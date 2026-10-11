@@ -1,0 +1,234 @@
+\section{Polygamma functions and generalized harmonic sums}
+\label{sec:harmonics}
+
+\subsection{Uncompensated polygamma pairings}
+For uncompensated Hurwitz zeta functions, the Laplace kernel $Q(x)$ has a
+simple pole at zero. Consequently, $\Rea s,\Rea t>3/2$ is a sufficient
+$L^2$ region for the same argument to give
+\begin{equation}\label{eq:plain-zeta-pair}
+ \frac1{2\pi}\int_{\R}\zeta(s,a+\ii y)\zeta(t,b-\ii y)\dd y
+ =\frac{\Gamma(w)}{\Gamma(s)\Gamma(t)}
+       \{\zeta(w-1,A)+(1-A)\zeta(w,A)\}.
+\end{equation}
+This follows directly from the $Q^2$ calculation in the proof of
+\cref{thm:basic}; no compensation is needed in this smaller domain.
+Using the standard identity
+$\psi^{(r)}(z)=(-1)^{r+1}r!\zeta(r+1,z)$ gives the following consequence.
+
+\begin{corollary}\label{thm:polygamma}
+For integers $r,k\ge1$, $\Rea a,\Rea b>0$, and $A=a+b$,
+\begin{align}
+ &\frac1{2\pi}\int_{\R}\psi^{(r)}(a+\ii y)
+                                  \psi^{(k)}(b-\ii y)\dd y\notag\\
+ &\quad=(-1)^{r+k}(r+k)!
+      \{\zeta(r+k,A)+(1-A)\zeta(r+k+1,A)\}.\label{eq:polygamma-pair}
+\end{align}
+In particular,
+\begin{equation}\label{eq:polygamma-norm}
+ \frac1{2\pi}\int_{\R}
+       |\psi^{(r)}(\tfrac12+\ii y)|^2\dd y=(2r)!\zeta(2r).
+\end{equation}
+\end{corollary}
+The restriction $r,k\ge1$ matters. Setting both to zero would introduce
+the divergent squared norm of the uncorrected digamma function, not the
+finite value in \eqref{eq:headline-digamma}.
+
+\subsection{Finite generalized harmonic families}
+For a positive integer $N$, define
+\begin{equation}\label{eq:finite-H}
+ \mathcal H_N^{(s)}(z)=\sum_{j=0}^{N-1}(z+j)^{-s}.
+\end{equation}
+At $z=1$ this is the usual generalized harmonic number $H_N^{(s)}$.
+For $\Rea s>0$, it is the Laplace transform with kernel
+$\sum_{j=0}^{N-1}e^{-jx}$, divided by $\Gamma(s)$.
+
+\begin{theorem}[Finite harmonic and mixed pairings]\label{thm:harmonic}
+Let $M,N\ge1$, $\Rea a,\Rea b>0$, $\Rea s,\Rea t>1/2$, and
+$A=a+b$, $w=s+t-1$. Then
+\begin{align}
+ &\frac1{2\pi}\int_{\R}\mathcal H_M^{(s)}(a+\ii y)
+                           \mathcal H_N^{(t)}(b-\ii y)\dd y\notag\\
+ &\qquad=\frac{\Gamma(w)}{\Gamma(s)\Gamma(t)}
+       \sum_{j=0}^{M-1}\sum_{k=0}^{N-1}(A+j+k)^{-w},\label{eq:HH-pair}\\
+ &\frac1{2\pi}\int_{\R}Z_s(a+\ii y)
+                           \mathcal H_N^{(t)}(b-\ii y)\dd y\notag\\
+ &\qquad=\frac{\Gamma(w)}{\Gamma(s)\Gamma(t)}
+                         \sum_{k=0}^{N-1}Z_w(A+k).\label{eq:ZH-pair}
+\end{align}
+The second expression is taken at its removable value if $w=1$.
+Arbitrary spectral and position derivatives are permitted inside both
+identities in the stated domain.
+\end{theorem}
+\begin{proof}
+Multiply the two finite exponential kernels and apply
+\cref{thm:plancherel}. Each exponential term contributes
+$\Gamma(w)(A+j+k)^{-w}$. In the mixed product it contributes
+$\Gamma(w)Z_w(A+k)$ by \eqref{eq:Z-laplace}.
+The kernels are bounded at zero, so the same $L^2$ holomorphy argument
+applies to all derivatives.
+\end{proof}
+
+For $a+b=1$ and $s=t=1$, these become particularly elementary:
+\begin{align}
+ &\frac1{2\pi}\int_{\R}\mathcal H_M^{(1)}(a+\ii y)
+                        \mathcal H_N^{(1)}(b-\ii y)\dd y\notag\\
+ &\quad=(M+N)H_{M+N}-MH_M-NH_N,\label{eq:HH-elementary}\\
+ &\frac1{2\pi}\int_{\R}G_0(a+\ii y)
+                        \mathcal H_N^{(1)}(b-\ii y)\dd y\notag\\
+ &\quad=\log\Gamma(N+1)-NH_N+N(1+\gamma).
+               \label{eq:GH-elementary}
+\end{align}
+Indeed, the first double sum can be summed along its diagonals, and the
+second is $\sum_{k=1}^N(\log k-\psi(k))$.
+Taking spectral derivatives supplies finite sums of
+$\log^r(A+j+k)/(A+j+k)^w$ and corresponding exact mixed identities for
+higher $G_m$, with the same Gamma-quotient coefficient bookkeeping as
+in \cref{sec:stieltjes}.
+
+\section{Lerch products and polylogarithm order derivatives}
+\label{sec:lerch}
+
+Let $\xi$ lie in $\{\xi:|\xi|\le1,\ \xi\ne1\}$. The Lerch transcendent
+has the integral representation \cite{dlmf-lerch}
+\begin{equation}\label{eq:lerch-laplace}
+ \Phi(\xi,s,z)=\frac1{\Gamma(s)}\int_0^\infty
+           \frac{x^{s-1}e^{-zx}}{1-\xi e^{-x}}\dd x,
+ \qquad\Rea s>0,\quad\Rea z>0.
+\end{equation}
+For $|\xi|<1$ this also follows by summing its defining series.
+The kernel is bounded at zero and along the positive real axis. Boundary
+colors $|\xi|=1$, $\xi\ne1$, follow by dominated continuation from inside
+the disk. No assertion here includes the singular color $\xi=1$ without
+the separate compensation already developed.
+
+\begin{theorem}[Colored pairings and confluent colors]\label{thm:lerch}
+Let $\Rea s,\Rea t>1/2$, $\Rea a,\Rea b>0$, and set
+$A=a+b$, $w=s+t-1$. For admissible colors $\xi\ne\eta$,
+\begin{align}
+ &\frac1{2\pi}\int_{\R}\Phi(\xi,s,a+\ii y)
+                             \Phi(\eta,t,b-\ii y)\dd y\notag\\
+ &\quad=\frac{\Gamma(w)}{\Gamma(s)\Gamma(t)}
+           \frac{\xi\Phi(\xi,w,A)-\eta\Phi(\eta,w,A)}{\xi-\eta}.
+               \label{eq:lerch-distinct}
+\end{align}
+At $\eta=\xi$, the quotient is replaced by
+\begin{equation}\label{eq:lerch-confluent}
+ \Phi(\xi,w-1,A)+(1-A)\Phi(\xi,w,A).
+\end{equation}
+In particular, when $A=1$ and $\xi\ne\eta$,
+\begin{align}
+ &\frac1{2\pi}\int_{\R}\Phi(\xi,s,a+\ii y)
+                             \Phi(\eta,t,1-a-\ii y)\dd y\notag\\
+ &\quad=\frac{\Gamma(w)}{\Gamma(s)\Gamma(t)}
+                 \frac{\Li_w(\xi)-\Li_w(\eta)}{\xi-\eta}.
+                     \label{eq:polylog-divdiff}
+\end{align}
+For equal nonzero colors the final quotient is $\Li_{w-1}(\xi)/\xi$;
+at $\xi=0$ its removable value is $1$.
+\end{theorem}
+\begin{proof}
+For distinct colors, use the exact partial fraction identity
+\[
+ \frac1{(1-\xi r)(1-\eta r)}
+ =\frac{\xi/(1-\xi r)-\eta/(1-\eta r)}{\xi-\eta}
+\]
+in the Laplace product supplied by \cref{thm:plancherel}.
+For equal colors, the kernel has series
+$\sum_{n\ge0}(n+1)\xi^n e^{-nx}$, and
+$n+1=(n+A)+(1-A)$ proves \eqref{eq:lerch-confluent}.
+This series argument initially uses $|\xi|<1$; its identity extends to
+the stated boundary colors by the same dominated kernel argument.
+Finally, $\xi\Phi(\xi,w,1)=\Li_w(\xi)$, including the removable
+interpretation at zero. All products converge by $L^2$.
+\end{proof}
+
+Order differentiation of \eqref{eq:polylog-divdiff} is a direct source of
+identities for $\partial_w^r\Li_w(\xi)$ and mixed order derivatives of
+Lerch functions. In particular, at $s=t=1$, the total-order derivatives
+are generated by
+\[
+ C(u,v)\frac{\Li_{1+u+v}(\xi)-\Li_{1+u+v}(\eta)}{\xi-\eta}.
+\]
+This is a convergent parameter identity near the origin, rather than an
+experimental relation inferred from numerical integer-relation searches.
+
+\subsection{Mixed Stieltjes--Lerch closure and the spectral resonance}
+\begin{theorem}\label{thm:mixed-lerch}
+Under the hypotheses of \cref{thm:lerch},
+\begin{align}
+ &\frac1{2\pi}\int_{\R}Z_s(a+\ii y)\Phi(\xi,t,b-\ii y)\dd y\notag\\
+ &\quad=\frac{\Gamma(w)}{\Gamma(s)\Gamma(t)}
+  \left\{\frac{\zeta(w,A)-\xi\Phi(\xi,w,A)}{1-\xi}
+                     -\frac{\Phi(\xi,w-1,A)}{w-1}\right\}.
+                         \label{eq:mixed-lerch}
+\end{align}
+The brace is holomorphic for $\Rea w>0$. At $s=t=1$ it gives
+\begin{align}
+ &\frac1{2\pi}\int_{\R}G_0(a+\ii y)\Phi(\xi,1,b-\ii y)\dd y\notag\\
+ &\quad=\frac{-\psi(A)-\xi\Phi(\xi,1,A)}{1-\xi}
+                                  -\Phi'(\xi,0,A).
+                                      \label{eq:mixed-lerch-resonance}
+\end{align}
+\end{theorem}
+\begin{proof}
+The product kernel is
+\[
+ \frac{h(x)}{1-\xi e^{-x}}
+ =\frac{Q(x)-\xi/(1-\xi e^{-x})}{1-\xi}
+                     -\frac1{x(1-\xi e^{-x})}.
+\]
+Integrate the separated expression first for $\Rea w>1$.
+The combined kernel is bounded at zero, so its Mellin transform is
+holomorphic for $\Rea w>0$. At $w=1$, both singular summands have residue
+$1/(1-\xi)$ with opposite signs, because
+$\Phi(\xi,0,A)=1/(1-\xi)$. Their constant terms give
+\eqref{eq:mixed-lerch-resonance}. Derivatives of this removable identity
+are justified by the original holomorphic $L^2$ pairing.
+\end{proof}
+
+When $A=1$, \eqref{eq:mixed-lerch-resonance} becomes
+\begin{equation}\label{eq:mixed-Li0}
+ \frac1{2\pi}\int_{\R}G_0(a+\ii y)\Phi(\xi,1,1-a-\ii y)\dd y
+ =\frac{\gamma+\log(1-\xi)}{1-\xi}
+       -\frac{\left.\partial_s\Li_s(\xi)\right|_{s=0}}{\xi}.
+\end{equation}
+At zero color the final quotient is interpreted by continuity. At
+$\xi=-1$, the right-hand side reduces to
+\begin{equation}\label{eq:alternating-special}
+ \frac\gamma2+\log2-\frac12\log\pi.
+\end{equation}
+Indeed, $\Li_s(-1)=(2^{1-s}-1)\zeta(s)$, whence
+$\Li'_0(-1)=\frac12\log(2/\pi)$. Moreover,
+\[
+ \Phi(-1,1,z)=\frac12\left\{\psi\left(\frac{z+1}{2}\right)
+                           -\psi\left(\frac z2\right)\right\}.
+\]
+Thus \eqref{eq:alternating-special} is also an explicit compensated
+digamma--digamma-difference integral.
+
+\subsection{Every nontrivial root of unity gives a finite Gamma formula}
+If $\xi^q=1$ and $\xi\ne1$, grouping the Lerch series modulo $q$ gives
+\begin{equation}\label{eq:root-unity}
+ \Phi(\xi,s,A)=q^{-s}\sum_{r=0}^{q-1}\xi^r
+                                \zeta\left(s,\frac{A+r}{q}\right).
+\end{equation}
+The zeta residues at $s=1$ cancel because $\sum\xi^r=0$. With
+$c_r=(A+r)/q$, its two required values are
+\begin{align}
+ \Phi(\xi,1,A)&=-\frac1q\sum_{r=0}^{q-1}\xi^r\psi(c_r),\label{eq:root-one}\\
+ \Phi'(\xi,0,A)&=\sum_{r=0}^{q-1}\xi^r\log\Gamma(c_r)
+                                      -\frac{\log q}{1-\xi}.
+                                          \label{eq:root-zero-derivative}
+\end{align}
+Substituting into \eqref{eq:mixed-lerch-resonance} yields the finite family
+\begin{align}
+ &\frac1{2\pi}\int_{\R}G_0(a+\ii y)\Phi(\xi,1,b-\ii y)\dd y\notag\\
+ &\quad=\frac{-\psi(A)+(\xi/q)\sum_{r=0}^{q-1}\xi^r\psi(c_r)
+                      +\log q}{1-\xi}
+             -\sum_{r=0}^{q-1}\xi^r\log\Gamma(c_r).
+                 \label{eq:root-Gamma-pair}
+\end{align}
+For higher indices, differentiating the finite sum
+\eqref{eq:root-unity} gives a triangular combination of Hurwitz order
+jets and powers of $\log q$. This is a proved finite reduction at every
+index, with no presumption of further transcendence reductions.

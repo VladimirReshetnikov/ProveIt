@@ -1,0 +1,109 @@
+\section{Transverse curved directions and a sharp fourth-jet correction}
+\label{sec:curves}
+
+The cubic coordinate formula survives a nonlinear change of spectral
+path. The path contributes an explicitly classical correction, while
+the coefficients of $\Omega_3$ and $\kappa$ depend only on its tangent.
+
+Using \eqref{ray:h0}--\eqref{ray:hA}, define
+\begin{align}
+ K(A,B,C)=\frac1{\Gamma(1+C)}\biggl\{
+ &\zeta(A)\zeta(B)
+ -\frac{C\Gamma(1-A)\zeta(B-1)}{A+C}
+ -\frac{C\Gamma(1-B)\zeta(A-1)}{B+C}\notag\\
+ &+C\bigl(h_0+h_A(A+B)+h_C\,C\bigr)\biggr\}.
+ \label{curve:K}
+\end{align}
+Although $K$ is meromorphic in three variables, its restriction to
+each of the paths in the following theorem is holomorphic.
+
+\begin{theorem}[Cubic transport along a spectral curve]\label{thm:curve}
+Let $A(t),B(t),C(t)$ be analytic near zero, vanish at zero, and have
+first derivatives $a,b,c$ satisfying \eqref{ray:admissible}.
+Write $\mathscr W(t)=\T(A(t),B(t),C(t))$. Then
+\begin{equation}\label{curve:main}
+ \mathscr W'''(0)=W_{a,b,c}'''(0)+
+ 6[t^3]\bigl(K(A(t),B(t),C(t))-K(at,bt,ct)\bigr).
+\end{equation}
+The correction uses only ordinary Gamma and zeta derivatives and
+the Taylor coefficients of $A,B,C$ through degree four. In particular,
+the coefficients of $\Omega_3$ and $\kappa$ remain $abc$ and
+$-c\Delta/2$.
+\end{theorem}
+
+\begin{proof}
+Write the quadratic homogeneous part of \eqref{ray:H-Taylor} as
+$H_2$. Formula \eqref{ray:decomposition} gives
+\[
+ \T-K=\frac{C}{\Gamma(1+C)}H_2(A,B,C)
+            +O\bigl((|A|+|B|+|C|)^4\bigr).
+\]
+After substitution of the curve, its coefficient of $t^3$ is
+$cH_2(a,b,c)$, exactly the coefficient on the tangent ray. Subtracting
+the two restrictions proves \eqref{curve:main}.
+
+The only possible need for one additional path coefficient comes
+from $C/(A+C)$ and $C/(B+C)$. Remove their common factor $t$.
+The new denominators have nonzero constant terms, so the coefficient
+of $t^3$ in each ratio uses the original curves only through degree
+four. All the remaining compositions use at most degree three.
+This proves the finite-jet assertion and holomorphy of the restrictions.
+\end{proof}
+
+\subsection{A correction involving only the lower directional layer}
+
+The correction can be made smaller than the Gamma expression
+\eqref{curve:K} suggests. Put $v=(a,b,c)$ and write the path as
+\[
+ (A(t),B(t),C(t))=tv+t^2\alpha+t^3\beta+t^4\delta+O(t^5).
+\]
+Let $f_j(v)=W_v^{(j)}(0)$ for $j=0,1,2$, explicitly given by
+\eqref{ray:lower}. Denote ordinary differentials in the slope
+variables by $D$. Then
+\begin{align}
+ \mathscr W'''(0)-W_v'''(0)={}&
+ 6Df_0(v)[\delta]+6D^2f_0(v)[\alpha,\beta]
+                  +D^3f_0(v)[\alpha,\alpha,\alpha]\notag\\
+ &+6Df_1(v)[\beta]+3D^2f_1(v)[\alpha,\alpha]
+                  +3Df_2(v)[\alpha].
+ \label{curve:differentials}
+\end{align}
+In particular the correction belongs to the span of
+$1,L,L^2,\zeta'(-1),\zeta''(0),\zeta''(-1)$ with rational
+functions of the path coefficients. No third zeta derivative or
+additional Gamma constant is needed.
+
+To prove \eqref{curve:differentials}, cancel the common factor $t$
+in the two polar ratios in \eqref{ray:decomposition}. The function
+$(t,v)\mapsto\T(ta,tb,tc)$ is then jointly holomorphic near
+$(0,v)$ for admissible $v$. Its Taylor series is
+$\sum_{j\ge0}f_j(v)t^j/j!$. Substitute
+$v+\alpha t+\beta t^2+\delta t^3+O(t^4)$ for $v$ and take
+the coefficient of $t^3$. The ordinary multivariate Taylor formula
+gives exactly \eqref{curve:differentials}.
+
+\begin{proposition}[The fourth jet is genuinely needed]\label{prop:sharpcurve}
+Fix admissible $a,b,c$ with $c\ne0$. Replacing the straight path
+$(at,bt,ct)$ by $(at+\varepsilon t^4,bt,ct)$ changes its cubic
+derivative by exactly
+\begin{equation}\label{curve:sharp}
+ -\frac{c\varepsilon}{2(a+c)^2}.
+\end{equation}
+Here $\varepsilon$ is the coefficient of $t^4$, not the fourth derivative.
+\end{proposition}
+\begin{proof}
+Only the ratio $C/(A+C)$ in \eqref{curve:K} changes at degree three.
+Its multiplier at the origin is $-\zeta(-1)=1/12$. The ratio changes by
+$-c\varepsilon t^3/(a+c)^2+O(t^4)$. Multiplication by $3!=6$
+gives \eqref{curve:sharp}.
+\end{proof}
+
+For example, the curve $(t+\varepsilon t^4,t,t)$ has cubic
+derivative $\Omega_3-\varepsilon/8$, even though its first three
+path derivatives agree with those of the diagonal.
+
+This theorem concerns transverse curves. If a path lies in $A+C=0$
+or $B+C=0$, or is tangent to one of those divisors, a separate
+restriction or normal finite-part prescription is needed. The theorem
+does not assign a value by substituting a zero denominator into
+\eqref{ray:main}.

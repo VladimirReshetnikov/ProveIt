@@ -1,0 +1,121 @@
+\section{Reproducible finite verification and numerical diagnostics}
+\label{bmh:sec:verification}
+
+\subsection{What was executed}
+The package contains two independent implementation layers. The exact
+layer uses Python integers and SymPy rational arithmetic, with an
+unevaluated symbol $Z(A,B)$ for convergent double zeta values. The
+numerical layer uses mpmath quadrature of the original Mellin integrals
+and an independently implemented finite-sum plus Euler--Maclaurin
+representation of double Hurwitz zeta values. It does not evaluate an
+integral by merely calling the symbolic result being tested.
+
+The exact run passed \textbf{8,849 checks}. Its recorded categories are
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Exact category & Checks\\
+\midrule
+Enumerated shuffle multiplicities through word length ten & 8,194\\
+Cone formula versus compact coefficients & 91\\
+Compact-formula symmetry & 91\\
+Laurent decomposition, endpoint, transport, residue identities & 216\\
+Gamma product versus independent Bell recurrence & 90\\
+Negative resonance versus independent kernel recursion & 48\\
+Inversion derivative and parity laws & 30\\
+Central-moment symmetry & 85\\
+Printed low-weight examples & 3\\
+Deliberately corrupted coefficient rejected & 1\\
+\midrule
+Total & 8,849\\
+\bottomrule
+\end{tabular}
+\end{center}
+The shuffle test enumerates subsets of word positions independently of
+the binomial formula; it does not merely evaluate that formula twice.
+The negative-resonance test compares the common-shift Taylor law with the
+separately implemented integration-by-parts recurrence. The corruption
+control adds a nonzero formal double-zeta coefficient and verifies that
+exact cancellation fails.
+
+The numerical run passed \textbf{67 comparisons at 45 decimal working
+digits}. The largest scaled discrepancy was less than
+$2.3\times10^{-44}$, against an acceptance threshold $10^{-33}$.
+The families tested were the noninteger master (nine cases), central
+$a=0$ logarithmic moments (twelve), negative-resonance moments (five),
+integer-kernel recurrence values (ten), central parity values (seven),
+unequal-scale logarithmic examples (five), connected shifts and stuffles
+(ten), independent double-zeta tail refinements (four), and beta moments
+(five). The Stieltjes spectral-derivative and continuous-primitive
+extensions are proved analytically in Section~\ref{bmh:sec:stieltjes};
+the 67 numerical checks are not advertised as direct quadrature tests
+of those extensions.
+
+Representative raw values, printed here only as diagnostics, are
+\begin{align*}
+ I_{1,1}&\approx2.40411380631918857079947632302,\\
+ I_{2,1}&\approx4.59987374327233731394301571029,\\
+ I_{3,1}&\approx7.68040700358583071301959561699,\\
+ I_{2,2}&\approx9.98307291147592432545107273885.
+\end{align*}
+The full run records, not these rounded lines, are the replay evidence.
+They are floating-point diagnostics, not rational interval certificates.
+An accepted tiny residual is not used anywhere as a proof of equality.
+
+\subsection{The independent double-zeta evaluator}
+For $A\ge2,B\ge2$, write
+\[
+ Z_q(A,B)=\zeta(A;q)\zeta(B;q)
+       -\sum_{n\ge0}(n+q)^{-A}\zeta(B;n+q).
+\]
+After a finite sum through $n=M-1$, the tail is evaluated with
+\begin{align*}
+ &\frac{\zeta(A+B-1;M+q)}{B-1}
+ +\frac12\zeta(A+B;M+q)\\
+ &\qquad+\sum_{k=1}^{K}\frac{B_{2k}}{(2k)!}(B)_{2k-1}
+          \zeta(A+B+2k-1;M+q).
+\end{align*}
+For $B=1$, use the finite partial sum of
+$(n+q)^{-A}(\psi(n+q)-\psi(q))$ and the tail
+\begin{align*}
+ &-\zeta^{[1]}(A;M+q)-\psi(q)\zeta(A;M+q)
+   -\frac12\zeta(A+1;M+q)\\
+ &\qquad-\sum_{k=1}^{K}\frac{B_{2k}}{2k}
+                      \zeta(A+2k;M+q).
+\end{align*}
+Here $\zeta^{[1]}$ differentiates the spectral variable. The default
+parameters are $M=64,K=24$; a second calculation uses $M=96,K=32$.
+These are truncated asymptotic tails checked by refinement, not asserted
+convergent infinite expansions or certified error bounds.
+
+The direct quadrature uses $u=\log x$. Polylogarithm inversion keeps
+integer-order library evaluations inside the unit disk. At order one,
+$-\log(1+e^u)$ is computed with a stable \src{log1p} form; a naive
+$\log(1+\varepsilon)$ can lose the very small lower-tail contribution at
+negative Mellin parameters. This implementation detail does not alter
+the mathematical integral.
+
+\subsection{Commands and delivery contents}
+From the package root, with Python, SymPy, mpmath, and pdfLaTeX installed:
+\begin{verbatim}
+python verification/verify_exact.py
+python verification/verify_numerics.py
+python verification/export_tables.py
+python build.py
+\end{verbatim}
+The tested Python version is 3.13.5, SymPy is 1.14.0, and the numerical
+record identifies the mpmath version. The supplied requirements pin the
+Python packages. Alternative output paths can be passed to the two
+verification scripts with \src{--output}; this permits replay on a copy
+without overwriting delivered evidence. The scripts fail with a nonzero
+exit status when an assertion fails.
+
+The article is a self-contained source split into section files.
+\src{data/exact_results.json} and \src{data/numerical_results.json}
+record the completed runs; \src{data/formula_table.json} stores exact
+example expressions; \src{AUDIT.md}, \src{PROVENANCE.json}, and
+\src{integration/INTEGRATION.md} record status and source scope.
+The build script checks the LaTeX process and runs enough passes to
+resolve cross-references. The delivered PDF was also rendered and
+visually inspected. No proof-assistant certification or external peer
+review is claimed.

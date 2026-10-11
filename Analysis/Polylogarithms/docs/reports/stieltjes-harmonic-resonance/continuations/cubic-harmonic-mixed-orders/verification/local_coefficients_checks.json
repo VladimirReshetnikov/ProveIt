@@ -1,0 +1,257 @@
+{
+  "status": "passed",
+  "arithmetic": "exact symbolic and rational SymPy arithmetic",
+  "sympy_version": "1.14.0",
+  "checks": {
+    "formal_gamma_coefficient_checks": 42,
+    "direct_sympy_gamma_coefficient_checks": 30,
+    "local_kernel_coefficient_checks": 9,
+    "normalized_principal_part_checks": 3,
+    "finite_harmonic_algebra_checks": 36
+  },
+  "total_exact_checks": 120,
+  "formal_constant_convention": "gamma,zeta_2,...,zeta_6 are independent symbols in formal checks; direct SymPy checks use actual EulerGamma and zeta values.",
+  "gamma_coefficients": [
+    {
+      "center": 1,
+      "formal_coefficients_through_degree_6": [
+        "1",
+        "gamma",
+        "gamma**2/2 - zeta_2/2",
+        "gamma**3/6 - gamma*zeta_2/2 + zeta_3/3",
+        "gamma**4/24 - gamma**2*zeta_2/4 + gamma*zeta_3/3 + zeta_2**2/8 - zeta_4/4",
+        "gamma**5/120 - gamma**3*zeta_2/12 + gamma**2*zeta_3/6 + gamma*zeta_2**2/8 - gamma*zeta_4/4 - zeta_2*zeta_3/6 + zeta_5/5",
+        "gamma**6/720 - gamma**4*zeta_2/48 + gamma**3*zeta_3/18 + gamma**2*zeta_2**2/16 - gamma**2*zeta_4/8 - gamma*zeta_2*zeta_3/6 + gamma*zeta_5/5 - zeta_2**3/48 + zeta_2*zeta_4/8 + zeta_3**2/18 - zeta_6/6"
+      ],
+      "integer_shift_recurrence_passed": true,
+      "direct_sympy_series_through_degree_4_passed": true
+    },
+    {
+      "center": 2,
+      "formal_coefficients_through_degree_6": [
+        "1",
+        "gamma - 1",
+        "gamma**2/2 - gamma - zeta_2/2 + 1",
+        "gamma**3/6 - gamma**2/2 - gamma*zeta_2/2 + gamma + zeta_2/2 + zeta_3/3 - 1",
+        "gamma**4/24 - gamma**3/6 - gamma**2*zeta_2/4 + gamma**2/2 + gamma*zeta_2/2 + gamma*zeta_3/3 - gamma + zeta_2**2/8 - zeta_2/2 - zeta_3/3 - zeta_4/4 + 1",
+        "gamma**5/120 - gamma**4/24 - gamma**3*zeta_2/12 + gamma**3/6 + gamma**2*zeta_2/4 + gamma**2*zeta_3/6 - gamma**2/2 + gamma*zeta_2**2/8 - gamma*zeta_2/2 - gamma*zeta_3/3 - gamma*zeta_4/4 + gamma - zeta_2**2/8 - zeta_2*zeta_3/6 + zeta_2/2 + zeta_3/3 + zeta_4/4 + zeta_5/5 - 1",
+        "gamma**6/720 - gamma**5/120 - gamma**4*zeta_2/48 + gamma**4/24 + gamma**3*zeta_2/12 + gamma**3*zeta_3/18 - gamma**3/6 + gamma**2*zeta_2**2/16 - gamma**2*zeta_2/4 - gamma**2*zeta_3/6 - gamma**2*zeta_4/8 + gamma**2/2 - gamma*zeta_2**2/8 - gamma*zeta_2*zeta_3/6 + gamma*zeta_2/2 + gamma*zeta_3/3 + gamma*zeta_4/4 + gamma*zeta_5/5 - gamma - zeta_2**3/48 + zeta_2**2/8 + zeta_2*zeta_3/6 + zeta_2*zeta_4/8 - zeta_2/2 + zeta_3**2/18 - zeta_3/3 - zeta_4/4 - zeta_5/5 - zeta_6/6 + 1"
+      ],
+      "integer_shift_recurrence_passed": true,
+      "direct_sympy_series_through_degree_4_passed": true
+    },
+    {
+      "center": 5,
+      "formal_coefficients_through_degree_6": [
+        "1/24",
+        "gamma/24 - 25/288",
+        "gamma**2/48 - 25*gamma/288 - zeta_2/48 + 415/3456",
+        "gamma**3/144 - 25*gamma**2/576 - gamma*zeta_2/48 + 415*gamma/3456 + 25*zeta_2/576 + zeta_3/72 - 5845/41472",
+        "gamma**4/576 - 25*gamma**3/1728 - gamma**2*zeta_2/96 + 415*gamma**2/6912 + 25*gamma*zeta_2/576 + gamma*zeta_3/72 - 5845*gamma/41472 + zeta_2**2/192 - 415*zeta_2/6912 - 25*zeta_3/864 - zeta_4/96 + 76111/497664",
+        "gamma**5/2880 - 25*gamma**4/6912 - gamma**3*zeta_2/288 + 415*gamma**3/20736 + 25*gamma**2*zeta_2/1152 + gamma**2*zeta_3/144 - 5845*gamma**2/82944 + gamma*zeta_2**2/192 - 415*gamma*zeta_2/6912 - 25*gamma*zeta_3/864 - gamma*zeta_4/96 + 76111*gamma/497664 - 25*zeta_2**2/2304 - zeta_2*zeta_3/144 + 5845*zeta_2/82944 + 415*zeta_3/10368 + 25*zeta_4/1152 + zeta_5/120 - 952525/5971968",
+        "gamma**6/17280 - 5*gamma**5/6912 - gamma**4*zeta_2/1152 + 415*gamma**4/82944 + 25*gamma**3*zeta_2/3456 + gamma**3*zeta_3/432 - 5845*gamma**3/248832 + gamma**2*zeta_2**2/384 - 415*gamma**2*zeta_2/13824 - 25*gamma**2*zeta_3/1728 - gamma**2*zeta_4/192 + 76111*gamma**2/995328 - 25*gamma*zeta_2**2/2304 - gamma*zeta_2*zeta_3/144 + 5845*gamma*zeta_2/82944 + 415*gamma*zeta_3/10368 + 25*gamma*zeta_4/1152 + gamma*zeta_5/120 - 952525*gamma/5971968 - zeta_2**3/1152 + 415*zeta_2**2/27648 + 25*zeta_2*zeta_3/1728 + zeta_2*zeta_4/192 - 76111*zeta_2/995328 + zeta_3**2/432 - 5845*zeta_3/124416 - 415*zeta_4/13824 - 5*zeta_5/288 - zeta_6/144 + 11679655/71663616"
+      ],
+      "integer_shift_recurrence_passed": true,
+      "direct_sympy_series_through_degree_4_passed": true
+    },
+    {
+      "center": 0,
+      "formal_coefficients_through_degree_6": [
+        "0",
+        "1",
+        "gamma",
+        "gamma**2/2 - zeta_2/2",
+        "gamma**3/6 - gamma*zeta_2/2 + zeta_3/3",
+        "gamma**4/24 - gamma**2*zeta_2/4 + gamma*zeta_3/3 + zeta_2**2/8 - zeta_4/4",
+        "gamma**5/120 - gamma**3*zeta_2/12 + gamma**2*zeta_3/6 + gamma*zeta_2**2/8 - gamma*zeta_4/4 - zeta_2*zeta_3/6 + zeta_5/5"
+      ],
+      "integer_shift_recurrence_passed": true,
+      "direct_sympy_series_through_degree_4_passed": true
+    },
+    {
+      "center": -1,
+      "formal_coefficients_through_degree_6": [
+        "0",
+        "-1",
+        "1 - gamma",
+        "-gamma**2/2 + gamma + zeta_2/2",
+        "-gamma**3/6 + gamma**2/2 + gamma*zeta_2/2 - zeta_2/2 - zeta_3/3",
+        "-gamma**4/24 + gamma**3/6 + gamma**2*zeta_2/4 - gamma*zeta_2/2 - gamma*zeta_3/3 - zeta_2**2/8 + zeta_3/3 + zeta_4/4",
+        "-gamma**5/120 + gamma**4/24 + gamma**3*zeta_2/12 - gamma**2*zeta_2/4 - gamma**2*zeta_3/6 - gamma*zeta_2**2/8 + gamma*zeta_3/3 + gamma*zeta_4/4 + zeta_2**2/8 + zeta_2*zeta_3/6 - zeta_4/4 - zeta_5/5"
+      ],
+      "integer_shift_recurrence_passed": true,
+      "direct_sympy_series_through_degree_4_passed": true
+    },
+    {
+      "center": -4,
+      "formal_coefficients_through_degree_6": [
+        "0",
+        "24",
+        "24*gamma - 50",
+        "12*gamma**2 - 50*gamma - 12*zeta_2 + 35",
+        "4*gamma**3 - 25*gamma**2 - 12*gamma*zeta_2 + 35*gamma + 25*zeta_2 + 8*zeta_3 - 10",
+        "gamma**4 - 25*gamma**3/3 - 6*gamma**2*zeta_2 + 35*gamma**2/2 + 25*gamma*zeta_2 + 8*gamma*zeta_3 - 10*gamma + 3*zeta_2**2 - 35*zeta_2/2 - 50*zeta_3/3 - 6*zeta_4 + 1",
+        "gamma**5/5 - 25*gamma**4/12 - 2*gamma**3*zeta_2 + 35*gamma**3/6 + 25*gamma**2*zeta_2/2 + 4*gamma**2*zeta_3 - 5*gamma**2 + 3*gamma*zeta_2**2 - 35*gamma*zeta_2/2 - 50*gamma*zeta_3/3 - 6*gamma*zeta_4 + gamma - 25*zeta_2**2/4 - 4*zeta_2*zeta_3 + 5*zeta_2 + 35*zeta_3/3 + 25*zeta_4/2 + 24*zeta_5/5"
+      ],
+      "integer_shift_recurrence_passed": true,
+      "direct_sympy_series_through_degree_4_passed": true
+    }
+  ],
+  "local_kernel_coefficients": [
+    {
+      "x_power": -1,
+      "log_power": 0,
+      "coefficient": "0"
+    },
+    {
+      "x_power": -1,
+      "log_power": 1,
+      "coefficient": "0"
+    },
+    {
+      "x_power": -1,
+      "log_power": 2,
+      "coefficient": "1"
+    },
+    {
+      "x_power": 0,
+      "log_power": 0,
+      "coefficient": "0"
+    },
+    {
+      "x_power": 0,
+      "log_power": 1,
+      "coefficient": "-1"
+    },
+    {
+      "x_power": 0,
+      "log_power": 2,
+      "coefficient": "-1/2"
+    },
+    {
+      "x_power": 1,
+      "log_power": 0,
+      "coefficient": "1/4"
+    },
+    {
+      "x_power": 1,
+      "log_power": 1,
+      "coefficient": "7/12"
+    },
+    {
+      "x_power": 1,
+      "log_power": 2,
+      "coefficient": "1/12"
+    }
+  ],
+  "principal_parts": [
+    {
+      "center": 1,
+      "epsilon_definition": "C minus center",
+      "raw_mellin_principal_part": "2/eps**3",
+      "normalized_principal_part": "-pi**2/(6*eps) + EulerGamma**2/eps + 2*EulerGamma/eps**2 + 2/eps**3",
+      "passed": true
+    },
+    {
+      "center": 0,
+      "epsilon_definition": "C minus center",
+      "raw_mellin_principal_part": "eps**(-2) - 1/eps**3",
+      "normalized_principal_part": "-EulerGamma/eps + 1/eps - 1/eps**2",
+      "passed": true
+    },
+    {
+      "center": -1,
+      "epsilon_definition": "C minus center",
+      "raw_mellin_principal_part": "1/(4*eps) - 7/(12*eps**2) + 1/(6*eps**3)",
+      "normalized_principal_part": "-EulerGamma/(6*eps) + 3/(4*eps) - 1/(6*eps**2)",
+      "passed": true
+    }
+  ],
+  "cubic_harmonic_bridge": [
+    {
+      "N": 1,
+      "sum_a_n_over_n": "-gamma**2 + 2*gamma + zeta_2",
+      "reciprocal_sum_identity_passed": true,
+      "finite_difference_passed": true,
+      "formal_log_summation_by_parts_passed": true
+    },
+    {
+      "N": 2,
+      "sum_a_n_over_n": "-3*gamma**2/2 + 7*gamma/2 + 3*zeta_2/2 - 1/2",
+      "reciprocal_sum_identity_passed": true,
+      "finite_difference_passed": true,
+      "formal_log_summation_by_parts_passed": true
+    },
+    {
+      "N": 3,
+      "sum_a_n_over_n": "-11*gamma**2/6 + 85*gamma/18 + 11*zeta_2/6 - 7/6",
+      "reciprocal_sum_identity_passed": true,
+      "finite_difference_passed": true,
+      "formal_log_summation_by_parts_passed": true
+    },
+    {
+      "N": 4,
+      "sum_a_n_over_n": "-25*gamma**2/12 + 415*gamma/72 + 25*zeta_2/12 - 91/48",
+      "reciprocal_sum_identity_passed": true,
+      "finite_difference_passed": true,
+      "formal_log_summation_by_parts_passed": true
+    },
+    {
+      "N": 5,
+      "sum_a_n_over_n": "-137*gamma**2/60 + 12019*gamma/1800 + 137*zeta_2/60 - 127/48",
+      "reciprocal_sum_identity_passed": true,
+      "finite_difference_passed": true,
+      "formal_log_summation_by_parts_passed": true
+    },
+    {
+      "N": 6,
+      "sum_a_n_over_n": "-49*gamma**2/20 + 13489*gamma/1800 + 49*zeta_2/20 - 7339/2160",
+      "reciprocal_sum_identity_passed": true,
+      "finite_difference_passed": true,
+      "formal_log_summation_by_parts_passed": true
+    },
+    {
+      "N": 7,
+      "sum_a_n_over_n": "-363*gamma**2/140 + 726301*gamma/88200 + 363*zeta_2/140 - 8947/2160",
+      "reciprocal_sum_identity_passed": true,
+      "finite_difference_passed": true,
+      "formal_log_summation_by_parts_passed": true
+    },
+    {
+      "N": 8,
+      "sum_a_n_over_n": "-761*gamma**2/280 + 3144919*gamma/352800 + 761*zeta_2/280 - 117925/24192",
+      "reciprocal_sum_identity_passed": true,
+      "finite_difference_passed": true,
+      "formal_log_summation_by_parts_passed": true
+    },
+    {
+      "N": 9,
+      "sum_a_n_over_n": "-7129*gamma**2/2520 + 30300391*gamma/3175200 + 7129*zeta_2/2520 - 57985/10368",
+      "reciprocal_sum_identity_passed": true,
+      "finite_difference_passed": true,
+      "formal_log_summation_by_parts_passed": true
+    },
+    {
+      "N": 10,
+      "sum_a_n_over_n": "-7381*gamma**2/2520 + 32160403*gamma/3175200 + 7381*zeta_2/2520 - 57113663/9072000",
+      "reciprocal_sum_identity_passed": true,
+      "finite_difference_passed": true,
+      "formal_log_summation_by_parts_passed": true
+    },
+    {
+      "N": 11,
+      "sum_a_n_over_n": "-83711*gamma**2/27720 + 4102360483*gamma/384199200 + 83711*zeta_2/27720 - 63349943/9072000",
+      "reciprocal_sum_identity_passed": true,
+      "finite_difference_passed": true,
+      "formal_log_summation_by_parts_passed": true
+    },
+    {
+      "N": 12,
+      "sum_a_n_over_n": "-86021*gamma**2/27720 + 4301068993*gamma/384199200 + 86021*zeta_2/27720 - 109131059/14256000",
+      "reciprocal_sum_identity_passed": true,
+      "finite_difference_passed": true,
+      "formal_log_summation_by_parts_passed": true
+    }
+  ],
+  "limitations": "These tests certify finite algebra only. Mellin continuation, local remainder estimates, and infinite-series convergence require the analytic arguments in the article."
+}

@@ -1,0 +1,91 @@
+\section{Explicit primitives and a weighted multiple-zeta identity}
+\label{bmh:sec:words}
+
+\subsection{Binary Landen words}
+In this section it is convenient to use the positive harmonic kernels
+$\omega_0=\dd t/t$ and $\omega_1=\dd t/(1-t)$. Let $H(w;t)$ denote the
+corresponding iterated integral, with the first letter integrated
+outermost. These conventions differ by a sign at the letter one from
+those of $G$ in Section~\ref{bmh:sec:closure}. Equation~\eqref{bmh:eq:Landen-G}
+at $z=1$ becomes
+\begin{equation}\label{bmh:eq:Landen-binary}
+ L_m(t)=-H\big((e_0+e_1)^{m-1}e_1;t\big).
+\end{equation}
+For every word $w=w_1\cdots w_W$ of length $W=m+n$ ending in one, put
+\begin{equation}\label{bmh:eq:word-coeff}
+ c_{m,n}(w)=\sum_{\substack{1\le j<W\\w_j=1}}
+ \left\{\binom{j-1}{m-1}+\binom{j-1}{n-1}\right\}.
+\end{equation}
+
+\begin{lemma}[Closed shuffle multiplicities]\label{bmh:lem:shuffle}
+For $0<t<1$,
+\begin{equation}\label{bmh:eq:shuffle-product}
+ L_m(t)L_n(t)=\sum_{\substack{|w|=W\\w_W=1}}c_{m,n}(w)H(w;t).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The two minus signs in~\eqref{bmh:eq:Landen-binary} cancel. A shuffle
+assigns $m$ positions of $w$ to the first factor and $n$ to the second.
+Every internal letter in either factor may be zero or one, but its final
+letter must be one. Exactly one factor ends at position $W$ and the
+other ends at some $j<W$ with $w_j=1$. If the length-$m$ factor ends at
+$j$, choose its other $m-1$ positions among the first $j-1$ positions,
+giving $\binom{j-1}{m-1}$ possibilities. Interchanging the factors gives
+the second binomial coefficient. These cases are disjoint and exhaustive,
+proving~\eqref{bmh:eq:word-coeff}.
+\end{proof}
+
+\begin{theorem}[An explicit anchored primitive]\label{bmh:thm:primitive}
+For $x\ge0$,
+\begin{equation}\label{bmh:eq:primitive}
+ \boxed{\displaystyle
+ \int_0^x\frac{\Li_m(-u)\Li_n(-u)}{u(1+u)}\dd u
+ =\sum_{\substack{|w|=W\\w_W=1}}c_{m,n}(w)
+       H\left(0w;\frac{x}{1+x}\right).}
+\end{equation}
+Every endpoint value at $x=\infty$ is convergent: its word starts with
+zero and ends with one.
+\end{theorem}
+\begin{proof}
+The substitution $t=u/(1+u)$ turns $\dd u/(u(1+u))$ into $\dd t/t$.
+Insert~\eqref{bmh:eq:shuffle-product} and prepend the letter zero.
+Both sides vanish at $x=0$, fixing the integration constant. At one the
+prepend-zero condition removes the outer logarithmic singularity, while
+the final-one condition gives convergence at zero.
+\end{proof}
+
+\subsection{A finite high-depth sum with a double-zeta answer}
+Let $\boldsymbol k=(k_1,\ldots,k_d)$ be a composition of $W+1$ with
+$k_1\ge2$, and write $K_\ell=k_1+\cdots+k_\ell$. Define
+\begin{equation}\label{bmh:eq:composition-coeff}
+ c_{m,n}(\boldsymbol k)=\sum_{\ell=1}^{d-1}
+ \left\{\binom{K_\ell-2}{m-1}+\binom{K_\ell-2}{n-1}\right\}.
+\end{equation}
+The sum is zero when $d=1$.
+
+\begin{corollary}[Weighted MZV reduction]\label{bmh:cor:weighted}
+For all positive $m,n$,
+\begin{align}
+ &\sum_{\substack{k_1+\cdots+k_d=W+1\\k_1\ge2,\ k_j\ge1}}
+ c_{m,n}(\boldsymbol k)\zeta(k_1,\ldots,k_d)\notag\\
+ &\qquad=\left(\binom W{m-1}+\binom W{n-1}\right)\zeta(W+1)
+ +\sum_{j=1}^{W-1}jA_j(m,n)\zeta(j+1,W-j).
+ \label{bmh:eq:weighted}
+\end{align}
+The left side ranges over every admissible composition, and can have
+large depth. Its particular weighted combination always reduces to
+single and double values.
+\end{corollary}
+\begin{proof}
+Take $x\to\infty$ in~\eqref{bmh:eq:primitive} and identify
+$H(0^{k_1-1}1\cdots0^{k_d-1}1;1)$ with the decreasing-index multiple
+zeta value. An internal one occurs at position $K_\ell-1$ in $w$, so
+\eqref{bmh:eq:word-coeff} becomes~\eqref{bmh:eq:composition-coeff}.
+Theorem~\ref{bmh:thm:compact} supplies the right side.
+\end{proof}
+This is a reduction of a specified family of weighted sums, not a theorem
+that every multiple zeta value of the same weight has depth at most two.
+It also gives a direct identity between two finite descriptions of the
+same integral: a binary-word primitive and a two-cone double-sum formula.
+The verification code checks their combinatorial interface without
+assuming numerical period independence.

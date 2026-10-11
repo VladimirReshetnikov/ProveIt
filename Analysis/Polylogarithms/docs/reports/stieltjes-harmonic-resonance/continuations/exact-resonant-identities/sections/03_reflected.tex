@@ -1,0 +1,497 @@
+% Standalone section source for the parent article. Uses standard amsmath/amsthm.
+\section{Coincident reflected Stieltjes products close in ordinary zeta jets}
+\label{ct:section}
+
+Let
+\[
+ K(x)=\pi\cot(\pi x),\qquad
+ \zeta(1+u,x)-\frac1u
+   =\sum_{m\ge0}\frac{(-1)^m}{m!}\gamma_m(x)u^m.
+\]
+In particular $\gamma_0(x)=-\psi(x)$. All finite parts in this section use
+\emph{both} unit endpoint coordinates $x$ and $1-x$. Equivalently,
+\[
+ \operatorname{FP}\int_0^1 f(x)\,dx
+ =\operatorname{CT}_{\epsilon\downarrow0}
+       \int_\epsilon^{1-\epsilon} f(x)\,dx,
+\]
+where the constant coefficient is taken after expanding every endpoint
+power and logarithm. Independent lower and upper cutoffs give the same
+answer because the two local contributions are added. This convention
+is invariant under $x\mapsto1-x$, and it assigns zero to
+$\operatorname{FP}\int_0^1x^{-1}\log^j x\,dx$.
+
+The incoming triple report proves finite closure for one Stieltjes factor
+\cite{RepoTriple} and any number of reflected polygamma factors whose seams are pairwise
+separated. The result below allows every reflected factor to collide with
+the Stieltjes seam. It is an exact closed subclass of the coincident
+product problem. It does not evaluate the unreflected cube
+$\operatorname{FP}\int\psi^3$, whose remaining diagonal Tornheim third
+jet is a different coordinate. The Fourier transform and reflection
+inputs are classical; the contribution here is the full coordinate
+completion and its all-order coincident reflected consequences.
+
+\subsection{A classical meromorphic transform and its local completion}
+
+\begin{lemma}[Cotangent--Hurwitz transform]
+\label{ct:transform}
+For $r\ge0$, initially when $\Re s$ is sufficiently negative and then by
+meromorphic continuation,
+\begin{equation}\label{ct:J}
+ J_r(s):=\operatorname{FP}\int_0^1\zeta(s,x)K^{(r)}(x)\,dx
+ =(s)_r\,\pi\cot\frac{\pi(s+r)}2\,\zeta(s+r).
+\end{equation}
+At a spectral resonance the right side denotes the meromorphic
+continuation, not the coordinate finite part of a specialized
+coefficient.
+\end{lemma}
+\begin{proof}
+The periodic principal value of $K$ has nonzero Fourier coefficients
+$-\pi i\operatorname{sgn}(n)$ and zero mean. This follows, for example,
+by differentiating the Abel Fourier series for
+$\log(2\sin\pi x)$ in distributions. The Hurwitz Fourier expansion \cite[Eq.~25.11.9]{DLMFHurwitz} gives,
+for $\Re s<0$,
+\[
+ J_0(s)=2\pi\Gamma(1-s)(2\pi)^{s-1}
+             \cos(\pi s/2)\zeta(1-s).
+\]
+The sum is absolutely convergent because its summands have magnitude
+$O(n^{\Re s-1})$. The Riemann functional equation \cite{DLMFZetaReflection} turns the displayed
+expression into $\pi\cot(\pi s/2)\zeta(s)$, with removable singularities
+interpreted by continuation.
+
+For $\Re s<-r-1$, the singular term $x^{-s}$ and sufficiently many
+of its derivatives vanish at zero. The smooth part
+$\zeta(s,1+x)$ has the same periodic endpoint jets as $\zeta(s,x)$ at
+one. Consequently distributional integration by parts against
+$K^{(r)}$ agrees with the stated endpoint finite part and gives
+\[
+ J_r(s)=(-1)^r\operatorname{FP}\int_0^1
+              \partial_x^r\zeta(s,x)K(x)\,dx
+       =(s)_rJ_0(s+r).
+\]
+There are no unrecorded endpoint constants in this initial region:
+the smooth jets match and the remaining power vanishes. Finite endpoint
+Taylor subtraction supplies meromorphic continuation in $s$, proving
+\eqref{ct:J} everywhere as a meromorphic identity.
+\end{proof}
+
+Set $N=p+r$ and define $P_j(u)=(1+u)_j$, so $P_0=1$.
+For $p,r\ge0$ put
+\begin{align}
+ \mathcal R_{p,r}(u)
+ =(-1)^p\bigg[&P_N(u)\,
+      \pi\cot\frac{\pi(N+1+u)}2\,\zeta(N+1+u)\notag\\
+ &-\mathbf1_{N\text{ odd}}
+      \frac{2N!\zeta(N+1)}{p!}\,\frac{P_p(u)}u\bigg].
+ \label{ct:R}
+\end{align}
+For $N=0$ the first line is the removable expression
+$-\pi\tan(\pi u/2)\zeta(1+u)$.
+
+\begin{theorem}[All-index coincident reflected closure]
+\label{ct:closure}
+The function $\mathcal R_{p,r}$ is holomorphic near $u=0$, and for every
+$m,p,r\ge0$,
+\begin{equation}\label{ct:moment}
+ \boxed{\displaystyle
+ \operatorname{FP}\int_0^1\gamma_m^{(p)}(x)K^{(r)}(x)\,dx
+       =(-1)^m m!\,[u^m]\mathcal R_{p,r}(u).}
+\end{equation}
+Thus all these moments have a finite reduction to ordinary Riemann zeta
+jets at $N+1$ and generalized harmonic polynomials. In the exceptional
+case $N=0$, ordinary Stieltjes constants occur instead.
+\end{theorem}
+\begin{proof}
+Write $g(u,x)=\zeta(1+u,x)-1/u$. The exact local splitting is
+\[
+ \partial_x^pg(u,x)
+   =(-1)^pP_p(u)x^{-p-1-u}+h_p(u,x),\qquad
+ h_p(u,x)=\partial_x^pg(u,1+x).
+\]
+The function $h_p$ is holomorphic jointly near $(u,x)=(0,0)$.
+At the upper endpoint the entire factor $\partial_x^pg(u,1-y)$ is
+holomorphic jointly near $(0,0)$ in $(u,y)$. The cotangent expansion is
+\[
+ K^{(r)}(x)=(-1)^rr!x^{-r-1}
+ -2\sum_{j\ge1}\zeta(2j)
+        \frac{(2j-1)!}{(2j-1-r)!}x^{2j-1-r},
+\]
+where a term is zero when $2j-1<r$.
+In the product of the varying singular power with this expansion,
+resonance with $x^{-1-u}$ occurs exactly when
+$2j=N+1$, hence exactly when $N$ is odd. Its complete coefficient is
+\[
+ A_{p,r}(u)
+ =-2(-1)^p\frac{N!}{p!}\zeta(N+1)P_p(u).
+\]
+The meromorphic integral of this local monomial on $(0,b)$ is
+$-A_{p,r}(u)b^{-u}/u$. Its coefficientwise coordinate finite-part
+generator is $-A_{p,r}(u)(b^{-u}-1)/u$. Their difference is
+$-A_{p,r}(u)/u$; therefore the required completion is the meromorphic
+integral plus $A_{p,r}(u)/u$.
+
+All other varying-power monomials have denominators nonzero at zero.
+Subtract finitely many local Taylor terms at both endpoints so that all
+remainders and any fixed finite number of parameter derivatives are
+bounded by $Cx^{-\eta}(1+|\log x|^M)$, respectively
+$Cy^{-\eta}(1+|\log y|^M)$, with $\eta<1$. These integrals are normally
+convergent. The fixed integer endpoint powers from the smooth factors
+have analytic coefficients and their coordinate finite parts may be
+extracted coefficientwise. This proves holomorphy and identifies all
+Taylor coefficients.
+
+The meromorphic integral itself is, by \eqref{ct:J},
+\[
+ (-1)^pP_p(u)J_r(1+p+u)
+ =(-1)^pP_N(u)\pi\cot\frac{\pi(N+1+u)}2\zeta(N+1+u).
+\]
+The subtraction $-K^{(r)}/u$ when $p=0$ contributes nothing because
+$K^{(r)}$ has coordinate finite-part mean zero. Adding the complete
+local correction just obtained gives exactly \eqref{ct:R}, and
+coefficient extraction in $g$ proves \eqref{ct:moment}.
+\end{proof}
+
+Removing only the pole residue would replace $P_p(u)$ by $p!$ and
+lose finite terms. In particular, for odd $N$ it would incorrectly
+omit the harmonic correction $H_p$ in the next formula.
+
+\subsection{Polygamma specializations and exact finite endpoint anomalies}
+
+Let $H_0=0$. At Stieltjes index zero, \eqref{ct:moment} gives
+\begin{equation}\label{ct:zero-index}
+ \operatorname{FP}\int_0^1\psi^{(p)}(x)K^{(r)}(x)\,dx
+ =\begin{cases}
+ \pi^2/2,&N=0,\\
+ 0,&N>0\text{ even},\\
+ 2(-1)^{p+1}N!\bigl[\zeta'(N+1)
+                +(H_N-H_p)\zeta(N+1)\bigr],&N\text{ odd}.
+ \end{cases}
+\end{equation}
+The first examples are
+\begin{align*}
+ \operatorname{FP}\int_0^1\psi(x)K'(x)\,dx
+   &=-2\zeta'(2)-2\zeta(2),\\
+ \operatorname{FP}\int_0^1\psi'(x)K(x)\,dx
+   &=2\zeta'(2),\\
+ \operatorname{FP}\int_0^1\psi(x)K'''(x)\,dx
+   &=-12\zeta'(4)-22\zeta(4),\\
+ \operatorname{FP}\int_0^1\psi'(x)K''(x)\,dx
+   &=12\zeta'(4)+10\zeta(4),\\
+ \operatorname{FP}\int_0^1\psi''(x)K'(x)\,dx
+   &=-12\zeta'(4)-4\zeta(4),\\
+ \operatorname{FP}\int_0^1\psi'''(x)K(x)\,dx
+   &=12\zeta'(4).
+\end{align*}
+These are consistent with finite-part integration by parts, including
+its boundary constants. For example,
+\[
+ \operatorname{FP}\int_0^1(\psi K)'\,dx=-2\zeta(2).
+\]
+Indeed the constant terms of $\psi(x)K(x)$ at zero and one are
+$3\zeta(2)$ and $\zeta(2)$, respectively. Thus setting the integral
+of this ordinary derivative to zero would be incorrect in the present
+coordinate convention.
+
+At $p=r=0$, every Stieltjes index has the particularly short formula
+\begin{align}
+ \operatorname{FP}\int_0^1\gamma_m(x)K(x)\,dx
+ ={}&4m!\sum_{k=1}^{\lfloor(m+1)/2\rfloor}
+   \frac{(1-2^{-2k})\zeta(2k)\gamma_{m-2k+1}}
+                       {(m-2k+1)!}\notag\\
+ &-\mathbf1_{2\mid m}\,4m!(1-2^{-m-2})\zeta(m+2).
+ \label{ct:all-m-base}
+\end{align}
+For $m=0,1,2$ this gives
+\[
+ -\frac{\pi^2}{2},\qquad
+ \frac{\pi^2\gamma}{2},\qquad
+ \pi^2\gamma_1-\frac{\pi^4}{12}.
+\]
+The base constant can also be recovered formally from the finite
+constant of the separated Stieltjes--cotangent transform in the incoming
+triple report. The local proof above establishes that this formal limit
+has the stated same-point coordinate normalization, and supplies all
+argument-derivative resonances.
+
+For $N>0$ even and $m=1$ there is the simple additional family
+\[
+ \operatorname{FP}\int_0^1\gamma_1^{(p)}(x)K^{(r)}(x)\,dx
+   =\frac{(-1)^pN!\pi^2}{2}\zeta(N+1).
+\]
+All higher coefficients in \eqref{ct:R} are finite because
+$P_j(u)=j!\prod_{a=1}^j(1+u/a)$ is a polynomial.
+
+\subsection{Arbitrarily many coincident reflected factors}
+
+Define derivative polynomials
+\[
+ D_0(X)=X,\qquad D_{r+1}(X)=-(X^2+\pi^2)D_r'(X).
+\]
+Then $K^{(r)}(x)=D_r(K(x))$, and $D_r$ has degree $r+1$ and leading
+coefficient $(-1)^rr!$. Consequently every polynomial $P(X)$ has a unique
+finite decomposition
+\begin{equation}\label{ct:poly-decomp}
+ P(X)=C+\sum_{r=0}^{\deg P-1}c_rD_r(X).
+\end{equation}
+The constant is explicitly
+\[
+ C=\frac{P(i\pi)+P(-i\pi)}2,
+\]
+since $D_r(\pm i\pi)=0$ for $r\ge1$ and $D_0(\pm i\pi)=\pm i\pi$.
+The remaining coefficients follow by descending elimination of the
+leading powers, an exact terminating procedure.
+
+\begin{corollary}[Finite coincident reflected algebra]
+\label{ct:algebra}
+For arbitrary $m,p\ge0$ and any polynomial $P$, the finite part
+\[
+ \operatorname{FP}\int_0^1\gamma_m^{(p)}(x)P(K(x))\,dx
+ =\sum_r c_r(-1)^m m![u^m]\mathcal R_{p,r}(u)
+\]
+has a finite evaluation in ordinary zeta jets and Stieltjes constants.
+The same holds after replacing
+$P(K)$ by any finite product of arbitrary derivatives $K^{(r_j)}$.
+Equivalently, it holds for any finite product of the reflected factors
+\[
+ (-1)^{r_j}\psi^{(r_j)}(1-x)-\psi^{(r_j)}(x).
+\]
+\end{corollary}
+\begin{proof}
+The reflection formula \cite[Eq.~5.15.6]{DLMFPolyGamma} identifies each balanced polygamma expression
+with $K^{(r_j)}$. The derivative-polynomial recurrence converts their
+product to a polynomial in $K$. Apply \eqref{ct:poly-decomp} and
+Theorem~\ref{ct:closure}. The constant term contributes zero because
+$\operatorname{FP}\int_0^1\gamma_m^{(p)}(x)\,dx=0$. For $p=0$ this
+follows by integrating the shifted Hurwitz family and completing its
+single resonance; for $p\ge1$ it follows directly by taking endpoint
+constant terms of $\gamma_m^{(p-1)}$. The smooth endpoint jets coincide
+and the singular derivative of $x^{-1}\log^m x$ has no constant term.
+\end{proof}
+
+For powers alone, write
+$K^q=C_q+\sum_rc_{q,r}K^{(r)}$. A useful recurrence is
+\[
+ C_0=1,\quad C_1=0,\quad c_{1,0}=1,\qquad
+ C_q=-\pi^2 C_{q-2},\qquad
+ c_{q,r}=-\frac{c_{q-1,r-1}}{q-1}-\pi^2c_{q-2,r},
+\]
+with absent coefficients zero. It follows from
+$(K^{q-1})'=-(q-1)(K^q+\pi^2K^{q-2})$.
+In particular,
+\begin{align*}
+ K^2&=-K'-\pi^2,\\
+ K^3&=\tfrac12K''-\pi^2K,\\
+ K^4&=-\tfrac16K'''+\tfrac43\pi^2K'+\pi^4,\\
+ K^5&=\tfrac1{24}K^{(4)}-\tfrac56\pi^2K''+\pi^4K.
+\end{align*}
+Since the coordinate finite-part mean of every $K^{(r)}$ is zero,
+\begin{equation}\label{ct:pure-power}
+ \operatorname{FP}\int_0^1K(x)^q\,dx
+       =\pi^q\cos(q\pi/2).
+\end{equation}
+The resulting mixed digamma examples include
+\begin{align}
+ \operatorname{FP}\int_0^1\psi(x)K(x)^2\,dx
+     &=2\zeta'(2)+2\zeta(2),\label{ct:cubic-reflected}\\
+ \operatorname{FP}\int_0^1\psi(x)K(x)^4\,dx
+     &=2\zeta'(4)-\frac{8\pi^2}{3}\zeta'(2)
+                       -\frac{109}{3}\zeta(4).\label{ct:quintic-reflected}
+\end{align}
+There is an all-degree elementary family:
+\begin{equation}\label{ct:odd-powers}
+ \boxed{\displaystyle
+ \operatorname{FP}\int_0^1\psi(x)K(x)^{2h+1}\,dx
+       =\frac{(-1)^h\pi^{2h+2}}2\qquad(h\ge0).}
+\end{equation}
+Besides the polynomial proof, reflection gives a short independent
+argument: averaging the integral with its reflected copy yields
+$-\tfrac12\operatorname{FP}\int K^{2h+2}$, which is
+\eqref{ct:odd-powers} by \eqref{ct:pure-power}.
+
+There is also an exactly reducible family with two unreflected factors:
+\begin{equation}\label{ct:two-unreflected}
+ \operatorname{FP}\int_0^1\psi(x)^2K(x)^{2h+1}\,dx
+   =-\operatorname{FP}\int_0^1\psi(x)K(x)^{2h+2}\,dx.
+\end{equation}
+To prove it, reflect the left side and use
+$\psi(1-x)=\psi(x)+K(x)$. The reflected value is its negative minus
+twice the right-hand moment before its displayed minus sign, while
+the remaining pure odd power has zero finite-part mean. Thus every
+moment in \eqref{ct:two-unreflected} also has a finite ordinary-zeta-jet
+reduction by Corollary~\ref{ct:algebra}. At $h=0$ it says
+\[
+ \operatorname{FP}\int_0^1\psi(x)^2K(x)\,dx
+       =-2\zeta'(2)-2\zeta(2).
+\]
+
+A direct cubic consequence, retaining the distinction from the open
+unreflected cube, is
+\begin{equation}\label{ct:cubic-difference}
+ \operatorname{FP}\int_0^1
+ \bigl[\psi(x)^3-\psi(x)^2\psi(1-x)\bigr]dx
+      =2\zeta'(2)+2\zeta(2).
+\end{equation}
+Indeed expanding $\psi K^2$ gives
+$\psi\psi(1-x)^2-2\psi^2\psi(1-x)+\psi^3$, and reflection identifies
+the finite parts of the first two mixed cubic monomials. This determines
+a difference of cubic moments and leaves their common unreflected
+Tornheim coordinate free.
+
+\subsection{Log-Gamma primitives and a harmonic-number family}
+
+The same completed transform supplies the integrated Gamma level.
+At $s=0$, the only resonance for $\zeta(s,x)K(x)$ is $x^{-1-s}$.
+Thus
+\[
+ \pi\cot(\pi s/2)\zeta(s)+\frac1s
+\]
+is the generating germ for the coordinate finite parts of the spectral
+jets $\zeta^{[j]}(0,x)K(x)$. Its linear coefficient is
+$\zeta''(0)+\zeta(2)/2$, because
+$\zeta(0)=-1/2$ and
+$\pi\cot(\pi s/2)=2/s-\zeta(2)s+O(s^3)$.
+Lerch's identity \cite[Eq.~25.11.18]{DLMFHurwitz} $\zeta'(0,x)=\log\Gamma(x)-\tfrac12\log(2\pi)$
+and the zero mean of $K$ give
+\begin{equation}\label{ct:loggamma-K}
+ \operatorname{FP}\int_0^1\log\Gamma(x)K(x)\,dx
+       =\zeta''(0)+\frac12\zeta(2).
+\end{equation}
+The constant $1/s$ is independent of the parameter, apart from its
+pole, so this specialization has no omitted finite derivative of a
+resonant amplitude.
+
+For $r\ge1$, coordinate integration by parts gives the particularly
+simple primitive law
+\begin{equation}\label{ct:loggamma-primitive}
+ \operatorname{FP}\int_0^1\log\Gamma(x)K^{(r)}(x)\,dx
+       =-\operatorname{FP}\int_0^1\psi(x)K^{(r-1)}(x)\,dx.
+\end{equation}
+Here the boundary constant difference is zero, and this can be checked
+rather than assumed. For $r=1$, the constant of $\log\Gamma(x)K(x)$
+at each endpoint is $-\gamma$. For $r\ge2$, use
+\[
+ \log\Gamma(x)=-\log x-\gamma x+
+     \sum_{j\ge2}\frac{(-1)^j\zeta(j)}j x^j,
+ \qquad
+ \log\Gamma(1-y)=\gamma y+
+     \sum_{j\ge2}\frac{\zeta(j)}j y^j.
+\]
+The constant at both endpoints of
+$\log\Gamma(x)K^{(r-1)}(x)$ is
+$-(r-1)!\zeta(r)/r$. Logarithmic terms are excluded by the same
+constant-term prescription. This proves \eqref{ct:loggamma-primitive}
+directly from the cutoff fundamental theorem.
+Combining it with \eqref{ct:zero-index} yields
+\[
+ \operatorname{FP}\int_0^1\log\Gamma(x)K^{(r)}(x)\,dx
+ =\begin{cases}
+ -\pi^2/2,&r=1,\\
+ 2(r-1)!\bigl[\zeta'(r)+H_{r-1}\zeta(r)\bigr],&r\ge2\text{ even},\\
+ 0,&r\ge3\text{ odd}.
+ \end{cases}
+\]
+For any polynomial $P$ with decomposition \eqref{ct:poly-decomp}, its
+log-Gamma moment is therefore a finite sum of these evaluations and
+\eqref{ct:loggamma-K}, with the constant contribution
+$C\log(2\pi)/2$. This is an explicit primitive counterpart of the
+coincident reflected algebra.
+
+The even powers have an especially compact expression involving only
+ordinary harmonic numbers:
+\begin{equation}\label{ct:loggamma-even}
+ \boxed{\displaystyle
+ \operatorname{FP}\int_0^1\log\Gamma(x)K(x)^{2h}\,dx
+ =\frac{(-1)^h\pi^{2h}}2
+       \left[\log(2\pi)-H_{2h}+\frac12H_h\right]
+       \quad(h\ge0).}
+\end{equation}
+Here is an independent proof of the normalization. Initially for
+$\Re a>2h-1$,
+\[
+ V_h(a):=\int_0^1\sin(\pi x)^aK(x)^{2h}\,dx
+  =\pi^{2h-1}B\left(\frac{a-2h+1}{2},h+\frac12\right).
+\]
+At $a=0$, all endpoint exponents are even integers; none is $-1$.
+Thus this beta continuation is holomorphic there, and its value and
+first derivative equal the coordinate finite parts of $K^{2h}$ and
+$K^{2h}\log\sin(\pi x)$. The beta identity \cite{DLMFBeta}, Gamma reflection, and the digamma recurrence \cite{DLMFGamma}
+give
+\[
+ V_h(0)=(-1)^h\pi^{2h},\qquad
+ V_h'(0)=(-1)^h\pi^{2h}
+       \left[-\log2+H_{2h}-\frac12H_h\right].
+\]
+Finally average the log-Gamma integral with its reflected copy and use
+$\log\Gamma(x)+\log\Gamma(1-x)=\log\pi-\log\sin(\pi x)$.
+This proves \eqref{ct:loggamma-even} in the same unit coordinates.
+For example,
+\[
+ \operatorname{FP}\int_0^1\log\Gamma(x)K(x)^2\,dx
+   =\frac{\pi^2}{2}\bigl[1-\log(2\pi)\bigr],
+\]
+\[
+ \operatorname{FP}\int_0^1\log\Gamma(x)K(x)^4\,dx
+   =\frac{\pi^4}{2}\left[\log(2\pi)-\frac43\right].
+\]
+The beta/reflection proof uses classical formulas; it is included as an
+explicit infinite family and as an independent check on the primitive
+normalization, without a claim of global priority.
+
+\subsection{Extension to repeated seams at arbitrary shifts}
+
+The same argument completes the separated theorem by rational partial
+fractions. Any finite product of $K^{(r_j)}(x-a_j)$ is rational in
+$X=e^{2\pi ix}$, bounded at $X=0,\infty$, and has poles only at the
+finitely many $e^{2\pi ia_j}$. At each pole, the principal parts of
+$K^{(r)}(x-a)$ form a triangular basis. Subtracting them leaves a
+constant. Hence a unique finite representation exists as
+\[
+ C+\sum_a\sum_{r=0}^{M_a-1}c_{a,r}K^{(r)}(x-a),
+\]
+where $M_a$ is the pole order at that seam. Multiplication by the ordinary
+function $\gamma_m^{(p)}(x)$ and coordinate finite-part integration are
+linear operations on its local Laurent-log expansion, so this rational
+identity remains valid under precisely the stated normalization. The
+terms with $a=0$ are evaluated by \eqref{ct:moment}; the other terms use
+the already proved separated Stieltjes--cotangent kernel and its
+contact-corrected argument derivatives. No limit through colliding
+separated distributions is required.
+
+For completeness, if
+$I_m(a)=\operatorname{FP}\int_0^1\gamma_m(x)K(x-a)dx$ at $0<a<1$,
+$N=p+r$, and
+$h_{m,p}=(-1)^m m!e_{m+1}(p)$ for $p\ge1$ (zero for $p=0$),
+the existing one-factor contact law \cite{RepoMain,RepoTriple} gives
+\[
+ \operatorname{FP}\int_0^1\gamma_m^{(p)}(x)K^{(r)}(x-a)dx
+       =(-1)^r\bigl[I_m^{(N)}(a)-h_{m,p}K^{(N)}(a)\bigr].
+\]
+Here $e_j(p)$ is the elementary symmetric polynomial of degree $j$ in
+$1,1/2,\ldots,1/p$, and is zero for $j>p$. To check signs, use
+$F_{m,p}=D^pG_m+h_{m,p}\delta^{(p)}$ and
+$K^{(N)}(-a)=(-1)^{N+1}K^{(N)}(a)$. Thus arbitrary repetitions and
+coincidences within the reflected algebra still reduce to finitely many
+ordinary Hurwitz-zeta jets, with trigonometric coefficients at the
+remaining distinct shifts.
+
+\subsection{Verification and remaining questions}
+
+The accompanying verifier computes independent endpoint Laurent-log
+series from the ordinary Hurwitz shift relation and integrates them
+term by term on $(0,1/5)$ and $(4/5,1)$. On the central interval it uses
+ordinary high-precision quadrature of Stieltjes/polygamma and cotangent
+functions. It compares these values against finite coefficients of
+\eqref{ct:R}, and separately integrates powers $K^q$ without applying
+the derivative-polynomial reduction. Exact symbolic assertions verify
+the power reduction recurrence. These are independent floating-point
+diagnostics, not interval enclosures; the proof above establishes the
+all-index result.
+
+The natural next questions are to classify which products with two
+unreflected Stieltjes factors and a reflected polynomial still close
+without a Tornheim jet, to derive a conductor-compatible version of the
+repeated-seam partial fractions, and to formalize the local coefficient
+completion independently of distributional products. The present
+results do not imply an arithmetic evaluation of the generic cubic
+Tornheim derivative or either fixed-weight Gaussian candidate.

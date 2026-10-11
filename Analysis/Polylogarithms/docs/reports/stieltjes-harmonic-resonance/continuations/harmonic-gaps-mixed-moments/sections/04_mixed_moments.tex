@@ -1,0 +1,521 @@
+\section{Mixed centered harmonic-tail moments}
+\label{mt:section}
+
+The source reports evaluate every centered even moment of a trigamma
+square \cite{IncomingHigherReflection,IncomingParity}; the harmonic-parity
+report asks for the corresponding evaluation for two unequal even-order
+harmonic tails. We resolve that two-factor problem for all
+orders and all moments. The resulting finite formula reduces entirely to
+ordinary zeta values and their products. We then package the infinite
+moment sequence into one analytic generator with explicit
+polylogarithmic primitives. The centered parity mechanism is inherited
+from the source criterion; the evaluation and the generator are the
+additional results here. Euler's classical odd-weight reduction supplies
+the arithmetic step~\cite{Bradley2007}.
+
+\subsection{Continuation and ordinary convergent representatives}
+
+Let $a,b\ge2$ be even integers, and put
+\begin{equation}\label{mt:notation}
+ T_a(n)=\zeta(a,n+1)=\zeta(a)-H_n^{(a)}
+       =\frac{\psi^{(a-1)}(n+1)}{(a-1)!},
+ \qquad x_n=n+\frac12.
+\end{equation}
+The last equality uses that $a$ is even. Define
+\begin{equation}\label{mt:F}
+ F_{a,b}(s)=\sum_{n=0}^{\infty}\frac{T_a(n)T_b(n)}{x_n^s},
+ \qquad V_{a,b}(M)=F_{a,b}(-2M),\quad M\ge0.
+\end{equation}
+The series for $F_{a,b}$ converges absolutely when
+$\Re s>3-a-b$. The value at $-2M$ is understood through the continuation
+proved below whenever the unmodified series diverges.
+
+Write $\alpha=a+b-2$, and define rational coefficients
+\begin{align}
+ t_{a,0}&=\frac1{a-1},&
+ t_{a,k}&=\frac{B_{2k}(1/2)}{(2k)!}(a)_{2k-1}\quad(k\ge1),
+ &c_k&=\sum_{j=0}^k t_{a,j}t_{b,k-j}.
+ \label{mt:centered-coefficients}
+\end{align}
+Here $(a)_r$ is the rising factorial, $B_j(x)$ is the Bernoulli
+polynomial, and $B_j=B_j(0)$, with $B_1=-1/2$.
+The centered Hurwitz expansions \cite[\S25.11(xii)]{DLMFHurwitz} give
+\begin{equation}\label{mt:centered-expansion}
+ T_a(n)\sim\sum_{k\ge0}t_{a,k}x_n^{1-a-2k},
+ \qquad
+ T_a(n)T_b(n)\sim\sum_{k\ge0}c_kx_n^{-\alpha-2k}.
+\end{equation}
+Only finite truncations of these asymptotic expansions are used.
+
+\begin{proposition}[Regularity and bracketed moments]
+\label{mt:regularity}
+The function $F_{a,b}$ extends meromorphically to the complex plane.
+Its only possible poles are simple poles at
+$s=3-a-b-2k$, $k\ge0$, with residue $c_k$.
+In particular every even spectral integer is regular. For
+\begin{equation}\label{mt:subtraction-polynomial}
+ P_M(x)=\sum_{\alpha+2k\le2M}c_kx^{2M-\alpha-2k},
+\end{equation}
+one has the ordinary convergent identity
+\begin{equation}\label{mt:bracket}
+ V_{a,b}(M)=\sum_{n=0}^{\infty}
+ \left[x_n^{2M}T_a(n)T_b(n)-P_M(x_n)\right].
+\end{equation}
+The polynomial is zero if its indexing set is empty. The bracket is
+$O(x_n^{-2})$.
+\end{proposition}
+
+\begin{proof}
+For any fixed $K$, subtract the first $K+1$ terms of
+\eqref{mt:centered-expansion} inside the defining series. The remainder
+converges normally in a right half-plane extending farther to the left,
+while the removed terms
+sum to
+$\sum_{k=0}^K c_k\zeta(s+\alpha+2k,1/2)$.
+Increasing $K$ provides compatible continuations and the stated poles
+and residues. Since $a+b$ is even, all these potential poles are odd
+integers. At $s=-2M$, every nondecaying term has a nonnegative even
+power of $x_n$. Its continued sum is
+$\zeta(-2j,1/2)=0$, including $j=0$. After their removal the next
+possible power is $x_n^{-2}$, which proves \eqref{mt:bracket}.
+\end{proof}
+
+\begin{corollary}[Every spectral derivative with its correction terms]
+\label{mt:spectralderivatives}
+For $r,M\geq0$, every derivative at a centered even spectral value has
+the ordinary convergent representation
+\begin{align}
+ F_{a,b}^{(r)}(-2M)
+  ={}&\sum_{n=0}^{\infty}(-\log x_n)^r
+       \left[x_n^{2M}T_a(n)T_b(n)-P_M(x_n)\right]\notag\\
+    &+\sum_{\alpha+2k\leq2M}
+               c_k\zeta^{(r)}(\alpha+2k-2M,1/2).
+ \label{mt:logmoment}
+\end{align}
+The second sum vanishes for $r=0$. It must in general be retained for
+$r\geq1$.
+\end{corollary}
+\begin{proof}
+Use the same finite subtractions as in \eqref{mt:subtraction-polynomial}
+at a moving $s$ in a neighborhood of $-2M$. The remainder series and all
+its fixed spectral derivatives converge locally normally there, since
+their terms are bounded by $C x_n^{-2+\varepsilon}(1+|\log x_n|^r)$
+with some $\varepsilon<1$. Differentiation of the finite Hurwitz
+correction gives exactly \eqref{mt:logmoment}.
+\end{proof}
+
+For example, the first derivative in the $(2,4)$ family at $s=-4$ is
+\begin{equation}\label{mt:derivative-example}
+ F'_{2,4}(-4)=
+ -\sum_{n\geq0}\log x_n
+        \left[x_n^4T_2(n)T_4(n)-\frac13\right]
+ -\frac{\log 2}{6},
+\end{equation}
+because $\zeta'(0,1/2)=-\tfrac12\log2$. This identity fixes the
+logarithmic remainder and its constant; it does not claim that the
+remainder is an ordinary-zeta combination.
+
+We will also use a concrete equivalent characterization. Let
+$\operatorname{CT}_N$ mean the coefficient of $N^0(\log N)^0$ in
+an asymptotic expansion in the integer cutoff $N$. Then
+\begin{equation}\label{mt:cutoff-value}
+ V_{a,b}(M)=\operatorname{CT}_N
+   \sum_{n=0}^{N-1}x_n^{2M}T_a(n)T_b(n).
+\end{equation}
+Indeed the partial sum of each removed even polynomial power is
+$B_{2j+1}(N+1/2)/(2j+1)$, an odd polynomial in $N$ with zero constant
+term. The summable remainder in \eqref{mt:bracket} tends to its ordinary
+sum. The coordinate $N$ in \eqref{mt:cutoff-value} is part of the
+statement; no change of endpoint coordinate is implicit.
+
+\subsection{A finite formula at every moment order}
+
+The double-zeta convention used below is
+\[
+ \zeta(u,v)=\sum_{j>k\ge1}\frac1{j^u k^v}.
+\]
+Thus the first exponent belongs to the larger summation variable.
+For each positive odd integer $d$, define
+\begin{equation}\label{mt:oriented}
+ K_{a,b}(d)=
+ \begin{cases}
+  \displaystyle\zeta(b,a-d)+\frac12\zeta(a+b-d),&d<a,\\[2mm]
+  \displaystyle\sum_{j=1}^{\min(b/2,(d-a+1)/2)}
+    \frac{\binom{d-a+1}{2j}B_{d-a+1-2j}}{d-a+1}
+             \zeta(b-2j),&d>a,
+ \end{cases}
+\end{equation}
+and put
+\begin{equation}\label{mt:E}
+ E_{a,b}(d)=K_{a,b}(d)+K_{b,a}(d).
+\end{equation}
+There is no missing case $d=a$: $d$ is odd and $a$ even. All double
+zetas in the first branch are ordinary convergent sums. In the second
+branch, $\zeta(0)=-1/2$ has its usual continued meaning.
+
+\begin{theorem}[All mixed even-tail moments]
+\label{mt:all-moments}
+For even $a,b\ge2$ and every integer $M\ge0$,
+\begin{equation}\label{mt:moment-formula}
+ \boxed{\displaystyle
+ V_{a,b}(M)=\frac1{2M+1}\sum_{\ell=0}^{M}
+  \binom{2M+1}{2\ell+1}B_{2M-2\ell}(1/2)
+                          E_{a,b}(2\ell+1).}
+\end{equation}
+The summation and every coefficient in this formula are finite and
+explicit.
+\end{theorem}
+
+The $j=b/2$ term in \eqref{mt:oriented}, whenever its range includes
+it, records an exact rational boundary contribution through
+$\zeta(0)=-1/2$. Discarding this term would already give an incorrect
+answer for divergent centered moments of the trigamma square.
+
+\begin{proof}
+First form the exact polynomial partial sum
+\begin{align}
+ S_M(k)&=\sum_{n=0}^{k-1}(n+1/2)^{2M}
+       =\frac{B_{2M+1}(k+1/2)}{2M+1}
+       =\sum_{\ell=0}^{M}s_{M,\ell}k^{2\ell+1},
+ \label{mt:S}\\
+ s_{M,\ell}&=\frac{\binom{2M+1}{2\ell+1}}{2M+1}
+                         B_{2M-2\ell}(1/2).
+ \notag
+\end{align}
+The tail recurrence gives
+\begin{align*}
+&T_a(k-1)T_b(k-1)-T_a(k)T_b(k)\\
+&\hspace{18mm}=k^{-a}T_b(k-1)+k^{-b}T_a(k-1)-k^{-a-b}.
+\end{align*}
+Applying finite summation by parts, without taking any divergent limits,
+therefore yields
+\begin{equation}\label{mt:finite-sbp}
+ \sum_{n=0}^{N-1}x_n^{2M}T_a(n)T_b(n)
+ =\sum_{\ell=0}^{M}s_{M,\ell}\,\mathcal E_{2\ell+1}(N),
+\end{equation}
+where
+\begin{align}
+ \mathcal E_d(N)={}&N^dT_a(N)T_b(N)
+   +\sum_{k=1}^N k^{d-a}T_b(k-1)
+   +\sum_{k=1}^N k^{d-b}T_a(k-1)
+   -H_N^{(a+b-d)}.
+ \label{mt:finite-E}
+\end{align}
+We compute its cutoff constant explicitly.
+
+If $d<a$, the first oriented sum in \eqref{mt:finite-E} is absolutely
+convergent, and direct rearrangement gives
+\begin{equation}\label{mt:convergent-oriented}
+ \sum_{k=1}^{\infty}k^{d-a}T_b(k-1)
+ =\zeta(b,a-d)+\zeta(a+b-d).
+\end{equation}
+If $d>a$, put $p=d-a$, a positive odd integer. The Faulhaber
+polynomial is
+\begin{equation}\label{mt:faulhaber}
+ Q_p(X)=\sum_{k=1}^X k^p
+   =\frac12X^p+\sum_{j=1}^{(p+1)/2}q_{p,2j}X^{2j},
+ \qquad
+ q_{p,2j}=\frac{\binom{p+1}{2j}B_{p+1-2j}}{p+1}.
+\end{equation}
+The finite-sum notation specifies the polynomial by its values at
+nonnegative integers. Define $q_{p,h}=0$ outside its displayed
+nonzero even degrees, whenever an even $h$ is used below. A finite
+rearrangement which retains the infinite tail gives the exact equality
+\begin{equation}\label{mt:finite-rearrangement}
+ \sum_{k=1}^N k^pT_b(k-1)
+  =\sum_{h\ge1}[X^h]Q_p(X)\,H_N^{(b-h)}
+    +Q_p(N)T_b(N).
+\end{equation}
+For $v>1$, the cutoff constant of $H_N^{(v)}$ is $\zeta(v)$;
+for $v=1$ it is Euler's constant $\gamma$; and for integer $v\le0$
+it is zero because the finite power sum is a polynomial in $N$ with
+zero constant term.
+
+At the potential logarithmic collision $d=a+b-1$, the half-leading
+monomial in each of the two Faulhaber polynomials contributes
+$\gamma/2$. The diagonal term in \eqref{mt:finite-E} contributes
+$-\gamma$. These cancel. In particular, this proof never evaluates
+an isolated $\zeta(1)$.
+
+We now evaluate the constant contributions of the explicit tails. Write
+\begin{equation}\label{mt:tau}
+ T_a(N)\sim\sum_j\tau_a(j)N^{-j},\qquad
+ \begin{cases}
+ \tau_a(a-1)=1/(a-1),\\
+ \tau_a(a)=-1/2,\\
+ \tau_a(a+2k-1)=B_{2k}(a)_{2k-1}/(2k)!,&k\ge1,
+ \end{cases}
+\end{equation}
+with all other coefficients zero. Since $a,b$ are even and $d$ odd,
+an odd total degree in the product can only use one exceptional even
+index $a$ or $b$. Hence
+\begin{equation}\label{mt:boundary-product}
+ \operatorname{CT}_N N^dT_a(N)T_b(N)
+ =-\frac12\tau_b(d-a)-\frac12\tau_a(d-b).
+\end{equation}
+For $p=d-a>0$, the only odd monomial of $Q_p$ is $X^p/2$,
+and the only even index in $T_b$ is $b$. Therefore
+\begin{equation}\label{mt:boundary-oriented}
+ \operatorname{CT}_N Q_p(N)T_b(N)
+ =\frac12\tau_b(p)-\frac12q_{p,b}.
+\end{equation}
+The $\tau$ terms in \eqref{mt:boundary-product} cancel those from
+the two instances of \eqref{mt:boundary-oriented}. The remaining
+constant is
+\begin{equation}\label{mt:boundary-constant}
+ -\frac12\bigl(q_{d-a,b}+q_{d-b,a}\bigr),
+\end{equation}
+where a term is zero if its first index is not positive. This is
+exactly the contribution of the $\zeta(0)$ terms in
+\eqref{mt:oriented}.
+
+For completeness consider the remaining diagonal constant. If
+$W=a+b-d\ge3$, a branch $d<a$ contributes the full $\zeta(W)$
+in \eqref{mt:convergent-oriented}, and a branch $d>a$ contributes
+$\zeta(W)/2$ from the half-leading term in
+\eqref{mt:finite-rearrangement}. After subtracting the diagonal
+$\zeta(W)$, exactly one half remains for each branch $d<a$.
+When $W=1$ the constants cancel as already shown. When $W<1$,
+the diagonal power sum has zero constant term. The other surviving
+Faulhaber terms have even degree and yield the even zeta values in
+\eqref{mt:oriented}. Thus
+\[
+ \operatorname{CT}_N\mathcal E_d(N)=E_{a,b}(d).
+\]
+Taking constants in \eqref{mt:finite-sbp} and applying
+\eqref{mt:cutoff-value} proves \eqref{mt:moment-formula}.
+\end{proof}
+
+\subsection{Reduction to ordinary zeta values}
+
+For clarity, the classical reduction needed to eliminate every double
+coordinate is written out. Let $m\ge2$ be even, let $n\ge1$ be odd,
+and put $w=m+n$ and
+$\mathcal U_{m,n}=\zeta(m,n)+\zeta(w)/2$. Euler's formulas, in the
+convention above, give
+\begin{equation}\label{mt:euler-one}
+ \mathcal U_{m,1}=\frac{m+1}{2}\zeta(m+1)
+  -\sum_{j=1}^{m/2-1}\zeta(2j)\zeta(m+1-2j),
+\end{equation}
+and, for $n\ge3$,
+\begin{align}
+ \mathcal U_{m,n}={}&\frac12\binom wm\zeta(w)+\zeta(m)\zeta(n)
+ \notag\\
+ &-\sum_{j=1}^{(w-3)/2}
+  \left[\binom{w-2j-1}{m-1}+\binom{w-2j-1}{n-1}\right]
+                      \zeta(2j)\zeta(w-2j).
+ \label{mt:euler-odd}
+\end{align}
+These are the ordinary specialization of the classical signed Euler
+reduction; an elementary proof from partial fractions is provided in
+\cite[Eq.~(2)--(3) and Proposition~1]{Bradley2007}. No divergent
+$\zeta(1)$ appears in \eqref{mt:euler-one}--\eqref{mt:euler-odd}.
+The first branch of \eqref{mt:oriented} is exactly
+$\mathcal U_{b,a-d}$, so the formulas apply to every such branch.
+
+\begin{corollary}[Ordinary-zeta closure and a fixed spanning list]
+\label{mt:closure}
+Every $V_{a,b}(M)$ is a rational linear combination of $1$, ordinary
+even zeta values, ordinary odd zeta values, and products of one even
+and one odd zeta value. Put $B=\max(a,b)$. The entire moment sequence
+lies in the rational span of the at most $B$ coordinates
+\begin{equation}\label{mt:finite-span}
+ E_{a,b}(1),E_{a,b}(3),\ldots,E_{a,b}(B-1),
+ \qquad 1,\zeta(2),\zeta(4),\ldots,\zeta(B-2).
+\end{equation}
+The positive even-zeta sublist is empty when $B=2$.
+\end{corollary}
+\begin{proof}
+Ordinary-zeta closure follows by inserting
+\eqref{mt:euler-one}--\eqref{mt:euler-odd} into
+\eqref{mt:oriented}. For odd $d>B$, both branches in
+\eqref{mt:oriented} are finite combinations of
+$\zeta(0),\zeta(2),\ldots,\zeta(B-2)$. Formula
+\eqref{mt:moment-formula} then proves the spanning assertion.
+\end{proof}
+
+The corollary is a finite spanning theorem, not a claim that its
+coordinates are arithmetically independent or minimal. It answers the
+ordinary-constant reduction question for every pair of even-order
+tails; increasing the moment order introduces no additional constants.
+
+\subsection{The first unequal-order family}
+
+For $a=2$ and $b=4$, the first five coordinates are
+\begin{align}
+ E_{2,4}(1)&=\frac{15}{2}\zeta(5)-3\zeta(2)\zeta(3),
+ &E_{2,4}(3)&=\frac12\zeta(2)+\frac32\zeta(3),\notag\\
+ E_{2,4}(5)&=\frac14\zeta(2)-\frac38,
+ &E_{2,4}(7)&=-\frac1{12}\zeta(2)-\frac13,\label{mt:E24}\\
+ E_{2,4}(9)&=\frac1{12}\zeta(2)+\frac3{16}.\notag
+\end{align}
+The centered product expansion begins
+\begin{equation}\label{mt:T24-expansion}
+ T_2(n)T_4(n)=\frac1{3x_n^4}-\frac7{36x_n^6}
+                       +\frac{61}{360x_n^8}+O(x_n^{-10}).
+\end{equation}
+Theorem~\ref{mt:all-moments} consequently gives the following ordinary
+convergent identities:
+\begin{align}
+ \sum_{n\ge0}T_2(n)T_4(n)
+  &=\frac{15}{2}\zeta(5)-3\zeta(2)\zeta(3),
+ \label{mt:V0}\\
+ \sum_{n\ge0}x_n^2T_2(n)T_4(n)
+  &=\frac14\zeta(2)\zeta(3)+\frac16\zeta(2)+\frac12\zeta(3)
+                   -\frac58\zeta(5),
+ \label{mt:V1}\\
+ \sum_{n\ge0}\left[x_n^4T_2(n)T_4(n)-\frac13\right]
+  &=-\frac7{80}\zeta(2)\zeta(3)-\frac1{30}\zeta(2)
+      -\frac14\zeta(3)+\frac7{32}\zeta(5)-\frac3{40}.
+ \label{mt:V2}
+\end{align}
+One further example is
+\begin{align}
+ &\sum_{n\ge0}\left[x_n^6T_2(n)T_4(n)-\frac{x_n^2}{3}+\frac7{36}\right]
+ \notag\\
+ &\qquad=\frac{31}{448}\zeta(2)\zeta(3)-\frac1{672}\zeta(2)
+          +\frac7{32}\zeta(3)-\frac{155}{896}\zeta(5)
+          +\frac{31}{672}.
+ \label{mt:V3}
+\end{align}
+Since $T_2=\psi'$ and $T_4=\psi'''/6$, multiplication by $6$
+turns these into identities for products of two unequal polygamma
+orders. They equally evaluate the centered harmonic numerator
+$(H_n^{(2)}-\zeta(2))(H_n^{(4)}-\zeta(4))$.
+
+\subsection{An analytic generator for all moment orders}
+
+For a fixed ordered pair $(a,b)$, define
+\begin{equation}\label{mt:G}
+ G_b(t)=\frac12\coth(t/2)
+             \sum_{j=1}^{b/2}\zeta(b-2j)\frac{t^{2j}}{(2j)!}.
+\end{equation}
+Its apparent singularity at zero is removable. It is odd and analytic
+on $|t|<2\pi$.
+
+\begin{theorem}[All-moment generating function]
+\label{mt:generator}
+Let $A_{a,b}$ be the unique analytic solution on $|t|<2\pi$ of
+\begin{equation}\label{mt:generator-ode}
+ A_{a,b}^{(a)}(t)=G_b(t),
+\end{equation}
+whose Taylor polynomial of degree less than $a$ is
+\begin{equation}\label{mt:initial-data}
+ \sum_{\substack{1\le d<a\\d\text{ odd}}}
+  \left[\zeta(b,a-d)+\frac12\zeta(a+b-d)\right]\frac{t^d}{d!}.
+\end{equation}
+Then the exponential series
+\begin{equation}\label{mt:moment-egf}
+ \mathscr V_{a,b}(t)=\sum_{M=0}^{\infty}
+                      V_{a,b}(M)\frac{t^{2M}}{(2M)!}
+\end{equation}
+converges for $|t|<2\pi$ and satisfies
+\begin{equation}\label{mt:generator-formula}
+ \boxed{\displaystyle
+ \mathscr V_{a,b}(t)=
+       \frac{A_{a,b}(t)+A_{b,a}(t)}{2\sinh(t/2)}.}
+\end{equation}
+The quotient has a removable value at zero and is even analytic.
+\end{theorem}
+
+\begin{proof}
+Anchored integration of the analytic function $G_b$ gives existence
+and uniqueness. Its oddness, and the even value of $a$, show that
+$A_{a,b}$ is odd. The Bernoulli generating identity
+\[
+ C(t)=\frac t2\coth(t/2)
+       =\sum_{k\ge0}\frac{B_{2k}}{(2k)!}t^{2k}
+\]
+gives
+\[
+ G_b(t)=C(t)\sum_{j=1}^{b/2}\zeta(b-2j)\frac{t^{2j-1}}{(2j)!}.
+\]
+For positive odd $p$, its coefficient of $t^p/p!$ is
+\[
+ \sum_{j=1}^{\min(b/2,(p+1)/2)}
+   \frac{\binom{p+1}{2j}B_{p+1-2j}}{p+1}\zeta(b-2j).
+\]
+Together with the initial data, this says exactly that
+\begin{equation}\label{mt:A-series}
+ A_{a,b}(t)=\sum_{\substack{d\ge1\\d\text{ odd}}}
+                             K_{a,b}(d)\frac{t^d}{d!}.
+\end{equation}
+Finally,
+\[
+ \frac1{2\sinh(t/2)}
+     =\frac1t\sum_{k\ge0}\frac{B_{2k}(1/2)}{(2k)!}t^{2k}.
+\]
+Multiplication with the sum of the two series in
+\eqref{mt:A-series} gives precisely the coefficient formula
+\eqref{mt:moment-formula}. The numerator is odd and vanishes at zero;
+the denominator has a simple zero there and no other zero in this
+disk. Hence the quotient is even analytic throughout the disk, proving
+actual convergence of \eqref{mt:moment-egf} as well as the identity.
+\end{proof}
+
+This analytic generator concerns the regularized values already fixed
+by \eqref{mt:bracket}. It is not obtained by interchanging an exponential
+series with the divergent unmodified moment sums.
+
+\subsection{Explicit polylogarithmic primitives and their constants}
+
+For an integer $k\ge1$, set
+\begin{equation}\label{mt:L-integral}
+ L_k(t)=\int_0^t\frac{u^k}{e^u-1}\,du.
+\end{equation}
+The integrand is analytic at zero. Initially in $\Re t>0$, the standard
+polylogarithm differentiation rule \cite[\S25.12]{DLMFPolylog} gives the explicit anchored formula
+\begin{equation}\label{mt:L-polylog}
+ L_k(t)=k!\zeta(k+1)
+ -\sum_{h=0}^k\frac{k!}{(k-h)!}
+                      t^{k-h}\operatorname{Li}_{h+1}(e^{-t}).
+\end{equation}
+For real $t>0$, all polylogarithms have arguments in $(0,1)$; this fixes
+the branch. The formula extends to the right half-plane by analyticity.
+Differentiating the finite sum makes its adjacent terms cancel and
+leaves $t^k/(e^t-1)$. As $t\to0$ from the right, all positive powers
+multiplying the polylogarithms vanish, including
+$t^k\operatorname{Li}_1(e^{-t})$, and the remaining term cancels
+$k!\zeta(k+1)$. This proves both the derivative and the anchoring
+constant. The completed expression, taken as a whole, then continues
+analytically to $|t|<2\pi$ through its integral definition. Individual
+polylogarithm terms need not be assigned separate analytic values
+around the logarithmic point $t=0$.
+
+For positive even $m$, define
+\begin{align}
+ R_{a,m}(t)={}&\frac{t^{a+m}}{2(a+m)!}
+ \notag\\
+ &+\frac1{m!(a-1)!}\sum_{r=0}^{a-1}(-1)^r\binom{a-1}{r}
+                                  t^{a-1-r}L_{m+r}(t).
+ \label{mt:R}
+\end{align}
+Expanding the anchored integration kernel $(t-u)^{a-1}$ shows that
+\begin{equation}\label{mt:R-integral}
+ R_{a,m}(t)=\frac1{(a-1)!}\int_0^t(t-u)^{a-1}
+                         \frac12\coth(u/2)\frac{u^m}{m!}\,du.
+\end{equation}
+Here one uses $\tfrac12\coth(u/2)=\tfrac12+(e^u-1)^{-1}$;
+the first term gives the polynomial in \eqref{mt:R}, and the second
+gives the finite sum of $L$ integrals. Consequently
+\begin{equation}\label{mt:A-polylog}
+ A_{a,b}(t)=(\text{the polynomial in \eqref{mt:initial-data}})
+              +\sum_{j=1}^{b/2}\zeta(b-2j)R_{a,2j}(t).
+\end{equation}
+Equations \eqref{mt:euler-one}--\eqref{mt:euler-odd} and
+\eqref{mt:generator-formula}--\eqref{mt:A-polylog} express the whole
+moment sequence using ordinary zeta constants, elementary functions,
+and finitely many $\operatorname{Li}_k(e^{-t})$ with $k\le a+b$.
+Every repeated primitive is anchored at zero. Near zero, the ODE or
+Taylor form is more suitable for numerical evaluation because the
+separate polylogarithmic terms undergo strong cancellation.
+
+\subsection{Scope of the result}
+
+The theorem resolves the two-factor even-tail sector of the source
+question. It does not assert ordinary-zeta closure for the first
+spectral derivative $F'_{a,b}(-2M)$, independent order derivatives,
+or products of four tails. In particular, adding a spectral derivative
+introduces a global logarithmic moment; the finite-value theorem alone
+does not eliminate it. Verification records and precise next questions
+are given in Sections~\ref{audit:section} and~\ref{research:section}.

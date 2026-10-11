@@ -1,0 +1,188 @@
+\section{Source disposition, verification, and further research}
+\label{asj:sec:audit}
+
+\subsection{What has been completed}
+The question Q10 in \cite{prior} is resolved for the concrete classes
+requested there: periodic and quasi-polynomial multiplicities are
+handled by \eqref{asj:eq:quasipoly} and Theorem~\ref{asj:thm:mean}; several
+poles and higher poles are handled by Theorems~\ref{asj:thm:transfer}--\ref{asj:thm:all-differences}
+under explicit continuation hypotheses, with unconditional arithmetic
+examples \eqref{asj:eq:sigma1} and \eqref{asj:eq:Dhurwitz}. The Hurwitz-product
+class also supplies all principal coefficients and every individual jet.
+
+This is not a theorem that every nonpolynomial arithmetic multiplicity
+satisfies those hypotheses. Dirichlet series outside the meromorphic
+setting, or with a natural boundary blocking the desired spectral point,
+are not covered by the transfer theorem. Their treatment needs additional
+structure rather than a formal substitution into its statement.
+
+The previous report already proves the corresponding polynomial and
+polynomial-times-logarithm calculus. It also already credits the classical
+multiplicative-anomaly mechanism. Those results are antecedents, not new
+claims in this package.
+
+\subsection{Corrections and integration safeguards}
+No fresh substantive error is asserted in the targeted current source
+proofs. The following are proved obstructions to \emph{naive extensions}
+and must accompany integration of the new results.
+
+\paragraph{Ordinary derivatives versus Laurent coefficients.}
+Equation \eqref{asj:eq:doublepole-example} proves that the double-divisor
+shift has residue $-a$ at zero. A formula written as $F_a'(0)$ is
+therefore invalid for $a\ne0$; the correct object here is $[s]F_a(s)$.
+The coordinate is fixed and must be recorded in any identity store.
+
+\paragraph{The full principal part is necessary.}
+The top difference sees only the highest pole, whereas intermediate
+local identities involve every $\kappa_{p,h}$. At order $r$ one may
+need the numerator through order $r+H$, not merely $r+1$ or $r$.
+The exact multiple-pole tests include a case with a third-order pole
+at one point and a second-order pole at another.
+
+\paragraph{An Abel limit does not automatically preserve a finite part.}
+The divergence in \eqref{asj:eq:twisted-six} and the finite value in
+\eqref{asj:eq:untwisted-first-six} prove this explicitly. The compensation
+in Theorem~\ref{asj:thm:untwist} is part of the theorem, not a numerical
+acceleration that can be dropped.
+
+\paragraph{Do not discard grouped subtractions or base points.}
+The Gamma sums and their primitives converge only in their specified
+grouped form. The anchored integral vanishes at $a=0$; an arbitrary
+negative-polygamma convention cannot replace $K$ without adjusting
+its polynomial terms.
+
+\paragraph{Preserve the actual Gaussian status.}
+At the inspected revision, the old frozen $S_8$ candidate is rejected,
+but a distinct later vector in \texttt{04-S8-candidate.tex} remains
+conjectural. Its certified proximity, like the current $S_6$ proximity,
+is not a proof. The present arithmetic-spectrum identities neither
+prove nor disprove either surviving conjecture. The already proved
+$S_4$ identity is not presented as an open target.
+
+\subsection{Reproducible algebra and independent numerical diagnostics}
+The accompanying exact program performs \textbf{191} rational or symbolic
+polynomial equality checks. They include every coefficient of the
+Pochhammer/harmonic identity for $1\le\ell\le18$, the full binomial
+recurrence through degree eight, the alternant normalization through
+four factors, multiple-pole finite differences, independent Stieltjes
+product coefficients, and the six-term normalization with a symbolic
+subleading residue. These finite checks do not substitute for the
+normal-convergence proofs.
+
+The numerical program uses \textbf{60 decimal working digits} and passes
+\textbf{19} equality comparisons. It compares the centered Gamma head
+plus an analytically summed Hurwitz tail with an independent zeta-product
+series, repeats that comparison for the primitive, and checks reciprocal
+polygamma derivatives through order four. It also extracts Laurent
+coefficients by a discrete Cauchy integral of the unexpanded meromorphic
+binomial series and compares them with the explicit harmonic/Stieltjes
+formula through order three. Separate Cauchy extractions check the
+six-term double-pole, triple-pole, and polylogarithm-twisted identities.
+
+The largest observed absolute discrepancy in this run was less than
+$6.0\times10^{-52}$. The fixed pass threshold was $10^{-35}$; the
+smaller observed residual is a diagnostic, not a rigorously enclosed
+error. The discrete contour and infinite series were numerically
+truncated. The mathematical proofs do not rely on the observed digits.
+Complete parameters and individual residuals are in
+\texttt{results/numerical\_checks.json}.
+
+A separate limiting diagnostic checks \eqref{asj:eq:first-counter} with
+$c=0.9$ and $a=0.12$. It is deliberately not included among the equality
+comparisons, because a finite positive $t$ does not give the limiting value.
+\begin{center}
+\begin{tabular}{@{}cc@{}}\toprule
+$t$ & Absolute difference after compensation from the limiting value\\\midrule
+$10^{-1}$ & $3.3560095783406\times10^{-2}$\\
+$10^{-2}$ & $3.6881187552929\times10^{-3}$\\
+$10^{-3}$ & $4.0080828824899\times10^{-4}$\\
+$10^{-4}$ & $4.3269361070920\times10^{-5}$\\\bottomrule
+\end{tabular}
+\end{center}
+The proof of the limit is the uniform-contour argument, not the decreasing
+sequence of numerical differences.
+
+\subsection{Proposed next research questions}
+The following targets are not promoted to theorems in this report.
+They are separated from the extension already completed above.
+\begin{enumerate}[leftmargin=*,label=\textbf{Q\arabic*.},itemsep=7pt]
+\item \textbf{Residue-zero strata for complex twists.}
+For products of Lerch factors, classify the twist parameters where the
+leading coefficient at $s=1$ vanishes. Determine the resulting exact
+degree drops of normalized jets and the transition formulas when several
+Lerch factors vanish simultaneously. The first test is one simple zero
+of $\Phi(z,1,c)$ with a remaining double Hurwitz pole.
+
+\item \textbf{Several simultaneous untwistings.}
+Theorem~\ref{asj:thm:untwist} removes one geometric twist while retaining an
+arbitrary Hurwitz product. Construct the finite compensation when two
+or more twists approach unity at independent rates. Prove which
+rate-dependent finite terms remain after all divergent powers and
+logarithms are subtracted. Compare sequential limits with a specified
+joint limit rather than silently identifying them.
+
+\item \textbf{Noninteger resonances at other spectral centers.}
+At the origin, only integer poles $p=\ell-k$ enter the local formula.
+Develop the corresponding finite local calculus about a nonzero total
+spectral center so that noninteger or complex poles can resonate.
+State the exponent normalization and branch choices before defining
+its tangent polynomial law.
+
+\item \textbf{A smaller coordinate algebra for centered Gamma reciprocity.}
+For specified rational $a,b,c$, determine which values of $E_{b,c}(a)$
+and $I_{b,c}(a)$ reduce to a finite algebra generated by Gamma values,
+Hurwitz-zeta derivatives, classical or multiple polylogarithms, and
+Dirichlet $L$ derivatives. The comparison algebra must be fixed.
+Failure of a symbolic simplifier or a relation search would not prove
+irreducibility.
+
+\item \textbf{A reflection or functional equation for the shifted divisor spectrum.}
+Construct a useful exact reflection formula in the shift variable for
+$F_a(s)$ or its Laurent jets, rather than for the unshifted product
+$\zeta(s)^h$. The Gamma representation supplies ordinary derivatives,
+but does not by itself give a global reflection law across the negative
+spectral lattice.
+
+\item \textbf{Canonical finite-part determinants with several pole orders.}
+Our choice $\exp(-[s]F(s))$ is well-defined once the spectral coordinate
+is fixed. Determine a normalization with a specified covariance under
+spectral rescaling and a specified product law. Record the lower
+Laurent coefficients that necessarily enter under a coordinate change;
+there is no regulator-independent determinant for free.
+
+\item \textbf{Representation components beyond the Vandermonde.}
+For a pole of order $H$, the normalized jet has degree at most $r+H$.
+Identify permutation-representation projections whose first occurrence
+lies above degree $r$ but below the fully alternating degree. They should
+isolate particular Stieltjes residue layers. Give explicit factorizations
+and exact finite certificates in the first four-factor cases.
+
+\item \textbf{Other arithmetic products with controlled continuation.}
+Apply the transfer theorem to products of primitive Dirichlet $L$
+functions and shifted zeta factors, tracking zeros that cancel nominal
+poles. Separate residue-class identities from new arithmetic information.
+For a base series lacking known continuation, prove that continuation
+rather than treating the theorem as evidence for it.
+
+\item \textbf{Formal analytic interfaces and certified regression tests.}
+Formalize the finite-principal-part extraction and tangent polarization
+independently of the convergence lemmas. Add interval Cauchy extraction
+and certified truncation to the current floating-point diagnostics.
+The exact finite algebra is already isolated in the supplied program.
+
+\item \textbf{The surviving Gaussian identities remain a separate target.}
+An exact certificate for $S_6$, and then the distinct current $S_8$
+vector, still needs a relation outside the restricted product-row
+presentation identified in the source. The present divisor-spectrum
+alternants should not be mistaken for such a certificate.
+\end{enumerate}
+
+\subsection{Integration recommendation}
+Place the package under a new continuation directory beneath the
+Stieltjes-harmonic-resonance report, and mark the explicit Q10 classes
+as completed with the hypotheses and scope above. The main candidate
+manuscript insertions are the transfer/local calculus, the Gamma
+reciprocity with its normalized primitive, and the compensated
+polylogarithmic untwisting theorem. The package is self-contained:
+its \LaTeX{} build does not depend on unbundled repository files.
+No remote repository files were modified while preparing this report.

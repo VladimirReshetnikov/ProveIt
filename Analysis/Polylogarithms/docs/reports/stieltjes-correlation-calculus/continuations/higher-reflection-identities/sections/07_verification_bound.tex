@@ -1,0 +1,118 @@
+\label{hc:verification-bound}
+
+The numerical checks of the centered trigamma-square moments use a finite
+head and an explicitly summed Bernoulli tail. The tail truncation admits
+the following analytic bound. This bound controls truncation of an
+asymptotic expansion; the recorded \texttt{mpmath} evaluations use ordinary
+floating-point arithmetic and are not claimed to be interval enclosures.
+The mathematical identity is proved separately in
+Theorem~\ref{hc:trigamma}.
+
+For real $x>0$, write
+\[
+ T(x)=\psi'(x+1/2),\qquad
+ A_K(x)=\sum_{j=0}^{K}B_{2j}(1/2)x^{-2j-1},\qquad
+ C_K=\frac{2(2K+2)!}{(2\pi)^{2K+2}}.
+\]
+For every integer $K\ge0$,
+\begin{equation}\label{hc:T-remainder}
+ 0<T(x)\le x^{-1},\qquad
+ |T(x)-A_K(x)|\le C_Kx^{-2K-3}.
+\end{equation}
+Indeed the standard trigamma integral gives
+\[
+ T(x)=\int_0^\infty e^{-xt}g(t)\,dt,
+ \qquad g(t)=\frac{t}{2\sinh(t/2)}.
+\]
+The partial fraction expansion of the hyperbolic cosecant
+\cite[Eq.~4.36.5]{DLMFHyperbolic} is
+\[
+ g(t)=1+2\sum_{k=1}^{\infty}
+             (-1)^k\frac{t^2}{t^2+(2\pi k)^2}.
+\]
+Expand each rational term through degree $2K$. With $a_k=2\pi k$,
+the remainder is exactly
+\[
+ 2(-1)^K t^{2K+2}\sum_{k=1}^{\infty}
+              \frac{(-1)^k}{a_k^{2K}(t^2+a_k^2)}.
+\]
+The positive summand magnitudes decrease in $k$, so the alternating
+series estimate yields
+\[
+ \left|g(t)-\sum_{j=0}^{K}
+       \frac{B_{2j}(1/2)}{(2j)!}t^{2j}\right|
+ \le \frac{2t^{2K+2}}{(2\pi)^{2K+2}}.
+\]
+The finite polynomial is identified by the Bernoulli generating
+function $g(t)=te^{t/2}/(e^t-1)$. Integration proves the second
+inequality in \eqref{hc:T-remainder}; the first follows from
+$0<g(t)\le1$.
+
+Fix integers $M\ge0$, $K\ge M$, and $N\ge1$, and set $a=N+1/2$.
+Let
+\[
+ b_j=B_{2j}(1/2),\qquad
+ d_\ell^{(K)}=
+ \sum_{\substack{0\le j\le K\\0\le\ell-j\le K}}
+                    b_jb_{\ell-j},
+ \qquad
+ C_A=\sum_{j=0}^{K}|b_j|a^{-2j}.
+\]
+The nondecaying polynomial to subtract from $x^{2M}T(x)^2$ is
+\[
+ P_M(x)=\sum_{\ell=0}^{M-1}
+                  d_\ell^{(K)}x^{2M-2\ell-2}.
+\]
+This polynomial is independent of $K$ in the stated range; the sum is
+empty when $M=0$. Define the finite computational expression
+\begin{align}\label{hc:finite-check}
+ Q_{M,N,K}={}&
+ \sum_{n=0}^{N-1}
+   \bigl\{(n+1/2)^{2M}T(n+1/2)^2-P_M(n+1/2)\bigr\}\notag\\
+ &+\sum_{\ell=M}^{2K}
+          d_\ell^{(K)}\zeta(2\ell+2-2M,a).
+\end{align}
+Every Hurwitz zeta argument in the last sum is at least $2$.
+The ordinarily convergent moment $V_M$ satisfies
+\begin{equation}\label{hc:finite-check-bound}
+ |V_M-Q_{M,N,K}|
+ \le C_K(1+C_A)\zeta(2K+4-2M,a).
+\end{equation}
+To verify this, for $x\ge a$ use $|A_K(x)|\le C_A/x$ and
+\eqref{hc:T-remainder} to obtain
+\[
+ x^{2M}|T(x)^2-A_K(x)^2|
+ \le C_K(1+C_A)x^{2M-2K-4}.
+\]
+Summing this inequality over $x=n+1/2$, $n\ge N$, proves
+\eqref{hc:finite-check-bound}. Expanding the finite square $A_K^2$
+and subtracting $P_M$ gives exactly the Hurwitz zeta tail in
+\eqref{hc:finite-check}.
+
+The accompanying script uses $N=64$, $K=30$, and $105$ decimal
+working digits. Its recorded discrepancies from the exact Bernoulli
+formula and the analytic truncation envelopes are as follows:
+\begin{center}
+\begin{tabular}{rll}
+\hline
+$M$ & Observed absolute discrepancy & Analytic truncation envelope\\
+\hline
+0 & $9.911754463\,10^{-80}$ & $1.015061650\,10^{-79}$\\
+1 & $4.203540245\,10^{-76}$ & $4.304746532\,10^{-76}$\\
+2 & $1.784489779\,10^{-72}$ & $1.827411085\,10^{-72}$\\
+3 & $7.583667641\,10^{-69}$ & $7.765877807\,10^{-69}$\\
+4 & $3.226610534\,10^{-65}$ & $3.304045785\,10^{-65}$\\
+5 & $1.374533946\,10^{-61}$ & $1.407480267\,10^{-61}$\\
+6 & $5.863410357\,10^{-58}$ & $6.003761793\,10^{-58}$\\
+\hline
+\end{tabular}
+\end{center}
+The script also verifies exactly the first centered Bernoulli pole
+test and its stated near-miss example, the formal translation recurrence
+through degree $14$, the affine derivative relations for orders $2$
+through $8$, nine Faulhaber block constants, and the exact moment
+coefficients through $M=10$. These finite checks audit the formulas;
+they do not substitute for the all-order proofs.
+
+% Primary source for the partial fraction identity:
+% https://dlmf.nist.gov/4.36#E5

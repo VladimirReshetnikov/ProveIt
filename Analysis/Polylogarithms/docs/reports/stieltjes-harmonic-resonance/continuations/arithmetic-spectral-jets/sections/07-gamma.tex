@@ -1,0 +1,174 @@
+\section{Gamma reciprocity, polygamma sums, and a normalized primitive}
+\label{asj:sec:gamma}
+
+\subsection{A convergent nonlinear part of the first Laurent jet}
+For the multiplicative Hurwitz lattice define
+\begin{equation}\label{asj:eq:Edef}
+ E_{\boldsymbol b}(a)=\sum_{\boldsymbol n}
+        \left\{\frac a{\lambda_{\boldsymbol n}}
+                    -\log\left(1+\frac a{\lambda_{\boldsymbol n}}\right)\right\},
+ \qquad a> -\lambda_*.
+\end{equation}
+Every brace must be kept grouped. Its tail is $O(\lambda_{\boldsymbol n}^{-2})$
+on compact shift sets, and $\sum\lambda_{\boldsymbol n}^{-2}
+=\prod_j\zeta(2,b_j)<\infty$. Thus this is an ordinary, locally normally
+convergent series, not a finite-part sum.
+
+\begin{proposition}[First-jet decomposition]\label{asj:thm:firstjet}
+For $F_a$ of Section~\ref{asj:sec:hurwitz},
+\begin{equation}\label{asj:eq:firstjet}
+ \boxed{\displaystyle \calJ_1F_a=\D'(0)-a d_0+E_{\boldsymbol b}(a).}
+\end{equation}
+\end{proposition}
+\begin{proof}
+For $|a|<\lambda_*$, apply \eqref{asj:eq:alljets} with $P=1$, one exponent,
+and $r=1$. The resonant term is $-a d_0$. For $\ell\ge2$,
+$[s](s)_\ell/\ell!=1/\ell$, so the remaining sum is
+\[
+ \sum_{\ell\ge2}\frac{(-a)^\ell}{\ell}\D(\ell)
+       =\sum_{\boldsymbol n}\left\{a/\lambda_{\boldsymbol n}
+                  -\log(1+a/\lambda_{\boldsymbol n})\right\}.
+\]
+Absolute convergence justifies the interchange. Both sides continue
+locally holomorphically throughout the slit shift plane
+$\C\setminus(-\infty,-\lambda_*]$, using finite heads on the spectral
+side and the grouped series on the other side. The identity theorem,
+or continuation along the real interval, gives every stated $a$.
+\end{proof}
+
+The entire principal part at the spectral origin is affine in $a$ by
+\eqref{asj:eq:Fpolar}. All nonlinearity of the first Laurent coefficient is
+therefore the convergent function $E_{\boldsymbol b}$.
+
+\subsection{Two independent Gamma representations of the same function}
+For two parameters write $E_{b,c}=E_{(b,c)}$.
+
+\begin{theorem}[Centered Gamma reciprocity]\label{asj:thm:gamma}
+For $b,c>0$ and $a>-bc$,
+\begin{align}\label{asj:eq:gamma-reciprocity}
+ E_{b,c}(a)
+ &=\sum_{n=0}^{\infty}\left\{
+       \log\Gamma\left(c+\frac a{n+b}\right)-\log\Gamma(c)
+                      -\frac{a\psi(c)}{n+b}\right\}\notag\\
+ &=\sum_{m=0}^{\infty}\left\{
+       \log\Gamma\left(b+\frac a{m+c}\right)-\log\Gamma(b)
+                      -\frac{a\psi(b)}{m+c}\right\}.
+\end{align}
+Both series converge absolutely and locally uniformly in $a$. On
+$|a|<bc$ they also equal
+\begin{equation}\label{asj:eq:gamma-zeta}
+ E_{b,c}(a)=\sum_{\ell\ge2}
+                 \frac{(-a)^\ell}{\ell}\zeta(\ell,b)\zeta(\ell,c).
+\end{equation}
+\end{theorem}
+\begin{proof}
+The classical centered Gamma product gives, for $c>0$ and $t>-c$,
+\begin{equation}\label{asj:eq:centeredgamma}
+ \log\Gamma(c+t)-\log\Gamma(c)-t\psi(c)
+    =\sum_{m\ge0}\left\{\frac{t}{m+c}
+                         -\log\left(1+\frac t{m+c}\right)\right\}.
+\end{equation}
+One may derive it without choosing a product normalization: both sides
+vanish with their first derivative at $t=0$, and their second derivatives
+are the same convergent trigamma series. Set $t=a/(n+b)$ and sum over
+$n$. All double summands are absolutely summable, since their tails are
+bounded by a constant times $(n+b)^{-2}(m+c)^{-2}$ and their finitely many
+small factors stay away from zero on compact allowed shift sets.
+Fubini's theorem gives $E_{b,c}$. Interchanging $m$ and $n$ proves the
+second representation. Expanding the logarithm under $|a|<bc$ proves
+\eqref{asj:eq:gamma-zeta}.
+\end{proof}
+
+For $b=c=1$, the first Laurent coefficient becomes the explicit
+Gamma--Stieltjes identity
+\begin{equation}\label{asj:eq:divisor-gamma}
+ \calJ_1F_a=\frac12\log(2\pi)-a(\gamma^2-2\gamma_1)
+      +\sum_{n\ge1}\left\{\log\Gamma(1+a/n)+\frac{\gamma a}{n}\right\}.
+\end{equation}
+Here $\D'(0)=2\zeta(0)\zeta'(0)=\tfrac12\log(2\pi)$ and
+$d_0=\gamma^2-2\gamma_1$. At the same time,
+\[
+ \Res_{s=0}F_a=-a,\qquad [s^0]F_a=\frac14-2\gamma a.
+\]
+The Gamma series in \eqref{asj:eq:divisor-gamma} cannot make that nonzero pole
+ disappear. It evaluates the correctly specified Laurent coefficient.
+
+\subsection{Reciprocal digamma and all polygamma derivatives}
+\begin{corollary}[All argument derivatives]\label{asj:thm:polygamma}
+For $b,c>0$, $a>-bc$,
+\begin{align}\label{asj:eq:digamma-reciprocity}
+ E_{b,c}'(a)
+ &=\sum_{n\ge0}\frac{\psi(c+a/(n+b))-\psi(c)}{n+b}\notag\\
+ &=\sum_{m\ge0}\frac{\psi(b+a/(m+c))-\psi(b)}{m+c}.
+\end{align}
+For every integer $r\ge2$,
+\begin{align}\label{asj:eq:polygamma-reciprocity}
+ E_{b,c}^{(r)}(a)
+ &=\sum_{n\ge0}\frac{\psi^{(r-1)}(c+a/(n+b))}{(n+b)^r}\notag\\
+ &=\sum_{m\ge0}\frac{\psi^{(r-1)}(b+a/(m+c))}{(m+c)^r}\notag\\
+ &=(-1)^r(r-1)!\sum_{n,m\ge0}
+                       \bigl((n+b)(m+c)+a\bigr)^{-r}.
+\end{align}
+At $a=0$ this is $(-1)^r(r-1)!\zeta(r,b)\zeta(r,c)$.
+\end{corollary}
+\begin{proof}
+Differentiate the grouped normally convergent series on compact subsets
+of the allowed shift domain. The $r$th derivative for $r\ge2$ of one
+grouped summand in \eqref{asj:eq:Edef} is
+$(-1)^r(r-1)!(\lambda+a)^{-r}$. The Gamma representation gives the
+first two forms. The conventional polygamma series, or differentiation
+of \eqref{asj:eq:centeredgamma}, gives the last one. At $a=0$ absolute
+convergence factors the double series.
+\end{proof}
+
+For more than two Hurwitz factors, summing over one factor gives an
+analogous centered Gamma series over the remaining $(h-1)$ indices.
+The choice of the factor summed first is arbitrary, producing $h$
+compatible Gamma representations. This is a constructive representation,
+not a reduction claim into finitely many Gamma values.
+
+\subsection{An anchored primitive in Hurwitz-zeta derivatives}
+Define the classical primitive
+\begin{equation}\label{asj:eq:Kdef}
+ K(z)=\zeta'(-1,z)+\frac{z-z^2}{2}+\frac z2\log(2\pi),\qquad z>0.
+\end{equation}
+The identities $\partial_z\zeta(s,z)=-s\zeta(s+1,z)$ and
+$\zeta'(0,z)=\log\Gamma(z)-\tfrac12\log(2\pi)$ imply
+$K'(z)=\log\Gamma(z)$ \cite{dlmf-hurwitz}. This agrees with the
+primitive already used in the manuscript \cite{repo}.
+
+\begin{theorem}[Reciprocal normalized primitive]\label{asj:thm:primitive}
+Let $I_{b,c}(a)=\int_0^a E_{b,c}(t)\dd t$, with oriented integration
+when $a<0$. Then
+\begin{align}\label{asj:eq:primitive-gamma}
+ I_{b,c}(a)=\sum_{n\ge0}\Bigg\{&(n+b)
+              \left[K\left(c+\frac a{n+b}\right)-K(c)\right]\notag\\
+              &-a\log\Gamma(c)-\frac{a^2\psi(c)}{2(n+b)}\Bigg\}.
+\end{align}
+The same expression with $b$ and $c$ exchanged is equal to it. Equivalently,
+\begin{align}\label{asj:eq:primitive-lattice}
+ I_{b,c}(a)=\sum_{n,m\ge0}\Bigg\{&\frac{a^2}{2\lambda_{n,m}}
+        -(\lambda_{n,m}+a)
+                 \log\left(1+\frac a{\lambda_{n,m}}\right)+a\Bigg\},
+\end{align}
+where $\lambda_{n,m}=(n+b)(m+c)$. For $|a|<bc$,
+\begin{equation}\label{asj:eq:primitive-power}
+ I_{b,c}(a)=\sum_{\ell\ge2}\frac{(-1)^\ell a^{\ell+1}}{\ell(\ell+1)}
+                                   \zeta(\ell,b)\zeta(\ell,c).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Integrate the grouped summands of Theorem~\ref{asj:thm:gamma} along the
+compact segment from $0$ to $a$. Uniform convergence permits the
+interchange. Substitution $u=c+t/(n+b)$ gives the $K$ term, and the
+two subtractions integrate to the other two terms in
+\eqref{asj:eq:primitive-gamma}. Integration of \eqref{asj:eq:Edef} gives
+\eqref{asj:eq:primitive-lattice}. Its grouped tail is $O(\lambda_{n,m}^{-2})$.
+Both forms vanish at $a=0$, fixing the integration constant. Integrating
+\eqref{asj:eq:gamma-zeta} proves \eqref{asj:eq:primitive-power}.
+\end{proof}
+
+In \eqref{asj:eq:primitive-gamma}, the three large pieces must not be summed
+separately. The cancellations are part of the identity's definition.
+This is the same normalization issue that occurs in negative polygamma,
+but here both the base point and every convergent subtraction are explicit.

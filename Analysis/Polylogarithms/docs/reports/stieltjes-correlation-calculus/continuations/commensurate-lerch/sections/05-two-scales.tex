@@ -1,0 +1,104 @@
+\section{The complete integer two-scale identity}
+\label{clc:sec:two}
+
+The general table construction has a particularly short closed form
+for scales $1$ and $m$, where $m$ is any positive integer. Write
+\begin{equation}\label{clc:eq:pair-data}
+ \sigma_m=(-1)^{m+1},\qquad
+ c_r^{(m)}=(-1)^{r+1}\csc\frac{\pi r}{m}\quad(1\le r<m).
+\end{equation}
+When $m=1$ all sums over $r$ below are empty.
+For $\Rea A>-1$, define the \emph{unnormalized} integral
+\begin{equation}\label{clc:eq:I-def}
+ I_m(s,t;A)=\int_0^\infty
+ F_{1+A,s}(y)F_{1+A/m,t}(y^{-m})\frac{\dd y}{y}.
+\end{equation}
+The normalized quantity is
+$D_m(W;A)=\CC_{(1,m),A}(W;0)=m^{-t}I_m(s,t;A)$.
+
+\begin{theorem}[All integer scale ratios and all complex orders]
+\label{clc:thm:pair}
+For $s,t\in\C$, $W=s+t$, and $\Rea A>-1$,
+\begin{align}
+ I_m(s,t;A)=m^{-s-1}\biggl[&
+ \pi\sum_{r=1}^{m-1}c_r^{(m)}
+       \Phi\left(\sigma_m,W,\frac{A+r}{m}\right)\notag\\
+ &+\sigma_m W\Phi\left(\sigma_m,W+1,1+\frac A m\right)\biggr].
+ \label{clc:eq:pair}
+\end{align}
+The integral is ordinary, absolutely convergent, and entire in $s,t$.
+For odd $m$, the last term is $\EE_{1+A/m}(W)$, and the simple Hurwitz
+sum is grouped into differences to remove its pole at $W=1$.
+\end{theorem}
+\begin{proof}
+Use $Q=m$. The poles at $r=1,\ldots,m-1$ are simple, with
+\[
+ a_{r,1}=(-1)^r\frac\pi m\csc\frac{\pi r}{m}.
+\]
+At $\rho=m$ both factors are polar, and
+$a_{m,2}=(-1)^{m+1}=\sigma_m$, $a_{m,1}=0$.
+Substitution in \eqref{clc:eq:central-raw} gives the normalized formula
+with prefactor $m^{-W-1}$. Multiplication by $m^t$ gives
+\eqref{clc:eq:pair}. Entire dependence and absolute convergence were
+proved before the residue calculation. For odd $m$,
+$c_{m-r}^{(m)}=-c_r^{(m)}$, so $\sum_rc_r^{(m)}=0$ and the
+simple-pole cancellation is explicit.
+\end{proof}
+
+\subsection{Scales two and three}
+At $A=0$ the functions in the integrand are ordinary polylogarithms.
+For $m=2$, the two reductions
+$\eta(W,1/2)=2^W\beta(W)$ and $\eta(W,1)=\eta(W)$ give
+\eqref{clc:eq:intro-beta}. For $m=3$, let $\chi_{-3}$ be the real
+nonprincipal character modulo three and set
+\[
+ L(W,\chi_{-3})=3^{-W}
+       [\zeta(W,1/3)-\zeta(W,2/3)].
+\]
+Then
+\begin{equation}\label{clc:eq:pair3}
+ \boxed{\displaystyle
+ \int_0^\infty\Li_s(-y)\Li_t(-y^{-3})\frac{\dd y}{y}
+ =\frac{2\pi\,3^{t-1}}{\sqrt3}L(W,\chi_{-3})
+    +3^{-s-1}\EE_1(W).}
+\end{equation}
+For $s=t=1$ this yields
+\begin{equation}\label{clc:eq:log3}
+ \int_0^\infty\log(1+y)\log(1+y^{-3})\frac{\dd y}{y}
+ =\frac{2\pi}{\sqrt3}L(2,\chi_{-3})+\frac29\zeta(3).
+\end{equation}
+The first two numerical values are
+\begin{align*}
+ I_2(1,1;0)&=2.426819442923313294752678355954754053578\ldots,\\
+ I_3(1,1;0)&=3.101375395830302048787723234392638\ldots.
+\end{align*}
+They were checked against direct real-line logarithmic quadrature;
+they are diagnostics, not the proof.
+
+\subsection{Zero-order resonance and an explicit normalization obstruction}
+At zero orders one obtains
+\begin{equation}\label{clc:eq:zero-examples}
+ I_2(0,0;0)=\frac\pi4,\qquad
+ I_3(0,0;0)=\frac13+\frac{2\pi}{9\sqrt3}.
+\end{equation}
+The $1/3$ in the second expression is the value
+$3^{-1}\EE_1(0)$. Substituting $W=0$ in a separated factor
+$W\zeta(W+1)$ and declaring it zero would lose this term.
+
+Even at the smallest nonzero total order the raw unequal-scale
+integral fails pure order addition:
+\begin{align}
+ I_2(1,0;0)&=\frac{5\pi^2}{48},&
+ I_2(0,1;0)&=\frac{5\pi^2}{24}.
+ \label{clc:eq:swap}
+\end{align}
+For instance, use $\beta(1)=\pi/4$ and $\eta(2)=\pi^2/12$ in
+\eqref{clc:eq:intro-beta}. These two values have the same total order
+but differ by a factor of two. The normalized integrals agree, as
+Theorem~\ref{clc:thm:addition} requires. This is an exact counterexample
+to a tempting extension of the old equal-scale statement, not an error
+attributed to that statement itself.
+
+For $m=1$, Theorem~\ref{clc:thm:pair} reduces to the preceding report's
+identity $I_1(s,t;A)=\EE_{1+A}(s+t)$. This limiting consistency is useful,
+but the equal-scale case is prior work, not a new claim.

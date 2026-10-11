@@ -1,0 +1,228 @@
+{
+  "schema_version": "1.0",
+  "package": "ProveIt_Harmonic_Parity_and_Resolvent_Identities_2026-10-11",
+  "captured_at_utc": "2026-10-11T01:35:30Z",
+  "scope": "Final checksums and summaries of completed delivered programs, mathematical results, routine rerun, and document review. Metadata construction itself performs no additional mathematical numerical run.",
+  "proof_status": "Conventional analytic and algebraic proofs; finite exact symbolic checks and floating-point diagnostics. No formal proof-assistant verification or interval certification.",
+  "records": [
+    {
+      "family": "centered_harmonic_parity",
+      "reported_status": "all checks passed",
+      "working_precision_digits": 110,
+      "record_summary": {
+        "representative_parity_polynomials": 8,
+        "general_shift_cases": 2,
+        "constant_term_indices": 8,
+        "centered_square_values": 7,
+        "generator_parameters": 3
+      },
+      "files": [
+        {
+          "path": "code/verify_harmonic_parity.py",
+          "bytes": 6250,
+          "sha256": "f84d70305011953ecb5bb9ca0519efa78d069ed7d18b286a083a05d83ec9e1ae"
+        },
+        {
+          "path": "results/harmonic_parity_checks.json",
+          "bytes": 4857,
+          "sha256": "663a5f476f379b911c8a2cba8aa75c82e959c872c70661d0e91e7f09204e6e27"
+        }
+      ]
+    },
+    {
+      "family": "cotangent_stieltjes_resolvent",
+      "record_summary": {
+        "exact_assertions": 55,
+        "working_precision_digits": 55,
+        "full": true,
+        "numerical_checks": 28,
+        "elapsed_seconds": 246.817,
+        "hurwitz_derivative_method": "Native analytic derivative, with exact endpoint shift; loggamma at primitive level zero.",
+        "largest_absolute_error": "8.03570208107e-41",
+        "interpretation": "Floating-point diagnostics, not interval-certified proofs."
+      },
+      "files": [
+        {
+          "path": "code/verify_resolvent.py",
+          "bytes": 10333,
+          "sha256": "9066270bcb65062272b6c5f1494cb3e85583917c85665076d8613c26d3951c1c"
+        },
+        {
+          "path": "results/resolvent_checks.json",
+          "bytes": 6583,
+          "sha256": "492c541ae40ae5ff86d32efd0fd7bdf3d794eb78922572e10a25219eded9e8c9"
+        }
+      ]
+    },
+    {
+      "family": "independent_resolvent_contact",
+      "reported_status": "all checks passed",
+      "working_precision_digits": 100,
+      "numerical_checks": 9,
+      "files": [
+        {
+          "path": "code/verify_resolvent_contact.py",
+          "bytes": 2543,
+          "sha256": "fb72075af073846c82ee35a9551fbc981edd9fddecc0054530370e55ba851c50"
+        },
+        {
+          "path": "results/resolvent_contact_checks.json",
+          "bytes": 2636,
+          "sha256": "84f813441f79de94c53072cabb8be2663b783bd3a3c4d5ac963ffcb016d2655f"
+        }
+      ]
+    },
+    {
+      "family": "arbitrary_endpoint_harmonic_reduction",
+      "exact_check_counts": {
+        "word_cases": 26,
+        "strategy_and_gap_checks": 78,
+        "finite_nested_sum_checks": 52,
+        "degree_bound_checks": 327,
+        "zero_insertion_checks": 7,
+        "complete_harmonic_checks": 36
+      },
+      "strict_gap_corruption_control": "passed",
+      "working_precision_digits": 60,
+      "numerical_checks": 19,
+      "files": [
+        {
+          "path": "code/reduce_harmonic.py",
+          "bytes": 5057,
+          "sha256": "d4f88a88b67b72b60947f65010e9e926509d1578a66b8558edc620cea20d1807"
+        },
+        {
+          "path": "code/verify_harmonic.py",
+          "bytes": 12768,
+          "sha256": "f3b9907b4ff9d25babdf60f02de03274c2f055a38f9d14ecc04918921c203642"
+        },
+        {
+          "path": "results/harmonic_verification.json",
+          "bytes": 15989,
+          "sha256": "6bca816ebd85c366404b363b1b1bff68d680123efdbc56f030fab5a387842b53"
+        }
+      ]
+    },
+    {
+      "family": "quartic_tornheim_and_formal_kernel",
+      "exact_formula_checks": {
+        "quartic_polynomial": true,
+        "cyclic_polynomial": true,
+        "diagonal": true,
+        "Euler_diagonal": true,
+        "cyclic_123": true,
+        "Xi_elementary_correction": true
+      },
+      "formal_dimension_cases": 11,
+      "working_precision_digits": 70,
+      "numerical_rays": 3,
+      "finite_difference_step": "0.000015",
+      "files": [
+        {
+          "path": "code/check_quartic_tornheim.py",
+          "bytes": 9777,
+          "sha256": "76691417617133bc89b96894684043b6e5601ec89060ece92b8cbfbf63102cfd"
+        },
+        {
+          "path": "results/quartic_tornheim_checks.json",
+          "bytes": 3962,
+          "sha256": "1a6057ff2a2123cedf434c39aa615636f97e8e14d35248ac421bca9681f22ea4"
+        }
+      ]
+    },
+    {
+      "family": "packaged_routine_runner",
+      "reported_status": "passed",
+      "record_summary": {
+        "mode": "routine",
+        "python": "3.12.14",
+        "status": "passed",
+        "jobs": [
+          {
+            "name": "harmonic_parity",
+            "returncode": 0,
+            "seconds": 3.335
+          },
+          {
+            "name": "resolvent_contact",
+            "returncode": 0,
+            "seconds": 22.844
+          },
+          {
+            "name": "harmonic_reduction",
+            "returncode": 0,
+            "seconds": 6.897
+          },
+          {
+            "name": "quartic_tornheim",
+            "returncode": 0,
+            "seconds": 1.475
+          },
+          {
+            "name": "resolvent",
+            "returncode": 0,
+            "seconds": 67.016
+          }
+        ],
+        "qualification": "Exact finite checks and floating-point diagnostics; no interval certificates."
+      },
+      "files": [
+        {
+          "path": "code/verify_all.py",
+          "bytes": 2955,
+          "sha256": "25f0b102b4882bb6697a8f5237321659d2eb06d01ea3ff843f8640770ec21981"
+        },
+        {
+          "path": "results/routine_run.json",
+          "bytes": 647,
+          "sha256": "00320eb162eb2c9eaaa4d7f04372f55ad84d434dff2c06e88270ee3dec45b656"
+        }
+      ]
+    },
+    {
+      "family": "compiled_document_review",
+      "reported_status": "passed",
+      "physical_pages": 41,
+      "files": [
+        {
+          "path": "build.py",
+          "bytes": 3868,
+          "sha256": "969571f461b09557d2fade41a61b9b6e55ee538c7236748e5a52a3566abbcc2f"
+        },
+        {
+          "path": "results/build.json",
+          "bytes": 346,
+          "sha256": "c33e43e2efa766d518b5a12f3e1021269cf2f0822dd2c088fe6067bf7567bc06"
+        },
+        {
+          "path": "results/document_review.json",
+          "bytes": 1223,
+          "sha256": "31e3bde7ed63a3ec198f37824128630248eab93190c3f0aa938d14bbad6cee1e"
+        }
+      ]
+    }
+  ],
+  "independent_reviews": [
+    {
+      "path": "provenance/reviews/harmonic_cross_review.txt",
+      "bytes": 4256,
+      "sha256": "52d06ac2c514bccabbba4e7107c51a3bb8beac19c6ffc62e38e7e9956c98621f"
+    },
+    {
+      "path": "provenance/reviews/harmonic_parity_cross_review.txt",
+      "bytes": 4913,
+      "sha256": "f115adb4ccee1f52285e9d8328d6509ce3d90c523240945fc20707d0a14989ba"
+    },
+    {
+      "path": "provenance/reviews/pdf_math_layout_review.txt",
+      "bytes": 2646,
+      "sha256": "822e110e34444f0b2b51b97c7a73af921cbf4389ba725565a6bf13388ba2f4ab"
+    },
+    {
+      "path": "provenance/reviews/resolvent_independent_review.txt",
+      "bytes": 3239,
+      "sha256": "df285dac245278af255365753c751ac18f4b4e48d91342d9308caae7191724b9"
+    }
+  ],
+  "integration_caution": "If a checked program or result file is changed during integration, update its recorded checksum and identify any rerun."
+}

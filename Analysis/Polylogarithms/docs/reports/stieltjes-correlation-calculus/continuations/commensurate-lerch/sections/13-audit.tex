@@ -1,0 +1,157 @@
+\section{Proof status, correction safeguards, and reproducible checks}
+\label{clc:sec:audit}
+
+\subsection{What was actually inspected}
+The canonical manuscript README and its source-directory structure were
+retrieved through the connected GitHub repository. The branch commit
+recorded during this audit is
+\begin{center}\small
+\src{338a3a3877c337f981072061c16bc8ee1d87155d}.
+\end{center}
+The repository's timestamp for that commit is 11 October 2026 at
+01:59:45 UTC, which is 10 October in the user's Pacific timezone.
+The full accessible TeX source of \emph{Reciprocal Lerch Convolutions}
+was retrieved from the user's Library and preserved locally for this
+research pass. Its profile definitions, transform and weighted-holomorphy
+proof, equal-scale closure, moment formulas, Stieltjes conventions,
+harmonic-remainder identity, and future questions are the relevant
+source material. That report records its own, earlier repository pin;
+it must not be confused with the pin above.
+
+The current incoming directory listing includes the bilinear Mellin,
+cubic mixed-order, exact-resonance, independent-order, harmonic parity,
+harmonic shift, higher reflection, nonlinear transport, ordered Hurwitz,
+and unequal-twist packages. Their filenames and GitHub metadata were
+visible, but their binary ZIP members were not read in this pass.
+Accordingly this article does not assert that its results are absent
+from every incoming archive, and does not claim to have audited those
+archives. The source-audit artifact records this limitation explicitly.
+A filename alone is not mathematical evidence of either novelty or overlap.
+
+\subsection{Corrections and integration safeguards}
+No new error in the inspected equal-scale theorem is asserted here.
+The following are concrete corrections to plausible \emph{extensions}
+and implementation mistakes, supported by exact formulas in this article.
+
+\paragraph{Scale normalization.}
+Replace a raw order-addition claim for unequal scales by the normalized
+profiles \eqref{clc:eq:h}. The exact pair \eqref{clc:eq:swap} refutes the
+unnormalized claim. Alignment means $q_j(a_j-1)=A$, not equality of the
+original Lerch shifts $a_j$.
+
+\paragraph{Pole cancellation before specialization.}
+Store $\EE_a(v)$ as an entire object with value one at zero, and store
+simple-pole Hurwitz sums as differences. The $1/3$ in
+\eqref{clc:eq:zero-examples} is lost by zero-times-pole substitution.
+In particular the expression $W\zeta(W+1)$ is not zero at $W=0$.
+
+\paragraph{Periods and branches.}
+The pole period is a common multiple of the positive scales.
+Using a common denominator instead generally misidentifies the pole
+lattice. At positive $\mu$ in the periodic case, use the entire combined
+Lerch expression; its zero jump was proved, not assumed. Independently
+choosing branch values and discarding imaginary parts is not the rule.
+
+\paragraph{Independent orders and common strips.}
+An integer-only partial fraction formula cannot be differentiated in
+its changing integer summation limit. The normal expansion in
+Theorem~\ref{clc:thm:unequal} supplies an actual holomorphic family.
+For unequal scales and centers, the common-strip hypothesis
+\eqref{clc:eq:unequal-strip} is explicit; separate one-profile
+admissibility is not silently substituted for it.
+
+\paragraph{Primitive constants and residue scope.}
+Use anchored Taylor remainders for higher primitives. Their resonant
+quotients have specified removable values. The universal parity result
+is an equality of the stated ordinary integrals on their common domain,
+then a polynomial continuation at negative integer order; it is not a
+license to continue arbitrary complex-order integrals without tracking
+branches and convergence.
+
+\paragraph{Arithmetic and numerical scope.}
+A functional pole-lattice obstruction is not arithmetic independence.
+The current $S_6$ and revised $S_8$ statuses are unchanged. During
+exploratory numerical work, an ordinary Python expression $3^{-2}$
+introduced a binary floating-point coefficient into an otherwise
+high-precision comparison; replacing it by exact or multiprecision
+arithmetic removed that discrepancy. The delivered numerical routines
+convert rational constants without such a binary-float intermediate.
+This was an implementation issue in the present exploratory work, not
+an error attributed to the repository.
+
+\subsection{Executed verification}
+The delivered completed runs comprise \textbf{307 exact symbolic
+assertions, 91 numerical diagnostics, and five negative controls}.
+The exact and numerical roles are deliberately separate.
+\begin{center}
+\begin{tabular}{l r r r}
+\toprule
+Script/run & Exact & Numerical & Negative controls\\
+\midrule
+\texttt{verify.py --part exact} & 285 & 0 & 2\\
+\texttt{verify.py --part numeric} & 0 & 77 & 2\\
+\texttt{verify\_extra.py} & 22 & 14 & 1\\
+\midrule
+Total & 307 & 91 & 5\\
+\bottomrule
+\end{tabular}
+\end{center}
+The exact suite compares the Bell and direct reciprocal-sine algorithms
+for eighteen scale families, checks period residues and scale covariance,
+verifies the full printed $(1,2,3)$ table, and checks the two-scale pole
+formulas, mixed-moment recurrence, harmonic Pochhammer coefficients,
+primitive resonance denominators, and low-depth universal parity
+polynomials. The corruption control changes an actual coefficient of
+the Laurent table and verifies that the independent construction rejects
+it. A separate domain control rejects a zero scale.
+
+The numerical suite compares finite central closure with independent
+vertical-contour quadrature, including complex orders, complex centers,
+zero order, positive order, and negative-integer resonance. It also
+compares noncentral Lerch closure, ordinary logarithmic product integrals,
+weighted moments, Gamma primitives, Stieltjes jets, balanced harmonic
+remainders, unequal-center expansions, and irrational-scale parity
+values. Higher primitive tests compare the closed formulas to
+32-point Gauss--Legendre integration; their resonant order derivatives
+are evaluated by a separate 48-point Cauchy sum. The universal cubic
+formula is also checked against ordinary one-dimensional integrals
+after an elementary two-factor convolution.
+
+The usual working precision is 55 decimal digits. The balanced-remainder
+integral uses 100 digits to control cancellation and a truncated
+real-line integration interval; its acceptance tolerance is $10^{-30}$.
+The other default tolerances are $10^{-36}$, with $10^{-42}$ for the
+unequal-center expansion tests. The finite quadrature and finite expansion
+errors are not interval-enclosed. An initial adaptive higher-primitive
+diagnostic exceeded the execution limit; the delivered fixed quadrature
+and Cauchy-sum checks completed successfully. All completed records,
+including actual residuals and software versions, are in
+\texttt{verification/*-results.json}.
+
+These computations test the formulas and their implementation. They are
+not interval certificates, not proofs for all parameters, and not a
+proof-assistant formalization. The all-index and continuum assertions
+rest on the analytic proofs above.
+
+\subsection{Integration status}
+\begin{center}
+\begin{tabular}{p{0.56\textwidth}p{0.35\textwidth}}
+\toprule
+Claim & Status in this delivery\\
+\midrule
+Commensurate-scale, all-depth, entire-order finite closure & Proved.\\
+Every mixed logarithmic moment and independent order jet & Proved by a finite algorithm.\\
+Unequal-center expansion in the common-strip domain & Proved, normally convergent.\\
+All anchored primitive orders and their resonances & Proved.\\
+Universal negative-integer parity for arbitrary positive scales & Proved.\\
+Pure-order-addition and common-step kernel rigidity & Proved in the stated functional classes.\\
+Canonical Gaussian $S_6$ and revised $S_8$ & Not proved or disproved here.\\
+Novelty relative to every unread incoming ZIP & Not established.\\
+Historical priority for every special case & Not claimed.\\
+\bottomrule
+\end{tabular}
+\end{center}
+All theorem and equation labels use the prefix \texttt{clc:} to reduce
+integration collisions. The package includes modular sources, a standalone
+source, a compiled PDF, reusable verification code, provenance notes,
+and a checksum manifest. No change to the canonical repository was made.

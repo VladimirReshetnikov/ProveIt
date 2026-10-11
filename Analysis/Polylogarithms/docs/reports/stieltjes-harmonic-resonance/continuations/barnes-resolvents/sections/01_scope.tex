@@ -1,0 +1,117 @@
+\section{Scope, source baseline, and conventions}
+\label{bhr:sec:scope}
+
+The starting point is the ProveIt repository at commit
+\snapshot, whose recorded time is 11 October 2026, 01:57:13 UTC.
+We obtained the canonical manuscript's 81 chapter files, its README,
+validation record, preamble and references, and the text members of all
+eleven archives then present in \src{docs/incoming}. The source review
+was targeted at the identities used below; it was not a line-by-line
+soundness audit of every volume. The accompanying source inventory
+identifies the snapshot and the incoming Git blob identifiers.
+
+The newest source, \emph{Harmonic Parity and Resolvent Identities}
+\cite{bhr:Parity}, already settles the rational cotangent-resolvent
+problem, the balanced negapolygamma ladder, and a quartic directional
+normal form. Those conclusions are baseline results here. Its
+questions R4 and R6 instead ask for nonintegral complex kernel powers
+and individual multiple Gamma transforms. The cubic harmonic report
+\cite{bhr:Cubic} asks for a further bridge from higher digamma powers to
+harmonic Laurent coefficients. These are the principal targets of
+the present continuation.
+
+\begin{table}[htbp]
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.23\textwidth}Y@{}}
+\toprule
+Source target & Exact scope pursued in this article\\
+\midrule
+Parity R6: individual Barnes functions & A finite formula for every
+polynomially weighted, unit-period multiple Gamma resolvent, including
+all normalization polynomials; an explicit $G$ formula.\\[5pt]
+Parity R4: complex powers & A joint spectral transform and conversion
+at positive integer exponent crossings, with the branch fixed along
+the integration interval.\\[5pt]
+Cubic Q6: higher digamma powers & The fourth-power finite part in
+ordinary zeta/Stieltjes data and explicitly defined depth-two and
+depth-three harmonic Laurent coefficients; an absolutely convergent
+series representation.\\[5pt]
+Parity R10: a transverse cyclic coordinate & A convergent integral
+representative and its use in the fifth cyclic directional layer.\\
+\bottomrule
+\end{tabularx}
+\caption{Developments relative to the inspected reports. Theorems below
+state the precise domains; a reduction to higher-depth data is not a
+reduction to an unspecified algebra of familiar constants.}
+\label{bhr:tab:targets}
+\end{table}
+
+\subsection{What remains a conjecture}
+
+The short Gaussian $S_6$ evaluation with label
+\src{cycloquot:conj:S6} and the revised $S_8$ evaluation with label
+\src{s8new:conj:S8} remain conjectural. The older frozen $S_8$ vector
+was rigorously rejected in the existing manuscript; it is a different
+candidate. None of the transformations in this article is an exact
+certificate for either current candidate. Similarly, the familiar
+cubic constants are not declared to belong to a smaller classical
+constant algebra simply because an integral or a new convergent
+series represents them.
+
+\subsection{Notation}
+
+We use the standard Hurwitz Laurent convention
+\begin{equation}\label{bhr:eq:stieltjes-convention}
+ \zeta(1-s,x)=-\frac1s+
+    \sum_{m=0}^{\infty}\gamma_m(x)\frac{s^m}{m!},
+ \qquad \gamma_0(x)=-\psi(x),\quad \psi=\frac{\Gamma'}\Gamma.
+\end{equation}
+Thus $\gamma_m=\gamma_m(1)$ and $\gamma=\gamma_0$.
+An ordinary prime on $\zeta$ means a derivative in its first,
+spectral argument. A superscript on $\psi$ or $\gamma_m(x)$ means
+an argument derivative. We write
+\[
+ \Li_s^{[j]}(q)=\partial_s^j\Li_s(q),\qquad
+ H_n^{(r)}=\sum_{k=1}^n k^{-r},\qquad H_n=H_n^{(1)}.
+\]
+All logarithms of positive real numbers are real. Complex logarithms
+are fixed explicitly whenever they occur in a power. Products of
+positive real Gamma and Barnes functions on $(0,1)$ use their real
+logarithms.
+
+The endpoint finite part in this article is
+\begin{equation}\label{bhr:eq:fp-definition}
+ \FP_x\int_0^1 f(x)\,dx
+   = [\delta^0(\log\delta)^0]
+       \int_{\delta}^{1-\delta}f(x)\,dx.
+\end{equation}
+This definition applies when the integral has a finite asymptotic
+expansion of nonvanishing powers and logarithms plus a constant and a
+vanishing remainder. For complex exponents, the removed powers may
+oscillate as well as diverge. Our proofs either establish that expansion or
+give an equivalent explicit subtraction. A parameter Laurent
+constant, denoted $\CT$, is a different operation. Their equality
+is asserted only after the relevant correction has been proved.
+
+\subsection{Classical inputs and the meaning of a contribution}
+
+The Hurwitz Fourier formula, the argument-shift law, Gamma
+derivatives, Bernoulli polynomial evaluations, and ordinary
+polylogarithm calculus are standard \cite{bhr:DLMFZ,bhr:DLMFG}.
+Espinosa--Moll already developed Hurwitz integrals and balanced
+negapolygamma functions \cite{bhr:EMIntegrals,bhr:EMGeneralized}.
+The multiple-Gamma/Hurwitz-zeta conversion is classical
+\cite{bhr:Adamchik,bhr:Vardi}. The Fourier coefficients of
+$x\log\Gamma(x)$ and $\log G(x)$ are also known, in particular in
+Mez\H{o}'s paper \cite{bhr:Mezo}. We do not reclassify any of those
+facts as discoveries.
+
+Our Barnes result is a finite resolvent reduction, valid with an
+arbitrary polynomial weight and every specified normalization
+constant. Its spectral form supplies an all-index Stieltjes
+extension at the same time. The later sections isolate the precise
+additional harmonic and transverse coordinates rather than hiding
+them inside unnamed finite parts. These are developments relative
+to the pinned source programme. Numerical checks in the package
+support independent error detection; the proofs in the text carry
+the mathematical claims.

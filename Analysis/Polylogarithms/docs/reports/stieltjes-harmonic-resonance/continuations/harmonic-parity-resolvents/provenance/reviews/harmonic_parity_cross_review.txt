@@ -1,0 +1,106 @@
+FINAL INDEPENDENT ADVERSE REVIEW
+
+Reviewed source:
+  /workspace/scratch/945e2d93a641/work/agent_resonant/harmonic_parity.tex
+
+Scope: mathematical proof review only; no new searches or numerical tests.
+The parent had already independently verified the precise ADH
+Theorem 1.2, formal S_infty hypotheses in the primary source.
+
+Conclusion: no actual mathematical issue found. No source edit requested.
+
+1. General-a Bernoulli expansion.
+
+For x=n+a, H_n=psi(x+1-a)+gamma. The shifted digamma expansion gives
+  psi(x+1-a) ~ log x - sum_{k>=1} B_k(a)/(k x^k),
+using B_k(1-a)=(-1)^k B_k(a). Thus the uniform negative sign in A(z,a)
+is correct. Differentiating r-1 times and multiplying by
+(-1)^r/(r-1)! gives the tail
+  z^(r-1)/(r-1)
+  + sum_{k>=1} binom(k+r-2,r-2) B_k(a) z^(k+r-1)/(r-1),
+so every coefficient and sign in T_r is correct.
+
+The principal-part map is also correct: the (-1)^ell from converting
+logarithmic powers to zeta derivatives cancels the same sign in the
+ellth derivative of 1/(s+j-1). The remaining coefficient is ell! q.
+Distinct j have distinct pole positions. Finite subtraction gives
+normal convergence in Re s>-J as claimed.
+
+2. Formal injectivity and invariant-ring classification.
+
+The centered formal trigamma f has the displayed expansion and satisfies
+  f(x+1)-f(x)=-(x+1/2)^(-2).
+The second-order homogeneous equation is correctly obtained by taking
+the ratio of this rational inhomogeneous term under x -> x+1.
+
+The rational-solution obstruction is valid. In each nonempty finite
+pole orbit modulo Z, the smallest pole creates an uncancelled pole one
+step earlier in the forward difference, while the largest creates an
+uncancelled pole at itself. These are distinct. The right side has one
+pole in exactly one orbit, so no rational solution exists.
+
+Under the verified ADH theorem, f is differentially transcendental
+over C(x), hence all finite derivative tuples are algebraically
+independent. The higher harmonic tails are invertible affine multiples
+of these derivatives. Adding X_1 uses the independent formal symbol L;
+the highest L coefficient of a nonzero polynomial cannot vanish.
+This establishes injectivity over C without assuming numerical
+independence of Euler's constant or zeta values.
+
+At the center, parity is simultaneous sign reversal of all even-order
+tails. Injectivity converts vanishing of all odd expansion coefficients
+into the exact polynomial equality P=tau(P). The displayed invariant
+ring and its nonfree paired generators are correct. The complementary
+pole lattices and the assertion that nonzero P cannot give an entire
+Dirichlet function follow from the same injectivity.
+
+3. Trigamma-square constant terms.
+
+Finite summation by parts with
+  A_(k-1)^2-A_k^2 = 2 A_k/k^2 + 1/k^4
+gives the stated partial-sum identity with the positive boundary term
+S_r(N) A_N^2.
+
+The j=0 contribution is 3 zeta(3). For j>=2,
+F_j(ell-1)/ell^2 is polynomial because both its constant and linear
+numerator coefficients vanish; its finite sum has zero constant term.
+For j=1 the exact extra term (N-H_N)/2 cancels the harmonic sum in E_j.
+This exceptional case is handled correctly.
+
+Using A_N=N^(-1)-(1/2)N^(-2)+sum B_(2k) N^(-2k-1):
+  CT(A_N F_j(N)) = (3-2j) B_(2j-2)/4,
+  CT(N^(2j+1) A_N^2) = -B_(2j-2).
+For j>=2 only the indicated N^2 and N^(2j-1) coefficients contribute
+to the first equality. For j=1 direct multiplication gives 1/4.
+Both constant computations and their combination are correct.
+
+The ordinary subtracted sums are exactly the analytic values because
+all removed Dirichlet terms specialize to zeta(-2m,1/2)=0. This includes
+m=0, since zeta(0,1/2)=0. The remaining terms are O(n^-2), so no
+regularization prescription remains in these identities.
+
+4. Generator.
+
+The twice-integrated Bernoulli series gives precisely the factor
+(2j-1)/(2j+1), with the overall -1/2 from the moment formula.
+The resulting integral generator and its even holomorphic disk are
+correct. Differentiating the claimed polylogarithmic antiderivative
+twice recovers t^2/(exp(t)-1), and its value and first derivative at
+zero vanish. This independently confirms the Li_2, Li_3, Li_4 signs
+and all constants in the classical-polylogarithmic form.
+
+5. Contribution status relative to the inspected source.
+
+The invariant-ring necessity and sufficiency answers the explicit
+Q11 request beyond the source's sufficient raw-H_n-power parity
+argument. It should remain distinguished from the classical
+Bernoulli/asymptotic tools used to prove it.
+
+The all-even centered single-tail trigamma-square moments form a
+different family from the inherited Dougall-derived weighted squares
+of shifted trigamma differences. Acknowledging the earlier family
+does not reduce the new family to a duplicate claim.
+
+No global priority judgment is made. The existing polynomial
+Stieltjes integration mechanism, discussed in the other harmonic
+module, should retain its existing/classical attribution.

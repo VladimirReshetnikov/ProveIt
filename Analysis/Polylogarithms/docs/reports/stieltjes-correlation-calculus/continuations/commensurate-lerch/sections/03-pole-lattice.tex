@@ -1,0 +1,164 @@
+\section{A finite pole lattice and pole-free Lerch closure}
+\label{clc:sec:lattice}
+
+Assume now that the positive scales are commensurate: there exists $Q>0$
+with $d_j=Q/q_j\in\N$. For rational scales one may choose
+\begin{equation}\label{clc:eq:Q}
+ Q=\frac{\operatorname{lcm}(\operatorname{num}q_1,\ldots,
+                              \operatorname{num}q_r)}
+         {\gcd(\operatorname{den}q_1,\ldots,
+                              \operatorname{den}q_r)}.
+\end{equation}
+This is a common multiple of the scales, not a common denominator.
+Put
+\begin{equation}\label{clc:eq:period-data}
+ \sigma=(-1)^{\sum_jd_j},\qquad
+ \PP=\bigcup_{j=1}^r\{q_j,2q_j,\ldots,Q\},\qquad
+ d_\rho=\#\{j:\rho/q_j\in\mathbb Z\}.
+\end{equation}
+Then $G_{\bq}(p+Q)=\sigma G_{\bq}(p)$, and every positive pole is a
+translate of a member of $\PP$. Define its finite Laurent data by
+\begin{equation}\label{clc:eq:Laurent}
+ G_{\bq}(\rho+z)=\sum_{k=1}^{d_\rho}a_{\rho,k}z^{-k}+O(1).
+\end{equation}
+
+\begin{lemma}[Elementary commensurate kernel]\label{clc:lem:kernel}
+For $\mu<0$,
+\begin{equation}\label{clc:eq:kernel}
+ K_{\bq}(\mu)=
+ -\frac{\displaystyle\sum_{\rho\in\PP}\sum_{k=1}^{d_\rho}
+ a_{\rho,k}e^{\rho\mu}\frac{\mu^{k-1}}{(k-1)!}}
+ {1-\sigma e^{Q\mu}}.
+\end{equation}
+If $\sigma=1$, the simple Laurent coefficients satisfy
+\begin{equation}\label{clc:eq:residue-sum}
+ \sum_{\rho\in\PP}a_{\rho,1}=0.
+\end{equation}
+Formula \eqref{clc:eq:kernel} continues to all real $\mu$, with its
+removable value at zero understood when $\sigma=1$.
+\end{lemma}
+\begin{proof}
+Take the inverse transform of $G_{\bq}$ on $0<c<q_*$. For $\mu<0$ close
+the contour to the right. Choose the closing vertical lines at a fixed
+nonpole residue class modulo $Q$. The trigonometric denominators are
+then uniformly separated from zero near the real axis, and give
+exponential decay at large imaginary part. The closing vertical
+integral tends to zero by $e^{\mu\Rea p}$; the horizontal integrals
+vanish as their heights tend to infinity. The closure is clockwise,
+so the sign of the residue sum is negative.
+
+At $p=\rho+nQ$, the coefficient of $(p-\rho-nQ)^{-k}$ is
+$\sigma^n a_{\rho,k}$. The residue of its product with $e^{p\mu}$ is
+$\sigma^na_{\rho,k}e^{(\rho+nQ)\mu}\mu^{k-1}/(k-1)!$.
+The convergent geometric sum over $n\ge0$ proves
+\eqref{clc:eq:kernel}.
+
+When $\sigma=1$, integrate $G_{\bq}$ around a rectangle whose two
+vertical edges differ by $Q$, enclosing one positive period of poles.
+The vertical integrals cancel by periodicity, and the horizontal ones
+vanish by exponential decay. The residue theorem gives
+\eqref{clc:eq:residue-sum}. In \eqref{clc:eq:kernel} the numerator
+therefore vanishes at zero, so its possible real singularity is
+removable. The original inverse transform is holomorphic in a strip
+around the real axis. Analytic continuation from $\mu<0$ along the
+real axis proves the last assertion. Possible more distant complex
+zeros of the denominator are not being declared removable here.
+\end{proof}
+
+\begin{theorem}[Finite Lerch closure at every complex order]
+\label{clc:thm:finite}
+Let $\Rea A>-q_*$ and $b_\rho=(A+\rho)/Q$. For $\mu<0$ and $W\in\C$,
+\begin{align}
+ \CC_{\bq,A}(W;\mu)
+ =-\sum_{\rho\in\PP}\sum_{k=1}^{d_\rho}a_{\rho,k}e^{\rho\mu}
+ \sum_{j=0}^{k-1}
+ &\frac{(-1)^j\mu^{k-1-j}(W)_j}
+ {j!(k-1-j)!Q^{W+j}}\notag\\[-2pt]
+ &\hspace{-24mm}\cdot\Phi(\sigma e^{Q\mu},W+j,b_\rho).
+ \label{clc:eq:finite}
+\end{align}
+The whole expression continues to the real axis. If $\sigma=1$ and
+$\mu>0$, its two Lerch boundary values agree. At $\mu=0$ the following
+central expression is interpreted in its pole-free form below:
+\begin{equation}\label{clc:eq:central-raw}
+ \CC_{\bq,A}(W;0)=
+ \sum_{\rho\in\PP}\sum_{k=1}^{d_\rho}
+ \frac{(-1)^ka_{\rho,k}}{(k-1)!Q^{W+k-1}}
+ (W)_{k-1}\Phi(\sigma,W+k-1,b_\rho).
+\end{equation}
+\end{theorem}
+\begin{proof}
+For $\Rea W>0$, insert \eqref{clc:eq:kernel} into
+\eqref{clc:eq:base-fractional}. Expand
+$(\mu-u)^{k-1}/(k-1)!$ in powers of $u$, and use
+\[
+ \frac1{1-\sigma e^{Q(\mu-u)}}
+ =\sum_{n=0}^\infty\sigma^ne^{nQ\mu-nQu}.
+\]
+The absolute convergence is immediate for $\mu<0$ from
+$\Rea(A+\rho)>0$. Each Laplace integral is
+$\Gamma(W+j)/(A+\rho+nQ)^{W+j}$.
+Dividing by $\Gamma(W)$ produces $(W)_j$, proving
+\eqref{clc:eq:finite} in the initial half-plane. Since the Lerch argument
+has modulus less than one, the right side is entire in $W$. Theorem
+\ref{clc:thm:addition} proves equality everywhere.
+
+Initially with $\Rea W$ sufficiently large, taking $\mu\to0^-$ is
+justified in the summed integrals and leaves only $j=k-1$. This gives
+\eqref{clc:eq:central-raw}. Its extension to all orders follows from
+the pole-free identities in Corollary~\ref{clc:cor:polefree}.
+
+For the real continuation when $\sigma=1$, continue the equality from
+negative $\mu$ through the upper and lower parts of the holomorphic
+strip. The Lerch jump at
+$z=e^{Q\mu}>1$ is, up to the common boundary-orientation sign,
+\[
+ \frac{2\pi i}{\Gamma(W+j)}
+ e^{-b_\rho Q\mu}(Q\mu)^{W+j-1}.
+\]
+For $\Rea(W+j)>0$, this jump follows by indenting the Lerch Euler
+integral at its simple pole $u=Q\mu$; its residue is precisely the
+displayed coefficient. The general order follows by continuation.
+After multiplication by the factors in \eqref{clc:eq:finite}, the
+$\rho$ and $j$ dependence in the exponential and in $Q$ cancels.
+For fixed $k\ge2$, the remaining coefficient is proportional to
+\[
+ \sum_{j=0}^{k-1}\frac{(-1)^j}{j!(k-1-j)!}=0.
+\]
+For $k=1$, the total remaining coefficient is proportional to
+$\sum_\rho a_{\rho,1}=0$. This initially proves zero jump away from
+the Gamma exceptional points and then everywhere by order continuation.
+Thus both boundary values coincide with the analytic ordinary
+convolution. For $\sigma=-1$ there is no positive-real Lerch cut to cross.
+\end{proof}
+
+\begin{corollary}[Entire central normalization]\label{clc:cor:polefree}
+If $\sigma=-1$, every summand of \eqref{clc:eq:central-raw} is entire,
+with $\Phi(-1,v,b)=\eta(v,b)$. If $\sigma=1$, choose any fixed reference
+$b_*$ with positive real part. Replace the combined $k=1$ terms by
+\begin{equation}\label{clc:eq:simple-polefree}
+ -Q^{-W}\sum_{\rho\in\PP}a_{\rho,1}
+ \bigl[\zeta(W,b_\rho)-\zeta(W,b_*)\bigr].
+\end{equation}
+For every $k\ge2$ make the replacement
+\begin{equation}\label{clc:eq:high-polefree}
+ (W)_{k-1}\zeta(W+k-1,b_\rho)
+ =(W)_{k-2}\EE_{b_\rho}(W+k-2).
+\end{equation}
+All these new summands are entire in $W$ and their sum is the desired
+central convolution.
+\end{corollary}
+\begin{proof}
+The residues of the two Hurwitz functions in a difference cancel. At
+$W=1$ its value is $\psi(b_*)-\psi(b_\rho)$ by
+\eqref{clc:eq:stieltjes-convention}. Equation
+\eqref{clc:eq:residue-sum} makes subtraction of the reference function
+legitimate. For $k\ge2$, the last factor of $(W)_{k-1}$ is
+$W+k-2$, giving \eqref{clc:eq:high-polefree}. The function $\EE$ is
+entire by its removable normalization. These observations prove the
+claim, including every nonpositive-integer resonance.
+\end{proof}
+
+The number of terms is finite independently of the orders. It depends
+only on the scales and pole multiplicities. No search for an integer
+relation among numerical special values enters the proof.

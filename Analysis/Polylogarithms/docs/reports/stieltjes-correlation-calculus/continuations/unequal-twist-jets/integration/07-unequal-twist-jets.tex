@@ -1,0 +1,265 @@
+% Additive canonical fragment for the Hurwitz/Stieltjes volume.
+% Place after 07-mixed-twist-identities.tex. No repository files were changed.
+% Requires amsmath, amssymb, amsthm and the canonical theorem/proof environments.
+% All new labels use the utj: namespace; no new global macros are introduced.
+% Full details, literature attribution and additional formulas are in article.tex.
+
+\section{Unequal-twist jets: exact expansions and finite functional closure}
+\label{utj:sec:main}
+Retain the twisted Fourier convention
+\[
+ \widehat K_\alpha^\theta(n)=(2\pi i(n+\theta))^{-\alpha},\qquad
+ L_{n,\theta}=\log(2\pi|n+\theta|)
+       +\frac{i\pi}{2}\operatorname{sgn}(n+\theta).
+\]
+In this section write
+$J_m^{r,\theta}=(-1)^m\partial_\alpha^mK_\alpha^\theta|_{\alpha=r}$.
+Its multiplier is $L_{n,\theta}^m(2\pi i(n+\theta))^{-r}$.
+Every Fourier mode is retained. In particular $K_0^\theta=\delta_0$.
+The finite integer-order partial-fraction theorem does not by itself
+permit differentiation in those discrete order labels. A convergent
+identity in arbitrary orders supplies the required extension.
+
+\begin{theorem}[Central expansion and every mixed order jet]
+\label{utj:thm:central}
+Let $\theta_j\in(0,1)$ and choose $c\in(0,1)$ with
+$R=\max_j|\theta_j-c|<\eta=\min(c,1-c)$. The midpoint of the extreme
+twists always satisfies this condition. Put $d_j=\theta_j-c$,
+$A=\sum_j\alpha_j$, and define the polynomials $h_k$ by
+\begin{align}
+ \sum_{k\ge0}h_k(\boldsymbol\alpha;\boldsymbol d)t^k
+   &=\prod_j(1-d_jt)^{-\alpha_j},\label{utj:eq:hgen}\\
+ h_0=1,\qquad k h_k
+   &=\sum_{\ell=1}^k\left(\sum_j\alpha_jd_j^\ell\right)h_{k-\ell}.
+ \label{utj:eq:hrec}
+\end{align}
+Then, locally normally in the distribution topology,
+\begin{equation}
+ \mathop{*}_{j=1}^d K_{\alpha_j}^{\theta_j}
+  =\sum_{k\ge0}(-2\pi i)^k h_k(\boldsymbol\alpha;\boldsymbol d)K_{A+k}^c.
+ \label{utj:eq:central}
+\end{equation}
+All order derivatives are allowed. In particular, with
+$M=\sum_jm_j$, $R_*=\sum_jr_j$, and the usual multi-index conventions,
+\begin{align}
+ \mathop{*}_{j=1}^d J_{m_j}^{r_j,\theta_j}
+ =\sum_{k\ge0}(-2\pi i)^k\sum_{\boldsymbol q\le\boldsymbol m}
+    (-1)^{|\boldsymbol q|}\binom{\boldsymbol m}{\boldsymbol q}
+    (\partial^{\boldsymbol q}h_k)(\boldsymbol r;\boldsymbol d)
+    J_{M-|\boldsymbol q|}^{R_*+k,c}.
+ \label{utj:eq:jets}
+\end{align}
+\end{theorem}
+\begin{proof}
+At each Fourier mode,
+$L_{n,\theta_j}=L_{n,c}+\log(1+d_j/(n+c))$ because the ratio is
+positive. Expand the binomial factors and use
+$(n+c)^{-k}=(2\pi i)^k(2\pi i(n+c))^{-k}$.
+For $R<R_0<\eta$, Cauchy's estimate applied to
+\eqref{utj:eq:hgen} gives $|h_k|\le C R_0^k$ on compact order sets.
+The resulting modewise absolute sum has a common polynomial growth
+bound in $n$. Pairing against rapidly decreasing smooth Fourier
+coefficients proves normal convergence and Fourier uniqueness proves
+\eqref{utj:eq:central}. Cauchy's formula in the order variables and
+Leibniz's rule give \eqref{utj:eq:jets}, including its sign.
+\end{proof}
+
+All coefficients are finite Pochhammer derivatives. With unsigned
+Stirling numbers $\left[\begin{smallmatrix}k\\q\end{smallmatrix}\right]$,
+\[
+ \left.\partial_u^q\frac{(u)_k}{k!}\right|_{u=0}
+  =\frac{q!}{k!}\left[\begin{smallmatrix}k\\q\end{smallmatrix}\right].
+\]
+For positive integer $r$, the same derivative at $r$ is
+$(r)_k/k!$ times the complete Bell polynomial in
+$\mathcal H_1,-\mathcal H_2,2!\mathcal H_3,\ldots$, where
+$\mathcal H_j=H_{r+k-1}^{(j)}-H_{r-1}^{(j)}$.
+Setting $(0)_k=0$ before differentiation would erase nonzero terms.
+
+For arbitrary real nonintegral twists, retain a finite exceptional
+Fourier head exactly and apply the same expansion only at modes with
+$|n+c|>\max_j|\theta_j-c|$. This restores all branches and gives an
+entire identity without requiring a common frequency interval.
+
+\begin{theorem}[Exact finite closure criterion in the integer ladder]
+\label{utj:thm:nonclosure}
+Let $a_j$ be distinct real shifts and $r_j,m_j\ge0$ integers, omitting
+sites with $r_j=m_j=0$. The sequence
+\[
+ \prod_j(n+a_j)^{-r_j}\log^{m_j}(n+a_j)
+\]
+is an eventual finite constant-coefficient linear combination of
+$(n+c)^{-s}\log^q(n+c)$, with arbitrary finitely many centres $c$,
+$s\in\mathbb Z$ and $q\ge0$, if and only if all $m_j=0$ or at most
+one site is active. Thus genuine mixed logarithmic twists cannot
+in general reduce to finitely many single-twist integer-order jets.
+Finite Fourier corrections and derivatives of $\delta_0$ do not
+remove this obstruction.
+\end{theorem}
+\begin{proof}
+Rational partial fractions and the one-site case give sufficiency.
+An eventual sequence identity in this class is an analytic identity:
+a nonzero difference has a convergent expansion
+$\sum_{p\ge p_0}y^{-p}P_p(\log y)$ of bounded logarithmic degree near
+infinity, and its leading nonzero polynomial cannot vanish at every
+large integer.
+
+Continue the analytic identity around the finite singularities.
+Monodromy difference around $-a$ adds $2\pi i$ to $\log(y+a)$
+and fixes other logarithms and all integer powers. If two sites carry
+logarithms, their mixed monodromy difference is nonzero on the product
+but zero on every single-centre generator. If only $a$ carries a
+logarithm, of degree $m$, but a denominator is present at $b\ne a$,
+write the product as $R(y)\log^m(y+a)$. Applying the $(m+1)$st
+monodromy difference forces higher log degrees at $a$ on the putative
+right side to vanish. Applying the $m$th difference then identifies
+$R(y)$ with a Laurent polynomial in $y+a$. This is impossible because
+$R$ has a pole at $-b$. These arguments also hold modulo finitely many
+Fourier modes, since the eventual-sequence argument is unchanged.
+\end{proof}
+
+This is a functional statement in a specified integer-order span,
+not a numerical period-independence or fixed-Hurwitz-value theorem.
+Neither this criterion nor a numerical relation search resolves the
+remaining $S_6/S_8$ special-value problems.
+
+\subsection{A symmetric identity and its normalization}
+For $a=c-d$, $b=c+d$, $|d|<\min(c,1-c)$, set
+$\eta_k=H_{2k-1}-H_{k-1}$ and $E_m^c=J_m^{0,c}$. Then
+\begin{equation}
+ E_1^a*E_1^b=E_2^c-
+   \sum_{k\ge1}\frac{(2\pi id)^{2k}}k
+              \bigl(J_1^{2k,c}+\eta_kK_{2k}^c\bigr).
+ \label{utj:eq:symmetric}
+\end{equation}
+Indeed, at a mode, with $u=d/(n+c)$ and $L=L_{n,c}$,
+\[
+ (L+\log(1-u))(L+\log(1+u))
+   =L^2-\sum_{k\ge1}\frac{u^{2k}}k(L+\eta_k).
+\]
+For the canonical coefficients
+$Z_{1+u}^\theta=-\delta_0/u+\sum_{m\ge0}(-1)^mU_m^\theta u^m/m!$,
+Gamma expansion gives
+$E_1^\theta=-U_0^\theta-\gamma\delta_0$ and
+$E_2^\theta=2U_1^\theta+2\gamma U_0^\theta+
+(\gamma^2-\zeta(2))\delta_0$. Hence
+\begin{align}
+ U_0^a*U_0^b={}&2U_1^c+2\gamma U_0^c-\gamma(U_0^a+U_0^b)
+                 -\zeta(2)\delta_0\notag\\
+ &-\sum_{k\ge1}\frac{(2\pi id)^{2k}}k
+              \bigl(J_1^{2k,c}+\eta_kK_{2k}^c\bigr).
+ \label{utj:eq:contact}
+\end{align}
+The point mass is necessary, including when $a=b=c$.
+
+\subsection{Ordinary Gamma integrals and scalar finite parts}
+Write $P_\theta=J_1^{1,\theta}$, $S_0=0$, and
+$S_k=\sum_{\ell=1}^k\eta_\ell/\ell$. Dividing the preceding mode
+identity by $\lambda_{n,c}^2(1-u^2)$ yields
+\begin{align}
+ \int_0^1P_a(t)P_b(\{x-t\})\,dt
+   =\sum_{k\ge0}(2\pi id)^{2k}
+       \bigl(J_2^{2k+2,c}(x)-H_kJ_1^{2k+2,c}(x)
+                              -S_kK_{2k+2}^c(x)\bigr).
+ \label{utj:eq:gamma}
+\end{align}
+This is an ordinary integral: $P_\theta\in L^2$ since its coefficients
+are $L_{n,\theta}/\lambda_{n,\theta}$. The coefficient double sum on
+the right is absolutely convergent, dominated after summing over $k$
+by $O((1+\log^2(2+|n|))/(1+|n|)^2)$, so equality is continuous and
+holds at every circular argument. For $\theta=p/q$, with
+$z=e^{-2\pi ip/q}$, its factors are explicitly
+\begin{equation}
+ P_{p/q}(x)=e^{-2\pi ipx/q}\left\{
+  \sum_{\ell=0}^{q-1}z^\ell\log\Gamma\left(\frac{x+\ell}{q}\right)
+                 -\frac{\gamma+\log q}{1-z}\right\},\quad 0<x<1.
+ \label{utj:eq:gammafactor}
+\end{equation}
+To derive this representative, use
+$\Phi(z,s,x)=q^{-s}\sum_\ell z^\ell\zeta(s,(x+\ell)/q)$,
+$\zeta'(0,y)=\log\Gamma(y)-\tfrac12\log(2\pi)$, and the derivative
+of $1/\Gamma(\alpha)$ at $\alpha=1$.
+
+For $a,b>0$ define the sharp-cutoff constants
+\[
+ C_{m,n}(a,b)=\lim_{N\to\infty}\left\{
+   \sum_{j=0}^{N-1}\frac{\log^m(j+a)\log^n(j+b)}{j+a}
+               -\frac{\log^{m+n+1}N}{m+n+1}\right\}.
+\]
+Subtracting the diagonal summand leaves an absolutely convergent
+series. A unilateral binomial expansion and the Pochhammer jet at
+zero therefore give, with $M=m+n$ and $|b-a|<a$,
+\begin{align}
+ C_{m,n}(a,b)=\gamma_M(a)+(-1)^M\sum_{k\ge1}(a-b)^k
+   \sum_{q=1}^{\min(n,k)}\binom nq\frac{q!}{k!}
+     \left[\begin{smallmatrix}k\\q\end{smallmatrix}\right]
+                           \zeta^{(M-q)}(k+1,a).
+ \label{utj:eq:cutoff}
+\end{align}
+All zeta superscripts here are order derivatives. For other positive
+shifts, split off a finite head and translate both shifts by the same
+integer until the displayed condition holds. Differentiating the
+convergent difference sum and applying partial fractions gives
+\begin{align}
+ \partial_b C_{m,n}(a,b)
+   &=\frac{n}{b-a}\bigl(C_{m,n-1}(a,b)-C_{n-1,m}(b,a)\bigr),
+          &&n\ge1,\ b\ne a,\label{utj:eq:recursion}\\
+ C_{0,1}(a,b)&=\gamma_1(a)+\int_a^b
+                  \frac{\psi(t)-\psi(a)}{t-a}\,dt,\label{utj:eq:digamma}\\
+ \int_a^b C_{0,1}(a,t)\,dt
+   &=(b-a)C_{0,1}(a,b)-\log\Gamma(b)+\log\Gamma(a)
+                               +(b-a)\psi(a).
+ \label{utj:eq:primitive}
+\end{align}
+The collision singularities in these divided differences are
+removable. The last equality is integration by parts.
+
+\subsection{The unilateral family and transverse ray constants}
+For positive $a_j$, choose $c>0$ with $|a_j-c|<c$. The same
+coefficient polynomials, now with $d_j=a_j-c$, give
+\begin{equation}
+ \mathcal Z(\boldsymbol\alpha;\boldsymbol a)
+ :=\sum_{n\ge0}\prod_j(n+a_j)^{-\alpha_j}
+ =\sum_{k\ge0}(-1)^k h_k(\boldsymbol\alpha;\boldsymbol d)
+                                      \zeta(A+k,c).
+ \label{utj:eq:multizeta}
+\end{equation}
+The left series initially requires $\operatorname{Re}A>1$; the right
+is its meromorphic continuation. The only possible hyperplanes are
+$A=1-k$, and their residues are
+$(-1)^k h_k|_{A=1-k}$. Normal convergence of the large-$k$ tail follows
+from $|h_k|\le C R_0^k$ for $\max|d_j|<R_0<c$ and
+$|\zeta(A+k,c)|\le Cc^{-k}$ on compact order sets.
+
+For complex weights $w_j$, put $W=\sum_jw_j\ne0$ and
+$\mathcal Z_{\boldsymbol w}(t)=\mathcal Z(t\boldsymbol w;\boldsymbol a)$.
+Then the transverse ray has a removable singularity at zero and
+\begin{align}
+ \mathcal Z_{\boldsymbol w}(0)
+   &=\frac12-\frac{\sum_jw_ja_j}{W},\label{utj:eq:rayvalue}\\
+ \mathcal Z_{\boldsymbol w}'(0)
+   &=\sum_jw_j\log\Gamma(a_j)-\frac W2\log(2\pi).
+ \label{utj:eq:raygamma}
+\end{align}
+To prove this, isolate $k=0,1$ in \eqref{utj:eq:multizeta}. With
+$D=\sum_jw_jd_j$, these terms are
+$\zeta(Wt,c)-tD\zeta(1+Wt,c)$; the second has constant $-D/W$
+and linear coefficient $-D\gamma_0(c)$. For $k\ge2$,
+$h_k(0)=0$ and $\partial_t h_k(t\boldsymbol w;\boldsymbol d)|_0
+ =\sum_jw_jd_j^k/k$. Summing the convergent Taylor series
+\[
+ \log\Gamma(c+d)-\log\Gamma(c)-d\psi(c)
+    =\sum_{k\ge2}\frac{(-1)^kd^k}{k}\zeta(k,c)
+\]
+gives \eqref{utj:eq:raygamma}, using $\gamma_0(c)=-\psi(c)$.
+The ray value generally depends on direction: for shifts $1,2$, the
+rays with weights $(1,1)$ and $(2,1)$ give $-1$ and $-5/6$.
+Thus a joint value is not being assigned at the multivariable origin.
+
+The full continuation report also proves the unilateral multishift
+Lerch expansion, all ordinary primitives, the meromorphic polar
+hyperplanes, every transverse spectral-ray jet, and the pole-aware
+cyclotomic Stieltjes filter. Its proofs and execution records retain
+separate status: 824 finite exact assertions and 96 numerical comparisons
+at each of two working precisions corroborate, but do not replace, the
+analytic arguments. No global priority or proof-assistant claim is made.

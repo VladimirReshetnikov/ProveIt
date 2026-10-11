@@ -1,0 +1,440 @@
+\section{The fourth digamma moment and harmonic Laurent data}
+\label{bhr:quartic-harmonic:sec}
+
+The incoming \emph{Cubic Tornheim Derivatives and Harmonic Stieltjes Constants}
+report, Section~7,
+Question~6 \cite{bhr:Cubic}, explicitly asks for a power-to-harmonic formula at the fourth
+power. The following theorem answers that question. It is separate from
+the quartic \emph{directional} Tornheim layer, which has already been
+worked out in later incoming reports. No claim of worldwide novelty or
+finite reduction to ordinary zeta constants is intended.
+
+Write $H_n^{(r)}=\sum_{j=1}^n j^{-r}$, $H_n=H_n^{(1)}$, and
+\[
+ H_n(1,1)=\sum_{n\ge j>k\ge1}\frac1{jk}
+         =\frac{H_n^2-H_n^{(2)}}2.
+\]
+The strict harmonic Dirichlet series used here are
+\[
+ Z_2(s,1)=\sum_{n=1}^{\infty}\frac{H_{n-1}}{n^s},\qquad
+ Z_3(s,1,1)=\sum_{n=1}^{\infty}\frac{H_{n-1}(1,1)}{n^s},
+ \qquad \Re s>1.
+\]
+They have the local expansions
+\begin{align}
+ Z_2(1+u,1)&=u^{-2}+\gamma u^{-1}
+       +\frac{\gamma^2-\zeta(2)}2+\eta u+O(u^2),
+       \label{bhr:quartic-harmonic:eta}\\
+ Z_3(1+u,1,1)&=u^{-3}+\gamma u^{-2}
+       +\frac{\gamma^2-\zeta(2)}{2u}
+       +\frac{\gamma^3-3\gamma\zeta(2)+2\zeta(3)}6
+       +\beta_1u+O(u^2).
+       \label{bhr:quartic-harmonic:beta}
+\end{align}
+In particular $\beta_1$ is a completely specified strict depth-three
+harmonic Laurent coefficient; it is not a coefficient of the inclusive
+harmonic series. The constant term is also fixed by the Mellin lemma below.
+The pole terms in the second expansion follow directly
+from $H_{n-1}=\log n+\gamma+O(n^{-1})$ and
+$H_{n-1}^{(2)}=\zeta(2)+O(n^{-1})$, by subtraction of zeta derivatives.
+The convention for the ordinary Stieltjes constants is
+\[
+ \zeta(1+u)=u^{-1}+\sum_{j\ge0}\frac{(-1)^j\gamma_j}{j!}u^j.
+\]
+
+\begin{theorem}[A quartic power-to-harmonic identity]
+\label{bhr:quartic-harmonic:main}
+Use the unit-coordinate Hadamard finite part at the origin and put
+$Q_4=\operatorname{FP}\int_0^1\psi(x)^4\,dx$. Then
+\begin{align}
+ Q_4={}&18\zeta(4)+12\zeta(3)-12\gamma\zeta(2)+4\zeta'(3)
+       +12(\gamma^2-\zeta(2))\gamma_1
+       +24\gamma\eta-24\beta_1.
+       \label{bhr:quartic-harmonic:main-eq}
+\end{align}
+An equivalent absolutely convergent arithmetic formula is
+\begin{align}
+ Q_4={}&18\zeta(4)+12\zeta(3)-12\gamma\zeta(2)+4\zeta'(3)
+          +12\gamma_3-24\zeta(2)\gamma_1\notag\\
+ &+12\sum_{n=1}^{\infty}
+       \frac{\bigl(\psi(n)^2+\psi'(n)-\log^2 n\bigr)\log n}{n}.
+       \label{bhr:quartic-harmonic:arithmetic}
+\end{align}
+If $Q_3=\operatorname{FP}\int_0^1\psi(x)^3\,dx$, the already proved
+cubic bridge \cite{bhr:Cubic} $Q_3=3\zeta(2)-6\eta-6\gamma\gamma_1$ eliminates $\eta$:
+\begin{equation}
+ Q_4+4\gamma Q_3
+   =18\zeta(4)+12\zeta(3)+4\zeta'(3)
+       -12(\gamma^2+\zeta(2))\gamma_1-24\beta_1.
+       \label{bhr:quartic-harmonic:combined}
+\end{equation}
+\end{theorem}
+
+\subsection{A normalized Mittag--Leffler expansion}
+
+For $n\ge0$ set
+\begin{align*}
+ b_n&=H_n-\gamma,& c_n&=\zeta(2)+H_n^{(2)},&
+ e_n&=H_n^{(3)}-\zeta(3),\\
+ a_n&=c_n-b_n^2,& d_n&=6b_n^2-4c_n,&
+ r_n&=-4b_n^3+12b_nc_n-4e_n.
+\end{align*}
+Let
+\[
+ C_* =\gamma^4-12\gamma^2\zeta(2)+12\gamma\zeta(3)+11\zeta(4),
+ \qquad
+ P_n(z)=\frac1{(n+z)^4}-\frac{4b_n}{(n+z)^3}
+          +\frac{d_n}{(n+z)^2}+\frac{r_n}{n+z}.
+\]
+
+\begin{lemma}[Quartic principal parts with no unknown entire term]
+\label{bhr:quartic-harmonic:ML}
+For $z\notin\{0,-1,-2,\ldots\}$,
+\begin{equation}
+ \psi(z)^4=P_0(z)+C_*+
+     \sum_{n=1}^{\infty}\bigl(P_n(z)-P_n(0)\bigr).
+     \label{bhr:quartic-harmonic:ML-eq}
+\end{equation}
+The series converges normally on every compact set avoiding the poles.
+\end{lemma}
+
+\begin{proof}
+The digamma recurrence and its convergent expansion at zero \cite{bhr:DLMFG} give
+\[
+ \psi(-n+\varepsilon)
+   =-\varepsilon^{-1}+b_n+c_n\varepsilon+e_n\varepsilon^2
+       +(\zeta(4)+H_n^{(4)})\varepsilon^3+O(\varepsilon^4).
+\]
+Raising this expression to the fourth power gives exactly $P_n$ as
+its principal part. The constant coefficient at $n=0$ is
+\[
+ \gamma^4-12\gamma^2\zeta(2)+6\zeta(2)^2
+                +12\gamma\zeta(3)-4\zeta(4)=C_*.
+\]
+This establishes the poles but does not on its own establish the entire
+remainder. To determine that remainder, let $f(z)=\psi(z)^4-P_0(z)$.
+For fixed $z$, apply the residue theorem to
+$z f(w)/(w(w-z))$ on $|w|=N+\tfrac12$.
+The standard digamma asymptotic in the right half-plane, and
+$\psi(w)=\psi(1-w)-\pi\cot(\pi w)$ in the left half-plane, give
+$f(w)=O(\log^4 N)$ uniformly on these circles. The cotangent is
+uniformly bounded there: away from the real axis this follows from its
+exponential formula, while near the real axis these half-integer circles
+remain a fixed positive distance from the integer poles. Thus the
+contour integral is $O(\log^4N/N)$ and tends to zero. The residues are
+$f(z)$, $-f(0)$, and $-(P_n(z)-P_n(0))$, proving the formula.
+Finally $b_n=O(\log n)$, $d_n=O(\log^2n)$ and
+$r_n=O(\log^3n)$, and the simple-pole difference is $O(n^{-2})$
+on each fixed compact set. These estimates prove normal convergence.
+\end{proof}
+
+\subsection{The exact summation-by-parts cancellation}
+
+For $m\ge2$ and $n\ge1$,
+\[
+ \int_0^1\bigl((n+x)^{-m}-n^{-m}\bigr)\,dx
+     =\frac{n^{1-m}-(n+1)^{1-m}}{m-1}-n^{-m}.
+\]
+Integrating \eqref{bhr:quartic-harmonic:ML-eq}, and retaining the finite
+parts of its three higher-order poles at zero, yields
+\begin{equation}
+ Q_4=K+\sum_{n=1}^{\infty}r_n
+      \left(\log\left(1+\frac1n\right)-\frac1n\right),
+      \label{bhr:quartic-harmonic:K-eq}
+\end{equation}
+where
+\begin{equation}
+ K=\gamma^4-18\gamma^2\zeta(2)+32\gamma\zeta(3)
+       +\frac{13}{2}\zeta(4)+12\zeta(3)-12\gamma\zeta(2).
+       \label{bhr:quartic-harmonic:K}
+\end{equation}
+For clarity, the ordinary Euler sums needed in this simplification are
+\begin{equation}
+ \sum_{n\ge1}\frac{H_n}{n^2}=2\zeta(3),\qquad
+ \sum_{n\ge1}\frac{H_n}{n^3}=\frac54\zeta(4),\qquad
+ \sum_{n\ge1}\frac{H_n^{(2)}}{n^2}=\frac74\zeta(4),\qquad
+ \sum_{n\ge1}\frac{H_n^2}{n^2}=\frac{17}4\zeta(4).
+ \label{bhr:quartic-harmonic:euler}
+\end{equation}
+These are classical ordinary convergent sums. One short derivation of
+the three weight-four formulas is as follows. The shuffle and stuffle
+products of $\zeta(2)^2$ give respectively
+$2\zeta(2,2)+4\zeta(3,1)$ and $2\zeta(2,2)+\zeta(4)$;
+hence $\zeta(3,1)=\zeta(4)/4$ and
+$\zeta(2,2)=3\zeta(4)/4$.
+The iterated-integral substitution $t\mapsto1-t$ gives
+$\zeta(2,1,1)=\zeta(4)$. Expanding the three harmonic numerators
+in strict sums now gives exactly the displayed values. The first,
+weight-three formula follows from the same shuffle/stuffle method or
+from the elementary symmetric integral
+$\int_0^1\log x\log(1-x)/(x(1-x))\,dx=2\zeta(3)$.
+
+The decisive finite difference is
+\begin{equation}
+ r_n-r_{n-1}=\frac{12a_{n-1}}n+\frac4{n^3}.
+ \label{bhr:quartic-harmonic:residue-difference}
+\end{equation}
+It follows by substituting
+$b_n=b_{n-1}+n^{-1}$, $c_n=c_{n-1}+n^{-2}$,
+and $e_n=e_{n-1}+n^{-3}$; no limiting argument is involved.
+Thus finite summation by parts gives
+\begin{align}
+ \sum_{n=1}^N r_n\log\left(1+\frac1n\right)
+ &=r_N\log(N+1)-12\sum_{n=1}^N\frac{a_{n-1}\log n}{n}
+                      -4\sum_{n=1}^N\frac{\log n}{n^3}.
+ \label{bhr:quartic-harmonic:SBP}
+\end{align}
+
+We also need the constant term in $\sum_{n=1}^N r_n/n$.
+Here is an exact finite identity that makes this normalization
+checkable. Put $X=H_N$, $Y=H_N^{(2)}$, $Z=H_N^{(3)}$,
+$W=H_N^{(4)}$, and
+\[
+ S_{12}=\sum_{n=1}^N\frac{H_n}{n^2},\quad
+ S_{13}=\sum_{n=1}^N\frac{H_n}{n^3},\quad
+ S_{22}=\sum_{n=1}^N\frac{H_n^{(2)}}{n^2},\quad
+ S_{112}=\sum_{n=1}^N\frac{H_n^2}{n^2}.
+\]
+Then
+\begin{align}
+ \sum_{n=1}^N\frac{r_n}{n}
+ ={}&-X^4+4\gamma X^3+(-6\gamma^2+6\zeta(2))X^2
+       +(4\gamma^3-12\gamma\zeta(2)+4\zeta(3))X\notag\\
+ &+6X^2Y-12\gamma XY-4XZ
+       +(-6\gamma^2+6\zeta(2))Y-16\gamma Z-11W\notag\\
+ &+24\gamma S_{12}-12S_{112}+20S_{13}+6S_{22}.
+ \label{bhr:quartic-harmonic:finite-sum}
+\end{align}
+For example this identity follows by taking finite differences of
+$H_n^4$, $H_n^3$, $H_n^2H_n^{(2)}$, $H_nH_n^{(2)}$,
+and $H_nH_n^{(3)}$, then collecting terms. Both sides vanish at
+$N=0$, and their exact finite differences are $r_N/N$.
+
+Let $L=\log N$. Using \eqref{bhr:quartic-harmonic:euler} in
+\eqref{bhr:quartic-harmonic:finite-sum}, together with
+$H_N=L+\gamma+O(N^{-1})$, gives
+\begin{equation}
+ \sum_{n=1}^N\frac{r_n}{n}
+ =-L^4+12\zeta(2)L^2+C+o(1),\qquad
+ C=\gamma^4-18\gamma^2\zeta(2)+32\gamma\zeta(3)
+       -\frac{23}2\zeta(4).
+ \label{bhr:quartic-harmonic:C}
+\end{equation}
+Also
+$r_N\log(N+1)=-4L^4+24\zeta(2)L^2+o(1)$.
+Since $a_{n-1}=2\zeta(2)-\log^2n+O(\log n/n)$, the limit
+\begin{equation}
+ A=\lim_{N\to\infty}\left\{
+  \sum_{n=1}^N\frac{a_{n-1}\log n}{n}
+      -\zeta(2)L^2+\frac{L^4}{4}\right\}
+ \label{bhr:quartic-harmonic:A}
+\end{equation}
+exists. Equations \eqref{bhr:quartic-harmonic:K-eq},
+\eqref{bhr:quartic-harmonic:SBP}, and \eqref{bhr:quartic-harmonic:C}
+now imply
+\begin{equation}
+ Q_4=18\zeta(4)+12\zeta(3)-12\gamma\zeta(2)
+                         +4\zeta'(3)-12A.
+ \label{bhr:quartic-harmonic:before-Laurent}
+\end{equation}
+Every divergent polynomial has been retained until this cancellation.
+
+\subsection{Convergent arithmetic and the Laurent coefficient}
+
+At a positive integer,
+\[
+ a_{n-1}=2\zeta(2)-\psi(n)^2-\psi'(n).
+\]
+Moreover $\psi(n)^2+\psi'(n)-\log^2n=O(\log n/n)$.
+Using the standard Stieltjes defining limits in
+\eqref{bhr:quartic-harmonic:A} gives
+\[
+ A=2\zeta(2)\gamma_1-\gamma_3
+   -\sum_{n=1}^{\infty}
+          \frac{\bigl(\psi(n)^2+\psi'(n)-\log^2n\bigr)\log n}{n}.
+\]
+The final series is absolutely convergent because its summand is
+$O(\log^2n/n^2)$. Substitution proves
+\eqref{bhr:quartic-harmonic:arithmetic}.
+
+To identify the harmonic coordinate, introduce
+\[
+ F(s)=\sum_{n=1}^{\infty}
+    \frac{\psi(n)^2+\psi'(n)-\log^2n}{n^s},\qquad\Re s>0.
+\]
+This series and every fixed spectral derivative converge normally
+on compact subsets of the stated half-plane. Expanding the harmonic
+numerator in strict sums gives, initially for $\Re s>1$,
+\begin{equation}
+ F(s)=2Z_3(s,1,1)-2\gamma Z_2(s,1)
+                   +(\gamma^2+\zeta(2))\zeta(s)-\zeta''(s).
+ \label{bhr:quartic-harmonic:deformation}
+\end{equation}
+This also supplies the required local continuation. The coefficient
+of $u$ at $s=1+u$ is
+\[
+ F'(1)=2\beta_1-2\gamma\eta
+                 -(\gamma^2+\zeta(2))\gamma_1+\gamma_3.
+\]
+On the other hand it is the negative of the convergent sum in
+\eqref{bhr:quartic-harmonic:arithmetic}. Inserting this relation proves
+\eqref{bhr:quartic-harmonic:main-eq}. Combining it with the cubic bridge
+proves \eqref{bhr:quartic-harmonic:combined}.
+
+\subsection{A Mellin normalization for every height-one coefficient}
+
+The following classical Mellin mechanism (compare the harmonic-zeta framework in \cite{bhr:Kargin}) supplies an independent
+realization of the coefficient used above. Its all-depth formulation
+also states precisely where new global information first enters.
+Let $d\ge1$, and write
+\[
+ Z_d(s,\{1\}^{d-1})
+   =\sum_{n=1}^{\infty}\frac{H_{n-1}(\{1\}^{d-1})}{n^s},
+ \qquad
+ \frac1{\Gamma(1+u)}=\sum_{j\ge0}c_ju^j.
+\]
+An empty harmonic word has value one. For $t>0$ put
+\[
+ B(t)=-\log(1-e^{-t}),\qquad
+ V_d(t)=B(t)^d-\mathbf1_{0<t<1}(-\log t)^d.
+\]
+Since $V_d(t)=O(t(1+|\log t|^{d-1}))$ at zero and decays
+exponentially at infinity, every logarithmic moment of $V_d(t)/t$
+converges absolutely.
+
+\begin{lemma}[All height-one finite parts and regular coefficients]
+\label{bhr:quartic-harmonic:mellin}
+For $|u|<1$, as an identity of meromorphic functions,
+\begin{equation}
+ \Gamma(1+u)Z_d(1+u,\{1\}^{d-1})
+   =\frac1{u^d}+\frac{u}{d!}
+       \int_0^\infty t^{u-1}V_d(t)\,dt.
+ \label{bhr:quartic-harmonic:mellin-generator}
+\end{equation}
+Consequently the principal part and constant coefficient together are
+$\sum_{j=0}^{d}c_j u^{j-d}$. For every $k\ge1$, the exact regular
+coefficient is
+\begin{equation}
+ [u^k]Z_d(1+u,\{1\}^{d-1})
+  =c_{d+k}+\frac1{d!}\sum_{j=1}^k
+       \frac{c_{k-j}}{(j-1)!}
+       \int_0^\infty\frac{V_d(t)\log^{j-1}t}{t}\,dt.
+ \label{bhr:quartic-harmonic:mellin-coefficients}
+\end{equation}
+In particular the finite part is $c_d$, while the coefficient of $u$
+is $c_{d+1}+d!^{-1}\int_0^\infty V_d(t)\,dt/t$.
+\end{lemma}
+
+\begin{proof}
+The elementary multiple-polylogarithm identity
+$\operatorname{Li}_{\{1\}^{d-1}}(z)
+=(-\log(1-z))^{d-1}/(d-1)!$ gives, first for $\Re s>1$,
+\[
+ \Gamma(s)Z_d(s,\{1\}^{d-1})
+  =\int_0^\infty t^{s-1}
+       \frac{B(t)^{d-1}}{(d-1)!(e^t-1)}\,dt.
+\]
+Subtract $(-\log t)^{d-1}/((d-1)!t)$ on $(0,1)$.
+Its Mellin integral at $s=1+u$ is $u^{-d}$. The subtracted
+kernel is $-V_d'(t)/d!$; no jump term occurs at $t=1$, since
+$(-\log1)^d=0$. Integrating that remainder by parts produces
+exactly the integral in \eqref{bhr:quartic-harmonic:mellin-generator}.
+The boundary terms vanish for $\Re u>-1$, because of the bounds on
+$V_d$. Normal convergence of that integral and all its spectral
+derivatives proves continuation and coefficient extraction.
+\end{proof}
+
+For the present depth-three coordinate this yields the particularly
+simple convergent formula
+\begin{equation}
+ \beta_1=
+ \frac{\gamma^4}{24}-\frac{\gamma^2\zeta(2)}4
+       +\frac{\gamma\zeta(3)}3+\frac{\zeta(4)}{16}
+       +\frac16\int_0^\infty\frac{V_3(t)}t\,dt.
+ \label{bhr:quartic-harmonic:beta-mellin}
+\end{equation}
+Likewise $\eta=c_3+\tfrac12\int_0^\infty V_2(t)\,dt/t$.
+These formulas evaluate the harmonic coefficients through elementary
+convergent kernels; they do not identify those kernels with finite
+combinations of ordinary constants. They also confirm the constant
+coefficient displayed in \eqref{bhr:quartic-harmonic:beta} directly.
+
+\subsection{A normalized primitive and every differentiated identity}
+
+Put
+\[
+ d_0=6\gamma^2-4\zeta(2),\qquad
+ r_0=4\gamma^3-12\gamma\zeta(2)+4\zeta(3).
+\]
+For $\Re z>0$ with the principal logarithm, define
+\begin{align}
+ \mathcal P_4(z)={}&-\frac1{3z^3}-\frac{2\gamma}{z^2}
+                      -\frac{d_0}{z}+r_0\log z+C_*z\notag\\
+ &+\sum_{n=1}^{\infty}\Bigg[
+   \frac1{3n^3}-\frac1{3(n+z)^3}-\frac z{n^4}\notag\\
+ &\hspace{11mm}-4b_n\left\{\frac1{2n^2}-\frac1{2(n+z)^2}
+                                      -\frac z{n^3}\right\}\notag\\
+ &\hspace{11mm}+d_n\left\{\frac1n-\frac1{n+z}-\frac z{n^2}\right\}
+       +r_n\left\{\log\left(1+\frac zn\right)-\frac zn\right\}
+                                      \Bigg].
+ \label{bhr:quartic-harmonic:primitive}
+\end{align}
+The normally convergent braces are the integrals, vanishing at zero,
+of the subtracted principal parts. Consequently
+\[
+ \mathcal P_4'(z)=\psi(z)^4,\qquad
+ \operatorname{FP}\int_0^b\psi(x)^4\,dx=\mathcal P_4(b)
+      \quad(b>0),\qquad \mathcal P_4(1)=Q_4.
+\]
+The constant term of $\mathcal P_4$ at the singular origin is zero;
+this fixes the integration constant without an unspecified branch term.
+
+For every integer $m\ge1$, differentiation of
+\eqref{bhr:quartic-harmonic:ML-eq} gives the further exact identity
+\begin{align}
+ &\sum_{m_1+m_2+m_3+m_4=m}
+   \frac{m!}{m_1!m_2!m_3!m_4!}
+      \prod_{j=1}^4\psi^{(m_j)}(z)\notag\\
+ &\quad=(-1)^m m!\sum_{n=0}^{\infty}
+ \left\{
+  \frac{\binom{m+3}{3}}{(n+z)^{m+4}}
+  -\frac{4b_n\binom{m+2}{2}}{(n+z)^{m+3}}
+  +\frac{(m+1)d_n}{(n+z)^{m+2}}
+  +\frac{r_n}{(n+z)^{m+1}}
+ \right\}.
+ \label{bhr:quartic-harmonic:derivatives}
+\end{align}
+The convergence is normal off the digamma poles, since the slowest
+term is $O(\log^3n/n^{m+1})$. At $z=1$, the left side is a finite
+polynomial in $\gamma$ and ordinary zeta values.
+
+\paragraph{Independent checks.}
+The exact checking program verifies the principal parts, the residue
+finite difference, the full finite identity
+\eqref{bhr:quartic-harmonic:finite-sum}, and the cancellations producing
+\eqref{bhr:quartic-harmonic:main-eq}. A separate numerical calculation
+integrates a locally Taylor-subtracted digamma fourth power and compares
+it with the convergent arithmetic formula, whose tail is evaluated by
+Bernoulli asymptotics and Hurwitz-zeta derivatives. At working precision
+80 digits, the arithmetic-tail evaluation differs from quadrature by
+less than $3.4\cdot10^{-62}$. Independent Mellin evaluations of $\eta$
+and $\beta_1$, inserted into the main identity, differ from the same
+quadrature by less than $2.1\cdot10^{-74}$. The common value begins
+\[
+ Q_4=13.5101203760158274116062407128304484419327985333019186009860964\ldots.
+\]
+These are numerical diagnostics, not certified enclosures or substitutes
+for the proof.
+
+\paragraph{Next precise targets.}
+The theorem determines $\beta_1$ from the cubic and quartic finite parts,
+but does not express it in a prescribed algebra of ordinary constants.
+For the fifth power, the residue polynomial has degree four in the
+finite harmonic data, and its first difference should produce both
+height-one depth-four Laurent data and additional harmonic numerators.
+The correct next task is to derive that exact difference and identify the
+minimal \emph{stated} family of Laurent coefficients. A second direction
+is a common Hurwitz shift: the shifted strict harmonic numerator and the
+integration endpoint must be normalized together, since replacing
+$n$ by $n+a$ only in the outer denominator does not shift the harmonic
+prefix or the finite-part coordinate.

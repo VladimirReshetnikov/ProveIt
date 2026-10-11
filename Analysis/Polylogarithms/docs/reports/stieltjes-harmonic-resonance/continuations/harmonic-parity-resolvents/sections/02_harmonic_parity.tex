@@ -1,0 +1,547 @@
+% Manuscript-ready section. Requires amsmath, amssymb, amsthm.
+% Bibliographic keys: ghp:ADH, ghp:DLMF, ghp:ExactResonant.
+\section{Exact parity of generalized harmonic numerators}
+\label{ghp:sec}
+
+Question Q11 in the pinned \emph{Exact Resonant Identities} report
+\cite{ghp:ExactResonant} asks which polynomials in generalized harmonic
+numbers have no principal part at any nonpositive even spectral integer
+when the outer shift is $1/2$. The raw-power argument proves a sufficient
+condition for powers of $H_n$; it does not itself classify arbitrary
+polynomials. This section gives a necessary and sufficient algebraic
+criterion. The necessity uses an established theorem on formal
+difference equations. It does not assume algebraic independence of
+Euler's constant, zeta values, or numerical periods.
+
+\subsection{The centered involution and the classification theorem}
+
+Put $H_0^{(r)}=0$, $H_n^{(r)}=\sum_{k=1}^n k^{-r}$, and $H_n=H_n^{(1)}$.
+For a fixed $R\geq1$ and a polynomial $P\in\mathbb C[X_1,\ldots,X_R]$,
+let
+\begin{equation}\label{ghp:def:series}
+ \mathcal D_P(s,a)=\sum_{n=0}^{\infty}
+  \frac{P(H_n,H_n^{(2)},\ldots,H_n^{(R)})}{(n+a)^s},
+ \qquad a>0,\quad \Re s>1.
+\end{equation}
+These series converge normally in that half-plane; a polynomial
+numerator grows at most as a fixed power of $\log(n+2)$.
+All later values refer to the unique meromorphic continuation.
+
+Define an involution on the polynomial ring by
+\begin{equation}\label{ghp:def:tau}
+ \tau X_1=X_1,\qquad
+ \tau X_r=\begin{cases}
+       2\zeta(r)-X_r,&r\geq2\text{ even},\\
+       X_r,&r\geq3\text{ odd}.
+       \end{cases}
+\end{equation}
+The coefficients in $\mathbb C$ are fixed. Thus the transformation
+changes the sign of every even-order tail $\zeta(2j)-X_{2j}$
+\emph{simultaneously}.
+
+\Needspace{20\baselineskip}
+\begin{theorem}[Exact centered cancellation criterion]\label{ghp:thm:classification}
+For $P\in\mathbb C[X_1,\ldots,X_R]$, the following conditions are
+ equivalent:
+\begin{enumerate}
+\item $\mathcal D_P(s,1/2)$ is holomorphic at every
+      $s=0,-2,-4,\ldots$.
+\item $\tau P=P$ as a polynomial with complex coefficients.
+\item On writing $V_j=\zeta(2j)-X_{2j}$, every monomial of $P$ has
+      even total degree in the variables $V_1,V_2,\ldots$.
+\end{enumerate}
+Equivalently, the complete algebra of such numerators is
+\begin{equation}\label{ghp:eq:invariant-ring}
+ \mathbb C\bigl[X_1,X_3,X_5,\ldots,
+  (\zeta(2i)-X_{2i})(\zeta(2j)-X_{2j}):1\leq i\leq j\leq\lfloor R/2\rfloor\bigr].
+\end{equation}
+Only variables whose index is at most $R$ are retained.
+\end{theorem}
+
+The paired generators in \eqref{ghp:eq:invariant-ring} are a generating
+set, not an assertion that this algebra is freely generated. For
+example, $(V_iV_j)^2=V_i^2V_j^2$ is an algebraic relation among them.
+
+Examples of admissible numerators are
+\[
+ H_n^pH_n^{(3)},\qquad
+ (\zeta(2)-H_n^{(2)})^2,\qquad
+ H_n^p(\zeta(2)-H_n^{(2)})(\zeta(4)-H_n^{(4)}),
+ \qquad p\geq0.
+\]
+The raw polynomial $H_n^{(2)}$ does not qualify. In fact its principal
+part at $s=0$ is $-1/s$, since
+$H_n^{(2)}=\zeta(2)-(n+1/2)^{-1}+O(n^{-3})$.
+Multiplying two even-order tails changes this outcome by making their
+full centered expansion even.
+
+\subsection{A finite formula for every principal part}
+
+Let $L$ be an independent formal symbol, $z$ a formal variable, and
+\begin{equation}\label{ghp:def:A}
+ A(z,a)=-\sum_{k\geq1}\frac{B_k(a)}kz^k,
+ \qquad T_1(z,L;a)=L+\gamma+A(z,a).
+\end{equation}
+For $r\geq2$ define
+\begin{equation}\label{ghp:def:Tr}
+ T_r(z;a)=\zeta(r)-\frac{z^{r-1}}{r-1}
+ -\frac1{r-1}\sum_{k\geq1}
+   \binom{k+r-2}{r-2}B_k(a)z^{k+r-1}.
+\end{equation}
+These are formal asymptotic series; convergence in $z$ is not needed.
+Set
+\begin{equation}\label{ghp:def:q}
+ P(T_1,T_2,\ldots,T_R)=\sum_{j\geq0}q_{P,j}(L;a)z^j,
+ \qquad q_{P,j}(L;a)=\sum_{\ell\geq0}q_{P,j,\ell}(a)L^\ell.
+\end{equation}
+Every coefficient requires only finitely many Bernoulli polynomials and
+finite polynomial operations.
+
+\begin{proposition}[Generalized-harmonic principal coefficients]
+\label{ghp:prop:principal}
+The function \eqref{ghp:def:series} continues meromorphically to the
+entire $s$-plane. Its possible poles are $1,0,-1,-2,\ldots$. At
+$s=1-j$ its complete principal part is
+\begin{equation}\label{ghp:eq:principal}
+ \sum_{\ell\geq0}\frac{\ell!\,q_{P,j,\ell}(a)}{(s+j-1)^{\ell+1}}.
+\end{equation}
+The sum is finite. In particular, this point is regular if and only if
+$q_{P,j}(L;a)$ is the zero polynomial in $L$.
+\end{proposition}
+
+\begin{proof}
+Writing $x=n+a$, the ordinary shifted digamma expansion and its fixed
+argument derivatives give the expansions $T_r$ above, with $z=x^{-1}$
+and $L=\log x$; see the classical Gamma and polygamma formulas in
+\cite[\S\S5.11, 5.15]{DLMF}. For $r\geq2$ one can also obtain
+\eqref{ghp:def:Tr} directly by differentiating
+\[
+ H_n=\psi(n+1)+\gamma,
+ \qquad
+ \zeta(r)-H_n^{(r)}=
+       \frac{(-1)^r}{(r-1)!}\psi^{(r-1)}(n+1).
+\]
+At every fixed truncation order $J$, the polynomial substitution has
+remainder
+\[
+ O\bigl(x^{-J-1}(1+\log^d x)\bigr)
+\]
+for some fixed $d$.
+Subtract those finitely many terms from the Dirichlet series. The
+remaining series converges normally in $\Re s>-J$ on compact subsets.
+The subtracted terms are
+\[
+ \sum_{j=0}^J\sum_\ell
+   q_{P,j,\ell}(a)(-1)^\ell\partial_s^\ell\zeta(s+j,a).
+\]
+Their only principal contribution at $s=1-j$ is
+\eqref{ghp:eq:principal}. Taking arbitrarily large $J$ proves the
+continuation. Distinct powers $(s+j-1)^{-\ell-1}$ cannot cancel one
+another, proving the last assertion.
+\end{proof}
+
+At $a=1/2$, all odd Bernoulli polynomials vanish. Consequently
+\begin{equation}\label{ghp:eq:formal-parity}
+ T_1(-z,L;1/2)=T_1(z,L;1/2),\qquad
+ T_r(-z;1/2)=\begin{cases}
+  2\zeta(r)-T_r(z;1/2),&r\text{ even},\\
+  T_r(z;1/2),&r\text{ odd}.
+ \end{cases}
+\end{equation}
+This proves the sufficiency of $P=\tau P$. The necessity requires
+showing that no nonzero polynomial is annihilated by the formal
+substitution. A finite list of verified asymptotic coefficients could
+not establish that fact.
+
+\subsection{Why the formal substitution is injective}
+
+We use the following established result in exactly its formal Laurent
+setting. Adamczewski, Dreyfus, and Hardouin
+\cite[Theorem~1.2, case $\mathbf S_\infty$]{ghp:ADH} prove that a formal
+Laurent series $f\in\mathbb C((x^{-1}))$ satisfying a homogeneous linear
+difference equation over $\mathbb C(x)$ for the shift $x\mapsto x+1$
+is either rational or differentially transcendental over
+$\mathbb C(x)$. The latter means that every finite tuple
+$f,f',\ldots,f^{(q)}$ is algebraically independent over $\mathbb C(x)$.
+
+\begin{lemma}[Independence of the centered formal harmonic tails]
+\label{ghp:lem:injective}
+The substitution
+\[
+ \mathbb C[X_1,\ldots,X_R]\longrightarrow\mathbb C[L][[z]],
+ \qquad X_r\longmapsto T_r(z,L;1/2),
+\]
+is injective.
+\end{lemma}
+
+\begin{proof}
+Let
+\begin{equation}\label{ghp:eq:formal-trigamma}
+ f(x)=\frac1x+\sum_{k\geq1}B_{2k}(1/2)x^{-2k-1}
+        \in\mathbb C((x^{-1})).
+\end{equation}
+This is the formal expansion of $\psi'(x+1/2)$. The trigamma shift
+identity, or the Bernoulli generating series, gives
+\begin{equation}\label{ghp:eq:shift}
+ f(x+1)-f(x)=-\frac1{(x+1/2)^2}.
+\end{equation}
+In particular it satisfies the homogeneous second-order equation
+\begin{equation}\label{ghp:eq:homogeneous}
+ f(x+2)-(1+c(x))f(x+1)+c(x)f(x)=0,
+ \qquad c(x)=\frac{(x+1/2)^2}{(x+3/2)^2}.
+\end{equation}
+
+There is no rational solution of \eqref{ghp:eq:shift}. Indeed, in any
+nonempty finite set of poles of a rational function belonging to one
+coset modulo $\mathbb Z$, choose the first and last pole in the integer
+ordering. Its forward difference has an uncancelled pole immediately
+before the first and another at the last. These poles are distinct.
+Thus a rational forward difference cannot have precisely one pole in
+such a coset. The right side of \eqref{ghp:eq:shift} has exactly one
+pole. A rational function with no finite poles is a polynomial, whose
+forward difference is polynomial, and is also impossible.
+
+The cited difference-equation theorem applied to
+\eqref{ghp:eq:homogeneous} now shows that
+$f,f',\ldots,f^{(R-2)}$ are algebraically independent over
+$\mathbb C(x)$ when $R\geq2$. For $r\geq2$, the substitution for $X_r$
+is the affine expression
+\[
+ T_r=\zeta(r)-\frac{(-1)^r}{(r-1)!}f^{(r-2)}.
+\]
+These tails are therefore algebraically independent, even over
+$\mathbb C(x)$. Finally $T_1=L+\gamma+A(z,1/2)$ has coefficient one
+in the independent formal symbol $L$, and the other $T_r$ contain no
+$L$. If a nonzero polynomial in $X_1$ has degree $d$ and nonzero leading
+coefficient $a_d(X_2,\ldots,X_R)$, the coefficient of $L^d$ after
+substitution is the nonzero substituted value of $a_d$. This proves
+injectivity, including the case $R=1$ directly.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{ghp:thm:classification}]
+By Proposition~\ref{ghp:prop:principal}, regularity at every $s=-2m$
+is equivalent to the vanishing of every odd coefficient $q_{P,2m+1}$.
+Equivalently, the complete formal substitution is even in $z$ while
+$L$ is held fixed. By \eqref{ghp:eq:formal-parity}, this says that the
+substitution annihilates $P-\tau P$. Lemma~\ref{ghp:lem:injective}
+therefore gives $P-\tau P=0$.
+
+Writing the even-index variables as $\zeta(2j)-V_j$ makes $\tau$ the
+simultaneous sign change of all the $V_j$. The invariant polynomials
+are exactly those with even total degree in these variables. Every
+such monomial can be grouped into pairs $V_iV_j$, proving the stated
+finite generating description.
+\end{proof}
+
+\begin{corollary}[Complementary pole lattices]\label{ghp:cor:split}
+Write $P=P_++P_-$, where $P_\pm=(P\pm\tau P)/2$. Then
+$\mathcal D_{P_+}(s,1/2)$ has possible poles only at
+$1,-1,-3,\ldots$, while $\mathcal D_{P_-}(s,1/2)$ has possible poles
+only at $0,-2,-4,\ldots$. Moreover, if $P\ne0$,
+$\mathcal D_P(s,1/2)$ is not entire.
+\end{corollary}
+\begin{proof}
+The corresponding formal expansions have only even and only odd
+powers of $z$, respectively. This gives the two pole lists by
+\eqref{ghp:eq:principal}. If the whole Dirichlet function were entire,
+all its coefficient polynomials $q_{P,j}$ would vanish. Injectivity
+would then force $P=0$.
+\end{proof}
+
+This is a statement about identities of functions and formal series,
+not about algebraic independence of their special numerical values.
+The criterion concerns cancellation at \emph{every} point of the
+specified parity. At any finite list of spectral points, additional
+accidental cancellations can occur and are decided by the finite
+Bernoulli conditions \eqref{ghp:eq:principal}.
+
+\section{All centered trigamma-square moments and a polylogarithmic generator}
+\label{ghp:square:sec}
+
+The invariant numerator $(\zeta(2)-H_n^{(2)})^2$ provides an explicit
+family beyond raw powers of $H_n$. Define
+\begin{equation}\label{ghp:def:square}
+ A_n=\zeta(2)-H_n^{(2)}=\psi'(n+1),\qquad
+ \mathcal T(s)=\sum_{n=0}^{\infty}\frac{A_n^2}{(n+1/2)^s}.
+\end{equation}
+The defining series already converges for $\Re s>-1$. By the preceding
+theorem it is regular at every nonpositive even integer. All its values
+there reduce to a rational number plus a rational multiple of
+$\zeta(3)$.
+
+\begin{theorem}[Every nonpositive even trigamma-square value]
+\label{ghp:thm:square}
+For every integer $r\geq0$,
+\begin{align}\label{ghp:eq:all-square}
+ \mathcal T(-2r)={}&3B_{2r}(1/2)\zeta(3)\notag\\
+ &-\frac12\sum_{j=1}^{r}\binom{2r}{2j}
+   \frac{2j-1}{2j+1}B_{2r-2j}(1/2)B_{2j-2}.
+\end{align}
+The Bernoulli number convention is $B_1=-1/2$, and the sum is empty
+when $r=0$.
+\end{theorem}
+
+For example,
+\begin{align}\label{ghp:eq:square-table}
+ \mathcal T(0)&=3\zeta(3),\notag\\
+ \mathcal T(-2)&=-\frac14\zeta(3)-\frac16,\notag\\
+ \mathcal T(-4)&=\frac7{80}\zeta(3)+\frac1{30},\notag\\
+ \mathcal T(-6)&=-\frac{31}{448}\zeta(3)+\frac1{672},\notag\\
+ \mathcal T(-8)&=\frac{127}{1280}\zeta(3)-\frac{17}{540}.
+\end{align}
+The first value is the classical Euler sum. The theorem supplies a
+single finite formula for all subsequent centered moments.
+
+\subsection{Equivalent identities of absolutely convergent ordinary sums}
+
+Let
+\begin{equation}\label{ghp:def:ck}
+ c_k=\sum_{i=0}^{k-1}B_{2i}(1/2)B_{2k-2-2i}(1/2),\qquad k\geq1.
+\end{equation}
+Thus $c_1=1$, $c_2=-1/6$, $c_3=47/720$, and
+$c_4=-257/5040$. Squaring \eqref{ghp:eq:formal-trigamma} gives
+$A_n^2\sim\sum_{k\geq1}c_k(n+1/2)^{-2k}$.
+For every $r\geq0$ the exact ordinary convergent identity is
+\begin{equation}\label{ghp:eq:convergent-square}
+ \sum_{n=0}^{\infty}\left\{(n+1/2)^{2r}\psi'(n+1)^2
+       -\sum_{k=1}^r c_k(n+1/2)^{2r-2k}\right\}
+       =\mathcal T(-2r),
+\end{equation}
+where the right side is explicitly \eqref{ghp:eq:all-square}. The
+summands after subtraction are $O(n^{-2})$.
+
+For instance,
+\[
+ \sum_{n=0}^{\infty}\left((n+1/2)^2\psi'(n+1)^2-1\right)
+       =-\frac14\zeta(3)-\frac16,
+\]
+and
+\[
+ \sum_{n=0}^{\infty}\left((n+1/2)^4\psi'(n+1)^2
+                         -(n+1/2)^2+\frac16\right)
+       =\frac7{80}\zeta(3)+\frac1{30}.
+\]
+These statements need no prescription for summing a divergent series.
+To prove \eqref{ghp:eq:convergent-square}, subtract the displayed
+asymptotic terms in the half-plane of convergence and continue. Their
+Dirichlet sums at $s=-2r$ are
+$c_k\zeta(2k-2r,1/2)=0$, since
+$\zeta(-2m,1/2)=0$ for $m\geq0$.
+
+\subsection{Proof of the Bernoulli formula by finite summation}
+
+For a sequence admitting an expansion in powers of $N$ and $\log N$,
+write $\operatorname{CT}_N$ for its coefficient of $N^0(\log N)^0$.
+Only finite exact identities followed by known asymptotic expansions
+will be used here. Put
+\begin{equation}\label{ghp:def:S}
+ S_r(k)=\sum_{n=0}^{k-1}(n+1/2)^{2r}
+  =\frac{B_{2r+1}(k+1/2)}{2r+1}
+  =\sum_{j=0}^r b_{r,j}k^{2j+1},
+\end{equation}
+where
+\begin{equation}\label{ghp:def:b}
+ b_{r,j}=\frac{\binom{2r}{2j}}{2j+1}B_{2r-2j}(1/2).
+\end{equation}
+The Bernoulli polynomial $B_{2r+1}(1/2)$ is zero, so this is an odd
+polynomial in $k$ and has zero constant term.
+
+\begin{proof}[Proof of Theorem~\ref{ghp:thm:square}]
+First, \eqref{ghp:eq:convergent-square} and \eqref{ghp:def:S} show that
+\begin{equation}\label{ghp:eq:ct-reduction}
+ \mathcal T(-2r)=\operatorname{CT}_N
+       \sum_{n=0}^{N-1}(n+1/2)^{2r}A_n^2.
+\end{equation}
+Indeed every subtracted even power has partial sum with zero constant
+term in $N$, and the convergent remainder tends to the stated value.
+
+The identity $A_{k-1}=A_k+k^{-2}$ gives finite summation by parts:
+\begin{align}\label{ghp:eq:partial-sum}
+ \sum_{n=0}^{N-1}(n+1/2)^{2r}A_n^2
+ ={}&\sum_{k=1}^N S_r(k)
+          \left(\frac{2A_k}{k^2}+\frac1{k^4}\right)
+       +S_r(N)A_N^2.
+\end{align}
+The coefficient $b_{r,0}$ of $k$ contributes
+\[
+ \operatorname{CT}_N
+ \left(2\sum_{k=1}^N\frac{A_k}{k}+H_N^{(3)}+NA_N^2\right)
+ =3\zeta(3).
+\]
+Here $\sum_{k\geq1}A_k/k=\zeta(2,1)=\zeta(3)$ is the classical
+Euler identity and $NA_N^2\to0$. For completeness, the Euler identity
+follows from
+\[
+ \zeta(2,1)=\frac12\int_0^1\frac{\log^2(1-t)}t\,dt
+ =\frac12\int_0^\infty\frac{u^2}{e^u-1}\,du=\zeta(3).
+\]
+
+For $j\geq1$, it remains to compute the constant of
+\begin{equation}\label{ghp:def:Ej}
+ E_j(N)=2\sum_{k=1}^Nk^{2j-1}A_k
+        +\sum_{k=1}^Nk^{2j-3}+N^{2j+1}A_N^2.
+\end{equation}
+Let
+\[
+ F_j(N)=\sum_{k=1}^Nk^{2j-1}
+       =\frac{B_{2j}(N+1)-B_{2j}}{2j}.
+\]
+Changing the order in a finite sum gives
+\begin{equation}\label{ghp:eq:finite-change-order}
+ \sum_{k=1}^Nk^{2j-1}A_k
+  =A_NF_j(N)+\sum_{\ell=1}^N\frac{F_j(\ell-1)}{\ell^2}.
+\end{equation}
+For $j\geq2$, the second summand is a sum of polynomial powers of
+$\ell$ and has zero constant term as a polynomial in $N$;
+$B_{2j-1}=0$ removes a possible $1/\ell$ term. The other power sum in
+\eqref{ghp:def:Ej} also has zero constant. For $j=1$ the second sum in
+\eqref{ghp:eq:finite-change-order} equals $(N-H_N)/2$; its harmonic
+term cancels exactly against $\sum k^{-1}$ in \eqref{ghp:def:Ej}.
+In all cases,
+\begin{equation}\label{ghp:eq:Ej-CT}
+ \operatorname{CT}_NE_j(N)
+   =2\operatorname{CT}_N(A_NF_j(N))
+          +\operatorname{CT}_N(N^{2j+1}A_N^2).
+\end{equation}
+
+Now use the uncentered tail expansion
+\[
+ A_N=\frac1N-\frac1{2N^2}
+                  +\sum_{k\geq1}\frac{B_{2k}}{N^{2k+1}}.
+\]
+The finite coefficient calculation gives
+\begin{equation}\label{ghp:eq:two-constants}
+ \operatorname{CT}_N(A_NF_j(N))
+      =\frac{3-2j}{4}B_{2j-2},\qquad
+ \operatorname{CT}_N(N^{2j+1}A_N^2)=-B_{2j-2}.
+\end{equation}
+To check the first identity, the coefficient of $N^\ell$ in $F_j$
+is $\binom{2j}{\ell}B_{2j-\ell}(1)/(2j)$. Only $\ell=2$ and
+$\ell=2j-1$ can pair with nonzero inverse coefficients of $A_N$
+when $j\geq2$; their contributions are
+$-(2j-1)B_{2j-2}/4$ and $B_{2j-2}/2$. The case $j=1$ is the direct
+product with $F_1(N)=(N^2+N)/2$ and gives $1/4$.
+For the second identity, an odd inverse exponent in $A_N^2$ arises
+only by multiplying $-1/(2N^2)$ by the appropriate odd inverse power;
+this gives $-B_{2j-2}$, also at $j=1$.
+
+Combining \eqref{ghp:eq:Ej-CT} and \eqref{ghp:eq:two-constants} yields
+\[
+ \operatorname{CT}_NE_j(N)=-\frac{2j-1}{2}B_{2j-2}.
+\]
+Multiplication by $b_{r,j}$, followed by the $j=0$ contribution,
+proves \eqref{ghp:eq:all-square}.
+\end{proof}
+
+\subsection{A convergent generator involving classical polylogarithms}
+
+The complete sequence has an analytic exponential generating function.
+Let
+\[
+ \mathcal G(t)=\sum_{r=0}^{\infty}
+               \mathcal T(-2r)\frac{t^{2r}}{(2r)!}.
+\]
+
+\begin{theorem}[Polylogarithmic moment generator]\label{ghp:thm:generator}
+The series $\mathcal G$ converges for $|t|<2\pi$ and equals
+\begin{equation}\label{ghp:eq:integral-generator}
+ \mathcal G(t)=\frac{t}{2\sinh(t/2)}
+   \left[3\zeta(3)-\frac1{4t}
+       \int_0^t(t-u)u^2\coth(u/2)\,du\right].
+\end{equation}
+The singularities at zero in this expression are removable. For
+real $0<t<2\pi$, an equivalent formula in classical polylogarithms is
+\begin{align}\label{ghp:eq:polylog-generator}
+ \mathcal G(t)=\frac{t}{2\sinh(t/2)}\bigg[
+ 2\zeta(3)-\frac{t^3}{48}
+ -\frac t2\operatorname{Li}_2(e^{-t})
+ -2\operatorname{Li}_3(e^{-t})
+ +\frac{3\bigl(\zeta(4)-\operatorname{Li}_4(e^{-t})\bigr)}t
+ \bigg].
+\end{align}
+Its continuation specified by \eqref{ghp:eq:integral-generator} is
+holomorphic and even throughout $|t|<2\pi$.
+\end{theorem}
+
+\begin{proof}
+The Bernoulli generating functions give
+\[
+ \frac{t}{2\sinh(t/2)}
+     =\sum_{r\geq0}B_{2r}(1/2)\frac{t^{2r}}{(2r)!},
+ \qquad
+ \frac u2\coth(u/2)
+     =\sum_{k\geq0}B_{2k}\frac{u^{2k}}{(2k)!}.
+\]
+Both converge in the disk of radius $2\pi$. Integrating the second
+series twice gives
+\[
+ \frac1{2t}\int_0^t(t-u)u^2\coth(u/2)\,du
+  =\sum_{j\geq1}\frac{2j-1}{2j+1}B_{2j-2}
+                  \frac{t^{2j}}{(2j)!}.
+\]
+Thus \eqref{ghp:eq:integral-generator} is exactly the binomial
+convolution in \eqref{ghp:eq:all-square}. This proves convergence,
+analyticity and the integral formula. In particular all apparent odd
+or logarithmic terms in any branch representation must cancel.
+
+For positive $t$, expand $(e^u-1)^{-1}$ in its convergent positive
+exponential series. Direct integration, justified for the integrable
+factor $(t-u)u^2$, gives
+\begin{align*}
+ \int_0^t\frac{(t-u)u^2}{e^u-1}\,du
+  ={}&2t\zeta(3)-6\zeta(4)
+      +t^2\operatorname{Li}_2(e^{-t})\\
+     &+4t\operatorname{Li}_3(e^{-t})
+      +6\operatorname{Li}_4(e^{-t}).
+\end{align*}
+Finally $\coth(u/2)=1+2/(e^u-1)$ and
+$\int_0^t(t-u)u^2\,du=t^4/12$ give
+\eqref{ghp:eq:polylog-generator}.
+\end{proof}
+
+\subsection{Verification, audit scope, and further exact questions}
+
+The accompanying \texttt{verify\_harmonic\_parity.py} implements the
+formal involution, verifies the centered trigamma difference equation,
+and checks the two finite Bernoulli constant calculations independently
+for eight values of $j$. It evaluates seven spectral values directly
+from finite trigamma sums with independently truncated asymptotic tails
+at two cutoffs, using 110 decimal digits. The largest discrepancy
+against \eqref{ghp:eq:all-square} is less than $1.6\times10^{-85}$.
+At three positive parameters it compares the polylogarithmic generator
+both with the Bernoulli moment series and with ordinary quadrature of
+\eqref{ghp:eq:integral-generator}. These are floating-point diagnostics,
+not interval enclosures. The proofs do not depend on their precision.
+
+The selected harmonic statements in the pinned report were consistent
+with these checks. No new false formula was identified in that selected
+source. Its Q11 warning was correct: raw-power parity alone does not
+apply to an arbitrary higher-harmonic numerator. The result here
+resolves that specific question by supplying the exact invariant ring;
+it does not label the earlier warning an error.
+
+The following are concrete extensions beyond the proved results.
+\begin{enumerate}
+\item Evaluate every centered moment of
+$(\zeta(2i)-H_n^{(2i)})(\zeta(2j)-H_n^{(2j)})$ by a uniform finite
+Bernoulli formula, and determine the precise convergent multiple-zeta
+coordinates that remain. The current trigamma-square result is
+$i=j=1$.
+\item For invariant products of three or more tail pairs, seek a
+polylogarithmic generator analogous to \eqref{ghp:eq:polylog-generator}
+and determine when the resulting multiple zeta values reduce to
+ordinary zeta products.
+\item Classify cancellation at a \emph{finite} prescribed set of
+spectral integers by the finite coefficient map
+\eqref{ghp:eq:principal}. Its kernel can be larger than the invariant
+ring and is a tractable exact linear problem in any bounded polynomial
+space.
+\item Derive exact spectral-derivative identities for $\mathcal T$
+at its regular even points. Such derivatives retain a global remainder
+and do not follow by formally differentiating the discrete index $r$
+in \eqref{ghp:eq:all-square}.
+\item Determine an elementary proof of the injectivity lemma tailored
+to the additive trigamma difference equation. This would remove the
+use of the general difference Galois theorem, while leaving the current
+unconditional classification unchanged.
+\end{enumerate}

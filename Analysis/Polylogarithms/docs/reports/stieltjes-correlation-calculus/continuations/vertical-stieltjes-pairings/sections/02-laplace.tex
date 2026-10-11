@@ -1,0 +1,156 @@
+\section{Laplace--Plancherel and the basic Hurwitz closure}
+\label{sec:laplace}
+
+\subsection{A bilinear transform lemma}
+For a function supported on $(0,\infty)$ use the Fourier convention
+$\widehat f(y)=\int_0^\infty f(x)e^{-\ii yx}\dd x$.
+The following version of Plancherel fixes every scale factor needed later.
+
+\begin{lemma}[Bilinear Laplace--Plancherel]\label{thm:plancherel}
+Suppose $f,g\in L^1(0,\infty)\cap L^2(0,\infty)$. Then
+\begin{equation}\label{eq:bilinear-plancherel}
+ \frac1{2\pi}\int_{\R}\widehat f(y)\widehat g(-y)\dd y
+     =\int_0^\infty f(x)g(x)\dd x.
+\end{equation}
+Both products are absolutely integrable. For $p,q>0$,
+\begin{equation}\label{eq:scaled-plancherel}
+ \frac1{2\pi}\int_{\R}\widehat f(py)\widehat g(-qy)\dd y
+     =\int_0^\infty f(qx)g(px)\dd x.
+\end{equation}
+If $f$ and $g$ depend holomorphically on parameters as $L^2$ vectors, all
+parameter derivatives can be taken inside the bilinear pairing.
+\end{lemma}
+\begin{proof}
+Apply the usual Hermitian Plancherel identity to $f$ and $\overline g$,
+noting that $\overline{\widehat{\overline g}(y)}=\widehat g(-y)$.
+Cauchy--Schwarz gives absolute integrability. For the scaled formula,
+$\widehat f(py)$ is the Fourier transform of $p^{-1}f(x/p)$.
+Equation~\eqref{eq:bilinear-plancherel} therefore gives
+$(pq)^{-1}\int_0^\infty f(x/p)g(x/q)\dd x$; substitute $x=pqu$.
+Finally, the bilinear map $(f,g)\mapsto\int fg$ is continuous on
+$L^2\times L^2$. Its composition with holomorphic vector-valued maps is
+holomorphic and satisfies the usual product rule.
+\end{proof}
+
+\subsection{Spatial compensation}
+Write
+\begin{equation}\label{eq:h-basic}
+ Q(x)=\frac1{1-e^{-x}},\qquad h(x)=Q(x)-\frac1x.
+\end{equation}
+At the origin, $h(x)=\frac12+\frac{x}{12}+O(x^3)$; at infinity it has at
+most polynomial growth. The standard Mellin representation of the Hurwitz
+zeta function \cite{dlmf-zeta}, after subtracting the elementary Laplace
+transform of $x^{s-2}$, gives
+\begin{equation}\label{eq:Z-laplace}
+ Z_s(z)=\frac1{\Gamma(s)}\int_0^\infty
+            x^{s-1}e^{-zx}h(x)\dd x,
+ \qquad \Rea s>0,\quad \Rea z>0.
+\end{equation}
+Initially one can subtract the two integrals for $\Rea s>1$.
+The combined integrand is integrable for $\Rea s>0$ and is locally
+uniformly dominated there, which proves the continuation. In particular,
+the normalized subtraction is spatial: removing only $1/(s-1)$ would
+not produce \eqref{eq:Z-laplace}.
+
+For $\Rea s>1/2$, the function $x^{s-1}e^{-ax}h(x)$ lies in
+$L^1\cap L^2$. On each compact subset of this parameter region, every
+fixed spectral derivative merely adds a power of $\log x$, which is still
+locally dominated by an integrable power at zero and an exponential at
+infinity. This verifies the holomorphic-vector hypothesis of
+\cref{thm:plancherel}; it will justify all subsequent Stieltjes jet
+extractions without a separate unjustified interchange at each order.
+
+\begin{theorem}[Equal-scale compensated Hurwitz pairing]\label{thm:basic}
+Let $\Rea a,\Rea b>0$ and $\Rea s,\Rea t>1/2$. Put
+$A=a+b$ and $w=s+t-1$. Then
+\begin{equation}\label{eq:basic-pair}
+ \frac1{2\pi}\int_{\R}Z_s(a+\ii y)Z_t(b-\ii y)\dd y
+   =\frac{\Gamma(w)}{\Gamma(s)\Gamma(t)}K(w,A),
+\end{equation}
+where
+\begin{equation}\label{eq:K}
+ \boxed{\displaystyle
+ K(w,A)=\left(1-\frac2{w-1}\right)\zeta(w-1,A)
+ +(1-A)\zeta(w,A)
+ +\frac{A^{2-w}}{(w-1)(w-2)}.}
+\end{equation}
+The apparent singularities at $w=1,2$ are removable. The combined function
+$\Gamma(w)K(w,A)$ is holomorphic for $\Rea w>0$ and $\Rea A>0$.
+\end{theorem}
+\begin{proof}
+By \eqref{eq:Z-laplace} and \cref{thm:plancherel}, the integral equals
+\begin{equation}\label{eq:basic-moment}
+ \frac1{\Gamma(s)\Gamma(t)}
+   \int_0^\infty x^{w-1}e^{-Ax}h(x)^2\dd x.
+\end{equation}
+For $\Rea w>2$, expand $h^2=Q^2-2Q/x+x^{-2}$.
+The exact power series
+\[
+ Q(x)^2=\sum_{n\ge0}(n+1)e^{-nx}
+\]
+yields
+\[
+ \int_0^\infty x^{w-1}e^{-Ax}Q(x)^2\dd x
+ =\Gamma(w)\{\zeta(w-1,A)+(1-A)\zeta(w,A)\},
+\]
+because $n+1=(n+A)+(1-A)$. The other two integrals are
+$-2\Gamma(w-1)\zeta(w-1,A)$ and $\Gamma(w-2)A^{2-w}$.
+Using the Gamma recurrence gives \eqref{eq:K}.
+The combined integral \eqref{eq:basic-moment} is holomorphic for
+$\Rea w>0$, since $h^2=1/4+O(x)$ at zero. The identity theorem extends
+the finite expression to that half-plane and removes its apparent poles.
+\end{proof}
+
+The pole cancellation can also be checked directly. At $w=1$ the residue
+is
+\[
+ -2\zeta(0,A)+(1-A)-A=0,
+ \qquad \zeta(0,A)=\tfrac12-A.
+\]
+At $w=2$, the residue $-1$ from the first zeta term cancels the residue
+$+1$ from the elementary term. Neither cancellation is a license to
+substitute separately into the singular summands.
+
+\begin{corollary}[An exact compensated digamma integral]\label{thm:digamma}
+For $\Rea a,\Rea b>0$ and $A=a+b$,
+\begin{align}
+ &\frac1{2\pi}\int_{\R}
+ [\log(a+\ii y)-\psi(a+\ii y)]
+ [\log(b-\ii y)-\psi(b-\ii y)]\dd y \notag\\
+ &\hspace{8mm}=
+ \frac12-2A+A\log A-2\log\Gamma(A)+\log(2\pi)
+       -(1-A)\psi(A).\label{eq:digamma-pair}
+\end{align}
+\end{corollary}
+\begin{proof}
+The constant term of \eqref{eq:K} at $w=1$ is
+\[
+ \zeta(0,A)-2\zeta'(0,A)+(1-A)\gamma_0(A)+A(\log A-1).
+\]
+Use $\gamma_0=-\psi$ and
+$\zeta'(0,A)=\log\Gamma(A)-\frac12\log(2\pi)$
+\cite{dlmf-zeta}. Formula~\eqref{eq:headline-digamma} follows at $A=1$.
+\end{proof}
+
+\subsection{Position derivatives}
+Direct differentiation gives the exact ladder
+\begin{equation}\label{eq:Z-position-ladder}
+ \partial_z Z_s(z)=-sZ_{s+1}(z),\qquad
+ \partial_z^r Z_s(z)=(-1)^r(s)_r Z_{s+r}(z).
+\end{equation}
+Consequently, for integers $r,k\ge0$, differentiating
+\eqref{eq:basic-pair} in $a$ and $b$ gives
+\begin{align}
+ &\frac1{2\pi}\int_{\R}
+    (\partial_z^r Z_s)(a+\ii y)(\partial_z^k Z_t)(b-\ii y)\dd y
+       \notag\\
+ &\quad=\partial_A^{r+k}
+       \frac{\Gamma(w)K(w,A)}{\Gamma(s)\Gamma(t)}
+   =\frac{(-1)^{r+k}\Gamma(w+r+k)}{\Gamma(s)\Gamma(t)}
+                K(w+r+k,A).\label{eq:position-pair}
+\end{align}
+The last equality follows by differentiating the Laplace moment, and is
+valid at all its removable spectral values. Thus the differentiation
+calculus closes without introducing a second independent position
+parameter. Spectral differentiation of this identity gives the same result
+for derivatives of arbitrary $G_m$.

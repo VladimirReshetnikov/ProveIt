@@ -1,0 +1,143 @@
+\section{Aligned profiles and entire-order addition}
+\label{clc:sec:analysis}
+
+For $y>0$ define
+\begin{equation}\label{clc:eq:F}
+ F_{a,s}(y)=y\Phi(-y,s,a),\qquad
+ \ell(x)=\frac{e^x}{1+e^x}.
+\end{equation}
+Thus $F_{1,s}(y)=-\Li_s(-y)$ and $F_{a,0}(e^x)=\ell(x)$.
+For a positive real scale $q$ and $\Rea A>-q$, set
+\begin{equation}\label{clc:eq:h}
+ h_{q,A,s}(x)=q^{-s}F_{1+A/q,s}(e^{qx}),\qquad
+ g_q(p)=\frac{\pi}{q}\csc\frac{\pi p}{q}.
+\end{equation}
+We call $A$ the affine center. It is $q(a-1)$ in the original Lerch
+shift, not $a$ itself.
+
+\begin{lemma}[Weighted entire dependence]\label{clc:lem:weighted}
+Let $q>0$, $\Rea A>-q$, and
+\begin{equation}\label{clc:eq:strip}
+ \max(0,-\Rea A)<c<q.
+\end{equation}
+Then $s\mapsto e^{-cx}h_{q,A,s}(x)$ is entire with values in
+$L^1(\R)\cap L^\infty(\R)$. The assertion holds after any fixed
+multiplication by a power of $x$, any fixed order or center derivative,
+and locally uniformly in $A$. The profiles are smooth in $x$ and obey
+\begin{equation}\label{clc:eq:profile-ladder}
+ (\partial_x+A)h_{q,A,s}=h_{q,A,s-1}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $\Rea s>0$, the Lerch integral and the change of variable from its
+Laplace parameter to $qu$ give
+\begin{equation}\label{clc:eq:fractional-profile}
+ h_{q,A,s}(x)=\frac1{\Gamma(s)}
+ \int_0^\infty u^{s-1}e^{-Au}\ell(q(x-u))\dd u.
+\end{equation}
+Every derivative of $\ell$ is $\ell$ times a polynomial in $\ell$.
+Consequently $|\ell^{(j)}(v)|\le C_j\ell(v)$ on the real line.
+The function $e^{-cx}\ell(qx)$ is bounded and integrable precisely for
+$0<c<q$. Multiplying \eqref{clc:eq:fractional-profile} by $e^{-cx}$ and
+writing $v=x-u$ separates the norm estimate into this logistic norm and
+\[
+ \int_0^\infty u^{\Rea s-1}e^{-(c+\Rea A)u}\dd u.
+\]
+Both are finite. On compact subsets of the initial parameter domain,
+derivatives insert only powers of $u$, $\log u$, and smooth Gamma factors;
+these are controlled by slightly larger integrable majorants.
+
+Integration by parts in $u$, initially for $\Rea s>1$, proves
+\eqref{clc:eq:profile-ladder}. For an arbitrary compact set of orders,
+choose an integer $N$ with $\Rea(s+N)>0$ and define
+$h_{q,A,s}=(\partial_x+A)^Nh_{q,A,s+N}$. The integration-by-parts identity
+makes these definitions consistent on overlaps. They agree with the
+convergent Lerch series for $x<0$ and hence with the specified continuation.
+The derivative estimates for $\ell$ prove the norm-holomorphic extension.
+Finally, choose neighboring admissible weights $c\pm\varepsilon$.
+The bound $|x|^k\le C_{k,\varepsilon}e^{\varepsilon|x|}$ proves every
+polynomially weighted assertion. Cauchy's formula in the parameters
+supplies all fixed parameter derivatives.
+\end{proof}
+
+\begin{theorem}[Scaled bilateral transform]\label{clc:thm:transform}
+Under \eqref{clc:eq:strip}, for every $s\in\C$,
+\begin{equation}\label{clc:eq:transform}
+ \int_\R e^{-px}h_{q,A,s}(x)\dd x
+ =g_q(p)(p+A)^{-s},\qquad \Rea p=c.
+\end{equation}
+The power uses the right-half-plane logarithm of $p+A$.
+\end{theorem}
+\begin{proof}
+For $\Rea s>0$, Fubini is justified by the preceding proof. The transform
+of \eqref{clc:eq:fractional-profile} factors into $(p+A)^{-s}$ and
+\[
+ \int_\R e^{-px}\ell(qx)\dd x
+ =\frac1q\int_0^\infty\frac{y^{-p/q}}{1+y}\dd y
+ =\frac1q\Gamma(p/q)\Gamma(1-p/q)=g_q(p).
+\]
+The last step is Gamma reflection \cite{DLMF5}. Both sides are entire in
+$s$, so the identity extends to all orders. In particular there is no
+remaining $\Gamma(s)$ factor and no remaining $q^s$ factor.
+\end{proof}
+
+Let $\bq=(q_1,\ldots,q_r)$, $q_j>0$, and $q_*=\min_jq_j$.
+For $r\ge2$ put $x_r=\mu-\sum_{j<r}x_j$ and define
+\begin{equation}\label{clc:eq:C-def}
+ \CC_{\bq,A}(W;\mu)=
+ \int_{\R^{r-1}}\prod_{j=1}^r h_{q_j,A,s_j}(x_j)
+           \dd x_1\cdots\dd x_{r-1},\qquad W=\sum_js_j.
+\end{equation}
+For $r=1$ the notation means evaluation of the single profile at $\mu$.
+That the integral depends only on $W$ is part of the following theorem.
+
+\begin{theorem}[Entire-order addition at arbitrary positive scales]
+\label{clc:thm:addition}
+If $\Rea A>-q_*$, \eqref{clc:eq:C-def} is absolutely convergent for all
+independent complex orders, depends only on their sum, and is entire in
+that sum. With
+$G_{\bq}(p)=\prod_jg_{q_j}(p)$, it equals
+\begin{equation}\label{clc:eq:C-contour}
+ \CC_{\bq,A}(W;\mu)=\frac1{2\pi i}
+ \int_{c-i\infty}^{c+i\infty}
+ e^{p\mu}G_{\bq}(p)(p+A)^{-W}\dd p,
+ \qquad \max(0,-\Rea A)<c<q_*.
+\end{equation}
+Every fixed mixed order derivative can be moved inside the ordinary
+convolution integral. The contour expression is holomorphic for
+$|\Ima\mu|<\pi\sum_jq_j^{-1}$.
+\end{theorem}
+\begin{proof}
+Set $u_j(x)=e^{-cx}h_{q_j,A,s_j}(x)$. On the constraint hyperplane the
+weight removed from the product is the constant $e^{c\mu}$. Thus the
+absolute integral is at most
+$e^{c\mu}\|u_r\|_\infty\prod_{j<r}\|u_j\|_1$.
+Lemma~\ref{clc:lem:weighted} gives convergence and locally uniform bounds
+for all derivatives. The product of Fourier transforms is
+$G_{\bq}(p)(p+A)^{-W}$, by Theorem~\ref{clc:thm:transform}.
+Along the vertical line this decays like
+$\exp(-\pi|\Ima p|\sum_jq_j^{-1})$ times a fixed power of $1+|p|$
+on compact parameter sets. Fourier inversion therefore applies. The
+convolution is continuous, so equality holds pointwise. The same decay
+proves the claimed complex $\mu$ strip and all holomorphic dependence.
+\end{proof}
+
+Write $K_{\bq}(\mu)=\CC_{\bq,A}(0;\mu)$; it is independent of $A$ and
+is the convolution of the scaled logistic functions. An equivalent
+representation, initially for $\Rea W>0$, is
+\begin{equation}\label{clc:eq:base-fractional}
+ \CC_{\bq,A}(W;\mu)=\frac1{\Gamma(W)}
+ \int_0^\infty u^{W-1}e^{-Au}K_{\bq}(\mu-u)\dd u.
+\end{equation}
+It follows either by the Dirichlet simplex integral in
+\eqref{clc:eq:fractional-profile} or by its bilateral transform. The
+entire continuation in $W$, not the improper integral on the right,
+is used when $\Rea W\le0$.
+
+Scaling is also exact. For $\lambda>0$,
+\begin{equation}\label{clc:eq:scaling}
+ \CC_{\lambda\bq,\lambda A}(W;\mu)
+ =\lambda^{1-r-W}\CC_{\bq,A}(W;\lambda\mu).
+\end{equation}
+Indeed $h_{\lambda q,\lambda A,s}(x)=\lambda^{-s}h_{q,A,s}(\lambda x)$,
+and the $r-1$ integration variables supply the remaining power.

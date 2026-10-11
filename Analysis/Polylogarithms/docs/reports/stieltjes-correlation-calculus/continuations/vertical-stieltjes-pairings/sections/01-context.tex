@@ -1,0 +1,97 @@
+\section{Scope, relation to the repository, and principal results}
+\label{sec:scope}
+
+The canonical manuscript in \cite{repo} already develops a substantial
+periodic Hurwitz--Stieltjes convolution calculus. In particular, its
+Fourier-normalized family on $\R/\mathbb Z$ leads to shifted correlations,
+finite parts, coincident limits, contact terms, and primitive ladders.
+Repeating those formulas under new notation would not advance that program.
+Here the integration variable is instead the imaginary part of the
+\emph{second} Hurwitz argument:
+\begin{equation}\label{eq:vertical-scope}
+ \frac1{2\pi}\int_{-\infty}^{\infty}
+       f(a+\ii y)g(b-\ii y)\dd y,
+ \qquad \Rea a,\Rea b>0.
+\end{equation}
+This is neither an integral in the spectral variable $s=\sigma+\ii y$ nor
+a periodic correlation on $[0,1]$. It requires a different subtraction,
+a different transform, and different convergence hypotheses. The auxiliary
+Hurwitz products over $[0,1]$ studied in \cite{shpot2016,shpot-paris} also
+have a different integration geometry and use a different auxiliary
+function. Our starting transform identities are classical; the contribution
+of this note is the explicit, jointly proved closure calculus and its
+specializations. We do not assert priority for every displayed identity.
+
+Set
+\begin{equation}\label{eq:Z-definition-intro}
+ Z_s(z)=\zeta(s,z)-\frac{z^{1-s}}{s-1},
+ \qquad
+ G_m(z)=\gamma_m(z)+\frac{\log^{m+1}z}{m+1}.
+\end{equation}
+The value at $s=1$ is removable, and $G_0(z)=\log z-\psi(z)$.
+The main equal-scale theorem evaluates \eqref{eq:vertical-scope} for
+$f=Z_s$, $g=Z_t$ by a one-variable function $K(s+t-1,a+b)$.
+Its all-order Taylor coefficients then evaluate every pairing of $G_m$
+and $G_n$. Finite Bernoulli subtractions give the same conclusion for
+negative spectral orders. Rational vertical dilations introduce only a
+finite set of shifted Hurwitz arguments, rather than an irreducible double
+zeta object.
+
+Three consequences indicate the scale and normalization of the results.
+Define the analytic Stirling remainder in the right half-plane by
+\begin{equation}\label{eq:Omega-intro}
+ \Omega(z)=\log\Gamma(z)-(z-\tfrac12)\log z+z-\tfrac12\log(2\pi).
+\end{equation}
+Then
+\begin{align}
+ \frac1{2\pi}\int_{\R}
+   |G_0(\tfrac12+\ii y)|^2\dd y
+   &=\log(2\pi)-\frac32,\label{eq:headline-digamma}\\
+ \frac1{2\pi}\int_{\R}
+   |\Omega(\tfrac12+\ii y)|^2\dd y
+   &=\zeta'(-1)+\frac{\zeta(3)}{2\pi^2}+\frac19,
+       \label{eq:headline-stirling}\\
+ \frac1{2\pi}\int_{\R}
+    G_0(\tfrac12+\ii y)G_0(\tfrac12-2\ii y)\dd y
+   &=\log\Gamma(\tfrac14)-\tfrac12\log\pi-\tfrac14\log2
+       \notag\\[-1mm]
+   &\hspace{9mm}+\tfrac34\log3-\tfrac34-\tfrac\pi8.
+       \label{eq:headline-quarter}
+\end{align}
+Their right-hand sides are approximately $0.33787706640934548$,
+$0.0065868815274467235$, and $0.22363092143574916$, respectively.
+These numerical values are diagnostics; the proofs appear below.
+
+\subsection{What is and is not resolved}
+The questions answered here are precise: whether spatially compensated
+vertical Stieltjes pairings close at arbitrary indices; whether negative
+spectral orders can be handled without assigning finite parts to the
+vertical integral; and whether rationally related slopes preserve finite
+Hurwitz closure. The answer to each is affirmative, with explicit formulas
+and proofs. These are newly developed continuations in this package, not a
+claim that a named conjecture in an unread incoming archive has been solved.
+The repository's $S_6$ and revised $S_8$ problems are not settled here.
+
+The audit was targeted. The canonical README, the periodic convolution
+foundation, a terminal rational-reduction section, the incoming README,
+and incoming metadata were inspected. Not every recent ZIP was decoded or
+audited. Thus absence of a formula from these inspected sections is not a
+proof of absence from the entire corpus. The package includes an integration
+map and a source inventory so that an independent maintainer can perform
+that final overlap check.
+
+\subsection{Conventions that affect the answer}
+Throughout, $\log z$ is the principal logarithm on $\Rea z>0$.
+The function $\log\Gamma(z)$ means its analytic logarithm, real on the
+positive real axis; it does \emph{not} mean the pointwise principal value
+of $\log(\Gamma(z))$. A prime on $\zeta$ or $\Phi$ denotes differentiation
+in the spectral order, unless a different variable is explicitly indicated.
+We use
+\begin{equation}\label{eq:laurent-convention}
+ \zeta(1+u,z)=\frac1u+
+      \sum_{m\ge0}\frac{(-1)^m}{m!}\gamma_m(z)u^m.
+\end{equation}
+All the vertical integrals asserted as theorems are ordinary absolutely
+convergent Lebesgue integrals. The words ``constant term'' and ``removable
+value'' used later refer to a finite \emph{spectral expression}, not to a
+regularization of a divergent integral in $y$.

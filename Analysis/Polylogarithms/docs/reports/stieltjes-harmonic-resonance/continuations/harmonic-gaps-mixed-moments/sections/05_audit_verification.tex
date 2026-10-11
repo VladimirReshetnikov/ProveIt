@@ -1,0 +1,246 @@
+\Needspace{10\baselineskip}
+\section{Source audit, normalization safeguards, and verification}
+\label{audit:section}
+
+\subsection{Inspected baseline and source attribution}
+
+The source anchor is the ProveIt revision
+\src{7bd45777a8a127e5dc69aff8887ca36a79a3059d}, including the eleven
+archives then present in \src{docs/incoming} \cite{Repository}.
+The archive inventory, immutable source URLs, and hashes accompany
+the delivery.  The mathematical review concentrated on the relative
+Hurwitz definitions, nonpositive-index reductions, one-free-order
+generator, centered moment formulas, and the explicit R1, R7, and R8
+questions of the incoming harmonic-parity report
+\cite{IncomingParity,IncomingIndependent}.  This is a targeted analytic
+review with a complete archive inventory; it is not a line-by-line
+certification of every proof in the entire repository.
+
+No newly confirmed false theorem in the inspected source material
+emerged from this review.  The refinements below specify hypotheses and
+normalizations that must survive integration.  In particular, the
+source's warning against differentiating a fixed deleted index was
+correct: Section~\ref{tr:section} supplies the extra moving-parameter
+identity needed to cross that boundary.
+
+The kernel attribution deserves explicit preservation.  The geometric
+kernel reorganized in \eqref{zbg:kernel}, and the original entire
+interpolation that it represents, are established in Ihara, Nakamura,
+and Yamamoto \cite[Proposition~3.3 and Theorem~4.1]{INY}.  The published
+reference is \emph{The Ramanujan Journal} \textbf{67} (2025), article~1,
+doi:10.1007/s11139-025-01045-2; the arXiv version remains a useful
+accessible precursor.  Bibliographic entries that describe this work
+only as a preprint can therefore be updated.  The incoming
+independent-orders report already identifies the interpolant
+\cite{IncomingIndependent}.  Our contribution is the stated joint
+twist completion, the all-block unit-polydisc theorem, and the
+transverse formulas, rather than a new discovery of their underlying
+geometric interpolation.
+
+Likewise, the finite gap polynomials and the one-free-order generating
+function retain their attribution to \cite{IncomingParity}.  Euler's
+odd-weight double-zeta reduction remains a classical ingredient,
+with the explicit primary proof cited in \cite{Bradley2007}.
+Several incoming reports have overlapping parity and quartic-zeta
+results from earlier common baselines.  Their separate proofs may be
+useful, but the canonical question ledger should count the corresponding
+resolved question once and retain each report's actual scope.
+
+\subsection{An absolutely convergent boundary series can have a different value}
+\label{audit:boundary}
+
+The initial convergence domain in Theorem~\ref{tr:jointD} is essential.
+An isolated exponent can cancel the leading asymptotic term of a
+paired summand, producing an ordinary convergent series whose sum differs
+from the continuation of the original family.  Here is a complete
+elementary example, requiring no numerical regularization.
+
+Take $m=r=0$, $a=2$, and $b=1$.  Then
+\[
+ \ell_{0,0}(x)=\zeta(0,x)=\frac12-x,
+ \qquad h_{2,1}(s)=1.
+\]
+On the initial half-plane $\Re s>2$, the defining weighted difference
+is
+\begin{align}
+ D_{0,0}(s;2,1)
+ &=\sum_{n\geq0}\{f_s(n+1)-f_s(n+2)\},
+ & f_s(x)&=\frac12x^{-s}-x^{1-s}.
+ \label{audit:telescoping}
+\end{align}
+Its $N$th partial sum is exactly
+\begin{equation}\label{audit:boundary-partial}
+ -\frac12-\frac12(N+1)^{-s}+(N+1)^{1-s}.
+\end{equation}
+Consequently its entire continuation is the constant
+\begin{equation}\label{audit:continued}
+                         D_{0,0}(s;2,1)=-\frac12.
+\end{equation}
+But substituting $s=1$ in the individual paired summands first gives
+the ordinary absolutely convergent series
+\begin{equation}\label{audit:literal}
+ \sum_{n\geq0}\frac12
+       \left(\frac1{n+1}-\frac1{n+2}\right)=\frac12.
+\end{equation}
+The values differ by one, which is the boundary term
+$(N+1)^{1-s}$ in \eqref{audit:boundary-partial}.  This discrepancy
+does not contradict analytic continuation: the paired series lacks
+locally normal convergence on a complex neighborhood of $s=1$.
+
+Thus \eqref{tr:Didentity} and \eqref{tr:StieltjesD} must retain the
+phrase ``the continuation from the stated initial domain.''  Literal
+summation at an accidentally improved boundary point is a different
+operation.  The example is also a useful negative control for software
+that evaluates parameterized infinite sums after specialization.
+
+\subsection{Hypotheses and constants to preserve during integration}
+
+\paragraph{Moving and fixed indices.}
+The polynomial identity for a word with a letter fixed at $u=-m$
+contains no information about derivatives in the transverse variable
+$u$.  It can be differentiated in its independently free letters.
+To differentiate in $u$, first use the entire identity
+\eqref{tr:genericgap}, and then specialize.  The functions
+$\ell_{m,r}$ are the additional data introduced by that operation.
+The finite-family bound in Proposition~\ref{tr:finitefamily} concerns
+one marked index; it does not establish the same bound for several
+independently marked indices.
+
+\paragraph{Strict endpoints and Bernoulli signs.}
+For a strict unit-lattice gap the finite power sum is
+\[
+ \sum_{z<x<y}x^m
+   =\frac{B_{m+1}(y)-B_{m+1}(z+1)}{m+1}.
+\]
+Accordingly $B_1=-1/2$ and $B_1(1)=1/2$ occur in different positions.
+At $m=0$, the missing endpoints account for the last term in
+\[
+ \HH(s,0,t)=\HH(s-1,t)-\HH(s,t-1)-\HH(s,t).
+\]
+The analogous term in \eqref{tr:commutator} must also remain after
+transverse differentiation.  Its sign is fixed by the Hurwitz shift
+identity, not by a choice of regularization.
+
+\paragraph{Centered cutoff constants and the two zero-order zeta values.}
+The mixed-tail proof uses the cutoff $0\leq n<N$ and the constant
+term in the variable $N$.  The equality with the spectral value is
+proved in \eqref{mt:cutoff-value}; it is not a general rule for every
+cutoff coordinate.  Two different zero-order zeta values appear:
+\[
+                \zeta(0,1/2)=0,\qquad \zeta(0)=-\frac12.
+\]
+The first makes the continued sums of the subtracted centered even
+polynomials vanish.  The second encodes the surviving rational boundary
+term in \eqref{mt:boundary-constant}.  Dropping either distinction
+changes the moment formula.  At $d=a+b-1$, the two oriented
+$\gamma/2$ terms cancel the diagonal $-\gamma$; an isolated
+$\zeta(1)$ is never introduced.
+
+\paragraph{Domains, branches, and spanning statements.}
+Endpoint parameters stay in the right half-plane.  The twists satisfy
+the consecutive-sum inequalities in \eqref{zbg:tube}; removable zero
+collisions do not remove the remaining nonzero-period hyperplanes.
+The polylogarithmic primitives are first fixed in the right half-plane
+and then continued as their complete anchored expressions, as in
+\eqref{mt:L-polylog}.  The finite list in \eqref{mt:finite-span} is
+a proved rational spanning list.  Its at-most-$\max(a,b)$ count is not
+an assertion of arithmetic independence or minimality.  The ordinary
+moment theorem also does not imply ordinary-zeta closure of its first
+spectral derivative, which contains additional global logarithmic data.
+
+\subsection{Reproducible verification and the limits of its evidence}
+
+The analytic proofs above establish the unrestricted identities.
+The companion scripts provide finite exact checks and independent
+high-precision diagnostics of the most sensitive formulas.  The
+recorded coverage is summarized below.
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{1.40in}rr>{\raggedright\arraybackslash}p{3.43in}@{}}
+\toprule
+Family & Exact & Numerical & What is compared\\
+\midrule
+Geometric kernels and zero blocks
+ & 590 & 0
+ & Endpoint composition, deconcatenation, kernel recurrence, finite
+   intervals, inverse intervals, gap coefficients, and insertion sums.\\[4pt]
+Mixed-tail moments
+ & 460 & 30
+ & 400 boundary identities and 60 finite summation-by-parts identities;
+   direct Hurwitz heads and centered tail expansions at two cutoffs.\\[4pt]
+Transverse identities
+ & 0 & 15
+ & Finite Gamma/Hurwitz gaps, noninteger endpoint tails, Barnes values,
+   negative-outer-order formulas, and the boundary discrepancy above.\\[4pt]
+Normalized Mellin derivatives
+ & 0 & 24
+ & Subtracted logarithmic quadrature versus derivatives of explicit
+   elementary Mellin transforms for two independent test functions.\\[4pt]
+Moment generators
+ & 0 & 3
+ & Anchored quadrature, explicit polylogarithmic primitives, and a Taylor
+   sum using 65 exact moment coefficients in each comparison.\\[4pt]
+\midrule
+Total & 1,050 & 72 & Finite algebra and numerical diagnostics have
+                         different evidentiary roles.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The 590 kernel checks use rational arithmetic only.  Positive
+fourth-power exponential nodes and quarter-integral endpoints permit
+exact tests even when $a-b$ is nonintegral.  The 460 moment checks are
+finite identities over rational symbolic coefficient rings.  In
+particular, the finite summation-by-parts tests keep the two tail
+constants symbolic.
+
+The transverse diagnostics use 65 decimal working digits and include
+the discrepancy \eqref{audit:continued}--\eqref{audit:literal} as a
+deliberate boundary control.  A separate 80-digit test of
+\eqref{tr:Mjet} uses two quadratic-polynomial exponential functions,
+one with nonreal coefficients and decay parameter.  For each function,
+the centers $m=0,1,3$ and derivative orders $r=1,2,3,4$ compare the
+subtracted logarithmic integral with a numerical derivative of its
+known elementary Mellin transform.  All 24 cases satisfy the scripted
+$10^{-50}$ tolerance; the largest observed discrepancy is about
+$3.10\times10^{-79}$.  These functions test the normalization lemma
+independently of the relative harmonic kernel.
+
+The moment diagnostics use 95 working
+digits, with orders through $(6,8)$ and moment indices through $M=7$.
+They evaluate a direct finite Hurwitz-zeta head and a separately
+assembled centered asymptotic tail at $(N,K)=(48,32)$ and $(64,36)$.
+The largest observed discrepancy at the larger cutoff is about
+$1.16\times10^{-63}$.  The three generator comparisons include a
+nonreal parameter; their largest recorded Taylor-sum discrepancy is
+about $1.08\times10^{-89}$.  The 65 Taylor coefficients are exact
+inputs to those three numerical comparisons, not 65 additional
+independent exact tests.
+
+These residuals are observed floating-point discrepancies, not rigorous
+error bounds or interval enclosures.  Working precision alone is not
+an accuracy guarantee.  The recorded diagnostics cover the stated
+examples; they do not constitute numerical quadrature of every
+multidimensional integral in Theorem~\ref{tr:integral}.  Uniform
+integrability, simultaneous branch cancellation, and continuation at
+arbitrary orders are established by the proofs, not by a finite test
+count.  The delivery includes neither a proof-assistant formalization
+nor an external referee report.
+
+\subsection{Status of the broader conjectures}
+
+The contribution ledger records R7 as answered in the specified
+arbitrary-depth zero-decoration family, R8 as answered for one marked
+index and all of its nonpositive-center derivatives, and R1 as answered
+for the full two-factor even-tail sector.  Extra harmonic factors,
+several independently marked indices, and additional global spectral
+derivative reductions remain separate questions.
+
+The Gaussian $S_6$ and revised $S_8$ candidates retain their
+conjectural status \cite{Repository,IncomingParity}.  No new functional
+identity or exact period certificate for either candidate is supplied
+here.  Existing nonmembership results concern their explicitly named
+formal relation spaces and must not be read as period nonvanishing
+theorems.  The next research questions in
+Section~\ref{research:section} begin at these stated boundaries.

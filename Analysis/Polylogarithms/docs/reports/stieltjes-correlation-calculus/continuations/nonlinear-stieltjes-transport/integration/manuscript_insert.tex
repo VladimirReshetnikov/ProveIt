@@ -1,0 +1,192 @@
+% Standalone insert. Requires amsmath, amssymb, amsthm; see insert_driver.tex.
+% Namespaced labels/macros deliberately avoid the canonical manuscript's labels.
+\providecommand{\NLFP}{\operatorname{FP}}
+\providecommand{\NLLi}{\operatorname{Li}}
+\providecommand{\NLA}{\mathcal A}
+\providecommand{\NLT}{\mathcal T}
+\newtheorem{nonlinearthm}{Theorem}[section]
+
+\section{Nonlinear coordinate transport of Stieltjes finite parts}
+\label{nonlinear:sec:transport}
+All finite parts in this section use a cutoff in the named coordinate and
+logarithmic scale one. Thus $\NLFP\int_0^1x^{-1}\log^n x\,dx=0$, while for
+$k\ge2$ its value with $x^{-k}$ is $-n!/(k-1)^{n+1}$.
+A density pullback is defined by
+$\langle\phi^*T,h\rangle=\langle T,h\circ\phi^{-1}\rangle$;
+its ordinary coefficient is $\phi'f(\phi)$.
+
+\begin{nonlinearthm}[Complete local coordinate correction]
+\label{nonlinear:thm:local}
+Let $\phi$ be a smooth increasing endpoint-preserving diffeomorphism of
+$[0,1]$, with $\lambda=\phi'(0)>0$. Put $r(y)=\phi(y)/y$ and
+$L(y)=\log r(y)$. For $k\ge1$, $n\ge0$,
+\begin{align*}
+\NLA_\phi^{k,n}
+&:=\phi^*\NLFP_x(x^{-k}\log^n x\,dx)
+-\NLFP_y(\phi'\phi^{-k}\log^n\phi\,dy),\\
+\langle\NLA_\phi^{k,n},h\rangle
+&=\frac1{n+1}[y^{k-1}]\phi'(y)r(y)^{-k}L(y)^{n+1}h(y).
+\end{align*}
+In particular the coefficient of $\delta^{(j)}$ is
+\[
+\frac{(-1)^j}{(n+1)j!}[y^{k-1-j}](\phi'r^{-k}L^{n+1}),
+\qquad 0\le j\le k-1.
+\]
+The formula extends linearly to finite logarithmic singular expansions
+modulo locally integrable remainders. Its discrepancy obeys
+\[
+\NLA_{\phi\circ\psi}(f\,dx)
+=\psi^*\NLA_\phi(f\,dx)+\NLA_\psi(\phi^*(f\,dx)).
+\]
+\end{nonlinearthm}
+\begin{proof}
+The meromorphic distribution $y^{-k-u}$ has residue
+$-h^{(k-1)}(0)/(k-1)!$ on a test function $h$. Taylor subtraction through
+degree $k-1$ leaves an integral holomorphic for $|\Re u|<1$; each fixed
+spectral derivative is dominated by an integrable power times finitely
+many logarithms. Its regular coefficients are
+$(-1)^n\NLFP(y^{-k}\log^n y)/n!$.
+Under $x=\phi(y)$ the full numerator is
+$A(u,y)=\phi'r^{-k}e^{-uL}$.
+The regular coefficients give the coordinate finite part of the composed
+logarithmic singularity. The additional coefficient comes from
+$-[y^{k-1}](A(u,y)h(y))/u$ and is
+$[y^{k-1}](\phi'r^{-k}L^{n+1}h)/(n+1)$ after multiplying by $(-1)^nn!$.
+This proves the action formula and the delta coefficients. Integrable
+remainders obey ordinary substitution. The composition rule follows by
+adding and subtracting $\psi^*\NLFP(\phi^*(f\,dx))$.
+\end{proof}
+
+An existing comparison $K=\NLFP(f\,dx)+\kappa\delta^{(d)}$ consequently
+transports to
+\[
+\phi^*K=\NLFP(\phi'f(\phi)\,dy)
++\NLA_\phi(f\,dx)+\kappa\phi^*\delta^{(d)}.
+\]
+For $d\ge1$ the last term has the explicit derivative expansion
+\[
+\phi^*\delta^{(d)}=
+\sum_{j=1}^d(-1)^{d+j}\frac{(d-1)!}{(j-1)!}
+[y^{d-j}]\left(\frac y{\phi(y)}\right)^d\delta^{(j)}.
+\]
+Indeed, writing $\tau=\phi^{-1}$, its action is
+$(-1)^dd![x^d]h(\tau(x))$; Lagrange inversion yields the displayed
+coefficients. Also $\phi^*\delta=\delta$. For a second endpoint use
+$1-\phi(1-y)$ and reflect its delta derivatives with sign $(-1)^j$.
+This is transport of the specified distribution, not a claim that nonlinear
+pullback preserves circular convolution.
+
+\subsection{Harmonic Stieltjes specialization}
+Use
+\[
+\zeta(1+u,x)=\frac1u+\sum_{m\ge0}\frac{(-1)^m}{m!}\gamma_m(x)u^m,
+\qquad \gamma_0=-\psi.
+\]
+Let $P_p(u)=\prod_{j=1}^p(1+u/j)=\sum_je_{p,j}u^j$, with $P_0=1$ and
+$e_{p,j}=0$ outside $0\le j\le p$. Its coefficients are finite harmonic
+polynomials because
+$\log P_p(u)=\sum_{r\ge1}(-1)^{r-1}H_p^{(r)}u^r/r$.
+Define
+\[
+\NLT_{m,p}(L)=m!\sum_{j=0}^{\min(m,p)}
+\frac{(-1)^je_{p,j}L^{m-j+1}}{(m-j+1)!}.
+\]
+\begin{nonlinearthm}[All-index Stieltjes correction]
+\label{nonlinear:thm:stieltjes}
+For every $m,p\ge0$,
+\[
+\big\langle\NLA_\phi(\gamma_m^{(p)}\,dx),h\big\rangle
+=(-1)^pp![y^p]\phi'r^{-p-1}\NLT_{m,p}(\log r)h.
+\]
+If $\phi(y)=y+ay^2+O(y^3)$ and $p\ge1$, this correction vanishes for
+$m\ge2p$, while at the last possible index it equals
+\[
+\NLA_\phi(\gamma_{2p-1}^{(p)}\,dx)
+=\frac{(2p-1)!}{p!}a^p\delta.
+\]
+In particular $\NLA_\phi(\psi'\,dx)=a\delta$.
+\end{nonlinearthm}
+\begin{proof}
+The Hurwitz shift gives the exact singularity
+\[
+\gamma_m^{(p)}(x)=(-1)^pp!\sum_{j=0}^{\min(m,p)}
+\frac{(-1)^jm!e_{p,j}}{(m-j)!}\frac{\log^{m-j}x}{x^{p+1}}
++\gamma_m^{(p)}(1+x).
+\]
+Apply Theorem~\ref{nonlinear:thm:local} term by term. When the slope is one,
+$\log r=ay+O(y^2)$. For $m\ge2p$ the smallest logarithmic power in
+$\NLT_{m,p}$ is at least $p+1$, so its $y^p$ coefficient vanishes. At
+$m=2p-1$ only $j=p$ survives; use $e_{p,p}=1/p!$.
+\end{proof}
+
+\subsection{Nonlinear circle averages}
+Let $\chi_\lambda:[0,1]\to[0,1]$ be the continuous increasing lift of
+$\tan(\pi\chi_\lambda(y))=\lambda\tan(\pi y)$, where $\lambda>0$.
+It equals $\pi^{-1}\arctan(\lambda\tan\pi y)$ below $1/2$, equals $1/2$
+there, and requires adding one to that expression above $1/2$.
+Put $q=(1-\lambda)/(1+\lambda)$ and $R_\lambda(y)=\chi_\lambda(y)/y$.
+The inverse density is the Poisson kernel
+\[
+(\chi_\lambda^{-1})'(x)=\Pi_q(x)
+=\frac{1-q^2}{1-2q\cos(2\pi x)+q^2}.
+\]
+The Taylor series of $R_\lambda$ is even.
+
+For spectral coefficient extraction set
+\[
+F_p(u;q)=2(2\pi)^p\Gamma(1-u)(2\pi)^u
+\cos\frac{\pi(p+u)}2\,\NLLi_{-p-u}(q).
+\]
+\begin{nonlinearthm}[Exact nonlinear Stieltjes averages]
+\label{nonlinear:thm:circle}
+For $m,p\ge0$,
+\begin{align*}
+\NLFP\int_0^1\gamma_m^{(p)}(\chi_\lambda(y))\,dy
+={}&(-1)^{m+1}m![u^{m+1}]
+\bigl(F_p(u;q)-P_p(u)F_p(0;q)\bigr)\\
+&-(-1)^pp![y^p]R_\lambda^{-p-1}
+\NLT_{m,p}(\log R_\lambda).
+\end{align*}
+The last line vanishes for odd $p$. At Stieltjes index zero,
+\[
+\NLFP\int_0^1\psi^{(2j+1)}(\chi_\lambda(y))\,dy
+=(-1)^{j+1}\pi(2\pi)^{2j+1}\NLLi_{-2j-1}(q).
+\]
+These last values are rational functions of $q$ times the displayed power
+of $\pi$.
+\end{nonlinearthm}
+\begin{proof}
+The canonical periodic Stieltjes generator has nonzero Fourier coefficients
+\[
+(2\pi i n)^p\left[\Gamma(-u)(2\pi i n)^u+\frac{P_p(u)}u\right]
+\]
+and zero mean. This follows from the Hurwitz Fourier formula and full
+endpoint-residue subtraction; it is the previously established
+fixed-coordinate identity. Pairing it with $\Pi_q$ gives
+$-(F_p(u;q)-P_p(u)F_p(0;q))/u$. Exponential Fourier decay justifies every
+fixed spectral derivative. To change to the unweighted composition
+average, apply Theorem~\ref{nonlinear:thm:stieltjes} with
+$\phi=\chi_\lambda$ and test function $1/\chi_\lambda'$.
+This cancels the Jacobian in the contact coefficient. Evenness of
+$R_\lambda$ gives the odd-order zero; differentiating the spectral factor
+at $u=0$ and using $\gamma_0=-\psi$ proves the polygamma formula.
+\end{proof}
+
+Ordinary convergent specializations, with
+$\NLLi_s^{[1]}(q)=\partial_s\NLLi_s(q)$, are
+\begin{align*}
+\int_0^1\left[\psi(\chi_2(y))+\frac1{2y}\right]dy
+&=-2\NLLi_0^{[1]}(-1/3)-\frac{\gamma+\log\pi}{2},\\
+\int_0^1\left[\psi'(\chi_2(y))-\frac1{4y^2}\right]dy
+&=\frac14+\frac{3\pi^2}{8},\\
+\int_0^1\log\Gamma(\chi_\lambda(y))\,dy
+&=\frac12\log\frac{\pi(\lambda+1)}\lambda.
+\end{align*}
+The first two follow by subtracting their complete singular heads and using
+the monomial finite parts stated above. The last follows independently
+from Gamma reflection, symmetry of the map and the Poisson average of
+$\log\sin(\pi x)$. The full article supplies the all-index ordinary
+subtraction procedure, normalized antiderivative hierarchy, source
+attribution and verification artifacts. These statements do not resolve
+unrestricted multiple collision restrictions or the remaining Gaussian
+$S_6$ reduction.

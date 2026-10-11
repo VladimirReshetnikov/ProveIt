@@ -1,0 +1,542 @@
+% Manuscript-ready fragment: raw harmonic powers at nonpositive spectral integers.
+% Standard amsmath, amssymb, amsthm. Labels/citations have hp: prefix.
+\section{Raw harmonic powers: polynomial finite parts and a centered cancellation}
+\label{hp:sec:main}
+
+The elementary-symmetric harmonic numerators of the height-one family do
+not equal raw powers. For example, its second numerator is
+$H_n^2-H_n^{(2)}$, whereas the family studied here contains $H_n^2$ itself.
+Let
+\begin{equation}\label{hp:def:F}
+ H_n=\sum_{j=1}^n\frac1j,\qquad H_0=0,\qquad
+ F_p(s,a)=\sum_{n=0}^{\infty}\frac{H_n^p}{(n+a)^s},
+ \qquad p\ge1,\quad a>0,\quad \Re s>1.
+\end{equation}
+The inner harmonic numbers are unshifted; only the outer denominator
+moves. All finite parts below mean the constant Laurent coefficient of
+this meromorphic continuation in the variable $s$. They are not an
+assignment of an ordinary value to the divergent defining series.
+
+Dirichlet series of raw harmonic powers, their poles, and reductions to
+Euler sums have already been studied, notably by Tin
+\cite{hp:Tin2025}. The polylogarithm and shuffle ingredients are also
+classical \cite{hp:IKZ2006}. The contribution developed here is the
+continuous outer-shift normalization, its polynomial finite-part law at
+every nonpositive integer, the exact cancellation at the centered shift,
+and explicit low-weight identities with normalized parameter primitives.
+No claim of priority is made for raw-power meromorphic continuation or
+for the classical Euler sums used in the reductions.
+
+\subsection{Every principal part has a finite Bernoulli formula}
+
+Write $B_j(a)$ for the Bernoulli polynomial, with $B_1(a)=a-1/2$, and
+introduce the formal series
+\begin{equation}\label{hp:def:U}
+ U(z,a)=-\sum_{j\ge1}\frac{B_j(a)}jz^j.
+\end{equation}
+Only finitely many coefficients are used; convergence of this formal
+asymptotic series is neither required nor asserted.
+
+\begin{theorem}[All poles and all principal coefficients]\label{hp:thm:poles}
+The function $F_p(s,a)$ continues meromorphically to the entire $s$-plane,
+locally uniformly in $a>0$. Its only possible poles are
+$1,0,-1,-2,\ldots$. At $s=1$ its principal part is
+\begin{equation}\label{hp:eq:principal-one}
+ \sum_{r=0}^p\binom pr\frac{r!\gamma^{p-r}}{(s-1)^{r+1}}.
+\end{equation}
+At $s=-m$, $m\ge0$, put
+\[
+ F_p(-m+\varepsilon,a)
+ =\sum_{h=1}^p\frac{R_{p,m,h}(a)}{\varepsilon^h}
+       +C_{p,m}(a)+O(\varepsilon).
+\]
+Then every principal coefficient is the finite polynomial
+\begin{equation}\label{hp:eq:allresidues}
+ \boxed{\quad
+ R_{p,m,h}(a)=\frac{p!}{(p-h+1)!}
+       [z^{m+1}]\bigl(\gamma+U(z,a)\bigr)^{p-h+1},
+ \qquad 1\le h\le p.\quad}
+\end{equation}
+In particular,
+\begin{equation}\label{hp:eq:topresidue}
+ R_{p,m,p}(a)=-\frac{p!}{m+1}B_{m+1}(a).
+\end{equation}
+Every $R_{p,m,h}$ has degree at most $m+1$ in $a$.
+\end{theorem}
+
+\begin{proof}
+Put $x=n+a$. The classical shifted digamma expansion, obtained for
+example from Euler--Maclaurin \cite{hp:DLMF}, is
+\begin{equation}\label{hp:eq:digamma-expansion}
+ H_n=\log x+\gamma-
+       \sum_{j=1}^{J}\frac{B_j(a)}{jx^j}+O(x^{-J-1}).
+\end{equation}
+It holds uniformly when $a$ ranges over a compact positive interval;
+the finite differentiated versions have the same uniformity. Raising a
+finite truncation to the fixed power $p$ gives
+\[
+ H_n^p=\sum_{j=0}^{J}\sum_{r=0}^p
+  \binom pr[z^j](\gamma+U(z,a))^{p-r}
+                    x^{-j}(\log x)^r
+       +O\bigl(x^{-J-1}(1+\log^p x)\bigr).
+\]
+Subtract these finitely many terms in the defining Dirichlet series.
+The remainder is normally convergent in $\Re s>-J$ on compact
+subsets. The subtracted sums are the corresponding linear combination
+of $(-1)^r\partial_s^r\zeta(s+j,a)$. Arbitrarily large $J$ therefore
+provides the meromorphic continuation and justifies every fixed
+parameter derivative.
+
+The only principal term of
+$(-1)^r\partial_s^r\zeta(s+j,a)$ at $s=1-j$ is
+$r!/(s+j-1)^{r+1}$. At $j=0$ this proves
+\eqref{hp:eq:principal-one}. At $j=m+1$, set $r=h-1$ to obtain
+\eqref{hp:eq:allresidues}. The case $r=p$ has no positive-degree
+coefficient in $z$, so the pole order at a nonpositive integer is at
+most $p$. Formula \eqref{hp:eq:topresidue} and the degree assertion
+follow directly from the Bernoulli-polynomial coefficients.
+\end{proof}
+
+\begin{corollary}[Cancellation at every nonpositive even integer]
+\label{hp:cor:centered}
+For every $p\ge1$, the centered function $F_p(s,1/2)$ is holomorphic
+at $s=0,-2,-4,\ldots$. Its only poles are at
+$s=1,-1,-3,-5,\ldots$; their orders are exactly $p+1$ at $1$ and
+exactly $p$ at each negative odd integer.
+\end{corollary}
+\begin{proof}
+All odd Bernoulli polynomials vanish at $1/2$, including $B_1(1/2)$.
+Thus $U(z,1/2)$ contains only even powers of $z$ and every coefficient
+in \eqref{hp:eq:allresidues} vanishes when $m$ is even.
+At $m=2r-1$, the top coefficient is
+$-p!B_{2r}(1/2)/(2r)$, which is nonzero because
+$B_{2r}(1/2)=(2^{1-2r}-1)B_{2r}\ne0$. The leading coefficient at
+$s=1$ is $p!$ by \eqref{hp:eq:principal-one}.
+\end{proof}
+
+The cancellation concerns the entire Laurent principal part, not only
+the residue. In the centered variable $x=n+1/2$ it is the exact
+consequence of
+$H_n=\log x+\gamma+1/(24x^2)-7/(960x^4)+\cdots$ having only even
+inverse powers after its logarithm.
+
+\subsection{A finite polylogarithm calculation determines every finite part}
+
+For a positive-index word $\boldsymbol{k}=(k_1,\ldots,k_d)$, use
+\[
+ \operatorname{Li}_{\boldsymbol{k}}(z)
+ =\sum_{n_1>\cdots>n_d\ge1}
+       \frac{z^{n_1}}{n_1^{k_1}\cdots n_d^{k_d}}.
+\]
+Define the finite combination
+\begin{equation}\label{hp:def:A}
+ A_p(t)=\sum_{\substack{\boldsymbol{k}\text{ a composition of }p}}
+     \frac{p!}{k_1!\cdots k_d!}
+                  \operatorname{Li}_{\boldsymbol{k}}(e^{-t}).
+\end{equation}
+Ordering the distinct indices in the product $H_n^p$ proves the exact
+identity
+\begin{equation}\label{hp:eq:kernel}
+ (1-e^{-t})\sum_{n\ge0}H_n^pe^{-nt}=A_p(t),\qquad
+ \Gamma(s)F_p(s,a)=\int_0^\infty t^{s-1}K_{p,a}(t)\,dt,
+ \quad K_{p,a}(t)=\frac{e^{-at}A_p(t)}{1-e^{-t}}.
+\end{equation}
+The integral is initially ordinary for $\Re s>1$. The first identity
+is a finite stuffle decomposition: an ordered equality block of size
+$k_j$ contributes $n_j^{-k_j}$ and its multiplicity is the displayed
+multinomial coefficient.
+
+For completeness, the local calculation has an explicit finite
+recursion. With $L_{\boldsymbol{k}}(t)=
+\operatorname{Li}_{\boldsymbol{k}}(e^{-t})$, set $L_{\varnothing}=1$.
+Then
+\begin{equation}\label{hp:eq:word-derivatives}
+ \frac{d}{dt}L_{k_1,\ldots,k_d}(t)=
+ \begin{cases}
+  -L_{k_1-1,k_2,\ldots,k_d}(t),& k_1>1,\\
+  -L_{k_2,\ldots,k_d}(t)/(e^t-1),& k_1=1.
+ \end{cases}
+\end{equation}
+For a convergent word $k_1\ge2$, the constant is
+$L_{\boldsymbol{k}}(0)=\zeta(\boldsymbol{k})$.
+For a leading-one word, the integration constant is fixed by the
+shuffle relations and $L_1(t)=-\log(1-e^{-t})$, whose constant
+coefficient in powers of $\log t$ is zero. This is the usual shuffle
+regularization. It is a finite reduction: multiplying a word with one
+fewer initial $1$ by $\operatorname{Li}_1$ and shuffling its iterated
+integral word isolates the desired initial-one word with a nonzero
+integer multiplicity. All other terms have fewer initial $1$'s.
+Induction reduces its constant to convergent multiple zeta values.
+
+At a specified Taylor order, \eqref{hp:eq:word-derivatives} uses only
+rational operations and finite integrations of logarithmic monomials.
+Explicitly, for a polynomial $P$,
+\begin{align}
+ \int t^{-1}P(\log t)\,dt
+   &=\int P(\ell)\,d\ell\big|_{\ell=\log t},\notag\\
+ \int t^jP(\log t)\,dt
+   &=t^{j+1}\sum_{q=0}^{\deg P}
+           \frac{(-1)^qP^{(q)}(\log t)}{(j+1)^{q+1}},
+                       \qquad j\ge0.\label{hp:eq:finite-integration}
+\end{align}
+This supplies an implementable calculation with fixed endpoint
+constants, rather than an unspecified asymptotic coefficient.
+
+\begin{theorem}[Polynomial finite parts at all nonpositive integers]
+\label{hp:thm:finiteparts}
+For fixed $p\ge1$ and $m\ge0$, compute the finite local expansion
+\begin{equation}\label{hp:eq:local-kernel}
+ K_{p,a}(t)=\sum_{j=-1}^{m}t^j
+         \sum_{r=0}^p c_{p,j,r}(a)(\log t)^r
+       +O\bigl(t^{m+1}(1+|\log t|^p)\bigr).
+\end{equation}
+The coefficients are provided by
+\eqref{hp:def:A}--\eqref{hp:eq:finite-integration}; they are polynomials
+in $a$ of degree at most $j+1$ with coefficients in the algebra of
+convergent multiple zeta values. Define
+\begin{equation}\label{hp:def:g}
+ \frac1{\Gamma(-m+\varepsilon)}
+      =\sum_{\ell\ge1}g_{m,\ell}\varepsilon^\ell.
+\end{equation}
+Then the exact finite part is
+\begin{equation}\label{hp:eq:FP-all}
+ \boxed{\quad C_{p,m}(a)=
+   \sum_{r=0}^p(-1)^rr!\,c_{p,m,r}(a)g_{m,r+1}.\quad}
+\end{equation}
+In particular $C_{p,m}$ is a polynomial in $a$ of degree at most
+$m+1$. Its coefficients lie in the algebra generated by Euler's
+constant and convergent multiple zeta values. At the centered regular
+points one has the stronger exact identity
+\begin{equation}\label{hp:eq:center-value}
+ F_p(-2r,1/2)=(2r)!\,c_{p,2r,0}(1/2).
+\end{equation}
+These centered values lie in the multiple-zeta algebra without requiring
+Euler's constant.
+\end{theorem}
+
+\begin{proof}
+Equations \eqref{hp:eq:word-derivatives} and
+\eqref{hp:eq:finite-integration}, with the fixed shuffle constants,
+construct the expansion by induction on the weight. The ordinary
+convergent expansion of $1/(e^t-1)$ has a simple pole at zero and
+radius $2\pi$. Finite integration of its analytic remainders preserves
+a remainder bounded by a power of $t$ times a fixed logarithmic
+polynomial. Consequently the displayed finite expansion is an actual
+local expansion with the stated remainder, locally uniformly in $a$;
+there are no negative powers below $t^{-1}$. Multiplication by
+$e^{-at}$ proves the degree bound.
+
+Subtract \eqref{hp:eq:local-kernel} inside the integral over $(0,1)$.
+The remainder integral, together with the integral over $(1,\infty)$,
+is holomorphic in $\Re s>-m-1$. Its fixed spectral derivatives are
+obtained by inserting powers of $\log t$, by ordinary domination.
+Thus
+\begin{equation}\label{hp:eq:Mellin-continuation}
+ \Gamma(s)F_p(s,a)=
+ \sum_{j=-1}^{m}\sum_{r=0}^p
+       \frac{(-1)^rr!c_{p,j,r}(a)}{(s+j)^{r+1}}+J_{p,m}(s,a),
+\end{equation}
+where $J_{p,m}$ is holomorphic near $s=-m$.
+The zero of $1/\Gamma(s)$ at $s=-m$ kills the holomorphic remainder
+and all terms with $j\ne m$ when taking the constant Laurent
+coefficient. Only the finitely many $j=m$ terms remain, and their
+product with \eqref{hp:def:g} is precisely \eqref{hp:eq:FP-all}.
+
+For reference the reciprocal-Gamma coefficients are themselves finite
+Bell expressions, obtained from
+\begin{align}\label{hp:eq:gamma-generator}
+ \frac1{\Gamma(-m+\varepsilon)}
+ ={}&(-1)^m m!\,\varepsilon
+ \exp\left((\gamma-H_m)\varepsilon\right.\notag\\
+ &\left.\hspace{8mm}+
+ \sum_{k\ge2}\frac{(-1)^{k+1}\zeta(k)-H_m^{(k)}}k
+                                      \varepsilon^k\right).
+\end{align}
+The recurrence for Gamma proves this formula directly from the Taylor
+series of $1/\Gamma(1+\varepsilon)$.
+At a centered regular point, the highest possible logarithmic
+coefficient in \eqref{hp:eq:Mellin-continuation} would produce a
+nonzero pole. Descending triangularly, Corollary~\ref{hp:cor:centered}
+therefore forces $c_{p,2r,j}(1/2)=0$ for every $j\ge1$. Since
+$g_{2r,1}=(2r)!$, this proves \eqref{hp:eq:center-value}.
+\end{proof}
+
+\paragraph{Where the global information returns.}
+The theorem evaluates the principal part and constant term. It does
+not evaluate all spectral derivatives using the same finite data.
+Already the coefficient of $\varepsilon$ receives the generally nonzero
+contribution $(-1)^m m!J_{p,m}(-m,a)$ from the holomorphic remainder
+in \eqref{hp:eq:Mellin-continuation}, together with the other regular
+terms. In particular, differentiating a formula valid only for a
+nonpositive integer does not determine the spectral derivative there.
+This distinguishes the present finite identities from the higher
+harmonic Stieltjes coefficients.
+
+\subsection{The complete expansion through the finite part at zero}
+
+Set
+\begin{equation}\label{hp:def:P}
+ P_p(L)=p![u^p]\exp(Lu)\Gamma(1+u)e^{\gamma u},\qquad P_0=1.
+\end{equation}
+Define ordinary convergent Euler sums
+\begin{equation}\label{hp:def:E}
+ E_{q,k}=\sum_{n\ge1}\frac{H_{n-1}^q}{n^k},
+ \qquad q\ge0,\quad k\ge2.
+\end{equation}
+At $q=0$ the numerator is one. Every such sum is the finite
+multiple-zeta combination
+\begin{equation}\label{hp:eq:E-MZV}
+ E_{q,k}=\sum_{\boldsymbol{r}\vDash q}
+       \frac{q!}{r_1!\cdots r_d!}\zeta(k,r_1,\ldots,r_d),
+\end{equation}
+with the empty composition giving $E_{0,k}=\zeta(k)$.
+
+\begin{theorem}[An exact all-degree zero-resonance identity]
+\label{hp:thm:zero}
+There are constants $Q_p$ with $Q_1=1/2$ and the finite recurrence
+\begin{equation}\label{hp:eq:Q-recurrence}
+ Q_p=-pQ_{p-1}+
+ \frac12\sum_{k=2}^{p-1}(k-1)\binom p{k+1}E_{p-1-k,k},
+                       \qquad p\ge2.
+\end{equation}
+For every $a>0$ one has
+\begin{equation}\label{hp:eq:zero-expansion}
+ \boxed{\quad F_p(s,a)=
+   \left(\frac12-a\right)\frac{p!e^{\gamma s}}{s^p}
+                 +Q_p+O(s).\quad}
+\end{equation}
+Consequently
+\begin{equation}\label{hp:eq:zero-FP}
+ C_{p,0}(a)=Q_p+\left(\frac12-a\right)\gamma^p,
+                  \qquad F_p(0,1/2)=Q_p.
+\end{equation}
+Each $Q_p$ has a finite expression using convergent multiple zeta
+values of weights at most $p-1$.
+\end{theorem}
+
+\begin{proof}
+First the leading local polynomial of $A_p$ is $P_p(-\log t)$.
+One way to fix it without a regularization guess is to use
+\eqref{hp:eq:principal-one} in the Mellin identity. Multiplication by
+$\Gamma(1+s)$ turns the elementary pole polynomial at $s=0$ into
+exactly the coefficients of
+$\Gamma(1+u)e^{\gamma u}$ in \eqref{hp:def:P}.
+The word calculation proves existence of the local expansion, so this
+identifies its leading polynomial uniquely.
+At the centered shift
+$e^{-t/2}/(1-e^{-t})=t^{-1}+O(t)$.
+Regularity at $s=0$ then forces the coefficient of $t$ in $A_p$ to
+have no logarithmic terms, by the same triangular argument as in the
+previous theorem. Hence
+\begin{equation}\label{hp:eq:A-first}
+ A_p(t)=P_p(-\log t)+tQ_p+O(t^2(1+|\log t|^p)).
+\end{equation}
+The elementary formula for $A_1=-\log(1-e^{-t})$ gives $Q_1=1/2$.
+
+To determine every other $Q_p$, put
+\[
+ M_{q,k}(t)=\sum_{n\ge1}\frac{H_{n-1}^q}{n^k}e^{-nt}.
+\]
+The exact increment $H_n^p-H_{n-1}^p$ gives
+\[
+ A_p=\sum_{k=1}^p\binom pkM_{p-k,k},\qquad
+ A_p'=-\frac{pA_{p-1}}{e^t-1}
+            -\sum_{k=2}^p\binom pkM_{p-k,k-1}.
+\]
+For $k\ge2$, $M_{q,k}(t)\to E_{q,k}$ by domination.
+Using the preceding identity with $p-1$ also gives the complete
+leading logarithmic polynomial
+\[
+ M_{p-2,1}(t)=\frac{1}{p-1}
+ \left(P_{p-1}(-\log t)-
+       \sum_{k=2}^{p-1}\binom{p-1}kE_{p-1-k,k}\right)+o(1).
+\]
+Take the coefficient of $t^0(\log t)^0$ in the derivative identity,
+using \eqref{hp:eq:A-first} and
+$(e^t-1)^{-1}=t^{-1}-1/2+O(t)$.
+The two copies of $P_{p-1}$ cancel as full polynomials. This leaves
+\[
+ Q_p=-pQ_{p-1}+\sum_{k=2}^{p-1}
+ \left(\frac p2\binom{p-1}k-\binom p{k+1}\right)E_{p-1-k,k}.
+\]
+The bracket is $(k-1)\binom p{k+1}/2$, proving the recurrence.
+The local expansions already established justify differentiation and
+coefficient comparison here.
+
+It remains to show the particularly simple normalization in
+\eqref{hp:eq:zero-expansion}. The coefficient of $t^0$ in the kernel is
+$(1/2-a)P_p(-\log t)+Q_p$. If
+$d(u)=\Gamma(1+u)e^{\gamma u}$, its $P_p$ contribution to the Mellin
+continuation is
+\[
+ \frac{p!}{\Gamma(s)}[u^p]\frac{d(u)}{s-u}.
+\]
+Replace $d(u)$ by $d(s)$: the difference quotient is holomorphic in
+$(s,u)$ near $(0,0)$ and its multiplication by $1/\Gamma(s)$ is
+$O(s)$. The remaining term is
+$p!e^{\gamma s}/s^p$. The constant $Q_p$ contributes
+$Q_p/(s\Gamma(s))=Q_p+O(s)$. All other local and global terms are
+$O(s)$ by the preceding theorem. This proves the result.
+\end{proof}
+
+The first five constants are
+\begin{align}\label{hp:eq:Q-table}
+ Q_1&=\frac12,& Q_2&=-1,\notag\\
+ Q_3&=3+\frac12\zeta(2),&
+ Q_4&=-12-2\zeta(2)+3\zeta(3),\notag\\
+ Q_5&=60+10\zeta(2)-15\zeta(3)+\frac{33}{2}\zeta(4).
+\end{align}
+For example $E_{1,2}=\zeta(2,1)=\zeta(3)$ and
+$E_{2,2}=2\zeta(2,1,1)+\zeta(2,2)=11\zeta(4)/4$.
+These classical low-weight reductions follow from shuffle and stuffle
+relations. Equation \eqref{hp:eq:zero-expansion} includes all negative
+Laurent powers: for example the cubic case is
+\[
+ F_3(s,a)=\left(\frac12-a\right)
+ \left(\frac6{s^3}+\frac{6\gamma}{s^2}+
+                    \frac{3\gamma^2}{s}+\gamma^3\right)
+         +3+\frac12\zeta(2)+O(s).
+\]
+
+\subsection{Explicit formulas at the next two spectral integers}
+
+The finite word recursion gives the following local table. Here
+$L=-\log t$, $z_j=\zeta(j)$, and the omitted remainder is
+$O(t^4(1+|\log t|^p))$.
+\begin{align}\label{hp:eq:A-table}
+ A_1(t)={}&L+\frac t2-\frac{t^2}{24}+O(t^4),\notag\\
+ A_2(t)={}&L^2+z_2-t-\frac{L}{12}t^2-\frac{t^3}{36}
+                         +O(t^4(1+L^2)),\notag\\
+ A_3(t)={}&L^3+3z_2L-2z_3+\left(3+\frac{z_2}{2}\right)t\notag\\
+ &+\left(-\frac{L^2}{8}-\frac L4-\frac{z_2}{8}-\frac38\right)t^2
+           +\frac5{72}t^3+O(t^4(1+|L|^3)),\notag\\
+ A_4(t)={}&L^4+6z_2L^2-8z_3L+\frac{27}{2}z_4
+             +(-12-2z_2+3z_3)t\notag\\
+ &+\left(-\frac{L^3}{6}-\frac{L^2}{2}-\frac{z_2L}{2}-L
+                 -\frac{z_2}{2}+\frac{z_3}{3}-\frac34\right)t^2
+      +\left(-\frac{z_2}{18}-\frac7{27}\right)t^3
+                     +O(t^4(1+|L|^4)).
+\end{align}
+This table is reproducible with \eqref{hp:eq:word-derivatives}.
+For clarity the only weight-four endpoint reductions required are
+\[
+ \zeta(3,1)=\frac14\zeta(4),\qquad
+ \zeta(2,2)=\frac34\zeta(4),\qquad
+ \zeta(2,1,1)=\zeta(4).
+\]
+The leading-one regular constants follow by the indicated shuffle
+elimination; for example they are $-5\zeta(4)/4$ for $(1,3)$,
+$-3\zeta(4)$ for $(1,2,1)$, and $3\zeta(4)$ for $(1,1,2)$.
+These constants, the two differentiation rules, and finite integration
+fully determine every entry of \eqref{hp:eq:A-table}.
+
+\begin{corollary}[Uniform square, cube, and fourth-power identities]
+\label{hp:cor:minus-one}
+For $1\le p\le4$, put $b=a-1/2$ and
+\[
+ T_1=0,\qquad T_2=-\frac1{12},\qquad
+ T_3=\frac18,\qquad T_4=-\frac14.
+\]
+Then
+\begin{equation}\label{hp:eq:minus-one-expansion}
+ \boxed{\quad
+ F_p(-1+\varepsilon,a)=p!e^{\gamma\varepsilon}
+ \left(\frac{1/24-b^2/2}{\varepsilon^p}
+               +\frac{b^2}{2\varepsilon^{p-1}}\right)
+                  +bQ_p+T_p+O(\varepsilon).\quad}
+\end{equation}
+In particular,
+\begin{equation}\label{hp:eq:minus-one-FP}
+ C_{p,1}(a)=\frac{\gamma^p}{24}+T_p+bQ_p
+                 +\frac{b^2}{2}(p\gamma^{p-1}-\gamma^p).
+\end{equation}
+The centered regular values at $s=-2$ are
+\begin{align}\label{hp:eq:minus-two-table}
+ F_1(-2,1/2)&=-\frac1{24},&
+ F_2(-2,1/2)&=\frac1{36},\notag\\
+ F_3(-2,1/2)&=-\frac19-\frac{\zeta(2)}{24},&
+ F_4(-2,1/2)&=\frac{13}{27}+\frac{\zeta(2)}{18}
+                                  -\frac{\zeta(3)}4.
+\end{align}
+\end{corollary}
+
+\begin{proof}
+Multiply \eqref{hp:eq:A-table} by
+$e^{-at}/(1-e^{-t})$ and apply \eqref{hp:eq:FP-all} at $m=1$.
+Together with the Bernoulli formula for the principal part this gives
+\eqref{hp:eq:minus-one-expansion}. Equivalently, the centered calculation
+uses $e^{-t/2}/(1-e^{-t})=t^{-1}-t/24+O(t^3)$ and the
+reciprocal-Gamma expansion at $-1$; the exact parameter transport
+proved next supplies its entire $b$-dependence.
+For $m=2$, no logarithmic term survives at the centered shift, and
+\eqref{hp:eq:center-value} says to multiply the constant coefficient
+of $t^2$ by $2$. This coefficient is
+$[t^3]A_p-Q_p/24$. Inserting the displayed table gives all four
+values in \eqref{hp:eq:minus-two-table}.
+\end{proof}
+
+\subsection{Exact shift derivatives and normalized antiderivatives}
+
+Let $R_{p,m}(a)=R_{p,m,1}(a)$ be the simple-pole coefficient in
+\eqref{hp:eq:allresidues}. It is given without a polylogarithm
+calculation by
+\begin{equation}\label{hp:eq:residue-poly}
+ R_{p,m}(a)=[z^{m+1}](\gamma+U(z,a))^p.
+\end{equation}
+
+\begin{theorem}[Parameter transport and finite primitives]
+\label{hp:thm:transport}
+For $m\ge1$,
+\begin{equation}\label{hp:eq:transport}
+ C_{p,m}'(a)=mC_{p,m-1}(a)-R_{p,m-1}(a).
+\end{equation}
+At $m=0$ the corresponding identity is $C_{p,0}'(a)=-\gamma^p$.
+For every $m\ge0$ and positive $a,a_0$ one consequently has the
+normalized antiderivative identity
+\begin{equation}\label{hp:eq:primitive}
+ \boxed{\quad
+ \int_{a_0}^a C_{p,m}(x)\,dx=
+ \frac{C_{p,m+1}(a)-C_{p,m+1}(a_0)
+              +\int_{a_0}^aR_{p,m}(x)\,dx}{m+1}.\quad}
+\end{equation}
+The last integral is a finite polynomial integral explicitly specified
+by \eqref{hp:eq:residue-poly}; it introduces no new special function
+or undetermined normalization.
+\end{theorem}
+\begin{proof}
+Normal convergence in the defining half-plane gives
+$\partial_aF_p(s,a)=-sF_p(s+1,a)$, and the normally convergent
+continuations extend this identity meromorphically. Take the constant
+coefficient at $s=-m+\varepsilon$.
+The factor $m-\varepsilon$ contributes
+$mC_{p,m-1}-R_{p,m-1}$, proving \eqref{hp:eq:transport}.
+At $m=0$, the residue at $s=1$ is $\gamma^p$ by
+\eqref{hp:eq:principal-one}. Integrating the relation with $m+1$
+gives \eqref{hp:eq:primitive} and fixes its additive constant.
+\end{proof}
+
+For example, substituting \eqref{hp:eq:zero-FP} and
+$R_{p,0}(a)=p(1/2-a)\gamma^{p-1}$ into
+\eqref{hp:eq:transport} proves the quadratic shift dependence
+\eqref{hp:eq:minus-one-FP} from its centered value. This provides an
+independent exact check on the $a$-polynomial obtained by Mellin
+coefficient extraction.
+
+\paragraph{Extension and remaining questions.}
+A polynomial in finitely many generalized harmonic numbers
+$H_n^{(r)}$ of positive integer orders $r$ admits the same finite
+ordered-equality-block expansion.
+Replacing \eqref{hp:def:A} by its finite multiple-polylogarithm
+combination (including a constant when the polynomial has one)
+therefore preserves the finite-part theorem, polynomial
+shift dependence, and normalized parameter transport. Its pole orders
+must be read from its own finite asymptotic expansion; the particular
+centered cancellation for raw powers does not automatically extend to
+arbitrary generalized-harmonic products.
+Three concrete questions remain: determine how far the $Q_p$ reduce
+within specified multiple-zeta coordinate spaces at higher weight;
+produce compact all-degree formulas for the centered values
+$F_p(-2r,1/2)$ beyond the word recursion; and identify combinations of
+first regular spectral coefficients whose global Mellin remainders
+cancel. The last question is distinct from the finite-part identities
+proved here.

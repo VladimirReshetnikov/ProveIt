@@ -1,0 +1,95 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,breaklinks=true]{hyperref}
+\usepackage{bookmark}
+\pagestyle{fancy}\fancyhf{}
+\lhead{\small Reciprocal Lerch convolutions}\rhead{\small ProveIt research continuation}
+\cfoot{\thepage}\renewcommand{\headrulewidth}{0.3pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\Ima}{Im}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\C}{\mathbb C}\newcommand{\R}{\mathbb R}\newcommand{\N}{\mathbb N}
+\newcommand{\E}{\mathcal E}
+\newcommand{\CC}{\mathcal C}
+\newcommand{\MM}{\mathcal M}
+\newcommand{\stir}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\newcommand{\pin}{\src{0c740647c48baec7f0b4192723e977d69917dd52}}
+\setlist{itemsep=4pt,topsep=6pt}
+\allowdisplaybreaks[2]
+\hypersetup{pdftitle={Reciprocal Lerch Convolutions},pdfauthor={Research continuation for Vladimir Reshetnikov's ProveIt programme},pdfsubject={Entire-order identities, central-factorial reductions, logarithmic moments, and Stieltjes--Gamma calculus}}
+\title{\textbf{Reciprocal Lerch Convolutions}\\[6pt]
+\large Entire-order identities, central-factorial zeta reductions,\\
+all logarithmic moments, and Stieltjes--Gamma calculus}
+\author{Research continuation for Vladimir Reshetnikov's ProveIt programme\\
+\small Mathematical derivations and computational checks with OpenAI assistance}
+\date{10 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+A reciprocal-argument product of two Lerch profiles has an ordinary
+integral equal to $(s+t)\zeta(s+t+1,a)$, interpreted as an entire function
+of the total order. We develop this order-addition mechanism at every
+multiplicative depth. An explicit central-factorial polynomial reduces
+an $r$-fold convolution to finitely many Lerch values, and at unit
+fugacity to Hurwitz-zeta or alternating Hurwitz-zeta values. A separate
+finite differential-polynomial calculus evaluates \emph{every} mixed
+logarithmic moment for arbitrary complex orders. For two factors we
+obtain a closed formula whose apparent zeta poles cancel by a polynomial
+divisibility identity.
+
+The resulting order derivatives give ordinary convergent products
+representing generalized Stieltjes constants. Higher-depth derivatives
+involve finite Stirling and generalized-harmonic polynomials, positive
+odd zeta jets, and an explicit Stieltjes term. Gamma-weighted contour
+integrals, reciprocal polylogarithmic remainders, a Gaussian odd-part
+family, unequal-shift partial fractions, and anchored antiderivatives
+are derived in the same normalization. Negative-order resonances retain
+nonzero residue contributions; one explicit depth-four term is $1/3$.
+
+The article provides full analytic proofs, exact finite checks, numerical
+diagnostics, and integration notes. It continues the repository's
+Mellin and Stieltjes programme in a distinct reciprocal geometry; it
+does not claim to settle the same-direction two-scale problem, the
+Gaussian $S_6/S_8$ conjectures, or historical priority for the underlying
+convolution method.
+\end{abstract}
+\vfill
+\noindent\small\textbf{Source anchor.} Targeted repository reading is pinned to\\
+\pin. Three accessible incoming packages were inspected in relevant
+parts; three newer binary packages were listed but not inspected.
+No repository files were modified.\normalsize
+\clearpage
+\begingroup
+\small
+\tableofcontents
+\endgroup
+\clearpage
+\input{sections/01-scope}
+\input{sections/02-analysis}
+\input{sections/03-convolution}
+\input{sections/04-central}
+\input{sections/05-moments}
+\input{sections/06-stieltjes}
+\input{sections/07-harmonic-gaussian}
+\input{sections/08-gamma}
+\input{sections/09-unequal}
+\input{sections/10-primitives}
+\input{sections/11-audit}
+\input{sections/12-research}
+\input{references}
+\end{document}

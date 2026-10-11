@@ -1,0 +1,177 @@
+\section{Stieltjes order jets and continuous primitive combinations}
+\label{bmh:sec:stieltjes}
+
+\subsection{A bilinear identity at every Stieltjes index}
+Recall that $\Li_1^{[r]}(z)$ means
+$\left.\partial_s^r\Li_s(z)\right|_{s=1}$.
+
+\begin{theorem}[Bilinear polylogarithm--Stieltjes reciprocity]
+\label{bmh:thm:Stieltjes}
+For every integer $n\ge1$, every $r\ge0$, and $-1<\Rea a<1$,
+\begin{align}
+ &\int_0^\infty\frac{x^{a-1}\Li_1^{[r]}(-x)}{1+x}
+      \left\{\Li_n(-x)+(-1)^n\Li_n(-1/x)\right\}\dd x\notag\\
+ &\quad=(-1)^r P_n(\partial_a)
+ \left\{\pi\csc(\pi a)\bigl[\gamma_r(1)-\gamma_r(1-a)\bigr]\right\}.
+ \label{bmh:eq:Stieltjes}
+\end{align}
+The right side at $a=0$ is a combined removable germ. Arbitrary fixed
+$a$-derivatives give further ordinary identities with powers of
+$\log x$. At $r=0$, the right side is a finite polygamma expression.
+\end{theorem}
+\begin{proof}
+By~\eqref{bmh:eq:inversion}, the expression in braces on the left is
+$P_n(\log x)$. For complex $s$ near one, the one-factor master already
+proved in the repository~\cite{MLD} gives
+\[
+ \int_0^\infty\frac{x^{a-1}\Li_s(-x)}{1+x}\dd x
+ =\pi\csc(\pi a)\{\zeta(s)-\zeta(s;1-a)\}.
+\]
+Both sides are holomorphic for $-1<\Rea a<1$, with the cosecant pole
+removed as a whole. The residues of the two zeta functions at $s=1$
+are identical. Therefore~\eqref{bmh:eq:Stieltjes-convention} gives
+\[
+ \left.\partial_s^r\{\zeta(s)-\zeta(s;1-a)\}\right|_{s=1}
+ =(-1)^r\{\gamma_r(1)-\gamma_r(1-a)\}.
+\]
+Apply $P_n(\partial_a)$ and use the dominated differentiation statement
+of Proposition~\ref{bmh:prop:strip}. Since $\gamma_0=-\psi$, the last
+assertion follows. This proof is a new bilinear assembly of the classical
+inversion polynomial and the existing one-factor Stieltjes master; those
+inputs are not claimed as new results.
+\end{proof}
+
+For example, its $n=1,r=1$ content can be written as
+\begin{equation}\label{bmh:eq:Stieltjes-example}
+ \int_0^\infty\frac{x^{a-1}\log x}{1+x}
+             \left.\partial_s\Li_s(-x)\right|_{s=1}\dd x
+ =\frac{\dd}{\dd a}\left\{
+    \pi\csc(\pi a)[\gamma_1(1-a)-\gamma_1(1)]\right\}.
+\end{equation}
+The sign on $\gamma_1$ is fixed by the Laurent convention, not by an
+informal substitution of $s=1$ into a pole. The identities involve
+spectral derivatives of polylogarithms and generalized Stieltjes
+constants; they do not assert that these derivatives lie in a finite
+ordinary-polylogarithm algebra.
+
+\subsection{Spectral Stieltjes jets of the connected coordinate}
+For $A\ge2$ the bulk definition~\eqref{bmh:eq:Cbulk} is holomorphic in
+$B$ in a neighborhood of one. Put
+\begin{equation}\label{bmh:eq:scriptC}
+ \mathfrak C_{A,r}(q)=
+ \left.\partial_B^r\bmhC_{A,B}(q)\right|_{B=1}.
+\end{equation}
+Normal convergence gives the explicit logarithmic-double-sum formula
+\begin{align}
+ \mathfrak C_{A,r}(q)=(-1)^r\biggl[&
+ \sum_{\nu>\mu\ge0}\frac{\log^r(\mu+1)}{(\nu+1)^A(\mu+1)}
+ -\sum_{\nu>\mu\ge0}\frac{\log^r(\mu+q)}{(\nu+q)^A(\mu+q)}\notag\\
+ &+\zeta(A;q)\{\gamma_r(q)-\gamma_r(1)\}\biggr].
+ \label{bmh:eq:scriptC-series}
+\end{align}
+For $r=0$ the convention $\log^0(1)=1$ applies. The normal convergence
+is immediate from an outer $\nu^{-A}$ factor times a fixed power of
+$\log\nu$.
+
+\begin{proposition}[Exact discrete primitive for Stieltjes sums]
+\label{bmh:prop:Stieltjes-shift}
+For $A\ge2$, $r\ge0$, and positive $q$,
+\begin{equation}\label{bmh:eq:Stieltjes-shift}
+ \mathfrak C_{A,r}(q+1)-\mathfrak C_{A,r}(q)
+ =(-1)^{r+1}q^{-A}\{\gamma_r(q)-\gamma_r(1)\}.
+\end{equation}
+Consequently, for an integer $L\ge1$,
+\begin{align}
+ \sum_{j=0}^{L-1}\frac{\gamma_r(q+j)-\gamma_r(1)}{(q+j)^A}
+ =(-1)^{r+1}\{
+ \mathfrak C_{A,r}(q+L)-\mathfrak C_{A,r}(q)\}.
+ \label{bmh:eq:Stieltjes-finite-sum}
+\end{align}
+At integer arguments this is compatible with the logarithmic generalized
+harmonic sums
+\begin{equation}\label{bmh:eq:Stieltjes-harmonic}
+ \mathfrak C_{A,r}(L)=(-1)^r
+ \sum_{1\le k<j\le L-1}\frac{\log^r k}{j^A k}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Differentiate~\eqref{bmh:eq:Cshift} $r$ times in $B$ at one.
+The pole-cancelled spectral derivative is
+$\partial_B^rD_B(q)|_{B=1}=(-1)^r(\gamma_r(q)-\gamma_r(1))$.
+This proves~\eqref{bmh:eq:Stieltjes-shift}; summing it telescopes.
+Alternatively differentiating the finite identity~\eqref{bmh:eq:Charmonic}
+gives~\eqref{bmh:eq:Stieltjes-harmonic}. The elementary Hurwitz shift
+underlying this law is classical. The connected coordinate supplies a
+single compatible notation for its double-sum and Stieltjes forms.
+\end{proof}
+
+\subsection{A continuous primitive ladder}
+A discrete primitive is not a continuous antiderivative. The latter can
+also be obtained for a natural adjacent-index combination. Set
+\begin{equation}\label{bmh:eq:U}
+ U_k(q)=\begin{cases}\zeta(k;q),&k\ge2,\\-\psi(q),&k=1.
+ \end{cases}
+\end{equation}
+Then $U_k'(q)=-k\zeta(k+1;q)$, including $k=1$.
+
+\begin{proposition}[Anchored adjacent-index primitive]
+\label{bmh:prop:continuous-primitive}
+For $A\ge2$, $B\ge1$, and positive $q,q_0$,
+\begin{align}
+ &\int_{q_0}^{q}\left\{A\bmhC_{A+1,B}(t)+B\bmhC_{A,B+1}(t)\right\}\dd t
+ \notag\\
+ &\quad=\bmhC_{A,B}(q_0)-\bmhC_{A,B}(q)
+ +\{A\zeta(A+1,B)+B\zeta(A,B+1)\}(q-q_0)\notag\\
+ &\qquad\quad+
+ \frac{B\zeta(B+1)}{A-1}
+       \{U_{A-1}(q)-U_{A-1}(q_0)\}.
+ \label{bmh:eq:continuous-primitive}
+\end{align}
+All terms are ordinarily finite, including the polygamma case $A=2$.
+\end{proposition}
+\begin{proof}
+Differentiate~\eqref{bmh:eq:Cbulk}, use~\eqref{bmh:eq:Zq-derivative},
+and regroup the two shifted connected coordinates. This gives
+\begin{align}
+ \bmhC_{A,B}'(q)={}&-A\bmhC_{A+1,B}(q)-B\bmhC_{A,B+1}(q)\notag\\
+ &+A\zeta(A+1,B)+B\zeta(A,B+1)
+       -B\zeta(B+1)\zeta(A;q).
+ \label{bmh:eq:C-differential}
+\end{align}
+Integrate and use the derivative of $U_{A-1}$. The anchoring differences
+in~\eqref{bmh:eq:continuous-primitive} fix every integration constant.
+At $A=2$, the correct $U_1=-\psi$ is the finite part of the Hurwitz
+zeta function at one; inserting an undefined $\zeta(1;q)$ would obscure
+an otherwise finite antiderivative.
+\end{proof}
+
+\subsection{An independent unequal-scale elementary example}
+The finite-alphabet theorem does not imply that every two-scale example
+requires genuine depth two. For $z>0$, put $r=1-1/z$. Then
+\begin{equation}\label{bmh:eq:multiscale-example}
+ \boxed{\displaystyle
+ \int_0^\infty\frac{\log(1+x)\log(1+zx)}{(1+x)^2}\dd x
+ =\frac{\log z+\Li_2(1-1/z)}{1-1/z}.}
+\end{equation}
+At $z=1$ the removable value is $2$. To prove the formula, let
+$u=(1+x)^{-1}$ and use
+$\log(1+zx)=\log z-\log u+\log(1-ru)$.
+The integral becomes
+\[
+ \log z+2-\int_0^1\log u\log(1-ru)\dd u.
+\]
+For $|r|<1$, termwise integration gives
+\[
+ \int_0^1\log u\log(1-ru)\dd u
+ =\sum_{k\ge1}\frac{r^k}{k(k+1)^2}.
+\]
+The partial fraction identity
+$1/(k(k+1)^2)=1/k-1/(k+1)-1/(k+1)^2$
+sums this series and yields~\eqref{bmh:eq:multiscale-example}.
+Both sides are real analytic for $r<1$, so continuation proves it for
+all $z>0$. In particular, at $z=2$ the value is
+\begin{equation}\label{bmh:eq:multiscale2}
+ \frac{\pi^2}{6}+2\log2-\log^22.
+\end{equation}
+The example illustrates why a general upper-bound theorem must not be
+rephrased as a minimal-depth claim.

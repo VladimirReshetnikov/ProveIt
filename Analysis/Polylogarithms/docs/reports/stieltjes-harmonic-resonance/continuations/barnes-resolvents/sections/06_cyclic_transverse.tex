@@ -1,0 +1,380 @@
+% Integration fragment: requires amsmath, amssymb, amsthm and theorem/proposition environments.
+% Labels use fcy:; bibliography keys are shared with the full article.
+\section{An ordinary convergent generator for symmetric Tornheim jets}
+\label{bhr:fcy:section}
+
+The incoming \emph{Harmonic Parity and Resolvent Identities} report
+already determines the quartic directional layer and the formal
+all-order kernel. Its Question R10 asks for additional
+analytic information about the symmetric quadratic germ controlling
+cyclic fifth derivatives. We answer the stated integral version of
+that question. We first give an explicit, normally convergent integral
+for its full symmetric generating germ. We then extract one
+transverse quadratic coefficient, including its full finite
+normalization. Together with the diagonal fifth derivative this
+coefficient determines every cyclic fifth derivative.
+
+No claim that either retained coefficient has a finite evaluation in
+ordinary zeta constants is made. The earlier quartic reconstruction,
+formal dimension count, and cyclic factorization are used with their
+existing attribution \cite{bhr:Parity}. The holomorphy of the cyclic
+Tornheim sum near the origin is also a special case of Nakamura's
+symmetric desingularization theorem \cite[Theorem 1.2]{bhr:Nakamura}.
+
+\subsection{The fixed holomorphic remainder}
+
+Write
+\[
+ T(A,B,C)=\sum_{m,n\ge1}\frac1{m^A n^B(m+n)^C},\qquad
+ \mathfrak g(C)=\frac1{\Gamma(1+C)},\qquad \Sigma=A+B+C.
+\]
+The series is first used where it converges absolutely; subsequently
+\(T\) denotes its meromorphic continuation. We use exactly the
+normalization of the preceding report:
+\begin{equation}\label{bhr:fcy:R}
+ T(A,B,C)=\zeta(A)\zeta(B)
+ -\frac{C\zeta(B-1)}{A+C}-\frac{C\zeta(A-1)}{B+C}
+ +C R(A,B,C),
+\end{equation}
+where \(R\) is holomorphic and symmetric in \(A,B\) near the
+origin. Here and below an apparent quotient of holomorphic germs by a
+linear form is assigned its holomorphic extension when its numerator
+is divisible by that form.
+
+The finite elementary kernel needed below is
+\begin{align}
+ E(A,B,C)={}&\mathfrak g(C)\left\{
+ \frac{\Gamma(1-A)\Gamma(1-B)}{\Sigma-2}
+ +\frac{\Gamma(1-A)\zeta(B)}{A+C-1}
+ +\frac{\Gamma(1-B)\zeta(A)}{B+C-1}\right\}\notag\\
+ &+\zeta(A)\zeta(B)\frac{\mathfrak g(C)-1}{C}\notag\\
+ &-\zeta(B-1)\frac{\Gamma(1-A)\mathfrak g(C)-1}{A+C}
+ -\zeta(A-1)\frac{\Gamma(1-B)\mathfrak g(C)-1}{B+C}.
+ \label{bhr:fcy:E}
+\end{align}
+It is jointly holomorphic near zero. For example,
+\(\Gamma(1-A)\mathfrak g(-A)=1\), proving removability at \(A+C=0\).
+
+For completeness, put \(F_A(x)=\operatorname{Li}_A(e^{-x})\) and
+\begin{align}
+ S(A,B;x)={}&\Gamma(1-A)\Gamma(1-B)x^{A+B-2}
+ +\Gamma(1-A)\zeta(B)x^{A-1}
+ +\Gamma(1-B)\zeta(A)x^{B-1}\notag\\
+ &-\Gamma(1-A)\zeta(B-1)x^A
+ -\Gamma(1-B)\zeta(A-1)x^B+\zeta(A)\zeta(B).
+ \label{bhr:fcy:S}
+\end{align}
+Jonqui\`ere's expansion \cite[25.12.12]{bhr:DLMFPolylog} gives the
+normally convergent integral
+\begin{align}
+ I_0(A,B,C)={}&\int_0^1x^{C-1}\bigl(F_A(x)F_B(x)-S(A,B;x)\bigr)\,dx
+ \notag\\
+ &+\int_1^\infty x^{C-1}F_A(x)F_B(x)\,dx
+ \label{bhr:fcy:I0}
+\end{align}
+and the identity
+\begin{equation}\label{bhr:fcy:RE}
+ R(A,B,C)=\mathfrak g(C)I_0(A,B,C)+E(A,B,C).
+\end{equation}
+Indeed, integrate the six subtracted terms explicitly in the Mellin
+representation for \(T\), multiply by \(\mathfrak g(C)\), and collect the
+two polar terms of \eqref{bhr:fcy:R}. This gives
+\eqref{bhr:fcy:E} term by term. In a sufficiently small closed parameter
+polydisc the omitted Jonqui\`ere terms, after multiplication by
+\(x^{C-1}\), are bounded by
+\(x^{-\delta}(1+|\log x|^N)\) for some \(\delta<1\), including
+any prescribed finite number of parameter derivatives. At infinity
+there is uniform exponential decay. These estimates justify the
+joint holomorphy and all differentiations used below.
+
+\subsection{An explicit integral for the symmetric germ}
+
+The earlier factorization defines the unique symmetric holomorphic
+germ \(J\) by
+\begin{align}
+ \sum_{\mathrm{cyc}}T(A,B,C)={}&
+ 2\bigl(\zeta(A)\zeta(B)+\zeta(B)\zeta(C)+\zeta(C)\zeta(A)\bigr)
+ \notag\\
+ &-\zeta(A+B)-\zeta(B+C)-\zeta(C+A)\notag\\
+ &+2\bigl(\zeta(A)+\zeta(B)+\zeta(C)\bigr)+1+ABCJ(A,B,C).
+ \label{bhr:fcy:J}
+\end{align}
+We retain this normalization exactly. The next formula expresses
+\(J\) through ordinary polylogarithms, Gamma and zeta functions,
+and ordinarily convergent integrals, without any Tornheim derivative
+on the right-hand side.
+
+For a holomorphic function \(H\), define
+\[
+ \mathcal D_{A,B}H(A,B,C)=
+ \frac{H(A,B,C)-H(A,0,C)-H(0,B,C)+H(0,0,C)}{AB}.
+\]
+At zero parameters this means the corresponding derivative. Set
+\begin{align*}
+ d_A(x)&=\frac{\operatorname{Li}_A(e^{-x})-\operatorname{Li}_0(e^{-x})}{A},&
+ g_A(x)&=\frac{\Gamma(1-A)x^A-1}{A},\\
+ p_A&=\frac{\zeta(A)+1/2}{A},&
+ q_A&=\frac{\zeta(A-1)+1/12}{A},
+\end{align*}
+with the holomorphic values at \(A=0\). Define
+\begin{align}
+ S_\Delta(A,B;x)={}&\frac{g_A(x)g_B(x)}{x^2}
+ +\frac{g_A(x)p_B+g_B(x)p_A}{x}\notag\\
+ &-g_A(x)q_B-g_B(x)q_A+p_Ap_B,
+ \label{bhr:fcy:SDelta}\\
+ I_\Delta(A,B,C)={}&\int_0^1x^{C-1}
+ \bigl(d_A(x)d_B(x)-S_\Delta(A,B;x)\bigr)\,dx\notag\\
+ &+\int_1^\infty x^{C-1}d_A(x)d_B(x)\,dx.
+ \label{bhr:fcy:IDelta}
+\end{align}
+
+\begin{theorem}[Ordinary convergent symmetric generator]
+\label{bhr:fcy:generator}
+The integrals \eqref{bhr:fcy:IDelta} converge normally in a common
+neighborhood of \((0,0,0)\), including after arbitrary fixed
+parameter derivatives, and
+\begin{equation}\label{bhr:fcy:Jintegral}
+ J(A,B,C)=\sum_{\mathrm{cyc}}
+ \left\{\mathfrak g(C)I_\Delta(A,B,C)+\mathcal D_{A,B}E(A,B,C)\right\}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply the rectangular difference in \(A,B\) to
+\eqref{bhr:fcy:I0}. The difference of the product \(F_AF_B\),
+divided by \(AB\), is \(d_Ad_B\); the corresponding difference
+of \(S\) is exactly \(S_\Delta\). Cauchy estimates on a slightly
+larger parameter polydisc preserve the integrable bounds of
+\eqref{bhr:fcy:I0}; equivalently, one can use
+\(d_A(x)=g_A(x)/x+p_A-q_Ax+O(x^{2-\epsilon})\), locally
+uniformly with logarithmic factors after differentiation. Thus
+\(I_\Delta=\mathcal D_{A,B}I_0\), with normal convergence.
+
+In the cyclic sum of \eqref{bhr:fcy:R}, the two terms with
+denominator \(A+C\) combine to \(-\zeta(B-1)\), and similarly
+for the other denominators. All remaining explicit zeta terms
+depend on at most two variables. The complete rectangular
+three-variable difference therefore annihilates them and gives
+\[
+ ABCJ(A,B,C)=\sum_{\mathrm{cyc}}C\bigl(
+ R(A,B,C)-R(A,0,C)-R(0,B,C)+R(0,0,C)\bigr).
+\]
+To check the left-hand side, apply the same difference to
+\eqref{bhr:fcy:J}: all its explicit terms vanish, and \(ABCJ\)
+vanishes on every coordinate plane. Divide by \(ABC\), substitute
+\eqref{bhr:fcy:RE}, and use holomorphic extension at zero parameters.
+This proves \eqref{bhr:fcy:Jintegral}.
+\end{proof}
+
+The theorem is an analytic representation of the previously defined
+germ. It supplies all symmetric jet coefficients in one fixed,
+ordinary convergent kernel. Its content includes the endpoint
+subtractions and their finite normalization; replacing the kernel by
+an unsubtracted integral would not preserve its Taylor coefficients.
+
+\subsection{The first transverse quadratic coefficient}
+
+Write \(\gamma\) for Euler's constant and put
+\[
+ L=\log(2\pi),\qquad z_j=\zeta^{(j)}(0),\qquad
+ y_j=\zeta^{(j)}(-1),\qquad \kappa_2=\zeta(2),\quad \kappa_4=\zeta(4).
+\]
+The quadratic homogeneous part of \(J\) has the form
+\begin{equation}\label{bhr:fcy:J2form}
+ J_2(A,B,C)=j_{20}(A^2+B^2+C^2)+\chi(AB+BC+CA).
+\end{equation}
+Thus \(\chi=[AB]J\) is the additional scalar to be determined.
+For \(x>0\), let
+\[
+ f_j(x)=\left.\partial_s^j\operatorname{Li}_s(e^{-x})\right|_{s=0},
+ \qquad h(x)=\log x+\gamma,
+\]
+and define
+\begin{align}
+ P_{21}(x)={}&\frac{h(h^2+\kappa_2)}{x^2}
+ +\frac{z_1(h^2+\kappa_2)+z_2h}{x}
+ -y_1(h^2+\kappa_2)-y_2h+z_1z_2,
+ \label{bhr:fcy:P21}\\
+ P_{22}(x)={}&\frac{(h^2+\kappa_2)^2}{x^2}
+ +\frac{2z_2(h^2+\kappa_2)}{x}-2y_2(h^2+\kappa_2)+z_2^2,
+ \label{bhr:fcy:P22}\\
+ \mathcal K(x)={}&\frac14 f_2(x)^2+h(x)f_2(x)f_1(x),\qquad
+ P(x)=\frac14P_{22}(x)+h(x)P_{21}(x).
+ \label{bhr:fcy:KP}
+\end{align}
+Let
+\begin{equation}\label{bhr:fcy:chiintegral}
+ \mathcal I=\int_0^1\frac{\mathcal K(x)-P(x)}x\,dx
+                   +\int_1^\infty\frac{\mathcal K(x)}x\,dx.
+\end{equation}
+Both integrals converge ordinarily and absolutely.
+
+\begin{theorem}[Explicit transverse fifth-order coordinate]
+\label{bhr:fcy:chi}
+The coefficient in \eqref{bhr:fcy:J2form} is
+\begin{equation}\label{bhr:fcy:chiresult}
+ \chi=\mathcal I+\mathcal E,
+\end{equation}
+where
+\begin{align}
+ \mathcal E={}&-\frac{10\gamma^4+20\gamma^3+12\gamma^2\kappa_2
+ +30\gamma^2+12\gamma \kappa_2+30\gamma+2\kappa_2^2+6\kappa_2+15}{16}
+ \notag\\
+ &+\frac{-\gamma^4-2\gamma^2\kappa_2+\kappa_2^2+2\kappa_4}{4}\,y_1
+ -\frac{\gamma(\gamma^2+\kappa_2)}2\,y_2\notag\\
+ &-\bigl(\gamma^3+3\gamma^2+6\gamma+6+(\gamma+1)\kappa_2\bigr)z_1
+ -\frac{3\gamma^2+6\gamma+6+\kappa_2}{2}\,z_2\notag\\
+ &+\frac{\gamma^2-\kappa_2}{2}\,z_1z_2+\frac\gamma4z_2^2.
+ \label{bhr:fcy:chicorrection}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+All derivatives of \(R\) in this proof are evaluated at the
+origin. The coefficient of \(A^2B^2C\) in
+\(\sum_{\mathrm{cyc}}CR(A,B,C)\) is
+\[
+ \frac14R_{AABB}+R_{AABC}.
+\]
+The first cyclic term contributes \(R_{AABB}/4\), and the
+other two contribute \(R_{AABC}/2\) each. The explicit
+zeta terms in \eqref{bhr:fcy:J} and the cyclic form of
+\eqref{bhr:fcy:R} have no monomial involving all three variables.
+Consequently
+\begin{equation}\label{bhr:fcy:chiderivative}
+ \chi=\frac14R_{AABB}+R_{AABC}.
+\end{equation}
+
+Differentiate \eqref{bhr:fcy:RE}, using \(\mathfrak g(0)=1\) and
+\(\mathfrak g'(0)=\gamma\). The integral contribution to
+\eqref{bhr:fcy:chiderivative} is precisely \eqref{bhr:fcy:chiintegral}:
+\(S_{AAB}=P_{21}\), \(S_{AABB}=P_{22}\), and the derivative
+of \(\mathfrak g(C)x^{C-1}\) at zero is \(h(x)/x\).
+For a direct convergence check, the differentiated Jonqui\`ere
+expansions are
+\[
+ f_1(x)=\frac h x+\sum_{k\ge0}
+       \frac{(-1)^k\zeta'(-k)}{k!}x^k,\qquad
+ f_2(x)=\frac{h^2+\kappa_2}x+\sum_{k\ge0}
+       \frac{(-1)^k\zeta''(-k)}{k!}x^k.
+\]
+The displayed subtractions remove both singular products, the
+cross terms of analytic degrees zero and one, and the constant
+analytic product. Hence \((\mathcal K-P)/x=O(1+|\log x|^3)\) at zero.
+At infinity \(f_1,f_2=O(e^{-2x})\), so
+\(\mathcal K/x=O((1+\log x)e^{-4x}/x)\).
+
+The remaining finite contribution is
+\[
+ \mathcal E=[A^2B^2]E+2[A^2BC]E.
+\]
+Insert
+\begin{align*}
+ \log\Gamma(1-A)&=\gamma A+\frac{\kappa_2}{2} A^2
+                  +\frac{\zeta(3)}3A^3+\frac{\kappa_4}4A^4+O(A^5),\\
+ \log \mathfrak g(C)&=\gamma C-\frac{\kappa_2}{2} C^2
+                  +\frac{\zeta(3)}3C^3-\frac{\kappa_4}4C^4+O(C^5)
+\end{align*}
+into the elementary expression \eqref{bhr:fcy:E}. Expand its three
+nonresonant denominators geometrically and divide the three
+removable quotients as holomorphic power series. Extraction of
+the two coefficients gives \eqref{bhr:fcy:chicorrection}. This is
+finite polynomial algebra; the accompanying exact script performs
+it independently with all zeta derivatives left symbolic.
+\end{proof}
+
+\subsection{Every cyclic fifth derivative}
+
+Put \(\Omega_5=W_{1,1,1}^{(5)}(0)\), where
+\(W_{a,b,c}(t)=T(at,bt,ct)\) is restricted before taking its
+one-variable continuation at zero. Write
+\[
+ e_1=a+b+c,\quad e_2=ab+bc+ca,\quad e_3=abc,\quad
+ D=e_1^2-3e_2,\quad p_2=e_1^2-2e_2.
+\]
+
+\begin{theorem}[Cyclic fifth-order formula]\label{bhr:fcy:fifth}
+If the three pairwise sums of \(a,b,c\) are nonzero, then
+\begin{align}
+ \sum_{\mathrm{cyc}}W_{a,b,c}^{(5)}(0)={}&
+ e_3p_2\Omega_5-120e_3D\chi
+ -5(e_1e_2-3e_3)D\,Lz_4\notag\\
+ &+20(e_1e_2^2-4e_1^2e_3+3e_2e_3)z_2z_3\notag\\
+ &+(-2e_1^5+5e_1^3e_2-5e_1e_2^2
+                         +47e_1^2e_3-69e_2e_3)z_5.
+ \label{bhr:fcy:fifthformula}
+\end{align}
+For arbitrary complex slopes the same polynomial gives the fifth
+derivative of the holomorphic cyclic sum restricted as a whole.
+This last assertion does not assign values to its individual
+singular summands.
+\end{theorem}
+
+\begin{proof}
+On the diagonal, differentiation of \eqref{bhr:fcy:J} gives
+\[
+ j_{20}+\chi=\frac{
+ \Omega_5+10Lz_4-40z_2z_3+32z_5}{120}.
+\]
+Thus \eqref{bhr:fcy:J2form} is completely determined by
+\(\Omega_5\) and the ordinarily convergent coordinate
+\eqref{bhr:fcy:chiresult}. For general slopes, the fifth derivative
+of the explicit part of \eqref{bhr:fcy:J} is
+\[
+ -5Lz_4\sum_{\mathrm{sym}}a^4b
+ +20z_2z_3\sum_{\mathrm{sym}}a^3b^2
+ -\bigl((a+b)^5+(b+c)^5+(c+a)^5\bigr)z_5.
+\]
+The remaining derivative is \(120abcJ_2(a,b,c)\).
+Substitute the preceding value of \(j_{20}\), use the elementary
+symmetric polynomial identities, and collect terms. This yields
+\eqref{bhr:fcy:fifthformula}. Since \eqref{bhr:fcy:J} is jointly
+holomorphic, its cyclic restriction exists even when an individual
+pairwise divisor would prevent restricting a single Tornheim term.
+\end{proof}
+
+For instance, the explicit asymmetric identity is
+\begin{align}
+ &W_{1,2,3}^{(5)}(0)+W_{2,3,1}^{(5)}(0)+W_{3,1,2}^{(5)}(0)
+       -84\Omega_5\notag\\
+ &\hspace{18mm}=-2160\chi-720L\zeta^{(4)}(0)
+       +1200\zeta''(0)\zeta'''(0)-1704\zeta^{(5)}(0).
+ \label{bhr:fcy:example}
+\end{align}
+For real slopes, \(D=\tfrac12((a-b)^2+(b-c)^2+(c-a)^2)\).
+Consequently a single real cyclic fifth ray with \(abc\ne0\)
+eliminates the displayed transverse coefficient only on the
+diagonal. For complex slopes the cone \(D=0\) has additional
+points. These are coefficient statements in the specified two
+coordinate representation, not claims of arithmetic independence.
+
+\needspace{13\baselineskip}
+\subsection{Numerical checks and the remaining arithmetic problem}
+The package evaluates \(\mathcal I\) using differentiated
+Jonqui\`ere series on \((0,1)\) and exponentially convergent
+incomplete-Gamma sums on \((1,\infty)\). At 70 decimal digits
+of working precision the diagnostic values are
+\begin{align*}
+ \mathcal I&=-0.0128358838132664551878307355997471413775071472849\ldots,\\
+ \mathcal E&=18.6522612153652911636439613245591942979227651526949\ldots,\\
+ \chi&=18.6394253315520247084561305889594471565452580054100\ldots,\\
+ \Omega_5&=8808.87952093843854353140320772504731742914386526227\ldots.
+\end{align*}
+An independently evaluated Mellin continuation of individual
+\(T\) rays checks \eqref{bhr:fcy:fifthformula} on the cycles generated
+by \((1,2,3)\), \((1,1,2)\), and \((1,-2,3)\); the largest
+recorded discrepancy is below \(6\cdot10^{-30}\). These are
+uncertified numerical diagnostics, not interval enclosures or
+proofs of the analytic identities. The exact coefficient script
+checks the elementary correction and the full symbolic fifth-order
+formula.
+
+The new generator answers the ordinary-integral alternative of
+Question R10 and makes all higher symmetric coefficients concrete.
+Finite ordinary-constant evaluations of \(\chi\) and
+\(\Omega_5\) remain open. A sharper next problem is to find an
+independent Gamma or Barnes representation of the kernel in
+\eqref{bhr:fcy:chiintegral}, with its normalization \eqref{bhr:fcy:chicorrection}
+unchanged. At the following order, the same generator yields the
+three coefficients of the symmetric cubic germ \(J_3\); any
+reduction below that formal count requires an additional identity.

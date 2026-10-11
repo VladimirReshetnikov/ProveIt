@@ -1,0 +1,105 @@
+\section{The problem, conventions, and scope}\label{bmh:sec:scope}
+
+\subsection{A precise continuation of the repository}
+The canonical manuscript \emph{Polylogarithms and their Arithmetic Bridges}
+collects an extensive theory of polylogarithmic identities, harmonic sums,
+Gamma arithmetic, Hurwitz jets, and Stieltjes correlations~\cite{Repo}.
+The related report \emph{Mellin--Lerch Transforms and Dilation Identities for
+Stieltjes Correlations} proves a one-factor Mellin transform and then asks,
+in its tenth proposed research question, for a treatment of
+\begin{equation}\label{bmh:eq:problem}
+ \int_0^\infty\frac{x^{a-1}\Li_s(-zx)\Li_t(-wx)}{(1+x)^N}\dd x.
+\end{equation}
+Its two explicit objectives are finite multiple-polylogarithm closure at
+integer Mellin parameters and a determination of the depth forced by
+independent arguments~\cite{MLD}. The present article answers the first
+objective when the polylogarithm orders are positive integers. It goes
+further at equal arguments by deriving a finite double-Hurwitz formula
+for noninteger $a$, exact formulas at both integer resonances in the
+$N=1$ strip, and all logarithmic moments.
+
+This is not a claim to settle the question for arbitrary complex spectral
+orders, nor to prove numerical or motivic minimal depth. Generic
+hyperlogarithmic integration is established mathematics; the multiscale
+closure proof below is an explicit specialization of that method, with
+its alphabet, full product convergence strip, and residue-weight
+refinement made concrete~\cite{Panzer}. The connected double-Hurwitz
+formula and the coefficient identities are derived here in detail and
+are the main research contribution relative to the inspected repository
+material. An exhaustive literature priority search has not been made.
+
+The main source path is
+\begin{center}\small
+\url{Analysis/Polylogarithms/docs/reports/stieltjes-correlation-calculus/continuations/mellin-lerch-dilation/}.
+\end{center}
+The research-question file is \src{sections/06-audit-research.tex}; its
+blob at the recorded pin is
+\src{c0e3d58e42005ca844ca8b6900d7feaf1b33e2f8}.
+The existing one-factor theorem, used with attribution in
+Sections~\ref{bmh:sec:reciprocity}--\ref{bmh:sec:stieltjes}, is in
+\src{sections/02-mellin.tex}. We also inspected the canonical README,
+main source, selected depth and discovery sections, the incoming
+inventory, and its intake instructions. The binary contents of the eight
+archives in that inventory were not analytically audited. Consequently
+our comparison is with the specified inspected text, not a claim of
+exhaustive novelty against every incoming archive.
+
+\subsection{Notation and normalization}
+All unqualified $m,n,N$ are positive integers; $h,r$ are nonnegative
+integers. Put $W=m+n$ and define
+\begin{equation}\label{bmh:eq:M-definition}
+ M_N(a;m,n;z,w)=\int_0^\infty
+ \frac{x^{a-1}\Li_m(-zx)\Li_n(-wx)}{(1+x)^N}\dd x.
+\end{equation}
+We suppress $z,w$ when both are one. Powers of positive real numbers use
+the real logarithm. The polylogarithm is on its principal branch; positive
+$z,w$ therefore never put its argument on the positive-real branch cut.
+More general scales are considered on
+$\C\setminus(-\infty,0]$. Standard polylogarithm, Hurwitz-zeta, and Gamma
+conventions are those of the DLMF~\cite{DLMFpoly,DLMFhurwitz,DLMFbeta}.
+
+We use a semicolon in $\zeta(s;q)$ for the single Hurwitz parameter,
+to distinguish it from the comma-separated multiple-zeta indices.
+Multiple zeta values use \emph{decreasing} indices:
+\begin{equation}\label{bmh:eq:MZV}
+ \zeta(k_1,\ldots,k_d)=
+ \sum_{n_1>\cdots>n_d\ge1}\frac1{n_1^{k_1}\cdots n_d^{k_d}},
+ \qquad k_1\ge2,
+\end{equation}
+and the common-shift double Hurwitz value is
+\begin{equation}\label{bmh:eq:Zq}
+ Z_q(A,B)=\sum_{\nu>\mu\ge0}
+ \frac1{(\nu+q)^A(\mu+q)^B},
+ \qquad A\ge2,
+ \quad B\ge1,\quad \Rea q>0.
+\end{equation}
+Thus $Z_1(A,B)=\zeta(A,B)$. When the spectral indices vary in a
+proof, the same series is used wherever it is absolutely convergent. Each of these series, and any fixed number of
+its $q$-derivatives, converges normally on compact subsets of
+$\Rea q>0$. The inner sum is at most logarithmic when $B=1$ and bounded
+when $B>1$; this proves the assertion directly. Spectral differentiation
+in $B$ near one adds only logarithms and is also normally convergent.
+
+We write $(s)_j=s(s+1)\cdots(s+j-1)$, with $(s)_0=1$, and
+$\binom uv=0$ for integer $u\ge0$ and $v\notin\{0,\ldots,u\}$.
+Generalized harmonic numbers are
+$H_d^{(r)}=\sum_{j=1}^d j^{-r}$, with $H_0^{(r)}=0$.
+The Stieltjes convention is
+\begin{equation}\label{bmh:eq:Stieltjes-convention}
+ \zeta(s;q)=\frac1{s-1}
+ +\sum_{r=0}^\infty\frac{(-1)^r}{r!}\gamma_r(q)(s-1)^r,
+ \qquad \gamma_0(q)=-\psi(q).
+\end{equation}
+An order derivative $\Li_s^{[r]}$ differentiates $s$, not the argument.
+
+\subsection{What the principal results say}
+Theorem~\ref{bmh:thm:master} is a finite formula at all positive integer
+orders and noninteger Mellin parameters in the full product strip.
+Theorem~\ref{bmh:thm:compact} gives an especially short unshifted double-zeta
+answer. Theorems~\ref{bmh:thm:jets} and \ref{bmh:thm:kernel} give the complete
+logarithmic and integer-kernel calculi. Theorem~\ref{bmh:thm:central}
+identifies a parity sector with a single-zeta answer, and
+Theorem~\ref{bmh:thm:Stieltjes} connects bilinear polylogarithmic integrals
+to every generalized Stieltjes index. The algebraic checks are finite
+implementation tests. The proofs of the infinite families are the
+analytic and combinatorial arguments printed below.

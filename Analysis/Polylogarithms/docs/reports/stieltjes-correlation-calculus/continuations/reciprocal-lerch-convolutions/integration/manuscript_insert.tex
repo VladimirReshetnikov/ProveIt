@@ -1,0 +1,100 @@
+\section{Reciprocal Lerch products and entire-order moments}
+\label{rlc:insert:section}
+For $y>0$ and $\Re a>0$ put
+\[
+ F_{a,s}(y)=y\Phi(-y,s,a),\qquad
+ \mathcal E_a(v)=v\zeta(v+1,a),\qquad \mathcal E_a(0)=1.
+\]
+The last prescription removes the unique apparent pole. In particular,
+$F_{1,s}(y)=-\operatorname{Li}_s(-y)$.
+\begin{theorem}[Entire-order reciprocal product]
+\label{rlc:insert:product}
+For every $s,t\in\mathbb C$,
+\[
+ \int_0^\infty F_{a,s}(y)F_{a,t}(1/y)\frac{\mathrm dy}{y}
+        =\mathcal E_a(s+t).
+\]
+The integral is ordinary and absolutely convergent. It may be
+differentiated any finite number of times in either order.
+\end{theorem}
+\begin{proof}
+With $f_{a,s}(x)=F_{a,s}(e^x)$, the Euler integral gives
+\[
+ f_{a,s}(x)=\frac1{\Gamma(s)}\int_0^\infty
+ u^{s-1}e^{-(a-1)u}\frac{e^{x-u}}{1+e^{x-u}}\mathrm du
+\]
+for $\Re s>0$. For
+$\max(0,1-\Re a)<c<1$, its $e^{-cx}$-weighted version lies in
+$L^1\cap L^\infty$. The same holds after any fixed derivative of the
+logistic kernel. The relation
+$(\partial_x+a-1)f_{a,s}=f_{a,s-1}$ therefore extends it to an entire
+weighted family in $s$, with all logarithmic moments locally uniformly
+integrable.
+
+For positive real parts of the two orders, the reciprocal $y$ integral
+of their two Euler denominators equals
+$(u+v)/(1-e^{-(u+v)})$. Set $w=u+v$ and integrate the beta proportions.
+The result is
+\[
+ \frac1{\Gamma(s+t)}\int_0^\infty
+ \frac{w^{s+t}e^{-(a-1)w}}{e^w-1}\mathrm dw
+       =(s+t)\zeta(s+t+1,a).
+\]
+Weighted holomorphy extends this identity to all orders and justifies
+all order derivatives.
+\end{proof}
+
+Writing $L_m^a(y)=\left.\partial_s^mF_{a,s}(y)\right|_{s=0}$ and using
+$\zeta(1+v,a)=v^{-1}+\sum_{n\ge0}(-1)^n\gamma_n(a)v^n/n!$ gives
+\begin{equation}\label{rlc:insert:stieltjes}
+ \int_0^\infty L_m^a(y)L_n^a(1/y)\frac{\mathrm dy}{y}
+ =\begin{cases}
+ 1,&m+n=0,\\
+ (-1)^{m+n-1}(m+n)\gamma_{m+n-1}(a),&m+n>0.
+ \end{cases}
+\end{equation}
+Thus this particular Stieltjes product law needs no finite-part
+normalization.
+
+The full report gives a pole-free formula for every logarithmic moment.
+Let $W=s+t$,
+$Q_k(s,t)=((s)_k-(-1)^k(t)_k)/(s+t+k-1)$,
+and $d_{2j}=[z^{2j}]\pi z/\sin\pi z$. The quotient $Q_k$ is a
+polynomial: its numerator vanishes at $t=1-k-s$. Then
+\begin{equation}\label{rlc:insert:moments}
+ \int_0^\infty\log^\ell y\,F_{a,s}(y)F_{a,t}(1/y)\frac{\mathrm dy}{y}
+ =\ell!\sum_{j=0}^{\lfloor\ell/2\rfloor}
+ \frac{d_{2j}}{(\ell-2j+1)!}
+ Q_{\ell-2j+1}(s,t)\mathcal E_a(W+\ell-2j).
+\end{equation}
+In particular the first moment is
+$(s-t)\mathcal E_a(W+1)/2$, not twice that value.
+For a concise derivation, insert $y^\lambda$ in the Euler-integral
+proof above. The result has the normally convergent local expansion
+\[
+ \frac{\pi}{\sin\pi\lambda}
+ \sum_{k\ge1}\frac{(s)_k-(-1)^k(t)_k}{k!}
+                \zeta(W+k,a)\lambda^k.
+\]
+Coefficient extraction and the polynomial divisibility give
+\eqref{rlc:insert:moments}; entire continuation completes the proof.
+
+At higher multiplicative depth, the convolution transform is
+$(\pi\csc\pi p)^r(p+a-1)^{-W}$. The elementary polynomials
+$p_1=1$, $p_2=X$, and
+$p_{r+2}(X)=(X^2+r^2\pi^2)p_r(X)$ give a finite central reduction.
+For example,
+\[
+ \mathcal C_{4,a}(W;0)=\frac{(W)_2\mathcal E_a(W+2)
+                      +4\pi^2\mathcal E_a(W)}6.
+\]
+Its value at $W=-2$ contains $1/3$ from the cancelled zeta pole.
+Every mixed logarithmic weight also has a finite differential-polynomial
+reduction, as proved in the full report.
+
+\paragraph{Status boundary.}
+This reciprocal geometry is distinct from the same-direction rational
+Mellin product. The arbitrary-order same-direction problem and the
+canonical Gaussian $S_6/S_8$ candidates are not resolved by this insertion.
+The ordinary formulas also do not replace the repository's separately
+normalized distributional Stieltjes products.

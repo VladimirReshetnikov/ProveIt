@@ -1,0 +1,546 @@
+\section{A finite Euler-sum space for every centered harmonic moment}
+\label{hpnew:section}
+
+The recent raw-power report proves that the centered series
+\[
+ F_p(s,a)=\sum_{n=0}^{\infty}\frac{H_n^p}{(n+a)^s},\qquad
+ H_n=\sum_{j=1}^n\frac1j,\quad H_0=0,
+\]
+is regular at $s=0,-2,-4,\ldots$ when $a=1/2$.
+Its Question 10 asks for a generator that avoids listing every
+composition of $p$, with the complete sequence $F_p(-2,1/2)$ as a
+first target \cite{RepoExactResonant}. We give such a generator for
+\emph{every} nonnegative even moment. More strongly, for fixed $p$ all
+these values lie in one finite rational span of convergent Euler sums,
+independent of the moment order. These are exact analytic identities;
+no assertion of arithmetic independence or literature-wide priority is
+made. They concern values at regular spectral points, not derivatives
+of a formula known only at those points.
+
+\subsection{An exponent parameter with the required joint regularity}
+
+Introduce the auxiliary exponent family
+\begin{equation}\label{hpnew:exponent}
+ \mathscr F(s,u)=\sum_{n=0}^{\infty}
+       \frac{\exp(uH_n)}{(n+1/2)^s},\qquad
+                    \Re(s-u)>1.
+\end{equation}
+Positive bases have their real logarithms. This normally convergent
+series is jointly holomorphic in its initial domain. At $u=0$ its
+$p$th derivative is $F_p(s,1/2)$ for $p\ge1$; the zeroth derivative is
+$\zeta(s,1/2)$. Let $B_j(x)$ denote the Bernoulli polynomials, and put
+\begin{equation}\label{hpnew:coefficients}
+ b_j=-\frac{B_{2j}(1/2)}{2j},\qquad
+ c_j(u)=[z^j]\exp\left(u\sum_{\ell\ge1}b_\ell z^\ell\right).
+\end{equation}
+The latter definition is formal: each $c_j$ is a finite polynomial.
+No convergence of the infinite Bernoulli series is required.
+
+\begin{lemma}[Joint continuation and the centered divisor pattern]
+\label{hpnew:joint}
+The family $\mathscr F$ has a joint meromorphic continuation to
+$\mathbb C^2$, with possible polar hyperplanes
+\begin{equation}\label{hpnew:divisors}
+                         s-u=1-2j,\qquad j=0,1,2,\ldots.
+\end{equation}
+In particular it is jointly holomorphic near every $(-2r,0)$,
+$r\ge0$. The function
+\begin{equation}\label{hpnew:V}
+ V_r(u)=\mathscr F(-2r,u)
+       =\sum_{p\ge1}F_p(-2r,1/2)\frac{u^p}{p!}
+\end{equation}
+is holomorphic for $|u|<1$.
+\end{lemma}
+
+\begin{proof}
+With $x=n+1/2$, Euler--Maclaurin gives, for every fixed $J$,
+\[
+ H_n=\log x+\gamma+\sum_{j=1}^Jb_jx^{-2j}
+                              +O(x^{-2J-2}).
+\]
+This is the centered shifted-digamma expansion used in
+\cite{RepoExactResonant}. Exponentiating a finite truncation gives
+\begin{equation}\label{hpnew:asymptotic}
+ \exp(uH_n)=e^{\gamma u}x^u
+      \left(\sum_{j=0}^Jc_j(u)x^{-2j}
+                         +O_K(x^{-2J-2})\right),
+\end{equation}
+uniformly for $u$ in a compact set $K$. Fixed $u$ derivatives have
+analogous estimates with powers of $\log x$.
+Subtract these finitely many terms in \eqref{hpnew:exponent}, starting
+at any fixed positive index. The remainder is normally convergent
+when $\Re(s-u)>-2J-1$, and the subtracted terms are
+$e^{\gamma u}c_j(u)\zeta(s-u+2j,N+1/2)$.
+The sole pole of each Hurwitz function is at its first argument $1$
+\cite{DLMFHurwitz}. Arbitrarily large $J$ prove the stated joint
+continuation. None of the hyperplanes \eqref{hpnew:divisors} passes
+through $(-2r,0)$. Joint holomorphy, rather than a formal interchange
+at a singular point, therefore identifies all the coefficients in
+\eqref{hpnew:V}. Its constant coefficient is
+$\zeta(-2r,1/2)=0$.
+\end{proof}
+
+\subsection{A triangular generator from ordinary telescoping}
+
+For $k\ge2$ define the normally convergent functions
+\begin{align}
+ E_k(u)&=\sum_{n\ge1}\frac{\exp(uH_{n-1})}{n^k},
+                                  &&\Re u<k-1,\label{hpnew:Ek}\\
+ B(u)&=1+\sum_{k\ge2}\frac{u^k}{k!}E_k(u),
+                                  &&\Re u<1.\label{hpnew:B}
+\end{align}
+The letter $B$ without an index in \eqref{hpnew:B} is an auxiliary
+function, not a Bernoulli polynomial. Its coefficients involve the
+ordinary convergent Euler sums
+\begin{equation}\label{hpnew:Euler}
+ E_{q,k}=\sum_{n\ge1}\frac{H_{n-1}^q}{n^k},\qquad
+ q\ge0,\quad k\ge2;\qquad
+ E_k(u)=\sum_{q\ge0}E_{q,k}\frac{u^q}{q!}.
+\end{equation}
+The Taylor identity in \eqref{hpnew:Euler} is used near $u=0$.
+Here $H_{n-1}^0=1$, including at $n=1$.
+
+\begin{theorem}[A finite triangular generator at every centered moment]
+\label{hpnew:generator}
+For $m=0,1,\ldots$, define $G_m(u)$ recursively by
+\begin{align}
+ (u+m+1)G_m(u)
+ ={}&\sum_{j=0}^{m-1}
+ \left\{(-1)^{m+1-j}\binom{m+1}{j}
+             -\frac{u^{m+1-j}}{(m+1-j)!}\right\}G_j(u)\notag\\
+ &+\frac{u^{m+1}}{(m+2)!}B(u)
+ -\sum_{k\ge2}\frac{u^{k+m+1}}{(k+m+1)!}E_k(u).
+ \label{hpnew:Grecurrence}
+\end{align}
+The first sum is empty at $m=0$. All functions are holomorphic on
+$|u|<1$, and
+\begin{equation}\label{hpnew:Vrecurrence}
+ \boxed{\displaystyle
+ V_r(u)=\sum_{j=0}^{2r}\binom{2r}{j}
+                     \left(-\frac12\right)^{2r-j}G_j(u).}
+\end{equation}
+Thus $2r+1$ triangular steps determine the exponential generating
+function for all $F_p(-2r,1/2)$. For a specified $p$, only finitely
+many coefficients of finitely many $E_k$ are needed.
+\end{theorem}
+
+\begin{proof}
+Put $g_n(u)=\exp(uH_{n-1})$. It obeys the exact discrete equation
+\[
+                  g_{n+1}(u)=e^{u/n}g_n(u).
+\]
+For $\Re u<0$, telescoping and then an absolutely convergent
+exponential expansion give
+\[
+ -1=\sum_{n\ge1}(g_{n+1}-g_n)
+   =u\sum_{n\ge1}\frac{g_n}{n}
+                      +\sum_{k\ge2}\frac{u^k}{k!}E_k(u).
+\]
+Consequently the continued order-one sum is exactly
+\begin{equation}\label{hpnew:Eone}
+                \sum_{n\ge1}\frac{g_n(u)}n=-\frac{B(u)}u.
+\end{equation}
+This equality initially concerns ordinary sums in $\Re u<0$.
+
+For a fixed $m\ge0$, work first in $\Re u<-m-1$, where all the
+following sums converge absolutely. Multiplying the discrete equation
+by $n^{m+1}$, summing to a finite cutoff $N$, and only then
+shifting an index yields the following formulas after $N\to\infty$
+\begin{align*}
+ \sum_{n\ge1}n^{m+1}(g_{n+1}-g_n)
+ &=\sum_{j=0}^{m}(-1)^{m+1-j}\binom{m+1}{j}
+                                  \sum_{n\ge1}n^jg_n,\\
+ \sum_{n\ge1}n^{m+1}(g_{n+1}-g_n)
+ &=\sum_{k\ge1}\frac{u^k}{k!}
+                                  \sum_{n\ge1}\frac{g_n}{n^{k-m-1}}.
+\end{align*}
+The upper-end term is $N^{m+1}g_{N+1}=O(N^{m+1+\Re u})$ and
+vanishes in the stated half-plane. There is no lower-end boundary
+term because the polynomial being shifted has positive degree.
+This finite-cutoff argument never separates a difference into two
+possibly divergent infinite sums. In the second line separate $k=1$,
+$2\le k\le m+1$, $k=m+2$, and $k\ge m+3$.
+Using \eqref{hpnew:Eone} for the order-one term and moving the two
+copies of $\sum n^mg_n$ to the left gives
+\eqref{hpnew:Grecurrence}. In particular its $G_m$ is the
+meromorphic continuation of the ordinary sum
+$\sum_{n\ge1}n^m\exp(uH_{n-1})$ from $\Re u<-m-1$.
+
+Here are the convergence details for the continuation. On a compact
+subset of $\Re u<1$, choose $U<1$ with $\Re u\le U$.
+The two-sided estimate $H_{n-1}=\log n+O(1)$ gives
+$|g_n(u)|\le Cn^U$, uniformly, including when $\Re u$ is negative. Hence all $E_k(u)$, $k\ge2$, are
+bounded by a common summable majorant, and the factorial denominators
+make both infinite $k$ sums normally convergent. Fixed derivatives in
+$u$ are justified on slightly larger compact subsets, or directly by
+inserting powers of $H_{n-1}$. The recurrence therefore continues
+$G_m$ meromorphically to $\Re u<1$, with possible poles only at
+$-1,-2,\ldots,-m-1$. In particular it is holomorphic on $|u|<1$.
+
+Finally, for $\Re u<-2r-1$, an ordinary change of index in the
+absolutely convergent defining series gives
+\[
+ \mathscr F(-2r,u)=\sum_{n\ge1}(n-1/2)^{2r}g_n(u)
+   =\sum_{j=0}^{2r}\binom{2r}{j}(-1/2)^{2r-j}G_j(u).
+\]
+Meromorphic continuation in $u$ proves \eqref{hpnew:Vrecurrence};
+Lemma~\ref{hpnew:joint} identifies its Taylor coefficients with the
+claimed regular spectral values.
+\end{proof}
+
+\begin{remark}[Why the auxiliary values cannot be specialized in the other order]
+\label{hpnew:orderwarning}
+Induction in \eqref{hpnew:Grecurrence} gives $G_m(0)=0$ for every
+$m$. For example $G_1(0)=0$, whereas $\zeta(-1)=-1/12$.
+This is consistent: $G_m$ first fixes the spectral argument at $-m$
+and then continues the exponent $u$. The uncentered family has polar hyperplanes $s-u=1-j$.
+Even a single such divisor can prevent joint holomorphy when its
+numerator vanishes at the specialization point. For example its
+local subtraction includes
+\[
+ e^{\gamma u}\left(\frac{u^2}{8}-\frac{u}{12}\right)
+                                      \zeta(s-u+2).
+\]
+At $s=-1$ and then $u\to0$, this contributes $1/12$; at $u=0$
+first, it contributes zero. It is therefore invalid to replace
+$G_m(0)$ by the separately specialized zeta value.
+The centered combination \eqref{hpnew:Vrecurrence} is justified by
+joint holomorphy, which was proved before coefficient extraction.
+\end{remark}
+
+\subsection{A finite arithmetic space independent of the moment order}
+
+\begin{theorem}[Uniform finite Euler-sum span]
+\label{hpnew:uniformspan}
+For $p\ge1$, set
+\begin{equation}\label{hpnew:space}
+ \mathcal E_{p-1}=\operatorname{span}_{\mathbb Q}
+ \left(\{1\}\cup
+   \{E_{q,k}:q\ge0,\ k\ge2,\ q+k\le p-1\}\right).
+\end{equation}
+Then
+\begin{equation}\label{hpnew:spanconclusion}
+ \boxed{\displaystyle
+             F_p(-2r,1/2)\in\mathcal E_{p-1}
+                    \quad\hbox{for every }r\ge0.}
+\end{equation}
+Every value has a finite multiple-zeta expression using weights at
+most $p-1$, with no Euler constant required. In particular every
+centered even-negative moment of $H_n$ or $H_n^2$ is rational.
+For $p\ge2$, the displayed spanning list has at most
+$1+\binom{p-1}{2}$ elements; this is a spanning bound, not a claim
+that the periods in the list are independent.
+\end{theorem}
+
+\begin{proof}
+The recurrence is linear in the functions $E_k(u)$, and all rational
+coefficients being expanded are regular at $u=0$.
+An occurrence of $E_k$ first has a factor $u^{k+m+1}$, either in
+the last sum of \eqref{hpnew:Grecurrence} or through $B$ in its
+preceding term. Its exponent is at least $k+1$.
+Induction on $m$ therefore shows that the coefficient of $u^p$ in
+any $G_m$, and hence in any $V_r$, is a rational linear combination
+of $1$ and $E_{q,k}$ with $q+k\le p-1$.
+
+For completeness, the finite multiple-zeta reduction is
+\begin{equation}\label{hpnew:MZV}
+ E_{q,k}=\sum_{\substack{(r_1,\ldots,r_d)\text{ a composition of }q}}
+       \frac{q!}{r_1!\cdots r_d!}\,
+                          \zeta(k,r_1,\ldots,r_d).
+\end{equation}
+At $q=0$ the empty composition gives $E_{0,k}=\zeta(k)$.
+To prove the formula, expand $H_{n-1}^q$, order its distinct indices,
+and group equal indices into blocks of sizes $r_1,\ldots,r_d$.
+The displayed multinomial is their multiplicity. Each resulting MZV
+converges because its first index is $k\ge2$, and its weight is
+$q+k$. Formula \eqref{hpnew:MZV} is an optional final conversion:
+it is not necessary for computing the generator itself.
+\end{proof}
+
+This uniform space is smaller information than an unspecified
+multiple-zeta algebra at each separate moment. Increasing $r$ changes
+rational coefficients in one fixed finite list; it does not require
+Euler sums of increasing weight.
+
+\subsection{Two all-moment Bernoulli identities}
+
+\begin{corollary}[The first two powers at every centered even moment]
+\label{hpnew:Bernoulli}
+For every $r\ge0$,
+\begin{align}
+ F_1(-2r,1/2)&=\frac12 B_{2r}(1/2),\label{hpnew:firstpower}\\
+ F_2(-2r,1/2)&=-\sum_{j=0}^{r}\binom{2r}{2j}
+       \frac{B_{2j}B_{2r-2j}(1/2)}{2j+1}.
+                         \label{hpnew:secondpower}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+The classical generating functions needed here are particularly short.
+Write $L(t)=-\log(1-e^{-t})$, and define
+$A_p(t)=(1-e^{-t})\sum_{n\ge0}H_n^pe^{-nt}$.
+Then $A_1=L$ and $A_2=L^2+\Li_2(e^{-t})$.
+Consequently
+\[
+                         A_2'(t)=-\coth(t/2)L(t).
+\]
+The odd powers in the local expansion of $L$ consist only of $t/2$:
+\[
+ L(t)=-\log t+\frac t2
+                  -\log\left(\frac{\sinh(t/2)}{t/2}\right).
+\]
+Here ``odd powers'' refers to the power--log expansion at $t=0$,
+with no branch continuation to negative $t$ being assumed.
+It follows that the odd-power part of $A_2$ is
+\[
+ -\int_0^t\frac v2\coth(v/2)\,dv
+       =-\sum_{j\ge0}\frac{B_{2j}}{(2j)!(2j+1)}t^{2j+1}.
+\]
+The centered Mellin kernel is $A_p(t)/(2\sinh(t/2))$.
+Its log-free coefficient of $t^{2r}$, multiplied by $(2r)!$, is
+$F_p(-2r,1/2)$. Indeed that coefficient gives the simple Mellin
+pole at $s=-2r$, and the simple zero of $1/\Gamma(s)$ cancels
+it; all holomorphic Mellin terms vanish at the specialization.
+Regularity proved in Lemma~\ref{hpnew:joint} eliminates higher
+logarithmic poles. Finally use
+\[
+ \frac1{2\sinh(t/2)}=
+             \sum_{j\ge0}\frac{B_{2j}(1/2)}{(2j)!}t^{2j-1}.
+\]
+Multiplying the two convergent local series gives
+\eqref{hpnew:firstpower} and \eqref{hpnew:secondpower}.
+\end{proof}
+
+\subsection{A sufficient parity class for generalized harmonic products}
+
+There is also a direct extension toward Question 11 of
+\cite{RepoExactResonant}. Define
+$H_n^{(q)}=\sum_{k=1}^n k^{-q}$ and
+$U_q(s)=\sum_{n\ge0}H_n^{(q)}(n+1/2)^{-s}$.
+
+\begin{corollary}[Odd harmonic orders and finite ordinary-zeta values]
+\label{hpnew:oddorders}
+Let $P$ be any polynomial in finitely many variables. The Dirichlet
+series with numerator
+\[
+                 P(H_n,H_n^{(3)},H_n^{(5)},\ldots,H_n^{(2d+1)})
+\]
+is holomorphic at every $s=-2r$, $r\ge0$. This is a sufficient
+class of numerator polynomials, not a necessity classification.
+For a single positive odd integer $q$, the exact values are
+\begin{equation}\label{hpnew:oddformula}
+ \boxed{\displaystyle
+ U_q(-2r)=-\frac1{2r+1}\sum_{j=0}^{r}\binom{2r+1}{2j}
+          B_{2j}(1/2)\,
+                         \zeta(q-2r-1+2j).}
+\end{equation}
+For fixed odd $q\ge3$, all these moments belong to the same space
+$\operatorname{span}_{\mathbb Q}\{1,\zeta(2),\zeta(4),\ldots,
+\zeta(q-1)\}$. At $q=1$, formula \eqref{hpnew:oddformula} reduces
+to \eqref{hpnew:firstpower}.
+\end{corollary}
+
+\begin{proof}
+For $q\ge3$ and $x=n+1/2$, use
+$H_n^{(q)}=\zeta(q)-\zeta(q,x+1/2)$ and the midpoint expansion
+\[
+ \zeta(q,x+1/2)=\frac{x^{1-q}}{q-1}
+ +\sum_{j=1}^{J}\frac{B_{2j}(1/2)(q)_{2j-1}}{(2j)!}
+                                       x^{1-q-2j}
+ +O(x^{-q-2J-1}).
+\]
+When $q$ is odd, every displayed inverse power is even. Together
+with the even inverse-power expansion of $H_n$ following its
+logarithm, this shows that any stated polynomial has an asymptotic
+expansion containing only $x^{-2j}(\log x)^h$. Finite subtraction
+in its Dirichlet series leaves possible poles only at $s=1-2j$.
+This proves regularity at every nonpositive even integer.
+
+To prove the value formula, first take $\Re q>2r+2$. The identity
+$U_q(s)-\zeta(q)\zeta(s,1/2)
+=-\sum_{n\ge0}\zeta(q,n+1)(n+1/2)^{-s}$ continues the difference
+to $s=-2r$ by an absolutely convergent tail sum. Since
+$\zeta(-2r,1/2)=0$, ordinary summation reversal gives
+\[
+ U_q(-2r)=-\sum_{k\ge1}k^{-q}
+                         \sum_{n=0}^{k-1}(n+1/2)^{2r}.
+\]
+The centered Faulhaber identity is
+\[
+ \sum_{n=0}^{k-1}(n+1/2)^{2r}
+ =\frac{B_{2r+1}(k+1/2)}{2r+1}
+ =\frac1{2r+1}\sum_{j=0}^{r}\binom{2r+1}{2j}
+                              B_{2j}(1/2)k^{2r+1-2j}.
+\]
+Insertion proves \eqref{hpnew:oddformula} in this half-plane.
+
+The same tail expansion supplies joint meromorphic continuation
+in $(s,q)$; its possible moving divisors are $s+q=2-2j$.
+None passes through $(-2r,q)$ for an odd positive integer $q$.
+The apparent pole at $q=1$ cancels: near $s=-2r$ the combination
+\[
+ \zeta(q)\zeta(s,1/2)-\frac{\zeta(s+q-1,1/2)}{q-1}
+\]
+is jointly holomorphic after writing it as
+$(\zeta(q)-(q-1)^{-1})\zeta(s,1/2)
+-(\zeta(s+q-1,1/2)-\zeta(s,1/2))/(q-1)$.
+The remaining finite subtractions and the normal remainder have
+no divisor there. Thus meromorphic continuation of the value formula
+really gives the separately specified odd-order functions, including
+$H_n^{(1)}=H_n$. Finally, every zeta argument in
+\eqref{hpnew:oddformula} is even; negative even arguments give zero
+and $\zeta(0)=-1/2$, proving the claimed fixed span.
+\end{proof}
+
+For example,
+\begin{align}\label{hpnew:thirdorder}
+ U_3(0)&=-\zeta(2),&
+ U_3(-2)&=\frac16+\frac1{12}\zeta(2),&
+ U_3(-4)&=-\frac1{12}-\frac7{240}\zeta(2),\\
+ U_5(0)&=-\zeta(4),&
+ U_5(-2)&=-\frac13\zeta(2)+\frac1{12}\zeta(4),\notag\\
+ U_5(-4)&=\frac1{10}+\frac16\zeta(2)-\frac7{240}\zeta(4).
+                                                               \notag
+\end{align}
+The odd-order restriction should be retained. At an even-order
+specialization a vanishing coefficient can still meet a moving divisor,
+so continuing the fixed spectral value in $q$ need not agree with
+specializing $q$ before taking the spectral value. No such ambiguity
+occurs at the odd orders proved here.
+
+\subsection{Compact generators at zero, minus two, and minus four}
+
+Put $Q(u)=V_0(u)$, $V(u)=V_1(u)$, and $W(u)=V_2(u)$.
+The first three moment rows have the following compact forms.
+\begin{corollary}[Three complete rows in the harmonic power]
+\label{hpnew:threerows}
+For $|u|<1$,
+\begin{align}
+ (u+1)Q(u)
+ &=\frac u2+\frac12\sum_{k\ge2}(k-1)
+                  \frac{u^{k+1}}{(k+1)!}E_k(u),\label{hpnew:Q}\\
+ (u+3)V(u)
+ &=\frac{u^3-3u-3}{12}Q(u)-\frac{u^3}{24}\notag\\
+ &\hspace{4mm}-\frac1{24}\sum_{k\ge2}(k-1)(k+1)(k+6)
+                  \frac{u^{k+3}}{(k+3)!}E_k(u),\label{hpnew:minus2}\\
+ (u+5)W(u)
+ &=-\frac{u^3+18u^2+90u+150}{60}V(u)\notag\\
+ &\hspace{4mm}-\frac{u^3+6u^2+15u+15}{240}Q(u)\notag\\
+ &\hspace{4mm}+\frac1{120}\sum_{k\ge2}k(k-1)(k+1)
+                  \frac{u^{k+5}}{(k+5)!}E_k(u).
+                                      \label{hpnew:minus4}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+The $m=0$ case of \eqref{hpnew:Grecurrence}, followed by substitution
+of \eqref{hpnew:B}, is \eqref{hpnew:Q}. For the next row use
+\[
+ V=G_2-G_1+\frac14G_0.
+\]
+The $G_1$ coefficient is $-u(u+2)/2$ before its substitution, so its
+apparent denominator $u+2$ cancels. Substituting $B$ gives the factor
+\[
+ \frac{k+1}{2(k+3)!}-\frac1{24k!}
+       =-\frac{(k-1)(k+1)(k+6)}{24(k+3)!},
+\]
+which proves \eqref{hpnew:minus2}.
+For the last row substitute $m\le4$ into
+\[
+ W=G_4-2G_3+\frac32G_2-\frac12G_1+\frac1{16}G_0.
+\]
+Collect $Q$, $V$, the constant part of $B$, and the coefficient of
+each $E_k$ separately. The first three are respectively
+$-(u^3+6u^2+15u+15)/(240(u+5))$,
+$-(u^3+18u^2+90u+150)/(60(u+5))$, and zero; the last is
+$k(k-1)(k+1)u^{k+5}/(120(u+5)(k+5)!)$.
+These rational simplifications prove \eqref{hpnew:minus4}. The
+verification script replays them with symbolic $u$ and $k$.
+\end{proof}
+
+The zero row \eqref{hpnew:Q} recovers the recurrence already proved
+in \cite{RepoExactResonant}. Equations \eqref{hpnew:minus2} and
+\eqref{hpnew:minus4} determine two further complete rows, while
+Theorem~\ref{hpnew:generator} supplies every remaining row.
+For an explicit finite coefficient version, write
+$Q_p=F_p(0,1/2)$, $V_p=F_p(-2,1/2)$ and $Q_0=V_0=0$.
+For $p\ge1$, \eqref{hpnew:minus2} says
+\begin{align}\label{hpnew:finiteV}
+ 3V_p+pV_{p-1}
+ ={}&\frac{p(p-1)(p-2)}{12}Q_{p-3}
+       -\frac p4Q_{p-1}-\frac14Q_p-\frac14\mathbf1_{p=3}\notag\\
+ &-\frac1{24}\sum_{k=2}^{p-3}(k-1)(k+1)(k+6)
+                     \binom p{k+3}E_{p-k-3,k}.
+\end{align}
+The first term is omitted for $p<3$, and an empty sum is zero.
+There is no infinite coefficient calculation at a fixed $p$.
+
+For example, the next fifth-power identity is
+\begin{equation}\label{hpnew:fifth}
+ \boxed{\displaystyle
+ F_5(-2,1/2)=-\frac{200}{81}-\frac{23}{54}\zeta(2)
+                  +\frac5{12}\zeta(3)-\frac{11}{8}\zeta(4).}
+\end{equation}
+At the next spectral point the first five powers are
+\begin{align}
+ F_1(-4,1/2)&=\frac7{480},&
+ F_2(-4,1/2)&=\frac{19}{3600},\notag\\
+ F_3(-4,1/2)&=\frac{493}{18000}+\frac7{480}\zeta(2),
+                                                      \label{hpnew:table4}\\
+ F_4(-4,1/2)&=-\frac{6479}{67500}+\frac{19}{1800}\zeta(2)
+                              +\frac7{80}\zeta(3),\notag\\
+ F_5(-4,1/2)&=\frac{98437}{202500}+\frac{643}{5400}\zeta(2)
+                +\frac{19}{240}\zeta(3)+\frac{77}{160}\zeta(4).
+                                                        \notag
+\end{align}
+Coefficient extraction from \eqref{hpnew:Q}--\eqref{hpnew:minus4}
+proves these evaluations. Beyond $E_{0,k}=\zeta(k)$, the only
+low-weight reductions needed are the classical identities
+$E_{1,2}=\zeta(3)$, $E_{1,3}=\zeta(4)/4$ and
+$E_{2,2}=11\zeta(4)/4$, also used in \cite{RepoExactResonant}.
+
+\subsection{Exact exponent singularities and reproducible checks}
+
+The apparent negative even denominators in the triangular recursion
+cancel in every centered row. This has a stronger analytic explanation.
+\begin{corollary}[Exact negative poles of the exponent generator]
+\label{hpnew:upoles}
+On $\Re u<1$, the function $V_r$ has exactly the simple poles
+\[
+                     u=-2r-1,-2r+1,\ldots,-1.
+\]
+At $u_j=2j-2r-1$, $0\le j\le r$, its residue is
+\begin{equation}\label{hpnew:residue}
+             \operatorname{Res}_{u=u_j}V_r(u)
+                        =-e^{\gamma u_j}c_j(u_j).
+\end{equation}
+Its Taylor series at zero therefore has exact radius $1$.
+\end{corollary}
+
+\begin{proof}
+The finite subtraction in \eqref{hpnew:asymptotic} leaves precisely
+these possible poles in the indicated half-plane. The Hurwitz pole is
+$\zeta(1-(u-u_j),N+1/2)$, with residue $-1$ in $u$, proving
+\eqref{hpnew:residue}. To check that none is removable, use
+$B_{2j}(1/2)=(2^{1-2j}-1)B_{2j}$. Thus
+$b_j=(-1)^{j+1}|b_j|$. For a negative real $u$, every term in the
+coefficient $c_j(u)$ has sign $(-1)^j$, and at least one term is
+nonzero; also $c_0=1$. Hence every displayed residue is nonzero.
+The pole at $-1$ fixes the exact Taylor radius.
+\end{proof}
+
+The accompanying \src{code/verify_harmonic_powers.py} performs exact
+rational checks of the three generator rows, extracts the displayed
+values, checks the first two Bernoulli formulas and the centered
+Faulhaber identity through multiple moment orders, and evaluates six
+odd generalized-harmonic checkpoints. Its independent numerical
+calculation starts from the
+original harmonic-power sums, subtracts their centered Euler--Maclaurin
+expansion, and evaluates the remaining Hurwitz order derivatives.
+Two different truncation lengths are compared. This diagnostic tests
+signs and constants without reusing the triangular generator; it is
+not a proof of an infinite identity or a certified numerical error bound.
+The proof is the normally convergent telescoping argument and the
+joint continuation established above. The first regular spectral
+coefficient beyond these centered values still carries global Mellin
+information; the theorem makes no unsupported claim to eliminate it.

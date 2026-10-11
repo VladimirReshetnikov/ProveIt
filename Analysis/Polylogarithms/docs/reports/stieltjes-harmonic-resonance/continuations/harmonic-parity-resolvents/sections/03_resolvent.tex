@@ -1,0 +1,483 @@
+\section{Cotangent resolvents: a nonpolynomial Stieltjes generator}
+\label{res:section}
+
+Question Q8 of the incoming \emph{Exact Resonant Identities} report
+\cite{ghp:ExactResonant} asks for a nonpolynomial extension of its
+cotangent moment calculus, including the local subtraction before
+parameter expansion. We give such an extension for every rational
+function of the cotangent bounded at infinity and with no real pole. A single
+resolvent supplies the answer; differentiation gives all repeated
+poles, and partial fractions give the general rational case. The
+answer involves ordinary polylogarithms and their order derivatives.
+The Fourier identity used in the proof is classical. The contribution
+here is the completed rational-kernel identity, its precise endpoint
+correction at every Stieltjes and argument-derivative order, and its
+compatibility with continuous polygamma orders and primitives.
+
+\subsection{Coordinates, branches, and finite parts}
+
+Write
+\begin{equation}\label{res:kernel}
+ K(x)=\pi\cot(\pi x),\qquad
+ R_z(x)=\frac1{K(x)-z},\qquad 0<x<1,\quad z\in\mathbb C\setminus\mathbb R.
+\end{equation}
+Although $K$ has endpoint poles, $R_z$ extends to a smooth periodic
+function, with $R_z(0)=R_z(1)=0$. On either open half-plane put
+\begin{equation}\label{res:coordinates}
+ \epsilon=\operatorname{sgn}(\Im z),\quad
+ a=z+\epsilon\pi i,\quad
+ q=\frac{z-\epsilon\pi i}{z+\epsilon\pi i},\quad
+ c=\frac{2\epsilon\pi i}{a^2},\quad
+ \sigma=-2\epsilon\pi i.
+\end{equation}
+Thus $|q|<1$, and throughout the section
+\[
+ \Log\sigma=\log(2\pi)-\epsilon i\pi/2.
+\]
+The letter $a$ in this section is only the denominator in
+\eqref{res:coordinates}; it is not a Hurwitz endpoint.
+To remove an otherwise unnecessary exceptional case, define
+\begin{equation}\label{res:normalizedpolylog}
+ \Phi_*(s,q)=\frac{\Li_s(q)}q
+       =\sum_{n\ge1}\frac{q^{n-1}}{n^s},\qquad
+ \Phi_*(s,0)=1.
+\end{equation}
+This function is entire in $s$ and holomorphic for $|q|<1$.
+Its order derivatives at $q=0$ are zero except at order zero.
+
+We use the conventional generalized Stieltjes functions
+\begin{equation}\label{res:stieltjes}
+ \zeta(1-s,x)=-\frac1s+
+       \sum_{m\ge0}\gamma_m(x)\frac{s^m}{m!},\qquad
+ \gamma_0(x)=-\psi(x).
+\end{equation}
+A superscript $(p)$ on $\gamma_m$ or $\psi$ means an argument
+derivative. A superscript $[j]$ on $\Li_s$ or $\Phi_*$ means an order
+derivative. These two operations must be distinguished.
+
+Every finite part below is taken in the original variable $x$:
+$\operatorname{FP}_x\int_0^1 f(x)\,dx$ is the coefficient of
+$\varepsilon^0(\log\varepsilon)^0$ in
+$\int_\varepsilon^{1-\varepsilon}f(x)\,dx$. Equivalently, subtract
+the finitely many nonintegrable endpoint terms, integrate the
+remainder, and add the constant terms of the explicit subtractions.
+For the resolvent integrals only the endpoint $x=0$ can be singular.
+The Stieltjes shift formula gives
+\begin{equation}\label{res:singularpart}
+ \gamma_m(x)=\frac{\log^m x}{x}+\gamma_m(x+1).
+\end{equation}
+Consequently all the finite parts used here exist. In particular,
+\[
+ M_{m,p}(z):=\operatorname{FP}_x\int_0^1\gamma_m^{(p)}(x)R_z(x)\,dx
+\]
+is an ordinary convergent integral when $p=0$.
+
+\subsection{The complete all-index identity}
+
+Set
+\begin{equation}\label{res:BE}
+ B_\epsilon(s)=\Gamma(1+s)\sigma^{-s},\qquad
+ E_p(s)=\prod_{j=1}^p\left(1-\frac{s}{j}\right),\qquad E_0(s)=1.
+\end{equation}
+
+\begin{theorem}[Completed cotangent--Stieltjes resolvent]
+\label{res:main}
+For all integers $m,p\ge0$ and $z\notin\mathbb R$,
+\begin{equation}\label{res:master}
+ \boxed{\displaystyle
+ M_{m,p}(z)=m!c\sigma^p[s^{m+1}]
+ \left\{B_\epsilon(s)\Phi_*(s-p,q)
+                   -E_p(s)\Phi_*(-p,q)\right\}.}
+\end{equation}
+The expression in braces vanishes at $s=0$. The identity is
+holomorphic in $z$ on each half-plane, including $z=\epsilon i\pi$.
+For $p\ge1$ the polynomial $E_p$ is the full local endpoint
+correction. Its contribution vanishes whenever $m\ge p$.
+\end{theorem}
+
+The identity can be expanded without any coefficient notation.
+Let $g_j=B_\epsilon^{(j)}(0)$ and $e_{p,j}=E_p^{(j)}(0)$. Then
+\begin{equation}\label{res:expanded}
+ M_{m,p}(z)=\frac{c\sigma^p}{m+1}
+ \left\{\sum_{j=0}^{m+1}\binom{m+1}{j}
+     g_{m+1-j}\Phi_*^{[j]}(-p,q)
+                 -e_{p,m+1}\Phi_*(-p,q)\right\}.
+\end{equation}
+The coefficients $g_j$ are complete exponential Bell polynomials
+with logarithmic derivatives
+\[
+ b_1=-\gamma-\Log\sigma,\qquad
+ b_j=(-1)^j(j-1)!\zeta(j)\quad(j\ge2),
+\]
+so $g_0=1$, $g_1=b_1$, $g_2=b_1^2+\zeta(2)$, and
+$g_3=b_1^3+3b_1\zeta(2)-2\zeta(3)$.
+Likewise
+\begin{equation}\label{res:contactcoeff}
+ e_{p,j}=(-1)^j j!\,
+ e_j\left(1,\frac12,\ldots,\frac1p\right),
+\end{equation}
+where $e_j$ on the right is the elementary symmetric polynomial;
+it is zero for $j>p$. Thus the contact terms use ordinary harmonic
+numbers and their finite Bell-polynomial combinations.
+
+\begin{proof}[Proof of Theorem~\ref{res:main}]
+It is enough to prove the upper-half-plane case; reversing the
+Fourier signs gives the other case with exactly the branches in
+\eqref{res:coordinates}. Put $w=e^{2\pi ix}$. Direct algebra gives
+the uniformly convergent Fourier expansion
+\begin{equation}\label{res:fourierkernel}
+ R_z(x)=-\frac1a+c\sum_{n\ge1}q^{n-1}e^{2\pi inx}.
+\end{equation}
+For example, at $z=i\pi$ this reduces to
+$(e^{2\pi ix}-1)/(2\pi i)$. The classical Hurwitz Fourier formula
+\cite[\S25.11]{DLMF} implies, initially in a sufficiently large
+right half-plane,
+\[
+ \int_0^1\zeta(1-s,x)\,dx=0,\qquad
+ \int_0^1\zeta(1-s,x)e^{2\pi inx}\,dx
+       =\Gamma(s)\sigma^{-s}n^{-s}.
+\]
+All termwise integrations are legitimate there because of the
+geometric factor $q^n$. Argument differentiation multiplies the
+negative Fourier mode by $\sigma n$. For $\Re s>p+1$, this gives
+\begin{equation}\label{res:spectralintegral}
+ J_p(s,z):=\int_0^1\partial_x^p\zeta(1-s,x)R_z(x)\,dx
+       =c\Gamma(s)\sigma^{p-s}\Phi_*(s-p,q).
+\end{equation}
+This equation is then an identity of meromorphic continuations.
+
+We now relate that continuation to the pointwise finite part;
+this is the step that cannot be replaced by substitution at $s=0$.
+Write $r_j(z)=[x^j]R_z(x)$. For $p\ge1$, the sole local term
+whose moving exponent crosses $-1$ at $s=0$ is
+\begin{equation}\label{res:localmoving}
+ r_p(z)A_p(s)x^{s-1},\qquad
+ A_p(s)=\prod_{j=1}^p(s-j).
+\end{equation}
+Indeed the singular part of
+$\partial_x^p\zeta(1-s,x)$ is
+$A_p(s)x^{s-p-1}$. The analytic part from $\zeta(1-s,x+1)$
+has no pole in $s$ after an argument derivative. Every other
+Taylor term of $R_z$ has an exponent separated from $-1$ near
+zero. For such a term, finite-part integration commutes with
+coefficient extraction. The term \eqref{res:localmoving} is different:
+its analytically continued integral is $r_pA_p(s)/s$, whereas the
+finite part of every coefficient $x^{-1}\log^j x$ on $(0,1)$ is zero.
+It follows, with the entire amplitude retained, that
+\begin{equation}\label{res:completion}
+ M_{m,p}(z)=m![s^m]
+            \left(J_p(s,z)-\frac{r_p(z)A_p(s)}s\right),\quad p\ge1.
+\end{equation}
+One can make this argument on $(0,\delta)$ with a finite Taylor
+subtraction and a normally integrable remainder. The compensating
+integrals on $(\delta,1)$ cancel the artificial splitting point.
+This also proves all holomorphy and coefficient interchanges used here.
+
+Differentiating \eqref{res:fourierkernel} at $x=0$ gives
+\begin{equation}\label{res:rj}
+ r_p(z)=\frac{c(-\sigma)^p}{p!}\Phi_*(-p,q),\qquad p\ge1.
+\end{equation}
+Since $A_p(s)=(-1)^pp!E_p(s)$, substitution in
+\eqref{res:completion} proves \eqref{res:master} for $p\ge1$.
+
+For $p=0$, the product $\gamma_m R_z$ is integrable by
+\eqref{res:singularpart}. The pole in \eqref{res:stieltjes} is
+independent of $x$, so
+\[
+ \sum_{m\ge0}M_{m,0}(z)\frac{s^m}{m!}
+       =J_0(s,z)+\frac1s\int_0^1R_z(x)\,dx
+       =J_0(s,z)-\frac1{as}.
+\]
+But $c\Phi_*(0,q)=1/a$. This is exactly
+\eqref{res:master} with $E_0=1$. Thus the same formula accounts
+for both the global Hurwitz pole at $p=0$ and the local moving
+endpoint singularity at $p\ge1$.
+\end{proof}
+
+\subsection{Explicit examples and a check of the correction}
+
+At the first Stieltjes index the formula is
+\begin{equation}\label{res:polygamma}
+ \operatorname{FP}_x\int_0^1\psi^{(p)}(x)R_z(x)\,dx
+  =c\sigma^p\left\{(\gamma+\Log\sigma-H_p)\Phi_*(-p,q)
+                                      -\Phi_*^{[1]}(-p,q)\right\},
+\end{equation}
+with $H_0=0$. The harmonic number is essential whenever $p>0$.
+For $m=1$ the complete formula is
+\begin{align}\label{res:gamma1}
+ M_{1,p}(z)=\frac{c\sigma^p}{2}\bigl\{
+  &\Phi_*^{[2]}(-p,q)-2(\gamma+\Log\sigma)\Phi_*^{[1]}(-p,q)\notag\\
+  &+\bigl((\gamma+\Log\sigma)^2+\zeta(2)
+                      -H_p^2+H_p^{(2)}\bigr)\Phi_*(-p,q)\bigr\}.
+\end{align}
+Here $H_0^{(2)}=0$. The correction in this equation vanishes at
+$p=0,1$, as the general threshold predicts.
+
+At $z=i\pi$, the normalized polylogarithm is identically one,
+and all positive order derivatives disappear. In particular,
+\begin{equation}\label{res:explicitcheck}
+ \operatorname{FP}_x\int_0^1
+       \frac{\psi'(x)}{\pi\cot(\pi x)-i\pi}\,dx
+       =1-\gamma-\log(2\pi)+\frac{i\pi}{2}.
+\end{equation}
+There is a direct independent verification of its constant term.
+At this $z$, $R'_z=e^{2\pi ix}$ and the finite boundary value of
+$[\psi R_z]_0^1$ is $1$, because $\psi(x)R_z(x)\to-1$ as
+$x\downarrow0$. Integration by parts therefore supplies precisely
+the $1$ in \eqref{res:explicitcheck}. Omitting the local correction
+would miss it.
+
+The local coefficients themselves require no special functions:
+\begin{equation}\label{res:riccati}
+ R_z'=1+2zR_z+(z^2+\pi^2)R_z^2,\qquad R_z(0)=0.
+\end{equation}
+Thus $r_1=1$, $r_2=z$, $r_3=z^2+\pi^2/3$, and
+$r_4=z^3+2\pi^2z/3$. In general $r_p$ is a polynomial in $z$
+of degree $p-1$. The difference between the raw spectral coefficient
+and the stated finite part is therefore a finite polynomial in $z$,
+not an additional unevaluated integral.
+
+For a real parameter $b>0$, taking the real and imaginary parts of
+the $p=m=0$ formula at $z=ib$ gives ordinary real integrals. For example,
+with $q=(b-\pi)/(b+\pi)$,
+\begin{align}
+ \int_0^1\frac{\gamma_0(x)K(x)}{K(x)^2+b^2}\,dx
+       &=\frac{\pi}{2(b+\pi)},\label{res:realexample1}\\
+ \int_0^1\frac{\gamma_0(x)}{K(x)^2+b^2}\,dx
+       &=\frac{\gamma+\log(2\pi)
+                   -(1-q)\Phi_*^{[1]}(0,q)}{b(b+\pi)}.
+       \label{res:realexample2}
+\end{align}
+At $b=3\pi$, the last numerator becomes
+$\gamma+\log(2\pi)-\Li_0^{[1]}(1/2)$.
+Equation \eqref{res:realexample1} also follows directly from the
+digamma reflection formula, providing a separate check of the phase.
+
+\subsection{Repeated poles and the complete bounded-rational family}
+
+\begin{corollary}[All repeated resolvents]\label{res:repeated}
+For every integer $r\ge1$,
+\begin{equation}\label{res:repeatedformula}
+ \operatorname{FP}_x\int_0^1
+       \frac{\gamma_m^{(p)}(x)}{(K(x)-z)^r}\,dx
+       =\frac1{(r-1)!}\partial_z^{r-1}M_{m,p}(z).
+\end{equation}
+This is an ordinary absolutely convergent integral if $r>p$.
+Every rational function $Q(u)$ bounded at infinity and with no real pole admits
+a finite reduction of
+$\operatorname{FP}_x\int_0^1\gamma_m^{(p)}(x)Q(K(x))\,dx$
+to the right-hand sides of \eqref{res:repeatedformula}.
+\end{corollary}
+
+\begin{proof}
+Parameter differentiation commutes with the finitely many local
+subtractions on compact subsets away from the real poles. Since
+$\partial_z^{r-1}R_z=(r-1)!R_z^r$, the formula follows.
+Near zero the integrand has size
+$O(x^{r-p-1}(1+|\log x|^m))$, proving the convergence assertion.
+Equivalently, the resonant coefficient $[x^p]R_z^r$ is zero
+when $r>p$, so all contact terms disappear from the differentiated
+formula.
+
+Partial fractions express $Q$ as a constant plus finitely many
+repeated resolvents. The constant contributes zero:
+\[
+ \operatorname{FP}_x\int_0^1\gamma_m^{(p)}(x)\,dx=0.
+\]
+For $p=0$ this follows by integrating the Hurwitz spectral family
+and matching its constant and endpoint pole. For $p\ge1$ it
+follows from the finite part of the endpoint difference of
+$\gamma_m^{(p-1)}$, using \eqref{res:singularpart}. The analytic
+parts at $0$ and $1$ agree, and the singular part has zero constant.
+This proves the complete finite reduction.
+\end{proof}
+
+Repeated $z$ derivatives introduce no new transcendental function
+class: $\partial_q\Li_s(q)=\Li_{s-1}(q)/q$, and $q(z)$ is rational.
+The reduction therefore stays within finitely many polylogarithmic
+order derivatives at explicit arguments. This proves the rational
+sector of the proposed nonpolynomial extension. It does not assert
+the same finite closure for arbitrary complex powers of $K-z$.
+
+\section{Continuous polygamma orders, Gamma primitives, and boundary values}
+\label{res:primitive-section}
+
+\subsection{An entire transform and its integer-order anomaly}
+
+We use the established generalized polygamma function of Espinosa
+and Moll \cite{EM}, denoted here by $\Psi(v,x)$ to distinguish it
+from the ordinary digamma:
+\begin{equation}\label{res:EM}
+ \Psi(v,x)=e^{-\gamma v}\partial_v
+       \left(e^{\gamma v}\frac{\zeta(1+v,x)}{\Gamma(-v)}\right).
+\end{equation}
+The removable values in this definition are understood. It is entire
+in $v$, satisfies $\partial_x\Psi(v,x)=\Psi(v+1,x)$, and equals
+$\psi^{(p)}(x)$ when $v=p\ge0$. These are properties of the
+classical generalized function, not new definitions of polygamma.
+
+\Needspace{18\baselineskip}
+\begin{theorem}[Continuous-order resolvent and finite-part conversion]
+\label{res:continuous}
+For $\Re v<1$ and $z\notin\mathbb R$, the following ordinary
+absolutely convergent integral holds:
+\begin{equation}\label{res:continuousformula}
+ \mathcal C(v,z):=\int_0^1\Psi(v,x)R_z(x)\,dx
+   =c\sigma^v\left\{(\gamma+\Log\sigma)\Phi_*(-v,q)
+                                         -\Phi_*^{[1]}(-v,q)\right\}.
+\end{equation}
+The right side is entire in $v$. At a nonnegative integer $p$,
+its continuation and the pointwise finite part are related by
+\begin{equation}\label{res:anomaly}
+ \operatorname{FP}_x\int_0^1\psi^{(p)}(x)R_z(x)\,dx
+    =\mathcal C(p,z)-(-1)^pp!H_p r_p(z),
+\end{equation}
+where the correction is zero for $p=0$ without defining $r_0$.
+\end{theorem}
+
+\begin{proof}
+The singular part of \eqref{res:EM} is a linear combination of
+$x^{-v-1}$ and $x^{-v-1}\log x$ with entire coefficient functions
+of $v$. Multiplication by $R_z=O(x)$ gives locally uniform
+integrability when $\Re v<1$. Thus the integral is holomorphic
+in that half-plane, including the removable point $v=0$.
+
+For $\Re v<0$, divide \eqref{res:spectralintegral} with $p=0$
+by $\Gamma(s)$ and set $s=-v$. Applying
+$e^{-\gamma v}\partial_v e^{\gamma v}$ yields
+\eqref{res:continuousformula}. Holomorphic continuation gives
+the entire stated ordinary-integral strip. Finally, compare the
+right side at $v=p$ with \eqref{res:polygamma}, and use
+$c\sigma^p\Phi_*(-p,q)=(-1)^pp!r_p(z)$.
+This proves the exact conversion formula.
+\end{proof}
+
+The last statement is a concrete instance of noncommutation between
+specializing a parameter and taking an endpoint finite part. It is
+not a defect of the generalized polygamma function. At $p=1$ the
+correction in \eqref{res:anomaly} is $+1$ for every nonreal $z$.
+At $p=2$ it is $-3z$. These exact corrections are useful checks
+when a spectral formula is integrated into a symbolic system.
+
+Integration by parts gives a compatible differential identity for
+the entire transform:
+\begin{equation}\label{res:continuous-recurrence}
+ \mathcal C(v+1,z)
+      =-2z\mathcal C(v,z)-(z^2+\pi^2)\partial_z\mathcal C(v,z).
+\end{equation}
+Initially take $\Re v<0$, so the boundary term vanishes and
+$\int_0^1\Psi(v,x)\,dx=0$, and use \eqref{res:riccati}.
+Both sides are entire in $v$, which proves the identity everywhere.
+For the pointwise finite-part moments
+$F_p(z)=\operatorname{FP}_x\int\psi^{(p)}R_z$, the corresponding
+identity instead reads
+\begin{equation}\label{res:pointwise-recurrence}
+ F_{p+1}(z)=-2zF_p(z)-(z^2+\pi^2)F_p'(z)
+                         +(-1)^pp!r_{p+1}(z).
+\end{equation}
+The last term is exactly the finite part of $[\psi^{(p)}R_z]_0^1$.
+Thus the derivative hierarchy, the endpoint subtraction, and the
+polylogarithmic formula agree at every order.
+
+\subsection{Every balanced Gamma primitive}
+
+For $r\ge0$, let
+\begin{equation}\label{res:balanced}
+ \mathcal B_r(x)=\frac{\zeta'(-r,x)+H_r\zeta(-r,x)}{r!}.
+\end{equation}
+These are the standard balanced negapolygamma functions
+$\Psi(-r-1,x)$ \cite{EM}. Direct differentiation gives
+\[
+ \mathcal B_0(x)=\log\Gamma(x)-\tfrac12\log(2\pi),\qquad
+ \mathcal B_r'(x)=\mathcal B_{r-1}(x)\quad(r\ge1).
+\]
+The additive constants have therefore been specified completely.
+
+\begin{corollary}[The rational-kernel primitive ladder]
+\label{res:balancedcor}
+For every $r\ge0$,
+\begin{equation}\label{res:balancedmoment}
+ \int_0^1\mathcal B_r(x)R_z(x)\,dx
+    =c\sigma^{-r-1}
+       \left\{(\gamma+\Log\sigma)\Phi_*(r+1,q)
+                                      -\Phi_*^{[1]}(r+1,q)\right\}.
+\end{equation}
+All these integrals are ordinary convergent integrals.
+\end{corollary}
+
+This follows from \eqref{res:continuousformula} at $v=-r-1$.
+There is also a useful direct check. Differentiate
+\eqref{res:spectralintegral} in $s$ at $s=r+1$. The derivative of
+$\Gamma(s)$ supplies $H_r-\gamma$; the $H_r\zeta(-r,x)$ term
+in \eqref{res:balanced} cancels $H_r$ exactly. That cancellation
+explains why the same coefficient $\gamma+\Log\sigma$ works at
+every primitive level.
+
+In particular,
+\begin{equation}\label{res:loggammamoment}
+ \int_0^1\log\Gamma(x)R_z(x)\,dx
+ =-\frac{\log(2\pi)}{2a}
+   +\frac{\Phi_*^{[1]}(1,q)
+                 -(\gamma+\Log\sigma)\Phi_*(1,q)}{a^2}.
+\end{equation}
+At the next level, the standard Barnes identity
+\cite{Vardi}
+\[
+ \zeta'(-1,x)=\zeta'(-1)-\log G(x)+(x-1)\log\Gamma(x)
+\]
+shows that \eqref{res:balancedmoment} is an explicit formula for
+the corresponding normalized Barnes-$G$ combination, since
+$\zeta(-1,x)=-B_2(x)/2$. Here $G$ is the standard Barnes function, with its usual asymptotic
+normalization, $G(x+1)=\Gamma(x)G(x)$, and $G(1)=1$. The
+functional equation and the value at $1$ alone would not exclude
+a multiplicative periodic factor. This supplies an exact primitive
+family relevant to Q9 in the source, without claiming to evaluate
+every unbalanced product containing $G$.
+
+\subsection{Boundary values and recovery of the Stieltjes functions}
+
+The resolvent also permits a useful inversion check. Given
+$u\in\mathbb R$, let $x_u\in(0,1)$ be the unique point with
+$K(x_u)=u$. For $m\ge0$ the ordinary moment $M_{m,0}$ has
+one-sided boundary values satisfying
+\begin{equation}\label{res:jump}
+ M_{m,0}(u+i0)-M_{m,0}(u-i0)
+       =\frac{2\pi i}{u^2+\pi^2}\gamma_m(x_u).
+\end{equation}
+Indeed the substitution $y=K(x)$ gives the Cauchy integral
+\[
+ M_{m,0}(z)=\int_{-\infty}^{\infty}
+      \frac{\gamma_m(x_y)}{(y^2+\pi^2)(y-z)}\,dy.
+\]
+Its tail is integrable after the factor $(y-z)^{-1}$ is included,
+and its density is smooth locally at $y=u$. Splitting off that
+local value and integrating $1/(y-z)$ proves
+\eqref{res:jump}; this is the elementary Cauchy jump formula.
+The average of the two boundary values gives the corresponding
+principal-value integral at the interior pole.
+
+On the boundary, $q=e^{-2\pi ix_u}$ in the upper half-plane and
+$q=e^{2\pi ix_u}$ in the lower one. Thus the two versions of
+\eqref{res:master} recover the classical Hurwitz--polylogarithm
+connection and all its Stieltjes order derivatives. This boundary
+interpretation is a consistency check and an exact inversion formula;
+it is not claimed as a new Hurwitz functional equation.
+
+\subsection{Verification and the precise new scope}
+
+The program \src{code/verify_resolvent.py} checks the Fourier and
+Riccati expressions for the local coefficients by exact rational
+function arithmetic, including both the Gamma polynomial and its
+harmonic correction. Its numerical checks compare the formulas with
+direct quadrature of digamma and generalized Stieltjes functions,
+local-subtraction quadrature for the finite parts, convergent
+integrals involving $\gamma_1'$, and the first three balanced
+Gamma primitives. Complex-order tests use the defining Hurwitz
+formula \eqref{res:EM}. The numerical and exact records are distinct.
+
+The all-index rational closure answers the specified rational sector
+of the source's nonpolynomial question. The local correction
+mechanism extends the repository's established finite-part calculus;
+it is not presented as an independently invented regularization.
+The continuous-order conversion and the primitive ladder explain
+which explicit boundary terms must accompany the resulting identities.

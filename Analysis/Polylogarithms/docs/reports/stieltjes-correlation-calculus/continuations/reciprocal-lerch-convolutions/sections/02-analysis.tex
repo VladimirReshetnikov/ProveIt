@@ -1,0 +1,90 @@
+\section{Analytic profiles and their bilateral transform}
+\label{rlc:sec:analysis}
+
+Write $f_0(x)=e^x/(1+e^x)$. For $\Rea s>0$ the Lerch integral gives
+\begin{equation}\label{rlc:eq:fractional}
+ f_{a,s}(x)=\frac1{\Gamma(s)}
+ \int_0^\infty u^{s-1}e^{-(a-1)u}f_0(x-u)\dd u.
+\end{equation}
+The right side explains the covariant derivative
+$D_a=\partial_x+a-1$:
+\begin{equation}\label{rlc:eq:covariant}
+ D_a f_{a,s}=f_{a,s-1}.
+\end{equation}
+The analytic justification of all subsequent parameter operations is
+concentrated in the next lemma.
+
+\begin{lemma}[Weighted holomorphy]\label{rlc:lem:weighted}
+Fix $\Rea a>0$ and choose a real $c$ satisfying
+\begin{equation}\label{rlc:eq:cstrip}
+ \max(0,1-\Rea a)<c<1.
+\end{equation}
+Then $s\mapsto e^{-cx}f_{a,s}(x)$ is an entire family in
+$L^1(\R)\cap L^\infty(\R)$. The same is true after multiplication by
+any fixed power of $x$, after any fixed order derivative, and locally
+jointly in $a$. The profile is smooth in $x$, and
+\eqref{rlc:eq:covariant} holds for all $s\in\C$.
+\end{lemma}
+\begin{proof}
+Every derivative of $f_0$ is $f_0$ times a polynomial in $f_0$, so
+$|f_0^{(j)}(x)|\le C_j f_0(x)$ on the real line. The function
+$e^{-cx}f_0(x)$ is bounded and integrable for $0<c<1$.
+For $\Rea s>0$, multiply \eqref{rlc:eq:fractional} by $e^{-cx}$ and
+put $v=x-u$. Its absolute integral is bounded by a constant times
+\[
+ \int_0^\infty u^{\Rea s-1}
+ e^{-(c+\Rea a-1)u}\dd u
+ \int_\R e^{-cv}f_0(v)\dd v.
+\]
+Both factors are finite. The same estimate with the second factor a
+supremum proves boundedness. On compact subsets of the parameter
+half-planes, derivatives insert only fixed powers of $u$ and $\log u$,
+so the estimates prove holomorphy in these norms.
+
+For $\Rea s>1$, differentiation and integration by parts in $u$ give
+$D_a f_{a,s}=f_{a,s-1}$: the derivative of
+$e^{-(a-1)u}f_0(x-u)$ is its negative covariant $x$ derivative, and
+both boundary terms vanish. For a compact set of arbitrary complex
+$s$, choose an integer $N$ with $\Rea(s+N)>0$ and define
+$f_{a,s}=D_a^Nf_{a,s+N}$. The integration-by-parts identity makes these
+definitions consistent on overlaps. They agree with the original Lerch
+series when $x<0$ and hence with its continuation. The estimates for
+$f_0^{(j)}$ prove the asserted norm holomorphy everywhere.
+
+Finally choose $\delta>0$ so that $c-\delta$ and $c+\delta$ both satisfy
+\eqref{rlc:eq:cstrip}. The elementary inequality
+$|x|^m\le C_{m,\delta}e^{\delta|x|}$ transfers the two neighboring
+weighted estimates to every power of $x$. Cauchy's formula in $s$ and
+$a$ gives the same conclusions for their derivatives.
+\end{proof}
+
+\begin{theorem}[Bilateral transform]\label{rlc:thm:transform}
+For $s\in\C$, $\Rea a>0$, and
+$\max(0,1-\Rea a)<\Rea p<1$,
+\begin{equation}\label{rlc:eq:transform}
+ \int_\R e^{-px}f_{a,s}(x)\dd x
+ =\Gamma(p)\Gamma(1-p)(p+a-1)^{-s}
+ =\frac{\pi}{\sin\pi p}(p+a-1)^{-s}.
+\end{equation}
+The power uses the right-half-plane logarithm of $p+a-1$.
+\end{theorem}
+\begin{proof}
+For $\Rea s>0$, Fubini applies to \eqref{rlc:eq:fractional} by the
+preceding estimates. The substitution $x=v+u$ separates the transform
+into
+\[
+ \frac1{\Gamma(s)}\int_0^\infty
+ u^{s-1}e^{-(p+a-1)u}\dd u
+ \int_\R e^{-pv}f_0(v)\dd v.
+\]
+The first factor is $(p+a-1)^{-s}$. With $y=e^v$, the second is
+$\int_0^\infty y^{-p}/(1+y)\dd y=B(1-p,p)$.
+Euler's reflection formula gives the stated Gamma product. Both sides
+are entire in $s$, so the identity theorem completes the proof.
+\end{proof}
+
+There is no factor $\Gamma(s)$ left in \eqref{rlc:eq:transform}.
+Losing this normalization would destroy order addition and every
+Stieltjes specialization. The common strip depends on the shift $a$,
+not on the spectral order $s$. This distinction is what makes the
+all-complex-order statements possible.

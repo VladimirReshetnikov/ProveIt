@@ -1,0 +1,444 @@
+\section{Independent directions at depth four}
+\label{oq:section}
+
+The most recent ordered-Hurwitz report asks for an explicit description of
+the first independent-slope case beyond depth three
+\cite[Questions 1--2]{RepoOrdered}. We give such a description. Three
+additional coordinates suffice beyond its previously defined ordering
+function $\eta(a)$. All three have absolutely convergent representatives.
+The resulting formula includes the complete principal part, every
+transverse straight direction, exact shift recurrences, and a finite
+reconstruction of the coordinates from three positive directions.
+The construction is a spanning normal form; it does not assert arithmetic
+independence of its coordinates.
+
+\subsection{Conventions and the holomorphic regular germs}
+
+Fix $a>0$ and use real logarithms of $n+a$. Set
+\[
+ Z_d(s_1,\ldots,s_d;a)
+ =\sum_{n_1>\cdots>n_d\ge0}\prod_{j=1}^d(n_j+a)^{-s_j},
+ \qquad Z_0=1.
+\]
+The initial domain is $\Re(s_1+\cdots+s_j)>j$ for every $j$.
+Write $u_j=s_j-1$ and $P_k=u_1+\cdots+u_k$.
+The Laurent convention is
+\begin{equation}\label{oq:stieltjes}
+ \zeta(1+u,a)=\frac1u+
+ \sum_{j\ge0}\frac{(-1)^j\gamma_j(a)}{j!}u^j.
+\end{equation}
+Throughout this section,
+\[
+ g_j=\gamma_j(a),\quad g=g_0=-\psi(a),\quad
+ z_k^{[j]}=\left.\partial_s^j\zeta(s,a)\right|_{s=k},
+ \quad z_k=z_k^{[0]}.
+\]
+Thus a prime on an ordinary zeta value denotes its order derivative,
+whereas $\eta'(a)$ below denotes its shift derivative.
+
+For completeness, the regular germs can be constructed directly.
+Define
+\begin{align}
+ D(s,x)&=\zeta(s,x+1)-\frac{x^{1-s}}{s-1},\label{oq:D}\\
+ E_d(\mathbf u;a)&=
+ \sum_{n_2>\cdots>n_d\ge0}
+ D(1+u_1,n_2+a)\prod_{j=2}^d(n_j+a)^{-1-u_j}.
+ \label{oq:E}
+\end{align}
+Let $R_0=1$, $R_1(u;a)=\zeta(1+u,a)-1/u$, and recursively put
+\begin{align}\label{oq:Rrec}
+ R_d(\mathbf u;a)=E_d(\mathbf u;a)+
+ \frac{R_{d-1}(u_1+u_2,u_3,\ldots;a)
+       -R_{d-1}(u_2,u_3,\ldots;a)}{u_1}.
+\end{align}
+The divided difference takes its removable value when $u_1=0$.
+
+\begin{lemma}[Ordered decomposition and normalization]\label{oq:regular}
+The germs $R_d$ are holomorphic on $\sum_j|u_j|<1/2$, and
+\begin{equation}\label{oq:decomp}
+ Z_d(1+\mathbf u;a)=
+ \sum_{k=0}^d\frac{R_{d-k}(u_{k+1},\ldots,u_d;a)}{P_1\cdots P_k}.
+\end{equation}
+Furthermore, if $B_d(a)=R_d(0,\ldots,0;a)$, then
+\begin{equation}\label{oq:gamma}
+ \sum_{d\ge0}B_d(a)y^d=\frac{\Gamma(a)}{\Gamma(a+y)}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $\Re s>0$, the tail defect has the integral
+\[
+ D(s,x)=\frac1{\Gamma(s)}\int_0^\infty
+ t^{s-1}e^{-xt}\left(\frac1{e^t-1}-\frac1t\right)dt.
+\]
+The bracket is bounded at zero. This proves removability at $s=1$
+and $D(s,x)=O(x^{-\Re s})$ on compact subsets. The summands in
+\eqref{oq:E}, after summing the inner finite indices, have a
+uniform bound of the form
+$C(1+n_2)^{-2+\sum|u_j|}(1+\log(1+n_2))^{d-2}$.
+Normal convergence and the integral expression for a divided difference
+prove holomorphy. Summing first over $n_1>n_2$ gives
+\[
+ Z_d(1+\mathbf u;a)=\frac1{u_1}
+ Z_{d-1}(1+u_1+u_2,1+u_3,\ldots;a)+E_d(\mathbf u;a),
+\]
+so induction proves \eqref{oq:decomp}. On the common diagonal,
+the elementary-symmetric product for $Z_d$ implies, coefficientwise
+as a formal power series in $y$,
+\begin{align}\label{oq:diaggenerator}
+ \sum_{d\ge0}R_d(t,\ldots,t;a)y^d
+ =\exp\left\{yR_1(t;a)+
+ \sum_{m\ge2}\frac{(-1)^{m-1}}m\zeta(m+mt,a)y^m\right\}.
+\end{align}
+At $t=0$, the logarithmic Taylor expansion of $\Gamma(a+y)$
+gives \eqref{oq:gamma}.
+\end{proof}
+
+This construction and the diagonal generating function are antecedents,
+not new claims of this article. For $a=1$, the ordered Laurent framework
+is due to Saha \cite{Saha}; general integer-point Laurent expansions are
+studied in \cite{MOW}. The common-shift construction above is the one
+in \cite{RepoOrdered}. In particular,
+\begin{align}
+ B_2&=\frac{g^2-z_2}{2},&
+ B_3&=\frac{g^3-3gz_2+2z_3}{6},\label{oq:B23}\\
+ B_4&=\frac{g^4-6g^2z_2+3z_2^2+8gz_3-6z_4}{24}.
+ \label{oq:B4}
+\end{align}
+
+\subsection{The small jet that controls the answer}
+
+Define
+\begin{align}
+ \eta(a)&=[u]R_2(u,0;a),\label{oq:eta}\\
+ \rho(a)&=[u^2]R_2(u,0;a)-[v^2]R_2(0,v;a),\label{oq:rho}\\
+ \kappa(a)&=(\partial_1-2\partial_2+\partial_3)R_3(0,0,0;a),
+ \label{oq:kappa}\\
+ T(a)&=(\partial_u-\partial_v)Z_2(2+u,1+v;a)\big|_{u=v=0}.
+ \label{oq:T}
+\end{align}
+The factorial convention in \eqref{oq:rho} matters: $\rho$ is a
+difference of Taylor coefficients, not a difference of second derivatives.
+The last coordinate has the elementary convergent series
+\begin{equation}\label{oq:Tseries}
+ T(a)=\sum_{n>m\ge0}
+ \frac{\log(m+a)-\log(n+a)}{(n+a)^2(m+a)}.
+\end{equation}
+Introduce the ordinary-data combinations
+\begin{align}
+ D_1&=-gg_1-z_2^{[1]},\label{oq:D1}\\
+ E&=\frac{gg_2-z_2^{[2]}}2,
+ &F&=\frac{g_1^2-z_2^{[2]}}2,\label{oq:EF}\\
+ S&=-g_1B_2-gz_2^{[1]}+z_3^{[1]},\label{oq:S}\\
+ V&=g\eta+\frac{g_1(g^2+z_2)}2+gz_2^{[1]}-T.
+ \label{oq:V}
+\end{align}
+Only $V$ retains a nonordinary coordinate; the letters $D_1,E,F,S$
+denote explicitly displayed finite expressions.
+
+\begin{theorem}[Complete required jet]\label{oq:jet}
+The quadratic Taylor polynomial of $R_2$ and the linear Taylor polynomial
+of $R_3$ are
+\begin{align}\label{oq:R2jet}
+ R_2(u,v;a)={}&B_2+\eta u+(D_1-\eta)v
+ +\frac{E+\rho}{2}u^2+Fuv+\frac{E-\rho}{2}v^2
+ +O((|u|+|v|)^3),\\
+ R_3(u,v,w;a)={}&B_3+
+ \frac S3(u+v+w)+\frac\kappa6(u-2v+w)
+ +\frac V2(u-w)+O((|u|+|v|+|w|)^2).
+ \label{oq:R3jet}
+\end{align}
+\end{theorem}
+\begin{proof}
+The regularized depth-two stuffle identity is
+\begin{equation}\label{oq:stuffle2}
+ R_2(u,v)+R_2(v,u)=R_1(u)R_1(v)-\zeta(2+u+v,a).
+\end{equation}
+It follows directly by substituting \eqref{oq:decomp} into the ordinary
+stuffle identity; the rational polar terms cancel. Its coefficients of
+$u$, $u^2$ and $uv$, together with the definition of $\rho$, prove
+\eqref{oq:R2jet}.
+
+For the next depth put
+\[
+ C(u,v)=Z_2(2+u,1+v;a),\qquad
+ L(u,v)=Z_2(1+u,2+v;a)-\frac{\zeta(2+v,a)}u.
+\]
+The first function converges normally near zero. The second is holomorphic
+there because the two-factor stuffle law gives the exact expression
+\begin{equation}\label{oq:L}
+ L(u,v)=R_1(u)\zeta(2+v,a)-C(v,u)-\zeta(3+u+v,a).
+\end{equation}
+Applying the three-factor stuffle identity and cancelling the explicit
+prefix poles gives
+\begin{align}\label{oq:stuffle3}
+ R_1(u)R_2(v,w)={}&R_3(u,v,w)+R_3(v,u,w)+R_3(v,w,u)
+ +C(u+v,w)+L(v,u+w).
+\end{align}
+For clarity, the needed cancellation uses
+$R_2(u,w)+R_2(w,u)=R_1(u)R_1(w)-\zeta(2+u+w,a)$.
+Thus \eqref{oq:stuffle3} follows from meromorphic identities and entails
+no unproved assumption that arbitrary finite-part prescriptions preserve
+products.
+
+Write $X=\partial_1R_3(0)$, $Y=\partial_2R_3(0)$ and
+$Z=\partial_3R_3(0)$. Differentiating \eqref{oq:stuffle3} with respect
+to $u$ and using \eqref{oq:L} gives
+\[
+ X+Y+Z=-g_1B_2-gz_2^{[1]}+z_3^{[1]}=S.
+\]
+Differentiating with respect to $v$ instead gives
+\[
+ 2X+Y=g\eta+g_1z_2+z_3^{[1]}-T.
+\]
+Subtracting the preceding equation proves $X-Z=V$.
+Finally $X-2Y+Z=\kappa$ by definition. Solving these three linear
+equations gives \eqref{oq:R3jet}.
+\end{proof}
+
+\subsection{Every transverse depth-four Laurent constant}
+
+For $p,b,c,d\in\mathbb C$ suppose
+\begin{equation}\label{oq:transverse}
+ p(p+b)(p+b+c)(p+b+c+d)\ne0.
+\end{equation}
+Here $\operatorname{FP}_{\varepsilon=0}$ means the constant coefficient
+of the meromorphic function after the specified substitution. It is not
+an iterated residue and is not a value on a polar hyperplane.
+
+\begin{theorem}[Depth-four directional normal form]\label{oq:main}
+Under \eqref{oq:transverse},
+\begin{align}\label{oq:FP4}
+ &\operatorname{FP}_{\varepsilon=0}
+ Z_4(1+p\varepsilon,1+b\varepsilon,1+c\varepsilon,1+d\varepsilon;a)
+ \notag\\
+ &\quad=B_4+
+ \frac1p\left\{\frac{S(b+c+d)}3+
+            \frac{\kappa(b-2c+d)}6+\frac{V(b-d)}2\right\}
+ \notag\\
+ &\qquad\quad+
+ \frac{E(c^2+d^2)/2+Fcd+\rho(c^2-d^2)/2}{p(p+b)}
+ -\frac{g_3d^3}{6p(p+b)(p+b+c)}.
+\end{align}
+The complete principal part is
+\begin{align}\label{oq:principal}
+ &\frac{1}{p(p+b)(p+b+c)(p+b+c+d)\varepsilon^4}
+ +\frac{g}{p(p+b)(p+b+c)\varepsilon^3}
+ \notag\\
+ &\quad+\frac1{\varepsilon^2}
+ \left\{\frac{B_2}{p(p+b)}-
+ \frac{dg_1}{p(p+b)(p+b+c)}\right\}
+ \notag\\
+ &\quad+\frac1\varepsilon
+ \left\{\frac{B_3}p+
+ \frac{\eta(c-d)+D_1d}{p(p+b)}+
+ \frac{g_2d^2}{2p(p+b)(p+b+c)}\right\}.
+\end{align}
+\end{theorem}
+\begin{proof}
+At depth four, \eqref{oq:decomp} has five terms:
+\[
+ \frac1{P_1P_2P_3P_4}+
+ \frac{R_1(u_4)}{P_1P_2P_3}+
+ \frac{R_2(u_3,u_4)}{P_1P_2}+
+ \frac{R_3(u_2,u_3,u_4)}{P_1}+R_4(\mathbf u).
+\]
+The constant term requires the cubic coefficient of $R_1$, the quadratic
+coefficient of $R_2$, the linear coefficient of $R_3$, and $R_4(0)=B_4$.
+Equations \eqref{oq:stieltjes}, \eqref{oq:R2jet} and \eqref{oq:R3jet}
+give exactly \eqref{oq:FP4}. The lower powers give
+\eqref{oq:principal}. Holomorphy of the remainders makes the coefficient
+calculation legitimate, including directions with some zero or negative
+slopes, provided the prefix sums remain nonzero.
+\end{proof}
+
+The answer depends on $p$ and the three trailing slopes, but it needs
+no new fourth-depth regular constant. The new information lies in
+lower-depth derivatives, exactly as the ordered pole geometry predicts.
+
+\begin{corollary}[Exact cancellation locus in this normal form]
+\label{oq:locus}
+Treat $\rho,\kappa,T,\eta$ as named coordinates, without assigning
+unproved relations among their values. Under \eqref{oq:transverse},
+all their coefficients in \eqref{oq:FP4} vanish if and only if
+$b=c=d$. On this locus the answer reduces to ordinary Hurwitz jets.
+\end{corollary}
+\begin{proof}
+The coefficient of $T$ is $-(b-d)/(2p)$ and the coefficient of
+$\kappa$ is $(b-2c+d)/(6p)$. Their simultaneous vanishing forces
+$b=d$ and then $c=b$. This also kills the $\rho$ and $\eta$
+coefficients. Conversely, substitution proves cancellation.
+\end{proof}
+
+This corollary classifies cancellation in the proved coordinate expression.
+It does not say that no other direction can simplify after a new functional
+identity is discovered. In particular, it is not a statement of arithmetic
+independence at an individual value of $a$.
+
+For $b=c=d=q$, the formula becomes
+\begin{equation}\label{oq:diagonalcheck}
+ B_4+\frac qpS+
+ \frac{q^2}{p(p+q)}\left\{\frac{g_1^2+gg_2}{2}-z_2^{[2]}\right\}
+ -\frac{q^3g_3}{6p(p+q)(p+2q)},
+\end{equation}
+which recovers the already proved distinguished-slope formula of
+\cite{RepoOrdered}. This is a consistency specialization, not an additional
+new evaluation.
+
+\subsection{Three positive rays recover all three coordinates}
+
+Define the ordinary part of \eqref{oq:FP4} by
+\begin{align}\label{oq:ordinary}
+ \mathcal O(p,b,c,d;a)=B_4+
+ \frac{S(b+c+d)}{3p}+
+ \frac{E(c^2+d^2)/2+Fcd}{p(p+b)}
+ -\frac{g_3d^3}{6p(p+b)(p+b+c)}.
+\end{align}
+Let $\Delta_A,\Delta_B,\Delta_C$ be the directional finite parts minus
+$\mathcal O$ at the respective rays
+\[
+ A=(1,1,2,1),\qquad B=(1,1,3,1),\qquad C=(1,2,1,1).
+\]
+All three lie in the positive convergence directions.
+
+\begin{corollary}[Finite reconstruction]\label{oq:reconstruction}
+One has
+\begin{align}
+ \rho&=2\Delta_B-4\Delta_A,\label{oq:recoverrho}\\
+ \kappa&=\frac92\Delta_B-12\Delta_A,\label{oq:recoverkappa}\\
+ V&=2\Delta_C-\frac32\Delta_B+4\Delta_A.\label{oq:recoverV}
+\end{align}
+Consequently $T$ is recovered from \eqref{oq:V} once $\eta$ is known.
+\end{corollary}
+\begin{proof}
+The three equations supplied by \eqref{oq:FP4} are
+\[
+ \begin{pmatrix}\Delta_A\\\Delta_B\\\Delta_C\end{pmatrix}
+ =\begin{pmatrix}-1/3&3/4&0\\-2/3&2&0\\1/6&0&1/2\end{pmatrix}
+ \begin{pmatrix}\kappa\\\rho\\V\end{pmatrix}.
+\]
+The determinant is $-1/12$. Inverting this rational matrix gives the
+displayed formulas.
+\end{proof}
+
+Thus the appearance of three coordinates is observable by a finite exact
+linear calculation. The invertible matrix proves equivalence of two
+spanning descriptions; it does not prove that the three numerical values
+are independent over any field.
+
+\subsection{Absolutely convergent representatives}
+
+Put
+\[
+ Q_j(x)=\gamma_j(x+1)+\frac{\log^{j+1}x}{j+1},\qquad
+ h_n(a)=\sum_{m=0}^{n-1}\frac1{m+a},\qquad
+ \ell_n(a)=\sum_{m=0}^{n-1}\frac{\log(m+a)}{m+a}.
+\]
+Here empty sums vanish. The familiar identities
+\[
+ h_n(a)=\psi(n+a)-\psi(a),\qquad
+ \ell_n(a)=\gamma_1(a)-\gamma_1(n+a)
+\]
+make the representatives numerically usable with one outer summation.
+
+\begin{theorem}[Convergent coordinate formulas]\label{oq:series}
+With $x=n+a$ in every sum,
+\begin{align}
+ \eta(a)&=\frac{g_2}{2}-\sum_{n\ge0}\frac{Q_1(x)}x,
+ \label{oq:etaseries}\\
+ \rho(a)&=\frac{g_3}{3}+
+ \frac12\sum_{n\ge0}\frac{Q_2(x)-Q_0(x)\log^2x}{x},
+ \label{oq:rhoseries}\\
+ \kappa(a)&=\sum_{n\ge0}
+ \frac{-Q_1(x)h_n(a)+Q_0(x)(2\log x\,h_n(a)-\ell_n(a))}{x}
+ -\frac32(E+\rho)+F.\label{oq:kappaseries}
+\end{align}
+All these series, as well as \eqref{oq:Tseries}, converge absolutely
+and locally uniformly for $a$ in compact subintervals of $(0,\infty)$.
+\end{theorem}
+\begin{proof}
+Taylor expansion in \eqref{oq:D} gives
+$D(1+u,x)=\sum_{j\ge0}(-1)^jQ_j(x)u^j/j!$.
+If $r^{(d)}_{m_1,\ldots,m_d}=[\mathbf u^{\mathbf m}]R_d$, the
+divided difference in \eqref{oq:Rrec} yields
+\begin{equation}\label{oq:coeffrec}
+ r^{(d)}_{m_1,\ldots,m_d}
+ =[\mathbf u^{\mathbf m}]E_d+
+ \binom{m_1+m_2+1}{m_1+1}
+ r^{(d-1)}_{m_1+m_2+1,m_3,\ldots,m_d}.
+\end{equation}
+For $(m_1,m_2)=(1,0),(2,0),(0,2)$ this gives the first two formulas.
+For $(1,0,0),(0,1,0),(0,0,1)$, their combination with coefficients
+$1,-2,1$ gives the sum in \eqref{oq:kappaseries} and the correction
+$-3[u^2]R_2+[uv]R_2=-3(E+\rho)/2+F$.
+The estimates used for \eqref{oq:E}, followed by Cauchy's formula on
+a slightly larger compact spectral polydisc, justify every coefficient
+extraction and give absolute convergence. Alternatively,
+$Q_j(x)=O((1+\log x)^j/x)$ suffices, since
+$h_n=O(1+\log n)$ and $\ell_n=O(1+\log^2n)$.
+\end{proof}
+
+These formulas define the coordinates independently of a numerical
+Laurent fit. They are useful even if no further ordinary-zeta reduction
+exists, and they keep the unevaluated part confined to explicitly
+convergent harmonic--Stieltjes sums.
+
+\subsection{Exact shift and differential compatibility}
+
+\begin{proposition}[Triangular shift laws]\label{oq:shift}
+Let a superscript $+$ mean evaluation at $a+1$, and let $L=\log a$.
+Then
+\begin{align}
+ \eta(a)-\eta(a+1)&=-\frac{g_1^+}{a},\label{oq:shifteta}\\
+ \rho(a)-\rho(a+1)&=\frac{g_2^+-g^+L^2}{2a},\label{oq:shiftrho}\\
+ T(a)-T(a+1)&=\frac{z_2^{[1],+}+Lz_2^+}{a},\label{oq:shiftT}\\
+ \kappa(a)-\kappa(a+1)&=
+ \frac{3\eta^+-2D_1^+-LB_2^+}{a}.\label{oq:shiftkappa}
+\end{align}
+\end{proposition}
+\begin{proof}
+The terms with last index zero give the exact ordered shift identity
+\[
+ Z_d(\mathbf s;a)-Z_d(\mathbf s;a+1)
+ =a^{-s_d}Z_{d-1}(s_1,\ldots,s_{d-1};a+1).
+\]
+Substitution into \eqref{oq:decomp} and induction on depth show that
+\begin{equation}\label{oq:Rshift}
+ R_d(\mathbf u;a)-R_d(\mathbf u;a+1)
+ =a^{-1-u_d}R_{d-1}(u_1,\ldots,u_{d-1};a+1).
+\end{equation}
+The first, second and fourth assertions are the indicated Taylor
+coefficients of \eqref{oq:Rshift}. For the third, use
+$C(u,v;a)-C(u,v;a+1)=a^{-1-v}\zeta(2+u,a+1)$ and apply
+$\partial_u-\partial_v$.
+\end{proof}
+
+\begin{proposition}[A convergent derivative identity]\label{oq:derivative}
+Let $C_0(a)=Z_2(2,1;a)$. Then
+\begin{equation}\label{oq:etaT}
+ T(a)=-\eta'(a)-C_0(a)+g_1z_2+z_3^{[1]}.
+\end{equation}
+At $a=1$, the classical Euler evaluation $Z_2(2,1;1)=\zeta(3)$ gives
+\[
+ T(1)=-\eta'(1)-\zeta(3)+\gamma_1\zeta(2)+\zeta'(3).
+\]
+\end{proposition}
+\begin{proof}
+Differentiating the ordered defining sum in its initial domain, and
+then continuing, gives
+\[
+ \partial_aR_2(u,v;a)=-(1+u)C(u,v)-(1+v)L(u,v).
+\]
+The pole removed from $L$ cancels exactly with
+$\partial_aR_1(v)/u=-(1+v)\zeta(2+v,a)/u$.
+Apply $\partial_u$ at zero and substitute
+$L_u(0,0)=-g_1z_2-z_3^{[1]}-C_v(0,0)$ from \eqref{oq:L}.
+The result is \eqref{oq:etaT}. Normal convergence justifies the
+derivatives of $C$; the regular germs are holomorphic in $a$ for
+$\Re a>0$ on the principal branch.
+\end{proof}
+
+Equations \eqref{oq:shifteta}--\eqref{oq:etaT} connect the new directional
+coordinates to generalized harmonic sums, generalized Stieltjes constants,
+and parameter derivatives. They also supply independent consistency checks
+for implementations. A complete reduction of $\rho$ or $\kappa$ to ordinary
+single-zeta data is not proved here.

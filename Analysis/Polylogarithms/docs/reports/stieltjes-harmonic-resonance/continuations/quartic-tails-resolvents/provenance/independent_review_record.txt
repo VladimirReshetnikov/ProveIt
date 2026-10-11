@@ -1,0 +1,113 @@
+INDEPENDENT RESEARCH REVIEW RECORD
+Date: 2026-10-11
+Reviewer: independent ChatGPT research agent (automated review)
+
+Scope and provenance
+  Read-only review of the pinned ProveIt source and the current research
+  drafts. No repository files were edited. Files in this directory are
+  independent supplementary proofs, symbolic checks, numerical diagnostics,
+  and review notes supporting the assembled article.
+
+1. Complex-power completion and its noninteger corollary
+  Reviewed the source sections/complex_powers.tex, including the new
+  power:noninteger formula. No mandatory mathematical correction found.
+
+  The local families at zero are
+    A_p(u) v_j(lambda) x^(u+lambda-p-1+j),
+    b_j(u,lambda) x^(lambda+j).
+  The second endpoint contributes
+    exp(epsilon*pi*i*lambda)*(-1)^j*b_j(u,lambda)*y^(lambda+j).
+  At u=0 a resonant integrated exponent can therefore occur only at
+  lambda=p-j or lambda=-1-j, both integers. For any fixed noninteger
+  lambda a sufficiently small parameter neighborhood misses all these
+  hyperplanes. Finite Taylor subtraction leaves a uniform integrable
+  remainder, and each subtracted denominator stays away from zero.
+  Hence generalized power-log constant extraction commutes locally with
+  lambda derivatives, exactly as power:noninteger states.
+
+  The integer-power completion must retain the complete moving numerator
+  A_p(u)*v_(p-L)(L+v)/(u+v). At negative L, the full two-endpoint term
+    [1+(-1)^(-L-1)*exp(epsilon*pi*i*(L+v))]*b_(-L-1)(u,L+v)/v
+  is removable but has value -epsilon*pi*i*b_(-L-1)(u,L), not zero.
+  Subtracting only residues would discard this finite contact.
+
+  contact_verification.tex gives an independent all-M residue proof of
+  the negative-power mean correction. check_contacts.py verifies it from
+  the formal cotangent Taylor series through M=10, both half-plane signs,
+  and rejects all twenty deliberately phase-omitted variants. The script
+  also verifies the z-primitive telescoping with symbolic L != 1 through
+  logarithmic degree 5, the L=1 branch, and the boundary resonance canary.
+  The machine-readable record is contact_checks.json.
+
+2. Quartic bridge independent proof audit
+  Reviewed quartic_bridge/quartic_bridge.tex and the critical constants
+  and arithmetic in quartic_bridge/verify_quartic_bridge.py.
+  No mandatory mathematical correction or unclosed proof gap found.
+
+  Global Mittag-Leffler expansion:
+    The local principal parts of psi(z)^4 and its regular coefficient
+    kappa_4 agree with the fourth power of the digamma Laurent series.
+    For f=psi^4-P_0, f is regular at zero. Integrating
+    z*f(w)/(w*(w-z)) on |w|=N+1/2 is legitimate: reflection and the
+    asymptotic digamma formula give a uniform O(log^4 N) bound while
+    cot(pi*w) remains bounded on these circles. The integral is
+    O(log^4 N/N), hence tends to zero. The residue at each -n is
+    -(P_n(z)-P_n(0)). The normal convergence estimate
+    O(log^3(n)/n^2) closes the argument and excludes an unspecified
+    entire remainder.
+
+  Integration and arithmetic reduction:
+    Finite-part integration of P_0 gives the displayed endpoint constants.
+    The finite-difference identity for a_n, Abel summation of its logarithm
+    terms, and the symmetric-sum reductions all check. In particular the
+    +4*zeta'(3) sign in A_4 is correct. The remaining infinite series uses
+    the kernel (psi(n)^2+psi'(n)-log(n)^2)*log(n)/n, which is absolutely
+    summable. The printed C_4 constant and the reindexing to this kernel
+    are consistent.
+
+  Theta identification:
+    D_4(s)=2*Z_3(s,1,1)-2*gamma*Z_2(s,1)
+           +(gamma^2+zeta(2))*zeta(s)-zeta''(s)
+    agrees with its Dirichlet series on Re(s)>1 and continues regularly
+    to Re(s)>0. Its derivative at 1 is
+    2*theta-2*gamma*eta-(gamma^2+zeta(2))*gamma_1+gamma_3.
+    Substitution gives the displayed quartic bridge with all signs.
+    In the independent Mellin argument for theta, the regularized cubic
+    kernel has R_3(0)=0 because it is one sixth of the derivative of
+    log^3(1-exp(-t)). The subtraction at zero has vanishing difference
+    in its cubic logarithmic primitive. Therefore the inverse-Gamma
+    coefficient of degree four and R_3'(0) yield theta as claimed.
+
+  Numerical remainder treatment:
+    The Binet remainder bounds for psi and psi' have the correct powers
+    and constants. The exact zeta derivative signs in the logarithmic
+    tail compiler are consistent. The verifier's temporary use of
+    gamma^2-zeta(2), followed by a separately added 2*zeta(2) term,
+    is algebraically equivalent to the gamma^2+zeta(2) coefficient in
+    the mathematical formula. Its reported agreement is a high-precision
+    independent diagnostic, not an interval certificate, as documented.
+
+3. Ordinary moments and log-resolvent checks
+  moments.tex supplies a regularized Gauss exponential generating
+  function for all nonreal z and Re(lambda)>-1, its Bernoulli moments,
+  a general-q digamma-Lerch first moment, and the Gamma/harmonic formula
+  at q=0. The logarithmic Gamma generating series has its smaller
+  radius min(1,abs(1+lambda)) explicitly distinguished from the quotient's
+  Taylor radius. Inverse-square-root endpoint examples are ordinary
+  absolutely convergent integrals.
+
+  check_moments.py completed nine independent exact coefficient checks,
+  a deliberate prefactor corruption control, and nineteen numerical
+  comparisons at 55-digit working precision. The largest absolute
+  discrepancy is 2.824e-31, in an inverse-square-root endpoint quadrature.
+  The two nonzero complex-q finite-part log-resolvent checks agree within
+  4.3e-56; their stable integrands use exact endpoint subtraction.
+  Numerical results are diagnostics, not rigorous interval enclosures.
+
+4. Conjecture status
+  S6 and current replacement S8 remain open in this work. The inherited
+  exact Cayley obstruction concerns a precisely specified restricted
+  relation space and is not a period-independence theorem. The larger
+  full-depth double-shuffle experiment stopped before elimination was
+  complete. Neither numerical agreement nor failure of a limited relation
+  search has been promoted to an exact identity or an independence claim.

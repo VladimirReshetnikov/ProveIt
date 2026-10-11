@@ -1,0 +1,122 @@
+\section{Exact Gamma and Bell formulas for the Laurent coefficients}
+\label{clc:sec:coefficients}
+
+The finite closure becomes an explicit algorithm once the coefficients
+$a_{\rho,k}$ are known. For a fixed pole put
+\[
+ I_\rho=\{j:\rho/q_j\in\mathbb Z\},\qquad
+ J_\rho=\{1,\ldots,r\}\setminus I_\rho,
+ \qquad d=|I_\rho|.
+\]
+Define the complete exponential Bell polynomials by
+\begin{equation}\label{clc:eq:Bell-def}
+ \exp\left(\sum_{n\ge1}u_n\frac{z^n}{n!}\right)
+ =\sum_{n\ge0}\mathcal B_n(u_1,\ldots,u_n)\frac{z^n}{n!}.
+\end{equation}
+Thus $\mathcal B_0=1$, $\mathcal B_1=u_1$,
+$\mathcal B_2=u_1^2+u_2$, and
+$\mathcal B_3=u_1^3+3u_1u_2+u_3$.
+
+\begin{theorem}[Finite coefficient construction]\label{clc:thm:coeff}
+The leading coefficient at $\rho$ is
+\begin{equation}\label{clc:eq:leading}
+ a_{\rho,d}=(-1)^{\sum_{j\in I_\rho}\rho/q_j}
+ \prod_{j\in J_\rho}\frac{\pi}{q_j}\csc\frac{\pi\rho}{q_j}.
+\end{equation}
+For $n\ge1$ let
+\begin{align}
+ u_n={}&\boldsymbol1_{2\mid n}\,2(n-1)!\zeta(n)
+              \sum_{j\in I_\rho}q_j^{-n}\notag\\
+ &+\sum_{j\in J_\rho}q_j^{-n}
+ \left\{\psi^{(n-1)}(\rho/q_j)
+       +(-1)^n\psi^{(n-1)}(1-\rho/q_j)\right\},
+ \label{clc:eq:logjets}
+\end{align}
+where the first line is zero for odd $n$, so it never calls for
+$\zeta(1)$. Then, for $1\le k\le d$,
+\begin{equation}\label{clc:eq:Bell-coeff}
+ a_{\rho,k}=\frac{a_{\rho,d}}{(d-k)!}
+                  \mathcal B_{d-k}(u_1,\ldots,u_{d-k}).
+\end{equation}
+Only $u_1,\ldots,u_{d-1}$ are needed. For rational scales,
+$a_{\rho,k}/\pi^{r-k}$ is a real cyclotomic algebraic number.
+\end{theorem}
+\begin{proof}
+Each polar factor has leading term
+$(-1)^{\rho/q_j}/z$, proving \eqref{clc:eq:leading}.
+The normalized local germ
+$z^dG_{\bq}(\rho+z)/a_{\rho,d}$ is analytic and equals one at zero;
+its local logarithm is consequently unambiguous.
+For a polar factor its logarithm is
+\[
+ \log\frac{\pi z/q_j}{\sin(\pi z/q_j)}
+ =\sum_{h=1}^\infty\frac{\zeta(2h)}{h}\left(\frac z{q_j}\right)^{2h}.
+\]
+This follows from the sine product, or from Gamma reflection and the
+local Gamma series. Its $n$th derivative at zero is the first line of
+\eqref{clc:eq:logjets}.
+For a nonpolar factor use
+\[
+ g_{q_j}(\rho+z)=q_j^{-1}
+ \Gamma\left(\frac{\rho+z}{q_j}\right)
+ \Gamma\left(1-\frac{\rho+z}{q_j}\right).
+\]
+Differentiating its local logarithm gives the second line. The arguments
+$1-\rho/q_j$ here may be negative, but are not integers; the meromorphic
+polygamma values are well defined. No global branch of their separate
+Gamma logarithms is required. Exponentiating the normalized local
+logarithm gives \eqref{clc:eq:Bell-coeff}.
+
+For the final assertion one can avoid transcendental cancellation
+entirely. Expand the sine factors directly at rational multiples of
+$\pi$, invert their finite Taylor polynomials, and multiply to order
+$d-1$. The trigonometric constants are real cyclotomic algebraic
+numbers, and the Taylor powers supply exactly $\pi^{r-k}$.
+\end{proof}
+
+The two constructions in this proof are independent computational
+routes. The supplied code uses the logarithmic Bell recurrence in
+\texttt{pole\_table}, and direct reciprocal-sine Taylor multiplication in
+\texttt{direct\_local\_table}. Exact comparisons are made after symbolic
+simplification, not after floating-point evaluation of polygamma terms.
+
+\subsection{A genuinely mixed three-scale example}
+For $\bq=(1,2,3)$, a common period is $Q=6$ and $\sigma=-1$.
+The complete table is as follows; blank entries mean zero or absent
+higher pole order.
+\begin{center}
+\begin{tabular}{c c c c}
+\toprule
+$\rho$ & $a_{\rho,1}$ & $a_{\rho,2}$ & $a_{\rho,3}$\\
+\midrule
+$1$ & $-\sqrt3\pi^2/9$ & &\\
+$2$ & $-2\pi^2/27$ & $-2\sqrt3\pi/9$ &\\
+$3$ & $0$ & $-\pi/2$ &\\
+$4$ & $2\pi^2/27$ & $-2\sqrt3\pi/9$ &\\
+$5$ & $\sqrt3\pi^2/9$ & &\\
+$6$ & $-49\pi^2/216$ & $0$ & $-1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Together with \eqref{clc:eq:central-raw}, this is an explicit finite
+identity for every total order and every $\Rea A>-1$, using alternating
+Hurwitz functions at $(A+\rho)/6$. No additional infinite sum is hidden
+in the coefficient construction.
+At $W=0$ every $k\ge2$ term vanishes because $(0)_{k-1}=0$, and
+$\eta(0,b)=1/2$. Thus
+\begin{equation}\label{clc:eq:123zero}
+ K_{(1,2,3)}(0)=-\frac12\sum_\rho a_{\rho,1}
+ =\frac{49\pi^2}{432}.
+\end{equation}
+The independent parity theorem in Section~\ref{clc:sec:parity} gives
+exactly the same value without constructing this table.
+
+The coefficients also obey a useful scaling check. If all scales and
+poles are multiplied by $\lambda>0$, then
+\begin{equation}\label{clc:eq:coef-scaling}
+ a^{\lambda\bq}_{\lambda\rho,k}
+ =\lambda^{k-r}a^{\bq}_{\rho,k}.
+\end{equation}
+This follows at once from
+$G_{\lambda\bq}(p)=\lambda^{-r}G_{\bq}(p/\lambda)$ and is included
+in the exact verification suite.

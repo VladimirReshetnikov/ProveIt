@@ -1,0 +1,335 @@
+\section{Individual Barnes functions and all multiple Gamma ranks}
+\label{bhr:sec:barnes}
+
+The balanced functions in the preceding reports are particular
+linear combinations of Hurwitz-zeta derivatives and Bernoulli
+polynomials. An individual multiple Gamma function also carries
+polynomial coefficients in $x$. Theorem~\ref{bhr:thm:weighted-master}
+supplies exactly those missing weights.
+
+\subsection{Fixing the multiple Gamma normalization}
+
+For an integer $r\ge1$, the unit-period Barnes zeta is initially
+\begin{equation}\label{bhr:eq:barnes-zeta}
+ \mathcal Z_r(u,x)=\sum_{n=0}^{\infty}
+        \binom{n+r-1}{r-1}(n+x)^{-u},\qquad \Re u>r,\quad x>0.
+\end{equation}
+Define the explicit coefficient polynomials
+\begin{equation}\label{bhr:eq:C-rk}
+ C_{r,k}(x)=\frac1{(r-1)!}[X^k]
+                      \prod_{h=1}^{r-1}(X+h-x),\qquad 0\le k<r.
+\end{equation}
+Expanding the binomial coefficient in powers of $n+x$ gives
+\begin{equation}\label{bhr:eq:Barnes-Hurwitz}
+ \mathcal Z_r(u,x)=\sum_{k=0}^{r-1}C_{r,k}(x)\zeta(u-k,x),\qquad
+ L_r(x):=\partial_u\mathcal Z_r(0,x)
+       =\sum_{k=0}^{r-1}C_{r,k}(x)\zeta'(-k,x).
+\end{equation}
+The first equality holds in the initial convergence domain and
+then meromorphically. The value at zero is regular. This is the
+classical Barnes/Hurwitz conversion, here written in a directly
+computable polynomial form \cite{bhr:Adamchik,bhr:Vardi}.
+
+To specify a normalization completely, put
+\begin{equation}\label{bhr:eq:Q-r}
+ Q_r(x)=\sum_{j=0}^{r-1}(-1)^{j+1}L_{r-j}(1)
+                          \binom{x-1}{j},\qquad
+ \log\Gamma_r(x)=L_r(x)+Q_r(x).
+\end{equation}
+We use the division convention for the multiple Gamma hierarchy:
+$\Gamma_0(x)=x^{-1}$, $\Gamma_1=\Gamma$, and
+$\Gamma_2=G^{-1}$. The zeta prescription
+\eqref{bhr:eq:Barnes-Hurwitz}--\eqref{bhr:eq:Q-r}, not merely a functional
+equation, defines the normalized functions in every higher rank.
+Other standard sign conventions can be converted by inversion.
+
+\begin{proposition}[Normalization and recurrence]\label{bhr:prop:normalization}
+The functions in \eqref{bhr:eq:Q-r} satisfy
+\begin{equation}\label{bhr:eq:Gamma-r-recurrence}
+ \Gamma_r(1)=1,\qquad
+ \Gamma_r(x+1)=\frac{\Gamma_r(x)}{\Gamma_{r-1}(x)}.
+\end{equation}
+Their normalization polynomials contain only rational numbers and
+ordinary zeta derivatives at nonpositive integers.
+\end{proposition}
+\begin{proof}
+Counting the multiplicities in \eqref{bhr:eq:barnes-zeta} gives
+$\mathcal Z_r(u,x+1)-\mathcal Z_r(u,x)=-\mathcal Z_{r-1}(u,x)$, with
+$\mathcal Z_0(u,x)=x^{-u}$. Hence
+$L_r(x+1)-L_r(x)=-L_{r-1}(x)$, where $L_0=-\log x$.
+The binomial difference formula gives
+$Q_r(x+1)-Q_r(x)=-Q_{r-1}(x)$ for $r\ge2$.
+For $r=1$, $Q_1=-\zeta'(0)=\tfrac12\log(2\pi)$ is
+constant. Also $Q_r(1)=-L_r(1)$. These statements prove
+\eqref{bhr:eq:Gamma-r-recurrence}, including the usual Gamma
+recurrence at $r=1$. The last claim follows from
+\eqref{bhr:eq:Barnes-Hurwitz} at $x=1$.
+\end{proof}
+
+The first three rows make every coefficient explicit. Here
+$L=\log(2\pi)$:
+\begin{align}
+ L_1(x)&=\zeta'(0,x),& Q_1(x)&=L/2,\label{bhr:eq:rank1}\\
+ L_2(x)&=\zeta'(-1,x)+(1-x)\zeta'(0,x),&
+ Q_2(x)&=-\zeta'(-1)-\tfrac L2(x-1),\label{bhr:eq:rank2}\\
+ L_3(x)&=\tfrac12\zeta'(-2,x)
+       +\tfrac{3-2x}{2}\zeta'(-1,x)
+       +\tfrac{(x-1)(x-2)}2\zeta'(0,x),\label{bhr:eq:rank3a}\\
+ Q_3(x)&=-\tfrac12\bigl(\zeta'(-2)+\zeta'(-1)\bigr)
+       +(x-1)\zeta'(-1)+\tfrac L2\binom{x-1}{2}.
+       \label{bhr:eq:rank3b}
+\end{align}
+At rank two these equations are equivalent to the usual Vardi
+identity
+\begin{equation}\label{bhr:eq:Vardi}
+ \log G(x)=\zeta'(-1)+(x-1)\log\Gamma(x)-\zeta'(-1,x).
+\end{equation}
+The familiar Barnes function has its standard asymptotic
+normalization; $G(x+1)=\Gamma(x)G(x)$ and $G(1)=1$ alone
+would allow multiplication by a nontrivial periodic factor.
+
+\subsection{The all-rank resolvent theorem}
+
+\begin{theorem}[Individual multiple Gamma transforms]\label{bhr:thm:all-Barnes}
+For every integer $r\ge1$, polynomial $W$, and $z\notin\R$,
+\begin{equation}\label{bhr:eq:all-Barnes}
+ \boxed{\displaystyle
+ \int_0^1 W(x)\log\Gamma_r(x)R_z(x)\,dx
+  =-\sum_{k=0}^{r-1}
+      \left.\partial_s I_{W C_{r,k}}(s,z)\right|_{s=k+1}
+          +T_{WQ_r}(z).}
+\end{equation}
+Every term on the right is explicitly given by
+\eqref{bhr:eq:weighted-master} and \eqref{bhr:eq:Tpoly}. It is a finite
+combination of ordinary and depth-two polylogarithms, their first
+order derivatives, Gamma factors, logarithms, and ordinary zeta
+values and derivatives. All depth-two series needed at the stated
+evaluation points are normally convergent.
+\end{theorem}
+
+\begin{proof}
+Differentiate the ordinary integral in
+Theorem~\ref{bhr:thm:weighted-master} at $s=k+1$:
+\[
+ \partial_s I_P(k+1,z)
+       =-\int_0^1P(x)\zeta'(-k,x)R_z(x)\,dx.
+\]
+The shift formula at zero bounds the differentiated integrand by
+a fixed polynomial in $|\log x|$ times $x$ when $k=0$, and
+by an even more integrable power when $k>0$; its analytic tail
+is bounded. Thus differentiation is justified locally uniformly.
+Insert \eqref{bhr:eq:Barnes-Hurwitz} and \eqref{bhr:eq:Q-r}.
+At every evaluation point $s=k+1\ge1$ and every polynomial
+index $j\ge1$, the depth-two total order is $s+j\ge2$.
+Lemma~\ref{bhr:lem:omega-normal} therefore applies with a margin,
+including all the stated spectral derivatives. The sums over
+$r,k,j$ are finite.
+\end{proof}
+
+This theorem answers the individual, unit-period multiple Gamma
+part of source question R6. It does not assert a reduction for
+arbitrary products of two multiple Gamma logarithms, nor for
+arbitrary incommensurable Barnes periods.
+
+Repeated poles are equally explicit:
+\begin{equation}\label{bhr:eq:Barnes-repeated}
+ \int_0^1\frac{W(x)\log\Gamma_r(x)}{(K(x)-z)^h}\,dx
+   =\frac1{(h-1)!}\partial_z^{h-1}
+      \int_0^1W(x)\log\Gamma_r(x)R_z(x)\,dx,
+ \qquad h\ge1.
+\end{equation}
+All these integrals converge. Argument derivatives of
+$\mathcal O_{\alpha,\beta}(q)$ can be taken directly in its
+series, multiplying by powers of $n$. The formal identity
+\[
+ q\partial_q\mathcal O_{\alpha,\beta}
+  =\mathcal O_{\alpha-1,\beta}-\mathcal O_{\alpha,\beta-1}
+\]
+must be kept as a paired difference when either term separately
+leaves its convergence domain. The original differentiated series
+still converges normally. This qualification prevents an artificial
+divergence in implementations at total order two.
+
+\subsection{A compact formula for the ordinary Barnes function}
+
+Only one depth-two derivative is needed at rank two. Define
+\begin{equation}\label{bhr:eq:Dq}
+ \mathcal D(q)=
+    \left.(\partial_\alpha+\partial_\beta)
+                      \mathcal O_{\alpha,\beta}(q)\right|_{\alpha=\beta=1}
+  =-\sum_{n,m\ge1}\frac{q^n\log(m(m+n))}{m(m+n)}.
+\end{equation}
+It is holomorphic for $|q|<1$ and vanishes at zero. In the next
+formulas all polylogarithms have argument $q$. Set
+\begin{align}
+ \mathcal A(q)
+  &=\frac{\mathcal D(q)-\Li_2^{[1]}(q)
+       -(\gamma+L+1)\Li_2(q)-\Li_1(q)\Li_1^{[1]}(q)}{2\pi^2}
+           -\frac14\Li_1(q),\label{bhr:eq:Aq}\\
+ \mathcal S(q)
+  &=\frac{\Li_1^{[1]}(q)-(\gamma+2L)\Li_1(q)
+            -\tfrac12\bigl(\Li_2(q)+\Li_1(q)^2\bigr)}{2\pi},
+        \label{bhr:eq:Sq}\\
+ \mu_G&=2\zeta'(-1)-\frac1{12}-\frac L4.
+       \label{bhr:eq:meanG}
+\end{align}
+
+\begin{theorem}[The individual $G$ resolvent]\label{bhr:thm:G-resolvent}
+With the coordinates \eqref{bhr:eq:coordinates},
+\begin{equation}\label{bhr:eq:G-resolvent}
+ \boxed{\displaystyle
+ \int_0^1\frac{\log G(x)}{\pi\cot(\pi x)-z}\,dx
+    =-\frac{\mu_G}{a}
+       +\frac c{2q}\bigl(\mathcal A(q)+\epsilon\ii\mathcal S(q)\bigr).}
+\end{equation}
+The quotient at $q=0$ is removable. The formula is holomorphic
+on each open half-plane and uses the real logarithm of $G(x)$
+on the integration interval.
+\end{theorem}
+
+\begin{proof}
+We give a summation proof that also connects the formula to the
+known Barnes Fourier expansion \cite[Theorems 2--3]{bhr:Mezo}.
+Write
+\[
+ \log G(x)=\mu_G+\sum_{n\ge1}
+                  \bigl(a_n\cos(2\pi nx)+b_n\sin(2\pi nx)\bigr).
+\]
+Its coefficients are
+\begin{align}
+ a_n&=\frac{\frac12\log n-(\gamma+L)-1}{2\pi^2n^2}
+                -\frac1{4n}-\frac{T_n}{\pi^2},\label{bhr:eq:anG}\\
+ b_n&=\frac{\frac1{2n}-\gamma-2L-\log n-H_n}{2\pi n},
+          \label{bhr:eq:bnG}\\
+ T_n&=\sum_{\substack{m\ge1\\m\ne n}}
+                          \frac{\log m}{m^2-n^2}.
+          \label{bhr:eq:Tn}
+\end{align}
+The $m$-sum in $T_n$ converges absolutely. These coefficients
+can also be recovered from Theorem~\ref{bhr:thm:weighted-master}
+by differentiating the $P=x-1$ formula at $s=1$, the $P=1$
+formula at $s=2$, and using \eqref{bhr:eq:Vardi}. Thus their use
+does not assume a new Barnes Fourier theorem.
+
+To evaluate their generating functions, differentiate the
+$j=1$ case of \eqref{bhr:eq:lattice-splitting} and the definition
+of $\mathcal O_{1,s}$. Partial fractions give the exact identity
+\begin{equation}\label{bhr:eq:T-generator}
+ \sum_{n\ge1}q^nT_n
+   =\frac12\Li_1(q)\Li_1^{[1]}(q)
+       -\frac12\mathcal D(q)+\frac14\Li_2^{[1]}(q).
+\end{equation}
+For clarity, the scalar calculation behind it is
+\[
+ \frac1{m^2-n^2}=
+     \frac1{2m}\left(\frac1{m-n}+\frac1{m+n}\right).
+\]
+The excluded term $m=n$ in the second sum is
+$\log n/(2n^2)$ before multiplication by $1/2$; it supplies
+the last term in \eqref{bhr:eq:T-generator}. This diagonal term
+is necessary for the coefficient of $\Li_2^{[1]}$.
+
+Next,
+\begin{equation}\label{bhr:eq:harmonic-generator}
+ \sum_{n\ge1}\frac{H_nq^n}{n}
+      =\Li_2(q)+\frac12\Li_1(q)^2.
+\end{equation}
+It follows either by integrating
+$\sum_{n\ge1}H_nq^n=\Li_1(q)/(1-q)$ or by the depth-two
+stuffle identity. Equations \eqref{bhr:eq:anG}--\eqref{bhr:eq:harmonic-generator}
+give $\sum a_nq^n=\mathcal A(q)$ and
+$\sum b_nq^n=\mathcal S(q)$.
+
+The function $\log G$ is integrable and square integrable:
+near zero it equals $\log x+O(x)$, while it is analytic at one.
+Pair its Fourier coefficients with the uniformly convergent
+geometric series \eqref{bhr:eq:resolvent-fourier}. This yields
+\eqref{bhr:eq:G-resolvent}. The constant term is
+\eqref{bhr:eq:meanG}; for example integrate \eqref{bhr:eq:Vardi}, use
+$\int_0^1\zeta'(-1,x)\,dx=0$ and
+\[
+ \int_0^1x\log\Gamma(x)\,dx
+       =\frac L4+\zeta'(-1)-\frac1{12}.
+\]
+The latter follows by integrating the Hurwitz argument ladder.
+All generating functions used above are $O(q)$, so the quotient
+at zero is removable. Normal convergence proves holomorphy.
+\end{proof}
+
+\subsection{An ordinary-polylogarithm real component}
+
+\begin{corollary}[A one-parameter exact real integral]\label{bhr:cor:G-real}
+For $b>0$, let $q=(b-\pi)/(b+\pi)\in(-1,1)$. Then
+\begin{equation}\label{bhr:eq:G-real}
+ \boxed{\displaystyle
+ \int_0^1\frac{K(x)\log G(x)}{K(x)^2+b^2}\,dx
+ =\frac{\Li_1^{[1]}(q)-(\gamma+2L)\Li_1(q)
+       -\frac12\bigl(\Li_2(q)+\Li_1(q)^2\bigr)}
+               {2q(b+\pi)^2}.}
+\end{equation}
+At $b=\pi$ the right side means
+$-(\gamma+2L+1/2)/(8\pi^2)$. In particular,
+\begin{equation}\label{bhr:eq:G-threepi}
+ \boxed{\displaystyle
+ \int_0^1\frac{\pi\cot(\pi x)\log G(x)}
+                      {\pi^2\cot^2(\pi x)+9\pi^2}\,dx
+ =\frac{\Li_1^{[1]}(1/2)-(\gamma+2\log(2\pi))\log2
+                    -\pi^2/24-(\log2)^2/4}{16\pi^2}.}
+\end{equation}
+\end{corollary}
+\begin{proof}
+At $z=\ii b$, $a=\ii(b+\pi)$ and
+$c=-2\pi\ii/(b+\pi)^2$. The functions $\mathcal A,
+\mathcal S$ are real at real $q$. Taking the real part of
+\eqref{bhr:eq:G-resolvent} therefore keeps only
+$\pi\mathcal S(q)/(q(b+\pi)^2)$.
+Use $\Li_1(q)/q\to1$, $\Li_2(q)/q\to1$ and
+$\Li_1^{[1]}(q)/q\to0$ at zero. For $b=3\pi$, use
+$q=1/2$, $\Li_1(1/2)=\log2$ and
+$\Li_2(1/2)=\pi^2/12-(\log2)^2/2$.
+\end{proof}
+
+The integral \eqref{bhr:eq:G-threepi} is approximately
+$-0.02312768479852353748486907193849$.
+The complete complex transform at $z=3\pi\ii$ is approximately
+\[
+ -0.02312768479852353748486907193849
+   -0.05510836371472001971368271205301\,\ii.
+\]
+These decimals are diagnostics, not definitions or exact-value
+certificates. The symmetry of $K$ under $x\mapsto1-x$ explains
+why its real component isolates the simpler sine coefficients.
+
+\subsection{Normalized antiderivatives remain explicit}
+
+The standard balanced primitives are
+\begin{equation}\label{bhr:eq:balanced-B}
+ \mathscr B_k(x)=\frac{\zeta'(-k,x)+H_k\zeta(-k,x)}{k!},
+ \qquad H_0=0.
+\end{equation}
+They satisfy $\mathscr B_0=\log\Gamma-L/2$ and
+$\mathscr B_k'=\mathscr B_{k-1}$ for $k\ge1$
+\cite{bhr:EMIntegrals,bhr:EMGeneralized}. For a polynomial $P$, set
+\begin{equation}\label{bhr:eq:weighted-antiderivative}
+ \mathscr A_{P,k}(x)=
+    \sum_{j=0}^{\deg P}(-1)^jP^{(j)}(x)\mathscr B_{k+j+1}(x).
+\end{equation}
+Termwise differentiation telescopes, so
+$\mathscr A_{P,k}'=P\mathscr B_k$.
+Consequently a primitive of $P(x)\zeta'(-k,x)$, normalized
+to vanish at $x=1$, is
+\begin{align}\label{bhr:eq:normalized-zeta-primitive}
+ k!\bigl(\mathscr A_{P,k}(x)-\mathscr A_{P,k}(1)\bigr)
+    -H_k\int_1^xP(t)\zeta(-k,t)\,dt.
+\end{align}
+The remaining integral is polynomial because
+$\zeta(-k,t)=-B_{k+1}(t)/(k+1)$.
+Apply \eqref{bhr:eq:normalized-zeta-primitive} to the finitely many
+terms in \eqref{bhr:eq:Barnes-Hurwitz}, and integrate $Q_r$ as a
+polynomial. This gives a fully normalized primitive of every
+$\log\Gamma_r$. Repetition gives every iterated primitive,
+without unspecified additive constants. Their resolvent
+transforms again follow from Theorem~\ref{bhr:thm:all-Barnes} and
+Theorem~\ref{bhr:thm:weighted-master}. The primitive operation is
+classical integration by parts; the point here is its compatibility
+with the explicit individual-function normalization.

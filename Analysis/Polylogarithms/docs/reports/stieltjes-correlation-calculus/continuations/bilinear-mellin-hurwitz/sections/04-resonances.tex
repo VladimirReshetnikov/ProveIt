@@ -1,0 +1,217 @@
+\section{Both resonances and every logarithmic moment}\label{bmh:sec:resonances}
+
+\subsection{An all-weight double-zeta evaluation}
+Write
+\begin{equation}\label{bmh:eq:Idef}
+ I_{m,n}^{(h)}=\int_0^\infty
+ \frac{\log^h x\,\Li_m(-x)\Li_n(-x)}{x(1+x)}\dd x,
+ \qquad I_{m,n}=I_{m,n}^{(0)}.
+\end{equation}
+
+\begin{theorem}[Compact double-zeta reduction]\label{bmh:thm:compact}
+For every $m,n\ge1$, with $W=m+n$,
+\begin{align}
+ \boxed{\begin{aligned}
+ I_{m,n}={}&\left(\binom W{m-1}+\binom W{n-1}\right)\zeta(W+1)\\
+ &+\sum_{j=1}^{W-1}j\,A_j(m,n)\zeta(j+1,W-j).
+ \end{aligned}}
+ \label{bmh:eq:compact}
+\end{align}
+where
+\begin{equation}\label{bmh:eq:Aj}
+ A_j(m,n)=\binom{W-j-1}{m-1}+\binom{W-j-1}{n-1}
+           -\binom{j-1}{m-1}-\binom{j-1}{n-1}.
+\end{equation}
+In particular $A_{W-j}(m,n)=-A_j(m,n)$. All double-zeta values in the
+formula are ordinarily convergent and have weight $W+1$.
+\end{theorem}
+
+\begin{proof}[A direct proof at resonance]
+The $a=0$ limit of~\eqref{bmh:eq:resolvent} is
+\[
+ I_0(c,d)=\frac{c\log c/(c-1)-d\log d/(d-1)}{c-d}.
+\]
+On the cone $u=v+t$ it is the following difference of two nonnegative
+kernels:
+\begin{equation}\label{bmh:eq:resonant-cone}
+ I_0(e^{v+t},e^v)=
+ \frac{t e^{-(v+t)}}{(1-e^{-t})(1-e^{-(v+t)})}
+ -\frac{v e^{-(2v+t)}}{(1-e^{-(v+t)})(1-e^{-v})}.
+\end{equation}
+Each term, after multiplication by $(v+t)^{m-1}v^{n-1}$, is integrable.
+This can be seen either from its elementary behavior at the axes or from
+the convergent double sums below. Consequently Tonelli's theorem applies
+separately to their geometric expansions.
+
+Using the same binomial expansion as in the proof of the master, the
+first cone contributes
+\begin{align}
+ \sum_{k=0}^{m-1}\binom{W-2-k}{n-1}
+ \bigl[&(k+1)\{\zeta(k+2,W-1-k)+\zeta(W+1)\}\notag\\
+       &-(W-1-k)\zeta(W-k,k+1)\bigr].
+ \label{bmh:eq:resonant-unsimplified}
+\end{align}
+The weak inequality in the first geometric sum accounts for the
+single-zeta diagonal. The second cone gives the same expression with
+$m,n$ interchanged. Reindexing the positive and negative double-zeta
+terms gives $jA_j(m,n)$. The coefficient of the diagonal is
+\[
+ \sum_{k=0}^{m-1}(k+1)\binom{W-2-k}{n-1}
+ +\sum_{k=0}^{n-1}(k+1)\binom{W-2-k}{m-1}
+ =\binom W{m-1}+\binom W{n-1},
+\]
+a double application of the hockey-stick identity. This proves the
+formula independently of any numerical recognition.
+\end{proof}
+
+\subsection{All Taylor coefficients without singular coordinates}
+Let
+\begin{equation}\label{bmh:eq:even-coeff}
+ \frac{\pi u}{\sin\pi u}=\sum_{j\ge0}e_{2j}u^{2j},
+ \qquad e_0=1,\quad
+ e_{2j}=2(1-2^{1-2j})\zeta(2j)\quad(j\ge1).
+\end{equation}
+For positive integers $A,B$ and $\nu\ge1$, define
+\begin{align}
+ c_\nu(A,B)={}&-\frac{(A)_\nu}{\nu!}\zeta(A+\nu,B)\notag\\
+ &+\sum_{v=1}^{\nu}
+ \frac{(A)_{\nu-v}(B)_v}{(\nu-v)!v!}
+ \bigl\{\zeta(B+v,A+\nu-v)+\zeta(A+B+\nu)\bigr\}.
+ \label{bmh:eq:cjet}
+\end{align}
+Every first double-zeta index in this expression is at least two. An
+equivalent, simpler corner formula is
+\begin{equation}\label{bmh:eq:c11jet}
+ c_\nu(1,1)=\frac12\sum_{v=1}^{\nu-1}
+       \zeta(v+1)\zeta(\nu-v+1)
+       +\frac{\nu+1}{2}\zeta(\nu+2).
+\end{equation}
+Define $T_\nu(m,n)$ by replacing every $\bmhC_{A,B}$ in
+\eqref{bmh:eq:K} by $c_\nu(A,B)$.
+
+\begin{lemma}[Cancelled coefficient identity]\label{bmh:lem:cjet}
+For $|u|<1$,
+\begin{equation}\label{bmh:eq:C-Taylor}
+ \bmhC_{A,B}(1-u)=\sum_{\nu\ge1}c_\nu(A,B)u^\nu.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $A\ge2$, expand the normally convergent double Hurwitz series and
+use
+\[
+ D_B(1-u)=\sum_{v\ge1}\frac{(B)_v}{v!}\zeta(B+v)u^v.
+\]
+The latter also holds at $B=1$ by the digamma expansion. At total degree
+$\nu$, the terms of $Z_{1-u}(A,B)$ with positive shift in the second
+index cancel against the corresponding stuffle term of
+$\zeta(A;1-u)D_B(1-u)$. What remains is exactly
+\eqref{bmh:eq:cjet}. For $A=1$, take the limit from spectral $A>1$ in
+the analytic combined cone integral of~\eqref{bmh:eq:cone-moment}.
+All coordinates surviving on the right of~\eqref{bmh:eq:cjet} converge
+at this limit. The same argument reaches $A=B=1$; alternatively,
+expanding~\eqref{bmh:eq:Ccorner} directly gives
+\eqref{bmh:eq:c11jet}. Local uniform convergence permits coefficient
+extraction throughout.
+\end{proof}
+
+\begin{theorem}[Complete resonant logarithmic moments]
+\label{bmh:thm:jets}
+For every $m,n\ge1$ and $h\ge0$,
+\begin{equation}\label{bmh:eq:all-jets}
+ \boxed{\displaystyle
+ I_{m,n}^{(h)}=h!\sum_{j=0}^{\lfloor h/2\rfloor}
+                      e_{2j}T_{h+1-2j}(m,n).}
+\end{equation}
+Every term has representation weight $m+n+h+1$. At $h=0$ the formula
+reduces to Theorem~\ref{bmh:thm:compact}.
+\end{theorem}
+\begin{proof}
+Insert~\eqref{bmh:eq:C-Taylor} into~\eqref{bmh:eq:master} and use
+\eqref{bmh:eq:even-coeff}. The constant term of $\bmhK(1-u)$ is zero, so
+its factor of $u$ cancels the cosecant pole. The coefficient of $u^h$
+is the right side of~\eqref{bmh:eq:all-jets} divided by $h!$.
+Differentiating the original integral is justified by
+Proposition~\ref{bmh:prop:strip}. The weight assertion follows by
+adding the indices in~\eqref{bmh:eq:cjet} and the even-zeta weight.
+\end{proof}
+
+\begin{remark}[Depth is not the same as the generating algebra]
+For $h=0,1$ the answer is a linear combination of single and double zeta
+values. For larger $h$, the factor $e_{2j}$ may multiply a double value.
+It is therefore correct to say that the answer belongs to the algebra
+generated by ordinary and double zeta values. It is \emph{not} correct
+to call every such product additive depth two. Expanding by stuffle gives
+additive depth at most three. No minimal-depth assertion is made.
+\end{remark}
+
+\subsection{The second resonance at \texorpdfstring{$a=-1$}{a=-1}}
+Define
+\begin{equation}\label{bmh:eq:minus-coeff}
+ c^-_\nu(A,B)=c_\nu(A,B)
+ -\sum_{v=1}^{\nu}
+    \frac{(A)_{\nu-v}(B)_v}{(\nu-v)!v!}\zeta(B+v),
+\end{equation}
+and let $T^-_\nu(m,n)$ be the corresponding replacement in
+\eqref{bmh:eq:K}.
+
+\begin{corollary}[Negative Mellin resonance]\label{bmh:cor:negative}
+For $m,n\ge1$ and $h\ge0$,
+\begin{equation}\label{bmh:eq:negative-jets}
+ \boxed{\displaystyle
+ \int_0^\infty\frac{\log^h x\,\Li_m(-x)\Li_n(-x)}{x^2(1+x)}\dd x
+ =-h!\sum_{j=0}^{\lfloor h/2\rfloor}e_{2j}T^-_{h+1-2j}(m,n).}
+\end{equation}
+\end{corollary}
+\begin{proof}
+The shift law gives
+\[
+ \bmhC_{A,B}(2-u)=\bmhC_{A,B}(1-u)-(1-u)^{-A}D_B(1-u).
+\]
+Multiplying the two elementary Taylor series proves that its coefficients
+are $c^-_\nu$. Now use $a=-1+u$ and
+$\sin\pi(-1+u)=-\sin\pi u$ in~\eqref{bmh:eq:master}.
+\end{proof}
+For instance,
+\begin{equation}\label{bmh:eq:negative11}
+ \int_0^\infty\frac{\log^2(1+x)}{x^2(1+x)}\dd x
+ =2\zeta(2)-2\zeta(3).
+\end{equation}
+This resonance exists because the product is $O(x^2)$ at zero. The
+one-factor lower endpoint $a>-1$ cannot be reused for the bilinear
+problem.
+
+\subsection{Small-weight reductions with explicit algebra}
+The first values are
+\begin{align}
+ I_{1,1}&=2\zeta(3),\label{bmh:eq:example11}\\
+ I_{2,1}&=\frac{17}{4}\zeta(4),\label{bmh:eq:example21}\\
+ I_{3,1}&=\frac{11}{2}\zeta(5)+\zeta(2)\zeta(3),\label{bmh:eq:example31}\\
+ I_{2,2}&=2\zeta(5)+4\zeta(2)\zeta(3).\label{bmh:eq:example22}
+\end{align}
+Here is enough exact algebra to verify the reductions. The depth-two sum
+formula
+\begin{equation}\label{bmh:eq:sumformula}
+ \sum_{k=2}^{w-1}\zeta(k,w-k)=\zeta(w),\qquad w\ge3,
+\end{equation}
+follows without regularization: sum the finite geometric progression
+inside $\sum_{n>m}$ to obtain
+\[
+ \sum_{k=2}^{w-1}\frac1{n^k m^{w-k}}
+ =\frac{1/(n m^{w-2})-1/n^{w-1}}{n-m}.
+\]
+The first part summed over $n>m$ is
+$\sum_m H_m/m^{w-1}$, and the second is
+$\sum_n H_{n-1}/n^{w-1}$. Their difference is $\zeta(w)$.
+At weight four, stuffle gives $\zeta(2,2)=3\zeta(4)/4$, so
+$\zeta(3,1)=\zeta(4)/4$. At weight five, use the convergent shuffle
+and stuffle rows
+\begin{align*}
+ \zeta(2)\zeta(3)&=\zeta(2,3)+3\zeta(3,2)+6\zeta(4,1),\\
+ \zeta(2)\zeta(3)&=\zeta(2,3)+\zeta(3,2)+\zeta(5),
+\end{align*}
+together with~\eqref{bmh:eq:sumformula}. Solving gives
+\[
+ \zeta(4,1)=2\zeta(5)-\zeta(2)\zeta(3),\quad
+ \zeta(2,3)=\frac92\zeta(5)-2\zeta(2)\zeta(3).
+\]
+Substitution into~\eqref{bmh:eq:compact} proves the displayed examples.

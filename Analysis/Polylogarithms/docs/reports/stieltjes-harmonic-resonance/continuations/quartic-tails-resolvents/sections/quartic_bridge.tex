@@ -1,0 +1,528 @@
+% Research section prepared against ProveIt 7bd45777a8a127e5dc69aff8887ca36a79a3059d.
+% This fragment uses only standard amsmath/amsthm commands.  Labels begin q4:.
+% Suggested source citations are recorded in SOURCE_NOTES.md beside this file.
+
+\section{The quartic digamma finite part and a depth-three harmonic coefficient}
+\label{q4:section}
+
+The cubic harmonic report~\cite{IncomingCubic} leaves a specific
+next question: carry out the
+power-to-harmonic reduction for the fourth power of the digamma function,
+with the entire remainder and every endpoint constant fixed.  The theorem
+below completes that reduction.  The retained depth-three coefficient is
+defined explicitly; a finite evaluation of it in ordinary zeta and
+Stieltjes constants is a separate arithmetic question.
+
+Throughout this section, write $\gamma=\gamma_0$, and use
+\[
+ \zeta(1+u)=\frac1u+\sum_{j\geq0}\frac{(-1)^j\gamma_j}{j!}u^j.
+\]
+For strict multiple zeta functions the larger index is first:
+\[
+ Z_r(s_1,\ldots,s_r)
+ =\sum_{n_1>\cdots>n_r\geq1}n_1^{-s_1}\cdots n_r^{-s_r}.
+\]
+Only a single spectral order varies in the following definitions:
+\begin{align}
+ Z_2(1+u,1)
+ &=u^{-2}+\gamma u^{-1}+\frac{\gamma^2-\zeta(2)}2
+       +\eta u+O(u^2),\label{q4:eta}\\
+ Z_3(1+u,1,1)
+ &=u^{-3}+\gamma u^{-2}
+       +\frac{\gamma^2-\zeta(2)}{2u}
+       +\frac{\gamma^3-3\gamma\zeta(2)+2\zeta(3)}6
+       +\theta u+O(u^2).\label{q4:theta}
+\end{align}
+Thus $\theta$ is the linear Laurent coefficient, with no factorial or sign
+included.  These conventions agree with the incoming ordered-Hurwitz and
+cubic harmonic reports~\cite{IncomingOrdered,IncomingCubic}.
+The expansions can also be established directly
+from the finite elementary symmetric sums used below.
+
+Define $\operatorname{FP}\int_0^1$ as the constant coefficient of
+$\int_\varepsilon^1$ in the coordinate $\varepsilon$ itself.  In particular,
+$\operatorname{FP}\int_0^1x^{-j}\,dx=-1/(j-1)$ for $j\geq2$, whereas
+$\operatorname{FP}\int_0^1x^{-1}\,dx=0$.
+
+\begin{theorem}[Quartic harmonic bridge]\label{q4:main}
+Let
+\[
+ A_4=12\zeta(3)-12\gamma\zeta(2)+18\zeta(4)+4\zeta'(3).
+\]
+Then
+\begin{equation}\label{q4:bridge}
+ \boxed{\displaystyle
+ Q_4:=\operatorname{FP}\int_0^1\psi(x)^4\,dx
+ =A_4-24\theta+24\gamma\eta
+        +12\bigl(\gamma^2-\zeta(2)\bigr)\gamma_1.}
+\end{equation}
+Equivalently, an absolutely convergent arithmetic representation is
+\begin{equation}\label{q4:arithmetic}
+ \boxed{\begin{aligned}
+ Q_4={}&A_4+12\gamma_3-24\zeta(2)\gamma_1\\
+ &+12\sum_{n=1}^{\infty}
+ \frac{\bigl(\psi(n)^2+\psi'(n)-\log^2n\bigr)\log n}{n}.
+ \end{aligned}}
+\end{equation}
+In generalized harmonic notation the numerator inside the parentheses is
+\[
+ (H_{n-1}-\gamma)^2+\zeta(2)-H_{n-1}^{(2)}-\log^2n.
+\]
+Using the already proved cubic bridge, one may isolate the single
+depth-three coefficient in
+\begin{align}\label{q4:single-coordinate}
+ \operatorname{FP}\int_0^1\bigl\{\psi(x)^4+4\gamma\psi(x)^3\bigr\}\,dx
+ ={}&12\zeta(3)+18\zeta(4)+4\zeta'(3)\notag\\
+ &-24\theta-12\bigl(\gamma^2+\zeta(2)\bigr)\gamma_1.
+\end{align}
+No arithmetic independence or ordinary-constant evaluation of $\theta$ is
+asserted by these formulas.
+\end{theorem}
+
+\subsection{A global quartic partial-fraction identity}
+
+For $n\geq0$ put
+\begin{equation}\label{q4:coefficients}
+ \begin{split}
+ b_n&=H_n-\gamma,\qquad
+ c_n=\zeta(2)+H_n^{(2)},\qquad
+ d_n=H_n^{(3)}-\zeta(3),\\
+ q_n&=6b_n^2-4c_n,\qquad
+ a_n=-b_n^3+3b_nc_n-d_n,
+ \end{split}
+\end{equation}
+with $H_0^{(r)}=0$.  The quartic principal part at $-n$ is
+\begin{equation}\label{q4:Pn}
+ P_n(z)=\frac1{(z+n)^4}-\frac{4b_n}{(z+n)^3}
+             +\frac{q_n}{(z+n)^2}+\frac{4a_n}{z+n}.
+\end{equation}
+The constant coefficient of $\psi(z)^4$ at $z=0$ is
+\begin{equation}\label{q4:kappa}
+ \kappa_4=\gamma^4-12\gamma^2\zeta(2)+6\zeta(2)^2
+                        +12\gamma\zeta(3)-4\zeta(4).
+\end{equation}
+
+\begin{lemma}[The entire remainder is fixed]\label{q4:ML}
+For $z\notin\{0,-1,-2,\ldots\}$,
+\begin{equation}\label{q4:MLformula}
+ \psi(z)^4=P_0(z)+\kappa_4+
+                   \sum_{n=1}^{\infty}\bigl(P_n(z)-P_n(0)\bigr).
+\end{equation}
+The series converges normally on every compact set avoiding the poles.
+\end{lemma}
+
+\begin{proof}
+The digamma recurrence and the Taylor expansion at zero
+\cite[Sections~5.5, 5.7]{DLMF} give
+\[
+ \psi(-n+\varepsilon)=-\varepsilon^{-1}+b_n+c_n\varepsilon
+           +d_n\varepsilon^2
+           +\bigl(\zeta(4)+H_n^{(4)}\bigr)\varepsilon^3
+           +O(\varepsilon^4).
+\]
+Taking its fourth power proves \eqref{q4:Pn}; its constant term at zero
+is \eqref{q4:kappa}.  Matching principal parts by itself would leave an
+unknown entire function, so one additional argument is necessary.
+
+Let $f(z)=\psi(z)^4-P_0(z)$, which is regular at zero.  For fixed $z$,
+integrate
+\[
+ \frac{z f(w)}{w(w-z)}
+\]
+over $|w|=N+1/2$, with $N$ sufficiently large.  On these circles,
+$f(w)=O(\log^4N)$ uniformly.  In the right half-plane this follows from
+the usual digamma asymptotic~\cite[Section~5.11]{DLMF}.
+In the left half-plane use
+$\psi(w)=\psi(1-w)-\pi\cot(\pi w)$.  The cotangent is bounded uniformly
+on the chosen circles: for $|\operatorname{Im}w|\geq1/4$ its exponential
+formula suffices, and for the remaining arcs the real part remains a
+fixed distance from every integer.  Hence the contour integral is
+$O(\log^4N/N)$ and tends to zero.
+
+Its residues at $z$ and $0$ are $f(z)$ and $-f(0)$, and the residue at
+$-n$ is $-(P_n(z)-P_n(0))$.  The residue theorem proves
+\eqref{q4:MLformula}.  Finally,
+$b_n=O(\log n)$, $q_n=O(\log^2n)$ and $a_n=O(\log^3n)$, while
+$(n+z)^{-1}-n^{-1}=O(n^{-2})$ uniformly on a fixed compact set.
+This proves normal convergence as well as the identity.
+\end{proof}
+
+\subsection{Integration and finite summation by parts}
+
+Integrating the normally convergent remainder in \eqref{q4:MLformula}
+term by term gives
+\begin{align}\label{q4:integrated}
+ Q_4={}&-\frac13-2\gamma-q_0+\kappa_4\notag\\
+ &+\sum_{n\geq1}\left\{
+   \frac{n^{-3}-(n+1)^{-3}}3-n^{-4}
+   -2b_n\bigl(n^{-2}-(n+1)^{-2}\bigr)+4b_nn^{-3}\right.\notag\\
+ &\hspace{34mm}\left.
+   +q_n\bigl(n^{-1}-(n+1)^{-1}-n^{-2}\bigr)
+   +4a_n\left(\log\left(1+\frac1n\right)-\frac1n\right)
+  \right\}.
+\end{align}
+The finite parts $-1/3$, $-2\gamma$ and $-q_0$ are retained explicitly.
+The simple-pole finite part at the origin is zero.
+
+We use the following classical convergent Euler sums
+\cite[Equations~25.16.8 and 25.16.13]{DLMF}:
+\begin{align*}
+ \sum_{n\geq1}\frac{H_n}{n^2}&=2\zeta(3),&
+ \sum_{n\geq1}\frac{H_n}{n^3}&=\frac54\zeta(4),\\
+ \sum_{n\geq1}\frac{H_n^2}{n^2}&=\frac{17}4\zeta(4),&
+ \sum_{n\geq1}\frac{H_n^{(2)}}{n^2}
+     &=\frac{\zeta(2)^2+\zeta(4)}2.
+\end{align*}
+The first three can be taken from the standard Euler-sum formulas; the
+fourth follows by splitting the product $\zeta(2)^2$ into its two strict
+triangles and its diagonal.  Also $\zeta(2)^2=5\zeta(4)/2$.
+The exact differences
+\begin{equation}\label{q4:differences}
+ b_n-b_{n-1}=\frac1n,\qquad
+ q_n-q_{n-1}=\frac{12b_{n-1}}n+\frac2{n^2},\qquad
+ a_n-a_{n-1}=\frac{3(c_{n-1}-b_{n-1}^2)}n+\frac1{n^3}
+\end{equation}
+then reduce all terms in \eqref{q4:integrated} except the logarithmic
+ones to
+\begin{equation}\label{q4:base}
+ Q_4=B_4+4\sum_{n\geq1}a_n
+          \left(\log\left(1+\frac1n\right)-\frac1n\right),
+\end{equation}
+where
+\[
+ B_4=\gamma^4-18\gamma^2\zeta(2)-12\gamma\zeta(2)
+             +32\gamma\zeta(3)+12\zeta(3)+\frac{13}2\zeta(4).
+\]
+For a directly checkable bookkeeping formula, the lower-pole terms before
+substitution of the Euler sums are
+\[
+ \kappa_4-\zeta(4)
+ +4\sum_{n\geq1}\frac{b_n}{n^3}
+ +12\sum_{n\geq1}\frac{b_{n-1}}{n^2}
+ -6\sum_{n\geq1}\frac{b_n^2}{n^2}
+ +4\sum_{n\geq1}\frac{c_n}{n^2}.
+\]
+This equals $B_4$ exactly.
+
+The residue difference in \eqref{q4:differences} is the decisive step.
+For a finite integer $N\geq1$, define
+\[
+ M_N=\sum_{n=1}^N
+             \frac{(b_{n-1}^2-c_{n-1})\log n}{n}.
+\]
+Finite summation by parts gives the exact equality
+\begin{equation}\label{q4:logsum}
+ \sum_{n=1}^N a_n\log\left(1+\frac1n\right)
+       =a_N\log(N+1)+3M_N-\sum_{n=1}^N\frac{\log n}{n^3}.
+\end{equation}
+To evaluate the other finite sum, let $e_j(N)$ be the elementary symmetric
+sum of degree $j$ in $1,1/2,\ldots,1/N$, and write
+\[
+ H_N(r_1,\ldots,r_d)
+  =\sum_{N\geq n_1>\cdots>n_d\geq1}
+         n_1^{-r_1}\cdots n_d^{-r_d}.
+\]
+The polynomial expression for the residue is
+\begin{equation}\label{q4:elementary}
+ a_n=-6e_3(n)+6\gamma e_2(n)+3(\zeta(2)-\gamma^2)H_n
+           +\gamma^3-3\gamma\zeta(2)+\zeta(3)+H_n^{(3)}.
+\end{equation}
+Use $e_j(n)=e_j(n-1)+e_{j-1}(n-1)/n$ in each sum, and split the
+product $H_NH_N^{(3)}$ into strict triangles.  This proves, without
+any infinite rearrangement,
+\begin{align}\label{q4:finitesum}
+ \sum_{n=1}^N\frac{a_n}{n}
+ ={}&-6e_4(N)+6\gamma e_3(N)+3(\zeta(2)-\gamma^2)e_2(N)\notag\\
+ &+(\gamma^3-3\gamma\zeta(2)+\zeta(3))H_N+H_NH_N^{(3)}\notag\\
+ &-6H_N(2,1,1)+6\gamma H_N(2,1)
+       +3(\zeta(2)-\gamma^2)H_N^{(2)}-H_N(3,1).
+\end{align}
+The only multiple-zeta limits needed here are
+\[
+ Z_3(2,1,1)=\zeta(4),\qquad
+ Z_2(2,1)=\zeta(3),\qquad
+ Z_2(3,1)=\frac14\zeta(4).
+\]
+For example,
+\[
+ Z_3(2,1,1)=\frac16\int_0^1\frac{[-\log(1-t)]^3}{t}\,dt
+           =\frac16\int_0^1\frac{(-\log t)^3}{1-t}\,dt
+           =\zeta(4),
+\]
+and the double-zeta values follow from the displayed Euler sums.
+
+The elementary symmetric formulas are
+\[
+ \begin{split}
+ e_2(N)&=\frac{H_N^2-H_N^{(2)}}2,\\
+ e_3(N)&=\frac{H_N^3-3H_NH_N^{(2)}+2H_N^{(3)}}6,\\
+ e_4(N)&=\frac{H_N^4-6H_N^2H_N^{(2)}+3(H_N^{(2)})^2
+                +8H_NH_N^{(3)}-6H_N^{(4)}}{24}.
+ \end{split}
+\]
+Substitute these into \eqref{q4:finitesum}, using
+$H_N=\log N+\gamma+O(N^{-1})$ and
+$H_N^{(r)}=\zeta(r)+O(N^{1-r})$ for $r\geq2$.
+All discarded terms are $o(1)$, including their polynomial logarithmic
+factors.  The result, including its full constant term, is
+\begin{equation}\label{q4:asymptoticsum}
+ \sum_{n=1}^N\frac{a_n}{n}
+ =-\frac{\log^4N}{4}+3\zeta(2)\log^2N+C_4+o(1),
+\end{equation}
+where
+\begin{equation}\label{q4:C4}
+ C_4=\frac{\gamma^4}{4}-\frac92\gamma^2\zeta(2)
+                    +8\gamma\zeta(3)-\frac{23}8\zeta(4).
+\end{equation}
+Also
+\[
+ a_N\log(N+1)=-\log^4N+6\zeta(2)\log^2N+o(1).
+\]
+Equations \eqref{q4:base}--\eqref{q4:asymptoticsum} now yield
+\begin{equation}\label{q4:limit}
+ Q_4=A_4+12\lim_{N\to\infty}
+       \left\{M_N-\frac{\log^4N}{4}+\zeta(2)\log^2N\right\}.
+\end{equation}
+Indeed $B_4-4C_4=12\zeta(3)-12\gamma\zeta(2)+18\zeta(4)$,
+and $-\sum\log n/n^3=\zeta'(3)$.  This is where an omitted endpoint
+constant or a sign error in the logarithmic sum would alter the theorem.
+
+\subsection{Identification of the Laurent coefficient}
+
+Since
+\[
+ b_{n-1}^2-c_{n-1}
+   =\psi(n)^2+\psi'(n)-2\zeta(2),
+\]
+and $\psi(n)=\log n+O(n^{-1})$, $\psi'(n)=O(n^{-1})$, the series
+in \eqref{q4:arithmetic} is absolutely convergent, with summands
+$O(\log^2n/n^2)$.  The standard Stieltjes limits give
+\begin{align}\label{q4:Mconstant}
+ \lim_{N\to\infty}
+       \left\{M_N-\frac{\log^4N}{4}+\zeta(2)\log^2N\right\}
+  ={}&\gamma_3-2\zeta(2)\gamma_1\notag\\
+ &+\sum_{n\geq1}
+       \frac{(\psi(n)^2+\psi'(n)-\log^2n)\log n}{n}.
+\end{align}
+Together with \eqref{q4:limit}, this proves \eqref{q4:arithmetic}.
+
+For the precise spectral interpretation, define the holomorphic function
+\[
+ D_4(s)=\sum_{n\geq1}
+       \frac{\psi(n)^2+\psi'(n)-\log^2n}{n^s},
+       \qquad\operatorname{Re}s>0.
+\]
+The series and every fixed derivative converge normally on compact
+subsets of this half-plane.  In $\operatorname{Re}s>1$ the finite identity
+$H_{n-1}^2-H_{n-1}^{(2)}=2e_2(n-1)$ gives
+\begin{equation}\label{q4:Didentity}
+ D_4(s)=2Z_3(s,1,1)-2\gamma Z_2(s,1)
+                  +(\gamma^2+\zeta(2))\zeta(s)-\zeta''(s).
+\end{equation}
+Analytic continuation carries the identity to the germ at $s=1$.
+Comparing its linear coefficients, with \eqref{q4:eta} and
+\eqref{q4:theta}, yields
+\[
+ D_4'(1)=2\theta-2\gamma\eta
+                    -(\gamma^2+\zeta(2))\gamma_1+\gamma_3.
+\]
+The convergent sum in \eqref{q4:arithmetic} is $-D_4'(1)$.
+Substitution proves \eqref{q4:bridge}.  Finally, the incoming cubic
+report~\cite{IncomingCubic}
+proves
+\[
+ Q_3=\operatorname{FP}\int_0^1\psi(x)^3\,dx
+    =3\zeta(2)-6\eta-6\gamma\gamma_1.
+\]
+Adding $4\gamma Q_3$ gives \eqref{q4:single-coordinate}.
+
+\paragraph{A direct existence check for the depth-three Laurent germ.}
+There is also a useful elementary Mellin representation:
+\begin{equation}\label{q4:heightone-mellin}
+ Z_3(s,1,1)=\frac1{2\Gamma(s)}\int_0^\infty
+     \frac{t^{s-1}\log^2(1-e^{-t})}{e^t-1}\,dt,
+     \qquad\operatorname{Re}s>1.
+\end{equation}
+Indeed the generating series of $e_2(n-1)$ is
+$\log^2(1-z)/(2(1/z-1))$.  Mellin integration is absolutely convergent
+in the stated domain.  Near zero the kernel is
+$\log^2t/(2t)+O(\log^2t)$, so subtracting that one local term gives
+a holomorphic remainder $R_3(u)$ in
+\[
+ \Gamma(1+u)Z_3(1+u,1,1)=u^{-3}+R_3(u).
+\]
+The identity
+$\frac{d}{dt}\log^3(1-e^{-t})=3\log^2(1-e^{-t})/(e^t-1)$
+shows $R_3(0)=0$.  The inverse-Gamma expansion therefore gives exactly
+the principal and constant coefficients in \eqref{q4:theta}.  In
+particular,
+\begin{align}\label{q4:theta-kernel}
+ \theta={}&\frac{\gamma^4-6\gamma^2\zeta(2)+3\zeta(2)^2
+                       +8\gamma\zeta(3)-6\zeta(4)}{24}\notag\\
+ &+\frac12\int_0^1\log t
+       \left\{\frac{\log^2(1-e^{-t})}{e^t-1}
+                        -\frac{\log^2t}{t}\right\}\,dt\notag\\
+ &+\frac12\int_1^\infty
+       \frac{\log t\,\log^2(1-e^{-t})}{e^t-1}\,dt.
+\end{align}
+Both integrals in this display converge ordinarily.  This fixes the
+retained coordinate by an elementary, one-dimensional kernel as well as
+by the strict Laurent definition; it does not remove its arithmetic
+content by renaming it.
+
+\subsection{A normalized quartic antiderivative and derivative identities}
+
+For $j\geq2$, define
+\[
+ F_j(n,z)=\frac{(n+z)^{1-j}-n^{1-j}}{1-j}-\frac{z}{n^j},
+ \qquad
+ F_1(n,z)=\log\left(1+\frac zn\right)-\frac zn.
+\]
+Use the logarithm real on the positive real axis, continued to
+$\operatorname{Re}z>0$.  Put
+$p_{4,n}=1$, $p_{3,n}=-4b_n$, $p_{2,n}=q_n$, $p_{1,n}=4a_n$.
+
+\begin{corollary}[Normalized primitive]\label{q4:primitive}
+On $\operatorname{Re}z>0$, the function
+\begin{align}\label{q4:primitiveformula}
+ \mathcal P_4(z)={}&-\frac1{3z^3}-\frac{2\gamma}{z^2}
+       -\frac{6\gamma^2-4\zeta(2)}z
+       +4(\gamma^3-3\gamma\zeta(2)+\zeta(3))\log z
+       +\kappa_4z\notag\\
+ &+\sum_{n=1}^\infty\sum_{j=1}^4p_{j,n}F_j(n,z)
+\end{align}
+satisfies $\mathcal P_4'(z)=\psi(z)^4$.  Its expansion at the singular
+origin has constant term zero.  Consequently, for every real $b>0$,
+\[
+ \operatorname{FP}\int_0^b\psi(x)^4\,dx=\mathcal P_4(b),
+ \qquad \mathcal P_4(1)=Q_4,
+\]
+and, for $0<a<b$, the ordinary integral is
+$\int_a^b\psi(x)^4\,dx=\mathcal P_4(b)-\mathcal P_4(a)$.
+\end{corollary}
+
+\begin{proof}
+Each $F_j$ is the primitive vanishing at zero of
+$(n+z)^{-j}-n^{-j}$.  Uniformly on a fixed compact set,
+$F_j(n,z)=O(n^{-j-1})$.  The coefficient growth established in
+Lemma~\ref{q4:ML} therefore proves normal convergence of the series and
+its differentiated series.  Differentiation gives
+\eqref{q4:MLformula}.  The same estimates give uniform convergence on
+each disk $|z|\leq r<1$, including the origin, where every summand
+vanishes.  Thus the displayed singular terms fix the constant
+coefficient to be zero.
+\end{proof}
+
+\begin{corollary}[Quartic polygamma hierarchy]\label{q4:derivatives}
+For every integer $r\geq1$, away from the poles of $\psi$,
+\begin{align}\label{q4:allpolygamma}
+ &\sum_{r_1+r_2+r_3+r_4=r}
+       \frac{r!}{r_1!r_2!r_3!r_4!}
+       \prod_{j=1}^4\psi^{(r_j)}(z)\notag\\
+ &\quad=(-1)^rr!\sum_{n=0}^{\infty}
+       \left\{\frac{\binom{r+3}{3}}{(n+z)^{r+4}}
+       -\frac{4b_n\binom{r+2}{2}}{(n+z)^{r+3}}
+       +\frac{(r+1)q_n}{(n+z)^{r+2}}
+       +\frac{4a_n}{(n+z)^{r+1}}\right\}.
+\end{align}
+The series converges normally.  At $z=1$ its value is a finite polynomial
+in $\gamma,\zeta(2),\ldots,\zeta(r+1)$.
+\end{corollary}
+\begin{proof}
+Differentiate \eqref{q4:MLformula} $r$ times.  Its constant subtractions
+disappear, and the resulting terms are bounded by a constant times
+$n^{-r-1}(1+\log^3n)$ on each compact set avoiding the poles.
+The product rule gives the left side.  The last assertion follows from
+$\psi(1)=-\gamma$ and
+$\psi^{(k)}(1)=(-1)^{k+1}k!\zeta(k+1)$ for $k\geq1$.
+\end{proof}
+
+\subsection{Independent verification and a reproducible tail formula}
+
+The supplied program checks 44 exact algebraic identities, including
+all principal coefficients, the residue differences, the finite
+summation identity for $1\leq N\leq25$, the endpoint-constant
+cancellation, Laurent coefficient extraction, and the primitive
+derivatives.  Its separate numerical calculations use 100 decimal
+digits and give
+\[
+ Q_4=13.510120376015827411606240712830448441932798533301918600986096436\ldots.
+\]
+One evaluator uses the arithmetic series with a Binet tail.  The other
+integrates the convergent Taylor series of $(x\psi(x))^4$ near zero and
+uses ordinary quadrature away from zero; it does not use the harmonic
+bridge or the Mittag--Leffler expansion.  Two choices of the matching
+point, $1/8$ and $1/16$, agree to the displayed precision.  The finest
+arithmetic result differs from these evaluations by less than
+$1.40\cdot10^{-83}$.
+
+Here is the explicit analytic tail control used in the arithmetic
+calculation.  For $K\geq0$ set
+\[
+ a_K(x)=-\frac1{2x}-\sum_{k=1}^K\frac{B_{2k}}{2k\,x^{2k}},
+ \qquad
+ p_K(x)=\frac1x+\frac1{2x^2}
+                      +\sum_{k=1}^K\frac{B_{2k}}{x^{2k+1}}.
+\]
+Binet's integral~\cite[Equation~5.9.15]{DLMF} and the finite
+geometric expansion give, for $x>0$,
+\[
+ |\psi(x)-\log x-a_K(x)|\leq E_Kx^{-2K-2},\qquad
+ |\psi'(x)-p_K(x)|\leq G_Kx^{-2K-3},
+\]
+where $G_K=|B_{2K+2}|$ and $E_K=G_K/(2K+2)$.
+For the differentiated bound, expand $(1+y)^{-2}$ under the differentiated
+Binet integral; its Taylor remainder after $K$ terms has magnitude at
+most $(K+1)y^K$ for $y\geq0$.
+
+For $N\geq2$ put
+$U_{N,K}=1/(2N)+\sum_{k=1}^K|B_{2k}|/(2kN^{2k})$.
+Replace $\psi(n)^2+\psi'(n)-\log^2n$ in the tail $n\geq N$ by
+\[
+ 2\log n\,a_K(n)+a_K(n)^2+p_K(n).
+\]
+This finite polynomial in $n^{-1}$ and $\log n$ sums exactly by the first
+two spectral derivatives of $\zeta(s,N)$.  The error in the series
+itself is bounded by
+\begin{align}\label{q4:tailbound}
+ &2E_K\zeta''(2K+3,N)
+    -2U_{N,K}E_K\zeta'(2K+3,N)\notag\\
+ &\qquad{}-E_K^2\zeta'(4K+5,N)
+    -G_K\zeta'(2K+4,N).
+\end{align}
+To obtain the error in $Q_4$, multiply this bound by $12$.
+Indeed, if $R=\psi-\log-a_K$, then
+\[
+ |\psi^2+\psi'-(\log+a_K)^2-p_K|
+ \leq2(\log n+U_{N,K})E_Kn^{-2K-2}
+          +E_K^2n^{-4K-4}+G_Kn^{-2K-3},
+\]
+and summing after multiplication by $\log n/n$ gives
+\eqref{q4:tailbound}.  With $N=64$, $K=34$, the bound for $Q_4$ is
+below $1.88\cdot10^{-83}$.  The implementation uses ordinary mpmath
+arithmetic, so this analytic truncation bound does not include an
+interval enclosure of rounding error; the numerical evidence is
+reported with that qualification.
+
+\paragraph{Scope of the advance.}
+The Mittag--Leffler method, harmonic Laurent coefficients, the Mellin
+representation, and the Euler sums are classical.  The incoming cubic
+report supplies the immediate proof strategy and explicitly asks for
+the quartic reduction.  The new result relative to the inspected corpus
+is \eqref{q4:bridge}, including its exact finite correction, convergent
+arithmetic form and normalized primitive.  The claim is a solution of
+that stated quartic reduction problem, not a proof that $\theta$ is
+irreducible or a claim of global priority for every equivalent formula.
+
+\paragraph{Further questions.}
+The contour argument extends to each fixed power $\psi^k$, but the finite
+arithmetic reduction has only been carried out here through $k=4$.
+The next case asks which strict harmonic Laurent coefficients occur in
+$\operatorname{FP}\int_0^1\psi(x)^5\,dx$ and whether some canonical
+polynomial in $\psi$ cancels all lower-depth coefficients.  A second
+question is to combine the new quartic bridge with the cubic logarithmic
+sine moment supplied by the existing beta generator and determine the
+smallest remaining spectral coordinate space.  A third is to obtain a
+common-Hurwitz-shift version with all boundary terms fixed; simply
+replacing $\gamma_j$ by $\gamma_j(a)$ in \eqref{q4:bridge} is not
+justified by this proof.

@@ -1,0 +1,306 @@
+\section{Audit, interpretation, and further research}
+\label{sec:audit}
+
+\subsection{What has been proved, and what has not}
+
+The following table records the mathematical status at the inspected
+revision. The word ``resolved'' refers to the explicitly stated component
+of a research question, not to every possible arithmetic refinement.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.25\textwidth}p{0.65\textwidth}}
+\toprule
+Question or object & Result and scope\\
+\midrule
+\endhead
+Nonpolynomial reflected generator &
+Theorems~\ref{beta:transform} and \ref{beta:completion} give a
+complex-power sine family, its polylogarithmic Euler representation, and
+the full joint completion. All Stieltjes indices, all argument-derivative
+orders, and all logarithmic powers are covered.\\[5pt]
+First nonlinear log-sine bridge &
+Theorem~\ref{beta:secondmoment} expresses the sine-square moment through
+the inclusive harmonic Stieltjes coefficient and then eliminates that
+coefficient in \eqref{beta:cancellation}. The separate cubic bridge is
+inherited from \cite{RepoCubic}.\\[5pt]
+Centered harmonic cancellation &
+Theorem~\ref{hc:main} is necessary and sufficient for every polynomial
+in finitely many generalized harmonic variables. It is stronger than
+checking finitely many residues. Theorem~\ref{hc:trigamma} evaluates an
+infinite family of its regular values.\\[5pt]
+Geometric collisions &
+Theorems~\ref{gc:main} and \ref{gc:derivative} cover arbitrary finite
+clusters and argument-derivative orders at Stieltjes index zero and unit
+frequency, with no comparability requirement on the gaps. Higher
+Stieltjes indices and iterated merger associativity remain open here.\\[5pt]
+Quartic directional Tornheim jets &
+Theorem~\ref{qt:main} reconstructs every admissible fourth ray derivative
+from three specified coordinates. Proposition~\ref{qt:integrals} gives
+convergent representatives. The difference \eqref{qt:short-difference}
+eliminates all three coordinates.\\[5pt]
+Higher formal relation spaces &
+Theorem~\ref{qt:all-order-space} and
+Corollary~\ref{qt:cyclic-dimension} give exact dimensions for the stated
+axis, symmetry, and Euler boundary system. They do not prove period
+independence or completeness of all functional identities.\\[5pt]
+Gaussian $S_6$ and revised $S_8$ &
+Still conjectural. The present work supplies neither a period certificate
+nor a counterexample. Existing formal nonmembership results restrict
+their specified search systems only \cite{RepoExact}.\\
+\bottomrule
+\end{longtable}
+
+The phrase ``finite-coordinate formula'' is deliberately separate from
+``evaluation in ordinary constants.'' For example, the quartic theorem
+is effective: its retained coordinates are given by convergent Gamma
+series and polylogarithmic integrals. A further reduction of those
+coordinates is an additional arithmetic theorem. Conversely,
+\eqref{beta:cancellation} and \eqref{qt:short-difference} already are
+evaluations in the displayed ordinary constants, because the residual
+coordinates cancel algebraically.
+
+\subsection{Corrections and qualifications to preserve at integration}
+
+No additional false theorem was established in the focused portions of
+the nine incoming reports that were checked. Several previously
+documented corrections should retain their original attribution: the
+rejected earlier $S_8$ coefficient vector, the restricted sector required
+in the Crandall--Jonqui\`ere expansion, the extra harmonic factor in an
+external boundary formula, and the distinction between a numerical
+period conjecture and formal row-space nonmembership
+\cite{RepoExact,RepoCubic,RepoIndependent}. They are not discoveries of
+the present article.
+
+The new results do rule out three plausible but unjustified extensions.
+They suggest the following concrete wording for future integration.
+\begin{enumerate}
+\item \textbf{Specify the entire crossing numerator.}
+Replace any convention saying only ``take the removable value of the
+regularized integral'' by the holomorphic completion
+\eqref{beta:Hp}, or its locally equivalent full subtraction. At $p=2$,
+the uncompleted analytic limit is $2\zeta(2)$ while the coordinate
+finite part is zero. Merely observing that the residue vanishes at the
+intersection does not remove its finite contribution.
+\item \textbf{Retain boundary contacts under argument differentiation.}
+The two derivative correlations satisfy
+$C_{(1,0)}+C_{(0,1)}=\pi^2\csc^2(\pi a)$, not zero, in the specified
+finite-part convention. A formal integration-by-parts or translation
+argument that drops the seam terms loses this exact contribution.
+Use the direct repeated-pole calculation or an explicitly compatible
+distributional extension.
+\item \textbf{Limit the diagonal cyclic claim to its proven orders.}
+The polynomial $U_5$ in \eqref{qt:fifth-obstruction} is invisible to the
+axis, boundary, and diagonal data but has a nonzero cyclic sum. Thus the
+cubic and quartic reduction to one diagonal coordinate cannot be
+extended to all orders using those relations alone. Additional
+relations must be stated and proved.
+\end{enumerate}
+
+There is a related algebraic warning in Section~\ref{hc:section}.
+Vanishing at a finite collection of spectral centers is not evidence for
+the all-center property. The explicit near-miss polynomials following
+\eqref{hc:first-tests} show exactly where this inference fails. The
+replacement is the finite polynomial identity $\iota(P)=P$, whose
+necessity uses the proved formal independence lemma.
+
+\subsection{Reproducibility and evidence}
+
+Each theorem has an analytic or exact algebraic proof in the article.
+The Python files independently check sensitive signs, finite constants,
+and symbolic eliminations. They require only Python, SymPy, and mpmath;
+no source archive or network connection is needed to run them.
+The verification README explains the methods, recorded versions,
+precision, and report-writing behavior.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.32\textwidth}p{0.58\textwidth}}
+\toprule
+Artifact & Independent check\\
+\midrule
+\endhead
+\src{check_beta.py} &
+Direct Hurwitz-weight quadrature versus finite Fourier sums and the
+Euler--polylog integral; Gamma reflection moments; separately subtracted
+digamma logarithmic and cubic integrals; exact Fourier jets.\\[4pt]
+\src{centered_checks.py} &
+Exact Bernoulli recurrences, affine derivative relations, parity examples,
+first-pole counterexamples, and Faulhaber coefficients; independent
+finite-head and Hurwitz-tail values for $M=0,\ldots,6$.\\[4pt]
+\src{check_quartic.py} &
+Exact rational reconstruction, cyclic cancellation, integral correction
+constants, dimensions, and the fifth-order obstruction; four fourth
+derivatives evaluated from the original continued Mellin expression.\\[4pt]
+\src{verify_collision.py} &
+Exact quartic and hierarchical coefficient extraction; direct
+interval-by-interval finite parts compared with the predicted merged
+limit after subtraction.\\[4pt]
+\src{verify_derivative_pair.py} &
+Independent double-pole quadrature for the two derivative counterterms
+and the exact trigamma-reflection sum.\\
+\bottomrule
+\end{longtable}
+
+The beta identities, except for the integrable singular Euler test,
+have observed numerical discrepancies below $1.3\cdot10^{-60}$ in the
+recorded run; the Euler test has discrepancy $2.5\cdot10^{-33}$ or less.
+The four Tornheim ray comparisons are below $8.2\cdot10^{-34}$.
+The derivative-pair reflection checks are below $6.4\cdot10^{-51}$.
+These are floating-point observations at the documented precisions.
+For geometric collisions, $C-T-Q$ at a finite separation is a remainder
+that should tend to zero, not an equality error expected to be tiny at
+each separation. The centered checks have an additional explicit
+analytic truncation bound proved in the appendix; rounding errors have
+not been enclosed by interval arithmetic.
+
+\subsection{Proposed research questions}
+
+The following questions are intended as concrete next projects. They
+emphasize exact identities and structure; the analytic estimates needed
+to justify an interchange or a numerical reproduction are auxiliary.
+
+\begin{question}[Higher log-sine cancellations]\label{rq:logs}
+Determine the smallest harmonic-zeta Laurent family needed for
+$J_k(s)$ at each $k\ge3$, using the explicit coefficient formula
+\eqref{beta:jet}. Which linear combinations of finite-part products of
+digamma, polygamma, and logarithmic sine powers cancel every nonordinary
+harmonic coordinate? The first target is the next layer after
+\eqref{beta:cancellation}, with its relation matrix derived symbolically
+before any numerical search.
+\end{question}
+The generator fixes both inclusive harmonic conventions and all
+endpoint constants. This makes it possible to compare candidate
+combinations without changing regularization halfway through the
+calculation.
+
+\begin{question}[An arithmetic description of quartic coordinates]
+Express $J_{21}$ and $K_{11}$, or their canonical linear combinations,
+through Laurent coefficients of explicitly defined harmonic multiple
+zeta functions. Does the combination $\beta+\varepsilon$ admit a
+shorter one-dimensional harmonic series analogous to the cubic bridge?
+Can any of $\Omega_4,\alpha,\beta$ be reduced further in a specified
+ordinary constant algebra?
+\end{question}
+The convergent representations here provide exact starting expressions.
+A numerical integer relation can guide a target but would not resolve
+the question.
+
+\begin{question}[The second quintic cyclic coordinate]
+Compute the full fifth-order cyclic formula. After the known boundary
+part is removed, its residual lies in
+$ABC\,\mathrm{span}\{(A+B+C)^2,AB+BC+CA\}$.
+The diagonal value and one suitable nondiagonal cyclic value, for example
+at $(1,1,2)$, separate these two coordinates. Find convergent
+representatives and short combinations in which both cancel.
+\end{question}
+The assertion about the two evaluations is finite algebra: the ratios
+$s_1^2/s_2$ are $3$ at $(1,1,1)$ and $16/5$ at $(1,1,2)$.
+What remains is to compute the ordinary part and the new analytic
+coordinate, not to conjecture the dimension.
+
+\begin{question}[Canonical ray sets at arbitrary order]
+Use the normal form \eqref{qt:residual-form} to choose small positive
+integer anchor rays giving an invertible evaluation matrix of size
+$D_n$. For cyclic reconstruction the corresponding size is
+$p_{\le3}(n-3)$. Can the inverses and the resulting cancellation
+identities be organized uniformly in $n$?
+\end{question}
+One should also test additional global Tornheim functional equations
+against these spaces. They may reduce the dimension of the actual
+reconstruction problem; the dimensions in this article are exact only
+for their stated input relations.
+
+\begin{question}[Higher Stieltjes geometric collisions]
+Replace $\gamma_0^{(r_i)}$ by $\gamma_{m_i}^{(r_i)}$ in
+Theorem~\ref{gc:derivative}. The singular local germs now contain
+powers of $\log x$. Construct a simultaneous Mellin-parameter
+completion whose derivatives give explicit counterterms uniformly for
+hierarchical gaps, and prove that the remainder extends through the
+total collision.
+\end{question}
+The existing all-factor spectral completions are relevant input, but
+they do not by themselves justify uniform passage through vanishing
+geometric gaps. This is the missing analytic statement to isolate.
+
+\begin{question}[Integer-frequency grids and Fourier weights]
+Give the complete geometric theorem for
+$\prod_i\gamma_0^{(r_i)}(\{p_i x+s_i\})$, with positive integers
+$p_i$, optionally multiplied by an analytic periodic weight. At each
+merging grid point the local shifts are $s_i/p_i$ and the pole amplitudes
+must be scaled in the ambient coordinate. Derive the resulting finite
+Fourier-moment contact formulas and their conductor dependence.
+\end{question}
+The local interpolation proof strongly suggests this extension. A
+complete statement must inventory all grid intersections and preserve
+their coordinate scale; it is not included in the proved theorems here.
+
+\begin{question}[Compatibility of successive mergers]
+Characterize subtraction rules for partial clusters whose iterated
+mergers agree with the simultaneous full subtraction. For three and
+four factors, calculate the finite difference between two merger orders
+and decide whether a universal local adjustment makes the operation
+associative.
+\end{question}
+The hierarchical example \eqref{gc:hierarchy} supplies an exact test
+case. Existence of the fully subtracted limit does not settle
+associativity of other subtraction prescriptions.
+
+\begin{question}[Centered products beyond a trigamma square]
+Evaluate all centered even moments of products of an even number of
+even-order harmonic tails. Start with
+$(H_n^{(2r)}-\zeta(2r))(H_n^{(2q)}-\zeta(2q))$, then four tails.
+Determine which families reduce by finite summation by parts to
+ordinary Euler sums and which require higher-depth constants.
+\end{question}
+The pole cancellation is already completely answered by
+Theorem~\ref{hc:main}; the new task is evaluation of the regular values.
+This separates a solved analytic classification from an arithmetic
+problem that can grow with the number of factors.
+
+\begin{question}[Other outer shifts and periodic harmonic data]
+Classify the polynomials $P$ for which
+$\sum_{n\ge0}P(H_n^{(1)},\ldots,H_n^{(R)})(n+a)^{-s}$ is regular
+at all nonpositive even integers when $a\ne1/2$.
+Then consider harmonic variables with rational inner shifts or periodic
+coefficients. What replaces the reflection involution, and how do
+coincident translation-pole orbits affect the independence argument?
+\end{question}
+The additive-difference lemma reduces this to a concrete analysis of
+rational telescoping in each pole orbit. It should be proved for the
+specific family rather than inferred from a few vanished Bernoulli
+coefficients.
+
+\begin{question}[A joint beta--collision generator]
+Combine the complex-power sine weight with moving periodic Stieltjes
+factors. Determine the polar arrangement in the weight, spectral, and
+gap parameters, and give a canonical subtraction whose restrictions
+recover both \eqref{beta:Hp} and \eqref{gc:Tr}.
+\end{question}
+Such a formula would connect Fourier coefficients, Gamma primitives,
+and geometric contact terms in a single analytic object. It would also
+identify explicitly which order of restriction is compatible with the
+unit-coordinate finite part.
+
+\begin{question}[Return to the Gaussian period conjectures]
+Find a functional identity or period certificate for the frozen $S_6$
+and revised $S_8$ candidates outside the already obstructed relation
+system. Can a harmonic or Stieltjes transform supply a new exact
+relation after a justified change of variables to the Gaussian alphabet?
+\end{question}
+No such bridge is proved here. The source vectors and their conventions
+should remain fixed, and a proposed proof must produce an exact
+certificate for those vectors rather than a nearby fitted identity.
+
+\begin{question}[Formalization in ProveIt]
+Separate the formal development into reusable analytic and algebraic
+lemmas: finite asymptotic subtraction with normal convergence;
+coefficient extraction from a completed meromorphic germ; confluent
+interpolation on a fixed contour; the additive-difference lemma; and
+the homogeneous residual-space normal form. Which of the present
+finite identities can then be generated and checked automatically from
+these lemmas?
+\end{question}
+The supplied exact computations can serve as regression examples. They
+are not proof-assistant certificates, and incorporation into the
+repository should not silently confer a formalized status.
+
+\appendix
+\section{Analytic control of the centered verification tail}
+\input{sections/07_verification_bound}

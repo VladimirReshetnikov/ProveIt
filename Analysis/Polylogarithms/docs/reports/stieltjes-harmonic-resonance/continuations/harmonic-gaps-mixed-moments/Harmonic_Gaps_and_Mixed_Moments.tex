@@ -1,0 +1,2381 @@
+% Standalone source generated from article.tex and its inputs.
+% Edit the modular sources, then run python3 build.py.
+% Begin preamble.tex
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.92in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,microtype,xurl}
+\usepackage{fancyhdr,needspace}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,
+ citecolor=teal!55!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{bookmark}
+\definecolor{ink}{RGB}{25,47,68}
+\emergencystretch=2em
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.25em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\CT}{CT}
+\DeclareMathOperator{\Log}{Log}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\spanQ}{span_{\mathbb Q}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\HH}{\mathcal H}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\newcommand{\st}{\boldsymbol s}
+\newcommand{\tz}{\boldsymbol t}
+\newcommand{\xz}{\boldsymbol x}
+\newcommand{\uz}{\boldsymbol u}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Harmonic gaps and mixed moments}}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\hypersetup{pdftitle={Harmonic Gaps, Gamma Derivatives, and Mixed Tail Moments},
+ pdfauthor={ProveIt research continuation},
+ pdfsubject={Joint Lerch generators, transverse harmonic derivatives, and exact centered moments}}
+
+
+% End preamble.tex
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\thispagestyle{empty}
+{\color{ink}\small\textsc{ProveIt \quad / \quad Research continuation}\par}
+\vspace{1.1cm}
+{\color{ink}\huge\bfseries Harmonic Gaps, Gamma Derivatives,\\[5pt]
+and Mixed Tail Moments\par}
+\vspace{0.45cm}
+{\Large Joint Lerch generators and exact centered values\par}
+\vspace{0.8cm}
+{\large 11 October 2026\par}
+\vspace{0.5cm}
+\noindent\textbf{Repository baseline.}\quad
+\src{7bd45777a8a127e5dc69aff8887ca36a79a3059d}.
+The manuscript and all eleven archives in the incoming directory were
+inspected at this revision.
+\vspace{0.7cm}
+
+\begin{abstract}
+We address three connected questions in the newest harmonic-parity report.
+First, arbitrary zero blocks around any finite number of independently
+moving harmonic orders admit one jointly entire multiple-Lerch completion.
+A confluent divided-difference kernel gives a common tube of holomorphy;
+the complete decoration series converges on the unit polydisc, independently
+of the number of free orders. Second, a derivative transverse to a
+nonpositive harmonic index is represented by an explicit convergent
+logarithmic Mellin integral and by a finite difference of decorated
+lower-depth sums. At a zero index the first new gap is a log-Gamma
+difference; higher derivatives give normalized Stieltjes primitives.
+All derivative orders, all nonpositive centers, and arbitrary unmarked
+nonpositive decorations are included. Third, every centered even moment
+of a product of two even-order Hurwitz tails is evaluated by a finite
+Bernoulli formula. Classical odd-weight Euler reduction puts the values
+in an explicit finite span of ordinary zeta products. One analytic
+generating function produces the entire moment family and has finite
+polylogarithmic primitives.
+
+The underlying harmonic interpolant, its untwisted geometric kernel, and
+the classical Euler and Hurwitz identities are credited to their sources.
+The contribution is the stated extension of the repository's exact
+questions, not a claim of literature-wide priority. Proofs are separated
+from exact finite checks and high-precision diagnostics. The Gaussian
+$S_6$ and revised $S_8$ evaluations remain conjectural.
+\end{abstract}
+\vfill
+\noindent\small
+\textbf{Contents of the accompanying package.}
+Modular and standalone \LaTeX\ sources, this PDF, exact verification
+programs, numerical diagnostics, result records, source provenance,
+an integration ledger, and further research questions.
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+% Begin sections/01_scope.tex
+\section{Scope, principal results, and conventions}
+\label{scope:section}
+
+This continuation starts at the explicit questions R1, R7, and R8 of
+\emph{Harmonic Parity and Resolvent Identities}, preserved in the incoming
+directory at the pinned revision \cite{IncomingParity,Repository}.
+R1 asks for mixed even-tail moments, beginning with orders two and four.
+R7 asks for a genuinely convergent generator with several free harmonic
+orders and arbitrary zero blocks. R8 asks for a derivative transverse to
+a harmonic index that is subsequently set to a nonpositive integer.
+The corresponding results here are independent theorems with compatible
+normalizations.
+
+\subsection{What is established}
+
+\begin{enumerate}[leftmargin=*,label=\textbf{\arabic*.}]
+\item \textbf{All zero decorations with independent orders.}
+Theorem~\ref{zbg:main} proves a single analytic formula for
+\[
+ \sum_{p_0,\ldots,p_k\geq0}
+ \HH_{a,b}(0^{p_0},s_1,0^{p_1},\ldots,s_k,0^{p_k})
+                     u_0^{p_0}\cdots u_k^{p_k}.
+\]
+Every $s_j$ is an independent complex variable. The series converges
+locally normally for $|u_j|<1$, with a domain that does not shrink with
+$k$. The proof gives all branch cancellations and does not infer an
+analytic identity from agreement at integer endpoints.
+
+\item \textbf{Transverse Gamma and Stieltjes gaps.}
+Theorems~\ref{tr:gap} and~\ref{tr:integral} prove every order of
+\[
+ \left.\partial_u^r\HH_{a,b}(s,u,t)\right|_{u=-m},
+ \qquad m\geq0,\quad r\geq1.
+\]
+The first new case is the log-Gamma gap
+$\log\Gamma(z+1)-\log\Gamma(y)$ between two surviving lattice variables
+$y>z$. There are explicit absolutely convergent Mellin integrals, finite
+decorated-sum formulas, and a finite family sufficient after arbitrary
+unmarked nonpositive indices have been removed. The simultaneous
+Stieltjes completion at $u=1$ is included.
+
+\item \textbf{Every mixed even-tail moment.}
+Section~\ref{mt:section} evaluates all centered even moments of
+$(\zeta(A)-H_n^{(A)})(\zeta(B)-H_n^{(B)})$ for even $A,B\geq2$.
+The finite formula uses Bernoulli numbers and classical double zeta
+values of odd weight; Euler's reduction removes the latter.
+For each fixed pair $(A,B)$ a fixed finite span contains the entire
+infinite sequence of moments. An analytic generating function and
+finite ordinary-polylogarithm primitives complete the result.
+This resolves the two-factor sector of R1; products with additional
+harmonic factors are not covered by the same theorem.
+\end{enumerate}
+
+For a concrete illustration, put $x_n=n+\tfrac12$ and
+$T_j(n)=\zeta(j,n+1)$. The unequal-order identities include
+\begin{align}
+ \sum_{n\geq0}T_2(n)T_4(n)
+  &=\frac{15}{2}\zeta(5)-3\zeta(2)\zeta(3),\label{scope:first}\\
+ \sum_{n\geq0}x_n^2T_2(n)T_4(n)
+  &=\frac14\zeta(2)\zeta(3)+\frac16\zeta(2)
+       +\frac12\zeta(3)-\frac58\zeta(5),\label{scope:second}\\
+ \sum_{n\geq0}\left\{x_n^4T_2(n)T_4(n)-\frac13\right\}
+  &=-\frac7{80}\zeta(2)\zeta(3)-\frac1{30}\zeta(2)
+       -\frac14\zeta(3)+\frac7{32}\zeta(5)-\frac3{40}.
+       \label{scope:third}
+\end{align}
+All three displayed series, including the brackets in the last one,
+are ordinary convergent series. The third identity must retain its
+subtraction. Since $T_2(n)=\psi'(n+1)$ and
+$T_4(n)=\psi'''(n+1)/6$, multiplication by six gives corresponding
+polygamma-product evaluations.
+
+\subsection{Provenance and the precise claim of advancement}
+
+The harmonic interpolant and its original geometric Mellin kernel are
+established mathematics. Ihara, Nakamura, and Yamamoto prove their
+entire interpolation and harmonic product law; their paper also
+explains related earlier work of Komori
+\cite[Proposition 3.3, Theorem 4.1, Corollary 4.2]{INY}.
+The incoming independent-orders report identifies the same interpolant
+and gives a relative endpoint normalization \cite{IncomingIndependent}.
+The zero-index polynomial reductions and one-free-order generator are
+already in \cite{IncomingParity}. We retain those definitions and give
+the requested simultaneous analytic extension and transverse formulas.
+
+Similarly, Bernoulli power sums, Hurwitz specializations, Gamma
+asymptotics, and Euler's odd-weight double-zeta reduction are classical
+\cite{DLMFHurwitz,DLMFGamma,DLMFBernoulli,Bradley2007}.
+They are ingredients of the mixed-tail theorem, rather than separate
+claims of new mathematics.
+
+The present results are proposed additions relative to the inspected
+repository. We make no assertion of literature-wide priority for every
+specialization, no arithmetic-independence claim for a spanning set, and
+no proof-assistant formalization claim. The original $S_6$ and revised
+$S_8$ candidates are not proved or refuted here.
+
+\subsection{Analytic and algebraic conventions}
+
+All endpoint parameters $a,b$ lie in the right half-plane.
+Principal logarithms define $(n+a)^{-s}$. Positive real integration
+variables use their real logarithms. The Hurwitz zeta function is
+normalized by
+\begin{equation}\label{scope:stieltjes}
+ \zeta(1+v,x)=\frac1v+
+       \sum_{r=0}^{\infty}\frac{(-1)^r}{r!}\gamma_r(x)v^r,
+ \qquad \gamma_0(x)=-\psi(x).
+\end{equation}
+A superscript $\zeta^{(r)}$ denotes differentiation in the first
+argument. In particular \cite[\S25.11]{DLMFHurwitz},
+\begin{equation}\label{scope:hurwitz}
+ \zeta(-m,x)=-\frac{B_{m+1}(x)}{m+1},\qquad
+ \zeta'(0,x)=\log\Gamma(x)-\frac12\log(2\pi).
+\end{equation}
+Bernoulli numbers mean $B_j=B_j(0)$, so $B_1=-1/2$ and $B_1(1)=1/2$.
+The strict multiple-zeta convention is
+\[
+ \zeta(r,t)=\sum_{n>j\geq1}n^{-r}j^{-t}.
+\]
+
+For a word $w=(s_1,\ldots,s_k)$, define the meromorphic ordered tail
+\[
+ Z_c(w)=\sum_{n_1>\cdots>n_k\geq0}
+                      \prod_j(n_j+c)^{-s_j},\qquad Z_c(\varnothing)=1.
+\]
+An initial domain with $\Re s_j>1$ suffices below. The relative
+interpolant is the unique triangular solution of
+\begin{equation}\label{scope:relative}
+ Z_b(w)=\sum_{w=uv}Z_a(u)\HH_{a,b}(v),\qquad
+ \HH_{a,b}(\varnothing)=1.
+\end{equation}
+The sum includes both empty prefix and empty suffix. Its depth-one value is
+\begin{equation}\label{scope:h}
+ h_{a,b}(s)=\zeta(s,b)-\zeta(s,a).
+\end{equation}
+The pole at $s=1$ cancels. Useful values are
+\begin{align}
+ h_{a,b}(1)&=\psi(a)-\psi(b),&
+ h_{a,b}^{(r)}(1)&=(-1)^r\{\gamma_r(b)-\gamma_r(a)\},\label{scope:hjets}\\
+ h_{a,b}'(0)&=\log\Gamma(b)-\log\Gamma(a),&
+ h_{a,b}(0)&=a-b.\notag
+\end{align}
+At $a=b+N$, $N\in\N_0$, the relative word is the finite strict sum
+over $N>n_1>\cdots>n_k\geq0$. For general endpoints it means
+\eqref{scope:relative}, with the joint continuation proved again in
+Section~\ref{zbg:section}. The finite endpoint property alone is not
+our definition of continuation.
+
+We use a cutoff constant only for a function with a specified asymptotic
+expansion in powers and logarithms of that cutoff. It is the coefficient
+of the monomial $N^0(\log N)^0$. Section~\ref{mt:section} proves when
+that prescription agrees with the spectral value. This distinction
+is essential: even an accidentally convergent paired boundary series
+need not equal the analytic continuation from its initial half-plane.
+
+
+% End sections/01_scope.tex
+
+% Begin sections/02_joint_generator.tex
+\section{A jointly entire kernel for all zero-block decorations}
+\label{zbg:section}
+
+The one-free-order zero-block generator in the incoming harmonic-parity
+report admits a uniform extension to any number of independently moving
+orders.  The extension is not obtained by interpolating finite sums from
+integer endpoint differences.  A divided-difference identity proves the
+required analytic relation at arbitrary endpoints before any coefficient
+is extracted.
+
+The underlying geometric kernel and its normalized Mellin interpolation
+are already present in Ihara, Nakamura, and Yamamoto
+\cite[Proposition~3.3 and Theorem~4.1]{INY}; the published paper is
+\emph{The Ramanujan Journal} \textbf{67} (2025), article~1,
+doi:10.1007/s11139-025-01045-2.  In their notation the kernel below is
+$e^{-b\sum_jx_j}G_k(e^{-x_1},\ldots,e^{-x_k};a-b)$.
+Equivalently it is $e^{-(b-1)\sum_jx_j}$ times their $b=1$ kernel.
+Its divided-difference form, composition proof, and continuation proof
+are included to make the normalization and later estimates explicit;
+the underlying interpolant and its geometric Mellin representation are
+not claimed as new.  The developments here are the simultaneous twist
+tube, the full dimension-independent zero-decoration polydisc, the
+all-block identity with arbitrary independent free orders, and its
+compatibility with the transverse derivative calculus developed below.
+
+Write $\mathcal H_{a,b}(s_1,\ldots,s_k)$ for the entire relative
+Hurwitz interpolant, normalized by
+\[
+ Z_b(w)=\sum_{w=uv} Z_a(u)\mathcal H_{a,b}(v),\qquad
+ Z_c(s_1,\ldots,s_j)=\sum_{n_1>\cdots>n_j\geq0}
+                         \prod_{\ell=1}^j(n_\ell+c)^{-s_\ell}.
+\]
+Empty words have value one.  Throughout this section
+$\Re a,\Re b>0$, and powers of the positive-real-axis variables use
+their real logarithms.  All endpoint powers use the branches obtained
+on the right half-plane.
+
+\subsection{The established geometric kernel in divided-difference form}
+
+For $\boldsymbol x=(x_1,\ldots,x_k)$ put
+\[
+ X_0=0,\qquad X_j=x_1+\cdots+x_j,\qquad Q_j=e^{-X_j},\qquad
+ \Delta=a-b.
+\]
+At pairwise distinct nodes define
+\begin{equation}\label{zbg:kernel}
+ \mathscr K_{a,b}^{(k)}(\boldsymbol x)
+ =e^{-bX_k-\sum_{j=1}^{k-1}X_j}
+       \sum_{j=0}^k
+       \frac{e^{-\Delta X_j}}{\prod_{\ell\ne j}(Q_j-Q_\ell)}.
+\end{equation}
+The sum is the divided difference
+$[Q_0,\ldots,Q_k]z^\Delta$, where the value at $Q_j$ is specified
+as $e^{-\Delta X_j}$.  This specification keeps track of the
+logarithms even when the exponential nodes wind around zero.  Set
+$\mathscr K^{(0)}=1$.
+
+\begin{lemma}[Kernel analyticity and exponential control]\label{zbg:bounds}
+The expression \eqref{zbg:kernel} extends holomorphically through
+every hyperplane $X_j-X_i=0$, away from the nonzero-period
+hyperplanes below. Its only possible finite singular
+hyperplanes are
+\[
+ X_j-X_i=2\pi i\ell,\qquad 0\leq i<j\leq k,
+                   \quad \ell\in\mathbb Z\setminus\{0\}.
+\]
+Define the open convex tube
+\begin{equation}\label{zbg:tube}
+ \Omega_k=\left\{\boldsymbol t\in\mathbb C^k:
+   \left|\Im\sum_{j=p}^q t_j\right|<2\pi
+                      \quad(1\leq p\leq q\leq k)\right\}.
+\end{equation}
+On compact subsets of $\Re a,\Re b>0$ and
+$\boldsymbol t\in\Omega_k$, for every multi-index $\boldsymbol\nu$
+there are $C,\delta>0$ such that
+\begin{equation}\label{zbg:bound}
+ \left|\partial_{\boldsymbol x}^{\boldsymbol\nu}
+       \mathscr K_{a,b}^{(k)}(\boldsymbol x-\boldsymbol t)\right|
+       \leq C e^{-\delta(x_1+\cdots+x_k)},\qquad x_j\geq0.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+If nodes collide with $X_j-X_i=0$, their assigned logarithms agree.
+On a sufficiently small neighborhood of each cluster, choose the common
+holomorphic logarithm.  The ordinary confluent divided difference of
+its holomorphic power function extends across all coinciding nodes.
+Different clusters have nonzero denominator differences.  This proves
+the simultaneous removability assertion, including intersections of
+arbitrarily many zero hyperplanes away from the remaining singular
+hyperplanes. Nonzero exponential periods are
+exactly the remaining possible denominator zeros.
+
+The first-order kernel is
+\[
+ \mathscr K_{a,b}^{(1)}(v)=\frac{e^{-bv}-e^{-av}}{1-e^{-v}}.
+\]
+The elementary divided-difference recurrence gives, for $k\geq2$,
+\begin{equation}\label{zbg:recurrence}
+ \mathscr K_{a,b}^{(k)}(v,w,\boldsymbol z)=
+ \frac{e^{-v}\mathscr K_{a,b}^{(k-1)}(v+w,\boldsymbol z)
+       -e^{-av}\mathscr K_{a,b}^{(k-1)}(w,\boldsymbol z)}
+      {1-e^{-v}}.
+\end{equation}
+Indeed the two divided differences in the numerator omit $Q_1$ and
+$Q_0$, respectively; scaling the nodes of the second one by $Q_1$
+gives exactly the displayed exponential factor.
+
+This recurrence proves \eqref{zbg:bound} by induction.  For large
+$x_1$, the denominator is uniformly bounded away from zero, and both
+numerator terms have the required exponential decay.  For bounded
+$x_1$, the only possible denominator zero is the removable zero at
+$v=0$; the numerator vanishes there because its two kernel terms agree.  A fixed small neighborhood of the shifted positive orthant
+stays away from all nonzero-period hyperplanes, because the compact
+subset in \eqref{zbg:tube} has a positive distance from its boundary.
+The maximum principle, or the Cauchy formula around the removable
+zero, then bounds the quotient by the inductively bounded numerator.
+Merging $v+w$ preserves the tube inequalities, since they involve
+consecutive sums.  One may take $\delta$ smaller than the minimum of
+$1,\Re a,\Re b$ on the endpoint compact set.  Cauchy estimates in the
+same uniform neighborhood prove the bounds for every derivative.
+\end{proof}
+
+\subsection{Why the kernel gives the specified noninteger interpolant}
+
+Let
+\begin{equation}\label{zbg:infinite}
+ \mathscr B_c^{(k)}(\boldsymbol x)
+ =\frac{e^{-cX_k-\sum_{j=1}^{k-1}X_j}}
+              {\prod_{j=1}^k(1-e^{-X_j})},\qquad x_j>0.
+\end{equation}
+This is the geometric kernel of the ordered infinite sum $Z_c$:
+introducing the positive successive gaps gives
+$\mathscr B_c^{(k)}=\sum_{n_1>\cdots>n_k\geq0}
+e^{-\sum_j(n_j+c)x_j}$.
+
+\begin{lemma}[Exact endpoint composition]\label{zbg:composition}
+For arbitrary right-half-plane endpoints $a,b,c$,
+\begin{equation}\label{zbg:kernelcomposition}
+ \mathscr K_{a,b}^{(k)}(x_1,\ldots,x_k)
+ =\sum_{j=0}^k
+   \mathscr K_{a,c}^{(j)}(x_1,\ldots,x_j)
+   \mathscr K_{c,b}^{(k-j)}(x_{j+1},\ldots,x_k).
+\end{equation}
+Consequently,
+\begin{equation}\label{zbg:convolution}
+ \mathscr B_b^{(k)}=\sum_{j=0}^k
+                       \mathscr B_a^{(j)}\mathscr K_{a,b}^{(k-j)},
+\end{equation}
+with the same prefix/suffix arguments.
+\end{lemma}
+
+\begin{proof}
+Apply the divided-difference product identity
+\[
+ [Q_0,\ldots,Q_k](fg)=\sum_{j=0}^k
+ [Q_0,\ldots,Q_j]f\,[Q_j,\ldots,Q_k]g
+\]
+to $f(z)=z^{a-c}$ and $g(z)=z^{c-b}$.  The suffix nodes in its
+kernel are $Q_\ell/Q_j$.  Scaling a divided difference of order
+$k-j$ supplies the factor $Q_j^{k-j-(c-b)}$; together with the
+kernel prefactors this makes every summand have the common factor
+$e^{-bX_k-\sum_{\ell=1}^{k-1}X_\ell}$.  Thus the product identity
+is exactly \eqref{zbg:kernelcomposition}.  This argument is first
+made at distinct positive nodes and then continued through the
+removable collisions.
+
+For $x_j>0$, let a real upper endpoint $A$ tend to $+\infty$ in
+$\mathscr K_{A,b}=\mathscr K_{A,a}*\mathscr K_{a,b}$.  In
+\eqref{zbg:kernel}, every term except $j=0$ tends to zero.  The
+remaining term is precisely \eqref{zbg:infinite}.  This gives
+\eqref{zbg:convolution}, a finite identity requiring no interchange
+with an infinite depth sum.  In particular, the proof is valid for
+noninteger $a-b$ and does not use uniqueness of interpolation from
+integer values.
+\end{proof}
+
+\subsection{The entire multiple-Lerch completion}
+
+For $\Re s_j>0$ define
+\begin{equation}\label{zbg:Mellin}
+ \mathscr E_{a,b}(\boldsymbol s;\boldsymbol t)
+ =\frac1{\prod_{j=1}^k\Gamma(s_j)}
+   \int_{(0,\infty)^k}\prod_{j=1}^k x_j^{s_j-1}
+      \mathscr K_{a,b}^{(k)}(\boldsymbol x-\boldsymbol t)
+           \,d\boldsymbol x,\qquad\boldsymbol t\in\Omega_k.
+\end{equation}
+
+\begin{theorem}[Independent spectral orders and simultaneous branch cancellation]
+\label{zbg:entire}
+The function \eqref{zbg:Mellin} extends jointly to an entire function
+of $\boldsymbol s\in\mathbb C^k$, holomorphic in
+$\boldsymbol t\in\Omega_k$, with locally normal derivatives of
+every fixed spectral and decoration order.  It satisfies
+\begin{equation}\label{zbg:lowering}
+ \mathscr E_{a,b}(\boldsymbol s;\boldsymbol0)
+       =\mathcal H_{a,b}(\boldsymbol s),\qquad
+ \partial_{t_j}\mathscr E_{a,b}(\boldsymbol s;\boldsymbol t)
+       =\mathscr E_{a,b}(\boldsymbol s-\boldsymbol e_j;\boldsymbol t).
+\end{equation}
+In a neighborhood of $\boldsymbol t=0$ its normally convergent Taylor
+series is
+\begin{equation}\label{zbg:Taylor}
+ \mathscr E_{a,b}(\boldsymbol s;\boldsymbol t)
+ =\sum_{\boldsymbol\nu\geq0}
+     \mathcal H_{a,b}(\boldsymbol s-\boldsymbol\nu)
+                          \frac{\boldsymbol t^{\boldsymbol\nu}}{\boldsymbol\nu!}.
+\end{equation}
+For instance, the Taylor series converges normally whenever
+$\sum_j|t_j|<2\pi$.
+\end{theorem}
+
+\begin{proof}
+Lemma~\ref{zbg:bounds} proves absolute convergence of the integral.
+Repeated integration by parts gives the particularly useful continuation
+formula
+\begin{equation}\label{zbg:continuation}
+ \mathscr E_{a,b}(\boldsymbol s;\boldsymbol t)
+ =\frac{(-1)^{|\boldsymbol N|}}
+             {\prod_j\Gamma(s_j+N_j)}
+    \int_{(0,\infty)^k}\prod_jx_j^{s_j+N_j-1}
+      \partial_{\boldsymbol x}^{\boldsymbol N}
+          \mathscr K_{a,b}^{(k)}(\boldsymbol x-\boldsymbol t)
+                                                    \,d\boldsymbol x,
+\end{equation}
+valid for $\Re s_j>-N_j$.  It agrees with the original integral
+where $\Re s_j>0$; the endpoint terms there vanish.  Since each
+$N_j$ is arbitrary, these compatible formulas prove joint entireness.
+The same exponential majorants, with logarithmic powers from spectral
+differentiation, prove local normality.
+
+At $\boldsymbol t=0$, apply the normalized Mellin transform to
+\eqref{zbg:convolution}, initially with all spectral real parts
+sufficiently large.  The product of prefix/suffix transforms is a
+product of independent integrals.  The result is exactly the defining
+deconcatenation relation for $\mathcal H_{a,b}$.  This proves the
+first identity in \eqref{zbg:lowering}; entireness extends it everywhere.
+The equality $\partial_{t_j}\mathscr K=-\partial_{x_j}\mathscr K$
+and one integration by parts prove the lowering relation first where
+$\Re s_j>1$, and then everywhere.  Taylor's theorem proves
+\eqref{zbg:Taylor}.  Every polydisc whose coordinate radii have sum
+less than $2\pi$ lies in $\Omega_k$, giving the stated domain.
+\end{proof}
+
+For $\boldsymbol t\in\Omega_k$ with $\Re t_j<0$ for every $j$, let
+\[
+ \mathscr Z_c(\boldsymbol s;\boldsymbol t)
+ =\sum_{n_1>\cdots>n_k\geq0}
+       \prod_j(n_j+c)^{-s_j}e^{(n_j+c)t_j}.
+\]
+These ordered multiple-Lerch series (with the standard depth-one
+normalization \cite[\S25.14]{DLMFLerch}) are absolutely convergent and
+entire in their independent orders.  In that domain,
+$\mathscr E_{a,b}=\mathscr Z_a^{-1}*\mathscr Z_b$ under
+deconcatenation, by the same kernel identity.  At each fixed depth the
+inverse is a finite expression.  For example,
+\begin{align*}
+ \mathscr E_{a,b}(s,t;u,v)={}&
+  \mathscr Z_b(s,t;u,v)-\mathscr Z_a(s,t;u,v)\\
+ &-\mathscr Z_a(s;u)
+               \bigl(\mathscr Z_b(t;v)-\mathscr Z_a(t;v)\bigr).
+\end{align*}
+Theorem~\ref{zbg:entire} proves that the whole expression has a
+single holomorphic continuation throughout $\Omega_k$, including all
+simultaneous zero-twist branch crossings.  Continuing the summands
+independently without this completion is unnecessary.
+
+\subsection{Summing every zero block on a dimension-independent polydisc}
+
+Let $\boldsymbol u=(u_0,\ldots,u_k)$, $|u_j|<1$, and take the
+logarithms $L_j=\log(1+u_j)$ determined at the origin.  Put
+$t_j=L_j-L_{j-1}$.
+
+\begin{theorem}[All zero decorations around independent orders]
+\label{zbg:main}
+For every $k\geq1$,
+\begin{align}\label{zbg:generator}
+ &\sum_{p_0,\ldots,p_k\geq0}
+ \mathcal H_{a,b}(\{0\}^{p_0},s_1,\{0\}^{p_1},\ldots,
+                       s_k,\{0\}^{p_k})\prod_{j=0}^ku_j^{p_j}
+ \notag\\
+ &\qquad=(1+u_0)^{a-1}(1+u_k)^{-b}
+                    \prod_{j=1}^{k-1}(1+u_j)^{-1}
+        \mathscr E_{a,b}(\boldsymbol s;
+                L_1-L_0,\ldots,L_k-L_{k-1}).
+\end{align}
+The series converges absolutely and locally normally on the full
+polydisc $|u_j|<1$, uniformly on compact spectral and endpoint sets.
+Every fixed collection of independent spectral derivatives may be
+taken term by term.
+\end{theorem}
+
+\begin{proof}
+For $|u|<1$, $1+u$ lies in the right half-plane, so
+$|\Im\log(1+u)|<\pi/2$.  Every consecutive sum of the $t_j$
+telescopes to $L_q-L_{p-1}$ and has imaginary part of absolute value
+less than $\pi$.  Thus the right side of \eqref{zbg:generator}
+is holomorphic on the entire stated polydisc, independently of $k$.
+
+To identify its Taylor coefficients, use \eqref{zbg:Taylor} locally
+and formally replace
+$\mathcal H_{a,b}(\boldsymbol s-\boldsymbol\nu)$ by
+$\boldsymbol y^{\boldsymbol\nu}$.  The resulting expression is
+\[
+ (1+u_0)^{a-y_1-1}
+ \prod_{j=1}^{k-1}(1+u_j)^{y_j-y_{j+1}-1}
+ (1+u_k)^{y_k-b}.
+\]
+Its coefficient of $\prod u_j^{p_j}$ is
+\[
+ \binom{a-y_1-1}{p_0}
+ \prod_{j=1}^{k-1}\binom{y_j-y_{j+1}-1}{p_j}
+ \binom{y_k-b}{p_k}.
+\]
+This is exactly the canonical strict-gap polynomial of the zero
+blocks.  The analytic gap-deletion theorem in \cite{IncomingParity},
+with the independent-order continuation fixed in \cite{IncomingIndependent},
+identifies its finite polynomial expansion with
+the left coefficient in \eqref{zbg:generator}.  Each coefficient
+uses only finitely many terms of \eqref{zbg:Taylor}; no interchange
+of a divergent formal order-shift sum is involved.  Holomorphy of the
+right side now proves absolute local convergence of its Taylor series
+throughout the unit polydisc.  Spectral derivatives obey the same
+Cauchy estimates uniformly on compact spectral sets.
+\end{proof}
+
+\begin{corollary}[Insertion sums and normalized primitives]\label{zbg:corollaries}
+For every integer $r\geq0$,
+\begin{equation}\label{zbg:insertion}
+ \sum_{p_0+\cdots+p_k=r}
+ \mathcal H_{a,b}(\{0\}^{p_0},s_1,\ldots,s_k,\{0\}^{p_k})
+ =\binom{a-b-k}{r}\mathcal H_{a,b}(s_1,\ldots,s_k),
+\end{equation}
+where the zero blocks between consecutive displayed free orders are
+included in the summand as in \eqref{zbg:generator}.  Moreover,
+\begin{equation}\label{zbg:primitive}
+ \int_{\tau_0}^{t_j}\mathscr E_{a,b}(\boldsymbol s;
+                      t_1,\ldots,\tau,\ldots,t_k)\,d\tau
+ =\mathscr E_{a,b}(\boldsymbol s+\boldsymbol e_j;\boldsymbol t)
+  -\mathscr E_{a,b}(\boldsymbol s+\boldsymbol e_j;
+                     t_1,\ldots,\tau_0,\ldots,t_k),
+\end{equation}
+along any path in the indicated slice of $\Omega_k$.
+For $\boldsymbol m\in\mathbb N_0^k$,
+\begin{equation}\label{zbg:negative}
+ \mathscr E_{a,b}(-\boldsymbol m;\boldsymbol t)
+ =(-1)^{|\boldsymbol m|}
+       \partial_{\boldsymbol x}^{\boldsymbol m}
+            \mathscr K_{a,b}^{(k)}(-\boldsymbol t).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Set every $u_j=u$ in \eqref{zbg:generator}.  All twists vanish and
+the prefactor becomes $(1+u)^{a-b-k}$.  The primitive is
+\eqref{zbg:lowering} with the additive normalization retained.
+For \eqref{zbg:negative}, use \eqref{zbg:continuation} with
+$N_j=m_j+1$ and integrate the derivatives successively.  Exponential
+decay removes the upper boundary terms and supplies precisely one
+additional minus sign for each integration.
+\end{proof}
+
+At $a=b+N$ with $N\geq0$ integral, the kernel is the finite ordered
+exponential sum and $\mathscr E_{a,b}$ is its weighted finite
+Dirichlet sum.  The generating function is consequently a polynomial
+of total degree at most $N-k$ if $N\geq k$, and is zero if $N<k$.
+For $k=1$ the theorem specializes to the previously proved
+single-Lerch generator.  For $k>1$ it resolves the requested joint
+convergence and simultaneous branch-cancellation problem.  It supplies
+an explicit Gamma-separated kernel, with no claim that this kernel is
+minimal in an unspecified class.
+
+% End sections/02_joint_generator.tex
+
+% Begin sections/03_transverse.tex
+\section{Transverse index derivatives and Gamma--Stieltjes gaps}
+\label{tr:section}
+
+A formula proved only after setting an index to $-m$ cannot be
+differentiated in that index. The derivative sees information that a
+Bernoulli polynomial does not contain. This section constructs that
+information explicitly. We first obtain identities valid with an
+independent moving index, and only then differentiate and specialize.
+The kernel of Section~\ref{zbg:section} supplies a second, convergent
+integral realization of the same derivatives.
+
+\subsection{The joint Hurwitz completion}
+
+Put
+\begin{equation}\label{tr:Q}
+ Q(u,x)=\zeta(u,x)-\frac1{u-1},
+\end{equation}
+with its removable value at $u=1$. This is entire in $u$ and holomorphic
+for $\Re x>0$. At the resonant point,
+\begin{equation}\label{tr:Qstieltjes}
+ \left.\partial_u^rQ(u,x)\right|_{u=1}=(-1)^r\gamma_r(x).
+\end{equation}
+For $m,r\geq0$ set
+\begin{equation}\label{tr:ell}
+ \ell_{m,r}(x)=\left.\partial_u^r\zeta(u,x)\right|_{u=-m}.
+\end{equation}
+The derivatives of $Q$ at $-m$ differ from $\ell_{m,r}$ only by the
+constant $r!/(m+1)^{r+1}$. Thus they give the same gap differences.
+
+For $\Re s$ sufficiently large, uniformly on compact sets of $u$,
+define the paired sum
+\begin{equation}\label{tr:Dtilde}
+ \widetilde D_{a,b}(s,u)=
+ \sum_{n\geq0}\left\{
+ (n+b)^{-s}Q(u,n+b)-(n+a)^{-s}Q(u,n+a)\right\}.
+\end{equation}
+We initially require convergence of the separate one-sided series,
+not merely an accidental cancellation at an isolated exponent.
+
+\begin{theorem}[A jointly entire weighted-tail difference]
+\label{tr:jointD}
+The continuation of \eqref{tr:Dtilde} is the entire function
+\begin{equation}\label{tr:Djoint}
+ \boxed{\widetilde D_{a,b}(s,u)
+       =Q(u,b)h_{a,b}(s)-\HH_{a,b}(s,u).}
+\end{equation}
+Consequently the series
+\begin{equation}\label{tr:D}
+ D_{m,r}(s;a,b)=\sum_{n\geq0}\left\{
+ (n+b)^{-s}\ell_{m,r}(n+b)
+ -(n+a)^{-s}\ell_{m,r}(n+a)\right\},
+ \qquad \Re s>m+2,
+\end{equation}
+has the entire continuation
+\begin{equation}\label{tr:Didentity}
+ D_{m,r}(s;a,b)=\ell_{m,r}(b)h_{a,b}(s)
+       -\left.\partial_u^r\HH_{a,b}(s,u)\right|_{u=-m}.
+\end{equation}
+For each $r\geq0$, the similarly continued Stieltjes-weighted difference is
+\begin{align}
+ &\sum_{n\geq0}\left\{
+ \frac{\gamma_r(n+b)}{(n+b)^s}
+ -\frac{\gamma_r(n+a)}{(n+a)^s}\right\}
+ \notag\\
+ &\qquad=\gamma_r(b)h_{a,b}(s)
+       -(-1)^r\left.\partial_u^r\HH_{a,b}(s,u)\right|_{u=1}.
+ \label{tr:StieltjesD}
+\end{align}
+The last series is first interpreted, for example, on $\Re s>1$.
+\end{theorem}
+
+\begin{proof}
+In a domain of absolute convergence, summing the inner index gives
+\[
+ Z_c(s,u)=\zeta(s,c)\zeta(u,c)
+          -\sum_{n\geq0}(n+c)^{-s}\zeta(u,n+c).
+\]
+Insert this identity into
+\[
+ \HH_{a,b}(s,u)=Z_b(s,u)-Z_a(s,u)-\zeta(s,a)h_{a,b}(u).
+\]
+The endpoint products cancel to leave
+\[
+ \sum_{n\geq0}\left\{(n+b)^{-s}\zeta(u,n+b)
+               -(n+a)^{-s}\zeta(u,n+a)\right\}
+ =\zeta(u,b)h_{a,b}(s)-\HH_{a,b}(s,u).
+\]
+Subtract $h_{a,b}(s)/(u-1)$ to obtain \eqref{tr:Djoint}.
+Its right side is jointly entire by Theorem~\ref{zbg:entire}.
+
+The Hurwitz asymptotic expansion, uniformly differentiated on a compact
+neighborhood of $u=-m$, gives
+$\ell_{m,r}(n+c)=O(n^{m+1}(1+\log^r n))$ on compact endpoint sets.
+A slightly enlarged compact set gives termwise spectral differentiation
+in a sufficiently far right half-plane; continuation then proves
+\eqref{tr:Didentity}. Formula \eqref{tr:Qstieltjes} gives
+\eqref{tr:StieltjesD}. At $u=1$, the coefficient $\gamma_r(n+c)$ is
+$O(1+\log^{r+1}n)$ on compact endpoint sets, proving the stated
+initial half-plane.
+\end{proof}
+
+The whole function \eqref{tr:Djoint}, rather than two separately
+regularized tails, fixes all constants. In particular the theorem covers
+simultaneous spectral derivatives at $s=1,u=1$.
+
+\subsection{A finite gap identity before specialization}
+
+For lattice functions $f,g$ with enough decay, define
+\begin{align}
+ Z_c[f]&=\sum_{n\geq0}f(n+c),&
+ Z_c[f,g]&=\sum_{n>j\geq0}f(n+c)g(j+c),\notag\\
+ \HH_{a,b}[f,g]
+   &=Z_b[f,g]-Z_a[f,g]-Z_a[f]\{Z_b[g]-Z_a[g]\}.
+ \label{tr:decorated}
+\end{align}
+For longer decorated words, define
+\[
+ Z_c[f_1,\ldots,f_k]
+   =\sum_{n_1>\cdots>n_k\geq0}\prod_{j=1}^k f_j(n_j+c),
+\]
+and define $\HH_{a,b}[f_1,\ldots,f_k]$ by the same
+prefix--suffix recursion as \eqref{scope:relative}; the displayed
+formula \eqref{tr:decorated} is its depth-two case.
+All decorated expressions below mean these initial definitions and their
+specified continuations. They do not mean arbitrary interpolations of
+finite sums. Write $f_s(x)=x^{-s}$ and use pointwise products of letters.
+
+\begin{theorem}[The moving-index gap and every transverse derivative]
+\label{tr:gap}
+The two functions
+\[
+ A(s,u,t)=\HH_{a,b}[f_sQ(u,\cdot),f_t],\qquad
+ B(s,u,t)=\HH_{a,b}[f_s,f_tQ(u,\cdot+1)]
+\]
+continue individually to entire functions of $(s,u,t)$. They obey
+\begin{align}
+ A(s,u,t)
+   &=\HH_{a,b}(u,s,t)+\HH_{a,b}(s+u,t)
+                      +Q(u,a)\HH_{a,b}(s,t),\label{tr:A}\\
+ B(s,u,t)&=A(s,u,t)+\HH_{a,b}(s,u,t).\label{tr:B}
+\end{align}
+Thus
+\begin{equation}\label{tr:genericgap}
+ \boxed{\HH_{a,b}(s,u,t)
+   =\HH_{a,b}[f_s,f_tQ(u,\cdot+1)]
+       -\HH_{a,b}[f_sQ(u,\cdot),f_t].}
+\end{equation}
+For $m,r\geq0$ this gives
+\begin{align}
+ J_{m,r}(s,t;a,b)
+ &:=\left.\partial_u^r\HH_{a,b}(s,u,t)\right|_{u=-m}\notag\\
+ &=\HH_{a,b}[f_s,f_t\ell_{m,r}(\cdot+1)]
+      -\HH_{a,b}[f_s\ell_{m,r}(\cdot),f_t].
+ \label{tr:J}
+\end{align}
+In particular this is an identity for arbitrary independent $s,t$ and
+arbitrary right-half-plane endpoints.
+\end{theorem}
+
+\begin{proof}
+First replace $Q$ by $\zeta$ and take all real parts large.
+In the decorated sum $Z_c[f_s\zeta(u,\cdot),f_t]$, the additional
+tail index is either larger than the outer index or equal to it.
+Accordingly
+\[
+ Z_c[f_s\zeta(u,\cdot),f_t]
+          =Z_c(u,s,t)+Z_c(s+u,t),
+ \qquad
+ Z_c[f_s\zeta(u,\cdot)]=Z_c(u,s)+\zeta(s+u,c).
+\]
+Substitute these identities in \eqref{tr:decorated}. Expanding the
+relative recursion \eqref{scope:relative} and collecting the same cuts
+gives
+\[
+ \HH_{a,b}[f_s\zeta(u,\cdot),f_t]
+   =\HH_{a,b}(u,s,t)+\HH_{a,b}(s+u,t)
+                            +\zeta(u,a)\HH_{a,b}(s,t).
+\]
+In the other decorated double, its two indices above the lower one
+can be ordered in either direction or can be equal. These three cases
+give $Z_c(s,u,t)$, $Z_c(u,s,t)$, and $Z_c(s+u,t)$.
+The same relative recursion gives the extra term $\HH_{a,b}(s,u,t)$.
+
+Subtracting the constant letter $1/(u-1)$ proves
+\eqref{tr:A}--\eqref{tr:B}. Their right sides are entire, so they also
+provide individual continuations of the decorated doubles through every
+spectral intersection. Their difference proves \eqref{tr:genericgap}.
+Differentiate this entire identity. At $u=-m$ the constants that
+distinguish the derivatives of $Q$ from $\ell_{m,r}$ cancel between
+the two doubles. This proves \eqref{tr:J}.
+\end{proof}
+
+The arbitrary-depth version of the counting argument will be useful
+when several unmarked slots have first been removed. It also makes the
+general-endpoint meaning of every boundary gap explicit.
+
+\begin{lemma}[A decorated word with one moving tail]
+\label{tr:masterlemma}
+Let $\boldsymbol s=(s_1,\ldots,s_k)$ and $1\leq i\leq k$.
+Then the decorated relative word has the jointly entire continuation
+\begin{align}
+ &\HH_{a,b}[f_{s_1},\ldots,f_{s_i}Q(u,\cdot),\ldots,f_{s_k}]
+ \notag\\
+ &\quad=Q(u,a)\HH_{a,b}(s_1,\ldots,s_k)
+   +\sum_{j=0}^{i-1}\HH_{a,b}(s_1,\ldots,s_j,u,s_{j+1},\ldots,s_k)
+ \notag\\
+ &\qquad\quad
+   +\sum_{j=1}^{i}\HH_{a,b}(s_1,\ldots,s_j+u,\ldots,s_k).
+ \label{tr:masterdecorate}
+\end{align}
+In particular the top and bottom boundary identities are
+\begin{align}
+ \HH_{a,b}(u,\boldsymbol s)
+  &=\HH_{a,b}[f_{s_1}Q(u,\cdot+1),f_{s_2},\ldots,f_{s_k}]
+                      -Q(u,a)\HH_{a,b}(\boldsymbol s),
+ \label{tr:topgap}\\
+ \HH_{a,b}(\boldsymbol s,u)
+  &=Q(u,b)\HH_{a,b}(\boldsymbol s)
+      -\HH_{a,b}[f_{s_1},\ldots,f_{s_k}Q(u,\cdot)].
+ \label{tr:bottomgap}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+First replace $Q(u,x)$ by $\zeta(u,x)$ and take all real parts
+large. In the infinite ordered sum, the extra tail index is at least
+the index in position $i$. Its possible strict positions are the $i$
+slots preceding that position, and its possible equalities are the
+first $i$ existing indices. Thus the infinite decorated sum is exactly
+the sum of the insertion terms and merger terms in
+\eqref{tr:masterdecorate}, with $Z_c$ in place of $\HH$ and
+without the endpoint term.
+
+Expand each such $Z_b$ by deconcatenation and group terms by the cut
+in the original undecorated word. For a cut before position $i$,
+insertions and mergers lying wholly in the prefix give
+$\zeta(u,a)Z_a(\text{prefix})$ by the ordinary singleton stuffle
+identity. The remaining insertions and mergers lie in the suffix.
+For a cut at or after position $i$, the same counting identity gives
+$Z_a(\text{decorated prefix})$. These are exactly the two types
+of cuts in the defining recursion for the decorated relative word.
+Triangular uniqueness proves the claimed identity with $\zeta$;
+subtracting $\HH(\boldsymbol s)/(u-1)$ replaces its endpoint value
+by $Q(u,a)$ and proves \eqref{tr:masterdecorate}. Its right side
+provides the jointly entire continuation.
+
+At $i=1$, use $Q(u,x+1)=Q(u,x)-x^{-u}$ to obtain
+\eqref{tr:topgap}. At $i=k$, the relative singleton stuffle identity
+combines all insertions and mergers, and
+$Q(u,b)-Q(u,a)=h_{a,b}(u)$ gives \eqref{tr:bottomgap}.
+The difference of the decorations at adjacent positions $i+1$ and $i$,
+using $Q(u,\cdot+1)$ at the lower position, leaves exactly the
+insertion at the gap between them. This proves the interior gap
+identity at any depth as well. No integer-endpoint uniqueness principle
+is used.
+\end{proof}
+
+At an integer interval $a=b+N$, the meaning of the gap is especially
+transparent:
+\begin{equation}\label{tr:finitegap}
+ J_{m,r}(s,t;b+N,b)=
+ \sum_{N>i>k\geq0}
+ \frac{\ell_{m,r}(k+b+1)-\ell_{m,r}(i+b)}
+      {(i+b)^s(k+b)^t}.
+\end{equation}
+Indeed the middle-index sum is
+\[
+ \sum_{k<j<i}(j+b)^m(-\log(j+b))^r
+           =\ell_{m,r}(k+b+1)-\ell_{m,r}(i+b).
+\]
+The proof above establishes the general-endpoint identity independently
+of this finite illustration.
+
+The Hurwitz shift identity also gives an equivalent form using only
+unshifted decorated letters:
+\begin{align}
+ J_{m,r}(s,t;a,b)
+   ={}&\HH_{a,b}[f_s,f_t\ell_{m,r}]
+       -\HH_{a,b}[f_s\ell_{m,r},f_t]
+       -\partial_t^r\HH_{a,b}(s,t-m).
+ \label{tr:commutator}
+\end{align}
+The last term is essential. For $m=r=0$, it recovers exactly
+\[
+ \HH(s,0,t)=\HH(s-1,t)-\HH(s,t-1)-\HH(s,t),
+\]
+the strict zero-gap deletion rule.
+
+\subsection{Gamma gaps, Stieltjes primitives, and repeated primitives}
+
+For the first transverse derivative at zero, \eqref{scope:hurwitz}
+turns \eqref{tr:finitegap} into
+\begin{equation}\label{tr:logGammafinite}
+ \left.\partial_u\HH_{b+N,b}(s,u,t)\right|_{u=0}
+ =
+ \sum_{N>i>k\geq0}
+ \frac{\log\Gamma(k+b+1)-\log\Gamma(i+b)}
+      {(i+b)^s(k+b)^t}.
+\end{equation}
+The constants $\log(2\pi)/2$ disappear. This is the requested transverse
+identity in explicit Gamma coordinates, with \eqref{tr:J} specifying
+its general-endpoint counterpart.
+
+Differentiating $-\!u\zeta(1+u,x)$ at $u=0$ gives, for $r\geq1$,
+\begin{equation}\label{tr:Stieltjesprimitive}
+ \frac{d}{dx}\ell_{0,r}(x)=(-1)^r r\,\gamma_{r-1}(x).
+\end{equation}
+Therefore
+\begin{equation}\label{tr:integratedgap}
+ \ell_{0,r}(z+1)-\ell_{0,r}(y)
+   =(-1)^{r+1}r\int_{z+1}^{y}\gamma_{r-1}(x)\dd x.
+\end{equation}
+The path lies in the right half-plane. The integral is path independent,
+and its additive normalization is fixed by the displayed endpoints.
+Combining \eqref{tr:J} with \eqref{tr:integratedgap} gives all the
+corresponding harmonic identities with Stieltjes-primitive gaps.
+At $u=1$, the same entire identity instead gives
+\begin{align}
+ \left.\partial_u^r\HH(s,u,t)\right|_{u=1}
+ =(-1)^r\bigl\{\HH[f_s,f_t\gamma_r(\cdot+1)]
+                 -\HH[f_s\gamma_r,f_t]\bigr\}.
+ \label{tr:Stieltjesgap}
+\end{align}
+These statements retain the ordered information; they do not claim
+a reduction of every resulting value to depth-one constants.
+
+A standard balanced normalization packages repeated primitives of
+log-Gamma \cite{EspinosaMoll}:
+\begin{equation}\label{tr:balanced}
+ \mathcal B_m(x)=
+       \frac{\zeta'(-m,x)+H_m\zeta(-m,x)}{m!},\qquad H_0=0.
+\end{equation}
+Here $\mathcal B_0(x)=\log\Gamma(x)-\tfrac12\log(2\pi)$, and
+\begin{equation}\label{tr:balancedderivative}
+ \mathcal B_m'(x)=\mathcal B_{m-1}(x)\qquad(m\geq1).
+\end{equation}
+To check this, differentiate the Hurwitz identity
+$\partial_x\zeta(u,x)=-u\zeta(u+1,x)$ once in $u$, then use
+$H_m=H_{m-1}+1/m$. The factor $m!$ in \eqref{tr:balanced} is
+exactly the one needed for \eqref{tr:balancedderivative}.
+
+It follows that the repeated-Gamma-primitive gap has the exact identity
+\begin{align}
+ &\HH[f_s,f_t\mathcal B_m(\cdot+1)]
+                 -\HH[f_s\mathcal B_m,f_t]\notag\\
+ &\qquad=\frac{J_{m,1}(s,t)+H_m\HH(s,-m,t)}{m!}.
+ \label{tr:balancedgap}
+\end{align}
+The second term is a finite Bernoulli reduction. Thus no undetermined
+polynomial or integration constant is hidden in the primitive ladder.
+
+As one elementary Stieltjes check, let $h=h_{a,b}$. Differentiating the
+stuffle of a singleton with $\HH(s,t)$ gives
+\begin{align}
+ &\left.\partial_u\{\HH(u,s,t)+\HH(s,u,t)+\HH(s,t,u)\}\right|_{u=0}
+ \notag\\
+ &\qquad=h'(0)\HH(s,t)-(\partial_s+\partial_t)\HH(s,t).
+ \label{tr:insertionderivative}
+\end{align}
+At $s=t=1$, use $\HH(v,v)=(h(v)^2-h(2v))/2$ to obtain the fully
+specified expression
+\begin{equation}\label{tr:Stieltjesexample}
+ \frac{h'(0)}2\{h(1)^2-h(2)\}
+   +h(1)\{\gamma_1(b)-\gamma_1(a)\}
+   +\zeta'(2,b)-\zeta'(2,a).
+\end{equation}
+This is a consistency specialization of the classical stuffle algebra,
+not a separate claim of a new product principle.
+
+\subsection{Absolutely convergent transverse Mellin formulas}
+
+The following elementary normalized-Mellin lemma makes the transverse
+construction directly computable.
+
+\begin{lemma}[Every derivative at a nonpositive Mellin order]
+\label{tr:Mellinlemma}
+Suppose $f$ is smooth on $[0,\infty)$, extends holomorphically near zero,
+and all its derivatives decrease exponentially at infinity. Let
+\[
+ \mathcal M_f(u)=\frac1{\Gamma(u)}
+                  \int_0^\infty y^{u-1}f(y)\dd y,\qquad\Re u>0.
+\]
+It has an entire continuation. Put $c_j=[v^j]\Gamma(v)^{-1}$.
+For $m\geq0$,
+\begin{align}
+ \mathcal M_f(-m)&=(-1)^m f^{(m)}(0),\label{tr:Mvalue}\\
+ \mathcal M_f^{(r)}(-m)
+ &=(-1)^m r!\sum_{j=1}^r\frac{c_j}{(r-j)!}
+      \int_0^\infty\frac{\log^{r-j}y}{y}
+          \{f^{(m)}(y)-f^{(m)}(0)e^{-y}\}\dd y ,
+ \qquad r\geq1.
+ \label{tr:Mjet}
+\end{align}
+All integrals in \eqref{tr:Mjet} are ordinary absolutely convergent
+integrals.
+\end{lemma}
+
+\begin{proof}
+Repeated integration by parts gives
+$\mathcal M_f(u)=(-1)^m\mathcal M_{f^{(m)}}(u+m)$, initially on
+$\Re u>0$ and then by continuation. It is enough to expand at zero.
+Write $g=f^{(m)}$ and use the exact identity
+\[
+ \mathcal M_g(v)=g(0)+\frac1{\Gamma(v)}
+       \int_0^\infty y^{v-1}\{g(y)-g(0)e^{-y}\}\dd y .
+\]
+The last integral is holomorphic for $\Re v>-1$, locally at zero.
+Its $q$th derivative at zero is the integral with
+$\log^qy/y$. The bracket is $O(y)$ near zero and decreases
+exponentially at infinity. Coefficient multiplication by
+$\Gamma(v)^{-1}$ proves \eqref{tr:Mjet}.
+The continuation and value formula also follow from repeated integration
+by parts with an arbitrarily large number of derivatives.
+\end{proof}
+
+The coefficients $c_j$ are explicit Gamma Taylor coefficients:
+\[
+ c_1=1,\qquad c_2=\gamma,\qquad
+ c_3=\frac{\gamma^2-\zeta(2)}2,
+\]
+and in every degree they follow from
+\[
+ \frac1{\Gamma(v)}
+     =v\exp\left(\gamma v+
+             \sum_{q\geq2}\frac{(-1)^{q+1}\zeta(q)}qv^q\right).
+\]
+
+\begin{theorem}[Convergent formula for every transverse gap]
+\label{tr:integral}
+Let $\Re s,\Re t>0$, $m\geq0$, and $r\geq1$. In
+\eqref{tr:Mjet}, set
+\[
+ f(y)=\mathscr K_{a,b}^{(3)}(x,y,z).
+\]
+Then $J_{m,r}(s,t;a,b)$ is the normalized $(x,z)$ Mellin transform
+of its right side. Explicitly it is
+\begin{align}
+ &\frac{(-1)^m r!}{\Gamma(s)\Gamma(t)}
+ \sum_{j=1}^r\frac{c_j}{(r-j)!}
+ \int_0^\infty\int_0^\infty
+       x^{s-1}z^{t-1}\notag\\
+ &\qquad\cdot\int_0^\infty \frac{\log^{r-j}y}{y}
+ \left\{\partial_y^m\mathscr K^{(3)}_{a,b}(x,y,z)
+       -\partial_y^m\mathscr K^{(3)}_{a,b}(x,0,z)e^{-y}\right\}
+             \dd y\dd z\dd x .
+ \label{tr:tripleintegral}
+\end{align}
+All these integrals are absolutely convergent. Their common continuation
+is entire in $s,t$. Every further fixed spectral derivative can be
+taken in the convergent integrals on compact subsets of
+$\Re s,\Re t>0$.
+\end{theorem}
+
+\begin{proof}
+Lemma~\ref{zbg:bounds} gives uniform exponential control of all derivatives
+of the kernel, including at $y=0$. The inner bracket is uniformly
+$O(y)e^{-\delta(x+z)}$ as $y\downarrow0$; for $y\geq1$ it is bounded
+by $Ce^{-\delta(x+z)}(e^{-\delta y}+e^{-y})$.
+Consequently the inner logarithmic integrals and the two outer Mellin
+integrals are absolutely convergent. Fubini's theorem and the preceding
+lemma give the derivative of
+$\mathscr E_{a,b}(s,u,t;\boldsymbol0)=\HH_{a,b}(s,u,t)$.
+Theorem~\ref{zbg:entire} gives the entire continuation. Powers of $\log x$
+and $\log z$ from further spectral derivatives preserve the same
+integrable majorants on compact half-plane subsets.
+\end{proof}
+
+For $m=0,r=1$ the formula contains just
+\[
+ \int_0^\infty
+ \frac{\mathscr K^{(3)}(x,y,z)-\mathscr K^{(3)}(x,0,z)e^{-y}}y\dd y.
+\]
+This supplies a convergent realization of the log-Gamma gap at arbitrary
+noninteger endpoints, without separate divergent ordered sums.
+
+\subsection{All negative outer values and fixed Barnes constants}
+
+The weighted difference in Theorem~\ref{tr:jointD} has especially
+explicit values at nonpositive outer orders.
+
+\begin{theorem}[Finite Bernoulli formula for the transverse weighted tails]
+\label{tr:negativeD}
+Let $d,m,r\geq0$ and $q=d+1$. Then
+\begin{align}
+ D_{m,r}(-d;a,b)
+   =\frac1q\biggl\{&
+        B_q(a)\ell_{m,r}(a)-B_q(b)\ell_{m,r}(b)\notag\\
+       &+\sum_{k=0}^q\binom qk B_{q-k}(1)
+                             h_{a,b}^{(r)}(-m-k)\biggr\}.
+ \label{tr:negativeformula}
+\end{align}
+Every term is an endpoint Hurwitz derivative or a Bernoulli polynomial.
+\end{theorem}
+
+\begin{proof}
+The required top-index deletion identity is
+\begin{equation}\label{tr:topdelete}
+ \HH(-d,u)=\frac1q\left\{
+ B_q(a)h(u)-\sum_{k=0}^q\binom qk B_{q-k}(1)h(u-k)\right\}.
+\end{equation}
+For a direct analytic derivation, sum the leading index of $Z_c(v,u)$
+as $\zeta(v,n+c+1)$, then continue $v$ to $-d$ while $\Re u$ is
+large. Use
+$\zeta(-d,x+1)=-B_q(x+1)/q$ and expand the Bernoulli polynomial.
+Insert the result in the relative quotient. The leading singleton
+$Z_a(-d)=-B_q(a)/q$ contributes the first term. This proves
+\eqref{tr:topdelete} on a nonempty domain, and entireness in $u$ extends it.
+
+Differentiate \eqref{tr:topdelete} $r$ times in $u$ and set $u=-m$.
+Substitute in \eqref{tr:Didentity} and use
+$h(-d)=(B_q(a)-B_q(b))/q$. The terms involving
+$B_q(a)\ell_{m,r}(b)$ cancel, giving \eqref{tr:negativeformula}.
+\end{proof}
+
+For $m=0,r=1,d=0$, the standard Barnes relation
+\cite{Vardi,DLMFBarnes} gives the particularly simple identity
+\begin{equation}\label{tr:Barnes}
+ \boxed{D_{0,1}(0;a,b)=
+    \log G(a)-\log G(b)-\frac{a-b}{2}\log(2\pi).}
+\end{equation}
+Here $G$ is Barnes' function with its standard asymptotic normalization,
+$G(1)=1$, and $G(x+1)=\Gamma(x)G(x)$. Holomorphic logarithms in the
+right half-plane are normalized from the positive real axis.
+Indeed the $q=1$ formula is
+\[
+ (a-1)\ell_{0,1}(a)-(b-1)\ell_{0,1}(b)
+                    +\zeta'(-1,b)-\zeta'(-1,a),
+\]
+and
+$\log G(x)=(x-1)\log\Gamma(x)+\zeta'(-1)-\zeta'(-1,x)$
+proves \eqref{tr:Barnes}. At an integer endpoint difference it also
+agrees with the finite product obtained by iterating the functional
+equation. General $d$ gives the analogous finite endpoint formula in
+higher Hurwitz derivatives, without choosing an unspecified multiple
+Gamma normalization.
+
+\subsection{A finite family after arbitrary unmarked deletions}
+
+The preceding construction is stable under inserting any finite word
+of unmarked nonpositive indices. We state exactly the scope.
+
+\begin{proposition}[One marked index with arbitrary nonpositive decoration]
+\label{tr:finitefamily}
+Suppose a word contains $k\geq1$ independent free indices, one marked
+index $u$, and unmarked indices $-m_1,\ldots,-m_e$, with $m_i\geq0$.
+Put $M=\sum_i(m_i+1)$. After differentiating the marked index $r$ times
+and setting $u=-m$, the word is a finite polynomial-endpoint combination
+of $k$-letter relative sums whose letters are ordinary shifted powers,
+ordinary spectral derivatives of those powers, and at most one factor
+\[
+ \ell_{m+\nu,r}(x),\qquad 0\leq\nu\leq M.
+\]
+Endpoint values of the same finite family may occur. Thus the new gap
+functions needed for this one-marked problem are a specified finite
+list. This is a bound for this representation, not an assertion of
+minimal arithmetic depth.
+\end{proposition}
+
+\begin{proof}
+First regard $u$ as free. The finite Bernoulli deletion rules for each
+unmarked $-m_i$ hold identically in all remaining indices: sum its
+finite strict gap by a Bernoulli polynomial, or use the leading-tail
+argument of \eqref{tr:topdelete} at the upper boundary, and insert the
+result in the relative recursion. An interior deletion has the two
+endpoint terms
+\[
+ \frac1{m_i+1}\sum_{j=0}^{m_i+1}\binom{m_i+1}{j}
+ \left\{B_{m_i+1-j}\HH(\ldots,s-j,t,\ldots)
+       -B_{m_i+1-j}(1)\HH(\ldots,s,t-j,\ldots)\right\}.
+\]
+It shifts adjacent surviving orders down by nonnegative integers.
+The total shift budget is at most $M$, even when adjacent unmarked
+indices are combined during the deletion. Coefficients are endpoint
+polynomials and are independent of every surviving free order.
+
+Now differentiate in $u$ and set $u=-m$. Each surviving marked order
+is $-m-\nu$ for some $0\leq\nu\leq M$.
+Apply Lemma~\ref{tr:masterlemma} at the surviving marked position.
+Its adjacent-decoration difference gives the interior gap, and
+\eqref{tr:topgap}--\eqref{tr:bottomgap} give the boundary gaps.
+Their finite-interval forms are
+$\ell(y+1)-\ell(a)$ at the top and
+$\ell(b)-\ell(y)$ at the bottom. Only one decorated factor is introduced.
+Finally
+$\ell_{m+\nu,r}(x+1)=\ell_{m+\nu,r}(x)
+                   -x^{m+\nu}(-\log x)^r$
+removes shifted potentials in favor of ordinary free-order derivatives.
+The analytic identities at every step were proved with the marked
+order still free, so the transverse differentiation is legitimate.
+\end{proof}
+
+There is also an analytic all-decoration version. Take any fixed
+free word with one marked slot, apply Theorem~\ref{zbg:main}, then
+differentiate that slot at $-m$. Local normality proves convergence on
+the same full unit polydisc. Formula \eqref{tr:Mjet}, applied to the
+marked kernel coordinate, gives the corresponding logarithmic-integral
+generator. This simultaneously extends R7 and R8 to every derivative
+order and every nonpositive marked center.
+
+If there are no other free indices, the remaining singleton is
+$h_{a,b}^{(r)}(-m-\nu)$, so no decorated lower-depth sum is needed.
+Several independently marked indices are a further problem: this
+proposition makes no claim that their repeated gap primitives close
+in the same one-marked list.
+
+
+% End sections/03_transverse.tex
+
+% Begin sections/04_mixed_moments.tex
+\section{Mixed centered harmonic-tail moments}
+\label{mt:section}
+
+The source reports evaluate every centered even moment of a trigamma
+square \cite{IncomingHigherReflection,IncomingParity}; the harmonic-parity
+report asks for the corresponding evaluation for two unequal even-order
+harmonic tails. We resolve that two-factor problem for all
+orders and all moments. The resulting finite formula reduces entirely to
+ordinary zeta values and their products. We then package the infinite
+moment sequence into one analytic generator with explicit
+polylogarithmic primitives. The centered parity mechanism is inherited
+from the source criterion; the evaluation and the generator are the
+additional results here. Euler's classical odd-weight reduction supplies
+the arithmetic step~\cite{Bradley2007}.
+
+\subsection{Continuation and ordinary convergent representatives}
+
+Let $a,b\ge2$ be even integers, and put
+\begin{equation}\label{mt:notation}
+ T_a(n)=\zeta(a,n+1)=\zeta(a)-H_n^{(a)}
+       =\frac{\psi^{(a-1)}(n+1)}{(a-1)!},
+ \qquad x_n=n+\frac12.
+\end{equation}
+The last equality uses that $a$ is even. Define
+\begin{equation}\label{mt:F}
+ F_{a,b}(s)=\sum_{n=0}^{\infty}\frac{T_a(n)T_b(n)}{x_n^s},
+ \qquad V_{a,b}(M)=F_{a,b}(-2M),\quad M\ge0.
+\end{equation}
+The series for $F_{a,b}$ converges absolutely when
+$\Re s>3-a-b$. The value at $-2M$ is understood through the continuation
+proved below whenever the unmodified series diverges.
+
+Write $\alpha=a+b-2$, and define rational coefficients
+\begin{align}
+ t_{a,0}&=\frac1{a-1},&
+ t_{a,k}&=\frac{B_{2k}(1/2)}{(2k)!}(a)_{2k-1}\quad(k\ge1),
+ &c_k&=\sum_{j=0}^k t_{a,j}t_{b,k-j}.
+ \label{mt:centered-coefficients}
+\end{align}
+Here $(a)_r$ is the rising factorial, $B_j(x)$ is the Bernoulli
+polynomial, and $B_j=B_j(0)$, with $B_1=-1/2$.
+The centered Hurwitz expansions \cite[\S25.11(xii)]{DLMFHurwitz} give
+\begin{equation}\label{mt:centered-expansion}
+ T_a(n)\sim\sum_{k\ge0}t_{a,k}x_n^{1-a-2k},
+ \qquad
+ T_a(n)T_b(n)\sim\sum_{k\ge0}c_kx_n^{-\alpha-2k}.
+\end{equation}
+Only finite truncations of these asymptotic expansions are used.
+
+\begin{proposition}[Regularity and bracketed moments]
+\label{mt:regularity}
+The function $F_{a,b}$ extends meromorphically to the complex plane.
+Its only possible poles are simple poles at
+$s=3-a-b-2k$, $k\ge0$, with residue $c_k$.
+In particular every even spectral integer is regular. For
+\begin{equation}\label{mt:subtraction-polynomial}
+ P_M(x)=\sum_{\alpha+2k\le2M}c_kx^{2M-\alpha-2k},
+\end{equation}
+one has the ordinary convergent identity
+\begin{equation}\label{mt:bracket}
+ V_{a,b}(M)=\sum_{n=0}^{\infty}
+ \left[x_n^{2M}T_a(n)T_b(n)-P_M(x_n)\right].
+\end{equation}
+The polynomial is zero if its indexing set is empty. The bracket is
+$O(x_n^{-2})$.
+\end{proposition}
+
+\begin{proof}
+For any fixed $K$, subtract the first $K+1$ terms of
+\eqref{mt:centered-expansion} inside the defining series. The remainder
+converges normally in a right half-plane extending farther to the left,
+while the removed terms
+sum to
+$\sum_{k=0}^K c_k\zeta(s+\alpha+2k,1/2)$.
+Increasing $K$ provides compatible continuations and the stated poles
+and residues. Since $a+b$ is even, all these potential poles are odd
+integers. At $s=-2M$, every nondecaying term has a nonnegative even
+power of $x_n$. Its continued sum is
+$\zeta(-2j,1/2)=0$, including $j=0$. After their removal the next
+possible power is $x_n^{-2}$, which proves \eqref{mt:bracket}.
+\end{proof}
+
+\begin{corollary}[Every spectral derivative with its correction terms]
+\label{mt:spectralderivatives}
+For $r,M\geq0$, every derivative at a centered even spectral value has
+the ordinary convergent representation
+\begin{align}
+ F_{a,b}^{(r)}(-2M)
+  ={}&\sum_{n=0}^{\infty}(-\log x_n)^r
+       \left[x_n^{2M}T_a(n)T_b(n)-P_M(x_n)\right]\notag\\
+    &+\sum_{\alpha+2k\leq2M}
+               c_k\zeta^{(r)}(\alpha+2k-2M,1/2).
+ \label{mt:logmoment}
+\end{align}
+The second sum vanishes for $r=0$. It must in general be retained for
+$r\geq1$.
+\end{corollary}
+\begin{proof}
+Use the same finite subtractions as in \eqref{mt:subtraction-polynomial}
+at a moving $s$ in a neighborhood of $-2M$. The remainder series and all
+its fixed spectral derivatives converge locally normally there, since
+their terms are bounded by $C x_n^{-2+\varepsilon}(1+|\log x_n|^r)$
+with some $\varepsilon<1$. Differentiation of the finite Hurwitz
+correction gives exactly \eqref{mt:logmoment}.
+\end{proof}
+
+For example, the first derivative in the $(2,4)$ family at $s=-4$ is
+\begin{equation}\label{mt:derivative-example}
+ F'_{2,4}(-4)=
+ -\sum_{n\geq0}\log x_n
+        \left[x_n^4T_2(n)T_4(n)-\frac13\right]
+ -\frac{\log 2}{6},
+\end{equation}
+because $\zeta'(0,1/2)=-\tfrac12\log2$. This identity fixes the
+logarithmic remainder and its constant; it does not claim that the
+remainder is an ordinary-zeta combination.
+
+We will also use a concrete equivalent characterization. Let
+$\operatorname{CT}_N$ mean the coefficient of $N^0(\log N)^0$ in
+an asymptotic expansion in the integer cutoff $N$. Then
+\begin{equation}\label{mt:cutoff-value}
+ V_{a,b}(M)=\operatorname{CT}_N
+   \sum_{n=0}^{N-1}x_n^{2M}T_a(n)T_b(n).
+\end{equation}
+Indeed the partial sum of each removed even polynomial power is
+$B_{2j+1}(N+1/2)/(2j+1)$, an odd polynomial in $N$ with zero constant
+term. The summable remainder in \eqref{mt:bracket} tends to its ordinary
+sum. The coordinate $N$ in \eqref{mt:cutoff-value} is part of the
+statement; no change of endpoint coordinate is implicit.
+
+\subsection{A finite formula at every moment order}
+
+The double-zeta convention used below is
+\[
+ \zeta(u,v)=\sum_{j>k\ge1}\frac1{j^u k^v}.
+\]
+Thus the first exponent belongs to the larger summation variable.
+For each positive odd integer $d$, define
+\begin{equation}\label{mt:oriented}
+ K_{a,b}(d)=
+ \begin{cases}
+  \displaystyle\zeta(b,a-d)+\frac12\zeta(a+b-d),&d<a,\\[2mm]
+  \displaystyle\sum_{j=1}^{\min(b/2,(d-a+1)/2)}
+    \frac{\binom{d-a+1}{2j}B_{d-a+1-2j}}{d-a+1}
+             \zeta(b-2j),&d>a,
+ \end{cases}
+\end{equation}
+and put
+\begin{equation}\label{mt:E}
+ E_{a,b}(d)=K_{a,b}(d)+K_{b,a}(d).
+\end{equation}
+There is no missing case $d=a$: $d$ is odd and $a$ even. All double
+zetas in the first branch are ordinary convergent sums. In the second
+branch, $\zeta(0)=-1/2$ has its usual continued meaning.
+
+\begin{theorem}[All mixed even-tail moments]
+\label{mt:all-moments}
+For even $a,b\ge2$ and every integer $M\ge0$,
+\begin{equation}\label{mt:moment-formula}
+ \boxed{\displaystyle
+ V_{a,b}(M)=\frac1{2M+1}\sum_{\ell=0}^{M}
+  \binom{2M+1}{2\ell+1}B_{2M-2\ell}(1/2)
+                          E_{a,b}(2\ell+1).}
+\end{equation}
+The summation and every coefficient in this formula are finite and
+explicit.
+\end{theorem}
+
+The $j=b/2$ term in \eqref{mt:oriented}, whenever its range includes
+it, records an exact rational boundary contribution through
+$\zeta(0)=-1/2$. Discarding this term would already give an incorrect
+answer for divergent centered moments of the trigamma square.
+
+\begin{proof}
+First form the exact polynomial partial sum
+\begin{align}
+ S_M(k)&=\sum_{n=0}^{k-1}(n+1/2)^{2M}
+       =\frac{B_{2M+1}(k+1/2)}{2M+1}
+       =\sum_{\ell=0}^{M}s_{M,\ell}k^{2\ell+1},
+ \label{mt:S}\\
+ s_{M,\ell}&=\frac{\binom{2M+1}{2\ell+1}}{2M+1}
+                         B_{2M-2\ell}(1/2).
+ \notag
+\end{align}
+The tail recurrence gives
+\begin{align*}
+&T_a(k-1)T_b(k-1)-T_a(k)T_b(k)\\
+&\hspace{18mm}=k^{-a}T_b(k-1)+k^{-b}T_a(k-1)-k^{-a-b}.
+\end{align*}
+Applying finite summation by parts, without taking any divergent limits,
+therefore yields
+\begin{equation}\label{mt:finite-sbp}
+ \sum_{n=0}^{N-1}x_n^{2M}T_a(n)T_b(n)
+ =\sum_{\ell=0}^{M}s_{M,\ell}\,\mathcal E_{2\ell+1}(N),
+\end{equation}
+where
+\begin{align}
+ \mathcal E_d(N)={}&N^dT_a(N)T_b(N)
+   +\sum_{k=1}^N k^{d-a}T_b(k-1)
+   +\sum_{k=1}^N k^{d-b}T_a(k-1)
+   -H_N^{(a+b-d)}.
+ \label{mt:finite-E}
+\end{align}
+We compute its cutoff constant explicitly.
+
+If $d<a$, the first oriented sum in \eqref{mt:finite-E} is absolutely
+convergent, and direct rearrangement gives
+\begin{equation}\label{mt:convergent-oriented}
+ \sum_{k=1}^{\infty}k^{d-a}T_b(k-1)
+ =\zeta(b,a-d)+\zeta(a+b-d).
+\end{equation}
+If $d>a$, put $p=d-a$, a positive odd integer. The Faulhaber
+polynomial is
+\begin{equation}\label{mt:faulhaber}
+ Q_p(X)=\sum_{k=1}^X k^p
+   =\frac12X^p+\sum_{j=1}^{(p+1)/2}q_{p,2j}X^{2j},
+ \qquad
+ q_{p,2j}=\frac{\binom{p+1}{2j}B_{p+1-2j}}{p+1}.
+\end{equation}
+The finite-sum notation specifies the polynomial by its values at
+nonnegative integers. Define $q_{p,h}=0$ outside its displayed
+nonzero even degrees, whenever an even $h$ is used below. A finite
+rearrangement which retains the infinite tail gives the exact equality
+\begin{equation}\label{mt:finite-rearrangement}
+ \sum_{k=1}^N k^pT_b(k-1)
+  =\sum_{h\ge1}[X^h]Q_p(X)\,H_N^{(b-h)}
+    +Q_p(N)T_b(N).
+\end{equation}
+For $v>1$, the cutoff constant of $H_N^{(v)}$ is $\zeta(v)$;
+for $v=1$ it is Euler's constant $\gamma$; and for integer $v\le0$
+it is zero because the finite power sum is a polynomial in $N$ with
+zero constant term.
+
+At the potential logarithmic collision $d=a+b-1$, the half-leading
+monomial in each of the two Faulhaber polynomials contributes
+$\gamma/2$. The diagonal term in \eqref{mt:finite-E} contributes
+$-\gamma$. These cancel. In particular, this proof never evaluates
+an isolated $\zeta(1)$.
+
+We now evaluate the constant contributions of the explicit tails. Write
+\begin{equation}\label{mt:tau}
+ T_a(N)\sim\sum_j\tau_a(j)N^{-j},\qquad
+ \begin{cases}
+ \tau_a(a-1)=1/(a-1),\\
+ \tau_a(a)=-1/2,\\
+ \tau_a(a+2k-1)=B_{2k}(a)_{2k-1}/(2k)!,&k\ge1,
+ \end{cases}
+\end{equation}
+with all other coefficients zero. Since $a,b$ are even and $d$ odd,
+an odd total degree in the product can only use one exceptional even
+index $a$ or $b$. Hence
+\begin{equation}\label{mt:boundary-product}
+ \operatorname{CT}_N N^dT_a(N)T_b(N)
+ =-\frac12\tau_b(d-a)-\frac12\tau_a(d-b).
+\end{equation}
+For $p=d-a>0$, the only odd monomial of $Q_p$ is $X^p/2$,
+and the only even index in $T_b$ is $b$. Therefore
+\begin{equation}\label{mt:boundary-oriented}
+ \operatorname{CT}_N Q_p(N)T_b(N)
+ =\frac12\tau_b(p)-\frac12q_{p,b}.
+\end{equation}
+The $\tau$ terms in \eqref{mt:boundary-product} cancel those from
+the two instances of \eqref{mt:boundary-oriented}. The remaining
+constant is
+\begin{equation}\label{mt:boundary-constant}
+ -\frac12\bigl(q_{d-a,b}+q_{d-b,a}\bigr),
+\end{equation}
+where a term is zero if its first index is not positive. This is
+exactly the contribution of the $\zeta(0)$ terms in
+\eqref{mt:oriented}.
+
+For completeness consider the remaining diagonal constant. If
+$W=a+b-d\ge3$, a branch $d<a$ contributes the full $\zeta(W)$
+in \eqref{mt:convergent-oriented}, and a branch $d>a$ contributes
+$\zeta(W)/2$ from the half-leading term in
+\eqref{mt:finite-rearrangement}. After subtracting the diagonal
+$\zeta(W)$, exactly one half remains for each branch $d<a$.
+When $W=1$ the constants cancel as already shown. When $W<1$,
+the diagonal power sum has zero constant term. The other surviving
+Faulhaber terms have even degree and yield the even zeta values in
+\eqref{mt:oriented}. Thus
+\[
+ \operatorname{CT}_N\mathcal E_d(N)=E_{a,b}(d).
+\]
+Taking constants in \eqref{mt:finite-sbp} and applying
+\eqref{mt:cutoff-value} proves \eqref{mt:moment-formula}.
+\end{proof}
+
+\subsection{Reduction to ordinary zeta values}
+
+For clarity, the classical reduction needed to eliminate every double
+coordinate is written out. Let $m\ge2$ be even, let $n\ge1$ be odd,
+and put $w=m+n$ and
+$\mathcal U_{m,n}=\zeta(m,n)+\zeta(w)/2$. Euler's formulas, in the
+convention above, give
+\begin{equation}\label{mt:euler-one}
+ \mathcal U_{m,1}=\frac{m+1}{2}\zeta(m+1)
+  -\sum_{j=1}^{m/2-1}\zeta(2j)\zeta(m+1-2j),
+\end{equation}
+and, for $n\ge3$,
+\begin{align}
+ \mathcal U_{m,n}={}&\frac12\binom wm\zeta(w)+\zeta(m)\zeta(n)
+ \notag\\
+ &-\sum_{j=1}^{(w-3)/2}
+  \left[\binom{w-2j-1}{m-1}+\binom{w-2j-1}{n-1}\right]
+                      \zeta(2j)\zeta(w-2j).
+ \label{mt:euler-odd}
+\end{align}
+These are the ordinary specialization of the classical signed Euler
+reduction; an elementary proof from partial fractions is provided in
+\cite[Eq.~(2)--(3) and Proposition~1]{Bradley2007}. No divergent
+$\zeta(1)$ appears in \eqref{mt:euler-one}--\eqref{mt:euler-odd}.
+The first branch of \eqref{mt:oriented} is exactly
+$\mathcal U_{b,a-d}$, so the formulas apply to every such branch.
+
+\begin{corollary}[Ordinary-zeta closure and a fixed spanning list]
+\label{mt:closure}
+Every $V_{a,b}(M)$ is a rational linear combination of $1$, ordinary
+even zeta values, ordinary odd zeta values, and products of one even
+and one odd zeta value. Put $B=\max(a,b)$. The entire moment sequence
+lies in the rational span of the at most $B$ coordinates
+\begin{equation}\label{mt:finite-span}
+ E_{a,b}(1),E_{a,b}(3),\ldots,E_{a,b}(B-1),
+ \qquad 1,\zeta(2),\zeta(4),\ldots,\zeta(B-2).
+\end{equation}
+The positive even-zeta sublist is empty when $B=2$.
+\end{corollary}
+\begin{proof}
+Ordinary-zeta closure follows by inserting
+\eqref{mt:euler-one}--\eqref{mt:euler-odd} into
+\eqref{mt:oriented}. For odd $d>B$, both branches in
+\eqref{mt:oriented} are finite combinations of
+$\zeta(0),\zeta(2),\ldots,\zeta(B-2)$. Formula
+\eqref{mt:moment-formula} then proves the spanning assertion.
+\end{proof}
+
+The corollary is a finite spanning theorem, not a claim that its
+coordinates are arithmetically independent or minimal. It answers the
+ordinary-constant reduction question for every pair of even-order
+tails; increasing the moment order introduces no additional constants.
+
+\subsection{The first unequal-order family}
+
+For $a=2$ and $b=4$, the first five coordinates are
+\begin{align}
+ E_{2,4}(1)&=\frac{15}{2}\zeta(5)-3\zeta(2)\zeta(3),
+ &E_{2,4}(3)&=\frac12\zeta(2)+\frac32\zeta(3),\notag\\
+ E_{2,4}(5)&=\frac14\zeta(2)-\frac38,
+ &E_{2,4}(7)&=-\frac1{12}\zeta(2)-\frac13,\label{mt:E24}\\
+ E_{2,4}(9)&=\frac1{12}\zeta(2)+\frac3{16}.\notag
+\end{align}
+The centered product expansion begins
+\begin{equation}\label{mt:T24-expansion}
+ T_2(n)T_4(n)=\frac1{3x_n^4}-\frac7{36x_n^6}
+                       +\frac{61}{360x_n^8}+O(x_n^{-10}).
+\end{equation}
+Theorem~\ref{mt:all-moments} consequently gives the following ordinary
+convergent identities:
+\begin{align}
+ \sum_{n\ge0}T_2(n)T_4(n)
+  &=\frac{15}{2}\zeta(5)-3\zeta(2)\zeta(3),
+ \label{mt:V0}\\
+ \sum_{n\ge0}x_n^2T_2(n)T_4(n)
+  &=\frac14\zeta(2)\zeta(3)+\frac16\zeta(2)+\frac12\zeta(3)
+                   -\frac58\zeta(5),
+ \label{mt:V1}\\
+ \sum_{n\ge0}\left[x_n^4T_2(n)T_4(n)-\frac13\right]
+  &=-\frac7{80}\zeta(2)\zeta(3)-\frac1{30}\zeta(2)
+      -\frac14\zeta(3)+\frac7{32}\zeta(5)-\frac3{40}.
+ \label{mt:V2}
+\end{align}
+One further example is
+\begin{align}
+ &\sum_{n\ge0}\left[x_n^6T_2(n)T_4(n)-\frac{x_n^2}{3}+\frac7{36}\right]
+ \notag\\
+ &\qquad=\frac{31}{448}\zeta(2)\zeta(3)-\frac1{672}\zeta(2)
+          +\frac7{32}\zeta(3)-\frac{155}{896}\zeta(5)
+          +\frac{31}{672}.
+ \label{mt:V3}
+\end{align}
+Since $T_2=\psi'$ and $T_4=\psi'''/6$, multiplication by $6$
+turns these into identities for products of two unequal polygamma
+orders. They equally evaluate the centered harmonic numerator
+$(H_n^{(2)}-\zeta(2))(H_n^{(4)}-\zeta(4))$.
+
+\subsection{An analytic generator for all moment orders}
+
+For a fixed ordered pair $(a,b)$, define
+\begin{equation}\label{mt:G}
+ G_b(t)=\frac12\coth(t/2)
+             \sum_{j=1}^{b/2}\zeta(b-2j)\frac{t^{2j}}{(2j)!}.
+\end{equation}
+Its apparent singularity at zero is removable. It is odd and analytic
+on $|t|<2\pi$.
+
+\begin{theorem}[All-moment generating function]
+\label{mt:generator}
+Let $A_{a,b}$ be the unique analytic solution on $|t|<2\pi$ of
+\begin{equation}\label{mt:generator-ode}
+ A_{a,b}^{(a)}(t)=G_b(t),
+\end{equation}
+whose Taylor polynomial of degree less than $a$ is
+\begin{equation}\label{mt:initial-data}
+ \sum_{\substack{1\le d<a\\d\text{ odd}}}
+  \left[\zeta(b,a-d)+\frac12\zeta(a+b-d)\right]\frac{t^d}{d!}.
+\end{equation}
+Then the exponential series
+\begin{equation}\label{mt:moment-egf}
+ \mathscr V_{a,b}(t)=\sum_{M=0}^{\infty}
+                      V_{a,b}(M)\frac{t^{2M}}{(2M)!}
+\end{equation}
+converges for $|t|<2\pi$ and satisfies
+\begin{equation}\label{mt:generator-formula}
+ \boxed{\displaystyle
+ \mathscr V_{a,b}(t)=
+       \frac{A_{a,b}(t)+A_{b,a}(t)}{2\sinh(t/2)}.}
+\end{equation}
+The quotient has a removable value at zero and is even analytic.
+\end{theorem}
+
+\begin{proof}
+Anchored integration of the analytic function $G_b$ gives existence
+and uniqueness. Its oddness, and the even value of $a$, show that
+$A_{a,b}$ is odd. The Bernoulli generating identity
+\[
+ C(t)=\frac t2\coth(t/2)
+       =\sum_{k\ge0}\frac{B_{2k}}{(2k)!}t^{2k}
+\]
+gives
+\[
+ G_b(t)=C(t)\sum_{j=1}^{b/2}\zeta(b-2j)\frac{t^{2j-1}}{(2j)!}.
+\]
+For positive odd $p$, its coefficient of $t^p/p!$ is
+\[
+ \sum_{j=1}^{\min(b/2,(p+1)/2)}
+   \frac{\binom{p+1}{2j}B_{p+1-2j}}{p+1}\zeta(b-2j).
+\]
+Together with the initial data, this says exactly that
+\begin{equation}\label{mt:A-series}
+ A_{a,b}(t)=\sum_{\substack{d\ge1\\d\text{ odd}}}
+                             K_{a,b}(d)\frac{t^d}{d!}.
+\end{equation}
+Finally,
+\[
+ \frac1{2\sinh(t/2)}
+     =\frac1t\sum_{k\ge0}\frac{B_{2k}(1/2)}{(2k)!}t^{2k}.
+\]
+Multiplication with the sum of the two series in
+\eqref{mt:A-series} gives precisely the coefficient formula
+\eqref{mt:moment-formula}. The numerator is odd and vanishes at zero;
+the denominator has a simple zero there and no other zero in this
+disk. Hence the quotient is even analytic throughout the disk, proving
+actual convergence of \eqref{mt:moment-egf} as well as the identity.
+\end{proof}
+
+This analytic generator concerns the regularized values already fixed
+by \eqref{mt:bracket}. It is not obtained by interchanging an exponential
+series with the divergent unmodified moment sums.
+
+\subsection{Explicit polylogarithmic primitives and their constants}
+
+For an integer $k\ge1$, set
+\begin{equation}\label{mt:L-integral}
+ L_k(t)=\int_0^t\frac{u^k}{e^u-1}\,du.
+\end{equation}
+The integrand is analytic at zero. Initially in $\Re t>0$, the standard
+polylogarithm differentiation rule \cite[\S25.12]{DLMFPolylog} gives the explicit anchored formula
+\begin{equation}\label{mt:L-polylog}
+ L_k(t)=k!\zeta(k+1)
+ -\sum_{h=0}^k\frac{k!}{(k-h)!}
+                      t^{k-h}\operatorname{Li}_{h+1}(e^{-t}).
+\end{equation}
+For real $t>0$, all polylogarithms have arguments in $(0,1)$; this fixes
+the branch. The formula extends to the right half-plane by analyticity.
+Differentiating the finite sum makes its adjacent terms cancel and
+leaves $t^k/(e^t-1)$. As $t\to0$ from the right, all positive powers
+multiplying the polylogarithms vanish, including
+$t^k\operatorname{Li}_1(e^{-t})$, and the remaining term cancels
+$k!\zeta(k+1)$. This proves both the derivative and the anchoring
+constant. The completed expression, taken as a whole, then continues
+analytically to $|t|<2\pi$ through its integral definition. Individual
+polylogarithm terms need not be assigned separate analytic values
+around the logarithmic point $t=0$.
+
+For positive even $m$, define
+\begin{align}
+ R_{a,m}(t)={}&\frac{t^{a+m}}{2(a+m)!}
+ \notag\\
+ &+\frac1{m!(a-1)!}\sum_{r=0}^{a-1}(-1)^r\binom{a-1}{r}
+                                  t^{a-1-r}L_{m+r}(t).
+ \label{mt:R}
+\end{align}
+Expanding the anchored integration kernel $(t-u)^{a-1}$ shows that
+\begin{equation}\label{mt:R-integral}
+ R_{a,m}(t)=\frac1{(a-1)!}\int_0^t(t-u)^{a-1}
+                         \frac12\coth(u/2)\frac{u^m}{m!}\,du.
+\end{equation}
+Here one uses $\tfrac12\coth(u/2)=\tfrac12+(e^u-1)^{-1}$;
+the first term gives the polynomial in \eqref{mt:R}, and the second
+gives the finite sum of $L$ integrals. Consequently
+\begin{equation}\label{mt:A-polylog}
+ A_{a,b}(t)=(\text{the polynomial in \eqref{mt:initial-data}})
+              +\sum_{j=1}^{b/2}\zeta(b-2j)R_{a,2j}(t).
+\end{equation}
+Equations \eqref{mt:euler-one}--\eqref{mt:euler-odd} and
+\eqref{mt:generator-formula}--\eqref{mt:A-polylog} express the whole
+moment sequence using ordinary zeta constants, elementary functions,
+and finitely many $\operatorname{Li}_k(e^{-t})$ with $k\le a+b$.
+Every repeated primitive is anchored at zero. Near zero, the ODE or
+Taylor form is more suitable for numerical evaluation because the
+separate polylogarithmic terms undergo strong cancellation.
+
+\subsection{Scope of the result}
+
+The theorem resolves the two-factor even-tail sector of the source
+question. It does not assert ordinary-zeta closure for the first
+spectral derivative $F'_{a,b}(-2M)$, independent order derivatives,
+or products of four tails. In particular, adding a spectral derivative
+introduces a global logarithmic moment; the finite-value theorem alone
+does not eliminate it. Verification records and precise next questions
+are given in Sections~\ref{audit:section} and~\ref{research:section}.
+
+% End sections/04_mixed_moments.tex
+
+% Begin sections/05_audit_verification.tex
+\Needspace{10\baselineskip}
+\section{Source audit, normalization safeguards, and verification}
+\label{audit:section}
+
+\subsection{Inspected baseline and source attribution}
+
+The source anchor is the ProveIt revision
+\src{7bd45777a8a127e5dc69aff8887ca36a79a3059d}, including the eleven
+archives then present in \src{docs/incoming} \cite{Repository}.
+The archive inventory, immutable source URLs, and hashes accompany
+the delivery.  The mathematical review concentrated on the relative
+Hurwitz definitions, nonpositive-index reductions, one-free-order
+generator, centered moment formulas, and the explicit R1, R7, and R8
+questions of the incoming harmonic-parity report
+\cite{IncomingParity,IncomingIndependent}.  This is a targeted analytic
+review with a complete archive inventory; it is not a line-by-line
+certification of every proof in the entire repository.
+
+No newly confirmed false theorem in the inspected source material
+emerged from this review.  The refinements below specify hypotheses and
+normalizations that must survive integration.  In particular, the
+source's warning against differentiating a fixed deleted index was
+correct: Section~\ref{tr:section} supplies the extra moving-parameter
+identity needed to cross that boundary.
+
+The kernel attribution deserves explicit preservation.  The geometric
+kernel reorganized in \eqref{zbg:kernel}, and the original entire
+interpolation that it represents, are established in Ihara, Nakamura,
+and Yamamoto \cite[Proposition~3.3 and Theorem~4.1]{INY}.  The published
+reference is \emph{The Ramanujan Journal} \textbf{67} (2025), article~1,
+doi:10.1007/s11139-025-01045-2; the arXiv version remains a useful
+accessible precursor.  Bibliographic entries that describe this work
+only as a preprint can therefore be updated.  The incoming
+independent-orders report already identifies the interpolant
+\cite{IncomingIndependent}.  Our contribution is the stated joint
+twist completion, the all-block unit-polydisc theorem, and the
+transverse formulas, rather than a new discovery of their underlying
+geometric interpolation.
+
+Likewise, the finite gap polynomials and the one-free-order generating
+function retain their attribution to \cite{IncomingParity}.  Euler's
+odd-weight double-zeta reduction remains a classical ingredient,
+with the explicit primary proof cited in \cite{Bradley2007}.
+Several incoming reports have overlapping parity and quartic-zeta
+results from earlier common baselines.  Their separate proofs may be
+useful, but the canonical question ledger should count the corresponding
+resolved question once and retain each report's actual scope.
+
+\subsection{An absolutely convergent boundary series can have a different value}
+\label{audit:boundary}
+
+The initial convergence domain in Theorem~\ref{tr:jointD} is essential.
+An isolated exponent can cancel the leading asymptotic term of a
+paired summand, producing an ordinary convergent series whose sum differs
+from the continuation of the original family.  Here is a complete
+elementary example, requiring no numerical regularization.
+
+Take $m=r=0$, $a=2$, and $b=1$.  Then
+\[
+ \ell_{0,0}(x)=\zeta(0,x)=\frac12-x,
+ \qquad h_{2,1}(s)=1.
+\]
+On the initial half-plane $\Re s>2$, the defining weighted difference
+is
+\begin{align}
+ D_{0,0}(s;2,1)
+ &=\sum_{n\geq0}\{f_s(n+1)-f_s(n+2)\},
+ & f_s(x)&=\frac12x^{-s}-x^{1-s}.
+ \label{audit:telescoping}
+\end{align}
+Its $N$th partial sum is exactly
+\begin{equation}\label{audit:boundary-partial}
+ -\frac12-\frac12(N+1)^{-s}+(N+1)^{1-s}.
+\end{equation}
+Consequently its entire continuation is the constant
+\begin{equation}\label{audit:continued}
+                         D_{0,0}(s;2,1)=-\frac12.
+\end{equation}
+But substituting $s=1$ in the individual paired summands first gives
+the ordinary absolutely convergent series
+\begin{equation}\label{audit:literal}
+ \sum_{n\geq0}\frac12
+       \left(\frac1{n+1}-\frac1{n+2}\right)=\frac12.
+\end{equation}
+The values differ by one, which is the boundary term
+$(N+1)^{1-s}$ in \eqref{audit:boundary-partial}.  This discrepancy
+does not contradict analytic continuation: the paired series lacks
+locally normal convergence on a complex neighborhood of $s=1$.
+
+Thus \eqref{tr:Didentity} and \eqref{tr:StieltjesD} must retain the
+phrase ``the continuation from the stated initial domain.''  Literal
+summation at an accidentally improved boundary point is a different
+operation.  The example is also a useful negative control for software
+that evaluates parameterized infinite sums after specialization.
+
+\subsection{Hypotheses and constants to preserve during integration}
+
+\paragraph{Moving and fixed indices.}
+The polynomial identity for a word with a letter fixed at $u=-m$
+contains no information about derivatives in the transverse variable
+$u$.  It can be differentiated in its independently free letters.
+To differentiate in $u$, first use the entire identity
+\eqref{tr:genericgap}, and then specialize.  The functions
+$\ell_{m,r}$ are the additional data introduced by that operation.
+The finite-family bound in Proposition~\ref{tr:finitefamily} concerns
+one marked index; it does not establish the same bound for several
+independently marked indices.
+
+\paragraph{Strict endpoints and Bernoulli signs.}
+For a strict unit-lattice gap the finite power sum is
+\[
+ \sum_{z<x<y}x^m
+   =\frac{B_{m+1}(y)-B_{m+1}(z+1)}{m+1}.
+\]
+Accordingly $B_1=-1/2$ and $B_1(1)=1/2$ occur in different positions.
+At $m=0$, the missing endpoints account for the last term in
+\[
+ \HH(s,0,t)=\HH(s-1,t)-\HH(s,t-1)-\HH(s,t).
+\]
+The analogous term in \eqref{tr:commutator} must also remain after
+transverse differentiation.  Its sign is fixed by the Hurwitz shift
+identity, not by a choice of regularization.
+
+\paragraph{Centered cutoff constants and the two zero-order zeta values.}
+The mixed-tail proof uses the cutoff $0\leq n<N$ and the constant
+term in the variable $N$.  The equality with the spectral value is
+proved in \eqref{mt:cutoff-value}; it is not a general rule for every
+cutoff coordinate.  Two different zero-order zeta values appear:
+\[
+                \zeta(0,1/2)=0,\qquad \zeta(0)=-\frac12.
+\]
+The first makes the continued sums of the subtracted centered even
+polynomials vanish.  The second encodes the surviving rational boundary
+term in \eqref{mt:boundary-constant}.  Dropping either distinction
+changes the moment formula.  At $d=a+b-1$, the two oriented
+$\gamma/2$ terms cancel the diagonal $-\gamma$; an isolated
+$\zeta(1)$ is never introduced.
+
+\paragraph{Domains, branches, and spanning statements.}
+Endpoint parameters stay in the right half-plane.  The twists satisfy
+the consecutive-sum inequalities in \eqref{zbg:tube}; removable zero
+collisions do not remove the remaining nonzero-period hyperplanes.
+The polylogarithmic primitives are first fixed in the right half-plane
+and then continued as their complete anchored expressions, as in
+\eqref{mt:L-polylog}.  The finite list in \eqref{mt:finite-span} is
+a proved rational spanning list.  Its at-most-$\max(a,b)$ count is not
+an assertion of arithmetic independence or minimality.  The ordinary
+moment theorem also does not imply ordinary-zeta closure of its first
+spectral derivative, which contains additional global logarithmic data.
+
+\subsection{Reproducible verification and the limits of its evidence}
+
+The analytic proofs above establish the unrestricted identities.
+The companion scripts provide finite exact checks and independent
+high-precision diagnostics of the most sensitive formulas.  The
+recorded coverage is summarized below.
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{1.40in}rr>{\raggedright\arraybackslash}p{3.43in}@{}}
+\toprule
+Family & Exact & Numerical & What is compared\\
+\midrule
+Geometric kernels and zero blocks
+ & 590 & 0
+ & Endpoint composition, deconcatenation, kernel recurrence, finite
+   intervals, inverse intervals, gap coefficients, and insertion sums.\\[4pt]
+Mixed-tail moments
+ & 460 & 30
+ & 400 boundary identities and 60 finite summation-by-parts identities;
+   direct Hurwitz heads and centered tail expansions at two cutoffs.\\[4pt]
+Transverse identities
+ & 0 & 15
+ & Finite Gamma/Hurwitz gaps, noninteger endpoint tails, Barnes values,
+   negative-outer-order formulas, and the boundary discrepancy above.\\[4pt]
+Normalized Mellin derivatives
+ & 0 & 24
+ & Subtracted logarithmic quadrature versus derivatives of explicit
+   elementary Mellin transforms for two independent test functions.\\[4pt]
+Moment generators
+ & 0 & 3
+ & Anchored quadrature, explicit polylogarithmic primitives, and a Taylor
+   sum using 65 exact moment coefficients in each comparison.\\[4pt]
+\midrule
+Total & 1,050 & 72 & Finite algebra and numerical diagnostics have
+                         different evidentiary roles.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The 590 kernel checks use rational arithmetic only.  Positive
+fourth-power exponential nodes and quarter-integral endpoints permit
+exact tests even when $a-b$ is nonintegral.  The 460 moment checks are
+finite identities over rational symbolic coefficient rings.  In
+particular, the finite summation-by-parts tests keep the two tail
+constants symbolic.
+
+The transverse diagnostics use 65 decimal working digits and include
+the discrepancy \eqref{audit:continued}--\eqref{audit:literal} as a
+deliberate boundary control.  A separate 80-digit test of
+\eqref{tr:Mjet} uses two quadratic-polynomial exponential functions,
+one with nonreal coefficients and decay parameter.  For each function,
+the centers $m=0,1,3$ and derivative orders $r=1,2,3,4$ compare the
+subtracted logarithmic integral with a numerical derivative of its
+known elementary Mellin transform.  All 24 cases satisfy the scripted
+$10^{-50}$ tolerance; the largest observed discrepancy is about
+$3.10\times10^{-79}$.  These functions test the normalization lemma
+independently of the relative harmonic kernel.
+
+The moment diagnostics use 95 working
+digits, with orders through $(6,8)$ and moment indices through $M=7$.
+They evaluate a direct finite Hurwitz-zeta head and a separately
+assembled centered asymptotic tail at $(N,K)=(48,32)$ and $(64,36)$.
+The largest observed discrepancy at the larger cutoff is about
+$1.16\times10^{-63}$.  The three generator comparisons include a
+nonreal parameter; their largest recorded Taylor-sum discrepancy is
+about $1.08\times10^{-89}$.  The 65 Taylor coefficients are exact
+inputs to those three numerical comparisons, not 65 additional
+independent exact tests.
+
+These residuals are observed floating-point discrepancies, not rigorous
+error bounds or interval enclosures.  Working precision alone is not
+an accuracy guarantee.  The recorded diagnostics cover the stated
+examples; they do not constitute numerical quadrature of every
+multidimensional integral in Theorem~\ref{tr:integral}.  Uniform
+integrability, simultaneous branch cancellation, and continuation at
+arbitrary orders are established by the proofs, not by a finite test
+count.  The delivery includes neither a proof-assistant formalization
+nor an external referee report.
+
+\subsection{Status of the broader conjectures}
+
+The contribution ledger records R7 as answered in the specified
+arbitrary-depth zero-decoration family, R8 as answered for one marked
+index and all of its nonpositive-center derivatives, and R1 as answered
+for the full two-factor even-tail sector.  Extra harmonic factors,
+several independently marked indices, and additional global spectral
+derivative reductions remain separate questions.
+
+The Gaussian $S_6$ and revised $S_8$ candidates retain their
+conjectural status \cite{Repository,IncomingParity}.  No new functional
+identity or exact period certificate for either candidate is supplied
+here.  Existing nonmembership results concern their explicitly named
+formal relation spaces and must not be read as period nonvanishing
+theorems.  The next research questions in
+Section~\ref{research:section} begin at these stated boundaries.
+
+% End sections/05_audit_verification.tex
+
+% Begin sections/06_research.tex
+\section{Further exact research questions}
+\label{research:section}
+
+The results above change the starting point of the next investigation.
+The all-zero-block generator and the single marked transverse derivative
+need no further conjectural existence statement. The unresolved issues
+concern additional factors, several marked positions, arithmetic
+reduction, and analytic continuation beyond the domains proved here.
+The questions below specify an object to compute and a criterion for
+progress. They are proposals, not assertions that the suggested
+reductions hold.
+
+\subsection{Higher products and logarithmic moments}
+
+\paragraph{Q1. Four and more even-order tails.}
+For an even number $2d\geq4$ of even orders $a_j\geq2$, consider
+\[
+ F_{\boldsymbol a}(s)=\sum_{n\geq0}(n+1/2)^{-s}
+                         \prod_{j=1}^{2d}\zeta(a_j,n+1).
+\]
+The centered expansion has exponents
+$2d-\sum_j a_j-2k$, so the same subtraction argument makes all even
+spectral integers regular. The open arithmetic problem is to evaluate
+every $F_{\boldsymbol a}(-2M)$ in an explicit finite list of
+multiple-zeta coordinates whose size is independent of $M$.
+The first useful case is $(a_1,a_2,a_3,a_4)=(2,2,2,4)$.
+Finite summation by parts and ordering the surviving indices give a
+concrete route, but the two-factor Euler reduction does not by itself
+remove every higher-depth coordinate. A satisfactory theorem should
+give the finite coordinate map first and prove every subsequent
+reduction. For an odd number of even tails, possible poles occur at
+even spectral integers; that problem additionally requires a specified
+Laurent finite part and is a different extension.
+
+\paragraph{Q2. Which logarithmic remainders cancel?}
+Corollary~\ref{mt:spectralderivatives} gives a convergent exact formula
+for every $F_{a,b}^{(r)}(-2M)$, including its finite Hurwitz correction.
+The remaining question is whether there are nontrivial, explicitly
+specified rational linear combinations of these derivatives whose
+logarithmic remainder sums cancel or reduce to endpoint data.
+Begin with $r=1$, $(a,b)=(2,4)$ and $(2,2)$, and retain the
+$-\log2/6$ term in \eqref{mt:derivative-example}.
+One should seek an identity at the level of the summands or a
+parameter-dependent kernel; an integer relation among a few decimal
+values would only suggest a target. Independent differentiation of a
+tail order, such as $\partial_a F_{a,b}$ before specializing $a$,
+is another problem because it differentiates both the Hurwitz tail and
+its asymptotic coefficients.
+
+\Needspace{5\baselineskip}
+\paragraph{Q3. A smallest proved span for each pair of orders.}
+Corollary~\ref{mt:closure} supplies at most $\max(a,b)$ coordinates for
+the entire sequence. Determine all reductions of that list obtainable
+from stated algebraic identities, and give an algorithm producing a
+smaller \emph{proved} spanning list. There are two distinct questions:
+the rank of explicit rational coefficient vectors in a chosen formal
+zeta-product alphabet, and arithmetic independence of the resulting
+numbers. Only the first is a finite linear-algebra computation without
+additional period theorems. A uniform description for $(2,2q)$ would
+be a useful initial result.
+
+\subsection{Several moving positions and primitive calculus}
+
+\paragraph{Q4. Two independently marked positions.}
+Construct a jointly continued gap formula for
+\[
+ \left.\partial_u^r\partial_v^q
+       \HH_{a,b}(s,u,v,t)\right|_{u=-m,\,v=-n},
+ \qquad m,n\geq0,\quad r,q\geq1,
+\]
+and identify a finite family of decorated lower-depth objects that
+remains sufficient after arbitrary unmarked nonpositive deletions.
+The adjacent case $m=n=0$, $r=q=1$ has a precise finite-gap guide.
+For two surviving positive real lattice values $y>z$ in a finite
+unit-lattice interval, put
+\[
+ P_r(y,z)=\ell_{0,r}(z+1)-\ell_{0,r}(y).
+\]
+The elementary symmetric-polynomial identity gives
+\[
+ \sum_{y>i>j>z}\log i\,\log j
+                 =\frac12\bigl(P_1(y,z)^2-P_2(y,z)\bigr).
+\]
+Here $P_1$ is the negative sum of the gap logarithms and $P_2$ is
+their squared-logarithm sum. This finite identity suggests the shape
+of a Gamma--Stieltjes formula. A theorem at arbitrary endpoints must
+still identify its decorated continuation with the prescribed
+relative quotient. The separate-position and unequal-center cases
+may require more than products of single-gap primitives.
+
+\paragraph{Q5. Ordered versus symmetrized transverse data.}
+Equation~\eqref{tr:insertionderivative} evaluates the sum of the three
+possible insertion positions using depth-two data. Determine an exact
+decomposition of several marked derivatives into their symmetrized
+part and the remaining ordered part. At two marked positions,
+stuffle products provide explicit relations but do not identify all
+ordered differences. A useful result would describe a finite basis
+of these ordered differences modulo the stated stuffle and deletion
+relations, with the endpoint normalization retained throughout.
+
+\paragraph{Q6. Endpoint differentiation and normalized antiderivatives.}
+Combine the transverse calculus with differentiation in $a$ and $b$.
+The identities
+\[
+ \partial_x\zeta(u,x)=-u\zeta(u+1,x),\qquad
+ \mathcal B_m'(x)=\mathcal B_{m-1}(x)
+\]
+suggest a closed transport system connecting moving harmonic orders,
+polygamma factors, and the balanced primitive ladder. Determine that
+system for a depth-three word with one marked position, then integrate
+it between specified endpoint values. The target is a formula whose
+Gamma or Barnes constants are fixed by the same relative quotient,
+rather than by separately chosen indefinite integrals. At $r\geq2$,
+the analogous system involves generalized Stieltjes primitives and
+should state their additive normalization explicitly.
+
+\subsection{Rational shifts and continuation of the generators}
+
+\paragraph{Q7. Common rational shifts and colored tails.}
+For rational $c>1/2$, replace the moment family by
+\[
+ \sum_{n\geq0}(n+c-1/2)^{-s}
+                 \zeta(a,n+c)\zeta(b,n+c).
+\]
+Its centered parity remains available, but the removed polynomial
+terms now have continued values $\zeta(-2j,c-1/2)$, which generally
+do not vanish. Establish the exact analogue of the finite Bernoulli
+formula with all these counterterms. Then determine the appropriate
+colored or cyclotomic multiple-zeta reduction for rational $c$.
+Unequal shifts in the two tails should be treated separately, since
+they no longer share the same centered expansion. Any differentiation
+of rational multiplication formulas must keep the conductor powers
+and their logarithmic derivatives.
+
+\paragraph{Q8. Rational endpoint Gamma--Stieltjes identities.}
+Specialize the finite endpoint formula
+\eqref{tr:negativeformula} to $a,b\in\Q_{>0}$ and apply Hurwitz
+distribution and character projections. For example,
+\[
+ \sum_{j=1}^{q}\zeta(s,j/q)=q^s\zeta(s)
+\]
+gives a completely specified hierarchy after differentiation at
+$s=-m$. Determine which linear combinations of transverse weighted
+tails reduce to derivatives of Dirichlet $L$-functions and logarithms
+of Gamma or Barnes values, and which still require ordered coordinates.
+The equality of the finite endpoint expressions provides an exact
+starting point; no conjectural independence of Stieltjes constants is
+needed for this transport step.
+
+\paragraph{Q9. Singular hyperplanes beyond the common twist tube.}
+Theorem~\ref{zbg:entire} proves joint holomorphy on $\Omega_k$.
+The kernel identifies the only remaining candidate singular
+hyperplanes as nonzero exponential periods of consecutive sums.
+Determine their residues or local branching, first at depth two,
+including further cancellations at specific nonzero periods.
+For integral $a-b$, the function $z^{a-b}$ is single valued near
+every nonzero node, so all finite node collisions are removable;
+for $a-b=N\geq0$ the finite exponential sum gives the same conclusion.
+For nonintegral endpoint differences,
+a precise local continuation theorem would explain which parts of
+the unit decoration polydisc can be enlarged and on which sheets.
+It should treat the complete relative expression, since separately
+continued Lerch summands can conceal cancellations.
+
+\paragraph{Q10. Functional identities for the all-moment generator.}
+The ODE and polylogarithmic representation in
+Theorem~\ref{mt:generator} reduce each fixed pair of orders to
+finitely many anchored primitives. Seek recurrences linking different
+pairs $(a,b)$, reflection or continuation identities in $t$, and exact
+special values at nonzero arguments where the polylogarithms have a
+useful algebraic argument. The common radius $2\pi$ also makes the
+nearest singularities at $\pm2\pi i$ accessible. Their local
+expansions may give exact coefficient relations or full asymptotic
+expansions of the moment sequence. Estimates alone are a secondary
+goal here; the primary target is a new identity between the generators.
+
+\Needspace{10\baselineskip}
+\subsection{Integration with the existing conjectural program}
+
+\paragraph{Q11. An analytic bridge to the Gaussian $S_6$ and $S_8$ candidates.}
+The source manuscript distinguishes its formal Cayley or period
+coordinates from proved evaluations. The new generators should be
+compared with the existing Gaussian kernels only through an explicit
+analytic transformation: a convergent integral identity, a justified
+parameter deformation, or a proved functional equation. Determine
+whether such a transformation sends a specific conjectural remainder
+to a Gamma--Stieltjes gap or a mixed-tail coordinate evaluated here.
+Until that bridge is proved, the present exact results supply neither
+a proof nor a refutation of the $S_6$ or revised $S_8$ formulas.
+
+\paragraph{Q12. Formalization of the exact algebra before the analytic layer.}
+The divided-difference product identity, finite endpoint composition,
+strict-gap binomial coefficients, Bernoulli deletion, and finite
+summation-by-parts formulas are suitable first formalization targets.
+Their statements should use exact rational or symbolic arithmetic and
+retain the boundary terms. The analytic layer then needs explicitly
+stated normalized-Mellin continuation, local normal convergence,
+and Hurwitz asymptotics. The accompanying programs are reproducible
+checks of finite instances; they do not replace those quantified
+theorems. A useful integration milestone is a mechanically checked
+finite algebraic core with the analytic lemmas listed as precise
+dependencies.
+
+\medskip
+For an efficient next investigation, the most concrete starting points
+are the four-tail example in Q1, the adjacent two-marked gap in Q4,
+and the rational-shift extension in Q7. Each starts from a finite
+identity or a convergent kernel already available here. They also test
+three different potential obstructions: higher arithmetic depth,
+nonlinear ordered primitives, and nonvanishing endpoint counterterms.
+
+% End sections/06_research.tex
+
+\begin{thebibliography}{99}
+% Begin references.tex
+% Bibliography entries only; article.tex supplies thebibliography.
+% Repository links are immutable at the inspected commit.
+
+\bibitem{Repository}
+ProveIt Contributors,
+\emph{Polylogarithms and their Arithmetic Bridges}.
+ProveIt repository, pinned manuscript and editorial-ledger snapshot,
+11 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/7bd45777a8a127e5dc69aff8887ca36a79a3059d/Analysis/Polylogarithms/docs/manuscript}.
+
+\bibitem{IncomingParity}
+ProveIt research collection,
+\emph{Harmonic Parity and Resolvent Identities:
+Exact Lerch generators, Stieltjes primitives, and the quartic and higher
+Tornheim layers}.
+Research report, 11 October 2026; in particular, the centered harmonic
+calculus, gap-deletion formulas, and research questions R1, R7, and R8.
+Incoming archive at the revision of \cite{Repository}:
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/7bd45777a8a127e5dc69aff8887ca36a79a3059d/docs/incoming/ProveIt_Harmonic_Parity_and_Resolvent_Identities_2026-10-11.zip}.
+
+\bibitem{IncomingIndependent}
+ProveIt research collection,
+\emph{Independent Orders and Exact Reductions in Polylogarithm--Zeta
+Calculus}.
+Research report, 11 October 2026; in particular, the entire relative
+Hurwitz interpolant and its nonpositive-index reductions.
+Incoming archive at the revision of \cite{Repository}:
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/7bd45777a8a127e5dc69aff8887ca36a79a3059d/docs/incoming/ProveIt_Independent_Orders_2026-10-11.zip}.
+
+\bibitem{IncomingHigherReflection}
+ProveIt research collection,
+\emph{Higher Reflection Identities and Resonant Zeta Calculus}.
+Research report, 11 October 2026; in particular, the centered harmonic
+parity and resonant-continuation conventions.
+Incoming archive at the revision of \cite{Repository}:
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/7bd45777a8a127e5dc69aff8887ca36a79a3059d/docs/incoming/ProveIt_Higher_Reflection_Identities_2026-10-11.zip}.
+
+\bibitem{INY}
+Kentaro Ihara, Yayoi Nakamura, and Shuji Yamamoto,
+\emph{Interpolant of truncated multiple zeta functions}.
+The Ramanujan Journal \textbf{67} (2025), article 1.
+\url{https://doi.org/10.1007/s11139-025-01045-2}.
+Author preprint: \url{https://arxiv.org/abs/2407.20509}.
+Especially Proposition 2.1, Proposition 3.3, Theorem 4.1,
+and Corollary 4.2.
+
+\bibitem{Bradley2007}
+David M. Bradley,
+\emph{A signed analog of Euler's reduction formula for the double zeta
+function}.
+Author preprint, arXiv:0707.4486 (2007).
+\url{https://arxiv.org/abs/0707.4486}.
+The unsigned specialization is the classical odd-weight Euler reduction;
+see equations (2)--(3) and Proposition 1.
+
+\bibitem{DLMFHurwitz}
+National Institute of Standards and Technology,
+\emph{NIST Digital Library of Mathematical Functions},
+\S25.11, Hurwitz zeta function.
+In particular, the shift law, polygamma and Bernoulli special values, parameter
+differentiation, and Lerch's log-Gamma identity in
+equations 25.11.3, 25.11.12, 25.11.14, 25.11.17, and 25.11.18;
+the asymptotic expansion is 25.11.43.
+Accessed 11 October 2026.
+\url{https://dlmf.nist.gov/25.11}.
+
+\bibitem{DLMFGamma}
+National Institute of Standards and Technology,
+\emph{NIST Digital Library of Mathematical Functions},
+Chapter 5, Gamma function; especially \S5.2 (definitions),
+\S5.7 (series expansions), \S5.11 (asymptotic expansions),
+and \S5.15 (polygamma functions).
+Accessed 11 October 2026.
+\url{https://dlmf.nist.gov/5.2};
+\url{https://dlmf.nist.gov/5.7};
+\url{https://dlmf.nist.gov/5.11};
+\url{https://dlmf.nist.gov/5.15}.
+
+\bibitem{DLMFBernoulli}
+National Institute of Standards and Technology,
+\emph{NIST Digital Library of Mathematical Functions},
+\S24.4, Basic properties of Bernoulli and Euler polynomials.
+In particular, the difference, reflection, power-sum, and finite-expansion
+identities in equations 24.4.1, 24.4.3, 24.4.9, and 24.4.12.
+Accessed 11 October 2026.
+\url{https://dlmf.nist.gov/24.4}.
+
+\bibitem{DLMFPolylog}
+National Institute of Standards and Technology,
+\emph{NIST Digital Library of Mathematical Functions},
+\S25.12, Polylogarithms.
+Accessed 11 October 2026.
+\url{https://dlmf.nist.gov/25.12}.
+
+\bibitem{DLMFLerch}
+National Institute of Standards and Technology,
+\emph{NIST Digital Library of Mathematical Functions},
+\S25.14, Lerch's transcendent.
+Accessed 11 October 2026.
+\url{https://dlmf.nist.gov/25.14}.
+
+\bibitem{DLMFBarnes}
+National Institute of Standards and Technology,
+\emph{NIST Digital Library of Mathematical Functions},
+\S5.17, Barnes' $G$-function (double gamma function).
+In particular, the recurrence, normalization, product, and logarithmic
+integral formulas in equations 5.17.1, 5.17.3, and 5.17.4.
+Accessed 11 October 2026.
+\url{https://dlmf.nist.gov/5.17}.
+
+\bibitem{EspinosaMoll}
+Olivier Espinosa and Victor H. Moll,
+\emph{A generalized polygamma function}.
+Integral Transforms and Special Functions \textbf{15} (2004), 101--115.
+Author preprint: \url{https://arxiv.org/abs/math/0305079}.
+The balanced negapolygamma normalization supplies the fixed constants
+used in the primitive ladder.
+
+\bibitem{Vardi}
+Ilan Vardi,
+\emph{Determinants of Laplacians and multiple gamma functions}.
+SIAM Journal on Mathematical Analysis \textbf{19} (1988), 493--507.
+\url{https://doi.org/10.1137/0519035}.
+The Hurwitz-zeta derivative identity fixes the Barnes-$G$ normalization
+used in the endpoint formula.
+
+% End references.tex
+
+\end{thebibliography}
+\end{document}
+

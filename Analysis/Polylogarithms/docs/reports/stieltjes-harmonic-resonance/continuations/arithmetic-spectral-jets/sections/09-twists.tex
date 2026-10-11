@@ -1,0 +1,251 @@
+\section{Polylogarithmic twists and exact finite-part untwisting}
+\label{asj:sec:twists}
+
+\subsection{Twisting lowers the pole order}
+For $0<z<1$ and $c>0$, the defining Lerch series
+\[
+ \Phi(z,s,c)=\sum_{n\ge0}\frac{z^n}{(n+c)^s}
+\]
+is entire in $s$, by uniform exponential convergence on compact sets
+\cite{dlmf-lerch}. Consequently the base series of a multiplicative lattice
+with $H$ untwisted factors and some geometrically twisted factors is
+\begin{equation}\label{asj:eq:twistedbase}
+ \D_{\boldsymbol z}(s)=
+      \prod_{j=1}^H\zeta(s,b_j)\prod_{k=1}^v\Phi(z_k,s,c_k).
+\end{equation}
+For real $0<z_k<1$, its pole order at $1$ is exactly $H$ and its leading
+coefficient is
+\[
+ \kappa_{1,H}=\prod_{k=1}^v\Phi(z_k,1,c_k)>0.
+\]
+With $H=0$ it is entire. Complex twists are also covered by the transfer
+theorem, but a zero of a Lerch factor can lower the pole order further;
+one must then use the actual principal part, not the number of nominally
+untwisted factors.
+
+For a particularly transparent arithmetic case, put
+\begin{equation}\label{asj:eq:cz}
+ c_z(N)=\sum_{d\mid N}z^d d_2(N/d),\qquad
+ \D_z(s)=\sum_{N\ge1}\frac{c_z(N)}{N^s}
+                         =\zeta(s)^2\Li_s(z).
+\end{equation}
+The equality follows by an absolutely convergent Dirichlet convolution.
+For $0<z<1$, the leading double-pole coefficient is
+$\Li_1(z)=-\log(1-z)$. Define $T_{P,z}$ as in \eqref{asj:eq:Tdef}, with
+$d_2(N)$ replaced by $c_z(N)$. The proof of Theorem~\ref{asj:thm:alternant}
+gives the exact identity
+\begin{align}\label{asj:eq:twisted-six}
+ &T_{P,z}(a,b)+T_{P,z}(b,c)+T_{P,z}(c,a)\notag\\
+ &\quad-T_{P,z}(b,a)-T_{P,z}(c,b)-T_{P,z}(a,c)
+    =-\frac{\log(1-z)}9(a-b)(b-c)(c-a)
+\end{align}
+for monic quadratic $P$. This directly connects arithmetic Laurent jets
+to a classical polylogarithm, while all lower residue coefficients cancel.
+
+\subsection{A concrete failure of naive untwisting}
+At $z=1$, $c_z(N)$ becomes $d_3(N)$ and the base function is $\zeta(s)^3$.
+Its order-three pole has subleading coefficient $3\gamma$. For the same
+\emph{first} Laurent jets and the same quadratic $P$, alternation kills
+the degree-one and degree-two parts. The degree-four part is zero because
+$\calR_1$ has degree at most three. The remaining degree-three part gives
+\begin{equation}\label{asj:eq:untwisted-first-six}
+ \operatorname{Alt}T_{P,1}(a,b,c)
+           =\frac\gamma3(a-b)(b-c)(c-a).
+\end{equation}
+Here $\operatorname{Alt}$ is the signed six-term expression in
+\eqref{asj:eq:twisted-six}. Equations \eqref{asj:eq:twisted-six} and
+\eqref{asj:eq:untwisted-first-six} exhibit noncommutation without any
+numerical approximation: the naive $z\uparrow1$ limit diverges whenever
+the three shifts are distinct, whereas the untwisted Laurent coefficient
+is finite. The next theorem supplies the missing compensation at all
+orders, not only in this example.
+
+\subsection{A finite compensation for every polynomial and every jet}
+Let
+\[
+ B(s)=\prod_{j=1}^H\zeta(s,b_j),\qquad H\ge1,
+ \quad Y_{\boldsymbol n}=\prod_{j=1}^H(n_j+b_j),
+ \quad \lambda_{n,\boldsymbol n}=nY_{\boldsymbol n},\quad n\ge1.
+\]
+The untwisted spectrum has base $\D_0(s)=\zeta(s)B(s)$ and minimum
+$\lambda_* =\prod_jb_j$. For $t>0$, attach the weight $e^{-tn}$ to its
+first factor. The twisted base is
+\[
+ \D_t(s)=\Li_s(e^{-t})B(s).
+\]
+For a polynomial $P(x)=\sum_{k=0}^d p_kx^k$, allowed real shifts
+$a_j>-\lambda_*$, and normalized exponents $\sum\alpha_j=1$, define
+\begin{equation}\label{asj:eq:Zt}
+ Z_{t,P,\boldsymbol\alpha}(s)
+   =\sum_{n\ge1,\boldsymbol n\ge0}
+       e^{-tn}P(\lambda_{n,\boldsymbol n})
+         \prod_j(\lambda_{n,\boldsymbol n}+a_j)^{-s\alpha_j}
+\end{equation}
+initially in its absolute-convergence half-plane and subsequently by
+continuation. At $t=0$ omit the exponential weight. Use $C_\ell$ of
+\eqref{asj:eq:Cdef} for these shifts.
+
+\begin{theorem}[All-order compensated Abel untwisting]\label{asj:thm:untwist}
+Define the finite meromorphic compensation
+\begin{align}\label{asj:eq:general-counter}
+ M_{t,P,\boldsymbol\alpha}(s)
+  =\sum_{k=0}^d p_k\sum_{\ell=0}^{k+1}
+      C_\ell(s\boldsymbol\alpha)
+      \Gamma(1-s-\ell+k)\,
+       t^{s+\ell-k-1} B(s+\ell-k).
+\end{align}
+There is a sufficiently small fixed circle $|s|=\rho>0$ on which
+\begin{equation}\label{asj:eq:uniform-untwist}
+ Z_{t,P,\boldsymbol\alpha}(s)-M_{t,P,\boldsymbol\alpha}(s)
+      \longrightarrow Z_{0,P,\boldsymbol\alpha}(s)
+       \quad(t\downarrow0)
+\end{equation}
+uniformly. In particular, for every integer $r\ge0$,
+\begin{equation}\label{asj:eq:jet-untwist}
+ \boxed{\displaystyle
+ \calJ_r Z_{0,P,\boldsymbol\alpha}
+   =\lim_{t\downarrow0}\left\{
+      \calJ_r Z_{t,P,\boldsymbol\alpha}
+                 -r![s^r]M_{t,P,\boldsymbol\alpha}(s)\right\}.}
+\end{equation}
+The number of compensation terms depends on the degree of $P$, not on
+the requested jet order. For each fixed order its Laurent coefficients
+are finite expressions in Gamma jets, powers of $\log t$, zeta jets,
+and generalized Stieltjes constants.
+\end{theorem}
+\begin{proof}
+First suppose $\max|a_j|<\lambda_*$. The binomial expansion gives
+\[
+ Z_{t,P,\boldsymbol\alpha}(s)
+  =\sum_{k=0}^d p_k\sum_{\ell\ge0}C_\ell(s\boldsymbol\alpha)
+          \Li_{s+\ell-k}(e^{-t}) B(s+\ell-k).
+\]
+Choose $0<\rho<1/4$ small enough to avoid any other local poles; the
+circle never passes through an integer argument of the Gamma factors.
+The classical polylogarithm expansion is \cite[Eq.~25.12.12]{dlmf-polylog}
+\begin{equation}\label{asj:eq:Jonquiere}
+ \Li_v(e^{-t})=\Gamma(1-v)t^{v-1}
+                 +\sum_{j\ge0}\zeta(v-j)\frac{(-t)^j}{j!},
+ \qquad 0<t<2\pi,
+\end{equation}
+with colliding terms combined by continuation when $v$ is an integer.
+For each of the finitely many indices $\ell\le k+1$, the difference
+between the left side and its Gamma term tends uniformly on our circle
+to $\zeta(s+\ell-k)$. Multiplying by the fixed meromorphic factors,
+which are bounded on the circle, gives exactly the finite subtraction
+\eqref{asj:eq:general-counter}.
+
+For $\ell\ge k+2$, no subtraction is needed. The real part of
+$s+\ell-k$ exceeds $1$, and the absolutely convergent series gives
+\[
+ \Li_{s+\ell-k}(e^{-t})B(s+\ell-k)
+    \longrightarrow \zeta(s+\ell-k)B(s+\ell-k)
+\]
+uniformly on the circle, by dominated convergence. The high-$\ell$
+bounds from Lemma~\ref{asj:thm:tail} apply uniformly in $t$, because
+$0<e^{-tn}\le1$. Together with the Cauchy bound for $C_\ell$, they give
+a common summable geometric majorant. Therefore the entire tail tends
+uniformly to its untwisted counterpart. This proves
+\eqref{asj:eq:uniform-untwist} for small shifts.
+
+For general allowed shifts, remove a finite spectral head so that its
+tail minimum exceeds $\max|a_j|$. Each subtracted head term is entire
+in $s$ and converges uniformly to the corresponding untwisted head term
+as $t\downarrow0$. Apply the same argument to the tail. The finite
+subtractions in the base functions converge without a compensation and
+do not alter the Gamma terms in \eqref{asj:eq:general-counter}. This proves
+the general case.
+
+Finally, the Laurent coefficient is the Cauchy integral
+\[
+ [s^r]F(s)=\frac1{2\pi i}\int_{|s|=\rho}\frac{F(s)}{s^{r+1}}\dd s.
+\]
+Uniform convergence on this fixed circle proves
+\eqref{asj:eq:jet-untwist}. Expanding the finitely many Gamma and $B$ factors
+at their integer arguments gives the stated coefficient class. At a
+pole of $B$, its finite required Laurent coefficients are precisely
+finite Stieltjes polynomials.
+\end{proof}
+
+The theorem does not interchange a divergent pointwise limit at $s=0$
+with differentiation. It takes a uniform limit on a contour where the
+functions are defined, after an explicit finite subtraction. This
+specifies both the regulator and the correction.
+
+\subsection{A closed Bell-polynomial compensation for one shifted factor}
+For $P=1$, one shifted factor, and exponent $s$, the two terms in
+\eqref{asj:eq:general-counter} simplify to
+\begin{equation}\label{asj:eq:single-counter}
+ M_{t,a}(s)=\Gamma(1-s)t^{s-1}B(s)
+                 +a\Gamma(1-s)t^sB(1+s).
+\end{equation}
+The sign of the second term follows from
+$(-as)\Gamma(-s)=a\Gamma(1-s)$.
+Write
+\[
+ B(1+s)=\sum_{q=-H}^{\infty}b_qs^q,\qquad
+ g_j(t)=\left.\frac{\dd^j}{\dd s^j}\{\Gamma(1-s)t^s\}\right|_{s=0}.
+\]
+The Gamma expansion \cite{dlmf-gamma} gives
+\begin{equation}\label{asj:eq:gBell}
+ \Gamma(1-s)t^s
+   =\exp\left((\gamma+\log t)s
+                     +\sum_{j\ge2}\frac{\zeta(j)}j s^j\right).
+\end{equation}
+Thus $g_j$ is the complete exponential Bell polynomial in
+$\gamma+\log t,1!\zeta(2),2!\zeta(3),\ldots$; this generating identity
+also defines it without Bell-polynomial notation.
+
+\begin{corollary}[Explicit compensation at arbitrary order]
+\label{asj:thm:bellcounter}
+For $r\ge0$,
+\begin{align}\label{asj:eq:Bellcounter}
+ r![s^r]M_{t,a}(s)
+   ={}&\frac1t\sum_{j=0}^r\binom rj g_j(t)B^{(r-j)}(0)\notag\\
+     &+a r!\sum_{q=-H}^{r}b_q\frac{g_{r-q}(t)}{(r-q)!}.
+\end{align}
+\end{corollary}
+\begin{proof}
+Multiply the Taylor series of \eqref{asj:eq:gBell} by the ordinary Taylor
+series of $B(s)$ in the first term of \eqref{asj:eq:single-counter}, and
+by its Laurent series $B(1+s)$ in the second. The latter product
+requires Gamma coefficients through order $r+H$.
+\end{proof}
+
+For $B(s)=\zeta(s,c)$, $H=1$, and $r=1$, put
+$\ell_t=\gamma+\log t$. The complete compensation is
+\begin{equation}\label{asj:eq:first-counter}
+ \frac{\zeta'(0,c)+\ell_t\zeta(0,c)}t
+     +a\left\{\frac{\ell_t^2+\zeta(2)}2
+                    +\gamma_0(c)\ell_t-\gamma_1(c)\right\}.
+\end{equation}
+Subtracting this from $\calJ_1Z_{t,1}$ and taking $t\downarrow0$ yields
+exactly the Gamma--Stieltjes value \eqref{asj:eq:firstjet} with parameters
+$(1,c)$. The $a\ell_t^2/2$ term is indispensable; it comes from the
+pole of $\zeta(1+s,c)$, and a first-order truncation of the Gamma factor
+would discard it.
+
+\subsection{An explicit compensation check on the six-term family}
+Return to \eqref{asj:eq:cz}, set $z=e^{-t}$, and write
+$V=(a-b)(b-c)(c-a)$. Alternating the first Laurent coefficient of the
+finite compensation \eqref{asj:eq:general-counter}, with $B=\zeta^2$ and
+$P$ monic quadratic, gives
+\begin{equation}\label{asj:eq:altcounter}
+ \operatorname{Alt}[s]M=-\frac{\log t+3\gamma}{9}\,V.
+\end{equation}
+To check the sign and constant directly, use unnormalized weights
+$(2,1,0)$. The alternated coefficient $C_3(s\boldsymbol w)$ is
+$s^3V$, while all $C_\ell$ with $\ell<3$ have zero alternation.
+The only relevant compensation is
+\[
+ s^3V\,\Gamma(-3s)t^{3s}\zeta(1+3s)^2.
+\]
+Its first coefficient is \eqref{asj:eq:altcounter}. Hence the compensated
+signed first jets satisfy the exact finite-$t$ identity
+\begin{equation}\label{asj:eq:altfinite}
+ \operatorname{Alt}T_{P,e^{-t}}+\frac{\log t+3\gamma}{9}V
+  =\frac\gamma3V+\frac{V}{9}\log\frac{t}{1-e^{-t}}.
+\end{equation}
+The last logarithm tends to zero. This elementary special case verifies
+both the divergent subtraction and the finite Euler-constant correction
+in the general contour argument.

@@ -1,0 +1,552 @@
+% Manuscript-ready module. Requires amsmath, amssymb, theorem environments.
+% Source status: deductions beyond the two pinned incoming reports;
+% classical Faulhaber, Hurwitz, Lerch and polynomial integration inputs
+% are explicitly identified. No literature-wide novelty claim is made.
+
+\section{Nonpositive harmonic indices and a convergent Lerch generator}
+\label{harm:section}
+
+The incoming independent-order report reduces a depth-two word whose
+last index is a nonpositive integer. We extend that calculation to an
+arbitrary position and depth, prove a canonical finite reduction, and
+sum all zero-index decorations around one free index in a convergent
+Lerch generating function. The summation of powers by Bernoulli
+polynomials is classical; the contribution here is its compatibility
+with the entire relative harmonic interpolant at arbitrary endpoints,
+including its independent spectral derivatives. The interpolant itself
+is established in the incoming report, and its one-endpoint version is
+the interpolant of Ihara, Nakamura, and Yamamoto
+\cite{harm:INY}. We do not claim literature-wide priority for these
+consequences.
+
+\subsection{Normalization and a local elimination theorem}
+
+For $\Re a,\Re b>0$, use the normalization
+\begin{align}
+ Z_a(s_1,\ldots,s_r)
+  &=\sum_{n_1>\cdots>n_r\ge0}
+                  \prod_{j=1}^r(n_j+a)^{-s_j},\notag\\
+ \mathcal H_{a,b}(w)
+  &=Z_b(w)-\sum_{j=1}^{|w|}Z_a(w_{\le j})
+                              \mathcal H_{a,b}(w_{>j}),
+ \qquad \mathcal H_{a,b}(\varnothing)=1.
+ \label{harm:normalization}
+\end{align}
+The $Z_a$ are meromorphically continued from their convergence domain.
+The combined function $\mathcal H_{a,b}$ is entire in all spectral
+indices. For $a=b+N$, $N\ge0$ an integer, it is the strict finite sum
+over $N>n_1>\cdots>n_r\ge0$. In particular,
+\begin{equation}
+ h_{a,b}(s):=\mathcal H_{a,b}(s)
+      =\zeta(s,b)-\zeta(s,a),\qquad
+ h_{a,b}(1)=\psi(a)-\psi(b).
+ \label{harm:h}
+\end{equation}
+We take $B_n=B_n(0)$, so $B_1=-1/2$, whereas $B_1(1)=1/2$.
+This distinction is essential for strict inequalities.
+
+\begin{theorem}[Eliminating a fixed nonpositive index]
+\label{harm:local}
+Let $m\ge0$ and $q=m+1$. All other indices below are arbitrary
+independent complex numbers. With unchanged prefix and suffix words
+suppressed, an interior index obeys
+\begin{align}
+ \mathcal H_{a,b}(\ldots,s,-m,t,\ldots)
+  =\frac1q\sum_{k=0}^q\binom qk\bigl\{
+   &B_{q-k}\mathcal H_{a,b}(\ldots,s-k,t,\ldots)\notag\\[-2pt]
+   &-B_{q-k}(1)\mathcal H_{a,b}(\ldots,s,t-k,\ldots)
+   \bigr\}.
+ \label{harm:interior}
+\end{align}
+At the two boundaries the formulas are
+\begin{align}
+ \mathcal H_{a,b}(-m,t,\ldots)
+ &=\frac1q\left\{B_q(a)\mathcal H_{a,b}(t,\ldots)
+  -\sum_{k=0}^q\binom qk B_{q-k}(1)
+                        \mathcal H_{a,b}(t-k,\ldots)\right\},
+ \label{harm:top}\\
+ \mathcal H_{a,b}(\ldots,s,-m)
+ &=\frac1q\left\{\sum_{k=0}^q\binom qk B_{q-k}
+                  \mathcal H_{a,b}(\ldots,s-k)
+                     -B_q(b)\mathcal H_{a,b}(\ldots,s)\right\}.
+ \label{harm:bottom}
+\end{align}
+The singleton rule is
+\begin{equation}
+             h_{a,b}(-m)=\frac{B_q(a)-B_q(b)}q.
+ \label{harm:singleton}
+\end{equation}
+These are identities of entire functions in every remaining index.
+\end{theorem}
+
+\begin{proof}
+The classical finite power-sum identity \cite{DLMF} gives
+\begin{equation}
+ \sum_{z<x<y}x^m=\frac{B_q(y)-B_q(z+1)}q,
+ \label{harm:finite-gap}
+\end{equation}
+when the variables belong to a common unit lattice and the sum has the
+indicated strict endpoints. The upper and lower boundary variants
+replace $y$ by $a$ and $z+1$ by $b$, respectively. This explains the
+formulas for finite sums, but agreement at integer endpoint differences
+alone would not justify their analytic continuation. We instead prove
+the identities directly in \eqref{harm:normalization}.
+
+For $Z_a$, summing an interior or final nonpositive index by
+\eqref{harm:finite-gap} proves \eqref{harm:interior} and
+\eqref{harm:bottom}, with $\mathcal H_{a,b}$ replaced by $Z_a$ and
+the final lower endpoint $b$ replaced by $a$. One first chooses the
+unfixed indices in a domain of absolute convergence and then continues
+meromorphically. For a first index use
+\[
+ \sum_{n_1>n_2}(n_1+a)^{-z}
+                   =\zeta(z,n_2+a+1),\qquad
+ \zeta(-m,x+1)=-\frac{B_q(x+1)}q.
+\]
+Taking the remaining indices sufficiently far into their convergence
+domain justifies continuation of $z$ to $-m$ inside this expression.
+Consequently the top-index identity for $Z_a$ is
+\begin{equation}
+ Z_a(-m,t,\ldots)
+   =-\frac1q\sum_{k=0}^q\binom qk B_{q-k}(1)
+                               Z_a(t-k,\ldots).
+ \label{harm:Ztop}
+\end{equation}
+All these statements concern generic values on the indicated spectral
+hyperplane, followed by meromorphic continuation; they assign no
+directional value to an individual singular $Z_a$ at an intersection.
+
+Now induct on the depth in \eqref{harm:normalization}. For the top
+formula substitute \eqref{harm:Ztop} into every prefix of length at
+least two. The prefix of length one contributes
+$-Z_a(-m)\mathcal H_{a,b}(t,\ldots)
+ =B_q(a)\mathcal H_{a,b}(t,\ldots)/q$.
+Each remaining group is exactly a shorter convolution identity, giving
+\eqref{harm:top}. The bottom formula follows in the same way. Its
+two exceptional terms are the last prefix and the singleton suffix;
+the factors involving $B_q(a)$ cancel, leaving $B_q(b)$.
+
+For clarity, consider an interior letter and write its nonempty words
+on the two sides as $L$ and $R$. In the deconcatenation sum, cuts
+strictly before $L$'s last letter use the induction hypothesis on the
+suffix; cuts after the first letter of $R$ use the interior $Z_a$
+identity on the prefix. The two adjacent cuts are
+\[
+ Z_a(L)\mathcal H_{a,b}(-m,R),\qquad
+ Z_a(L,-m)\mathcal H_{a,b}(R).
+\]
+After the top and bottom substitutions their exceptional terms are
+$B_q(a)Z_a(L)\mathcal H_{a,b}(R)/q$ and its negative.
+They cancel. The remaining left-shifted and right-shifted terms are
+precisely the recursions for the two shorter words in
+\eqref{harm:interior}. This proves that formula on generic remaining
+indices. Entireness of $\mathcal H_{a,b}$ then extends all the
+identities to every remaining index, including coincident resonances.
+\end{proof}
+
+For $m=0$, the interior rule takes the particularly transparent form
+\begin{equation}
+ \mathcal H_{a,b}(\ldots,s,0,t,\ldots)
+ =\mathcal H_{a,b}(\ldots,s-1,t,\ldots)
+  -\mathcal H_{a,b}(\ldots,s,t-1,\ldots)
+  -\mathcal H_{a,b}(\ldots,s,t,\ldots).
+ \label{harm:zero}
+\end{equation}
+The last term records the strict gap's missing endpoint. Changing
+$B_1(1)$ to $B_1$ incorrectly deletes it.
+
+\subsection{A canonical polynomial normal form}
+
+Suppose a word contains $k$ free indices, in their original order
+$s_1,\ldots,s_k$, and fixed indices $-m_1,\ldots,-m_e$, where
+$m_j\ge0$. Set $M=\sum_{j=1}^e(m_j+1)$.
+
+\Needspace{13\baselineskip}
+\begin{theorem}[Finite reduction at arbitrary depth]
+\label{harm:normalform}
+There are explicitly computable polynomials $C_{\boldsymbol\nu}(a,b)
+\in\mathbb Q[a,b]$ such that
+\begin{equation}
+ \boxed{\displaystyle
+ \mathcal H_{a,b}(w)=
+  \sum_{\substack{\boldsymbol\nu\in\mathbb N_0^k\\
+                    |\boldsymbol\nu|\le M}}
+  C_{\boldsymbol\nu}(a,b)
+  \mathcal H_{a,b}(s_1-\nu_1,\ldots,s_k-\nu_k),\qquad
+ \deg C_{\boldsymbol\nu}\le M-|\boldsymbol\nu|.}
+ \label{harm:normalform-eq}
+\end{equation}
+For $k=0$ the result is a polynomial multiplying the empty word.
+Every elimination order in Theorem~\ref{harm:local} gives the same
+coefficient polynomials when the free indices are kept formally
+distinct. The bound concerns this explicitly specified finite normal
+form and does not assert a minimal arithmetic depth.
+\end{theorem}
+
+\begin{proof}
+Every local rule deletes one fixed index. A deleted index $-m$ has
+budget $q=m+1$: it either produces an endpoint polynomial of degree
+at most $q$, or shifts an adjacent index by $k\le q$. If the adjacent
+index is also fixed, its later budget increases by $k$; if it is free,
+its final shift increases by $k$. Induction therefore proves termination
+and the degree bound in \eqref{harm:normalform-eq}.
+
+Here is a canonical description of the coefficients. For a fixed
+nonpositive block $v$, let
+\[
+ \Pi_v(A,B)=\mathcal H_{A,B}(v),\qquad \Pi_{\varnothing}(A,B)=1.
+\]
+The first part proves that these are polynomials. Write
+$w=(v_0,s_1,v_1,\ldots,s_k,v_k)$ and expand the polynomial
+\begin{equation}
+ G_w(\boldsymbol y;a,b)=
+   \Pi_{v_0}(a,y_1+1)
+   \prod_{j=1}^{k-1}\Pi_{v_j}(y_j,y_{j+1}+1)
+   \Pi_{v_k}(y_k,b)
+   =\sum_{\boldsymbol\nu}C_{\boldsymbol\nu}(a,b)
+                                 \boldsymbol y^{\boldsymbol\nu}.
+ \label{harm:gaps}
+\end{equation}
+For integer endpoint differences, fix the free summation variables
+$y_1>\cdots>y_k$. The sums in the intervening gaps are independent,
+and their product is exactly \eqref{harm:gaps}.
+
+To identify these coefficients with those of any already proved local
+reduction, compare the two finite sums for all independent $s_j$.
+Distinct ordered tuples of positive lattice points give linearly
+independent functions $\prod_j y_j^{-s_j}$: this is elementary finite
+linear independence of exponential functions, applied successively
+in the $s_j$. Thus the difference of the two coefficient polynomials
+vanishes at every lattice configuration
+$a=b+N$, $y_j=b+n_j$, $N>n_1>\cdots>n_k\ge0$, with $b>0$.
+These configurations are Zariski dense. Indeed a polynomial vanishing
+on all integer tuples satisfying strict inequalities vanishes by
+successive univariate polynomial uniqueness, and $b$ ranges over an
+interval. Hence the coefficient polynomials agree identically.
+This is polynomial uniqueness after the analytic identities have
+already been proved; it is not uniqueness of a holomorphic interpolation
+from integer endpoint values.
+\end{proof}
+
+In the one-free-index case, every depth reduces to the finite sum
+\begin{equation}
+           \mathcal H_{a,b}(v_0,s,v_1)
+              =\sum_{\nu=0}^M C_\nu(a,b)h_{a,b}(s-\nu).
+ \label{harm:onefree}
+\end{equation}
+All derivatives in the free index commute with this identity. At
+$s-\nu=1$ use the finite value
+\begin{equation}
+ h_{a,b}^{(r)}(1)=(-1)^r\{\gamma_r(b)-\gamma_r(a)\},
+ \qquad
+ h_{a,b}'(0)=\log\Gamma(b)-\log\Gamma(a).
+ \label{harm:jets}
+\end{equation}
+At positive integer arguments $>1$, the undifferentiated differences
+are polygamma differences. These standard Hurwitz specializations are
+recorded in \cite{DLMF}. Differentiation of a \emph{fixed}
+index $-m$ is a different problem and is not licensed by a formula
+proved only on that spectral hyperplane.
+
+Two concise examples are
+\begin{align}
+ \mathcal H_{a,b}(0,s,0)
+   &=-h_{a,b}(s-2)+(a+b-1)h_{a,b}(s-1)
+                                  -b(a-1)h_{a,b}(s),
+ \label{harm:examplezero}\\
+ \mathcal H_{a,b}(-1,s,-1)
+   &=\frac14\bigl\{-h_{a,b}(s-4)
+       +(A+B+1)h_{a,b}(s-2)\notag\\
+   &\hspace{32mm}+(B-A)h_{a,b}(s-1)-ABh_{a,b}(s)\bigr\}.
+ \label{harm:exampleone}
+\end{align}
+Here $A=a(a-1)$ and $B=b(b-1)$ in the second identity.
+The absent shift $s-3$ in the second identity is an exact cancellation.
+It follows by expanding
+$(A-y^2-y)(y^2-y-B)/4$. For example, its derivative at $s=2$ is
+\begin{align}
+ \left.\partial_s\mathcal H_{a,b}(-1,s,-1)\right|_{s=2}
+  =\frac14\bigl\{&-\zeta'(-2,b)+\zeta'(-2,a)\notag\\
+       &+(A+B+1)\log\tfrac{\Gamma(b)}{\Gamma(a)}
+        +(B-A)\{\gamma_1(a)-\gamma_1(b)\}\notag\\
+       &-AB\{\zeta'(2,b)-\zeta'(2,a)\}\bigr\}.
+ \label{harm:examplejet}
+\end{align}
+
+\subsection{Summing arbitrarily many zero indices}
+
+For a block of $p$ zero indices, polynomial continuation of the finite
+count gives
+\begin{equation}
+                    \Pi_{\{0\}^p}(A,B)=\binom{A-B}{p}.
+ \label{harm:zeroblock}
+\end{equation}
+Consequently \eqref{harm:gaps} for a single free index uses the polynomial
+$\binom{a-y-1}{p}\binom{y-b}{q}$. All such polynomials can be summed
+in one analytic formula.
+
+\begin{theorem}[Lerch generator for zero decorations]
+\label{harm:Lerch}
+Let $\Re a,\Re b>0$. There is a function
+$\mathcal L_{a,b}(s;t)$ entire in $s$ and holomorphic for $|t|<2\pi$
+such that, when $\Re t<0$,
+\begin{equation}
+ \mathcal L_{a,b}(s;t)=
+    e^{bt}\Phi(e^t,s,b)-e^{at}\Phi(e^t,s,a).
+ \label{harm:Lerchdifference}
+\end{equation}
+Here $\Phi(z,s,c)=\sum_{n\ge0}z^n(n+c)^{-s}$ for $|z|<1$, with
+principal powers of $n+c$. The combination in
+\eqref{harm:Lerchdifference}, not its separate summands, is continued
+through $t=0$. It satisfies
+\begin{equation}
+ \mathcal L_{a,b}(s;0)=h_{a,b}(s),\qquad
+ \partial_t\mathcal L_{a,b}(s;t)=\mathcal L_{a,b}(s-1;t),\qquad
+ \mathcal L_{a,b}(s;t)=\sum_{n\ge0}h_{a,b}(s-n)\frac{t^n}{n!}.
+ \label{harm:LerchTaylor}
+\end{equation}
+The last series converges locally normally for $|t|<2\pi$, including
+all fixed spectral derivatives. For $|u|,|v|<1/2$ one has the convergent
+identity
+\begin{equation}
+ \boxed{\displaystyle
+ \sum_{p,q\ge0}\mathcal H_{a,b}(\{0\}^p,s,\{0\}^q)u^pv^q
+  =(1+u)^{a-1}(1+v)^{-b}
+    \mathcal L_{a,b}\bigl(s;\log(1+v)-\log(1+u)\bigr).}
+ \label{harm:zerogenerator}
+\end{equation}
+Powers and logarithms on the right are their germs at $u=v=0$.
+\end{theorem}
+
+\begin{proof}
+Define
+\begin{equation}
+ K_{a,b}(y)=\frac{e^{-by}-e^{-ay}}{1-e^{-y}}.
+ \label{harm:K}
+\end{equation}
+The apparent pole at $y=0$ is removable, with value $a-b$.
+Its only other possible finite poles are $2\pi i\mathbb Z\setminus\{0\}$.
+Thus for $|t|<2\pi$ the function $K_{a,b}(x-t)$ is analytic near
+every $x\ge0$ and decreases exponentially as $x\to+\infty$,
+locally uniformly in $t,a,b$. Initially for $\Re s>0$ put
+\begin{equation}
+ \mathcal L_{a,b}(s;t)=\frac1{\Gamma(s)}
+                \int_0^\infty x^{s-1}K_{a,b}(x-t)\,dx.
+ \label{harm:LerchMellin}
+\end{equation}
+For any $N\ge1$, subtract the Taylor polynomial of $K_{a,b}(x-t)$
+at $x=0$ in the integral from $0$ to $1$, and add
+\[
+ \frac1{\Gamma(s)}\sum_{j=0}^{N-1}
+             \frac{K_{a,b}^{(j)}(-t)}{j!(s+j)}.
+\]
+The subtracted integral is holomorphic for $\Re s>-N$. The displayed
+possible poles are cancelled by the simple zeros of $1/\Gamma(s)$.
+Since $N$ is arbitrary, this proves joint entireness in $s$ and
+holomorphy for $|t|<2\pi$, with locally normal spectral derivatives.
+
+For $\Re t<0$, geometric expansion in \eqref{harm:LerchMellin}
+and the Gamma integral give \eqref{harm:Lerchdifference}, first for
+$\Re s>0$ and then for all $s$. At $t=0$ the ordinary Hurwitz
+integral gives $h_{a,b}(s)$, initially for $\Re s>1$, and then by
+continuation. Differentiating the absolutely convergent Lerch series
+for $\Re t<0$ proves the order-lowering identity in
+\eqref{harm:LerchTaylor}; continuation and Taylor's theorem give the
+remaining assertions.
+
+The right side of \eqref{harm:zerogenerator} is holomorphic for
+$|u|,|v|<1/2$, because the absolute value of the difference of its
+logarithms is less than $2\log2<2\pi$. To identify a coefficient,
+formally replace $h_{a,b}(s-n)$ in \eqref{harm:LerchTaylor} by
+$y^n$. Its right side becomes $e^{yt}$. Including the prefactors in
+\eqref{harm:zerogenerator} gives
+\[
+                 (1+u)^{a-y-1}(1+v)^{y-b}.
+\]
+Its coefficient of $u^pv^q$ is precisely
+$\binom{a-y-1}{p}\binom{y-b}{q}$. At each fixed bidegree this is a
+finite polynomial calculation. The canonical gap formula then identifies
+it with $\mathcal H_{a,b}(\{0\}^p,s,\{0\}^q)$, proving the
+identity and the convergence of its left side.
+\end{proof}
+
+The branch cancellation can also be read as a Gamma separation:
+$\Gamma(s)\mathcal L_{a,b}(s;t)$ is the ordinary Mellin transform
+of the explicit kernel \eqref{harm:K}; its apparent spectral poles at
+nonpositive integers are entirely accounted for by $\Gamma(s)$.
+This proves a generating formula for the specified one-free-order
+family. It does not settle a minimality question for several arbitrary
+independent nonzero indices.
+
+Setting $u=v$ gives the exact insertion identity
+\begin{equation}
+ \sum_{p+q=r}\mathcal H_{a,b}(\{0\}^p,s,\{0\}^q)
+                  =\binom{a-b-1}{r}h_{a,b}(s).
+ \label{harm:diagonalzero}
+\end{equation}
+The generating function also has normalized antiderivatives:
+\begin{equation}
+ \int_0^t\mathcal L_{a,b}(s;\tau)\,d\tau
+            =\mathcal L_{a,b}(s+1;t)-h_{a,b}(s+1).
+ \label{harm:Lerchprimitive}
+\end{equation}
+At a nonpositive order,
+\begin{equation}
+ \mathcal L_{a,b}(-m;t)
+      =\partial_t^m\frac{e^{bt}-e^{at}}{1-e^t},
+ \qquad m\ge0,
+ \label{harm:Lerchnegative}
+\end{equation}
+where $t=0$ is removable. At $a=b+N$, $N\ge0$ integer,
+$\mathcal L_{a,b}(s;t)=\sum_{n=0}^{N-1}(n+b)^{-s}e^{(n+b)t}$;
+the double generating function becomes a polynomial of total degree at
+most $N-1$ when $N\ge1$ and is zero when $N=0$.
+
+\subsection{Polynomial endpoint primitives and Stieltjes moments}
+
+The polynomial Hurwitz integration mechanism used here is classical:
+Espinosa and Moll give a general integration-by-parts formula and its
+polynomial specialization \cite[Theorem~2.1 and Example~2.2]{harm:EM}.
+The canonical manuscript \cite{source:manuscript}, in the Moments section
+of \src{chapters/07-integration.tex}, already states the unit-interval
+Hurwitz transform, gives the first Stieltjes moment, and identifies the complete
+homogeneous coefficients for every Stieltjes order. We state the fully
+indexed arbitrary-endpoint version, with the normalization required by
+\eqref{harm:onefree}. This is an explicit extension and restatement of
+the existing moment mechanism, and is not counted as a new general
+Stieltjes-moment principle.
+
+For $d\ge0$, write $\Delta=a-b$ and define
+\begin{equation}
+ P_{d;a,b}(s)=\int_b^a(x-b)^d h_{x,b}(s)\,dx.
+ \label{harm:Pdef}
+\end{equation}
+Paths lie in the right half-plane. The integral is path independent and
+entire in $s$. Initially away from singularities of the individual
+displayed terms,
+\begin{align}
+ P_{d;a,b}(s)
+  ={}&\frac{\Delta^{d+1}}{d+1}\zeta(s,b)\notag\\
+   &+\sum_{j=0}^d\frac{d!}{(d-j)!}
+     \frac{\Delta^{d-j}\zeta(s-j-1,a)
+              -\mathbf1_{j=d}\zeta(s-j-1,b)}
+          {(s-1)(s-2)\cdots(s-j-1)}.
+ \label{harm:Pfinite}
+\end{align}
+This follows by repeated integration by parts using
+$\partial_x\zeta(s-1,x)=-(s-1)\zeta(s,x)$.
+The definite integral proves that every apparent pole in the combined
+right side is removable. Expanding a coefficient polynomial
+$C_\nu(x,b)$ in powers of $x-b$ and using \eqref{harm:Pfinite}
+therefore integrates every one-free-order word and every one of its
+free-order derivatives in a finite Hurwitz basis, with the constant
+fixed at $a=b$.
+
+To state all resonance coefficients, put
+\begin{equation}
+ c_{j,n}=[z^n]\prod_{\ell=1}^j(1-z/\ell)^{-1},
+ \qquad c_{0,n}=\mathbf1_{n=0}.
+ \label{harm:cn}
+\end{equation}
+These are finite generalized harmonic expressions:
+\[
+ \sum_{n\ge0}c_{j,n}z^n
+     =\exp\left(\sum_{r\ge1}\frac{H_j^{(r)}}r z^r\right),
+ \qquad H_j^{(r)}=\sum_{\ell=1}^j\ell^{-r}.
+\]
+For example $c_{j,0}=1$, $c_{j,1}=H_j$ and
+$c_{j,2}=(H_j^2+H_j^{(2)})/2$. Equivalently, $c_{j,n}$ is the
+complete exponential Bell polynomial in
+$H_j,1!H_j^{(2)},\ldots,(n-1)!H_j^{(n)}$, divided by $n!$.
+
+\begin{corollary}[Explicit arbitrary-endpoint form of the moment calculus]
+\label{harm:Stieltjesmoments}
+For $d,m\ge0$ and $\Re a,\Re b>0$,
+\begin{align}
+ \int_b^a(x-b)^d\gamma_m(x)\,dx
+   ={}&(-1)^{m+1}m!
+        \sum_{j=0}^d(-1)^j\binom dj
+        \sum_{r=0}^{m+1}\frac{c_{j,m+1-r}}{r!}\notag\\
+      &\hspace{7mm}\cdot
+       \left\{\Delta^{d-j}\zeta^{(r)}(-j,a)
+                      -\mathbf1_{j=d}\zeta^{(r)}(-j,b)\right\}.
+ \label{harm:Stieltjesfinite}
+\end{align}
+Here derivatives of $\zeta$ are with respect to its first argument.
+\end{corollary}
+
+\begin{proof}
+Set $s=1+z$ in \eqref{harm:Pfinite}. The denominator in its $j$th
+term has expansion
+\[
+ \frac1{z(z-1)\cdots(z-j)}
+       =\frac{(-1)^j}{j!z}\sum_{n\ge0}c_{j,n}z^n.
+\]
+Use
+$\zeta(1+z,b)=z^{-1}+\sum_{m\ge0}(-1)^m\gamma_m(b)z^m/m!$
+and the ordinary Taylor expansion of each $\zeta(z-j,a)$.
+The coefficient of $z^{-1}$ cancels, as it must by entireness of
+$P_{d;a,b}$. The coefficient of $z^m$, multiplied by $m!$, equals
+\[
+ (-1)^m\frac{\Delta^{d+1}}{d+1}\gamma_m(b)
+ +m!\sum_{j=0}^d(-1)^j\binom dj
+    \sum_{r=0}^{m+1}\frac{c_{j,m+1-r}}{r!}
+       \left\{\Delta^{d-j}\zeta^{(r)}(-j,a)
+                         -\mathbf1_{j=d}\zeta^{(r)}(-j,b)\right\}.
+\]
+On the integral side, \eqref{harm:jets} gives
+$(-1)^m\{\Delta^{d+1}\gamma_m(b)/(d+1)
+ -\int_b^a(x-b)^d\gamma_m(x)\,dx\}$.
+Cancel the common endpoint term and solve for the integral.
+All coefficient extractions are locally normal on compact endpoint
+sets in the right half-plane.
+\end{proof}
+
+For $d=0$ this recovers the familiar normalized primitive
+\begin{equation}
+ \int_b^a\gamma_m(x)\,dx
+       =\frac{(-1)^{m+1}}{m+1}
+          \{\zeta^{(m+1)}(0,a)-\zeta^{(m+1)}(0,b)\}.
+ \label{harm:d0}
+\end{equation}
+For $d=1$, since $c_{1,n}=1$ for every $n$,
+\begin{align}
+ \int_b^a(x-b)\gamma_m(x)\,dx
+  =(-1)^{m+1}m!\left\{
+       \frac{\Delta\zeta^{(m+1)}(0,a)}{(m+1)!}
+       -\sum_{r=0}^{m+1}
+          \frac{\zeta^{(r)}(-1,a)-\zeta^{(r)}(-1,b)}{r!}
+                         \right\}.
+ \label{harm:d1}
+\end{align}
+In particular $m=0$ reduces to an integral of the digamma function,
+and Lerch's identity converts the $\zeta'(0,a)$ term to
+$\log\Gamma(a)-\tfrac12\log(2\pi)$.
+
+\subsection{Exact scope and further questions}
+
+The identities above add arbitrary-depth finite reductions and a
+convergent all-zero-decoration generator to the previously established
+depth-two calculus. They do not evaluate nonsymmetric positive-index
+coordinates such as the incoming harmonic Stieltjes parameter $\eta$.
+No statement about the unresolved $S_6$ or $S_8$ reductions is made.
+
+Natural next questions are the following.
+\begin{enumerate}
+\item Construct and prove a jointly convergent analogue of
+\eqref{harm:zerogenerator} with two or more independently moving free
+indices and arbitrary zero blocks between them. The finite coefficient
+polynomials \eqref{harm:gaps} are already explicit; the remaining task
+is a useful analytic kernel and a precise simultaneous branch domain.
+\item Differentiate an eliminated index before specializing it to
+$-m$. Determine a finite set of additional ordered coordinates needed
+at the first such derivative. The present identities only differentiate
+the free indices, so this question asks for a real extension.
+\item For rational endpoints, combine \eqref{harm:Stieltjesfinite}
+with finite character projections to give algorithms for polynomial
+moments in Dirichlet $L$-derivatives, retaining every conductor logarithm.
+\item Formalize the Bernoulli deletion rules, the polynomial gap
+normal form, and the finite coefficient extraction. Their analytic
+interface is the already established entire interpolant and the
+explicit normalized Mellin continuation in \eqref{harm:LerchMellin}.
+\end{enumerate}

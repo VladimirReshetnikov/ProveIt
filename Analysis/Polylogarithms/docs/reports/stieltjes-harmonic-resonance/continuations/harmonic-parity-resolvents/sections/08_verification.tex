@@ -1,0 +1,160 @@
+\section{Verification and reproducibility}
+\label{verify:section}
+
+\subsection{Analytic proofs, finite algebra, and numerical evidence}
+
+The proofs in the article establish the stated infinite families.
+Finite symbolic tests check the coefficient algebra and the
+implementation of the formulas. Numerical tests compare independent
+representations and help detect phase, endpoint, or transcription
+errors. A small floating-point discrepancy is not an interval
+enclosure and is not used as a proof of an identity.
+
+The complete numerical records are supplied as JSON rather than
+rounded tables alone. They record working precision, truncations,
+directions or endpoints, and the actual observed discrepancies.
+For a reproducible source baseline, the package also includes the
+archive and canonical-file hashes and a claim ledger distinguishing
+new developments, inherited inputs, explicit restatements, and
+unresolved questions.
+
+\subsection{Centered harmonic and trigamma-square checks}
+
+The file \src{code/verify_harmonic_parity.py} verifies representative
+invariant and anti-invariant polynomials through inverse degree 16,
+the general-shift expansions at $a=1/3$ and $a=7/5$, and the formal
+trigamma shift equation through the stated truncation. It independently
+checks the two finite-summation constant terms for $j=1,\ldots,8$.
+These finite tests supplement the all-order injectivity proof;
+they do not replace it.
+
+At 110-digit working precision, the values $\mathcal T(-2r)$ for
+$r=0,\ldots,6$ were compared with a direct finite trigamma sum plus
+an Euler--Maclaurin tail. The two cutoff choices were
+$(N,J)=(64,38)$ and $(96,45)$. The largest discrepancy of the
+tighter-cutoff value from the theorem was approximately
+$1.51\cdot10^{-85}$; the largest difference between the two
+cutoff calculations was $9.28\cdot10^{-69}$.
+At $t=0.2,0.7,1.1$, the polylogarithmic generator was also compared
+with the Bernoulli moment series and the ordinary integral generator.
+The largest moment-series discrepancy was below $4.46\cdot10^{-95}$.
+No rigorous remainder enclosure is inferred from these comparisons.
+
+\subsection{Resolvent and continuous-order checks}
+
+The file \src{code/verify_resolvent.py} performs 55 exact assertions
+on rational local coefficients, the Gamma contact polynomial, its
+harmonic derivative, and the threshold where that correction
+vanishes. The completed numerical run has 28 checks at 55-digit
+working precision. They include upper- and lower-half-plane
+parameters, twelve pointwise polygamma finite parts, the explicit
+trigamma correction, the first three balanced primitives at two
+parameters, two convergent $\gamma_1'$ squared-resolvent integrals,
+four direct Stieltjes integrals, and two continuous polygamma orders.
+A special-value regression is also included.
+
+For the ordinary and local-subtraction checks assigned tolerance
+$10^{-42}$, the largest observed discrepancy was below
+$3.31\cdot10^{-53}$. The endpoint-sensitive complex order
+$v=0.3+0.2i$ had discrepancy approximately $8.04\cdot10^{-41}$,
+within its separately stated $10^{-34}$ tolerance.
+An additional independently implemented integration-by-parts
+check in \src{code/verify_resolvent_contact.py} tests nine
+polygamma contact values at 100 digits, with largest discrepancy
+below $5.27\cdot10^{-97}$.
+
+The initial numerical implementation used finite differences of
+the Hurwitz function at spectral order zero. At the quadrature
+node $x=7/8$, that evaluation lost precision even though the
+mathematical formula was exact. The final program uses the
+log-Gamma identity at this order and native Hurwitz order
+derivatives with an exact endpoint shift elsewhere. The regression
+at $7/8$ is retained, and no tolerance was relaxed. This is an
+implementation correction, not a change to the theorem.
+
+\subsection{Harmonic elimination, Lerch continuation, and primitives}
+
+The exact reducer \src{code/reduce_harmonic.py} is exercised by
+\src{code/verify_harmonic.py}. Its recorded checks comprise
+26 words, 78 comparisons among different local deletion orders
+and the canonical gap form, 52 independent finite nested sums,
+327 coefficient degree conditions, seven zero-insertion
+identities, and 36 complete-harmonic coefficient identities.
+A deliberately corrupted strict-gap sign is detected.
+
+At 60-digit precision, six arbitrary noninteger-endpoint
+continuations and one free-order derivative were evaluated by
+an independent Euler--Maclaurin procedure. Their largest
+observed residual was below $1.43\cdot10^{-33}$.
+The zero-decoration generating function, truncated at total
+degrees $10,14,18$, was compared with separate Lerch evaluations;
+the residuals were approximately
+$3.53\cdot10^{-20}$, $1.53\cdot10^{-26}$, and
+$7.82\cdot10^{-33}$, respectively.
+
+An ordinary Mellin integral checks the Lerch formula in its
+honest convergence domain. Three normalized polynomial
+primitives and five Stieltjes quadratures give additional
+independent checks, with discrepancies at approximately
+59--62 decimal places. A Python reciprocal initially formed
+at machine precision for an exact integer input was replaced
+by arbitrary-precision division; the two affected cases were
+rerun and the actual corrected records retained.
+
+\subsection{Tornheim coefficient and Mellin checks}
+
+The file \src{code/check_quartic_tornheim.py} checks the full
+quartic coefficient formula, its cyclic form, diagonal and
+Euler specializations, and the elementary correction in
+the mixed coordinate $\Xi$ by exact symbolic arithmetic.
+It independently constructs the symmetry, axis, and
+Euler-plane constraint matrices for remainder degrees
+$0$ through $10$, computes their ranks and cyclic images,
+and compares them with the dimension formulas.
+
+The numerical mode uses 70-digit working precision, 68
+integrated Jonqui\`ere terms, an incomplete-Gamma cutoff
+of 165, and a 16-node fourth-derivative formula with step
+$0.000015$. The independent Mellin comparisons were:
+\begin{center}
+\begin{tabular}{@{}cc@{}}
+\toprule
+Direction $(a,b,c)$ & Absolute discrepancy\\
+\midrule
+$(1,2,3)$  & $3.739835213\cdot10^{-37}$\\
+$(2,3,1)$  & $2.075573689\cdot10^{-38}$\\
+$(1,-2,3)$ & $2.871059279\cdot10^{-39}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Reducing the finite-difference step by a factor of ten
+from an initial run decreased the first discrepancy by
+the expected scale for the retained truncation error.
+The delivered record is the completed tighter-step run.
+The exact proof does not depend on that numerical tuning.
+
+\subsection{How to rebuild and inspect the package}
+
+The standalone file
+\src{Harmonic_Parity_and_Resolvent_Identities.tex}
+contains the complete article, including its bibliography.
+It requires only a standard LaTeX installation with the
+listed packages and can be compiled without network access.
+The modular \src{article.tex}, \src{preamble.tex}, and
+\src{sections/} files are also retained for integration.
+
+Run \src{python3 build.py} to regenerate the standalone
+source from the modules and compile the PDF.
+Run \src{python3 code/verify_all.py} for the routine
+exact and moderate numerical checks, or add \src{--full}
+to rerun the slower independent Stieltjes, Lerch, and
+Tornheim comparisons. The individual scripts remain
+usable separately. Python dependencies and versions
+are recorded in the package.
+
+The PDF was compiled and inspected for unresolved references,
+unavailable glyphs, overfull displays, and page layout.
+The independent mathematical review notes are supplied
+as review artifacts. They are an additional check by
+separate derivations, not external peer review or a
+machine-checked proof.

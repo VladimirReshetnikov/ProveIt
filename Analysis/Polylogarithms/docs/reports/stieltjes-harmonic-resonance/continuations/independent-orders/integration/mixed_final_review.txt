@@ -1,0 +1,95 @@
+FINAL INDEPENDENT REVIEW: MIXED ORDERS AND SPECIALIZATIONS
+Date: 11 October 2026 (UTC)
+Repository source revision: 5a790187c8e186e41e2b990b4941cb7a1a3c7b6b
+
+Reviewed sections/04_mixed.tex in full, including the integrated C=4
+evaluation and exact pole classification, and the relevant mathematical
+scope and computation-status statements in sections/06_audit.tex.
+Conclusion: the mixed-order arguments and integrated formulas pass.
+The literature audit and numerical counts belonging to the other
+research tracks were not independently reexecuted in this final review.
+
+PROOF SCOPE
+
+The finite construction preserves the cumulative root alphabet, handles
+coincident colors, terminates by strict depth decrease, and leaves only
+the first spectral order free.  Its output depth is at most P+1 in the
+mixed case, P in the all-positive case, and one in the all-nonpositive
+case.  This is an upper bound for the construction, not a minimal-depth
+or independence assertion.  The continuation proof correctly distinguishes
+interior convergence, boundary absolute convergence, and subsequent
+meromorphic continuation.  If every original color differs from one,
+each output term is individually entire in the free outer order.
+
+At nonpositive outer integers, reciprocal-Gamma zeros remove the
+holomorphic Mellin remainder from the constant Laurent coefficient.
+They do not remove it from all higher regular coefficients or from
+the constant coefficient of an outer-order derivative.  The article
+states this boundary correctly.  The logarithmic budget P_1 counts
+positive-order original factors whose color is one.
+
+The C=4 evaluation is supported by a complete beta-integral proof of
+the classical height-one identity, with Aomoto--Drinfel'd attribution
+through Kaneko--Ohno, Eq. (5).  The U pole theorem establishes actual
+orders, using nonzero even Bernoulli numbers, rather than only possible
+pole locations.  The U(-1) Laurent expansion and the U(-2) Laurent
+constant have the correct signs and reciprocal-Gamma factors.
+
+APPLIED CLARIFICATIONS
+
+The integrated text already contains the earlier audit fixes: cumulative
+root alphabet rather than an unrestricted root-of-unity claim; cumulative
+rather than relative color bounds; weighted radial damping; the sharper
+P_1 pole bound; and the distinction between free outer derivatives and
+transverse derivatives in fixed inner integers.  In this final review,
+the theorem's phrase "corresponding first-order derivative" was changed
+to "corresponding derivative with respect to the first index" to avoid
+misreading an arbitrary fixed C-derivative as only one differentiation.
+No mathematical formula required correction.  No edit to Section 6 was
+needed for its mixed-order or S6 scope statements.
+
+COMPACT REPRODUCIBILITY ADDITION
+
+Run from the package root:
+
+    python code/check_specializations.py
+
+This self-contained script uses only SymPy and mpmath.  It does not
+import the mixed-order compiler.  It starts from elementary exponential
+and logarithm kernels, differentiates before expansion, and makes 24
+exact assertions: the displayed F and U kernel coefficients; their
+nonpositive Laurent specializations; the three positive leading poles;
+the first Bernoulli pole coefficients; and the elementary F values and
+normalized primitive.  All 24 pass with SymPy 1.14.0.
+
+The same script evaluates the ordinary, unsubtracted Mellin integral
+
+  U(4;1) = (1/6) integral_0^infinity
+      t^3 [-log(1-exp(-t))]^2
+      exp(-t)(1+exp(-t))/(1-exp(-t))^3 dt
+
+independently of the multiple-polylogarithm normal form.  At 60 decimal
+working digits with mpmath 1.3.0:
+
+  quadrature =
+    0.800554586688603605340430733954592866934243531365278822443578
+  pi^4/24 + 7*pi^2/12 - 15*zeta(3)/2 =
+    0.800554586688603605340430733954592866934243531365278822443577
+  absolute residual =
+    3.8893845486632135669650400336125776503689076054507294581882e-61
+
+This reproduces the earlier independent diagnostic to working precision.
+The residual is a floating-point diagnostic, not an interval-certified
+error bound.  The exact proof remains the beta-integral argument.
+The complete ledger is results/specialization_checks.json.  These
+24 assertions supplement, and must not replace or be conflated with,
+the 192 exact mixed-compiler coefficient checks in 13 input cases.
+
+UNCHANGED CONJECTURE STATUS
+
+Section 6 accurately records that S4 is proved and that the current
+S6 and revised S8 remain conjectural.  The S6 matrix generation and
+interrupted modular elimination are an incomplete exploration, with
+no row-membership certificate, no exhausted-space nonmembership
+result, and no separating functional for the enlarged system.
+None of the new mixed-order results changes those Gaussian statuses.

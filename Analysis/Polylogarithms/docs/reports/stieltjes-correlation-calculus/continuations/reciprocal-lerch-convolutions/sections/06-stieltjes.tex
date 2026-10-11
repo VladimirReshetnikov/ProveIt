@@ -1,0 +1,146 @@
+\section{Ordinary Stieltjes products and harmonic coefficient calculus}
+\label{rlc:sec:stieltjes}
+
+\subsection{A convergent product at every Stieltjes index}
+Set
+\begin{equation}\label{rlc:eq:Ljets}
+ L_m^a(y)=\left.\partial_s^mF_{a,s}(y)\right|_{s=0}.
+\end{equation}
+These are order derivatives, not argument derivatives. From
+\eqref{rlc:eq:stieltjesconvention},
+\begin{equation}\label{rlc:eq:Ejets}
+ \E_a^{(M)}(0)=
+ \begin{cases}
+ 1,&M=0,\\
+ (-1)^{M-1}M\gamma_{M-1}(a),&M\ge1.
+ \end{cases}
+\end{equation}
+
+\begin{theorem}[Ordinary Stieltjes product law]
+\label{rlc:thm:stieltjes}
+For $m,n\ge0$ and $\Rea a>0$,
+\begin{equation}\label{rlc:eq:stieltjespair}
+ \boxed{\displaystyle
+ \int_0^\infty L_m^a(y)L_n^a(1/y)\frac{\dd y}{y}
+ =\begin{cases}
+ 1,&m=n=0,\\
+ (-1)^{m+n-1}(m+n)\gamma_{m+n-1}(a),&m+n>0.
+ \end{cases}}
+\end{equation}
+All integrals are absolutely convergent.
+\end{theorem}
+\begin{proof}
+Differentiate \eqref{rlc:eq:opening} $m$ times in $s$ and $n$ times
+in $t$. Lemma~\ref{rlc:lem:weighted} justifies the differentiation.
+The right side is \eqref{rlc:eq:Ejets} with $M=m+n$.
+\end{proof}
+
+For example,
+\[
+ \int_0^\infty L_1^a(y)L_0^a(1/y)\frac{\dd y}{y}
+ =-\psi(a),\qquad
+ \int_0^\infty L_1^a(y)L_1^a(1/y)\frac{\dd y}{y}
+ =-2\gamma_1(a).
+\]
+At $a=1$ these become identities involving only order derivatives
+of ordinary polylogarithms. The apparent product can have either sign:
+this is not a Hermitian inner product and the second factor has
+reciprocal argument rather than complex conjugation.
+
+\subsection{Logarithmic Stieltjes identities}
+Theorem~\ref{rlc:thm:twomoments} can be differentiated independently in
+its two orders. Three explicit consequences are
+\begin{align}
+ \int_0^\infty\log y\,L_1^a(y)L_0^a(1/y)\frac{\dd y}{y}
+ &=\frac12\zeta(2,a),\label{rlc:eq:jetlog1}\\
+ \int_0^\infty\log^2 y\,L_1^a(y)L_0^a(1/y)\frac{\dd y}{y}
+ &=\frac{\pi^2}{3}\gamma_0(a)+\frac23\zeta(3,a),
+ \label{rlc:eq:jetlog2}\\
+ \int_0^\infty\log^2 y\,L_1^a(y)L_1^a(1/y)\frac{\dd y}{y}
+ &=\frac43\zeta^{[1]}(3,a)-\frac{2\pi^2}{3}\gamma_1(a).
+ \label{rlc:eq:jetlogmixed}
+\end{align}
+To check the last identity explicitly, write
+$Q=s^2-st+t^2+s+t$ and differentiate
+$Q\E_a(s+t+2)$ at $s=t=0$. The result is
+$-\E_a(2)+2\E_a'(2)=4\zeta^{[1]}(3,a)$.
+The remaining term is $\pi^2\E_a''(0)/3$.
+This derivation fixes both the coefficient $4/3$ and the Stieltjes sign.
+
+\subsection{All-depth jets as finite harmonic polynomials}
+For a multi-index $\boldsymbol m$ of length $r$, let
+$J_{r,\boldsymbol m}(a)$ be the integral at $\mu=0$ of the product of
+$f_{a,s_j}^{[m_j]}(x_j)$ evaluated at all $s_j=0$. Let
+$M=\sum m_j$. Order addition proves that this integral depends only on
+$M$, so write it as $J_{r,M}(a)$.
+The next result makes that value completely explicit.
+
+\begin{theorem}[All-depth Stieltjes coefficients]
+\label{rlc:thm:alljets}
+At even depth, for $M\ge1$,
+\begin{align}
+ J_{2m,M}(a)=\frac1{(2m-1)!}\biggl[&
+ A_{m,0}(-1)^{M-1}M\gamma_{M-1}(a)\notag\\
+ &+\sum_{k=1}^{m-1}A_{m,k}
+ \sum_{h=1}^{\min(M,2k+1)}
+ \frac{M!}{(M-h)!}\stir{2k+1}{h}
+       \zeta^{[M-h]}(2k+1,a)\biggr].
+ \label{rlc:eq:evenjets}
+\end{align}
+Here $\stir{j}{h}$ is an unsigned Stirling number of the first kind.
+For $M=0$, $J_{2m,0}=A_{m,0}/(2m-1)!$.
+At odd depth the corresponding formula is
+\begin{equation}\label{rlc:eq:oddjets}
+ J_{2m+1,M}(a)=\frac1{(2m)!}
+ \sum_{k=0}^{m}B_{m,k}
+ \sum_{h=0}^{\min(M,2k)}
+ \frac{M!}{(M-h)!}\stir{2k}{h}
+          \eta^{[M-h]}(2k,a),
+\end{equation}
+where $\stir00=1$. In particular $J_{2m+1,0}=B_{m,0}/[2(2m)!]$.
+\end{theorem}
+\begin{proof}
+Differentiate \eqref{rlc:eq:evencentral} and
+\eqref{rlc:eq:oddcentral} $M$ times at zero. In even depth keep the
+$k=0$ term in the entire form $A_{m,0}\E_a(W)$. For $k\ge1$ it is
+safe to use $(W)_{2k+1}\zeta(W+2k+1,a)$.
+The identity $(W)_j=\sum_h\stir jh W^h$ and the ordinary product rule
+give \eqref{rlc:eq:evenjets}. The same expansion gives
+\eqref{rlc:eq:oddjets}. The zero-order formulas follow immediately.
+\end{proof}
+
+For example,
+\begin{align}
+ J_{4,1}(a)&=\frac{2\pi^2}{3}\gamma_0(a)+\frac13\zeta(3,a),
+ \label{rlc:eq:J41}\\
+ J_{4,2}(a)&=-\frac{4\pi^2}{3}\gamma_1(a)
+              +\zeta(3,a)+\frac23\zeta^{[1]}(3,a).
+ \label{rlc:eq:J42}
+\end{align}
+The number of factors and the distribution of the derivative orders
+can be varied without changing these scalar values, provided their
+respective totals stay fixed.
+
+The coefficients also have a finite generalized-harmonic description.
+For $j\ge1$,
+\begin{equation}\label{rlc:eq:pochhammerharmonic}
+ (z)_j=(j-1)!z\exp\left(
+ \sum_{q=1}^\infty\frac{(-1)^{q-1}}q H_{j-1}^{(q)}z^q\right),
+\end{equation}
+locally at zero. Thus, for $1\le h\le j$,
+\begin{equation}\label{rlc:eq:Bellharmonic}
+ \left.\partial_z^h(z)_j\right|_{0}
+ =h(j-1)!\,\mathcal B_{h-1}
+ \left(H_{j-1},-H_{j-1}^{(2)},2!H_{j-1}^{(3)},\ldots\right),
+\end{equation}
+where $\mathcal B_n$ is the complete exponential Bell polynomial.
+Indeed, divide $(z)_j$ by $(j-1)!z$, take the logarithm of
+$\prod_{q=1}^{j-1}(1+z/q)$, and expand. This proves the formula,
+including the signs and factorials. At nonzero resonances one should
+use the finite polynomial $(z)_j$ itself, rather than a logarithmic
+derivative divided by a vanishing factor.
+
+Together with Theorem~\ref{rlc:thm:allmoments}, these formulas give a
+terminating algorithm for every mixed order jet of every logarithmic
+moment. The coefficient operations are finite; they do not presuppose
+arithmetic independence of the resulting zeta or Stieltjes values.

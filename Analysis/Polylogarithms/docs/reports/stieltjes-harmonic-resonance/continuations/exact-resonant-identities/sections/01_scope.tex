@@ -1,0 +1,146 @@
+\section{Scope, antecedents, and the exact meaning of the results}
+\label{scope:section}
+
+The starting point is the canonical ProveIt manuscript
+\cite{RepoMain} and the eleven archives present in \src{docs/incoming}
+at repository commit
+\begin{center}
+\texttt{5a790187c8e186e41e2b990b4941cb7a1a3c7b6b}.
+\end{center}
+The commit timestamp is 11 October 2026, 00:09:09 UTC. The incoming
+reports retain their 10 October dates. The delivered source manifest
+records the retrieved paths and hashes. This article is an integration
+candidate; it does not modify the canonical manuscript or promote
+unreviewed incoming statements by editorial fiat.
+
+The immediate motivation is three explicit unfinished parts of the
+latest exact-identity programme. The ordered-Hurwitz report
+\cite{RepoOrdered} asks for the first independent-slope formula beyond
+depth three and for the directions where its additional ordering
+coefficients disappear. The triple-Stieltjes report \cite{RepoTriple}
+provides finite closure for reflected factors with distinct seams, while
+coincidences require a separate normalization. The Gaussian depth
+projector report \cite{gf:Depth} proposes completing the Cayley ideal
+before repeating a finite reduction search. Sections~\ref{oq:section},
+\ref{ct:section}, and~\ref{gf:sec} answer these questions in the
+precise senses stated below. The harmonic-power work in
+Section~\ref{hp:sec:main} gives a further exact family connecting
+multiple polylogarithms, Gamma coefficients, harmonic numbers, and
+spectral finite parts.
+
+\subsection{A ledger of contributions}
+
+\begin{longtable}{@{}p{0.22\textwidth}p{0.39\textwidth}p{0.32\textwidth}@{}}
+\toprule
+Direction & Proved here & Boundary of the claim\\
+\midrule
+\endhead
+Depth-four ordered resonance & A spanning normal form for all transverse
+straight rays, convergent coordinates, shifts, and reconstruction &
+No arithmetic independence; no prescription for a ray contained in a
+polar hyperplane.\\[5pt]
+Coincident reflected products & All Stieltjes and argument derivative
+indices; arbitrary finite reflected products; explicit Gamma primitives &
+The generic unreflected cubic Tornheim coordinate is not evaluated.\\[5pt]
+Raw harmonic powers & All nonpositive principal and finite coefficients
+as shift polynomials; centered cancellation; explicit families &
+The first regular spectral coefficient generally needs global Mellin
+data.\\[5pt]
+Gaussian formal obstruction & Nonmembership after adding the complete
+Cayley ideal to the frozen additional relation span &
+$S_6$ and revised $S_8$ remain conjectural as numerical period identities.\\[5pt]
+Literature correction & A sign correction to equation (22) of
+arXiv:2507.03058v1, with an all-logarithmic proof &
+It is a correction to that identified formula, not a rejection of the
+preprint's entire framework.\\
+\bottomrule
+\end{longtable}
+
+The word ``new'' in this report means an explicitly demonstrated
+continuation beyond the inspected ProveIt results. We identify the
+classical inputs and the nearest primary-source antecedents. We do not
+claim an exhaustive priority search over every formulation in the
+literature. In particular, the Gamma diagonal of ordered regular germs,
+ordinary Hurwitz Fourier expansions, shuffle regularization, and
+raw-power meromorphic continuation are antecedents.
+
+The analytic context is the Laurent theory of multiple zeta functions
+developed by Saha \cite{Saha} and by Matsumoto, Onozuka, and Wakabayashi
+\cite{MOW}. Hurwitz integral methods and their Gamma applications have
+substantial classical development, including Espinosa and Moll
+\cite{EspinosaMoll1,EspinosaMoll2}. Tin \cite{hp:Tin2025} studies raw
+harmonic-power Dirichlet series and their harmonic Stieltjes constants;
+Karg\i n, Dil, Cenkci, and Can \cite{Kargin} study related harmonic zeta
+constants. We retain their strict/inclusive and inner/outer shift
+distinctions rather than silently identifying different series.
+The shuffle-polynomial and Eulerian-logarithm structure in the formal
+argument is classical \cite{gf:Radford,gf:Patras}; the new certificate
+concerns its application to the complete ideal intersection.
+
+\subsection{Three normalizations that must not be interchanged}
+
+For $a>0$, throughout the article,
+\[
+ \zeta(1+u,a)=\frac1u+
+       \sum_{m\ge0}\frac{(-1)^m}{m!}\gamma_m(a)u^m,
+ \qquad \gamma_0(a)=-\psi(a).
+\]
+A spectral derivative differentiates the order $s$ of a zeta function;
+an argument derivative differentiates its positive shift $a$ or its
+position $x$. A superscript $(p)$ on $\gamma_m$ or $\psi$ in the
+reflected section always denotes an argument derivative. Bracketed
+superscripts $[j]$ on $z_k$ in the ordered section denote spectral
+derivatives. The ordinary constants are $\gamma_m=\gamma_m(1)$.
+Generalized harmonic numbers are
+$H_n^{(r)}=\sum_{j=1}^n j^{-r}$, with $H_0^{(r)}=0$.
+
+There are three different finite-coefficient operations.
+\begin{enumerate}
+\item A \emph{spectral finite part} is the constant Laurent coefficient
+in a specified complex parameter. The ray variable $\varepsilon$ in
+Section~\ref{oq:section} and the spectral variable $s+m$ in
+Section~\ref{hp:sec:main} are explicitly fixed.
+\item A \emph{coordinate finite-part integral} is the constant term of
+a cut-off integral in fixed local coordinates. On $(0,1)$ those
+coordinates are $x$ and $1-x$. Powers and logarithms are expanded before
+the constant term is selected. This is the convention in
+Section~\ref{ct:section}.
+\item A \emph{formal shuffle relation} is an equality in a specified
+rational word algebra. Its truth and exact verification are independent
+of an unproved assertion that the period map is injective.
+\end{enumerate}
+All ordinary integrals, convergent sums, analytic continuations, and
+finite parts are identified where they first occur. Analytic continuation
+of an integral and coefficientwise coordinate completion agree away
+from a resonance, but can differ by a finite Taylor correction at one.
+That correction is computed explicitly in the coincident theorem.
+
+The multiple-polylogarithm convention used for the Gaussian target is
+\[
+ \operatorname{Li}_{r,s}(u,v)
+ =\sum_{n>m\ge1}\frac{u^nv^m}{n^rm^s}.
+\]
+The one-variable multiple polylogarithms in the harmonic-power kernel
+carry the argument only on the outer index. These conventions fix the
+word order, colors, and harmonic conversions; changing them changes
+intermediate coordinate formulas.
+
+\subsection{Reading and integration map}
+
+The four mathematical sections can be read independently after the
+normalizations above. The ordered section supplies all of its required
+lower-depth germs. The reflected section proves the completed transform
+before using polynomial reduction. The harmonic section gives both a
+finite general algorithm and closed low-weight examples. The formal
+section includes the algebraic argument connecting its finite exact
+checks to the unrestricted ideal. Section~\ref{audit:section} distinguishes
+an actual correction from normalization safeguards, and
+Section~\ref{research:section} identifies concrete remaining targets.
+
+For canonical integration, the ordered section naturally follows the
+latest ordered-Hurwitz contribution; the reflected section follows the
+coincident/contact calculus; the harmonic section belongs with harmonic
+polylogarithm and endpoint regularization material; and the complete
+Cayley certificate belongs immediately after the existing bounded
+$S_6$ obstruction. The retained proof-status qualifications are part of
+each mathematical statement.

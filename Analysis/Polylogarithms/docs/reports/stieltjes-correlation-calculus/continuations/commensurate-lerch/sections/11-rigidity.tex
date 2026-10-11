@@ -1,0 +1,104 @@
+\section{Two precise rigidity statements}
+\label{clc:sec:rigidity}
+
+\subsection{When can the independent orders add purely?}
+\begin{theorem}[Affine-center alignment is necessary and sufficient]
+\label{clc:thm:alignment}
+Fix positive scales and centers with a common strip. The convolution
+function $\mu\mapsto\UU_{\bq,\bA}(\bs;\mu)$ depends on the orders only
+through $W=\sum_js_j$, for all orders in a nonempty open set, if and
+only if $A_1=\cdots=A_r$. For the \emph{unnormalized} profiles
+$F_{1+A_j/q_j,s_j}(e^{q_jx})$, pure addition as a function of $\mu$
+also requires $q_1=\cdots=q_r$.
+\end{theorem}
+\begin{proof}
+Sufficiency in the normalized case is Theorem~\ref{clc:thm:addition}.
+For necessity, weighted convolution is in $L^1$ as well as continuous,
+so one can take its bilateral transform. If the function depends only
+on $W$, its derivative in the direction
+$\partial_{s_j}-\partial_{s_k}$ vanishes. By
+\eqref{clc:eq:U-contour} and transform uniqueness, this gives
+\[
+ G_{\bq}(p)\prod_l(p+A_l)^{-s_l}
+             [\log(p+A_k)-\log(p+A_j)]=0
+\]
+on the common vertical line. The prefactors never vanish there, so the
+logarithms agree. Exponentiation implies $p+A_k=p+A_j$, hence
+$A_k=A_j$. This holds for every pair.
+
+In the unnormalized case there is an additional transform factor
+$\prod_jq_j^{s_j}$. The same derivative now gives
+$\log q_j-\log q_k-\log(p+A_j)+\log(p+A_k)=0$.
+Thus $q_j(p+A_k)=q_k(p+A_j)$ on a line. Comparing the linear
+coefficients in $p$ gives $q_j=q_k$, and then $A_j=A_k$.
+\end{proof}
+
+The statement concerns the entire convolution \emph{function} of $\mu$,
+not a special numerical coincidence at one point or one order. It does
+not rule out exceptional identities at $\mu=0$. Even with equal scales,
+unequal centers already fail in the simplest example:
+\begin{align*}
+ \UU_{(1,1),(0,1)}((1,0);0)&=\zeta(2),\\
+ \UU_{(1,1),(0,1)}((0,1);0)&=\zeta(2)-1.
+\end{align*}
+To verify these, the zero-order profile is independent of its center.
+The two integrals therefore reduce respectively to the equal-center
+weight-one formulas at $A=0$ and $A=1$.
+
+\subsection{What commensurability really characterizes}
+Consider the following explicitly restricted elementary class on $x<0$:
+finite sums of functions
+\begin{equation}\label{clc:eq:kernel-class}
+ \frac{P_\nu(x)e^{\rho_\nu x}}
+             {1-\epsilon_\nu e^{Qx}},
+ \qquad Q>0,\quad |\epsilon_\nu|=1,
+\end{equation}
+where each $P_\nu$ is a polynomial, and the finite data $\rho_\nu$,
+$\epsilon_\nu$ and $P_\nu$ are constant in $x$. The same $Q$ is used
+for every term. Complex exponents are allowed.
+
+\begin{theorem}[Common-step kernel rigidity]\label{clc:thm:commensurate}
+For positive real scales $\bq$, the logistic convolution $K_{\bq}$
+has a representation of the form \eqref{clc:eq:kernel-class} on $x<0$
+if and only if all scale ratios are rational.
+\end{theorem}
+\begin{proof}
+The sufficiency is \eqref{clc:eq:kernel}, since commensurate scales have
+a positive common multiple $Q$.
+For necessity, suppose such a finite representation exists and fix
+$\delta>0$. On $x< -\delta$, expand the denominators as geometric
+series. Integrating each term of its negative-half-line Laplace
+transform gives meromorphic functions of $p$ whose poles lie in the
+finite union
+\[
+ \bigcup_\nu\{\rho_\nu+nQ:n\ge0\}.
+\]
+Polynomial factors only increase pole multiplicities. The upper cutoff
+$-\delta$ supplies exponential decay in $n$, so after omitting any
+finite initial terms the integrated series is normally convergent on
+compact subsets away from that pole set. This establishes the stated
+meromorphic pole restriction, regardless of any cancellations between
+terms of the finite representation.
+
+The Laplace transform over $[-\delta,\infty)$ is holomorphic for
+$\Rea p>0$. Indeed the weighted convolution estimates with arbitrarily
+small positive weight show that $K_{\bq}(x)$ grows more slowly than
+$e^{\varepsilon x}$ for every $\varepsilon>0$ as $x\to+\infty$.
+The full transform agrees with $G_{\bq}(p)$ on $0<\Rea p<q_*$,
+so meromorphic continuation forces every positive pole of $G_{\bq}$
+to belong to the finite union above.
+
+But $G_{\bq}$ has an uncancelled pole at every $nq_j$, $n\ge1$:
+cosecant factors have no zeros, so another factor cannot remove it.
+For a fixed $j$, two of the infinitely many $nq_j$ lie in the same
+one of the finitely many progressions. Subtracting them gives
+$(n-n')q_j=(k-k')Q$, hence $q_j/Q\in\mathbb Q$.
+This holds for each $j$, proving commensurability.
+\end{proof}
+
+This theorem is a characterization of a fixed common-step elementary
+kernel class. It is \emph{not} a claim that incommensurate integrals
+cannot be expressed by other special functions, cannot have isolated
+exact values, or yield arithmetically independent constants.
+The next section supplies abundant isolated exact values for arbitrary
+positive scales, emphasizing the distinction.
