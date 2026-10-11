@@ -4,14 +4,11 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
-\usepackage[version=4]{mhchem}
-\usepackage{stmaryrd}
-\usepackage{bbold}
 
 \title{A NEW PROOF OF SZEMERÉDI'S THEOREM }
 
 \author{W.T. Gowers}
-\date{}
+\date{Editorial annotations from the Lean formalization, 11 October 2026}
 
 
 %New command to display footnote whose markers will always be hidden
@@ -3497,6 +3494,33 @@ We have just shown that $\phi_{1}$ has a property similar to multiple multilinea
 % for every rho and box, a cover by at most max(b, C(r,2) b^2) multilinear
 % graphs on boxes of width sqrt((floor(l)/8)^e)/4, with r = ceil(6q/sigma)
 % sampled slices and b, e the slice controls; the unit claim is refuted.
+\emph{Editorial note on Lemma 16.10 (2026-10-11).}
+The standalone encoding using only the packaged cross-section and all-box
+line-cover assumptions does not imply the unit-parameter conclusion below:
+Lean proves its negation by a counterexample. This refutes that explicit
+two-premise formulation, not every possible interpretation with additional
+contextual hypotheses. The documented correction accepted for this
+formalization is an explicit modular-cover conclusion. For $k\geqslant1$,
+prime $N$, $0<\theta,\gamma\leqslant1$, and $0<\rho\leqslant1$, put
+$\sigma=\rho/4$ and take the cover counts $q_\gamma,q_\delta$ and width
+$l$ supplied by Lemma 16.9. Set
+\[
+\begin{aligned}
+ S&=\gamma^{-2}s(2^{-(k+2)}\theta,\gamma,k), &
+ r&=\left\lceil 6\max(1,q_\gamma)/\sigma\right\rceil,\\
+ b&=q(\sigma/(rS),\gamma,k)^{rS}, &
+ e&=c(\sigma/(rS),\gamma,k)^{rS}.
+\end{aligned}
+\]
+Under the same two packaged assumptions, every modular box with injective
+axis parametrizations admits a partition and a good set of relative mass
+at least $1-\rho$, on which $\phi_1$ is covered in each cell by at most
+$\max\{b,\binom r2 b^2\}$ multilinear graphs. The cell widths are at least
+$\frac14\sqrt{(\lfloor l\rfloor/8)^e}$. Lean proves this corrected statement.
+These controls depend on $\rho$; they do not establish the printed
+unit-parameter claim. The later all-dimensional inverse and final
+Szemer\'edi bounds are proved by the separate joint-cover construction.
+
 Lemma 16.10. The function $\phi_{1}$ is itself $(\gamma, 1)$-multiply $(k+1)$-linear.\\
 Proof. We begin by remarking that, since $\phi_{1}$ is a translation of a restriction of $\phi$, property (i) of Lemma 16.4 implies that the restriction of $\phi_{1}$ to any cross-section of $B_{1}$ formed by fixing the final variable $x$ is $\left(\gamma, \gamma^{-2} s\left(2^{-(k+2)} \theta, \gamma, k\right)\right)$-multiply multilinear of the appropriate dimension.
 
