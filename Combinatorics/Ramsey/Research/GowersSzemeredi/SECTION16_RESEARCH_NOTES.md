@@ -3923,6 +3923,95 @@ Neither is solved by grading (L.10) or by constants (L.10b).
   power. Rewrite the exponents syntactically first (`1+5 = 6`,
   `2^6 = 64`).
 
+### L.12 Joint vertex covers: Theorems 18.1, 18.2 and Corollary 18.7 in full (2026-10-11)
+
+**The obstruction of L.11, requirement 1, was the nest, not the covers.**
+`remainder_piece_on` (and its graded form) applies one *provider* per
+non-top vertex, each at the density the previous one left:
+`ρ_{i+1} = C_i(ρ_i)`. The `t`-degrees therefore multiply, and the log-degree
+of `ρ₁` is a sum over the vertices (`136·3^k` graded, `76·4^k` uniform).
+The providers come from covers (`MultiplyLinearWith`), and a cover works at
+a precision fixed in advance. So:
+1. every vertex `e` keeps its face cover of dimension `|S_e|`, lifted to the
+   ambient box by `vertex_multiplyLinearWith_of_face`, which is
+   *lossless in `t`* (count `max(Qb θ, 3^(k+1))`, exponent
+   `Eb θ / 16^(k+1-|S_e|)`) — this is L.11's requirement 2;
+2. all `2^k − 1` covers refine one partition of the full box, each at the
+   common precision `θ_e = θ₂/2^(k+1)`; the bad sets add up to at most
+   `θ₂/2`;
+3. one pigeonhole over the `Π_e q_e` tuples of maps picks one map per
+   vertex on a single cell.
+
+The remainder density is `coverRho1 = (θ₂/2)/Π_e max(Qb_{|S_e|}(θ_e), 3^(k+1))`,
+of `t`-degree `1 + Σ_e D_{|S_e|}`: the degrees **add**, so the log-degree is
+the *maximum* plus `k` bits for the count of vertices. No dimension-free
+cover degree is needed: with the tight class degree `68·2^l` the cost is
+`68·2^k + k`, which is already `O(2^k)`.
+
+**The modules** (light and kernel-checked unless marked otherwise):
+- `Proofs16JointCovers`: `JointCoverOn` (a partition into proper boxes of
+  width `≥ P.width^Et`, a good set of density `1 − s`, `≤ Qt` tuples of
+  maps per cell); `joint_cover_on` (covers compose by refining one partition
+  vertex by vertex, `MultiplyLinearWith.on_partition` + `boxFlatten`, with
+  `s = Σθ_e`, `Qt = ΠQb_e(θ_e)`, `Et = ΠEb_e(θ_e)`); `JointCoverOn.piece`
+  (one pigeonhole); `remainder_piece_of_vertex_covers`.
+- `Proofs16SinglePieceCoverGlobal` (`mk_cover_global.py`):
+  `single_piece_lift_global_cover`, with `coverPrec`, `coverCount`,
+  `coverRho1`, `coverExp` and `coverRemWidth = ⌈N^coverExp⌉` (no
+  threshold).
+- `Proofs18SinglePieceCoverInverse` (`mk_cover_inverse.py`): frequency box,
+  localization and inverse step; the graded families `(Cg, Wg)` and their
+  lift hypotheses disappear.
+- `Proofs18CoverModulus` (`mk_cover_modulus.py`): `GenParamsC`, `ranges`,
+  `Eloc_pos_le`, `modulus_conditions`.
+- `Proofs18CoverDensity` (hand-written): `vertex_uCount_le`, `prod_le_pw`,
+  `rho1_inv_leC` at `rhoDegC k μ₀ = max(68·2^k + μ₀ + 3, fixDeg k + 1) + k`,
+  `nestExp_inv_leC`, `yIn_boundsC`, `GenParamsC.inverse_step`.
+- `Proofs18CoverExponents` (`mk_cover_exponents.py`): `CHyp` (no bound on
+  `k`; the graded chain needed `k + 1 ≤ 2^68`), `Eloc_inv_leC`,
+  `MReq_le_expC`, `Tloc_le_expC`.
+- `Proofs18CoverDegrees` (`mk_cover_degrees.py` + closed forms): the steps
+  `polyEnvBound_stepC`, `envBound_stepC` and their inductions in every
+  dimension; `envStepC_le`, `envStepCT_le` (one step adds
+  `268·2^k + O(k³)`); **`polyGenMuC_le : polyGenMuC k ≤ 1000·2^k`** against
+  the Theorem 18.1 budget `2^(d+10) = 4096·2^k`, and
+  **`genMuC_le : genMuC k ≤ 2000·2^k`** against the Theorem 18.2 budget
+  `2^(L+9) = 8192·2^k`; `genMuC_ge` (`268·2^k ≤ genMuC k`, which gives the
+  stopping budget `4L + 20 ≤ 2^μ` at every length);
+  `theorem_18_1_of_profiles_cover` (every `d ≥ 4`),
+  `theorem_18_2_of_profiles_cover`, `corollary_18_7_of_profiles_cover`
+  (every `L ≥ 6`).
+- Bridge `Proofs18CoverExplicit` (heavy, stub-checked):
+  **`theorem_18_1_explicit : theorem_18_1`**,
+  **`theorem_18_2_explicit : theorem_18_2`**,
+  **`corollary_18_7_explicit : corollary_18_7`**, and through the corpus's
+  reductions `theorem_1_2_explicit : theorem_1_2`,
+  `theorem_1_3_explicit : theorem_1_3`. The faithful stub
+  (`mkstub_cover.py`: the port's definitions verbatim, both bridges
+  verbatim) prints the axioms `propext`, `Classical.choice`, `Quot.sound`
+  and exactly the corpus theorems `commonDiffPartitionBoundAt_of`,
+  `multilinearPartitionBoundAt_explicit`,
+  `section16RecurrenceProfileWith_explicit` (18.1) and
+  `section16RecurrenceProfileWith_explicit`, `theorem_18_2_le_six` (18.2,
+  18.7, 1.2, 1.3), each at its exact signature.
+
+An exact model of the envelope recursion predicted `μ_k/2^k → 536`
+(13% of the 18.1 budget, 7% of the 18.2 budget); the proved closed forms
+`1000·2^k` and `2000·2^k` are loose versions of it.
+
+**Technique notes.**
+- `omega` cannot see through a `def` like `rhoDegC`: a `_ge` lemma that
+  drops the `+ k` summand is too weak for a goal that needs it. Unfold the
+  definition and add the `le_max_left` fact.
+- `generalize 2 ^ k = x at *` after rewriting `2^(k+6) = 64·2^k` turns the
+  envelope inequalities into linear arithmetic that `omega` closes,
+  including the nested `max`es.
+- A lemma elaborated before its function argument is known (`prod_le_pw`
+  with an inline nonnegativity proof) can unify `f` with a wrong lambda;
+  state the goal first and `refine` into it.
+- The facade-only collision class struck again: `isBoxPartition_self` was
+  already in `Proofs16OscillationPartition`. Run
+  `scripts/check_gowers_duplicates.py` before publishing new modules.
 
 ### L.13 Joint-cover arithmetic in every dimension (2026-10-11)
 
@@ -3959,6 +4048,8 @@ width, spectrum retiling, slice widths, and explicit modulus threshold must
 also be supplied to `single_piece_inverse_step_global_cover`. In particular,
 checking a recursion does not construct a large enough localization box.
 The numbered ledger remains 117 exact companions and three open statements.
+*(Superseded by L.12: the production inverse step is connected there, and
+the three statements are proved.)*
 
 The exact standard-parameter substitutions are now checked:
 `coverExpDeg_standard` gives `268*2^k+k+15` for the localization log-degree,

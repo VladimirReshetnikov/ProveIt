@@ -41,12 +41,6 @@ def JointCoverOn {N d : Nat} [NeZero N] {ι : Type*} (E : Finset ι)
       ∀ j x, x ∈ (Q j).carrier → x ∈ G → (∀ e ∈ E, x ∈ Dom e) →
         ∃ i, ∀ e ∈ E, f e x = mu j i e x
 
-/-- The trivial partition of a box. -/
-theorem isBoxPartition_self {N d : Nat} [NeZero N] (P : Box N d) :
-    IsBoxPartition (fun _ : Fin 1 => P) P := by
-  refine ⟨fun x => ⟨fun h => ⟨0, h⟩, fun ⟨_, h⟩ => h⟩, fun i j hij => ?_⟩
-  simp [Subsingleton.elim i j] at hij
-
 /-- **Covers compose additively.** -/
 theorem joint_cover_on {N d : Nat} [NeZero N] {ι : Type*} [DecidableEq ι]
     (Dom : ι → Finset (Point N d)) (f : ι → Point N d → ZMod N)
@@ -61,8 +55,11 @@ theorem joint_cover_on {N d : Nat} [NeZero N] {ι : Type*} [DecidableEq ι]
   induction E using Finset.induction_on with
   | empty =>
     intro _ _ _ _ P hP
+    have hself : IsBoxPartition (fun _ : Fin 1 => P) P := by
+      refine ⟨fun x => ⟨fun h => ⟨0, h⟩, fun ⟨_, h⟩ => h⟩, fun i j hij => ?_⟩
+      simp [Subsingleton.elim i j] at hij
     refine ⟨1, 1, P.carrier, fun _ => P, fun _ _ _ _ => 0, Finset.Subset.refl _, ?_,
-      isBoxPartition_self P, fun _ => hP, by simp, fun _ => by simp, fun _ _ e he => by simp at he,
+      hself, fun _ => hP, by simp, fun _ => by simp, fun _ _ e he => by simp at he,
       fun _ x _ _ _ => ⟨0, fun e he => by simp at he⟩⟩
     simp
   | insert a E ha ih =>
