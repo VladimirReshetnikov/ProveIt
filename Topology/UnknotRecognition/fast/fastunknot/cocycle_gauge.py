@@ -44,4 +44,5 @@ def optimize_cocycle_gauge(triangulation,heights,*,max_work=None,check=lambda:No
     if not verify_cocycle_gauge(triangulation,heights,proof,check=budget.tick):
         raise ArithmeticError('vertex gauge failed independent source replay')
     return dict(heights=shifted,certificate=proof,changed=shifted!=h,
+        span_witness=dict(heights=h,coordinates=result['coordinates'],span_certificate=result['certificate']),
         stats=dict(result['stats'],work=budget.work))
