@@ -1075,6 +1075,7 @@ import GowersSzemeredi.Proofs16CoordinateSelections
 import GowersSzemeredi.Proofs16ClassPieces
 import GowersSzemeredi.Proofs16ClassPieceCover
 import GowersSzemeredi.Proofs16ClassStep
+import GowersSzemeredi.Proofs16ClassStepBounds
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
