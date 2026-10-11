@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs16PolynomialAllScaleLemma9
 import GowersSzemeredi.Proofs16Lemma9WithRemainder
 import GowersSzemeredi.Proofs16PieceCoverWithRemainder
+import GowersSzemeredi.Proofs16FamilyLemma6
 
 /-! The polynomial all-scale Lemma 16.9 with arbitrary remainder controls.
 
@@ -52,5 +53,20 @@ theorem exists_all_scale_power_lemma_16_6 (k : Nat) :
         (section16PolynomialWidthDivisor k p)) := by
   obtain ⟨C, p, hC, hp, hlemma6⟩ := exists_all_scale_polynomial_lemma_16_6 k
   exact ⟨C, p, hC, hp, allScaleLemma166WidthAt_power_of_polynomial k hlemma6⟩
+
+/-- The polynomial recurrence profile is the abstract profile at the shapes
+`familyRecThr`, `familyRecExp` (definitional). -/
+theorem section16RecurrenceProfileWith_of_polynomial (k K p : Nat)
+    (h : PolynomialSection16RecurrenceProfileAt k K p) :
+    Section16RecurrenceProfileWith k (familyRecThr k K p) (familyRecExp k p) := h
+
+/-- **Lemma 16.6 for a family of pieces on one partition**, with the
+polynomial recurrence. -/
+theorem exists_all_scale_family_lemma_16_6 (k : Nat) :
+    ∃ C p : Nat, 2 ≤ C ∧ 0 < p ∧
+      AllScaleFamilyLemma166At k
+        (section16PowerWidth (familyWidthPrefactor C) (familyWidthDivisor k p)) := by
+  obtain ⟨K, p, hK, hp, hrec⟩ := exists_polynomial_section16_recurrence_profile k
+  exact ⟨K, p, hK, hp, allScaleFamilyLemma166At_of k hK hp hrec⟩
 
 end LeanProofs.GowersSzemeredi
