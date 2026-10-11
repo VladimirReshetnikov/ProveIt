@@ -2817,6 +2817,123 @@ family layer must be stated over frame-free members.
    - Below Lemma 15.6's threshold `N₀ = poly(1/γθ)`, the coarse relation
      cover has count `3²·N < 9N₀`, which is still polynomial.
 
+### L.3b `PolyCoverAt 2` is proved (2026-10-10)
+
+`polyCoverAt_two_of_family_lemma6` (`Proofs16PolyCoverTwo`) is
+kernel-checked and light. It states:
+
+> `AbstractFamilyLemma166At 1 (section16PowerWidth A Bq)` with `A, B > 0`
+> implies `PolyCoverAt 2 polyTwoQb (polyTwoEb A Bq)`.
+
+The heavy bridge `exists_polyCoverAt_two`
+(`Proofs16PolynomialLemma9WithRemainder`) discharges the hypothesis from
+`exists_polynomial_section16_recurrence_profile`. It does so
+definitionally (`familyRecThr`/`familyRecExp` are verbatim copies of the
+simultaneous threshold and exponent). The bridge has not been elaborated
+on this machine because it needs the OAI closure; it awaits the full
+verification run.
+
+**The proof** (B7.1–B7.5 of L.3a).
+1. *Peeling.* `section16_greedy_relation_decomposition`. Each sub-relation
+   with projection at least `θN²` gives a piece:
+   - a one-value-per-point selection keeps the product property
+     (`RelationProductProperty`, hereditary);
+   - Lemma 15.6 at `β = θ/2` gives Lemma 16.4's arrangement conditions,
+     since `section16ThetaOne θ γ 1 = (βγ/2)^(2^64)`;
+   - `section16_poly_piece_two_data` gives the piece, in the original
+     frame, with its Freiman data.
+
+   At most `γ⁻²/(5θ′)` pieces are needed.
+2. *Padding.* Pad with empty pieces (mass 0) to
+   `polyTwoPieces = ⌊γ⁻²/(5θ′)⌋`, so the controls depend only on
+   `(γ, θ, ρ)`.
+3. *The simultaneous cover.* `section16_poly_family_two_cover`: one
+   `MultiplyLinearWith` cover of the union of all pieces. The three common
+   relations (spectra, a remainder cylinder, stacked slices) are unions of
+   the pieces' Freiman covers (`RelFreimanCover`).
+4. *Small moduli.* Below `polyTwoThreshold = max 3 (Lemma 15.6's
+   threshold)`, which is polynomial in `1/θγ`, the coarse relation cover
+   has count `9⌈N₀⌉`. This goes through
+   `multiplyLinearWith_of_large_box_covers` with threshold `N₀`.
+
+**The controls.**
+- *Count.* `polyTwoQb = max(polyTwoFamCount, 9⌈N₀⌉)`.
+  - The family count is `max(m·max(Pb, C(S,2)Pb²), 9m)`.
+  - Here `m = ⌊γ⁻²/(5θ′)⌋`, `S ≈ 24·Qr·m/ρ`, and `Pb = 3(m·S·q + 1)`.
+  - `q = section16BaseFamilyBound(γ, θ′)` and `θ′ = θ₂/8`.
+- *Width exponent.* `polyTwoEb` is a capped product of cubic exponents
+  and the recurrence divisor `8p(q+1)^8`. By
+  `piece_cover_exponent_lower` and `section16_cubic_capped_exponent_lower`
+  its capped parts keep a constant multiple of the product of the line
+  and slice exponents, up to a factor `log(16A/ζ)`.
+
+Everything is polynomial in `1/ρ` and in `1/θγ`. The degree is Gowers's
+fixed `2^(2^6)` from `θ₁`, which `δ` and `θ₂` inherit.
+
+**Consequences to pursue.**
+- `single_piece_lift_global` at `k = 2` needs exactly `PolyCoverAt 1`
+  (proved) and `PolyCoverAt 2` (now proved). Its chain ends in
+  `FunctionDiscrepancyBound 4` (L.1, step 7), so it becomes unconditional
+  up to the scale conditions and the budget.
+- The family cover does not need a common product property, only
+  per-piece data. So the pieces of a whole *family* of relations can be
+  covered at once, which is plausibly the covering half of
+  `StackableStructureAt 2` that Part J needs for dimension three.
+
+### L.4 After `PolyCoverAt 2`: two routes to catalogue items (plan, 2026-10-10)
+
+**(I) Theorem 18.2 at length six** (`Theorem182At 6`; Corollary 18.7 at
+six follows).
+- *Chain.* `single_piece_quartic_inverse_global` (Proofs18SinglePieceInverse)
+  needs `PolyCoverAt 1` (proved) and `PolyCoverAt 2` (L.3b). It returns
+  `FunctionDiscrepancyBound 4 α β σ T`.
+  `FunctionDiscrepancyBound.interval_szemeredi_closed` turns that into
+  six-term progressions above `intervalDiscrepancyClosedThreshold 6 δ β σ T`,
+  at `α = intervalUniformityParameter δ 6`.
+- *Remaining inputs.*
+  1. The lift-width functions `C, W`: minima of the two lift iterates.
+  2. `hretile`, from the recurrence profile through
+     `Section16RecurrenceProfileWith.retiled_family` and `.single`.
+  3. `hmod`, the per-modulus scale conditions
+     (`SinglePieceModulusConditions`), at an explicit `Tloc`.
+  4. The comparison with `szemerediThreshold δ 6 = 2^2^(δ^(−M))`,
+     `M = 2^32768`.
+- *Budget (K.4).* A density `β = α^D` fits whenever `D ≲ M/728`. The
+  single-piece route has `D ≈ 2^132·poly(D_in)`, with `D_in ≈ c·2^64`
+  from `θ₁`, so `D ≈ 2^500` at most: an enormous margin. Crude power
+  bounds suffice everywhere.
+- *Explicit constants.* The recurrence constants are not opaque.
+  - `multilinearPartitionBoundAt_explicit` gives
+    `multiaffinePartitionK/P k (2^k)`, built from the Schmidt constants.
+  - `Proofs05WeylConstantBounds` bounds those Schmidt constants
+    numerically.
+  - So the light modules carry `K, p` as parameters with numeric upper
+    bounds as hypotheses, and the heavy bridge instantiates them.
+- *Template.* The five-term case:
+  `fejerFiveTermThreshold_le_double_exp_alpha` (via
+  `densityIterationClosedThreshold_le_double_exp`), then
+  `fejerFiveTermThreshold_le_source`.
+
+**(II) Theorem 16.2 in every dimension.** The family machinery suggests
+an induction on a *stackable piece structure*: a class of `k`-dimensional
+pieces with data such that
+- (a) every product relation decomposes, after a `θ` deletion, into
+  polynomially many pieces (peeling plus Lemma 15.6 plus piece data);
+- (b) any `n` pieces have one simultaneous cover with controls
+  polynomial in `n` (the family cover).
+
+The base case is Freiman graphs. The step `k → k+1` builds `(k+1)`-pieces
+whose data refers to `k`-pieces (spectra, slices) and lower faces
+(remainders), and gets (b) from (b) at dimension `k` for the referenced
+pieces. New ingredients:
+- the remainder is a signed *sum* of `2^k − 1` vertex functions, which
+  needs common-partition sums of family covers;
+- relation lifts along unused coordinates in every dimension;
+- piece data for general `k`.
+
+The printed comparison per `k` would follow, if the degree recursion
+`D_{k+1} ≤ poly(D_k)` fits `2^(2^(k+8))`.
+
 ## F. Routes
 
 1. **Quantitative repair (research).**

@@ -3,6 +3,7 @@ import GowersSzemeredi.Proofs16Lemma9WithRemainder
 import GowersSzemeredi.Proofs16PieceCoverWithRemainder
 import GowersSzemeredi.Proofs16FamilyLemma6
 import GowersSzemeredi.Proofs16AbstractFamily
+import GowersSzemeredi.Proofs16PolyCoverTwo
 
 /-! The polynomial all-scale Lemma 16.9 with arbitrary remainder controls.
 
@@ -78,5 +79,15 @@ theorem exists_abstract_family_lemma_16_6 (k : Nat) :
         (section16PowerWidth (familyWidthPrefactor C) (familyWidthDivisor k p)) := by
   obtain ⟨K, p, hK, hp, hrec⟩ := exists_polynomial_section16_recurrence_profile k
   exact ⟨K, p, hK, hp, abstractFamilyLemma166At_of k hK hp hrec⟩
+
+/-- **`PolyCoverAt 2`, unconditionally**: the polynomial recurrence gives the
+abstract family Lemma 16.6, hence the polynomial global-to-local cover of
+every two-dimensional relation with the product property. -/
+theorem exists_polyCoverAt_two :
+    ∃ C p : Nat, 2 ≤ C ∧ 0 < p ∧
+      PolyCoverAt 2 polyTwoQb (polyTwoEb (familyWidthPrefactor C) (familyWidthDivisor 1 p)) := by
+  obtain ⟨C, p, hC, hp, h6⟩ := exists_abstract_family_lemma_16_6 1
+  exact ⟨C, p, hC, hp, polyCoverAt_two_of_family_lemma6
+    (familyWidthPrefactor_pos (by omega)) (familyWidthDivisor_pos hp) h6⟩
 
 end LeanProofs.GowersSzemeredi
