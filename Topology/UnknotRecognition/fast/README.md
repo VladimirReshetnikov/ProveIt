@@ -4090,3 +4090,35 @@ This is a classification task, not a full parallelity-bundle extraction.
 PYTHONPATH=. python -B -m normal_orbit_research.cut_products audit --output ../synthesis/data/cut-products-audit.json
 PYTHONPATH=. python -B -m normal_orbit_research.cut_products benchmark --rounds 5 --output ../synthesis/data/cut-products-benchmark.json
 ```
+
+### Source-bound prismatic normal midsection inventories
+
+`fastunknot.normal_prismatic_inventory.normal_prismatic_inventory` recovers
+full normal midsection coordinates, Euler values and binary multiplicities
+for wholly prismatic cut components. Core components remain counted only.
+An additive marker plus normal-disc weight system distinguishes these classes;
+independent replay is
+`fastunknot.normal_prismatic_inventory_verify.verify_normal_prismatic_inventory`.
+The checker reconstructs its own source weights and validates the entire
+inventory. Connected doubles are retained rather than divided by their gcd.
+
+A supplied `orbit_certificate` is checked against freshly owned chamber pairings
+and reused without another orbit search. `max_cycles` must then be `None`.
+Callbacks apply to weighted transport and verification as well as discovery.
+An unfinished query has no inventory or certificate. This standalone operator
+retains the one-torus source contract and does not supply core geometry,
+interior attached parallelity regions, a knot verdict or a new recognition bound.
+
+All 1,564 tests and 24 focused tests pass. The audit matches all 5,241 explicit
+finite inventories and retains 57 source proofs, nine large binary cases and
+six search-free reused traces. At 65,536 meridians, the complete native inventory
+call is about 149 times faster than an explicit chamber reference, including
+independent replay; small cases are slower. Reproduce from this directory:
+
+```sh
+PYTHONPATH=. python -B -m normal_orbit_research.prismatic_inventory audit --output ../synthesis/data/prismatic-inventory-audit.json
+PYTHONPATH=. python -B -m normal_orbit_research.prismatic_inventory benchmark --rounds 5 --output ../synthesis/data/prismatic-inventory-benchmark.json
+```
+
+The full coordinate proof, output-size bound and remaining core problem are in
+[prismatic_inventory.tex](../synthesis/prismatic_inventory.tex).

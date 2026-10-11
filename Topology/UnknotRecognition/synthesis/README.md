@@ -1619,3 +1619,26 @@ They authenticate 660 source/evidence hashes, 5,241 exact disabled/classified
 cases, the finite midsection evidence, timing outcomes and all 55 saved
 version-two proofs with producers disabled. Source PDF hashes and contract
 notes are retained in `data/cut-products-literature.json`.
+
+[prismatic_inventory.tex](prismatic_inventory.tex) turns whole-prism classification
+into a source-certified normal midsection inventory with binary multiplicities.
+It proves the additive chamber-weight interpretation and the polynomial output
+bit bound, retains connected normal doubles and checks trace reuse against fresh
+geometric pairings. Every vector, multiplicity and Euler value matches explicit
+recovery on 5,241 source cases; 57 saved proofs independently replay. All 1,564
+tests and 24 focused tests pass. Eighty measured complete inventory calls include
+all preparation, independent replay and serialization; the largest tested paired
+ratio is 148.591 against an explicit chamber reference. Small regressions are
+retained. Core geometry and attached parallelity are still separate obligations.
+
+The current [PDF](report.pdf) has 618 pages. Section 157 starts on page 610;
+the assessment is section 158 on page 613. Rendered pages 610–615 pass visual
+review, covering the inventory proof, independent weights, coordinate doubles,
+trace reuse, complete timing table, assessment continuation and references.
+All references resolve; only four pre-existing overflow warnings remain.
+Reproduce publication checks with
+`python -B data/prismatic_inventory_review.py --publication` from this directory.
+They authenticate 664 current source/evidence hashes, all exact inventory and
+timing outcomes and the passing test records, and replay all 57 saved source
+proofs with producers disabled. The inventory covers whole prismatic pieces;
+interior attached parallelity and core geometry remain unimplemented.

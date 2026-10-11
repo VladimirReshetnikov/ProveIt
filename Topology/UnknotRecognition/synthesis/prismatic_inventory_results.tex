@@ -1,0 +1,65 @@
+All 1,564 maintained tests pass in 301.283 seconds; the 24 focused tests
+pass in 0.734 seconds. The nine new regressions check parallel meridians,
+vertex links, layered sources, odd/even one-sided families, connected normal
+doubles, source/weight/base/count mutations, shared trace ownership, caps,
+operation limits and cancellation. Binary JSON and a 16,385-bit multiplicity
+pass independent replay without expanding components.
+
+The 68.207-second source audit computes inventories on all 5,241 saved
+cut-surface instances on 48 triangulations. Every core count, full normal
+base vector, multiplicity and Euler value agrees with explicit finite chamber
+recovery using the independent geometric pairing construction. The inventories
+account for 7,838 midsection instances. This is agreement of complete
+coordinate inventories, not just agreement of total component counts.
+Representative bases on all 48 sources receive fresh Regina connectivity
+and Euler checks. The earlier geometric pilot supplies the full finite
+midsection/cut-signature context; no unique 3-manifold classification is
+inferred from those signatures alone.
+
+All native proofs replay with weight, inventory, chamber and orbit producers
+disabled. Six large cut-orbit traces are then reused with orbit search
+disabled; their inventories agree exactly with fresh queries. Nine large
+binary cases include one-, four- and sixteen-tetrahedron meridian families
+at $2^{128}$ or $2^{500}$ scale, the $2^{16384}$ one-tetrahedron case, and
+large odd/even M\"obius stacks. The meridian families have one base vector
+with multiplicity $m-1$. Even M\"obius stacks retain both the one-sided
+vector and its connected annular double where present; odd stacks retain
+the annular vector. The audit preserves 57 representative complete source
+proofs.
+
+For the large meridian families, maximum observed weight-run counts are
+six, 24 and 96 for one, four and sixteen source tetrahedra respectively;
+they do not grow between the tested $2^{128}$ and $2^{500}$ multiplicities.
+These are finite diagnostic observations, not the proof of the polynomial
+bound. That bound comes from the source weight construction, normal-type
+accounting and the existing weighted interval operation.
+
+Five paired timing rounds measure 80 completed inventory calls and sixteen
+warmups, with identical-baseline A/A arms. Both methods return the same full
+midsection vectors and multiplicities. The explicit reference expands the
+finite chamber graph, computes its connected components and accumulates
+normal-disc counts for each unmarked component. The native arm constructs
+compressed indicators, runs weighted transport, independently replays the
+complete source proof and serializes its result. All source construction,
+validation, reconstruction and serialization are charged. This is an explicit
+graph baseline, not an optimized published parallelity-bundle constructor.
+\input{tables/prismatic_inventory_queries.tex}
+
+At 65,536 copies the paired explicit/native ratio is 148.591, with median
+154.142 versus 1.033 milliseconds. At 4,096 copies the ratio is 8.647.
+At sixteen and 256 copies the ratios are 0.187 and 0.641: native proof and
+weighted reconstruction lose on small inputs. Old A/A ratios range from
+0.982 to 1.011 and new ones from 0.989 to 1.073. These remain host observations,
+not universal speedup factors or full-recognition timings.
+
+Runtime release \code{a10e8eb83}, all tests, exact source inventories,
+search-free trace reuse checks and complete-query timings are retained.
+
+The reproduction driver is \code{normal\_orbit\_research.prismatic\_inventory}.
+Records are under \code{data/prismatic-inventory-*}. Publication review checks
+664 current source/evidence hashes, the exact pilot input, every timing outcome
+and the passing test records. It independently replays all 57 saved source
+proofs with producers disabled. The complete recognizer is unchanged. The
+next geometric task is parallelity inside the marked cores and its attachment
+representation; that richer problem is not replaced by this whole-component
+inventory.
