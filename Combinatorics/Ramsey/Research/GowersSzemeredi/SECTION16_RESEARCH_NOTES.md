@@ -3923,6 +3923,48 @@ Neither is solved by grading (L.10) or by constants (L.10b).
   power. Rewrite the exponents syntactically first (`1+5 = 6`,
   `2^6 = 64`).
 
+
+### L.13 Joint-cover arithmetic in every dimension (2026-10-11)
+
+`Proofs18FiniteCoverBudgets` proves the finite-product budget directly in Lean:
+if a family has at most `2^k` candidates counts, each at most `X^(2^m)`,
+their product is at most `X^(2^(m+k))`. The heterogeneous version uses the
+exact sum of the exponents. The inverse density of the final pigeonhole,
+`(theta/2/product counts)^(-1)`, is at most
+`X^(2^(max t (m+k)+2))` when `theta^(-1) <= X^(2^t)`.
+
+With the joint covers introduced in the incoming source, the proposed
+remainder log-degree is `coverRhoDeg k muD mu0 = mu0+muD+k+4`.
+The corresponding lower-degree parameter log-degree is
+`coverDensDeg = coverRhoDeg+2*muD+13`. Substituting the tight class degree
+`muD=68*2^k` and the standard base budget `mu0=2^(k+6)+2` gives exactly
+`268*2^k+k+19`, proved by `coverDensDeg_standard`.
+
+`Proofs18CoverEnvelopeArithmetic` proves that the candidate recursion
+
+    M(0) = 74
+    M(k+1) = max(268*2^(k+1)+(k+1)+33+4*(k+4)^2+M(k),
+                 40*(k+3)^3+1095)
+
+satisfies `M(k) <= 2048*2^k` for every natural `k`. It therefore fits both
+printed exponent comparisons:
+
+    M(k)+1 <= 2^(k+2+10)
+    M(k)+2*(k+4)+14 <= 2^(k+4+9).
+
+These are arithmetic facts about a candidate envelope, **not proofs of
+Theorem 18.1, Theorem 18.2, or Corollary 18.7**. The actual `coverRho1` and
+localization parameter must be bounded by these formulas; the remainder
+width, spectrum retiling, slice widths, and explicit modulus threshold must
+also be supplied to `single_piece_inverse_step_global_cover`. In particular,
+checking a recursion does not construct a large enough localization box.
+The numbered ledger remains 117 exact companions and three open statements.
+
+Validation: all ten auxiliary theorems compile from their production source
+with Lean 4.32.0 and mathlib v4.32.0. A transitive axiom check allows only
+`propext`, `Classical.choice`, and `Quot.sound`; no faithful-stub environment
+is used for this check. The full facade dependency rebuild is in progress.
+
 ## F. Routes
 
 1. **Quantitative repair (research).**
