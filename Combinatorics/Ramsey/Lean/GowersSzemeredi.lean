@@ -1072,6 +1072,7 @@ import GowersSzemeredi.Proofs16PolyCoverThreeExplicit
 import GowersSzemeredi.Proofs16PowerUniformClass
 import GowersSzemeredi.Proofs16FaceLifts
 import GowersSzemeredi.Proofs16CoordinateSelections
+import GowersSzemeredi.Proofs16ClassPieces
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
