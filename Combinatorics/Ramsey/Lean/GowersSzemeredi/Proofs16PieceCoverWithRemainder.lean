@@ -92,7 +92,7 @@ theorem section16_piece_large_box_profile {k : Nat} (hk : 1 ≤ k)
     {Pb Es : Nat → Real → Real}
     (hslice : Section16SliceProvider D (section16PhiOne phi x0) Pb Es)
     (hranges : Section16SliceProviderRanges Pb Es)
-    (hPb : ∀ ε, Monotone (fun r => Pb r ε)) (hEs : ∀ ε, Antitone (fun r => Es r ε)) :
+    (hPb : ∀ ε, Monotone (fun r => Pb r ε)) (hEs : ∀ ε, 0 < ε → Antitone (fun r => Es r ε)) :
     ∀ rho : Real, 0 < rho → rho ≤ 1 →
       LargeBoxMultilinearCover (partialGraph D (section16PhiOne phi x0)) rho
         (pieceGraphBound Qr Pb rho)
@@ -135,7 +135,7 @@ theorem section16_piece_large_box_profile {k : Nat} (hk : 1 ≤ k)
   have hSpos : 0 < S := pieceSamples_pos hrho
   obtain ⟨hPbS, hEsS, hEsS1⟩ := hranges S sigma hSpos hs hs1
   have hPbr : Pb r sigma ≤ Pb S sigma := hPb sigma hrS
-  have hEsr : Es S sigma ≤ Es r sigma := hEs sigma hrS
+  have hEsr : Es S sigma ≤ Es r sigma := hEs sigma hs hrS
   have hrpos : 0 < r := by
     rw [hr]
     apply Nat.ceil_pos.mpr
@@ -202,7 +202,7 @@ theorem section16_piece_cover_with {k : Nat} (hk : 1 ≤ k)
     {Pb Es : Nat → Real → Real}
     (hslice : Section16SliceProvider D (section16PhiOne phi x0) Pb Es)
     (hranges : Section16SliceProviderRanges Pb Es)
-    (hPb : ∀ ε, Monotone (fun r => Pb r ε)) (hEs : ∀ ε, Antitone (fun r => Es r ε)) :
+    (hPb : ∀ ε, Monotone (fun r => Pb r ε)) (hEs : ∀ ε, 0 < ε → Antitone (fun r => Es r ε)) :
     MultiplyLinearWith
       (fun rho => max (pieceGraphBound Qr Pb rho) ((3 ^ (k + 1) : Nat) : Real))
       (fun rho => section16CappedWidthExponent
