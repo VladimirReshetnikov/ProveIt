@@ -1,0 +1,156 @@
+\section{Compressed connectivity of cut-open normal surfaces}
+\label{sec:cut-complement}
+
+The hierarchy needs more than a component census of its cutting surface.
+It must also locate the connected pieces of the ambient manifold after the
+cut. Expanding a binary normal vector into individual discs loses the desired
+complexity bound. This continuation constructs a linear-size interval system
+for the connectivity of the cut-open manifold and authenticates its count
+with the existing independent orbit-trace checker. It is a native geometric
+operation toward compressed cutting, not a full implementation of that
+hierarchy obligation.
+
+The current source contract remains the existing validated finite connected
+compact orientable triangulation with one torus boundary. The surface is
+supplied by admissible nonnegative integral normal coordinates. It need not
+be connected, primitive, two-sided or incompressible. No correspondence with
+an input knot diagram is inferred. The result counts the components of
+$M\setminus\operatorname{int}\nu(F)$, where $\nu(F)$ is a normal regular
+neighborhood of the surface, including the one-sided case.
+
+\subsection{Local chambers and affine face regions}
+
+In a tetrahedron let $t_v$ be its four triangle counts and let $q$ be its
+single occupied quadrilateral count, zero when no quadrilateral is present.
+Cutting the tetrahedron along these normal discs gives
+\[
+                 1+q+\sum_{v=0}^{3}t_v
+\]
+connected chambers. Index the $q+1$ successive chambers of the quadrilateral
+stack first, followed by four arms of $t_v$ chambers each, numbered outward
+from vertex $v$. The triangle arms meet the appropriate endpoint chamber
+of the quadrilateral stack. With $q=0$, all four arms meet the central chamber.
+This is a description of the chambers; adjacent chambers separated by the
+surface are never identified by a local tree edge.
+
+Quadrilateral type $j$ separates the vertex pairs
+$A=\{0,j+1\}$ and $B=\{0,1,2,3\}\setminus A$.
+Take the chain index to increase from the $A$ side to the $B$ side. On a
+face, each normal arc cuts off one of its three vertices. The face therefore
+has a central region and three ordered arms of arc regions. At its corner
+$v$, the arm has length $t_v+q_{f,v}$, where $q_{f,v}$ is the count of
+quadrilaterals whose face arc cuts off $v$.
+
+The first $t_v$ face-arm regions map in order to the triangle chambers.
+Only the face's singleton vertex on one side of the quadrilateral partition
+has further regions. Its $q$ remaining regions map to chain indices
+$0,\ldots,q-1$ on the $A$ side, and $q,\ldots,1$ on the $B$ side.
+The central face region maps to the opposite chain endpoint. These are
+at most two affine pieces per face arm, with slopes $+1$ or $-1$.
+
+For a glued face, normal matching equates the two arc-arm lengths.
+Its vertex permutation matches regions of the same rank from the corresponding
+vertices, including its central region. Intersect the two arm partitions
+at their triangle/quad breakpoints. There are at most three nonempty
+rank intervals per arm. Composing the two affine chamber maps produces
+an interval isometry between chamber indices. Add the single central-region
+pair. Self-face gluings and order reversals are included; boundary faces
+produce no identification.
+
+\begin{proposition}[Binary cut-component reduction]
+For $T$ source tetrahedra and maximum coordinate bit length $B$, the described
+system has
+\[
+ N=T+D,\qquad K\le20T,\qquad
+ \log(N+1)=O(B+\log(T+1)),
+\]
+where $D$ is the number of represented normal discs. Its interval orbits
+are exactly the connected components of the cut-open manifold. Construction,
+orbit counting and independent trace replay have polynomial bit complexity
+in the source size and coordinate bit length; replay also charges its supplied
+trace length. No represented normal disc or chamber family is expanded.
+\end{proposition}
+\begin{proof}
+The normal discs form a quadrilateral stack with four compatible nested
+triangle stacks near the vertices. Every disc separates one local chamber,
+so the stated chain and arms account for all $1+q+\sum t_v$ local pieces.
+Each chamber is connected. Cutting a face along its arcs gives precisely the
+central region and its three corner arms. The rank descriptions above record
+which chamber meets every such region. Matching and the face permutation
+give every actual identification across a glued face, without adding an
+identification across the cutting surface.
+
+A path in the cut-open manifold can be perturbed to cross source faces
+through their region interiors, avoiding their edges and vertices. Its
+sequence of local chambers therefore gives an interval-orbit path.
+Conversely every interval arrow is a genuine shared face region and joins
+two connected local chambers. Chaining these paths proves the equivalence.
+A one-sided surface merely causes its two local sides to be identified by
+source face gluings; no global coorientation is assumed.
+
+Summing the local counts gives $N=T+D$. Each glued face contributes at most
+ten interval pairings, and there are at most $2T$ glued face pairs. Also
+$D\le7T\,2^B$, proving the digit bound. Only a constant number of breakpoints
+per face are sorted and composed, so interval construction has linear scalar
+work in $T$, charged at its endpoint bit sizes. The established
+Agol--Hass--Thurston interval algorithm gives polynomial orbit work in
+$K$ and $\log(N+1)$\cite{aht-orbits}; the retained independent local trace
+checker charges all supplied events. Finite manifold validation and exact
+matching validation retain their existing polynomial costs.
+\end{proof}
+
+This is an elementary chamber-connectivity reduction using the existing
+orbit machinery; no new literature-priority claim is made. Regina's
+\code{cutAlong} supplies an independent small-input geometric oracle; its
+API explicitly warns that the expanded triangulation can be very large
+\cite{regina-cut-along}. The native API supplies the component count and
+its source-bound proof, not that expanded triangulation.
+
+\subsection{Independent geometry and binary multiplicity}
+
+The producer numbers chain and triangle-arm intervals and composes face
+maps by evaluating their endpoints. The independent checker derives each
+face's singleton vertex from its quad partition, constructs its affine
+segments and intersects their domains. It reconstructs the canonical chamber
+pairings from the actual validated source and coordinates. It imports neither
+the producer's chamber constructor nor the orbit planner.
+
+The schema \code{normal-cut-components-v1} binds the normalized source
+and coordinates, the cut-component count and the complete ordinary orbit
+certificate. All pairings, the universe size and the final count must match
+the independent construction and replay. Signed binary integer transport
+is retained. Invalid schemas, changed sources or coordinates, changed counts
+and altered traces do not authenticate a result. Cooperative cancellation
+propagates. A capped orbit query contains neither a component count nor
+a certificate, and a replay operation limit means unverified rather than
+any topological conclusion.
+
+Multiplicity must not be divided out as it is for some surface-census queries.
+For $m\ge1$ parallel meridian discs in a solid torus the cut has $m$ pieces;
+$m$ parallel vertex-link discs give $m+1$. For the retained one-tetrahedron
+M\"obius-band vector, its $m$-fold normal vector gives
+$\lfloor m/2\rfloor+1$ pieces. Odd multiplicity includes a one-sided sheet,
+whereas even multiplicity consists of annular doubles. The chamber model
+handles these cases directly on binary counts without producing their copies.
+
+\subsection{Scope still missing for the hierarchy}
+
+The new API is \code{normal\_complement\_components}.
+
+Independent replay uses \code{verify\_normal\_complement\_certificate}.
+
+It is not called by
+the complete recognizer and supplies no knot verdict or new recognition
+asymptotic bound. A cut can have exponentially many components; a count does
+not list them or extract a usable compressed manifold representation.
+
+Post-cut cells with full boundary-pattern transport, component descriptions,
+regluing maps and provenance for lifting later discs are still absent.
+The existing one-torus validator also does not validate arbitrary later
+hierarchy pieces with multiple boundary components. Pattern-sensitive
+surfaces, bounded rebuilds and logarithmic hierarchy depth remain unproved.
+Thus this implements a concrete polynomial connectivity operation inside the
+missing cutting requirement, without claiming that requirement complete.
+
+\subsection{Geometric cross-checks and component-count measurements}
+\input{cut_complement_results.tex}

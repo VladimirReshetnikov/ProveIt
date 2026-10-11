@@ -14,6 +14,7 @@ from .cocycle_transport_verify import (
 from .normal_surface_geometry import _prepare, _quad, NormalOrbitError
 from .normal_disk_kernel import verify_normal_disk_count_certificate
 from .integer_codec import certificate_equal, encoded_integer
+from .cocycle_gauge_verify import verify_cocycle_gauge
 
 
 class _CallbackRaised(BaseException):
@@ -48,46 +49,62 @@ def verify_transport_disk_certificate(diagram, certificate, *, check=lambda: Non
                                diagram, certificate)
 
 
-def _verify_transport_disk_certificate(diagram, certificate, *, check):
-    check()
-    fields = {'schema', 'input_pd', 'source_triangulation', 'shelling',
-              'source_heights', 'steps', 'coordinates', 'disc_certificate'}
-    if (type(certificate) is not dict or set(certificate) != fields
-            or certificate['schema'] != 'diagram-transport-disc-v1'
-            or type(certificate['steps']) is not list):
-        return False
+def _replay_transport_source(diagram,certificate,allow_gauges,check):
+    """Authenticate actual source and every move/gauge before terminal tests."""
     try:
         source = Diagram.from_pd(diagram.pd)
     except (DiagramError, AttributeError, TypeError):
-        return False
+        return None
     if not certificate_equal(certificate['input_pd'], [list(r) for r in source.pd]):
-        return False
+        return None
     raw = certificate['source_triangulation']
     if not verify_diagram_exterior(source, raw, check=check):
-        return False
+        return None
     shelling = certificate['shelling']
     if shelling is not None:
         if (type(shelling) is not dict or set(shelling) != {'triangulation', 'moves'}
                 or not verify_boundary_shellings(raw, shelling['triangulation'],
                                                   shelling['moves'], check=check)):
-            return False
+            return None
         raw = shelling['triangulation']
     try:
         prepared = _prepare(raw, check)
         heights = _read_heights(certificate['source_heights'],
                                 len(prepared['tetrahedra']), check)
         if heights is None or not _check_signed_edges(prepared, heights, check):
-            return False
+            return None
         for step in certificate['steps']:
             check()
+            if type(step)is dict and set(step)=={'gauge'}:
+                if (not allow_gauges
+                        or not verify_cocycle_gauge(raw,heights,step['gauge'],check=check)):return None
+                heights=_read_heights(step['gauge']['heights'],len(raw['tetrahedra']),check)
+                continue
             if type(step) is not dict or set(step) != {'triangulation', 'transport'}:
-                return False
+                return None
             if not verify_cocycle_transport(raw, heights, step['triangulation'],
                                            step['transport'], check=check):
-                return False
+                return None
             raw = step['triangulation']
             heights = _read_heights(step['transport']['heights'],
                                     len(raw['tetrahedra']), check)
+        return source,raw,heights
+    except (ValueError,KeyError,TypeError,IndexError,NormalOrbitError):
+        return None
+
+
+def _verify_transport_disk_certificate(diagram, certificate, *, check):
+    check()
+    fields = {'schema', 'input_pd', 'source_triangulation', 'shelling',
+              'source_heights', 'steps', 'coordinates', 'disc_certificate'}
+    if (type(certificate) is not dict or set(certificate) != fields
+            or certificate['schema'] not in ('diagram-transport-disc-v1','diagram-transport-disc-v2')
+            or type(certificate['steps']) is not list):
+        return False
+    replay=_replay_transport_source(diagram,certificate,certificate['schema']=='diagram-transport-disc-v2',check)
+    if replay is None:return False
+    source,raw,heights=replay
+    try:
         # Reconstruct coherent coordinates independently of local_coordinates.
         expected = []
         for row in heights:
@@ -108,3 +125,29 @@ def _verify_transport_disk_certificate(diagram, certificate, *, check):
         return False
     check()
     return count > 0
+
+
+def verify_transport_annulus_certificate(diagram,certificate,*,check=lambda:None):
+    """Replay a moved source, then a connected primitive annulus and its cap."""
+    return _callback_safe_call(_verify_transport_annulus_certificate,check,diagram,certificate)
+
+
+def _verify_transport_annulus_certificate(diagram,certificate,*,check):
+    check()
+    fields={'schema','input_pd','source_triangulation','shelling','source_heights','steps','surface_certificate'}
+    if (type(certificate)is not dict or set(certificate)!=fields
+            or certificate['schema']!='diagram-transport-annulus-v1'
+            or type(certificate['steps'])is not list):return False
+    replay=_replay_transport_source(diagram,certificate,True,check)
+    if replay is None:return False
+    source,raw,_=replay
+    surface=certificate['surface_certificate']
+    if type(surface)is not dict or surface.get('schema')!='diagram-cocycle-annulus-v1':return False
+    # This predicate closes over this call's independently replayed source.
+    # It accepts no caller-supplied source-verification cache.
+    def bound_source(input_diagram,final,*,check):
+        check();return certificate_equal(final,raw)
+    from .normal_cocycle_verify import _inspect_cocycle_source
+    normalized=dict(surface,schema='diagram-cocycle-disc-v1')
+    result=_inspect_cocycle_source(source,normalized,bound_source,check=check)
+    return result is not None and result[0]['euler_characteristic']==0

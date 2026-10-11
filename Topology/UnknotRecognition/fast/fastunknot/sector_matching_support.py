@@ -6,6 +6,7 @@ back to ordinary complete discovery. The checker reconstructs source rows
 and never imports this forest or elimination code.
 """
 from fractions import Fraction
+from itertools import combinations, product
 
 from .normal_sector import _rref,_source_hash
 
@@ -23,6 +24,52 @@ def _closure(rows,check):
             added=[i for i,_ in active];forced.update(added)
             steps.append((index,sign,added))
         if len(forced)==before:return forced,steps
+
+
+def _pair_step(rows,forced,check):
+    """Find a one-sided consequence in a two-row span, with exact bounds."""
+    if len(rows)<2 or not rows or len(forced)==len(rows[0]):return None
+    for i,j in combinations(range(len(rows)),2):
+        for sa,sb in product((1,-1),repeat=2):
+            check();lower=Fraction(0);upper=None
+            for k,(a,b)in enumerate(zip(rows[i],rows[j])):
+                check()
+                if k in forced:continue
+                a*=sa;b*=sb
+                if not b:
+                    if a<0:break
+                elif b>0:lower=max(lower,-a/Fraction(b))
+                else:upper=-a/Fraction(b) if upper is None else min(upper,-a/Fraction(b))
+                if upper is not None and lower>upper:break
+            else:
+                scale=lower+1 if upper is None else (lower+upper)/2
+                added=[]
+                for k,(a,b)in enumerate(zip(rows[i],rows[j])):
+                    check()
+                    if k not in forced and sa*a+scale*sb*b>0:added.append(k)
+                if added:return [(i,Fraction(sa)),(j,scale*sb)],added
+    return None
+
+
+def _combined_closure(rows,check):
+    """Polynomial sufficient closure; larger row spans may still be needed."""
+    forced,single=_closure(rows,check)
+    steps=[([(index,Fraction(sign))],added)for index,sign,added in single]
+    while True:
+        pair=_pair_step(rows,forced,check)
+        if pair is None:return forced,steps
+        combination,added=pair;forced.update(added);steps.append(pair)
+        while True:
+            before=len(forced)
+            for index,row in enumerate(rows):
+                check()
+                active=[(i,x)for i,x in enumerate(row)if x and i not in forced]
+                if not active:continue
+                sign=1 if active[0][1]>0 else -1
+                if any(sign*x<0 for _,x in active):continue
+                added=[i for i,_ in active];forced.update(added)
+                steps.append(([(index,Fraction(sign))],added))
+            if len(forced)==before:break
 
 
 def _kernel_equations(basis,width,check):
@@ -94,20 +141,20 @@ def matching_support(kernel,check):
     """Return retained original indices and a replayable sufficient proof."""
     width=len(kernel.support)
     equations=_kernel_equations(kernel.basis,width,check)
-    forced,_=_closure(equations,check)
+    forced,_=_combined_closure(equations,check)
     if not forced:return list(range(width)),None
     augmented=_source_constraints(kernel.prepared,kernel.support,check)
     rows=[row[:width]for row in augmented]
-    actual,steps=_closure(rows,check)
+    actual,steps=_combined_closure(rows,check)
     if rows!=equations or actual!=forced:
         raise ArithmeticError('source equation provenance disagrees with matching kernel')
     records=[]
-    for index,sign,added in steps:
+    for coefficients,added in steps:
         check();combination=[]
-        for number,value in enumerate(augmented[index][width:]):
+        for number in range(len(kernel.prepared['matching'])):
             check()
+            value=sum(scale*augmented[index][width+number]for index,scale in coefficients)
             if value:
-                value*=sign
                 combination.append([number,value.numerator,value.denominator])
         records.append(dict(row_combination=combination,forced_indices=added))
     proof=dict(schema='normal-sector-matching-support-v1',source_sha256=_source_hash(kernel.triangulation),

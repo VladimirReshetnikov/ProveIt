@@ -3928,3 +3928,134 @@ focused tests pass. The geometric restart count is bounded by the initial
 tetrahedron count, but no small-upward universal reach or terminal theorem
 is claimed. Epoch mode and the optional Pachner stage stay off by default.
 Reproduce the actual-diagram audit with `causal_research.epochs`.
+
+Epoch mode can periodically reoptimize the current source's integral vertex
+gauge. API: `pachner_seed_regauge_interval=4`; CLI:
+`--pachner-seed --pachner-seed-epochs 64 --pachner-seed-regauge-interval 4`.
+The default zero interval preserves the preceding policy. The producer
+anchors component constants and requires nonincreasing disc span. Its
+independent `verify_cocycle_gauge` reconstructs source vertices and checks
+the exact corner equation; it imports no optimizer or flow solver. Edge
+changes are one global integer coboundary, so every cohomology period is
+preserved, although the coherent normal fibre can change topology.
+
+Mixed move/gauge proofs use `diagram-transport-disc-v2`, replaying every
+geometric move and every gauge from the original input; old v1 move-only
+proofs remain valid. No optimizer assertion, lower span or Euler value can
+replace the final essential-disc certificate. Shared caps and complete
+fallback remain, with no default activation of the optional stage.
+
+The actual genus-one-miss disc now needs 24 rather than 33 descents, 83
+rather than 191 nodes and about 32% fewer checkpoints. Six optimizer calls
+produce three actual changes; its full v2 proof has 32 geometric moves
+and three gauge steps. All 1,521 tests and 28 focused tests pass, including
+source/potential forgeries, schema downgrade rejection, optimizer-disabled
+replay and portable 9,000-bit common offsets. The precise source audit and
+configured-call timings are in `causal_research.epoch_gauge`.
+
+Explicit epoch mode can authenticate a primitive annulus cap with
+`pachner_seed_annulus=True` or
+`--pachner-seed --pachner-seed-epochs 64 --pachner-seed-annulus`.
+The default is false. The adapter retains current-source minimum-span
+witnesses at optimization checkpoints and discards them after geometry
+changes. A zero-Euler candidate is accepted only by independent source,
+matching, primitive-period and connectivity/optimality replay. A valid
+nonprimitive minimum-span witness is explicitly rejected.
+
+`diagram-transport-annulus-v1` carries the original source and complete
+move/gauge chain plus the terminal primitive surface certificate.
+`verify_transport_annulus_certificate` replays the exact final source and
+uses the existing connected primitive annulus theorem to authenticate its
+boundary cap. It imports no optimizer or source/move producer and stores
+no fictitious normal vector for the capped disc. Existing v1/v2 normal-disc
+proofs retain their final component authority.
+
+The actual optimized-positive source now returns a certified annulus at
+48,281 checkpoints and zero epochs, instead of reaching the two-million
+work cap. All 1,529 tests and 36 focused tests pass, including a nonempty
+move/gauge chain, topology/dual/source forgeries, valid doubled nonprimitive
+arithmetic, CLI routing and cap-safe complete fallback. The other sampled
+disc proofs and negative controls are preserved. All optional defaults
+remain off; the general quasi-polynomial recognition bound is still open.
+Reproduce the audit and configured-call timings with `causal_research.annulus`.
+
+### Exact sector transcripts through binary integer transport
+
+The independent sector-exhaustion checker now decodes its ray-count and Euler
+fields with the same strict signed hexadecimal codec used by the component
+proofs. Equivalent integer and hexadecimal values have identical mathematical
+meaning. Booleans, floats, decimal strings, malformed encodings, changed counts
+and incorrect support widths are rejected; allowed-type indices keep their
+existing strict schema. A verified nested Q transcript is decoded before its
+positive support is extracted, so a hexadecimal zero remains zero.
+
+All 1,534 maintained tests and 24 focused tests pass. Tests use actual source
+triangulations and cover all exhaustion statuses, nested support reductions,
+producer-disabled replay, changed large binary values and cancellation.
+This fixes certificate compatibility for compressed arithmetic; it does not
+change the search policy or establish a new recognition complexity bound.
+See [the bit-size proof and replay evidence](../synthesis/sector_integer_transport.tex).
+
+### Two-row source matching implications
+
+High-nullity automatic standard discovery now considers exact signed two-row
+combinations after the existing one-row sign propagation. Rational interval
+bounds find nonnegative active consequences, and source-equation provenance
+uses the existing certificate schema and independent checker. The closure
+has polynomial `O(k^4)` scalar work with polynomial bit cost; combinations
+of three or more rows can still expose zeros that it misses. Complete fallback
+and the original support statement remain authoritative.
+
+The source pilot finds fifty extra reductions among 3,412 sectors on 48
+triangulations. Two raw-nullity-four sectors bypass generic Q screening,
+reach nullity-three adaptive discovery, and drop attempted candidates from
+63 to seven. Their complete native source-query paired ratios are about
+1.55 and 1.53, including preparation, proof replay and serialization.
+The existing-reduction control is at parity; the unreduced control has
+about five percent overhead in this sample. No full-recognition timing or
+new general complexity theorem follows. All 1,540 tests and 22 focused
+tests pass. The optional diagram geometry policy remains off.
+
+Reproduce the source evidence from this directory with:
+
+```sh
+PYTHONPATH=. python -B -m normal_orbit_research.matching_pairs audit --output ../synthesis/data/matching-pairs-audit.json
+PYTHONPATH=. python -B -m normal_orbit_research.matching_pairs benchmark --rounds 5 --output ../synthesis/data/matching-pairs-benchmark.json
+```
+
+The audit uses Regina for independent source-ray checks. See
+[the theory, counterexample and measurements](../synthesis/matching_pairs.tex).
+
+### Binary cut-open component connectivity
+
+`fastunknot.normal_cut_complement.normal_complement_components` counts the
+connected pieces after cutting a supplied valid normal surface. It represents
+local quad-stack/triangle-arm chambers with at most `20*T` interval pairings,
+regardless of the number of represented normal discs. Unlimited work is
+polynomial in the source and binary coordinate size. Independent replay is
+`fastunknot.normal_cut_complement_verify.verify_normal_complement_certificate`;
+it reconstructs face regions without the chamber or orbit producers.
+
+Parallel coordinates are retained: cutting along `m` parallel meridians gives
+`m` pieces, while the retained Möbius-band vector gives `floor(m/2)+1`.
+A capped query has no count or certificate. Source geometry retains the
+existing finite compact orientable one-torus-boundary contract. The API
+returns a count and optional source-bound proof; it does not return full cut
+triangulations, boundary patterns, regluing maps or a knot verdict. It is not
+called by recognition and establishes no new general recognition bound.
+
+All 1,548 tests and eight focused tests pass. The audit agrees with 2,019
+actual Regina cuts on 48 sources and independently checks thirteen large
+binary cases, including a 16,385-bit coordinate certificate. At 1,024 copies,
+the measured count task is about 74.9 times faster than an explicit Regina
+cut-and-count baseline. Native Python replay is slower on the smallest
+inputs; the baseline additionally constructs the expanded triangulation.
+Reproduce from this directory (Regina is required only by the research driver):
+
+```sh
+PYTHONPATH=. python -B -m normal_orbit_research.cut_complement audit --output ../synthesis/data/cut-complement-audit.json
+PYTHONPATH=. python -B -m normal_orbit_research.cut_complement benchmark --rounds 5 --output ../synthesis/data/cut-complement-benchmark.json
+```
+
+The theory, independent construction and missing hierarchy geometry are in
+[cut_complement.tex](../synthesis/cut_complement.tex).

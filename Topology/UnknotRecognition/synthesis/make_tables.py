@@ -1767,3 +1767,19 @@ if os.path.exists('data/cover-oracle-diagram-benchmark.json'):
 if os.path.exists('data/pachner-epochs-benchmark.json'):
     import runpy
     runpy.run_path('data/pachner_epochs_tables.py')
+
+if os.path.exists('data/epoch-gauge-benchmark.json'):
+    import runpy
+    runpy.run_path('data/epoch_gauge_tables.py')
+
+if os.path.exists('data/transport-annulus-benchmark.json'):
+    import runpy
+    runpy.run_path('data/transport_annulus_tables.py')
+
+if os.path.exists('data/matching-pairs-benchmark.json'):
+    import runpy
+    runpy.run_path('data/matching_pairs_tables.py')
+
+if os.path.exists('data/cut-complement-benchmark.json'):
+    import runpy
+    runpy.run_path('data/cut_complement_tables.py')

@@ -1,0 +1,67 @@
+All 1,548 maintained tests pass in 288.894 seconds; the eight focused tests
+pass in 0.284 seconds. They check actual-source chamber pairings, empty cuts,
+parallel meridians and vertex links, one-sided sheets and their doubles,
+mixed link/quad surfaces, source and trace mutations, producer-disabled
+replay, operation/cycle caps and cancellation. A 16,385-bit coordinate
+certificate passes ordinary binary JSON transport and independent replay.
+
+The initial geometric pilot matches 1,635 standard-vertex or empty surfaces
+on 48 source triangulations against Regina's cut-open component counts.
+The integrated 10.894-second audit repeats those actual cuts with the native
+source-bound proof and independent chamber reconstruction, and adds 384
+compatible mixed-coordinate surfaces. Every one of the 2,019 expanded-cut
+checks agrees. These are surface instances, not 2,019 distinct triangulations.
+All native proofs replay with chamber and orbit producers disabled.
+
+Thirteen further binary cases include parallel meridians on one-, four- and
+sixteen-tetrahedron layered solid tori, with multiplicity one, $2^{128}$ or
+$2^{500}$; a one-tetrahedron $2^{16384}$ meridian case; and large vertex-link
+and odd/even M\"obius-sheet families. Their counts agree with the geometric
+family formulas above, and their exact certificates independently replay.
+No expanded Regina cut is attempted for the enormous multiplicities.
+The sixteen-tetrahedron meridian family takes 68 orbit cycles for all three
+scales; the one-tetrahedron meridian family takes four. These observations
+support the implementation checks, while the general polynomial guarantee
+comes from the proved chamber reduction and interval algorithm.
+
+The audit retains 157 representative original-source proofs, including all
+thirteen large cases. The publication review independently replays these,
+checks the complete oracle records and authenticates 658 source/evidence
+hashes together with the exact pilot and source-bank hashes.
+
+Five paired timing rounds measure 80 completed component-count calls and
+sixteen warmups, with identical-baseline A/A arms. Each input is a binary
+multiple of the primitive meridian of the same one-tetrahedron source.
+The baseline constructs a Regina cut-open triangulation and counts its
+components, including its source/surface construction and result serialization.
+The native arm constructs chamber intervals, counts their orbits, independently
+replays the source-bound certificate and serializes its result. Thus the
+comparison has the same requested count but different intermediate artifacts:
+only the baseline constructs the expanded cut triangulation. It is not a
+comparison of two complete cut-manifold constructors or two knot recognizers.
+\input{tables/cut_complement_counts.tex}
+
+At 1,024 copies the paired explicit/native ratio is 74.860, with median
+34.197 versus 0.468 milliseconds. The explicit cut has 13,330 tetrahedra;
+the compressed model has 3,073 chamber points, three interval pairings and
+four orbit cycles. At 128 copies the ratio is 4.826. At one and sixteen
+copies the ratios are 0.353 and 0.935: native Python validation and independent
+proof replay have a larger small-input constant than the C++ expanded baseline.
+These regressions are retained rather than presented as improvements.
+
+The new A/A ratios range from 1.023 to 1.119 and the old ones from 0.914
+to 1.020. Submillisecond observations fluctuate; the large ratio is not a
+precise universal speedup. The important asymptotic distinction is the
+binary count operation versus constructing every represented chamber.
+No general recognition speedup or changed recognizer default follows.
+
+Runtime release \code{cbbd59371}, the passing tests, both source audits and
+the complete count-task measurements are retained.
+
+The driver is \code{normal\_orbit\_research.cut\_complement}, with audit
+and benchmark modes. Records are under \code{data/cut-complement-*} and
+\code{data/complement-chamber-pilot.*}. The operator completes the local
+cut-connectivity calculation under its existing source contract. It does
+not extract or validate later hierarchy pieces, transport boundary patterns
+or prove logarithmic depth. The full compressed-cutting obligation and
+general quasi-polynomial recognition bound remain open.

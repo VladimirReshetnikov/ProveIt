@@ -1032,6 +1032,19 @@ import GowersSzemeredi.Proofs16PieceCoverWithRemainder
 import GowersSzemeredi.Proofs16VertexWithCovers
 import GowersSzemeredi.Proofs16PolyPieceTwoInputs
 import GowersSzemeredi.Proofs16PolyPieceTwo
+import GowersSzemeredi.Proofs16FamilyRetiledLinearity
+import GowersSzemeredi.Proofs16FamilyLemma6
+import GowersSzemeredi.Proofs16FamilyAffineLift
+import GowersSzemeredi.Proofs16FamilyLemma9
+import GowersSzemeredi.Proofs16FamilyPieceCover
+import GowersSzemeredi.Proofs16AbstractFamily
+import GowersSzemeredi.Proofs16RelationLift
+import GowersSzemeredi.Proofs16RelFreimanCover
+import GowersSzemeredi.Proofs16PolyPieceTwoData
+import GowersSzemeredi.Proofs16PolyFamilyTwo
+import GowersSzemeredi.Proofs16PolyCoverTwo
+import GowersSzemeredi.Proofs18LengthSixRoute
+import GowersSzemeredi.Proofs18WidthPowerBounds
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

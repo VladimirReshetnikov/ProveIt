@@ -1475,3 +1475,113 @@ with `python -B data/pachner_epochs_review.py --publication` from this directory
 They check 646 runtime pins, exact disabled/capped complete verdicts, all
 timing outcomes and all three saved original-source disc chains with
 epoch/move/transport producers disabled during replay.
+
+[epoch_gauge.tex](epoch_gauge.tex) authenticates periodic integral vertex
+coboundaries, mixed original-source move/gauge chains and their representation
+bounds. The checker trusts neither an optimizer nor its objective. The
+target actual diagram disc decreases from 33 to 24 epochs, 191 to 83 nodes
+and roughly 914,561 to 622,768 checkpoints, with three exact gauge steps.
+All 1,521 tests and 28 focused tests pass; all six tested verdicts and
+legacy proof behavior remain. Fresh Regina confirms all three returned
+discs. The full optimizer, replay and query costs are included in the paired
+measurements; the optional stage and interval remain disabled by default.
+Records are `data/epoch-gauge-*`. General recognition reach remains open.
+
+The current [PDF](report.pdf) has 599 pages. Section 151 starts on page 591;
+the assessment is section 152 on page 594. Rendered pages 591–596 pass visual
+review, including the complete theorem, representation bounds, actual audit,
+timing tables, assessment continuation and references. All references resolve;
+only the four existing overflow warnings remain. Reproduce publication checks
+with `python -B data/epoch_gauge_review.py --publication` from this directory.
+They check 650 runtime pins, all complete/capped outcomes and all three
+original-source disc proofs with epoch, gauge optimization, move/search and
+source producers disabled during replay. The actual three gauge records
+and 35-step target chain are checked explicitly.
+
+[transport_annulus.tex](transport_annulus.tex) authenticates the retained
+primitive annulus capping theorem on a source-replayed endpoint. It
+requires independent connectivity, primitive period and minimum-span
+arithmetic, and preserves original-input geometry/transport authority.
+The optimized-positive case now returns an annulus certificate rather
+than reaching the disc-only work cap. All 1,529 tests and 36 focused tests
+pass; fresh Regina confirms one annulus and three retained disc witnesses.
+The optional feature remains off, and other negative controls still use
+complete fallback. Failed endpoint-window, repeated-shelling and edge-first
+pilots are preserved under `data/endpoint-negative-pilots.json`. Current
+source audits and timings are `data/transport-annulus-*`.
+
+The current [PDF](report.pdf) has 603 pages. Section 152 starts on page 594;
+the assessment is section 153 on page 598. Rendered pages 594–600 pass visual
+review, including the full capping proof, source-chain authentication, both
+timing tables, assessment continuation and references. All references resolve;
+only the four existing overflow warnings remain. Reproduce publication checks
+with `python -B data/transport_annulus_review.py --publication` from this directory.
+They check 652 runtime pins, all six actual diagram outcomes, four complete
+original-source proofs with producers disabled, the passing test records and
+the retained negative pilots. The comparison includes all preparation and replay;
+the old optimized-positive native query is capped, rather than an exhausted
+search family. The full optional-call ratio is 62.726 on this one input;
+ordinary recognition without the optional stage remains faster here.
+
+[sector_integer_transport.tex](sector_integer_transport.tex) repairs exact
+binary serialization of sector ray counts, Euler values and nested positive
+support extraction. It includes the standard determinant proof of the
+primitive vertex-coordinate bound and separates ray-field size from ray
+count, component-proof size and full search cost. The source checker still
+rebuilds every expected geometric ray and retains independent component
+proofs. No new general recognition bound or speedup is claimed.
+
+The current [PDF](report.pdf) has 604 pages. Section 153 starts on page 598;
+the assessment is section 154 on page 600. Rendered pages 598–602 pass visual
+review, covering the full determinant proof, exact transport contract, real-source
+evidence, assessment continuation and references. All references resolve and
+only four pre-existing overflow warnings remain. Reproduce the retained-source
+audit with `python -B data/sector_integer_audit.py`; publication checks use
+`python -B data/sector_integer_review.py --publication` from this directory.
+The evidence retains 134 proof instances and 422 current core-runtime/test
+hashes, alongside the prior 652-source inventory comparison.
+
+[matching_pairs.tex](matching_pairs.tex) proves exact two-row-span detection,
+polynomial sufficient zero closure and original-source proof preservation.
+It preserves a three-row counterexample to complete maximal-support claims.
+The finite 3,412-sector pilot supplies fifty further reductions; fifty source
+implications replay with producers disabled. Two automatic targets bypass
+generic Q screening before reaching the same nullity-three feasible span.
+All 1,540 tests and 22 focused tests pass. Eighty completed paired native
+source-query measurements include preparation, geometry, component proofs,
+full-sector replay and serialization; target ratios are 1.550 and 1.531.
+An unreduced control exposes the additional scanning cost. No full knot
+recognition speedup or general quasi-polynomial theorem is claimed.
+
+The current [PDF](report.pdf) has 608 pages. Section 154 starts on page 600;
+the assessment is section 155 on page 603. Rendered pages 600–605 pass visual
+review, including the pair-span proof, counterexample, source authority, complete
+timing table, assessment continuation and references. All references resolve
+and only four pre-existing overflow warnings remain. Reproduce publication
+checks with `python -B data/matching_pairs_review.py --publication` from this
+directory. They verify 654 current source/evidence hashes, fifty independent
+source implications, four complete sector certificates and all 80 measured
+calls, as well as test logs and the finite pilot scope.
+
+[cut_complement.tex](cut_complement.tex) proves a polynomial binary reduction
+from cut-open normal-surface component connectivity to interval orbits. It
+retains source-relative geometry and handles one-sided and parallel sheets
+without disc expansion or multiplicity division. Independent replay rebuilds
+face regions separately. The source audit agrees with 2,019 Regina cuts on
+48 triangulations; thirteen large binary cases and 157 saved proofs replay.
+All 1,548 tests and eight focused tests pass. Eighty completed count-task
+measurements include construction, independent native replay and serialization.
+The expanded baseline is faster on tiny inputs; its ratio to native count
+at 1,024 copies is 74.860. The native API does not construct a full cut manifold
+or integrate into the recognizer; patterned cutting and global depth remain open.
+
+The current [PDF](report.pdf) has 611 pages. Section 155 starts on page 603;
+the assessment is section 156 on page 606. Rendered pages 603–608 pass visual
+review, including the full chamber proof, independent geometry, count-task
+timing table, assessment continuation and references. The new operation
+citation on page 611 was also inspected. All references resolve and only
+four pre-existing overflow warnings remain. Reproduce publication checks with
+`python -B data/cut_complement_review.py --publication` from this directory.
+They replay all 157 saved source proofs with producers disabled, check 658
+current source/evidence hashes and authenticate all oracle, test and timing
+records. The API counts components; full patterned cut geometry stays open.
