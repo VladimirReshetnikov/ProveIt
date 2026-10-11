@@ -4244,6 +4244,31 @@ The verification result and input-source hashes are in
 `verification/2026-10-11-numbered-and-bounds.json` and its referenced manifest.
 These results supersede the pending production-check notices in L.13–L.16.
 
+## L.18 Integer-representative fidelity follow-up (2026-10-11)
+
+The new active goal includes the remaining fidelity obligations, beyond
+the corrected-catalogue completion of L.17. The current `ModAP.IsProper`
+predicate means that the parameterization has no repeated residues. It
+does not imply that the canonical integer representatives form an ordinary
+arithmetic progression. `Proofs05IntegerRepresentatives` kernel-proves
+the counterexample `6,0,1` modulo 7: its carrier has cardinality three,
+while its representative set `{0,1,6}` has no positive-step integer AP
+representation of length three.
+
+The module introduces `ModAP.HasIntegerRepresentatives`, requiring a
+positive-step `NatAP` of the same length, entirely in `[0,N)`, whose cast
+carrier equals the modular carrier. It proves that this implies the
+existing properness predicate and recovers that `NatAP` by taking
+`ZMod.val` of the carrier, over any nonzero modulus. It also proves the
+integer-representative conclusion for every ordinary progression whose
+unreduced terms lie below the modulus, without primality assumptions.
+
+The editorial note before Lemma 5.12 records this formalization issue.
+The catalogue proofs of Lemmas 5.12--5.13 normalize the modular orbit,
+which proves the current weaker properness conclusion. They still need
+the genuine geometric refinement and its stated quantitative cell count.
+No counterexample to the paper's Lemmas 5.12--5.13 is claimed.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
