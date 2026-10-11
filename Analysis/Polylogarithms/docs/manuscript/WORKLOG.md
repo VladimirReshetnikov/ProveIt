@@ -631,3 +631,29 @@ coupled rounds and independent cold builds pass. All 40 external links checked;
 10 changed volume and two unmatched combined bodies reviewed at full size,
 with exact inherited body review for the remainder. Bibliography 136; inventory
 1333; cumulative preservation 90 archives/3328 tracked originals.
+
+
+## Integration-by-parts and inverse-Gamma parity checkpoint
+
+Incoming state unchanged at the initial inspection; preserve the completed
+ninety-archive census. Audit and reconcile the shared formal core of the
+Bernoulli-Tornheim, differential-polygamma and tail reports. Prove the
+triangular normal form, factor-degree dimensions, finite endpoint map,
+primitive-carrying recurrence and inverse-Gamma parity at every weight.
+The total-derivative image is not an ideal; period independence is not inferred.
+
+Independent exact matrix certificates cover 506 monomials at weights 2--14.
+Bell, Lagrange, parity and pair recurrences cover degrees 2--12; five printed
+normal forms and three endpoint constants pass with a rejected cross-pole
+omission. Native Wolfram checks the exact endpoints and both derived integral
+identities independently by 90-digit quadrature. An initial native helper
+used the protected symbol E; it was stopped, renamed and replayed successfully.
+The slow general symbolic exponential expansion was replaced by its exact
+finite partition coefficient formula; no incomplete run supports a claim.
+
+Four-volume build and independent cold compilations pass, 129/127/211/84
+pages (551 total); combined 513. All 40 external destinations verified.
+Six changed Volume III bodies and two unmatched combined contents pages
+reviewed at full size; exact inherited body review covers the remainder.
+Gamma-Appell transport, explicit sixth/seventh arithmetic coordinates and
+broader report integrations remain pending. S6 and revised S8 stay open.

@@ -705,8 +705,8 @@ multishift precisions. Analytic acceptance remains a separate boundary.
 | `polygamma-tail-identities` | Accept the common derivative-ideal unsubtracted expansion, residue cancellation, ordinary finite-part coordinates and anchored primitive after independent proof audit. Continues the canonical fifth report optimal-prefix conjecture for adjacent even orders, all quadratic Hurwitz products, derivative-containing polynomials and a complete sixth-moment coordinate. Overlaps the two differential deliveries; no S6 ladder proof is claimed. |
 
 The Chapter 8 extension accepts the analytic convergence core for arbitrary
-fixed differential polynomials by scalar/derivative-ideal decomposition. It
-does not automatically accept quotient dimensions, arithmetic coordinate
+fixed differential polynomials by scalar/derivative-ideal decomposition. The formal integration-by-parts quotient and inverse-Gamma factor parity
+are now separately proved; it does not automatically accept arithmetic coordinate
 reductions, general tail ranks, branch-completed reflections or period identities.
 The newer optimal-prefix slices still need independent uniform proof audit;
 the original conjecture remains historical evidence. No delivered source
@@ -715,5 +715,26 @@ claim was retracted from an unread or unproved extension.
 Independent native replay passes sixteen frozen residues, one scalar control
 and three fixed-coordinate moment diagnostics. The complete incoming finite
 differential audit passes separately. Current inventory is 1333 textual
-provenance documents. The canonical volumes contain 129/127/208/84 pages,
+provenance documents. The canonical volumes contain 129/127/211/84 pages,
 136 references, and 40 verified external destinations.
+
+
+## Canonical integration by parts and inverse-Gamma factor parity
+
+Accept the shared formal normal-form core of bernoulli-tornheim-digamma,
+differential-polygamma-lerch-jets and polygamma-tail-identities. The quotient
+is a vector-space quotient, with a terminating triangular decomposition,
+partition/factor-degree dimensions and a retained finite endpoint functional.
+The total-derivative image is not an ideal. A formal Lagrange concomitant proves
+inverse-Gamma factor parity at every degree; the primitive-carrying recurrence
+is explicit. These dimensions do not count independent numerical periods.
+
+Independent matrix inversion verifies 506 monomial decompositions at weights
+2--14, both inverse certificates and factor-degree preservation. Eleven Bell,
+Lagrange, parity and pair-recurrence checks verify inverse-Gamma degrees 2--12;
+five printed normal forms and three endpoint constants pass. A missing-cross-
+pole control is rejected. Native Wolfram independently checks the three
+endpoint constants and two derived finite-part identities at 90 working digits.
+No quadrature interval certificate is claimed. Gamma-Appell transport,
+explicit sixth/seventh arithmetic coordinate families and broader incoming
+branches remain separate pending audits. S6 and revised S8 remain conjectural.
