@@ -16,7 +16,9 @@ set by `fixDeg k = 2^(k+5) + 7`). One step costs `236·2^k + O(k²)`
   exponent `α^(2^(2^(d+7)))`** (`theorem_18_1_d7_of_profiles_cover`);
 * `genMuT_le`: `genMuT k ≤ 505·2^k` for `k ≥ 7`, giving **Theorem 18.2 at
   every length `L ≥ 11` with `L + 5`** (`theorem_18_2_L5_of_profiles_cover`).
-  Below `L = 11` the cubic stopping term `40(k+2)³ + 1095` exceeds `2^(L+5)`.
+  Below `L = 11` the cubic stopping term `40(k+2)³ + 1095` blocks `L + 5`:
+  it exceeds `2^(L+5)` itself for `L ≤ 8`, and its excess from the first
+  steps persists in the envelope at `L = 9, 10`.
 `d + 6` and `L + 4` would need a step cost below `128·2^k`. -/
 set_option autoImplicit false
 noncomputable section

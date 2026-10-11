@@ -50,6 +50,54 @@ Scope
   exact companions and related results. Historical checkpoint counts below
   refer to their respective earlier states.
 
+How the gap in Gowers's proof was closed — summary (2026-10-11)
+  Three separate obstructions stood between the printed argument and
+  formal proofs of the Section 16 and Section 18 statements. Each was
+  removed by a different repair.
+  1. Section 16, the anchor lift of Lemma 16.10 (notes L, L.3–L.6b).
+     The printed comparison q(sigma/p,gamma,k+1)^p <= q(rho,gamma,k+1)
+     fails because p grows with 1/rho. The union rule for multiply-linear
+     sets costs exponentially in the number of pieces. The printed
+     two-premise encoding of Lemma 16.10 is formally refuted; the catalogue
+     now states a repaired Lemma 16.10 with a weaker explicit cover
+     conclusion, and that statement is proved.
+     Repair (route II): replace the fixed control functions of
+     MultiplyLinear by power-uniform classes with polynomial controls
+     (PolyCoverAt), read every remainder vertex as a lower-dimensional
+     product function (faces as cylinders), and induct over the dimension
+     with explicit degrees. The degrees fit the printed tower slack.
+     Result: theorem_16_2_explicit, corollary_16_11_explicit, every
+     dimension.
+  2. Section 13, Lemma 13.5 (notes L.7c, L.9). The printed proof takes one
+     square root per affine form, so the cell-size exponent sigma of
+     Theorem 18.1 became exponential in 1/alpha at the degree-three base.
+     Repair: a Lemma 13.5 polynomial in the number of forms, from the
+     corpus's common-difference partition (ProgressionPhasePartition).
+     Result: Theorem 18.1 at degree three with polynomial exponents.
+  3. Section 18, the inverse induction (notes L.7a, L.10–L.12). The
+     single-piece step needs one multilinear map for the remainder, a sum
+     over the 2^k - 1 non-top cube vertices. Applying one provider per
+     vertex, each at the density the previous one left, multiplies the
+     degrees (log-degree ~ 136*3^k). That outgrows the printed budgets at
+     degree 10 and length 14. Repair: compose the vertex covers at one
+     precision fixed in advance and pigeonhole once (joint vertex covers);
+     the degrees add (~ 68*2^k + k). The envelope is then <= 1000*2^k
+     against budgets 4096*2^k and 8192*2^k.
+     Result: theorem_18_1_explicit, theorem_18_2_explicit,
+     corollary_18_7_explicit (and theorem_1_2/1_3_explicit) in every
+     degree and length, plus sharper constants (d+7, L+6, L+5 for L >= 11).
+  Write-up: Research/GowersSzemeredi/joint-vertex-covers/joint-vertex-covers.pdf.
+
+Verification of the cover route (2026-10-11)
+  The local faithful stubs (mkstub_cover.py, mkstub_sharp.py) were
+  superseded the same day by the production CompletionAudit (see Scope):
+  1,440 modules built from the actual source, exact-type checks of all 120
+  numbered statements and of the improved-bound results, transitive axioms
+  propext, Classical.choice and Quot.sound only. A local full-closure build
+  started here (about 18 hours on this host) was stopped as redundant.
+  scripts/gowers_bridge_axioms.lean is a quick standalone #print axioms
+  check of the 13 bridge theorems for any later rebuild.
+
 Sharper exponents for Theorems 18.1 and 18.2 — 2026-10-11 (notes L.15)
   The joint-cover envelopes are a quarter of the printed budgets, so:
   - theorem_18_1_sharper_four_le: Theorem 18.1 at every degree d >= 4 with

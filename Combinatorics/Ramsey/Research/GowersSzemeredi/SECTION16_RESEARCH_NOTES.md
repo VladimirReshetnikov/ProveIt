@@ -4161,10 +4161,11 @@ budgets of L.13–L.14 to the production inverse step.
   case is involved).
 
 Degrees below four and lengths below six keep the printed constants (their
-proofs are the corpus's). **The method stops here:** the exact envelope
+proofs are the corpus's). At the standard parameters the exact envelope
 recursion grows like `536·2^k` (L.12's model), above `512·2^k`, so `d + 7`
-and `L + 5` would need a smaller per-step cost than `268·2^k`, i.e. a
-smaller class degree than `68·2^l` or a cheaper spectrum and slice stage.
+and `L + 5` need a per-step cost below `256·2^k`. *(Audit correction: an
+earlier version said this needs a smaller class degree or a cheaper
+spectrum and slice stage. L.15a gets it from the base budget `μ₀` instead.)*
 
 **L.15a (same day): one constant further, from the base budget.** The step
 cost `268·2^k` is `68·2^k` (vertex covers) + `μ₀` + `136·2^k` (two slice
@@ -4178,8 +4179,15 @@ controls), and the standard `μ₀ = genMu0 k ≈ 64·2^k` comes from the loose
   **Theorem 18.1 at every `d ≥ 4` with exponent `α^(2^(2^(d+7)))`**
   (`theorem_18_1_d7_of_profiles_cover`);
 - `genMuT_le` (`≤ 505·2^k`, `k ≥ 7`): **Theorem 18.2 at every `L ≥ 11`
-  with `L + 5`** (`theorem_18_2_L5_of_profiles_cover`); for `L ≤ 10` the
-  cubic stopping term `40(k+2)³ + 1095` exceeds `2^(L+5)`.
+  with `L + 5`** (`theorem_18_2_L5_of_profiles_cover`). Below `L = 11`
+  the cubic stopping term `40(k+2)³ + 1095` (from the catalogue's Weyl
+  threshold `2^(2^(40k³))`) blocks `L + 5`. For `L ≤ 8` it exceeds
+  `2^(L+5)` by itself (`3655 > 2048`, `6095 > 4096`, `9735 > 8192`). At
+  `L = 9, 10` it does not (`14815 < 16384`, `21575 < 32768`), but the excess
+  it put into the envelope at the first steps persists: the model ratios
+  `(μ + 2L + 14)/2^(L+5)` are `1.10` and `1.02`, and `0.98` at `L = 11`.
+  *(Audit correction: an earlier version said the cubic term itself exceeds
+  `2^(L+5)` for every `L ≤ 10`.)*
 Bridge additions in `Proofs18CoverSharperExplicit`:
 `theorem_18_1_d7_four_le`, `theorem_18_2_L5_eleven_le` (same stub axioms).
 `d + 6` and `L + 4` would need a step cost below `128·2^k`, i.e. both the
