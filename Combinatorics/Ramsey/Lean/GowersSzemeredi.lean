@@ -1133,6 +1133,7 @@ import GowersSzemeredi.Proofs18CoverColorings
 import GowersSzemeredi.Proofs18CoverSharperComparisons
 import GowersSzemeredi.Proofs18CoverSharperLowDegrees
 import GowersSzemeredi.Proofs18CoverSharperAllDegrees
+import GowersSzemeredi.Proofs18CoverSharperShortLengths
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

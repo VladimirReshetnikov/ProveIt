@@ -4207,7 +4207,21 @@ stub axioms: `commonDiffPartitionBoundAt_of`,
 `section16RecurrenceProfileWith_explicit` (the corpus theorems the production
 audit verified). These two modules postdate the production audit.
 
-A three-page mathematical write-up of L.12-L.15b is in
+**L.15d: Theorem 18.2 and Corollary 18.7 with `L + 6` in every length.**
+The corpus's short lengths have explicit thresholds far below the printed
+ones (Roth's `exp(exp(10¹²·δ⁻¹))` for `L ≤ 3`; towers with `2^21` and
+`2^73` on top for `L = 4, 5`), and they stay below the tower with `L + 6`
+on top (`Proofs18CoverSharperShortLengths`, light). With the joint-cover
+envelope for `L ≥ 6`, `Proofs18CoverSharperAllDegrees` proves
+`theorem_18_2_L6`, `corollary_18_7_L6` (every `L`) and the implications
+`theorem_18_2_L6_implies_printed : theorem_18_2`,
+`corollary_18_7_L6_implies_printed : corollary_18_7`; stub axiom:
+`section16RecurrenceProfileWith_explicit` only. The short-lengths module
+was checked against the existing oleans (`build_trust.py`): the concurrent
+`Section05` edit for Lemmas 5.12–5.13 made every module stale by
+timestamp, and the full rebuild belongs to the production audit.
+
+A three-page mathematical write-up of L.12-L.15d is in
 `joint-vertex-covers/joint-vertex-covers.tex` (PDF beside it).
 
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
