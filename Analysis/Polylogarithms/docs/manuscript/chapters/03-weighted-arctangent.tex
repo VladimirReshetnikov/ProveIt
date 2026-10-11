@@ -1,0 +1,335 @@
+\section{Weighted arctangent families in classical trilogarithms}
+\label{xid:wat:sec}
+The bilinear integral underlying Section~\ref{cleo:sec:square} reduces to the
+product of its half-angle parameters. Inserting the weight $1/\sin x$
+changes that structure, but it still leaves an exact evaluation in
+classical dilogarithms and trilogarithms. Hyperbolic sums and differences
+of the parameters replace their product. This provides a new arithmetic
+route at real algebraic parameters, alongside the unit-circle route of
+the inverse-hyperbolic companion below. The incoming continuation
+\cite{xid:report} supplies these two families; we give their complete
+proofs and strengthen its coefficient obstruction to arbitrary
+one-variable functions.
+\begin{equation}\label{xid:wat:eq:K}
+ K(p,q)=\int_0^{\pi/2}
+ \frac{\arctan(p\sin x)\arctan(q\sin x)}{\sin x}\,dx,
+ \qquad p,q\in\mathbb R.
+\end{equation}
+The integral in \eqref{xid:wat:eq:K} is ordinary and convergent. Its integrand
+is $pq\,x+O(x^3)$ at zero. The principal real arctangent is used
+throughout. The polylogarithms below use convergent real series or
+absolutely convergent unit-circle boundary series, with the classical
+conventions of DLMF~\S25.12~\cite{rw:DLMFPolylog}.
+
+\subsection{The hyperbolic addition formula}
+
+Write
+\[
+ \chi_j(z)=\frac{\operatorname{Li}_j(z)-\operatorname{Li}_j(-z)}2
+          =\sum_{k=0}^{\infty}\frac{z^{2k+1}}{(2k+1)^j}
+ \qquad (|z|<1)
+\]
+for the Legendre chi function. The values used in the next theorem
+are real and lie in its ordinary convergent series domain, including
+the endpoints $\chi_2(1)=\pi^2/8$ and
+$\chi_3(1)=7\zeta(3)/8$.
+
+\begin{theorem}[A real two-term weighted evaluation]
+\label{xid:wat:thm:main}
+Define the even function
+\begin{equation}\label{xid:wat:eq:Fclosed}
+ \mathfrak F(s)=\frac{\pi^2|s|}{8}-\frac74\zeta(3)
+    +|s|\chi_2(e^{-|s|})+2\chi_3(e^{-|s|}),
+ \qquad s\in\mathbb R.
+\end{equation}
+Its value at zero is $\mathfrak F(0)=0$. The apparent lack of
+smoothness from the absolute values is removable: $\mathfrak F$ is
+real analytic on $\mathbb R$, and it is equivalently characterized by
+\begin{equation}\label{xid:wat:eq:Fode}
+ \mathfrak F''(s)=\frac{s}{2\sinh s},\qquad
+ \mathfrak F''(0)=\frac12,\qquad
+ \mathfrak F(0)=\mathfrak F'(0)=0.
+\end{equation}
+For every $p,q\in\mathbb R$, put
+$\alpha=\operatorname{arcsinh}p$ and
+$\beta=\operatorname{arcsinh}q$. Then
+\begin{equation}\label{xid:wat:eq:main}
+ \boxed{\displaystyle
+ K(p,q)=\mathfrak F(\alpha+\beta)-\mathfrak F(\alpha-\beta).}
+\end{equation}
+In particular the formula includes both diagonals $p=\pm q$,
+either zero parameter, and arbitrary signs without branch changes.
+\end{theorem}
+
+\begin{proof}
+First, for $s>0$ use
+$d\chi_j(e^{-s})/ds=-\chi_{j-1}(e^{-s})$ to obtain
+\[
+ \mathfrak F'(s)=\frac{\pi^2}{8}
+              -\chi_2(e^{-s})-s\chi_1(e^{-s}),
+ \qquad
+ \mathfrak F''(s)=s\chi_0(e^{-s})
+                =\frac{s}{2\sinh s}.
+\]
+The limits at zero follow from the endpoint values of $\chi_2$ and
+$\chi_3$ and from
+$s\chi_1(e^{-s})=\tfrac{s}{2}\log\coth(s/2)\to0$.
+The unique twice-normalized primitive of the real analytic even
+function $s/(2\sinh s)$ is real analytic and even. Hence
+\eqref{xid:wat:eq:Fclosed} agrees with this primitive on the whole real
+line; this proves all assertions in \eqref{xid:wat:eq:Fode}.
+
+Differentiate \eqref{xid:wat:eq:K} once in each parameter. On compact
+real parameter sets the differentiated integrand is bounded by an
+integrable function, and therefore
+\begin{align*}
+ K_{pq}(p,q)
+ &=\int_0^{\pi/2}
+       \frac{\sin x\,dx}
+       {(1+p^2\sin^2x)(1+q^2\sin^2x)}\\
+ &=\frac{p\operatorname{arcsinh}p/\sqrt{1+p^2}
+       -q\operatorname{arcsinh}q/\sqrt{1+q^2}}{p^2-q^2}
+       \qquad(p^2\ne q^2).
+\end{align*}
+For the second equality use partial fractions and
+\[
+ \int_0^{\pi/2}\frac{\sin x}{1+p^2\sin^2x}\,dx
+       =\frac{\operatorname{arcsinh}p}{p\sqrt{1+p^2}},
+\]
+whose zero-parameter value is $1$ and which follows by
+$v=\cos x$.
+
+Let $\widetilde K(\alpha,\beta)=K(\sinh\alpha,\sinh\beta)$.
+Multiplication by $\cosh\alpha\cosh\beta$ and the addition formulas
+for $\sinh$ now give
+\begin{align}\label{xid:wat:eq:hyperbolicmixed}
+ \widetilde K_{\alpha\beta}
+ &=\frac{\alpha\sinh\alpha\cosh\beta
+        -\beta\sinh\beta\cosh\alpha}
+       {\sinh^2\alpha-\sinh^2\beta}\notag\\
+ &=\frac12\left\{
+      \frac{\alpha+\beta}{\sinh(\alpha+\beta)}
+     +\frac{\alpha-\beta}{\sinh(\alpha-\beta)}\right\}.
+\end{align}
+Both quotients on the last line have their removable value $1$ at
+zero. Thus the equality holds at $\alpha=\pm\beta$ by continuity.
+By \eqref{xid:wat:eq:Fode}, this is the mixed derivative of
+$\mathfrak F(\alpha+\beta)-\mathfrak F(\alpha-\beta)$.
+Both this expression and $\widetilde K$ vanish on $\alpha=0$ and
+$\beta=0$. Integration of their equal mixed derivatives over the
+oriented rectangle from $(0,0)$ to $(\alpha,\beta)$ proves
+\eqref{xid:wat:eq:main} for every real $\alpha,\beta$.
+\end{proof}
+
+For algebraic real $p,q$, the two arguments
+$e^{-|\alpha+\beta|}$ and $e^{-|\alpha-\beta|}$ are algebraic.
+Indeed $e^\alpha=p+\sqrt{1+p^2}$ and
+$e^\beta=q+\sqrt{1+q^2}$ are positive algebraic numbers, and taking
+the absolute value in either exponent selects an algebraic number
+or its reciprocal. Thus \eqref{xid:wat:eq:main} expresses every such
+integral by classical polylogarithms at real algebraic arguments and
+logarithms of positive algebraic numbers. It asserts no independence
+or minimality of the resulting constants.
+
+The diagonal specializes particularly simply:
+\begin{equation}\label{xid:wat:eq:Kdiagonal}
+ K(p,p)=\mathfrak F(2\operatorname{arcsinh}p).
+\end{equation}
+For $\ell=\log(1+\sqrt2)$ and $r=3-2\sqrt2$, this gives the exact
+identity
+\begin{equation}\label{xid:wat:eq:K11}
+ \boxed{\displaystyle
+ \int_0^{\pi/2}\frac{\arctan^2(\sin x)}{\sin x}\,dx
+ =\frac{\pi^2\ell}{4}-\frac74\zeta(3)
+       +2\ell\chi_2(r)+2\chi_3(r).}
+\end{equation}
+Its numerical value is
+$0.718064319741103407036328710693\ldots$; the decimal only
+identifies the normalization, while the theorem proves the identity.
+
+An exact weighted counterpart of the manuscript's Cleo integral
+also follows. Set $\alpha=\log(1+\sqrt2)$ and
+$\beta=\log\bigl((1+\sqrt5)/2\bigr)$. Then
+\begin{align}\label{xid:wat:eq:weightedCleo}
+ &\int_0^{\pi/2}\frac1{\sin x}
+    \arctan^2\!\left(\frac{6\sin x}{3+\cos2x}\right)dx\notag\\
+ &\qquad=\mathfrak F(2\alpha)
+          +2\mathfrak F(\alpha+\beta)
+          -2\mathfrak F(\alpha-\beta)
+          +\mathfrak F(2\beta).
+\end{align}
+To verify the reduction put $s=\sin x\in[0,1]$. Since
+$\arctan s+\arctan(s/2)<\pi/2$, the tangent addition formula gives
+\[
+ \arctan\frac{6\sin x}{3+\cos2x}
+       =\arctan(\sin x)+\arctan(\tfrac12\sin x).
+\]
+Squaring and integrating yields
+$K(1,1)+2K(1,1/2)+K(1/2,1/2)$, proving
+\eqref{xid:wat:eq:weightedCleo} by \eqref{xid:wat:eq:main}.
+
+\subsection{The weighted inverse-hyperbolic companion}
+
+The same parameter method has a trigonometric form. It gives a
+second exact family, including convergent improper endpoint values.
+
+\begin{theorem}[An inverse-hyperbolic bilinear evaluation]
+\label{xid:wat:thm:atanh}
+For $|r|,|s|\leq1$ define
+\[
+ L(r,s)=\int_0^{\pi/2}
+    \frac{\operatorname{arctanh}(r\sin x)
+          \operatorname{arctanh}(s\sin x)}{\sin x}\,dx,
+\]
+using real inverse hyperbolic tangents and interpreting an endpoint
+with $|r|=1$ or $|s|=1$ as an improper integral. Put
+\begin{equation}\label{xid:wat:eq:Gclosed}
+ \mathfrak G(t)=\frac74\zeta(3)
+     -t\operatorname{Im}\chi_2(e^{it})
+     -2\operatorname{Re}\chi_3(e^{it}),\qquad |t|\leq\pi.
+\end{equation}
+The chi values on the unit circle are defined by their absolutely
+convergent series. Then $\mathfrak G$ is even, continuous on
+$[-\pi,\pi]$, and real analytic on $(-\pi,\pi)$, with
+\begin{equation}\label{xid:wat:eq:Gode}
+ \mathfrak G''(t)=\frac{t}{2\sin t},\qquad
+ \mathfrak G''(0)=\frac12,\qquad
+ \mathfrak G(0)=\mathfrak G'(0)=0.
+\end{equation}
+For $a=\arcsin r$, $b=\arcsin s$, including either sign of either
+parameter,
+\begin{equation}\label{xid:wat:eq:atanhmain}
+ \boxed{\displaystyle
+ L(r,s)=\mathfrak G(a+b)-\mathfrak G(a-b).}
+\end{equation}
+In particular,
+\begin{equation}\label{xid:wat:eq:atanh11}
+ \boxed{\displaystyle
+ \int_0^{\pi/2}\frac{\operatorname{arctanh}^2(\sin x)}{\sin x}\,dx
+       =\frac72\zeta(3).}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Conjugation of the chi series proves evenness and endpoint
+continuity of \eqref{xid:wat:eq:Gclosed}. For $0<t<\pi$,
+polylogarithm differentiation gives
+\[
+ \mathfrak G'(t)=\operatorname{Im}\chi_2(e^{it})
+                    -t\operatorname{Re}\chi_1(e^{it}),
+ \qquad
+ \mathfrak G''(t)=t\operatorname{Im}\chi_0(e^{it})
+                 =\frac{t}{2\sin t}.
+\]
+Here $\operatorname{Re}\chi_1(e^{it})=\tfrac12\log\cot(t/2)$,
+so the limit of the first derivative at zero is zero. Also
+$\mathfrak G(0)=0$ by $\chi_3(1)=7\zeta(3)/8$.
+The normalized even primitive of $t/(2\sin t)$ is real analytic
+on $(-\pi,\pi)$, proving \eqref{xid:wat:eq:Gode}.
+
+For $|r|,|s|<1$, differentiation and partial fractions give
+\[
+ L_{rs}(r,s)=
+ \frac{r\arcsin r/\sqrt{1-r^2}
+       -s\arcsin s/\sqrt{1-s^2}}{r^2-s^2}
+ \qquad(r^2\ne s^2).
+\]
+The underlying elementary integral is
+$\int_0^{\pi/2}\sin x/(1-r^2\sin^2x)\,dx
+ =\arcsin r/(r\sqrt{1-r^2})$, again obtained by $v=\cos x$.
+For $\widetilde L(a,b)=L(\sin a,\sin b)$ the sine addition formulas
+therefore yield
+\[
+ \widetilde L_{ab}(a,b)
+   =\frac12\left\{
+       \frac{a+b}{\sin(a+b)}+\frac{a-b}{\sin(a-b)}\right\},
+ \qquad |a|,|b|<\pi/2.
+\]
+The zero quotients take their removable value $1$. This is the
+mixed derivative of the right side of \eqref{xid:wat:eq:atanhmain},
+and both sides vanish on the two axes. Rectangle integration proves
+the identity in the open parameter square.
+
+For all $|r|,|s|\leq1$ the absolute value of the integrand is bounded
+by $\operatorname{arctanh}^2(\sin x)/\sin x$. This majorant is
+$O(x)$ at zero and $O(\log^2(\pi/2-x))$ at the other endpoint,
+so it is integrable. Dominated convergence extends the equality
+to the closed square. Finally
+$\chi_3(-1)=-7\zeta(3)/8$ and
+$\operatorname{Im}\chi_2(-1)=0$ give
+$\mathfrak G(\pi)=7\zeta(3)/2$, proving
+\eqref{xid:wat:eq:atanh11}.
+The endpoint value also follows directly from
+$u=\operatorname{arctanh}(\sin x)$:
+\[
+ \int_0^\infty\frac{u^2}{\sinh u}\,du
+    =4\sum_{k=0}^\infty\frac1{(2k+1)^3}
+    =\frac72\zeta(3).
+\]
+\end{proof}
+
+For algebraic $r,s\in[-1,1]$, the chi arguments in this theorem are
+algebraic points on the unit circle, since
+$e^{ia}=\sqrt{1-r^2}+ir$ and
+$e^{ib}=\sqrt{1-s^2}+is$. The theorem has been proved directly over
+real parameters; it does not depend on an unstated continuation of
+the arctangent formula.
+
+\subsection{An exact obstruction to the one-product ansatz}
+
+The distinction from the unweighted factorization has a short exact proof. Set
+\[
+ u(p)=\frac{p}{1+\sqrt{1+p^2}},\qquad u(0)=0.
+\]
+The unweighted integral is a function of $u(p)u(q)$. The weighted
+integral has no such factorization into any one-variable function on a
+real neighborhood of zero; no regularity assumption on that function is needed.
+
+\begin{proposition}\label{xid:wat:prop:nonfactor}
+There is no function $G$ defined on a real neighborhood of zero for which
+$K(p,q)=G(u(p)u(q))$ holds for all sufficiently small real $p,q$.
+\end{proposition}
+
+\begin{proof}
+Suppose such a function exists. Fix a sufficiently small $q_0\ne0$ and
+put $c=u(q_0)\ne0$. The local inverse of $u$ is
+$p=2u/(1-u^2)$. The asserted identity therefore forces
+\[
+ G(t)=K\!\left(\frac{2(t/c)}{1-(t/c)^2},q_0\right)
+\]
+for every sufficiently small real $t$. The integral $K$ is real analytic
+near the origin: on compact subdisks of $|p|,|q|<1$, the product of the
+arctangent series divided by $\sin x$ converges normally and is dominated
+by $C\sin x$ for a parameter-independent constant $C$. Integration of
+this normally convergent series proves analyticity despite the apparent
+endpoint singularity. Hence the displayed expression forces $G$ to
+be real analytic near zero.
+
+For $|p|,|q|<1$, integration of the absolutely convergent arctangent
+series gives
+\begin{equation}\label{xid:wat:eq:doubleTaylor}
+ K(p,q)=\sum_{j,k\geq0}
+ \frac{(-1)^{j+k}p^{2j+1}q^{2k+1}}{(2j+1)(2k+1)}
+ \frac{4^{j+k}}{(2j+2k+1)\binom{2j+2k}{j+k}}.
+\end{equation}
+In particular,
+\[
+ K(p,q)=pq-\frac29(p^3q+pq^3)
+       +\text{terms of total degree at least six},
+\]
+whereas
+\[
+ u(p)u(q)=\frac{pq}{4}-\frac{p^3q+pq^3}{16}
+       +\text{terms of total degree at least six}.
+\]
+The coefficient of $pq$ would force $G'(0)=4$, and hence the
+coefficient of $p^3q$ would have to be $-1/4$, contradicting $-2/9$.
+Terms of order at least two in $G$ cannot contain $p^3q$.
+\end{proof}
+
+The obstruction concerns this functional ansatz and implies no arithmetic
+independence. Theorem~\ref{xid:wat:thm:main} gives a short alternative in
+hyperbolic sums and differences. Independent exact checks and signed,
+diagonal and endpoint quadratures audit the normalization; the analytic
+proofs establish the identities. The ordinary primitive and higher Euler
+ladder remain separate integration targets in the editorial ledger.

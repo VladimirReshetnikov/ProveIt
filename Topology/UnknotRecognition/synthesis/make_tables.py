@@ -1763,3 +1763,7 @@ if os.path.exists('data/pachner-native-diagram-benchmark.json'):
 if os.path.exists('data/cover-oracle-diagram-benchmark.json'):
     import runpy
     runpy.run_path('data/cover_oracle_tables.py')
+
+if os.path.exists('data/pachner-epochs-benchmark.json'):
+    import runpy
+    runpy.run_path('data/pachner_epochs_tables.py')

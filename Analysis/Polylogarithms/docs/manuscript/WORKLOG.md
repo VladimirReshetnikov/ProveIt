@@ -1,3 +1,30 @@
+# October 10: weighted identities and eleven-batch intake checkpoint
+
+The requested four-volume organization remains the primary publication:
+Volume I identities and arithmetic; II signed kernels and experimental
+discovery; III Hurwitz/Stieltjes/Gamma calculus; IV grids, CM and Herglotz.
+Their shared chapter sources preserve old citation numbers. The weighted
+addition family, inverse-hyperbolic endpoints and stronger arbitrary-function
+product obstruction are integrated at the end of Chapter 3. No old result
+is renumbered. Correct the local analyticity wording: the product divided
+by sin(x), rather than the weight alone, is dominated by C sin(x).
+
+Six incoming deliveries were placed in 59764aec23 and published by normal
+push via ee4288fc67 after two main merges and one safely rejected push race.
+Preserve 212 tracked originals, including 20 historical logs and all PDFs.
+Retire the six ZIPs after placement; retain arrival recovery records and the
+drop-zone README. Five later committed arrivals await the next intake.
+
+Native seven exact checks and seventeen diagnostics pass; all 78 weighted
+delivery checks pass freshly on a separate copy. All six full package replays pass and their sessions are terminal. Replay
+remains separate from analytic acceptance, with explicit pending boundaries
+in the ledger. Four-volume and combined builds, independent cold builds,
+all-page/reference/link inspection, raster comparisons and visual review
+are recorded separately. The active identity/research goal remains open.
+
+Earlier entries below are historical and may name superseded artifacts,
+page counts or completed process handles.
+
 # Final Mellin parameter-domain clarification
 
 Made p>0 explicit in the normalized Mellin lemma, matching its Gamma-density comparison. Three serial passes converge with no log issues. The 379-page structure is unchanged; only page 142 differs in the exact raster comparison with the previously published reviewed PDF. That page and contact sheet were reviewed freshly, and the nine other listed full-size pages and 378 thumbnails are identical. Historical axis-wording and 340-page comparisons retain their earlier artifact scope. The sharp universal Euler result, certified constant, incoming preservation and remaining research agenda retain the scopes recorded below.

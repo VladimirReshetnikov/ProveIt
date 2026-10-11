@@ -562,3 +562,28 @@ global convergence. Coverage, every external PDF named destination, all-page
 static inspection, fresh standalone compilation and human visual review are
 separate records. The earlier combined source and snapshot are retained.
 No mathematical theorem is duplicated or dropped by the volume assignment.
+
+## Eleventh incoming continuation audit, October 10, 2026
+
+Six packages (215 originals, 212 tracked under existing ignore rules) were
+placed in 59764aec23. The six committed ZIPs were retired after placement;
+all delivered mathematical sources, original PDFs and evidence are retained.
+The aggregate intake is now 55 archives and 2101 tracked original members.
+The source inventory includes all newly placed textual provenance documents.
+
+| Group | Canonical acceptance and remaining audit |
+|---|---|
+| `coincident-stieltjes` | Preserved quadratic/derivative closure and off-point collision certificates; same-point coordinate finite parts and delta contacts require separate analytic reconciliation. |
+| `centered-dougall-resonance` | Preserved centered Rogers-Dougall proof and zero-safe jets; canonical all-resonance integration remains pending. |
+| `collision-and-weighted-identities` | Accept Chapter 3 weighted real arctangent Li3 evaluation, signed inverse-hyperbolic companion and 7 zeta(3)/2 endpoint; full proofs and independent native exact/diagnostic checks. Strengthen the product obstruction to any one-variable function, since factorization forces analyticity. The logarithmic ordinary primitive, Euler ladder, collision, nonlinear and shifted/triple extensions retain separate pending audits. Earlier arctanh corrections are already canonical. |
+| `resonance-coordinate-transport` | Preserved an overlapping Dougall route and unequal-frequency transport/cocycle formulas; normalize against the correlation spine before integration. |
+| `resonant-jets-and-shifts` | Preserved directional, labelled symmetric, moving-root and shifted-Lerch formulas; ordered higher-depth and canonical-renormalization claims remain limited. A proposed external denominator correction needs a primary-source audit. |
+| `triple-stieltjes-tornheim` | Preserved six-sector entire colored Tornheim and multi-reflected-digamma formulas; keep interior principal values distinct from generic coordinate finite parts. Canonical integration remains pending. |
+
+Fresh full mathematical suites run only on copies; receipts are under
+verification/eleventh-replay. No suite checks an original checksum manifest.
+Successful finite replay does not establish analytic continuation,
+distributional contact completeness or numerical period independence.
+The S6 and revised S8 conjectures remain open. Five further arrivals were
+observed during publication and remain committed in docs/incoming for the
+next intake, without being counted in this batch.
