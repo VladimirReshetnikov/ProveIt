@@ -3405,6 +3405,17 @@ cover and `2^(j+5)` comes from `θ₁(j)`.
 Theorem 18.1 is not on this path. Its obstacle is the Section 13
 localization loss (L.6).
 
+**Progress (2026-10-11).** F0–F2 are in Proofs16PowerUniformClass,
+Proofs16SplitUniformClass and Proofs16SplitStepBounds (`splitUniformClass_succ`).
+F3a is in Proofs16SplitAllDimensions: `splitUniformClass_all` gives a split
+class in every dimension `k ≥ 2` with degrees `splitPair k = (a_k, D_k)`, and
+`split_pair_bounds` gives `2^(k+6)·a_k ≤ 2^(35·2^k)` and `D_k ≤ 2^(75·2^k)`.
+The step bounds are `a′ ≤ 2^(k+5)·a²` and `D′ ≤ 2^(k+6)·a(a+D)·P + T`, with
+`log P ≈ 2^(k+5)` and `log T = 2^(k+6)`. The bound has no `D²` term. That
+is essential: a bound by `(a+D)²` would double `log D` per dimension and
+bring back the `k·2^k` growth of L.6. The constant `75` is far below the
+`≈ 2^11` the printed threshold allows.
+
 ## F. Routes
 
 1. **Quantitative repair (research).**
