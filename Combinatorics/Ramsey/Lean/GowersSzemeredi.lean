@@ -1107,6 +1107,11 @@ import GowersSzemeredi.Proofs18PolyDegrees
 import GowersSzemeredi.Proofs16SinglePieceGradedRemainder
 import GowersSzemeredi.Proofs16SinglePieceGradedGlobal
 import GowersSzemeredi.Proofs18SinglePieceGradedInverse
+import GowersSzemeredi.Proofs18GradedModulus
+import GowersSzemeredi.Proofs16VertexWeightCounts
+import GowersSzemeredi.Proofs18GradedDensity
+import GowersSzemeredi.Proofs18GradedExponents
+import GowersSzemeredi.Proofs18GradedDegrees
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
