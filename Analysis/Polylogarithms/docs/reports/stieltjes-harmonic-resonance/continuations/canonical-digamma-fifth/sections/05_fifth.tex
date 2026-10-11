@@ -1,0 +1,634 @@
+% Independent fifth-power contribution. Standard amsmath/amsthm only.
+% Labels have prefix q5:. All finite parts use the coordinate x itself.
+\section{The fifth digamma power and its mixed coordinate}
+\label{q5:section}
+
+This section resolves the fifth-power calculation posed in the inspected
+quartic report.  It fixes all endpoint constants and identifies the
+additional mixed spectral combination which occurs beside the
+height-one Laurent coefficients.  The result does not assert that this
+mixed combination is arithmetically independent of the height-one data.
+
+Write $z_j=\zeta(j)$ and $\gamma=\gamma_0$.  Strict multiple zeta
+functions have decreasing indices:
+\[
+ Z_r(s_1,\ldots,s_r)
+   =\sum_{n_1>\cdots>n_r\geq1}
+        n_1^{-s_1}\cdots n_r^{-s_r}.
+\]
+For their height-one germs put
+\begin{equation}\label{q5:lambda}
+ \lambda_r=[u^1]Z_r(1+u,\underbrace{1,\ldots,1}_{r-1}),
+ \qquad
+ \lambda_1=-\gamma_1,\quad
+ \lambda_2=\eta,\quad\lambda_3=\theta,\quad\lambda_4=\xi.
+\end{equation}
+The bracket extracts the coefficient itself, with no factorial or sign.
+The coordinate finite part of an integral is the constant coefficient
+of its cutoff expansion in $\varepsilon$ for the integral from
+$\varepsilon$ to the stated upper endpoint.
+
+\subsection{The identities}
+
+Define
+\begin{align}
+ R(s)&=Z_2(s,3)-z_3\zeta(s),\label{q5:R}\\
+ J(s)&=2R(s)+2Z_2(s+2,1)+Z_2(s+1,2)
+                 -2\gamma\zeta(s+2)+z_2\zeta(s+1).
+ \label{q5:J}
+\end{align}
+Here $R$ is holomorphic in $\operatorname{Re}s>-1$, and $J$ is
+holomorphic in $\operatorname{Re}s>0$.  In particular $J'(1)$ is an
+ordinary derivative of a holomorphic function, not a coefficient
+requiring a new choice of finite-part normalization.
+
+\begin{theorem}[Fifth-power and mixed-polygamma bridges]
+\label{q5:main}
+Set
+\[
+ Q_5=\operatorname{FP}\int_0^1\psi(x)^5\,dx,
+ \qquad
+ I=\operatorname{FP}\int_0^1\psi(x)\psi'(x)^2\,dx.
+\]
+Then
+\begin{equation}\label{q5:Ibridge}
+ \boxed{\displaystyle
+ I=-2\gamma z_3+\frac{35}{6}z_4+2J'(1).}
+\end{equation}
+The fifth-power identity is
+\begin{equation}\label{q5:bridge}
+ \boxed{\begin{aligned}
+ Q_5={}&30\gamma^2z_2-60\gamma z_3+\frac{35}{3}z_4
+       -120\xi+120\gamma\theta\\
+ &-60(\gamma^2-z_2)\eta
+       +20(\gamma^3-3\gamma z_2+2z_3)\lambda_1
+       +10J'(1).
+ \end{aligned}}
+\end{equation}
+Equivalently, the mixed integral itself isolates the extra coordinate:
+\begin{equation}\label{q5:QminusI}
+ \boxed{\begin{aligned}
+ Q_5-5I={}&30\gamma^2z_2-50\gamma z_3-\frac{35}{2}z_4
+       -120\xi+120\gamma\theta\\
+ &-60(\gamma^2-z_2)\eta
+       +20(\gamma^3-3\gamma z_2+2z_3)\lambda_1.
+ \end{aligned}}
+\end{equation}
+All the ordinary zeta derivatives in the compact notation are explicit:
+\begin{align}\label{q5:Jexpanded}
+ J'(1)={}&2R'(1)
+       +2\left.\frac{\partial}{\partial s}Z_2(s,1)\right|_{s=3}
+       +\left.\frac{\partial}{\partial s}Z_2(s,2)\right|_{s=2}
+       -2\gamma\zeta'(3)+z_2\zeta'(2).
+\end{align}
+If $\phi_{13}=[u^1]Z_2(1+u,3)$, then
+$R'(1)=\phi_{13}+z_3\gamma_1=\phi_{13}-z_3\lambda_1$.
+\end{theorem}
+
+The last conversion matters.  Substituting $\phi_{13}$ for $R'(1)$
+without its $z_3\gamma_1$ correction would give an incorrect fifth-power
+formula.  The mixed term is one specified linear combination.  No claim
+that its separate components form a minimal arithmetic basis is needed.
+
+\subsection{A convergent arithmetic form and the spectral germs}
+
+For $n\geq1$ use
+\begin{equation}\label{q5:integer-bcd}
+ b=\psi(n),\qquad c=2z_2-\psi'(n),\qquad
+ d=\frac12\psi''(n),\qquad L_n=\log n,
+\end{equation}
+where $b,c,d$ in a summand always refer to that summand's $n$.
+Then
+\begin{align}
+ J(s)&=\sum_{n\geq1}\frac1{n^s}
+      \left(2d+\frac{c}{n}+\frac{2b}{n^2}\right),
+      &&\operatorname{Re}s>0,\label{q5:Jseries}\\
+ I&=-2\gamma z_3+\frac{35}{6}z_4
+       -\sum_{n\geq1}
+        \left(\frac{4d}{n}+\frac{2c}{n^2}
+                         +\frac{4b}{n^3}\right)L_n.
+ \label{q5:Iarithmetic}
+\end{align}
+Another expression for $Q_5$ is
+\begin{align}\label{q5:Qarithmetic}
+ Q_5={}&30\gamma^2z_2-60\gamma z_3+\frac{35}{3}z_4
+           +20\gamma_4-120z_2\gamma_2\notag\\
+ &+20\sum_{n\geq1}
+     \frac{(b^3-3bc+d-L_n^3+6z_2L_n)L_n}{n}\notag\\
+ &-20\sum_{n\geq1}\frac{bL_n}{n^3}
+       -10\sum_{n\geq1}\frac{cL_n}{n^2}.
+\end{align}
+Every series in these displays converges absolutely.  Indeed
+$\psi(n)=\log n+O(n^{-1})$,
+$\psi'(n)=O(n^{-1})$, and $\psi''(n)=O(n^{-2})$.
+The summand in the first sum of \eqref{q5:Qarithmetic} is
+$O((1+\log^3n)/n^2)$.  These estimates also prove normal convergence
+of \eqref{q5:Jseries} and of each fixed spectral derivative on compact
+subsets of its half-plane.  The series for $R$ is
+\[
+ R(s)=\sum_{n\geq1}
+       \frac{H_{n-1}^{(3)}-z_3}{n^s};
+\]
+its summands are $O(n^{-\operatorname{Re}s-2})$.
+
+The height-one Laurent germs used here have a direct existence proof.
+For $r\geq1$ and $\operatorname{Re}s>1$,
+\begin{equation}\label{q5:mellin}
+ Z_r(s,1^{r-1})=
+ \frac{(-1)^{r-1}}{(r-1)!\,\Gamma(s)}
+ \int_0^\infty
+    \frac{t^{s-1}\log^{r-1}(1-e^{-t})}{e^t-1}\,dt.
+\end{equation}
+This follows from the elementary-symmetric generating series and
+termwise Mellin integration.  Near zero the kernel is its displayed
+leading term
+$(-1)^{r-1}\log^{r-1}t/((r-1)!t)$ plus
+$O(1+|\log t|^{r-1})$.  Subtraction of that term gives
+\[
+ \Gamma(1+u)Z_r(1+u,1^{r-1})=u^{-r}+V_r(u),
+ \qquad V_r(0)=0,
+\]
+with $V_r$ holomorphic near zero.  The assertion $V_r(0)=0$ follows
+by integrating the derivative of $\log^r(1-e^{-t})$ and comparing its
+lower boundary with $\log^r t$.  Thus the principal and constant
+coefficients are fixed by $1/\Gamma(1+u)$, and in particular $\xi$
+in \eqref{q5:lambda} is well defined.
+
+\subsection{Global partial fractions with a fixed entire remainder}
+
+For $n\geq0$, set
+\begin{equation}\label{q5:localcoeffs}
+ \begin{aligned}
+ b_n&=H_n-\gamma,&
+ c_n&=z_2+H_n^{(2)},\\
+ d_n&=H_n^{(3)}-z_3,&
+ e_n&=z_4+H_n^{(4)}.
+ \end{aligned}
+\end{equation}
+The local digamma expansion is
+\[
+ \psi(-n+\varepsilon)
+ =-\varepsilon^{-1}+b_n+c_n\varepsilon
+       +d_n\varepsilon^2+e_n\varepsilon^3+O(\varepsilon^4).
+\]
+For $F_5(z)=\psi(z)^5$ and $F_I(z)=\psi(z)\psi'(z)^2$, let
+\[
+ P_{X,n}(z)=\sum_{j=1}^5\frac{p_{X,j,n}}{(z+n)^j},
+ \qquad X\in\{5,I\}.
+\]
+The principal coefficients, with subscripts $n$ suppressed in the table,
+are
+\begin{center}
+\begin{tabular}{c|c|c}
+$j$&$p_{5,j}$&$p_{I,j}$\\\hline
+5&$-1$&$-1$\\
+4&$5b$&$b$\\
+3&$-10b^2+5c$&$-c$\\
+2&$10b^3-20bc+5d$&$2bc-3d$\\
+1&$-5b^4+30b^2c-20bd-10c^2+5e$&$4bd+c^2-5e$
+\end{tabular}
+\end{center}
+Write $r_{X,n}=p_{X,1,n}$.  The constant coefficients at zero are
+\begin{align}
+ \kappa_5={}&-\gamma^5+20\gamma^3z_2-30\gamma^2z_3
+         -30\gamma z_2^2+20\gamma z_4+20z_2z_3-5z_5,
+ \label{q5:kappa5}\\
+ \kappa_I={}&-\gamma z_2^2-6\gamma z_4-2z_2z_3+7z_5.
+ \label{q5:kappaI}
+\end{align}
+
+\begin{lemma}[Two normalized Mittag--Leffler expansions]
+\label{q5:ML}
+For $X=5,I$ and $z\notin\{0,-1,-2,\ldots\}$,
+\begin{equation}\label{q5:MLformula}
+ F_X(z)=P_{X,0}(z)+\kappa_X+
+       \sum_{n\geq1}\bigl(P_{X,n}(z)-P_{X,n}(0)\bigr).
+\end{equation}
+The series converges normally on compact sets avoiding the poles.
+\end{lemma}
+\begin{proof}
+The coefficient table follows by finite multiplication of the local
+digamma series and its derivative.  For the entire remainder, put
+$f_X=F_X-P_{X,0}$ and integrate
+$z f_X(w)/(w(w-z))$ on $|w|=N+1/2$.
+Digamma asymptotics in the right half-plane and the reflection formula
+in the left half-plane give $f_X(w)=O(1+\log^5N)$ on these circles.
+The cotangent and its fixed derivatives are uniformly bounded there:
+away from the real axis use their exponential expressions, and on the
+remaining arcs the real coordinate stays a fixed distance from the
+integers.  The contour integral is therefore
+$O((1+\log^5N)/N)$ and tends to zero.
+Its residues are $f_X(z)$, $-f_X(0)$, and
+$-(P_{X,n}(z)-P_{X,n}(0))$.  This proves the identity.
+Finally $p_{5,j,n}=O(1+\log^{5-j}n)$ and the corresponding mixed
+coefficients have no greater growth.  The two-point subtractions give
+an additional inverse power of $n$, proving normal convergence.
+\end{proof}
+
+\subsection{The finite summation ledger}
+
+Integrating \eqref{q5:MLformula} and telescoping each pole of order
+at least two gives
+\begin{equation}\label{q5:integrated}
+ \operatorname{FP}\int_0^1F_X(x)\,dx
+   =B_X+\sum_{n\geq1}r_{X,n}
+        \left(\log\left(1+\frac1n\right)-\frac1n\right),
+\end{equation}
+where
+\begin{equation}\label{q5:Bmechanism}
+ B_X=\kappa_X+
+  \sum_{j=2}^5\sum_{n\geq1}
+    \left(\frac{p_{X,j,n}-p_{X,j,n-1}}{(j-1)n^{j-1}}
+                       -\frac{p_{X,j,n}}{n^j}\right).
+\end{equation}
+This formula includes the finite parts at the origin.  For example,
+the lower endpoint contribution of $p_{X,j,0}x^{-j}$ is
+$-p_{X,j,0}/(j-1)$; it cancels the initial term of that pole's finite
+telescoping sum.  The simple-pole finite part is zero.
+
+Here is a shorter directly reproducible form of all the nonlogarithmic
+terms.  In the sums in this display only, let
+$b=b_{n-1}$, $c=c_{n-1}$, $d=d_{n-1}$.  Then
+\begin{align}
+ B_5={}&\kappa_5+\sum_{n\geq1}\left\{
+ \frac{-10b^3+20bc-5d+30b^2-20c}{n^2}
+ +\frac{-20b^2+15c}{n^3}
+ +\frac{5b-35/6}{n^4}+\frac6{n^5}\right\},
+ \label{q5:B5sum}\\
+ B_I={}&\kappa_I+\sum_{n\geq1}\left\{
+ \frac{-2bc+3d+2c}{n^2}+\frac{2b-c}{n^3}
+ +\frac{-3b-7/6}{n^4}+\frac2{n^5}\right\}.
+ \label{q5:BIsum}
+\end{align}
+All these sums converge absolutely.
+
+To evaluate them and the finite residue sums, write
+\[
+ H_N(a_1,\ldots,a_d)=
+    \sum_{N\geq n_1>\cdots>n_d\geq1}
+                 n_1^{-a_1}\cdots n_d^{-a_d},
+ \qquad e_j(N)=H_N(1^j).
+\]
+The finite product rule is the quasi-shuffle rule with a positive merged
+index.  The summation rule is equally elementary:
+\begin{equation}\label{q5:finite-prefix}
+ \sum_{n=1}^N\frac{H_n(a_1,\ldots,a_d)}{n^p}
+   =H_N(p,a_1,\ldots,a_d)
+      +H_N(p+a_1,a_2,\ldots,a_d),
+\end{equation}
+with the second term absent for an empty word.  Both statements follow
+by separating strict inequalities from equalities of the outer indices.
+There is no infinite rearrangement in either identity.
+
+For completeness, the convergent values required in this section are
+\begin{equation}\label{q5:MZVtable}
+\begin{array}{c|c}
+\text{value}&\text{reduction}\\\hline
+Z_2(2,1)&z_3\\
+Z_2(3,1),\ Z_2(2,2),\ Z_3(2,1,1)&z_4/4,\ 3z_4/4,\ z_4\\
+Z_2(4,1),\ Z_3(3,1,1)&2z_5-z_2z_3\\
+Z_2(3,2),\ Z_3(2,2,1)&3z_2z_3-11z_5/2\\
+Z_2(2,3),\ Z_3(2,1,2)&9z_5/2-2z_2z_3\\
+Z_4(2,1,1,1)&z_5
+\end{array}
+\end{equation}
+These are the classical low-weight reductions.  Their use here can be
+checked from the finite product rule, the depth-two sum theorem and
+iterated-integral duality.  At weight five, for example, the stuffle
+and shuffle products are respectively
+\[
+ z_2z_3=Z_2(2,3)+Z_2(3,2)+z_5,
+ \qquad
+ z_2z_3=Z_2(2,3)+3Z_2(3,2)+6Z_2(4,1).
+\]
+Together with
+$Z_2(4,1)+Z_2(3,2)+Z_2(2,3)=z_5$, these give the three
+depth-two weight-five entries.  Substitution $t\mapsto1-t$ in the
+iterated integrals gives the paired dual values in the table.
+The same arguments at weights three and four give the first two rows;
+$z_2^2=5z_4/2$ is used throughout.
+
+Here is an explicit finite identity which records the full fifth-power
+constant.  In this display set $h_j=H_N^{(j)}$, $h=h_1$,
+$E_j=e_j(N)$, and abbreviate $H_N(a_1,\ldots,a_d)$ by
+$H(a_1,\ldots,a_d)$.  Put
+\[
+ A=\gamma^3-3\gamma z_2+z_3,\qquad
+ r_0=-5\gamma^4+30\gamma^2z_2-20\gamma z_3-10z_2^2+5z_4.
+\]
+Then the exact equality for every $N\geq1$ is
+\begin{align}\label{q5:S5finite}
+ \sum_{n=1}^N\frac{r_{5,n}}n={}&
+  -120E_5+120\gamma E_4+60(z_2-\gamma^2)E_3
+       +20AE_2+r_0h+20Ah_2\notag\\
+ &-120H(2,1,1,1)+120\gamma H(2,1,1)
+       +(50z_2-60\gamma^2)H(2,1)\notag\\
+ &+20E_2h_3-20H(3,1,1)-20hh_4
+       +20H(4,1)+20h_5\notag\\
+ &+10hH(2,2)-10H(2,1,2)-10H(2,2,1)+10H(2,3)\notag\\
+ &-20\gamma hh_3+20\gamma H(3,1)+10z_2hh_2.
+\end{align}
+One derivation first writes the residue polynomial as
+\begin{align*}
+ r_{5,n}={}&-120e_4(n)+120\gamma e_3(n)
+       +60(z_2-\gamma^2)e_2(n)+20A H_n+r_0\\
+ &+20(H_n-\gamma)H_n^{(3)}
+       +5\bigl(H_n^{(2)}\bigr)^2-25H_n^{(4)}+10z_2H_n^{(2)}.
+\end{align*}
+Apply \eqref{q5:finite-prefix} to every term, and then use the finite
+product rule to collect the products occurring in \eqref{q5:S5finite}.
+
+For the mixed residue there is a shorter identity.  Put
+$C_0=4\gamma z_3+z_2^2-5z_4$.  Then
+\begin{align}\label{q5:SIfinite}
+ \sum_{n=1}^N\frac{r_{I,n}}n={}&
+ 4E_2(h_3-z_3)
+ +h\{2H(2,2)-4h_4-4\gamma h_3+2z_2h_2+C_0\}\notag\\
+ &-4H(3,1,1)-2H(2,1,2)-2H(2,2,1)+2H(2,3)\notag\\
+ &+4H(4,1)+4h_5+4\gamma H(3,1)-4z_3h_2-2z_2H(2,1).
+\end{align}
+This is again a finite product-and-prefix calculation.
+
+\begin{lemma}[All finite constants]
+\label{q5:constants}
+As $N\to\infty$, with $L=\log N$,
+\begin{align}
+ \sum_{n=1}^N\frac{r_{5,n}}n
+   &=-L^5+20z_2L^3-90z_4L+C_5+o(1),
+   \label{q5:S5asymptotic}\\
+ r_{5,N}\log(N+1)
+   &=-5L^5+60z_2L^3-90z_4L+o(1),
+   \label{q5:r5asymptotic}
+\end{align}
+where
+\begin{equation}\label{q5:C5}
+ C_5=-\gamma^5+30\gamma^3z_2-80\gamma^2z_3
+         -\frac{65}{2}\gamma z_4+60z_2z_3-69z_5.
+\end{equation}
+For the mixed residue,
+\begin{equation}\label{q5:CI}
+ \sum_{n\geq1}\frac{r_{I,n}}n
+      =C_I=\gamma z_4-12z_2z_3+15z_5,
+ \qquad r_{I,N}\log(N+1)=o(1).
+\end{equation}
+Finally the nonlogarithmic terms satisfy
+\begin{equation}\label{q5:Bconstants}
+ B_5-C_5=30\gamma^2z_2-60\gamma z_3+\frac{35}{3}z_4,
+ \qquad
+ B_I-C_I=-2\gamma z_3+\frac{35}{6}z_4.
+\end{equation}
+\end{lemma}
+\begin{proof}
+In \eqref{q5:S5finite}, substitute
+$h=\log N+\gamma+O(N^{-1})$ and
+$h_j=z_j+O(N^{1-j})$ for $j\geq2$, and replace the words with
+outer exponent at least two by their limits in
+\eqref{q5:MZVtable}.  Every discarded term is $o(1)$ even after
+multiplication by the displayed powers of $\log N$.
+The elementary polynomials are fixed, without any interpolation, by
+\[
+ E_0=1,\qquad
+ jE_j=\sum_{r=1}^j(-1)^{r-1}h_rE_{j-r}.
+\]
+This gives \eqref{q5:S5asymptotic} including its constant
+\eqref{q5:C5}.  For \eqref{q5:r5asymptotic}, directly substitute
+$b_N=L+O(N^{-1})$, $c_N=2z_2+O(N^{-1})$,
+$d_N=O(N^{-2})$, and $e_N=2z_4+O(N^{-3})$ in the residue.
+Its constant polynomial term is
+$-40z_2^2+10z_4=-90z_4$.
+
+For \eqref{q5:SIfinite}, the first term tends to zero.  The expression
+in braces multiplying $h$ has zero limit by
+$Z_2(2,2)=3z_4/4$ and $z_2^2=5z_4/2$; its convergence is fast
+enough that its product with $h$ tends to zero.  The remaining convergent
+words have value
+\begin{align*}
+ &-4Z_3(3,1,1)-2Z_3(2,1,2)-2Z_3(2,2,1)+2Z_2(2,3)\\
+ &\qquad+4Z_2(4,1)+4z_5+4\gamma Z_2(3,1)-6z_2z_3\\
+ &\hspace{15mm}=\gamma z_4-12z_2z_3+15z_5.
+\end{align*}
+Also $r_{I,n}=O(n^{-1})+O(\log n/n^2)$, since its prospective
+constant term $4z_2^2-10z_4$ vanishes.  This proves the ordinary
+convergence and the boundary assertion in \eqref{q5:CI}.
+Finally, expand the products in \eqref{q5:B5sum} and
+\eqref{q5:BIsum} by the finite quasi-shuffle rule, prefix their
+outer denominator, and use \eqref{q5:MZVtable}.
+The results are respectively $C_5$ and $C_I$ plus the two explicitly
+displayed corrections in \eqref{q5:Bconstants}.
+\end{proof}
+
+The preceding calculation is a full constant-term computation.  In
+particular it retains the $-90z_4\log N$ terms on both sides of
+the summation-by-parts boundary; neither term may be dropped before
+their cancellation.
+
+\subsection{Identification of the logarithmic terms}
+
+The residue differences are particularly short.  For $n\geq1$,
+with $b=b_{n-1}$, $c=c_{n-1}$, $d=d_{n-1}$,
+\begin{align}
+ r_{5,n}-r_{5,n-1}
+    &=-\frac{20(b^3-3bc+d)}n+\frac{20b}{n^3}
+                              +\frac{10c}{n^2},
+      \label{q5:diff5}\\
+ r_{I,n}-r_{I,n-1}
+    &=\frac{4d}n+\frac{4b}{n^3}+\frac{2c}{n^2}.
+      \label{q5:diffI}
+\end{align}
+For any residue sequence, finite summation by parts gives
+\begin{equation}\label{q5:logSBP}
+ \sum_{n=1}^Nr_{X,n}\log\left(1+\frac1n\right)
+  =r_{X,N}\log(N+1)
+       -\sum_{n=1}^N(r_{X,n}-r_{X,n-1})\log n.
+\end{equation}
+For $I$, equations \eqref{q5:integrated}, \eqref{q5:CI},
+\eqref{q5:Bconstants}, and \eqref{q5:diffI} immediately give
+\eqref{q5:Iarithmetic} and hence \eqref{q5:Ibridge}.
+
+For $Q_5$, define
+\[
+ M_N=\sum_{n=1}^N\frac{(b_{n-1}^3-3b_{n-1}c_{n-1}+d_{n-1})\log n}{n}.
+\]
+Equations \eqref{q5:S5asymptotic}--\eqref{q5:logSBP} give
+\begin{align}\label{q5:limit}
+ Q_5={}&B_5-C_5+
+       20\lim_{N\to\infty}
+          \left(M_N-\frac{\log^5N}{5}+2z_2\log^3N\right)\notag\\
+ &-20\sum_{n\geq1}\frac{b_{n-1}\log n}{n^3}
+       -10\sum_{n\geq1}\frac{c_{n-1}\log n}{n^2}.
+\end{align}
+Splitting off $\log^3n-6z_2\log n$ and using the ordinary
+Stieltjes limits gives \eqref{q5:Qarithmetic}.
+
+For the exact spectral form introduce, initially for
+$\operatorname{Re}s>1$,
+\[
+ T(s)=\sum_{n\geq1}
+       \frac{b_{n-1}^3-3b_{n-1}c_{n-1}+d_{n-1}}{n^s}.
+\]
+Finite elementary-symmetric algebra gives
+\begin{align}\label{q5:Tidentity}
+ T(s)={}&6Z_4(s,1,1,1)-6\gamma Z_3(s,1,1)
+           +3(\gamma^2-z_2)Z_2(s,1)\notag\\
+ &-(\gamma^3-3\gamma z_2+2z_3)\zeta(s)-R(s).
+\end{align}
+Moreover $T(s)+\zeta'''(s)-6z_2\zeta'(s)$ is holomorphic in
+$\operatorname{Re}s>0$.  Thus $T$ has principal part
+$6u^{-4}-6z_2u^{-2}$ at $s=1+u$, and the finite limit in
+\eqref{q5:limit} is exactly $-[u^1]T(1+u)$.
+One can see the sign directly by differentiating the normally convergent
+subtracted Dirichlet series; the ordinary limits contribute
+$\gamma_4-6z_2\gamma_2$.
+By \eqref{q5:Tidentity},
+\[
+ [u^1]T(1+u)=6\xi-6\gamma\theta+3(\gamma^2-z_2)\eta
+       -(\gamma^3-3\gamma z_2+2z_3)\lambda_1-R'(1).
+\]
+The two remaining sums in \eqref{q5:limit} are
+\[
+ -\left.\frac{\partial}{\partial s}Z_2(s,1)\right|_{s=3}
+          +\gamma\zeta'(3),\qquad
+ -\left.\frac{\partial}{\partial s}Z_2(s,2)\right|_{s=2}
+          -z_2\zeta'(2),
+\]
+respectively.  Substitution proves \eqref{q5:bridge}; subtraction
+of five times \eqref{q5:Ibridge} gives \eqref{q5:QminusI}.
+
+\subsection{A differential-polynomial interpretation and exact endpoints}
+
+The fifth inverse-Gamma differential polynomial is
+\begin{align}\label{q5:A5}
+ \mathcal A_5
+ ={}&\psi^5-10\psi^3\psi'+15\psi(\psi')^2+10\psi^2\psi''
+            -10\psi'\psi''-5\psi\psi'''+\psi''''.
+\end{align}
+It equals $-\Gamma\,D^5(1/\Gamma)$.
+Let $\Delta G=G(1)-[x^0]G(x)$ for a Laurent-meromorphic function
+at zero.  Coordinate finite parts obey
+$\operatorname{FP}\int_0^1G'(x)\,dx=\Delta G$.
+The complete endpoint table needed for \eqref{q5:A5} is
+\begin{equation}\label{q5:endpoints}
+\begin{array}{c|c}
+G&\Delta G\\\hline
+\psi^4&12\gamma^2z_2-12\gamma z_3-11z_4\\
+\psi^2\psi'&2\gamma z_3+3z_4/2\\
+(\psi')^2&-6z_4\\
+\psi\psi''&8z_4\\
+\psi'''&0
+\end{array}
+\end{equation}
+Integration by parts, with these constants retained, gives
+\begin{align}\label{q5:Bell-explanation}
+ Q_5-5I
+   &=\operatorname{FP}\int_0^1\mathcal A_5(x)\,dx
+       +30\gamma^2z_2-50\gamma z_3-\frac{35}{2}z_4.
+\end{align}
+Consequently \eqref{q5:QminusI} is compatible with the all-degree
+inverse-Gamma construction, while the raw fifth power contains $I$.
+This distinguishes a proved differential-polynomial cancellation from
+the separate proposed cancellation by a scalar polynomial in $\psi$.
+The formulas here neither prove nor disprove the existence of a further
+ordinary-constant identity eliminating $J'(1)$.
+
+\subsection{Normalized primitives and the polygamma hierarchy}
+
+For $n\geq1$, define on $\operatorname{Re}z>0$
+\[
+ F_1(n,z)=\log\left(1+\frac zn\right)-\frac zn,
+ \qquad
+ F_j(n,z)=\frac{(n+z)^{1-j}-n^{1-j}}{1-j}-\frac z{n^j}
+ \quad(j\geq2),
+\]
+with the logarithm real for positive arguments.
+
+\begin{corollary}[Two normalized primitives]\label{q5:primitives}
+For $X\in\{5,I\}$ the expression
+\begin{align}\label{q5:primitiveformula}
+ \mathcal P_X(z)={}&r_{X,0}\log z
+       +\sum_{j=2}^5\frac{p_{X,j,0}z^{1-j}}{1-j}
+       +\kappa_Xz
+       +\sum_{n\geq1}\sum_{j=1}^5p_{X,j,n}F_j(n,z)
+\end{align}
+satisfies $\mathcal P_X'(z)=F_X(z)$ and has zero constant term
+at the singular origin.  For real $b>0$,
+\[
+ \operatorname{FP}\int_0^bF_X(x)\,dx=\mathcal P_X(b).
+\]
+For $0<a<b$ the ordinary integral is
+$\mathcal P_X(b)-\mathcal P_X(a)$.
+\end{corollary}
+\begin{proof}
+Each $F_j$ is the primitive vanishing at zero of
+$(n+z)^{-j}-n^{-j}$.  On compact sets it is $O(n^{-j-1})$;
+the coefficient bounds from Lemma~\ref{q5:ML} therefore justify normal
+convergence and differentiation.  The series converges uniformly on
+each disk $|z|\leq r<1$, where all its summands vanish at zero.
+The explicitly displayed singular terms and logarithm consequently
+leave no constant term.
+\end{proof}
+
+\begin{corollary}[All fixed polygamma orders]\label{q5:derivative}
+For every integer $r\geq1$, away from the poles,
+\begin{equation}\label{q5:derivatives}
+ D^rF_X(z)=(-1)^r r!
+       \sum_{n\geq0}\sum_{j=1}^5
+       \binom{r+j-1}{j-1}\frac{p_{X,j,n}}{(n+z)^{r+j}}.
+\end{equation}
+The series converges normally.  The left sides are explicitly
+\[
+ D^rF_5=
+ \sum_{r_1+\cdots+r_5=r}\frac{r!}{r_1!\cdots r_5!}
+                  \prod_{i=1}^5\psi^{(r_i)},
+ \qquad
+ D^rF_I=
+ \sum_{r_1+r_2+r_3=r}\frac{r!}{r_1!r_2!r_3!}
+         \psi^{(r_1)}\psi^{(r_2+1)}\psi^{(r_3+1)}.
+\]
+At $z=1$ these are finite polynomials in $\gamma$ and ordinary
+zeta values, using
+$\psi^{(j)}(1)=(-1)^{j+1}j!\zeta(j+1)$ for $j\geq1$.
+\end{corollary}
+\begin{proof}
+Differentiate \eqref{q5:MLformula}.  For $r\geq1$ all constant
+subtractions disappear, and the summands are bounded on compact sets
+by a constant times $n^{-r-1}(1+\log^4n)$.  The product rule gives
+the displayed left sides.
+\end{proof}
+
+\subsection{Verification and scope}
+
+The accompanying exact replay checks 87 identities: principal
+coefficients, constant Laurent terms, residue differences, both finite
+harmonic summation formulas, all finite asymptotic constants,
+nonlogarithmic reductions, spectral extraction, endpoint terms,
+primitive derivatives, and the derivative kernels through order eight.
+The finite harmonic checks are symbolic identities for arbitrary $N$;
+they are not a fit to a finite sample of integers.  As regression checks,
+the same summation code recovers the previously proved cubic and
+quartic constants.
+
+Independent numerical evaluations give
+\begin{align*}
+ Q_5&=-8.69030396262453826629558966236565357677029354492388429266\ldots,\\
+ I&=-1.01946582194172926744369821391554613746742300351148475173\ldots.
+\end{align*}
+One route integrates the convergent Taylor series of the functions
+after their fifth-order singularity has been factored out near zero,
+and performs ordinary quadrature away from zero.  Cutoffs $1/8$ and
+$1/16$ agree to about 77 decimal digits.  A second route uses
+\eqref{q5:Iarithmetic} and \eqref{q5:Qarithmetic}, summing a finite
+prefix and expressing a truncated digamma asymptotic tail through
+Hurwitz-zeta derivatives.  At the finest recorded settings the
+differences from the direct calculation are below
+$1.02\cdot10^{-48}$ and $3.83\cdot10^{-48}$, respectively.
+These are floating-point cross-checks, not interval-certified
+enclosures.  The exact identities rest on the proofs above.
+
+The advance relative to the inspected quartic report is the complete
+fifth-power bridge, its mixed-coordinate identification, all finite
+corrections, and the normalized primitive and derivative consequences.
+The classical partial-fraction and multiple-zeta tools are not claimed
+as new.  The scalar-polynomial elimination question remains distinct:
+the presently proved cancellation naturally uses the additional
+integral $I$ or, equivalently, the differential polynomial
+$\mathcal A_5$.

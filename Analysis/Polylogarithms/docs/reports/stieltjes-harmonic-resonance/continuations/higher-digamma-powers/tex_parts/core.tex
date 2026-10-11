@@ -1,0 +1,1135 @@
+% Research continuation for the ProveIt repository, 11 October 2026.
+% This file is assembled with the reviewed companion sections into the
+% standalone deliverable Higher_Digamma_Powers_and_Ordered_Gamma_Sums.tex.
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,longtable,array}
+\usepackage{microtype,xcolor,enumitem,fancyhdr}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Higher Digamma Powers and Ordered Gamma Sums},
+ pdfauthor={Research continuation prepared with ChatGPT for Vladimir Reshetnikov and ProveIt},
+ pdfsubject={Exact finite parts, spectral zeta coefficients, and polylogarithmic depth cancellations}}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\CT}{CT}
+\DeclareMathOperator*{\Res}{Res}
+\DeclareMathOperator{\Li}{Li}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\Hrel}{\mathcal H}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\zet}{\zeta}
+\newcommand{\commit}{b7667ae40a2957eed9a53d8559d53a3ee20dd1c1}
+\setlength{\parskip}{0.35em}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks[2]
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Higher Digamma Powers and Ordered Gamma Sums}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{14mm}
+\noindent{\large\sffamily PROVEIT\quad /\quad RESEARCH CONTINUATION}
+\vspace{18mm}
+
+\noindent{\Huge\bfseries Higher Digamma Powers\\[3mm]
+and Ordered Gamma Sums}
+\vspace{8mm}
+
+\noindent{\Large Exact finite parts, spectral zeta coefficients,\\[2mm]
+and polylogarithmic depth cancellations}
+\vspace{15mm}
+
+\noindent Prepared with ChatGPT for Vladimir Reshetnikov and the ProveIt project\\
+11 October 2026
+\vspace{12mm}
+
+\begin{abstract}
+We develop a complete finite-part formula for every positive integer power
+of the digamma function.  A normalized Mittag--Leffler expansion, finite
+summation by parts, and a large-circle residue calculation reduce the
+unit-interval moment to an absolutely convergent harmonic sum and the
+linear Laurent coefficient of an explicit harmonic Dirichlet series.
+The entire boundary polynomial is evaluated; its constant is zero for
+odd powers and $(-1)^m\pi^{2m}/(2m+1)$ for power $2m$.  A second form
+uses only an ordinary convergent series and an explicit finite list of
+ordinary Stieltjes constants.  We carry out the fifth power completely,
+including the mixed double-zeta derivatives that do not occur at powers
+two through four, and give normalized primitives and differentiated
+polygamma identities for all powers.
+
+A complementary two-marker Gamma formula sums ordered relative harmonic
+words over depth while retaining an arbitrary complex tagged exponent.
+Integer marker differences give finite Hurwitz-zeta reductions, and
+spectral differentiation produces generalized Stieltjes and log-Gamma
+identities.  We also prove finite-interval formulas with several tagged
+exponents and polylogarithmic depth cancellations.  Two precisely located
+external-source errors are corrected by direct proofs.  Exact algebraic
+checks and independent high-precision diagnostics accompany the proofs.
+The Gaussian $S_6$ and revised $S_8$ conjectures remain unresolved.
+\end{abstract}
+\vfill
+\noindent\small Source baseline: ProveIt revision
+\texttt{\commit}.\\
+The results are proposed additions to the inspected material; historical
+priority beyond the cited comparison has not been established.
+\end{titlepage}
+
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+
+\section{Research targets, scope, and notation}
+\label{sec:scope}
+
+The immediate starting point is the quartic digamma calculation in the
+incoming reports \cite{Quartic,Barnes}.  The first higher-power question
+in \cite{Quartic} asks for the fifth moment with \emph{every} finite
+correction, including the correct linear Laurent coefficients and
+ordinary zeta derivatives.  Its next question asks whether scalar
+polynomials in the digamma function can cancel lower-depth data at
+arbitrary degree.  The present article resolves the first question and
+proves an all-power reduction mechanism.  It also identifies the precise
+extra coordinate that must be addressed before the stronger scalar
+cancellation proposal can be asserted at degree five.
+
+The second line of work begins with the relative ordered harmonic
+interpolation in the incoming independent-order report \cite{Independent}.
+We prove a two-marker generating formula and exact depth cancellations
+that keep a tagged complex exponent, together with all its spectral
+derivatives.  This provides a useful connection between the harmonic
+and polylogarithmic parts of the research program.
+
+\begin{center}
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.24\textwidth}
+>{\raggedright\arraybackslash}p{0.39\textwidth}
+>{\raggedright\arraybackslash}p{0.27\textwidth}}
+\toprule
+Source target & Result established here & Scope retained\\
+\midrule
+Fifth digamma finite part & Complete formula in Theorem~\ref{thm:q5},
+with all scalar and spectral corrections & No reduction of the retained
+spectral constants to a smaller arithmetic algebra\\[3pt]
+Arbitrary integer powers & Normalized expansion, universal contour
+constant, finite word algorithm, and ordinary subtracted sum & Fixed
+integer power; no assertion for arbitrary complex powers\\[3pt]
+Canonical scalar polynomials & Explicit fifth-degree cancellation of
+height-one lower data; mixed derivative term remains & A formal
+coordinate statement, not arithmetic independence\\[3pt]
+Independent ordered exponents & Two-marker Gamma formula, integer-gap
+reductions, Stieltjes and Gamma consequences & Stated convergence discs;
+several tags are proved here on finite intervals\\[3pt]
+Gaussian $S_6$, revised $S_8$ & A bounded expanded $S_6$ relation search
+is recorded separately & Both remain conjectural\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The source review is targeted.  It is not a proof audit of every chapter
+or every incoming archive.  The familiar Gamma recurrences and
+asymptotics, finite stuffle algebra, and low-weight multiple-zeta
+evaluations are antecedents, not new results \cite{DLMF,IKZ}.  Nor is the
+existence of entire harmonic interpolation new: we use the established
+interpolant of Ihara--Nakamura--Yamamoto \cite{INY}.  The new contribution
+relative to the inspected repository is the collection of exact
+extensions, normalizations, and reductions proved below.  No result is
+accepted on the basis of integer-relation recognition.
+
+\subsection{Conventions}
+
+Let $\psi(z)=\Gamma'(z)/\Gamma(z)$, let $\gamma$ be Euler's constant,
+and put
+\[
+ H_n^{(r)}=\sum_{j=1}^n j^{-r},\qquad H_n=H_n^{(1)},\qquad
+ H_n(w)=\sum_{n\ge j_1>\cdots>j_d\ge1}
+                     j_1^{-w_1}\cdots j_d^{-w_d}.
+\]
+The empty word has value $H_n(\varnothing)=1$; a nonempty word has
+$H_0(w)=0$.  All finite words used in the digamma calculation have
+positive integer entries.  We use the strict multiple-zeta convention
+\begin{equation}
+ Z(s_1,\ldots,s_d)=\zeta(s_1,\ldots,s_d)
+ =\sum_{n_1>\cdots>n_d\ge1}
+                 n_1^{-s_1}\cdots n_d^{-s_d}.
+ \label{eq:strict-zeta}
+\end{equation}
+In particular $Z(s,w)=\sum_{n\ge1}H_{n-1}(w)n^{-s}$ where the series
+converges.  At the positive integer words below, a first entry at least
+two makes the series absolutely convergent.
+
+Our Stieltjes convention is
+\begin{equation}
+ \zeta(1+u,a)=\frac1u+
+       \sum_{j\ge0}\frac{(-1)^j}{j!}\gamma_j(a)u^j,
+ \qquad a>0,\qquad \gamma_j=\gamma_j(1).
+ \label{eq:stieltjes-convention}
+\end{equation}
+Thus $\gamma_0(a)=-\psi(a)$ and $\gamma_0=\gamma$.
+For a meromorphic germ $f(u)$, $[u^j]f$ denotes its Laurent coefficient.
+In particular $[u]f$ is meaningful even at a pole and is not then
+$f'(0)$.  This distinction is essential in the fifth-power formula.
+
+\begin{definition}[Original-coordinate finite part]
+Suppose $f(x)=\sum_{j=1}^k a_jx^{-j}+g(x)$ near zero, with $g$
+continuous on $[0,1]$.  Define
+\begin{equation}
+ \FP\int_0^1 f(x)\,\dd x
+ =\lim_{\epsilon\downarrow0}\left\{
+ \int_\epsilon^1 f(x)\,\dd x
+ -\sum_{j=2}^k\frac{a_j\epsilon^{1-j}}{j-1}
+ +a_1\log\epsilon\right\}.
+ \label{eq:fp-definition}
+\end{equation}
+The coordinate is exactly $x$ and the upper endpoint is exactly $1$.
+We write $Q_k=\FP\int_0^1\psi(x)^k\,\dd x$ for $k\ge1$.
+\end{definition}
+
+For a sequence $B_N=P(\log N)+o(1)$, with $P$ a polynomial, define
+$\CT_{\log N}B_N=P(0)$.  This cutoff operation and a Laurent
+coefficient in an auxiliary variable are not identified by convention;
+Lemma~\ref{lem:cutoff} proves the comparison needed here.  Complex
+logarithms in the global primitive use the principal branch on
+$\C\setminus(-\infty,0]$.  All powers of positive real summation
+variables use the real logarithm.
+
+\section{Pole coefficients and the normalized global expansion}
+\label{sec:poles}
+
+The standard Taylor expansion of $\psi(1+\epsilon)$ and the recurrence
+$\psi(z+1)=\psi(z)+1/z$ give \cite[\S\S5.5,5.7]{DLMF}
+\begin{align}
+ \psi(-n+\epsilon)
+ &=-\frac1\epsilon+b_n+
+                 \sum_{r\ge2}c_{r,n}\epsilon^{r-1},
+ \label{eq:pole-series}\\
+ b_n&=H_n-\gamma,\qquad
+ c_{r,n}=H_n^{(r)}+(-1)^r\zeta(r),\qquad n\ge0.
+ \notag
+\end{align}
+This is a convergent local expansion for $0<|\epsilon|<1$.
+
+For each fixed positive integer $k$, define the finite polynomial data
+\begin{align}
+ p_{k,j}(n)
+ &=[\epsilon^{k-j}]
+   \left(-1+b_n\epsilon+\sum_{r=2}^k c_{r,n}\epsilon^r\right)^k,
+      &&1\le j\le k, \label{eq:pdef}\\
+ r_k(n)&=p_{k,1}(n),\qquad
+ P_{k,n}(z)=\sum_{j=1}^k\frac{p_{k,j}(n)}{(z+n)^j},
+ \qquad
+ \kappa_k=[\epsilon^0]\psi(\epsilon)^k.
+ \label{eq:Pdef}
+\end{align}
+The symbol $\kappa_k$ is a local Laurent constant; it will not be
+confused with the universal contour constant $C_k$ introduced later.
+The pole coefficients satisfy
+\begin{equation}
+ p_{k,j}(n)=O_k\bigl((1+\log(n+1))^{k-j}\bigr).
+ \label{eq:p-growth}
+\end{equation}
+Indeed $b_n=O(1+\log(n+1))$ and every $c_{r,n}$ with $r\ge2$ is
+bounded.  In a term of degree $k-j$ in $\epsilon$, at most $k-j$
+factors of $b_n$ can occur.
+
+\begin{theorem}[Normalized Mittag--Leffler formula for every power]
+\label{thm:ML}
+For $z\notin\{0,-1,-2,\ldots\}$,
+\begin{equation}
+ \boxed{\;
+ \psi(z)^k=P_{k,0}(z)+\kappa_k+
+       \sum_{n\ge1}\bigl(P_{k,n}(z)-P_{k,n}(0)\bigr).
+ \;}
+ \label{eq:ML}
+\end{equation}
+The series converges normally on compact sets avoiding the poles.
+In particular the entire remainder is exactly the displayed constant,
+with no uncomputed entire function.
+\end{theorem}
+
+\begin{proof}
+Normal convergence of the candidate series follows from
+\eqref{eq:p-growth}: on a fixed compact set, for sufficiently large $n$,
+\[
+ (z+n)^{-j}-n^{-j}=O(n^{-j-1}),
+\]
+uniformly in $z$.  It remains to determine the possible entire
+remainder.  Put $f(w)=\psi(w)^k-P_{k,0}(w)$, so $f$ is analytic at
+zero and $f(0)=\kappa_k$.  Integrate
+\[
+                  \frac{zf(w)}{w(w-z)}
+\]
+around $|w|=R_N=N+\tfrac12$, with positive orientation and $N$ large.
+
+We need a uniform estimate on the full circle, including near the
+negative real axis.  On its right half, the usual sectorial digamma
+asymptotic gives $\psi(w)=O(1+\log R_N)$.  On its left half, use
+\begin{equation}
+             \psi(w)=\psi(1-w)-\pi\cot(\pi w).
+ \label{eq:reflection}
+\end{equation}
+Here $1-w$ lies in the right half-plane and has size comparable to
+$R_N$.  If $|\Im w|\ge1$, the cotangent is uniformly bounded.  If
+$|\Im w|<1$, the points of this circle are a fixed positive distance
+from the integers for all sufficiently large $N$, because its real
+intersections are half-integers.  The cotangent is again uniformly
+bounded.  Thus $f(w)=O_k((1+\log R_N)^k)$ on the whole contour, and
+the integral is $O_k((1+\log R_N)^k/R_N)=o(1)$.
+
+The residues at $w=z$ and $w=0$ are $f(z)$ and $-f(0)$.
+At $w=-n$, the residue is
+$-P_{k,n}(z)+P_{k,n}(0)$, as follows by expanding
+$z/[w(w-z)]=1/(w-z)-1/w$ there.  The residue theorem and passage to
+the limit give \eqref{eq:ML}.  This proves the normalization, not just
+agreement of the principal parts.
+\end{proof}
+
+\subsection{A finite recurrence for the coefficient differences}
+
+Write $\Delta p_{k,j}(n)=p_{k,j}(n)-p_{k,j}(n-1)$ for $n\ge1$,
+and $\Delta r_k(n)=\Delta p_{k,1}(n)$.
+
+\begin{proposition}[Exact difference recurrence]
+\label{prop:difference}
+For $1\le j\le k$,
+\begin{equation}
+ \Delta p_{k,j}(n)=
+ \sum_{\ell=1}^{k-j}\binom{k}{\ell}
+ \sum_{h=j}^{k-\ell}
+       \binom{\ell+h-j-1}{h-j}
+       \frac{p_{k-\ell,h}(n-1)}{n^{\ell+h-j}}.
+ \label{eq:difference}
+\end{equation}
+An empty sum is zero; in particular $\Delta p_{k,k}(n)=0$.
+\end{proposition}
+
+\begin{proof}
+The recurrence for $\psi$ gives the local identity
+\[
+ \psi(-n+\epsilon)=\psi(-(n-1)+\epsilon)+\frac1{n-\epsilon}.
+\]
+Expand its $k$th power by the binomial theorem.  In the term with
+$\ell$ copies of $(n-\epsilon)^{-1}$, multiply the pole
+$p_{k-\ell,h}(n-1)\epsilon^{-h}$ by
+\[
+ (n-\epsilon)^{-\ell}
+   =\sum_{q\ge0}\binom{\ell+q-1}{q}
+                       \frac{\epsilon^q}{n^{\ell+q}}.
+\]
+The coefficient of $\epsilon^{-j}$ has $q=h-j$, which gives
+\eqref{eq:difference}.  Only finitely many coefficients contribute.
+\end{proof}
+
+The recurrence proves, in particular,
+$\Delta p_{k,j}(n)=O_k((1+\log n)^k/n)$ for $j<k$.
+Sharper logarithmic powers are immediate, but are not needed for the
+exact identities.  Formula~\eqref{eq:difference} is also a convenient
+implementation specification: it involves only lower powers and exact
+rational binomial coefficients.
+
+\section{The universal contour polynomial}
+\label{sec:contour}
+
+The subtraction constants in \eqref{eq:ML} are individually awkward
+harmonic expressions.  Their combined cutoff asymptotic is much
+simpler than their separate expansions suggest.
+
+\begin{theorem}[All coefficients of the large-circle boundary term]
+\label{thm:contour}
+For every fixed integer $k\ge1$,
+\begin{align}
+ \kappa_k-\sum_{n=1}^N P_{k,n}(0)
+ &=\frac1{2\pi}\int_{-\pi}^{\pi}
+                         (\log N+i\theta)^k\,\dd\theta+o(1)
+ \notag\\
+ &=\sum_{m=0}^{\lfloor k/2\rfloor}
+   \binom{k}{2m}\frac{(-1)^m\pi^{2m}}{2m+1}
+                      (\log N)^{k-2m}+o(1).
+ \label{eq:contour-polynomial}
+\end{align}
+Consequently
+\begin{equation}
+ C_k:=\CT_{\log N}\left(\kappa_k-\sum_{n=1}^N P_{k,n}(0)\right)
+ =\begin{cases}
+  (-1)^m\pi^{2m}/(2m+1),&k=2m,\\
+  0,&k\text{ odd}.
+ \end{cases}
+ \label{eq:Ck}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The residue at zero of $\psi(w)^k/w$ is $\kappa_k$.  At $-n$ it is
+$-P_{k,n}(0)$.  Thus, on $R=N+\tfrac12$, the residue theorem gives
+the exact identity
+\begin{equation}
+ \kappa_k-\sum_{n=1}^N P_{k,n}(0)
+       =\frac1{2\pi}\int_{-\pi}^{\pi}
+                           \psi(Re^{i\theta})^k\,\dd\theta.
+ \label{eq:exact-circle}
+\end{equation}
+We compare this with the angular average of the principal logarithm.
+On the right half-circle, $\psi(w)-\Log w=O(1/R)$ uniformly.
+On the left half-circle with $|\Im w|\ge\log R$, reflection
+\eqref{eq:reflection} and the exponential expansion of cotangent give
+\[
+ \psi(w)-\Log w=O(1/R)+O(e^{-2\pi|\Im w|}).
+\]
+For example, in the upper left quadrant,
+$\Log(1-w)=\Log w-i\pi+O(1/R)$ and
+$\pi\cot\pi w=-i\pi+O(e^{-2\pi\Im w})$; the lower quadrant is
+the conjugate branch calculation.
+
+The remaining arc near the negative real axis has angular length
+$O(\log R/R)$.  On that arc, the bounded-cotangent argument in
+Theorem~\ref{thm:ML} gives $\psi(w)-\Log w=O(1)$, while both
+terms are $O(1+\log R)$.  Factoring the difference of the $k$th
+powers shows that its contribution to the angular average is
+$O_k((1+\log R)^k/R)$.  The rest of the circle contributes a quantity
+of the same or smaller order.  The logarithm has a jump at the one
+endpoint of the angular parametrization, which does not affect the
+integral.  Therefore
+\[
+ \frac1{2\pi}\int_{-\pi}^{\pi}
+   \bigl(\psi(Re^{i\theta})^k-(\log R+i\theta)^k\bigr)
+                                      \,\dd\theta=o(1).
+\]
+Replacing $\log R$ by $\log N$ changes this by $o(1)$.  Odd powers
+of $\theta$ integrate to zero and the even angular moments are
+$(-1)^m\pi^{2m}/(2m+1)$, proving both assertions.
+\end{proof}
+
+For orientation, $C_1=C_3=C_5=0$, $C_2=-2\zeta(2)$, and
+$C_4=18\zeta(4)$.  These are combined boundary constants.  They are
+not the local Laurent constants $\kappa_k$.
+
+\section{A finite-part formula for every positive integer power}
+\label{sec:bridge}
+
+Define
+\begin{align}
+ J_k&=\sum_{n\ge1}\sum_{j=2}^k
+          \frac{\Delta p_{k,j}(n)}{(j-1)n^{j-1}},
+ \label{eq:Jdef}\\
+ D_k(s)&=\sum_{n\ge1}\frac{\Delta r_k(n)}{n^s},
+                       \qquad \Re s>0.
+ \label{eq:Ddef}
+\end{align}
+The first series is ordinary and absolutely convergent, by
+Proposition~\ref{prop:difference}.  The second converges absolutely
+in its initial half-plane.  Its meromorphic continuation to a
+neighborhood of zero will follow from the proof below.
+
+\begin{theorem}[The all-power harmonic spectral formula]
+\label{thm:all-power}
+For every integer $k\ge1$,
+\begin{equation}
+                 \boxed{\;Q_k=C_k+J_k+[s]D_k(s).\;}
+ \label{eq:all-power}
+\end{equation}
+All data on the right are specified by the finite polynomial
+calculation \eqref{eq:pdef}, the exact difference recurrence
+\eqref{eq:difference}, and the coefficient of a meromorphic germ.
+The identity uses the original-coordinate finite part
+\eqref{eq:fp-definition}.
+\end{theorem}
+
+We first record the exact cutoff comparison that determines the sign
+and the order of the spectral coefficient.
+
+\begin{lemma}[Logarithmic cutoffs and Laurent coefficients]
+\label{lem:cutoff}
+Suppose
+$a_n=P(\log n)+O(n^{-\delta}(1+\log n)^M)$, where $P$ is a
+polynomial and $\delta>0$.  Let $A(s)=\sum_{n\ge1}a_nn^{-s}$
+in its right half-plane of absolute convergence.  Then $A(1+u)$
+continues meromorphically near $u=0$, and
+\begin{align}
+ \CT_{\log N}\sum_{n=1}^N\frac{a_n}{n}
+           &=[u^0]A(1+u), \label{eq:cutoff-zero}\\
+ \CT_{\log N}\sum_{n=1}^N\frac{a_n\log n}{n}
+           &=-[u]A(1+u). \label{eq:cutoff-one}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+For $P(L)=\sum_j c_jL^j$, write
+\[
+ A(1+u)=\sum_j c_j(-1)^j\zeta^{(j)}(1+u)
+           +\sum_{n\ge1}\frac{a_n-P(\log n)}{n^{1+u}}.
+\]
+The last series and all its derivatives converge normally for
+$\Re u>-\delta$.  The elementary Stieltjes limit formula gives
+\[
+ \sum_{n=1}^N\frac{(\log n)^j}{n}
+       =\frac{(\log N)^{j+1}}{j+1}+\gamma_j
+                    +O((1+\log N)^j/N).
+\]
+The stated error follows by one sum--integral comparison applied
+to the derivative of $(\log x)^j/x$ on the tail.
+On the Laurent side,
+$[u^0](-1)^j\zeta^{(j)}(1+u)=\gamma_j$ and
+$[u](-1)^j\zeta^{(j)}(1+u)=-\gamma_{j+1}$.
+Termwise comparison proves the first formula and, after inserting
+one further factor of $\log n$, the second.  Absolute convergence
+handles the subtracted remainder in both cases.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:all-power}]
+The harmonic-number asymptotic expansions, or reflection followed by
+the positive-axis digamma expansion, show that
+\begin{align}
+ r_k(n)&=R_k(\log n)+O_k((1+\log n)^M/n),\label{eq:r-asymptotic}\\
+ \Delta r_k(n)&=\frac{R_k'(\log n)}n
+                  +O_k((1+\log n)^M/n^2),\label{eq:delta-asymptotic}\\
+ R_k(L)&=\Res_{\epsilon=0}(L-\pi\cot\pi\epsilon)^k.
+ \label{eq:Rdefinition}
+\end{align}
+Here and below $M$ may depend on $k$.  To justify the second estimate,
+use the complete harmonic asymptotic expansions through the $1/n$
+term: $r_k(n)=R_k(\log n)+n^{-1}U_k(\log n)
++O((1+\log n)^M/n^2)$ with a polynomial $U_k$.  The difference of
+the explicit $n^{-1}U_k$ terms is $O((1+\log n)^M/n^2)$, and
+the leading difference is $R_k'(\log n)/n$ to that same accuracy.
+Thus the second formula does not follow from differencing an
+unspecified first-order error.  It also follows directly from
+\eqref{eq:difference} and the first two harmonic asymptotic terms.
+
+Apply Lemma~\ref{lem:cutoff} to $a_n=n\Delta r_k(n)$.
+It proves the meromorphic continuation of $D_k$ and gives
+\begin{equation}
+ \CT_{\log N}\sum_{n=1}^N\Delta r_k(n)\log n=-[s]D_k(s).
+ \label{eq:delta-cutoff}
+\end{equation}
+
+Now integrate the normally convergent series \eqref{eq:ML}.
+After the pole $P_{k,0}$ is removed, the same
+$O(n^{-j-1})$ estimate proves uniform convergence also on the
+closed interval $[0,1]$, so integration across its regular
+endpoint is justified.
+The finite part of the pole at zero contributes
+$-\sum_{j=2}^kp_{k,j}(0)/(j-1)$; its simple pole has finite part
+zero.  For a pole at $-n$, the integrated simple-pole term is
+$r_k(n)\log(1+1/n)$, and the higher-pole terms have numerators
+$p_{k,j}(n)(n^{1-j}-(n+1)^{1-j})/(j-1)$.
+The constant subtraction integrates to $-P_{k,n}(0)$.
+
+Use the following \emph{finite} summation identities:
+\begin{align}
+ &\sum_{n=1}^N p_{k,j}(n)
+               \bigl(n^{1-j}-(n+1)^{1-j}\bigr)\notag\\
+ &\hspace{6mm}=p_{k,j}(0)+
+           \sum_{n=1}^N\frac{\Delta p_{k,j}(n)}{n^{j-1}}
+                    -\frac{p_{k,j}(N)}{(N+1)^{j-1}},
+                  &&j\ge2,\label{eq:sbp-high}\\
+ &\sum_{n=1}^N r_k(n)\log(1+1/n)
+     =r_k(N)\log(N+1)-\sum_{n=1}^N\Delta r_k(n)\log n.
+ \label{eq:sbp-simple}
+\end{align}
+The first terms in \eqref{eq:sbp-high} cancel the finite part of
+the pole at zero exactly, while its final terms tend to zero.
+If $J_{k,N}$ denotes the cutoff in \eqref{eq:Jdef}, we obtain
+\begin{align}
+ Q_k=\lim_{N\to\infty}\biggl\{
+ &\kappa_k-\sum_{n=1}^N P_{k,n}(0)+J_{k,N}
+       +r_k(N)\log(N+1)\notag\\
+ &\hspace{12mm}-\sum_{n=1}^N\Delta r_k(n)\log n\biggr\}.
+ \label{eq:Qcutoff}
+\end{align}
+All terms here arose from finite sums or normally convergent series.
+By \eqref{eq:r-asymptotic}, the polynomial asymptotic of the boundary
+$r_k(N)\log(N+1)$ is $(\log N)R_k(\log N)$, which has no constant
+term.  Theorem~\ref{thm:contour} supplies the constant $C_k$ for the
+first two terms of \eqref{eq:Qcutoff}, and \eqref{eq:delta-cutoff}
+supplies $+[s]D_k$.  Finally $J_{k,N}\to J_k$.  Taking the constant
+coefficient of the complete cutoff expression proves
+\eqref{eq:all-power}.
+\end{proof}
+
+\subsection{A closed ordinary-series form}
+
+The residue polynomial in \eqref{eq:Rdefinition} itself has a closed
+form.  This makes every Stieltjes correction explicit, without naming
+any multiple-zeta Laurent coefficient.
+
+% INSERT residue_polynomial.tex HERE
+
+\begin{corollary}[Ordinary subtracted series at every power]
+\label{cor:ordinary-all}
+With the definitions above,
+\begin{align}
+ Q_k={}&C_k+J_k+
+ k\sum_{m=0}^{\lfloor(k-2)/2\rfloor}
+       (-1)^m\binom{k-1}{2m+1}\pi^{2m}\gamma_{k-2m-1}
+ \notag\\
+ &-\sum_{n\ge1}
+   \left(\Delta r_k(n)-\frac{R_k'(\log n)}n\right)\log n.
+ \label{eq:ordinary-all}
+\end{align}
+The finite Stieltjes sum is zero at $k=1$.  Both infinite sums are
+ordinary absolutely convergent sums.  The last summand is
+$O_k((1+\log n)^{M+1}/n^2)$.
+\end{corollary}
+
+This is useful both conceptually and computationally.  The right side
+contains no unspecified regularization and no uncomputed entire
+remainder.  Further terms of the same harmonic asymptotic expansions
+give convergent Hurwitz-zeta tail accelerations if numerical evaluation
+is wanted.  Such acceleration is optional for the identity itself.
+
+\section{A finite algorithm in strict harmonic words}
+\label{sec:algorithm}
+
+The spectral formula becomes finite algebra once its target class is
+specified.  Work over $\Q[\gamma,\zeta(2),\ldots,\zeta(k)]$ and put
+$h_r=H_{n-1}^{(r)}$, $v=1/n$.  Compute the polynomial
+$p_{k,j}$ from \eqref{eq:pdef}, and replace $H_n^{(r)}$ by
+$h_r+v^r$ to obtain its value at $n$.  Subtract its value at $n-1$.
+This produces every $\Delta p_{k,j}$ as a finite polynomial in
+$v,h_1,\ldots,h_k$.
+
+The finite stuffle recursion, with $(a,A)$ denoting a leading letter
+followed by a word, is
+\begin{equation}
+ (a,A)*(b,B)=(a,A*(b,B))+(b,(a,A)*B)+(a+b,A*B).
+ \label{eq:stuffle}
+\end{equation}
+It expresses products of the $h_r$ as a finite integer combination
+of strict words $H_{n-1}(w)$.  The coefficients count equal-index
+possibilities as well as the two strict orderings.  Thus
+\[
+        h_1^2=2H_{n-1}(1,1)+H_{n-1}^{(2)},
+\]
+and a further multiplication gives
+\[
+ h_1^3=6H_{n-1}(1,1,1)+3H_{n-1}(2,1)
+                  +3H_{n-1}(1,2)+H_{n-1}^{(3)}.
+\]
+These are finite identities before any infinite sum is taken.
+
+Every positive-integer word has a polynomial harmonic asymptotic
+\begin{equation}
+ H_{n-1}(w)=B_w(\log n)+O((1+\log n)^M/n)
+ \label{eq:word-asymptotic}
+\end{equation}
+for some polynomial $B_w$ and integer $M$.  Here is a direct induction
+that also supplies the continuation needed term by term.  For the
+empty word the assertion is immediate.  Given it for $w$, use
+$H_N(a,w)=\sum_{m=1}^N H_{m-1}(w)m^{-a}$.  If $a=1$,
+the Stieltjes cutoff formula applied to each power of $\log m$
+and the absolutely convergent subtracted remainder give a
+polynomial in $\log N$ with an
+$O((1+\log N)^{M'}/N)$ error.  If $a\ge2$, the sum converges
+and its tail has that same error form, so the polynomial is a
+constant.  Replacing $N$ by $n-1$ preserves the claimed form.
+Consequently each $Z(1+s,w)$ has a meromorphic germ at zero by
+Lemma~\ref{lem:cutoff}; for first entry at least two its defining
+series is already holomorphic near zero.
+
+\begin{theorem}[Terminating harmonic-word reduction]
+\label{thm:algorithm}
+At a fixed positive integer power $k$, the following procedure terminates
+and yields the exact formula \eqref{eq:all-power}:
+\begin{enumerate}
+\item Compute $p_{k,j}$ and their finite differences by
+\eqref{eq:pdef} or \eqref{eq:difference}.
+\item Expand the summand of $J_k$ and the polynomial $\Delta r_k(n)$
+in $v,h_1,\ldots,h_k$.
+\item Apply the finite stuffle recursion to every harmonic monomial.
+\item Replace $v^qH_{n-1}(w)$ by $Z(q,w)$ for $J_k$, and by
+$Z(q+s,w)$ for $D_k(s)$.
+\end{enumerate}
+Every first entry in $J_k$ is at least two.  Every first entry in
+$D_k(0)$ is at least one.  The resulting word weights are at most
+$k-1$; coefficient factors in $\gamma$ and ordinary zeta values account
+for the remaining formal weight.  The prescription introduces only a
+finite number of specified linear Laurent coefficients.
+\end{theorem}
+
+\begin{proof}
+Coefficient extraction and finite differences are finite polynomial
+operations.  Each application of the stuffle recursion reduces the
+combined remaining word length, so it terminates.  By
+\eqref{eq:difference}, every monomial in $\Delta p_{k,j}$ contains
+at least one $v$, and division by $n^{j-1}$ gives $q\ge j\ge2$
+in $J_k$.  For $\Delta r_k$, it gives $q\ge1$.  Therefore all
+replacements in the initial half-planes are identities of absolutely
+convergent series.  Their continuations at zero agree by the
+meromorphic subtraction justified by \eqref{eq:word-asymptotic}.
+Finally assign weight $1$ to $h_1,\gamma,v$, weight $r$ to
+$h_r,\zeta(r)$, and use \eqref{eq:pdef}.  Both relevant summand
+polynomials have weight $k-1$, and stuffle preserves it.
+\end{proof}
+
+This is a reduction to a precise finite class of multiple-zeta values
+and their spectral coefficients.  It does not prove that all those
+values reduce further to products of ordinary zeta values.  For higher
+powers it is appropriate to retain admissible multiple-zeta words
+unless an exact additional relation is supplied.
+
+\subsection{Recovery of the lower-power formulas}
+
+Define the height-one coefficients
+\begin{equation}
+ \eta=[u]Z(1+u,1),\qquad
+ \theta=[u]Z(1+u,1,1),\qquad
+ \chi=[u]Z(1+u,1,1,1).
+ \label{eq:height-coefficients}
+\end{equation}
+The first instances of Theorem~\ref{thm:all-power} are
+\begin{align}
+ Q_1={}&0,\notag\\
+ Q_2={}&2\gamma_1-2\zeta(2),\label{eq:Q2}\\
+ Q_3={}&3\zeta(2)-6\eta-6\gamma\gamma_1,\label{eq:Q3}\\
+ Q_4={}&12\zeta(3)-12\gamma\zeta(2)+18\zeta(4)+4\zeta'(3)
+       -24\theta+24\gamma\eta
+                  +12(\gamma^2-\zeta(2))\gamma_1.
+ \label{eq:Q4}
+\end{align}
+The cubic and quartic identities are consistency checks against the
+incoming reports \cite{Quartic,Barnes}; they are not presented as new
+evaluations here.  For example,
+\begin{align*}
+ D_2(s)&=-2\zeta(1+s),& J_2&=0,\\
+ D_3(s)&=-6Z(1+s,1)+6\gamma\zeta(1+s),&J_3&=3\zeta(2),\\
+ D_4(s)&=-24Z(1+s,1,1)+24\gamma Z(1+s,1)\\
+       &\quad+12(\zeta(2)-\gamma^2)\zeta(1+s)+4\zeta(3+s),
+       &J_4&=12\zeta(3)-12\gamma\zeta(2).
+\end{align*}
+At $k=1$ the residue is the constant $-1$, hence $J_1=D_1=0$;
+the finite part also follows directly from $\log\Gamma(1)=0$ and
+$\log\Gamma(\epsilon)=-\log\epsilon+O(\epsilon)$.
+
+\section{The fifth power with every finite correction}
+\label{sec:fifth}
+
+For compactness write $\zeta_r=\zeta(r)$ in this section.  At a fixed
+pole use $b=b_n$, $c=c_{2,n}$, $d=c_{3,n}$, and $e=c_{4,n}$.
+Direct coefficient extraction gives
+\begin{align}
+ p_{5,5}&=-1,\qquad
+ p_{5,4}=5b,\qquad
+ p_{5,3}=5c-10b^2,\notag\\
+ p_{5,2}&=10b^3-20bc+5d,\notag\\
+ r_5&=-5b^4+30b^2c-10c^2-20bd+5e.
+ \label{eq:p5}
+\end{align}
+For reference, the local constant is
+\begin{equation}
+ \kappa_5=-\gamma^5+20\gamma^3\zeta_2-55\gamma\zeta_4
+             -30\gamma^2\zeta_3+20\zeta_2\zeta_3-5\zeta_5.
+ \label{eq:kappa5}
+\end{equation}
+The universal constant is $C_5=0$, a different quantity.
+
+For the finite differences, let $b,c,d$ instead denote the preceding
+index $n-1$.  Then
+\begin{align}
+ \Delta p_{5,4}(n)&=\frac5n,\notag\\
+ \Delta p_{5,3}(n)&=-\frac5{n^2}-\frac{20b}{n},\notag\\
+ \Delta p_{5,2}(n)&=-\frac5{n^3}+\frac{10b}{n^2}
+                              +\frac{30b^2-20c}{n},\notag\\
+ \Delta r_5(n)&=\frac{-20b^3+60bc-20d}{n}
+                          +\frac{10c}{n^2}+\frac{20b}{n^3}.
+ \label{eq:delta5}
+\end{align}
+Equivalently the first numerator in the last line is $5r_4(n-1)$.
+These identities can be checked simply by replacing
+$(b,c,d,e)$ by $(b+1/n,c+1/n^2,d+1/n^3,e+1/n^4)$ in
+\eqref{eq:p5}; Proposition~\ref{prop:difference} gives an independent
+binomial derivation.
+
+The higher poles therefore contribute
+\begin{align}
+ J_5
+ &=\sum_{n\ge1}\left\{
+       \frac{30(H_{n-1}-\gamma)^2
+                    -20(H_{n-1}^{(2)}+\zeta_2)}{n^2}
+                            -\frac{35}{6n^4}\right\}\notag\\
+ &=30\gamma^2\zeta_2-60\gamma\zeta_3+\frac{35}{3}\zeta_4.
+ \label{eq:J5}
+\end{align}
+For completeness, the low-weight evaluations needed in this last step
+are
+\[
+ Z(2,1)=\zeta_3,\quad Z(2,1,1)=\zeta_4,\quad
+ Z(2,2)=\frac34\zeta_4,\quad \zeta_2^2=\frac52\zeta_4.
+\]
+They follow from the standard duality, sum, and stuffle identities
+\cite{DLMF,IKZ}.  In particular,
+\begin{align*}
+ \sum_{n\ge1}\frac{(H_{n-1}-\gamma)^2}{n^2}
+       &=\frac{11}{4}\zeta_4-2\gamma\zeta_3+\gamma^2\zeta_2,\\
+ \sum_{n\ge1}\frac{H_{n-1}^{(2)}+\zeta_2}{n^2}
+       &=\frac{13}{4}\zeta_4,
+\end{align*}
+which proves every scalar term in \eqref{eq:J5}.
+
+Applying finite stuffle to the last line of \eqref{eq:delta5} yields
+the complete spectral identity
+\begin{align}
+ D_5(s)={}&-120Z(1+s,1,1,1)+120\gamma Z(1+s,1,1)
+ \notag\\
+ &+60(\zeta_2-\gamma^2)Z(1+s,1)
+       +20(\gamma^3-3\gamma\zeta_2+\zeta_3)\zeta(1+s)
+ \notag\\
+ &+20Z(1+s,3)+10Z(2+s,2)+20Z(3+s,1)
+ \notag\\
+ &+10\zeta_2\zeta(2+s)-20\gamma\zeta(3+s).
+ \label{eq:D5}
+\end{align}
+All equalities here hold first for $\Re s>0$, and then as meromorphic
+germs.  In the first numerator of \eqref{eq:delta5}, the words
+$(2,1)$ and $(1,2)$ from $H_{n-1}^3$ cancel against the corresponding
+words in $H_{n-1}H_{n-1}^{(2)}$.  The residual $(3)$ word does not
+cancel.  It is responsible for $Z(1+s,3)$.
+
+Set
+\begin{equation}
+ D_{p,q}=[u]Z(p+u,q),\qquad
+ \Omega_4=2D_{1,3}+D_{2,2}+2D_{3,1}.
+ \label{eq:mixed-def}
+\end{equation}
+For $p\ge2$ these coefficients are ordinary outer-order derivatives,
+$D_{p,q}=\partial_1Z(p,q)$.  For $p=1,q=3$, coefficient extraction
+is required at a simple pole.
+
+\begin{theorem}[Complete fifth-power finite part]
+\label{thm:q5}
+In the conventions \eqref{eq:fp-definition},
+\eqref{eq:stieltjes-convention}, \eqref{eq:height-coefficients}, and
+\eqref{eq:mixed-def},
+\begin{align}
+ Q_5={}&30\gamma^2\zeta_2-60\gamma\zeta_3+\frac{35}{3}\zeta_4
+          -120\chi+120\gamma\theta
+          +60(\zeta_2-\gamma^2)\eta
+ \notag\\
+ &-20(\gamma^3-3\gamma\zeta_2+\zeta_3)\gamma_1
+          +20D_{1,3}+10D_{2,2}+20D_{3,1}
+ \notag\\
+ &+10\zeta_2\zeta'(2)-20\gamma\zeta'(3).
+ \label{eq:Q5}
+\end{align}
+Equivalently the three mixed terms are $10\Omega_4$.
+\end{theorem}
+
+\begin{proof}
+Use $C_5=0$, \eqref{eq:J5}, and the linear coefficient of
+\eqref{eq:D5} in Theorem~\ref{thm:all-power}.  In particular
+$[s]\zeta(1+s)=-\gamma_1$, which fixes the sign of its correction.
+The other coefficients are exactly those named in
+\eqref{eq:height-coefficients} and \eqref{eq:mixed-def}.
+Every step rests on a finite algebraic identity or the normalized
+analytic results already proved.
+\end{proof}
+
+This answers the fifth-power research question in \cite{Quartic}:
+the fourfold height-one coefficient enters with multiplier $-120$,
+and the mixed twofold coefficients and both ordinary zeta derivatives
+are retained explicitly.  The result is not a reduction of $\chi$
+or $\Omega_4$ to ordinary zeta and Stieltjes constants.
+
+\subsection{An ordinary convergent formula for the same finite part}
+
+The residue polynomial and its derivative are
+\[
+ R_5(L)=-5L^4+60\zeta_2L^2-90\zeta_4,
+ \qquad R_5'(L)=-20L^3+120\zeta_2L.
+\]
+Consequently Corollary~\ref{cor:ordinary-all} gives the exact alternative
+\begin{align}
+ Q_5={}&30\gamma^2\zeta_2-60\gamma\zeta_3+\frac{35}{3}\zeta_4
+                   +20\gamma_4-120\zeta_2\gamma_2
+ \notag\\
+ &-\sum_{n\ge1}
+  \left\{\Delta r_5(n)
+           +\frac{20\log^3n-120\zeta_2\log n}{n}\right\}\log n.
+ \label{eq:Q5ordinary}
+\end{align}
+Here $\Delta r_5$ is the explicit harmonic expression
+\eqref{eq:delta5}, with $b,c,d$ at $n-1$.
+It can equally be written in polygamma values at positive integers:
+\begin{equation}
+ b=\psi(n),\qquad c=2\zeta_2-\psi'(n),\qquad
+ d=\tfrac12\psi''(n).
+ \label{eq:polygamma5}
+\end{equation}
+The final series in \eqref{eq:Q5ordinary} converges absolutely;
+its summand is $O((1+\log n)^4/n^2)$.
+This gives a definition-free numerical route to $Q_5$ using only
+ordinary Stieltjes constants and ordinary polygamma evaluations,
+with no multivariate analytic continuation routine.
+
+\subsection{Explicit kernels for the height-one coefficients}
+\label{subsec:heightkernel}
+
+The retained height-one coefficient has a concrete normalized
+integral representation.  We give it at every depth so that the
+fourfold coefficient is specified independently of the digamma moment.
+Height-one Laurent constants and related normalized integrals have
+antecedents in Young's work \cite[Section~4]{Young}.  The proposition
+below records a direct Mellin subtraction with the coefficient and
+Stieltjes conventions fixed explicitly for this article.
+Let
+\begin{equation}
+ \frac1{\Gamma(1+u)}=\sum_{j\ge0}a_ju^j,\qquad
+ K_d(t)=\frac{[-\log(1-e^{-t})]^{d-1}}
+                       {(d-1)!(e^t-1)},\quad d\ge1.
+ \label{eq:Kd}
+\end{equation}
+
+\begin{proposition}[Normalized height-one Mellin coefficient]
+\label{prop:heightkernel}
+For $d\ge1$,
+\begin{equation}
+ Z(1+u,1^{d-1})=\sum_{j=0}^d a_ju^{j-d}+L_du+O(u^2),
+ \label{eq:heightLaurent}
+\end{equation}
+where
+\begin{align}
+ L_d=a_{d+1}
+ &+\int_0^1\log t\left\{K_d(t)
+                  -\frac{(-\log t)^{d-1}}{(d-1)!t}\right\}\,\dd t
+ \notag\\
+ &+\int_1^\infty\log t\,K_d(t)\,\dd t.
+ \label{eq:heightkernel}
+\end{align}
+Both integrals are absolutely convergent.  In particular
+$L_2=\eta$, $L_3=\theta$, and $L_4=\chi$.
+\end{proposition}
+
+\begin{proof}
+The generating series of $H_{n-1}(1^{d-1})$ gives, for $\Re u>0$,
+\[
+ \Gamma(1+u)Z(1+u,1^{d-1})=\int_0^\infty t^uK_d(t)\,\dd t.
+\]
+For example it follows by dividing
+$\Li_{1^{d-1}}(z)=(-\log(1-z))^{d-1}/(d-1)!$
+by $1-z$, multiplying by $z$, and setting $z=e^{-t}$; for $d=1$
+the kernel is simply $1/(e^t-1)$.  Subtract the leading kernel on
+$(0,1)$ to write this integral as $u^{-d}+B_d(u)$, with $B_d$
+holomorphic near zero.  The subtraction is integrable with any fixed
+power of $\log t$, because its remainder is at worst a polynomial in
+$|\log t|$ near zero; the kernel decays exponentially at infinity.
+
+The derivative identity
+\[
+ K_d(t)=-\frac1{d!}\frac{\dd}{\dd t}
+                         [-\log(1-e^{-t})]^d
+\]
+shows that $B_d(0)=0$: the integrals from $\epsilon$ to infinity
+and of the subtracted kernel from $\epsilon$ to $1$ have difference
+\[
+ \frac{[-\log(1-e^{-\epsilon})]^d-(-\log\epsilon)^d}{d!}
+                         \longrightarrow0.
+\]
+Multiplication by $1/\Gamma(1+u)$ now proves
+\eqref{eq:heightLaurent}, with $L_d=a_{d+1}+B_d'(0)$ exactly as
+in \eqref{eq:heightkernel}.
+\end{proof}
+
+For the fifth moment the coefficient used in this kernel is explicitly
+\begin{equation}
+ a_5=\frac{\gamma^5-10\gamma^3\zeta_2+20\gamma^2\zeta_3
+       +15\gamma\zeta_2^2-30\gamma\zeta_4
+       -20\zeta_2\zeta_3+24\zeta_5}{120}.
+ \label{eq:a5}
+\end{equation}
+This follows by exponentiating
+$\log(1/\Gamma(1+u))=\gamma u+
+\sum_{r\ge2}(-1)^{r+1}\zeta(r)u^r/r$.
+The kernel is an exact analytic representation, not by itself a
+reduction of the arithmetic content of $\chi$.
+
+\subsection{The mixed derivative and its polylogarithmic representations}
+\label{subsec:mixed}
+
+The stuffle identity in a right half-plane gives
+\[
+ Z(1+u,3)=\zeta(1+u)\zeta_3-Z(3,1+u)-\zeta(4+u).
+\]
+Consequently
+\begin{equation}
+ D_{1,3}=-\gamma_1\zeta_3-\partial_2Z(3,1)-\zeta'(4).
+ \label{eq:D13inner}
+\end{equation}
+The inner-order derivative has an absolutely convergent defining
+series.  In particular this transformation replaces a singular
+outer-order coefficient by a convergent inner-order derivative; it
+does not remove the nonsymmetric spectral information.
+
+Define the Tornheim function
+\[
+ T(a,b,c)=\sum_{m,n\ge1}\frac1{m^an^b(m+n)^c}
+\]
+in its absolute-convergence domain.  A finite partial fraction
+calculation gives, for $u$ near zero,
+\begin{equation}
+ T(2,2,u)=2Z(2+u,2)+4Z(3+u,1).
+ \label{eq:T22}
+\end{equation}
+Indeed, for $l=m+n$, summation over $1\le m<l$ uses
+\[
+ \frac1{m^2(l-m)^2}
+ =\frac1{l^2}\left(\frac1{m^2}+\frac1{(l-m)^2}
+                    +\frac2{m(l-m)}\right)
+\]
+and gives $2H_{l-1}^{(2)}/l^2+4H_{l-1}/l^3$.
+Thus
+\begin{align}
+ \Omega_4
+ &=2D_{1,3}+\tfrac12\partial_3T(2,2,0)
+ \label{eq:OmegaT}\\
+ &=2(\partial_1-\partial_2)Z(3,1)+\partial_1Z(2,2)
+                      -2\gamma_1\zeta_3-2\zeta'(4).
+ \label{eq:OmegaInner}
+\end{align}
+Spectral derivatives of Tornheim sums have substantial prior literature,
+including \cite{BB2014}.  These equalities are useful coordinate changes;
+no arithmetic independence is asserted for the displayed coordinates.
+
+There are also completely convergent one-dimensional representations:
+\begin{align}
+ D_{1,3}
+  &=-\gamma_1\zeta_3+
+        \sum_{n\ge1}\frac{\zeta(3,n)\log n}{n},
+ \label{eq:D13tail}\\
+ \partial_3T(2,2,0)
+  &=\int_0^\infty
+        \frac{\Li_2(e^{-t})^2-e^{-t}\zeta_2^2}{t}\,\dd t.
+ \label{eq:Tpolylog}
+\end{align}
+For \eqref{eq:D13tail}, use
+$H_{n-1}^{(3)}=\zeta_3-\zeta(3,n)$ and extract the linear
+coefficient.  For \eqref{eq:Tpolylog}, insert the Frullani identity
+$-\log(m+n)=\int_0^\infty(e^{-(m+n)t}-e^{-t})\,\dd t/t$
+and sum.  Absolute integrability follows either from
+$\sum_{m,n\ge1}\log(m+n)/(m^2n^2)<\infty$, or directly from
+the $O(\log t)$ integrand at zero and exponential decay at infinity.
+Equations~\eqref{eq:OmegaT}, \eqref{eq:D13tail}, and
+\eqref{eq:Tpolylog} connect the first mixed correction in a digamma
+power to a dilogarithm integral and a Hurwitz-zeta tail sum.
+
+\subsection{What scalar polynomial cancellation proves}
+\label{subsec:canonical}
+
+% INSERT canonical_fifth.tex HERE
+
+\section{Normalized primitives and polygamma identities}
+\label{sec:primitives}
+
+The same normalization gives a primitive, not only a finite moment.
+On $\C\setminus(-\infty,0]$ use the principal logarithm.
+
+\begin{theorem}[An all-power primitive with fixed normalization]
+\label{thm:primitive}
+For $k\ge1$, put
+\begin{align}
+ \mathcal A_k(z)={}&\kappa_k z+p_{k,1}(0)\Log z
+             +\sum_{j=2}^k\frac{p_{k,j}(0)z^{1-j}}{1-j}
+ \notag\\
+ &+\sum_{n\ge1}\biggl\{
+       p_{k,1}(n)\log(1+z/n)-zP_{k,n}(0)
+ \notag\\
+ &\hspace{26mm}
+       +\sum_{j=2}^k p_{k,j}(n)
+             \frac{(z+n)^{1-j}-n^{1-j}}{1-j}\biggr\}.
+ \label{eq:primitive}
+\end{align}
+The series converges normally on compact subsets of that slit plane,
+and
+\begin{equation}
+             \mathcal A_k'(z)=\psi(z)^k,\qquad
+             \mathcal A_k(1)=Q_k.
+ \label{eq:primitive-properties}
+\end{equation}
+Its local Laurent--log expansion at zero has constant coefficient
+zero, which fixes the otherwise arbitrary additive constant.
+\end{theorem}
+
+\begin{proof}
+Each brace in \eqref{eq:primitive} is the integral from zero to $z$
+of $P_{k,n}(w)-P_{k,n}(0)$.  For large $n$ and $z$ in a fixed
+compact set its magnitude is
+$O_k((1+\log n)^{k-1}/n^2)$, as follows by cancellation of its
+linear terms or from the bound in the proof of Theorem~\ref{thm:ML}.
+The normally convergent series may therefore be differentiated, and
+\eqref{eq:ML} gives the first identity.  Every term in the braces
+vanishes at zero and the analytic part begins with $\kappa_kz$.
+The Laurent and logarithmic terms outside the braces also have no
+constant coefficient.  The definition of the original-coordinate
+finite part now gives $\mathcal A_k(1)=Q_k$.
+\end{proof}
+
+For $k=1$, this is the normalized branch of $\log\Gamma(z)$,
+whose local expansion begins $-\Log z-\gamma z+\cdots$.
+For every higher power it gives an explicitly normalized antiderivative
+through harmonic pole coefficients.  Ordinary integrals along paths
+contained in the slit plane follow by endpoint subtraction of
+$\mathcal A_k$.  On other pole-free intervals the same conclusion
+holds after choosing a consistent analytic continuation.
+
+\begin{corollary}[Differentiated polygamma identities]
+\label{cor:derivatives}
+For $m\ge1$ and $z$ away from the nonpositive integers,
+\begin{equation}
+ \frac{\dd^m}{\dd z^m}\psi(z)^k
+  =(-1)^m\sum_{n\ge0}\sum_{j=1}^k
+              \frac{(j)_m p_{k,j}(n)}{(z+n)^{j+m}}.
+ \label{eq:all-derivatives}
+\end{equation}
+The series is normally convergent.  Its left side is explicitly
+\begin{equation}
+ \sum_{m_1+\cdots+m_k=m}
+          \frac{m!}{m_1!\cdots m_k!}
+                         \prod_{i=1}^k\psi^{(m_i)}(z),
+ \label{eq:polygamma-multinomial}
+\end{equation}
+where $\psi^{(0)}=\psi$ and $(j)_m$ is the rising factorial.
+\end{corollary}
+
+\begin{proof}
+Differentiate \eqref{eq:ML} normally on compact subsets.  The constant
+subtractions disappear after the first derivative and each pole gives
+the displayed rising factorial.  The denominator exponent is at least
+two, so \eqref{eq:p-growth} proves normal convergence directly as well.
+The multinomial identity is the ordinary product rule.
+\end{proof}
+
+For example, with $b_n=H_n-\gamma$ the case $k=2,m=1$ gives
+\[
+ \psi(z)\psi'(z)
+     =-\sum_{n\ge0}\left\{\frac1{(z+n)^3}
+                             -\frac{b_n}{(z+n)^2}\right\}.
+\]
+This agrees with the classical polygamma pole series at $k=1$ and
+extends it to polynomial products without an undetermined analytic
+term.  The full formulas apply at arbitrary complex $z$ in their
+specified domains, not only at integer arguments.
+
+% INSERT ordered_section.tex HERE
+% INSERT audit_section.tex HERE
+% INSERT article_end.tex HERE

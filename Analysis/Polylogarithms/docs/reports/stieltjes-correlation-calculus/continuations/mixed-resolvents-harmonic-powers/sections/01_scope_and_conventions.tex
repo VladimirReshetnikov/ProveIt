@@ -1,0 +1,188 @@
+\section{Scope, conventions, and the role of complete local subtraction}
+\label{scope:section}
+
+\subsection{Relation to the current manuscript and incoming reports}
+
+The source baseline is the repository revision
+\src{9035bb0eaaf70f3398711b489733093dcc52e946}, whose manuscript is
+organized into four volumes and whose current incoming directory contains
+seventeen ZIP reports \cite{repo:main}. The work here follows the
+Hurwitz--Stieltjes and harmonic-identity spine. The source review included
+the manuscript's structure and status records, the relevant finite-part
+chapters, and the incoming reports bearing on the questions below.
+It is a targeted mathematical audit, not a claim that every theorem in
+the four volumes and all incoming archives has been re-proved.
+
+There are already substantial results at this baseline. The cubic and
+quartic digamma bridges, single-resolvent complex powers at nonpositive
+resonances, all-degree formal Tornheim relation spaces, and the
+Stieltjes-index-zero collision theorem are prior work
+\cite{repo:cubic,repo:barnes,repo:quartic,repo:reflection}.
+Several questions in older incoming reports have consequently become
+stale. We preserve that distinction throughout: a theorem that was
+already proved in a newer report is not presented as a new result here.
+
+The concrete contributions and their limits are as follows.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.24\textwidth}
+                  >{\raggedright\arraybackslash}p{0.68\textwidth}}
+\toprule
+Target & Result in this article\\
+\midrule
+\endhead
+Several resolvents with independent exponents &
+Theorems~\ref{mr:fourier}, \ref{mr:hurwitz}, and \ref{mr:completion}
+give the complete Fourier spectrum, the Hurwitz transform, and the
+local completion for any finite number of nonreal parameters. Opposite
+orientations are included. This answers the transformation and
+normalization portions of Question 10 in \cite{repo:quartic}.\\[5pt]
+Mixed logarithmic products &
+Theorem~\ref{ml:allStieltjes} gives a finite expression of depth at
+most two for two opposite logarithmic resolvents, at every Stieltjes
+index and every ordinary argument-derivative order. It supplies a
+specific instance of the mixed-product question in \cite{repo:quartic}.\\[5pt]
+The fifth digamma moment &
+Theorem~\ref{hp:fifth} resolves Question 1 of
+\cite{repo:quartic}, with all finite corrections and a convergent
+polygamma representation. It also supplies the first new case requested
+by Question F3 of \cite{repo:barnes}.\\[5pt]
+Arbitrary digamma powers &
+Theorem~\ref{hp:allpowers} gives a terminating reduction to ordinary
+convergent multiple zeta values and specified first Laurent coefficients.
+Corollary~\ref{hp:primitive} fixes an antiderivative for every power.
+No claim of an arithmetically minimal output basis is made.\\[5pt]
+Higher-index geometric collisions &
+Theorem~\ref{gcx:main} proves the total-collision limit for arbitrary
+Stieltjes indices and ordinary derivatives, with an analytic local
+weight and no restriction on gap ratios. This resolves the higher-index
+extension posed in \cite{repo:reflection} at the level of continuity
+after complete subtraction.\\[5pt]
+Gaussian period conjectures &
+The frozen $S_6$ and revised $S_8$ remain open. Neither a new period
+certificate nor a counterexample is obtained. The earlier rejected
+$S_8$ vector and the stated formal relation obstructions retain their
+separate established status \cite{repo:main,repo:exact}.\\
+\bottomrule
+\end{longtable}
+
+The word \emph{new} refers here to progress relative to this
+pinned source corpus. Classical beta integrals, Gamma expansions,
+harmonic products, and multiple-zeta dualities are cited as such.
+The external literature check was focused; it does not establish global
+priority for every consequence or specialization.
+
+\subsection{Special-function and coefficient conventions}
+
+The generalized Stieltjes functions are normalized by
+\begin{equation}\label{scope:stieltjes}
+ \zeta(1+u,x)=\frac1u+
+       \sum_{m\ge0}\frac{(-1)^m}{m!}\gamma_m(x)u^m,
+ \qquad \gamma_m=\gamma_m(1),\quad \gamma=\gamma_0.
+\end{equation}
+Thus $\gamma_0(x)=-\psi(x)$, where $\psi=\Gamma'/\Gamma$.
+Equivalently,
+\[
+ \zeta(1-s,x)+\frac1s=\sum_{m\ge0}\gamma_m(x)\frac{s^m}{m!}.
+\]
+A superscript $(p)$ on $\gamma_m$ or $\psi$ means an ordinary derivative
+in its argument. A prime on a zeta function of a single variable denotes
+an order derivative unless an argument is explicitly specified.
+The standard Hurwitz recurrence and differentiation formulas are
+\cite{dlmf:hurwitz,dlmf:polygamma}
+\begin{align}
+ \gamma_m(x)&=\frac{\log^m x}{x}+\gamma_m(1+x),
+       \label{scope:recurrence}\\
+ \partial_x^p\zeta(s,x)&=(-1)^p(s)_p\zeta(s+p,x).
+       \label{scope:hurwitzderivative}
+\end{align}
+Here $(s)_p=s(s+1)\cdots(s+p-1)$ is the rising factorial.
+The symbol $[u^j]F$ means a Taylor or Laurent coefficient, including
+no factorial. A derivative is recovered by multiplying a Taylor
+coefficient by the appropriate factorial. This distinction matters at
+every harmonic Laurent coefficient used below.
+
+Our multiple zeta convention is strict and decreasing:
+\[
+ Z_d(s_1,\ldots,s_d)
+   =\sum_{n_1>\cdots>n_d\ge1}
+       n_1^{-s_1}\cdots n_d^{-s_d},
+\]
+in its convergence region, with meromorphic continuation where stated.
+The notation $\zeta(s,t)$ in the polylogarithmic section denotes the
+same depth-two function. For a nonnegative integer $N$,
+$H_N^{(r)}=\sum_{n=1}^N n^{-r}$; multiple harmonic words use the same
+strict ordering. No weakly ordered sum is silently substituted for a
+strict one.
+
+\subsection{Coordinate finite parts}
+
+All endpoint finite parts are taken in the original integration
+coordinate. For an integrand with a finite power--log singular expansion,
+integrate after removing a small endpoint interval, expand the result
+in the cutoff, and retain its constant term. At two distinct endpoints
+the cutoffs are independent. In particular,
+\begin{align}
+ \FP\int_0^1 x^{\alpha-1}\log^j x\,\dd x
+   &=\frac{(-1)^j j!}{\alpha^{j+1}}
+                    &&(\alpha\ne0),\label{scope:monomial}\\
+ \FP\int_0^1 x^{-1}\log^j x\,\dd x&=0
+                    &&(j\ge0).\label{scope:resonantmonomial}
+\end{align}
+The first equality follows by meromorphic continuation from
+$\Re\alpha>0$, or directly from the cutoff primitive.
+At $\alpha=0$ the second equality is the coordinate constant;
+it is not a value obtained by inserting zero into the first formula.
+
+For periodic Stieltjes products, the local singularity occurs on the
+right of each seam. We remove a right interval of ambient length
+$\eta$ at every singular point and take independent constant terms.
+Ordinary derivatives on the open intervals are used throughout.
+Differentiating a periodic distribution that has already been extended
+across a seam is a different operation and can carry additional
+distributional contacts. Section~\ref{gcx:section} specifies its
+convention explicitly.
+
+For fixed distinct singular points, independent finite parts are linear
+and commute with fixed parameter derivatives once enough local
+monomials have been subtracted uniformly. This elementary fact is the
+common analytic step behind the spectral and geometric constructions.
+It does not authorize taking an arbitrary path through intersecting
+parameter poles.
+
+\begin{lemma}[Full-amplitude completion]\label{scope:completionlemma}
+Let a parameter-dependent integrand near an endpoint have a finite
+expansion whose singular terms are
+$A_j(\mathbf t)x^{\alpha_j(\mathbf t)-1}$, with holomorphic amplitudes
+and affine exponents, none identically zero. Suppose the subtracted remainder and each fixed
+parameter derivative are uniformly integrable near $\mathbf t=0$.
+For every $j$ such that $\alpha_j(0)=0$, subtract
+$A_j(\mathbf t)/\alpha_j(\mathbf t)$ from its meromorphically continued
+integral. The resulting local germ is holomorphic, and its Taylor
+coefficients are exactly the coordinate finite parts of the
+corresponding derivatives of the integrand. Power--log monomials follow
+by differentiating in an auxiliary exponent.
+\end{lemma}
+
+\begin{proof}
+On a fixed endpoint interval $(0,\rho)$, the integrated monomial is
+\[
+ A_j(\mathbf t)\frac{\rho^{\alpha_j(\mathbf t)}}
+                            {\alpha_j(\mathbf t)}
+ =\frac{A_j(\mathbf t)}{\alpha_j(\mathbf t)}
+  +A_j(\mathbf t)
+       \frac{\rho^{\alpha_j(\mathbf t)}-1}{\alpha_j(\mathbf t)}.
+\]
+The second term is entire in $\alpha_j$ and generates the cutoff
+constants of all its logarithmic derivatives. Nonresonant monomials are
+already holomorphic at the base point. Uniform integrability justifies
+coefficient extraction from the remainder. The artificial splitting
+point cancels against the rest of the integral.
+\end{proof}
+
+The amplitude in this lemma is the complete function
+$A_j(\mathbf t)$, not merely its restriction to the polar hyperplane.
+The latter specifies a residue but omits regular coefficients that
+contribute to the prescribed finite part. The two-orientation example
+in Section~\ref{mr:section} makes this distinction exact: different
+uncompleted parameter paths give different finite limits for the same
+specialized function.

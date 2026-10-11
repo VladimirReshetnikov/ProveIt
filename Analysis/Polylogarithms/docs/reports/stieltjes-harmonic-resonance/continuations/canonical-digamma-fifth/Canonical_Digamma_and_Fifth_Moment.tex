@@ -1,0 +1,2697 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[a4paper,margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,
+ pdftitle={Canonical Digamma Polynomials and the Fifth Harmonic Bridge},
+ pdfauthor={Research continuation prepared for the ProveIt project}}
+\usepackage{bookmark}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Canonical digamma polynomials}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{1.5em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\CT}{CT}
+\DeclareMathOperator{\Log}{Log}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\CM}{\mathcal C}
+\newcommand{\re}{\operatorname{Re}}
+\title{\textbf{Canonical Digamma Polynomials\protect\\and the Fifth Harmonic Bridge}\\[5pt]
+\large Laurent coefficients, polygamma primitives,\\and finite reconstruction of even-tail moments}
+\author{Research continuation prepared for the ProveIt project}
+\date{11 October 2026\\\small Repository snapshot \texttt{b7667ae40a2957eed9a53d8559d53a3ee20dd1c1}}
+\begin{document}
+\maketitle
+\begin{abstract}
+We continue the exact-identity programme in the ProveIt manuscript and
+its recent incoming reports. The fifth coordinate finite part of the
+digamma function is evaluated in terms of the linear Laurent
+coefficients of strict multiple zeta functions of depths two, three,
+and four, together with one explicitly specified holomorphic mixed
+double-zeta derivative. All finite endpoint constants are proved by
+finite harmonic algebra and a normalized Mittag--Leffler expansion.
+A Gamma quotient provides a meromorphic realization of the classical
+Roman harmonic Bell polynomials. Its coefficients have exactly
+prescribed strict-harmonic simple-pole residues and satisfy an ordinary
+integral identity isolating one height-one Laurent coefficient at every
+depth. We prove uniqueness, up to constants, of the scalar Gamma--Appell
+normalization that cancels all nondecaying residue defects, and give
+explicit polygamma differential corrections, primitives, and polylogarithmic
+integral kernels. Independently, an exponential-polynomial argument proves
+that an explicit finite prefix reconstructs every centered moment of
+two even harmonic tails; equal orders admit an exact determinant and
+the first $q$ moments. A concrete orders-$(2,6)$ consequence is an
+absolutely convergent rational polygamma sum. Prior results are attributed,
+the remaining stronger conjectures are separated from the proved
+statements, and a narrow published Stieltjes sign-description error is
+corrected. Exact symbolic replays and independent numerical diagnostics
+accompany the proofs.
+\end{abstract}
+\tableofcontents
+\clearpage
+% BEGIN sections/01_scope
+\section{Scope, exact targets, and conventions}
+\label{sec:scope}
+
+The starting point is the manuscript directory and the incoming archive
+directory of the ProveIt repository, inspected at the commit printed on
+the title page \cite{Repo}. A repository-relative claim of progress is
+different from a claim of priority in the mathematical literature.
+This article makes the former precise. Classical Gamma quotients,
+harmonic Bell polynomials, height-one coefficient series, and
+low-weight multiple-zeta reductions are explicitly attributed. The
+proofs developed here organize these tools into a fifth-power bridge
+and a finite moment reconstruction theorem. The bounded literature
+review is not a proof that no equivalent formulation exists elsewhere.
+
+Two especially relevant incoming reports are \emph{Quartic Tails and
+Complex Resolvents} and \emph{Barnes Resolvents and Higher Harmonic Identities}
+\cite{Quartic,Barnes}. They already establish the quartic digamma bridge,
+the all-depth reciprocal-Gamma singular Laurent coefficients, and finite
+formulas for two-even-tail moments. Their stated further questions,
+rather than results already proved in their bodies, determine our targets.
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.22\textwidth}>{\raggedright\arraybackslash}p{.69\textwidth}@{}}
+\toprule
+Source target & Result and precise boundary \\
+\midrule
+Quartic report, Q1: fifth digamma power &
+Theorem~\ref{q5:main} gives the complete fifth-power finite part, its
+mixed coordinate, and all endpoint constants. \\[5pt]
+Quartic report, Q2: canonical polynomial &
+The scalar residue normalization is proved for every degree, uniquely
+up to an additive constant. An exact differential normalization is also
+proved. The stronger claim that scalar polynomials remove every
+lower-depth arithmetic coordinate remains open. \\[5pt]
+Quartic report, Q8: initial-moment generation &
+Theorem~\ref{tr:main} proves an explicit finite-prefix bound and rational
+reconstruction. For equal orders the first $q$ moments suffice. The
+same first-$q$ assertion for all unequal orders remains open. \\[5pt]
+Manuscript $S_6$, revised $S_8$ &
+No proof is asserted here. Existing numerical residual certificates
+retain their original evidentiary status. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Harmonic and spectral notation}
+
+Put $H_n^{(r)}=\sum_{k=1}^n k^{-r}$ and $H_n=H_n^{(1)}$, with every
+empty sum zero. For strict indices, use
+\begin{align}
+ H_n(s_1,\ldots,s_d)&=
+ \sum_{n\ge k_1>\cdots>k_d\ge1}k_1^{-s_1}\cdots k_d^{-s_d},\\
+ Z_d(s_1,\ldots,s_d)&=
+ \sum_{k_1>\cdots>k_d\ge1}k_1^{-s_1}\cdots k_d^{-s_d}
+ \label{eq:strictzeta}
+\end{align}
+in their convergence regions, followed by analytic continuation where
+specified. The elementary harmonic polynomials are
+\begin{equation}\label{eq:edef}
+ e_j(n)=H_n(\{1\}^j),\qquad e_0(n)=1,
+ \qquad \sum_{j\ge0}e_j(n)t^j=\prod_{k=1}^n\left(1+\frac tk\right).
+\end{equation}
+They must be distinguished from the complete, weakly ordered harmonic
+sums, whose generator has factors $(1-t/k)^{-1}$.
+
+The ordinary Stieltjes convention is
+\begin{equation}\label{eq:stieltjes}
+ \zeta(1+u)=\frac1u+
+ \sum_{j\ge0}\frac{(-1)^j\gamma_j}{j!}u^j,
+ \qquad \gamma=\gamma_0.
+\end{equation}
+At depth $d$, define literal regular Laurent coefficients by
+\begin{equation}\label{eq:lambdadef}
+ \lambda_{d,j}=[u^j]Z_d(1+u,\{1\}^{d-1}),\qquad
+ \lambda_d=\lambda_{d,1}.
+\end{equation}
+The coefficient brackets impose neither a factorial nor an alternating
+sign. In particular
+\[
+ \lambda_1=-\gamma_1,\qquad
+ \lambda_2=\eta,\quad\lambda_3=\theta,\quad\lambda_4=\xi.
+\]
+The ordered germ has a pole of order $d$, not a simple pole for $d>1$.
+It is therefore unsafe to identify it with a Hurwitz-zeta germ merely
+by calling both sets of coefficients generalized Stieltjes constants.
+
+We use the reciprocal-Gamma coefficients
+\begin{equation}\label{eq:cdef}
+ \frac1{\Gamma(1+t)}=\sum_{j\ge0}c_jt^j,
+ \quad c_0=1,\quad c_1=\gamma,\quad
+ c_2=\frac{\gamma^2-\zeta(2)}2,\quad
+ c_3=\frac{\gamma^3-3\gamma\zeta(2)+2\zeta(3)}6.
+\end{equation}
+They are obtained recursively by differentiating the standard
+log-Gamma expansion \cite{DLMF}:
+\begin{equation}\label{eq:crecurrence}
+ n c_n=\gamma c_{n-1}
+       +\sum_{r=2}^n(-1)^{r+1}\zeta(r)c_{n-r}.
+\end{equation}
+
+\subsection{A finite part is a specified constant coefficient}
+
+For a function meromorphic at zero and smooth on $(0,1]$, throughout
+this article
+\begin{equation}\label{eq:fpdef}
+ \FP\int_0^1f(x)\,dx
+ =\CT_{\varepsilon\downarrow0}\int_\varepsilon^1f(x)\,dx.
+\end{equation}
+The expansion uses powers of the coordinate $\varepsilon$ itself and
+$\log\varepsilon$. There is no silently changed cutoff, rescaled
+coordinate, or substituted spectral regularization. If
+$f(x)=\sum_{k=-M}^{\infty}a_kx^k$ near zero, this definition can be
+computed without divergent numerical cancellation as
+\begin{equation}\label{eq:fpsubtraction}
+ \int_0^1\left(f(x)-\sum_{k=-M}^{-1}a_kx^k\right)dx
+       +\sum_{k=-M}^{-2}\frac{a_k}{k+1}.
+\end{equation}
+The contribution from $a_{-1}/x$ is zero. For a meromorphic $F$,
+\begin{equation}\label{eq:fpderivative}
+ \FP\int_0^1F'(x)\,dx=F(1)-[x^0]F(x).
+\end{equation}
+This rule follows directly by differentiating the Laurent series; it
+will account for every endpoint term in the fifth-power calculation.
+
+All ordinary integrals below are identified as such. All matrix ranks
+in the moment reconstruction are formal rational ranks. Neither
+finite-part calculations nor rational elimination require unproved
+arithmetic independence of zeta or Stieltjes constants.
+
+% END sections/01_scope
+
+% BEGIN sections/02_laurent
+\section{A normalized Mellin formula for the height-one germs}
+\label{sec:laurent}
+
+This section gives a self-contained normalization of the coefficient
+data used later. The reciprocal-Gamma singular coefficients and
+height-one series are established objects in the literature
+\cite{Young2023,Young2024} and in the incoming Barnes report
+\cite{Barnes}. We record the precise integral form so that the fifth
+power and the ordinary Gamma integral share a proved convention.
+
+For $v>0$, put
+\begin{equation}\label{eq:Vdef}
+ B(v)=-\log(1-e^{-v}),\qquad
+ V_d(v)=B(v)^d-\boldsymbol1_{(0,1)}(v)(-\log v)^d.
+\end{equation}
+Near zero, $B(v)=-\log v+O(v)$, and consequently
+\[
+ V_d(v)=O\bigl(v(1+|\log v|^{d-1})\bigr).
+\]
+At infinity it decays exponentially. Thus
+$\int_0^\infty v^{u-1}V_d(v)\,dv$ is holomorphic for
+$\re u>-1$; each derivative on a compact subset is obtained by
+inserting the corresponding power of $\log v$.
+
+\begin{proposition}[Mellin normalization]\label{prop:mellin}
+For $d\ge1$, initially for $\re u>0$ and then meromorphically for
+$\re u>-1$,
+\begin{equation}\label{eq:normalizedmellin}
+ \boxed{\displaystyle
+ \Gamma(1+u)Z_d(1+u,\{1\}^{d-1})
+   =\frac1{u^d}+\frac{u}{d!}
+       \int_0^\infty v^{u-1}V_d(v)\,dv.}
+\end{equation}
+In particular the complete principal part and the constant term are
+\begin{equation}\label{eq:principal}
+ Z_d(1+u,\{1\}^{d-1})
+ =\sum_{j=0}^d c_j u^{j-d}+\lambda_du+O(u^2),
+\end{equation}
+where
+\begin{equation}\label{eq:lambda_integral}
+ \lambda_d=c_{d+1}+\frac1{d!}\int_0^\infty\frac{V_d(v)}v\,dv.
+\end{equation}
+\end{proposition}
+\begin{proof}
+The generating identity
+\[
+ \Li_{\{1\}^{d-1}}(y)=\frac{(-\log(1-y))^{d-1}}{(d-1)!}
+\]
+follows either from strict harmonic generating functions or by
+repeated integration of $1/(1-y)$. Termwise Mellin integration gives
+\[
+ \Gamma(1+u)Z_d(1+u,\{1\}^{d-1})
+  =\frac1{(d-1)!}\int_0^\infty
+       \frac{v^u B(v)^{d-1}}{e^v-1}\,dv.
+\]
+For $\re u>0$ the integral is absolutely convergent. Since
+$B'(v)=-1/(e^v-1)$, integration by parts, with both boundary terms
+zero, turns it into
+\[
+ \frac{u}{d!}\int_0^\infty v^{u-1}B(v)^d\,dv.
+\]
+The subtracted comparison integral is exactly
+$\int_0^1v^{u-1}(-\log v)^d\,dv=d!/u^{d+1}$.
+The estimates preceding the proposition justify continuation and all
+coefficient extractions. Multiplication by the Taylor series
+\eqref{eq:cdef} proves the remaining formulas.
+\end{proof}
+
+\begin{corollary}[Every regular coefficient and spectral derivative]
+\label{cor:allcoefficients}
+Let
+\[
+ I_{d,r}=\int_0^\infty \frac{(\log v)^r V_d(v)}v\,dv
+ \qquad(d\ge1,\ r\ge0).
+\]
+For every $j\ge1$,
+\begin{equation}\label{eq:alllaurent}
+ \lambda_{d,j}=c_{d+j}
+  +\frac1{d!}\sum_{r=0}^{j-1}
+       c_{j-1-r}\frac{I_{d,r}}{r!}.
+\end{equation}
+If $\Lambda_d(u)=\Gamma(1+u)Z_d(1+u,\{1\}^{d-1})-u^{-d}$,
+then
+\begin{equation}\label{eq:normalizedderivatives}
+ \Lambda_d^{(j)}(0)=\frac{j}{d!}I_{d,j-1}\qquad(j\ge1).
+\end{equation}
+These are ordinary convergent logarithmic Mellin integrals. At depth
+one, $\lambda_{1,j}=(-1)^j\gamma_j/j!$ recovers the usual Stieltjes
+derivative convention.
+\end{corollary}
+\begin{proof}
+Expand the holomorphic integral in \eqref{eq:normalizedmellin} into
+its Taylor series and multiply by $\sum c_ju^j$. The estimates are
+uniform on every closed disc $|u|\le\rho<1$, so the operations are
+analytic coefficient extractions rather than formal regularizations.
+\end{proof}
+
+Formula~\eqref{eq:alllaurent} is useful for reproducibility: coefficients
+of different depths can be evaluated in one fixed scheme, with no
+matching of independently chosen subtraction constants. It is also a
+direct route to higher spectral derivatives whenever a new digamma
+identity produces them.
+
+% END sections/02_laurent
+
+% BEGIN sections/03_gamma
+\section{The Gamma quotient and its exact harmonic residues}
+\label{sec:gamma}
+
+The generating function in this section is classical at integer
+arguments: it generates the Roman harmonic numbers, or complete
+harmonic star sums, discussed by Sesma \cite[Eq.~(49)]{Sesma}.
+We use its meromorphic continuation in the harmonic cutoff to produce
+a convenient exact differential normalization of the digamma powers.
+The all-depth ordinary integral below is proved directly; its
+coefficient-series data are related to Young's established formulas,
+and its first case is Coffey's integral for $\gamma_1$
+\cite[Eq.~(1.19)]{Coffey}.
+
+\begin{definition}\label{def:Cm}
+For $x$ away from the nonpositive integers, define
+\begin{equation}\label{eq:GammaGenerator}
+ G(x,t)=\frac{\Gamma(1-t)\Gamma(x)}{\Gamma(x-t)}
+       =\sum_{m\ge0}\CM_m(x)\frac{t^m}{m!}.
+\end{equation}
+Coefficient extraction is at $t=0$; the resulting functions of $x$
+are extended meromorphically.
+\end{definition}
+
+Put
+\begin{equation}\label{eq:hr}
+ h_1(x)=\psi(x)+\gamma,\qquad
+ h_r(x)=\zeta(r)-\zeta(r,x)
+       =\zeta(r)+\frac{(-1)^{r+1}}{(r-1)!}\psi^{(r-1)}(x)
+       \quad(r\ge2).
+\end{equation}
+The log-Gamma Taylor expansion yields
+\begin{equation}\label{eq:logG}
+ \log G(x,t)=\sum_{r\ge1}h_r(x)\frac{t^r}{r}.
+\end{equation}
+Consequently $\CM_m=Y_m(h_1,1!h_2,\ldots,(m-1)!h_m)$,
+where $Y_m$ is the complete exponential Bell polynomial. In particular
+\begin{align}
+ \CM_0&=1,\qquad \CM_1=h_1,\qquad
+ \CM_2=h_1^2+h_2,\\
+ \CM_3&=h_1^3+3h_1h_2+2h_3,\\
+ \CM_4&=h_1^4+6h_1^2h_2+3h_2^2+8h_1h_3+6h_4,\\
+ \CM_5&=h_1^5+10h_1^3h_2+15h_1h_2^2+20h_1^2h_3
+                +20h_2h_3+30h_1h_4+24h_5.
+ \label{eq:Cfirst}
+\end{align}
+At every degree a finite recurrence suffices:
+\begin{equation}\label{eq:Crecurrence}
+ \CM_{m+1}=
+ \sum_{r=0}^m\binom mr r!h_{r+1}\CM_{m-r}.
+\end{equation}
+At a positive integer $n$ the generator is
+$\prod_{k=1}^{n-1}(1-t/k)^{-1}$, so $\CM_m(n)/m!$ is the
+weakly ordered harmonic sum of $m$ unit indices.
+
+\begin{theorem}[Exact poles and removable values]\label{thm:Cpoles}
+For $m\ge2$, $\CM_m$ has only simple poles, with
+\begin{equation}\label{eq:Cresidue}
+ \Res_{x=-n}\CM_m(x)=-m!e_{m-1}(n),\qquad n\ge0.
+\end{equation}
+The points $0,-1,\ldots,-(m-2)$ are removable. Its first actual pole
+is $-(m-1)$ and has residue $-m$. At the removable points,
+\begin{equation}\label{eq:Cnegative}
+ \boxed{\displaystyle
+ \CM_m(-j)=-m!\sum_{k=0}^j e_k(j)\zeta(m-k),
+       \qquad 0\le j\le m-2.}
+\end{equation}
+In particular $\CM_m(0)=-m!\zeta(m)$, and $\CM_m(1)=0$.
+\end{theorem}
+\begin{proof}
+The reciprocal Gamma factor is entire, so the Gamma quotient has
+at most simple poles in $x$. The Gamma recurrence gives exactly
+\[
+ \Res_{x=-n}G(x,t)
+ =\frac{(-1)^n\Gamma(1-t)}{n!\Gamma(-n-t)}
+ =-t\prod_{k=1}^n\left(1+\frac tk\right).
+\]
+Taking coefficients proves the residue assertion. Since $e_{m-1}(n)$
+vanishes precisely for $n<m-1$ and is positive thereafter, it also
+proves the removability and the first-pole statements.
+
+For the values, set $x=-j+\varepsilon$ and
+$E_j(t)=\prod_{k=1}^j(1+t/k)$. Expansion of both Gamma factors gives
+the constant coefficient in $\varepsilon$ as
+\[
+ -tE_j(t)\bigl(H_j-\gamma-\psi(-j-t)\bigr).
+\]
+By the digamma recurrence this equals
+\begin{equation}\label{eq:Cnegativeproof}
+ tE_j(t)(\gamma+\psi(1-t))
+ -tE_j(t)H_j+E_j(t)+tE_j(t)\sum_{k=1}^j\frac1{k+t}.
+\end{equation}
+All terms after the first are polynomials of degree at most $j+1$.
+For the last term this follows by cancelling the corresponding factor
+of $E_j$. Finally
+$\gamma+\psi(1-t)=-\sum_{r\ge1}\zeta(r+1)t^r$.
+At degree $m\ge j+2$ only this series contributes, proving
+\eqref{eq:Cnegative}. Since the pole coefficient at that degree is
+zero, its finite Laurent value is the ordinary removable value.
+The identity at $1$ follows from $G(1,t)=1$.
+\end{proof}
+
+\begin{theorem}[A normally convergent partial-fraction expansion]
+\label{thm:CML}
+For $m\ge2$, away from its actual poles,
+\begin{equation}\label{eq:CML}
+ \boxed{\displaystyle
+ \CM_m(z)=-m!\zeta(m)-m!\sum_{n\ge1}e_{m-1}(n)
+       \left(\frac1{n+z}-\frac1n\right).}
+\end{equation}
+The series converges normally on every compact subset of that domain.
+Terms whose coefficient $e_{m-1}(n)$ is zero are omitted, including
+at a removable point where their displayed denominator vanishes.
+\end{theorem}
+\begin{proof}
+Since $e_{m-1}(n)=O((1+\log n)^{m-1})$, the subtracted series
+converges normally. To determine the entire remainder, integrate
+$z\CM_m(w)/(w(w-z))$ on $|w|=N+1/2$. The right-half-plane
+digamma asymptotics and their derivatives, combined with reflection
+on the left, give $\CM_m(w)=O((1+\log N)^m)$ uniformly on these
+circles. The distance to the nonpositive integral poles stays bounded
+below. In the reflection formula the cotangent and its fixed
+derivatives are bounded there, while the remaining polygammas have
+their usual sectorial bounds \cite{DLMF}. The integral tends to zero
+like $O((1+\log N)^m/N)$.
+
+Its residues at $w=z$ and $w=0$ are $\CM_m(z)$ and
+$-\CM_m(0)$. Each pole $w=-n$ contributes
+$-m!e_{m-1}(n)z/(n(n+z))$. The residue theorem and
+Theorem~\ref{thm:Cpoles} give \eqref{eq:CML}. Thus matching the
+principal parts alone is not being used to discard an arbitrary
+entire function.
+\end{proof}
+
+\subsection{An ordinary integral isolates one strict-depth coefficient}
+
+\begin{theorem}[The all-depth ordinary-integral bridge]
+\label{thm:Cintegral}
+For every integer $m\ge2$,
+\begin{equation}\label{eq:Cintegral}
+ \boxed{\displaystyle
+ \int_0^1\CM_m(x)\,dx=m!\bigl(c_m-\lambda_{m-1}\bigr).}
+\end{equation}
+The integrand extends continuously to both endpoints. There is no
+finite-part operation in this identity.
+\end{theorem}
+\begin{proof}
+Use the opposite-sign parameter
+$F(x,t)=G(x,-t)=\Gamma(1+t)\Gamma(x)/\Gamma(x+t)$ and define
+\[
+ \Phi(t)=\int_0^1\{F(x,t)-1+t(\psi(x)+\gamma)\}\,dx.
+\]
+Its origin residue is $t-t=0$. More precisely, the subtracted
+integrand is jointly holomorphic in $t$ near zero and continuous in
+$x\in[0,1]$; this follows by subtracting $t/x$ from the Gamma
+quotient. Uniform coefficient extraction on $|t|\le\rho<1$ gives
+\begin{equation}\label{eq:PhiTaylor}
+ \Phi(t)=\sum_{m\ge2}\frac{(-1)^m t^m}{m!}
+                    \int_0^1\CM_m(x)\,dx.
+\end{equation}
+
+For $\re t>0$, Euler's beta integral and the standard digamma
+integral give, after combining their integrands,
+\[
+ \Phi(t)=t\int_0^\infty
+ \left\{\frac{(1-e^{-v})^t-1}{v}
+             +\frac{e^{-v}}{1-e^{-v}}\right\}dv-1.
+\]
+The combination is integrable at both ends. For example the original
+integrand before integration in $x$ is
+$e^{-xv}((1-e^{-v})^{t-1}-(1-e^{-v})^{-1})
++e^{-v}/(1-e^{-v})$; its joint integral is absolutely convergent
+when $\re t>0$, which justifies Fubini.
+Integrate the second term from a lower cutoff $\delta$ and use
+$\int_\delta^\infty e^{-v}/(1-e^{-v})\,dv
+=-\log(1-e^{-\delta})$. Comparing with
+$\int_\delta^1(v^t-1)\,dv/v$ yields
+\begin{equation}\label{eq:PhiMellin}
+ \Phi(t)=t\int_0^\infty
+ \frac{(1-e^{-v})^t-1-\boldsymbol1_{(0,1)}(v)(v^t-1)}v\,dv.
+\end{equation}
+This subtracted integral is holomorphic for $\re t>-1$ locally
+about zero. Near zero, $(1-e^{-v})^t-v^t=O(v^{\re t+1})$
+uniformly on compact parameter sets; at infinity the numerator
+decays exponentially. Thus the equality continues to $|t|<1$.
+
+At degree $m\ge2$, its right side has coefficient
+\[
+ \frac{(-1)^{m-1}}{(m-1)!}
+             \int_0^\infty\frac{V_{m-1}(v)}v\,dv.
+\]
+Comparison with \eqref{eq:PhiTaylor} gives
+$\int_0^1\CM_m=-m I_{m-1,0}$.
+Equation~\eqref{eq:lambda_integral} proves the claimed formula.
+\end{proof}
+
+The first two instances are
+\begin{align}
+ \int_0^1\{(\psi+\gamma)^2+\zeta(2)-\psi'\}\,dx
+   &=\gamma^2-\zeta(2)+2\gamma_1,\label{eq:C2integral}\\
+ \int_0^1\{(\psi+\gamma)^3
+      +3(\psi+\gamma)(\zeta(2)-\psi')
+      +2\zeta(3)+\psi''\}\,dx
+   &=6(c_3-\eta).
+ \label{eq:C3integral}
+\end{align}
+The apparent singularities in each complete integrand cancel; its
+individual displayed terms should not be separately integrated as
+ordinary improper integrals. The first formula rearranges exactly to
+Coffey's known identity cited above.
+
+\subsection{The known Cauchy-series coordinates recovered from the same quotient}
+
+An additional beta representation is useful both for interpretation
+and for stable numerical evaluation:
+\begin{equation}\label{eq:Cbeta}
+ \CM_m(x)=(x-1)\int_0^1(-\log y)^m(1-y)^{x-2}\,dy,
+       \qquad m\ge1,\quad\re x>1-m.
+\end{equation}
+For $\re x>1$ it follows by differentiating
+$G(x,t)=(x-1)B(1-t,x-1)$. The integral on the right then continues
+it to the stated half-plane: near $y=1$ the exponent is $x+m-2$.
+This also independently displays the location of the first pole.
+
+Define positive rational coefficients
+\begin{equation}\label{eq:an}
+ a_n=\frac1{(n-1)!}\int_0^1(r)_n\,dr,
+ \qquad a_1=\frac12,\quad a_2=\frac56,\quad a_3=\frac98,
+\end{equation}
+where $(r)_n=r(r+1)\cdots(r+n-1)$ is a rising factorial. If
+$L=-\log(1-y)$, their generating kernel is
+\begin{equation}\label{eq:Kkernel}
+ K(y)=\sum_{n\ge1}a_ny^{n-1}
+      =\frac{L-y}{(1-y)^2L^2}.
+\end{equation}
+Indeed integrate $(1-y)^{-r}=\sum (r)_ny^n/n!$ over $r\in[0,1]$
+and differentiate the resulting $y/((1-y)L)$.
+Integrating \eqref{eq:Cbeta} in $x$, for $m\ge2$, gives
+\[
+ \int_0^1\CM_m(x)\,dx
+   =-\int_0^1(-\log y)^m K(y)\,dy.
+\]
+The integrals are absolutely convergent; alternatively Tonelli applies
+to their nonnegative negatives. The elementary Mellin integral of
+$y^{n-1}$ therefore yields
+\begin{equation}\label{eq:knowncauchy}
+ \boxed{\displaystyle
+ \lambda_d=c_{d+1}+\sum_{n\ge1}\frac{a_n}{n^{d+2}},
+       \qquad d\ge1.}
+\end{equation}
+This coefficient series is an equivalent form of the established
+Cauchy/Bernoulli-second-kind series in Young's work
+\cite{Young2023,Young2024}; it is included as an independent
+normalization check and a connection with the meromorphic differential
+realization, not as a new coefficient formula.
+
+% END sections/03_gamma
+
+% BEGIN sections/04_scalar
+\section{A scalar Gamma--Appell normalization of digamma residues}
+\label{sec:scalar-gamma-normalizer}
+
+The differential polynomials generated by a normalized Gamma quotient
+have exactly the strict harmonic residues required for a single-depth
+Laurent coefficient.  There is also a canonical scalar polynomial in
+the digamma function that has the same residues up to a decaying
+correction.  The distinction is useful: scalar powers are the original
+finite-part integrands, whereas differential polynomials remove all
+unwanted pole orders at once.
+
+For $n\geq0$, let
+\begin{equation}
+ e_j(n)=\sum_{1\leq i_1<\cdots<i_j\leq n}
+             \frac{1}{i_1\cdots i_j},
+ \qquad e_0(n)=1,
+ \qquad e_j(n)=0\quad(j>n).
+ \label{eq:scalar-elementary-definition}
+\end{equation}
+Thus $e_j(n)$ is a strict finite harmonic sum, and
+\begin{equation}
+ E_n(t):=\sum_{j\geq0}e_j(n)t^j
+   =\prod_{k=1}^{n}\left(1+\frac{t}{k}\right)
+   =\frac{\Gamma(n+1+t)}{\Gamma(n+1)\Gamma(1+t)}.
+ \label{eq:scalar-elementary-generator}
+\end{equation}
+Define the monic polynomials
+\begin{equation}
+ P_m(Y)=m![t^m]\Gamma(1-t)e^{tY},\qquad m\geq0.
+ \label{eq:scalar-appell-definition}
+\end{equation}
+They satisfy $P_0=1$ and $P_m'(Y)=mP_{m-1}(Y)$, so they form an
+Appell sequence.  For example,
+\begin{equation}
+ \begin{aligned}
+ P_1(Y)&=Y+\gamma,\\
+ P_2(Y)&=(Y+\gamma)^2+\zeta(2),\\
+ P_3(Y)&=(Y+\gamma)^3+3\zeta(2)(Y+\gamma)+2\zeta(3).
+ \end{aligned}
+ \label{eq:scalar-first-polynomials}
+\end{equation}
+Every coefficient assertion below is at a fixed finite order; no
+uniformity as $m\to\infty$ is required.
+The generating function also gives an explicit finite recurrence:
+\begin{equation}\label{eq:scalar-recurrence}
+ P_{m+1}(Y)=(Y+\gamma)P_m(Y)
+  +\sum_{r=1}^m\binom mr r!\zeta(r+1)P_{m-r}(Y).
+\end{equation}
+It follows by differentiating with respect to $t$ and using
+$-\psi(1-t)=\gamma+\sum_{r\ge1}\zeta(r+1)t^r$.
+
+\begin{lemma}[The universal cotangent residue]
+\label{lem:scalar-cotangent-residue}
+For every $t\in\mathbb C$,
+\begin{equation}
+ \operatorname*{Res}_{v=0}e^{-\pi t\cot(\pi v)}
+       =-\frac{\sin(\pi t)}{\pi}.
+ \label{eq:scalar-cotangent-residue}
+\end{equation}
+Here the residue is the coefficient of $v^{-1}$; the isolated
+singularity may be essential.
+\end{lemma}
+
+\begin{proof}
+Put $w=\pi\cot(\pi v)$.  Near $v=0$, this is an invertible change
+between the local coordinate $v$ and the local coordinate $1/w$ at
+infinity, since $w=v^{-1}+O(v)$.  Moreover,
+\begin{equation}
+ \frac{dw}{dv}=-(w^2+\pi^2),\qquad
+ e^{-\pi t\cot(\pi v)}\,dv
+       =-\frac{e^{-tw}}{w^2+\pi^2}\,dw.
+ \label{eq:scalar-residue-change-variable}
+\end{equation}
+Residues of differentials are invariant under this local coordinate
+change.  The two finite residues of the differential on the right are
+$-e^{-i\pi t}/(2i\pi)$ at $w=i\pi$ and
+$e^{i\pi t}/(2i\pi)$ at $w=-i\pi$.  Their sum is
+$\sin(\pi t)/\pi$.  Applying the residue theorem on a circle
+containing these two points, or equivalently taking the residue at
+infinity, gives its negative, as asserted.  This argument applies to
+every complex $t$; a pole rather than an essential singularity at
+infinity is not needed for that contour calculation.
+\end{proof}
+
+\begin{theorem}[Scalar residue normalization and uniqueness]
+\label{thm:scalar-gamma-normalization}
+For $m\geq1$ and $n\geq0$, set
+\begin{equation}
+ r_{m,n}=\operatorname*{Res}_{x=-n}P_m(\psi(x)),
+ \qquad
+ \delta_{m,n}=r_{m,n}+m!e_{m-1}(n).
+ \label{eq:scalar-defect-definition}
+\end{equation}
+Then $\delta_{1,n}=0$, and for each fixed $m\geq2$,
+\begin{equation}
+ \delta_{m,n}
+   =O_m\!\left(\frac{(1+\log n)^{m-2}}{n}\right)
+           \qquad(n\to\infty).
+ \label{eq:scalar-defect-decay}
+\end{equation}
+In particular, the difference in
+\eqref{eq:scalar-defect-definition} tends to zero.
+
+Conversely, a monic polynomial $Q\in\mathbb C[Y]$ of degree $m$
+satisfies
+\begin{equation}
+ \operatorname*{Res}_{x=-n}Q(\psi(x))+m!e_{m-1}(n)
+           \longrightarrow0
+ \label{eq:scalar-normalization-condition}
+\end{equation}
+if and only if $Q-P_m$ is constant.  Consequently
+$P_m(Y)-P_m(0)$ is the unique such monic polynomial with zero
+constant term.
+\end{theorem}
+
+\begin{proof}
+Fix a circle $|v|=\rho$ with $0<\rho<1/2$.  The reflection formula
+and the uniform large-argument expansion of the digamma function give
+\begin{equation}
+ \psi(-n+v)=\psi(n+1-v)-\pi\cot(\pi v)
+           =L_n+K(v)+\eta_n(v),
+ \label{eq:scalar-local-reflection}
+\end{equation}
+where $L_n=\log n$, $K(v)=-\pi\cot(\pi v)$, and
+$\eta_n$ is holomorphic on $|v|\leq\rho$ with
+$\sup|\eta_n|=O(n^{-1})$.  Only $n\geq1$ is needed for this
+asymptotic argument.
+
+Consider, coefficientwise near $t=0$,
+\begin{equation}
+ R_n(t)=\operatorname*{Res}_{v=0}e^{tK(v)+t\eta_n(v)}.
+ \label{eq:scalar-residue-germ}
+\end{equation}
+Integration on the fixed circle makes $R_n(t)$ an entire function
+of $t$.  By Lemma~\ref{lem:scalar-cotangent-residue},
+\begin{equation}
+ R_n(t)=-\frac{\sin(\pi t)}{\pi}+\Delta_n(t),
+ \qquad
+ \Delta_n(t)=\operatorname*{Res}_{v=0}
+       e^{tK(v)}\bigl(e^{t\eta_n(v)}-1\bigr).
+ \label{eq:scalar-residue-germ-error}
+\end{equation}
+Each fixed Taylor coefficient of $\Delta_n$ is $O(n^{-1})$:
+this follows directly by bounding its contour integral on
+$|v|=\rho$ for $t$ on a fixed small circle.  More precisely,
+$\Delta_n(0)=0$ and
+$\Delta_n'(0)=\operatorname*{Res}_{v=0}\eta_n(v)=0$.
+Thus $\Delta_n$ starts with $t^2$, a fact that gives the exponent
+$m-2$ in \eqref{eq:scalar-defect-decay}.
+
+Taking coefficients in
+\eqref{eq:scalar-appell-definition} and using
+\eqref{eq:scalar-local-reflection}--\eqref{eq:scalar-residue-germ-error}
+therefore yields, for $m\geq2$,
+\begin{equation}
+ \begin{aligned}
+ r_{m,n}
+ &=-m![t^m]\Gamma(1-t)e^{tL_n}
+                         \frac{\sin(\pi t)}{\pi}
+       +O_m\!\left(\frac{(1+L_n)^{m-2}}{n}\right)\\
+ &=-m![t^{m-1}]\frac{e^{tL_n}}{\Gamma(1+t)}
+       +O_m\!\left(\frac{(1+L_n)^{m-2}}{n}\right).
+ \end{aligned}
+ \label{eq:scalar-nondecaying-polynomial}
+\end{equation}
+The last equality is Euler's reflection identity
+$\Gamma(1-t)\sin(\pi t)/\pi=t/\Gamma(1+t)$.
+
+For comparison, uniformly for $t$ in a sufficiently small fixed disk,
+\begin{equation}
+ \frac{\Gamma(n+1+t)}{\Gamma(n+1)}
+    =e^{tL_n}e^{u_n(t)},\qquad
+ u_n(0)=0,\qquad [t^j]u_n(t)=O_j(n^{-1})\quad(j\geq1).
+ \label{eq:scalar-gamma-ratio-error}
+\end{equation}
+For example, this follows by integrating
+$\psi(n+1+s)-\log n=O(n^{-1})$ from $s=0$ to $s=t$.
+Consequently the correction $e^{u_n(t)}-1$ starts with $t$ and
+has each fixed coefficient $O(n^{-1})$.  By
+\eqref{eq:scalar-elementary-generator}, for $d\geq1$,
+\begin{equation}
+ e_d(n)=[t^d]\frac{e^{tL_n}}{\Gamma(1+t)}
+       +O_d\!\left(\frac{(1+L_n)^{d-1}}{n}\right).
+ \label{eq:scalar-elementary-asymptotics}
+\end{equation}
+Equations \eqref{eq:scalar-nondecaying-polynomial} and
+\eqref{eq:scalar-elementary-asymptotics}, with $d=m-1$, prove
+\eqref{eq:scalar-defect-decay}.  For $m=1$ the assertion is
+immediate from $P_1(\psi)=\psi+\gamma$, whose residue at every
+nonpositive integer is $-1$.
+
+It remains to prove necessity and uniqueness.  Let $Q$ satisfy
+\eqref{eq:scalar-normalization-condition}.  If $Q-P_m$ is
+nonconstant, write its degree as $j\geq1$ and its leading
+coefficient as $a\ne0$.  For $j=1$, its residue is exactly
+$-a$.  For $j\geq2$, expand the polynomial at
+$L_n+K(v)+\eta_n(v)$ in \eqref{eq:scalar-local-reflection}.
+The coefficient of $L_n^j$ is constant in $v$, hence contributes
+no residue.  The coefficient of $L_n^{j-1}$ has residue
+$ja\operatorname*{Res}_{v=0}(K+\eta_n)=-ja$.  All remaining
+terms have degree at most $j-2$ in $L_n$ and bounded residue
+coefficients.  Hence
+\begin{equation}
+ \operatorname*{Res}_{x=-n}(Q-P_m)(\psi(x))
+      =-ja(\log n)^{j-1}
+          +O\bigl((1+\log n)^{j-2}\bigr).
+ \label{eq:scalar-uniqueness-leading-term}
+\end{equation}
+Neither this expression nor the nonzero constant for $j=1$ can
+tend to zero, contradicting the two normalization conditions.
+Thus $Q-P_m$ is constant.  Conversely, an additive constant has
+zero residue and preserves the condition.
+\end{proof}
+
+The theorem establishes a uniqueness of functions, not an assertion
+about algebraic independence of Euler's constant or zeta values.
+It also explains why an unqualified uniqueness statement would be
+false: no residue condition can determine an additive constant.
+
+\begin{proposition}[Uniqueness of the complete Appell family]
+\label{prop:scalar-appell-family-uniqueness}
+Suppose $A(t)\in\mathbb C[[t]]$, $A(0)=1$, and
+$Q_m(Y)=m![t^m]A(t)e^{tY}$.  If
+\eqref{eq:scalar-normalization-condition} holds for every $m\geq1$,
+then $A(t)=\Gamma(1-t)$ as formal power series.
+\end{proposition}
+
+\begin{proof}
+By Theorem~\ref{thm:scalar-gamma-normalization},
+$Q_m-P_m$ is constant for every $m$.  If
+$A(t)-\Gamma(1-t)$ were nonzero, let $a_k t^k$, $a_k\ne0$,
+be its first nonzero term; necessarily $k\geq1$.  The coefficient
+of $t^{k+1}$ in
+$(A(t)-\Gamma(1-t))e^{tY}$ contains the nonconstant term
+$a_kY$.  This contradicts the conclusion for $m=k+1$.
+\end{proof}
+
+\subsection{An explicit finite formula for the defect}
+
+Set $H_0^{(r)}=0$, write $H_n=H_n^{(1)}$, and define
+\begin{equation}
+ b_n=H_n-\gamma,\qquad
+ a_{r,n}=H_n^{(r+1)}+(-1)^{r+1}\zeta(r+1)\quad(r\geq1).
+ \label{eq:scalar-local-coefficients}
+\end{equation}
+The exact convergent local expansion is
+\begin{equation}
+ \psi(-n+v)=-\frac1v+b_n+\sum_{r\geq1}a_{r,n}v^r,
+                         \qquad0<|v|<1.
+ \label{eq:scalar-digamma-laurent}
+\end{equation}
+It follows by applying the recurrence to $\psi(v)$ and then using
+the Taylor expansion of $\psi(1+v)$.
+
+\begin{proposition}[Finite harmonic-polynomial defect formula]
+\label{prop:scalar-finite-defect}
+For every $m\geq2$ and $n\geq0$,
+\begin{equation}
+ \begin{aligned}
+ r_{m,n}=m!\sum_{h=1}^{m}\frac{(-1)^h}{h!}
+ [t^{m-h}v^{h-1}]\,
+ \Gamma(1-t)
+ \exp\left(tb_n+t\sum_{r=1}^{m-2}a_{r,n}v^r\right),\\
+ \delta_{m,n}=r_{m,n}+m!e_{m-1}(n).
+ \end{aligned}
+ \label{eq:scalar-finite-defect-formula}
+\end{equation}
+The sum over $r$ is empty when $m=2$.  Formula
+\eqref{eq:scalar-finite-defect-formula} requires only finitely
+many coefficients of the displayed series; it is an exact
+polynomial computation, valid also at $n=0$.
+\end{proposition}
+
+\begin{proof}
+Substitute \eqref{eq:scalar-digamma-laurent} in
+\eqref{eq:scalar-appell-definition} and expand
+$e^{-t/v}=\sum_{h\geq0}(-t)^h/(h!v^h)$.  The residue from
+the term indexed by $h$ is the coefficient of $v^{h-1}$ in
+the holomorphic factor.  Only $1\leq h\leq m$ can contribute
+to $[t^m]$.  Moreover, an occurrence of $a_{r,n}v^r$ consumes
+at least one additional power of $t$, so whenever such a coefficient
+occurs, $h\leq m-1$ and $r\leq h-1\leq m-2$.
+All higher $a_{r,n}$ can therefore
+be discarded before coefficient extraction.  This proves the
+first equation; the second is the definition of the defect.
+\end{proof}
+
+For a transparent low-degree form, put
+\begin{equation}
+ A_j(n)=\zeta(j)-H_n^{(j)},\qquad j\geq2.
+ \label{eq:scalar-harmonic-tails}
+\end{equation}
+The first defects are
+\begin{equation}
+ \begin{aligned}
+ \delta_{1,n}&=\delta_{2,n}=\delta_{3,n}=0,\\
+ \delta_{4,n}&=-4A_3(n),\\
+ \delta_{5,n}&=-20H_nA_3(n)+5A_2(n)^2
+                 -20\zeta(2)A_2(n)+25A_4(n).
+ \end{aligned}
+ \label{eq:scalar-low-degree-defects}
+\end{equation}
+These formulas can be checked without any infinite summation.
+For example, writing $h=H_n$ and $h_j=H_n^{(j)}$, the finite
+formula gives
+\begin{equation}
+ \begin{aligned}
+ r_{4,n}&=-4h^3+12hh_2-4h_3-4\zeta(3),\\
+ r_{5,n}&=-5h^4+30h^2h_2-20hh_3-20\zeta(3)h
+           -10h_2^2+10\zeta(2)h_2\\
+        &\hspace{1.5em}+5\zeta(2)^2+5h_4-25\zeta(4).
+ \end{aligned}
+ \label{eq:scalar-fourth-fifth-residues}
+\end{equation}
+Subtract the identities
+$-24e_3(n)=-4h^3+12hh_2-8h_3$ and
+$-120e_4(n)=-5h^4+30h^2h_2-15h_2^2-40hh_3+30h_4$.
+The fifth defect then takes the form in
+\eqref{eq:scalar-low-degree-defects} after
+$\zeta(2)^2=5\zeta(4)/2$ is used.  In particular, scalar
+normalization is already exact at the level of residues through
+degree three.  At degrees four and five the remaining terms are
+explicit decaying harmonic tails, rather than additional
+nondecaying lower-depth data.
+
+\subsection{Comparison with exact differential normalization}
+
+In the notation of the Gamma-polygamma construction, let
+\begin{equation}
+ \mathcal C_m(x)=m![t^m]\frac{\Gamma(1-t)\Gamma(x)}{\Gamma(x-t)}.
+ \label{eq:scalar-differential-comparison-definition}
+\end{equation}
+Taylor expansion of $\log\Gamma(x-t)$ gives the exact
+coefficient identity
+\begin{equation}
+ \sum_{m\geq0}\frac{\mathcal C_m(x)}{m!}t^m
+ =\Gamma(1-t)e^{t\psi(x)}
+  \exp\left(\sum_{r\geq2}
+       \frac{(-1)^{r+1}\psi^{(r-1)}(x)}{r!}t^r\right).
+ \label{eq:scalar-differential-comparison-generator}
+\end{equation}
+Thus the higher derivatives provide an exact correction to the
+scalar Appell family.  The first examples are
+\begin{equation}
+ \begin{aligned}
+ \mathcal C_2&=P_2(\psi)-\psi',\\
+ \mathcal C_3&=P_3(\psi)-3P_1(\psi)\psi'+\psi'',\\
+ \mathcal C_4&=P_4(\psi)-6P_2(\psi)\psi'+4P_1(\psi)\psi''
+                  -\psi'''+3(\psi')^2,\\
+ \mathcal C_5&=P_5(\psi)-10P_3(\psi)\psi'
+                   +10P_2(\psi)\psi''-5P_1(\psi)\psi'''\\
+ &\qquad+15P_1(\psi)(\psi')^2-10\psi'\psi''+\psi''''.
+ \end{aligned}
+ \label{eq:scalar-differential-comparison-examples}
+\end{equation}
+Indeed the quotient itself has only simple possible poles in $x$,
+and its exact residue is
+\begin{equation}
+ \operatorname*{Res}_{x=-n}
+    \frac{\Gamma(1-t)\Gamma(x)}{\Gamma(x-t)}
+       =-t\prod_{j=1}^{n}\left(1+\frac{t}{j}\right).
+ \label{eq:scalar-differential-exact-residue}
+\end{equation}
+Coefficient extraction therefore yields
+\begin{equation}
+ \operatorname*{Res}_{x=-n} \mathcal C_m(x)=-m!e_{m-1}(n),
+ \qquad
+ \operatorname*{Res}_{x=-n}\bigl(P_m(\psi(x))-\mathcal C_m(x)\bigr)
+          =\delta_{m,n}.
+ \label{eq:scalar-exact-defect-comparison}
+\end{equation}
+The scalar theorem cancels all nondecaying residue data.  The
+differential family also cancels the explicit defects and every
+higher pole order.  These are precise functional statements;
+they do not assert that the associated Laurent constants are
+arithmetically independent or form a minimal period basis.
+
+\subsection{A complete finite-part formula for inverse-Gamma derivatives}
+
+There is an all-degree form of the cancellation which explains the
+fifth-power identity before its raw-power endpoint corrections are
+computed. Define
+\begin{equation}\label{eq:Adefinition}
+ \mathcal A_m(x)=(-1)^m\Gamma(x)\frac{d^m}{dx^m}\frac1{\Gamma(x)},
+ \qquad
+ \frac{\Gamma(x)}{\Gamma(x-t)}
+       =\sum_{m\ge0}\mathcal A_m(x)\frac{t^m}{m!}.
+\end{equation}
+Then $\mathcal A_1=\psi$, $\mathcal A_2=\psi^2-\psi'$, and
+$\mathcal A_{m+1}=\psi\mathcal A_m-\mathcal A_m'$.
+
+\begin{corollary}[All-degree differential finite parts]
+\label{cor:Aintegrals}
+For $m\ge1$,
+\begin{equation}\label{eq:Aintegrals}
+ \boxed{\displaystyle
+ \FP\int_0^1\mathcal A_m(x)\,dx
+ =m![t^m]\frac{\sin(\pi t)}{\pi t}
+   -m!\sum_{d=1}^{m-1}(-1)^{m-d-1}c_{m-d-1}\lambda_d.}
+\end{equation}
+The sum is empty for $m=1$. For odd $m$ the first term is zero;
+for $m=2k$ it is $(-1)^k\pi^{2k}/(2k+1)$.
+\end{corollary}
+\begin{proof}
+Multiplying the series for $\mathcal C_m$ by $1/\Gamma(1-t)$ gives
+\[
+ \mathcal A_m=\sum_{k=0}^m\frac{m!}{k!}
+                         (-1)^{m-k}c_{m-k}\mathcal C_k.
+\]
+Finite parts are linear. The degree-zero integral is one, and
+$\FP\int_0^1\mathcal C_1=\gamma$ because
+$\int_\varepsilon^1\psi=-\log\Gamma(\varepsilon)$ has constant
+term zero. For $k\ge2$ use Theorem~\ref{thm:Cintegral}.
+The terms containing only $c_k$ combine to
+\[
+ m![t^m]\frac1{\Gamma(1-t)\Gamma(1+t)}
+     =m![t^m]\frac{\sin(\pi t)}{\pi t},
+\]
+and the remaining terms are exactly the displayed finite sum.
+\end{proof}
+
+In degree five this reads
+\begin{equation}\label{eq:A5height}
+ \begin{aligned}
+ \FP\int_0^1\mathcal A_5(x)\,dx
+   ={}&-120\xi+120\gamma\theta
+      -60(\gamma^2-\zeta(2))\eta\\
+      &+20(\gamma^3-3\gamma\zeta(2)+2\zeta(3))\lambda_1.
+ \end{aligned}
+\end{equation}
+The next section proves exactly how $\mathcal A_5$ differs, after
+integration with the specified finite parts, from the scalar power
+$\psi^5$. The resulting additional mixed integral is an analytic
+quantity, not an omitted integration constant.
+
+% END sections/04_scalar
+
+% BEGIN sections/05_fifth
+% Independent fifth-power contribution. Standard amsmath/amsthm only.
+% Labels have prefix q5:. All finite parts use the coordinate x itself.
+\section{The fifth digamma power and its mixed coordinate}
+\label{q5:section}
+
+This section resolves the fifth-power calculation posed in the inspected
+quartic report.  It fixes all endpoint constants and identifies the
+additional mixed spectral combination which occurs beside the
+height-one Laurent coefficients.  The result does not assert that this
+mixed combination is arithmetically independent of the height-one data.
+
+Write $z_j=\zeta(j)$ and $\gamma=\gamma_0$.  Strict multiple zeta
+functions have decreasing indices:
+\[
+ Z_r(s_1,\ldots,s_r)
+   =\sum_{n_1>\cdots>n_r\geq1}
+        n_1^{-s_1}\cdots n_r^{-s_r}.
+\]
+For their height-one germs put
+\begin{equation}\label{q5:lambda}
+ \lambda_r=[u^1]Z_r(1+u,\underbrace{1,\ldots,1}_{r-1}),
+ \qquad
+ \lambda_1=-\gamma_1,\quad
+ \lambda_2=\eta,\quad\lambda_3=\theta,\quad\lambda_4=\xi.
+\end{equation}
+The bracket extracts the coefficient itself, with no factorial or sign.
+The coordinate finite part of an integral is the constant coefficient
+of its cutoff expansion in $\varepsilon$ for the integral from
+$\varepsilon$ to the stated upper endpoint.
+
+\subsection{The identities}
+
+Define
+\begin{align}
+ R(s)&=Z_2(s,3)-z_3\zeta(s),\label{q5:R}\\
+ J(s)&=2R(s)+2Z_2(s+2,1)+Z_2(s+1,2)
+                 -2\gamma\zeta(s+2)+z_2\zeta(s+1).
+ \label{q5:J}
+\end{align}
+Here $R$ is holomorphic in $\operatorname{Re}s>-1$, and $J$ is
+holomorphic in $\operatorname{Re}s>0$.  In particular $J'(1)$ is an
+ordinary derivative of a holomorphic function, not a coefficient
+requiring a new choice of finite-part normalization.
+
+\begin{theorem}[Fifth-power and mixed-polygamma bridges]
+\label{q5:main}
+Set
+\[
+ Q_5=\operatorname{FP}\int_0^1\psi(x)^5\,dx,
+ \qquad
+ I=\operatorname{FP}\int_0^1\psi(x)\psi'(x)^2\,dx.
+\]
+Then
+\begin{equation}\label{q5:Ibridge}
+ \boxed{\displaystyle
+ I=-2\gamma z_3+\frac{35}{6}z_4+2J'(1).}
+\end{equation}
+The fifth-power identity is
+\begin{equation}\label{q5:bridge}
+ \boxed{\begin{aligned}
+ Q_5={}&30\gamma^2z_2-60\gamma z_3+\frac{35}{3}z_4
+       -120\xi+120\gamma\theta\\
+ &-60(\gamma^2-z_2)\eta
+       +20(\gamma^3-3\gamma z_2+2z_3)\lambda_1
+       +10J'(1).
+ \end{aligned}}
+\end{equation}
+Equivalently, the mixed integral itself isolates the extra coordinate:
+\begin{equation}\label{q5:QminusI}
+ \boxed{\begin{aligned}
+ Q_5-5I={}&30\gamma^2z_2-50\gamma z_3-\frac{35}{2}z_4
+       -120\xi+120\gamma\theta\\
+ &-60(\gamma^2-z_2)\eta
+       +20(\gamma^3-3\gamma z_2+2z_3)\lambda_1.
+ \end{aligned}}
+\end{equation}
+All the ordinary zeta derivatives in the compact notation are explicit:
+\begin{align}\label{q5:Jexpanded}
+ J'(1)={}&2R'(1)
+       +2\left.\frac{\partial}{\partial s}Z_2(s,1)\right|_{s=3}
+       +\left.\frac{\partial}{\partial s}Z_2(s,2)\right|_{s=2}
+       -2\gamma\zeta'(3)+z_2\zeta'(2).
+\end{align}
+If $\phi_{13}=[u^1]Z_2(1+u,3)$, then
+$R'(1)=\phi_{13}+z_3\gamma_1=\phi_{13}-z_3\lambda_1$.
+\end{theorem}
+
+The last conversion matters.  Substituting $\phi_{13}$ for $R'(1)$
+without its $z_3\gamma_1$ correction would give an incorrect fifth-power
+formula.  The mixed term is one specified linear combination.  No claim
+that its separate components form a minimal arithmetic basis is needed.
+
+\subsection{A convergent arithmetic form and the spectral germs}
+
+For $n\geq1$ use
+\begin{equation}\label{q5:integer-bcd}
+ b=\psi(n),\qquad c=2z_2-\psi'(n),\qquad
+ d=\frac12\psi''(n),\qquad L_n=\log n,
+\end{equation}
+where $b,c,d$ in a summand always refer to that summand's $n$.
+Then
+\begin{align}
+ J(s)&=\sum_{n\geq1}\frac1{n^s}
+      \left(2d+\frac{c}{n}+\frac{2b}{n^2}\right),
+      &&\operatorname{Re}s>0,\label{q5:Jseries}\\
+ I&=-2\gamma z_3+\frac{35}{6}z_4
+       -\sum_{n\geq1}
+        \left(\frac{4d}{n}+\frac{2c}{n^2}
+                         +\frac{4b}{n^3}\right)L_n.
+ \label{q5:Iarithmetic}
+\end{align}
+Another expression for $Q_5$ is
+\begin{align}\label{q5:Qarithmetic}
+ Q_5={}&30\gamma^2z_2-60\gamma z_3+\frac{35}{3}z_4
+           +20\gamma_4-120z_2\gamma_2\notag\\
+ &+20\sum_{n\geq1}
+     \frac{(b^3-3bc+d-L_n^3+6z_2L_n)L_n}{n}\notag\\
+ &-20\sum_{n\geq1}\frac{bL_n}{n^3}
+       -10\sum_{n\geq1}\frac{cL_n}{n^2}.
+\end{align}
+Every series in these displays converges absolutely.  Indeed
+$\psi(n)=\log n+O(n^{-1})$,
+$\psi'(n)=O(n^{-1})$, and $\psi''(n)=O(n^{-2})$.
+The summand in the first sum of \eqref{q5:Qarithmetic} is
+$O((1+\log^3n)/n^2)$.  These estimates also prove normal convergence
+of \eqref{q5:Jseries} and of each fixed spectral derivative on compact
+subsets of its half-plane.  The series for $R$ is
+\[
+ R(s)=\sum_{n\geq1}
+       \frac{H_{n-1}^{(3)}-z_3}{n^s};
+\]
+its summands are $O(n^{-\operatorname{Re}s-2})$.
+
+The height-one Laurent germs used here have a direct existence proof.
+For $r\geq1$ and $\operatorname{Re}s>1$,
+\begin{equation}\label{q5:mellin}
+ Z_r(s,1^{r-1})=
+ \frac{(-1)^{r-1}}{(r-1)!\,\Gamma(s)}
+ \int_0^\infty
+    \frac{t^{s-1}\log^{r-1}(1-e^{-t})}{e^t-1}\,dt.
+\end{equation}
+This follows from the elementary-symmetric generating series and
+termwise Mellin integration.  Near zero the kernel is its displayed
+leading term
+$(-1)^{r-1}\log^{r-1}t/((r-1)!t)$ plus
+$O(1+|\log t|^{r-1})$.  Subtraction of that term gives
+\[
+ \Gamma(1+u)Z_r(1+u,1^{r-1})=u^{-r}+V_r(u),
+ \qquad V_r(0)=0,
+\]
+with $V_r$ holomorphic near zero.  The assertion $V_r(0)=0$ follows
+by integrating the derivative of $\log^r(1-e^{-t})$ and comparing its
+lower boundary with $\log^r t$.  Thus the principal and constant
+coefficients are fixed by $1/\Gamma(1+u)$, and in particular $\xi$
+in \eqref{q5:lambda} is well defined.
+
+\subsection{Global partial fractions with a fixed entire remainder}
+
+For $n\geq0$, set
+\begin{equation}\label{q5:localcoeffs}
+ \begin{aligned}
+ b_n&=H_n-\gamma,&
+ c_n&=z_2+H_n^{(2)},\\
+ d_n&=H_n^{(3)}-z_3,&
+ e_n&=z_4+H_n^{(4)}.
+ \end{aligned}
+\end{equation}
+The local digamma expansion is
+\[
+ \psi(-n+\varepsilon)
+ =-\varepsilon^{-1}+b_n+c_n\varepsilon
+       +d_n\varepsilon^2+e_n\varepsilon^3+O(\varepsilon^4).
+\]
+For $F_5(z)=\psi(z)^5$ and $F_I(z)=\psi(z)\psi'(z)^2$, let
+\[
+ P_{X,n}(z)=\sum_{j=1}^5\frac{p_{X,j,n}}{(z+n)^j},
+ \qquad X\in\{5,I\}.
+\]
+The principal coefficients, with subscripts $n$ suppressed in the table,
+are
+\begin{center}
+\begin{tabular}{c|c|c}
+$j$&$p_{5,j}$&$p_{I,j}$\\\hline
+5&$-1$&$-1$\\
+4&$5b$&$b$\\
+3&$-10b^2+5c$&$-c$\\
+2&$10b^3-20bc+5d$&$2bc-3d$\\
+1&$-5b^4+30b^2c-20bd-10c^2+5e$&$4bd+c^2-5e$
+\end{tabular}
+\end{center}
+Write $r_{X,n}=p_{X,1,n}$.  The constant coefficients at zero are
+\begin{align}
+ \kappa_5={}&-\gamma^5+20\gamma^3z_2-30\gamma^2z_3
+         -30\gamma z_2^2+20\gamma z_4+20z_2z_3-5z_5,
+ \label{q5:kappa5}\\
+ \kappa_I={}&-\gamma z_2^2-6\gamma z_4-2z_2z_3+7z_5.
+ \label{q5:kappaI}
+\end{align}
+
+\begin{lemma}[Two normalized Mittag--Leffler expansions]
+\label{q5:ML}
+For $X=5,I$ and $z\notin\{0,-1,-2,\ldots\}$,
+\begin{equation}\label{q5:MLformula}
+ F_X(z)=P_{X,0}(z)+\kappa_X+
+       \sum_{n\geq1}\bigl(P_{X,n}(z)-P_{X,n}(0)\bigr).
+\end{equation}
+The series converges normally on compact sets avoiding the poles.
+\end{lemma}
+\begin{proof}
+The coefficient table follows by finite multiplication of the local
+digamma series and its derivative.  For the entire remainder, put
+$f_X=F_X-P_{X,0}$ and integrate
+$z f_X(w)/(w(w-z))$ on $|w|=N+1/2$.
+Digamma asymptotics in the right half-plane and the reflection formula
+in the left half-plane give $f_X(w)=O(1+\log^5N)$ on these circles.
+The cotangent and its fixed derivatives are uniformly bounded there:
+away from the real axis use their exponential expressions, and on the
+remaining arcs the real coordinate stays a fixed distance from the
+integers.  The contour integral is therefore
+$O((1+\log^5N)/N)$ and tends to zero.
+Its residues are $f_X(z)$, $-f_X(0)$, and
+$-(P_{X,n}(z)-P_{X,n}(0))$.  This proves the identity.
+Finally $p_{5,j,n}=O(1+\log^{5-j}n)$ and the corresponding mixed
+coefficients have no greater growth.  The two-point subtractions give
+an additional inverse power of $n$, proving normal convergence.
+\end{proof}
+
+\subsection{The finite summation ledger}
+
+Integrating \eqref{q5:MLformula} and telescoping each pole of order
+at least two gives
+\begin{equation}\label{q5:integrated}
+ \operatorname{FP}\int_0^1F_X(x)\,dx
+   =B_X+\sum_{n\geq1}r_{X,n}
+        \left(\log\left(1+\frac1n\right)-\frac1n\right),
+\end{equation}
+where
+\begin{equation}\label{q5:Bmechanism}
+ B_X=\kappa_X+
+  \sum_{j=2}^5\sum_{n\geq1}
+    \left(\frac{p_{X,j,n}-p_{X,j,n-1}}{(j-1)n^{j-1}}
+                       -\frac{p_{X,j,n}}{n^j}\right).
+\end{equation}
+This formula includes the finite parts at the origin.  For example,
+the lower endpoint contribution of $p_{X,j,0}x^{-j}$ is
+$-p_{X,j,0}/(j-1)$; it cancels the initial term of that pole's finite
+telescoping sum.  The simple-pole finite part is zero.
+
+Here is a shorter directly reproducible form of all the nonlogarithmic
+terms.  In the sums in this display only, let
+$b=b_{n-1}$, $c=c_{n-1}$, $d=d_{n-1}$.  Then
+\begin{align}
+ B_5={}&\kappa_5+\sum_{n\geq1}\left\{
+ \frac{-10b^3+20bc-5d+30b^2-20c}{n^2}
+ +\frac{-20b^2+15c}{n^3}
+ +\frac{5b-35/6}{n^4}+\frac6{n^5}\right\},
+ \label{q5:B5sum}\\
+ B_I={}&\kappa_I+\sum_{n\geq1}\left\{
+ \frac{-2bc+3d+2c}{n^2}+\frac{2b-c}{n^3}
+ +\frac{-3b-7/6}{n^4}+\frac2{n^5}\right\}.
+ \label{q5:BIsum}
+\end{align}
+All these sums converge absolutely.
+
+To evaluate them and the finite residue sums, write
+\[
+ H_N(a_1,\ldots,a_d)=
+    \sum_{N\geq n_1>\cdots>n_d\geq1}
+                 n_1^{-a_1}\cdots n_d^{-a_d},
+ \qquad e_j(N)=H_N(1^j).
+\]
+The finite product rule is the quasi-shuffle rule with a positive merged
+index.  The summation rule is equally elementary:
+\begin{equation}\label{q5:finite-prefix}
+ \sum_{n=1}^N\frac{H_n(a_1,\ldots,a_d)}{n^p}
+   =H_N(p,a_1,\ldots,a_d)
+      +H_N(p+a_1,a_2,\ldots,a_d),
+\end{equation}
+with the second term absent for an empty word.  Both statements follow
+by separating strict inequalities from equalities of the outer indices.
+There is no infinite rearrangement in either identity.
+
+For completeness, the convergent values required in this section are
+\begin{equation}\label{q5:MZVtable}
+\begin{array}{c|c}
+\text{value}&\text{reduction}\\\hline
+Z_2(2,1)&z_3\\
+Z_2(3,1),\ Z_2(2,2),\ Z_3(2,1,1)&z_4/4,\ 3z_4/4,\ z_4\\
+Z_2(4,1),\ Z_3(3,1,1)&2z_5-z_2z_3\\
+Z_2(3,2),\ Z_3(2,2,1)&3z_2z_3-11z_5/2\\
+Z_2(2,3),\ Z_3(2,1,2)&9z_5/2-2z_2z_3\\
+Z_4(2,1,1,1)&z_5
+\end{array}
+\end{equation}
+These are the classical low-weight reductions.  Their use here can be
+checked from the finite product rule, the depth-two sum theorem and
+iterated-integral duality.  At weight five, for example, the stuffle
+and shuffle products are respectively
+\[
+ z_2z_3=Z_2(2,3)+Z_2(3,2)+z_5,
+ \qquad
+ z_2z_3=Z_2(2,3)+3Z_2(3,2)+6Z_2(4,1).
+\]
+Together with
+$Z_2(4,1)+Z_2(3,2)+Z_2(2,3)=z_5$, these give the three
+depth-two weight-five entries.  Substitution $t\mapsto1-t$ in the
+iterated integrals gives the paired dual values in the table.
+The same arguments at weights three and four give the first two rows;
+$z_2^2=5z_4/2$ is used throughout.
+
+Here is an explicit finite identity which records the full fifth-power
+constant.  In this display set $h_j=H_N^{(j)}$, $h=h_1$,
+$E_j=e_j(N)$, and abbreviate $H_N(a_1,\ldots,a_d)$ by
+$H(a_1,\ldots,a_d)$.  Put
+\[
+ A=\gamma^3-3\gamma z_2+z_3,\qquad
+ r_0=-5\gamma^4+30\gamma^2z_2-20\gamma z_3-10z_2^2+5z_4.
+\]
+Then the exact equality for every $N\geq1$ is
+\begin{align}\label{q5:S5finite}
+ \sum_{n=1}^N\frac{r_{5,n}}n={}&
+  -120E_5+120\gamma E_4+60(z_2-\gamma^2)E_3
+       +20AE_2+r_0h+20Ah_2\notag\\
+ &-120H(2,1,1,1)+120\gamma H(2,1,1)
+       +(50z_2-60\gamma^2)H(2,1)\notag\\
+ &+20E_2h_3-20H(3,1,1)-20hh_4
+       +20H(4,1)+20h_5\notag\\
+ &+10hH(2,2)-10H(2,1,2)-10H(2,2,1)+10H(2,3)\notag\\
+ &-20\gamma hh_3+20\gamma H(3,1)+10z_2hh_2.
+\end{align}
+One derivation first writes the residue polynomial as
+\begin{align*}
+ r_{5,n}={}&-120e_4(n)+120\gamma e_3(n)
+       +60(z_2-\gamma^2)e_2(n)+20A H_n+r_0\\
+ &+20(H_n-\gamma)H_n^{(3)}
+       +5\bigl(H_n^{(2)}\bigr)^2-25H_n^{(4)}+10z_2H_n^{(2)}.
+\end{align*}
+Apply \eqref{q5:finite-prefix} to every term, and then use the finite
+product rule to collect the products occurring in \eqref{q5:S5finite}.
+
+For the mixed residue there is a shorter identity.  Put
+$C_0=4\gamma z_3+z_2^2-5z_4$.  Then
+\begin{align}\label{q5:SIfinite}
+ \sum_{n=1}^N\frac{r_{I,n}}n={}&
+ 4E_2(h_3-z_3)
+ +h\{2H(2,2)-4h_4-4\gamma h_3+2z_2h_2+C_0\}\notag\\
+ &-4H(3,1,1)-2H(2,1,2)-2H(2,2,1)+2H(2,3)\notag\\
+ &+4H(4,1)+4h_5+4\gamma H(3,1)-4z_3h_2-2z_2H(2,1).
+\end{align}
+This is again a finite product-and-prefix calculation.
+
+\begin{lemma}[All finite constants]
+\label{q5:constants}
+As $N\to\infty$, with $L=\log N$,
+\begin{align}
+ \sum_{n=1}^N\frac{r_{5,n}}n
+   &=-L^5+20z_2L^3-90z_4L+C_5+o(1),
+   \label{q5:S5asymptotic}\\
+ r_{5,N}\log(N+1)
+   &=-5L^5+60z_2L^3-90z_4L+o(1),
+   \label{q5:r5asymptotic}
+\end{align}
+where
+\begin{equation}\label{q5:C5}
+ C_5=-\gamma^5+30\gamma^3z_2-80\gamma^2z_3
+         -\frac{65}{2}\gamma z_4+60z_2z_3-69z_5.
+\end{equation}
+For the mixed residue,
+\begin{equation}\label{q5:CI}
+ \sum_{n\geq1}\frac{r_{I,n}}n
+      =C_I=\gamma z_4-12z_2z_3+15z_5,
+ \qquad r_{I,N}\log(N+1)=o(1).
+\end{equation}
+Finally the nonlogarithmic terms satisfy
+\begin{equation}\label{q5:Bconstants}
+ B_5-C_5=30\gamma^2z_2-60\gamma z_3+\frac{35}{3}z_4,
+ \qquad
+ B_I-C_I=-2\gamma z_3+\frac{35}{6}z_4.
+\end{equation}
+\end{lemma}
+\begin{proof}
+In \eqref{q5:S5finite}, substitute
+$h=\log N+\gamma+O(N^{-1})$ and
+$h_j=z_j+O(N^{1-j})$ for $j\geq2$, and replace the words with
+outer exponent at least two by their limits in
+\eqref{q5:MZVtable}.  Every discarded term is $o(1)$ even after
+multiplication by the displayed powers of $\log N$.
+The elementary polynomials are fixed, without any interpolation, by
+\[
+ E_0=1,\qquad
+ jE_j=\sum_{r=1}^j(-1)^{r-1}h_rE_{j-r}.
+\]
+This gives \eqref{q5:S5asymptotic} including its constant
+\eqref{q5:C5}.  For \eqref{q5:r5asymptotic}, directly substitute
+$b_N=L+O(N^{-1})$, $c_N=2z_2+O(N^{-1})$,
+$d_N=O(N^{-2})$, and $e_N=2z_4+O(N^{-3})$ in the residue.
+Its constant polynomial term is
+$-40z_2^2+10z_4=-90z_4$.
+
+For \eqref{q5:SIfinite}, the first term tends to zero.  The expression
+in braces multiplying $h$ has zero limit by
+$Z_2(2,2)=3z_4/4$ and $z_2^2=5z_4/2$; its convergence is fast
+enough that its product with $h$ tends to zero.  The remaining convergent
+words have value
+\begin{align*}
+ &-4Z_3(3,1,1)-2Z_3(2,1,2)-2Z_3(2,2,1)+2Z_2(2,3)\\
+ &\qquad+4Z_2(4,1)+4z_5+4\gamma Z_2(3,1)-6z_2z_3\\
+ &\hspace{15mm}=\gamma z_4-12z_2z_3+15z_5.
+\end{align*}
+Also $r_{I,n}=O(n^{-1})+O(\log n/n^2)$, since its prospective
+constant term $4z_2^2-10z_4$ vanishes.  This proves the ordinary
+convergence and the boundary assertion in \eqref{q5:CI}.
+Finally, expand the products in \eqref{q5:B5sum} and
+\eqref{q5:BIsum} by the finite quasi-shuffle rule, prefix their
+outer denominator, and use \eqref{q5:MZVtable}.
+The results are respectively $C_5$ and $C_I$ plus the two explicitly
+displayed corrections in \eqref{q5:Bconstants}.
+\end{proof}
+
+The preceding calculation is a full constant-term computation.  In
+particular it retains the $-90z_4\log N$ terms on both sides of
+the summation-by-parts boundary; neither term may be dropped before
+their cancellation.
+
+\subsection{Identification of the logarithmic terms}
+
+The residue differences are particularly short.  For $n\geq1$,
+with $b=b_{n-1}$, $c=c_{n-1}$, $d=d_{n-1}$,
+\begin{align}
+ r_{5,n}-r_{5,n-1}
+    &=-\frac{20(b^3-3bc+d)}n+\frac{20b}{n^3}
+                              +\frac{10c}{n^2},
+      \label{q5:diff5}\\
+ r_{I,n}-r_{I,n-1}
+    &=\frac{4d}n+\frac{4b}{n^3}+\frac{2c}{n^2}.
+      \label{q5:diffI}
+\end{align}
+For any residue sequence, finite summation by parts gives
+\begin{equation}\label{q5:logSBP}
+ \sum_{n=1}^Nr_{X,n}\log\left(1+\frac1n\right)
+  =r_{X,N}\log(N+1)
+       -\sum_{n=1}^N(r_{X,n}-r_{X,n-1})\log n.
+\end{equation}
+For $I$, equations \eqref{q5:integrated}, \eqref{q5:CI},
+\eqref{q5:Bconstants}, and \eqref{q5:diffI} immediately give
+\eqref{q5:Iarithmetic} and hence \eqref{q5:Ibridge}.
+
+For $Q_5$, define
+\[
+ M_N=\sum_{n=1}^N\frac{(b_{n-1}^3-3b_{n-1}c_{n-1}+d_{n-1})\log n}{n}.
+\]
+Equations \eqref{q5:S5asymptotic}--\eqref{q5:logSBP} give
+\begin{align}\label{q5:limit}
+ Q_5={}&B_5-C_5+
+       20\lim_{N\to\infty}
+          \left(M_N-\frac{\log^5N}{5}+2z_2\log^3N\right)\notag\\
+ &-20\sum_{n\geq1}\frac{b_{n-1}\log n}{n^3}
+       -10\sum_{n\geq1}\frac{c_{n-1}\log n}{n^2}.
+\end{align}
+Splitting off $\log^3n-6z_2\log n$ and using the ordinary
+Stieltjes limits gives \eqref{q5:Qarithmetic}.
+
+For the exact spectral form introduce, initially for
+$\operatorname{Re}s>1$,
+\[
+ T(s)=\sum_{n\geq1}
+       \frac{b_{n-1}^3-3b_{n-1}c_{n-1}+d_{n-1}}{n^s}.
+\]
+Finite elementary-symmetric algebra gives
+\begin{align}\label{q5:Tidentity}
+ T(s)={}&6Z_4(s,1,1,1)-6\gamma Z_3(s,1,1)
+           +3(\gamma^2-z_2)Z_2(s,1)\notag\\
+ &-(\gamma^3-3\gamma z_2+2z_3)\zeta(s)-R(s).
+\end{align}
+Moreover $T(s)+\zeta'''(s)-6z_2\zeta'(s)$ is holomorphic in
+$\operatorname{Re}s>0$.  Thus $T$ has principal part
+$6u^{-4}-6z_2u^{-2}$ at $s=1+u$, and the finite limit in
+\eqref{q5:limit} is exactly $-[u^1]T(1+u)$.
+One can see the sign directly by differentiating the normally convergent
+subtracted Dirichlet series; the ordinary limits contribute
+$\gamma_4-6z_2\gamma_2$.
+By \eqref{q5:Tidentity},
+\[
+ [u^1]T(1+u)=6\xi-6\gamma\theta+3(\gamma^2-z_2)\eta
+       -(\gamma^3-3\gamma z_2+2z_3)\lambda_1-R'(1).
+\]
+The two remaining sums in \eqref{q5:limit} are
+\[
+ -\left.\frac{\partial}{\partial s}Z_2(s,1)\right|_{s=3}
+          +\gamma\zeta'(3),\qquad
+ -\left.\frac{\partial}{\partial s}Z_2(s,2)\right|_{s=2}
+          -z_2\zeta'(2),
+\]
+respectively.  Substitution proves \eqref{q5:bridge}; subtraction
+of five times \eqref{q5:Ibridge} gives \eqref{q5:QminusI}.
+
+\subsection{A differential-polynomial interpretation and exact endpoints}
+
+The fifth inverse-Gamma differential polynomial is
+\begin{align}\label{q5:A5}
+ \mathcal A_5
+ ={}&\psi^5-10\psi^3\psi'+15\psi(\psi')^2+10\psi^2\psi''
+            -10\psi'\psi''-5\psi\psi'''+\psi''''.
+\end{align}
+It equals $-\Gamma\,D^5(1/\Gamma)$.
+Let $\Delta G=G(1)-[x^0]G(x)$ for a Laurent-meromorphic function
+at zero.  Coordinate finite parts obey
+$\operatorname{FP}\int_0^1G'(x)\,dx=\Delta G$.
+The complete endpoint table needed for \eqref{q5:A5} is
+\begin{equation}\label{q5:endpoints}
+\begin{array}{c|c}
+G&\Delta G\\\hline
+\psi^4&12\gamma^2z_2-12\gamma z_3-11z_4\\
+\psi^2\psi'&2\gamma z_3+3z_4/2\\
+(\psi')^2&-6z_4\\
+\psi\psi''&8z_4\\
+\psi'''&0
+\end{array}
+\end{equation}
+Integration by parts, with these constants retained, gives
+\begin{align}\label{q5:Bell-explanation}
+ Q_5-5I
+   &=\operatorname{FP}\int_0^1\mathcal A_5(x)\,dx
+       +30\gamma^2z_2-50\gamma z_3-\frac{35}{2}z_4.
+\end{align}
+Consequently \eqref{q5:QminusI} is compatible with the all-degree
+inverse-Gamma construction, while the raw fifth power contains $I$.
+This distinguishes a proved differential-polynomial cancellation from
+the separate proposed cancellation by a scalar polynomial in $\psi$.
+The formulas here neither prove nor disprove the existence of a further
+ordinary-constant identity eliminating $J'(1)$.
+
+\subsection{Normalized primitives and the polygamma hierarchy}
+
+For $n\geq1$, define on $\operatorname{Re}z>0$
+\[
+ F_1(n,z)=\log\left(1+\frac zn\right)-\frac zn,
+ \qquad
+ F_j(n,z)=\frac{(n+z)^{1-j}-n^{1-j}}{1-j}-\frac z{n^j}
+ \quad(j\geq2),
+\]
+with the logarithm real for positive arguments.
+
+\begin{corollary}[Two normalized primitives]\label{q5:primitives}
+For $X\in\{5,I\}$ the expression
+\begin{align}\label{q5:primitiveformula}
+ \mathcal P_X(z)={}&r_{X,0}\log z
+       +\sum_{j=2}^5\frac{p_{X,j,0}z^{1-j}}{1-j}
+       +\kappa_Xz
+       +\sum_{n\geq1}\sum_{j=1}^5p_{X,j,n}F_j(n,z)
+\end{align}
+satisfies $\mathcal P_X'(z)=F_X(z)$ and has zero constant term
+at the singular origin.  For real $b>0$,
+\[
+ \operatorname{FP}\int_0^bF_X(x)\,dx=\mathcal P_X(b).
+\]
+For $0<a<b$ the ordinary integral is
+$\mathcal P_X(b)-\mathcal P_X(a)$.
+\end{corollary}
+\begin{proof}
+Each $F_j$ is the primitive vanishing at zero of
+$(n+z)^{-j}-n^{-j}$.  On compact sets it is $O(n^{-j-1})$;
+the coefficient bounds from Lemma~\ref{q5:ML} therefore justify normal
+convergence and differentiation.  The series converges uniformly on
+each disk $|z|\leq r<1$, where all its summands vanish at zero.
+The explicitly displayed singular terms and logarithm consequently
+leave no constant term.
+\end{proof}
+
+\begin{corollary}[All fixed polygamma orders]\label{q5:derivative}
+For every integer $r\geq1$, away from the poles,
+\begin{equation}\label{q5:derivatives}
+ D^rF_X(z)=(-1)^r r!
+       \sum_{n\geq0}\sum_{j=1}^5
+       \binom{r+j-1}{j-1}\frac{p_{X,j,n}}{(n+z)^{r+j}}.
+\end{equation}
+The series converges normally.  The left sides are explicitly
+\[
+ D^rF_5=
+ \sum_{r_1+\cdots+r_5=r}\frac{r!}{r_1!\cdots r_5!}
+                  \prod_{i=1}^5\psi^{(r_i)},
+ \qquad
+ D^rF_I=
+ \sum_{r_1+r_2+r_3=r}\frac{r!}{r_1!r_2!r_3!}
+         \psi^{(r_1)}\psi^{(r_2+1)}\psi^{(r_3+1)}.
+\]
+At $z=1$ these are finite polynomials in $\gamma$ and ordinary
+zeta values, using
+$\psi^{(j)}(1)=(-1)^{j+1}j!\zeta(j+1)$ for $j\geq1$.
+\end{corollary}
+\begin{proof}
+Differentiate \eqref{q5:MLformula}.  For $r\geq1$ all constant
+subtractions disappear, and the summands are bounded on compact sets
+by a constant times $n^{-r-1}(1+\log^4n)$.  The product rule gives
+the displayed left sides.
+\end{proof}
+
+\subsection{Verification and scope}
+
+The accompanying exact replay checks 87 identities: principal
+coefficients, constant Laurent terms, residue differences, both finite
+harmonic summation formulas, all finite asymptotic constants,
+nonlogarithmic reductions, spectral extraction, endpoint terms,
+primitive derivatives, and the derivative kernels through order eight.
+The finite harmonic checks are symbolic identities for arbitrary $N$;
+they are not a fit to a finite sample of integers.  As regression checks,
+the same summation code recovers the previously proved cubic and
+quartic constants.
+
+Independent numerical evaluations give
+\begin{align*}
+ Q_5&=-8.69030396262453826629558966236565357677029354492388429266\ldots,\\
+ I&=-1.01946582194172926744369821391554613746742300351148475173\ldots.
+\end{align*}
+One route integrates the convergent Taylor series of the functions
+after their fifth-order singularity has been factored out near zero,
+and performs ordinary quadrature away from zero.  Cutoffs $1/8$ and
+$1/16$ agree to about 77 decimal digits.  A second route uses
+\eqref{q5:Iarithmetic} and \eqref{q5:Qarithmetic}, summing a finite
+prefix and expressing a truncated digamma asymptotic tail through
+Hurwitz-zeta derivatives.  At the finest recorded settings the
+differences from the direct calculation are below
+$1.02\cdot10^{-48}$ and $3.83\cdot10^{-48}$, respectively.
+These are floating-point cross-checks, not interval-certified
+enclosures.  The exact identities rest on the proofs above.
+
+The advance relative to the inspected quartic report is the complete
+fifth-power bridge, its mixed-coordinate identification, all finite
+corrections, and the normalized primitive and derivative consequences.
+The classical partial-fraction and multiple-zeta tools are not claimed
+as new.  The scalar-polynomial elimination question remains distinct:
+the presently proved cancellation naturally uses the additional
+integral $I$ or, equivalently, the differential polynomial
+$\mathcal A_5$.
+
+% END sections/05_fifth
+
+% BEGIN sections/06_calculus
+\section{Polylogarithmic kernels, derivatives, and normalized primitives}
+\label{sec:calculus}
+
+The residue normalization has useful consequences beyond one finite
+part. It gives convergent antiderivatives, strict multiple-zeta Taylor
+coefficients, and explicit polylogarithmic kernels. These are exact
+identities of functions on stated domains. The Gamma and polylogarithm
+ingredients are classical; the point here is that the same normalization
+works for the ordinary integral, the poles, and all subsequent
+differentiations.
+
+\subsection{A primitive with a fixed additive constant}
+
+\begin{theorem}[The normalized Gamma-polygamma primitive]
+\label{thm:Cprimitive}
+Let $m\ge2$ and $\Omega_m=\C\setminus(-\infty,-(m-1)]$.
+With the principal logarithm, put
+\begin{equation}\label{eq:Cprimitive}
+ \mathfrak P_m(z)=-m!\zeta(m)z
+  -m!\sum_{n\ge m-1}e_{m-1}(n)
+       \left\{\Log\left(1+\frac zn\right)-\frac zn\right\}.
+\end{equation}
+Then $\mathfrak P_m$ is holomorphic on $\Omega_m$,
+$\mathfrak P_m(0)=0$, and $\mathfrak P_m'=\CM_m$. In particular
+\begin{equation}\label{eq:primitive_atone}
+ \mathfrak P_m(1)=m!(c_m-\lambda_{m-1}).
+\end{equation}
+For any real $-(m-1)<a<b$, the ordinary integral of $\CM_m$ is
+$\mathfrak P_m(b)-\mathfrak P_m(a)$.
+\end{theorem}
+\begin{proof}
+On every fixed compact set the bracket in \eqref{eq:Cprimitive} is
+$O(n^{-2})$, uniformly in $z$. The logarithm is holomorphic on the
+stated slit because the first nonzero residue occurs at $n=m-1$.
+The normal convergence and the same bound for the differentiated
+bracket justify termwise differentiation, giving \eqref{eq:CML}.
+Every term vanishes at zero. Theorem~\ref{thm:Cintegral} gives the
+value at one.
+\end{proof}
+
+\subsection{The all-ones polylogarithm as a kernel}
+
+The harmonic generating identity is
+\begin{equation}\label{eq:harmonic_polylog_kernel}
+ \sum_{n\ge1}e_d(n)y^n
+    =\frac{\Li_{\{1\}^d}(y)}{1-y}
+    =\frac{(-\log(1-y))^d}{d!(1-y)},\qquad |y|<1.
+\end{equation}
+The factor $(1-y)^{-1}$ records the inclusive upper cutoff $n$.
+Omitting it changes the harmonic convention and the resulting poles.
+
+\begin{corollary}[Polylogarithmic integral and primitive kernels]
+\label{cor:Cpolylog}
+For $m\ge2$ and $\re z>-(m-1)$,
+\begin{align}
+ \CM_m(z)={}&-m!\zeta(m)
+  +m!\int_0^1(1-y^z)
+       \frac{\Li_{\{1\}^{m-1}}(y)}{y(1-y)}\,dy,
+ \label{eq:Cpolylog}\\
+ \mathfrak P_m(z)={}&-m!\zeta(m)z
+  +m!\int_0^1\left\{z-\frac{y^z-1}{\log y}\right\}
+       \frac{\Li_{\{1\}^{m-1}}(y)}{y(1-y)}\,dy.
+ \label{eq:Ppolylog}
+\end{align}
+Here $y^z=e^{z\log y}$ uses the real logarithm for $0<y<1$.
+Both integrals are ordinary absolutely convergent integrals.
+\end{corollary}
+\begin{proof}
+Insert $(n+z)^{-1}-n^{-1}=\int_0^1y^{n-1}(y^z-1)\,dy$
+into \eqref{eq:CML} and use \eqref{eq:harmonic_polylog_kernel}.
+Near zero the polylogarithm is $O(y^{m-1})$, giving precisely
+the half-plane in the statement. Near one, $1-y^z=O(1-y)$;
+the remaining logarithmic power is integrable. These estimates are
+uniform on compact parameter sets and justify summation and
+differentiation. Integrating with respect to $z$ from zero gives
+the second formula and its normalization.
+\end{proof}
+
+\subsection{All derivatives and the exact Taylor radius}
+
+\begin{corollary}[Derivative Euler sums]\label{cor:Cderivatives}
+For every $m\ge2$ and integer $r\ge1$,
+\begin{equation}\label{eq:Cderivatives}
+ \CM_m^{(r)}(z)=(-1)^{r+1}m!r!
+       \sum_{n\ge m-1}\frac{e_{m-1}(n)}{(n+z)^{r+1}}.
+\end{equation}
+The series converges normally away from the actual poles. At zero,
+\begin{equation}\label{eq:Cderivative_zero}
+ \CM_m^{(r)}(0)=(-1)^{r+1}m!r!
+  \left\{Z_m(r+1,\{1\}^{m-1})
+       +Z_{m-1}(r+2,\{1\}^{m-2})\right\}.
+\end{equation}
+Equivalently, the Taylor series is
+\begin{equation}\label{eq:Ctaylor}
+ \CM_m(z)=-m!\zeta(m)
+  +m!\sum_{r\ge1}(-1)^{r+1}
+  \left\{Z_m(r+1,\{1\}^{m-1})
+       +Z_{m-1}(r+2,\{1\}^{m-2})\right\}z^r.
+\end{equation}
+Its radius of convergence is exactly $m-1$.
+\end{corollary}
+\begin{proof}
+Differentiate the normally convergent partial fractions. The bound
+$e_{m-1}(n)=O((1+\log n)^{m-1})$ is sufficient for every
+$r\ge1$. The exact finite identity
+$e_d(n)=e_d(n-1)+e_{d-1}(n-1)/n$ separates the inclusive
+cutoff into two strict sums, proving \eqref{eq:Cderivative_zero}.
+The Taylor coefficients follow by division by $r!$. Finally the
+origin is removable and the nearest actual singularity is the
+simple pole at $-(m-1)$, whose residue is nonzero by
+Theorem~\ref{thm:Cpoles}; this proves the exact radius.
+\end{proof}
+
+For example $\CM_2'(0)=4\zeta(3)$ and
+$\CM_3'(0)=15\zeta(4)/2$. These recover the same coefficients
+by differentiating the Bell-polygamma expressions. More generally,
+every derivative at zero becomes a convergent multiple-zeta value,
+whereas integration over one unit interval produces a regular
+Laurent coefficient. This provides a direct functional connection
+between the two types of constants.
+
+On $\re z>-(m-1)$ the derivative also has the kernel
+\begin{equation}\label{eq:Cderivative_kernel}
+ \CM_m^{(r)}(z)=(-1)^{r+1}m!
+  \int_0^1y^z(-\log y)^r
+       \frac{\Li_{\{1\}^{m-1}}(y)}{y(1-y)}\,dy.
+\end{equation}
+The powers of $\log y$ therefore represent spatial differentiation,
+while the logarithmic Mellin powers in \eqref{eq:alllaurent}
+represent spectral differentiation.
+
+The Gamma recurrence also supplies the exact discrete relation
+\begin{equation}\label{eq:Cshift}
+ \CM_m(x+1)-\CM_m(x)=\frac m x\CM_{m-1}(x+1),\qquad m\ge1.
+\end{equation}
+It follows by taking coefficients in
+$G(x+1,t)=xG(x,t)/(x-t)$. The identity holds meromorphically;
+removable values at exceptional points are obtained by continuation.
+At positive integers it is the classical complete-harmonic recurrence.
+
+\subsection{Antiderivatives in the spectral parameter}
+
+The normalized germ $\Lambda_d$ from Corollary~\ref{cor:allcoefficients}
+has a convergent primitive as well. On $\re u>-1$, define
+\begin{equation}\label{eq:spectral_primitive}
+ \mathfrak S_d(u)=\frac1{d!}\int_0^\infty\frac{V_d(v)}v
+   \frac{(u\log v-1)v^u+1}{(\log v)^2}\,dv.
+\end{equation}
+At $v=1$ the quotient is assigned its limiting value $u^2/2$.
+The same estimates as in Proposition~\ref{prop:mellin} justify
+parameter differentiation and give
+\begin{equation}\label{eq:spectral_primitive_derivative}
+ \mathfrak S_d(0)=0,\qquad \mathfrak S_d'(u)=\Lambda_d(u).
+\end{equation}
+Indeed the quotient equals $\int_0^u wv^w\,dw$ on any path in the
+half-plane. This identity integrates the completed spectral germ,
+so its pole subtraction and integration constant are explicit.
+
+For comparison, the ordinary Hurwitz Stieltjes constants are defined
+by $\zeta(1+u,a)=u^{-1}+\sum(-1)^j\gamma_j(a)u^j/j!$,
+with $\re a>0$. Their classical parameter calculus follows at once
+from $\partial_a\zeta(s,a)=-s\zeta(s+1,a)$ \cite{DLMF}:
+\begin{align}
+ \partial_a\gamma_0(a)&=-\zeta(2,a),\\
+ \partial_a\gamma_j(a)&=(-1)^{j+1}
+     \{\partial_s^j\zeta(2,a)+j\partial_s^{j-1}\zeta(2,a)\},
+       \qquad j\ge1,\label{eq:hurwitz_derivative}\\
+ \int\gamma_j(a)\,da
+     &=\frac{(-1)^{j+1}}{j+1}
+                       \partial_s^{j+1}\zeta(0,a)+\text{constant}.
+ \label{eq:hurwitz_primitive}
+\end{align}
+For the last identity expand
+$\partial_a\zeta(u,a)=-u\zeta(1+u,a)$ at $u=0$.
+These familiar formulas provide a sign and factorial control when
+translating between ordinary Hurwitz constants and the strict-depth
+constants used in the new finite-part identities.
+
+% END sections/06_calculus
+
+% BEGIN sections/07_tail_rank
+% Standalone research fragment for the parent article; no preamble.
+% Source: incoming Quartic_Tails_and_Complex_Resolvents, sections/mixed_even_tails.tex
+% and sections/mixed_even_tail_generators.tex, source commit
+% b7667ae40a2957eed9a53d8559d53a3ee20dd1c1.
+\section{Finite reconstruction of every two-tail moment}
+\label{tr:section}
+
+The two-tail report proves a finite formula and a fixed coordinate space
+for every centered moment, but asks whether a uniformly specified finite
+prefix of the moments generates that space. We answer this question with
+an explicit bound and a rational reconstruction matrix. For equal tail
+orders the first $q$ moments suffice, with an exact determinant. For
+unequal orders the bound below is deliberately not asserted to be optimal.
+All ranks in this section are ranks of matrices over $\mathbb Q$; the
+argument makes no assertion of arithmetic independence of zeta values.
+
+The exact target is Question~8, ``Finite generation by initial moments'',
+in \emph{Quartic Digamma Bridges, Harmonic Tail Moments, and Complex Resolvent Powers}. Its source theorem is
+``All even orders and all centered moments'', with source label
+\texttt{tail:all-moments}; the inverse transform has source label
+\texttt{tail:inverse-transform}. The archive's Git blob is recorded
+in the provenance manifest; it was inspected at the repository
+commit printed on the title page.
+The source formulas are reproduced below to fix every normalization;
+the new argument begins with the finite-prefix theorem.
+
+Let $2\le p\le q$ be even, $b=q/2$, and
+\[
+ A_p(n)=\zeta(p)-H_n^{(p)},\qquad
+ D_r=D_{p,q}(-2r),\qquad
+ D_{p,q}(s)=\sum_{n\ge0}A_p(n)A_q(n)(n+1/2)^{-s}.
+\]
+Outside its initial convergence half-plane, $D_{p,q}$ denotes its
+meromorphic continuation. Every displayed $D_r$ is regular. The source
+two-tail theorem gives blocks $C_j=C_{p,q}(2j+1)$ as follows. Put $W=p+q$
+and use the decreasing-index convention
+\[
+ \zeta(a,b)=\sum_{n>k\ge1}n^{-a}k^{-b},\qquad a\ge2,\quad b\ge1.
+\]
+For a positive odd integer $d$, let
+\begin{align}
+ U_{p,q}(d)&=
+ \begin{cases}
+ \zeta(p,q-d)+\frac12\zeta(W-d),&d<q,\\[4pt]
+ \displaystyle\sum_{h=1}^{\min\{(d-q+1)/2,p/2-1\}}
+ \frac{\binom{d-q+1}{2h}}{d-q+1}B_{d-q+1-2h}\zeta(p-2h),&d>q,
+ \end{cases}\label{tr:U}\\
+ R_{p,q}(d)&=
+ \begin{cases}
+ 0,&d<W-1,\\[3pt]
+ \displaystyle-\frac{B_{d-W+1}}2
+ \left\{\frac1p\binom{d-q}{p-1}+\frac1q\binom{d-p}{q-1}\right\},
+ &d\ge W-1,
+ \end{cases}\label{tr:R}\\
+ C_j&=U_{p,q}(2j+1)+U_{q,p}(2j+1)+R_{p,q}(2j+1).
+ \label{tr:Cdefinition}
+\end{align}
+Every sum is finite; the two alternatives in \eqref{tr:U} exhaust the
+possibilities because $q$ is even. These blocks satisfy
+\begin{align}
+ D_r&=\sum_{j=0}^r T_{rj}C_j,
+ &T_{rj}&=\frac{\binom{2r}{2j}}{2j+1}B_{2r-2j}(1/2),
+ \label{tr:forward}\\
+ C_j&=\sum_{r=0}^j B_{jr}D_r,
+ &B_{jr}&=\binom{2j+1}{2r}2^{-2(j-r)}.
+ \label{tr:backward}
+\end{align}
+The $B$ notation here denotes this finite matrix only when it has two
+indices; $B_n(x)$ and $B_n$ are Bernoulli polynomials and numbers.
+
+\paragraph{Why the inherited finite formula applies.}
+For completeness, its finite-sum mechanism is short. The centered
+Hurwitz expansion of $A_p(n)$ contains only the powers
+$(n+1/2)^{1-p-2h}$. Hence $A_pA_q$ contains only even inverse powers;
+asymptotic subtraction proves regularity of $D_{p,q}$ at $-2r$.
+All removed nonnegative even powers have continued sum zero, since
+$\zeta(-2h,1/2)=0$. Let $\operatorname{CT}_N$ mean the constant
+coefficient at positive infinity and put
+\[
+ S_r(N)=\sum_{n=0}^{N-1}(n+1/2)^{2r}
+       =\sum_{j=0}^r T_{rj}N^{2j+1}.
+\]
+This odd polynomial has no constant term. Finite summation by parts,
+using $A_p(k-1)=A_p(k)+k^{-p}$, gives
+\[
+ D_r=\sum_{j=0}^rT_{rj}\operatorname{CT}_N E_{p,q,2j+1}(N),
+\]
+where
+\[
+ E_{p,q,d}(N)=N^dA_p(N)A_q(N)
+ +\sum_{k=1}^N k^{d-q}A_p(k)
+ +\sum_{k=1}^N k^{d-p}A_q(k)
+ +\sum_{k=1}^N k^{d-W}.
+\]
+If $d<q$, the first ordered sum converges to $\zeta(p,q-d)$.
+If $d>q$, write $m=d-q$ and
+$F_m(N)=(B_{m+1}(N+1)-B_{m+1})/(m+1)$. The exact identity
+\[
+ \sum_{k=1}^Nk^mA_p(k)
+ =A_p(N)F_m(N)+\sum_{\ell=1}^N\frac{F_m(\ell-1)}{\ell^p}
+\]
+reduces its constant term to the Bernoulli sum in \eqref{tr:U}.
+The half-leading Faulhaber terms leave precisely one half of
+$\zeta(W-d)$ for each convergent ordered block. At $d=W-1$ their
+two $-\gamma/2$ constants cancel the final power sum's $+\gamma$.
+The remaining three boundary products give exactly \eqref{tr:R},
+by the uncentered Hurwitz expansion. This proves
+$\operatorname{CT}_NE_{p,q,d}=C_{p,q}(d)$ and explains the fixed
+finite-part normalization in \eqref{tr:forward}. Finally the ordinary
+Bernoulli generating identity proves \eqref{tr:backward}. These are
+inherited identities; no new priority is claimed for their derivation.
+
+The source coordinate list is
+\begin{equation}\label{tr:coordinates}
+ C_0,\ldots,C_{b-1},\quad Z_0,\ldots,Z_{b-1},
+ \qquad Z_k=\zeta(2k),\quad Z_0=-\frac12.
+\end{equation}
+It has $q$ specified entries. Using $Z_0$ instead of $1$ is an invertible
+rational change of coordinates. For $j\ge b$ the source block formula
+is equivalently
+\begin{equation}\label{tr:A}
+ C_j=\sum_{k=0}^{b-1}a_{jk}Z_k,
+\end{equation}
+where, with $d=2j+1$ and $e=d-p-q+2k+1$,
+\begin{equation}\label{tr:Aentries}
+ a_{jk}=
+ \begin{cases}
+ B_e\left\{
+ \displaystyle\frac{\binom{d-q+1}{p-2k}}{d-q+1}
+ +\displaystyle\frac{\binom{d-p+1}{q-2k}}{d-p+1}
+ \right\},& e\ge0,\\[5pt]
+ 0,&e<0.
+ \end{cases}
+\end{equation}
+In this formula a binomial term is omitted unless its lower index is at
+least $2$ and no greater than its upper index. This qualification matters:
+including a spurious lower index $0$ changes the formula. The rational
+block is exactly the $k=0$ term, since $Z_0=-1/2$ and
+$\binom{u}{v}/u=\binom{u-1}{v-1}/v$.
+
+\begin{theorem}[A prescribed finite prefix]\label{tr:main}
+If $p<q$, put
+\begin{equation}\label{tr:N}
+ N=\frac{q(q-p)}2+\frac q2+p-1.
+\end{equation}
+The matrix
+\[
+ M=(a_{jk})_{b\le j\le N,\ 0\le k<b}
+\]
+has column rank $b$ over $\mathbb Q$. Consequently
+\begin{equation}\label{tr:span}
+ \operatorname{span}_{\mathbb Q}\{D_0,D_1,\ldots\}
+ =\operatorname{span}_{\mathbb Q}\{D_0,\ldots,D_N\}
+ =\operatorname{span}_{\mathbb Q}
+     \{C_0,\ldots,C_{b-1},Z_0,\ldots,Z_{b-1}\}.
+\end{equation}
+These are equalities of spans of actual numbers, regardless of any
+linear dependence among those numbers. The coefficient system on the
+$q$ formal labels in \eqref{tr:coordinates} has rank exactly $q$.
+For $p=q$, all conclusions hold with $N=q-1$.
+\end{theorem}
+
+The pair-dependent bound is at most $q(q-1)/2+1$, so the first
+$q(q-1)/2+2$ moments always suffice. The sharper diagonal assertion is
+proved separately below. The existence theorem answers the source
+finite-prefix question; it does not establish that the first $q$ moments
+always suffice when $p<q$.
+
+\subsection{A differential description of the coefficient columns}
+
+Write $h(t)=\coth(t/2)$ and $m=q-p$. The source generator, or a direct
+termwise beta integration of the Bernoulli series, gives column functions
+\begin{equation}\label{tr:column}
+ \begin{split}
+ f_k(t)={}&
+ \frac{1}{2(p-2k)!(q-1)!}
+       \int_0^t u^{p-2k}(t-u)^{q-1}h(u)\,du\\
+ &+\frac{1}{2(q-2k)!(p-1)!}
+       \int_0^t u^{q-2k}(t-u)^{p-1}h(u)\,du.
+ \end{split}
+\end{equation}
+The first summand is omitted if $p-2k<2$. Both integrands otherwise
+have a removable endpoint singularity. Their Taylor series converge
+for $|t|<2\pi$. The coefficient of $t^{2j+1}/(2j+1)!$ in $f_k$ is
+$a_{jk}$ for every $j\ge b$; lower coefficients will not be used.
+This follows from $h(u)=2\sum_{n\ge0}B_{2n}u^{2n-1}/(2n)!$ and
+Euler's beta integral.
+
+For a vector $v=(v_0,\ldots,v_{b-1})$ over $\mathbb C$, put
+\[
+ f_v=\sum_{k=0}^{b-1}v_kf_k,
+ \qquad Q(t)=\sum_{k=0}^{b-1}v_k\frac{t^{q-2k}}{(q-2k)!}.
+\]
+Thus $Q$ is an arbitrary even polynomial of degree at most $q$ with
+$Q(0)=0$. Differentiating the convolution integrals $q$ times gives
+\begin{equation}\label{tr:operator}
+ 2f_v^{(q)}(t)
+ =\left(Q^{(m)}(t)-Q^{(m)}(0)\right)h(t)
+       +(Q(t)h(t))^{(m)}
+ =:\mathcal L_Q(t).
+\end{equation}
+The subtraction $Q^{(m)}(0)$ enforces the omitted zero lower index in
+\eqref{tr:Aentries}. Each side is an odd function holomorphic at zero.
+
+\begin{lemma}[A finite jet forces the polynomial to vanish]
+\label{tr:zerobound}
+Suppose $m=q-p>0$ and
+\[
+ \operatorname{ord}_{t=0}\mathcal L_Q\ge2N+3-q
+\]
+with $N$ as in \eqref{tr:N}. Then $Q=0$.
+\end{lemma}
+
+\begin{proof}
+Set $y=e^t$. For $r\ge1$, direct differentiation shows that
+$h^{(r)}(t)$ has the form $P_r(y)/(y-1)^{r+1}$, where $P_r$ is a
+polynomial of degree at most $r$, divisible by $y$. Indeed it is true
+for $h'=-2y/(y-1)^2$, and application of $y\,d/dy$ preserves the
+asserted form. Also $h=(y+1)/(y-1)$.
+
+It follows by the product rule that
+\[
+ E(t)=(e^t-1)^{m+1}\mathcal L_Q(t)
+     =\sum_{\nu=0}^{m+1}P_\nu^*(t)e^{\nu t}
+\]
+is an entire exponential polynomial. For $\nu=0$ and $\nu=m+1$,
+$\deg P_\nu^*\le p$; for $1\le\nu\le m$, the degrees are at most
+$q$. To verify the endpoint degree statement, all terms involving
+$h^{(r)}$ with $r\ge1$ have an $e^t$ factor and have exponential
+degree at most $m$, after the denominator is cleared. Only the
+$h$ term reaches exponent $0$ or $m+1$, and its polynomial factor
+is $2Q^{(m)}-Q^{(m)}(0)$, of degree at most $p$.
+
+Therefore $E$ is annihilated by the monic constant-coefficient
+differential operator
+\begin{equation}\label{tr:ode}
+ \mathcal P(\partial_t)=
+ \partial_t^{p+1}
+ \left(\prod_{\nu=1}^{m}(\partial_t-\nu)^{q+1}\right)
+ (\partial_t-(m+1))^{p+1}.
+\end{equation}
+Its order is
+$H=2(p+1)+m(q+1)$. A holomorphic solution of this equation whose
+first $H$ Taylor coefficients vanish is identically zero: the monic
+equation recursively expresses each higher derivative in the previous
+$H$ derivatives. On the other hand, the hypothesis gives
+\[
+ \operatorname{ord}_0E\ge(2N+3-q)+(m+1)
+    =2N+4-p=H.
+\]
+Hence $E=0$ and $\mathcal L_Q=0$ meromorphically.
+
+At every nonzero $\tau=2\pi i\ell$, $h(t)$ has residue $2$.
+Since the even integer $m$ is at least $2$, the pole of order $m+1$
+in $(Qh)^{(m)}$ has coefficient $2m!Q(\tau)$. The other term of
+$\mathcal L_Q$ has at most a simple pole. Thus $Q(\tau)=0$ for all
+nonzero integers $\ell$. A polynomial with infinitely many zeros is
+zero. This proves the lemma.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{tr:main} for unequal orders]
+If $Mv=0$, the odd Taylor coefficients of $f_v$ at degrees
+$q+1,q+3,\ldots,2N+1$ vanish. Differentiation $q$ times kills every
+lower coefficient; the next possible degree is $2N+3-q$.
+Equation~\eqref{tr:operator} and Lemma~\ref{tr:zerobound} give $Q=0$,
+hence $v=0$. The matrix has rank $b$ already over $\mathbb C$, and
+therefore over $\mathbb Q$.
+
+Its finite left inverse recovers all $Z_k$ from $C_b,\ldots,C_N$.
+Equations~\eqref{tr:forward}--\eqref{tr:backward} recover these blocks
+and the initial $C_0,\ldots,C_{b-1}$ from $D_0,\ldots,D_N$.
+All later blocks are given by \eqref{tr:A}; this proves all the span
+equalities. The early $b$ coefficient rows are the identity on the
+$C_0,\ldots,C_{b-1}$ labels, and the later rows have rank $b$ on
+the remaining labels. Thus the full formal rank is $2b=q$.
+\end{proof}
+
+\subsection{An explicit rational reconstruction matrix}
+
+The preceding proof is effective without a search for a nonsingular
+minor. Define
+\begin{equation}\label{tr:leftinverse}
+ L=(M^{\mathsf T}M)^{-1}M^{\mathsf T}
+   =\frac{\operatorname{adj}(M^{\mathsf T}M)M^{\mathsf T}}
+          {\det(M^{\mathsf T}M)}.
+\end{equation}
+Every entry is an explicitly specified rational number obtained from
+the finite Bernoulli formula. The denominator is nonzero because $M$
+has full column rank; equivalently its real Gram matrix is positive
+definite. If $V=(C_b,\ldots,C_N)^{\mathsf T}$, then
+\begin{equation}\label{tr:reconstruct}
+ (Z_0,\ldots,Z_{b-1})^{\mathsf T}=LV.
+\end{equation}
+Together with \eqref{tr:backward}, this is an explicit rational formula
+in the required prefix of actual moments. For any desired later $D_r$,
+insert \eqref{tr:reconstruct} into \eqref{tr:A} and then
+\eqref{tr:forward}. This is a terminating exact algorithm, including
+when the actual coordinate values satisfy unknown rational relations.
+
+One can also extract exactly $q$ specified moments from this bounded
+prefix. Form their formal coefficient rows $W_r\in\mathbb Q^q$ by
+\[
+ (W_r)_j=T_{rj}\quad(0\le j<b),\qquad
+ (W_r)_{b+k}=\sum_{j=b}^r T_{rj}a_{jk}\quad(0\le k<b),
+\]
+where a term with $j>r$ is zero. Scan $r=0,1,\ldots,N$, retaining a
+row exactly when it increases rational rank. The theorem proves that
+this deterministic finite procedure retains $q$ rows, with indices
+$r_1<\cdots<r_q\le N$. If $A_*$ is the matrix of those rows, then
+\[
+ D_r=W_rA_*^{-1}(D_{r_1},\ldots,D_{r_q})^{\mathsf T}
+\]
+for every $r\ge0$. This is an explicit basis-selection algorithm for
+the formal system, not a claim that its $q$ actual numbers form an
+arithmetically independent set.
+
+\subsection{Equal orders: an exact determinant and a shorter prefix}
+
+If $p=q=2b$, take the square late matrix with $b\le j\le2b-1$.
+Write $j=b+t$ with $0\le t<b$. Formula~\eqref{tr:Aentries} is zero
+whenever $t+k<b-1$, and on the antidiagonal $t+k=b-1$ it equals
+$1/(t+1)$. Therefore
+\begin{equation}\label{tr:diagonal-det}
+ \det M=\frac{(-1)^{b(b-1)/2}}{b!}\ne0.
+\end{equation}
+This proves the asserted $N=q-1$. It also gives a particularly simple
+reconstruction, for $t=0,\ldots,b-1$:
+\begin{equation}\label{tr:diagonal-recursion}
+ Z_{b-1-t}=(t+1)\left(
+ C_{b+t}-\sum_{k=b-t}^{b-1}a_{b+t,k}Z_k\right).
+\end{equation}
+The sum is empty at $t=0$. In the coordinate ordering
+\eqref{tr:coordinates}, the determinant of the complete first-$q$
+moment matrix is
+\begin{equation}\label{tr:complete-det}
+ \frac{(-1)^{b(b-1)/2}}{b!\,(2q-1)!!}.
+\end{equation}
+Here the extra denominator is the product of the diagonal entries
+$1/(2r+1)$ of the forward Bernoulli transform.
+
+\subsection{A new concrete mixed example: orders two and six}
+
+For $(p,q)=(2,6)$, the general theorem supplies a longer guaranteed
+prefix, but direct exact elimination proves that the first six moments
+already suffice. The last three block rows are
+\[
+ \begin{pmatrix}C_3\\C_4\\C_5\end{pmatrix}
+ =\begin{pmatrix}
+  2/3&5/12&-1/12\\
+  5/6&-7/24&1/12\\
+  -47/60&1/2&-3/20
+ \end{pmatrix}
+ \begin{pmatrix}-1/2\\\zeta(2)\\\zeta(4)\end{pmatrix},
+\]
+whose determinant is $61/5760$. Its inverse is
+\begin{equation}\label{tr:26inverse}
+ \frac1{61}
+ \begin{pmatrix}
+ 12&120&60\\344&-952&-720\\1084&-3800&-3120
+ \end{pmatrix}.
+\end{equation}
+For example, the rational row becomes the exact identity
+\begin{equation}\label{tr:26rational}
+ 61D_0+8204D_1+116000D_2+370048D_3
+      +303360D_4+56320D_5=-\frac{7808}{3}.
+\end{equation}
+It has the ordinary absolutely convergent interpretation
+\begin{equation}\label{tr:26ordinary}
+ \begin{split}
+ \sum_{n\ge0}\bigg\{&P(x_n)A_2(n)A_6(n)
+   -11264x_n^4-\frac{136960}{3}x_n^2-\frac{88064}{5}\bigg\}
+   =-\frac{7808}{3},\\
+ P(x)={}&61+8204x^2+116000x^4+370048x^6
+                +303360x^8+56320x^{10},\qquad x_n=n+\frac12.
+ \end{split}
+\end{equation}
+Indeed $A_2(n)A_6(n)=\frac15x_n^{-6}
+-\frac4{15}x_n^{-8}+\frac{87}{200}x_n^{-10}+O(x_n^{-12})$,
+so the displayed bracket is $O(n^{-2})$. Also
+$A_2(n)A_6(n)=\psi'(n+1)\psi^{(5)}(n+1)/120$, giving a
+polygamma identity with exactly the same normalization.
+
+\paragraph{What is still open.}
+The first-$q$ square coefficient matrix is nonsingular in every
+unequal pair checked by exact rational arithmetic through $q=24$.
+This is finite evidence, not a proof for all $p,q$. The general
+theorem gives an explicit finite prefix and an exact rational inverse
+without assuming that stronger assertion. It also leaves untouched
+the arithmetic dimension of the actual number space: formal rank $q$
+is compatible with unknown rational relations among its zeta coordinates.
+
+% END sections/07_tail_rank
+
+% BEGIN sections/08_audit
+\section{Prior art, coefficient conventions, and the source audit}
+\label{sec:normalizer-prior-art-audit}
+
+\subsection{Established ingredients and the attribution boundary}
+
+The normalized Gamma generator is closely connected with the
+classical Roman harmonic numbers.  In the notation of
+Sesma~\cite[Proposition~3(a), equation~(49)]{Sesma},
+\begin{equation}
+ \frac{n!}{(1-t)_n}=\sum_{m\geq0}c_n^{(m)}t^m
+       =\frac{\Gamma(1-t)\Gamma(n+1)}{\Gamma(n+1-t)}.
+ \label{eq:audit-roman-generator}
+\end{equation}
+Consequently $\mathcal C_m(n+1)/m!=c_n^{(m)}$ is the complete harmonic
+star sum with $m$ unit indices.  The complete harmonic-polynomial
+formula and the beta-logarithmic integral are also recorded in
+\cite[equations~(29)--(30)]{Sesma}; the relation of negative Roman
+degrees to strict harmonic sums appears in equations~(24) and~(26).
+The meromorphic functions $\mathcal C_m(x)$ used here are therefore natural
+continuations of established harmonic Bell polynomials.  Their
+generator and their positive-integer specialization should not
+be presented as newly discovered objects.
+
+The first ordinary-integral case is likewise known.
+Coffey~\cite[Proposition~3(b), equation~(1.19)]{Coffey} gives
+\begin{equation}
+ \gamma_1=\zeta(2)+\int_0^1
+       \left(\gamma\psi(x)
+          +\frac{\psi(x)^2-\psi'(x)}{2}\right)\,dx.
+ \label{eq:audit-coffey-first-case}
+\end{equation}
+Since $\mathcal C_2=(\psi+\gamma)^2+\zeta(2)-\psi'$, this is exactly
+\begin{equation}
+ \int_0^1 \mathcal C_2(x)\,dx
+       =\gamma^2-\zeta(2)+2\gamma_1
+       =2(c_2-\lambda_1),
+ \label{eq:audit-coffey-normalized-case}
+\end{equation}
+where $c_k=[u^k]\Gamma(1+u)^{-1}$ and
+$\lambda_1=[u]\zeta(1+u)=-\gamma_1$.
+Coffey's Appendix~B also develops complex-degree Gamma derivatives
+and their Bell-polynomial and polygamma descriptions.
+
+Young's work on height-one multiple zeta functions establishes
+the reciprocal-Gamma singular Laurent data at $s=1$ and
+expressions for the first regular coefficient in terms of
+Bernoulli numbers of the second kind and multiple Hurwitz
+integrals~\cite{Young2023,Young2024,YoungLecture}.  It also relates
+strict-depth Laurent constants to Ramanujan sums of complete
+harmonic star sums.  In particular, the Cauchy-number series
+for the linear coefficient in this article is existing
+literature in equivalent notation.  To make the equivalence
+explicit, put
+\begin{equation}
+ \lambda_d=[u]\zeta(1+u,\{1\}^{d-1}),\qquad
+ a_n=\frac{1}{(n-1)!}\int_0^1(r)_n\,dr.
+ \label{eq:audit-lambda-and-cauchy}
+\end{equation}
+If $t/\log(1+t)=\sum_{n\geq0}b_nt^n$, then
+\begin{equation}
+ \frac{a_n}{n}=\sum_{k>n}|b_k|,\qquad
+ \sum_{n\geq1}\frac{a_n}{n^{d+2}}
+      =\sum_{k\geq1}|b_k|H_{k-1}^{(d+1)}.
+ \label{eq:audit-cauchy-equivalence}
+\end{equation}
+The first equality follows by comparing coefficients in
+\begin{equation}
+ \sum_{n\geq0}\frac{z^n}{n!}\int_0^1(r)_n\,dr
+   =\frac{-z}{(1-z)\log(1-z)}
+   =\frac{1-\sum_{k\geq1}|b_k|z^k}{1-z}.
+ \label{eq:audit-cauchy-generating-equivalence}
+\end{equation}
+Here $\sum_{k\geq1}|b_k|=1$, obtained by letting $z\uparrow1$
+in $-z/\log(1-z)=1-\sum_{k\geq1}|b_k|z^k$.
+The second equality in \eqref{eq:audit-cauchy-equivalence}
+then follows by Tonelli's theorem.  Thus
+\begin{equation}
+ \lambda_d=c_{d+1}+\sum_{n\geq1}\frac{a_n}{n^{d+2}}
+ \label{eq:audit-known-cauchy-coefficient}
+\end{equation}
+is precisely Young's coefficient formula after a change of
+Cauchy-number convention, rather than an independent new evaluation.
+
+The contribution developed here is the explicit residue organization
+needed for the finite-part problem: the scalar Gamma--Appell
+normalizer, its uniqueness up to constants, its finite decaying
+defect, and its comparison with the exact differential normalizer.
+The ordinary integral represents the established strict-depth
+coefficient in terms of Gamma and polygamma functions.
+These statements are proved directly in the article.  The source
+search supplies attribution for their ingredients; it does not
+establish worldwide priority for every possible reformulation.
+
+\subsection{A sign description in Young's 2024 paper}
+
+There is a specific convention issue worth correcting before the
+formulas are imported into a symbolic library.  In the standard
+Stieltjes convention,
+\begin{equation}
+ \zeta(1+u)=\frac1u+\gamma-\gamma_1u+O(u^2).
+ \label{eq:audit-standard-stieltjes-sign}
+\end{equation}
+Thus the literal linear coefficient is $-\gamma_1$.
+Young's earlier lecture explicitly defines the regular coefficients
+with the factors $(-1)^i/i!$ and, on its numbered slides~3 and~6,
+correctly identifies $-\gamma_1^{[d]}(1)$ as the linear
+coefficient~\cite{YoungLecture}.
+
+In \cite[equations~(4.1)--(4.2) and Corollary~3]{Young2024},
+the verbal description identifies the same signed Stieltjes
+constant with the literal linear coefficient.  With the explicit
+notation \eqref{eq:audit-lambda-and-cauchy}, the unambiguous
+translation of equation~(4.2) is
+\begin{equation}
+ \nu_{0,d}-\nu_{-1,d-1}=c_{d+1}-\lambda_d,
+ \label{eq:audit-young-sign-translation}
+\end{equation}
+where the two series in the source's notation are
+\begin{equation}
+ \nu_{0,d}=\sum_{n\geq2}\frac{(-1)^n}{n}
+                       \zeta(n,\{1\}^{d}),\qquad
+ \nu_{-1,d-1}=\sum_{n\geq2}\frac{(-1)^n}{n-1}
+                       \zeta(n,\{1\}^{d-1}).
+ \label{eq:audit-young-nu-definition}
+\end{equation}
+The second series is interpreted as its ordinary convergent
+alternating sum when $d=1$; the other cases here are absolutely
+convergent.  At depth one,
+\begin{equation}
+ \nu_{0,1}-\nu_{-1,0}-c_2=\gamma_1=-\lambda_1,
+ \label{eq:audit-depth-one-sign-control}
+\end{equation}
+which exhibits the sign directly.  The appropriate correction is
+to describe $\gamma_1^{[d]}(1)$ as the \emph{negative} of the
+linear coefficient, or to translate every formula consistently
+into the literal-coefficient notation $\lambda_d$.  The equations
+for the conventional signed constants need not be reversed.
+
+The finite-part convention is a separate issue.  In the reviewed
+quartic-tail and Barnes incoming articles, the quartic constants
+denoted $\theta$ and $\beta_1$ represent the same strict coefficient
+$[u]\zeta(1+u,1,1)$, and the finite parts use a cutoff in $x$
+itself.  No additional incompatibility between those conventions
+was established in the audit.  A change of cutoff coordinate,
+however, must be transported explicitly before two finite-part
+formulas are compared; a change of Laurent-coefficient sign must
+not be used to absorb such a coordinate change.
+
+% END sections/08_audit
+
+% BEGIN sections/09_questions
+\section{Further research questions and concrete next targets}
+\label{sec:questions}
+
+The following programme emphasizes exact identities and structural
+reduction. Its first two items sharpen source questions partially
+answered here; the subsequent items follow from the proved formulas.
+Numerical experiments may guide these questions, but their desired
+outputs are identities, rank theorems, and analytic proofs.
+
+\subsection{The first \texorpdfstring{$q$}{q} moments for unequal even orders}
+
+\begin{conjecture}[The optimal consecutive prefix]\label{conj:firstq}
+For all even $2\le p<q$, the square matrix
+\[
+ (a_{jk})_{q/2\le j\le q-1,\ 0\le k<q/2}
+\]
+is nonsingular over $\Q$. Equivalently, the first $q$ centered
+moments have the full formal rank $q$.
+\end{conjecture}
+
+The article proves a larger finite prefix for every pair and the
+conjectured prefix on the diagonal. Exact calculations verify the
+unequal assertion through $q=24$, but this is a finite test.
+A useful next proof would replace the general exponential-polynomial
+zero count by a sharper property of the restricted even-polynomial
+space in \eqref{tr:operator}. An explicit determinant formula would
+also explain the nontrivial rational numerators already visible for
+$(2,4)$ and $(2,6)$. A sign pattern alone would be insufficient unless
+it proves nonvanishing for every order.
+
+\subsection{Can the mixed fifth coordinate be eliminated?}
+
+Theorem~\ref{q5:main} singles out the holomorphic quantity $J'(1)$.
+The first unresolved question is whether it has an exact reduction
+to the height-one coefficients and ordinary zeta/Stieltjes constants
+already present in that theorem. It is not appropriate to declare a
+new independent constant merely because it appears in one reduction.
+Conversely, a small numerical integer relation would not establish
+its reducibility.
+
+A more algebraic version asks for a scalar polynomial in $\psi$
+whose coordinate finite part contains only a prescribed highest-depth
+coefficient and ordinary constants. The scalar Gamma--Appell theorem
+controls the nondecaying residue polynomial at infinity. Its explicit
+defects, starting at degree four, show why this statement alone does
+not settle all convergent lower-depth contributions. A promising
+next target is to classify the residue defects modulo discrete
+differences whose logarithmic sums reduce by finite harmonic algebra.
+
+\subsection{An all-degree classification of the mixed coordinates}
+
+The differential sequence $\CM_m$ has exactly one height-one residue
+word. The raw scalar power $\psi^m$ introduces products involving
+higher polygammas. At degree five the additional coordinate is represented
+by $\FP\int\psi(\psi')^2$. At degree six and beyond, one can ask:
+which differential monomials survive integration by parts after every
+finite endpoint constant is retained?
+
+A precise project is to grade monomials by
+$\operatorname{wt}(\psi^{(r)})=r+1$, quotient them by total
+derivatives, and compute the finite-dimensional residue-coordinate
+image at each weight. This must keep endpoint evaluation as part of
+the map: discarding a total derivative without its finite constant
+would produce a different problem. The desired result is a recursion
+for the surviving spectral words, with a proved coordinate count,
+rather than a list of fitted numerical bases.
+
+\subsection{Shifted and rational-cutoff Gamma normalizations}
+
+Replacing the base point $1$ by a parameter $a$ naturally produces
+$\Gamma(a-t)\Gamma(x)/(\Gamma(a)\Gamma(x-t))$ and differences
+of Hurwitz polygammas. The special base point in this article makes
+the origin residue exactly linear in $t$, which is responsible for
+the ordinary integrals at every degree $m\ge2$. For general $a$, a
+new subtraction is required.
+
+Find the canonical joint subtraction in $x$ and $t$, prove the
+resulting integral bridge, and express it in the ordered
+multiple-Hurwitz Laurent coordinates already developed in the
+incoming Barnes report. Rational $a$ should connect the resulting
+formulas with congruence-restricted harmonic sums and cyclotomic
+polylogarithms. The question is the exact compatibility of the
+normalizations, not just formal substitution in an unshifted formula.
+
+\subsection{Four tails and higher products}
+
+For products $\prod_{i=1}^k(\zeta(p_i)-H_n^{(p_i)})$ with even
+$p_i$ and even $k$, the centered even-power asymptotics persist.
+Finite summation by
+parts produces higher-depth convergent zeta coordinates. Determine a
+finite formal coordinate system and prove an effective initial-moment
+generation theorem for even $k\ge4$. Odd numbers of tails instead
+produce odd centered powers and can have poles at the target spectral
+values; their finite-part moments constitute a separate extension.
+The two-tail proof suggests a route
+through differential operators on products of $\coth(t/2)$, but
+higher pole multiplicities and overlaps of coordinate columns must
+be handled explicitly. Merely observing stabilization in low-order
+matrices would not prove a uniform theorem.
+
+\subsection{Exact primitives at algebraic or rational arguments}
+
+The functions $\mathfrak P_m$ provide explicit normally convergent
+logarithmic primitives on a slit plane. Evaluate their values at
+rational arguments and their reflection or multiplication combinations.
+One may seek reductions to Barnes multiple-Gamma functions, multiple
+Hurwitz derivatives, or cyclotomic polylogarithms. The removable values
+\eqref{eq:Cnegative} and the shift identity \eqref{eq:Cshift} supply
+exact boundary conditions. Any proposed primitive identity should
+match both its derivative and one normalization value; matching
+derivatives alone leaves an undetermined constant.
+
+\subsection{Higher Laurent jets and their functional relations}
+
+Equation~\eqref{eq:alllaurent} supplies every regular Laurent
+coefficient through a fixed logarithmic Mellin kernel. Determine
+which identities among those logarithmic moments arise from
+polylogarithmic functional equations, shuffle products, and the
+spectral primitive \eqref{eq:spectral_primitive}. A particularly
+concrete question is whether selected mixed derivatives in the
+sixth-power calculation can be expressed using only finitely many
+height-one jets plus a small collection of higher-depth germs.
+
+\subsection{Proof certificates and unresolved ladder identities}
+
+The finite harmonic identities in the fifth-power ledger are suitable
+for independent formal verification: only exact quasi-shuffle
+multiplication, the prefix rule, explicit low-weight reductions, and
+polynomial constant-term extraction are needed. The analytic layer
+can be separated into normal convergence, the contour remainder,
+and the Mellin continuation lemmas. This provides a manageable route
+to integrating proof certificates into ProveIt.
+
+The manuscript's remaining $S_6$ and revised $S_8$ ladder candidates
+continue to deserve exact functional-equation research. Their
+existing high-precision certificates should guide the search for
+an identity or an obstruction, while remaining explicitly distinct
+from a proof of equality. No result of this article changes their
+status.
+
+% END sections/09_questions
+
+% BEGIN sections/10_reproducibility
+\section{Verification, provenance, and integration}
+\label{sec:reproducibility}
+
+The accompanying archive is an editable research package. It contains
+this article in modular and single-file \LaTeX, the compiled PDF,
+the exact calculation scripts, numerical evaluators, their recorded
+JSON outputs, a build script, a checksum manifest, and proposed
+repository integration notes. The scripts require Python, SymPy, and
+mpmath; no network access or private data is needed to replay them.
+
+\subsection{What the calculations verify}
+
+The fifth-power exact replay checks 87 identities using finite harmonic
+quasi-shuffle algebra. They include all principal coefficients, the
+constant Laurent coefficients at zero, both finite residue-sum
+identities, their asymptotic constants, the nonlogarithmic sums,
+the spectral substitution, and every endpoint entry used in the
+integration by parts. These are symbolic finite identities for
+arbitrary cutoff $N$, together with explicitly stated classical
+multiple-zeta reductions; the computation does not infer the
+identities by sampling $N$.
+
+The tail reconstruction replay checks 1,582 exact assertions. These
+include the forward and inverse Bernoulli transforms, the agreement
+of the compact coefficient matrix with the inherited finite formula,
+the diagonal determinant, the displayed rational inverse, the
+orders-$(2,6)$ identity, and finite instances of the
+exponential-polynomial degree counts. It also verifies the first-$q$
+square matrix for all 78 even pairs $2\le p\le q\le24$. Those
+finite checks support the stronger conjecture but are not its proof.
+The all-pairs finite-prefix theorem rests on the differential and
+pole argument in Section~\ref{tr:section}.
+
+The independent Gamma-normalizer replay checks 202 exact assertions
+through degree eight and integer pole labels zero through eight,
+including the removable values and the first nonzero residues.
+Separate ordinary-integral computations for $m=2,\ldots,7$ use
+analytic Gamma coefficients on $[0,1]$ and the completed logarithmic
+Mellin kernel on $(0,\infty)$. The largest recorded absolute
+discrepancy is below $7.403\cdot10^{-58}$ at 70 working decimal
+digits. A local Taylor switch is changed independently to test
+cancellation handling. The scalar normalization has its own 94-check finite polynomial
+replay, including the inverse-Gamma finite-part convolution through
+degree ten. Together the four exact suites verify 1,965 assertions.
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.29\textwidth}>{\raggedright\arraybackslash}p{.29\textwidth}>{\raggedright\arraybackslash}p{.31\textwidth}@{}}
+\toprule
+Independent comparison & Finest recorded absolute discrepancy & Type \\
+\midrule
+Fifth-power finite part & $<3.83\cdot10^{-48}$ & Taylor-subtracted
+quadrature versus harmonic arithmetic with asymptotic tail \\[4pt]
+Mixed integral $I$ & $<1.02\cdot10^{-48}$ & The same two independent
+analytic representations \\[4pt]
+Orders-$(2,6)$ rational sum & $<2.40\cdot10^{-62}$ & Hurwitz-tail
+sum with separately derived centered tail \\[4pt]
+Gamma ordinary integrals & $<7.403\cdot10^{-58}$ & Bell/Gamma
+coefficients versus completed Mellin kernel \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+All entries in this table are floating-point diagnostics. They are
+not interval certificates and are not presented as proofs. In
+particular, the Gamma evaluator records a bound for its omitted
+analytic kernel tail, but that bound does not enclose quadrature,
+local Taylor truncation, or rounding error. The mathematical
+conclusions follow from the analytic and exact algebraic arguments
+in the text.
+
+\subsection{Source and editorial controls}
+
+The provenance manifest records the inspected repository commit,
+the source archive and relevant member hashes, and the external
+primary references. The main manuscript was checked for prior
+results before the new targets were selected. The audit does not
+purport to certify every page of the repository. In particular,
+the already proved Choi harmonic conjectures and the proved $S_4$
+identity are not rediscovered here, and $S_6$ and the revised $S_8$
+remain explicitly open.
+
+The integration notes propose where to place the new sections and
+how to update the three source questions. They also provide the
+precise Stieltjes sign translation, so an importer can retain the
+literal-coefficient notation consistently. No repository file has
+been silently altered, and the package is intended for review and
+integration through the project's normal process.
+
+The broader literature also contains harmonic-zeta Stieltjes
+families with different indexing conventions; see, for example,
+Karg\i n--Dil--Cenkci--Can \cite{Kargin}. All uses of such constants
+in future extensions should name the defining germ and its
+factorial and sign convention explicitly, as done here.
+
+% END sections/10_reproducibility
+
+% BEGIN references
+\begin{thebibliography}{99}
+\raggedright
+
+\bibitem{Repo}
+V. Reshetnikov, \emph{ProveIt}, GitHub repository, manuscript and
+incoming reports inspected at commit
+\texttt{b7667ae40a2957eed9a53d8559d53a3ee20dd1c1},
+11 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+Repository paths and file hashes are recorded in the accompanying
+\texttt{provenance/} directory.
+
+\bibitem{Quartic}
+\emph{Quartic Digamma Bridges, Harmonic Tail Moments, and Complex Resolvent Powers}, ProveIt incoming report,
+11 October 2026. Archive
+\texttt{ProveIt\_Quartic\_Tails\_Resolvents\_2026-10-11.zip},
+in \texttt{docs/incoming/} at the snapshot in \cite{Repo}.
+Principal source sections: \texttt{mixed\_even\_tails.tex},
+\texttt{mixed\_even\_tail\_generators.tex}, and
+\texttt{research\_questions.tex}.
+
+\bibitem{Barnes}
+\emph{Barnes Resolvents and Higher Harmonic Identities}, ProveIt incoming
+report, 11 October 2026, in the incoming directory at the snapshot
+in \cite{Repo}. Used for the height-one Laurent normalization and
+the comparison of quartic finite-part conventions.
+
+\bibitem{Young2023}
+P. T. Young, Global series for height 1 multiple zeta functions,
+\emph{European Journal of Mathematics} \textbf{9} (2023), article 99.
+\url{https://doi.org/10.1007/s40879-023-00695-0}.
+The publisher's abstract and metadata were inspected; the full
+subscription article was not obtained. The public lecture
+\cite{YoungLecture} was read in full.
+
+\bibitem{Young2024}
+P. T. Young, Series of height one multiple zeta functions,
+\emph{Integers} \textbf{24} (2024), A43.
+\url{https://doi.org/10.5281/zenodo.11221606}.
+Public full text: \url{https://math.colgate.edu/~integers/y43/y43.pdf}.
+
+\bibitem{YoungLecture}
+P. T. Young, \emph{Global series for height 1 multiple zeta functions},
+public lecture slides, 4 July 2023, 17 numbered slides with overlays.
+\url{https://iecl.univ-lorraine.fr/wp-content/uploads/2023/07/tuesday-12-young-p.pdf}.
+The Laurent convention occurs on numbered slides 3 and 6; complete
+harmonic star sums and their Ramanujan sums occur on slides 16 and 17.
+
+\bibitem{Sesma}
+J. Sesma, The Roman harmonic numbers revisited,
+\emph{Journal of Number Theory} \textbf{180} (2017), 544--565.
+\url{https://doi.org/10.1016/j.jnt.2017.05.009}.
+Public preprint: \url{https://arxiv.org/abs/1702.03718}.
+
+\bibitem{Coffey}
+M. W. Coffey, Series representations of the Riemann and Hurwitz zeta
+functions and series and integral representations of the first
+Stieltjes constant, arXiv:1106.5146, 2011.
+\url{https://arxiv.org/abs/1106.5146}.
+
+\bibitem{Kargin}
+L. Karg\i n, A. Dil, M. Cenkci, and M. Can,
+On the Stieltjes constants with respect to harmonic zeta functions,
+\emph{Journal of Mathematical Analysis and Applications} (2023),
+article 127302.
+\url{https://doi.org/10.1016/j.jmaa.2023.127302}.
+Public preprint: \url{https://arxiv.org/abs/2304.03517}.
+
+\bibitem{DLMF}
+NIST Digital Library of Mathematical Functions,
+Sections 5.7 (Gamma series), 5.11 (asymptotics), 5.12 (beta integrals),
+5.15 (polygamma functions), and 25.11 (Hurwitz zeta function).
+\url{https://dlmf.nist.gov/5.7},
+\url{https://dlmf.nist.gov/5.11},
+\url{https://dlmf.nist.gov/5.12},
+\url{https://dlmf.nist.gov/5.15},
+\url{https://dlmf.nist.gov/25.11}.
+Accessed 11 October 2026.
+
+\end{thebibliography}
+
+% END references
+
+\end{document}

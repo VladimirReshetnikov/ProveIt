@@ -1,0 +1,80 @@
+\begin{lemma}[Closed asymptotic residue polynomial]
+\label{powers:lem:closed-residue}
+For an integer \(k\ge0\), define
+\[
+ R_k(L)=\Res_{t=0}\bigl(L-\pi\cot(\pi t)\bigr)^k.
+\]
+Then
+\begin{equation}
+ \boxed{\displaystyle
+ R_k(L)=-\frac{(L+i\pi)^k-(L-i\pi)^k}{2i\pi}.}
+ \label{powers:eq:closed-residue}
+\end{equation}
+For \(k\ge1\), if \(R_k'(L)=\sum_{j\ge0}a_{k,j}L^j\), the
+ordinary Stieltjes contribution is the explicit finite expression
+\begin{equation}
+ \boxed{\displaystyle
+ -\sum_{j\ge0}a_{k,j}\gamma_{j+1}
+ =k\sum_{m=0}^{\lfloor(k-2)/2\rfloor}
+       (-1)^m\binom{k-1}{2m+1}\pi^{2m}\gamma_{k-2m-1}.}
+ \label{powers:eq:closed-Stieltjes}
+\end{equation}
+The right side is understood as zero for \(k=1\). Here
+\(\zeta(1+s)=s^{-1}+\sum_{j\ge0}(-1)^j\gamma_j s^j/j!\).
+\end{lemma}
+
+\begin{proof}
+Put \(f(t)=L-\pi\cot(\pi t)\). The elementary differential
+identity
+\[
+ f'(t)=(f(t)-L)^2+\pi^2
+\]
+and the zero residue of a meromorphic derivative give, for \(k\ge2\),
+\[
+ 0=\frac1{k-1}\Res_{t=0}\frac{\dd}{\dd t}f(t)^{k-1}
+   =R_k(L)-2LR_{k-1}(L)+(L^2+\pi^2)R_{k-2}(L).
+\]
+Since \(R_0=0\) and \(R_1=-1\), solving this recurrence with
+characteristic roots \(L\pm i\pi\) proves
+\eqref{powers:eq:closed-residue}. Expanding its numerator yields
+\[
+ R_k(L)=-\sum_{m=0}^{\lfloor(k-1)/2\rfloor}
+       (-1)^m\binom{k}{2m+1}\pi^{2m}L^{k-2m-1}.
+\]
+On differentiating in \(L\), the possible term with
+\(k-2m-1=0\) vanishes. Use
+\((k-2m-1)\binom{k}{2m+1}=k\binom{k-1}{2m+1}\).
+This gives \eqref{powers:eq:closed-Stieltjes}.
+\end{proof}
+
+To see directly why this finite expression is the Stieltjes term,
+suppose the residue difference satisfies the previously established
+asymptotic formula
+\[
+ r_k(n)-r_k(n-1)
+   =\frac{R_k'(\log n)}n
+          +O\!\left(\frac{(1+\log n)^M}{n^2}\right).
+\]
+For \(D_k(s)=\sum_{n\ge1}(r_k(n)-r_k(n-1))n^{-s}\), subtraction
+therefore gives
+\[
+ D_k(s)=\sum_{j\ge0}a_{k,j}(-1)^j\zeta^{(j)}(1+s)
+ +\sum_{n\ge1}
+   \left(r_k(n)-r_k(n-1)-\frac{R_k'(\log n)}n\right)n^{-s}.
+\]
+The second series and its first spectral derivative converge normally
+near \(s=0\). Since
+\([s](-1)^j\zeta^{(j)}(1+s)=-\gamma_{j+1}\), it follows that
+\begin{align}
+ [s]D_k(s)
+ ={}&k\sum_{m=0}^{\lfloor(k-2)/2\rfloor}
+       (-1)^m\binom{k-1}{2m+1}\pi^{2m}\gamma_{k-2m-1}
+       \notag\\
+ &-\sum_{n\ge1}
+   \left(r_k(n)-r_k(n-1)-\frac{R_k'(\log n)}n\right)\log n.
+ \label{powers:eq:closed-Dlinear}
+\end{align}
+The final sum is absolutely convergent. For example, the finite
+Stieltjes terms at powers four and five are respectively
+\(12\gamma_3-24\zeta(2)\gamma_1\) and
+\(20\gamma_4-120\zeta(2)\gamma_2\).

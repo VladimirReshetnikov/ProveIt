@@ -1,0 +1,147 @@
+\section{Prior art, coefficient conventions, and the source audit}
+\label{sec:normalizer-prior-art-audit}
+
+\subsection{Established ingredients and the attribution boundary}
+
+The normalized Gamma generator is closely connected with the
+classical Roman harmonic numbers.  In the notation of
+Sesma~\cite[Proposition~3(a), equation~(49)]{Sesma},
+\begin{equation}
+ \frac{n!}{(1-t)_n}=\sum_{m\geq0}c_n^{(m)}t^m
+       =\frac{\Gamma(1-t)\Gamma(n+1)}{\Gamma(n+1-t)}.
+ \label{eq:audit-roman-generator}
+\end{equation}
+Consequently $\mathcal C_m(n+1)/m!=c_n^{(m)}$ is the complete harmonic
+star sum with $m$ unit indices.  The complete harmonic-polynomial
+formula and the beta-logarithmic integral are also recorded in
+\cite[equations~(29)--(30)]{Sesma}; the relation of negative Roman
+degrees to strict harmonic sums appears in equations~(24) and~(26).
+The meromorphic functions $\mathcal C_m(x)$ used here are therefore natural
+continuations of established harmonic Bell polynomials.  Their
+generator and their positive-integer specialization should not
+be presented as newly discovered objects.
+
+The first ordinary-integral case is likewise known.
+Coffey~\cite[Proposition~3(b), equation~(1.19)]{Coffey} gives
+\begin{equation}
+ \gamma_1=\zeta(2)+\int_0^1
+       \left(\gamma\psi(x)
+          +\frac{\psi(x)^2-\psi'(x)}{2}\right)\,dx.
+ \label{eq:audit-coffey-first-case}
+\end{equation}
+Since $\mathcal C_2=(\psi+\gamma)^2+\zeta(2)-\psi'$, this is exactly
+\begin{equation}
+ \int_0^1 \mathcal C_2(x)\,dx
+       =\gamma^2-\zeta(2)+2\gamma_1
+       =2(c_2-\lambda_1),
+ \label{eq:audit-coffey-normalized-case}
+\end{equation}
+where $c_k=[u^k]\Gamma(1+u)^{-1}$ and
+$\lambda_1=[u]\zeta(1+u)=-\gamma_1$.
+Coffey's Appendix~B also develops complex-degree Gamma derivatives
+and their Bell-polynomial and polygamma descriptions.
+
+Young's work on height-one multiple zeta functions establishes
+the reciprocal-Gamma singular Laurent data at $s=1$ and
+expressions for the first regular coefficient in terms of
+Bernoulli numbers of the second kind and multiple Hurwitz
+integrals~\cite{Young2023,Young2024,YoungLecture}.  It also relates
+strict-depth Laurent constants to Ramanujan sums of complete
+harmonic star sums.  In particular, the Cauchy-number series
+for the linear coefficient in this article is existing
+literature in equivalent notation.  To make the equivalence
+explicit, put
+\begin{equation}
+ \lambda_d=[u]\zeta(1+u,\{1\}^{d-1}),\qquad
+ a_n=\frac{1}{(n-1)!}\int_0^1(r)_n\,dr.
+ \label{eq:audit-lambda-and-cauchy}
+\end{equation}
+If $t/\log(1+t)=\sum_{n\geq0}b_nt^n$, then
+\begin{equation}
+ \frac{a_n}{n}=\sum_{k>n}|b_k|,\qquad
+ \sum_{n\geq1}\frac{a_n}{n^{d+2}}
+      =\sum_{k\geq1}|b_k|H_{k-1}^{(d+1)}.
+ \label{eq:audit-cauchy-equivalence}
+\end{equation}
+The first equality follows by comparing coefficients in
+\begin{equation}
+ \sum_{n\geq0}\frac{z^n}{n!}\int_0^1(r)_n\,dr
+   =\frac{-z}{(1-z)\log(1-z)}
+   =\frac{1-\sum_{k\geq1}|b_k|z^k}{1-z}.
+ \label{eq:audit-cauchy-generating-equivalence}
+\end{equation}
+Here $\sum_{k\geq1}|b_k|=1$, obtained by letting $z\uparrow1$
+in $-z/\log(1-z)=1-\sum_{k\geq1}|b_k|z^k$.
+The second equality in \eqref{eq:audit-cauchy-equivalence}
+then follows by Tonelli's theorem.  Thus
+\begin{equation}
+ \lambda_d=c_{d+1}+\sum_{n\geq1}\frac{a_n}{n^{d+2}}
+ \label{eq:audit-known-cauchy-coefficient}
+\end{equation}
+is precisely Young's coefficient formula after a change of
+Cauchy-number convention, rather than an independent new evaluation.
+
+The contribution developed here is the explicit residue organization
+needed for the finite-part problem: the scalar Gamma--Appell
+normalizer, its uniqueness up to constants, its finite decaying
+defect, and its comparison with the exact differential normalizer.
+The ordinary integral represents the established strict-depth
+coefficient in terms of Gamma and polygamma functions.
+These statements are proved directly in the article.  The source
+search supplies attribution for their ingredients; it does not
+establish worldwide priority for every possible reformulation.
+
+\subsection{A sign description in Young's 2024 paper}
+
+There is a specific convention issue worth correcting before the
+formulas are imported into a symbolic library.  In the standard
+Stieltjes convention,
+\begin{equation}
+ \zeta(1+u)=\frac1u+\gamma-\gamma_1u+O(u^2).
+ \label{eq:audit-standard-stieltjes-sign}
+\end{equation}
+Thus the literal linear coefficient is $-\gamma_1$.
+Young's earlier lecture explicitly defines the regular coefficients
+with the factors $(-1)^i/i!$ and, on its numbered slides~3 and~6,
+correctly identifies $-\gamma_1^{[d]}(1)$ as the linear
+coefficient~\cite{YoungLecture}.
+
+In \cite[equations~(4.1)--(4.2) and Corollary~3]{Young2024},
+the verbal description identifies the same signed Stieltjes
+constant with the literal linear coefficient.  With the explicit
+notation \eqref{eq:audit-lambda-and-cauchy}, the unambiguous
+translation of equation~(4.2) is
+\begin{equation}
+ \nu_{0,d}-\nu_{-1,d-1}=c_{d+1}-\lambda_d,
+ \label{eq:audit-young-sign-translation}
+\end{equation}
+where the two series in the source's notation are
+\begin{equation}
+ \nu_{0,d}=\sum_{n\geq2}\frac{(-1)^n}{n}
+                       \zeta(n,\{1\}^{d}),\qquad
+ \nu_{-1,d-1}=\sum_{n\geq2}\frac{(-1)^n}{n-1}
+                       \zeta(n,\{1\}^{d-1}).
+ \label{eq:audit-young-nu-definition}
+\end{equation}
+The second series is interpreted as its ordinary convergent
+alternating sum when $d=1$; the other cases here are absolutely
+convergent.  At depth one,
+\begin{equation}
+ \nu_{0,1}-\nu_{-1,0}-c_2=\gamma_1=-\lambda_1,
+ \label{eq:audit-depth-one-sign-control}
+\end{equation}
+which exhibits the sign directly.  The appropriate correction is
+to describe $\gamma_1^{[d]}(1)$ as the \emph{negative} of the
+linear coefficient, or to translate every formula consistently
+into the literal-coefficient notation $\lambda_d$.  The equations
+for the conventional signed constants need not be reversed.
+
+The finite-part convention is a separate issue.  In the reviewed
+quartic-tail and Barnes incoming articles, the quartic constants
+denoted $\theta$ and $\beta_1$ represent the same strict coefficient
+$[u]\zeta(1+u,1,1)$, and the finite parts use a cutoff in $x$
+itself.  No additional incompatibility between those conventions
+was established in the audit.  A change of cutoff coordinate,
+however, must be transported explicitly before two finite-part
+formulas are compared; a change of Laurent-coefficient sign must
+not be used to absorb such a coordinate change.

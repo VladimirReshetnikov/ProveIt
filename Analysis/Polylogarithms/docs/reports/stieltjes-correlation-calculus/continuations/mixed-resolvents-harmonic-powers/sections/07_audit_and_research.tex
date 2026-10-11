@@ -1,0 +1,270 @@
+\section{Audit, integration corrections, and further research}
+\label{audit:section}
+
+\subsection{What the audit changes}
+
+No new false theorem in the focused established source material was
+identified. The principal audit finding is a status issue: several
+questions survive in earlier archives after later incoming reports have
+answered them. Integration should reconcile the chronology before
+assigning credit or declaring a question newly resolved.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.29\textwidth}
+                  >{\raggedright\arraybackslash}p{0.63\textwidth}}
+\toprule
+Earlier question or claim & Proposed integration treatment\\
+\midrule
+\endhead
+Single-resolvent nonpositive powers &
+The complete answer is already in \cite{repo:quartic}. The earlier
+Barnes Question F5 is therefore resolved by that report. The new
+theorem here concerns independently powered products and their
+orientation-dependent endpoint poles.\\[5pt]
+The fourth digamma power &
+Retain the existing cubic and quartic bridges with credit to
+\cite{repo:cubic,repo:barnes,repo:quartic}. Add the fifth theorem and the
+all-power reduction as subsequent extensions.\\[5pt]
+Pure pairs of even harmonic tails &
+The question in the earlier parity and reflection reports is already
+answered by \cite{repo:quartic}. It is not a new contribution of this
+article. Products with further factors remain a separate problem.\\[5pt]
+Higher-index collision remainder &
+Replace the open-status entry for existence of a fully subtracted
+total limit by Theorem~\ref{gcx:main}. State continuity explicitly.
+Do not upgrade this to analyticity at positive Stieltjes indices or
+to associativity of arbitrary partial-merger prescriptions.\\[5pt]
+Canonical power polynomials &
+Record Corollary~\ref{hp:cancellation} as elimination of the inherited
+height-one coefficients $\eta,\theta$. The additional derivative
+coordinate $\chi_4$ remains, so the stronger single-coordinate
+all-power question is still open.\\[5pt]
+Gaussian $S_6$ and revised $S_8$ &
+Preserve their conjectural status. Keep the previously rejected
+coefficient vector distinct from the revised candidate, and distinguish
+period equality from membership in a specified formal relation system.\\
+\bottomrule
+\end{longtable}
+
+The companion \src{integration/CLAIM_LEDGER.csv} records theorem labels,
+source questions, and proposed status changes. The source snapshot
+manifest gives the inspected revision and hashes of the current incoming
+archives. The older reports are dependencies and provenance, not copied
+into this deliverable as if they were new work.
+
+\subsection{Exact corrections to tempting extrapolations}
+
+Two natural extrapolations are disproved by the calculations here.
+They should be excluded explicitly in any consolidated statement.
+
+\paragraph{A value along a parameter path is not automatically the
+coordinate finite part.}
+For opposite resolvents, \eqref{mr:pathlimit} gives the three limits
+$-2\pi\ii,-\pi\ii,0$ for the same specialized function $K-\pi\ii$.
+Its coordinate finite part is $-\pi\ii$.
+The proposed replacement is the full germ \eqref{mr:H}, retaining
+$E=\sum\epsilon_j\lambda_j$ as well as $\Lambda=\sum\lambda_j$.
+The phase numerator may be simplified using integrality of each exponent
+only when that hypothesis actually holds. The theorem itself requires
+only integrality of the total at the chosen resonance.
+
+\paragraph{Taking the order-zero term of a collision does not commute
+with merging its factors.}
+The three constants \eqref{gcx:CT0}--\eqref{gcx:CT2} differ although
+their directly merged integrand is the same
+$\gamma_1\gamma_0^2$. The replacement is to subtract the entire
+counterterm \eqref{gcx:T} before passing to the limit. Dividing the local
+cutoff by a shrinking gap would alter this convention and its constants.
+The terms involving
+$\gamma_1'(1)=\zeta(2)+\zeta'(2)$ must retain both summands;
+differentiation of the Pochhammer factor supplies the first one.
+
+These counterexamples correct unsupported extensions. They are not
+retroactive claims that the earlier single-resolvent or index-zero
+theorems were false.
+
+Two further proof requirements should accompany the integration.
+Matching principal parts of $\psi^k$ leaves an entire-function
+ambiguity; Lemma~\ref{hp:ML} supplies the contour argument that eliminates
+it. Also, an exact finite harmonic identity is not the same statement as
+its asymptotic regularization: use \eqref{hp:regularization} with finite
+terminal harmonic sums first, and replace convergent terminal words by
+their limits only after controlling their tails. These requirements are
+met in the proofs above.
+
+\subsection{Questions opened by the new results}
+
+The following projects ask for exact identities or structural theorems.
+They are questions rather than unproved assertions of reducibility.
+Each has a concrete starting formula in this article.
+
+\begin{question}[The derivative coordinate of weight four]
+Can
+\[
+ \chi_4=2(\partial_1-\partial_2)Z_2(3,1)+\partial_1Z_2(2,2)
+\]
+be reduced to a smaller specified algebra of ordinary zeta derivatives
+and height-one Laurent coefficients?
+\end{question}
+The first task is to differentiate identities valid with genuinely free
+orders, rather than differentiate a duality known only at discrete
+integer indices. The free-order stuffle identity used after
+\eqref{hp:Er} is admissible in this sense. A useful result would be an
+exact reduction or a formal separating functional for a precisely
+enumerated family of differentiated relations. Such a formal obstruction
+would still not prove arithmetic independence.
+
+\begin{question}[The sixth power and canonical cancellation matrices]
+Compute the complete sixth-power reduction and determine which
+polynomials in $\psi$ eliminate its inherited lower-depth coordinates.
+Does a uniform family of power polynomials remove all but the single
+height-one coefficient at every degree?
+\end{question}
+The compiler of Theorem~\ref{hp:allpowers} already terminates at every
+fixed degree and fixes its constants. What remains is to simplify the
+resulting moving-order coordinates and compute the exact cancellation
+matrix against lower powers. The coefficient of the top-depth term is
+already known, namely $-k!$; it is the lower-depth relations that must be
+understood. The surviving $\chi_4$ in the fifth case is a specific test.
+
+\begin{question}[A common Hurwitz shift for all digamma powers]
+Extend the reduction and the normalized primitive to
+$\psi(x+a)^k$, with a free common shift $a$, and determine the finite
+multiple-Hurwitz or Lerch family required.
+\end{question}
+At $a>0$ the unit-interval integral is ordinary; the principal poles of
+the global meromorphic function have moved to $-a-\N_0$.
+The contour subtraction and finite summation-by-parts method should be
+carried out with the shifted lattice, keeping the endpoint normalization
+explicit. Rational $a$ offers a precise next specialization to colored
+multiple-zeta data.
+
+\begin{question}[Higher mixed logarithmic resolvent products]
+For arbitrary positive integers $r,s$, find finite multiple-polylogarithmic
+expressions for the all-index transforms of $L_z^rL_w^s$.
+What depth and moving-order derivative families are sufficient?
+\end{question}
+The two-factor formula \eqref{ml:Tu} and the ordinary cubic formula
+\eqref{ml:triple} are initial cases. Start from the integer convolution
+constraints of the Fourier coefficients, apply exact partial fractions,
+and keep the complete local power--log polynomial in the Stieltjes
+subtraction. A finite representation in a stated class is the target;
+introducing an unrestricted new generating integral alone would not
+provide that reduction.
+
+\begin{question}[Classical multivariable forms of the Gamma spectrum]
+For which exponent patterns and disk coordinates does
+\eqref{mr:ck} collapse to a finite combination of Gauss, Appell,
+Lauricella, or multiple-polylogarithmic functions?
+\end{question}
+The example \eqref{mr:gaussmean} proves that a Gauss function suffices
+for one zero disk coordinate. The general Gamma convolution is already
+explicit and normally convergent. A further result should produce a
+smaller function class, a new functional equation, or an arithmetic
+special-value identity, with all exceptional parameter restrictions
+handled on the complete meromorphic expression.
+
+\begin{question}[Real-axis boundary identities]
+Determine the exact limits of the completed mixed resolvent transforms
+as one or more nonreal parameters approach the real axis, including
+coincident limiting parameters.
+\end{question}
+The sign $\epsilon_j$ then records which boundary value is taken, and
+interior cotangent poles can appear. A correct statement must inventory
+their local principal-value and contact contributions as well as the
+endpoint terms already present in \eqref{mr:H}. This is an exact
+boundary-value problem, not a request for numerical bounds.
+
+\begin{question}[Regularity of the higher-index collision remainder]
+Find the complete power--log expansion of $C-T$ near total collision,
+and determine its differentiability and analytic subfamilies.
+\end{question}
+Theorem~\ref{gcx:main} proves continuity uniformly in the relative
+gaps. It does not assert a convergent Taylor series. After the Hermite
+subtraction the only obstacle is the explicit product of translated
+logarithms. Resolving that remaining integral for one cluster and then
+for nested clusters would give a controlled higher-order contact
+calculus, including gap configurations not described by a single scale.
+
+\begin{question}[The global mixed cubic constant]
+Express
+$Q=\FP\int_0^1\gamma_1(x)\gamma_0(x)^2\,\dd x$
+in a specified multiple-Hurwitz or directional Tornheim derivative
+family, and seek combinations that eliminate it.
+\end{question}
+Equation~\eqref{gcx:Q-ordinary} is an absolutely convergent representative.
+The difference of collision constants already eliminates $Q$ exactly.
+For a further arithmetic reduction, begin with a joint completed
+three-factor Hurwitz generator and differentiate its orders before
+specialization. A numerical relation for the displayed decimal would
+only suggest a candidate.
+
+\begin{question}[Compatibility of successive partial mergers]
+Characterize partial-cluster subtraction rules whose iterated mergers
+agree with the simultaneous full counterterm \eqref{gcx:T}.
+Can a universal local adjustment make the operation associative?
+\end{question}
+The present result fixes the total limit even for hierarchical gaps.
+It does not identify the finite constants produced by every possible
+intermediate prescription. For three and four factors, compare two
+merger orders symbolically using the explicit dilogarithm kernels,
+then determine the local difference before proposing a general rule.
+
+\begin{question}[Integer-frequency grids and their logarithmic scales]
+Extend the geometric theorem to
+$\prod_i\gamma_{m_i}^{(r_i)}(\{p_i x+s_i\})$ with positive integers
+$p_i$, including analytic Fourier weights.
+\end{question}
+The analytic-weight portion at common unit frequency is proved here.
+For a grid point with ambient displacement $t$, the singular factor
+has amplitude
+$p_i^{-r_i-1}t^{-r_i-1}L_{m_i,r_i}(\log t+\log p_i)$.
+A complete theorem should inventory all coinciding grid points and
+transport the cutoff in this ambient coordinate. The logarithms
+$\log p_i$ are finite contacts that cannot be removed by an informal
+rescaling.
+
+\begin{question}[A common spectral and collision completion]
+Construct a joint generator with both the complex resolvent-power
+weight and moving periodic Stieltjes factors, and prove compatible
+restriction formulas at intersecting spectral and geometric resonances.
+\end{question}
+The two ingredients are explicit here, but their direct combination
+has new local products: a weighted collision point can approach an
+endpoint where the weight is singular. The target is one full
+subtraction rule that recovers \eqref{mr:H} and \eqref{gcx:T} in
+their separate domains, with the order of all restrictions specified.
+
+\begin{question}[A new exact relation for the frozen Gaussian targets]
+Can an identity obtained from a harmonic, Stieltjes, or resolvent
+transform supply a genuine functional relation for the frozen
+$S_6$ or revised $S_8$ residual outside the previously obstructed
+formal systems?
+\end{question}
+The source vectors and branch conventions must remain fixed. A useful
+candidate should have a demonstrably new action on the existing
+separating functional, or a proved analytic specialization beyond the
+enumerated relation family. Neither additional digits nor an
+uncompleted modular elimination establishes the period equality.
+No such functional bridge has been proved in this article.
+
+\begin{question}[Reusable formalization units]
+Formalize the full-amplitude completion lemma, the all-power
+Mittag--Leffler normalization, strict harmonic quasi-shuffles and their
+asymptotic regularization, and the fixed-contour Hermite remainder.
+\end{question}
+These units separate the reusable analytic proof from finite symbolic
+coefficient calculations. The supplied programs give regression
+examples for the latter. Formal verification of the analytic lemmas
+would support generated identities at many new indices; importing
+Python outputs alone should not confer a proof-assistant status.
+
+\subsection{Suggested order of work}
+
+The most direct next exact calculations are the sixth-power normal
+form, the first higher mixed logarithmic transform, and a joint
+Hurwitz representation of the global mixed cubic constant. Their input
+algebra and all local corrections are now explicit. The collision
+regularity and merger-compatibility questions are the next structural
+problems. The Gaussian conjectures require a new functional relation or
+an exact period certificate beyond the relation systems already
+analyzed in the source material.

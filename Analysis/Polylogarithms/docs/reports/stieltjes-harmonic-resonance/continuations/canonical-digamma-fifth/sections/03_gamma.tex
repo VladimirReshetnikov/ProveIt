@@ -1,0 +1,254 @@
+\section{The Gamma quotient and its exact harmonic residues}
+\label{sec:gamma}
+
+The generating function in this section is classical at integer
+arguments: it generates the Roman harmonic numbers, or complete
+harmonic star sums, discussed by Sesma \cite[Eq.~(49)]{Sesma}.
+We use its meromorphic continuation in the harmonic cutoff to produce
+a convenient exact differential normalization of the digamma powers.
+The all-depth ordinary integral below is proved directly; its
+coefficient-series data are related to Young's established formulas,
+and its first case is Coffey's integral for $\gamma_1$
+\cite[Eq.~(1.19)]{Coffey}.
+
+\begin{definition}\label{def:Cm}
+For $x$ away from the nonpositive integers, define
+\begin{equation}\label{eq:GammaGenerator}
+ G(x,t)=\frac{\Gamma(1-t)\Gamma(x)}{\Gamma(x-t)}
+       =\sum_{m\ge0}\CM_m(x)\frac{t^m}{m!}.
+\end{equation}
+Coefficient extraction is at $t=0$; the resulting functions of $x$
+are extended meromorphically.
+\end{definition}
+
+Put
+\begin{equation}\label{eq:hr}
+ h_1(x)=\psi(x)+\gamma,\qquad
+ h_r(x)=\zeta(r)-\zeta(r,x)
+       =\zeta(r)+\frac{(-1)^{r+1}}{(r-1)!}\psi^{(r-1)}(x)
+       \quad(r\ge2).
+\end{equation}
+The log-Gamma Taylor expansion yields
+\begin{equation}\label{eq:logG}
+ \log G(x,t)=\sum_{r\ge1}h_r(x)\frac{t^r}{r}.
+\end{equation}
+Consequently $\CM_m=Y_m(h_1,1!h_2,\ldots,(m-1)!h_m)$,
+where $Y_m$ is the complete exponential Bell polynomial. In particular
+\begin{align}
+ \CM_0&=1,\qquad \CM_1=h_1,\qquad
+ \CM_2=h_1^2+h_2,\\
+ \CM_3&=h_1^3+3h_1h_2+2h_3,\\
+ \CM_4&=h_1^4+6h_1^2h_2+3h_2^2+8h_1h_3+6h_4,\\
+ \CM_5&=h_1^5+10h_1^3h_2+15h_1h_2^2+20h_1^2h_3
+                +20h_2h_3+30h_1h_4+24h_5.
+ \label{eq:Cfirst}
+\end{align}
+At every degree a finite recurrence suffices:
+\begin{equation}\label{eq:Crecurrence}
+ \CM_{m+1}=
+ \sum_{r=0}^m\binom mr r!h_{r+1}\CM_{m-r}.
+\end{equation}
+At a positive integer $n$ the generator is
+$\prod_{k=1}^{n-1}(1-t/k)^{-1}$, so $\CM_m(n)/m!$ is the
+weakly ordered harmonic sum of $m$ unit indices.
+
+\begin{theorem}[Exact poles and removable values]\label{thm:Cpoles}
+For $m\ge2$, $\CM_m$ has only simple poles, with
+\begin{equation}\label{eq:Cresidue}
+ \Res_{x=-n}\CM_m(x)=-m!e_{m-1}(n),\qquad n\ge0.
+\end{equation}
+The points $0,-1,\ldots,-(m-2)$ are removable. Its first actual pole
+is $-(m-1)$ and has residue $-m$. At the removable points,
+\begin{equation}\label{eq:Cnegative}
+ \boxed{\displaystyle
+ \CM_m(-j)=-m!\sum_{k=0}^j e_k(j)\zeta(m-k),
+       \qquad 0\le j\le m-2.}
+\end{equation}
+In particular $\CM_m(0)=-m!\zeta(m)$, and $\CM_m(1)=0$.
+\end{theorem}
+\begin{proof}
+The reciprocal Gamma factor is entire, so the Gamma quotient has
+at most simple poles in $x$. The Gamma recurrence gives exactly
+\[
+ \Res_{x=-n}G(x,t)
+ =\frac{(-1)^n\Gamma(1-t)}{n!\Gamma(-n-t)}
+ =-t\prod_{k=1}^n\left(1+\frac tk\right).
+\]
+Taking coefficients proves the residue assertion. Since $e_{m-1}(n)$
+vanishes precisely for $n<m-1$ and is positive thereafter, it also
+proves the removability and the first-pole statements.
+
+For the values, set $x=-j+\varepsilon$ and
+$E_j(t)=\prod_{k=1}^j(1+t/k)$. Expansion of both Gamma factors gives
+the constant coefficient in $\varepsilon$ as
+\[
+ -tE_j(t)\bigl(H_j-\gamma-\psi(-j-t)\bigr).
+\]
+By the digamma recurrence this equals
+\begin{equation}\label{eq:Cnegativeproof}
+ tE_j(t)(\gamma+\psi(1-t))
+ -tE_j(t)H_j+E_j(t)+tE_j(t)\sum_{k=1}^j\frac1{k+t}.
+\end{equation}
+All terms after the first are polynomials of degree at most $j+1$.
+For the last term this follows by cancelling the corresponding factor
+of $E_j$. Finally
+$\gamma+\psi(1-t)=-\sum_{r\ge1}\zeta(r+1)t^r$.
+At degree $m\ge j+2$ only this series contributes, proving
+\eqref{eq:Cnegative}. Since the pole coefficient at that degree is
+zero, its finite Laurent value is the ordinary removable value.
+The identity at $1$ follows from $G(1,t)=1$.
+\end{proof}
+
+\begin{theorem}[A normally convergent partial-fraction expansion]
+\label{thm:CML}
+For $m\ge2$, away from its actual poles,
+\begin{equation}\label{eq:CML}
+ \boxed{\displaystyle
+ \CM_m(z)=-m!\zeta(m)-m!\sum_{n\ge1}e_{m-1}(n)
+       \left(\frac1{n+z}-\frac1n\right).}
+\end{equation}
+The series converges normally on every compact subset of that domain.
+Terms whose coefficient $e_{m-1}(n)$ is zero are omitted, including
+at a removable point where their displayed denominator vanishes.
+\end{theorem}
+\begin{proof}
+Since $e_{m-1}(n)=O((1+\log n)^{m-1})$, the subtracted series
+converges normally. To determine the entire remainder, integrate
+$z\CM_m(w)/(w(w-z))$ on $|w|=N+1/2$. The right-half-plane
+digamma asymptotics and their derivatives, combined with reflection
+on the left, give $\CM_m(w)=O((1+\log N)^m)$ uniformly on these
+circles. The distance to the nonpositive integral poles stays bounded
+below. In the reflection formula the cotangent and its fixed
+derivatives are bounded there, while the remaining polygammas have
+their usual sectorial bounds \cite{DLMF}. The integral tends to zero
+like $O((1+\log N)^m/N)$.
+
+Its residues at $w=z$ and $w=0$ are $\CM_m(z)$ and
+$-\CM_m(0)$. Each pole $w=-n$ contributes
+$-m!e_{m-1}(n)z/(n(n+z))$. The residue theorem and
+Theorem~\ref{thm:Cpoles} give \eqref{eq:CML}. Thus matching the
+principal parts alone is not being used to discard an arbitrary
+entire function.
+\end{proof}
+
+\subsection{An ordinary integral isolates one strict-depth coefficient}
+
+\begin{theorem}[The all-depth ordinary-integral bridge]
+\label{thm:Cintegral}
+For every integer $m\ge2$,
+\begin{equation}\label{eq:Cintegral}
+ \boxed{\displaystyle
+ \int_0^1\CM_m(x)\,dx=m!\bigl(c_m-\lambda_{m-1}\bigr).}
+\end{equation}
+The integrand extends continuously to both endpoints. There is no
+finite-part operation in this identity.
+\end{theorem}
+\begin{proof}
+Use the opposite-sign parameter
+$F(x,t)=G(x,-t)=\Gamma(1+t)\Gamma(x)/\Gamma(x+t)$ and define
+\[
+ \Phi(t)=\int_0^1\{F(x,t)-1+t(\psi(x)+\gamma)\}\,dx.
+\]
+Its origin residue is $t-t=0$. More precisely, the subtracted
+integrand is jointly holomorphic in $t$ near zero and continuous in
+$x\in[0,1]$; this follows by subtracting $t/x$ from the Gamma
+quotient. Uniform coefficient extraction on $|t|\le\rho<1$ gives
+\begin{equation}\label{eq:PhiTaylor}
+ \Phi(t)=\sum_{m\ge2}\frac{(-1)^m t^m}{m!}
+                    \int_0^1\CM_m(x)\,dx.
+\end{equation}
+
+For $\re t>0$, Euler's beta integral and the standard digamma
+integral give, after combining their integrands,
+\[
+ \Phi(t)=t\int_0^\infty
+ \left\{\frac{(1-e^{-v})^t-1}{v}
+             +\frac{e^{-v}}{1-e^{-v}}\right\}dv-1.
+\]
+The combination is integrable at both ends. For example the original
+integrand before integration in $x$ is
+$e^{-xv}((1-e^{-v})^{t-1}-(1-e^{-v})^{-1})
++e^{-v}/(1-e^{-v})$; its joint integral is absolutely convergent
+when $\re t>0$, which justifies Fubini.
+Integrate the second term from a lower cutoff $\delta$ and use
+$\int_\delta^\infty e^{-v}/(1-e^{-v})\,dv
+=-\log(1-e^{-\delta})$. Comparing with
+$\int_\delta^1(v^t-1)\,dv/v$ yields
+\begin{equation}\label{eq:PhiMellin}
+ \Phi(t)=t\int_0^\infty
+ \frac{(1-e^{-v})^t-1-\boldsymbol1_{(0,1)}(v)(v^t-1)}v\,dv.
+\end{equation}
+This subtracted integral is holomorphic for $\re t>-1$ locally
+about zero. Near zero, $(1-e^{-v})^t-v^t=O(v^{\re t+1})$
+uniformly on compact parameter sets; at infinity the numerator
+decays exponentially. Thus the equality continues to $|t|<1$.
+
+At degree $m\ge2$, its right side has coefficient
+\[
+ \frac{(-1)^{m-1}}{(m-1)!}
+             \int_0^\infty\frac{V_{m-1}(v)}v\,dv.
+\]
+Comparison with \eqref{eq:PhiTaylor} gives
+$\int_0^1\CM_m=-m I_{m-1,0}$.
+Equation~\eqref{eq:lambda_integral} proves the claimed formula.
+\end{proof}
+
+The first two instances are
+\begin{align}
+ \int_0^1\{(\psi+\gamma)^2+\zeta(2)-\psi'\}\,dx
+   &=\gamma^2-\zeta(2)+2\gamma_1,\label{eq:C2integral}\\
+ \int_0^1\{(\psi+\gamma)^3
+      +3(\psi+\gamma)(\zeta(2)-\psi')
+      +2\zeta(3)+\psi''\}\,dx
+   &=6(c_3-\eta).
+ \label{eq:C3integral}
+\end{align}
+The apparent singularities in each complete integrand cancel; its
+individual displayed terms should not be separately integrated as
+ordinary improper integrals. The first formula rearranges exactly to
+Coffey's known identity cited above.
+
+\subsection{The known Cauchy-series coordinates recovered from the same quotient}
+
+An additional beta representation is useful both for interpretation
+and for stable numerical evaluation:
+\begin{equation}\label{eq:Cbeta}
+ \CM_m(x)=(x-1)\int_0^1(-\log y)^m(1-y)^{x-2}\,dy,
+       \qquad m\ge1,\quad\re x>1-m.
+\end{equation}
+For $\re x>1$ it follows by differentiating
+$G(x,t)=(x-1)B(1-t,x-1)$. The integral on the right then continues
+it to the stated half-plane: near $y=1$ the exponent is $x+m-2$.
+This also independently displays the location of the first pole.
+
+Define positive rational coefficients
+\begin{equation}\label{eq:an}
+ a_n=\frac1{(n-1)!}\int_0^1(r)_n\,dr,
+ \qquad a_1=\frac12,\quad a_2=\frac56,\quad a_3=\frac98,
+\end{equation}
+where $(r)_n=r(r+1)\cdots(r+n-1)$ is a rising factorial. If
+$L=-\log(1-y)$, their generating kernel is
+\begin{equation}\label{eq:Kkernel}
+ K(y)=\sum_{n\ge1}a_ny^{n-1}
+      =\frac{L-y}{(1-y)^2L^2}.
+\end{equation}
+Indeed integrate $(1-y)^{-r}=\sum (r)_ny^n/n!$ over $r\in[0,1]$
+and differentiate the resulting $y/((1-y)L)$.
+Integrating \eqref{eq:Cbeta} in $x$, for $m\ge2$, gives
+\[
+ \int_0^1\CM_m(x)\,dx
+   =-\int_0^1(-\log y)^m K(y)\,dy.
+\]
+The integrals are absolutely convergent; alternatively Tonelli applies
+to their nonnegative negatives. The elementary Mellin integral of
+$y^{n-1}$ therefore yields
+\begin{equation}\label{eq:knowncauchy}
+ \boxed{\displaystyle
+ \lambda_d=c_{d+1}+\sum_{n\ge1}\frac{a_n}{n^{d+2}},
+       \qquad d\ge1.}
+\end{equation}
+This coefficient series is an equivalent form of the established
+Cauchy/Bernoulli-second-kind series in Young's work
+\cite{Young2023,Young2024}; it is included as an independent
+normalization check and a connection with the meromorphic differential
+realization, not as a new coefficient formula.

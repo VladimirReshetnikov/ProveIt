@@ -1,0 +1,101 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm,mathrsfs}
+\usepackage{booktabs,array,longtable}
+\usepackage{microtype}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{xurl}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,
+ pdftitle={Algebraic Gauss Residues and Centered Harmonic Reflection},
+ pdfauthor={Research continuation prepared for the ProveIt project}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Algebraic residues and harmonic reflection}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\usepackage{enumitem}
+\setlist{itemsep=3pt,topsep=5pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Bcal}{\mathcal B}
+\newcommand{\Ccal}{\mathcal C}
+\newcommand{\Dcal}{\mathcal D}
+\newcommand{\FP}{\operatorname{FP}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\e}{\mathrm e}
+\newcommand{\stirling}[2]{\left\{\begin{matrix}#1\\#2\end{matrix}\right\}}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\sourcecommit}{\texttt{dd78c6c9079e1e4a32600d8f9400667b4de8bd54}}
+\allowdisplaybreaks[2]
+\begin{document}
+\begin{titlepage}
+\vspace*{0.35in}
+{\small\scshape ProveIt / Analysis / Polylogarithms\par}
+\vspace{0.5in}
+{\huge\bfseries Algebraic Gauss Residues\par}
+\vspace{0.12in}
+{\huge\bfseries and Centered Harmonic Reflection\par}
+\vspace{0.35in}
+{\Large Finite Stirling formulas, all-depth trivial zeros,\par
+Gamma generating functions, and Stieltjes identities\par}
+\vspace{0.5in}
+{\large Research continuation prepared for the ProveIt project\par}
+\vspace{0.15in}
+{10 October 2026\par}
+\vspace{0.55in}
+\begin{abstract}
+An explicit research question in the repository asks for a finite algebraic
+proof of a Bernoulli-coefficient identity previously obtained from residues
+of Gauss summation. We give such a proof, using integer-root interpolation
+and a degree argument. We then evaluate the entire resonant coefficient
+tail: its normalized exponential generating function is
+$\e^{ct}{}_2F_1(a,b;r+1;1-\e^t)$, and every coefficient has a finite
+Stirling-number formula. The coefficients form an Appell family in the
+comparison shift.
+
+A second development uses the moving reflection $a\mapsto1+u-a$ in the
+complex-order Barnes--Hurwitz family. Its centered harmonic derivatives
+have a common holomorphic zero at every nonpositive even integer. We prove
+that the centering is uniquely forced by the corresponding all-depth
+condition; for affine shifts, only the first two depths are needed.
+An exact Gamma quotient evaluates an infinite family of convergent
+harmonic sums at outer exponent two, with an explicit zeta-cumulant
+formula at every depth. We also give shifted, all-order logarithmic
+polygamma sums involving generalized Stieltjes constants and Hurwitz
+zeta derivatives, ordinary antiderivatives, and an unequal-frequency
+multivariate reflection theorem.
+
+The existing fixed-shift Laurent theorem is acknowledged as prior work,
+not relabeled as a new result. A version-specific Stieltjes indexing
+error in a cited preprint is corrected. All-index claims are proved analytically
+or algebraically. The accompanying 436 exact checks and 30 numerical
+comparisons are separate regression evidence. Global priority is not
+asserted, and neither S6 nor S8 is proved here.
+\end{abstract}
+\vfill
+\noindent\small Inspected scientific baseline: \sourcecommit.\\
+The report and code are self-contained; a proposed integration map and
+source-audit notes accompany the article.
+\end{titlepage}
+\begingroup
+\fontsize{9}{10.4}\selectfont
+\tableofcontents
+\endgroup
+\clearpage
+\input{body.tex}
+\input{references.tex}
+\end{document}

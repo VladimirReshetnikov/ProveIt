@@ -1,0 +1,136 @@
+INTERNAL INDEPENDENT MATHEMATICAL REVIEW RECORD
+Article: Mixed Resolvent Products, Higher Digamma Powers, and Stieltjes Collisions
+Date: 11 October 2026
+Source baseline: 9035bb0eaaf70f3398711b489733093dcc52e946
+
+Nature and scope
+----------------
+This record documents an additional internal cross-check during preparation
+of the article. A separate collaborating review pass read the mathematical
+proofs independently of the principal drafting of the relevant sections.
+It is not external peer review, a proof-assistant certificate, an interval
+certificate, or a fresh audit of every theorem in the ProveIt source corpus.
+
+The adversarial proof review covered:
+  sections/02_resolvents.tex
+  sections/03_polylogarithms.tex
+  sections/04_higher_digamma.tex
+
+Earlier independent derivations of the mixed-orientation endpoint geometry,
+special-point Gamma means and residues, and mixed-log Fourier convolution
+were compared with the corresponding article formulas. The record below
+does not claim an additional independent proof audit of the full
+higher-collision theorem in sections/05_higher_collisions.tex.
+
+Method
+------
+The review checked branches, convergence domains, endpoint amplitudes,
+residue signs, finite summation-by-parts identities, strict harmonic-word
+products, asymptotic regularization constants, and the reduction of the
+fifth-power formula. Numerical agreement was used only as supporting
+diagnostic evidence. The mathematical conclusions below came from the
+analytic and finite algebraic calculations.
+
+Findings: all digamma powers
+---------------------------
+1. The Mittag-Leffler contour has the correct sign. For the kernel
+   z/[w(w-z)], the residue at w=-n is the negative of the corrected
+   principal-part contribution P_{k,n}(z)-P_{k,n}(0). The residues at
+   z and 0 therefore produce the stated formula with f(0)=kappa_k.
+
+2. The uniform O(log^k N) bound on the circles |w|=N+1/2 is valid.
+   Reflection reduces the left half-plane to the right; cotangent is
+   bounded on the circles, including their short near-real arcs.
+   The contour consequently tends to zero at O(log^k N/N).
+   This fixes the entire remainder rather than merely its principal
+   parts.
+
+3. The normalized primitive has zero constant in its expansion at the
+   origin. The corrected summands converge normally on compact sets,
+   with the necessary parameter derivatives.
+
+4. The finite Abel summation identity gives Q_k=B_k-C_k+[u^1]E_k(u).
+   In particular,
+     [u^1](-1)^r zeta^(r)(1+u) = -gamma_{r+1},
+   which confirms the sign of the asymptotic constant.
+
+5. The leading-one regularization recurrence is terminating. Its finite
+   harmonic-sum identity is distinguished from the subsequent replacement
+   of convergent terminal words by limits. Their O(N^-1 log^M N) tails
+   remain negligible after every fixed polynomial factor in H_N.
+
+6. The highest-depth coefficient is -k!: the leading residue monomial
+   -k H_n^(k-1) contributes -k(k-1) H_{n-1}^(k-2)/n, whose strict
+   all-one word has coefficient (k-2)!.
+
+Findings: exact fifth-power bridge
+---------------------------------
+The independent algebra checked all printed principal coefficients,
+kappa_5, the exact difference of r_n, each B_{5,j}, the full finite
+identity for sum r_n/n, the leading-one regularization, C_r, B_5-C_5,
+the moving-order identity E_r, and the final polynomial cancellation.
+
+The nontrivial constants confirmed include:
+  C_r = -gamma^5/5 + 6 gamma^3 zeta(2) - 16 gamma^2 zeta(3)
+        -13 gamma zeta(4)/2 + 12 zeta(2) zeta(3) -69 zeta(5)/5;
+
+  B_5-C_5 = 30 gamma^2 zeta(2) - 60 gamma zeta(3)
+            +35 zeta(4)/3.
+
+The additional depth-two derivatives combine with exactly the signs
+specified by
+  chi_4 = 2(partial_1-partial_2) Z_2(3,1) + partial_1 Z_2(2,2).
+
+The ordinary polygamma series has the stated subtraction and
+O(n^-2 log^3 n) summand. In the Mellin representation of phi, the
+subtracted regular remainder has value zero at order one. Thus the
+inverse-Gamma contribution is exactly [u^5]1/Gamma(1+u), with no
+omitted lower coefficient.
+
+The fifth-degree polynomial cancels eta and theta but retains chi_4.
+The theorem correctly avoids claiming the stronger universal
+one-coordinate reduction.
+
+Findings: resolvents and mixed logarithms
+----------------------------------------
+The global sine factorization, Gamma Fourier coefficients, ordinary
+integral domains, Fourier orientation signs, and log-Gamma order
+differentiation agree with the endpoint-normalized branches.
+
+At the right endpoint the completed smooth Hurwitz factor is h_p(s,-y).
+Its coefficient is exp(pi*i*E)(-1)^j b_j. No additional (-1)^p is
+present. Both complete local quotients in the resonance germ are
+necessary, and deleting them gives the stated coordinate finite parts.
+Only integrality of the total base exponent is required.
+
+The special-point mean, residue polynomial, transverse and curved-path
+limits, and negative-resonance logarithmic family are consistent with
+the complete endpoint correction.
+
+The mixed-log Fourier convolution is absolutely convergent in Re u>0.
+The depth-two reduction follows from an exact partial fraction, using
+the combined strict value at colors (1,1). The local subtraction
+retains every logarithmic amplitude and every coefficient of A_p(s).
+There is no additional right-endpoint resonance for the logarithmic
+kernel alone.
+
+The eta special-point identity was checked by direct Laurent
+multiplication, including
+  -(gamma^3+log^3(2*pi))/3,
+  -gamma*zeta(2)-log(2*pi)*zeta(2)/2,
+  -2*zeta(3)/3.
+The ordinary triple-log identity, Gamma moment generator, displayed
+mixed moments, and completed two-parameter primitive were also checked.
+
+Corrections and editorial clarifications
+----------------------------------------
+The pass identified two literal TeX defects, subsequently reported for
+correction: a malformed fraction command in the first cumulant and
+a missing backslash before a left delimiter in the Gamma expansion.
+It also requested explicit wording for the branch of C_j and for the
+local convergence domain of the cumulant power series.
+
+No mathematical error was found in the substantive identities audited.
+This conclusion is limited to the reviewed material and to the proof
+checks described above. It is not a claim that a finite review can
+guarantee the absence of every possible error.

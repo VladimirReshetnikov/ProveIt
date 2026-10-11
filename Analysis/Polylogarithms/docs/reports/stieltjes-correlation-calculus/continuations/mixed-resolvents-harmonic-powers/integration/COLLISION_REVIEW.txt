@@ -1,0 +1,104 @@
+INTERNAL COLLISION REVIEW: INTEGRATION MAPPING
+Date: 11 October 2026
+The original independent review below concerns the source drafts later
+incorporated as sections/05_higher_collisions.tex and
+sections/06_collision_examples.tex. The draft paths in the original
+record identify the reviewed working sources; they are not package paths.
+This is an internal mathematical cross-check, not external peer review.
+
+INDEPENDENT ADVERSARIAL REVIEW
+Reviewed files, without editing them:
+notes/stieltjes/final/01_higher_collisions.tex
+notes/stieltjes/final/02_mixed_cubic_examples.tex
+
+Conclusion: no mathematical correction is required by this review.
+The following points were checked directly, rather than accepted from
+the numerical diagnostics or the previous source status.
+
+1. Local model and derivatives
+The Stieltjes shift relation is gamma_m(x)=log(x)^m/x+gamma_m(1+x).
+Its r-th ordinary derivative has polynomial prod_{j=1}^r(D_X-j)X^m.
+This verifies the one-sided local decomposition, the harmonic-polynomial
+formula, and the sign (-1)^(m+k) in the analytic-tail coefficient.
+No distributional differentiation is silently used.
+
+2. The product's support and why there is one lower endpoint per subset
+For a selected subset S, all its singular indicators multiply to
+1_{x > -min_{i in S}s_i}. The other nodes lie to the left of this lower
+endpoint, not in the integration interval. The expansion into subsets
+therefore accounts for every original singular point with the stated
+independent right-hand cutoffs.
+
+3. Arbitrary hierarchical gaps
+The contour formulas for P_S and A_S are correct Cauchy/Hermite formulas.
+On their fixed contour, every |z+s_i| is bounded below uniformly, even
+when some real gaps are vastly smaller than all the others. Thus A_S
+is uniformly bounded without estimating individual Lagrange terms.
+After y=x+b_S, every a_i=s_i-b_S is nonnegative. In a sufficiently
+small fixed neighborhood, 0<y+a_i<1 and
+|log(y+a_i)| <= |log y|. The residual product is dominated by the
+integrable function C(1+|log y|)^M, independently of all gap ratios.
+The changing upper endpoint tends to delta and causes no difficulty.
+This proves the stated limit along paths such as gaps exp(-1/epsilon^2)
+as well as along fixed-ratio paths. Continuity is proved; analyticity
+for nonzero logarithmic indices is appropriately not asserted.
+
+4. Full infinite interval and endpoint normalization
+P_S/D_S=p_S/x+O(x^-2) at infinity. Multiplying logarithmic polynomials
+leaves exactly p_S lambda_S(log x)/x as the divergent derivative; the
+remainder is O(x^-2(1+log x)^M), locally uniformly with shift derivatives.
+The sign in B_S=-p_S Psi_S(log delta)+integral(remainder) is correct.
+Translation x=y-b_S leaves the lower ambient cutoff equal to eta and
+changes log(R+b_S)^j to log(R)^j+o(1), so no constant is lost at infinity.
+Pure monomials y^-k(log y)^j, k>=1, have total two-endpoint finite part
+zero. This checks both the singleton convention and -B_S(0) as the
+merged local principal contribution. Subtracting only a short local
+integral would miss these constants; the actual definition avoids that.
+
+5. The GPL reduction
+The partial-fraction coefficients use q_S rather than P_S legitimately:
+their difference is divisible by D_S. Simple poles prepend one letter
+to a log product of weight at most M. Integration by parts for repeated
+poles lowers total logarithmic degree; subsequent partial fractions can
+move pole multiplicity but cannot reverse that decrease. The asserted
+weight bound M+1 and termination are correct. All letters are on the
+nonpositive real axis after translation, so there is no interior branch
+crossing. Tangential regularization at zero is explicitly stated.
+
+6. Direct check of the binary logarithmic kernels
+For a>b, differentiation verifies
+log(a-b) log(y+b) - Li_2(-(y+b)/(a-b)).
+For b>a, differentiation verifies
+log(y+a) log(1+(y+a)/(b-a)) + Li_2(-(y+a)/(b-a)).
+Using Li_2(-t)+Li_2(-1/t)=-zeta(2)-log(t)^2/2 reproduces all six rows
+of the printed U table, including the nonzero upper constants.
+In particular U(0,a)=zeta(2)+log(a)^2/2 and
+U(a,0)=-zeta(2)-log(a)^2/2; their signs are not interchangeable.
+
+7. Direct check of the cubic pair contributions
+For a pair of shifts a<b and its omitted analytic tail q:
+ - logarithm at the first node: q(-b) B(log(b-a))/(b-a);
+ - logarithm at the second node:
+   [q(-a)B(log(b-a))+q(-b)log(b-a)^2/2]/(b-a);
+ - no logarithm in the pair: q(-b)log(b-a)/(b-a).
+Applying these rules to all three subsets independently reproduces
+every term of T0, T1, and T2.
+The triple partial fractions reproduce
+A0=L^2/4-(log2)L/2+zeta(2)/2-log(2)^2/4,
+A1=L^2/2-(log2)L/2+zeta(2)/4, and A2=L^2/2.
+
+8. Finite anomalies and the merged ordinary integral
+With h'(0)=-zeta(2) and k'(0)=beta=zeta(2)+zeta'(2), the three constant
+terms in T_j are respectively
+ -zeta(2)^2/2+zeta(2)log(2)^2/4,
+ -beta log(2)/2,
+ +zeta(2)^2/2.
+The printed C0 power-log expansion has the same coefficients.
+For Q, expanding (log x/x+k(x))(1/x+h(x))^2 gives pure singular terms
+log x/x^3, 2gamma log x/x^2, and gamma_1/x^2 with finite integrals
+-1/4, -2gamma, and -gamma_1. All other removed terms are proportional
+to 1/x or log x/x and have zero finite constant. The stated remaining
+integrand is exactly the difference and is absolutely integrable.
+
+Scope: this review checks the mathematical derivation and normalization.
+It does not assert a numerical interval certificate or Lean formalization.

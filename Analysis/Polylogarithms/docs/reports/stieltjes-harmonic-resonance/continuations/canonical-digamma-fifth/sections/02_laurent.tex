@@ -1,0 +1,102 @@
+\section{A normalized Mellin formula for the height-one germs}
+\label{sec:laurent}
+
+This section gives a self-contained normalization of the coefficient
+data used later. The reciprocal-Gamma singular coefficients and
+height-one series are established objects in the literature
+\cite{Young2023,Young2024} and in the incoming Barnes report
+\cite{Barnes}. We record the precise integral form so that the fifth
+power and the ordinary Gamma integral share a proved convention.
+
+For $v>0$, put
+\begin{equation}\label{eq:Vdef}
+ B(v)=-\log(1-e^{-v}),\qquad
+ V_d(v)=B(v)^d-\boldsymbol1_{(0,1)}(v)(-\log v)^d.
+\end{equation}
+Near zero, $B(v)=-\log v+O(v)$, and consequently
+\[
+ V_d(v)=O\bigl(v(1+|\log v|^{d-1})\bigr).
+\]
+At infinity it decays exponentially. Thus
+$\int_0^\infty v^{u-1}V_d(v)\,dv$ is holomorphic for
+$\re u>-1$; each derivative on a compact subset is obtained by
+inserting the corresponding power of $\log v$.
+
+\begin{proposition}[Mellin normalization]\label{prop:mellin}
+For $d\ge1$, initially for $\re u>0$ and then meromorphically for
+$\re u>-1$,
+\begin{equation}\label{eq:normalizedmellin}
+ \boxed{\displaystyle
+ \Gamma(1+u)Z_d(1+u,\{1\}^{d-1})
+   =\frac1{u^d}+\frac{u}{d!}
+       \int_0^\infty v^{u-1}V_d(v)\,dv.}
+\end{equation}
+In particular the complete principal part and the constant term are
+\begin{equation}\label{eq:principal}
+ Z_d(1+u,\{1\}^{d-1})
+ =\sum_{j=0}^d c_j u^{j-d}+\lambda_du+O(u^2),
+\end{equation}
+where
+\begin{equation}\label{eq:lambda_integral}
+ \lambda_d=c_{d+1}+\frac1{d!}\int_0^\infty\frac{V_d(v)}v\,dv.
+\end{equation}
+\end{proposition}
+\begin{proof}
+The generating identity
+\[
+ \Li_{\{1\}^{d-1}}(y)=\frac{(-\log(1-y))^{d-1}}{(d-1)!}
+\]
+follows either from strict harmonic generating functions or by
+repeated integration of $1/(1-y)$. Termwise Mellin integration gives
+\[
+ \Gamma(1+u)Z_d(1+u,\{1\}^{d-1})
+  =\frac1{(d-1)!}\int_0^\infty
+       \frac{v^u B(v)^{d-1}}{e^v-1}\,dv.
+\]
+For $\re u>0$ the integral is absolutely convergent. Since
+$B'(v)=-1/(e^v-1)$, integration by parts, with both boundary terms
+zero, turns it into
+\[
+ \frac{u}{d!}\int_0^\infty v^{u-1}B(v)^d\,dv.
+\]
+The subtracted comparison integral is exactly
+$\int_0^1v^{u-1}(-\log v)^d\,dv=d!/u^{d+1}$.
+The estimates preceding the proposition justify continuation and all
+coefficient extractions. Multiplication by the Taylor series
+\eqref{eq:cdef} proves the remaining formulas.
+\end{proof}
+
+\begin{corollary}[Every regular coefficient and spectral derivative]
+\label{cor:allcoefficients}
+Let
+\[
+ I_{d,r}=\int_0^\infty \frac{(\log v)^r V_d(v)}v\,dv
+ \qquad(d\ge1,\ r\ge0).
+\]
+For every $j\ge1$,
+\begin{equation}\label{eq:alllaurent}
+ \lambda_{d,j}=c_{d+j}
+  +\frac1{d!}\sum_{r=0}^{j-1}
+       c_{j-1-r}\frac{I_{d,r}}{r!}.
+\end{equation}
+If $\Lambda_d(u)=\Gamma(1+u)Z_d(1+u,\{1\}^{d-1})-u^{-d}$,
+then
+\begin{equation}\label{eq:normalizedderivatives}
+ \Lambda_d^{(j)}(0)=\frac{j}{d!}I_{d,j-1}\qquad(j\ge1).
+\end{equation}
+These are ordinary convergent logarithmic Mellin integrals. At depth
+one, $\lambda_{1,j}=(-1)^j\gamma_j/j!$ recovers the usual Stieltjes
+derivative convention.
+\end{corollary}
+\begin{proof}
+Expand the holomorphic integral in \eqref{eq:normalizedmellin} into
+its Taylor series and multiply by $\sum c_ju^j$. The estimates are
+uniform on every closed disc $|u|\le\rho<1$, so the operations are
+analytic coefficient extractions rather than formal regularizations.
+\end{proof}
+
+Formula~\eqref{eq:alllaurent} is useful for reproducibility: coefficients
+of different depths can be evaluated in one fixed scheme, with no
+matching of independently chosen subtraction constants. It is also a
+direct route to higher spectral derivatives whenever a new digamma
+identity produces them.
