@@ -4100,6 +4100,14 @@ Gowers proof modules, without a stub environment.
 
 ## F. Routes
 
+**Status (2026-10-11, L.12).** All routes below are historical. Route 1
+succeeded: Theorem 16.2 and Corollary 16.11 in every dimension (route (II),
+split classes, L.6b–L.10b), then Theorems 18.1, 18.2 and Corollary 18.7 in
+every degree and length by the joint vertex covers of L.12, at the printed
+exponents and thresholds. The ledger has 120 exact companions and no open
+statement; the bridge proofs await the full kernel audit on the verification
+host.
+
 1. **Quantitative repair (research).**
    - Strengthen the induction hypothesis to polynomial graph counts, which
      repairs B.
