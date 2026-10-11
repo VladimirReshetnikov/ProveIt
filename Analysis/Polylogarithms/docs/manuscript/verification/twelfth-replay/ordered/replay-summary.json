@@ -1,0 +1,71 @@
+{
+  "part": "ordered",
+  "source_folder": "stieltjes-harmonic-resonance/continuations/ordered-hurwitz-resonances",
+  "source_code_sha256": {
+    "build.py": "7e6c01f7f591a9151de6b10823b3e91c90ad101660ba6dfbbf1d2cc88379eebc",
+    "verification/audit_cubic_coefficients.py": "a6f2e7d75cf6f0897e81caea22df08a9684b50e8c5e1f6bc6ca317c6d8bf571f",
+    "verification/audit_ordered_coefficients.py": "0c1911a154d0fdb804e6ddfccb51dfc05868453ae5fa52e831677dd654ebba0e",
+    "verification/verify_cubic.py": "1d3ae3d50d6d90387f0ccaafecb1b73fb2bede899fe973250905234dd106537e",
+    "verification/verify_ordered_core.py": "ad3dc24e5806d14186ee3c6c3bbb9d1712ad0ac0359037235850fad8db853256",
+    "verification/verify_ordered_numeric.py": "0740cd073d219f185582886cf6d38e1088310f6b0ae24a0ddc39e8bf6a1f0685"
+  },
+  "commands": [
+    {
+      "arguments": [
+        "verification/verify_ordered_core.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "verification/audit_ordered_coefficients.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "verification/audit_cubic_coefficients.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "verification/verify_ordered_numeric.py",
+        "--dps",
+        "50",
+        "--points",
+        "20",
+        "--cutoff",
+        "36",
+        "--order",
+        "20",
+        "--guard-dps",
+        "40",
+        "--tolerance",
+        "1e-32"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "verification/verify_cubic.py",
+        "--dps",
+        "35",
+        "--terms",
+        "50",
+        "--tolerance",
+        "1e-28"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "fresh_result_files": [
+    "results/cubic_audit.json",
+    "results/cubic_validation_35dps.json",
+    "results/ordered_audit.json",
+    "results/ordered_core_exact_checks.json",
+    "results/ordered_numeric_50dps.json"
+  ],
+  "passed": true,
+  "scope": "Fresh exact/symbolic suites and separately labeled diagnostics. Successful finite replay does not complete analytic integration or establish numerical period identities."
+}

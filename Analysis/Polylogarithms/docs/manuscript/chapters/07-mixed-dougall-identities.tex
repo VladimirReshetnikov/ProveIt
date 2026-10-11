@@ -1,0 +1,306 @@
+\section{Mixed Gamma derivatives and exact harmonic tail identities}
+\label{mx:section}
+The harmonic coefficient calculus has a useful companion at a double
+zero of a hypergeometric residue. The mixed spectral continuation
+\cite{mx:report} identifies a normally convergent two-parameter Gamma
+identity and a weighted square of trigamma differences. We prove the
+needed first resonance directly from the classical Rogers--Dougall sum
+\cite{mx:DLMFDougall}, rather than assuming the entire pending
+all-resonance programme. Its mixed derivatives produce ordinary harmonic
+identities. Differentiating the resulting square identity also suggests
+an all-orders zeta-tail family; an independent Euler partial-fraction
+proof of that family closes the loop between experiment and exact algebra.
+
+\subsection{A normally convergent double-zero germ}
+Put $\eta=a/2$, $x_n=n+\eta$, and $A=a-1$. Define
+\begin{align}
+ Q_n(a;p,q)&=
+ \frac{\Gamma(n+a)\Gamma(n+1+p)\Gamma(n+1+q)\Gamma(n+a-p-q)}
+ {\Gamma(n+1)\Gamma(n+a-p)\Gamma(n+a-q)\Gamma(n+1+p+q)},
+ \label{mx:Q}\\
+ B_a(p,q)&=\psi(a/2)+\tfrac12\{
+ \psi(2)-\psi(1+p)-\psi(1+q)-\psi(a-p-q)\}.
+ \label{mx:B}
+\end{align}
+These are holomorphic for $\Re a>0$ and $p,q$ sufficiently small
+on each compact $a$-set. Both $Q_n(a;p,0)$ and $Q_n(a;0,q)$ are one.
+
+\begin{theorem}[The first mixed resonance]\label{mx:generator}
+For every real $a>0$, and sufficiently small complex $p,q$,
+\begin{equation}\label{mx:generator-eq}
+ \sum_{n\ge0}\left\{
+ x_n\bigl(Q_n(a;p,q)-1\bigr)+\frac{(A-p-q)pq}{x_n}\right\}
+ =-(A-p-q)pq\,B_a(p,q).
+\end{equation}
+The bracketed series converges locally normally, including after
+division by $pq$ at either axis. Every fixed parameter derivative
+can be taken termwise. The identity extends holomorphically to the
+corresponding germs over $\Re a>0$.
+\end{theorem}
+\begin{proof}
+First take $a>1$, $b=1+p$, $c=1+q$ and $d_0=1+a-b-c>0$.
+Introduce a separate spectral variable $u$ and the centered summand
+\[
+ r_n(u)=x_n\frac{\Gamma(n+a)\Gamma(n+b)\Gamma(n+c)\Gamma(n+d_0-u)}
+ {\Gamma(n+1)\Gamma(n+1+a-b)\Gamma(n+1+a-c)\Gamma(n+b+c+u)}.
+\]
+For $0<\Re u<d_0$, the Rogers--Dougall formula with upper parameters
+$a,1+a/2,b,c,d_0-u$ and lower parameters
+$a/2,1+a-b,1+a-c,b+c+u$ gives
+\begin{equation}\label{mx:dougall-normalized}
+ \sum_{n\ge0}r_n(u)=
+ G(u):=\frac{\Gamma(b)\Gamma(c)\Gamma(d_0-u)\Gamma(u)}
+ {2\Gamma(d_0)\Gamma(b+u)\Gamma(c+u)}.
+\end{equation}
+The classical excess is $2u$; the factor $1/2$ follows from the
+normalization $x_n=n+a/2$, not the usual Pochhammer summand.
+
+Write
+\[
+ (\alpha_1,\alpha_2,\alpha_3,\alpha_4)
+ =(\eta,b-\eta,c-\eta,d_0-u-\eta).
+\]
+The denominator shifts relative to $x_n$ are $1-\alpha_i$.
+The shifted Stirling expansion \cite{hstruct:DLMF} and Bernoulli
+reflection therefore give uniformly on compact parameter sets
+\[
+ r_n(u)=x_n^{-1-2u}\{1+C_1(u)x_n^{-2}+O(n^{-4})\},\qquad
+ C_1(u)=-\tfrac13\sum_{i=1}^4 B_3(\alpha_i).
+\]
+Centering cancels the odd inverse powers. Thus
+\begin{equation}\label{mx:subtracted}
+ R_2(u)=\sum_{n\ge0}
+ \{r_n(u)-x_n^{-1-2u}-C_1(u)x_n^{-3-2u}\}
+ =G(u)-\zeta(1+2u,\eta)-C_1(u)\zeta(3+2u,\eta)
+\end{equation}
+extends holomorphically to $-2<\Re u<d_0$. The series bound is
+$O(n^{-5-2\Re u})$ on compact subsets; Cauchy's formula gives
+normal convergence for each fixed spectral or parameter derivative.
+The equality first follows by summing the counterterms in the
+ordinary convergence region, and then by continuation.
+
+At $u=-1$, direct Bernoulli algebra gives
+\begin{align}
+ C_1(-1)&=\rho:=-(A-p-q)pq,\notag\\
+ \tfrac12 C_1'(-1)+\zeta(-1,\eta)
+ &=\tfrac12\{B_2(\eta-p-q)-B_2(\eta)\}
+ =-\tfrac12(A-p-q)(p+q).
+ \label{mx:bernoulli-cancellation}
+\end{align}
+For generic nonzero $p,q$, $G$ has residue $\rho/2$ and constant term
+\[
+ \frac\rho2\{\psi(2)-\psi(d_0+1)-\psi(p)-\psi(q)\}.
+\]
+The resonant Hurwitz term has constant coefficient
+$C_1'(-1)/2-\rho\psi(\eta)$. Combining these constants with
+\eqref{mx:bernoulli-cancellation}, and using
+$\psi(1+p)=\psi(p)+1/p$ and its $q$ counterpart, yields
+$R_2(-1)=\rho B_a(p,q)$. Since $r_n(-1)=x_nQ_n$, this is
+\eqref{mx:generator-eq}. Holomorphy extends it to the spectral axes.
+
+Finally all Gamma arguments in $Q_n$ and all digamma arguments in
+$B_a$ stay pole-free for $\Re a>0$ and small $p,q$. The centered
+bound remains $O(n^{-3})$ uniformly on every compact $a$-set.
+Each Taylor coefficient is consequently holomorphic in that half-plane
+and agrees with the asserted coefficient for $\Re a>1$; the identity
+theorem extends it throughout. The bracket vanishes identically on
+both axes. Cauchy's formula on a slightly larger polydisc transfers
+its $O(n^{-3})$ bound to its holomorphic quotient by $pq$ and to
+every fixed derivative, proving the divided-series assertion.
+\end{proof}
+
+\subsection{Finite mixed coefficient tables}
+For $k\ge2$ set
+$\Lambda_k(n;a)=(-1)^k\psi^{(k-1)}(n+a)-\psi^{(k-1)}(n+1)$.
+Logarithmic differentiation of the eight Gamma factors gives
+\begin{equation}\label{mx:logQ}
+ \log Q_n=\sum_{r,s\ge1}\Lambda_{r+s}(n;a)\frac{p^rq^s}{r!s!}.
+\end{equation}
+Define the finite bivariate Bell coefficient
+\[
+ \mathcal B_{rs}(n;a)=r!s![p^rq^s]
+ \exp\left(\sum_{i,j\ge1}\Lambda_{i+j}(n;a)\frac{p^iq^j}{i!j!}\right).
+\]
+Only $i\le r$, $j\le s$ and powers at most $\min(r,s)$ are needed.
+For example
+\[
+ \mathcal B_{11}=\Lambda_2,\quad
+ \mathcal B_{31}=\Lambda_4,\quad
+ \mathcal B_{22}=\Lambda_4+2\Lambda_2^2,\quad
+ \mathcal B_{33}=\Lambda_6+9\Lambda_2\Lambda_4+9\Lambda_3^2+6\Lambda_2^3.
+\]
+Write $B_{rs}=\partial_p^r\partial_q^sB_a(0,0)$. Then
+\[
+ B_{00}=\psi(a/2)+\tfrac12(1+\gamma-\psi(a)),
+\]
+and, for $r+s=k\ge1$,
+\begin{equation}\label{mx:B-jets}
+ B_{rs}=-\tfrac12\{
+ \mathbf1_{s=0}\psi^{(r)}(1)+\mathbf1_{r=0}\psi^{(s)}(1)
+                  +(-1)^k\psi^{(k)}(a)\}.
+\end{equation}
+Terms with a negative subscript are omitted below.
+\begin{corollary}[All fixed mixed orders]\label{mx:mixed-table}
+For $r,s\ge1$ the absolutely convergent single bracket
+\begin{align}
+ S_{rs}(a)=\sum_{n\ge0}\bigg\{x_n\mathcal B_{rs}(n;a)
+ +\frac{A\mathbf1_{r=s=1}-2\mathbf1_{(r,s)=(2,1)}
+                         -2\mathbf1_{(r,s)=(1,2)}}{x_n}\bigg\}
+ \label{mx:mixed-sum}
+\end{align}
+equals
+\begin{equation}\label{mx:mixed-value}
+ -rs\{A B_{r-1,s-1}-(r-1)B_{r-2,s-1}-(s-1)B_{r-1,s-2}\}.
+\end{equation}
+When $r+s\ge4$ the counterterm is absent.
+\end{corollary}
+\begin{proof}
+Differentiate the normally convergent identity
+\eqref{mx:generator-eq}. Its counterterm is a polynomial of total
+degree three, while Leibniz's rule on the right gives
+\eqref{mx:mixed-value}. The quotient and normal-convergence
+statements were proved before differentiation.
+\end{proof}
+
+\subsection{A trigamma square and its arithmetic specializations}
+\begin{theorem}[Weighted trigamma square]\label{mx:trigamma-square}
+For every real $a>0$,
+\begin{equation}\label{mx:trigamma-square-value}
+ \sum_{n\ge0}\left(n+\frac a2\right)
+       \bigl(\psi'(n+a)-\psi'(n+1)\bigr)^2
+ =\frac{a-1}{4}\psi''(a)+\frac{\psi'(a)-\zeta(2)}2
+                         +\frac{3(a-1)}2\zeta(3).
+\end{equation}
+The ordinary series is locally normally convergent over $\Re a>0$,
+where the square is algebraic.
+\end{theorem}
+\begin{proof}
+The $(2,2)$ and $(3,1)$ rows of \eqref{mx:mixed-value} give
+\begin{align*}
+ \sum_nx_n(\Lambda_4+2\Lambda_2^2)
+ &=2A\psi''(a)+4\psi'(a)-4\zeta(2),\\
+ \sum_nx_n\Lambda_4
+ &=\tfrac{3A}{2}\{\psi''(1)+\psi''(a)\}
+                       +3\{\psi'(a)-\zeta(2)\}.
+\end{align*}
+Subtract and divide by two, using $\psi''(1)=-2\zeta(3)$.
+All series in that calculation converge absolutely. Independently,
+the polygamma expansion gives
+$\psi'(n+a)-\psi'(n+1)=O(n^{-2})$ locally uniformly, so the
+weighted square is $O(n^{-3})$, including at $a=1$.
+\end{proof}
+The half-integer recurrences reduce the cases $a=3/2$ and $a=1/2$ to
+\begin{align}
+ \sum_{n\ge0}(4n+3)
+ \{2H_{2n+1}^{(2)}-H_n^{(2)}-\zeta(2)\}^2
+ &=\zeta(2)-\zeta(3),\label{mx:half-square}\\
+ \sum_{n\ge0}(4n+1)
+ \{\zeta(2)-2H_{2n}^{(2)}+H_n^{(2)}\}^2
+ &=\zeta(2)+\zeta(3).\label{mx:other-half-square}
+\end{align}
+Indeed $\psi'(3/2)=3\zeta(2)-4$,
+$\psi''(3/2)=-14\zeta(3)+16$,
+$\psi'(1/2)=3\zeta(2)$ and $\psi''(1/2)=-14\zeta(3)$.
+The polygamma series express the respective differences as twice
+the bracketed harmonic tails. At $a=2$,
+\eqref{mx:trigamma-square-value} reduces to $\sum_{k\ge1}k^{-3}=\zeta(3)$.
+
+\subsection{An all-orders zeta-tail identity with an independent proof}
+Put $T_s(n)=\zeta(s)-H_n^{(s)}=\sum_{j>n}j^{-s}$ for $s\ge2$.
+Differentiating \eqref{mx:trigamma-square-value} at $a=1$ suggests the
+following finite combination at every order. We prove it independently
+by Euler partial fractions and positive double sums, so its validity
+does not depend on the hypergeometric continuation.
+\begin{theorem}[All-order quadratic tail reduction]\label{mx:tail-family}
+For every integer $k\ge2$,
+\begin{align}
+ &\sum_{n\ge0}\bigg[
+ \left(n+\tfrac12\right)\sum_{j=1}^{k-1}(j+1)(k-j+1)
+                 T_{j+2}(n)T_{k-j+2}(n)\notag\\
+ &\hspace{30mm}-\tfrac12\sum_{j=1}^{k-2}(j+1)(k-j)
+                 T_{j+2}(n)T_{k-j+1}(n)\bigg]
+ =\frac{(k+1)(k+2)}4\zeta(k+2).
+ \label{mx:tail-family-value}
+\end{align}
+Every series displayed on the left is ordinary and absolutely convergent.
+\end{theorem}
+\begin{proof}
+For $a,b\ge3$, summing first over $0\le n<\min(l,m)$ gives
+\begin{align}
+ \sum_{n\ge0}(n+\tfrac12)T_a(n)T_b(n)
+ &=\tfrac12\{\zeta(a+b-2)+\zeta(a,b-2)+\zeta(b,a-2)\},
+ \label{mx:weighted-tail}\\
+ \sum_{n\ge0}T_a(n)T_b(n)
+ &=\zeta(a+b-1)+\zeta(a,b-1)+\zeta(b,a-1).
+ \label{mx:ordinary-tail}
+\end{align}
+The finite sums of the weights are $\min(l,m)^2/2$ and $\min(l,m)$,
+respectively. Positivity justifies Tonelli, and the resulting double
+zeta sums converge. Here $\zeta(r,s)=\sum_{l>m\ge1}l^{-r}m^{-s}$.
+Substituting these two formulas, using the symmetry in $j$ and $k-j$
+or $k-1-j$, reduces \eqref{mx:tail-family-value} to
+\begin{equation}\label{mx:Euler-weighted}
+ \sum_{j=1}^{k-2}(j+1)\zeta(j+2,k-j)
+          +2k\zeta(k+1,1)=\zeta(k+2).
+\end{equation}
+The diagonal single-zeta coefficient before this last reduction is
+$(k^2+3k-2)/4$; the proposed value exceeds it by one.
+
+For completeness the classical relation \eqref{mx:Euler-weighted}
+has an elementary proof. Iterating
+\[
+ \frac1{x^r y^s}=
+ \frac{x^{-(r-1)}y^{-s}+x^{-r}y^{-(s-1)}}{x+y}
+\]
+gives, for $x,y>0$,
+\begin{equation}\label{mx:partial-fraction}
+ \frac1{x^2y^k}
+ =\sum_{i=0}^{1}\frac{\binom{k+i-1}{i}}{(x+y)^{k+i}x^{2-i}}
+  +\sum_{i=0}^{k-1}\frac{i+1}{(x+y)^{2+i}y^{k-i}}.
+\end{equation}
+Summing over positive integer $x,y$ is justified by positivity. The
+first sum becomes $\zeta(k,2)+k\zeta(k+1,1)$; the second becomes
+$\sum_{i=0}^{k-1}(i+1)\zeta(i+2,k-i)$.
+On the other hand, separating equal and unequal indices in the product
+gives the stuffle identity
+$\zeta(2)\zeta(k)=\zeta(2,k)+\zeta(k,2)+\zeta(k+2)$.
+Subtracting the two expressions proves \eqref{mx:Euler-weighted},
+including $k=2$ where the empty sum is zero. This proves the theorem.
+\end{proof}
+The first member is the simple ordinary identity
+\begin{equation}\label{mx:tail-three-square}
+ \boxed{\sum_{n\ge0}(2n+1)\{\zeta(3)-H_n^{(3)}\}^2
+                         =\tfrac32\zeta(4).}
+\end{equation}
+The next member is
+\[
+ \sum_{n\ge0}\{12(n+\tfrac12)T_3(n)T_4(n)-2T_3(n)^2\}
+                         =5\zeta(5).
+\]
+
+\begin{corollary}[Centered tail squares]\label{mx:centered-tails}
+For every integer $s\ge3$,
+\begin{equation}\label{mx:centered-tail-family}
+ \sum_{k\ge1}k\{2T_s(k-1)-k^{-s}\}^2
+ =2\zeta(2s-2)+4\zeta(s,s-2)-\zeta(2s-1).
+\end{equation}
+At $s=3$ this is the mixed-report evaluation
+\begin{equation}\label{mx:centered-three}
+ \boxed{\sum_{k\ge1}k
+       \{2(\zeta(3)-H_{k-1}^{(3)})-k^{-3}\}^2
+                   =3\zeta(4)-\zeta(5).}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Expand the square and use \eqref{mx:weighted-tail},
+\eqref{mx:ordinary-tail}, and
+$\sum_{k\ge1}k^{1-s}T_s(k-1)=\zeta(s,s-1)+\zeta(2s-1)$.
+The two $\zeta(s,s-1)$ terms cancel. For $s=3$,
+\eqref{mx:Euler-weighted} at $k=2$ gives
+$4\zeta(3,1)=\zeta(4)$, yielding \eqref{mx:centered-three}.
+All rearranged sums converge absolutely.
+\end{proof}
+These identities show how a Gamma mixed-derivative experiment can expose
+an exact Euler relation. The additional all-order tail and centered-tail
+formulas are collective deductions from classical partial fractions;
+global priority or independence of their period coordinates is not asserted.
