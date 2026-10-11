@@ -1123,6 +1123,8 @@ import GowersSzemeredi.Proofs18CoverDensity
 import GowersSzemeredi.Proofs18CoverExponents
 import GowersSzemeredi.Proofs18CoverDegrees
 import GowersSzemeredi.Proofs18CoverExplicit
+import GowersSzemeredi.Proofs18FiniteCoverBudgets
+import GowersSzemeredi.Proofs18CoverEnvelopeArithmetic
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
