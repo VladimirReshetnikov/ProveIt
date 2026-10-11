@@ -91,7 +91,9 @@ Endpoint query deduplication does not discard continuation frames merely
 because an endpoint was seen: remaining budget, sleeping events and
 compatible covers can differ.
 
-The complete cover index can have $t2^{O(U)}$ incidences. It is explicitly
+At that release the complete cover index can have $t2^{O(U)}$ incidences.
+Section~\ref{sec:cover-oracle} later replaces default eager indexing by exact
+on-demand footprint completion while retaining the indexed backend. It is explicitly
 constructed and charged; neither constant memory nor a free index is claimed.
 Transitions and integral transport are evaluated only when queued branches
 are visited. Independent replay checks move geometry, cochain transport,

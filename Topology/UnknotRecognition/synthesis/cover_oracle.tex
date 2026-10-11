@@ -1,0 +1,122 @@
+\section{Exact cover existence before ambient indexing}
+\label{sec:cover-oracle}
+
+The integrated shared Pachner engine removes restarted trace prefixes but
+still constructs a complete ambient cover index before visiting the search
+root. On the actual-diagram audit of Section~\ref{sec:pachner-native}, this
+preparation consumes the local allowance before useful move exploration.
+This continuation represents the same existential cover language by exact
+on-demand queries on consumed footprints. It preserves connected and
+multicomponent covers, the complete bounded family and independent replay.
+
+\subsection{A footprint needs a witness, not the whole index}
+
+For original dual graph $G$, size limit $R$ and component limit $c$, a
+footprint $F$ is admitted exactly when
+\[
+  \exists S:\quad F\subseteq S,\quad |S|\le R,\quad
+                          \operatorname{components}(G[S])\le c.
+\]
+An empty footprint has the empty witness. If $F$ itself satisfies the size
+and component limits, it is already a witness. Otherwise the oracle searches
+for additional original cells connecting its components. In particular it
+must not reject disconnected consumption merely because $c=1$.
+A larger connected cover can contain a disconnected footprint.
+
+\begin{proposition}[Rooted completion suffices]
+If a permitted cover of $F$ exists, one exists with every induced component
+intersecting $F$. The latter covers can be enumerated without duplication
+by a rooted reverse search starting from $F$.
+\end{proposition}
+\begin{proof}
+Delete every component of a cover that does not intersect $F$. This retains
+all required cells, reduces its size and cannot increase its component
+count. For any rooted set $S\supsetneq F$, choose a spanning forest with
+one assigned root in $F$ for every tree, for example a deterministic
+multi-source breadth-first forest. It has a non-root leaf. Deleting that
+leaf leaves every remaining vertex connected to a root, so at least one
+non-root deletion preserves the rooted property.
+Define the canonical parent by deleting the largest non-root vertex with
+that property. Cardinality decreases until $F$ is reached. The deleted
+vertex always has a neighbour in its parent, since a component consisting
+only of that non-root vertex would violate rootedness. Thus adding frontier
+vertices and accepting exactly children whose canonical parent is the
+current set generates every rooted extension once.
+\end{proof}
+
+The original degree bound is four. For fixed roots $F$, encode any rooted
+extension by processing a deterministic breadth-first queue initially
+containing those roots. Each processed vertex gives at most four membership
+bits for its neighbour ports. Every component meets a root, so the queue
+reaches the entire extension. At most $R$ vertices are processed, giving
+at most $\sum_{i=0}^{R}2^{4i}=2^{O(R)}$ extensions, independent of an
+ambient factor raised to $|F|$. Canonical-parent and component tests cost
+polynomial work in $R$ and the source encoding. A fixed query therefore
+has $2^{O(R)}\operatorname{poly}(t+B)$ bit cost. No greedy Steiner
+approximation or numerical relaxation supplies the answer.
+
+\subsection{The selected witness does not define future eligibility}
+
+A search frame retains its actual consumed original set $F$. Adding an
+event's newly consumed originals $A$ asks about $F\cup A$, using the
+\emph{original} dual graph. Born cells add no new original identity because
+their ancestors entered at creation. An admitted frame stores one covering
+witness solely for the source certificate. The next query uses $F$, not
+that witness: a later event may require a different cover containing the
+larger footprint.
+
+For example on the path $0$--$1$--$2$--$3$ with $R=3,c=1$, consumption
+$\{0\}$ has witness $\{0\}$. Later consumption $\{0,2\}$ is still allowed,
+with witness $\{0,1,2\}$. Restricting future moves to the first witness
+would lose this trace. The new engine does not do so.
+
+The existential predicate is hereditary. If some cover contains a full
+trace's footprint, it contains every prefix. It therefore admits exactly
+the union language of the indexed engine. Admitted independent-event swaps
+have the same final footprint and source marking, and both intermediate
+footprints lie in that cover. The same sleep-set commutation argument
+remains valid. Endpoint deduplication still does not delete continuation
+states with different remaining budgets or obligations.
+
+Witness covers may differ between backends; actual geometry, transported
+cochain, incarnation histories and parent trace evidence do not depend on
+which covering witness is chosen. Predicate completeness still requires
+invariance under marked endpoint/commutation equivalence and independence
+from an arbitrarily selected witness cover. A history-sensitive callback
+cannot gain a completeness guarantee from changing representation.
+
+\subsection{Completed caches, explicit limits and retained interfaces}
+
+The oracle caches only a completed existence result for a footprint:
+one actual witness, or a proved absence. Its global completion-state limit
+counts begun rooted-extension candidates. Exhausting that limit or a
+cooperative callback interrupts the query; it never returns or caches a
+false exclusion. Cheap certified cases, such as a connected footprint
+already within the limit, need no extension search.
+
+\code{cover\_backend} accepts \code{auto}, \code{indexed} and \code{oracle}.
+The default uses the on-demand backend when no complete-index cap is
+requested. An explicit \code{max\_regions} retains its original index-cap
+meaning and selects the indexed engine in automatic mode. The two explicit
+backends remain differential oracles. \code{max\_oracle\_states} bounds total
+completion work across a call, not the ambient cover-family count. These
+limits have distinct meanings; an incompatible explicit oracle/index-cap
+combination is rejected. The original certificate format and source checker
+remain unchanged.
+
+Index counters remain zero on an unmaterialized oracle call; they do not
+assert that no logical covers exist. Separate query, cache-hit and extension
+state counts describe the actual oracle work. The index implementation and
+its cap/measurement regression tests remain available explicitly.
+
+For connected bounded first descent, $R\le3U+3$. Multiplying the existing
+$t2^{O(U)}$ geometric trace count by the $2^{O(R)}$ per-footprint completion
+cost retains $2^{O(U)}\operatorname{poly}(t+B)$ overall geometry. This replaces
+eager preparation with visited-footprint work, rather than improving that
+parameterized complexity class. It can expose useful geometric transitions
+within an allowance that previously ended during index construction.
+For general multicomponent families, no new ambient-independent trace count
+is asserted; only each supplied-footprint completion has the stated bound.
+
+\subsection{Actual diagram progress and measured source costs}
+\input{cover_oracle_results.tex}
