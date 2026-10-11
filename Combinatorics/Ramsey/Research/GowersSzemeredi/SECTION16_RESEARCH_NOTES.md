@@ -4231,8 +4231,10 @@ companions. Its printed unit-parameter encoding is separately negated by
 `lemma_16_10_packaged_premises_counterexample`; CompletionAudit verifies that
 exact negation and its axiom dependencies independently. Thus the audit
 never presents a refuted printed claim as a proved positive statement.
-The existing catalogue-fidelity caveats remain; the user-facing correction
-clarification is separate from the now-completed kernel verification.
+On 2026-10-11 the user explicitly accepted the documented Lemma 16.10
+correction. The requested formalization is therefore complete under that
+accepted scope, together with the stronger bounds checked above. The
+existing catalogue-fidelity caveats remain.
 
 Reproduce with:
 
