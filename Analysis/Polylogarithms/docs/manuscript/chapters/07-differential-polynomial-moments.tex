@@ -1,0 +1,236 @@
+
+\section{Differential polynomials and the disappearance of subtractions}
+\label{dpm:section}
+
+The all-power expansion also supplies a complete calculus for a fixed
+polynomial in digamma and its positive derivatives.  Three further
+continuations \cite{dpm:reports} develop this direction.  We reconcile
+here their common analytic core: derivatives remove the frozen residue,
+so the derivative-containing part has an ordinary, unsubtracted global
+pole expansion.  The integration-by-parts quotient, sixth/seventh
+coordinate reductions and unequal-tail rank claims remain separate
+questions; they are not consequences of this convergence theorem alone.
+
+Let $P\in\mathbb C[u_0,u_1,\ldots,u_R]$ be a fixed polynomial, and put
+\[
+ f_P(z)=P\bigl(\psi(z),\psi'(z),\ldots,\psi^{(R)}(z)\bigr),\qquad
+ \phi_P(T)=P(T,0,\ldots,0).
+\]
+Write $\mathcal J=(u_1,\ldots,u_R)$.  Thus $P\in\mathcal J$ means
+that every monomial contains at least one positive derivative.
+The coefficients of $P$ are fixed constants, with no dependence on $z$.
+Choose a common pole-order bound $M$, and extract
+\[
+ p_j(n)=[\varepsilon^{-j}]f_P(-n+\varepsilon),\quad
+ r(n)=p_1(n),\quad
+ P_n(z)=\sum_{j=1}^M\frac{p_j(n)}{(z+n)^j}.
+\]
+Zero coefficients are understood.  The pole data come from the
+convergent series \eqref{dgp:eq:pole-series}, differentiated a finite number
+of times and multiplied.  They are finite harmonic polynomials.
+For example a monomial $\prod_{a=0}^R u_a^{m_a}$ has pole order at
+most $\sum_a(a+1)m_a$.
+
+\begin{theorem}[Unsubtracted expansion for the derivative ideal]
+\label{dpm:unsubtracted}
+For $P\in\mathcal J$, the identity
+\begin{equation}\label{dpm:ML}
+ \boxed{f_P(z)=\sum_{n\ge0}P_n(z)}
+\end{equation}
+holds with absolute normal convergence away from the nonpositive
+integers.  For some fixed $A\ge0$, as $n\to\infty$,
+\begin{align}
+ p_j(n)&=O\bigl((1+\log n)^A\bigr),&
+ \Delta p_j(n)&=O\bigl(n^{-1}(1+\log n)^A\bigr),\label{dpm:coeff}\\
+ r(n)&=O\bigl(n^{-1}(1+\log n)^A\bigr),&
+ \Delta r(n)&=O\bigl(n^{-2}(1+\log n)^A\bigr).
+ \label{dpm:residue}
+\end{align}
+Here $\Delta a(n)=a(n)-a(n-1)$.
+\end{theorem}
+
+\begin{proof}
+Put $K(v)=-\pi\cot(\pi v)$.  Its differential equation is
+$K'=K^2+\pi^2$.  Each positive derivative $K^{(a)}$ is therefore a
+polynomial in $K$ divisible by $K^2+\pi^2$: differentiation preserves
+that divisibility.  For any constant $L$, the polynomial
+$P(L+K,K',\ldots)$ is divisible by $K^2+\pi^2$.  Divide by this
+factor and integrate the resulting polynomial in $K$.  There is a
+polynomial $T_L$ with
+\[
+ P(L+K(v),K'(v),\ldots)=\frac{d}{dv}T_L(K(v)).
+\]
+A meromorphic derivative has zero residue.  This is the exact frozen
+residue cancellation; it uses the derivative in each monomial.
+
+Fix $0<\rho<1/2$.  Reflection at $-n$ gives
+\[
+ \psi(-n+v)=K(v)+\log n+\eta_n(v),\qquad
+ \eta_t(v)=\psi(t+1-v)-\log t\quad(t\ge1).
+\]
+Uniformly for $|v|\le\rho$, every fixed finite set of derivatives satisfies
+\[
+ \partial_v^a\eta_t(v)=O(t^{-1}),\qquad
+ \partial_t\partial_v^a\eta_t(v)=O(t^{-2}).
+\]
+For $a=0$ this includes the subtraction of $\log t$ and its derivative;
+for $a>0$ it follows directly from the positive-axis polygamma
+expansions, which may also be obtained by differentiating the normally
+convergent pole series.  Cauchy coefficient extraction on $|v|=\rho$
+now bounds $p_j(t)$ and its $t$ derivative by the orders in
+\eqref{dpm:coeff}.  For the residue, first subtract the frozen
+polynomial with $L=\log t$.  Its residue is identically zero, while
+the difference and its $t$ derivative have bounds
+$O(t^{-1}(1+\log t)^A)$ and $O(t^{-2}(1+\log t)^A)$.
+Integrating the $t$ derivative over $[n-1,n]$ proves
+\eqref{dpm:residue}; finitely many small indices do not affect these
+estimates.  No derivative of an unspecified remainder is used.
+
+These bounds give absolute normal convergence of the proposed pole
+series: the simple pole has the extra factor $n^{-1}$, and every
+higher pole already has exponent at least two.  To determine the
+entire remainder, use $|w|=R_N=N+1/2$.  Pole avoidance, reflection
+and the same sectorial expansions give uniformly on this circle
+\[
+ |\psi(w)|\le C(1+\log R_N),\qquad
+ |\psi^{(a)}(w)|\le C_a
+       \bigl(R_N^{-1}+e^{-c|\operatorname{Im}w|}\bigr)
+       \quad(a\ge1).
+\]
+The cotangent derivatives decay exponentially for large imaginary
+part and remain bounded for small imaginary part because the circle
+stays at least $1/2$ from each integer.  The right half-plane can
+be estimated directly.  Thus, since every monomial has a positive
+derivative,
+\[
+ |f_P(w)|\le C(1+\log R_N)^A
+        \bigl(R_N^{-1}+e^{-c|\operatorname{Im}w|}\bigr).
+\]
+The angular integral of $e^{-cR_N|\sin\theta|}$ is $O(R_N^{-1})$.
+Consequently, for fixed $z$,
+\[
+ \oint_{|w|=R_N}\frac{f_P(w)}{w-z}\,dw
+       =O\bigl((1+\log R_N)^A/R_N\bigr)\longrightarrow0.
+\]
+The residue at $z$ is $f_P(z)$, and the one at $-n$ is $-P_n(z)$.
+The residue theorem proves \eqref{dpm:ML}, including its normalization.
+\end{proof}
+
+\begin{theorem}[Ordinary finite-part coordinates for the derivative ideal]
+\label{dpm:FP}
+For $P\in\mathcal J$, set
+\[
+ J_P=\sum_{n\ge1}\sum_{j=2}^M
+       \frac{\Delta p_j(n)}{(j-1)n^{j-1}},\qquad
+ D_P(s)=\sum_{n\ge1}\frac{\Delta r(n)}{n^s}.
+\]
+Then $D_P$ is holomorphic for $\operatorname{Re}s>-1$, and the
+original-coordinate finite part is
+\begin{equation}\label{dpm:ordinary}
+ \boxed{\operatorname{FP}_x\int_0^1 f_P(x)\,dx
+   =J_P+D_P'(0)
+   =J_P-\sum_{n\ge1}\Delta r(n)\log n.}
+\end{equation}
+Every displayed sum is ordinary and absolutely convergent.
+\end{theorem}
+
+\begin{proof}
+After removing the finitely many pole terms at zero,
+\eqref{dpm:ML} converges uniformly on $[0,1]$, so it may be integrated
+there.  The simple pole at zero has finite part zero.  A higher pole
+at zero contributes $-p_j(0)/(j-1)$.  A pole at $-n$, $n\ge1$,
+contributes $r(n)\log(1+1/n)$ and
+$p_j(n)(n^{1-j}-(n+1)^{1-j})/(j-1)$.
+Use the finite summation identities
+\eqref{dgp:eq:sbp-high} and \eqref{dgp:eq:sbp-simple}.
+The initial higher-pole terms cancel the finite parts at zero.
+All boundary terms vanish: $p_j(N)(N+1)^{1-j}\to0$ for $j\ge2$,
+and $r(N)\log(N+1)\to0$ by \eqref{dpm:residue}.
+This gives \eqref{dpm:ordinary}.  The same bound on $\Delta r$
+proves normal convergence of $D_P$ and all its derivatives on compact
+subsets of $\operatorname{Re}s>-1$.  It justifies the displayed
+ordinary derivative at zero.
+\end{proof}
+
+\begin{corollary}[An arbitrary fixed differential polynomial]
+\label{dpm:allP}
+Write $P=\phi_P(u_0)+P_{\rm mix}$ with $P_{\rm mix}\in\mathcal J$.
+The finite part of $f_P$ is the linear combination of the all-power
+formulas for $\phi_P$ and \eqref{dpm:ordinary} for $P_{\rm mix}$.
+In particular, the large-circle boundary polynomial and the frozen
+residue polynomial depend only on $\phi_P$.  If
+$\phi_P(T)=\sum a_kT^k$, they are respectively
+\[
+ C_P(L)=\sum_k\frac{a_k}{2\pi}\int_{-\pi}^{\pi}(L+i\theta)^k\,d\theta,
+ \qquad
+ R_P(L)=-\frac{\phi_P(L+i\pi)-\phi_P(L-i\pi)}{2i\pi}.
+\]
+The normalized global formula is
+\[
+ f_P(z)=P_0(z)+\kappa_P+
+       \sum_{n\ge1}\bigl(P_n(z)-P_n(0)\bigr),
+ \qquad \kappa_P=[\varepsilon^0]f_P(\varepsilon).
+\]
+\end{corollary}
+
+\begin{proof}
+Apply Theorems~\ref{dgp:thm:ML}, \ref{dgp:thm:contour} and
+\ref{dgp:thm:all-power} to each scalar monomial, and the two preceding
+theorems to $P_{\rm mix}$.  The scalar constant term contributes its
+ordinary integral.  For the mixed part, \eqref{dpm:ML} implies
+$\kappa_{P_{\rm mix}}=\sum_{n\ge1}(P_{\rm mix})_n(0)$ by taking the regular constant at zero;
+this sum converges by \eqref{dpm:coeff}--\eqref{dpm:residue}.
+Hence its unsubtracted expansion is also precisely the displayed
+normalized expansion.  Linearity completes every assertion.
+\end{proof}
+
+\begin{corollary}[Anchored primitives for derivative-containing polynomials]
+\label{dpm:primitive}
+On $\mathbb C\setminus(-\infty,0]$, use the principal logarithm.
+For $z,z_0$ in this domain,
+\begin{align*}
+ F_P(z;z_0)={}&\sum_{n\ge0}r(n)
+       \bigl(\operatorname{Log}(z+n)-\operatorname{Log}(z_0+n)\bigr)\\
+ &+\sum_{n\ge0}\sum_{j=2}^M\frac{p_j(n)}{j-1}
+       \bigl((z_0+n)^{1-j}-(z+n)^{1-j}\bigr)
+\end{align*}
+converges normally, has $F_P(z_0;z_0)=0$ and
+$\partial_zF_P(z;z_0)=f_P(z)$.  For complex anchors retain the difference
+of logarithms; a principal logarithm of the ratio need not agree.
+\end{corollary}
+
+\begin{proof}
+On a compact set, the logarithm difference is $O(n^{-1})$ and the
+inverse-power difference in the $j$th term is $O(n^{-j})$.
+The coefficient bounds imply normal convergence.  Differentiation
+and \eqref{dpm:ML} prove the derivative and the anchor is immediate.
+\end{proof}
+
+As a normalization check, the derivative-containing polynomial
+$P=u_0u_1$ gives
+\[
+ \operatorname{FP}_x\int_0^1\psi(x)\psi'(x)\,dx=\zeta(2).
+\]
+Indeed its primitive is $\psi^2/2$.  Its value at one is $\gamma^2/2$,
+whereas its local constant at zero is $(\gamma^2-2\zeta(2))/2$.
+More general total derivatives retain exactly this endpoint-minus-local-
+constant rule.  Formula \eqref{dpm:ordinary} applies as well to mixed
+polynomials which are not total derivatives.  It removes singular
+spectral Laurent coordinates without asserting that their ordinary
+convergent replacements reduce arithmetically to a smaller constant field.
+
+For the nonlinear example $P=u_1^2$, write the local series as
+$\psi'(-n+v)=v^{-2}+c_{2,n}+2c_{3,n}v+\cdots$.
+The square has $p_4(n)=1$, $p_3(n)=0$, $p_2(n)=2c_{2,n}$ and
+$r(n)=4c_{3,n}$.  Hence $\Delta p_2(n)=2n^{-2}$ and
+$\Delta r(n)=4n^{-3}$.  Formula \eqref{dpm:ordinary} gives the
+explicit ordinary identity
+\[
+ \operatorname{FP}_x\int_0^1\psi'(x)^2\,dx
+       =2\zeta(3)+4\zeta'(3).
+\]
+The logarithmic sum is absolutely convergent.  This illustrates why a
+positive derivative removes the singular spectral germ while retaining
+an ordinary zeta derivative.  Independent local-subtraction quadrature
+checks this value and the two total-derivative examples; it is a numerical
+diagnostic, with no interval error claim.

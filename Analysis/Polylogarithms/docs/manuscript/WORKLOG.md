@@ -603,3 +603,31 @@ Four volumes compile and pass independent cold builds: 129/127/205/84 pages,
 changed page body reviewed at full size; inherited raster equivalence covers
 the rest. Inventory 1251 textual sources; cumulative 84 archives/3111 tracked
 originals; bibliography 135. Original report evidence stays immutable.
+
+
+## Fifteenth intake: a common differential-polynomial analytic core
+
+Preserved six new continuations (220 originals, 217 tracked) in 2356a42ff4de,
+retiring their ZIPs in that same placement; exact publication verified. All
+six complete mathematical suites pass on separate copies, including both
+multishift numerical precisions. Retain original logs/build evidence and the
+independent proof routes. No substantive source or PDF repeats an older intake.
+
+Reconcile the common derivative-ideal theorem from the Bernoulli-Tornheim,
+differential-polygamma and tail reports. Frozen cotangent residue cancellation,
+real-index coefficient interpolation and the decaying contour average prove
+the unsubtracted pole expansion. Summation by parts gives ordinary finite-part
+coordinates; normal convergence gives anchored primitives. Scalar decomposition
+extends the result to every fixed differential polynomial. The trigamma-square
+example is derived directly from its local coefficients. Native Wolfram passes
+16 exact residue checks, an excluded-scalar control and three 90-digit
+quadratures; the full independent incoming differential audit also passes.
+
+The quotient basis, sixth/seventh arithmetic coordinate families, optimal tail
+prefix slices, cubic invariants, determinants and multishift/Lerch branches
+remain pending separate analytic integration. S6 and revised S8 stay open.
+Four volumes now have 129/127/208/84 pages, total 548; combined 510. Three
+coupled rounds and independent cold builds pass. All 40 external links checked;
+10 changed volume and two unmatched combined bodies reviewed at full size,
+with exact inherited body review for the remainder. Bibliography 136; inventory
+1333; cumulative preservation 90 archives/3328 tracked originals.
