@@ -4025,3 +4025,37 @@ PYTHONPATH=. python -B -m normal_orbit_research.matching_pairs benchmark --round
 
 The audit uses Regina for independent source-ray checks. See
 [the theory, counterexample and measurements](../synthesis/matching_pairs.tex).
+
+### Binary cut-open component connectivity
+
+`fastunknot.normal_cut_complement.normal_complement_components` counts the
+connected pieces after cutting a supplied valid normal surface. It represents
+local quad-stack/triangle-arm chambers with at most `20*T` interval pairings,
+regardless of the number of represented normal discs. Unlimited work is
+polynomial in the source and binary coordinate size. Independent replay is
+`fastunknot.normal_cut_complement_verify.verify_normal_complement_certificate`;
+it reconstructs face regions without the chamber or orbit producers.
+
+Parallel coordinates are retained: cutting along `m` parallel meridians gives
+`m` pieces, while the retained Möbius-band vector gives `floor(m/2)+1`.
+A capped query has no count or certificate. Source geometry retains the
+existing finite compact orientable one-torus-boundary contract. The API
+returns a count and optional source-bound proof; it does not return full cut
+triangulations, boundary patterns, regluing maps or a knot verdict. It is not
+called by recognition and establishes no new general recognition bound.
+
+All 1,548 tests and eight focused tests pass. The audit agrees with 2,019
+actual Regina cuts on 48 sources and independently checks thirteen large
+binary cases, including a 16,385-bit coordinate certificate. At 1,024 copies,
+the measured count task is about 74.9 times faster than an explicit Regina
+cut-and-count baseline. Native Python replay is slower on the smallest
+inputs; the baseline additionally constructs the expanded triangulation.
+Reproduce from this directory (Regina is required only by the research driver):
+
+```sh
+PYTHONPATH=. python -B -m normal_orbit_research.cut_complement audit --output ../synthesis/data/cut-complement-audit.json
+PYTHONPATH=. python -B -m normal_orbit_research.cut_complement benchmark --rounds 5 --output ../synthesis/data/cut-complement-benchmark.json
+```
+
+The theory, independent construction and missing hierarchy geometry are in
+[cut_complement.tex](../synthesis/cut_complement.tex).

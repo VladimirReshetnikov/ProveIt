@@ -1562,3 +1562,26 @@ checks with `python -B data/matching_pairs_review.py --publication` from this
 directory. They verify 654 current source/evidence hashes, fifty independent
 source implications, four complete sector certificates and all 80 measured
 calls, as well as test logs and the finite pilot scope.
+
+[cut_complement.tex](cut_complement.tex) proves a polynomial binary reduction
+from cut-open normal-surface component connectivity to interval orbits. It
+retains source-relative geometry and handles one-sided and parallel sheets
+without disc expansion or multiplicity division. Independent replay rebuilds
+face regions separately. The source audit agrees with 2,019 Regina cuts on
+48 triangulations; thirteen large binary cases and 157 saved proofs replay.
+All 1,548 tests and eight focused tests pass. Eighty completed count-task
+measurements include construction, independent native replay and serialization.
+The expanded baseline is faster on tiny inputs; its ratio to native count
+at 1,024 copies is 74.860. The native API does not construct a full cut manifold
+or integrate into the recognizer; patterned cutting and global depth remain open.
+
+The current [PDF](report.pdf) has 611 pages. Section 155 starts on page 603;
+the assessment is section 156 on page 606. Rendered pages 603–608 pass visual
+review, including the full chamber proof, independent geometry, count-task
+timing table, assessment continuation and references. The new operation
+citation on page 611 was also inspected. All references resolve and only
+four pre-existing overflow warnings remain. Reproduce publication checks with
+`python -B data/cut_complement_review.py --publication` from this directory.
+They replay all 157 saved source proofs with producers disabled, check 658
+current source/evidence hashes and authenticate all oracle, test and timing
+records. The API counts components; full patterned cut geometry stays open.
