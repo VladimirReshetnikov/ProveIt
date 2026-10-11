@@ -1,0 +1,202 @@
+% Research note: exact continuation of Differential §09's systematic
+% rational-telescoping question, independent of continued moments.
+\section{A universal finite telescoper for late harmonic-tail moments}
+\label{tel:section}
+
+This section resolves the systematic telescoping question in \cite{DPL}.
+The coordinate formulas used in its application are inherited from
+\cite{DPL,BTD}; the finite certificate and its limiting calculation
+are given here for arbitrary positive even orders.
+
+Let $2\le p\le q$ be even integers, $b=q/2$, and
+\[
+ A_r(N)=\zeta(r)-H_N^{(r)}=\sum_{k>N}k^{-r}.
+\]
+Choose finitely many rational coefficients $\lambda_j$, $b\le j\le J$,
+and put
+\[
+ K(X)=\sum_{j=b}^J\lambda_jX^{2j+1},\qquad
+ P(X)=K(X+\tfrac12)-K(X-\tfrac12).
+\]
+In particular $P$ is even. Define Faulhaber polynomials by their values
+on nonnegative integers:
+\[
+ U(N)=\sum_{k=1}^N\frac{K(k)}{k^q},\qquad
+ V(N)=\sum_{k=1}^N\frac{K(k)}{k^p}.
+\]
+The conditions $j\ge b$ ensure that the summands are polynomials in
+$k$ with positive odd powers. Thus $U,V\in\mathbb Q[N]$ and
+$U(0)=V(0)=0$.
+
+Define the finite even Laurent polynomial
+\begin{equation}\label{tel:H}
+ H(N)=\frac{K(N)}{N^{p+q}}+
+       \frac{U(N-1)}{N^p}+\frac{V(N-1)}{N^q}
+      =H_+(N)+\sum_{k=1}^{b-1}\frac{h_k}{N^{2k}},
+ \qquad h_0=H_+(0),
+\end{equation}
+where $H_+$ contains the nonnegative powers.
+Let $S(X)$ be the nonnegative-power part of the centered asymptotic
+expansion of $P(X)A_p(X-1/2)A_q(X-1/2)$.
+This is an explicitly computable even polynomial: one uses only finitely
+many terms of
+\begin{equation}\label{tel:centered}
+ A_r(X-\tfrac12)\sim\frac{X^{1-r}}{r-1}
+ +\sum_{\ell\ge1}\frac{B_{2\ell}(1/2)(r)_{2\ell-1}}{(2\ell)!}
+      X^{1-r-2\ell}.
+\end{equation}
+Finally let $R\in\mathbb Q[N]$ be the unique polynomial with
+\[
+ R(0)=0,\qquad R(N)-R(N-1)=H_+(N)-S(N-\tfrac12).
+\]
+
+\begin{theorem}[A finite certificate and its limiting value]
+\label{tel:main}
+With these definitions,
+\begin{equation}\label{tel:F}
+ F(N)=K(N)A_p(N)A_q(N)+U(N)A_p(N)+V(N)A_q(N)+R(N)
+\end{equation}
+satisfies the exact finite identity
+\begin{align}\label{tel:finite}
+ F(N)-F(N-1)={}&P(N-\tfrac12)A_p(N-1)A_q(N-1)
+   -S(N-\tfrac12)-\sum_{k=1}^{b-1}\frac{h_k}{N^{2k}}.
+\end{align}
+Moreover $F(0)=0$ and $\lim_{N\to\infty}F(N)=-h_0/2$.
+Consequently the ordinary absolutely convergent sum has the exact value
+\begin{equation}\label{tel:evaluation}
+ \boxed{\displaystyle
+ \sum_{n=0}^\infty
+ \left\{P(n+\tfrac12)A_p(n)A_q(n)-S(n+\tfrac12)\right\}
+ =-\frac{h_0}{2}+\sum_{k=1}^{b-1}h_k\zeta(2k).}
+\end{equation}
+If $h_1=\cdots=h_{b-1}=0$, the certificate consists entirely of
+polynomial multiples of the product of the two tails, the two individual
+tails, and a polynomial; its value is the rational number $-h_0/2$.
+\end{theorem}
+
+\begin{proof}
+For a positive odd integer $m$, write
+\[
+ \sum_{k=1}^N k^m=E_m(N)+\frac12N^m,
+ \qquad E_m(-N)=E_m(N),\quad E_m(0)=0.
+\]
+This follows immediately by expanding
+$\{B_{m+1}(N+1)-B_{m+1}\}/(m+1)$: apart from its half-power term,
+all surviving powers are positive even powers. Hence there are even
+polynomials $U_e,V_e$, both vanishing at zero, such that
+\[
+ U(N)=U_e(N)+\frac{K(N)}{2N^q},\qquad
+ V(N)=V_e(N)+\frac{K(N)}{2N^p}.
+\]
+Their difference laws imply
+$U(N-1)=U_e(N)-K(N)/(2N^q)$, and similarly for $V$.
+Therefore
+\begin{equation}\label{tel:Hparity}
+ H(N)=\frac{U_e(N)}{N^p}+\frac{V_e(N)}{N^q}.
+\end{equation}
+This proves its evenness. Since $U_e,V_e$ have no constant term, the
+most negative possible exponent is $2-q$, which gives the stated range
+$1\le k\le b-1$.
+
+Set $a=A_p(N)$ and $b'=A_q(N)$ and use
+$A_p(N-1)=a+N^{-p}$ and $A_q(N-1)=b'+N^{-q}$.
+Expanding $F(N)-F(N-1)$ and using
+\[
+ \Delta K=P(N-\tfrac12),\quad
+ \Delta U=K(N)N^{-q},\quad \Delta V=K(N)N^{-p}
+\]
+proves \eqref{tel:finite} as a rational-function identity in
+$N,a,b'$. No identity among zeta values enters this step.
+The centered expansion \eqref{tel:centered} shows that its first
+two terms together are $O(N^{-2})$; the residual even reciprocal
+powers are summable. Thus $F(N)$ has a finite limit.
+
+It remains to compute that limit without analytic continuation.
+The standard uncentered asymptotic expansion has the parity form
+\[
+ A_r(N)\sim O_r(N)-\frac12N^{-r},
+ \qquad O_r(-N)=-O_r(N),
+\]
+where $O_r$ is an asymptotic Laurent series containing only odd
+negative powers. Combining all three expressions gives the exact
+formal asymptotic identity
+\[
+ KA_pA_q+UA_p+VA_q\sim
+ KO_pO_q+U_eO_p+V_eO_q-\frac K4N^{-p-q}
+   -\frac{U_e}{2}N^{-p}-\frac{V_e}{2}N^{-q}.
+\]
+The first four terms have odd powers only. The surviving constant is
+\[
+ -\frac12\left([N^p]U_e+[N^q]V_e\right)=-\frac{h_0}{2}
+\]
+by \eqref{tel:Hparity}. The polynomial $R$ has zero constant.
+All computations use finitely many asymptotic terms, and the remainder
+can be taken $o(1)$ after multiplication by the fixed polynomials.
+Since the limit exists, positive powers in this expansion cancel and
+the limit equals the displayed constant. Summing \eqref{tel:finite}
+and using $F(0)=0$ proves \eqref{tel:evaluation}.
+\end{proof}
+
+\paragraph{Exact agreement with the inherited late-block matrix.}
+For $d=2j+1$ and $e=d-p-q+2k+1$, the coefficient of $N^{-2k}$ in
+the contribution of $N^d$ to $H$ is zero for $e<0$, and otherwise
+\[
+ a_{jk}=B_e\left\{
+ \frac{\binom{d-q+1}{p-2k}}{d-q+1}
+ +\frac{\binom{d-p+1}{q-2k}}{d-p+1}\right\}.
+\]
+Each summand is omitted unless its lower binomial index is between
+two and its upper index. Indeed $U_e,V_e$ contain positive even powers
+only; the forbidden lower-index-zero term is absent because their
+constant terms are zero. Thus $h_k=\sum_j\lambda_j a_{jk}$,
+including $k=0$. This is exactly the normalization in
+Differential equations \texttt{ar:entries}, \texttt{ar:block}, and
+Bernoulli equation \texttt{eq:general-source-entries} \cite{DPL,BTD}.
+The theorem supplies the all-order finite certificate requested in
+Differential Section 09, ``Systematic rational telescoping for tail
+products.'' It proves the certificate for every even pair and every
+late-block combination, without presupposing a nonsingular optimal
+prefix matrix.
+
+\paragraph{Degree bounds.}
+If $\lambda_J\ne0$, then
+\[
+ \deg K=2J+1,\quad\deg P=2J,\quad
+ \deg U=2J+2-q,\quad\deg V=2J+2-p.
+\]
+Put $\delta=2J+2-p-q$. If $\delta\ge0$, then
+$\deg H_+,\deg S\le\delta$ and $\deg R\le\delta+1$.
+If $\delta<0$, $H_+=S=R=0$.
+For the optimal prefix $J=q-1$ these bounds become
+$\deg S\le q-p$ and $\deg R\le q-p+1$.
+
+\subsection{A finite certificate for the (8,12) identity}
+\label{tel:812}
+For the polynomial $K$ in \eqref{gap:812-K}, set $P=W$ as in
+\eqref{gap:812-W}. The exact identity is
+\eqref{gap:812-ordinary}, with
+$A_8(n)A_{12}(n)=\psi^{(7)}(n+1)\psi^{(11)}(n+1)/(7!\,11!)$.
+
+Here is a compact certificate retaining every rational coefficient.
+Put $T=N(N+1)$ and define
+\begin{align}\label{tel:812UV}
+ U(N)=\frac{T}{8}\bigl(&8556468T^5+32712160T^4-38171739T^3\notag\\
+      &+24232272T^2-9577682T+1879356\bigr),\\
+ V(N)=\frac{T^5}{8}\bigl(&6417351T^3-3525928T^2-1698454T+1879356\bigr),\notag\\
+ R(N)=-\frac{N}{6160}\bigl(&2417202210N^4-5764920315N^3\notag\\
+      &+42395905270N^2-129829345800N+260578219219\bigr).
+      \label{tel:812R}
+\end{align}
+The corresponding Laurent polynomial actually has no negative powers:
+\[
+ H(N)=\frac38\left(4991273N^4+112406360N^2+263589503\right).
+\]
+Hence $h_0=790768509/8$ and $h_k=0$ for $1\le k\le5$.
+Substitution of \eqref{gap:812-K} and \eqref{tel:812UV}--\eqref{tel:812R} into
+\eqref{tel:F} gives a finite identity whose difference is exactly
+the summand of \eqref{gap:812-ordinary}, and whose limit is the right
+side. All its steps are rational-function identities followed by the
+parity calculation in the theorem. The accompanying symbolic program
+checks the identity in independent variables for $A_8(N),A_{12}(N)$,
+and separately checks the limiting constant from finite Laurent
+expansions.

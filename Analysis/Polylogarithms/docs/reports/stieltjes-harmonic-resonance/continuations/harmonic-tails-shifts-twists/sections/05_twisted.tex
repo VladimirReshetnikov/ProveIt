@@ -1,0 +1,512 @@
+\section{An alternating two-parameter digamma identity}
+\label{alt:sec:master}
+
+The centered moments in the preceding sections use even polynomial weights.
+An alternating outer sign has a complementary effect: odd centered weights
+lead to odd-weight alternating double zeta values, which admit a classical
+parity reduction. Summing these reductions over both even tail orders gives
+a compact identity in digamma and trigonometric functions. The method of
+turning products of tails into ordered sums is classical; see Hoffman
+\cite{Hoffman}. The parity formula is due to the classical Euler-sum
+theory and is proved in a generating-function form by Teo
+\cite{Teo}; see also the descending-index formulation in
+\cite[Eq.~(3.7)]{XuWang}. The contribution here is the resulting
+two-parameter identity, its explicitly normalized odd-weight family, and
+the rational-parameter square evaluations. No literature-priority claim
+is made for individual special cases.
+
+For $\sigma\in\{1,-1\}$ set
+\begin{equation}\label{alt:eq:resolvent-tail}
+ E_n^\sigma(x)=\sum_{k>n}\frac{\sigma^k}{k^2-x^2},
+ \qquad x\notin\mathbb Z\setminus\{0\},\quad n\ge0.
+\end{equation}
+Each $E_n^\sigma$ is even in $x$. Its poles at integers of modulus at
+most $n$ are absent. These functions are ordinary polygamma expressions:
+\begin{align}
+ E_n^+(x)&=\frac{\psi(n+1+x)-\psi(n+1-x)}{2x},
+ \label{alt:eq:digamma-tail}\\
+ E_n^-(x)&=\frac{(-1)^{n+1}}{2x}
+       \{\mathcal B(n+1-x)-\mathcal B(n+1+x)\},
+ \qquad
+ \mathcal B(v)=\frac{\psi((v+1)/2)-\psi(v/2)}2.
+ \notag
+\end{align}
+The apparent singularities at $x=0$ are removable. Formula
+\eqref{alt:eq:digamma-tail} follows by partial fractions and the
+convergent digamma difference series; the second formula follows from
+$\mathcal B(v)=\sum_{j\ge0}(-1)^j/(j+v)$ for $\Re v>0$,
+and then by continuation.
+
+Define the even meromorphic functions
+\begin{align}
+ O_+(t)&=-\frac{\psi(1+t)+\psi(1-t)+2\gamma}{2},
+ \label{alt:eq:O}\\
+ O_-(t)&=-\log2+O_+(t/2)-O_+(t),\notag
+\end{align}
+and put $R_+(t)=\cot(\pi t)$ and $R_-(t)=\csc(\pi t)$.
+For $xy\ne0$, abbreviate
+\begin{equation}\label{alt:eq:UV}
+ U_\sigma(x,y)=\frac{O_\sigma(x+y)-O_\sigma(x-y)}{2xy},
+ \qquad
+ V_\sigma(x,y)=\frac{O_\sigma(x+y)+O_\sigma(x-y)}2.
+\end{equation}
+
+\begin{theorem}[The two-parameter alternating identity]
+\label{alt:thm:master}
+Let $\alpha,\beta\in\{1,-1\}$ and $c=-\alpha\beta$. Initially assume
+$|x|+|y|<1$ and $xy\ne0$. Then
+\begin{align}
+ &\mathcal K_{\alpha,\beta}(x,y)
+ :=\sum_{n=0}^\infty(-1)^n(2n+1)E_n^\alpha(x)E_n^\beta(y)
+ \notag\\
+ &=\frac\pi2\bigg\{
+ \frac{R_\alpha(x)}xO_{-\beta}(y)
+ +\frac{R_\beta(y)}yO_{-\alpha}(x)
+ -yR_c(y)U_\alpha(x,y)-xR_c(x)U_\beta(x,y)
+ \notag\\[-2pt]
+ &\hspace{37mm}
+ -\frac{R_c(x)}xV_{-\beta}(x,y)
+ -\frac{R_c(y)}yV_{-\alpha}(x,y)\bigg\}.
+ \label{alt:eq:master}
+\end{align}
+The series converges absolutely and locally normally if at least one of
+$\alpha,\beta$ is $-1$. For $\alpha=\beta=1$ it converges ordinarily
+and locally uniformly; after subtracting each summand's value at
+$(0,0)$ the remaining series is absolutely locally normally
+convergent. Both sides extend meromorphically to $\mathbb C^2$.
+Possible genuine poles occur only when $x$ or $y$ is a nonzero integer.
+In particular the apparent singularities at $xy=0$, and those on
+$x\pm y\in\mathbb Z$ away from the coordinate poles, are removable.
+The identity is even separately in $x$ and $y$ and is unchanged by
+simultaneously exchanging $(\alpha,x)$ with $(\beta,y)$.
+\end{theorem}
+
+\subsection{An ordinary finite-cutoff identity}
+
+For $s\ge2$, write
+\[
+ T_s^\sigma(n)=\sum_{k>n}\frac{\sigma^k}{k^s},\qquad
+ Z(r,s;\sigma,\tau)
+ =\sum_{k>m\ge1}\frac{\sigma^k\tau^m}{k^r m^s}.
+\]
+The convention for $Z$ is the decreasing-index convention. Put
+$\mathsf L_s(\sigma)=\operatorname{Li}_s(\sigma)$ for $s\ge2$ and
+$\mathsf L_1(-1)=-\log2$.
+
+\begin{lemma}[Odd alternating weights]
+\label{alt:lem:finitecutoff}
+Let $p,q\ge2$ be integers and let $d$ be odd with
+$1\le d<\min(p,q)$. Then
+\begin{align}
+ &\sum_{n\ge0}(-1)^n\{n^d+(n+1)^d\}
+                    T_p^\alpha(n)T_q^\beta(n)\notag\\
+ &\quad=-Z(p,q-d;\alpha,-\beta)
+        -Z(q,p-d;\beta,-\alpha)
+        -\mathsf L_{p+q-d}(-\alpha\beta).
+ \label{alt:eq:weighted-tail}
+\end{align}
+The left side is absolutely convergent except possibly when
+$(p,q,d,\alpha,\beta)=(2,2,1,1,1)$; in that case it converges as
+an ordinary alternating series. Every double series on the right is
+absolutely convergent.
+\end{lemma}
+
+\begin{proof}
+For $m\ge1$, cancellation of consecutive powers gives
+\[
+ \sum_{n=0}^{m-1}(-1)^n\{n^d+(n+1)^d\}
+       =(-1)^{m-1}m^d.
+\]
+First sum over the finite range $0\le n\le N$. For each fixed $n$
+the two tail series are absolutely convergent, so their product may
+be expanded and the finite $n$-sum interchanged. The inner weight
+becomes $(-1)^{\min(k,m,N+1)-1}\min(k,m,N+1)^d$.
+The limiting double series is dominated by
+$\min(k,m)^d/(k^p m^q)$, whose sum is finite because $q-d,p-d\ge1$
+and $p,q\ge2$. For example the region $k>m$ is
+\[
+ \sum_{m\ge1}m^{d-q}\sum_{k>m}k^{-p}
+       =O\left(\sum_{m\ge1}m^{d+1-p-q}\right)<\infty.
+\]
+Dominated convergence is therefore applicable to the double series.
+Separating $k>m$, $m>k$, and $k=m$ proves
+\eqref{alt:eq:weighted-tail}. Equivalently, the additional term in the
+finite-cutoff formula when both indices exceed $N+1$ has modulus at
+most $(N+1)^d T_p^+(N)T_q^+(N)=O(N^{d+2-p-q})$, which tends to zero.
+
+For absolute convergence of the original series use
+$T_s^+(n)=O(n^{1-s})$ and $T_s^-(n)=O(n^{-s})$.
+Under the stated range the only unresolved exponent is $-1$ in the
+listed case. There
+$(2n+1)T_2^+(n)^2=2/n+O(n^{-2})$ for $n\ge1$, so an ordinary
+alternating harmonic series plus an absolutely convergent series
+proves convergence. This also fixes the boundary value without
+assigning a value to a divergent series.
+\end{proof}
+
+\subsection{The classical parity input, with its endpoint convention}
+
+The following formula is the alternating double-Euler parity theorem
+\cite{Teo,XuWang}. We record it in the convention used here.
+For $r\ge2$, $s\ge1$, and $w=r+s$ odd, set
+\[
+ \mu_j=(-1)^r\left\{
+ \binom{j-1}{r-1}\mathsf L_j(\sigma)
+ +\binom{j-1}{s-1}\mathsf L_j(\tau)\right\}.
+\]
+Binomial coefficients outside $0\le k\le n$ are zero. Then
+\begin{align}
+ Z(r,s;\sigma,\tau)
+ ={}&\frac12\left\{-\mathsf L_w(\sigma\tau)
+ +(1+(-1)^r)\mathsf L_r(\sigma)\mathsf L_s(\tau)+\mu_w\right\}
+ \notag\\
+ &-\sum_{k=1}^{(w-1)/2}\mathsf L_{2k}(\sigma\tau)\mu_{w-2k}.
+ \label{alt:eq:parity}
+\end{align}
+The exceptional notation $\mathsf L_1(1)$ is interpreted as one formal
+symbol $T$ while this finite expression is assembled. It cancels before
+the expression is evaluated. Indeed it can occur only when $s=1$ and
+$\tau=1$; then $r$ is even, and the first product contributes
+$\mathsf L_r(\sigma)T$, while the last summand contributes its negative.
+There is no remaining regularization parameter. Thus one may set
+$\mathsf L_1(1)=0$ in a coefficient implementation after this cancellation
+has been established. The value zero is a bookkeeping convention, not
+an asserted value of the divergent harmonic series.
+
+Combining \eqref{alt:eq:weighted-tail} and \eqref{alt:eq:parity}
+already proves an explicit all-order family whenever $p+q$ is even.
+Only single zeta values and $\log2$ remain, since
+$\mathsf L_s(-1)=(2^{1-s}-1)\zeta(s)$ for $s\ge2$.
+No period-independence assumption is involved.
+The canonical weights exhaust the corresponding odd polynomial space:
+for odd $d$,
+$P_d(X)=(X-1/2)^d+(X+1/2)^d$ is odd with leading term $2X^d$.
+Consequently the $P_d$ with $d<\min(p,q)$ form a triangular basis
+for all odd centered polynomial weights in that degree range.
+For $p+q$ even, every such weighted moment therefore has the same
+finite reduction to single zeta values and $\log2$.
+
+\subsection{Proof of the two-parameter identity}
+
+Put
+\[
+ A_\sigma(t)=\sum_{a\ge1}\mathsf L_{2a}(\sigma)t^{2a-2}
+       =\frac1{2t^2}-\frac{\pi R_\sigma(t)}{2t}.
+\]
+The equality follows from the cotangent partial-fraction expansion and
+its alternating counterpart. Moreover, for $|t|<1$,
+\[
+ O_\sigma(t)=\sum_{j\ge0}\mathsf L_{2j+1}(\sigma)t^{2j},
+\]
+with the already justified convention $\mathsf L_1(1)=0$.
+The familiar digamma Taylor expansion gives \eqref{alt:eq:O}.
+
+We first verify the analytic legitimacy of the coefficient calculation.
+Uniformly for $x$ in a compact subset avoiding the coordinate poles,
+\[
+ E_n^+(x)=O(n^{-1}),\quad E_n^-(x)=O(n^{-2}),\quad
+ E_n^\sigma(x)-E_n^\sigma(0)=O(n^{-3}).
+\]
+The last estimate follows directly by subtracting the two rational
+summands in \eqref{alt:eq:resolvent-tail}. Consequently, if one sign is
+negative, the defining series for $\mathcal K$ converges absolutely
+normally. In the positive-positive case its difference from the series
+at $(0,0)$ is absolutely normally convergent, with summands $O(n^{-3})$.
+The scalar series at $(0,0)$ converges by Lemma~\ref{alt:lem:finitecutoff}.
+Cauchy's coefficient formula therefore gives
+\begin{equation}\label{alt:eq:master-coeff}
+ [x^{2a-2}y^{2b-2}]\mathcal K_{\alpha,\beta}
+ =-Z(2a,2b-1;\alpha,-\beta)
+  -Z(2b,2a-1;\beta,-\alpha)
+  -\mathsf L_{2a+2b-1}(c).
+\end{equation}
+
+Insert \eqref{alt:eq:parity}. Its two terms
+$-\mathsf L_{2a+2b-1}(c)/2$ cancel the diagonal term in
+\eqref{alt:eq:master-coeff}. Summation of the remaining binomial terms
+uses only the even and odd parts of the binomial theorem. For $N\ge1$,
+\begin{align*}
+ \sum_{a=1}^{N}\binom{2N}{2a-1}x^{2a-2}y^{2N-2a}
+ &=\frac{(x+y)^{2N}-(x-y)^{2N}}{2xy},\\
+ \sum_{a=0}^{N}\binom{2N}{2a}x^{2a}y^{2N-2a}
+ &=\frac{(x+y)^{2N}+(x-y)^{2N}}2.
+\end{align*}
+For completeness, the complete expression before replacing $A_\sigma$
+by trigonometric functions is
+\begin{align}
+ \mathcal K_{\alpha,\beta}
+ ={}&\left(y^2A_c(y)-\tfrac12\right)U_\alpha
+    +\left(x^2A_c(x)-\tfrac12\right)U_\beta\notag\\
+ &+\left(A_c(x)-\tfrac1{2x^2}\right)V_{-\beta}
+    +\left(A_c(y)-\tfrac1{2y^2}\right)V_{-\alpha}\notag\\
+ &+\left(\tfrac1{2x^2}-A_\alpha(x)\right)O_{-\beta}(y)
+    +\left(\tfrac1{2y^2}-A_\beta(y)\right)O_{-\alpha}(x).
+ \label{alt:eq:master-before-trig}
+\end{align}
+All the power series used here converge absolutely when
+$|x|+|y|<1$. Substitution of $A_\sigma$ proves
+\eqref{alt:eq:master}. If the formal constant $T$ is retained in $O_+$,
+it cancels directly in this last expression: when $-\beta=1$ one has
+$c=\alpha$, and when $-\alpha=1$ one has $c=\beta$.
+
+The left side is holomorphic on
+$(\mathbb C\setminus(\mathbb Z\setminus\{0\}))^2$ by the same normal
+convergence argument; near a coordinate pole only finitely many tail
+terms are singular. The right side is meromorphic on $\mathbb C^2$.
+The meromorphic identity theorem extends their equality from the
+initial open set. This proves all the removability and continuation
+claims in Theorem~\ref{alt:thm:master}. Evenness and exchange symmetry
+follow directly from the left side.
+
+There is also a direct check of the coordinate axes. Pair the first
+and fifth terms in the braces of \eqref{alt:eq:master} as
+\[
+ \frac{R_\alpha(x)-R_c(x)}xO_{-\beta}(y)
+ +\frac{R_c(x)}x\{O_{-\beta}(y)-V_{-\beta}(x,y)\}.
+\]
+All $R_\sigma$ have the same principal part $1/(\pi x)$, so the
+first quotient is holomorphic at zero. The second difference is
+divisible by $x^2$, so the second product is also holomorphic.
+The symmetric pair handles $y=0$. Finally, the difference of any
+even power evaluated at $x+y$ and $x-y$ is divisible by $xy$,
+which proves that $U_\sigma$ is holomorphic on both axes.
+
+\subsection{A diagonal square with elementary rational-parameter values}
+
+\begin{corollary}[A closed alternating square]
+\label{alt:cor:square}
+For every $x\notin\mathbb Z\setminus\{0\}$,
+\begin{equation}\label{alt:eq:diagonal-square}
+ \boxed{\displaystyle
+ \sum_{n\ge0}(-1)^n(2n+1)
+       \left(\sum_{k>n}\frac{(-1)^k}{k^2-x^2}\right)^2
+ =-\frac{\pi\{\psi(1+x)+\psi(1-x)+2\gamma\}}
+             {4x\sin(\pi x)}.}
+\end{equation}
+The series is absolutely locally normally convergent. Its value at
+$x=0$ is $\zeta(3)/2$.
+\end{corollary}
+\begin{proof}
+Set $\alpha=\beta=-1$ and $y=x$ in
+\eqref{alt:eq:master}. Here $c=-1$, $O_+(0)=0$, and
+\[
+ O_-(2x)-O_-(0)=O_+(x)-O_+(2x).
+\]
+The two terms at $2x$ cancel, leaving
+$\pi O_+(x)/(2x\sin\pi x)$, which is
+\eqref{alt:eq:diagonal-square}. At zero,
+$O_+(x)=\zeta(3)x^2+O(x^4)$ and
+$x\sin(\pi x)=\pi x^2+O(x^4)$. This proves the value and the
+removable interpretation.
+\end{proof}
+
+The complete diagonal can be written as one symmetric matrix. With
+$c_x=\cos(\pi x)$ and the signs ordered as $+,-$,
+\begin{equation}\label{alt:eq:diagonal-matrix}
+ \bigl(\mathcal K_{\alpha,\beta}(x,x)\bigr)_{\alpha,\beta\in\{+,-\}}
+ =\frac{\pi}{2x\sin(\pi x)}
+ \begin{pmatrix}
+ 2c_xO_-(x)-O_+(x)+2\log2 & O_-(x)+c_x\log2\\
+ O_-(x)+c_x\log2 & O_+(x)
+ \end{pmatrix}.
+\end{equation}
+This follows from the same substitution $y=x$ and
+$O_+(2x)+O_-(2x)=O_+(x)-\log2$ in the other sign cases.
+In particular,
+\begin{equation}\label{alt:eq:half-matrix}
+ \bigl(\mathcal K_{\alpha,\beta}(1/2,1/2)\bigr)_{\alpha,\beta}
+ =\pi\begin{pmatrix}1&-1\\-1&2\log2-1\end{pmatrix}.
+\end{equation}
+Here $E_n^+(1/2)=1/(n+1/2)$, so the positive-positive entry also
+reduces directly to the ordinary alternating arctangent series for
+$\pi$. This example lies on the apparent oblique polar line $x+y=1$
+of the unsimplified master formula, and makes its removability explicit.
+
+For $x=r/N$, $1\le r<N$, Gauss's digamma formula
+\cite[Eq.~(5.4.19)]{DLMFGamma} gives the explicit
+finite expression
+\begin{equation}\label{alt:eq:rational-O}
+ O_+(r/N)=\log(2N)-\frac{N}{2r}
+ -2\sum_{j=1}^{\lfloor(N-1)/2\rfloor}
+       \cos\frac{2\pi rj}{N}\log\sin\frac{\pi j}{N}.
+\end{equation}
+Thus every such square is $\pi$ times an explicit linear combination,
+with algebraic coefficients, of $1$ and logarithms of positive
+algebraic numbers. For example,
+\begin{align}
+ \sum_{n\ge0}(-1)^n(2n+1)
+  \left(\sum_{k>n}\frac{(-1)^k}{k^2-1/4}\right)^2
+ &=\pi(2\log2-1),\label{alt:eq:half-example}\\
+ \sum_{n\ge0}(-1)^n(2n+1)
+  \left(\sum_{k>n}\frac{(-1)^k}{k^2-1/9}\right)^2
+ &=\frac{3\sqrt3\pi}{2}(\log3-1),\label{alt:eq:third-example}\\
+ \sum_{n\ge0}(-1)^n(2n+1)
+  \left(\sum_{k>n}\frac{(-1)^k}{k^2-1/16}\right)^2
+ &=2\sqrt2\pi(3\log2-2).\label{alt:eq:quarter-example}
+\end{align}
+The squares are algebraic squares throughout; no complex conjugation
+is inserted when $x$ is complex.
+
+Expanding \eqref{alt:eq:diagonal-square} produces a short all-order
+convolution. With $\eta(s)=(1-2^{1-s})\zeta(s)$ for $s>1$, for every
+$m\ge2$ one has
+\begin{equation}\label{alt:eq:convolution}
+ \sum_{a=1}^{m-1}\sum_{n\ge0}(-1)^n(2n+1)
+        T_{2a}^-(n)T_{2m-2a}^-(n)
+ =\frac12\zeta(2m-1)
+   +\sum_{j=1}^{m-2}\eta(2j)\zeta(2m-2j-1).
+\end{equation}
+Indeed
+$\pi x/\sin\pi x=1+2\sum_{j\ge1}\eta(2j)x^{2j}$;
+coefficient extraction is legitimate by absolute normal convergence.
+
+\begin{corollary}[An anchored Gamma primitive]
+\label{alt:cor:gamma-primitive}
+For $|u|<1$,
+\begin{equation}\label{alt:eq:gamma-primitive}
+ \int_0^u x\sin(\pi x)\mathcal K_{-,-}(x,x)\,dx
+ =-\frac\pi4\left\{
+ \log\Gamma(1+u)-\log\Gamma(1-u)+2\gamma u\right\}.
+\end{equation}
+The logarithms are their analytic branches on the unit disk,
+normalized by $\log\Gamma(1)=0$. The path of integration may be any
+path in that disk, and the defining series for $\mathcal K_{-,-}$
+may be integrated term by term. In particular the value at $u=1/2$
+is $\pi(\log2-\gamma)/4$.
+\end{corollary}
+\begin{proof}
+Multiply \eqref{alt:eq:diagonal-square} by $x\sin(\pi x)$.
+Its right side is the derivative of the expression in braces
+in \eqref{alt:eq:gamma-primitive}, multiplied by $-\pi/4$.
+The anchored logarithms exist because $\Gamma(1\pm u)$ are
+holomorphic and nonzero on the simply connected unit disk.
+Both sides vanish at zero. Absolute local normal convergence,
+already proved, justifies exchanging the path integral and sum.
+Finally $\Gamma(3/2)/\Gamma(1/2)=1/2$ gives the stated value.
+\end{proof}
+
+Some individual coefficients of the full two-variable theorem are
+also useful. Let
+$C_{p,q}^{\alpha,\beta}=\sum_{n\ge0}(-1)^n(2n+1)
+T_p^\alpha(n)T_q^\beta(n)$. Then
+\begin{align}
+ C_{2,2}^{+,+}&=\frac{\pi^2\log2}{2}-\frac54\zeta(3),
+ & C_{2,2}^{+,-}&=-\frac{\pi^2\log2}{4}-\frac38\zeta(3),
+ \label{alt:eq:coeff22}\\
+ C_{2,2}^{-,-}&=\frac12\zeta(3),
+ &C_{2,4}^{+,+}&=\frac{\pi^4\log2}{48}
+                   +\frac{\pi^2\zeta(3)}{12}-\frac{23}{32}\zeta(5),
+ \label{alt:eq:coeff24}\\
+ C_{4,4}^{+,+}&=-\frac{335}{64}\zeta(7)
+                 +\frac{13\pi^2}{48}\zeta(5)
+                 +\frac{\pi^4}{32}\zeta(3).
+ \label{alt:eq:coeff44}
+\end{align}
+Only $C_{2,2}^{+,+}$ is conditionally convergent. As an example with a
+higher odd centered weight, \eqref{alt:eq:weighted-tail} gives the
+absolutely convergent identity
+\begin{equation}\label{alt:eq:cubicweight}
+ \sum_{n\ge0}(-1)^n\{n^3+(n+1)^3\}T_4^+(n)^2
+ =\frac{\pi^4\log2}{24}+\frac{\pi^2\zeta(3)}8
+       -\frac{49}{16}\zeta(5).
+\end{equation}
+
+\subsection{All repeated rational resolvents}
+
+The same identity supplies explicit derivatives of every order. Define
+\[
+ E_{n,r}^{\sigma}(x)=\sum_{k>n}
+       \frac{\sigma^k}{(k^2-x^2)^{r+1}},\qquad r\ge0,
+\]
+and let $\partial_{x^2}=(2x)^{-1}\partial_x$ on even analytic
+functions, with its removable meaning at $x=0$.
+
+\begin{corollary}[Repeated-resolvent products]\label{alt:cor:derivatives}
+For integers $r,s\ge0$ and parameters outside the coordinate poles,
+\begin{equation}\label{alt:eq:derivatives}
+ \sum_{n\ge0}(-1)^n(2n+1)
+        E_{n,r}^{\alpha}(x)E_{n,s}^{\beta}(y)
+ =\frac{1}{r!s!}
+      \partial_{x^2}^{\,r}\partial_{y^2}^{\,s}
+                         \mathcal K_{\alpha,\beta}(x,y).
+\end{equation}
+The right side is an explicit finite expression obtained by
+differentiating \eqref{alt:eq:master}. Whenever $r+s>0$, the series
+is absolutely locally normally convergent for all sign pairs.
+\end{corollary}
+\begin{proof}
+Termwise differentiation of the individual rational tails gives
+$\partial_{x^2}^{\,r}E_n^\alpha(x)=r!E_{n,r}^\alpha(x)$.
+For compact parameter sets avoiding poles, the positive-sign estimate
+is $E_{n,r}^+(x)=O(n^{-2r-1})$; an alternating sign improves it to
+$O(n^{-2r-2})$. Thus a derivative of positive total order makes the
+outer series absolutely summable, even when both signs are positive.
+The locally uniform identity in Theorem~\ref{alt:thm:master} and
+Cauchy's differentiation formula justify the operation. Evenness
+gives the stated removable interpretation at the axes.
+\end{proof}
+
+\subsection{A colored polylogarithmic function and its anchored primitive}
+
+The same finite-difference mechanism has an interior-variable form that
+also fixes an antiderivative. For $p,q\ge2$, $|a|,|b|\le1$, and
+$|z|<1$, put
+$T_p^a(n)=\operatorname{Li}_p(a)-\sum_{k=1}^n a^k/k^p$.
+Use the colored convention
+\[
+ \operatorname{Li}_{s_1,\ldots,s_d}(z_1,\ldots,z_d)
+ =\sum_{n_1>\cdots>n_d\ge1}
+       \frac{z_1^{n_1}\cdots z_d^{n_d}}
+            {n_1^{s_1}\cdots n_d^{s_d}}.
+\]
+
+\begin{proposition}[Colored generating function and primitive]
+\label{alt:prop:GF}
+Writing $F(z)=\sum_{n\ge0}T_p^a(n)T_q^b(n)z^n$, one has
+\begin{align}
+ (1-z)F(z)={}&\operatorname{Li}_p(a)\operatorname{Li}_q(b)
+ -\operatorname{Li}_q(b)\operatorname{Li}_p(az)
+ -\operatorname{Li}_p(a)\operatorname{Li}_q(bz)\notag\\
+ &+\operatorname{Li}_{p,q}(az,b)
+  +\operatorname{Li}_{q,p}(bz,a)
+  +\operatorname{Li}_{p+q}(abz).
+ \label{alt:eq:GF}
+\end{align}
+The primitive normalized to vanish at zero is
+\begin{align}
+ \int_0^zF(t)\,dt={}&
+  \operatorname{Li}_p(a)\operatorname{Li}_q(b)\operatorname{Li}_1(z)
+ -\operatorname{Li}_q(b)\operatorname{Li}_{1,p}(z,a)
+ -\operatorname{Li}_p(a)\operatorname{Li}_{1,q}(z,b)\notag\\
+ &+\operatorname{Li}_{1,p,q}(z,a,b)
+  +\operatorname{Li}_{1,q,p}(z,b,a)
+  +\operatorname{Li}_{1,p+q}(z,ab).
+ \label{alt:eq:primitive}
+\end{align}
+The integral is along any path in the unit disk. Every function in the
+formulas is defined by an absolutely locally normally convergent series.
+\end{proposition}
+\begin{proof}
+The identity
+\[
+ T_p^a(n-1)T_q^b(n-1)-T_p^a(n)T_q^b(n)
+ =\frac{a^n}{n^p}T_q^b(n)+\frac{b^n}{n^q}T_p^a(n)
+   +\frac{(ab)^n}{n^{p+q}}
+\]
+proves \eqref{alt:eq:GF} after multiplication by $z^n$ and summation.
+All rearrangements are absolute in the disk. The general derivative
+\[
+ \frac{d}{dz}\operatorname{Li}_{1,s_1,\ldots,s_d}
+                (z,c_1,\ldots,c_d)
+ =\frac{\operatorname{Li}_{s_1,\ldots,s_d}
+                (zc_1,c_2,\ldots,c_d)}{1-z}
+\]
+follows by summing the largest index first. It proves the displayed
+primitive term by term. Each term vanishes at $z=0$, which fixes its
+additive constant and branch.
+\end{proof}
+The generating function and primitive are finite-difference consequences,
+not assertions of general depth reduction. The additional reduction in
+Theorem~\ref{alt:thm:master} uses the specific alternating weight and
+odd-weight parity input. It does not imply the outstanding Gaussian
+$S_6$ or revised $S_8$ identities.

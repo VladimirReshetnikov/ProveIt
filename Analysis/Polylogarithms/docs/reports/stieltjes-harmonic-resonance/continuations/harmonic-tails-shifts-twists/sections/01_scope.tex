@@ -1,0 +1,121 @@
+\section{The questions advanced in this continuation}
+\label{sec:scope}
+
+The harmonic tails
+\[
+ A_p(n)=\zeta(p)-H_n^{(p)}=\zeta(p,n+1),\qquad
+ H_n^{(p)}=\sum_{k=1}^n k^{-p},\quad H_0^{(p)}=0,
+\]
+connect three languages used throughout the existing programme:
+ordinary sums involving harmonic numbers, polygamma functions at
+integer or shifted arguments, and multiple zeta or polylogarithm
+values. A polynomial weight can destroy ordinary convergence without
+destroying the exact identity. The useful question is then to specify
+the finite subtraction and its constant, and to determine which
+finite collection of moments already contains all the information.
+
+The present article concentrates on this exact-identity question.
+Asymptotic expansions enter only to justify convergence, constant
+extraction, and limiting operations. The main result settles one
+additional infinite family of the existing optimal-prefix conjecture.
+The other results produce explicit shift, twist, derivative, and
+primitive formulas around the same tail functions.
+
+\subsection{The precise change in the conjecture}
+
+For even $2\le p\le q$ consider the continued centered moments
+\[
+ D_{p,q}(-2r),\qquad
+ D_{p,q}(s)=\sum_{n\ge0}
+       A_p(n)A_q(n)(n+\tfrac12)^{-s}.
+\]
+The source reports supply $q$ formal coordinates and prove that
+some finite initial segment generates them. Their stronger conjecture
+asks whether the first $q$ moments always suffice. At the pinned
+revision the following families have proofs in the source reports:
+the diagonal $p=q$, the adjacent case $q-p=2$, and each fixed smaller
+order $p=2,4,6$ \cite{Canonical,Differential,Bernoulli,Polygamma}.
+
+Theorem~\ref{eg:main} proves the entire family $q-p=4$.
+Its additional cases begin at $(p,q)=(8,12)$, since the first three
+pairs overlap the fixed-order results. The proof is an all-order
+nonvanishing argument. A table of computed determinants is only a
+normalization check. Theorem~\ref{eg:two-minors} supplies the underlying
+comparison theorem for every even gap, while the text explains why
+that theorem alone does not settle higher-dimensional determinants.
+
+The rank is taken over $\Q$ on the source's specified formal labels.
+It yields exact reconstruction identities for the corresponding
+numbers, whether or not those numbers have further arithmetic
+relations. It does not assert linear independence of zeta values.
+
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.31\textwidth}>{\raggedright\arraybackslash}p{0.36\textwidth}@{}}
+\toprule
+Direction & Earlier status & Contribution here \\
+\midrule
+Optimal moment prefix & Diagonal, gap two, and $p=2,4,6$ proved &
+Gap four proved at every order; explicit reconstruction and sums \\
+Hurwitz shift & Requested extension of half-integer centering &
+Finite endpoint and Bernoulli corrections; free-shift trigamma identity \\
+Logarithmic moments & Subtraction constants must be tracked &
+All spectral coefficients, including Stieltjes resonance terms \\
+Character twists & Proposed exact reduction programme &
+Signed centered moments, digamma generator, polylogarithmic primitives \\
+Gaussian $S_6$, revised $S_8$ & Numerical candidates with unresolved proofs &
+Remain open; no claim of resolution \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Source scope and established mathematics}
+
+The repository snapshot is \cite{Repo}. The current incoming directory
+contains six reports: \emph{Bernoulli--Tornheim--Digamma},
+\emph{Cubic Tail Descent}, \emph{Determinantal Harmonic Resonance},
+\emph{Differential Polygamma and Lerch Jets},
+\emph{Multishift Reflection}, and \emph{Polygamma Tail Identities}.
+The source manifest records the Git blob of every acquired manuscript
+text and archive. We inspected the claims used here and their nearby
+research agendas; this is a targeted proof audit, not a certification
+of every theorem in the collective volumes.
+
+Several ingredients are established mathematics. Hoffman's treatment
+of products of Riemann-zeta tails explains their relation to multiple
+zeta values and higher products \cite{Hoffman}. Teo proves the
+odd-weight reduction of alternating double Euler sums \cite{Teo}.
+The Hurwitz recurrence, its relation to polygamma, the Bernoulli
+difference law, and Euler--Maclaurin continuation are classical
+\cite{DLMF}. Bernoulli Hankel determinants also have an extensive
+literature \cite{DilcherJiu}. These ingredients are credited where
+used. The additional contribution is the specified determinant proof,
+the normalized extensions, and their explicit consequences relative
+to the inspected programme. An exhaustive historical-priority claim
+is not made.
+
+\subsection{Conventions needed for reproducibility}
+
+Bernoulli numbers use $B_1=-1/2$, and Bernoulli polynomials satisfy
+\[
+ \frac{te^{xt}}{e^t-1}=\sum_{m\ge0}B_m(x)\frac{t^m}{m!}.
+\]
+The multiple-polylogarithm convention uses decreasing indices:
+\[
+ \Li_{s_1,\ldots,s_d}(z_1,\ldots,z_d)
+ =\sum_{n_1>\cdots>n_d\ge1}
+       \frac{z_1^{n_1}\cdots z_d^{n_d}}
+            {n_1^{s_1}\cdots n_d^{s_d}}.
+\]
+In particular, a one-variable depth-two expression
+$\Li_{p,q}(z,1)$ weights the larger index. The generalized Stieltjes
+constants use
+\[
+ \zeta(1+s,a)=\frac1s+
+       \sum_{j\ge0}\frac{(-1)^j\gamma_j(a)}{j!}s^j,
+ \qquad \gamma_0(a)=-\psi(a).
+\]
+A superscript $\zeta^{(j)}$ denotes a derivative in the spectral
+variable. Derivatives of $\psi$ denote derivatives in its argument.
+Every finite part and every convergent subtraction is specified at
+its point of use. No divergent series is assigned a value without
+a stated continuation or subtraction rule.

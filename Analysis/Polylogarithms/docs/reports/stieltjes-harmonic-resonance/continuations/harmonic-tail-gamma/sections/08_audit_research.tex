@@ -1,0 +1,251 @@
+\section{Source audit, integration decisions, and further research}
+\label{audit:integration-section}
+
+\subsection{The inspected baseline and the scope of the audit}
+\label{audit:baseline}
+
+The comparison baseline is the repository revision
+\[
+ \texttt{446dca9bd65c20e409d1d2561d4ffad408103e2a}.
+\]
+The two locations named in the research request are the canonical
+polylogarithm manuscript and the current incoming directory
+\cite{Repo,Incoming}. The six current incoming archives were extracted
+and their relevant statements compared with the manuscript's overview
+and proof-status records. The targeted mathematical checks concerned
+the even-tail coefficient conventions and operator reduction, the
+differential-polynomial normal form and known Gamma coefficient sectors,
+the normalized residue calculus, and the first determinantal resonance
+and its stated continuation problem \cite{DPL,PTI,BTD,DHR}.
+
+The new arguments were checked against those inputs, including the
+omitted binomial summand, the signs and index shifts in the boundary
+determinant, the Euler-operator projection, and the endpoint constants
+in the convergent integral formulas. This is a targeted audit of the
+proof chain used here. It is not a certification of every chapter,
+historical archive, or earlier numerical calculation in the repository.
+\textbf{No new false inherited theorem was established by this audit.}
+The source changes below concern proved extensions, attribution, and
+precise status updates rather than a newly discovered counterexample.
+
+\subsection{What is new relative to that baseline}
+\label{audit:status-matrix}
+
+The following distinctions prevent an already available reduction from
+being counted as a new resolution. ``New'' here means established in
+this continuation relative to the inspected source material; it does
+not assert historical priority over the entire literature.
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.18\linewidth}>{\raggedright\arraybackslash}p{0.34\linewidth}>{\raggedright\arraybackslash}p{0.40\linewidth}@{}}
+\hline
+Topic & Inherited input & Exact advance in this article\\
+\hline
+Even-tail rank & Equal and adjacent orders; the $p=2,4,6$ families;
+the fixed-gap boundary determinant in DPL,
+\texttt{ar:gap-det} \cite{DPL,PTI,BTD}.
+& Strict separation of every pair of recurrence-column ratios, and
+nonvanishing of the complete $q-p=4$ family. The fixed-gap determinant
+is rederived as an input, not claimed as new.\\[4pt]
+Finite telescopers & The Bernoulli coordinate formula and explicit
+low-order telescopers, including $(4,6)$ \cite{DPL}.
+& A polynomial certificate for every late-block combination and every
+even pair, with a uniform construction, degree bounds, and limiting
+constant. The $(8,12)$ rational extraction is an explicit application.\\[4pt]
+Gamma coefficients & The canonical quotient, Appell transport, the
+complete $u_0,u_1$ sector, and every pure polygamma-square coefficient
+\cite{DPL,PTI,BTD}.
+& The complete projection onto $u_0,u_1,u_2$, including all powers
+$u_2^b$, $b\ge2$, and the rational coefficient form with numerator
+degree $b-2$. These are formal coefficient identities.\\[4pt]
+Next resonance & Classical Gauss summation and the determinant
+identity; the first-resonance theory and proposed next two-particle
+target \cite{DHR}.
+& The next double pole, including overlap subtraction, the hard-cutoff
+constant, its spectral comparison, uniform cutoff jets, and anchored
+Hurwitz--Stieltjes identities.\\[4pt]
+Higher spectral jets & The normalized principal-part expansion,
+scalar projection, and first spectral-coefficient bridge \cite{DPL}.
+& Canonical spatial kernels for every $[s^q]D_1(s)$, $q\ge1$, with
+all origin, infinity, and higher-pole terms. The same scalar projection
+controls every Stieltjes correction.\\[4pt]
+Family--2 example & An exact incoming proof of the manuscript's
+\texttt{double:eq:fam2-example}, with a simplified value \cite{PTI}.
+& An editorial promotion supported by that inherited proof. No new
+proof of this example is claimed here.\\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Concrete integration decisions and limits}
+\label{audit:decisions}
+
+The optimal-prefix conjecture should now record the union of the
+proved equal-order, adjacent-order, $p=2,4,6$, and gap-four families.
+Its general unequal-order statement remains open. In particular,
+pairwise ratio separation does not settle a boundary determinant of
+size three or larger. There is a simple algebraic reason: the positive
+matrix $B_{ij}=i+j$, $1\le i,j\le3$, has every increasing
+two-by-two minor strictly negative,
+\[
+ \det B_{\{i_1,i_2\},\{j_1,j_2\}}
+       =-(i_2-i_1)(j_2-j_1)<0,
+\]
+but its three-by-three determinant is zero. Thus the new ratio theorem
+supplies exactly the sign information needed for a two-column
+boundary block; an additional argument is required for $m\ge3$.
+
+The rational telescoper theorem changes the status of the requested
+all-order certificate construction. It does not by itself prove that
+an arbitrary prescribed inverse row exists. When a coefficient relation
+has been supplied, the theorem constructs and verifies its finite
+certificate; the separate rank theorem proves existence of every
+reconstruction row in the stated families.
+
+For the Gamma sector, retain the order of operations: first take the
+canonical normal form and then apply the projection $\sigma_2$ which
+sets $u_r=0$ for $r\ge3$. The Euler-operator proof justifies extracting
+this projected sector; setting higher derivatives to zero before
+normal reduction is a different operation. The all-$b$ recurrence and
+rational numerator theorem extend the earlier sector results. They
+neither evaluate every associated finite-part moment nor establish
+independence of the resulting numerical constants \cite{DPL,PTI}.
+
+All normalizations should travel with their formulas. The tail
+identities use the centered coordinate $n+1/2$ and explicit polynomial
+subtraction. Differential-polynomial finite parts retain the original
+spatial coordinate and the endpoint functional of total derivatives.
+The logarithmic kernels use the displayed subtraction at infinity and
+the splitting point $1$. The resonant hard cutoff uses $x=N+1$, while
+its spectral constant belongs to the explicitly stated Gamma
+deformation. The product of a vanishing tail with a divergent moment
+contributes to that constant and must be retained. These distinctions
+are requirements of the proved identities, not interchangeable
+definitions of one unspecified regularization.
+
+The canonical Family--2 display
+\texttt{chapters/04-depth.tex}, \texttt{double:eq:fam2-example},
+can be marked proved by citing the existing incoming component
+evaluations \texttt{bip:eq:12}--\texttt{bip:eq:21} and simplification
+\texttt{bip:eq:family2-short} \cite{PTI}. This promotion was already
+justified before the present work. The Gaussian $S_6$ and the
+\emph{current} $S_8$ candidate remain conjectural. The older rejected
+$S_8$ vector is a different statement and must not replace the current
+candidate in either a proof attempt or a status table \cite{Repo,PTI}.
+None of the new rank, Gamma-sector, or resonance results proves those
+period identities.
+
+Exact finite algebra and numerical diagnostics serve different
+purposes. The rational replays test coefficient transformations and
+finite certificates. The separately subtracted quadratures and
+complex-parameter comparisons test analytic formulas and endpoint
+constants. The infinite-family results rest on the proofs, rather than
+on the extent of a computed table; the floating-point diagnostics are
+not interval certificates. No proof-assistant formalization is claimed.
+
+\subsection{Twelve concrete questions for the next continuation}
+\label{audit:future}
+
+The following targets emphasize exact identities, structural reductions,
+and normalized primitives. Each calls for a proof or a specified finite
+certificate; a failed numerical relation search would not settle an
+independence or nonmembership claim.
+
+\begin{enumerate}
+\item \textbf{Settle the next boundary determinant.}
+For $m=3$, prove or disprove nonvanishing of
+$\det(C_{b+i,j}^{[3]})_{1\le i,j\le3}$ for every $b>3$.
+This is the next gap $q-p=6$. The pairwise signs are now known, but
+they do not control the three-column determinant. A discrete Wronskian
+identity, an exact recurrence for the determinant, or a nonvanishing
+arithmetic normalization would supply the missing step.
+
+\item \textbf{Explain the gap-four determinant sequence arithmetically.}
+Find a generating function, finite recurrence, or exact denominator
+formula for $\Delta_b=u_{b+2}v_{b+1}-u_{b+1}v_{b+2}$.
+The recurrence already proves positivity; the new target is a closed
+identity or an integer normalization which explains the numerators
+of the optimal-prefix determinants and supports exact reconstruction.
+
+\item \textbf{Describe all reconstruction rows without generic inversion.}
+For the proved gap-four family, express each inverse row through
+finite binomial or Bernoulli sums and the two fundamental recurrence
+solutions. Combine it with the universal telescoper to obtain
+certificates for prescribed even-zeta coordinates. Determine minimal
+weight-polynomial degrees within the specified formal coefficient
+system, keeping this separate from arithmetic independence.
+
+\item \textbf{Extend polynomial telescoping to three or more tails.}
+Construct a finite difference certificate involving products of every
+required proper subset of the tails. Identify precisely which parity
+conditions leave only even reciprocal powers and which additional
+Euler-sum coordinates survive. The target is an all-order certificate
+and its endpoint constant, rather than an unproved extrapolation of
+the two-tail cancellation.
+
+\item \textbf{Determine the complete next Gamma projection.}
+Apply the Euler-operator method to $\sigma_3$, retaining
+$u_0,u_1,u_2,u_3$. Derive a closed coefficient equation with the
+canonical support restrictions, then solve the first coupled families
+containing $u_3^2$ and arbitrary powers of $u_1,u_2$.
+Prove that discarded higher canonical monomials cannot contribute
+before extracting this sector.
+
+\item \textbf{Find a closed formula for the all-$b$ sector numerators.}
+The rational form, denominator, degree, and leading coefficient of
+the polynomials $p_b(k)$ are now established. Seek a finite formula
+uniform in both $b$ and $k$, a bivariate generating function, or a
+hypergeometric representation. Such a formula should explain exact
+vanishing coefficients and coefficient patterns, rather than merely
+reproduce the already proved recurrence.
+
+\item \textbf{Evaluate the numerical image of the new Gamma sector.}
+Map the moments containing $(\psi')^{2k}(\psi'')^b$ and their
+Gamma--Appell transports into convergent free-order multiple-zeta
+derivatives. Determine the relations among these images within an
+explicitly stated functional-relation family. This would connect the
+new formal coefficient theorem with the remaining basis-reduction questions for
+higher mixed moments in the incoming reports \cite{DPL,PTI}.
+
+\item \textbf{Introduce rational shifts into the logarithmic kernels.}
+Replace the unshifted pole lattice by a fixed Hurwitz lattice and
+derive the exact analogue of the scalar correction for
+$\gamma_q(a)$. At rational $a$, seek finite formulas in a declared
+multiple-Hurwitz or cyclotomic basis. Retain the origin subtraction,
+the choice of logarithm, and the transport of the normalization
+constant under changes of base point.
+
+\item \textbf{Construct parameter primitives for the higher jets.}
+Starting with the normally convergent kernels, integrate in a shift
+or Gamma parameter and anchor the primitive at a specified point.
+Find recurrences which isolate one prescribed higher Stieltjes
+coefficient or one marked spectral derivative. A complete answer
+should prove the endpoint limit and identify any Barnes-type
+functions needed for the resulting primitive family.
+
+\item \textbf{Treat higher-rank and deeper determinantal resonances.}
+At the next general-rank resonance $b-a-c=2r-3$, construct the
+subtraction for the divergent two-by-two moment block together with
+the finite lower block. Then study the deeper loci
+$b-a-c=2r-2-M$. Determine all overlapping escape terms before
+comparing hard-cutoff constants with spectral Laurent coefficients,
+and prove uniformity sufficient for every fixed parameter jet.
+
+\item \textbf{Find a depth description compatible with finite differences.}
+For rational Gamma weights at other positive integer parameters,
+derive complete polylogarithm generators of the largest-index
+increments and their anchored Euler primitives. Determine which
+cutoff harmonic products cancel under finite differencing and when
+the endpoint sums reduce to ordinary zeta products. The two-particle
+specialization here supplies a test case for a depth invariant that
+respects this operation.
+
+\item \textbf{Return to the frozen Gaussian period targets.}
+For the exact $S_6$ vector and current $S_8$ candidate, seek a
+parameter-dependent polylogarithm or iterated-integral identity whose
+proved boundary value is the required relation. Preserve the branch
+data and all lower-weight constants. A projection outside a selected
+formal relation space is not a disproof of the numerical period
+identity, and a small residual is not its proof \cite{Repo}.
+\end{enumerate}

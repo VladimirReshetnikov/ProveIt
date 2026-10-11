@@ -1,0 +1,123 @@
+\section{Even and odd quadratic spectra}\label{qspec:sec:transform}
+
+Define the absolutely convergent series
+\begin{align}
+E(s;a,b)&=\sum_{n\in\Z}\bigl((n+a)^2+b^2\bigr)^{-s},
+&&\Rea s>\tfrac12,\label{qspec:eq:E}\\
+Y(s;a,b)&=\sum_{n\in\Z}(n+a)\bigl((n+a)^2+b^2\bigr)^{-s},
+&&\Rea s>1.\label{qspec:eq:Y}
+\end{align}
+Their reflected positive-index forms are
+\[
+E(s)=\sum_{n\ge0}\bigl(Q_b(x_n)^{-s}+Q_b(y_n)^{-s}\bigr),
+\qquad
+Y(s)=\sum_{n\ge0}\bigl(x_nQ_b(x_n)^{-s}-y_nQ_b(y_n)^{-s}\bigr).
+\]
+Continuation of the initially absolutely convergent functions, rather than
+an unannounced summation prescription for divergent series, is used throughout.
+
+\begin{proposition}[Classical Poisson--Bessel continuation in both channels]
+\label{qspec:prop:poisson}
+The meromorphic continuation of $E$ is
+\begin{align}
+E(s;a,b)={}&\frac{\sqrt\pi\,\Gamma(s-\tfrac12)}{\Gamma(s)}b^{1-2s}\notag\\
+&+\frac{4\pi^s b^{1/2-s}}{\Gamma(s)}
+\sum_{n\ge1}n^{s-1/2}\cos(2\pi na)K_{s-1/2}(2\pi bn).
+\label{qspec:eq:poisson}
+\end{align}
+Its only poles are simple, at $s=\tfrac12-j$, $j\ge0$, with
+\begin{equation}\label{qspec:eq:residues}
+\operatorname*{Res}_{s=1/2-j} E(s;a,b)
+=\frac1{4^j}\binom{2j}{j}b^{2j}.
+\end{equation}
+It vanishes at every nonpositive integer. The odd companion is entire and
+has the expression
+\begin{equation}\label{qspec:eq:odd-poisson}
+Y(s;a,b)=\frac{4\pi^s b^{3/2-s}}{\Gamma(s)}
+\sum_{n\ge1}n^{s-1/2}\sin(2\pi na)K_{s-3/2}(2\pi bn).
+\end{equation}
+All displayed Fourier series and all their spectral derivatives converge
+locally uniformly for $s\in\C$, $b>0$, and real $a$.
+\end{proposition}
+\begin{proof}
+Mellin integration in the absolute-convergence half-plane gives
+\[
+\Gamma(s)E(s;a,b)
+=\int_0^\infty t^{s-1}e^{-b^2t}
+\sum_{n\in\Z}e^{-t(n+a)^2}\dd t.
+\]
+Apply the Gaussian Poisson identity
+\[
+\sum_{n\in\Z}e^{-t(n+a)^2}
+=\sqrt{\pi/t}\sum_{k\in\Z}e^{-\pi^2k^2/t}e^{2\pi ika}.
+\]
+This identity follows from the Fourier transform of a Gaussian, or from
+the classical theta transformation \cite{theta}. The zero Fourier mode
+is $\sqrt\pi\Gamma(s-\tfrac12)b^{1-2s}$. For $k\ne0$, use the
+Bessel integral \cite{bessel}
+\[
+\int_0^\infty t^{s-3/2}e^{-b^2t-\pi^2k^2/t}\dd t
+=2(\pi|k|/b)^{s-1/2}K_{s-1/2}(2\pi b|k|).
+\]
+Combining the two signs of $k$ proves \eqref{qspec:eq:poisson}.
+Interchange of the nonzero modes and the integral is justified by the
+same integrals with absolute values; their resulting Bessel series has
+exponential decay.
+
+For explicit normal convergence, use
+\begin{equation}\label{qspec:eq:K-cosh}
+K_\nu(u)=\int_0^\infty e^{-u\cosh t}\cosh(\nu t)\dd t,
+\qquad u>0.
+\end{equation}
+On a compact set of $\nu$ the integrand, and any fixed number of order
+derivatives, are bounded by $e^{-u\cosh t}e^{A t}(1+t)^M$ for fixed
+$A,M$. For $u\ge u_0>0$ the factor $e^{-u\cosh t}$ supplies an
+exponential factor in $u$ and an integrable majorant in $t$. Multiplying
+by any fixed power of $n$ or $\log n$ does not destroy convergence when
+$u=2\pi bn$ and $b$ stays bounded away from zero. Parameter derivatives
+in $a$ introduce only powers of $n$ and have the same property.
+
+The nonzero-mode part is therefore entire in $s$. The poles and residues
+come only from $\Gamma(s-\tfrac12)$; the half-integer Gamma values give
+\eqref{qspec:eq:residues}. At $s=0,-1,-2,\ldots$ the bracket before
+multiplication by $1/\Gamma(s)$ is regular, so $E(s)=0$.
+
+Initially for $\Rea s>\tfrac32$, termwise differentiation gives
+\begin{equation}\label{qspec:eq:odd-differentiation}
+Y(s;a,b)=-\frac1{2(s-1)}\partial_a E(s-1;a,b).
+\end{equation}
+The zero-mode term in \eqref{qspec:eq:poisson} is independent of $a$.
+Differentiate its remaining series and use
+$(s-1)\Gamma(s-1)=\Gamma(s)$ to obtain
+\eqref{qspec:eq:odd-poisson}. Normal convergence proves that this expression
+is entire. The apparent singularity in \eqref{qspec:eq:odd-differentiation}
+at $s=1$ is removable, not a missing residue.
+\end{proof}
+
+\subsection{The two local spectral germs}
+For $\epsilon$ near zero define
+\begin{align}
+C(\epsilon;b)&=\frac{\sqrt\pi\,\Gamma(\epsilon)b^{-2\epsilon}}
+                         {\Gamma(1/2+\epsilon)},\label{qspec:eq:Cgerm}\\
+B_+(\epsilon;a,b)&=
+\frac{4\pi^{1/2+\epsilon}b^{-\epsilon}}{\Gamma(1/2+\epsilon)}
+\sum_{n\ge1}n^\epsilon\cos(2\pi na)K_\epsilon(2\pi bn),\label{qspec:eq:Bplusgerm}\\
+B_-(\epsilon;a,b)&=
+\frac{4\pi^{1+\epsilon}b^{1/2-\epsilon}}{\Gamma(1+\epsilon)}
+\sum_{n\ge1}n^{1/2+\epsilon}\sin(2\pi na)
+ K_{\epsilon-1/2}(2\pi bn).\label{qspec:eq:Bminusgerm}
+\end{align}
+Then
+\begin{equation}\label{qspec:eq:germ-identities}
+E(\tfrac12+\epsilon)=C(\epsilon;b)+B_+(\epsilon;a,b),
+\qquad Y(1+\epsilon)=B_-(\epsilon;a,b).
+\end{equation}
+The only pole of these germs is the unit-residue pole of $C$ at zero.
+Define their regular jets by
+\begin{equation}\label{qspec:eq:jet-definitions}
+C_m(b)=m![\epsilon^m]\bigl(C(\epsilon;b)-\epsilon^{-1}\bigr),
+\qquad B_m^\pm(a,b)=\left.\partial_\epsilon^m B_\pm(\epsilon;a,b)\right|_{0}.
+\end{equation}
+The spectral shifts $1/2+\epsilon$ and $1+\epsilon$ differ deliberately:
+the first-moment factor in $Y$ is what aligns both massless powers with
+$x^{-1-2\epsilon}$.

@@ -1,0 +1,515 @@
+% Integration fragment. All labels start eg: and no special macros are required.
+% Prior source: Differential_Polygamma_and_Lerch_Identities, Section 8;
+% current Bernoulli_Tornheim_Digamma_Identities, Sections 3--6.
+% Exact verification: verify_gap_four.py, gap_four_exact_results.json.
+\section{The optimal initial prefix when the even orders differ by four}
+\label{eg:section}
+
+The current incoming reports prove the optimal initial-prefix statement
+for the diagonal, for adjacent even orders, and for the fixed smaller
+orders $p=2,4,6$ \cite{Canonical,Differential,Bernoulli,Polygamma}.
+We prove the next fixed-gap family
+\[
+                    (p,q)=(2b-4,2b),\qquad b\ge3.
+\]
+Its additional range relative to those reports begins with $(p,q)=(8,12)$ and continues
+with $(10,14),(12,16),\ldots$. The proof uses the strict log-convexity
+of the positive coefficients of $2/x-\cot(x/2)$ to show that a
+specified two-by-two boundary determinant never vanishes. We also
+prove a structural statement about every pair of columns in the
+fundamental recurrence for an arbitrary even gap. The latter does
+not settle the higher-dimensional boundary determinant.
+
+\subsection{Normalization and the determinant to be proved nonzero}
+
+For even $2\le p\le q=2b$, put
+\[
+ A_p(n)=\zeta(p)-H_n^{(p)}=\zeta(p,n+1),\qquad
+ D_{p,q}(s)=\sum_{n\ge0}A_p(n)A_q(n)(n+\tfrac12)^{-s}.
+\]
+The series initially converges for $\Re s>3-p-q$, and its continuation
+is regular at every $s=-2r$. Write $D_r=D_{p,q}(-2r)$. We use the
+inherited blocks $C_j$, characterized by the mutually inverse formulas
+\begin{align}
+ D_r&=\sum_{j=0}^r\frac{\binom{2r}{2j}}{2j+1}
+       B_{2r-2j}(\tfrac12)C_j,\label{eg:forward}\\
+ C_j&=\sum_{r=0}^j\binom{2j+1}{2r}2^{-2(j-r)}D_r.
+       \label{eg:backward}
+\end{align}
+For $j\ge b$ they have the finite coordinate form
+\[
+ C_j=\sum_{k=0}^{b-1}a_{jk}Z_k,\qquad
+ Z_k=\zeta(2k),\qquad Z_0=-\tfrac12.
+\]
+For $d=2j+1$ and $e=d-p-q+2k+1$, the inherited coefficients are
+\begin{equation}\label{eg:entries}
+ a_{jk}=\begin{cases}
+ B_e\left\{\displaystyle
+ \frac{\binom{d-q+1}{p-2k}}{d-q+1}
+ +\frac{\binom{d-p+1}{q-2k}}{d-p+1}\right\},&e\ge0,\\[6pt]
+ 0,&e<0.
+ \end{cases}
+\end{equation}
+Each binomial summand is omitted unless its lower index lies between
+$2$ and its upper index. In particular a zero lower index is omitted.
+Let
+\begin{equation}\label{eg:M}
+ M_{p,q}=(a_{b+r-1,k})_{1\le r\le b,\ 0\le k<b}.
+\end{equation}
+The first $q$ moments have full rank on the specified formal labels
+\[
+ C_0,\ldots,C_{b-1},Z_0,\ldots,Z_{b-1}
+\]
+if and only if $M_{p,q}$ is nonsingular. The complete first-$q$
+determinant in this coordinate order is
+$\det M_{p,q}/(4b-1)!!$, by the triangular transform
+\eqref{eg:forward}. No arithmetic independence of the actual constants
+is asserted by this formal rank statement.
+
+\subsection{A strict comparison theorem for all even gaps}
+
+Put $q-p=2c$, where $1\le c<b$, and define
+\begin{equation}\label{eg:alpha}
+ \alpha_n=\frac{2|B_{2n}|}{(2n)!}
+          =4\sum_{m=1}^{\infty}(2\pi m)^{-2n},\qquad n\ge1.
+\end{equation}
+For $s\ge c+1$ set
+\begin{equation}\label{eg:ABD}
+ A_s=\frac{(2s)!}{(2s-2c)!},\qquad
+ B_s=\frac{(2s-1)!}{(2s-2c-1)!},\qquad
+ d_s=2(A_s+B_s),
+\end{equation}
+and put $A_s=0$ for $1\le s\le c$. The letters $A_s,B_s$ in
+\eqref{eg:ABD} are rational recurrence coefficients, distinguished from
+the harmonic tails $A_p(n)$ and Bernoulli numbers $B_{2n}$ by their
+arguments and subscripts. Define
+\begin{equation}\label{eg:kernel}
+ K(s,u)=\frac{\alpha_{s-u}(B_s+A_u)}{d_s},
+ \qquad s\ge c+1,\quad1\le u<s,
+\end{equation}
+and the fundamental array
+\begin{align}
+ R_{s,j}&=\delta_{sj},&&1\le s,j\le c,\notag\\
+ R_{s,j}&=\sum_{u=1}^{s-1}K(s,u)R_{u,j},
+       &&s\ge c+1,\quad1\le j\le c.
+       \label{eg:fundamental}
+\end{align}
+All generated entries $R_{s,j}$, $s\ge c+1$, are strictly positive.
+The earlier fixed-gap reduction gives
+\begin{equation}\label{eg:inherited-reduction}
+ \det M_{2(b-c),2b}
+ =\frac{(-1)^{b(b-1)/2}}{4^bb!}
+    \left(\prod_{s=c+1}^{b+c}d_s\right)
+    \det(R_{b+i,j})_{1\le i,j\le c}.
+\end{equation}
+We give the coefficient mechanism below to check the convention and
+signs directly; nonvanishing of the last determinant is the additional
+issue addressed here when $c=2$.
+
+\begin{lemma}[Strictly decreasing kernel ratios]\label{eg:kernel-ratios}
+For every $s\ge c+1$, the quotient
+\[
+                   \frac{K(s+1,u)}{K(s,u)}
+\]
+is a strictly decreasing function of the integer $u$, $1\le u<s$.
+\end{lemma}
+
+\begin{proof}
+The coefficients in \eqref{eg:alpha} are strictly log-convex. Indeed,
+with $x_m=(2\pi m)^{-2}$,
+\[
+ \alpha_n\alpha_{n+2}-\alpha_{n+1}^2
+ =16\sum_{m<\ell}x_m^nx_\ell^n(x_m-x_\ell)^2>0.
+\]
+The sums converge absolutely for $n\ge1$, and the positive support
+contains more than one point. Thus $\alpha_{n+1}/\alpha_n$ strictly
+increases with $n$. On the other hand,
+\[
+ \frac{K(s+1,u)}{K(s,u)}
+ =\frac{d_s}{d_{s+1}}
+   \frac{\alpha_{s+1-u}}{\alpha_{s-u}}
+   \frac{B_{s+1}+A_u}{B_s+A_u}.
+\]
+The middle factor strictly decreases with $u$. The last factor is
+nonincreasing because $A_u$ is nondecreasing, $B_{s+1}>B_s>0$,
+and $(B_{s+1}+a)/(B_s+a)$ decreases as $a$ increases. Every factor
+is positive, so their product strictly decreases.
+\end{proof}
+
+\begin{theorem}[Every generated minor of order two is negative]
+\label{eg:two-minors}
+Fix an even gap $2c$ with $c\ge2$. For any initial columns
+$1\le j<k\le c$, the positive ratios
+\[
+                   \frac{R_{s,k}}{R_{s,j}},\qquad s\ge c+1,
+\]
+strictly decrease with $s$. Equivalently, for $c+1\le r<s$,
+\begin{equation}\label{eg:minor-sign}
+ \det\begin{pmatrix}R_{r,j}&R_{r,k}\\R_{s,j}&R_{s,k}\end{pmatrix}<0.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Write $X_u=R_{u,j}$, $Y_u=R_{u,k}$. Suppose that the stated ratio
+ordering has been proved through row $s\ge c+1$, and put
+$z_s=Y_s/X_s$. This supposition is empty at $s=c+1$, so it includes
+the induction base. For $u<s$ set $v_u=Y_u-z_sX_u$. Among the initial
+rows, $v_j=-z_s<0$, $v_k=1>0$, and all other $v_u$ vanish. Among
+the generated rows $c+1\le u<s$, the induction hypothesis gives
+$v_u>0$. Thus the unique negative term is at index $j$, and every
+positive term has larger index. The recurrence gives
+\[
+                     \sum_{u=1}^{s-1}K(s,u)v_u=0.
+\]
+Put $\beta_u=K(s+1,u)/K(s,u)$. Since $v_s=0$,
+\begin{align*}
+ Y_{s+1}-z_sX_{s+1}
+ &=\sum_{u=1}^{s-1}K(s,u)\beta_uv_u\\
+ &=\sum_{u=1}^{s-1}K(s,u)(\beta_u-\beta_j)v_u<0.
+\end{align*}
+The negative-index term vanishes; every nonzero remaining term is
+negative by Lemma~\ref{eg:kernel-ratios}. Strictness already follows
+from the term $u=k$. Hence $Y_{s+1}/X_{s+1}<z_s$, completing the
+induction. Multiplying the ratio inequality by the two positive
+denominators proves \eqref{eg:minor-sign}.
+\end{proof}
+
+The one exceptional initial negative index is essential in this proof.
+Positivity of the recurrence entries alone would not imply the theorem.
+
+\subsection{Exact determinant and reconstruction for gap four}
+
+Now take $c=2$. Define $X_s=R_{s,1}$ and $Y_s=R_{s,2}$, so
+\[
+ (X_1,Y_1)=(1,0),\qquad (X_2,Y_2)=(0,1),
+\]
+and compute both columns by \eqref{eg:fundamental}. In this case
+\begin{equation}\label{eg:d-gapfour}
+ d_s=16(s-1)^2(2s-1)(2s-3),\qquad s\ge3.
+\end{equation}
+Set
+\begin{equation}\label{eg:casoratian}
+ E_s=X_{s+1}Y_s-X_sY_{s+1},\qquad s\ge3.
+\end{equation}
+Theorem~\ref{eg:two-minors} proves $E_s>0$ at every index. For example,
+\[
+ E_3=\frac1{14515200},\qquad
+ E_4=\frac{61}{1170505728000},\qquad
+ E_5=\frac{3419}{69528040243200000}.
+\]
+These are exact rational recurrence values, not approximations.
+
+\begin{theorem}[Optimal prefix for every gap-four pair]\label{eg:main}
+For every integer $b\ge3$,
+\begin{equation}\label{eg:determinant}
+ \boxed{\displaystyle
+ \det M_{2b-4,2b}
+ =(-1)^{b(b-1)/2+1}
+   \frac{4^b((b+1)!)^2(2b+3)!!(2b+1)!!}{3b!}\,E_{b+1}\ne0.}
+\end{equation}
+Consequently, for $(p,q)=(2b-4,2b)$,
+\begin{align}\label{eg:span}
+ \operatorname{span}_{\mathbb Q}\{D_0,D_1,\ldots\}
+ &=\operatorname{span}_{\mathbb Q}\{D_0,\ldots,D_{q-1}\}\notag\\
+ &=\operatorname{span}_{\mathbb Q}
+     \{C_0,\ldots,C_{b-1},Z_0,\ldots,Z_{b-1}\}.
+\end{align}
+The complete first-$q$ coefficient determinant is
+\eqref{eg:determinant} divided by $(4b-1)!!$. The prefix is optimal
+for rank $q$ on these $q$ formal labels.
+\end{theorem}
+
+\begin{proof}
+The last determinant in \eqref{eg:inherited-reduction} is now
+\[
+ \det\begin{pmatrix}X_{b+1}&Y_{b+1}\\X_{b+2}&Y_{b+2}\end{pmatrix}
+ =-E_{b+1}<0.
+\]
+The elementary product evaluation
+\[
+ \prod_{s=3}^{b+2}d_s
+ =\frac{16^b((b+1)!)^2(2b+3)!!(2b+1)!!}{3}
+\]
+gives \eqref{eg:determinant}. The block decomposition and invertible
+triangular transforms give \eqref{eg:span}. Fewer than $q$ rows cannot
+have rank $q$ on $q$ specified formal coordinates.
+\end{proof}
+
+The first five determinants are
+\[
+\begin{array}{c|c}
+(p,q)&\det M_{p,q}\\\hline
+(2,6)&61/5760\\
+(4,8)&-3419/138240\\
+(6,10)&-713039/6451200\\
+(8,12)&263589503/309657600\\
+(10,14)&818219064067/78033715200
+\end{array}
+\]
+The first three pairs overlap the previously settled fixed smaller
+orders. The last two belong to the additional infinite range covered
+by Theorem~\ref{eg:main}.
+
+\paragraph{Checking the source reduction and the rotation.}
+For an arbitrary coefficient vector $v=(v_0,\ldots,v_{b-1})$, set
+$Q(t)=\sum_{k=0}^{b-1}v_k t^{2b-2k}/(2b-2k)!$ and write
+$Q(ix)=R(x)=\sum_{u=1}^b r_ux^{2u}$. Thus
+$r_u=(-1)^uv_{b-u}/(2u)!$. Consider the real odd expression
+\[
+ (R^{(2c)}-R^{(2c)}(0))\cot(x/2)+(R\cot(x/2))^{(2c)}.
+\]
+The coefficient at $x^{2r-1}$, with $s=r+c$, is
+\begin{equation}\label{eg:coefficient-equation}
+ Y_r^*=d_sr_s-\sum_{u=1}^{s-1}\alpha_{s-u}(B_s+A_u)r_u,
+ \qquad r_{b+1}=\cdots=r_{b+c}=0.
+\end{equation}
+Indeed $2/x$ supplies $d_s$, and the remaining cotangent coefficients
+are $-\alpha_n$. The constant derivative subtraction sets $A_c=0$,
+exactly enforcing the omitted zero lower binomial index.
+Comparing factorials directly with \eqref{eg:entries} gives the row scaling
+\[
+ Y_r^*=\frac{2(-1)^{r-c}}{(2r-1)!}(M_{p,q}v)_r.
+\]
+Here is a complete determinant check of
+\eqref{eg:inherited-reduction}. Let $L$ be the lower triangular
+matrix of size $b+c$ whose first $c$ rows are the corresponding
+identity rows, and whose remaining entries are
+\[
+ L_{ss}=d_s,\qquad L_{su}=-d_sK(s,u)\ (u<s),\qquad
+ L_{su}=0\ (u>s).
+\]
+Its inverse has entries $(L^{-1})_{s,j}=R_{s,j}$ in its first $c$
+columns. The coefficient matrix $H$ of
+\eqref{eg:coefficient-equation} is the minor with rows
+$c+1,\ldots,b+c$ and columns $1,\ldots,b$. Jacobi's complementary
+minor identity therefore gives
+\[
+ \det H=(-1)^{bc}\left(\prod_{s=c+1}^{b+c}d_s\right)
+                     \det(R_{b+i,j})_{1\le i,j\le c}.
+\]
+If $T$ denotes the reversed diagonal map from $v$ to $r$ and $S$
+the row scaling just displayed, then $HT=SM_{p,q}$ and
+\[
+ \det T=\frac{(-1)^b}{\prod_{u=1}^b(2u)!},\qquad
+ \det S=\frac{2^b(-1)^{b(b+1)/2-bc}}
+                       {\prod_{r=1}^b(2r-1)!}.
+\]
+Taking determinants yields exactly
+\eqref{eg:inherited-reduction}. This checks the recurrence against
+the original Bernoulli matrix, including the sign convention, without
+a new analytic assumption.
+
+For $c=2$, these equations give a particularly small reconstruction.
+Given the actual blocks $C_b,\ldots,C_{2b-1}$, set
+\[
+ Y_r^*=\frac{2(-1)^{r-2}}{(2r-1)!}C_{b+r-1},\qquad1\le r\le b.
+\]
+Set $\eta_1=\eta_2=0$ and compute, for $3\le s\le b+2$,
+\begin{equation}\label{eg:inhomogeneous}
+ \eta_s=\frac{Y_{s-2}^*}{d_s}
+          +\sum_{u=1}^{s-1}K(s,u)\eta_u.
+\end{equation}
+The two initial coefficients are recovered by
+\begin{equation}\label{eg:reconstruction}
+ \begin{pmatrix}r_1\\r_2\end{pmatrix}
+ =-\begin{pmatrix}X_{b+1}&Y_{b+1}\\X_{b+2}&Y_{b+2}\end{pmatrix}^{-1}
+       \begin{pmatrix}\eta_{b+1}\\\eta_{b+2}\end{pmatrix}.
+\end{equation}
+Then $r_s=X_sr_1+Y_sr_2+\eta_s$ and
+$Z_k=(-1)^{b-k}(2b-2k)!r_{b-k}$. This uses one two-by-two inverse
+with a proved nonzero determinant. Equations \eqref{eg:backward} and
+\eqref{eg:reconstruction} reconstruct all the even-zeta coordinates
+from the first $q$ moments; substitution into \eqref{eg:entries} and
+\eqref{eg:forward} recovers every later moment.
+
+\subsection{An infinite family of ordinary rational polygamma sums}
+
+Write the first row of $M_{p,q}^{-1}$ as
+$(\lambda_b,\ldots,\lambda_{q-1})$ and define
+\begin{equation}\label{eg:ordinary-weights}
+ w_r=\sum_{j=\max\{b,r\}}^{q-1}
+          \lambda_j\binom{2j+1}{2r}2^{-2(j-r)},\qquad
+ P_b(x)=\sum_{r=0}^{q-1}w_rx^{2r}.
+\end{equation}
+For $p=q-4$, put
+\begin{align*}
+ u_0&=\frac1{(p-1)(q-1)},\\
+ u_1&=-\frac1{24}\left(\frac q{p-1}+\frac p{q-1}\right),\\
+ u_2&=\frac7{5760}\left(
+ \frac{q(q+1)(q+2)}{p-1}+\frac{p(p+1)(p+2)}{q-1}\right)
+          +\frac{pq}{576},\\
+ S_b(x)&=u_0w_{q-1}x^4
+       +(u_0w_{q-2}+u_1w_{q-1})x^2
+       +u_0w_{q-3}+u_1w_{q-2}+u_2w_{q-1}.
+\end{align*}
+
+\begin{corollary}[Gap-four rational evaluations]\label{eg:ordinary-family}
+For every even $q\ge6$, with $p=q-4$ and $x_n=n+1/2$,
+\begin{equation}\label{eg:ordinary-family-equation}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}\left\{
+ \frac{P_b(x_n)}{(p-1)!(q-1)!}
+   \psi^{(p-1)}(n+1)\psi^{(q-1)}(n+1)-S_b(x_n)
+                  \right\}=-\frac12.}
+\end{equation}
+The sum converges absolutely. Its polynomial $P_b$ has exact degree
+$2q-2$, because
+\begin{equation}\label{eg:top-coefficient}
+ w_{q-1}=\frac{4b(4b-1)E_b}{d_{b+2}E_{b+1}}>0.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The inverse row gives $\sum_{j=b}^{q-1}\lambda_jC_j=Z_0=-1/2$.
+The inverse Bernoulli transform gives the weights
+\eqref{eg:ordinary-weights}. The centered expansion of the tail product
+is
+\[
+ A_p(n)A_q(n)=u_0x_n^{2-p-q}+u_1x_n^{-p-q}
+                         +u_2x_n^{-p-q-2}+O(x_n^{-p-q-4}).
+\]
+Since $\deg P_b\le2q-2$ and $p=q-4$, its nonnegative powers are
+exactly $S_b(x_n)$; the remaining summand is $O(x_n^{-2})$.
+The continued centered sums of $x_n^4,x_n^2,1$ are all zero,
+so the ordinary sum equals the moment combination. Equivalently,
+finite centered power summation gives these polynomial subtraction
+terms zero constant coefficient at the integer cutoff. The polygamma
+normalization follows from even $p,q$.
+
+For \eqref{eg:top-coefficient}, set every row output in
+\eqref{eg:coefficient-equation} except the last equal to zero.
+A homogeneous solution before the final boundary equation has initial
+vector proportional to $(Y_{b+1},-X_{b+1})$, since its coefficient
+at $b+1$ must vanish. Its coefficient at $b$ is $-E_b$ times that
+scalar, and its continued coefficient at $b+2$ is $E_{b+1}$ times
+that scalar. Hence the last row gives
+\[
+        \frac{r_b}{Y_b^*}=\frac{E_b}{d_{b+2}E_{b+1}}.
+\]
+The row and column scalings above show that
+$\lambda_{q-1}=4bE_b/(d_{b+2}E_{b+1})$. Multiplication by
+$\binom{2q-1}{2q-2}=4b-1$ gives the stated positive coefficient.
+\end{proof}
+
+\subsection{A concrete evaluation at the new pair \texorpdfstring{$(8,12)$}{(8,12)}}
+
+A centered difference keeps the integer coefficients readable. Put
+\begin{align*}
+ K(y)=y^{13}\bigl(&469839+1269227y^2-11819495y^4\\
+                 &+56443363y^6+83672540y^8+12834702y^{10}\bigr),\\
+ P(x)&=K(x+\tfrac12)-K(x-\tfrac12),\\
+ S(x)&=\frac{2951981460x^4+51273021735x^2+118231913818}{770}.
+\end{align*}
+Then the exact ordinary identity is
+\begin{equation}\label{eg:8-12-sum}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}\left\{
+ \frac{P(n+\tfrac12)}{7!\,11!}
+       \psi^{(7)}(n+1)\psi^{(11)}(n+1)-S(n+\tfrac12)\right\}
+ =-\frac{790768509}{16}.}
+\end{equation}
+For example, the coefficient row
+\[
+ (469839,1269227,-11819495,56443363,83672540,12834702)
+\]
+multiplied by $M_{8,12}$ is exactly
+$(790768509/8,0,0,0,0,0)$. The centered difference converts this row
+of blocks into $P$, and the first three centered tail-product
+coefficients give precisely $S$. Thus \eqref{eg:8-12-sum} follows
+already from the preceding corollary.
+
+There is also a finite telescoping proof, independent of the
+continued-moment interpretation. Let $c_0,\ldots,c_5$ be the six
+coefficients in the parentheses defining $K$, in increasing order,
+and let
+\[
+ F_m(N)=\sum_{k=1}^N k^m
+       =\frac{B_{m+1}(N+1)-B_{m+1}}{m+1}.
+\]
+Define the explicitly specified polynomials
+\begin{align*}
+ U_8(N)&=\sum_{j=0}^5c_jF_{2j+1}(N),&
+ U_{12}(N)&=\sum_{j=0}^5c_jF_{2j+5}(N),\\
+ V(N)&=-\frac{N}{6160}\bigl(
+ 2417202210N^4-5764920315N^3+42395905270N^2\notag\\
+ &\hspace{36mm}-129829345800N+260578219219\bigr).
+\end{align*}
+The first two definitions imply
+\[
+ \Delta U_8(N)=K(N)N^{-12},\qquad
+ \Delta U_{12}(N)=K(N)N^{-8},
+\]
+where $\Delta f(N)=f(N)-f(N-1)$. Direct polynomial expansion also
+gives
+\begin{equation}\label{eg:V-difference}
+ \Delta V(N)=\frac{K(N)}{N^{20}}+
+      \frac{U_8(N-1)}{N^8}+\frac{U_{12}(N-1)}{N^{12}}
+                         -S(N-\tfrac12).
+\end{equation}
+In particular the negative powers cancel on the right. These are
+finite rational-function identities, reproducible from the six
+integer coefficients and the displayed Bernoulli polynomials.
+Now put
+\[
+ \mathcal F(N)=K(N)A_8(N)A_{12}(N)
+                 +U_8(N)A_8(N)+U_{12}(N)A_{12}(N)+V(N).
+\]
+Using $A_m(N-1)=A_m(N)+N^{-m}$ and the three difference identities,
+all mixed terms cancel to give
+\[
+ \mathcal F(N)-\mathcal F(N-1)
+ =P(N-\tfrac12)A_8(N-1)A_{12}(N-1)-S(N-\tfrac12).
+\]
+Since $\mathcal F(0)=0$, the partial sum of
+\eqref{eg:8-12-sum} through $n=N-1$ is exactly $\mathcal F(N)$.
+For the limiting step, use
+\begin{align*}
+ A_8(N)&=\frac1{7N^7}-\frac1{2N^8}+\frac2{3N^9}
+                                      -\frac1{N^{11}}+O(N^{-13}),\\
+ A_{12}(N)&=\frac1{11N^{11}}-\frac1{2N^{12}}+\frac1{N^{13}}
+                                 -\frac{91}{30N^{15}}+O(N^{-17}).
+\end{align*}
+The three tail-containing terms of $\mathcal F$ have constant
+coefficients, respectively,
+\[
+       -\frac{116518888243}{2310},\qquad
+       -\frac{193499245}{336},\qquad
+        \frac{350665911}{220}.
+\]
+Their sum is $-790768509/16$, $V$ has zero constant coefficient,
+and the coefficients of $N,N^2,\ldots,N^5$ cancel exactly.
+The remainders above contribute $O(N^{-1})$. This proves the
+ordinary evaluation by a finite identity and an asymptotic limit.
+
+\subsection{Scope and reproducible checks}
+
+The exact script checks \eqref{eg:determinant} against the original
+Bernoulli matrix for $3\le b\le18$, checks the independent rotation
+matrix, and verifies \eqref{eg:top-coefficient} where a full inverse
+is computed. It also checks 1,946 minors of order two for gaps
+$c=2,\ldots,6$, and verifies the displayed ordinary evaluation by
+an exact finite telescoper. These checks detect normalization errors;
+the all-order proof is Theorem~\ref{eg:two-minors}, not the finite
+arithmetic range.
+
+The theorem about minors of order two cannot be promoted to a
+fixed-sign assertion for larger boundary determinants. For example,
+for $c=3$ the exact signs are
+\[
+ \det(R_{6+i,j})_{1\le i,j\le3}<0,\qquad
+ \det(R_{7+i,j})_{1\le i,j\le3}>0.
+\]
+Both are nonzero, and both arrays satisfy all the strict negative
+minor statements in Theorem~\ref{eg:two-minors}. Thus order-two
+comparison alone does not prove the general conjecture. Combining
+all currently established families, the still-unsettled range is
+\[
+             8\le p<q,\qquad q-p\ge6,
+             \qquad p,q\ \hbox{even}.
+\]
+A useful next problem is to identify an exact, sign-flexible
+nonvanishing invariant for the higher boundary determinants, or to
+combine the fixed-gap recurrence with the complementary determinant
+of size $p/2$ from the shifted-Hankel approach. The rank problem and
+the arithmetic independence of the actual zeta coordinates remain
+distinct questions.

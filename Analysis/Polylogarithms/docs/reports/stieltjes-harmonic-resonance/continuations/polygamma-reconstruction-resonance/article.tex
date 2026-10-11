@@ -1,0 +1,89 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype,booktabs,longtable,array,enumitem,xcolor}
+\usepackage{titlesec,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=teal!60!black,urlcolor=blue!45!black,breaklinks=true]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{RGB}{25,47,67}
+\definecolor{accent}{RGB}{0,105,111}
+\titleformat{\section}{\large\bfseries\color{ink}}{\thesection}{.7em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{accent}}{\thesubsection}{.7em}{}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\CT}{CT}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\Ima}{Im}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\rising}[2]{(#1)_{#2}}
+\newcommand{\repoSHA}{\texttt{446dca9bd65c20e409d1d2561d4ffad408103e2a}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Polygamma reconstruction and resonance}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\setlist{itemsep=.3em,topsep=.4em}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\allowdisplaybreaks[2]
+\hypersetup{pdftitle={Exact Reconstruction and Higher Resonances in Polygamma--Zeta Calculus},pdfauthor={ProveIt research continuation}}
+\title{\color{ink}\textbf{Exact Reconstruction and Higher Resonances\\in Polygamma--Zeta Calculus}\\[.6em]
+\large Explicit even-zeta extraction, cubic tail moments,\\Gamma determinants, and spectral logarithmic integrals}
+\author{Research continuation prepared for the ProveIt project}
+\date{11 October 2026 (UTC)}
+\begin{document}
+\maketitle
+\begin{abstract}
+This article continues the polylogarithm, harmonic-tail, Gamma, and
+Stieltjes programme at a fixed repository revision. Its main constructive
+result recovers every even-zeta coordinate from the optimal moment prefix
+for the pair of tail orders $(2,2b)$, with no matrix inverse or unspecified
+minor left in the formula. The proof constructs an explicit Bernoulli
+reproducing kernel and evaluates its rank-one perturbation. The resulting
+polynomial weights give ordinary absolutely convergent polygamma series
+and finite polylogarithmic boundary identities. Further developments concern
+the optimal-prefix conjecture at tail order eight, all regular centered
+cubic trigamma moments, the next two-particle Gamma-determinant
+resonance, and spatial Mellin formulas for every spectral coefficient.
+At order eight an exact symbolic determinant certificate and a uniform
+Bernoulli congruence prove the conjecture outside one residue class
+modulo sixteen. The cubic moments close in four fixed constant
+coordinates. The resonance yields explicit generalized Stieltjes
+identities, shift derivatives, and an anchored Hurwitz-zeta primitive.
+All singular subtractions and coordinate conventions are stated explicitly.
+Exact finite calculations and independent numerical diagnostics accompany
+the proofs. The manuscript's short Gaussian $S_6$ and revised $S_8$ period
+identities remain unresolved; no numerical independence claim is made.
+\end{abstract}
+\tableofcontents
+\newpage
+\input{sections/01_scope}
+\input{sections/02_tail_foundation}
+\input{sections/03_inverse_kernel}
+\input{sections/04_tail_polylog}
+\input{sections/05_rank_eight}
+\input{sections/06_centered_cubic}
+\input{sections/07_second_resonance}
+\input{sections/08_spectral_mellin}
+\input{sections/09_audit_research}
+\input{references}
+\end{document}

@@ -1,0 +1,1640 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor}
+\definecolor{bcblue}{RGB}{25,65,105}
+\usepackage[colorlinks=true,linkcolor=bcblue,citecolor=bcblue,urlcolor=bcblue,breaklinks=true]{hyperref}
+\usepackage{bookmark,fancyhdr,needspace,etoolbox}
+\pagestyle{fancy}
+\fancyhf{}\fancyhead[L]{\small Beta mixtures across integer twists}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\BeforeBeginEnvironment{theorem}{\Needspace{6\baselineskip}}
+\BeforeBeginEnvironment{proposition}{\Needspace{6\baselineskip}}
+\BeforeBeginEnvironment{corollary}{\Needspace{6\baselineskip}}
+\BeforeBeginEnvironment{lemma}{\Needspace{6\baselineskip}}
+\newcommand{\bcFP}{\operatorname{FP}}
+\newcommand{\bcPf}{\operatorname{Pf}}
+\newcommand{\bcPV}{\operatorname{PV}}
+\newcommand{\bcLi}{\operatorname{Li}}
+\newcommand{\bcRes}{\operatorname{Res}}
+\newcommand{\bcCT}{\operatorname{CT}}
+\newcommand{\bcRe}{\operatorname{Re}}
+\newcommand{\bcsgn}{\operatorname{sgn}}
+\newcommand{\bcC}{\mathcal C}
+\newcommand{\bcY}{\mathcal Y}
+\newcommand{\bcZ}{\mathcal Z}
+\newcommand{\bcJ}{\mathcal J}
+\newcommand{\bcT}{\mathbb T}
+\newcommand{\bcN}{\mathbb N}
+\newcommand{\bcR}{\mathbb R}
+\newcommand{\bcD}{\mathcal D}
+\newcommand{\bce}{\mathrm e}
+\DeclareMathOperator{\rank}{rank}
+\hypersetup{pdftitle={Beta Mixtures Across Integer Twists},pdfauthor={Research continuation prepared for ProveIt},pdfsubject={Finite spectral corrections, harmonic moments, polylogarithms, Hurwitz zeta and Stieltjes primitives}}
+\title{\textbf{Beta Mixtures Across Integer Twists}\\[5pt]
+\large Finite spectral corrections, harmonic logarithmic moments,\\
+and Stieltjes--polylogarithm primitives}
+\author{Research continuation prepared for the ProveIt project}
+\date{October 10, 2026\\[3pt]\small Reference commit: \texttt{446dca9bd65c20e409d1d2561d4ffad408103e2a}}
+\begin{document}
+\maketitle
+\begin{abstract}
+The ProveIt manuscript evaluates convolutions of unequal twisted Hurwitz
+kernels by Dirichlet beta mixtures when the twists lie in one interval
+between consecutive integers. We determine the correction when that
+hypothesis is removed and the total order is a positive integer. For any
+finite number of factors, the difference between the convolution and the
+affine finite-part mixture is an explicit finite Fourier polynomial. Its
+coefficient at a crossed mode is a sine of the sum of the orders on the
+negative side. Although this correction vanishes at every positive-integer
+order tuple, its balanced order derivatives need not vanish. We give all
+such derivatives and prove that their first-order rank is one less than
+the number of occupied integer chambers.
+
+A two-endpoint specialization evaluates every sufficiently vanishing
+centered-logarithm moment by a polynomial times $\pi u\cot\pi u$. At integer
+endpoint orders the resulting ordinary integrals are finite rational
+linear combinations of even zeta values. Their parameter primitives have
+finite classical-polylogarithm expressions, producing convergent
+inverse-logarithm integrals with odd zeta values. An independent logistic
+Mellin transform gives finite Hurwitz-zeta reductions, all logarithmic
+finite parts, and generalized Stieltjes antiderivatives. In particular,
+the finite part of an unnormalized Mellin integral requires an explicit
+Gamma-derivative contribution from the pole residue.
+
+The proofs are self-contained apart from standard special-function
+identities, which are also derived where used. The package records 508
+finite exact checks, including three negative controls, and 94
+floating-point diagnostics. These checks are not a formalization or
+interval certification. The contribution is an extension of the inspected
+repository material, not a claim of literature priority.
+\end{abstract}
+\newpage
+\begingroup
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{Research target, relationship to the manuscript, and scope}
+\label{bc:sec:introduction}
+
+The immediate starting point is the manuscript section
+\emph{Unequal twists through beta mixtures and finite resolvent identities},
+file \texttt{07-mixed-twist-identities.tex} \cite{repo-mixed}. Its kernel
+$K_\alpha^\theta$ has Fourier multiplier $(2\pi i(n+\theta))^{-\alpha}$.
+When all real twists belong to a single open interval between consecutive
+integers, its Dirichlet-mixture theorem is valid for arbitrary orders with
+positive real parts. The same section gives finite partial-fraction
+reductions at positive integer orders without the common-interval
+restriction. Both statements are correct as written.
+
+There is a genuine gap between those regimes: the beta simplex can cross
+an integral twist even when none of its vertices is integral. The
+intermediate kernel then has a pole in the twist parameter. Simply
+replacing the integral by a principal value, or by the real finite part at
+higher order, does not in general preserve the identity. Moreover, an
+identity valid only on the discrete set of integer order tuples cannot be
+differentiated in the orders without first constructing its analytic
+extension.
+
+The main theorem below fills this gap at every positive integer
+\emph{total} order, allowing the individual orders to be fractional. It is
+not restricted to two factors. The resulting correction is especially
+simple because only finitely many Fourier modes can change sign. This
+finite-dimensional feature makes all balanced order derivatives explicit
+and permits a complete rank calculation. The same scalar computation
+produces a family of exact ordinary integrals, rather than estimates.
+
+\subsection{What is established here}
+
+The central results are Theorem~\ref{bc:thm:periodic} (arbitrary-depth
+integer-total crossing formula), Theorem~\ref{bc:thm:jets} (all balanced
+order derivatives), and Theorem~\ref{bc:thm:rank} (the complete
+chamberwise criterion for their vanishing). The analytic consequences are
+Theorem~\ref{bc:thm:moments}, the polylogarithm primitive in
+Proposition~\ref{bc:prop:polyprimitive}, the logarithmic Mellin finite-part
+formula in Theorem~\ref{bc:thm:mellin-fp}, and the Stieltjes primitive ladder
+in Theorem~\ref{bc:thm:primitives}. Every one is proved below.
+
+The beta integral, Gamma reflection, integer polygamma--Hurwitz
+conversion, elementary polylogarithm differential rule, and finite
+Hurwitz expansion of the equal-period Barnes-type zeta are classical
+ingredients \cite{dlmf-beta,dlmf-gamma,dlmf-polygamma,dlmf-polylog,dlmf-hurwitz}.
+Their use is not itself a novelty claim. The distinction between analytic
+boundary values and uncorrected Feynman-parameter integrals also has a
+substantial history; the papers of Weldon and Bedaque--Das provide relevant
+context \cite{weldon,bedaque-das}. Only their abstracts were consulted for
+this contextual comparison. No step of our proof is outsourced to those
+papers, and no assertion is made that the general boundary-value principle
+originates here.
+
+\subsection{What is not claimed}
+
+This is not a proof of the manuscript's $S_6$ or revised $S_8$ period
+conjectures. The repository README continues to mark them conjectural
+\cite{repo-readme}. Nor do we claim a finite reduction of all arbitrary
+unequal-twist order derivatives to a prescribed list of single Hurwitz
+values. Our rank theorem concerns explicit Fourier corrections, not
+arithmetic independence of periods.
+
+The targeted source was read again at the reference commit printed on
+the title page. The manuscript README, the chapter inventory, and the
+incoming directory listing were inspected. The harmonic Gamma-coefficient
+section was read in full; it already proves the corrected all-order Choi
+families \cite{repo-harmonic}. Only the beginning of the log-Gamma-moments
+section was inspected. The six binary archives present in the incoming
+listing were \emph{not} opened. Consequently this is neither an exhaustive
+repository audit nor an exhaustive comparison with all pending reports.
+The machine-readable provenance record makes these boundaries explicit.
+
+% INTEGRATION-BEGIN
+\section{Fourier, branch, and finite-part conventions}
+\label{bc:sec:conventions}
+
+Write $\bcT=\bcR/\mathbb Z$. For a periodic distribution $f$, use
+\[
+ \widehat f(n)=\langle f,\bce^{-2\pi i n x}\rangle,
+ \qquad f=\sum_{n\in\mathbb Z}\widehat f(n)\bce^{2\pi i n x}.
+\]
+The pairing agrees with integration over $[0,1]$ for integrable functions.
+Convolution is normalized so that Fourier coefficients multiply. For a
+real nonintegral $\theta$, define the entire distribution-valued family
+\begin{equation}\label{bc:eq:kernel}
+ \widehat K_\alpha^\theta(n)
+  =\exp\left[-\alpha\left\{
+       \log(2\pi|n+\theta|)
+       +\frac{\pi i}{2}\bcsgn(n+\theta)\right\}\right].
+\end{equation}
+On each compact set of $\alpha$, these coefficients and their order
+derivatives have a common polynomial growth bound in $n$. Pairing against
+a smooth test function therefore proves normal convergence and entire
+dependence on $\alpha$. The same argument defines convolution of any
+finite collection of these kernels.
+
+For positive integers $m$ and $0<x<1$,
+\begin{equation}\label{bc:eq:integer-kernel}
+ K_1^\theta(x)=\frac{\bce^{-2\pi i\theta x}}{1-\bce^{-2\pi i\theta}},
+ \qquad
+ K_m^\theta(x)=
+ \frac{(-1)^{m-1}}{(2\pi i)^{m-1}(m-1)!}
+          \partial_\theta^{m-1}K_1^\theta(x).
+\end{equation}
+Indeed the first expression has Fourier coefficient
+$(2\pi i(n+\theta))^{-1}$, by a direct integral. Differentiating this
+coefficient gives the second expression. Endpoint representatives are
+not assigned by this formula; the periodic distribution is the primary
+object.
+
+\subsection{The affine finite part}
+
+For a positive integer $m$ we use the distributional identity
+\begin{equation}\label{bc:eq:boundary}
+ (y-i0)^{-m}
+ =\bcPf y^{-m}
+  +\frac{i\pi(-1)^{m-1}}{(m-1)!}\delta^{(m-1)}(y).
+\end{equation}
+Here $\bcPf y^{-1}$ is the Cauchy principal value, and
+\[
+ \bcPf y^{-m}=\frac{(-1)^{m-1}}{(m-1)!}
+                     \frac{d^{m-1}}{dy^{m-1}}\bcPV\frac1y.
+\]
+For completeness, write $(y-i\varepsilon)^{-1}$ as
+$y/(y^2+\varepsilon^2)+i\varepsilon/(y^2+\varepsilon^2)$.
+The first term tends to the principal value and the second to $i\pi\delta$.
+Differentiating $m-1$ times proves \eqref{bc:eq:boundary}. Replacing $i0$
+by $-i0$ reverses the sign of the delta term.
+
+If $h$ is smooth near zero and integrable away from zero on a compact
+interval, write
+\[
+ \bcFP\int h(y)y^{-m}\,dy=\langle\bcPf y^{-m},h\rangle.
+\]
+We also allow a finite measure away from zero; only its restriction near
+zero needs a smooth density. A partition of unity reduces this definition
+to a smooth function of compact support near zero and an ordinary integral
+against the measure elsewhere. An explicit
+calculation uses Taylor subtraction through degree $m-1$ near zero,
+followed by the exact finite parts of the subtracted monomials. Thus the
+notation specifies a computable normalization, not merely a rule to
+``discard infinity.'' Pairing \eqref{bc:eq:boundary} with $h$ gives
+\begin{equation}\label{bc:eq:boundary-pair}
+ \int h(y)(y-i0)^{-m}\,dy
+ =\bcFP\int h(y)y^{-m}\,dy
+       +\frac{i\pi}{(m-1)!}h^{(m-1)}(0).
+\end{equation}
+
+All simplex finite parts below use the displayed \emph{affine scalar}
+$y=\sum t_j y_j$. This choice matters: an arbitrary nonlinear change of
+variable can alter local finite-part terms. Later, logarithmic Mellin
+finite parts use a different, explicitly stated cutoff variable. We
+change variables between the two settings only for ordinary convergent
+integrals, unless a separate normalization is supplied.
+
+\section{A scalar Dirichlet crossing identity at every depth}
+\label{bc:sec:scalar}
+
+Let
+\[
+ \Delta_{d-1}=\{(t_1,\ldots,t_d):t_j\ge0,\ \sum_jt_j=1\},
+ \qquad dt=dt_1\cdots dt_{d-1},
+\]
+where $t_d=1-\sum_{j<d}t_j$. Fix nonzero real numbers $y_j$ and complex
+parameters $\alpha_j$ satisfying
+\begin{equation}\label{bc:eq:scalar-assumptions}
+ \bcRe\alpha_j>0,\qquad \sum_{j=1}^d\alpha_j=m\in\bcN.
+\end{equation}
+Set
+\begin{equation}\label{bc:eq:scalar-data}
+ \sigma=\sum_{y_j<0}\alpha_j,
+ \qquad Q=\prod_{j=1}^d|y_j|^{-\alpha_j}.
+\end{equation}
+The normalized pushforward $h$ is specified by
+\begin{equation}\label{bc:eq:pushforward}
+ \int h(y)F(y)\,dy=
+ \frac{\Gamma(m)}{\prod_j\Gamma(\alpha_j)}
+ \int_{\Delta_{d-1}}\prod_jt_j^{\alpha_j-1}
+                          F\left(\sum_jt_jy_j\right)dt.
+\end{equation}
+For complex parameters this is a complex measure, not a probability
+density. Positivity is unnecessary.
+
+\begin{lemma}[Smoothness at an interior crossing]\label{bc:lem:smooth}
+If the $y_j$ include both signs, the pushforward in
+\eqref{bc:eq:pushforward} has a smooth density on a neighborhood of zero.
+Every fixed derivative there depends holomorphically on the parameters
+in \eqref{bc:eq:scalar-assumptions}. If all signs agree, its support is
+bounded away from zero.
+\end{lemma}
+\begin{proof}
+Group the negative and positive indices. The usual change of simplex
+coordinates first chooses the total negative mass $v$, then the internal
+coordinates in each group. It factors the normalized measure into two
+internal Dirichlet measures and the beta density
+\[
+ \frac{\Gamma(m)}{\Gamma(\sigma)\Gamma(m-\sigma)}
+               v^{\sigma-1}(1-v)^{m-\sigma-1}\,dv.
+\]
+This factorization follows directly by its Jacobian and the beta
+integral; it remains valid for positive real parts by absolute
+convergence. Conditional on the internal coordinates, let $Y_-$ and
+$Y_+$ be the corresponding weighted means of the negative and positive
+$y_j$. Some $c>0$ satisfies $Y_-\le-c$ and $Y_+\ge c$ uniformly.
+Now $y=vY_-+(1-v)Y_+$, so
+\[
+ v=\frac{Y_+-y}{Y_+-Y_-},\qquad
+ \left|\frac{dv}{dy}\right|=\frac1{Y_+-Y_-}.
+\]
+For $|y|<c/2$, both $v$ and $1-v$ stay uniformly away from zero, because
+$Y_\pm$ also range in fixed compact sets. Every $y$ derivative of the
+conditional beta density is therefore bounded by a constant times an
+integrable internal Dirichlet weight. Differentiation under the integral
+proves smoothness. The same domination on compact parameter sets, with
+additional endpoint logarithms when needed, proves holomorphic
+dependence. The one-sign assertion is immediate from convexity.
+\end{proof}
+
+\begin{theorem}[Finite part and crossing derivative]\label{bc:thm:scalar}
+Under \eqref{bc:eq:scalar-assumptions},
+\begin{align}
+ \bcFP\int h(y)y^{-m}\,dy&=\cos(\pi\sigma)Q,
+       \label{bc:eq:scalar-fp}\\
+ h^{(m-1)}(0)&=\frac{(m-1)!}{\pi}\sin(\pi\sigma)Q.
+       \label{bc:eq:density-derivative}
+\end{align}
+In the one-sign case the second formula is read as zero, since
+$\sigma=0$ or $\sigma=m$. The two boundary values are
+\begin{equation}\label{bc:eq:scalar-boundaries}
+ \int h(y)(y\mp i0)^{-m}\,dy=\bce^{\pm i\pi\sigma}Q.
+\end{equation}
+\end{theorem}
+\begin{proof}
+For complex numbers $z_j$ in the right half-plane, the product of Gamma
+integrals and the substitution $u_j=rt_j$ give
+\begin{equation}\label{bc:eq:dirichlet}
+ \prod_j z_j^{-\alpha_j}
+ =\frac{\Gamma(m)}{\prod_j\Gamma(\alpha_j)}
+ \int_{\Delta_{d-1}}\frac{\prod_jt_j^{\alpha_j-1}}
+                              {(\sum_jt_jz_j)^m}\,dt.
+\end{equation}
+Indeed the Jacobian is $r^{d-1}$ and integration in $r$ produces
+$\Gamma(m)(\sum t_jz_j)^{-m}$. This proves the identity directly in a
+domain where all relevant integrals converge absolutely.
+
+Put $z_j=\varepsilon+i y_j$ in \eqref{bc:eq:dirichlet} and factor out
+$i^{-m}$ from both sides. As $\varepsilon\downarrow0$, the left side
+becomes $Q\bce^{i\pi\sigma}$. For a negative $y_j$ the factor
+$(y_j-i0)^{-\alpha_j}$ contributes $\bce^{i\pi\alpha_j}$; this is the
+entire phase correction. On the right, Lemma~\ref{bc:lem:smooth} and
+\eqref{bc:eq:boundary-pair} justify the distributional limit at zero;
+away from zero dominated convergence applies to the finite pushforward
+measure. This proves the upper sign of
+\eqref{bc:eq:scalar-boundaries}. The substitution
+$z_j=\varepsilon-i y_j$ proves the lower sign by the same argument.
+Average the two identities to obtain \eqref{bc:eq:scalar-fp}; subtract
+them and use \eqref{bc:eq:boundary-pair} to obtain
+\eqref{bc:eq:density-derivative}. No reality assumption on the parameters
+is needed in this subtraction.
+\end{proof}
+
+\begin{remark}[A direct two-point version]
+For $A,B>0$, $\bcRe\alpha,\bcRe\beta>0$ and $\alpha+\beta=m$, the theorem
+states
+\begin{equation}\label{bc:eq:two-beta}
+ \frac{\Gamma(m)}{\Gamma(\alpha)\Gamma(\beta)}
+ \bcFP\int_0^1
+ \frac{t^{\alpha-1}(1-t)^{\beta-1}}
+      {[B-(A+B)t]^m}\,dt
+ =\frac{\cos(\pi\alpha)}{A^\alpha B^\beta}.
+\end{equation}
+The missing imaginary boundary term is
+$i\sin(\pi\alpha)/(A^\alpha B^\beta)$. Here the affine singularity is
+$t=B/(A+B)$, not necessarily $1/2$.
+\end{remark}
+
+\section{The finite spectral correction for unequal twists}
+\label{bc:sec:periodic}
+
+For nonintegral real twists $\theta_1,\ldots,\theta_d$, define
+\begin{equation}\label{bc:eq:crossed-modes}
+ \bcC=\{n\in\mathbb Z:\min_j(n+\theta_j)<0<\max_j(n+\theta_j)\}.
+\end{equation}
+This is a finite set. For every mode put
+\[
+ \sigma_n=\sum_{n+\theta_j<0}\alpha_j,
+ \qquad Q_n=\prod_j|n+\theta_j|^{-\alpha_j}.
+\]
+Let $\mathcal M_m(\bm\alpha;\bm\theta)$ denote the simplex mixture whose
+$n$th Fourier coefficient is the affine finite part of
+\[
+ \frac1{(2\pi i)^m}
+ \frac{\Gamma(m)}{\prod_j\Gamma(\alpha_j)}
+ \int_{\Delta_{d-1}}\prod_jt_j^{\alpha_j-1}
+                     \left(n+\sum_jt_j\theta_j\right)^{-m}dt.
+\]
+Equivalently it is the affine finite-part interpretation of the integral
+of $K_m^{\sum t_j\theta_j}$. Only finitely many modes need subtraction.
+
+\begin{theorem}[Arbitrary-depth integer-total crossing formula]
+\label{bc:thm:periodic}
+If $\bcRe\alpha_j>0$ and $\sum_j\alpha_j=m\in\bcN$, then
+\begin{align}
+ K_{\alpha_1}^{\theta_1}*\cdots*K_{\alpha_d}^{\theta_d}
+ ={}&\mathcal M_m(\bm\alpha;\bm\theta)
+ +\frac{i}{(2\pi i)^m}\sum_{n\in\bcC}
+      \bce^{2\pi i n x}\sin(\pi\sigma_n)Q_n.
+ \label{bc:eq:periodic-main}
+\end{align}
+The mixture and its correction are holomorphic in the indicated
+parameter hyperplane. If all twists lie in one open unit interval, the
+correction is empty. If every $\alpha_j$ is a positive integer, the
+correction vanishes even when $\bcC$ is nonempty.
+\end{theorem}
+\begin{proof}
+At mode $n$, formula \eqref{bc:eq:kernel} gives the product multiplier
+\begin{equation}\label{bc:eq:mode-phase}
+ \prod_j(2\pi i(n+\theta_j))^{-\alpha_j}
+       =(2\pi i)^{-m}\bce^{i\pi\sigma_n}Q_n.
+\end{equation}
+Theorem~\ref{bc:thm:scalar} evaluates the mixture coefficient as
+$(2\pi i)^{-m}\cos(\pi\sigma_n)Q_n$. Their difference is the displayed
+sine term. For $n\notin\bcC$, $\sigma_n$ is either $0$ or $m$, so the
+difference is zero. This also proves the assertions about the common
+interval and integer tuples.
+
+For $|n|$ sufficiently large all $n+\theta_j$ have the same sign and are
+comparable to $|n|$. Uniformly on compact parameter sets in the
+hyperplane, $Q_n=O(|n|^{-m})$. The finitely many crossed coefficients
+are holomorphic by Lemma~\ref{bc:lem:smooth}. Pairing the series with a
+smooth test function now justifies the mixture, all parameter
+derivatives, and the equality of distributions by Fourier uniqueness.
+In fact at $m\ge2$ the undifferentiated coefficients are absolutely
+summable. The distributional formulation also covers $m=1$ without any
+endpoint convention.
+\end{proof}
+
+The correction in \eqref{bc:eq:periodic-main} is a finite trigonometric
+polynomial in $x$. The local delta derivative used to obtain it was in
+the \emph{intermediate twist variable}. It must not be replaced by a
+Dirac distribution in $x$.
+
+\begin{corollary}[Two twists crossing several integers]
+\label{bc:cor:two-twists}
+For nonintegral $a<b$ and $\alpha+\beta=m$ with positive real parts,
+\begin{align}
+ K_\alpha^a*K_\beta^b
+ ={}&\frac{\Gamma(m)}{\Gamma(\alpha)\Gamma(\beta)}
+ \bcFP\int_0^1(1-t)^{\alpha-1}t^{\beta-1}
+                            K_m^{(1-t)a+tb}\,dt\notag\\
+ &+\frac{i\sin(\pi\alpha)}{(2\pi i)^m}
+     \sum_{\substack{k\in\mathbb Z\\a<k<b}}
+       \frac{\bce^{-2\pi i kx}}{(k-a)^\alpha(b-k)^\beta}.
+ \label{bc:eq:two-twist-main}
+\end{align}
+\end{corollary}
+\begin{proof}
+The crossed modes are exactly $n=-k$ with $a<k<b$. Their negative group
+consists of the first factor, so $\sigma_{-k}=\alpha$.
+\end{proof}
+
+\subsection{Exact counterexamples to an uncorrected extension}
+
+At $a=-1/2$, $b=1/2$ and $\alpha=\beta=1/2$, only $n=0$ crosses. Hence
+\begin{equation}\label{bc:eq:half-counterexample}
+ K_{1/2}^{-1/2}*K_{1/2}^{1/2}
+ =\frac1\pi\bcPV\int_0^1
+      \frac{K_1^{t-1/2}}{\sqrt{t(1-t)}}\,dt+\frac1\pi.
+\end{equation}
+The zero Fourier coefficient of the convolution is $1/\pi$, whereas
+that of the principal-value mixture is zero. Thus even a single mode
+disproves the unrestricted, uncorrected beta formula. This is an exact
+counterexample, independent of floating-point calculations.
+
+For a genuinely three-factor example, let the twists be
+$(-1/2,1/2,3/2)$ and all three orders be $1/3$. The total order is one;
+the crossed modes are $0$ and $-1$. Both have
+$Q_n=2\,3^{-1/3}$ and $\sin(\pi\sigma_n)=\sqrt3/2$. Therefore the
+correction is
+\begin{equation}\label{bc:eq:three-example}
+ \frac{3^{1/6}}{2\pi}\left(1+\bce^{-2\pi i x}\right).
+\end{equation}
+Repeated twists cause no difficulty: identical vertices may be grouped
+by adding their orders, directly from the beta integral or the Fourier
+multipliers.
+
+\section{All balanced order jets and their chamber rank}
+\label{bc:sec:jets}
+
+Fix positive integers $r_j$ with $\sum_jr_j=m$. Choose a direction
+$\bm v=(v_1,\ldots,v_d)$ with $\sum_jv_j=0$, and put
+$\alpha_j=r_j+uv_j$. For sufficiently small $u$ the hypotheses of
+Theorem~\ref{bc:thm:periodic} hold. At a crossed mode define
+\begin{align}
+ R_n&=\sum_{n+\theta_j<0}r_j,&
+ V_n&=\sum_{n+\theta_j<0}v_j,\notag\\
+ L_n&=-\sum_jv_j\log|n+\theta_j|,&
+ Q_{n,0}&=\prod_j|n+\theta_j|^{-r_j}.
+ \label{bc:eq:jet-data}
+\end{align}
+For a nonnegative integer $q$, call $C_q$ the $q$th $u$ derivative at zero
+of the correction in \eqref{bc:eq:periodic-main}.
+
+\begin{theorem}[Every balanced derivative, without a recursion]
+\label{bc:thm:jets}
+For every $q\ge0$,
+\begin{equation}\label{bc:eq:jet-main}
+ C_q(x)=\frac1{2(2\pi i)^m}\sum_{n\in\bcC}
+ (-1)^{R_n}Q_{n,0}\bce^{2\pi i n x}
+ \left\{(L_n+i\pi V_n)^q-(L_n-i\pi V_n)^q\right\}.
+\end{equation}
+In particular $C_0=0$, but
+\begin{equation}\label{bc:eq:first-jet}
+ C_1(x)=\frac{i\pi}{(2\pi i)^m}\sum_{n\in\bcC}
+             (-1)^{R_n}Q_{n,0}V_n\bce^{2\pi i n x}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+At each crossed mode the varying factor is
+\[
+ i\sin(\pi(R_n+uV_n))\,Q_{n,0}\bce^{uL_n}
+ =\frac{(-1)^{R_n}Q_{n,0}}2
+     \left(\bce^{u(L_n+i\pi V_n)}
+                  -\bce^{u(L_n-i\pi V_n)}\right).
+\]
+Differentiate this finite sum. Holomorphic dependence in the preceding
+theorem justifies differentiating the convolution and mixture as well.
+\end{proof}
+
+For several balanced directions $\bm v^{(1)},\ldots,\bm v^{(p)}$, replace
+$\alpha_j$ by $r_j+\sum_\ell u_\ell v_j^{(\ell)}$. Define $L_{n,\ell}$ and
+$V_{n,\ell}$ as in \eqref{bc:eq:jet-data}. The mixed derivative of
+multi-order $\bm q$ has the same formula with the brace replaced by
+\begin{equation}\label{bc:eq:multi-jet}
+ \prod_{\ell=1}^p(L_{n,\ell}+i\pi V_{n,\ell})^{q_\ell}
+ -\prod_{\ell=1}^p(L_{n,\ell}-i\pi V_{n,\ell})^{q_\ell}.
+\end{equation}
+Thus arbitrarily high mixed derivatives require only finite
+polynomials in logarithms and $\pi$ on the correction side.
+
+\subsection{Harmonic-number weights on the simplex}
+
+Let $\bcY_q$ denote the complete exponential Bell polynomial, normalized by
+\[
+ \exp\left(\sum_{k\ge1}\ell_k\frac{u^k}{k!}\right)
+          =\sum_{q\ge0}\bcY_q(\ell_1,\ldots,\ell_q)\frac{u^q}{q!}.
+\]
+For $N\ge0$ and $k\ge1$, put
+$H_N^{(k)}=\sum_{j=1}^N j^{-k}$, with $H_0^{(k)}=0$ and $H_N=H_N^{(1)}$.
+The simplex density at the integer tuple is
+\[
+ B_0(\bm t)=\frac{\Gamma(m)}{\prod_j\Gamma(r_j)}
+                             \prod_jt_j^{r_j-1}.
+\]
+Its $q$th balanced derivative is
+\begin{equation}\label{bc:eq:bell-weight}
+ B_0(\bm t)\bcY_q(\ell_1,\ldots,\ell_q),
+\end{equation}
+where
+\begin{align}
+ \ell_1&=\sum_jv_j(\log t_j-H_{r_j-1}),
+       \label{bc:eq:ell-one}\\
+ \ell_k&=(-1)^{k+1}(k-1)!
+           \sum_jv_j^k\bigl(\zeta(k)-H_{r_j-1}^{(k)}\bigr),
+                      \qquad k\ge2.
+       \label{bc:eq:ell-higher}
+\end{align}
+To prove these expressions, differentiate the logarithm of the normalized
+Dirichlet density. Its first derivative is
+$\sum_jv_j(\log t_j-\psi(r_j))$. The Euler constant cancels since
+$\sum v_j=0$ and $\psi(r_j)=H_{r_j-1}-\gamma$. Higher derivatives are
+$-\sum_jv_j^k\psi^{(k-1)}(r_j)$. The convergent polygamma series gives
+\eqref{bc:eq:ell-higher}. Exponentiation proves
+\eqref{bc:eq:bell-weight}.
+
+Consequently the derivative of the mixture is the affine finite-part
+integral of $K_m^{\sum t_j\theta_j}$ against
+\eqref{bc:eq:bell-weight}. These formulas evaluate whole families of
+logarithmic simplex integrals. They are not merely derivatives of an
+identity at an isolated integer point: the required analytic family has
+already been established.
+
+\begin{example}[A zero correction with a nonzero derivative]
+For $\theta_1=-1/2$, $\theta_2=1/2$ and
+$(\alpha_1,\alpha_2)=(1+u,1-u)$, the zero-mode coefficient of the
+convolution is $\pi^{-2}\bce^{i\pi u}$. The corresponding finite-part
+coefficient is $\pi^{-2}\cos(\pi u)$. Their difference is
+\begin{equation}\label{bc:eq:jet-example}
+ \frac{i\sin(\pi u)}{\pi^2}.
+\end{equation}
+It is zero at $u=0$, but its first and third derivatives there are
+$i/\pi$ and $-i\pi$. The second derivative is zero. An integer-order
+partial-fraction formula alone cannot supply these order derivatives.
+\end{example}
+
+\subsection{Exactly which directions have no correction?}
+
+Let $c$ be the number of occupied open unit intervals $(k,k+1)$ among the
+twists, and let $I_1,\ldots,I_c$ be their groups, ordered from left to
+right. Empty intervals are not counted.
+
+\begin{theorem}[Chamberwise kernel and rank]\label{bc:thm:rank}
+On the balanced tangent space $\{\bm v:\sum_jv_j=0\}$, the linear map
+$\bm v\mapsto C_1$ has rank $c-1$. Its kernel is exactly
+\begin{equation}\label{bc:eq:chamber-kernel}
+ \left\{\bm v:\ \sum_{j\in I_h}v_j=0\text{ for every }h=1,\ldots,c\right\},
+\end{equation}
+and has dimension $d-c$. A direction belongs to this kernel if and only
+if \emph{every} $C_q$ vanishes. In that case the full correction vanishes
+identically as a function of $u$ near zero.
+\end{theorem}
+\begin{proof}
+Because the exponential functions at distinct integer frequencies are
+linearly independent and $Q_{n,0}\ne0$, formula
+\eqref{bc:eq:first-jet} vanishes if and only if $V_n=0$ at each crossed
+mode. For $n=-k$, the negative group is $\{j:\theta_j<k\}$. It is a union
+of complete occupied chambers. As the integer $k$ runs between the
+smallest and largest twists, these groups realize every nonempty proper
+prefix $I_1\cup\cdots\cup I_h$, $1\le h<c$. Gaps between occupied
+chambers repeat a prefix but do not create an additional one.
+
+Writing $s_h=\sum_{j\in I_h}v_j$, the distinct conditions are
+$s_1=0$, $s_1+s_2=0$, \ldots, $s_1+\cdots+s_{c-1}=0$. Together with
+$\sum_hs_h=0$, these are equivalent to all $s_h=0$. The map from $\bm v$
+to the chamber sums is onto the $(c-1)$-dimensional zero-sum space:
+choose one representative index per chamber. Hence the rank is $c-1$
+and the kernel dimension is $d-c$. If all $V_n$ are zero, the sine
+factor $\sin(\pi(R_n+uV_n))$ is identically zero; thus every derivative
+vanishes. The converse already follows from $q=1$.
+\end{proof}
+
+For example, twists $(1/5,7/10,6/5,18/5)$ occupy three chambers. The rank
+is two and the kernel is generated by $(1,-1,0,0)$. This rank is purely
+spectral and exact. It gives no information about linear independence of
+special values obtained by evaluating the kernels at a point.
+
+\section{Centered logarithmic moments and finite even-zeta reductions}
+\label{bc:sec:moments}
+
+The same crossing calculation produces ordinary real integrals with
+arbitrary logarithmic order. Fix $A,B>0$ and define
+\begin{equation}\label{bc:eq:centered-data}
+ U(t)=\log\frac{At}{B(1-t)},\qquad
+ D(t)=B-(A+B)t,\qquad t_0=\frac{B}{A+B}.
+\end{equation}
+Both $U$ and $D$ vanish simply at $t_0$. We initially allow positive real
+$r,s$ such that $r+s=m\in\bcN$. The stronger polynomial conclusions will
+assume that $r,s$ themselves are positive integers.
+
+\begin{theorem}[The centered generator and all ordinary moments]
+\label{bc:thm:moments}
+For $-r<\bcRe u<s$,
+\begin{equation}\label{bc:eq:centered-generator}
+ I_{r,s}(u):=\bcFP\int_0^1
+ \frac{t^{r-1}(1-t)^{s-1}\bce^{uU(t)}}{D(t)^m}\,dt
+ =\frac{\Gamma(r+u)\Gamma(s-u)\cos(\pi(r+u))}
+        {(m-1)!A^rB^s}.
+\end{equation}
+The finite part is in the affine variable $D$. If $r,s\in\bcN$, put
+\begin{equation}\label{bc:eq:P}
+ P_{r,s}(u)=\prod_{j=1}^{r-1}(j+u)
+                \prod_{j=1}^{s-1}(j-u),\qquad
+ G_{r,s}(u)=\pi u\cot(\pi u)P_{r,s}(u).
+\end{equation}
+Empty products equal one. Then
+\begin{equation}\label{bc:eq:cot-generator}
+ I_{r,s}(u)=\frac{(-1)^r}{(m-1)!A^rB^s}G_{r,s}(u).
+\end{equation}
+For every integer $q\ge m$, the following integral is ordinary and
+absolutely convergent:
+\begin{align}
+ M_q^{r,s}(A,B)
+ &:={}\int_0^1\frac{t^{r-1}(1-t)^{s-1}U(t)^q}{D(t)^m}\,dt\notag\\
+ &=\frac{2(-1)^{r+1}q!}{(m-1)!A^rB^s}
+       \sum_{k=1}^{\lfloor q/2\rfloor}
+           \zeta(2k)[u^{q-2k}]P_{r,s}(u).
+ \label{bc:eq:all-moments}
+\end{align}
+\end{theorem}
+\begin{proof}
+Since
+$\bce^{uU(t)}=(A/B)^u t^u(1-t)^{-u}$, apply
+\eqref{bc:eq:two-beta} with $\alpha=r+u$ and $\beta=s-u$.
+The factors $A^{-u}B^u$ on its right cancel the centering factor
+$(A/B)^u$. This proves \eqref{bc:eq:centered-generator}. Endpoint
+integrability on compact subsets of the indicated strip, and Taylor
+subtraction at $t_0$, show that both sides are holomorphic there.
+
+For integer $r,s$, the Gamma recurrence and reflection identity give
+\[
+ \Gamma(r+u)\Gamma(s-u)
+  =P_{r,s}(u)\Gamma(1+u)\Gamma(1-u)
+  =P_{r,s}(u)\frac{\pi u}{\sin\pi u}.
+\]
+Because $\cos(\pi(r+u))=(-1)^r\cos\pi u$, this proves
+\eqref{bc:eq:cot-generator}. The apparent poles at the nonzero integers
+inside the strip are canceled by $P_{r,s}$; the value at zero is
+removable.
+
+Near $t_0$, $U(t)^q/D(t)^m=O(|t-t_0|^{q-m})$. For $q\ge m$ this is
+bounded, and the endpoint logarithms are integrable because $r,s>0$.
+Thus the finite-part derivative $I_{r,s}^{(q)}(0)$ equals the ordinary
+integral in \eqref{bc:eq:all-moments}. Finally, the logarithmic derivative
+of the product for $\sin\pi u$, or the partial fractions of cotangent,
+gives the convergent expansion
+\begin{equation}\label{bc:eq:cot-series}
+ \pi u\cot\pi u=1-2\sum_{k\ge1}\zeta(2k)u^{2k},\qquad |u|<1.
+\end{equation}
+For example, the partial fractions are
+$\pi u\cot\pi u=1-2\sum_{n\ge1}u^2/(n^2-u^2)$, and expanding the
+absolutely convergent right side proves \eqref{bc:eq:cot-series}.
+Since $\deg P_{r,s}=m-2<q$, the initial polynomial contributes no
+$u^q$ coefficient. Coefficient extraction proves the stated formula.
+\end{proof}
+
+The endpoint asymmetry has disappeared from the answer except for the
+factor $A^{-r}B^{-s}$. The centered logarithm is essential for this
+simplification. An uncentered logarithm gives derivatives of an
+additional exponential in $u$.
+
+\subsection{Harmonic coefficients and parity}
+
+Every coefficient of $P_{r,s}$ is explicit in generalized harmonic
+numbers. Namely,
+\begin{equation}\label{bc:eq:P-bell}
+ [u^j]P_{r,s}(u)=\frac{(r-1)!(s-1)!}{j!}
+               \bcY_j(p_1,\ldots,p_j),
+\end{equation}
+where
+\begin{equation}\label{bc:eq:p-harmonic}
+ p_k=(k-1)!\left((-1)^{k-1}H_{r-1}^{(k)}-H_{s-1}^{(k)}\right).
+\end{equation}
+To verify this, take the logarithm of the two finite products in
+\eqref{bc:eq:P} and expand each $\log(1\pm u/j)$. This is an identity
+of finite Taylor coefficients near zero. Although the Bell expressions
+are written for every $j$, the coefficients vanish for $j>m-2$.
+
+For $r=s$, $P_{r,r}(u)=\prod_{j=1}^{r-1}(j^2-u^2)$ is even. Therefore
+all odd centered moments vanish. The same fact follows directly from
+$t\mapsto1-t$ when $A=B$, and from the logistic coordinate used below
+for arbitrary positive $A,B$.
+
+Some explicit ordinary evaluations, with $A=B=1$ and
+$U=\log(t/(1-t))$, are
+\begin{align}
+ \int_0^1\frac{U^{2k}}{(1-2t)^2}\,dt
+     &=2(2k)!\zeta(2k),\qquad k\ge1,
+                      \label{bc:eq:moment-11}\\
+ \int_0^1\frac{(1-t)U^3}{(1-2t)^3}\,dt&=-\pi^2,
+                      \label{bc:eq:moment-12a}\\
+ \int_0^1\frac{(1-t)U^4}{(1-2t)^3}\,dt&=\frac{4\pi^4}{15},
+                      \label{bc:eq:moment-12b}\\
+ \int_0^1\frac{t(1-t)U^4}{(1-2t)^4}\,dt
+       &=8\bigl(\zeta(2)-\zeta(4)\bigr),
+                      \label{bc:eq:moment-22a}\\
+ \int_0^1\frac{t(1-t)U^6}{(1-2t)^4}\,dt
+       &=240\bigl(\zeta(4)-\zeta(6)\bigr).
+                      \label{bc:eq:moment-22b}
+\end{align}
+For instance $P_{1,2}=1-u$ and $P_{2,2}=1-u^2$, so each evaluation is
+an immediate finite coefficient extraction. None uses a numerical
+integer-relation search.
+
+\subsection{An ordinary subtracted generating integral}
+
+Let $T_NF(u)=\sum_{q=0}^NF^{(q)}(0)u^q/q!$ be the Taylor polynomial
+at zero. Write $c_{r,s}=(-1)^r/((m-1)!A^rB^s)$. The finite-part generator
+can be converted into an ordinary one:
+\begin{corollary}[Subtraction of the full local obstruction]
+\label{bc:cor:ordinary-generator}
+For $r,s\in\bcN$ and $-r<\bcRe u<s$,
+\begin{align}
+ &\int_0^1\frac{t^{r-1}(1-t)^{s-1}}{D(t)^m}
+     \left(\bce^{uU(t)}-\sum_{q=0}^{m-1}
+                        \frac{u^qU(t)^q}{q!}\right)dt\notag\\
+ &\hspace{35mm}=c_{r,s}\bigl(G_{r,s}(u)-T_{m-1}G_{r,s}(u)\bigr).
+ \label{bc:eq:ordinary-generator}
+\end{align}
+The integral is ordinary, locally uniformly convergent in the strip.
+\end{corollary}
+\begin{proof}
+At $t_0$ the numerator is $O(U^m)$, uniformly on compact $u$ sets.
+At the endpoints, the exponential term is bounded by powers with
+positive integrability exponents on every compact substrip, and the
+subtractions have only logarithmic growth. Taylor subtraction in
+\eqref{bc:eq:centered-generator} therefore agrees with the ordinary
+integral on the left. Equation \eqref{bc:eq:cot-generator} gives the
+right side.
+\end{proof}
+
+\section{Classical-polylogarithm primitives and inverse-logarithm integrals}
+\label{bc:sec:polylog}
+
+The generating function in \eqref{bc:eq:cot-generator} has elementary
+meromorphic factors, but its antiderivatives naturally introduce
+polylogarithms. The following finite formula avoids a recursive chain of
+unevaluated integrals.
+
+\begin{proposition}[A finite primitive for every polynomial cotangent]
+\label{bc:prop:polyprimitive}
+Let $R$ be a polynomial of degree $d$. On any sufficiently small simply
+connected domain avoiding the integers, choose consistent local
+branches of $\bcLi_j(\bce^{2\pi i u})$. Then
+\begin{equation}\label{bc:eq:polyprimitive}
+ \mathcal A_R(u)=
+ -i\pi\int R(u)\,du
+ -\sum_{j=0}^{d}\frac{(-1)^jR^{(j)}(u)}{(2\pi i)^j}
+                       \bcLi_{j+1}(\bce^{2\pi i u})
+\end{equation}
+is an antiderivative of $\pi R(u)\cot\pi u$.
+\end{proposition}
+\begin{proof}
+Put $z=\bce^{2\pi i u}$ and $c=2\pi i$. Since
+$\bcLi_0(z)=z/(1-z)$, the elementary cotangent formula gives
+\[
+ \cot\pi u=-i\bigl(1+2\bcLi_0(z)\bigr).
+\]
+The differential identities
+$\partial_u\bcLi_{j+1}(z)=c\bcLi_j(z)$ follow from the power series
+in $|z|<1$ and then by analytic continuation on the chosen local
+branches. Differentiating the finite sum in
+\eqref{bc:eq:polyprimitive}, adjacent terms cancel. The only surviving
+polylogarithmic term is $-cR(u)\bcLi_0(z)$, while differentiating the
+polynomial primitive contributes $-i\pi R(u)$. Their sum is
+$\pi R(u)\cot\pi u$.
+\end{proof}
+
+This is a local primitive, not a globally single-valued function on the
+punctured plane. In particular the logarithm in $\bcLi_1(z)=-\log(1-z)$
+requires a branch. For the definite real integrals below, analytic
+continuation from the upper half $u$-plane gives an unambiguous boundary
+value on $0<u<1$.
+
+\begin{corollary}[Normalized real primitive]
+\label{bc:cor:real-primitive}
+Suppose $R$ has real coefficients and $R(0)=0$. For $0<v<1$,
+\begin{align}
+ \int_0^v\pi R(u)\cot\pi u\,du
+ ={}&-\bcRe\sum_{j=0}^{d}
+       \frac{(-1)^jR^{(j)}(v)}{(2\pi i)^j}
+                           \bcLi_{j+1}(\bce^{2\pi i v})\notag\\
+ &+\bcRe\sum_{j=1}^{d}
+       \frac{(-1)^jR^{(j)}(0)}{(2\pi i)^j}\zeta(j+1).
+ \label{bc:eq:real-primitive}
+\end{align}
+If additionally $v=1/2$, this becomes the finite odd-zeta expression
+\begin{align}
+ \int_0^{1/2}\pi R(u)\cot\pi u\,du
+ ={}&R(1/2)\log2\notag\\
+ &+\sum_{\ell=1}^{\lfloor d/2\rfloor}
+   \frac{(-1)^\ell}{(2\pi)^{2\ell}}
+   \left((1-2^{-2\ell})R^{(2\ell)}(1/2)+R^{(2\ell)}(0)\right)
+                           \zeta(2\ell+1).
+ \label{bc:eq:half-primitive}
+\end{align}
+\end{corollary}
+\begin{proof}
+The real part of $-i\pi\int R$ is zero along the real segment. As
+$u\downarrow0$, the $j=0$ term tends to zero since
+$R(u)=O(u)$ and $\bcLi_1(\bce^{2\pi i u})=O(1+|\log u|)$.
+For $j\ge1$, the polylogarithm tends to $\zeta(j+1)$. Subtract the
+endpoint value in Proposition~\ref{bc:prop:polyprimitive}. This proves
+\eqref{bc:eq:real-primitive}. At $v=1/2$, use
+$\bcLi_1(-1)=-\log2$ and
+$\bcLi_{j+1}(-1)=-(1-2^{-j})\zeta(j+1)$ for $j\ge1$.
+The odd-$j$ terms have zero real part, giving
+\eqref{bc:eq:half-primitive}.
+\end{proof}
+
+For $R(u)=uP_{r,s}(u)$, the degree is $m-1$ and
+$\pi R\cot\pi u=G_{r,s}$. Thus polylogarithms through order $m$ suffice
+for the primitive of every centered generator. In the symmetric example
+$r=s=2$, $R(u)=u-u^3$, and
+\begin{equation}\label{bc:eq:primitive-22}
+ \int_0^{1/2}\pi(u-u^3)\cot\pi u\,du
+      =\frac38\log2+\frac{9\zeta(3)}{16\pi^2}.
+\end{equation}
+The appearance of odd zeta values in a primitive is compatible with the
+even-zeta Taylor coefficients of the original generator: integration
+and evaluation at a nonzero endpoint are different operations.
+
+\subsection{An all-order ordinary inverse-logarithm family}
+
+Integrating \eqref{bc:eq:ordinary-generator} in the parameter, rather than
+in $t$, gives the following exact identity.
+
+\begin{theorem}[Convergent inverse-logarithm integrals]
+\label{bc:thm:inverse-log}
+Let $r,s\in\bcN$, $m=r+s$, and $0<v<1$. Then
+\begin{align}
+ &\int_0^1\frac{t^{r-1}(1-t)^{s-1}}{D(t)^m}
+ \frac{\displaystyle\bce^{vU(t)}
+              -\sum_{j=0}^{m}\frac{(vU(t))^j}{j!}}{U(t)}\,dt\notag\\
+ &\quad=c_{r,s}\left\{\int_0^vG_{r,s}(u)\,du
+       -\sum_{q=0}^{m-1}
+          \frac{G_{r,s}^{(q)}(0)v^{q+1}}{(q+1)!}\right\}.
+ \label{bc:eq:inverse-log}
+\end{align}
+The left side is an ordinary absolutely convergent integral with a
+removable expression at $t=t_0$. Its right side is a finite combination
+of classical polylogarithms and polynomial terms by
+\eqref{bc:eq:real-primitive}. At $v=1/2$, only $\log2$, odd zeta values,
+even zeta values from the Taylor polynomial, and rational powers of
+$\pi$ are needed.
+\end{theorem}
+\begin{proof}
+Integrate the left side of \eqref{bc:eq:ordinary-generator} over
+$0\le u\le v$. Uniform domination on this compact parameter segment
+justifies Fubini. The integral of the exponential minus its first $m$
+Taylor terms is exactly the displayed quotient. Its numerator vanishes
+to order $m+1$ in $U$, so division by $U D^m$ leaves a bounded function
+at $t_0$. The endpoint convergence follows from $v<s$, automatic here
+because $s\ge1$ and $v<1$. Integrating the right side proves the formula.
+\end{proof}
+
+Here are two explicit evaluations. In both, $U=\log(t/(1-t))$:
+\begin{align}
+ &\int_0^1\frac{\bce^{U/2}-1-U/2-U^2/8}{U(1-2t)^2}\,dt
+             =\frac{1-\log2}{2},
+ \label{bc:eq:inverse-11}\\[3pt]
+ &\int_0^1\frac{t(1-t)}{(1-2t)^4}
+  \frac{\bce^{U/2}-1-U/2-U^2/8-U^3/48-U^4/384}{U}\,dt\notag\\
+ &\hspace{18mm}=
+  \frac{\log2}{16}+\frac{3\zeta(3)}{32\pi^2}
+                   -\frac{11}{144}+\frac{\pi^2}{432}.
+ \label{bc:eq:inverse-22}
+\end{align}
+For the second identity,
+$G_{2,2}(u)=1-(1+\pi^2/3)u^2+O(u^4)$, so the integrated Taylor
+polynomial is $11/24-\pi^2/72$ at $v=1/2$. Combine this with
+\eqref{bc:eq:primitive-22} and $c_{2,2}=1/6$. This supplies an entirely
+symbolic derivation of the constant.
+
+\section{A logistic Mellin transform and finite Hurwitz reductions}
+\label{bc:sec:mellin}
+
+The centered logarithm is also a natural global coordinate. Solving
+\eqref{bc:eq:centered-data} for $t$ gives
+\begin{equation}\label{bc:eq:logistic}
+ t=\frac{B\bce^U}{A+B\bce^U},\qquad
+ \frac{t^{r-1}(1-t)^{s-1}}{D(t)^m}\,dt
+   =\frac1{A^rB^s}\frac{\bce^{rU}}{(1-\bce^U)^m}\,dU.
+\end{equation}
+This identity holds as an ordinary change of variables away from $U=0$.
+For the convergent moments $q\ge m$, it is valid across $U=0$ as well.
+On $U<0$ put $v=-U$, and on $U>0$ put $v=U$. The two kernels become
+$\bce^{-rv}/(1-\bce^{-v})^m$ and
+$(-1)^m\bce^{-sv}/(1-\bce^{-v})^m$.
+
+For an integer $m\ge1$ and $a>0$, define
+\begin{align}
+ \bcZ_m(z,a)&=\sum_{n=0}^\infty
+       \binom{n+m-1}{m-1}(n+a)^{-z},\qquad \bcRe z>m,
+                  \label{bc:eq:barnes-series}\\
+ \bcJ_{m,a}(z)&=\int_0^\infty
+       v^{z-1}\frac{\bce^{-av}}{(1-\bce^{-v})^m}\,dv,
+                  \qquad \bcRe z>m.
+                  \label{bc:eq:mellin-J}
+\end{align}
+The function $\bcZ_m$ is the equal-period Barnes-type zeta: the
+multiplicity counts the nonnegative integer $m$-tuples of sum $n$.
+We use only the explicit finite reduction proved next, not any
+unproved reduction of a general multiple zeta function.
+
+Write
+\begin{equation}\label{bc:eq:c-polynomial}
+ C_{m,a}(X)=\prod_{j=1}^{m-1}(X+j-a)
+                  =\sum_{k=0}^{m-1}c_{m,a,k}X^k.
+\end{equation}
+For $m=1$ this polynomial is one.
+
+\begin{proposition}[Mellin transform, order derivatives, and polygamma]
+\label{bc:prop:mellin}
+For $a>0$,
+\begin{equation}\label{bc:eq:finite-hurwitz}
+ \bcZ_m(z,a)=\frac1{(m-1)!}
+                 \sum_{k=0}^{m-1}c_{m,a,k}\zeta(z-k,a),
+ \qquad
+ \bcJ_{m,a}(z)=\Gamma(z)\bcZ_m(z,a).
+\end{equation}
+The first equality gives meromorphic continuation to the whole
+$z$-plane. For every $q\ge0$ and $\bcRe z>m$,
+\begin{equation}\label{bc:eq:mellin-log}
+ \int_0^\infty v^{z-1}(\log v)^q
+              \frac{\bce^{-av}}{(1-\bce^{-v})^m}\,dv
+ =\partial_z^q\left(\Gamma(z)\bcZ_m(z,a)\right).
+\end{equation}
+At an integer $p\ge m$, the non-logarithmic case is the finite
+polygamma expression
+\begin{equation}\label{bc:eq:polygamma-Mellin}
+ \bcJ_{m,a}(p+1)=\frac{p!}{(m-1)!}
+       \sum_{k=0}^{m-1}c_{m,a,k}
+            \frac{(-1)^{p+1-k}}{(p-k)!}\psi^{(p-k)}(a).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Since $C_{m,a}(n+a)=\prod_{j=1}^{m-1}(n+j)$, expanding the polynomial
+in \eqref{bc:eq:barnes-series} gives the finite Hurwitz sum in its
+absolutely convergent half-plane. Next expand
+$(1-\bce^{-v})^{-m}=\sum_{n\ge0}\binom{n+m-1}{m-1}\bce^{-nv}$.
+For real $z>m$, Tonelli and the Gamma integral prove the second identity;
+absolute convergence and holomorphy extend it to $\bcRe z>m$.
+Near zero the integrand is $O(v^{\bcRe z-m-1})$, while at infinity
+it decays exponentially. Extra powers of $\log v$ are integrable on
+compact subsets of the half-plane, proving
+\eqref{bc:eq:mellin-log} by differentiation. Finally, the convergent
+polygamma series
+$\psi^{(h)}(a)=(-1)^{h+1}h!\zeta(h+1,a)$ gives
+\eqref{bc:eq:polygamma-Mellin}.
+\end{proof}
+
+This proof also makes clear which parts of the construction are
+classical: the finite Hurwitz reduction is polynomial multiplicity
+expansion, and the Mellin kernel is its elementary Gamma transform.
+Their purpose here is to give a second derivation of the moment family
+and a precise Stieltjes finite-part continuation.
+
+\subsection{A second evaluation of all centered moments}
+
+For $r,s>0$, $r+s=m\in\bcN$ and $q\ge m$ integral,
+\eqref{bc:eq:logistic} gives
+\begin{equation}\label{bc:eq:moment-second}
+ M_q^{r,s}(A,B)=\frac1{A^rB^s}
+    \left((-1)^q\bcJ_{m,r}(q+1)+(-1)^m\bcJ_{m,s}(q+1)\right).
+\end{equation}
+For integer $r,s$ this is a finite combination of generalized harmonic
+tails. Equating \eqref{bc:eq:moment-second} with
+\eqref{bc:eq:all-moments} proves the finite identity
+\begin{align}
+ &(-1)^q\sum_{j=0}^{m-1}c_{m,r,j}\zeta(q+1-j,r)
+  +(-1)^m\sum_{j=0}^{m-1}c_{m,s,j}\zeta(q+1-j,s)\notag\\
+ &\qquad=2(-1)^{r+1}
+     \sum_{k=1}^{\lfloor q/2\rfloor}
+                   \zeta(2k)[u^{q-2k}]P_{r,s}(u).
+ \label{bc:eq:hurwitz-cancellation}
+\end{align}
+In particular, replacing
+$\zeta(h,r)=\zeta(h)-H_{r-1}^{(h)}$ for the integer shifts shows the
+exact cancellation of the unwanted odd-zeta and rational harmonic
+tail terms. The two analytic proofs establish this at all orders; the
+216 symbolic comparisons supplied with the article are independent
+finite consistency checks, not the reason it holds for all orders.
+
+There is also an ordinary fractional-order extension on either half
+of the $U$-line. For example, for $\bcRe z>m$,
+\begin{align}
+ \int_0^{t_0}\frac{t^{r-1}(1-t)^{s-1}[-U(t)]^{z-1}}
+                        {D(t)^m}\,dt
+       &=A^{-r}B^{-s}\Gamma(z)\bcZ_m(z,r),\notag\\
+ \int_{t_0}^{1}\frac{t^{r-1}(1-t)^{s-1}U(t)^{z-1}}
+                        {D(t)^m}\,dt
+       &=(-1)^mA^{-r}B^{-s}\Gamma(z)\bcZ_m(z,s).
+ \label{bc:eq:half-Mellin}
+\end{align}
+The powers of positive $\pm U$ use real logarithms. Their order
+derivatives insert $\log(-U)$ or $\log U$; no branch of a negative
+real power is hidden in these formulas.
+
+\section{Stieltjes coefficients, finite parts, and their primitives}
+\label{bc:sec:stieltjes}
+
+The Laurent expansion convention for generalized Stieltjes constants is
+\begin{equation}\label{bc:eq:stieltjes-convention}
+ \zeta(1+\varepsilon,a)=\frac1\varepsilon+
+     \sum_{q=0}^\infty\frac{(-1)^q\gamma_q(a)}{q!}\varepsilon^q.
+\end{equation}
+In particular $\gamma_0(a)=-\psi(a)$. All $a$ parameters in this section
+are positive real numbers; differentiation may equivalently be carried
+out on a complex neighborhood avoiding the nonpositive integers.
+
+For $1\le j\le m$ set
+\begin{equation}\label{bc:eq:rho}
+ \rho_{m,j}(a)=\frac{c_{m,a,j-1}}{(m-1)!}.
+\end{equation}
+The coefficient may be zero, in which case the apparent pole is
+removable. Define $E_{m,j,q}(a)$ by
+\begin{equation}\label{bc:eq:Z-Laurent}
+ \bcZ_m(j+\varepsilon,a)=\frac{\rho_{m,j}(a)}\varepsilon
+                         +\sum_{q\ge0}E_{m,j,q}(a)\varepsilon^q.
+\end{equation}
+The finite Hurwitz reduction gives the explicit formula
+\begin{equation}\label{bc:eq:E}
+ E_{m,j,q}(a)=\frac{1}{(m-1)!q!}
+ \left\{c_{m,a,j-1}(-1)^q\gamma_q(a)
+       +\sum_{\substack{0\le k\le m-1\\k\ne j-1}}
+               c_{m,a,k}\zeta^{(q)}(j-k,a)\right\}.
+\end{equation}
+The superscript on $\zeta$ here always means differentiation in its
+first, order variable. Formula \eqref{bc:eq:E} includes the residue-zero
+cases without a limiting convention.
+
+\subsection{The unnormalized Mellin finite part has an extra term}
+
+We now fix the cutoff variable to be $v$ in \eqref{bc:eq:mellin-J}, with
+reference split at $v=1$. The notation
+\[
+ \bcFP\int_0^\infty v^{j-1}(\log v)^q
+                   \frac{\bce^{-av}}{(1-\bce^{-v})^m}\,dv
+\]
+means the Hadamard finite part obtained by subtracting all divergent
+terms of the small-$v$ expansion and discarding precisely their
+divergent cutoff powers and logarithms. The normalization is not
+inferred from the earlier $t$-coordinate finite part.
+
+\begin{theorem}[Every logarithmic finite part at a Mellin pole]
+\label{bc:thm:mellin-fp}
+For $a>0$, $1\le j\le m$ and $q\ge0$,
+\begin{align}
+ &\bcFP\int_0^\infty v^{j-1}(\log v)^q
+                  \frac{\bce^{-av}}{(1-\bce^{-v})^m}\,dv\notag\\
+ &\quad=q!\left\{
+     \rho_{m,j}(a)\frac{\Gamma^{(q+1)}(j)}{(q+1)!}
+     +\sum_{\ell=0}^q
+         \frac{\Gamma^{(\ell)}(j)}{\ell!}
+                     E_{m,j,q-\ell}(a)\right\}.
+ \label{bc:eq:Mellin-FP}
+\end{align}
+In particular, the residue contribution involving
+$\Gamma^{(q+1)}(j)$ cannot generally be omitted.
+\end{theorem}
+\begin{proof}
+Let
+\[
+ g(v)=\bce^{-av}\left(\frac{v}{1-\bce^{-v}}\right)^m
+                      =\sum_{h\ge0}b_hv^h
+\]
+near zero. This is analytic with $b_0=1$. Subtract its Taylor polynomial
+through $h=m-j$ on $0<v<1$. The remainder of
+$v^{j-m-1}g(v)(\log v)^q$ is integrable. Each subtracted monomial with
+$h<m-j$ has finite-part integral
+\begin{equation}\label{bc:eq:monomial-fp}
+ \bcFP\int_0^1v^{j-m+h-1}(\log v)^q\,dv
+   =\frac{(-1)^qq!}{(j-m+h)^{q+1}},
+\end{equation}
+whereas the monomial with $h=m-j$ has finite part zero. This follows
+by direct integration from a cutoff $\delta$ to one; in the last case
+the antiderivative is $(\log v)^{q+1}/(q+1)$.
+
+Equivalently, insert $v^\varepsilon$ before integration. After the same
+subtractions the meromorphic continuation is obtained by adding
+$b_h/(\varepsilon+j-m+h)$. Its $q$th derivative in $\varepsilon$
+inserts $(\log v)^q$. The constant Laurent coefficient of that derivative
+is exactly the finite part calculated in \eqref{bc:eq:monomial-fp}.
+Consequently our finite part is
+$q![\varepsilon^q]\bcJ_{m,a}(j+\varepsilon)$, where the bracket means
+the regular Laurent coefficient. Multiply
+\eqref{bc:eq:Z-Laurent} by the Taylor expansion of
+$\Gamma(j+\varepsilon)$. Its $\varepsilon^q$ coefficient is
+\[
+ \rho_{m,j}\frac{\Gamma^{(q+1)}(j)}{(q+1)!}
+ +\sum_{\ell=0}^q\frac{\Gamma^{(\ell)}(j)}{\ell!}E_{m,j,q-\ell}.
+\]
+This proves \eqref{bc:eq:Mellin-FP}, including any removable-pole case.
+\end{proof}
+
+The Gamma derivatives in this theorem are finite Bell expressions in
+polygamma values:
+\begin{equation}\label{bc:eq:Gamma-Bell}
+ \Gamma^{(q)}(j)=\Gamma(j)
+          \bcY_q\bigl(\psi(j),\psi'(j),\ldots,\psi^{(q-1)}(j)\bigr).
+\end{equation}
+At positive integer $j$ these reduce to $\gamma$, generalized harmonic
+numbers, and ordinary zeta values. Thus \eqref{bc:eq:Mellin-FP} is an
+explicit finite expression in the functions requested, at every
+logarithmic order.
+
+\begin{example}[A normalization test that detects the missing residue]
+For $m=2$ and $a=1$,
+$\bcZ_2(z,1)=\zeta(z-1)$ and $\rho_{2,2}=1$. At $j=2$,
+$E_{2,2,0}=\gamma$ and $\Gamma'(2)=1-\gamma$. Therefore
+\begin{equation}\label{bc:eq:Mellin-test-zero}
+ \bcFP\int_0^\infty
+           \frac{v\bce^{-v}}{(1-\bce^{-v})^2}\,dv=1,
+\end{equation}
+not $\gamma$. Directly,
+\[
+ \int_\delta^\infty\frac{v\bce^{-v}}{(1-\bce^{-v})^2}\,dv
+  =\frac{\delta}{\bce^\delta-1}-\log(1-\bce^{-\delta})
+  =1-\log\delta+o(1).
+\]
+For the first logarithmic moment, using
+$\Gamma''(2)=\zeta(2)-2\gamma+\gamma^2$, the same theorem gives
+\begin{equation}\label{bc:eq:Mellin-test-one}
+ \bcFP\int_0^\infty
+         \frac{v\log v\,\bce^{-v}}{(1-\bce^{-v})^2}\,dv
+       =\frac{\zeta(2)-\gamma^2}{2}-\gamma_1.
+\end{equation}
+Here $\gamma_1=\gamma_1(1)$ in convention
+\eqref{bc:eq:stieltjes-convention}.
+\end{example}
+
+For arbitrary $a>0$, the same order-two calculation gives the exact
+polygamma finite parts
+\begin{align}
+ \bcFP\int_0^\infty\frac{v\bce^{-av}}{(1-\bce^{-v})^2}\,dv
+   &=1-\gamma-\psi(a)+(1-a)\psi'(a),
+       \label{bc:eq:fp-polygamma-two}\\
+ \bcFP\int_0^\infty\frac{\bce^{-av}}{(1-\bce^{-v})^2}\,dv
+   &=(a-1)(\psi(a)+\gamma)+\frac12-a.
+       \label{bc:eq:fp-polygamma-one}
+\end{align}
+They follow from $C_{2,a}(X)=X+1-a$,
+$\zeta(0,a)=1/2-a$, and $\zeta(2,a)=\psi'(a)$.
+Both are in the declared $v$-cutoff normalization.
+
+\subsection{Parameter derivatives and exact Stieltjes antiderivatives}
+
+The multiplicity in \eqref{bc:eq:barnes-series} does not depend on $a$.
+Thus the series gives, initially in its convergent half-plane,
+\begin{equation}\label{bc:eq:a-ladder}
+ \partial_a\bcZ_m(z,a)=-z\bcZ_m(z+1,a),\qquad
+ \partial_a^p\bcZ_m(z,a)=(-1)^p(z)_p\bcZ_m(z+p,a).
+\end{equation}
+Meromorphic continuation proves these identities for all $z$. This
+short ladder is particularly effective at an order where a pole is
+multiplied by a vanishing factor.
+
+\begin{theorem}[A primitive for every Stieltjes coefficient]
+\label{bc:thm:primitives}
+For all $m\ge1$ and $q\ge0$,
+\begin{equation}\label{bc:eq:primitive-j1}
+ \frac{d}{da}\left[-\frac{\partial_z^{q+1}\bcZ_m(0,a)}{(q+1)!}\right]
+        =E_{m,1,q}(a).
+\end{equation}
+For $2\le j\le m$, define
+\begin{align}
+ F_{m,j,q}(a)={}&-
+  \sum_{\ell=0}^{q}\frac{(-1)^\ell E_{m,j-1,q-\ell}(a)}{(j-1)^{\ell+1}}
+  -\frac{(-1)^{q+1}\rho_{m,j-1}(a)}{(j-1)^{q+2}}.
+ \label{bc:eq:primitive-higher}
+\end{align}
+Then $F_{m,j,q}'(a)=E_{m,j,q}(a)$. Consequently every Laurent
+coefficient in \eqref{bc:eq:E} has an explicit finite primitive in
+Hurwitz-order derivatives and Stieltjes coefficients. Definite
+integrals between positive endpoints are differences of the displayed
+primitives.
+\end{theorem}
+\begin{proof}
+Expand \eqref{bc:eq:a-ladder} at $z=\varepsilon$:
+\[
+ \partial_a\bcZ_m(\varepsilon,a)
+   =-\varepsilon\bcZ_m(1+\varepsilon,a)
+   =-\rho_{m,1}(a)-\sum_{q\ge0}E_{m,1,q}(a)\varepsilon^{q+1}.
+\]
+Since $\bcZ_m$ is regular at $z=0$, comparison of the
+$\varepsilon^{q+1}$ coefficient proves
+\eqref{bc:eq:primitive-j1}. For $j\ge2$, use
+\[
+ \partial_a\left(-\frac{\bcZ_m(j-1+\varepsilon,a)}{j-1+\varepsilon}\right)
+     =\bcZ_m(j+\varepsilon,a).
+\]
+The regular $\varepsilon^q$ coefficient on the left is
+\eqref{bc:eq:primitive-higher}; its final term comes from the residue at
+$j-1$. Coefficient comparison proves the derivative assertion. All
+expansions are locally uniform in $a>0$, as follows either from the
+finite Hurwitz representation or from analyticity before continuation.
+\end{proof}
+
+For $m=1$, $\bcZ_1(z,a)=\zeta(z,a)$ and
+$E_{1,1,q}=(-1)^q\gamma_q(a)/q!$. Thus the familiar Stieltjes primitive
+appears as the first member of the ladder:
+\begin{equation}\label{bc:eq:classical-Stieltjes-primitive}
+ \int\gamma_q(a)\,da=
+       \frac{(-1)^{q+1}}{q+1}\zeta^{(q+1)}(0,a)+\text{constant}.
+\end{equation}
+For $m=2$,
+\begin{equation}\label{bc:eq:Z2}
+ \bcZ_2(z,a)=\zeta(z-1,a)+(1-a)\zeta(z,a),
+\end{equation}
+so \eqref{bc:eq:primitive-j1} gives the nontrivial weighted example
+\begin{align}
+ \frac{d}{da}\left[-\frac12\left\{
+             \zeta''(-1,a)+(1-a)\zeta''(0,a)\right\}\right]
+   ={}&\log\Gamma(a)-\frac12\log(2\pi)
+                           -(1-a)\gamma_1(a).
+ \label{bc:eq:weighted-Stieltjes-primitive}
+\end{align}
+We used $\zeta'(0,a)=\log\Gamma(a)-\tfrac12\log(2\pi)$, with the
+standard positive-real normalization \cite{dlmf-hurwitz}. More generally,
+\begin{equation}\label{bc:eq:weighted-general-q}
+ \frac{d}{da}\left[-\frac{
+       \zeta^{(q+1)}(-1,a)+(1-a)\zeta^{(q+1)}(0,a)}{(q+1)!}\right]
+ =\frac{\zeta^{(q)}(0,a)+(1-a)(-1)^q\gamma_q(a)}{q!}.
+\end{equation}
+This is an all-order identity, not an extrapolation from its first
+few numerical values. Higher $m$ yields polynomially weighted
+Stieltjes combinations with a finite list of shifted Hurwitz-order
+derivatives.
+% INTEGRATION-END
+
+\section{Corrections, compatibility, and integration recommendations}
+\label{bc:sec:audit}
+
+\subsection{Targeted audit outcome}
+
+No mathematical error was found in the common-interval mixture or the
+integer-order partial-fraction theorem of the inspected section
+\cite{repo-mixed}. The present result should be added as a continuation,
+not used to replace their statements with an alleged correction. Its
+hypotheses are different: arbitrary nonintegral real twists, but positive
+integer total order for the finite-part formula. The source's unrestricted
+fractional \emph{total} order in a common interval is retained.
+
+Three tempting extensions are rigorously rejected in this article.
+First, removing the common-interval condition while using an uncorrected
+principal value is contradicted by \eqref{bc:eq:half-counterexample}.
+Second, inferring vanishing order derivatives from a vanishing
+integer-tuple correction is contradicted by \eqref{bc:eq:jet-example}.
+Third, replacing the finite part of $\Gamma(z)\bcZ_m(z,a)$ by Gamma times
+the regular part of $\bcZ_m$ omits a residue term; the independent cutoff
+calculation in \eqref{bc:eq:Mellin-test-zero} detects the error immediately.
+These are statements about candidate extensions and normalization rules.
+They are not attributed to the current manuscript without textual evidence.
+
+\subsection{Compatibility with the existing proof chain}
+
+At a common integer chamber, Theorem~\ref{bc:thm:periodic} reduces to the
+manuscript's beta theorem specialized to integer total order. At a positive
+integer tuple, it becomes an affine finite-part interpretation of the
+same convolution already given by the source's finite resolvent
+identities. These are consistency checks at the overlap, not separate
+period conjectures. The harmonic Bell weights in
+\eqref{bc:eq:ell-one}--\eqref{bc:eq:ell-higher} are compatible with the
+finite-product and Gamma-coefficient conventions in the harmonic
+section \cite{repo-harmonic}; we do not claim to re-prove a previously
+unresolved Choi case.
+
+The name ``correction'' is used in two different senses that must stay
+separate in integration. The sine polynomial corrects a beta mixture
+across integer \emph{twists}. The Gamma-derivative term corrects a
+\emph{Laurent coefficient extraction} through a pole. Neither is an
+unannounced Dirac distribution in the spatial variable. Furthermore,
+the ordinary moment identities and the subtracted generators must not
+be relabeled as regularized integrals: their vanishing numerators make
+them genuinely convergent.
+
+\subsection{Suggested placement and review status}
+
+The mathematical core is supplied as
+\texttt{integration/07-beta-crossing-identities.tex}, with namespace
+\texttt{bc:} for all labels and a separate small preamble fragment.
+Its natural placement is after
+\texttt{07-mixed-twist-identities.tex} in the Hurwitz--Stieltjes material.
+The Mellin and primitive subsections can instead be cross-referenced
+from the integration/differentiation chapters. A machine-readable status
+ledger lists the new statements, their proof locations, overlap with
+classical ingredients, and verification coverage.
+
+The supplied proofs are mathematical arguments, not proof-assistant
+formalizations. They have not undergone independent peer review. The
+replay scripts test finite algebra and selected numerical instances;
+they do not certify every continuum statement. The generated package
+changes no repository files. It is intended for normal analytic audit
+and integration, preserving the source's existing status distinctions.
+
+\section{Further research questions and proposed next steps}
+\label{bc:sec:questions}
+
+The following questions are deliberately phrased as open tasks rather
+than conclusions inferred from the finite tests.
+
+\begin{enumerate}
+\item \textbf{Noninteger total order across chambers.}
+For $\sum\alpha_j\notin\bcN$, determine a comparably useful explicit
+real-boundary or finite-part mixture. The right-half-plane regularized
+Dirichlet formula remains available, but the two boundary distributions
+are no longer a real rational finite part plus a single delta derivative.
+A successful extension should specify the global branch convention and
+recover \eqref{bc:eq:periodic-main} at every integer total order.
+
+\item \textbf{Unbalanced order derivatives.}
+Allow $\sum_jv_j\ne0$, so that differentiation changes the total order.
+This introduces order derivatives of the intermediate kernel and
+logarithmic boundary distributions at the crossing. Determine the exact
+replacement for the finite polynomial jet formula, with all local
+counterterms specified. The balanced theorem does not settle this case.
+
+\item \textbf{An explicit connection to the manuscript's Stieltjes jets.}
+Translate the balanced derivatives into the exact normalization of the
+manuscript's twisted Stieltjes families. Identify which Bell
+combinations reduce to finite single-Hurwitz expressions and which
+require the existing convergent unequal-shift expansions. A finite
+spectral correction alone does not prove the desired finite reduction
+of the full convolution.
+
+\item \textbf{Moving twists and chamber transitions.}
+Differentiate in the twists as a vertex approaches an integer, keeping
+track of the divergent individual Fourier coefficient. Determine
+canonical subtractions and transition identities that agree from both
+neighboring chambers. At a fixed nonintegral twist configuration our
+formulas are explicit, but uniform passage through an integral vertex
+needs a separate theorem.
+
+\item \textbf{Rational endpoint polylogarithm reductions.}
+Formula \eqref{bc:eq:real-primitive} evaluates the centered primitive at
+$v=p/q$ through polylogarithms at $q$th roots of unity. Develop a
+conductor-aware reduction of the full family, including its Taylor
+subtractions, into the canonical cyclotomic basis used elsewhere in the
+repository. At $q=2$ this article provides the finite odd-zeta formula.
+No claim of minimal depth or period independence is implied.
+
+\item \textbf{Repeated parameter primitives.}
+Iterate the construction behind \eqref{bc:eq:inverse-log}. At the $h$th
+primitive the natural integrand contains an exponential remainder divided
+by $U^h$ and a correspondingly larger subtraction polynomial. Give a
+single closed coefficient formula, branch normalization, and exact
+root-of-unity endpoint evaluations at every $h$.
+
+\item \textbf{Mellin residues with unequal periods.}
+Replace $(1-\bce^{-v})^{-m}$ by a product
+$\prod_j(1-\bce^{-\omega_jv})^{-1}$. For commensurable positive periods,
+find the precise finite Hurwitz decomposition, including quasipolynomial
+multiplicities and every logarithmic finite part. For incommensurable
+periods, determine which pieces of the Stieltjes primitive ladder survive
+without pretending that the same finite one-variable reduction holds.
+
+\item \textbf{Coordinate-change laws for finite parts.}
+Derive an explicit all-order local formula comparing the affine
+$t$-finite part with the logarithmic $U$-finite part for nonconvergent
+moments. The ordinary $q\ge m$ identities already agree automatically.
+The remaining finite discrepancy should be expressed in the finite jet
+of the logistic map, rather than absorbed into an unspecified constant.
+
+\item \textbf{Formal proof and exact regression coverage.}
+Formalize the scalar boundary-value theorem and chamber-rank statement,
+then use them as interfaces for the Fourier and special-function
+calculations. In the short term, add exact multiparameter Bell and
+higher-pole primitive tests, together with independent interval
+quadrature for selected convergent integrals. Neither failed numerical
+searches nor a passing finite suite should alter open period statuses.
+\end{enumerate}
+
+\appendix
+\section{A direct finite proof of the two-point density derivative}
+\label{bc:app:finite-density}
+
+The local derivative in the two-vertex case also has a direct algebraic
+proof, independent of boundary-value evaluation. Let $\alpha+\beta=m$
+and $N=m-1$. For $0<t<1$,
+\begin{equation}\label{bc:eq:finite-density-identity}
+ \frac{d^{m-1}}{dt^{m-1}}
+      \left(t^{\alpha-1}(1-t)^{\beta-1}\right)
+ =\left(\prod_{h=1}^{m-1}(\alpha-h)\right)t^{-\beta}(1-t)^{-\alpha}.
+\end{equation}
+Indeed Leibniz's rule, after extracting
+$t^{-\beta}(1-t)^{-\alpha}$, gives
+\[
+ \sum_{j=0}^{N}\binom Nj
+  (\alpha-1)^{\underline j}
+  (\beta-1)^{\underline{N-j}}(-1)^{N-j}
+  t^{N-j}(1-t)^j.
+\]
+Here the underlined exponent denotes a falling factorial. Since
+$\beta=m-\alpha$, each product of falling factorials and its sign is
+$\prod_{h=1}^{N}(\alpha-h)$, independent of $j$. The remaining sum is
+$(t+(1-t))^N=1$, proving \eqref{bc:eq:finite-density-identity}.
+
+For the affine pushforward $y=B-(A+B)t$, its density is
+\[
+ h(y)=\frac{\Gamma(m)}{\Gamma(\alpha)\Gamma(\beta)(A+B)}
+ \left(\frac{B-y}{A+B}\right)^{\alpha-1}
+ \left(\frac{A+y}{A+B}\right)^{\beta-1}.
+\]
+Use \eqref{bc:eq:finite-density-identity} and the chain rule at $y=0$.
+The powers of $A+B$ cancel. Gamma reflection then yields
+\[
+ h^{(m-1)}(0)=\frac{\Gamma(m)}{\pi A^\alpha B^\beta}
+                                      \sin(\pi\alpha),
+\]
+which is exactly \eqref{bc:eq:density-derivative}. Apparent singularities
+in intermediate Gamma quotients at integer parameters are removable;
+the polynomial identity itself has no such restriction. The exact
+verification script checks its finite Leibniz expansion through $m=12$.
+
+\section{Reproducible verification and evidence boundaries}
+\label{bc:app:verification}
+
+The scripts require Python, SymPy and mpmath. The recorded run used
+Python 3.13.5, SymPy 1.14.0 and mpmath 1.3.0. All numerical diagnostics
+were run at 65 decimal digits. The following commands can be run from
+the package directory:
+\begin{verbatim}
+python verification/check_exact.py
+python verification/check_numeric.py --dps 65
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The two scripts write JSON receipts next to themselves and stop on a
+failed assertion. Their numerical tolerances are explicitly recorded
+per test. These tolerances are diagnostics, not rigorous error enclosures.
+
+\subsection{Finite exact checks}
+
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Family & Checks\\
+\midrule
+Two-point finite density derivative &12\\
+Multiplicity polynomial &12\\
+Polynomial derivative recurrence &12\\
+Individual coefficient derivative recurrence &66\\
+Sine/exponential jet versus two powers &14\\
+Cosine/exponential jet versus two powers &14\\
+Chamber rank over exact rational twists &120\\
+Mellin moments versus cotangent coefficients &216\\
+Gamma prefactor through a simple pole &11\\
+Polylogarithm primitive telescoping &25\\
+Explicit phase and normalization constants &3\\
+Rejected uncorrected formulas &3\\
+\midrule
+Total &508\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The 216 moment comparisons cover $1\le r,s\le6$ and the six orders
+$m\le q\le m+5$ for each pair. They treat the zeta values as independent
+formal symbols and use exact rational harmonic sums, so accidental
+numerical cancellation cannot hide a coefficient error. The 120 rank
+checks use rational twists and exact matrix ranks, with a fixed seed.
+The proof of Theorem~\ref{bc:thm:rank}, not this finite sample, supplies
+the general rank statement.
+
+\subsection{Floating-point diagnostics}
+
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Comparison & Cases\\
+\midrule
+Direct affine beta finite parts &6\\
+Original-variable ordinary centered moments &27\\
+Polylogarithm primitive versus quadrature &16\\
+Half-period primitive evaluation &1\\
+Ordinary inverse-logarithm integrals &2\\
+Mellin integrals and first order derivatives &24\\
+Direct subtracted logarithmic Mellin finite parts &12\\
+Stieltjes primitive differentiated in the parameter &6\\
+\midrule
+Total &94\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The beta finite parts are calculated by Taylor subtraction in the
+original affine coordinate, not by fitting values at a small imaginary
+regulator. The moment diagnostics integrate in $t$, independently of
+the Mellin substitution. The pole diagnostics subtract the small-$v$
+series, integrate the remainder, and add the exact monomial finite
+parts. These are meaningfully different evaluations from the closed
+forms, although floating-point quadrature and finite Taylor arithmetic
+still do not produce rigorous intervals.
+
+The supplied receipts report all 508 exact checks and all 94 diagnostics
+as passing. Near a subtraction point the numerical script uses a finite
+Taylor series to avoid catastrophic cancellation. That implementation
+detail reinforces why the diagnostics are not a replacement for the
+analytic Taylor-remainder arguments in the article. A displayed zero
+floating-point residual means agreement at the working precision, not
+an independently certified exact equality.
+
+\subsection{Source and artifact provenance}
+
+The source manifest records the observed reference commit, the targeted
+chapter blob, the scope of the other reads, and the names and Git blob
+identifiers of the six incoming archives that were listed but not
+opened. It does not assert that all moving-branch reads were a single
+atomic snapshot. The targeted mathematical source was re-read at the
+reference commit, eliminating that ambiguity for the theorem being
+extended.
+
+The package includes the complete \LaTeX{} source, its compiled PDF, an
+integration fragment extracted from the mathematical sections, the two
+verification scripts, their JSON receipts, a status ledger, build
+instructions, and SHA-256 checksums. Build by-products are excluded from
+the distribution. The PDF was rendered and visually inspected as part of
+package preparation; the separate artifact inspection record documents
+that review. No proof-assistant or external peer-review status is inferred
+from the artifact checks.
+
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{repo-mixed}
+ProveIt Contributors,
+\emph{Unequal twists through beta mixtures and finite resolvent identities},
+\texttt{07-mixed-twist-identities.tex}, in the manuscript chapters directory,
+reference commit \texttt{446dca9bd65c20e409d1d2561d4ffad408103e2a}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/446dca9bd65c20e409d1d2561d4ffad408103e2a/Analysis/Polylogarithms/docs/manuscript/chapters/07-mixed-twist-identities.tex}{Pinned GitHub source}.
+
+\bibitem{repo-readme}
+ProveIt Contributors,
+\emph{Polylogarithms and their Arithmetic Bridges}, manuscript README,
+inspected during this continuation. The moving-branch reading is
+recorded in the provenance manifest.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/Polylogarithms/docs/manuscript}{GitHub manuscript directory and README}.
+
+\bibitem{repo-harmonic}
+ProveIt Contributors,
+\emph{Gamma coefficients prove every harmonic-order identity},
+\texttt{07-harmonic-gamma-coefficients.tex}, inspected source blob
+\texttt{1b18b485517cd551f6a938b1b9736cea942eacf5}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/Polylogarithms/docs/manuscript/chapters/07-harmonic-gamma-coefficients.tex}{GitHub harmonic-coefficient section}.
+
+\bibitem{dlmf-beta}
+NIST Digital Library of Mathematical Functions,
+\S5.12, \emph{Beta Function}.
+\url{https://dlmf.nist.gov/5.12}.
+
+\bibitem{dlmf-gamma}
+NIST Digital Library of Mathematical Functions,
+\S5.5, \emph{Functional Relations} for the Gamma function.
+\url{https://dlmf.nist.gov/5.5}.
+
+\bibitem{dlmf-polygamma}
+NIST Digital Library of Mathematical Functions,
+\S5.15, \emph{Polygamma Functions}.
+\url{https://dlmf.nist.gov/5.15}.
+
+\bibitem{dlmf-polylog}
+NIST Digital Library of Mathematical Functions,
+\S25.12, \emph{Polylogarithms}.
+\url{https://dlmf.nist.gov/25.12}.
+
+\bibitem{dlmf-hurwitz}
+NIST Digital Library of Mathematical Functions,
+\S25.11, \emph{Hurwitz Zeta Function}.
+\url{https://dlmf.nist.gov/25.11}.
+
+\bibitem{weldon}
+H.~A. Weldon,
+\emph{Mishaps with Feynman parametrization at finite temperature},
+Physical Review D \textbf{47} (1993), 594--600.
+\href{https://doi.org/10.1103/PhysRevD.47.594}{doi:10.1103/PhysRevD.47.594}.
+Abstract consulted for context; no theorem in this article depends on
+an uninspected derivation in that paper.
+
+\bibitem{bedaque-das}
+P.~F. Bedaque and A.~Das,
+\emph{Feynman parametrization and the degenerate electron gas},
+Physical Review D \textbf{47} (1993), 601--607;
+\href{https://arxiv.org/abs/hep-ph/9209273}{arXiv:hep-ph/9209273}.
+\href{https://doi.org/10.1103/PhysRevD.47.601}{doi:10.1103/PhysRevD.47.601}.
+Abstract consulted for context.
+\end{thebibliography}
+\end{document}

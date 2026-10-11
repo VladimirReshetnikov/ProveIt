@@ -1,0 +1,240 @@
+\section{Every reconstruction row in explicit form}
+\label{sec:inverse}
+
+The main theorem of this section answers research question R2 of
+\cite{incoming-bernoulli} for the complete $(2,2b)$ family. The answer
+contains only factorials, Bernoulli numbers, and finite sums. In
+particular, it does not leave an inverse matrix or an unknown
+determinant in the definition of a reconstruction coefficient.
+
+\subsection{A finite Pad\'e identity}
+
+For $N\geq0$, define
+\begin{equation}\label{eq:PN}
+ P_N(t)=\sum_{k=0}^N
+  \frac{(2N-k)!\,N!}{(2N)!\,k!\,(N-k)!}t^k.
+\end{equation}
+The exact initial Taylor coefficients of
+$e^tP_N(-t)-P_N(t)$ vanish through degree $2N$, and
+\begin{equation}\label{eq:Pade-remainder}
+ e^tP_N(-t)-P_N(t)
+ =\frac{(-1)^N(N!)^2}{(2N)!(2N+1)!}t^{2N+1}
+   +O(t^{2N+2}).
+\end{equation}
+For completeness, the vanishing is the binomial identity
+\[
+ \sum_{k=0}^N(-1)^k\binom Nk(1+x)^{2N-k}
+ =x^N(1+x)^N
+\]
+applied coefficient by coefficient. The first remaining coefficient is
+\[
+ \frac1{(2N)!}\sum_{k=0}^N
+  \frac{(-1)^k\binom Nk}{2N+1-k}
+ =\frac1{(2N)!}\int_0^1x^N(x-1)^N\dd x,
+\]
+which proves \eqref{eq:Pade-remainder} by the beta integral.
+
+Set
+\begin{equation}\label{eq:Fmu}
+ F(z)=\sum_{j\geq0}\mu_jz^j
+ =\frac{\sqrt z}{2}\coth\frac{\sqrt z}{2}.
+\end{equation}
+The right side is an even germ in $\sqrt z$, hence a single-valued
+holomorphic germ in $z$. With $N=2n+1$, put
+\[
+ q_n(t^2)=\frac{P_{2n+1}(t)-P_{2n+1}(-t)}t,
+ \qquad
+ r_n(t^2)=\frac{P_{2n+1}(t)+P_{2n+1}(-t)}2.
+\]
+Then \eqref{eq:Pade-remainder} implies
+\begin{equation}\label{eq:Fq-r}
+ F(z)q_n(z)-r_n(z)=h_nz^{2n+1}+O(z^{2n+2}),
+ \qquad
+ h_n=\frac{((2n+1)!)^2}{(4n+2)!(4n+3)!}.
+\end{equation}
+
+\subsection{Two explicit orthogonal families}
+
+Let $\mathcal L$ be the rational linear functional on $\Q[x]$ with
+$\mathcal L(x^j)=\mu_j$. Define
+\begin{align}
+ \pi_n(x)&=\sum_{t=0}^n p_{nt}x^t,
+ &p_{nt}&=
+ \frac{2(2n+2t+1)!(2n+1)!}
+ {(4n+2)!(2n-2t+1)!(2t)!},
+ \label{eq:pi-coeff}\\
+ c_n&=\frac{(2n+1)(2n+2)!}{(4n+2)!}.
+ \label{eq:cn}
+\end{align}
+Thus $\pi_n(x)=x^nq_n(1/x)$ is monic. Coefficient comparison in
+\eqref{eq:Fq-r} gives
+\begin{equation}\label{eq:pi-moments}
+ \mathcal L(\pi_n)=c_n,\qquad
+ \mathcal L(x^k\pi_n)=0\ (1\leq k\leq n),\qquad
+ \mathcal L(x^{n+1}\pi_n)=h_n.
+\end{equation}
+These are the inherited shifted-functional polynomials. The new inverse
+construction requires orthogonality for $\mathcal L$ itself.
+
+\begin{lemma}[The unshifted Bernoulli family]
+\label{lem:Qorthogonal}
+Put
+\begin{align}
+ Q_0(x)&=1,&\nu_0&=1,\notag\\
+ Q_n(x)&=\pi_n(x)-\frac{c_n}{c_{n-1}}\pi_{n-1}(x),
+ &\nu_n&=-\frac{c_n}{c_{n-1}}h_{n-1}\quad(n\geq1).
+ \label{eq:Qnu}
+\end{align}
+Then the $Q_n$ are monic, pairwise orthogonal for $\mathcal L$, and
+$\mathcal L(Q_n^2)=\nu_n\ne0$. Write
+$q_{nt}=[x^t]Q_n(x)$, with $q_{nt}=0$ if $t>n$.
+\end{lemma}
+\begin{proof}
+The zeroth moment of $Q_n$ vanishes by \eqref{eq:pi-moments}.
+For $1\leq k<n$, both terms in
+$\mathcal L(x^kQ_n)$ vanish by the same formula. Therefore $Q_n$
+is orthogonal to every polynomial of degree less than $n$.
+As $Q_n$ is monic,
+\[
+ \mathcal L(Q_n^2)=\mathcal L(x^nQ_n)
+ =-\frac{c_n}{c_{n-1}}\mathcal L(x^n\pi_{n-1})
+ =-\frac{c_n}{c_{n-1}}h_{n-1}.
+\]
+All factorials in $c_n,h_n$ are positive, so the norm is nonzero.
+The functional is not positive: $\nu_0>0$ and $\nu_n<0$ for
+$n\geq1$. The proof is algebraic and uses no positivity assumption.
+\end{proof}
+
+\begin{theorem}[Explicit inverse Bernoulli kernel]
+\label{thm:kernel}
+For $b\geq1$, let $H_b=(\mu_{t+k})_{0\leq t,k<b}$ and set
+\begin{equation}\label{eq:kernel}
+ K_b(x,y)=\sum_{n=0}^{b-1}\frac{Q_n(x)Q_n(y)}{\nu_n},
+ \qquad
+ K_{kt}^{(b)}=[x^ky^t]K_b(x,y)
+ =\sum_{n=0}^{b-1}\frac{q_{nk}q_{nt}}{\nu_n}.
+\end{equation}
+Then $H_b$ is nonsingular and
+$H_b^{-1}=(K_{kt}^{(b)})_{0\leq k,t<b}$.
+Moreover,
+\begin{equation}\label{eq:Kfirst}
+ K_{0t}^{(b)}=\frac{p_{b-1,t}}{c_{b-1}}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Every polynomial $f$ of degree less than $b$ has the orthogonal
+expansion
+\[
+ f(x)=\sum_{n=0}^{b-1}
+   \frac{\mathcal L(fQ_n)}{\nu_n}Q_n(x).
+\]
+It follows that $\mathcal L_y(K_b(x,y)f(y))=f(x)$.
+Taking $f(y)=y^j$ and comparing coefficients of $x^k$ gives
+$\sum_tK_{kt}^{(b)}\mu_{t+j}=\delta_{kj}$, which proves the matrix
+identity. The polynomial $\pi_{b-1}/c_{b-1}$ has moments one at
+degree zero and zero at degrees $1,\ldots,b-1$ by
+\eqref{eq:pi-moments}; uniqueness of the first inverse row proves
+\eqref{eq:Kfirst}.
+\end{proof}
+
+\subsection{The complete mixed inverse}
+
+Define the following finite rational data, for $0\leq t,k<b$:
+\begin{align}
+ u_t^{(b)}&=\mu_t
+   \frac{(2b)!(2t+1)!}{2(2b+2t-1)!},
+ \label{eq:ut}\\
+ v_k^{(b)}&=\sum_{t=0}^{b-1}K_{kt}^{(b)}u_t^{(b)},
+ &\delta_b&=2-B_{2b-2}.
+ \label{eq:vkdelta}
+\end{align}
+Here every $K_{kt}^{(b)}$ is already given by the explicit finite sum
+\eqref{eq:kernel} and the factorial coefficients
+\eqref{eq:pi-coeff}--\eqref{eq:Qnu}.
+
+\begin{theorem}[All reconstruction rows]
+\label{thm:all-rows}
+For every $b\geq2$, $\delta_b\ne0$, and
+\begin{equation}\label{eq:all-rows}
+ \boxed{\displaystyle
+ \mathcal R_{b;k,t}=
+ \frac{(2b-2k)!}{(2b+2t-1)!}
+ \left(
+ K_{kt}^{(b)}-
+ \frac{v_k^{(b)}}{\delta_b}\frac{p_{b-1,t}}{c_{b-1}}
+ \right)
+ =(M_b^{-1})_{kt}.}
+\end{equation}
+Consequently every even-zeta coordinate is recovered by
+\begin{equation}\label{eq:all-coordinates}
+ \boxed{\displaystyle
+ \zeta(2k)=\sum_{t=0}^{b-1}\mathcal R_{b;k,t}C_{b+t},
+ \qquad 0\leq k<b.}
+\end{equation}
+This gives all rows in a common closed finite-sum formula.
+\end{theorem}
+\begin{proof}
+Let
+\[
+ R_b=\operatorname{diag}_{t}(2b+2t-1)!,\qquad
+ E_b=\operatorname{diag}_{k}\frac1{(2b-2k)!}.
+\]
+The exact entries in \eqref{eq:M-system} give
+\begin{equation}\label{eq:rank-one}
+ M_b=R_b(H_b+u^{(b)}e_0^{\mathsf T})E_b.
+\end{equation}
+By \eqref{eq:Kfirst}, factorial cancellation gives
+\begin{align}\label{eq:v0}
+ v_0^{(b)}
+ &=\frac1{2b-1}\sum_{t=0}^{b-1}
+   \binom{2b-1}{2t}(2t+1)B_{2t}
+ =1-B_{2b-2}.
+\end{align}
+To prove the last equality directly, put $N=2b-1\geq3$ and use
+\[
+ \sum_{j=0}^N\binom NjB_j=B_N(1)=0,\qquad
+ \sum_{j=0}^N j\binom NjB_j=-NB_{N-1}.
+\]
+After removing the $j=1$ terms and using the vanishing of the higher
+odd Bernoulli numbers, their sum is exactly \eqref{eq:v0}.
+
+We include the elementary nonvanishing argument. In the localization
+$\Z_{(2)}$ of rationals with odd denominator, the Bernoulli recurrence
+is
+\[
+ (2m+1)(2B_{2m})=2m-1-
+  \sum_{j=1}^{m-1}\binom{2m+1}{2j}(2B_{2j}).
+\]
+Induction and
+$\sum_{j=1}^{m-1}\binom{2m+1}{2j}=2^{2m}-2m-2$
+show that $2B_{2m}$ is an odd element of $\Z_{(2)}$.
+It cannot equal four. Hence $B_{2m}\ne2$, proving $\delta_b\ne0$.
+
+Let $K=H_b^{-1}$ and $v=Ku$. A direct multiplication, using
+$1+e_0^{\mathsf T}v=\delta_b$, shows
+\[
+ (H_b+ue_0^{\mathsf T})^{-1}
+ =K-\frac{ve_0^{\mathsf T}K}{\delta_b}.
+\]
+Insert \eqref{eq:Kfirst} and multiply by the two inverse diagonal
+factors from \eqref{eq:rank-one}. This is \eqref{eq:all-rows}.
+Finally apply it to \eqref{eq:M-system}.
+\end{proof}
+
+\begin{remark}[Recovery of the earlier rational row]
+The row $k=0$ simplifies to
+\begin{equation}\label{eq:rational-row}
+ \mathcal R_{b;0,t}=
+ \frac{2}{(2b-1)(2-B_{2b-2})}\binom{2b-1}{2t}.
+\end{equation}
+Thus the previously known rational extraction is recovered exactly.
+Rows $k=1,\ldots,b-1$ in \eqref{eq:all-rows} are the missing rows
+asked for in the source. The first nontrivial complete inverse is
+\begin{equation}\label{eq:b2inverse}
+ M_2=
+ \begin{pmatrix}3/4&1/4\\2/3&-1/12\end{pmatrix},\qquad
+ M_2^{-1}=\frac1{11}
+ \begin{pmatrix}4&12\\32&-36\end{pmatrix}.
+\end{equation}
+These small matrices are included as a transparent normalization check.
+\end{remark}

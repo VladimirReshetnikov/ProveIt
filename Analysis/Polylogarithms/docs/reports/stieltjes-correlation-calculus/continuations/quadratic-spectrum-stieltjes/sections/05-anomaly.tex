@@ -1,0 +1,166 @@
+\section{Conjugate factorization and an exact polynomial parity criterion}
+\label{qspec:sec:anomaly}
+
+Although $\log(x^2+b^2)=\log(x+ib)+\log(x-ib)$ for $x>0$, one cannot
+split arbitrary zeta-regularized weighted sums of these logarithms without
+checking the continuation. This section computes the correction rather
+than assuming it vanishes.
+
+For $a,b>0$ and a polynomial $W(x)=\sum_{d=0}^D w_dx^d\in\C[x]$, define
+\begin{align}
+Z_W(s;a,b)&=\sum_{n\ge0}W(n+a)Q_b(n+a)^{-s},\label{qspec:eq:weighted-quadratic}\\
+F_{W,\pm}(s;a,b)&=\sum_{n\ge0}W(n+a)(n+a\pm ib)^{-s}.
+\label{qspec:eq:weighted-linear}
+\end{align}
+Their initial absolute-convergence conditions are respectively
+$\Rea s>(D+1)/2$ and $\Rea s>D+1$. We always mean their meromorphic
+continuations when evaluating at zero. The sign convention for the
+factorization defect is
+\begin{equation}\label{qspec:eq:delta-definition}
+\delta_W(a,b)=F_{W,+}'(0;a,b)+F_{W,-}'(0;a,b)-Z_W'(0;a,b).
+\end{equation}
+It is a convention for spectral derivatives; changing to logarithms of
+regularized determinants changes the associated sign convention.
+
+\begin{theorem}[Harmonic residue formula and universal vanishing criterion]
+\label{qspec:thm:anomaly}
+All three continued functions in
+\eqref{qspec:eq:weighted-quadratic}--\eqref{qspec:eq:weighted-linear} are
+holomorphic at zero. The defect is independent of $a$ and equals
+\begin{align}
+\delta_W(a,b)
+&=\frac14[x^{-1}]W(x)
+\left(\log(1+ib/x)-\log(1-ib/x)\right)^2\label{qspec:eq:anomaly-residue}\\
+&=\sum_{k\ge1}w_{2k-1}\frac{(-1)^k b^{2k}}{k}
+\left(H_{2k}-\frac12H_k\right).
+\label{qspec:eq:anomaly-harmonic}
+\end{align}
+The last sum is finite. For a fixed polynomial $W$, the identity
+$\delta_W(a,b)=0$ for every $b>0$ holds if and only if $W$ is even.
+\end{theorem}
+\begin{proof}
+We first take $b<a$. Put $\ell_\pm(x)=\log(1\pm ib/x)$ and
+$L=\ell_++\ell_-$. In a common initial half-plane, factor out $x^{-2s}$
+and compare $Z_W(s)$ with
+$\tfrac12(F_{W,+}(2s)+F_{W,-}(2s))$. The remaining difference is
+\begin{equation}\label{qspec:eq:local-defect}
+e^{-sL}-\tfrac12\bigl(e^{-2s\ell_+}+e^{-2s\ell_-}\bigr)
+=-\frac{s^2}{2}(\ell_+-\ell_-)^2+O(s^3).
+\end{equation}
+Both the constant and first powers of $s$ cancel identically as formal
+power series in $x^{-1}$.
+
+To justify the continuation and the coefficient comparison, expand each
+factor in powers of $x^{-1}$ and sum $x=n+a$. A monomial $w_dx^d$
+paired with the coefficient of $x^{-j}$ contributes
+$w_d\zeta(2s+j-d,a)$. For $s$ near zero, only $j=d+1$ has a pole,
+and it is
+\begin{equation}\label{qspec:eq:hurwitz-local-pole}
+\zeta(1+2s,a)=\frac1{2s}+\gamma_0(a)+O(s).
+\end{equation}
+Every original positive-degree coefficient in the exponential expansion
+vanishes at least to order one at $s=0$, so this possible pole is
+cancelled. The degree-zero term is a finite combination of $\zeta(-d,a)$,
+which is regular. The remaining infinite coefficient sum converges
+normally near zero because $b/a<1$. This proves holomorphy of the
+original functions at zero, not just holomorphy of their difference.
+
+In the difference \eqref{qspec:eq:local-defect}, all regular Hurwitz
+terms start at $s^2$ and have zero first derivative at zero. Multiplying
+the pole in \eqref{qspec:eq:hurwitz-local-pole} by the quadratic term
+in \eqref{qspec:eq:local-defect} gives
+\[
+Z_W'(0)-F_{W,+}'(0)-F_{W,-}'(0)
+=-\tfrac14[x^{-1}]W(x)(\ell_+-\ell_-)^2.
+\]
+The finite part $\gamma_0(a)$ contributes only from order $s^2$ onward;
+this explains both the sign and the independence from $a$.
+
+For arbitrary $b>0$, remove a finite head with $M+a>b$ before expanding.
+At each of the finitely many head terms, the first derivatives cancel
+because the ordinary logarithms add with the stated branches. The tail
+calculation is identical, and the residue in
+\eqref{qspec:eq:hurwitz-local-pole} is still one in its spectral variable.
+This proves \eqref{qspec:eq:anomaly-residue} globally.
+
+For the coefficient formula, write
+\[
+\ell_+-\ell_-=2\sum_{r\ge0}\frac{(ib)^{2r+1}}{(2r+1)x^{2r+1}}.
+\]
+The coefficient of $x^{-2k}$ in one quarter of its square is
+\[
+(-1)^kb^{2k}\sum_{r=0}^{k-1}
+\frac1{(2r+1)(2k-2r-1)}
+=\frac{(-1)^kb^{2k}}k\sum_{r=0}^{k-1}\frac1{2r+1}.
+\]
+The last sum is $H_{2k}-H_k/2$. It is nonzero for every $k\ge1$.
+Only odd monomials $x^{2k-1}$ can contribute to $[x^{-1}]$.
+Finally the distinct powers $b^{2k}$ are linearly independent as
+polynomials in $b$, proving the universal vanishing criterion.
+\end{proof}
+
+\begin{remark}[A fixed mass is different from all masses]
+At a single prescribed value of $b$, different odd terms can cancel.
+For example $W(x)=x^3+\tfrac23b_0^2x$ has zero defect at $b=b_0$
+but is not even. Thus the theorem characterizes vanishing identically
+in the mass, not an erroneous pointwise equivalence.
+\end{remark}
+
+The first defect values, with the convention
+\eqref{qspec:eq:delta-definition}, are
+\begin{equation}\label{qspec:eq:anomaly-examples}
+\delta_1=0,\qquad \delta_x=-b^2,\qquad
+\delta_{x^2}=0,\qquad \delta_{x^3}=\frac23b^4,\qquad
+\delta_{x^5}=-\frac{23}{45}b^6.
+\end{equation}
+They are useful negative controls: deleting the anomaly from an odd-weight
+calculation gives an explicitly false formula, not merely an uncertified
+one.
+
+\subsection{Finite corrected formulas for any polynomial weight}
+Expand $W$ about either conjugate root by writing
+\begin{equation}\label{qspec:eq:shifted-weight-coeffs}
+W(y\mp ib)=\sum_{r=0}^D c_r^\pm(b)y^r.
+\end{equation}
+The linear-factor series are finite sums of shifted Hurwitz functions,
+so Theorem~\ref{qspec:thm:anomaly} immediately gives
+\begin{equation}\label{qspec:eq:general-weighted-hurwitz}
+Z_W'(0;a,b)=
+\sum_{r=0}^D\left(c_r^+(b)\zeta'(-r,a+ib)
++c_r^-(b)\zeta'(-r,a-ib)\right)-\delta_W(a,b).
+\end{equation}
+For real coefficients, the two finite sums are conjugates. Thus every
+polynomially weighted quadratic logarithmic sum in this class has a
+finite Hurwitz-derivative evaluation, with the exact harmonic correction
+already displayed. This is a concrete specialization of the classical
+local-anomaly principle, not an assumption of multiplicativity.
+
+\subsection{Anomaly-free factorization at every negative integer}
+Let
+\begin{equation}\label{qspec:eq:one-sided}
+Z_a(s;b)=\sum_{n\ge0}Q_b(n+a)^{-s}
+\end{equation}
+initially for $\Rea s>1/2$. The weight $W(x)=Q_b(x)^m$ is even for every
+integer $m\ge0$, so the defect vanishes.
+
+\begin{corollary}\label{qspec:cor:negative-hurwitz}
+For $a,b>0$ and $m\ge0$,
+\begin{equation}\label{qspec:eq:negative-hurwitz}
+Z_a'(-m;b)=2\Rea\sum_{j=0}^m
+\binom mj(-2ib)^{m-j}\zeta'(-m-j,a+ib).
+\end{equation}
+\end{corollary}
+\begin{proof}
+For this weight $Z_W(s)=Z_a(s-m;b)$. With $y=x+ib$,
+\[
+Q_b(x)^m=y^m(y-2ib)^m
+=\sum_{j=0}^m\binom mj(-2ib)^{m-j}y^{m+j}.
+\]
+Insert this finite expansion into
+\eqref{qspec:eq:general-weighted-hurwitz}; the defect is zero and the
+second conjugate factor gives the real-part formula.
+\end{proof}
+No claim is made that an arbitrary higher spectral derivative factorizes
+in this way. The proof uses the first-derivative cancellation and the
+special even polynomial weight. At higher spectral orders, logarithmic
+cross terms require their own calculation.

@@ -1,0 +1,285 @@
+\section{Audit conclusions, integration changes, and further research}
+\label{sec:audit-research}
+
+\subsection{The precise change in mathematical status}
+
+The inspection covered the source statements used by this investigation,
+their nearby conjectures, and the six incoming reports at the pinned
+revision. It was not a line-by-line certification of the entire collective
+manuscript. No new counterexample or invalid proof in those inherited
+statements was established. Several tempting shortcuts in the present
+derivations were rejected or corrected before delivery. The appropriate
+repository changes are the following additions and status refinements.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.23\textwidth}>{\raggedright\arraybackslash}p{.34\textwidth}>{\raggedright\arraybackslash}p{.36\textwidth}@{}}
+\toprule
+Target in the inspected material & Proved advancement & Boundary retained\\
+\midrule
+\endhead
+All reconstruction rows, Bernoulli report R2 &
+Theorem~\ref{thm:all-rows} gives every entry of $M_b^{-1}$;
+Theorems~\ref{thm:extraction-series} and \ref{thm:polylog-filter}
+give its ordinary and polylogarithmic evaluations. &
+The inverse is for the $(2,2b)$ matrix. Formal coordinate rank is
+not arithmetic independence.\\[.5em]
+Optimal-prefix conjecture beyond $p=6$ &
+Theorem~\ref{rank8:theorem} proves the $p=8$, $q=2b$ family
+for $b\ge5$, $b\not\equiv1\pmod {16}$. &
+The missing residue class and general unequal orders $p\ge10$
+are not settled by this paper.\\[.5em]
+Centered cubic tails &
+Theorem~\ref{cc:all} evaluates every regular odd centered cubic
+trigamma moment; Theorems~\ref{cc:generator} and \ref{cc:polylog}
+give its analytic and finite polylogarithmic generators. &
+The lowest cubic evaluation has classical antecedents.
+No general higher-power closure theorem is claimed.\\[.5em]
+Next two-particle resonance &
+Theorems~\ref{sr:thm:germ} and \ref{sr:thm:constant} establish
+the grouped subtraction and exact cutoff constant. Corollary
+\ref{sr:cor:alljets} gives every spectral row. &
+The result concerns two particles and the specified next resonance.
+Arbitrary particle number and arbitrary resonance remain open.\\[.5em]
+Higher spatial spectral functionals &
+Theorem~\ref{mellin:main} and Corollary~\ref{mellin:coefficients}
+give ordinary logarithmic Mellin formulas at every coefficient order. &
+The statement uses the inherited unshifted differential-polynomial
+residue germ. General independent spatial shifts need a new analysis.\\[.5em]
+Short Gaussian $S_6$ and revised $S_8$ &
+No status change. &
+The current frozen candidates remain conjectural. The older rejected
+$S_8$ vector is a different statement.\\
+\bottomrule
+\end{longtable}
+
+For integration, the full inverse belongs immediately after the rational
+row in the Bernoulli moment-rank development. The rank-eight theorem is
+an additional case of the existing optimal-prefix programme, and should
+be attached with its congruence qualification. The cubic section belongs
+after the canonical centered-square chapter. The resonance theorem
+continues the determinantal report; the Mellin theorem continues the
+differential-polygamma report. These are additive changes. The package's
+integration notes identify the source files and supplied artifacts.
+
+\subsection{Normalization issues that must survive editing}
+
+\paragraph{The omitted binomial term.}
+The lower-index-zero summand in the source tail matrix is not present.
+Restoring it changes the matrix, the exceptional zeroth column, and the
+reconstruction coefficients. Formula~\eqref{eq:M-system} and the direct
+finite-cutoff verification in the package fix this convention explicitly.
+
+\paragraph{The zeroth power in Faulhaber's formula.}
+The uniformly correct expression for $\sum_{k=1}^N k^m$, $m\ge0$,
+is \eqref{eq:faulhaber-tail}, with $B_{m+1}(1)$ at the lower endpoint.
+Replacing it by $B_{m+1}(0)$ is valid for $m\ge1$ but fails at $m=0$.
+This scope error was found in an early draft of the present article and
+corrected. It is not reported as an error in an inherited theorem.
+
+\paragraph{Exceptional cubic boundary terms.}
+The $-\zeta(2)/2$ term at $j=2$ and the rational $1/4$ term at $j=3$
+in \eqref{cc:Cj} are required. The latter is the surviving
+$B_1^2/B_1^3$ boundary contribution in \eqref{cc:boundaryexception}.
+Deleting low-order exceptions because a generic parity pattern looks
+simpler would change the convergent identities.
+
+\paragraph{Cutoff constants and spectral finite parts.}
+At the second resonance, $C$ in \eqref{sr:eq:lambda-C} and $F$ in
+\eqref{sr:eq:spectral-laurent} are different precisely normalized
+quantities. Equation~\eqref{sr:eq:normalization} includes both derivatives
+of the amplitude needed at a double pole. The example $a=c=1$ gives
+the same cutoff constant $\gamma-\gamma^2$ but different spectral
+finite parts under two normalizations. This is a proved comparison,
+not an assertion that the inspected report made the incorrect identification.
+
+\paragraph{A second-order endpoint constant after scalar cancellation.}
+When $\phi_P=0$, the scalar-filter Stieltjes terms disappear, but
+$\pi^2p_1(0)/6$ remains in \eqref{mellin:q2}. It comes from the sine
+factor in the Mellin transform. Its absence at first order provides
+no reason to discard it at second order.
+
+\paragraph{An extrapolation that is actually false.}
+The rank-eight determinant's valuation follows a simple law on the
+proved residue classes, but the unrestricted extrapolation fails at
+$b=65$ and $129$, as documented in the rank-eight section. These are
+counterexamples to a guess considered during this investigation, not
+to the source optimal-prefix conjecture. The determinants at those
+points are nonzero. The missing class must be addressed by a different
+argument or a finer congruence analysis.
+
+\subsection{Exact certificates and independent diagnostics}
+
+The accompanying scripts separate identities over $\Q$ from numerical
+comparisons. The reconstruction verifier checks both products with the
+original binomial matrix through $b=15$, the shifted and unshifted
+orthogonality identities, the exceptional inverse row, and the printed
+examples. A second implementation reconstructs 35 late-coordinate rows
+directly from finite summation and the uncentered Hurwitz expansion;
+it does not insert the proposed matrix formula. Exact coefficient tables
+contain all 20 extraction rows for $2\le b\le6$.
+
+The rank-eight computation is a finite symbolic certificate in an
+integer polynomial ring, followed by a proved congruence for the Bernoulli
+inputs. Checking all coefficients of that polynomial identity is what
+makes it apply to an infinite family. A list of specialized nonzero
+determinants would not suffice. The full polynomial and a generator that
+reconstructs it from the four-by-four matrix are supplied.
+
+The cubic verifier independently reconstructs 18 coordinates from finite
+cutoffs, checks the generating-function coefficients, and differentiates
+the finite polylogarithmic numerator twice with exact zero residual.
+It also checks the rational and $\zeta(3)$ extraction identities.
+The resonance verifier checks the finite Pearson relations and the
+Laurent cancellations algebraically, and evaluates defining finite
+weight sums with an independently generated asymptotic tail. The Mellin
+verifier checks 56 exact principal-part and coefficient identities,
+then compares spatial quadrature with spectral expressions.
+
+Numerical diagnostics use 50, 80, or 110 decimal working digits, as
+recorded by each script. The six reconstruction comparisons have largest
+absolute residual below $3.4\times10^{-59}$; the cubic moment checks
+through $r=8$ have largest higher-cutoff residual below
+$4.8\times10^{-76}$. The two nonzero-parameter resonance comparisons,
+including a complex parameter, agree within $1.4\times10^{-30}$.
+The nine Mellin comparisons have largest relative residual below
+$1.1\times10^{-49}$. These are independently organized diagnostics,
+not rigorous interval enclosures. Cancellation can exhaust working
+precision at large polynomial degree, so the reports retain the cutoff,
+expansion order, and successive comparison rather than a single
+unqualified count of ``correct digits.'' The analytic proofs establish
+the infinite-family statements.
+
+\subsection{Further research questions}
+
+The following questions retain a concrete exact target. They prioritize
+identities and reductions; estimates are tools for justifying the
+manipulations, rather than separate objectives.
+
+\begin{enumerate}[leftmargin=*,label=\textbf{Q\arabic*.}]
+
+\item \textbf{Finish rank eight on $b\equiv1\pmod {16}$.}
+Determine an arithmetic invariant of the four-by-four perturbation that
+cannot vanish in this residue class. Higher modulus versions of the
+Faulhaber congruence are available, but the counterexamples to the simple
+valuation law show that its exponent cannot be predicted merely from
+$v_2(b-1)$. A useful result would prove nonvanishing for all remaining
+$b$, or identify a complete, exact valuation recursion with a termination
+argument. Checking more values alone does not settle the question.
+
+\item \textbf{Prove the optimal prefix for general unequal even orders.}
+For $(p,q)=(2a,2b)$ with $a\ge5$, the inherited reduction leaves an
+$a$-square perturbation determinant. Seek a structural factorization,
+a congruence stable in $a$, or an algebraic interpretation of its
+nonvanishing. The Bernoulli functional is indefinite, so a positive
+moment-matrix argument cannot simply be imported. The result should
+identify the exceptional arithmetic factors, not leave their nonvanishing
+as an implicit assumption.
+
+\item \textbf{Construct all higher-$p$ reconstruction rows.}
+The kernel of Theorem~\ref{thm:kernel} and a finite-rank inverse formula
+suggest a route for $(4,2b)$ and $(6,2b)$, whose rank is already known.
+The target is an explicit coefficient formula comparable to
+\eqref{eq:all-rows}, with no unknown minors. Translate those coefficients
+into ordinary polynomial-subtracted polygamma sums with one prescribed
+even-zeta coordinate. The independent finite-cutoff method in the package
+can verify their normalization before an all-order proof is attempted.
+
+\item \textbf{Extend the reconstruction to shifted and character tails.}
+Replace $A_p(n)$ by a Hurwitz tail or a Dirichlet-character tail.
+Determine the correct generalized Bernoulli kernel and state the exact
+finite correction when the midpoint identity
+$\zeta(-2j,1/2)=0$ is lost. One can first ask for a single rational
+shift and a common character, then for distinct shifts. A claimed
+ordinary evaluation must include the changed subtraction constants.
+
+\item \textbf{Classify higher powers of the centered trigamma tail.}
+For $d\ge4$, examine
+$\sum_{n\ge0}\psi'(n+1)^d x_n^{-s}$ at its regular integer values.
+Does the correct parity family lie in a fixed finite coordinate space
+for each $d$? The cubic proof identifies a finite cancellation of linear
+tails before taking constant terms. Find its higher-power analogue, or
+prove a specific obstruction. An explicit quartic formula and a generator
+would be a decisive next case; no quartic closure is assumed here.
+
+\item \textbf{Determine the functional depth of the cubic generator.}
+Theorem~\ref{cc:polylog} uses six specified depth-two polylogarithms.
+Determine whether their particular combination admits a smaller function
+basis under an explicitly stated class of argument transformations.
+An equality of derivatives together with an anchored value is a suitable
+certificate. A numerical relation at one $e^{-t}$ does not establish a
+functional reduction, and formal symbol rank alone does not establish
+arithmetic irreducibility at an endpoint.
+
+\item \textbf{Integrate the new boundary operators at interior arguments.}
+The operators in \eqref{eq:Phi-filter} prescribe exact cancellations at
+$z=1$. Find anchored primitives that lower their differential order and
+give compact formulas at interior algebraic points, including $1/2$ and
+cyclotomic points accessible by continuation. Track all integration
+constants from the power series at zero. The rational resonance generator
+in \eqref{sr:eq:G-polylog} supplies a simple model of this approach.
+
+\item \textbf{Develop a general simultaneous-escape subtraction.}
+For three or more particles, classify the regions in which subsets of
+summation indices tend to infinity together. Determine an exact
+inclusion--exclusion subtraction and the associated exponents in the
+Hurwitz terms. The doubled scale $1+2u$ in the present two-particle
+case is the first nontrivial example. A successful theorem must prove
+normal convergence of the full grouped expression before differentiating
+at a resonance.
+
+\item \textbf{Explain the saving of one shape-polygamma order.}
+Equation~\eqref{sr:eq:lower-order-G} removes the apparent $R_{k+2}$
+dependence from every $k$th spectral row. Is this a consequence of a
+general determinant identity or of the two-particle Pearson reduction?
+Find a corresponding regular expression at higher resonances or prove
+where the saving fails. Such a result would reduce the number of
+independent harmonic weights needed in exact derivative formulas.
+
+\item \textbf{Extend the ordinary Mellin bridge to independent shifts.}
+For $P$ in polygamma functions evaluated at several distinct shifts,
+formulate the exact shift-difference principal parts and identify the
+replacement for $D_j(u+j-1)$. A natural target is a normally convergent
+Lerch or Hurwitz multiple-zeta family with all endpoint logarithms
+explicit. The first problem is to specify the spatial subtraction scale
+and its transformation law; the generalized Stieltjes corrections then
+have an unambiguous meaning.
+
+\item \textbf{Reduce the concrete nonlinear spectral derivatives.}
+The cube identity \eqref{mellin:trigammacube} provides particular
+combinations of $\partial_1^j Z(s,t)$ at convergent integer pairs.
+Determine which combinations reduce to ordinary zeta derivatives,
+height-one coefficients, or the existing Tornheim coordinates. Functional
+relations must hold in a neighborhood of the differentiated point;
+an identity true only at integer orders cannot be differentiated as if
+it were such a relation. The logarithmic integral
+\eqref{mellin:cube-log} is a concrete initial target.
+
+\item \textbf{Compute the spectral image of the differential quotient.}
+The incoming report classifies integration by parts in a free
+differential-polynomial algebra. The Mellin bridge supplies a map from
+that quotient, with its endpoint functional, to harmonic residue series.
+Determine the kernel of this map at fixed weight, first exactly at low
+weight and then by structural generators. A formal quotient dimension
+and a dimension after substituting the digamma function need not agree.
+
+\item \textbf{Build anchored multivariable primitive systems.}
+Combine the spectral derivatives in \eqref{sr:eq:alljets} with the
+shift primitive \eqref{sr:eq:primitive}. Determine finite recurrences for
+iterated primitives in the shift and shape parameters, with base values
+fixed at specified anchors. The goal is an identity in known Gamma,
+Hurwitz-zeta, Stieltjes, and multiple-zeta families, rather than naming
+an undetermined constant after each integration.
+
+\item \textbf{Return to the frozen Gaussian $S_6$ and revised $S_8$ targets.}
+Preserve their exact current vectors and the repository's established
+shuffle equivalences. Seek a functional or iterated-integral relation
+whose rigorously evaluated boundary is precisely one of those vectors.
+The present identities expand the available analytic tools but establish
+no direct implication for those two conjectures. Their status should
+change only after such a relation and its endpoint evaluation are proved.
+
+\end{enumerate}
+
+The concrete deliverable of this investigation is therefore a set of
+proved reconstruction, moment, resonance, and Mellin theorems with
+explicit coefficients and normalization constants. The unresolved
+questions are kept attached to the exact missing mathematical step.

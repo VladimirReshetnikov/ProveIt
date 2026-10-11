@@ -1,0 +1,186 @@
+\section{Centered moments and their exact normalization}
+\label{sec:foundation}
+
+We first establish the analytic meaning of the moment values used in
+the reconstruction theorem. The finite coordinate formulas are
+inherited from the tail reports; their normalization is reproduced
+here so that the additional determinant argument can be checked
+without reconstructing an earlier archive.
+
+\subsection{Centered asymptotic subtraction}
+
+Put $x_n=n+1/2$. For an integer $p\ge2$, the centered Hurwitz
+expansion is
+\begin{equation}\label{found:asymptotic}
+ A_p(n)\sim\sum_{j\ge0}a_j(p)x_n^{1-p-2j},\qquad
+ a_0(p)=\frac1{p-1},\quad
+ a_j(p)=\frac{B_{2j}(1/2)(p)_{2j-1}}{(2j)!}\quad(j\ge1).
+\end{equation}
+Here $(p)_m=p(p+1)\cdots(p+m-1)$ is the rising factorial.
+For each fixed truncation the usual Euler--Maclaurin remainder
+justifies this expansion, locally uniformly in any parameters kept
+away from their poles \cite{DLMF}. In particular, if $p,q$ are even,
+\begin{equation}\label{found:product-expansion}
+ A_p(n)A_q(n)\sim
+ \sum_{j\ge0}c_j(p,q)x_n^{2-p-q-2j},\qquad
+ c_j(p,q)=\sum_{h=0}^j a_h(p)a_{j-h}(q).
+\end{equation}
+
+\begin{proposition}[Continued and ordinary centered moments]
+\label{found:regularity}
+For even $p,q\ge2$, $D_{p,q}(s)$ initially converges absolutely for
+$\Re s>3-p-q$ and has a meromorphic continuation to the plane.
+Its possible poles are among
+\[
+                         s=3-p-q-2j,\qquad j\ge0.
+\]
+Every $s=-2r$, $r\ge0$, is regular. Moreover, with
+$J=r+1-(p+q)/2$, the exact ordinary identity is
+\begin{equation}\label{found:ordinary}
+ D_{p,q}(-2r)=\sum_{n\ge0}\left\{
+ x_n^{2r}A_p(n)A_q(n)
+ -\sum_{j=0}^{J}c_j(p,q)x_n^{2r+2-p-q-2j}\right\}.
+\end{equation}
+The inner sum is empty when $J<0$. The complete summand is
+$O(x_n^{-2})$ when subtraction is needed; when it is not needed the
+original series is absolutely convergent.
+\end{proposition}
+
+\begin{proof}
+Subtract $L$ terms of \eqref{found:product-expansion}. Summing them
+back gives
+\begin{align}\label{found:continuation}
+ D_{p,q}(s)={}&\sum_{n\ge0}
+ \left(A_p(n)A_q(n)-\sum_{j=0}^{L-1}c_jx_n^{2-p-q-2j}\right)x_n^{-s}
+ \notag\\
+ &+\sum_{j=0}^{L-1}c_j\zeta(s+p+q-2+2j,1/2).
+\end{align}
+The first term converges normally for
+$\Re s>3-p-q-2L$. Increasing $L$ gives the continuation and the
+listed possible poles. Their positions are odd integers, so none
+equals $-2r$. At this value choose exactly the nonnegative powers
+in the polynomial subtraction. Each added-back Hurwitz value is
+zero because
+\[
+ \zeta(-2h,1/2)=-\frac{B_{2h+1}(1/2)}{2h+1}=0
+ \qquad(h\ge0).
+\]
+This proves \eqref{found:ordinary}. The statement uses a convergent
+sum of the complete braces; the separately divergent pieces are
+never summed on their own.
+\end{proof}
+
+The last vanishing is special to the chosen center. It also cannot
+be differentiated as though it were an identity in the spectral
+variable: for example $\zeta'(0,1/2)=-\tfrac12\log2\ne0$.
+The shifted and logarithmic formulas below preserve the corresponding
+finite correction terms.
+
+\subsection{Finite summation and the block transform}
+
+Let $\CT_N$ denote the coefficient of $N^0(\log N)^0$ in a
+specified large-$N$ expansion. Centered even power sums satisfy
+\begin{equation}\label{found:power-sum}
+ S_r(N)=\sum_{n=0}^{N-1}(n+1/2)^{2r}
+ =\frac{B_{2r+1}(N+1/2)}{2r+1}
+ =\sum_{j=0}^r T_{rj}N^{2j+1},
+\end{equation}
+where
+\[
+ T_{rj}=\frac{\binom{2r}{2j}}{2j+1}B_{2r-2j}(1/2).
+\]
+The polynomial has zero constant term. By
+Proposition~\ref{found:regularity}, the moment is consequently the
+constant term of its finite partial sum. The recurrence
+\[
+                         A_p(k-1)=A_p(k)+k^{-p}
+\]
+and finite summation by parts give
+\begin{equation}\label{found:blocks}
+ D_{p,q}(-2r)=\sum_{j=0}^r T_{rj}C_{p,q}(2j+1),
+\end{equation}
+where, for a positive odd $d$,
+\begin{align}\label{found:block-CT}
+ C_{p,q}(d)=\CT_N\bigg\{&N^dA_p(N)A_q(N)
+       +\sum_{k=1}^N k^{d-q}A_p(k)\notag\\
+       &+\sum_{k=1}^N k^{d-p}A_q(k)
+       +\sum_{k=1}^N k^{d-p-q}\bigg\}.
+\end{align}
+This identity is obtained at a finite cutoff before any limiting
+operation. It is also the convenient starting point for shifted and
+twisted extensions.
+
+For later reference we state the explicit inherited evaluation.
+Set $W=p+q$, and define
+\begin{align}
+ U_{p,q}(d)&=
+ \begin{cases}
+ \zeta(p,q-d)+\tfrac12\zeta(W-d),&d<q,\\[3pt]
+ \displaystyle\sum_{h=1}^{\min\{(d-q+1)/2,p/2-1\}}
+ \frac{\binom{d-q+1}{2h}}{d-q+1}
+ B_{d-q+1-2h}\zeta(p-2h),&d>q,
+ \end{cases}\label{found:U}\\
+ R_{p,q}(d)&=
+ \begin{cases}
+ 0,&d<W-1,\\[3pt]
+ \displaystyle-\frac{B_{d-W+1}}2
+ \left\{\frac1p\binom{d-q}{p-1}
+       +\frac1q\binom{d-p}{q-1}\right\},&d\ge W-1.
+ \end{cases}\label{found:R}
+\end{align}
+Then
+\begin{equation}\label{found:C-evaluation}
+ C_{p,q}(d)=U_{p,q}(d)+U_{q,p}(d)+R_{p,q}(d).
+\end{equation}
+All double-zeta sums appearing in \eqref{found:U} are convergent.
+There is no case $d=q$ because $d$ is odd and $q$ is even.
+
+\paragraph{Why these finite formulas hold.}
+For $d<q$, changing the order in the convergent sum yields
+$\sum_{k\ge1}k^{d-q}A_p(k)=\zeta(p,q-d)$.
+For $d>q$ set $m=d-q$ and
+$F_m(N)=(B_{m+1}(N+1)-B_{m+1})/(m+1)$. The finite identity
+\[
+ \sum_{k=1}^N k^mA_p(k)
+ =A_p(N)F_m(N)+
+                  \sum_{\ell=1}^N\frac{F_m(\ell-1)}{\ell^p}
+\]
+reduces everything to Bernoulli polynomials and ordinary power sums.
+The even Bernoulli terms give \eqref{found:U}. The half-leading Faulhaber terms leave precisely
+one half of $\zeta(W-d)$ for each convergent ordered block. When
+both ordered blocks require reduction, their two half-terms cancel
+the last sum in \eqref{found:block-CT}. At $d=W-1$ this includes cancellation of
+the two $-\gamma/2$ constants against $+\gamma$ from the harmonic
+sum. The remaining boundary products give \eqref{found:R}.
+This is the finite-sum proof in the incoming tail calculus
+\cite{Canonical,Bernoulli}; no additional relation among numerical
+periods is used.
+
+\subsection{Inverse transform and a small check}
+
+Write $C_j=C_{p,q}(2j+1)$ and $D_r=D_{p,q}(-2r)$.
+The Bernoulli generating identity in \eqref{found:power-sum} yields
+the inverse transform
+\begin{equation}\label{found:inverse}
+ C_j=\sum_{r=0}^j\binom{2j+1}{2r}2^{-2(j-r)}D_r.
+\end{equation}
+One way to verify it is to set
+$G(t)=\sum D_rt^{2r}/(2r)!$ and
+$C(t)=\sum C_jt^{2j+1}/(2j+1)!$. The forward transform says
+$G(t)=C(t)/(2\sinh(t/2))$ as a formal power series. Multiplying
+back proves \eqref{found:inverse}, with no analytic assumption on
+the growth of the moments.
+
+For $p=q=2$, the first two blocks are $C_0=3\zeta(3)$ and
+$C_1=-1/2$. Hence
+\[
+ D_0=3\zeta(3),\qquad
+ D_1=-\frac14\zeta(3)-\frac16,
+\]
+and Proposition~\ref{found:regularity} gives the ordinary identity
+\[
+ \sum_{n\ge0}\bigl((n+1/2)^2\psi'(n+1)^2-1\bigr)
+ =-\frac14\zeta(3)-\frac16.
+\]
+These are inherited checks. The next section uses the same fixed
+normalization to prove an additional infinite reconstruction family.

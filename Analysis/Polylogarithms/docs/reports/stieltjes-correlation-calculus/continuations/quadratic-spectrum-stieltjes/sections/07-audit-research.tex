@@ -1,0 +1,229 @@
+\section{Source audit, verification, and further research}
+\label{qspec:sec:audit}
+
+\subsection{What was inspected}
+The repository anchor is \qpin. Its commit timestamp is
+11 October 2026 at 05:06:38 UTC, which is 10 October 2026 in the user's
+America/Los\_Angeles time zone. The local date in this delivery is therefore
+10 October 2026.
+
+The source reading included the manuscript's main file and preface, its
+research-status chapter, the beginning and central conventions of the
+integration chapter, the displayed $S_6$ target and formal-obstruction
+framework in the full-Cayley continuation, the arithmetic spectral-jets
+section on periodic weights and poles, and the all-rational formal
+classification section of the Herglotz report. The intake README and
+incoming directory catalogue were also read \cite{repo,arithmetic,classification,intake}.
+This was a targeted reading, not a full audit of every included manuscript
+chapter, report, proof prerequisite, or source program.
+
+Six incoming archive names were visible at the pin: the Bernoulli--Tornheim--
+digamma, cubic-tail-descent, determinantal-harmonic-resonance,
+differential-polygamma-and-Lerch-jets, multishift-reflection, and
+polygamma-tail-identities packages. Only their catalogue metadata was
+inspected; their interiors were not read. Accordingly, no theorem,
+conjecture, omission, or error is attributed here to any of those archive
+interiors. The machine-readable provenance file and source-audit note
+preserve this distinction.
+
+\subsection{A concrete editorial synchronization correction}
+The inspected research chapter still describes the general rational
+$J(p/q)$ symbol classification as a further question. At the same pin,
+the report \qfile{herglotz-rational-classification} already contains a
+section entitled ``Complete formal classification at rational arguments''
+with a theorem and its argument \cite{classification}.
+
+Its statement concerns coprime positive $p,q$. In mixed parity, with
+$e$ the even entry and $o$ the odd entry, formal rational-dilogarithmic
+reducibility and formal logarithmic reducibility are equivalent to
+\begin{equation}\label{qspec:eq:existing-J-status}
+e^2\equiv\pm1\pmod o,\qquad o^2\equiv1\pmod{2e}.
+\end{equation}
+When both entries are odd, the stated rational-dilogarithmic cases have
+$p,q\in\{1,3,5\}$, and the only logarithmic case is $p=q=1$.
+This classification belongs to the existing report; it is not a result
+of the present article. Its prerequisite symbol-theoretic lemmas were
+not all re-audited here.
+
+The proposed correction is therefore editorial: replace the stale open
+classification question by a pointer to that existing theorem, subject
+to the repository's normal integration review, while retaining the
+separate tasks of constructing short explicit evaluations and understanding
+numerical period relations. Failure of a formal reduction criterion is
+not numerical transcendence or period independence. The delivered
+\qfile{integration/editorial_update.md} contains precise replacement wording.
+
+No new counterexample to an analytic formula in the inspected source
+material was established in this session. The following mathematical
+safeguards concern the present derivations; they are not allegations
+about unread reports.
+
+\subsection{Five distinctions required for a correct implementation}
+\begin{enumerate}
+\item \textbf{The doubled spectral variable.} The pole of
+$\zeta(1+2\epsilon,a)$ is $1/(2\epsilon)$, and its $m$th regular
+jet is $(-2)^m\gamma_m(a)$. Omitting the factor two breaks both
+reflection channels and the anomaly residue calculation.
+\item \textbf{A finite part is not a Taylor coefficient before pole removal.}
+The coefficient $C_m$ is
+$\Bcal_{m+1}(\ell)/(m+1)$, not $\Bcal_m(\ell)$. The extra index comes
+from dividing the analytic function $\epsilon C(\epsilon)$ by
+$\epsilon$.
+\item \textbf{The binomial radius is real.} Formula
+\eqref{qspec:eq:harmonic-counterterms} cannot simply be evaluated outside
+$b<\min(a,1-a)$. The finite-head formula supplies the exact replacement.
+Both tail shifts increase by $M$.
+\item \textbf{Complex-order holomorphy is not a real-part operation.}
+The combinations in \eqref{qspec:eq:zt} are needed before differentiating
+in a complex spectral order. At real orders they may then be evaluated
+as real and imaginary parts.
+\item \textbf{Pointwise logarithms do not automatically factor continued sums.}
+The odd-weight examples \eqref{qspec:eq:anomaly-examples} are explicit
+counterexamples to unchecked multiplicativity. Evenness guarantees
+universal vanishing for this conjugate-pair polynomial problem; a
+fortuitous zero at one mass does not imply evenness.
+\end{enumerate}
+
+\subsection{Executed verification and its evidentiary meaning}
+The supplied code was copied to a separate working directory before the
+recorded runs. The results are included in
+\qfile{data/exact_results.json} and \qfile{data/numeric_results.json}.
+The exact suite ran with SymPy 1.14.0. The numerical suite ran with
+mpmath 1.3.0 at 45 working decimal digits.
+
+\begin{center}
+\begin{tabular}{@{}p{0.65\linewidth}r@{}}
+\toprule
+Exact finite regression family & Assertions\\
+\midrule
+Pochhammer jets and Bell polynomials & 140\\
+Ordinary/half-shifted harmonic conversion & 120\\
+Anomaly coefficients, their nonvanishing, and parity zeros & 36\\
+Rational partial fractions & 6\\
+Half-integer Bessel recurrence & 12\\
+Mass-primitive coefficient recurrence & 85\\
+Shift/mass differential equation & 88\\
+Heat-residue normalization & 13\\
+Anchored primitive pole cancellation & 8\\
+Several-mass polynomial change of basis & 9\\
+\midrule
+Total & 517\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The numerical suite passed 82 independent comparisons. Eighteen test the
+two Stieltjes channels through order three, including masses outside the
+unshifted binomial disk. Twenty-four compare negative-point derivatives
+using the differentiated Hurwitz series, finite complex-Hurwitz formula,
+and finite polylogarithm formula. Sixteen test even and odd polynomial
+anomalies; ten compare positive-integer polygamma and polylogarithm
+expressions. The remaining fourteen test general Poisson continuation,
+Gamma ratios and integrals, parameter primitives, both polylogarithm
+integrals, and the several-mass theorem, including repeated masses.
+
+The largest recorded scaled residual was
+$4.618\times10^{-44}$, where the scale is
+$\max(1,|\mathrm{lhs}|,|\mathrm{rhs}|)$. The acceptance threshold was
+$10^{-33}$. These are \emph{floating-point diagnostics}, not rigorous
+interval enclosures, tail certificates, or proofs of equality. The
+truncation choices are conservative numerical choices, not a delivered
+validated error estimator. The exact finite suite proves its particular
+algebraic assertions, not the analytic continuation or all-index theorems.
+Those depend on the ordinary proofs given in the article.
+
+\subsection{Integration recommendation and claim boundaries}
+A suitable destination is a new report under
+\qfile{Analysis/Polylogarithms/docs/reports/quadratic-spectrum-stieltjes/}.
+The compact integration fragment uses prefixed labels and can be adapted
+into the Hurwitz--Stieltjes and integration chapters after normal editorial
+review. No automatic patch, remote commit, overwrite of existing research,
+or change of conjecture status is included.
+
+The key claims to preserve are: all-index exact identities in both
+reflection channels; all-positive-mass convergence through a finite head;
+a universal, not pointwise, parity characterization; finite first-derivative
+reductions, not arbitrary higher-derivative factorization; and explicitly
+anchored primitives. The classical inputs and the new derivations should
+remain distinguishable in the merged text.
+
+\subsection{Further research questions and concrete next targets}
+\begin{enumerate}
+\item \textbf{Higher spectral jets at negative integers.}
+For $r\ge2$, determine the smallest explicitly stated function algebra
+containing $\partial_s^rE(-m;a,b)$. The reciprocal-Gamma zero leaves
+Bessel order derivatives of order at most $r-1$. Can the second jet be
+reduced to a finite family of polylogarithm order derivatives plus
+explicit logarithmic terms, or is an additional integral coordinate
+required? A failure of a chosen formal calculus must be distinguished
+from numerical nonreducibility.
+
+\item \textbf{Higher-jet factorization defects.}
+For a fixed polynomial $W$, study
+\[
+\Delta_r(W)=2^{r-1}\bigl(F_{W,+}^{(r)}(0)+F_{W,-}^{(r)}(0)\bigr)
+-Z_W^{(r)}(0).
+\]
+At $r=1$ Theorem~\ref{qspec:thm:anomaly} gives an exact local polynomial.
+At $r=2$ mixed logarithms introduce a genuinely nonlocal part. Separate
+that part from the residue polynomial and determine what parity still
+forces to vanish. This is an extension problem, not an assumption that
+the first-derivative criterion persists unchanged.
+
+\item \textbf{Noninteger polynomial degree.}
+Replace $W(x)$ by $x^\rho$ on the positive spectrum. Determine the exact
+continuation as $\rho$ crosses the resonant odd integers and formulate a
+parameter-dependent correction that specializes to
+\eqref{qspec:eq:anomaly-harmonic}. The finite polynomial residue in this
+article provides a set of exact interpolation constraints.
+
+\item \textbf{Arithmetic projection of both Stieltjes channels.}
+At $a=p/q$, apply finite character projectors to the master identities
+and their mass-transfer laws. Which combinations admit a shorter
+Gamma/Dirichlet-$L$ jet description, and which retain genuinely useful
+damped polylogarithm integrals? The first useful target is a complete
+small-denominator dictionary with the even and odd character components
+kept separate.
+
+\item \textbf{Exact removal of the auxiliary mass.}
+The identities are independent of $b$ after their counterterms are
+combined. Develop an exact coefficient calculus for the cancellations
+as $b\downarrow0$, rather than simply taking a numerically unstable
+limit of separate terms. Comparing the resulting coefficients at two
+masses may generate new harmonic sums involving Hurwitz order derivatives.
+
+\item \textbf{Mixed shift and mass primitives.}
+Combine \eqref{qspec:eq:all-primitives},
+\eqref{qspec:eq:mass-primitives}, and \eqref{qspec:eq:PDE} to classify
+which rectangular integrals in $(a,b^2)$ have finite polylogarithm and
+Hurwitz-jet endpoints. Anchoring every primitive should be part of the
+statement, not a later adjustment by unspecified polynomials.
+
+\item \textbf{Several factors beyond the first spectral derivative.}
+Theorem~\ref{qspec:thm:several-masses} has a finite answer even with
+repeated masses. Determine the second derivative for two masses and
+its confluent limit as they coincide. The target is an exact formula
+for the logarithmic cross term, with no subtraction of divergent sums
+left implicit.
+
+\item \textbf{Formalization and validated evaluation.}
+The Bell recurrences, harmonic coefficient identity, rational partial
+fractions, and finite mass/PDE reductions are suitable finite targets
+for a proof assistant. Separately, an interval implementation of the
+Bessel order integrals and finite-head remainder would turn the present
+floating-point diagnostics into validated evaluations. Neither has
+been supplied here.
+\end{enumerate}
+
+\section*{Conclusion}
+\addcontentsline{toc}{section}{Conclusion}
+The positive quadratic deformation does more than provide another series
+for a Stieltjes constant. Its even and odd spectra form a complete
+reflection pair, its harmonic counterterms admit a globally valid
+finite-head formulation, and its negative spectral zeros collapse first
+derivatives to finite polylogarithm expressions. Polynomial parity
+explains exactly when conjugate factorization is legitimate. The same
+finite family supports anchored mass primitives, a shift/mass differential
+equation, and products of several quadratic factors. These are exact
+structural identities with ordinary proofs; the supplied computations
+check their implementation without replacing those proofs.

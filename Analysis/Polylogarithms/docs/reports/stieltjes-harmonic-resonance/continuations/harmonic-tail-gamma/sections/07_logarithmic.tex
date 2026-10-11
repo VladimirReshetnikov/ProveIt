@@ -1,0 +1,252 @@
+% Research continuation of Differential Section 09,
+% ``Higher spectral derivatives of the residue calculus.''
+\section{Canonical spatial kernels for every spectral coefficient}
+\label{log:section}
+
+Let $P\in\mathbb C[u_0,\ldots,u_R]$ be fixed and write
+$f_P(x)=P(\psi(x),\psi'(x),\ldots,\psi^{(R)}(x))$.
+Its scalar projection is $\phi_P(Y)=P(Y,0,\ldots,0)$.
+For a sufficiently large finite $M$, define the principal-part data
+\[
+ p_j(n)=[v^{-j}]f_P(-n+v),\qquad
+ P_0(x)=\sum_{j=1}^M p_j(0)x^{-j},\qquad
+ \Delta p_j(n)=p_j(n)-p_j(n-1).
+\]
+All $p_j(n)$ are explicit polynomials in ordinary harmonic numbers
+and zeta values. Define the harmonic Dirichlet functions by
+\begin{equation}\label{log:Dirichlet}
+ D_j(s)=\sum_{n\ge1}\Delta p_j(n)n^{-s}\qquad(\Re s>0).
+\end{equation}
+The subscript $j$ denotes pole order, not differentiation order.
+We are interested in every Laurent coefficient $[s^q]D_1(s)$,
+$q\ge1$. The previously established unweighted finite-part bridge
+uses only $q=1$ \cite{DPL,PTI}.
+
+The normalized spatial function and its leading tail are
+\begin{equation}\label{log:hK}
+ h_P(x)=f_P(x+1)-f_P(x)+P_0(x),\qquad
+ K_P(L)=\phi'_P(L)+p_1(0)=\sum_{k\ge0}K_kL^k.
+\end{equation}
+The $P_0$ term removes the entire singularity at $x=0$.
+In particular $h_P(0)=f_P(1)-[x^0]f_P(x)$.
+
+\begin{theorem}[Normalized Mellin identity]
+\label{log:Mellin}
+The integrals
+\begin{equation}\label{log:E}
+ E_P(s)=\int_0^1 x^{-s}h_P(x)\,dx
+  +\int_1^\infty x^{-s}
+       \left\{h_P(x)-\frac{K_P(\log x)}x\right\}\,dx
+\end{equation}
+define a holomorphic function on $-1<\Re s<1$.
+On that strip, as an identity of meromorphic functions,
+\begin{equation}\label{log:master}
+ \boxed{\displaystyle
+ D_1(s)=-\frac{\sin\pi s}{\pi}
+       \left(E_P(s)+\sum_{k\ge0}\frac{K_k k!}{s^{k+1}}\right)
+ -\sum_{j=2}^M\frac{(s)_{j-1}}{(j-1)!}D_j(j-1+s).}
+\end{equation}
+The rising factorials are finite polynomials.
+Every shifted $D_j$ in the second sum is holomorphic at $s=0$,
+with all its derivatives represented by absolutely convergent series.
+\end{theorem}
+
+\begin{proof}
+The inherited normalized principal-part expansion \cite[Section 2]{DPL}
+gives, on
+$x>0$, the particularly simple shift identity
+\begin{equation}\label{log:shiftres}
+ h_P(x)=-\sum_{n\ge1}\sum_{j=1}^M
+          \frac{\Delta p_j(n)}{(n+x)^j}.
+\end{equation}
+It can also be obtained directly by shifting a finite cutoff of the
+principal-part expansion: the last boundary term tends to zero since
+$p_j(n)=O((1+\log n)^d)$.
+The local Laurent expansion proves analyticity at $x=0$.
+The differentiable positive-axis polygamma asymptotic expansions give
+\[
+ f_P(x+1)-f_P(x)=\frac{\phi'_P(\log x)}x
+                   +O((1+\log x)^d/x^2),
+\]
+and hence
+$h_P(x)=K_P(\log x)/x+O((1+\log x)^d/x^2)$.
+These estimates prove normal convergence of \eqref{log:E}, together
+with every fixed $s$-derivative, on its stated strip.
+
+For $0<\Re s<1$, integrate \eqref{log:shiftres} against $x^{-s}$.
+The exact beta integral is
+\[
+ \int_0^\infty\frac{x^{-s}}{(n+x)^j}\,dx
+ =n^{1-s-j}\frac{\Gamma(1-s)\Gamma(j-1+s)}{\Gamma(j)}
+ =\frac{\pi}{\sin\pi s}\frac{(s)_{j-1}}{(j-1)!}
+   n^{-(j-1+s)}.
+\]
+Fubini is justified by
+$\Delta p_j(n)=O((1+\log n)^d/n)$; the slowest case, $j=1$,
+is summable for $\Re s>0$ after taking the beta integral.
+Also
+\[
+ \int_1^\infty x^{-s-1}K_P(\log x)\,dx
+       =\sum_{k\ge0}K_k k!s^{-k-1}.
+\]
+Solving for $D_1(s)$ gives \eqref{log:master} on $0<\Re s<1$,
+and its right side supplies continuation to the whole strip.
+For $j\ge2$, $j-1+s$ has positive real part throughout
+$\Re s>-1$, so its series is holomorphic there. This also proves
+the assertions about ordinary derivatives.
+\end{proof}
+
+For $q\ge1$, define the universal polynomial
+\begin{align}\label{log:kernel}
+ k_q(L)&=\frac{(-1)^q}{q!}
+          \frac{(L+i\pi)^q-(L-i\pi)^q}{2i\pi}\notag\\
+ &=(-1)^q\sum_{m=0}^{\lfloor(q-1)/2\rfloor}
+       \frac{(-1)^m\pi^{2m}L^{q-2m-1}}
+            {(2m+1)!(q-2m-1)!}.
+\end{align}
+The first four are
+\[
+ k_1=-1,\qquad k_2=L,\qquad
+ k_3=\frac{\pi^2}{6}-\frac{L^2}{2},\qquad
+ k_4=\frac{L^3-\pi^2L}{6}.
+\]
+For any polynomial $w$, put
+\[
+ \mathcal L_P[w]=\int_0^1w(\log x)h_P(x)\,dx+
+ \int_1^\infty w(\log x)
+       \left\{h_P(x)-\frac{K_P(\log x)}x\right\}\,dx.
+\]
+Both integrals are ordinary absolutely convergent integrals.
+Set
+\begin{align}\label{log:constants}
+ A_{P,q}&=-\sum_{\substack{k\ge0\\q+k\ \mathrm{even}}}
+        \frac{(-1)^{(q+k)/2}\pi^{q+k}K_k k!}{(q+k+1)!},\notag\\
+ T_{P,q}&=\sum_{j=2}^M\sum_{n\ge1}
+       \frac{\Delta p_j(n)}{n^{j-1}}
+       [s^q]\left\{\frac{(s)_{j-1}}{(j-1)!}e^{-s\log n}\right\}.
+\end{align}
+The inner coefficient is an explicit polynomial in $\log n$, so
+$T_{P,q}$ is an absolutely convergent spectral sum. Equivalently it
+is a finite rational combination of the derivatives
+$D_j^{(r)}(j-1)$, $0\le r\le q-1$.
+
+\begin{corollary}[Every Laurent coefficient has a normalized spatial kernel]
+\label{log:coefficient}
+For every fixed differential polynomial $P$ and every integer $q\ge1$,
+\begin{equation}\label{log:coefficient-formula}
+ \boxed{[s^q]D_1(s)=\mathcal L_P[k_q]+A_{P,q}-T_{P,q}.}
+\end{equation}
+All terms on the right are fixed by ordinary integrals, convergent
+series, and finite endpoint/polynomial calculations.
+\end{corollary}
+\begin{proof}
+Expand $\sin(\pi s)/\pi$ in \eqref{log:master} and differentiate
+the normally convergent integrals coefficientwise. The coefficient
+of $-\sin(\pi s)x^{-s}/\pi$ is exactly $k_q(\log x)$.
+Multiplication with $K_k k!/s^{k+1}$ gives $A_{P,q}$ with the
+stated sign and parity. The remaining finite sum gives $T_{P,q}$.
+\end{proof}
+
+\subsection{The same scalar projection controls every Stieltjes correction}
+
+Define
+\[
+ R_P(L)=-\frac{\phi_P(L+i\pi)-\phi_P(L-i\pi)}{2i\pi},
+ \qquad R'_P(L)=\sum_{r\ge0}a_rL^r.
+\]
+The inherited scalar-residue asymptotic \cite[Section 2]{DPL} is
+\[
+ \Delta p_1(n)=\frac{R'_P(\log n)}n
+                 +O((1+\log n)^d/n^2).
+\]
+With $\zeta(1+s)=s^{-1}+\sum_{m\ge0}(-1)^m\gamma_m s^m/m!$,
+the following all-order answer follows.
+
+\begin{corollary}[Complete Stieltjes correction]
+\label{log:Stieltjes}
+For $q\ge1$,
+\begin{equation}\label{log:stieltjes-formula}
+ \boxed{\displaystyle
+ [s^q]D_1(s)=\frac{(-1)^q}{q!}
+ \left\{\sum_{r\ge0}a_r\gamma_{q+r}
+ +\sum_{n\ge1}\left(\Delta p_1(n)-\frac{R'_P(\log n)}n\right)
+                      (\log n)^q\right\}.}
+\end{equation}
+The second sum converges absolutely. In particular a mixed polynomial,
+for which $\phi_P=0$, requires no Stieltjes correction at any order.
+\end{corollary}
+\begin{proof}
+Subtract the leading polynomial from the Dirichlet series:
+\[
+ D_1(s)=\sum_r a_r(-1)^r\zeta^{(r)}(1+s)
+  +\sum_{n\ge1}\left(\Delta p_1(n)-R'_P(\log n)/n\right)n^{-s}.
+\]
+The second series is holomorphic for $\Re s>-1$. The coefficient
+of $s^q$ in $(-1)^r\zeta^{(r)}(1+s)$ is
+$(-1)^q\gamma_{q+r}/q!$. This gives the formula.
+\end{proof}
+
+\paragraph{Recovery of the original finite-part normalization.}
+For $q=1$, $T_{P,1}=\sum_{j\ge2,n\ge1}
+\Delta p_j(n)/((j-1)n^{j-1})=J_P$.
+If $C_P=(2\pi)^{-1}\int_{-\pi}^{\pi}\phi_P(i\theta)\,d\theta$,
+then direct coefficient extraction gives
+$A_{P,1}=\phi_P(0)-C_P$.
+Thus the inherited identity
+$\operatorname{FP}\int_0^1 f_P=C_P+J_P+[s]D_1(s)$ becomes
+\begin{equation}\label{log:fpcheck}
+ \operatorname{FP}\int_0^1f_P(x)\,dx=\phi_P(0)-E_P(0).
+\end{equation}
+This is a normalization check; no endpoint constant has been dropped.
+For $q\ge2$, \eqref{log:coefficient-formula} supplies the spatial
+normalization requested in Differential Section 09. The choice of the
+splitting point $1$ and the full term $K_P(\log x)/x$ is part of the
+definition. Altering it without transporting the elementary correction
+would change the reported constants.
+
+\subsection{Two explicit logarithmic integral evaluations}
+
+For $P=u_0^2$, the pole differences are
+$\Delta p_1(n)=-2/n$, $\Delta p_2(n)=0$, hence
+$D_1(s)=-2\zeta(1+s)$ and $T_{P,q}=0$.
+Moreover
+\[
+ h_P(x)=\frac{2(\psi(1+x)+\gamma)}x,\qquad
+ K_P(L)=2L+2\gamma.
+\]
+The case $q=2$ gives the ordinary Stieltjes identity
+\begin{equation}\label{log:gamma2}
+ \boxed{\displaystyle
+ \int_0^1\frac{\log x\,[\psi(1+x)+\gamma]}x\,dx
+ +\int_1^\infty\frac{\log x\,[\psi(1+x)-\log x]}x\,dx
+ =-\frac{\gamma_2}{2}-\frac{\pi^2\gamma}{6}.}
+\end{equation}
+The higher $q$ versions follow from the printed universal kernels.
+These special-function ingredients have classical antecedents; the
+claim here is the all-polynomial normalization theorem, not historical
+priority for this isolated scalar integral.
+
+For $P=u_1^2$, the principal parts are
+\[
+ p_4(n)=1,\quad p_2(n)=2(H_n^{(2)}+\zeta(2)),\quad
+ p_1(n)=4(H_n^{(3)}-\zeta(3)),\quad p_3(n)=0.
+\]
+Thus $D_1(s)=4\zeta(3+s)$, $D_2(s)=2\zeta(2+s)$,
+$T_{P,2}=2\zeta'(3)$, and $K_P=-4\zeta(3)$.
+Write
+\[
+ h(x)=-\frac{2}{x^2}
+        \bigl(\psi'(1+x)-\zeta(2)+2\zeta(3)x\bigr).
+\]
+The bracket has a double zero at zero. Equation
+\eqref{log:coefficient-formula} gives
+\begin{equation}\label{log:trigamma-square}
+ \boxed{\displaystyle
+ \int_0^1(\log x)h(x)\,dx
+ +2\int_1^\infty\frac{\log x}{x^2}
+          \bigl(\zeta(2)-\psi'(1+x)\bigr)\,dx
+ =2\zeta''(3)+2\zeta'(3)+\frac{2\pi^2}{3}\zeta(3).}
+\end{equation}
+Both displayed integrals converge absolutely. This example explicitly
+tests the origin subtraction, the higher-pole term $T_{P,2}$, and the
+$\pi^2$ endpoint correction independently of the scalar Stieltjes case.

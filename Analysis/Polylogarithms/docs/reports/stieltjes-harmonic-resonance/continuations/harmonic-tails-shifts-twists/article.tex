@@ -1,0 +1,112 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[letterpaper,margin=0.88in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,microtype,xcolor,xurl}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=navy,citecolor=navy,urlcolor=navy]{hyperref}
+\definecolor{navy}{HTML}{163B5C}
+\definecolor{muted}{HTML}{536575}
+\definecolor{accent}{HTML}{8A521A}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\CT}{CT}
+\DeclareMathOperator{\Res}{Res}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\re}{\operatorname{Re}}
+\newcommand{\im}{\operatorname{Im}}
+\newcommand{\src}[1]{\texttt{\small\detokenize{#1}}}
+\setlist{leftmargin=*,itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}Exact harmonic-tail identities}
+\fancyhead[R]{\small\color{muted}ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\hypersetup{pdftitle={Exact Harmonic-Tail Identities: Gap-Four Reconstruction, Hurwitz Shifts, and Alternating Moments},pdfauthor={Research continuation prepared for Vladimir Reshetnikov},pdfsubject={Exact identities for harmonic tails, polygamma, polylogarithms and Stieltjes constants}}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{0.9in}
+{\Large\color{navy}\sffamily PROVEIT RESEARCH CONTINUATION\par}
+\vspace{0.45in}
+{\LARGE\bfseries Exact Harmonic-Tail Identities\par}
+\vspace{0.2in}
+{\Large Gap-Four Reconstruction, Hurwitz Shifts,\\[5pt]
+and Alternating Moments\par}
+\vspace{0.5in}
+{\large Prepared for Vladimir Reshetnikov\par}
+\vspace{0.15in}
+{11 October 2026\par}
+\vspace{0.55in}
+\begin{minipage}{0.89\textwidth}
+\small
+\textbf{Abstract.}
+We continue the exact harmonic-tail programme in the ProveIt
+polylogarithm manuscripts. For every pair of even orders with
+$q-p=4$, the first $q$ centered moments generate the full specified
+formal coordinate space. The proof gives an explicit nonzero
+determinant and a reconstruction requiring only a two-by-two inverse.
+Its central comparison theorem proves that every generated minor of
+order two in the fundamental recurrence is strictly negative for
+arbitrary even gaps. A concrete new $(8,12)$ identity is also certified
+by a finite rational telescoper.
+
+We then develop exact shifted Hurwitz-tail moments, including the
+Bernoulli corrections that distinguish ordinary subtracted sums from
+continued Dirichlet values. An elementary trigamma-square telescoper
+gives a free-shift identity and an all-order differentiated family in
+ordinary zeta values. Spectral coefficients retain the required
+generalized Stieltjes terms. Finally, signed tail products lead to
+alternating moment reductions, a two-parameter digamma generating
+identity, and anchored polylogarithmic primitives. All analytic
+statements carry explicit convergence or continuation conventions.
+The accompanying programs check finite rational identities and
+independent numerical representations; the infinite-family claims
+are proved in the text.
+\end{minipage}
+\vfill
+\begin{minipage}{0.89\textwidth}
+\footnotesize\color{muted}
+Repository baseline:
+\texttt{446dca9bd65c20e409d1d2561d4ffad408103e2a}.\\
+The manuscript source files and all six incoming archives were fixed
+to this revision. The new conclusions are separated from inherited
+results and from questions that remain open.
+\end{minipage}
+\end{titlepage}
+\clearpage
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+\input{sections/01_scope}
+\input{sections/02_foundation}
+\input{sections/03_gap_four}
+\input{sections/04_hurwitz}
+\input{sections/05_twisted}
+\input{sections/06_audit_research}
+\input{sections/07_reproducibility}
+\input{references}
+\end{document}

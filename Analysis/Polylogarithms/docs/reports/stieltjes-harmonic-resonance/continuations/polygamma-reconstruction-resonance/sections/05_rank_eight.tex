@@ -1,0 +1,295 @@
+\section{Order eight: an infinite family beyond the proved small orders}
+\label{rank8:section}
+
+The incoming \emph{Bernoulli, Tornheim, and Digamma Identities} report
+\cite[general small-determinant reduction and research question R1]{incoming-bernoulli}
+proves the optimal-prefix conjecture when the smaller even order is
+$2$, $4$, or $6$, and reduces every fixed smaller order to a finite
+determinant.  The following result establishes a substantial part of
+the first remaining order.  Its proof uses an exact symbolic
+determinant certificate and a uniform Bernoulli congruence.
+
+\begin{theorem}[The order-eight prefix outside one residue class]
+\label{rank8:theorem}
+Let $p=8$ and $q=2b>8$.  If
+\begin{equation}\label{rank8:scope}
+ b\not\equiv1\pmod {16},
+\end{equation}
+then the first $q$ centered moments have full formal rank $q$ on
+the inherited coordinate list
+$C_0,\ldots,C_{b-1},Z_0,\ldots,Z_{b-1}$.
+The assertion concerns the coefficient matrix; it does not assert
+arithmetic independence of the evaluated coordinates.
+
+For $b\ge8$ satisfying \eqref{rank8:scope}, the normalized determinant
+ratio $\rho_b$ defined below has the exact valuation
+\begin{equation}\label{rank8:valuation}
+ v_2(\rho_b)=v_2(b-1)-4.
+\end{equation}
+No all-$b$ valuation formula is asserted.
+\end{theorem}
+
+\subsection{The inherited reduction, with its normalization fixed}
+
+Here the centered moments are the regular values
+$D_{8,2b}(-2r)$, $0\le r<2b$, where
+\[
+ D_{8,2b}(s)=\sum_{n\ge0}A_8(n)A_{2b}(n)x_n^{-s}
+ \quad(\Re s>-2b-5)
+\]
+is continued by the same midpoint subtraction as in
+Proposition~\ref{prop:ordinary-subtraction}. The coordinates $C_j$
+use \eqref{eq:C-from-D} with $D_{b,r}$ replaced by $D_{8,2b}(-2r)$.
+The zeta coordinates are again $Z_k=\zeta(2k)$.
+
+Set $\mu_r=B_{2r}/(2r)!$ for $r\ge0$ and $\mu_r=0$ for $r<0$,
+and put
+\[
+ H_{4,b}=(\mu_{i+j-3})_{0\le i,j<b},\quad
+ R_{4,b}=\operatorname{diag}_{0\le i<b}(2b+2i-7)!,\quad
+ E_b=\operatorname{diag}_{0\le j<b}\frac1{(2b-2j)!}.
+\]
+The source's $b$-square late-coordinate matrix is explicitly
+\begin{equation}\label{rank8:source-matrix}
+ (M_{4,b})_{ik}=B_{2i+2k-6}
+ \left\{\frac{\binom{2i+2}{8-2k}}{2i+2}
+       +\frac{\binom{2b+2i-6}{2b-2k}}{2b+2i-6}\right\},
+ \qquad 0\le i,k<b.
+\end{equation}
+An entry with negative Bernoulli index is zero. A binomial summand is
+omitted unless its lower index is at least $2$ and at most its upper
+index. Thus every matrix in the determinant ratio is specified. Define
+\begin{equation}\label{rank8:rho}
+ \rho_b=\frac{\det M_{4,b}}
+ {\det R_{4,b}\det E_b\det H_{4,b}}.
+\end{equation}
+The inherited shifted-Hankel theorem makes every factor in the
+denominator nonzero.  The first-$q$ determinant is
+$\det M_{4,b}/(4b-1)!!$, so it suffices to prove $\rho_b\ne0$.
+
+Here is a four-square formula whose size is independent of $b$.
+For $0\le i,\ell\le3$ set
+\begin{align*}
+ n_i&=b-4+i,&N_{i\ell}&=2(n_i-\ell)+1,&R_\ell&=2b-6+2\ell,\\
+ f_\ell(n)&=\frac1{(2\ell+1)!}
+       \prod_{r=0}^{2\ell-1}(2n-r)(2n+3+r),&F_{i\ell}&=f_\ell(n_i).
+\end{align*}
+An empty product is $1$.  Define the polynomial weight
+\[
+ W_{i\ell}(z)=(z+2\ell+1)
+                 (2n_i+2\ell+z+1)^{\underline{2i}},
+\]
+where the underline denotes a falling factorial, and its finite
+Newton coefficients
+\begin{equation}\label{rank8:newton}
+ d_{i\ell h}=\frac1{h!}\sum_{j=0}^{h}
+       (-1)^{h-j}\binom hj W_{i\ell}(N_{i\ell}-j).
+\end{equation}
+Introduce seven independent symbols $U_1,\ldots,U_7$.  Set
+\begin{equation}\label{rank8:A}
+ \begin{split}
+ \mathcal A_{i\ell}={}&2F_{i\ell}+
+ \frac{R_\ell!}
+ {(2n_i+1)(2n_i+2)(2\ell+2)!N_{i\ell}!}\,
+ \sum_{\substack{1\le h\le2i+1\\h\ {m odd}}}
+ d_{i\ell h}N_{i\ell}^{\underline h}
+ U_{4-i+\ell+(h-1)/2}.
+ \end{split}
+\end{equation}
+The ratio of factorials is interpreted as a rational function of $b$
+by cancellation of finite products; its index difference
+$R_\ell-N_{i\ell}=1+4\ell-2i$ is fixed.
+
+For every integer $b\ge8$ the inherited small-determinant reduction
+gives
+\begin{equation}\label{rank8:ratio-small}
+ \rho_b=
+ \left.\frac{\det\mathcal A}{\det F}
+ \right|_{U_j=2B_{2b-2j}}.
+\end{equation}
+To check the normalization, reverse the four source columns and
+divide row $i$ by its nonzero Pad\'e constant $c_{n_i}$.  The
+unperturbed entries become $F_{i\ell}$.  For the perturbation, apply
+\eqref{rank8:newton} to the source weighted Bernoulli sum, using
+the Newton identity
+$W_{i\ell}(z)=\sum_h d_{i\ell h}(N_{i\ell}-z)^{\underline h}$
+and
+\[
+ \sum_{j=0}^{N}\binom Nj B_j(N-j)^{\underline h}
+      =N^{\underline h}B_{N-h}(1).
+\]
+When $b\ge8$, $N_{i\ell}-h\ge2$ for every retained odd $h$, and
+the even $h$ terms have odd Bernoulli index at least $3$ and vanish.
+The excluded $j=1$ term contributes exactly another $F_{i\ell}$.
+This explains the coefficient $2F$ in \eqref{rank8:A} and the factor
+$U_j=2B_{2b-2j}$; neither can be dropped.  At smaller $b$ the
+exceptional $B_0$ and $B_1(1)$ terms require the direct finite
+calculation recorded below.
+
+\subsection{The exact polynomial certificate}
+
+Put
+\begin{align}
+ D_8(b)={}&256b^8-3584b^7+18496b^6-40544b^5
+ +25984b^4\notag\\
+ &+18424b^3-5856b^2-8316b-2025.
+ \label{rank8:D8}
+\end{align}
+This integer is odd at every integer $b$, since every nonconstant
+coefficient is even.
+
+\begin{lemma}[Finite integer certificate]\label{rank8:certificate}
+The matrices \eqref{rank8:A} and $F$ satisfy
+\begin{align}
+ \det F={}&\frac{256}{4725}(b-2)(b-1)(2b-5)(2b-3)
+ (4b-11)(4b-9)\notag\\
+ &\hspace{15mm}\cdot(4b-7)^2(4b-5)(4b-3)D_8(b),
+ \label{rank8:Fdet}\\
+ \frac{\det\mathcal A}{\det F}
+   ={}&\frac{P(b;U_1,\ldots,U_7)}{576(2b-5)D_8(b)},
+ \label{rank8:certificate-ratio}
+\end{align}
+where $P\in\mathbb Z[b,U_1,\ldots,U_7]$.  It has $94$ monomials
+in the seven $U$ variables, with integer polynomial coefficients in
+$b$.  Under the indicated polynomial substitution, it obeys
+\begin{equation}\label{rank8:congruence-certificate}
+ \boxed{P\bigl(b;1+4(b-j)+16(b-j)^2\ (1\le j\le7)\bigr)
+       \equiv16b^2+44b+4\pmod {64}.}
+\end{equation}
+The congruence is coefficientwise in $\mathbb Z[b]$.
+\end{lemma}
+
+\begin{proof}
+This is a finite algebraic certificate. The accompanying
+\texttt{rank\_eight\_certificate.json} gives
+every coefficient of $P$.  The independent verifier rebuilds
+\eqref{rank8:newton}--\eqref{rank8:A}, without reading a precomputed
+matrix.  In each row it clears the least common denominator and
+computes the determinant as the sum of its $24$ signed permutation
+products in $\mathbb Z[b,U_1,\ldots,U_7]$.  Cross multiplication
+verifies \eqref{rank8:Fdet} and \eqref{rank8:certificate-ratio} by
+exact coefficient comparison.  It then performs the seven displayed
+substitutions and checks that every coefficient of the difference in
+\eqref{rank8:congruence-certificate} is divisible by $64$.
+
+These instructions, together with the finite formulas defining the
+entries, specify a reproducible exact certificate.  The calculation
+uses neither interpolation from values of $b$ nor floating-point
+determinants.  In particular, it certifies polynomial identities for
+all parameters, rather than inferring them from a sample.
+\end{proof}
+
+\subsection{A uniform Bernoulli congruence}
+
+Let $\mathbb Z_{(2)}$ denote the rational numbers with odd
+denominator; congruences below are in this ring.
+
+\begin{lemma}[Doubled Bernoulli numbers modulo $64$]
+\label{rank8:bernoulli}
+For every integer $m\ge4$,
+\begin{equation}\label{rank8:bernoulli64}
+ \boxed{2B_{2m}\equiv1+4m+16m^2\pmod {64}.}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+First, $2B_{2m}\in\mathbb Z_{(2)}$ is odd for every $m\ge1$.
+This follows inductively from
+\[
+ (2m+1)(2B_{2m})
+ =2m-1-\sum_{j=1}^{m-1}\binom{2m+1}{2j}(2B_{2j}).
+\]
+Indeed the sum of the binomial coefficients on the right is even,
+and the denominator $2m+1$ is odd.  Thus all even Bernoulli
+numbers have $2$-adic valuation at least $-1$, a fact also proved
+in the incoming report.
+
+Apply the Faulhaber formula to
+$S_{2m}(8)=\sum_{a=0}^{7}a^{2m}$.  Its final term is $8B_{2m}$.
+For $m\ge2$, every other nonzero term with an even Bernoulli index
+contains at least $8^3$; its valuation is at least $8$ after the
+Bernoulli denominator is included.  The $B_1$ and $B_0$ terms have
+still greater valuation.  Division by $2m+1$ has no effect because
+that integer is odd.  Consequently
+\[
+ 2B_{2m}\equiv\frac14S_{2m}(8)\pmod {64}.
+\]
+When $m\ge4$, each even summand $a^{2m}/4$ vanishes modulo $64$.
+For the four odd summands, expand the integer powers
+$9^m=(1+8)^m$, $25^m=(1+24)^m$, and $49^m=(1+48)^m$.
+After division by $4$, the first coefficients are
+\[
+ \frac{1+9^m+25^m+49^m}{4}
+ \equiv1+20m+736\binom m2\pmod {64}.
+\]
+The coefficient of $\binom m3$ is $31232$, divisible by $64$;
+all subsequent terms have valuation at least $10$.  Finally,
+$736\equiv32\pmod {64}$, and
+$20m+32\binom m2=4m+16m^2$.  This proves the lemma.
+\end{proof}
+
+\subsection{Proof of the order-eight theorem}
+
+For $b\ge11$ all seven indices $m=b-j$ in
+\eqref{rank8:ratio-small} are at least $4$.  Since $P$ has integer
+coefficients, Lemma~\ref{rank8:bernoulli} may be substituted into
+Lemma~\ref{rank8:certificate}, giving
+\begin{equation}\label{rank8:P64}
+ P(b;2B_{2b-2},\ldots,2B_{2b-14})
+ \equiv16b^2+44b+4
+ \equiv4(b-1)(4b+15)\pmod {64}.
+\end{equation}
+The last factor is odd.  If $b\not\equiv1\pmod {16}$, then
+$v_2(b-1)\le3$, so the right side of \eqref{rank8:P64} has valuation
+at most $5$, and
+\[
+ v_2(P)=v_2(b-1)+2.
+\]
+The denominator in \eqref{rank8:certificate-ratio} has valuation
+$6$: $576=2^6\cdot9$, while $2b-5$ and $D_8(b)$ are odd.
+This proves \eqref{rank8:valuation} and nonvanishing for all the
+stated $b\ge11$.
+
+The remaining six values $5\le b\le10$ are computed from the
+original $b$-square source matrix, with every omitted binomial
+summand treated exactly as prescribed.  Their nonzero ratios are
+\begin{center}
+\begin{tabular}{c r}
+\hline
+$b$ & $\rho_b$\\
+\hline
+5 & $309713/27640$\\
+6 & $263589503/10455480$\\
+7 & $-6698504467/244114290$\\
+8 & $1826240201143/4860702000$\\
+9 & $-334092867653747/85606130610$\\
+10 & $711292958938006619/13975082830800$\\
+\hline
+\end{tabular}
+\end{center}
+At $b=8,9,10$ their valuations are $-4,-1,-4$, agreeing with
+\eqref{rank8:valuation}.  The cases $b=5,6,7$ are asserted only
+as nonzero, not as instances of that valuation formula.
+This completes the proof of Theorem~\ref{rank8:theorem}.
+
+\subsection{Limits of the result and an informative failed extrapolation}
+
+The unevaluated class $b\equiv1\pmod {16}$ remains outside this
+theorem.  Computed values in it do not prove its general nonvanishing.
+Moreover, an apparent extension of \eqref{rank8:valuation}, suggested
+by low-order experiments during this work, is false.  Independent
+exact evaluation with ordinary rational Bernoulli numbers gives
+\[
+ \begin{array}{c|c|c|c}
+ b&P\bmod 65536&v_2(\rho_b)&v_2(b-1)-4\\\hline
+ 65&52224&4&2\\
+ 129&24320&2&3
+ \end{array}
+\]
+The residues have valuations $10$ and $8$, respectively; the
+denominator still has valuation $6$.  These are counterexamples
+to a tempting extrapolation made in the present investigation,
+not source errata.  They do not refute the optimal-prefix conjecture:
+both displayed determinants are nonzero.  A further proof for the
+remaining residue class must therefore allow different valuation
+behavior rather than extend the formula beyond its proved scope.

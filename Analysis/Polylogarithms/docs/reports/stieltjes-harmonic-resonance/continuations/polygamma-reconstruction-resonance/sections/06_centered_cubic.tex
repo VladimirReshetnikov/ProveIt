@@ -1,0 +1,484 @@
+% Self-contained research section; standard amsmath/amsthm packages suffice.
+% Bibliography keys and source notes are supplied in centered_cubic_notes.txt.
+% No claim of historical priority is made for the lowest cubic moment.
+
+\section{All regular odd centered cubic trigamma moments}
+\label{cc:sec}
+
+The canonical centered-square chapter evaluates all regular nonpositive
+even moments of $\psi'(n+1)^2$.  Its cubic counterpart has the opposite
+parity and a slightly larger, but still fixed, coordinate space.  We give
+an explicit formula for every regular negative odd value, ordinary
+absolutely convergent identities realizing these values, and a finite
+polylogarithmic expression for their exponential generating function.
+
+The cubic series itself has classical antecedents.  In particular,
+Furdui evaluates $\sum_{n\ge1}n\psi'(n)^3$ in
+\cite[Theorem 1(b)]{cc:furdui2015}; Hoffman's sums-of-tails calculus
+provides a general multiple-zeta framework \cite{cc:hoffman2016}.
+The contribution here is the entire centered polynomial-subtracted
+family, its finite Bernoulli formula, and its explicit generator.
+The lowest convergent evaluation is included as its normalization,
+without a historical-priority claim.
+
+\subsection{Regular values and ordinary convergent sums}
+
+Put
+\begin{equation}\label{cc:definitions}
+ A_n=\psi'(n+1)=\zeta(2)-H_n^{(2)},\qquad
+ x_n=n+\tfrac12,\qquad
+ \mathcal U(s)=\sum_{n=0}^{\infty}A_n^3x_n^{-s}.
+\end{equation}
+The last series converges normally in $\Re s>-2$.  Define rational
+numbers
+\begin{equation}\label{cc:g}
+ g_k=\sum_{\substack{a+b+c=k\\a,b,c\ge0}}
+ B_{2a}(1/2)B_{2b}(1/2)B_{2c}(1/2),\qquad k\ge0.
+\end{equation}
+Thus $g_0=1$, $g_1=-1/4$, and $g_2=13/120$.
+The Bernoulli convention throughout is $B_1=-1/2$.
+
+\begin{proposition}[Continuation and the correct parity]
+\label{cc:continuation}
+The function $\mathcal U$ has a meromorphic continuation to the complex
+plane, with simple poles at $s=-2-2k$, $k\ge0$, and residues $g_k$.
+Every $s=-(2r+1)$, $r\ge0$, is regular.  Writing
+\begin{equation}\label{cc:Mr}
+ U_r=\mathcal U(-2r-1),
+\end{equation}
+one has the ordinary convergent identity
+\begin{equation}\label{cc:ordinary}
+ U_r=\sum_{n=0}^{\infty}
+ \left\{x_n^{2r+1}A_n^3-
+       \sum_{k=0}^{r-1}g_kx_n^{2r-2-2k}\right\}.
+\end{equation}
+The inner sum is empty for $r=0$; every bracket is $O(x_n^{-2})$.
+\end{proposition}
+
+\begin{proof}
+The centered Hurwitz expansion gives, to arbitrary finite order,
+\[
+ A_n\sim\sum_{j\ge0}B_{2j}(1/2)x_n^{-2j-1},\qquad
+ A_n^3\sim\sum_{k\ge0}g_kx_n^{-2k-3}.
+\]
+Subtracting finitely many terms and adding their Hurwitz-zeta sums
+continues $\mathcal U$ to successive left half-planes.  The only
+possible poles are the stated simple poles, with the stated residues.
+For $j\ge1$, $B_{2j}(1/2)$ has sign $(-1)^j$, so every summand
+in $g_k$ has sign $(-1)^k$; thus $g_k\ne0$.
+At $s=-2r-1$ the subtracted sums are
+$g_k\zeta(2k+2-2r,1/2)=0$ for $0\le k<r$.
+Indeed $\zeta(-2m,1/2)=0$ for all $m\ge0$.
+This proves \eqref{cc:ordinary} and its convergence.
+\end{proof}
+
+\subsection{A finite formula in four constant coordinates}
+
+Set
+\begin{align}
+ C_1&=9\zeta(3)-\frac{17}{4}\zeta(4),
+       \label{cc:C1}\\
+ R_j&=-\frac{3}{2(2j-1)}
+       \sum_{h=0}^{j-2}(2h+1)\binom{2j-1}{2h+3}
+          B_{2j-4-2h}B_{2h}
+       +\frac14\delta_{j,3},\qquad j\ge2,
+       \label{cc:Rj}\\
+ C_j&=9B_{2j-2}\zeta(3)-\frac12\delta_{j,2}\zeta(2)+R_j,
+       \qquad j\ge2.
+       \label{cc:Cj}
+\end{align}
+Here $\delta$ is the Kronecker delta.  The first few coordinates are
+\begin{align}
+ C_2&=\frac32\zeta(3)-\frac12\zeta(2)-\frac12,
+       \notag\\
+ C_3&=-\frac3{10}\zeta(3)-\frac25,
+       \notag\\
+ C_4&=\frac3{14}\zeta(3)-\frac5{56},
+       \notag\\
+ C_5&=-\frac3{10}\zeta(3)+\frac7{45}.
+       \label{cc:Cexamples}
+\end{align}
+
+\begin{theorem}[All centered cubic moments]
+\label{cc:all}
+For every integer $r\ge0$,
+\begin{equation}\label{cc:allformula}
+ \boxed{\displaystyle
+ U_r=\frac1{2r+2}\sum_{j=1}^{r+1}
+      \binom{2r+2}{2j}B_{2r+2-2j}(1/2)C_j.}
+\end{equation}
+In particular every ordinary sum in \eqref{cc:ordinary} belongs to
+\[
+ \mathbb Q+\mathbb Q\zeta(2)+\mathbb Q\zeta(3)+\mathbb Q\zeta(4).
+\]
+No multiple-zeta coordinate of increasing weight is required as $r$
+increases.
+\end{theorem}
+
+For example,
+\begin{align}
+ U_0&=\frac92\zeta(3)-\frac{17}{8}\zeta(4),
+       \label{cc:U0}\\
+ U_1&=-\frac18\zeta(2)-\frac34\zeta(3)
+          +\frac{17}{32}\zeta(4)-\frac18,
+       \label{cc:U1}\\
+ U_2&=\frac5{48}\zeta(2)+\frac{47}{160}\zeta(3)
+          -\frac{119}{384}\zeta(4)+\frac3{80},
+       \label{cc:U2}\\
+ U_3&=-\frac{49}{384}\zeta(2)-\frac{257}{1120}\zeta(3)
+          +\frac{527}{1536}\zeta(4)-\frac{99}{4480}.
+       \label{cc:U3}
+\end{align}
+Thus \eqref{cc:U1} evaluates
+$\sum_{n\ge0}(x_n^3\psi'(n+1)^3-1)$, and
+\eqref{cc:U2} evaluates
+$\sum_{n\ge0}(x_n^5\psi'(n+1)^3-x_n^2+1/4)$.
+These are convergent series; the displayed subtractions are part of
+the identities.
+
+\subsection{Proof by finite summation and explicit cancellation}
+
+Let $\operatorname{CT}_N$ denote the coefficient of
+$N^0(\log N)^0$ in a cutoff asymptotic expansion.  We use it only
+after finite identities and standard asymptotic expansions.
+Every partial sum of a nonnegative even power of $x_n$ has zero
+constant coefficient as a polynomial in $N$.  Consequently
+\eqref{cc:ordinary} implies
+\begin{equation}\label{cc:cutoff}
+ U_r=\operatorname{CT}_N\sum_{n=0}^{N-1}x_n^{2r+1}A_n^3.
+\end{equation}
+The centered power sum is the even polynomial
+\begin{equation}\label{cc:centeredsum}
+ \sum_{n=0}^{k-1}x_n^{2r+1}
+ =\frac{B_{2r+2}(k+1/2)-B_{2r+2}(1/2)}{2r+2}
+ =\frac1{2r+2}\sum_{j=1}^{r+1}
+      \binom{2r+2}{2j}B_{2r+2-2j}(1/2)k^{2j}.
+\end{equation}
+Since $A_{k-1}=A_k+k^{-2}$, finite summation by parts reduces
+\eqref{cc:allformula} to
+\begin{equation}\label{cc:Ccutoff}
+ C_j=\operatorname{CT}_N\left\{
+ 3\sum_{k=1}^Nk^{2j-2}A_k^2
+ +3\sum_{k=1}^Nk^{2j-4}A_k
+ +\sum_{k=1}^Nk^{2j-6}+N^{2j}A_N^3\right\}.
+\end{equation}
+It remains to prove that this expression is
+\eqref{cc:C1}--\eqref{cc:Cj}.
+
+\paragraph{The first two coordinates.}
+The elementary tail rearrangements
+\[
+ \sum_{k=1}^{\infty}A_k^2=3\zeta(3)-\frac52\zeta(4),\qquad
+ \sum_{k=1}^{\infty}\frac{A_k}{k^2}=\zeta_{\mathrm{MZ}}(2,2)=\frac34\zeta(4)
+\]
+give \eqref{cc:C1}.  For the first equality, include $k=0$ and
+partition the two tail indices to obtain
+$2\zeta_{\mathrm{MZ}}(2,1)+\zeta(3)=3\zeta(3)$, then remove $A_0^2$.
+
+For $j=2$, write
+$U_m(N)=\sum_{k=1}^Nk^mA_k$ and
+$V_m(N)=\sum_{k=1}^Nk^mA_k^2$.
+The same finite summation identities give
+\begin{align*}
+ \operatorname{CT}_N U_0(N)&=\gamma-\zeta(2)+1,\\
+ \operatorname{CT}_N V_2(N)&=-\gamma+\frac12\zeta(2)
+                         +\frac12\zeta(3)-\frac23,\\
+ \operatorname{CT}_N(N^4A_N^3)&=-\frac32.
+\end{align*}
+For clarity, the first line follows from
+$U_0(N)=H_N-H_N^{(2)}+NA_N$.
+The second follows by using
+$\sum_{k<\ell}k^2=\ell^3/3-\ell^2/2+\ell/6$ in the
+quadratic summation identity below; the needed additional constants are
+$\operatorname{CT}_NU_1(N)=1/4-\gamma/2$ and
+$U_{-1}(\infty)=\zeta(3)$.
+Substitution in \eqref{cc:Ccutoff} yields the displayed $C_2$.
+
+\paragraph{The general coordinate.}
+Let $m=2j-2\ge4$ and put
+\[
+ F_m(N)=\sum_{k=1}^Nk^m
+ =\sum_{\substack{a=1\\a\text{ odd}}}^{m+1}f_aN^a+\frac12N^m,
+ \qquad
+ f_a=\frac1{m+1}\binom{m+1}{a}B_{m+1-a}.
+\]
+Then
+\[
+ F_m(k-1)=\sum_{\substack{a=1\\a\text{ odd}}}^{m+1}f_ak^a-\frac12k^m.
+\]
+Finite summation by parts gives the exact relation
+\begin{equation}\label{cc:quadraticcutoff}
+ V_m(N)=F_m(N)A_N^2+
+ 2\sum_{k=1}^N\frac{F_m(k-1)A_k}{k^2}
+ +\sum_{k=1}^N\frac{F_m(k-1)}{k^4}.
+\end{equation}
+Its term $-U_{m-2}(N)$ cancels exactly against the corresponding
+linear-tail term in \eqref{cc:Ccutoff}.  This cancellation occurs
+before constants or divergent harmonic terms are taken.
+
+For every positive odd $q$, another finite summation gives
+\begin{equation}\label{cc:oddlinear}
+ \operatorname{CT}_NU_q(N)
+   =\frac{2-q}{4}B_{q-1}-\frac12\delta_{q,1}\gamma.
+\end{equation}
+Indeed, if $F_q(N)=\sum_{k=1}^Nk^q$, then
+\[
+ U_q(N)=F_q(N)A_N+\sum_{k=1}^N\frac{F_q(k-1)}{k^2}.
+\]
+Use the uncentered expansion
+$A_N\sim\sum_{a\ge1}B_{a-1}N^{-a}$.
+Only the $N^2$ and $N^q$ terms of $F_q$ can contribute to the
+constant when $q\ge3$, yielding $(2-q)B_{q-1}/4$.
+The case $q=1$ follows directly from
+$F_1(N)=(N^2+N)/2$ and $(N-H_N)/2$.
+
+In \eqref{cc:quadraticcutoff}, the $a=1$ terms contribute
+$9f_1\zeta(3)=9B_m\zeta(3)$ to \eqref{cc:Ccutoff}.
+The $a=3$ harmonic constants cancel by \eqref{cc:oddlinear}; all
+remaining nonnegative-power sums have constant zero.
+For odd $a\ge3$,
+\[
+ [N^{-a}]A_N^2=-B_{a-3}.
+\]
+Combining these boundary coefficients with \eqref{cc:oddlinear}
+leaves the rational sum
+\[
+ \frac32\sum_{\substack{a=3\\a\text{ odd}}}^{m+1}
+          f_a(2-a)B_{a-3},
+\]
+apart from the even boundary coefficient.  The latter is exactly
+\begin{equation}\label{cc:boundaryexception}
+ \frac32[N^{-m}]A_N^2+[N^{-m-2}]A_N^3
+       =\frac14\delta_{m,4}.
+\end{equation}
+To see this, all odd-index Bernoulli numbers except $B_1=-1/2$
+vanish.  The terms containing exactly one $B_1$ cancel the ordinary
+even-even convolution; the only surviving possibility is the
+$B_1^2/B_1^3$ contribution at $m=4$.
+Substitute $a=2h+3$ and $m=2j-2$ to obtain
+\eqref{cc:Rj}--\eqref{cc:Cj}.  This proves
+Theorem~\ref{cc:all}.
+
+\subsection{A fixed coordinate space and a rational cubic identity}
+
+Treat $\zeta(2),\zeta(3),\zeta(4),1$ as formal coordinates.
+The coefficient matrix of $U_0,U_1,U_2,U_3$ in this order is
+\begin{equation}\label{cc:matrix}
+ M=\begin{pmatrix}
+ 0&9/2&-17/8&0\\
+ -1/8&-3/4&17/32&-1/8\\
+ 5/48&47/160&-119/384&3/80\\
+ -49/384&-257/1120&527/1536&-99/4480
+ \end{pmatrix},\qquad
+ \det M=\frac{51}{81920}.
+\end{equation}
+Thus these first four values generate the entire formal coordinate
+space of the cubic family, and every later value is an explicit
+rational combination of them.  This is a coefficient-space statement;
+it asserts no unproved arithmetic independence of the four constants.
+
+One particularly simple elimination is
+\begin{equation}\label{cc:rationalmoment}
+ 11U_0+198U_1+512U_2+224U_3=-\frac{21}{2}.
+\end{equation}
+Consequently, with
+$P(x)=11x+198x^3+512x^5+224x^7$, one obtains the entirely rational
+ordinary sum
+\begin{equation}\label{cc:rationalsum}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}\left\{
+ P(x_n)\psi'(n+1)^3-224x_n^4-456x_n^2-\frac{1414}{15}
+ \right\}=-\frac{21}{2}.}
+\end{equation}
+Its summand is $O(x_n^{-2})$.  Equation \eqref{cc:rationalsum}
+follows from the four proved values and their prescribed subtractions,
+so no numerical relation search or independence assumption enters it.
+
+Another elimination isolates the odd zeta coordinate:
+\begin{equation}\label{cc:zeta3moment}
+37U_0+2136U_1+11344U_2+7168U_3=252\zeta(3).
+\end{equation}
+With $P_3(x)=37x+2136x^3+11344x^5+7168x^7$, this becomes
+\begin{equation}\label{cc:zeta3sum}
+ \boxed{\begin{aligned}
+ \sum_{n=0}^{\infty}\Bigl\{P_3(x_n)\psi'(n+1)^3
+  -7168x_n^4-9552x_n^2-\frac{1148}{15}\Bigr\}
+  =252\zeta(3).
+ \end{aligned}}
+\end{equation}
+It is again an ordinary absolutely convergent sum. Equations
+\eqref{cc:rationalsum} and \eqref{cc:zeta3sum} demonstrate that
+the fixed four-coordinate description supplies exact extraction
+identities, in addition to individual moment evaluations.
+
+\subsection{The cubic generator from the known square generator}
+
+Let
+\[
+ \mathcal G_2(t)=\sum_{r\ge0}\mathcal T(-2r)\frac{t^{2r}}{(2r)!},
+ \qquad
+ \mathcal G_3(t)=\sum_{r\ge0}U_r\frac{t^{2r+1}}{(2r+1)!},
+\]
+where $\mathcal T(s)=\sum_{n\ge0}A_n^2x_n^{-s}$ for $\Re s>-1$,
+continued meromorphically elsewhere, is the centered-square Dirichlet
+series of the canonical chapter. The inherited explicit expression is
+\begin{equation}\label{cc:G2}
+ \mathcal G_2(t)=\frac{t}{2\sinh(t/2)}
+ \left[3\zeta(3)-\frac1{4t}
+       \int_0^t(t-u)u^2\coth(u/2)\,du\right].
+\end{equation}
+This is recalled with attribution to \cite{cc:repo-square}, not
+presented as an additional new square-moment theorem.
+
+\begin{theorem}[An analytic cubic moment generator]
+\label{cc:generator}
+The series $\mathcal G_3$ converges for $|t|<2\pi$.  On that disk,
+\begin{equation}\label{cc:G3integral}
+ \boxed{\displaystyle
+ \mathcal G_3(t)=\frac1{2\sinh(t/2)}
+ \int_0^t(t-u)\left\{
+    3\cosh(u/2)\mathcal G_2(u)-\frac{17}{4}\zeta(4)
+    -\frac14\zeta(2)u^2+\frac{u^4}{96}
+ \right\}\,du.}
+\end{equation}
+The expression is holomorphic and odd; its apparent singularity at
+zero is removable.  The integration path lies in the disk and is
+otherwise arbitrary.
+\end{theorem}
+
+\begin{proof}
+Put $C(t)=\sum_{j\ge1}C_jt^{2j}/(2j)!$.
+The Bernoulli transform \eqref{cc:allformula} gives
+\[
+ \mathcal G_3(t)=\frac{C(t)}{2\sinh(t/2)}.
+\]
+Write $E(t)=\tfrac t2\coth(t/2)$ and
+\[
+ F(t)=\frac1t\int_0^t(t-u)uE(u)\,du
+     =\sum_{h\ge0}\frac{(2h+1)B_{2h}}{(2h+3)!}t^{2h+2}.
+\]
+Direct coefficient multiplication of \eqref{cc:Rj} yields
+\begin{align*}
+ C''(t)
+ &=9\zeta(3)E(t)-\frac32E(t)F(t)
+          -\frac{17}{4}\zeta(4)-\frac14\zeta(2)t^2+\frac{t^4}{96}\\
+ &=3\cosh(t/2)\mathcal G_2(t)
+          -\frac{17}{4}\zeta(4)-\frac14\zeta(2)t^2+\frac{t^4}{96}.
+\end{align*}
+In the second line use \eqref{cc:G2} and
+$E(t)=\cosh(t/2)t/(2\sinh(t/2))$.
+All these series converge in $|t|<2\pi$ by the Bernoulli generating
+functions.  The initial conditions are $C(0)=C'(0)=0$.
+Twice integrating proves \eqref{cc:G3integral} and the stated
+analyticity and parity.
+\end{proof}
+
+\subsection{A finite depth-two polylogarithmic expression}
+
+For $0<z<1$ use the convention
+\[
+ \operatorname{Li}_{a,b}(z)
+   =\sum_{m>n\ge1}\frac{z^m}{m^a n^b}.
+\]
+This is the one-variable multiple polylogarithm with the outer index
+carrying the argument.  In the following formula, every displayed
+depth-two first index is at least two.
+
+\begin{theorem}[Closed polylogarithmic generator]
+\label{cc:polylog}
+For real $0<t<2\pi$, set $z=e^{-t}$ and define
+\begin{align}
+ \mathcal C(t)={}&
+ \left(9\zeta(4)+6t\zeta(3)-\frac{t^4}{16}\right)
+           \operatorname{Li}_2(z)
+ +\left(12\zeta(3)-\frac{t^3}{2}\right)\operatorname{Li}_3(z)
+       \notag\\
+ &-3t^2\operatorname{Li}_4(z)-12t\operatorname{Li}_5(z)
+       -\frac{45}{2}\operatorname{Li}_6(z)
+       -\frac32t^2\operatorname{Li}_{2,2}(z)
+       \notag\\
+ &-6t\left(\operatorname{Li}_{3,2}(z)+\operatorname{Li}_{2,3}(z)\right)
+       -9\left(\operatorname{Li}_{4,2}(z)+\operatorname{Li}_{2,4}(z)\right)
+       -12\operatorname{Li}_{3,3}(z)
+       \notag\\
+ &+\frac{15}{2}\zeta(6)-6\zeta(3)^2+6t\zeta(5)
+       +\frac12t^3\zeta(3)+\frac18t^2\zeta(4)
+       -\frac1{48}t^4\zeta(2)-\frac{t^6}{1440}.
+       \label{cc:Cpolylog}
+\end{align}
+Then
+\begin{equation}\label{cc:G3polylog}
+ \mathcal G_3(t)=\frac{\mathcal C(t)}{2\sinh(t/2)}.
+\end{equation}
+Equation \eqref{cc:G3integral} specifies its single-valued holomorphic
+odd continuation throughout $|t|<2\pi$.
+\end{theorem}
+
+\begin{proof}
+For ordinary polylogarithms,
+$\frac{d}{dt}\operatorname{Li}_a(e^{-t})=-\operatorname{Li}_{a-1}(e^{-t})$.
+For the depth-two convention just stated,
+\[
+ \frac{d}{dt}\operatorname{Li}_{a,b}(e^{-t})
+   =-\operatorname{Li}_{a-1,b}(e^{-t})\quad(a\ge2),\qquad
+ \frac{d}{dt}\operatorname{Li}_{1,b}(e^{-t})
+   =-\frac{\operatorname{Li}_b(e^{-t})}{e^t-1}.
+\]
+Together with $\coth(t/2)=(1+e^{-t})/(1-e^{-t})$, these give,
+by finite differentiation, that $\mathcal C''$ is the integrand in
+\eqref{cc:G3integral}.
+
+The integration constants may be checked by anchored primitives.
+If $F_a'(t)=-F_{a-1}(t)$ and the displayed endpoint values exist, then
+\begin{equation}\label{cc:anchoredprimitive}
+ \int_0^t(t-u)u^kF_0(u)\,du
+ =\sum_{j=0}^k(j+1)\frac{k!}{(k-j)!}t^{k-j}F_{j+2}(t)
+       -(k+1)!F_{k+2}(0)+tk!F_{k+1}(0).
+\end{equation}
+Apply this with $F_a=\operatorname{Li}_{s+a}(e^{-t})$, or
+$F_a=\operatorname{Li}_{a,b}(e^{-t})$ for $k\ge1$.
+The only potentially divergent endpoint is kept in the convergent
+combination
+\[
+ \operatorname{Li}_{1,4}(e^{-t})-\zeta(4)\operatorname{Li}_1(e^{-t})
+ \longrightarrow -\zeta_{\mathrm{MZ}}(4,1)-\zeta(5)
+                 =\zeta(2)\zeta(3)-3\zeta(5).
+\]
+The elementary depth-two reductions
+\begin{align*}
+ \zeta_{\mathrm{MZ}}(2,3)&=\tfrac92\zeta(5)-2\zeta(2)\zeta(3),&
+ \zeta_{\mathrm{MZ}}(3,2)&=3\zeta(2)\zeta(3)-\tfrac{11}{2}\zeta(5),\\
+ \zeta_{\mathrm{MZ}}(4,2)+\zeta_{\mathrm{MZ}}(2,4)&=\zeta(2)\zeta(4)-\zeta(6),&
+ 2\zeta_{\mathrm{MZ}}(3,3)&=\zeta(3)^2-\zeta(6)
+\end{align*}
+reduce the endpoint constants to those in \eqref{cc:Cpolylog}.
+Thus $\mathcal C(0)=\mathcal C'(0)=0$ in the limiting sense,
+and \eqref{cc:G3integral} proves the claim.  No differentiation of
+an identity known only at integral zeta orders is used.
+\end{proof}
+
+\subsection{Verification scope and immediate continuation questions}
+
+The supplied script independently reconstructs the cutoff constants
+using Faulhaber polynomials and the uncentered trigamma expansion; it
+does not insert \eqref{cc:Rj} into that reconstruction.  It agrees
+with the closed formula for $1\le j\le18$, checks the generator
+coefficient conversion over the same range, and verifies the second
+derivative of \eqref{cc:Cpolylog} as an exact symbolic zero.
+Independent direct tail sums plus centered Hurwitz-tail corrections
+check $0\le r\le8$.  The largest displayed residual in the higher
+cutoff calculation is below $5\cdot10^{-76}$ at 110-digit working
+precision.  Those residuals are numerical diagnostics, not certified
+interval bounds or replacements for the finite-sum proof.
+
+The new result suggests three concrete questions.  First, determine
+whether all regular centered moments of $\psi'(n+1)^4$ admit a
+similarly explicit fixed coordinate space, and derive its generator
+with every subtraction and endpoint constant specified.  Second,
+identify the analogous regular-parity moment spaces for mixed products
+$\prod_i\psi^{(m_i)}(n+1)$, distinguishing formal coefficient rank
+from arithmetic independence.  Third, determine whether the particular
+depth-two combination in \eqref{cc:Cpolylog} reduces to a prescribed
+finite class of classical polylogarithms; a failed numerical search
+would not prove that it cannot.  None of these questions is settled
+by the cubic calculation above.
