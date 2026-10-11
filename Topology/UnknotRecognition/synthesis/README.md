@@ -1642,3 +1642,26 @@ They authenticate 664 current source/evidence hashes, all exact inventory and
 timing outcomes and the passing test records, and replay all 57 saved source
 proofs with producers disabled. The inventory covers whole prismatic pieces;
 interior attached parallelity and core geometry remain unimplemented.
+
+[prism_interfaces.tex](prism_interfaces.tex) records prism face regions
+attached inside marked cores, rather than only whole prismatic pieces.
+Source-labelled face/corner/rank ports are bounded by `24*T`, and independent
+weighted replay authenticates their partition and 0/1-handle profiles.
+The article keeps missing edge/vertex handles and actual base topology explicit.
+All 1,571 tests and 31 focused tests pass; all 5,289 finite structures and
+prior whole-piece counts agree with explicit recovery. Fifty-eight complete
+source proofs replay with producers disabled. Complete paired queries include
+source geometry and independent replay, exposing both small regressions and
+larger compressed-input gains. Recognition integration remains separate.
+
+The current [PDF](report.pdf) has 621 pages. Section 158 starts on page 613;
+the assessment is section 159 on page 616. Rendered pages 613–618 pass visual
+review, including clipping geometry, source interface ownership, 0/1-handle
+limits, the full timing table, assessment continuation and references. All
+references resolve and only four pre-existing overflow warnings remain.
+Reproduce publication checks with
+`python -B data/prism_interfaces_review.py --publication` from this directory.
+They verify 668 current source/evidence hashes, all 5,289 exact structures,
+previous whole-piece counts and passing test/timing records, and replay all
+58 saved source proofs with producers disabled. The remaining topology is
+edge/vertex handles and actual ordered parallelity-base boundaries.

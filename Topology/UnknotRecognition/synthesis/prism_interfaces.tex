@@ -1,0 +1,133 @@
+\section{Source-labelled prism regions attached to cut cores}
+\label{sec:prism-interfaces}
+
+Whole prismatic cut pieces do not describe the parallelity that remains
+inside a marked core. A primitive connected cut can have no whole prismatic
+components and still contain many locally parallel discs. This continuation
+retains their face-connected prism regions and the exact source faces and
+ranks where they meet exceptional chambers. The output is a geometric
+incidence representation and a verified partition of interface ports.
+It is not yet a full parallelity-bundle or core-handle reconstruction.
+
+\subsection{Remove exceptional points without losing face locations}
+
+Start with the owned chamber model of Section~\ref{sec:cut-complement}.
+Delete its at most $6T$ exceptional chamber points. On the remaining
+points use the order-preserving compression
+\[
+             \pi(x)=x-\#\{e\text{ exceptional}:e<x\}.
+\]
+For each source face region, retain its original source/target tetrahedra,
+faces, corner and rank interval. Its two chamber maps are affine with slopes
+$+1$ or $-1$. Split the rank interval at every preimage of an exceptional
+point and immediately after it. Each resulting part has one of three roles:
+\begin{enumerate}
+\item Both chambers are prisms: retain the compressed interval pairing and
+  one face-band contribution on its source endpoint family.
+\item Exactly one chamber is exceptional: retain a singleton interface port
+  with its source face, corner and rank, core-cell identity, side and compressed
+  prism point.
+\item Both chambers are exceptional: retain their source-labelled core-face
+  contact. No prism identification is added.
+\end{enumerate}
+
+Because no remaining piece crosses a deleted point, compression preserves
+its interval isometry. The domain/range normalization used by the orbit
+kernel does not erase source-side information: port positions are computed
+from the original affine face maps before normalization. Self-face gluings
+are included. A self pairing that changes no connectivity still represents
+a face band and must contribute to the ribbon profile.
+
+\begin{proposition}[Bounded source ports and exact face-region partition]
+The construction has at most $6T$ exceptional cells and $24T$ core/prism
+face ports. Its interval orbits are exactly the components of the prism
+face-adjacency graph. Every component touching a core-facing port is
+identified by the set of those port indices. Components touching no such
+port are exactly the whole prismatic cut pieces of the preceding classifier.
+All source locations and multiplicities remain binary and the construction
+has polynomial source-size and endpoint-bit cost.
+\end{proposition}
+\begin{proof}
+Each local chamber meets at most one region in each source face: the central
+face region, triangle arms and quad-chain segments have disjoint chamber
+images. An exceptional chamber therefore supplies at most four glued-face
+incidences. There are at most $6T$ exceptional chambers, giving the port
+bound. Each port has exactly one prism endpoint and one exceptional endpoint.
+
+Clipping removes precisely the exceptional vertices and their incident
+arrows from the original face-adjacency graph. All remaining face arrows
+are retained through their compressed affine intervals, so their orbits
+are exactly the stated prism face-components. A component with no port
+has no original adjacency to an exceptional chamber; it is therefore a
+whole unmarked cut component. Conversely a whole unmarked component has
+no such port. The source record keeps the exact original geometric face
+location of every removed core/prism adjacency.
+
+There are only constantly many exceptional points in each incident
+tetrahedron and only constantly many affine face pieces per face. Splitting
+at their preimages adds only a constant number of pieces per face.
+All indices use $O(B+\log(T+1))$ bits; no chamber or repeated face band is
+expanded.
+\end{proof}
+
+This identifies prism chains attached within a core even when the cut has
+only one component. The core cells and their face contacts are local
+incidence data, not a completed triangulation of the core. Source edge and
+vertex neighborhoods are not supplied by this representation.
+
+\subsection{Weighted port ownership and 0/1-handle profiles}
+
+Give each compressed prism point one cell-count weight. Give each retained
+prism/prism face pairing one band-count indicator over its source endpoint
+interval. Finally give every interface port a distinct singleton indicator
+at its prism point. The dimension is two plus the number of ports.
+All work, including overlapping indicators, is charged to the existing
+weighted orbit operation.
+
+An orbit's port entries are zero or one. A nonzero port-weight vector can
+occur only once, because that particular port belongs to exactly one orbit.
+Thus these vectors recover the attached-region port partition without
+enumerating points or performing a separate search for every port.
+Zero-port rows coalesce repeated unattached regions with binary multiplicities.
+For each profile the output records prism-cell count $c$, face-band count $b$
+and the ribbon quantity
+\[
+                       \chi_{01}=c-b.
+\]
+
+Here ``ribbon'' refers to the 0/1-handle neighborhood of the prism blocks
+and their face bands, with corner attachments kept separate. Its Euler
+value follows from its discs and bands. It is not the Euler characteristic
+of the full parallelity base: edge handles can fill corner cycles, and
+vertex data and boundary patterns still require construction. We do not
+identify touching edge strata as a completed bundle, or infer base genus
+and boundary counts from $\chi_{01}$.
+
+The number of attached profiles is at most the number of ports. An unattached
+profile's cell and band counts are linear functions of its full normal
+midsection vector, so their number of distinct values is bounded by the
+previous $v+2q$ type bound. This gives a polynomial output with repeated
+unattached regions encoded by multiplicity.
+
+\subsection{Independent source clipping and remaining topology}
+
+The API is \code{normal\_prism\_face\_regions}. Its checker independently
+constructs affine face segments, walks their exceptional-point events,
+reconstructs core contacts and ports, and replays the exact weighted source.
+The producer's splitter, summary and orbit planner are not used.
+Every source location, port group, cell/band count and ribbon value must
+match the independently owned construction. The schema is
+\code{normal-prism-interfaces-v1}; large integer fields use the existing
+exact hexadecimal transport. Incomplete queries have no structure or proof.
+Operation limits mean unverified, and cooperative cancellation propagates.
+
+The source still satisfies the existing finite compact orientable one-torus
+contract. The result supplies attached face regions and source-labelled
+interfaces inside cores, not their full parallelity topology. Edge/vertex
+handles, actual base genus and boundary curves, cyclic ordering of vertical
+attachments, core geometry and general later hierarchy-piece validation
+remain unresolved. The complete recognizer is not changed and no general
+quasi-polynomial recognition bound follows.
+
+\subsection{Exact source incidence and complete-query evidence}
+\input{prism_interfaces_results.tex}
