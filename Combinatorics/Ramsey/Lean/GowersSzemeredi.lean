@@ -1058,6 +1058,14 @@ import GowersSzemeredi.Proofs16UniformCoverTwo
 import GowersSzemeredi.Proofs16WithSum
 import GowersSzemeredi.Proofs16UniformCoverTwoBounds
 import GowersSzemeredi.Proofs16ThreeSlices
+import GowersSzemeredi.Proofs16ThreeCylinders
+import GowersSzemeredi.Proofs16PolyFamilyThree
+import GowersSzemeredi.Proofs16ProductTranslate
+import GowersSzemeredi.Proofs16PolyPieceThreeInputs
+import GowersSzemeredi.Proofs16PolyPieceThreeData
+import GowersSzemeredi.Proofs16PolyCoverThree
+import GowersSzemeredi.Proofs16PolyCoverThreeBridge
+import GowersSzemeredi.Proofs16PrintedControls
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
