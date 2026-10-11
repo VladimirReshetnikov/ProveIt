@@ -1103,6 +1103,7 @@ import GowersSzemeredi.Proofs18FejerCubicAt
 import GowersSzemeredi.Proofs16PhasePartitionOne
 import GowersSzemeredi.Proofs18PolyCubicDegree
 import GowersSzemeredi.Proofs18PolyCubicDegreeExplicit
+import GowersSzemeredi.Proofs18PolyDegrees
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

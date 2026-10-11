@@ -3706,15 +3706,48 @@ otherwise.
     `commonDiffPartitionOne_explicit`, the one-line instantiation of
     `commonDiffPartitionBoundAt_of 1`.
 
-**Degrees four to seven (plan, not yet checked).** The single-piece step of
-L.7b keeps `σ` polynomial only if its own losses are polynomial.
-- To verify: in `envBound_step`, does the `σ` envelope depend
-  exponentially on anything except the input `σ`? Candidates are the
-  thresholds and Lemma 15.6.
-- If not, the L.7c count applies: `genMu`-type sums with a polynomial
-  degree-three base fit `2^(k+10)` up to `k = 7`.
-- The work would be an `EnvBound` variant with `σ⁻¹ ≤ X^(2^μ)` in place of
-  `exp(X^(2^μ))`, and its step lemma.
+**Degrees four to seven: done (L.9a below).**
+
+### L.9a Theorem 18.1 at every degree up to seven (2026-10-11)
+
+The check posed in L.9 comes out yes. In `envBound_step` the new exponent is
+`σ′⁻¹ = 32P·E_loc⁻¹·σ⁻¹` (`sigma_step`), and `E_loc⁻¹ ≤ X^(2^(E+3))` is
+already a power of `X` (`Eloc_inv_le`). The exponential enters only through
+the input `σ`. Theorem 18.1's threshold is existential, so no threshold
+envelope is needed.
+
+`Proofs18PolyDegrees` (light, kernel-checked):
+- `PolyEnvBound d μ`: `β⁻¹, σ⁻¹ ≤ (2/α)^(2^μ)`, with no threshold.
+- `polyEnvBound_step`: `envBound_step` with `σ` read in `X`-powers, at
+  the same new envelope `envStep k μD μ₀ μK μ`.
+- `polyEnvBound_three_of_phase_partition`: the base `PolyEnvBound 3 74`.
+- `polyGenMu` and `polyEnvBound_all`.
+- `theorem181At_of_polyEnvBound`.
+- `theorem_18_1_four_to_seven_of_profiles`.
+
+The envelopes, checked by `decide` (`polyGenMu_fits`):
+
+| degree `d` | `polyGenMu (d−2)` | `2^(d+10)` |
+|---|---|---|
+| 4 | 3 655 | 16 384 |
+| 5 | 10 430 | 32 768 |
+| 6 | 33 585 | 65 536 |
+| 7 | 118 640 | 131 072 |
+| 8 | 444 179 | 262 144 (fails) |
+
+Bridge `Proofs18PolyCubicDegreeExplicit`:
+- `progressionPhasePartition_explicit`;
+- `theorem_18_1_three` and `theorem_18_1_four_to_seven`;
+- **`theorem_18_1_le_seven : d ≤ 7 → Theorem181At d`**. Degrees 0, 1 and
+  2 are the corpus's.
+
+It is stub-checked faithfully. The axiom list is exactly the two heavy
+instantiations `commonDiffPartitionOne_explicit` and
+`section16RecurrenceProfileWith_explicit`.
+
+Degree eight and beyond is the nest problem of L.7a and L.8. The same
+precision-free counts (the stackability gap) would carry Theorem 18.1 to
+every degree.
 
 **Technique notes.**
 - `positivity` on terms containing `section13Q δ` unfolds into the hidden
