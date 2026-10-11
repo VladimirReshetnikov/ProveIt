@@ -1,0 +1,194 @@
+\section{Every logarithmic moment at arbitrary complex orders}
+\label{rlc:sec:moments}
+
+Order addition alone evaluates the unweighted convolution. Polynomial
+weights record how the total logarithmic argument is distributed among
+its factors. Surprisingly, they still admit finite closure at arbitrary
+complex orders.
+
+\subsection{An all-depth differential-polynomial algorithm}
+For $\ell\ge0$ define polynomials $R_\ell(s;T,U)$ by
+\begin{align}
+ R_0&=1,\notag\\
+ R_{\ell+1}&=(T+sU)R_\ell+(\pi^2+T^2)\partial_T R_\ell
+                        +U^2\partial_U R_\ell.
+ \label{rlc:eq:Rrecurrence}
+\end{align}
+Their first values are
+\begin{align*}
+ R_1&=T+sU,\\
+ R_2&=2T^2+2sTU+s(s+1)U^2+\pi^2,\\
+ R_3&=6T^3+6sT^2U+3s(s+1)TU^2+(s)_3U^3
+          +5\pi^2T+3s\pi^2U.
+\end{align*}
+For a multi-index $\boldsymbol\ell=(\ell_1,\ldots,\ell_r)$, let
+\begin{equation}\label{rlc:eq:weighteddef}
+ \MM_{\boldsymbol\ell}(\boldsymbol s;a;\mu)
+ =\int_{\R^{r-1}}\prod_{j=1}^r
+     x_j^{\ell_j}f_{a,s_j}(x_j)\dd x_1\cdots\dd x_{r-1},
+ \qquad x_r=\mu-\sum_{j<r}x_j.
+\end{equation}
+
+\begin{theorem}[Finite closure of all mixed moments]
+\label{rlc:thm:allmoments}
+The integral \eqref{rlc:eq:weighteddef} is absolutely convergent and
+entire in its orders. Form the finite polynomial
+$\prod_{j=1}^r R_{\ell_j}(s_j;T,U)$ and put $W=\sum s_j$.
+Apply the following linear replacement rules to its monomials:
+\begin{align}
+ T^{2k}U^d\ &\longmapsto\
+ \sum_{q=0}^k\binom{k}{q}(-\pi^2)^{k-q}
+        \CC_{r+2q,a}(W+d;\mu),\label{rlc:eq:evenrule}\\
+ T^{2k+1}U^d\ &\longmapsto\
+ \sum_{q=0}^k\binom{k}{q}\frac{(-\pi^2)^{k-q}}{r+2q}
+ \left\{\mu\CC_{r+2q,a}(W+d;\mu)
+ -(W+d)\CC_{r+2q,a}(W+d+1;\mu)\right\}.
+ \label{rlc:eq:oddrule}
+\end{align}
+The resulting expression is exactly
+$\MM_{\boldsymbol\ell}(\boldsymbol s;a;\mu)$.
+Thus every mixed logarithmic moment at $\mu=0$ reduces to finitely many
+entire Hurwitz-zeta combinations in even depth, and alternating
+Hurwitz-zeta combinations in odd depth. Arbitrary mixed order
+derivatives of this finite formula are valid.
+\end{theorem}
+\begin{proof}
+Put $g(p)=\pi\csc(\pi p)$, $h=p+a-1$, $T=\pi\cot(\pi p)$,
+and $U=h^{-1}$. Then
+$g'=-Tg$, $T'=-(\pi^2+T^2)$, and $U'=-U^2$.
+Repeated differentiation gives the exact identity
+\[
+ (-\partial_p)^\ell\{g(p)h^{-s}\}
+       =g(p)h^{-s}R_\ell(s;T,U).
+\]
+The left side is the transform of $x^\ell f_{a,s}(x)$.
+The product of the transforms of all factors is consequently
+$g(p)^r h^{-W}\prod_jR_{\ell_j}(s_j;T,U)$.
+
+The identity $T^2=g^2-\pi^2$ proves
+\eqref{rlc:eq:evenrule}. For an odd power, first use that identity
+and then $g^R T=-(g^R)'/R$. Integration by parts on the vertical line
+in \eqref{rlc:eq:barnes} gives, for every $v$,
+\[
+ \frac1{2\pi i}\int e^{p\mu}g(p)^R T h^{-v}\dd p
+ =\frac{\mu}{R}\CC_{R,a}(v;\mu)
+       -\frac{v}{R}\CC_{R,a}(v+1;\mu).
+\]
+The boundary terms vanish exponentially. This proves the odd rule.
+Lemma~\ref{rlc:lem:weighted} supplies absolute convergence and parameter
+holomorphy, so no formal interchange remains unproved.
+\end{proof}
+
+For example, at $\mu=0$, with $s=s_1$ and $W=\sum s_j$,
+\begin{align}
+ \MM_{(1,0,\ldots,0)}
+ &=\left(s-\frac Wr\right)\CC_{r,a}(W+1;0),
+ \label{rlc:eq:firstall}\\
+ \MM_{(2,0,\ldots,0)}
+ &=2\CC_{r+2,a}(W;0)-\pi^2\CC_{r,a}(W;0)\notag\\
+ &\quad+\left[s(s+1)-\frac{2s(W+1)}r\right]
+                \CC_{r,a}(W+2;0).
+ \label{rlc:eq:secondall}
+\end{align}
+For two distinct positions having orders $s$ and $t$,
+\begin{align}
+ \MM_{(1,1,0,\ldots,0)}
+ &=\CC_{r+2,a}(W;0)-\pi^2\CC_{r,a}(W;0)\notag\\
+ &\quad+\left[st-\frac{(s+t)(W+1)}r\right]
+                    \CC_{r,a}(W+2;0).
+ \label{rlc:eq:mixedsecond}
+\end{align}
+Summing \eqref{rlc:eq:firstall} over all positions gives zero, as it
+must from $x_1+\cdots+x_r=0$. The factor $1/r$ is essential.
+
+\subsection{A closed two-factor formula}
+For $k\ge1$ define
+\begin{equation}\label{rlc:eq:Q}
+ Q_k(s,t)=\frac{(s)_k-(-1)^k(t)_k}{s+t+k-1}.
+\end{equation}
+This is a polynomial, not a meromorphic quotient: at
+$t=1-k-s$, $(t)_k=(-1)^k(s)_k$, proving divisibility.
+Its first values are
+\[
+ Q_1=1,\qquad Q_2=s-t,\qquad
+ Q_3=s^2-st+t^2+s+t.
+\]
+Let $d_{2j}$ be defined by
+\begin{equation}\label{rlc:eq:dcoeff}
+ \frac{\pi\lambda}{\sin\pi\lambda}
+ =\sum_{j=0}^\infty d_{2j}\lambda^{2j},\qquad
+ d_0=1,\quad
+ d_{2j}=2(1-2^{1-2j})\zeta(2j)\quad(j\ge1).
+\end{equation}
+
+\begin{theorem}[All two-factor logarithmic moments]
+\label{rlc:thm:twomoments}
+For $\ell\ge0$, $s,t\in\C$, and $\Rea a>0$, put $W=s+t$. Then
+\begin{equation}\label{rlc:eq:momentclosed}
+ \boxed{\displaystyle
+ \int_0^\infty\log^\ell y\,F_{a,s}(y)F_{a,t}(1/y)\frac{\dd y}{y}
+ =\ell!\sum_{j=0}^{\lfloor\ell/2\rfloor}
+ \frac{d_{2j}}{(\ell-2j+1)!}
+ Q_{\ell-2j+1}(s,t)\E_a(W+\ell-2j).}
+\end{equation}
+Every term on the right is entire in the two independent orders.
+\end{theorem}
+\begin{proof}
+Introduce the locally holomorphic tilted integral
+\[
+ I(\lambda)=\int_0^\infty y^\lambda
+ F_{a,s}(y)F_{a,t}(1/y)\frac{\dd y}{y}.
+\]
+The weighted estimates prove convergence for
+$|\Rea\lambda|<\min(1,\Rea a)$. For
+$\Rea s,\Rea t>0$ and sufficiently small $|\lambda|$, inserting
+Euler integrals and evaluating the elementary rational $y$ integral
+gives
+\begin{equation}\label{rlc:eq:tilted}
+ I(\lambda)=\frac{\pi}{\sin\pi\lambda}
+ \sum_{n=0}^\infty\left[
+ (n+a-\lambda)^{-s}(n+a)^{-t}
+ -(n+a)^{-s}(n+a+\lambda)^{-t}\right].
+\end{equation}
+For clarity, the elementary integration kernel before the two Laplace
+integrals are performed is
+\[
+ \frac{\pi}{\sin\pi\lambda}
+ \frac{e^{\lambda u}-e^{-\lambda v}}{e^{u+v}-1}
+ e^{-(a-1)(u+v)}.
+\]
+It is multiplied by $u^{s-1}v^{t-1}/(\Gamma(s)\Gamma(t))$.
+Expanding the geometric denominator and integrating $u,v$ gives
+\eqref{rlc:eq:tilted}. Its $\lambda=0$ value is removable.
+
+Taylor expansion in $\lambda$ now yields
+\[
+ I(\lambda)=\frac{\pi}{\sin\pi\lambda}
+ \sum_{k=1}^\infty
+ \frac{(s)_k-(-1)^k(t)_k}{k!}
+       \zeta(W+k,a)\lambda^k.
+\]
+Normal convergence in a small disk follows from $\Rea W>0$ and the
+shift bound $|\lambda|<\Rea a$. Extracting the coefficient of
+$\lambda^\ell$ and using
+\[
+ \bigl((s)_k-(-1)^k(t)_k\bigr)\zeta(W+k,a)
+       =Q_k(s,t)\E_a(W+k-1)
+\]
+proves \eqref{rlc:eq:momentclosed} in the initial domain. Both sides
+are entire in $s,t$, which proves the theorem everywhere.
+\end{proof}
+
+The first two nonconstant moments are therefore
+\begin{align}
+ \int_0^\infty\log y\,F_{a,s}(y)F_{a,t}(1/y)\frac{\dd y}{y}
+ &=\frac{s-t}{2}\E_a(W+1),\label{rlc:eq:moment1}\\
+ \int_0^\infty\log^2 y\,F_{a,s}(y)F_{a,t}(1/y)\frac{\dd y}{y}
+ &=\frac{s^2-st+t^2+s+t}{3}\E_a(W+2)
+      +\frac{\pi^2}{3}\E_a(W).
+ \label{rlc:eq:moment2}
+\end{align}
+In particular, at $s=t=0$ the second moment is $\pi^2/3$, the ordinary
+logistic second moment. Formula \eqref{rlc:eq:moment1} independently
+checks the $1/2$ in the first-moment normalization. All odd moments
+vanish when $s=t$, directly reflecting $y\leftrightarrow1/y$.

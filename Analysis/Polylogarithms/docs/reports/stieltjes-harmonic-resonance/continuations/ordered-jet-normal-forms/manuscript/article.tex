@@ -1,0 +1,1713 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\PassOptionsToPackage{dvipsnames}{xcolor}
+\usepackage{amsmath,amsthm}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype,amsmath,amsthm,mathtools,booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Ordered Harmonic Jets: Exact Orientation Ranks, Stieltjes Commutators, and Depth-Four Hurwitz Finite Parts},pdfauthor={ProveIt research continuation},pdfsubject={Exact identities and formal orientation quotients},pdfkeywords={Hurwitz zeta, Stieltjes constants, polylogarithms, harmonic sums, Gamma function}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Ordered harmonic jets}\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathcal R}
+\newcommand{\HH}{\mathcal H}
+\newcommand{\SSS}{\mathscr S}
+\newcommand{\Alg}{\mathscr H}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\CT}{\operatorname{CT}}
+\newcommand{\FP}{\operatorname{FP}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Ree}{\operatorname{Re}}
+\newcommand{\bbm}{\boldsymbol m}
+\newcommand{\bbu}{\boldsymbol u}
+\newcommand{\bbc}{\boldsymbol c}
+\newcommand{\src}[1]{\texttt{\small\detokenize{#1}}}
+\newcommand{\Zletter}[1]{Z_{#1}}
+\title{\textbf{Ordered Harmonic Jets}\\[5pt]
+\large Exact orientation ranks, Stieltjes commutators,\\
+and depth-four Hurwitz finite parts}
+\author{A research continuation prepared for the ProveIt project}
+\date{10 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The harmonic-compatible regular germs of ordered multiple Hurwitz zeta
+functions leave a concrete problem: which of their mixed coefficients are
+forced by one-variable identities, and which retain ordering information?
+We answer this question in a precisely specified formal linear quotient.
+At word length $j$ and logarithmic degree $r$, its dimension is
+$\binom{j+r-1}{r}-p_{\le j}(r)$. For the complete set of coefficients entering
+a depth-$d$ transverse finite part, the dimension is
+$2^{d-1}-p(d)$. We give an equivariant description by augmentation spaces
+of permutation modules, a rational normal-form algorithm, and a residue
+argument showing that all these coordinates can be distinguished by
+positive rational rays. Single-letter closure of an individual ray occurs
+exactly when all its inner slopes are equal, relative to the stipulated
+stuffle laws.
+
+At depth four the quotient is the direct sum of a two-dimensional
+standard permutation component and a one-dimensional sign component.
+We give the full finite part and recover its three orientation coordinates
+from three positive rays by an explicit rational inverse matrix. To evaluate
+the coordinates analytically, we prove an all-index, absolutely convergent
+Stieltjes commutator identity with its exact contact term, ordinary
+polylogarithmic Mellin representations, a curvature integral, and a
+Gamma-weighted antiderivative family. Rational Hurwitz shifts give explicit
+cyclotomic versions. These results resolve the formal depth-four
+organization question in the inspected predecessor and extend it to all
+depths. They do not assert numerical period independence, reduction to a
+smaller transcendental constant field, or historical priority for classical
+quasi-shuffle and Hurwitz continuation principles.
+\end{abstract}
+\vspace{6pt}
+\noindent\textbf{Keywords.} Ordered multiple Hurwitz zeta; generalized Stieltjes
+constants; harmonic regularization; quasi-shuffle algebra; polylogarithm
+order derivatives; Gamma-weighted primitives.
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{The continuation target and the meaning of the result}
+\label{sec:scope}
+The predecessor \emph{Ordered Hurwitz Germs at Every Depth} constructs
+harmonic-compatible holomorphic remainders near the all-one point. Its
+second further-research question asks for the permutation components of
+the lower-depth jets entering a depth-four finite part, and for a distinction
+between stuffle-forced combinations and genuinely ordered coordinates
+\cite{ordered}. We address that specified question, then give an all-depth
+linear answer. The immediate objects are not merely numerical values: they
+are words representing finite logarithmic harmonic sums, equipped with
+explicit multiplication and a fixed constant-term prescription.
+
+The distinction between three assertions will be used throughout.
+An identity between evaluated functions is proved by analytic or finite
+algebraic arguments. A dimension calculation in the universal word algebra
+is a statement relative to its defining laws. Neither one, by itself,
+proves arithmetic independence of the evaluated constants. In particular,
+the number $2^{d-1}-p(d)$ below is a \emph{rational linear quotient dimension}.
+It is not a transcendence degree, a count of algebraically independent
+periods, or a module rank after adjoining a field of one-variable constants.
+
+Our principal conclusions are Theorem~\ref{thm:rank}, which supplies an
+all-depth normal form; Theorems~\ref{thm:identifiable} and
+\ref{thm:closure}, which identify its ray coefficients and the exact
+single-letter-closed locus; Theorem~\ref{thm:commutator}, which gives every
+double logarithmic commutator; and Theorem~\ref{thm:quartic}, which evaluates
+the full depth-four finite part in three orientation coordinates.
+Theorems~\ref{thm:gamma-bridge} and \ref{thm:curvature} connect those
+coordinates to Gamma-weighted integration and ordinary polylogarithmic
+Mellin integrals.
+
+\paragraph{Classical inputs and attribution.}
+Finite harmonic products, their quasi-shuffle structure, and the
+polynomial/Lyndon description are classical; Hoffman gives a general
+algebraic framework \cite{hoffman}. Laurent expansions of multiple zeta
+functions by harmonic products and analytic continuation are likewise
+established subjects \cite{mow}. The analytic regularization and its
+Gamma-generating diagonal used here are those of the inspected predecessor
+\cite{ordered}; we reprove the required facts to make the normal-form and
+identity arguments self-contained. Standard one-variable identities follow
+the DLMF conventions \cite{dlmf-zeta,dlmf-polylog,dlmf-lerch,dlmf-gamma}.
+No exhaustive literature-priority assertion is made for the combinations
+of these tools developed here.
+
+\paragraph{Inspection boundary.}
+The manuscript entry point and selected portions of its integration,
+differentiation, and research-programme chapters were read \cite{repo-manuscript,repo-discovery}, together with
+the complete predecessor TeX. The incoming archives were inventoried by
+visible metadata, not exhaustively unpacked or audited. The repository
+reference observed during this work was
+\begin{center}\small\ttfamily
+d838a9eec408cb7e36f5c9bcec194314446ed295.
+\end{center}
+The package records source paths and hashes in its provenance manifest.
+All claims of progress are relative to the explicit inspected question,
+not to every unpublished file in the repository or Library.
+
+\section{Logarithmic harmonic words and their constant terms}
+\label{sec:regularization}
+Fix $a>0$. Unless stated otherwise, logarithms of positive real quantities
+are real logarithms. The convention for generalized Stieltjes constants is
+\begin{equation}\label{eq:stieltjes}
+ \zeta(1+u,a)=\frac1u+g_a(u),\qquad
+ g_a(u)=\sum_{m\ge0}\frac{(-1)^m\gamma_m(a)}{m!}u^m.
+\end{equation}
+In particular $\gamma_0(a)=-\psi(a)$. A superscript on $\zeta^{(m)}$
+always means differentiation in the spectral argument; a derivative in
+$a$ will be written explicitly.
+
+A letter is a pair $(k,m)$ with $k\ge1$ and $m\ge0$. It represents
+$f_{k,m}(x)=x^{-k}\log^m x$. For a word
+$w=((k_1,m_1),\ldots,(k_j,m_j))$, put
+\begin{equation}\label{eq:finite-word}
+ W_w(N;a)=\sum_{N>n_1>\cdots>n_j\ge0}
+             \prod_{i=1}^j f_{k_i,m_i}(n_i+a),\qquad W_\varnothing=1.
+\end{equation}
+The larger index carries the earlier letter. The finite generalized
+harmonic numbers used below are
+\begin{equation}\label{eq:harmonic}
+ H_N^{(k,m)}(a)=\sum_{n=0}^{N-1}\frac{\log^m(n+a)}{(n+a)^k}.
+\end{equation}
+Thus $H_N^{(1,0)}(1)$ is the ordinary $N$th harmonic number.
+
+\begin{proposition}[Harmonic constant-term character]\label{prop:character}
+Every word has a unique polynomial $P_w(L;a)$ such that, with
+$L_N=\log(N+a)$,
+\begin{equation}\label{eq:polynomial-cutoff}
+ W_w(N;a)=P_w(L_N;a)+O\bigl(N^{-1}(1+\log N)^M\bigr)
+\end{equation}
+for some $M$. Define $\R_a(w)=P_w(0;a)$. Let $*$ be the positive-merge
+quasi-shuffle product, with
+\begin{equation}\label{eq:merge}
+ (k,m)\circ(\ell,n)=(k+\ell,m+n).
+\end{equation}
+Then
+\begin{equation}\label{eq:character}
+ \R_a(w*v)=\R_a(w)\R_a(v).
+\end{equation}
+It agrees with every convergent sum in this class, and
+\begin{equation}\label{eq:single-letters}
+ \ell_{k,m}(a):=\R_a((k,m))=
+ \begin{cases}
+ \gamma_m(a),&k=1,\\
+ (-1)^m\zeta^{(m)}(k,a),&k\ge2.
+ \end{cases}
+\end{equation}
+The estimates, and all fixed parameter derivatives needed below, are
+locally uniform for $a$ in compact subsets of $(0,\infty)$.
+\end{proposition}
+\begin{proof}
+Induct on length. Finite inner sums have at most logarithmic growth. If
+the first exponent is at least two, the outer series converges and its
+tail has the form of the error in \eqref{eq:polynomial-cutoff}. If the
+first letter is $(1,m)$, insert the tail polynomial into the exact increment
+\[
+ W_w(N+1;a)-W_w(N;a)=
+       \frac{\log^m(N+a)}{N+a}W_{w'}(N;a).
+\]
+The primitive in $L$ of $L^mP_{w'}(L;a)$ is a polynomial. The sum--integral
+difference of this increment is summable, since its derivative in the
+continuous variable is $O(x^{-2}(1+\log x)^{M'})$. The inserted tail error
+is summable for the same reason. Its accumulated limit defines the missing
+constant. This proves existence and the error estimate; uniqueness follows
+because no nonzero polynomial in $\log(N+a)$ tends to zero.
+
+At finite cutoff, interlacing the two sets of indices and accounting for
+equalities proves the quasi-shuffle identity. Products of the error terms
+with a fixed logarithmic polynomial still tend to zero. Hence the
+polynomial asymptotics satisfy the same product identity. Evaluation at
+$L=0$ is multiplicative. The depth-one identities follow by Taylor
+expanding the Hurwitz tail, or directly from \eqref{eq:stieltjes} and the
+convergent spectral derivatives at $k\ge2$. The increment arguments and
+summable majorants remain uniform on compact positive $a$-intervals.
+Differentiation of those majorants gives the stated parameter regularity.
+\end{proof}
+
+We write $Z_m=(1,m)$, and frequently $X=Z_0$, $Y=Z_1$, $Z=Z_2$.
+Concatenation is not the product $*$: for instance
+\begin{equation}\label{eq:double-stuffle}
+ \R_a(Z_pZ_q)+\R_a(Z_qZ_p)
+ =\gamma_p(a)\gamma_q(a)-(-1)^{p+q}\zeta^{(p+q)}(2,a).
+\end{equation}
+This elementary distinction is essential at higher depth.
+
+\begin{proposition}[Shift and differential transport]\label{prop:transport}
+For a nonempty word $w=v(k,m)$,
+\begin{equation}\label{eq:word-shift}
+ \R_a(w)-\R_{a+1}(w)=\frac{\log^m a}{a^k}\R_{a+1}(v).
+\end{equation}
+Define a derivation on concatenated words by the letter rule
+\begin{equation}\label{eq:letter-D}
+ \mathcal D(k,m)=-k(k+1,m)+m(k+1,m-1),
+\end{equation}
+where a term with zero coefficient is omitted. Then
+\begin{equation}\label{eq:word-D}
+ \frac{\mathrm d}{\mathrm da}\R_a(w)=\R_a(\mathcal Dw).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Separate the finite sum according to whether its smallest index is zero.
+The sum with all indices positive becomes a sum at $a+1$ after subtracting
+one from every index. The two cutoff logarithms can be chosen identical:
+$\log(N+a)=\log((N-1)+(a+1))$. Constant terms give
+\eqref{eq:word-shift}. Differentiating each summand gives
+\eqref{eq:letter-D}. The locally uniform asymptotic construction in
+Proposition~\ref{prop:character} permits differentiation of the polynomial
+asymptotic. Derivatives of $L_N$ are $O(N^{-1})$, so contribute no constant
+term. This proves \eqref{eq:word-D}.
+\end{proof}
+
+\section{Compatible ordered germs and transverse finite parts}
+\label{sec:germs}
+Define
+\[
+ Z_d(s_1,\ldots,s_d;a)=\sum_{n_1>\cdots>n_d\ge0}
+                         \prod_{i=1}^d(n_i+a)^{-s_i},\qquad Z_0=1.
+\]
+Initially all $\Ree s_i>1$ suffice. The following construction provides
+the only local continuation needed here.
+
+Put
+\begin{equation}\label{eq:kernel-B}
+ K(t)=\frac1{e^t-1}-\frac1t,\qquad
+ B(u,x)=\zeta(1+u,x+1)-\frac{x^{-u}}u.
+\end{equation}
+The singularity at $u=0$ is removable, and
+\begin{equation}\label{eq:B-Mellin}
+ B(u,x)=\frac1{\Gamma(1+u)}\int_0^\infty t^u e^{-xt}K(t)\dd t,
+ \qquad \Ree u>-1.
+\end{equation}
+The integral follows by subtracting the usual Hurwitz and elementary
+Mellin integrals where they converge, then continuing. Since
+$K(t)=-1/2+O(t)$ at zero, scaling $t=y/x$ shows that $B$ and its fixed
+$u$-derivatives are $O(x^{-1+\delta}(1+\log x)^M)$ on small compact
+$u$-sets. In particular,
+\begin{equation}\label{eq:tail-A}
+ A_d(\bbu;a)=\sum_{n_2>\cdots>n_d\ge0}
+ B(u_1,n_2+a)\prod_{i=2}^d(n_i+a)^{-1-u_i}
+\end{equation}
+converges normally in a sufficiently small neighborhood of zero, including
+after any fixed mixed derivative. Grouping by $n_2$ gives a majorant
+$O(n_2^{-2+\delta}(1+\log n_2)^M)$, with $\delta<1$.
+
+\begin{proposition}[Compatible germ and harmonic jets]\label{prop:germ}
+Set $\HH_0=1$, $\HH_1(u;a)=g_a(u)$, and, recursively,
+\begin{equation}\label{eq:H-recursion}
+ \HH_d(\bbu;a)=A_d(\bbu;a)+
+ \frac{\HH_{d-1}(u_1+u_2,u_3,\ldots;a)
+       -\HH_{d-1}(u_2,u_3,\ldots;a)}{u_1}.
+\end{equation}
+The quotient is removable. These functions are holomorphic near zero and,
+with $U_k=u_1+\cdots+u_k$,
+\begin{equation}\label{eq:germ}
+ Z_d(1+u_1,\ldots,1+u_d;a)=
+ \sum_{j=0}^d\frac{\HH_j(u_{d-j+1},\ldots,u_d;a)}{U_1\cdots U_{d-j}}.
+\end{equation}
+Their Taylor coefficients are
+\begin{equation}\label{eq:jet-word}
+ [u_1^{m_1}\cdots u_j^{m_j}]\HH_j
+ =\frac{(-1)^{m_1+\cdots+m_j}}{m_1!\cdots m_j!}
+                       \R_a(Z_{m_1}\cdots Z_{m_j}).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Sum the outer index first and use \eqref{eq:kernel-B}. This gives
+\[
+ Z_d(1+\bbu;a)=\frac1{u_1}
+ Z_{d-1}(1+u_1+u_2,1+u_3,\ldots;a)+A_d(\bbu;a).
+\]
+Insert the lower-depth instance of \eqref{eq:germ}, then add and subtract
+$\HH_{d-1}(u_2,\ldots)/u_1$. Induction proves the formula and
+holomorphy, since a divided difference of a holomorphic function is
+holomorphic.
+
+To identify the cutoff prescription rather than merely a formal
+subtraction, construct locally holomorphic functions $Q_j(\bbu;L)$ with
+\[
+ Q_j(\bbu;L)=k_j(\bbu)+\int_0^L e^{-u_1t}
+                             Q_{j-1}(u_2,\ldots;t)\dd t.
+\]
+The increment proof of Proposition~\ref{prop:character}, now with small
+complex exponent perturbations, shows that the finite ordered sums equal
+$Q_j(\bbu;\log(N+a))+O(N^{-1+\delta}(1+\log N)^M)$ locally uniformly.
+Indeed, the difference between a discrete increment and the integral over
+$[N+a,N+a+1]$ is $O(N^{-2+\delta}(1+\log N)^M)$; so is the error from
+inserting the lower-depth approximation. Their normally convergent sum
+constructs $k_j$. Cauchy estimates on a slightly larger compact set justify
+all fixed Taylor extractions.
+
+When all $\Ree u_i>0$, the finite sums converge. Repeated integration of
+the displayed recurrence gives the prefix denominators in
+\eqref{eq:germ}. Uniqueness by subtraction at successive depths therefore
+identifies $k_j=\HH_j$. Taylor extraction produces a polynomial in $L$
+whose constant is the coefficient of $\HH_j$. Extracting the same
+coefficient from the finite sum proves \eqref{eq:jet-word}.
+\end{proof}
+
+A transverse ray for the present purpose is a vector
+$\bbc=(c_1,\ldots,c_d)$ with every prefix sum
+$S_k=c_1+\cdots+c_k\ne0$. Its finite part is the constant Laurent
+coefficient
+\[
+ F_d(\bbc;a)=\FP_{\varepsilon=0}
+       Z_d(1+c_1\varepsilon,\ldots,1+c_d\varepsilon;a).
+\]
+The vector may have mixed signs; positive vectors are automatically
+admissible. No choice of approaching half-plane is needed for the local
+meromorphic coefficient.
+
+\begin{corollary}[Exact ray coefficient formula]\label{cor:ray}
+For every admissible ray,
+\begin{equation}\label{eq:ray}
+ F_d(\bbc;a)=\sum_{j=1}^d
+ \frac{(-1)^{d-j}}{\prod_{k=1}^{d-j}S_k}
+ \sum_{\substack{m_1+\cdots+m_j=d-j\\m_i\ge0}}
+ \frac{\prod_{i=1}^j c_{d-j+i}^{m_i}}{\prod_{i=1}^j m_i!}
+                      \R_a(Z_{m_1}\cdots Z_{m_j}).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Each denominator in \eqref{eq:germ} is homogeneous of degree $d-j$ in
+$\varepsilon$. Extract exactly that Taylor degree from its numerator and
+use \eqref{eq:jet-word}. The $j=0$ term is a pure pole and has no constant
+coefficient.
+\end{proof}
+
+\section{Exact formal ranks and permutation components}
+\label{sec:ranks}
+Let $\Alg$ be the rational vector space freely spanned by all decorated
+words, with the quasi-shuffle product \eqref{eq:merge}. Its first weight
+is $\sum k_i$ and its logarithmic degree is $\sum m_i$. Let $\SSS$ be
+its unital subalgebra generated by all individual letters. This is the
+\emph{single-letter algebra}: evaluation sends it to polynomials in
+ordinary Stieltjes constants and spectral derivatives of Hurwitz zeta.
+
+For fixed $j\ge1,r\ge0$, let $V_{j,r}$ be the span of the words
+$Z_{m_1}\cdots Z_{m_j}$ with $\sum m_i=r$. We ask for its linear quotient
+modulo the elements already in $\SSS$. This completely specifies the
+meaning of ``orientation'' in the rank theorem.
+
+\begin{lemma}[Finite symmetric-sum identity]\label{lem:sym-sum}
+For arbitrary $m_1,\ldots,m_j\ge0$, including repeated values,
+\begin{equation}\label{eq:symmetric-sum}
+ \sum_{\sigma\in S_j}\R_a(Z_{m_{\sigma(1)}}\cdots Z_{m_{\sigma(j)}})
+ =\sum_{\pi\in\Pi_j}(-1)^{j-|\pi|}
+       \prod_{B\in\pi} (|B|-1)!\,
+                  \ell_{|B|,\sum_{i\in B}m_i}(a).
+\end{equation}
+The same identity holds in $\Alg$ before evaluation, with ordinary
+products on the right replaced by quasi-shuffle products. The left sum is
+over labelled permutations, not only distinct words.
+\end{lemma}
+\begin{proof}
+At finite cutoff, sum over $j$ labelled indices with the condition that
+all are distinct. Inclusion--exclusion on their equality partitions has
+partition-lattice coefficient
+$\prod_B(-1)^{|B|-1}(|B|-1)!$. This coefficient can also be verified
+inductively: the sum of signed cycle permutations on a set of size $n$
+is zero for $n>1$, and one for $n=1$. A block $B$ of equal indices gives
+the single letter $(|B|,\sum_{i\in B}m_i)$. Ordering the distinct indices
+gives the labelled permutation sum. Taking constant terms proves
+\eqref{eq:symmetric-sum}. The same combinatorial argument interlaces
+formal words and proves the pre-evaluation identity.
+\end{proof}
+
+\begin{theorem}[Orientation quotient and all-depth count]\label{thm:rank}
+The intersection $V_{j,r}\cap\SSS$ is exactly the span of distinct-word
+permutation-orbit sums. Consequently,
+\begin{equation}\label{eq:rank-jr}
+ \dim_{\mathbb Q}\frac{V_{j,r}}{V_{j,r}\cap\SSS}
+       =\binom{j+r-1}{r}-p_{\le j}(r),
+\end{equation}
+where $p_{\le j}(r)$ counts partitions of $r$ into at most $j$ parts,
+with $p_{\le j}(0)=1$. In the direct sum of all spaces entering
+\eqref{eq:ray}, the quotient dimension is
+\begin{equation}\label{eq:rank-d}
+ \boxed{\displaystyle
+ N_d=\dim_{\mathbb Q}
+ \frac{\bigoplus_{j=1}^d V_{j,d-j}}
+      {\bigl(\bigoplus_{j=1}^d V_{j,d-j}\bigr)\cap\SSS}
+      =2^{d-1}-p(d).}
+\end{equation}
+\end{theorem}
+\begin{proof}
+A quasi-shuffle product of $h$ single letters has word length at most
+$h$. Its length-$h$ component is the full shuffle symmetrization of those
+letters. A monomial in single letters of first weight $j$ has at most
+$j$ factors. To have a component of length $j$, it must have exactly
+$j$ factors, each with first exponent one. Thus the length-$j$
+component of every element of $\SSS$ of bidegree $(j,r)$ is a linear
+combination of orbit sums. If that element belongs to $V_{j,r}$, there
+are no other lengths and the necessity follows. Conversely, every orbit
+sum belongs to $\SSS$ by Lemma~\ref{lem:sym-sum}, after dividing the
+labelled sum by the product of the multiplicity factorials.
+
+The number of raw words is the weak-composition count
+$\binom{j+r-1}{r}$. Their orbits are the nondecreasing $j$-tuples of sum
+$r$, counted by $p_{\le j}(r)$. Distinct orbit sums have disjoint word
+supports, so are linearly independent. This proves \eqref{eq:rank-jr}.
+
+The spaces with bidegrees $(j,d-j)$ cannot mix, since $\SSS$ is
+bigraded. There are $\sum_j\binom{d-1}{j-1}=2^{d-1}$ raw words.
+Adding one to every entry of a nondecreasing tuple $(m_1,\ldots,m_j)$
+of sum $d-j$ gives a partition of $d$ into exactly $j$ positive parts.
+Summing the orbit counts over $j$ therefore gives $p(d)$, proving
+\eqref{eq:rank-d}.
+\end{proof}
+
+\begin{corollary}[Equivariant description]\label{cor:representation}
+For each nondecreasing tuple $\bbm$ of length $j$ and sum $r$, let
+$G_{\bbm}\le S_j$ be the subgroup permuting equal entries. As an
+$S_j$-representation,
+\begin{equation}\label{eq:permutation-modules}
+ \frac{V_{j,r}}{V_{j,r}\cap\SSS}
+ \simeq\bigoplus_{\bbm}
+ \left(\mathbb Q[S_j/G_{\bbm}]/\mathbb Q\mathbf1_{\bbm}\right).
+\end{equation}
+Equivalently each summand is the sum-zero subspace on that orbit.
+\end{corollary}
+\begin{proof}
+Each orbit is its permutation representation on the cosets of its
+stabilizer. Theorem~\ref{thm:rank} quotients out exactly its invariant
+orbit-sum vector. Averaging its coefficients splits off that line over
+$\mathbb Q$, leaving the sum-zero subspace.
+\end{proof}
+
+Here is a direct rational normal-form algorithm. In each orbit choose a
+canonical word $w_0$, for example the nondecreasing tuple. For every other
+word keep $\delta_w=w-w_0$. If the orbit has size $h$ and its known
+orbit sum is $T_{\mathcal O}$, then
+\begin{equation}\label{eq:normal-algorithm}
+ w_0=\frac1h\left(T_{\mathcal O}-\sum_{w\ne w_0}\delta_w\right),
+ \qquad w=w_0+\delta_w.
+\end{equation}
+Lemma~\ref{lem:sym-sum} evaluates $T_{\mathcal O}$ explicitly in single
+letters. Formula \eqref{eq:normal-algorithm} is a terminating finite
+certificate, not a numerical relation search.
+
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+Depth $d$ & Raw coefficients $2^{d-1}$ & Symmetric orbits $p(d)$ & $N_d$\\
+\midrule
+1&1&1&0\\2&2&2&0\\3&4&3&1\\4&8&5&3\\
+5&16&7&9\\6&32&11&21\\7&64&15&49\\8&128&22&106\\
+9&256&30&226\\10&512&42&470\\11&1024&56&968\\12&2048&77&1971\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{remark}[What is not counted]\label{rem:not-module-rank}
+The theorem does not count indecomposable Lyndon generators. Products
+containing an already ordered constant may relate one orientation
+coordinate to another and to a lower-depth ordered quantity. Nor does it
+compute a quotient after making all single-letter values scalars in a
+larger coefficient field. The first-weight/log-degree grading and the
+specified \emph{rational linear} quotient are indispensable. Section
+\ref{sec:quartic} exhibits this distinction explicitly: a triple
+orientation coordinate is related to $\gamma_0\Omega$ and to a merged-letter
+double sum, without ceasing to be a nonzero class in the quotient just
+computed.
+\end{remark}
+
+\section{Ray identifiability and the exact single-letter-closed locus}
+\label{sec:ray-geometry}
+The quotient count is useful only if the coefficients of the rays can
+actually distinguish the coordinates. The nested polar denominators make
+this possible without numerical sampling assumptions.
+
+\begin{theorem}[All raw jet coefficients are identifiable]\label{thm:identifiable}
+For fixed $d$, the rational functions
+\begin{equation}\label{eq:coefficient-functions}
+ f_{j,\bbm}(\bbc)=
+ \frac{\prod_{i=1}^j c_{d-j+i}^{m_i}}
+      {\prod_{k=1}^{d-j}S_k\,\prod_i m_i!},
+ \qquad |\bbm|=d-j,
+\end{equation}
+are linearly independent over $\mathbb Q$. Consequently the $N_d$
+orientation coefficient functions in any rational normal form are also
+linearly independent. Finitely many positive rational rays distinguish
+all of them; $N_d$ such rays can be chosen for the orientation quotient.
+\end{theorem}
+\begin{proof}
+Suppose a rational linear combination of \eqref{eq:coefficient-functions}
+vanishes. Collect its terms at a fixed $j$ into a homogeneous polynomial
+$P_j(c_{d-j+1},\ldots,c_d)$ over the denominator
+$S_1\cdots S_{d-j}$. Restrict the residue first to $S_{d-1}=0$, away
+from the other prefix hyperplanes. Only the $j=1$ term can contribute,
+so $P_1(c_d)=0$. The suffix variable $c_d$ is unconstrained on that
+hyperplane, hence $P_1$ is the zero polynomial.
+
+Next take the residue at $S_{d-2}=0$. After the $j=1$ term is removed,
+only $j=2$ contributes. Its two suffix variables remain arbitrary, so
+$P_2=0$. Continue in this fashion. The last term has no denominator and
+must also vanish. Within each suffix the distinct monomials are linearly
+independent, proving the first assertion.
+
+A change from raw words to orbit sums and orientation differences is an
+invertible rational change of coordinates, so its full set of coefficient
+functions remains independent. Every subset, including the orientation
+functions, is independent. If their values on all positive rational rays
+spanned a proper subspace, a nonzero linear functional would annihilate
+all of them there. Density and continuity would give an identity on the
+positive open orthant, hence a rational-function identity, a contradiction.
+Successively choose rays whose value vectors increase the span.
+\end{proof}
+
+In this statement ``distinguish'' means that, after the single-letter
+contribution is subtracted, an exact finite linear system recovers the
+formal orientation values. It does not imply that the recovered numerical
+values are independent of one another or of other periods.
+
+\begin{theorem}[Complete formal single-letter closure]\label{thm:closure}
+Let $d\ge3$, and let every prefix sum of $\bbc$ be nonzero. Replace the
+values in \eqref{eq:ray} by their universal words. That formal finite part
+belongs to the single-letter algebra (with the slope coefficients adjoined)
+if and only if
+\begin{equation}\label{eq:closed-locus}
+ c_2=c_3=\cdots=c_d.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The component of bidegree $(d-1,1)$ in \eqref{eq:ray} is
+\[
+ -\frac1{c_1}\sum_{i=1}^{d-1}c_{i+1}
+                   X^{i-1}YX^{d-1-i}.
+\]
+The words here constitute a single permutation orbit. By Theorem
+\ref{thm:rank}, its coefficient vector belongs to $\SSS$ exactly when
+all its entries are equal. This forces \eqref{eq:closed-locus}.
+Conversely, if every inner slope is $t$, each suffix polynomial in
+\eqref{eq:ray} is invariant under permuting its letters: the common factor
+is $t^{d-j}$ and the factorial denominator is permutation invariant.
+Every such combination is an orbit-sum combination, and hence lies in
+$\SSS$. The distinct bidegrees ensure that neither direction can be
+altered by cancellation from another layer.
+\end{proof}
+
+\begin{remark}
+This is a necessary-and-sufficient result within a fixed universal law
+system. At particular numerical $a$, an extra analytic identity could
+reduce a ray outside \eqref{eq:closed-locus}. The theorem does not rule
+out that possibility. At $d=2$ there is no nontrivial orientation quotient,
+and the one-entry inner-slope condition is vacuous.
+\end{remark}
+
+\section{Gamma generation of every closed ray}
+\label{sec:gamma-generation}
+The predecessor's diagonal generator provides an explicit evaluation on
+the complete closed locus just found. Define, as a formal power series in
+$z$ with coefficients holomorphic near $u=0$,
+\begin{equation}\label{eq:master-E}
+ \mathcal E_a(z,u)=\exp\left\{
+ zg_a(u)+\sum_{k\ge2}\frac{(-1)^{k+1}}k\zeta(k+ku,a)z^k\right\}.
+\end{equation}
+
+\begin{proposition}[Diagonal generator]\label{prop:diagonal-generator}
+For every $j\ge0$,
+\begin{equation}\label{eq:E-H}
+ [z^j]\mathcal E_a(z,u)=\HH_j(u,\ldots,u;a),\qquad
+ \mathcal E_a(z,0)=\frac{\Gamma(a)}{\Gamma(a+z)}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+For positive $u$, the elementary-symmetric generating identity for the
+convergent diagonal multiple zeta sums is
+\[
+ \sum_{d\ge0}Z_d(1+u,\ldots,1+u;a)z^d
+ =\exp\left\{\sum_{k\ge1}\frac{(-1)^{k+1}}k\zeta(k+ku,a)z^k\right\}.
+\]
+The prefix denominators in \eqref{eq:germ} on this diagonal are
+$(d-j)!u^{d-j}$. Therefore its left side equals
+$e^{z/u}\sum_{j\ge0}\HH_j(u,\ldots,u;a)z^j$. Cancel $e^{z/u}$
+coefficientwise and continue the holomorphic coefficients to $u=0$.
+The Taylor expansion of $\log\Gamma(a+z)$ then proves the second
+identity, since
+\[
+ \log\frac{\Gamma(a)}{\Gamma(a+z)}
+ =\gamma_0(a)z+\sum_{k\ge2}\frac{(-1)^{k+1}}k\zeta(k,a)z^k.
+\]
+\end{proof}
+
+\begin{corollary}[All-depth closed-ray identity]\label{cor:closed-ray}
+When $c+rt\ne0$ for $0\le r\le d-1$,
+\begin{equation}\label{eq:closed-ray}
+ \boxed{\displaystyle
+ F_d(c,t,\ldots,t;a)=\sum_{j=1}^d
+ \frac{t^{d-j}}{\prod_{r=0}^{d-j-1}(c+rt)}
+                    [z^ju^{d-j}]\mathcal E_a(z,u).}
+\end{equation}
+Every coefficient on the right is a finite polynomial in generalized
+Stieltjes constants and spectral derivatives $\zeta^{(m)}(k,a)$,
+$k\ge2$. At $t=0$ this gives $F_d(c,0,\ldots,0;a)=C_d(a)$, where
+\begin{equation}\label{eq:C-gen}
+ C_d(a)=[z^d]\frac{\Gamma(a)}{\Gamma(a+z)}=\R_a(X^d).
+\end{equation}
+\end{corollary}
+\begin{proof}
+In \eqref{eq:germ}, the $j$th numerator along this ray is
+$\HH_j(t\varepsilon,\ldots,t\varepsilon;a)$. Its denominator is
+$\varepsilon^{d-j}\prod_{r=0}^{d-j-1}(c+rt)$. Use
+\eqref{eq:E-H} and extract the constant coefficient. The $t=0$ value
+follows directly, or by continuity. Finite coefficient extraction from
+\eqref{eq:master-E} uses only finitely many $k$ and finitely many spectral
+derivatives.
+\end{proof}
+
+For later use, put $x=\gamma_0(a)$ and $z_k=\zeta(k,a)$. Then
+\begin{align}
+ C_2&=\frac{x^2-z_2}{2},\qquad
+ C_3=\frac{x^3-3xz_2+2z_3}{6},\label{eq:C23}\\
+ C_4&=\frac{x^4-6x^2z_2+3z_2^2+8xz_3-6z_4}{24}.
+ \label{eq:C4}
+\end{align}
+Because $z_k=(-1)^k\psi^{(k-1)}(a)/(k-1)!$ for $k\ge2$,
+the $C_j$ themselves are polygamma polynomials.
+
+\section{Every double orientation as a convergent Stieltjes identity}
+\label{sec:commutators}
+Define the logarithmic commutators
+\begin{equation}\label{eq:commutator-def}
+ \mathcal C_{p,q}(a)=\R_a(Z_pZ_q)-\R_a(Z_qZ_p),\qquad p,q\ge0.
+\end{equation}
+They are antisymmetric in $p,q$. Combined with
+\eqref{eq:double-stuffle}, one commutator gives both ordered double
+values. The all-index contact term in the next theorem is part of the
+identity, not a matter of notation.
+
+\begin{theorem}[All-index Stieltjes commutator]\label{thm:commutator}
+Let $p,q\ge0$,
+\[
+ \kappa_{p,q}=\frac1{q+1}-\frac1{p+1},\qquad n=p+q+1.
+\]
+Then, for every $a>0$,
+\begin{equation}\label{eq:commutator-series}
+ \boxed{\displaystyle
+ \mathcal C_{p,q}(a)=\kappa_{p,q}\gamma_n(a)+
+ \sum_{\nu=0}^\infty
+ \frac{\log^q x\,\gamma_p(x)-\log^p x\,\gamma_q(x)
+                  -\kappa_{p,q}\log^n x}{x},\quad x=\nu+a.}
+\end{equation}
+The series is ordinarily absolutely convergent, locally uniformly in $a$.
+For $p\ne q$, its summand has the expansion
+\begin{equation}\label{eq:commutator-tail}
+ \frac{q-p}{12x^3}\log^{p+q-1}x
+       +O\!\left(\frac{1+\log^{p+q-1}x}{x^5}\right).
+\end{equation}
+For $p=q$ both sides vanish identically.
+\end{theorem}
+\begin{proof}
+At depth two, \eqref{eq:H-recursion} reads
+\[
+ \HH_2(u,v)=A_2(u,v)+\frac{g_a(u+v)-g_a(v)}u.
+\]
+The contribution of the divided difference to the coefficient difference
+corresponding to \eqref{eq:commutator-def} is
+\begin{align*}
+ &(-1)^{p+q}p!q!\,[u^pv^q-u^qv^p]
+                   \frac{g_a(u+v)-g_a(v)}u\\
+ &\quad=-\frac{p!q!}{n!}
+     \left\{\binom n{p+1}-\binom n{q+1}\right\}\gamma_n(a)
+       =\kappa_{p,q}\gamma_n(a).
+\end{align*}
+Here bracket notation denotes the difference of the two indicated
+coefficient extractions. This computation fixes the contact term exactly.
+
+For $x>0$, Taylor expansion of \eqref{eq:kernel-B} gives
+\begin{equation}\label{eq:B-derivative}
+ \partial_u^mB(0,x)=(-1)^m
+       \left\{\gamma_m(x+1)+\frac{\log^{m+1}x}{m+1}\right\}.
+\end{equation}
+Differentiate the normally convergent series
+$A_2(u,v)=\sum_{\nu\ge0}B(u,\nu+a)(\nu+a)^{-1-v}$.
+Using \eqref{eq:B-derivative}, its antisymmetric contribution is
+\[
+ \sum_{\nu\ge0}\frac1x
+ \left\{\log^q x\,\gamma_p(x+1)
+       -\log^p x\,\gamma_q(x+1)
+       -\kappa_{p,q}\log^{p+q+1}x\right\}.
+\]
+The Stieltjes shift
+$\gamma_m(x+1)=\gamma_m(x)-\log^m x/x$ cancels between the two
+terms, proving \eqref{eq:commutator-series}.
+
+For completeness, the first Euler--Maclaurin terms of the one-variable
+Hurwitz function give
+\begin{equation}\label{eq:gamma-asym}
+ \gamma_m(x)=-\frac{L^{m+1}}{m+1}+\frac{L^m}{2x}
+       +\frac{L^m-mL^{m-1}}{12x^2}
+       +O\bigl(x^{-4}(1+L^m)\bigr),\quad L=\log x.
+\end{equation}
+The term $mL^{m-1}$ is zero when $m=0$. To obtain the sharper
+antisymmetric remainder in \eqref{eq:commutator-tail}, retain the next
+Euler--Maclaurin term before taking the difference. It is $x^{-4}$ times
+a polynomial obtained from $(1+u)_3e^{-uL}$; its top $L^m$ coefficient is
+independent of $m$, so the top $L^{p+q}$ term cancels. The remaining degree
+is at most $p+q-1$. The same differentiated remainder argument, or one
+additional Euler--Maclaurin term, proves the stated $O$ estimate. The
+$x^0$ contribution in the numerator of
+\eqref{eq:commutator-series} is exactly cancelled by the displayed
+logarithmic subtraction; the $x^{-1}$ terms cancel each other. The
+$x^{-2}$ term is $(q-p)L^{p+q-1}/12$. Division by $x$ proves
+\eqref{eq:commutator-tail} and absolute convergence.
+\end{proof}
+
+\begin{corollary}[Explicit ordered double normal form]\label{cor:double-normal}
+For every $p,q\ge0$,
+\begin{equation}\label{eq:double-normal}
+ \R_a(Z_pZ_q)=\frac12\left\{
+ \gamma_p(a)\gamma_q(a)-(-1)^{p+q}\zeta^{(p+q)}(2,a)
+                         +\mathcal C_{p,q}(a)\right\}.
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:C-shift}
+ \mathcal C_{p,q}(a)-\mathcal C_{p,q}(a+1)
+   =\frac{\log^q a\,\gamma_p(a)-\log^p a\,\gamma_q(a)}a.
+\end{equation}
+\end{corollary}
+\begin{proof}
+Add and subtract \eqref{eq:double-stuffle} and
+\eqref{eq:commutator-def}. Apply \eqref{eq:word-shift} to the two
+ordered words for the second identity; the products of the two
+$a$-terms cancel.
+\end{proof}
+
+Write $\Omega=\mathcal C_{0,1}$ and
+$\Omega_2=\mathcal C_{0,2}$. The first is precisely the orientation
+constant in the inspected predecessor. The theorem reproduces its
+normalization, including the $-\gamma_2/2$ term, and gives the next one:
+\begin{align}
+ \Omega(a)&=-\frac{\gamma_2(a)}2+
+ \sum_{\nu\ge0}\frac{L\gamma_0(x)-\gamma_1(x)+L^2/2}{x},
+ \label{eq:Omega}\\
+ \Omega_2(a)&=-\frac{2\gamma_3(a)}3+
+ \sum_{\nu\ge0}\frac{L^2\gamma_0(x)-\gamma_2(x)+2L^3/3}{x},
+ \label{eq:Omega2}
+\end{align}
+where $x=\nu+a$ and $L=\log x$. Thus these are exact analytic
+coordinates, rather than residuals of an integer-relation search.
+
+\section{Ordinary polylogarithmic Mellin identities}
+\label{sec:mellin}
+For $a,t>0$, define
+\begin{equation}\label{eq:Lerch-heat}
+ \mathcal L_a(s;t)=\sum_{\nu\ge0}\frac{e^{-(\nu+a)t}}{(\nu+a)^s}
+                 =e^{-at}\Phi(e^{-t},s,a).
+\end{equation}
+This is entire in $s$ for each fixed $t>0$. At $a=1$ it is
+$\Li_s(e^{-t})$. Define the elementary reciprocal-Gamma polynomials
+\begin{equation}\label{eq:P-polynomials}
+ P_m(T)=\left.\partial_u^m\frac{e^{uT}}{\Gamma(1+u)}\right|_{u=0}.
+\end{equation}
+With $\gamma$ denoting Euler's constant, the first four are
+\begin{align*}
+ P_0&=1,&P_1&=T+\gamma,\\
+ P_2&=(T+\gamma)^2-\zeta(2),&
+ P_3&=(T+\gamma)^3-3\zeta(2)(T+\gamma)+2\zeta(3).
+\end{align*}
+All higher ones follow by finite coefficient extraction from the
+Taylor expansion of $1/\Gamma(1+u)$.
+
+\begin{theorem}[Mellin realization of every commutator]\label{thm:C-Mellin}
+For $p,q\ge0$, with $n$ and $\kappa_{p,q}$ as in
+Theorem~\ref{thm:commutator},
+\begin{align}\label{eq:C-Mellin}
+ \mathcal C_{p,q}(a)-\kappa_{p,q}\gamma_n(a)
+ ={}&(-1)^{p+q}\int_0^\infty K(t)
+ \bigl\{P_p(\log t)\,\partial_s^q\mathcal L_a(1;t)\notag\\
+ &\hspace{39mm}-P_q(\log t)\,\partial_s^p\mathcal L_a(1;t)\bigr\}\dd t.
+\end{align}
+This is an ordinary absolutely convergent integral; no finite-part
+interpretation is needed at either endpoint.
+\end{theorem}
+\begin{proof}
+Insert \eqref{eq:B-Mellin} into $A_2$ and interchange a normally
+convergent sum and integral to obtain
+\[
+ A_2(u,v)=\frac1{\Gamma(1+u)}\int_0^\infty
+                       K(t)t^u\mathcal L_a(1+v;t)\dd t.
+\]
+Differentiate in $u,v$ and antisymmetrize, using
+\eqref{eq:jet-word} and the already computed divided-difference term.
+For a direct endpoint check, $\partial_s^m\mathcal L_a(1;t)$ grows at
+most like a fixed power of $1+|\log t|$ as $t\downarrow0$. This follows
+by splitting its defining sum at $\nu\asymp1/t$ and using the exponential
+tail. The factor $K(t)$ is bounded there. At infinity every order
+derivative decays exponentially. These estimates justify all the fixed
+differentiations and prove the asserted convergence.
+\end{proof}
+
+At $a=1$, \eqref{eq:C-Mellin} supplies an all-index family involving
+ordinary polylogarithms and their order derivatives. For example,
+\begin{align}\label{eq:Omega-Mellin}
+ \Omega(1)+\frac{\gamma_2}{2}
+ =\int_0^\infty K(t)\biggl\{
+ (\log t+\gamma)\Li_1(e^{-t})
+ -\left.\partial_s\Li_s(e^{-t})\right|_{s=1}\biggr\}\dd t,\\
+ \Omega_2(1)+\frac{2\gamma_3}{3}
+ =\int_0^\infty K(t)\biggl\{
+ \left.\partial_s^2\Li_s(e^{-t})\right|_{s=1}
+ -\bigl((\log t+\gamma)^2-\zeta(2)\bigr)\Li_1(e^{-t})
+ \biggr\}\dd t.
+ \label{eq:Omega2-Mellin}
+\end{align}
+Here $\Li_1(e^{-t})=-\log(1-e^{-t})$. No relation between
+$\Omega(1)$ and a smaller specified constant algebra is presumed.
+
+\begin{proposition}[Rational shifts and cyclotomic order derivatives]
+\label{prop:cyclotomic}
+Let $1\le r\le q$ and $\omega=e^{2\pi i/q}$. Then
+\begin{equation}\label{eq:rational-L}
+ \mathcal L_{r/q}(s;t)=q^{s-1}\sum_{h=0}^{q-1}
+               \omega^{-rh}\Li_s(\omega^h e^{-t/q}).
+\end{equation}
+For the ordered depth-two heat sum
+\begin{equation}\label{eq:L2-def}
+ \mathcal L_a^{(2)}(s_1,s_2;t)=
+ \sum_{\nu>\mu\ge0}\frac{e^{-(\nu+a)t}}
+                        {(\nu+a)^{s_1}(\mu+a)^{s_2}},
+\end{equation}
+one has
+\begin{align}\label{eq:rational-L2}
+ \mathcal L_{r/q}^{(2)}(s_1,s_2;t)
+ =q^{s_1+s_2-2}\sum_{h,k=0}^{q-1}\omega^{-r(h+k)}
+       \Li_{s_1,s_2}(\omega^h e^{-t/q},\omega^k).
+\end{align}
+Here $\Li_{s_1,s_2}(z_1,z_2)=\sum_{n>m\ge1}z_1^nz_2^m/(n^{s_1}m^{s_2})$.
+Both identities may be differentiated to every fixed order in the spectral
+variables and substituted into the ordinary integrals of this article.
+\end{proposition}
+\begin{proof}
+Write $q\nu+r$ for the positive integer in the required residue class.
+The root-of-unity filter
+$q^{-1}\sum_h\omega^{h(n-r)}$ selects that class. Applying it once
+proves \eqref{eq:rational-L}; applying it independently to the two
+ordered indices proves \eqref{eq:rational-L2}. For $t>0$ the outer
+exponential ensures normal convergence, including every fixed logarithmic
+weight. In the resulting finite cyclotomic sums, the endpoint estimates
+in Theorem~\ref{thm:C-Mellin} and its depth-two analogue justify the
+Mellin substitutions. Derivatives of the prefactor give explicit powers
+of $\log q$.
+\end{proof}
+
+\section{The complete depth-four normal form}
+\label{sec:quartic}
+We now answer the predecessor's depth-four question explicitly. To avoid
+confusing letters with numerical values, retain $X=Z_0$, $Y=Z_1$,
+$Z=Z_2$ for words, and use
+\begin{equation}\label{eq:quartic-data}
+ x=\gamma_0(a),\quad y=\gamma_1(a),\quad
+ z=\zeta(2,a),\quad p=-\zeta'(2,a),\quad r=-\zeta'(3,a).
+\end{equation}
+All quantities in this section are evaluated at the same positive $a$.
+Define
+\begin{align}
+ A&=\R_a(YXX),&B&=\R_a(XYX),&C&=\R_a(XXY),\label{eq:ABC}\\
+ T&=A+B+C,&D&=A-C,&\Theta&=A-2B+C.\label{eq:T-D-Theta}
+\end{align}
+The final orientation coordinate is $\Omega_2=\mathcal C_{0,2}$.
+
+\begin{proposition}[Permutation components at depth four]
+\label{prop:quartic-components}
+Among the eight raw coefficients entering a depth-four finite part,
+five independent combinations are in the single-letter algebra.
+The remaining quotient is
+\begin{equation}\label{eq:quartic-representation}
+ \operatorname{Std}(S_3)\ \oplus\ \operatorname{sgn}(S_2).
+\end{equation}
+Here the two groups act on their respective length-three and length-two
+word layers; this is not an assertion of a common $S_4$ action preserving
+each prefix denominator. The coordinates $(D,\Theta)$ form a rational
+basis of the standard component, and $\Omega_2$ spans the sign component.
+The symmetric triple value is
+\begin{equation}\label{eq:T-evaluation}
+ T=yC_2-xp+r
+   =\gamma_1(a)\frac{\gamma_0(a)^2-\zeta(2,a)}2
+        +\gamma_0(a)\zeta'(2,a)-\zeta'(3,a).
+\end{equation}
+\end{proposition}
+\begin{proof}
+The four layers $(j,r)=(1,3),(2,2),(3,1),(4,0)$ contain respectively
+$1,3,3,1$ words. The length-two layer consists of $ZX,YY,XZ$:
+$ZX+XZ$ and $YY$ are symmetric, and $XZ-ZX$ is the sign component.
+The length-three layer is the permutation representation on $YXX,XYX,XXY$.
+Its sum is invariant; its sum-zero quotient is the standard two-dimensional
+representation. The other layers are invariant single orbits. This proves
+the decomposition and the count $1+2+1+1=5$ of symmetric directions.
+The change of coordinates in \eqref{eq:T-D-Theta} is invertible, with
+\begin{equation}\label{eq:ABC-inverse}
+ A=\frac{2T+\Theta}{6}+\frac D2,\quad
+ B=\frac{T-\Theta}{3},\quad
+ C=\frac{2T+\Theta}{6}-\frac D2.
+\end{equation}
+Finally the stuffle product of $Y$ with $XX$ is
+$YXX+XYX+XXY+(2,1)X+X(2,1)$. The last pair sums to $xp-r$,
+while $\R_a(XX)=C_2$. This gives \eqref{eq:T-evaluation}.
+\end{proof}
+
+Define the quadratic form
+\begin{align}\label{eq:quadratic-Q}
+ Q_2(u,v;a)={}&\frac{u^2+v^2}{4}
+                 \bigl(x\gamma_2(a)-\zeta''(2,a)\bigr)
+             +\frac{v^2-u^2}{4}\Omega_2(a)\notag\\
+ &+\frac{uv}{2}\bigl(y^2-\zeta''(2,a)\bigr).
+\end{align}
+
+\begin{theorem}[Every ordered quartic finite part]\label{thm:quartic}
+For every $a>0$ and every ray with nonzero prefix sums,
+\begin{align}\label{eq:quartic-master}
+ F_4(c_1,c_2,c_3,c_4;a)={}&C_4
+ -\frac1{c_1}\left\{\frac{c_2+c_3+c_4}{3}T
+                 +\frac{c_2-c_4}{2}D
+                 +\frac{c_2-2c_3+c_4}{6}\Theta\right\}\notag\\
+ &+\frac{Q_2(c_3,c_4;a)}{c_1(c_1+c_2)}
+ -\frac{c_4^3\gamma_3(a)}{6c_1(c_1+c_2)(c_1+c_2+c_3)}.
+\end{align}
+Here $C_4$ and $T$ are the single-letter expressions
+\eqref{eq:C4} and \eqref{eq:T-evaluation}; the three ordered coordinates
+are exactly $D,\Theta,\Omega_2$.
+\end{theorem}
+\begin{proof}
+At $d=4$, formula \eqref{eq:ray} is
+\begin{align*}
+ F_4={}&\R_a(X^4)
+ -\frac{c_2\R_a(YXX)+c_3\R_a(XYX)+c_4\R_a(XXY)}{c_1}\\
+ &+\frac{c_3^2\R_a(ZX)/2+c_3c_4\R_a(YY)+c_4^2\R_a(XZ)/2}
+          {c_1(c_1+c_2)}
+ -\frac{c_4^3\gamma_3(a)}{6c_1(c_1+c_2)(c_1+c_2+c_3)}.
+\end{align*}
+Use \eqref{eq:ABC-inverse} in the linear term. In the quadratic term,
+\eqref{eq:double-normal} gives
+\[
+ \R_a(ZX)=\frac{x\gamma_2-\zeta''(2,a)-\Omega_2}{2},\quad
+ \R_a(XZ)=\frac{x\gamma_2-\zeta''(2,a)+\Omega_2}{2},\quad
+ \R_a(YY)=\frac{y^2-\zeta''(2,a)}2.
+\]
+The result is \eqref{eq:quadratic-Q}, while the constant word is
+$C_4$ by \eqref{eq:C-gen}.
+\end{proof}
+
+\subsection{Three positive rays and an exact inverse}
+Let $K_4(\bbc;a)$ denote the right side of \eqref{eq:quartic-master}
+with $D,\Theta,\Omega_2$ set to zero, leaving the explicitly known
+single-letter part. Set
+\begin{align*}
+ \Delta_1&=F_4(1,1,1,2;a)-K_4(1,1,1,2;a),\\
+ \Delta_2&=F_4(1,1,2,3;a)-K_4(1,1,2,3;a),\\
+ \Delta_3&=F_4(1,2,3,4;a)-K_4(1,2,3,4;a).
+\end{align*}
+
+\begin{corollary}[Positive-ray reconstruction]\label{cor:three-rays}
+The three orientation coordinates satisfy the exact identities
+\begin{equation}\label{eq:three-rays}
+ \begin{pmatrix}\Delta_1\\\Delta_2\\\Delta_3\end{pmatrix}
+ =\begin{pmatrix}1/2&-1/6&3/8\\1&0&5/8\\1&0&7/12\end{pmatrix}
+ \begin{pmatrix}D\\\Theta\\\Omega_2\end{pmatrix},
+ \qquad \det=-\frac1{144}.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:ray-inverse}
+ \boxed{\quad
+ D=-14\Delta_2+15\Delta_3,\quad
+ \Theta=-6\Delta_1+12\Delta_2-9\Delta_3,\quad
+ \Omega_2=24\Delta_2-24\Delta_3.\quad}
+\end{equation}
+\end{corollary}
+\begin{proof}
+In \eqref{eq:quartic-master}, the coefficients of $(D,\Theta,\Omega_2)$
+are
+\[
+ \left(-\frac{c_2-c_4}{2c_1},\;
+       -\frac{c_2-2c_3+c_4}{6c_1},\;
+        \frac{c_4^2-c_3^2}{4c_1(c_1+c_2)}\right).
+\]
+Substitution of the three rays gives the displayed matrix. Rational
+Gaussian elimination gives its determinant and inverse.
+\end{proof}
+
+This corollary provides identities between genuinely ordered Laurent
+coefficients and convergent Stieltjes coordinates. No extrapolation from
+a diagonal or a fully symmetrized calculation would determine all three.
+
+\subsection{All equal inner slopes and a diagonal check}
+For $c+rt\ne0$ at the relevant prefixes,
+\begin{align}\label{eq:quartic-closed}
+ F_4(c,t,t,t;a)={}&C_4-\frac tcT
+ +\frac{t^2}{2c(c+t)}
+       \bigl(x\gamma_2(a)+y^2-2\zeta''(2,a)\bigr)\notag\\
+ &-\frac{t^3\gamma_3(a)}{6c(c+t)(c+2t)}.
+\end{align}
+This has no ordered coordinate at all, in agreement with
+Theorem~\ref{thm:closure}. In particular,
+\begin{equation}\label{eq:quartic-diagonal}
+ F_4(1,1,1,1;a)
+ =C_4-T+\frac{x\gamma_2(a)+y^2-2\zeta''(2,a)}4
+                        -\frac{\gamma_3(a)}{36}.
+\end{equation}
+An independent exact check is available from the elementary-symmetric
+identity
+\begin{align}\label{eq:newton4}
+ Z_4(s,s,s,s;a)=\frac1{24}\bigl\{&\zeta(s,a)^4
+ -6\zeta(s,a)^2\zeta(2s,a)+3\zeta(2s,a)^2\notag\\
+ &+8\zeta(s,a)\zeta(3s,a)-6\zeta(4s,a)\bigr\}.
+\end{align}
+Substitute $s=1+\varepsilon$ and \eqref{eq:stieltjes} and extract the
+constant coefficient. The result is exactly \eqref{eq:quartic-diagonal};
+the source code performs this as a symbolic rational polynomial identity.
+
+\section{A Gamma-weighted differential identity and antiderivative}
+\label{sec:gamma-bridge}
+The first standard-component coordinate $D$ has a useful relation to the
+first double commutator and to ordinarily convergent generalized harmonic
+sums. Define $Q=(2,0)$ and $P=(2,1)$, and put
+\begin{equation}\label{eq:H-E-def}
+ H(a)=\R_a(QX),\qquad
+ E(a)=\R_a(PX)-\R_a(QY).
+\end{equation}
+For $x_\nu=\nu+a$, $L_\nu=\log x_\nu$, let
+\begin{equation}\label{eq:HN-JN}
+ h_\nu(a)=\sum_{\mu=0}^{\nu-1}\frac1{\mu+a},\qquad
+ j_\nu(a)=\sum_{\mu=0}^{\nu-1}\frac{\log(\mu+a)}{\mu+a}.
+\end{equation}
+Then
+\begin{equation}\label{eq:H-E-sums}
+ H(a)=\sum_{\nu\ge0}\frac{h_\nu(a)}{x_\nu^2},\qquad
+ E(a)=\sum_{\nu\ge0}\frac{L_\nu h_\nu(a)-j_\nu(a)}{x_\nu^2}.
+\end{equation}
+These sums converge absolutely and locally uniformly, including the
+fixed parameter derivatives used below.
+
+\begin{lemma}[The merged-letter contribution]\label{lem:D-merged}
+With the notation \eqref{eq:quartic-data},
+\begin{equation}\label{eq:D-merged}
+ D=-\frac{x\Omega}{2}+\frac{xp-yz}{2}-E.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For transparency, the three finite quasi-shuffle rows needed are
+\begin{align*}
+ Y*XX&=YXX+XYX+XXY+PX+XP,\\
+ X*YX&=2YXX+XYX+PX+YQ,\\
+ X*XY&=XYX+2XXY+QY+XP.
+\end{align*}
+Subtract the last row from the middle row and evaluate. Its left side
+is $x(\R_a(YX)-\R_a(XY))=-x\Omega$. On the right,
+$PX-QY$ contributes $E$, and
+\[
+ \R_a(YQ)-\R_a(XP)
+ =(yz-r-\R_a(QY))-(xp-r-\R_a(PX))=yz-xp+E.
+\]
+The triple part contributes $2D$. Rearrangement proves
+\eqref{eq:D-merged}.
+\end{proof}
+
+This calculation explains why keeping only the highest-length part of a
+shuffle relation loses information. The merged letters contribute $E$;
+that term does not disappear simply because the top-depth permutation
+component is two-dimensional.
+
+\begin{theorem}[Gamma-weighted bridge]\label{thm:gamma-bridge}
+For every $a>0$,
+\begin{equation}\label{eq:Omega-derivative}
+ \Omega'(a)=x(z-p)+yz-\zeta(3,a)-2H(a)+2E(a),
+\end{equation}
+and consequently
+\begin{equation}\label{eq:Gamma-bridge}
+ \boxed{\displaystyle
+ 2D(a)=\gamma_0(a)\zeta(2,a)-\zeta(3,a)-2H(a)
+       -\Gamma(a)\frac{\mathrm d}{\mathrm da}
+                          \left(\frac{\Omega(a)}{\Gamma(a)}\right).}
+\end{equation}
+For any positive endpoints $\alpha,\beta$ this gives the exact
+antiderivative identity
+\begin{align}\label{eq:Gamma-antiderivative}
+ \int_\alpha^\beta
+ \frac{\gamma_0(a)\zeta(2,a)-\zeta(3,a)-2H(a)-2D(a)}{\Gamma(a)}\dd a
+ =\frac{\Omega(\beta)}{\Gamma(\beta)}
+  -\frac{\Omega(\alpha)}{\Gamma(\alpha)}.
+\end{align}
+\end{theorem}
+\begin{proof}
+The letter derivation gives $\mathcal DX=-Q$ and
+$\mathcal DY=-P+Q$. Thus
+\begin{align*}
+ \Omega'&=-\R_a(QY)-\R_a(XP)+\R_a(XQ)
+               +\R_a(PX)-\R_a(QX)+\R_a(YQ).
+\end{align*}
+Use
+\[
+ \R_a(XP)=xp-r-\R_a(PX),\quad
+ \R_a(YQ)=yz-r-\R_a(QY),\quad
+ \R_a(XQ)=xz-\zeta(3,a)-H.
+\]
+The result is \eqref{eq:Omega-derivative}. Eliminate $E$ with
+\eqref{eq:D-merged} to obtain
+\[
+ 2D=xz-\zeta(3,a)-2H-x\Omega-\Omega'.
+\]
+Since $x=-\psi(a)$,
+$\Gamma(a)(\Omega/\Gamma)'=\Omega'+x\Omega$. This proves
+\eqref{eq:Gamma-bridge}. Local uniform convergence and the parameter
+transport proposition ensure continuous differentiability on every compact
+positive interval. The fundamental theorem of calculus yields
+\eqref{eq:Gamma-antiderivative}.
+\end{proof}
+
+At $a=1$ the classical Euler value $H(1)=\zeta(3)$ makes the bridge
+particularly simple:
+\begin{equation}\label{eq:D-at-one}
+ 2D(1)=\gamma\zeta(2)-3\zeta(3)-\gamma\Omega(1)-\Omega'(1).
+\end{equation}
+For a direct proof of the value used here, the generating identity
+$\Li_{1,1}(u,1)=\tfrac12\log^2(1-u)$ gives
+\[
+ H(1)=\frac12\int_0^1\frac{\log^2(1-u)}u\dd u
+     =\frac12\int_0^1\frac{\log^2 v}{1-v}\dd v
+     =\zeta(3).
+\]
+The last step is a positive termwise geometric expansion. The equality
+$H(a)=\zeta(3,a)$ has not been used, and is not asserted for general $a$.
+
+
+\subsection{An all-index Gamma--Stieltjes antiderivative family}
+The first-order bridge is one member of a uniform identity. For $q\ge1$
+define
+\begin{equation}\label{eq:Dq-Hm}
+ D_q(a)=\R_a(Z_qXX)-\R_a(XXZ_q),\qquad
+ H_m(a)=\R_a((2,m)X)=\sum_{\nu\ge0}
+             \frac{\log^m(\nu+a)h_\nu(a)}{(\nu+a)^2}.
+\end{equation}
+Thus $D_1=D$ and $H_0=H$. The $H_m$ are ordinarily convergent
+logarithmically weighted generalized harmonic sums.
+
+\begin{theorem}[All-index Gamma bridge and unit-interval evaluation]
+\label{thm:all-Gamma}
+For $a>0$ and every integer $q\ge1$,
+\begin{align}\label{eq:all-Gamma}
+ \Gamma(a)\frac{\mathrm d}{\mathrm da}
+       \left(\frac{\mathcal C_{0,q}(a)}{\Gamma(a)}\right)
+ =q\bigl\{\gamma_0(a)\ell_{2,q-1}(a)
+          -\ell_{3,q-1}(a)-2H_{q-1}(a)\bigr\}-2D_q(a).
+\end{align}
+In particular, writing $\gamma_q=\gamma_q(1)$,
+\begin{equation}\label{eq:unit-Stieltjes-integral}
+ \boxed{\displaystyle
+ \int_1^2
+ \frac{q\{\gamma_0(a)\ell_{2,q-1}(a)-\ell_{3,q-1}(a)-2H_{q-1}(a)\}
+                  -2D_q(a)}{\Gamma(a)}\dd a=\gamma_q.}
+\end{equation}
+The one-variable letters in these formulas are explicitly
+$\ell_{k,q-1}(a)=(-1)^{q-1}\zeta^{(q-1)}(k,a)$.
+\end{theorem}
+\begin{proof}
+Put $Y_q=Z_q$, $P_q=(2,q)$, and
+$E_q=\R_a(P_qX)-\R_a(QY_q)$. Repeating the three stuffle rows in
+Lemma~\ref{lem:D-merged}, with $Y_q$ replacing $Y$, gives
+\[
+ 2D_q=-x\mathcal C_{0,q}+x\ell_{2,q}-\gamma_q(a)z-2E_q.
+\]
+The derivative rule $\mathcal DY_q=-P_q+qP_{q-1}$ gives
+\begin{align*}
+ \mathcal C_{0,q}'
+ &=2E_q-x\ell_{2,q}+\gamma_q(a)z
+          +q\{\R_a(XP_{q-1})-\R_a(P_{q-1}X)\}\\
+ &=2E_q-x\ell_{2,q}+\gamma_q(a)z
+          +q\{x\ell_{2,q-1}-\ell_{3,q-1}-2H_{q-1}\}.
+\end{align*}
+Eliminate $E_q$ and use $x=-\psi(a)$ to obtain
+\eqref{eq:all-Gamma}. This is an identity of finite quasi-shuffle
+expressions under the letter derivation; no convergence claim beyond the
+already established regularization and parameter transport is needed.
+
+Integrate the derivative of $\mathcal C_{0,q}/\Gamma$ over $[1,2]$.
+Since $\Gamma(1)=\Gamma(2)=1$, its endpoint difference is
+$\mathcal C_{0,q}(2)-\mathcal C_{0,q}(1)$. At $a=1$,
+\eqref{eq:C-shift} and $q\ge1$ give precisely this difference as
+$\gamma_q$. The integration is ordinary: every function involved is
+smooth on the compact interval.
+\end{proof}
+
+The case $q=1$ is the particularly simple identity
+\begin{equation}\label{eq:gamma1-integral}
+ \int_1^2\frac{\gamma_0(a)\zeta(2,a)-\zeta(3,a)-2H(a)-2D(a)}{\Gamma(a)}\dd a
+ =\gamma_1.
+\end{equation}
+The appearance of a Stieltjes constant here comes from the exact shift
+of an ordered commutator, rather than from a singular endpoint or a
+formal exchange of divergent integrals.
+
+\section{The second standard component as a curvature integral}
+\label{sec:curvature}
+The term ``curvature'' here refers only to the second finite difference
+$A-2B+C$ among three placements of a logarithmic letter. It does not
+refer to differential geometry or an unproved sign property.
+
+\begin{theorem}[Ordinary Mellin formula for the triple curvature]
+\label{thm:curvature}
+Define
+\begin{align}\label{eq:Xi-integral}
+ \Xi(a)=\int_0^\infty K(t)\bigl\{
+ &2\partial_{s_1}\mathcal L_a^{(2)}(1,1;t)
+   -\partial_{s_2}\mathcal L_a^{(2)}(1,1;t)\notag\\
+ &-(\log t+\gamma)\mathcal L_a^{(2)}(1,1;t)\bigr\}\dd t.
+\end{align}
+The integral is ordinarily absolutely convergent, and
+\begin{equation}\label{eq:Theta-Xi}
+ \boxed{\displaystyle
+ \Theta(a)=\Xi(a)+\frac34\gamma_0(a)\gamma_2(a)
+                 -\frac12\gamma_1(a)^2-\frac14\zeta''(2,a)
+                 -\frac34\Omega_2(a).}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Insert \eqref{eq:B-Mellin} into \eqref{eq:tail-A} at depth three:
+\[
+ A_3(u,v,w)=\frac1{\Gamma(1+u)}\int_0^\infty
+                  K(t)t^u\mathcal L_a^{(2)}(1+v,1+w;t)\dd t.
+\]
+Write $\HH_2(u,v)=\sum h_{mn}u^mv^n$. The divided difference in
+\eqref{eq:H-recursion} then has linear part
+$h_{20}(u+2v)+h_{11}w$. By \eqref{eq:jet-word},
+\[
+ \Theta=-\partial_u\HH_3(0)+2\partial_v\HH_3(0)-\partial_w\HH_3(0)
+        =\Xi+3h_{20}-h_{11}.
+\]
+The double normal form yields
+\[
+ h_{20}=\frac{x\gamma_2-\zeta''(2,a)-\Omega_2}{4},\qquad
+ h_{11}=\frac{y^2-\zeta''(2,a)}2.
+\]
+Substitution gives \eqref{eq:Theta-Xi}.
+
+For endpoint control, the undifferentiated heat sum in
+\eqref{eq:L2-def}, and each first order derivative, is bounded near zero
+by a fixed power of $1+|\log t|$; split the outer index at $1/t$ and
+bound the inner harmonic sums by logarithmic polynomials. Multiplication
+by $\log t$ preserves integrability. At infinity the outer exponential
+dominates the inner logarithmic growth. These estimates justify the
+integral manipulations and show that no regularized endpoint is hidden
+in \eqref{eq:Xi-integral}.
+\end{proof}
+
+At $a=1$, the heat sum is $\Li_{s_1,s_2}(e^{-t},1)$; at $(1,1)$ it
+is $\tfrac12\log^2(1-e^{-t})$. Consequently
+\eqref{eq:Theta-Xi} is an explicit identity involving the first order
+derivatives of a depth-two polylogarithm, elementary logarithms, Stieltjes
+constants, and a Hurwitz-zeta derivative. Proposition
+\ref{prop:cyclotomic} supplies its rational-shift cyclotomic forms.
+
+\begin{proposition}[A convergent harmonic--Stieltjes series for $\Xi$]
+\label{prop:Xi-series}
+With the notation \eqref{eq:HN-JN}, put $x=\nu+a$, $L=\log x$, and
+\begin{equation}\label{eq:b01}
+ b_0(x)=\gamma_0(x+1)+L,\qquad
+ b_1(x)=-\gamma_1(x+1)-\frac{L^2}{2}.
+\end{equation}
+Then
+\begin{equation}\label{eq:Xi-series}
+ \Xi(a)=\sum_{\nu=0}^\infty
+       \frac{\bigl(-b_1(x)-2L b_0(x)\bigr)h_\nu(a)
+                         +b_0(x)j_\nu(a)}x.
+\end{equation}
+This is absolutely convergent. Its terms are
+$O(x^{-2}(1+\log x)^2)$.
+\end{proposition}
+\begin{proof}
+In the normally convergent double series for $A_3$, the undifferentiated
+inner sum is $h_\nu$, while differentiation in the inner exponent gives
+$-j_\nu$. Also $B(0,x)=b_0(x)$ and $B_u(0,x)=b_1(x)$ by
+\eqref{eq:B-derivative}. Therefore
+$-A_{3,u}+2A_{3,v}-A_{3,w}$ is exactly
+\eqref{eq:Xi-series}. The bound follows from
+$b_0=O(x^{-1})$, $b_1=O(x^{-1}(1+\log x))$ and the elementary harmonic
+bounds $h_\nu=O(1+\log x)$, $j_\nu=O((1+\log x)^2)$.
+\end{proof}
+
+Together, \eqref{eq:Omega2}, \eqref{eq:D-merged},
+\eqref{eq:H-E-sums}, and \eqref{eq:Theta-Xi}--\eqref{eq:Xi-series}
+are a complete convergent-series realization of the quartic normal form.
+Alternatively, the Gamma bridge trades $D$ for $\Omega'$ and $H$,
+and the Mellin formulas trade the other coordinates for ordinary
+polylogarithmic integrals. These are equivalent exact representations;
+none presupposes an unproved reduction to a smaller constant field.
+
+\section{Worked identities and a comparison of representations}
+\label{sec:examples}
+The results are more informative when different exact representations are
+kept distinct. A ray finite part, a convergent Stieltjes sum, and an ordinary
+Mellin integral may encode the same coordinate, but require different
+analytic and algebraic arguments.
+
+\subsection{An explicit difference of positive-ray finite parts}
+Let
+\[
+ F^{(2)}=F_4(1,1,2,3;a),\qquad F^{(3)}=F_4(1,2,3,4;a).
+\]
+Eliminating the known parts in \eqref{eq:ray-inverse} gives the exact
+identity
+\begin{align}\label{eq:explicit-ray-difference}
+ \Omega_2(a)={}&24\bigl(F^{(2)}-F^{(3)}\bigr)-24T
+ +11\gamma_0(a)\gamma_2(a)+12\gamma_1(a)^2\notag\\
+ &-23\zeta''(2,a)-\frac{13}{18}\gamma_3(a).
+\end{align}
+For verification by hand, the two single-letter parts differ by
+\[
+ K_4(1,1,2,3;a)-K_4(1,2,3,4;a)
+ =T-\frac{11}{24}\bigl(x\gamma_2-\zeta''(2,a)\bigr)
+    -\frac12\bigl(y^2-\zeta''(2,a)\bigr)+\frac{13}{432}\gamma_3.
+\]
+Multiplying by $24$ proves \eqref{eq:explicit-ray-difference}. Inserting
+\eqref{eq:Omega2} therefore yields a further convergent identity:
+\begin{align}\label{eq:ray-Stieltjes-series}
+ \sum_{\nu\ge0}\frac{L^2\gamma_0(x)-\gamma_2(x)+2L^3/3}{x}
+ ={}&24\bigl(F^{(2)}-F^{(3)}\bigr)-24T
+       +11\gamma_0(a)\gamma_2(a)+12\gamma_1(a)^2\notag\\
+ &-23\zeta''(2,a)-\frac1{18}\gamma_3(a),\qquad x=\nu+a,\quad L=\log x.
+\end{align}
+This explicitly isolates the length-two sign coordinate from two rays
+whose length-three orientation coefficients cancel after subtraction. The equality
+is exact even when the individual ordered finite parts do not reduce to
+single-letter constants.
+
+\subsection{Every ordered double logarithmic moment}
+Combining Theorem~\ref{thm:commutator} with
+Corollary~\ref{cor:double-normal} gives, without new notation,
+\begin{align}\label{eq:all-double-explicit}
+ \R_a(Z_pZ_q)={}&\frac12\gamma_p(a)\gamma_q(a)
+ -\frac{(-1)^{p+q}}2\zeta^{(p+q)}(2,a)
+ +\frac{\kappa_{p,q}}2\gamma_{p+q+1}(a)\notag\\
+ &+\frac12\sum_{\nu\ge0}
+ \frac{\log^q x\,\gamma_p(x)-\log^p x\,\gamma_q(x)
+                  -\kappa_{p,q}\log^{p+q+1}x}{x}.
+\end{align}
+Here $x=\nu+a$. For $p=q$, the final two terms vanish. For unequal indices, the sum has
+an $x^{-3}$ leading tail after the cancellations built into the formula.
+The equality defines neither side by the other: the left side is the
+harmonic polynomial constant of the finite nested sum, while the right
+side uses ordinary one-variable Stieltjes functions in an absolutely
+convergent series.
+
+\subsection{Exact finite shifts}
+Iterating \eqref{eq:C-shift}, for any positive integer $N$,
+\begin{align}\label{eq:finite-shift}
+ \mathcal C_{p,q}(a+N)=\mathcal C_{p,q}(a)
+ -\sum_{\nu=0}^{N-1}
+ \frac{\log^q(\nu+a)\gamma_p(\nu+a)
+       -\log^p(\nu+a)\gamma_q(\nu+a)}{\nu+a}.
+\end{align}
+The one-letter case of \eqref{eq:word-shift} expresses every
+$\gamma_m(\nu+a)$ here as $\gamma_m(a)-H_\nu^{(1,m)}(a)$.
+Thus all positive integer translates of the commutator are determined by
+one base value and finite generalized harmonic sums. At $a=1$ and $q>0$,
+this specializes to
+\[
+ \mathcal C_{0,q}(2)-\mathcal C_{0,q}(1)=\gamma_q,
+\]
+which is exactly the endpoint mechanism behind
+\eqref{eq:unit-Stieltjes-integral}.
+
+\section{Audit findings, verification, and integration}
+\label{sec:audit}
+\subsection{What is corrected, sharpened, and left open}
+No new mathematical error was established in the inspected predecessor's
+first-commutator formula. In particular, its term $-\gamma_2(a)/2$ is
+correct. The present all-index formula shows why replacing the contact
+term by zero, or extrapolating that first factor unchanged to all indices,
+would be wrong: the correct coefficient is
+$\kappa_{p,q}=1/(q+1)-1/(p+1)$. This is a safeguard for generalization,
+not an allegation that the predecessor contained that error.
+
+The predecessor's depth-four organization question can now be replaced
+by Proposition~\ref{prop:quartic-components} and Theorem
+\ref{thm:quartic}. Its broader all-depth version has the exact linear
+answer in Theorem~\ref{thm:rank}. The words ``independent coordinate''
+must remain qualified by the specified formal quotient. In particular,
+Lemma~\ref{lem:D-merged} shows that a highest-length or Lyndon-only count
+cannot be substituted for the complete normal form without tracking the
+merged-letter terms and products of earlier orientation coordinates.
+
+These results do not settle the arithmetic reduction of $\Omega(1)$,
+$\Omega(1/2)$, or $\Omega(1/3)$ into a smaller named algebra. They do
+not prove the Gaussian $S_6$ relation. The inspected research-programme
+chapter records an exact rejection of one particular frozen weight-nine
+$S_8$ vector; that rejection is not an independence theorem and does not
+reject every possible relation in its basket \cite{repo-discovery}.
+The present work does not revisit that certificate. It also makes no
+claim of proof-assistant formalization.
+
+\subsection{Exact finite certificates}
+The script \src{code/verify_exact.py} uses integer word coefficients
+and rational symbolic arithmetic. Its saved output records:
+\begin{itemize}[itemsep=2pt]
+\item 146 complete symmetric-sum expansions, including repeated logarithmic
+indices and every partition-lattice merge in each tested instance;
+\item 81 exact contact-coefficient calculations for $0\le p,q\le8$,
+and eight full word-algebra certificates of the all-index Gamma bridge;
+\item the rank table through $d=12$, the three displayed quartic stuffle
+rows, the quartic linear change of coordinates, its positive-ray matrix
+and inverse, and the independent diagonal Newton constant-term identity.
+\end{itemize}
+The all-depth rank and analytic identities are not inferred from these
+finite checks. Their proofs are given above. The checks make the finite
+algebra and implementation replayable and help guard against signs,
+factorials, repeated-index multiplicities, and missing merged letters.
+
+\subsection{Numerical regressions and their limitations}
+The script \src{code/verify_numeric.py} performs 83 floating-point
+regressions at 80 decimal working digits, using $a=1/2,1,3/2$.
+It compares two cutoff/asymptotic settings, $(N,M)=(48,32)$ and $(64,40)$;
+checks single letters against separate \texttt{mpmath} Stieltjes and
+Hurwitz-zeta calls; compares raw harmonic constants with the convergent
+commutator and curvature series; and compares five quartic rays at each
+shift with the explicit normal form. A five-point real-parameter derivative
+provides a separate check of the Gamma-weighted differential bridge.
+
+The maximum observed residual among the 82 ordinary regressions was
+approximately $1.462\times10^{-45}$, dominated by the comparison of
+truncation settings. The five-point derivative check had residual
+approximately $3.477\times10^{-20}$ with step $10^{-5}$. These are
+observed floating-point differences, not proven error bounds. The two
+nested representations share the Euler--Maclaurin engine, and this shared
+dependency is recorded explicitly in the data. Neither tiny residuals nor
+stability under a larger cutoff is used as a proof of equality.
+
+Selected diagnostic values, deliberately rounded far below the working
+precision, are:
+\begin{center}\small
+\begin{tabular}{r r r r r}
+\toprule
+$a$&$\Omega(a)$&$\Omega_2(a)$&$D(a)$&$\Theta(a)$\\
+\midrule
+$1/2$&$0.013640874271$&$-0.005542291305$&$-2.652698961380$&$1.490647980568$\\
+$1$&$0.093995347735$&$0.041077482932$&$-1.272799745634$&$0.210840232622$\\
+$3/2$&$0.028724389737$&$0.045438039415$&$-0.951236020795$&$-0.095917401069$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The package preserves longer values, every residual, the settings, and
+whether each tolerance check passed. These decimals are diagnostics only;
+no sign or arithmetic-independence theorem is inferred from them.
+
+\subsection{Repository-ready contents}
+The delivered directory contains this article and PDF; Python verification
+code; JSON and text outputs; a provenance manifest; build instructions;
+and a short manuscript insertion fragment with namespaced labels. A
+suggested report location is
+\begin{center}\small\ttfamily
+Analysis/Polylogarithms/docs/reports/ordered-jet-normal-forms/.
+\end{center}
+The fragment is intended for the integration/differentiation part of the
+manuscript, with a cross-reference from the research-programme chapter.
+Its status note replaces the specified formal depth-four question, while
+retaining the arithmetic evaluation questions. No remote repository file
+was modified during this work.
+
+\section{Further research questions}
+\label{sec:future}
+The following problems are deliberately more specific than asking for
+additional high-precision fits.
+
+\paragraph{1. Evaluation kernels at rational shifts.}
+For $a=1,1/2,1/3$, fix an explicit comparison algebra generated by selected
+Gamma values, ordinary zeta derivatives, Dirichlet-$L$ derivatives, and
+cyclotomic polylogarithms. Determine which classes from
+Theorem~\ref{thm:rank} vanish after numerical evaluation modulo that
+algebra. The first concrete targets are $\Omega_2(a)$ and the combination
+$\Xi(a)-3\Omega_2(a)/4$. The formal rank is not an obstruction to
+additional analytic reductions.
+
+\paragraph{2. Linear quotients versus scalar extension.}
+Compute the relevant quotient after products of previously known ordered
+coordinates with single-letter data are allowed as background. At depth
+four, \eqref{eq:D-merged} provides the first exact transition between
+these two questions. A general algorithm should track lower-length merged
+words, not just the top-length Lyndon terms. Its output may be a filtered
+module presentation rather than the vector-space count $N_d$.
+
+\paragraph{3. Adding convergent shuffle and functional equations.}
+The single-letter-closed locus in Theorem~\ref{thm:closure} is complete
+for the stipulated stuffle vocabulary. Determine its enlargement when
+specific convergent iterated-integral shuffle identities, reflection
+identities, or functional equations are added. The target is a new exact
+presentation and a replayable certificate, not an inference from failed
+integer-relation searches.
+
+\paragraph{4. Colored commutators and conductors.}
+Extend the decorated alphabet by root-of-unity colors. Merging then
+multiplies colors while adding both exponents. Derive the corresponding
+contact terms, character projectors, and ordinary Mellin formulas, including
+what changes when the color is nontrivial and the one-variable pole is
+absent. The rational-shift formulas of Proposition~\ref{prop:cyclotomic}
+provide concrete consistency checks.
+
+\paragraph{5. Nonlinear and tangential finite parts.}
+For a fixed analytic curve through the all-one point, the required jet
+orders depend on its orders of contact with the prefix divisors. Apply
+the orbit-sum theorem to the resulting finite set of bidegrees and derive
+an exact orientation count in terms of those contact orders. Unlike the
+transverse formula, the set need not lie on the single diagonal $j+r=d$.
+A coefficient-identifiability theorem must then account for constraints
+among the curve's Taylor coefficients.
+
+\paragraph{6. Eliminating higher ordered terms from the Gamma integrals.}
+Formula \eqref{eq:unit-Stieltjes-integral} gives an ordinary integral for
+every $\gamma_q$. Seek additional exact identities that eliminate $D_q$
+in favor of lower-depth functions or classical polylogarithm order
+derivatives. It is essential to specify which function class is permitted;
+simply replacing $D_q$ by the derivative in \eqref{eq:all-Gamma} would
+only restate the fundamental theorem of calculus.
+
+\paragraph{7. Rational ray designs at higher depth.}
+Theorem~\ref{thm:identifiable} proves existence of rational positive sample
+rays. Find explicit structured families with transparent inverse matrices
+for $d=5,6$, using the nine and twenty-one orientation coordinates,
+respectively. The aim is symbolic recoverability and simple exact
+coefficients, not a numerical conditioning claim without an accompanying
+analysis.
+
+\paragraph{8. Formal verification of the algebraic--analytic interface.}
+A first proof-assistant target is the finite word algebra: merge,
+quasi-shuffle, partition-lattice symmetrization, the orbit quotient, and
+the ray matrix. The analytic target can then isolate normal convergence
+of the outer-tail series, the uniqueness of the cutoff polynomial, and
+parameter differentiation. This separation avoids treating a successful
+finite symbolic script as a formal proof of an analytic identity.
+
+\appendix
+\section{The numerical harmonic constant-term evaluator}
+\label{app:em}
+The evaluator represents a truncated asymptotic expansion in
+$x=N+a$ as a dictionary of coefficients of $x^{-p}\log^q x$.
+Finite nested sums are evaluated by the exact ordering recurrence
+\[
+ W_{(k,m)v}(n+1)=W_{(k,m)v}(n)+
+                  (n+a)^{-k}\log^m(n+a)W_v(n),\qquad W_\varnothing=1.
+\]
+For a prospective increment expansion $f(x)$, a formal discrete primitive
+is
+\begin{equation}\label{eq:EM-primitive}
+ \mathfrak E f(x)=\int f(x)\dd x-\frac12f(x)
+       +\sum_{r\ge1}\frac{B_{2r}}{(2r)!}f^{(2r-1)}(x).
+\end{equation}
+Every integration constant is set to zero in the logarithmic polynomial.
+For a monomial, the primitives are
+\begin{align*}
+ \int x^{-1}\log^q x\dd x&=\frac{\log^{q+1}x}{q+1},\\
+ \int x^{-p}\log^q x\dd x
+ &=-x^{1-p}\sum_{h=0}^q
+       \frac{q!\,\log^{q-h}x}{(q-h)!(p-1)^{h+1}},\qquad p>1.
+\end{align*}
+All derivatives and products of the finite expansions are elementary.
+The constant is estimated recursively as the finite sum at $N$ minus
+its nonconstant asymptotic primitive at $N+a$. Convergent outer sums use
+the same primitive to approximate their tails. For the commutator series,
+exactly cancelling nonsummable polynomial terms are removed symbolically
+by their exponent pattern before the numerical tail is formed.
+
+This algorithm uses an \emph{asymptotic} expansion. Increasing its order
+indefinitely at fixed cutoff is not asserted to converge. The recorded
+tests increase both cutoff and order, compare with separate single-variable
+calls, and retain all residuals. No interval enclosure or optimal-truncation
+bound is implemented. The mathematical proofs in the body of the article
+do not depend on the numerical evaluator.
+
+\section{Finite normal-form and ray-recovery algorithms}
+\label{app:algorithms}
+For a given depth $d$, enumerate all $j=1,\ldots,d$ and weak compositions
+$\bbm$ of $d-j$ into $j$ parts. Group the tuples by their sorted version.
+For each group, generate the labelled symmetric-sum certificate from
+\eqref{eq:symmetric-sum}, divide by the repeated-entry multiplicity, and
+apply \eqref{eq:normal-algorithm}. Substitute the monomial coefficient
+from \eqref{eq:ray}. All operations are finite rational additions,
+multiplications, and coefficient collections.
+
+For a practical positive-ray search, enumerate positive integer vectors
+in a fixed order, omit duplicates under common rescaling, and append a
+row whenever exact rational elimination increases the orientation-matrix
+rank. Theorem~\ref{thm:identifiable} proves that some finite stage attains
+rank $N_d$: rational positive rays can be scaled to positive integer ones,
+and a common slope scaling leaves \eqref{eq:ray} unchanged. This is a
+termination theorem for a specified algebraic enumeration. It is not a
+claim that the first full-rank matrix has small entries or is numerically
+well conditioned.
+
+The certificate checker expands quasi-shuffle products recursively via
+\[
+ (av)*(bw)=a\bigl(v*(bw)\bigr)+b\bigl((av)*w\bigr)
+                  +(a\circ b)(v*w).
+\]
+The empty word is the multiplicative unit. Word coefficients are integers,
+so a vanishing residual is checked by exact coefficient cancellation.
+The explicit $3\times3$ matrix in \eqref{eq:three-rays} and the formal
+Gamma bridges are examples of certificates produced without numerical
+constants of any kind.
+
+\section{A compact theorem dependency map}
+\label{app:dependencies}
+The analytic foundation consists of the harmonic constant-term character,
+the outer-tail Mellin representation, and the compatible germ. The
+orientation rank uses only the universal quasi-shuffle algebra and the
+partition-lattice symmetric sum; it does not require analytic continuation.
+Ray identifiability uses only rational functions of the slopes. The ray
+finite-part interpretation then joins these two foundations.
+
+The commutator series is obtained from the depth-two outer-tail recursion.
+The quartic formula is a finite substitution into the ray coefficient
+formula. The Gamma bridge uses the parameter derivative of words and
+three finite stuffle rows. The curvature identity uses the depth-three
+outer-tail recursion. Thus none of the new analytic identities is justified
+by the numerical regression table, and the exact rank theorem does not
+assume any unproved arithmetic property of zeta or Stieltjes values.
+
+\clearpage
+\begin{thebibliography}{99}\raggedright
+\bibitem{ordered}
+\emph{Ordered Hurwitz Germs at Every Depth: Harmonic renormalization,
+directional Stieltjes constants, and polylogarithmic Mellin identities}.
+ProveIt research continuation, 10 October 2026. Inspected complete TeX
+\texttt{article(20261011-014723).tex}; particularly Sections 4--7 and
+further-research question 2. The visible incoming inventory includes
+\texttt{ProveIt\_Ordered\_Hurwitz\_Germs\_2026-10-10.zip}. Source hashes
+and inspection scope are recorded in the accompanying provenance manifest.
+
+\bibitem{repo-manuscript}
+V. Reshetnikov, \emph{ProveIt: Polylogarithms manuscript},
+\nolinkurl{Analysis/Polylogarithms/docs/manuscript/}, inspected 10 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/Polylogarithms/docs/manuscript}.
+
+\bibitem{repo-discovery}
+V. Reshetnikov, \emph{Experimental discovery and the route to proof},
+ProveIt manuscript, \texttt{chapters/10-discovery.tex}. Inspected Git blob
+\texttt{207c719ae6e7fb1639401f449216ae9b695afd40}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/Polylogarithms/docs/manuscript/chapters/10-discovery.tex}.
+
+\bibitem{hoffman}
+M. E. Hoffman, \emph{Quasi-shuffle products}, Journal of Algebraic
+Combinatorics \textbf{11} (2000), 49--68.
+\url{https://arxiv.org/abs/math/9907173}.
+
+\bibitem{mow}
+K. Matsumoto, T. Onozuka, and I. Wakabayashi,
+\emph{Laurent series expansions of multiple zeta-functions of Euler--Zagier
+type at integer points}, preprint, arXiv:1601.05918 (2016).
+\url{https://arxiv.org/abs/1601.05918}.
+
+\bibitem{dlmf-zeta}
+NIST Digital Library of Mathematical Functions, Section 25.11,
+\emph{Hurwitz Zeta Function}; definitions, recurrence, derivatives,
+and Euler--Maclaurin representation.
+\url{https://dlmf.nist.gov/25.11}.
+
+\bibitem{dlmf-polylog}
+NIST Digital Library of Mathematical Functions, Section 25.12,
+\emph{Polylogarithms}.
+\url{https://dlmf.nist.gov/25.12}.
+
+\bibitem{dlmf-lerch}
+NIST Digital Library of Mathematical Functions, Section 25.14,
+\emph{Lerch's Transcendent}.
+\url{https://dlmf.nist.gov/25.14}.
+
+\bibitem{dlmf-gamma}
+NIST Digital Library of Mathematical Functions, Sections 5.7 and 5.15,
+\emph{Gamma-function series expansions} and \emph{Polygamma Functions}.
+\url{https://dlmf.nist.gov/5.7}; \url{https://dlmf.nist.gov/5.15}.
+\end{thebibliography}
+\end{document}

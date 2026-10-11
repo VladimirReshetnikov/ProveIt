@@ -1,0 +1,292 @@
+\section{The cubic digamma finite part and the first harmonic coefficient}
+\label{bridge:sec}
+
+In this section write $\eta=\eta(1)$ and $Z_2(s,1)=Z_2(s,1;1)$,
+with the conventions fixed in Section~\ref{sec:scope}. In particular,
+$B_2=(\gamma^2-\zeta(2))/2$ and
+\[
+ Z_2(1+u,1)=u^{-2}+\gamma u^{-1}+B_2+\eta u+O(u^2).
+\]
+The inclusive harmonic coefficient is related by
+$\eta=-\gamma_H(1,1)-\zeta'(2)$ \cite{Kargin,IncomingOrdered}.
+
+\begin{theorem}[Cubic--harmonic bridge]\label{bridge:main}
+In the unit-coordinate Hadamard finite-part convention,
+\begin{align}
+ Q:=\operatorname{FP}\int_0^1\psi(x)^3\,dx
+ &=3\zeta(2)-6\eta-6\gamma\gamma_1,\label{bridge:eta}\\
+ &=3\zeta(2)+6\gamma_H(1,1)+6\zeta'(2)-6\gamma\gamma_1.
+ \label{bridge:harmonic}
+\end{align}
+An absolutely convergent arithmetic representation is
+\begin{equation}\label{bridge:arithmetic}
+ Q=3\zeta(2)+6\gamma_2+
+  6\sum_{n=1}^{\infty}
+   \frac{\bigl(H_{n-1}-\gamma-\log n\bigr)\log n}{n}.
+\end{equation}
+Consequently the cubic finite part and the first strict harmonic
+coefficient are equivalent modulo ordinary zeta and Stieltjes constants.
+This theorem does not assert that the harmonic coefficient is a finite
+combination of ordinary zeta constants.
+\end{theorem}
+
+\subsection{A global partial-fraction identity}
+
+For $n\ge0$ put
+\[
+ b_n=H_n-\gamma,\qquad
+ a_n=\zeta(2)+H_n^{(2)}-b_n^2,
+ \qquad H_n^{(r)}=\sum_{j=1}^n j^{-r},
+\]
+with $H_0^{(r)}=0$.  Set
+\[
+ c_0=-\gamma^3+6\gamma\zeta(2)-3\zeta(3).
+\]
+
+\begin{lemma}[Normally convergent cubic partial fractions]
+\label{bridge:ML}
+For $z\notin\{0,-1,-2,\ldots\}$,
+\begin{align}
+ \psi(z)^3={}&-\frac1{z^3}-\frac{3\gamma}{z^2}
+       +\frac{3(\zeta(2)-\gamma^2)}z+c_0\notag\\
+ &+\sum_{n=1}^{\infty}\bigg\{
+      -\bigl((z+n)^{-3}-n^{-3}\bigr)
+      +3b_n\bigl((z+n)^{-2}-n^{-2}\bigr)\notag\\
+ &\hspace{42mm}+3a_n\bigl((z+n)^{-1}-n^{-1}\bigr)\bigg\}.
+ \label{bridge:MLformula}
+\end{align}
+The series converges normally on every compact subset avoiding the poles.
+\end{lemma}
+
+\begin{proof}
+At $z=-n+\varepsilon$, the recurrence of $\psi$ gives
+\[
+ \psi(-n+\varepsilon)
+   =-\varepsilon^{-1}+b_n+
+      \bigl(\zeta(2)+H_n^{(2)}\bigr)\varepsilon
+      +\bigl(H_n^{(3)}-\zeta(3)\bigr)\varepsilon^2
+      +O(\varepsilon^3).
+\]
+The cubic principal part at $-n$ is therefore
+\[
+ P_n(z)=-(z+n)^{-3}+3b_n(z+n)^{-2}+3a_n(z+n)^{-1}.
+\]
+The constant coefficient at zero is $c_0$.
+It is important to justify the entire remainder in a Mittag--Leffler
+argument, rather than infer it from the principal parts alone.
+Let $f(z)=\psi(z)^3-P_0(z)$, which is regular at zero, and integrate
+\[
+ \frac{z f(w)}{w(w-z)}
+\]
+over the circles $|w|=N+\tfrac12$, for fixed $z$ and large $N$.
+On these circles $f(w)=O(\log^3 N)$ uniformly.  In the right
+half-plane this follows from the usual digamma asymptotic \cite[Sections~5.7, 5.11]{DLMFgamma}.  In the
+left half-plane use
+\[
+ \psi(w)=\psi(1-w)-\pi\cot(\pi w).
+\]
+The cotangent is uniformly bounded: when $|\Im w|\ge1/4$ this follows
+from its elementary exponential formula; in the remaining part of the
+circle, the real coordinate stays a fixed positive distance from the
+integers.  Thus the contour integral is
+$O(\log^3 N/N)$ and tends to zero.
+Its residues at $z$ and $0$ are $f(z)$ and $-f(0)$.
+The residue at $-n$ is $-\bigl(P_n(z)-P_n(0)\bigr)$, either by a
+direct calculation or by applying the same two-point Cauchy kernel to
+each principal part.  The residue theorem proves
+$f(z)-f(0)=\sum_{n\ge1}(P_n(z)-P_n(0))$.
+Finally $b_n=O(\log n)$ and $a_n=O(\log^2 n)$, while on compact sets
+$(z+n)^{-1}-n^{-1}=O(n^{-2})$.  These estimates prove normal
+convergence and justify the asserted identity.
+\end{proof}
+
+\subsection{Reduction to one logarithmic harmonic series}
+
+Integrating the normally convergent remainder of
+\eqref{bridge:MLformula} term by term yields
+\begin{align}
+ Q={}&\frac12+3\gamma+c_0
+  +\sum_{n\ge1}\bigg\{
+    \frac1{n^3}+\frac1{2(n+1)^2}-\frac1{2n^2}
+     -\frac{3b_n}{n^2(n+1)}\notag\\
+ &\hspace{47mm}
+     +3a_n\left(\log\left(1+\frac1n\right)-\frac1n\right)
+     \bigg\}.
+ \label{bridge:integratedML}
+\end{align}
+Here the finite parts of $-x^{-3}$ and $-3\gamma x^{-2}$ are
+$1/2$ and $3\gamma$, and the unit-coordinate finite part of
+$x^{-1}$ is zero.  The elementary identities
+\[
+ \sum_{n\ge1}\frac{H_n}{n(n+1)}=\zeta(2),\qquad
+ \sum_{n\ge1}\frac{H_n}{n^2}=2\zeta(3)
+\]
+give
+\[
+ \sum_{n\ge1}\frac{b_n}{n^2(n+1)}
+   =2\zeta(3)-\zeta(2)-\gamma\bigl(\zeta(2)-1\bigr).
+\]
+For completeness, the second Euler sum follows from
+\[
+ \sum_{n\ge1}\frac{H_n}{n^2}
+ =\int_0^1\frac{\log x\log(1-x)}{x(1-x)}\,dx
+ =2\int_0^1\frac{\log x\log(1-x)}x\,dx
+ =2\zeta(3),
+\]
+using the harmonic generating function, symmetry, and an absolutely
+convergent geometric-series integration.
+Consequently \eqref{bridge:integratedML} becomes
+\begin{equation}\label{bridge:quadratic-log}
+ Q=-\gamma^3+9\gamma\zeta(2)+3\zeta(2)-8\zeta(3)
+  +3\sum_{n\ge1}a_n
+       \left(\log\left(1+\frac1n\right)-\frac1n\right).
+\end{equation}
+
+The crucial cancellation is the exact difference
+\[
+ a_n-a_{n-1}=-\frac{2(H_{n-1}-\gamma)}n.
+\]
+Write
+$L_N=\sum_{n=1}^N(H_{n-1}-\gamma)\log n/n$ and
+$S_N=\sum_{n=1}^N H_n/n^2$.  Finite summation by parts gives
+\begin{align*}
+ \sum_{n=1}^N a_n\log\left(1+\frac1n\right)
+ &=a_N\log(N+1)+2L_N,\\
+ \sum_{n=1}^N\frac{a_n}{n}
+ &=(\zeta(2)-\gamma^2)H_N+
+      \gamma(H_N^2+H_N^{(2)})-\frac{H_N^3}{3}
+       +H_NH_N^{(2)}-2S_N+\frac43H_N^{(3)}.
+\end{align*}
+The second identity follows by summing the finite differences of
+$H_n^2$, $H_n^3$, and $H_nH_n^{(2)}$; it has no limiting
+interchange hidden in it.  Since
+\[
+ H_N-\gamma=\log(N+1)+O(N^{-1}),\quad
+ H_N^{(2)}=\zeta(2)+O(N^{-1}),\quad S_N\longrightarrow2\zeta(3),
+\]
+substitution in \eqref{bridge:quadratic-log}, with all polynomial
+terms retained before the limit, gives
+\begin{equation}\label{bridge:limit}
+ Q=3\zeta(2)+6\lim_{N\to\infty}
+       \left(L_N-\frac{\log^3 N}{3}\right).
+\end{equation}
+Now split $H_{n-1}-\gamma=\log n+\psi(n)-\log n$ and use the
+standard defining limit
+\[
+ \gamma_2=\lim_{N\to\infty}
+   \left(\sum_{n=1}^N\frac{\log^2 n}{n}-\frac{\log^3 N}{3}\right).
+\]
+Since $\psi(n)-\log n=O(n^{-1})$, the remaining series is absolutely
+convergent.  This proves \eqref{bridge:arithmetic}.
+
+Define the holomorphic Dirichlet deformation
+\[
+ D(s)=\sum_{n\ge1}\frac{\psi(n)-\log n}{n^s},\qquad\Re s>0.
+\]
+Normal convergence, including every fixed derivative on compact
+subsets, follows from $\psi(n)-\log n=O(n^{-1})$.
+In $\Re s>1$ we have the exact identity
+\[
+ D(s)=Z_2(s,1)-\gamma\zeta(s)+\zeta'(s).
+\]
+Comparing Laurent coefficients at $s=1$ gives
+$D'(1)=\eta+\gamma\gamma_1+\gamma_2$.  Formula
+\eqref{bridge:arithmetic} says
+$Q=3\zeta(2)+6\gamma_2-6D'(1)$, proving
+\eqref{bridge:eta}.  The inclusive-to-strict conversion gives
+\eqref{bridge:harmonic} and completes the proof of
+Theorem~\ref{bridge:main}.
+
+\subsection{A normalized complex antiderivative}
+
+\begin{corollary}[Cubic digamma primitive]\label{bridge:primitive}
+On $\Re z>0$, with the principal logarithm, the function
+\begin{align}
+ \mathcal P_3(z)={}&\frac1{2z^2}+\frac{3\gamma}z
+       +3(\zeta(2)-\gamma^2)\log z+c_0z\notag\\
+ &+\sum_{n=1}^{\infty}\bigg\{
+      \frac1{2(n+z)^2}-\frac1{2n^2}+\frac{z}{n^3}
+      +3b_n\left(\frac1n-\frac1{n+z}-\frac z{n^2}\right)
+        \notag\\
+ &\hspace{41mm}
+      +3a_n\left(\log\left(1+\frac zn\right)-\frac zn\right)
+        \bigg\}
+ \label{bridge:primitiveformula}
+\end{align}
+satisfies $\mathcal P_3'(z)=\psi(z)^3$.  Its asymptotic expansion at
+zero has constant term zero.  In particular, for every real $b>0$,
+\[
+ \operatorname{FP}\int_0^b\psi(x)^3\,dx=\mathcal P_3(b),
+ \qquad \mathcal P_3(1)=3\zeta(2)-6\eta-6\gamma\gamma_1.
+\]
+The series and its differentiated series converge normally on compact
+subsets of the right half-plane.  Higher derivatives therefore give
+identities for derivatives of $\psi^3$ in the same domain.
+\end{corollary}
+
+\begin{proof}
+Each brace is the primitive, vanishing at $z=0$, of the corresponding
+brace in \eqref{bridge:MLformula}.  On a fixed compact set,
+the logarithmic difference is $O(n^{-2})$, the quadratic-pole
+primitive is $O(n^{-3})$, and the cubic-pole primitive is $O(n^{-4})$.
+Multiplication by $a_n=O(\log^2 n)$ or $b_n=O(\log n)$ preserves
+normal convergence.  Differentiation recovers the previous lemma.
+All series terms vanish at zero, so the displayed singular and logarithmic
+terms leave no constant term.  This proves the stated normalization.
+\end{proof}
+
+\begin{corollary}[A polygamma--harmonic hierarchy]\label{bridge:polygamma}
+For every integer $r\ge1$ and $z\notin\{0,-1,-2,\ldots\}$,
+\begin{align}
+ &\sum_{r_1+r_2+r_3=r}\frac{r!}{r_1!r_2!r_3!}
+       \psi^{(r_1)}(z)\psi^{(r_2)}(z)\psi^{(r_3)}(z)\notag\\
+ &\quad=(-1)^r r!\sum_{n=0}^{\infty}
+   \left\{-\frac{(r+1)(r+2)}{2(n+z)^{r+3}}
+       +\frac{3(r+1)b_n}{(n+z)^{r+2}}
+       +\frac{3a_n}{(n+z)^{r+1}}\right\}.
+ \label{bridge:allpolygamma}
+\end{align}
+Here $\psi^{(0)}=\psi$. The series converges normally away from
+the poles. At $z=1$ the left side is a finite polynomial in
+$\gamma,\zeta(2),\ldots,\zeta(r+1)$, using
+$\psi^{(k)}(1)=(-1)^{k+1}k!\zeta(k+1)$ for $k\ge1$.
+\end{corollary}
+\begin{proof}
+Differentiate \eqref{bridge:MLformula} $r$ times. The constant
+subtractions disappear and the derivative series is bounded on each
+compact set by a constant times
+$\sum n^{-r-1}(1+\log^2n)$. The product rule gives the left
+side. The $n=0$ summand includes the principal part at zero since
+$b_0=-\gamma$ and $a_0=\zeta(2)-\gamma^2$. The special values
+follow from the classical Hurwitz--polygamma identity
+\cite[Section~25.11]{DLMFhurwitz}.
+\end{proof}
+
+\subsection{A short certified evaluation route}
+
+For integers $N\ge2$ and $K\ge0$ define
+\begin{align*}
+ S_{N,K}={}&\sum_{n=1}^{N-1}
+  \frac{(H_{n-1}-\gamma-\log n)\log n}{n}
+   +\frac12\zeta'(2,N)
+   +\sum_{k=1}^K\frac{B_{2k}}{2k}\zeta'(2k+1,N).
+\end{align*}
+The Binet formula for $\psi$ \cite[Section~5.9]{DLMFgamma} and the finite geometric expansion of
+$(n^2+t^2)^{-1}$ give the rigorous truncation estimate
+\begin{equation}\label{bridge:tail-bound}
+ \left|S_{N,K}-\sum_{n\ge1}
+  \frac{(\psi(n)-\log n)\log n}{n}\right|
+ \le \frac{|B_{2K+2}|}{2K+2}\bigl(-\zeta'(2K+3,N)\bigr).
+\end{equation}
+Indeed the digamma asymptotic remainder is bounded by the magnitude of
+its first omitted Bernoulli term for positive real arguments, and the
+logarithmic tail is exactly a Hurwitz-zeta derivative.
+The supplied Arb script evaluates every displayed quantity with ball
+arithmetic and adds this analytic tail bound.  This certifies the
+arithmetic identity numerically without replacing its proof.
+
+\paragraph{Status.}
+The harmonic zeta function, its Stieltjes coefficients, and the
+Mittag--Leffler method are classical.  The cubic--harmonic bridge and
+its coordinate consequence were derived here and were not found in the
+inspected repository reports.  No worldwide priority claim is made.

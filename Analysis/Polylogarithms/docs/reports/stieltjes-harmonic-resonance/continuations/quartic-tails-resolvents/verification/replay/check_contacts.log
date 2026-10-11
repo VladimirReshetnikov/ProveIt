@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "arithmetic": "Exact SymPy polynomial/rational arithmetic; P is symbolic pi",
+  "sympy_version": "1.14.0",
+  "positive_exact_checks": 36,
+  "deliberate_corruptions_rejected": 20,
+  "negative_power_range": "M=1,...,10; both epsilon=+1 and epsilon=-1",
+  "primitive_range": "k=0,...,5; symbolic L != 1 and the L=1 branch",
+  "boundary_canary": {
+    "ordinary_integral": "0",
+    "continued_spectral_value": "-1",
+    "local_endpoint_contact": "-1"
+  },
+  "small_M_examples": {
+    "1": {
+      "finite_part_mean": "-z",
+      "local_residue": "1"
+    },
+    "2": {
+      "finite_part_mean": "-P**2 + z**2",
+      "local_residue": "-2*z"
+    },
+    "3": {
+      "finite_part_mean": "3*P**2*z - z**3",
+      "local_residue": "-P**2 + 3*z**2"
+    },
+    "4": {
+      "finite_part_mean": "P**4 - 6*P**2*z**2 + z**4",
+      "local_residue": "4*P**2*z - 4*z**3"
+    }
+  },
+  "scope": "Finite exact verification and falsification controls; the article contains all-index proofs."
+}

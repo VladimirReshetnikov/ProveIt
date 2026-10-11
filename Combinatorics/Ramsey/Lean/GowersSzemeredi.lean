@@ -1045,6 +1045,7 @@ import GowersSzemeredi.Proofs16PolyFamilyTwo
 import GowersSzemeredi.Proofs16PolyCoverTwo
 import GowersSzemeredi.Proofs18LengthSixRoute
 import GowersSzemeredi.Proofs18WidthPowerBounds
+import GowersSzemeredi.Proofs18LengthSixScale
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

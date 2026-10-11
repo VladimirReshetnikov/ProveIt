@@ -1,0 +1,170 @@
+\section{Sampled identities and finite single-centre reduction}
+\label{sampling:section}
+
+The mixed-spectral report proves a two-centre functional criterion and
+explicitly asks whether identities on integer Fourier modes imply the
+corresponding scalar identities \cite[Section 6, question on sampled
+identities]{RepoMixed}. In the finite power--logarithm class used there,
+the answer is yes. We give an elementary proof that also works on many
+sparser sets, then obtain the exact finite-reduction criterion for any
+number of distinct twists.
+
+Classical uniqueness theorems, such as Carlson's theorem, concern much
+larger holomorphic function classes \cite{Pila}. The elementary lemma
+below uses the convergent expansions specific to the present functions.
+The contribution to the repository is the complete sampling implication
+and its application to finite twisted-family reduction; no new general
+Carlson theorem is claimed.
+
+\begin{definition}[Finite power--logarithm germs at infinity]
+\label{sampling:class}
+Let $\mathscr P$ consist of functions, for sufficiently large positive
+$x$, of the form
+\begin{equation}\label{sampling:germ}
+ f(x)=\sum_{\nu=1}^J x^{\alpha_\nu}
+           \sum_{k=0}^{K_\nu}(\log x)^k h_{\nu k}(1/x),
+\end{equation}
+where the $h_{\nu k}$ are holomorphic in a disc about zero and
+$\alpha_\nu\in\C$. Powers of positive $x$ use the real logarithm.
+Every finite product or sum of shifted powers and nonnegative integral
+powers of their logarithms belongs to this class.
+\end{definition}
+
+For the last assertion, expand
+$(x+a)^s=x^s(1+a/x)^s$ and
+$\Log(x+a)=\log x+\Log(1+a/x)$ for $x>2|a|$.
+The expansions are convergent, rather than merely asymptotic.
+
+\begin{theorem}[Uniqueness on an asymptotically dense logarithmic mesh]
+\label{sampling:unique}
+Let $f\in\mathscr P$. Suppose that $x_j\to\infty$ is strictly
+increasing, $x_{j+1}/x_j\to1$, and $f(x_j)=0$ for every sufficiently
+large $j$. Then $f$ vanishes identically for all sufficiently large $x$.
+Consequently any two finite power--logarithm expressions that agree at
+every sufficiently large integer agree as analytic germs at infinity.
+They agree on every domain reached by coherent analytic continuation.
+\end{theorem}
+\begin{proof}
+First combine exponents whose differences are integers. In each such
+class choose the largest integer translate among the finitely many
+displayed exponents; this keeps all coefficient functions holomorphic
+at zero. Unless $f$ is identically zero, in each remaining class there
+is a first nonzero Taylor coefficient among its finitely many
+$h_{\nu k}$. Among these finitely many leading terms take the largest
+real exponent $\sigma$, and among terms with that real exponent the
+largest logarithmic degree $d$. Convergent Taylor expansion then gives
+\begin{equation}\label{sampling:leading}
+ \frac{f(x)}{x^\sigma(\log x)^d}
+   =\sum_{\ell=1}^q c_\ell e^{\ii\tau_\ell\log x}+o(1),
+ \qquad x\to+\infty,
+\end{equation}
+where the real $\tau_\ell$ are distinct and at least one $c_\ell$ is
+nonzero. The remainder tends to zero on the whole positive ray.
+
+Put $P(t)=\sum c_\ell e^{\ii\tau_\ell t}$ and $t_j=\log x_j$.
+The hypothesis gives $P(t_j)\to0$ and $t_{j+1}-t_j\to0$.
+The derivative of $P$ is bounded; hence interpolation between adjacent
+$t_j$ gives $P(t)\to0$ as $t\to\infty$. On the other hand direct
+integration of the finitely many exponentials shows
+\[
+ \lim_{T\to\infty}\frac1T\int_0^T|P(t)|^2\dd t
+       =\sum_{\ell=1}^q|c_\ell|^2>0.
+\]
+This contradicts $P(t)\to0$. Thus the assumed nonzero leading term
+cannot occur, and the germ is zero. The final assertion follows from
+the identity theorem.
+\end{proof}
+
+The logarithmic-mesh condition includes $x_j=j^q$ for every real $q>0$.
+It cannot simply be omitted: the nonzero function
+\[
+ \sin\left(\frac{2\pi\log x}{\log 2}\right)
+ =\frac{x^{2\pi\ii/\log2}-x^{-2\pi\ii/\log2}}{2\ii}
+\]
+belongs to $\mathscr P$ and vanishes at $x=2^j$. Conversely, if
+one leaves the finite class entirely, $\sin(\pi x)$ vanishes at every
+integer. These examples state exactly what is used in the theorem.
+
+\begin{theorem}[Any number of centres: complete finite reduction]
+\label{sampling:centres}
+Let $a_1,\ldots,a_d$ be distinct complex numbers and let
+$\alpha_1,\ldots,\alpha_d\in\C$. Use coherent branches of
+\[
+                       f(z)=\prod_{j=1}^d(z+a_j)^{\alpha_j}.
+\]
+The following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item On a nonempty domain, $f$ is a finite constant-coefficient
+linear combination of single-centre order jets
+$(z+a_j)^r\Log^k(z+a_j)$, with arbitrary $r\in\C$ and
+$k\in\Z_{\ge0}$.
+\item Such a finite combination agrees with $f(n)$ at every
+sufficiently large positive integer $n$.
+\item Either every $\alpha_j$ is integral, or exactly one
+$\alpha_j$ is nonintegral and all the other exponents are
+nonnegative integers.
+\end{enumerate}
+The equivalence remains valid if the sampled set in (ii) is any
+sequence in Theorem~\ref{sampling:unique}.
+\end{theorem}
+\begin{proof}
+The sampling theorem proves (ii)$\Rightarrow$(i), and analytic
+continuation proves the converse after the branches are fixed. If all
+exponents are integers, ordinary rational partial fractions give (i).
+If only $\alpha_i$ is nonintegral and all remaining exponents are
+nonnegative integers, expand their polynomial product in $z+a_i$.
+This proves (iii)$\Rightarrow$(i).
+
+For necessity, suppose $\alpha_i\notin\Z$, write $w=z+a_i$, and put
+\[
+             h(w)=\prod_{j\ne i}(w+a_j-a_i)^{\alpha_j}.
+\]
+This function is holomorphic near $w=0$. The monodromy difference
+$M_i-I$ around a small loop about zero annihilates every single-centre
+term based at $-a_j$ with
+$j\ne i$. On the product it gives
+$(e^{2\pi\ii\alpha_i}-1)w^{\alpha_i}h(w)$.
+The remaining finite sum of $w^r\Log^k w$ is annihilated by a
+nonzero polynomial $P(E)$ in $E=w\,d/dw$: include a factor
+$(E-r)^{k+1}$ for each term. Expanding $h(w)=\sum_{m\ge0}h_mw^m$
+therefore yields
+\[
+                         P(\alpha_i+m)h_m=0\quad(m\ge0).
+\]
+A polynomial has finitely many roots, so $h$ is a polynomial.
+Near every distinct point $w=a_i-a_j$, its factor there is a
+nonzero holomorphic factor times $(w+a_j-a_i)^{\alpha_j}$.
+Polynomiality forces $\alpha_j\in\Z_{\ge0}$ for every $j\ne i$.
+There can be no second nonintegral exponent. This proves necessity.
+\end{proof}
+
+\begin{corollary}[Finite closure of several twisted Fourier families]
+\label{sampling:twisted}
+For distinct real noninteger twists $\theta_j$, let a periodic
+distribution $K$ have Fourier coefficients
+\[
+ \widehat K(n)=\prod_{j=1}^d\bigl(2\pi\ii(n+\theta_j)\bigr)^{\alpha_j},
+\]
+where $\Log(2\pi\ii x)=\log(2\pi|x|)+\pi\ii\sgn(x)/2$.
+Then $K$ is a finite linear combination of single-twist families
+and their spectral order derivatives if and only if condition (iii)
+of Theorem~\ref{sampling:centres} holds. Allowing an additional finite
+Fourier polynomial does not change the necessity of that condition.
+\end{corollary}
+\begin{proof}
+On the positive Fourier tail, every phase and power of $2\pi$ is
+a constant. Expanding powers of
+$\log(2\pi(n+\theta_j))+\pi\ii/2$ gives precisely the class in
+Theorem~\ref{sampling:centres}; a finite Fourier polynomial changes
+only finitely many modes. This proves necessity. For sufficiency,
+rational partial fractions and polynomial expansion hold coefficient
+by coefficient on both tails with the stated branches; only one
+factor can be nonintegral. The coefficients have locally uniform
+polynomial growth, so Fourier equality proves distributional equality.
+\end{proof}
+
+Thus the two-centre criterion in the source extends to the actual
+integer Fourier spectrum, and to arbitrarily many centres. The claim
+concerns a prescribed finite family of functions. It says nothing
+about rational or algebraic independence of individual constants
+obtained by evaluating the distributions at particular arguments.

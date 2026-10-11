@@ -1,0 +1,123 @@
+\section{Unequal centers: normal convergence through every order jet}
+\label{clc:sec:unequal}
+
+The preceding finite identities share one affine center $A$.
+For independent centers $A_j$, define
+\begin{equation}\label{clc:eq:U}
+ \UU_{\bq,\bA}(\bs;\mu)=
+ \int_{\R^{r-1}}\prod_{j=1}^r h_{q_j,A_j,s_j}(x_j)
+             \dd\boldsymbol x.
+\end{equation}
+We require a common weight:
+\begin{equation}\label{clc:eq:unequal-strip}
+ \max\bigl(0,-\min_j\Rea A_j\bigr)<c<q_*.
+\end{equation}
+This condition is stronger than the separate requirements
+$\Rea A_j>-q_j$ when the scales are unequal; it must not be dropped.
+It holds, in particular, if all $\Rea A_j>-q_*$.
+The weighted proof of Theorem~\ref{clc:thm:addition} applies to give
+\begin{equation}\label{clc:eq:U-contour}
+ \UU_{\bq,\bA}(\bs;\mu)=\frac1{2\pi i}
+ \int_{c-i\infty}^{c+i\infty}e^{p\mu}G_{\bq}(p)
+                \prod_{j=1}^r(p+A_j)^{-s_j}\dd p.
+\end{equation}
+It is entire in its independent orders; no integer-order restriction is
+being analytically differentiated.
+
+Choose a real reference $A$ with $A+c>0$ and set $\delta_j=A_j-A$.
+Suppose
+\begin{equation}\label{clc:eq:rho-condition}
+ \rho_0=\max_j\frac{|\delta_j|}{A+c}<1.
+\end{equation}
+Define explicit polynomial coefficients by
+\begin{align}
+ \prod_{j=1}^r(1+\delta_jz)^{-s_j}
+   &=\sum_{N=0}^\infty h_N(\bs;\bdelta)z^N,\label{clc:eq:hN-gen}\\
+ h_N(\bs;\bdelta)
+   &=\sum_{n_1+\cdots+n_r=N}
+       \prod_{j=1}^r\frac{(-\delta_j)^{n_j}(s_j)_{n_j}}{n_j!}.
+ \label{clc:eq:hN}
+\end{align}
+In particular $h_0=1$, $h_1=-\sum_js_j\delta_j$, and
+\[
+ h_2=\frac12\sum_js_j(s_j+1)\delta_j^2
+                 +\sum_{i<j}s_is_j\delta_i\delta_j.
+\]
+
+\begin{theorem}[Normally convergent unequal-center closure]
+\label{clc:thm:unequal}
+Under \eqref{clc:eq:unequal-strip} and \eqref{clc:eq:rho-condition},
+\begin{equation}\label{clc:eq:unequal-series}
+ \boxed{\displaystyle
+ \UU_{\bq,\bA}(\bs;\mu)
+ =\sum_{N=0}^\infty h_N(\bs;\bdelta)
+                  \CC_{\bq,A}(W+N;\mu),\qquad W=\sum_js_j.}
+\end{equation}
+The series is normally convergent on compact subsets where a strict
+version of \eqref{clc:eq:rho-condition} holds, jointly in the independent
+orders, the centers, and $\mu$ in a closed substrip of
+$|\Ima\mu|<\pi\sum_jq_j^{-1}$. Every fixed mixed order or center
+derivative may be taken term by term. Center collisions are regular.
+If the scales are commensurate, every coefficient function $\CC$ on the
+right has the finite pole-free Hurwitz or Lerch form already proved.
+\end{theorem}
+\begin{proof}
+On the contour, $|p+A|\ge A+c$, so
+$|\delta_j/(p+A)|\le\rho_0<1$ uniformly. The chosen logarithms satisfy
+\[
+ \log(p+A_j)=\log(p+A)+
+             \log\left(1+\frac{\delta_j}{p+A}\right).
+\]
+This is first clear as $\delta_j$ moves from zero inside the strict disk,
+and continues there because both $p+A$ and $p+A_j$ stay in the right
+half-plane. The binomial series therefore gives
+\[
+ \prod_j(p+A_j)^{-s_j}
+ =(p+A)^{-W}\sum_{N\ge0}h_N(\bs;\bdelta)(p+A)^{-N}.
+\]
+On a compact set of orders, $|(s)_n/n!|$ is at most a fixed polynomial
+in $n$; this follows directly from the Gamma ratio away from a finite
+initial set, with continuity covering nonpositive integer orders.
+The absolute binomial series is consequently bounded by a convergent
+polynomial-times-geometric series, uniformly along the whole contour.
+The remaining factors in \eqref{clc:eq:U-contour} have an integrable
+exponential vertical majorant, locally uniformly in all parameters.
+Tonelli's theorem for the majorant and ordinary dominated convergence
+justify termwise contour integration, giving \eqref{clc:eq:unequal-series}.
+
+The same estimates hold on a slightly larger compact neighborhood of
+any strict parameter set. Cauchy's integral formula then proves normal
+convergence of every fixed derivative, not merely of the undifferentiated
+series. In particular no singularity is created when two $\delta_j$
+coincide. The final assertion follows by substituting
+Theorem~\ref{clc:thm:finite} into each term.
+\end{proof}
+
+\begin{corollary}[Every common-strip configuration has such an expansion]
+\label{clc:cor:global-center}
+For any fixed centers satisfying \eqref{clc:eq:unequal-strip}, a reference
+$A$ satisfying \eqref{clc:eq:rho-condition} exists. One may choose a real
+number larger than zero and all the finitely many numbers
+\begin{equation}\label{clc:eq:choose-A}
+ \frac{|A_j|^2-c^2}{2(c+\Rea A_j)}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+The denominators are positive. The strict inequality
+$|A_j-A|^2<(A+c)^2$ is exactly
+$|A_j|^2-c^2<2A(c+\Rea A_j)$, so the stated choice works for every $j$.
+\end{proof}
+
+This proves the unequal-shift research question in the preceding
+reciprocal report \cite[Further research, question 2]{RLC} for its
+right-half-plane shifts, and extends it to unequal scales whenever the
+common strip exists. For equal scales $q_j=1$, the old shifts are
+$a_j=1+A_j$; their conditions $\Rea a_j>0$ imply that such a common
+$c<1$ can be chosen. Thus the original equal-scale question is fully
+covered, including all independent spectral derivatives.
+
+The result should not be described as a finite reduction of arbitrary
+unequal centers: the outer series is generally infinite. The finite
+closure is retained \emph{inside each term}. Theorem
+\ref{clc:thm:alignment} below explains why generic unequal centers do
+not recover pure order addition.

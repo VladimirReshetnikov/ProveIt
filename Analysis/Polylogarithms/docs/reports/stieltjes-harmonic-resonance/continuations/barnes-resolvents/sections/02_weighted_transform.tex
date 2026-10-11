@@ -1,0 +1,307 @@
+\section{A polynomially weighted Hurwitz resolvent}
+\label{bhr:sec:weighted}
+
+\subsection{The two Fourier directions and a convergent depth-two function}
+
+For $z\in\C\setminus\R$, put
+\begin{equation}\label{bhr:eq:coordinates}
+ \begin{gathered}
+ \epsilon=\sgn(\Im z),\quad \omega=2\epsilon\pi\ii,
+ \quad \sigma=-\omega,\quad a=z+\epsilon\pi\ii,\\
+ q=\frac{z-\epsilon\pi\ii}{z+\epsilon\pi\ii},\qquad
+ c=\frac{2\epsilon\pi\ii}{a^2},\qquad |q|<1,\\
+ \Log\omega=\log(2\pi)+\epsilon\pi\ii/2,\qquad
+ \Log\sigma=\log(2\pi)-\epsilon\pi\ii/2.
+ \end{gathered}
+\end{equation}
+Let $K(x)=\pi\cot(\pi x)$ and $R_z(x)=(K(x)-z)^{-1}$.
+The elementary identity
+\begin{equation}\label{bhr:eq:resolvent-fourier}
+ R_z(x)=-\frac1a+c\sum_{n\ge1}q^{n-1}e^{\omega nx}
+\end{equation}
+converges uniformly with every argument derivative. In particular
+$R_z(0)=R_z(1)=0$ and $R_z(x)=x+O(x^2)$ at zero.
+
+The natural depth-two function for multiplication by a polynomial is
+\begin{equation}\label{bhr:eq:omega-function}
+ \mathcal O_{\alpha,\beta}(q)
+   =\sum_{n,m\ge1}\frac{q^n}{(m+n)^\alpha m^\beta}
+   =\Li_{\alpha,\beta}(q,q^{-1}).
+\end{equation}
+Here our convention is
+$\Li_{\alpha,\beta}(u,v)=\sum_{k>m\ge1}
+u^kv^m/(k^\alpha m^\beta)$.
+The last expression in \eqref{bhr:eq:omega-function} is interpreted by
+the displayed convergent series, not by assigning separate
+independent branches to the two arguments.
+
+\begin{lemma}[Normal convergence]\label{bhr:lem:omega-normal}
+The series \eqref{bhr:eq:omega-function}, with all finite order
+derivatives, converges normally on
+\[
+ |q|<1,\qquad \Re(\alpha+\beta)>1.
+\]
+It vanishes at $q=0$, and division by $q$ has a removable value there.
+\end{lemma}
+\begin{proof}
+On a compact parameter set split the inner sum at $m=2n$.
+For $m>2n$, the summand is bounded by a fixed multiple of
+$|q|^n m^{-\Re(\alpha+\beta)}$. For $m\le2n$, all possible
+growth is bounded by a fixed power of $n$, and the geometric
+factor dominates it. Derivatives introduce only powers of
+$\log m$, $\log(m+n)$ and $n$, which are handled by a small
+margin in the strict inequalities. The same bounds justify
+termwise differentiation. Every term contains $q^n$ with $n\ge1$.
+\end{proof}
+
+We shall also need the normally convergent subtracted functions
+\begin{align}
+ U_j(s,q)&=\sum_{n,m\ge1}q^n m^{-s}
+       \bigl((m+n)^{-j}-m^{-j}\bigr),\label{bhr:eq:U}\\
+ V_j(s,q)&=\sum_{n,m\ge1}q^n m^{-j}
+       \bigl((m+n)^{-s}-m^{-s}\bigr),\label{bhr:eq:V}
+\end{align}
+where $j\ge1$. Each is holomorphic for $\Re s>-j$, $|q|<1$.
+In the common initial domain they satisfy
+\begin{equation}\label{bhr:eq:UV-continuation}
+ U_j=\mathcal O_{j,s}-\frac{q}{1-q}\zeta(s+j),\qquad
+ V_j=\mathcal O_{s,j}-\frac{q}{1-q}\zeta(s+j).
+\end{equation}
+For example, in the tail $m>2n$ each difference gains a factor
+$O(n/m)$, uniformly on compact sets. The remaining part is
+geometrically summable as in Lemma~\ref{bhr:lem:omega-normal}.
+This proves the claimed larger domain directly, without assigning
+values to divergent unsubtracted summands.
+
+\subsection{The finite polynomial data}
+
+For a polynomial $P$ of degree $d$, define
+\begin{equation}\label{bhr:eq:polynomial-data}
+ \mu_P=\int_0^1P(x)\,dx,\qquad
+ b_j(P)=\frac{(-1)^{j-1}}{\omega^j}
+    \bigl(P^{(j-1)}(1)-P^{(j-1)}(0)\bigr),\quad 1\le j\le d.
+\end{equation}
+The sum is empty when $P$ is constant. Repeated integration by
+parts gives
+\begin{equation}\label{bhr:eq:P-fourier}
+ \int_0^1P(x)e^{\omega kx}\,dx
+ =\begin{cases}
+   \mu_P,& k=0,\\[2pt]
+   \displaystyle\sum_{j=1}^d\frac{b_j(P)}{k^j},& k\in\Z\setminus\{0\}.
+  \end{cases}
+\end{equation}
+The derivative of order $d$ is constant and hence contributes no
+endpoint difference. Thus only these finitely many data occur.
+
+Define the elementary polynomial resolvent
+\begin{equation}\label{bhr:eq:Tpoly}
+ T_P(z)=\int_0^1P(x)R_z(x)\,dx
+       =-\frac{\mu_P}{a}+
+          \frac cq\sum_{j=1}^d b_j(P)\Li_j(q).
+\end{equation}
+All quotients by $q$ in this article are given their removable
+values at $q=0$, equivalently $z=\epsilon\pi\ii$.
+
+\subsection{The master identity}
+
+Set
+\begin{align}\label{bhr:eq:Bpoly}
+ \mathcal B_P(s,q)
+   ={}&\sigma^{-s}\mu_P\Li_s(q)\notag\\
+    &+\sum_{j=1}^d b_j(P)
+       \left\{\omega^{-s}U_j(s,q)
+        +\sigma^{-s}\bigl(\Li_s(q)\Li_j(q)
+                              +(-1)^jV_j(s,q)\bigr)\right\}.
+\end{align}
+
+\begin{theorem}[Polynomial Hurwitz resolvent]\label{bhr:thm:weighted-master}
+For every polynomial $P$, every $z\notin\R$, and $\Re s>0$,
+\begin{equation}\label{bhr:eq:weighted-master}
+ \boxed{\displaystyle
+ I_P(s,z):=\int_0^1P(x)\zeta(1-s,x)R_z(x)\,dx
+          =\frac{c\Gamma(s)}q\mathcal B_P(s,q).}
+\end{equation}
+The bracket $\mathcal B_P$ is holomorphic on $\Re s>-1$.
+The formula therefore gives a meromorphic continuation through
+$s=0$, with residue $-T_P(z)$ and no other pole in that half-plane.
+On $\Re s>0$ it is a finite depth-two polylogarithmic formula
+by \eqref{bhr:eq:UV-continuation}.
+\end{theorem}
+
+\begin{proof}
+Initially take $\Re s>1$. The classical Hurwitz Fourier expansion
+\cite[\S25.11]{bhr:DLMFZ} is absolutely convergent and reads
+\begin{equation}\label{bhr:eq:hurwitz-fourier}
+ \zeta(1-s,x)=\Gamma(s)\sum_{m\ge1}m^{-s}
+       \left(\omega^{-s}e^{\omega mx}
+                         +\sigma^{-s}e^{-\omega mx}\right).
+\end{equation}
+Multiply this by \eqref{bhr:eq:resolvent-fourier} and use
+\eqref{bhr:eq:P-fourier}. The constant Fourier term of $R_z$ gives
+\[
+ -\frac{\Gamma(s)}a\sum_j b_j(P)
+        \bigl(\omega^{-s}+(-1)^j\sigma^{-s}\bigr)\zeta(s+j).
+\]
+The equal-frequency diagonal contributes
+$c\Gamma(s)\sigma^{-s}\mu_P\Li_s(q)/q$.
+The same-sign frequencies contribute $\mathcal O_{j,s}$.
+For the remaining frequencies split at $m=n$:
+\begin{align}\label{bhr:eq:lattice-splitting}
+ \sum_{\substack{n,m\ge1\\m\ne n}}
+    \frac{q^n}{m^s(n-m)^j}
+ &=\Li_s(q)\Li_j(q)+(-1)^j\mathcal O_{s,j}(q).
+\end{align}
+Indeed $m<n$ is parameterized by $n=m+h$ and gives the
+product; $m>n$ is parameterized by $m=n+h$ and gives the second
+sum. Absolute convergence justifies these changes of variables.
+
+Insert \eqref{bhr:eq:UV-continuation}. Every ordinary zeta term
+cancels because
+\begin{equation}\label{bhr:eq:coefficient-cancellation}
+ \frac{c}{1-q}=\frac1a.
+\end{equation}
+What remains is exactly \eqref{bhr:eq:weighted-master}.
+Both sides are holomorphic on $\Re s>0$, so the initial identity
+extends there. On the left, use
+$\zeta(1-s,x)=x^{s-1}+\zeta(1-s,x+1)$:
+the first term times $P R_z$ is locally integrable for $\Re s>-1$,
+and the second has just the constant Hurwitz pole $-1/s$.
+The normal convergence of $U_j,V_j$ proves the same assertion
+on the right. Finally, telescoping in $m$ gives
+\[
+ U_j(0,q)=-\frac{\Li_j(q)}{1-q},\qquad V_j(0,q)=0.
+\]
+Since $\Li_0(q)=q/(1-q)$,
+\begin{equation}\label{bhr:eq:Bzero}
+ \mathcal B_P(0,q)=\mu_P\frac{q}{1-q}
+                     -\sum_jb_j(P)\Li_j(q)=-\frac q c T_P(z).
+\end{equation}
+This proves the residue, including the removable $q=0$ case.
+\end{proof}
+
+\begin{example}[The first nonconstant weight]\label{bhr:ex:xweight}
+For $P(x)=x$, one has $\mu_P=1/2$, $b_1=1/\omega$ and
+\begin{align}
+ \mathcal B_x(s,q)
+  =\frac12\sigma^{-s}\Li_s(q)
+   +\frac1\omega\left\{\omega^{-s}U_1(s,q)
+       +\sigma^{-s}\bigl(\Li_s(q)\Li_1(q)-V_1(s,q)\bigr)\right\}.
+ \label{bhr:eq:xweight}
+\end{align}
+This is the missing $x\log\Gamma(x)$ input to an individual
+Barnes-$G$ transform. Setting $P=1$ deletes $U_j,V_j$ and
+recovers the previously established unweighted formula.
+\end{example}
+
+\subsection{All weighted Stieltjes coefficients}
+
+\begin{theorem}[A holomorphic Stieltjes generator]\label{bhr:thm:weighted-stieltjes}
+For every polynomial $P$, integer $m\ge0$, and $z\notin\R$,
+\begin{equation}\label{bhr:eq:weighted-stieltjes}
+ \boxed{\displaystyle
+ \int_0^1P(x)\gamma_m(x)R_z(x)\,dx
+   =\frac{m!c}{q}[s^{m+1}]
+               \Gamma(1+s)\mathcal B_P(s,q).}
+\end{equation}
+These are ordinary absolutely convergent integrals.
+Equivalently their exponential generating function is
+\begin{equation}\label{bhr:eq:weighted-stieltjes-germ}
+ I_P(s,z)+\frac{T_P(z)}s
+   =\frac cq\frac{\Gamma(1+s)\mathcal B_P(s,q)
+                          -\mathcal B_P(0,q)}s.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The shift law
+$\gamma_m(x)=x^{-1}\log^m x+\gamma_m(x+1)$ and $R_z=O(x)$
+prove convergence. The same bounds, locally uniformly for $s$
+near zero, allow \eqref{bhr:eq:stieltjes-convention} to be integrated
+after removing its constant pole. Now use Theorem~\ref{bhr:thm:weighted-master}
+and \eqref{bhr:eq:Bzero}. The numerator on the right of
+\eqref{bhr:eq:weighted-stieltjes-germ} vanishes at zero.
+\end{proof}
+
+For instance, the first two moments are obtained from
+\begin{align}
+ \int_0^1P\gamma_0R_z\,dx
+  &=\frac cq\bigl(\partial_s\mathcal B_P(0,q)
+                                      -\gamma\mathcal B_P(0,q)\bigr),\\
+ \int_0^1P\gamma_1R_z\,dx
+  &=\frac c{2q}\bigl(\partial_s^2\mathcal B_P(0,q)
+       -2\gamma\partial_s\mathcal B_P(0,q)
+                +(\gamma^2+\zeta(2))\mathcal B_P(0,q)\bigr).
+\end{align}
+Every derivative of the subtracted double sums is normally
+convergent. In particular these formulas do not require subtracting
+two divergent numerical evaluations of \eqref{bhr:eq:UV-continuation}.
+
+\subsection{Argument derivatives and complete local corrections}
+
+Let
+\begin{equation}\label{bhr:eq:Ap}
+ A_p(s)=\prod_{j=1}^p(s-j),\qquad
+ r_{P,p}(z)=[x^p]\bigl(P(x)R_z(x)\bigr).
+\end{equation}
+The empty product is one. Meromorphic continuation of $I_P$ to
+any desired finite spectral neighborhood can be constructed by
+subtracting finitely many terms from the Taylor expansion of
+$P(x)R_z(x)$ at zero. This supplies an unambiguous meaning to
+the next formula even when $s-p$ is outside the normal domain
+of the first subtraction in \eqref{bhr:eq:U}--\eqref{bhr:eq:V}.
+
+\begin{theorem}[Weighted argument-derivative conversion]\label{bhr:thm:weighted-contact}
+For $m\ge0$, $p\ge1$ and a polynomial $P$,
+\begin{equation}\label{bhr:eq:weighted-contact}
+ \boxed{\displaystyle
+ \FP_x\int_0^1P(x)\gamma_m^{(p)}(x)R_z(x)\,dx
+   =m![s^m]\left\{
+       A_p(s)I_P(s-p,z)-\frac{r_{P,p}(z)A_p(s)}s\right\}.}
+\end{equation}
+The expression in braces is holomorphic near $s=0$.
+The entire polynomial amplitude $A_p(s)$ must be subtracted,
+not only its value at zero.
+\end{theorem}
+\begin{proof}
+The Hurwitz argument ladder gives the meromorphic identity
+\[
+ \partial_x^p\zeta(1-s,x)=A_p(s)\zeta(1-s+p,x).
+\]
+The singular part at zero is $A_p(s)x^{s-p-1}$.
+After multiplication by $P R_z$, the only exponent crossing
+$-1$ at $s=0$ is $r_{P,p}A_p(s)x^{s-1}$.
+Its continued integral is $r_{P,p}A_p(s)/s$, whereas the
+finite part of every coefficient $x^{-1}\log^j x$ on $(0,1)$
+is zero. All other terms commute with coefficient extraction.
+To justify the latter statement, subtract a Taylor polynomial
+through degree $p+1$ on $(0,\delta_0)$, integrate its terms
+explicitly, and use normal integrability of the remainder.
+The nonsingular Hurwitz tail at $x+1$ is analytic after an
+argument derivative. This proves the formula and the
+holomorphy assertion.
+\end{proof}
+
+For a completely explicit continuation of the depth-two expression,
+one can subtract $N$ terms of $(1+n/m)^{-j}$ and $(1+n/m)^{-s}$.
+The resulting known terms are respectively
+\begin{align}
+ &\sum_{k=0}^{N-1}\frac{(-1)^k(j)_k}{k!}
+         \Li_{-k}(q)\zeta(s+j+k),\\
+ &\sum_{k=0}^{N-1}\frac{(-1)^k(s)_k}{k!}
+         \Li_{-k}(q)\zeta(s+j+k).
+\end{align}
+The remainders are normally convergent for $\Re s>1-j-N$.
+This follows by the same $m>2n$ split and the finite Taylor
+remainder estimate; the terms $m\le2n$ are still geometrically
+summable. Thus \eqref{bhr:eq:weighted-contact} is a constructive
+finite calculation plus convergent sums at every fixed $m,p$.
+
+Repeated resolvents follow by $z$ differentiation:
+\begin{equation}\label{bhr:eq:weighted-repeated}
+ \FP_x\int_0^1\frac{P(x)\gamma_m^{(p)}(x)}{(K(x)-z)^r}\,dx
+  =\frac1{(r-1)!}\partial_z^{r-1}
+        \FP_x\int_0^1P(x)\gamma_m^{(p)}(x)R_z(x)\,dx.
+\end{equation}
+Local subtractions are holomorphic in $z$ on compact subsets of
+either half-plane. If $P$ vanishes to order $e$ at zero, the
+integral in \eqref{bhr:eq:weighted-repeated} is absolutely convergent
+when $e+r>p$.

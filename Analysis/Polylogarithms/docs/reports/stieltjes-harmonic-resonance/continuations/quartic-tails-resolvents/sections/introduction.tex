@@ -1,0 +1,141 @@
+\section{Source baseline and mathematical contributions}
+\label{intro:scope}
+
+This article continues the polylogarithm manuscript and incoming
+research reports in the ProveIt repository~\cite{ProveIt} at the fixed
+revision
+\begin{center}\snapshot.\end{center}
+The source comparison uses the manuscript, the relevant archived
+continuations, and all eleven incoming ZIP archives present at this
+revision. The incoming directory is a research staging area: a claim
+being present there is not evidence that it is proved or integrated
+into a canonical manuscript chapter. We therefore trace each advance
+to a named question and preserve the qualifications in its source.
+
+The immediate starting points are the cubic harmonic
+bridge~\cite{IncomingCubic}, the centered parity and rational-resolvent
+theorems~\cite{IncomingParity}, and the higher-reflection
+generators~\cite{IncomingReflection}. The strict ordered-Hurwitz
+conventions come from the all-depth germ report~\cite{IncomingOrdered}.
+The exact-relation obstruction and the incomplete larger relation
+search~\cite{IncomingExact,IncomingIndependent} delimit what can
+presently be claimed about the Gaussian polylogarithm conjectures.
+
+\subsection{Three resolved research directions}
+
+The main advances are the following. They are new relative to the
+inspected source corpus; no exhaustive claim of priority across the
+literature is intended.
+
+\begin{enumerate}
+\item \textbf{The explicitly requested quartic harmonic reduction.}
+Question 6 of the cubic harmonic report asks for the finite reduction
+at $k=4$, with the higher-depth data identified. We prove
+Theorem~\ref{q4:main}, fixing the entire remainder in the quartic
+Mittag--Leffler expansion and all integration constants. The answer
+uses the linear Laurent coefficient $\theta$ of $Z_3(1+u,1,1)$,
+the inherited coefficient $\eta$ of $Z_2(1+u,1)$, and ordinary
+zeta and Stieltjes constants. Equation~\eqref{q4:single-coordinate}
+eliminates $\eta$ by combining the fourth and third moments.
+An absolutely convergent harmonic series, an elementary Mellin
+kernel for $\theta$, a normalized primitive, and every argument
+derivative accompany the evaluation.
+
+\item \textbf{Every moment of every pair of even harmonic tails.}
+Question R1 of the harmonic-parity report asks first for the mixed
+pair of orders two and four, and then for a controlled algebra at
+general orders. Theorems~\ref{tail:all-moments} and
+\ref{tail:generator} solve the pure two-tail family for all even
+$p,q\ge2$ and all moment orders. The finite formula retains no
+unreduced double-zeta coordinate: all double zeta values have odd
+weight and reduce by classical identities. The moment order does
+not enlarge the specified arithmetic span. For $(p,q)=(2,4)$,
+every moment is a rational combination of the first four. The
+additional factors of $H_n$ and odd-order harmonic numbers mentioned
+in R1 remain outside this theorem.
+
+\item \textbf{Complex powers and full moving-endpoint completion.}
+Question R4 of the same report asks for a branch, a joint
+meromorphic generator, and the full resonant amplitudes for
+$(\pi\cot\pi x-z)^{-\lambda}$. Theorems
+\ref{power:eulerthm}, \ref{power:hurwitzthm}, and
+\ref{power:completion} provide them. The result applies to every
+nonreal $z$, every Stieltjes index and argument derivative, and
+every integer power with arbitrary logarithmic powers. Away from
+integer powers the uncompleted local formula applies directly.
+The correction at negative integers is finite even when its
+denominator is removable; omitting it changes the answer.
+Section~\ref{moment:sec} adds a Gamma--Gauss generator for all
+ordinary polynomial moments and a generalized-harmonic formula
+at the imaginary base points.
+\end{enumerate}
+
+The status changes are deliberately narrower than the broadest
+questions in the sources. The quartic calculation does not settle
+every power $k\ge4$. The two-tail theorem does not treat four tails
+or extra harmonic factors. A functional transform for arbitrary
+complex powers need not reduce every one of its parameter values to
+a finite list of familiar constants. Each theorem states exactly
+what is finite, what is continued, and what arithmetic coordinate
+remains.
+
+\subsection{Representative identities}
+
+Two compact consequences illustrate the range of the results.
+With $x_n=n+1/2$, one obtains the ordinary absolutely convergent sum
+\begin{equation}\label{intro:rational-example}
+\begin{aligned}
+\sum_{n=0}^{\infty}\bigg\{&
+\frac{1344x_n^6+2000x_n^4+412x_n^2+7}{6}
+                  \psi'(n+1)\psi'''(n+1)\\
+&\hspace{17mm}-448x_n^2-\frac{1216}{3}\bigg\}=-88.
+\end{aligned}
+\end{equation}
+The polynomial subtraction is part of the summand; it is not a
+separate divergent series. The proof is exact elimination among
+four independently specified centered moments, as detailed in
+\eqref{tail:24-eliminations}--\eqref{tail:rational-polygamma}.
+
+At a negative half power of the resolvent, an ordinary real integral
+has the elementary zeta/logarithm evaluation
+\begin{equation}\label{intro:half-example}
+\int_0^1\left(x^2-x+\frac16\right)
+       \frac{\cos(\pi x/2)}{\sqrt{\sin(\pi x)}}\,\dd x
+       =\frac1{12}-\frac{\log^22}{\pi^2}.
+\end{equation}
+Its entire sequence of Bernoulli analogues follows from one Gamma
+quotient, rather than separate evaluations of successive moments.
+
+These ordinary identities complement the finite-part identity for
+$\psi^4$. A finite part is appropriate in that case because the
+unsubtracted integral diverges at zero; it is not required for
+\eqref{intro:rational-example} or \eqref{intro:half-example}.
+
+\subsection{Classical inputs and proof architecture}
+
+The classical ingredients are digamma recurrence and reflection,
+Hurwitz Fourier expansions, Mellin transforms, Bernoulli
+polynomials, Euler sums, and beta/hypergeometric integral formulas
+\cite{DLMF,BBG,EspinosaMoll}. Harmonic-zeta and Stieltjes
+coordinates have their own established literature; Coppo's
+harmonic-zeta identities provide a recent point of comparison
+\cite{Coppo}. We use these sources for specified formulas, not to
+infer any unproved constant reduction.
+
+Three proof mechanisms perform different jobs. A two-point contour
+fixes the entire function that remains after matching the digamma
+principal parts. Exact finite summation by parts identifies the
+constant at infinity in a harmonic-tail moment without rearranging
+a divergent double sum. Finally, local monomial subtraction in two
+complex parameters distinguishes a meromorphic spectral value
+from the coordinate finite part of its specialized integrand.
+The last distinction is essential for differentiation and
+antidifferentiation at resonances.
+
+The proofs do not depend on a numerical relation search. The
+accompanying scripts check finite algebra independently and compare
+analytically different numerical representations. Explicit
+truncation estimates support these comparisons, but the recorded
+floating-point runs do not constitute interval certificates or
+formal proof-assistant proofs.
+

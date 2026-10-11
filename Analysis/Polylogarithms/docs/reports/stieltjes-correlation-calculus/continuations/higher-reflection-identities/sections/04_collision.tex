@@ -1,0 +1,337 @@
+\section{Geometric collisions at Stieltjes index zero}
+\label{gc:section}
+
+The periodic contact reports \cite{RepoPeriodic,RepoContact,RepoMixed} develop
+two-factor and spectral completions. Here the shifts themselves move toward
+collision. The result covers every finite number of factors and every
+argument-derivative order at Stieltjes index zero.
+
+Set $f(x)=\gamma_0(x)=-\psi(x)$ and $h(x)=f(1+x)$.  The Hurwitz shift
+identity gives the exact local decomposition
+\begin{equation}\label{gc:one-sided}
+ f(\{x\})=\frac{\boldsymbol{1}_{x>0}}x+h(x),\qquad -1<x<1,
+ \quad x\ne0.
+\end{equation}
+Here the negative half of the formula uses $\{x\}=1+x$.  The germ $h$ is
+holomorphic on $|x|<1$, with
+\begin{equation}\label{gc:hseries}
+ h(x)=\gamma+\sum_{n\ge1}(-1)^n\zeta(n+1)x^n.
+\end{equation}
+The finite-part convention is fixed throughout: at each right-hand
+singular point $a$ remove $(a,a+\eta)$ and take the constant term in the
+\emph{ambient coordinate} $\eta$.  Independent cutoffs are used at distinct
+points.  No collision-dependent rescaling of these coordinates is made.
+
+For distinct sufficiently small real shifts $s_1,\ldots,s_d$, define
+\begin{equation}\label{gc:Cdef}
+ C_d(\boldsymbol{s})=
+ \operatorname{FP}\int_{\mathbb R/\mathbb Z}
+       \prod_{i=1}^d f(\{x+s_i\})\,dx,
+ \qquad
+ Q_d=\operatorname{FP}\int_0^1 f(x)^d\,dx.
+\end{equation}
+For a nonempty subset $S\subseteq\{1,\ldots,d\}$, let $m(S)$ denote its
+index with smallest shift.  It is a fixed index when an ordering chamber
+is fixed.
+
+\begin{theorem}[Complete local counterterm for any number of factors]
+\label{gc:main}
+Define
+\begin{equation}\label{gc:T}
+ T_d(\boldsymbol{s})=
+ -\sum_{\substack{S\subseteq\{1,\ldots,d\}\\ |S|\ge2}}
+  \ \sum_{i\in S\setminus\{m(S)\}}
+  \frac{\displaystyle\prod_{j\notin S}h(s_j-s_i)}
+       {\displaystyle\prod_{k\in S\setminus\{i\}}(s_k-s_i)}
+       \log(s_i-s_{m(S)}).
+\end{equation}
+On each fixed ordering chamber,
+$C_d(\boldsymbol{s})-T_d(\boldsymbol{s})$ is the restriction of a real
+analytic function on a full neighborhood of $\boldsymbol{s}=0$.  Its value
+at total collision is $Q_d$.  Consequently
+\begin{equation}\label{gc:anypath}
+ C_d(\boldsymbol{s})-T_d(\boldsymbol{s})\longrightarrow Q_d
+ \qquad (\boldsymbol{s}\longrightarrow0)
+\end{equation}
+along every path remaining in that chamber, without a lower bound on the
+ratios of the gaps.
+\end{theorem}
+
+\begin{proof}
+Choose $\delta>0$ small enough that all required germs are holomorphic on
+$|z|<3\delta$, and restrict the shifts to $|s_i|<\delta/8$.  Use the circle
+coordinate $-\delta<x<1-\delta$.  Outside $(-\delta,\delta)$ the entire
+integrand is jointly analytic in the shifts, and its integral is analytic.
+On $(-\delta,\delta)$, expand the exact product of
+\eqref{gc:one-sided} by the subset $S$ of factors contributing their pole.
+The empty subset is analytic.  For a nonempty $S$, the product of the
+indicator functions is $\boldsymbol{1}_{x>-s_{m(S)}}$, and the contribution
+is the finite part of
+\begin{equation}\label{gc:subset-integral}
+ \int_{-s_{m(S)}}^\delta \frac{q_S(x;\boldsymbol{s})}
+                                      {D_S(x;\boldsymbol{s})}\,dx,
+ \quad
+ q_S(x;\boldsymbol{s})=\prod_{j\notin S}h(x+s_j),
+ \quad D_S(x;\boldsymbol{s})=\prod_{i\in S}(x+s_i).
+\end{equation}
+
+Let $P_S$ be the interpolation polynomial of degree less than $|S|$ which
+agrees with $q_S$ at the nodes $-s_i$, $i\in S$.  Both $P_S$ and
+$R_S=(q_S-P_S)/D_S$ extend holomorphically when nodes coalesce.  One
+explicit justification is the fixed-contour expression
+\begin{equation}\label{gc:hermite}
+ P_S(x;\boldsymbol{s})=\frac1{2\pi i}\oint_{|z|=2\delta}
+ \frac{q_S(z;\boldsymbol{s})}{D_S(z;\boldsymbol{s})}
+ \frac{D_S(z;\boldsymbol{s})-D_S(x;\boldsymbol{s})}{z-x}\,dz.
+\end{equation}
+Its integrand is holomorphic in the parameters and the quotient of
+polynomials is a polynomial in $x$ of the required degree.  Cauchy's
+formula gives the jointly holomorphic remainder
+\[
+ R_S(x;\boldsymbol{s})=\frac1{2\pi i}\oint_{|z|=2\delta}
+ \frac{q_S(z;\boldsymbol{s})}
+ {D_S(z;\boldsymbol{s})(z-x)}\,dz,
+ \qquad |x|<2\delta.
+\]
+
+For distinct nodes the rational principal part is
+\[
+ \frac{P_S(x;\boldsymbol{s})}{D_S(x;\boldsymbol{s})}
+ =\sum_{i\in S}\frac{b_{S,i}(\boldsymbol{s})}{x+s_i},
+ \qquad
+ b_{S,i}(\boldsymbol{s})=
+ \frac{q_S(-s_i;\boldsymbol{s})}
+      {\prod_{k\in S\setminus\{i\}}(s_k-s_i)}.
+\]
+Its finite-part integral in \eqref{gc:subset-integral} equals
+\begin{equation}\label{gc:integrated}
+ \sum_{i\in S}b_{S,i}\log(\delta+s_i)
+ -\sum_{i\in S\setminus\{m(S)\}}
+       b_{S,i}\log(s_i-s_{m(S)}).
+\end{equation}
+At the minimal node the discarded primitive is $b_{S,m(S)}\log\eta$,
+whose constant term is zero under the specified coordinate convention.
+The second sum in \eqref{gc:integrated} is precisely the corresponding
+summand of \eqref{gc:T}.  Although the individual coefficients $b_{S,i}$
+have poles at coincident nodes, the first sum has the holomorphic form
+\begin{equation}\label{gc:upper-contour}
+ \frac1{2\pi i}\oint_{|z|=\delta/2}
+ \frac{q_S(z;\boldsymbol{s})}{D_S(z;\boldsymbol{s})}
+                      \operatorname{Log}(\delta-z)\,dz.
+\end{equation}
+The logarithm is the holomorphic branch equal to $\log\delta$ at $z=0$.
+This contour is deliberately smaller than the interpolation contour in
+\eqref{gc:hermite}.  The integral of $R_S$ from $-s_{m(S)}$ to $\delta$ is
+also holomorphic, since its lower endpoint is a fixed coordinate function
+on the chosen chamber.
+
+At $\boldsymbol{s}=0$, $D_S=x^{|S|}$ and $P_S$ is the Taylor polynomial of
+$q_S$ through degree $|S|-1$.  Formula \eqref{gc:upper-contour} is exactly
+the finite-part integral of $P_S/x^{|S|}$ from $0$ to $\delta$; the
+remainder gives the ordinary integral of the analytic part.  Summing the
+subsets therefore gives the same local finite part as the directly
+merged product.  The outer integral supplies its remaining part, proving
+that the analytic remainder has value $Q_d$.
+\end{proof}
+
+\begin{remark}[Meaning of the chamber qualification]
+The extension asserted above is an extension \emph{from each chamber}.
+Different chambers choose different lower-endpoint indices in
+\eqref{gc:subset-integral}; no assertion that the resulting analytic germs
+agree off the total diagonal is needed.  All their values at total
+collision are the prescribed merged finite part.  In particular the
+theorem proves a path-independent limit only after subtracting the full
+$T_d$, including any finite constant it contributes on the chosen path.
+\end{remark}
+
+\subsection{Every argument-derivative order}
+For nonnegative integers $r_1,\ldots,r_d$, put
+\[
+ d_i=r_i+1,\qquad A_i=(-1)^{r_i}r_i!,\qquad
+ h_i(x)=\gamma_0^{(r_i)}(1+x).
+\]
+Ordinary differentiation away from the integer endpoints gives
+\[
+ \gamma_0^{(r_i)}(\{x\})
+    =A_i\boldsymbol{1}_{x>0}x^{-d_i}+h_i(x).
+\]
+Define $C_{\boldsymbol r}(\boldsymbol s)$ and $Q_{\boldsymbol r}$ by
+replacing the factors in \eqref{gc:Cdef} by the indicated argument
+derivatives.  For a nonempty $S$, set
+\[
+ A_S=\prod_{i\in S}A_i,\qquad
+ q_S(x;\boldsymbol s)=\prod_{j\notin S}h_j(x+s_j),\qquad
+ D_S(x;\boldsymbol s)=\prod_{i\in S}(x+s_i)^{d_i}.
+\]
+For $i\in S$ and $1\le q\le d_i$, let
+\begin{equation}\label{gc:B}
+ B_{S,i,q}(\boldsymbol s)=
+ \frac1{(d_i-q)!}
+ \left.\left(\frac{d}{dx}\right)^{d_i-q}
+ \frac{q_S(x;\boldsymbol s)}
+ {\prod_{k\in S\setminus\{i\}}(x+s_k)^{d_k}}
+ \right|_{x=-s_i}.
+\end{equation}
+
+\begin{theorem}[Repeated-pole collision formula]\label{gc:derivative}
+Let
+\begin{align}\label{gc:Tr}
+ T_{\boldsymbol r}(\boldsymbol s)
+ ={}&\sum_{\substack{S\subseteq\{1,\ldots,d\}\\ |S|\ge2}}
+ A_S\sum_{i\in S\setminus\{m(S)\}}
+ \left\{-B_{S,i,1}\log(s_i-s_{m(S)})\right.\notag\\[-2pt]
+ &\hspace{42mm}\left.
+ +\sum_{q=2}^{d_i}\frac{B_{S,i,q}}{q-1}
+                   (s_i-s_{m(S)})^{1-q}\right\}.
+\end{align}
+Then $C_{\boldsymbol r}-T_{\boldsymbol r}$ has a real analytic extension
+from each ordering chamber through total collision, with value
+$Q_{\boldsymbol r}$ there.
+\end{theorem}
+
+\begin{proof}
+Repeat the preceding proof with Hermite interpolation of multiplicity
+$d_i$ at $-s_i$.  Formula \eqref{gc:hermite}, with the new $D_S$, proves
+holomorphy of the interpolation polynomial and its remainder, including
+coalescing nodes.  The principal part is
+$\sum_{i\in S}\sum_{q=1}^{d_i}B_{S,i,q}(x+s_i)^{-q}$.  Its upper primitive
+is again \eqref{gc:upper-contour}, multiplied by $A_S$, since
+\[
+ \frac1{(q-1)!}\frac{d^{q-1}}{dz^{q-1}}
+      \operatorname{Log}(\delta-z)
+ =-\frac{(\delta-z)^{1-q}}{q-1},\qquad q\ge2.
+\]
+At a nonminimal node, subtracting the lower primitive gives exactly the
+bracket in \eqref{gc:Tr}.  At the minimal node each lower primitive is a
+pure power of $\eta$ or a multiple of $\log\eta$, and hence has zero
+constant term.  The same coalescence argument identifies the value of the
+analytic remainder with $Q_{\boldsymbol r}$.
+\end{proof}
+
+This proof differentiates only ordinary local analytic functions in
+\eqref{gc:B}.  Differentiating an already extended periodic distribution
+can generate contact terms, and does not supply a substitute for the
+direct repeated-pole proof.  For example, with two factors and shifts
+$(0,a)$, the formula gives
+\[
+ T_{(1,0)}(0,a)=\frac{\log a}{a^2},\qquad
+ T_{(0,1)}(0,a)=\frac{1-\log a}{a^2}.
+\]
+Both analytic remainders tend to
+$Q_{(1,0)}=Q_{(0,1)}=\zeta(2)$, which also follows by integrating
+$ff'=(f^2)'/2$ and taking the endpoint finite part.
+The separated integrals satisfy the exact identity
+\begin{equation}\label{gc:pair-sum}
+ C_{(1,0)}(0,a)+C_{(0,1)}(0,a)
+   =\frac{\pi^2}{\sin^2(\pi a)},\qquad 0<a<1.
+\end{equation}
+Indeed, apply the fundamental theorem of calculus to the product
+$f(x)f(\{x+a\})$ on the two nonsingular intervals.  At $0$ the left
+boundary value minus the constant in the right Laurent expansion is
+$-f'(a)$; at $1-a$ it is $-f'(1-a)$.  Taking the finite parts and using
+trigamma reflection gives
+$-f'(a)-f'(1-a)=\psi'(a)+\psi'(1-a)=\pi^2/\sin^2(\pi a)$.
+Thus \eqref{gc:pair-sum} records the boundary correction required by the
+specified finite part.  The sum of the two local counterterms is $a^{-2}$,
+and the sum of their limiting remainders is $2\zeta(2)=\pi^2/3$, in
+agreement with the Taylor expansion of its right side.
+
+\subsection{Fixed rates and a finite zeta--logarithm expression}
+For $s_i=a_i\epsilon$ with fixed distinct real rates, define
+$m(S)=\operatorname*{argmin}_{i\in S}a_i$.  Coefficient extraction from
+\eqref{gc:T} gives
+\begin{align}\label{gc:fixed-constant}
+ \operatorname{CT}_{\epsilon\downarrow0}C_d(\epsilon\boldsymbol a)
+ ={}&Q_d-\sum_{\substack{S\subseteq\{1,\ldots,d\}\\ |S|\ge2}}
+ \ \sum_{i\in S\setminus\{m(S)\}}
+ \frac{\log(a_i-a_{m(S)})}
+      {\prod_{k\in S\setminus\{i\}}(a_k-a_i)}\notag\\
+ &\hspace{18mm}\cdot
+ [\epsilon^{|S|-1}]
+       \prod_{j\notin S}h\bigl(\epsilon(a_j-a_i)\bigr).
+\end{align}
+Here the constant-term operation discards positive powers of
+$\log\epsilon$ even when their power of $\epsilon$ is zero.  Only finitely
+many Taylor coefficients of \eqref{gc:hseries} occur.  In particular the
+finite anomaly is an explicit polynomial in Euler's constant and ordinary
+zeta values, with rational functions of the rates and logarithms of their
+positive differences as coefficients.  This is a local conclusion; it
+does not evaluate the merged global constant $Q_d$.
+
+For equally spaced triples, \eqref{gc:fixed-constant} recovers the earlier
+three-factor contact specialization \cite{RepoMixed}:
+\[
+ \operatorname{CT}_{\epsilon\downarrow0}
+ C_3(0,\epsilon,2\epsilon)=Q_3+\frac{\zeta(2)}2\log2.
+\]
+For four equally spaced points, the new formula is
+\begin{equation}\label{gc:quartic-example}
+ \operatorname{CT}_{\epsilon\downarrow0}
+ C_4(0,\epsilon,2\epsilon,3\epsilon)
+ =Q_4+\gamma\zeta(2)(2\log2+\log3)
+       -\frac32\zeta(3)(3\log2+\log3).
+\end{equation}
+
+\subsection{A hierarchical collision}
+Take shifts $(0,\epsilon,\epsilon+\epsilon^2)$, so the last pair approaches
+one another on a smaller scale than its distance from the first point.
+The four terms in \eqref{gc:T} are exactly
+\begin{align*}
+ T_{\{1,2,3\}}&=\frac{\log\epsilon}{\epsilon^3}
+ -\frac{\log(\epsilon+\epsilon^2)}{\epsilon^3(1+\epsilon)},\\
+ T_{\{1,2\}}&=\frac{h(\epsilon^2)}\epsilon\log\epsilon,\\
+ T_{\{1,3\}}&=\frac{h(-\epsilon^2)}{\epsilon+\epsilon^2}
+                         \log(\epsilon+\epsilon^2),\\
+ T_{\{2,3\}}&=\frac{h(-\epsilon-\epsilon^2)}{\epsilon^2}
+                         \log(\epsilon^2).
+\end{align*}
+Writing $\Lambda=\log\epsilon$, expanding these exact terms, and applying
+Theorem~\ref{gc:main} yields
+\begin{align}\label{gc:hierarchy}
+ C_3(0,\epsilon,\epsilon+\epsilon^2)
+ ={}&\frac{(1+2\gamma)\Lambda-1}{\epsilon^2}
+ +\frac{(2\gamma+2\zeta(2)-1)\Lambda+\tfrac32}{\epsilon}\notag\\
+ &+(1-\gamma+2\zeta(2)+2\zeta(3))\Lambda
+ +Q_3+\gamma-\frac{11}{6}
+ +O(\epsilon|\log\epsilon|).
+\end{align}
+The finite constant is therefore $Q_3+\gamma-11/6$.  The rational term
+$-11/6$ comes from the all-pole subset, while the term $\gamma$ comes from
+$T_{\{1,3\}}$.  This example shows why one cannot obtain hierarchical
+constant terms by retaining only the singular powers of a fixed-rate
+expansion and subsequently varying its rate parameters.
+
+\subsection{Verification and precise scope}
+The companion script \texttt{verify\_collision.py} verifies the quartic
+constant and the full hierarchical expansion through order zero by exact
+symbolic algebra.  It also evaluates the separated circle integral by
+subtracting its actual right-hand poles interval by interval, independently
+of \eqref{gc:T}.  Direct Laurent subtraction at
+the merged endpoint gives
+\begin{align*}
+ Q_3&=-1.9662627343915343406643753384116\ldots,\\
+ Q_4&=\phantom{-}13.510120376015827411606240712830\ldots.
+\end{align*}
+The computed differences $C_d-T_d-Q_d$ tend to zero linearly on both
+displayed paths, at four values of $\epsilon$ for each path and $55$
+working decimal digits.  The separate script
+\texttt{verify\_derivative\_pair.py} checks both displayed derivative
+counterterms at the same four gaps, using independent double-pole
+subtraction and $65$ working decimal digits.  Its four comparisons with
+\eqref{gc:pair-sum} have observed absolute residual at most
+$6.4\times10^{-51}$.  The package includes the raw JSON records.
+These floating-point diagnostics check implementation and signs; the
+interpolation proof supplies the theorem.
+
+The result settles the arbitrary-factor and arbitrary argument-derivative
+parts of the unit-frequency geometric collision question at Stieltjes index zero,
+including hierarchical approaches.  Higher Stieltjes indices introduce
+logarithmic singular germs and are not covered by the rational
+interpolation argument.  Associativity of successively renormalized
+partial mergers also remains a separate question: an exact simultaneous
+subtraction does not by itself identify every iterated subtraction rule.
+Two further extensions are a complete statement for integer-frequency
+singular grids, with each local pole amplitude scaled in the ambient
+coordinate, and a weighted version for analytic periodic test functions
+which would provide collision formulas for Fourier moments.  Neither is
+included in the theorems proved here.

@@ -1,0 +1,272 @@
+\section{Rationally related vertical scales}
+\label{sec:rational-scales}
+
+Unequal slopes introduce two arithmetic progressions into the product
+kernel. For a rational slope ratio those progressions are commensurate,
+and their apparent double-zeta structure reduces to a finite collection
+of single Hurwitz zeta functions. The scale factors in this statement
+are important: one cannot obtain it by replacing $a+b$ with a weighted
+sum in \cref{thm:basic} while leaving all other factors unchanged.
+
+Let $p,q$ be positive integers, not necessarily coprime. Put
+\begin{equation}\label{eq:rational-grid}
+ B=qa+pb,\qquad R=pq,\qquad
+ c_{ij}=\frac{B+qi+pj}{R}\quad(0\le i<p,\ 0\le j<q),
+\end{equation}
+and define
+\begin{equation}\label{eq:Dpq}
+ D_{p,q}(w,B)=R^{-w}\sum_{i=0}^{p-1}\sum_{j=0}^{q-1}
+       \{\zeta(w-1,c_{ij})+(1-c_{ij})\zeta(w,c_{ij})\}.
+\end{equation}
+
+\begin{lemma}[Finite residue-grid reduction]\label{thm:grid}
+For $\Rea w>2$ and $\Rea B>0$,
+\begin{equation}\label{eq:QQ-grid}
+ \int_0^\infty x^{w-1}e^{-Bx}Q(qx)Q(px)\dd x
+                 =\Gamma(w)D_{p,q}(w,B).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write each pair of nonnegative integers uniquely as
+$n=p\ell+i$, $m=qk+j$ with $0\le i<p$, $0\le j<q$.
+Then $qn+pm=qi+pj+pq(\ell+k)$, so
+\[
+ Q(qx)Q(px)=\sum_{i=0}^{p-1}\sum_{j=0}^{q-1}
+              \frac{e^{-(qi+pj)x}}{(1-e^{-Rx})^2}.
+\]
+Expanding the square produces the multiplicity $\ell+k+1$.
+Rescale $Rx$ and use the $Q^2$ calculation in \cref{thm:basic}.
+Absolute convergence in the initial half-plane justifies every sum.
+No coprimality condition is used in this decomposition.
+\end{proof}
+
+Define the compensated grid transform by
+\begin{equation}\label{eq:Jpq-integral}
+ \mathcal J_{d,e}^{p,q}(w,B)=\int_0^\infty
+             x^{w-1}e^{-Bx}h_d(qx)h_e(px)\dd x.
+\end{equation}
+
+\begin{theorem}[Rational-scale closure at every depth]
+\label{thm:rational-depth}
+Under the same $L^2$ conditions on $s,t,a,b$ as in
+\cref{thm:depth-closure},
+\begin{align}
+ &\frac1{2\pi}\int_{\R}\mathcal F_d(s,a+\ii py)
+                              \mathcal F_e(t,b-\ii qy)\dd y\notag\\
+ &\quad=q^{s-1}p^{t-1}\,
+       \mathcal J_{d,e}^{p,q}(s+t-1,qa+pb).
+                          \label{eq:rational-depth-pair}
+\end{align}
+The finite expression for the right-hand transform is
+\begin{align}
+ \mathcal J_{d,e}^{p,q}(w,B)={}&\Gamma(w)D_{p,q}(w,B)\notag\\
+ &-\sum_{k\in E_e}\alpha_{e,k}p^k\Gamma(w+k)q^{-w-k}
+                                 \zeta(w+k,B/q)\notag\\
+ &-\sum_{j\in E_d}\alpha_{d,j}q^j\Gamma(w+j)p^{-w-j}
+                                 \zeta(w+j,B/p)\notag\\
+ &+\sum_{j\in E_d}\sum_{k\in E_e}
+       \alpha_{d,j}\alpha_{e,k}q^jp^k\Gamma(w+j+k)B^{-w-j-k}.
+                          \label{eq:Jpq-finite}
+\end{align}
+It is holomorphic for $\Rea w>-\nu_d-\nu_e$, $\Rea B>0$ after all
+removable cancellations. The identities are stable under arbitrary
+spectral and position derivatives inside the stated domains.
+\end{theorem}
+\begin{proof}
+The scaled formula \eqref{eq:scaled-plancherel} pairs
+$x^{s-1}e^{-ax}h_d(x)$ with $x^{t-1}e^{-bx}h_e(x)$.
+Their values at $qx$ and $px$ contribute
+$q^{s-1}p^{t-1}x^{s+t-2}e^{-(qa+pb)x}h_d(qx)h_e(px)$,
+which proves \eqref{eq:rational-depth-pair}.
+For $\Rea w>2$, expand
+$(Q(qx)-P_d(qx))(Q(px)-P_e(px))$.
+The first term is \cref{thm:grid}; a monomial from $P_e(px)$ contributes
+$p^kx^k$ against $Q(qx)$ and hence the second line of
+\eqref{eq:Jpq-finite}. The other two lines follow in the same way.
+The combined kernel vanishes to order $\nu_d+\nu_e$ at zero.
+Its holomorphy proves all pole cancellations and the derivative assertion
+exactly as in \cref{thm:depth-closure}.
+\end{proof}
+
+If the actual slopes are $cp,cq$ with $c>0$, one multiplies the result
+by $1/c$ after changing $y$ to $cy$. Thus the theorem covers every positive
+rational slope ratio. At $p=q=c$ it is consistent with the ordinary
+$1/c$ scaling law. For an irrational ratio the Laplace identity survives,
+but the finite residue grid used in \cref{thm:grid} is unavailable; no
+non-reducibility claim is implied.
+
+\subsection{An explicit all-order rational-scale Stieltjes formula}
+For depth zero write
+$\mathcal J_{0,0}^{p,q}(w,B)=\Gamma(w)K_{p,q}(w,B)$.
+Then \eqref{eq:Jpq-finite} simplifies to
+\begin{align}
+ K_{p,q}(w,B)={}&D_{p,q}(w,B)
+ -\frac{p^{-1}q^{1-w}\zeta(w-1,B/q)
+       +q^{-1}p^{1-w}\zeta(w-1,B/p)}{w-1}\notag\\
+ &+\frac{B^{2-w}}{pq(w-1)(w-2)}.
+                                  \label{eq:Kpq}
+\end{align}
+For integers $m,n\ge0$ define
+\[
+ I_{m,n}^{p,q}(a,b)=\frac1{2\pi}\int_{\R}
+               G_m(a+\ii py)G_n(b-\ii qy)\dd y.
+\]
+Then the theorem gives
+\begin{equation}\label{eq:rational-Stieltjes-jets}
+ \boxed{\displaystyle
+ I_{m,n}^{p,q}(a,b)=(-1)^{m+n}m!n!\,[u^mv^n]
+       q^up^v C(u,v)K_{p,q}(1+u+v,B).}
+\end{equation}
+The exponential slope factors are essential even for first-order jets.
+
+For an entirely pole-free coefficient recipe put
+\begin{equation}\label{eq:coefficient-symbols}
+ z_j(c)=\frac{\zeta^{(j)}(0,c)}{j!},\qquad
+ g_j(c)=\frac{(-1)^j\gamma_j(c)}{j!},\qquad
+ e_j(\lambda)=\frac{(-\log\lambda)^j}{j!}.
+\end{equation}
+Let
+$K_{p,q}(1+\epsilon,B)=\sum_{k\ge0}\kappa_k^{p,q}(B)\epsilon^k$.
+
+\begin{corollary}[Finite coefficient formula]\label{thm:rational-coeff}
+For each integer $k\ge0$,
+\begin{align}
+ \kappa_k^{p,q}(B)={}&\frac1R\sum_{i=0}^{p-1}\sum_{j=0}^{q-1}
+  \left\{\sum_{\ell=0}^{k}e_\ell(R)
+       [z_{k-\ell}(c_{ij})+(1-c_{ij})g_{k-\ell}(c_{ij})]
+      +(1-c_{ij})e_{k+1}(R)\right\}\notag\\
+ &-\frac1p\sum_{\ell=0}^{k+1}e_\ell(q)z_{k+1-\ell}(B/q)
+  -\frac1q\sum_{\ell=0}^{k+1}e_\ell(p)z_{k+1-\ell}(B/p)\notag\\
+ &-\frac BR\sum_{\ell=0}^{k+1}e_\ell(B).
+                                  \label{eq:rational-coeff}
+\end{align}
+Together with \eqref{eq:rational-Stieltjes-jets}, this evaluates every
+rational-scale Stieltjes pairing by finitely many one-variable Hurwitz
+jets, Stieltjes constants, elementary logarithms, and universal zeta
+constants from $C$.
+\end{corollary}
+\begin{proof}
+Expand \eqref{eq:Kpq} at $w=1+\epsilon$.
+The first double sum contains a simple zeta pole multiplied by
+$R^{-1}e^{-\epsilon\log R}$; its contribution to the coefficient of
+$\epsilon^k$ is exactly $(1-c_{ij})e_{k+1}(R)/R$ in addition to the
+regular convolution of Taylor coefficients. The two crossed terms
+contain $e^{-\epsilon\log q}\zeta(\epsilon,B/q)/\epsilon$ and its
+$p$ analogue. The last term is
+$-(B/R)e^{-\epsilon\log B}/\{\epsilon(1-\epsilon)\}$.
+Their coefficients are the last two lines of \eqref{eq:rational-coeff}.
+
+To check the cancellation preceding extraction, observe that
+\[
+ \sum_{i,j}(1-c_{ij})=\frac{p+q}{2}-B.
+\]
+The total residue of \eqref{eq:Kpq} is therefore
+\[
+ \frac{(p+q)/2-B}{pq}
+ -\frac1p\Bigl(\frac12-\frac Bq\Bigr)
+ -\frac1q\Bigl(\frac12-\frac Bp\Bigr)-\frac B{pq}=0.
+\]
+This also checks the powers of $p,q$ in the coefficient formula.
+\end{proof}
+
+For $p=q=1$, \eqref{eq:rational-coeff} reduces exactly to
+\eqref{eq:k-coefficients}. At general $p,q$, Stieltjes jets at the grid
+points enter only up to order $m+n$, while zeta order derivatives at
+$B/p$ and $B/q$ enter only up to order $m+n+1$.
+
+\subsection{The two-scale quarter-Gamma identity}
+The case $k=0$ of \eqref{eq:rational-coeff} is
+\begin{align}
+ K_{p,q}(1,B)={}&\frac1R\sum_{i,j}
+   \{\zeta(0,c_{ij})-(1-c_{ij})\psi(c_{ij})
+                              -(1-c_{ij})\log R\}\notag\\
+ &-\frac1p\zeta'(0,B/q)-\frac1q\zeta'(0,B/p)
+   +\frac{\log q}{p}\zeta(0,B/q)
+   +\frac{\log p}{q}\zeta(0,B/p)\notag\\
+ &+\frac BR(\log B-1).
+                         \label{eq:Kpq-one}
+\end{align}
+For $p=1,q=2,a=b=1/2$, the grid is $3/4,5/4$ and $B=3/2$.
+Using
+$\psi(5/4)-\psi(3/4)=4-\pi$, the first line reduces to $-\pi/8$.
+Thus
+\begin{align*}
+ K_{1,2}(1,3/2)={}&-\frac\pi8-\zeta'(0,3/4)
+       -\frac12\zeta'(0,3/2)-\frac14\log2
+       +\frac34\{\log(3/2)-1\}.
+\end{align*}
+Insert Lerch's formula for $\zeta'(0,z)$,
+$\Gamma(3/2)=\sqrt\pi/2$, and
+$\Gamma(1/4)\Gamma(3/4)=\pi\sqrt2$.
+The result is \eqref{eq:headline-quarter}, proving that identity without
+numerical recognition of its constants.
+
+\section{Evaluating removable integer values without numerical cancellation}
+\label{sec:finite-part-engine}
+
+The formulas for deep compensation contain many singular summands even
+when their sum is regular. A stable evaluation should compute their
+Laurent constant terms, retaining derivatives of analytic prefactors.
+The following rules are enough for every integer specialization of
+\eqref{eq:J-finite} and \eqref{eq:Jpq-finite}.
+
+Let $H_0=0$ and $H_n=\sum_{j=1}^n1/j$. For $n\ge0$,
+\begin{align}
+ \Gamma(-n+\epsilon)
+  &=\frac{(-1)^n}{n!}
+     \left\{\frac1\epsilon+H_n-\gamma+O(\epsilon)\right\},
+                                 \label{eq:Gamma-laurent}\\
+ \CT_{\epsilon=0}\bigl[\Gamma(-n+\epsilon)
+                    \zeta(-n+\delta+\epsilon,C)\bigr]
+  &=\frac{(-1)^n}{n!}
+    \{\zeta'(-n+\delta,C)+(H_n-\gamma)\zeta(-n+\delta,C)\},
+                                 \label{eq:GZ-negative-ct}
+\end{align}
+provided the zeta factor is regular there. The needed unshifted grid
+terms have $\delta=0,-1$, so this proviso always holds when their Gamma
+factor has a nonpositive integer argument. If a regular Gamma factor
+meets the zeta pole instead, $k\ge1$ and $k+\delta=1$, then
+\begin{equation}\label{eq:GZ-positive-ct}
+ \CT_{\epsilon=0}[\Gamma(k+\epsilon)\zeta(1+\epsilon,C)]
+       =\Gamma(k)\{\psi(k)-\psi(C)\},
+\end{equation}
+with residue $\Gamma(k)$. The elementary terms have
+\begin{equation}\label{eq:GE-ct}
+ \CT_{\epsilon=0}[\Gamma(-n+\epsilon)C^{n-\epsilon}]
+       =\frac{(-1)^nC^n}{n!}\{H_n-\gamma-\log C\}.
+\end{equation}
+All these formulas follow by multiplication of one-term Laurent and
+Taylor expansions.
+
+The prefactor rule is indispensable. If a singular factor has residue
+$r$ and constant term $c$, and
+$\theta(\epsilon)=\theta_0+\theta_1\epsilon+O(\epsilon^2)$, then
+\begin{equation}\label{eq:prefactor-rule}
+ \CT\left[\theta(\epsilon)\left(\frac r\epsilon+c+O(\epsilon)\right)\right]
+        =\theta_0c+\theta_1r.
+\end{equation}
+For example, $q^{-w}$ contributes the logarithmic derivative $-\log q$.
+Dropping the second term in \eqref{eq:prefactor-rule} would erase the
+very slope logarithms required by \eqref{eq:rational-coeff}.
+
+\subsection{Finite algorithm and its justification}
+To evaluate $\mathcal J_{d,e}^{p,q}(w_0,B)$ at an integer $w_0$ inside its
+holomorphic domain, expand each summand of \eqref{eq:Jpq-finite} only
+through its residue and constant term. For grid summands, use
+\eqref{eq:GZ-negative-ct} or \eqref{eq:GZ-positive-ct}, and include the
+factor $R^{-w}$ by \eqref{eq:prefactor-rule}. For crossed terms, shift
+$w_0$ by the integer monomial exponent and include the corresponding
+$q^{-w}$ or $p^{-w}$ factor. For elementary terms, use
+\eqref{eq:GE-ct}. Sum the resulting residues and constant terms.
+\cref{thm:rational-depth} proves the residue sum is exactly zero and
+that the constant sum is the value of the ordinary convergent integral.
+Thus a finite part is used solely as a computational operation on a
+meromorphic formula whose total singularity is removable.
+
+The function \texttt{J\_at\_integer} in the accompanying code implements
+this procedure, returning both the finite value and the residual sum.
+It avoids taking tiny spectral offsets and subtracting enormous nearly
+equal quantities. First-order Hurwitz order derivatives suffice for these
+integer values; higher spectral derivatives are obtained by retaining
+more Laurent coefficients. This gives an implementable extension of the
+primitive calculus rather than leaving its resonances as formal limits.

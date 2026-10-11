@@ -1,0 +1,144 @@
+\section{Source audit and proposed integration}
+\label{audit:section}
+
+\subsection{What the audit established}
+
+No new false theorem was found in the specific source arguments used
+for the present results. In particular, the incoming cubic bridge,
+the centered parity criterion, and the previously proved
+trigamma-square moments survive the checks relevant to their use
+here. Their stated limits are research questions, not flaws in
+their proofs. This is a targeted mathematical audit of the relevant
+material, not a certification of every page in the repository.
+
+The appropriate source changes are therefore progress updates and
+additional normalization examples. Table~\ref{audit:status-table}
+gives the precise mapping. The supplied integration notes identify
+the archive-internal source paths and theorem labels; no source
+repository was modified in preparing this package.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.28\linewidth}>{\raggedright\arraybackslash}p{.36\linewidth}>{\raggedright\arraybackslash}p{.28\linewidth}@{}}
+\toprule
+Source question & Result established here & Remaining scope\\
+\midrule
+Cubic harmonic report, Q6 & Quartic power-to-harmonic reduction,
+Theorem~\ref{q4:main} & Powers $k\ge5$ and arithmetic reduction of
+the retained depth-three coefficient\\[5pt]
+Harmonic-parity report, R1 & All pure two-even-tail moments and their
+generator, Theorems~\ref{tail:all-moments}, \ref{tail:generator}
+& Additional harmonic factors and products of four or more tails\\[5pt]
+Harmonic-parity report, R4 & Complex powers, joint resonant completion,
+all logarithmic moments, Theorem~\ref{power:completion}
+& Products of distinct resolvents or nonlinear continuous-order factors\\[5pt]
+Higher-reflection report, centered products & First mixed pair and all
+two-tail orders & Higher-depth products and spectral derivatives\\[5pt]
+Canonical Gaussian $S_6$, revised $S_8$ & No proof or refutation obtained
+& Exact functional bridge to the frozen candidates\\
+\bottomrule
+\end{tabular}
+\caption{Scoped updates relative to the pinned source revision.}
+\label{audit:status-table}
+\end{table}
+
+\subsection{A concrete correction to a tempting extension}
+
+There is a mathematically incorrect extension that the new results
+rule out: replacing a specialized coordinate finite part by the
+meromorphic transform at every point where the specialized integrand
+happens to be integrable. The counterexample at the end of
+Section~\ref{power:sec} is exact. With $p=2$, $u=1$, and
+$\lambda=1$, the ordinary integral of
+$\partial_x^2\zeta(0,x)R_z(x)$ equals zero. The fixed-$\lambda$
+meromorphic continuation of the spectral formula equals $-1$.
+The local monomial has a coefficient that vanishes at the same
+point as its integration denominator, leaving the nonzero limit
+$u-2$.
+
+The correction is to retain the entire moving amplitude before
+coefficient extraction, as in \eqref{power:H}. Removing just the
+negative Laurent coefficients of a one-variable expansion is
+insufficient. At negative integer powers the two smooth endpoint
+residues cancel, yet their quotient has the nonzero limit
+\eqref{power:smoothcontact}. A cancellation of residues therefore
+does not imply that there is no finite endpoint correction.
+
+This is a warning and an exact regression example for future
+extensions. The inspected incoming resolvent theorem states its
+own convergence and completion conditions; this article does not
+attribute the incorrect extension to that theorem. The package
+includes a deliberately corrupted coefficient check so that
+omitting the endpoint phase is visibly rejected by exact algebra.
+
+\subsection{Four conventions that should accompany integration}
+
+\begin{enumerate}
+\item \textbf{Keep strict harmonic coordinates named and normalized.}
+The quartic coefficient $\theta$ is the coefficient of $u$ in
+$Z_3(1+u,1,1)$, not the constant coefficient and not an order
+derivative of a regular function before its poles have been
+specified. The entire principal part and constant coefficient
+are given in \eqref{q4:theta}. The retained coefficient is
+genuine remaining arithmetic data in the present reduction;
+its integral representation is a normalization, not an ordinary-
+constant evaluation.
+
+\item \textbf{Retain subtractions inside convergent summands.}
+The sums in \eqref{tail:ordinary-formula} and
+\eqref{tail:rational-polygamma} are ordinary convergent sums of
+the displayed brackets. Their polynomial pieces must not be
+separated and summed as ordinary series. The equality with the
+continued Dirichlet series is proved using the half-shift and
+Hurwitz trivial zeros.
+
+\item \textbf{Use the regularized Gauss function at parameter resonances.}
+The definition \eqref{moment:eq:regularized} remains valid when
+its third parameter is a nonpositive integer. A quotient written
+informally as ${}_2F_1/\Gamma(c)$ must be read through that
+definition. Likewise the logarithmic Gamma-quotient series has
+the smaller disk stated in \eqref{moment:eq:hgenerator}; zeros
+of the quotient obstruct its logarithm before they obstruct
+the quotient itself.
+
+\item \textbf{Distinguish analytic proofs, finite algebra, and numerical evidence.}
+The infinite identities follow from the proofs. Symbolic checks
+verify selected finite polynomial consequences. The numerical
+files use ordinary multiprecision arithmetic with specified
+analytic tail estimates. They are not interval-enclosed evaluations
+and do not certify arithmetic independence of any constants.
+\end{enumerate}
+
+\subsection{The Gaussian conjectures and the exact obstruction}
+
+The frozen $S_6$ target is in
+\texttt{chapters/04-cyclotomic-quotients.tex}; the revised $S_8$
+candidate is in \texttt{chapters/04-S8-candidate.tex} of the
+manuscript at the pinned revision~\cite{ProveIt}. Both remain
+conjectures. Their existing short candidate formulas have not
+been replaced by a numerical fit in this work.
+
+The exact-resonant report already proves a specific obstruction:
+the $S_6$ target is separated from the entire convergent Cayley
+shuffle ideal together with a specified family of $5{,}131$
+additional relations~\cite{IncomingExact}. This is stronger than
+an unsuccessful small linear solve. It is also a statement about
+that named formal relation system, not a proof that the numerical
+period conjecture is false or that no other functional relation
+can prove it.
+
+The larger search in the independent-orders report generated
+$51{,}244$ double-shuffle rows in $24{,}514$ imaginary word
+coordinates. Its modular elimination stopped after $8{,}500$
+pivots, before exhausting the system~\cite{IncomingIndependent}.
+The incomplete search cannot be cited as an exhausted obstruction,
+and it supplies no rational identity certificate. No new claim
+about its terminal rank is made here.
+
+The new complex-power transform provides analytic identities that
+can be tested against a Gaussian target, but this article has not
+proved a specialization producing either frozen residual. The
+unresolved step is an explicit functional bridge, followed by
+exact coefficient extraction. Giving another representation of
+an unrelated zeta constant does not accomplish that step.
+

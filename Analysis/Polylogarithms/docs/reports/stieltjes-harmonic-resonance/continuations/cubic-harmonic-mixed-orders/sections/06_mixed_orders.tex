@@ -1,0 +1,565 @@
+% Integration requirements: amsmath, amssymb, amsthm; theorem, lemma,
+% proposition, corollary, remark, and proof environments.  No unprefixed
+% macros are introduced.  Bibliography entries are in mixed_references.tex.
+\providecommand{\mxLi}{\operatorname{Li}}
+
+\section{Arbitrary depth with mixed integer inner orders}
+\label{mx:section}
+
+Question~11 of the preceding directional report asks for a finite
+nested-polylogarithm reduction when the inner integer orders have both
+signs.  Theorem~\ref{mx:main} supplies such a reduction while keeping the
+outer order complex.  If exactly $q$ inner orders are positive, its
+output has depth at most $q+1$, regardless of how many nonpositive
+orders occur.  Its coefficients are finite rational operations,
+root-of-unity filters, and generalized-harmonic polynomials.  Repeated
+poles are included directly, and coincident colors are evaluated by an
+explicit polynomial summation rule.
+
+The shuffle algebra of iterated integrals and the reduction of rational
+functions times hyperlogarithms are established tools; see
+Panzer~\cite[Sections~2.1--2.3]{mx:Panzer}.  Colored depth-two Tornheim
+reductions are also classical~\cite{mx:Zhao}.  The contribution here is
+the explicit convolution formula with unrestricted outer order, its
+depth bound, its coincident-color reduction rule, and the accompanying
+meromorphic and normal-derivative prescription.  No claim of literature
+priority for the underlying shuffle or rational-function algorithms is
+made.
+
+\subsection{Definitions and finite input data}
+
+Let $s_j\in\mathbb Z$, $p_j\in\mathbb Z_{>0}$, and
+$0<|X_j|\leq1$.  Define
+\begin{equation}\label{mx:Z}
+ Z_{\mathbf s,\mathbf p}(C;\mathbf X)
+ =\sum_{m_1,\ldots,m_d\geq1}
+  \frac{\prod_{j=1}^dX_j^{m_j}m_j^{-s_j}}
+       {(p_1m_1+\cdots+p_dm_d)^C}.
+\end{equation}
+The half-plane
+$\Re C>d+\sum_j\max(0,-s_j)$ is sufficient for absolute
+convergence.  Every power of a positive integer uses its real
+logarithm.  Put
+\[
+ I_+=\{j:s_j>0\},\qquad I_-=\{j:s_j\leq0\},\qquad
+ q=|I_+|,
+\]
+and assume for the main theorem that both sets are nonempty.  Factor
+the ordinary coefficient generating function as
+\begin{equation}\label{mx:factor}
+ \sum_{n\geq1}r_nt^n=R(t)P(t),\qquad
+ R(t)=\prod_{j\in I_-}\mxLi_{s_j}(X_jt^{p_j}),\quad
+ P(t)=\prod_{j\in I_+}\mxLi_{s_j}(X_jt^{p_j}).
+\end{equation}
+Then $Z(C)=\sum_{n\geq1}r_nn^{-C}$ in the stated half-plane.
+
+For each $j\in I_-$ write $a_j=-s_j$.  The identity
+\[
+ \mxLi_{-a}(z)=\left(z\frac{d}{dz}\right)^a\frac z{1-z}
+\]
+shows that $R$ is rational and bounded at infinity.  Its finite partial
+fractions have the form
+\begin{equation}\label{mx:partial}
+ R(t)=c_\infty+
+       \sum_\alpha\sum_{h=1}^{M_\alpha}
+          \frac{c_{\alpha,h}}{(1-\alpha t)^h},\qquad
+ M_\alpha=\sum_{\substack{j\in I_-\\\alpha^{p_j}=X_j}}(1-s_j).
+\end{equation}
+The index $\alpha$ runs over the distinct roots of the indicated
+equations.  Pole cancellation may make some coefficients zero.  Even
+at repeated roots the coefficient formula is simply
+\begin{equation}\label{mx:polecoeff}
+ c_{\alpha,h}
+ =[u^{M_\alpha-h}]\,u^{M_\alpha}R((1-u)/\alpha).
+\end{equation}
+The function inside the coefficient extraction is holomorphic at zero.
+Because $I_-$ is nonempty, $R(0)=0$, so
+\begin{equation}\label{mx:constantcancel}
+ c_\infty+\sum_{\alpha,h}c_{\alpha,h}=0.
+\end{equation}
+Finally set
+\begin{equation}\label{mx:e}
+ e_{h,r}=[v^r]\prod_{\nu=1}^{h-1}(1+v/\nu)
+ \quad(0\leq r<h).
+\end{equation}
+Thus $e_{h,0}=1$, $e_{h,1}=H_{h-1}$, and
+$e_{h,2}=\{H_{h-1}^2-H_{h-1}^{(2)}\}/2$.  In every degree the
+coefficients follow from
+\[
+ \prod_{\nu=1}^{h-1}(1+v/\nu)
+ =\exp\!\left(\sum_{k\geq1}
+          \frac{(-1)^{k+1}}kH_{h-1}^{(k)}v^k\right).
+\]
+
+We use the descending-index convention
+\begin{equation}\label{mx:mpl}
+ \mxLi_{u_1,\ldots,u_k}(z_1,\ldots,z_k)
+ =\sum_{n_1>\cdots>n_k\geq1}
+       \frac{z_1^{n_1}\cdots z_k^{n_k}}
+            {n_1^{u_1}\cdots n_k^{u_k}}.
+\end{equation}
+The first order will remain variable.  Intermediate trailing orders
+may be nonpositive integers; Lemma~\ref{mx:eliminate} removes all such
+orders.  For root choices $\mathbf a=(a_j)_{j\in I_+}$ with
+$a_j^{p_j}=X_j$, form the words
+\[
+ 0^{s_j-1}a_j\qquad(j\in I_+).
+\]
+Their shuffle, with each original position retained as a labeled
+position before equal words are collected, is a finite formal sum
+$\sum_w\mu_w w$.  Every resulting word has exactly $q$ nonzero
+letters and ends in a nonzero letter; hence it has a unique form
+\begin{equation}\label{mx:word}
+ w=0^{k_1-1}b_1\,0^{k_2-1}b_2\cdots0^{k_q-1}b_q,
+ \qquad k_i\geq1.
+\end{equation}
+The sequence $(b_1,\ldots,b_q)$ lists the selected root colors in the
+order in which they occur in that shuffle.  Repeated colors do not
+alter this rule or suppress their shuffle multiplicities.
+
+\subsection{The mixed-sign reduction theorem}
+
+\begin{theorem}[Finite mixed-sign reduction and every normal jet]
+\label{mx:main}
+Let the preceding data be fixed, with $q\geq1$ and $I_-\ne\varnothing$.
+Put $K=\prod_{j\in I_+}p_j^{s_j-1}$.  Then
+\begin{align}\label{mx:mainformula}
+ Z(C)={}&K\sum_{\substack{\mathbf a\\a_j^{p_j}=X_j}}
+       \sum_w\mu_w\sum_\alpha\sum_{h=1}^{M_\alpha}
+           c_{\alpha,h}
+       \sum_{r=0}^{h-1}e_{h,r}\sum_{\ell=0}^r
+           (-1)^\ell\binom r\ell\notag\\[-1mm]
+ &\hspace{10mm}\cdot
+ \mxLi_{C-r+\ell,\,k_1-\ell,\,k_2,\ldots,k_q}
+ \left(\alpha,\frac{b_1}\alpha,
+                  \frac{b_2}{b_1},\ldots,\frac{b_q}{b_{q-1}}\right).
+\end{align}
+This is an identity of meromorphic functions of $C$ on the whole
+complex plane.  It reduces, by finite algebra, to a sum of terms
+\begin{equation}\label{mx:positiveoutput}
+ A\,\mxLi_{C+v,\,t_2,\ldots,t_k}(z_1,\ldots,z_k),
+ \qquad v\in\mathbb Z,\quad t_i\in\mathbb Z_{>0},\quad k\leq q+1.
+\end{equation}
+All coefficients and colors are independent of $C$.  Consequently
+every derivative $\partial_C^N Z$ is obtained by differentiating only
+the first polylogarithm order in either finite formula.  If no $X_j$
+equals one, the continuation is entire and these derivatives are
+ordinary entire functions.  When poles occur, the identities and
+derivatives are meromorphic identities with the pole prescription in
+Theorem~\ref{mx:poles} below.
+\end{theorem}
+
+\begin{proof}
+The root filter, valid first as an identity of power series, is
+\begin{equation}\label{mx:rootfilter}
+ \mxLi_s(Xt^p)=p^{s-1}\sum_{a^p=X}\mxLi_s(at).
+\end{equation}
+Indeed the sum of the $n$th powers of those roots vanishes unless
+$p\mid n$, and equals $pX^{n/p}$ otherwise.  Thus no choice of a
+particular $p$th-root branch enters the result.
+
+For completeness, take the iterated-integral forms
+$\omega_0=dt/t$ and $\omega_a=a\,dt/(1-at)$, and let
+$\mathcal H_w$ denote the corresponding integral from zero with
+outermost letter first.  All words used here end in a nonzero letter,
+so these integrals require no tangential-base-point regularization.
+Expansion of the kernels into geometric series proves
+\begin{equation}\label{mx:hyperlog}
+ \mathcal H_w(t)=
+ \mxLi_{k_1,\ldots,k_q}
+       (b_1t,b_2/b_1,\ldots,b_q/b_{q-1}).
+\end{equation}
+Partitioning the product of integration simplices by all total
+orderings of their integration variables proves the shuffle product,
+including its multiplicities when letters coincide.  Applying this
+to \eqref{mx:rootfilter} gives
+\[
+ P(t)=K\sum_{\mathbf a}\sum_w\mu_w\mathcal H_w(t).
+\]
+
+It remains to compute one rational-factor convolution.  Write
+$H(t)=\mathcal H_w(t)=\sum_{m\geq1}h_mt^m$.  For $n\geq m$,
+\begin{align}\label{mx:binomial}
+ [t^{n-m}](1-\alpha t)^{-h}
+ &=\alpha^{n-m}\binom{n-m+h-1}{h-1}\notag\\
+ &=\alpha^{n-m}\sum_{r=0}^{h-1}e_{h,r}
+                   \sum_{\ell=0}^r(-1)^\ell\binom r\ell
+                            n^{r-\ell}m^\ell.
+\end{align}
+The diagonal $n=m$ contributes $h_n$ exactly once.  The strict part
+$n>m$, followed by the nested indices already in $h_m$, is precisely
+the multiple polylogarithm in \eqref{mx:mainformula}.  The diagonal
+contributions from every rational partial fraction and from
+$c_\infty H$ have combined coefficient
+$c_\infty+\sum_{\alpha,h}c_{\alpha,h}=R(0)=0$.  Thus they cancel
+exactly, leaving the displayed formula.
+
+This reasoning proves an identity of coefficient sequences.  All
+series converge locally normally in $C$ if $|X_j|<1$: the cumulative
+colors in every term of \eqref{mx:mainformula} are
+$(\alpha,b_1,\ldots,b_q)$, all strictly inside the disk, so the
+coefficients have exponential decay times a polynomial.  For boundary
+colors the same coefficient identity can first be summed in a
+sufficiently far right half-plane.  Lemma~\ref{mx:eliminate} produces
+\eqref{mx:positiveoutput}; each elimination decreases depth by one.
+The initial depth is $q+1$, proving the asserted depth bound.
+The Mellin argument in Theorem~\ref{mx:poles} proves the continuation
+and the entire assertion.  Equality on the original half-plane then
+implies equality meromorphically everywhere and permits every fixed
+$C$ derivative.
+\end{proof}
+
+\begin{lemma}[Eliminating a nonpositive trailing order]
+\label{mx:eliminate}
+Any multiple polylogarithm whose first order is $C+v$ with
+$v\in\mathbb Z$ and whose remaining orders are integers reduces
+finitely to terms of the form \eqref{mx:positiveoutput}, with depth
+no greater than its initial depth.  Coincident cumulative colors are
+handled directly, without division by their difference.
+\end{lemma}
+
+\begin{proof}
+Choose any nonpositive trailing order $-M$ at position $j\geq2$.
+For fixed neighboring indices put
+$u=n_{j-1}$ and $l=n_{j+1}$, with $n_{k+1}=0$ when $j=k$ is last.
+The sum to eliminate is
+\[
+ \sum_{l<n<u}\beta^n n^M,\qquad \beta=z_j.
+\]
+For $\beta\ne1$ define the rational functions and polynomial
+\begin{equation}\label{mx:Q}
+ S_r(\beta)=\left(\beta\frac d{d\beta}\right)^r
+                         \frac1{1-\beta},\qquad
+ Q_M(x;\beta)=\sum_{r=0}^M\binom Mr x^{M-r}S_r(\beta).
+\end{equation}
+The geometric-series identity, or its polynomial continuation in
+$\beta$, gives
+\begin{equation}\label{mx:geomelim}
+ \sum_{l<n<u}\beta^n n^M
+   =\beta^{l+1}Q_M(l+1;\beta)-\beta^uQ_M(u;\beta).
+\end{equation}
+For example, it follows by subtracting the two tails
+$\sum_{n\geq v}\beta^n n^M=\beta^vQ_M(v;\beta)$ when
+$|\beta|<1$, and then using equality of rational functions.  At
+$\beta=1$ the formula used by the algorithm is instead
+\begin{equation}\label{mx:faulhaber}
+ \sum_{l<n<u}n^M
+   =\frac{B_{M+1}(u)-B_{M+1}(l+1)}{M+1},
+\end{equation}
+where $B_1(x)=x-1/2$.  Both identities hold even when $u=l+1$;
+their two boundary terms then cancel.
+
+Expand the boundary polynomials in $u$ or $l$.  A power $u^a$ lowers
+the preceding order by $a$, and the factor $\beta^u$ multiplies the
+preceding color by $\beta$.  Similarly, a power $l^a$ lowers the next
+order and $\beta^l$ multiplies its color by $\beta$.  At the last
+position the lower boundary is a scalar.  After removing position
+$j$, every term is a polylogarithm of depth one less, with first order
+still of the form $C+$ an integer.  Some adjacent trailing orders
+may now be nonpositive; repeat the same step.  The depth strictly
+decreases at each step, so the recursion terminates after at most
+$k-1$ eliminations along any branch.  Every trailing order in the
+final terms is positive.  Equation~\eqref{mx:faulhaber} is the exact
+coincident-color branch; it never requires taking numerically unstable
+limits of \eqref{mx:geomelim}.
+\end{proof}
+
+\begin{remark}[What the reduction preserves]
+Only the first polylogarithm order varies with $C$.  The theorem does
+not authorize differentiating the finite expression with respect to
+the discrete inner indices $s_j$.  Boundary elimination replaces a
+pair of adjacent colors by their product; hence its cumulative colors
+are obtained by deleting entries from
+$(\alpha,b_1,\ldots,b_q)$.  In particular, if every original $X_j$
+is nontrivial, it cannot introduce a cumulative color equal to one.
+This observation also explains why equal neighboring colors are
+harmless while a genuinely uncolored original factor can change the
+outer spectral poles.
+\end{remark}
+
+The two unmixed sectors fit the same proof.  If $I_-=\varnothing$,
+the shuffle gives a sum of depth-$d$ polylogarithms with first order
+$C+k_1$.  If $I_+=\varnothing$, the coefficient identity
+\eqref{mx:binomial} gives the preceding depth-one formula
+\[
+ Z(C)=\sum_{\alpha,h}c_{\alpha,h}
+                    \sum_{r=0}^{h-1}e_{h,r}\mxLi_{C-r}(\alpha).
+\]
+Thus every pattern of integer inner orders has a finite reduction.
+
+\subsection{Continuation, poles, and normal differentiation}
+
+Positive uncolored factors introduce logarithms.  Therefore the
+finite simple-pole list from the all-nonpositive rational sector
+cannot simply be copied to the mixed sector.  The following local
+rule gives all the poles and their principal coefficients.
+
+\begin{theorem}[Complete principal-part prescription]
+\label{mx:poles}
+For the integer-order sum \eqref{mx:Z}, including the unmixed sectors,
+put
+\[
+ F(x)=\prod_j\mxLi_{s_j}(X_je^{-p_jx}),\qquad
+ M=\sum_{\substack{s_j\leq0\\X_j=1}}(1-s_j),\qquad
+ \ell_+=\#\{j:s_j>0,\ X_j=1\}.
+\]
+Near $x=0^+$ there is a convergent logarithmic Laurent expansion
+\begin{equation}\label{mx:locallaurent}
+ F(x)=\sum_{v\geq-M}\sum_{b=0}^{\ell_+} a_{v,b}x^v(\log x)^b.
+\end{equation}
+The meromorphic continuation of $Z$ has possible poles only at
+integers $m\leq M$.  Its complete principal part at $C=m$, with
+$\varepsilon=C-m$, is
+\begin{equation}\label{mx:principal}
+ \operatorname{PP}_{C=m}Z(C)
+ =\operatorname{PP}_{\varepsilon=0}\left\{
+  \frac1{\Gamma(m+\varepsilon)}
+    \sum_{b=0}^{\ell_+}\frac{(-1)^bb!\,a_{-m,b}}
+                        {\varepsilon^{b+1}}\right\}.
+\end{equation}
+Consequently the pole order is at most $\ell_++1$ for positive $m$, and
+at most $\ell_+$ for nonpositive $m$.  Missing coefficients and canceled
+principal parts mean removable singularities.  If no $X_j=1$,
+the function is entire.  Every normal derivative is obtained by
+differentiating the meromorphic function and its displayed principal
+parts.
+\end{theorem}
+
+\begin{proof}
+For a nontrivial color the factor is analytic at zero, with expansion
+\begin{equation}\label{mx:nontrivexp}
+ \mxLi_s(Xe^{-px})
+   =\sum_{k\geq0}\mxLi_{s-k}(X)\frac{(-px)^k}{k!}.
+\end{equation}
+For $a\geq0$ the uncolored nonpositive factor has expansion
+\begin{equation}\label{mx:negativeexp}
+ \mxLi_{-a}(e^{-px})
+   =\frac{a!}{(px)^{a+1}}
+      +\sum_{k\geq0}\zeta(-a-k)\frac{(-px)^k}{k!}.
+\end{equation}
+For $s\geq1$ the uncolored positive factor has the integer-order
+limit of Jonqui\`ere's expansion~\cite[Eq.~25.12.12]{DLMFpolylog}:
+\begin{equation}\label{mx:positiveexp}
+ \mxLi_s(e^{-px})
+  =\frac{(-px)^{s-1}}{(s-1)!}
+       \{H_{s-1}-\log p-\log x\}
+    +\sum_{\substack{k\geq0\\k\ne s-1}}
+       \zeta(s-k)\frac{(-px)^k}{k!}.
+\end{equation}
+These convergent local expansions prove \eqref{mx:locallaurent} and
+provide every needed coefficient by finite multiplication.
+
+In the initial right half-plane, termwise integration gives
+\begin{equation}\label{mx:mellin}
+ Z(C)=\frac1{\Gamma(C)}\int_0^\infty x^{C-1}F(x)\,dx.
+\end{equation}
+The integral over any $[\delta,\infty)$ is entire before multiplication
+by $1/\Gamma(C)$, since $F$ decreases exponentially at infinity.
+Subtract successively more terms of \eqref{mx:locallaurent} near zero.
+The remainder then defines a holomorphic function on successively
+larger left half-planes, and the subtracted monomials contribute
+\[
+ \int_0^1x^{C+v-1}(\log x)^b\,dx
+       =\frac{(-1)^bb!}{(C+v)^{b+1}}.
+\]
+Only $v=-m$ can contribute to the principal part at $C=m$.
+The reciprocal Gamma function is nonzero at positive integers and
+has a simple zero at each nonpositive integer.  This proves
+\eqref{mx:principal} and the pole-order assertions.  If there are no
+uncolored factors, then $M=\ell_+=0$; all potential Mellin poles cancel
+against those Gamma zeros.  Local normal convergence of the subtracted
+integrals on compact sets also justifies every fixed normal
+derivative.
+
+To verify continuation of each nested term separately, its coefficient
+kernel, with the first denominator omitted, is
+\[
+ \sum_{n_1>\cdots>n_k\geq1}
+ \frac{(z_1t)^{n_1}z_2^{n_2}\cdots z_k^{n_k}}
+      {n_2^{t_2}\cdots n_k^{t_k}}
+ =\frac{z_1t}{1-z_1t}
+     \mxLi_{t_2,\ldots,t_k}(z_1z_2t,z_3,\ldots,z_k).
+\]
+For depth one the kernel is just $z_1t/(1-z_1t)$.  The positive
+trailing indices make the right side a rational function times an
+iterated integral.  Induction in its word length gives a convergent
+finite-logarithmic local expansion at $t=1$.  Applying the same Mellin
+subtractions with parameter $C+v$ proves its meromorphic continuation.
+If none of its cumulative colors is one, its kernel is analytic at
+$t=1$, and the continuation is entire.  As noted after
+Lemma~\ref{mx:eliminate}, all these cumulative colors come from the
+original root sets.
+\end{proof}
+
+Formula~\eqref{mx:principal} is fully finite at every specified pole.
+For clarity, the Gamma factors needed there can be generated by
+\begin{align}\label{mx:gammajets}
+ \frac1{\Gamma(m+\varepsilon)}
+ &=\frac1{(m-1)!}\exp\left\{
+   (\gamma-H_{m-1})\varepsilon+
+   \sum_{k\geq2}\frac{(-1)^{k+1}}k
+       (\zeta(k)-H_{m-1}^{(k)})\varepsilon^k\right\},\quad m\geq1,
+ \notag\\
+ \frac1{\Gamma(-N+\varepsilon)}
+ &=(-1)^NN!\varepsilon\exp\left\{
+   (\gamma-H_N)\varepsilon+
+   \sum_{k\geq2}\frac{(-1)^{k+1}\zeta(k)-H_N^{(k)}}k
+                                        \varepsilon^k\right\}.
+\end{align}
+Only finitely many coefficients are required.  This controls all
+principal coefficients through ordinary zeta values, generalized
+harmonic numbers, integer-order polylogarithms, and logarithms of
+the weights.  It does not assert that the holomorphic Laurent
+coefficients reduce to depth one.
+
+Inside the unit polydisk the functions are already entire in $C$.
+When all boundary colors are nontrivial, their continuation agrees
+locally uniformly in $C$ with the total-degree Abel limit
+$X_j\mapsto\rho^{p_j}X_j$, $\rho\uparrow1$.  This follows from
+the same Taylor subtractions, uniformly near those fixed colors.
+If uncolored factors occur, an Abel limit outside the convergence
+half-plane need not exist.  In that case the prescribed value is the
+meromorphic continuation of the fixed-color sum, and a pole requires
+a Laurent coefficient or other explicitly stated restriction.
+
+\subsection{Explicit mixed and weighted identities}
+
+For compactness write
+\[
+ Z_{s_1,\ldots,s_d}(C;z)
+  =\sum_{m_1,\ldots,m_d\geq1}
+      \frac{z^{m_1+\cdots+m_d}}
+       {m_1^{s_1}\cdots m_d^{s_d}(m_1+\cdots+m_d)^C}.
+\]
+The following identities hold first for $|z|<1$, and thereafter with
+the fixed-color continuation just specified.  From
+$\mxLi_1(zt)^2=2\mxLi_{1,1}(zt,1)$ and
+$\mxLi_0(zt)=-1+(1-zt)^{-1}$, one obtains
+\begin{equation}\label{mx:110}
+ Z_{1,1,0}(C;z)=2\mxLi_{C,1,1}(z,1,1).
+\end{equation}
+The repeated pole
+\[
+ \mxLi_{-1}(zt)=(1-zt)^{-2}-(1-zt)^{-1}
+\]
+gives, after the coincident-color elimination,
+\begin{align}\label{mx:11minus1}
+ Z_{1,1,-1}(C;z)={}&2\mxLi_{C-1,1,1}(z,1,1)
+                   -2\mxLi_{C-1,1}(z,1)
+                   +2\mxLi_{C,1}(z,1)\notag\\
+                 &+2\mxLi_{C-1}(z)-2\mxLi_C(z).
+\end{align}
+Indeed the intermediate term is
+$2\{\mxLi_{C-1,1,1}-\mxLi_{C,0,1}\}$, and direct summation of
+the middle index proves
+\[
+ \mxLi_{a,0,1}(z,1,1)
+ =\mxLi_{a-1,1}(z,1)-\mxLi_{a,1}(z,1)
+      -\mxLi_{a-1}(z)+\mxLi_a(z).
+\]
+Every normal derivative of \eqref{mx:11minus1}, including at $C=0$
+when $z\ne1$, follows by replacing each polylogarithm with its
+corresponding first-order derivative.  This gives the whole normal
+jet, rather than an isolated negative-integer value identity.
+
+A four-variable example has depth at most three, as predicted:
+\begin{align}\label{mx:1100}
+ Z_{1,1,0,0}(C;z)={}&2\mxLi_{C-1,1,1}(z,1,1)
+                    -2\mxLi_{C,1,1}(z,1,1)\notag\\
+                  &-2\mxLi_{C-1,1}(z,1)
+                    +2\mxLi_{C,1}(z,1)
+                    +2\mxLi_{C-1}(z)-2\mxLi_C(z).
+\end{align}
+Here the rational factor is
+$(zt)^2/(1-zt)^2=1-2/(1-zt)+(1-zt)^{-2}$.
+
+An unequal-weight example, with both root filtering and a color
+coincidence, is
+\begin{equation}\label{mx:weightedexample}
+ W(C)=\sum_{m,n,k\geq1}
+       \frac{4^{-m}3^{-n}9^{-k}}{m^2n(2m+n+2k)^C}.
+\end{equation}
+It is entire in $C$.  Since
+\[
+ \mxLi_2(t^2/4)=2\{\mxLi_2(t/2)+\mxLi_2(-t/2)\},\qquad
+ \frac{t^2/9}{1-t^2/9}
+   =-1+\frac1{2(1-t/3)}+\frac1{2(1+t/3)},
+\]
+the three shuffles of the words $0a$ and $1/3$ give
+\begin{align}\label{mx:weightedanswer}
+ W(C)=\sum_{\substack{a\in\{1/2,-1/2\}\\
+                     \delta\in\{1/3,-1/3\}}}
+ \biggl\{&\mxLi_{C,1,2}(\delta,1/(3\delta),3a)
+       +\mxLi_{C,2,1}(\delta,1/(3\delta),3a)\notag\\
+       &+\mxLi_{C,2,1}(\delta,a/\delta,1/(3a))\biggr\}.
+\end{align}
+All cumulative colors in these twelve terms have modulus less than
+one, so no continuation convention is needed to differentiate this
+identity at any $C$.
+
+The uncolored case of \eqref{mx:110} illustrates why the pole theorem
+is necessary.  Near zero its Mellin kernel is
+\[
+ \mxLi_0(e^{-x})\mxLi_1(e^{-x})^2
+ =x^{-1}\log^2x-\tfrac12\log^2x-\log x
+   +x\{\tfrac1{12}\log^2x+\tfrac7{12}\log x+\tfrac14\}
+   +O(x^2(1+|\log x|^2)).
+\]
+Consequently
+\begin{align}\label{mx:examplepoles}
+ \operatorname{PP}_{C=1} Z_{1,1,0}(C;1)
+  &=\frac2{(C-1)^3}+\frac{2\gamma}{(C-1)^2}
+                         +\frac{\gamma^2-\zeta(2)}{C-1},\notag\\
+ \operatorname{PP}_{C=0} Z_{1,1,0}(C;1)
+  &=-\frac1{C^2}+\frac{1-\gamma}{C},\notag\\
+ \operatorname{PP}_{C=-1} Z_{1,1,0}(C;1)
+  &=-\frac1{6(C+1)^2}+\frac{3/4-\gamma/6}{C+1}.
+\end{align}
+In fact there are infinitely many nonpositive poles: the coefficient
+of $\log^2x$ in this kernel is exactly
+$\mxLi_0(e^{-x})$, whose positive odd powers have nonzero Bernoulli
+coefficients.  This observation concerns the mixed extension; it is
+not a correction of the earlier theorem restricted to rational
+generating functions.
+
+\subsection{A compatible primitive hierarchy and exact checks}
+
+With $r_n$ from \eqref{mx:factor}, introduce an additional variable
+$z$ by $Z(C;z)=\sum_{n\geq1}r_nz^nn^{-C}$.  Equivalently this
+replaces $X_j$ by $X_jz^{p_j}$.  In every term of the finite reduction
+only the first polylogarithm color acquires the factor $z$.  Thus
+\begin{equation}\label{mx:primitives}
+ \int_0^z\partial_C^N Z(C;t)\frac{dt}{t}
+        =\partial_C^N Z(C+1;z),\qquad
+ z\frac d{dz}\partial_C^N Z(C;z)
+        =\partial_C^N Z(C-1;z).
+\end{equation}
+The primitive is fixed by its zero value at $z=0$.  These identities
+follow by local normal convergence in the disk and continue along
+any common path avoiding the coefficient-function singularities.
+
+The accompanying program performs 624 exact rational checks with
+SymPy; its source is \texttt{verify\_mixed\_reduction.py}.
+There are 484 coefficient
+checks: for eleven independent fixtures, each of the first 22
+coefficients is computed directly from the original product and
+compared both with \eqref{mx:mainformula} and with the fully eliminated
+positive-trailing-order expression.  The fixtures include four
+original variables, three positive factors, unequal weights, repeated
+rational poles, coincident and opposite unit colors, and nonpositive
+intermediate trailing indices.  The remaining 140 checks verify the
+finite boundary summations for degrees zero through six, including
+empty intervals and $\beta=1$.  No floating-point tolerance is used.
+The coefficient checks establish finite algebraic diagnostics;
+meromorphic continuation and differentiation are supplied by the
+proofs, not inferred from these tests.  The exact outputs and fixture
+descriptions are recorded in \texttt{mixed\_reduction\_checks.json}.
+
+The remaining question is arithmetic simplification of the resulting
+positive-depth normal jets.  The depth bound is a guaranteed upper
+bound, not an independence statement or a proof of minimality.
+At roots of unity, one can now ask which symmetries or distribution
+projections cancel these residual jets and leave only depth-one
+Hurwitz-zeta, Gamma, and generalized-Stieltjes data.  Such a
+cancellation problem is distinct from the finite mixed-sign closure
+proved here.

@@ -1,0 +1,2054 @@
+% Standalone source; generated from the modular article sources.
+\documentclass[11pt]{article}
+% BEGIN preamble.tex
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=26mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{hyperref,bookmark,fancyhdr}
+\definecolor{ResearchBlue}{HTML}{173D63}
+\definecolor{ResearchTeal}{HTML}{126B72}
+\hypersetup{colorlinks=true,linkcolor=ResearchBlue,citecolor=ResearchTeal,urlcolor=ResearchTeal,pdftitle={Cubic Tornheim Derivatives and Harmonic Stieltjes Constants},pdfauthor={Research continuation for the ProveIt project}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\itshape Cubic Tornheim and harmonic Stieltjes identities}
+\fancyhead[R]{\small ProveIt research}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{3pt}
+\setlist{topsep=4pt,itemsep=3pt,parsep=0pt}
+\allowdisplaybreaks[1]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\FP}{\operatorname{FP}}
+\newcommand{\CT}{\operatorname{CT}}
+\newcommand{\PP}{\operatorname{PP}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\T}{\mathcal T}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Repart}{\operatorname{Re}}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\etah}{\eta}
+\newcommand{\gH}{\gamma_H}
+\newcommand{\ray}{W}
+\newcommand{\sourcecommit}{\texttt{5a790187c8e186e41e2b990b4941cb7a1a3c7b6b}}
+
+% END preamble.tex
+
+\title{\color{ResearchBlue}\bfseries Cubic Tornheim Derivatives and\\Harmonic Stieltjes Constants\\[6pt]\large A two-coordinate formula, a digamma-cube bridge,\\and finite reductions at mixed integer orders}
+\author{Research continuation for the ProveIt project}
+\date{11 October 2026 (UTC)}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+This report develops three connected exact-identity results. First, a
+coordinate-normalized integral of the digamma cube is expressed through the
+first strict harmonic Stieltjes coefficient, linking an ordered Hurwitz
+Laurent coordinate to the third derivative of diagonal Tornheim zeta.
+A normally convergent harmonic series and an explicitly normalized
+antiderivative supply independent analytic descriptions. Second, every
+admissible third directional derivative of Tornheim zeta at its singular
+origin is reduced to two fixed constants and ordinary Riemann-zeta
+derivatives. The coefficient of each nonclassical coordinate is explicit;
+an asymmetric conic of directions eliminates one coordinate. A transverse
+curved version retains these two coordinates and has an exact fourth-jet
+correction. Third, products containing arbitrary positive and nonpositive
+integer polylogarithm orders admit finite nested-polylogarithm reductions
+with a free complex outer order. The construction includes integer
+weights, repeated colors, all outer-order derivatives, and the logarithmic
+Mellin poles that distinguish the mixed sector from the purely rational
+one. Proofs, exact symbolic certificates, independent numerical checks,
+source-status notes, and further research questions accompany the results.
+No arithmetic independence of the displayed constants is asserted.
+\end{abstract}
+\vfill
+\noindent\textbf{Source snapshot.} The manuscript and incoming reports were
+checked against commit\\[3pt]
+\sourcecommit.\\[5pt]
+The accompanying source inventory records the Git blob hashes of all
+80 manuscript chapter files and all 11 incoming archives at that revision.
+\clearpage
+\tableofcontents
+\clearpage
+% BEGIN sections/01_scope.tex
+\section{Research scope and conventions}
+\label{sec:scope}
+
+The current ProveIt manuscript already contains extensive exact
+polylogarithm, Gamma, Stieltjes, and correlation identities. Its newest
+incoming reports go further: they construct arbitrary-depth ordered
+Hurwitz germs, complete coincident Stieltjes products, and compute the
+first two derivatives of Tornheim zeta on every admissible ray through
+the origin \cite{Repo,IncomingOrdered,IncomingCoincident}. The questions
+addressed here are specific continuations of that work.
+
+\subsection{What is proved here}
+
+\begin{enumerate}
+\item The cubic digamma finite part is reduced to the strict harmonic
+coefficient $\eta(1)$ already used in the ordered Hurwitz report:
+\[
+ \FP\int_0^1\psi(x)^3\dd x
+       =3\zeta(2)-6\eta(1)-6\gamma\gamma_1.
+\]
+This identifies two previously separate coordinates in the inspected
+reports. It supplies a convergent harmonic-series answer to the proposed
+reduction of the diagonal Tornheim third derivative. It does not give a
+finite evaluation of $\eta(1)$ using only ordinary zeta constants.
+\item The entire cubic directional layer of $\T(A,B,C)$ is determined
+by two fixed constants. An exact double-zeta product identity reduces
+the number of unknown quadratic coefficients in its holomorphic
+remainder; the resulting formula answers the asymmetric-ray question
+in Section~9, Question~2 of the coincident report.
+\item The mixed integer-order problem in Section~9, Question~11 of
+that report has a finite constructive solution at arbitrary depth.
+The free outer spectral order is retained throughout. The pole
+description includes logarithmic singularities, which are absent
+from the purely rational case.
+\end{enumerate}
+
+The Gaussian $S_6$ and revised $S_8$ candidates are different arithmetic
+questions. They are not proved by the results below. The exact-identity
+and source-status ledgers retain this distinction.
+
+\subsection{Classical input and the extent of novelty}
+
+The Mellin representation, Jonqui\`ere expansion, shuffle and stuffle
+products, Mittag--Leffler methods, and the elementary relationship
+between Hurwitz zeta and polygamma functions are classical
+\cite{DLMFpolylog,DLMFhurwitz,DLMFgamma,Connon,BorweinDilcher}.
+General Laurent algorithms for multiple zeta functions also predate
+this report \cite{MOW}. Harmonic Stieltjes coefficients have an
+established normalization and literature \cite{Kargin}.
+
+The contribution is the specific cubic bridge, the complete formula
+for arbitrary cubic directions and transverse curves, and the explicit
+finite reduction and pole prescription for the mixed integer-order
+sector. These are proved directly. They are new continuations relative
+to the inspected repository corpus; a claim of global priority for
+every equivalent formulation would require a broader literature audit.
+In particular, a two-coordinate spanning formula is not a proof that
+the corresponding numbers are arithmetically independent.
+
+\subsection{Notation}
+
+The generalized Stieltjes convention is
+\begin{equation}\label{eq:stieltjes}
+ \zeta(1+u,a)=\frac1u+
+       \sum_{m=0}^{\infty}\frac{(-1)^m\gamma_m(a)}{m!}u^m,
+ \qquad \gamma_m=\gamma_m(1),\quad \gamma=\gamma_0.
+\end{equation}
+Thus $\gamma_0(a)=-\psi(a)$ and $\psi=\Gamma'/\Gamma$.
+Primes on $\zeta(s,a)$ denote derivatives in its first argument unless
+explicitly stated otherwise. We set
+\[
+ L=\log(2\pi),\qquad
+ H_n^{(r)}=\sum_{j=1}^n j^{-r},\qquad H_n=H_n^{(1)},\qquad H_0^{(r)}=0.
+\]
+Powers of positive real numbers use real logarithms. All logarithms
+of complex variables in a right half-plane use the branch real on
+the positive axis.
+
+Our ordered double zeta convention places the larger summation index
+first:
+\begin{equation}\label{eq:Z2def}
+ Z_2(s,t;a)=\sum_{n>m\ge0}(n+a)^{-s}(m+a)^{-t},\qquad a>0.
+\end{equation}
+The series converges, for example, if $\Re s>1$ and
+$\Re(s+t)>2$. Its meromorphic continuation is understood when a
+spectral argument is outside this domain. The strict harmonic coefficient
+is fixed by
+\begin{equation}\label{eq:eta-definition}
+ Z_2(1+u,1;a)=\frac1{u^2}+\frac{\gamma_0(a)}u+
+ \frac{\gamma_0(a)^2-\zeta(2,a)}2+\eta(a)u+O(u^2).
+\end{equation}
+This is the convention of the ordered incoming report. If
+$\zeta_H(s,a)$ uses the inclusive inner sum, then
+\begin{equation}\label{eq:strict-inclusive}
+ \zeta_H(s,a)=Z_2(s,1;a)+\zeta(s+1,a),\qquad
+ \eta(a)=-\gamma_H(1,a)-\zeta'(2,a).
+\end{equation}
+The correction $\zeta'(2,a)$ and the minus sign are essential.
+
+For a function with an endpoint expansion in powers of $x$ and
+$\log x$, $\FP\int_0^1$ means the constant coefficient of the cutoff
+integral $\int_\varepsilon^1$ as $\varepsilon\downarrow0$, in the
+coordinate $x$ itself. We never replace this prescription silently
+by a spectral Laurent constant or by a nonlinear cutoff coordinate.
+
+% END sections/01_scope.tex
+
+% BEGIN sections/02_cubic_harmonic.tex
+\section{The cubic digamma finite part and the first harmonic coefficient}
+\label{bridge:sec}
+
+In this section write $\eta=\eta(1)$ and $Z_2(s,1)=Z_2(s,1;1)$,
+with the conventions fixed in Section~\ref{sec:scope}. In particular,
+$B_2=(\gamma^2-\zeta(2))/2$ and
+\[
+ Z_2(1+u,1)=u^{-2}+\gamma u^{-1}+B_2+\eta u+O(u^2).
+\]
+The inclusive harmonic coefficient is related by
+$\eta=-\gamma_H(1,1)-\zeta'(2)$ \cite{Kargin,IncomingOrdered}.
+
+\begin{theorem}[Cubic--harmonic bridge]\label{bridge:main}
+In the unit-coordinate Hadamard finite-part convention,
+\begin{align}
+ Q:=\operatorname{FP}\int_0^1\psi(x)^3\,dx
+ &=3\zeta(2)-6\eta-6\gamma\gamma_1,\label{bridge:eta}\\
+ &=3\zeta(2)+6\gamma_H(1,1)+6\zeta'(2)-6\gamma\gamma_1.
+ \label{bridge:harmonic}
+\end{align}
+An absolutely convergent arithmetic representation is
+\begin{equation}\label{bridge:arithmetic}
+ Q=3\zeta(2)+6\gamma_2+
+  6\sum_{n=1}^{\infty}
+   \frac{\bigl(H_{n-1}-\gamma-\log n\bigr)\log n}{n}.
+\end{equation}
+Consequently the cubic finite part and the first strict harmonic
+coefficient are equivalent modulo ordinary zeta and Stieltjes constants.
+This theorem does not assert that the harmonic coefficient is a finite
+combination of ordinary zeta constants.
+\end{theorem}
+
+\subsection{A global partial-fraction identity}
+
+For $n\ge0$ put
+\[
+ b_n=H_n-\gamma,\qquad
+ a_n=\zeta(2)+H_n^{(2)}-b_n^2,
+ \qquad H_n^{(r)}=\sum_{j=1}^n j^{-r},
+\]
+with $H_0^{(r)}=0$.  Set
+\[
+ c_0=-\gamma^3+6\gamma\zeta(2)-3\zeta(3).
+\]
+
+\begin{lemma}[Normally convergent cubic partial fractions]
+\label{bridge:ML}
+For $z\notin\{0,-1,-2,\ldots\}$,
+\begin{align}
+ \psi(z)^3={}&-\frac1{z^3}-\frac{3\gamma}{z^2}
+       +\frac{3(\zeta(2)-\gamma^2)}z+c_0\notag\\
+ &+\sum_{n=1}^{\infty}\bigg\{
+      -\bigl((z+n)^{-3}-n^{-3}\bigr)
+      +3b_n\bigl((z+n)^{-2}-n^{-2}\bigr)\notag\\
+ &\hspace{42mm}+3a_n\bigl((z+n)^{-1}-n^{-1}\bigr)\bigg\}.
+ \label{bridge:MLformula}
+\end{align}
+The series converges normally on every compact subset avoiding the poles.
+\end{lemma}
+
+\begin{proof}
+At $z=-n+\varepsilon$, the recurrence of $\psi$ gives
+\[
+ \psi(-n+\varepsilon)
+   =-\varepsilon^{-1}+b_n+
+      \bigl(\zeta(2)+H_n^{(2)}\bigr)\varepsilon
+      +\bigl(H_n^{(3)}-\zeta(3)\bigr)\varepsilon^2
+      +O(\varepsilon^3).
+\]
+The cubic principal part at $-n$ is therefore
+\[
+ P_n(z)=-(z+n)^{-3}+3b_n(z+n)^{-2}+3a_n(z+n)^{-1}.
+\]
+The constant coefficient at zero is $c_0$.
+It is important to justify the entire remainder in a Mittag--Leffler
+argument, rather than infer it from the principal parts alone.
+Let $f(z)=\psi(z)^3-P_0(z)$, which is regular at zero, and integrate
+\[
+ \frac{z f(w)}{w(w-z)}
+\]
+over the circles $|w|=N+\tfrac12$, for fixed $z$ and large $N$.
+On these circles $f(w)=O(\log^3 N)$ uniformly.  In the right
+half-plane this follows from the usual digamma asymptotic \cite[Sections~5.7, 5.11]{DLMFgamma}.  In the
+left half-plane use
+\[
+ \psi(w)=\psi(1-w)-\pi\cot(\pi w).
+\]
+The cotangent is uniformly bounded: when $|\Im w|\ge1/4$ this follows
+from its elementary exponential formula; in the remaining part of the
+circle, the real coordinate stays a fixed positive distance from the
+integers.  Thus the contour integral is
+$O(\log^3 N/N)$ and tends to zero.
+Its residues at $z$ and $0$ are $f(z)$ and $-f(0)$.
+The residue at $-n$ is $-\bigl(P_n(z)-P_n(0)\bigr)$, either by a
+direct calculation or by applying the same two-point Cauchy kernel to
+each principal part.  The residue theorem proves
+$f(z)-f(0)=\sum_{n\ge1}(P_n(z)-P_n(0))$.
+Finally $b_n=O(\log n)$ and $a_n=O(\log^2 n)$, while on compact sets
+$(z+n)^{-1}-n^{-1}=O(n^{-2})$.  These estimates prove normal
+convergence and justify the asserted identity.
+\end{proof}
+
+\subsection{Reduction to one logarithmic harmonic series}
+
+Integrating the normally convergent remainder of
+\eqref{bridge:MLformula} term by term yields
+\begin{align}
+ Q={}&\frac12+3\gamma+c_0
+  +\sum_{n\ge1}\bigg\{
+    \frac1{n^3}+\frac1{2(n+1)^2}-\frac1{2n^2}
+     -\frac{3b_n}{n^2(n+1)}\notag\\
+ &\hspace{47mm}
+     +3a_n\left(\log\left(1+\frac1n\right)-\frac1n\right)
+     \bigg\}.
+ \label{bridge:integratedML}
+\end{align}
+Here the finite parts of $-x^{-3}$ and $-3\gamma x^{-2}$ are
+$1/2$ and $3\gamma$, and the unit-coordinate finite part of
+$x^{-1}$ is zero.  The elementary identities
+\[
+ \sum_{n\ge1}\frac{H_n}{n(n+1)}=\zeta(2),\qquad
+ \sum_{n\ge1}\frac{H_n}{n^2}=2\zeta(3)
+\]
+give
+\[
+ \sum_{n\ge1}\frac{b_n}{n^2(n+1)}
+   =2\zeta(3)-\zeta(2)-\gamma\bigl(\zeta(2)-1\bigr).
+\]
+For completeness, the second Euler sum follows from
+\[
+ \sum_{n\ge1}\frac{H_n}{n^2}
+ =\int_0^1\frac{\log x\log(1-x)}{x(1-x)}\,dx
+ =2\int_0^1\frac{\log x\log(1-x)}x\,dx
+ =2\zeta(3),
+\]
+using the harmonic generating function, symmetry, and an absolutely
+convergent geometric-series integration.
+Consequently \eqref{bridge:integratedML} becomes
+\begin{equation}\label{bridge:quadratic-log}
+ Q=-\gamma^3+9\gamma\zeta(2)+3\zeta(2)-8\zeta(3)
+  +3\sum_{n\ge1}a_n
+       \left(\log\left(1+\frac1n\right)-\frac1n\right).
+\end{equation}
+
+The crucial cancellation is the exact difference
+\[
+ a_n-a_{n-1}=-\frac{2(H_{n-1}-\gamma)}n.
+\]
+Write
+$L_N=\sum_{n=1}^N(H_{n-1}-\gamma)\log n/n$ and
+$S_N=\sum_{n=1}^N H_n/n^2$.  Finite summation by parts gives
+\begin{align*}
+ \sum_{n=1}^N a_n\log\left(1+\frac1n\right)
+ &=a_N\log(N+1)+2L_N,\\
+ \sum_{n=1}^N\frac{a_n}{n}
+ &=(\zeta(2)-\gamma^2)H_N+
+      \gamma(H_N^2+H_N^{(2)})-\frac{H_N^3}{3}
+       +H_NH_N^{(2)}-2S_N+\frac43H_N^{(3)}.
+\end{align*}
+The second identity follows by summing the finite differences of
+$H_n^2$, $H_n^3$, and $H_nH_n^{(2)}$; it has no limiting
+interchange hidden in it.  Since
+\[
+ H_N-\gamma=\log(N+1)+O(N^{-1}),\quad
+ H_N^{(2)}=\zeta(2)+O(N^{-1}),\quad S_N\longrightarrow2\zeta(3),
+\]
+substitution in \eqref{bridge:quadratic-log}, with all polynomial
+terms retained before the limit, gives
+\begin{equation}\label{bridge:limit}
+ Q=3\zeta(2)+6\lim_{N\to\infty}
+       \left(L_N-\frac{\log^3 N}{3}\right).
+\end{equation}
+Now split $H_{n-1}-\gamma=\log n+\psi(n)-\log n$ and use the
+standard defining limit
+\[
+ \gamma_2=\lim_{N\to\infty}
+   \left(\sum_{n=1}^N\frac{\log^2 n}{n}-\frac{\log^3 N}{3}\right).
+\]
+Since $\psi(n)-\log n=O(n^{-1})$, the remaining series is absolutely
+convergent.  This proves \eqref{bridge:arithmetic}.
+
+Define the holomorphic Dirichlet deformation
+\[
+ D(s)=\sum_{n\ge1}\frac{\psi(n)-\log n}{n^s},\qquad\Re s>0.
+\]
+Normal convergence, including every fixed derivative on compact
+subsets, follows from $\psi(n)-\log n=O(n^{-1})$.
+In $\Re s>1$ we have the exact identity
+\[
+ D(s)=Z_2(s,1)-\gamma\zeta(s)+\zeta'(s).
+\]
+Comparing Laurent coefficients at $s=1$ gives
+$D'(1)=\eta+\gamma\gamma_1+\gamma_2$.  Formula
+\eqref{bridge:arithmetic} says
+$Q=3\zeta(2)+6\gamma_2-6D'(1)$, proving
+\eqref{bridge:eta}.  The inclusive-to-strict conversion gives
+\eqref{bridge:harmonic} and completes the proof of
+Theorem~\ref{bridge:main}.
+
+\subsection{A normalized complex antiderivative}
+
+\begin{corollary}[Cubic digamma primitive]\label{bridge:primitive}
+On $\Re z>0$, with the principal logarithm, the function
+\begin{align}
+ \mathcal P_3(z)={}&\frac1{2z^2}+\frac{3\gamma}z
+       +3(\zeta(2)-\gamma^2)\log z+c_0z\notag\\
+ &+\sum_{n=1}^{\infty}\bigg\{
+      \frac1{2(n+z)^2}-\frac1{2n^2}+\frac{z}{n^3}
+      +3b_n\left(\frac1n-\frac1{n+z}-\frac z{n^2}\right)
+        \notag\\
+ &\hspace{41mm}
+      +3a_n\left(\log\left(1+\frac zn\right)-\frac zn\right)
+        \bigg\}
+ \label{bridge:primitiveformula}
+\end{align}
+satisfies $\mathcal P_3'(z)=\psi(z)^3$.  Its asymptotic expansion at
+zero has constant term zero.  In particular, for every real $b>0$,
+\[
+ \operatorname{FP}\int_0^b\psi(x)^3\,dx=\mathcal P_3(b),
+ \qquad \mathcal P_3(1)=3\zeta(2)-6\eta-6\gamma\gamma_1.
+\]
+The series and its differentiated series converge normally on compact
+subsets of the right half-plane.  Higher derivatives therefore give
+identities for derivatives of $\psi^3$ in the same domain.
+\end{corollary}
+
+\begin{proof}
+Each brace is the primitive, vanishing at $z=0$, of the corresponding
+brace in \eqref{bridge:MLformula}.  On a fixed compact set,
+the logarithmic difference is $O(n^{-2})$, the quadratic-pole
+primitive is $O(n^{-3})$, and the cubic-pole primitive is $O(n^{-4})$.
+Multiplication by $a_n=O(\log^2 n)$ or $b_n=O(\log n)$ preserves
+normal convergence.  Differentiation recovers the previous lemma.
+All series terms vanish at zero, so the displayed singular and logarithmic
+terms leave no constant term.  This proves the stated normalization.
+\end{proof}
+
+\begin{corollary}[A polygamma--harmonic hierarchy]\label{bridge:polygamma}
+For every integer $r\ge1$ and $z\notin\{0,-1,-2,\ldots\}$,
+\begin{align}
+ &\sum_{r_1+r_2+r_3=r}\frac{r!}{r_1!r_2!r_3!}
+       \psi^{(r_1)}(z)\psi^{(r_2)}(z)\psi^{(r_3)}(z)\notag\\
+ &\quad=(-1)^r r!\sum_{n=0}^{\infty}
+   \left\{-\frac{(r+1)(r+2)}{2(n+z)^{r+3}}
+       +\frac{3(r+1)b_n}{(n+z)^{r+2}}
+       +\frac{3a_n}{(n+z)^{r+1}}\right\}.
+ \label{bridge:allpolygamma}
+\end{align}
+Here $\psi^{(0)}=\psi$. The series converges normally away from
+the poles. At $z=1$ the left side is a finite polynomial in
+$\gamma,\zeta(2),\ldots,\zeta(r+1)$, using
+$\psi^{(k)}(1)=(-1)^{k+1}k!\zeta(k+1)$ for $k\ge1$.
+\end{corollary}
+\begin{proof}
+Differentiate \eqref{bridge:MLformula} $r$ times. The constant
+subtractions disappear and the derivative series is bounded on each
+compact set by a constant times
+$\sum n^{-r-1}(1+\log^2n)$. The product rule gives the left
+side. The $n=0$ summand includes the principal part at zero since
+$b_0=-\gamma$ and $a_0=\zeta(2)-\gamma^2$. The special values
+follow from the classical Hurwitz--polygamma identity
+\cite[Section~25.11]{DLMFhurwitz}.
+\end{proof}
+
+\subsection{A short certified evaluation route}
+
+For integers $N\ge2$ and $K\ge0$ define
+\begin{align*}
+ S_{N,K}={}&\sum_{n=1}^{N-1}
+  \frac{(H_{n-1}-\gamma-\log n)\log n}{n}
+   +\frac12\zeta'(2,N)
+   +\sum_{k=1}^K\frac{B_{2k}}{2k}\zeta'(2k+1,N).
+\end{align*}
+The Binet formula for $\psi$ \cite[Section~5.9]{DLMFgamma} and the finite geometric expansion of
+$(n^2+t^2)^{-1}$ give the rigorous truncation estimate
+\begin{equation}\label{bridge:tail-bound}
+ \left|S_{N,K}-\sum_{n\ge1}
+  \frac{(\psi(n)-\log n)\log n}{n}\right|
+ \le \frac{|B_{2K+2}|}{2K+2}\bigl(-\zeta'(2K+3,N)\bigr).
+\end{equation}
+Indeed the digamma asymptotic remainder is bounded by the magnitude of
+its first omitted Bernoulli term for positive real arguments, and the
+logarithmic tail is exactly a Hurwitz-zeta derivative.
+The supplied Arb script evaluates every displayed quantity with ball
+arithmetic and adds this analytic tail bound.  This certifies the
+arithmetic identity numerically without replacing its proof.
+
+\paragraph{Status.}
+The harmonic zeta function, its Stieltjes coefficients, and the
+Mittag--Leffler method are classical.  The cubic--harmonic bridge and
+its coordinate consequence were derived here and were not found in the
+inspected repository reports.  No worldwide priority claim is made.
+
+% END sections/02_cubic_harmonic.tex
+
+% BEGIN sections/03_diagonal_bridge.tex
+\section{The diagonal Tornheim derivative in harmonic coordinates}
+\label{sec:diagonal}
+
+The incoming coincident report relates the digamma cube to a third
+diagonal Tornheim derivative. We give the relevant derivation, with
+its finite normalization visible, and then insert the new bridge.
+This separates the earlier spectral identity from the additional
+harmonic reduction proved here.
+
+Write
+\[
+ \omega(t)=\T(t,t,t),\qquad \Omega_3=\omega'''(0),\qquad
+ E(t)=\Gamma(1+t)e^{-Lt},\qquad
+ h(t)=\zeta(1-t)+\frac1t.
+\]
+Here $\T$ is the continuation of
+$\sum_{m,n\ge1}m^{-A}n^{-B}(m+n)^{-C}$, and the diagonal is
+restricted before taking the limit at zero. The third derivative is
+one-variable data; joint holomorphy at the origin is not assumed.
+
+\subsection{The completed cubic generating function}
+
+Set
+\[
+ g(t,x)=\zeta(1-t,x)+\frac1t
+       =\sum_{m\ge0}\gamma_m(x)\frac{t^m}{m!}.
+\]
+Near $x=0$ its exact Hurwitz splitting yields
+\begin{equation}\label{diag:local}
+ g(t,x)=x^{t-1}+h(t)-(1-t)\zeta(2-t)x+O(x^2).
+\end{equation}
+After cubing, the only local monomials whose Mellin denominators
+vanish at $t=0$ are
+\[
+ 3h(t)^2x^{t-1},\qquad
+ -3(1-t)\zeta(2-t)x^{2t-1}.
+\]
+Their complete spectral integrals are $3h(t)^2/t$ and
+$-3(1-t)\zeta(2-t)/(2t)$. The complete numerators, rather than
+just their values at zero, have to be removed to obtain the
+unit-coordinate finite parts.
+
+For $\Re t>1$, the absolutely convergent Hurwitz Fourier expansion
+has coefficients
+\[
+ \widehat{\zeta(1-t,\cdot)}(n)
+ =\Gamma(t)(2\pi|n|)^{-t}
+             e^{-\pi i t\operatorname{sgn}(n)/2},\qquad n\ne0.
+\]
+The constant coefficient vanishes. In the product of three series,
+the condition $n_1+n_2+n_3=0$ has six sign cones; on each, the
+largest magnitude is the sum of the other two. Consequently
+\begin{align}
+ \int_0^1\zeta(1-t,x)^3\dd x
+ &=6\Gamma(t)^3(2\pi)^{-3t}\cos(\pi t/2)\omega(t),\notag\\
+ \int_0^1\zeta(1-t,x)^2\dd x
+ &=2\Gamma(t)^2(2\pi)^{-2t}\zeta(2t).
+ \label{diag:Fourier}
+\end{align}
+The classical Hurwitz--Tornheim connection is recorded, with its
+literature attribution, in the coincident report
+\cite{IncomingCoincident}. Finite endpoint Taylor subtraction
+continues both sides meromorphically.
+
+\begin{lemma}[Completed diagonal kernel]\label{lem:diag-completed}
+The expression
+\begin{align}
+ F(t)={}&\frac{6E(t)^3\cos(\pi t/2)\omega(t)
+                         +6E(t)^2\zeta(2t)+1}{t^3}\notag\\
+ &-\frac{3h(t)^2}{t}
+           +\frac{3(1-t)\zeta(2-t)}{2t}
+ \label{diag:completed}
+\end{align}
+is holomorphic near zero and satisfies $F(0)=-Q$.
+\end{lemma}
+
+\begin{proof}
+Expand $g^3$ and use \eqref{diag:Fourier} and the vanishing
+one-factor integral. This gives the fraction on the first line as
+the meromorphic integral of $g^3$. To justify its completion,
+split the $x$ integral at any $b\in(0,1)$. Subtract finitely many
+Taylor monomials of the smooth factor in \eqref{diag:local} on
+$(0,b)$. The remainder and all fixed parameter derivatives are
+integrable uniformly in a small $t$ disk. A local monomial with
+exponent $kt-1$ has spectral integral $b^{kt}/(kt)$, while the
+generating function of its coordinate finite parts is
+$(b^{kt}-1)/(kt)$. Their difference is exactly $1/(kt)$.
+All nonresonant denominators remain nonzero at zero. The two
+resonant terms displayed above therefore give precisely the second
+line of \eqref{diag:completed}. The resulting Taylor coefficients
+are the finite parts of those of $g^3$. At zero,
+$g(0,x)=\gamma_0(x)=-\psi(x)$, hence $F(0)=-Q$.
+\end{proof}
+
+Solving \eqref{diag:completed} for $\omega$ also proves its
+holomorphy at zero, since the coefficient $E(t)^3\cos(\pi t/2)$
+is nonzero there. This argument does not infer a joint regularity
+statement from a ray restriction.
+
+\subsection{An explicit reduction of the third diagonal derivative}
+
+Use the classical values $\zeta(0)=-1/2$, $\zeta'(0)=-L/2$ and
+\[
+ E(t)=\exp\left[-(\gamma+L)t+\frac{\zeta(2)}2t^2
+                              -\frac{\zeta(3)}3t^3+O(t^4)\right].
+\]
+The coefficients of $t^{-3},t^{-2},t^{-1}$ in
+\eqref{diag:completed} give
+\begin{equation}\label{diag:lower}
+ \omega(0)=\frac13,\qquad \omega'(0)=L,
+ \qquad \omega''(0)=L^2-4\zeta''(0).
+\end{equation}
+For clarity, after the first two substitutions the coefficient of
+$t^2$ in the numerator is
+\[
+ 3\omega''(0)+3\gamma^2-3L^2-\tfrac32\zeta(2)+12\zeta''(0),
+\]
+and the remaining two terms contribute
+$-3\gamma^2+3\zeta(2)/2$ to the residue.
+The numerator coefficient at $t^3$, after \eqref{diag:lower}, is
+\[
+ \Omega_3+8\zeta'''(0)+12(\gamma+L)\zeta''(0)
+ +L^3+6\gamma L^2-5\gamma^3+\tfrac32\gamma\zeta(2).
+\]
+Since $h(t)=\gamma+\gamma_1t+O(t^2)$, the other constant
+terms are $-6\gamma\gamma_1-3(\zeta(2)+\zeta'(2))/2$.
+Thus the earlier cubic identity is recovered:
+\begin{align}
+ Q={}&-\Omega_3-8\zeta'''(0)-12(\gamma+L)\zeta''(0)
+            -L^3-6\gamma L^2+5\gamma^3\notag\\
+ &+6\gamma\gamma_1-\frac32\gamma\zeta(2)
+                       +\frac32\bigl(\zeta(2)+\zeta'(2)\bigr).
+ \label{diag:old-cube}
+\end{align}
+
+\begin{theorem}[Harmonic coordinate for the cubic diagonal]
+\label{thm:diag-harmonic}
+The third derivative of the specified diagonal continuation is
+\begin{align}
+ \Omega_3={}&6\eta(1)-8\zeta'''(0)
+ -12(\gamma+L)\zeta''(0)-L^3-6\gamma L^2+5\gamma^3\notag\\
+ &+12\gamma\gamma_1-\frac32\gamma\zeta(2)
+                     -\frac32\zeta(2)+\frac32\zeta'(2).
+ \label{bridge:tornheim}
+\end{align}
+In particular, \eqref{bridge:arithmetic} gives an absolutely
+convergent generalized-harmonic evaluation of this derivative.
+\end{theorem}
+\begin{proof}
+Substitute \eqref{bridge:eta} into \eqref{diag:old-cube} and solve
+for $\Omega_3$.
+\end{proof}
+
+The independently certified arithmetic evaluation in the package gives
+\begin{align*}
+ Q&=1.96626273439153434066437533841163142382586897649\ldots,\\
+ \eta(1)&=0.53678702435841856750360788434881167385105703307\ldots,\\
+ \Omega_3&=86.6578666011000736529032768587621836100797302472\ldots.
+\end{align*}
+The first harmonic coefficient is therefore sufficient for the
+diagonal cubic problem. A finite expression for that coefficient in
+a specified algebra of ordinary zeta, Gamma and Stieltjes constants
+remains an arithmetic research question.
+
+% END sections/03_diagonal_bridge.tex
+
+% BEGIN sections/04_ray_calculus.tex
+\section{The complete cubic directional layer of Tornheim zeta}
+\label{sec:rays}
+
+Define the uncolored Mordell--Tornheim function in its absolute
+convergence region by
+\begin{equation}\label{ray:T}
+ \T(A,B,C)=\sum_{m,n\ge1}\frac1{m^A n^B(m+n)^C}.
+\end{equation}
+For instance, sufficiently large positive real parts suffice.
+Its meromorphic continuation is symmetric in $A,B$, but is not
+jointly holomorphic at the origin. We form a restriction away from
+its polar hyperplanes before taking a one-variable limit.
+
+Let
+\[
+ W_{a,b,c}(t)=\T(at,bt,ct),\qquad
+ \Omega_3=\left.\frac{\mathrm d^3}{\mathrm dt^3}\T(t,t,t)\right|_{t=0}.
+\]
+The two admissibility conditions are
+\begin{equation}\label{ray:admissible}
+ (a+c)(b+c)\ne0.
+\end{equation}
+They allow complex and unequal slopes, including negative slopes.
+
+\subsection{Statement of the formula}
+
+Put
+\begin{align}
+ \sigma&=a+b+c,\notag\\
+ \mathcal B&=\frac{c(c^2+ab-a^2-b^2)}{(a+c)(b+c)},\label{ray:B}\\
+ \Delta&=a^2+b^2-c(a+b),\notag\\
+ J_3&=W_{1,0,2}'''(0),\notag\\
+ \kappa&=J_3+\frac{35}{2}\zeta'''(0)
+                 +6L\zeta''(0)-9\zeta'''(-1).\label{ray:kappa}
+\end{align}
+The constant $J_3$ is a fixed Euler double-zeta directional derivative:
+$\T(t,0,2t)=Z_2(2t,t;1)$. An independent convergent integral for
+$\kappa$ is given below.
+
+\begin{theorem}[All admissible cubic directions]\label{thm:cubic-rays}
+Under \eqref{ray:admissible}, $W_{a,b,c}$ is holomorphic at zero and
+\begin{align}
+ W_{a,b,c}'''(0)={}&abc\,\Omega_3-\frac{c\Delta}{2}\kappa\notag\\
+ &+\left(8abc-\frac{(a+c)^3+(b+c)^3}{2}\right)\zeta'''(0)\notag\\
+ &-\frac32\bigl((a+b)(ab+c^2)-4abc\bigr)L\zeta''(0)
+       +\sigma^2\mathcal B\,\zeta'''(-1).
+ \label{ray:main}
+\end{align}
+Thus every third directional derivative belongs to the span of
+$\Omega_3,\kappa,\zeta'''(0),L\zeta''(0),\zeta'''(-1)$ over
+the field of rational functions of the slopes. By the cubic bridge,
+$\Omega_3$ can be replaced by $\eta(1)$ and explicit ordinary zeta
+and Stieltjes data.
+\end{theorem}
+
+Every coefficient is homogeneous of degree three. This agrees with
+$W_{ra,rb,rc}(t)=W_{a,b,c}(rt)$. The formula contains no surviving
+Euler-constant or Gamma-expansion coefficients in addition to those
+already packaged into $\Omega_3$ and $\kappa$.
+
+\subsection{A holomorphic remainder with exactly two visible polar divisors}
+
+For $x>0$ set $F(A,B;x)=\Li_A(e^{-x})\Li_B(e^{-x})$.
+Jonqui\`ere's formula gives, locally uniformly for $A$ near zero,
+\begin{equation}\label{ray:Jonquiere}
+ \Li_A(e^{-x})=\Gamma(1-A)x^{A-1}
+       +\sum_{j\ge0}\zeta(A-j)\frac{(-x)^j}{j!},\qquad 0<x<2\pi.
+\end{equation}
+Subtract the six local terms
+\begin{align}
+ S(A,B;x)={}&\Gamma(1-A)\Gamma(1-B)x^{A+B-2}
+ +\Gamma(1-A)\zeta(B)x^{A-1}\notag\\
+ &+\Gamma(1-B)\zeta(A)x^{B-1}
+ -\Gamma(1-A)\zeta(B-1)x^A\notag\\
+ &-\Gamma(1-B)\zeta(A-1)x^B+\zeta(A)\zeta(B).
+ \label{ray:S}
+\end{align}
+Define
+\begin{align}
+ H(A,B,C)={}&\int_0^1x^{C-1}\bigl(F(A,B;x)-S(A,B;x)\bigr)\dd x
+       +\int_1^\infty x^{C-1}F(A,B;x)\dd x\notag\\
+ &+\frac{\Gamma(1-A)\Gamma(1-B)}{A+B+C-2}
+ +\frac{\Gamma(1-A)\zeta(B)}{A+C-1}
+ +\frac{\Gamma(1-B)\zeta(A)}{B+C-1}.
+ \label{ray:H}
+\end{align}
+All denominators on the last line are nonzero near the origin.
+On a sufficiently small closed parameter polydisc, the first integrand
+and every fixed parameter derivative are bounded at zero by
+$x^{-\delta}(1+|\log x|^N)$ for a $\delta<1$; the second integral
+has exponential decay. Thus $H$ is jointly holomorphic and symmetric
+in $A,B$. Termwise integration and meromorphic continuation yield
+\begin{equation}\label{ray:decomposition}
+ \begin{split}
+ \T(A,B,C)=\frac1{\Gamma(1+C)}\biggl\{&\zeta(A)\zeta(B)
+ -\frac{C\Gamma(1-A)\zeta(B-1)}{A+C}\\
+ &-\frac{C\Gamma(1-B)\zeta(A-1)}{B+C}
+ +CH(A,B,C)\biggr\}.
+ \end{split}
+\end{equation}
+This also proves removability on every admissible ray. The six-term
+subtraction and the decomposition are retained from the incoming
+coincident report \cite{IncomingCoincident}; the cubic determination
+below is the additional step.
+
+\subsection{Exact slices determine the constant and linear remainder}
+
+Two elementary restrictions provide all the lower coefficients:
+\begin{align}
+ \T(0,0,t)&=\zeta(t-1)-\zeta(t),\label{ray:axis}\\
+ \T(t,0,t)&=\frac{\zeta(t)^2-\zeta(2t)}2.\label{ray:symmetric-slice}
+\end{align}
+For the first, count positive pairs with $m+n=k$. For the second,
+use $\T(A,0,C)=Z_2(C,A;1)$ and the exact stuffle product
+\begin{equation}\label{ray:stuffle-slice}
+ \T(A,0,C)+\T(C,0,A)=\zeta(A)\zeta(C)-\zeta(A+C).
+\end{equation}
+Both identities are first proved in domains of absolute convergence
+and then extended meromorphically. A fixed $C=0$ substitution alone
+would not determine the normal derivative of $CH$; this is why
+\eqref{ray:symmetric-slice} supplies real additional information.
+
+Write
+\begin{align}
+ H(A,B,C)={}&h_0+h_A(A+B)+h_C\,C\notag\\
+ &+h_{20}(A^2+B^2)+h_{11}AB+h_{10c}(A+B)C+h_{02}C^2
+ +O\bigl((|A|+|B|+|C|)^3\bigr).
+ \label{ray:H-Taylor}
+\end{align}
+Here $h_C$ denotes the coefficient of the linear term in $C$;
+$h_{02}$ is its quadratic coefficient. Direct comparison in
+\eqref{ray:axis}--\eqref{ray:symmetric-slice} gives
+\begin{align}
+ h_0={}&\zeta'(-1)+\frac L2-\frac{5\gamma}{12},\label{ray:h0}\\
+ h_C={}&\frac{\zeta''(-1)-\zeta''(0)}2
+       -\gamma\left(\zeta'(-1)+\frac L2\right)
+       +\frac5{24}(\gamma^2+\zeta(2)),\label{ray:hC}\\
+ h_A={}&\frac{L^2}{8}-\frac{\zeta''(0)}2+
+       \gamma\zeta'(-1)-\frac{\gamma L}{4}
+       -\frac{\gamma^2+\zeta(2)}{24}.
+ \label{ray:hA}
+\end{align}
+For example, the axis gives
+$\Gamma(1+t)(\zeta(t-1)-\zeta(t))=5/12+tH(0,0,t)$,
+which proves the first two lines. On the symmetric slice the
+coefficient of $t^2$ then gives the third line.
+
+Substitution now proves the complete lower layer
+\begin{align}
+ W(0)&=\frac14+\frac{c}{12(a+c)}+\frac{c}{12(b+c)},\notag\\
+ W'(0)&=\frac{a+b+2c}{4}L+\mathcal B\zeta'(-1),\notag\\
+ W''(0)&=\frac{2ab+c(a+b)}4L^2
+ -\frac{a^2+b^2+2c(a+b)+2c^2}{2}\zeta''(0)
+ +\sigma\mathcal B\zeta''(-1).
+ \label{ray:lower}
+\end{align}
+These agree with the earlier report. In particular,
+ $\omega(0)=1/3$, $\omega'(0)=L$, and
+$\omega''(0)=L^2-4\zeta''(0)$ follow here without using the
+unknown cubic moment.
+
+\subsection{Proof of the cubic formula}
+
+At quadratic degree, the symmetric slice fixes
+$h_{20}+h_{10c}$, not the two terms separately. This distinction is
+the main structural point. The axis fixes $h_{02}$; the diagonal
+then fixes $h_{11}$, leaving exactly one more coefficient, determined
+by $J_3$.
+
+Here are explicit finite coefficient formulas which also make the
+algebra completely reproducible. Set $V=h_{20}+h_{10c}$ and define
+the cubic Taylor polynomials
+\begin{align*}
+ O(t)&=\frac13+Lt+\frac{L^2-4\zeta''(0)}2t^2
+                         +\frac{\Omega_3}{6}t^3,\\
+ D(t)&=\frac7{18}+\left(\frac54L+\zeta'(-1)\right)t
+       +\left(\frac{L^2}{4}-\frac{13}{4}\zeta''(0)
+                               +\frac32\zeta''(-1)\right)t^2
+       +\frac{J_3}{6}t^3.
+\end{align*}
+Comparison on the four slices gives
+\begin{align}
+ h_{02}&=[t^3]\Gamma(1+t)(\zeta(t-1)-\zeta(t)),\notag\\
+ V+h_{02}&=[t^3]\left\{
+ \frac{\Gamma(1+t)}2(\zeta(t)^2-\zeta(2t))
+ +\frac{\zeta(t)}2-\frac{\Gamma(1-t)}{24}+\zeta(t-1)\right\},\notag\\
+ h_{11}+2V+h_{02}&=[t^3]\left\{
+ \Gamma(1+t)O(t)-\zeta(t)^2+\Gamma(1-t)\zeta(t-1)\right\},\notag\\
+ -2h_{20}+4V+8h_{02}&=[t^3]\left\{
+ \Gamma(1+2t)D(t)+\frac{\zeta(t)}2
+                      -\frac{\Gamma(1-t)}{18}+\zeta(t-1)\right\}.
+ \label{ray:finite-system}
+\end{align}
+The coefficient system is triangular with nonzero diagonal. Thus
+it determines all four quadratic coefficients for any assigned
+$\Omega_3,J_3$.
+
+Use
+\[
+ \Gamma(1\pm t)=1\mp\gamma t+
+ \frac{\gamma^2+\zeta(2)}2t^2
+ \mp\frac{\gamma^3+3\gamma\zeta(2)+2\zeta(3)}6t^3+O(t^4)
+\]
+and the ordinary Taylor expansions of $\zeta$ at $0$ and $-1$.
+Substitute \eqref{ray:finite-system} into
+\eqref{ray:decomposition}. The coefficients of $\Omega_3$ and
+$J_3$ are respectively $abc$ and $-c\Delta/2$.
+The remaining nonzero coefficients are
+\begin{align*}
+ [\zeta'''(0)]\colon\;&8abc-\frac{(a+c)^3+(b+c)^3}{2}
+                                      -\frac{35}{4}c\Delta,\\
+ [L\zeta''(0)]\colon\;&-\frac32\bigl((a+b)(ab+c^2)-4abc\bigr)
+                                      -3c\Delta,\\
+ [\zeta'''(-1)]\colon\;&\sigma^2\mathcal B+\frac92c\Delta.
+\end{align*}
+All coefficients involving $\gamma,\zeta(2),\zeta(3)$ or
+$\zeta'(-1),\zeta''(-1)$ cancel. Absorbing the three multiples
+of $c\Delta$ into \eqref{ray:kappa} proves
+Theorem~\ref{thm:cubic-rays}. This is a finite algebraic proof;
+the delivered symbolic certificate independently verifies the exact
+rational identity with all constants treated as formal symbols.
+
+\subsection{An independent convergent integral for the second coordinate}
+
+Define
+\begin{align}
+ Q_2(x)&=\left.\partial_s^2\Li_s(e^{-x})\right|_{s=0}
+               =\sum_{n\ge1}(\log n)^2e^{-nx},\notag\\
+ P(x)&=(\log x+\gamma)^2+\zeta(2),\notag\\
+ S_2(x)&=\left(x^{-2}-\frac1{2x}+\frac1{12}\right)P(x)
+             +\zeta''(0)\left(x^{-1}-\frac12\right)-\zeta''(-1),\notag\\
+ I_2&=\int_0^1\left(\frac{Q_2(x)}{e^x-1}-S_2(x)\right)\frac{\dd x}{x}
+       +\int_1^\infty\frac{Q_2(x)}{x(e^x-1)}\dd x.
+ \label{ray:I2}
+\end{align}
+Both integrals converge ordinarily: the first integrand is
+$O(1+\log^2x)$; the second is $O(e^{-3x}/x)$.
+
+\begin{proposition}[Mellin coordinate]\label{prop:kappa-integral}
+The quadratic coefficient $h_{20}$ satisfies
+\begin{equation}\label{ray:h20-integral}
+ h_{20}=\frac\gamma4+\frac38-\frac{\zeta''(0)}2+\frac{I_2}{2},
+\end{equation}
+and
+\begin{align}
+ \kappa={}&-12h_{20}-\frac{\gamma^3}{6}
+       -\frac{\gamma\zeta(2)}2+3\gamma\zeta''(0)
+       +6\gamma\zeta''(-1)-\frac{\zeta(3)}3
+       -3\zeta'''(0)-2\zeta'''(-1).
+ \label{ray:kappa-h20}
+\end{align}
+\end{proposition}
+\begin{proof}
+Differentiate \eqref{ray:H} twice in $A$ at $(0,0,0)$.
+The product derivative is $Q_2(x)/(e^x-1)$, and the derivative of
+the six subtractions is $S_2(x)$. Differentiation under the subtracted
+integrals follows from the local bounds used above. The rational
+last line of \eqref{ray:H}, on $B=C=0$, is
+\[
+ \Gamma(1-A)\left(\frac1{A-2}-\frac1{2(A-1)}\right)-\zeta(A).
+\]
+Its coefficient of $A^2$ is
+$\gamma/4+3/8-\zeta''(0)/2$, proving
+\eqref{ray:h20-integral}. Expanding the last line of
+\eqref{ray:finite-system} and using \eqref{ray:kappa} gives
+\eqref{ray:kappa-h20}.
+\end{proof}
+
+The independent integral evaluation gives
+\begin{align*}
+ I_2&=-0.2860481161626797704387366252971602\ldots,\\
+ \kappa&=-3.0226121641572464811701683702659737\ldots.
+\end{align*}
+These displayed digits are numerical diagnostics, not an arithmetic
+characterization. The definition \eqref{ray:I2} supplies such a
+characterization without referring back to an unknown generic ray.
+
+\subsection{Coordinate cancellation and exact examples}
+
+In the formal coordinate system of Theorem~\ref{thm:cubic-rays},
+the $\kappa$ term disappears exactly when
+\begin{equation}\label{ray:conic}
+ c\bigl(a^2+b^2-c(a+b)\bigr)=0.
+\end{equation}
+For positive $a,b$, the choice
+$c=(a^2+b^2)/(a+b)$ gives a continuum of asymmetric directions with
+only the harmonic coordinate $\eta(1)$ remaining. For fixed real
+$c$, the nontrivial locus can equivalently be written
+$(a-c/2)^2+(b-c/2)^2=c^2/2$.
+
+The $\Omega_3$ term disappears when $abc=0$. With $c\ne0$, both
+displayed nonclassical coefficients vanish only on the axis
+$(0,0,c)$ and the rays $(c,0,c)$ or $(0,c,c)$. With $c=0$,
+admissibility requires $ab\ne0$ and the restriction equals
+$\zeta(at)\zeta(bt)$. These are coefficient-elimination statements,
+not assertions that other numerical cancellations are impossible.
+
+Some explicit specializations are
+\begin{align}
+ W_{1,2,3}'''(0)={}&6\Omega_3+6\kappa
+       -\frac{93}{2}\zeta'''(0)-\frac{27}{2}L\zeta''(0)
+       +\frac{162}{5}\zeta'''(-1),\label{ray:123}\\
+ W_{2,3,1}'''(0)={}&6\Omega_3-4\kappa
+       +\frac52\zeta'''(0)-\frac{33}{2}L\zeta''(0)
+       -18\zeta'''(-1),\label{ray:231}\\
+ W_{1,1,2}'''(0)={}&2\Omega_3+2\kappa
+       -11\zeta'''(0)-3L\zeta''(0)+\frac{32}{3}\zeta'''(-1),\notag\\
+ W_{0,0,1}'''(0)={}&\zeta'''(-1)-\zeta'''(0),\notag\\
+ W_{1,0,1}'''(0)={}&-\frac92\zeta'''(0)-\frac32L\zeta''(0).
+\end{align}
+The last two also follow directly from the exact slices.
+
+\begin{remark}[Why two coordinates are sufficient, and what this does not prove]
+Modulo the already determined constant and linear coefficients of
+$H$, the axis and symmetric slice leave two formal quadratic degrees
+of freedom. The diagonal and $(1,0,2)$ slices fix them separately.
+Their contributions to generic cubic rays are independent polynomials
+$abc$ and $c\Delta$. This proves uniqueness in the specified formal
+reconstruction problem. It does not prove that $\eta(1)$ and $\kappa$
+are independent over any arithmetic constant field.
+\end{remark}
+
+% END sections/04_ray_calculus.tex
+
+% BEGIN sections/05_curves.tex
+\section{Transverse curved directions and a sharp fourth-jet correction}
+\label{sec:curves}
+
+The cubic coordinate formula survives a nonlinear change of spectral
+path. The path contributes an explicitly classical correction, while
+the coefficients of $\Omega_3$ and $\kappa$ depend only on its tangent.
+
+Using \eqref{ray:h0}--\eqref{ray:hA}, define
+\begin{align}
+ K(A,B,C)=\frac1{\Gamma(1+C)}\biggl\{
+ &\zeta(A)\zeta(B)
+ -\frac{C\Gamma(1-A)\zeta(B-1)}{A+C}
+ -\frac{C\Gamma(1-B)\zeta(A-1)}{B+C}\notag\\
+ &+C\bigl(h_0+h_A(A+B)+h_C\,C\bigr)\biggr\}.
+ \label{curve:K}
+\end{align}
+Although $K$ is meromorphic in three variables, its restriction to
+each of the paths in the following theorem is holomorphic.
+
+\begin{theorem}[Cubic transport along a spectral curve]\label{thm:curve}
+Let $A(t),B(t),C(t)$ be analytic near zero, vanish at zero, and have
+first derivatives $a,b,c$ satisfying \eqref{ray:admissible}.
+Write $\mathscr W(t)=\T(A(t),B(t),C(t))$. Then
+\begin{equation}\label{curve:main}
+ \mathscr W'''(0)=W_{a,b,c}'''(0)+
+ 6[t^3]\bigl(K(A(t),B(t),C(t))-K(at,bt,ct)\bigr).
+\end{equation}
+The correction uses only ordinary Gamma and zeta derivatives and
+the Taylor coefficients of $A,B,C$ through degree four. In particular,
+the coefficients of $\Omega_3$ and $\kappa$ remain $abc$ and
+$-c\Delta/2$.
+\end{theorem}
+
+\begin{proof}
+Write the quadratic homogeneous part of \eqref{ray:H-Taylor} as
+$H_2$. Formula \eqref{ray:decomposition} gives
+\[
+ \T-K=\frac{C}{\Gamma(1+C)}H_2(A,B,C)
+            +O\bigl((|A|+|B|+|C|)^4\bigr).
+\]
+After substitution of the curve, its coefficient of $t^3$ is
+$cH_2(a,b,c)$, exactly the coefficient on the tangent ray. Subtracting
+the two restrictions proves \eqref{curve:main}.
+
+The only possible need for one additional path coefficient comes
+from $C/(A+C)$ and $C/(B+C)$. Remove their common factor $t$.
+The new denominators have nonzero constant terms, so the coefficient
+of $t^3$ in each ratio uses the original curves only through degree
+four. All the remaining compositions use at most degree three.
+This proves the finite-jet assertion and holomorphy of the restrictions.
+\end{proof}
+
+\subsection{A correction involving only the lower directional layer}
+
+The correction can be made smaller than the Gamma expression
+\eqref{curve:K} suggests. Put $v=(a,b,c)$ and write the path as
+\[
+ (A(t),B(t),C(t))=tv+t^2\alpha+t^3\beta+t^4\delta+O(t^5).
+\]
+Let $f_j(v)=W_v^{(j)}(0)$ for $j=0,1,2$, explicitly given by
+\eqref{ray:lower}. Denote ordinary differentials in the slope
+variables by $D$. Then
+\begin{align}
+ \mathscr W'''(0)-W_v'''(0)={}&
+ 6Df_0(v)[\delta]+6D^2f_0(v)[\alpha,\beta]
+                  +D^3f_0(v)[\alpha,\alpha,\alpha]\notag\\
+ &+6Df_1(v)[\beta]+3D^2f_1(v)[\alpha,\alpha]
+                  +3Df_2(v)[\alpha].
+ \label{curve:differentials}
+\end{align}
+In particular the correction belongs to the span of
+$1,L,L^2,\zeta'(-1),\zeta''(0),\zeta''(-1)$ with rational
+functions of the path coefficients. No third zeta derivative or
+additional Gamma constant is needed.
+
+To prove \eqref{curve:differentials}, cancel the common factor $t$
+in the two polar ratios in \eqref{ray:decomposition}. The function
+$(t,v)\mapsto\T(ta,tb,tc)$ is then jointly holomorphic near
+$(0,v)$ for admissible $v$. Its Taylor series is
+$\sum_{j\ge0}f_j(v)t^j/j!$. Substitute
+$v+\alpha t+\beta t^2+\delta t^3+O(t^4)$ for $v$ and take
+the coefficient of $t^3$. The ordinary multivariate Taylor formula
+gives exactly \eqref{curve:differentials}.
+
+\begin{proposition}[The fourth jet is genuinely needed]\label{prop:sharpcurve}
+Fix admissible $a,b,c$ with $c\ne0$. Replacing the straight path
+$(at,bt,ct)$ by $(at+\varepsilon t^4,bt,ct)$ changes its cubic
+derivative by exactly
+\begin{equation}\label{curve:sharp}
+ -\frac{c\varepsilon}{2(a+c)^2}.
+\end{equation}
+Here $\varepsilon$ is the coefficient of $t^4$, not the fourth derivative.
+\end{proposition}
+\begin{proof}
+Only the ratio $C/(A+C)$ in \eqref{curve:K} changes at degree three.
+Its multiplier at the origin is $-\zeta(-1)=1/12$. The ratio changes by
+$-c\varepsilon t^3/(a+c)^2+O(t^4)$. Multiplication by $3!=6$
+gives \eqref{curve:sharp}.
+\end{proof}
+
+For example, the curve $(t+\varepsilon t^4,t,t)$ has cubic
+derivative $\Omega_3-\varepsilon/8$, even though its first three
+path derivatives agree with those of the diagonal.
+
+This theorem concerns transverse curves. If a path lies in $A+C=0$
+or $B+C=0$, or is tangent to one of those divisors, a separate
+restriction or normal finite-part prescription is needed. The theorem
+does not assign a value by substituting a zero denominator into
+\eqref{ray:main}.
+
+% END sections/05_curves.tex
+
+% BEGIN sections/06_mixed_orders.tex
+% Integration requirements: amsmath, amssymb, amsthm; theorem, lemma,
+% proposition, corollary, remark, and proof environments.  No unprefixed
+% macros are introduced.  Bibliography entries are in mixed_references.tex.
+\providecommand{\mxLi}{\operatorname{Li}}
+
+\section{Arbitrary depth with mixed integer inner orders}
+\label{mx:section}
+
+Question~11 of the preceding directional report asks for a finite
+nested-polylogarithm reduction when the inner integer orders have both
+signs.  Theorem~\ref{mx:main} supplies such a reduction while keeping the
+outer order complex.  If exactly $q$ inner orders are positive, its
+output has depth at most $q+1$, regardless of how many nonpositive
+orders occur.  Its coefficients are finite rational operations,
+root-of-unity filters, and generalized-harmonic polynomials.  Repeated
+poles are included directly, and coincident colors are evaluated by an
+explicit polynomial summation rule.
+
+The shuffle algebra of iterated integrals and the reduction of rational
+functions times hyperlogarithms are established tools; see
+Panzer~\cite[Sections~2.1--2.3]{mx:Panzer}.  Colored depth-two Tornheim
+reductions are also classical~\cite{mx:Zhao}.  The contribution here is
+the explicit convolution formula with unrestricted outer order, its
+depth bound, its coincident-color reduction rule, and the accompanying
+meromorphic and normal-derivative prescription.  No claim of literature
+priority for the underlying shuffle or rational-function algorithms is
+made.
+
+\subsection{Definitions and finite input data}
+
+Let $s_j\in\mathbb Z$, $p_j\in\mathbb Z_{>0}$, and
+$0<|X_j|\leq1$.  Define
+\begin{equation}\label{mx:Z}
+ Z_{\mathbf s,\mathbf p}(C;\mathbf X)
+ =\sum_{m_1,\ldots,m_d\geq1}
+  \frac{\prod_{j=1}^dX_j^{m_j}m_j^{-s_j}}
+       {(p_1m_1+\cdots+p_dm_d)^C}.
+\end{equation}
+The half-plane
+$\Re C>d+\sum_j\max(0,-s_j)$ is sufficient for absolute
+convergence.  Every power of a positive integer uses its real
+logarithm.  Put
+\[
+ I_+=\{j:s_j>0\},\qquad I_-=\{j:s_j\leq0\},\qquad
+ q=|I_+|,
+\]
+and assume for the main theorem that both sets are nonempty.  Factor
+the ordinary coefficient generating function as
+\begin{equation}\label{mx:factor}
+ \sum_{n\geq1}r_nt^n=R(t)P(t),\qquad
+ R(t)=\prod_{j\in I_-}\mxLi_{s_j}(X_jt^{p_j}),\quad
+ P(t)=\prod_{j\in I_+}\mxLi_{s_j}(X_jt^{p_j}).
+\end{equation}
+Then $Z(C)=\sum_{n\geq1}r_nn^{-C}$ in the stated half-plane.
+
+For each $j\in I_-$ write $a_j=-s_j$.  The identity
+\[
+ \mxLi_{-a}(z)=\left(z\frac{d}{dz}\right)^a\frac z{1-z}
+\]
+shows that $R$ is rational and bounded at infinity.  Its finite partial
+fractions have the form
+\begin{equation}\label{mx:partial}
+ R(t)=c_\infty+
+       \sum_\alpha\sum_{h=1}^{M_\alpha}
+          \frac{c_{\alpha,h}}{(1-\alpha t)^h},\qquad
+ M_\alpha=\sum_{\substack{j\in I_-\\\alpha^{p_j}=X_j}}(1-s_j).
+\end{equation}
+The index $\alpha$ runs over the distinct roots of the indicated
+equations.  Pole cancellation may make some coefficients zero.  Even
+at repeated roots the coefficient formula is simply
+\begin{equation}\label{mx:polecoeff}
+ c_{\alpha,h}
+ =[u^{M_\alpha-h}]\,u^{M_\alpha}R((1-u)/\alpha).
+\end{equation}
+The function inside the coefficient extraction is holomorphic at zero.
+Because $I_-$ is nonempty, $R(0)=0$, so
+\begin{equation}\label{mx:constantcancel}
+ c_\infty+\sum_{\alpha,h}c_{\alpha,h}=0.
+\end{equation}
+Finally set
+\begin{equation}\label{mx:e}
+ e_{h,r}=[v^r]\prod_{\nu=1}^{h-1}(1+v/\nu)
+ \quad(0\leq r<h).
+\end{equation}
+Thus $e_{h,0}=1$, $e_{h,1}=H_{h-1}$, and
+$e_{h,2}=\{H_{h-1}^2-H_{h-1}^{(2)}\}/2$.  In every degree the
+coefficients follow from
+\[
+ \prod_{\nu=1}^{h-1}(1+v/\nu)
+ =\exp\!\left(\sum_{k\geq1}
+          \frac{(-1)^{k+1}}kH_{h-1}^{(k)}v^k\right).
+\]
+
+We use the descending-index convention
+\begin{equation}\label{mx:mpl}
+ \mxLi_{u_1,\ldots,u_k}(z_1,\ldots,z_k)
+ =\sum_{n_1>\cdots>n_k\geq1}
+       \frac{z_1^{n_1}\cdots z_k^{n_k}}
+            {n_1^{u_1}\cdots n_k^{u_k}}.
+\end{equation}
+The first order will remain variable.  Intermediate trailing orders
+may be nonpositive integers; Lemma~\ref{mx:eliminate} removes all such
+orders.  For root choices $\mathbf a=(a_j)_{j\in I_+}$ with
+$a_j^{p_j}=X_j$, form the words
+\[
+ 0^{s_j-1}a_j\qquad(j\in I_+).
+\]
+Their shuffle, with each original position retained as a labeled
+position before equal words are collected, is a finite formal sum
+$\sum_w\mu_w w$.  Every resulting word has exactly $q$ nonzero
+letters and ends in a nonzero letter; hence it has a unique form
+\begin{equation}\label{mx:word}
+ w=0^{k_1-1}b_1\,0^{k_2-1}b_2\cdots0^{k_q-1}b_q,
+ \qquad k_i\geq1.
+\end{equation}
+The sequence $(b_1,\ldots,b_q)$ lists the selected root colors in the
+order in which they occur in that shuffle.  Repeated colors do not
+alter this rule or suppress their shuffle multiplicities.
+
+\subsection{The mixed-sign reduction theorem}
+
+\begin{theorem}[Finite mixed-sign reduction and every normal jet]
+\label{mx:main}
+Let the preceding data be fixed, with $q\geq1$ and $I_-\ne\varnothing$.
+Put $K=\prod_{j\in I_+}p_j^{s_j-1}$.  Then
+\begin{align}\label{mx:mainformula}
+ Z(C)={}&K\sum_{\substack{\mathbf a\\a_j^{p_j}=X_j}}
+       \sum_w\mu_w\sum_\alpha\sum_{h=1}^{M_\alpha}
+           c_{\alpha,h}
+       \sum_{r=0}^{h-1}e_{h,r}\sum_{\ell=0}^r
+           (-1)^\ell\binom r\ell\notag\\[-1mm]
+ &\hspace{10mm}\cdot
+ \mxLi_{C-r+\ell,\,k_1-\ell,\,k_2,\ldots,k_q}
+ \left(\alpha,\frac{b_1}\alpha,
+                  \frac{b_2}{b_1},\ldots,\frac{b_q}{b_{q-1}}\right).
+\end{align}
+This is an identity of meromorphic functions of $C$ on the whole
+complex plane.  It reduces, by finite algebra, to a sum of terms
+\begin{equation}\label{mx:positiveoutput}
+ A\,\mxLi_{C+v,\,t_2,\ldots,t_k}(z_1,\ldots,z_k),
+ \qquad v\in\mathbb Z,\quad t_i\in\mathbb Z_{>0},\quad k\leq q+1.
+\end{equation}
+All coefficients and colors are independent of $C$.  Consequently
+every derivative $\partial_C^N Z$ is obtained by differentiating only
+the first polylogarithm order in either finite formula.  If no $X_j$
+equals one, the continuation is entire and these derivatives are
+ordinary entire functions.  When poles occur, the identities and
+derivatives are meromorphic identities with the pole prescription in
+Theorem~\ref{mx:poles} below.
+\end{theorem}
+
+\begin{proof}
+The root filter, valid first as an identity of power series, is
+\begin{equation}\label{mx:rootfilter}
+ \mxLi_s(Xt^p)=p^{s-1}\sum_{a^p=X}\mxLi_s(at).
+\end{equation}
+Indeed the sum of the $n$th powers of those roots vanishes unless
+$p\mid n$, and equals $pX^{n/p}$ otherwise.  Thus no choice of a
+particular $p$th-root branch enters the result.
+
+For completeness, take the iterated-integral forms
+$\omega_0=dt/t$ and $\omega_a=a\,dt/(1-at)$, and let
+$\mathcal H_w$ denote the corresponding integral from zero with
+outermost letter first.  All words used here end in a nonzero letter,
+so these integrals require no tangential-base-point regularization.
+Expansion of the kernels into geometric series proves
+\begin{equation}\label{mx:hyperlog}
+ \mathcal H_w(t)=
+ \mxLi_{k_1,\ldots,k_q}
+       (b_1t,b_2/b_1,\ldots,b_q/b_{q-1}).
+\end{equation}
+Partitioning the product of integration simplices by all total
+orderings of their integration variables proves the shuffle product,
+including its multiplicities when letters coincide.  Applying this
+to \eqref{mx:rootfilter} gives
+\[
+ P(t)=K\sum_{\mathbf a}\sum_w\mu_w\mathcal H_w(t).
+\]
+
+It remains to compute one rational-factor convolution.  Write
+$H(t)=\mathcal H_w(t)=\sum_{m\geq1}h_mt^m$.  For $n\geq m$,
+\begin{align}\label{mx:binomial}
+ [t^{n-m}](1-\alpha t)^{-h}
+ &=\alpha^{n-m}\binom{n-m+h-1}{h-1}\notag\\
+ &=\alpha^{n-m}\sum_{r=0}^{h-1}e_{h,r}
+                   \sum_{\ell=0}^r(-1)^\ell\binom r\ell
+                            n^{r-\ell}m^\ell.
+\end{align}
+The diagonal $n=m$ contributes $h_n$ exactly once.  The strict part
+$n>m$, followed by the nested indices already in $h_m$, is precisely
+the multiple polylogarithm in \eqref{mx:mainformula}.  The diagonal
+contributions from every rational partial fraction and from
+$c_\infty H$ have combined coefficient
+$c_\infty+\sum_{\alpha,h}c_{\alpha,h}=R(0)=0$.  Thus they cancel
+exactly, leaving the displayed formula.
+
+This reasoning proves an identity of coefficient sequences.  All
+series converge locally normally in $C$ if $|X_j|<1$: the cumulative
+colors in every term of \eqref{mx:mainformula} are
+$(\alpha,b_1,\ldots,b_q)$, all strictly inside the disk, so the
+coefficients have exponential decay times a polynomial.  For boundary
+colors the same coefficient identity can first be summed in a
+sufficiently far right half-plane.  Lemma~\ref{mx:eliminate} produces
+\eqref{mx:positiveoutput}; each elimination decreases depth by one.
+The initial depth is $q+1$, proving the asserted depth bound.
+The Mellin argument in Theorem~\ref{mx:poles} proves the continuation
+and the entire assertion.  Equality on the original half-plane then
+implies equality meromorphically everywhere and permits every fixed
+$C$ derivative.
+\end{proof}
+
+\begin{lemma}[Eliminating a nonpositive trailing order]
+\label{mx:eliminate}
+Any multiple polylogarithm whose first order is $C+v$ with
+$v\in\mathbb Z$ and whose remaining orders are integers reduces
+finitely to terms of the form \eqref{mx:positiveoutput}, with depth
+no greater than its initial depth.  Coincident cumulative colors are
+handled directly, without division by their difference.
+\end{lemma}
+
+\begin{proof}
+Choose any nonpositive trailing order $-M$ at position $j\geq2$.
+For fixed neighboring indices put
+$u=n_{j-1}$ and $l=n_{j+1}$, with $n_{k+1}=0$ when $j=k$ is last.
+The sum to eliminate is
+\[
+ \sum_{l<n<u}\beta^n n^M,\qquad \beta=z_j.
+\]
+For $\beta\ne1$ define the rational functions and polynomial
+\begin{equation}\label{mx:Q}
+ S_r(\beta)=\left(\beta\frac d{d\beta}\right)^r
+                         \frac1{1-\beta},\qquad
+ Q_M(x;\beta)=\sum_{r=0}^M\binom Mr x^{M-r}S_r(\beta).
+\end{equation}
+The geometric-series identity, or its polynomial continuation in
+$\beta$, gives
+\begin{equation}\label{mx:geomelim}
+ \sum_{l<n<u}\beta^n n^M
+   =\beta^{l+1}Q_M(l+1;\beta)-\beta^uQ_M(u;\beta).
+\end{equation}
+For example, it follows by subtracting the two tails
+$\sum_{n\geq v}\beta^n n^M=\beta^vQ_M(v;\beta)$ when
+$|\beta|<1$, and then using equality of rational functions.  At
+$\beta=1$ the formula used by the algorithm is instead
+\begin{equation}\label{mx:faulhaber}
+ \sum_{l<n<u}n^M
+   =\frac{B_{M+1}(u)-B_{M+1}(l+1)}{M+1},
+\end{equation}
+where $B_1(x)=x-1/2$.  Both identities hold even when $u=l+1$;
+their two boundary terms then cancel.
+
+Expand the boundary polynomials in $u$ or $l$.  A power $u^a$ lowers
+the preceding order by $a$, and the factor $\beta^u$ multiplies the
+preceding color by $\beta$.  Similarly, a power $l^a$ lowers the next
+order and $\beta^l$ multiplies its color by $\beta$.  At the last
+position the lower boundary is a scalar.  After removing position
+$j$, every term is a polylogarithm of depth one less, with first order
+still of the form $C+$ an integer.  Some adjacent trailing orders
+may now be nonpositive; repeat the same step.  The depth strictly
+decreases at each step, so the recursion terminates after at most
+$k-1$ eliminations along any branch.  Every trailing order in the
+final terms is positive.  Equation~\eqref{mx:faulhaber} is the exact
+coincident-color branch; it never requires taking numerically unstable
+limits of \eqref{mx:geomelim}.
+\end{proof}
+
+\begin{remark}[What the reduction preserves]
+Only the first polylogarithm order varies with $C$.  The theorem does
+not authorize differentiating the finite expression with respect to
+the discrete inner indices $s_j$.  Boundary elimination replaces a
+pair of adjacent colors by their product; hence its cumulative colors
+are obtained by deleting entries from
+$(\alpha,b_1,\ldots,b_q)$.  In particular, if every original $X_j$
+is nontrivial, it cannot introduce a cumulative color equal to one.
+This observation also explains why equal neighboring colors are
+harmless while a genuinely uncolored original factor can change the
+outer spectral poles.
+\end{remark}
+
+The two unmixed sectors fit the same proof.  If $I_-=\varnothing$,
+the shuffle gives a sum of depth-$d$ polylogarithms with first order
+$C+k_1$.  If $I_+=\varnothing$, the coefficient identity
+\eqref{mx:binomial} gives the preceding depth-one formula
+\[
+ Z(C)=\sum_{\alpha,h}c_{\alpha,h}
+                    \sum_{r=0}^{h-1}e_{h,r}\mxLi_{C-r}(\alpha).
+\]
+Thus every pattern of integer inner orders has a finite reduction.
+
+\subsection{Continuation, poles, and normal differentiation}
+
+Positive uncolored factors introduce logarithms.  Therefore the
+finite simple-pole list from the all-nonpositive rational sector
+cannot simply be copied to the mixed sector.  The following local
+rule gives all the poles and their principal coefficients.
+
+\begin{theorem}[Complete principal-part prescription]
+\label{mx:poles}
+For the integer-order sum \eqref{mx:Z}, including the unmixed sectors,
+put
+\[
+ F(x)=\prod_j\mxLi_{s_j}(X_je^{-p_jx}),\qquad
+ M=\sum_{\substack{s_j\leq0\\X_j=1}}(1-s_j),\qquad
+ \ell_+=\#\{j:s_j>0,\ X_j=1\}.
+\]
+Near $x=0^+$ there is a convergent logarithmic Laurent expansion
+\begin{equation}\label{mx:locallaurent}
+ F(x)=\sum_{v\geq-M}\sum_{b=0}^{\ell_+} a_{v,b}x^v(\log x)^b.
+\end{equation}
+The meromorphic continuation of $Z$ has possible poles only at
+integers $m\leq M$.  Its complete principal part at $C=m$, with
+$\varepsilon=C-m$, is
+\begin{equation}\label{mx:principal}
+ \operatorname{PP}_{C=m}Z(C)
+ =\operatorname{PP}_{\varepsilon=0}\left\{
+  \frac1{\Gamma(m+\varepsilon)}
+    \sum_{b=0}^{\ell_+}\frac{(-1)^bb!\,a_{-m,b}}
+                        {\varepsilon^{b+1}}\right\}.
+\end{equation}
+Consequently the pole order is at most $\ell_++1$ for positive $m$, and
+at most $\ell_+$ for nonpositive $m$.  Missing coefficients and canceled
+principal parts mean removable singularities.  If no $X_j=1$,
+the function is entire.  Every normal derivative is obtained by
+differentiating the meromorphic function and its displayed principal
+parts.
+\end{theorem}
+
+\begin{proof}
+For a nontrivial color the factor is analytic at zero, with expansion
+\begin{equation}\label{mx:nontrivexp}
+ \mxLi_s(Xe^{-px})
+   =\sum_{k\geq0}\mxLi_{s-k}(X)\frac{(-px)^k}{k!}.
+\end{equation}
+For $a\geq0$ the uncolored nonpositive factor has expansion
+\begin{equation}\label{mx:negativeexp}
+ \mxLi_{-a}(e^{-px})
+   =\frac{a!}{(px)^{a+1}}
+      +\sum_{k\geq0}\zeta(-a-k)\frac{(-px)^k}{k!}.
+\end{equation}
+For $s\geq1$ the uncolored positive factor has the integer-order
+limit of Jonqui\`ere's expansion~\cite[Eq.~25.12.12]{DLMFpolylog}:
+\begin{equation}\label{mx:positiveexp}
+ \mxLi_s(e^{-px})
+  =\frac{(-px)^{s-1}}{(s-1)!}
+       \{H_{s-1}-\log p-\log x\}
+    +\sum_{\substack{k\geq0\\k\ne s-1}}
+       \zeta(s-k)\frac{(-px)^k}{k!}.
+\end{equation}
+These convergent local expansions prove \eqref{mx:locallaurent} and
+provide every needed coefficient by finite multiplication.
+
+In the initial right half-plane, termwise integration gives
+\begin{equation}\label{mx:mellin}
+ Z(C)=\frac1{\Gamma(C)}\int_0^\infty x^{C-1}F(x)\,dx.
+\end{equation}
+The integral over any $[\delta,\infty)$ is entire before multiplication
+by $1/\Gamma(C)$, since $F$ decreases exponentially at infinity.
+Subtract successively more terms of \eqref{mx:locallaurent} near zero.
+The remainder then defines a holomorphic function on successively
+larger left half-planes, and the subtracted monomials contribute
+\[
+ \int_0^1x^{C+v-1}(\log x)^b\,dx
+       =\frac{(-1)^bb!}{(C+v)^{b+1}}.
+\]
+Only $v=-m$ can contribute to the principal part at $C=m$.
+The reciprocal Gamma function is nonzero at positive integers and
+has a simple zero at each nonpositive integer.  This proves
+\eqref{mx:principal} and the pole-order assertions.  If there are no
+uncolored factors, then $M=\ell_+=0$; all potential Mellin poles cancel
+against those Gamma zeros.  Local normal convergence of the subtracted
+integrals on compact sets also justifies every fixed normal
+derivative.
+
+To verify continuation of each nested term separately, its coefficient
+kernel, with the first denominator omitted, is
+\[
+ \sum_{n_1>\cdots>n_k\geq1}
+ \frac{(z_1t)^{n_1}z_2^{n_2}\cdots z_k^{n_k}}
+      {n_2^{t_2}\cdots n_k^{t_k}}
+ =\frac{z_1t}{1-z_1t}
+     \mxLi_{t_2,\ldots,t_k}(z_1z_2t,z_3,\ldots,z_k).
+\]
+For depth one the kernel is just $z_1t/(1-z_1t)$.  The positive
+trailing indices make the right side a rational function times an
+iterated integral.  Induction in its word length gives a convergent
+finite-logarithmic local expansion at $t=1$.  Applying the same Mellin
+subtractions with parameter $C+v$ proves its meromorphic continuation.
+If none of its cumulative colors is one, its kernel is analytic at
+$t=1$, and the continuation is entire.  As noted after
+Lemma~\ref{mx:eliminate}, all these cumulative colors come from the
+original root sets.
+\end{proof}
+
+Formula~\eqref{mx:principal} is fully finite at every specified pole.
+For clarity, the Gamma factors needed there can be generated by
+\begin{align}\label{mx:gammajets}
+ \frac1{\Gamma(m+\varepsilon)}
+ &=\frac1{(m-1)!}\exp\left\{
+   (\gamma-H_{m-1})\varepsilon+
+   \sum_{k\geq2}\frac{(-1)^{k+1}}k
+       (\zeta(k)-H_{m-1}^{(k)})\varepsilon^k\right\},\quad m\geq1,
+ \notag\\
+ \frac1{\Gamma(-N+\varepsilon)}
+ &=(-1)^NN!\varepsilon\exp\left\{
+   (\gamma-H_N)\varepsilon+
+   \sum_{k\geq2}\frac{(-1)^{k+1}\zeta(k)-H_N^{(k)}}k
+                                        \varepsilon^k\right\}.
+\end{align}
+Only finitely many coefficients are required.  This controls all
+principal coefficients through ordinary zeta values, generalized
+harmonic numbers, integer-order polylogarithms, and logarithms of
+the weights.  It does not assert that the holomorphic Laurent
+coefficients reduce to depth one.
+
+Inside the unit polydisk the functions are already entire in $C$.
+When all boundary colors are nontrivial, their continuation agrees
+locally uniformly in $C$ with the total-degree Abel limit
+$X_j\mapsto\rho^{p_j}X_j$, $\rho\uparrow1$.  This follows from
+the same Taylor subtractions, uniformly near those fixed colors.
+If uncolored factors occur, an Abel limit outside the convergence
+half-plane need not exist.  In that case the prescribed value is the
+meromorphic continuation of the fixed-color sum, and a pole requires
+a Laurent coefficient or other explicitly stated restriction.
+
+\subsection{Explicit mixed and weighted identities}
+
+For compactness write
+\[
+ Z_{s_1,\ldots,s_d}(C;z)
+  =\sum_{m_1,\ldots,m_d\geq1}
+      \frac{z^{m_1+\cdots+m_d}}
+       {m_1^{s_1}\cdots m_d^{s_d}(m_1+\cdots+m_d)^C}.
+\]
+The following identities hold first for $|z|<1$, and thereafter with
+the fixed-color continuation just specified.  From
+$\mxLi_1(zt)^2=2\mxLi_{1,1}(zt,1)$ and
+$\mxLi_0(zt)=-1+(1-zt)^{-1}$, one obtains
+\begin{equation}\label{mx:110}
+ Z_{1,1,0}(C;z)=2\mxLi_{C,1,1}(z,1,1).
+\end{equation}
+The repeated pole
+\[
+ \mxLi_{-1}(zt)=(1-zt)^{-2}-(1-zt)^{-1}
+\]
+gives, after the coincident-color elimination,
+\begin{align}\label{mx:11minus1}
+ Z_{1,1,-1}(C;z)={}&2\mxLi_{C-1,1,1}(z,1,1)
+                   -2\mxLi_{C-1,1}(z,1)
+                   +2\mxLi_{C,1}(z,1)\notag\\
+                 &+2\mxLi_{C-1}(z)-2\mxLi_C(z).
+\end{align}
+Indeed the intermediate term is
+$2\{\mxLi_{C-1,1,1}-\mxLi_{C,0,1}\}$, and direct summation of
+the middle index proves
+\[
+ \mxLi_{a,0,1}(z,1,1)
+ =\mxLi_{a-1,1}(z,1)-\mxLi_{a,1}(z,1)
+      -\mxLi_{a-1}(z)+\mxLi_a(z).
+\]
+Every normal derivative of \eqref{mx:11minus1}, including at $C=0$
+when $z\ne1$, follows by replacing each polylogarithm with its
+corresponding first-order derivative.  This gives the whole normal
+jet, rather than an isolated negative-integer value identity.
+
+A four-variable example has depth at most three, as predicted:
+\begin{align}\label{mx:1100}
+ Z_{1,1,0,0}(C;z)={}&2\mxLi_{C-1,1,1}(z,1,1)
+                    -2\mxLi_{C,1,1}(z,1,1)\notag\\
+                  &-2\mxLi_{C-1,1}(z,1)
+                    +2\mxLi_{C,1}(z,1)
+                    +2\mxLi_{C-1}(z)-2\mxLi_C(z).
+\end{align}
+Here the rational factor is
+$(zt)^2/(1-zt)^2=1-2/(1-zt)+(1-zt)^{-2}$.
+
+An unequal-weight example, with both root filtering and a color
+coincidence, is
+\begin{equation}\label{mx:weightedexample}
+ W(C)=\sum_{m,n,k\geq1}
+       \frac{4^{-m}3^{-n}9^{-k}}{m^2n(2m+n+2k)^C}.
+\end{equation}
+It is entire in $C$.  Since
+\[
+ \mxLi_2(t^2/4)=2\{\mxLi_2(t/2)+\mxLi_2(-t/2)\},\qquad
+ \frac{t^2/9}{1-t^2/9}
+   =-1+\frac1{2(1-t/3)}+\frac1{2(1+t/3)},
+\]
+the three shuffles of the words $0a$ and $1/3$ give
+\begin{align}\label{mx:weightedanswer}
+ W(C)=\sum_{\substack{a\in\{1/2,-1/2\}\\
+                     \delta\in\{1/3,-1/3\}}}
+ \biggl\{&\mxLi_{C,1,2}(\delta,1/(3\delta),3a)
+       +\mxLi_{C,2,1}(\delta,1/(3\delta),3a)\notag\\
+       &+\mxLi_{C,2,1}(\delta,a/\delta,1/(3a))\biggr\}.
+\end{align}
+All cumulative colors in these twelve terms have modulus less than
+one, so no continuation convention is needed to differentiate this
+identity at any $C$.
+
+The uncolored case of \eqref{mx:110} illustrates why the pole theorem
+is necessary.  Near zero its Mellin kernel is
+\[
+ \mxLi_0(e^{-x})\mxLi_1(e^{-x})^2
+ =x^{-1}\log^2x-\tfrac12\log^2x-\log x
+   +x\{\tfrac1{12}\log^2x+\tfrac7{12}\log x+\tfrac14\}
+   +O(x^2(1+|\log x|^2)).
+\]
+Consequently
+\begin{align}\label{mx:examplepoles}
+ \operatorname{PP}_{C=1} Z_{1,1,0}(C;1)
+  &=\frac2{(C-1)^3}+\frac{2\gamma}{(C-1)^2}
+                         +\frac{\gamma^2-\zeta(2)}{C-1},\notag\\
+ \operatorname{PP}_{C=0} Z_{1,1,0}(C;1)
+  &=-\frac1{C^2}+\frac{1-\gamma}{C},\notag\\
+ \operatorname{PP}_{C=-1} Z_{1,1,0}(C;1)
+  &=-\frac1{6(C+1)^2}+\frac{3/4-\gamma/6}{C+1}.
+\end{align}
+In fact there are infinitely many nonpositive poles: the coefficient
+of $\log^2x$ in this kernel is exactly
+$\mxLi_0(e^{-x})$, whose positive odd powers have nonzero Bernoulli
+coefficients.  This observation concerns the mixed extension; it is
+not a correction of the earlier theorem restricted to rational
+generating functions.
+
+\subsection{A compatible primitive hierarchy and exact checks}
+
+With $r_n$ from \eqref{mx:factor}, introduce an additional variable
+$z$ by $Z(C;z)=\sum_{n\geq1}r_nz^nn^{-C}$.  Equivalently this
+replaces $X_j$ by $X_jz^{p_j}$.  In every term of the finite reduction
+only the first polylogarithm color acquires the factor $z$.  Thus
+\begin{equation}\label{mx:primitives}
+ \int_0^z\partial_C^N Z(C;t)\frac{dt}{t}
+        =\partial_C^N Z(C+1;z),\qquad
+ z\frac d{dz}\partial_C^N Z(C;z)
+        =\partial_C^N Z(C-1;z).
+\end{equation}
+The primitive is fixed by its zero value at $z=0$.  These identities
+follow by local normal convergence in the disk and continue along
+any common path avoiding the coefficient-function singularities.
+
+The accompanying program performs 624 exact rational checks with
+SymPy; its source is \texttt{verify\_mixed\_reduction.py}.
+There are 484 coefficient
+checks: for eleven independent fixtures, each of the first 22
+coefficients is computed directly from the original product and
+compared both with \eqref{mx:mainformula} and with the fully eliminated
+positive-trailing-order expression.  The fixtures include four
+original variables, three positive factors, unequal weights, repeated
+rational poles, coincident and opposite unit colors, and nonpositive
+intermediate trailing indices.  The remaining 140 checks verify the
+finite boundary summations for degrees zero through six, including
+empty intervals and $\beta=1$.  No floating-point tolerance is used.
+The coefficient checks establish finite algebraic diagnostics;
+meromorphic continuation and differentiation are supplied by the
+proofs, not inferred from these tests.  The exact outputs and fixture
+descriptions are recorded in \texttt{mixed\_reduction\_checks.json}.
+
+The remaining question is arithmetic simplification of the resulting
+positive-depth normal jets.  The depth bound is a guaranteed upper
+bound, not an independence statement or a proof of minimality.
+At roots of unity, one can now ask which symmetries or distribution
+projections cancel these residual jets and leave only depth-one
+Hurwitz-zeta, Gamma, and generalized-Stieltjes data.  Such a
+cancellation problem is distinct from the finite mixed-sign closure
+proved here.
+
+% END sections/06_mixed_orders.tex
+
+% BEGIN sections/07_audit_research.tex
+\section{Verification, source corrections, and further research}
+\label{sec:audit}
+
+\subsection{What the checks establish}
+
+The mathematical proofs above are independent of floating-point
+agreement. The supplied programs exercise three different layers of
+the argument.
+
+\paragraph{Exact finite algebra.}
+The cubic symbolic script treats $\gamma,L,\zeta(2),\zeta(3)$,
+the needed zeta derivatives, and $\Omega_3,J_3$ as formal symbols.
+It reconstructs the four quadratic coefficients of $H$ from the
+four stated restrictions and reduces the residual in
+\eqref{ray:main} to the zero rational function. Its curve checks
+compare direct truncated quotient expansion with
+\eqref{curve:differentials}; they retain all path coefficients.
+The mixed-order script independently constructs the original
+coefficient convolution, the shuffle/partial-fraction formula, and
+the output after eliminating nonpositive trailing orders. Its 624
+exact rational checks include coincident colors and repeated poles.
+A separate local-coefficient script checks the displayed Mellin
+principal parts and Gamma jets and the finite harmonic
+summation-by-parts algebra in Section~\ref{bridge:sec}. In total,
+the three exact suites record 760 passed checks: 16 cubic/ray
+identities, 624 mixed-order checks, and 120 local-coefficient checks.
+
+\paragraph{A certified scalar evaluation.}
+The code \texttt{verify\_cubic\_harmonic\_bridge.py} combines
+Arb ball arithmetic with \eqref{bridge:tail-bound}, using
+$N=50$, $K=24$ and 100 decimal digits of working precision.
+The stored enclosure is
+\[
+ Q\in 1.9662627343915343406643753384116314238258689764916868267443076
+       \ \pm\ 4.86\cdot10^{-62}.
+\]
+The analytic tail contribution alone is below $1.26\cdot10^{-62}$.
+The reported enclosure includes rounding of its displayed center.
+The corresponding enclosures for $\eta(1)$ and $\Omega_3$ are
+obtained using the proved exact identities. They are not independent
+proofs of those identities.
+
+\paragraph{Independent numerical diagnostics.}
+Ordinary high-precision quadrature of the regularized digamma cube
+and the harmonic Mellin integral agree through approximately 70
+decimal places. A different evaluator computes $\T$ by integrating
+Jonqui\`ere's series on $(0,1)$ and an incomplete-Gamma tail on
+$(1,\infty)$. Symmetric differences with polynomial extrapolation
+check the third derivatives on six additional rays, including
+$(1,-2,3)$. Their largest recorded absolute discrepancy is below
+$5.7\cdot10^{-37}$. An independent computation of $I_2$ gives the
+same second cubic coordinate through more than 30 decimal places.
+These latter calculations use non-interval arithmetic and truncated
+series; their digits are diagnostics, not certified error estimates.
+The split at one is strictly inside the Jonqui\`ere radius $2\pi$.
+
+The package records exact program versions, numerical parameters,
+machine-readable outputs, and build instructions. No finite test
+suite certifies the analytic convergence arguments: those arguments
+are supplied in the text. The exact symbolic checks certify the
+specified finite algebra, rather than all possible extensions of a
+theorem.
+
+\subsection{A source-status ledger for integration}
+
+The source snapshot is pinned by its full commit identifier, with
+blob hashes in \path{provenance/repository_inventory.json}.
+All 80 manuscript chapter files and all 11 incoming archives matched
+their recorded Git blob hashes. This establishes the identity of the
+source corpus; it is not a claim that every proof in that corpus has
+received a new exhaustive review. The mathematical audit concentrated
+on the harmonic normalization, the cubic completion, the local
+Tornheim decomposition, and the rational/colored reduction machinery
+used by the present results.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.46\textwidth}>{\raggedright\arraybackslash}p{0.23\textwidth}@{}}
+\toprule
+Existing target & Result in this report & Status to record\\
+\midrule
+\endhead
+Coincident report, Q1: third diagonal derivative
+& Theorem~\ref{thm:diag-harmonic} and the absolutely convergent
+harmonic series \eqref{bridge:arithmetic}.
+& Reduced to $\eta(1)$; finite ordinary-constant closure remains open.\\[5pt]
+Coincident report, Q2: asymmetric cubic directions
+& Theorem~\ref{thm:cubic-rays}, with two fixed coordinates and
+explicit coefficients; $\kappa$ also has the convergent integral
+\eqref{ray:I2}.
+& Complete spanning formula proved; arithmetic minimality unproved.\\[5pt]
+Coincident report, Q11: mixed integer inner signs
+& Theorem~\ref{mx:main}, including arbitrary integer weights,
+coincident colors, repeated poles and all outer-order derivatives.
+& Finite closure proved, with a guaranteed depth bound.\\[5pt]
+Strict/inclusive harmonic conventions
+& \eqref{eq:strict-inclusive} is retained exactly, including
+the sign and the $\zeta'(2,a)$ shift.
+& Existing normalization confirmed.\\[5pt]
+Gaussian $S_6$ and revised $S_8$ candidates
+& No exact target-vector certificate is supplied here.
+& Remain open; no theorem label should be promoted.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Corrections and qualifications worth preserving}
+
+No new false theorem was found in the specific repository results
+used here. Several distinctions are nevertheless necessary for a
+correct integration.
+
+\begin{enumerate}
+\item \textbf{Keep the full resonant numerators.}
+The cubic completion \eqref{diag:completed} subtracts
+$3h(t)^2/t$ and adds $3(1-t)\zeta(2-t)/(2t)$.
+Replacing their numerators by their constant terms changes the
+answer. This is an existing warning in the coincident report,
+rederived here to protect the new harmonic bridge from a finite
+normalization error.
+\item \textbf{Use the mixed pole rule only in its stated domain.}
+The rational sector has a finite simple-pole description. Its
+extension with positive uncolored inner orders can have higher
+pole order and infinitely many nonpositive poles. The explicit
+$Z_{1,1,0}(C;1)$ example proves this difference. The earlier
+rational theorem is not wrong; extending its pole statement without
+the logarithmic correction would be wrong.
+\item \textbf{Separate coordinate rank from arithmetic independence.}
+Two formal quadratic coordinates of $H$ survive the exact slice
+constraints, with slope coefficients $abc$ and $c\Delta$.
+The theorem determines that reconstruction problem. It does not
+show that $\eta(1)$ or $\kappa$ lies outside a chosen field of
+ordinary constants, or that they are independent of each other.
+\item \textbf{Restrict before differentiating.}
+An admissible Tornheim ray is holomorphic at zero, while the full
+three-variable function is meromorphic there. The values $1/3$ on
+the diagonal and $5/12$ on the $C$ axis are consistent. A curve
+tangent to $A+C=0$ or $B+C=0$ is outside
+Theorem~\ref{thm:curve}; its value is not assigned by cancellation
+of a zero denominator in the displayed ray formula.
+\end{enumerate}
+
+The incoming report already records corrections to the inspected
+Borwein--Dilcher author PDF \cite{IncomingCoincident,BorweinDilcher}.
+They should retain that attribution. In the integer Jonqui\`ere
+formula, the convention is $H_0=0$, and the coefficient of
+$x^{p-1}\log x$ is
+\[
+ B_p=\frac{(-1)^p}{\Gamma(p)},\qquad p\ge1,
+\]
+without an additional factor $H_{p-1}$. This follows at once from
+\eqref{mx:positiveexp}; $p=3$ gives $-1/2$.
+For the ordinary convergent local power series, the splitting point
+must satisfy $0<\theta<2\pi$. These are previously documented
+corrections to the inspected author version, not newly discovered
+errors or assertions about every published version.
+
+\subsection{Proposed further research questions}
+
+The following problems are specific next steps. They are questions,
+not conjectured equalities unsupported by calculation.
+
+\paragraph{1. Determine the arithmetic content of the harmonic bridge.}
+Fix a constant algebra before attempting reduction, for example one
+generated over $\mathbb Q$ by ordinary Stieltjes constants, ordinary
+zeta derivatives at integers, logarithms and specified Barnes values.
+Does $\eta(1)$ have a finite expression in that algebra? The bridge
+gives three analytic realizations of the same coordinate: an ordered
+double-zeta Laurent coefficient, a convergent logarithmic harmonic
+series, and a normalized digamma-cube integral. Seek a functional
+identity relating two realizations without reintroducing the same
+coefficient under another name.
+
+\paragraph{2. Relate the second cubic coordinate to harmonic Laurent data.}
+The constant $\kappa$ is a fixed asymmetric double-zeta derivative
+and also the convergent moment \eqref{ray:I2} plus classical terms.
+Can an ordered Hurwitz functional equation carry that derivative
+from the origin to a harmonic Stieltjes coefficient at $(1,1)$?
+A successful identity should state the exact finite correction and
+the direction of continuation. The question of a relation between
+$\kappa$ and $\eta(1)$ is distinct from the proved two-coordinate
+spanning formula.
+
+\paragraph{3. Classify useful cancellations among cubic directions.}
+The conic $\Delta=0$ removes $\kappa$ from a single ray. More
+generally, a finite combination $\sum_j r_jW_{v_j}'''(0)$ has no
+displayed nonclassical coordinate whenever
+$\sum_jr_ja_jb_jc_j=0$ and
+$\sum_jr_jc_j\Delta_j=0$. Classify short rational configurations
+with additional permutation, distribution, or character symmetry.
+This is a finite exact linear problem and can produce concrete new
+single-zeta identities without an independence assumption.
+
+\paragraph{4. Construct the complete quartic directional layer.}
+At fourth order the cubic homogeneous part of $H$ enters. Determine
+its exact dimension after symmetry and the axis/stuffle restrictions,
+then choose independent anchor slices and derive the analogue of
+\eqref{ray:main}. The first goal is a proved finite coordinate
+formula with convergent integral representatives. A finite
+ordinary-zeta evaluation should be a separate theorem if achieved.
+
+\paragraph{5. Extend the cubic bridge to a common Hurwitz shift.}
+For $a>0$, the coefficient $\eta(a)$ has exact shift and derivative
+relations in the ordered report. Apply the partial-fraction method
+to shifted poles and compare with the primitive
+$\mathcal P_3(a+1)-\mathcal P_3(a)$. Determine the explicit
+boundary terms and whether products of shifted digamma and
+polygamma functions give a useful identity involving $\eta(a)$.
+The unit-coordinate finite part at a singular endpoint and an
+ordinary integral over a positive shifted interval must stay distinct.
+
+\paragraph{6. Obtain a general power-to-harmonic formula.}
+For each $k\ge4$, the principal parts of $\psi(z)^k$ are finite
+generalized-harmonic polynomials. The two-point contour argument
+still suggests a normally convergent subtraction. Carry out the
+finite summation-by-parts reduction explicitly for $k=4$ and identify
+the required harmonic Laurent coefficients or higher-depth data.
+The target is a compact identity with every constant fixed, rather
+than an unspecified Mittag--Leffler entire remainder.
+
+\paragraph{7. Find depth-reducing projections in the mixed sector.}
+At root-of-unity colors, the finite reduction outputs a finite list
+of nested functions and their first-order derivatives. Construct
+exact matrices for character projections and distribution identities
+on that list. Their kernels can identify combinations whose depth
+drops to one, where Hurwitz-zeta, Gamma and generalized-Stieltjes
+formulas become available. Any claimed minimal depth must specify
+the relation space being used.
+
+\paragraph{8. Evaluate selected holomorphic Laurent coefficients.}
+Theorem~\ref{mx:poles} gives all principal parts but deliberately
+does not promise finite depth-one formulas for the regular terms.
+Begin with $Z_{1,1,0}(C;1)$ at $C=1,0,-1$: derive explicit
+convergent kernels for its constant and linear Laurent coefficients
+and relate them to depth-three harmonic Stieltjes conventions.
+This separates the already solved local pole algebra from new
+global arithmetic.
+
+\paragraph{9. Normalize ordinary primitives under reflection and multiplication.}
+The primitive $\mathcal P_3$ fixes its integration constant at the
+singular origin, while \eqref{mx:primitives} fixes a holomorphic
+Euler primitive at zero. Determine exact reflection and multiplication
+relations for these normalizations, including their polynomial and
+logarithmic correction terms. At low orders, compare with Barnes
+multiple-Gamma primitives only after matching the additive constants
+and branches.
+
+\paragraph{10. Resolve tangential spectral paths.}
+The transverse formula requires $(a+c)(b+c)\ne0$. For a curve
+whose first nonzero contact with one polar divisor occurs at order
+$r>1$, determine when the numerator cancels enough terms to leave
+a removable restriction, and which path jets fix the resulting
+finite value. This is a divisibility and coefficient-extraction
+problem, not an instruction to apply the transverse formula at a
+zero denominator.
+
+\paragraph{11. Return to the exact Gaussian targets.}
+The frozen $S_6$ and revised $S_8$ vectors still need exact
+certificates in proved relation spaces. Use the current reduction
+and projection machinery to propose additional rows, proving the
+regularization prescription for each row. A numerical integer
+relation is a candidate; a successful proof must combine exact
+rows to the exact target. An unsuccessful restricted search should
+report its precise space and a separating functional, not an
+unrestricted impossibility claim.
+
+\paragraph{12. Formalize the finite proof interfaces.}
+The partial-fraction extraction, shuffle multiplicities, finite
+antidifferences, Gamma jets, and cubic coefficient elimination are
+all terminating algebra. Separate them from analytic lemmas for
+normal convergence, Mellin continuation and endpoint constant
+terms. A formal implementation can then check the finite identities
+while explicitly declaring the analytic hypotheses on which their
+applications depend.
+
+These questions preserve the emphasis on exact identities and
+normalizations. Error bounds appear in this report only to certify
+the numerical evaluation of an already proved identity.
+
+% END sections/07_audit_research.tex
+
+% BEGIN references.tex
+\begin{thebibliography}{99}
+\raggedright
+\addcontentsline{toc}{section}{References}
+
+\bibitem{Repo}
+V. Reshetnikov and the ProveIt research programme,
+\emph{Polylogarithms and their Arithmetic Bridges}, manuscript and
+incoming research corpus, snapshot \sourcecommit, accessed
+11 October 2026 (UTC).
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/5a790187c8e186e41e2b990b4941cb7a1a3c7b6b/Analysis/Polylogarithms/docs/manuscript}{Pinned manuscript directory};
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/5a790187c8e186e41e2b990b4941cb7a1a3c7b6b/docs/incoming}{pinned incoming directory}.
+
+\bibitem{IncomingCoincident}
+ProveIt research continuation,
+\emph{Coincident Stieltjes Products and Directional Zeta Identities:
+Cubic finite parts, distributional contact terms, coordinate
+invariance, and exact spectral reductions},
+10 October 2026, incoming archive
+\texttt{ProveIt\_Coincident\_Stieltjes\_Directional\_Zeta\_2026-10-10.zip}
+at the revision in \cite{Repo}.
+Relevant source files: \texttt{sections/02\_cubic.tex},
+\texttt{05\_spectral.tex}, \texttt{06\_rays.tex},
+\texttt{08b\_external\_audit.tex}, and \texttt{09\_research.tex}.
+The question numbers in this report refer to that last file.
+
+\bibitem{IncomingOrdered}
+ProveIt research continuation,
+\emph{Ordered Hurwitz Resonances and Cubic Stieltjes Products:
+Exact Laurent coefficients, Gamma generating functions, sharp curve
+dependence, and a polylogarithmic Mellin bridge},
+10 October 2026, incoming archive
+\texttt{ProveIt\_Ordered\_Hurwitz\_Resonances\_2026-10-10.zip}
+at the revision in \cite{Repo}.
+Relevant source files: \texttt{sections/02\_ordered.tex},
+\texttt{04\_harmonic\_polylog.tex}, and \texttt{05\_cubic.tex}.
+The archive source fixes the strict harmonic coefficient used here.
+
+\bibitem{Kargin}
+L. Karg\i n, A. Dil, M. Cenkci and M. Can,
+\emph{On the Stieltjes constants with respect to harmonic zeta
+functions}, Journal of Mathematical Analysis and Applications
+\textbf{525} (2023), article 127302.
+\url{https://doi.org/10.1016/j.jmaa.2023.127302}.
+Author preprint: \url{https://arxiv.org/abs/2304.03517}.
+
+\bibitem{MOW}
+K. Matsumoto, T. Onozuka and I. Wakabayashi,
+\emph{Laurent series expansions of multiple zeta-functions of
+Euler--Zagier type at integer points}, Mathematische Zeitschrift
+\textbf{295} (2020), 623--642.
+\url{https://doi.org/10.1007/s00209-019-02337-2}.
+Author preprint: \url{https://arxiv.org/abs/1601.05918}.
+
+\bibitem{BorweinDilcher}
+J. M. Borwein and K. Dilcher,
+\emph{Derivatives and fast evaluation of the Tornheim zeta function},
+The Ramanujan Journal \textbf{45} (2018), 413--432.
+\url{https://doi.org/10.1007/s11139-017-9890-9}.
+Inspected author version, titled \emph{Derivatives and fast evaluation
+of the Witten zeta function}:
+\url{https://carmamaths.org/jon/omega3.pdf}.
+The version-specific corrections cited in Section~\ref{sec:audit}
+were already documented in \cite{IncomingCoincident}.
+
+\bibitem{Connon}
+D. F. Connon, \emph{On an integral involving the digamma function},
+preprint (2012), arXiv:1212.1432.
+\url{https://arxiv.org/abs/1212.1432}.
+Used for context on digamma integrals, not as a source of the
+cubic--harmonic theorem proved in this report.
+
+\bibitem{DLMFpolylog}
+NIST Digital Library of Mathematical Functions,
+Section 25.12, \emph{Polylogarithms}, especially Eq.~25.12.12.
+\url{https://dlmf.nist.gov/25.12}. Accessed 11 October 2026.
+
+\bibitem{DLMFhurwitz}
+NIST Digital Library of Mathematical Functions,
+Section 25.11, \emph{Hurwitz zeta function}.
+\url{https://dlmf.nist.gov/25.11}. Accessed 11 October 2026.
+
+\bibitem{DLMFgamma}
+NIST Digital Library of Mathematical Functions,
+Chapter 5, \emph{Gamma function}, especially Sections 5.7, 5.9,
+5.11 and 5.15.
+\url{https://dlmf.nist.gov/5}. Accessed 11 October 2026.
+
+\bibitem{mx:Panzer}
+E. Panzer, \emph{Algorithms for the symbolic integration of
+hyperlogarithms with applications to Feynman integrals},
+Computer Physics Communications \textbf{188} (2015), 148--166.
+\url{https://doi.org/10.1016/j.cpc.2014.10.019}.
+Author preprint: \url{https://arxiv.org/abs/1403.3385}.
+Sections 2.1--2.3 supply classical background on shuffle products,
+rational prefactors and local logarithmic expansions.
+
+\bibitem{mx:Zhao}
+J. Zhao, \emph{A note on colored Tornheim's double series},
+Integers \textbf{10} (2010), A59, 879--882.
+\url{https://arxiv.org/abs/0907.5106}.
+
+\end{thebibliography}
+
+% END references.tex
+
+\end{document}

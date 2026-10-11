@@ -1,0 +1,605 @@
+\section{Transverse index derivatives and Gamma--Stieltjes gaps}
+\label{tr:section}
+
+A formula proved only after setting an index to $-m$ cannot be
+differentiated in that index. The derivative sees information that a
+Bernoulli polynomial does not contain. This section constructs that
+information explicitly. We first obtain identities valid with an
+independent moving index, and only then differentiate and specialize.
+The kernel of Section~\ref{zbg:section} supplies a second, convergent
+integral realization of the same derivatives.
+
+\subsection{The joint Hurwitz completion}
+
+Put
+\begin{equation}\label{tr:Q}
+ Q(u,x)=\zeta(u,x)-\frac1{u-1},
+\end{equation}
+with its removable value at $u=1$. This is entire in $u$ and holomorphic
+for $\Re x>0$. At the resonant point,
+\begin{equation}\label{tr:Qstieltjes}
+ \left.\partial_u^rQ(u,x)\right|_{u=1}=(-1)^r\gamma_r(x).
+\end{equation}
+For $m,r\geq0$ set
+\begin{equation}\label{tr:ell}
+ \ell_{m,r}(x)=\left.\partial_u^r\zeta(u,x)\right|_{u=-m}.
+\end{equation}
+The derivatives of $Q$ at $-m$ differ from $\ell_{m,r}$ only by the
+constant $r!/(m+1)^{r+1}$. Thus they give the same gap differences.
+
+For $\Re s$ sufficiently large, uniformly on compact sets of $u$,
+define the paired sum
+\begin{equation}\label{tr:Dtilde}
+ \widetilde D_{a,b}(s,u)=
+ \sum_{n\geq0}\left\{
+ (n+b)^{-s}Q(u,n+b)-(n+a)^{-s}Q(u,n+a)\right\}.
+\end{equation}
+We initially require convergence of the separate one-sided series,
+not merely an accidental cancellation at an isolated exponent.
+
+\begin{theorem}[A jointly entire weighted-tail difference]
+\label{tr:jointD}
+The continuation of \eqref{tr:Dtilde} is the entire function
+\begin{equation}\label{tr:Djoint}
+ \boxed{\widetilde D_{a,b}(s,u)
+       =Q(u,b)h_{a,b}(s)-\HH_{a,b}(s,u).}
+\end{equation}
+Consequently the series
+\begin{equation}\label{tr:D}
+ D_{m,r}(s;a,b)=\sum_{n\geq0}\left\{
+ (n+b)^{-s}\ell_{m,r}(n+b)
+ -(n+a)^{-s}\ell_{m,r}(n+a)\right\},
+ \qquad \Re s>m+2,
+\end{equation}
+has the entire continuation
+\begin{equation}\label{tr:Didentity}
+ D_{m,r}(s;a,b)=\ell_{m,r}(b)h_{a,b}(s)
+       -\left.\partial_u^r\HH_{a,b}(s,u)\right|_{u=-m}.
+\end{equation}
+For each $r\geq0$, the similarly continued Stieltjes-weighted difference is
+\begin{align}
+ &\sum_{n\geq0}\left\{
+ \frac{\gamma_r(n+b)}{(n+b)^s}
+ -\frac{\gamma_r(n+a)}{(n+a)^s}\right\}
+ \notag\\
+ &\qquad=\gamma_r(b)h_{a,b}(s)
+       -(-1)^r\left.\partial_u^r\HH_{a,b}(s,u)\right|_{u=1}.
+ \label{tr:StieltjesD}
+\end{align}
+The last series is first interpreted, for example, on $\Re s>1$.
+\end{theorem}
+
+\begin{proof}
+In a domain of absolute convergence, summing the inner index gives
+\[
+ Z_c(s,u)=\zeta(s,c)\zeta(u,c)
+          -\sum_{n\geq0}(n+c)^{-s}\zeta(u,n+c).
+\]
+Insert this identity into
+\[
+ \HH_{a,b}(s,u)=Z_b(s,u)-Z_a(s,u)-\zeta(s,a)h_{a,b}(u).
+\]
+The endpoint products cancel to leave
+\[
+ \sum_{n\geq0}\left\{(n+b)^{-s}\zeta(u,n+b)
+               -(n+a)^{-s}\zeta(u,n+a)\right\}
+ =\zeta(u,b)h_{a,b}(s)-\HH_{a,b}(s,u).
+\]
+Subtract $h_{a,b}(s)/(u-1)$ to obtain \eqref{tr:Djoint}.
+Its right side is jointly entire by Theorem~\ref{zbg:entire}.
+
+The Hurwitz asymptotic expansion, uniformly differentiated on a compact
+neighborhood of $u=-m$, gives
+$\ell_{m,r}(n+c)=O(n^{m+1}(1+\log^r n))$ on compact endpoint sets.
+A slightly enlarged compact set gives termwise spectral differentiation
+in a sufficiently far right half-plane; continuation then proves
+\eqref{tr:Didentity}. Formula \eqref{tr:Qstieltjes} gives
+\eqref{tr:StieltjesD}. At $u=1$, the coefficient $\gamma_r(n+c)$ is
+$O(1+\log^{r+1}n)$ on compact endpoint sets, proving the stated
+initial half-plane.
+\end{proof}
+
+The whole function \eqref{tr:Djoint}, rather than two separately
+regularized tails, fixes all constants. In particular the theorem covers
+simultaneous spectral derivatives at $s=1,u=1$.
+
+\subsection{A finite gap identity before specialization}
+
+For lattice functions $f,g$ with enough decay, define
+\begin{align}
+ Z_c[f]&=\sum_{n\geq0}f(n+c),&
+ Z_c[f,g]&=\sum_{n>j\geq0}f(n+c)g(j+c),\notag\\
+ \HH_{a,b}[f,g]
+   &=Z_b[f,g]-Z_a[f,g]-Z_a[f]\{Z_b[g]-Z_a[g]\}.
+ \label{tr:decorated}
+\end{align}
+For longer decorated words, define
+\[
+ Z_c[f_1,\ldots,f_k]
+   =\sum_{n_1>\cdots>n_k\geq0}\prod_{j=1}^k f_j(n_j+c),
+\]
+and define $\HH_{a,b}[f_1,\ldots,f_k]$ by the same
+prefix--suffix recursion as \eqref{scope:relative}; the displayed
+formula \eqref{tr:decorated} is its depth-two case.
+All decorated expressions below mean these initial definitions and their
+specified continuations. They do not mean arbitrary interpolations of
+finite sums. Write $f_s(x)=x^{-s}$ and use pointwise products of letters.
+
+\begin{theorem}[The moving-index gap and every transverse derivative]
+\label{tr:gap}
+The two functions
+\[
+ A(s,u,t)=\HH_{a,b}[f_sQ(u,\cdot),f_t],\qquad
+ B(s,u,t)=\HH_{a,b}[f_s,f_tQ(u,\cdot+1)]
+\]
+continue individually to entire functions of $(s,u,t)$. They obey
+\begin{align}
+ A(s,u,t)
+   &=\HH_{a,b}(u,s,t)+\HH_{a,b}(s+u,t)
+                      +Q(u,a)\HH_{a,b}(s,t),\label{tr:A}\\
+ B(s,u,t)&=A(s,u,t)+\HH_{a,b}(s,u,t).\label{tr:B}
+\end{align}
+Thus
+\begin{equation}\label{tr:genericgap}
+ \boxed{\HH_{a,b}(s,u,t)
+   =\HH_{a,b}[f_s,f_tQ(u,\cdot+1)]
+       -\HH_{a,b}[f_sQ(u,\cdot),f_t].}
+\end{equation}
+For $m,r\geq0$ this gives
+\begin{align}
+ J_{m,r}(s,t;a,b)
+ &:=\left.\partial_u^r\HH_{a,b}(s,u,t)\right|_{u=-m}\notag\\
+ &=\HH_{a,b}[f_s,f_t\ell_{m,r}(\cdot+1)]
+      -\HH_{a,b}[f_s\ell_{m,r}(\cdot),f_t].
+ \label{tr:J}
+\end{align}
+In particular this is an identity for arbitrary independent $s,t$ and
+arbitrary right-half-plane endpoints.
+\end{theorem}
+
+\begin{proof}
+First replace $Q$ by $\zeta$ and take all real parts large.
+In the decorated sum $Z_c[f_s\zeta(u,\cdot),f_t]$, the additional
+tail index is either larger than the outer index or equal to it.
+Accordingly
+\[
+ Z_c[f_s\zeta(u,\cdot),f_t]
+          =Z_c(u,s,t)+Z_c(s+u,t),
+ \qquad
+ Z_c[f_s\zeta(u,\cdot)]=Z_c(u,s)+\zeta(s+u,c).
+\]
+Substitute these identities in \eqref{tr:decorated}. Expanding the
+relative recursion \eqref{scope:relative} and collecting the same cuts
+gives
+\[
+ \HH_{a,b}[f_s\zeta(u,\cdot),f_t]
+   =\HH_{a,b}(u,s,t)+\HH_{a,b}(s+u,t)
+                            +\zeta(u,a)\HH_{a,b}(s,t).
+\]
+In the other decorated double, its two indices above the lower one
+can be ordered in either direction or can be equal. These three cases
+give $Z_c(s,u,t)$, $Z_c(u,s,t)$, and $Z_c(s+u,t)$.
+The same relative recursion gives the extra term $\HH_{a,b}(s,u,t)$.
+
+Subtracting the constant letter $1/(u-1)$ proves
+\eqref{tr:A}--\eqref{tr:B}. Their right sides are entire, so they also
+provide individual continuations of the decorated doubles through every
+spectral intersection. Their difference proves \eqref{tr:genericgap}.
+Differentiate this entire identity. At $u=-m$ the constants that
+distinguish the derivatives of $Q$ from $\ell_{m,r}$ cancel between
+the two doubles. This proves \eqref{tr:J}.
+\end{proof}
+
+The arbitrary-depth version of the counting argument will be useful
+when several unmarked slots have first been removed. It also makes the
+general-endpoint meaning of every boundary gap explicit.
+
+\begin{lemma}[A decorated word with one moving tail]
+\label{tr:masterlemma}
+Let $\boldsymbol s=(s_1,\ldots,s_k)$ and $1\leq i\leq k$.
+Then the decorated relative word has the jointly entire continuation
+\begin{align}
+ &\HH_{a,b}[f_{s_1},\ldots,f_{s_i}Q(u,\cdot),\ldots,f_{s_k}]
+ \notag\\
+ &\quad=Q(u,a)\HH_{a,b}(s_1,\ldots,s_k)
+   +\sum_{j=0}^{i-1}\HH_{a,b}(s_1,\ldots,s_j,u,s_{j+1},\ldots,s_k)
+ \notag\\
+ &\qquad\quad
+   +\sum_{j=1}^{i}\HH_{a,b}(s_1,\ldots,s_j+u,\ldots,s_k).
+ \label{tr:masterdecorate}
+\end{align}
+In particular the top and bottom boundary identities are
+\begin{align}
+ \HH_{a,b}(u,\boldsymbol s)
+  &=\HH_{a,b}[f_{s_1}Q(u,\cdot+1),f_{s_2},\ldots,f_{s_k}]
+                      -Q(u,a)\HH_{a,b}(\boldsymbol s),
+ \label{tr:topgap}\\
+ \HH_{a,b}(\boldsymbol s,u)
+  &=Q(u,b)\HH_{a,b}(\boldsymbol s)
+      -\HH_{a,b}[f_{s_1},\ldots,f_{s_k}Q(u,\cdot)].
+ \label{tr:bottomgap}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+First replace $Q(u,x)$ by $\zeta(u,x)$ and take all real parts
+large. In the infinite ordered sum, the extra tail index is at least
+the index in position $i$. Its possible strict positions are the $i$
+slots preceding that position, and its possible equalities are the
+first $i$ existing indices. Thus the infinite decorated sum is exactly
+the sum of the insertion terms and merger terms in
+\eqref{tr:masterdecorate}, with $Z_c$ in place of $\HH$ and
+without the endpoint term.
+
+Expand each such $Z_b$ by deconcatenation and group terms by the cut
+in the original undecorated word. For a cut before position $i$,
+insertions and mergers lying wholly in the prefix give
+$\zeta(u,a)Z_a(\text{prefix})$ by the ordinary singleton stuffle
+identity. The remaining insertions and mergers lie in the suffix.
+For a cut at or after position $i$, the same counting identity gives
+$Z_a(\text{decorated prefix})$. These are exactly the two types
+of cuts in the defining recursion for the decorated relative word.
+Triangular uniqueness proves the claimed identity with $\zeta$;
+subtracting $\HH(\boldsymbol s)/(u-1)$ replaces its endpoint value
+by $Q(u,a)$ and proves \eqref{tr:masterdecorate}. Its right side
+provides the jointly entire continuation.
+
+At $i=1$, use $Q(u,x+1)=Q(u,x)-x^{-u}$ to obtain
+\eqref{tr:topgap}. At $i=k$, the relative singleton stuffle identity
+combines all insertions and mergers, and
+$Q(u,b)-Q(u,a)=h_{a,b}(u)$ gives \eqref{tr:bottomgap}.
+The difference of the decorations at adjacent positions $i+1$ and $i$,
+using $Q(u,\cdot+1)$ at the lower position, leaves exactly the
+insertion at the gap between them. This proves the interior gap
+identity at any depth as well. No integer-endpoint uniqueness principle
+is used.
+\end{proof}
+
+At an integer interval $a=b+N$, the meaning of the gap is especially
+transparent:
+\begin{equation}\label{tr:finitegap}
+ J_{m,r}(s,t;b+N,b)=
+ \sum_{N>i>k\geq0}
+ \frac{\ell_{m,r}(k+b+1)-\ell_{m,r}(i+b)}
+      {(i+b)^s(k+b)^t}.
+\end{equation}
+Indeed the middle-index sum is
+\[
+ \sum_{k<j<i}(j+b)^m(-\log(j+b))^r
+           =\ell_{m,r}(k+b+1)-\ell_{m,r}(i+b).
+\]
+The proof above establishes the general-endpoint identity independently
+of this finite illustration.
+
+The Hurwitz shift identity also gives an equivalent form using only
+unshifted decorated letters:
+\begin{align}
+ J_{m,r}(s,t;a,b)
+   ={}&\HH_{a,b}[f_s,f_t\ell_{m,r}]
+       -\HH_{a,b}[f_s\ell_{m,r},f_t]
+       -\partial_t^r\HH_{a,b}(s,t-m).
+ \label{tr:commutator}
+\end{align}
+The last term is essential. For $m=r=0$, it recovers exactly
+\[
+ \HH(s,0,t)=\HH(s-1,t)-\HH(s,t-1)-\HH(s,t),
+\]
+the strict zero-gap deletion rule.
+
+\subsection{Gamma gaps, Stieltjes primitives, and repeated primitives}
+
+For the first transverse derivative at zero, \eqref{scope:hurwitz}
+turns \eqref{tr:finitegap} into
+\begin{equation}\label{tr:logGammafinite}
+ \left.\partial_u\HH_{b+N,b}(s,u,t)\right|_{u=0}
+ =
+ \sum_{N>i>k\geq0}
+ \frac{\log\Gamma(k+b+1)-\log\Gamma(i+b)}
+      {(i+b)^s(k+b)^t}.
+\end{equation}
+The constants $\log(2\pi)/2$ disappear. This is the requested transverse
+identity in explicit Gamma coordinates, with \eqref{tr:J} specifying
+its general-endpoint counterpart.
+
+Differentiating $-\!u\zeta(1+u,x)$ at $u=0$ gives, for $r\geq1$,
+\begin{equation}\label{tr:Stieltjesprimitive}
+ \frac{d}{dx}\ell_{0,r}(x)=(-1)^r r\,\gamma_{r-1}(x).
+\end{equation}
+Therefore
+\begin{equation}\label{tr:integratedgap}
+ \ell_{0,r}(z+1)-\ell_{0,r}(y)
+   =(-1)^{r+1}r\int_{z+1}^{y}\gamma_{r-1}(x)\dd x.
+\end{equation}
+The path lies in the right half-plane. The integral is path independent,
+and its additive normalization is fixed by the displayed endpoints.
+Combining \eqref{tr:J} with \eqref{tr:integratedgap} gives all the
+corresponding harmonic identities with Stieltjes-primitive gaps.
+At $u=1$, the same entire identity instead gives
+\begin{align}
+ \left.\partial_u^r\HH(s,u,t)\right|_{u=1}
+ =(-1)^r\bigl\{\HH[f_s,f_t\gamma_r(\cdot+1)]
+                 -\HH[f_s\gamma_r,f_t]\bigr\}.
+ \label{tr:Stieltjesgap}
+\end{align}
+These statements retain the ordered information; they do not claim
+a reduction of every resulting value to depth-one constants.
+
+A standard balanced normalization packages repeated primitives of
+log-Gamma \cite{EspinosaMoll}:
+\begin{equation}\label{tr:balanced}
+ \mathcal B_m(x)=
+       \frac{\zeta'(-m,x)+H_m\zeta(-m,x)}{m!},\qquad H_0=0.
+\end{equation}
+Here $\mathcal B_0(x)=\log\Gamma(x)-\tfrac12\log(2\pi)$, and
+\begin{equation}\label{tr:balancedderivative}
+ \mathcal B_m'(x)=\mathcal B_{m-1}(x)\qquad(m\geq1).
+\end{equation}
+To check this, differentiate the Hurwitz identity
+$\partial_x\zeta(u,x)=-u\zeta(u+1,x)$ once in $u$, then use
+$H_m=H_{m-1}+1/m$. The factor $m!$ in \eqref{tr:balanced} is
+exactly the one needed for \eqref{tr:balancedderivative}.
+
+It follows that the repeated-Gamma-primitive gap has the exact identity
+\begin{align}
+ &\HH[f_s,f_t\mathcal B_m(\cdot+1)]
+                 -\HH[f_s\mathcal B_m,f_t]\notag\\
+ &\qquad=\frac{J_{m,1}(s,t)+H_m\HH(s,-m,t)}{m!}.
+ \label{tr:balancedgap}
+\end{align}
+The second term is a finite Bernoulli reduction. Thus no undetermined
+polynomial or integration constant is hidden in the primitive ladder.
+
+As one elementary Stieltjes check, let $h=h_{a,b}$. Differentiating the
+stuffle of a singleton with $\HH(s,t)$ gives
+\begin{align}
+ &\left.\partial_u\{\HH(u,s,t)+\HH(s,u,t)+\HH(s,t,u)\}\right|_{u=0}
+ \notag\\
+ &\qquad=h'(0)\HH(s,t)-(\partial_s+\partial_t)\HH(s,t).
+ \label{tr:insertionderivative}
+\end{align}
+At $s=t=1$, use $\HH(v,v)=(h(v)^2-h(2v))/2$ to obtain the fully
+specified expression
+\begin{equation}\label{tr:Stieltjesexample}
+ \frac{h'(0)}2\{h(1)^2-h(2)\}
+   +h(1)\{\gamma_1(b)-\gamma_1(a)\}
+   +\zeta'(2,b)-\zeta'(2,a).
+\end{equation}
+This is a consistency specialization of the classical stuffle algebra,
+not a separate claim of a new product principle.
+
+\subsection{Absolutely convergent transverse Mellin formulas}
+
+The following elementary normalized-Mellin lemma makes the transverse
+construction directly computable.
+
+\begin{lemma}[Every derivative at a nonpositive Mellin order]
+\label{tr:Mellinlemma}
+Suppose $f$ is smooth on $[0,\infty)$, extends holomorphically near zero,
+and all its derivatives decrease exponentially at infinity. Let
+\[
+ \mathcal M_f(u)=\frac1{\Gamma(u)}
+                  \int_0^\infty y^{u-1}f(y)\dd y,\qquad\Re u>0.
+\]
+It has an entire continuation. Put $c_j=[v^j]\Gamma(v)^{-1}$.
+For $m\geq0$,
+\begin{align}
+ \mathcal M_f(-m)&=(-1)^m f^{(m)}(0),\label{tr:Mvalue}\\
+ \mathcal M_f^{(r)}(-m)
+ &=(-1)^m r!\sum_{j=1}^r\frac{c_j}{(r-j)!}
+      \int_0^\infty\frac{\log^{r-j}y}{y}
+          \{f^{(m)}(y)-f^{(m)}(0)e^{-y}\}\dd y ,
+ \qquad r\geq1.
+ \label{tr:Mjet}
+\end{align}
+All integrals in \eqref{tr:Mjet} are ordinary absolutely convergent
+integrals.
+\end{lemma}
+
+\begin{proof}
+Repeated integration by parts gives
+$\mathcal M_f(u)=(-1)^m\mathcal M_{f^{(m)}}(u+m)$, initially on
+$\Re u>0$ and then by continuation. It is enough to expand at zero.
+Write $g=f^{(m)}$ and use the exact identity
+\[
+ \mathcal M_g(v)=g(0)+\frac1{\Gamma(v)}
+       \int_0^\infty y^{v-1}\{g(y)-g(0)e^{-y}\}\dd y .
+\]
+The last integral is holomorphic for $\Re v>-1$, locally at zero.
+Its $q$th derivative at zero is the integral with
+$\log^qy/y$. The bracket is $O(y)$ near zero and decreases
+exponentially at infinity. Coefficient multiplication by
+$\Gamma(v)^{-1}$ proves \eqref{tr:Mjet}.
+The continuation and value formula also follow from repeated integration
+by parts with an arbitrarily large number of derivatives.
+\end{proof}
+
+The coefficients $c_j$ are explicit Gamma Taylor coefficients:
+\[
+ c_1=1,\qquad c_2=\gamma,\qquad
+ c_3=\frac{\gamma^2-\zeta(2)}2,
+\]
+and in every degree they follow from
+\[
+ \frac1{\Gamma(v)}
+     =v\exp\left(\gamma v+
+             \sum_{q\geq2}\frac{(-1)^{q+1}\zeta(q)}qv^q\right).
+\]
+
+\begin{theorem}[Convergent formula for every transverse gap]
+\label{tr:integral}
+Let $\Re s,\Re t>0$, $m\geq0$, and $r\geq1$. In
+\eqref{tr:Mjet}, set
+\[
+ f(y)=\mathscr K_{a,b}^{(3)}(x,y,z).
+\]
+Then $J_{m,r}(s,t;a,b)$ is the normalized $(x,z)$ Mellin transform
+of its right side. Explicitly it is
+\begin{align}
+ &\frac{(-1)^m r!}{\Gamma(s)\Gamma(t)}
+ \sum_{j=1}^r\frac{c_j}{(r-j)!}
+ \int_0^\infty\int_0^\infty
+       x^{s-1}z^{t-1}\notag\\
+ &\qquad\cdot\int_0^\infty \frac{\log^{r-j}y}{y}
+ \left\{\partial_y^m\mathscr K^{(3)}_{a,b}(x,y,z)
+       -\partial_y^m\mathscr K^{(3)}_{a,b}(x,0,z)e^{-y}\right\}
+             \dd y\dd z\dd x .
+ \label{tr:tripleintegral}
+\end{align}
+All these integrals are absolutely convergent. Their common continuation
+is entire in $s,t$. Every further fixed spectral derivative can be
+taken in the convergent integrals on compact subsets of
+$\Re s,\Re t>0$.
+\end{theorem}
+
+\begin{proof}
+Lemma~\ref{zbg:bounds} gives uniform exponential control of all derivatives
+of the kernel, including at $y=0$. The inner bracket is uniformly
+$O(y)e^{-\delta(x+z)}$ as $y\downarrow0$; for $y\geq1$ it is bounded
+by $Ce^{-\delta(x+z)}(e^{-\delta y}+e^{-y})$.
+Consequently the inner logarithmic integrals and the two outer Mellin
+integrals are absolutely convergent. Fubini's theorem and the preceding
+lemma give the derivative of
+$\mathscr E_{a,b}(s,u,t;\boldsymbol0)=\HH_{a,b}(s,u,t)$.
+Theorem~\ref{zbg:entire} gives the entire continuation. Powers of $\log x$
+and $\log z$ from further spectral derivatives preserve the same
+integrable majorants on compact half-plane subsets.
+\end{proof}
+
+For $m=0,r=1$ the formula contains just
+\[
+ \int_0^\infty
+ \frac{\mathscr K^{(3)}(x,y,z)-\mathscr K^{(3)}(x,0,z)e^{-y}}y\dd y.
+\]
+This supplies a convergent realization of the log-Gamma gap at arbitrary
+noninteger endpoints, without separate divergent ordered sums.
+
+\subsection{All negative outer values and fixed Barnes constants}
+
+The weighted difference in Theorem~\ref{tr:jointD} has especially
+explicit values at nonpositive outer orders.
+
+\begin{theorem}[Finite Bernoulli formula for the transverse weighted tails]
+\label{tr:negativeD}
+Let $d,m,r\geq0$ and $q=d+1$. Then
+\begin{align}
+ D_{m,r}(-d;a,b)
+   =\frac1q\biggl\{&
+        B_q(a)\ell_{m,r}(a)-B_q(b)\ell_{m,r}(b)\notag\\
+       &+\sum_{k=0}^q\binom qk B_{q-k}(1)
+                             h_{a,b}^{(r)}(-m-k)\biggr\}.
+ \label{tr:negativeformula}
+\end{align}
+Every term is an endpoint Hurwitz derivative or a Bernoulli polynomial.
+\end{theorem}
+
+\begin{proof}
+The required top-index deletion identity is
+\begin{equation}\label{tr:topdelete}
+ \HH(-d,u)=\frac1q\left\{
+ B_q(a)h(u)-\sum_{k=0}^q\binom qk B_{q-k}(1)h(u-k)\right\}.
+\end{equation}
+For a direct analytic derivation, sum the leading index of $Z_c(v,u)$
+as $\zeta(v,n+c+1)$, then continue $v$ to $-d$ while $\Re u$ is
+large. Use
+$\zeta(-d,x+1)=-B_q(x+1)/q$ and expand the Bernoulli polynomial.
+Insert the result in the relative quotient. The leading singleton
+$Z_a(-d)=-B_q(a)/q$ contributes the first term. This proves
+\eqref{tr:topdelete} on a nonempty domain, and entireness in $u$ extends it.
+
+Differentiate \eqref{tr:topdelete} $r$ times in $u$ and set $u=-m$.
+Substitute in \eqref{tr:Didentity} and use
+$h(-d)=(B_q(a)-B_q(b))/q$. The terms involving
+$B_q(a)\ell_{m,r}(b)$ cancel, giving \eqref{tr:negativeformula}.
+\end{proof}
+
+For $m=0,r=1,d=0$, the standard Barnes relation
+\cite{Vardi,DLMFBarnes} gives the particularly simple identity
+\begin{equation}\label{tr:Barnes}
+ \boxed{D_{0,1}(0;a,b)=
+    \log G(a)-\log G(b)-\frac{a-b}{2}\log(2\pi).}
+\end{equation}
+Here $G$ is Barnes' function with its standard asymptotic normalization,
+$G(1)=1$, and $G(x+1)=\Gamma(x)G(x)$. Holomorphic logarithms in the
+right half-plane are normalized from the positive real axis.
+Indeed the $q=1$ formula is
+\[
+ (a-1)\ell_{0,1}(a)-(b-1)\ell_{0,1}(b)
+                    +\zeta'(-1,b)-\zeta'(-1,a),
+\]
+and
+$\log G(x)=(x-1)\log\Gamma(x)+\zeta'(-1)-\zeta'(-1,x)$
+proves \eqref{tr:Barnes}. At an integer endpoint difference it also
+agrees with the finite product obtained by iterating the functional
+equation. General $d$ gives the analogous finite endpoint formula in
+higher Hurwitz derivatives, without choosing an unspecified multiple
+Gamma normalization.
+
+\subsection{A finite family after arbitrary unmarked deletions}
+
+The preceding construction is stable under inserting any finite word
+of unmarked nonpositive indices. We state exactly the scope.
+
+\begin{proposition}[One marked index with arbitrary nonpositive decoration]
+\label{tr:finitefamily}
+Suppose a word contains $k\geq1$ independent free indices, one marked
+index $u$, and unmarked indices $-m_1,\ldots,-m_e$, with $m_i\geq0$.
+Put $M=\sum_i(m_i+1)$. After differentiating the marked index $r$ times
+and setting $u=-m$, the word is a finite polynomial-endpoint combination
+of $k$-letter relative sums whose letters are ordinary shifted powers,
+ordinary spectral derivatives of those powers, and at most one factor
+\[
+ \ell_{m+\nu,r}(x),\qquad 0\leq\nu\leq M.
+\]
+Endpoint values of the same finite family may occur. Thus the new gap
+functions needed for this one-marked problem are a specified finite
+list. This is a bound for this representation, not an assertion of
+minimal arithmetic depth.
+\end{proposition}
+
+\begin{proof}
+First regard $u$ as free. The finite Bernoulli deletion rules for each
+unmarked $-m_i$ hold identically in all remaining indices: sum its
+finite strict gap by a Bernoulli polynomial, or use the leading-tail
+argument of \eqref{tr:topdelete} at the upper boundary, and insert the
+result in the relative recursion. An interior deletion has the two
+endpoint terms
+\[
+ \frac1{m_i+1}\sum_{j=0}^{m_i+1}\binom{m_i+1}{j}
+ \left\{B_{m_i+1-j}\HH(\ldots,s-j,t,\ldots)
+       -B_{m_i+1-j}(1)\HH(\ldots,s,t-j,\ldots)\right\}.
+\]
+It shifts adjacent surviving orders down by nonnegative integers.
+The total shift budget is at most $M$, even when adjacent unmarked
+indices are combined during the deletion. Coefficients are endpoint
+polynomials and are independent of every surviving free order.
+
+Now differentiate in $u$ and set $u=-m$. Each surviving marked order
+is $-m-\nu$ for some $0\leq\nu\leq M$.
+Apply Lemma~\ref{tr:masterlemma} at the surviving marked position.
+Its adjacent-decoration difference gives the interior gap, and
+\eqref{tr:topgap}--\eqref{tr:bottomgap} give the boundary gaps.
+Their finite-interval forms are
+$\ell(y+1)-\ell(a)$ at the top and
+$\ell(b)-\ell(y)$ at the bottom. Only one decorated factor is introduced.
+Finally
+$\ell_{m+\nu,r}(x+1)=\ell_{m+\nu,r}(x)
+                   -x^{m+\nu}(-\log x)^r$
+removes shifted potentials in favor of ordinary free-order derivatives.
+The analytic identities at every step were proved with the marked
+order still free, so the transverse differentiation is legitimate.
+\end{proof}
+
+There is also an analytic all-decoration version. Take any fixed
+free word with one marked slot, apply Theorem~\ref{zbg:main}, then
+differentiate that slot at $-m$. Local normality proves convergence on
+the same full unit polydisc. Formula \eqref{tr:Mjet}, applied to the
+marked kernel coordinate, gives the corresponding logarithmic-integral
+generator. This simultaneously extends R7 and R8 to every derivative
+order and every nonpositive marked center.
+
+If there are no other free indices, the remaining singleton is
+$h_{a,b}^{(r)}(-m-\nu)$, so no decorated lower-depth sum is needed.
+Several independently marked indices are a further problem: this
+proposition makes no claim that their repeated gap primitives close
+in the same one-marked list.
+

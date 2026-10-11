@@ -1,0 +1,210 @@
+\section{Unequal shifts: finite reductions and arithmetic collapses}
+\label{rlc:sec:unequal}
+
+Different shifts replace the single resolvent in
+\eqref{rlc:eq:barnes} by a product. For $\Rea a_j>0$ define
+\[
+ \mathcal K(\boldsymbol s,\boldsymbol a;\mu)
+       =(f_{a_1,s_1}*\cdots*f_{a_r,s_r})(\mu).
+\]
+A common $c$ with
+$\max_j(0,1-\Rea a_j)<c<1$ exists. The weighted proof gives
+\begin{equation}\label{rlc:eq:unequaltransform}
+ \mathcal K=\frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}
+       e^{p\mu}g(p)^r\prod_{j=1}^r(p+a_j-1)^{-s_j}\dd p,
+ \qquad g(p)=\pi\csc(\pi p).
+\end{equation}
+This is an entire function of the independent orders.
+
+\subsection{A precise rigidity statement}
+\begin{proposition}[Rigidity of pure order addition]
+\label{rlc:prop:rigidity}
+Group equal shifts into distinct values $a_\nu$, with grouped orders
+$S_\nu$. Put $W=\sum_\nu S_\nu$. For a proposed shift $b$ with
+$\Rea b>0$, the identity
+\[
+ \mathcal K(\boldsymbol s,\boldsymbol a;\mu)=\CC_{r,b}(W;\mu)
+\]
+holds on an open interval of real $\mu$ if and only if every grouped
+order at a shift different from $b$ is zero and the grouped order at
+$b$ is $W$; absent groups are interpreted as zero. In particular, for
+strictly positive real orders it forces all shifts to equal $b$.
+\end{proposition}
+\begin{proof}
+Analyticity in the $\mu$ strip turns interval equality into equality on
+the whole real axis. Taking the bilateral transform, cancelling $g^r$,
+and logarithmically differentiating gives the rational identity
+\[
+ \sum_\nu\frac{S_\nu}{p+a_\nu-1}=\frac{W}{p+b-1}.
+\]
+Equality of residues at distinct poles gives the necessity. Conversely,
+the stated grouped cancellations give equality of the multipliers with
+the chosen branches and hence equality of convolutions. Equivalently,
+a possible multiplicative constant after logarithmic differentiation is
+one by the behavior as real $p\to+\infty$ of the resolvent product.
+\end{proof}
+
+This is a functional rigidity statement within a specified family.
+It is not an arithmetic-independence theorem or a prohibition on other
+special-value reductions. Broader finite-jet nonclosure by monodromy
+has already been studied for the periodic unequal-twist family
+\cite{UTJ}; that preceding result is not claimed anew here.
+
+\subsection{Dirichlet mixtures and integer-order partial fractions}
+For $\Rea s_j>0$, the classical Dirichlet parameter formula gives
+\begin{equation}\label{rlc:eq:simplex}
+ \mathcal K(\boldsymbol s,\boldsymbol a;\mu)
+ =\frac{\Gamma(W)}{\prod_j\Gamma(s_j)}
+ \int_{\substack{u_j\ge0\\\sum u_j=1}}
+       \prod_j u_j^{s_j-1}
+       \CC_{r,\sum u_ja_j}(W;\mu)\dd u_1\cdots\dd u_{r-1}.
+\end{equation}
+Indeed apply the Gamma integral to each resolvent in
+\eqref{rlc:eq:unequaltransform}, separate the total integration variable
+from its simplex proportions, and then invert the transform. The real
+parts of the convexly combined shifts remain positive, so Fubini is
+justified by a common weighted bound.
+
+If the grouped orders are positive integers $m_\nu$, the mixture has a
+finite alternative. For distinct $a_1,\ldots,a_d$ set
+\begin{equation}\label{rlc:eq:partialcoeff}
+ c_{\nu,k}=\frac1{(m_\nu-k)!}
+ \left.\frac{\dd^{m_\nu-k}}{\dd z^{m_\nu-k}}
+ \prod_{\rho\ne\nu}(z+a_\rho-a_\nu)^{-m_\rho}\right|_{z=0}.
+\end{equation}
+The elementary partial fraction identity and transform uniqueness give
+\begin{equation}\label{rlc:eq:partialclosure}
+ \boxed{\displaystyle
+ \mathcal K(\boldsymbol m,\boldsymbol a;\mu)
+       =\sum_{\nu=1}^{d}\sum_{k=1}^{m_\nu}
+             c_{\nu,k}\CC_{r,a_\nu}(k;\mu).}
+\end{equation}
+The number $r$ is the number of original profile factors, not the number
+of distinct shifts after grouping. At zero, the right side is finite
+polygamma or alternating-polygamma data. Colliding shifts are handled
+by the limit of the entire combined expression or by grouping first;
+individual partial fraction coefficients need not have finite limits.
+
+For instance,
+\begin{equation}\label{rlc:eq:unequal11}
+ \int_0^\infty F_{a,1}(y)F_{b,1}(1/y)\frac{\dd y}{y}
+       =\frac{\zeta(2,a)-\zeta(2,b)}{b-a}.
+\end{equation}
+At $b=a$ the value is $2\zeta(3,a)$. For unequal nonnegative integers
+$N,M$, this specializes to the finite harmonic quotient
+\begin{equation}\label{rlc:eq:unequalharmonic}
+ \int_0^\infty F_{N+1,1}(y)F_{M+1,1}(1/y)\frac{\dd y}{y}
+       =\frac{H_M^{(2)}-H_N^{(2)}}{M-N}.
+\end{equation}
+In particular the values for $(N,M)=(0,1)$ and $(0,2)$ are $1$ and
+$5/8$, respectively.
+
+\subsection{All-depth elementary integrals with finite harmonic values}
+Unit-order profiles at integer shifts are elementary logarithmic
+remainders by \eqref{rlc:eq:remaindershift}. Their multivariable
+convolutions can have especially simple arithmetic values.
+For distinct nonnegative integers $N_1,\ldots,N_r$, put
+\[
+ c_\nu=\prod_{\rho\ne\nu}(N_\rho-N_\nu)^{-1},\qquad
+ \overline H_N^{(q)}=\sum_{j=1}^N\frac{(-1)^{j-1}}{j^q},
+\]
+and let $\mathcal K_{\boldsymbol N}$ denote
+$(f_{N_1+1,1}*\cdots*f_{N_r+1,1})(0)$.
+
+\begin{theorem}[Integral-shift arithmetic collapse]
+\label{rlc:thm:lattice}
+For $r=2m\ge2$,
+\begin{equation}\label{rlc:eq:latticeeven}
+ \mathcal K_{\boldsymbol N}
+ =-\frac1{(2m-1)!}\sum_{k=0}^{m-1}A_{m,k}(2k+1)!
+          \sum_{\nu=1}^{2m}c_\nu H_{N_\nu}^{(2k+2)}.
+\end{equation}
+It belongs to $\mathbb Q[\pi^2]$, of degree at most $m-1$ in $\pi^2$.
+For $r=2m+1\ge3$, if all $N_\nu$ have the same parity and
+$\sigma=(-1)^{N_1}$, then
+\begin{equation}\label{rlc:eq:latticeodd}
+ \mathcal K_{\boldsymbol N}
+ =-\frac{\sigma}{(2m)!}\sum_{k=0}^{m}B_{m,k}(2k)!
+          \sum_{\nu=1}^{2m+1}c_\nu\overline H_{N_\nu}^{(2k+1)}.
+\end{equation}
+This belongs to $\mathbb Q[\pi^2]$, of degree at most $m$.
+\end{theorem}
+\begin{proof}
+The unit-order partial fraction formula is
+$\mathcal K_{\boldsymbol N}=\sum c_\nu\CC_{r,N_\nu+1}(1;0)$.
+Moreover $\sum c_\nu=0$ for $r\ge2$, by comparing coefficients of
+$p^{-1}$ at infinity in the resolvent identity.
+
+At even depth insert the central zeta formula and
+$\zeta(q,N+1)=\zeta(q)-H_N^{(q)}$. The common zeta terms cancel because
+$\sum c_\nu=0$, giving \eqref{rlc:eq:latticeeven}.
+At odd depth use
+\[
+ \eta(q,N+1)=(-1)^N\{\eta(q,1)-\overline H_N^{(q)}\}.
+\]
+The common parity makes the sign independent of $\nu$, so the common
+alternating-zeta terms cancel as well. This proves
+\eqref{rlc:eq:latticeodd}. All remaining harmonic numbers are rational,
+and the degrees in $\pi^2$ follow from the product polynomials.
+\end{proof}
+
+Two explicit instances are
+\begin{align}
+ (f_{1,1}*f_{3,1}*f_{5,1})(0)
+       &=\frac{1475}{13824}+\frac{5\pi^2}{192},
+       \label{rlc:eq:lattice3}\\
+ (f_{1,1}*f_{2,1}*f_{3,1}*f_{4,1})(0)
+       &=\frac{575}{3888}+\frac{11\pi^2}{162}.
+       \label{rlc:eq:lattice4}
+\end{align}
+These are, respectively, ordinary two- and three-dimensional integrals
+of explicitly elementary logarithmic profiles. Their derivation requires
+no integer-relation search.
+
+\subsection{A closed consecutive-shift harmonic formula}
+Define complete homogeneous harmonic polynomials $h_j^{(n)}$ by
+\begin{equation}\label{rlc:eq:completeharmonic}
+ \prod_{q=1}^n(1-z/q)^{-1}=\sum_{j=0}^\infty h_j^{(n)}z^j,
+ \qquad
+ h_j^{(n)}=\frac1{j!}\mathcal B_j
+       \bigl(H_n,1!H_n^{(2)},2!H_n^{(3)},\ldots\bigr).
+\end{equation}
+These have positive harmonic signs, in contrast to the elementary
+product in \eqref{rlc:eq:pochhammerharmonic}.
+
+\begin{corollary}[Consecutive even-depth evaluation]
+\label{rlc:cor:consecutive}
+For $r=2m$ and $n=2m-1$,
+\begin{equation}\label{rlc:eq:consecutive}
+ \boxed{\displaystyle
+ (f_{1,1}*f_{2,1}*\cdots*f_{2m,1})(0)
+   =\frac1{n(n!)^2}\sum_{k=0}^{m-1}
+          A_{m,k}(2k+1)!h_{2k+1}^{(n)}.}
+\end{equation}
+\end{corollary}
+\begin{proof}
+In \eqref{rlc:eq:latticeeven}, the shifts are $N_\nu=0,1,\ldots,n$
+and $c_N=(-1)^N/[N!(n-N)!]$.
+Interchanging two finite sums gives
+\[
+ \sum_{N=0}^n c_NH_N^{(q)}
+ =\frac1{n!}\sum_{j=1}^n\frac{(-1)^j}{j^q}\binom{n-1}{j-1}
+ =-\frac{h_{q-1}^{(n)}}{n\,n!}.
+\]
+For the last step use
+$\binom{n-1}{j-1}=j\binom nj/n$ and
+\[
+ \sum_{j=1}^n(-1)^{j-1}\binom nj j^{-v}=h_v^{(n)}.
+\]
+The latter identity follows by the partial fraction decomposition of
+$\prod_{q=1}^n(1-z/q)^{-1}$ and comparison of its $z^v$ coefficient.
+Substitution proves \eqref{rlc:eq:consecutive}. The Bell expression in
+\eqref{rlc:eq:completeharmonic} follows by taking a logarithm of its
+finite product.
+\end{proof}
+
+Thus the reciprocal convolution calculus naturally contains both
+harmonic coefficient systems: the elementary product governing order
+derivatives of rising factorials, and the reciprocal product governing
+these finite harmonic collapses. Neither system needs to be inferred
+from a numerical pattern.

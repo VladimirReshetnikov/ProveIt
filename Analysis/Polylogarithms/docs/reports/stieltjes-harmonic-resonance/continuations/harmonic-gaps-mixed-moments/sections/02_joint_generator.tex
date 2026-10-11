@@ -1,0 +1,371 @@
+\section{A jointly entire kernel for all zero-block decorations}
+\label{zbg:section}
+
+The one-free-order zero-block generator in the incoming harmonic-parity
+report admits a uniform extension to any number of independently moving
+orders.  The extension is not obtained by interpolating finite sums from
+integer endpoint differences.  A divided-difference identity proves the
+required analytic relation at arbitrary endpoints before any coefficient
+is extracted.
+
+The underlying geometric kernel and its normalized Mellin interpolation
+are already present in Ihara, Nakamura, and Yamamoto
+\cite[Proposition~3.3 and Theorem~4.1]{INY}; the published paper is
+\emph{The Ramanujan Journal} \textbf{67} (2025), article~1,
+doi:10.1007/s11139-025-01045-2.  In their notation the kernel below is
+$e^{-b\sum_jx_j}G_k(e^{-x_1},\ldots,e^{-x_k};a-b)$.
+Equivalently it is $e^{-(b-1)\sum_jx_j}$ times their $b=1$ kernel.
+Its divided-difference form, composition proof, and continuation proof
+are included to make the normalization and later estimates explicit;
+the underlying interpolant and its geometric Mellin representation are
+not claimed as new.  The developments here are the simultaneous twist
+tube, the full dimension-independent zero-decoration polydisc, the
+all-block identity with arbitrary independent free orders, and its
+compatibility with the transverse derivative calculus developed below.
+
+Write $\mathcal H_{a,b}(s_1,\ldots,s_k)$ for the entire relative
+Hurwitz interpolant, normalized by
+\[
+ Z_b(w)=\sum_{w=uv} Z_a(u)\mathcal H_{a,b}(v),\qquad
+ Z_c(s_1,\ldots,s_j)=\sum_{n_1>\cdots>n_j\geq0}
+                         \prod_{\ell=1}^j(n_\ell+c)^{-s_\ell}.
+\]
+Empty words have value one.  Throughout this section
+$\Re a,\Re b>0$, and powers of the positive-real-axis variables use
+their real logarithms.  All endpoint powers use the branches obtained
+on the right half-plane.
+
+\subsection{The established geometric kernel in divided-difference form}
+
+For $\boldsymbol x=(x_1,\ldots,x_k)$ put
+\[
+ X_0=0,\qquad X_j=x_1+\cdots+x_j,\qquad Q_j=e^{-X_j},\qquad
+ \Delta=a-b.
+\]
+At pairwise distinct nodes define
+\begin{equation}\label{zbg:kernel}
+ \mathscr K_{a,b}^{(k)}(\boldsymbol x)
+ =e^{-bX_k-\sum_{j=1}^{k-1}X_j}
+       \sum_{j=0}^k
+       \frac{e^{-\Delta X_j}}{\prod_{\ell\ne j}(Q_j-Q_\ell)}.
+\end{equation}
+The sum is the divided difference
+$[Q_0,\ldots,Q_k]z^\Delta$, where the value at $Q_j$ is specified
+as $e^{-\Delta X_j}$.  This specification keeps track of the
+logarithms even when the exponential nodes wind around zero.  Set
+$\mathscr K^{(0)}=1$.
+
+\begin{lemma}[Kernel analyticity and exponential control]\label{zbg:bounds}
+The expression \eqref{zbg:kernel} extends holomorphically through
+every hyperplane $X_j-X_i=0$, away from the nonzero-period
+hyperplanes below. Its only possible finite singular
+hyperplanes are
+\[
+ X_j-X_i=2\pi i\ell,\qquad 0\leq i<j\leq k,
+                   \quad \ell\in\mathbb Z\setminus\{0\}.
+\]
+Define the open convex tube
+\begin{equation}\label{zbg:tube}
+ \Omega_k=\left\{\boldsymbol t\in\mathbb C^k:
+   \left|\Im\sum_{j=p}^q t_j\right|<2\pi
+                      \quad(1\leq p\leq q\leq k)\right\}.
+\end{equation}
+On compact subsets of $\Re a,\Re b>0$ and
+$\boldsymbol t\in\Omega_k$, for every multi-index $\boldsymbol\nu$
+there are $C,\delta>0$ such that
+\begin{equation}\label{zbg:bound}
+ \left|\partial_{\boldsymbol x}^{\boldsymbol\nu}
+       \mathscr K_{a,b}^{(k)}(\boldsymbol x-\boldsymbol t)\right|
+       \leq C e^{-\delta(x_1+\cdots+x_k)},\qquad x_j\geq0.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+If nodes collide with $X_j-X_i=0$, their assigned logarithms agree.
+On a sufficiently small neighborhood of each cluster, choose the common
+holomorphic logarithm.  The ordinary confluent divided difference of
+its holomorphic power function extends across all coinciding nodes.
+Different clusters have nonzero denominator differences.  This proves
+the simultaneous removability assertion, including intersections of
+arbitrarily many zero hyperplanes away from the remaining singular
+hyperplanes. Nonzero exponential periods are
+exactly the remaining possible denominator zeros.
+
+The first-order kernel is
+\[
+ \mathscr K_{a,b}^{(1)}(v)=\frac{e^{-bv}-e^{-av}}{1-e^{-v}}.
+\]
+The elementary divided-difference recurrence gives, for $k\geq2$,
+\begin{equation}\label{zbg:recurrence}
+ \mathscr K_{a,b}^{(k)}(v,w,\boldsymbol z)=
+ \frac{e^{-v}\mathscr K_{a,b}^{(k-1)}(v+w,\boldsymbol z)
+       -e^{-av}\mathscr K_{a,b}^{(k-1)}(w,\boldsymbol z)}
+      {1-e^{-v}}.
+\end{equation}
+Indeed the two divided differences in the numerator omit $Q_1$ and
+$Q_0$, respectively; scaling the nodes of the second one by $Q_1$
+gives exactly the displayed exponential factor.
+
+This recurrence proves \eqref{zbg:bound} by induction.  For large
+$x_1$, the denominator is uniformly bounded away from zero, and both
+numerator terms have the required exponential decay.  For bounded
+$x_1$, the only possible denominator zero is the removable zero at
+$v=0$; the numerator vanishes there because its two kernel terms agree.  A fixed small neighborhood of the shifted positive orthant
+stays away from all nonzero-period hyperplanes, because the compact
+subset in \eqref{zbg:tube} has a positive distance from its boundary.
+The maximum principle, or the Cauchy formula around the removable
+zero, then bounds the quotient by the inductively bounded numerator.
+Merging $v+w$ preserves the tube inequalities, since they involve
+consecutive sums.  One may take $\delta$ smaller than the minimum of
+$1,\Re a,\Re b$ on the endpoint compact set.  Cauchy estimates in the
+same uniform neighborhood prove the bounds for every derivative.
+\end{proof}
+
+\subsection{Why the kernel gives the specified noninteger interpolant}
+
+Let
+\begin{equation}\label{zbg:infinite}
+ \mathscr B_c^{(k)}(\boldsymbol x)
+ =\frac{e^{-cX_k-\sum_{j=1}^{k-1}X_j}}
+              {\prod_{j=1}^k(1-e^{-X_j})},\qquad x_j>0.
+\end{equation}
+This is the geometric kernel of the ordered infinite sum $Z_c$:
+introducing the positive successive gaps gives
+$\mathscr B_c^{(k)}=\sum_{n_1>\cdots>n_k\geq0}
+e^{-\sum_j(n_j+c)x_j}$.
+
+\begin{lemma}[Exact endpoint composition]\label{zbg:composition}
+For arbitrary right-half-plane endpoints $a,b,c$,
+\begin{equation}\label{zbg:kernelcomposition}
+ \mathscr K_{a,b}^{(k)}(x_1,\ldots,x_k)
+ =\sum_{j=0}^k
+   \mathscr K_{a,c}^{(j)}(x_1,\ldots,x_j)
+   \mathscr K_{c,b}^{(k-j)}(x_{j+1},\ldots,x_k).
+\end{equation}
+Consequently,
+\begin{equation}\label{zbg:convolution}
+ \mathscr B_b^{(k)}=\sum_{j=0}^k
+                       \mathscr B_a^{(j)}\mathscr K_{a,b}^{(k-j)},
+\end{equation}
+with the same prefix/suffix arguments.
+\end{lemma}
+
+\begin{proof}
+Apply the divided-difference product identity
+\[
+ [Q_0,\ldots,Q_k](fg)=\sum_{j=0}^k
+ [Q_0,\ldots,Q_j]f\,[Q_j,\ldots,Q_k]g
+\]
+to $f(z)=z^{a-c}$ and $g(z)=z^{c-b}$.  The suffix nodes in its
+kernel are $Q_\ell/Q_j$.  Scaling a divided difference of order
+$k-j$ supplies the factor $Q_j^{k-j-(c-b)}$; together with the
+kernel prefactors this makes every summand have the common factor
+$e^{-bX_k-\sum_{\ell=1}^{k-1}X_\ell}$.  Thus the product identity
+is exactly \eqref{zbg:kernelcomposition}.  This argument is first
+made at distinct positive nodes and then continued through the
+removable collisions.
+
+For $x_j>0$, let a real upper endpoint $A$ tend to $+\infty$ in
+$\mathscr K_{A,b}=\mathscr K_{A,a}*\mathscr K_{a,b}$.  In
+\eqref{zbg:kernel}, every term except $j=0$ tends to zero.  The
+remaining term is precisely \eqref{zbg:infinite}.  This gives
+\eqref{zbg:convolution}, a finite identity requiring no interchange
+with an infinite depth sum.  In particular, the proof is valid for
+noninteger $a-b$ and does not use uniqueness of interpolation from
+integer values.
+\end{proof}
+
+\subsection{The entire multiple-Lerch completion}
+
+For $\Re s_j>0$ define
+\begin{equation}\label{zbg:Mellin}
+ \mathscr E_{a,b}(\boldsymbol s;\boldsymbol t)
+ =\frac1{\prod_{j=1}^k\Gamma(s_j)}
+   \int_{(0,\infty)^k}\prod_{j=1}^k x_j^{s_j-1}
+      \mathscr K_{a,b}^{(k)}(\boldsymbol x-\boldsymbol t)
+           \,d\boldsymbol x,\qquad\boldsymbol t\in\Omega_k.
+\end{equation}
+
+\begin{theorem}[Independent spectral orders and simultaneous branch cancellation]
+\label{zbg:entire}
+The function \eqref{zbg:Mellin} extends jointly to an entire function
+of $\boldsymbol s\in\mathbb C^k$, holomorphic in
+$\boldsymbol t\in\Omega_k$, with locally normal derivatives of
+every fixed spectral and decoration order.  It satisfies
+\begin{equation}\label{zbg:lowering}
+ \mathscr E_{a,b}(\boldsymbol s;\boldsymbol0)
+       =\mathcal H_{a,b}(\boldsymbol s),\qquad
+ \partial_{t_j}\mathscr E_{a,b}(\boldsymbol s;\boldsymbol t)
+       =\mathscr E_{a,b}(\boldsymbol s-\boldsymbol e_j;\boldsymbol t).
+\end{equation}
+In a neighborhood of $\boldsymbol t=0$ its normally convergent Taylor
+series is
+\begin{equation}\label{zbg:Taylor}
+ \mathscr E_{a,b}(\boldsymbol s;\boldsymbol t)
+ =\sum_{\boldsymbol\nu\geq0}
+     \mathcal H_{a,b}(\boldsymbol s-\boldsymbol\nu)
+                          \frac{\boldsymbol t^{\boldsymbol\nu}}{\boldsymbol\nu!}.
+\end{equation}
+For instance, the Taylor series converges normally whenever
+$\sum_j|t_j|<2\pi$.
+\end{theorem}
+
+\begin{proof}
+Lemma~\ref{zbg:bounds} proves absolute convergence of the integral.
+Repeated integration by parts gives the particularly useful continuation
+formula
+\begin{equation}\label{zbg:continuation}
+ \mathscr E_{a,b}(\boldsymbol s;\boldsymbol t)
+ =\frac{(-1)^{|\boldsymbol N|}}
+             {\prod_j\Gamma(s_j+N_j)}
+    \int_{(0,\infty)^k}\prod_jx_j^{s_j+N_j-1}
+      \partial_{\boldsymbol x}^{\boldsymbol N}
+          \mathscr K_{a,b}^{(k)}(\boldsymbol x-\boldsymbol t)
+                                                    \,d\boldsymbol x,
+\end{equation}
+valid for $\Re s_j>-N_j$.  It agrees with the original integral
+where $\Re s_j>0$; the endpoint terms there vanish.  Since each
+$N_j$ is arbitrary, these compatible formulas prove joint entireness.
+The same exponential majorants, with logarithmic powers from spectral
+differentiation, prove local normality.
+
+At $\boldsymbol t=0$, apply the normalized Mellin transform to
+\eqref{zbg:convolution}, initially with all spectral real parts
+sufficiently large.  The product of prefix/suffix transforms is a
+product of independent integrals.  The result is exactly the defining
+deconcatenation relation for $\mathcal H_{a,b}$.  This proves the
+first identity in \eqref{zbg:lowering}; entireness extends it everywhere.
+The equality $\partial_{t_j}\mathscr K=-\partial_{x_j}\mathscr K$
+and one integration by parts prove the lowering relation first where
+$\Re s_j>1$, and then everywhere.  Taylor's theorem proves
+\eqref{zbg:Taylor}.  Every polydisc whose coordinate radii have sum
+less than $2\pi$ lies in $\Omega_k$, giving the stated domain.
+\end{proof}
+
+For $\boldsymbol t\in\Omega_k$ with $\Re t_j<0$ for every $j$, let
+\[
+ \mathscr Z_c(\boldsymbol s;\boldsymbol t)
+ =\sum_{n_1>\cdots>n_k\geq0}
+       \prod_j(n_j+c)^{-s_j}e^{(n_j+c)t_j}.
+\]
+These ordered multiple-Lerch series (with the standard depth-one
+normalization \cite[\S25.14]{DLMFLerch}) are absolutely convergent and
+entire in their independent orders.  In that domain,
+$\mathscr E_{a,b}=\mathscr Z_a^{-1}*\mathscr Z_b$ under
+deconcatenation, by the same kernel identity.  At each fixed depth the
+inverse is a finite expression.  For example,
+\begin{align*}
+ \mathscr E_{a,b}(s,t;u,v)={}&
+  \mathscr Z_b(s,t;u,v)-\mathscr Z_a(s,t;u,v)\\
+ &-\mathscr Z_a(s;u)
+               \bigl(\mathscr Z_b(t;v)-\mathscr Z_a(t;v)\bigr).
+\end{align*}
+Theorem~\ref{zbg:entire} proves that the whole expression has a
+single holomorphic continuation throughout $\Omega_k$, including all
+simultaneous zero-twist branch crossings.  Continuing the summands
+independently without this completion is unnecessary.
+
+\subsection{Summing every zero block on a dimension-independent polydisc}
+
+Let $\boldsymbol u=(u_0,\ldots,u_k)$, $|u_j|<1$, and take the
+logarithms $L_j=\log(1+u_j)$ determined at the origin.  Put
+$t_j=L_j-L_{j-1}$.
+
+\begin{theorem}[All zero decorations around independent orders]
+\label{zbg:main}
+For every $k\geq1$,
+\begin{align}\label{zbg:generator}
+ &\sum_{p_0,\ldots,p_k\geq0}
+ \mathcal H_{a,b}(\{0\}^{p_0},s_1,\{0\}^{p_1},\ldots,
+                       s_k,\{0\}^{p_k})\prod_{j=0}^ku_j^{p_j}
+ \notag\\
+ &\qquad=(1+u_0)^{a-1}(1+u_k)^{-b}
+                    \prod_{j=1}^{k-1}(1+u_j)^{-1}
+        \mathscr E_{a,b}(\boldsymbol s;
+                L_1-L_0,\ldots,L_k-L_{k-1}).
+\end{align}
+The series converges absolutely and locally normally on the full
+polydisc $|u_j|<1$, uniformly on compact spectral and endpoint sets.
+Every fixed collection of independent spectral derivatives may be
+taken term by term.
+\end{theorem}
+
+\begin{proof}
+For $|u|<1$, $1+u$ lies in the right half-plane, so
+$|\Im\log(1+u)|<\pi/2$.  Every consecutive sum of the $t_j$
+telescopes to $L_q-L_{p-1}$ and has imaginary part of absolute value
+less than $\pi$.  Thus the right side of \eqref{zbg:generator}
+is holomorphic on the entire stated polydisc, independently of $k$.
+
+To identify its Taylor coefficients, use \eqref{zbg:Taylor} locally
+and formally replace
+$\mathcal H_{a,b}(\boldsymbol s-\boldsymbol\nu)$ by
+$\boldsymbol y^{\boldsymbol\nu}$.  The resulting expression is
+\[
+ (1+u_0)^{a-y_1-1}
+ \prod_{j=1}^{k-1}(1+u_j)^{y_j-y_{j+1}-1}
+ (1+u_k)^{y_k-b}.
+\]
+Its coefficient of $\prod u_j^{p_j}$ is
+\[
+ \binom{a-y_1-1}{p_0}
+ \prod_{j=1}^{k-1}\binom{y_j-y_{j+1}-1}{p_j}
+ \binom{y_k-b}{p_k}.
+\]
+This is exactly the canonical strict-gap polynomial of the zero
+blocks.  The analytic gap-deletion theorem in \cite{IncomingParity},
+with the independent-order continuation fixed in \cite{IncomingIndependent},
+identifies its finite polynomial expansion with
+the left coefficient in \eqref{zbg:generator}.  Each coefficient
+uses only finitely many terms of \eqref{zbg:Taylor}; no interchange
+of a divergent formal order-shift sum is involved.  Holomorphy of the
+right side now proves absolute local convergence of its Taylor series
+throughout the unit polydisc.  Spectral derivatives obey the same
+Cauchy estimates uniformly on compact spectral sets.
+\end{proof}
+
+\begin{corollary}[Insertion sums and normalized primitives]\label{zbg:corollaries}
+For every integer $r\geq0$,
+\begin{equation}\label{zbg:insertion}
+ \sum_{p_0+\cdots+p_k=r}
+ \mathcal H_{a,b}(\{0\}^{p_0},s_1,\ldots,s_k,\{0\}^{p_k})
+ =\binom{a-b-k}{r}\mathcal H_{a,b}(s_1,\ldots,s_k),
+\end{equation}
+where the zero blocks between consecutive displayed free orders are
+included in the summand as in \eqref{zbg:generator}.  Moreover,
+\begin{equation}\label{zbg:primitive}
+ \int_{\tau_0}^{t_j}\mathscr E_{a,b}(\boldsymbol s;
+                      t_1,\ldots,\tau,\ldots,t_k)\,d\tau
+ =\mathscr E_{a,b}(\boldsymbol s+\boldsymbol e_j;\boldsymbol t)
+  -\mathscr E_{a,b}(\boldsymbol s+\boldsymbol e_j;
+                     t_1,\ldots,\tau_0,\ldots,t_k),
+\end{equation}
+along any path in the indicated slice of $\Omega_k$.
+For $\boldsymbol m\in\mathbb N_0^k$,
+\begin{equation}\label{zbg:negative}
+ \mathscr E_{a,b}(-\boldsymbol m;\boldsymbol t)
+ =(-1)^{|\boldsymbol m|}
+       \partial_{\boldsymbol x}^{\boldsymbol m}
+            \mathscr K_{a,b}^{(k)}(-\boldsymbol t).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Set every $u_j=u$ in \eqref{zbg:generator}.  All twists vanish and
+the prefactor becomes $(1+u)^{a-b-k}$.  The primitive is
+\eqref{zbg:lowering} with the additive normalization retained.
+For \eqref{zbg:negative}, use \eqref{zbg:continuation} with
+$N_j=m_j+1$ and integrate the derivatives successively.  Exponential
+decay removes the upper boundary terms and supplies precisely one
+additional minus sign for each integration.
+\end{proof}
+
+At $a=b+N$ with $N\geq0$ integral, the kernel is the finite ordered
+exponential sum and $\mathscr E_{a,b}$ is its weighted finite
+Dirichlet sum.  The generating function is consequently a polynomial
+of total degree at most $N-k$ if $N\geq k$, and is zero if $N<k$.
+For $k=1$ the theorem specializes to the previously proved
+single-Lerch generator.  For $k>1$ it resolves the requested joint
+convergence and simultaneous branch-cancellation problem.  It supplies
+an explicit Gamma-separated kernel, with no claim that this kernel is
+minimal in an unspecified class.

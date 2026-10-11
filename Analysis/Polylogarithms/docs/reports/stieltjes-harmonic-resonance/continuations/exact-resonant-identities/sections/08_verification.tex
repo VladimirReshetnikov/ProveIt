@@ -1,0 +1,102 @@
+\section{Proof dependencies and reproducible verification}
+\label{verification:section}
+
+The all-index analytic statements are proved by finite local
+subtraction, normal convergence, and exact coefficient extraction.
+The formal ideal statement combines an all-weight algebraic argument
+with a finite exact rational certificate. The additional computations
+have two purposes: to detect normalization or transcription mistakes,
+and to make the finite algebraic part independently replayable.
+They do not replace the analytic arguments.
+
+\subsection{Exact calculations}
+
+The ordered verifier solves the regularized stuffle equations for the
+required jets, extracts all Laurent coefficients through the finite
+part, checks the diagonal Gamma specialization and shift identities,
+and reconstructs the three-direction matrix. It passes 23 exact
+symbolic assertions, including a control that rejects an intentionally
+changed coefficient of $\kappa$.
+
+The harmonic symbolic verifier independently constructs the low-weight
+multiple-polylogarithm expansions from their differential equations
+and fixed endpoint constants. It checks the Bernoulli principal
+coefficients, the displayed finite parts, parameter transport, and
+selected higher centered cancellations. It passes 171 exact symbolic
+assertions. The all-index parity proof remains the reason that every
+centered even pole vanishes.
+
+The reflected verifier checks 15 exact derivative-polynomial identities
+in addition to its numerical comparisons. The complete Cayley verifier
+regenerates all 5,131 inherited rows, verifies all 2,546 basis
+differences in the ideal intersection, and obtains the exact nonzero
+target pairing in Section~\ref{gf:sec}. It also checks 780 independent
+Eulerian/convention cases and 2,150 shuffle products. Both retained
+upstream code modules are byte-for-byte copies of their pinned Git
+blobs. The verifier checks their SHA-256 hashes and the exact
+functional data before carrying out the calculation.
+
+\subsection{Independent numerical diagnostics}
+
+\begin{center}
+\begin{tabular}{@{}p{0.20\textwidth}p{0.45\textwidth}p{0.24\textwidth}@{}}
+\toprule
+Family & Independent evaluation & Largest observed discrepancy\\
+\midrule
+Ordered depth four & Original ordered sums with Euler--Maclaurin tails;
+four directional finite parts and four shift checks &
+$6.54\cdot10^{-34}$\\[5pt]
+Reflected moments & Central ordinary quadrature plus independent
+endpoint Laurent-log integration; 30 checks &
+$4.38\cdot10^{-47}$\\[5pt]
+Harmonic powers & Original Dirichlet head and digamma asymptotic tail;
+72 Laurent coefficients including larger-cutoff replays &
+$3.41\cdot10^{-41}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The ordered run uses 55 working decimal digits with 35 guard digits
+for its local coefficient calculation, and tests shifts $a=1,2$.
+The reflected run uses 50 decimal digits and includes higher
+Stieltjes/argument derivative pairs that test the nonconstant resonant
+amplitude. The harmonic run uses 58 decimal digits, shifts $1/2$ and
+$3/4$, and spectral centers $0,-1,-2$; its independent replay increases
+the finite head, tail order, and Cauchy sample count. The attached JSON
+files record all numerical settings and individual residuals.
+
+These are floating-point diagnostics, not interval enclosures. The
+numbers in the last column are observed discrepancies, not rigorous
+error bounds. The finite symbolic checks are also not proof-assistant
+formalizations of the analytic theorems. Separate derivations and
+cross-reviews checked the ordered jet equations, the harmonic local
+table, their factorial conventions, and their shift identities.
+
+\subsection{Files and replay commands}
+
+The package includes the modular article sources, a self-contained
+\src{Exact_Resonant_Identities.tex}, the compiled PDF, exact certificate
+data, verification scripts and receipts, a source manifest, a claims
+ledger, and integration notes. The self-contained source inlines the
+section and bibliography inputs, so its compilation does not require
+network retrieval or access to the inspected repository.
+
+The numerical and symbolic scripts use Python with \src{mpmath} and
+\src{sympy}; the complete Cayley verifier requires only the Python
+standard library. From the package root:
+\begin{verbatim}
+python3 build.py
+python3 verification/verify_all.py --exact-only
+python3 verification/verify_all.py
+\end{verbatim}
+The last command includes the higher-index reflected checks and the
+full independent numerical runs. The detailed README lists separate
+commands so a reader can replay only the result under review. No search
+matrix, modular rank cache, numerical polylogarithm conjecture check,
+or external service is required for the exact Cayley proof.
+
+The top-level checksums describe the delivered files. Verification
+receipts contain elapsed times and may change when replayed; source
+integrity checks for the actual certificate are independent of those
+timings. No numerical threshold is used to decide the nonzero exact
+integer pairing.

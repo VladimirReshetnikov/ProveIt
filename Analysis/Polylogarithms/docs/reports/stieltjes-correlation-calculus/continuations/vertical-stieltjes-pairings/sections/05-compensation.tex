@@ -1,0 +1,277 @@
+\section{Bernoulli compensation and negative spectral orders}
+\label{sec:compensation}
+
+\subsection{A hierarchy with an exact convergence domain}
+The basic kernel $h$ is bounded but does not vanish at zero. Its Mellin
+transform therefore does not directly reach the Gamma logarithm at spectral
+order zero. We now subtract exactly the required Taylor terms.
+Let $B_{2k}$ be the Bernoulli numbers and put
+\begin{align}
+ P_0(x)&=x^{-1},\label{eq:P0}\\
+ P_d(x)&=x^{-1}+\frac12+
+       \sum_{k=1}^{d-1}\frac{B_{2k}}{(2k)!}x^{2k-1},\qquad d\ge1,
+                 \label{eq:Pd}\\
+ h_d(x)&=Q(x)-P_d(x),\qquad
+ \nu_d=\begin{cases}0,&d=0,\\2d-1,&d\ge1.\end{cases}
+                 \label{eq:hd}
+\end{align}
+An empty sum is zero. Thus $h_0=h$, $h_1=h-1/2$, and
+$h_2=h-1/2-x/12$. The convergent local Bernoulli expansion gives
+\begin{equation}\label{eq:hd-valuation}
+ h_0(x)=\tfrac12+O(x),\qquad
+ h_d(x)=\frac{B_{2d}}{(2d)!}x^{2d-1}+O(x^{2d+1})\quad(d\ge1).
+\end{equation}
+Write $P_d(x)=\sum_{j\in E_d}\alpha_{d,j}x^j$, where
+$E_0=\{-1\}$ and
+$E_d=\{-1,0,1,3,\ldots,2d-3\}$ for $d\ge1$, with the evident empty
+positive portion for $d=1$.
+
+\begin{definition}\label{def:Fd}
+The Gamma-normalized compensated Hurwitz family is
+\begin{equation}\label{eq:Fd-laplace}
+ \mathcal F_d(s,z)=\int_0^\infty x^{s-1}e^{-zx}h_d(x)\dd x,
+ \qquad\Rea s>-\nu_d,\quad\Rea z>0.
+\end{equation}
+Equivalently, on this domain it is the combined continuation of
+\begin{equation}\label{eq:Fd-closed}
+ \mathcal F_d(s,z)=\Gamma(s)\zeta(s,z)
+       -\sum_{j\in E_d}\alpha_{d,j}\Gamma(s+j)z^{-s-j}.
+\end{equation}
+We also set $\mathcal R_d(s,z)=\mathcal F_d(s,z)/\Gamma(s)$ by
+continuation. In particular,
+\begin{align}
+ \mathcal R_0(s,z)&=Z_s(z),\notag\\
+ \mathcal R_d(s,z)&=Z_s(z)-\tfrac12z^{-s}
+  -\sum_{k=1}^{d-1}\frac{B_{2k}}{(2k)!}(s)_{2k-1}z^{1-s-2k}
+          \quad(d\ge1).\label{eq:Rd}
+\end{align}
+\end{definition}
+
+\begin{proposition}[Holomorphy, zeros, and the position ladder]
+\label{thm:Fd-domain}
+The family $\mathcal F_d$ is jointly holomorphic on the domain in
+\eqref{eq:Fd-laplace}. It is a holomorphic $L^2$ vector on the vertical
+line $z=a+\ii y$ whenever
+\begin{equation}\label{eq:Fd-L2}
+ \Rea s>\frac12-\nu_d,\qquad\Rea a>0.
+\end{equation}
+It satisfies
+\begin{equation}\label{eq:Fd-ladder}
+ \partial_z\mathcal F_d(s,z)=-\mathcal F_d(s+1,z).
+\end{equation}
+For every integer $n$ with $0\le n<\nu_d$,
+\begin{equation}\label{eq:Rd-zero}
+ \mathcal R_d(-n,z)=0,\qquad
+ \mathcal F_d(-n,z)=\frac{(-1)^n}{n!}
+                    \left.\partial_s\mathcal R_d(s,z)\right|_{s=-n}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Near zero the kernel in \eqref{eq:Fd-laplace} is
+$O(x^{\Rea s+\nu_d-1})$, and at infinity the exponential dominates
+all polynomial terms in $P_d$. These bounds, with extra powers of
+$\log x$ on compact spectral subsets, prove holomorphy. Squaring the
+near-zero kernel gives exactly the sufficient $L^2$ condition
+\eqref{eq:Fd-L2}. Plancherel then transfers the vector-valued holomorphy
+to the vertical line. Multiplication by $-x$ proves the position ladder.
+
+Formula~\eqref{eq:Fd-closed} follows by evaluating the separate terms
+first for sufficiently large $\Rea s$, then continuing.
+The function in \eqref{eq:Rd} is entire in $s$, after the original
+$s=1$ pole cancellation. Since $1/\Gamma(s)$ has a simple zero at
+$s=-n$ while $\mathcal F_d$ is holomorphic there, $\mathcal R_d(-n,z)=0$.
+Finally,
+$\Gamma(-n+\epsilon)=(-1)^n/(n!\epsilon)+O(1)$ gives the second formula.
+\end{proof}
+
+The kernel $L^2$ threshold is exact for an individual transform in its
+Laplace domain, because the leading coefficients in
+\eqref{eq:hd-valuation} are nonzero. We do not claim that the rectangular
+pair of such thresholds is the maximal possible region for every product.
+The theorem deliberately states a uniform domain in which all orders of
+parameter differentiation are justified.
+
+\subsection{Finite closure at every compensation depth}
+Define
+\begin{equation}\label{eq:J-integral}
+ \mathcal J_{d,e}(w,A)=\int_0^\infty
+          x^{w-1}e^{-Ax}h_d(x)h_e(x)\dd x.
+\end{equation}
+It is holomorphic for
+$\Rea w>-\nu_d-\nu_e$, $\Rea A>0$.
+
+\begin{theorem}[Arbitrary-depth product closure]\label{thm:depth-closure}
+For $\Rea s>1/2-\nu_d$, $\Rea t>1/2-\nu_e$, and
+$\Rea a,\Rea b>0$,
+\begin{equation}\label{eq:Fd-pair}
+ \frac1{2\pi}\int_{\R}\mathcal F_d(s,a+\ii y)
+                         \mathcal F_e(t,b-\ii y)\dd y
+       =\mathcal J_{d,e}(s+t-1,a+b).
+\end{equation}
+The right-hand side has the finite expression
+\begin{align}
+ \mathcal J_{d,e}(w,A)={}&
+ \Gamma(w)\{\zeta(w-1,A)+(1-A)\zeta(w,A)\}\notag\\
+ &-\sum_{j\in E_d}\alpha_{d,j}\Gamma(w+j)\zeta(w+j,A)\notag\\
+ &-\sum_{k\in E_e}\alpha_{e,k}\Gamma(w+k)\zeta(w+k,A)\notag\\
+ &+\sum_{j\in E_d}\sum_{k\in E_e}
+   \alpha_{d,j}\alpha_{e,k}\Gamma(w+j+k)A^{-w-j-k}.
+                  \label{eq:J-finite}
+\end{align}
+Every apparent pole of this expression in
+$\Rea w>-\nu_d-\nu_e$ is removable. The identity and all its spectral
+and position derivatives are identities of ordinary convergent pairings.
+\end{theorem}
+\begin{proof}
+Equation~\eqref{eq:Fd-pair} is \cref{thm:plancherel} applied to
+\eqref{eq:Fd-laplace}. For $\Rea w>2$, expand
+\[
+ (Q-P_d)(Q-P_e)=Q^2-P_dQ-P_eQ+P_dP_e.
+\]
+Every individual Mellin integral then converges. The $Q^2$ term was
+evaluated earlier; the monomial--$Q$ terms yield
+$\Gamma(w+j)\zeta(w+j,A)$, and the monomial products yield the last
+line of \eqref{eq:J-finite}. The original combined integrand vanishes
+to order $\nu_d+\nu_e$ at zero, proving its holomorphy on the larger
+half-plane. Analytic continuation therefore cancels \emph{all} of the
+apparent poles there, not merely those checked at finitely many indices.
+The vector-valued argument proves the derivative assertion.
+\end{proof}
+
+For $d=e=0$, \eqref{eq:J-finite} is exactly
+$\mathcal J_{0,0}(w,A)=\Gamma(w)K(w,A)$. Higher depths do not replace the
+special-function alphabet: they enlarge its finite range of spectral
+arguments while improving the admissible left half-plane. This is the
+mechanism that permits antiderivatives to be paired without a divergent
+vertical integral.
+
+\section{Stirling remainders and normalized antiderivatives}
+\label{sec:primitives}
+
+\subsection{The first negative-order pairing}
+At depth one, \eqref{eq:Rd-zero} and the standard zeta values at zero give
+\begin{equation}\label{eq:Omega-F}
+ \mathcal F_1(0,z)=\Omega(z)
+    =\int_0^\infty e^{-zx}\frac{h_1(x)}x\dd x.
+\end{equation}
+For completeness, differentiate
+$\mathcal R_1(s,z)=\zeta(s,z)-z^{1-s}/(s-1)-\frac12z^{-s}$ at $s=0$.
+The result is
+$\zeta'(0,z)-z\log z+z+\frac12\log z$, which is
+\eqref{eq:Omega-intro}. Thus \eqref{eq:Omega-F} also follows directly
+from the compensated Hurwitz family, independently of quoting Binet's
+formula; it agrees with the classical representation in
+\cite{dlmf-gamma}.
+
+\begin{theorem}[Exact Stirling-remainder pairing]\label{thm:Omega-pair}
+Let $\Rea a,\Rea b>0$ and $A=a+b$. Then
+\begin{align}
+ \frac1{2\pi}\int_{\R}\Omega(a+\ii y)\Omega(b-\ii y)\dd y
+   ={}&A\zeta'(-1,A)-2\zeta'(-2,A)\notag\\
+     &+\left(\frac{A^3}{6}-\frac{A^2}{2}+\frac A4\right)\log A
+           +\frac{A^3}{36}+\frac A{12}.
+                  \label{eq:Omega-pair}
+\end{align}
+\end{theorem}
+\begin{proof}
+The domain condition \eqref{eq:Fd-L2} holds at $d=1$, $s=0$.
+Hence the left-hand side equals $\mathcal J_{1,1}(-1,A)$.
+Since $h_1^2=h^2-h+1/4$, write
+$\mathcal J_{1,1}(w,A)=\Gamma(w)\mathcal B(w,A)$, where
+\begin{align}
+ \mathcal B(w,A)={}&\frac{w-3}{w-1}\zeta(w-1,A)-A\zeta(w,A)
+       +\frac{A^{2-w}}{(w-1)(w-2)}\notag\\
+       &+\frac{A^{1-w}}{w-1}+\frac14A^{-w}.
+                      \label{eq:B-Stirling}
+\end{align}
+At $w=-1$,
+\[
+ \mathcal B(-1,A)=2\zeta(-2,A)-A\zeta(-1,A)
+                       +\frac{A^3}{6}-\frac{A^2}{2}+\frac A4=0.
+\]
+This is the Bernoulli-polynomial identity
+$\zeta(-n,A)=-B_{n+1}(A)/(n+1)$ at $n=1,2$.
+Because $\Res_{w=-1}\Gamma(w)=-1$,
+\[
+ \mathcal J_{1,1}(-1,A)=-\partial_w\mathcal B(-1,A).
+\]
+Differentiation before simplification gives
+\begin{align*}
+ -\partial_w\mathcal B(-1,A)={}&
+ A\zeta'(-1,A)-2\zeta'(-2,A)-\tfrac12\zeta(-2,A)\\
+ &+A^3\left(\frac{\log A}{6}-\frac5{36}\right)
+       -\frac{A^2\log A}{2}+\frac{A^2}{4}+\frac{A\log A}{4}.
+\end{align*}
+Finally, $\zeta(-2,A)=-A^3/3+A^2/2-A/6$ yields
+\eqref{eq:Omega-pair}.
+\end{proof}
+
+At $A=1$, the functional equation of the Riemann zeta function gives
+$\zeta'(-2)=-\zeta(3)/(4\pi^2)$, proving
+\eqref{eq:headline-stirling}. The sign in front of $\partial_w\mathcal B$
+is forced by the negative residue of $\Gamma$ at $-1$.
+Discarding the zero of $\mathcal B$ before differentiating would incorrectly
+turn a nonzero norm into zero.
+
+\subsection{A canonical primitive at every admissible depth}
+Define the depth-$d$ Stirling remainder, for $d\ge1$, by
+\begin{equation}\label{eq:Omega-depth}
+ \Omega_d(z)=\Omega(z)-\sum_{k=1}^{d-1}
+          \frac{B_{2k}}{2k(2k-1)}z^{1-2k}.
+\end{equation}
+The Gamma recurrence in \eqref{eq:Fd-closed} gives
+$\mathcal F_d(0,z)=\Omega_d(z)$.
+
+\begin{theorem}[Normalized primitive ladder and exact pairings]
+\label{thm:primitive-ladder}
+For $d\ge1$ and $0\le n<\nu_d=2d-1$, let
+\begin{equation}\label{eq:primitive-definition}
+ \mathcal P_{d,n}(z)=(-1)^n\mathcal F_d(-n,z)
+      =\frac1{n!}\left.\partial_s\mathcal R_d(s,z)\right|_{s=-n}.
+\end{equation}
+Then
+\begin{equation}\label{eq:primitive-ladder}
+ \mathcal P_{d,0}=\Omega_d,\qquad
+ \partial_z\mathcal P_{d,n}=\mathcal P_{d,n-1}\quad(n\ge1).
+\end{equation}
+Each $\mathcal P_{d,n}(x)$ tends to zero as real $x\to+\infty$.
+This normalization uniquely specifies it among the holomorphic
+$n$-fold antiderivatives of $\Omega_d$.
+For $d,e\ge1$, $0\le n<\nu_d$, $0\le m<\nu_e$,
+\begin{equation}\label{eq:primitive-pair}
+ \frac1{2\pi}\int_{\R}\mathcal P_{d,n}(a+\ii y)
+                       \mathcal P_{e,m}(b-\ii y)\dd y
+       =(-1)^{n+m}\mathcal J_{d,e}(-n-m-1,a+b).
+\end{equation}
+The right-hand side is the removable value of the finite expression
+\eqref{eq:J-finite}; no new integral is left unevaluated.
+\end{theorem}
+\begin{proof}
+The definition and ladder follow from \cref{thm:Fd-domain}. The Laplace
+representation is
+\[
+ \mathcal P_{d,n}(z)=(-1)^n\int_0^\infty x^{-n-1}e^{-zx}h_d(x)\dd x.
+\]
+Its near-zero power is $x^{\nu_d-n-1}$, with $\nu_d-n>0$.
+Rescaling $x$ by a positive real $z$ and using an integrable split of the
+kernel proves decay $O(z^{n-\nu_d})$ as $z\to+\infty$.
+The difference of two $n$-fold antiderivatives is a polynomial of degree
+less than $n$, and such a polynomial cannot tend to zero unless it is zero.
+For $n=0$ the uniqueness statement simply identifies the function itself.
+
+The integer restriction $n<\nu_d$ implies
+$-n>1/2-\nu_d$; similarly for $m$. Thus \cref{thm:depth-closure} applies
+and proves \eqref{eq:primitive-pair}. Moreover,
+$-n-m-1>-\nu_d-\nu_e$, placing the spectral value strictly inside the
+holomorphic domain of $\mathcal J_{d,e}$.
+\end{proof}
+
+The primitive formula is explicit in ordinary Hurwitz order derivatives:
+\eqref{eq:Rd} involves only $\zeta(s,z)$, elementary powers, and a finite
+Pochhammer polynomial. At $s=-n$ its first derivative therefore involves
+$\zeta'(-n,z)$ and elementary terms. Pairing primitives at arbitrary
+depths remains finite by \eqref{eq:J-finite}. At its integer resonances,
+first derivatives of Hurwitz zeta and digamma values suffice; the next
+section gives a stable finite-part rule. Higher \emph{spectral} jets may
+require correspondingly higher zeta derivatives and Stieltjes constants,
+but always only finitely many.

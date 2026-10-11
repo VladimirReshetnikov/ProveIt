@@ -1,0 +1,99 @@
+\section{Generalized harmonic numbers in every single-shift jet}
+\label{asj:sec:harmonic}
+
+Let $e_j(q)$ be the elementary symmetric polynomial of degree $j$ in
+$1,1/2,\ldots,1/q$, with $e_0(q)=1$ and $e_j(q)=0$ for $j>q$.
+For $q=0$ use the empty alphabet. Define
+$H_q^{(j)}=\sum_{n=1}^q n^{-j}$ and $H_q=H_q^{(1)}$.
+The finite product gives
+\begin{align}\label{asj:eq:harmonic-egf}
+ \frac{(s)_\ell}{\ell!}
+ &=\frac{s}{\ell}\prod_{j=1}^{\ell-1}(1+s/j)
+   =\frac{s}{\ell}\sum_{j=0}^{\ell-1}e_j(\ell-1)s^j,\notag\\
+ \sum_{j\ge0}e_j(q)s^j
+ &=\exp\left(\sum_{k\ge1}\frac{(-1)^{k+1}}kH_q^{(k)}s^k\right).
+\end{align}
+The second equality is understood as a power-series identity near zero;
+its exponential simplifies to the finite product. In particular,
+\[
+ e_1(q)=H_q,\qquad
+ e_2(q)=\tfrac12\{H_q^2-H_q^{(2)}\},\qquad
+ e_3(q)=\tfrac16\{H_q^3-3H_qH_q^{(2)}+2H_q^{(3)}\}.
+\]
+These are the familiar harmonic/Stirling coordinates already present in
+the manuscript's derivative tower. Their role here is to control
+arithmetic spectral finite parts, not just parameter derivatives of a
+single Hurwitz function.
+
+\begin{theorem}[All single-shift Laurent jets]\label{asj:thm:harmonic}
+For the multiplicative Hurwitz lattice, $|a|<\lambda_*$, and $r\ge1$,
+\begin{align}\label{asj:eq:single-all}
+ \calJ_r F_a
+  ={}&\D^{(r)}(0)-a r!d_{r-1}\notag\\
+   &+\sum_{\ell\ge2}\frac{(-a)^\ell}{\ell}
+       \sum_{t=1}^{\min(r,\ell)}
+         \frac{r!}{(r-t)!}\,e_{t-1}(\ell-1)
+                                  \D^{(r-t)}(\ell).
+\end{align}
+The constant Laurent coefficient is
+$\calJ_0F_a=\D(0)-a d_{-1}$. All spectral derivatives of $\D$
+are finite sums of products of Hurwitz-zeta derivatives by Leibniz's
+rule. Thus \eqref{asj:eq:single-all} uses only specified zeta jets,
+generalized harmonic numbers, and finite Stieltjes polynomials.
+\end{theorem}
+\begin{proof}
+The binomial expansion is
+\[
+ F_a(s)=\sum_{\ell\ge0}\frac{(-a)^\ell(s)_\ell}{\ell!}\D(s+\ell).
+\]
+The $\ell=0$ term contributes $\D^{(r)}(0)$. The resonant term $\ell=1$
+is $-as\D(1+s)$ and contributes $-a r!d_{r-1}$, including $r=0$.
+For $\ell\ge2$, substitute \eqref{asj:eq:harmonic-egf} and multiply by
+the ordinary Taylor series of $\D(\ell+s)$. Theorem~\ref{asj:thm:alljets}
+justifies the extraction and convergence.
+\end{proof}
+
+The first genuinely higher rows are worth displaying without compressed
+symmetric-function notation:
+\begin{align}\label{asj:eq:secondjet}
+ \calJ_2F_a={}&\D''(0)-2a d_1
+     +2\sum_{\ell\ge2}\frac{(-a)^\ell}{\ell}
+           \{\D'(\ell)+H_{\ell-1}\D(\ell)\},\\
+ \calJ_3F_a={}&\D'''(0)-6a d_2
+     +3\sum_{\ell\ge2}\frac{(-a)^\ell}{\ell}
+        \Big\{\D''(\ell)+2H_{\ell-1}\D'(\ell)\notag\\
+        &\hspace{43mm}
+        +(H_{\ell-1}^2-H_{\ell-1}^{(2)})\D(\ell)\Big\}.
+ \label{asj:eq:thirdjet}
+\end{align}
+For two independent Hurwitz parameters, $d_1,d_2$ are exactly
+\eqref{asj:eq:d1}--\eqref{asj:eq:d2}. For example,
+\[
+ \D'(\ell)=\zeta'(\ell,b)\zeta(\ell,c)
+                    +\zeta(\ell,b)\zeta'(\ell,c),
+\]
+so every occurrence in \eqref{asj:eq:secondjet} is explicit. These formulas
+are exact convergent identities; no assertion is made that the infinite
+series always collapses to finitely many familiar constants.
+
+\subsection{A finite algorithm and its shift continuation}
+To compute a jet of order $r$, one first computes the finite Laurent
+coefficients through $d_{r-1}$ using \eqref{asj:eq:drecipe}, then generates
+the elementary symmetric coefficients through degree $r-1$, and finally
+evaluates the normally convergent zeta-jet series. Only finitely many
+algebraic operations are needed at each series index. The recurrence
+\begin{equation}\label{asj:eq:Crecurrence}
+ \ell C_\ell(\boldsymbol u)
+     =\sum_{j=1}^{\ell}(-1)^j
+         \left(\sum_i u_i a_i^j\right)C_{\ell-j}(\boldsymbol u)
+\end{equation}
+follows by differentiating \eqref{asj:eq:Cdef} with respect to $z$ and
+is convenient for multiple factors. The verification code tests it
+against the independent binomial product \eqref{asj:eq:Cpoch}.
+
+The radius $|a|<\lambda_*$ is a convergence condition for this particular
+Taylor series, not a singularity of the first-jet Gamma representation at
+positive $a$. For larger shifts use the finite-head version of the transfer
+theorem, or use \eqref{asj:eq:firstjet} and its derivatives. Confusing a
+convergent expansion's radius with the full identity's domain would
+unnecessarily discard most positive shifts.

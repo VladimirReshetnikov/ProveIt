@@ -1,0 +1,188 @@
+\section{A classical-polylogarithm generator for every pair}
+\label{tail:generator-section}
+
+The finite formula of Theorem~\ref{tail:all-moments} can be summed
+at every moment order. This yields an analytic identity, as opposed
+to a merely formal generating series.
+
+For integers \(a\ge2\) and \(b\ge1\), define
+\begin{equation}\label{tail:I}
+ I_{a,b}(t)=\int_0^t u^a(t-u)^b\coth(u/2)\,\dd u.
+\end{equation}
+Inside \(|t|<2\pi\), use the straight segment from zero to \(t\).
+The integrand has a removable zero-endpoint singularity, and the
+integral is unambiguous there. Define the finite polynomial
+\begin{equation}\label{tail:P}
+ P_{p,q}(t)=\sum_{\substack{1\le d<q\\d\ {
+ \rm odd}}}
+ \left\{\zeta(p,q-d)+\frac12\zeta(W-d)\right\}
+                        \frac{t^{d-1}}{d!}.
+\end{equation}
+Every double zeta in this polynomial is eliminated by
+\eqref{tail:Euler-reduction} or \eqref{tail:Euler-boundary}.
+
+\begin{theorem}[All-pair analytic moment generator]
+\label{tail:generator}
+For even \(p,q\ge2\), the series
+\[
+ G_{p,q}(t)=\sum_{r=0}^{\infty}
+           D_{p,q}(-2r)\frac{t^{2r}}{(2r)!}
+\]
+converges in \(|t|<2\pi\). In that disk it is the even holomorphic
+function
+\begin{equation}\label{tail:generator-formula}
+ \boxed{
+ G_{p,q}(t)=\frac{t}{2\sinh(t/2)}
+             \{F_{p,q}(t)+F_{q,p}(t)\},}
+\end{equation}
+where all singularities at zero are removable and
+\begin{align}\label{tail:F}
+ F_{p,q}(t)={}&P_{p,q}(t)\notag\\
+ &+\sum_{h=1}^{p/2-1}
+   \frac{\zeta(p-2h)}{2t(2h)!(q-1)!}
+       I_{2h,q-1}(t)
+  -\frac{I_{p,q-1}(t)}{4t p!(q-1)!}.
+\end{align}
+For real \(0<t<2\pi\), the expression in braces has a finite
+form using only rational functions of \(t\), ordinary zeta values,
+and \(\operatorname{Li}_k(e^{-t})\) for \(2\le k\le p+q\).
+The full generator includes the displayed elementary prefactor
+\(t/(2\sinh(t/2))\).
+The integral formula fixes its holomorphic continuation at zero.
+\end{theorem}
+
+\begin{proof}
+The Bernoulli convolution in \eqref{tail:moment-formula} is
+equivalent formally to
+\begin{equation}\label{tail:block-generator}
+ G_{p,q}(t)=\frac{t}{2\sinh(t/2)}
+           \sum_{\substack{d\ge1\\d\ {\rm odd}}}
+                        C_{p,q}(d)\frac{t^{d-1}}{d!}.
+\end{equation}
+We show that the last series converges in the stated disk and
+equals \(F_{p,q}+F_{q,p}\).
+
+Write
+\[
+ E(u)=\frac u2\coth(u/2)
+     =\sum_{k\ge0}\frac{B_{2k}}{(2k)!}u^{2k},
+ \qquad |u|<2\pi.
+\]
+The terms with \(d<q\) in the ordered block are exactly
+\(P_{p,q}\). For each fixed \(1\le h\le p/2-1\), put
+\(d=q+2h-1+2k\). Its remaining Bernoulli contribution is
+\[
+ \frac{\zeta(p-2h)}{(2h)!}
+ \sum_{k\ge0}\frac{(2h+2k-1)!}{(q+2h+2k-1)!}
+            \frac{B_{2k}}{(2k)!}t^{q+2h+2k-2}.
+\]
+Euler's beta integral transforms this normally convergent series
+into
+\[
+ \frac{\zeta(p-2h)}{t(2h)!(q-1)!}
+       \int_0^t u^{2h-1}(t-u)^{q-1}E(u)\,\dd u
+   =\frac{\zeta(p-2h)I_{2h,q-1}(t)}
+          {2t(2h)!(q-1)!}.
+\]
+For the first binomial term in \(R_{p,q}(d)\), set
+\(d=W-1+2k\). Its series is
+\[
+ -\frac1{2p!}\sum_{k\ge0}
+    \frac{(p+2k-1)!}{(W+2k-1)!}
+         \frac{B_{2k}}{(2k)!}t^{W+2k-2},
+\]
+which the same beta integral turns into
+\(-I_{p,q-1}(t)/(4t p!(q-1)!)\). The second term is the
+same expression with \(p,q\) exchanged. This proves
+\eqref{tail:F} and \eqref{tail:generator-formula}.
+
+All power-series integrations above are normal on compact subsets
+of \(|t|<2\pi\). The prefactor \(t/(2\sinh(t/2))\) is
+holomorphic there, including at zero. The resulting function is
+even: this follows from its Taylor construction, or by substituting
+\(u=tv\) in each integral. Thus
+\eqref{tail:block-generator} is the Taylor series of an even
+holomorphic function, proving the claimed convergence.
+
+Finally, write \(\coth(u/2)=1+2/(e^u-1)\) and expand the
+polynomial \((t-u)^b\). For \(t>0\), elementary integration
+gives
+\begin{align}\label{tail:finite-Li}
+ I_{a,b}(t)={}&\frac{a!b!}{(a+b+1)!}t^{a+b+1}\notag\\
+ &+2\sum_{\ell=0}^{b}(-1)^\ell\binom b\ell
+                     t^{b-\ell}J_{a+\ell}(t),\notag\\
+ J_m(t)={}&m!\left\{\zeta(m+1)
+       -\sum_{j=0}^{m}\frac{t^j}{j!}
+                  \operatorname{Li}_{m+1-j}(e^{-t})\right\}.
+\end{align}
+One proof expands \((e^u-1)^{-1}\) into its positive exponential
+series and integrates each term. Since \(m\ge2\), the
+integrals are absolutely convergent. The coefficient of
+\(\operatorname{Li}_1(e^{-t})\) in the first two lines is
+proportional to \(\sum_{\ell=0}^{b}(-1)^\ell\binom b\ell=0\).
+The largest remaining polylogarithm order is
+\(a+b+1\le p+q\). This proves the last assertion.
+\end{proof}
+
+\subsection{An explicit \texorpdfstring{$\operatorname{Li}_2$--$\operatorname{Li}_6$}{Li2--Li6} identity}
+
+For \((p,q)=(2,4)\), the general generator becomes
+\begin{align}\label{tail:24-integral-generator}
+ G_{2,4}(t)=\frac{t}{2\sinh(t/2)}\bigg\{
+ &\frac{15}{2}\zeta(5)-3\zeta(2)\zeta(3)
+       +\frac{t^2}{4}\zeta(3)
+       +\frac{\zeta(2)}{4t}I_{2,1}(t)\notag\\
+ &-\frac{I_{4,1}(t)}{96t}
+       -\frac{I_{2,3}(t)}{48t}\bigg\}.
+\end{align}
+Put \(L_k(t)=\operatorname{Li}_k(e^{-t})\). An entirely explicit
+version, valid for real \(0<t<2\pi\), is
+\begin{equation}\label{tail:24-Li-generator}
+ G_{2,4}(t)=\frac{t}{2\sinh(t/2)}\,\mathcal L_{2,4}(t),
+\end{equation}
+where
+\begin{align}\label{tail:24-Li-body}
+ \mathcal L_{2,4}(t)={}&4\zeta(5)-2\zeta(2)\zeta(3)
+       +\frac{t^2}{6}\zeta(3)+\frac{3t}{4}\zeta(4)
+       +\frac{t^3}{48}\zeta(2)-\frac{t^5}{1440}\notag\\
+ &+\left(\frac{t}{2}\zeta(2)-\frac{t^3}{48}\right)L_2(t)
+       +\left(2\zeta(2)-\frac{t^2}{6}\right)L_3(t)\notag\\
+ &-tL_4(t)-4L_5(t)
+       +\frac{3\zeta(2)}{t}\{L_4(t)-\zeta(4)\}
+       +\frac{15}{2t}\{\zeta(6)-L_6(t)\}.
+\end{align}
+Although individual polylogarithms have logarithmic expansions at
+zero, their specified combination is even and holomorphic there.
+Equation~\eqref{tail:24-integral-generator}, rather than a separate
+choice of logarithm for each term, provides the continuation. The
+coefficient of \(t^{2r}/(2r)!\) is exactly the all-order moment in
+\eqref{tail:moment-formula} and \eqref{tail:24-blocks}.
+
+\subsection{Scope and next exact questions}
+
+The two-tail problem is closed by a finite Bernoulli formula,
+ordinary-zeta elimination, and a convergent classical-polylogarithm
+generator. The next questions are structurally different.
+
+\begin{enumerate}
+\item For four even tails, determine the smallest useful
+multiple-zeta coordinate space uniform in the centered moment
+order. Finite summation by parts still lowers the number of tails,
+but higher-depth constants can enter. A two-tail calculation does
+not prove their elimination.
+\item Determine exact first spectral derivatives at the regular
+points \(s=-2r\). These contain logarithmically weighted remainder
+sums in addition to local Bernoulli data. The value theorem alone
+does not reduce those global contributions.
+\item Introduce rational inner shifts while retaining a matched
+center for the outer weight. Identify the resulting finite
+colored Euler-sum coordinates and the precise analogues of the
+classical-polylogarithm generator.
+\item For fixed \(p,q\), find optimal finite generating sets of
+the actual moment sequence. Corollary~\ref{tail:fixed-space}
+provides at most \(\max\{p,q\}\) explicit coordinates, and
+\((2,4)\) has an exact four-moment generator. Arithmetic
+independence of a proposed minimal set must be distinguished from
+the rank of its rational coefficient matrix.
+\end{enumerate}
+

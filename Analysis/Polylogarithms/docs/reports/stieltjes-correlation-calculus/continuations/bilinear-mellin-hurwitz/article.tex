@@ -1,0 +1,96 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm,mathrsfs}
+\usepackage{microtype,booktabs,longtable,array,enumitem,xcolor,xurl,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,urlcolor=blue!40!black]{hyperref}
+\usepackage{bookmark}
+\setlength{\emergencystretch}{3em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\CT}{CT}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\bmhC}{\mathcal C}
+\newcommand{\bmhK}{\mathcal K}
+\newcommand{\bmhH}{\mathcal H}
+\newcommand{\bmhM}{\mathcal M}
+\newcommand{\src}[1]{{\small\nolinkurl{#1}}}
+\newcommand{\zetad}{\zeta}
+\newcommand{\sh}{\mathbin{\amalg}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Bilinear Mellin--Hurwitz calculus}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\title{\bfseries Bilinear Mellin--Hurwitz Calculus\\[5pt]
+\large Double-zeta reductions, harmonic moments,\\and Stieltjes reciprocity}
+\author{Research continuation prepared for the ProveIt project\\
+\small Mathematical derivations and reproducible checks with OpenAI assistance}
+\date{10 October 2026}
+\hypersetup{pdftitle={Bilinear Mellin-Hurwitz Calculus},pdfauthor={Research continuation for the ProveIt project}}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+We develop an exact calculus for products of polylogarithms under rational
+Mellin kernels. For positive integer orders $m,n$, the transform
+$\int_0^\infty x^{a-1}\Li_m(-x)\Li_n(-x)/(1+x)\dd x$ is reduced to a finite
+combination of common-shift double Hurwitz zeta functions. Connected
+combinations remove the divergent leading-index-one coordinates and make
+both resonances $a=0,-1$ explicit. At $a=0$ we obtain an all-weight formula
+using only ordinary and double zeta values, together with every logarithmic
+moment. A terminating Laurent-kernel recurrence evaluates all admissible
+integer Mellin parameters and denominator orders; its elementary base
+cases are Gamma derivatives and Bell polynomials in generalized harmonic
+numbers. A separate inversion argument reduces the odd-parity central
+moments to ordinary zeta data and gives bilinear identities for every
+polylogarithm order derivative at one in terms of generalized Stieltjes
+constants. We also give explicit iterated-integral primitives, a weighted
+multiple-zeta reduction, and a constructive multiscale closure theorem.
+The latter settles the positive-integer-order finite-closure part of a
+specific research question in the repository; arbitrary spectral orders
+and arithmetic minimal depth remain separate questions. Full analytic
+proofs, finite exact verification, numerical diagnostics, and integration
+notes are supplied. Historical priority beyond the examined sources is
+not asserted.
+\end{abstract}
+\vfill
+\noindent\small\textbf{Source scope.} The continuation targets the Mellin--Lerch
+report and the canonical Polylogarithms manuscript. The source pin is
+\src{b1df802799851c62a860570c3ac78ee31b9f5c04}; the precise inspected files,
+unchanged research-question blob, and limitations of the incoming-archive
+inspection are recorded in Section~\ref{bmh:sec:scope} and the delivery notes.
+\clearpage
+\tableofcontents
+\clearpage
+\input{sections/01-scope}
+\input{sections/02-closure}
+\input{sections/03-master}
+\input{sections/04-resonances}
+\input{sections/05-kernels}
+\input{sections/06-words}
+\input{sections/07-reciprocity}
+\input{sections/08-stieltjes}
+\input{sections/09-audit-research}
+\appendix
+\input{sections/10-verification}
+\input{references}
+\end{document}

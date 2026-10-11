@@ -1,0 +1,111 @@
+\section{Scope, provenance, and conventions}
+\label{sec:scope}
+
+The starting point is the ProveIt repository at revision
+\begin{center}
+\texttt{c2cb285b64273e4cb2c8d7a03c68a4a99ac812d4}.
+\end{center}
+The source inventory under
+\src{Analysis/Polylogarithms/docs/manuscript} and all nine ZIP reports
+present under \src{docs/incoming} at that revision were retrieved.
+Selected canonical manuscript sections were read alongside the reports.
+The focused reading concerned the integration, harmonic, reflection,
+Stieltjes contact, and Tornheim sections. This is a continuation of those
+parts, not a claim to have audited every proof in the four-volume project.
+The accompanying \src{SOURCE_AUDIT.md} identifies the relevant files and
+the exact boundary between inherited results and the present extensions.
+
+The latest incoming reports matter mathematically. They already prove
+the cubic digamma--harmonic bridge, the independent cubic Tornheim
+formula, the polynomial reflected Stieltjes closure, and several
+all-depth spectral completion results. Repeating any of these as a new
+theorem would misrepresent the state of the project. The questions
+continued here are more specific:
+\begin{enumerate}
+\item The nonpolynomial reflected generator requested in Q8 of
+\emph{Exact Resonant Identities} \cite{RepoExact}.
+\item The necessary and sufficient centered cancellation criterion for
+generalized harmonic polynomials requested in Q11 of the same report.
+\item Simultaneous and hierarchical geometric collisions beyond the
+two-factor case, asked for in the periodic contact reports
+\cite{RepoPeriodic,RepoMixed}.
+\item The quartic directional layer and its cancellation map, requested
+in \emph{Independent Orders and Exact Reductions}, Section 7,
+and the cubic harmonic report \cite{RepoIndependent,RepoCubic}.
+\end{enumerate}
+
+These were posed as research questions. We do not recast them as named
+classical conjectures. The results below resolve the stated analytic and
+formal-algebraic components; the arithmetic reduction of the retained
+constants is a separate problem.
+
+\subsection{Basic functions and the meaning of a derivative}
+
+We use
+\[
+ \zeta(s,a)=\sum_{n=0}^{\infty}(n+a)^{-s},\qquad
+ \Li_s(z)=\sum_{n=1}^{\infty}\frac{z^n}{n^s}
+\]
+in their initial convergence domains, followed by the explicitly stated
+analytic continuation. The generalized Stieltjes functions are defined by
+\begin{equation}\label{scope:stieltjes}
+ \zeta(1+u,x)=\frac1u+
+       \sum_{m=0}^{\infty}\frac{(-1)^m}{m!}\gamma_m(x)u^m.
+\end{equation}
+In particular $\gamma_0(x)=-\psi(x)$, where
+$\psi=\Gamma'/\Gamma$. Write $\gamma=\gamma_0(1)$ and
+$\gamma_m=\gamma_m(1)$. A prime on $\psi$ or $\gamma_m$ means an
+argument derivative. A superscript $\zeta^{(j)}(s)$ means an order
+derivative of the Riemann zeta function. Multivariable subscripts on
+the Tornheim remainder mean partial derivatives, always evaluated at
+the point specified. These distinctions are essential at a spectral pole.
+
+The generalized harmonic numbers are
+\[
+ H_n^{(r)}=\sum_{k=1}^n k^{-r},\qquad H_n=H_n^{(1)}.
+\]
+All powers of positive real variables use the real logarithm. Thus, for
+complex $\lambda$, the expression $(\sin(\pi x)/\pi)^{2\lambda}$
+on $0<x<1$ is unambiguous. Meromorphic identities are continued from
+a nonempty open convergence domain; a value at a crossing of polar
+divisors is never assigned by informal substitution.
+
+\subsection{Coordinate finite parts}
+
+For an endpoint expansion in real powers and integral logarithmic powers,
+the unit-coordinate finite part is the coefficient independent of both
+$\epsilon$ and $\log\epsilon$ in the cutoff integral. On the unit interval,
+\begin{equation}\label{scope:FP}
+ \FP\int_0^1 f(x)\dd x
+   =\CT_{\epsilon\downarrow0}\int_\epsilon^{1-\epsilon}f(x)\dd x.
+\end{equation}
+The coordinates are $x$ at zero and $1-x$ at one. Independent endpoint
+cutoffs give the same additive constant. For example,
+\[
+ \FP\int_0^1x^{-1}\log^j x\dd x=0,\qquad
+ \FP\int_0^1x^{-r}\dd x=\frac1{1-r}\quad(r\ne1).
+\]
+At periodic seams, the same convention is applied on each side in the
+unit argument coordinate. Geometric collision constants are then taken
+in a second parameter after this first finite part has been formed.
+The two operations can differ from first merging the factors.
+
+All coefficient extractions below are from a germ proved holomorphic
+after its full prescribed subtraction. Numerical quadrature is used
+only to test identities already supplied with proofs. Exact finite
+linear algebra establishes a statement about its specified relation
+space, not arithmetic independence of the associated periods.
+
+\subsection{Relation to the literature}
+
+Hurwitz Fourier transforms, Beta and Gamma identities, and their
+applications to logarithmic integrals are classical
+\cite{DLMFHurwitz,DLMFBeta,EspinosaMoll}. Harmonic Stieltjes constants
+and log-sine connections were studied before this project
+\cite{Kargin,Can}. The Mellin continuation and Euler boundary relations
+for Tornheim zeta are likewise established tools \cite{BorweinDilcher}.
+The contributions claimed here are the particular completed generators,
+the exact all-polynomial criterion, the explicit cluster subtraction,
+and the higher directional reconstruction proved below. The source
+search was focused; it does not establish worldwide priority for every
+displayed specialization.

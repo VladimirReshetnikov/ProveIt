@@ -1,0 +1,1551 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage{enumitem,fancyhdr,xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{pdftitle={Vertical-Line Hurwitz Pairings and Exact Stieltjes--Gamma Calculus},pdfauthor={ProveIt research continuation},pdfsubject={Exact identities, rational vertical dilations, compensated Stieltjes functions, and Gamma primitives}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Vertical-line Hurwitz pairings}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}{Research question}
+\numberwithin{equation}{section}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\CT}{\operatorname{CT}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\bpair}[2]{\mathcal V\!\left[#1,#2\right]}
+\newcommand{\coeff}[2]{\left[#1\right]#2}
+\newcommand{\sourcepath}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\pkg}{\texttt{ProveIt\_Vertical\_Stieltjes\_Pairings\_2026-10-10}}
+\allowdisplaybreaks[2]
+\setlength{\emergencystretch}{2em}
+\setlist[enumerate]{leftmargin=*,itemsep=4pt,topsep=5pt}
+\setcounter{tocdepth}{1}
+\title{\vspace{-12mm}\textbf{Vertical-Line Hurwitz Pairings\\and Exact Stieltjes--Gamma Calculus}\\[3mm]
+\large Rational dilations, Bernoulli compensation,\\polylogarithm identities, and normalized primitives}
+\author{Research continuation for Vladimir Reshetnikov's ProveIt project}
+\date{10 October 2026 \quad\textbullet\quad Version 1.0}
+\begin{document}
+\maketitle
+\begin{abstract}
+We study ordinary, absolutely convergent bilinear integrals in which the
+\emph{argument} of a Hurwitz zeta function moves along a vertical line.
+Subtracting its spatial principal term produces a Laplace kernel whose
+products close in a finite alphabet of Hurwitz zeta functions. Differentiation
+at the spectral pole yields an arbitrary-index pairing formula for the
+compensated Stieltjes functions
+$\gamma_m(z)+\log^{m+1}z/(m+1)$. A finite Bernoulli-subtraction calculus extends
+this closure to negative spectral orders and to normalized antiderivatives
+of the Stirling remainder. Rationally related vertical scales admit a finite
+residue-grid reduction; we give an explicit all-order coefficient formula,
+not merely a meromorphic prescription. Additional identities couple these
+families to finite generalized harmonic sums, polygamma functions, Lerch
+transcendents, and polylogarithm order derivatives. Three illustrative
+specializations evaluate a compensated digamma norm, a Stirling-remainder
+norm, and a two-scale pairing containing $\log\Gamma(1/4)$.
+All general identities are proved by Laplace--Plancherel, finite kernel
+algebra, and holomorphic continuation. Reproducible symbolic and numerical
+checks are separated from those proofs. A concrete nonreal-argument failure
+of the installed mpmath 1.3.0 Stieltjes routine is documented and avoided by
+an independent Cauchy-coefficient calculation. No claim of an exhaustive
+literature audit, proof-assistant verification, or resolution of the
+repository's $S_6$ and revised $S_8$ conjectures is made.
+\end{abstract}
+\tableofcontents
+\clearpage
+\section{Scope, relation to the repository, and principal results}
+\label{sec:scope}
+
+The canonical manuscript in \cite{repo} already develops a substantial
+periodic Hurwitz--Stieltjes convolution calculus. In particular, its
+Fourier-normalized family on $\R/\mathbb Z$ leads to shifted correlations,
+finite parts, coincident limits, contact terms, and primitive ladders.
+Repeating those formulas under new notation would not advance that program.
+Here the integration variable is instead the imaginary part of the
+\emph{second} Hurwitz argument:
+\begin{equation}\label{eq:vertical-scope}
+ \frac1{2\pi}\int_{-\infty}^{\infty}
+       f(a+\ii y)g(b-\ii y)\dd y,
+ \qquad \Rea a,\Rea b>0.
+\end{equation}
+This is neither an integral in the spectral variable $s=\sigma+\ii y$ nor
+a periodic correlation on $[0,1]$. It requires a different subtraction,
+a different transform, and different convergence hypotheses. The auxiliary
+Hurwitz products over $[0,1]$ studied in \cite{shpot2016,shpot-paris} also
+have a different integration geometry and use a different auxiliary
+function. Our starting transform identities are classical; the contribution
+of this note is the explicit, jointly proved closure calculus and its
+specializations. We do not assert priority for every displayed identity.
+
+Set
+\begin{equation}\label{eq:Z-definition-intro}
+ Z_s(z)=\zeta(s,z)-\frac{z^{1-s}}{s-1},
+ \qquad
+ G_m(z)=\gamma_m(z)+\frac{\log^{m+1}z}{m+1}.
+\end{equation}
+The value at $s=1$ is removable, and $G_0(z)=\log z-\psi(z)$.
+The main equal-scale theorem evaluates \eqref{eq:vertical-scope} for
+$f=Z_s$, $g=Z_t$ by a one-variable function $K(s+t-1,a+b)$.
+Its all-order Taylor coefficients then evaluate every pairing of $G_m$
+and $G_n$. Finite Bernoulli subtractions give the same conclusion for
+negative spectral orders. Rational vertical dilations introduce only a
+finite set of shifted Hurwitz arguments, rather than an irreducible double
+zeta object.
+
+Three consequences indicate the scale and normalization of the results.
+Define the analytic Stirling remainder in the right half-plane by
+\begin{equation}\label{eq:Omega-intro}
+ \Omega(z)=\log\Gamma(z)-(z-\tfrac12)\log z+z-\tfrac12\log(2\pi).
+\end{equation}
+Then
+\begin{align}
+ \frac1{2\pi}\int_{\R}
+   |G_0(\tfrac12+\ii y)|^2\dd y
+   &=\log(2\pi)-\frac32,\label{eq:headline-digamma}\\
+ \frac1{2\pi}\int_{\R}
+   |\Omega(\tfrac12+\ii y)|^2\dd y
+   &=\zeta'(-1)+\frac{\zeta(3)}{2\pi^2}+\frac19,
+       \label{eq:headline-stirling}\\
+ \frac1{2\pi}\int_{\R}
+    G_0(\tfrac12+\ii y)G_0(\tfrac12-2\ii y)\dd y
+   &=\log\Gamma(\tfrac14)-\tfrac12\log\pi-\tfrac14\log2
+       \notag\\[-1mm]
+   &\hspace{9mm}+\tfrac34\log3-\tfrac34-\tfrac\pi8.
+       \label{eq:headline-quarter}
+\end{align}
+Their right-hand sides are approximately $0.33787706640934548$,
+$0.0065868815274467235$, and $0.22363092143574916$, respectively.
+These numerical values are diagnostics; the proofs appear below.
+
+\subsection{What is and is not resolved}
+The questions answered here are precise: whether spatially compensated
+vertical Stieltjes pairings close at arbitrary indices; whether negative
+spectral orders can be handled without assigning finite parts to the
+vertical integral; and whether rationally related slopes preserve finite
+Hurwitz closure. The answer to each is affirmative, with explicit formulas
+and proofs. These are newly developed continuations in this package, not a
+claim that a named conjecture in an unread incoming archive has been solved.
+The repository's $S_6$ and revised $S_8$ problems are not settled here.
+
+The audit was targeted. The canonical README, the periodic convolution
+foundation, a terminal rational-reduction section, the incoming README,
+and incoming metadata were inspected. Not every recent ZIP was decoded or
+audited. Thus absence of a formula from these inspected sections is not a
+proof of absence from the entire corpus. The package includes an integration
+map and a source inventory so that an independent maintainer can perform
+that final overlap check.
+
+\subsection{Conventions that affect the answer}
+Throughout, $\log z$ is the principal logarithm on $\Rea z>0$.
+The function $\log\Gamma(z)$ means its analytic logarithm, real on the
+positive real axis; it does \emph{not} mean the pointwise principal value
+of $\log(\Gamma(z))$. A prime on $\zeta$ or $\Phi$ denotes differentiation
+in the spectral order, unless a different variable is explicitly indicated.
+We use
+\begin{equation}\label{eq:laurent-convention}
+ \zeta(1+u,z)=\frac1u+
+      \sum_{m\ge0}\frac{(-1)^m}{m!}\gamma_m(z)u^m.
+\end{equation}
+All the vertical integrals asserted as theorems are ordinary absolutely
+convergent Lebesgue integrals. The words ``constant term'' and ``removable
+value'' used later refer to a finite \emph{spectral expression}, not to a
+regularization of a divergent integral in $y$.
+
+\section{Laplace--Plancherel and the basic Hurwitz closure}
+\label{sec:laplace}
+
+\subsection{A bilinear transform lemma}
+For a function supported on $(0,\infty)$ use the Fourier convention
+$\widehat f(y)=\int_0^\infty f(x)e^{-\ii yx}\dd x$.
+The following version of Plancherel fixes every scale factor needed later.
+
+\begin{lemma}[Bilinear Laplace--Plancherel]\label{thm:plancherel}
+Suppose $f,g\in L^1(0,\infty)\cap L^2(0,\infty)$. Then
+\begin{equation}\label{eq:bilinear-plancherel}
+ \frac1{2\pi}\int_{\R}\widehat f(y)\widehat g(-y)\dd y
+     =\int_0^\infty f(x)g(x)\dd x.
+\end{equation}
+Both products are absolutely integrable. For $p,q>0$,
+\begin{equation}\label{eq:scaled-plancherel}
+ \frac1{2\pi}\int_{\R}\widehat f(py)\widehat g(-qy)\dd y
+     =\int_0^\infty f(qx)g(px)\dd x.
+\end{equation}
+If $f$ and $g$ depend holomorphically on parameters as $L^2$ vectors, all
+parameter derivatives can be taken inside the bilinear pairing.
+\end{lemma}
+\begin{proof}
+Apply the usual Hermitian Plancherel identity to $f$ and $\overline g$,
+noting that $\overline{\widehat{\overline g}(y)}=\widehat g(-y)$.
+Cauchy--Schwarz gives absolute integrability. For the scaled formula,
+$\widehat f(py)$ is the Fourier transform of $p^{-1}f(x/p)$.
+Equation~\eqref{eq:bilinear-plancherel} therefore gives
+$(pq)^{-1}\int_0^\infty f(x/p)g(x/q)\dd x$; substitute $x=pqu$.
+Finally, the bilinear map $(f,g)\mapsto\int fg$ is continuous on
+$L^2\times L^2$. Its composition with holomorphic vector-valued maps is
+holomorphic and satisfies the usual product rule.
+\end{proof}
+
+\subsection{Spatial compensation}
+Write
+\begin{equation}\label{eq:h-basic}
+ Q(x)=\frac1{1-e^{-x}},\qquad h(x)=Q(x)-\frac1x.
+\end{equation}
+At the origin, $h(x)=\frac12+\frac{x}{12}+O(x^3)$; at infinity it has at
+most polynomial growth. The standard Mellin representation of the Hurwitz
+zeta function \cite{dlmf-zeta}, after subtracting the elementary Laplace
+transform of $x^{s-2}$, gives
+\begin{equation}\label{eq:Z-laplace}
+ Z_s(z)=\frac1{\Gamma(s)}\int_0^\infty
+            x^{s-1}e^{-zx}h(x)\dd x,
+ \qquad \Rea s>0,\quad \Rea z>0.
+\end{equation}
+Initially one can subtract the two integrals for $\Rea s>1$.
+The combined integrand is integrable for $\Rea s>0$ and is locally
+uniformly dominated there, which proves the continuation. In particular,
+the normalized subtraction is spatial: removing only $1/(s-1)$ would
+not produce \eqref{eq:Z-laplace}.
+
+For $\Rea s>1/2$, the function $x^{s-1}e^{-ax}h(x)$ lies in
+$L^1\cap L^2$. On each compact subset of this parameter region, every
+fixed spectral derivative merely adds a power of $\log x$, which is still
+locally dominated by an integrable power at zero and an exponential at
+infinity. This verifies the holomorphic-vector hypothesis of
+\cref{thm:plancherel}; it will justify all subsequent Stieltjes jet
+extractions without a separate unjustified interchange at each order.
+
+\begin{theorem}[Equal-scale compensated Hurwitz pairing]\label{thm:basic}
+Let $\Rea a,\Rea b>0$ and $\Rea s,\Rea t>1/2$. Put
+$A=a+b$ and $w=s+t-1$. Then
+\begin{equation}\label{eq:basic-pair}
+ \frac1{2\pi}\int_{\R}Z_s(a+\ii y)Z_t(b-\ii y)\dd y
+   =\frac{\Gamma(w)}{\Gamma(s)\Gamma(t)}K(w,A),
+\end{equation}
+where
+\begin{equation}\label{eq:K}
+ \boxed{\displaystyle
+ K(w,A)=\left(1-\frac2{w-1}\right)\zeta(w-1,A)
+ +(1-A)\zeta(w,A)
+ +\frac{A^{2-w}}{(w-1)(w-2)}.}
+\end{equation}
+The apparent singularities at $w=1,2$ are removable. The combined function
+$\Gamma(w)K(w,A)$ is holomorphic for $\Rea w>0$ and $\Rea A>0$.
+\end{theorem}
+\begin{proof}
+By \eqref{eq:Z-laplace} and \cref{thm:plancherel}, the integral equals
+\begin{equation}\label{eq:basic-moment}
+ \frac1{\Gamma(s)\Gamma(t)}
+   \int_0^\infty x^{w-1}e^{-Ax}h(x)^2\dd x.
+\end{equation}
+For $\Rea w>2$, expand $h^2=Q^2-2Q/x+x^{-2}$.
+The exact power series
+\[
+ Q(x)^2=\sum_{n\ge0}(n+1)e^{-nx}
+\]
+yields
+\[
+ \int_0^\infty x^{w-1}e^{-Ax}Q(x)^2\dd x
+ =\Gamma(w)\{\zeta(w-1,A)+(1-A)\zeta(w,A)\},
+\]
+because $n+1=(n+A)+(1-A)$. The other two integrals are
+$-2\Gamma(w-1)\zeta(w-1,A)$ and $\Gamma(w-2)A^{2-w}$.
+Using the Gamma recurrence gives \eqref{eq:K}.
+The combined integral \eqref{eq:basic-moment} is holomorphic for
+$\Rea w>0$, since $h^2=1/4+O(x)$ at zero. The identity theorem extends
+the finite expression to that half-plane and removes its apparent poles.
+\end{proof}
+
+The pole cancellation can also be checked directly. At $w=1$ the residue
+is
+\[
+ -2\zeta(0,A)+(1-A)-A=0,
+ \qquad \zeta(0,A)=\tfrac12-A.
+\]
+At $w=2$, the residue $-1$ from the first zeta term cancels the residue
+$+1$ from the elementary term. Neither cancellation is a license to
+substitute separately into the singular summands.
+
+\begin{corollary}[An exact compensated digamma integral]\label{thm:digamma}
+For $\Rea a,\Rea b>0$ and $A=a+b$,
+\begin{align}
+ &\frac1{2\pi}\int_{\R}
+ [\log(a+\ii y)-\psi(a+\ii y)]
+ [\log(b-\ii y)-\psi(b-\ii y)]\dd y \notag\\
+ &\hspace{8mm}=
+ \frac12-2A+A\log A-2\log\Gamma(A)+\log(2\pi)
+       -(1-A)\psi(A).\label{eq:digamma-pair}
+\end{align}
+\end{corollary}
+\begin{proof}
+The constant term of \eqref{eq:K} at $w=1$ is
+\[
+ \zeta(0,A)-2\zeta'(0,A)+(1-A)\gamma_0(A)+A(\log A-1).
+\]
+Use $\gamma_0=-\psi$ and
+$\zeta'(0,A)=\log\Gamma(A)-\frac12\log(2\pi)$
+\cite{dlmf-zeta}. Formula~\eqref{eq:headline-digamma} follows at $A=1$.
+\end{proof}
+
+\subsection{Position derivatives}
+Direct differentiation gives the exact ladder
+\begin{equation}\label{eq:Z-position-ladder}
+ \partial_z Z_s(z)=-sZ_{s+1}(z),\qquad
+ \partial_z^r Z_s(z)=(-1)^r(s)_r Z_{s+r}(z).
+\end{equation}
+Consequently, for integers $r,k\ge0$, differentiating
+\eqref{eq:basic-pair} in $a$ and $b$ gives
+\begin{align}
+ &\frac1{2\pi}\int_{\R}
+    (\partial_z^r Z_s)(a+\ii y)(\partial_z^k Z_t)(b-\ii y)\dd y
+       \notag\\
+ &\quad=\partial_A^{r+k}
+       \frac{\Gamma(w)K(w,A)}{\Gamma(s)\Gamma(t)}
+   =\frac{(-1)^{r+k}\Gamma(w+r+k)}{\Gamma(s)\Gamma(t)}
+                K(w+r+k,A).\label{eq:position-pair}
+\end{align}
+The last equality follows by differentiating the Laplace moment, and is
+valid at all its removable spectral values. Thus the differentiation
+calculus closes without introducing a second independent position
+parameter. Spectral differentiation of this identity gives the same result
+for derivatives of arbitrary $G_m$.
+
+\section{Arbitrary-index Stieltjes pairings}
+\label{sec:stieltjes}
+
+\subsection{The complete coefficient theorem}
+Expansion of the subtracted term in \eqref{eq:Z-definition-intro} gives
+\begin{equation}\label{eq:Z-G-expansion}
+ Z_{1+u}(z)=\sum_{m\ge0}\frac{(-1)^m}{m!}G_m(z)u^m.
+\end{equation}
+For $\Rea a,\Rea b>0$, define
+\begin{equation}\label{eq:Imn}
+ I_{m,n}(A)=\frac1{2\pi}\int_{\R}
+            G_m(a+\ii y)G_n(b-\ii y)\dd y,
+ \qquad A=a+b.
+\end{equation}
+The following theorem both proves that this depends only on $A$ and
+specifies a finite answer at every pair of indices.
+
+\begin{theorem}[All-index Stieltjes closure]\label{thm:all-stieltjes}
+For all integers $m,n\ge0$, the integral \eqref{eq:Imn} converges absolutely
+and
+\begin{equation}\label{eq:all-jets}
+ \boxed{\displaystyle
+ I_{m,n}(A)=(-1)^{m+n}m!n!\,[u^mv^n]
+      C(u,v)K(1+u+v,A),}
+\end{equation}
+where
+\begin{align}
+ C(u,v)&=\frac{\Gamma(1+u+v)}{\Gamma(1+u)\Gamma(1+v)},\label{eq:C}\\
+ \log C(u,v)&=\sum_{r\ge2}\frac{(-1)^r\zeta(r)}r
+          \{(u+v)^r-u^r-v^r\}.\label{eq:log-C}
+\end{align}
+Write $K(1+\epsilon,A)=\sum_{\ell\ge0}k_\ell(A)\epsilon^\ell$.
+Its coefficients are
+\begin{align}
+ k_\ell(A)={}&\frac{\zeta^{(\ell)}(0,A)}{\ell!}
+  -\frac{2\zeta^{(\ell+1)}(0,A)}{(\ell+1)!}
+  +(1-A)\frac{(-1)^\ell\gamma_\ell(A)}{\ell!}\notag\\
+ &-A\sum_{j=0}^{\ell+1}\frac{(-\log A)^j}{j!}.
+       \label{eq:k-coefficients}
+\end{align}
+In particular, $I_{m,n}$ belongs to the finite algebra generated by
+$A$, $\log A$, the constants $\zeta(2),\ldots,\zeta(m+n)$,
+$\gamma_\ell(A)$ for $\ell\le m+n$, and
+$\zeta^{(j)}(0,A)$ for $j\le m+n+1$.
+\end{theorem}
+\begin{proof}
+The map $u\mapsto Z_{1+u}(a+\ii y)$ is holomorphic as an $L^2(\R)$ vector
+in a neighborhood of zero, by the estimates preceding \cref{thm:basic}.
+Its derivatives are precisely $(-1)^mG_m$. Hence every $G_m$ belongs to
+$L^2$, and the product in \eqref{eq:Imn} is absolutely integrable.
+Taking the two Taylor coefficients in \eqref{eq:basic-pair} gives
+\eqref{eq:all-jets}. The Taylor expansion of $\log\Gamma(1+u)$ proves
+\eqref{eq:log-C}; its linear Euler-constant terms cancel.
+
+For the explicit coefficients, write
+\[
+ K(1+\epsilon,A)=\left(1-\frac2\epsilon\right)\zeta(\epsilon,A)
+ +(1-A)\zeta(1+\epsilon,A)
+ +\frac{A e^{-\epsilon\log A}}{\epsilon(\epsilon-1)}.
+\]
+The pole coefficient vanishes as already checked. Since
+\[
+ \frac{Ae^{-\epsilon\log A}}{\epsilon(\epsilon-1)}
+ =-A\sum_{r\ge0}\epsilon^{r-1}
+          \sum_{j=0}^r\frac{(-\log A)^j}{j!},
+\]
+its coefficient of $\epsilon^\ell$ is the last term of
+\eqref{eq:k-coefficients}. The other terms follow from the Taylor and
+Laurent series of the two zeta factors. Only total degree at most $m+n$
+of $C$ is used, proving the finite-alphabet assertion.
+\end{proof}
+
+This theorem is an actual finite recipe. If
+$C(u,v)=\sum c_{r,k}u^rv^k$, then equivalently
+\begin{equation}\label{eq:finite-jet-recipe}
+ I_{m,n}(A)=(-1)^{m+n}m!n!
+  \sum_{r=0}^m\sum_{k=0}^n c_{r,k}
+       \binom{m+n-r-k}{m-r}k_{m+n-r-k}(A).
+\end{equation}
+No two-variable special function or undetermined integration constant
+remains. This is a closure statement, not a claim that all its generators
+are algebraically independent or reducible to elementary constants.
+
+\subsection{Low-order identities and a useful degeneration}
+Let $\mu_j(A)=\partial_w^jK(1,A)=j!k_j(A)$. Direct coefficient extraction
+from \eqref{eq:log-C} gives
+\begin{align}
+ I_{0,0}&=\mu_0,&
+ I_{m,0}&=(-1)^m\mu_m,\label{eq:jet-row0}\\
+ I_{1,1}&=\mu_2+\zeta(2)\mu_0,\label{eq:jet11}\\
+ I_{2,1}&=-\mu_3-2\zeta(2)\mu_1+2\zeta(3)\mu_0,\label{eq:jet21}\\
+ I_{3,1}&=\mu_4+3\zeta(2)\mu_2-6\zeta(3)\mu_1
+                   +6\zeta(4)\mu_0,\label{eq:jet31}\\
+ I_{2,2}&=\mu_4+4\zeta(2)\mu_2-8\zeta(3)\mu_1
+                   +\{6\zeta(4)+2\zeta(2)^2\}\mu_0.
+                   \label{eq:jet22}
+\end{align}
+Here and below, every $\mu_j$ in one equation has the same argument $A$.
+For example, the coefficient of $u^2v^2$ in $C$ is
+$\frac32\zeta(4)+\frac12\zeta(2)^2$; the factor $2!2!$ explains the last
+coefficient in \eqref{eq:jet22}. This factorial is easy to lose if ordinary
+and exponential generating functions are mixed.
+
+At $A=1$, the entire explicit Stieltjes term in
+\eqref{eq:k-coefficients} disappears:
+\begin{equation}\label{eq:A-one-degeneration}
+ k_\ell(1)=\frac{\zeta^{(\ell)}(0)}{\ell!}
+          -\frac{2\zeta^{(\ell+1)}(0)}{(\ell+1)!}-1.
+\end{equation}
+Thus every vertical pairing with $a+b=1$ is expressible using Riemann zeta
+order derivatives at zero and ordinary positive zeta values. This does
+not say that the individual Stieltjes functions disappear pointwise;
+the simplification occurs after pairing.
+
+\subsection{A second, kernel-polynomial description}
+Define real-coefficient polynomials $E_m(L)$ by
+\begin{equation}\label{eq:E-generating}
+ \sum_{m\ge0}E_m(L)\frac{v^m}{m!}
+          =\frac{e^{-vL}}{\Gamma(1-v)}.
+\end{equation}
+For example,
+\[
+ E_0=1,\qquad E_1=-(L+\gamma),\qquad
+ E_2=(L+\gamma)^2-\zeta(2).
+\]
+Differentiating \eqref{eq:Z-laplace} gives
+\begin{align}
+ G_m(z)&=\int_0^\infty e^{-zx}h(x)E_m(\log x)\dd x,
+               \label{eq:G-bell-laplace}\\
+ I_{m,n}(A)&=\int_0^\infty e^{-Ax}h(x)^2
+                  E_m(\log x)E_n(\log x)\dd x.
+               \label{eq:Stieltjes-bell-pair}
+\end{align}
+All these differentiations are justified by the same compact-parameter
+bounds used in the proof of \cref{thm:all-stieltjes}.
+Equations~\eqref{eq:all-jets} and \eqref{eq:Stieltjes-bell-pair} provide two
+useful computational routes: the former uses a finite zeta/Stieltjes
+alphabet, while the latter uses one rapidly decaying quadrature with a kernel regular for positive $x$. They are independently implemented in the verification code.
+
+The equal-scale identity also supplies all derivatives in the horizontal
+arguments: one differentiates \eqref{eq:all-jets} in $A$, or inserts powers
+of $-x$ in \eqref{eq:Stieltjes-bell-pair}. No new spectral-order restriction
+arises from a nonnegative number of such derivatives.
+
+\subsection{A complex-safe Hermite identity}
+The generalized Stieltjes parameter must be treated holomorphically, not by
+applying a real-part formula outside its real domain. A useful exact
+representation, valid at every index, is the following.
+
+\begin{proposition}[Holomorphic Hermite representation]\label{thm:complex-Hermite}
+For $\Rea z>0$ and every integer $m\ge0$,
+\begin{align}
+ G_m(z)={}&\frac{\log^m z}{2z}
+  +\ii\int_0^\infty\frac1{e^{2\pi t}-1}
+       \left\{\frac{\log^m(z+\ii t)}{z+\ii t}
+                  -\frac{\log^m(z-\ii t)}{z-\ii t}\right\}\dd t.
+                     \label{eq:complex-Hermite}
+\end{align}
+The integral is absolutely convergent and holomorphic in $z$ throughout
+the right half-plane. For nonreal $z$, neither term may be replaced by
+the complex conjugate of the other.
+\end{proposition}
+\begin{proof}
+The standard Hermite representation of Hurwitz zeta
+\cite{dlmf-zeta}, after subtracting its spatial principal term, is
+\[
+ Z_s(z)=\frac1{2z^s}
+   +\ii\int_0^\infty
+        \frac{(z+\ii t)^{-s}-(z-\ii t)^{-s}}{e^{2\pi t}-1}\dd t.
+\]
+It can equivalently be obtained from \eqref{eq:Z-laplace} using
+$h(x)=1/2+2\int_0^\infty\sin(tx)/(e^{2\pi t}-1)\dd t$.
+The two powers have a difference $O(t)$ at zero, uniformly on compact
+subsets of $s\in\C$, $\Rea z>0$; the denominator also has a simple zero.
+At infinity the exponential denominator dominates all powers and
+logarithms arising from any fixed spectral derivative. Therefore the
+combined integral is jointly holomorphic and may be differentiated in
+$s$ at $s=1$. Multiplying the $m$th derivative by $(-1)^m$ proves
+\eqref{eq:complex-Hermite}. Holomorphic continuation in $z$ from positive
+real values gives the entire right half-plane; the paired expression,
+not a real-part projection, is what makes this continuation legitimate.
+\end{proof}
+
+This representation is classical in origin, but spelling out its paired
+complex form is important for the verification of the present vertical-line
+identities. \Cref{sec:software-audit} records a concrete numerical failure
+when a real-part implementation is used at nonreal $z$, and supplies both
+\eqref{eq:complex-Hermite} and Cauchy-coefficient extraction as repairs.
+
+\section{Polygamma functions and generalized harmonic sums}
+\label{sec:harmonics}
+
+\subsection{Uncompensated polygamma pairings}
+For uncompensated Hurwitz zeta functions, the Laplace kernel $Q(x)$ has a
+simple pole at zero. Consequently, $\Rea s,\Rea t>3/2$ is a sufficient
+$L^2$ region for the same argument to give
+\begin{equation}\label{eq:plain-zeta-pair}
+ \frac1{2\pi}\int_{\R}\zeta(s,a+\ii y)\zeta(t,b-\ii y)\dd y
+ =\frac{\Gamma(w)}{\Gamma(s)\Gamma(t)}
+       \{\zeta(w-1,A)+(1-A)\zeta(w,A)\}.
+\end{equation}
+This follows directly from the $Q^2$ calculation in the proof of
+\cref{thm:basic}; no compensation is needed in this smaller domain.
+Using the standard identity
+$\psi^{(r)}(z)=(-1)^{r+1}r!\zeta(r+1,z)$ gives the following consequence.
+
+\begin{corollary}\label{thm:polygamma}
+For integers $r,k\ge1$, $\Rea a,\Rea b>0$, and $A=a+b$,
+\begin{align}
+ &\frac1{2\pi}\int_{\R}\psi^{(r)}(a+\ii y)
+                                  \psi^{(k)}(b-\ii y)\dd y\notag\\
+ &\quad=(-1)^{r+k}(r+k)!
+      \{\zeta(r+k,A)+(1-A)\zeta(r+k+1,A)\}.\label{eq:polygamma-pair}
+\end{align}
+In particular,
+\begin{equation}\label{eq:polygamma-norm}
+ \frac1{2\pi}\int_{\R}
+       |\psi^{(r)}(\tfrac12+\ii y)|^2\dd y=(2r)!\zeta(2r).
+\end{equation}
+\end{corollary}
+The restriction $r,k\ge1$ matters. Setting both to zero would introduce
+the divergent squared norm of the uncorrected digamma function, not the
+finite value in \eqref{eq:headline-digamma}.
+
+\subsection{Finite generalized harmonic families}
+For a positive integer $N$, define
+\begin{equation}\label{eq:finite-H}
+ \mathcal H_N^{(s)}(z)=\sum_{j=0}^{N-1}(z+j)^{-s}.
+\end{equation}
+At $z=1$ this is the usual generalized harmonic number $H_N^{(s)}$.
+For $\Rea s>0$, it is the Laplace transform with kernel
+$\sum_{j=0}^{N-1}e^{-jx}$, divided by $\Gamma(s)$.
+
+\begin{theorem}[Finite harmonic and mixed pairings]\label{thm:harmonic}
+Let $M,N\ge1$, $\Rea a,\Rea b>0$, $\Rea s,\Rea t>1/2$, and
+$A=a+b$, $w=s+t-1$. Then
+\begin{align}
+ &\frac1{2\pi}\int_{\R}\mathcal H_M^{(s)}(a+\ii y)
+                           \mathcal H_N^{(t)}(b-\ii y)\dd y\notag\\
+ &\qquad=\frac{\Gamma(w)}{\Gamma(s)\Gamma(t)}
+       \sum_{j=0}^{M-1}\sum_{k=0}^{N-1}(A+j+k)^{-w},\label{eq:HH-pair}\\
+ &\frac1{2\pi}\int_{\R}Z_s(a+\ii y)
+                           \mathcal H_N^{(t)}(b-\ii y)\dd y\notag\\
+ &\qquad=\frac{\Gamma(w)}{\Gamma(s)\Gamma(t)}
+                         \sum_{k=0}^{N-1}Z_w(A+k).\label{eq:ZH-pair}
+\end{align}
+The second expression is taken at its removable value if $w=1$.
+Arbitrary spectral and position derivatives are permitted inside both
+identities in the stated domain.
+\end{theorem}
+\begin{proof}
+Multiply the two finite exponential kernels and apply
+\cref{thm:plancherel}. Each exponential term contributes
+$\Gamma(w)(A+j+k)^{-w}$. In the mixed product it contributes
+$\Gamma(w)Z_w(A+k)$ by \eqref{eq:Z-laplace}.
+The kernels are bounded at zero, so the same $L^2$ holomorphy argument
+applies to all derivatives.
+\end{proof}
+
+For $a+b=1$ and $s=t=1$, these become particularly elementary:
+\begin{align}
+ &\frac1{2\pi}\int_{\R}\mathcal H_M^{(1)}(a+\ii y)
+                        \mathcal H_N^{(1)}(b-\ii y)\dd y\notag\\
+ &\quad=(M+N)H_{M+N}-MH_M-NH_N,\label{eq:HH-elementary}\\
+ &\frac1{2\pi}\int_{\R}G_0(a+\ii y)
+                        \mathcal H_N^{(1)}(b-\ii y)\dd y\notag\\
+ &\quad=\log\Gamma(N+1)-NH_N+N(1+\gamma).
+               \label{eq:GH-elementary}
+\end{align}
+Indeed, the first double sum can be summed along its diagonals, and the
+second is $\sum_{k=1}^N(\log k-\psi(k))$.
+Taking spectral derivatives supplies finite sums of
+$\log^r(A+j+k)/(A+j+k)^w$ and corresponding exact mixed identities for
+higher $G_m$, with the same Gamma-quotient coefficient bookkeeping as
+in \cref{sec:stieltjes}.
+
+\section{Lerch products and polylogarithm order derivatives}
+\label{sec:lerch}
+
+Let $\xi$ lie in $\{\xi:|\xi|\le1,\ \xi\ne1\}$. The Lerch transcendent
+has the integral representation \cite{dlmf-lerch}
+\begin{equation}\label{eq:lerch-laplace}
+ \Phi(\xi,s,z)=\frac1{\Gamma(s)}\int_0^\infty
+           \frac{x^{s-1}e^{-zx}}{1-\xi e^{-x}}\dd x,
+ \qquad\Rea s>0,\quad\Rea z>0.
+\end{equation}
+For $|\xi|<1$ this also follows by summing its defining series.
+The kernel is bounded at zero and along the positive real axis. Boundary
+colors $|\xi|=1$, $\xi\ne1$, follow by dominated continuation from inside
+the disk. No assertion here includes the singular color $\xi=1$ without
+the separate compensation already developed.
+
+\begin{theorem}[Colored pairings and confluent colors]\label{thm:lerch}
+Let $\Rea s,\Rea t>1/2$, $\Rea a,\Rea b>0$, and set
+$A=a+b$, $w=s+t-1$. For admissible colors $\xi\ne\eta$,
+\begin{align}
+ &\frac1{2\pi}\int_{\R}\Phi(\xi,s,a+\ii y)
+                             \Phi(\eta,t,b-\ii y)\dd y\notag\\
+ &\quad=\frac{\Gamma(w)}{\Gamma(s)\Gamma(t)}
+           \frac{\xi\Phi(\xi,w,A)-\eta\Phi(\eta,w,A)}{\xi-\eta}.
+               \label{eq:lerch-distinct}
+\end{align}
+At $\eta=\xi$, the quotient is replaced by
+\begin{equation}\label{eq:lerch-confluent}
+ \Phi(\xi,w-1,A)+(1-A)\Phi(\xi,w,A).
+\end{equation}
+In particular, when $A=1$ and $\xi\ne\eta$,
+\begin{align}
+ &\frac1{2\pi}\int_{\R}\Phi(\xi,s,a+\ii y)
+                             \Phi(\eta,t,1-a-\ii y)\dd y\notag\\
+ &\quad=\frac{\Gamma(w)}{\Gamma(s)\Gamma(t)}
+                 \frac{\Li_w(\xi)-\Li_w(\eta)}{\xi-\eta}.
+                     \label{eq:polylog-divdiff}
+\end{align}
+For equal nonzero colors the final quotient is $\Li_{w-1}(\xi)/\xi$;
+at $\xi=0$ its removable value is $1$.
+\end{theorem}
+\begin{proof}
+For distinct colors, use the exact partial fraction identity
+\[
+ \frac1{(1-\xi r)(1-\eta r)}
+ =\frac{\xi/(1-\xi r)-\eta/(1-\eta r)}{\xi-\eta}
+\]
+in the Laplace product supplied by \cref{thm:plancherel}.
+For equal colors, the kernel has series
+$\sum_{n\ge0}(n+1)\xi^n e^{-nx}$, and
+$n+1=(n+A)+(1-A)$ proves \eqref{eq:lerch-confluent}.
+This series argument initially uses $|\xi|<1$; its identity extends to
+the stated boundary colors by the same dominated kernel argument.
+Finally, $\xi\Phi(\xi,w,1)=\Li_w(\xi)$, including the removable
+interpretation at zero. All products converge by $L^2$.
+\end{proof}
+
+Order differentiation of \eqref{eq:polylog-divdiff} is a direct source of
+identities for $\partial_w^r\Li_w(\xi)$ and mixed order derivatives of
+Lerch functions. In particular, at $s=t=1$, the total-order derivatives
+are generated by
+\[
+ C(u,v)\frac{\Li_{1+u+v}(\xi)-\Li_{1+u+v}(\eta)}{\xi-\eta}.
+\]
+This is a convergent parameter identity near the origin, rather than an
+experimental relation inferred from numerical integer-relation searches.
+
+\subsection{Mixed Stieltjes--Lerch closure and the spectral resonance}
+\begin{theorem}\label{thm:mixed-lerch}
+Under the hypotheses of \cref{thm:lerch},
+\begin{align}
+ &\frac1{2\pi}\int_{\R}Z_s(a+\ii y)\Phi(\xi,t,b-\ii y)\dd y\notag\\
+ &\quad=\frac{\Gamma(w)}{\Gamma(s)\Gamma(t)}
+  \left\{\frac{\zeta(w,A)-\xi\Phi(\xi,w,A)}{1-\xi}
+                     -\frac{\Phi(\xi,w-1,A)}{w-1}\right\}.
+                         \label{eq:mixed-lerch}
+\end{align}
+The brace is holomorphic for $\Rea w>0$. At $s=t=1$ it gives
+\begin{align}
+ &\frac1{2\pi}\int_{\R}G_0(a+\ii y)\Phi(\xi,1,b-\ii y)\dd y\notag\\
+ &\quad=\frac{-\psi(A)-\xi\Phi(\xi,1,A)}{1-\xi}
+                                  -\Phi'(\xi,0,A).
+                                      \label{eq:mixed-lerch-resonance}
+\end{align}
+\end{theorem}
+\begin{proof}
+The product kernel is
+\[
+ \frac{h(x)}{1-\xi e^{-x}}
+ =\frac{Q(x)-\xi/(1-\xi e^{-x})}{1-\xi}
+                     -\frac1{x(1-\xi e^{-x})}.
+\]
+Integrate the separated expression first for $\Rea w>1$.
+The combined kernel is bounded at zero, so its Mellin transform is
+holomorphic for $\Rea w>0$. At $w=1$, both singular summands have residue
+$1/(1-\xi)$ with opposite signs, because
+$\Phi(\xi,0,A)=1/(1-\xi)$. Their constant terms give
+\eqref{eq:mixed-lerch-resonance}. Derivatives of this removable identity
+are justified by the original holomorphic $L^2$ pairing.
+\end{proof}
+
+When $A=1$, \eqref{eq:mixed-lerch-resonance} becomes
+\begin{equation}\label{eq:mixed-Li0}
+ \frac1{2\pi}\int_{\R}G_0(a+\ii y)\Phi(\xi,1,1-a-\ii y)\dd y
+ =\frac{\gamma+\log(1-\xi)}{1-\xi}
+       -\frac{\left.\partial_s\Li_s(\xi)\right|_{s=0}}{\xi}.
+\end{equation}
+At zero color the final quotient is interpreted by continuity. At
+$\xi=-1$, the right-hand side reduces to
+\begin{equation}\label{eq:alternating-special}
+ \frac\gamma2+\log2-\frac12\log\pi.
+\end{equation}
+Indeed, $\Li_s(-1)=(2^{1-s}-1)\zeta(s)$, whence
+$\Li'_0(-1)=\frac12\log(2/\pi)$. Moreover,
+\[
+ \Phi(-1,1,z)=\frac12\left\{\psi\left(\frac{z+1}{2}\right)
+                           -\psi\left(\frac z2\right)\right\}.
+\]
+Thus \eqref{eq:alternating-special} is also an explicit compensated
+digamma--digamma-difference integral.
+
+\subsection{Every nontrivial root of unity gives a finite Gamma formula}
+If $\xi^q=1$ and $\xi\ne1$, grouping the Lerch series modulo $q$ gives
+\begin{equation}\label{eq:root-unity}
+ \Phi(\xi,s,A)=q^{-s}\sum_{r=0}^{q-1}\xi^r
+                                \zeta\left(s,\frac{A+r}{q}\right).
+\end{equation}
+The zeta residues at $s=1$ cancel because $\sum\xi^r=0$. With
+$c_r=(A+r)/q$, its two required values are
+\begin{align}
+ \Phi(\xi,1,A)&=-\frac1q\sum_{r=0}^{q-1}\xi^r\psi(c_r),\label{eq:root-one}\\
+ \Phi'(\xi,0,A)&=\sum_{r=0}^{q-1}\xi^r\log\Gamma(c_r)
+                                      -\frac{\log q}{1-\xi}.
+                                          \label{eq:root-zero-derivative}
+\end{align}
+Substituting into \eqref{eq:mixed-lerch-resonance} yields the finite family
+\begin{align}
+ &\frac1{2\pi}\int_{\R}G_0(a+\ii y)\Phi(\xi,1,b-\ii y)\dd y\notag\\
+ &\quad=\frac{-\psi(A)+(\xi/q)\sum_{r=0}^{q-1}\xi^r\psi(c_r)
+                      +\log q}{1-\xi}
+             -\sum_{r=0}^{q-1}\xi^r\log\Gamma(c_r).
+                 \label{eq:root-Gamma-pair}
+\end{align}
+For higher indices, differentiating the finite sum
+\eqref{eq:root-unity} gives a triangular combination of Hurwitz order
+jets and powers of $\log q$. This is a proved finite reduction at every
+index, with no presumption of further transcendence reductions.
+
+\section{Bernoulli compensation and negative spectral orders}
+\label{sec:compensation}
+
+\subsection{A hierarchy with an exact convergence domain}
+The basic kernel $h$ is bounded but does not vanish at zero. Its Mellin
+transform therefore does not directly reach the Gamma logarithm at spectral
+order zero. We now subtract exactly the required Taylor terms.
+Let $B_{2k}$ be the Bernoulli numbers and put
+\begin{align}
+ P_0(x)&=x^{-1},\label{eq:P0}\\
+ P_d(x)&=x^{-1}+\frac12+
+       \sum_{k=1}^{d-1}\frac{B_{2k}}{(2k)!}x^{2k-1},\qquad d\ge1,
+                 \label{eq:Pd}\\
+ h_d(x)&=Q(x)-P_d(x),\qquad
+ \nu_d=\begin{cases}0,&d=0,\\2d-1,&d\ge1.\end{cases}
+                 \label{eq:hd}
+\end{align}
+An empty sum is zero. Thus $h_0=h$, $h_1=h-1/2$, and
+$h_2=h-1/2-x/12$. The convergent local Bernoulli expansion gives
+\begin{equation}\label{eq:hd-valuation}
+ h_0(x)=\tfrac12+O(x),\qquad
+ h_d(x)=\frac{B_{2d}}{(2d)!}x^{2d-1}+O(x^{2d+1})\quad(d\ge1).
+\end{equation}
+Write $P_d(x)=\sum_{j\in E_d}\alpha_{d,j}x^j$, where
+$E_0=\{-1\}$ and
+$E_d=\{-1,0,1,3,\ldots,2d-3\}$ for $d\ge1$, with the evident empty
+positive portion for $d=1$.
+
+\begin{definition}\label{def:Fd}
+The Gamma-normalized compensated Hurwitz family is
+\begin{equation}\label{eq:Fd-laplace}
+ \mathcal F_d(s,z)=\int_0^\infty x^{s-1}e^{-zx}h_d(x)\dd x,
+ \qquad\Rea s>-\nu_d,\quad\Rea z>0.
+\end{equation}
+Equivalently, on this domain it is the combined continuation of
+\begin{equation}\label{eq:Fd-closed}
+ \mathcal F_d(s,z)=\Gamma(s)\zeta(s,z)
+       -\sum_{j\in E_d}\alpha_{d,j}\Gamma(s+j)z^{-s-j}.
+\end{equation}
+We also set $\mathcal R_d(s,z)=\mathcal F_d(s,z)/\Gamma(s)$ by
+continuation. In particular,
+\begin{align}
+ \mathcal R_0(s,z)&=Z_s(z),\notag\\
+ \mathcal R_d(s,z)&=Z_s(z)-\tfrac12z^{-s}
+  -\sum_{k=1}^{d-1}\frac{B_{2k}}{(2k)!}(s)_{2k-1}z^{1-s-2k}
+          \quad(d\ge1).\label{eq:Rd}
+\end{align}
+\end{definition}
+
+\begin{proposition}[Holomorphy, zeros, and the position ladder]
+\label{thm:Fd-domain}
+The family $\mathcal F_d$ is jointly holomorphic on the domain in
+\eqref{eq:Fd-laplace}. It is a holomorphic $L^2$ vector on the vertical
+line $z=a+\ii y$ whenever
+\begin{equation}\label{eq:Fd-L2}
+ \Rea s>\frac12-\nu_d,\qquad\Rea a>0.
+\end{equation}
+It satisfies
+\begin{equation}\label{eq:Fd-ladder}
+ \partial_z\mathcal F_d(s,z)=-\mathcal F_d(s+1,z).
+\end{equation}
+For every integer $n$ with $0\le n<\nu_d$,
+\begin{equation}\label{eq:Rd-zero}
+ \mathcal R_d(-n,z)=0,\qquad
+ \mathcal F_d(-n,z)=\frac{(-1)^n}{n!}
+                    \left.\partial_s\mathcal R_d(s,z)\right|_{s=-n}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Near zero the kernel in \eqref{eq:Fd-laplace} is
+$O(x^{\Rea s+\nu_d-1})$, and at infinity the exponential dominates
+all polynomial terms in $P_d$. These bounds, with extra powers of
+$\log x$ on compact spectral subsets, prove holomorphy. Squaring the
+near-zero kernel gives exactly the sufficient $L^2$ condition
+\eqref{eq:Fd-L2}. Plancherel then transfers the vector-valued holomorphy
+to the vertical line. Multiplication by $-x$ proves the position ladder.
+
+Formula~\eqref{eq:Fd-closed} follows by evaluating the separate terms
+first for sufficiently large $\Rea s$, then continuing.
+The function in \eqref{eq:Rd} is entire in $s$, after the original
+$s=1$ pole cancellation. Since $1/\Gamma(s)$ has a simple zero at
+$s=-n$ while $\mathcal F_d$ is holomorphic there, $\mathcal R_d(-n,z)=0$.
+Finally,
+$\Gamma(-n+\epsilon)=(-1)^n/(n!\epsilon)+O(1)$ gives the second formula.
+\end{proof}
+
+The kernel $L^2$ threshold is exact for an individual transform in its
+Laplace domain, because the leading coefficients in
+\eqref{eq:hd-valuation} are nonzero. We do not claim that the rectangular
+pair of such thresholds is the maximal possible region for every product.
+The theorem deliberately states a uniform domain in which all orders of
+parameter differentiation are justified.
+
+\subsection{Finite closure at every compensation depth}
+Define
+\begin{equation}\label{eq:J-integral}
+ \mathcal J_{d,e}(w,A)=\int_0^\infty
+          x^{w-1}e^{-Ax}h_d(x)h_e(x)\dd x.
+\end{equation}
+It is holomorphic for
+$\Rea w>-\nu_d-\nu_e$, $\Rea A>0$.
+
+\begin{theorem}[Arbitrary-depth product closure]\label{thm:depth-closure}
+For $\Rea s>1/2-\nu_d$, $\Rea t>1/2-\nu_e$, and
+$\Rea a,\Rea b>0$,
+\begin{equation}\label{eq:Fd-pair}
+ \frac1{2\pi}\int_{\R}\mathcal F_d(s,a+\ii y)
+                         \mathcal F_e(t,b-\ii y)\dd y
+       =\mathcal J_{d,e}(s+t-1,a+b).
+\end{equation}
+The right-hand side has the finite expression
+\begin{align}
+ \mathcal J_{d,e}(w,A)={}&
+ \Gamma(w)\{\zeta(w-1,A)+(1-A)\zeta(w,A)\}\notag\\
+ &-\sum_{j\in E_d}\alpha_{d,j}\Gamma(w+j)\zeta(w+j,A)\notag\\
+ &-\sum_{k\in E_e}\alpha_{e,k}\Gamma(w+k)\zeta(w+k,A)\notag\\
+ &+\sum_{j\in E_d}\sum_{k\in E_e}
+   \alpha_{d,j}\alpha_{e,k}\Gamma(w+j+k)A^{-w-j-k}.
+                  \label{eq:J-finite}
+\end{align}
+Every apparent pole of this expression in
+$\Rea w>-\nu_d-\nu_e$ is removable. The identity and all its spectral
+and position derivatives are identities of ordinary convergent pairings.
+\end{theorem}
+\begin{proof}
+Equation~\eqref{eq:Fd-pair} is \cref{thm:plancherel} applied to
+\eqref{eq:Fd-laplace}. For $\Rea w>2$, expand
+\[
+ (Q-P_d)(Q-P_e)=Q^2-P_dQ-P_eQ+P_dP_e.
+\]
+Every individual Mellin integral then converges. The $Q^2$ term was
+evaluated earlier; the monomial--$Q$ terms yield
+$\Gamma(w+j)\zeta(w+j,A)$, and the monomial products yield the last
+line of \eqref{eq:J-finite}. The original combined integrand vanishes
+to order $\nu_d+\nu_e$ at zero, proving its holomorphy on the larger
+half-plane. Analytic continuation therefore cancels \emph{all} of the
+apparent poles there, not merely those checked at finitely many indices.
+The vector-valued argument proves the derivative assertion.
+\end{proof}
+
+For $d=e=0$, \eqref{eq:J-finite} is exactly
+$\mathcal J_{0,0}(w,A)=\Gamma(w)K(w,A)$. Higher depths do not replace the
+special-function alphabet: they enlarge its finite range of spectral
+arguments while improving the admissible left half-plane. This is the
+mechanism that permits antiderivatives to be paired without a divergent
+vertical integral.
+
+\section{Stirling remainders and normalized antiderivatives}
+\label{sec:primitives}
+
+\subsection{The first negative-order pairing}
+At depth one, \eqref{eq:Rd-zero} and the standard zeta values at zero give
+\begin{equation}\label{eq:Omega-F}
+ \mathcal F_1(0,z)=\Omega(z)
+    =\int_0^\infty e^{-zx}\frac{h_1(x)}x\dd x.
+\end{equation}
+For completeness, differentiate
+$\mathcal R_1(s,z)=\zeta(s,z)-z^{1-s}/(s-1)-\frac12z^{-s}$ at $s=0$.
+The result is
+$\zeta'(0,z)-z\log z+z+\frac12\log z$, which is
+\eqref{eq:Omega-intro}. Thus \eqref{eq:Omega-F} also follows directly
+from the compensated Hurwitz family, independently of quoting Binet's
+formula; it agrees with the classical representation in
+\cite{dlmf-gamma}.
+
+\begin{theorem}[Exact Stirling-remainder pairing]\label{thm:Omega-pair}
+Let $\Rea a,\Rea b>0$ and $A=a+b$. Then
+\begin{align}
+ \frac1{2\pi}\int_{\R}\Omega(a+\ii y)\Omega(b-\ii y)\dd y
+   ={}&A\zeta'(-1,A)-2\zeta'(-2,A)\notag\\
+     &+\left(\frac{A^3}{6}-\frac{A^2}{2}+\frac A4\right)\log A
+           +\frac{A^3}{36}+\frac A{12}.
+                  \label{eq:Omega-pair}
+\end{align}
+\end{theorem}
+\begin{proof}
+The domain condition \eqref{eq:Fd-L2} holds at $d=1$, $s=0$.
+Hence the left-hand side equals $\mathcal J_{1,1}(-1,A)$.
+Since $h_1^2=h^2-h+1/4$, write
+$\mathcal J_{1,1}(w,A)=\Gamma(w)\mathcal B(w,A)$, where
+\begin{align}
+ \mathcal B(w,A)={}&\frac{w-3}{w-1}\zeta(w-1,A)-A\zeta(w,A)
+       +\frac{A^{2-w}}{(w-1)(w-2)}\notag\\
+       &+\frac{A^{1-w}}{w-1}+\frac14A^{-w}.
+                      \label{eq:B-Stirling}
+\end{align}
+At $w=-1$,
+\[
+ \mathcal B(-1,A)=2\zeta(-2,A)-A\zeta(-1,A)
+                       +\frac{A^3}{6}-\frac{A^2}{2}+\frac A4=0.
+\]
+This is the Bernoulli-polynomial identity
+$\zeta(-n,A)=-B_{n+1}(A)/(n+1)$ at $n=1,2$.
+Because $\Res_{w=-1}\Gamma(w)=-1$,
+\[
+ \mathcal J_{1,1}(-1,A)=-\partial_w\mathcal B(-1,A).
+\]
+Differentiation before simplification gives
+\begin{align*}
+ -\partial_w\mathcal B(-1,A)={}&
+ A\zeta'(-1,A)-2\zeta'(-2,A)-\tfrac12\zeta(-2,A)\\
+ &+A^3\left(\frac{\log A}{6}-\frac5{36}\right)
+       -\frac{A^2\log A}{2}+\frac{A^2}{4}+\frac{A\log A}{4}.
+\end{align*}
+Finally, $\zeta(-2,A)=-A^3/3+A^2/2-A/6$ yields
+\eqref{eq:Omega-pair}.
+\end{proof}
+
+At $A=1$, the functional equation of the Riemann zeta function gives
+$\zeta'(-2)=-\zeta(3)/(4\pi^2)$, proving
+\eqref{eq:headline-stirling}. The sign in front of $\partial_w\mathcal B$
+is forced by the negative residue of $\Gamma$ at $-1$.
+Discarding the zero of $\mathcal B$ before differentiating would incorrectly
+turn a nonzero norm into zero.
+
+\subsection{A canonical primitive at every admissible depth}
+Define the depth-$d$ Stirling remainder, for $d\ge1$, by
+\begin{equation}\label{eq:Omega-depth}
+ \Omega_d(z)=\Omega(z)-\sum_{k=1}^{d-1}
+          \frac{B_{2k}}{2k(2k-1)}z^{1-2k}.
+\end{equation}
+The Gamma recurrence in \eqref{eq:Fd-closed} gives
+$\mathcal F_d(0,z)=\Omega_d(z)$.
+
+\begin{theorem}[Normalized primitive ladder and exact pairings]
+\label{thm:primitive-ladder}
+For $d\ge1$ and $0\le n<\nu_d=2d-1$, let
+\begin{equation}\label{eq:primitive-definition}
+ \mathcal P_{d,n}(z)=(-1)^n\mathcal F_d(-n,z)
+      =\frac1{n!}\left.\partial_s\mathcal R_d(s,z)\right|_{s=-n}.
+\end{equation}
+Then
+\begin{equation}\label{eq:primitive-ladder}
+ \mathcal P_{d,0}=\Omega_d,\qquad
+ \partial_z\mathcal P_{d,n}=\mathcal P_{d,n-1}\quad(n\ge1).
+\end{equation}
+Each $\mathcal P_{d,n}(x)$ tends to zero as real $x\to+\infty$.
+This normalization uniquely specifies it among the holomorphic
+$n$-fold antiderivatives of $\Omega_d$.
+For $d,e\ge1$, $0\le n<\nu_d$, $0\le m<\nu_e$,
+\begin{equation}\label{eq:primitive-pair}
+ \frac1{2\pi}\int_{\R}\mathcal P_{d,n}(a+\ii y)
+                       \mathcal P_{e,m}(b-\ii y)\dd y
+       =(-1)^{n+m}\mathcal J_{d,e}(-n-m-1,a+b).
+\end{equation}
+The right-hand side is the removable value of the finite expression
+\eqref{eq:J-finite}; no new integral is left unevaluated.
+\end{theorem}
+\begin{proof}
+The definition and ladder follow from \cref{thm:Fd-domain}. The Laplace
+representation is
+\[
+ \mathcal P_{d,n}(z)=(-1)^n\int_0^\infty x^{-n-1}e^{-zx}h_d(x)\dd x.
+\]
+Its near-zero power is $x^{\nu_d-n-1}$, with $\nu_d-n>0$.
+Rescaling $x$ by a positive real $z$ and using an integrable split of the
+kernel proves decay $O(z^{n-\nu_d})$ as $z\to+\infty$.
+The difference of two $n$-fold antiderivatives is a polynomial of degree
+less than $n$, and such a polynomial cannot tend to zero unless it is zero.
+For $n=0$ the uniqueness statement simply identifies the function itself.
+
+The integer restriction $n<\nu_d$ implies
+$-n>1/2-\nu_d$; similarly for $m$. Thus \cref{thm:depth-closure} applies
+and proves \eqref{eq:primitive-pair}. Moreover,
+$-n-m-1>-\nu_d-\nu_e$, placing the spectral value strictly inside the
+holomorphic domain of $\mathcal J_{d,e}$.
+\end{proof}
+
+The primitive formula is explicit in ordinary Hurwitz order derivatives:
+\eqref{eq:Rd} involves only $\zeta(s,z)$, elementary powers, and a finite
+Pochhammer polynomial. At $s=-n$ its first derivative therefore involves
+$\zeta'(-n,z)$ and elementary terms. Pairing primitives at arbitrary
+depths remains finite by \eqref{eq:J-finite}. At its integer resonances,
+first derivatives of Hurwitz zeta and digamma values suffice; the next
+section gives a stable finite-part rule. Higher \emph{spectral} jets may
+require correspondingly higher zeta derivatives and Stieltjes constants,
+but always only finitely many.
+
+\section{Rationally related vertical scales}
+\label{sec:rational-scales}
+
+Unequal slopes introduce two arithmetic progressions into the product
+kernel. For a rational slope ratio those progressions are commensurate,
+and their apparent double-zeta structure reduces to a finite collection
+of single Hurwitz zeta functions. The scale factors in this statement
+are important: one cannot obtain it by replacing $a+b$ with a weighted
+sum in \cref{thm:basic} while leaving all other factors unchanged.
+
+Let $p,q$ be positive integers, not necessarily coprime. Put
+\begin{equation}\label{eq:rational-grid}
+ B=qa+pb,\qquad R=pq,\qquad
+ c_{ij}=\frac{B+qi+pj}{R}\quad(0\le i<p,\ 0\le j<q),
+\end{equation}
+and define
+\begin{equation}\label{eq:Dpq}
+ D_{p,q}(w,B)=R^{-w}\sum_{i=0}^{p-1}\sum_{j=0}^{q-1}
+       \{\zeta(w-1,c_{ij})+(1-c_{ij})\zeta(w,c_{ij})\}.
+\end{equation}
+
+\begin{lemma}[Finite residue-grid reduction]\label{thm:grid}
+For $\Rea w>2$ and $\Rea B>0$,
+\begin{equation}\label{eq:QQ-grid}
+ \int_0^\infty x^{w-1}e^{-Bx}Q(qx)Q(px)\dd x
+                 =\Gamma(w)D_{p,q}(w,B).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write each pair of nonnegative integers uniquely as
+$n=p\ell+i$, $m=qk+j$ with $0\le i<p$, $0\le j<q$.
+Then $qn+pm=qi+pj+pq(\ell+k)$, so
+\[
+ Q(qx)Q(px)=\sum_{i=0}^{p-1}\sum_{j=0}^{q-1}
+              \frac{e^{-(qi+pj)x}}{(1-e^{-Rx})^2}.
+\]
+Expanding the square produces the multiplicity $\ell+k+1$.
+Rescale $Rx$ and use the $Q^2$ calculation in \cref{thm:basic}.
+Absolute convergence in the initial half-plane justifies every sum.
+No coprimality condition is used in this decomposition.
+\end{proof}
+
+Define the compensated grid transform by
+\begin{equation}\label{eq:Jpq-integral}
+ \mathcal J_{d,e}^{p,q}(w,B)=\int_0^\infty
+             x^{w-1}e^{-Bx}h_d(qx)h_e(px)\dd x.
+\end{equation}
+
+\begin{theorem}[Rational-scale closure at every depth]
+\label{thm:rational-depth}
+Under the same $L^2$ conditions on $s,t,a,b$ as in
+\cref{thm:depth-closure},
+\begin{align}
+ &\frac1{2\pi}\int_{\R}\mathcal F_d(s,a+\ii py)
+                              \mathcal F_e(t,b-\ii qy)\dd y\notag\\
+ &\quad=q^{s-1}p^{t-1}\,
+       \mathcal J_{d,e}^{p,q}(s+t-1,qa+pb).
+                          \label{eq:rational-depth-pair}
+\end{align}
+The finite expression for the right-hand transform is
+\begin{align}
+ \mathcal J_{d,e}^{p,q}(w,B)={}&\Gamma(w)D_{p,q}(w,B)\notag\\
+ &-\sum_{k\in E_e}\alpha_{e,k}p^k\Gamma(w+k)q^{-w-k}
+                                 \zeta(w+k,B/q)\notag\\
+ &-\sum_{j\in E_d}\alpha_{d,j}q^j\Gamma(w+j)p^{-w-j}
+                                 \zeta(w+j,B/p)\notag\\
+ &+\sum_{j\in E_d}\sum_{k\in E_e}
+       \alpha_{d,j}\alpha_{e,k}q^jp^k\Gamma(w+j+k)B^{-w-j-k}.
+                          \label{eq:Jpq-finite}
+\end{align}
+It is holomorphic for $\Rea w>-\nu_d-\nu_e$, $\Rea B>0$ after all
+removable cancellations. The identities are stable under arbitrary
+spectral and position derivatives inside the stated domains.
+\end{theorem}
+\begin{proof}
+The scaled formula \eqref{eq:scaled-plancherel} pairs
+$x^{s-1}e^{-ax}h_d(x)$ with $x^{t-1}e^{-bx}h_e(x)$.
+Their values at $qx$ and $px$ contribute
+$q^{s-1}p^{t-1}x^{s+t-2}e^{-(qa+pb)x}h_d(qx)h_e(px)$,
+which proves \eqref{eq:rational-depth-pair}.
+For $\Rea w>2$, expand
+$(Q(qx)-P_d(qx))(Q(px)-P_e(px))$.
+The first term is \cref{thm:grid}; a monomial from $P_e(px)$ contributes
+$p^kx^k$ against $Q(qx)$ and hence the second line of
+\eqref{eq:Jpq-finite}. The other two lines follow in the same way.
+The combined kernel vanishes to order $\nu_d+\nu_e$ at zero.
+Its holomorphy proves all pole cancellations and the derivative assertion
+exactly as in \cref{thm:depth-closure}.
+\end{proof}
+
+If the actual slopes are $cp,cq$ with $c>0$, one multiplies the result
+by $1/c$ after changing $y$ to $cy$. Thus the theorem covers every positive
+rational slope ratio. At $p=q=c$ it is consistent with the ordinary
+$1/c$ scaling law. For an irrational ratio the Laplace identity survives,
+but the finite residue grid used in \cref{thm:grid} is unavailable; no
+non-reducibility claim is implied.
+
+\subsection{An explicit all-order rational-scale Stieltjes formula}
+For depth zero write
+$\mathcal J_{0,0}^{p,q}(w,B)=\Gamma(w)K_{p,q}(w,B)$.
+Then \eqref{eq:Jpq-finite} simplifies to
+\begin{align}
+ K_{p,q}(w,B)={}&D_{p,q}(w,B)
+ -\frac{p^{-1}q^{1-w}\zeta(w-1,B/q)
+       +q^{-1}p^{1-w}\zeta(w-1,B/p)}{w-1}\notag\\
+ &+\frac{B^{2-w}}{pq(w-1)(w-2)}.
+                                  \label{eq:Kpq}
+\end{align}
+For integers $m,n\ge0$ define
+\[
+ I_{m,n}^{p,q}(a,b)=\frac1{2\pi}\int_{\R}
+               G_m(a+\ii py)G_n(b-\ii qy)\dd y.
+\]
+Then the theorem gives
+\begin{equation}\label{eq:rational-Stieltjes-jets}
+ \boxed{\displaystyle
+ I_{m,n}^{p,q}(a,b)=(-1)^{m+n}m!n!\,[u^mv^n]
+       q^up^v C(u,v)K_{p,q}(1+u+v,B).}
+\end{equation}
+The exponential slope factors are essential even for first-order jets.
+
+For an entirely pole-free coefficient recipe put
+\begin{equation}\label{eq:coefficient-symbols}
+ z_j(c)=\frac{\zeta^{(j)}(0,c)}{j!},\qquad
+ g_j(c)=\frac{(-1)^j\gamma_j(c)}{j!},\qquad
+ e_j(\lambda)=\frac{(-\log\lambda)^j}{j!}.
+\end{equation}
+Let
+$K_{p,q}(1+\epsilon,B)=\sum_{k\ge0}\kappa_k^{p,q}(B)\epsilon^k$.
+
+\begin{corollary}[Finite coefficient formula]\label{thm:rational-coeff}
+For each integer $k\ge0$,
+\begin{align}
+ \kappa_k^{p,q}(B)={}&\frac1R\sum_{i=0}^{p-1}\sum_{j=0}^{q-1}
+  \left\{\sum_{\ell=0}^{k}e_\ell(R)
+       [z_{k-\ell}(c_{ij})+(1-c_{ij})g_{k-\ell}(c_{ij})]
+      +(1-c_{ij})e_{k+1}(R)\right\}\notag\\
+ &-\frac1p\sum_{\ell=0}^{k+1}e_\ell(q)z_{k+1-\ell}(B/q)
+  -\frac1q\sum_{\ell=0}^{k+1}e_\ell(p)z_{k+1-\ell}(B/p)\notag\\
+ &-\frac BR\sum_{\ell=0}^{k+1}e_\ell(B).
+                                  \label{eq:rational-coeff}
+\end{align}
+Together with \eqref{eq:rational-Stieltjes-jets}, this evaluates every
+rational-scale Stieltjes pairing by finitely many one-variable Hurwitz
+jets, Stieltjes constants, elementary logarithms, and universal zeta
+constants from $C$.
+\end{corollary}
+\begin{proof}
+Expand \eqref{eq:Kpq} at $w=1+\epsilon$.
+The first double sum contains a simple zeta pole multiplied by
+$R^{-1}e^{-\epsilon\log R}$; its contribution to the coefficient of
+$\epsilon^k$ is exactly $(1-c_{ij})e_{k+1}(R)/R$ in addition to the
+regular convolution of Taylor coefficients. The two crossed terms
+contain $e^{-\epsilon\log q}\zeta(\epsilon,B/q)/\epsilon$ and its
+$p$ analogue. The last term is
+$-(B/R)e^{-\epsilon\log B}/\{\epsilon(1-\epsilon)\}$.
+Their coefficients are the last two lines of \eqref{eq:rational-coeff}.
+
+To check the cancellation preceding extraction, observe that
+\[
+ \sum_{i,j}(1-c_{ij})=\frac{p+q}{2}-B.
+\]
+The total residue of \eqref{eq:Kpq} is therefore
+\[
+ \frac{(p+q)/2-B}{pq}
+ -\frac1p\Bigl(\frac12-\frac Bq\Bigr)
+ -\frac1q\Bigl(\frac12-\frac Bp\Bigr)-\frac B{pq}=0.
+\]
+This also checks the powers of $p,q$ in the coefficient formula.
+\end{proof}
+
+For $p=q=1$, \eqref{eq:rational-coeff} reduces exactly to
+\eqref{eq:k-coefficients}. At general $p,q$, Stieltjes jets at the grid
+points enter only up to order $m+n$, while zeta order derivatives at
+$B/p$ and $B/q$ enter only up to order $m+n+1$.
+
+\subsection{The two-scale quarter-Gamma identity}
+The case $k=0$ of \eqref{eq:rational-coeff} is
+\begin{align}
+ K_{p,q}(1,B)={}&\frac1R\sum_{i,j}
+   \{\zeta(0,c_{ij})-(1-c_{ij})\psi(c_{ij})
+                              -(1-c_{ij})\log R\}\notag\\
+ &-\frac1p\zeta'(0,B/q)-\frac1q\zeta'(0,B/p)
+   +\frac{\log q}{p}\zeta(0,B/q)
+   +\frac{\log p}{q}\zeta(0,B/p)\notag\\
+ &+\frac BR(\log B-1).
+                         \label{eq:Kpq-one}
+\end{align}
+For $p=1,q=2,a=b=1/2$, the grid is $3/4,5/4$ and $B=3/2$.
+Using
+$\psi(5/4)-\psi(3/4)=4-\pi$, the first line reduces to $-\pi/8$.
+Thus
+\begin{align*}
+ K_{1,2}(1,3/2)={}&-\frac\pi8-\zeta'(0,3/4)
+       -\frac12\zeta'(0,3/2)-\frac14\log2
+       +\frac34\{\log(3/2)-1\}.
+\end{align*}
+Insert Lerch's formula for $\zeta'(0,z)$,
+$\Gamma(3/2)=\sqrt\pi/2$, and
+$\Gamma(1/4)\Gamma(3/4)=\pi\sqrt2$.
+The result is \eqref{eq:headline-quarter}, proving that identity without
+numerical recognition of its constants.
+
+\section{Evaluating removable integer values without numerical cancellation}
+\label{sec:finite-part-engine}
+
+The formulas for deep compensation contain many singular summands even
+when their sum is regular. A stable evaluation should compute their
+Laurent constant terms, retaining derivatives of analytic prefactors.
+The following rules are enough for every integer specialization of
+\eqref{eq:J-finite} and \eqref{eq:Jpq-finite}.
+
+Let $H_0=0$ and $H_n=\sum_{j=1}^n1/j$. For $n\ge0$,
+\begin{align}
+ \Gamma(-n+\epsilon)
+  &=\frac{(-1)^n}{n!}
+     \left\{\frac1\epsilon+H_n-\gamma+O(\epsilon)\right\},
+                                 \label{eq:Gamma-laurent}\\
+ \CT_{\epsilon=0}\bigl[\Gamma(-n+\epsilon)
+                    \zeta(-n+\delta+\epsilon,C)\bigr]
+  &=\frac{(-1)^n}{n!}
+    \{\zeta'(-n+\delta,C)+(H_n-\gamma)\zeta(-n+\delta,C)\},
+                                 \label{eq:GZ-negative-ct}
+\end{align}
+provided the zeta factor is regular there. The needed unshifted grid
+terms have $\delta=0,-1$, so this proviso always holds when their Gamma
+factor has a nonpositive integer argument. If a regular Gamma factor
+meets the zeta pole instead, $k\ge1$ and $k+\delta=1$, then
+\begin{equation}\label{eq:GZ-positive-ct}
+ \CT_{\epsilon=0}[\Gamma(k+\epsilon)\zeta(1+\epsilon,C)]
+       =\Gamma(k)\{\psi(k)-\psi(C)\},
+\end{equation}
+with residue $\Gamma(k)$. The elementary terms have
+\begin{equation}\label{eq:GE-ct}
+ \CT_{\epsilon=0}[\Gamma(-n+\epsilon)C^{n-\epsilon}]
+       =\frac{(-1)^nC^n}{n!}\{H_n-\gamma-\log C\}.
+\end{equation}
+All these formulas follow by multiplication of one-term Laurent and
+Taylor expansions.
+
+The prefactor rule is indispensable. If a singular factor has residue
+$r$ and constant term $c$, and
+$\theta(\epsilon)=\theta_0+\theta_1\epsilon+O(\epsilon^2)$, then
+\begin{equation}\label{eq:prefactor-rule}
+ \CT\left[\theta(\epsilon)\left(\frac r\epsilon+c+O(\epsilon)\right)\right]
+        =\theta_0c+\theta_1r.
+\end{equation}
+For example, $q^{-w}$ contributes the logarithmic derivative $-\log q$.
+Dropping the second term in \eqref{eq:prefactor-rule} would erase the
+very slope logarithms required by \eqref{eq:rational-coeff}.
+
+\subsection{Finite algorithm and its justification}
+To evaluate $\mathcal J_{d,e}^{p,q}(w_0,B)$ at an integer $w_0$ inside its
+holomorphic domain, expand each summand of \eqref{eq:Jpq-finite} only
+through its residue and constant term. For grid summands, use
+\eqref{eq:GZ-negative-ct} or \eqref{eq:GZ-positive-ct}, and include the
+factor $R^{-w}$ by \eqref{eq:prefactor-rule}. For crossed terms, shift
+$w_0$ by the integer monomial exponent and include the corresponding
+$q^{-w}$ or $p^{-w}$ factor. For elementary terms, use
+\eqref{eq:GE-ct}. Sum the resulting residues and constant terms.
+\cref{thm:rational-depth} proves the residue sum is exactly zero and
+that the constant sum is the value of the ordinary convergent integral.
+Thus a finite part is used solely as a computational operation on a
+meromorphic formula whose total singularity is removable.
+
+The function \texttt{J\_at\_integer} in the accompanying code implements
+this procedure, returning both the finite value and the residual sum.
+It avoids taking tiny spectral offsets and subtracting enormous nearly
+equal quantities. First-order Hurwitz order derivatives suffice for these
+integer values; higher spectral derivatives are obtained by retaining
+more Laurent coefficients. This gives an implementable extension of the
+primitive calculus rather than leaving its resonances as formal limits.
+
+\section{Audit findings, corrections, and verification status}
+\label{sec:audit}
+
+\subsection{Scope of the source review}
+The inspected canonical convolution foundation in \cite{repo} works with
+the mean-zero periodic family having nonzero Fourier coefficients
+$(2\pi\ii k)^{-\alpha}$. Its contact and finite-part conventions belong
+to that geometry. They have not been transferred silently to the real
+vertical line. In the present setting, the elementary term subtracted from
+$\zeta(s,z)$ is $z^{1-s}/(s-1)$, and the analytic mechanism is a Laplace
+kernel on $(0,\infty)$.
+
+No new false theorem was established in the canonical source portions
+actually inspected. It would therefore be inappropriate to issue a
+blanket erratum against the existing manuscript. The practical correction
+found during this continuation concerns the complex-argument numerical
+backend described next. We also isolate three normalization mistakes
+that would invalidate an attempted extension of the earlier calculus:
+\begin{enumerate}
+\item Subtracting only the spectral pole $1/(s-1)$ does not remove spatial
+      growth. At $s=1$ it leaves $\gamma_0(z)=-\psi(z)$; the squared
+      vertical norm diverges because $\psi(a+\ii y)$ has logarithmic
+      growth. Adding $\log z$ produces the convergent $G_0$ pairing.
+\item The zero $\mathcal R_d(-n,z)=0$ does not imply that its spectral
+      derivative vanishes. The pole of $\Gamma(s)$ turns that derivative
+      into the nonzero value in \eqref{eq:Rd-zero}. The Stirling norm
+      illustrates the corresponding zero-times-pole cancellation in
+      the paired expression.
+\item Replacing analytic $\log\Gamma(z)$ by the principal logarithm of
+      $\Gamma(z)$ changes its branch by discontinuous multiples of
+      $2\pi\ii$. It destroys the Laplace representation and need not
+      preserve any vertical norm in this paper.
+\end{enumerate}
+These are explicit scope guards, not allegations that the inspected
+canonical chapters made these mistakes.
+
+\subsection{A reproduced mpmath 1.3.0 nonreal-argument failure}
+\label{sec:software-audit}
+During the independent numerical replay, the installed
+\texttt{mpmath 1.3.0} function \texttt{stieltjes(0,z)} failed the exact
+calibration identity $\gamma_0(z)=-\psi(z)$ at $z=0.8+0.6\ii$.
+At 60 decimal digits of working precision it returned approximately
+\[
+ 0.4662545368664062120-0.9931920114430890458\ii,
+\]
+whereas $-\psi(z)$ is approximately
+\[
+ 0.4278547847547755586-1.0184230001203705136\ii.
+\]
+The absolute discrepancy was approximately
+$0.04594718437366742995$, not a last-digit effect.
+The version-tagged source \cite{mpmath13} takes a real part inside its
+integrand. That real-parameter formula is not a valid analytic continuation
+in a nonreal argument.
+
+The repair used here is explicit. Complex Stieltjes values are checked by
+the holomorphic paired Hermite formula \eqref{eq:complex-Hermite} and by
+Cauchy coefficients of the entire function $u\mapsto Z_{1+u}(z)$.
+Positive-real arguments in \eqref{eq:k-coefficients} may still use the
+installed Stieltjes routine; an independent positive-real control was
+included. The code does not claim this finding is new, that later mpmath
+versions share it, or that any particular canonical repository result
+was affected. A corpus-wide search for such unsafe nonreal calls would
+be a separate audit task.
+
+For the Cauchy check, with $0<\rho<1$ and integer $N>m$, the approximation
+used is
+\begin{equation}\label{eq:Cauchy-diagnostic}
+ G_m(z)\approx\frac{(-1)^m m!}{N\rho^m}
+   \sum_{k=0}^{N-1}Z_{1+\rho\omega_k}(z)\omega_k^{-m},
+ \qquad \omega_k=e^{2\pi\ii k/N}.
+\end{equation}
+The actual replay used $\rho=1/8$ and $N=96$ at 60-digit precision for
+orders zero through two. This is a trapezoidal discretization of Cauchy's
+coefficient formula, not a certified error enclosure. Its agreement with
+the independent Laplace and Hermite evaluations is recorded separately
+from the analytic proof.
+
+\subsection{What the verification establishes}
+The supplied exact checks contain \textbf{538 passing assertions}:
+7 kernel-valuation certificates, 36 compensated spectral-zero identities,
+210 equal-scale residue cancellations, 234 rational-scale residue
+cancellations, 49 finite-lattice polynomial identities, and 2
+Stirling-polynomial reductions. They use exact rational arithmetic and
+symbolic Bernoulli polynomials. These finite checks would detect many
+sign, indexing, or scale errors, but the proofs above, not the finite
+range of tests, establish the all-order assertions.
+
+The numerical replay contains \textbf{76 passing comparisons} at
+\textbf{60 decimal digits of working precision}, using acceptance
+criterion
+\[
+ \frac{|\text{left}-\text{right}|}{\max(1,|\text{left}|,|\text{right}|)}
+      <10^{-35}.
+\]
+The largest recorded scaled discrepancy was approximately
+$2.04\times10^{-53}$, in a basic spectral moment with $w=0.8$, $A=1$.
+The test set includes direct vertical-line quadrature, independent
+Laplace moments, mixed Stieltjes jets, complex Cauchy coefficients,
+polygamma integrals, rational scales, negative-order compensated
+moments, removable integer values, primitive derivatives, Lerch
+confluence, root-of-unity Gamma reductions, and finite harmonic sums.
+Four of these comparisons form the separate complex-safe replay; its
+negative control reproduces the dependency limitation just discussed.
+
+These are unvalidated floating-point comparisons, not interval proofs.
+For direct vertical integrals, the implementation switches to the
+standard asymptotic expansions of $G_0$ and $\Omega$ beyond $|z|=60$
+to avoid catastrophic subtraction at very large quadrature nodes.
+The resulting quadrature remains a diagnostic. No Lean or other
+proof-assistant formalization is supplied.
+
+\subsection{Reproduction and proposed integration}
+The ZIP contains the modular article sources, a standalone TeX source,
+the compiled PDF, exact and numerical scripts, machine-readable results,
+a version-specific negative-control record, source audit, proof-status
+ledger, build instructions, and checksums. The core commands are
+\begin{verbatim}
+python verification/exact_checks.py
+python verification/numerical_checks.py core
+python verification/numerical_checks.py extensions
+python verification/complex_safe_replay.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+
+A suitable integration is a new chapter or research note on
+\emph{vertical-line Hurwitz pairings}, placed near the existing integration
+and log-Gamma material, not merged into the periodic contact-term chapter
+as if its integrals had the same meaning. Suggested labels and dependencies
+are in \texttt{INTEGRATION\_NOTES.md}. The incoming ZIP should be retained
+unchanged as a provenance artifact, consistent with the repository's
+incoming-report policy. No repository write was performed in preparing
+this package.
+
+\section{Further research questions}
+\label{sec:questions}
+
+The proved results suggest the following concrete extensions. These are
+questions, not additional theorems claimed by the present paper.
+
+\begin{question}[Irrational-scale closure and its precise obstruction]
+For $p/q\notin\mathbb Q$, classify when
+$\int_0^\infty x^{w-1}e^{-Bx}h_d(qx)h_e(px)\dd x$ admits a finite
+representation by terms of the form
+$\Gamma(w+j)\lambda^{-w}\zeta(w+j,C)$ and elementary Gamma--power terms,
+with parameters independent of $w$. The allowed coefficient field and
+allowed scales must be fixed before asserting a non-reduction theorem.
+The Laplace identity is already available; what is missing is a rigorous
+classification of the corresponding exponential-kernel algebra.
+\end{question}
+
+\begin{question}[Joint color coalescence and Bernoulli compensation]
+Develop a compensation hierarchy for
+$(1-\xi e^{-x})^{-1}$ that remains uniform as $\xi\to1$ and produces
+well-defined mixed color/spectral jets. Can its exact transition terms
+be written in the same finite Hurwitz alphabet as
+\eqref{eq:rational-coeff}? A formula should specify the order of color
+coalescence and spectral differentiation rather than rely on formal
+substitution into a singular divided difference.
+\end{question}
+
+\begin{question}[Higher products and multiple-zeta closure]
+For three or more factors with both vertical orientations, Plancherel
+produces convolution constraints rather than a single diagonal product.
+Determine the smallest class of multiple Hurwitz or Tornheim-type
+functions closed under the resulting compensated integrals, and identify
+integer resonances where that class collapses to ordinary Hurwitz order
+jets. The two-factor result here provides exact normalization tests for
+such a theory.
+\end{question}
+
+\begin{question}[Minimal arithmetic bases for rational scales]
+The $pq$-point grid is explicit but not always minimal. Use Gamma
+multiplication, reflection, and finite character decompositions to find
+minimal provable spanning sets for
+$I_{m,n}^{p,q}(a,b)$ at rational $a,b$. The quarter-Gamma formula
+\eqref{eq:headline-quarter} is the first simple instance. Any assertion
+of a basis must distinguish a proved spanning statement from unproved
+linear independence of its constants.
+\end{question}
+
+\begin{question}[Exact reductions of remaining integral conjectures]
+Determine which still-conjectural polylogarithm integrals in the broader
+repository can be transformed into the finite-subtraction kernel algebra
+of this paper. A successful reduction would need an explicit transform
+identity and branch/convergence proof. No such reduction of $S_6$ or the
+revised $S_8$ candidate is supplied here, and numerical agreement alone
+would not constitute one.
+\end{question}
+
+\begin{question}[Certified complex jets and formalization]
+Replace the floating-point Cauchy replay with an interval-certified
+complex-zeta coefficient engine, including explicit contour truncation
+and rounding errors. In parallel, formalize the bilinear
+Laplace--Plancherel lemma, compact-parameter domination, and finite kernel
+identity. These three components would turn the present proof ledger
+into a reusable formal route to arbitrary-depth and rational-scale
+Stieltjes identities.
+\end{question}
+
+\paragraph{Conclusion.}
+The central mathematical outcome is finite exact closure for a genuinely
+different integration geometry from the existing periodic theory. Spatial
+compensation gives all Stieltjes indices; deeper Bernoulli compensation
+gives Gamma remainders and normalized primitives; commensurate vertical
+scales give finite arithmetic grids; and colored kernels give explicit
+polylogarithm order identities. The difficult bookkeeping points---joint
+parameter holomorphy, removable poles, slope logarithms, and complex
+branches---are part of the proofs, not delegated to a numerical fit.
+
+\clearpage
+\begin{thebibliography}{99}
+\bibitem{repo}
+V. Reshetnikov, \emph{ProveIt}, public research repository, canonical
+polylogarithm manuscript and incoming-report directory. Inspected source
+paths and blob identifiers are recorded in \texttt{SOURCE\_AUDIT.md}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+\bibitem{dlmf-zeta}
+NIST Digital Library of Mathematical Functions, \S25.11, \emph{Hurwitz Zeta
+Function}, especially the integral representation, special values,
+and parameter-differentiation formulas.
+\url{https://dlmf.nist.gov/25.11}.
+\bibitem{dlmf-gamma}
+NIST Digital Library of Mathematical Functions, \S5.9, \emph{Integral
+Representations}, including Binet's formula and digamma integrals.
+\url{https://dlmf.nist.gov/5.9}.
+\bibitem{dlmf-lerch}
+NIST Digital Library of Mathematical Functions, \S25.14, \emph{Lerch's
+Transcendent}.
+\url{https://dlmf.nist.gov/25.14}.
+\bibitem{shpot2016}
+M. A. Shpot, M. P. Chaudhary, and R. B. Paris,
+\emph{Integrals of products of Hurwitz zeta functions and the Casimir effect
+in $\phi^4$ field theories}, arXiv:1603.00722 (2016).
+\url{https://arxiv.org/abs/1603.00722}.
+\bibitem{shpot-paris}
+M. A. Shpot and R. B. Paris,
+\emph{Integrals of products of Hurwitz zeta functions via Feynman
+parametrization and two double sums of Riemann zeta functions},
+arXiv:1609.05658 (2016).
+\url{https://arxiv.org/abs/1609.05658}.
+\bibitem{mpmath13}
+The mpmath developers, \emph{mpmath}, version 1.3.0,
+\texttt{mpmath/functions/zeta.py}, function \texttt{stieltjes}.
+Version-specific source inspected for the nonreal-argument diagnostic.
+\url{https://github.com/mpmath/mpmath/blob/1.3.0/mpmath/functions/zeta.py}.
+\end{thebibliography}
+\end{document}

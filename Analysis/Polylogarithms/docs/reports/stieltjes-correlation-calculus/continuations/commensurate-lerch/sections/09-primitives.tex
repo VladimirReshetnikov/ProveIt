@@ -1,0 +1,120 @@
+\section{Argument derivatives and all anchored primitive orders}
+\label{clc:sec:primitives}
+
+Order differentiation is distinct from differentiating the center or
+the logarithmic argument. The contour formula makes the latter two
+operations equally explicit:
+\begin{align}
+ \partial_A\CC_{\bq,A}(W;\mu)
+      &=-W\CC_{\bq,A}(W+1;\mu),\label{clc:eq:A-ladder}\\
+ (\partial_\mu+A)\CC_{\bq,A}(W;\mu)
+      &=\CC_{\bq,A}(W-1;\mu).
+ \label{clc:eq:mu-ladder}
+\end{align}
+Both follow by differentiating \eqref{clc:eq:C-contour}; its exponential
+vertical majorant justifies each derivative. They also follow from the
+corresponding profile identities. Iteration gives
+\begin{equation}\label{clc:eq:A-higher}
+ \partial_A^d\CC_{\bq,A}(W;\mu)
+       =(-1)^d(W)_d\CC_{\bq,A}(W+d;\mu).
+\end{equation}
+Every mixed spectral derivative can be applied to these identities.
+The Pochhammer factor must then be differentiated too.
+
+\subsection{First and higher anchored antiderivatives}
+For an anchor $A_0$ in $\Rea A>-q_*$,
+\begin{equation}\label{clc:eq:first-primitive}
+ \int_{A_0}^A\CC_{\bq,u}(W;\mu)\dd u
+ =\frac{\CC_{\bq,A_0}(W-1;\mu)
+                  -\CC_{\bq,A}(W-1;\mu)}{W-1}.
+\end{equation}
+The integral is along any path in that half-plane. The right side is
+filled in at $W=1$ by
+\begin{equation}\label{clc:eq:first-resonant}
+ \CC_{\bq,A_0}^{[1]}(0;\mu)-\CC_{\bq,A}^{[1]}(0;\mu),
+\end{equation}
+since $\CC_{\bq,A}(0;\mu)=K_{\bq}(\mu)$ is independent of $A$.
+At $\mu=0$, this already gives a finite Gamma and polygamma primitive
+of the weight-one convolution.
+
+The same mechanism supplies every primitive order. Define
+\begin{align}
+ T_d(W;A,A_0;\mu)={}&\CC_{\bq,A}(W-d;\mu)\notag\\
+ &-\sum_{j=0}^{d-1}\frac{(A-A_0)^j}{j!}(-1)^j(W-d)_j
+             \CC_{\bq,A_0}(W-d+j;\mu).
+ \label{clc:eq:T-d}
+\end{align}
+
+\begin{theorem}[All anchored primitives, including resonance]
+\label{clc:thm:primitives}
+For $d\ge1$,
+\begin{equation}\label{clc:eq:primitive-d}
+ \boxed{\displaystyle
+ \int_{A_0}^A\frac{(A-u)^{d-1}}{(d-1)!}
+                 \CC_{\bq,u}(W;\mu)\dd u
+ =\frac{(-1)^dT_d(W;A,A_0;\mu)}{(W-d)_d}.}
+\end{equation}
+The right side is entire in $W$ after removing its apparent poles at
+$W=1,\ldots,d$. At $W=k$ in that range its value is
+\begin{equation}\label{clc:eq:primitive-resonance}
+ \frac{(-1)^k}{(k-1)!(d-k)!}
+            \left.\partial_WT_d(W;A,A_0;\mu)\right|_{W=k}.
+\end{equation}
+All order derivatives of these primitive identities are valid.
+\end{theorem}
+\begin{proof}
+Apply the ordinary Taylor formula with integral remainder, in the
+variable $A$, to $\CC_{\bq,A}(W-d;\mu)$ at $A_0$. Its $j$th derivative
+is given by \eqref{clc:eq:A-higher}. Its $d$th derivative is
+$(-1)^d(W-d)_d\CC_{\bq,A}(W;\mu)$. This proves
+\eqref{clc:eq:primitive-d} when the polynomial denominator is nonzero.
+The left side is entire in $W$, by local uniform holomorphy on a compact
+integration path. Therefore all apparent poles are removable.
+The polynomial $(W-d)_d=\prod_{j=1}^d(W-j)$ has simple zeros, with
+its derivative at $W=k$ equal to
+$(-1)^{d-k}(k-1)!(d-k)!$.
+Taking the quotient limit gives \eqref{clc:eq:primitive-resonance}.
+Local uniform holomorphy and Cauchy's formula give every order derivative.
+\end{proof}
+
+This formulation fixes all integration constants by the anchor and
+its vanishing derivatives through order $d-1$. It is stronger than
+writing an unanchored formal primitive and leaving its constants
+ambiguous at resonant orders.
+
+\subsection{Explicit Gamma primitives of the two-scale family}
+For $D_m(W;A)=\CC_{(1,m),A}(W;0)$, define $b_r=(A+r)/m$.
+When $m$ is odd, put
+\begin{equation}\label{clc:eq:Podd}
+ P_m(A)=\frac1m\left[\psi(b_m)
+                  -\pi\sum_{r=1}^{m-1}c_r^{(m)}\log\Gamma(b_r)\right].
+\end{equation}
+When $m$ is even, put
+\begin{equation}\label{clc:eq:Peven}
+ P_m(A)=\frac1m\left[\eta(1,b_m)-\pi\sum_{r=1}^{m-1}c_r^{(m)}
+ \log\frac{\Gamma(b_r/2)}{\Gamma((b_r+1)/2)}\right].
+\end{equation}
+Then in both cases
+\begin{equation}\label{clc:eq:Pderivative}
+ P_m'(A)=D_m(1;A),\qquad
+ \int_{A_0}^AD_m(1;u)\dd u=P_m(A)-P_m(A_0).
+\end{equation}
+To check the odd case directly, use
+$\psi'(b)=\zeta(2,b)$ and
+$\sum_rc_r^{(m)}\zeta(1,b_r)=-\sum_rc_r^{(m)}\psi(b_r)$,
+where the sum is understood after its residue cancellation.
+For the even case use
+$\partial_b\eta(1,b)=-\eta(2,b)$ and
+\[
+ \partial_b\log\frac{\Gamma(b/2)}{\Gamma((b+1)/2)}=-\eta(1,b).
+\]
+Both derivatives reproduce the $W=1$ case of the normalized pair formula,
+including its $m^{-2}$ factor. This is also an independent check of the
+sign in \eqref{clc:eq:first-resonant}.
+
+Subsequent center derivatives of \eqref{clc:eq:Podd} and
+\eqref{clc:eq:Peven} are finite polygamma expressions. The all-index
+Stieltjes formulas in Section~\ref{clc:sec:stieltjes}, followed by
+\eqref{clc:eq:primitive-d}, give their anchored order-jet primitives.
+Thus differentiation and integration are both covered without replacing
+a pole-cancelled expression by its singular separate pieces.

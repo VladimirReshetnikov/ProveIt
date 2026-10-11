@@ -1,0 +1,27 @@
+Independent mathematical audit of sections/05_quartic_harmonic.tex
+
+Conclusion: no mathematical error found in the inspected proof. Main identity, strict Laurent normalization, and primitive agree under the declared unit-coordinate finite-part convention.
+
+1. Mittag-Leffler entire remainder.
+The contour |w|=N+1/2 stays at least distance 1/2 from EVERY integer, by the reverse triangle inequality. On the right half the standard digamma expansion is uniform. On the left, reflection sends 1-w into Re>=1, and cot(pi w) is uniformly bounded on these circles. Thus f(w)=psi(w)^4-P0(w)=O(log^4 N). The integrand z f(w)/(w(w-z)) has integral O(log^4 N/N). Residues at z and 0 are f(z),-f(0); at -n they are -(Pn(z)-Pn(0)). Hence there is no undetermined entire remainder. Normal convergence follows from O(log^3 n/n^2) of the slowest subtracted term.
+
+2. Principal parts and C_*.
+I re-expanded psi(-n+epsilon) and its fourth power. b,c,e and the quartic Laurent coefficients all have the stated signs. At n=0 the regular constant is gamma^4-12gamma^2 zeta2+12gamma zeta3+6zeta2^2-4zeta4; zeta2^2=(5/2)zeta4 gives the stated +11zeta4.
+
+3. Integration constant K.
+Separately summing the quartic pole, cubic pole, and double-pole terms gives the printed K. In particular the cubic contribution (including P0) is 5zeta4-(4gamma+2)zeta3; the double-pole contribution is (24gamma+14)zeta3-12gamma zeta2-6gamma^2 zeta2-(17/2)zeta4. Together with the quartic contribution -zeta4 and C_* these yield exactly equation bhr:quartic-harmonic:K.
+
+4. Finite summation by parts.
+I independently entered the right side of bhr:quartic-harmonic:finite-sum as a formal polynomial, substituted the previous-step harmonic values, and subtracted r_N/N. SymPy simplified the exact residual to zero. Its asymptotic substitution also gave exact residual zero against -L^4+12zeta2 L^2+C, including the printed -23zeta4/2. Thus the potentially fragile boundary constants are independently confirmed.
+
+5. Laurent bridge.
+a_(n-1)=2zeta2-psi(n)^2-psi'(n). The remainder numerator is O(log n/n), yielding normal convergence of F(s) and every fixed spectral derivative for Re s>0. Expansion of strict harmonic numerators gives F=2Z3-2gamma Z2+(gamma^2+zeta2)zeta-zeta''. The u coefficient of -zeta''(1+u) is +gamma3, as printed. Substitution produces both main formulas and Q4+4gamma Q3 with correct signs.
+
+6. All-depth Mellin normalization.
+The kernel equals -(B(t)^d)'/d!, B'=-1/(e^t-1). Subtracting (-log t)^d 1_(t<1) introduces NO Dirac jump at t=1, since its value there is zero for every d>=1. V_d=O(t log^(d-1)t), so t^u V_d vanishes at zero for Re u>-1. Integrating by parts gives exactly 1/u^d+u/d! integral t^(u-1)V_d. Coefficients c_d and c_(d+1) are correct, including c4=gamma^4/24-gamma^2 zeta2/4+gamma zeta3/3+zeta4/16.
+
+7. Primitive and derivatives.
+The primitive has zero finite constant at z=0; all series braces vanish there and converge normally on Re z>0. Differentiating gives psi^4, and the stated arbitrary-order derivative formula has the correct factorial and binomial factors.
+
+Typesetting correction incorporated in the delivered article:
+Equation bhr:quartic-harmonic:A uses \left{ and \right}; replace by \left\{ and \right\}. The delivered modular and standalone sources contain the corrected braces.

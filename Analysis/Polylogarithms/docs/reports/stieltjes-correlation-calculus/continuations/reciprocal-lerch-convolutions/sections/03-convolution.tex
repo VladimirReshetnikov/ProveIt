@@ -1,0 +1,93 @@
+\section{Order addition at every multiplicative depth}
+\label{rlc:sec:convolution}
+
+For $r\ge2$, set $x_r=\mu-x_1-\cdots-x_{r-1}$ and define
+\begin{equation}\label{rlc:eq:convolution}
+ (f_{a,s_1}*\cdots*f_{a,s_r})(\mu)
+ =\int_{\R^{r-1}}\prod_{j=1}^r f_{a,s_j}(x_j)
+       \dd x_1\cdots\dd x_{r-1}.
+\end{equation}
+Equivalently $y_j=e^{x_j}$ and $y_1\cdots y_r=e^\mu$, with measure
+$\prod_{j<r}\dd y_j/y_j$. For $r=1$ use ordinary evaluation.
+
+\begin{theorem}[Entire-order addition]\label{rlc:thm:addition}
+For $\Rea a>0$, real $\mu$, and arbitrary $s_1,\ldots,s_r\in\C$,
+\eqref{rlc:eq:convolution} is absolutely convergent and depends on the
+orders only through $W=s_1+\cdots+s_r$. Denote it by $\CC_{r,a}(W;\mu)$.
+It is entire in $W$ and has the representation
+\begin{equation}\label{rlc:eq:barnes}
+ \CC_{r,a}(W;\mu)=\frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}
+ e^{p\mu}\left(\frac{\pi}{\sin\pi p}\right)^r
+ (p+a-1)^{-W}\dd p,
+\end{equation}
+where $c$ satisfies \eqref{rlc:eq:cstrip}. This formula extends it
+holomorphically to $|\Ima\mu|<r\pi$.
+Every fixed mixed order derivative can be passed through
+\eqref{rlc:eq:convolution}; a derivative of total degree $M$ gives
+$\partial_W^M\CC_{r,a}(W;\mu)$.
+\end{theorem}
+\begin{proof}
+Put $g_j(x)=e^{-cx}f_{a,s_j}(x)$. The factor $e^{c\mu}$ is constant
+on the constraint hyperplane. The integral of absolute values in
+\eqref{rlc:eq:convolution} is therefore at most
+\[
+ e^{c\mu}\|g_r\|_\infty\prod_{j<r}\|g_j\|_1.
+\]
+Lemma~\ref{rlc:lem:weighted} proves absolute convergence and locally
+uniform bounds for all parameter derivatives. The Fourier transform of
+$g_j$ is \eqref{rlc:eq:transform} at $p=c+it$. Its product is
+\[
+ \left(\frac{\pi}{\sin\pi p}\right)^r(p+a-1)^{-W}.
+\]
+This depends only on $W$. Fourier inversion is applicable because the
+product decays like $e^{-r\pi|t|}$ times a fixed power of $1+|t|$ on
+compact order sets. It gives \eqref{rlc:eq:barnes} and establishes
+pointwise equality, not merely equality almost everywhere; the
+convolutions are continuous. The same exponential decay proves the
+stated $\mu$ strip and entire dependence on $W$. Norm holomorphy and
+Cauchy's formula justify all differentiated integrals.
+\end{proof}
+
+For $\Rea W>0$, another useful form follows from the ordinary
+one-sided fractional-integral semigroup:
+\begin{equation}\label{rlc:eq:basefractional}
+ \CC_{r,a}(W;\mu)=\frac1{\Gamma(W)}
+ \int_0^\infty u^{W-1}e^{-(a-1)u}
+           f_0^{*r}(\mu-u)\dd u.
+\end{equation}
+One can prove it first with all $\Rea s_j>0$ by Fubini and the
+Dirichlet simplex integral; their sum of positive integration variables
+has Gamma density of order $W$. Alternatively its transform is
+\eqref{rlc:eq:barnes}. The kernel in
+\eqref{rlc:eq:basefractional} is then continued through $W=0,-1,\ldots$
+by the already established entire function, not by substituting into an
+improper integral that no longer converges.
+
+\subsection{A direct two-factor proof}
+It is useful to verify the main normalization without Fourier inversion.
+For $\Rea s,\Rea t>0$, insert the two Euler integrals and integrate the
+reciprocal variable first. For $u,v>0$,
+\[
+ \int_0^\infty
+ \frac{\dd y/y}{(1+ye^{-u})(1+y^{-1}e^{-v})}
+ =\frac{u+v}{1-e^{-(u+v)}}.
+\]
+This follows by one partial fraction decomposition; the logarithms at
+infinity cancel. With $w=u+v$, the remaining beta integral yields
+\begin{align*}
+ \int_0^\infty F_{a,s}(y)F_{a,t}(1/y)\frac{\dd y}{y}
+ &=\frac1{\Gamma(W)}\int_0^\infty
+       \frac{w^W e^{-(a-1)w}}{e^w-1}\dd w\\
+ &=W\zeta(W+1,a).
+\end{align*}
+Absolute convergence and entire-order continuation proved above give
+\eqref{rlc:eq:opening} for all $s,t$. In particular,
+\begin{equation}\label{rlc:eq:polylogpair}
+ \int_0^\infty\Li_s(-y)\Li_t(-1/y)\frac{\dd y}{y}
+     =(s+t)\zeta(s+t+1),
+\end{equation}
+with the removable value at zero understood. For example, the integrals
+for the order pairs $(1,1)$, $(2,1)$, and $(2,2)$ are respectively
+$2\zeta(3)$, $3\zeta(4)$, and $4\zeta(5)$.
+These examples illustrate the normalization; they are not offered as
+historical-priority claims.

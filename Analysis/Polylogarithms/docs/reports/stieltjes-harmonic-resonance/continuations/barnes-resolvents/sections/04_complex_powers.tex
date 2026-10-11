@@ -1,0 +1,545 @@
+\section{Complex cotangent powers and their resonant amplitudes}
+\label{bhr:cxp:sec:complex}
+
+Question R4 of the incoming \emph{Harmonic Parity and Resolvent
+Identities} report \cite{bhr:Parity} asks for a joint generator for nonintegral powers of
+the cotangent resolvent, with the moving endpoint amplitudes retained
+before expansion.  We prove such a generator and its finite-part
+conversion.  The primary result below covers every complex exponent
+with positive real part and every positive integral crossing.  A new
+Dirichlet-series coordinate is used explicitly; no finite reduction to
+ordinary polylogarithms is asserted for an arbitrary complex exponent.
+Nevertheless, its exponent jets have a finite multiple-polylogarithmic
+description, and one special resolvent point has a Gamma evaluation at
+every positive integral spectral order.
+
+\subsection{Branches and a binomial Dirichlet transform}
+
+Put
+\[
+ K(x)=\pi\cot(\pi x),\qquad R_z(x)=(K(x)-z)^{-1},
+ \qquad z\in\mathbb C\setminus\mathbb R.
+\]
+For the chosen half-plane define
+\[
+ \epsilon=\operatorname{sgn}\Im z,\quad
+ a=z+\epsilon\pi i,\quad A=-a^{-1},\quad
+ q=\frac{z-\epsilon\pi i}{z+\epsilon\pi i},\quad
+ \sigma=-2\epsilon\pi i.
+\]
+Then \(|q|<1\).  We take the continuous logarithm of \(K(x)-z\)
+whose imaginary part lies in \((-\pi,0)\) if \(\epsilon=1\) and
+in \((0,\pi)\) if \(\epsilon=-1\).  Consequently
+\[
+ R_z(x)^\lambda=\exp\{-\lambda\Log(K(x)-z)\}.
+\]
+Also \(\Log\sigma=\log(2\pi)-\epsilon\pi i/2\), and
+\(\Log A\) is the principal logarithm.
+
+With \(w=e^{2\epsilon\pi i x}\), elementary algebra gives
+\begin{equation}\label{bhr:cxp:eq:disk}
+ R_z(x)^\lambda
+ =A^\lambda(1-w)^\lambda(1-qw)^{-\lambda}.
+\end{equation}
+Here the two logarithms on the right are their holomorphic
+determinations in \(|w|<1\), continued to \(w\ne1\) on its boundary.
+To check the constant in this identity, both sides divided by
+\(x^\lambda\) tend to one as \(x\downarrow0\).  This fixes the phase
+at the other endpoint as well.
+
+Define
+\begin{align}
+ h_n(\lambda,q)
+ &=[w^n](1-w)^\lambda(1-qw)^{-\lambda}\notag\\
+ &=\sum_{k=0}^n
+   \frac{(-\lambda)_k(\lambda)_{n-k}}{k!(n-k)!}\,q^{n-k},
+ \label{bhr:cxp:eq:hn}\\
+ \mathcal L_\lambda(u,q)
+ &=\sum_{n=1}^{\infty}\frac{h_n(\lambda,q)}{n^u}.
+ \label{bhr:cxp:eq:L}
+\end{align}
+The Pochhammer symbols have their polynomial meaning, including at
+integral parameters.  The initial Dirichlet series converges normally
+where \(\Re(u+\lambda)>0\), locally in \(|q|<1\).  One way to see
+the needed coefficient estimate is to convolve the binomial
+coefficients of \((1-w)^\lambda\) with the exponentially decaying
+coefficients of \((1-qw)^{-\lambda}\); on compact parameter sets this
+gives \(h_n=O(n^{-\Re\lambda-1})\), with a harmless uniform weakening
+of the exponent at the boundary of a compact set.
+
+\begin{theorem}[Joint continuation of the binomial transform]
+\label{bhr:cxp:thm:L}
+The function \(\mathcal L_\lambda(u,q)\) continues meromorphically
+in \((u,\lambda)\in\mathbb C^2\), holomorphically in \(|q|<1\).
+Its possible polar hypersurfaces are
+\[
+ u+\lambda=-j,\qquad j=0,1,2,\ldots.
+\]
+Away from them,
+\[
+ \mathcal L_\lambda(0,q)=-1,\qquad
+ \mathcal L_\lambda(-N,q)=0\quad(N\ge1).
+\]
+These equalities concern the meromorphic restriction at the indicated
+spectral order.  At an intersection with a polar hypersurface,
+substitution and continuation need not commute.
+\end{theorem}
+
+\begin{proof}
+For \(\Re u>0\) and \(\Re(u+\lambda)>0\), termwise integration
+gives
+\begin{equation}\label{bhr:cxp:eq:mellin}
+ \Gamma(u)\mathcal L_\lambda(u,q)
+ =\int_0^\infty t^{u-1}
+ \left[
+ \left(\frac{1-e^{-t}}{1-qe^{-t}}\right)^\lambda-1
+ \right]\,dt.
+\end{equation}
+The positive real logarithm of \(1-e^{-t}\), and the holomorphic
+logarithm of \(1-qe^{-t}\), specify its powers.  Set
+\[
+ \left(\frac{1-e^{-t}}{1-qe^{-t}}\right)^\lambda
+   =t^\lambda\sum_{j\ge0}b_j(\lambda,q)t^j.
+\]
+The coefficients are entire in \(\lambda\), holomorphic in \(q\).
+For any fixed \(N\), split the integral at one and subtract the
+first \(N\) terms of this local expansion.  The result is
+\begin{align}
+ \Gamma(u)\mathcal L_\lambda(u,q)
+ ={}&-\frac1u+
+   \sum_{j=0}^{N-1}\frac{b_j(\lambda,q)}{u+\lambda+j}
+   +E_N(u,\lambda,q),\label{bhr:cxp:eq:subtraction}
+\end{align}
+where \(E_N\) is holomorphic when \(\Re(u+\lambda)>-N\).
+The tail at infinity is exponentially convergent on every compact
+parameter set.  Increasing \(N\) proves the continuation.  Division
+by \(\Gamma(u)\) removes the isolated pole \(-1/u\), with value
+\(-1\) at \(u=0\), and gives zero at the other nonpositive
+integers whenever no moving denominator vanishes.
+\end{proof}
+
+\subsection{The completed spectral generator}
+
+Use the conventional normalization
+\[
+ \zeta(1-s,x)=-\frac1s+
+    \sum_{m\ge0}\gamma_m(x)\frac{s^m}{m!},
+ \qquad \gamma_0(x)=-\psi(x).
+\]
+For an integer \(p\ge0\), let
+\[
+ A_p(s)=\prod_{k=1}^p(s-k),\qquad A_0(s)=1.
+\]
+Argument differentiation satisfies
+\[
+ \partial_x^p\zeta(1-s,x)
+   =A_p(s)\zeta(1+p-s,x).
+\]
+The notation \(\gamma_m^{(p)}\) below always means argument
+differentiation.
+
+\begin{theorem}[Complex-power cotangent generator]
+\label{bhr:cxp:thm:generator}
+In the ordinary-integral region
+\(\Re\lambda>-1,\ \Re(s+\lambda)>p\), away from the Hurwitz
+pole when \(p=0\),
+\begin{equation}\label{bhr:cxp:eq:J}
+ \mathcal J_p(s,\lambda,z):=
+ \int_0^1\partial_x^p\zeta(1-s,x)R_z(x)^\lambda\,dx
+ =A^\lambda\Gamma(s)\sigma^{p-s}
+       \mathcal L_\lambda(s-p,q).
+\end{equation}
+This identity defines a joint meromorphic continuation to all
+\((s,\lambda)\).  Besides the pole
+\(-A^\lambda/s\) when \(p=0\), its only possible polar
+hypersurfaces are
+\[
+ s+\lambda=p-j,\qquad j=0,1,\ldots.
+\]
+Define the completed family
+\begin{equation}\label{bhr:cxp:eq:F}
+ \mathcal F_p(s,\lambda,z)=
+ \mathcal J_p(s,\lambda,z)
+       +\mathbf1_{p=0}\frac{A^\lambda}{s}.
+\end{equation}
+For \(\Re\lambda>p\) the ordinary absolutely convergent moments
+\begin{equation}\label{bhr:cxp:eq:M}
+ \mathcal M_{m,p}(\lambda,z)=
+ \int_0^1\gamma_m^{(p)}(x)R_z(x)^\lambda\,dx
+ =m![s^m]\mathcal F_p(s,\lambda,z)
+\end{equation}
+therefore have meromorphic continuations in \(\lambda\), with
+possible poles only at the integers \(\lambda\le p\), of order
+at most \(m+1\).
+\end{theorem}
+
+\begin{proof}
+First suppose \(\Re\lambda>0\) and \(\Re s>p+1\).
+The Fourier series of the kernel in \eqref{bhr:cxp:eq:disk}
+is absolutely convergent.  The classical Hurwitz Fourier identity
+\cite[25.11.9]{bhr:DLMFZ} gives
+\[
+ \int_0^1\zeta(1-s,x)\,dx=0,\qquad
+ \int_0^1\partial_x^p\zeta(1-s,x)
+           e^{2\epsilon\pi i n x}\,dx
+ =\Gamma(s)\sigma^{p-s}n^{p-s}.
+\]
+The constant kernel mode vanishes, and summing the other modes
+proves \eqref{bhr:cxp:eq:J}.  The endpoint decomposition
+\[
+ \partial_x^p\zeta(1-s,x)
+ =A_p(s)x^{s-p-1}
+       +\partial_x^p\zeta(1-s,1+x)
+\]
+shows normal integrability on the larger region stated in the
+theorem, so the identity extends there.
+
+In \eqref{bhr:cxp:eq:subtraction}, put \(u=s-p\) and use
+\(\Gamma(s)/\Gamma(s-p)=A_p(s)\).  The moving denominators
+give exactly the indicated hypersurfaces.  The isolated term
+\(-1/(s-p)\) is cancelled by \(A_p(s)\) for \(p\ge1\); for
+\(p=0\) it gives residue \(-A^\lambda\).  This proves the
+claimed completion.  Finally, the mean of the kernel is \(A^\lambda\)
+for \(\Re\lambda>0\), by its constant Fourier coefficient.
+Termwise Stieltjes expansion is valid when \(\Re\lambda>p\),
+including all powers of the endpoint logarithm.  This proves
+\eqref{bhr:cxp:eq:M} and its continuation.
+\end{proof}
+
+\begin{corollary}[Lowest Stieltjes index and shift identities]
+\label{bhr:cxp:cor:shifts}
+Away from the moving poles,
+\begin{align*}
+ \mathcal M_{0,0}(\lambda,z)
+ &=A^\lambda\left(
+   \gamma+\Log\sigma+
+         \left.\partial_u\mathcal L_\lambda(u,q)\right|_{u=0}\right),\\
+ \mathcal M_{0,p}(\lambda,z)
+ &=A^\lambda\sigma^p
+         \left.\partial_u\mathcal L_\lambda(u,q)\right|_{u=-p}
+                                      \qquad(p\ge1).
+\end{align*}
+The continued moments satisfy the meromorphic identities
+\begin{align}
+ \partial_z\mathcal M_{m,p}(\lambda,z)
+   &=\lambda\mathcal M_{m,p}(\lambda+1,z),\label{bhr:cxp:eq:zshift}\\
+ \mathcal M_{m,p+1}(\lambda,z)
+   &=-\lambda\bigl(
+       \mathcal M_{m,p}(\lambda-1,z)
+       +2z\mathcal M_{m,p}(\lambda,z)\notag\\
+   &\hspace{39mm}
+       +(z^2+\pi^2)\mathcal M_{m,p}(\lambda+1,z)\bigr).
+       \label{bhr:cxp:eq:pshift}
+\end{align}
+\end{corollary}
+\begin{proof}
+The first two formulas follow by expanding \(\Gamma(s)\sigma^{-s}\)
+and using Theorem~\ref{bhr:cxp:thm:L} at \(0,-p\).
+The first shift follows from
+\(\partial_zR_z^\lambda=\lambda R_z^{\lambda+1}\).
+For the second, integrate by parts where \(\Re\lambda>p+1\),
+so the boundary terms vanish, and use
+\[
+ R_z'=1+2zR_z+(z^2+\pi^2)R_z^2.
+\]
+Continuation proves the meromorphic statements.  At a resonant
+integer, a pointwise finite-part version must use the conversion
+in the next theorem before substituting.
+\end{proof}
+
+\subsection{All positive resonances and the two finite parts}
+
+Finite parts in the next theorem use the original \(x\)-coordinate:
+they retain the constant coefficient in the cutoff integral
+\(\int_\eta^{1-\eta}\), after removing every nonintegrable power
+and logarithm.  For a complex exponent of positive real part this
+definition is unambiguous from the local power-log expansion.
+It agrees with the ordinary integral whenever that integral converges.
+
+The complete local amplitude is elementary.  Write
+\begin{equation}\label{bhr:cxp:eq:d}
+ D_j(\lambda,z)
+ =[x^j]\bigl(\pi x\cot(\pi x)-zx\bigr)^{-\lambda}.
+\end{equation}
+Thus \(R_z(x)^\lambda
+=x^\lambda\sum_{j\ge0}D_j(\lambda,z)x^j\) near zero, with
+\[
+ D_0=1,\qquad D_1=\lambda z,\qquad
+ D_2=\frac{\lambda\pi^2}{3}
+       +\frac{\lambda(\lambda+1)z^2}{2}.
+\]
+Every \(D_j\) is a polynomial in \(\lambda,z,\pi^2\) with rational
+coefficients, and has degree at most \(j\) in \(\lambda\).
+
+\begin{theorem}[Resonant amplitudes and finite-part conversion]
+\label{bhr:cxp:thm:contacts}
+For a positive integer \(r\le p\), put \(j=p-r\).
+In a neighborhood of \((s,\lambda)=(0,r)\),
+\begin{equation}\label{bhr:cxp:eq:amplitude}
+ \mathcal F_p(s,\lambda,z)
+  =\frac{A_p(s)D_j(\lambda,z)}{s+\lambda-r}
+      +H_{p,r}(s,\lambda,z),
+\end{equation}
+where \(H_{p,r}\) is jointly holomorphic.  Hence, for every
+positive integer \(r\),
+\begin{align}
+ &\operatorname{FP}_x\int_0^1
+       \gamma_m^{(p)}(x)R_z(x)^r\,dx\notag\\
+ &\quad =
+ m![s^m]\left\{
+   \mathcal F_p(s,r,z)
+   -\mathbf1_{r\le p}\frac{A_p(s)D_{p-r}(r,z)}s
+           \right\}. \label{bhr:cxp:eq:fixed-r}
+\end{align}
+
+There is also an explicit comparison with continuation in the
+kernel exponent.  Write \(A_p(s)=\sum_{h=0}^p a_{p,h}s^h\).
+For \(1\le r\le p\), define
+\begin{equation}\label{bhr:cxp:eq:Delta}
+ \Delta_{m,p,r}(z)=m!
+ \sum_{h=0}^{\min(p,m)}
+ \frac{(-1)^{m-h}a_{p,h}}{(m-h+1)!}\,
+ \left.\partial_\lambda^{\,m-h+1}
+                 D_{p-r}(\lambda,z)\right|_{\lambda=r}.
+\end{equation}
+Then
+\begin{equation}\label{bhr:cxp:eq:lambdaCT}
+ \operatorname{FP}_x\int_0^1
+   \gamma_m^{(p)}(x)R_z(x)^r\,dx
+ =\operatorname{CT}_{\lambda=r}
+      \mathcal M_{m,p}(\lambda,z)-\Delta_{m,p,r}(z).
+\end{equation}
+For \(\Re\lambda>0\) away from the positive integers
+\(1,\ldots,p\), the meromorphic value of
+\(\mathcal M_{m,p}\) equals the pointwise \(x\)-finite part.
+\end{theorem}
+
+\begin{proof}
+Subtract a sufficiently long full local Taylor jet, so that the
+remaining endpoint integral converges normally near \((0,r)\).
+Among the explicitly integrated Taylor terms, the only one whose
+exponent crosses \(-1\) there is
+\[
+ A_p(s)D_{p-r}(\lambda,z)
+                 x^{s+\lambda-r-1}.
+\]
+Use a smooth cutoff on a small interval next to zero.
+The continued integrals of all other Taylor terms, and the normally
+convergent remainder, are holomorphic near \((0,r)\).
+The distinguished term has meromorphic integral with polar part
+\(A_p(s)D_{p-r}(\lambda,z)/(s+\lambda-r)\).
+Replacing the cutoff by one only changes a holomorphic function;
+this proves \eqref{bhr:cxp:eq:amplitude} with the indicated full
+amplitude, not just its value on the polar hyperplane.
+
+At fixed \(\lambda=r\), the analytically continued integral of
+the resonant local term is \(A_p(s)D_{p-r}(r,z)/s\).
+Every coefficient of \(x^{s-1}\) is a power of \(\log x\)
+divided by \(x\), whose finite part on \((0,1)\) is zero.
+Deleting the entire amplitude before expansion proves
+\eqref{bhr:cxp:eq:fixed-r}.  Terms on the cutoff complement
+cancel the artificial splitting point.
+
+For the second formula, put \(\delta=\lambda-r\) and take
+the \(s^m\) coefficient of the polar term in
+\eqref{bhr:cxp:eq:amplitude}.  It is
+\[
+ m!\sum_{h=0}^{\min(p,m)}
+  (-1)^{m-h}a_{p,h}
+       \frac{D_{p-r}(r+\delta,z)}{\delta^{m-h+1}}.
+\]
+Its constant Laurent coefficient is exactly
+\eqref{bhr:cxp:eq:Delta}.  The holomorphic remainder contributes
+the same value along either order of expansion.  This proves
+\eqref{bhr:cxp:eq:lambdaCT}.  Away from a crossing, endpoint
+subtractions have nonzero exponents, and coefficient extraction
+commutes with finite-part integration.
+\end{proof}
+
+The theorem supplies the full principal part as well: expand the
+polynomial \(D_{p-r}(r+\delta,z)\) in the last display and retain
+negative powers of \(\delta\).  Some potential poles cancel.
+In particular, \(\Delta_{m,p,p}=0\), since \(D_0=1\);
+a collision does not automatically imply a nonzero conversion term.
+
+\paragraph{A nonzero conversion for the simple resolvent.}
+The simplest example is \(m=0,p=2,r=1\).  Since
+\(A_2(s)=s^2-3s+2\) and \(D_1(\lambda,z)=\lambda z\),
+\[
+ \Delta_{0,2,1}(z)=2z.
+\]
+At \(z=i\pi\), set \(\ell=\log(2\pi)-i\pi/2\).
+The finite Fourier series
+\(R_{i\pi}(x)=(e^{2\pi ix}-1)/(2\pi i)\) gives
+\[
+ \operatorname{FP}_x\int_0^1\gamma_0''(x)R_{i\pi}(x)\,dx
+       =2\pi i\left(\frac32-\gamma-\ell\right).
+\]
+It follows that
+\begin{equation}\label{bhr:cxp:eq:noncommute}
+ \operatorname{CT}_{\lambda=1}
+       \mathcal M_{0,2}(\lambda,i\pi)
+       =2\pi i\left(\frac52-\gamma-\ell\right).
+\end{equation}
+The two constants differ by \(2\pi i\).  This is a concrete
+obstruction to identifying exponent continuation with the
+specified \(x\)-finite part.  In contrast the case
+\(m=0,p=r=1\) has no exponent-axis correction.
+
+\paragraph{Exact recovery of integral powers.}
+For a positive integer \(r\) and \(q\ne0\), partial fractions give
+\[
+ h_n(r,q)=q^{n-r}
+   \sum_{j=1}^r\binom rj(q-1)^j
+                    \binom{n+j-1}{j-1}\qquad(n\ge1).
+\]
+The binomial on the right is a polynomial of degree \(j-1\) in
+\(n\).  Consequently \(\mathcal L_r(u,q)\) is a finite linear
+combination of the ordinary \(\operatorname{Li}_{u-k}(q)\),
+\(0\le k<r\), with rational coefficients in \(q\).
+At \(q=0\) the removable limiting expression is
+\[
+ \mathcal L_r(u,0)
+       =\sum_{n=1}^r\frac{(-1)^n\binom rn}{n^u}.
+\]
+Thus the completed generator recovers precisely the ordinary
+polylogarithm class of the previous repeated-resolvent theorem.
+
+\subsection{Gamma closure at a special point}
+
+For \(z=\epsilon i\pi\) one has \(q=0\), and
+\[
+ \mathcal L_\lambda(u,0)
+       =\sum_{n\ge1}\frac{(-\lambda)_n}{n!\,n^u}.
+\]
+At every positive integer \(u\), this new coordinate reduces to
+generalized harmonic numbers at a complex argument.  Define
+\[
+ H_\lambda^{(1)}=\psi(1+\lambda)+\gamma,\qquad
+ H_\lambda^{(r)}=\zeta(r)-\zeta(r,1+\lambda)\quad(r\ge2),
+\]
+initially for \(\Re\lambda>-1\) and then meromorphically.
+
+\begin{theorem}[Every integral spectral order at \(q=0\)]
+\label{bhr:cxp:thm:gamma}
+For \(N\ge1\),
+\begin{equation}\label{bhr:cxp:eq:Bell}
+ \mathcal L_\lambda(N,0)
+ =-\frac1{N!}Y_N\bigl(
+     H_\lambda^{(1)},1!H_\lambda^{(2)},\ldots,
+                          (N-1)!H_\lambda^{(N)}\bigr),
+\end{equation}
+where \(Y_N\) is the complete exponential Bell polynomial.
+Equivalently, near \(v=0\),
+\begin{equation}\label{bhr:cxp:eq:beta-generator}
+ \sum_{N\ge1}\mathcal L_\lambda(N,0)v^{N-1}
+ =\frac1v\left\{
+ 1-\frac{\Gamma(1-v)\Gamma(1+\lambda)}
+                 {\Gamma(1+\lambda-v)}\right\}.
+\end{equation}
+In particular,
+\[
+ \mathcal L_\lambda(1,0)=-H_\lambda^{(1)},\qquad
+ \mathcal L_\lambda(2,0)
+ =-\frac{(H_\lambda^{(1)})^2+H_\lambda^{(2)}}2.
+\]
+\end{theorem}
+
+\begin{proof}
+For \(\Re\lambda>-1\) and \(\Re t>0\), the beta integral gives
+\[
+ \sum_{n\ge1}\frac{(-\lambda)_n}{n!(n+t)}
+  =\int_0^1 y^{t-1}\bigl((1-y)^\lambda-1\bigr)\,dy
+  =\frac{\Gamma(t)\Gamma(1+\lambda)}
+           {\Gamma(1+\lambda+t)}-\frac1t.
+\]
+Expand at \(t=-v\).  The left side generates the positive
+integral spectral orders.  On the right,
+\[
+ \log\frac{\Gamma(1-v)\Gamma(1+\lambda)}
+              {\Gamma(1+\lambda-v)}
+   =\sum_{r\ge1}\frac{H_\lambda^{(r)}}r\,v^r.
+\]
+The defining Bell-polynomial generating function proves both
+identities.  Meromorphic continuation removes the initial
+restrictions.  This is a beta-integral specialization, not a claim
+of priority for the classical binomial-harmonic identity.
+\end{proof}
+
+\subsection{Exponent jets and colored multiple polylogarithms}
+
+There is also an exact finite description of every exponent jet at
+\(\lambda=0\).  For \(q\ne0,\ |q|<1\), let
+\(\mathcal A=\{1,q\}\), with signs \(\nu(1)=-1,\nu(q)=1\).
+The multiple polylogarithm uses decreasing indices:
+\[
+ \operatorname{Li}_{s_1,\ldots,s_d}(z_1,\ldots,z_d)
+ =\sum_{n_1>\cdots>n_d\ge1}
+       \frac{z_1^{n_1}\cdots z_d^{n_d}}
+            {n_1^{s_1}\cdots n_d^{s_d}}.
+\]
+
+\begin{proposition}[All exponent jets at zero]
+\label{bhr:cxp:prop:jets}
+For \(d\ge1\) and \(\Re u>0\),
+\begin{equation}\label{bhr:cxp:eq:MPL}
+ \left.\partial_\lambda^d\mathcal L_\lambda(u,q)
+                                      \right|_{\lambda=0}
+ =d!\sum_{a_1,\ldots,a_d\in\mathcal A}
+ \left(\prod_{j=1}^d\nu(a_j)\right)
+ \operatorname{Li}_{u+1,\{1\}^{d-1}}
+       \left(a_1,\frac{a_2}{a_1},\ldots,
+                                \frac{a_d}{a_{d-1}}\right).
+\end{equation}
+All displayed nested sums converge absolutely.  Their cumulative
+color products are \(a_j\in\{1,q\}\), so the appearance of
+\(q^{-1}\) as an individual color causes no convergence problem.
+For nonintegral \(u\), these are nested Dirichlet sums with a complex first index; at positive integral \(u\), they are classical colored multiple polylogarithms.
+At \(q=0\), the continuous limiting identity is
+\[
+ \left.\partial_\lambda^d\mathcal L_\lambda(u,0)
+                                      \right|_{\lambda=0}
+       =(-1)^d d!\,\zeta(u+1,\{1\}^{d-1}).
+\]
+\end{proposition}
+
+\begin{proof}
+Put \(F(w)=\operatorname{Li}_1(qw)-\operatorname{Li}_1(w)\).
+The \(d\)-th exponent derivative of the disk kernel at zero is
+\(F(w)^d\).  Repeated integration of
+\[
+ F'(w)=\frac{q}{1-qw}-\frac1{1-w}
+\]
+proves the shuffle identity
+\[
+ \frac{F(w)^d}{d!}
+ =\sum_{a_1,\ldots,a_d\in\mathcal A}
+   \left(\prod_j\nu(a_j)\right)
+ \operatorname{Li}_{\{1\}^d}
+     \left(a_1w,\frac{a_2}{a_1},\ldots,
+                                   \frac{a_d}{a_{d-1}}\right).
+\]
+Multiplying the coefficient of \(w^n\) by \(n^{-u}\) raises
+the first index from one to \(u+1\).  Absolute convergence for
+\(\Re u>0\) justifies evaluation at \(w=1\) and all coefficient
+interchanges.  If \(q=0\), only the letter one survives.
+\end{proof}
+
+The first jet is the simple identity
+\[
+ \left.\partial_\lambda\mathcal L_\lambda(u,q)\right|_0
+       =\operatorname{Li}_{u+1}(q)-\zeta(u+1).
+\]
+Higher jets explain how generalized harmonic sums and increasing
+multiple-polylogarithm depth enter complex powers.  The finite
+description is proved for each fixed jet; it does not imply finite
+ordinary-polylogarithm closure after summing all jets.
+
+\paragraph{Verification.}
+The accompanying program independently compares the spectral
+generator with ordinary \(x\)-quadrature at nonintegral complex
+parameters, checks the Gamma specialization against Mellin
+quadrature, and compares a nearby-exponent Laurent extrapolation
+with \eqref{bhr:cxp:eq:noncommute}.  Its recorded numerical residuals
+are diagnostics.  The continuation, pole classification, and
+all-order conversion rest on the local subtractions above.

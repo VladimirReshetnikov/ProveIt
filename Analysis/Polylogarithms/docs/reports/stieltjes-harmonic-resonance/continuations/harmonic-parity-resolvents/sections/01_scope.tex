@@ -1,0 +1,196 @@
+\section{Scope, main results, and mathematical conventions}
+\label{scope:section}
+
+The objective is to obtain exact identities that survive the passage
+between spectral parameters, endpoint singularities, and ordinary
+special functions. Four aspects of the existing research collection
+are particularly productive: centered harmonic expansions,
+cotangent--Hurwitz transforms, entire relative harmonic interpolants,
+and holomorphic remainders of multivariate zeta functions. Each already
+has a substantial foundation in the manuscript or the incoming reports.
+The present article extends that foundation at specific open points.
+
+\subsection{The inspected baseline and the status of the questions}
+
+The source baseline is the repository revision \snapshot,
+dated 11 October 2026 at 00:52:39 UTC. We inspected the relevant
+canonical manuscript chapters and the nine incoming archives listed
+in the accompanying source manifest. The most direct starting points
+are \emph{Exact Resonant Identities} \cite{ghp:ExactResonant},
+\emph{Independent Orders and Exact Reductions} \cite{qtr:Independent},
+and \emph{Cubic Tornheim Derivatives and Harmonic Stieltjes
+Constants} \cite{source:Cubic}. The original manuscript remains
+the reference for its established normalization and conjecture labels
+\cite{source:manuscript}.
+
+This is a targeted continuation and audit of those areas, not a claim
+to have checked every line of all manuscript volumes. In particular,
+the short $S_6$ reduction and the revised $S_8$ reduction remain
+conjectures. Previously rejected candidate vectors and previously
+reported corrections are distinguished from current candidates in
+Section~\ref{audit:section}.
+
+The following table states the exact scope of the main advances.
+Resolution refers to the indicated mathematical question, with the
+domains and qualifications in the cited theorem.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.23\textwidth}Y p{0.19\textwidth}@{}}
+\toprule
+Source question or direction & Result proved here & Location\\
+\midrule
+Exact Resonant Q11: generalized harmonic cancellation
+& Necessary and sufficient centered involution criterion for all
+nonpositive even spectral points.
+& Theorem~\ref{ghp:thm:classification}\\
+\addlinespace
+Explicit centered values beyond raw $H_n$ powers
+& Every trigamma-square even moment, its ordinary convergent
+subtracted sum, and a convergent polylogarithmic generator.
+& Theorems~\ref{ghp:thm:square}, \ref{ghp:thm:generator}\\
+\addlinespace
+Exact Resonant Q8: a nonpolynomial cotangent family
+& The complete rational sector bounded at infinity, with the
+all-index endpoint correction.
+& Theorem~\ref{res:main}; Corollary~\ref{res:repeated}\\
+\addlinespace
+Exact Resonant Q9: normalized primitive families
+& The resolvent transform of every balanced Gamma primitive and
+the continuous-order conversion formula.
+& Theorem~\ref{res:continuous}; Corollary~\ref{res:balancedcor}\\
+\addlinespace
+Independent Orders: nonpositive-index reductions
+& Arbitrary positions and depths, a canonical finite normal form,
+and an analytic zero-decoration generator.
+& Theorems~\ref{harm:local}--\ref{harm:Lerch}\\
+\addlinespace
+Independent Orders and Cubic Harmonic: quartic rays
+& All quartic directions in three coordinates; cyclic directions
+in one diagonal coordinate.
+& Theorem~\ref{qtr:quartic}; equation~\eqref{qtr:cyclicquartic}\\
+\addlinespace
+Higher directional relations
+& Exact formal kernel and cyclic-image dimensions for the named
+relations, and a fifth-order obstruction.
+& Theorem~\ref{qtr:kernel}; Corollary~\ref{qtr:cyclicimage}\\
+\bottomrule
+\end{tabularx}
+\caption{Results relative to the pinned source questions. The primitive
+and higher-order statements resolve the specified families, rather than
+every possible extension proposed in the source.}
+\label{scope:table}
+\end{table}
+
+\subsection{A selection of exact identities}
+
+Three compact examples illustrate the different kinds of conclusion.
+The centered square identity
+\begin{equation}\label{scope:sample-square}
+ \sum_{n=0}^{\infty}
+ \left((n+\tfrac12)^2\psi'(n+1)^2-1\right)
+       =-\frac14\zeta(3)-\frac16
+\end{equation}
+is an ordinary absolutely convergent series. It is the first
+nontrivial member of a complete all-even family, rather than a
+numerically recognized isolated value.
+
+The pointwise endpoint finite part
+\begin{equation}\label{scope:sample-resolvent}
+ \operatorname{FP}_x\int_0^1
+ \frac{\psi'(x)}{\pi\cot(\pi x)-i\pi}\,dx
+       =1-\gamma-\log(2\pi)+\frac{i\pi}{2}
+\end{equation}
+has a boundary contribution equal to $1$. Analytically continuing an
+integrated spectral family and then substituting the integer order
+without that contribution gives a different value. The all-index
+theorem locates this difference before any expansion.
+
+For the Tornheim restriction $W_{a,b,c}(t)=T(at,bt,ct)$ and
+$\Lambda=W_{1,1,1}^{(4)}(0)$, a cyclic combination gives
+\begin{align}\label{scope:sample-quartic}
+ &W_{1,2,3}^{(4)}(0)+W_{2,3,1}^{(4)}(0)
+       +W_{3,1,2}^{(4)}(0)-36\Lambda\notag\\
+ &\hspace{13mm}=-184\log(2\pi)\zeta'''(0)
+                +156\zeta''(0)^2-386\zeta''''(0).
+\end{align}
+The cancellation is an exact polynomial identity between directional
+coefficients. It does not require an assumption about relations among
+the individual constants.
+
+\subsection{Conventions and the meaning of a reduction}
+
+We use
+\[
+ \zeta(1+t,x)=\frac1t+
+      \sum_{m\ge0}\frac{(-1)^m}{m!}\gamma_m(x)t^m,\qquad
+ \gamma_m=\gamma_m(1),\qquad \gamma=\gamma_0,
+\]
+and $\psi=\Gamma'/\Gamma$. Primes on a one-variable zeta function, or
+$\zeta^{(j)}(s,x)$ with the first argument displayed, mean derivatives
+in the spectral argument. Superscripts on $\psi$ and $\gamma_m(x)$
+mean derivatives in $x$. When confusion is possible, a square
+superscript $[j]$ denotes a polylogarithmic order derivative:
+\[
+ \Li_s^{[j]}(z)=\partial_s^j\Li_s(z).
+\]
+All logarithms of positive real quantities are real. Complex powers
+use the specified branch; Hurwitz endpoints are initially in the
+right half-plane. Bernoulli numbers satisfy $B_1=-1/2$.
+All branches required by the resolvent formulas are given explicitly
+in Section~\ref{res:section}.
+
+The term \emph{reduction} is always relative to a stated target class.
+For the harmonic deletion theorem it means a finite linear combination
+with polynomial endpoint coefficients and only the surviving free
+orders. For a rational cotangent kernel it means finitely many
+polylogarithmic order derivatives at explicit arguments. For the
+quartic Tornheim layer it means three explicitly normalized
+coordinates, two of which are supplied with ordinary convergent
+representatives. It does not silently mean reduction to a conjectured
+algebra of familiar constants.
+
+There are three distinct analytic operations in the proofs.
+A meromorphic continuation is uniquely determined from a convergence
+domain. A coordinate finite part extracts the constant term of a
+cutoff integral in its stated endpoint variable. A directional
+restriction of a meromorphic function is formed before taking its
+one-variable limit. These operations sometimes agree and sometimes
+differ by explicit terms. The article proves the needed compatibility
+at each use.
+
+\subsection{Proof inputs and attribution}
+
+The sufficient half-shift parity argument is elementary asymptotic
+algebra. Its converse uses the formal-Laurent version of the
+Adamczewski--Dreyfus--Hardouin theorem
+\cite[Theorem~1.2]{ghp:ADH}. This use is spelled out, including a
+proof that the relevant formal trigamma series is not rational.
+It supplies differential algebraic independence of functions and
+formal series; it says nothing about algebraic independence of
+Euler's constant or zeta values.
+
+The Mellin, Fourier, Bernoulli, Gamma, and polylogarithm expansions
+used below are classical \cite{DLMF}. The relative harmonic
+interpolant and the Tornheim polar normalization are inherited from
+the pinned incoming reports; the underlying one-endpoint
+interpolant is due to Ihara, Nakamura, and Yamamoto \cite{harm:INY}.
+The continuous polygamma function and balanced negapolygamma functions
+are the established Espinosa--Moll functions \cite{EM}.
+Polynomial Hurwitz and Stieltjes primitives are also established
+in Espinosa--Moll \cite{harm:EM} and the canonical manuscript.
+Our fully indexed arbitrary-endpoint version is included to make the
+new finite reduction calculus directly usable.
+
+The centered trigamma-square family should also be distinguished
+from the weighted squares of \emph{differences} of trigamma functions
+already evaluated in the incoming mixed-spectral report
+\cite{source:Mixed}. Both are exact identities; their summands,
+parameters, and generating mechanisms are different.
+
+All results described as developments are developments relative to
+the inspected source baseline. The article makes no literature-wide
+priority claim. Proofs are analytic and algebraic; the accompanying
+programs provide finite exact checks and numerical diagnostics, not
+proof-assistant verification of the analytic theorems.

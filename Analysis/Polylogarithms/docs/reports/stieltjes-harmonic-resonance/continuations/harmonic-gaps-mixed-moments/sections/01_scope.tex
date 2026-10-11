@@ -1,0 +1,155 @@
+\section{Scope, principal results, and conventions}
+\label{scope:section}
+
+This continuation starts at the explicit questions R1, R7, and R8 of
+\emph{Harmonic Parity and Resolvent Identities}, preserved in the incoming
+directory at the pinned revision \cite{IncomingParity,Repository}.
+R1 asks for mixed even-tail moments, beginning with orders two and four.
+R7 asks for a genuinely convergent generator with several free harmonic
+orders and arbitrary zero blocks. R8 asks for a derivative transverse to
+a harmonic index that is subsequently set to a nonpositive integer.
+The corresponding results here are independent theorems with compatible
+normalizations.
+
+\subsection{What is established}
+
+\begin{enumerate}[leftmargin=*,label=\textbf{\arabic*.}]
+\item \textbf{All zero decorations with independent orders.}
+Theorem~\ref{zbg:main} proves a single analytic formula for
+\[
+ \sum_{p_0,\ldots,p_k\geq0}
+ \HH_{a,b}(0^{p_0},s_1,0^{p_1},\ldots,s_k,0^{p_k})
+                     u_0^{p_0}\cdots u_k^{p_k}.
+\]
+Every $s_j$ is an independent complex variable. The series converges
+locally normally for $|u_j|<1$, with a domain that does not shrink with
+$k$. The proof gives all branch cancellations and does not infer an
+analytic identity from agreement at integer endpoints.
+
+\item \textbf{Transverse Gamma and Stieltjes gaps.}
+Theorems~\ref{tr:gap} and~\ref{tr:integral} prove every order of
+\[
+ \left.\partial_u^r\HH_{a,b}(s,u,t)\right|_{u=-m},
+ \qquad m\geq0,\quad r\geq1.
+\]
+The first new case is the log-Gamma gap
+$\log\Gamma(z+1)-\log\Gamma(y)$ between two surviving lattice variables
+$y>z$. There are explicit absolutely convergent Mellin integrals, finite
+decorated-sum formulas, and a finite family sufficient after arbitrary
+unmarked nonpositive indices have been removed. The simultaneous
+Stieltjes completion at $u=1$ is included.
+
+\item \textbf{Every mixed even-tail moment.}
+Section~\ref{mt:section} evaluates all centered even moments of
+$(\zeta(A)-H_n^{(A)})(\zeta(B)-H_n^{(B)})$ for even $A,B\geq2$.
+The finite formula uses Bernoulli numbers and classical double zeta
+values of odd weight; Euler's reduction removes the latter.
+For each fixed pair $(A,B)$ a fixed finite span contains the entire
+infinite sequence of moments. An analytic generating function and
+finite ordinary-polylogarithm primitives complete the result.
+This resolves the two-factor sector of R1; products with additional
+harmonic factors are not covered by the same theorem.
+\end{enumerate}
+
+For a concrete illustration, put $x_n=n+\tfrac12$ and
+$T_j(n)=\zeta(j,n+1)$. The unequal-order identities include
+\begin{align}
+ \sum_{n\geq0}T_2(n)T_4(n)
+  &=\frac{15}{2}\zeta(5)-3\zeta(2)\zeta(3),\label{scope:first}\\
+ \sum_{n\geq0}x_n^2T_2(n)T_4(n)
+  &=\frac14\zeta(2)\zeta(3)+\frac16\zeta(2)
+       +\frac12\zeta(3)-\frac58\zeta(5),\label{scope:second}\\
+ \sum_{n\geq0}\left\{x_n^4T_2(n)T_4(n)-\frac13\right\}
+  &=-\frac7{80}\zeta(2)\zeta(3)-\frac1{30}\zeta(2)
+       -\frac14\zeta(3)+\frac7{32}\zeta(5)-\frac3{40}.
+       \label{scope:third}
+\end{align}
+All three displayed series, including the brackets in the last one,
+are ordinary convergent series. The third identity must retain its
+subtraction. Since $T_2(n)=\psi'(n+1)$ and
+$T_4(n)=\psi'''(n+1)/6$, multiplication by six gives corresponding
+polygamma-product evaluations.
+
+\subsection{Provenance and the precise claim of advancement}
+
+The harmonic interpolant and its original geometric Mellin kernel are
+established mathematics. Ihara, Nakamura, and Yamamoto prove their
+entire interpolation and harmonic product law; their paper also
+explains related earlier work of Komori
+\cite[Proposition 3.3, Theorem 4.1, Corollary 4.2]{INY}.
+The incoming independent-orders report identifies the same interpolant
+and gives a relative endpoint normalization \cite{IncomingIndependent}.
+The zero-index polynomial reductions and one-free-order generator are
+already in \cite{IncomingParity}. We retain those definitions and give
+the requested simultaneous analytic extension and transverse formulas.
+
+Similarly, Bernoulli power sums, Hurwitz specializations, Gamma
+asymptotics, and Euler's odd-weight double-zeta reduction are classical
+\cite{DLMFHurwitz,DLMFGamma,DLMFBernoulli,Bradley2007}.
+They are ingredients of the mixed-tail theorem, rather than separate
+claims of new mathematics.
+
+The present results are proposed additions relative to the inspected
+repository. We make no assertion of literature-wide priority for every
+specialization, no arithmetic-independence claim for a spanning set, and
+no proof-assistant formalization claim. The original $S_6$ and revised
+$S_8$ candidates are not proved or refuted here.
+
+\subsection{Analytic and algebraic conventions}
+
+All endpoint parameters $a,b$ lie in the right half-plane.
+Principal logarithms define $(n+a)^{-s}$. Positive real integration
+variables use their real logarithms. The Hurwitz zeta function is
+normalized by
+\begin{equation}\label{scope:stieltjes}
+ \zeta(1+v,x)=\frac1v+
+       \sum_{r=0}^{\infty}\frac{(-1)^r}{r!}\gamma_r(x)v^r,
+ \qquad \gamma_0(x)=-\psi(x).
+\end{equation}
+A superscript $\zeta^{(r)}$ denotes differentiation in the first
+argument. In particular \cite[\S25.11]{DLMFHurwitz},
+\begin{equation}\label{scope:hurwitz}
+ \zeta(-m,x)=-\frac{B_{m+1}(x)}{m+1},\qquad
+ \zeta'(0,x)=\log\Gamma(x)-\frac12\log(2\pi).
+\end{equation}
+Bernoulli numbers mean $B_j=B_j(0)$, so $B_1=-1/2$ and $B_1(1)=1/2$.
+The strict multiple-zeta convention is
+\[
+ \zeta(r,t)=\sum_{n>j\geq1}n^{-r}j^{-t}.
+\]
+
+For a word $w=(s_1,\ldots,s_k)$, define the meromorphic ordered tail
+\[
+ Z_c(w)=\sum_{n_1>\cdots>n_k\geq0}
+                      \prod_j(n_j+c)^{-s_j},\qquad Z_c(\varnothing)=1.
+\]
+An initial domain with $\Re s_j>1$ suffices below. The relative
+interpolant is the unique triangular solution of
+\begin{equation}\label{scope:relative}
+ Z_b(w)=\sum_{w=uv}Z_a(u)\HH_{a,b}(v),\qquad
+ \HH_{a,b}(\varnothing)=1.
+\end{equation}
+The sum includes both empty prefix and empty suffix. Its depth-one value is
+\begin{equation}\label{scope:h}
+ h_{a,b}(s)=\zeta(s,b)-\zeta(s,a).
+\end{equation}
+The pole at $s=1$ cancels. Useful values are
+\begin{align}
+ h_{a,b}(1)&=\psi(a)-\psi(b),&
+ h_{a,b}^{(r)}(1)&=(-1)^r\{\gamma_r(b)-\gamma_r(a)\},\label{scope:hjets}\\
+ h_{a,b}'(0)&=\log\Gamma(b)-\log\Gamma(a),&
+ h_{a,b}(0)&=a-b.\notag
+\end{align}
+At $a=b+N$, $N\in\N_0$, the relative word is the finite strict sum
+over $N>n_1>\cdots>n_k\geq0$. For general endpoints it means
+\eqref{scope:relative}, with the joint continuation proved again in
+Section~\ref{zbg:section}. The finite endpoint property alone is not
+our definition of continuation.
+
+We use a cutoff constant only for a function with a specified asymptotic
+expansion in powers and logarithms of that cutoff. It is the coefficient
+of the monomial $N^0(\log N)^0$. Section~\ref{mt:section} proves when
+that prescription agrees with the spectral value. This distinction
+is essential: even an accidentally convergent paired boundary series
+need not equal the analytic continuation from its initial half-plane.
+

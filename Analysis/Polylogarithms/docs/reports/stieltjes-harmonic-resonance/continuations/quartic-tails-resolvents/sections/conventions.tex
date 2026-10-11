@@ -1,0 +1,80 @@
+\section{Conventions and finite-part normalization}
+\label{conv:section}
+
+We use $\psi=\Gamma'/\Gamma$, $\psi^{(0)}=\psi$, and
+$H_n^{(r)}=\sum_{j=1}^n j^{-r}$, with $H_n=H_n^{(1)}$ and
+$H_0^{(r)}=0$. A prime on $\zeta(s)$ denotes differentiation
+in its order $s$; a superscript $[k]$ on $\Li_s$ also denotes
+order differentiation. Derivatives of $\gamma_m(x)$ are with
+respect to its argument $x$.
+
+The generalized Stieltjes convention is
+\begin{equation}\label{conv:stieltjes}
+\zeta(s,x)=\frac1{s-1}+
+\sum_{m\ge0}\frac{(-1)^m\gamma_m(x)}{m!}(s-1)^m.
+\end{equation}
+Thus $\gamma_0(x)=-\psi(x)$ and
+$\gamma_m=\gamma_m(1)$. After setting $s=1-u$, the pole-removed
+germ is
+\[
+\zeta(1-u,x)+\frac1u
+=\sum_{m\ge0}\gamma_m(x)\frac{u^m}{m!}.
+\]
+This positive-sign $u$ expansion must not be confused with the
+alternating-sign expansion of $\zeta(1+u)$.
+
+Strict multiple zeta functions have decreasing indices:
+\[
+Z_r(s_1,\ldots,s_r)=
+\sum_{n_1>\cdots>n_r\ge1}\prod_{j=1}^r n_j^{-s_j}.
+\]
+We also write $\zeta(a,b)=Z_2(a,b)$ when the sum converges.
+The coefficients $\eta$ and $\theta$ in Section~\ref{q4:section}
+are coefficients of $u^1$, with no hidden factorial or sign.
+Bernoulli numbers have $B_1=-1/2$, and Bernoulli polynomials use
+\[
+\frac{te^{xt}}{e^t-1}=\sum_{n\ge0}B_n(x)\frac{t^n}{n!}.
+\]
+
+\begin{definition}[Coordinate finite part]
+Suppose an integrand on $(0,1)$ has, to every required finite order,
+endpoint expansions in complex powers and powers of logarithms,
+with an integrable remainder after finitely many subtractions.
+Its coordinate finite part is the constant coefficient of the
+cutoff integral in the endpoint coordinates $x$ and $1-x$.
+One may introduce independent cutoffs at the two ends; the
+constant is the coefficient of both cutoff powers zero and both
+logarithm powers zero. A common cutoff gives the same constant
+for the separate endpoint expansions used here.
+\end{definition}
+
+For example,
+\[
+\FP\int_0^1x^{-j}\,\dd x=-\frac1{j-1}\quad(j\ge2),
+\qquad
+\FP\int_0^1\frac{\log^k x}{x}\,\dd x=0\quad(k\ge0).
+\]
+At a general nonzero exponent $\alpha$ the regularized monomial
+integral is $1/\alpha$; its parameter derivatives are the
+corresponding logarithmic integrals. At $\alpha=0$ the coordinate
+constant is zero, whereas the meromorphic function has a pole.
+This elementary difference becomes a finite contact term when a
+coefficient also vanishes at the same parameter.
+
+A change of endpoint coordinate can change a finite part. Every
+identity in this article fixes the coordinate before taking the
+constant, differentiating parameters, or forming a primitive.
+In particular, the spectral values $D_{p,q}(-2r)$ are initially
+defined by meromorphic continuation, and their equality to
+ordinary subtracted sums is proved in
+Proposition~\ref{tail:ordinary}; it is not an implicit choice
+of summation method.
+
+All primitives are normalized. The quartic primitive has zero
+constant term at its singular origin. Primitives in the nonreal
+resolvent parameter are differences at a specified base point
+within one half-plane. Complex powers of the resolvent use the
+continuous logarithm specified in
+Section~\ref{power:sec}; no branch is inferred from an
+unqualified power of a complex number.
+

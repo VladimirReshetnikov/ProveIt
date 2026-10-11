@@ -1,0 +1,111 @@
+\section{Periodic weights and several distinct arithmetic poles}
+\label{asj:sec:arithmetic}
+
+\subsection{A complete quasi-polynomial specialization}
+Let $q\ge1$ and let $a_0,\ldots,a_K$ be periodic functions on the positive
+integers with period $q$. Define
+\[
+ c_n=\sum_{d=0}^K n^d a_d(n),\qquad
+ \mu_d=\frac1q\sum_{j=1}^q a_d(j).
+\]
+Residue-class splitting in the absolute-convergence region gives
+\begin{equation}\label{asj:eq:quasipoly}
+ \D(s)=\sum_{d=0}^K q^{d-s}
+                  \sum_{j=1}^q a_d(j)\zeta(s-d,j/q).
+\end{equation}
+This finite formula proves the continuation hypotheses of
+Theorem~\ref{asj:thm:transfer}. Its only possible poles are simple, at $p=d+1$,
+with residues $\mu_d$.
+
+\begin{corollary}[Only the mean polynomial contributes local defects]
+\label{asj:thm:mean}
+For quasi-polynomial multiplicities and any polynomial $P$, all normalized
+order-$r$ jets have degree at most $r+1$. For $r+1$ tangent vectors,
+\begin{align}\label{asj:eq:mean}
+ &\Delta_{\boldsymbol v_1}\cdots\Delta_{\boldsymbol v_{r+1}}
+       \calJ_r(\boldsymbol\alpha)\notag\\
+ &\quad=(-1)^{r+1}r![x^{-1}]P(x)
+           \left(\sum_{d=0}^K\mu_dx^d\right)
+                       \prod_i V_{\boldsymbol v_i}(x).
+\end{align}
+If every $\mu_d=0$, the degree is at most $r$ and the displayed difference
+vanishes. More generally, replacing $c_n$ by its mean polynomial changes
+only a degree-at-most-$r$ part of the normalized jet.
+\end{corollary}
+\begin{proof}
+Use the residues in \eqref{asj:eq:quasipoly} in \eqref{asj:eq:top} and observe
+$[x^{-(d+1)}]f(x)=[x^{-1}]x^d f(x)$. Subtracting the mean polynomial
+leaves a base Dirichlet series whose possible poles have all been canceled,
+so its shifted germ is holomorphic at the exponent origin. Theorem
+\ref{asj:thm:polynomial} then gives degree at most $r$.
+\end{proof}
+
+For example, a nontrivial additive character $a(n)=e^{2\pi i kn/q}$ has
+zero mean. Every normalized order-$r$ jet for this periodically weighted
+spectrum, even after multiplication by $n^dP(n)$, has degree at most $r$.
+There is no first-derivative multiplicative anomaly for such a pure
+zero-mean periodic component. This does not say that its individual jets
+vanish.
+
+The finite parts themselves retain the periodic data. For one degree $d$,
+the constant coefficient at $s=d+1$ of the corresponding term in
+\eqref{asj:eq:quasipoly} is
+\[
+ \frac1q\sum_{j=1}^q a_d(j)\gamma_0(j/q)-\mu_d\log q.
+\]
+Other degrees contribute holomorphic values there. Higher coefficients
+follow by multiplying $e^{-s\log q}$ by \eqref{asj:eq:stieltjes}. Thus the
+mean law is a statement about the local defect, not the entire answer.
+
+\subsection{A two-pole example from the sum-of-divisors function}
+Let $\sigma_1(n)=\sum_{d\mid n}d$. The elementary product of two
+absolutely convergent Dirichlet series proves
+\begin{equation}\label{asj:eq:sigma1}
+ \sum_{n\ge1}\frac{\sigma_1(n)}{n^s}=\zeta(s)\zeta(s-1),
+ \qquad \Rea s>2.
+\end{equation}
+The two poles are simple, with
+\[
+ \kappa_{1,1}=\zeta(0)=-\frac12,
+ \qquad \kappa_{2,1}=\zeta(2).
+\]
+The coexistence of distinct poles is genuinely different from inserting
+a power of $\log n$ into one polynomially weighted spectrum.
+
+For $P=1$, denote the continued multi-shift series by $Z_{\boldsymbol w}$,
+and the single-shift series by $F_a$. Both are holomorphic at the spectral
+origin, since all relevant numerators vanish there and the poles are simple.
+Set
+\[
+ \delta_{\boldsymbol w}=
+        \sum_j w_jF_{a_j}'(0)-Z_{\boldsymbol w}'(0),\qquad W\ne0.
+\]
+\begin{proposition}[An exact arithmetic anomaly]\label{asj:thm:sigma}
+For $a_j>-1$,
+\begin{equation}\label{asj:eq:sigma-anomaly}
+ \boxed{\displaystyle
+ \delta_{\boldsymbol w}
+      =\frac{\zeta(2)}{2W}
+                 \sum_{i<j}w_iw_j(a_i-a_j)^2.}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Normalize the weights. For $r=1$, the nonlocal part is linear and cancels
+against interpolation at the coordinate vertices. The pole at $1$ gives
+$[x^{-1}]L_{\boldsymbol\alpha}^2=0$. The pole at $2$ gives
+$\zeta(2)(\sum_j\alpha_ja_j)^2/2$. Therefore the difference between
+vertex interpolation and the jet is
+\[
+ \frac{\zeta(2)}2\left\{
+       \sum_j\alpha_ja_j^2-\left(\sum_j\alpha_ja_j\right)^2\right\}
+   =\frac{\zeta(2)}2\sum_{i<j}\alpha_i\alpha_j(a_i-a_j)^2.
+\]
+Multiply by $W$ using \eqref{asj:eq:scaling}. The small-shift argument extends
+to all stated shifts by the finite-head theorem.
+\end{proof}
+
+For two unit weights and shifts $a,b$, the anomaly is
+$\zeta(2)(a-b)^2/4$. This is a concrete arithmetic specialization of the
+classical simple-pole mechanism, not a claim to have discovered that
+mechanism. In contrast, the next sections concern base functions with
+higher poles, for which $F_a'(0)$ is typically not defined at all.

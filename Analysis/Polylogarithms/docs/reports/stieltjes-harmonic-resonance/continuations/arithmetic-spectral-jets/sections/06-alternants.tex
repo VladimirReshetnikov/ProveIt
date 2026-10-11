@@ -1,0 +1,132 @@
+\section{Exact alternating identities for arithmetic Laurent jets}
+\label{asj:sec:alternants}
+
+Let $m\ge2$,
+\[
+ N=\binom m2,\qquad K_m=\prod_{k=0}^{m-1}k!,\qquad
+ \Delta(\boldsymbol x)=\prod_{i<j}(x_j-x_i).
+\]
+We use $(\sigma\boldsymbol w)_j=w_{\sigma(j)}$ and
+$W=\sum_jw_j\ne0$. For the multiplicative Hurwitz lattice of order $h$
+assume $h\le N$, and set $r=N-h$.
+
+\begin{theorem}[Higher-pole spectral alternant]\label{asj:thm:alternant}
+For every polynomial $P$ and allowed shifts,
+\begin{align}\label{asj:eq:alternant}
+ &\sum_{\sigma\in S_m}\operatorname{sgn}(\sigma)
+           r![s^r]\calZ_P(s\sigma\boldsymbol w)\notag\\
+ &\quad=\frac{(-1)^N r!}{W^h K_m}\Delta(\boldsymbol w)
+          [x^{-1}]P(x)\prod_{i<j}\log\frac{x+a_j}{x+a_i}.
+\end{align}
+If $P$ has degree $N-1$ and leading coefficient $p$, this reduces to
+\begin{equation}\label{asj:eq:alternant-leading}
+ \boxed{\displaystyle
+ \sum_{\sigma}\operatorname{sgn}(\sigma)
+           r![s^r]\calZ_P(s\sigma\boldsymbol w)
+  =\frac{(-1)^N r!p}{W^hK_m}
+                \Delta(\boldsymbol w)\Delta(\boldsymbol a).}
+\end{equation}
+For degree below $N-1$, the alternating sum is zero.
+\end{theorem}
+\begin{proof}
+An alternating polynomial in $m$ variables is divisible by their
+Vandermonde, whose degree is $N$. In \eqref{asj:eq:Jlocal}, alternation
+therefore kills the holomorphic term of degree $r<N$ and every local
+term of degree $r+j<N$. Only the top principal coefficient $d_{-h}=1$
+remains. The elementary identity
+\begin{equation}\label{asj:eq:elementary-alternant}
+ \sum_{\sigma}\operatorname{sgn}(\sigma)
+       \left(\sum_j\alpha_{\sigma(j)}y_j\right)^N
+       =\frac{N!}{K_m}\Delta(\boldsymbol\alpha)\Delta(\boldsymbol y)
+\end{equation}
+follows by expanding the power. Terms with a repeated exponent vanish;
+the only distinct nonnegative exponents summing to $N$ are
+$0,1,\ldots,m-1$. Their two determinants give the Vandermondes with the
+orientation displayed. Substituting $y_j=\log(1+a_j/x)$ in
+\eqref{asj:eq:Rhom} proves the normalized identity. Equation
+\eqref{asj:eq:scaling} and $\Delta(\boldsymbol w/W)=W^{-N}\Delta(\boldsymbol w)$
+produce $W^{r-N}=W^{-h}$. Finally,
+\[
+ \prod_{i<j}\log\frac{x+a_j}{x+a_i}
+         =\Delta(\boldsymbol a)x^{-N}+O(x^{-N-1}),
+\]
+which gives the last two assertions.
+\end{proof}
+
+\subsection{A six-term first-jet identity for the divisor function}
+For a monic quadratic $P$ define
+\begin{equation}\label{asj:eq:Tdef}
+ T_P(a,b)=[s]\sum_{n\ge1}d_2(n)P(n)
+                  \bigl((n+a)^2(n+b)\bigr)^{-s},\qquad a,b>-1,
+\end{equation}
+by meromorphic continuation and the fixed Laurent convention.
+
+\begin{corollary}[Six first jets collapse to an algebraic number]
+\label{asj:thm:six}
+\begin{align}\label{asj:eq:six}
+ &T_P(a,b)+T_P(b,c)+T_P(c,a)\notag\\
+ &\quad-T_P(b,a)-T_P(c,b)-T_P(a,c)
+       =\frac{(a-b)(b-c)(c-a)}9.
+\end{align}
+The lower two coefficients of $P$ do not affect the answer. For a
+quadratic leading coefficient $p$, multiply the right side by $p$;
+for degree at most one the answer is zero.
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{asj:thm:alternant} with $m=3$, $h=2$, $r=1$,
+$\boldsymbol w=(2,1,0)$, $W=3$, $K_3=2$, and
+$\Delta(\boldsymbol w)=-2$. Reading the six permutations in
+\eqref{asj:eq:alternant-leading} gives precisely \eqref{asj:eq:six}.
+\end{proof}
+
+\paragraph{A compact direct certificate.}
+For the six permutations of $(2,1,0)$ let $\mathcal A$ denote signed
+summation. Since $C_\ell(s\boldsymbol w)$ is polynomial in the weights,
+its alternating part is divisible by $s^3$. It vanishes identically for
+$\ell<3$. At $\ell=3$, equation~\eqref{asj:eq:elementary-alternant} gives
+\[
+ \mathcal A C_3(s\boldsymbol w)=s^3\Delta(a,b,c).
+\]
+For $P(x)=x^2$, only $\ell=3$ can contribute to the first Laurent
+coefficient: all other nonzero alternating terms multiply a function
+holomorphic at $s=0$. The resonant factor is
+$\zeta(1+3s)^2=1/(9s^2)+O(s^{-1})$. Hence its first coefficient is
+$\Delta(a,b,c)/9$. The lower coefficients of $P$ resonate only at
+$\ell<3$ and make no contribution. This is a finite symbolic certificate
+of the corollary independent of any numerical spectral evaluation.
+
+For $(a,b,c)=(1,2,3)$ the value is $2/9$. Replacing $d_2(n)$ by the
+three-factor divisor multiplicity $d_3(n)$ moves the same identity down
+one more spectral order: with
+\[
+ U_P(a,b)=[s^0]\sum_{n\ge1}d_3(n)P(n)
+                  \bigl((n+a)^2(n+b)\bigr)^{-s},
+\]
+the same signed six-term combination equals
+\begin{equation}\label{asj:eq:sixconstant}
+ \frac{(a-b)(b-c)(c-a)}{27}.
+\end{equation}
+It is an identity between constant Laurent coefficients, not between
+values of functions at their poles.
+
+\subsection{A hierarchy with independent Hurwitz parameters}
+The identities \eqref{asj:eq:six} and \eqref{asj:eq:sixconstant} hold unchanged
+when the integer divisor spectrum is replaced by arbitrary multiplicative
+Hurwitz lattices of two and three factors, respectively. Although each
+individual Laurent jet depends on all the $b_j$, the alternating
+combination does not. The reason is exactly $d_{-h}=1$, not a cancellation
+suggested by numerical fitting.
+
+For $m=4$, $N=6$ and $K_4=12$. With $h=2$, a signed sum of twenty-four
+fourth jets for a degree-five polynomial with leading coefficient $p$
+is
+\[
+ \frac{2p}{W^2}\Delta(\boldsymbol w)\Delta(\boldsymbol a).
+\]
+With $h=3$, the corresponding third-jet sum is
+$p\Delta(\boldsymbol w)\Delta(\boldsymbol a)/(2W^3)$.
+This makes visible the general shift in spectral order: the same
+Vandermonde identity occurs at order $N-h$ when the base pole has order
+$h$. These are exact consequences of the higher-pole germ; applying a
+simple-pole determinant formula at an undefined derivative would not
+establish them.

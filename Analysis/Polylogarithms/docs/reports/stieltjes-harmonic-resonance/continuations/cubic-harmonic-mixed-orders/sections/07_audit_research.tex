@@ -1,0 +1,275 @@
+\section{Verification, source corrections, and further research}
+\label{sec:audit}
+
+\subsection{What the checks establish}
+
+The mathematical proofs above are independent of floating-point
+agreement. The supplied programs exercise three different layers of
+the argument.
+
+\paragraph{Exact finite algebra.}
+The cubic symbolic script treats $\gamma,L,\zeta(2),\zeta(3)$,
+the needed zeta derivatives, and $\Omega_3,J_3$ as formal symbols.
+It reconstructs the four quadratic coefficients of $H$ from the
+four stated restrictions and reduces the residual in
+\eqref{ray:main} to the zero rational function. Its curve checks
+compare direct truncated quotient expansion with
+\eqref{curve:differentials}; they retain all path coefficients.
+The mixed-order script independently constructs the original
+coefficient convolution, the shuffle/partial-fraction formula, and
+the output after eliminating nonpositive trailing orders. Its 624
+exact rational checks include coincident colors and repeated poles.
+A separate local-coefficient script checks the displayed Mellin
+principal parts and Gamma jets and the finite harmonic
+summation-by-parts algebra in Section~\ref{bridge:sec}. In total,
+the three exact suites record 760 passed checks: 16 cubic/ray
+identities, 624 mixed-order checks, and 120 local-coefficient checks.
+
+\paragraph{A certified scalar evaluation.}
+The code \texttt{verify\_cubic\_harmonic\_bridge.py} combines
+Arb ball arithmetic with \eqref{bridge:tail-bound}, using
+$N=50$, $K=24$ and 100 decimal digits of working precision.
+The stored enclosure is
+\[
+ Q\in 1.9662627343915343406643753384116314238258689764916868267443076
+       \ \pm\ 4.86\cdot10^{-62}.
+\]
+The analytic tail contribution alone is below $1.26\cdot10^{-62}$.
+The reported enclosure includes rounding of its displayed center.
+The corresponding enclosures for $\eta(1)$ and $\Omega_3$ are
+obtained using the proved exact identities. They are not independent
+proofs of those identities.
+
+\paragraph{Independent numerical diagnostics.}
+Ordinary high-precision quadrature of the regularized digamma cube
+and the harmonic Mellin integral agree through approximately 70
+decimal places. A different evaluator computes $\T$ by integrating
+Jonqui\`ere's series on $(0,1)$ and an incomplete-Gamma tail on
+$(1,\infty)$. Symmetric differences with polynomial extrapolation
+check the third derivatives on six additional rays, including
+$(1,-2,3)$. Their largest recorded absolute discrepancy is below
+$5.7\cdot10^{-37}$. An independent computation of $I_2$ gives the
+same second cubic coordinate through more than 30 decimal places.
+These latter calculations use non-interval arithmetic and truncated
+series; their digits are diagnostics, not certified error estimates.
+The split at one is strictly inside the Jonqui\`ere radius $2\pi$.
+
+The package records exact program versions, numerical parameters,
+machine-readable outputs, and build instructions. No finite test
+suite certifies the analytic convergence arguments: those arguments
+are supplied in the text. The exact symbolic checks certify the
+specified finite algebra, rather than all possible extensions of a
+theorem.
+
+\subsection{A source-status ledger for integration}
+
+The source snapshot is pinned by its full commit identifier, with
+blob hashes in \path{provenance/repository_inventory.json}.
+All 80 manuscript chapter files and all 11 incoming archives matched
+their recorded Git blob hashes. This establishes the identity of the
+source corpus; it is not a claim that every proof in that corpus has
+received a new exhaustive review. The mathematical audit concentrated
+on the harmonic normalization, the cubic completion, the local
+Tornheim decomposition, and the rational/colored reduction machinery
+used by the present results.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.46\textwidth}>{\raggedright\arraybackslash}p{0.23\textwidth}@{}}
+\toprule
+Existing target & Result in this report & Status to record\\
+\midrule
+\endhead
+Coincident report, Q1: third diagonal derivative
+& Theorem~\ref{thm:diag-harmonic} and the absolutely convergent
+harmonic series \eqref{bridge:arithmetic}.
+& Reduced to $\eta(1)$; finite ordinary-constant closure remains open.\\[5pt]
+Coincident report, Q2: asymmetric cubic directions
+& Theorem~\ref{thm:cubic-rays}, with two fixed coordinates and
+explicit coefficients; $\kappa$ also has the convergent integral
+\eqref{ray:I2}.
+& Complete spanning formula proved; arithmetic minimality unproved.\\[5pt]
+Coincident report, Q11: mixed integer inner signs
+& Theorem~\ref{mx:main}, including arbitrary integer weights,
+coincident colors, repeated poles and all outer-order derivatives.
+& Finite closure proved, with a guaranteed depth bound.\\[5pt]
+Strict/inclusive harmonic conventions
+& \eqref{eq:strict-inclusive} is retained exactly, including
+the sign and the $\zeta'(2,a)$ shift.
+& Existing normalization confirmed.\\[5pt]
+Gaussian $S_6$ and revised $S_8$ candidates
+& No exact target-vector certificate is supplied here.
+& Remain open; no theorem label should be promoted.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Corrections and qualifications worth preserving}
+
+No new false theorem was found in the specific repository results
+used here. Several distinctions are nevertheless necessary for a
+correct integration.
+
+\begin{enumerate}
+\item \textbf{Keep the full resonant numerators.}
+The cubic completion \eqref{diag:completed} subtracts
+$3h(t)^2/t$ and adds $3(1-t)\zeta(2-t)/(2t)$.
+Replacing their numerators by their constant terms changes the
+answer. This is an existing warning in the coincident report,
+rederived here to protect the new harmonic bridge from a finite
+normalization error.
+\item \textbf{Use the mixed pole rule only in its stated domain.}
+The rational sector has a finite simple-pole description. Its
+extension with positive uncolored inner orders can have higher
+pole order and infinitely many nonpositive poles. The explicit
+$Z_{1,1,0}(C;1)$ example proves this difference. The earlier
+rational theorem is not wrong; extending its pole statement without
+the logarithmic correction would be wrong.
+\item \textbf{Separate coordinate rank from arithmetic independence.}
+Two formal quadratic coordinates of $H$ survive the exact slice
+constraints, with slope coefficients $abc$ and $c\Delta$.
+The theorem determines that reconstruction problem. It does not
+show that $\eta(1)$ or $\kappa$ lies outside a chosen field of
+ordinary constants, or that they are independent of each other.
+\item \textbf{Restrict before differentiating.}
+An admissible Tornheim ray is holomorphic at zero, while the full
+three-variable function is meromorphic there. The values $1/3$ on
+the diagonal and $5/12$ on the $C$ axis are consistent. A curve
+tangent to $A+C=0$ or $B+C=0$ is outside
+Theorem~\ref{thm:curve}; its value is not assigned by cancellation
+of a zero denominator in the displayed ray formula.
+\end{enumerate}
+
+The incoming report already records corrections to the inspected
+Borwein--Dilcher author PDF \cite{IncomingCoincident,BorweinDilcher}.
+They should retain that attribution. In the integer Jonqui\`ere
+formula, the convention is $H_0=0$, and the coefficient of
+$x^{p-1}\log x$ is
+\[
+ B_p=\frac{(-1)^p}{\Gamma(p)},\qquad p\ge1,
+\]
+without an additional factor $H_{p-1}$. This follows at once from
+\eqref{mx:positiveexp}; $p=3$ gives $-1/2$.
+For the ordinary convergent local power series, the splitting point
+must satisfy $0<\theta<2\pi$. These are previously documented
+corrections to the inspected author version, not newly discovered
+errors or assertions about every published version.
+
+\subsection{Proposed further research questions}
+
+The following problems are specific next steps. They are questions,
+not conjectured equalities unsupported by calculation.
+
+\paragraph{1. Determine the arithmetic content of the harmonic bridge.}
+Fix a constant algebra before attempting reduction, for example one
+generated over $\mathbb Q$ by ordinary Stieltjes constants, ordinary
+zeta derivatives at integers, logarithms and specified Barnes values.
+Does $\eta(1)$ have a finite expression in that algebra? The bridge
+gives three analytic realizations of the same coordinate: an ordered
+double-zeta Laurent coefficient, a convergent logarithmic harmonic
+series, and a normalized digamma-cube integral. Seek a functional
+identity relating two realizations without reintroducing the same
+coefficient under another name.
+
+\paragraph{2. Relate the second cubic coordinate to harmonic Laurent data.}
+The constant $\kappa$ is a fixed asymmetric double-zeta derivative
+and also the convergent moment \eqref{ray:I2} plus classical terms.
+Can an ordered Hurwitz functional equation carry that derivative
+from the origin to a harmonic Stieltjes coefficient at $(1,1)$?
+A successful identity should state the exact finite correction and
+the direction of continuation. The question of a relation between
+$\kappa$ and $\eta(1)$ is distinct from the proved two-coordinate
+spanning formula.
+
+\paragraph{3. Classify useful cancellations among cubic directions.}
+The conic $\Delta=0$ removes $\kappa$ from a single ray. More
+generally, a finite combination $\sum_j r_jW_{v_j}'''(0)$ has no
+displayed nonclassical coordinate whenever
+$\sum_jr_ja_jb_jc_j=0$ and
+$\sum_jr_jc_j\Delta_j=0$. Classify short rational configurations
+with additional permutation, distribution, or character symmetry.
+This is a finite exact linear problem and can produce concrete new
+single-zeta identities without an independence assumption.
+
+\paragraph{4. Construct the complete quartic directional layer.}
+At fourth order the cubic homogeneous part of $H$ enters. Determine
+its exact dimension after symmetry and the axis/stuffle restrictions,
+then choose independent anchor slices and derive the analogue of
+\eqref{ray:main}. The first goal is a proved finite coordinate
+formula with convergent integral representatives. A finite
+ordinary-zeta evaluation should be a separate theorem if achieved.
+
+\paragraph{5. Extend the cubic bridge to a common Hurwitz shift.}
+For $a>0$, the coefficient $\eta(a)$ has exact shift and derivative
+relations in the ordered report. Apply the partial-fraction method
+to shifted poles and compare with the primitive
+$\mathcal P_3(a+1)-\mathcal P_3(a)$. Determine the explicit
+boundary terms and whether products of shifted digamma and
+polygamma functions give a useful identity involving $\eta(a)$.
+The unit-coordinate finite part at a singular endpoint and an
+ordinary integral over a positive shifted interval must stay distinct.
+
+\paragraph{6. Obtain a general power-to-harmonic formula.}
+For each $k\ge4$, the principal parts of $\psi(z)^k$ are finite
+generalized-harmonic polynomials. The two-point contour argument
+still suggests a normally convergent subtraction. Carry out the
+finite summation-by-parts reduction explicitly for $k=4$ and identify
+the required harmonic Laurent coefficients or higher-depth data.
+The target is a compact identity with every constant fixed, rather
+than an unspecified Mittag--Leffler entire remainder.
+
+\paragraph{7. Find depth-reducing projections in the mixed sector.}
+At root-of-unity colors, the finite reduction outputs a finite list
+of nested functions and their first-order derivatives. Construct
+exact matrices for character projections and distribution identities
+on that list. Their kernels can identify combinations whose depth
+drops to one, where Hurwitz-zeta, Gamma and generalized-Stieltjes
+formulas become available. Any claimed minimal depth must specify
+the relation space being used.
+
+\paragraph{8. Evaluate selected holomorphic Laurent coefficients.}
+Theorem~\ref{mx:poles} gives all principal parts but deliberately
+does not promise finite depth-one formulas for the regular terms.
+Begin with $Z_{1,1,0}(C;1)$ at $C=1,0,-1$: derive explicit
+convergent kernels for its constant and linear Laurent coefficients
+and relate them to depth-three harmonic Stieltjes conventions.
+This separates the already solved local pole algebra from new
+global arithmetic.
+
+\paragraph{9. Normalize ordinary primitives under reflection and multiplication.}
+The primitive $\mathcal P_3$ fixes its integration constant at the
+singular origin, while \eqref{mx:primitives} fixes a holomorphic
+Euler primitive at zero. Determine exact reflection and multiplication
+relations for these normalizations, including their polynomial and
+logarithmic correction terms. At low orders, compare with Barnes
+multiple-Gamma primitives only after matching the additive constants
+and branches.
+
+\paragraph{10. Resolve tangential spectral paths.}
+The transverse formula requires $(a+c)(b+c)\ne0$. For a curve
+whose first nonzero contact with one polar divisor occurs at order
+$r>1$, determine when the numerator cancels enough terms to leave
+a removable restriction, and which path jets fix the resulting
+finite value. This is a divisibility and coefficient-extraction
+problem, not an instruction to apply the transverse formula at a
+zero denominator.
+
+\paragraph{11. Return to the exact Gaussian targets.}
+The frozen $S_6$ and revised $S_8$ vectors still need exact
+certificates in proved relation spaces. Use the current reduction
+and projection machinery to propose additional rows, proving the
+regularization prescription for each row. A numerical integer
+relation is a candidate; a successful proof must combine exact
+rows to the exact target. An unsuccessful restricted search should
+report its precise space and a separating functional, not an
+unrestricted impossibility claim.
+
+\paragraph{12. Formalize the finite proof interfaces.}
+The partial-fraction extraction, shuffle multiplicities, finite
+antidifferences, Gamma jets, and cubic coefficient elimination are
+all terminating algebra. Separate them from analytic lemmas for
+normal convergence, Mellin continuation and endpoint constant
+terms. A formal implementation can then check the finite identities
+while explicitly declaring the analytic hypotheses on which their
+applications depend.
+
+These questions preserve the emphasis on exact identities and
+normalizations. Error bounds appear in this report only to certify
+the numerical evaluation of an already proved identity.

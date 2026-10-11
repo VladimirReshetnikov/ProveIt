@@ -1,0 +1,78 @@
+\section{Research target, contribution, and conventions}
+\label{asj:sec:scope}
+
+\subsection{A specific repository question}
+The manuscript's Hurwitz-jet chapters organize parameter derivatives, spectral
+derivatives, generalized Stieltjes constants, and negative-order polygamma in one
+calculus \cite{repo}. A later report already proves a normalized-exponent polynomial
+law for polynomial spectral multiplicities, including a polynomial times a power of
+a logarithm \cite{prior}. Its question Q10 asks for arithmetic and nonpolynomial
+multiplicities, beginning with periodic or quasi-polynomial weights and then moving
+to base zeta functions with several or higher-order poles.
+
+That is the precise target here. The extension is not obtained by assuming that an
+arbitrary arithmetic Dirichlet series continues meromorphically. Instead, we state
+such a continuation as a hypothesis in the general theorem, prove the requisite
+normal convergence, and verify the hypotheses unconditionally in explicit families.
+For these families the result is a complete coefficient algorithm rather than an
+asymptotic extrapolation.
+
+The new scope relative to \cite{prior} consists of a general finite-principal-part
+transfer theorem, the separation of the mean and oscillatory parts of
+quasi-polynomial multiplicities, independent Hurwitz factors with all their
+Stieltjes residue layers, explicit Gamma reciprocity and primitive formulas, and
+an all-order finite compensation for removing a polylogarithmic twist. The
+alternating identities extend the report's simple-pole alternants to actual
+arithmetic higher poles. The argument is elementary once the correct germ is
+retained; its simplicity is not a reason to identify a Laurent coefficient with
+an undefined derivative.
+
+\subsection{Classical inputs and the limits of a novelty assertion}
+The Hurwitz continuation, its parameter derivative, and its relation to
+$\log\Gamma$ are standard \cite{dlmf-hurwitz}. The Pochhammer expansion, the
+Gamma product, and the polylogarithm expansion near unity are also classical
+\cite{dlmf-gamma,dlmf-polylog}. First-derivative multiplicative-anomaly formulas
+have an extensive prior theory; Dowker's treatment includes products of linear
+factors and polynomial degeneracies \cite{dowker}. We use that theory as context,
+not as a new result. The present proofs establish the stated extensions relative
+to the inspected repository. The literature inspection does not prove that every
+individual consequence is absent from all earlier publications.
+
+The source audit is targeted. The canonical chapters, the relevant earlier
+spectral-product section and its research questions, and the incoming-directory
+inventory were inspected. The incoming ZIP files were not all extracted and
+audited. The artifact records the source revision and the precise question being
+answered; it does not assert a line-by-line audit of the entire repository.
+
+\subsection{Laurent jets and local coefficients}
+Throughout, $[s^r]F(s)$ denotes a Laurent coefficient. When $r\ge0$, define
+\begin{equation}\label{asj:eq:jetdef}
+ \calJ_r F=r![s^r]F(s).
+\end{equation}
+This equals $F^{(r)}(0)$ only when $F$ is holomorphic there. A ``first jet''
+means $[s]F(s)$ under this convention, not the finite part of $F'(s)$ under a
+separately chosen change of coordinate. The regulator coordinate $s$ is fixed.
+
+For an expansion at infinity, $[x^{-p}]f(x)$ means the coefficient in the
+Laurent series in $x^{-1}$. In particular, $[x^{-1}]$ is the negative of the
+complex-analytic residue at infinity when that terminology applies. This
+coefficient is computed from a finite truncation in all formulas below.
+
+We use the standard Stieltjes normalization
+\begin{equation}\label{asj:eq:stieltjes}
+ \zeta(1+s,b)=\frac1s+\sum_{n\ge0}\frac{(-1)^n}{n!}\gamma_n(b)s^n,
+ \qquad b>0.
+\end{equation}
+Thus $\gamma_0(b)=-\psi(b)$ and $\gamma_0(1)=\gamma$, Euler's constant.
+Spectral superscripts on $\zeta$ differentiate its first argument; the
+superscript on $\psi^{(k)}$ is an argument derivative. All logarithms of positive
+real quantities are real. The proofs also give local holomorphic shift
+continuations on any domain where compatible logarithms have been fixed.
+
+\subsection{What is not being claimed}
+An exact polynomial identity in the exponent variables is not an independence
+theorem for its special-function coefficients. A finite numerical residual is
+not a proof of equality. Neither a new Gamma-series coordinate nor a zeta-jet
+coordinate is claimed to be irreducible in a smaller arithmetic algebra.
+The ordinary proofs here have not been formalized in Lean or another proof
+assistant.

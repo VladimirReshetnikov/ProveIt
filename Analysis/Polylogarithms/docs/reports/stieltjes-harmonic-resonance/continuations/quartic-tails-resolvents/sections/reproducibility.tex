@@ -1,0 +1,90 @@
+\section{Reproducibility and verification record}
+\label{repro:section}
+
+The package contains the complete modular source, a self-contained
+single-file TeX version, the compiled PDF, four verification
+programs, their recorded JSON outputs, source provenance, a claim
+inventory, and integration notes. It does not require a checkout
+of ProveIt to build or run its mathematical checks. The source
+snapshot is recorded for comparison and attribution.
+
+\subsection{Build and replay}
+
+From the extracted package directory, run
+\begin{verbatim}
+python3 build.py
+python3 run_verification.py
+\end{verbatim}
+The first command generates the standalone TeX file and builds the
+PDF using pdfLaTeX. The second runs the four mathematical suites
+and saves a replay summary and per-suite logs under
+\texttt{verification/replay/}. Each suite also updates its own
+recorded JSON file. To preserve the shipped records verbatim,
+run the replay on a copy of the package.
+
+The Python dependencies are SymPy and mpmath, with the recorded
+versions pinned in \texttt{requirements.txt}. The TeX build uses
+standard AMS, Latin Modern, geometry, microtype, hyperref, and
+related standard packages listed explicitly in the preamble.
+No external bibliographic processor, private dataset, network
+service, or shell-escape operation is needed.
+
+\subsection{The scope of the checks}
+
+The recorded exact checks total $183$, together with $21$
+deliberate corruption controls. They are finite symbolic tests
+of separate coefficient constructions and finite algebraic
+consequences. They are not a count of independent theorems, and
+they do not replace the all-index analytic arguments.
+
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.27\linewidth}>{\raggedleft\arraybackslash}p{.13\linewidth}>{\raggedright\arraybackslash}p{.53\linewidth}@{}}
+\toprule
+Suite & Exact checks & Independent numerical route\\
+\midrule
+Quartic bridge & 44 & Harmonic/Binet summation versus local Taylor
+integration and ordinary quadrature, at 100 working digits\\[4pt]
+Mixed tails & 94 & 36 finite-head/Hurwitz-tail evaluations,
+plus generator comparisons, at 110 working digits\\[4pt]
+Continuous-power moments & 9 & 19 quadrature, Mellin, Gamma,
+Lerch, and subtracted logarithmic comparisons, at 55 working digits\\[4pt]
+Endpoint contacts and primitives & 36 & Exact arithmetic only;
+20 omitted-phase controls are rejected\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The remaining corruption control changes a Fourier coefficient's
+prefactor. It is rejected by exact polynomial comparison.
+The continuous-power numerical suite samples both half-planes,
+complex exponents, an integrable negative half power, and nonzero
+complex $q$. Its largest absolute discrepancy is about
+$2.824\cdot10^{-31}$, arising in inverse-square-root endpoint
+quadrature. This is consistent with the deliberately more modest
+diagnostic tolerance; it is not a claim of 55 correct digits in
+every quadrature.
+
+For the quartic calculation, the finest arithmetic evaluation and
+the independent local Taylor/quadrature evaluation differ by less
+than $1.40\cdot10^{-83}$. The Binet truncation bound is below
+$1.88\cdot10^{-83}$. For the mixed tails, every observed moment
+discrepancy is below its displayed analytic truncation envelope.
+These statements separate the analytically controlled omitted tail
+from floating-point rounding, which is not enclosed by this
+implementation. No interval certificate is claimed.
+
+\input{sections/contact_verification.tex}
+
+\subsection{Integration and provenance artifacts}
+
+\texttt{INTEGRATION.md} identifies the source questions and the
+proposed scoped status updates. \texttt{claims.json} lists the
+principal statements, domains, proof labels, dependencies, and
+remaining limitations. \texttt{provenance/source\_manifest.json}
+records the pinned source revision and hashes of inspected
+manuscript files and incoming archives.
+\texttt{SHA256SUMS} covers the deliverable files present at
+packaging time. The complete archive is self-contained; the
+original incoming ZIP files are identified by hash rather than
+duplicated inside it.
+

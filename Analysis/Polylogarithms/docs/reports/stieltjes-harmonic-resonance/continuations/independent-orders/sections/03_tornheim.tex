@@ -1,0 +1,448 @@
+\section{All cubic Tornheim directions from two scalar coordinates}
+\label{tr3:section}
+
+The incoming \emph{Coincident Stieltjes and Directional Zeta} report~\cite{tr3:incoming} proves
+all quadratic derivatives of $T(at,bt,ct)$ and asks for the entire cubic
+layer.  The following calculation answers that question with two explicit
+scalar coordinates.  One is the already isolated diagonal derivative
+$\Omega$; the other is an absolutely convergent logarithmic Gamma series.
+The result also identifies an exact conic of directions and a cyclic
+symmetrization in which the second coordinate cancels.  These are finite
+identities; no arithmetic independence of the two coordinates is assumed.
+
+Throughout this section,
+\[
+ T(A,B,C)=\sum_{m,n\geq1}m^{-A}n^{-B}(m+n)^{-C},
+ \qquad L=\log(2\pi),
+\]
+initially in its domain of absolute convergence and subsequently by its
+meromorphic continuation.  Set
+\[
+ z_2=\zeta''(0),\qquad z_3=\zeta'''(0),\qquad
+ y_3=\zeta'''(-1),\qquad
+ \Omega=\left.\frac{d^3}{dt^3}T(t,t,t)\right|_{t=0}.
+\]
+The order of restriction is part of the notation.  In particular, $T$ is
+not jointly holomorphic at the origin, whereas the one-variable diagonal
+is holomorphic there~\cite{tr3:BD}.  The Stieltjes convention is
+\[
+ \zeta(1+u)=\frac1u+\sum_{r\geq0}\frac{(-1)^r\gamma_r}{r!}u^r.
+\]
+
+\subsection{A local remainder with no Gamma factors in its polar part}
+
+\begin{lemma}[Elementary polar model]\label{tr3:polar}
+There is a unique function $R(A,B,C)$ holomorphic in a neighborhood of
+$(0,0,0)$, symmetric in $A,B$, for which
+\begin{equation}\label{tr3:model}
+ \boxed{\displaystyle
+ T(A,B,C)=\zeta(A)\zeta(B)
+  -\frac{C\zeta(B-1)}{A+C}
+  -\frac{C\zeta(A-1)}{B+C}+C R(A,B,C).}
+\end{equation}
+The identity is meromorphic; each quotient retains its indicated
+numerator until a restriction has been specified.
+\end{lemma}
+
+\begin{proof}
+For $A,B$ near zero, Jonqui\`ere's expansion~\cite[\S25.12(ii)]{tr3:DLMF} gives
+\[
+ \operatorname{Li}_A(e^{-x})
+ =\Gamma(1-A)x^{A-1}
+   +\sum_{j\geq0}\zeta(A-j)\frac{(-x)^j}{j!},\qquad 0<x<2\pi.
+\]
+In the Mellin integral
+\[
+ \Gamma(C)T(A,B,C)=\int_0^\infty
+ x^{C-1}\operatorname{Li}_A(e^{-x})\operatorname{Li}_B(e^{-x})\,dx,
+\]
+subtract on $(0,1)$ the six terms
+\begin{align*}
+ S(A,B;x)={}&\Gamma(1-A)\Gamma(1-B)x^{A+B-2}
+ +\Gamma(1-A)\zeta(B)x^{A-1}
+ +\Gamma(1-B)\zeta(A)x^{B-1}\\
+ &-\Gamma(1-A)\zeta(B-1)x^A
+ -\Gamma(1-B)\zeta(A-1)x^B+\zeta(A)\zeta(B).
+\end{align*}
+The difference is normally integrable against $x^{C-1}$ on a sufficiently
+small common parameter polydisc.  Each fixed parameter derivative only
+adds logarithmic powers.  Integrating the six displayed monomials shows
+that some holomorphic symmetric $H$ satisfies
+\begin{align}\label{tr3:Hmodel}
+ T(A,B,C)=\frac{1}{\Gamma(1+C)}\biggl\{
+ \zeta(A)\zeta(B)
+ -\frac{C\Gamma(1-A)\zeta(B-1)}{A+C}
+ -\frac{C\Gamma(1-B)\zeta(A-1)}{B+C}+C H(A,B,C)\biggr\}.
+\end{align}
+The terms with denominators $A+B+C-2$, $A+C-1$, and $B+C-1$ belong
+to $H$, since these denominators are nonzero at the origin.
+
+Write $G(C)=1/\Gamma(1+C)$.  Subtract the proposed polar part from
+\eqref{tr3:Hmodel} and divide by $C$.  The resulting expression is
+\begin{align*}
+ R(A,B,C)={}&G(C)H(A,B,C)
+  +\frac{G(C)-1}{C}\zeta(A)\zeta(B)\\
+ &-\frac{\Gamma(1-A)G(C)-1}{A+C}\zeta(B-1)
+  -\frac{\Gamma(1-B)G(C)-1}{B+C}\zeta(A-1).
+\end{align*}
+Every quotient is holomorphic.  For example,
+$\Gamma(1-A)G(-A)=1$, so its numerator is divisible by $A+C$ in
+the local ring of holomorphic functions.  This proves existence and
+symmetry.  Uniqueness follows from \eqref{tr3:model} for $C\ne0$ and
+then by analytic continuation.
+\end{proof}
+
+The meromorphic continuation and Mellin method are classical~\cite{tr3:BD,tr3:SS}; the local
+form \eqref{tr3:Hmodel} also occurs in the incoming report.  The change
+from $H$ to $R$ is useful because all Gamma and Euler constant terms
+are absorbed into a holomorphic function before the coefficient
+calculation.
+
+For reference, the complete linear jet is
+\begin{align}\label{tr3:linearjet}
+ R(0,0,0)&=\frac L2+\zeta'(-1),\notag\\
+ R_A(0)=R_B(0)&=\frac{L^2}{8}-\frac{z_2}{2},\qquad
+ R_C(0)=\frac{\zeta''(-1)-z_2}{2}.
+\end{align}
+These formulas need no additional spectral input.  The exact $C$ axis
+in the next proof determines $R(0)$ and $R_C(0)$.  The coefficient of
+$AC$ in the Euler identity \eqref{tr3:stuffleR} gives
+$2R_A=\zeta'(0)^2-\zeta''(0)$.  As a consequence,
+\[
+ \left.\frac{d^2}{dt^2}T(t,t,t)\right|_{t=0}
+  =\frac{L^2}{2}-z_2-\zeta''(-1)+4R_A+2R_C
+  =L^2-4z_2.
+\]
+This recovers the incoming quadratic diagonal formula by an independent
+coefficient calculation, while the new result begins at cubic order.
+
+\subsection{The quadratic remainder and the cubic ray theorem}
+
+Let all partial derivatives in the following notation be evaluated
+at $(0,0,0)$:
+\[
+ p=R_{AA}=R_{BB},\qquad q=R_{AB},\qquad
+ r=R_{AC}=R_{BC},\qquad s=R_{CC}.
+\]
+These four coordinates describe the homogeneous quadratic part of
+$R$.  Three exact restrictions determine three independent combinations.
+
+\begin{lemma}[Three exact constraints]\label{tr3:constraints}
+The four second partial derivatives satisfy
+\begin{equation}\label{tr3:quadraticjet}
+ \boxed{\displaystyle
+ s=\frac{y_3-z_3}{3},\qquad
+ p+2r=-\frac{Lz_2}{2}-z_3,\qquad
+ q=\frac{\Omega+6Lz_2+8z_3}{6}.}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Counting the $n-1$ positive pairs with sum $n$ gives
+\[
+ T(0,0,C)=\zeta(C-1)-\zeta(C).
+\]
+Since $\zeta(0)^2-2\zeta(-1)=5/12$, \eqref{tr3:model} yields
+\[
+ C R(0,0,C)=\zeta(C-1)-\zeta(C)-\frac5{12}.
+\]
+Its cubic coefficient gives $s=(y_3-z_3)/3$.
+
+On the plane $B=0$, set
+\[
+ E(A,C)=T(A,0,C)=\sum_{n>m\geq1}n^{-C}m^{-A}.
+\]
+The ordinary Euler stuffle identity, first in an absolutely convergent
+region and then meromorphically, is
+\[
+ E(A,C)+E(C,A)=\zeta(A)\zeta(C)-\zeta(A+C).
+\]
+Inserting \eqref{tr3:model} gives a holomorphic identity
+\begin{align}\label{tr3:stuffleR}
+ C R(A,0,C)+A R(C,0,A)
+ ={}&\zeta(A)\zeta(C)-\zeta(A+C)
+ +\frac{\zeta(A)+\zeta(C)}2\notag\\
+ &+\zeta(-1)+\zeta(A-1)+\zeta(C-1).
+\end{align}
+The coefficient of $A^2C$ on its left is $p/2+r$.  On its right it is
+$\zeta'(0)z_2/2-z_3/2=-Lz_2/4-z_3/2$.  This proves the second
+constraint.
+
+Finally, on the diagonal \eqref{tr3:model} says
+\[
+ T(t,t,t)=\zeta(t)^2-\zeta(t-1)+tR(t,t,t).
+\]
+Taking third derivatives gives
+\[
+ \Omega=-3Lz_2-z_3-y_3+6p+6q+12r+3s.
+\]
+The first two constraints simplify this to
+$\Omega=-6Lz_2-8z_3+6q$, proving the last assertion.
+\end{proof}
+
+\begin{theorem}[Every asymmetric cubic direction]\label{tr3:main}
+Let $a,b,c\in\mathbb C$ satisfy $(a+c)(b+c)\ne0$.  Form the
+one-variable meromorphic restriction $W_{a,b,c}(t)=T(at,bt,ct)$ before
+continuing to $t=0$.  This restriction is holomorphic at zero.  Define
+$\kappa=R_{AA}(0,0,0)$.  Then
+\begin{align}\label{tr3:allrays}
+ \boxed{\displaystyle W_{a,b,c}'''(0)}
+ ={}&abc\,\Omega
+ +3c\bigl(a^2+b^2-c(a+b)\bigr)\kappa\notag\\
+ &-\frac32\bigl(ab(a+b-4c)+c^2(a+b)\bigr)Lz_2\notag\\
+ &+\left(-\frac{a^3+b^3}{2}+8abc-3c^2(a+b)-c^3\right)z_3\notag\\
+ &+\left(c^3-\frac{cb^3}{a+c}-\frac{ca^3}{b+c}\right)y_3.
+\end{align}
+The scalar $\kappa$ is explicitly given by the absolutely convergent
+series in \eqref{tr3:kappa} below.
+\end{theorem}
+
+\begin{proof}
+On an admissible ray the two polar quotients in \eqref{tr3:model}
+become constants times holomorphic one-variable zeta functions, so
+the restriction is holomorphic.  Its cubic derivative is
+\begin{align*}
+ W_{a,b,c}'''(0)={}&-\frac{a^3+b^3}{2}z_3
+ -\frac32ab(a+b)Lz_2
+ -c\left(\frac{b^3}{a+c}+\frac{a^3}{b+c}\right)y_3\\
+ &+3cp(a^2+b^2)+6cqab+6c^2r(a+b)+3c^3s.
+\end{align*}
+Substitute $p=\kappa$ and \eqref{tr3:quadraticjet}.  Collecting the
+coefficients of $\Omega,\kappa,Lz_2,z_3,y_3$ gives
+\eqref{tr3:allrays}.
+\end{proof}
+
+Thus no unresolved partial derivative of the three-variable Tornheim
+function remains in the answer.  The new information relative to the
+quadratic theorem is one explicitly specified Gamma-series coordinate
+in addition to the diagonal coordinate already present in the cubic
+digamma problem.  This is a two-coordinate reduction, not a claim that
+two algebraically independent constants are necessary.
+
+\subsection{A convergent Gamma series and all boundary jets}
+
+Put
+\begin{equation}\label{tr3:rho}
+ \rho(n)=\log\Gamma(n+1)-\left(n+\frac12\right)\log n
+            +n-\frac L2-\frac{1}{12n},\qquad n\geq1.
+\end{equation}
+Stirling's expansion~\cite[\S5.11]{tr3:DLMF} gives $\rho(n)=-1/(360n^3)+O(n^{-5})$.
+Consequently
+\[
+ M_j=\sum_{n\geq1}(\log n)^j\rho(n)
+\]
+converges absolutely for every fixed integer $j\geq0$.  No zeta
+regularization is used in these sums.
+
+\begin{theorem}[Boundary germ in Gamma and Stieltjes data]
+\label{tr3:boundary}
+The Dirichlet series
+\[
+ D(A)=\sum_{n\geq1}\frac{\rho(n)}{n^A}
+\]
+is holomorphic on $\Re A>-2$.  Near $A=0$ it satisfies
+\begin{align}\label{tr3:boundarygerm}
+ R(A,0,0)={}&D(A)-\zeta'(A-1)-\frac12\zeta'(A)
+            -\zeta(A-1)
+            +\frac{\zeta(1+A)-1/A}{12}.
+\end{align}
+In particular, for every $j\geq0$,
+\begin{align}\label{tr3:boundaryjets}
+ \partial_A^jR(0,0,0)
+ ={}&(-1)^j M_j-\zeta^{(j+1)}(-1)
+ -\frac12\zeta^{(j+1)}(0)-\zeta^{(j)}(-1)
+ +\frac{(-1)^j\gamma_j}{12},
+\end{align}
+and the scalar in Theorem~\ref{tr3:main} is
+\begin{equation}\label{tr3:kappa}
+ \boxed{\displaystyle
+ \kappa=\sum_{n\geq1}(\log n)^2\rho(n)
+       -\zeta'''(-1)-\frac12\zeta'''(0)-\zeta''(-1)
+       +\frac{\gamma_2}{12}.}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The decay of $\rho$ proves normal convergence of $D$ and every fixed
+order derivative on compact subsets of $\Re A>-2$.  For $\Re A>2$
+and $C$ near zero, the representation
+\[
+ E(A,C)=\sum_{m\geq1}m^{-A}\zeta(C,m+1)
+\]
+can be differentiated normally in $C$.  Lerch's formula
+$\zeta'(0,x)=\log\Gamma(x)-L/2$~\cite[(25.11.18)]{tr3:DLMF} gives
+\[
+ E_C(A,0)=\sum_{m\geq1}m^{-A}
+            \left(\log\Gamma(m+1)-\frac L2\right).
+\]
+Expanding the summand using \eqref{tr3:rho}, in this convergent
+half-plane, proves
+\[
+ E_C(A,0)=D(A)-\zeta'(A-1)-\frac12\zeta'(A)
+          -\zeta(A-1)+\frac{\zeta(A+1)}{12}.
+\]
+Both sides have meromorphic continuations to a neighborhood of zero.
+On the other hand, differentiation in $C$ of \eqref{tr3:model} with
+$B=0$, for fixed $A\ne0$, gives
+\[
+ E_C(A,0)=\frac{1}{12A}+R(A,0,0).
+\]
+Combining these two identities proves \eqref{tr3:boundarygerm}; its
+apparent $A=0$ singularity is removable.  Taking $j$ derivatives and
+using the specified Stieltjes convention proves
+\eqref{tr3:boundaryjets} and \eqref{tr3:kappa}.
+\end{proof}
+
+The first two members of this hierarchy are completely evaluable:
+\begin{align}\label{tr3:lowGamma}
+ \sum_{n\geq1}\rho(n)
+   &=2\zeta'(-1)+\frac L4-\frac{1+\gamma}{12},\notag\\
+ \sum_{n\geq1}(\log n)\rho(n)
+   &=-\frac{L^2}{8}-\zeta''(-1)-\zeta'(-1)-\frac{\gamma_1}{12}.
+\end{align}
+They follow from \eqref{tr3:linearjet} and
+\eqref{tr3:boundaryjets}.  We use these as derived consistency
+identities and make no separate novelty claim for them.
+
+There is also an exact integral involving an order derivative of the
+ordinary polylogarithm.  In the half-plane $\Re A>-2$,
+\begin{equation}\label{tr3:Dpolylog}
+ D(A)=\int_0^\infty
+ \left(\frac1{e^x-1}-\frac1x+\frac12-\frac{x}{12}\right)
+           \frac{\operatorname{Li}_A(e^{-x})}{x}\,dx.
+\end{equation}
+To see this, the Laplace form of Binet's formula~\cite[\S5.9]{tr3:DLMF} gives
+\[
+ \rho(n)=\int_0^\infty e^{-nx}
+ \left(\frac1{e^x-1}-\frac1x+\frac12-\frac{x}{12}\right)\frac{dx}{x}.
+\]
+This formula can also be verified by differentiating with respect to
+$n$ using the standard digamma integral and fixing the constant at
+$n=+\infty$.  Summation and integration commute absolutely on
+$\Re A>-2$.  At the lower endpoint the bracket divided by $x$ is
+$-x^2/720+O(x^4)$ and the polylogarithm contributes at worst the
+integrable singularity required by that half-plane; the upper endpoint
+is exponentially decaying.  Fixed order derivatives add logarithmic
+factors and remain integrable.  Hence
+\begin{equation}\label{tr3:Mpolylog}
+ M_j=(-1)^j\int_0^\infty
+ \left(\frac1{e^x-1}-\frac1x+\frac12-\frac{x}{12}\right)
+ \left.\partial_A^j\operatorname{Li}_A(e^{-x})\right|_{A=0}\frac{dx}{x}.
+\end{equation}
+Equations \eqref{tr3:kappa} and \eqref{tr3:Mpolylog} supply equivalent
+Gamma-series and polylogarithmic-integral coordinates for the same
+constant.  They also connect the entire boundary derivative hierarchy
+to the Stieltjes constants.  Since
+$-\left.\partial_s H_n^{(s)}\right|_{s=0}=\log\Gamma(n+1)$,
+these identities can equivalently be written with order derivatives of
+generalized harmonic numbers.
+
+\subsection{Exact cancellation families and examples}
+
+\begin{corollary}[A conic of directions]\label{tr3:conic}
+If an admissible direction obeys
+\begin{equation}\label{tr3:coniceq}
+ a^2+b^2=c(a+b),
+\end{equation}
+then its third derivative is a finite combination of
+$\Omega$, $L\zeta''(0)$, $\zeta'''(0)$, and $\zeta'''(-1)$.
+No Gamma-series coordinate occurs.
+\end{corollary}
+
+For example, the direction $(1,2,5/3)$ gives the exact relation
+\begin{equation}\label{tr3:conicexample}
+ W_{1,2,5/3}'''(0)=\frac{10}{3}\Omega
+ -\frac32Lz_2-\frac{403}{54}z_3-\frac{245}{297}y_3.
+\end{equation}
+The diagonal and the Euler diagonal are familiar points on the same
+conic.  In particular,
+\[
+ W_{1,0,1}'''(0)=-\frac32Lz_2-\frac92z_3,
+\]
+as also follows directly from
+$T(t,0,t)=(\zeta(t)^2-\zeta(2t))/2$.
+
+\begin{corollary}[Cyclic elimination]\label{tr3:cyclic}
+Let all pairwise sums $a+b$, $a+c$, $b+c$ be nonzero, and put
+$e_1=a+b+c$, $e_2=ab+bc+ca$, $e_3=abc$.  Then
+\begin{align}\label{tr3:cyclicformula}
+ W_{a,b,c}'''(0)+W_{b,c,a}'''(0)+W_{c,a,b}'''(0)
+ ={}&3e_3\Omega+3(9e_3-e_1e_2)Lz_2\notag\\
+ &+(-2e_1^3+3e_1e_2+27e_3)z_3.
+\end{align}
+Both $\kappa$ and $\zeta'''(-1)$ cancel.
+\end{corollary}
+
+\begin{proof}
+Sum \eqref{tr3:allrays} cyclically.  The $\kappa$ coefficient is
+$3\sum_{\rm cyc}c(a^2+b^2)-3\sum_{\rm cyc}c^2(a+b)=0$.
+In the $y_3$ coefficient, terms sharing the denominator $a+c$ combine
+to $-b^3$, cancelling the sum of cubes.  The remaining two
+coefficients reduce to the elementary symmetric expressions displayed
+in \eqref{tr3:cyclicformula}.
+\end{proof}
+
+The concrete specialization $(a,b,c)=(1,2,3)$ is
+\[
+ W_{1,2,3}'''(0)+W_{2,3,1}'''(0)+W_{3,1,2}'''(0)-18\Omega
+       =-36Lz_2-72z_3.
+\]
+Individually, two asymmetric cases read
+\begin{align*}
+ W_{1,2,3}'''(0)&=6\Omega-36\kappa
+                -\frac{27}{2}Lz_2-\frac{129}{2}z_3+\frac{102}{5}y_3,\\
+ W_{2,3,1}'''(0)&=6\Omega+24\kappa
+                -\frac{33}{2}Lz_2+\frac{29}{2}z_3-10y_3.
+\end{align*}
+The Euler direction $(1,0,2)$ isolates the additional coordinate:
+\begin{equation}\label{tr3:kappaisolate}
+ W_{1,0,2}'''(0)=-6\kappa-6Lz_2-\frac{41}{2}z_3+7y_3.
+\end{equation}
+Thus one may replace $\kappa$ by a single Euler double-zeta directional
+derivative if that basis is preferable.  The Gamma series gives a
+convergent evaluation of that derivative, rather than merely naming it.
+
+For a finite linear combination of admissible rays, the map
+\[
+ (a,b,c)\longmapsto
+ \bigl(abc,\ 3c(a^2+b^2-c(a+b))\bigr)
+\]
+lists the coefficients of the two residual coordinates.  Any linear
+combination in the kernel of this explicit map reduces to the displayed
+ordinary zeta derivatives.  This is a sufficient exact elimination
+criterion.  Arithmetic relations between $\Omega$ and $\kappa$, if
+found later, could enlarge the actual reducible family.
+
+\subsection{Verification and status}
+
+The accompanying \texttt{check\_cubic\_rays.py} checks the finite algebra
+symbolically.  It computes the Gamma series using finite Stirling
+subtraction and evaluates Tornheim functions independently through
+integrated Jonqui\`ere series on $(0,1)$ and an incomplete-Gamma series
+on $(1,\infty)$.  The reported working precision, finite-difference
+step, truncations, and discrepancies are recorded in
+\texttt{cubic\_rays.json}.  The largest discrepancy in the three fully asymmetric cases is less than
+$2.27\times10^{-38}$ at 65-digit working precision.  These numerical
+diagnostics accompany the proof; the floating-point results are not interval certificates.
+For orientation,
+\begin{align*}
+ \kappa&=3.6336347857639257352355574698800935822\ldots,\\
+ M_2&=-0.00064921643050147820901953512402746385\ldots.
+\end{align*}
+
+The exact contribution is the cubic directional classification,
+the explicit boundary germ, and their cancellation consequences.
+The classical ingredients are Mellin continuation, Euler stuffle,
+Stirling subtraction, and Lerch's formula.  The 2025 preprint of
+Sathyanarayana and Sharan~\cite{tr3:SS}, published in 2026, develops fixed-variable
+Kronecker limits, Herglotz-type relations, and diagonal special values.
+Its Section~5 proposes further study of simultaneously varying order
+limits at points of indeterminacy.  The 2026 preprint of
+Dobrowolski~\cite{tr3:Dobrowolski} concerns positive-integer symmetrized weights.  These are
+relevant adjacent developments.  The simultaneous cubic-origin formula
+above was not located in the inspected versions, but a comprehensive
+priority claim would require a broader literature review.
+
+Questions about further reduction of $\Omega$ and $\kappa$, the quartic
+jet, and systematic cancellation families are stated in
+Section~\ref{research:section}.

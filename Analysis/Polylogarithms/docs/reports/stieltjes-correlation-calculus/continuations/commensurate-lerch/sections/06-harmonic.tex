@@ -1,0 +1,102 @@
+\section{Balanced harmonic remainders and their order derivatives}
+\label{clc:sec:harmonic}
+
+The scale alignment also identifies the correct unequal truncation
+lengths. For $N\ge0$ put
+\begin{equation}\label{clc:eq:R}
+ \mathcal R_{N,s}(y)=\Li_s(-y)-\sum_{k=1}^{N}\frac{(-y)^k}{k^s}.
+\end{equation}
+The empty sum is zero. For $a>0$ and $\sigma\in\{1,-1\}$ write
+\begin{equation}\label{clc:eq:Hcolored}
+ H_{N,\sigma}^{(v)}(a)=\sum_{k=0}^{N-1}\frac{\sigma^k}{(k+a)^v}.
+\end{equation}
+This finite function is entire in $v$. At $a=1$, $\sigma=1$, it is the
+usual generalized harmonic number $H_N^{(v)}$.
+
+\begin{theorem}[Unequal-scale harmonic-remainder product]
+\label{clc:thm:remainder}
+For all integers $m\ge1$, $N\ge0$, and all complex $s,t$, with $W=s+t$,
+\begin{align}
+ &\int_0^\infty\mathcal R_{mN,s}(y)
+            \mathcal R_{N,t}(y^{-m})\frac{\dd y}{y}
+ = I_m(s,t;0)\notag\\
+ &\quad-m^{-s-1}\biggl[
+ \pi\sum_{r=1}^{m-1}c_r^{(m)}
+ H_{N,\sigma_m}^{(W)}\left(\frac r m\right)
+ +\sigma_m W H_{N,\sigma_m}^{(W+1)}(1)\biggr].
+ \label{clc:eq:remainder}
+\end{align}
+The integral is absolutely convergent and entire in its two orders.
+Every independent order derivative can be passed through it.
+\end{theorem}
+\begin{proof}
+The elementary shift of the Lerch series, first for $0<y<1$ and then
+by continuation along $y>0$, gives
+\begin{equation}\label{clc:eq:Rshift}
+ F_{N+1,s}(y)=-(-y)^{-N}\mathcal R_{N,s}(y).
+\end{equation}
+Take $A=mN$ in \eqref{clc:eq:I-def}. The two factors in
+\eqref{clc:eq:Rshift} have powers $y^{-mN}$ and $y^{mN}$, so they
+cancel; their signs give
+\[
+ \int_0^\infty\mathcal R_{mN,s}(y)
+       \mathcal R_{N,t}(y^{-m})\frac{\dd y}{y}
+ =\sigma_m^N I_m(s,t;mN).
+\]
+This also proves convergence and all order-holomorphic assertions by
+Theorem~\ref{clc:thm:pair} and the weighted lemma.
+
+The finite shift formula is
+\[
+ \Phi(\sigma,v,a+N)=\sigma^N
+             [\Phi(\sigma,v,a)-H_{N,\sigma}^{(v)}(a)]
+ \quad(\sigma=\pm1).
+\]
+It follows directly by removing the first $N$ terms; at $\sigma=1$
+it is continued through the usual Hurwitz pole in the combined formula.
+All arguments in \eqref{clc:eq:pair} increase by $N$ when $A=mN$.
+The resulting factor $\sigma_m^N$ cancels the preceding sign, proving
+\eqref{clc:eq:remainder}. All harmonic corrections are finite entire
+functions of the orders, so no additional continuation issue remains.
+\end{proof}
+
+An explicit example is
+\begin{align}
+ &\int_0^\infty
+ \left[-\log(1+y)+y-\frac{y^2}{2}\right]
+ \left[-\log(1+y^{-2})+y^{-2}\right]\frac{\dd y}{y}\notag\\
+ &\hspace{25mm}=\pi G-\frac38\zeta(3)-\pi+\frac12.
+ \label{clc:eq:Rexample}
+\end{align}
+This is the case $m=2$, $N=1$, $s=t=1$. The two brackets must be kept
+together. Expanding the product and integrating its monomials separately
+would introduce divergent integrals and would not prove the identity.
+The unequal truncation lengths $2$ and $1$ are dictated by the scales;
+they are not interchangeable with two equal truncation lengths.
+
+\subsection{Logarithmic harmonic derivatives}
+For every $h\ge0$,
+\begin{equation}\label{clc:eq:Hjets}
+ \partial_v^hH_{N,\sigma}^{(v)}(a)
+ =(-1)^h\sum_{k=0}^{N-1}
+       \frac{\sigma^k\log^h(k+a)}{(k+a)^v}.
+\end{equation}
+Consequently the derivatives of \eqref{clc:eq:remainder} give explicit
+identities for products of polylogarithmic order derivatives and finite
+harmonic-logarithmic corrections, with no new infinite coefficients.
+The prefactor $m^{-s-1}$ contributes powers of $-\log m$ and must be
+differentiated as well.
+
+For example, the first $s$ derivative of the correction bracket in
+\eqref{clc:eq:remainder}, evaluated at any pair $(s,t)$, is
+\begin{align*}
+ m^{-s-1}\biggl\{&\pi\sum_r c_r^{(m)}
+       [\partial_W H_{N,\sigma_m}^{(W)}(r/m)
+                     -\log m\,H_{N,\sigma_m}^{(W)}(r/m)]\\
+ &+\sigma_m[(1-W\log m)H_{N,\sigma_m}^{(W+1)}(1)
+                  +W\partial_W H_{N,\sigma_m}^{(W+1)}(1)]\biggr\}.
+\end{align*}
+The $t$ derivative has no derivative of the prefactor. Thus the explicit
+harmonic identities retain the same scale asymmetry as the raw
+polylogarithm integral. Arbitrarily high derivatives follow from the
+finite Leibniz rule rather than an unproved extrapolation.

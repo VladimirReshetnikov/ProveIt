@@ -1,0 +1,2614 @@
+% Generated from article.tex by build_standalone.py.
+% Edit the modular source and regenerate this file.
+
+% BEGIN preamble.tex
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,longtable,tabularx,array,enumitem,xcolor,microtype,xurl}
+\usepackage{graphicx,needspace}
+\definecolor{inkblue}{RGB}{24,61,97}
+\usepackage[colorlinks=true,linkcolor=inkblue,citecolor=inkblue,urlcolor=inkblue]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Barnes Resolvents and Higher Harmonic Identities},
+ pdfauthor={Research continuation prepared for Vladimir Reshetnikov},
+ pdfsubject={Exact polylogarithm, Gamma, harmonic, Stieltjes, and Tornheim identities},
+ pdfkeywords={polylogarithm, Barnes G, multiple gamma, polygamma, Hurwitz zeta, Stieltjes constants, Tornheim}}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\allowdisplaybreaks[2]
+\emergencystretch=3em
+\setlength{\parskip}{3pt}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Log}{Log}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\CT}{CT}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\sgn}{sgn}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm dx}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\newcommand{\Liord}[2]{\Li_{#1}^{[1]}(#2)}
+\newcommand{\snapshot}{\nolinkurl{7bd45777a8a127e5dc69aff8887ca36a79a3059d}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\title{\textcolor{inkblue}{Barnes Resolvents and Higher Harmonic Identities}\\[8pt]
+\large Polynomial Hurwitz transforms, complex kernel powers,\\
+quartic Stieltjes moments, and transverse Tornheim data}
+\author{Research continuation prepared for Vladimir Reshetnikov}
+\date{11 October 2026}
+\hypersetup{pdftitle={Barnes Resolvents and Higher Harmonic Identities},pdfauthor={Research continuation for Vladimir Reshetnikov}}
+
+% END preamble.tex
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We continue the exact-identity programme of the ProveIt polylogarithm
+manuscript from a fixed repository snapshot. A polynomially weighted
+Hurwitz transform gives the individual cotangent resolvents of every
+unit-period multiple Gamma function with an explicit normalization.
+For the Barnes $G$ function, the answer uses ordinary polylogarithms,
+their order derivatives, and one convergent depth-two derivative; an
+antisymmetric component reduces entirely to depth one. The same
+transform gives all weighted Stieltjes coefficients and their full
+endpoint corrections. We also develop complex powers of the kernel,
+an exact quartic digamma--harmonic bridge, and an independently
+convergent transverse coordinate for higher cyclic Tornheim
+derivatives. Every reduction is stated relative to an explicit
+function class; no arithmetic independence or literature-wide
+priority claim is made. Proofs, normalization checks, reproducible
+computations, a narrowly scoped correction to a published Barnes
+identity, and further research questions accompany the results.
+\end{abstract}
+\tableofcontents
+\newpage
+
+% BEGIN sections/01_scope.tex
+\section{Scope, source baseline, and conventions}
+\label{bhr:sec:scope}
+
+The starting point is the ProveIt repository at commit
+\snapshot, whose recorded time is 11 October 2026, 01:57:13 UTC.
+We obtained the canonical manuscript's 81 chapter files, its README,
+validation record, preamble and references, and the text members of all
+eleven archives then present in \src{docs/incoming}. The source review
+was targeted at the identities used below; it was not a line-by-line
+soundness audit of every volume. The accompanying source inventory
+identifies the snapshot and the incoming Git blob identifiers.
+
+The newest source, \emph{Harmonic Parity and Resolvent Identities}
+\cite{bhr:Parity}, already settles the rational cotangent-resolvent
+problem, the balanced negapolygamma ladder, and a quartic directional
+normal form. Those conclusions are baseline results here. Its
+questions R4 and R6 instead ask for nonintegral complex kernel powers
+and individual multiple Gamma transforms. The cubic harmonic report
+\cite{bhr:Cubic} asks for a further bridge from higher digamma powers to
+harmonic Laurent coefficients. These are the principal targets of
+the present continuation.
+
+\begin{table}[htbp]
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.23\textwidth}Y@{}}
+\toprule
+Source target & Exact scope pursued in this article\\
+\midrule
+Parity R6: individual Barnes functions & A finite formula for every
+polynomially weighted, unit-period multiple Gamma resolvent, including
+all normalization polynomials; an explicit $G$ formula.\\[5pt]
+Parity R4: complex powers & A joint spectral transform and conversion
+at positive integer exponent crossings, with the branch fixed along
+the integration interval.\\[5pt]
+Cubic Q6: higher digamma powers & The fourth-power finite part in
+ordinary zeta/Stieltjes data and explicitly defined depth-two and
+depth-three harmonic Laurent coefficients; an absolutely convergent
+series representation.\\[5pt]
+Parity R10: a transverse cyclic coordinate & A convergent integral
+representative and its use in the fifth cyclic directional layer.\\
+\bottomrule
+\end{tabularx}
+\caption{Developments relative to the inspected reports. Theorems below
+state the precise domains; a reduction to higher-depth data is not a
+reduction to an unspecified algebra of familiar constants.}
+\label{bhr:tab:targets}
+\end{table}
+
+\subsection{What remains a conjecture}
+
+The short Gaussian $S_6$ evaluation with label
+\src{cycloquot:conj:S6} and the revised $S_8$ evaluation with label
+\src{s8new:conj:S8} remain conjectural. The older frozen $S_8$ vector
+was rigorously rejected in the existing manuscript; it is a different
+candidate. None of the transformations in this article is an exact
+certificate for either current candidate. Similarly, the familiar
+cubic constants are not declared to belong to a smaller classical
+constant algebra simply because an integral or a new convergent
+series represents them.
+
+\subsection{Notation}
+
+We use the standard Hurwitz Laurent convention
+\begin{equation}\label{bhr:eq:stieltjes-convention}
+ \zeta(1-s,x)=-\frac1s+
+    \sum_{m=0}^{\infty}\gamma_m(x)\frac{s^m}{m!},
+ \qquad \gamma_0(x)=-\psi(x),\quad \psi=\frac{\Gamma'}\Gamma.
+\end{equation}
+Thus $\gamma_m=\gamma_m(1)$ and $\gamma=\gamma_0$.
+An ordinary prime on $\zeta$ means a derivative in its first,
+spectral argument. A superscript on $\psi$ or $\gamma_m(x)$ means
+an argument derivative. We write
+\[
+ \Li_s^{[j]}(q)=\partial_s^j\Li_s(q),\qquad
+ H_n^{(r)}=\sum_{k=1}^n k^{-r},\qquad H_n=H_n^{(1)}.
+\]
+All logarithms of positive real numbers are real. Complex logarithms
+are fixed explicitly whenever they occur in a power. Products of
+positive real Gamma and Barnes functions on $(0,1)$ use their real
+logarithms.
+
+The endpoint finite part in this article is
+\begin{equation}\label{bhr:eq:fp-definition}
+ \FP_x\int_0^1 f(x)\,dx
+   = [\delta^0(\log\delta)^0]
+       \int_{\delta}^{1-\delta}f(x)\,dx.
+\end{equation}
+This definition applies when the integral has a finite asymptotic
+expansion of nonvanishing powers and logarithms plus a constant and a
+vanishing remainder. For complex exponents, the removed powers may
+oscillate as well as diverge. Our proofs either establish that expansion or
+give an equivalent explicit subtraction. A parameter Laurent
+constant, denoted $\CT$, is a different operation. Their equality
+is asserted only after the relevant correction has been proved.
+
+\subsection{Classical inputs and the meaning of a contribution}
+
+The Hurwitz Fourier formula, the argument-shift law, Gamma
+derivatives, Bernoulli polynomial evaluations, and ordinary
+polylogarithm calculus are standard \cite{bhr:DLMFZ,bhr:DLMFG}.
+Espinosa--Moll already developed Hurwitz integrals and balanced
+negapolygamma functions \cite{bhr:EMIntegrals,bhr:EMGeneralized}.
+The multiple-Gamma/Hurwitz-zeta conversion is classical
+\cite{bhr:Adamchik,bhr:Vardi}. The Fourier coefficients of
+$x\log\Gamma(x)$ and $\log G(x)$ are also known, in particular in
+Mez\H{o}'s paper \cite{bhr:Mezo}. We do not reclassify any of those
+facts as discoveries.
+
+Our Barnes result is a finite resolvent reduction, valid with an
+arbitrary polynomial weight and every specified normalization
+constant. Its spectral form supplies an all-index Stieltjes
+extension at the same time. The later sections isolate the precise
+additional harmonic and transverse coordinates rather than hiding
+them inside unnamed finite parts. These are developments relative
+to the pinned source programme. Numerical checks in the package
+support independent error detection; the proofs in the text carry
+the mathematical claims.
+
+% END sections/01_scope.tex
+
+
+% BEGIN sections/02_weighted_transform.tex
+\section{A polynomially weighted Hurwitz resolvent}
+\label{bhr:sec:weighted}
+
+\subsection{The two Fourier directions and a convergent depth-two function}
+
+For $z\in\C\setminus\R$, put
+\begin{equation}\label{bhr:eq:coordinates}
+ \begin{gathered}
+ \epsilon=\sgn(\Im z),\quad \omega=2\epsilon\pi\ii,
+ \quad \sigma=-\omega,\quad a=z+\epsilon\pi\ii,\\
+ q=\frac{z-\epsilon\pi\ii}{z+\epsilon\pi\ii},\qquad
+ c=\frac{2\epsilon\pi\ii}{a^2},\qquad |q|<1,\\
+ \Log\omega=\log(2\pi)+\epsilon\pi\ii/2,\qquad
+ \Log\sigma=\log(2\pi)-\epsilon\pi\ii/2.
+ \end{gathered}
+\end{equation}
+Let $K(x)=\pi\cot(\pi x)$ and $R_z(x)=(K(x)-z)^{-1}$.
+The elementary identity
+\begin{equation}\label{bhr:eq:resolvent-fourier}
+ R_z(x)=-\frac1a+c\sum_{n\ge1}q^{n-1}e^{\omega nx}
+\end{equation}
+converges uniformly with every argument derivative. In particular
+$R_z(0)=R_z(1)=0$ and $R_z(x)=x+O(x^2)$ at zero.
+
+The natural depth-two function for multiplication by a polynomial is
+\begin{equation}\label{bhr:eq:omega-function}
+ \mathcal O_{\alpha,\beta}(q)
+   =\sum_{n,m\ge1}\frac{q^n}{(m+n)^\alpha m^\beta}
+   =\Li_{\alpha,\beta}(q,q^{-1}).
+\end{equation}
+Here our convention is
+$\Li_{\alpha,\beta}(u,v)=\sum_{k>m\ge1}
+u^kv^m/(k^\alpha m^\beta)$.
+The last expression in \eqref{bhr:eq:omega-function} is interpreted by
+the displayed convergent series, not by assigning separate
+independent branches to the two arguments.
+
+\begin{lemma}[Normal convergence]\label{bhr:lem:omega-normal}
+The series \eqref{bhr:eq:omega-function}, with all finite order
+derivatives, converges normally on
+\[
+ |q|<1,\qquad \Re(\alpha+\beta)>1.
+\]
+It vanishes at $q=0$, and division by $q$ has a removable value there.
+\end{lemma}
+\begin{proof}
+On a compact parameter set split the inner sum at $m=2n$.
+For $m>2n$, the summand is bounded by a fixed multiple of
+$|q|^n m^{-\Re(\alpha+\beta)}$. For $m\le2n$, all possible
+growth is bounded by a fixed power of $n$, and the geometric
+factor dominates it. Derivatives introduce only powers of
+$\log m$, $\log(m+n)$ and $n$, which are handled by a small
+margin in the strict inequalities. The same bounds justify
+termwise differentiation. Every term contains $q^n$ with $n\ge1$.
+\end{proof}
+
+We shall also need the normally convergent subtracted functions
+\begin{align}
+ U_j(s,q)&=\sum_{n,m\ge1}q^n m^{-s}
+       \bigl((m+n)^{-j}-m^{-j}\bigr),\label{bhr:eq:U}\\
+ V_j(s,q)&=\sum_{n,m\ge1}q^n m^{-j}
+       \bigl((m+n)^{-s}-m^{-s}\bigr),\label{bhr:eq:V}
+\end{align}
+where $j\ge1$. Each is holomorphic for $\Re s>-j$, $|q|<1$.
+In the common initial domain they satisfy
+\begin{equation}\label{bhr:eq:UV-continuation}
+ U_j=\mathcal O_{j,s}-\frac{q}{1-q}\zeta(s+j),\qquad
+ V_j=\mathcal O_{s,j}-\frac{q}{1-q}\zeta(s+j).
+\end{equation}
+For example, in the tail $m>2n$ each difference gains a factor
+$O(n/m)$, uniformly on compact sets. The remaining part is
+geometrically summable as in Lemma~\ref{bhr:lem:omega-normal}.
+This proves the claimed larger domain directly, without assigning
+values to divergent unsubtracted summands.
+
+\subsection{The finite polynomial data}
+
+For a polynomial $P$ of degree $d$, define
+\begin{equation}\label{bhr:eq:polynomial-data}
+ \mu_P=\int_0^1P(x)\,dx,\qquad
+ b_j(P)=\frac{(-1)^{j-1}}{\omega^j}
+    \bigl(P^{(j-1)}(1)-P^{(j-1)}(0)\bigr),\quad 1\le j\le d.
+\end{equation}
+The sum is empty when $P$ is constant. Repeated integration by
+parts gives
+\begin{equation}\label{bhr:eq:P-fourier}
+ \int_0^1P(x)e^{\omega kx}\,dx
+ =\begin{cases}
+   \mu_P,& k=0,\\[2pt]
+   \displaystyle\sum_{j=1}^d\frac{b_j(P)}{k^j},& k\in\Z\setminus\{0\}.
+  \end{cases}
+\end{equation}
+The derivative of order $d$ is constant and hence contributes no
+endpoint difference. Thus only these finitely many data occur.
+
+Define the elementary polynomial resolvent
+\begin{equation}\label{bhr:eq:Tpoly}
+ T_P(z)=\int_0^1P(x)R_z(x)\,dx
+       =-\frac{\mu_P}{a}+
+          \frac cq\sum_{j=1}^d b_j(P)\Li_j(q).
+\end{equation}
+All quotients by $q$ in this article are given their removable
+values at $q=0$, equivalently $z=\epsilon\pi\ii$.
+
+\subsection{The master identity}
+
+Set
+\begin{align}\label{bhr:eq:Bpoly}
+ \mathcal B_P(s,q)
+   ={}&\sigma^{-s}\mu_P\Li_s(q)\notag\\
+    &+\sum_{j=1}^d b_j(P)
+       \left\{\omega^{-s}U_j(s,q)
+        +\sigma^{-s}\bigl(\Li_s(q)\Li_j(q)
+                              +(-1)^jV_j(s,q)\bigr)\right\}.
+\end{align}
+
+\begin{theorem}[Polynomial Hurwitz resolvent]\label{bhr:thm:weighted-master}
+For every polynomial $P$, every $z\notin\R$, and $\Re s>0$,
+\begin{equation}\label{bhr:eq:weighted-master}
+ \boxed{\displaystyle
+ I_P(s,z):=\int_0^1P(x)\zeta(1-s,x)R_z(x)\,dx
+          =\frac{c\Gamma(s)}q\mathcal B_P(s,q).}
+\end{equation}
+The bracket $\mathcal B_P$ is holomorphic on $\Re s>-1$.
+The formula therefore gives a meromorphic continuation through
+$s=0$, with residue $-T_P(z)$ and no other pole in that half-plane.
+On $\Re s>0$ it is a finite depth-two polylogarithmic formula
+by \eqref{bhr:eq:UV-continuation}.
+\end{theorem}
+
+\begin{proof}
+Initially take $\Re s>1$. The classical Hurwitz Fourier expansion
+\cite[\S25.11]{bhr:DLMFZ} is absolutely convergent and reads
+\begin{equation}\label{bhr:eq:hurwitz-fourier}
+ \zeta(1-s,x)=\Gamma(s)\sum_{m\ge1}m^{-s}
+       \left(\omega^{-s}e^{\omega mx}
+                         +\sigma^{-s}e^{-\omega mx}\right).
+\end{equation}
+Multiply this by \eqref{bhr:eq:resolvent-fourier} and use
+\eqref{bhr:eq:P-fourier}. The constant Fourier term of $R_z$ gives
+\[
+ -\frac{\Gamma(s)}a\sum_j b_j(P)
+        \bigl(\omega^{-s}+(-1)^j\sigma^{-s}\bigr)\zeta(s+j).
+\]
+The equal-frequency diagonal contributes
+$c\Gamma(s)\sigma^{-s}\mu_P\Li_s(q)/q$.
+The same-sign frequencies contribute $\mathcal O_{j,s}$.
+For the remaining frequencies split at $m=n$:
+\begin{align}\label{bhr:eq:lattice-splitting}
+ \sum_{\substack{n,m\ge1\\m\ne n}}
+    \frac{q^n}{m^s(n-m)^j}
+ &=\Li_s(q)\Li_j(q)+(-1)^j\mathcal O_{s,j}(q).
+\end{align}
+Indeed $m<n$ is parameterized by $n=m+h$ and gives the
+product; $m>n$ is parameterized by $m=n+h$ and gives the second
+sum. Absolute convergence justifies these changes of variables.
+
+Insert \eqref{bhr:eq:UV-continuation}. Every ordinary zeta term
+cancels because
+\begin{equation}\label{bhr:eq:coefficient-cancellation}
+ \frac{c}{1-q}=\frac1a.
+\end{equation}
+What remains is exactly \eqref{bhr:eq:weighted-master}.
+Both sides are holomorphic on $\Re s>0$, so the initial identity
+extends there. On the left, use
+$\zeta(1-s,x)=x^{s-1}+\zeta(1-s,x+1)$:
+the first term times $P R_z$ is locally integrable for $\Re s>-1$,
+and the second has just the constant Hurwitz pole $-1/s$.
+The normal convergence of $U_j,V_j$ proves the same assertion
+on the right. Finally, telescoping in $m$ gives
+\[
+ U_j(0,q)=-\frac{\Li_j(q)}{1-q},\qquad V_j(0,q)=0.
+\]
+Since $\Li_0(q)=q/(1-q)$,
+\begin{equation}\label{bhr:eq:Bzero}
+ \mathcal B_P(0,q)=\mu_P\frac{q}{1-q}
+                     -\sum_jb_j(P)\Li_j(q)=-\frac q c T_P(z).
+\end{equation}
+This proves the residue, including the removable $q=0$ case.
+\end{proof}
+
+\begin{example}[The first nonconstant weight]\label{bhr:ex:xweight}
+For $P(x)=x$, one has $\mu_P=1/2$, $b_1=1/\omega$ and
+\begin{align}
+ \mathcal B_x(s,q)
+  =\frac12\sigma^{-s}\Li_s(q)
+   +\frac1\omega\left\{\omega^{-s}U_1(s,q)
+       +\sigma^{-s}\bigl(\Li_s(q)\Li_1(q)-V_1(s,q)\bigr)\right\}.
+ \label{bhr:eq:xweight}
+\end{align}
+This is the missing $x\log\Gamma(x)$ input to an individual
+Barnes-$G$ transform. Setting $P=1$ deletes $U_j,V_j$ and
+recovers the previously established unweighted formula.
+\end{example}
+
+\subsection{All weighted Stieltjes coefficients}
+
+\begin{theorem}[A holomorphic Stieltjes generator]\label{bhr:thm:weighted-stieltjes}
+For every polynomial $P$, integer $m\ge0$, and $z\notin\R$,
+\begin{equation}\label{bhr:eq:weighted-stieltjes}
+ \boxed{\displaystyle
+ \int_0^1P(x)\gamma_m(x)R_z(x)\,dx
+   =\frac{m!c}{q}[s^{m+1}]
+               \Gamma(1+s)\mathcal B_P(s,q).}
+\end{equation}
+These are ordinary absolutely convergent integrals.
+Equivalently their exponential generating function is
+\begin{equation}\label{bhr:eq:weighted-stieltjes-germ}
+ I_P(s,z)+\frac{T_P(z)}s
+   =\frac cq\frac{\Gamma(1+s)\mathcal B_P(s,q)
+                          -\mathcal B_P(0,q)}s.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The shift law
+$\gamma_m(x)=x^{-1}\log^m x+\gamma_m(x+1)$ and $R_z=O(x)$
+prove convergence. The same bounds, locally uniformly for $s$
+near zero, allow \eqref{bhr:eq:stieltjes-convention} to be integrated
+after removing its constant pole. Now use Theorem~\ref{bhr:thm:weighted-master}
+and \eqref{bhr:eq:Bzero}. The numerator on the right of
+\eqref{bhr:eq:weighted-stieltjes-germ} vanishes at zero.
+\end{proof}
+
+For instance, the first two moments are obtained from
+\begin{align}
+ \int_0^1P\gamma_0R_z\,dx
+  &=\frac cq\bigl(\partial_s\mathcal B_P(0,q)
+                                      -\gamma\mathcal B_P(0,q)\bigr),\\
+ \int_0^1P\gamma_1R_z\,dx
+  &=\frac c{2q}\bigl(\partial_s^2\mathcal B_P(0,q)
+       -2\gamma\partial_s\mathcal B_P(0,q)
+                +(\gamma^2+\zeta(2))\mathcal B_P(0,q)\bigr).
+\end{align}
+Every derivative of the subtracted double sums is normally
+convergent. In particular these formulas do not require subtracting
+two divergent numerical evaluations of \eqref{bhr:eq:UV-continuation}.
+
+\subsection{Argument derivatives and complete local corrections}
+
+Let
+\begin{equation}\label{bhr:eq:Ap}
+ A_p(s)=\prod_{j=1}^p(s-j),\qquad
+ r_{P,p}(z)=[x^p]\bigl(P(x)R_z(x)\bigr).
+\end{equation}
+The empty product is one. Meromorphic continuation of $I_P$ to
+any desired finite spectral neighborhood can be constructed by
+subtracting finitely many terms from the Taylor expansion of
+$P(x)R_z(x)$ at zero. This supplies an unambiguous meaning to
+the next formula even when $s-p$ is outside the normal domain
+of the first subtraction in \eqref{bhr:eq:U}--\eqref{bhr:eq:V}.
+
+\begin{theorem}[Weighted argument-derivative conversion]\label{bhr:thm:weighted-contact}
+For $m\ge0$, $p\ge1$ and a polynomial $P$,
+\begin{equation}\label{bhr:eq:weighted-contact}
+ \boxed{\displaystyle
+ \FP_x\int_0^1P(x)\gamma_m^{(p)}(x)R_z(x)\,dx
+   =m![s^m]\left\{
+       A_p(s)I_P(s-p,z)-\frac{r_{P,p}(z)A_p(s)}s\right\}.}
+\end{equation}
+The expression in braces is holomorphic near $s=0$.
+The entire polynomial amplitude $A_p(s)$ must be subtracted,
+not only its value at zero.
+\end{theorem}
+\begin{proof}
+The Hurwitz argument ladder gives the meromorphic identity
+\[
+ \partial_x^p\zeta(1-s,x)=A_p(s)\zeta(1-s+p,x).
+\]
+The singular part at zero is $A_p(s)x^{s-p-1}$.
+After multiplication by $P R_z$, the only exponent crossing
+$-1$ at $s=0$ is $r_{P,p}A_p(s)x^{s-1}$.
+Its continued integral is $r_{P,p}A_p(s)/s$, whereas the
+finite part of every coefficient $x^{-1}\log^j x$ on $(0,1)$
+is zero. All other terms commute with coefficient extraction.
+To justify the latter statement, subtract a Taylor polynomial
+through degree $p+1$ on $(0,\delta_0)$, integrate its terms
+explicitly, and use normal integrability of the remainder.
+The nonsingular Hurwitz tail at $x+1$ is analytic after an
+argument derivative. This proves the formula and the
+holomorphy assertion.
+\end{proof}
+
+For a completely explicit continuation of the depth-two expression,
+one can subtract $N$ terms of $(1+n/m)^{-j}$ and $(1+n/m)^{-s}$.
+The resulting known terms are respectively
+\begin{align}
+ &\sum_{k=0}^{N-1}\frac{(-1)^k(j)_k}{k!}
+         \Li_{-k}(q)\zeta(s+j+k),\\
+ &\sum_{k=0}^{N-1}\frac{(-1)^k(s)_k}{k!}
+         \Li_{-k}(q)\zeta(s+j+k).
+\end{align}
+The remainders are normally convergent for $\Re s>1-j-N$.
+This follows by the same $m>2n$ split and the finite Taylor
+remainder estimate; the terms $m\le2n$ are still geometrically
+summable. Thus \eqref{bhr:eq:weighted-contact} is a constructive
+finite calculation plus convergent sums at every fixed $m,p$.
+
+Repeated resolvents follow by $z$ differentiation:
+\begin{equation}\label{bhr:eq:weighted-repeated}
+ \FP_x\int_0^1\frac{P(x)\gamma_m^{(p)}(x)}{(K(x)-z)^r}\,dx
+  =\frac1{(r-1)!}\partial_z^{r-1}
+        \FP_x\int_0^1P(x)\gamma_m^{(p)}(x)R_z(x)\,dx.
+\end{equation}
+Local subtractions are holomorphic in $z$ on compact subsets of
+either half-plane. If $P$ vanishes to order $e$ at zero, the
+integral in \eqref{bhr:eq:weighted-repeated} is absolutely convergent
+when $e+r>p$.
+
+% END sections/02_weighted_transform.tex
+
+
+% BEGIN sections/03_barnes.tex
+\section{Individual Barnes functions and all multiple Gamma ranks}
+\label{bhr:sec:barnes}
+
+The balanced functions in the preceding reports are particular
+linear combinations of Hurwitz-zeta derivatives and Bernoulli
+polynomials. An individual multiple Gamma function also carries
+polynomial coefficients in $x$. Theorem~\ref{bhr:thm:weighted-master}
+supplies exactly those missing weights.
+
+\subsection{Fixing the multiple Gamma normalization}
+
+For an integer $r\ge1$, the unit-period Barnes zeta is initially
+\begin{equation}\label{bhr:eq:barnes-zeta}
+ \mathcal Z_r(u,x)=\sum_{n=0}^{\infty}
+        \binom{n+r-1}{r-1}(n+x)^{-u},\qquad \Re u>r,\quad x>0.
+\end{equation}
+Define the explicit coefficient polynomials
+\begin{equation}\label{bhr:eq:C-rk}
+ C_{r,k}(x)=\frac1{(r-1)!}[X^k]
+                      \prod_{h=1}^{r-1}(X+h-x),\qquad 0\le k<r.
+\end{equation}
+Expanding the binomial coefficient in powers of $n+x$ gives
+\begin{equation}\label{bhr:eq:Barnes-Hurwitz}
+ \mathcal Z_r(u,x)=\sum_{k=0}^{r-1}C_{r,k}(x)\zeta(u-k,x),\qquad
+ L_r(x):=\partial_u\mathcal Z_r(0,x)
+       =\sum_{k=0}^{r-1}C_{r,k}(x)\zeta'(-k,x).
+\end{equation}
+The first equality holds in the initial convergence domain and
+then meromorphically. The value at zero is regular. This is the
+classical Barnes/Hurwitz conversion, here written in a directly
+computable polynomial form \cite{bhr:Adamchik,bhr:Vardi}.
+
+To specify a normalization completely, put
+\begin{equation}\label{bhr:eq:Q-r}
+ Q_r(x)=\sum_{j=0}^{r-1}(-1)^{j+1}L_{r-j}(1)
+                          \binom{x-1}{j},\qquad
+ \log\Gamma_r(x)=L_r(x)+Q_r(x).
+\end{equation}
+We use the division convention for the multiple Gamma hierarchy:
+$\Gamma_0(x)=x^{-1}$, $\Gamma_1=\Gamma$, and
+$\Gamma_2=G^{-1}$. The zeta prescription
+\eqref{bhr:eq:Barnes-Hurwitz}--\eqref{bhr:eq:Q-r}, not merely a functional
+equation, defines the normalized functions in every higher rank.
+Other standard sign conventions can be converted by inversion.
+
+\begin{proposition}[Normalization and recurrence]\label{bhr:prop:normalization}
+The functions in \eqref{bhr:eq:Q-r} satisfy
+\begin{equation}\label{bhr:eq:Gamma-r-recurrence}
+ \Gamma_r(1)=1,\qquad
+ \Gamma_r(x+1)=\frac{\Gamma_r(x)}{\Gamma_{r-1}(x)}.
+\end{equation}
+Their normalization polynomials contain only rational numbers and
+ordinary zeta derivatives at nonpositive integers.
+\end{proposition}
+\begin{proof}
+Counting the multiplicities in \eqref{bhr:eq:barnes-zeta} gives
+$\mathcal Z_r(u,x+1)-\mathcal Z_r(u,x)=-\mathcal Z_{r-1}(u,x)$, with
+$\mathcal Z_0(u,x)=x^{-u}$. Hence
+$L_r(x+1)-L_r(x)=-L_{r-1}(x)$, where $L_0=-\log x$.
+The binomial difference formula gives
+$Q_r(x+1)-Q_r(x)=-Q_{r-1}(x)$ for $r\ge2$.
+For $r=1$, $Q_1=-\zeta'(0)=\tfrac12\log(2\pi)$ is
+constant. Also $Q_r(1)=-L_r(1)$. These statements prove
+\eqref{bhr:eq:Gamma-r-recurrence}, including the usual Gamma
+recurrence at $r=1$. The last claim follows from
+\eqref{bhr:eq:Barnes-Hurwitz} at $x=1$.
+\end{proof}
+
+The first three rows make every coefficient explicit. Here
+$L=\log(2\pi)$:
+\begin{align}
+ L_1(x)&=\zeta'(0,x),& Q_1(x)&=L/2,\label{bhr:eq:rank1}\\
+ L_2(x)&=\zeta'(-1,x)+(1-x)\zeta'(0,x),&
+ Q_2(x)&=-\zeta'(-1)-\tfrac L2(x-1),\label{bhr:eq:rank2}\\
+ L_3(x)&=\tfrac12\zeta'(-2,x)
+       +\tfrac{3-2x}{2}\zeta'(-1,x)
+       +\tfrac{(x-1)(x-2)}2\zeta'(0,x),\label{bhr:eq:rank3a}\\
+ Q_3(x)&=-\tfrac12\bigl(\zeta'(-2)+\zeta'(-1)\bigr)
+       +(x-1)\zeta'(-1)+\tfrac L2\binom{x-1}{2}.
+       \label{bhr:eq:rank3b}
+\end{align}
+At rank two these equations are equivalent to the usual Vardi
+identity
+\begin{equation}\label{bhr:eq:Vardi}
+ \log G(x)=\zeta'(-1)+(x-1)\log\Gamma(x)-\zeta'(-1,x).
+\end{equation}
+The familiar Barnes function has its standard asymptotic
+normalization; $G(x+1)=\Gamma(x)G(x)$ and $G(1)=1$ alone
+would allow multiplication by a nontrivial periodic factor.
+
+\subsection{The all-rank resolvent theorem}
+
+\begin{theorem}[Individual multiple Gamma transforms]\label{bhr:thm:all-Barnes}
+For every integer $r\ge1$, polynomial $W$, and $z\notin\R$,
+\begin{equation}\label{bhr:eq:all-Barnes}
+ \boxed{\displaystyle
+ \int_0^1 W(x)\log\Gamma_r(x)R_z(x)\,dx
+  =-\sum_{k=0}^{r-1}
+      \left.\partial_s I_{W C_{r,k}}(s,z)\right|_{s=k+1}
+          +T_{WQ_r}(z).}
+\end{equation}
+Every term on the right is explicitly given by
+\eqref{bhr:eq:weighted-master} and \eqref{bhr:eq:Tpoly}. It is a finite
+combination of ordinary and depth-two polylogarithms, their first
+order derivatives, Gamma factors, logarithms, and ordinary zeta
+values and derivatives. All depth-two series needed at the stated
+evaluation points are normally convergent.
+\end{theorem}
+
+\begin{proof}
+Differentiate the ordinary integral in
+Theorem~\ref{bhr:thm:weighted-master} at $s=k+1$:
+\[
+ \partial_s I_P(k+1,z)
+       =-\int_0^1P(x)\zeta'(-k,x)R_z(x)\,dx.
+\]
+The shift formula at zero bounds the differentiated integrand by
+a fixed polynomial in $|\log x|$ times $x$ when $k=0$, and
+by an even more integrable power when $k>0$; its analytic tail
+is bounded. Thus differentiation is justified locally uniformly.
+Insert \eqref{bhr:eq:Barnes-Hurwitz} and \eqref{bhr:eq:Q-r}.
+At every evaluation point $s=k+1\ge1$ and every polynomial
+index $j\ge1$, the depth-two total order is $s+j\ge2$.
+Lemma~\ref{bhr:lem:omega-normal} therefore applies with a margin,
+including all the stated spectral derivatives. The sums over
+$r,k,j$ are finite.
+\end{proof}
+
+This theorem answers the individual, unit-period multiple Gamma
+part of source question R6. It does not assert a reduction for
+arbitrary products of two multiple Gamma logarithms, nor for
+arbitrary incommensurable Barnes periods.
+
+Repeated poles are equally explicit:
+\begin{equation}\label{bhr:eq:Barnes-repeated}
+ \int_0^1\frac{W(x)\log\Gamma_r(x)}{(K(x)-z)^h}\,dx
+   =\frac1{(h-1)!}\partial_z^{h-1}
+      \int_0^1W(x)\log\Gamma_r(x)R_z(x)\,dx,
+ \qquad h\ge1.
+\end{equation}
+All these integrals converge. Argument derivatives of
+$\mathcal O_{\alpha,\beta}(q)$ can be taken directly in its
+series, multiplying by powers of $n$. The formal identity
+\[
+ q\partial_q\mathcal O_{\alpha,\beta}
+  =\mathcal O_{\alpha-1,\beta}-\mathcal O_{\alpha,\beta-1}
+\]
+must be kept as a paired difference when either term separately
+leaves its convergence domain. The original differentiated series
+still converges normally. This qualification prevents an artificial
+divergence in implementations at total order two.
+
+\subsection{A compact formula for the ordinary Barnes function}
+
+Only one depth-two derivative is needed at rank two. Define
+\begin{equation}\label{bhr:eq:Dq}
+ \mathcal D(q)=
+    \left.(\partial_\alpha+\partial_\beta)
+                      \mathcal O_{\alpha,\beta}(q)\right|_{\alpha=\beta=1}
+  =-\sum_{n,m\ge1}\frac{q^n\log(m(m+n))}{m(m+n)}.
+\end{equation}
+It is holomorphic for $|q|<1$ and vanishes at zero. In the next
+formulas all polylogarithms have argument $q$. Set
+\begin{align}
+ \mathcal A(q)
+  &=\frac{\mathcal D(q)-\Li_2^{[1]}(q)
+       -(\gamma+L+1)\Li_2(q)-\Li_1(q)\Li_1^{[1]}(q)}{2\pi^2}
+           -\frac14\Li_1(q),\label{bhr:eq:Aq}\\
+ \mathcal S(q)
+  &=\frac{\Li_1^{[1]}(q)-(\gamma+2L)\Li_1(q)
+            -\tfrac12\bigl(\Li_2(q)+\Li_1(q)^2\bigr)}{2\pi},
+        \label{bhr:eq:Sq}\\
+ \mu_G&=2\zeta'(-1)-\frac1{12}-\frac L4.
+       \label{bhr:eq:meanG}
+\end{align}
+
+\begin{theorem}[The individual $G$ resolvent]\label{bhr:thm:G-resolvent}
+With the coordinates \eqref{bhr:eq:coordinates},
+\begin{equation}\label{bhr:eq:G-resolvent}
+ \boxed{\displaystyle
+ \int_0^1\frac{\log G(x)}{\pi\cot(\pi x)-z}\,dx
+    =-\frac{\mu_G}{a}
+       +\frac c{2q}\bigl(\mathcal A(q)+\epsilon\ii\mathcal S(q)\bigr).}
+\end{equation}
+The quotient at $q=0$ is removable. The formula is holomorphic
+on each open half-plane and uses the real logarithm of $G(x)$
+on the integration interval.
+\end{theorem}
+
+\begin{proof}
+We give a summation proof that also connects the formula to the
+known Barnes Fourier expansion \cite[Theorems 2--3]{bhr:Mezo}.
+Write
+\[
+ \log G(x)=\mu_G+\sum_{n\ge1}
+                  \bigl(a_n\cos(2\pi nx)+b_n\sin(2\pi nx)\bigr).
+\]
+Its coefficients are
+\begin{align}
+ a_n&=\frac{\frac12\log n-(\gamma+L)-1}{2\pi^2n^2}
+                -\frac1{4n}-\frac{T_n}{\pi^2},\label{bhr:eq:anG}\\
+ b_n&=\frac{\frac1{2n}-\gamma-2L-\log n-H_n}{2\pi n},
+          \label{bhr:eq:bnG}\\
+ T_n&=\sum_{\substack{m\ge1\\m\ne n}}
+                          \frac{\log m}{m^2-n^2}.
+          \label{bhr:eq:Tn}
+\end{align}
+The $m$-sum in $T_n$ converges absolutely. These coefficients
+can also be recovered from Theorem~\ref{bhr:thm:weighted-master}
+by differentiating the $P=x-1$ formula at $s=1$, the $P=1$
+formula at $s=2$, and using \eqref{bhr:eq:Vardi}. Thus their use
+does not assume a new Barnes Fourier theorem.
+
+To evaluate their generating functions, differentiate the
+$j=1$ case of \eqref{bhr:eq:lattice-splitting} and the definition
+of $\mathcal O_{1,s}$. Partial fractions give the exact identity
+\begin{equation}\label{bhr:eq:T-generator}
+ \sum_{n\ge1}q^nT_n
+   =\frac12\Li_1(q)\Li_1^{[1]}(q)
+       -\frac12\mathcal D(q)+\frac14\Li_2^{[1]}(q).
+\end{equation}
+For clarity, the scalar calculation behind it is
+\[
+ \frac1{m^2-n^2}=
+     \frac1{2m}\left(\frac1{m-n}+\frac1{m+n}\right).
+\]
+The excluded term $m=n$ in the second sum is
+$\log n/(2n^2)$ before multiplication by $1/2$; it supplies
+the last term in \eqref{bhr:eq:T-generator}. This diagonal term
+is necessary for the coefficient of $\Li_2^{[1]}$.
+
+Next,
+\begin{equation}\label{bhr:eq:harmonic-generator}
+ \sum_{n\ge1}\frac{H_nq^n}{n}
+      =\Li_2(q)+\frac12\Li_1(q)^2.
+\end{equation}
+It follows either by integrating
+$\sum_{n\ge1}H_nq^n=\Li_1(q)/(1-q)$ or by the depth-two
+stuffle identity. Equations \eqref{bhr:eq:anG}--\eqref{bhr:eq:harmonic-generator}
+give $\sum a_nq^n=\mathcal A(q)$ and
+$\sum b_nq^n=\mathcal S(q)$.
+
+The function $\log G$ is integrable and square integrable:
+near zero it equals $\log x+O(x)$, while it is analytic at one.
+Pair its Fourier coefficients with the uniformly convergent
+geometric series \eqref{bhr:eq:resolvent-fourier}. This yields
+\eqref{bhr:eq:G-resolvent}. The constant term is
+\eqref{bhr:eq:meanG}; for example integrate \eqref{bhr:eq:Vardi}, use
+$\int_0^1\zeta'(-1,x)\,dx=0$ and
+\[
+ \int_0^1x\log\Gamma(x)\,dx
+       =\frac L4+\zeta'(-1)-\frac1{12}.
+\]
+The latter follows by integrating the Hurwitz argument ladder.
+All generating functions used above are $O(q)$, so the quotient
+at zero is removable. Normal convergence proves holomorphy.
+\end{proof}
+
+\subsection{An ordinary-polylogarithm real component}
+
+\begin{corollary}[A one-parameter exact real integral]\label{bhr:cor:G-real}
+For $b>0$, let $q=(b-\pi)/(b+\pi)\in(-1,1)$. Then
+\begin{equation}\label{bhr:eq:G-real}
+ \boxed{\displaystyle
+ \int_0^1\frac{K(x)\log G(x)}{K(x)^2+b^2}\,dx
+ =\frac{\Li_1^{[1]}(q)-(\gamma+2L)\Li_1(q)
+       -\frac12\bigl(\Li_2(q)+\Li_1(q)^2\bigr)}
+               {2q(b+\pi)^2}.}
+\end{equation}
+At $b=\pi$ the right side means
+$-(\gamma+2L+1/2)/(8\pi^2)$. In particular,
+\begin{equation}\label{bhr:eq:G-threepi}
+ \boxed{\displaystyle
+ \int_0^1\frac{\pi\cot(\pi x)\log G(x)}
+                      {\pi^2\cot^2(\pi x)+9\pi^2}\,dx
+ =\frac{\Li_1^{[1]}(1/2)-(\gamma+2\log(2\pi))\log2
+                    -\pi^2/24-(\log2)^2/4}{16\pi^2}.}
+\end{equation}
+\end{corollary}
+\begin{proof}
+At $z=\ii b$, $a=\ii(b+\pi)$ and
+$c=-2\pi\ii/(b+\pi)^2$. The functions $\mathcal A,
+\mathcal S$ are real at real $q$. Taking the real part of
+\eqref{bhr:eq:G-resolvent} therefore keeps only
+$\pi\mathcal S(q)/(q(b+\pi)^2)$.
+Use $\Li_1(q)/q\to1$, $\Li_2(q)/q\to1$ and
+$\Li_1^{[1]}(q)/q\to0$ at zero. For $b=3\pi$, use
+$q=1/2$, $\Li_1(1/2)=\log2$ and
+$\Li_2(1/2)=\pi^2/12-(\log2)^2/2$.
+\end{proof}
+
+The integral \eqref{bhr:eq:G-threepi} is approximately
+$-0.02312768479852353748486907193849$.
+The complete complex transform at $z=3\pi\ii$ is approximately
+\[
+ -0.02312768479852353748486907193849
+   -0.05510836371472001971368271205301\,\ii.
+\]
+These decimals are diagnostics, not definitions or exact-value
+certificates. The symmetry of $K$ under $x\mapsto1-x$ explains
+why its real component isolates the simpler sine coefficients.
+
+\subsection{Normalized antiderivatives remain explicit}
+
+The standard balanced primitives are
+\begin{equation}\label{bhr:eq:balanced-B}
+ \mathscr B_k(x)=\frac{\zeta'(-k,x)+H_k\zeta(-k,x)}{k!},
+ \qquad H_0=0.
+\end{equation}
+They satisfy $\mathscr B_0=\log\Gamma-L/2$ and
+$\mathscr B_k'=\mathscr B_{k-1}$ for $k\ge1$
+\cite{bhr:EMIntegrals,bhr:EMGeneralized}. For a polynomial $P$, set
+\begin{equation}\label{bhr:eq:weighted-antiderivative}
+ \mathscr A_{P,k}(x)=
+    \sum_{j=0}^{\deg P}(-1)^jP^{(j)}(x)\mathscr B_{k+j+1}(x).
+\end{equation}
+Termwise differentiation telescopes, so
+$\mathscr A_{P,k}'=P\mathscr B_k$.
+Consequently a primitive of $P(x)\zeta'(-k,x)$, normalized
+to vanish at $x=1$, is
+\begin{align}\label{bhr:eq:normalized-zeta-primitive}
+ k!\bigl(\mathscr A_{P,k}(x)-\mathscr A_{P,k}(1)\bigr)
+    -H_k\int_1^xP(t)\zeta(-k,t)\,dt.
+\end{align}
+The remaining integral is polynomial because
+$\zeta(-k,t)=-B_{k+1}(t)/(k+1)$.
+Apply \eqref{bhr:eq:normalized-zeta-primitive} to the finitely many
+terms in \eqref{bhr:eq:Barnes-Hurwitz}, and integrate $Q_r$ as a
+polynomial. This gives a fully normalized primitive of every
+$\log\Gamma_r$. Repetition gives every iterated primitive,
+without unspecified additive constants. Their resolvent
+transforms again follow from Theorem~\ref{bhr:thm:all-Barnes} and
+Theorem~\ref{bhr:thm:weighted-master}. The primitive operation is
+classical integration by parts; the point here is its compatibility
+with the explicit individual-function normalization.
+
+% END sections/03_barnes.tex
+
+
+% BEGIN sections/04_complex_powers.tex
+\section{Complex cotangent powers and their resonant amplitudes}
+\label{bhr:cxp:sec:complex}
+
+Question R4 of the incoming \emph{Harmonic Parity and Resolvent
+Identities} report \cite{bhr:Parity} asks for a joint generator for nonintegral powers of
+the cotangent resolvent, with the moving endpoint amplitudes retained
+before expansion.  We prove such a generator and its finite-part
+conversion.  The primary result below covers every complex exponent
+with positive real part and every positive integral crossing.  A new
+Dirichlet-series coordinate is used explicitly; no finite reduction to
+ordinary polylogarithms is asserted for an arbitrary complex exponent.
+Nevertheless, its exponent jets have a finite multiple-polylogarithmic
+description, and one special resolvent point has a Gamma evaluation at
+every positive integral spectral order.
+
+\subsection{Branches and a binomial Dirichlet transform}
+
+Put
+\[
+ K(x)=\pi\cot(\pi x),\qquad R_z(x)=(K(x)-z)^{-1},
+ \qquad z\in\mathbb C\setminus\mathbb R.
+\]
+For the chosen half-plane define
+\[
+ \epsilon=\operatorname{sgn}\Im z,\quad
+ a=z+\epsilon\pi i,\quad A=-a^{-1},\quad
+ q=\frac{z-\epsilon\pi i}{z+\epsilon\pi i},\quad
+ \sigma=-2\epsilon\pi i.
+\]
+Then \(|q|<1\).  We take the continuous logarithm of \(K(x)-z\)
+whose imaginary part lies in \((-\pi,0)\) if \(\epsilon=1\) and
+in \((0,\pi)\) if \(\epsilon=-1\).  Consequently
+\[
+ R_z(x)^\lambda=\exp\{-\lambda\Log(K(x)-z)\}.
+\]
+Also \(\Log\sigma=\log(2\pi)-\epsilon\pi i/2\), and
+\(\Log A\) is the principal logarithm.
+
+With \(w=e^{2\epsilon\pi i x}\), elementary algebra gives
+\begin{equation}\label{bhr:cxp:eq:disk}
+ R_z(x)^\lambda
+ =A^\lambda(1-w)^\lambda(1-qw)^{-\lambda}.
+\end{equation}
+Here the two logarithms on the right are their holomorphic
+determinations in \(|w|<1\), continued to \(w\ne1\) on its boundary.
+To check the constant in this identity, both sides divided by
+\(x^\lambda\) tend to one as \(x\downarrow0\).  This fixes the phase
+at the other endpoint as well.
+
+Define
+\begin{align}
+ h_n(\lambda,q)
+ &=[w^n](1-w)^\lambda(1-qw)^{-\lambda}\notag\\
+ &=\sum_{k=0}^n
+   \frac{(-\lambda)_k(\lambda)_{n-k}}{k!(n-k)!}\,q^{n-k},
+ \label{bhr:cxp:eq:hn}\\
+ \mathcal L_\lambda(u,q)
+ &=\sum_{n=1}^{\infty}\frac{h_n(\lambda,q)}{n^u}.
+ \label{bhr:cxp:eq:L}
+\end{align}
+The Pochhammer symbols have their polynomial meaning, including at
+integral parameters.  The initial Dirichlet series converges normally
+where \(\Re(u+\lambda)>0\), locally in \(|q|<1\).  One way to see
+the needed coefficient estimate is to convolve the binomial
+coefficients of \((1-w)^\lambda\) with the exponentially decaying
+coefficients of \((1-qw)^{-\lambda}\); on compact parameter sets this
+gives \(h_n=O(n^{-\Re\lambda-1})\), with a harmless uniform weakening
+of the exponent at the boundary of a compact set.
+
+\begin{theorem}[Joint continuation of the binomial transform]
+\label{bhr:cxp:thm:L}
+The function \(\mathcal L_\lambda(u,q)\) continues meromorphically
+in \((u,\lambda)\in\mathbb C^2\), holomorphically in \(|q|<1\).
+Its possible polar hypersurfaces are
+\[
+ u+\lambda=-j,\qquad j=0,1,2,\ldots.
+\]
+Away from them,
+\[
+ \mathcal L_\lambda(0,q)=-1,\qquad
+ \mathcal L_\lambda(-N,q)=0\quad(N\ge1).
+\]
+These equalities concern the meromorphic restriction at the indicated
+spectral order.  At an intersection with a polar hypersurface,
+substitution and continuation need not commute.
+\end{theorem}
+
+\begin{proof}
+For \(\Re u>0\) and \(\Re(u+\lambda)>0\), termwise integration
+gives
+\begin{equation}\label{bhr:cxp:eq:mellin}
+ \Gamma(u)\mathcal L_\lambda(u,q)
+ =\int_0^\infty t^{u-1}
+ \left[
+ \left(\frac{1-e^{-t}}{1-qe^{-t}}\right)^\lambda-1
+ \right]\,dt.
+\end{equation}
+The positive real logarithm of \(1-e^{-t}\), and the holomorphic
+logarithm of \(1-qe^{-t}\), specify its powers.  Set
+\[
+ \left(\frac{1-e^{-t}}{1-qe^{-t}}\right)^\lambda
+   =t^\lambda\sum_{j\ge0}b_j(\lambda,q)t^j.
+\]
+The coefficients are entire in \(\lambda\), holomorphic in \(q\).
+For any fixed \(N\), split the integral at one and subtract the
+first \(N\) terms of this local expansion.  The result is
+\begin{align}
+ \Gamma(u)\mathcal L_\lambda(u,q)
+ ={}&-\frac1u+
+   \sum_{j=0}^{N-1}\frac{b_j(\lambda,q)}{u+\lambda+j}
+   +E_N(u,\lambda,q),\label{bhr:cxp:eq:subtraction}
+\end{align}
+where \(E_N\) is holomorphic when \(\Re(u+\lambda)>-N\).
+The tail at infinity is exponentially convergent on every compact
+parameter set.  Increasing \(N\) proves the continuation.  Division
+by \(\Gamma(u)\) removes the isolated pole \(-1/u\), with value
+\(-1\) at \(u=0\), and gives zero at the other nonpositive
+integers whenever no moving denominator vanishes.
+\end{proof}
+
+\subsection{The completed spectral generator}
+
+Use the conventional normalization
+\[
+ \zeta(1-s,x)=-\frac1s+
+    \sum_{m\ge0}\gamma_m(x)\frac{s^m}{m!},
+ \qquad \gamma_0(x)=-\psi(x).
+\]
+For an integer \(p\ge0\), let
+\[
+ A_p(s)=\prod_{k=1}^p(s-k),\qquad A_0(s)=1.
+\]
+Argument differentiation satisfies
+\[
+ \partial_x^p\zeta(1-s,x)
+   =A_p(s)\zeta(1+p-s,x).
+\]
+The notation \(\gamma_m^{(p)}\) below always means argument
+differentiation.
+
+\begin{theorem}[Complex-power cotangent generator]
+\label{bhr:cxp:thm:generator}
+In the ordinary-integral region
+\(\Re\lambda>-1,\ \Re(s+\lambda)>p\), away from the Hurwitz
+pole when \(p=0\),
+\begin{equation}\label{bhr:cxp:eq:J}
+ \mathcal J_p(s,\lambda,z):=
+ \int_0^1\partial_x^p\zeta(1-s,x)R_z(x)^\lambda\,dx
+ =A^\lambda\Gamma(s)\sigma^{p-s}
+       \mathcal L_\lambda(s-p,q).
+\end{equation}
+This identity defines a joint meromorphic continuation to all
+\((s,\lambda)\).  Besides the pole
+\(-A^\lambda/s\) when \(p=0\), its only possible polar
+hypersurfaces are
+\[
+ s+\lambda=p-j,\qquad j=0,1,\ldots.
+\]
+Define the completed family
+\begin{equation}\label{bhr:cxp:eq:F}
+ \mathcal F_p(s,\lambda,z)=
+ \mathcal J_p(s,\lambda,z)
+       +\mathbf1_{p=0}\frac{A^\lambda}{s}.
+\end{equation}
+For \(\Re\lambda>p\) the ordinary absolutely convergent moments
+\begin{equation}\label{bhr:cxp:eq:M}
+ \mathcal M_{m,p}(\lambda,z)=
+ \int_0^1\gamma_m^{(p)}(x)R_z(x)^\lambda\,dx
+ =m![s^m]\mathcal F_p(s,\lambda,z)
+\end{equation}
+therefore have meromorphic continuations in \(\lambda\), with
+possible poles only at the integers \(\lambda\le p\), of order
+at most \(m+1\).
+\end{theorem}
+
+\begin{proof}
+First suppose \(\Re\lambda>0\) and \(\Re s>p+1\).
+The Fourier series of the kernel in \eqref{bhr:cxp:eq:disk}
+is absolutely convergent.  The classical Hurwitz Fourier identity
+\cite[25.11.9]{bhr:DLMFZ} gives
+\[
+ \int_0^1\zeta(1-s,x)\,dx=0,\qquad
+ \int_0^1\partial_x^p\zeta(1-s,x)
+           e^{2\epsilon\pi i n x}\,dx
+ =\Gamma(s)\sigma^{p-s}n^{p-s}.
+\]
+The constant kernel mode vanishes, and summing the other modes
+proves \eqref{bhr:cxp:eq:J}.  The endpoint decomposition
+\[
+ \partial_x^p\zeta(1-s,x)
+ =A_p(s)x^{s-p-1}
+       +\partial_x^p\zeta(1-s,1+x)
+\]
+shows normal integrability on the larger region stated in the
+theorem, so the identity extends there.
+
+In \eqref{bhr:cxp:eq:subtraction}, put \(u=s-p\) and use
+\(\Gamma(s)/\Gamma(s-p)=A_p(s)\).  The moving denominators
+give exactly the indicated hypersurfaces.  The isolated term
+\(-1/(s-p)\) is cancelled by \(A_p(s)\) for \(p\ge1\); for
+\(p=0\) it gives residue \(-A^\lambda\).  This proves the
+claimed completion.  Finally, the mean of the kernel is \(A^\lambda\)
+for \(\Re\lambda>0\), by its constant Fourier coefficient.
+Termwise Stieltjes expansion is valid when \(\Re\lambda>p\),
+including all powers of the endpoint logarithm.  This proves
+\eqref{bhr:cxp:eq:M} and its continuation.
+\end{proof}
+
+\begin{corollary}[Lowest Stieltjes index and shift identities]
+\label{bhr:cxp:cor:shifts}
+Away from the moving poles,
+\begin{align*}
+ \mathcal M_{0,0}(\lambda,z)
+ &=A^\lambda\left(
+   \gamma+\Log\sigma+
+         \left.\partial_u\mathcal L_\lambda(u,q)\right|_{u=0}\right),\\
+ \mathcal M_{0,p}(\lambda,z)
+ &=A^\lambda\sigma^p
+         \left.\partial_u\mathcal L_\lambda(u,q)\right|_{u=-p}
+                                      \qquad(p\ge1).
+\end{align*}
+The continued moments satisfy the meromorphic identities
+\begin{align}
+ \partial_z\mathcal M_{m,p}(\lambda,z)
+   &=\lambda\mathcal M_{m,p}(\lambda+1,z),\label{bhr:cxp:eq:zshift}\\
+ \mathcal M_{m,p+1}(\lambda,z)
+   &=-\lambda\bigl(
+       \mathcal M_{m,p}(\lambda-1,z)
+       +2z\mathcal M_{m,p}(\lambda,z)\notag\\
+   &\hspace{39mm}
+       +(z^2+\pi^2)\mathcal M_{m,p}(\lambda+1,z)\bigr).
+       \label{bhr:cxp:eq:pshift}
+\end{align}
+\end{corollary}
+\begin{proof}
+The first two formulas follow by expanding \(\Gamma(s)\sigma^{-s}\)
+and using Theorem~\ref{bhr:cxp:thm:L} at \(0,-p\).
+The first shift follows from
+\(\partial_zR_z^\lambda=\lambda R_z^{\lambda+1}\).
+For the second, integrate by parts where \(\Re\lambda>p+1\),
+so the boundary terms vanish, and use
+\[
+ R_z'=1+2zR_z+(z^2+\pi^2)R_z^2.
+\]
+Continuation proves the meromorphic statements.  At a resonant
+integer, a pointwise finite-part version must use the conversion
+in the next theorem before substituting.
+\end{proof}
+
+\subsection{All positive resonances and the two finite parts}
+
+Finite parts in the next theorem use the original \(x\)-coordinate:
+they retain the constant coefficient in the cutoff integral
+\(\int_\eta^{1-\eta}\), after removing every nonintegrable power
+and logarithm.  For a complex exponent of positive real part this
+definition is unambiguous from the local power-log expansion.
+It agrees with the ordinary integral whenever that integral converges.
+
+The complete local amplitude is elementary.  Write
+\begin{equation}\label{bhr:cxp:eq:d}
+ D_j(\lambda,z)
+ =[x^j]\bigl(\pi x\cot(\pi x)-zx\bigr)^{-\lambda}.
+\end{equation}
+Thus \(R_z(x)^\lambda
+=x^\lambda\sum_{j\ge0}D_j(\lambda,z)x^j\) near zero, with
+\[
+ D_0=1,\qquad D_1=\lambda z,\qquad
+ D_2=\frac{\lambda\pi^2}{3}
+       +\frac{\lambda(\lambda+1)z^2}{2}.
+\]
+Every \(D_j\) is a polynomial in \(\lambda,z,\pi^2\) with rational
+coefficients, and has degree at most \(j\) in \(\lambda\).
+
+\begin{theorem}[Resonant amplitudes and finite-part conversion]
+\label{bhr:cxp:thm:contacts}
+For a positive integer \(r\le p\), put \(j=p-r\).
+In a neighborhood of \((s,\lambda)=(0,r)\),
+\begin{equation}\label{bhr:cxp:eq:amplitude}
+ \mathcal F_p(s,\lambda,z)
+  =\frac{A_p(s)D_j(\lambda,z)}{s+\lambda-r}
+      +H_{p,r}(s,\lambda,z),
+\end{equation}
+where \(H_{p,r}\) is jointly holomorphic.  Hence, for every
+positive integer \(r\),
+\begin{align}
+ &\operatorname{FP}_x\int_0^1
+       \gamma_m^{(p)}(x)R_z(x)^r\,dx\notag\\
+ &\quad =
+ m![s^m]\left\{
+   \mathcal F_p(s,r,z)
+   -\mathbf1_{r\le p}\frac{A_p(s)D_{p-r}(r,z)}s
+           \right\}. \label{bhr:cxp:eq:fixed-r}
+\end{align}
+
+There is also an explicit comparison with continuation in the
+kernel exponent.  Write \(A_p(s)=\sum_{h=0}^p a_{p,h}s^h\).
+For \(1\le r\le p\), define
+\begin{equation}\label{bhr:cxp:eq:Delta}
+ \Delta_{m,p,r}(z)=m!
+ \sum_{h=0}^{\min(p,m)}
+ \frac{(-1)^{m-h}a_{p,h}}{(m-h+1)!}\,
+ \left.\partial_\lambda^{\,m-h+1}
+                 D_{p-r}(\lambda,z)\right|_{\lambda=r}.
+\end{equation}
+Then
+\begin{equation}\label{bhr:cxp:eq:lambdaCT}
+ \operatorname{FP}_x\int_0^1
+   \gamma_m^{(p)}(x)R_z(x)^r\,dx
+ =\operatorname{CT}_{\lambda=r}
+      \mathcal M_{m,p}(\lambda,z)-\Delta_{m,p,r}(z).
+\end{equation}
+For \(\Re\lambda>0\) away from the positive integers
+\(1,\ldots,p\), the meromorphic value of
+\(\mathcal M_{m,p}\) equals the pointwise \(x\)-finite part.
+\end{theorem}
+
+\begin{proof}
+Subtract a sufficiently long full local Taylor jet, so that the
+remaining endpoint integral converges normally near \((0,r)\).
+Among the explicitly integrated Taylor terms, the only one whose
+exponent crosses \(-1\) there is
+\[
+ A_p(s)D_{p-r}(\lambda,z)
+                 x^{s+\lambda-r-1}.
+\]
+Use a smooth cutoff on a small interval next to zero.
+The continued integrals of all other Taylor terms, and the normally
+convergent remainder, are holomorphic near \((0,r)\).
+The distinguished term has meromorphic integral with polar part
+\(A_p(s)D_{p-r}(\lambda,z)/(s+\lambda-r)\).
+Replacing the cutoff by one only changes a holomorphic function;
+this proves \eqref{bhr:cxp:eq:amplitude} with the indicated full
+amplitude, not just its value on the polar hyperplane.
+
+At fixed \(\lambda=r\), the analytically continued integral of
+the resonant local term is \(A_p(s)D_{p-r}(r,z)/s\).
+Every coefficient of \(x^{s-1}\) is a power of \(\log x\)
+divided by \(x\), whose finite part on \((0,1)\) is zero.
+Deleting the entire amplitude before expansion proves
+\eqref{bhr:cxp:eq:fixed-r}.  Terms on the cutoff complement
+cancel the artificial splitting point.
+
+For the second formula, put \(\delta=\lambda-r\) and take
+the \(s^m\) coefficient of the polar term in
+\eqref{bhr:cxp:eq:amplitude}.  It is
+\[
+ m!\sum_{h=0}^{\min(p,m)}
+  (-1)^{m-h}a_{p,h}
+       \frac{D_{p-r}(r+\delta,z)}{\delta^{m-h+1}}.
+\]
+Its constant Laurent coefficient is exactly
+\eqref{bhr:cxp:eq:Delta}.  The holomorphic remainder contributes
+the same value along either order of expansion.  This proves
+\eqref{bhr:cxp:eq:lambdaCT}.  Away from a crossing, endpoint
+subtractions have nonzero exponents, and coefficient extraction
+commutes with finite-part integration.
+\end{proof}
+
+The theorem supplies the full principal part as well: expand the
+polynomial \(D_{p-r}(r+\delta,z)\) in the last display and retain
+negative powers of \(\delta\).  Some potential poles cancel.
+In particular, \(\Delta_{m,p,p}=0\), since \(D_0=1\);
+a collision does not automatically imply a nonzero conversion term.
+
+\paragraph{A nonzero conversion for the simple resolvent.}
+The simplest example is \(m=0,p=2,r=1\).  Since
+\(A_2(s)=s^2-3s+2\) and \(D_1(\lambda,z)=\lambda z\),
+\[
+ \Delta_{0,2,1}(z)=2z.
+\]
+At \(z=i\pi\), set \(\ell=\log(2\pi)-i\pi/2\).
+The finite Fourier series
+\(R_{i\pi}(x)=(e^{2\pi ix}-1)/(2\pi i)\) gives
+\[
+ \operatorname{FP}_x\int_0^1\gamma_0''(x)R_{i\pi}(x)\,dx
+       =2\pi i\left(\frac32-\gamma-\ell\right).
+\]
+It follows that
+\begin{equation}\label{bhr:cxp:eq:noncommute}
+ \operatorname{CT}_{\lambda=1}
+       \mathcal M_{0,2}(\lambda,i\pi)
+       =2\pi i\left(\frac52-\gamma-\ell\right).
+\end{equation}
+The two constants differ by \(2\pi i\).  This is a concrete
+obstruction to identifying exponent continuation with the
+specified \(x\)-finite part.  In contrast the case
+\(m=0,p=r=1\) has no exponent-axis correction.
+
+\paragraph{Exact recovery of integral powers.}
+For a positive integer \(r\) and \(q\ne0\), partial fractions give
+\[
+ h_n(r,q)=q^{n-r}
+   \sum_{j=1}^r\binom rj(q-1)^j
+                    \binom{n+j-1}{j-1}\qquad(n\ge1).
+\]
+The binomial on the right is a polynomial of degree \(j-1\) in
+\(n\).  Consequently \(\mathcal L_r(u,q)\) is a finite linear
+combination of the ordinary \(\operatorname{Li}_{u-k}(q)\),
+\(0\le k<r\), with rational coefficients in \(q\).
+At \(q=0\) the removable limiting expression is
+\[
+ \mathcal L_r(u,0)
+       =\sum_{n=1}^r\frac{(-1)^n\binom rn}{n^u}.
+\]
+Thus the completed generator recovers precisely the ordinary
+polylogarithm class of the previous repeated-resolvent theorem.
+
+\subsection{Gamma closure at a special point}
+
+For \(z=\epsilon i\pi\) one has \(q=0\), and
+\[
+ \mathcal L_\lambda(u,0)
+       =\sum_{n\ge1}\frac{(-\lambda)_n}{n!\,n^u}.
+\]
+At every positive integer \(u\), this new coordinate reduces to
+generalized harmonic numbers at a complex argument.  Define
+\[
+ H_\lambda^{(1)}=\psi(1+\lambda)+\gamma,\qquad
+ H_\lambda^{(r)}=\zeta(r)-\zeta(r,1+\lambda)\quad(r\ge2),
+\]
+initially for \(\Re\lambda>-1\) and then meromorphically.
+
+\begin{theorem}[Every integral spectral order at \(q=0\)]
+\label{bhr:cxp:thm:gamma}
+For \(N\ge1\),
+\begin{equation}\label{bhr:cxp:eq:Bell}
+ \mathcal L_\lambda(N,0)
+ =-\frac1{N!}Y_N\bigl(
+     H_\lambda^{(1)},1!H_\lambda^{(2)},\ldots,
+                          (N-1)!H_\lambda^{(N)}\bigr),
+\end{equation}
+where \(Y_N\) is the complete exponential Bell polynomial.
+Equivalently, near \(v=0\),
+\begin{equation}\label{bhr:cxp:eq:beta-generator}
+ \sum_{N\ge1}\mathcal L_\lambda(N,0)v^{N-1}
+ =\frac1v\left\{
+ 1-\frac{\Gamma(1-v)\Gamma(1+\lambda)}
+                 {\Gamma(1+\lambda-v)}\right\}.
+\end{equation}
+In particular,
+\[
+ \mathcal L_\lambda(1,0)=-H_\lambda^{(1)},\qquad
+ \mathcal L_\lambda(2,0)
+ =-\frac{(H_\lambda^{(1)})^2+H_\lambda^{(2)}}2.
+\]
+\end{theorem}
+
+\begin{proof}
+For \(\Re\lambda>-1\) and \(\Re t>0\), the beta integral gives
+\[
+ \sum_{n\ge1}\frac{(-\lambda)_n}{n!(n+t)}
+  =\int_0^1 y^{t-1}\bigl((1-y)^\lambda-1\bigr)\,dy
+  =\frac{\Gamma(t)\Gamma(1+\lambda)}
+           {\Gamma(1+\lambda+t)}-\frac1t.
+\]
+Expand at \(t=-v\).  The left side generates the positive
+integral spectral orders.  On the right,
+\[
+ \log\frac{\Gamma(1-v)\Gamma(1+\lambda)}
+              {\Gamma(1+\lambda-v)}
+   =\sum_{r\ge1}\frac{H_\lambda^{(r)}}r\,v^r.
+\]
+The defining Bell-polynomial generating function proves both
+identities.  Meromorphic continuation removes the initial
+restrictions.  This is a beta-integral specialization, not a claim
+of priority for the classical binomial-harmonic identity.
+\end{proof}
+
+\subsection{Exponent jets and colored multiple polylogarithms}
+
+There is also an exact finite description of every exponent jet at
+\(\lambda=0\).  For \(q\ne0,\ |q|<1\), let
+\(\mathcal A=\{1,q\}\), with signs \(\nu(1)=-1,\nu(q)=1\).
+The multiple polylogarithm uses decreasing indices:
+\[
+ \operatorname{Li}_{s_1,\ldots,s_d}(z_1,\ldots,z_d)
+ =\sum_{n_1>\cdots>n_d\ge1}
+       \frac{z_1^{n_1}\cdots z_d^{n_d}}
+            {n_1^{s_1}\cdots n_d^{s_d}}.
+\]
+
+\begin{proposition}[All exponent jets at zero]
+\label{bhr:cxp:prop:jets}
+For \(d\ge1\) and \(\Re u>0\),
+\begin{equation}\label{bhr:cxp:eq:MPL}
+ \left.\partial_\lambda^d\mathcal L_\lambda(u,q)
+                                      \right|_{\lambda=0}
+ =d!\sum_{a_1,\ldots,a_d\in\mathcal A}
+ \left(\prod_{j=1}^d\nu(a_j)\right)
+ \operatorname{Li}_{u+1,\{1\}^{d-1}}
+       \left(a_1,\frac{a_2}{a_1},\ldots,
+                                \frac{a_d}{a_{d-1}}\right).
+\end{equation}
+All displayed nested sums converge absolutely.  Their cumulative
+color products are \(a_j\in\{1,q\}\), so the appearance of
+\(q^{-1}\) as an individual color causes no convergence problem.
+For nonintegral \(u\), these are nested Dirichlet sums with a complex first index; at positive integral \(u\), they are classical colored multiple polylogarithms.
+At \(q=0\), the continuous limiting identity is
+\[
+ \left.\partial_\lambda^d\mathcal L_\lambda(u,0)
+                                      \right|_{\lambda=0}
+       =(-1)^d d!\,\zeta(u+1,\{1\}^{d-1}).
+\]
+\end{proposition}
+
+\begin{proof}
+Put \(F(w)=\operatorname{Li}_1(qw)-\operatorname{Li}_1(w)\).
+The \(d\)-th exponent derivative of the disk kernel at zero is
+\(F(w)^d\).  Repeated integration of
+\[
+ F'(w)=\frac{q}{1-qw}-\frac1{1-w}
+\]
+proves the shuffle identity
+\[
+ \frac{F(w)^d}{d!}
+ =\sum_{a_1,\ldots,a_d\in\mathcal A}
+   \left(\prod_j\nu(a_j)\right)
+ \operatorname{Li}_{\{1\}^d}
+     \left(a_1w,\frac{a_2}{a_1},\ldots,
+                                   \frac{a_d}{a_{d-1}}\right).
+\]
+Multiplying the coefficient of \(w^n\) by \(n^{-u}\) raises
+the first index from one to \(u+1\).  Absolute convergence for
+\(\Re u>0\) justifies evaluation at \(w=1\) and all coefficient
+interchanges.  If \(q=0\), only the letter one survives.
+\end{proof}
+
+The first jet is the simple identity
+\[
+ \left.\partial_\lambda\mathcal L_\lambda(u,q)\right|_0
+       =\operatorname{Li}_{u+1}(q)-\zeta(u+1).
+\]
+Higher jets explain how generalized harmonic sums and increasing
+multiple-polylogarithm depth enter complex powers.  The finite
+description is proved for each fixed jet; it does not imply finite
+ordinary-polylogarithm closure after summing all jets.
+
+\paragraph{Verification.}
+The accompanying program independently compares the spectral
+generator with ordinary \(x\)-quadrature at nonintegral complex
+parameters, checks the Gamma specialization against Mellin
+quadrature, and compares a nearby-exponent Laurent extrapolation
+with \eqref{bhr:cxp:eq:noncommute}.  Its recorded numerical residuals
+are diagnostics.  The continuation, pole classification, and
+all-order conversion rest on the local subtractions above.
+
+% END sections/04_complex_powers.tex
+
+
+% BEGIN sections/05_quartic_harmonic.tex
+\section{The fourth digamma moment and harmonic Laurent data}
+\label{bhr:quartic-harmonic:sec}
+
+The incoming \emph{Cubic Tornheim Derivatives and Harmonic Stieltjes Constants}
+report, Section~7,
+Question~6 \cite{bhr:Cubic}, explicitly asks for a power-to-harmonic formula at the fourth
+power. The following theorem answers that question. It is separate from
+the quartic \emph{directional} Tornheim layer, which has already been
+worked out in later incoming reports. No claim of worldwide novelty or
+finite reduction to ordinary zeta constants is intended.
+
+Write $H_n^{(r)}=\sum_{j=1}^n j^{-r}$, $H_n=H_n^{(1)}$, and
+\[
+ H_n(1,1)=\sum_{n\ge j>k\ge1}\frac1{jk}
+         =\frac{H_n^2-H_n^{(2)}}2.
+\]
+The strict harmonic Dirichlet series used here are
+\[
+ Z_2(s,1)=\sum_{n=1}^{\infty}\frac{H_{n-1}}{n^s},\qquad
+ Z_3(s,1,1)=\sum_{n=1}^{\infty}\frac{H_{n-1}(1,1)}{n^s},
+ \qquad \Re s>1.
+\]
+They have the local expansions
+\begin{align}
+ Z_2(1+u,1)&=u^{-2}+\gamma u^{-1}
+       +\frac{\gamma^2-\zeta(2)}2+\eta u+O(u^2),
+       \label{bhr:quartic-harmonic:eta}\\
+ Z_3(1+u,1,1)&=u^{-3}+\gamma u^{-2}
+       +\frac{\gamma^2-\zeta(2)}{2u}
+       +\frac{\gamma^3-3\gamma\zeta(2)+2\zeta(3)}6
+       +\beta_1u+O(u^2).
+       \label{bhr:quartic-harmonic:beta}
+\end{align}
+In particular $\beta_1$ is a completely specified strict depth-three
+harmonic Laurent coefficient; it is not a coefficient of the inclusive
+harmonic series. The constant term is also fixed by the Mellin lemma below.
+The pole terms in the second expansion follow directly
+from $H_{n-1}=\log n+\gamma+O(n^{-1})$ and
+$H_{n-1}^{(2)}=\zeta(2)+O(n^{-1})$, by subtraction of zeta derivatives.
+The convention for the ordinary Stieltjes constants is
+\[
+ \zeta(1+u)=u^{-1}+\sum_{j\ge0}\frac{(-1)^j\gamma_j}{j!}u^j.
+\]
+
+\begin{theorem}[A quartic power-to-harmonic identity]
+\label{bhr:quartic-harmonic:main}
+Use the unit-coordinate Hadamard finite part at the origin and put
+$Q_4=\operatorname{FP}\int_0^1\psi(x)^4\,dx$. Then
+\begin{align}
+ Q_4={}&18\zeta(4)+12\zeta(3)-12\gamma\zeta(2)+4\zeta'(3)
+       +12(\gamma^2-\zeta(2))\gamma_1
+       +24\gamma\eta-24\beta_1.
+       \label{bhr:quartic-harmonic:main-eq}
+\end{align}
+An equivalent absolutely convergent arithmetic formula is
+\begin{align}
+ Q_4={}&18\zeta(4)+12\zeta(3)-12\gamma\zeta(2)+4\zeta'(3)
+          +12\gamma_3-24\zeta(2)\gamma_1\notag\\
+ &+12\sum_{n=1}^{\infty}
+       \frac{\bigl(\psi(n)^2+\psi'(n)-\log^2 n\bigr)\log n}{n}.
+       \label{bhr:quartic-harmonic:arithmetic}
+\end{align}
+If $Q_3=\operatorname{FP}\int_0^1\psi(x)^3\,dx$, the already proved
+cubic bridge \cite{bhr:Cubic} $Q_3=3\zeta(2)-6\eta-6\gamma\gamma_1$ eliminates $\eta$:
+\begin{equation}
+ Q_4+4\gamma Q_3
+   =18\zeta(4)+12\zeta(3)+4\zeta'(3)
+       -12(\gamma^2+\zeta(2))\gamma_1-24\beta_1.
+       \label{bhr:quartic-harmonic:combined}
+\end{equation}
+\end{theorem}
+
+\subsection{A normalized Mittag--Leffler expansion}
+
+For $n\ge0$ set
+\begin{align*}
+ b_n&=H_n-\gamma,& c_n&=\zeta(2)+H_n^{(2)},&
+ e_n&=H_n^{(3)}-\zeta(3),\\
+ a_n&=c_n-b_n^2,& d_n&=6b_n^2-4c_n,&
+ r_n&=-4b_n^3+12b_nc_n-4e_n.
+\end{align*}
+Let
+\[
+ C_* =\gamma^4-12\gamma^2\zeta(2)+12\gamma\zeta(3)+11\zeta(4),
+ \qquad
+ P_n(z)=\frac1{(n+z)^4}-\frac{4b_n}{(n+z)^3}
+          +\frac{d_n}{(n+z)^2}+\frac{r_n}{n+z}.
+\]
+
+\begin{lemma}[Quartic principal parts with no unknown entire term]
+\label{bhr:quartic-harmonic:ML}
+For $z\notin\{0,-1,-2,\ldots\}$,
+\begin{equation}
+ \psi(z)^4=P_0(z)+C_*+
+     \sum_{n=1}^{\infty}\bigl(P_n(z)-P_n(0)\bigr).
+     \label{bhr:quartic-harmonic:ML-eq}
+\end{equation}
+The series converges normally on every compact set avoiding the poles.
+\end{lemma}
+
+\begin{proof}
+The digamma recurrence and its convergent expansion at zero \cite{bhr:DLMFG} give
+\[
+ \psi(-n+\varepsilon)
+   =-\varepsilon^{-1}+b_n+c_n\varepsilon+e_n\varepsilon^2
+       +(\zeta(4)+H_n^{(4)})\varepsilon^3+O(\varepsilon^4).
+\]
+Raising this expression to the fourth power gives exactly $P_n$ as
+its principal part. The constant coefficient at $n=0$ is
+\[
+ \gamma^4-12\gamma^2\zeta(2)+6\zeta(2)^2
+                +12\gamma\zeta(3)-4\zeta(4)=C_*.
+\]
+This establishes the poles but does not on its own establish the entire
+remainder. To determine that remainder, let $f(z)=\psi(z)^4-P_0(z)$.
+For fixed $z$, apply the residue theorem to
+$z f(w)/(w(w-z))$ on $|w|=N+\tfrac12$.
+The standard digamma asymptotic in the right half-plane, and
+$\psi(w)=\psi(1-w)-\pi\cot(\pi w)$ in the left half-plane, give
+$f(w)=O(\log^4 N)$ uniformly on these circles. The cotangent is
+uniformly bounded there: away from the real axis this follows from its
+exponential formula, while near the real axis these half-integer circles
+remain a fixed positive distance from the integer poles. Thus the
+contour integral is $O(\log^4N/N)$ and tends to zero. The residues are
+$f(z)$, $-f(0)$, and $-(P_n(z)-P_n(0))$, proving the formula.
+Finally $b_n=O(\log n)$, $d_n=O(\log^2n)$ and
+$r_n=O(\log^3n)$, and the simple-pole difference is $O(n^{-2})$
+on each fixed compact set. These estimates prove normal convergence.
+\end{proof}
+
+\subsection{The exact summation-by-parts cancellation}
+
+For $m\ge2$ and $n\ge1$,
+\[
+ \int_0^1\bigl((n+x)^{-m}-n^{-m}\bigr)\,dx
+     =\frac{n^{1-m}-(n+1)^{1-m}}{m-1}-n^{-m}.
+\]
+Integrating \eqref{bhr:quartic-harmonic:ML-eq}, and retaining the finite
+parts of its three higher-order poles at zero, yields
+\begin{equation}
+ Q_4=K+\sum_{n=1}^{\infty}r_n
+      \left(\log\left(1+\frac1n\right)-\frac1n\right),
+      \label{bhr:quartic-harmonic:K-eq}
+\end{equation}
+where
+\begin{equation}
+ K=\gamma^4-18\gamma^2\zeta(2)+32\gamma\zeta(3)
+       +\frac{13}{2}\zeta(4)+12\zeta(3)-12\gamma\zeta(2).
+       \label{bhr:quartic-harmonic:K}
+\end{equation}
+For clarity, the ordinary Euler sums needed in this simplification are
+\begin{equation}
+ \sum_{n\ge1}\frac{H_n}{n^2}=2\zeta(3),\qquad
+ \sum_{n\ge1}\frac{H_n}{n^3}=\frac54\zeta(4),\qquad
+ \sum_{n\ge1}\frac{H_n^{(2)}}{n^2}=\frac74\zeta(4),\qquad
+ \sum_{n\ge1}\frac{H_n^2}{n^2}=\frac{17}4\zeta(4).
+ \label{bhr:quartic-harmonic:euler}
+\end{equation}
+These are classical ordinary convergent sums. One short derivation of
+the three weight-four formulas is as follows. The shuffle and stuffle
+products of $\zeta(2)^2$ give respectively
+$2\zeta(2,2)+4\zeta(3,1)$ and $2\zeta(2,2)+\zeta(4)$;
+hence $\zeta(3,1)=\zeta(4)/4$ and
+$\zeta(2,2)=3\zeta(4)/4$.
+The iterated-integral substitution $t\mapsto1-t$ gives
+$\zeta(2,1,1)=\zeta(4)$. Expanding the three harmonic numerators
+in strict sums now gives exactly the displayed values. The first,
+weight-three formula follows from the same shuffle/stuffle method or
+from the elementary symmetric integral
+$\int_0^1\log x\log(1-x)/(x(1-x))\,dx=2\zeta(3)$.
+
+The decisive finite difference is
+\begin{equation}
+ r_n-r_{n-1}=\frac{12a_{n-1}}n+\frac4{n^3}.
+ \label{bhr:quartic-harmonic:residue-difference}
+\end{equation}
+It follows by substituting
+$b_n=b_{n-1}+n^{-1}$, $c_n=c_{n-1}+n^{-2}$,
+and $e_n=e_{n-1}+n^{-3}$; no limiting argument is involved.
+Thus finite summation by parts gives
+\begin{align}
+ \sum_{n=1}^N r_n\log\left(1+\frac1n\right)
+ &=r_N\log(N+1)-12\sum_{n=1}^N\frac{a_{n-1}\log n}{n}
+                      -4\sum_{n=1}^N\frac{\log n}{n^3}.
+ \label{bhr:quartic-harmonic:SBP}
+\end{align}
+
+We also need the constant term in $\sum_{n=1}^N r_n/n$.
+Here is an exact finite identity that makes this normalization
+checkable. Put $X=H_N$, $Y=H_N^{(2)}$, $Z=H_N^{(3)}$,
+$W=H_N^{(4)}$, and
+\[
+ S_{12}=\sum_{n=1}^N\frac{H_n}{n^2},\quad
+ S_{13}=\sum_{n=1}^N\frac{H_n}{n^3},\quad
+ S_{22}=\sum_{n=1}^N\frac{H_n^{(2)}}{n^2},\quad
+ S_{112}=\sum_{n=1}^N\frac{H_n^2}{n^2}.
+\]
+Then
+\begin{align}
+ \sum_{n=1}^N\frac{r_n}{n}
+ ={}&-X^4+4\gamma X^3+(-6\gamma^2+6\zeta(2))X^2
+       +(4\gamma^3-12\gamma\zeta(2)+4\zeta(3))X\notag\\
+ &+6X^2Y-12\gamma XY-4XZ
+       +(-6\gamma^2+6\zeta(2))Y-16\gamma Z-11W\notag\\
+ &+24\gamma S_{12}-12S_{112}+20S_{13}+6S_{22}.
+ \label{bhr:quartic-harmonic:finite-sum}
+\end{align}
+For example this identity follows by taking finite differences of
+$H_n^4$, $H_n^3$, $H_n^2H_n^{(2)}$, $H_nH_n^{(2)}$,
+and $H_nH_n^{(3)}$, then collecting terms. Both sides vanish at
+$N=0$, and their exact finite differences are $r_N/N$.
+
+Let $L=\log N$. Using \eqref{bhr:quartic-harmonic:euler} in
+\eqref{bhr:quartic-harmonic:finite-sum}, together with
+$H_N=L+\gamma+O(N^{-1})$, gives
+\begin{equation}
+ \sum_{n=1}^N\frac{r_n}{n}
+ =-L^4+12\zeta(2)L^2+C+o(1),\qquad
+ C=\gamma^4-18\gamma^2\zeta(2)+32\gamma\zeta(3)
+       -\frac{23}2\zeta(4).
+ \label{bhr:quartic-harmonic:C}
+\end{equation}
+Also
+$r_N\log(N+1)=-4L^4+24\zeta(2)L^2+o(1)$.
+Since $a_{n-1}=2\zeta(2)-\log^2n+O(\log n/n)$, the limit
+\begin{equation}
+ A=\lim_{N\to\infty}\left\{
+  \sum_{n=1}^N\frac{a_{n-1}\log n}{n}
+      -\zeta(2)L^2+\frac{L^4}{4}\right\}
+ \label{bhr:quartic-harmonic:A}
+\end{equation}
+exists. Equations \eqref{bhr:quartic-harmonic:K-eq},
+\eqref{bhr:quartic-harmonic:SBP}, and \eqref{bhr:quartic-harmonic:C}
+now imply
+\begin{equation}
+ Q_4=18\zeta(4)+12\zeta(3)-12\gamma\zeta(2)
+                         +4\zeta'(3)-12A.
+ \label{bhr:quartic-harmonic:before-Laurent}
+\end{equation}
+Every divergent polynomial has been retained until this cancellation.
+
+\subsection{Convergent arithmetic and the Laurent coefficient}
+
+At a positive integer,
+\[
+ a_{n-1}=2\zeta(2)-\psi(n)^2-\psi'(n).
+\]
+Moreover $\psi(n)^2+\psi'(n)-\log^2n=O(\log n/n)$.
+Using the standard Stieltjes defining limits in
+\eqref{bhr:quartic-harmonic:A} gives
+\[
+ A=2\zeta(2)\gamma_1-\gamma_3
+   -\sum_{n=1}^{\infty}
+          \frac{\bigl(\psi(n)^2+\psi'(n)-\log^2n\bigr)\log n}{n}.
+\]
+The final series is absolutely convergent because its summand is
+$O(\log^2n/n^2)$. Substitution proves
+\eqref{bhr:quartic-harmonic:arithmetic}.
+
+To identify the harmonic coordinate, introduce
+\[
+ F(s)=\sum_{n=1}^{\infty}
+    \frac{\psi(n)^2+\psi'(n)-\log^2n}{n^s},\qquad\Re s>0.
+\]
+This series and every fixed spectral derivative converge normally
+on compact subsets of the stated half-plane. Expanding the harmonic
+numerator in strict sums gives, initially for $\Re s>1$,
+\begin{equation}
+ F(s)=2Z_3(s,1,1)-2\gamma Z_2(s,1)
+                   +(\gamma^2+\zeta(2))\zeta(s)-\zeta''(s).
+ \label{bhr:quartic-harmonic:deformation}
+\end{equation}
+This also supplies the required local continuation. The coefficient
+of $u$ at $s=1+u$ is
+\[
+ F'(1)=2\beta_1-2\gamma\eta
+                 -(\gamma^2+\zeta(2))\gamma_1+\gamma_3.
+\]
+On the other hand it is the negative of the convergent sum in
+\eqref{bhr:quartic-harmonic:arithmetic}. Inserting this relation proves
+\eqref{bhr:quartic-harmonic:main-eq}. Combining it with the cubic bridge
+proves \eqref{bhr:quartic-harmonic:combined}.
+
+\subsection{A Mellin normalization for every height-one coefficient}
+
+The following classical Mellin mechanism (compare the harmonic-zeta framework in \cite{bhr:Kargin}) supplies an independent
+realization of the coefficient used above. Its all-depth formulation
+also states precisely where new global information first enters.
+Let $d\ge1$, and write
+\[
+ Z_d(s,\{1\}^{d-1})
+   =\sum_{n=1}^{\infty}\frac{H_{n-1}(\{1\}^{d-1})}{n^s},
+ \qquad
+ \frac1{\Gamma(1+u)}=\sum_{j\ge0}c_ju^j.
+\]
+An empty harmonic word has value one. For $t>0$ put
+\[
+ B(t)=-\log(1-e^{-t}),\qquad
+ V_d(t)=B(t)^d-\mathbf1_{0<t<1}(-\log t)^d.
+\]
+Since $V_d(t)=O(t(1+|\log t|^{d-1}))$ at zero and decays
+exponentially at infinity, every logarithmic moment of $V_d(t)/t$
+converges absolutely.
+
+\begin{lemma}[All height-one finite parts and regular coefficients]
+\label{bhr:quartic-harmonic:mellin}
+For $|u|<1$, as an identity of meromorphic functions,
+\begin{equation}
+ \Gamma(1+u)Z_d(1+u,\{1\}^{d-1})
+   =\frac1{u^d}+\frac{u}{d!}
+       \int_0^\infty t^{u-1}V_d(t)\,dt.
+ \label{bhr:quartic-harmonic:mellin-generator}
+\end{equation}
+Consequently the principal part and constant coefficient together are
+$\sum_{j=0}^{d}c_j u^{j-d}$. For every $k\ge1$, the exact regular
+coefficient is
+\begin{equation}
+ [u^k]Z_d(1+u,\{1\}^{d-1})
+  =c_{d+k}+\frac1{d!}\sum_{j=1}^k
+       \frac{c_{k-j}}{(j-1)!}
+       \int_0^\infty\frac{V_d(t)\log^{j-1}t}{t}\,dt.
+ \label{bhr:quartic-harmonic:mellin-coefficients}
+\end{equation}
+In particular the finite part is $c_d$, while the coefficient of $u$
+is $c_{d+1}+d!^{-1}\int_0^\infty V_d(t)\,dt/t$.
+\end{lemma}
+
+\begin{proof}
+The elementary multiple-polylogarithm identity
+$\operatorname{Li}_{\{1\}^{d-1}}(z)
+=(-\log(1-z))^{d-1}/(d-1)!$ gives, first for $\Re s>1$,
+\[
+ \Gamma(s)Z_d(s,\{1\}^{d-1})
+  =\int_0^\infty t^{s-1}
+       \frac{B(t)^{d-1}}{(d-1)!(e^t-1)}\,dt.
+\]
+Subtract $(-\log t)^{d-1}/((d-1)!t)$ on $(0,1)$.
+Its Mellin integral at $s=1+u$ is $u^{-d}$. The subtracted
+kernel is $-V_d'(t)/d!$; no jump term occurs at $t=1$, since
+$(-\log1)^d=0$. Integrating that remainder by parts produces
+exactly the integral in \eqref{bhr:quartic-harmonic:mellin-generator}.
+The boundary terms vanish for $\Re u>-1$, because of the bounds on
+$V_d$. Normal convergence of that integral and all its spectral
+derivatives proves continuation and coefficient extraction.
+\end{proof}
+
+For the present depth-three coordinate this yields the particularly
+simple convergent formula
+\begin{equation}
+ \beta_1=
+ \frac{\gamma^4}{24}-\frac{\gamma^2\zeta(2)}4
+       +\frac{\gamma\zeta(3)}3+\frac{\zeta(4)}{16}
+       +\frac16\int_0^\infty\frac{V_3(t)}t\,dt.
+ \label{bhr:quartic-harmonic:beta-mellin}
+\end{equation}
+Likewise $\eta=c_3+\tfrac12\int_0^\infty V_2(t)\,dt/t$.
+These formulas evaluate the harmonic coefficients through elementary
+convergent kernels; they do not identify those kernels with finite
+combinations of ordinary constants. They also confirm the constant
+coefficient displayed in \eqref{bhr:quartic-harmonic:beta} directly.
+
+\subsection{A normalized primitive and every differentiated identity}
+
+Put
+\[
+ d_0=6\gamma^2-4\zeta(2),\qquad
+ r_0=4\gamma^3-12\gamma\zeta(2)+4\zeta(3).
+\]
+For $\Re z>0$ with the principal logarithm, define
+\begin{align}
+ \mathcal P_4(z)={}&-\frac1{3z^3}-\frac{2\gamma}{z^2}
+                      -\frac{d_0}{z}+r_0\log z+C_*z\notag\\
+ &+\sum_{n=1}^{\infty}\Bigg[
+   \frac1{3n^3}-\frac1{3(n+z)^3}-\frac z{n^4}\notag\\
+ &\hspace{11mm}-4b_n\left\{\frac1{2n^2}-\frac1{2(n+z)^2}
+                                      -\frac z{n^3}\right\}\notag\\
+ &\hspace{11mm}+d_n\left\{\frac1n-\frac1{n+z}-\frac z{n^2}\right\}
+       +r_n\left\{\log\left(1+\frac zn\right)-\frac zn\right\}
+                                      \Bigg].
+ \label{bhr:quartic-harmonic:primitive}
+\end{align}
+The normally convergent braces are the integrals, vanishing at zero,
+of the subtracted principal parts. Consequently
+\[
+ \mathcal P_4'(z)=\psi(z)^4,\qquad
+ \operatorname{FP}\int_0^b\psi(x)^4\,dx=\mathcal P_4(b)
+      \quad(b>0),\qquad \mathcal P_4(1)=Q_4.
+\]
+The constant term of $\mathcal P_4$ at the singular origin is zero;
+this fixes the integration constant without an unspecified branch term.
+
+For every integer $m\ge1$, differentiation of
+\eqref{bhr:quartic-harmonic:ML-eq} gives the further exact identity
+\begin{align}
+ &\sum_{m_1+m_2+m_3+m_4=m}
+   \frac{m!}{m_1!m_2!m_3!m_4!}
+      \prod_{j=1}^4\psi^{(m_j)}(z)\notag\\
+ &\quad=(-1)^m m!\sum_{n=0}^{\infty}
+ \left\{
+  \frac{\binom{m+3}{3}}{(n+z)^{m+4}}
+  -\frac{4b_n\binom{m+2}{2}}{(n+z)^{m+3}}
+  +\frac{(m+1)d_n}{(n+z)^{m+2}}
+  +\frac{r_n}{(n+z)^{m+1}}
+ \right\}.
+ \label{bhr:quartic-harmonic:derivatives}
+\end{align}
+The convergence is normal off the digamma poles, since the slowest
+term is $O(\log^3n/n^{m+1})$. At $z=1$, the left side is a finite
+polynomial in $\gamma$ and ordinary zeta values.
+
+\paragraph{Independent checks.}
+The exact checking program verifies the principal parts, the residue
+finite difference, the full finite identity
+\eqref{bhr:quartic-harmonic:finite-sum}, and the cancellations producing
+\eqref{bhr:quartic-harmonic:main-eq}. A separate numerical calculation
+integrates a locally Taylor-subtracted digamma fourth power and compares
+it with the convergent arithmetic formula, whose tail is evaluated by
+Bernoulli asymptotics and Hurwitz-zeta derivatives. At working precision
+80 digits, the arithmetic-tail evaluation differs from quadrature by
+less than $3.4\cdot10^{-62}$. Independent Mellin evaluations of $\eta$
+and $\beta_1$, inserted into the main identity, differ from the same
+quadrature by less than $2.1\cdot10^{-74}$. The common value begins
+\[
+ Q_4=13.5101203760158274116062407128304484419327985333019186009860964\ldots.
+\]
+These are numerical diagnostics, not certified enclosures or substitutes
+for the proof.
+
+\paragraph{Next precise targets.}
+The theorem determines $\beta_1$ from the cubic and quartic finite parts,
+but does not express it in a prescribed algebra of ordinary constants.
+For the fifth power, the residue polynomial has degree four in the
+finite harmonic data, and its first difference should produce both
+height-one depth-four Laurent data and additional harmonic numerators.
+The correct next task is to derive that exact difference and identify the
+minimal \emph{stated} family of Laurent coefficients. A second direction
+is a common Hurwitz shift: the shifted strict harmonic numerator and the
+integration endpoint must be normalized together, since replacing
+$n$ by $n+a$ only in the outer denominator does not shift the harmonic
+prefix or the finite-part coordinate.
+
+% END sections/05_quartic_harmonic.tex
+
+
+% BEGIN sections/06_cyclic_transverse.tex
+% Integration fragment: requires amsmath, amssymb, amsthm and theorem/proposition environments.
+% Labels use fcy:; bibliography keys are shared with the full article.
+\section{An ordinary convergent generator for symmetric Tornheim jets}
+\label{bhr:fcy:section}
+
+The incoming \emph{Harmonic Parity and Resolvent Identities} report
+already determines the quartic directional layer and the formal
+all-order kernel. Its Question R10 asks for additional
+analytic information about the symmetric quadratic germ controlling
+cyclic fifth derivatives. We answer the stated integral version of
+that question. We first give an explicit, normally convergent integral
+for its full symmetric generating germ. We then extract one
+transverse quadratic coefficient, including its full finite
+normalization. Together with the diagonal fifth derivative this
+coefficient determines every cyclic fifth derivative.
+
+No claim that either retained coefficient has a finite evaluation in
+ordinary zeta constants is made. The earlier quartic reconstruction,
+formal dimension count, and cyclic factorization are used with their
+existing attribution \cite{bhr:Parity}. The holomorphy of the cyclic
+Tornheim sum near the origin is also a special case of Nakamura's
+symmetric desingularization theorem \cite[Theorem 1.2]{bhr:Nakamura}.
+
+\subsection{The fixed holomorphic remainder}
+
+Write
+\[
+ T(A,B,C)=\sum_{m,n\ge1}\frac1{m^A n^B(m+n)^C},\qquad
+ \mathfrak g(C)=\frac1{\Gamma(1+C)},\qquad \Sigma=A+B+C.
+\]
+The series is first used where it converges absolutely; subsequently
+\(T\) denotes its meromorphic continuation. We use exactly the
+normalization of the preceding report:
+\begin{equation}\label{bhr:fcy:R}
+ T(A,B,C)=\zeta(A)\zeta(B)
+ -\frac{C\zeta(B-1)}{A+C}-\frac{C\zeta(A-1)}{B+C}
+ +C R(A,B,C),
+\end{equation}
+where \(R\) is holomorphic and symmetric in \(A,B\) near the
+origin. Here and below an apparent quotient of holomorphic germs by a
+linear form is assigned its holomorphic extension when its numerator
+is divisible by that form.
+
+The finite elementary kernel needed below is
+\begin{align}
+ E(A,B,C)={}&\mathfrak g(C)\left\{
+ \frac{\Gamma(1-A)\Gamma(1-B)}{\Sigma-2}
+ +\frac{\Gamma(1-A)\zeta(B)}{A+C-1}
+ +\frac{\Gamma(1-B)\zeta(A)}{B+C-1}\right\}\notag\\
+ &+\zeta(A)\zeta(B)\frac{\mathfrak g(C)-1}{C}\notag\\
+ &-\zeta(B-1)\frac{\Gamma(1-A)\mathfrak g(C)-1}{A+C}
+ -\zeta(A-1)\frac{\Gamma(1-B)\mathfrak g(C)-1}{B+C}.
+ \label{bhr:fcy:E}
+\end{align}
+It is jointly holomorphic near zero. For example,
+\(\Gamma(1-A)\mathfrak g(-A)=1\), proving removability at \(A+C=0\).
+
+For completeness, put \(F_A(x)=\operatorname{Li}_A(e^{-x})\) and
+\begin{align}
+ S(A,B;x)={}&\Gamma(1-A)\Gamma(1-B)x^{A+B-2}
+ +\Gamma(1-A)\zeta(B)x^{A-1}
+ +\Gamma(1-B)\zeta(A)x^{B-1}\notag\\
+ &-\Gamma(1-A)\zeta(B-1)x^A
+ -\Gamma(1-B)\zeta(A-1)x^B+\zeta(A)\zeta(B).
+ \label{bhr:fcy:S}
+\end{align}
+Jonqui\`ere's expansion \cite[25.12.12]{bhr:DLMFPolylog} gives the
+normally convergent integral
+\begin{align}
+ I_0(A,B,C)={}&\int_0^1x^{C-1}\bigl(F_A(x)F_B(x)-S(A,B;x)\bigr)\,dx
+ \notag\\
+ &+\int_1^\infty x^{C-1}F_A(x)F_B(x)\,dx
+ \label{bhr:fcy:I0}
+\end{align}
+and the identity
+\begin{equation}\label{bhr:fcy:RE}
+ R(A,B,C)=\mathfrak g(C)I_0(A,B,C)+E(A,B,C).
+\end{equation}
+Indeed, integrate the six subtracted terms explicitly in the Mellin
+representation for \(T\), multiply by \(\mathfrak g(C)\), and collect the
+two polar terms of \eqref{bhr:fcy:R}. This gives
+\eqref{bhr:fcy:E} term by term. In a sufficiently small closed parameter
+polydisc the omitted Jonqui\`ere terms, after multiplication by
+\(x^{C-1}\), are bounded by
+\(x^{-\delta}(1+|\log x|^N)\) for some \(\delta<1\), including
+any prescribed finite number of parameter derivatives. At infinity
+there is uniform exponential decay. These estimates justify the
+joint holomorphy and all differentiations used below.
+
+\subsection{An explicit integral for the symmetric germ}
+
+The earlier factorization defines the unique symmetric holomorphic
+germ \(J\) by
+\begin{align}
+ \sum_{\mathrm{cyc}}T(A,B,C)={}&
+ 2\bigl(\zeta(A)\zeta(B)+\zeta(B)\zeta(C)+\zeta(C)\zeta(A)\bigr)
+ \notag\\
+ &-\zeta(A+B)-\zeta(B+C)-\zeta(C+A)\notag\\
+ &+2\bigl(\zeta(A)+\zeta(B)+\zeta(C)\bigr)+1+ABCJ(A,B,C).
+ \label{bhr:fcy:J}
+\end{align}
+We retain this normalization exactly. The next formula expresses
+\(J\) through ordinary polylogarithms, Gamma and zeta functions,
+and ordinarily convergent integrals, without any Tornheim derivative
+on the right-hand side.
+
+For a holomorphic function \(H\), define
+\[
+ \mathcal D_{A,B}H(A,B,C)=
+ \frac{H(A,B,C)-H(A,0,C)-H(0,B,C)+H(0,0,C)}{AB}.
+\]
+At zero parameters this means the corresponding derivative. Set
+\begin{align*}
+ d_A(x)&=\frac{\operatorname{Li}_A(e^{-x})-\operatorname{Li}_0(e^{-x})}{A},&
+ g_A(x)&=\frac{\Gamma(1-A)x^A-1}{A},\\
+ p_A&=\frac{\zeta(A)+1/2}{A},&
+ q_A&=\frac{\zeta(A-1)+1/12}{A},
+\end{align*}
+with the holomorphic values at \(A=0\). Define
+\begin{align}
+ S_\Delta(A,B;x)={}&\frac{g_A(x)g_B(x)}{x^2}
+ +\frac{g_A(x)p_B+g_B(x)p_A}{x}\notag\\
+ &-g_A(x)q_B-g_B(x)q_A+p_Ap_B,
+ \label{bhr:fcy:SDelta}\\
+ I_\Delta(A,B,C)={}&\int_0^1x^{C-1}
+ \bigl(d_A(x)d_B(x)-S_\Delta(A,B;x)\bigr)\,dx\notag\\
+ &+\int_1^\infty x^{C-1}d_A(x)d_B(x)\,dx.
+ \label{bhr:fcy:IDelta}
+\end{align}
+
+\begin{theorem}[Ordinary convergent symmetric generator]
+\label{bhr:fcy:generator}
+The integrals \eqref{bhr:fcy:IDelta} converge normally in a common
+neighborhood of \((0,0,0)\), including after arbitrary fixed
+parameter derivatives, and
+\begin{equation}\label{bhr:fcy:Jintegral}
+ J(A,B,C)=\sum_{\mathrm{cyc}}
+ \left\{\mathfrak g(C)I_\Delta(A,B,C)+\mathcal D_{A,B}E(A,B,C)\right\}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply the rectangular difference in \(A,B\) to
+\eqref{bhr:fcy:I0}. The difference of the product \(F_AF_B\),
+divided by \(AB\), is \(d_Ad_B\); the corresponding difference
+of \(S\) is exactly \(S_\Delta\). Cauchy estimates on a slightly
+larger parameter polydisc preserve the integrable bounds of
+\eqref{bhr:fcy:I0}; equivalently, one can use
+\(d_A(x)=g_A(x)/x+p_A-q_Ax+O(x^{2-\epsilon})\), locally
+uniformly with logarithmic factors after differentiation. Thus
+\(I_\Delta=\mathcal D_{A,B}I_0\), with normal convergence.
+
+In the cyclic sum of \eqref{bhr:fcy:R}, the two terms with
+denominator \(A+C\) combine to \(-\zeta(B-1)\), and similarly
+for the other denominators. All remaining explicit zeta terms
+depend on at most two variables. The complete rectangular
+three-variable difference therefore annihilates them and gives
+\[
+ ABCJ(A,B,C)=\sum_{\mathrm{cyc}}C\bigl(
+ R(A,B,C)-R(A,0,C)-R(0,B,C)+R(0,0,C)\bigr).
+\]
+To check the left-hand side, apply the same difference to
+\eqref{bhr:fcy:J}: all its explicit terms vanish, and \(ABCJ\)
+vanishes on every coordinate plane. Divide by \(ABC\), substitute
+\eqref{bhr:fcy:RE}, and use holomorphic extension at zero parameters.
+This proves \eqref{bhr:fcy:Jintegral}.
+\end{proof}
+
+The theorem is an analytic representation of the previously defined
+germ. It supplies all symmetric jet coefficients in one fixed,
+ordinary convergent kernel. Its content includes the endpoint
+subtractions and their finite normalization; replacing the kernel by
+an unsubtracted integral would not preserve its Taylor coefficients.
+
+\subsection{The first transverse quadratic coefficient}
+
+Write \(\gamma\) for Euler's constant and put
+\[
+ L=\log(2\pi),\qquad z_j=\zeta^{(j)}(0),\qquad
+ y_j=\zeta^{(j)}(-1),\qquad \kappa_2=\zeta(2),\quad \kappa_4=\zeta(4).
+\]
+The quadratic homogeneous part of \(J\) has the form
+\begin{equation}\label{bhr:fcy:J2form}
+ J_2(A,B,C)=j_{20}(A^2+B^2+C^2)+\chi(AB+BC+CA).
+\end{equation}
+Thus \(\chi=[AB]J\) is the additional scalar to be determined.
+For \(x>0\), let
+\[
+ f_j(x)=\left.\partial_s^j\operatorname{Li}_s(e^{-x})\right|_{s=0},
+ \qquad h(x)=\log x+\gamma,
+\]
+and define
+\begin{align}
+ P_{21}(x)={}&\frac{h(h^2+\kappa_2)}{x^2}
+ +\frac{z_1(h^2+\kappa_2)+z_2h}{x}
+ -y_1(h^2+\kappa_2)-y_2h+z_1z_2,
+ \label{bhr:fcy:P21}\\
+ P_{22}(x)={}&\frac{(h^2+\kappa_2)^2}{x^2}
+ +\frac{2z_2(h^2+\kappa_2)}{x}-2y_2(h^2+\kappa_2)+z_2^2,
+ \label{bhr:fcy:P22}\\
+ \mathcal K(x)={}&\frac14 f_2(x)^2+h(x)f_2(x)f_1(x),\qquad
+ P(x)=\frac14P_{22}(x)+h(x)P_{21}(x).
+ \label{bhr:fcy:KP}
+\end{align}
+Let
+\begin{equation}\label{bhr:fcy:chiintegral}
+ \mathcal I=\int_0^1\frac{\mathcal K(x)-P(x)}x\,dx
+                   +\int_1^\infty\frac{\mathcal K(x)}x\,dx.
+\end{equation}
+Both integrals converge ordinarily and absolutely.
+
+\begin{theorem}[Explicit transverse fifth-order coordinate]
+\label{bhr:fcy:chi}
+The coefficient in \eqref{bhr:fcy:J2form} is
+\begin{equation}\label{bhr:fcy:chiresult}
+ \chi=\mathcal I+\mathcal E,
+\end{equation}
+where
+\begin{align}
+ \mathcal E={}&-\frac{10\gamma^4+20\gamma^3+12\gamma^2\kappa_2
+ +30\gamma^2+12\gamma \kappa_2+30\gamma+2\kappa_2^2+6\kappa_2+15}{16}
+ \notag\\
+ &+\frac{-\gamma^4-2\gamma^2\kappa_2+\kappa_2^2+2\kappa_4}{4}\,y_1
+ -\frac{\gamma(\gamma^2+\kappa_2)}2\,y_2\notag\\
+ &-\bigl(\gamma^3+3\gamma^2+6\gamma+6+(\gamma+1)\kappa_2\bigr)z_1
+ -\frac{3\gamma^2+6\gamma+6+\kappa_2}{2}\,z_2\notag\\
+ &+\frac{\gamma^2-\kappa_2}{2}\,z_1z_2+\frac\gamma4z_2^2.
+ \label{bhr:fcy:chicorrection}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+All derivatives of \(R\) in this proof are evaluated at the
+origin. The coefficient of \(A^2B^2C\) in
+\(\sum_{\mathrm{cyc}}CR(A,B,C)\) is
+\[
+ \frac14R_{AABB}+R_{AABC}.
+\]
+The first cyclic term contributes \(R_{AABB}/4\), and the
+other two contribute \(R_{AABC}/2\) each. The explicit
+zeta terms in \eqref{bhr:fcy:J} and the cyclic form of
+\eqref{bhr:fcy:R} have no monomial involving all three variables.
+Consequently
+\begin{equation}\label{bhr:fcy:chiderivative}
+ \chi=\frac14R_{AABB}+R_{AABC}.
+\end{equation}
+
+Differentiate \eqref{bhr:fcy:RE}, using \(\mathfrak g(0)=1\) and
+\(\mathfrak g'(0)=\gamma\). The integral contribution to
+\eqref{bhr:fcy:chiderivative} is precisely \eqref{bhr:fcy:chiintegral}:
+\(S_{AAB}=P_{21}\), \(S_{AABB}=P_{22}\), and the derivative
+of \(\mathfrak g(C)x^{C-1}\) at zero is \(h(x)/x\).
+For a direct convergence check, the differentiated Jonqui\`ere
+expansions are
+\[
+ f_1(x)=\frac h x+\sum_{k\ge0}
+       \frac{(-1)^k\zeta'(-k)}{k!}x^k,\qquad
+ f_2(x)=\frac{h^2+\kappa_2}x+\sum_{k\ge0}
+       \frac{(-1)^k\zeta''(-k)}{k!}x^k.
+\]
+The displayed subtractions remove both singular products, the
+cross terms of analytic degrees zero and one, and the constant
+analytic product. Hence \((\mathcal K-P)/x=O(1+|\log x|^3)\) at zero.
+At infinity \(f_1,f_2=O(e^{-2x})\), so
+\(\mathcal K/x=O((1+\log x)e^{-4x}/x)\).
+
+The remaining finite contribution is
+\[
+ \mathcal E=[A^2B^2]E+2[A^2BC]E.
+\]
+Insert
+\begin{align*}
+ \log\Gamma(1-A)&=\gamma A+\frac{\kappa_2}{2} A^2
+                  +\frac{\zeta(3)}3A^3+\frac{\kappa_4}4A^4+O(A^5),\\
+ \log \mathfrak g(C)&=\gamma C-\frac{\kappa_2}{2} C^2
+                  +\frac{\zeta(3)}3C^3-\frac{\kappa_4}4C^4+O(C^5)
+\end{align*}
+into the elementary expression \eqref{bhr:fcy:E}. Expand its three
+nonresonant denominators geometrically and divide the three
+removable quotients as holomorphic power series. Extraction of
+the two coefficients gives \eqref{bhr:fcy:chicorrection}. This is
+finite polynomial algebra; the accompanying exact script performs
+it independently with all zeta derivatives left symbolic.
+\end{proof}
+
+\subsection{Every cyclic fifth derivative}
+
+Put \(\Omega_5=W_{1,1,1}^{(5)}(0)\), where
+\(W_{a,b,c}(t)=T(at,bt,ct)\) is restricted before taking its
+one-variable continuation at zero. Write
+\[
+ e_1=a+b+c,\quad e_2=ab+bc+ca,\quad e_3=abc,\quad
+ D=e_1^2-3e_2,\quad p_2=e_1^2-2e_2.
+\]
+
+\begin{theorem}[Cyclic fifth-order formula]\label{bhr:fcy:fifth}
+If the three pairwise sums of \(a,b,c\) are nonzero, then
+\begin{align}
+ \sum_{\mathrm{cyc}}W_{a,b,c}^{(5)}(0)={}&
+ e_3p_2\Omega_5-120e_3D\chi
+ -5(e_1e_2-3e_3)D\,Lz_4\notag\\
+ &+20(e_1e_2^2-4e_1^2e_3+3e_2e_3)z_2z_3\notag\\
+ &+(-2e_1^5+5e_1^3e_2-5e_1e_2^2
+                         +47e_1^2e_3-69e_2e_3)z_5.
+ \label{bhr:fcy:fifthformula}
+\end{align}
+For arbitrary complex slopes the same polynomial gives the fifth
+derivative of the holomorphic cyclic sum restricted as a whole.
+This last assertion does not assign values to its individual
+singular summands.
+\end{theorem}
+
+\begin{proof}
+On the diagonal, differentiation of \eqref{bhr:fcy:J} gives
+\[
+ j_{20}+\chi=\frac{
+ \Omega_5+10Lz_4-40z_2z_3+32z_5}{120}.
+\]
+Thus \eqref{bhr:fcy:J2form} is completely determined by
+\(\Omega_5\) and the ordinarily convergent coordinate
+\eqref{bhr:fcy:chiresult}. For general slopes, the fifth derivative
+of the explicit part of \eqref{bhr:fcy:J} is
+\[
+ -5Lz_4\sum_{\mathrm{sym}}a^4b
+ +20z_2z_3\sum_{\mathrm{sym}}a^3b^2
+ -\bigl((a+b)^5+(b+c)^5+(c+a)^5\bigr)z_5.
+\]
+The remaining derivative is \(120abcJ_2(a,b,c)\).
+Substitute the preceding value of \(j_{20}\), use the elementary
+symmetric polynomial identities, and collect terms. This yields
+\eqref{bhr:fcy:fifthformula}. Since \eqref{bhr:fcy:J} is jointly
+holomorphic, its cyclic restriction exists even when an individual
+pairwise divisor would prevent restricting a single Tornheim term.
+\end{proof}
+
+For instance, the explicit asymmetric identity is
+\begin{align}
+ &W_{1,2,3}^{(5)}(0)+W_{2,3,1}^{(5)}(0)+W_{3,1,2}^{(5)}(0)
+       -84\Omega_5\notag\\
+ &\hspace{18mm}=-2160\chi-720L\zeta^{(4)}(0)
+       +1200\zeta''(0)\zeta'''(0)-1704\zeta^{(5)}(0).
+ \label{bhr:fcy:example}
+\end{align}
+For real slopes, \(D=\tfrac12((a-b)^2+(b-c)^2+(c-a)^2)\).
+Consequently a single real cyclic fifth ray with \(abc\ne0\)
+eliminates the displayed transverse coefficient only on the
+diagonal. For complex slopes the cone \(D=0\) has additional
+points. These are coefficient statements in the specified two
+coordinate representation, not claims of arithmetic independence.
+
+\needspace{13\baselineskip}
+\subsection{Numerical checks and the remaining arithmetic problem}
+The package evaluates \(\mathcal I\) using differentiated
+Jonqui\`ere series on \((0,1)\) and exponentially convergent
+incomplete-Gamma sums on \((1,\infty)\). At 70 decimal digits
+of working precision the diagnostic values are
+\begin{align*}
+ \mathcal I&=-0.0128358838132664551878307355997471413775071472849\ldots,\\
+ \mathcal E&=18.6522612153652911636439613245591942979227651526949\ldots,\\
+ \chi&=18.6394253315520247084561305889594471565452580054100\ldots,\\
+ \Omega_5&=8808.87952093843854353140320772504731742914386526227\ldots.
+\end{align*}
+An independently evaluated Mellin continuation of individual
+\(T\) rays checks \eqref{bhr:fcy:fifthformula} on the cycles generated
+by \((1,2,3)\), \((1,1,2)\), and \((1,-2,3)\); the largest
+recorded discrepancy is below \(6\cdot10^{-30}\). These are
+uncertified numerical diagnostics, not interval enclosures or
+proofs of the analytic identities. The exact coefficient script
+checks the elementary correction and the full symbolic fifth-order
+formula.
+
+The new generator answers the ordinary-integral alternative of
+Question R10 and makes all higher symmetric coefficients concrete.
+Finite ordinary-constant evaluations of \(\chi\) and
+\(\Omega_5\) remain open. A sharper next problem is to find an
+independent Gamma or Barnes representation of the kernel in
+\eqref{bhr:fcy:chiintegral}, with its normalization \eqref{bhr:fcy:chicorrection}
+unchanged. At the following order, the same generator yields the
+three coefficients of the symmetric cubic germ \(J_3\); any
+reduction below that formal count requires an additional identity.
+
+% END sections/06_cyclic_transverse.tex
+
+
+% BEGIN sections/07_audit_research.tex
+\section{Source audit, verification, and further research}
+\label{bhr:sec:audit}
+
+\subsection{A precise correction to a published Barnes identity}
+
+The inspection of the Barnes Fourier source revealed a pointwise
+algebraic error in equation (7) of the inspected arXiv version of
+Mez\H{o}'s paper \cite{bhr:Mezo}. That equation identifies
+$\log^2G(x)$ with
+\[
+ \frac14\left\{
+   \log^2\bigl(G(x)G(1-x)\bigr)
+   +\log^2\bigl(G(x)/G(1-x)\bigr)\right\}.
+\]
+On $(0,1)$ both Barnes values are positive. Put
+$a=\log G(x)$ and $b=\log G(1-x)$. The displayed expression
+is $(a^2+b^2)/2$, not $a^2$. Thus the corrected pointwise identity is
+\begin{equation}\label{bhr:eq:Mezo-correction}
+ \boxed{\displaystyle
+ \frac{\log^2G(x)+\log^2G(1-x)}2
+ =\frac14\left\{
+   \log^2\bigl(G(x)G(1-x)\bigr)
+   +\log^2\bigl(G(x)/G(1-x)\bigr)\right\}.}
+\end{equation}
+Alternatively, to keep the original left side one must add
+\[
+ \frac12\log\bigl(G(x)G(1-x)\bigr)
+           \log\bigl(G(x)/G(1-x)\bigr)
+\]
+to the original right side.
+
+This is an exact objection, not a small numerical discrepancy.
+From $G(1+x)=\Gamma(x)G(x)$ and $G(1)=1$ one gets
+$G(x)=x(1+O(x))$ as $x\downarrow0$, while
+$\log G(1-x)=O(x)$. Therefore the original left side has leading
+term $\log^2x$, whereas its stated right side has leading term
+$\tfrac12\log^2x$.
+
+The distinction has a narrow consequence. After integration over
+$(0,1)$, reflection makes
+$\int\log^2G(1-x)=\int\log^2G(x)$, and the added product
+is odd under $x\mapsto1-x$. The integrated equality used next in
+that paper is valid. We therefore propose correcting the pointwise
+line or placing its equality after integration; we do not infer
+that its subsequent integrated theorem is false. The source version
+and location are recorded in \src{integration/CORRECTIONS.md}.
+
+\subsection{What the repository audit does and does not establish}
+
+The source inventory contains 81 manuscript chapter files and all
+11 incoming archives present at the pinned commit. The detailed
+mathematical review concentrates on the conjecture status records,
+the cotangent-resolvent programme, the harmonic power bridges, and
+the cyclic Tornheim remainder. The inventory is not a claim that
+every theorem in all these documents has received a fresh proof audit.
+
+The following distinctions are necessary for correct integration.
+\begin{enumerate}[leftmargin=*,itemsep=5pt]
+ \item The classical Barnes/Hurwitz conversion, the log-$G$ Fourier
+ coefficients, balanced negapolygamma primitives, beta-integral
+ binomial identities, and symmetric Tornheim desingularization keep
+ their existing attribution. The new contribution is the proved
+ resolvent and coefficient reduction with the stated normalization.
+ \item The earlier report already contains the quartic directional
+ Tornheim reconstruction and the formal cyclic dimension count.
+ Section~\ref{bhr:fcy:section} supplies the requested explicit convergent
+ integral, and then the fifth-order formula using that analytic
+ coordinate; it does not relabel the earlier formal result as new.
+ \item The quartic digamma moment in
+ Section~\ref{bhr:quartic-harmonic:sec} is a different question from
+ the quartic directional Tornheim layer. Its depth-three coefficient
+ $\beta_1$ is strict, as specified in
+ \eqref{bhr:quartic-harmonic:beta}. An inclusive harmonic coefficient
+ cannot be substituted without its diagonal correction.
+ \item At a resonance, a Laurent constant in the spectral or kernel
+ exponent is not automatically the finite part in the original
+ integration coordinate. Equations~\eqref{bhr:eq:weighted-contact}
+ and \eqref{bhr:cxp:eq:lambdaCT} explicitly perform the conversion.
+ \item The current $S_6$ and revised $S_8$ coefficient vectors remain
+ conjectural. The pre-existing rejection of the old frozen $S_8$
+ vector must retain its separate label and status. No present
+ decimal evaluation changes any of these statuses.
+\end{enumerate}
+
+Within the inspected repository material we found no additional
+mathematical error that is established by the present analysis.
+The pointwise Barnes correction above is to the cited external
+source. The attached claim ledger distinguishes proved identities,
+classical ingredients, numerical diagnostics, and open questions.
+The package consists of research documents and reproducible
+calculations, not machine-checked ProveIt proof objects.
+
+\subsection{Independent checks and reproducibility}
+
+Four independent lines of calculation accompany the proofs.
+The Barnes checks evaluate the depth-two derivative from its own
+double series and evaluate the Fourier sum $\sum q^nT_n$ separately.
+The same code compares the complete transform with direct
+$\log G$ quadrature in both half-planes, and checks the removable
+$q=0$ real component. The polynomial Hurwitz checks compare the
+subtracted double series and its spectral derivative with direct
+Hurwitz quadrature, including a weighted Stieltjes coefficient.
+
+The complex-power checks compare its Mellin generator with the
+original integral at nonintegral complex parameters, and independently
+test its Gamma closure and a noncommuting finite-part example.
+The quartic checks use three routes: local digamma subtraction,
+the convergent harmonic series with a zeta-derivative tail, and
+the independent Mellin coefficients $\eta,\beta_1$.
+The cyclic fifth checks compare the new ordinary-integral coordinate
+with an independently evaluated continuation of three asymmetric
+cycles. The pre-existing evaluator used in that comparison is
+preserved with its provenance.
+
+Finite exact algebra checks cover the multiple-Gamma coefficient
+polynomials and normalization, quartic principal parts and their
+finite summation identity, the elementary Tornheim correction,
+and the symbolic fifth-order polynomial. These calculations are
+useful for detecting signs, factorials, and omitted constants.
+The analytic assertions---normal convergence, uniqueness of an
+entire remainder, branches, continuation, and the permitted
+coefficient interchanges---are proved in the text.
+
+All numerical records are explicitly non-interval diagnostics.
+Their working precision and truncations are recorded. Several
+independent values agreeing to many digits cannot certify an
+integer relation or a finite closed form. Scripts, dependency
+versions, replay commands, numerical records, and a file-hash
+manifest are included so that integration can preserve both the
+theorem and its actual verification status.
+
+\subsection{Further research questions}
+
+The next problems are formulated as exact identities or reductions
+in specified function classes. The first four build most directly
+on the new formulas.
+
+\begin{enumerate}[label=\textbf{F\arabic*.},leftmargin=*,itemsep=9pt]
+ \item \textbf{Products of individual Barnes logarithms.}
+ Determine the minimal explicit nested-series class for
+ \[
+  \int_0^1 W(x)\log\Gamma_r(x)\log\Gamma_t(x)R_z(x)\,dx.
+ \]
+ The polynomial Hurwitz decomposition reduces this to a bilinear
+ weighted transform. The real question is whether its lattice
+ splitting closes at depth three, with all diagonal corrections
+ explicit, and which reflection combinations reduce the depth.
+
+ \item \textbf{A second representation of $\mathcal D(q)$.}
+ Find a Gamma, Barnes, or iterated-integral expression for
+ \eqref{bhr:eq:Dq} that is independent of its defining depth-two sum.
+ A useful target is an exact differential or functional equation
+ under $q\mapsto q/(q-1)$, with a specified branch domain and
+ initial value. Establish whether it reduces to ordinary
+ polylogarithms and their order derivatives; do not infer such a
+ reduction from a successful numerical fit at isolated points.
+
+ \item \textbf{All higher digamma powers.}
+ Starting from the principal parts of $\psi(z)^5$, derive the
+ exact finite difference of its residue polynomial. Determine
+ which height-one depth-four Laurent coefficients and which
+ additional harmonic numerators survive summation by parts.
+ A satisfactory result must state a finite family of retained
+ coefficients and fix the entire remainder and every finite-part
+ constant, as was done for the fourth power here.
+
+ \item \textbf{Shifted quartic harmonic bridges.}
+ For $a>0$, derive a common-shift analogue of
+ \eqref{bhr:quartic-harmonic:main-eq}, using prefixes
+ $\sum_{k=0}^{n-1}(k+a)^{-r}$ and the corresponding outer
+ denominator. Track simultaneously the origin of the integration
+ coordinate, the lower summation endpoint, and generalized
+ Stieltjes constants $\gamma_j(a)$. Merely shifting the outer
+ denominator leaves a different problem.
+
+ \item \textbf{Nonpositive kernel resonances.}
+ Extend the pointwise finite-part comparison of
+ Theorem~\ref{bhr:cxp:thm:contacts} to $\Re\lambda\le0$,
+ keeping contributions from both endpoints. There is already a
+ concrete additional phase at $\lambda=-1$. The continued mean
+ of the kernel is $A^\lambda$, so its value there is
+ $-z-\epsilon\pi i$, whereas
+ \[
+  \FP_x\int_0^1 R_z(x)^{-1}\,dx
+   =\FP_x\int_0^1(K(x)-z)\,dx=-z.
+ \]
+ The last equality follows by integrating $K=(\log\sin\pi x)'$
+ on the symmetric cutoff interval. Thus the positive-resonance
+ rule cannot simply be copied to negative powers.
+
+ \item \textbf{Rational kernel exponents.}
+ For a fixed nonintegral rational $\lambda$, determine whether
+ $\mathcal L_\lambda(u,q)$ admits a finite representation in a
+ specified hypergeometric or multiple-polylogarithm class at
+ integral $u$. Its Gamma specialization at $q=0$ and its exact
+ exponent jets are constraints on any proposed reduction. The
+ unrestricted complex-$\lambda$ Dirichlet series is presently
+ retained as an explicit coordinate.
+
+ \item \textbf{The arithmetic of $\beta_1$.}
+ Decide whether the normalized integral in
+ \eqref{bhr:quartic-harmonic:beta-mellin} reduces to a specified
+ algebra generated by ordinary zeta derivatives, Stieltjes
+ constants, and Gamma or Barnes values at rational arguments.
+ The proved identity for $Q_4+4\gamma Q_3$ gives an exact
+ equivalence with a digamma finite-part evaluation, not an
+ arithmetic independence statement. A new reduction must add
+ information beyond that equivalence.
+
+ \item \textbf{Higher symmetric Tornheim coefficients.}
+ Use \eqref{bhr:fcy:Jintegral} to extract the three homogeneous cubic
+ coefficients of $J_3$, including their elementary corrections.
+ They control the cyclic sixth-derivative layer. Determine which
+ reflection or differential identities reduce the formal
+ three-coordinate count. For the present quadratic layer, seek
+ a second exact representation of $\chi$ that could lead to a
+ finite evaluation of $\chi$ or $\Omega_5$.
+
+ \item \textbf{Commensurable Barnes periods.}
+ Extend the individual resolvent theorem from unit periods to
+ positive rationally commensurable periods. Multiplicity
+ sequences should split into finitely many polynomial
+ residue-class pieces, suggesting shifted Hurwitz and root-of-unity
+ polylogarithm transforms. Prove that reduction with the exact
+ normalization; arbitrary incommensurable periods are a separate
+ problem and need not remain at finite depth two.
+
+ \item \textbf{Rational shifts and cyclotomic colors.}
+ Combine the polynomial weight with a rational Hurwitz shift,
+ or with a finite Fourier character. Determine the exact
+ colored analogue of $\mathcal O_{\alpha,\beta}(q)$ and its
+ residue cancellation. An effective theorem should specify
+ cumulative color products and convergence, since individual
+ arguments of modulus greater than one need not obstruct the
+ coupled nested sum.
+
+ \item \textbf{Exact certificates for the current $S_6$ and $S_8$.}
+ Keep each current candidate vector fixed. Try to express its
+ difference from the claimed integral in a finite basis of
+ iterated integrals or a rigorously defined cyclotomic quotient,
+ and reduce that expression by proved shuffle, stuffle,
+ distribution, and path relations. The deliverable should be
+ an exact certificate, or an exact obstruction to the specified
+ reduction, rather than additional matching digits. The
+ already-rejected old $S_8$ vector is not the current target.
+
+ \item \textbf{Formal finite-part and convergence infrastructure.}
+ Formalize a reusable theorem that subtracts a parameter-dependent
+ endpoint jet, integrates its monomials, and compares coefficient
+ extraction with the original-coordinate finite part. Pair it
+ with normal-convergence lemmas for a geometric outer index and
+ a subtracted power-law inner index. These two modules would
+ support most identities here without treating each moving pole
+ as a separate ad hoc calculation.
+\end{enumerate}
+
+\subsection{Integration guide}
+
+The suggested integration order is the polynomial transform,
+the individual Barnes theorem, the complex-power generator,
+the quartic harmonic bridge, and finally the transverse Tornheim
+generator. The first two share their new analytic input;
+the remaining branches have their own local subtraction proofs.
+All manuscript labels in the deliverable use a common prefix.
+The standalone source and the modular source compile the same
+article. No external PDFs are bundled: the bibliography links to
+the primary sources, while the provenance records identify the
+exact repository snapshot and the reused numerical evaluator.
+
+% END sections/07_audit_research.tex
+
+
+% BEGIN references.tex
+\begin{thebibliography}{99}
+
+\bibitem{bhr:ProveIt}
+V.~Reshetnikov, \emph{ProveIt: polylogarithm manuscript and incoming
+research collection}, repository snapshot
+\texttt{7bd45777a8a127e5dc69aff8887ca36a79a3059d},
+11 October 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/7bd45777a8a127e5dc69aff8887ca36a79a3059d/Analysis/Polylogarithms/docs/manuscript}{Pinned manuscript};
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/7bd45777a8a127e5dc69aff8887ca36a79a3059d/docs/incoming}{pinned incoming collection}.
+The attached inventory lists all source files used for the targeted audit.
+
+\bibitem{bhr:Parity}
+ProveIt research collection,
+\emph{Harmonic Parity and Resolvent Identities},
+incoming report dated 11 October 2026, in \cite{bhr:ProveIt}.
+Sections 5 and 7; in particular the local remainder and symmetric
+germ with labels \src{qtr:polar}, \src{qtr:kernel}, \src{qtr:J},
+and questions R4, R6, R10.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/7bd45777a8a127e5dc69aff8887ca36a79a3059d/docs/incoming/ProveIt_Harmonic_Parity_and_Resolvent_Identities_2026-10-11.zip}{Pinned source archive}.
+
+\bibitem{bhr:Cubic}
+ProveIt research collection,
+\emph{Cubic Tornheim Derivatives and Harmonic Stieltjes Constants},
+incoming report dated 11 October 2026, in \cite{bhr:ProveIt}.
+The cubic digamma--harmonic bridge and Section 7, question 6.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/7bd45777a8a127e5dc69aff8887ca36a79a3059d/docs/incoming/ProveIt_Cubic_Harmonic_Mixed_Orders_2026-10-11.zip}{Pinned source archive}.
+
+\bibitem{bhr:DLMFZ}
+NIST Digital Library of Mathematical Functions,
+\S25.11, \emph{Hurwitz Zeta Function}.
+\url{https://dlmf.nist.gov/25.11}.
+Fourier expansion, argument shifts, Bernoulli values, and derivatives.
+Accessed 11 October 2026.
+
+\bibitem{bhr:DLMFG}
+NIST Digital Library of Mathematical Functions,
+\S\S5.7, 5.11, 5.15, 5.17, \emph{Gamma Function}.
+\url{https://dlmf.nist.gov/5.15};
+\url{https://dlmf.nist.gov/5.17}.
+Digamma and polygamma expansions, asymptotics, and the Barnes $G$ function.
+Accessed 11 October 2026.
+
+\bibitem{bhr:DLMFPolylog}
+NIST Digital Library of Mathematical Functions,
+\S25.12, equation 25.12.12, \emph{Polylogarithms}.
+\url{https://dlmf.nist.gov/25.12.E12}.
+The Jonqui\`ere expansion used in Mellin subtractions.
+Accessed 11 October 2026.
+
+\bibitem{bhr:EMIntegrals}
+O.~Espinosa and V.~H.~Moll,
+\emph{On some integrals involving the Hurwitz zeta function: Part 2},
+Ramanujan Journal \textbf{6} (2002), 449--468.
+\url{https://www.math.tulane.edu/~vhm/papers_html/hurwitz2.pdf}.
+
+\bibitem{bhr:EMGeneralized}
+O.~Espinosa and V.~H.~Moll,
+\emph{A generalized polygamma function},
+Integral Transforms and Special Functions \textbf{15} (2004), 101--115.
+\url{https://arxiv.org/abs/math/0305079}.
+
+\bibitem{bhr:Adamchik}
+V.~S.~Adamchik,
+\emph{Multiple Gamma Function and Its Application to Computation of Series},
+arXiv:math/0308074 (2003).
+\url{https://arxiv.org/abs/math/0308074}.
+Classical multiple-Gamma normalization and Hurwitz-zeta conversion.
+
+\bibitem{bhr:Vardi}
+I.~Vardi,
+\emph{Determinants of Laplacians and multiple gamma functions},
+SIAM Journal on Mathematical Analysis \textbf{19} (1988), 493--507.
+\url{https://doi.org/10.1137/0519035}.
+
+\bibitem{bhr:Mezo}
+I.~Mez\H{o},
+\emph{The Fourier series of the log-Barnes function},
+arXiv:1604.00753v1 (2016).
+\url{https://arxiv.org/pdf/1604.00753v1}.
+Known Fourier coefficients; the pointwise correction in
+Section~\ref{bhr:sec:audit} concerns equation (7), printed page 6 of this
+specific version, and preserves its integrated use.
+
+\bibitem{bhr:Kargin}
+L.~Karg\i n, A.~Dil, M.~Cenkci, and M.~Can,
+\emph{On the Stieltjes constants with respect to harmonic zeta functions},
+Journal of Mathematical Analysis and Applications \textbf{525} (2023),
+article 127302.
+\url{https://arxiv.org/abs/2304.03517};
+\url{https://doi.org/10.1016/j.jmaa.2023.127302}.
+The harmonic-zeta coefficient framework is prior work; our strict
+depth-three normalization is specified independently in the text.
+
+\bibitem{bhr:Nakamura}
+T.~Nakamura,
+\emph{Rapidly convergent series representations of symmetric Tornheim
+double zeta functions}, arXiv:2103.16873 (2021), Theorem 1.2.
+\url{https://arxiv.org/abs/2103.16873}.
+
+\end{thebibliography}
+
+% END references.tex
+
+\end{document}

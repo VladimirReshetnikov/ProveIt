@@ -1,0 +1,109 @@
+\section{All-order local identities and finite differences}
+\label{asj:sec:local}
+
+Normalize the exponent vector by $\sum_j\alpha_j=1$, and set
+\begin{equation}\label{asj:eq:Jnormalized}
+ \calJ_r(\boldsymbol\alpha)
+  =r![s^r]\calZ_P(s\boldsymbol\alpha),\qquad r\ge0.
+\end{equation}
+Let $F_{[q]}$ denote the homogeneous Taylor part of degree $q$ of a
+holomorphic germ or polynomial $F$. Put
+$H=\max_{p\in\mathcal P}H_p$, with $H=0$ if $\mathcal P$ is empty.
+
+\begin{theorem}[Polynomiality of every normalized Laurent jet]
+\label{asj:thm:polynomial}
+On the affine hyperplane $\sum\alpha_j=1$,
+\begin{align}
+ \calJ_r(\boldsymbol\alpha)
+  &=r!\calH_{P,[r]}(\boldsymbol\alpha)
+      +r!\sum_{p,h}\kappa_{p,h}
+                       \calR_{p,[r+h]}(\boldsymbol\alpha),\label{asj:eq:Jlocal}\\
+ \calR_{p,[q]}(\boldsymbol\alpha)
+  &=\frac{(-1)^q}{q!}[x^{-p}]P(x)
+       \left(\sum_j\alpha_j\log(1+a_j/x)\right)^q.
+ \label{asj:eq:Rhom}
+\end{align}
+Consequently $\deg\calJ_r\le r+H$. A local term of degree $r+h$ can
+occur only when $r+h\le d+p$. Every term beyond degree $r$ is determined
+by the finite principal parts of $\D$.
+\end{theorem}
+\begin{proof}
+On the normalized ray $U=s$. Extracting the coefficient of $s^r$ in
+\eqref{asj:eq:germ} gives \eqref{asj:eq:Jlocal}. The homogeneous part of degree
+$q$ of $e^{-L_{\boldsymbol u}(z)}$ is
+$(-1)^qL_{\boldsymbol u}(z)^q/q!$. Using \eqref{asj:eq:Rdef} and then
+$z=x^{-1}$ proves \eqref{asj:eq:Rhom}. Every factor of the logarithmic
+sum starts with $x^{-1}$, proving the sharper degree cutoff.
+\end{proof}
+
+For a tangent vector $\boldsymbol v$ with $\sum_jv_j=0$, write
+\[
+ \Delta_{\boldsymbol v}f(\boldsymbol\alpha)
+     =f(\boldsymbol\alpha+\boldsymbol v)-f(\boldsymbol\alpha),
+ \qquad V_{\boldsymbol v}(x)=\sum_jv_j\log(x+a_j).
+\]
+The $\log x$ terms cancel, so $V_{\boldsymbol v}(x)=O(x^{-1})$.
+
+\begin{theorem}[Top local polarization]\label{asj:thm:top}
+Suppose $H\ge1$ and let $q=r+H$. For any $q$ tangent vectors,
+\begin{align}\label{asj:eq:top}
+ &\Delta_{\boldsymbol v_1}\cdots\Delta_{\boldsymbol v_q}
+          \calJ_r(\boldsymbol\alpha)\notag\\
+ &\quad=(-1)^q r!\sum_{p:H_p=H}\kappa_{p,H}
+           [x^{-p}]P(x)\prod_{i=1}^q V_{\boldsymbol v_i}(x).
+\end{align}
+The same expression equals the corresponding mixed directional
+derivative. Every mixed difference of order $q+1$ vanishes.
+\end{theorem}
+\begin{proof}
+The $q$ differentiations annihilate $\calH_{P,[r]}$ and every local
+part of degree below $q$. Polarizing the remaining $q$th power in
+\eqref{asj:eq:Rhom} supplies exactly $q!\prod_i V_{\boldsymbol v_i}$.
+For a polynomial of degree at most $q$, a mixed $q$th finite difference
+is its constant mixed $q$th derivative; integrate that derivative over
+the unit $q$-cube to see the equality directly. Differences of the
+next order vanish by the degree bound.
+\end{proof}
+
+The highest pole alone controls \eqref{asj:eq:top}; it does not control
+all lower local differences. The following formula retains every layer.
+
+\begin{theorem}[All finite local differences]\label{asj:thm:all-differences}
+Let $q>r$, and put $L_{\boldsymbol\alpha}(x)=
+\sum_j\alpha_j\log(1+a_j/x)$. Then
+\begin{align}\label{asj:eq:all-differences}
+ &\Delta_{\boldsymbol v_1}\cdots\Delta_{\boldsymbol v_q}
+       \calJ_r(\boldsymbol\alpha)\notag\\
+ &=r!\sum_{p,h}\kappa_{p,h}[x^{-p}]P(x)
+      [t^{r+h}]e^{-tL_{\boldsymbol\alpha}(x)}
+            \prod_{i=1}^q\bigl(e^{-tV_{\boldsymbol v_i}(x)}-1\bigr).
+\end{align}
+The right side is a finite algebraic computation. Terms with $q>r+h$
+vanish automatically.
+\end{theorem}
+\begin{proof}
+The differences kill the degree-$r$ holomorphic part. Apply a difference
+to $e^{-tL_{\boldsymbol\alpha}}$: it multiplies the exponential by
+$e^{-tV_{\boldsymbol v}}-1$. Repeating and extracting $t^{r+h}$ in
+\eqref{asj:eq:Jlocal} gives the assertion. Each of the $q$ factors is
+divisible by $t$, proving the last statement. Coefficients in $x^{-1}$
+need only be retained through the largest integer $d+p$ occurring.
+\end{proof}
+
+\subsection{Normalization, scaling, and the meaning of locality}
+For arbitrary weights $\boldsymbol w$ with $W=\sum_jw_j\ne0$,
+\begin{equation}\label{asj:eq:scaling}
+ r![s^r]\calZ_P(s\boldsymbol w)
+   =W^r\calJ_r(\boldsymbol w/W).
+\end{equation}
+This remains true for Laurent series: substitute $t=Ws$ before extracting
+the coefficient. The excluded hyperplane $W=0$ cannot be restored by
+blindly taking a limit in these formulas; it lies in the polar divisor
+and needs a separately specified restriction.
+
+``Local'' here has a precise meaning: the expression depends on finitely
+many principal coefficients of the base Dirichlet series and finitely many
+terms of the large-$x$ logarithmic expansion. It is not a claim that the
+individual jets have elementary evaluations. Finite-head changes affect
+only $\calH_P$, so any identity obtained by more than $r$ tangent differences
+is insensitive to finitely many altered spectral terms.

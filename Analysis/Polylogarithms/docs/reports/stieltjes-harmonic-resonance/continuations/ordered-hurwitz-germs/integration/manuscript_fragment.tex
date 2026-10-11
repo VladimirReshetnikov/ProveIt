@@ -1,0 +1,123 @@
+% Namespaced entry-point excerpt; full analytic proofs: article.tex.
+% Requires amsmath, amssymb, amsthm and a theorem environment.
+\providecommand{\OHGH}{\mathcal H}
+\providecommand{\OHGA}{\mathcal A}
+\providecommand{\OHGL}{\mathcal L}
+\providecommand{\OHGe}{\varepsilon}
+\subsection{Ordered common-shift Hurwitz germs and harmonic subtraction}
+\label{ohg:sec:germs}
+Fix $a>0$ and use the largest-index-first convention
+\[
+ Z_d(s_1,\ldots,s_d;a)=
+ \sum_{n_1>\cdots>n_d\ge0}\prod_{j=1}^d(n_j+a)^{-s_j}.
+\]
+Put $U_k=u_1+\cdots+u_k$ and
+$g_a(u)=\zeta(1+u,a)-1/u
+ =\sum_{m\ge0}(-1)^m\gamma_m(a)u^m/m!$.
+
+\begin{theorem}[Harmonic-compatible ordered polar decomposition]
+\label{ohg:thm:germ}
+There are compatible holomorphic functions $\OHGH_0=1$, $\OHGH_1=g_a$
+and $\OHGH_d(\bm u;a)$ near the all-zero point such that
+\begin{equation}\label{ohg:eq:germ}
+ Z_d(1+u_1,\ldots,1+u_d;a)=
+ \sum_{j=0}^d\frac{\OHGH_j(u_{d-j+1},\ldots,u_d;a)}{U_1\cdots U_{d-j}}.
+\end{equation}
+They are constructed by the normally convergent tail
+\[
+ \OHGA_d(\bm u;a)=\sum_{n_2>\cdots>n_d\ge0}
+ \left(\zeta(1+u_1,n_2+a+1)-\frac{(n_2+a)^{-u_1}}{u_1}\right)
+ \prod_{j=2}^d(n_j+a)^{-1-u_j}
+\]
+and the removable divided difference
+\begin{equation}\label{ohg:eq:recursion}
+ \OHGH_d=\OHGA_d+
+ \frac{\OHGH_{d-1}(u_1+u_2,u_3,\ldots,u_d;a)
+       -\OHGH_{d-1}(u_2,u_3,\ldots,u_d;a)}{u_1}.
+\end{equation}
+Every mixed coefficient is a constant coefficient of the corresponding
+logarithmic harmonic cutoff polynomial in $\log(N+a)$. Taking those
+constants on the full positive-index logarithmic stuffle algebra is
+multiplicative. In particular,
+\[
+ C_d(a):=\OHGH_d(0,\ldots,0;a)=[z^d]\frac{\Gamma(a)}{\Gamma(a+z)}.
+\]
+\end{theorem}
+\begin{proof}[Construction and proof map]
+The subtracted outer Hurwitz tail is $O(x^{-1-\Re u_1})$. Grouping by
+$n_2$ gives a summable majorant $x^{-2+\sigma}(1+\log x)^{d-2}$ on
+$\sum|u_j|\le\sigma<1/4$, also after any fixed mixed derivative.
+Summing the largest index first yields a lower-depth Hurwitz function
+with merged first two perturbations divided by $u_1$. Induction and
+\eqref{ohg:eq:recursion} prove \eqref{ohg:eq:germ}.
+The harmonic cutoff identification follows by summing the finite-index
+increments and comparing with the iterated integrals
+$\int_0^L e^{-u_1t}P_{d-1}(u_2,\ldots;t)\,dt$; the summable error tends
+to zero after every fixed derivative. Finite stuffle identities then
+pass to polynomial asymptotics, whose constant-term evaluation is
+multiplicative. Full uniform-convergence and cutoff proofs are in
+Sections 3--6 of the accompanying report, \emph{Ordered Hurwitz Germs
+at Every Depth}. The Gamma formula follows from the diagonal elementary
+symmetric generating series after removing its exponential pole.
+\end{proof}
+
+For $c\ne0$, $c+d\ne0$ and $c+d+e\ne0$, define
+$h_{10}=\partial_1\OHGH_2(0,0;a)$ and
+$h_{01}=\partial_2\OHGH_2(0,0;a)$. Then
+\begin{equation}\label{ohg:eq:triple}
+ [\OHGe^0]Z_3(1+c\OHGe,1+d\OHGe,1+e\OHGe;a)
+ =C_3(a)+\frac{d h_{10}+e h_{01}}c
+             +\frac{e^2\gamma_2(a)}{2c(c+d)}.
+\end{equation}
+Here $h_{10}+h_{01}=-\gamma_0(a)\gamma_1(a)-\zeta'(2,a)$, while
+\begin{equation}\label{ohg:eq:omega}
+ h_{10}-h_{01}=-\frac{\gamma_2(a)}2+
+ \sum_{n\ge0}\frac{\log(n+a)\gamma_0(n+a)-\gamma_1(n+a)
+                         +\tfrac12\log^2(n+a)}{n+a}.
+\end{equation}
+The last series converges absolutely; its summand is $O((n+a)^{-3})$.
+It is an exact coordinate, not a claimed reduction or independence result.
+
+\subsection{A full-half-plane Hurwitz--Mellin generating identity}
+\label{ohg:sec:mellin}
+Put $K(t)=(e^t-1)^{-1}-t^{-1}$ and
+\[
+ G_a(z,t)=\frac za e^{-at}{}_2F_1(1,a+z;a+1;e^{-t}).
+\]
+\begin{theorem}[Hurwitz--Mellin master identity]
+\label{ohg:thm:master}
+For $a>0$ and $\Re z>-1$,
+\begin{equation}\label{ohg:eq:master}
+ \frac z{\Gamma(1+z)}\int_0^\infty K(t)t^zG_a(z,t)\,dt
+ =\frac{\Gamma(a)}{\Gamma(a+z)}-1-zg_a(z).
+\end{equation}
+The integral is ordinary and absolutely convergent; the value at $z=0$
+is removable. Every fixed order derivative may be taken under the
+integral on this half-plane.
+\end{theorem}
+\begin{proof}
+With $q=e^{-t}$, the incomplete beta representation is
+$G_a(z,t)=z(1-q)^{-z}\int_0^q x^{a-1}(1-x)^{z-1}\,dx$.
+For $F=t^zG_a$ direct differentiation gives
+\[
+ KF=-F'/z-t^ze^{-at}/(1-e^{-t}).
+\]
+For $\Re z>0$, its boundary values are $F(\infty)=0$ and
+$F(0)=\Gamma(a)\Gamma(1+z)/\Gamma(a+z)$. Integrating and applying the
+ordinary Hurwitz Mellin integral proves \eqref{ohg:eq:master} there.
+For compact subsets of $\Re z>-1$, writing $w=1-e^{-t}$ bounds $F$
+near zero by $C(1+t^{-\rho})(1+|\log t|)$ with some $\rho<1$.
+Fixed derivatives only add logarithmic powers. Exponential decay holds
+at infinity. Thus the integral is holomorphic on the stated half-plane,
+and analytic continuation proves the result, including $z=0$.
+\end{proof}
+
+At $a=1$, $G_1(z,t)=(1-e^{-t})^{-z}-1$, so the master reduces to
+\[
+ \int_0^\infty K(t)t^z\big((1-e^{-t})^{-z}-1\big)\,dt
+ =\frac1z-\Gamma(1+z)\zeta(1+z).
+\]
+Its coefficients, and the shifted coefficients, are all-depth exact
+polylogarithmic Mellin identities. They do not settle the Gaussian
+$S_6$ or current $S_8$ arithmetic conjectures. Classical multiple-zeta
+continuation and regularization attribution is retained in the report.

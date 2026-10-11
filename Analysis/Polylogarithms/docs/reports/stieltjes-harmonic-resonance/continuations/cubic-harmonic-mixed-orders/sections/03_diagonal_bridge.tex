@@ -1,0 +1,163 @@
+\section{The diagonal Tornheim derivative in harmonic coordinates}
+\label{sec:diagonal}
+
+The incoming coincident report relates the digamma cube to a third
+diagonal Tornheim derivative. We give the relevant derivation, with
+its finite normalization visible, and then insert the new bridge.
+This separates the earlier spectral identity from the additional
+harmonic reduction proved here.
+
+Write
+\[
+ \omega(t)=\T(t,t,t),\qquad \Omega_3=\omega'''(0),\qquad
+ E(t)=\Gamma(1+t)e^{-Lt},\qquad
+ h(t)=\zeta(1-t)+\frac1t.
+\]
+Here $\T$ is the continuation of
+$\sum_{m,n\ge1}m^{-A}n^{-B}(m+n)^{-C}$, and the diagonal is
+restricted before taking the limit at zero. The third derivative is
+one-variable data; joint holomorphy at the origin is not assumed.
+
+\subsection{The completed cubic generating function}
+
+Set
+\[
+ g(t,x)=\zeta(1-t,x)+\frac1t
+       =\sum_{m\ge0}\gamma_m(x)\frac{t^m}{m!}.
+\]
+Near $x=0$ its exact Hurwitz splitting yields
+\begin{equation}\label{diag:local}
+ g(t,x)=x^{t-1}+h(t)-(1-t)\zeta(2-t)x+O(x^2).
+\end{equation}
+After cubing, the only local monomials whose Mellin denominators
+vanish at $t=0$ are
+\[
+ 3h(t)^2x^{t-1},\qquad
+ -3(1-t)\zeta(2-t)x^{2t-1}.
+\]
+Their complete spectral integrals are $3h(t)^2/t$ and
+$-3(1-t)\zeta(2-t)/(2t)$. The complete numerators, rather than
+just their values at zero, have to be removed to obtain the
+unit-coordinate finite parts.
+
+For $\Re t>1$, the absolutely convergent Hurwitz Fourier expansion
+has coefficients
+\[
+ \widehat{\zeta(1-t,\cdot)}(n)
+ =\Gamma(t)(2\pi|n|)^{-t}
+             e^{-\pi i t\operatorname{sgn}(n)/2},\qquad n\ne0.
+\]
+The constant coefficient vanishes. In the product of three series,
+the condition $n_1+n_2+n_3=0$ has six sign cones; on each, the
+largest magnitude is the sum of the other two. Consequently
+\begin{align}
+ \int_0^1\zeta(1-t,x)^3\dd x
+ &=6\Gamma(t)^3(2\pi)^{-3t}\cos(\pi t/2)\omega(t),\notag\\
+ \int_0^1\zeta(1-t,x)^2\dd x
+ &=2\Gamma(t)^2(2\pi)^{-2t}\zeta(2t).
+ \label{diag:Fourier}
+\end{align}
+The classical Hurwitz--Tornheim connection is recorded, with its
+literature attribution, in the coincident report
+\cite{IncomingCoincident}. Finite endpoint Taylor subtraction
+continues both sides meromorphically.
+
+\begin{lemma}[Completed diagonal kernel]\label{lem:diag-completed}
+The expression
+\begin{align}
+ F(t)={}&\frac{6E(t)^3\cos(\pi t/2)\omega(t)
+                         +6E(t)^2\zeta(2t)+1}{t^3}\notag\\
+ &-\frac{3h(t)^2}{t}
+           +\frac{3(1-t)\zeta(2-t)}{2t}
+ \label{diag:completed}
+\end{align}
+is holomorphic near zero and satisfies $F(0)=-Q$.
+\end{lemma}
+
+\begin{proof}
+Expand $g^3$ and use \eqref{diag:Fourier} and the vanishing
+one-factor integral. This gives the fraction on the first line as
+the meromorphic integral of $g^3$. To justify its completion,
+split the $x$ integral at any $b\in(0,1)$. Subtract finitely many
+Taylor monomials of the smooth factor in \eqref{diag:local} on
+$(0,b)$. The remainder and all fixed parameter derivatives are
+integrable uniformly in a small $t$ disk. A local monomial with
+exponent $kt-1$ has spectral integral $b^{kt}/(kt)$, while the
+generating function of its coordinate finite parts is
+$(b^{kt}-1)/(kt)$. Their difference is exactly $1/(kt)$.
+All nonresonant denominators remain nonzero at zero. The two
+resonant terms displayed above therefore give precisely the second
+line of \eqref{diag:completed}. The resulting Taylor coefficients
+are the finite parts of those of $g^3$. At zero,
+$g(0,x)=\gamma_0(x)=-\psi(x)$, hence $F(0)=-Q$.
+\end{proof}
+
+Solving \eqref{diag:completed} for $\omega$ also proves its
+holomorphy at zero, since the coefficient $E(t)^3\cos(\pi t/2)$
+is nonzero there. This argument does not infer a joint regularity
+statement from a ray restriction.
+
+\subsection{An explicit reduction of the third diagonal derivative}
+
+Use the classical values $\zeta(0)=-1/2$, $\zeta'(0)=-L/2$ and
+\[
+ E(t)=\exp\left[-(\gamma+L)t+\frac{\zeta(2)}2t^2
+                              -\frac{\zeta(3)}3t^3+O(t^4)\right].
+\]
+The coefficients of $t^{-3},t^{-2},t^{-1}$ in
+\eqref{diag:completed} give
+\begin{equation}\label{diag:lower}
+ \omega(0)=\frac13,\qquad \omega'(0)=L,
+ \qquad \omega''(0)=L^2-4\zeta''(0).
+\end{equation}
+For clarity, after the first two substitutions the coefficient of
+$t^2$ in the numerator is
+\[
+ 3\omega''(0)+3\gamma^2-3L^2-\tfrac32\zeta(2)+12\zeta''(0),
+\]
+and the remaining two terms contribute
+$-3\gamma^2+3\zeta(2)/2$ to the residue.
+The numerator coefficient at $t^3$, after \eqref{diag:lower}, is
+\[
+ \Omega_3+8\zeta'''(0)+12(\gamma+L)\zeta''(0)
+ +L^3+6\gamma L^2-5\gamma^3+\tfrac32\gamma\zeta(2).
+\]
+Since $h(t)=\gamma+\gamma_1t+O(t^2)$, the other constant
+terms are $-6\gamma\gamma_1-3(\zeta(2)+\zeta'(2))/2$.
+Thus the earlier cubic identity is recovered:
+\begin{align}
+ Q={}&-\Omega_3-8\zeta'''(0)-12(\gamma+L)\zeta''(0)
+            -L^3-6\gamma L^2+5\gamma^3\notag\\
+ &+6\gamma\gamma_1-\frac32\gamma\zeta(2)
+                       +\frac32\bigl(\zeta(2)+\zeta'(2)\bigr).
+ \label{diag:old-cube}
+\end{align}
+
+\begin{theorem}[Harmonic coordinate for the cubic diagonal]
+\label{thm:diag-harmonic}
+The third derivative of the specified diagonal continuation is
+\begin{align}
+ \Omega_3={}&6\eta(1)-8\zeta'''(0)
+ -12(\gamma+L)\zeta''(0)-L^3-6\gamma L^2+5\gamma^3\notag\\
+ &+12\gamma\gamma_1-\frac32\gamma\zeta(2)
+                     -\frac32\zeta(2)+\frac32\zeta'(2).
+ \label{bridge:tornheim}
+\end{align}
+In particular, \eqref{bridge:arithmetic} gives an absolutely
+convergent generalized-harmonic evaluation of this derivative.
+\end{theorem}
+\begin{proof}
+Substitute \eqref{bridge:eta} into \eqref{diag:old-cube} and solve
+for $\Omega_3$.
+\end{proof}
+
+The independently certified arithmetic evaluation in the package gives
+\begin{align*}
+ Q&=1.96626273439153434066437533841163142382586897649\ldots,\\
+ \eta(1)&=0.53678702435841856750360788434881167385105703307\ldots,\\
+ \Omega_3&=86.6578666011000736529032768587621836100797302472\ldots.
+\end{align*}
+The first harmonic coefficient is therefore sufficient for the
+diagonal cubic problem. A finite expression for that coefficient in
+a specified algebra of ordinary zeta, Gamma and Stieltjes constants
+remains an arithmetic research question.

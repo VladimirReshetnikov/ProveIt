@@ -1,0 +1,109 @@
+\section{Research target, contribution, and provenance}
+\label{rlc:sec:scope}
+
+The canonical ProveIt polylogarithm manuscript contains an extensive theory of harmonic sums, cyclotomic
+polylogarithms, Hurwitz order derivatives, Stieltjes distributions,
+and Gamma correlations \cite{Repo}. Its Mellin--Lerch continuation asks
+for exact product integrals and their spectral derivatives \cite{MLD}.
+The incoming bilinear report treats positive-integer polylogarithm
+orders under same-direction rational Mellin kernels, with a finite
+multiple-polylogarithm closure theorem and further questions about
+arbitrary orders \cite{BMH}.
+
+Here the change in geometry is essential. We study reciprocal arguments
+and, more generally, multiplicative constraints
+$y_1\cdots y_r=e^\mu$. This is not a relabeling of the same-direction
+integral
+\begin{equation}\label{rlc:eq:priorproblem}
+ \int_0^\infty \frac{x^{b-1}\Li_s(-zx)\Li_t(-wx)}{(1+x)^N}\dd x.
+\end{equation}
+The reciprocal geometry has a simple bilateral transform, and that
+transform permits an entire-order finite closure absent from the
+integer-only cone expansion of the preceding report. Our results
+solve the explicitly formulated reciprocal problem, not all of
+\eqref{rlc:eq:priorproblem}.
+
+\subsection{A first identity and the central normalization}
+Define, for $y>0$ and $\Rea a>0$,
+\begin{equation}\label{rlc:eq:profile}
+ F_{a,s}(y)=y\Phi(-y,s,a),\qquad
+ f_{a,s}(x)=F_{a,s}(e^x),\qquad
+ \E_a(v)=v\zeta(v+1,a).
+\end{equation}
+The last function is filled in at $v=0$ by $\E_a(0)=1$; it is entire
+in $v$. Our normalization gives
+\begin{equation}\label{rlc:eq:specialprofiles}
+ F_{1,s}(y)=-\Li_s(-y),\qquad
+ F_{a,0}(y)=\frac{y}{1+y}.
+\end{equation}
+The most economical instance of the theory is
+\begin{equation}\label{rlc:eq:opening}
+ \boxed{\displaystyle
+ \int_0^\infty F_{a,s}(y)F_{a,t}(1/y)\frac{\dd y}{y}
+      =\E_a(s+t),\qquad s,t\in\C.}
+\end{equation}
+All the displayed integrals in this article, unless explicitly described
+as contour integrals, are ordinary absolutely convergent integrals.
+No distribution product or finite-part cutoff is hidden in
+\eqref{rlc:eq:opening}. In particular, the value at $s+t=0$ is $1$, not
+zero and not a directional limit.
+
+The full results go considerably beyond this two-factor identity.
+Theorems~\ref{rlc:thm:addition} and \ref{rlc:thm:central} treat every
+number of factors and every complex order. Theorem~\ref{rlc:thm:allmoments}
+evaluates all mixed powers of their logarithmic arguments by a finite
+recurrence. Theorem~\ref{rlc:thm:twomoments} gives a particularly short
+closed two-factor formula. The Stieltjes, harmonic, Gamma, and
+antiderivative consequences are proved in
+Sections~\ref{rlc:sec:stieltjes}--\ref{rlc:sec:primitives}.
+
+\subsection{Conventions and classical inputs}
+We use
+\[
+ \Phi(z,s,a)=\sum_{n=0}^\infty\frac{z^n}{(n+a)^s},\qquad
+ \zeta(s,a)=\sum_{n=0}^\infty(n+a)^{-s}
+\]
+in their initial domains and their standard analytic continuations.
+For $\Rea a>0$, $\log(n+a)$ is the branch in the right half-plane.
+Pochhammer symbols are rising factorials:
+$(s)_0=1$, $(s)_j=s(s+1)\cdots(s+j-1)$.
+A superscript in square brackets denotes an order derivative, while
+$\psi^{(k)}$ denotes an argument derivative of the digamma function.
+Generalized Stieltjes constants have the convention
+\begin{equation}\label{rlc:eq:stieltjesconvention}
+ \zeta(1+v,a)=\frac1v+
+ \sum_{n=0}^\infty\frac{(-1)^n}{n!}\gamma_n(a)v^n;
+ \qquad \gamma_0(a)=-\psi(a).
+\end{equation}
+These conventions agree with the standard Hurwitz, Lerch, Fermi-integral,
+and Gamma identities summarized in the DLMF \cite{DLMF}.
+
+The elementary mechanisms are classical: Euler's beta integral,
+bilateral convolution, the semigroup law for one-sided fractional
+integrals, and partial fractions. Real convolution methods for
+Fermi--Dirac-type integrals already appear explicitly in
+Selvaggi and Selvaggi \cite{Selvaggi}. The incoming unequal-twist report
+also uses resolvent partial fractions, harmonic coefficients, and
+monodromy, in a periodic Fourier setting \cite{UTJ}.
+We do not present those methods as discoveries. The contribution here
+is their explicit entire-order, all-depth, all-logarithmic-moment
+specialization and the exact identities it produces. We make no claim
+that the initial two-factor integral, or every special case below, is
+new in the wider literature.
+
+\subsection{What the source audit does and does not establish}
+The source pin was read through the connected GitHub repository. The
+canonical README, the Gaussian quotient chapter, and the Mellin
+research-question section were inspected at that pin. Relevant sections
+of the incoming bilinear, unequal-twist, and nonlinear-transport packages
+were also available through the user's Library. Three further incoming packages, named for cubic harmonic mixed orders,
+exact resonant identities, and independent orders, were listed in the
+incoming directory but were not available for content inspection. Their
+complete filenames are recorded in the source-audit artifact.
+Their names alone establish neither overlap nor mathematical content.
+
+The existing $S_4$ proof is not counted again. The current short Gaussian
+$S_6$ reduction and revised $S_8$ candidate remain conjectural in the
+inspected canonical manuscript. Our Gaussian specialization is an
+ordinary integral family; it is not a zero certificate for either
+frozen relation vector. No proof-assistant formalization is supplied.
