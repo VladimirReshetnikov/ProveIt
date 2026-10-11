@@ -1,3 +1,66 @@
+# Sixth/seventh moments and complete first-letter kernel validation
+
+October 11, 2026. The four collective volumes compile to 129/128/218/84
+pages (559 total), with a 521-page combined edition. The author remains
+**ProveIt Contributors**; existing chapter/theorem/equation references,
+thirteen figures, 136 bibliography entries and 94 literature leads remain.
+
+Chapter 8 now proves explicit normalized scalar moments at degrees six and
+seven, using the preceding all-degree Gamma-Appell theorem. The ordinary
+corrections are 245 zeta(2) zeta(3) + 175 zeta(5), and
+3731 zeta(3)^2/4 + 918631 zeta(6)/240. Every retained marked derivative
+converges in a specified free-order neighborhood. Only open-domain stuffle
+identities are differentiated; integer duality is used only for ordinary
+values. The classical one-divergence comparison is checked against
+Ihara–Kaneko–Zagier, Theorem 1, printed page 310.
+
+An independent exact implementation regenerates the complete 21-by-8 and
+49-by-16 ordinary systems, checks both square inverse products and every
+unselected row, regenerates the delivered weight-six matrix, and rejects
+corrupted ordinary and derivative coefficients. The complete unshortened
+marked ledgers contain 13 and 32 nonzero coordinates. Independent native
+Wolfram calculations compare direct finite-part quadrature with positive
+Cauchy Mellin integration and residue-defect summation at 110 working digits.
+Both head/tail configurations (96,42) and (128,48) pass, with local Taylor
+degree 105, split 1/10 and Mellin cutoff 200. The omitted Mellin integration
+tail has a separate analytic bound; total quadrature/Taylor/asymptotic error
+is not interval certified.
+
+Chapter 12 proves completeness of the bounded contributions of all 1032
+single-X first-letter depth-five double-shuffle inputs. Their 6240-column
+outside sector has exact rational rank 1008 and kernel dimension 24.
+Every one of the old 190 input rows is matched; all 24 old combinations
+are reconstructed using the full coefficients and have zero outside part.
+Distinct leading indices prove their independence. Independently rebuilding
+a selected 1008-square integer minor gives determinant 221991308 modulo
+2147483647, proving the matching lower rank bound. No floating-point
+matrix arithmetic is used. Thus the old bounded combinations exhaust this
+whole input family. Their independence modulo the old bounded relations is
+not asserted. A complete 6187-by-8786 modular target search has rank 2905
+and does not close the target; this remains a finite-field diagnostic,
+not a rational nonmembership or a period nonidentity certificate.
+
+All four volumes complete three converged coupled rounds and three isolated
+cold passes. Static checks pass on every page, all 40 external destinations
+resolve, and chapter partition and source/reference checks pass. All ten
+changed volume bodies and two unmatched combined contents pages were
+inspected at full size. The remaining 549 volume and 511 combined bodies
+retain exact raster matches with the reviewed Appell edition; eight changed
+combined bodies match the freshly reviewed volumes. Bounds checks exclude
+only centered footer numbers. No current contact sheet was opened.
+
+The sixteenth intake preserves 177 delivered members: 174 tracked originals
+and three ignored bare manifests recoverable in arrival history. All six
+complete mathematical suites pass on isolated copies. Cumulatively, 96
+archives preserve 3502 tracked original members and 36 ignored manifests;
+the provenance inventory contains 1408 textual sources. Imported ZIPs were
+removed in their placement commit; delivered files were not regenerated in
+place and checksum-manifest validation was not performed. The broader new
+report branches retain pending analytic scopes. Gaussian S6/revised S8 and
+further arithmetic elimination of the marked coordinates remain open.
+Research continues independently with an empty incoming queue. Historical
+checkpoints below retain their original dated scope.
+
 # Validation of the four-volume collective manuscript
 
 Gamma-Appell checkpoint, October 11, 2026. Four volumes have 129/127/215/84
@@ -788,3 +851,11 @@ The external counterexample applies to the inspected 2020 author preprint;
 the separately published 2023 version was not audited in this check.
 
 The final normalized Mellin statement explicitly assumes p>0. After three converged serial passes, only page 142 changes relative to the previously published reviewed artifact. The other 378 thumbnails, 23 contact sheets and nine listed full-size pages are byte-identical; page 142 and its contact sheet were freshly reviewed. See mellin-domain-raster-comparison.json.
+
+
+The complete first-letter families X/Y/H/B contain 1032/1144/1032/1032
+inputs. All 4240 projected rows and every outside coordinate are preserved.
+The joint 9395-by-8786 native matrix has rank 4942 modulo 2147483647 and
+does not close the target. This is a completed finite-field diagnostic,
+separate from the proved X-family kernel theorem and the open period identity.
+Convergent length-split 2+5 and 3+4 products are a next research direction.

@@ -682,3 +682,45 @@ Four volumes compile and cold-build independently: 129/127/215/84 pages, total
 bodies and two unmatched combined contents pages reviewed at full size; exact
 inherited rasters cover the rest. Detailed sixth/seventh arithmetic reductions,
 other branch audits and Gaussian S6/revised S8 remain pending or conjectural.
+
+
+## Sixth/seventh scalar coordinates, sixteenth intake and complete X family
+
+Preserve and publish the six new packages in placement 6d1e05eceb, retiring
+their ZIPs in the same commit. Replay every specified full mathematical suite
+on isolated copies: beta crossing, harmonic-tail Gamma, shifts/twists,
+polygamma reconstruction, quadratic spectra and same-direction complex orders.
+All pass. Preserve their broader pending analytic scopes and distinguish
+already-canonical Herglotz classification and centered-moment results from
+stale source questions. Inventory: 1408 textual documents, 96 archives,
+3502 tracked original members, 36 ignored recoverable bare manifests.
+
+Prove explicit normalized sixth/seventh scalar formulas with complete marked
+coordinate ledgers, independently generated rational ordinary systems and
+native Wolfram finite-part/Cauchy/residue-tail comparisons. Verify the
+one-divergence regularization theorem in the primary author-hosted paper;
+never differentiate integer duality. Resolve the crowded two-decimal display
+by separate aligned lines, then rebuild and inspect the final artifacts.
+
+Complete all 1032 single-X depth-five inputs and preserve every projected
+coefficient. Reconstruct the old 24 exact kernel vectors in that full space;
+rebuild a 1008-square integer minor independently. Its nonzero modular
+determinant and those independent vectors prove rational rank 1008, kernel
+24 and exact exhaustion of bounded contributions. The full target search
+retains all 8786 coordinates and has modular rank 2905 without closure;
+do not infer rational nonmembership. Generate all Y/H/B families next,
+even though no new report is required to drive this independent research.
+
+Final four volumes: 129/128/218/84 pages, 559 total; combined 521. Three
+converged rounds and three isolated passes each, all 40 destinations valid,
+ten changed volume bodies and two unmatched combined contents reviewed
+at full size. Exact scientific-body rasters preserve the earlier review
+for all remaining pages. No Lean formalization or remote CI is claimed.
+
+
+The complete first-letter families X/Y/H/B contain 1032/1144/1032/1032
+inputs. All 4240 projected rows and every outside coordinate are preserved.
+The joint 9395-by-8786 native matrix has rank 4942 modulo 2147483647 and
+does not close the target. This is a completed finite-field diagnostic,
+separate from the proved X-family kernel theorem and the open period identity.
+Convergent length-split 2+5 and 3+4 products are a next research direction.
