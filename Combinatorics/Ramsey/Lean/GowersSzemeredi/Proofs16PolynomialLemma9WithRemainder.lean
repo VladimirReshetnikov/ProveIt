@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs16PolynomialAllScaleLemma9
 import GowersSzemeredi.Proofs16Lemma9WithRemainder
 import GowersSzemeredi.Proofs16PieceCoverWithRemainder
 import GowersSzemeredi.Proofs16FamilyLemma6
+import GowersSzemeredi.Proofs16AbstractFamily
 
 /-! The polynomial all-scale Lemma 16.9 with arbitrary remainder controls.
 
@@ -68,5 +69,14 @@ theorem exists_all_scale_family_lemma_16_6 (k : Nat) :
         (section16PowerWidth (familyWidthPrefactor C) (familyWidthDivisor k p)) := by
   obtain ⟨K, p, hK, hp, hrec⟩ := exists_polynomial_section16_recurrence_profile k
   exact ⟨K, p, hK, hp, allScaleFamilyLemma166At_of k hK hp hrec⟩
+
+/-- **Lemma 16.6 for abstract members in one frame**, with the polynomial
+recurrence. -/
+theorem exists_abstract_family_lemma_16_6 (k : Nat) :
+    ∃ C p : Nat, 2 ≤ C ∧ 0 < p ∧
+      AbstractFamilyLemma166At k
+        (section16PowerWidth (familyWidthPrefactor C) (familyWidthDivisor k p)) := by
+  obtain ⟨K, p, hK, hp, hrec⟩ := exists_polynomial_section16_recurrence_profile k
+  exact ⟨K, p, hK, hp, abstractFamilyLemma166At_of k hK hp hrec⟩
 
 end LeanProofs.GowersSzemeredi
