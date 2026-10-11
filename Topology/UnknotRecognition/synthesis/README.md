@@ -1540,3 +1540,25 @@ audit with `python -B data/sector_integer_audit.py`; publication checks use
 `python -B data/sector_integer_review.py --publication` from this directory.
 The evidence retains 134 proof instances and 422 current core-runtime/test
 hashes, alongside the prior 652-source inventory comparison.
+
+[matching_pairs.tex](matching_pairs.tex) proves exact two-row-span detection,
+polynomial sufficient zero closure and original-source proof preservation.
+It preserves a three-row counterexample to complete maximal-support claims.
+The finite 3,412-sector pilot supplies fifty further reductions; fifty source
+implications replay with producers disabled. Two automatic targets bypass
+generic Q screening before reaching the same nullity-three feasible span.
+All 1,540 tests and 22 focused tests pass. Eighty completed paired native
+source-query measurements include preparation, geometry, component proofs,
+full-sector replay and serialization; target ratios are 1.550 and 1.531.
+An unreduced control exposes the additional scanning cost. No full knot
+recognition speedup or general quasi-polynomial theorem is claimed.
+
+The current [PDF](report.pdf) has 608 pages. Section 154 starts on page 600;
+the assessment is section 155 on page 603. Rendered pages 600–605 pass visual
+review, including the pair-span proof, counterexample, source authority, complete
+timing table, assessment continuation and references. All references resolve
+and only four pre-existing overflow warnings remain. Reproduce publication
+checks with `python -B data/matching_pairs_review.py --publication` from this
+directory. They verify 654 current source/evidence hashes, fifty independent
+source implications, four complete sector certificates and all 80 measured
+calls, as well as test logs and the finite pilot scope.
