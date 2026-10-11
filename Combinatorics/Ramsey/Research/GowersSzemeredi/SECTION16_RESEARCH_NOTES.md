@@ -2880,6 +2880,60 @@ fixed `2^(2^6)` from `θ₁`, which `δ` and `θ₂` inherit.
   covered at once, which is plausibly the covering half of
   `StackableStructureAt 2` that Part J needs for dimension three.
 
+### L.4 After `PolyCoverAt 2`: two routes to catalogue items (plan, 2026-10-10)
+
+**(I) Theorem 18.2 at length six** (`Theorem182At 6`; Corollary 18.7 at
+six follows).
+- *Chain.* `single_piece_quartic_inverse_global` (Proofs18SinglePieceInverse)
+  needs `PolyCoverAt 1` (proved) and `PolyCoverAt 2` (L.3b). It returns
+  `FunctionDiscrepancyBound 4 α β σ T`.
+  `FunctionDiscrepancyBound.interval_szemeredi_closed` turns that into
+  six-term progressions above `intervalDiscrepancyClosedThreshold 6 δ β σ T`,
+  at `α = intervalUniformityParameter δ 6`.
+- *Remaining inputs.*
+  1. The lift-width functions `C, W`: minima of the two lift iterates.
+  2. `hretile`, from the recurrence profile through
+     `Section16RecurrenceProfileWith.retiled_family` and `.single`.
+  3. `hmod`, the per-modulus scale conditions
+     (`SinglePieceModulusConditions`), at an explicit `Tloc`.
+  4. The comparison with `szemerediThreshold δ 6 = 2^2^(δ^(−M))`,
+     `M = 2^32768`.
+- *Budget (K.4).* A density `β = α^D` fits whenever `D ≲ M/728`. The
+  single-piece route has `D ≈ 2^132·poly(D_in)`, with `D_in ≈ c·2^64`
+  from `θ₁`, so `D ≈ 2^500` at most: an enormous margin. Crude power
+  bounds suffice everywhere.
+- *Explicit constants.* The recurrence constants are not opaque.
+  - `multilinearPartitionBoundAt_explicit` gives
+    `multiaffinePartitionK/P k (2^k)`, built from the Schmidt constants.
+  - `Proofs05WeylConstantBounds` bounds those Schmidt constants
+    numerically.
+  - So the light modules carry `K, p` as parameters with numeric upper
+    bounds as hypotheses, and the heavy bridge instantiates them.
+- *Template.* The five-term case:
+  `fejerFiveTermThreshold_le_double_exp_alpha` (via
+  `densityIterationClosedThreshold_le_double_exp`), then
+  `fejerFiveTermThreshold_le_source`.
+
+**(II) Theorem 16.2 in every dimension.** The family machinery suggests
+an induction on a *stackable piece structure*: a class of `k`-dimensional
+pieces with data such that
+- (a) every product relation decomposes, after a `θ` deletion, into
+  polynomially many pieces (peeling plus Lemma 15.6 plus piece data);
+- (b) any `n` pieces have one simultaneous cover with controls
+  polynomial in `n` (the family cover).
+
+The base case is Freiman graphs. The step `k → k+1` builds `(k+1)`-pieces
+whose data refers to `k`-pieces (spectra, slices) and lower faces
+(remainders), and gets (b) from (b) at dimension `k` for the referenced
+pieces. New ingredients:
+- the remainder is a signed *sum* of `2^k − 1` vertex functions, which
+  needs common-partition sums of family covers;
+- relation lifts along unused coordinates in every dimension;
+- piece data for general `k`.
+
+The printed comparison per `k` would follow, if the degree recursion
+`D_{k+1} ≤ poly(D_k)` fits `2^(2^(k+8))`.
+
 ## F. Routes
 
 1. **Quantitative repair (research).**
