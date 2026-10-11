@@ -1034,6 +1034,10 @@ import GowersSzemeredi.Proofs16PolyPieceTwoInputs
 import GowersSzemeredi.Proofs16PolyPieceTwo
 import GowersSzemeredi.Proofs16FamilyRetiledLinearity
 import GowersSzemeredi.Proofs16FamilyLemma6
+import GowersSzemeredi.Proofs16FamilyAffineLift
+import GowersSzemeredi.Proofs16FamilyLemma9
+import GowersSzemeredi.Proofs16FamilyPieceCover
+import GowersSzemeredi.Proofs16AbstractFamily
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
