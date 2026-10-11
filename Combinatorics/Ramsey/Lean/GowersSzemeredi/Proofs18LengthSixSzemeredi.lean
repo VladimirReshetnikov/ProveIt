@@ -20,8 +20,9 @@ then gives the closed threshold `≤ exp(exp(X^(2^700+3)))`. That is below
 `2^(2^(δ^(-2^32768)))`.
 
 `theorem_18_2_six_of_profiles` is the result. Its hypotheses are the two
-recurrence profiles with constants `K, p ≤ 2^1700`. Those are the explicit
-constants of `Proofs16ExplicitConstantBounds`. -/
+recurrence profiles with constants `K, p ≤ 2^2000`. The explicit constants
+of `Proofs16ExplicitConstantBounds` are at most `2^1700`, and the profile
+exponent carries a factor `k + 1`. -/
 set_option autoImplicit false
 set_option exponentiation.threshold 4096
 noncomputable section
@@ -129,8 +130,8 @@ theorem length_factor_inv_le {X beta : Real} (hX : (2 : Real) ^ 700 ≤ X) (hb :
 /-- **The closed threshold of the length-six iteration is double exponential.** -/
 theorem lengthSixClosedThreshold_le {K1 p1 K2 p2 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1)
     (hK2 : 0 < K2) (hp2 : 0 < p2) {delta : Real} (hδ : 0 < delta) (hδhalf : delta ≤ 1 / 2)
-    (hK : (K1 : Real) ≤ 2 ^ 1700) (hp : (p1 : Real) ≤ 2 ^ 1700)
-    (hK' : (K2 : Real) ≤ 2 ^ 1700) (hp' : (p2 : Real) ≤ 2 ^ 1700) :
+    (hK : (K1 : Real) ≤ 2 ^ 2000) (hp : (p1 : Real) ≤ 2 ^ 2000)
+    (hK' : (K2 : Real) ≤ 2 ^ 2000) (hp' : (p2 : Real) ≤ 2 ^ 2000) :
     intervalDiscrepancyClosedThreshold 6 delta (lsBeta (intervalUniformityParameter delta 6))
         (lsSigma K1 p1 p2 (intervalUniformityParameter delta 6))
         (lsThreshold K1 p1 K2 p2 (intervalUniformityParameter delta 6)) ≤
@@ -141,8 +142,8 @@ theorem lengthSixClosedThreshold_le {K1 p1 K2 p2 : Nat} (hK1 : 0 < K1) (hp1 : 0 
   have hX2 : 2 ≤ 2 / alpha := le_trans (by norm_num) hXbig
   have hX1 : 1 ≤ 2 / alpha := le_trans (by norm_num) hXbig
   have hX0 : 0 ≤ 2 / alpha := le_trans (by norm_num) hXbig
-  have hc3 : ∀ c : Real, c ≤ 2 ^ 1700 → c ≤ (2 / alpha) ^ 3 := fun c hc =>
-    hc.trans ((show (2 : Real) ^ 1700 ≤ ((2 : Real) ^ 700) ^ 3 by norm_num).trans
+  have hc3 : ∀ c : Real, c ≤ 2 ^ 2000 → c ≤ (2 / alpha) ^ 3 := fun c hc =>
+    hc.trans ((show (2 : Real) ^ 2000 ≤ ((2 : Real) ^ 700) ^ 3 by norm_num).trans
       (pow_le_pow_left₀ (by norm_num) hXbig 3))
   obtain ⟨b0, b1, bi⟩ := lsBeta_bounds ha0 ha2
   obtain ⟨g0, gi⟩ := lsSigma_inv_le hK1 hp1 hp2 ha0 ha2 (hc3 _ hK) (hc3 _ hp) (hc3 _ hp')
@@ -221,8 +222,8 @@ theorem lengthSixClosedThreshold_le {K1 p1 K2 p2 : Nat} (hK1 : 0 < K1) (hp1 : 0 
 /-- The length-six closed threshold is below the source's threshold. -/
 theorem lengthSixClosedThreshold_le_source {K1 p1 K2 p2 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1)
     (hK2 : 0 < K2) (hp2 : 0 < p2) {delta : Real} (hδ : 0 < delta) (hδhalf : delta ≤ 1 / 2)
-    (hK : (K1 : Real) ≤ 2 ^ 1700) (hp : (p1 : Real) ≤ 2 ^ 1700)
-    (hK' : (K2 : Real) ≤ 2 ^ 1700) (hp' : (p2 : Real) ≤ 2 ^ 1700) :
+    (hK : (K1 : Real) ≤ 2 ^ 2000) (hp : (p1 : Real) ≤ 2 ^ 2000)
+    (hK' : (K2 : Real) ≤ 2 ^ 2000) (hp' : (p2 : Real) ≤ 2 ^ 2000) :
     intervalDiscrepancyClosedThreshold 6 delta (lsBeta (intervalUniformityParameter delta 6))
         (lsSigma K1 p1 p2 (intervalUniformityParameter delta 6))
         (lsThreshold K1 p1 K2 p2 (intervalUniformityParameter delta 6)) ≤
@@ -270,11 +271,11 @@ theorem lengthSixClosedThreshold_le_source {K1 p1 K2 p2 : Nat} (hK1 : 0 < K1) (h
 /-! ### Theorem 18.2 at length six -/
 
 /-- **Theorem 18.2 at length six, from the recurrence profiles in dimensions
-one and two** with explicit constants `K, p ≤ 2^1700`. -/
+one and two** with explicit constants `K, p ≤ 2^2000`. -/
 theorem theorem_18_2_six_of_profiles {K1 p1 K2 p2 : Nat} (hK1 : 2 ≤ K1) (hp1 : 0 < p1)
     (hK2 : 2 ≤ K2) (hp2 : 0 < p2)
-    (hK1b : (K1 : Real) ≤ 2 ^ 1700) (hp1b : (p1 : Real) ≤ 2 ^ 1700)
-    (hK2b : (K2 : Real) ≤ 2 ^ 1700) (hp2b : (p2 : Real) ≤ 2 ^ 1700)
+    (hK1b : (K1 : Real) ≤ 2 ^ 2000) (hp1b : (p1 : Real) ≤ 2 ^ 2000)
+    (hK2b : (K2 : Real) ≤ 2 ^ 2000) (hp2b : (p2 : Real) ≤ 2 ^ 2000)
     (hrec1 : Section16RecurrenceProfileWith 1 (familyRecThr 1 K1 p1) (familyRecExp 1 p1))
     (hrec2 : Section16RecurrenceProfileWith 2 (familyRecThr 2 K2 p2) (familyRecExp 2 p2)) :
     Theorem182At 6 := by
@@ -288,8 +289,8 @@ theorem theorem_18_2_six_of_profiles {K1 p1 K2 p2 : Nat} (hK1 : 2 ≤ K1) (hp1 :
     length_six_function_discrepancy hK1 hp1 hrec1 hK2 hp2 hrec2 ha0 ha2
   have hβ := (lsBeta_bounds ha0 ha2).1
   have hX := (intervalUniformityParameter_six_bounds hδ hδhalf).2.2.1
-  have hc3 : ∀ c : Real, c ≤ 2 ^ 1700 → c ≤ (2 / intervalUniformityParameter delta 6) ^ 3 :=
-    fun c hc => hc.trans ((show (2 : Real) ^ 1700 ≤ ((2 : Real) ^ 700) ^ 3 by norm_num).trans
+  have hc3 : ∀ c : Real, c ≤ 2 ^ 2000 → c ≤ (2 / intervalUniformityParameter delta 6) ^ 3 :=
+    fun c hc => hc.trans ((show (2 : Real) ^ 2000 ≤ ((2 : Real) ^ 700) ^ 3 by norm_num).trans
       (pow_le_pow_left₀ (by norm_num) hX 3))
   have hσ := (lsSigma_inv_le (by omega) hp1 hp2 ha0 ha2 (hc3 _ hK1b) (hc3 _ hp1b) (hc3 _ hp2b)).1
   exact FunctionDiscrepancyBound.natural_szemeredi_closed (k := 6) (by norm_num) hδ hβ hσ hbound N
@@ -299,8 +300,8 @@ theorem theorem_18_2_six_of_profiles {K1 p1 K2 p2 : Nat} (hK1 : 2 ≤ K1) (hp1 :
 /-- **Corollary 18.7 at length six**, from the same recurrence profiles. -/
 theorem corollary_18_7_six_of_profiles {K1 p1 K2 p2 : Nat} (hK1 : 2 ≤ K1) (hp1 : 0 < p1)
     (hK2 : 2 ≤ K2) (hp2 : 0 < p2)
-    (hK1b : (K1 : Real) ≤ 2 ^ 1700) (hp1b : (p1 : Real) ≤ 2 ^ 1700)
-    (hK2b : (K2 : Real) ≤ 2 ^ 1700) (hp2b : (p2 : Real) ≤ 2 ^ 1700)
+    (hK1b : (K1 : Real) ≤ 2 ^ 2000) (hp1b : (p1 : Real) ≤ 2 ^ 2000)
+    (hK2b : (K2 : Real) ≤ 2 ^ 2000) (hp2b : (p2 : Real) ≤ 2 ^ 2000)
     (hrec1 : Section16RecurrenceProfileWith 1 (familyRecThr 1 K1 p1) (familyRecExp 1 p1))
     (hrec2 : Section16RecurrenceProfileWith 2 (familyRecThr 2 K2 p2) (familyRecExp 2 p2)) :
     Corollary187At 6 :=

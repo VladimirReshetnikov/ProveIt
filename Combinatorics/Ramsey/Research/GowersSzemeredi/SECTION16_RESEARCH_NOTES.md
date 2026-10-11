@@ -2965,6 +2965,73 @@ explicit `β, σ, T`.
    (`multilinearPartitionBoundAt_explicit`), with numeric upper bounds on
    `K₁, p₁, K₂, p₂`, which enter `g, p, K` polynomially.
 
+**(I) complete (2026-10-10): `Theorem182At 6` and `Corollary187At 6`.**
+`theorem_18_2_six` and `corollary_18_7_six` (Proofs18LengthSixExplicit) use
+the source's own threshold `szemerediThreshold δ 6`. The light part is
+kernel-checked locally and needs only `propext`, `Classical.choice` and
+`Quot.sound`. It is
+`theorem_18_2_six_of_profiles` (Proofs18LengthSixSzemeredi): the
+conclusion follows from the two recurrence profiles at any constants
+`2 ≤ K`, `0 < p`, `K, p ≤ 2^2000`. The heavy bridge supplies the profiles
+in every dimension `k` with
+- `K = ⌈multiaffinePartitionK (k+1) (2^(k+1))⌉`;
+- `p = (k+1)·multiaffinePartitionP (k+1) (2^(k+1))`.
+
+The chain is `multilinearPartitionBoundAt_explicit`,
+`commonDiffPartitionBoundAt_of`, `commonDiffPartitionTwoBoundAt_of`,
+`polynomialSection16RecurrenceProfileAt_of` and
+`section16RecurrenceProfileWith_of_polynomial`. At `k = 1, 2` these
+constants are `explicitVarietyK`, `2·explicitVarietyP`, `explicitLiftK` and
+`explicitLiftP`, all `≤ 2^1701` by `explicit_constants_le`. The bridge
+was stub-checked locally: opaque stand-ins for the heavy constants and
+lemmas, against the real light modules. It still needs the
+full-verification host. `theorem_18_2_le_six` and `corollary_18_7_le_six`
+collect the lengths `k ≤ 6`.
+
+The comparison, step by step, with `X = 2/α`:
+1. *Counts* (Proofs18LengthSixCounts):
+   `sixQb l γ θ ρ ≤ (2/(γθρ))^(2^90)`.
+2. *Density* (Proofs18LengthSixDensity): `β⁻¹ ≤ X^(2^664)`. The lift
+   densities are tracked as `(c s)⁻¹ ≤ X^a s^(-b)` (`RecipPowerLB`, closed
+   under `liftLastC` and `min`). Then `ρ₁ ≥ X^(-2^412)`, the single-piece
+   density is `≥ X^(-2^601)` and `η ≥ X^(-2^602)`. The cubic input
+   `y = η/(2·10⁵)` enters through `fejer_cubic_gain_inv_le_power`.
+3. *Width exponents* (Proofs18LengthSixExponents):
+   `(sixEb …)⁻¹ ≤ (2/(γθρ))^(2^132)` once `K₁, p₁ ≤ (2/(γθρ))³`. The Bohr
+   radius `ζ = 2^(-s)` enters only as `ζ⁻¹ ≤ exp(w^(2^128))`, inside a
+   rounded power threshold that the cap `log 2/log(max 2 T)` turns back
+   into a polynomial exponent.
+4. *Scale exponents* (Proofs18LengthSixParameters): `lsNestExp`, `lsEm`,
+   `lsMExp`, `lsB`, `lsEth`, `lsEc` and `lsF` are all polynomial, and
+   `lsE⁻¹ ≤ X^(2^643)`.
+5. *Local threshold* (Proofs18LengthSixThresholds):
+   `lsTloc ≤ exp(X^(2^644))`. Lemma 15.6 at `k = 2` is `≤ X^(2^81)` and
+   `lsMReq ≤ exp(X^(2^510))`.
+6. *Envelope* (Proofs18LengthSixEnvelope): `σ⁻¹ ≤ exp(X^(2^664+2))` and
+   `T ≤ exp(exp(X^(2^700)))`. The degree-four refinement constant
+   (`≤ 2^(2^2562)`) is absorbed by `X ≥ 2^700`.
+7. *Iteration and tower* (Proofs18LengthSixSzemeredi). At length six,
+   `α = (δ⁶/110592)^32`, so `2^700 ≤ X ≤ δ^(-737)`. The closed threshold
+   is `≤ exp(exp(X^(2^700+3)))`, and that is `≤ 2^(2^(δ^(-2^711)))`. The
+   source has `δ^(-2^32768)`, so the margin is enormous: crude bounds
+   were enough everywhere.
+
+Lean traps found here. Each cost a build:
+- `linarith` panics: through `cancel_denoms` it computes `1^n` for every
+  power atom `x^n` in context, and `n ≥ 2^24` gives "Nat.pow exponent is
+  too big". The panic also hides all later errors in the file. Use
+  `linarith only` or derive arithmetic facts before huge-exponent
+  hypotheses exist.
+- `exponentiation.threshold` (default 256) silently stops `norm_num` on
+  `2^412` and larger. Raise it per file; 4096 sufficed.
+- `ring` on `W + W = 2^(2^2561+1)` stalls. With a literal degree 4,
+  `simp` evaluates the Weyl exponent `2^(40·4³)`; keep the degree a
+  variable.
+- `set x := e` before `unfold D` leaves `e` inside the unfolded `D`, and
+  unifying it with the abstract `x` timed out in `whnf`.
+- A stub check against a stale olean reports phantom mismatches. Rebuild
+  the light dependency first.
+
 ## F. Routes
 
 1. **Quantitative repair (research).**
