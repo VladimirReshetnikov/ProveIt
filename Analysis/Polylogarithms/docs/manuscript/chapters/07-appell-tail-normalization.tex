@@ -1,0 +1,268 @@
+
+\section{Gamma--Appell normalization and a single height-one coordinate}
+\label{gat:section}
+
+The preceding normal forms explain differential cancellations.  The
+scalar Gamma normalization also controls the singular spectral
+coordinates at every degree.  We reconcile the all-degree argument in
+\cite{dpm:reports} with the height-one convention already fixed in
+Section~\ref{dgp:subsec:heightkernel}.  Its remaining derivatives have
+ordinary convergent defining sums; no independence or smallest possible
+arithmetic basis is asserted.
+
+Define coefficientwise polynomials and their fixed-coordinate moments by
+\[
+ \mathsf P_m(Y)=m![t^m]\Gamma(1-t)e^{tY},\qquad
+ \mathsf S_m=\operatorname{FP}_x\int_0^1\mathsf P_m(\psi(x))\,dx.
+\]
+These symbols do not denote the separate Gaussian $S_6$ and $S_8$
+ladder candidates.  Write
+\[
+ \alpha_j=[t^j]\Gamma(1+t)^{-1},\qquad
+ L_d=[s]Z(1+s,1^{d-1})\quad(d\ge1),
+\]
+in the strict largest-index-first convention of
+\eqref{dgp:eq:strict-zeta}.  Thus $L_1=-\gamma_1$, $L_2=\eta$,
+$L_3=\theta$, and $L_4=\chi$.  A linear Laurent coefficient at a
+pole is not an ordinary derivative at that pole.
+
+Let $a_{m,j}(n)$ be the coefficient of $(x+n)^{-j}$ in
+$\mathsf P_m(\psi(x))$, $1\le j\le m$, and set
+\begin{align*}
+ e_r(n)&=H_n(1^r),\qquad e_0(n)=1,\\
+ \delta_m(n)&=a_{m,1}(n)+m!e_{m-1}(n),\\
+ \mathsf J_m&=\sum_{n\ge1}\sum_{j=2}^m
+       \frac{a_{m,j}(n)-a_{m,j}(n-1)}{(j-1)n^{j-1}},\\
+ \mathsf D_m&=-\sum_{n\ge1}
+       \bigl(\delta_m(n)-\delta_m(n-1)\bigr)\log n.
+\end{align*}
+The next result proves convergence and gives a finite description of
+both corrections.
+
+\begin{theorem}[One height-one coordinate at every degree]
+\label{gat:main}
+For every integer $m\ge2$,
+\begin{equation}\label{gat:spectral}
+ \boxed{\mathsf S_m=m!(\alpha_m-L_{m-1})
+                          +\mathsf J_m+\mathsf D_m.}
+\end{equation}
+The higher-pole sum $\mathsf J_m$ is a finite linear combination of
+admissible multiple zeta values with coefficients in the ordinary zeta
+algebra.  The correction $\mathsf D_2=\mathsf D_3=0$; for $m\ge4$,
+$\mathsf D_m$ is a finite linear combination of first coordinate
+derivatives of admissible multiple zeta functions, of depth at most
+$m-3$.  Each retained derivative has an ordinary absolutely convergent
+series and a holomorphic parameter neighborhood.  The construction
+retains no lower height-one Laurent coefficient.
+\end{theorem}
+
+\subsection{The tail ideal and the finite marked-word compiler}
+
+Put $h=H_n$ and $A_r(n)=\zeta(r)-H_n^{(r)}$ for $r\ge2$.
+These are strict upper tails.  Only finitely many enter a fixed pole
+coefficient.
+
+\begin{lemma}[The residue defect is in the upper-tail ideal]
+\label{gat:tailideal}
+The defect $\delta_m(n)$ is a polynomial in $h,A_2,A_3,\ldots$
+with coefficients in the ordinary zeta algebra, and vanishes when
+all the $A_r$ are set to zero.  For $m\ge4$, its degree in these
+harmonic variables, each counted with degree one, is at most $m-3$.
+The defects at degrees two and three are identically zero.
+\end{lemma}
+
+\begin{proof}
+Use the local series \eqref{dgp:eq:pole-series}.  Multiplication by
+$\Gamma(1-t)$ cancels the $-\gamma$ in its regular constant, since
+\[
+ \Gamma(1-t)=\exp\left(\gamma t+\sum_{r\ge2}\zeta(r)t^r/r\right).
+\]
+Finite residue extraction is therefore polynomial in harmonic numbers
+and ordinary zeta values.  Substitute $H_n^{(r)}=\zeta(r)-A_r$.
+When every upper tail is zero the local series is
+$h-\gamma-\pi\cot(\pi v)$.  The closed residue polynomials in
+Lemma~\ref{dgp:powers:lem:closed-residue} give, coefficientwise in $t$,
+\[
+ \operatorname*{Res}_{v=0}e^{-\pi t\cot(\pi v)}
+                   =-\frac{\sin\pi t}{\pi}.
+\]
+Euler reflection turns its normalized residue generator into
+\[
+ -\Gamma(1-t)e^{(h-\gamma)t}\frac{\sin\pi t}{\pi}
+             =-t\frac{e^{(h-\gamma)t}}{\Gamma(1+t)}.
+\]
+The elementary harmonic generator, specialized in exactly the same way,
+is
+\[
+ \sum_{r\ge0}e_r(n)t^r
+  =\exp\left(ht+\sum_{r\ge2}(-1)^{r-1}H_n^{(r)}t^r/r\right)
+  \longmapsto\frac{e^{(h-\gamma)t}}{\Gamma(1+t)}.
+\]
+Thus the two residue contributions cancel.  Known relations among
+even zeta values are retained here; those values are not treated as
+independent indeterminates.
+
+To obtain the sharper harmonic degree, first retain the variables
+$h_r=H_n^{(r)}$.  In the simple-pole coefficient the only terms of
+harmonic degrees $m-1$ and $m-2$ are, respectively,
+\[
+ -m h^{m-1},\qquad
+ \frac{m!}{2(m-3)!}h_2 h^{m-3}\quad(m\ge3).
+\]
+The first uses one pole factor.  The second uses two pole factors and
+one $h_2v$ factor; higher positive powers, additional pole factors,
+or ordinary zeta coefficients lower the harmonic degree further.
+The identical two terms occur in $-m!e_{m-1}$, so they cancel in
+$\delta_m$.  Substitution of $h_r=\zeta(r)-A_r$ cannot increase
+degree.  Direct extraction at $m=2,3$ gives zero.
+\end{proof}
+
+For the consecutive difference use $h=H_{n-1}$, $v=1/n$, and
+$A_r=A_r(n)$.  The exact finite polynomial rule is
+\begin{equation}\label{gat:difference}
+ \delta_m(n)-\delta_m(n-1)
+  =\delta_m(h+v,A_2,A_3,\ldots)
+       -\delta_m(h,A_2+v^2,A_3+v^3,\ldots).
+\end{equation}
+Every surviving monomial has a factor $v^q$ with $q\ge1$.
+If no upper tail remains, then $q\ge2$: a term with $q=1$ can
+arise only by changing $h$, and the tail-ideal property leaves an
+upper tail in that case.  Since $A_r(n)=O(n^{1-r})$, each summand
+is $O(n^{-2}(1+\log n)^B)$ for some fixed $B$.
+The Dirichlet series of this difference and all its parameter
+derivatives consequently converge normally for $\operatorname{Re}s>-1$.
+
+Here is the finite conversion.  Apply strict stuffle multiplication
+separately to the upper-tail factors and the powers of $H_{n-1}$.
+For an upper word $\mathbf a=(a_1,\ldots,a_r)$, whose entries are
+at least two, put
+\[
+ T_{\mathbf a}(n)=\sum_{k_1>\cdots>k_r>n}
+                          k_1^{-a_1}\cdots k_r^{-a_r}.
+\]
+The empty upper and lower words both have value one.  Their ordered
+indices give the exact identity
+\begin{equation}\label{gat:concatenation}
+ \sum_{n\ge1}\frac{T_{\mathbf a}(n)H_{n-1}(\mathbf b)}{n^{q+s}}
+                       =Z(\mathbf a,q+s,\mathbf b).
+\end{equation}
+If the upper word is empty, $q\ge2$; otherwise the first entry is
+at least two.  Every such term is holomorphic for
+$\operatorname{Re}s>-1$ by the same tail bounds.  Thus
+\begin{equation}\label{gat:mark}
+ -\sum_{n\ge1}\frac{T_{\mathbf a}(n)H_{n-1}(\mathbf b)\log n}{n^q}
+               =\partial_{r+1}Z(\mathbf a,q,\mathbf b).
+\end{equation}
+The derivative marks the distinguished $n$ index.  It need not be
+the first coordinate, and is not obtained by differentiating an
+identity known only at integer indices.  A nonzero finite difference
+replaces at least one harmonic factor by a power of $v$.  At most
+$m-4$ harmonic factors remain; adjoining the distinguished index
+gives depth at most $m-3$.
+
+\begin{proof}[Proof of Theorem~\ref{gat:main}]
+The scalar linear combination of Theorem~\ref{dgp:thm:all-power}
+applies to $\mathsf P_m$.  Its large-circle constant is
+\[
+ m![t^m]\Gamma(1-t)\frac1{2\pi}\int_{-\pi}^{\pi}e^{it\theta}\,d\theta
+   =m![t^m]\Gamma(1-t)\frac{\sin\pi t}{\pi t}=m!\alpha_m.
+\]
+Also $e_{m-1}(n)-e_{m-1}(n-1)=H_{n-1}(1^{m-2})/n$.
+Hence its residue-difference series splits as
+\[
+ \sum_{n\ge1}\frac{a_{m,1}(n)-a_{m,1}(n-1)}{n^s}
+  =-m!Z(1+s,1^{m-2})
+       +\sum_{n\ge1}\frac{\delta_m(n)-\delta_m(n-1)}{n^s}.
+\]
+The second term is holomorphic at zero by \eqref{gat:difference},
+and its linear coefficient is exactly $\mathsf D_m$.
+The first supplies $-m!L_{m-1}$.  Higher-pole differences acquire
+at least one power of $1/n$, so their outer exponent is at least two;
+the finite harmonic-word compiler gives $\mathsf J_m$ as admissible
+zeta values.  Equations \eqref{gat:concatenation}--\eqref{gat:mark}
+prove every assertion about the mixed correction and its depth.
+\end{proof}
+
+\subsection{A completely ordinary Cauchy-series form}
+
+Use the positive rational coefficients already defined in
+Proposition~\ref{dgp:powers:prop:Cauchy}:
+\[
+ \rho_n=\frac1{(n-1)!}\int_0^1(r)_n\,dr,\qquad 0<\rho_n\le n.
+\]
+Its formula $L_{m-1}=\alpha_m+\sum_{n\ge1}\rho_n/n^{m+1}$
+cancels the reciprocal-Gamma coefficient in \eqref{gat:spectral}.
+Therefore, at every degree $m\ge2$,
+\begin{equation}\label{gat:ordinary}
+ \boxed{\mathsf S_m=\mathsf J_m+\mathsf D_m
+                       -m!\sum_{n\ge1}\frac{\rho_n}{n^{m+1}}.}
+\end{equation}
+All three sums are ordinary and absolutely convergent.  The mixed
+correction still contains its specified convergent derivatives;
+this representation does not assert their further arithmetic elimination.
+
+The lower cases make the normalization concrete:
+\begin{align*}
+ \mathsf S_2&=2(\alpha_2-L_1),\\
+ \mathsf S_3&=6(\alpha_3-L_2)+3\zeta(2),\\
+ \mathsf S_4&=24(\alpha_4-L_3)+12\zeta(3)+4\zeta'(3),\\
+ \mathsf S_5&=120(\alpha_5-L_4)+\frac{260}{3}\zeta(4)+\mathsf D_5,\\
+ \mathsf D_5&=20\zeta(2)\zeta'(2)-10\partial_2Z(2,2)
+       +20(\partial_1-\partial_2)Z(3,1)-30\zeta'(4).
+\end{align*}
+Indeed $\mathsf J_2=0$, $\mathsf J_3=3\zeta(2)$,
+$\mathsf J_4=12Z(2,1)=12\zeta(3)$, and
+\[
+ \mathsf J_5=60Z(2,1,1)+10Z(2,2)+10\zeta(2)^2-\frac{35}{6}\zeta(4)
+             =\frac{260}{3}\zeta(4).
+\]
+The last equality uses the weight-four identities already used in
+Section~\ref{dgp:sec:poles}.  Direct pole extraction gives
+\[
+ \delta_4=-4A_3,\qquad
+ \delta_5=5A_2^2-20\zeta(2)A_2-20hA_3+25A_4.
+\]
+Their differences in \eqref{gat:difference} are
+$4v^3$ and
+$-10A_2v^2-20A_3v+20hv^3-30v^4+20\zeta(2)v^2$.
+The marked-word rule and the free-order stuffle identity
+$\partial_1Z(2,2)+\partial_2Z(2,2)=\zeta(2)\zeta'(2)-\zeta'(4)$
+prove the displayed $\mathsf D_5$.  These equations agree with the
+canonical raw fifth moment after its finite Stieltjes coordinate conversion.
+
+\subsection{Transport through the differential normal form and recovery}
+
+Let $A_m=N_m+\mathcal DT_m$ be Section~\ref{ibp:section}'s
+inverse-Gamma decomposition, and put $K_m=N_m|_{u_0=0}$.
+Since $\partial_{u_0}$ commutes with $\mathcal D$ and preserves the
+normal space, uniqueness and the Gamma recurrence give
+$\partial_{u_0}N_m=mN_{m-1}$.  Thus
+$N_m=\sum_j\binom mj u_0^jK_{m-j}$.
+Coefficientwise Gamma convolution yields the all-degree transport
+\[
+ \mathcal N\!\left(m![t^m]\frac{\Gamma(1-t)\Gamma(x)}{\Gamma(x-t)}\right)
+                  =\sum_{j=0}^m\binom mj\mathsf P_j(\psi(x))K_{m-j}.
+\]
+Here $\mathcal N$ is extended linearly over constant Gamma coefficients.
+The associated primitive is the same finite convolution of the $T_j$;
+its endpoint functional is retained.  This statement supplies a polynomial
+normal form, not an arithmetic evaluation of every resulting integral.
+
+Finally $Q_0=1$, $\mathsf S_0=1$ and $\mathsf S_1=\gamma$.
+The raw moments are recovered at every fixed degree by
+\begin{equation}\label{gat:inverse}
+ Q_m=m!\sum_{k=0}^m\frac{(-1)^{m-k}\alpha_{m-k}}{k!}\mathsf S_k.
+\end{equation}
+This follows by multiplying the coefficientwise normalization by
+$1/\Gamma(1-t)$.  It interchanges no infinite series with a divergent
+integral.  The finite input coefficients satisfy
+\[
+ \alpha_0=1,\qquad
+ j\alpha_j=\gamma\alpha_{j-1}
+          +\sum_{r=2}^j(-1)^{r+1}\zeta(r)\alpha_{j-r}.
+\]
+Independent finite residue and tail calculations through degree nine
+check the compiler and its convergence rules.  Exact lower-degree
+conversions and separate native quadrature check normalization; the
+preceding proofs establish the all-degree identities.  Detailed sixth-
+and seventh-degree arithmetic reductions remain separate audit targets.
