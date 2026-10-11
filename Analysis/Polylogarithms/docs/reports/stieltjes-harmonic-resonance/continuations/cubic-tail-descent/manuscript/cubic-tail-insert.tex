@@ -1,0 +1,123 @@
+% Proposed insertion after chapters/07-mixed-dougall-identities.tex.
+% Requires amsmath/amssymb/amsthm and the existing theorem environments.
+% This file does not modify the manuscript. Full proofs are in article.tex.
+\section{Cubic invariant descent for odd harmonic tails}
+\label{cti:section}
+Put $T_s(n)=\zeta(s)-H_n^{(s)}$ for $s\ge3$ and $n\ge0$.
+For $a\ge0$ and $d\ge2$, define
+\[
+ M_{a,d}=\sum_{n\ge0}(2n+1)
+   \sum_{\substack{j_1+\cdots+j_d=a\\j_i\ge0}}
+       \prod_{i=1}^dT_{2j_i+3}(n).
+\]
+The inner tuples are ordered. Define finite polynomials $P_{a,d}$ by
+$P_{0,0}=1$, $P_{a,0}=0$ for $a>0$, and
+\[
+ P_{a,d}=\frac2d\sum_{\substack{1\le b\le d\\b\text{ odd}}}
+    \sum_{i=0}^a\binom{i+b-1}{i}T_{2i+3b}P_{a-i,d-b}.
+\]
+\begin{theorem}[Invariant tail coefficients]\label{cti:coefficients}
+For $a\ge0,d\ge2$,
+\[
+ \sum_{n\ge0}(2n+1)P_{a,d}(T_3(n),T_5(n),\ldots)
+ =\frac{2a+3d-3}{a+d-1}\binom{a+d-1}{d-1}\zeta(2a+3d-2).
+\]
+Every series is ordinarily absolutely convergent. Moreover $M_{a,d}$
+has a constructive rational linear expression in convergent multiple zeta
+values of weight $2a+3d-2$ and depth at most $\max(1,d-2)$.
+\end{theorem}
+\begin{proof}
+Specialize the first mixed resonance to $a=1$ and put
+$\sigma=p^2+pq+q^2$, $\tau=pq(p+q)$.
+For the roots $r=(p,q,-p-q)$, its Gamma quotient is
+\[
+ Q_n=\prod_{j=1}^3\frac{\Gamma(n+1+r_j)}{\Gamma(n+1-r_j)}
+     =\prod_{k>n}\frac{k^3-\sigma k+\tau}{k^3-\sigma k-\tau}.
+\]
+On $|\sigma|+|\tau|<1$,
+\[
+ \log Q_n=2\sum_{i,b\ge0}\frac{\binom{i+2b}{i}}{2b+1}
+   T_{2i+6b+3}(n)\sigma^i\tau^{2b+1}.
+\]
+The normally convergent resonance is
+\[
+ \sum_n\left\{(n+\tfrac12)(Q_n-1)-\frac\tau{n+1/2}\right\}
+ =\tau\left[\psi(\tfrac12)+\frac12\left\{\psi(2)-\sum_j\psi(1+r_j)\right\}\right].
+\]
+Newton's identity
+\[
+ \sum_jr_j^k=\sum_{2i+3b=k}
+   \frac{k}{i+b}\binom{i+b}{b}(-1)^b\sigma^i\tau^b
+\]
+and the digamma Taylor series give the asserted coefficient. The recurrence
+is obtained by differentiating the exponential with respect to $\tau$.
+Its leading term in the number of tail factors is
+\[
+ P_{a,d}=\frac{2^d}{d!}[\sigma^a]
+       \left(\sum_{j\ge0}T_{2j+3}\sigma^j\right)^d+E_{a,d},
+\]
+where every monomial of $E_{a,d}$ has at most $d-2$ factors: all nonlinear
+terms of $\log Q_n$ have odd $\tau$-degree at least three.
+Finally, expanding a product of tails and summing $2n+1$ first replaces
+the minimum index by its square. Grouping equal indices into ordered
+blocks produces a multiple zeta value with the final exponent reduced by
+two. It never increases the number of factors. This proves the stated
+depth and weight bounds. Normal convergence of the subtracted resonance
+justifies coefficient extraction; all nonlinear coefficient series converge
+absolutely by $T_s(n)=O(n^{1-s})$.
+\end{proof}
+
+\begin{corollary}[Quadratic, cubic and quartic evaluations]\label{cti:moments}
+For $a\ge0$,
+\[
+ M_{a,2}=\frac{2a+3}{2}\zeta(2a+4),\qquad
+ M_{a,3}=\frac{(a+1)(2a+7)}4\zeta(2a+7).
+\]
+In particular,
+\[
+ \sum_n(2n+1)T_3(n)^3=\frac74\zeta(7),\qquad
+ \sum_n(2n+1)T_3(n)^4=\zeta(10)+\zeta(5)^2+2\zeta(7,3).
+\]
+\end{corollary}
+\begin{proof}
+The coefficients of $\tau^2$ and $\tau^3$ are
+$2A_n^2$ and $4A_n^3/3+2C_n/3$, where
+$A_n=\sum_jT_{2j+3}(n)\sigma^j$ and
+$C_n=\sum_j\binom{j+2}{2}T_{2j+9}(n)\sigma^j$.
+Use $\sum_n(2n+1)T_s(n)=\zeta(s-2)$.
+The coefficient $P_{0,4}=2T_3^4/3+4T_3T_9/3$ gives the fourth moment in
+terms of $\zeta(10)+\zeta(3,7)+\zeta(9,1)$.
+Euler's formula for $\zeta(9,1)$ and the stuffle relation for
+$\zeta(3)\zeta(7)$ give the displayed simplification.
+\end{proof}
+
+\begin{theorem}[A symmetric digamma cube]\label{cti:digamma}
+Set
+\[
+ A_n(x)=\frac{2\psi(n+1)-\psi(n+1-x)-\psi(n+1+x)}{2x^2},\qquad
+ J(x)=\psi(1+x)+\psi(1-x)-2\psi(1).
+\]
+For $x\in\mathbb C\setminus(\mathbb Z\setminus\{0\})$,
+\[
+ \sum_{n\ge0}(2n+1)A_n(x)^3
+ =\frac{J(x)}{4x^6}+\frac{J'(x)}{8x^5}
+       -\frac{J''(x)}{16x^4}+\frac{3\zeta(3)}{4x^4}.
+\]
+At zero use the removable value. The powers are algebraic.
+\end{theorem}
+\begin{proof}
+For $|x|<1$, $A_n(x)=\sum_jT_{2j+3}(n)x^{2j}$.
+Apply the operator $(D+1)(2D+7)/4$, $D=(x/2)\partial_x$, to
+$(-J(x)/(2x^2)-\zeta(3)-x^2\zeta(5))/x^4$.
+This is precisely the cubic generating family just proved.
+The series is locally normally convergent away from nonzero integers,
+so meromorphic continuation proves the full statement.
+\end{proof}
+
+\paragraph{Scope.}
+This is a representation-depth upper bound, not an arithmetic independence
+claim. It does not separately reduce every unsymmetrized product, and it
+does not resolve the Gaussian $S_6$ or revised $S_8$ conjectures.
+The full report also proves all-index cubic Hurwitz/Stieltjes traces,
+Lerch order-derivative identities and anchored primitives; those results
+can be integrated independently of this insert.

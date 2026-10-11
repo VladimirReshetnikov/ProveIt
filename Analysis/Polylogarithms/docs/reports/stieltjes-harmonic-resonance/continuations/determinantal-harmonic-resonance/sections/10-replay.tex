@@ -1,0 +1,142 @@
+\section{Reproducible computation and proof boundaries}
+\label{dhr:sec:replay}
+
+\subsection{What is in the package}
+The article consists of \texttt{article.tex}, the files under
+\texttt{sections/}, and \texttt{references.tex}. The standalone
+\texttt{article.pdf} is the compiled reading artifact.
+The mathematical software is
+\begin{center}
+\begin{tabular}{lp{0.60\textwidth}}
+\toprule
+File & Purpose\\
+\midrule
+\texttt{code/reductions.py} & Exact canonical cutoff, polylogarithm, and endpoint reducer\\
+\texttt{code/verify\_exact.py} & Finite rational/symbolic checks and formula export\\
+\texttt{code/verify\_numeric.py} & Separate floating-point diagnostics\\
+\bottomrule
+\end{tabular}
+\end{center}
+The dependencies used in the recorded run are SymPy 1.14.0 and mpmath
+1.3.0. Python 3.10 or later is suitable for the syntax in the scripts;
+the recorded run used Python 3.13. The scripts write their own output
+records, so replay should be performed on a working copy when the
+original delivery records need to be preserved.
+
+Run from the package root:
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python code/verify_exact.py
+python code/verify_numeric.py
+lualatex -interaction=nonstopmode -halt-on-error article.tex
+lualatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+A third LaTeX pass is harmless if a local build reports changed labels.
+No network access is needed by the mathematical scripts after the
+Python dependencies have been installed.
+
+\subsection{Exact assertions}
+The recorded exact suite passes 732 assertions. Grouping closely
+related checks gives the following accounting:
+\begin{center}
+\small
+\begin{tabular}{lr}
+\toprule
+Check family & Assertions\\
+\midrule
+Rational factorial determinant & 18\\
+Gamma product versus mixed moment determinant & 16\\
+Finite ordered sums, Cauchy--Binet, and finite moments & 216\\
+Rational partitions, residues, and cutoff constants & 24\\
+Polylogarithmic coefficients and removable origin terms & 416\\
+Nonconsecutive-pole residue and moment checks & 32\\
+Printed endpoint values and $G_2$ & 4\\
+Intentionally corrupted functional formula rejected & 1\\
+Mixed harmonic coefficient rows & 4\\
+Printed Stieltjes row algebra & 1\\
+\midrule
+Total & 732\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are finite exact checks. They detect arithmetic, index, and
+normalization mistakes in explicit cases; they do not replace the
+all-index proofs of Sections~\ref{dhr:sec:determinant}--\ref{dhr:sec:depth}.
+The corruption control changes $G_2$ by $z^2$ and verifies that the
+identity check rejects it.
+
+The file \texttt{results/exact\_formulas.json} contains ranks
+$r=1,2,3,4$, their cutoff coefficients, rational spectral partitions,
+residues, generating functions of primitive orders $q=0,1,2,3$, and
+endpoint values for $q=1,2,3$. In that file \texttt{L1}, \texttt{L2},
+\ldots denote $\Li_1(z),\Li_2(z),\ldots$; \texttt{D1}, \texttt{D2},
+\ldots denote $\Li_{1,1}(z,1),\Li_{2,1}(z,1),\ldots$.
+The coefficient expressions use exact rational numbers and SymPy
+syntax. They are not sampled numerical fits.
+
+\subsection{Numerical diagnostics}
+The recorded suite has 85 diagnostics, all at 100 decimal digits of
+\emph{working precision}:
+\begin{center}
+\small
+\begin{tabular}{lr}
+\toprule
+Diagnostic family & Cases\\
+\midrule
+Generating functions and Euler primitives from direct lower moments & 24\\
+Ordinary Gauss product, nonintegral $a,c$ & 8\\
+Convergent endpoints with an asymptotic tail & 12\\
+Spectral jets, $r=1,\ldots,4$, orders $0,\ldots,4$, two $\alpha$ values & 40\\
+Halfpoint logarithm/dilogarithm value & 1\\
+\midrule
+Total & 85\\
+\bottomrule
+\end{tabular}
+\end{center}
+The largest recorded scaled discrepancy is approximately
+$2.75\times10^{-32}$. Individual tolerances and absolute as well as
+scaled discrepancies are stored in \texttt{results/numerical\_checks.json}.
+It would be incorrect to describe all checks as agreements to 100
+digits: working precision is not an error bound.
+
+For disk evaluations, the left side is formed from directly accumulated
+lower moments and the right side from convergent polylogarithm series.
+For ordinary Gamma products, 1500 terms are used at a large positive
+excess. Endpoint diagnostics combine a 400-term direct head with a
+30th-order Euler--Maclaurin expansion of the harmonic/rational tail,
+summed by Hurwitz-zeta values and order derivatives. These tail
+approximations are diagnostic, not interval-certified enclosures.
+
+The spectral-jet left side uses an independent finite telescoping
+formula instead of the infinite Gamma product. Namely,
+\begin{align}
+ &\sum_{n=0}^N(n+1)_j
+       \frac{\Gamma(n+1)}{\Gamma(n+2r+u)}\notag\\
+ &\qquad=
+ \frac{\Gamma(j+1)/\Gamma(2r-1+u)
+             -\Gamma(N+j+2)/\Gamma(N+2r+u)}{2r-j-2+u}.
+ \label{dhr:eq:finite-jet-telescope}
+\end{align}
+To prove it, subtract successive terms of
+$\Gamma(n+j+1)/\Gamma(n+2r-1+u)$; their difference is
+$(2r-j-2+u)\Gamma(n+j+1)/\Gamma(n+2r+u)$.
+At $j=2r-2,u=0$ the quotient has a removable singularity, which
+is evaluated by Taylor coefficients rather than by division of two
+rounded near-zero numbers. Transforming powers of $n$ to rising
+factorials then gives the full finite moment determinant and its
+spectral derivatives. The diagnostic cutoff is $N=10^{40}$;
+it is used through this finite formula, not by enumerating that
+many summands.
+
+The translated root-of-unity extension is proved algebraically in the
+article; the recorded 85-case numerical suite does not separately test
+that extension. This is part of the verification scope, not a gap
+filled by an unstated computation.
+
+\subsection{Proof, calculation, and compilation are different evidence}
+A clean LaTeX build establishes that the document compiles. Finite
+symbolic assertions establish the corresponding finite identities.
+Floating-point comparisons test implementations and motivate scrutiny.
+The all-order analytic and algebraic conclusions are justified by the
+proofs in the article. None of the three forms of computational evidence
+alone confers theorem-prover status or proves global novelty.

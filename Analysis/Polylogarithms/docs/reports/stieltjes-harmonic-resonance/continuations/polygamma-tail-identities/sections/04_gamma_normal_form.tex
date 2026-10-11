@@ -1,0 +1,257 @@
+\section[Gamma differential polynomials and exact finite-part reduction]{Gamma differential polynomials\\and exact finite-part reduction}
+\label{gamma:sec}
+
+The abstract reduction used in this section is the classical
+functional-monomial decomposition of differential polynomials.
+It appears explicitly in Guo--Regensburger--Rosenkranz
+\cite[Proposition~4.10]{Guo2014}, with an earlier reduction rule in
+Rosenkranz--Regensburger \cite[Lemma~5]{Rosenkranz2008}.
+We give its short proof to specify the projection exactly.  The
+special-function contribution is its application to the Gamma
+hierarchy, the coefficient sectors in the next subsection, and the
+endpoint and spectral formulas that follow.
+
+\subsection{A canonical linear normal form}
+
+Let $\mathscr R=\Q[u_0,u_1,u_2,\ldots]$, with derivation
+$D u_r=u_{r+1}$ and weight $\wt(u_r)=r+1$.
+The factor degree of $\prod u_r^{a_r}$ is $\sum a_r$.
+A monomial is called functional if it is a power of $u_0$ (including
+$1$), or its largest positive derivative index occurs at least twice.
+Let $\mathscr F$ be their rational span.
+
+\begin{theorem}[Classical normal form, with a fixed primitive]
+\label{gamma:normal}
+Every $P\in\mathscr R$ has a unique decomposition
+\begin{equation}\label{gamma:decomp}
+ P=\NN(P)+D\HH(P),\qquad \NN(P)\in\mathscr F,
+ \qquad \HH(P)\text{ has zero constant term}.
+\end{equation}
+Both operators are rational and linear.  Reduction preserves factor
+degree; $\NN$ preserves weight and $\HH$ lowers weight by one.
+If $p(m)$ is the partition function, then
+\begin{equation}\label{gamma:dimension}
+ \dim_\Q\mathscr F_m=p(m)-p(m-1)\quad(m\ge2),
+ \qquad \dim\mathscr F_0=\dim\mathscr F_1=1.
+\end{equation}
+\end{theorem}
+\begin{proof}
+If a monomial $M$ has a unique largest index $r\ge1$, replace that
+factor $u_r$ by $u_{r-1}$, obtaining $\widetilde M$.
+If $a$ is the multiplicity of $u_{r-1}$ in $\widetilde M$, then
+\[
+ M=\frac1aD\widetilde M+
+      \left(M-\frac1aD\widetilde M\right).
+\]
+Every remaining monomial has largest derivative index at most $r-1$:
+all differentiations of a factor $u_{r-1}$ give precisely the $a$
+copies of $M$ that were removed.  Induction proves existence and
+termination.  It also proves the grading assertions.
+
+For uniqueness, a nonconstant polynomial $H$ of largest derivative
+index $r$ has
+$DH=u_{r+1}\partial H/\partial u_r+$ terms of order at most $r$.
+Its terms of order $r+1$ have that largest index exactly once and
+cannot belong to $\mathscr F$.  Hence $D\mathscr R\cap\mathscr F=0$,
+and the kernel of $D$ consists of constants.  Fixing the constant of
+$H$ proves uniqueness.  There are $p(m)$ monomials of weight $m$;
+for $m\ge2$, $D$ is injective on the positive-weight space of weight
+$m-1$.  This proves \eqref{gamma:dimension}.
+\end{proof}
+
+The quotient $\mathscr R/D\mathscr R$ in this theorem is a
+\emph{vector-space quotient}.  For example $\NN(u_1)=0$, but
+$\NN(u_1^2)=u_1^2$.  Thus $\NN$ is not a ring homomorphism.
+No multiplication of congruences modulo $D\mathscr R$ is permitted
+without a separate justification.
+
+Now put $u_r=\psi^{(r)}(x)$.  At zero the convergent Laurent expansion is
+\begin{equation}\label{gamma:local}
+ \psi(x)=-\frac1x-\gamma+
+       \sum_{j\ge1}(-1)^{j+1}\zeta(j+1)x^j,
+       \qquad |x|<1.
+\end{equation}
+It follows from the standard log-Gamma series \cite[\S5.7]{DLMF};
+all higher local expansions follow by differentiation.
+Define the explicit endpoint functional
+\begin{equation}\label{gamma:Delta}
+ \Delta H=H\bigl(\psi(1),\psi'(1),\ldots\bigr)
+             -[x^0]H\bigl(\psi(x),\psi'(x),\ldots\bigr).
+\end{equation}
+Then \eqref{scope:boundary} gives
+\begin{equation}\label{gamma:fp-normal}
+ \FP\int_0^1P(\psi,\psi',\ldots)\dd x
+ =\FP\int_0^1\NN(P)(\psi,\psi',\ldots)\dd x+\Delta\HH(P).
+\end{equation}
+This is a finite algebraic recipe: for a monomial of weight $w$, write
+it as $x^{-w}\prod_r(x^{r+1}\psi^{(r)}(x))^{a_r}$ and take its
+coefficient of $x^w$.  Only terms through degree $w$ in these ordinary
+series are needed.  The resulting endpoint belongs to
+$\Q[\gamma,\zeta(2),\zeta(3),\ldots]$.
+
+\subsection{The inverse-Gamma hierarchy and its balance identity}
+
+Define
+\begin{equation}\label{gamma:A}
+ \A_m(x)=(-1)^m\Gamma(x)\frac{d^m}{dx^m}\frac1{\Gamma(x)},
+ \qquad \A_0=1.
+\end{equation}
+As universal differential polynomials,
+\begin{equation}\label{gamma:recurrence}
+ \A_{m+1}=u_0\A_m-D\A_m,
+ \qquad
+ \sum_{m\ge0}\A_m\frac{t^m}{m!}
+ =\exp\left(\sum_{r\ge0}\frac{(-1)^ru_rt^{r+1}}{(r+1)!}\right).
+\end{equation}
+The generating function is simply $\Gamma(x)/\Gamma(x-t)$.
+Writing $B_j=\Gamma^{(j)}(x)/\Gamma(x)$ gives the exact balance
+identity
+\begin{equation}\label{gamma:balanced}
+ \A_m=B_r\A_{m-r}
+       -D\sum_{j=0}^{r-1}B_j\A_{m-1-j},\qquad 0\le r\le m.
+\end{equation}
+Indeed $DB_j=B_{j+1}-u_0B_j$ and
+$D\A_k=u_0\A_k-\A_{k+1}$, so differentiating the sum telescopes.
+Also $B_m(u)=(-1)^m\A_m(-u)$.  Taking $r=m$ in
+\eqref{gamma:balanced} and then the normal form proves
+\begin{equation}\label{gamma:parity}
+ \NN(\A_m)(u)=(-1)^m\NN(\A_m)(-u).
+\end{equation}
+Only factor degrees congruent to $m$ modulo two survive.
+
+The first reductions illustrate what must still be integrated:
+\begin{align}
+ \NN(\A_2)&=u_0^2,&
+ \NN(\A_3)&=u_0^3,\notag\\
+ \NN(\A_4)&=u_0^4-u_1^2,&
+ \NN(\A_5)&=u_0^5-5u_0u_1^2,\notag\\
+ \NN(\A_6)&=u_0^6-15u_0^2u_1^2+u_2^2,\label{gamma:firstforms}\\
+ \NN(\A_7)&=u_0^7-35u_0^3u_1^2+7u_0u_2^2,\notag\\
+ \NN(\A_8)&=u_0^8-70u_0^4u_1^2+28u_0^2u_2^2-7u_1^4-u_3^2.
+ \notag
+\end{align}
+The full differential identities, including primitives, are exact
+polynomial identities.  The accompanying code supplies them through
+weight ten; the same finite algorithm applies at every weight.
+
+\subsection{The inherited scalar bridge, with its normalization proved}
+
+Let
+\begin{equation}\label{gamma:c}
+ \frac1{\Gamma(1+u)}=\sum_{j\ge0}c_j u^j,
+ \qquad c_0=1,\quad c_1=\gamma.
+\end{equation}
+The source reports establish the all-depth Gamma-quotient bridge
+\cite[\S3]{SourceCanonical}.  We reproduce a proof here because its
+Laurent sign and scalar normalization enter the sixth moment.
+Define
+\begin{equation}\label{gamma:C}
+ \mathcal C_m(x)=m![t^m]
+       \frac{\Gamma(1-t)\Gamma(x)}{\Gamma(x-t)}.
+\end{equation}
+For $m\ge2$ it extends continuously to $[0,1]$, and
+\begin{equation}\label{gamma:Cintegral}
+ \int_0^1\mathcal C_m(x)\dd x=m!(c_m-\lambda_{m-1}).
+\end{equation}
+
+Here is a direct Mellin normalization.  Set
+$L(v)=-\log(1-e^{-v})$ and
+\[
+ V_d(v)=L(v)^d-\boldsymbol1_{(0,1)}(v)(-\log v)^d.
+\]
+The generating identity for strict unit-index harmonic sums and
+integration by parts give, initially for $\re u>0$,
+\begin{equation}\label{gamma:mellinheight}
+ \zeta(1+u,\{1\}^{d-1})
+ =\frac1{\Gamma(1+u)u^d}
+  +\frac{u}{d!\Gamma(1+u)}\int_0^\infty v^{u-1}V_d(v)\dd v.
+\end{equation}
+For clarity, the unsplit integral is
+$[\Gamma(u)d!]^{-1}\int_0^\infty v^{u-1}L(v)^d\dd v$.
+It follows by using
+\[
+ \sum_{n\ge1}H_{n-1}(\{1\}^{d-1})e^{-nv}
+ =\frac{e^{-v}L(v)^{d-1}}{(d-1)!(1-e^{-v})}
+ =-\frac1{d!}\frac d{dv}L(v)^d.
+\]
+The subtracted integral in \eqref{gamma:mellinheight} is holomorphic
+near $u=0$: near zero $V_d(v)=O(v(1+|\log v|)^{d-1})$, and at
+infinity it decays exponentially.  Consequently
+\begin{equation}\label{gamma:lambda-integral}
+ \lambda_d=c_{d+1}+\frac1{d!}\int_0^\infty\frac{V_d(v)}v\dd v.
+\end{equation}
+
+For the other side put
+$F(x,t)=\Gamma(1+t)\Gamma(x)/\Gamma(x+t)$ and
+\[
+ \Phi(t)=\int_0^1\{F(x,t)-1+t(\psi(x)+\gamma)\}\dd x.
+\]
+The residue $t/x$ of $F$ cancels the residue $-t/x$ of the last
+term.  The remaining integrand is jointly holomorphic in $t$ near
+zero and continuous in $x\in[0,1]$.
+Euler's beta integral, combined with the digamma integral before
+interchanging integrations, yields
+\begin{equation}\label{gamma:Phi}
+ \Phi(t)=t\int_0^\infty
+ \frac{(1-e^{-v})^t-1-\boldsymbol1_{(0,1)}(v)(v^t-1)}v\dd v.
+\end{equation}
+To verify the subtraction constant, for $\re t>0$ integration in
+$x$ first gives
+\[
+ t\int_0^\infty
+ \left\{\frac{(1-e^{-v})^t-1}{v}
+              +\frac{e^{-v}}{1-e^{-v}}\right\}\dd v-1.
+\]
+With lower cutoff $\delta$, the second integral is
+$-\log(1-e^{-\delta})$ and
+$\int_\delta^1(v^t-1)\dd v/v=(1-\delta^t)/t+\log\delta$.
+Their limits give exactly \eqref{gamma:Phi}.
+The latter integral continues holomorphically to a neighborhood of
+zero by its displayed local subtraction.  Comparing the coefficient
+of $t^m$ on its two sides gives
+$\int\mathcal C_m=-m\int V_{m-1}(v)\dd v/v$, proving
+\eqref{gamma:Cintegral}.  This proof also justifies all coefficient
+extractions as ordinary integrals.
+
+\begin{theorem}[All inverse-Gamma finite parts]
+\label{gamma:scalar}
+For $m\ge2$ put $\mathcal L_m=\FP\int_0^1\A_m(x)\dd x$.
+Then
+\begin{equation}\label{gamma:L}
+ \boxed{\displaystyle
+ \mathcal L_m=K_m-m!\sum_{d=1}^{m-1}
+       (-1)^{m-1-d}c_{m-1-d}\lambda_d,\qquad
+ K_{2n}=\frac{(-1)^n\pi^{2n}}{2n+1},\quad K_{2n+1}=0.}
+\end{equation}
+This is the scalar bridge already implicit in the incoming all-order
+Gamma formulas; the normal-form and spectral applications below
+are the extensions developed here.
+\end{theorem}
+\begin{proof}
+The coefficientwise finite part of the normalized quotient is
+\[
+ 1+\gamma t+\sum_{m\ge2}(c_m-\lambda_{m-1})t^m
+ =\frac1{\Gamma(1+t)}-\sum_{d\ge1}\lambda_d t^{d+1}.
+\]
+Here $\FP\int\mathcal C_1=\gamma$, since
+$\mathcal C_1=\psi+\gamma$ and $\FP\int\psi=0$.
+Multiply by $1/\Gamma(1-t)=\sum(-1)^jc_jt^j$.
+Gamma reflection turns the scalar product into
+$\sin(\pi t)/(\pi t)$.  Extracting $m![t^m]$ proves
+\eqref{gamma:L}.
+\end{proof}
+
+If
+$\NN(\A_m)=u_0^m+R_m$ and $H_m=\HH(\A_m)$, the immediate
+all-order moment identity is
+\begin{equation}\label{gamma:allmoments}
+ \boxed{\displaystyle
+ Q_m:=\FP\int_0^1\psi(x)^m\dd x
+   =\mathcal L_m-\Delta H_m
+       -\FP\int_0^1R_m(\psi,\psi',\ldots)\dd x.}
+\end{equation}
+Every monomial of $R_m$ contains a derivative.  Section~\ref{spectral:sec}
+will evaluate that remainder by convergent harmonic coordinates and
+provide its explicit antiderivative, so \eqref{gamma:allmoments} is
+part of a terminating exact procedure rather than an instruction to
+leave mixed integrals unnamed.

@@ -1,0 +1,269 @@
+\section[An explicit sixth digamma moment and higher-weight consequences]{An explicit sixth digamma moment\\and higher-weight consequences}
+\label{sixth:sec}
+
+We now apply the two independent reductions: the scalar Gamma bridge
+isolates the strict-depth Laurent slopes, while the differential normal
+form leaves a small number of derivative-containing integrals.
+At weight six only one genuinely mixed coordinate remains after the
+quadratic polygamma formula has been used.  We specify that coordinate
+completely, including ordinary convergent series and a finite
+multiple-zeta representation.
+
+\subsection{The mixed sixth-weight coordinate}
+
+At $x=-n+v$ write
+\[
+ \psi(x)=-v^{-1}+b_n+c_nv+d_nv^2+e_nv^3+f_nv^4+O(v^5),
+\]
+where, only within this subsection,
+\begin{equation}\label{sixth:locals}
+ \begin{gathered}
+ b_n=H_n-\gamma,\quad c_n=H_n^{(2)}+\zeta(2),\quad
+ d_n=H_n^{(3)}-\zeta(3),\\
+ e_n=H_n^{(4)}+\zeta(4),\quad f_n=H_n^{(5)}-\zeta(5).
+ \end{gathered}
+\end{equation}
+These local $c_n$ are unrelated to the reciprocal-Gamma coefficients
+$c_j$ of \eqref{gamma:c}.  Direct multiplication gives the principal
+parts of $f=\psi^2\psi'^2$:
+\begin{center}
+\begin{tabular}{@{}cl@{}}
+\toprule
+$j$ & $p_j(n)$ in $f(-n+v)=\sum_{j=1}^6p_j(n)v^{-j}+O(1)$ \\
+\midrule
+6 & $1$ \\
+5 & $-2b_n$ \\
+4 & $b_n^2$ \\
+3 & $-2b_nc_n+2d_n$ \\
+2 & $2b_n^2c_n-2c_n^2-6b_nd_n+4e_n$ \\
+1 & $4b_n^2d_n+2b_nc_n^2-6c_nd_n-10b_ne_n+6f_n$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+Let $r_n=p_1(n)$ and define
+\begin{equation}\label{sixth:D}
+ \mathcal D(s)=\sum_{n\ge1}(r_n-r_{n-1})n^{-s},\qquad
+ \Omega_5=\mathcal D'(0).
+\end{equation}
+By the residue theorem of Section~\ref{spectral:sec}, $\mathcal D$
+is holomorphic for $\re s>-1$.  In particular these are ordinary
+absolutely convergent identities:
+\begin{equation}\label{sixth:omega-series}
+ \boxed{\displaystyle
+ \Omega_5=-\sum_{n\ge1}(r_n-r_{n-1})\log n
+             =\sum_{n\ge1}r_n\log\left(1+\frac1n\right).}
+\end{equation}
+The last equality is summation by parts; its boundary term
+$r_N\log(N+1)$ tends to zero.
+The subscript five indicates the residual weight of the moment
+calculation, not a Stieltjes index or a zeta derivative order.
+
+For a short direct check, set $b=b_{n-1},c=c_{n-1},d=d_{n-1},e=e_{n-1}$.
+Replacing the harmonic cutoff $n-1$ by $n$ in the residue polynomial
+gives exactly
+\begin{equation}\label{sixth:delta-r}
+ r_n-r_{n-1}=
+ \frac{8bd+2c^2-10e}{n}
+ +\frac{4bc-2d}{n^2}
+ +\frac{4b^2-2c}{n^3}-\frac4{n^5}.
+\end{equation}
+Its apparent $1/n$ term has a vanishing frozen coefficient.
+Indeed, with $T_j=\zeta(j)-H_{n-1}^{(j)}$,
+\begin{equation}\label{sixth:tail-cancel}
+ 8bd+2c^2-10e=-8bT_3-8\zeta(2)T_2+2T_2^2+10T_4,
+\end{equation}
+where $8\zeta(2)^2=20\zeta(4)$ was used.
+This also directly proves the convergence asserted in
+\eqref{sixth:D}.
+Telescoping without logarithms gives the useful exact normalization
+\begin{equation}\label{sixth:Dzero}
+ \mathcal D(0)=4\gamma^2\zeta(3)-5\gamma\zeta(4)
+                 -6\zeta(2)\zeta(3)+6\zeta(5).
+\end{equation}
+
+The finite multiple-zeta representation can be stated compactly as
+$\mathcal D(s)=\sum_{\boldsymbol a}q_{\boldsymbol a}
+\zeta(s+a_1,a_2,\ldots,a_d)$, with the following complete table.
+The entries with first index one are combined before continuation
+or differentiation; an individually convergent alternative is given
+in Appendix~\ref{tables:omega-convergent}.
+
+\begin{center}
+\small
+\begin{tabular}{@{}ll@{\qquad}ll@{}}
+\toprule
+$\boldsymbol a$ & $q_{\boldsymbol a}$ & $\boldsymbol a$ & $q_{\boldsymbol a}$\\
+\midrule
+$(1)$ & $8\gamma\zeta(3)+2\zeta(2)^2-10\zeta(4)$
+ & $(2,2)$ & $-4\gamma$\\
+$(1,1)$ & $-8\zeta(3)$ & $(2,2,1)$ & $4$\\
+$(1,1,3)$ & $8$ & $(2,3)$ & $2$\\
+$(1,2)$ & $4\zeta(2)$ & $(3)$ & $4\gamma^2-2\zeta(2)$\\
+$(1,2,2)$ & $4$ & $(3,1)$ & $-8\gamma$\\
+$(1,3)$ & $-8\gamma$ & $(3,1,1)$ & $8$\\
+$(1,3,1)$ & $8$ & $(3,2)$ & $2$\\
+$(2)$ & $-4\gamma\zeta(2)+2\zeta(3)$ & $(5)$ & $-4$\\
+$(2,1)$ & $4\zeta(2)$ & $(2,1,2)$ & $4$\\
+\bottomrule
+\end{tabular}
+\end{center}
+To prove the table, expand \eqref{sixth:delta-r} and use only
+$H_N^{(a)}H_N^{(b)}=H_N(a,b)+H_N(b,a)+H_N^{(a+b)}$.
+No numerical recognition or conjectural relation is needed.
+
+\begin{proposition}[The complete mixed integral]
+\label{sixth:mixed}
+With $\Omega_5$ defined by \eqref{sixth:D},
+\begin{equation}\label{sixth:I}
+ \boxed{\displaystyle
+ \FP\int_0^1\psi(x)^2\psi'(x)^2\dd x
+ =\Omega_5+2\gamma^2\zeta(3)-\frac{35}{3}\gamma\zeta(4)
+      +\frac{31}{3}\zeta(2)\zeta(3)-\frac{19}{3}\zeta(5).}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The nonresidue part of the general finite-part formula is
+$J=\sum_{n\ge1}\sum_{j=2}^6
+       (p_j(n)-p_j(n-1))/((j-1)n^{j-1})$.
+The pole table reduces its entire summand to
+\[
+ j_n=\frac{4bc-6d}{n^2}+\frac{2b^2-3c}{n^3}
+             -\frac{7b}{3n^4}-\frac{13}{6n^5}.
+\]
+Stuffle expansion expresses its sum in convergent multiple zeta values
+of weight at most five.  The needed reductions are
+\[
+ \zeta(2,1)=\zeta(3),\quad
+ \zeta(3,1)=\tfrac14\zeta(4),\quad
+ \zeta(2,2)=\tfrac34\zeta(4),
+\]
+\begin{align*}
+ \zeta(4,1)&=2\zeta(5)-\zeta(2)\zeta(3),\\
+ \zeta(3,2)&=3\zeta(2)\zeta(3)-\tfrac{11}{2}\zeta(5),\\
+ \zeta(2,3)&=\tfrac92\zeta(5)-2\zeta(2)\zeta(3),
+\end{align*}
+together with the dualities
+$\zeta(3,1,1)=\zeta(4,1)$,
+$\zeta(2,2,1)=\zeta(3,2)$, and
+$\zeta(2,1,2)=\zeta(2,3)$.
+These classical low-weight identities can be obtained by the
+iterated-integral substitution $t\mapsto1-t$ and the shuffle/stuffle
+product rules.  For example the weight-five double sum formula,
+the stuffle of $\zeta(2)\zeta(3)$, and its shuffle give respectively
+\[
+ \zeta(2,3)+\zeta(3,2)+\zeta(4,1)=\zeta(5),
+\]
+\[
+ \zeta(2)\zeta(3)=\zeta(2,3)+\zeta(3,2)+\zeta(5)
+                =\zeta(2,3)+3\zeta(3,2)+6\zeta(4,1),
+\]
+which are a nonsingular linear system for the displayed evaluations.
+Substitution in $\sum j_n$ gives
+$J=2\gamma^2\zeta(3)-35\gamma\zeta(4)/3
+   +31\zeta(2)\zeta(3)/3-19\zeta(5)/3$.
+The residue contribution is $\mathcal D'(0)=\Omega_5$, proving
+\eqref{sixth:I}.
+\end{proof}
+
+\subsection{The sixth power with no unnamed mixed integral}
+
+Return to $c_j=[u^j]\Gamma(1+u)^{-1}$.  The required coefficients are
+\begin{align}
+ c_2&=\frac{\gamma^2-\zeta(2)}2,\notag\\
+ c_3&=\frac{\gamma^3-3\gamma\zeta(2)+2\zeta(3)}6,\label{sixth:cs}\\
+ c_4&=\frac{\gamma^4-6\gamma^2\zeta(2)+3\zeta(2)^2
+                     +8\gamma\zeta(3)-6\zeta(4)}{24}.\notag
+\end{align}
+
+\begin{theorem}[The sixth digamma moment]
+\label{sixth:main}
+In the original coordinate finite-part convention,
+\begin{equation}\label{sixth:Q6}
+ \boxed{\begin{aligned}
+ \FP\int_0^1\psi(x)^6\dd x={}&
+ 15\Omega_5-720\lambda_5+720\gamma\lambda_4
+ -720c_2\lambda_3+720c_3\lambda_2+720c_4\gamma_1\\
+ &-60\gamma^3\zeta(2)+180\gamma^2\zeta(3)-70\gamma\zeta(4)\\
+ &-55\zeta(2)\zeta(3)+175\zeta(5)
+                  +48\zeta'(5)-135\zeta(6).
+ \end{aligned}}
+\end{equation}
+All constants on the right have specified ordinary-series, Laurent,
+or standard special-function definitions.  In particular, this
+formula makes no assertion that $\Omega_5$ reduces to a smaller
+constant alphabet.
+\end{theorem}
+\begin{proof}
+The exact primitive in the sixth-weight normal decomposition is
+\begin{equation}\label{sixth:H6}
+ H_6=-3u_0^5+20u_0^3u_1-15u_0^2u_2-15u_0u_1^2
+                       +6u_0u_3+9u_1u_2-u_4.
+\end{equation}
+Direct differentiation gives
+$\A_6=u_0^6-15u_0^2u_1^2+u_2^2+DH_6$.
+The Laurent expansion \eqref{gamma:local} gives
+\begin{equation}\label{sixth:boundary}
+ \Delta H_6=60\gamma^3\zeta(2)-150\gamma^2\zeta(3)
+ -105\gamma\zeta(4)+210\zeta(2)\zeta(3)-242\zeta(5).
+\end{equation}
+The scalar bridge is
+\[
+ \mathcal L_6=-135\zeta(6)
+  -720\{c_4\lambda_1-c_3\lambda_2+c_2\lambda_3
+                              -\gamma\lambda_4+\lambda_5\}.
+\]
+The Hurwitz-product formula gives
+$\FP\int\psi''(x)^2\dd x=-28\zeta(5)-48\zeta'(5)$.
+Therefore
+\[
+ Q_6=\mathcal L_6+15\FP\int_0^1\psi^2\psi'^2\dd x
+                    -\FP\int_0^1\psi''^2\dd x-\Delta H_6.
+\]
+Substitute \eqref{sixth:I}, \eqref{sixth:boundary}, and
+$\lambda_1=-\gamma_1$; collecting rational coefficients proves
+\eqref{sixth:Q6}.
+\end{proof}
+
+As numerical reference values, independently evaluated quantities are
+\begin{align*}
+ \Omega_5&=-10.13986531321045747401304000835176665\ldots,\\
+ \FP\int_0^1\psi^2\psi'^2\dd x
+   &=-2.76249428761727870446208254860961992\ldots,\\
+ Q_6&=-64.95511203538334575217535095818579002\ldots.
+\end{align*}
+The mixed-identity residual was below $2\cdot10^{-99}$ in the
+115-digit run.  An end-to-end check of \eqref{sixth:Q6}, using
+independent Mellin integrals for all five $\lambda_d$, had residual
+below $10^{-87}$ at 90 working digits.  These are reproducible
+floating-point diagnostics, not certified error enclosures.
+
+\subsection{Seventh, eighth, and arbitrary weights}
+
+The next two normal forms in \eqref{gamma:firstforms} give
+\begin{align}
+ Q_7={}&\mathcal L_7-\Delta H_7
+    +35\FP\int_0^1\psi^3\psi'^2\dd x
+    -7\FP\int_0^1\psi\psi''^2\dd x,\label{sixth:Q7}\\
+ Q_8={}&\mathcal L_8-\Delta H_8
+    +70\FP\int_0^1\psi^4\psi'^2\dd x
+    -28\FP\int_0^1\psi^2\psi''^2\dd x\notag\\
+ &\hspace{14mm}+7\FP\int_0^1\psi'^4\dd x
+    +\FP\int_0^1\psi'''^2\dd x.\label{sixth:Q8}
+\end{align}
+These are useful compact reductions rather than claims of minimal
+arithmetic bases.  Every remaining integral is evaluated by the
+general pole-coefficient procedure, and the last square is already
+the explicit quadratic Hurwitz value.
+The endpoint polynomials $\Delta H_7,\Delta H_8$ appear in
+Appendix~\ref{tables:boundaries}; the data file retains all exact
+coefficients without a choice of even-zeta simplification.
+
+At general weight $m$, the closed coefficient sectors determine every
+term $\psi^{m-2r-2}(\psi^{(r)})^2$ and every term containing only
+$\psi$ and $\psi'$.  The remaining functional monomials can be
+generated finitely.  Their residue differences have finite harmonic
+word expansions, and their antiderivatives follow from the normally
+convergent primitive theorem.  This supplies a systematic way to
+produce exact identities and isolate the next arithmetic question at
+each weight.  It does not turn formal dimension into a theorem about
+independence of numerical constants.

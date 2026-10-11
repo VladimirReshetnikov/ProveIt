@@ -1,0 +1,297 @@
+\section{Source audit, proof status, and further research}
+\label{audit:section}
+
+\subsection{What has changed relative to the source questions}
+
+The baseline for this continuation is the repository revision
+\[
+\texttt{\sourcecommit},
+\]
+dated 11 October 2026. The two paths named
+in the research request were inspected at that revision. Six current
+incoming archives were extracted for comparison, and relevant canonical
+chapters, the manuscript overview, and its proof-status records were
+consulted. The source manifest in the package records their paths and
+hashes. This fixes what \emph{existing} means in the comparison; it does
+not imply that all historical drafts were audited.
+
+The main advancements have different logical forms and should be
+integrated accordingly.
+\begin{enumerate}
+\item The higher-power request for differential-polynomial finite parts
+receives an all-polynomial theorem, Theorems~\ref{poly:ML},
+\ref{poly:filter}, and \ref{poly:bridge}. The new scalar projection
+calculation identifies exactly which polynomial part produces the
+nondecaying residue and its Stieltjes correction. Mixed monomials have
+a finite, individually convergent word reduction by
+Theorem~\ref{poly:words}. The scalar power case is recovered prior work.
+
+\item The canonical report's question about integration by parts at all
+weights has the exact direct-sum solution in
+Theorem~\ref{poly:IBP}. The endpoint map is retained in
+\eqref{poly:IBPintegral}. This solves the formal quotient problem;
+classification of the numerical residue-coordinate image still requires
+relations among the resulting convergent spectral derivatives.
+
+\item The scalar Gamma--Appell question is sharpened and partly settled
+at every degree by Theorem~\ref{ac:main}: the highest height-one Laurent
+coefficient is the only \emph{singular} coordinate needed. The explicit
+sixth and seventh formulas implement the requested higher-degree
+calculations. Elimination of all convergent mixed coordinates is a
+different assertion, and remains open.
+
+\item The common-shift problem receives normalized primitives and a
+proved endpoint limit in Theorem~\ref{poly:primitivethm}. This establishes
+the precise subtraction and its limiting constant. A reduction of every
+shifted primitive to a chosen multiple-Hurwitz or Barnes basis is not
+proved here.
+
+\item Q8 of the continuous-depth report receives the requested all-order
+Gamma--Stieltjes--$Z_\rho$-jet answer in
+Theorem~\ref{lj:thm:oddjets}. The reflected jets are supplied with their
+own convergent evaluator in Theorem~\ref{lj:thm:Euler}, and the result
+extends to ordinary Gamma-weighted polylogarithm derivatives.
+
+\item Conjecture \texttt{conj:firstq} of the canonical fifth-moment
+report is proved for all $p=q-2$ by Theorem~\ref{ar:main}.
+The general unequal-order conjecture is reduced to an explicit
+fixed-gap boundary determinant by Proposition~\ref{ar:gap-det}, but
+its nonvanishing is not proved for all larger gaps. The rational
+polygamma-product evaluations in Section~\ref{ar:section} include
+an independently telescoping example.
+\end{enumerate}
+
+\subsection{Corrections and editorial recommendations}
+
+No newly identified false theorem is asserted for the inspected portions
+of the six incoming reports. The existing cautions about finite parts,
+formal rank, and differentiation of discrete identities are sound.
+The following changes are proposed for their integration and for the
+research-question lists.
+
+First, update the optimal-prefix conjecture to record the proved
+neighboring-order family while retaining the arbitrary-gap statement as a
+conjecture. Its determinant and the exact binomial omission convention
+should be copied together: retaining the lower-index-zero summand in
+\eqref{ar:entries} changes the matrix and invalidates the proof.
+Do not replace formal rank by independence of the actual tail
+moments or of the even zeta values.
+
+Second, state integration-by-parts reductions as
+$\cI(P)=E(Q)+\cI(N)$, with $Q$ at the prescribed weight. For example,
+$\cI(u_1^2+u_0u_2)=-\zeta(3)$, not zero. This is an explicit
+counterexample to discarding the endpoint constant; the source question
+already correctly requires that constant. The new normal-form theorem
+provides the requested implementation of that requirement.
+
+Third, descriptions of Gamma--Appell cancellation should distinguish the
+singular coordinates from convergent ones. The formulas
+\eqref{ac:D6} and \eqref{ac:D7} contain genuine free-order derivatives
+of admissible multiple zeta functions. Neither their appearance nor a
+failed numerical relation search proves that they are irreducible.
+Conversely, calling the singular support a singleton does not state
+that the whole answer contains only one nonclassical constant.
+
+Fourth, add the local identity \eqref{lj:eq:local} next to the source's
+odd-lattice formula before discussing order derivatives. The known
+polynomial values in the discrete index determine the $q=0$ case only.
+The reflected derivatives $\partial_s^jZ_\rho(-2m)$ are required for
+$q>0$. The same care applies to the normalization factor $2^{1-s}$
+in \eqref{lj:eq:Imaster}: its derivatives produce the explicit
+$\log 2$ terms in the Stieltjes examples.
+
+Finally, retain the manuscript's existing distinction between its
+rejected old Gaussian $S_8$ vector and its revised $S_8$ candidate.
+The Gaussian $S_6$ and revised $S_8$ remain conjectural
+\cite{Repo}. The symbols $\mathsf S_6,\mathsf S_7$ in this article
+are Gamma--Appell finite-part moments, unrelated to those Gaussian
+ladder labels. None of the present results changes the Gaussian
+proof status.
+
+\subsection{Verification and the role of the accompanying artifacts}
+\label{audit:verification}
+
+The proofs in the article establish the all-order statements. The
+package also supplies exact finite algebra and independent numerical
+diagnostics. Their distinct purposes are recorded in machine-readable
+result files.
+
+The adjacent-tail suite checks the source binomial matrix against the
+rotated cotangent operator, the positive recurrence against exact
+determinants, the full moment reconstruction, the fixed-gap
+factorization, and the explicit telescoping certificate.
+It records 2604 exact rational assertions and 90 independent symbolic
+cotangent-derivative assertions, with adjacent orders through $q=36$.
+A deliberately altered coefficient is rejected. Finite examples do not
+prove the all-order determinant statement; the positive recurrence does.
+
+The Gamma--Appell suite constructs finite Laurent data, the tail defects,
+and the strict word maps. Its weight-six certificate contains 49
+shuffle, stuffle, and duality equations on 16 admissible words, together
+with an invertible rational subsystem. The separate replay verifies the
+certificate and the free-order directional reductions. Integer-index
+duality is used for ordinary values only. An additional independent
+calculation using ordered set partitions agrees with both printed
+directional formulas.
+
+The Lerch suite compares exact Bell coefficients with direct logarithmic
+series, checks finite Euler values and trivial zeros, and compares
+negative-order Euler sums with positive-order Gamma-moment integrals.
+It records 48 exact cumulant checks, 45 finite Euler evaluations
+(including 20 odd trivial zeros), two differentiated-product checks,
+30 independent mixed-jet numerical comparisons, and direct Stieltjes
+derivative checks. The latter comparisons include noninteger and complex
+depth. Their largest recorded relative residual is approximately
+$1.17\times10^{-71}$.
+
+The differential-polynomial suite verifies all 270 formal monomial
+decompositions of weights 2--12, with 22 two-sided exact matrix inverse
+identities. It checks 128 mixed and 10 scalar Laurent residues through
+weight ten; 48 bilinear pairs, including every applicable zero-order
+case; 169 finite harmonic identities; and explicit endpoint constants.
+Its numerical companion computes finite parts using a convergent Taylor
+integral near zero and ordinary quadrature away from zero. It compares
+two splitting points, tests nonlinear endpoint identities, checks
+normalized primitives at real and complex arguments, and differentiates
+ordinary common-shift integrals.
+
+All numerical records use arbitrary-precision floating-point arithmetic;
+they are not interval certificates. The article does not claim
+proof-assistant formalization. The symbolic certificates are exact
+finite objects, but the analytic continuation, convergence, and
+normalization lemmas remain mathematical proofs in the text.
+
+\subsection{Further research questions}
+\label{audit:questions}
+
+The following questions seek identities, finite classifications, and
+functional relations. Estimates would serve to justify operations or
+certificates, rather than being the principal research target.
+
+\subsubsection{The boundary determinant for arbitrary even gaps}
+
+For each fixed $c\ge2$, prove or disprove
+$\det F_{b,c}\ne0$ for every $b>c$, with the explicit fundamental
+sequences in \eqref{ar:fundamental}. The case $c=2$ is the first
+unresolved family. The reduction is useful because the determinant size
+depends on the gap, not the upper tail order. A successful proof could
+come from a discrete Wronskian identity, a recurrence for the minors,
+or a factorization in a suitable polynomial basis. A uniform positivity
+argument for all gaps is unavailable: the sign change already recorded
+at $c=3$ rules out that simplest claim.
+
+\subsubsection{Systematic rational telescoping for tail products}
+
+The explicit $(4,6)$ identity has a certificate involving only a
+polynomial multiple of $A_4(N)A_6(N)$, two single-tail terms, and a
+polynomial. Determine whether every adjacent-order reconstruction
+identity admits a certificate of this form, and derive its coefficients
+directly from the recurrence for $\rho_s$. Such a theorem would replace
+spectral continuation by a finite telescoping proof for the whole
+ordinary-series family. A useful first output is a bound on the required
+polynomial degrees proved from the shift recurrence for the tails.
+
+\subsubsection{The spectral image of the canonical differential basis}
+
+Theorem~\ref{poly:IBP} classifies differential monomials before arithmetic
+relations are imposed. Apply the convergent-word map to this basis and
+determine its kernel modulo a precisely stated family of free-order
+stuffle relations and differential identities. The first interesting
+weights are those containing several nonlinear mixed basis elements,
+such as $u_0^2u_1^2$ and $u_1^3$ at weight six. The desired result is a
+finite presentation with a proved rank in that presentation. Arithmetic
+independence of its evaluated numbers should remain a separate question.
+
+\subsubsection{Relations among the sixth and seventh mixed directions}
+
+Determine which combinations in \eqref{ac:D6} and \eqref{ac:D7}
+reduce to lower depth, ordinary zeta derivatives, or named
+height-one Laurent coefficients. Symmetric free-order stuffle relations
+already explain part of the reduction; the surviving antisymmetric
+directions require additional identities. Tornheim functional relations,
+parameter-dependent iterated integrals, and deformation of known
+double-zeta identities are concrete candidates. An identity known only
+at integer orders cannot be differentiated for this purpose.
+
+\subsubsection{Higher spectral derivatives of the residue calculus}
+
+The present finite-part map selects the coefficient of $s$ in a
+Dirichlet germ. Introduce logarithmically weighted spectral functionals
+whose ordinary representatives select $[s^q]$ for $q\ge2$.
+Determine whether the same scalar projection controls all their
+Stieltjes corrections, and identify a canonical family of normalized
+spatial kernels realizing them. For mixed monomials the strict
+upper--middle--lower construction already gives convergent higher
+partial derivatives; the remaining issue is the exact spatial
+normalization and its endpoint constants.
+
+\subsubsection{Rational shifts and multiple-Hurwitz coordinates}
+
+For $I_P(a)$ and $\mathcal P_P(a)$ at rational $a>0$, find finite
+formulas in a specified algebra of multiple-Hurwitz derivatives and
+cyclotomic polylogarithms. The normalized kernels in
+\eqref{poly:primitivekernel} and the endpoint law
+\eqref{poly:shiftlimit} fix the constants that such a formula must
+respect. Reflection and multiplication combinations may simplify before
+individual values do. A complete result should also explain the relation
+to the Gamma-quotient normalization with a general base point.
+
+\subsubsection{Additional reductions at rational noninteger depth}
+
+For fixed rational noninteger $\rho>0$, investigate the reflected
+coordinates $\partial_\rho^r\partial_s^qZ_\rho(-2m)$.
+Theorem~\ref{lj:thm:Euler} already evaluates them by normally convergent
+series of finite harmonic-logarithmic expressions. The further
+arithmetic question is whether selected depths admit finite expressions
+in a predeclared collection of Hurwitz, Gamma, or cyclotomic constants.
+Integer-depth termination at $q=r=0$ does not persist automatically
+after differentiation. Identifying exactly when an additional finite
+reduction exists would be a substantive strengthening of the current
+lattice theorem.
+
+\subsubsection{Independent twists and noncentered Gamma weights}
+
+Extend the local lattice construction to the noncentered and tilted
+families while keeping order, shift, and depth as independent complex
+variables. The centered theorem uses the even Taylor structure and a
+single sine factor. Away from the center, the reflection system can
+couple two branches or two transforms. Derive the corresponding local
+matrix identity and determine its removable values before extracting
+mixed jets. The desired output is a finite formula for ordinary
+Gamma-weighted root-of-unity polylogarithm derivatives, with every
+branch and normalization specified.
+
+\subsubsection{Four or more harmonic tails}
+
+For products of an even number of even-order tails, develop a finite
+coordinate system and prove an initial-moment generation theorem.
+Centered parity still controls which spectral values can be singular,
+but the two-tail rank calculation does not establish the higher-product
+claim. The relevant differential operators should contain products of
+cotangent kernels and higher pole multiplicities. Exact finite
+reconstruction and ordinary telescoping identities would be natural
+outputs. Odd numbers of tails require a separate finite-part
+normalization because their centered parity changes.
+
+\subsubsection{Functional certificates for the remaining ladders}
+
+Continue the exact functional-equation search for the manuscript's
+Gaussian $S_6$ and revised $S_8$ candidates, keeping the evaluated
+identity distinct from the formal symbol calculation. The new
+convergent spectral coordinates suggest additional Mellin and
+polylogarithmic representations, but no bridge to those particular
+ladder vectors is proved here. A successful next step should supply an
+explicit functional certificate, a proved obstruction in a stated
+relation system, or a rigorously nonzero evaluated residual.
+
+\subsubsection{Formal certificates with a small analytic interface}
+
+The finite algorithms admit a useful separation: exact Laurent
+extraction and word multiplication, rational matrix reconstruction,
+and the analytic lemmas for normal convergence and finite parts.
+Formalize the first layer independently, then connect it through proved
+interfaces to the scalar residue filter, the normalized
+Mittag--Leffler theorem, and the Euler holomorphy theorem.
+The purpose is a reusable proof pipeline for further identities,
+with each numerical diagnostic remaining a separately identified
+experiment.

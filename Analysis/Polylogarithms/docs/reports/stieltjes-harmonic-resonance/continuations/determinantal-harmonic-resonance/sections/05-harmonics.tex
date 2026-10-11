@@ -1,0 +1,221 @@
+\section{Integer and mixed harmonic specializations}
+\label{dhr:sec:harmonic}
+
+\subsection{A rational spectral partition at every particle number}
+Take $a=c=1$, so $b_0=2r$, and choose
+\begin{equation}\label{dhr:eq:integer-normalization}
+ L(u)=\frac{\Gamma(2r+u)}{\Gamma(2r)}.
+\end{equation}
+At zero the particle weight is rational:
+\[
+ w_n(1,1;2r)=\frac1{(n+1)_{2r-1}}.
+\]
+Denote the normalized meromorphic partition by
+$F_r(u)=L(u)^rZ_r(1,1;2r+u)$.
+
+\begin{proposition}[Rationality of the normalized partition]
+\label{dhr:prop:rational-partition}
+For every $r\geq1$,
+\begin{equation}\label{dhr:eq:rational-partition}
+ \boxed{F_r(u)=
+ \frac{\displaystyle\prod_{j=0}^{r-1}(j!)^3}{[(2r-1)!]^r}
+ \prod_{k=0}^{r-1}\frac{(u+r+k)_{r-k}}{(u+k)_r}.}
+\end{equation}
+Its residue $A_0$ at zero is a positive rational number. The hard-cutoff
+constant is
+\begin{equation}\label{dhr:eq:integer-cutoff}
+ A_0\{\gamma-3H_{r-1}\}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+For $a=c=1$, the $j$th product factor in
+\eqref{dhr:eq:gauss-product} is
+\[
+ (j!)^3\frac{\Gamma(r-1+u-j)}{\Gamma(2r-1+u-j)^2}.
+\]
+Pair one factor $\Gamma(2r+u)$ from $L^r$ with each of these,
+use Gamma recurrences, and replace $j$ by $r-1-k$.
+This gives \eqref{dhr:eq:rational-partition}. Finally,
+$\chi=2\psi(1)-3\psi(r)=\gamma-3H_{r-1}$, and
+Corollary~\ref{dhr:cor:cutoff} applies.
+\end{proof}
+
+The first partitions are
+\begin{align}
+ F_1(u)&=\frac{u+1}{u},\notag\\
+ F_2(u)&=\frac{(u+3)^2}{36u(u+1)^2},\notag\\
+ F_3(u)&=\frac{(u+4)(u+5)^3}
+ {216000u(u+1)^2(u+2)^3(u+3)},\notag\\
+ F_4(u)&=\frac{(u+6)^2(u+7)^4}
+ {373403520000u(u+1)^2(u+2)^3(u+3)^4(u+4)^2}.
+ \label{dhr:eq:small-partitions}
+\end{align}
+The corresponding residues are
+\begin{equation}\label{dhr:eq:small-residues}
+ A_0=1,\quad\frac14,\quad\frac1{10368},\quad
+ \frac1{44789760000}\qquad(r=1,2,3,4).
+\end{equation}
+Although $F_r$ is rational, the individual normal-convergence amplitude
+$A(u)$ is generally not rational. Its polygamma derivatives are exactly
+what permit Stieltjes constants to appear in ordinary subtracted sums.
+
+For calculation, the logarithmic derivatives are
+\begin{align}
+ (\log A)^{(k)}(0)
+ &=r\psi^{(k-1)}(2r)
+ +\sum_{j=0}^{r-2}\left\{\psi^{(k-1)}(r-j)
+                    -2\psi^{(k-1)}(2r-1-j)\right\},
+ \label{dhr:eq:integer-A-jets}\\
+ \ell_k&=(-1)^k(k-1)!
+       \{3H_{r-1}^{(k)}-\zeta(k)\},\qquad k\geq2.
+ \label{dhr:eq:integer-E-jets}
+\end{align}
+Together with $\ell_1=\gamma-3H_{r-1}$, these are finite exact
+coefficient recipes for every row of Theorem~\ref{dhr:thm:jets}.
+
+\subsection{The derivatives as actual harmonic polynomials}
+For a configuration $\bm n=(n_1,\ldots,n_r)$ define
+\begin{equation}\label{dhr:eq:harmonic-log-jets}
+ v_k(\bm n)=(-1)^k(k-1)!
+  \sum_{i=1}^r\left\{H_{n_i+2r-1}^{(k)}-H_{2r-1}^{(k)}\right\}.
+\end{equation}
+Logarithmic differentiation of the normalized weight gives
+\begin{equation}\label{dhr:eq:K-harmonic}
+ K_n^{(k)}(0)=
+ \sum_{0\leq n_1<\cdots<n_{r-1}<n_r=n}
+ \frac{\Delta(\bm n)^2\,
+  \Bell_k(v_1(\bm n),\ldots,v_k(\bm n))}
+ {\displaystyle\prod_{i=1}^r(n_i+1)_{2r-1}}.
+\end{equation}
+This formula has no spectral derivatives left unevaluated. To see it,
+for a single particle differentiate
+$\log\Gamma(2r+u)-\log\Gamma(n+2r+u)$.
+The polygamma shift formula gives the corresponding summand in
+\eqref{dhr:eq:harmonic-log-jets}; the Bell identity
+\eqref{dhr:eq:bell} then differentiates the product. Substitution in
+\eqref{dhr:eq:all-jets} proves an explicit all-order family of
+harmonic--logarithm--Stieltjes identities.
+
+For a concrete first-order member, put
+\begin{equation}\label{dhr:eq:W2}
+ W_{m,n}=\frac{(n-m)^2}{(m+1)_3(n+1)_3},\qquad 0\leq m<n.
+\end{equation}
+At $r=2$, $A_0=1/4$, $A_1=(5/3-\gamma)/4$, and
+$e_2=(\gamma-3)^2+3-\zeta(2)$. Thus
+\begin{align}
+ \sum_{n\geq0}\bigg[&\sum_{m=0}^{n-1}W_{m,n}
+       (2H_3-H_{m+3}-H_{n+3})\notag\\
+ &-\frac{5/3-\gamma-\log(n+1)}{4(n+1)}\bigg]
+ =\frac14+\frac{\gamma^2-\zeta(2)}8+\frac{\gamma_1}{4}.
+ \label{dhr:eq:explicit-stieltjes}
+\end{align}
+Here $\gamma_1=\gamma_1(1)$, and the empty inner sum at $n=0$ is zero.
+The zero-order companion is
+\begin{equation}\label{dhr:eq:explicit-stieltjes-zero}
+ \sum_{n\geq0}\left\{\sum_{m<n}W_{m,n}-\frac1{4(n+1)}\right\}
+ =-\frac34.
+\end{equation}
+These are ordinary convergent bracketed series, not a declaration of
+finite-part integration in disguise.
+
+The same example makes the normalization distinction numerical and exact:
+\begin{equation}\label{dhr:eq:normalization-example}
+ \FP_{u=0}F_2(u)=-\frac13,\qquad
+ \lim_{N\to\infty}\left\{\sum_{m<n\leq N}W_{m,n}
+                              -\frac14\log N\right\}
+ =\frac{\gamma-3}{4}.
+\end{equation}
+Their difference is $A_1=(5/3-\gamma)/4$, as required. With $L=1$
+the spectral finite part instead equals $(2\gamma-5)/4$; the hard
+cutoff is unchanged.
+
+\subsection{Ordinary all-order mixed harmonic sums}
+A convergent, rather than resonant, specialization produces another
+useful family. For an integer $B>2r$, define
+\begin{equation}\label{dhr:eq:mixed-generator}
+ \mathcal H_{r,B}(p,q)=
+ \frac{Z_r(1+p,1+q;B)}{[\Gamma(1+p)\Gamma(1+q)]^r}.
+\end{equation}
+Near $p=q=0$, it is both a normally convergent sum and the explicit
+Gamma product
+\begin{align}
+ \mathcal H_{r,B}(p,q)
+ =\prod_{j=0}^{r-1}
+ \frac{j!\,\Gamma(1+p+j)\Gamma(1+q+j)
+              \Gamma(B-r-1-j-p-q)}
+ {\Gamma(1+p)\Gamma(1+q)
+              \Gamma(B-1-j-p)\Gamma(B-1-j-q)}.
+ \label{dhr:eq:mixed-product}
+\end{align}
+The convergence region includes a neighborhood with
+$\Rea(p+q)<B-2r$.
+
+\begin{theorem}[Many-variable mixed harmonic identities]
+\label{dhr:thm:mixed}
+For a configuration $\bm n$, let
+\[
+ U_j(\bm n)=(-1)^{j-1}(j-1)!\sum_{i=1}^rH_{n_i}^{(j)},\qquad
+ W_B(\bm n)=\frac{\Delta(\bm n)^2}{\prod_i(n_i+1)_{B-1}}.
+\]
+For all $k,l\geq0$,
+\begin{align}
+ &\sum_{n_1<\cdots<n_r}W_B(\bm n)
+ \Bell_k(U_1,\ldots,U_k)\Bell_l(U_1,\ldots,U_l)\notag\\
+ &\hspace{35mm}=\partial_p^k\partial_q^l
+               \mathcal H_{r,B}(0,0).
+ \label{dhr:eq:mixed-harmonic}
+\end{align}
+Every pure row ($k=0$ or $l=0$) is rational. Every mixed row lies
+in $\Q[\zeta(2),\ldots,\zeta(k+l)]$; for zero or first total order
+this means simply $\Q$.
+\end{theorem}
+\begin{proof}
+Relative to its value at $p=q=0$, the summand is multiplied by
+\[
+ \prod_{i=1}^r\prod_{j=1}^{n_i}(1+p/j)(1+q/j).
+\]
+Its logarithmic derivatives in either variable are the $U_j$.
+The Bell formula and local normal convergence prove
+\eqref{dhr:eq:mixed-harmonic}. The pure generating function is
+itself rational:
+\begin{equation}\label{dhr:eq:pure-rational}
+ \mathcal H_{r,B}(p,0)=
+ \prod_{j=0}^{r-1}
+ \frac{(j!)^2(1+p)_j}
+ {\Gamma(B-1-j)(B-r-1-j-p)_r}.
+\end{equation}
+This follows by Gamma recurrences in \eqref{dhr:eq:mixed-product}.
+It proves rationality of every pure derivative, not just the displayed
+low orders. For derivatives involving both $p$ and $q$, only
+$\log\Gamma(B-r-1-j-p-q)$ contributes to a mixed derivative
+of the logarithm. Its derivatives of total order $h\geq2$ are
+rational combinations of $\zeta(h)$ and finite generalized harmonic
+numbers. Pure logarithmic derivatives are rational by
+\eqref{dhr:eq:pure-rational}. Exponentiating with finite multivariate
+Bell coefficients proves the asserted zeta algebra.
+\end{proof}
+
+For $r=2,B=6$, the product simplifies to
+\begin{equation}\label{dhr:eq:H26}
+ \mathcal H_{2,6}(p,q)=
+ \frac{(1+p)(1+q)\Gamma(3-p-q)\Gamma(2-p-q)}
+ {\Gamma(5-p)\Gamma(5-q)\Gamma(4-p)\Gamma(4-q)}.
+\end{equation}
+Set $V_{m,n}=(n-m)^2/[(m+1)_5(n+1)_5]$ and sum below over
+$0\leq m<n$. Direct differentiation yields
+\begin{align}
+ \sum V_{m,n}&=\frac1{10368},\notag\\
+ \sum V_{m,n}(H_m+H_n)&=\frac{29}{12\cdot10368},\notag\\
+ \sum V_{m,n}\{(H_m+H_n)^2-H_m^{(2)}-H_n^{(2)}\}
+ &=\frac{43}{8\cdot10368},\notag\\
+ \sum V_{m,n}(H_m+H_n)^2
+ &=\frac{517/144+2\zeta(2)}{10368},\notag\\
+ \sum V_{m,n}\{H_m^{(2)}+H_n^{(2)}\}
+ &=\frac{2\zeta(2)-257/144}{10368}.
+ \label{dhr:eq:ordinary-examples}
+\end{align}
+For example, at zero the first logarithmic $p$-derivative is $29/12$,
+the second pure logarithmic derivative is $-67/144$, and the mixed
+logarithmic derivative is $2\zeta(2)-9/4$. These three numbers prove
+all four nonconstant rows. They illustrate why a pure Bell combination
+can be rational while the square of the ordinary harmonic sum is not.

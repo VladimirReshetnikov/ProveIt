@@ -1,0 +1,196 @@
+\section{Explicit polylogarithms and ordinary multiple sums}
+\label{dhr:sec:explicit}
+
+In this section use the canonical critical weight
+$w_r(n)=1/(n+1)_{2r-1}$. Abbreviate $S_{r,N}=S_{w_r,N}$,
+$K_{r,N}=S_{r,N}-S_{r,N-1}$, and
+\begin{equation}\label{dhr:eq:canonical-GI}
+ G_r(z)=\sum_{N\geq0}K_{r,N}z^{N+1},\qquad
+ I_{r,q}=\sum_{0\leq n_1<\cdots<n_r}
+ \frac{\Delta(\bm n)^2}
+ {(n_r+1)^q\prod_i(n_i+1)_{2r-1}},\quad q\geq1.
+\end{equation}
+Thus $I_{r,q}=\Theta^{-q}G_r(1)$, an ordinary convergent endpoint.
+The one-variable case is $G_1=\Li_1$ and $I_{1,q}=\zeta(q+1)$.
+
+\subsection{Two variables: complete cutoff and generating function}
+The three moments needed for $r=2$ are
+\begin{align}
+ M_0(N)&=\frac{(N+1)(N+4)}{4(N+2)(N+3)},\notag\\
+ M_1(N)&=\frac{N(N+1)}{4(N+2)(N+3)},\notag\\
+ M_2(N)&=H_{N+1}-\frac{11}{4}
+                      +\frac1{2(N+2)}+\frac9{2(N+3)}.
+ \label{dhr:eq:r2-moments}
+\end{align}
+They follow directly from the residues of $n^k/(n+1)_3$.
+Taking $M_0M_2-M_1^2$ gives the finite identity
+\begin{equation}\label{dhr:eq:r2-cutoff}
+ \boxed{S_{2,N}=
+ \frac{(N+1)(N+4)}{4(N+2)(N+3)}H_{N+1}
+ -\frac{(N+1)^2(3N+8)}{4(N+2)^2(N+3)}.}
+\end{equation}
+This proves the cutoff formula without any asymptotic summation.
+It also independently recovers the residue $1/4$ and constant
+$(\gamma-3)/4$.
+
+Applying the exact transforms in Section~\ref{dhr:sec:depth} yields
+\begin{align}
+ G_2(z)={}&\frac{(1-z)^2}{4z^2}\log^2(1-z)
+        +\frac{z-1}{2z}\Li_2(z)\notag\\
+ &-\frac{6-5z}{4z^2}\log(1-z)+\frac34-\frac3{2z}.
+ \label{dhr:eq:r2-G}
+\end{align}
+The expression is analytic at zero and starts $z^2/144$,
+corresponding to the unique first configuration $(0,1)$.
+Every negative-power coefficient cancels exactly.
+At $z=1/2$, the classical dilogarithm reflection formula
+\cite{dlmf:polylog} gives
+\begin{equation}\label{dhr:eq:G-half}
+ \sum_{0\leq m<n}\frac{(n-m)^2\,2^{-(n+1)}}{(m+1)_3(n+1)_3}
+ =\frac12\log^22+\frac72\log2-\frac{\pi^2}{24}-\frac94.
+\end{equation}
+At the other endpoint, \eqref{dhr:eq:r2-G} gives
+\begin{equation}\label{dhr:eq:Abel-constant}
+ G_2(z)=-\frac14\log(1-z)-\frac34+o(1),\qquad z\uparrow1.
+\end{equation}
+The Abel constant is $-3/4$, not the hard-cutoff constant
+$(\gamma-3)/4$. This is consistent with
+$\sum_{N\geq0}H_{N+1}z^{N+1}=-\log(1-z)/(1-z)$.
+
+\begin{theorem}[An ordinary double-sum evaluation]
+\label{dhr:thm:first-evaluation}
+\begin{equation}\label{dhr:eq:I21}
+ \boxed{\displaystyle
+ \sum_{0\leq m<n}
+ \frac{(n-m)^2}{(m+1)_3(n+1)_3(n+1)}
+ =\zeta(3)-\frac{\pi^2}{24}-\frac34.}
+\end{equation}
+\end{theorem}
+\begin{proof}
+We give a telescoping proof in addition to the polylogarithmic
+primitive method. Put $v=N+1$. Differencing \eqref{dhr:eq:r2-cutoff}
+gives
+\[
+ K_{2,v-1}=\frac{4(v+1)H_v+v^3-3v^2-6v}
+ {4v(v+1)^2(v+2)}.
+\]
+Partial fractions of $K_{2,v-1}/v$ give a harmonic coefficient
+\[
+ -\frac3{4v}+\frac1{v+1}-\frac1{4(v+2)}+\frac1{2v^2}
+\]
+and a nonharmonic coefficient
+\[
+ -\frac3{4v}+\frac5{4(v+1)}-\frac1{2(v+2)}
+                                      +\frac1{2(v+1)^2}.
+\]
+Group the first three terms of each coefficient into telescoping
+differences before summing. Absolute convergence then permits
+\begin{align*}
+ \sum_{v\geq1}\frac{H_v}{v(v+1)}&=\zeta(2),&
+ \sum_{v\geq1}\frac{H_v}{(v+1)(v+2)}&=1,&
+ \sum_{v\geq1}\frac{H_v}{v^2}&=2\zeta(3).
+\end{align*}
+The first two identities follow by summing over the inner index in
+$H_v$ and telescoping; the third is
+$\zeta(2,1)+\zeta(3)=2\zeta(3)$ by
+Lemma~\ref{dhr:lem:Euler}. The harmonic part therefore sums to
+$-3\zeta(2)/4+1/4+\zeta(3)$. The nonharmonic part sums to
+$\zeta(2)/2-1$. Their total is
+$\zeta(3)-\zeta(2)/4-3/4$, proving the theorem.
+\end{proof}
+
+Two further primitives give
+\begin{align}
+ I_{2,2}&=\frac74-\frac{\pi^2}{16}-\frac32\zeta(3)
+                            +\frac{\pi^4}{144},\label{dhr:eq:I22}\\
+ I_{2,3}&=-\frac52+\frac{17\pi^2}{96}+\zeta(3)
+             -\frac{\pi^4}{96}-\frac{\pi^2\zeta(3)}{12}
+             +\frac32\zeta(5).
+ \label{dhr:eq:I23}
+\end{align}
+These follow by dividing the same rational-plus-harmonic mass by
+$v^2$ and $v^3$, applying \eqref{dhr:eq:T-transform}--\eqref{dhr:eq:U-shift},
+and then \eqref{dhr:eq:Euler-zeta}. The delivered exact formula file
+contains the full primitive reductions, not just their endpoints.
+
+\subsection{Three variables: a depth-two formula of weight three}
+For $r=3$, the determinant gives
+\begin{equation}\label{dhr:eq:r3-P}
+ P_3(N)=\frac{N(N+1)^2(N^2+17N+54)}
+ {10368(N+3)^2(N+4)^2(N+5)}
+\end{equation}
+and
+\begin{equation}\label{dhr:eq:r3-Q}
+ Q_3(N)=-\frac{N(N+1)^3(9N^3+125N^2+514N+648)}
+ {20736(N+2)(N+3)^3(N+4)^2(N+5)},
+\end{equation}
+with $S_{3,N}=P_3(N)H_{N+1}+Q_3(N)$. Hence its hard-cutoff
+constant is $(\gamma-9/2)/10368$, again agreeing with the independent
+Gamma resonance calculation.
+
+For compact notation let $L_j=\Li_j(z)$ and
+$D_j=\Li_{j,1}(z,1)$. The generating function is
+\begin{align}
+ G_3(z)={}&-\frac{5(z-1)^2(7z-4)}{1728z^4}D_1
+        +\frac{(z-1)(z+1)}{144z^3}D_2\notag\\
+ &-\frac{117z^3+95z^2-513z+300}{10368z^4}L_1\notag\\
+ &-\frac{5(z-1)(7z-18)}{1728z^3}L_2
+        +\frac{z-1}{144z^2}L_3
+        -\frac{281z^2-78z-200}{6912z^3}.
+ \label{dhr:eq:r3-G}
+\end{align}
+Its first nonzero coefficient is $z^3/54432000$, the configuration
+$(0,1,2)$. Thus three ordered summation variables have not produced
+depth three. The theorem explains this before any coefficient
+calculation is performed.
+
+The first three ordinary primitive endpoints are
+\begin{align}
+ I_{3,1}&=\frac{1903}{124416}
+          -\frac{35\pi^2}{62208}-\frac7{864}\zeta(3),
+ \label{dhr:eq:I31}\\
+ I_{3,2}&=-\frac{6775}{373248}
+          +\frac{67\pi^2}{186624}+\frac7{576}\zeta(3),
+ \label{dhr:eq:I32}\\
+ I_{3,3}&=\frac{100297}{4478976}
+          -\frac{403\pi^2}{1492992}-\frac{131}{7776}\zeta(3)
+          +\frac{\pi^4}{186624}.
+ \label{dhr:eq:I33}
+\end{align}
+In particular, \eqref{dhr:eq:I31} is the explicit triple sum
+\[
+ \sum_{0\leq i<j<k}
+ \frac{(j-i)^2(k-i)^2(k-j)^2}
+ {(i+1)_5(j+1)_5(k+1)_5(k+1)}.
+\]
+The displayed value is a reduction of this entire sum, not a bound or
+an asymptotic approximation.
+
+\subsection{Four variables and the uniform algorithm}
+A first four-variable endpoint is
+\begin{equation}\label{dhr:eq:I41}
+ I_{4,1}=\frac{630863}{268738560000}
+ +\frac{14717\pi^2}{67184640000}
+ -\frac{487}{124416000}\zeta(3)
+ +\frac{\pi^4}{497664000}.
+\end{equation}
+The definition \eqref{dhr:eq:canonical-GI} specifies its six squared
+difference factors and four degree-seven factorial denominators.
+The numbers in these expressions can cancel substantially; direct
+low-precision evaluation is therefore a poor way to assess them.
+The exact rational reduction precedes the high-precision diagnostic.
+
+For any requested $r$ and primitive order $q$, there is a terminating
+algorithm: compute the $2r-1$ finite moments by residues, take the two
+determinants \eqref{dhr:eq:PQ-det}, difference the cutoff, divide by
+$(N+1)^q$, and apply the finite partial-fraction transform. It outputs
+both a functional polylogarithmic identity and, when $q\geq1$, its
+ordinary zeta endpoint. The implementation in \texttt{code/reductions.py}
+uses exact rational arithmetic. It is not restricted in its mathematics
+to the ranks and primitive orders printed here, although symbolic
+expression growth limits convenient computation at large rank.
+
+The fact that some displayed endpoints omit the highest permitted
+weight is an additional cancellation in those cases. We assert the
+proved upper bound $r+q$, not a universal sharp-weight formula and
+not independence of the surviving zeta coordinates.

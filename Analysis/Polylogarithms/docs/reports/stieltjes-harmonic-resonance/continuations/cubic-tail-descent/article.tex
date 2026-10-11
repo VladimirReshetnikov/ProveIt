@@ -1,0 +1,1353 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}\fancyhead[L]{\small Cubic invariant tail descent}\fancyhead[R]{\small ProveIt research continuation}\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\depth}{depth}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\Om}{\Omega}
+\newcommand{\Ztr}{\mathcal Z}
+\newcommand{\Ltr}{\mathcal L}
+\newcommand{\Dtr}{\mathcal D}
+\newcommand{\coef}[1]{\left[#1\right]}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\hypersetup{pdftitle={Cubic Invariant Tail Descent},pdfauthor={Research continuation prepared for Vladimir Reshetnikov},pdfsubject={Exact harmonic-tail identities, Gamma quotients, polylogarithms and Stieltjes traces}}
+\title{\textbf{Cubic Invariant Tail Descent}\\[5pt]
+\large All-degree harmonic identities, exact digamma cubes,\\
+polylogarithmic representations, and algebraic Stieltjes traces}
+\author{Research continuation prepared for Vladimir Reshetnikov\\
+\small ProveIt / Analysis / Polylogarithms\\
+\small Mathematical derivations and computational checks with OpenAI assistance}
+\date{10 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The first mixed Rogers--Dougall resonance already present in the ProveIt
+manuscript has a symmetric cubic structure that is not visible in its original
+two-parameter coefficient tables. We expose that structure and prove an
+all-degree descent theorem: the weighted, symmetrized product of $d\ge2$
+odd zeta tails has an explicit expression in multiple zeta values of depth
+at most $\max(1,d-2)$. The weight is preserved after the natural shift by
+two. A finite recurrence supplies every coefficient.
+
+The first consequences include
+\[
+ \sum_{n\ge0}(2n+1)\bigl(\zeta(3)-H_n^{(3)}\bigr)^3
+       =\frac74\zeta(7),
+\]
+and
+\[
+ \sum_{n\ge0}(2n+1)\bigl(\zeta(3)-H_n^{(3)}\bigr)^4
+       =\zeta(10)+\zeta(5)^2+2\zeta(7,3).
+\]
+We also obtain meromorphic closed formulas for the square and cube of a
+symmetric digamma tail, an exact cubic identity involving $H_n,H_{2n}$ and
+$\log2$, and convergent polylogarithmic integral and primitive formulas.
+The same cubic coordinates give a branch-independent expansion of Hurwitz
+and Lerch traces, all-index generalized Stieltjes identities, and anchored
+antiderivatives of every positive integer order. Root collisions cause no
+singularity in these trace formulas.
+
+The proofs are analytic and algebraic, not integer-relation inferences.
+The accompanying finite exact checks and numerical diagnostics are separate
+from the proofs. The classical Gamma and tail-product inputs are attributed;
+no comprehensive historical-priority claim is made. The Gaussian $S_6$ and
+revised $S_8$ conjectures remain unresolved by this article.
+\end{abstract}
+\vfill
+\noindent\small\textbf{Source scope.} Targeted canonical reads and repository
+searches at the source anchor\\
+\src{87c7db629552afbc2e803001526debe3430a31b0}.
+The incoming directory inventory and intake instructions were inspected;
+the binary contents of its ZIPs were not audited. No live repository files
+were modified.\normalsize
+\clearpage
+\begingroup\small\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{Research position and principal results}
+\label{ct:sec:position}
+The relevant canonical starting point is
+\src{chapters/07-mixed-dougall-identities.tex} \cite{ct:repo-mixed}.
+It proves a normally convergent first-resonance Gamma identity, mixed
+parameter derivatives, a weighted trigamma-difference square, and an
+all-order quadratic zeta-tail reduction. Those results are inputs here,
+not new claims. The harmonic coefficient chapter separately proves the
+Gauss identities that resolve and correct the indicated Choi formulas
+\cite{ct:repo-harmonic}. We do not reopen those resolved conjectures.
+
+The contribution of this continuation is a precise structural consequence
+of the mixed resonance. Introducing the elementary invariants of the
+three roots $p,q,-p-q$ turns a large family of mixed derivatives into a
+triangular system ordered by the number of tail factors. Its leading
+term is an arbitrary symmetric convolution of odd tails; every other term
+has at least two fewer factors. This gives an explicit all-degree depth
+reduction, rather than another unorganized list of derivatives.
+
+Let
+\begin{equation}\label{ct:eq:tails}
+ T_s(n)=\zeta(s,n+1)=\zeta(s)-H_n^{(s)},\qquad
+ H_n^{(s)}=\sum_{j=1}^n j^{-s},\qquad n\ge0,
+\end{equation}
+initially with integer $s\ge3$. In particular $H_0^{(s)}=0$.
+For $a\ge0$ and $d\ge2$, set
+\begin{equation}\label{ct:eq:M}
+ M_{a,d}=\sum_{n\ge0}(2n+1)
+       \sum_{j_1+\cdots+j_d=a\atop j_i\ge0}
+             \prod_{i=1}^d T_{2j_i+3}(n).
+\end{equation}
+The index tuples in the inner sum are ordered. This multiplicity is
+important: $M_{1,3}=3\sum_n(2n+1)T_3(n)^2T_5(n)$.
+
+\begin{theorem}[Summary of the tail descent]\label{ct:thm:summary}
+For every $a\ge0,d\ge2$, $M_{a,d}$ has an explicit rational linear
+expression in convergent multiple zeta values of weight
+$2a+3d-2$ and depth at most $\max(1,d-2)$. The construction is the finite
+recurrence in Theorem~\ref{ct:thm:coefficient} followed by the ordered-partition
+map in Lemma~\ref{ct:lem:partitions}. In particular,
+\begin{align}
+ M_{a,2}&=\frac{2a+3}{2}\zeta(2a+4),\label{ct:eq:quadratic}\\
+ M_{a,3}&=\frac{(a+1)(2a+7)}4\zeta(2a+7).\label{ct:eq:cubic}
+\end{align}
+\end{theorem}
+Here and below ``depth at most'' is a constructive upper bound on a
+representation. It is not a minimal-depth assertion, a statement of period
+independence, or a proof that $\zeta(7,3)$ cannot be reduced further.
+
+For a second accessible family, define
+\begin{equation}\label{ct:eq:R}
+ R_n=2\bigl(\log2+H_n-H_{2n}\bigr)-\frac1{2n+1}.
+\end{equation}
+We prove
+\begin{equation}\label{ct:eq:R-identities}
+ \sum_{n\ge0}(2n+1)R_n^2=\frac{\zeta(2)-1}{4},\qquad
+ \sum_{n\ge0}(2n+1)R_n^3=\frac58\zeta(3)-\log2.
+\end{equation}
+These are ordinary absolutely convergent series. Their proof gives a full
+complex-parameter identity, not just these two evaluations.
+
+\subsection{Classical antecedents and novelty boundaries}
+The Rogers--Dougall very well-poised summation is classical
+\cite{ct:dlmf16}. The passage from products of zeta tails to multiple zeta
+values is also established; Hoffman's treatment is a direct antecedent
+\cite{ct:hoffman}. Our minimum-square version of that passage is proved
+below because the weight $2n+1$ and the inclusion of $n=0$ change the
+normalization. It is not presented as the discovery of the general
+sums-of-tails method.
+
+The symmetric Gamma product, the Hurwitz shift expansion, and the
+Gamma--zeta derivative at zero are standard analytic ingredients
+\cite{ct:dlmf5,ct:dlmf25}. The additional results are their explicit cubic
+invariant organization, the associated all-degree descent, the closed
+symmetric-digamma cube, and the compatible trace/primitive formulas.
+These statements are proved here. A targeted search did not establish
+comprehensive historical priority for their individual special cases.
+
+\section{The cubic Gamma quotient}
+\label{ct:sec:gamma}
+Let
+\begin{equation}\label{ct:eq:domain}
+ \Om=\{(\sigma,\tau)\in\CC^2:|\sigma|+|\tau|<1\}.
+\end{equation}
+Write $r_1,r_2,r_3$ for the roots, with multiplicity, of
+\begin{equation}\label{ct:eq:cubic-poly}
+ r^3-\sigma r+\tau=0.
+\end{equation}
+Rouch\'e's theorem on $|r|=1$ gives $|r_j|<1$ on $\Om$.
+The symmetric expressions below do not require a continuous labeling of
+these roots. Put
+\begin{align}
+ Q_n(\sigma,\tau)
+   &=\prod_{j=1}^3\frac{\Gamma(n+1+r_j)}{\Gamma(n+1-r_j)},
+       \qquad x_n=n+\tfrac12,\label{ct:eq:Q}\\
+ B(\sigma,\tau)
+   &=\psi(\tfrac12)+\frac12\left\{\psi(2)-\sum_{j=1}^3\psi(1+r_j)\right\}.
+       \label{ct:eq:B}
+\end{align}
+
+\begin{lemma}[Product and logarithm]\label{ct:lem:product}
+On $\Om$,
+\begin{equation}\label{ct:eq:product}
+ Q_n(\sigma,\tau)
+   =\prod_{j>n}\frac{j^3-\sigma j+\tau}{j^3-\sigma j-\tau},
+\end{equation}
+and the logarithm that is zero at $(0,0)$ has the locally normally
+convergent expansion
+\begin{equation}\label{ct:eq:logQ}
+ \log Q_n
+ =2\sum_{a,b\ge0}\frac{\binom{a+2b}{a}}{2b+1}
+       T_{2a+6b+3}(n)\,\sigma^a\tau^{2b+1}.
+\end{equation}
+Moreover,
+\begin{equation}\label{ct:eq:Q-bound}
+ x_n(Q_n-1)-\frac{\tau}{x_n}=O(n^{-3})
+\end{equation}
+uniformly on compact subsets of $\Om$.
+\end{lemma}
+\begin{proof}
+The relations among the roots are
+$\sum r_j=0$, $\sum_{i<j}r_ir_j=-\sigma$ and $r_1r_2r_3=-\tau$.
+The linear exponential factors in the Weierstrass product for Gamma cancel.
+The remaining product gives \eqref{ct:eq:product}. Equivalently, use the
+Gamma recurrence to remove its first $n$ factors. Both numerator and
+denominator in \eqref{ct:eq:product} are nonzero on $\Om$.
+
+For $j\ge1$, expand
+\[
+ \log\frac{1+\tau/(j^3-\sigma j)}{1-\tau/(j^3-\sigma j)}
+   =2\sum_{b\ge0}\frac{\tau^{2b+1}}{(2b+1)(j^3-\sigma j)^{2b+1}},
+\]
+then expand $(1-\sigma/j^2)^{-2b-1}$. On every closed smaller domain
+$|\sigma|+|\tau|\le\rho<1$, these geometric expansions admit an absolute
+majorant. Summation over $j>n$ proves \eqref{ct:eq:logQ} and its normal
+convergence.
+
+The first term is $2\tau T_3(n)$. All other terms are $O(n^{-4})$ uniformly
+on compact parameter sets. The elementary centered tail expansion is
+\[
+ T_3(n)=\frac1{2x_n^2}+O(x_n^{-4}).
+\]
+For example, it follows from the first two terms of Euler--Maclaurin in
+$n+1$ followed by the substitution $n+1=x_n+1/2$; the cubic inverse power
+cancels. Thus $\log Q_n=\tau/x_n^2+O(x_n^{-4})$ and exponentiation proves
+\eqref{ct:eq:Q-bound}.
+\end{proof}
+
+\begin{theorem}[Cubic invariant master identity]\label{ct:thm:master}
+For $(\sigma,\tau)\in\Om$,
+\begin{equation}\label{ct:eq:master}
+ \sum_{n\ge0}\left\{x_n(Q_n(\sigma,\tau)-1)-\frac{\tau}{x_n}\right\}
+       =\tau B(\sigma,\tau).
+\end{equation}
+The bracketed sum is locally normally convergent. Every fixed derivative
+in $\sigma,\tau$ may be taken termwise, provided the displayed subtraction
+is retained before differentiation.
+\end{theorem}
+
+This theorem is the $a=1$ specialization of the canonical mixed resonance,
+rewritten symmetrically. To make the present continuation independently
+readable, the next section supplies a direct derivation from the classical
+summation, including the finite constant. It is not a second novelty claim
+for that resonance.
+
+\section{A proof of the master identity with its subtraction visible}
+\label{ct:sec:master-proof}
+Initially choose small negative real $p,q$ and then a sufficiently small
+complex neighborhood of a generic such pair. Put $d_0=-p-q$, with
+$\Rea d_0>0$, and set
+\[
+ \sigma=p^2+pq+q^2,\qquad \tau=pq(p+q).
+\]
+Then the three roots are $p,q,-p-q$. Introduce a separate spectral parameter
+$u$ and define
+\begin{equation}\label{ct:eq:ru}
+ r_n(u)=x_n\frac{\Gamma(n+1+p)\Gamma(n+1+q)\Gamma(n-p-q-u)}
+ {\Gamma(n+1-p)\Gamma(n+1-q)\Gamma(n+2+p+q+u)}.
+\end{equation}
+For $0<\Rea u<\Rea d_0$, the Rogers--Dougall summation, in the normalization of
+\eqref{ct:eq:ru}, is
+\begin{equation}\label{ct:eq:G}
+ \sum_{n\ge0}r_n(u)=G(u):=
+ \frac{\Gamma(1+p)\Gamma(1+q)\Gamma(-p-q-u)\Gamma(u)}
+ {2\Gamma(-p-q)\Gamma(1+p+u)\Gamma(1+q+u)}.
+\end{equation}
+Indeed substitute the upper parameters
+$1,3/2,1+p,1+q,-p-q-u$ in the classical ${}_5F_4(1)$ formula
+\cite[Eq.~16.4.9]{ct:dlmf16}; its excess is $2u$.
+The factor $1/2$ comes from $x_n=n+1/2$.
+
+The Gamma ratio in \eqref{ct:eq:ru} is centered at $x_n$. The numerator
+shifts, including the canceled pair $\Gamma(n+1)/\Gamma(n+1)$, are
+\[
+ \alpha=(\tfrac12,\tfrac12+p,\tfrac12+q,-\tfrac12-p-q-u),
+\]
+and the denominator shifts are $1-\alpha_j$. The shifted logarithmic
+Gamma expansion and $B_k(1-z)=(-1)^kB_k(z)$ give
+\begin{equation}\label{ct:eq:asymptotic-r}
+ r_n(u)=x_n^{-1-2u}\{1+C_1(u)x_n^{-2}+O(x_n^{-4})\},
+ \qquad C_1(u)=-\frac13\sum_{j=1}^4B_3(\alpha_j).
+\end{equation}
+The odd inverse powers cancel before exponentiation. These estimates are
+uniform on compact parameter sets avoiding the displayed Gamma poles
+\cite{ct:dlmf5}. Consequently
+\begin{align}
+ \mathcal R(u)&=\sum_{n\ge0}
+ \{r_n(u)-x_n^{-1-2u}-C_1(u)x_n^{-3-2u}\}\\
+ &=G(u)-\zeta(1+2u,\tfrac12)-C_1(u)\zeta(3+2u,\tfrac12)
+ \label{ct:eq:R-cont}
+\end{align}
+continues holomorphically across $u=-1$. Locally the summands are
+$O(n^{-5-2\Rea u})$, so the continuation is also the normally convergent
+subtracted series there.
+
+Write $v=u+1$. Direct Bernoulli algebra gives
+\begin{equation}\label{ct:eq:C1}
+ C_1(-1)=\tau,\qquad
+ \frac12C_1'(-1)+\zeta(-1,\tfrac12)=\frac{(p+q)^2}{2}.
+\end{equation}
+For clarity, $B_3(1/2+t)=t^3-t/4$, and
+$C_1'(-1)=B_2(1/2-p-q)=(p+q)^2-1/12$;
+$\zeta(-1,1/2)=1/24$.
+
+The Laurent constant of $G(-1+v)$ is
+\begin{equation}\label{ct:eq:G-constant}
+ G(-1+v)=\frac{\tau}{2v}
+ +\frac\tau2\{\psi(2)-\psi(1-p-q)-\psi(p)-\psi(q)\}+O(v).
+\end{equation}
+The resonant Hurwitz term is
+\[
+ C_1(-1+v)\zeta(1+2v,\tfrac12)
+ =\frac\tau{2v}+\frac12C_1'(-1)-\tau\psi(\tfrac12)+O(v).
+\]
+Subtracting these expansions in \eqref{ct:eq:R-cont}, and using
+$\psi(p)=\psi(1+p)-1/p$ and its $q$ counterpart, cancels precisely
+\[
+ \frac\tau2\left(\frac1p+\frac1q\right)
+       =\frac{(p+q)^2}{2}.
+\]
+Since $r_n(-1)=x_nQ_n$, the result is \eqref{ct:eq:master}.
+
+The initial restrictions on $p,q$ can now be removed by holomorphy. Both
+sides are symmetric in the three roots. Alternatively, regard them as
+holomorphic functions of $\sigma,\tau$ using the product and power-series
+representations. The map $(p,q)\mapsto(\sigma,\tau)$ has nonzero Jacobian
+at generic small pairs, so the identity holds on a nonempty open subset of
+$\Om$. The identity theorem and connectedness of $\Om$ extend it throughout.
+Lemma~\ref{ct:lem:product} gives normal convergence directly on this entire
+domain. Cauchy's integral formula on a slightly larger compact polydisc
+then justifies all fixed coefficient extractions and derivatives.
+\hfill$\square$
+
+\section{Newton coefficients and the all-degree tail recurrence}
+\label{ct:sec:coefficients}
+Put $S_k=r_1^k+r_2^k+r_3^k$. The relation
+\begin{equation}\label{ct:eq:newton-log}
+ -\log(1-\sigma t^2+\tau t^3)=\sum_{k\ge1}\frac{S_k}{k}t^k
+\end{equation}
+gives, for $k\ge1$,
+\begin{equation}\label{ct:eq:newton}
+ S_k=\sum_{2a+3b=k\atop a,b\ge0}
+ \frac{k}{a+b}\binom{a+b}{b}(-1)^b\sigma^a\tau^b.
+\end{equation}
+There is no $(a,b)=(0,0)$ term. Equivalently,
+$S_0=3,S_1=0,S_2=2\sigma$ and $S_k=\sigma S_{k-2}-\tau S_{k-3}$.
+
+Using $\psi(1+z)=-\gamma+\sum_{k\ge1}(-1)^{k+1}\zeta(k+1)z^k$,
+the two signs $(-1)^k$ and $(-1)^b$ cancel when $k=2a+3b$. Hence
+\begin{equation}\label{ct:eq:B-series}
+ B(\sigma,\tau)=\frac12-2\log2+
+ \frac12\sum_{a,b\ge0\atop a+b>0}
+ \frac{2a+3b}{a+b}\binom{a+b}{b}
+       \zeta(2a+3b+1)\sigma^a\tau^b.
+\end{equation}
+The expansion is normally convergent on smaller polydiscs inside $\Om$.
+The power-sum formula, or the root trace itself, continues it wherever
+needed in $\Om$.
+
+\begin{definition}\label{ct:def:P}
+Treat $T_3,T_5,\ldots$ as independent formal symbols. Define
+\begin{equation}\label{ct:eq:P-def}
+ P_{a,d}=[\sigma^a\tau^d]\exp\left(
+ 2\sum_{i,b\ge0}\frac{\binom{i+2b}{i}}{2b+1}
+       T_{2i+6b+3}\sigma^i\tau^{2b+1}\right).
+\end{equation}
+This is a finite polynomial for each fixed $(a,d)$.
+\end{definition}
+
+\begin{theorem}[Finite recurrence and exact summation]\label{ct:thm:coefficient}
+The initial values are $P_{0,0}=1$ and $P_{a,0}=0$ for $a>0$. For $d\ge1$,
+\begin{equation}\label{ct:eq:recurrence}
+ P_{a,d}=\frac2d\sum_{b\le d\atop b\text{ odd}}
+            \sum_{i=0}^a\binom{i+b-1}{i}
+                T_{2i+3b}\,P_{a-i,d-b}.
+\end{equation}
+For every $a\ge0,d\ge2$,
+\begin{equation}\label{ct:eq:P-sum}
+ \sum_{n\ge0}(2n+1)P_{a,d}\bigl(T_3(n),T_5(n),\ldots\bigr)
+       =C_{a,d}\zeta(2a+3d-2),
+\end{equation}
+where
+\begin{equation}\label{ct:eq:C-ad}
+ C_{a,d}=\frac{2a+3d-3}{a+d-1}\binom{a+d-1}{d-1}.
+\end{equation}
+All the sums in \eqref{ct:eq:P-sum} converge absolutely.
+\end{theorem}
+\begin{proof}
+Differentiating the exponential in \eqref{ct:eq:P-def} with respect to
+$\tau$ gives \eqref{ct:eq:recurrence}. On substituting the genuine tails,
+$P_{a,d}$ is exactly $[\sigma^a\tau^d]Q_n$. Take this coefficient in
+Theorem~\ref{ct:thm:master} and multiply by two. When $d\ge2$, the
+counterterm and the constant term of $B$ make no contribution.
+The coefficient in \eqref{ct:eq:B-series} with $b=d-1$ gives
+\eqref{ct:eq:C-ad}.
+
+Each monomial is a product of $\ell\ge1$ tails, all of orders at least
+three, with total order $2a+3d$. Because $T_s(n)=O(n^{1-s})$, its weighted
+summand is $O(n^{1+\ell-2a-3d})$. Here $\ell\le d$, so the exponent is
+at most $1-2a-2d\le-3$. This also directly proves absolute convergence
+without relying only on coefficient extraction.
+\end{proof}
+
+\subsection{The exceptional linear coefficient}
+The sole coefficient requiring the subtraction is $(a,d)=(0,1)$:
+\begin{equation}\label{ct:eq:linear-counterterm}
+ \sum_{n\ge0}\left\{(2n+1)T_3(n)-\frac1{n+1/2}\right\}
+       =\frac12-2\log2.
+\end{equation}
+For $a\ge1,d=1$, the identity is simply
+$\sum_n(2n+1)T_{2a+3}(n)=\zeta(2a+1)$.
+Equation~\eqref{ct:eq:linear-counterterm} must not be split into the
+difference of two ordinarily convergent sums: both separate series diverge.
+No such finite-part issue is present in the nonlinear identities.
+
+\section{Why two levels of depth disappear}
+\label{ct:sec:descent}
+Use the convention
+\begin{equation}\label{ct:eq:mzv}
+ \zeta(s_1,\ldots,s_\ell)
+  =\sum_{m_1>\cdots>m_\ell\ge1}
+          m_1^{-s_1}\cdots m_\ell^{-s_\ell}.
+\end{equation}
+An ordered set partition of $\{1,\ldots,d\}$ is a list of nonempty disjoint
+blocks whose union is that set; the order of the blocks matters.
+
+\begin{lemma}[The minimum-square map]\label{ct:lem:partitions}
+For integers $s_i\ge3$,
+\begin{equation}\label{ct:eq:partition-map}
+ \sum_{n\ge0}(2n+1)\prod_{i=1}^dT_{s_i}(n)
+  =\sum_{(B_1,\ldots,B_\ell)}
+     \zeta\left(\sum_{i\in B_1}s_i,\ldots,
+                  \sum_{i\in B_\ell}s_i-2\right),
+\end{equation}
+where the last exponent alone is reduced by two. A one-block partition
+contributes $\zeta(s_1+\cdots+s_d-2)$.
+\end{lemma}
+\begin{proof}
+Expand the product as a sum over $m_i>n$. Positivity permits Tonelli, and
+\[
+ \sum_{0\le n<\min(m_1,\ldots,m_d)}(2n+1)
+       =\min(m_1,\ldots,m_d)^2.
+\]
+Group the indices $m_i$ according to their equal values, listing the blocks
+from largest value to smallest. The minimum-square factor reduces the
+last exponent by two and produces exactly the summand in
+\eqref{ct:eq:partition-map}. No factorial is inserted: every ordered
+partition already records one distinct equality-and-order pattern.
+All resulting multiple zeta series converge. Their first exponent is at
+least three unless there is just one block, and their final exponent is
+at least one. Alternatively, the preceding tail estimate proves the
+finiteness of the original positive sum.
+\end{proof}
+This is the weighted counterpart of the classical tail-product
+rearrangement discussed by Hoffman \cite{ct:hoffman}.
+
+Define
+\[
+ A_n(\sigma)=\sum_{j\ge0}T_{2j+3}(n)\sigma^j.
+\]
+The part of $\log Q_n$ linear in $\tau$ is $2\tau A_n(\sigma)$.
+Every remaining term has odd $\tau$-degree at least three. Consequently
+\begin{equation}\label{ct:eq:leading}
+ P_{a,d}=\frac{2^d}{d!}[\sigma^a]
+          \left(\sum_{j\ge0}T_{2j+3}\sigma^j\right)^d+E_{a,d},
+\end{equation}
+where every monomial of $E_{a,d}$ has at most $d-2$ tail factors and the
+same parity of factor count as $d$. This is the entire reason for the
+depth drop; it is not a numerical rank observation.
+
+\begin{theorem}[Constructive depth descent]\label{ct:thm:descent}
+For $a\ge0,d\ge2$,
+\begin{equation}\label{ct:eq:descent}
+ M_{a,d}=\frac{d!}{2^d}\left\{
+ C_{a,d}\zeta(2a+3d-2)
+ -\sum_{n\ge0}(2n+1)E_{a,d}\bigl(T_3(n),T_5(n),\ldots\bigr)
+ \right\}.
+\end{equation}
+Applying \eqref{ct:eq:partition-map} to the finitely many monomials in
+$E_{a,d}$ produces only multiple zeta values of weight $2a+3d-2$ and depth
+at most $d-2$. For $d=2$, $E_{a,2}=0$, so the result has depth one.
+\end{theorem}
+\begin{proof}
+The unique way to obtain $d$ tail factors at $\tau$-degree $d$ in the
+exponential is to use $d$ linear terms. If any factor has $\tau$-degree
+at least three, the number of factors decreases by at least two. This
+proves \eqref{ct:eq:leading}. Substitution in \eqref{ct:eq:P-sum} proves
+\eqref{ct:eq:descent}. Each monomial has total tail order $2a+3d$;
+Lemma~\ref{ct:lem:partitions} reduces that weight by exactly two and never
+increases its number of factors. All operations involve finite linear
+combinations of absolutely convergent series.
+\end{proof}
+The theorem concerns the symmetrized convolution $M_{a,d}$, not every
+individual product with the same weight. For instance it directly reduces
+the sum of $T_3^2T_7$ and $T_3T_5^2$, but does not separately evaluate both.
+That distinction prevents an unjustified polarization claim.
+
+\section{Cubes, fourth powers, and a fifth-power relation}
+\label{ct:sec:examples}
+\subsection{The complete quadratic and cubic families}
+The $\tau^2$ coefficient is $2A_n(\sigma)^2$, giving
+\eqref{ct:eq:quadratic}. At degree three, put
+\[
+ C_n(\sigma)=\sum_{a\ge0}\binom{a+2}{2}T_{2a+9}(n)\sigma^a.
+\]
+Then
+\begin{equation}\label{ct:eq:tau3}
+ [\tau^3]Q_n=\frac43A_n(\sigma)^3+\frac23C_n(\sigma).
+\end{equation}
+The elementary identity $\sum_n(2n+1)T_s(n)=\zeta(s-2)$ for $s>3$ implies
+\[
+ \frac43M_{a,3}+\frac23\binom{a+2}{2}\zeta(2a+7)
+       =(a+1)(a+3)\zeta(2a+7).
+\]
+Solving proves \eqref{ct:eq:cubic}. Explicit consequences are
+\begin{align}
+ \sum_n(2n+1)T_3(n)^3&=\frac74\zeta(7),\label{ct:eq:cube0}\\
+ \sum_n(2n+1)T_3(n)^2T_5(n)&=\frac32\zeta(9),\label{ct:eq:cube1}\\
+ \sum_n(2n+1)\{T_3(n)^2T_7(n)+T_3(n)T_5(n)^2\}
+       &=\frac{11}{4}\zeta(11).\label{ct:eq:cube2}
+\end{align}
+For example, the first identity also states
+\begin{equation}\label{ct:eq:cubic-mzv}
+ 6\zeta(3,3,1)+3\zeta(3,4)+3\zeta(6,1)+\zeta(7)
+      =\frac74\zeta(7).
+\end{equation}
+This is an equality of periods with a proof from the master identity;
+it is not an assertion that the four displayed coordinates form a basis.
+
+\subsection{A fourth power reduces to one depth-two coordinate}
+At $a=0$,
+\begin{equation}\label{ct:eq:tau4}
+ P_{0,4}=\frac23T_3^4+\frac43T_3T_9.
+\end{equation}
+Since $C_{0,4}=3$, Theorem~\ref{ct:thm:coefficient} gives
+\begin{equation}\label{ct:eq:quartic-start}
+ \sum_n(2n+1)T_3(n)^4
+       =\frac92\zeta(10)-2\sum_n(2n+1)T_3(n)T_9(n).
+\end{equation}
+The minimum-square map yields
+\[
+ \sum_n(2n+1)T_3(n)T_9(n)
+       =\zeta(10)+\zeta(3,7)+\zeta(9,1).
+\]
+Euler's depth-two reduction and the ordinary stuffle product give
+\begin{align*}
+ \zeta(9,1)&=\frac92\zeta(10)-\zeta(2)\zeta(8)-\zeta(3)\zeta(7)
+                         -\zeta(4)\zeta(6)-\tfrac12\zeta(5)^2,\\
+ \zeta(3,7)+\zeta(7,3)&=\zeta(3)\zeta(7)-\zeta(10).
+\end{align*}
+These classical relations are recorded, with the same series convention,
+in \cite[\S2]{ct:hoffman}. Substituting them and using
+$\zeta(2)\zeta(8)=33\zeta(10)/20$ and
+$\zeta(4)\zeta(6)=11\zeta(10)/10$ proves the following.
+
+\begin{corollary}\label{ct:cor:quartic}
+\begin{equation}\label{ct:eq:quartic}
+ \sum_{n\ge0}(2n+1)\bigl(\zeta(3)-H_n^{(3)}\bigr)^4
+       =\zeta(10)+\zeta(5)^2+2\zeta(7,3).
+\end{equation}
+\end{corollary}
+
+\subsection{The next descent, without claiming a complete basis reduction}
+The fifth coefficient is
+\[
+ P_{0,5}=\frac4{15}T_3^5+\frac43T_3^2T_9+\frac25T_{15}.
+\]
+It follows that
+\begin{equation}\label{ct:eq:quintic}
+ \sum_n(2n+1)\{T_3(n)^5+5T_3(n)^2T_9(n)\}
+       =\frac{39}{4}\zeta(13).
+\end{equation}
+For a fully explicit depth-three form, the remaining mixed moment is
+\begin{align}
+ \sum_n(2n+1)T_3(n)^2T_9(n)
+   ={}&2\zeta(3,3,7)+2\zeta(3,9,1)+2\zeta(9,3,1)\notag\\
+     &+\zeta(6,7)+\zeta(9,4)
+           +2\zeta(12,1)+2\zeta(3,10)+\zeta(13).
+ \label{ct:eq:339}
+\end{align}
+The coefficients count the ordered partitions of the two labeled $3$-tails
+and one labeled $9$-tail. Thus \eqref{ct:eq:quintic} really is a finite
+reduction of the fifth power to depth at most three. No numerical basis
+selection is needed to make it a proved exact identity.
+
+\section{Closed meromorphic formulas for symmetric digamma powers}
+\label{ct:sec:digamma}
+For $x\notin\mathbb Z\setminus\{0\}$, define
+\begin{equation}\label{ct:eq:A-x}
+ \mathcal A_n(x)=\sum_{j>n}\frac1{j(j^2-x^2)}
+ =\frac{2\psi(n+1)-\psi(n+1-x)-\psi(n+1+x)}{2x^2},
+\end{equation}
+with $\mathcal A_n(0)=T_3(n)$. The equality follows by partial fractions
+and the digamma difference series. For $|x|<1$,
+$\mathcal A_n(x)=A_n(x^2)$.
+
+Set
+\begin{equation}\label{ct:eq:J}
+ J(x)=\psi(1+x)+\psi(1-x)-2\psi(1).
+\end{equation}
+Then $J'(x)=\psi'(1+x)-\psi'(1-x)$ and
+$J''(x)=\psi''(1+x)+\psi''(1-x)$.
+
+\begin{theorem}[Exact square and cube]\label{ct:thm:digamma}
+On $\CC\setminus(\mathbb Z\setminus\{0\})$,
+\begin{align}
+ \sum_{n\ge0}(2n+1)\mathcal A_n(x)^2
+    &=\frac{\pi^2}{4x^2\sin^2(\pi x)}
+        -\frac{\zeta(2)}{2x^2}-\frac1{4x^4},
+       \label{ct:eq:A-square}\\
+ \sum_{n\ge0}(2n+1)\mathcal A_n(x)^3
+    &=\frac{J(x)}{4x^6}+\frac{J'(x)}{8x^5}
+        -\frac{J''(x)}{16x^4}+\frac{3\zeta(3)}{4x^4}.
+       \label{ct:eq:A-cube}
+\end{align}
+All singularities at $x=0$ on the right are removable. The powers are
+algebraic powers, not absolute-value powers. The series converge locally
+normally away from the nonzero integers.
+\end{theorem}
+\begin{proof}
+First let $\sigma=x^2$, $|x|<1$, and $D=\sigma\partial_\sigma$.
+The quadratic family gives
+\[
+ \sum_n(2n+1)\mathcal A_n(x)^2=(D+\tfrac32)F(\sigma),\qquad
+ F(\sigma)=\sum_{a\ge0}\zeta(2a+4)\sigma^a.
+\]
+Using the partial-fraction expansion of cotangent,
+\[
+ E(\sigma)=\sum_{j\ge1}\frac1{j^2-\sigma}
+       =\frac{1-\pi x\cot(\pi x)}{2x^2},\qquad
+ F(\sigma)=\frac{E(\sigma)-\zeta(2)}{\sigma}.
+\]
+Differentiation cancels the cotangent terms and gives \eqref{ct:eq:A-square}.
+
+Similarly, the cubic family yields
+\begin{align*}
+ \sum_n(2n+1)\mathcal A_n(x)^3
+       &=\tfrac14(D+1)(2D+7)G(\sigma),\\
+ G(\sigma)&=\sum_{a\ge0}\zeta(2a+7)\sigma^a
+       =\frac{\mathcal A_0(x)-\zeta(3)-x^2\zeta(5)}{x^4}.
+\end{align*}
+Since $\mathcal A_0(x)=-J(x)/(2x^2)$ and $D=(x/2)\partial_x$, this operator
+is $x^2\partial_x^2/8+5x\partial_x/4+7/4$.
+Its action on $-J(x)/(2x^6)-\zeta(3)/x^4-\zeta(5)/x^2$ gives
+\eqref{ct:eq:A-cube}; the $\zeta(5)$ term cancels identically.
+
+On a compact set avoiding the nonzero integers, the finitely many small
+$j$ denominators are harmless and the large-$n$ tail satisfies
+$\mathcal A_n(x)=O(n^{-2})$ uniformly. Thus the squared and cubed series
+are normally convergent there and define meromorphic functions of $x$.
+The identity theorem extends the formulas from the unit disc to the
+connected punctured plane. Their removable values at zero agree with
+\eqref{ct:eq:quadratic} and \eqref{ct:eq:cube0}.
+\end{proof}
+
+\subsection{A half-shift harmonic cube}
+The half-integer recurrence gives
+\[
+ \mathcal A_n(\tfrac12)
+   =8(\log2+H_n-H_{2n})-\frac4{2n+1}=4R_n.
+\]
+At $x=1/2$,
+\[
+ J=2-4\log2,\qquad J'=-4,\qquad J''=16-28\zeta(3).
+\]
+Equations~\eqref{ct:eq:A-square}--\eqref{ct:eq:A-cube} therefore give
+\[
+ \sum_n(2n+1)\mathcal A_n(\tfrac12)^2=4\zeta(2)-4,
+ \qquad
+ \sum_n(2n+1)\mathcal A_n(\tfrac12)^3=40\zeta(3)-64\log2.
+\]
+Division by $16$ and $64$, respectively, proves
+\eqref{ct:eq:R-identities}.
+
+There is also an elementary integral realization,
+\begin{equation}\label{ct:eq:R-integral}
+ R_n=\int_0^1t^{2n}\frac{1-t}{1+t}\dd t.
+\end{equation}
+Indeed $\int_0^1t^{2n}/(1+t)\dd t=\log2+H_n-H_{2n}$.
+Thus one further exact integral consequence is
+\begin{equation}\label{ct:eq:triple-rational}
+ \int_{[0,1]^3}\frac{1+(xyz)^2}{(1-(xyz)^2)^2}
+        \frac{1-x}{1+x}\frac{1-y}{1+y}\frac{1-z}{1+z}
+           \dd x\dd y\dd z
+       =\frac58\zeta(3)-\log2.
+\end{equation}
+Tonelli applies to the positive power series
+$\sum_{n\ge0}(2n+1)(xyz)^{2n}$; its integral is finite by the already
+proved cubic moment. There is no hidden endpoint finite part.
+
+\subsection{A colliding-root Gamma example}
+Taking $p=q=1/4$ gives $\sigma=3/16,\tau=1/32$. The cubic has a repeated
+root, but the master identity is regular and yields
+\begin{equation}\label{ct:eq:quartergamma}
+ \sum_{n\ge0}\left[
+ (n+\tfrac12)\left\{
+ \frac{\Gamma(n+5/4)^2\Gamma(n+1/2)}
+      {\Gamma(n+3/4)^2\Gamma(n+3/2)}-1\right\}
+ -\frac1{32(n+1/2)}\right]
+       =\frac{\pi+4\log2-7}{64}.
+\end{equation}
+This example illustrates why singular derivatives of individually labeled
+roots should not be confused with singularities of a symmetric trace.
+
+\section{Polylogarithmic representations and explicit primitives}
+\label{ct:sec:polylogs}
+For positive integers $s_1,\ldots,s_\ell$ and $|z|<1$, use
+\begin{equation}\label{ct:eq:multiple-li}
+ \Li_{s_1,\ldots,s_\ell}(z)
+  =\sum_{m_1>\cdots>m_\ell\ge1}
+       \frac{z^{m_1}}{m_1^{s_1}\cdots m_\ell^{s_\ell}}.
+\end{equation}
+Only the largest summation index carries $z$. This convention fixes the
+primitive formulas and the endpoint $\Li_{\boldsymbol s}(1)=\zeta(\boldsymbol s)$.
+
+\begin{proposition}[An ordinary polylogarithmic realization of the fourth power]
+\label{ct:prop:polylog-quartic}
+\begin{equation}\label{ct:eq:polylog-quartic}
+ \sum_{n\ge0}(2n+1)T_3(n)^4
+ =\zeta(10)+\zeta(5)^2+
+     \frac1{360}\int_0^1\frac{(-\log t)^6\Li_3(t)}{1-t}\dd t.
+\end{equation}
+\end{proposition}
+\begin{proof}
+The geometric series and the defining series of $\Li_3$ give
+\[
+ \frac1{6!}\int_0^1\frac{(-\log t)^6\Li_3(t)}{1-t}\dd t
+ =\sum_{m>k\ge1}\frac1{m^7k^3}=\zeta(7,3).
+\]
+All terms are positive. The integrand is integrable: near zero the factor
+$\Li_3(t)$ is $O(t)$, and near one the sixth logarithmic power compensates
+the denominator. Apply Corollary~\ref{ct:cor:quartic}.
+\end{proof}
+
+\begin{proposition}[An explicit primitive ladder]\label{ct:prop:primitive-li}
+For $m\ge0$, $q\ge1$ an integer, and $0<z<1$,
+\begin{equation}\label{ct:eq:primitive-li}
+ \int_0^z\frac{(-\log t)^m\Li_q(t)}{1-t}\dd t
+ =\sum_{j=0}^m\frac{m!}{(m-j)!}(-\log z)^{m-j}\Li_{j+1,q}(z).
+\end{equation}
+On $|z|<1$, the same identity holds with consistently chosen logarithms
+and paths from zero. It can also be differentiated any fixed number of
+times in the order $q$ when $\Li_q$ and the nested series are regarded as
+entire functions of that order in the open disc.
+\end{proposition}
+\begin{proof}
+The defining series give
+\[
+ \frac{\mathrm d}{\mathrm dz}\Li_{1,q}(z)=\frac{\Li_q(z)}{1-z},\qquad
+ \frac{\mathrm d}{\mathrm dz}\Li_{r,q}(z)=\frac{\Li_{r-1,q}(z)}z\quad(r>1).
+\]
+Differentiating the finite sum on the right of
+\eqref{ct:eq:primitive-li} telescopes; only the desired integrand remains.
+Every term tends to zero as $z\to0$ along the chosen path because its nested
+series starts at order $z^2$. This fixes the integration constant.
+Local uniform geometric convergence, including every fixed order derivative,
+justifies the last assertion. At $z=1$, the endpoint limit for $m\ge1$
+is $m!\zeta(m+1,q)$ whenever the defining endpoint series converges.
+\end{proof}
+These integration rules are standard consequences of the iterated-series
+calculus; their role here is to turn the depth-descent output into ordinary
+polylogarithmic integrals and explicit antiderivatives.
+
+\subsection{Generating functions for arbitrary powers}
+For $s\ge3$, define
+\[
+ F_{s,d}(z)=\sum_{n\ge0}T_s(n)^d z^n,\qquad |z|<1.
+\]
+For $k\ge1$ put
+\[
+ V_{s,k}(z)=\sum_{\ell=1}^k\ 
+       \sum_{m_1+\cdots+m_\ell=k\atop m_i\ge1}
+       \frac{k!}{m_1!\cdots m_\ell!}
+             \Li_{sm_1,\ldots,sm_\ell}(z),
+ \qquad V_{s,0}(z)=1.
+\]
+Expanding the $k$th power of $H_n^{(s)}$ by the equal-index blocks gives
+\begin{equation}\label{ct:eq:tail-gf}
+ F_{s,d}(z)=\frac1{1-z}
+      \sum_{k=0}^d(-1)^k\binom dk\zeta(s)^{d-k}V_{s,k}(z).
+\end{equation}
+There is no appeal to numerical multiple-polylogarithm evaluation in this
+identity. The coefficient of $z^n$ is exactly
+$(\zeta(s)-H_n^{(s)})^d$.
+
+Writing $\theta=z\partial_z$,
+\begin{equation}\label{ct:eq:weighted-gf}
+ (2\theta+1)F_{s,d}(z)=\sum_{n\ge0}(2n+1)T_s(n)^d z^n.
+\end{equation}
+For $s=3,d\ge2$, absolute convergence permits $z\uparrow1$ on the
+right. The cubic and quartic evaluations above are therefore explicit
+endpoint cancellation identities for the multiple polylogarithms in
+\eqref{ct:eq:tail-gf}. One must take the complete combination on the left;
+its individual rationally weighted pieces need not have finite endpoint
+limits.
+
+\section{Algebraic Hurwitz traces and all-index Stieltjes identities}
+\label{ct:sec:stieltjes}
+We now use the same cubic roots, but allow a positive base point $h$ with
+$h>\max_j|r_j|$. This condition ensures that every $h+r_j$ lies in the
+right half-plane. Let
+\begin{equation}\label{ct:eq:trace}
+ \Ztr(s;h)=\sum_{j=1}^3\zeta(s,h+r_j)-3\zeta(s,h).
+\end{equation}
+The residues at $s=1$ cancel, so $\Ztr$ is entire in $s$.
+The dependence on $\sigma,\tau$ is symmetric and holomorphic, including
+at the cubic discriminant $4\sigma^3-27\tau^2=0$.
+
+\begin{theorem}[Invariant spectral trace expansion]\label{ct:thm:trace}
+For $h>\max_j|r_j|$,
+\begin{equation}\label{ct:eq:trace-series}
+ \Ztr(s;h)=
+ \sum_{a,b\ge0\atop a+b>0}
+ \frac{k}{a+b}\binom{a+b}{b}
+       \frac{(s)_k}{k!}\zeta(s+k,h)\sigma^a\tau^b,
+       \qquad k=2a+3b.
+\end{equation}
+The grouped series is locally normally convergent in $s$ and in parameter
+sets on which all roots remain strictly inside $|r|<h$. An explicit
+sufficient polydisc is $|\sigma|/h^2+|\tau|/h^3<1$.
+Every apparent pole of an individual spectral factor at $s=1-k$ is
+removable.
+\end{theorem}
+\begin{proof}
+The ordinary Taylor expansion in the Hurwitz shift is
+\[
+ \zeta(s,h+r)=\sum_{k\ge0}\frac{(-1)^k(s)_k}{k!}\zeta(s+k,h)r^k.
+\]
+It follows initially from the absolutely convergent defining series for
+$\Rea s>1$, and then by analytic continuation. The $k=0$ terms cancel
+in the trace; the $k=1$ term vanishes because $\sum r_j=0$.
+Substitute \eqref{ct:eq:newton}. Since $(-1)^k=(-1)^b$ when $k=2a+3b$,
+the signs cancel and give \eqref{ct:eq:trace-series}.
+
+For uniform convergence, choose a radius $\rho$ strictly between the largest
+root modulus and $h$. The shift Taylor expansion is uniform on a larger
+circle in the shift plane, on compact spectral sets after removal of the
+common pole. Cauchy's estimate then gives a geometric majorant for the
+root power sums. Each $k$ contains only finitely many invariant monomials;
+on the stated smaller polydiscs their absolute expansions have the same
+majorant. At $s=1-k$, the simple pole of $\zeta(s+k,h)$ is canceled by
+the zero of $(s)_k$, which contains the factor $s+k-1$.
+\end{proof}
+\begin{remark}
+The locally normal statement for an arbitrary root-bounded parameter set
+uses the grouping by $k=2a+3b$. Absolute convergence of the unrestricted
+double series is guaranteed on the explicit smaller polydisc. Keeping this
+distinction avoids asserting absolute convergence merely from a favorable
+choice of individually labeled roots.
+\end{remark}
+
+Define generalized Stieltjes constants by
+\begin{equation}\label{ct:eq:stieltjes-convention}
+ \zeta(1+u,h)=\frac1u+\sum_{m\ge0}\frac{(-1)^m}{m!}\gamma_m(h)u^m,
+ \qquad \gamma_0(h)=-\psi(h),
+\end{equation}
+and set
+\[
+ \Delta_m(h)=\sum_{j=1}^3\gamma_m(h+r_j)-3\gamma_m(h).
+\]
+For $k\ge1$ let $E_\ell(k)$ be the elementary harmonic coefficients
+\begin{equation}\label{ct:eq:E}
+ \prod_{j=1}^k(1+u/j)=\sum_{\ell\ge0}\frac{E_\ell(k)}{\ell!}u^\ell.
+\end{equation}
+Thus $E_0=1$, $E_1=H_k$, $E_2=H_k^2-H_k^{(2)}$ and
+$E_3=H_k^3-3H_kH_k^{(2)}+2H_k^{(3)}$; $E_\ell(k)=0$ for $\ell>k$.
+
+\begin{corollary}[All generalized Stieltjes indices]\label{ct:cor:stieltjes}
+In the same convergence domains,
+\begin{align}
+ \Delta_m(h)=(-1)^m\sum_{a,b\ge0\atop a+b>0}
+   &\frac{k}{a+b}\binom{a+b}{b}\sigma^a\tau^b\notag\\
+   &\times\sum_{\ell=0}^m\binom m\ell E_\ell(k)
+                      \zeta^{(m-\ell)}(k+1,h),\qquad k=2a+3b.
+ \label{ct:eq:stieltjes-trace}
+\end{align}
+The superscript on $\zeta$ denotes differentiation in its spectral argument.
+\end{corollary}
+\begin{proof}
+Use $\Delta_m=(-1)^m\partial_s^m\Ztr(s;h)|_{s=1}$.
+The factor $(1+u)_k/k!$ is exactly the product in \eqref{ct:eq:E}.
+Leibniz's rule in \eqref{ct:eq:trace-series} gives the formula, and normal
+convergence justifies termwise differentiation.
+\end{proof}
+For example, the first spectral derivative gives the explicit convergent
+identity
+\begin{equation}\label{ct:eq:gamma1}
+ \Delta_1(h)=-\sum_{a,b\ge0\atop a+b>0}
+ \frac{k}{a+b}\binom{a+b}{b}\sigma^a\tau^b
+       \{\zeta'(k+1,h)+H_k\zeta(k+1,h)\}.
+\end{equation}
+This is a direct link between generalized Stieltjes constants, generalized
+harmonic numbers, and derivatives of Hurwitz zeta in the cubic coordinates.
+
+\subsection{The same trace is the right side of the Gamma master}
+At $h=1$,
+\begin{equation}\label{ct:eq:B-trace}
+ B(\sigma,\tau)=\frac12-2\log2+\frac12\Ztr(1;1)
+       =\frac12-2\log2+\frac12\Delta_0(1).
+\end{equation}
+Thus the right side of the nonlinear Gamma identity and the all-index
+Stieltjes calculus have exactly the same invariant coefficients.
+This does \emph{not} license differentiating the integer tail orders in the
+nonlinear descent theorem: a separate continuously deformed summation
+identity would be required for that stronger conclusion.
+
+\subsection{A rational-shift check at every Stieltjes index}
+Take $r=(1/2,0,-1/2)$, so $(\sigma,\tau)=(1/4,0)$, and $h=1$.
+The Hurwitz recurrence and duplication give
+\[
+ \Ztr(s;1)=(2^{s+1}-4)\zeta(s)-2^s.
+\]
+If $L=\log2$ and $\gamma_j=\gamma_j(1)$, then
+\begin{equation}\label{ct:eq:half-stieltjes}
+ \Delta_m(1)=(-1)^m\left\{
+ \frac{4L^{m+1}}{m+1}
+ +4\sum_{j=0}^{m-1}\binom mj L^{m-j}(-1)^j\gamma_j
+ -2L^m\right\},
+\end{equation}
+with an empty sum when $m=0$. In particular $\Delta_0(1)=4L-2$.
+The pole is canceled \emph{before} Taylor expansion. Expanding the three
+Hurwitz zeta functions separately at $s=1$ without canceling their common
+pole is an avoidable source of incorrect constants.
+
+\section{Gamma determinants and anchored antiderivatives}
+\label{ct:sec:primitives}
+Define
+\begin{equation}\label{ct:eq:D}
+ \Dtr(h;\sigma,\tau)=\frac{\prod_{j=1}^3\Gamma(h+r_j)}{\Gamma(h)^3},
+\end{equation}
+with its logarithm normalized to zero at $(\sigma,\tau)=(0,0)$.
+The zeta derivative at zero and the cancellation of the three common
+$\log(2\pi)/2$ terms imply
+\begin{equation}\label{ct:eq:determinant}
+ \log\Dtr(h;\sigma,\tau)=\Ztr'(0;h).
+\end{equation}
+At $h=1$, the elementary Gamma product gives
+\begin{align}
+ \Dtr(1;\sigma,\tau)
+       &=\prod_{n\ge1}(1-\sigma/n^2-\tau/n^3)^{-1},\label{ct:eq:D-product}\\
+ \log\Dtr(1;\sigma,\tau)
+       &=\sum_{a,b\ge0\atop a+b>0}
+           \frac1{a+b}\binom{a+b}{b}\zeta(2a+3b)\sigma^a\tau^b.
+            \label{ct:eq:D-series}
+\end{align}
+Also $Q_n=\Dtr(n+1;\sigma,\tau)/\Dtr(n+1;\sigma,-\tau)$.
+This identifies the odd-$\tau$ Gamma quotient that caused the depth drop.
+
+\begin{proposition}[Derivative tower]\label{ct:prop:derivatives}
+For every $r\ge0$,
+\begin{equation}\label{ct:eq:trace-derivative}
+ \partial_h^r\Ztr(s;h)=(-1)^r(s)_r\Ztr(s+r;h).
+\end{equation}
+Consequently, for $r\ge1$,
+\begin{equation}\label{ct:eq:stieltjes-derivative}
+ \partial_h^r\Delta_m(h)=(-1)^{m+r}r!
+       \sum_{\ell=0}^m\binom m\ell E_\ell(r)
+                     \Ztr^{(m-\ell)}(1+r;h).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Apply the standard parameter derivative
+$\partial_h\zeta(s,h)=-s\zeta(s+1,h)$ repeatedly to the finite trace.
+Differentiate the resulting identity $m$ times in $s$ at $s=1$.
+The Taylor coefficients of $(1+u)_r$ are $r!E_\ell(r)/\ell!$.
+\end{proof}
+
+We give every positive integer order of antiderivative with its integration
+constants fixed. Choose real $h,h_0>\max_j|r_j|$; the formulas extend
+holomorphically to an appropriate simply connected right-half-plane domain.
+For $r\ge1$ set
+\begin{align}
+ N_r(u;h,h_0)={}&\Ztr(1-r+u;h)\notag\\
+  &-\sum_{j=0}^{r-1}\frac{(h-h_0)^j}{j!}
+         \left.\partial_t^j\Ztr(1-r+u;t)\right|_{t=h_0}.
+ \label{ct:eq:N-primitive}
+\end{align}
+
+\begin{theorem}[All anchored Stieltjes primitives]\label{ct:thm:anchored}
+The quotient $N_r(u;h,h_0)/(1-r+u)_r$ has a removable singularity at $u=0$.
+Define
+\begin{equation}\label{ct:eq:anchored}
+ \mathcal I_{r,m}(h;h_0)=(-1)^{m+r}m![u^m]
+                \frac{N_r(u;h,h_0)}{(1-r+u)_r}.
+\end{equation}
+Then
+\begin{equation}\label{ct:eq:anchored-properties}
+ \partial_h^r\mathcal I_{r,m}(h;h_0)=\Delta_m(h),\qquad
+ \left.\partial_h^j\mathcal I_{r,m}(h;h_0)\right|_{h=h_0}=0
+       \quad(0\le j<r).
+\end{equation}
+Equivalently,
+\begin{equation}\label{ct:eq:anchored-integral}
+ \mathcal I_{r,m}(h;h_0)
+   =\frac1{(r-1)!}\int_{h_0}^{h}(h-t)^{r-1}\Delta_m(t)\dd t.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The negative-integer identity
+$\zeta(1-r,h)=-B_r(h)/r$ shows that $\Ztr(1-r;h)$ is a polynomial in $h$
+of degree at most $r-2$: its leading degree-$r$ terms cancel between the
+three shifts and the base, and its degree-$(r-1)$ coefficient is a multiple
+of $\sum r_j=0$. For $r=1$ it vanishes identically. Its Taylor polynomial
+of degree $r-1$ around $h_0$ is therefore exact, so $N_r(0;h,h_0)=0$.
+The denominator has exactly one zero at $u=0$, with derivative
+$(-1)^{r-1}(r-1)!$. Holomorphic division proves removability.
+
+Differentiate \eqref{ct:eq:N-primitive} $r$ times in $h$. The subtracted
+Taylor polynomial disappears and \eqref{ct:eq:trace-derivative} gives
+\[
+ \partial_h^r N_r(u;h,h_0)
+       =(-1)^r(1-r+u)_r\Ztr(1+u;h).
+\]
+After division and coefficient extraction, the sign in
+\eqref{ct:eq:anchored} gives $(-1)^m m![u^m]\Ztr(1+u;h)=\Delta_m(h)$.
+The lower derivatives vanish at $h=h_0$ by construction, including after
+the removable division. The usual uniqueness of the solution of the
+$r$th derivative equation with these initial data gives
+\eqref{ct:eq:anchored-integral}.
+\end{proof}
+
+For the first primitive this simplifies to
+\begin{equation}\label{ct:eq:first-primitive}
+ \mathcal I_{1,m}(h;h_0)=\frac{(-1)^{m+1}}{m+1}
+       \{\Ztr^{(m+1)}(0;h)-\Ztr^{(m+1)}(0;h_0)\}.
+\end{equation}
+In particular,
+\begin{equation}\label{ct:eq:gamma-primitive}
+ \int_{h_0}^{h}\Delta_0(t)\dd t
+       =\log\Dtr(h_0;\sigma,\tau)-\log\Dtr(h;\sigma,\tau).
+\end{equation}
+This is a Gamma antiderivative with no unspecified polynomial ambiguity.
+The all-order formula treats that ambiguity explicitly rather than hiding
+it in a symbol for a negative-order polygamma function.
+
+\section{Lerch traces and polylogarithmic order derivatives}
+\label{ct:sec:lerch}
+Let $|z|<1$ and
+\[
+ \Phi(z,s,h)=\sum_{n\ge0}\frac{z^n}{(n+h)^s},\qquad
+ \Ltr(z,s;h)=\sum_{j=1}^3\Phi(z,s,h+r_j)-3\Phi(z,s,h).
+\]
+All powers use the logarithm in the right half-plane. The geometric factor
+makes these functions entire in $s$. Exactly the proof of
+Theorem~\ref{ct:thm:trace} gives
+\begin{equation}\label{ct:eq:lerch-trace}
+ \Ltr(z,s;h)=\sum_{a,b\ge0\atop a+b>0}
+ \frac{k}{a+b}\binom{a+b}{b}\frac{(s)_k}{k!}
+        \Phi(z,s+k,h)\sigma^a\tau^b,\qquad k=2a+3b.
+\end{equation}
+At $h=1$, $z\Phi(z,s,1)=\Li_s(z)$, so
+\begin{equation}\label{ct:eq:polylog-trace}
+ z\sum_{j=1}^3\Phi(z,s,1+r_j)-3\Li_s(z)
+ =\sum_{a,b\ge0\atop a+b>0}
+   \frac{k}{a+b}\binom{a+b}{b}\frac{(s)_k}{k!}
+      \Li_{s+k}(z)\sigma^a\tau^b.
+\end{equation}
+Every fixed spectral derivative may be taken termwise. For example,
+\begin{align}
+ \left.\partial_s\left\{
+ z\sum_j\Phi(z,s,1+r_j)-3\Li_s(z)\right\}\right|_{s=1}
+   =\sum_{a,b\ge0\atop a+b>0}
+       &\frac{k}{a+b}\binom{a+b}{b}\sigma^a\tau^b\notag\\
+       &\times\left\{\left.\partial_v\Li_v(z)\right|_{v=k+1}
+                             +H_k\Li_{k+1}(z)\right\}.
+ \label{ct:eq:polylog-order-derivative}
+\end{align}
+At higher derivative orders, the bracket is replaced by
+$\sum_{\ell=0}^m\binom m\ell E_\ell(k)
+\partial_v^{m-\ell}\Li_v(z)|_{v=k+1}$.
+
+\subsection{The endpoint and why it is controlled}
+For fixed shifts with zero sum,
+\[
+ \sum_j(n+h+r_j)^{-s}-3(n+h)^{-s}=O(n^{-\Rea s-2})
+\]
+locally uniformly in $s$, including fixed spectral derivatives with an
+additional logarithmic factor. Thus the trace defining series at $z=1$
+converges ordinarily for $\Rea s>-1$. On this half-plane Abel passage from
+\eqref{ct:eq:lerch-trace} recovers \eqref{ct:eq:trace-series}. In particular
+all spectral derivatives at $s=1$ have ordinary convergent endpoint traces.
+For $\Rea s\le-1$, analytic continuation is available but ordinary endpoint
+convergence is not asserted.
+
+\subsection{A finite differential system in the argument}
+The traces with powers of the roots also remain finite-dimensional. Put
+\[
+ F_j(z,s;h)=\sum_{i=1}^3r_i^j\Phi(z,s,h+r_i),\qquad j=0,1,2.
+\]
+Since $\theta\Phi(z,s,a)=\Phi(z,s-1,a)-a\Phi(z,s,a)$,
+\begin{align}
+ \theta F_0&=F_0(z,s-1;h)-hF_0-F_1,\notag\\
+ \theta F_1&=F_1(z,s-1;h)-hF_1-F_2,\label{ct:eq:lerch-system}\\
+ \theta F_2&=F_2(z,s-1;h)-hF_2-\sigma F_1+\tau F_0.\notag
+\end{align}
+The last line uses $r_i^3=\sigma r_i-\tau$.
+This supplies argument derivatives without differentiating branch choices
+for individual cubic roots.
+
+Anchored $h$-antiderivatives of the order jets of $\Ltr$ are obtained by
+replacing $\Ztr$ with $\Ltr$ in \eqref{ct:eq:N-primitive}--\eqref{ct:eq:anchored}.
+The same removal proof works: at nonpositive integer order the Lerch series
+is a polynomial in $h$ with coefficients rational in $z$, and the trace
+cancels its leading terms. At $z=1$ one must use the Hurwitz trace version
+or a justified endpoint limit rather than substituting into an individual
+negative-order Lerch series.
+
+\section{Audit findings and claims that must not be made}
+\label{ct:sec:audit}
+\subsection{The inspected mixed-resonance proof}
+No new mathematical error was established in the inspected canonical
+mixed-resonance chapter. Its centered $x_n=n+a/2$ normalization, the first
+resonant subtraction, and the sign of the cubic counterterm at $a=1$ agree with
+the independent calculation in Section~\ref{ct:sec:master-proof}.
+The explicit Bernoulli cancellations are also checked by exact symbolic
+arithmetic in the supplied code. This is a targeted audit, not an assertion
+that every statement in the manuscript or incoming archives has been checked.
+
+The necessary integration safeguards are mathematical rather than cosmetic.
+The $n=0$ term must be included in the present moments; omitting it changes
+an unweighted tail-power identity by the corresponding product of zeta
+values. The weight here is $2n+1$, not $n+1/2$. The roots of the cubic have
+product $-\tau$, whereas the odd parameter of the Gamma quotient is $+\tau$.
+At $x=0$ the complete right side of the digamma formulas must be evaluated
+by a removable limit. At higher Stieltjes index, the spectral pole must be
+canceled before taking Taylor coefficients.
+
+\subsection{A false extrapolation, not an attributed repository conjecture}
+The cases $d=2,3$ might suggest
+\begin{equation}\label{ct:eq:false-extrapolation}
+ \sum_n(2n+1)T_3(n)^d\stackrel{?}{=}
+       (2-2^{1-d})\zeta(3d-2).
+\end{equation}
+This is false already at $d=4$. We do not attribute
+\eqref{ct:eq:false-extrapolation} to any existing source. A rational
+countercheck is enough: positivity gives a lower bound
+$\bigl(\sum_{j=1}^{4}j^{-3}\bigr)^4$ for the left side, while
+\[
+ \frac{15}{8}\zeta(10)
+   <\frac{15}{8}\left(1+2^{-10}+\frac1{9\cdot2^9}\right)
+   <\left(\sum_{j=1}^{4}j^{-3}\right)^4.
+\]
+The last inequality is an exact comparison of rational numbers. The correct
+fourth-power formula is \eqref{ct:eq:quartic}. This small rejection is
+included to prevent a misleading simplification, not because inequalities
+are a research target of this article.
+
+\subsection{The Gaussian conjectures are not solved here}
+The canonical $S_4$ identity already has an exact octahedral certificate;
+the inspected discovery chapter distinguishes a rigorously rejected old
+$S_8$ vector from the surviving revised candidate \cite{ct:repo-status}.
+The present descent concerns ordinary odd zeta tails. We have not proved a
+bridge from the mixed-color Gaussian $S_6$ or revised $S_8$ residual to this
+invariant family. Their status is unchanged by this work. Nor does the
+appearance of $\zeta(7,3)$ prove any arithmetic irreducibility.
+
+\section{Reproducibility and manuscript integration}
+\label{ct:sec:verification}
+The analytic proofs above are independent of the numerical computations.
+The package includes one self-contained \LaTeX{} source, its compiled PDF,
+verification code, machine-readable results, a coefficient catalog, an
+integration note, and a compact theorem insert.
+
+\subsection{Finite exact checks}
+The exact suite makes \textbf{596 assertions}. It compares two independent
+constructions of the invariant exponential coefficients through
+$0\le a\le4$, $0\le d\le8$; checks their tail weight and the two-factor
+parity descent; compares the Newton recurrence with the closed formula
+through degree $30$; checks the harmonic/Pochhammer coefficients through
+$k=20$ and order five; verifies finite minimum-square sums against ordered
+partitions using rational arithmetic; checks the four printed low-degree
+polynomials and the Bernoulli constants; and verifies the negative-order
+Taylor cancellation for the first eight primitive orders.
+
+The catalog records the $35$ nonlinear pairs $0\le a\le4$, $2\le d\le8$.
+These tests verify finite algebra relative to the formulas stated in the
+article. They are not a proof-assistant certification of Gamma continuation,
+Tonelli's theorem, or normal convergence.
+
+\subsection{Independent numerical diagnostics}
+The numerical program uses defining Hurwitz tails for the quadratic,
+cubic, quartic and quintic identities. The depth-two coordinate in the
+quartic formula is evaluated independently by its polylogarithmic integral.
+The digamma formulas are checked at real points on both sides of a pole
+and at a nonreal point, always avoiding the pole itself. Further checks
+compare the full subtracted Gamma master with its digamma value, the
+invariant Stieltjes expansion with real-argument Stieltjes constants at a
+repeated-root configuration, anchored primitives with ordinary quadrature,
+and the finite polylogarithmic primitive with its defining integral.
+
+All \textbf{31 numerical checks} passed at \textbf{50 decimal working digits}.
+The output files record working precision, residual, tolerance and pass
+status for every test actually completed. Numerical tolerances are
+floating-point diagnostic thresholds, not rigorous error enclosures.
+In particular, no integer-relation search is used to infer an identity.
+
+\subsection{Rebuilding and proposed placement}
+From the package directory, run
+\par\medskip\noindent\begin{minipage}{\linewidth}
+\begin{verbatim}
+python verification/verify.py --exact-only
+python verification/verify.py --numeric-only --dps 50
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+\end{minipage}
+\par\medskip
+The proposed report home is the continuation directory
+\begin{quote}\small
+\src{Analysis/Polylogarithms/docs/reports/stieltjes-harmonic-resonance/}\\
+\src{continuations/cubic-invariant-tail-descent/}.
+\end{quote}
+The main insertion follows the mixed-resonance chapter. The
+trace and primitive results can instead
+be cross-referenced from the Hurwitz differentiation and integration
+chapters. All mathematical labels in this article use the prefix
+\src{ct:}; the supplied compact insert uses \src{cti:}. Proposed intake and
+integration are not claimed to have occurred.
+
+\section{Further research questions}
+\label{ct:sec:future}
+\paragraph{1. An elementary certificate for the master identity.}
+Can \eqref{ct:eq:master} be proved by an explicit finite-difference or
+contour certificate that avoids the meromorphic continuation of the
+Rogers--Dougall sum? The cubic product ratio
+$Q_{n-1}/Q_n=(n^3-\sigma n+\tau)/(n^3-\sigma n-\tau)$ is unusually simple.
+A successful certificate must recover the nonzero constant
+$1/2-2\log2$, not just its nonlinear coefficients. Such a proof could also
+provide a shorter analytic foundation for formalization.
+
+\paragraph{2. Full polarization of the symmetric-digamma cube.}
+Theorem~\ref{ct:thm:digamma} evaluates the diagonal sum
+$\sum_n(2n+1)\mathcal A_n(x)^3$. Determine a closed formula for
+$\sum_n(2n+1)\mathcal A_n(x)\mathcal A_n(y)\mathcal A_n(z)$ at independent
+arguments. Derivatives on the diagonal and the symmetric convolutions
+proved here do not uniquely determine this three-variable function.
+A divided-difference formula with controlled collision limits would be
+particularly useful.
+
+\paragraph{3. The fifth-power normal form.}
+Equation~\eqref{ct:eq:339} provides a small, explicit weight-thirteen
+starting basket. Reduce its particular combination further by exact
+shuffle, stuffle and duality relations, keeping a rational certificate.
+The target is a shorter proven expression for the fifth moment, not a
+numerical claim that a candidate list is linearly independent.
+
+\paragraph{4. Beyond three roots.}
+For four or more roots with zero sum, the odd part of a Gamma determinant
+still has a parity filtration, but there are additional independent
+invariants. Determine which higher hypergeometric summations supply a
+normally convergent weighted trace identity strong enough to isolate the
+leading tail moments. Parity of an exponential alone does not supply the
+missing summation theorem.
+
+\paragraph{5. Colored analogues and the Gaussian obstruction.}
+Develop a roots-of-unity analogue of the cubic product in which the tail
+indices are restricted to congruence classes or carry colors. A meaningful
+first target is an exact formula for a colored cubic tail moment whose
+ordered-partition image contains the mixed-color Gaussian depth-two
+coordinates. Only a proved transformation of that kind could connect
+this descent to $S_6$ or the revised $S_8$ conjecture.
+
+\paragraph{6. A genuine continuous-order nonlinear deformation.}
+The Lerch trace permits arbitrary order derivatives, whereas the
+Rogers--Dougall tail descent uses the fixed odd integer grading. Construct
+a nonlinear master identity with a free spectral order that interpolates
+the integer moments and whose derivatives produce weighted logarithmic
+tails. One must not obtain such a deformation by differentiating a family
+known only at isolated integer orders.
+
+\paragraph{7. Formal verification with analytic hypotheses.}
+The recurrence, Newton algebra, ordered-partition map and primitive
+removal are finite algebraic targets. A useful next step is to formalize
+these first, with the normally convergent master identity as an explicit
+hypothesis, and then formalize the Gamma-continuation and interchange
+lemmas. The supplied computations already separate those two layers.
+
+\section*{Conclusion}
+The cubic invariant coordinates expose a triangular feature of an existing
+Gamma resonance: nonlinear coefficients of high tail degree are controlled
+by lower tail degree, with a two-step parity gap. This yields an exact
+all-degree descent, particularly simple cubic and quartic evaluations,
+and meromorphic formulas for symmetric digamma powers. The same invariants
+organize Hurwitz, Stieltjes, Gamma and Lerch traces without introducing
+root-branch singularities, and allow every integration constant in the
+primitive tower to be specified. The result is a concrete continuation of
+the exact-identity program, with clearly separated classical inputs,
+proved consequences, numerical diagnostics and remaining conjectures.
+
+\clearpage
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{ct:repo-mixed}
+ProveIt Contributors,
+\emph{Mixed Gamma derivatives and exact harmonic tail identities},
+canonical manuscript chapter
+\src{Analysis/Polylogarithms/docs/manuscript/chapters/07-mixed-dougall-identities.tex},
+source anchor \src{87c7db629552afbc2e803001526debe3430a31b0}, inspected 10 October 2026.
+Repository: \url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{ct:repo-harmonic}
+ProveIt Contributors,
+\emph{Harmonic Gamma coefficient identities},
+canonical chapter \src{07-harmonic-gamma-coefficients.tex}, same repository
+and source anchor as \cite{ct:repo-mixed}.
+
+\bibitem{ct:repo-status}
+ProveIt Contributors,
+canonical manuscript \src{README.md}, \src{chapters/04-S4-proof.tex}
+and \src{chapters/10-discovery.tex}; incoming \src{README.md} and directory
+inventory, inspected 10 October 2026. Same repository as \cite{ct:repo-mixed}.
+These are source-status references, not assertions of a complete archive audit.
+
+\bibitem{ct:dlmf16}
+NIST Digital Library of Mathematical Functions,
+\S16.4, especially Eq.~16.4.9, Rogers--Dougall very well-poised sum.
+\url{https://dlmf.nist.gov/16.4.E9}. Consulted 10 October 2026.
+
+\bibitem{ct:dlmf5}
+NIST Digital Library of Mathematical Functions,
+\S5.8, infinite products, and \S5.11, asymptotic expansions of Gamma
+functions and ratios.
+\url{https://dlmf.nist.gov/5.8}; \url{https://dlmf.nist.gov/5.11}.
+Consulted 10 October 2026.
+
+\bibitem{ct:dlmf25}
+NIST Digital Library of Mathematical Functions,
+\S25.11, Hurwitz zeta function: shift recurrence, parameter derivatives,
+negative-integer values and $\zeta'(0,h)$; \S25.14, Lerch's transcendent.
+\url{https://dlmf.nist.gov/25.11}; \url{https://dlmf.nist.gov/25.14}.
+Consulted 10 October 2026.
+
+\bibitem{ct:hoffman}
+Michael E. Hoffman,
+\emph{Sums of Products of Riemann Zeta Tails},
+arXiv:1602.03399, 2016. In particular \S2 for the Euler depth-two identities
+and \S\S3--4 for products of tails.
+\url{https://arxiv.org/abs/1602.03399}.
+\end{thebibliography}
+\end{document}

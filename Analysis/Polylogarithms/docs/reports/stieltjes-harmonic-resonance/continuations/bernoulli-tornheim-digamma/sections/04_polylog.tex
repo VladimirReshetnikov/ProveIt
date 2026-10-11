@@ -1,0 +1,99 @@
+\section{A polylogarithmic boundary identity at every even order}
+\label{sec:polylog-companion}
+
+The new binomial annihilator has an exact polylogarithmic realization.
+We use the one-argument, decreasing-index convention
+\[
+ \operatorname{Li}_{p,q}(z)=\sum_{n>m\ge1}\frac{z^n}{n^p m^q},
+ \qquad |z|<1.
+\]
+Thus only the largest summation index carries the variable. This
+convention is essential: a product of two ordinary polylogarithms
+would give a different coloring.
+
+\begin{proposition}[The two-tail generating function]
+\label{prop:two-tail-polylog}
+For integers $p,q\ge2$ and $|z|<1$, define
+\[
+ \mathcal F_{p,q}(z)=\sum_{n\ge0}
+       \bigl(\zeta(p)-H_n^{(p)}\bigr)
+       \bigl(\zeta(q)-H_n^{(q)}\bigr)z^n.
+\]
+Then
+\begin{equation}\label{eq:two-tail-polylog}
+ \mathcal F_{p,q}(z)=\frac{1}{1-z}\Bigl\{
+ \zeta(p)\zeta(q)-\zeta(q)\operatorname{Li}_p(z)
+ -\zeta(p)\operatorname{Li}_q(z)
+ +\operatorname{Li}_{p,q}(z)+\operatorname{Li}_{q,p}(z)
+ +\operatorname{Li}_{p+q}(z)\Bigr\}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Put $T_n=(\zeta(p)-H_n^{(p)})(\zeta(q)-H_n^{(q)})$.
+The exact difference is
+\[
+ T_{n-1}-T_n=n^{-p}(\zeta(q)-H_n^{(q)})
+            +n^{-q}(\zeta(p)-H_n^{(p)})+n^{-p-q}.
+\]
+Multiplication of the generating series by $1-z$ and substitution
+of this difference give the result, using
+\[
+ \sum_{n\ge1}\frac{H_n^{(q)}}{n^p}z^n
+   =\operatorname{Li}_{p,q}(z)+\operatorname{Li}_{p+q}(z).
+\]
+All series converge absolutely and locally uniformly on the open
+unit disk, so the rearrangements are justified.
+\end{proof}
+
+The generating-function identity is a routine consequence of finite
+harmonic summation. The additional content is the particular
+all-order cancellation furnished by the determinant theorem.
+Write
+\[
+ \mathcal E=z\frac{d}{dz}+\frac12.
+\]
+For the polynomial $W_b$ in \eqref{eq:W-polynomial-two}, let
+$R_b$ be the nonnegative-power part of the centered asymptotic
+Laurent series
+\begin{equation}\label{eq:polylog-subtraction}
+ W_b(X)\zeta(2,X+\tfrac12)\zeta(2b,X+\tfrac12).
+\end{equation}
+Only finitely many Bernoulli coefficients enter $R_b$; it is an
+explicit even polynomial of degree $2b-2$.
+
+\begin{theorem}[An all-order polylogarithmic boundary evaluation]
+\label{thm:polylog-boundary}
+For every integer $b\ge2$,
+\begin{equation}\label{eq:polylog-boundary}
+ \boxed{\displaystyle
+ \lim_{z\uparrow1}\left\{
+ W_b(\mathcal E)\mathcal F_{2,2b}(z)
+       -R_b(\mathcal E)\frac{1}{1-z}\right\}
+ =-\frac{2b-1}{4}\bigl(2-B_{2b-2}\bigr).}
+\end{equation}
+The expression in braces has an absolutely convergent Taylor series
+on the closed unit disk, including its value at $z=1$.
+\end{theorem}
+\begin{proof}
+On each compact subset of the open disk, polynomial differentiation
+of the locally normally convergent generating series gives
+\[
+ W_b(\mathcal E)\mathcal F_{2,2b}(z)
+       -R_b(\mathcal E)\frac{1}{1-z}
+ =\sum_{n\ge0}\left\{
+ W_b(n+\tfrac12)A_2(n)A_{2b}(n)-R_b(n+\tfrac12)
+ \right\}z^n.
+\]
+The centered Hurwitz expansion contains only even inverse powers.
+After the displayed subtraction its coefficients are $O(n^{-2})$.
+The series therefore converges absolutely and uniformly for $|z|\le1$.
+Evaluation at $z=1$ is exactly the ordinary convergent identity in
+Corollary~\ref{cor:ordinary-two}.
+\end{proof}
+
+Equations~\eqref{eq:two-tail-polylog} and
+\eqref{eq:polylog-boundary} give a finite prescription involving
+classical polylogarithms, depth-two polylogarithms, and their ordinary
+derivatives. The subtraction is determined before the limit is taken.
+There is consequently no unspecified regularization constant and
+no need to assign values to the divergent pieces separately.

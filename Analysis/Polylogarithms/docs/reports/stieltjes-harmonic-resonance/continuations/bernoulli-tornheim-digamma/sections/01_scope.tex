@@ -1,0 +1,119 @@
+\section{Scope, provenance, and the exact questions continued}
+\label{sec:scope}
+
+The starting point is the current collective manuscript
+\emph{Polylogarithms and their Arithmetic Bridges} and the six
+archives in the repository's incoming directory at the title-page
+commit \cite{Repo}. The source was obtained as a pinned Git checkout;
+the incoming archives were extracted into separate directories outside
+that checkout. The research package is an addition for later
+integration. It does not change the canonical manuscript or the
+incoming archive contents.
+
+The two newest digamma reports are particularly relevant.
+\emph{Canonical Digamma and Fifth Moment} proves a finite, but
+generally longer, initial-moment reconstruction theorem and conjectures
+that the first $q$ moments already suffice for unequal even orders
+\cite[Sections 7 and 9, \texttt{conj:firstq}]{CanonicalFifth}.
+\emph{Higher Digamma Powers and Ordered Gamma Sums} asks for an
+organized sixth-power reduction and for a differential-polynomial
+integration calculus \cite[Further exact research questions]{HigherPowers}.
+The previous coincident/directional-zeta report supplies the complete
+quadratic ray formula for Tornheim functions, while leaving cubic
+arithmetic data unresolved \cite[Section 6]{DirectionalPrior}.
+
+\subsection{Main contributions and their limits}
+
+The first contribution resolves an infinite subfamily of a stated
+conjecture, rather than adding another finite rank experiment.
+For the pair $(2,2b)$, an explicit Pad\'e calculation evaluates the
+coefficient determinant and a rational extraction row. Classical
+Bernoulli Hankel machinery is reproved as needed; the mixed matrix
+perturbation and its application to the moment conjecture are the
+new continuation \cite{DilcherJiu2020}. The resulting sums and the
+polylogarithmic boundary family are identities at every $b\ge2$.
+A rank-two version proves the entire $(4,2b)$ family. A congruence
+modulo four and a finite polynomial certificate prove $(6,2b)$ as well. For every
+even pair $(2a,2b)$ the remaining determinant is reduced explicitly to
+size $a$; the cases $8\le p<q$ remain unresolved here.
+
+The second contribution is an exact cancellation theorem for third
+spectral derivatives. The spectral origin is not a regular point of
+the three-variable Tornheim function. We first isolate its polar
+part, then differentiate specified holomorphic ray restrictions.
+The elementary axis and quasi-shuffle restrictions determine enough
+of the remaining Taylor coefficients to yield a complete two-coordinate
+formula and explicit combinations containing ordinary zeta derivatives
+alone. The formal ambiguity theorem states precisely what these
+particular local restrictions leave undetermined. It is not a
+transcendence or arithmetic-independence theorem.
+
+The third contribution answers the algebraic part of the proposed
+differential-polynomial classification. Its partition basis gives
+an exact finite algorithm for reduction modulo total derivatives.
+This is a constructive specialization of classical differential
+algebra \cite{OlverShakiban1978}, with a new application to the current
+Gamma-normalized finite-part problem. The normalizations at degrees
+six and seven are computed explicitly. A remaining mixed integral is displayed,
+not silently declared independent or replaced by an unevaluated
+quantity under a new name.
+
+The principal status changes are summarized in
+Table~\ref{tab:status}. All references to novelty in this article
+mean an addition relative to the inspected ProveIt material.
+A complete historical priority claim would require a broader
+comparison with all specializations of the classical literature.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Source questions and the result established here.}
+\label{tab:status}
+\begin{tabular}{@{}p{.29\textwidth}p{.42\textwidth}p{.22\textwidth}@{}}
+\toprule
+Question & Proved result & Remaining scope\\
+\midrule
+Optimal first-$q$ prefix & Complete proofs for smaller order $2$, $4$, or $6$; a fixed-size determinant for every even pair & Unequal $8\le p<q$\\[5pt]
+Higher Tornheim ray derivatives & All cubic directions; exact cancellation criterion and an all-degree local kernel & Arithmetic values of the two cubic coordinates\\[5pt]
+Differential digamma classification & Canonical partition basis, bidegree dimensions, Gamma parity and endpoints & The image after additional spectral relations\\[5pt]
+Sixth and seventh moments & Canonical sixth formula with one mixed moment; explicit seventh formula & Spectral evaluation of the mixed integrals\\[5pt]
+Short Gaussian evaluations & No status change & $S_6$ and revised $S_8$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Conventions that affect the constants}
+
+For $r\ge1$, set $H_n^{(r)}=\sum_{k=1}^n k^{-r}$ and
+$H_0^{(r)}=0$. Bernoulli numbers and polynomials use
+\[
+ \frac{te^{xt}}{e^t-1}=\sum_{n\ge0}B_n(x)\frac{t^n}{n!},
+ \qquad B_n=B_n(0),\qquad B_1=-\frac12.
+\]
+The digamma function is $\psi(x)=\Gamma'(x)/\Gamma(x)$.
+The generalized Stieltjes convention is
+\begin{equation}\label{eq:stieltjes-convention}
+ \zeta(1+u,a)=\frac1u+
+       \sum_{j\ge0}\frac{(-1)^j\gamma_j(a)}{j!}u^j,
+ \qquad \re a>0.
+\end{equation}
+We abbreviate $\gamma=\gamma_0(1)$ and
+$\gamma_j=\gamma_j(1)$. Derivatives $\zeta^{(j)}(s)$ are always
+with respect to the spectral variable, not to a Hurwitz shift.
+Standard Gamma, polygamma, and Hurwitz formulas are used with these
+normalizations \cite{DLMF}.
+
+If $f$ is meromorphic near $0$ and regular on $(0,1]$, then
+\begin{equation}\label{eq:fp-convention}
+ \FP\int_0^1 f(x)\dd x
+ :=\CT_{\eps\downarrow0}\int_{\eps}^1 f(x)\dd x.
+\end{equation}
+The constant term discards negative powers of $\eps$ and logarithms
+but retains the constant in the original coordinate $x$.
+In particular, for a meromorphic primitive $g$,
+\begin{equation}\label{eq:endpoint-law-intro}
+ \FP\int_0^1 g'(x)\dd x=g(1)-\CT_{x=0}g(x).
+\end{equation}
+This convention is distinct from the centered asymptotic moment
+continuation in Section~\ref{sec:tail-foundation}; the latter is
+defined explicitly before it is used. Both conventions eventually
+lead to ordinary convergent identities after their stated subtractions.

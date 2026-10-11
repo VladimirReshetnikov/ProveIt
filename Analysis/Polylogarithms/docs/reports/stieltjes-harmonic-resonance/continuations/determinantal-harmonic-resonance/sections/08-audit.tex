@@ -1,0 +1,111 @@
+\section{Source audit, corrections, and integration status}
+\label{dhr:sec:audit}
+
+\subsection{What was actually inspected}
+The mathematical source anchor for the selected chapter reads is the
+\repo\ commit
+\begin{center}
+\texttt{87c7db629552afbc2e803001526debe3430a31b0}.
+\end{center}
+The inspected material comprises the canonical manuscript README,
+the mixed-Dougall chapter (including its full ending), the initial
+240 lines of the cyclotomic-quotient chapter, the incoming-directory
+inventory, and the first 180 lines of the incoming intake procedure.
+Targeted repository searches supplied additional context about existing
+Gauss, Stieltjes, tail, and Selberg-related work. Search snippets were
+not treated as complete proofs of the unseen material.
+
+The repository changed during retrieval: later search results carried
+a different commit. This report therefore records a source anchor,
+not an assertion that the whole repository was frozen throughout the
+session. Six ZIP archives were visible in the incoming inventory at
+the time it was read. Their binary contents were not unpacked or
+analytically audited in this work. File names, including date strings,
+do not establish their mathematical content. No statement here should
+be read as a certification of those archives or of the entire four-volume
+manuscript.
+
+No substantive false theorem was found in the fully inspected
+mixed-Dougall proof. Its all-order mixed derivatives and tail identities
+remain prior repository material, not contributions claimed by this
+report. The already corrected Choi normalization is likewise not a
+newly discovered correction here \cite{repo:readme,repo:dougall}.
+
+\subsection{Specific correction and normalization safeguards}
+The principal correction supplied by the present analysis is the
+\emph{transfer rule} between two possible definitions of a finite
+constant. For this family the correct formula is
+\[
+ \text{hard-cutoff constant}
+ =\text{spectral finite part}-A'(0).
+\]
+Equation~\eqref{dhr:eq:normalization-example} is an explicit
+counterexample to omitting the last term. The rule corrects that
+possible extrapolation; it is not attributed to any particular source
+statement that was not observed.
+
+Two further safeguards are necessary when implementing the formulas.
+The leading amplitude uses $L(u)^r$, even though its partition has
+$r-1$ particles. In the shifted harmonic transform
+\eqref{dhr:eq:U-shift}, the finite correction is $H_{k-1}$.
+Both choices follow from direct derivations, and the delivered
+coefficient checks are sensitive to the shift convention. The
+ordered-configuration normalization also precludes an extra factor
+of $r!$.
+
+The finite cutoff, the Abel constant, the spectral finite part, and the
+value of an ordinary subtracted bracket are four distinct normalizations.
+For the canonical two-particle example they are, respectively,
+\[
+ \frac{\gamma-3}{4},\qquad -\frac34,\qquad
+ -\frac13\ \text{for the normalization \eqref{dhr:eq:integer-normalization}},
+ \qquad -\frac34\ \text{at subtraction point }\alpha=1.
+\]
+The numerical equality of the second and fourth constants in this
+example does not identify all four operations.
+
+\subsection{Claim ledger}
+\begin{center}
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.28\textwidth}>{\raggedright\arraybackslash}p{0.30\textwidth}>{\raggedright\arraybackslash}p{0.31\textwidth}}
+\toprule
+Result & Status in this report & Scope qualification\\
+\midrule
+Gauss--Vandermonde product & Complete determinant proof & Classical inputs; no priority claim\\
+Largest-index finite part & Complete analytic proof & First logarithmic resonance only\\
+All Stieltjes orders & Complete normal-convergence proof & Fixed finite derivatives; full brackets\\
+Harmonic mixed generator & Complete Gamma-product proof & Integer $B>2r$, local parameter germ\\
+Rank-one harmonic cutoff & Complete algebraic proof & Simple negative-integer poles and critical decay\\
+Depth-two closure & Complete terminating reduction & Upper bound, not minimal depth\\
+Zeta endpoint evaluations & Complete reduction with Euler lemma & Ordinary positive primitive orders\\
+Common translated grid & Complete residue/filter proof & Common grid, not arbitrary unrelated shifts\\
+$S_6$, $S_8$ & Not resolved & Prior conjectural status unchanged\\
+Proof-assistant status & Not formalized & No Lean or other kernel certificate\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The source's distinction between formal relation systems and actual
+period independence is preserved \cite{repo:quotients}. A finite
+rank calculation or a failed integer-relation search would not prove
+that an endpoint lies outside a smaller period space. No such
+nonreduction assertion is used here.
+
+\subsection{Proposed integration}
+A suitable standalone destination is
+\begin{center}
+\small\path{Analysis/Polylogarithms/docs/reports/determinantal-harmonic-resonance/}.
+\end{center}
+Its thematic cross-links are the Gamma--harmonic resonance material,
+Hurwitz--Stieltjes calculus, and depth/cyclotomic chapters. The report
+contains a complete article and can be reviewed independently before
+any canonical chapter integration. All theorem and equation labels
+start with \texttt{dhr:} to reduce collisions.
+
+The incoming procedure explicitly separates preservation, replay,
+analytic review, and canonical integration \cite{repo:intake}. This
+delivery does not modify the GitHub repository, apply a patch, or
+promote its own results into the canonical manuscript. The separate
+\texttt{integration/INTEGRATION.md} records a suggested reading order
+and chapter mapping. The delivered source files, not this paragraph,
+are the proposed integration artifacts.

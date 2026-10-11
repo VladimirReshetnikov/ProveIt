@@ -1,0 +1,174 @@
+% Exact p=6 continuation. Uses general_shifted_hankel.tex notation.
+% Independent symbolic certificate: verify_moment_rank_six.py and .json.
+\section{The optimal prefix for every pair \texorpdfstring{$(6,q)$}{(6,q)}}
+\label{rs:section}
+
+A congruence modulo four, rather than only the parity of doubled
+Bernoulli numbers, settles the next unequal-order family.  All matrices
+in this section are in the same source normalization as
+Lemma~\ref{lem:general-even-factor}.
+
+\begin{lemma}[A doubled-Bernoulli congruence]\label{rs:Bernoulli-mod-four}
+For every integer $m\ge2$,
+\[
+ 2B_{2m}\equiv1\pmod4\quad\hbox{in }\mathbb Z_{(2)}.
+\]
+\end{lemma}
+\begin{proof}
+The previously proved Bernoulli parity gives $v_2(B_{2j})=-1$
+for $j\ge1$. Put $r=2m\ge4$. The exact Faulhaber identity is
+\[
+ \sum_{k=0}^3k^r
+ =4B_r+\sum_{h=2}^{r+1}
+          \binom r{h-1}\frac{4^h}{h}B_{r+1-h}.
+\]
+The $h=2$ term vanishes because $B_{r-1}=0$. Every $h\ge3$ term
+is zero modulo eight: all Bernoulli numbers involved have valuation
+at least $-1$, and
+$2h-1-v_2(h)\ge3$. The left side is
+$1+2^r+3^r\equiv2\pmod8$.
+Thus $4B_r\equiv2\pmod8$, proving the assertion.
+\end{proof}
+
+\begin{theorem}[Order-six optimal prefix]\label{rs:main}
+Let $a=3$ and $b\ge4$. Then
+\[
+ v_2\!\left(\frac{\det(H_{3,b}+U)}{\det H_{3,b}}\right)=-3.
+\]
+In particular $\det M_{3,b}\ne0$. Consequently the first $q$
+centered moments have full formal rank $q$ for every pair
+$(p,q)=(6,2b)$ with $q>6$.
+\end{theorem}
+
+Here are explicit finite identities certifying the uniform assertion.
+They also specify the polynomial used in the proof without an
+unrecorded fitted formula. For $0\le i,\ell\le2$, put
+\[
+ n=b-3+i,\qquad N=2(n-\ell)+1,\qquad R=2b-4+2\ell,
+\]
+and retain $f_\ell(n)$ from
+\eqref{eq:general-H-small-det}. Define
+\begin{align}
+ F_{i\ell}&=f_\ell(n),\notag\\
+ C_{i\ell}&=\frac{2R!}
+ {(2n+1)(2n+2)(2\ell+2)!N!},\label{rs:C}\\
+ W_{i\ell}(z)&=(z+2\ell+1)
+                 (2n+2\ell+z+1)^{\underline{2i}},\notag\\
+ \alpha_{i\ell h}&=\frac1{h!}\sum_{j=0}^h
+             (-1)^{h-j}\binom hj W_{i\ell}(N-j).
+ \label{rs:alpha}
+\end{align}
+All factorial ratios in $C_{i\ell}$ are interpreted as finite rational
+products in $b$: $R-N=1+4\ell-2i$ is a fixed integer.
+For independent variables $U_1,\ldots,U_5$, define the rational
+$3\times3$ matrix
+\begin{equation}\label{rs:matrix}
+ \mathscr A_{i\ell}(b;U)
+ =2F_{i\ell}+\frac{C_{i\ell}}2
+ \sum_{\substack{1\le h\le2i+1\\h\ {\rm odd}}}
+ \alpha_{i\ell h}N^{\underline h}
+       U_{3-i+\ell+(h-1)/2}.
+\end{equation}
+Thus at most three terms occur in any entry. Put
+\begin{align}
+ D(b)&=16b^4-80b^3+80b^2+50b+9,\label{rs:D}\\
+ Q(b)&=512b^6-6656b^5+27296b^4-25200b^3
+              -91092b^2+217836b-123741.\label{rs:Q}
+\end{align}
+Finally define
+\begin{equation}\label{rs:Pdefinition}
+ \mathscr P(b;U)
+ =48(2b-3)D(b)\,\frac{\det\mathscr A(b;U)}{\det F(b)}.
+\end{equation}
+The following are identities in rational functions of the indeterminates,
+not assertions inferred from evaluations at integer values:
+\begin{align}
+ \det F(b)&=\frac{16}{45}(b-1)(2b-3)(4b-7)(4b-5)(4b-3)D(b),
+ \label{rs:Fdet}\\
+ \mathscr P(b;U)&\in\mathbb Z[b,U_1,\ldots,U_5],
+ \label{rs:integrality}\\
+ \mathscr P(b;1,1,1,1,1)&=-2(2b-5)Q(b).
+ \label{rs:ones}
+\end{align}
+These finite algebraic identities are obtained by expanding the six
+terms of each $3\times3$ determinant in
+\eqref{rs:Pdefinition} and cancelling the displayed factors.
+The accompanying certificate performs the expansion with an
+indeterminate $b$, checks membership in the integer polynomial ring,
+and verifies \eqref{rs:Fdet} and \eqref{rs:ones} exactly. It records
+the full polynomial $\mathscr P$, which has 22 monomials in
+$U_1,\ldots,U_5$ with integer-polynomial coefficients in $b$.
+In particular \eqref{rs:matrix}--\eqref{rs:Pdefinition} are a finite
+explicit definition from which every coefficient can be recovered.
+
+\begin{proof}[Proof of Theorem~\ref{rs:main}]
+Use the last three orthogonal-polynomial rows in
+Theorem~\ref{thm:general-small-determinant}, reversing their first
+three columns so that $\ell=0,1,2$. Divide row $i$ by $c_n$.
+The unperturbed rows are $F_{i\ell}$.
+For $b\ge6$, the perturbation contraction is
+\[
+ C_{i\ell}\sum_{\substack{0\le j\le N\\j\ {\rm even}}}
+          \binom Nj W_{i\ell}(j)B_j.
+\]
+Expand $W_{i\ell}(N-y)$ in falling factorials; its coefficients
+are \eqref{rs:alpha}. The weighted Bernoulli identity
+\[
+ \sum_{j=0}^N\binom Nj (N-j)^{\underline h}B_j
+       =N^{\underline h}B_{N-h}(1)
+\]
+reduces the full sum. Here $N\ge2i+3$, so only odd $h$ occur,
+and every surviving Bernoulli index is positive and even.
+Removing the $j=1$ term contributes $NW_{i\ell}(1)/2$.
+Direct factorial cancellation gives
+\[
+ C_{i\ell}\frac N2W_{i\ell}(1)=f_\ell(n).
+\]
+Thus the normalized sum of the unperturbed row and its perturbation
+is precisely \eqref{rs:matrix}, at
+$U_j=2B_{2b-2j}$. The row and column factors cancel in the quotient,
+so \eqref{rs:Pdefinition} proves
+\begin{equation}\label{rs:ratio}
+ 8\frac{\det(H_{3,b}+U)}{\det H_{3,b}}
+ =\frac{\mathscr P(b;2B_{2b-2},2B_{2b-4},\ldots,2B_{2b-10})}
+             {6(2b-3)D(b)}.
+\end{equation}
+For $b\ge7$, all five doubled Bernoulli numbers are $1$ modulo
+four by Lemma~\ref{rs:Bernoulli-mod-four}.
+The integer-coefficient assertion \eqref{rs:integrality} and
+\eqref{rs:ones} therefore show that the numerator of
+\eqref{rs:ratio} is $2$ modulo four: $2b-5$ is odd, and
+$Q(b)\equiv1\pmod2$. Its valuation is exactly one.
+The denominator also has valuation one, since
+$D(b)\equiv1\pmod2$. Hence the quotient on the left of
+\eqref{rs:ratio} is a $2$-adic unit, which gives the claimed
+valuation $-3$.
+
+The three remaining cases are exact source-matrix calculations:
+\[
+\begin{array}{c|c|c}
+ b&\det(H_{3,b}+U)/\det H_{3,b}&\det M_{3,b}\\\hline
+ 4&7527/1240&2509/5120\\
+ 5&713039/70280&-713039/6451200\\
+ 6&2968099/1116360&2968099/2786918400.
+\end{array}
+\]
+Each ratio has valuation $-3$ and each determinant is nonzero.
+The general factorization and the previously proved nonsingularity
+of $H_{3,b}$ now establish the full claim.
+\end{proof}
+
+\paragraph{A limit of the valuation pattern.}
+The valuations $-1,-2,-3$ proved for $a=1,2,3$ (with $b\ge4$
+in the $a=2$ case) do not justify a
+uniform assertion $v_2(\det(H_{a,b}+U)/\det H_{a,b})=-a$.
+Already at $a=4,b=9$, an exact calculation gives
+\[
+ \frac{\det(H_{4,9}+U)}{\det H_{4,9}}
+ =-\frac{334092867653747}{85606130610},
+ \qquad v_2=-1.
+\]
+This contradicts that proposed valuation pattern even in the range
+$b\ge2a$. It does not refute the optimal-prefix conjecture; the
+determinant in this example is nonzero. The unequal-order conjecture
+remaining after the present results is $8\le p<q$.

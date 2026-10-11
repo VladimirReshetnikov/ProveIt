@@ -1,0 +1,546 @@
+\section{Every order derivative on the odd Lerch lattice}
+\label{lj:sec:main}
+
+The report \emph{Continuous Depth Lerch} asks in its final question Q8
+for the spectral derivatives of its continuous-depth family at odd
+positive integers \cite{Continuous}. Its formula \texttt{cdl:eq:oddF} gives the values there,
+but does not permit differentiation in the discrete index. We resolve
+that question in the precise form requested: an explicit finite formula
+for every order derivative and every mixed depth derivative, including
+the reflected spectral coordinates. We also give normally convergent
+series for all those coordinates. Thus the answer includes a constructive
+evaluation procedure at the negative reflected orders, where the original
+alternating series need not converge.
+
+The analytic inputs are the source report's proved centered reflection
+formula \texttt{cdl:eq:completed}, Euler's classical transformation of
+series, and the usual Gamma and Hurwitz-zeta identities \cite{DLMFEuler,DLMFGamma,DLMFZeta}. The new claim is
+the following continuation of the inspected source question, not priority
+for those classical inputs or for the special cases recovered below.
+Euler's transformation is recorded in DLMF \S3.9(ii); the normally
+convergent, parameter-differentiated use needed here is proved explicitly.
+
+\subsection{Functions, branches, and normalization}
+
+For $\re\rho>0$, put
+\begin{align}
+ f_\rho(t)&=(2\cosh(t/2))^{-\rho},\qquad t\geq0,
+ \label{lj:eq:f}\\
+ Z_\rho(s)&=\frac1{\Gamma(s)}
+       \int_0^\infty t^{s-1}f_\rho(t)\,\dd t,
+       \qquad \re s>0.
+ \label{lj:eq:Z}
+\end{align}
+The logarithm in $f_\rho$ is real on the positive real axis. The function
+$Z_\rho(s)$ is entire in $s$: subtracting finitely many Taylor terms of
+$f_\rho$ near zero gives its meromorphic Mellin transform, and the zeros
+of $1/\Gamma(s)$ cancel its poles. The same subtractions on compact
+parameter sets establish joint holomorphy for $\re\rho>0$. In the
+absolutely convergent region $\re s>\re\rho$,
+\begin{equation}
+ Z_\rho(s)=\sum_{k=0}^\infty
+     \frac{(-1)^k(\rho)_k}{k!(k+\rho/2)^s}.
+ \label{lj:eq:Zseries}
+\end{equation}
+Powers of $k+\rho/2$ use the logarithm on the right half-plane.
+
+Define
+\begin{align}
+ b_\rho(x)&=\frac{(2\pi)^{\rho-2}}{\Gamma(\rho)}
+       \Gamma\left(\frac\rho2+\frac{ix}{2\pi}\right)
+       \Gamma\left(\frac\rho2-\frac{ix}{2\pi}\right),
+ \label{lj:eq:b}\\
+ F_\rho(s)&=\frac1{\Gamma(s)}
+       \int_0^\infty x^{s-1}b_\rho(x)\,\dd x,
+       \qquad \re s>0.
+ \label{lj:eq:F}
+\end{align}
+This is $\mathcal F_{\rho,1/2}(s;0)$ in the continuous-depth report.
+Its entire continuation follows from the same Mellin-subtraction argument.
+For complex $\rho$, the Gamma product is a product of two functions,
+not a squared modulus.
+
+The centered reflection identity is
+\begin{equation}
+ F_\rho(s)=\frac{\pi(2\pi)^{\rho+s-2}}
+                 {\Gamma(s)\sin(\pi s/2)}Z_\rho(1-s).
+ \label{lj:eq:reflection}
+\end{equation}
+Apparent singularities are removed in the combined expression. For
+completeness, the beta integral gives the classical Fourier formula \cite{RamanujanFourier}
+$\widehat f_\rho(v)=
+\Gamma(\rho/2+iv)\Gamma(\rho/2-iv)/\Gamma(\rho)$, where the Fourier
+transform is $\int_{\mathbb R}e^{ivt}f_\rho(t)\,\dd t$. On
+$0<\re s<1$, insert a decaying exponential in the cosine Mellin
+integral, use Fubini, and then dominated convergence to obtain
+\[
+ \int_0^\infty v^{s-1}\widehat f_\rho(v)\,\dd v
+ =2\Gamma(s)\cos(\pi s/2)
+       \int_0^\infty t^{-s}f_\rho(t)\,\dd t.
+\]
+The regulator can be removed on the left because the Gamma product
+decays exponentially. Rescaling gives
+$F_\rho(s)=2(2\pi)^{\rho+s-2}\Gamma(1-s)
+\cos(\pi s/2)Z_\rho(1-s)$; Euler reflection for Gamma gives
+\eqref{lj:eq:reflection}. Entire continuation gives the stated global
+interpretation. This reproduces the source input rather than replacing
+it with a formal exchange at a pole.
+
+We use $\partial_s^q$ for order derivatives and $\partial_\rho^r$ for
+depth derivatives. The complete exponential Bell polynomials are fixed by
+\begin{equation}
+ \exp\left(\sum_{j\geq1}d_j\frac{v^j}{j!}\right)
+ =\sum_{q\geq0}\mathcal B_q(d_1,\ldots,d_q)\frac{v^q}{q!},
+ \qquad \mathcal B_0=1.
+ \label{lj:eq:Bell}
+\end{equation}
+Write $H_N^{(j)}=\sum_{k=1}^N k^{-j}$ and $H_0^{(j)}=0$.
+
+\subsection{The finite formula for all mixed jets}
+
+\begin{theorem}[Odd-lattice order and depth derivatives]
+\label{lj:thm:oddjets}
+Let $m,r,q\geq0$ be integers, put $N=2m$, $n=N+1$, and set
+\begin{align}
+ L&=\log(2\pi),\qquad
+ C_{m,\rho}=\frac{(-1)^m\pi(2\pi)^{\rho+N-1}}{N!},
+ \label{lj:eq:C}\\
+ \kappa_1&=L+\gamma-H_N,\nonumber\\
+ \kappa_j&=(j-1)!\left[
+       \left(1-\frac{1+(-1)^j}{2^j}\right)\zeta(j)
+       +(-1)^jH_N^{(j)}\right],\qquad j\geq2.
+ \label{lj:eq:kappa}
+\end{align}
+For every $\re\rho>0$,
+\begin{equation}
+ \boxed{\displaystyle
+ \partial_\rho^r\partial_s^qF_\rho(n)
+ =C_{m,\rho}\sum_{j=0}^q(-1)^j\binom qj
+       \mathcal B_{q-j}(\kappa_1,\ldots,\kappa_{q-j})
+       (\partial_\rho+L)^r\partial_s^jZ_\rho(-N).}
+ \label{lj:eq:alljets}
+\end{equation}
+The operator on the right is explicitly
+$\sum_{h=0}^r\binom rh L^{r-h}\partial_\rho^h$.
+No differentiation with respect to $m$ occurs.
+\end{theorem}
+
+\begin{proof}
+The pole-free local identity from which every derivative follows is
+\begin{equation}
+ F_{\rho+u}(n+v)=C_{m,\rho}e^{Lu}
+       R_m(v)Z_{\rho+u}(-N-v),
+ \qquad
+ R_m(v)=e^{Lv}\frac{\Gamma(n)}{\Gamma(n+v)}
+                  \sec(\pi v/2).
+ \label{lj:eq:local}
+\end{equation}
+It holds for $u$ sufficiently small and $|v|<1$, by substituting in
+\eqref{lj:eq:reflection} and using
+$\sin(\pi(n+v)/2)=(-1)^m\cos(\pi v/2)$.
+All factors in \eqref{lj:eq:local} are holomorphic there.
+
+The Gamma contribution to the $j$th logarithmic derivative of $R_m$
+is $-\psi^{(j-1)}(n)$. For $j\geq2$,
+\[
+ \psi^{(j-1)}(n)=(-1)^j(j-1)!
+                         \bigl(\zeta(j)-H_N^{(j)}\bigr).
+\]
+The product for cosine gives the convergent expansion
+\[
+ \log\sec(\pi v/2)
+   =\sum_{k\geq1}\frac{(1-2^{-2k})\zeta(2k)}{k}v^{2k},
+   \qquad |v|<1.
+\]
+Combining these expansions gives exactly \eqref{lj:eq:kappa} and
+$R_m^{(a)}(0)=\mathcal B_a(\kappa_1,\ldots,\kappa_a)$.
+Now apply the ordinary multivariate Leibniz rule to the holomorphic
+identity \eqref{lj:eq:local}. The argument $-N-v$ supplies $(-1)^j$,
+while $e^{Lu}$ supplies $(\partial_\rho+L)^r$. This proves
+\eqref{lj:eq:alljets} with every combinatorial coefficient fixed.
+\end{proof}
+
+For example, putting $Z^{[j]}=\partial_s^jZ_\rho(-N)$, the first two
+order derivatives are
+\begin{align}
+ F_\rho'(n)&=C_{m,\rho}(\kappa_1Z^{[0]}-Z^{[1]}),
+ \label{lj:eq:first}\\
+ F_\rho''(n)&=C_{m,\rho}
+       \bigl((\kappa_1^2+\kappa_2)Z^{[0]}
+                      -2\kappa_1Z^{[1]}+Z^{[2]}\bigr),
+ \label{lj:eq:second}\\
+ \kappa_2&=\tfrac12\zeta(2)+H_N^{(2)},\qquad
+ \kappa_3=2\bigl(\zeta(3)-H_N^{(3)}\bigr).\nonumber
+\end{align}
+
+To recover the already known value, define
+$U_m(\rho)=[z^{2m}]\sec(z)^\rho$. The even Taylor expansion of
+$f_\rho$ gives
+\begin{equation}
+ Z_\rho(-2m)=(-1)^m(2m)!2^{-\rho-2m}U_m(\rho),
+ \qquad
+ F_\rho(2m+1)=\frac{\pi^{\rho+2m}}2U_m(\rho).
+ \label{lj:eq:valuecheck}
+\end{equation}
+These are the $q=0$ inputs. The terms $Z^{[j]}$ with $j>0$ in
+\eqref{lj:eq:alljets} are additional data; discarding them would give
+an incorrect spectral derivative.
+
+\subsection{A convergent elementary series for every reflected jet}
+
+The next theorem makes the reflected coordinates in
+\eqref{lj:eq:alljets} independently computable. In particular, it avoids
+using the reflection equation itself as a numerical definition of the
+coordinates that are supposed to verify that equation.
+
+\begin{theorem}[Normally convergent Euler series at every order]
+\label{lj:thm:Euler}
+For $\re\rho>0$ and $s\in\mathbb C$, define
+\begin{equation}
+ A_k(\rho,s)=\frac{(\rho)_k}{k!(k+\rho/2)^s},\qquad
+ D_\ell(\rho,s)=\sum_{k=0}^\ell(-1)^k\binom\ell k A_k(\rho,s).
+ \label{lj:eq:D}
+\end{equation}
+Then
+\begin{equation}
+ \boxed{\displaystyle
+ Z_\rho(s)=\sum_{\ell=0}^\infty\frac{D_\ell(\rho,s)}{2^{\ell+1}}.}
+ \label{lj:eq:Euler}
+\end{equation}
+This series is absolutely and locally normally convergent throughout
+$\{\re\rho>0\}\times\mathbb C$. Every fixed mixed derivative in
+$\rho,s$ is obtained by differentiating its finite inner sums termwise.
+\end{theorem}
+
+\begin{proof}
+For $z\in\Omega=\mathbb C\setminus[1,\infty)$, initially $\re s>0$,
+let
+\begin{equation}
+ A(\rho,s;z)=\frac1{\Gamma(s)}\int_0^\infty
+        t^{s-1}e^{-\rho t/2}(1-ze^{-t})^{-\rho}\,\dd t.
+ \label{lj:eq:Aint}
+\end{equation}
+Use the principal logarithm of $1-ze^{-t}$. It is available on
+$\Omega$, since $1-ze^{-t}$ cannot lie on the nonpositive real axis
+there. On compact subsets, the integrand is bounded at zero after the
+factor $t^{s-1}$ is removed and decays exponentially at infinity.
+Thus \eqref{lj:eq:Aint} is jointly holomorphic in this initial domain.
+Its power series at $z=0$ is $\sum_{k\geq0}A_k(\rho,s)z^k$.
+
+The coefficient identity
+\begin{equation}
+ \left(z\frac\partial{\partial z}+\frac\rho2\right)
+ A(\rho,s+1;z)=A(\rho,s;z)
+ \label{lj:eq:Aladder}
+\end{equation}
+holds first in $|z|<1$ and then throughout $\Omega$. Iterating it from
+$\re(s+M)>0$ continues $A$ to every $s\in\mathbb C$. The definitions
+agree on overlaps by the same identity, so this is a joint holomorphic
+continuation. At $z=-1$, it equals $Z_\rho(s)$.
+
+Set
+\[
+ B(\rho,s;v)=\frac1{1-v}
+              A\left(\rho,s;\frac{-v}{1-v}\right).
+\]
+If $|v|<1$, then $-v/(1-v)$ is outside $[1,\infty)$: a point of that
+cut would require $v\in(1,\infty)$. Hence $B$ is holomorphic for
+$|v|<1$. Its Taylor coefficient is $D_\ell(\rho,s)$, by expanding
+$(1-v)^{-k-1}$ in the defining power series near zero.
+Taking $v=1/2$ yields $B(\rho,s;1/2)=2Z_\rho(s)$ and proves
+\eqref{lj:eq:Euler}.
+
+For a compact parameter set, choose any fixed radius $r$ with
+$1/2<r<1$. Cauchy's coefficient estimate on $|v|=r$ gives
+$|D_\ell|\leq C r^{-\ell}$ uniformly on that set. It proves absolute
+normal convergence of \eqref{lj:eq:Euler}. Apply the same argument on
+a slightly enlarged compact parameter neighborhood to justify every
+fixed mixed derivative. This argument proves convergence even when
+\eqref{lj:eq:Zseries} is a divergent ordinary series.
+\end{proof}
+
+All finite derivative coefficients admit a harmonic expression. Put
+$a_k=k+\rho/2$ and
+\[
+ h_k^{(j)}(\rho)=\sum_{\ell=0}^{k-1}(\rho+\ell)^{-j},\qquad
+ d_j=(-1)^{j-1}(j-1)!
+       \left(h_k^{(j)}(\rho)-\frac{s}{2^ja_k^j}\right).
+\]
+Then $\partial_\rho^r A_k=A_k\mathcal B_r(d_1,\ldots,d_r)$.
+For mixed derivatives a particularly safe finite generating formula is
+\begin{equation}
+ \frac{A_k(\rho+u,s+v)}{A_k(\rho,s)}
+ =e^{-v\log a_k}
+       \prod_{\ell=0}^{k-1}\left(1+\frac{u}{\rho+\ell}\right)
+       \left(1+\frac{u}{2a_k}\right)^{-s-v}.
+ \label{lj:eq:mixedcoeff}
+\end{equation}
+Only the requested bidegree is needed. This also distinguishes a mixed
+derivative from the product of two independent logarithmic derivatives.
+
+At the reflected integer $s=-N$, $N\geq0$, the formula is especially
+explicit:
+\begin{equation}
+\begin{split}
+ \partial_\rho^r\partial_s^q A_k(\rho,-N)
+ &=(-1)^q r!\frac{(\rho)_k}{k!}a_k^N[u^r]
+       \prod_{\ell=0}^{k-1}\left(1+\frac{u}{\rho+\ell}\right)
+       \left(1+\frac{u}{2a_k}\right)^N\\
+ &\hspace{13mm}\cdot
+       \left(\log a_k+\log\left(1+\frac{u}{2a_k}\right)\right)^q.
+\end{split}
+ \label{lj:eq:negativecoeff}
+\end{equation}
+For positive rational $\rho$, every inner coefficient here is a rational
+linear combination of powers of logarithms of positive rational numbers.
+Equations \eqref{lj:eq:negativecoeff}, \eqref{lj:eq:Euler}, and
+\eqref{lj:eq:alljets} therefore constitute a complete ordinary convergent
+series evaluation of all the reflected mixed jets in the theorem.
+The outer Euler series need not terminate. At a positive integer $\rho$
+and $q=r=0$, its inner sequence is polynomial at negative integer $s$,
+so finite differences do terminate; differentiation can remove that
+termination.
+
+\subsection{Independent Gamma-moment realization}
+
+The positive-half-line Gamma integral gives a different exact
+representation for checking the lattice formulas. Put
+\begin{equation}
+ a_j(\rho,x)=\delta_{j1}\log(2\pi)-\psi^{(j-1)}(\rho)
+  +2^{-j}\left\{
+   \psi^{(j-1)}\left(\frac\rho2+\frac{ix}{2\pi}\right)
+  +\psi^{(j-1)}\left(\frac\rho2-\frac{ix}{2\pi}\right)\right\}.
+ \label{lj:eq:Gammajet}
+\end{equation}
+For the order derivatives define $c_1(x;s)=\log x-\psi(s)$ and
+$c_j(x;s)=-\psi^{(j-1)}(s)$ for $j\geq2$. Direct differentiation of
+\eqref{lj:eq:F} gives, for $\re s>0$,
+\begin{equation}
+\begin{split}
+ \partial_\rho^r\partial_s^qF_\rho(s)
+  =\frac1{\Gamma(s)}\int_0^\infty
+      x^{s-1}b_\rho(x)
+      \mathcal B_r(a_1(\rho,x),\ldots,a_r(\rho,x))\qquad\qquad\\[-2pt]
+      {}\cdot\mathcal B_q(c_1(x;s),\ldots,c_q(x;s))\,\dd x.
+\end{split}
+ \label{lj:eq:momentjets}
+\end{equation}
+This is an ordinary absolutely convergent integral. Near zero, only
+fixed powers of $\log x$ occur. At infinity, the Gamma product decays
+as $e^{-x/2}$ times a power of $x$; its parameter derivatives introduce
+only logarithmic or polynomial factors on compact parameter sets.
+These observations justify every differentiation. The left side of
+\eqref{lj:eq:alljets} can therefore be evaluated through
+\eqref{lj:eq:momentjets} while its right side is evaluated through
+the independent Euler series.
+
+\subsection{Stieltjes coordinates at depth two}
+
+Let the generalized Stieltjes constants have the convention
+\[
+ \zeta(1+v,a)=\frac1v+
+       \sum_{j\geq0}\frac{(-1)^j\gamma_j(a)}{j!}v^j,
+       \qquad \re a>0.
+\]
+An upper parenthesized index on $\gamma_j$ below is an argument
+derivative. Set $E_a(s)=s\zeta(s+1,a)$, with the removable value
+$E_a(0)=1$.
+
+\begin{proposition}[Stieltjes transport to every positive order]
+\label{lj:prop:Stieltjes}
+For integers $n\geq1,q\geq0$, put $N=n-1$ and
+$\lambda_j=(-1)^j(j-1)!H_N^{(j)}$. Then
+\begin{equation}
+ \boxed{\displaystyle
+ E_a^{[q]}(n)=\frac{(-1)^n}{N!}
+   \sum_{j=0}^q(-1)^j\binom qj
+       \mathcal B_{q-j}(\lambda_1,\ldots,\lambda_{q-j})
+       \gamma_j^{(n)}(a).}
+ \label{lj:eq:Stieltjes}
+\end{equation}
+In particular,
+\begin{equation}
+ E_a^{[q]}(1)=(-1)^{q+1}\gamma_q'(a).
+ \label{lj:eq:Stieltjesone}
+\end{equation}
+At $a=1/2$, this gives $\partial_s^qF_2(n)$.
+\end{proposition}
+
+\begin{proof}
+The shift derivative of Hurwitz zeta gives
+$\partial_a^n\zeta(1+v,a)=(-1)^n(1+v)_n\zeta(n+1+v,a)$.
+The pole $1/v$ is independent of $a$, so
+\begin{equation}
+ E_a(n+v)=\frac{(-1)^n}{(1+v)_N}
+       \sum_{j\geq0}\frac{(-1)^j\gamma_j^{(n)}(a)}{j!}v^j.
+ \label{lj:eq:Stieltjesgerm}
+\end{equation}
+The logarithmic Taylor coefficients of $N!/(1+v)_N$ are $\lambda_j$.
+Coefficient extraction proves \eqref{lj:eq:Stieltjes}.
+Finally, $b_2(x)=x/(2\sinh(x/2))$, so its Mellin transform gives
+$F_2(s)=s\zeta(s+1,1/2)$ directly. This proves the last assertion.
+\end{proof}
+
+This proposition is an explicit form of the familiar parameter-derivative
+tower. Its role here is to transport the new lattice-jet formula into
+the repository's Stieltjes convention; it is not presented as a new
+Hurwitz-zeta identity. For instance, with $N=2m$,
+\[
+ F_2'(2m+1)=\frac{
+       \gamma_1^{(2m+1)}(1/2)
+        +H_{2m}\gamma_0^{(2m+1)}(1/2)}{(2m)!}.
+\]
+Together with \eqref{lj:eq:first}, this is an exact relation between
+negative reflected $Z_2$ order derivatives and positive-order Stieltjes
+argument derivatives.
+
+\subsection{Gamma-weighted polylogarithm order derivatives}
+
+Put
+\begin{align}
+ G_\rho(x)&=
+   \Gamma\left(\frac\rho2+\frac{ix}{2\pi}\right)
+   \Gamma\left(\frac\rho2-\frac{ix}{2\pi}\right),\nonumber\\
+ P_s(x)&=\frac{\operatorname{Li}_s(ie^{-x/2})
+                    -\operatorname{Li}_s(-ie^{-x/2})}{i},\nonumber\\
+ I_\rho(s)&=\int_{\mathbb R}G_\rho(x)P_s(x)\,\dd x.
+ \label{lj:eq:I}
+\end{align}
+The polylogarithms use their principal branches. Their arguments stay
+off the positive real cut. The following formula covers all independent
+order derivatives, including orders for which the integrand is no longer
+an elementary logarithm or a classical fixed-order polylogarithm.
+
+\begin{theorem}[All polylogarithmic order jets under a Gamma weight]
+\label{lj:thm:polylog}
+For $\re\rho>0$, the integral $I_\rho(s)$ is entire in $s$, jointly
+holomorphic in its parameters, and
+\begin{equation}
+ I_\rho(s)=\Gamma(\rho)(2\pi)^{2-\rho}2^{1-s}F_{\rho+1}(s)
+ =\frac{4\Gamma(\rho)\pi^{s+2}}
+        {\Gamma(s)\sin(\pi s/2)}Z_{\rho+1}(1-s),
+ \label{lj:eq:Imaster}
+\end{equation}
+with all apparent poles removed in the combined expression.
+For $N=2m$, $n=N+1$, replace only the first cumulant in
+\eqref{lj:eq:kappa} by
+$\widetilde\kappa_1=\log\pi+\gamma-H_N$, and leave
+$\widetilde\kappa_j=\kappa_j$ for $j\geq2$. Then
+\begin{equation}
+ \partial_s^qI_\rho(n)=
+ \frac{4(-1)^m\Gamma(\rho)\pi^{n+2}}{N!}
+   \sum_{j=0}^q(-1)^j\binom qj
+    \mathcal B_{q-j}(\widetilde\kappa_1,\ldots,
+                    \widetilde\kappa_{q-j})
+    \partial_s^jZ_{\rho+1}(-N).
+ \label{lj:eq:Ijets}
+\end{equation}
+Every mixed depth derivative follows by the finite rule
+\begin{equation}
+ \partial_\rho^r\{\Gamma(\rho)Y(\rho+1)\}
+ =\Gamma(\rho)\sum_{h=0}^r\binom rh
+     \mathcal B_{r-h}(\psi(\rho),\psi'(\rho),\ldots)
+     Y^{(h)}(\rho+1).
+ \label{lj:eq:Igammajets}
+\end{equation}
+All these derivatives pass through the ordinary integral in
+\eqref{lj:eq:I}.
+\end{theorem}
+
+\begin{proof}
+The root filter in the continuous-depth report, valid first by a
+convergent series and then by analytic continuation, is
+\[
+ \mathcal F_{1,1/2}(s;-x)=2^{s-1}e^{-x/2}P_s(x).
+\]
+Convolve this with
+$K_\rho(x)=(2\pi)^{\rho-2}e^{x/2}G_\rho(x)/\Gamma(\rho)$.
+The source's entire-order addition law gives $F_{\rho+1}(s)$ and
+therefore the first equality in \eqref{lj:eq:Imaster}. The second is
+\eqref{lj:eq:reflection}, with the powers of $2$ and $\pi$ collected.
+The ordinary integral is absolutely convergent locally uniformly in
+all the stated parameters. One explicit justification uses the vertical
+contour for $\mathcal F_{1,1/2}$ on any line $1/2<c<1$, giving
+$|P_s(x)|\leq C e^{(1/2-c)x}$ on compact order sets. The Gamma weight
+then decays integrably at both ends. Fixed order derivatives add powers
+of the logarithm of the contour variable, and depth derivatives of the
+Gamma weight add only polynomial or logarithmic factors. The same
+integrable majorants persist on slightly larger compact sets, proving
+joint holomorphy and passage of all derivatives.
+
+The local germ at $s=n+v$ now contains $e^{v\log\pi}$ in place of
+$e^{v\log(2\pi)}$. The proof of Theorem~\ref{lj:thm:oddjets} gives
+\eqref{lj:eq:Ijets}. Finally, the logarithmic derivatives of
+$\Gamma(\rho)$ are $\psi^{(j-1)}(\rho)$, so Bell's formula and Leibniz
+give \eqref{lj:eq:Igammajets}.
+\end{proof}
+
+On the integral side of \eqref{lj:eq:Igammajets}, the weight replacing
+$G_\rho$ is
+\[
+ G_\rho(x)\mathcal B_r(g_1(\rho,x),\ldots,g_r(\rho,x)),\qquad
+ g_j(\rho,x)=2^{-j}\left\{
+ \psi^{(j-1)}\left(\frac\rho2+\frac{ix}{2\pi}\right)
+ +\psi^{(j-1)}\left(\frac\rho2-\frac{ix}{2\pi}\right)\right\}.
+\]
+Thus the theorem is a family of explicit ordinary integrals containing
+polygamma factors and spectral derivatives of polylogarithms. Theorem
+\ref{lj:thm:Euler} evaluates their reflected coordinates by convergent
+series, including the mixed derivatives appearing in
+\eqref{lj:eq:Igammajets}.
+
+At $\rho=1$ and $s=1$, $G_1(x)=\pi\operatorname{sech}(x/2)$.
+The first derivative has the concrete forms
+\begin{align}
+ \int_{\mathbb R}\frac{\pi}{\cosh(x/2)}
+       \left.\partial_sP_s(x)\right|_{s=1}\,\dd x
+ &=2\pi\gamma_1'(1/2)-\pi^3\log2
+ \label{lj:eq:exampleStieltjes}\\
+ &=\pi^3\left(\gamma+\log\pi+
+                  \frac43\log2+12\zeta'(-1)\right).
+ \label{lj:eq:exampleZeta}
+\end{align}
+Indeed, the first equality follows from
+$I_1(s)=2\pi2^{1-s}E_{1/2}(s)$ and
+\eqref{lj:eq:Stieltjesone}. For the second use
+$Z_2(s)=\eta(s-1)$,
+$\eta(s)=(1-2^{1-s})\zeta(s)$,
+$Z_2(0)=1/4$, and
+$Z_2'(0)=-\log2/3-3\zeta'(-1)$ in
+\eqref{lj:eq:Ijets}. The second order derivative is
+\begin{equation}
+ \int_{\mathbb R}\frac{\pi}{\cosh(x/2)}
+       \left.\partial_s^2P_s(x)\right|_{s=1}\,\dd x
+ =-2\pi\gamma_2'(1/2)-4\pi\log2\,\gamma_1'(1/2)
+       +\pi^3\log^22.
+ \label{lj:eq:exampleSecond}
+\end{equation}
+These formulas state the normalization explicitly; in particular, the
+$2^{1-s}$ factor cannot be held constant during order differentiation.
+
+\subsection{What this resolves and what remains}
+
+Theorem~\ref{lj:thm:oddjets} resolves Q8 in the source's requested
+Gamma--Stieltjes--$Z_\rho$-jet form. Theorem~\ref{lj:thm:Euler} supplies
+a convergent evaluator and explicit harmonic coefficient calculus for
+every reflected coordinate, while Theorem~\ref{lj:thm:polylog} transports
+the result to ordinary Gamma-weighted polylogarithm integrals. This does
+not assert that arbitrary noninteger-depth spectral jets reduce to a
+finite algebra of classical zeta and Gamma values. Such a further
+reduction would be a different arithmetic statement.
+
+No false theorem was found in the inspected continuous-depth report.
+Its caution that one cannot differentiate a formula known only at
+integer $m$ is correct. The necessary addition is a holomorphic local
+identity, \eqref{lj:eq:local}, together with the extra reflected jets.
+The tilted report already treats independent shift and order derivatives
+of its matched convolution family; those results are retained as prior
+work and are not recounted as discoveries here.
+
+Two concrete questions remain. First, determine whether selected rational
+noninteger depths admit additional finite reductions of
+$\partial_s^qZ_\rho(-2m)$, specifying the comparison algebra in advance.
+Second, develop a cancellation-aware implementation of the Euler sums
+with proved arithmetic error bounds. The analytic theorem supplies
+normal convergence, while finite floating-point agreement by itself
+does not provide a certificate for a transcendental identity.

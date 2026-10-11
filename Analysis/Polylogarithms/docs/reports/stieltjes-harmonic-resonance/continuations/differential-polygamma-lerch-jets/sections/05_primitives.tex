@@ -1,0 +1,106 @@
+\section{Normalized primitives and common shifted endpoints}
+\label{poly:primitives}
+
+The global expansion also answers the endpoint-normalization part of
+the common-shift question. It yields convergent formulas at independent
+arguments without replacing ordinary harmonic numbers by shifted ones
+without justification.
+
+For $j\ge1$ put
+\[
+ F_1(z)=\Log z,\qquad F_j(z)=\frac{z^{1-j}}{1-j}\quad(j\ge2).
+\]
+With the data of \eqref{poly:poles}, define
+\begin{align}\label{poly:primitive}
+ \mathcal P_P(z)={}&\sum_{j=1}^Mp_j(0)(F_j(z)-F_j(1))
+                  +\kappa_P(z-1)\notag\\
+ &+\sum_{n\ge1}\sum_{j=1}^Mp_j(n)
+ \left\{F_j(n+z)-F_j(n+1)-\frac{z-1}{n^j}\right\}.
+\end{align}
+
+\begin{theorem}[Primitive and shift theorem]
+\label{poly:primitivethm}
+The function $\mathcal P_P$ is holomorphic on
+$\C\setminus(-\infty,0]$, its series converges normally there,
+and
+\begin{equation}\label{poly:primitiveidentity}
+ \mathcal P_P'(z)=f_P(z),\qquad \mathcal P_P(1)=0.
+\end{equation}
+In particular, for $\re a>0$,
+\begin{equation}\label{poly:shift}
+ I_P(a):=\int_0^1f_P(a+x)\dd x
+        =\mathcal P_P(a+1)-\mathcal P_P(a).
+\end{equation}
+As $a\to0$ in any fixed closed sector $|\arg a|\le\pi-\delta$,
+\begin{equation}\label{poly:shiftlimit}
+ I_P(a)=\sum_{j=2}^M\frac{p_j(0)}{j-1}a^{1-j}
+          -p_1(0)\Log a+\cI(P)+O(a).
+\end{equation}
+The last expansion refers to analytic continuation of the difference
+in \eqref{poly:shift}; on the positive real axis it is an ordinary
+integral. Thus subtracting its displayed singular terms recovers
+exactly the finite part at zero.
+\end{theorem}
+
+\begin{proof}
+For $z$ in a compact set, the braces in \eqref{poly:primitive}
+are $O(n^{-j-1})$ by integrating
+$(n+z)^{-j}-n^{-j}$ from $1$ to $z$. The pole coefficients have only
+polylogarithmic growth, so the series and its derivative converge
+normally. The derivative is \eqref{poly:MLeq}, and every term vanishes
+at one. This fixes the integration constant.
+Integrating along the horizontal segment from $a$ to $a+1$ proves
+\eqref{poly:shift}. Near zero, integrate the convergent Laurent expansion
+of $f_P$; its analytic remainder has an $O(a)$ primitive. The upper
+endpoint contributes another $O(a)$ term. The remaining constant is
+the definition \eqref{poly:fp}. The local convergent expansion also
+proves uniformity on the stated sectors.
+\end{proof}
+
+There is an exact differential check using only the Gamma recurrence:
+\begin{align}\label{poly:shiftdifferential}
+ I_P'(a)&=P\left(\psi(a)+a^{-1},
+ \psi'(a)-a^{-2},\ldots,
+ \psi^{(r)}(a)+(-1)^rr!a^{-r-1},\ldots\right)
+               -f_P(a).
+\end{align}
+This follows from $f_P(a+1)-f_P(a)$ and is valid throughout
+$\re a>0$. The explicit endpoint law is the part settled here.
+A further reduction of all such shifted logarithmic sums to a specified
+common-shift multiple-Hurwitz basis is not claimed.
+
+\subsection{A multiple-polylogarithm representation of the primitives}
+
+Put $V_j(z)=\sum_{n\ge1}p_j(n)z^n$ for $|z|<1$. Finite stuffle
+expansion of the inclusive harmonic polynomials expresses $V_j$ using
+multiple polylogarithms and rational factors $1/(1-z)$.
+For example, for a nonempty word $w$,
+$\sum_{n\ge1}H_n(w)z^n=\Li_w(z)/(1-z)$; constants have
+generating function $z/(1-z)$.
+
+For $\re z>0$, the expansion and primitive have ordinary kernels
+\begin{align}\label{poly:MLkernel}
+ f_P(z)={}&P_0(z)+\kappa_P+
+ \sum_{j=1}^M\frac1{(j-1)!}
+ \int_0^\infty t^{j-1}(e^{-zt}-1)V_j(e^{-t})\dd t,\\
+ \mathcal P_P(z)={}&\sum_{j=1}^Mp_j(0)(F_j(z)-F_j(1))
+ +\kappa_P(z-1)\notag\\
+ &+\sum_{j=1}^M\frac1{(j-1)!}
+ \int_0^\infty t^{j-1}
+ \left\{\frac{e^{-t}-e^{-zt}}t-(z-1)\right\}
+ V_j(e^{-t})\dd t.\label{poly:primitivekernel}
+\end{align}
+Near $t=0$, $V_j(e^{-t})=O(t^{-1}(1+|\log t|)^d)$, while the
+braced differences vanish to first order in $t$. Near infinity the
+positive summation indices supply exponential decay. These estimates,
+uniform on compact subsets of $\re z>0$, justify Fubini and all fixed
+$z$-derivatives. The normal partial-fraction formula gives the continuation
+to the larger slit plane without imposing an unjustified integral
+convergence claim there.
+
+This construction links three operations under one normalization:
+spatial differentiation multiplies the Mellin kernel by powers of $-t$;
+spectral differentiation of the harmonic Dirichlet series inserts
+logarithms of the distinguished integer; and spatial integration gives
+the explicit quotient in \eqref{poly:primitivekernel}. These operations
+are distinct and their constants have been fixed separately.

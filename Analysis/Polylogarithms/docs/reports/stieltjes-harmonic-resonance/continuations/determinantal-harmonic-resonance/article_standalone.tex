@@ -1,0 +1,1859 @@
+% Generated from article.tex and its local inputs. Edit modular sources.
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{lmodern,microtype}
+\usepackage[T1]{fontenc}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage{xcolor}
+\definecolor{ink}{HTML}{15344A}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,breaklinks=true]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Determinantal harmonic resonance}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.25em}
+\setlist{itemsep=0.3em,topsep=0.4em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\Rea}{Re}
+\newcommand{\C}{\mathbb C}\newcommand{\Q}{\mathbb Q}\newcommand{\N}{\mathbb N}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\diff}{\,\mathrm d}
+\newcommand{\ind}{\mathbf1}
+\newcommand{\repo}{\texttt{ProveIt}}
+\newcommand{\Bell}{\mathcal B}
+\hypersetup{pdftitle={Determinantal Harmonic Resonance},pdfauthor={OpenAI-assisted research draft for the ProveIt project},pdfsubject={Gauss--Vandermonde finite parts, Stieltjes jets, and depth-two polylogarithmic closure}}
+\begin{document}
+\begin{titlepage}
+\centering
+\vspace*{1.1cm}
+{\small\scshape Analysis / Polylogarithms\par}
+\vspace{1cm}
+{\huge\bfseries\color{ink} Determinantal Harmonic\\[0.2em] Resonance\par}
+\vspace{0.7cm}
+{\Large Gauss--Vandermonde finite parts,\\[0.25em] Stieltjes jets, and depth-two\\[0.25em] polylogarithmic closure\par}
+\vspace{1cm}
+{\large A research continuation for the ProveIt project\par}
+\vspace{0.25cm}
+{OpenAI-assisted mathematical research draft\par}
+{10 October 2026\par}
+\vspace{1cm}
+\begin{minipage}{0.91\textwidth}
+\small
+\textbf{Abstract.}
+We develop a determinantal extension of the Gamma--harmonic identity
+programme. A self-contained evaluation of a discrete Gauss--Vandermonde
+sum is used at its first logarithmic resonance. Separating the largest
+summation index produces a normally convergent subtraction, an explicit
+hard-cutoff constant, and all-order identities coupling many-variable
+harmonic sums to generalized Stieltjes constants. The same construction
+has exact Hurwitz-zeta derivatives and anchored log-Gamma primitives.
+
+For rational weights with simple poles on the negative integer grid,
+we prove that the finite moment matrix has harmonic dependence in only
+one entry. Consequently an arbitrary number of summation variables still
+admits a depth-two polylogarithmic generating function. Every positive
+Euler primitive at the endpoint reduces to ordinary zeta values and
+products of two zeta values. We give explicit two-, three-, and four-variable
+evaluations, an all-order mixed harmonic generating function, and a
+common-translate cyclotomic extension.
+
+The proofs, exact rational reducers, and diagnostic calculations are
+separate parts of the delivery. The replay contains 732 exact assertions
+and 85 numerical diagnostics at 100-digit working precision. The latter
+are not interval certificates. We do not assert global priority, resolve
+the manuscript's $S_6$ or $S_8$ conjectures, or confer canonical or
+proof-assistant status on this draft.
+\end{minipage}
+\vfill
+{\small Source anchor: \texttt{87c7db629552afbc2e803001526debe3430a31b0}\par}
+{\small Scope and integration qualifications are recorded in Section~\ref{dhr:sec:audit}.\par}
+\end{titlepage}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+% BEGIN sections/01-context.tex
+\section{Context, scope, and conventions}
+\label{dhr:sec:context}
+
+\subsection{The continuation problem}
+The canonical \repo\ manuscript already has a substantial Gamma--harmonic
+and Hurwitz--Stieltjes calculus. In particular, the inspected mixed-Dougall
+chapter proves a normally convergent two-parameter Gamma germ, all its
+fixed mixed derivatives, a weighted trigamma square, and a quadratic
+zeta-tail family \cite{repo:readme,repo:dougall}. The manuscript also records
+an all-order Gauss proof of the corrected pure and mixed Choi harmonic
+families. Re-proving the one-variable coefficient engine would not by
+itself be a meaningful continuation.
+
+We instead ask what happens when a squared Vandermonde couples an arbitrary
+number of summation indices. There are two distinct questions. First,
+can the Gamma product still supply a correctly normalized Stieltjes
+subtraction when the sum ceases to converge? Second, does the increase
+in the number of indices force a comparable increase in polylogarithmic
+depth? We answer both for the first resonant determinantal family.
+
+The first answer requires attention to a distinction easily hidden by
+formal Laurent expansion: a spectral finite part is generally \emph{not}
+the constant term of a hard cutoff. The residue amplitude varies with
+the spectral parameter. Its derivative is precisely the discrepancy.
+The second answer is more economical than the number of variables
+suggests: for simple-pole rational weights at critical decay, only the
+bottom-right moment contains a harmonic number. This gives depth at most
+two at every particle number.
+
+\subsection{Main results and what they do not claim}
+Theorem~\ref{dhr:thm:gauss} evaluates the convergent discrete partition
+function by elementary determinant algebra and Gauss summation. Its
+classical ingredients are not presented as new. Theorems
+\ref{dhr:thm:resonance} and \ref{dhr:thm:jets} give the normally convergent
+resonance calculus and its all-order Stieltjes consequences. Theorems
+\ref{dhr:thm:rank-one} and \ref{dhr:thm:closure} give the finite-cutoff
+rank-one harmonic theorem and its all-particle depth-two consequence.
+The concrete formulas in Section~\ref{dhr:sec:explicit} are exact
+applications, not identities inferred from a numerical relation search.
+
+These are results proved in the present report. An exhaustive literature
+comparison has not established their global novelty. Nor do they prove
+a lower bound on the depth of any actual period. The manuscript explicitly
+distinguishes formal cyclotomic quotients from numerical period
+independence \cite{repo:quotients}; we retain that distinction. The short
+$S_6$ and $S_8$ identities remain outside the results proved here.
+
+\subsection{Notation and analytic conventions}
+For $k\geq0$, write $(x)_k=\Gamma(x+k)/\Gamma(x)$ for a rising
+factorial, and $\fall{x}{k}=x(x-1)\cdots(x-k+1)$ for a falling factorial.
+Empty products and empty determinants are one. We use
+\[
+ H_n^{(s)}=\sum_{j=1}^n j^{-s},\qquad H_n=H_n^{(1)},\qquad H_0^{(s)}=0.
+\]
+The gamma logarithmic derivative is $\psi=\Gamma'/\Gamma$. Our
+Stieltjes convention is
+\begin{equation}\label{dhr:eq:stieltjes-convention}
+ \zeta(1+u,\alpha)=\frac1u+
+ \sum_{k\geq0}\frac{(-1)^k}{k!}\gamma_k(\alpha)u^k,
+ \qquad \Rea\alpha>0.
+\end{equation}
+Thus $\gamma_0(\alpha)=-\psi(\alpha)$ and $\gamma_0(1)=\gamma$.
+Derivatives $\zeta^{(k)}(s,\alpha)$ are in the first, or order,
+variable unless specified otherwise. We use the standard branches of
+Gamma and Hurwitz zeta on the stated right half-planes
+\cite{dlmf:gamma,dlmf:hurwitz,dlmf:polygamma}.
+
+Within $|z|<1$, define
+\begin{equation}\label{dhr:eq:polylogs}
+ \Li_s(z)=\sum_{n\geq1}\frac{z^n}{n^s},\qquad
+ \Li_{p,1}(z,1)=\sum_{n>m\geq1}\frac{z^n}{n^pm}.
+\end{equation}
+The latter convention agrees with the two-argument convention
+$\Li_{p,1}(x,y)=\sum_{n>m\geq1}x^ny^m/(n^pm)$.
+In particular $\Li_{1,1}(z,1)=\tfrac12\log^2(1-z)$. All formulas
+initially in the disk use the logarithm analytic there and zero at
+$z=0$. Rational Laurent factors in $z$ in the displayed reductions
+have removable singularities after the full expression is assembled.
+Analytic continuation means continuation of this common germ, not an
+independent choice of branch for each summand.
+
+The complete exponential Bell polynomials are normalized by
+\begin{equation}\label{dhr:eq:bell}
+ \exp\left(\sum_{j\geq1}x_j\frac{t^j}{j!}\right)
+ =\sum_{k\geq0}\Bell_k(x_1,\ldots,x_k)\frac{t^k}{k!}.
+\end{equation}
+For example, $\Bell_1=x_1$, $\Bell_2=x_1^2+x_2$, and
+$\Bell_3=x_1^3+3x_1x_2+x_3$.
+
+Whenever a series of subtracted brackets is asserted to converge,
+the brackets are the summands. This does not license splitting the
+series into separately divergent components. All index and parameter
+derivatives in the results below are fixed finite orders.
+
+% END sections/01-context.tex
+
+% BEGIN sections/02-determinant.tex
+\section{A discrete Gauss--Vandermonde product}
+\label{dhr:sec:determinant}
+
+For $r\geq1$ and $0\leq n_1<\cdots<n_r$, put
+\[
+ \Delta(\bm n)=\prod_{1\leq i<j\leq r}(n_j-n_i),\qquad
+ w_n(a,c;b)=\frac{\Gamma(n+a)\Gamma(n+c)}
+ {\Gamma(n+b)\Gamma(n+1)}.
+\]
+Define
+\begin{equation}\label{dhr:eq:partition}
+ Z_r(a,c;b)=\sum_{0\leq n_1<\cdots<n_r}
+       \Delta(\bm n)^2\prod_{i=1}^r w_{n_i}(a,c;b),
+ \qquad Z_0=1.
+\end{equation}
+The ordering is part of the definition. There is no additional $r!$
+in any product formula below.
+
+\begin{theorem}[Gauss--Vandermonde product]\label{dhr:thm:gauss}
+Let $\Rea a,\Rea c>0$ and $\Rea d>2r-2$, where $d=b-a-c$.
+Then \eqref{dhr:eq:partition} converges absolutely and locally normally,
+and
+\begin{equation}\label{dhr:eq:gauss-product}
+ \boxed{\displaystyle
+ Z_r(a,c;b)=\prod_{j=0}^{r-1}
+ \frac{j!\,\Gamma(a+j)\Gamma(c+j)\Gamma(d-r+1-j)}
+ {\Gamma(b-a-j)\Gamma(b-c-j)}.}
+\end{equation}
+For positive real parameters in this domain all summands are positive.
+\end{theorem}
+
+We give the determinant argument in detail, both to make the normalizing
+factor checkable and to avoid relying on an unproved discrete-Selberg
+analogy. Gamma ratio estimates and Gauss summation are classical
+\cite{dlmf:gamma,dlmf:gauss}; the determinant technique belongs to the
+standard evaluation toolkit \cite{krattenthaler}.
+
+\begin{lemma}[A rational factorial determinant]\label{dhr:lem:rational-det}
+For indeterminates $x_0,\ldots,x_{r-1},t$,
+\begin{equation}\label{dhr:eq:rational-det}
+ \det_{0\leq i,j<r}\frac{(x_i)_j}{(x_i+t)_j}
+ =\frac{\displaystyle\prod_{j=0}^{r-1}(t)_j
+                   \prod_{0\leq i<k<r}(x_k-x_i)}
+        {\displaystyle\prod_{i=0}^{r-1}(x_i+t)_{r-1}}.
+\end{equation}
+The identity holds at every specialization where the displayed
+rational functions are defined, and elsewhere by cancellation.
+\end{lemma}
+\begin{proof}
+Multiply row $i$ by $(x_i+t)_{r-1}$. The resulting column polynomials
+are
+\[
+ p_j(x)=(x)_j(x+t+j)_{r-1-j},\qquad 0\leq j<r.
+\]
+They have degree at most $r-1$, so their evaluation determinant is
+the Vandermonde in the $x_i$ times their coefficient determinant.
+To compute that coefficient determinant, evaluate at $x_i=-i$.
+The evaluation matrix is lower triangular, since $(-i)_j=0$ for
+$j>i$, with diagonal
+\[
+ p_i(-i)=(-1)^i i!\,(t)_{r-1-i}.
+\]
+Its determinant divided by
+$\prod_{i<k}((-k)-(-i))=(-1)^{r(r-1)/2}\prod_{k=0}^{r-1}k!$
+is $\prod_{j=0}^{r-1}(t)_j$. Dividing the row factors proves
+\eqref{dhr:eq:rational-det} as a rational identity.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{dhr:thm:gauss}]
+On compact subsets of the stated domain,
+$w_n=O((n+1)^{-1-\Rea d})$. For ordered nonnegative indices,
+\[
+ |\Delta(\bm n)|^2\leq\prod_{j=1}^r(n_j+1)^{2(j-1)}.
+\]
+Dropping the ordering gives a product of convergent majorant series
+when $\Rea d>2r-2$. This proves absolute local normal convergence,
+including that of moments of degrees at most $2r-2$.
+
+Apply finite Cauchy--Binet to the two monic polynomial bases
+$\fall{n}{i}$ and $(n+a)_j$, then pass to the normally convergent
+limit. Both evaluation determinants equal the Vandermonde, so
+\begin{equation}\label{dhr:eq:moment-det}
+ Z_r=\det_{0\leq i,j<r}M_{ij},\qquad
+ M_{ij}=\sum_{n\geq0}\fall{n}{i}(n+a)_j w_n.
+\end{equation}
+Shifting $n=i+k$ and applying the ordinary Gauss sum gives
+\begin{equation}\label{dhr:eq:mixed-moment}
+ M_{ij}=\frac{\Gamma(a+i+j)\Gamma(c+i)\Gamma(d-i-j)}
+ {\Gamma(b-a-j)\Gamma(b-c)}.
+\end{equation}
+Indeed the hypergeometric numerator parameters are $a+i+j,c+i$,
+the denominator parameter is $b+i$, and the excess is $d-i-j$.
+Its real part is positive throughout the present index range.
+
+Factor from row $i$ the quantity
+\[
+ R_i=\frac{\Gamma(a+i)\Gamma(c+i)\Gamma(d-i)}
+ {\Gamma(b-a)\Gamma(b-c)},
+\]
+and from column $j$ the factor $(1-b+a)_j$. The remaining entry is
+$(a+i)_j/(1-d+i)_j$. Lemma~\ref{dhr:lem:rational-det} applies with
+$x_i=a+i$ and $t=1-b+c$. Since $x_k-x_i=k-i$, its Vandermonde
+is $\prod_{j=0}^{r-1}j!$. The factorial identities
+\[
+ (1-b+a)_j=(-1)^j\frac{\Gamma(b-a)}{\Gamma(b-a-j)},\quad
+ (1-b+c)_j=(-1)^j\frac{\Gamma(b-c)}{\Gamma(b-c-j)}
+\]
+and
+\[
+ (1-d+i)_{r-1}=(-1)^{r-1}
+       \frac{\Gamma(d-i)}{\Gamma(d-i-r+1)}
+\]
+produce exactly \eqref{dhr:eq:gauss-product}; the total sign is one.
+Perform the calculation first away from the auxiliary determinant's
+poles, then extend by the identity theorem. The original sum and the
+final product are holomorphic on the asserted domain.
+\end{proof}
+
+\begin{remark}[The one-variable boundary case]
+For $r=1$, \eqref{dhr:eq:gauss-product} is simply
+\[
+ \sum_{n\geq0}w_n(a,c;b)
+ =\frac{\Gamma(a)\Gamma(c)\Gamma(b-a-c)}
+ {\Gamma(b-a)\Gamma(b-c)}.
+\]
+The subsequent $r=1$ resonance is the familiar zero-balanced Gauss
+case. The continuation of interest is the uniform mechanism for all $r$,
+not a claim of novelty for this boundary case.
+\end{remark}
+
+% END sections/02-determinant.tex
+
+% BEGIN sections/03-resonance.tex
+\section{First resonance and the correct finite part}
+\label{dhr:sec:resonance}
+
+Fix $r\geq1$, initially $a,c>0$, and set
+\begin{equation}\label{dhr:eq:resonant-parameters}
+ b_0=a+c+2r-2,\qquad b=b_0+u.
+\end{equation}
+Let $L(u)$ be any holomorphic function near zero with $L(0)=1$.
+It is a normalization of \emph{each} particle's weight. Define
+\begin{equation}\label{dhr:eq:amplitude-E}
+ \begin{split}
+ A(u)&=L(u)^r Z_{r-1}(a,c;b_0+u),\\
+ E(u)&=\frac{\Gamma(r)\Gamma(a+r-1)\Gamma(c+r-1)\Gamma(1+u)^2}
+ {\Gamma(r+u)\Gamma(a+r-1+u)\Gamma(c+r-1+u)}.
+ \end{split}
+\end{equation}
+Both are holomorphic near zero, and $E(0)=1$. Although $A$ uses the
+$(r-1)$-particle partition, its normalization is $L^r$, not $L^{r-1}$:
+the escaping largest index contributes a normalization factor as well.
+
+Write the contribution of a prescribed largest index as
+\begin{equation}\label{dhr:eq:maximum-mass}
+ \begin{split}
+ K_n(u)={}&L(u)^r w_n(a,c;b_0+u)\\
+ &\quad\times\sum_{0\leq m_1<\cdots<m_{r-1}<n}
+ \Delta(\bm m)^2\prod_{i=1}^{r-1}
+       (n-m_i)^2w_{m_i}(a,c;b_0+u).
+ \end{split}
+\end{equation}
+For $r=1$ the inner sum is one, including at $n=0$; for $r>1$ it
+vanishes if $n<r-1$. Each $K_n$ is holomorphic near zero.
+
+\begin{theorem}[Largest-index subtraction]\label{dhr:thm:resonance}
+For every fixed $\alpha$ with $\Rea\alpha>0$, the series
+\begin{equation}\label{dhr:eq:D-def}
+ D(u;\alpha)=\sum_{n\geq0}
+ \left\{K_n(u)-A(u)(n+\alpha)^{-1-u}\right\}
+\end{equation}
+is locally normally convergent near $u=0$, and
+\begin{equation}\label{dhr:eq:D-master}
+ \boxed{D(u;\alpha)=A(u)
+       \left\{\frac{E(u)}u-\zeta(1+u,\alpha)\right\}.}
+\end{equation}
+The apparent pole on the right is removable. Every fixed derivative
+in $u$ can be taken termwise. The assertions hold jointly locally
+holomorphically for $\Rea a,\Rea c,\Rea\alpha>0$.
+\end{theorem}
+
+\begin{proof}
+Dividing the products in Theorem~\ref{dhr:thm:gauss} at particle
+numbers $r$ and $r-1$, with the same $b=b_0+u$, gives
+\begin{equation}\label{dhr:eq:meromorphic-master}
+ L(u)^r Z_r(a,c;b_0+u)=\frac{A(u)E(u)}u.
+\end{equation}
+For instance, the ratio of the factors common to the two products
+contains
+\[
+ \prod_{j=0}^{r-2}
+ \frac{\Gamma(r-1+u-j)}{\Gamma(r+u-j)}
+ =\frac{\Gamma(1+u)}{\Gamma(r+u)}.
+\]
+The remaining factor has $\Gamma(u)=\Gamma(1+u)/u$. These two
+factors explain the square of $\Gamma(1+u)$ in $E$.
+Equation~\eqref{dhr:eq:meromorphic-master} initially holds for
+$\Rea u>0$ sufficiently small.
+
+We next justify the subtraction independently of that product's
+meromorphic continuation. Work on a compact parameter set and a small
+closed disk $|u|\leq\delta<1/2$. The absolute $(r-1)$-particle sum
+has a uniformly finite first moment:
+\begin{equation}\label{dhr:eq:lower-first-moment}
+ \sum_{m_1<\cdots<m_{r-1}}
+ (1+m_1+\cdots+m_{r-1})
+ |\Delta(\bm m)|^2\prod_i|w_{m_i}|<C.
+\end{equation}
+Indeed, the largest exponent in the separate-index majorant is
+$-3-\Rea u$ before inserting a first moment, and at most
+$-2+\delta<-1$ after insertion. This also proves the assertion
+uniformly for complex $a,c$ in compact right-half-plane sets.
+
+For $0\leq m_i<n$,
+\[
+ \left|1-\prod_i(1-m_i/n)^2\right|
+ \leq\frac{2}{n}\sum_i m_i.
+\]
+The missing region $m_{r-1}\geq n$ is likewise bounded by the first
+moment divided by $n$. It follows that the inner sum in
+\eqref{dhr:eq:maximum-mass}, divided by $n^{2r-2}$, is
+\[
+ Z_{r-1}(a,c;b_0+u)+O(n^{-1})
+\]
+uniformly on that compact set. The assertion is immediate for $r=1$.
+The uniform gamma-ratio expansion gives
+\[
+ w_n(a,c;b_0+u)=n^{-2r+1-u}\{1+O(n^{-1})\}.
+\]
+Consequently, for $n\geq1$,
+\begin{equation}\label{dhr:eq:asymptotic-mass}
+ K_n(u)=A(u)n^{-1-u}+O(n^{-2+\delta}).
+\end{equation}
+Replacing $n$ by $n+\alpha$ in the leading term changes only the
+summable remainder, uniformly on compact $\alpha$-sets. The finitely
+many initial terms are harmless. This proves local normal convergence
+of \eqref{dhr:eq:D-def}. Cauchy's integral formula on a slightly
+larger parameter disk proves normal convergence for every fixed
+$u$-derivative; there is no unproved exchange of an infinite series
+with differentiation at a pole.
+
+For $\Rea u>0$, sum the leading counterterm by Hurwitz zeta and use
+\eqref{dhr:eq:meromorphic-master}. This yields
+\eqref{dhr:eq:D-master} on a nonempty open set. Both sides extend
+holomorphically through zero, because $E(0)=1$ and the Hurwitz residue
+is one. The identity theorem completes the proof, including joint
+holomorphy in the auxiliary parameters.
+\end{proof}
+
+Put $A_j=A^{(j)}(0)$ and
+\begin{equation}\label{dhr:eq:chi}
+ \chi=E'(0)=2\psi(1)-\psi(r)-\psi(a+r-1)-\psi(c+r-1).
+\end{equation}
+In particular,
+\begin{equation}\label{dhr:eq:residue}
+ A_0=\prod_{j=0}^{r-2}
+ \frac{j!\,\Gamma(a+j)\Gamma(c+j)\Gamma(r-j)}
+ {\Gamma(c+2r-2-j)\Gamma(a+2r-2-j)}.
+\end{equation}
+
+\begin{corollary}[Hard-cutoff constant]\label{dhr:cor:cutoff}
+For $a,c>0$,
+\begin{equation}\label{dhr:eq:cutoff-constant}
+ \boxed{\lim_{N\to\infty}\left[
+ \sum_{0\leq n_1<\cdots<n_r\leq N}
+   \Delta(\bm n)^2\prod_i w_{n_i}(a,c;b_0)
+       -A_0\log N\right]=A_0\chi.}
+\end{equation}
+The corresponding spectral finite part is
+\begin{equation}\label{dhr:eq:spectral-vs-cutoff}
+ \FP_{u=0}\{L(u)^rZ_r(a,c;b_0+u)\}=A_1+A_0\chi.
+\end{equation}
+Thus the hard-cutoff constant is obtained from the spectral finite
+part by subtracting $A_1$.
+\end{corollary}
+\begin{proof}
+At zero, Theorem~\ref{dhr:thm:resonance} gives
+\[
+ D(0;\alpha)=A_0\{\chi-\gamma_0(\alpha)\}
+            =A_0\{\chi+\psi(\alpha)\}.
+\]
+The partial sum of the subtracted counterterm is
+$A_0\{\psi(N+1+\alpha)-\psi(\alpha)\}$.
+Since $\psi(N+1+\alpha)=\log N+o(1)$, the auxiliary $\alpha$
+cancels and proves \eqref{dhr:eq:cutoff-constant}.
+Expanding $A(u)E(u)/u$ directly gives
+\eqref{dhr:eq:spectral-vs-cutoff}.
+\end{proof}
+
+\begin{remark}[Why the normalization matters]
+Changing $L$ while preserving $L(0)=1$ leaves the entire cutoff sum
+unchanged. It changes $A_1$ by $rL'(0)A_0$ relative to the choice
+$L\equiv1$, and changes the spectral finite part by the same amount.
+Therefore identifying spectral and cutoff constants without specifying
+the amplitude derivative cannot be a normalization-invariant statement.
+This is a correction to that possible extrapolation, not an allegation
+that the inspected manuscript makes the identification.
+\end{remark}
+
+% END sections/03-resonance.tex
+
+% BEGIN sections/04-stieltjes.tex
+\section{All-order Stieltjes identities and Hurwitz primitives}
+\label{dhr:sec:stieltjes}
+
+\subsection{The complete jet formula}
+Let $e_j=E^{(j)}(0)$, so $e_0=1$ and $e_1=\chi$. All these
+coefficients are explicit finite polygamma polynomials. More precisely,
+put
+\begin{equation}\label{dhr:eq:ell}
+ \ell_j=2\psi^{(j-1)}(1)-\psi^{(j-1)}(r)
+        -\psi^{(j-1)}(a+r-1)-\psi^{(j-1)}(c+r-1).
+\end{equation}
+Then $\log E(u)=\sum_{j\geq1}\ell_j u^j/j!$ and
+$e_j=\Bell_j(\ell_1,\ldots,\ell_j)$. In particular,
+\[
+ e_2=\chi^2+\ell_2,\qquad
+ e_3=\chi^3+3\chi\ell_2+\ell_3.
+\]
+The derivatives $A_j$ are obtained in exactly the same way from the
+finite Gamma product \eqref{dhr:eq:amplitude-E}.
+
+\begin{theorem}[Every fixed Stieltjes order]\label{dhr:thm:jets}
+For every integer $k\geq0$, the following single-bracket series is
+ordinary and absolutely convergent:
+\begin{align}
+ &\sum_{n\geq0}\left[
+ K_n^{(k)}(0)-\frac1{n+\alpha}
+ \sum_{j=0}^k\binom{k}{j}A_j[-\log(n+\alpha)]^{k-j}
+ \right]\notag\\
+ &\qquad=\sum_{j=0}^k\binom{k}{j}A_j
+ \left\{\frac{e_{k-j+1}}{k-j+1}
+       -(-1)^{k-j}\gamma_{k-j}(\alpha)\right\}.
+ \label{dhr:eq:all-jets}
+\end{align}
+The result is locally holomorphic for the parameters in
+Theorem~\ref{dhr:thm:resonance}. The constants $A_j,e_j$ are finite
+Gamma/polygamma expressions; no infinite coefficient extraction is
+needed to compute a fixed row.
+\end{theorem}
+\begin{proof}
+Differentiate the already normally convergent identity
+\eqref{dhr:eq:D-master}, rather than the divergent unsubtracted
+partition. The expansion at zero is
+\[
+ \frac{E(u)}u-\zeta(1+u,\alpha)
+ =\sum_{h\geq0}\left\{\frac{e_{h+1}}{h+1}
+               -(-1)^h\gamma_h(\alpha)\right\}\frac{u^h}{h!}.
+\]
+Leibniz's rule gives the right side of \eqref{dhr:eq:all-jets}.
+Differentiating $(n+\alpha)^{-1-u}$ gives the logarithmic polynomial
+on the left. The normal-convergence statement proved in
+Theorem~\ref{dhr:thm:resonance} supplies absolute convergence of the
+resulting bracket and justifies every interchange.
+\end{proof}
+
+The first three values $D_k(\alpha)=\partial_u^kD(0;\alpha)$ are
+\begin{align}
+ D_0(\alpha)&=A_0\{\chi-\gamma_0(\alpha)\},\notag\\
+ D_1(\alpha)&=A_1\{\chi-\gamma_0(\alpha)\}
+                   +A_0\{e_2/2+\gamma_1(\alpha)\},\notag\\
+ D_2(\alpha)&=A_2\{\chi-\gamma_0(\alpha)\}
+          +2A_1\{e_2/2+\gamma_1(\alpha)\}
+          +A_0\{e_3/3-\gamma_2(\alpha)\}.
+ \label{dhr:eq:first-jets}
+\end{align}
+The factor $1/(h+1)$ in these rows comes from dividing $E(u)-1$ by
+$u$ before differentiation. Replacing it by one would give an
+incorrect higher-order table.
+
+\subsection{Derivatives in the subtraction point}
+The parameter $\alpha$ specifies the subtraction grid. It does not
+move the particles or change their original weights. Differentiating
+this auxiliary family nevertheless yields useful exact identities
+between the corresponding subtracted sums and the usual Hurwitz
+order ladder.
+
+\begin{proposition}[Hurwitz derivative and shift laws]\label{dhr:prop:alpha}
+For every integer $h\geq1$,
+\begin{equation}\label{dhr:eq:alpha-derivative}
+ \partial_\alpha^hD(u;\alpha)
+ =(-1)^{h+1}A(u)(1+u)_h\zeta(1+u+h,\alpha).
+\end{equation}
+Moreover,
+\begin{equation}\label{dhr:eq:alpha-shift}
+ D(u;\alpha+1)-D(u;\alpha)=A(u)\alpha^{-1-u}.
+\end{equation}
+Every fixed $u$-derivative of these equations is valid, including
+at $u=0$. In particular
+$\partial_\alpha^hD_0(\alpha)=A_0\psi^{(h)}(\alpha)$.
+\end{proposition}
+\begin{proof}
+Use the classical identities
+$\partial_\alpha^h\zeta(s,\alpha)=(-1)^h(s)_h\zeta(s+h,\alpha)$
+and $\zeta(s,\alpha+1)=\zeta(s,\alpha)-\alpha^{-s}$
+\cite{dlmf:hurwitz}. Their substitution in
+\eqref{dhr:eq:D-master} proves both formulas. Joint holomorphy, already
+established, permits the indicated mixed derivatives. The last formula
+also follows immediately from $D_0=A_0(\chi+\psi(\alpha))$.
+\end{proof}
+
+\subsection{Anchored antiderivatives and log-Gamma}
+An anchored primitive fixes the integration constant, which is especially
+important when differentiating in the spectral variable. Let
+$\Rea\alpha_0,\Rea\alpha>0$, with the path in that half-plane.
+
+\begin{theorem}[Every anchored primitive of the spectral jets]
+\label{dhr:thm:primitive}
+The identity
+\begin{equation}\label{dhr:eq:primitive-master}
+ \int_{\alpha_0}^{\alpha}D(u;t)\diff t
+ =\frac{A(u)}u\left\{(\alpha-\alpha_0)E(u)
+                  +\zeta(u,\alpha)-\zeta(u,\alpha_0)\right\}
+\end{equation}
+has a removable singularity at $u=0$. For every $k\geq0$,
+\begin{align}
+ \int_{\alpha_0}^{\alpha}D_k(t)\diff t
+ =\sum_{j=0}^k\binom{k}{j}\frac{A_j}{k-j+1}
+ \big[& (\alpha-\alpha_0)e_{k-j+1}\notag\\
+ &+\zeta^{(k-j+1)}(0,\alpha)
+ -\zeta^{(k-j+1)}(0,\alpha_0)\big].
+ \label{dhr:eq:primitive-jets}
+\end{align}
+In particular,
+\begin{equation}\label{dhr:eq:gamma-primitive}
+ \int_{\alpha_0}^{\alpha}D_0(t)\diff t
+ =A_0\left\{(\alpha-\alpha_0)\chi
+       +\log\Gamma(\alpha)-\log\Gamma(\alpha_0)\right\}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+For $u\ne0$, integrate the identity
+$\partial_t\zeta(u,t)=-u\zeta(1+u,t)$.
+This gives \eqref{dhr:eq:primitive-master}. The numerator vanishes
+at zero because $E(0)=1$ and $\zeta(0,t)=\tfrac12-t$.
+Its divided Taylor series has $h$th derivative at zero
+\[
+ \frac{(\alpha-\alpha_0)e_{h+1}
+       +\zeta^{(h+1)}(0,\alpha)-\zeta^{(h+1)}(0,\alpha_0)}{h+1}.
+\]
+Leibniz's rule proves \eqref{dhr:eq:primitive-jets}. Finally,
+$\zeta'(0,t)=\log\Gamma(t)-\tfrac12\log(2\pi)$
+\cite{dlmf:hurwitz} gives \eqref{dhr:eq:gamma-primitive}.
+\end{proof}
+
+This theorem transports the classical Stieltjes primitive to a
+many-variable resonant harmonic sum. It does not claim a new formula
+for $\int\gamma_k(t)\diff t$ in isolation, nor does it integrate an
+arbitrary many-variable weight with respect to a particle coordinate.
+The distinction identifies precisely which antiderivative has been
+established.
+
+% END sections/04-stieltjes.tex
+
+% BEGIN sections/05-harmonics.tex
+\section{Integer and mixed harmonic specializations}
+\label{dhr:sec:harmonic}
+
+\subsection{A rational spectral partition at every particle number}
+Take $a=c=1$, so $b_0=2r$, and choose
+\begin{equation}\label{dhr:eq:integer-normalization}
+ L(u)=\frac{\Gamma(2r+u)}{\Gamma(2r)}.
+\end{equation}
+At zero the particle weight is rational:
+\[
+ w_n(1,1;2r)=\frac1{(n+1)_{2r-1}}.
+\]
+Denote the normalized meromorphic partition by
+$F_r(u)=L(u)^rZ_r(1,1;2r+u)$.
+
+\begin{proposition}[Rationality of the normalized partition]
+\label{dhr:prop:rational-partition}
+For every $r\geq1$,
+\begin{equation}\label{dhr:eq:rational-partition}
+ \boxed{F_r(u)=
+ \frac{\displaystyle\prod_{j=0}^{r-1}(j!)^3}{[(2r-1)!]^r}
+ \prod_{k=0}^{r-1}\frac{(u+r+k)_{r-k}}{(u+k)_r}.}
+\end{equation}
+Its residue $A_0$ at zero is a positive rational number. The hard-cutoff
+constant is
+\begin{equation}\label{dhr:eq:integer-cutoff}
+ A_0\{\gamma-3H_{r-1}\}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+For $a=c=1$, the $j$th product factor in
+\eqref{dhr:eq:gauss-product} is
+\[
+ (j!)^3\frac{\Gamma(r-1+u-j)}{\Gamma(2r-1+u-j)^2}.
+\]
+Pair one factor $\Gamma(2r+u)$ from $L^r$ with each of these,
+use Gamma recurrences, and replace $j$ by $r-1-k$.
+This gives \eqref{dhr:eq:rational-partition}. Finally,
+$\chi=2\psi(1)-3\psi(r)=\gamma-3H_{r-1}$, and
+Corollary~\ref{dhr:cor:cutoff} applies.
+\end{proof}
+
+The first partitions are
+\begin{align}
+ F_1(u)&=\frac{u+1}{u},\notag\\
+ F_2(u)&=\frac{(u+3)^2}{36u(u+1)^2},\notag\\
+ F_3(u)&=\frac{(u+4)(u+5)^3}
+ {216000u(u+1)^2(u+2)^3(u+3)},\notag\\
+ F_4(u)&=\frac{(u+6)^2(u+7)^4}
+ {373403520000u(u+1)^2(u+2)^3(u+3)^4(u+4)^2}.
+ \label{dhr:eq:small-partitions}
+\end{align}
+The corresponding residues are
+\begin{equation}\label{dhr:eq:small-residues}
+ A_0=1,\quad\frac14,\quad\frac1{10368},\quad
+ \frac1{44789760000}\qquad(r=1,2,3,4).
+\end{equation}
+Although $F_r$ is rational, the individual normal-convergence amplitude
+$A(u)$ is generally not rational. Its polygamma derivatives are exactly
+what permit Stieltjes constants to appear in ordinary subtracted sums.
+
+For calculation, the logarithmic derivatives are
+\begin{align}
+ (\log A)^{(k)}(0)
+ &=r\psi^{(k-1)}(2r)
+ +\sum_{j=0}^{r-2}\left\{\psi^{(k-1)}(r-j)
+                    -2\psi^{(k-1)}(2r-1-j)\right\},
+ \label{dhr:eq:integer-A-jets}\\
+ \ell_k&=(-1)^k(k-1)!
+       \{3H_{r-1}^{(k)}-\zeta(k)\},\qquad k\geq2.
+ \label{dhr:eq:integer-E-jets}
+\end{align}
+Together with $\ell_1=\gamma-3H_{r-1}$, these are finite exact
+coefficient recipes for every row of Theorem~\ref{dhr:thm:jets}.
+
+\subsection{The derivatives as actual harmonic polynomials}
+For a configuration $\bm n=(n_1,\ldots,n_r)$ define
+\begin{equation}\label{dhr:eq:harmonic-log-jets}
+ v_k(\bm n)=(-1)^k(k-1)!
+  \sum_{i=1}^r\left\{H_{n_i+2r-1}^{(k)}-H_{2r-1}^{(k)}\right\}.
+\end{equation}
+Logarithmic differentiation of the normalized weight gives
+\begin{equation}\label{dhr:eq:K-harmonic}
+ K_n^{(k)}(0)=
+ \sum_{0\leq n_1<\cdots<n_{r-1}<n_r=n}
+ \frac{\Delta(\bm n)^2\,
+  \Bell_k(v_1(\bm n),\ldots,v_k(\bm n))}
+ {\displaystyle\prod_{i=1}^r(n_i+1)_{2r-1}}.
+\end{equation}
+This formula has no spectral derivatives left unevaluated. To see it,
+for a single particle differentiate
+$\log\Gamma(2r+u)-\log\Gamma(n+2r+u)$.
+The polygamma shift formula gives the corresponding summand in
+\eqref{dhr:eq:harmonic-log-jets}; the Bell identity
+\eqref{dhr:eq:bell} then differentiates the product. Substitution in
+\eqref{dhr:eq:all-jets} proves an explicit all-order family of
+harmonic--logarithm--Stieltjes identities.
+
+For a concrete first-order member, put
+\begin{equation}\label{dhr:eq:W2}
+ W_{m,n}=\frac{(n-m)^2}{(m+1)_3(n+1)_3},\qquad 0\leq m<n.
+\end{equation}
+At $r=2$, $A_0=1/4$, $A_1=(5/3-\gamma)/4$, and
+$e_2=(\gamma-3)^2+3-\zeta(2)$. Thus
+\begin{align}
+ \sum_{n\geq0}\bigg[&\sum_{m=0}^{n-1}W_{m,n}
+       (2H_3-H_{m+3}-H_{n+3})\notag\\
+ &-\frac{5/3-\gamma-\log(n+1)}{4(n+1)}\bigg]
+ =\frac14+\frac{\gamma^2-\zeta(2)}8+\frac{\gamma_1}{4}.
+ \label{dhr:eq:explicit-stieltjes}
+\end{align}
+Here $\gamma_1=\gamma_1(1)$, and the empty inner sum at $n=0$ is zero.
+The zero-order companion is
+\begin{equation}\label{dhr:eq:explicit-stieltjes-zero}
+ \sum_{n\geq0}\left\{\sum_{m<n}W_{m,n}-\frac1{4(n+1)}\right\}
+ =-\frac34.
+\end{equation}
+These are ordinary convergent bracketed series, not a declaration of
+finite-part integration in disguise.
+
+The same example makes the normalization distinction numerical and exact:
+\begin{equation}\label{dhr:eq:normalization-example}
+ \FP_{u=0}F_2(u)=-\frac13,\qquad
+ \lim_{N\to\infty}\left\{\sum_{m<n\leq N}W_{m,n}
+                              -\frac14\log N\right\}
+ =\frac{\gamma-3}{4}.
+\end{equation}
+Their difference is $A_1=(5/3-\gamma)/4$, as required. With $L=1$
+the spectral finite part instead equals $(2\gamma-5)/4$; the hard
+cutoff is unchanged.
+
+\subsection{Ordinary all-order mixed harmonic sums}
+A convergent, rather than resonant, specialization produces another
+useful family. For an integer $B>2r$, define
+\begin{equation}\label{dhr:eq:mixed-generator}
+ \mathcal H_{r,B}(p,q)=
+ \frac{Z_r(1+p,1+q;B)}{[\Gamma(1+p)\Gamma(1+q)]^r}.
+\end{equation}
+Near $p=q=0$, it is both a normally convergent sum and the explicit
+Gamma product
+\begin{align}
+ \mathcal H_{r,B}(p,q)
+ =\prod_{j=0}^{r-1}
+ \frac{j!\,\Gamma(1+p+j)\Gamma(1+q+j)
+              \Gamma(B-r-1-j-p-q)}
+ {\Gamma(1+p)\Gamma(1+q)
+              \Gamma(B-1-j-p)\Gamma(B-1-j-q)}.
+ \label{dhr:eq:mixed-product}
+\end{align}
+The convergence region includes a neighborhood with
+$\Rea(p+q)<B-2r$.
+
+\begin{theorem}[Many-variable mixed harmonic identities]
+\label{dhr:thm:mixed}
+For a configuration $\bm n$, let
+\[
+ U_j(\bm n)=(-1)^{j-1}(j-1)!\sum_{i=1}^rH_{n_i}^{(j)},\qquad
+ W_B(\bm n)=\frac{\Delta(\bm n)^2}{\prod_i(n_i+1)_{B-1}}.
+\]
+For all $k,l\geq0$,
+\begin{align}
+ &\sum_{n_1<\cdots<n_r}W_B(\bm n)
+ \Bell_k(U_1,\ldots,U_k)\Bell_l(U_1,\ldots,U_l)\notag\\
+ &\hspace{35mm}=\partial_p^k\partial_q^l
+               \mathcal H_{r,B}(0,0).
+ \label{dhr:eq:mixed-harmonic}
+\end{align}
+Every pure row ($k=0$ or $l=0$) is rational. Every mixed row lies
+in $\Q[\zeta(2),\ldots,\zeta(k+l)]$; for zero or first total order
+this means simply $\Q$.
+\end{theorem}
+\begin{proof}
+Relative to its value at $p=q=0$, the summand is multiplied by
+\[
+ \prod_{i=1}^r\prod_{j=1}^{n_i}(1+p/j)(1+q/j).
+\]
+Its logarithmic derivatives in either variable are the $U_j$.
+The Bell formula and local normal convergence prove
+\eqref{dhr:eq:mixed-harmonic}. The pure generating function is
+itself rational:
+\begin{equation}\label{dhr:eq:pure-rational}
+ \mathcal H_{r,B}(p,0)=
+ \prod_{j=0}^{r-1}
+ \frac{(j!)^2(1+p)_j}
+ {\Gamma(B-1-j)(B-r-1-j-p)_r}.
+\end{equation}
+This follows by Gamma recurrences in \eqref{dhr:eq:mixed-product}.
+It proves rationality of every pure derivative, not just the displayed
+low orders. For derivatives involving both $p$ and $q$, only
+$\log\Gamma(B-r-1-j-p-q)$ contributes to a mixed derivative
+of the logarithm. Its derivatives of total order $h\geq2$ are
+rational combinations of $\zeta(h)$ and finite generalized harmonic
+numbers. Pure logarithmic derivatives are rational by
+\eqref{dhr:eq:pure-rational}. Exponentiating with finite multivariate
+Bell coefficients proves the asserted zeta algebra.
+\end{proof}
+
+For $r=2,B=6$, the product simplifies to
+\begin{equation}\label{dhr:eq:H26}
+ \mathcal H_{2,6}(p,q)=
+ \frac{(1+p)(1+q)\Gamma(3-p-q)\Gamma(2-p-q)}
+ {\Gamma(5-p)\Gamma(5-q)\Gamma(4-p)\Gamma(4-q)}.
+\end{equation}
+Set $V_{m,n}=(n-m)^2/[(m+1)_5(n+1)_5]$ and sum below over
+$0\leq m<n$. Direct differentiation yields
+\begin{align}
+ \sum V_{m,n}&=\frac1{10368},\notag\\
+ \sum V_{m,n}(H_m+H_n)&=\frac{29}{12\cdot10368},\notag\\
+ \sum V_{m,n}\{(H_m+H_n)^2-H_m^{(2)}-H_n^{(2)}\}
+ &=\frac{43}{8\cdot10368},\notag\\
+ \sum V_{m,n}(H_m+H_n)^2
+ &=\frac{517/144+2\zeta(2)}{10368},\notag\\
+ \sum V_{m,n}\{H_m^{(2)}+H_n^{(2)}\}
+ &=\frac{2\zeta(2)-257/144}{10368}.
+ \label{dhr:eq:ordinary-examples}
+\end{align}
+For example, at zero the first logarithmic $p$-derivative is $29/12$,
+the second pure logarithmic derivative is $-67/144$, and the mixed
+logarithmic derivative is $2\zeta(2)-9/4$. These three numbers prove
+all four nonconstant rows. They illustrate why a pure Bell combination
+can be rational while the square of the ordinary harmonic sum is not.
+
+% END sections/05-harmonics.tex
+
+% BEGIN sections/06-depth-two.tex
+\section{Rank-one harmonic dependence and depth-two closure}
+\label{dhr:sec:depth}
+
+\subsection{A theorem beyond consecutive factorial weights}
+The next result is algebraic and does not require the Gamma product.
+Let $w(x)\in\Q(x)$ have only simple poles, all at negative integers,
+and suppose
+\begin{equation}\label{dhr:eq:rational-weight-assumption}
+ w(n)=\lambda n^{-(2r-1)}+O(n^{-2r}),\qquad
+ \lambda\in\Q\setminus\{0\}.
+\end{equation}
+There is no positivity assumption. The pole locations need not be
+consecutive. Define
+\begin{equation}\label{dhr:eq:general-cutoff}
+ S_{w,N}=\sum_{0\leq n_1<\cdots<n_r\leq N}
+              \Delta(\bm n)^2\prod_iw(n_i),\qquad S_{w,-1}=0.
+\end{equation}
+
+\begin{theorem}[Rank-one harmonic dependence]\label{dhr:thm:rank-one}
+There exist rational functions $P_w(N),Q_w(N)\in\Q(N)$ such that
+for every integer $N\geq0$,
+\begin{equation}\label{dhr:eq:rank-one-cutoff}
+ \boxed{S_{w,N}=P_w(N)H_{N+1}+Q_w(N).}
+\end{equation}
+Both rational functions are bounded at infinity. At each finite pole,
+$P_w$ has order at most $r-1$ and $Q_w$ has order at most $r$.
+The possible poles are negative integers at most $-2$.
+For $r=1$, $P_w=\lambda$.
+\end{theorem}
+
+\begin{proof}
+For $0\leq k\leq2r-2$, partial fractions give
+\begin{equation}\label{dhr:eq:moment-residues}
+ n^kw(n)=\sum_{d\geq1}\frac{c_{k,d}}{n+d},\qquad
+ \sum_dc_{k,d}=\lambda\ind_{k=2r-2}.
+\end{equation}
+Only finitely many coefficients are nonzero. There is no polynomial
+part because $n^kw(n)$ is proper. The sum of residues is the coefficient
+of $n^{-1}$ at infinity, proving the second equality.
+
+Thus the finite moment $M_k(N)=\sum_{n=0}^Nn^kw(n)$ equals
+\begin{align}
+ M_k(N)&=R_k(N)+\lambda\ind_{k=2r-2}H_{N+1},\notag\\
+ R_k(N)&=\sum_dc_{k,d}\left\{
+       \sum_{\ell=2}^{d}\frac1{N+\ell}-H_{d-1}\right\}.
+ \label{dhr:eq:finite-moments}
+\end{align}
+Every $R_k$ is a bounded rational function with simple poles only
+at the indicated negative integers. Finite Cauchy--Binet gives
+\begin{equation}\label{dhr:eq:hankel-cutoff}
+ S_{w,N}=\det_{0\leq i,j<r}M_{i+j}(N).
+\end{equation}
+Among these entries, $i+j=2r-2$ occurs only at $i=j=r-1$.
+Therefore
+\begin{equation}\label{dhr:eq:rank-one-matrix}
+ (M_{i+j})_{i,j=0}^{r-1}
+ =(R_{i+j})_{i,j=0}^{r-1}
+       +\lambda H_{N+1}\bm e_{r-1}\bm e_{r-1}^{\mathsf T}.
+\end{equation}
+The determinant is affine in the harmonic number, with
+\begin{equation}\label{dhr:eq:PQ-det}
+ P_w=\lambda\det_{0\leq i,j<r-1}R_{i+j},\qquad
+ Q_w=\det_{0\leq i,j<r}R_{i+j}.
+\end{equation}
+The empty-determinant convention covers $r=1$. Products of $r-1$
+or $r$ simple-pole entries prove the pole-order bounds, and boundedness
+of every entry proves boundedness at infinity. This argument proves
+\eqref{dhr:eq:rank-one-cutoff} at every cutoff, including $N<r-1$
+where the determinant and configuration sum both vanish.
+\end{proof}
+
+\begin{remark}[The source of the depth collapse]
+A generic determinant whose entries are affine in $H_{N+1}$ has
+harmonic degree as large as $r$. That estimate is much too weak here.
+The decay condition \eqref{dhr:eq:rational-weight-assumption} forces
+the residue sum to vanish in every moment except the highest one.
+Consequently the harmonic matrix has rank one \emph{and a single
+nonzero entry}. This is the mechanism, not cancellation observed in
+a few low-rank examples.
+\end{remark}
+
+\subsection{An explicit partial-fraction transform}
+For later use put
+\[
+ T_{p,j}(z)=\sum_{m\geq1}\frac{z^m}{(m+j)^p},\qquad
+ U_{p,j}(z)=\sum_{m\geq1}\frac{z^mH_m}{(m+j)^p},
+ \qquad p\geq1,\ j\geq0.
+\]
+Shifting the summation index gives
+\begin{equation}\label{dhr:eq:T-transform}
+ T_{p,j}(z)=z^{-j}\left\{\Li_p(z)-
+                    \sum_{k=1}^j\frac{z^k}{k^p}\right\}.
+\end{equation}
+For the harmonic sums the precise shifted formula is
+\begin{align}
+ U_{p,0}(z)&=\Li_{p,1}(z,1)+\Li_{p+1}(z),
+ \label{dhr:eq:U-zero}\\
+ U_{p,j}(z)&=z^{-j}\bigg\{\Li_{p,1}(z,1)
+ -\sum_{k=1}^j\frac{z^kH_{k-1}}{k^p}
+ -\sum_{\ell=1}^{j-1}\sum_{k=j+1}^{\infty}
+             \frac{z^k}{k^p(k-\ell)}\bigg\},\quad j\geq1.
+ \label{dhr:eq:U-shift}
+\end{align}
+For \eqref{dhr:eq:U-shift}, write $k=m+j$ and use
+$H_m=H_{k-1}-\sum_{\ell=1}^{j-1}(k-\ell)^{-1}$.
+The finite correction is $H_{k-1}$, not $H_k$.
+Each last rational tail has a partial-fraction decomposition in
+$k$ and $k-\ell$, hence involves only ordinary polylogarithms and
+finite sums. Its starting index $j+1>\ell$ avoids the apparent pole.
+Equations \eqref{dhr:eq:T-transform}--\eqref{dhr:eq:U-shift} are
+explicit terminating reduction rules, not formal existence statements.
+
+\begin{theorem}[All-particle depth-two closure]\label{dhr:thm:closure}
+Under the assumptions of Theorem~\ref{dhr:thm:rank-one}, let
+$K_{w,N}=S_{w,N}-S_{w,N-1}$ and
+\begin{equation}\label{dhr:eq:general-generating}
+ \mathcal G_w(z)=\sum_{N\geq0}K_{w,N}z^{N+1},\qquad |z|<1.
+\end{equation}
+Then $\mathcal G_w$ belongs to the $\Q(z)$-linear span of
+\begin{equation}\label{dhr:eq:closure-space}
+ 1,\quad \Li_1(z),\ldots,\Li_r(z),\quad
+ \Li_{1,1}(z,1),\ldots,\Li_{r-1,1}(z,1).
+\end{equation}
+For $r=1$ the depth-two part of this list is empty. Thus the depth
+upper bound is two, independently of $r$, and the polylogarithmic
+weight upper bound is $r$.
+\end{theorem}
+
+\begin{proof}
+Set $m=N+1$. By \eqref{dhr:eq:rank-one-cutoff},
+\begin{align}
+ K_{w,N}={}&\{P_w(N)-P_w(N-1)\}H_{N+1}\notag\\
+          &+Q_w(N)-Q_w(N-1)+\frac{P_w(N-1)}{N+1}.
+ \label{dhr:eq:mass-difference}
+\end{align}
+The harmonic coefficient is a proper rational function of $m$,
+with poles only at nonpositive integers and pole orders at most $r-1$.
+It is zero for $r=1$. The nonharmonic coefficient is also proper,
+with pole orders at most $r$: division by $m$ can increase the
+order of $P_w(N-1)$ at zero only from at most $r-1$ to at most $r$.
+All other poles already have the stated bound. The expressions at
+$N=-1$ used in \eqref{dhr:eq:mass-difference} are well defined;
+\eqref{dhr:eq:finite-moments} gives the empty moments there.
+
+Decompose both coefficients into terms $(m+j)^{-p}$ with $j\geq0$.
+For the nonharmonic part apply \eqref{dhr:eq:T-transform}, which
+uses indices at most $r$. For the harmonic part apply
+\eqref{dhr:eq:U-zero} and \eqref{dhr:eq:U-shift}. The resulting depth-two
+index is at most $r-1$; any additional ordinary polylogarithm has
+index at most $r$. This proves \eqref{dhr:eq:closure-space}.
+All the series converge absolutely in the open disk, so the shifts
+and finite partial fractions are legitimate.
+\end{proof}
+
+The equivalent identity
+\begin{equation}\label{dhr:eq:Abel-cutoff}
+ \mathcal G_w(z)=(1-z)\sum_{N\geq0}S_{w,N}z^{N+1}
+\end{equation}
+connects the cutoff and Abel descriptions. It is useful for checking
+constants but is not needed to guess the depth bound.
+
+\subsection{Derivatives, Euler primitives, and endpoint zeta reduction}
+Let $\Theta=z\,d/dz$ and normalize $\Theta^{-1}$ by integration from
+zero with the kernel $dt/t$. Then
+\begin{equation}\label{dhr:eq:Euler-primitive}
+ \Theta^{-q}\mathcal G_w(z)=
+ \sum_{N\geq0}\frac{K_{w,N}}{(N+1)^q}z^{N+1},\qquad q\geq0.
+\end{equation}
+This also equals, for $q\geq1$,
+\begin{equation}\label{dhr:eq:Euler-integral}
+ \frac1{(q-1)!}\int_0^z\log^{q-1}(z/t)
+                       \mathcal G_w(t)\frac{\mathrm dt}{t},
+\end{equation}
+initially along $0<t<z<1$, then as the analytic primitive of the
+power series.
+
+\begin{corollary}[Primitive closure and ordinary endpoint evaluations]
+\label{dhr:cor:endpoint}
+For every $q\geq0$, the function \eqref{dhr:eq:Euler-primitive} has
+polylogarithmic depth at most two and weight at most $r+q$.
+For $q\geq1$ its endpoint
+\begin{equation}\label{dhr:eq:I-general}
+ I_{w,q}=\sum_{N\geq0}\frac{K_{w,N}}{(N+1)^q}
+\end{equation}
+is an ordinary absolutely convergent sum and lies in the rational
+linear span of
+\[
+ 1,\qquad \zeta(k),\qquad \zeta(a)\zeta(b),
+ \quad 2\leq k\leq r+q,\quad a,b\geq2,\quad a+b\leq r+q.
+\]
+No product of more than two zeta factors is needed for this endpoint
+family. Ordinary derivatives and anchored ordinary antiderivatives
+also retain depth at most two, although their rational prefactors
+and exponent shifts change.
+\end{corollary}
+
+\begin{proof}
+Divide the two proper rational coefficients in
+\eqref{dhr:eq:mass-difference} by $m^q$. Their maximum pole orders
+become at most $r-1+q$ in the harmonic part and $r+q$ in the other
+part. The preceding proof therefore gives the asserted weight and
+depth bounds.
+
+Bounded rational functions have expansions at infinity, so
+\eqref{dhr:eq:mass-difference} also gives
+$K_{w,N}=P_w(\infty)/(N+1)+O(\log(N+2)/(N+1)^2)$.
+This proves absolute convergence of \eqref{dhr:eq:I-general}.
+The configuration sum itself is absolutely convergent after inserting
+the maximum weight $(n_r+1)^{-q}$, by the same absolute
+largest-index estimate used in Section~\ref{dhr:sec:resonance}.
+
+The reduction rules give Laurent-polynomial, hence locally analytic
+near $z=1$, coefficients of the polylogarithms. Only $\Li_1(z)$
+and $\Li_{1,1}(z,1)=\tfrac12\log^2(1-z)$ diverge there. Convergence
+forces their coefficients to vanish at one: a nonzero quadratic
+logarithm cannot cancel a linear logarithm or a bounded term, and
+a nonzero linear logarithm cannot cancel bounded terms. Those
+vanishing-coefficient terms tend to zero. The other endpoint values
+are $\zeta(p)$ and $\zeta(p,1)$. Lemma~\ref{dhr:lem:Euler} below
+reduces the latter to the stated span.
+
+For the last assertion, power-series differentiation multiplies
+coefficients by affine factors in the index and shifts the exponent;
+ordinary integration divides by such factors and shifts it oppositely.
+A finite shift of $H_m$ changes it by a rational function. Polynomial
+parts in the index, when they arise, sum to rational functions or
+rational multiples of $\Li_1(z)$. Partial fractions of the remaining
+proper parts again use \eqref{dhr:eq:T-transform}--\eqref{dhr:eq:U-shift},
+with finite initial terms removed where needed. None of these operations
+requires a third nested index.
+\end{proof}
+
+\begin{lemma}[Euler's height-one reduction]\label{dhr:lem:Euler}
+For every integer $p\geq2$,
+\begin{equation}\label{dhr:eq:Euler-zeta}
+ \zeta(p,1)=\frac p2\zeta(p+1)
+ -\frac12\sum_{j=1}^{p-2}\zeta(p-j)\zeta(j+1).
+\end{equation}
+\end{lemma}
+\begin{proof}
+We include a beta-integral proof of this classical identity so the
+endpoint theorem has no unproved multiple-zeta reduction step.
+For $|x|<1$, expand Euler's beta integral \cite{dlmf:beta}:
+\begin{align*}
+ B(1-x,y)-B(1,y)
+ &=\int_0^1(t^{-x}-1)(1-t)^{y-1}\mathrm dt\\
+ &=-\gamma-\psi(1-x)\\
+ &\quad+\frac y2\big\{[\gamma+\psi(1-x)]^2
+                          +\zeta(2)-\psi'(1-x)\big\}+O(y^2).
+\end{align*}
+The $y$-derivative at zero can be taken under the integral: the
+factor $t^{-x}-1$ cancels its endpoint singularity at $t=1$.
+Using $\log(1-t)/(1-t)=-\sum_{n\geq1}H_nt^n$ gives this derivative
+as
+\[
+ -\sum_{n\geq1}H_n\left\{\frac1{n+1-x}-\frac1{n+1}\right\}
+ =-\sum_{p\geq2}\zeta(p,1)x^{p-1}.
+\]
+The interchanges hold first for real $0<x<1$ by absolute convergence,
+and then throughout the disk by holomorphy. Put
+$f(x)=-\psi(1-x)-\gamma=\sum_{k\geq2}\zeta(k)x^{k-1}$.
+Comparison with the beta expansion yields
+\[
+ \sum_{p\geq2}\zeta(p,1)x^{p-1}
+ =\tfrac12\{f'(x)-\zeta(2)-f(x)^2\}.
+\]
+Equating coefficients of $x^{p-1}$ proves
+\eqref{dhr:eq:Euler-zeta}.
+\end{proof}
+
+\subsection{A common translate and cyclotomic coordinates}
+The rank-one mechanism survives translation of the entire simple-pole
+grid. Define
+\[
+ H_n(a)=\sum_{j=0}^{n-1}\frac1{j+a},\qquad H_0(a)=0,\qquad a>0.
+\]
+Suppose all poles of $w(n)$ are simple and lie at $-a-d$ with
+integers $d\geq0$, and the critical decay
+\eqref{dhr:eq:rational-weight-assumption} holds. Use the monic moment
+basis $(n+a)^k$. For each pole,
+\[
+ \sum_{n=0}^N\frac1{n+a+d}
+ =H_{N+1}(a)+\sum_{\ell=1}^d\frac1{N+a+\ell}
+                 -\sum_{\ell=0}^{d-1}\frac1{a+\ell}.
+\]
+The sum of residues still vanishes except in the top moment.
+The proof of Theorem~\ref{dhr:thm:rank-one} therefore gives
+\begin{equation}\label{dhr:eq:translated-cutoff}
+ S_{w,N}=P_w(N,a)H_{N+1}(a)+Q_w(N,a),
+\end{equation}
+with the same pole-order bounds. For a rational weight depending
+rationally on $a$, the coefficients are rational in $N,a$.
+
+For rational $a=p/q\in(0,1]$ in lowest terms, put
+$\omega=e^{2\pi i/q}$. The exact root-of-unity filters are
+\begin{align}
+ \sum_{n\geq0}\frac{z^{n+a}}{(n+a)^s}
+ &=q^{s-1}\sum_{j=0}^{q-1}\omega^{-pj}
+                       \Li_s(\omega^jz^{1/q}),
+ \label{dhr:eq:single-filter}\\
+ \sum_{n\geq0}\frac{z^{n+a}H_n(a)}{(n+a)^s}
+ &=q^{s-1}\sum_{j,k=0}^{q-1}\omega^{-p(j+k)}
+             \Li_{s,1}(\omega^jz^{1/q},\omega^k).
+ \label{dhr:eq:double-filter}
+\end{align}
+These formulas hold for integers $s\geq1$ and $0<z<1$, and on any
+common continuation with a fixed $q$th-root branch. To prove them,
+write the top index as $qn+p$ and the inner index as $qm+p$.
+The powers of $q$ from the denominators are $q^s$ and $q^{s+1}$;
+the one and two residue filters divide by $q$ and $q^2$,
+respectively. The strict inner inequality is preserved.
+
+Finite index shifts and partial fractions, exactly as in
+\eqref{dhr:eq:U-shift}, now prove depth at most two in level-$q$
+colored polylogarithms for the generating function with exponent
+$z^{N+a}$. The same conclusion holds for primitives that divide
+its coefficients by $(N+a)^h$. No ordinary-zeta-only endpoint
+reduction is asserted for general level $q$.
+
+The shifted canonical weight $w(n)=1/(n+a)_{2r-1}$ is also covered
+by the Gamma product: take the parameters there to be $(a,c)=(a,1)$
+and $b_0=a+2r-1$. For $r=2$ its residue and cutoff constant are
+\begin{equation}\label{dhr:eq:translated-cutoff-constant}
+ A_0=\frac1{2a(a+1)},\qquad
+ C_a=\frac{-2-\psi(a+1)}{2a(a+1)}.
+\end{equation}
+For example, at $a=1/2$,
+\begin{equation}\label{dhr:eq:half-cutoff}
+ \lim_{N\to\infty}\left[
+ \sum_{0\leq m<n\leq N}
+ \frac{(n-m)^2}{(m+\tfrac12)_3(n+\tfrac12)_3}
+       -\frac23\log N\right]
+ =\frac23\{\gamma+2\log2-4\}.
+\end{equation}
+This gives a direct digamma/cyclotomic bridge without changing the
+finite-cutoff depth mechanism.
+
+% END sections/06-depth-two.tex
+
+% BEGIN sections/07-explicit.tex
+\section{Explicit polylogarithms and ordinary multiple sums}
+\label{dhr:sec:explicit}
+
+In this section use the canonical critical weight
+$w_r(n)=1/(n+1)_{2r-1}$. Abbreviate $S_{r,N}=S_{w_r,N}$,
+$K_{r,N}=S_{r,N}-S_{r,N-1}$, and
+\begin{equation}\label{dhr:eq:canonical-GI}
+ G_r(z)=\sum_{N\geq0}K_{r,N}z^{N+1},\qquad
+ I_{r,q}=\sum_{0\leq n_1<\cdots<n_r}
+ \frac{\Delta(\bm n)^2}
+ {(n_r+1)^q\prod_i(n_i+1)_{2r-1}},\quad q\geq1.
+\end{equation}
+Thus $I_{r,q}=\Theta^{-q}G_r(1)$, an ordinary convergent endpoint.
+The one-variable case is $G_1=\Li_1$ and $I_{1,q}=\zeta(q+1)$.
+
+\subsection{Two variables: complete cutoff and generating function}
+The three moments needed for $r=2$ are
+\begin{align}
+ M_0(N)&=\frac{(N+1)(N+4)}{4(N+2)(N+3)},\notag\\
+ M_1(N)&=\frac{N(N+1)}{4(N+2)(N+3)},\notag\\
+ M_2(N)&=H_{N+1}-\frac{11}{4}
+                      +\frac1{2(N+2)}+\frac9{2(N+3)}.
+ \label{dhr:eq:r2-moments}
+\end{align}
+They follow directly from the residues of $n^k/(n+1)_3$.
+Taking $M_0M_2-M_1^2$ gives the finite identity
+\begin{equation}\label{dhr:eq:r2-cutoff}
+ \boxed{S_{2,N}=
+ \frac{(N+1)(N+4)}{4(N+2)(N+3)}H_{N+1}
+ -\frac{(N+1)^2(3N+8)}{4(N+2)^2(N+3)}.}
+\end{equation}
+This proves the cutoff formula without any asymptotic summation.
+It also independently recovers the residue $1/4$ and constant
+$(\gamma-3)/4$.
+
+Applying the exact transforms in Section~\ref{dhr:sec:depth} yields
+\begin{align}
+ G_2(z)={}&\frac{(1-z)^2}{4z^2}\log^2(1-z)
+        +\frac{z-1}{2z}\Li_2(z)\notag\\
+ &-\frac{6-5z}{4z^2}\log(1-z)+\frac34-\frac3{2z}.
+ \label{dhr:eq:r2-G}
+\end{align}
+The expression is analytic at zero and starts $z^2/144$,
+corresponding to the unique first configuration $(0,1)$.
+Every negative-power coefficient cancels exactly.
+At $z=1/2$, the classical dilogarithm reflection formula
+\cite{dlmf:polylog} gives
+\begin{equation}\label{dhr:eq:G-half}
+ \sum_{0\leq m<n}\frac{(n-m)^2\,2^{-(n+1)}}{(m+1)_3(n+1)_3}
+ =\frac12\log^22+\frac72\log2-\frac{\pi^2}{24}-\frac94.
+\end{equation}
+At the other endpoint, \eqref{dhr:eq:r2-G} gives
+\begin{equation}\label{dhr:eq:Abel-constant}
+ G_2(z)=-\frac14\log(1-z)-\frac34+o(1),\qquad z\uparrow1.
+\end{equation}
+The Abel constant is $-3/4$, not the hard-cutoff constant
+$(\gamma-3)/4$. This is consistent with
+$\sum_{N\geq0}H_{N+1}z^{N+1}=-\log(1-z)/(1-z)$.
+
+\begin{theorem}[An ordinary double-sum evaluation]
+\label{dhr:thm:first-evaluation}
+\begin{equation}\label{dhr:eq:I21}
+ \boxed{\displaystyle
+ \sum_{0\leq m<n}
+ \frac{(n-m)^2}{(m+1)_3(n+1)_3(n+1)}
+ =\zeta(3)-\frac{\pi^2}{24}-\frac34.}
+\end{equation}
+\end{theorem}
+\begin{proof}
+We give a telescoping proof in addition to the polylogarithmic
+primitive method. Put $v=N+1$. Differencing \eqref{dhr:eq:r2-cutoff}
+gives
+\[
+ K_{2,v-1}=\frac{4(v+1)H_v+v^3-3v^2-6v}
+ {4v(v+1)^2(v+2)}.
+\]
+Partial fractions of $K_{2,v-1}/v$ give a harmonic coefficient
+\[
+ -\frac3{4v}+\frac1{v+1}-\frac1{4(v+2)}+\frac1{2v^2}
+\]
+and a nonharmonic coefficient
+\[
+ -\frac3{4v}+\frac5{4(v+1)}-\frac1{2(v+2)}
+                                      +\frac1{2(v+1)^2}.
+\]
+Group the first three terms of each coefficient into telescoping
+differences before summing. Absolute convergence then permits
+\begin{align*}
+ \sum_{v\geq1}\frac{H_v}{v(v+1)}&=\zeta(2),&
+ \sum_{v\geq1}\frac{H_v}{(v+1)(v+2)}&=1,&
+ \sum_{v\geq1}\frac{H_v}{v^2}&=2\zeta(3).
+\end{align*}
+The first two identities follow by summing over the inner index in
+$H_v$ and telescoping; the third is
+$\zeta(2,1)+\zeta(3)=2\zeta(3)$ by
+Lemma~\ref{dhr:lem:Euler}. The harmonic part therefore sums to
+$-3\zeta(2)/4+1/4+\zeta(3)$. The nonharmonic part sums to
+$\zeta(2)/2-1$. Their total is
+$\zeta(3)-\zeta(2)/4-3/4$, proving the theorem.
+\end{proof}
+
+Two further primitives give
+\begin{align}
+ I_{2,2}&=\frac74-\frac{\pi^2}{16}-\frac32\zeta(3)
+                            +\frac{\pi^4}{144},\label{dhr:eq:I22}\\
+ I_{2,3}&=-\frac52+\frac{17\pi^2}{96}+\zeta(3)
+             -\frac{\pi^4}{96}-\frac{\pi^2\zeta(3)}{12}
+             +\frac32\zeta(5).
+ \label{dhr:eq:I23}
+\end{align}
+These follow by dividing the same rational-plus-harmonic mass by
+$v^2$ and $v^3$, applying \eqref{dhr:eq:T-transform}--\eqref{dhr:eq:U-shift},
+and then \eqref{dhr:eq:Euler-zeta}. The delivered exact formula file
+contains the full primitive reductions, not just their endpoints.
+
+\subsection{Three variables: a depth-two formula of weight three}
+For $r=3$, the determinant gives
+\begin{equation}\label{dhr:eq:r3-P}
+ P_3(N)=\frac{N(N+1)^2(N^2+17N+54)}
+ {10368(N+3)^2(N+4)^2(N+5)}
+\end{equation}
+and
+\begin{equation}\label{dhr:eq:r3-Q}
+ Q_3(N)=-\frac{N(N+1)^3(9N^3+125N^2+514N+648)}
+ {20736(N+2)(N+3)^3(N+4)^2(N+5)},
+\end{equation}
+with $S_{3,N}=P_3(N)H_{N+1}+Q_3(N)$. Hence its hard-cutoff
+constant is $(\gamma-9/2)/10368$, again agreeing with the independent
+Gamma resonance calculation.
+
+For compact notation let $L_j=\Li_j(z)$ and
+$D_j=\Li_{j,1}(z,1)$. The generating function is
+\begin{align}
+ G_3(z)={}&-\frac{5(z-1)^2(7z-4)}{1728z^4}D_1
+        +\frac{(z-1)(z+1)}{144z^3}D_2\notag\\
+ &-\frac{117z^3+95z^2-513z+300}{10368z^4}L_1\notag\\
+ &-\frac{5(z-1)(7z-18)}{1728z^3}L_2
+        +\frac{z-1}{144z^2}L_3
+        -\frac{281z^2-78z-200}{6912z^3}.
+ \label{dhr:eq:r3-G}
+\end{align}
+Its first nonzero coefficient is $z^3/54432000$, the configuration
+$(0,1,2)$. Thus three ordered summation variables have not produced
+depth three. The theorem explains this before any coefficient
+calculation is performed.
+
+The first three ordinary primitive endpoints are
+\begin{align}
+ I_{3,1}&=\frac{1903}{124416}
+          -\frac{35\pi^2}{62208}-\frac7{864}\zeta(3),
+ \label{dhr:eq:I31}\\
+ I_{3,2}&=-\frac{6775}{373248}
+          +\frac{67\pi^2}{186624}+\frac7{576}\zeta(3),
+ \label{dhr:eq:I32}\\
+ I_{3,3}&=\frac{100297}{4478976}
+          -\frac{403\pi^2}{1492992}-\frac{131}{7776}\zeta(3)
+          +\frac{\pi^4}{186624}.
+ \label{dhr:eq:I33}
+\end{align}
+In particular, \eqref{dhr:eq:I31} is the explicit triple sum
+\[
+ \sum_{0\leq i<j<k}
+ \frac{(j-i)^2(k-i)^2(k-j)^2}
+ {(i+1)_5(j+1)_5(k+1)_5(k+1)}.
+\]
+The displayed value is a reduction of this entire sum, not a bound or
+an asymptotic approximation.
+
+\subsection{Four variables and the uniform algorithm}
+A first four-variable endpoint is
+\begin{equation}\label{dhr:eq:I41}
+ I_{4,1}=\frac{630863}{268738560000}
+ +\frac{14717\pi^2}{67184640000}
+ -\frac{487}{124416000}\zeta(3)
+ +\frac{\pi^4}{497664000}.
+\end{equation}
+The definition \eqref{dhr:eq:canonical-GI} specifies its six squared
+difference factors and four degree-seven factorial denominators.
+The numbers in these expressions can cancel substantially; direct
+low-precision evaluation is therefore a poor way to assess them.
+The exact rational reduction precedes the high-precision diagnostic.
+
+For any requested $r$ and primitive order $q$, there is a terminating
+algorithm: compute the $2r-1$ finite moments by residues, take the two
+determinants \eqref{dhr:eq:PQ-det}, difference the cutoff, divide by
+$(N+1)^q$, and apply the finite partial-fraction transform. It outputs
+both a functional polylogarithmic identity and, when $q\geq1$, its
+ordinary zeta endpoint. The implementation in \texttt{code/reductions.py}
+uses exact rational arithmetic. It is not restricted in its mathematics
+to the ranks and primitive orders printed here, although symbolic
+expression growth limits convenient computation at large rank.
+
+The fact that some displayed endpoints omit the highest permitted
+weight is an additional cancellation in those cases. We assert the
+proved upper bound $r+q$, not a universal sharp-weight formula and
+not independence of the surviving zeta coordinates.
+
+% END sections/07-explicit.tex
+
+% BEGIN sections/08-audit.tex
+\section{Source audit, corrections, and integration status}
+\label{dhr:sec:audit}
+
+\subsection{What was actually inspected}
+The mathematical source anchor for the selected chapter reads is the
+\repo\ commit
+\begin{center}
+\texttt{87c7db629552afbc2e803001526debe3430a31b0}.
+\end{center}
+The inspected material comprises the canonical manuscript README,
+the mixed-Dougall chapter (including its full ending), the initial
+240 lines of the cyclotomic-quotient chapter, the incoming-directory
+inventory, and the first 180 lines of the incoming intake procedure.
+Targeted repository searches supplied additional context about existing
+Gauss, Stieltjes, tail, and Selberg-related work. Search snippets were
+not treated as complete proofs of the unseen material.
+
+The repository changed during retrieval: later search results carried
+a different commit. This report therefore records a source anchor,
+not an assertion that the whole repository was frozen throughout the
+session. Six ZIP archives were visible in the incoming inventory at
+the time it was read. Their binary contents were not unpacked or
+analytically audited in this work. File names, including date strings,
+do not establish their mathematical content. No statement here should
+be read as a certification of those archives or of the entire four-volume
+manuscript.
+
+No substantive false theorem was found in the fully inspected
+mixed-Dougall proof. Its all-order mixed derivatives and tail identities
+remain prior repository material, not contributions claimed by this
+report. The already corrected Choi normalization is likewise not a
+newly discovered correction here \cite{repo:readme,repo:dougall}.
+
+\subsection{Specific correction and normalization safeguards}
+The principal correction supplied by the present analysis is the
+\emph{transfer rule} between two possible definitions of a finite
+constant. For this family the correct formula is
+\[
+ \text{hard-cutoff constant}
+ =\text{spectral finite part}-A'(0).
+\]
+Equation~\eqref{dhr:eq:normalization-example} is an explicit
+counterexample to omitting the last term. The rule corrects that
+possible extrapolation; it is not attributed to any particular source
+statement that was not observed.
+
+Two further safeguards are necessary when implementing the formulas.
+The leading amplitude uses $L(u)^r$, even though its partition has
+$r-1$ particles. In the shifted harmonic transform
+\eqref{dhr:eq:U-shift}, the finite correction is $H_{k-1}$.
+Both choices follow from direct derivations, and the delivered
+coefficient checks are sensitive to the shift convention. The
+ordered-configuration normalization also precludes an extra factor
+of $r!$.
+
+The finite cutoff, the Abel constant, the spectral finite part, and the
+value of an ordinary subtracted bracket are four distinct normalizations.
+For the canonical two-particle example they are, respectively,
+\[
+ \frac{\gamma-3}{4},\qquad -\frac34,\qquad
+ -\frac13\ \text{for the normalization \eqref{dhr:eq:integer-normalization}},
+ \qquad -\frac34\ \text{at subtraction point }\alpha=1.
+\]
+The numerical equality of the second and fourth constants in this
+example does not identify all four operations.
+
+\subsection{Claim ledger}
+\begin{center}
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.28\textwidth}>{\raggedright\arraybackslash}p{0.30\textwidth}>{\raggedright\arraybackslash}p{0.31\textwidth}}
+\toprule
+Result & Status in this report & Scope qualification\\
+\midrule
+Gauss--Vandermonde product & Complete determinant proof & Classical inputs; no priority claim\\
+Largest-index finite part & Complete analytic proof & First logarithmic resonance only\\
+All Stieltjes orders & Complete normal-convergence proof & Fixed finite derivatives; full brackets\\
+Harmonic mixed generator & Complete Gamma-product proof & Integer $B>2r$, local parameter germ\\
+Rank-one harmonic cutoff & Complete algebraic proof & Simple negative-integer poles and critical decay\\
+Depth-two closure & Complete terminating reduction & Upper bound, not minimal depth\\
+Zeta endpoint evaluations & Complete reduction with Euler lemma & Ordinary positive primitive orders\\
+Common translated grid & Complete residue/filter proof & Common grid, not arbitrary unrelated shifts\\
+$S_6$, $S_8$ & Not resolved & Prior conjectural status unchanged\\
+Proof-assistant status & Not formalized & No Lean or other kernel certificate\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The source's distinction between formal relation systems and actual
+period independence is preserved \cite{repo:quotients}. A finite
+rank calculation or a failed integer-relation search would not prove
+that an endpoint lies outside a smaller period space. No such
+nonreduction assertion is used here.
+
+\subsection{Proposed integration}
+A suitable standalone destination is
+\begin{center}
+\small\path{Analysis/Polylogarithms/docs/reports/determinantal-harmonic-resonance/}.
+\end{center}
+Its thematic cross-links are the Gamma--harmonic resonance material,
+Hurwitz--Stieltjes calculus, and depth/cyclotomic chapters. The report
+contains a complete article and can be reviewed independently before
+any canonical chapter integration. All theorem and equation labels
+start with \texttt{dhr:} to reduce collisions.
+
+The incoming procedure explicitly separates preservation, replay,
+analytic review, and canonical integration \cite{repo:intake}. This
+delivery does not modify the GitHub repository, apply a patch, or
+promote its own results into the canonical manuscript. The separate
+\texttt{integration/INTEGRATION.md} records a suggested reading order
+and chapter mapping. The delivered source files, not this paragraph,
+are the proposed integration artifacts.
+
+% END sections/08-audit.tex
+
+% BEGIN sections/09-research.tex
+\section{Further research questions}
+\label{dhr:sec:research}
+
+\subsection{Higher resonances: several divergent moment entries}
+The first resonance $b-a-c=2r-2$ is special because only one particle
+can escape at logarithmic order while the lower ensemble retains a
+finite first moment. At $b-a-c=2r-2-M$ with $M\geq1$, a larger
+block of moments is divergent and the Gamma product can have higher
+pole order. Determine a canonical largest-index or multi-index
+subtraction, including all overlap terms, and compare its hard-cutoff
+polynomial in $\log N$ with its spectral Laurent coefficients.
+A successful extension must prove normal convergence after the full
+subtraction, not merely expand the Gamma product.
+
+A precise initial target is the next resonance for $r=2$, where one
+can explicitly compare the two divergent moments in the cutoff
+Hankel determinant with the two relevant gamma poles. This should
+clarify which derivatives of residue amplitudes enter beyond the
+first-order rule \eqref{dhr:eq:spectral-vs-cutoff}.
+
+\subsection{Repeated rational poles and the rank of harmonic data}
+The simple-pole hypothesis in Theorem~\ref{dhr:thm:rank-one} is
+essential to the proof. With repeated poles, moments contain
+$H_{N+1}^{(2)},H_{N+1}^{(3)},\ldots$ as well as $H_{N+1}$.
+Describe the matrix subspace spanned by these harmonic coefficients.
+Can its rank and support give a sharp \emph{formal} upper bound on
+the polylogarithmic depth of the cutoff generator?
+
+One concrete problem is to classify all rational weights for which
+this harmonic matrix pencil has rank one despite repeated poles.
+Such a classification could extend the current depth-two theorem
+without relying on generic determinant-degree estimates.
+
+\subsection{Closed all-rank coefficients and discrete orthogonal polynomials}
+The determinant formulas for $P_r(N)$ and $Q_r(N)$ are exact at every
+rank, but expression growth is substantial. Find product formulas,
+short recurrences, or a discrete-orthogonal-polynomial interpretation
+for the rational coefficients in the canonical case. The factors of
+$P_r$ displayed at ranks two through four suggest more structure
+than the determinant proof alone explains.
+
+A useful target is a recurrence in $r$ with rational coefficients in
+$N$ that generates both $P_r$ and $Q_r$ and preserves the initial
+vanishing $S_{r,N}=0$ for $N<r-1$. A companion recurrence for
+$I_{r,q}$ could explain systematic weight drops in
+\eqref{dhr:eq:I31}--\eqref{dhr:eq:I41}.
+
+\subsection{Mixed spectral and shape derivatives}
+Theorem~\ref{dhr:thm:resonance} gives joint holomorphy in $a,c,u$.
+One can therefore differentiate in $a,c$ as well as $u$, provided
+one keeps track of the moving relation $b_0=a+c+2r-2$.
+Develop explicit harmonic/polygamma formulas for these tangential
+shape derivatives and compare them with derivatives taken at fixed
+$b$. The distinction changes the counterterm and is likely important
+for integration with the existing mixed-Dougall calculus.
+
+A targeted problem is to derive a compact three-parameter Bell table
+whose rows express mixed generalized harmonic sums in terms of
+$\gamma_k(\alpha)$ and polygamma values at $a+r-1,c+r-1$.
+The analytic permission to differentiate is proved here; the most
+useful arithmetic basis for the resulting rows is not selected.
+
+\subsection{Rational grids beyond a common translate}
+The root filters in \eqref{dhr:eq:single-filter} and
+\eqref{dhr:eq:double-filter} handle one common residue class.
+For rational poles from several classes modulo a common denominator,
+the moment matrix can involve several independent shifted harmonic
+families. Determine whether its harmonic rank, rather than the number
+of summation variables, controls colored depth.
+
+The first test case should use two residue classes with separate
+harmonic coefficients and an explicitly computed matrix pencil.
+Any resulting endpoint reduction must state its cyclotomic level and
+its precise relation system; ordinary-zeta closure should not be
+assumed from the common-integer-grid case.
+
+\subsection{Changing the Vandermonde exponent}
+The square $\Delta^2$ is what permits Cauchy--Binet and a moment
+determinant. For $\Delta^{2\kappa}$ with integer $\kappa>1$, one
+can still expand finitely in monomials, but the single-entry argument
+no longer applies automatically. Determine the first resonant decay,
+its subtraction amplitude, and a useful depth bound. A comparison
+with known discrete Selberg-type sums should precede any novelty
+claim in that direction.
+
+\subsection{Functional certificates and arithmetic conjectures}
+The current identities live in a tightly specified depth-two family.
+It is reasonable to ask whether translated or colored variants supply
+new functional relations useful for the manuscript's arithmetic
+conjectures. There is no result here showing that they settle $S_6$
+or $S_8$. A productive target would be an exact functional certificate
+whose evaluation gives a previously missing relation, not another
+high-precision residual or an unsupported claim of period dependence.
+
+\subsection{Formalization and literature reconciliation}
+The rational determinant lemma, finite Cauchy--Binet identity, residue
+sum criterion, and terminating transform are natural first targets
+for formalization. The analytic normal-convergence argument should
+be formalized separately, with its compact-uniform first-moment
+estimate and Cauchy derivative transfer made explicit.
+
+In parallel, a systematic literature audit should identify which
+forms of the Gauss--Vandermonde product and height-one generating
+functions already occur in discrete determinant and Euler-sum
+literature, then isolate the exact scope of the resonant cutoff and
+rank-one harmonic statements. The present report supplies proofs and
+reproducible identities; it does not turn an incomplete priority
+search into a novelty theorem.
+
+% END sections/09-research.tex
+
+\appendix
+% BEGIN sections/10-replay.tex
+\section{Reproducible computation and proof boundaries}
+\label{dhr:sec:replay}
+
+\subsection{What is in the package}
+The article consists of \texttt{article.tex}, the files under
+\texttt{sections/}, and \texttt{references.tex}. The standalone
+\texttt{article.pdf} is the compiled reading artifact.
+The mathematical software is
+\begin{center}
+\begin{tabular}{lp{0.60\textwidth}}
+\toprule
+File & Purpose\\
+\midrule
+\texttt{code/reductions.py} & Exact canonical cutoff, polylogarithm, and endpoint reducer\\
+\texttt{code/verify\_exact.py} & Finite rational/symbolic checks and formula export\\
+\texttt{code/verify\_numeric.py} & Separate floating-point diagnostics\\
+\bottomrule
+\end{tabular}
+\end{center}
+The dependencies used in the recorded run are SymPy 1.14.0 and mpmath
+1.3.0. Python 3.10 or later is suitable for the syntax in the scripts;
+the recorded run used Python 3.13. The scripts write their own output
+records, so replay should be performed on a working copy when the
+original delivery records need to be preserved.
+
+Run from the package root:
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python code/verify_exact.py
+python code/verify_numeric.py
+lualatex -interaction=nonstopmode -halt-on-error article.tex
+lualatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+A third LaTeX pass is harmless if a local build reports changed labels.
+No network access is needed by the mathematical scripts after the
+Python dependencies have been installed.
+
+\subsection{Exact assertions}
+The recorded exact suite passes 732 assertions. Grouping closely
+related checks gives the following accounting:
+\begin{center}
+\small
+\begin{tabular}{lr}
+\toprule
+Check family & Assertions\\
+\midrule
+Rational factorial determinant & 18\\
+Gamma product versus mixed moment determinant & 16\\
+Finite ordered sums, Cauchy--Binet, and finite moments & 216\\
+Rational partitions, residues, and cutoff constants & 24\\
+Polylogarithmic coefficients and removable origin terms & 416\\
+Nonconsecutive-pole residue and moment checks & 32\\
+Printed endpoint values and $G_2$ & 4\\
+Intentionally corrupted functional formula rejected & 1\\
+Mixed harmonic coefficient rows & 4\\
+Printed Stieltjes row algebra & 1\\
+\midrule
+Total & 732\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are finite exact checks. They detect arithmetic, index, and
+normalization mistakes in explicit cases; they do not replace the
+all-index proofs of Sections~\ref{dhr:sec:determinant}--\ref{dhr:sec:depth}.
+The corruption control changes $G_2$ by $z^2$ and verifies that the
+identity check rejects it.
+
+The file \texttt{results/exact\_formulas.json} contains ranks
+$r=1,2,3,4$, their cutoff coefficients, rational spectral partitions,
+residues, generating functions of primitive orders $q=0,1,2,3$, and
+endpoint values for $q=1,2,3$. In that file \texttt{L1}, \texttt{L2},
+\ldots denote $\Li_1(z),\Li_2(z),\ldots$; \texttt{D1}, \texttt{D2},
+\ldots denote $\Li_{1,1}(z,1),\Li_{2,1}(z,1),\ldots$.
+The coefficient expressions use exact rational numbers and SymPy
+syntax. They are not sampled numerical fits.
+
+\subsection{Numerical diagnostics}
+The recorded suite has 85 diagnostics, all at 100 decimal digits of
+\emph{working precision}:
+\begin{center}
+\small
+\begin{tabular}{lr}
+\toprule
+Diagnostic family & Cases\\
+\midrule
+Generating functions and Euler primitives from direct lower moments & 24\\
+Ordinary Gauss product, nonintegral $a,c$ & 8\\
+Convergent endpoints with an asymptotic tail & 12\\
+Spectral jets, $r=1,\ldots,4$, orders $0,\ldots,4$, two $\alpha$ values & 40\\
+Halfpoint logarithm/dilogarithm value & 1\\
+\midrule
+Total & 85\\
+\bottomrule
+\end{tabular}
+\end{center}
+The largest recorded scaled discrepancy is approximately
+$2.75\times10^{-32}$. Individual tolerances and absolute as well as
+scaled discrepancies are stored in \texttt{results/numerical\_checks.json}.
+It would be incorrect to describe all checks as agreements to 100
+digits: working precision is not an error bound.
+
+For disk evaluations, the left side is formed from directly accumulated
+lower moments and the right side from convergent polylogarithm series.
+For ordinary Gamma products, 1500 terms are used at a large positive
+excess. Endpoint diagnostics combine a 400-term direct head with a
+30th-order Euler--Maclaurin expansion of the harmonic/rational tail,
+summed by Hurwitz-zeta values and order derivatives. These tail
+approximations are diagnostic, not interval-certified enclosures.
+
+The spectral-jet left side uses an independent finite telescoping
+formula instead of the infinite Gamma product. Namely,
+\begin{align}
+ &\sum_{n=0}^N(n+1)_j
+       \frac{\Gamma(n+1)}{\Gamma(n+2r+u)}\notag\\
+ &\qquad=
+ \frac{\Gamma(j+1)/\Gamma(2r-1+u)
+             -\Gamma(N+j+2)/\Gamma(N+2r+u)}{2r-j-2+u}.
+ \label{dhr:eq:finite-jet-telescope}
+\end{align}
+To prove it, subtract successive terms of
+$\Gamma(n+j+1)/\Gamma(n+2r-1+u)$; their difference is
+$(2r-j-2+u)\Gamma(n+j+1)/\Gamma(n+2r+u)$.
+At $j=2r-2,u=0$ the quotient has a removable singularity, which
+is evaluated by Taylor coefficients rather than by division of two
+rounded near-zero numbers. Transforming powers of $n$ to rising
+factorials then gives the full finite moment determinant and its
+spectral derivatives. The diagnostic cutoff is $N=10^{40}$;
+it is used through this finite formula, not by enumerating that
+many summands.
+
+The translated root-of-unity extension is proved algebraically in the
+article; the recorded 85-case numerical suite does not separately test
+that extension. This is part of the verification scope, not a gap
+filled by an unstated computation.
+
+\subsection{Proof, calculation, and compilation are different evidence}
+A clean LaTeX build establishes that the document compiles. Finite
+symbolic assertions establish the corresponding finite identities.
+Floating-point comparisons test implementations and motivate scrutiny.
+The all-order analytic and algebraic conclusions are justified by the
+proofs in the article. None of the three forms of computational evidence
+alone confers theorem-prover status or proves global novelty.
+
+% END sections/10-replay.tex
+
+% BEGIN references.tex
+\begin{thebibliography}{99}
+\addcontentsline{toc}{section}{References}
+
+\bibitem{repo:readme}
+ProveIt Contributors,
+\emph{Polylogarithms and their Arithmetic Bridges}, canonical manuscript
+README, inspected 10 October 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/87c7db629552afbc2e803001526debe3430a31b0/Analysis/Polylogarithms/docs/manuscript/README.md}{Repository source anchor}.
+
+\bibitem{repo:dougall}
+ProveIt Contributors,
+\emph{Mixed Gamma derivatives and exact harmonic tail identities},
+\path{chapters/07-mixed-dougall-identities.tex}, in the canonical
+Polylogarithms manuscript, source commit
+\texttt{87c7db629552afbc2e803001526debe3430a31b0}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/87c7db629552afbc2e803001526debe3430a31b0/Analysis/Polylogarithms/docs/manuscript/chapters/07-mixed-dougall-identities.tex}{Pinned chapter source}.
+
+\bibitem{repo:quotients}
+ProveIt Contributors,
+\emph{Mixed endpoints and all-weight cyclotomic product quotients},
+\path{chapters/04-cyclotomic-quotients.tex}, same source commit.
+The first 240 source lines were inspected for conventions and the
+formal-versus-numerical distinction.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/87c7db629552afbc2e803001526debe3430a31b0/Analysis/Polylogarithms/docs/manuscript/chapters/04-cyclotomic-quotients.tex}{Pinned chapter source}.
+
+\bibitem{repo:intake}
+ProveIt Contributors,
+\emph{Incoming reports}, \path{docs/incoming/README.md}, intake procedure
+and directory inventory inspected during this research session.
+The binary incoming archives were not audited here.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/docs/incoming}{Repository drop zone}.
+
+\bibitem{dlmf:gauss}
+NIST Digital Library of Mathematical Functions,
+\S15.4, equation 15.4.20: Gauss hypergeometric summation.
+\url{https://dlmf.nist.gov/15.4.E20}.
+
+\bibitem{dlmf:gamma}
+NIST Digital Library of Mathematical Functions,
+\S5.11: asymptotic expansions and ratios of Gamma functions.
+\url{https://dlmf.nist.gov/5.11}.
+
+\bibitem{dlmf:beta}
+NIST Digital Library of Mathematical Functions,
+\S5.12, equation 5.12.1: Euler's beta integral.
+\url{https://dlmf.nist.gov/5.12.E1}.
+
+\bibitem{dlmf:polygamma}
+NIST Digital Library of Mathematical Functions,
+\S5.15: polygamma functions, shifts, and special values.
+\url{https://dlmf.nist.gov/5.15}.
+
+\bibitem{dlmf:hurwitz}
+NIST Digital Library of Mathematical Functions,
+\S25.11: Hurwitz zeta, parameter differentiation, special values,
+and the log-Gamma identity.
+\url{https://dlmf.nist.gov/25.11}.
+
+\bibitem{dlmf:polylog}
+NIST Digital Library of Mathematical Functions,
+\S25.12: polylogarithms and the dilogarithm reflection identity.
+\url{https://dlmf.nist.gov/25.12}.
+
+\bibitem{krattenthaler}
+C.~Krattenthaler,
+\emph{Advanced determinant calculus},
+S\'eminaire Lotharingien de Combinatoire \textbf{42} (1999), Article B42q,
+67 pp.; arXiv:math/9902004.
+\url{https://arxiv.org/abs/math/9902004}.
+Cited as classical determinant-method background, not as a priority
+attribution for every formula in this report.
+
+\end{thebibliography}
+
+% END references.tex
+
+\end{document}

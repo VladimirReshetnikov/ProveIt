@@ -1,0 +1,205 @@
+\section{Convergent zeta coordinates and explicit product identities}
+\label{poly:coordinates}
+
+\subsection{A finite reduction without singular word coordinates}
+
+Absolute convergence of a combined Dirichlet series does not by itself
+make every term in an arbitrary quasi-shuffle expansion convergent.
+The following construction supplies convergent coordinates individually.
+
+\begin{theorem}[Convergent word reduction for every mixed monomial]
+\label{poly:words}
+Let $P$ be a mixed monomial with $K$ factors, counting multiplicities.
+Then $\cI(P)$ is a finite linear combination of convergent strict
+multiple-zeta values and their first spectral derivatives, of depth at
+most $K-1$. The coefficients belong to the ring generated over $\Q$
+by $\gamma$ and the ordinary zeta values occurring in the pole
+polynomials. For $K=1$ the integral is zero. Linearity gives a finite
+algorithm for every mixed polynomial.
+\end{theorem}
+
+\begin{proof}
+First expand the higher-pole differences in
+$h_r=H_{n-1}^{(r)}$ and $v=1/n$. A coefficient $p_j(n)$ uses at
+least one singular factor, so its harmonic degree is at most $K-1$.
+Taking a difference replaces at least one regular factor by a power
+of $v$. Hence $\Delta p_j(n)$ has harmonic degree at most $K-2$,
+and every term contains $v^q$ with $q\ge1$.
+Finite stuffle multiplication replaces products of the $h_r$ by strict
+words. Therefore
+\[
+ \sum_{n\ge1}\frac{v^q H_{n-1}(w)}{n^{j-1}}
+ =Z(q+j-1,w),\qquad j\ge2,
+\]
+with first entry at least two and depth at most $K-1$.
+This gives the claimed representation of $J_P$.
+
+For the residue, express $p_1(n)$ as a polynomial
+$F(B,A_2,A_3,\ldots)$ with $B=H_n-\gamma$ and
+$A_r=A_r(n)$. In \eqref{poly:localpsi} this amounts to replacing
+$c_{r,n}$ by $(1+(-1)^r)\zeta(r)-A_r$.
+The residue cancellation theorem, with $B$ an indeterminate, proves
+the polynomial identity $F(B,0,0,\ldots)=0$. Thus every monomial
+of $F$ contains at least one upper tail.
+
+Put $b=H_{n-1}-\gamma$ and use the exact increment formula
+\begin{equation}\label{poly:taildifference}
+ \Delta p_1(n)=F(b+v,A_2,A_3,\ldots)
+       -F(b,A_2+v^2,A_3+v^3,\ldots).
+\end{equation}
+Each resulting term is a constant times
+\begin{equation}\label{poly:splitword}
+ n^{-q}H_{n-1}(w)\,U_n(v_1,\ldots,v_d),\qquad
+ U_n(v_1,\ldots,v_d)=
+ \sum_{k_1>\cdots>k_d>n}\prod k_j^{-v_j}.
+\end{equation}
+Here all upper letters $v_j$ are at least two. Stuffle multiplication
+has been applied separately above and below the distinguished index $n$.
+If no upper letter remains, at least one removed tail supplies
+$n^{-r}$ with $r\ge2$, so $q\ge2$. If an upper letter remains,
+$q\ge1$ is sufficient. The corresponding sums and logarithmic sums are
+\begin{align}
+ \sum_{n\ge1}n^{-q}H_{n-1}(w)U_n(v)
+     &=Z(v_1,\ldots,v_d,q,w),\label{poly:concatenate}\\
+ -\sum_{n\ge1}n^{-q}H_{n-1}(w)U_n(v)\log n
+     &=\partial_{d+1}Z(v_1,\ldots,v_d,q,w).
+ \label{poly:concatenateD}
+\end{align}
+Every displayed word has first entry at least two. Its derivative is
+absolutely convergent as well: a logarithm is dominated by an arbitrarily
+small extra power of the largest index, while the standard admissible
+series has a positive convergence margin.
+The difference in \eqref{poly:taildifference} removes at least one of
+at most $K-1$ harmonic or tail factors; reinserting the distinguished
+index gives depth at most $K-1$. Formula \eqref{poly:mixed} completes
+the proof. For one positive-order polygamma all its principal coefficients
+are constant in $n$ and its simple residue is zero, giving $J_P=D_P=0$.
+\end{proof}
+
+This theorem makes a finite-coordinate statement. It does not assert
+that its resulting multiple-zeta derivatives reduce to ordinary zeta
+derivatives, nor that distinct remaining coordinates are independent.
+For polynomial coefficients already containing other constants, those
+constants are simply retained as coefficients.
+
+\subsection{Polylogarithmic kernels for the same coordinates}
+
+Let
+\begin{equation}\label{poly:S}
+ S_j(z)=\sum_{n\ge1}\Delta p_j(n)z^n,\qquad |z|<1.
+\end{equation}
+The finite harmonic expansion shows that every $S_j$ is a finite linear
+combination of strict multiple polylogarithms:
+\[
+ \sum_{n\ge1}\frac{H_{n-1}(w)}{n^q}z^n=\Li_{q,w}(z),
+ \qquad
+ \Li_{s_1,\ldots,s_d}(z)=
+ \sum_{n_1>\cdots>n_d\ge1}\frac{z^{n_1}}{n_1^{s_1}\cdots n_d^{s_d}}.
+\]
+For a mixed polynomial, $S_1$ has the continuous endpoint value
+$S_1(1)=\sum\Delta p_1(n)=-p_1(0)$.
+
+\begin{corollary}[Ordinary logarithmic polylogarithm bridge]
+\label{poly:polylog}
+For mixed $P$,
+\begin{equation}\label{poly:polylogeq}
+ \boxed{\displaystyle
+ \cI(P)=J_P+\int_0^1
+ \frac{S_1(z)-zS_1(1)}{z(-\log z)}\dd z.}
+\end{equation}
+The integral is ordinary and absolutely convergent. Moreover,
+\begin{equation}\label{poly:Jpolylog}
+ J_P=\sum_{j=2}^M\frac1{(j-1)!}
+ \int_0^1\frac{(-\log z)^{j-2}}z S_j(z)\dd z.
+\end{equation}
+\end{corollary}
+\begin{proof}
+The estimate $\Delta p_1(n)=O(n^{-2}(1+\log n)^d)$ implies
+$\sum |\Delta p_1(n)|\log n<\infty$. Frullani's identity in the
+form
+\[
+ \int_0^1\frac{z^{n-1}-1}{-\log z}\dd z=-\log n
+\]
+therefore justifies termwise integration of the complete subtracted
+kernel, including absolute integrability. This gives $D_P'(0)$.
+For the second formula use
+$\int_0^1z^{n-1}(-\log z)^{j-2}\dd z=(j-2)!/n^{j-1}$
+and the absolute convergence of the harmonic differences.
+Individual polylogarithms in a representation of $S_1$ can diverge at
+one; $S_1(1)$ means the value of their complete combination, not a
+termwise substitution into a divergent expression.
+\end{proof}
+
+\subsection{Every bilinear polygamma integral}
+
+The entire bilinear layer collapses to two ordinary zeta coordinates.
+This is also a useful explicit check on the signs and endpoint
+normalization in the general theorem.
+
+\begin{theorem}[Bilinear evaluation]
+\label{poly:bilinear}
+For nonnegative integers $r,s$ with $r+s\ge1$, put $h=r+s$,
+$\alpha=(-1)^{r+1}$, and $\beta=(-1)^{s+1}$. Then
+\begin{align}\label{poly:bilineareq}
+ \boxed{\displaystyle
+ \FP\int_0^1\psi^{(r)}(x)\psi^{(s)}(x)\dd x
+ =h!\left\{(\alpha+\beta)\zeta'(h+1)
+ +\bigl[\alpha(H_h-H_s)+\beta(H_h-H_r)\bigr]\zeta(h+1)\right\}.}
+\end{align}
+In particular, for $r\ge1$,
+\begin{equation}\label{poly:square}
+ \FP\int_0^1\bigl(\psi^{(r)}(x)\bigr)^2\dd x
+ =2(-1)^{r+1}(2r)!
+ \{\zeta'(2r+1)+(H_{2r}-H_r)\zeta(2r+1)\}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Assume first $r,s\ge1$. Multiplication of the two differentiated
+series in \eqref{poly:localpsi} gives
+\[
+ p_1(n)=(\alpha+\beta)h!c_{h+1,n}.
+\]
+The parity of $h$ shows that either $\alpha+\beta=0$ or
+$h+1$ is odd; in the latter case $c_{h+1,n}=-A_{h+1}(n)$.
+Thus
+$D_P(s_0)=(\alpha+\beta)h!\zeta(h+1+s_0)$.
+The higher-pole differences give
+\[
+ J_P=\left\{
+ \alpha r!\sum_{k=1}^r\frac{(h-k)!}{(r-k)!k}
+ +\beta s!\sum_{k=1}^s\frac{(h-k)!}{(s-k)!k}
+ \right\}\zeta(h+1).
+\]
+The finite binomial identity
+\begin{equation}\label{poly:finiteharmonic}
+ r!\sum_{k=1}^r\frac{(r+s-k)!}{(r-k)!k}
+ =(r+s)!(H_{r+s}-H_s)
+\end{equation}
+follows, for example, by taking the logarithmic derivative in $a$ of
+Vandermonde's identity for $[x^r](1-x)^{-a}(1-x)^{-s-1}$ at
+$a=0$, or by induction in $r$. To see the coefficient calculation
+directly, $\left.\partial_a(a)_k/k!\right|_{a=0}=1/k$ for $k\ge1$,
+and the derivative of $(a+s+1)_r/r!$ is
+$\binom{r+s}{r}(H_{r+s}-H_s)$. Multiplication by $r!s!$
+gives \eqref{poly:finiteharmonic}.
+
+If $r=0<s$, the coefficient of the pole of order $s+1$ contains
+$\beta s!b_n$ instead. Its difference is $\beta s!/n$, and it
+supplies exactly the last $k=s$ term of the same finite sum.
+The simple-pole formula remains valid. The case $s=0<r$ is symmetric.
+Formula \eqref{poly:mixed} now gives the result.
+\end{proof}
+
+For example,
+\begin{align}
+ \FP\int_0^1(\psi')^2\dd x&=2\zeta(3)+4\zeta'(3),\label{poly:trigamma2}\\
+ \FP\int_0^1\psi\psi''\dd x&=-3\zeta(3)-4\zeta'(3),\\
+ \FP\int_0^1\psi'\psi''\dd x&=-3\zeta(4),\\
+ \FP\int_0^1(\psi'')^2\dd x&=-28\zeta(5)-48\zeta'(5),\\
+ \FP\int_0^1\psi'\psi'''\dd x&=32\zeta(5)+48\zeta'(5).
+\end{align}
+If $r$ and $s$ have opposite parity, the zeta derivative disappears
+exactly. The exceptional pair $(0,0)$ has a singular scalar residue
+and instead gives $\cI(u_0^2)=2\gamma_1-2\zeta(2)$ by
+Theorem~\ref{poly:bridge}.

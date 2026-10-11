@@ -1,0 +1,121 @@
+{
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "commit": "f7e35be357654198c1546fd40f363694c5bcc2cc",
+  "research_date_utc": "2026-10-11",
+  "manuscript": "Analysis/Polylogarithms/docs/manuscript",
+  "incoming_archives_considered": [
+    "docs/incoming/Algebraic_Gauss_Centered_Harmonic_Reflection.zip",
+    "docs/incoming/ProveIt_Canonical_Digamma_Fifth_Moment_2026-10-11.zip",
+    "docs/incoming/ProveIt_Continuous_Depth_Lerch_2026-10-10.zip",
+    "docs/incoming/ProveIt_Higher_Digamma_Powers_2026-10-11.zip",
+    "docs/incoming/ProveIt_Mixed_Resolvents_Harmonic_Powers_2026-10-11.zip",
+    "docs/incoming/ProveIt_Tilted_Lerch_Binary_Cancellation_2026-10-10.zip"
+  ],
+  "audit_scope": "Targeted audit of the definitions and claims continued; not a line-by-line certification of the entire manuscript.",
+  "dependencies": [
+    {
+      "source": "docs/incoming/ProveIt_Canonical_Digamma_Fifth_Moment_2026-10-11.zip",
+      "files": [
+        "sections/02_laurent.tex",
+        "sections/03_gamma.tex",
+        "sections/07_tail_rank.tex",
+        "sections/09_questions.tex"
+      ],
+      "label": "conj:firstq",
+      "use": "Moment definitions, exact source coefficient matrix, and inherited Gamma normalization."
+    },
+    {
+      "source": "docs/incoming/ProveIt_Higher_Digamma_Powers_2026-10-11.zip",
+      "files": [
+        "tex_parts/end.tex"
+      ],
+      "use": "Explicit higher-power and differential-calculus research questions."
+    },
+    {
+      "source": "Analysis/Polylogarithms/docs/reports/stieltjes-correlation-calculus/continuations/coincident-directional-zeta",
+      "files": [
+        "sections/02_cubic.tex",
+        "sections/06_rays.tex"
+      ],
+      "use": "Existing cubic-digamma bridge and quadratic directional-zeta theory."
+    },
+    {
+      "source": "Analysis/Polylogarithms/docs/manuscript/chapters/08-stieltjes-contact-products.tex",
+      "label": "shj:polyclosurezeta",
+      "use": "Existing general polygamma-product closure; the article reproves the coincident case directly."
+    },
+    {
+      "source": "Analysis/Polylogarithms/docs/manuscript/EDITORIAL-LEDGER.md",
+      "use": "Retains the conjectural status of short S6 and revised S8."
+    }
+  ],
+  "new_theorems": [
+    {
+      "label": "thm:rank-two",
+      "claim": "Optimal prefix for p=2 and all even q>2",
+      "status": "proved"
+    },
+    {
+      "label": "rf:main",
+      "claim": "Optimal prefix for p=4 and all even q>4",
+      "status": "proved"
+    },
+    {
+      "label": "rs:main",
+      "claim": "Optimal prefix for p=6 and all even q>6",
+      "status": "proved with an exact finite symbolic polynomial certificate"
+    },
+    {
+      "label": "thm:general-small-determinant",
+      "claim": "Explicit determinant of size a for every even pair p=2a,q=2b",
+      "status": "proved; general perturbation nonvanishing not claimed"
+    },
+    {
+      "label": "thm:polylog-boundary",
+      "claim": "All-order polylogarithmic boundary cancellation from order-two extraction",
+      "status": "proved"
+    },
+    {
+      "label": "tc:main",
+      "claim": "All admissible cubic Tornheim directions in two specified higher-depth coordinates",
+      "status": "proved; arithmetic independence not claimed"
+    },
+    {
+      "label": "tc:kernel",
+      "claim": "Exact holomorphic ambiguity under the specified local identities",
+      "status": "proved"
+    },
+    {
+      "label": "dq:normalform",
+      "claim": "Canonical partition basis modulo total derivatives",
+      "status": "proved"
+    },
+    {
+      "label": "dq:parity",
+      "claim": "Factor parity of inverse-Gamma normal forms",
+      "status": "proved"
+    },
+    {
+      "label": "dq:canonicalsixth",
+      "claim": "Canonical sixth integral in lambda5, one mixed moment, and ordinary zeta data",
+      "status": "proved; mixed moment not eliminated"
+    },
+    {
+      "label": "dq:canonicalseventh",
+      "claim": "Canonical seventh integral with two specified mixed moments",
+      "status": "proved; mixed moments not eliminated"
+    }
+  ],
+  "remaining_questions": [
+    "Optimal first-q prefix for unequal even 8<=p<q",
+    "Arithmetic reduction of cubic Tornheim coordinates",
+    "Spectral elimination of retained sixth/seventh mixed integrals",
+    "Short S6 and revised S8 period identities"
+  ],
+  "artifact_entrypoints": {
+    "pdf": "Bernoulli_Tornheim_Digamma_Identities.pdf",
+    "tex": "Bernoulli_Tornheim_Digamma_Identities.tex",
+    "build": "build.py",
+    "verification": "verification/verify_all.py"
+  }
+}

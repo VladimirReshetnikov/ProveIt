@@ -1,0 +1,110 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,microtype,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{bookmark,fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Bernoulli, Tornheim, and digamma identities}
+\fancyhead[R]{\small ProveIt continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{3pt}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\CT}{CT}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\NF}{NF}
+\DeclareMathOperator{\wt}{wt}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\Span}{span}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\newcommand{\CM}{\mathcal C}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\re}{\operatorname{Re}}
+\newcommand{\mi}{\mathrm i}
+\hypersetup{pdftitle={Bernoulli Determinants, Cubic Tornheim Jets, and Canonical Digamma Integrals},pdfauthor={ProveIt research continuation}}
+\title{\textbf{Bernoulli Determinants, Cubic Tornheim Jets,\\and Canonical Digamma Integrals}\\[8pt]
+\large Exact harmonic-tail reconstruction, polylogarithmic boundary identities,\\
+and finite-part reduction through the seventh power}
+\author{Research continuation for the ProveIt programme}
+\date{11 October 2026 (UTC)\\[4pt]
+\small Repository snapshot \texttt{f7e35be357654198c1546fd40f363694c5bcc2cc}}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop three exact continuations of the current ProveIt
+polylogarithm--Hurwitz--Stieltjes programme. First, the conjectured
+optimal consecutive moment prefix is proved for every unequal even pair
+of harmonic-tail orders with smaller order $2$, $4$, or $6$. For $(2,2b)$,
+$b\ge2$, the decisive coefficient determinant is
+$(-1)^{b-1}(2-B_{2b-2})/(2^b(2b-2)!)$. A rank-two determinant with an arithmetic nonvanishing proof settles the
+order-four family. A modulo-four Bernoulli congruence and an exact
+polynomial certificate settle order six. A fixed-size determinant reduction is given
+for every even pair. For order two, a row of the inverse
+produces an all-order family of absolutely convergent harmonic and
+polygamma sums with rational values, together with exact depth-two
+polylogarithmic boundary identities. Second, every admissible third directional
+derivative of the Tornheim function at the spectral origin is expressed
+using two specified higher-depth constants and ordinary zeta derivatives.
+Two elementary homogeneous conditions characterize formal cancellation
+of these constants; a three-ray example evaluates exactly. A local
+holomorphic-kernel theorem extends this structural analysis to every
+Taylor degree. Third, we give a terminating integration-by-parts normal
+form for differential polynomials, indexed by partitions whose largest
+part is repeated. A Gamma-adjoint identity imposes a further parity
+restriction. With every endpoint constant retained, the canonical sixth
+digamma moment reduces to the height-one Laurent coefficient
+$\lambda_5$, one mixed finite-part integral, and ordinary zeta data.
+A seventh-degree identity and a general coincident-polygamma product
+formula complete the explicit applications. All uniform statements have proofs. Exact finite certificates and
+independent high-precision diagnostics are supplied separately. The
+remaining unequal-order moment-prefix conjecture for $8\le p<q$, arithmetic elimination
+of the remaining mixed constants, and the manuscript's $S_6$ and revised
+$S_8$ identities remain open.
+\end{abstract}
+\clearpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+\input{sections/01_scope.tex}
+\input{sections/02_tail_foundation.tex}
+\input{sections/03_moment_rank.tex}
+\input{sections/03b_general_hankel.tex}
+\input{sections/03c_moment_rank_four.tex}
+\input{sections/03d_moment_rank_six.tex}
+\input{sections/04_polylog.tex}
+\input{sections/05_tornheim.tex}
+\input{sections/06_gamma_foundation.tex}
+\input{sections/06_differential.tex}
+\input{sections/07_audit_research.tex}
+\input{sections/08_verification.tex}
+\input{references.tex}
+\end{document}

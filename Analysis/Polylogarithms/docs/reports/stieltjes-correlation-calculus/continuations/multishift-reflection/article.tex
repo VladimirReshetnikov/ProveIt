@@ -1,0 +1,1504 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.95in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,longtable}
+\usepackage{microtype,enumitem,xurl,hyperref,fancyhdr}
+\hypersetup{hidelinks,pdftitle={Contact-Complete Multishift Lerch Reflection},pdfauthor={Research continuation prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Multishift Lerch reflection}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{3pt}\setlength{\parindent}{15pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks[2]\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}\newcommand{\R}{\mathbb R}\newcommand{\N}{\mathbb N}
+\newcommand{\Rea}{\operatorname{Re}}\newcommand{\Ima}{\operatorname{Im}}
+\newcommand{\Li}{\operatorname{Li}}\newcommand{\Fp}{\operatorname{Fp}}
+\newcommand{\Res}{\operatorname{Res}}\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\dd}{\,\mathrm d}\newcommand{\M}{\mathcal M}
+\newcommand{\F}{\mathcal F}\newcommand{\B}{\mathcal B}
+\newcommand{\stir}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\newcommand{\pin}{\src{f7e35be357654198c1546fd40f363694c5bcc2cc}}
+\title{\textbf{Contact-Complete Multishift Lerch Reflection}\\[6pt]
+\large Independent spectral jets, generalized Stieltjes log moments,\\
+confluent contacts, and Gamma--polylogarithm identities}
+\author{Research continuation prepared for Vladimir Reshetnikov's ProveIt programme\\
+\small Mathematical derivations and computational checks with OpenAI assistance}
+\date{10 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop an exact centered-contour completion for the multiplier
+$(\pi\csc\pi p)^R\prod_j(p+a_j-1)^{-s_j}$, with independent complex
+shifts of positive real part, independent entire spectral orders, and
+$\Rea R>0$. Horizontal cuts give a finite, explicit collection of correction
+integrals. When cuts have the same height their jumps combine, rather than
+being added as isolated one-factor corrections. This resolves the
+independent-shift centered-reflection problem posed in the incoming
+\emph{Continuous-Depth Lerch Calculus} report, in the precise contour and
+branch conventions stated here. Collisions have a unique holomorphic
+completion, including arbitrary simultaneous collisions and centered poles.
+
+At zero spectral orders every mixed derivative becomes an ordinary
+logarithmic integral with an explicit finite jump polynomial. The cubic
+polynomial contains a non-additive $-\pi^2$ overlap term. A normally
+convergent Stirling compiler expresses the resulting depth-two moments
+using one generalized Stieltjes constant and convergent Hurwitz-zeta jets.
+Balanced log ratios give exact harmonic-number generating families.
+At positive integer orders, Hermite residues and half-residue contacts
+replace branch-cut integrals; all spectral derivatives of the local
+contact distribution are given explicitly.
+
+A second continuation supplies every order derivative on the odd and even
+centered evaluation lattices. Finite Bell formulas retain the necessary
+generalized alternating-Hurwitz jets and therefore do not infer derivatives
+from discrete values. Consequences include entire-order Gamma-weighted
+polylogarithm identities, explicit Stieltjes-valued order derivatives,
+polygamma weights, and anchored primitives through every integration
+resonance. The classical Gamma transform, one-shift hyperbolic Stieltjes
+formula, and existing single-anchor expansion are credited as inputs.
+No global priority claim, arithmetic independence assertion, or proof of
+the separate Gaussian $S_6$ and $S_8$ candidates is made.
+\end{abstract}
+\vspace{4pt}
+\noindent\textbf{Repository anchor.} \pin. The repository was read only.
+This package is an additive research proposal, not a rebuilt canonical manuscript.
+\clearpage
+\begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\clearpage
+
+\section{Research target and contribution boundaries}
+\label{mr:sec:scope}
+The canonical ProveIt manuscript and its incoming queue contain a substantial
+body of exact polylogarithm, harmonic-sum, Gamma, and Stieltjes calculus
+\cite{Repo,CDL,Tilt}. The aim here is not to repeat that infrastructure.
+Two questions in the incoming \emph{Continuous-Depth Lerch Calculus}
+report \cite[Section 13, Q4 and Q8]{CDL} are particularly concrete:
+independent-shift centered reflection with collision and branch rules;
+and genuine spectral derivatives on the centered odd evaluation lattice.
+The former report's section numbers refer to its delivered source; the
+question labels are the stable identifiers used in our claim ledger.
+
+We answer the first by a horizontal-cut formula valid for arbitrary complex
+shifts in the right half-plane. It remains an identity between the stated
+contour transform, a centered integral, and finitely many explicit cut
+integrals: it is \emph{not} a claim of finite reduction to ordinary Lerch
+functions at every continuous depth. We answer the second by explicit
+finite Bell formulas in derivatives of the already defined entire family
+$Z_R$. This is an exact representation of every jet, not an evaluation
+of each retained $Z_R$ derivative in a smaller arithmetic constant space.
+
+The Gamma-product Fourier transform is classical \cite{CS,Beta}.
+The one-shift hyperbolic formula for generalized Stieltjes constants, with
+$\Rea a>1/2$, is explicitly present in Johansson--Blagouchine
+\cite[equation (2)]{JB}. The independent-shift anchor expansion is already
+part of the incoming tilted-Lerch work \cite{Tilt}. Residues, Hermite
+divided differences, the Plemelj boundary rule, and Taylor subtraction are
+standard mechanisms. Our additions are their complete joint use in the
+specified multishift family, the all-index mixed jump and Stieltjes
+compiler, and the explicit resonant spectral jets and consequences.
+Historical priority for each specialization has not been established.
+
+\subsection{Conventions}
+We use the principal logarithm off the nonpositive real axis and its
+upper/lower limiting values on that axis. Set
+\begin{equation}\label{mr:eq:g}
+ g(p)=\frac\pi{\sin\pi p},\qquad 0<\Rea p<1.
+\end{equation}
+Here $\Rea g(p)>0$, so $g(p)^R=\exp(R\Log g(p))$ has a fixed
+holomorphic logarithm on the strip, real on $(0,1)$.
+Spectral derivatives are denoted by $f^{[q]}(s)=\partial_s^q f(s)$;
+ordinary primes on $\psi$ denote argument derivatives. We normalize
+\begin{equation}\label{mr:eq:stieltjes}
+ \zeta(1+w,a)=\frac1w+\sum_{m\ge0}\frac{(-1)^m\gamma_m(a)}{m!}w^m,
+ \qquad \gamma_0(a)=-\psi(a),\qquad\Rea a>0.
+\end{equation}
+The ordinary Lerch convention is
+$\Phi(z,s,a)=\sum_{n\ge0}z^n(n+a)^{-s}$ in its defining region,
+continued with the right-half-plane logarithms of $n+a$ \cite{Lerch,Zeta}.
+The exponential Bell polynomials satisfy
+\begin{equation}\label{mr:eq:bell}
+ \exp\left(\sum_{k\ge1}d_k\frac{z^k}{k!}\right)
+ =\sum_{q\ge0}\B_q(d_1,\ldots,d_q)\frac{z^q}{q!},\qquad\B_0=1.
+\end{equation}
+We write $H_n^{(k)}=\sum_{j=1}^n j^{-k}$, $H_0^{(k)}=0$,
+and $\stir{k}{r}$ for unsigned Stirling numbers of the first kind,
+including $\stir00=1$ and $\stir{k}{0}=0$ for $k>0$.
+
+\section{The multishift entire-order transform}
+\label{mr:sec:master}
+For $r\ge1$, $\Rea R>0$, and $\Rea a_j>0$, define
+\begin{equation}\label{mr:eq:master}
+ \M_R(\boldsymbol s;\boldsymbol a)=\frac1{2\pi i}
+ \int_{c-i\infty}^{c+i\infty}g(p)^R
+       \prod_{j=1}^r(p+a_j-1)^{-s_j}\dd p,
+ \qquad\max(0,1-\min_j\Rea a_j)<c<1.
+\end{equation}
+Every resolvent on this line has positive real part. Repeated shifts
+may be merged by adding their orders; this identity is literal, not a
+choice of continuation after collision.
+
+\begin{theorem}[Holomorphy and ordinary convolution]\label{mr:thm:master}
+The transform \eqref{mr:eq:master} is independent of its allowed line,
+entire in all $s_j$, and jointly holomorphic for $\Rea R>0$ and
+$\Rea a_j>0$. Every fixed mixed parameter derivative can be taken
+under the integral. If $R=\rho_1+\cdots+\rho_r$ with $\Rea\rho_j>0$,
+then it is the ordinary absolutely convergent convolution at zero of
+$\F_{\rho_j,a_j}(s_j;\cdot)$, where
+\begin{equation}\label{mr:eq:F}
+ \F_{\rho,a}(s;x)=\frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}
+ e^{px}g(p)^\rho(p+a-1)^{-s}\dd p.
+\end{equation}
+All fixed mixed parameter derivatives of this convolution converge
+absolutely as well.
+\end{theorem}
+\begin{proof}
+On any allowed line and compact parameter set, $\Log g(c+it)$ has
+bounded imaginary part and real part $-\pi|t|+O(1)$.
+Consequently the integrand, after any fixed number of parameter or
+$t$ derivatives, is bounded by a polynomial in $1+|t|$ times
+$e^{-\pi\Rea R|t|}$. Spectral differentiation inserts logarithms,
+shift differentiation inserts inverse resolvents, and depth differentiation
+inserts $\Log g$, all covered by this estimate. Uniform convergence
+proves joint holomorphy. Cauchy's theorem on rectangles proves line
+independence, because the horizontal sides tend to zero exponentially.
+
+For a common allowed $c$, the inverse Fourier transform of
+$g(c+it)^{\rho_j}(c+it+a_j-1)^{-s_j}$ is
+$e^{-cx}\F_{\rho_j,a_j}(s_j;x)$, a Schwartz function. Fourier
+multiplication proves the convolution identity. On the hyperplane
+$x_1+\cdots+x_r=0$ the exponential weights cancel. Absolute integration
+is bounded by $r-1$ weighted $L^1$ norms and one weighted $L^\infty$
+norm. The same estimates are locally uniform after every fixed mixed
+derivative, giving the asserted differentiation rule.
+\end{proof}
+
+For reference, the classical beta transform gives
+\begin{align}
+ K_R(x)&=\frac{(2\pi)^{R-2}e^{x/2}}{\Gamma(R)}G_R(x),
+ &G_R(x)&=\Gamma\left(\frac R2+\frac{ix}{2\pi}\right)
+          \Gamma\left(\frac R2-\frac{ix}{2\pi}\right),\label{mr:eq:kernel}\\
+ b_R(x)&=e^{-x/2}K_R(x),
+ &\int_\R e^{-px}K_R(x)\dd x&=g(p)^R.\label{mr:eq:transform}
+\end{align}
+For complex $R$, $G_R$ is a product, not a squared modulus.
+Indeed substitution $t=e^u$ in Euler's beta integral proves
+\begin{equation}\label{mr:eq:beta}
+ \frac{\Gamma(R/2+iv)\Gamma(R/2-iv)}{\Gamma(R)}
+ =\int_\R e^{ivu}(2\cosh(u/2))^{-R}\dd u.
+\end{equation}
+Fourier inversion and Gamma asymptotics give \eqref{mr:eq:transform};
+these are the classical inputs, also used in \cite{CDL,CS}.
+When $\Rea s_j>0$, Laplace integration yields the useful ordinary formula
+\begin{equation}\label{mr:eq:fractional}
+ \M_R(\boldsymbol s;\boldsymbol a)=
+ \frac1{\prod_j\Gamma(s_j)}\int_{(0,\infty)^r}
+ b_R(U)\prod_j u_j^{s_j-1}e^{-(a_j-1/2)u_j}\dd\boldsymbol u,
+ \qquad U=\sum_j u_j.
+\end{equation}
+The large-$U$ exponential is controlled by $\min\Rea a_j>0$.
+This formula must not be used as an improper integral at negative orders.
+
+\begin{lemma}[Depth-two scalar normalization]\label{mr:lem:E}
+Writing $E_a(s)=\M_2(s;a)$, one has, as an entire identity,
+\begin{equation}\label{mr:eq:E}
+ E_a(s)=s\zeta(s+1,a),\qquad E_a(0)=1,
+ \qquad E_a^{[q]}(0)=q(-1)^{q-1}\gamma_{q-1}(a)\quad(q\ge1).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Gamma reflection gives $K_2(-u)=u/(e^u-1)$.
+The one-variable fractional formula is therefore
+$\Gamma(s)^{-1}\int_0^\infty u^s e^{-au}(1-e^{-u})^{-1}\dd u$.
+Expanding geometrically for $\Rea s>0$ gives $s\zeta(s+1,a)$.
+Entire continuation follows from Theorem~\ref{mr:thm:master}; the
+Taylor coefficients follow from \eqref{mr:eq:stieltjes}.
+\end{proof}
+
+\section{Horizontal cuts and complete centered reflection}
+\label{mr:sec:cuts}
+Put $p_j=1-a_j=x_j+iy_j$. Temporarily assume $x_j\ne1/2$.
+The central integral is
+\begin{equation}\label{mr:eq:J}
+ J_R(\boldsymbol s;\boldsymbol a)=\frac1{2\pi}\int_\R
+ \left(\frac\pi{\cosh\pi t}\right)^R
+ \prod_j(a_j-1/2+it)^{-s_j}\dd t.
+\end{equation}
+It is split at $t=y_j$ when a principal cut meets the line. No single
+point value at a jump affects this integral. It is entire in
+$\boldsymbol s$ for each fixed configuration with $x_j\ne1/2$.
+
+For each distinct height $y$ let $I_y=\{j:y_j=y\}$ and
+$X_y=\max_{j\in I_y}x_j$. Only heights with $X_y>1/2$ contribute.
+For $1/2<x<X_y$, off the finitely many $x_j$, set
+\begin{equation}\label{mr:eq:active}
+ A_y(x)=\{j\in I_y:x<x_j\},\quad
+ \sigma_y(x)=\sum_{j\in A_y(x)}s_j,
+\end{equation}
+\begin{equation}\label{mr:eq:D}
+ D_y(x)=\prod_{j\in I_y}|x-x_j|^{-s_j}
+         \prod_{j\notin I_y}(x+iy-p_j)^{-s_j}.
+\end{equation}
+The latter factors use their principal logs; their imaginary parts are
+nonzero. Define, splitting at all $x_j$ on the integration segment,
+\begin{equation}\label{mr:eq:C}
+ C_R(\boldsymbol s;\boldsymbol a)=\frac1\pi
+ \sum_{y:X_y>1/2}\int_{1/2}^{X_y}
+ g(x+iy)^R\sin(\pi\sigma_y(x))D_y(x)\dd x.
+\end{equation}
+
+\begin{theorem}[Complete multishift centered reflection]\label{mr:thm:cut}
+Suppose $\Rea R>0$, $\Rea a_j>0$, and no $x_j=1/2$.
+For each block $B$ of identical branch points to the right of the
+central line, initially require $\Rea\sum_{j\in B}s_j<1$.
+Then all integrals below are ordinary and absolutely convergent, and
+\begin{equation}\label{mr:eq:complete}
+ \boxed{\M_R(\boldsymbol s;\boldsymbol a)
+       =J_R(\boldsymbol s;\boldsymbol a)
+        +C_R(\boldsymbol s;\boldsymbol a).}
+\end{equation}
+The \emph{sum} of cut terms has a unique entire continuation in all
+spectral orders. The completed expression is jointly holomorphic in
+all right-half-plane shifts, including every shift collision. Formula
+\eqref{mr:eq:C}, not a sum of independently continued one-factor
+corrections, specifies the branch convention when cuts overlap.
+\end{theorem}
+\begin{proof}
+Choose the original line to the right of both $1/2$ and every $x_j$.
+In the intervening strip, remove the horizontal cut segments ending
+at the $p_j$, and integrate around a truncated rectangle with thin
+slits. On a segment at height $y$, the boundary values of an active
+resolvent are $|x-x_j|^{-s_j}e^{\mp i\pi s_j}$.
+Inactive same-height factors and all other-height factors have no jump
+across that segment. The lower value minus the upper value of the
+product is therefore $2i\sin(\pi\sigma_y(x))D_y(x)$.
+The original upward line minus the centered upward line equals the
+integral of this lower-minus-upper jump from left to right, divided by
+$2\pi i$. This proves the sign and normalization in \eqref{mr:eq:C}.
+
+Small circles around a block $B$ have size
+$O(\epsilon^{1-\Rea\sum_{B}s_j})$, and hence vanish in the stated
+initial domain. Away from these points the slit limits are bounded.
+The horizontal sides at large height vanish by the exponential estimate
+used in Theorem~\ref{mr:thm:master}. These facts justify every limiting
+operation in the contour deformation.
+
+For fixed shifts, both $\M_R$ and $J_R$ are entire in the orders;
+thus their difference gives the unique entire continuation of the
+\emph{complete} cut sum. A constructive continuation subtracts local
+Taylor coefficients of the analytic factor at each endpoint. The
+subtracted terms are of the form
+$h_k\epsilon^{k+1-\sigma}/(k+1-\sigma)$ and the remaining integral
+converges in successively larger order domains. Terms at a common
+endpoint must be combined before evaluating a pole. Uniqueness follows
+from agreement in an open polydomain.
+
+Finally, $\M_R$ itself is jointly holomorphic in the shifts, including
+collisions, by Theorem~\ref{mr:thm:master}. This is a genuine analytic
+extension of the completed expression, not an assertion that an
+individual cut term or $J_R$ is holomorphic under every change of cut
+geometry. It fixes every limiting value uniquely.
+\end{proof}
+
+\subsection{Why colliding cut heights do not create ambiguity}
+The requisite algebra is the telescoping product identity
+\begin{equation}\label{mr:eq:telescope}
+ \prod_{j=1}^r u_j-\prod_{j=1}^r v_j
+ =\sum_{j=1}^r (u_j-v_j)
+       \prod_{k<j}u_k\prod_{k>j}v_k.
+\end{equation}
+As distinct horizontal heights approach one another, the other factors
+on a cut acquire the appropriate upper or lower limiting phases.
+Their sum telescopes to the single jump of the full product. Any ordering
+of the approaching heights gives the same merged jump. Equality of
+branch points then replaces the relevant orders by their sum.
+No assumption on ratios of distances in a simultaneous collision is
+needed for the completed identity. The contour at the right remains
+uniformly separated from every branch point on a compact parameter set.
+
+\subsection{The real-shift specialization}
+For real $a_j>0$, there is one height, $y=0$. Thus
+\begin{equation}\label{mr:eq:realcut}
+ C_R=\frac1\pi\int_{1/2}^{\max_j(1-a_j)}
+ g(x)^R\sin\left(\pi\sum_{x<1-a_j}s_j\right)
+ \prod_j|x+a_j-1|^{-s_j}\dd x,
+\end{equation}
+with the integral zero if its upper endpoint is at most $1/2$.
+In particular, no correction is present when every $a_j>1/2$.
+At $a_j=1/2$, the central power may cease to be locally integrable.
+The holomorphic value is still defined by \eqref{mr:eq:master}; its
+integer-order boundary convention is given in Section~\ref{mr:sec:contact}.
+The zero-order logarithmic jets, treated next, need no finite parts even
+at centered shifts.
+
+\section{All mixed logarithmic moments and overlap corrections}
+\label{mr:sec:logs}
+Let $\boldsymbol q=(q_1,\ldots,q_r)$ be nonnegative integers and
+$Q=\sum_jq_j$. On a cut at height $y$ define
+\begin{equation}\label{mr:eq:Lpm}
+ L_{j,y}^{\pm}(x)=
+ \begin{cases}
+ \log|x-x_j|\pm i\pi,&j\in A_y(x),\\
+ \Log(x+iy-p_j),&j\notin A_y(x),
+ \end{cases}
+\end{equation}
+where the second line is unambiguous off the cut endpoints: it is a
+real log for inactive factors at the same height. Set
+\begin{equation}\label{mr:eq:jumpP}
+ P_{\boldsymbol q,y}(x)=\frac1{2i}
+ \left\{\prod_jL_{j,y}^+(x)^{q_j}
+       -\prod_jL_{j,y}^-(x)^{q_j}\right\}.
+\end{equation}
+For complex shifts or depth this is generally complex; it must not be
+replaced by the imaginary part of the first product.
+Define the completed logarithmic moment
+\begin{align}
+ \Lambda_{R,\boldsymbol q}(\boldsymbol a)
+ ={}&\frac1{2\pi}\int_\R
+ \left(\frac\pi{\cosh\pi t}\right)^R
+ \prod_j\Log(a_j-1/2+it)^{q_j}\dd t\nonumber\\
+ &-\frac1\pi\sum_{y:X_y>1/2}\int_{1/2}^{X_y}
+       g(x+iy)^R P_{\boldsymbol q,y}(x)\dd x.
+ \label{mr:eq:Lambda}
+\end{align}
+As usual a factor with $q_j=0$ is one, even at its isolated endpoint.
+
+\begin{theorem}[Ordinary all-index mixed jets]\label{mr:thm:logs}
+For $\Rea R>0$ and arbitrary $\Rea a_j>0$, including centered and
+coincident shifts, every integral in \eqref{mr:eq:Lambda} is ordinary
+and absolutely convergent. The identity
+\begin{equation}\label{mr:eq:logjet}
+ \boxed{\Lambda_{R,\boldsymbol q}(\boldsymbol a)
+ =(-1)^Q\left.\partial_{s_1}^{q_1}\cdots\partial_{s_r}^{q_r}
+             \M_R(\boldsymbol s;\boldsymbol a)\right|_{\boldsymbol s=0}}
+\end{equation}
+holds. In particular the completed moment is holomorphic in all the
+shifts, even though its separate raw and cut terms need not be.
+\end{theorem}
+\begin{proof}
+First take noncentered shifts and orders in a sufficiently small
+polydisk about zero. Theorem~\ref{mr:thm:cut} is then an ordinary
+identity, and order derivatives are dominated near each endpoint by
+$u^{-\epsilon}(1+|\log u|)^Q$ with some $\epsilon<1$.
+The original and centered contours have exponential decay at infinity.
+Thus differentiation is justified termwise. The upper/lower product
+rule in \eqref{mr:eq:jumpP} is exactly the derivative of the jump of the
+powers. There are $Q$ minus signs from spectral differentiation;
+rearranging them gives the \emph{minus} sign in \eqref{mr:eq:Lambda}.
+
+At centered or colliding shifts, only logarithmic endpoint singularities
+remain. On each compact interval every fixed power of a translated
+logarithm is locally integrable, uniformly under small translations;
+H\"older's inequality gives the corresponding product estimate.
+One way to see uniform integrability explicitly is to choose any
+$\epsilon>0$ and dominate $|\log|u-h||^q$ near its singularity by
+$C_{q,\epsilon}|u-h|^{-\epsilon}$, choosing the exponent after the
+finite number of factors is fixed. Away from small endpoint
+neighborhoods the boundary values converge uniformly. When cut
+heights merge, \eqref{mr:eq:telescope} combines their jumps. These facts
+pass the ordinary log formula to all the stated collisions. Equivalently,
+the right contour, uniformly separated from the shifts, gives their
+unique common limit. Equality with the holomorphic right side then
+proves the last assertion.
+\end{proof}
+
+\subsection{An explicit finite polynomial for real shifts}
+For real shifts put $\ell_j=\log|x-p_j|$ and
+$\chi_j=\mathbf1_{x<p_j}$. Expansion of \eqref{mr:eq:jumpP} gives
+\begin{equation}\label{mr:eq:jumpcompiler}
+ P_{\boldsymbol q}(x)=
+ \sum_{\substack{0\le k_j\le q_j\\ K=\sum_jk_j\text{ odd}}}
+ (-1)^{(K-1)/2}\pi^K
+ \prod_j\binom{q_j}{k_j}\ell_j^{q_j-k_j}\chi_j^{k_j}.
+\end{equation}
+This is a terminating exact compiler at every harmonic degree.
+In the first two mixed cases it reads
+\begin{align}
+ \frac1\pi P_{(1,1)}&=\chi_1\ell_2+\chi_2\ell_1,\label{mr:eq:pairP}\\
+ \frac1\pi P_{(1,1,1)}
+ &=\chi_1\ell_2\ell_3+\chi_2\ell_1\ell_3+\chi_3\ell_1\ell_2
+   -\pi^2\chi_1\chi_2\chi_3.\label{mr:eq:tripleP}
+\end{align}
+The last term is essential. It is present on the common portion of
+three cuts, and cannot be recovered by adding independent pairwise
+corrections. At higher degree, every odd intersection order contributes
+as specified by \eqref{mr:eq:jumpcompiler}.
+
+\section{Generalized Stieltjes identities on the full right half-plane}
+\label{mr:sec:stieltjes}
+At a common shift the orders combine, and
+Lemma~\ref{mr:lem:E} immediately gives an all-index consequence.
+\begin{corollary}[Diagonal completed moments]\label{mr:cor:diag}
+For $Q\ge1$ and $\Rea a>0$,
+\begin{equation}\label{mr:eq:diagonal}
+ \Lambda_{2,\boldsymbol q}(a,\ldots,a)=-Q\gamma_{Q-1}(a).
+\end{equation}
+For $Q=0$ the value is one.
+\end{corollary}
+
+For real $a>0$ the formula can be displayed without multishift notation.
+For every $m\ge0$,
+\begin{align}
+ \gamma_m(a)={}&-\frac{\pi}{2(m+1)}\int_\R
+ \frac{\Log(a-1/2+it)^{m+1}}{\cosh^2\pi t}\dd t\nonumber\\
+ &+\frac{\pi}{m+1}\mathbf1_{a<1/2}
+ \int_0^{1/2-a}\csc^2\!\bigl(\pi(a+u)\bigr)
+       \Ima(\log u+i\pi)^{m+1}\dd u.
+ \label{mr:eq:stieltjesall}
+\end{align}
+The imaginary part in this \emph{real-shift} formula is legitimate.
+It is not the convention for general complex shifts; for those,
+\eqref{mr:eq:Lambda} with the difference of boundary values applies.
+When $a>1/2$, the second line vanishes and the first line is the
+Johansson--Blagouchine formula \cite[equation (2)]{JB}. Its value at
+$a=1/2$ is the ordinary logarithmic limit. The extra line gives the
+explicit crossing completion for $0<a<1/2$.
+
+\subsection{A diagnostic digamma reflection}
+At $m=0$, let
+\begin{equation}\label{mr:eq:rawlog}
+ A(a)=\frac\pi2\int_\R\frac{\Log(a-1/2+it)}{\cosh^2\pi t}\dd t.
+\end{equation}
+Then
+\begin{equation}\label{mr:eq:digamma}
+ A(a)=\psi(a)+\mathbf1_{a<1/2}\pi\cot(\pi a)
+ =\begin{cases}\psi(a),&a\ge1/2,\\\psi(1-a),&0<a<1/2.\end{cases}
+\end{equation}
+The first equality follows by elementary integration of the correction;
+the second is the classical digamma reflection formula \cite{Polygamma}.
+In particular, continuing the \emph{raw} integral as though it were
+$\psi(a)$ below the center gives an error of exactly $\pi$ at $a=1/4$.
+This is an explicit counterexample to an invalid extension, not an error
+attributed to \cite{JB}, which states its half-plane restriction.
+
+For the cubic diagonal moment, $0<a<1/2$ gives
+\begin{equation}\label{mr:eq:cubicdiag}
+ \frac\pi2\int_\R\frac{\Log(a-1/2+it)^3}{\cosh^2\pi t}\dd t
+ -\int_0^{1/2-a}g(a+u)^2(3\log^2u-\pi^2)\dd u
+ =-3\gamma_2(a).
+\end{equation}
+If the $-\pi^2$ overlap is omitted inside the second integral, the
+left side changes by $-\pi^3\cot(\pi a)$. The sign is fixed, for
+example, at $a=1/4$ where the change is $-\pi^3$.
+
+\section{Collision series and a finite Stieltjes-jet compiler}
+\label{mr:sec:compiler}
+The incoming tilted-Lerch continuation already constructs a single-anchor
+expansion for unequal shifts \cite{Tilt}. We record its specialization
+and proof to make the mixed-jet consequence independent of that source's
+notation. This expansion itself is not counted as a new result.
+
+\begin{proposition}[Normally convergent anchor expansion]\label{mr:prop:anchor}
+Let $a>0$, $a_j=a+h_j$, and $\max_j|h_j|<a$. Put
+$S=\sum_js_j$ and $K=\sum_jk_j$. Then
+\begin{equation}\label{mr:eq:anchor}
+ \M_R(\boldsymbol s;a+\boldsymbol h)=
+ \sum_{\boldsymbol k\ge0}\frac{(-1)^K}{\prod_jk_j!}
+ \prod_j(s_j)_{k_j}h_j^{k_j}\,
+ \F_{R,a}(S+K;0).
+\end{equation}
+The series is locally normally convergent in all orders and in the
+stated shift polydisk, and all fixed parameter derivatives are allowed.
+\end{proposition}
+\begin{proof}
+Choose $c<1$ sufficiently close to one that
+$\max|h_j|<c+a-1$. On the contour,
+$|h_j/(p+a-1)|\le\theta<1$. Apply the binomial series to each
+$(p+a+h_j-1)^{-s_j}$. On compact order sets the binomial coefficients
+are at most a fixed power of $k_j+1$; the geometric factor $\theta^{k_j}$
+therefore gives absolute uniform convergence. The remaining contour
+integrand is exponentially decreasing, uniformly on those sets.
+Integrate termwise. Holomorphic normal convergence, or the same estimates
+with logarithmic factors, justifies every fixed derivative.
+\end{proof}
+
+\begin{theorem}[All mixed Stieltjes-jet coefficients]\label{mr:thm:compiler}
+Under Proposition~\ref{mr:prop:anchor}, for arbitrary
+$\boldsymbol q\ge0$, $Q=\sum q_j$,
+\begin{align}
+ \Lambda_{R,\boldsymbol q}(a+\boldsymbol h)
+ ={}&(-1)^Q\sum_{\boldsymbol k\ge0}
+       \frac{(-1)^K\boldsymbol h^{\boldsymbol k}}{\boldsymbol k!}
+ \sum_{0\le r_j\le q_j}
+ \left\{\prod_j\frac{q_j!}{(q_j-r_j)!}\stir{k_j}{r_j}\right\}
+ \F_{R,a}^{[Q-|\boldsymbol r|]}(K;0).
+ \label{mr:eq:compiler}
+\end{align}
+For $R=2$ and $Q\ge1$ the $\boldsymbol k=0$ term is exactly
+$-Q\gamma_{Q-1}(a)$. Every other term is a finite combination of
+Hurwitz-zeta order derivatives at positive integers at least two:
+\begin{equation}\label{mr:eq:positivejets}
+ E_a^{[m]}(K)=K\zeta^{[m]}(K+1,a)
+             +m\zeta^{[m-1]}(K+1,a),\qquad K\ge1,
+\end{equation}
+with the second term omitted at $m=0$.
+\end{theorem}
+\begin{proof}
+The coefficient identity
+$(s)_k=\sum_r\stir{k}{r}s^r$ gives
+$\partial_s^r(s)_k|_0=r!\stir{k}{r}$.
+In differentiating a product term of \eqref{mr:eq:anchor}, choose $r_j$
+derivatives to fall on the $j$th Pochhammer factor; the remaining
+$Q-|\boldsymbol r|$ derivatives all act on its single argument $S+K$.
+The Leibniz factor is
+$\binom{q_j}{r_j}r_j!=q_j!/(q_j-r_j)!$.
+This proves \eqref{mr:eq:compiler}, using the justified differentiation
+of Proposition~\ref{mr:prop:anchor}. The case $K=0$ permits only
+$\boldsymbol r=0$ and is \eqref{mr:eq:E}. For $K>0$, differentiating
+$s\zeta(s+1,a)$ proves \eqref{mr:eq:positivejets}.
+\end{proof}
+
+This gives exactly \emph{one} anchor Stieltjes constant in this coordinate
+system. It does not assert that the remaining convergent series is a
+finite arithmetic reduction, or that its entries are independent.
+The polydisk includes arbitrary collisions, and is not constrained by
+ratios of differences between individual shifts.
+
+For instance, with $b=a+h$ and $|h|<a$,
+\begin{equation}\label{mr:eq:bilog}
+ \boxed{\Lambda_{2,(1,1)}(a,b)
+ =-2\gamma_1(a)+\sum_{k\ge1}(-h)^k
+    \left\{\zeta^{[1]}(k+1,a)+\frac{\zeta(k+1,a)}k\right\}.}
+\end{equation}
+Only the $k$th Pochhammer of the second shift contributes, with
+$\stir{k}{1}=(k-1)!$; its remaining derivative is $E_a^{[1]}(k)$.
+This verifies every coefficient and sign in the displayed example.
+Although the right side uses the anchor $a$ asymmetrically, its value is
+symmetric in $a,b$ after completion, by the defining integral. Expanding
+about $b$ therefore gives an exact identity between two Stieltjes--zeta
+series whenever their convergence domains overlap.
+
+\section{Balanced log ratios and harmonic-number generating identities}
+\label{mr:sec:balanced}
+A particularly useful zero-total-order slice avoids a spurious loss of
+the constant term. It also gives convergent identities without any
+retained Stieltjes constants after one derivative.
+
+\begin{theorem}[Balanced generating trace]\label{mr:thm:balanced}
+For $\Rea a,\Rea b>0$ and every $s\in\C$,
+\begin{equation}\label{mr:eq:balanced}
+ \boxed{\M_2(s,-s;a,b)=1+s(b-a)
+     \sum_{n=0}^\infty\frac{(n+b)^{s-1}}{(n+a)^{s+1}}.}
+\end{equation}
+The series and all its fixed spectral derivatives converge locally
+normally throughout that domain. At $a=b$ the right side is one.
+\end{theorem}
+\begin{proof}
+Initially take $a>0$, $h=b-a$, and $|h|<a$. The anchor series gives
+$1+\sum_{k\ge1}\binom{s}{k}kh^k\zeta(k+1,a)$, because
+$(-1)^k(-s)_k/k!=\binom{s}{k}$ and $E_a(k)=k\zeta(k+1,a)$.
+Expanding the zeta series and differentiating the binomial identity
+$\sum_{k\ge0}\binom{s}{k}z^k=(1+z)^s$ gives
+\eqref{mr:eq:balanced} with absolute interchange in this domain.
+For general right-half-plane $a,b$, each summand on its right is
+$O(n^{-2})$ locally uniformly, since
+$\Log(n+b)-\Log(n+a)=O(n^{-1})$. Spectral derivatives insert powers
+of that difference and improve the tail. Thus the right side is jointly
+holomorphic in $a,b,s$. The identity theorem on the connected product
+of half-planes extends the equality. The branches agree because each
+$n+a,n+b$ stays in the right half-plane.
+\end{proof}
+
+For real $a,b>1/2$, use the normalized bracket
+\begin{equation}\label{mr:eq:bracket}
+ \langle f\rangle=\frac\pi2\int_\R\frac{f(t)}{\cosh^2\pi t}\dd t.
+\end{equation}
+Both resolvents lie in the same right half-plane, so the principal
+logarithm of their ratio equals the difference of their principal logs.
+Differentiation of \eqref{mr:eq:balanced} gives, for $q\ge1$,
+\begin{equation}\label{mr:eq:ratio}
+ \boxed{\left\langle
+ \Log^q\frac{b-1/2+it}{a-1/2+it}\right\rangle
+ =q(b-a)\sum_{n\ge0}
+ \frac{\log^{q-1}((n+b)/(n+a))}{(n+a)(n+b)}.}
+\end{equation}
+In the complex or crossing case the same identity holds for the
+completed linear combination of mixed logarithmic moments obtained by
+expanding $(L_b-L_a)^q$; no uncompleted branch substitution is intended.
+
+\begin{corollary}[A harmonic coefficient family]\label{mr:cor:harmonic}
+For real $a,b>1/2$, $h=b-a$, $|h|<a$, and $q\ge1$,
+\begin{equation}\label{mr:eq:harmonic}
+ \left\langle\Log^q\frac{b-1/2+it}{a-1/2+it}\right\rangle
+ =q!\sum_{k\ge q}(-1)^{k-q}\stir{k}{q}
+       \frac{h^k}{(k-1)!}\zeta(k+1,a).
+\end{equation}
+All parameter differentiations allowed by the preceding theorems may
+be made termwise on compact subdisks.
+\end{corollary}
+\begin{proof}
+Differentiate the convergent binomial expansion in the proof of
+Theorem~\ref{mr:thm:balanced}, using the signed falling-factorial
+coefficient $(-1)^{k-q}\stir{k}{q}$.
+\end{proof}
+The first three cases are
+\begin{align}
+ \left\langle\Log\frac{b-1/2+it}{a-1/2+it}\right\rangle
+ &=\psi(b)-\psi(a),\label{mr:eq:ratio1}\\
+ \left\langle\Log^2\frac{b-1/2+it}{a-1/2+it}\right\rangle
+ &=2\sum_{k\ge2}(-h)^kH_{k-1}\zeta(k+1,a),\label{mr:eq:ratio2}\\
+ \left\langle\Log^3\frac{b-1/2+it}{a-1/2+it}\right\rangle
+ &=-3\sum_{k\ge3}(-h)^k
+       \bigl(H_{k-1}^2-H_{k-1}^{(2)}\bigr)\zeta(k+1,a).
+ \label{mr:eq:ratio3}
+\end{align}
+For $q=1$, the series on the right of \eqref{mr:eq:ratio} telescopes
+as the standard convergent digamma difference. These identities are
+exact analytic generating families, not assertions of reduction of an
+arbitrary Euler sum to ordinary zeta products.
+
+\section{Integer orders: Hermite reflection and centered half residues}
+\label{mr:sec:integer}
+When every order is a positive integer, cuts disappear but residues do
+not. Merge repeated branch points and let their multiplicities be $m_l$.
+Write
+\begin{equation}\label{mr:eq:integerf}
+ f(p)=g(p)^R\prod_j(p-p_j)^{-n_j},\qquad n_j\in\N_{>0},
+ \qquad N=\sum_jn_j.
+\end{equation}
+
+\begin{theorem}[Residue-completed integer reflection]\label{mr:thm:integer}
+For $\Rea R>0$ and $\Rea a_j>0$,
+\begin{equation}\label{mr:eq:integercentral}
+ \M_R(\boldsymbol n;\boldsymbol a)
+ =\frac1{2\pi}\Fp\int_\R f(1/2+it)\dd t
+   +\sum_{\Rea p_l>1/2}\Res_{p=p_l}f(p)
+   +\frac12\sum_{\Rea p_l=1/2}\Res_{p=p_l}f(p).
+\end{equation}
+The finite part is symmetric Hadamard subtraction at every pole on the
+central line, and is an ordinary integral when there are none.
+If also $0<\Rea a_j<1$, then
+\begin{equation}\label{mr:eq:Hermite}
+ \boxed{\M_R(\boldsymbol n;\boldsymbol a)
+       -(-1)^N\M_R(\boldsymbol n;\boldsymbol1-\boldsymbol a)
+       =\sum_l\Res_{p=p_l}f(p).}
+\end{equation}
+The right side is the confluent Hermite divided difference of $g^R$
+at the multiset containing $p_l$ with multiplicity $m_l$.
+\end{theorem}
+\begin{proof}
+Without central poles, ordinary contour deformation gives the first
+formula with the full residues to the right. For a pole on the line,
+the boundary distribution computed in Theorem~\ref{mr:thm:contact}
+below gives exactly half its residue and the specified finite part.
+This can also be obtained by a symmetric indentation and direct
+integration of the local Laurent polynomial. Higher order poles
+require Hadamard finite parts, not merely principal values.
+
+For the reflected identity replace $p$ by $1-p$ in a right contour
+for the second transform. The equality $g(1-p)^R=g(p)^R$ holds with
+our logarithm, and the integer denominators supply $(-1)^N$.
+The result is a left contour for $f$. Choose the two lines so that all
+$p_l$ lie between them; this is possible because $0<\Rea p_l<1$.
+Their difference is the sum of residues, proving \eqref{mr:eq:Hermite}.
+The usual Cauchy-integral definition of a Hermite divided difference
+is precisely this sum. Equivalently, one may expand every local
+analytic factor in its Taylor polynomial of degree $m_l-1$, which
+gives the standard confluent derivative formula directly.
+\end{proof}
+
+For distinct simple shifts the two-factor result is particularly short:
+\begin{equation}\label{mr:eq:tworeflect}
+ \M_R(1,1;a,b)-\M_R(1,1;1-a,1-b)
+ =\frac{g(a)^R-g(b)^R}{b-a}.
+\end{equation}
+Three distinct simple shifts give
+\begin{equation}\label{mr:eq:threereflect}
+ \M_R(1,1,1;a,b,c)+\M_R(1,1,1;1-a,1-b,1-c)
+ =\sum_{v\in\{a,b,c\}}
+   \frac{g(v)^R}{\prod_{u\in\{a,b,c\}\setminus\{v\}}(u-v)}.
+\end{equation}
+Their limits are Hermite derivatives; apparent small denominators are
+not singularities of the identity.
+
+\begin{proposition}[A terminating confluent residue polynomial]\label{mr:prop:Pn}
+Let
+\begin{equation}\label{mr:eq:Pn}
+ P_{0,R}(z)=1,\qquad
+ P_{n+1,R}(z)=RzP_{n,R}(z)+(1+z^2)\partial_zP_{n,R}(z).
+\end{equation}
+At a common shift $a$ with $0<\Rea a<1$,
+\begin{equation}\label{mr:eq:commoninteger}
+ \M_R(N;a)-(-1)^N\M_R(N;1-a)
+ =\frac{\pi^{N-1}g(a)^R}{(N-1)!}P_{N-1,R}(\cot\pi a).
+\end{equation}
+Every polynomial has rational coefficients in $R,z$. In particular,
+$P_{1,R}=Rz$ and $P_{2,R}=R+R(R+1)z^2$.
+\end{proposition}
+\begin{proof}
+At $p=1-a$, $\cot\pi p=-\cot\pi a$. Repeated differentiation of
+$g(p)^R$, using $(\cot\pi p)'=-\pi(1+\cot^2\pi p)$, gives
+$\partial_p^n g(p)^R|_{p=1-a}=\pi^ng(a)^RP_{n,R}(\cot\pi a)$.
+The residue of $g(p)^R/(p-(1-a))^N$ is its $(N-1)$st derivative
+divided by $(N-1)!$. Apply \eqref{mr:eq:Hermite}.
+\end{proof}
+At $a=1/2,N=1$, formula \eqref{mr:eq:integercentral} yields
+$\M_R(1;1/2)=\pi^R/2$: the central principal-value integral is zero
+by oddness. Dropping the half residue would incorrectly give zero.
+
+\section{All spectral derivatives of the local contact distribution}
+\label{mr:sec:contact}
+This section fixes the local convention behind all centered integer
+collisions. Its distributional formulas are applications of analytic
+continuation of one-sided powers; they are proved here to make every
+phase and contact coefficient explicit.
+
+Let $t_+^{\lambda}$ and $t_-^{\lambda}$ denote the one-sided powers,
+acting initially by integration over $t>0$ and $t<0$. Continue them by
+subtracting the Taylor polynomial of a Schwartz test function at zero
+on the interval $(0,1)$ in the positive radial coordinate. The cutoff
+one fixes a common finite-part scale. For $m\ge1$ define
+$A_{m,\ell}^{\pm}$ by the Laurent expansions
+\begin{align}
+ t_+^{-m-z}
+ &=\frac{(-1)^m}{(m-1)!z}\delta^{(m-1)}
+   +\sum_{\ell\ge0}\frac{(-z)^\ell}{\ell!}A_{m,\ell}^+,
+ \label{mr:eq:halfplus}\\
+ t_-^{-m-z}
+ &=-\frac1{(m-1)!z}\delta^{(m-1)}
+   +\sum_{\ell\ge0}\frac{(-z)^\ell}{\ell!}A_{m,\ell}^-.
+ \label{mr:eq:halfminus}
+\end{align}
+These are the fixed-scale finite parts of
+$t_\pm^{-m}\log^\ell|t|$. The series are locally convergent as
+meromorphic distribution germs when paired with a Schwartz function.
+
+\begin{theorem}[Entire boundary family and all contact jets]\label{mr:thm:contact}
+The boundary value
+\begin{equation}\label{mr:eq:T}
+ T_s(t)=\lim_{\epsilon\downarrow0}(\epsilon+it)^{-s}
+ =e^{-i\pi s/2}t_+^{-s}+e^{i\pi s/2}t_-^{-s}
+\end{equation}
+is an entire tempered-distribution family in $s$. Near $s=m+z$,
+\begin{align}
+ T_{m+z}={}&e^{-i\pi(m+z)/2}
+       \sum_{\ell\ge0}\frac{(-z)^\ell}{\ell!}A_{m,\ell}^+
+ +e^{i\pi(m+z)/2}
+       \sum_{\ell\ge0}\frac{(-z)^\ell}{\ell!}A_{m,\ell}^-\nonumber\\
+ &+\frac{2i^{m-1}}{(m-1)!}\frac{\sin(\pi z/2)}z\,
+       \delta^{(m-1)}.
+ \label{mr:eq:contactgerm}
+\end{align}
+In this fixed decomposition, the coefficient of $\delta^{(m-1)}$ in
+the $q$th order derivative at $s=m$ is
+\begin{equation}\label{mr:eq:contactcoef}
+ c_{m,q}=\begin{cases}
+ \displaystyle\frac{\pi i^{m-1}}{(m-1)!}
+      \frac{(-1)^{q/2}(\pi/2)^q}{q+1},&q\text{ even},\\[5pt]
+ 0,&q\text{ odd}.
+ \end{cases}
+\end{equation}
+The nonlocal part is the finite explicit sum
+\begin{align}
+ &e^{-i\pi m/2}\sum_{\ell=0}^q\binom q\ell
+       (-i\pi/2)^{q-\ell}(-1)^\ell A_{m,\ell}^+\nonumber\\
+ &\qquad+e^{i\pi m/2}\sum_{\ell=0}^q\binom q\ell
+       (i\pi/2)^{q-\ell}(-1)^\ell A_{m,\ell}^-.
+ \label{mr:eq:contactnonlocal}
+\end{align}
+\end{theorem}
+\begin{proof}
+For $\Rea s<1$, the right side of \eqref{mr:eq:T} is locally
+integrable and is the ordinary limit of $(\epsilon+it)^{-s}$.
+Taylor subtraction continues its action on Schwartz functions
+meromorphically to the plane. The only possible poles are positive
+integers, with residues obtained by integrating the $(m-1)$st Taylor
+term. They are exactly \eqref{mr:eq:halfplus}--\eqref{mr:eq:halfminus}.
+After multiplication by the phases their polar contribution is
+\[
+ \frac{i^m}{(m-1)!z}
+     (e^{-i\pi z/2}-e^{i\pi z/2})\delta^{(m-1)}
+ =\frac{2i^{m-1}}{(m-1)!}\frac{\sin(\pi z/2)}z\delta^{(m-1)}.
+\]
+It is entire at $z=0$, so all poles cancel. The exponential-boundary
+regularization has the same continuation: subtract the test-function
+Taylor terms first and integrate those elementary terms explicitly.
+This establishes its distributional limit and the entire identity.
+At integer orders there is also a direct check: the real and imaginary
+parts of $(\epsilon+it)^{-1}$ are
+$\epsilon/(\epsilon^2+t^2)$ and $-t/(\epsilon^2+t^2)$, whose limits
+are $\pi\delta$ and $-\operatorname{PV}(1/t)$. Repeated
+$t$ differentiation gives all positive integer boundary values.
+For noninteger orders, integration by parts reduces the limit to a
+locally integrable order; Taylor subtraction makes the reduction
+locally uniform through the removable integer parameters.
+Taking Taylor coefficients of the sine quotient proves
+\eqref{mr:eq:contactcoef}; Leibniz's rule on the two regular series gives
+\eqref{mr:eq:contactnonlocal}.
+\end{proof}
+At $q=0$, this reduces to
+\begin{equation}\label{mr:eq:plemelj}
+ T_m=i^{-m}\Fp t^{-m}
+       +\frac{\pi i^{m-1}}{(m-1)!}\delta^{(m-1)}.
+\end{equation}
+To recover the half residue in \eqref{mr:eq:integercentral}, multiply
+by a local analytic factor $H(1/2+it)$ and integrate with $1/(2\pi)$.
+The delta derivative contributes
+$H^{(m-1)}(p_0)/(2(m-1)!)$, since the two powers of $i^{m-1}$ and
+the distributional sign cancel. This is precisely half the residue.
+Translation gives the same rule at $p_0=1/2+iy_0$.
+
+\begin{remark}[Canonical total, conventional splitting]
+Changing the finite-part scale redistributes local delta derivatives
+between the $A_{m,\ell}^{\pm}$ and the displayed contact coefficients.
+The full distribution $T_s$ and every derivative are canonical.
+Formula \eqref{mr:eq:contactcoef} is stated only with the common scale
+fixed above. It must not be combined with finite parts taken at a
+different scale. If several centered factors have the same point,
+merge their orders first; independent spectral derivatives at that
+collision become derivatives in their total order. Before collision
+all orders remain independent in \eqref{mr:eq:master}.
+\end{remark}
+
+\section{Centered Fourier--Mellin reflection and the entire alternating family}
+\label{mr:sec:centered}
+The second research continuation requires the full spectral family,
+not just its integer values. Define
+\begin{equation}\label{mr:eq:Z}
+ Z_R(v)=\frac1{\Gamma(v)}\int_0^\infty
+ t^{v-1}(2\cosh(t/2))^{-R}\dd t,\qquad\Rea v>0,\quad\Rea R>0.
+\end{equation}
+Its original absolutely convergent alternating series is
+\begin{equation}\label{mr:eq:Zseries}
+ Z_R(v)=\sum_{n\ge0}\frac{(-1)^n(R)_n}{n!(n+R/2)^v},
+ \qquad\Rea v>\Rea R.
+\end{equation}
+The generalized series is not an ordinary Lerch function at arbitrary
+$R$. It is useful to retain its explicit definition.
+
+\begin{lemma}[Entire continuation and centered reflection]\label{mr:lem:reflection}
+The function $Z_R(v)$ is entire in $v$ and jointly holomorphic for
+$\Rea R>0$. If $f_R(t)=(2\cosh(t/2))^{-R}$, then
+\begin{equation}\label{mr:eq:negativeZ}
+ Z_R(-n)=(-1)^n f_R^{(n)}(0),\qquad
+ Z_R(-2m-1)=0.
+\end{equation}
+Writing $F_R(w)=\F_{R,1/2}(w;0)$, one has
+\begin{equation}\label{mr:eq:reflection}
+ F_R(w)=2(2\pi)^{R+w-2}\Gamma(1-w)
+              \cos(\pi w/2)Z_R(1-w),
+\end{equation}
+with all apparent singularities removable.
+\end{lemma}
+\begin{proof}
+Subtract a Taylor polynomial of $f_R$ at zero in the integral over
+$(0,1)$. Its Mellin transform has simple poles at $v=-n$ with residue
+$f_R^{(n)}(0)/n!$. The reciprocal Gamma factor cancels those poles and
+has derivative $(-1)^n n!$ there, proving \eqref{mr:eq:negativeZ}.
+Evenness of $f_R$ gives the odd zeros. Locally uniform subtractions and
+exponential decay at infinity prove joint holomorphy. The binomial
+series gives \eqref{mr:eq:Zseries} in its absolute region.
+
+For $0<\Rea w<1$, the fractional formula gives
+$F_R(w)=\Gamma(w)^{-1}\int_0^\infty x^{w-1}b_R(x)\dd x$.
+By \eqref{mr:eq:beta}, $b_R(x)=(2\pi)^{R-2}\widehat f_R(x/(2\pi))$
+with $\widehat f(v)=\int_\R e^{ivt}f(t)\dd t$.
+The Mellin transform of the cosine Fourier transform is
+\[
+ \int_0^\infty v^{w-1}\widehat f_R(v)\dd v
+ =2\Gamma(w)\cos(\pi w/2)\int_0^\infty t^{-w}f_R(t)\dd t.
+\]
+For completeness, insert $e^{-\epsilon v}$ first. Fubini is then
+absolute; the inner integral is
+$\Gamma(w)((\epsilon-it)^{-w}+(\epsilon+it)^{-w})/2$.
+It is uniformly dominated by $Ct^{-\Rea w}$ for $t>0$, integrable
+against $f_R$ in this strip. Removing the regulator and rescaling
+proves \eqref{mr:eq:reflection}. Entirety of $F_R$, supplied by its
+right contour, proves the removability and the global identity.
+\end{proof}
+These inputs are established in the continuous-depth report \cite{CDL};
+the preceding proof records the normalization used by the new jet formulas.
+In particular,
+\begin{equation}\label{mr:eq:classicalZ}
+ Z_1(v)=2^v\beta(v),\qquad Z_2(v)=\eta(v-1),
+\end{equation}
+where $\beta$ is the Dirichlet beta function and
+$\eta(v)=(1-2^{1-v})\zeta(v)$ is entire.
+
+\section{All resonant spectral jets: finite Bell formulas}
+\label{mr:sec:resonance}
+The following theorem answers the spectral-jet question without
+illegitimately differentiating an identity known only on a discrete set.
+Set $L=\log(2\pi)$. For $n\ge0$ and $k\ge1$ define two cumulant lists:
+\begin{align}
+ d^{\mathrm o}_{n,1}=d^{\mathrm e}_{n,1}
+ &=L+\gamma-H_n,\label{mr:eq:d1}\\
+ d^{\mathrm o}_{n,k}
+ &=(k-1)!\left\{(1-2^{1-k}\mathbf1_{2\mid k})\zeta(k)
+                      +(-1)^k H_n^{(k)}\right\},\quad k\ge2,
+ \label{mr:eq:do}\\
+ d^{\mathrm e}_{n,k}
+ &=(k-1)!\left\{(1-2(1-2^{-k})\mathbf1_{2\mid k})\zeta(k)
+                      +(-1)^k H_n^{(k)}\right\},\quad k\ge2.
+ \label{mr:eq:de}
+\end{align}
+Let $B_{n,q}^{\mathrm o}=\B_q(d^{\mathrm o}_{n,1},\ldots,d^{\mathrm o}_{n,q})$
+and define $B_{n,q}^{\mathrm e}$ similarly, with both zero-index values one.
+
+\begin{theorem}[Every odd and even order jet]\label{mr:thm:resonance}
+For $\Rea R>0$, $q\ge0$, and $m\ge0$,
+\begin{align}
+ F_R^{[q]}(2m+1)
+ ={}&\frac{(-1)^m\pi(2\pi)^{R+2m-1}}{(2m)!}
+ \sum_{j=0}^q\binom qj B_{2m,q-j}^{\mathrm o}(-1)^j
+                           Z_R^{[j]}(-2m).
+ \label{mr:eq:oddjet}
+\end{align}
+For $m\ge1$,
+\begin{align}
+ F_R^{[q]}(2m)
+ ={}&\frac{2(-1)^{m+1}(2\pi)^{R+2m-2}}{(2m-1)!}
+ \sum_{j=0}^q\binom qj B_{2m-1,q-j}^{\mathrm e}
+           \frac{(-1)^j}{j+1}Z_R^{[j+1]}(1-2m).
+ \label{mr:eq:evenjet}
+\end{align}
+Both sums are finite. All mixed $R$ derivatives are also valid.
+\end{theorem}
+\begin{proof}
+At the odd point $w=2m+1+z$, Gamma recurrence in
+\eqref{mr:eq:reflection} gives the analytic germ
+\begin{equation}\label{mr:eq:oddgerm}
+ F_R(2m+1+z)=C_{R,m}^{\mathrm o}A_{2m}^{\mathrm o}(z)Z_R(-2m-z),
+\end{equation}
+where
+\begin{align}
+ C_{R,m}^{\mathrm o}&=\frac{(-1)^m\pi(2\pi)^{R+2m-1}}{(2m)!},\nonumber\\
+ A_n^{\mathrm o}(z)&=(2\pi)^z\Gamma(1-z)
+     \frac{\sin(\pi z/2)}{\pi z/2}
+     \prod_{k=1}^n(1+z/k)^{-1}.\label{mr:eq:Ao}
+\end{align}
+At the even point, put $n=2m-1$ and use $Z_R(-n)=0$. The analytic germ is
+\begin{equation}\label{mr:eq:evengerm}
+ F_R(2m+z)=C_{R,m}^{\mathrm e}A_n^{\mathrm e}(z)
+                         \left(-\frac{Z_R(-n-z)}z\right),
+\end{equation}
+where
+\begin{align}
+ C_{R,m}^{\mathrm e}&=\frac{2(-1)^{m+1}(2\pi)^{R+2m-2}}{(2m-1)!},\nonumber\\
+ A_n^{\mathrm e}(z)&=(2\pi)^z\Gamma(1-z)\cos(\pi z/2)
+                    \prod_{k=1}^n(1+z/k)^{-1}.\label{mr:eq:Ae}
+\end{align}
+All factors have value one at zero except the explicitly retained $Z_R$
+terms. The convergent log-Gamma expansion \cite{GammaSeries}, the
+sine and cosine products, and the finite logarithmic product give
+\[
+ \log A_n^{\mathrm o}(z)=\sum_{k\ge1}d^{\mathrm o}_{n,k}\frac{z^k}{k!},
+ \qquad
+ \log A_n^{\mathrm e}(z)=\sum_{k\ge1}d^{\mathrm e}_{n,k}\frac{z^k}{k!}.
+\]
+For example, the logarithm of the sinc factor contributes
+$-2^{1-k}\zeta(k)/k$ at each even degree $k$; that of the cosine
+contributes $-2(1-2^{-k})\zeta(k)/k$. The finite product contributes
+$(-1)^kH_n^{(k)}/k$. These are exactly
+\eqref{mr:eq:d1}--\eqref{mr:eq:de}.
+Exponentiation gives the Bell coefficients. Finally,
+\[
+ -\frac{Z_R(-n-z)}z
+ =\sum_{j\ge0}\frac{(-1)^jZ_R^{[j+1]}(-n)}{(j+1)!}z^j.
+\]
+The product rule proves both asserted sums, including the factor
+$1/(j+1)$ in the even case. Joint holomorphy justifies $R$ derivatives.
+\end{proof}
+
+For clarity, the first odd derivative is
+\begin{equation}\label{mr:eq:odd1}
+ F_R^{[1]}(2m+1)=C_{R,m}^{\mathrm o}
+ \left\{(L+\gamma-H_{2m})Z_R(-2m)-Z_R^{[1]}(-2m)\right\}.
+\end{equation}
+The first even derivative is
+\begin{equation}\label{mr:eq:even1}
+ F_R^{[1]}(2m)=C_{R,m}^{\mathrm e}
+ \left\{(L+\gamma-H_{2m-1})Z_R^{[1]}(1-2m)
+                       -\tfrac12Z_R^{[2]}(1-2m)\right\}.
+\end{equation}
+No division by a possibly vanishing $Z_R$ value occurs.
+At $q=0$ the odd formula recovers the prior polynomial evaluation
+\begin{equation}\label{mr:eq:oddvalue}
+ F_R(2m+1)=\frac{\pi^{R+2m}}2U_m(R),\qquad
+ U_m(R)=[z^{2m}]\sec(z)^R.
+\end{equation}
+The jets $Z_R^{[j]}(-2m)$ for $j>0$ are genuinely retained spectral
+data. Knowing \eqref{mr:eq:oddvalue} for all integer $m$ is not, by
+itself, a license to differentiate it in $m$.
+
+\section{Gamma-weighted polylogarithms and explicit Stieltjes order jets}
+\label{mr:sec:polylog}
+For real $x$, use principal polylogarithms and put
+\begin{equation}\label{mr:eq:polyodd}
+ \mathcal P_s(x)=\frac{\Li_s(ie^{-x/2})-\Li_s(-ie^{-x/2})}{i},
+ \qquad I_R(s)=\int_\R G_R(x)\mathcal P_s(x)\dd x.
+\end{equation}
+Their arguments do not cross the positive-real polylogarithm cut.
+
+\begin{theorem}[Entire-order Gamma--polylogarithm reflection]\label{mr:thm:polylog}
+For $\Rea R>0$ and every complex $s$, the integral defining $I_R(s)$
+is ordinary and absolutely convergent, and
+\begin{align}
+ I_R(s)&=\Gamma(R)2^{1-s}(2\pi)^{2-R}F_{R+1}(s),
+ \label{mr:eq:ItoF}\\
+ &=8\Gamma(R)\pi^{s+1}\Gamma(1-s)
+           \cos(\pi s/2)Z_{R+1}(1-s).
+ \label{mr:eq:Ireflection}
+\end{align}
+All apparent singularities are removable. Every fixed mixed spectral
+and depth derivative can be taken under the ordinary integral.
+\end{theorem}
+\begin{proof}
+Separating the odd terms of the polylogarithm series proves
+\[
+ \F_{1,1/2}(s;-x)=2^{s-1}e^{-x/2}\mathcal P_s(x)
+\]
+first in its series region and then along the real axis by analytic
+continuation. The Lerch-to-polylogarithm convention is fixed by the
+standard relation $\Li_s(z)=z\Phi(z,s,1)$ \cite{Lerch,Polylog}.
+Convolve this function with $K_R$ at zero. The common-shift convolution
+in Theorem~\ref{mr:thm:master} gives $F_{R+1}(s)$, while the
+Gamma factor in \eqref{mr:eq:kernel} gives \eqref{mr:eq:ItoF}.
+Its weighted Schwartz estimates already prove absolute convergence
+and all mixed differentiations. Substituting \eqref{mr:eq:reflection}
+and collecting powers of $2$ and $\pi$ yields
+\eqref{mr:eq:Ireflection}.
+\end{proof}
+
+\subsection{Odd and even spectral derivatives}
+Theorem~\ref{mr:thm:resonance} applies without another singular limiting
+calculation. In its cumulants replace $L=\log(2\pi)$ by $\log\pi$,
+replace $Z_R$ by $Z_{R+1}$, and replace the two prefactors by
+\begin{equation}\label{mr:eq:Ipre}
+ \widetilde C_{R,m}^{\mathrm o}
+ =\frac{4(-1)^m\Gamma(R)\pi^{2m+3}}{(2m)!},\qquad
+ \widetilde C_{R,m}^{\mathrm e}
+ =\frac{8(-1)^{m+1}\Gamma(R)\pi^{2m+1}}{(2m-1)!}.
+\end{equation}
+The resulting finite sums evaluate $I_R^{[q]}(2m+1)$ and
+$I_R^{[q]}(2m)$ respectively. The shift in $L$ is necessary because
+of the $2^{-s}$ factor in \eqref{mr:eq:ItoF}.
+
+At zero derivative order one recovers the prior odd family
+\begin{equation}\label{mr:eq:Iodd}
+ I_R(2m+1)=\frac{\Gamma(R)\pi^{2m+3}}{2^{R+2m-1}}U_m(R+1),
+\end{equation}
+and obtains the even counterpart
+\begin{equation}\label{mr:eq:Ieven}
+ I_R(2m)=\frac{8(-1)^{m+1}\Gamma(R)\pi^{2m+1}}{(2m-1)!}
+                  Z_{R+1}^{[1]}(1-2m),\qquad m\ge1.
+\end{equation}
+The latter is an exact spectral-derivative coordinate, not an assertion
+that it is a polynomial in $R$ like the odd values.
+
+\subsection{Two completely classical depth reductions}
+The cases $R=1,2$ provide useful fully explicit families:
+\begin{align}
+ I_1(s)&=4\pi s(2-2^{-s})\zeta(s+1),\label{mr:eq:I1}\\
+ I_2(s)&=4s(s+1)\beta(s+2)+\pi^2\beta(s).
+ \label{mr:eq:I2}
+\end{align}
+These formulas are entire identities, with removable values understood.
+For \eqref{mr:eq:I1}, use $F_2(s)=s\zeta(s+1,1/2)$ in
+\eqref{mr:eq:ItoF}, and
+$\zeta(v,1/2)=(2^v-1)\zeta(v)$.
+For \eqref{mr:eq:I2}, Gamma recurrence gives
+$K_3(x)=(x^2+\pi^2)K_1(x)/2$. The fractional formula at the center
+therefore yields
+\[
+ F_3(s)=\tfrac12\{s(s+1)F_1(s+2)+\pi^2F_1(s)\},
+ \qquad F_1(s)=2^s\beta(s).
+\]
+Substitution proves \eqref{mr:eq:I2} first at positive real orders
+and then everywhere. These are consequences of classical recurrences;
+we do not assign separate priority to their low-order values.
+
+Nevertheless their spectral derivatives give concrete ordinary integrals
+of polylogarithm order derivatives. In particular,
+\begin{align}
+ I_1(0)&=4\pi,\nonumber\\
+ I_1^{[1]}(0)&=4\pi(\gamma+\log2),\label{mr:eq:I1jets}\\
+ I_1^{[2]}(0)&=4\pi\{-2\gamma_1+2\gamma\log2-\log^22\},\nonumber\\
+ I_1^{[3]}(0)&=4\pi\{3\gamma_2-6\gamma_1\log2
+                          -3\gamma\log^22+\log^32\}.\nonumber
+\end{align}
+Here $I_1^{[q]}(0)$ means the ordinary integral in
+\eqref{mr:eq:polyodd} with $\partial_s^q\mathcal P_s|_{s=0}$;
+$G_1(x)=\pi/\cosh(x/2)$. Thus these identities link ordinary zeta
+Laurent coefficients to genuine polylogarithm order derivatives,
+not to formal derivatives of a discrete family.
+For every $q$, a finite closed coefficient rule is
+\begin{equation}\label{mr:eq:I1all}
+ I_1^{[q]}(0)=4\pi\sum_{j=0}^q\binom qj a_j e_{q-j},\quad
+ \begin{cases}
+ a_0=e_0=1,\\
+ a_j=(-1)^{j+1}\log^j2 &(j\ge1),\\
+ e_k=k(-1)^{k-1}\gamma_{k-1} &(k\ge1).
+ \end{cases}
+\end{equation}
+It follows by expanding $(2-2^{-s})E_1(s)$, and agrees with all the
+displayed cases.
+
+\subsection{Polygamma-weighted versions}
+Define
+\begin{equation}\label{mr:eq:depthweights}
+ D_k(R,x)=2^{-k}\left\{
+ \psi^{(k-1)}\left(\frac R2+\frac{ix}{2\pi}\right)
+ +\psi^{(k-1)}\left(\frac R2-\frac{ix}{2\pi}\right)\right\}.
+\end{equation}
+Logarithmic differentiation of the Gamma product gives
+\begin{equation}\label{mr:eq:depthjet}
+ \partial_R^d\partial_s^q I_R(s)=
+ \int_\R G_R(x)\B_d(D_1(R,x),\ldots,D_d(R,x))
+                   \partial_s^q\mathcal P_s(x)\dd x.
+\end{equation}
+The right side is ordinary for every fixed $d,q$.
+Combining it with \eqref{mr:eq:Ireflection}, or with the resonance
+formulas before taking the derivative, gives all mixed polygamma and
+polylogarithm-order identities. The $D_k$ are genuine Gamma-argument
+polygammas; the resulting $Z$ depth derivatives remain distinct
+parameters and are not silently discarded.
+
+\section{All anchored primitive orders and an explicit log-Gamma integral}
+\label{mr:sec:primitives}
+The independent argument ladder follows directly from the defining contour:
+\begin{equation}\label{mr:eq:shiftladder}
+ \partial_{a_j}\M_R(\boldsymbol s;\boldsymbol a)
+ =-s_j\M_R(\boldsymbol s+\boldsymbol e_j;\boldsymbol a).
+\end{equation}
+The scalar primitive ladder and its removable resonances are already
+part of the incoming Lerch calculus \cite{CDL,Tilt}. The following
+form makes the independent-shift completion and its normalization explicit.
+
+Let $\mathcal I^k_{A,a_j}$ denote the $k$-fold primitive in $a_j$
+with its first $k$ initial derivatives zero at the right-half-plane
+anchor $A$. For a holomorphic function, integration may be taken on
+the straight segment; other paths inside the half-plane give the same
+anchored primitive.
+
+\begin{proposition}[Independent anchored primitives]\label{mr:prop:primitive}
+Put
+$H(\boldsymbol a)=\M_R(\boldsymbol s-k\boldsymbol e_j;\boldsymbol a)$.
+Then
+\begin{equation}\label{mr:eq:primitive}
+ \mathcal I^k_{A,a_j}\M_R(\boldsymbol s;\boldsymbol a)
+ =\frac{H(\boldsymbol a)-
+       \displaystyle\sum_{\ell=0}^{k-1}\frac{(a_j-A)^\ell}{\ell!}
+         \left.\partial_{a_j}^{\ell}H\right|_{a_j=A}}
+       {(1-s_j)_k}.
+\end{equation}
+The apparent singularities at $s_j=1,\ldots,k$ are removable.
+All fixed mixed order, depth, and remaining-shift derivatives are valid.
+\end{proposition}
+\begin{proof}
+Repeated use of \eqref{mr:eq:shiftladder} gives
+$\partial_{a_j}^kH=(-1)^k(s_j-k)_k\M_R=(1-s_j)_k\M_R$.
+Taylor's formula with integral remainder proves \eqref{mr:eq:primitive}
+where the denominator is nonzero. Its right side has the same anchored
+integral representation after cancellation, which proves holomorphic
+removability at every resonance. Each zero of $(1-s_j)_k$ is simple;
+there the quotient may also be computed as the spectral derivative
+of the full numerator divided by the derivative of the denominator.
+The integral remainder and compact-set holomorphy justify all the
+stated mixed derivatives.
+\end{proof}
+
+The scalar Stieltjes primitive is worth recording separately:
+\begin{equation}\label{mr:eq:stieltjesprimitive}
+ \int_A^a\gamma_m(u)\dd u
+ =\frac{(-1)^{m+1}}{m+1}
+   \{\zeta^{[m+1]}(0,a)-\zeta^{[m+1]}(0,A)\}.
+\end{equation}
+Indeed $\partial_a\zeta(v,a)=-v\zeta(v+1,a)$ \cite{Zeta};
+comparison with \eqref{mr:eq:stieltjes} proves the formula including
+its sign. At $m=0$ it is
+$\int_A^a-\psi(u)\dd u=-\log\Gamma(a)+\log\Gamma(A)$.
+
+An ordinary completed Gamma primitive follows directly from the raw
+log moment. For real $a>0$, let
+\begin{equation}\label{mr:eq:VB}
+ V(z)=z(\Log z-1),\quad V(0)=0,\qquad
+ B(a)=\begin{cases}\log\sin(\pi a),&0<a<1/2,\\0,&a\ge1/2.\end{cases}
+\end{equation}
+For all real $a,A>0$,
+\begin{equation}\label{mr:eq:gammaprimitive}
+ \boxed{\begin{aligned}
+ &\frac\pi2\int_\R\frac{
+        V(a-1/2+it)-V(A-1/2+it)}{\cosh^2\pi t}\dd t
+       -B(a)+B(A)\\
+ &\hspace{35mm}=\log\Gamma(a)-\log\Gamma(A).
+ \end{aligned}}
+\end{equation}
+To prove it, integrate \eqref{mr:eq:digamma} between $A$ and $a$.
+Fubini is justified by the integrable logarithmic singularity and the
+exponential kernel. Since $V'=\Log$ away from the cut, continuity at
+the center gives the same integral across it. The correction is exactly
+$B'(a)=\pi\cot\pi a$ below the center, with no jump in $B$ at $1/2$.
+Both sides vanish at $a=A$, fixing the integration constant.
+
+\section{Source audit, corrections, and evidentiary status}
+\label{mr:sec:audit}
+\subsection{Inspected scope}
+The repository read was anchored to \pin, whose recorded commit time is
+\src{2026-10-11T03:35:18Z} (10 October in the stated Pacific time zone).
+The canonical README, chapter listing, incoming directory, the canonical
+$S_4$ proof source, and selected research-question search results were
+inspected. The relevant sections of the continuous-depth archive's
+\src{article.tex} were read: principal definitions, kernel and entire
+spectral family, centered reflection, harmonic master, and the complete
+further-research section. The READMEs of the tilted-Lerch, mixed-resolvent,
+and algebraic-Gauss incoming packages were read to delimit overlap.
+Those README reads are \emph{not} full analytic audits of their articles.
+The other incoming ZIPs were inventoried, not fully unpacked or certified.
+The machine-readable source record names these exact scopes and observed
+Git blob identifiers.
+
+The accessible parsed text of Johansson--Blagouchine's original PDF
+confirmed the $\Rea a>1/2$ hypothesis of its equation (2).
+The web renderer failed to supply the requested screenshot; no visual
+inspection of that source PDF is claimed. The present article's PDF
+was separately compiled and visually inspected as recorded in the
+package's build and visual-review receipts.
+
+\subsection{What is corrected, and what is not}
+No false theorem was identified in the inspected source portions.
+Instead, three concrete \emph{invalid extensions} are excluded by
+explicit counterexamples: removing the crossing correction in
+\eqref{mr:eq:digamma}; adding only pairwise logarithmic corrections
+and losing the overlap term in \eqref{mr:eq:tripleP}; and dropping
+half residues at centered integer poles. A fourth structural safeguard
+is to combine a Gamma pole and a trivial $Z_R$ zero before taking
+spectral derivatives, as in \eqref{mr:eq:evengerm}.
+
+Additional integration safeguards are precise rather than rhetorical.
+One must not replace the complex Gamma product by a squared modulus;
+one must use the upper-minus-lower difference instead of an imaginary
+part for complex shifts; one must retain the constant $1$ on the
+zero-total-order slice \eqref{mr:eq:balanced}; and one must specify the
+finite-part scale when isolating the contact coefficients.
+A convergence hypothesis on a cut integral does not disappear merely
+because its sine prefactor vanishes at an integer order.
+
+The canonical $S_6$ and revised $S_8$ candidates remain unproved here.
+The existing $S_4$ certificate is not recounted as a new result.
+Neither the retained $Z_R$ jets nor the Hurwitz-zeta derivative series
+are claimed to be arithmetically independent or irreducible.
+
+\subsection{Executed checks and what they establish}
+The exact script executed \textbf{490 symbolic assertions}, including
+three negative controls. They compare Pochhammer derivatives with
+Stirling coefficients, mixed jump products with their independent
+multinomial expansion, residue recurrences with a trigonometric
+translation series, both lists of resonance cumulants with analytic
+Taylor germs, contact coefficients with the sine quotient, and
+primitive denominators at every tested resonance.
+
+The independent numerical suite passed \textbf{77 positive comparisons
+and three negative controls at each of 45 and 60 working decimal digits}.
+The largest normalized positive discrepancies were approximately
+$5.185\times10^{-31}$ and $7.510\times10^{-41}$, respectively.
+The normalization is $|u-v|/(1+|u|+|v|)$.
+Tests include unequal and coincident real cuts, complex shifts at
+separate and common heights, genuinely complex orders and depth,
+ordinary Stieltjes moments, cubic overlap corrections, Hermite residues,
+centered half residues, harmonic and mixed-zeta expansions, independent
+right-contour spectral jets, Gamma primitives crossing the center, and
+Gamma--polylogarithm quadrature.
+
+These are ordinary \texttt{mpmath} floating-point diagnostics, not
+outward-rounded interval enclosures. The harmonic checks truncate
+at $k=79$; their analytically proved convergence is not a numerical
+certificate of the displayed infinite sums. Polylogarithm quadrature
+uses finite cutoffs $310$ and $400$ in the two runs, to avoid pathological
+huge-argument evaluations at transformed infinite quadrature nodes.
+The complete exact identities are proved above, not established by
+small numerical residuals. Near spectral zero, the tiny-step Hurwitz
+implementation can suffer internal cancellation; the independent
+$Z_1$ derivative check uses Cauchy differentiation on a small complex
+circle instead. The executed code records these choices.
+
+\section{Further research questions and proposed next targets}
+\label{mr:sec:future}
+The following are open directions, not additional claims of proof.
+They focus on exact identities and structural reductions.
+
+\begin{enumerate}[label=Q\arabic*.]
+\item \textbf{Arithmetic closure of the retained spectral jets.}
+For rational depth $R$, determine which combinations of
+$Z_R^{[j]}(-n)$ reduce to ordinary Hurwitz-zeta derivatives, Gamma
+values, or cyclotomic multiple polylogarithms. Start with the even
+Gamma--polylogarithm values in \eqref{mr:eq:Ieven}; a formula that
+merely renames the same jet is not the desired arithmetic reduction.
+
+\item \textbf{Depth jets at an integer total depth.}
+Combine the mixed $R$ derivatives of the present reflection with a
+canonical logarithmically extended Lerch basis. The multiplier
+$g(p)^N\Log^q g(p)$ is outside the old meromorphic finite-depth class;
+find an exact basis with explicit connection and distribution laws.
+
+\item \textbf{Independent Gamma weights and several polylogarithms.}
+The present convolution has one polylogarithm odd part against one
+Gamma product. Several independent polylogarithms in the same variable
+are not handled by simply adding their orders. Determine the multiple
+Hurwitz--Lerch objects and balanced combinations that admit a genuine
+Gamma-quotient generating function.
+
+\item \textbf{A canonical global mixed-log coordinate system.}
+The anchor compiler converges in its natural polydisk; overlapping
+anchors give exact transition identities such as the symmetry of
+\eqref{mr:eq:bilog}. Find a terminating normal form for those
+transitions without assuming linear independence of their special values.
+
+\item \textbf{Rational shift summations of balanced log ratios.}
+Classify residue-class averages of \eqref{mr:eq:ratio} that telescope
+to finite Gamma or zeta expressions. The shifted harmonic coefficients
+in \eqref{mr:eq:harmonic} provide an explicit generating target at
+every degree, rather than a numerical integer-relation guess.
+
+\item \textbf{Distributional depth continuation.}
+Continue the \emph{depth} $R$ through zero and negative real parts,
+including the Gamma poles that cross its argument contour. The contact
+analysis in Section~\ref{mr:sec:contact} treats spectral powers, not
+this separate depth continuation; it does not authorize discarding
+those additional poles.
+
+\item \textbf{A functional certificate for the Gaussian candidates.}
+Use the multishift identities to search for convergent mixed-color
+relations relevant to $S_6$ and revised $S_8$. A successful continuation
+must exhibit the exact relation or a replayable rational certificate;
+the present reflection alone does not prove either candidate.
+
+\item \textbf{Formal verification and certified replay.}
+Formalize the finite Stirling, Bell, and contact algebra first, then isolate
+weighted Fourier inversion, parameter holomorphy, contour deformation,
+and distributional Taylor subtraction as analytic obligations.
+An independent ball-arithmetic replay would give certified diagnostic
+enclosures, but should remain distinct from the arbitrary-index proofs.
+
+\item \textbf{Literature reconciliation at the level of full families.}
+Compare the exact multishift jump theorem and its spectral germs with
+classical Mellin--Barnes, generalized-Lerch, and multiple-zeta literature.
+Assign historical priority only after comparing whole generating
+functions and their branch normalizations, not isolated low-weight values.
+\end{enumerate}
+
+\section*{Conclusion}
+\addcontentsline{toc}{section}{Conclusion}
+The independent-shift reflection is governed by the jump of a
+\emph{product}, not the sum of isolated jumps. With that correction,
+complex shifts, coincident cuts, ordinary mixed logarithmic jets,
+and integer half-residue contacts fit one holomorphic transform.
+The Stieltjes compiler and harmonic ratio identities give concrete
+exact consequences at every degree. Separately, the analytic germs
+at both resonance lattices determine all spectral derivatives with
+finite Bell coefficients, retaining the spectral data that discrete
+value formulas cannot supply. These results continue two specified
+repository questions while leaving arithmetic reductions, depth-zero
+continuation, and the Gaussian candidates explicitly open.
+
+\appendix
+\section{Replay and integration map}
+\label{mr:app:replay}
+The self-contained source \src{article.tex} builds without a ProveIt
+checkout. From the package directory:
+\begin{verbatim}
+python code/verify_exact.py
+python code/verify_numeric.py --dps 45
+python code/verify_numeric.py --dps 60
+python code/build.py
+\end{verbatim}
+The build script runs three serial pdfLaTeX passes and checks for
+unresolved references and overfull boxes. The JSON receipts retain
+working precision, values on both sides, finite cutoffs, and normalized
+residuals. The symbolic suite needs SymPy; the numerical suite needs
+mpmath; PDF inspection needs PyMuPDF and Pillow. Versions are recorded
+in \src{requirements.txt} and the receipts.
+
+The proposed destination is
+\src{Analysis/Polylogarithms/docs/reports/multishift-lerch-reflection/}.
+The \src{integration/} directory supplies an additive insertion,
+claim ledger, and source record. Integration should cite the older
+Gamma transform, continuous-depth definitions, and anchor expansion,
+then add the completed-cut theorem and resonance-jet theorems after
+those prerequisites. No original archive needs to be overwritten.
+The canonical volumes were not rebuilt and no repository mutation was
+performed in preparing this package.
+
+\begin{thebibliography}{99}
+\addcontentsline{toc}{section}{References}
+\bibitem{Repo}
+V. Reshetnikov and ProveIt contributors,
+\emph{ProveIt}, canonical polylogarithm manuscript
+and incoming research queue, repository snapshot \pin.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{CDL}
+\emph{Continuous-Depth Lerch Calculus: Gamma kernels, all-order harmonic
+identities, Stieltjes convolutions, and anchored primitives}, research
+continuation prepared for V. Reshetnikov, 10 October 2026.
+Incoming archive \src{ProveIt_Continuous_Depth_Lerch_2026-10-10.zip},
+member \src{ProveIt_Continuous_Depth_Lerch_2026-10-10/article.tex}.
+Read portions and archive Git blob are recorded in the source audit;
+especially the centered-reflection section and further-research Q4, Q8.
+
+\bibitem{Tilt}
+\emph{Tilted Lerch Convolutions and Binary Harmonic Cancellation},
+research continuation prepared for V. Reshetnikov, 10 October 2026.
+Incoming archive \src{ProveIt_Tilted_Lerch_Binary_Cancellation_2026-10-10.zip}.
+Its README describes the independent-shift single-anchor expansion,
+all order jets, and anchored primitives; those inputs are reproved
+in the narrower notation needed here rather than assumed from an unread proof.
+
+\bibitem{CS}
+D. Chakrabarti and G. K. Srinivasan,
+\emph{On a remarkable formula of Ramanujan}, 2012,
+arXiv:1206.5122. \url{https://arxiv.org/abs/1206.5122}.
+
+\bibitem{JB}
+F. Johansson and I. V. Blagouchine,
+\emph{Computing Stieltjes constants using complex integration},
+arXiv:1804.01679v3, 13 August 2018, especially equation (2).
+\url{https://arxiv.org/abs/1804.01679}.
+
+\bibitem{CH}
+T.-L. Cheng and C.-Y. Hu,
+\emph{On the Hurwitz Zeta Function and Its Applications to Hyperbolic
+Probability Distributions}, 2022, arXiv:2208.13733.
+\url{https://arxiv.org/abs/2208.13733}.
+This provides additional classical-context comparison for hyperbolic
+Hurwitz representations; no uninspected theorem from it is needed here.
+
+\bibitem{Beta}
+NIST Digital Library of Mathematical Functions,
+Section 5.12, \emph{Beta Function}.
+\url{https://dlmf.nist.gov/5.12}.
+
+\bibitem{GammaSeries}
+NIST Digital Library of Mathematical Functions,
+Section 5.7, \emph{Series Expansions} of the Gamma function.
+\url{https://dlmf.nist.gov/5.7}.
+
+\bibitem{Polygamma}
+NIST Digital Library of Mathematical Functions,
+Section 5.15, \emph{Polygamma Functions}.
+\url{https://dlmf.nist.gov/5.15}.
+
+\bibitem{Zeta}
+NIST Digital Library of Mathematical Functions,
+Section 25.11, \emph{Hurwitz Zeta Function}.
+\url{https://dlmf.nist.gov/25.11}.
+
+\bibitem{Lerch}
+NIST Digital Library of Mathematical Functions,
+Section 25.14, \emph{Lerch's Transcendent}.
+\url{https://dlmf.nist.gov/25.14}.
+
+\bibitem{Polylog}
+NIST Digital Library of Mathematical Functions,
+Section 25.12, \emph{Polylogarithms}.
+\url{https://dlmf.nist.gov/25.12}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,158 @@
+\section{Scope, conventions, and the proof ledger}
+\label{scope:sec}
+
+The source corpus already contains substantial all-order mathematics.
+In particular, the incoming reports \cite{SourceCanonical,SourceHigher} establish Gamma-quotient harmonic
+generators, arbitrary digamma-power algorithms, the fifth moment,
+continuous-depth Lerch constructions, and several Stieltjes collision
+formulas.  Repeating those results as new would obscure the actual
+progress.  We use them as a baseline and concentrate on four concrete
+tasks: resolving a recorded conjecture on an infinite family, proving a
+recorded numerical polylogarithm relation, finding closed coefficient
+formulas inside the higher Gamma hierarchy, and completing explicit
+higher-moment and spectral-derivative calculations.
+
+\subsection{What is proved here, and what is inherited}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}p{.26\textwidth}X@{}}
+\toprule
+Topic & Precise status in this continuation \\
+\midrule
+Gaussian Family--2 & The numerical source equation is proved exactly,
+and reduced to $\zeta(3)$, $\pi\beta(2)$, and $\pi^2\log2$.
+The general parity theorem is established prior work. \\
+Adjacent even tails & The first-$q$ conjecture is proved for all
+$p=q-2\ge2$.  The exact determinant and reconstruction identities
+are new developments relative to the inspected reports. \\
+Differential normal form & The functional-monomial decomposition is
+classical.  Its Gamma coefficient sectors and explicit endpoint
+specialization are developed and proved here. \\
+Quadratic Hurwitz products & Explicit integer finite parts and every
+order-derivative jet follow from the classical product kernel, with
+the local coordinate correction proved. \\
+Sixth digamma moment & A complete explicit formula is supplied in
+height-one Laurent slopes and one specified, convergent depth-at-most-three
+zeta-derivative combination.  Its further arithmetic reduction remains open. \\
+$S_6$, revised $S_8$, larger gaps & These remain conjectural or open.
+Neither the parity argument nor finite numerical evidence resolves them. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The distinction between an \emph{explicit coordinate formula} and a
+\emph{reduction to a prescribed constant alphabet} matters.  Defining a
+constant by an unexplained divergent sum would not complete a moment
+calculation.  Our remaining mixed coordinate is instead given by an
+absolutely convergent logarithmic series, a finite multiple-zeta
+expression, an exact value at spectral order zero, and independently
+checked analytic formulas.  We do not assert that it is irreducible or
+independent of the other constants.
+
+\subsection{Harmonic, polylogarithmic, and Laurent conventions}
+
+For $n\ge0$ and $r\ge1$,
+\[
+ H_n^{(r)}=\sum_{k=1}^n k^{-r},\qquad H_n=H_n^{(1)},
+ \qquad H_0^{(r)}=0.
+\]
+For a word $\boldsymbol a=(a_1,\ldots,a_d)$ of positive integers,
+\[
+ H_n(\boldsymbol a)=\sum_{n\ge k_1>\cdots>k_d\ge1}
+             \frac1{k_1^{a_1}\cdots k_d^{a_d}},
+ \qquad H_n(\varnothing)=1.
+\]
+All multiple zeta functions and multiple polylogarithms in this article
+use \emph{decreasing} indices:
+\[
+ \zeta(s,\boldsymbol a)=\sum_{n\ge1}\frac{H_{n-1}(\boldsymbol a)}{n^s},
+ \qquad
+ \Li_{p,q}(x,y)=\sum_{n>m\ge1}\frac{x^ny^m}{n^pm^q}.
+\]
+Outside their initial domains, multiple zeta functions mean their
+meromorphic continuations.  Where a displayed finite combination is
+holomorphic although individual terms have poles, the combination is
+formed \emph{before} its Taylor coefficient is taken.
+
+We use the conventional generalized Stieltjes constants
+\begin{equation}\label{scope:stieltjes}
+ \zeta(1+u,a)=\frac1u+
+       \sum_{n\ge0}\frac{(-1)^n\gamma_n(a)}{n!}u^n,
+ \qquad \gamma_0(a)=-\psi(a),\quad \gamma_n=\gamma_n(1).
+\end{equation}
+Thus the coefficient of $u$ at $a=1$ is $-\gamma_1$, not
+$\gamma_1$.  A second family used below is
+\begin{equation}\label{scope:lambda}
+ \lambda_d=[u^1]\zeta(1+u,\{1\}^{d-1}),\qquad d\ge1.
+\end{equation}
+Here $[u^1]$ means the Laurent coefficient; the function may have a pole
+of order $d$.  In particular $\lambda_1=-\gamma_1$.
+The higher $\lambda_d$ are strict-depth Laurent slopes, not a relabeling
+of the ordinary $\gamma_d$.  The local notation $\lambda_2$ for a
+dilogarithm imaginary part in the source Family--2 comparison is
+explicitly confined to that comparison.
+
+The basic differential identities are
+\begin{equation}\label{scope:hurwitz-differentiation}
+ \partial_a\zeta(s,a)=-s\zeta(s+1,a),\qquad
+ \psi^{(r)}(a)=(-1)^{r+1}r!\zeta(r+1,a)\quad(r\ge1).
+\end{equation}
+They follow directly from the defining series in its absolute
+convergence domain and then by continuation; see also DLMF~25.11
+\cite{DLMF}.  They fix the signs when translating the harmonic-tail
+identities into polygamma products.
+
+For later comparison with antiderivatives, coefficient extraction in
+\eqref{scope:hurwitz-differentiation} gives the classical formulas
+\begin{align}
+ \gamma_n'(a)
+  &=(-1)^{n+1}
+     \left\{\left.\partial_s^n\zeta(s,a)\right|_{s=2}
+      +n\left.\partial_s^{n-1}\zeta(s,a)\right|_{s=2}\right\},
+       \label{scope:stieltjes-derivative}\\
+ \int_{a_0}^{a}\gamma_n(v)\dd v
+  &=\frac{(-1)^{n+1}}{n+1}
+    \left.\partial_s^{n+1}
+       \{\zeta(s,a)-\zeta(s,a_0)\}\right|_{s=0}.
+       \label{scope:stieltjes-primitive}
+\end{align}
+The second term in braces in \eqref{scope:stieltjes-derivative} is
+absent for $n=0$.  The derivative formula comes from
+$\partial_a\zeta(1+u,a)=-(1+u)\zeta(2+u,a)$.
+For the primitive use
+$\partial_a\zeta(u,a)=-u\zeta(1+u,a)$, then differentiate
+$n+1$ times at zero.  These formulas are included to connect the new
+spectral-jet identities with the conventional Stieltjes normalization;
+no priority claim is made for them.
+
+\subsection{The endpoint coordinate is part of the definition}
+
+If a function on $(0,1]$ has a finite principal Laurent part at zero,
+we define
+\begin{equation}\label{scope:finitepart}
+ \FP\int_0^1 f(x)\dd x
+   =\CT_{\epsilon=0}\int_\epsilon^1 f(x)\dd x.
+\end{equation}
+The same notation applies to finite sums of powers times logarithms,
+followed by an integrable remainder.  The constant coefficient is taken
+after all negative powers and all divergent logarithms are removed.
+The cutoff is always the displayed coordinate $x=\epsilon$.
+In particular,
+\[
+ \FP\int_0^1x^{-j}\dd x=-\frac1{j-1}\ (j\ge2),\qquad
+ \FP\int_0^1x^{-1}(\log x)^a\dd x=0\ (a\ge0).
+\]
+For $h$ meromorphic near $[0,1]$ with no poles on $(0,1]$,
+\begin{equation}\label{scope:boundary}
+ \FP\int_0^1h'(x)\dd x=h(1)-[x^0]h(x).
+\end{equation}
+This is an exact coefficient identity obtained by integrating from
+$\epsilon$ to $1$.  It does not replace $[x^0]h$ by the generally
+nonexistent value $h(0)$.
+
+Finally, throughout the tail-rank and differential-polynomial sections,
+``rank'' and ``dimension'' refer to coefficient spaces over $\Q$.
+For example, using distinct formal symbols for $\zeta(0),\zeta(2),\ldots$
+does not assert their algebraic independence.  Likewise the image of a
+derivation is a vector subspace, generally not an ideal.

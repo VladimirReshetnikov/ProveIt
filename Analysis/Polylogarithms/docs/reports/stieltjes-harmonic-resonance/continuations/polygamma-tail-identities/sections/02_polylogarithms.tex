@@ -1,0 +1,429 @@
+% Self-contained section fragment for integration; ordinary amsmath/amsthm suffice.
+% Define \Li as \operatorname{Li} if the host does not already do so.
+\section[A bilateral proof of bicolored parity and the Gaussian Family--2 identity]{A bilateral proof of bicolored parity\\and the Gaussian Family--2 identity}
+\label{bip:sec:main}
+
+The canonical manuscript's equation \texttt{double:eq:fam2-example}
+was supported by integer-relation discovery and numerical evaluation.
+We give a complete proof, and simplify its right-hand side to three
+single-value products.  The proof is a concrete application of known
+parity theory: Nakamura's unit-circle functional relation
+\cite[Proposition~1.2]{bip:Nakamura2012} precedes Panzer's general
+multiple-polylogarithm parity theorem \cite[Theorem~1.3 and (3.2)]{bip:Panzer2017}.
+Our contribution here is the explicit formula in the manuscript's
+\emph{decreasing-index} convention, a direct bilateral proof including
+indices equal to one and the collision $xy=1$, and its exact application
+to the recorded Gaussian relation.  It is not a claim of priority for
+unit-circle parity or for reducibility of all the constants displayed below.
+
+\subsection{Conventions, ordinary convergence, and the finite formula}
+Write
+\[
+ Z_{p,q}(x,y)=\Li_{p,q}(x,y)
+ =\sum_{n>m\ge1}\frac{x^ny^m}{n^pm^q},\qquad p,q\ge1.
+\]
+In this section $|x|=|y|=1$ and $x,y\ne1$; the product $r=xy$ is
+allowed to equal one.  These hypotheses include the Gaussian pairs
+$(i,i)$, $(-1,i)$, $(i,-1)$, and $(i,-i)$.
+The ordinary nested series converges, including when $p=1$.
+Indeed, for $y\ne1$, the inner partial sums
+$H_{n-1}^{(q)}(y)=\sum_{m<n}y^m/m^q$ are bounded; the sequence
+$H_{n-1}^{(q)}(y)/n^p$ tends to zero and its successive differences
+are absolutely summable.  Summation by parts against the bounded
+partial sums of $x^n$ proves convergence.
+
+For $|u|=1$ put
+\[
+ \mathcal B_j(u)=\Li_j(u)+(-1)^j\Li_j(u^{-1})\quad(u\ne1).
+\]
+At $u=1$ define
+\[
+ \mathcal B_j(1)=\begin{cases}2\zeta(j),&j\text{ even},\\0,&j\text{ odd}.
+ \end{cases}
+\]
+In particular $\mathcal B_1(1)=0$ is a symmetric bilateral value;
+it is not an assignment of a finite value to $\Li_1(1)$.
+For $u=e^{2\pi i t}$, $0<t<1$, the classical inversion identity gives
+\[
+ \mathcal B_j(u)=-\frac{(2\pi i)^j}{j!}B_j(t),
+\]
+where $B_j(t)$ is the Bernoulli polynomial. Thus all these factors are
+explicit rational multiples of $(i\pi)^j$ at roots of unity.
+
+For $w=p+q$ define
+\begin{align}
+ \mathcal R_{p,q}(x,y)={}&(-1)^q\Biggl[
+ \sum_{j=1}^q(-1)^j\binom{w-j-1}{p-1}
+       \mathcal B_j(r)\Li_{w-j}(x)\notag\\
+ &\qquad+\sum_{j=1}^p\binom{w-j-1}{q-1}
+       \mathcal B_j(r)\Li_{w-j}(y^{-1})\notag\\
+ &\qquad-\binom{w-1}{p}\Li_w(y^{-1})
+       -\binom{w-1}{q}\Li_w(x)
+       \notag\\
+ &\qquad-\mathcal B_p(x)\Li_q(y^{-1})\Biggr]
+       +(-1)^w\Li_w(r^{-1}).
+ \label{bip:eq:R}
+\end{align}
+No $\Li_1(1)$ occurs in this expression: the arguments of the possible
+order-one single values are $x$ and $y^{-1}$, both different from one;
+the last single value has order $w\ge2$.
+
+\begin{theorem}[Explicit bicolored parity, in decreasing-index convention]
+\label{bip:thm:parity}
+For the parameters above,
+\begin{equation}
+ \boxed{\quad Z_{p,q}(x,y)-(-1)^wZ_{p,q}(x^{-1},y^{-1})
+      =\mathcal R_{p,q}(x,y).\quad}
+ \label{bip:eq:parity}
+\end{equation}
+Consequently
+\[
+ \Re Z_{p,q}(x,y)=\frac12\mathcal R_{p,q}(x,y)
+       \quad(w\text{ odd}),
+ \qquad
+ \Im Z_{p,q}(x,y)=\frac1{2i}\mathcal R_{p,q}(x,y)
+       \quad(w\text{ even}).
+\]
+At roots of unity these are finite formulas in single polylogarithms
+and powers of $\pi$.  The opposite parity component is not evaluated
+by this theorem.
+\end{theorem}
+
+\subsection{Proof with the summation order made explicit}
+For $k\ge1$ form the absolutely convergent bilateral sum
+\[
+ C_{p,q}(k;r)=\sum_{m\in\mathbb Z\setminus\{0,-k\}}
+       \frac{r^m}{(m+k)^pm^q}.
+\]
+The denominator is $O(|m|^w)$ as $|m|\to\infty$, and $w\ge2$.
+The elementary partial-fraction identity
+\begin{align}
+ \frac1{(m+k)^pm^q}
+ ={}&\sum_{j=1}^q(-1)^{q-j}\binom{w-j-1}{p-1}
+       \frac1{k^{w-j}m^j}\notag\\
+ &+(-1)^q\sum_{j=1}^p\binom{w-j-1}{q-1}
+       \frac1{k^{w-j}(m+k)^j}
+ \label{bip:eq:pf}
+\end{align}
+holds away from its poles.  It follows either by matching the principal
+parts at $m=0,-k$, after which the difference is a rational function
+with no poles and vanishing at infinity, or by induction on $p+q$.
+
+Sum \eqref{bip:eq:pf} over a symmetric cutoff in $m$.  The possible
+$j=1$ terms are legitimate in this order:
+\[
+ \underset{M\to\infty}{\lim}\sum_{0<|m|\le M}\frac{r^m}{m^j}
+      =\mathcal B_j(r).
+\]
+For $r\ne1$, the two one-sided $j=1$ series converge by Dirichlet's
+test; for $r=1$ they cancel at every symmetric cutoff.  Translating
+the cutoff by the fixed integer $k$ changes the sum by finitely many
+terms tending to zero, so the substitution $m+k=\ell$ is valid.
+Removing the omitted terms $m=-k$ and $\ell=k$ gives
+\begin{align}
+ C_{p,q}(k;r)={}&
+ \sum_{j=1}^q(-1)^{q-j}\binom{w-j-1}{p-1}
+   \frac{\mathcal B_j(r)}{k^{w-j}}\notag\\
+ &+(-1)^qr^{-k}\sum_{j=1}^p\binom{w-j-1}{q-1}
+   \frac{\mathcal B_j(r)}{k^{w-j}}\notag\\
+ &-\frac{(-1)^q}{k^w}
+       \left[\binom{w-1}{p}r^{-k}+\binom{w-1}{q}\right].
+ \label{bip:eq:C}
+\end{align}
+The last line uses the elementary hockey-stick sums
+$\sum_{j=1}^q\binom{w-j-1}{p-1}=\binom{w-1}{p}$ and its
+$p,q$ counterpart.
+
+For $0<\rho<1$ multiply \eqref{bip:eq:C} by $\rho^kx^k$ and sum over
+$k\ge1$. All the original double sums are now absolutely convergent.
+On the right, let $\rho\uparrow1$ in the resulting single
+polylogarithms; their arguments are $x$ and $y^{-1}$, neither equal
+to one.  The result is
+\begin{align}
+ \mathcal A={}&(-1)^q\Biggl[
+ \sum_{j=1}^q(-1)^j\binom{w-j-1}{p-1}
+       \mathcal B_j(r)\Li_{w-j}(x)\notag\\
+ &\quad+\sum_{j=1}^p\binom{w-j-1}{q-1}
+       \mathcal B_j(r)\Li_{w-j}(y^{-1})
+       -\binom{w-1}{p}\Li_w(y^{-1})
+       -\binom{w-1}{q}\Li_w(x)\Biggr].
+ \label{bip:eq:A}
+\end{align}
+
+To identify the left side in the ordinary nested convention, split
+its lattice points, with $n=m+k$, into three disjoint regions:
+$n>m>0$, $0>n>m$, and $n>0>m$. They yield, as $\rho\uparrow1$,
+\begin{equation}
+ \mathcal A=Z_{p,q}(x,y)+(-1)^wZ_{q,p}(y^{-1},x^{-1})
+            +(-1)^q\Li_p(x)\Li_q(y^{-1}).
+ \label{bip:eq:regions}
+\end{equation}
+For completeness, the gap Abel factors $\rho^{n-m}$ used here need
+not be identified informally with outer-index radial factors.  The
+first region is $Z_{p,q}(\rho x,y/\rho)$ and has the integral
+\begin{equation}
+ Z_{p,q}(a,b)=\frac1{(p-1)!}
+    \int_0^1(-\log t)^{p-1}
+            \frac{a\Li_q(abt)}{1-at}\,dt.
+ \label{bip:eq:integral}
+\end{equation}
+For $a=\rho x$, $ab=r$, its limit follows by dominated convergence:
+$1-\rho xt$ is bounded away from zero uniformly for $\rho$ near one;
+$\Li_q(rt)$ is bounded when $q>1$ and at worst logarithmic near
+$t=1$ when $q=1,r=1$.  These are integrable majorants.  The same
+integral identifies this limit with the ordinary nested series via
+outer-index Abel summation.  The negative region is handled
+identically, and the cross region is the product
+$(-1)^q\Li_p(\rho x)\Li_q(\rho/y)$.  This proves
+\eqref{bip:eq:regions} for all stated boundary cases.
+
+Finally the convergent stuffle identity gives
+\[
+ Z_{q,p}(y^{-1},x^{-1})=
+ \Li_q(y^{-1})\Li_p(x^{-1})-\Li_w(r^{-1})
+ -Z_{p,q}(x^{-1},y^{-1}).
+\]
+It follows by multiplying finite partial sums and passing to their
+limits; both nested series have already been shown to converge.
+Substituting this into \eqref{bip:eq:regions} and using
+$\mathcal B_p(x)=\Li_p(x)+(-1)^p\Li_p(x^{-1})$ gives
+\eqref{bip:eq:parity}.  Complex conjugation proves the two displayed
+real/imaginary consequences.
+
+The collision $r=1$ has therefore been proved directly. One can also
+see why it is harmless in \eqref{bip:eq:R}: its $\mathcal B_1(r)$
+coefficient is a constant multiple of
+$\Li_{w-1}(y^{-1})-\Li_{w-1}(x)$, which vanishes at $r=1$.
+The jump in the individual bilateral order-one factor cannot create
+a jump in the complete expression.
+
+\subsection{Proof and simplification of the recorded Family--2 identity}
+Let $L=\log2$, $G=\beta(2)$, and $v=(1+i)/2$. The exact depth-one
+values required at weight three are
+\[
+ \Li_1(i)=-\frac L2+\frac{i\pi}4,\quad
+ \Li_2(i)=-\frac{\pi^2}{48}+iG,\quad
+ \Li_3(i)=-\frac{3\zeta(3)}{32}+\frac{i\pi^3}{32},
+\]
+with $\Li_n(-i)=\overline{\Li_n(i)}$ and
+$\Li_n(-1)=-(1-2^{1-n})\zeta(n)$ for $n>1$.
+Here $\mathcal B_1(-1)=0$ and
+$\mathcal B_2(-1)=-\pi^2/6$. Inserting these numbers in
+\eqref{bip:eq:R}, first at $(p,q)=(1,2)$ and then at $(2,1)$,
+gives
+\begin{align}
+ \Re\Li_{1,2}(i,i)
+   &=\frac{33}{64}\zeta(3)-\frac\pi4G+\frac{\pi^2L}{24},
+       \label{bip:eq:12}\\
+ \Re\Li_{2,1}(i,i)
+   &=\frac{15}{64}\zeta(3)-\frac{\pi^2L}{32}.
+       \label{bip:eq:21}
+\end{align}
+Consequently the desired difference has the short exact form
+\begin{equation}
+ \boxed{\quad
+ \Re\bigl(\Li_{1,2}(i,i)-\Li_{2,1}(i,i)\bigr)
+ =\frac9{32}\zeta(3)-\frac\pi4G+\frac7{96}\pi^2\log2.
+ \quad}
+ \label{bip:eq:family2-short}
+\end{equation}
+
+To identify this with the exact equation printed in the source, write
+$\mu_2=\Re\Li_2(v)$, $\lambda_2=\Im\Li_2(v)$ and
+$h_{a,b}=\Re\Li_{a,b}(i,1)$. The classical Landen formula
+\[
+ \Li_2\!\left(\frac z{z-1}\right)
+      =-\Li_2(z)-\frac12\log^2(1-z)
+\]
+(applied along the segment $z=it$, $0\le t\le1$) gives
+\[
+ \mu_2=\frac{5\pi^2}{96}-\frac{L^2}{8},\qquad
+ \lambda_2=G-\frac{\pi L}{8}.
+\]
+Its derivative is an identity of elementary logarithms and its
+constant is fixed at $z=0$, so no numerical recognition is needed.
+The shuffle identity immediately gives
+\[
+ h_{1,1}=\frac{L^2}{8}-\frac{\pi^2}{32}.
+\]
+For the remaining height-one value put
+\[
+ S(z)=\Li_{2,1}(z,1)=\frac12\int_0^z\frac{\log^2(1-t)}t\,dt.
+\]
+The needed inversion is already recorded after the proof of the source's
+Proposition~1.12, ``Nielsen inversion with explicit endpoint data''
+\cite{SourceManuscript}; both the inversion and its Gaussian specialization
+are also explicit in Panzer's discussion following Corollary~1.4
+\cite{bip:Panzer2017}.  To make the present proof independent of an
+unlabelled source display, let $u=\log(-z)$ on
+$\mathbb C\setminus[0,\infty)$.  The identity
+$\log(1-1/z)=\log(1-z)-u$ shows by differentiation that
+\[
+ S(z)+S(1/z)-\Li_3(z)+u\Li_2(z)+\frac{u^3}{6}
+\]
+is constant.  Here
+\[
+ S(1)=\frac12\int_0^1\frac{\log^2t}{1-t}\,dt=\zeta(3),
+\]
+where the last equality follows by integrating the geometric series.
+Letting $z\to1$ along the upper unit semicircle gives $u\to-i\pi$;
+the two cubic imaginary terms cancel because $\zeta(2)=\pi^2/6$.
+The constant is therefore $\zeta(3)$, proving
+\begin{equation}\label{bip:eq:nielsen-inversion}
+ S(z)+S(1/z)=\Li_3(z)-\log(-z)\Li_2(z)
+               -\frac16\log^3(-z)+\zeta(3).
+\end{equation}
+At $z=i$, conjugation gives $S(1/i)=\overline{S(i)}$ and
+$\log(-i)=-i\pi/2$, so
+\[
+ h_{2,1}=\frac{29}{64}\zeta(3)-\frac\pi4G.
+\]
+Finally $\Li_1(i)\Li_2(i)=\Li_{1,2}(i,1)+2\Li_{2,1}(i,1)$
+gives
+\[
+ h_{1,2}=\Re\bigl(\Li_1(i)\Li_2(i)\bigr)-2h_{2,1}
+       =\frac{\pi^2L}{96}+\frac\pi4G-\frac{29}{32}\zeta(3).
+\]
+Direct rational substitution now yields
+\[
+ 3\zeta(3)-4L\mu_2-\pi\lambda_2-4Lh_{1,1}+3h_{1,2}
+ =\frac9{32}\zeta(3)-\frac\pi4G+\frac7{96}\pi^2L.
+\]
+This proves \texttt{double:eq:fam2-example} precisely as written,
+and proves its stronger simplification \eqref{bip:eq:family2-short}.
+The statement needs no conjectured independence of the three constants.
+
+\subsection{Mixed-color examples beyond the displayed source equation}
+The same finite formula gives the following exact evaluations:
+\begin{align}
+ \Re\bigl(\Li_{1,2}(-1,i)-\Li_{2,1}(i,-1)\bigr)
+   &=\frac{15}{16}\zeta(3)-\frac\pi2G+\frac{\pi^2L}{48},
+       \label{bip:eq:mix3}\\
+ \Im\bigl(\Li_{1,3}(-1,i)-\Li_{3,1}(i,-1)\bigr)
+   &=\frac{3\pi^3L}{32}-3\beta(4)+\frac{21\pi\zeta(3)}{64},
+       \label{bip:eq:mix4}\\
+ \Re\bigl(\Li_{1,4}(-1,i)-\Li_{4,1}(i,-1)\bigr)
+   &=\frac{7\pi^4L}{11520}-\frac\pi2\beta(4)
+          +\frac{\pi^2\zeta(3)}{32}+\frac{135}{128}\zeta(5),
+       \label{bip:eq:mix5}\\
+ \Im\bigl(\Li_{1,5}(-1,i)-\Li_{5,1}(i,-1)\bigr)
+   &=\frac{5\pi^5L}{512}-5\beta(6)
+          +\frac{465\pi\zeta(5)}{1024}
+          +\frac{3\pi^3\zeta(3)}{64}.
+       \label{bip:eq:mix6}
+\end{align}
+Both indices \emph{and} colors are swapped in these antisymmetric
+expressions. They are elementary rational specializations of
+Theorem~\ref{bip:thm:parity}, not additional parity conjectures.
+The accompanying symbolic generator derives the Gaussian formulas at
+all requested weights; a separate Mellin-integral evaluator checks the
+left sides without reusing the theorem as its evaluation algorithm.
+
+As a collision check, the case $p=q=1$, $(x,y)=(i,-i)$ gives
+\[
+ \Im\Li_{1,1}(i,-i)=G-\frac{\pi\log2}{8}.
+\]
+Here the symmetric bilateral value $\mathcal B_1(1)=0$ is essential to
+avoid introducing a spurious divergent $\Li_1(1)$.
+
+
+\subsection{An all-weight family of ordinary logarithmic integrals}
+The single-inner-index specialization has an additional cancellation:
+no even beta values remain in its real odd-weight component.
+
+\begin{corollary}[Odd logarithmic moments]
+For $m\ge1$, put $w=2m+1$ and
+\[
+ I_m=\frac1{(2m-1)!}\int_0^1
+       \frac{x(-\log x)^{2m-1}\log(1+x)}{1+x^2}\,dx.
+\]
+Then
+\begin{align}
+ I_m={}&\frac12(1-2^{-2m})
+        \left(1-\frac{2m+1}{2^{2m+1}}\right)\zeta(2m+1)\notag\\
+ &-\sum_{k=1}^{m-1}
+  \frac{(1-2^{1-2k})(1-2^{1-w+2k})}{2^{w-2k}}
+       \zeta(2k)\zeta(w-2k)\notag\\
+ &-\frac12(1-2^{1-2m})(1-2^{-2m})\zeta(2m)\log2.
+ \label{bip:eq:moment-family}
+\end{align}
+In particular,
+\begin{align*}
+ I_1&=\frac{15}{64}\zeta(3)-\frac{\pi^2\log2}{32},\\
+ I_2&=\frac{405}{1024}\zeta(5)-\frac{\pi^2\zeta(3)}{128}
+                     -\frac{7\pi^4\log2}{1536},\\
+ I_3&=\frac{7623}{16384}\zeta(7)-\frac{5\pi^2\zeta(5)}{2048}
+       -\frac{7\pi^4\zeta(3)}{7680}-\frac{31\pi^6\log2}{61440}.
+\end{align*}
+\end{corollary}
+\begin{proof}
+Equation~\eqref{bip:eq:integral} with $(x,y)=(i,i)$ and $q=1$
+gives $I_m=\Re Z_{2m,1}(i,i)$, since
+$\Li_1(-t)=-\log(1+t)$ and $\Re(i/(1-it))=-t/(1+t^2)$.
+In \eqref{bip:eq:R} use
+$\mathcal B_{2k}(-1)=2\Li_{2k}(-1)$ and
+$\mathcal B_{2k+1}(-1)=0$. Writing
+$u_j=\Re\Li_j(i)$, the real part simplifies before any
+zeta evaluation to
+\[
+ 2I_m=-2\sum_{k=1}^{m}\Li_{2k}(-1)u_{w-2k}
+           +w u_w-u_{2m}\log2-\Li_w(-1).
+\]
+Now $u_1=-\log2/2$ and
+$u_j=-2^{-j}(1-2^{1-j})\zeta(j)$ for $j\ge2$.
+Separate the $k=m$ term and substitute these expressions to obtain
+\eqref{bip:eq:moment-family}.  Euler's even-zeta evaluations yield
+the three displayed cases.
+\end{proof}
+
+Two weight-three integral identities also follow directly:
+\begin{align*}
+ \int_0^1\frac{x\log x\log(1+x)}{1+x^2}\,dx
+  &=\frac{\pi^2\log2}{32}-\frac{15}{64}\zeta(3),\\
+ \int_0^1\frac{x\Li_2(-x)}{1+x^2}\,dx
+  &=\frac\pi4G-\frac{\pi^2\log2}{24}-\frac{33}{64}\zeta(3).
+\end{align*}
+These are ordinary real integrals with their constants fixed by the
+convergent endpoint representation. They may be useful as simple
+benchmark identities alongside the bicolored-polylogarithm form.
+
+\subsection{Audit conclusion and what this does not settle}
+The numeric Family--2 example can now be marked proved and replaced,
+if desired, by \eqref{bip:eq:family2-short}; its older coordinates can
+be preserved as an exact equivalent identity. No false equality was
+found in that example. The correction is to its evidence status and
+to an unnecessarily large choice of constants.
+
+The master identity proves the real components in odd weight and the
+imaginary components in even weight for every admissible Gaussian
+mixed pair, and provides the same statement at all roots of unity.
+It therefore supplies an exact replacement for searches in these
+parity components. It does not prove nonreduction in the complementary
+components.
+In particular $S_6$ and $S_8$ have odd total weights seven and nine
+and are imaginary components. They lie in the opposite parity sector;
+this theorem proves neither frozen candidate. The rational
+weight-nine vector already excluded in the source remains false, and
+the newer $S_6,S_8$ candidates remain conjectural. The higher golden
+ladders are also unaffected.
+
+\paragraph{Attribution safeguard.}
+When comparing formulas, Panzer uses increasing summation indices,
+so both indices and arguments must be reversed to use his notation.
+Panzer's footnote~16 explicitly flags a transposed product in
+Nakamura's printed equation~(1.3): the product
+$\zeta(a;-y)\zeta(b;x)$ must be replaced by
+$\zeta(a;x)\zeta(b;-y)$ in that convention. The direct proof above
+rebuilds the products from the three lattice regions and therefore
+avoids relying on the misprinted equation. This is a literature
+normalization issue, not a newly discovered source-manuscript error.
+
+% Bibliography entries, if not already present in the host:
+% \bibitem{bip:Panzer2017}
+% E. Panzer, The parity theorem for multiple polylogarithms,
+% Journal of Number Theory 172 (2017), 93--113.
+% \url{https://arxiv.org/abs/1512.04482}.
+% \bibitem{bip:Nakamura2012}
+% T. Nakamura, A simple proof of the functional relation for the Lerch type
+% Tornheim double zeta function, Tokyo Journal of Mathematics 35 (2012),
+% 333--337. \url{https://arxiv.org/abs/1012.1144}.

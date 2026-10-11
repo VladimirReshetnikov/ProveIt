@@ -1,0 +1,541 @@
+\section{One singular Laurent coordinate at every Gamma--Appell degree}
+\label{ac:section}
+
+The newest canonical-digamma report proves that a Gamma--Appell sequence
+matches the nondecaying harmonic residues of the digamma powers, and
+asks which lower spectral coordinates survive
+\cite{Fifth}. The higher-power and mixed-resolvent reports give
+terminating harmonic-word compilers and complete fifth-power formulas,
+but leave the sixth and seventh cases and a uniform preferred spectral
+support as explicit further targets \cite{Higher,Mixed}.
+The result here settles a precise part of that question at every degree:
+one normalization removes \emph{all lower singular Laurent coordinates}.
+The remaining terms have ordinary absolutely convergent multiple-zeta
+derivatives. It does not remove every lower-depth arithmetic constant,
+and it makes no assertion of arithmetic independence.
+
+\subsection{The normalized moments and their finite data}
+
+Define
+\begin{equation}\label{ac:appell}
+ \mathsf P_m(Y)=m![t^m]\Gamma(1-t)e^{tY},\qquad
+ \mathsf S_m=\FP\int_0^1\mathsf P_m(\psi(x))\,\dd x.
+\end{equation}
+The finite part uses the original cutoff $x=\varepsilon$.
+For $m\ge2$, write
+\begin{equation}\label{ac:coordinates}
+ \frac1{\Gamma(1+t)}=\sum_{j\ge0}c_jt^j,
+ \qquad
+ \lambda_d=[s^1]Z_d(1+s,\underbrace{1,\ldots,1}_{d-1}),
+ \quad d\ge1.
+\end{equation}
+Here $Z_d$ is the strict multiple zeta function, with the largest
+summation index first. The coefficient of a Laurent germ has no
+additional factorial or alternating sign. In particular
+$\lambda_1=-\gamma_1$.
+
+Let $p_{m,j}(n)$ be the coefficient of $(x+n)^{-j}$ in
+$\mathsf P_m(\psi(x))$ at $x=-n$, and put
+\begin{align}
+ e_r(n)&=H_n(\{1\}^r),\qquad e_0(n)=1,\notag\\
+ \delta_m(n)&=p_{m,1}(n)+m!e_{m-1}(n),\label{ac:defect}\\
+ \mathsf J_m&=\sum_{n\ge1}\sum_{j=2}^m
+       \frac{p_{m,j}(n)-p_{m,j}(n-1)}{(j-1)n^{j-1}},
+       \label{ac:J}\\
+ \mathsf D_m&=-\sum_{n\ge1}
+                \bigl(\delta_m(n)-\delta_m(n-1)\bigr)\log n.
+       \label{ac:D}
+\end{align}
+The infinite expressions in \eqref{ac:J} and \eqref{ac:D} will be
+replaced by finite multiple-zeta formulas. They are also useful
+ordinary convergent representatives for numerical evaluation.
+
+\begin{theorem}[All lower singular Laurent coordinates disappear]
+\label{ac:main}
+For every integer $m\ge2$,
+\begin{equation}\label{ac:mainformula}
+ \boxed{\displaystyle
+ \mathsf S_m=m!\bigl(c_m-\lambda_{m-1}\bigr)
+                 +\mathsf J_m+\mathsf D_m.}
+\end{equation}
+The following assertions specify a finite arithmetic normal form.
+\begin{enumerate}
+ \item $\mathsf J_m$ is a finite linear combination of ordinary
+ admissible multiple zeta values, with coefficients in
+ $\Q[\zeta(2),\ldots,\zeta(m)]$.
+ \item $\mathsf D_2=\mathsf D_3=0$. For $m\ge4$, $\mathsf D_m$
+ is a finite linear combination of first partial derivatives
+ $\partial_j Z_d(s_1,\ldots,s_d)$ at admissible positive-integer
+ indices, with $d\le m-3$. Each derivative has an ordinary
+ absolutely convergent defining series in a full parameter
+ neighborhood of its evaluation point.
+ \item Every fixed word in these finite expressions has weight
+ at most $m-1$. Assigning weight $r$ to a coefficient $\zeta(r)$
+ makes each summand have total weight $m-1$ before the spectral
+ differentiation.
+\end{enumerate}
+Thus $\lambda_{m-1}$ is the only singular Laurent coefficient
+needed by this construction. No lower $\lambda_d$ is retained.
+\end{theorem}
+
+\begin{proof}[The finite-part identity]
+The scalar version of Theorem~\ref{poly:bridge} is linear in its
+polynomial argument. Its large-circle constant for $\mathsf P_m$ is
+\[
+ m![t^m]\Gamma(1-t)\frac1{2\pi}
+       \int_{-\pi}^{\pi}e^{it\theta}\,\dd\theta
+ =m![t^m]\Gamma(1-t)\frac{\sin\pi t}{\pi t}
+ =m!c_m.
+\]
+The last equality is Euler's reflection formula. The generating
+identity
+\[
+ \operatorname*{Res}_{x=-n}
+ \frac{\Gamma(1-t)\Gamma(x)}{\Gamma(x-t)}
+       =-t\prod_{k=1}^n(1+t/k)
+\]
+explains the comparison term $-m!e_{m-1}(n)$; its use here is
+consistent with the established differential normalization in
+\cite{Fifth}. Since
+\[
+ e_{m-1}(n)-e_{m-1}(n-1)=\frac{e_{m-2}(n-1)}n,
+\]
+the meromorphic residue-difference series is
+\begin{equation}\label{ac:Dsplit}
+ \sum_{n\ge1}\frac{p_{m,1}(n)-p_{m,1}(n-1)}{n^s}
+ =-m!Z_{m-1}(1+s,\{1\}^{m-2})
+   +\sum_{n\ge1}\frac{\delta_m(n)-\delta_m(n-1)}{n^s}.
+\end{equation}
+The next proof shows that the second series is holomorphic for
+$\Re s>-1$ and that its coefficient of $s$ is exactly
+$\mathsf D_m$. Extracting the coefficient in the scalar bridge
+gives \eqref{ac:mainformula}, including its endpoint and angular
+constants. The finite-word description of $\mathsf J_m$ follows
+from the same finite-difference and quasi-shuffle construction as
+Theorem~\ref{poly:words}; its initial index is at least two.
+\end{proof}
+
+\subsection{Why the correction is a finite convergent derivative family}
+
+The proof can be made completely explicit without assigning a new
+regularization to any mixed term. Set
+\begin{equation}\label{ac:tails}
+ h=H_n,\qquad A_r(n)=\zeta(r)-H_n^{(r)}=\sum_{k>n}k^{-r},
+                     \qquad r\ge2.
+\end{equation}
+
+\begin{lemma}[The tail ideal and the depth bound]
+\label{ac:tailideal}
+For every fixed $m$, $\delta_m(n)$ is a polynomial
+$\delta_m(h,A_2,A_3,\ldots)$ with coefficients in the ordinary
+zeta algebra. It vanishes identically when all $A_r$ are set to
+zero. For $m\ge4$, its degree in the harmonic variables
+$h,A_2,A_3,\ldots$, counting each of them with degree one, is at
+most $m-3$. Moreover $\delta_2=\delta_3=0$.
+\end{lemma}
+
+\begin{proof}
+The exact local Laurent expansion is
+\begin{equation}\label{ac:local}
+ \psi(-n+v)=H_n-\gamma-\frac1v
+       +\sum_{r\ge1}\bigl(H_n^{(r+1)}+(-1)^{r+1}\zeta(r+1)\bigr)v^r.
+\end{equation}
+Only finitely many coefficients enter any fixed residue. Substituting
+$H_n^{(r)}=\zeta(r)-A_r$ proves polynomiality.
+With every $A_r=0$, the right side is
+$h-\gamma-\pi\cot\pi v$. The universal cotangent residue
+\[
+ \Res_{v=0}e^{-\pi t\cot\pi v}=-\frac{\sin\pi t}{\pi}
+\]
+therefore gives the zero-tail residue generator (the residue identity follows coefficientwise from \eqref{poly:reschange})
+\[
+ -\Gamma(1-t)e^{(h-\gamma)t}\frac{\sin\pi t}{\pi}
+ =-t\frac{e^{(h-\gamma)t}}{\Gamma(1+t)}.
+\]
+On the other hand the zero-tail specialization of the elementary
+harmonic generator is
+\[
+ \sum_{r\ge0}e_r t^r
+ =\exp\left(ht+\sum_{r\ge2}\frac{(-1)^{r-1}\zeta(r)}r t^r\right)
+ =\frac{e^{(h-\gamma)t}}{\Gamma(1+t)}.
+\]
+Their sum in \eqref{ac:defect} is zero. This proves membership in
+the ideal generated by the $A_r$, using exact Gamma identities.
+
+For the harmonic degree, first keep $h_r=H_n^{(r)}$ as independent
+variables and write $h=h_1$. The centered Gamma--Appell generator is
+\[
+ \Gamma(1-t)e^{tY}
+ =\exp\left((Y+\gamma)t+\sum_{r\ge2}\frac{\zeta(r)}r t^r\right).
+\]
+For $m\ge3$, the only terms of harmonic degree $m-1$ and $m-2$
+in its simple-pole coefficient are respectively
+\[
+ -m h^{m-1},\qquad
+ \frac{m!}{2(m-3)!}h_2h^{m-3}.
+\]
+Indeed the first chooses one $-1/v$. To have only one fewer
+harmonic factor, one must choose two $-1/v$ factors and one
+$h_2v$ factor. Any other positive power of $v$, additional
+negative-power factor, or ordinary-zeta coefficient lowers the
+harmonic degree further. The same two terms occur in
+$-m!e_{m-1}$ by expansion of the elementary harmonic generator.
+They cancel in $\delta_m$. Replacing $h_r$ by $\zeta(r)-A_r$
+cannot increase this degree. Direct extraction at $m=2,3$ gives
+zero defects, completing the proof.
+\end{proof}
+
+Let $h=H_{n-1}$ and $v=1/n$, while $A_r=A_r(n)$ is the
+\emph{strict upper} tail. The finite difference is consequently
+the exact polynomial
+\begin{equation}\label{ac:delta-rule}
+ \delta_m(n)-\delta_m(n-1)
+ =\delta_m(h+v,A_2,A_3,\ldots)
+   -\delta_m(h,A_2+v^2,A_3+v^3,\ldots).
+\end{equation}
+Every monomial has the form
+\begin{equation}\label{ac:monomial}
+ a\,v^q h^b\prod_{r\ge2}A_r^{b_r},\qquad q\ge1.
+\end{equation}
+If it contains no upper tail, then $q\ge2$. This last restriction
+is decisive: a term with $q=1$ arises only by changing $h$, so
+the tail-ideal property leaves an upper tail behind.
+
+For a word $\mathbf a=(a_1,\ldots,a_r)$ of entries at least two,
+define
+\[
+ T_{\mathbf a}(n)=\sum_{k_1>\cdots>k_r>n}
+                        k_1^{-a_1}\cdots k_r^{-a_r}.
+\]
+The empty upper word and empty lower word both have value one.
+Apply the strict quasi-shuffle rule separately to the upper-tail
+product and to $h^b$. Each monomial becomes a finite sum of
+$n^{-q}T_{\mathbf a}(n)H_{n-1}(\mathbf b)$. Then
+\begin{equation}\label{ac:concatenate}
+ \sum_{n\ge1}\frac{T_{\mathbf a}(n)H_{n-1}(\mathbf b)}{n^{q+s}}
+       =Z(\mathbf a,q+s,\mathbf b).
+\end{equation}
+The index ordering on the two sides is identical. If the upper word
+is empty then $q\ge2$; otherwise the first entry is at least two.
+All entries are positive integers at $s=0$, so these series and
+their first derivatives converge absolutely on a small complex
+neighborhood. Equivalently, elementary tail estimates in
+\eqref{ac:monomial} give $O(n^{-2}(1+\log n)^B)$ before
+inserting $n^{-s}$, proving normal convergence for $\Re s>-1$.
+
+Differentiation of \eqref{ac:concatenate} therefore gives the
+explicit conversion rule
+\begin{equation}\label{ac:marked-rule}
+ -\sum_{n\ge1}\frac{T_{\mathbf a}(n)H_{n-1}(\mathbf b)\log n}{n^q}
+ =\partial_{r+1}Z(\mathbf a,q,\mathbf b),\qquad r=|\mathbf a|.
+\end{equation}
+Taking a nonzero finite difference replaces at least one harmonic
+factor by a power of $v$. The remaining harmonic-factor count is
+at most $m-4$; adjoining the distinguished $n$ in
+\eqref{ac:concatenate} gives depth at most $m-3$.
+This completes the proof of Theorem~\ref{ac:main} and provides a
+terminating finite algorithm for every term it retains.
+
+\subsection{Explicit sixth and seventh normalized powers}
+
+For an admissible integer word $\mathbf w$, write
+$Z_{\mathbf w}=Z(\mathbf w)$ and let
+\begin{equation}\label{ac:directions}
+ \Delta_{ij}Z_{\mathbf w}=(\partial_i-\partial_j)Z(\mathbf w).
+\end{equation}
+These are derivatives of a genuinely free-order analytic function.
+They are not obtained by differentiating an identity valid only
+at integer orders.
+
+\begin{theorem}[The sixth normalized digamma moment]
+\label{ac:sixth}
+The sixth-degree identity is
+\begin{equation}\label{ac:sixthmain}
+ \boxed{\displaystyle
+ \mathsf S_6=720(c_6-\lambda_5)
+                +245\zeta(2)\zeta(3)+175\zeta(5)+\mathsf D_6,}
+\end{equation}
+where the entire mixed correction is the following finite sum of
+convergent derivatives:
+\begin{align}\label{ac:D6}
+ \mathsf D_6={}&120\zeta(2)\Delta_{12}Z_{2,1}
+      -60\Delta_{23}Z_{2,2,1}
+      +120\Delta_{12}Z_{3,1,1}\notag\\
+ &-180\Delta_{12}Z_{4,1}-30\Delta_{12}Z_{2,3}
+      +138\zeta'(5)-60\zeta(2)\zeta'(3)
+                        +30\zeta(3)\zeta'(2).
+\end{align}
+\end{theorem}
+
+\begin{theorem}[The seventh normalized digamma moment]
+\label{ac:seventh}
+The seventh-degree identity is
+\begin{equation}\label{ac:seventhmain}
+ \boxed{\displaystyle
+ \mathsf S_7=5040(c_7-\lambda_6)
+       +\frac{3731}{4}\zeta(3)^2
+       +\frac{918631}{240}\zeta(6)+\mathsf D_7,}
+\end{equation}
+where
+\begin{align}\label{ac:D7}
+ \mathsf D_7={}&840\zeta(2)\Delta_{12}Z_{2,1,1}
+       -840\zeta(2)\Delta_{12}Z_{3,1}
+       +210\zeta(2)\partial_1 Z_{2,2}\notag\\
+ &-420\Delta_{23}Z_{2,2,1,1}
+       +630\Delta_{23}Z_{2,3,1}
+       +840\Delta_{12}Z_{3,1,1,1}\notag\\
+ &+420\Delta_{12}Z_{3,1,2}
+       +210(2\Delta_{13}+\Delta_{23})Z_{3,2,1}
+       +210\partial_1 Z_{2,2,2}\notag\\
+ &+798\partial_1 Z_{3,3}
+       -1260\Delta_{12}Z_{4,1,1}
+       +168\Delta_{12}Z_{2,4}+1596\Delta_{12}Z_{5,1}\notag\\
+ &+\frac{651}{2}\zeta(4)\zeta'(2)
+       +336\zeta(2)\zeta'(4)
+       -378\zeta(3)\zeta'(3)-504\zeta'(6).
+\end{align}
+\end{theorem}
+
+For completely explicit integrands, put $U=\psi(x)+\gamma$.
+Then
+\begin{align}\label{ac:P6}
+ \mathsf P_6(\psi)={}&U^6+15\zeta(2)U^4+40\zeta(3)U^3
+       +\frac{405}{2}\zeta(4)U^2\notag\\
+ &+(120\zeta(2)\zeta(3)+144\zeta(5))U
+       +40\zeta(3)^2+\frac{2745}{8}\zeta(6),\\
+ \mathsf P_7(\psi)={}&U^7+21\zeta(2)U^5+70\zeta(3)U^4
+       +\frac{945}{2}\zeta(4)U^3\notag\\
+ &+(420\zeta(2)\zeta(3)+504\zeta(5))U^2
+       +\left(280\zeta(3)^2+\frac{19215}{8}\zeta(6)\right)U\notag\\
+ &+945\zeta(3)\zeta(4)+504\zeta(2)\zeta(5)+720\zeta(7).
+       \label{ac:P7}
+\end{align}
+% Suggested replacement/extension of the paragraph following ac:P7.
+% Uses only the macros and citation keys already used by appell_section.tex.
+\subsection{Recovering raw moments without external tables}
+
+Put $Q_m=\FP\int_0^1\psi(x)^m\,\dd x$, with $Q_0=1$.
+The inverse of the Gamma--Appell normalization is the finite formula
+\begin{equation}\label{ac:rawclosed}
+ \boxed{\displaystyle
+ Q_m=m!\sum_{k=0}^m\frac{(-1)^{m-k}c_{m-k}}{k!}\,\mathsf S_k.}
+\end{equation}
+Indeed, the defining polynomial identity gives the formal-power-series
+relation
+\[
+ \sum_{m\ge0}\frac{\mathsf S_m}{m!}t^m
+   =\Gamma(1-t)\sum_{m\ge0}\frac{Q_m}{m!}t^m.
+\]
+Multiplication by $1/\Gamma(1-t)=\sum_{j\ge0}(-1)^jc_jt^j$
+proves \eqref{ac:rawclosed}. This is a coefficientwise polynomial
+argument; it requires no interchange of an infinite series with a
+finite-part integral. The coefficients themselves are determined by
+\begin{equation}\label{ac:crecurrence}
+ c_0=1,\qquad
+ j c_j=\gamma c_{j-1}
+       +\sum_{r=2}^j(-1)^{r+1}\zeta(r)c_{j-r},\qquad j\ge1.
+\end{equation}
+
+For completeness, the lower degrees already treated in the earlier
+reports \cite{Higher,Fifth} take the following form in the
+present normalization. They are recovered prior inputs, included to
+make the sixth- and seventh-power evaluations self-contained:
+\begin{align}
+ \mathsf S_0&=1,\qquad \mathsf S_1=\gamma,
+       \label{ac:lowerinitial}\\
+ \mathsf S_2&=2(c_2-\lambda_1),\nonumber\\
+ \mathsf S_3&=6(c_3-\lambda_2)+3\zeta(2),\nonumber\\
+ \mathsf S_4&=24(c_4-\lambda_3)+12\zeta(3)+4\zeta'(3),\nonumber\\
+ \mathsf S_5&=120(c_5-\lambda_4)+\frac{260}{3}\zeta(4)
+                     +\mathsf D_5,\label{ac:lowernormalized}\\
+ \mathsf D_5&=20\zeta(2)\zeta'(2)-10\partial_2Z_{2,2}
+       +20\Delta_{12}Z_{3,1}-30\zeta'(4).
+       \label{ac:lowerD5}
+\end{align}
+Here $Z_{a,b}=Z_2(a,b)$ and
+$\Delta_{12}=\partial_1-\partial_2$, with all derivatives evaluated
+at the displayed indices. In particular, all terms in
+$\mathsf D_5$ have ordinary absolutely convergent defining series.
+The value $\mathsf S_1=\gamma$ uses
+$\FP\int_0^1\psi(x)\,\dd x=0$, as follows directly from
+$\int_\varepsilon^1\psi(x)\,\dd x=-\log\Gamma(\varepsilon)$.
+
+Here is a short independent check of the lower arithmetic terms.
+The Laurent coefficients at degrees two and three give
+$\mathsf J_2=0$, $\mathsf J_3=3\zeta(2)$, and
+$\delta_2=\delta_3=0$. At degrees four and five,
+\[
+ \mathsf J_4=12Z_{2,1}=12\zeta(3),\qquad
+ \mathsf J_5=60Z_{2,1,1}+10Z_{2,2}
+                 +10\zeta(2)^2-\frac{35}{6}\zeta(4).
+\]
+The classical identities $Z_{2,1,1}=\zeta(4)$,
+$Z_{2,2}=3\zeta(4)/4$, and
+$\zeta(2)^2=5\zeta(4)/2$ give
+$\mathsf J_5=260\zeta(4)/3$.
+In the tail notation \eqref{ac:tails},
+\[
+ \delta_4=-4A_3,\qquad
+ \delta_5=5A_2^2-20\zeta(2)A_2-20hA_3+25A_4.
+\]
+For the consecutive difference use $h=H_{n-1}$,
+$A_r=A_r(n)$, and $v=1/n$. These two defects give respectively
+\[
+ 4v^3,\qquad
+ -10A_2v^2-20A_3v+20hv^3-30v^4+20\zeta(2)v^2.
+\]
+Multiplication by $-\log n$ and summation proves
+$\mathsf D_4=4\zeta'(3)$ and \eqref{ac:lowerD5} directly from
+the convergent strict multiple sums. Equations
+\eqref{ac:rawclosed}--\eqref{ac:lowerD5}, together with
+\eqref{ac:sixthmain} and \eqref{ac:seventhmain}, therefore give
+explicit finite reductions of $Q_6$ and $Q_7$ using only coordinates
+defined in this article.
+
+\subsection{Proof ledger for the two higher-degree identities}
+
+For reproducibility, the residue defects that generate every
+directional term above are printed in full. In the next two formulas
+$h=H_n$ and $A_r=A_r(n)$ as in \eqref{ac:tails}:
+\begin{align}\label{ac:delta6}
+ \delta_6={}&30A_2^2h-90A_2A_3-120\zeta(2)A_2h
+       -60A_3h^2+120\zeta(2)A_3+150A_4h-138A_5,\\
+ \delta_7={}&70A_2^3+105A_2^2h^2-315\zeta(2)A_2^2
+       -630A_2A_3h+588A_2A_4\notag\\
+ &-420\zeta(2)A_2h^2-126\zeta(4)A_2+259A_3^2
+       -140A_3h^3+840\zeta(2)A_3h-280\zeta(3)A_3\notag\\
+ &+525A_4h^2-651\zeta(2)A_4-966A_5h+833A_6.
+       \label{ac:delta7}
+\end{align}
+They follow by finite coefficient extraction in \eqref{ac:local},
+\eqref{ac:appell}, and the elementary harmonic generator. Applying
+\eqref{ac:delta-rule} and \eqref{ac:marked-rule} to these two
+polynomials gives the unsimplified directional formulas recorded
+in the attached exact coefficient tables.
+
+Only the following free-order identities are needed to simplify
+their symmetric derivative parts:
+\begin{align}
+ \zeta(a)\zeta(b)&=Z(a,b)+Z(b,a)+\zeta(a+b),\label{ac:free-stuffle}\\
+ Z(s,s,s)&=\frac{\zeta(s)^3-3\zeta(s)\zeta(2s)+2\zeta(3s)}6.
+       \label{ac:equal-triple}
+\end{align}
+Both hold on open absolute-convergence domains. In particular
+\begin{align*}
+ (\partial_1+\partial_2)Z(2,2)
+       &=\zeta(2)\zeta'(2)-\zeta'(4),\\
+ (\partial_1+\partial_2)Z(3,3)
+       &=\zeta(3)\zeta'(3)-\zeta'(6),\\
+ (\partial_1+\partial_2+\partial_3)Z(2,2,2)
+       &=\frac34\zeta(4)\zeta'(2)-\zeta(2)\zeta'(4)+\zeta'(6).
+\end{align*}
+The derivative identities for $(2,3)$ and $(2,4)$ are obtained by
+differentiating \eqref{ac:free-stuffle} in either argument. Direct
+substitution yields \eqref{ac:D6} and \eqref{ac:D7}. Integer-index
+duality is used only for ordinary values in $\mathsf J_m$, never
+for these derivatives.
+
+For completeness, the ordinary word calculations before the last
+reductions are
+\begin{align}\label{ac:J6ledger}
+ \mathsf J_6={}&90\zeta(2)\zeta(3)+60\zeta(2)Z_{2,1}
+       +360Z_{2,1,1,1}+60Z_{2,1,2}+60Z_{2,2,1}\notag\\
+ &-30Z_{2,3}-15\zeta(2)\zeta(3)-15Z_{3,2}
+       -35Z_{4,1}-\frac52\zeta(5),\\
+ \mathsf J_7={}&588\zeta(4)\zeta(2)+630\zeta(3)Z_{2,1}
+       +420\zeta(2)Z_{2,1,1}+2520Z_{2,1,1,1,1}\notag\\
+ &+420(Z_{2,1,1,2}+Z_{2,1,2,1}+Z_{2,2,1,1})
+       -210(Z_{2,1,3}+Z_{2,3,1})-42Z_{2,4}\notag\\
+ &-42\zeta(3)^2-105\zeta(2)Z_{3,1}
+       -105(Z_{3,1,2}+Z_{3,2,1})-63Z_{3,3}\notag\\
+ &-77\zeta(2)\zeta(4)-245Z_{4,1,1}-77Z_{4,2}
+       -\frac{35}{2}Z_{5,1}+\frac{189}{10}\zeta(6).
+       \label{ac:J7ledger}
+\end{align}
+The familiar weight-five Euler and duality identities reduce
+\eqref{ac:J6ledger} to $245\zeta(2)\zeta(3)+175\zeta(5)$.
+The weight-six entries needed for \eqref{ac:J7ledger} are as
+follows. Write $a=\zeta(3)^2$, $b=\zeta(6)$.
+\begin{center}
+\small
+\begin{tabular}{ll}
+\hline
+Admissible value or equal pair & Reduction\\
+\hline
+$Z_{2,1,1,1,1}$ & $b$\\
+$Z_{2,1,1,2}=Z_{2,4}$ & $25b/12-a$\\
+$Z_{2,1,2,1}=Z_{3,3}$ & $(a-b)/2$\\
+$Z_{2,2,1,1}=Z_{4,2}$ & $a-4b/3$\\
+$Z_{2,1,3}$ & $a-13b/16$\\
+$Z_{2,3,1}=Z_{3,1,2}$ & $53b/24-3a/2$\\
+$Z_{3,2,1}$ & $3a-203b/48$\\
+$Z_{4,1,1}$ & $23b/16-a$\\
+$Z_{5,1}$ & $3b/4-a/2$\\
+\hline
+\end{tabular}
+\end{center}
+These are ordinary classical multiple-zeta reductions, not new
+claims of special-value priority. One finite derivation uses the
+strict stuffle product, the binary iterated-integral shuffle product,
+and reversal-complement duality \cite{IKZ}. At weight six,
+take the products of admissible words of weights $2+4$ and $3+3$,
+their reversals, dualities, and the regularized shuffle-minus-stuffle
+relation of $(1)$ with each admissible weight-five word. Along with
+$Z(6)=\zeta(6)$, this gives 49 explicitly generated equations in
+16 admissible weight-six words. The provided rational certificate
+contains 16 independent rows and their inverse; multiplication
+checks the resulting table exactly. Substitution in
+\eqref{ac:J7ledger}, using
+$\zeta(2)\zeta(4)=7\zeta(6)/4$, gives the ordinary constant in
+\eqref{ac:seventhmain}. This also specifies a short independent
+way of auditing its less transparent rational numerator.
+
+\subsection{Validation and the remaining arithmetic question}
+
+The accompanying program constructs the pole coefficients, the
+tail polynomials, their finite differences, and the distinguished-index
+word maps using exact rational algebra. It checks the weight-six
+reduction certificate and the directional simplifications separately.
+The analytic statements above justify all infinite operations; a
+finite symbolic replay is not a substitute for those statements.
+
+An independent numerical diagnostic compares the locally subtracted
+integral of the explicit polynomial \eqref{ac:P6} or
+\eqref{ac:P7} with a different representation. In the latter,
+$m!(c_m-\lambda_{m-1})$ is evaluated through the ordinary
+Gamma-quotient beta kernel established in \cite{Fifth}:
+\begin{equation}\label{ac:diagnostic-kernel}
+ m!(c_m-\lambda_{m-1})
+ =-\int_0^1(-\log y)^m
+  \frac{-\log(1-y)-y}{(1-y)^2[-\log(1-y)]^2}\,\dd y.
+\end{equation}
+The correction \eqref{ac:D} is evaluated from its tail polynomial
+at $n\le96$, with the remaining ordinary sum accelerated by
+42 inverse-power terms and Hurwitz-zeta order derivatives.
+At 80 working decimal digits the comparisons were
+\begin{center}
+\small
+\begin{tabular}{lll}
+\hline
+Moment & Direct numerical value & Absolute discrepancy\\
+\hline
+$\mathsf S_6$ & $20.8226131542578224267340551051333\ldots$
+ & $8.80\times10^{-56}$\\
+$\mathsf S_7$ & $123.619906884273853180167345465232\ldots$
+ & $5.73\times10^{-54}$\\
+\hline
+\end{tabular}
+\end{center}
+These are floating-point diagnostics, not interval certificates.
+They test the finite-part endpoint terms and the ordinary constant
+reductions through analytically different formulas.
+
+Theorems~\ref{ac:main}--\ref{ac:seventh} remove an ambiguity from
+the source research question. A single singular Laurent coordinate
+is sufficient in every degree, while additional \emph{convergent}
+derivative coordinates already occur at low degree. The next
+arithmetic problem is to determine relations among the explicitly
+retained directions in \eqref{ac:D6} and \eqref{ac:D7}, within a
+stated relation family or a stated algebra of periods. The depth
+bound is a constructive upper bound; it is not a proof that these
+directions are necessary or independent.

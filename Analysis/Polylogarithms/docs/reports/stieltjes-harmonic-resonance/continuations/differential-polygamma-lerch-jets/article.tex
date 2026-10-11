@@ -1,0 +1,118 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,longtable,array,enumitem,microtype,xcolor,fancyhdr,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{bookmark}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\CT}{CT}
+\DeclareMathOperator*{\Res}{Res}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Log}{Log}
+\DeclareMathOperator{\re}{Re}
+\DeclareMathOperator{\im}{Im}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\wt}{wt}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\cI}{\mathcal I}
+\newcommand{\cD}{\mathcal D}
+\newcommand{\cB}{\mathcal B}
+\newcommand{\sourcecommit}{f7e35be357654198c1546fd40f363694c5bcc2cc}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{0.25em}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks[2]
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Differential Polygamma and Lerch Identities}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\hypersetup{pdftitle={Differential Polygamma and Lerch Identities},pdfauthor={Research continuation prepared with ChatGPT for Vladimir Reshetnikov and ProveIt}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{10mm}
+\noindent{\large\sffamily PROVEIT / RESEARCH CONTINUATION}
+\vspace{17mm}
+
+\noindent{\Huge\bfseries Differential Polygamma\\[3mm]
+and Lerch Identities}
+\vspace{8mm}
+
+\noindent{\Large Exact residue cancellation, higher Gamma moments,\\[2mm]
+spectral derivatives, and harmonic-tail reconstruction}
+\vspace{14mm}
+
+\noindent Prepared with ChatGPT for Vladimir Reshetnikov and the ProveIt project\\
+11 October 2026
+\vspace{11mm}
+
+\begin{abstract}
+We continue six newly submitted reports and the current ProveIt polylogarithm
+manuscript. The main theorem extends the normalized digamma-power calculus
+to every differential polynomial in the digamma function. Its asymptotic
+residue and its large-circle constant depend only on the scalar digamma
+part. In particular, every monomial containing a positive-order polygamma
+has an exact finite-part integral expressed by convergent multiple-zeta
+values and convergent spectral derivatives, with no singular Laurent
+coordinate. A triangular integration-by-parts theorem gives a canonical
+formal basis and retains every endpoint constant. We give normalized
+primitives, a common-shift endpoint law, polylogarithmic kernels, and an
+explicit formula for every bilinear polygamma integral.
+
+The Gamma--Appell continuation isolates the highest height-one Laurent
+coordinate at every degree and makes the remaining coordinates convergent;
+the sixth and seventh degrees are worked out. A second continuation
+evaluates all spectral jets of the centered continuous-depth Lerch family
+on its odd lattice, including mixed depth derivatives and Stieltjes
+specializations. Finally, an exact determinant formula proves the
+optimal-prefix conjecture for every neighboring pair of even harmonic-tail
+orders. The unrestricted unequal-order conjecture and the Gaussian
+$S_6,S_8$ candidates remain open. Proofs, source comparisons, and independent
+symbolic and numerical checks are supplied; numerical agreement is never
+used as a proof of an identity.
+\end{abstract}
+\vfill
+\noindent\small Source baseline: ProveIt revision
+\texttt{\sourcecommit}.\\
+The contribution is measured against the inspected sources. A claim of
+historical priority for every displayed specialization is not made.
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+\input{sections/01_scope}
+\input{sections/02_differential_calculus}
+\input{sections/03_convergent_words}
+\input{sections/04_normal_forms}
+\input{sections/05_primitives}
+\input{sections/06_appell}
+\input{sections/07_lerch}
+\input{sections/08_adjacent_tails}
+\input{sections/09_audit_and_questions}
+\input{references}
+\end{document}

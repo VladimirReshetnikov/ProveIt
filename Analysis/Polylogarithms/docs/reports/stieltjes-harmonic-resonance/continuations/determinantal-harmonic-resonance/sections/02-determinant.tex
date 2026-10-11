@@ -1,0 +1,129 @@
+\section{A discrete Gauss--Vandermonde product}
+\label{dhr:sec:determinant}
+
+For $r\geq1$ and $0\leq n_1<\cdots<n_r$, put
+\[
+ \Delta(\bm n)=\prod_{1\leq i<j\leq r}(n_j-n_i),\qquad
+ w_n(a,c;b)=\frac{\Gamma(n+a)\Gamma(n+c)}
+ {\Gamma(n+b)\Gamma(n+1)}.
+\]
+Define
+\begin{equation}\label{dhr:eq:partition}
+ Z_r(a,c;b)=\sum_{0\leq n_1<\cdots<n_r}
+       \Delta(\bm n)^2\prod_{i=1}^r w_{n_i}(a,c;b),
+ \qquad Z_0=1.
+\end{equation}
+The ordering is part of the definition. There is no additional $r!$
+in any product formula below.
+
+\begin{theorem}[Gauss--Vandermonde product]\label{dhr:thm:gauss}
+Let $\Rea a,\Rea c>0$ and $\Rea d>2r-2$, where $d=b-a-c$.
+Then \eqref{dhr:eq:partition} converges absolutely and locally normally,
+and
+\begin{equation}\label{dhr:eq:gauss-product}
+ \boxed{\displaystyle
+ Z_r(a,c;b)=\prod_{j=0}^{r-1}
+ \frac{j!\,\Gamma(a+j)\Gamma(c+j)\Gamma(d-r+1-j)}
+ {\Gamma(b-a-j)\Gamma(b-c-j)}.}
+\end{equation}
+For positive real parameters in this domain all summands are positive.
+\end{theorem}
+
+We give the determinant argument in detail, both to make the normalizing
+factor checkable and to avoid relying on an unproved discrete-Selberg
+analogy. Gamma ratio estimates and Gauss summation are classical
+\cite{dlmf:gamma,dlmf:gauss}; the determinant technique belongs to the
+standard evaluation toolkit \cite{krattenthaler}.
+
+\begin{lemma}[A rational factorial determinant]\label{dhr:lem:rational-det}
+For indeterminates $x_0,\ldots,x_{r-1},t$,
+\begin{equation}\label{dhr:eq:rational-det}
+ \det_{0\leq i,j<r}\frac{(x_i)_j}{(x_i+t)_j}
+ =\frac{\displaystyle\prod_{j=0}^{r-1}(t)_j
+                   \prod_{0\leq i<k<r}(x_k-x_i)}
+        {\displaystyle\prod_{i=0}^{r-1}(x_i+t)_{r-1}}.
+\end{equation}
+The identity holds at every specialization where the displayed
+rational functions are defined, and elsewhere by cancellation.
+\end{lemma}
+\begin{proof}
+Multiply row $i$ by $(x_i+t)_{r-1}$. The resulting column polynomials
+are
+\[
+ p_j(x)=(x)_j(x+t+j)_{r-1-j},\qquad 0\leq j<r.
+\]
+They have degree at most $r-1$, so their evaluation determinant is
+the Vandermonde in the $x_i$ times their coefficient determinant.
+To compute that coefficient determinant, evaluate at $x_i=-i$.
+The evaluation matrix is lower triangular, since $(-i)_j=0$ for
+$j>i$, with diagonal
+\[
+ p_i(-i)=(-1)^i i!\,(t)_{r-1-i}.
+\]
+Its determinant divided by
+$\prod_{i<k}((-k)-(-i))=(-1)^{r(r-1)/2}\prod_{k=0}^{r-1}k!$
+is $\prod_{j=0}^{r-1}(t)_j$. Dividing the row factors proves
+\eqref{dhr:eq:rational-det} as a rational identity.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{dhr:thm:gauss}]
+On compact subsets of the stated domain,
+$w_n=O((n+1)^{-1-\Rea d})$. For ordered nonnegative indices,
+\[
+ |\Delta(\bm n)|^2\leq\prod_{j=1}^r(n_j+1)^{2(j-1)}.
+\]
+Dropping the ordering gives a product of convergent majorant series
+when $\Rea d>2r-2$. This proves absolute local normal convergence,
+including that of moments of degrees at most $2r-2$.
+
+Apply finite Cauchy--Binet to the two monic polynomial bases
+$\fall{n}{i}$ and $(n+a)_j$, then pass to the normally convergent
+limit. Both evaluation determinants equal the Vandermonde, so
+\begin{equation}\label{dhr:eq:moment-det}
+ Z_r=\det_{0\leq i,j<r}M_{ij},\qquad
+ M_{ij}=\sum_{n\geq0}\fall{n}{i}(n+a)_j w_n.
+\end{equation}
+Shifting $n=i+k$ and applying the ordinary Gauss sum gives
+\begin{equation}\label{dhr:eq:mixed-moment}
+ M_{ij}=\frac{\Gamma(a+i+j)\Gamma(c+i)\Gamma(d-i-j)}
+ {\Gamma(b-a-j)\Gamma(b-c)}.
+\end{equation}
+Indeed the hypergeometric numerator parameters are $a+i+j,c+i$,
+the denominator parameter is $b+i$, and the excess is $d-i-j$.
+Its real part is positive throughout the present index range.
+
+Factor from row $i$ the quantity
+\[
+ R_i=\frac{\Gamma(a+i)\Gamma(c+i)\Gamma(d-i)}
+ {\Gamma(b-a)\Gamma(b-c)},
+\]
+and from column $j$ the factor $(1-b+a)_j$. The remaining entry is
+$(a+i)_j/(1-d+i)_j$. Lemma~\ref{dhr:lem:rational-det} applies with
+$x_i=a+i$ and $t=1-b+c$. Since $x_k-x_i=k-i$, its Vandermonde
+is $\prod_{j=0}^{r-1}j!$. The factorial identities
+\[
+ (1-b+a)_j=(-1)^j\frac{\Gamma(b-a)}{\Gamma(b-a-j)},\quad
+ (1-b+c)_j=(-1)^j\frac{\Gamma(b-c)}{\Gamma(b-c-j)}
+\]
+and
+\[
+ (1-d+i)_{r-1}=(-1)^{r-1}
+       \frac{\Gamma(d-i)}{\Gamma(d-i-r+1)}
+\]
+produce exactly \eqref{dhr:eq:gauss-product}; the total sign is one.
+Perform the calculation first away from the auxiliary determinant's
+poles, then extend by the identity theorem. The original sum and the
+final product are holomorphic on the asserted domain.
+\end{proof}
+
+\begin{remark}[The one-variable boundary case]
+For $r=1$, \eqref{dhr:eq:gauss-product} is simply
+\[
+ \sum_{n\geq0}w_n(a,c;b)
+ =\frac{\Gamma(a)\Gamma(c)\Gamma(b-a-c)}
+ {\Gamma(b-a)\Gamma(b-c)}.
+\]
+The subsequent $r=1$ resonance is the familiar zero-balanced Gauss
+case. The continuation of interest is the uniform mechanism for all $r$,
+not a claim of novelty for this boundary case.
+\end{remark}

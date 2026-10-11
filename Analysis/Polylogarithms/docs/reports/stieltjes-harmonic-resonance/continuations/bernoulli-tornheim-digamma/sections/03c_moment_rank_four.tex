@@ -1,0 +1,309 @@
+% Follow-on research fragment. Requires the definitions and lemmas of
+% moment_rank.tex, including pi_n, c_n, h_n, and Bernoulli 2-adic parity.
+
+\section{The optimal prefix for every pair \texorpdfstring{$(4,q)$}{(4,q)}}
+\label{rf:section}
+
+The same orthogonal polynomials settle a second infinite unequal-order
+family.  The perturbation now has rank two.  Its determinant involves
+three consecutive even Bernoulli numbers, and their elementary
+$2$-adic parity proves that this determinant never vanishes.
+
+Let $p=4$, $q=2b$, and $b\geq3$.  In this section write
+\[
+ M_b^{[4]}=(a_{b+t,k})_{0\leq t,k<b}.
+\]
+For $b\geq4$, put
+\[
+ d_b=4b^2-6b-1,\qquad
+ u=B_{2b-6},\quad v=B_{2b-4},\quad w=B_{2b-2},
+\]
+and define
+\begin{align}
+ \Xi_b={}&4d_b
+ +(b-2)(2b-5)\{u+(2b-1)w(4-u)\}\notag\\
+ &+(b-1)(2b-3)\{(2b-1)v^2-4(b+1)v\}.
+ \label{rf:Xi}
+\end{align}
+
+\begin{theorem}[Exact determinant for the entire order-four family]
+\label{rf:main}
+For every integer $b\geq4$,
+\begin{equation}\label{rf:det}
+ \boxed{\displaystyle
+ \det M_b^{[4]}=-\frac{\Xi_b}
+      {6\,2^b(b-1)(2b-4)!}\ne0.}
+\end{equation}
+Moreover $4\Xi_b$ belongs to $\mathbb Z_{(2)}$ and is odd there;
+equivalently, $v_2(\Xi_b)=-2$.  At the remaining unequal-order
+case $b=3$,
+\begin{equation}\label{rf:smallcase}
+ M_3^{[4]}=
+ \begin{pmatrix}
+ 0&3/4&1/4\\5/12&2/3&-1/12\\1&-3/8&1/12
+ \end{pmatrix},\qquad
+ \det M_3^{[4]}=-\frac{113}{384}.
+\end{equation}
+Thus the first $q$ centered moments have full formal rank $q$
+for every even pair $(p,q)=(4,2b)$ with $q>4$.  Their complete
+coefficient determinant is the determinant in
+\eqref{rf:det} or \eqref{rf:smallcase}, divided by $(4b-1)!!$.
+\end{theorem}
+
+\subsection{A shifted Hankel matrix and its first two inverse rows}
+
+Retain $\mu_n=B_{2n}/(2n)!$ for $n\geq0$, and put $\mu_{-1}=0$.
+Define
+\[
+ H_b^{[-1]}=(\mu_{t+k-1})_{0\leq t,k<b}.
+\]
+The source formula gives the exact factorization
+\begin{equation}\label{rf:factorization}
+ M_b^{[4]}=\mathcal R_b(H_b^{[-1]}+U_b)\mathcal E_b,
+\end{equation}
+where
+\[
+ (\mathcal R_b)_{tt}=(2b+2t-3)!,\qquad
+ (\mathcal E_b)_{kk}=\frac1{(2b-2k)!},
+\]
+and $U_b$ is zero outside its first two columns, with
+\begin{equation}\label{rf:U}
+ (U_b)_{tk}=\mu_{t+k-1}
+  \frac{(2t+1)!(2b-2k)!}
+       {(4-2k)!(2b+2t-3)!},\qquad k=0,1.
+\end{equation}
+This is precisely where the exclusion of a zero lower binomial
+index matters: no third perturbation column is present.
+
+Let $\mathcal L_{-1}(x^j)=\mu_{j-1}$, with
+$\mathcal L_{-1}(1)=0$.  The shifted functional from the preceding
+section satisfies
+\[
+ \mathcal L_{-1}(x^2g)=\mathcal N(g).
+\]
+Thus the explicit monic polynomials $\pi_n$ are orthogonal for the
+functional on the right.  The Pad\'e coefficient identities already
+proved give
+\begin{align}
+ \mathcal L_{-1}(x\pi_n)&=c_n,\notag\\
+ \mathcal L_{-1}(\pi_n)&=c_n\mathfrak r_n,
+ \qquad
+ \mathfrak r_n=\frac{(2n-1)(2n)(2n+3)(2n+4)}6.
+ \label{rf:two-moments}
+\end{align}
+The latter formula is valid also at $n=0$, where both sides vanish.
+For $n\geq1$ it follows by taking the coefficient of $z^{n-1}$
+in $F(z)q_n(z)$: that coefficient equals the coefficient of
+$z^{n-1}$ in the explicit numerator $r_n(z)$.  The quotient of
+this numerator coefficient and its leading coefficient $c_n$ is
+exactly $\mathfrak r_n$.
+
+Set
+\[
+ n=b-1,\quad m=b-2,\quad
+ r_+=\mathfrak r_n,\quad r_-=\mathfrak r_m,
+ \quad \delta_b=r_+-r_-
+      =\frac{2(4b-3)d_b}{3}.
+\]
+Both $c_n$ and $c_m$ are nonzero, and $\delta_b>0$ for $b\geq2$.
+Replace the last two monomial rows in $H_b^{[-1]}$ by the rows
+for $\pi_m,\pi_n$.  This triangular row change has determinant
+one, and these rows annihilate columns $2,\ldots,b-1$ by
+$\mathcal N$-orthogonality.  Expanding by the first two columns
+therefore gives
+\begin{equation}\label{rf:Hdet}
+ \det H_b^{[-1]}
+ =-c_mc_n\delta_b\prod_{j=0}^{b-3}h_j\ne0.
+\end{equation}
+The two first rows of its inverse are consequently the coefficient
+rows of the explicit polynomials
+\begin{align}
+ V_0(x)&=\frac1{\delta_b}
+       \left(\frac{\pi_n(x)}{c_n}-\frac{\pi_m(x)}{c_m}\right),
+       \label{rf:inverse0}\\
+ V_1(x)&=\frac1{\delta_b}
+       \left(-r_-\frac{\pi_n(x)}{c_n}
+                       +r_+\frac{\pi_m(x)}{c_m}\right).
+       \label{rf:inverse1}
+\end{align}
+Indeed, the two moments in \eqref{rf:two-moments} give the required
+Kronecker values in columns zero and one, and orthogonality kills
+all remaining columns.
+
+Combining \eqref{rf:Hdet} with the diagonal factors gives
+\begin{equation}\label{rf:base-scaled}
+ \det\mathcal R_b\det\mathcal E_b\det H_b^{[-1]}
+ =-\frac{d_b}{6\,2^b(b-1)(2b-4)!}\qquad(b\geq2).
+\end{equation}
+This factorial simplification can be checked inductively: after
+division by $d_b$, the value at $b=2$ is $-1/24$, and the quotient
+of successive values is $1/[4(b-1)(2b-5)]$.
+
+\subsection{The four perturbation contractions}
+
+For $j=n,m$ and $k=0,1$, put
+\[
+ s_{j,k}=\frac1{c_j}\sum_{t=0}^j[x^t]\pi_j(x)\,(U_b)_{tk},
+ \qquad s_{+,k}=s_{n,k},\quad s_{-,k}=s_{m,k}.
+\]
+The explicit factorial coefficients of $\pi_j$ simplify these
+contractions to the following finite Bernoulli sums:
+\begin{align}
+ s_{+,0}&=\frac{2b-2}{12}
+ \sum_{\substack{0\leq k\leq2b-4\\k\ {\rm even}}}
+ \binom{2b-3}{k}(k+3)(k+2b)(k+2b+1)B_k,\notag\\
+ s_{+,1}&=\frac1{2b(2b-1)^2}
+ \sum_{\substack{0\leq k\leq2b-2\\k\ {\rm even}}}
+ \binom{2b-1}{k}(k+1)(k+2b-2)(k+2b-1)B_k,\notag\\
+ s_{-,0}&=\frac{(2b)(2b-1)(2b-4)}{12}
+ \sum_{\substack{0\leq k\leq2b-6\\k\ {\rm even}}}
+ \binom{2b-5}{k}(k+3)B_k,\notag\\
+ s_{-,1}&=\frac1{2b-3}
+ \sum_{\substack{0\leq k\leq2b-4\\k\ {\rm even}}}
+ \binom{2b-3}{k}(k+1)B_k.
+ \label{rf:finite-sums}
+\end{align}
+
+For completeness, the polynomially weighted Bernoulli identities
+needed to evaluate these sums are as follows.  If $N\geq3$ is odd,
+\begin{equation}\label{rf:linear-sum}
+ \sum_{k\ {\rm even}}\binom Nk(k+\alpha)B_k
+ =N\left(\frac{\alpha+1}{2}-B_{N-1}\right).
+\end{equation}
+If $N\geq5$ is odd and $P$ is a monic cubic, then
+\begin{align}
+ \sum_{k\ {\rm even}}\binom NkP(k)B_k
+ ={}&\frac N2P(1)
+   +N\{P(N-1)-P(N)\}B_{N-1}\notag\\
+ &-N(N-1)(N-2)B_{N-3}.
+ \label{rf:cubic-sum}
+\end{align}
+Here and in \eqref{rf:linear-sum} the sum runs over $0\leq k\leq N$.
+To prove the identities, first include the $k=1$ term, then expand
+$P(N-y)$ in the falling factorials of $y=N-k$.  For $0\leq j\leq3$,
+\[
+ \sum_{k=0}^N(N-k)_{\underline j}\binom NkB_k
+ =N_{\underline j}B_{N-j}(1).
+\]
+When $N\geq5$ is odd, only $j=1,3$ survive.  The falling-factorial
+coefficient at $j=1$ is $P(N-1)-P(N)$, and the coefficient at
+$j=3$ is $-1$.  Removing the $k=1$ term adds $NP(1)/2$.
+The linear version is obtained in exactly the same way.  Thus these
+are polynomial identities, not conjectural Bernoulli reductions.
+
+Applying them to \eqref{rf:finite-sums}, for $b\geq4$ one obtains
+\begin{align}
+ s_{-,0}&=r_-(1-u/2),& s_{-,1}&=1-v,\notag\\
+ s_{+,0}&=r_+
+ -\frac{(2b-3)(2b-2)(2b-1)(4b-3)}3v\notag\\
+ &\hspace{9mm}
+ -\frac{(2b-3)(2b-2)(2b-4)(2b-5)}{12}u,\notag\\
+ s_{+,1}&=1-\frac{2(4b-3)}b w
+             -\frac{(b-1)(2b-3)}{b(2b-1)}v.
+ \label{rf:four-contractions}
+\end{align}
+The separate treatment of $b=3$ avoids applying
+\eqref{rf:linear-sum} at $N=1$, where that formula is not valid.
+
+The rank-two determinant lemma and
+\eqref{rf:inverse0}--\eqref{rf:inverse1} now give
+\begin{equation}\label{rf:small-det}
+ \frac{\det(H_b^{[-1]}+U_b)}{\det H_b^{[-1]}}
+ =\frac{(r_++s_{+,0})(1+s_{-,1})
+             -(r_-+s_{-,0})(1+s_{+,1})}{\delta_b}
+ =\frac{\Xi_b}{d_b}.
+\end{equation}
+The last equality is direct polynomial simplification of the four
+displayed contractions.  Together with \eqref{rf:base-scaled},
+it proves the determinant formula \eqref{rf:det}.
+
+\subsection{A uniform arithmetic proof of nonvanishing}
+
+The Bernoulli parity argument in the order-two section proves that
+\[
+ \widehat u=2u,\qquad\widehat v=2v,\qquad\widehat w=2w
+\]
+are odd elements of $\mathbb Z_{(2)}$, since $b\geq4$ makes all
+three Bernoulli indices positive and even.  Multiplication of
+\eqref{rf:Xi} by four yields
+\begin{align}
+ 4\Xi_b={}&16d_b
+ +(b-2)(2b-5)
+ \{2\widehat u+(2b-1)\widehat w(8-\widehat u)\}\notag\\
+ &+(b-1)(2b-3)
+ \{(2b-1)\widehat v^2-8(b+1)\widehat v\}.
+ \label{rf:parity}
+\end{align}
+Modulo two, the first bracket contributes $b$ and the second
+contributes $b-1$.  Hence
+\[
+ 4\Xi_b\equiv b+(b-1)\equiv1\pmod2.
+\]
+Therefore $v_2(\Xi_b)=-2$ and $\Xi_b\ne0$ for every $b\geq4$.
+This proves nonvanishing uniformly, without a real-sign assertion
+or any assumption about Bernoulli numerators beyond the elementary
+parity already established.
+
+\paragraph{Updated scope of the initial-prefix problem.}
+The optimal first-$q$ prefix is now proved for all even pairs with
+$p=2$, all even pairs with $p=4$, and the diagonal $p=q$ inherited
+from the source.  The next section settles $p=6$; the final remaining unequal-order
+range in this article is $8\leq p<q$.  The rank-two calculation suggests investigating the
+$2$-adic structure of the analogous higher-rank Bernoulli
+contractions, but no general nonvanishing theorem for those
+contractions is assumed here.
+
+% Optional compact corollary of the explicit (4,6) source matrix.
+\subsection{A convergent harmonic--polygamma identity at orders four and six}
+
+The exceptional matrix \eqref{rf:smallcase} also gives a concrete
+ordinary convergent identity.  Let $x_n=n+\tfrac12$ and
+$A_s(n)=\zeta(s)-H_n^{(s)}$, and put
+\[
+ \begin{split}
+ W_{4,6}(x)={}&67+15516x^2+324320x^4+1434496x^6\\
+              &+1601280x^8+371712x^{10}.
+ \end{split}
+\]
+Then
+\begin{equation}\label{rf:ordinary-46}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}\left\{
+ W_{4,6}(x_n)A_4(n)A_6(n)
+ -\frac{123904x_n^2+316928}{5}\right\}=-21696.}
+\end{equation}
+The summand is $O(n^{-2})$, so the convergence is absolute.
+One may equivalently write the tail product as
+\[
+ A_4(n)A_6(n)
+ =\frac{\psi^{(3)}(n+1)\psi^{(5)}(n+1)}{720}.
+\]
+
+\begin{proof}
+Direct multiplication of the exact matrix in
+\eqref{rf:smallcase} gives
+\[
+ (-7,45,66)M_3^{[4]}=(339/4,0,0),
+ \qquad -7C_3+45C_4+66C_5=-\frac{339}{8}.
+\]
+Set $S(y)=512(-7y^7+45y^9+66y^{11})$.  The inverse Bernoulli
+transform identifies the polynomial of the resulting centered
+moment combination as
+\[
+ S(x+\tfrac12)-S(x-\tfrac12)=W_{4,6}(x).
+\]
+The centered Hurwitz expansions give
+\[
+ A_4(n)A_6(n)=\frac1{15}x_n^{-8}
+              -\frac7{60}x_n^{-10}+O(x_n^{-12}).
+\]
+Hence the polynomial in nonnegative powers of $x_n$ in its product
+with $W_{4,6}$ is exactly
+$(123904x_n^2+316928)/5$.  Subtracting it leaves an absolutely
+summable remainder.  The removed polynomial has continued sum zero;
+equivalently, its partial sum has zero constant term in the integer cutoff, by the
+centered even-power argument used in
+Corollary~\ref{cor:ordinary-two}.  The ordinary sum therefore equals
+the finite-part moment combination, namely
+$512(-339/8)=-21696$.
+\end{proof}

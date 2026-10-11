@@ -1,0 +1,467 @@
+% Research fragment for integration into the parent article.
+% All assertions in this fragment have a self-contained algebraic proof.
+% The notation C_j,D_r,a_{jk} is the notation of the source tail-rank section.
+
+\section{The optimal moment prefix for every pair \texorpdfstring{$(2,q)$}{(2,q)}}
+\label{sec:rank-two}
+
+The source conjecture asks whether the first $q$ centered moments have
+full formal rank for every pair of even orders $2\leq p<q$.
+We prove the whole infinite subfamily $p=2$, with an exact determinant,
+an explicit rational extraction row, and an ordinary convergent
+polygamma-tail identity.  The order-four and order-six families are proved below; unequal pairs $8\leq p<q$
+remain open here.
+
+The Pad\'e and Hankel ingredients used below are classical.  In
+particular, the normalized shifted Bernoulli Hankel determinant is
+recorded by Dilcher and Jiu~\cite[\S7.3, Eq.~(7.12)]{DilcherJiu2020},
+who credit the evaluation to Krattenthaler.  We reprove the needed
+formula to make the normalization and the inverse row explicit.
+The new step relative to the source tail-moment report is the
+rank-one perturbation calculation giving the factor $2-B_{q-2}$,
+and its consequences for the optimal prefix and rational tail sums.
+
+Write $q=2b$, where $b\geq2$, and put
+\[
+ M_b=(a_{b+t,k})_{0\leq t,k<b}.
+\]
+The entry convention is exactly the source convention: a binomial
+summand is omitted if its lower index is less than $2$.  Thus, when
+$p=2$, the first binomial summand occurs only in column $k=0$.
+
+\begin{theorem}[Exact determinant for the entire order-two family]
+\label{thm:rank-two}
+For every integer $b\geq2$,
+\begin{equation}\label{eq:rank-two-det}
+ \det M_b=
+ \frac{(-1)^{b-1}\bigl(2-B_{2b-2}\bigr)}
+ {2^b(2b-2)!}\ne0.
+\end{equation}
+Consequently, for $p=2$ and $q=2b$, the first $q$ centered moments
+$D_0,\ldots,D_{q-1}$ have full rank $q$ on the source's formal
+coordinate list
+\[
+ C_0,\ldots,C_{b-1},\quad Z_0,\ldots,Z_{b-1},
+ \qquad Z_k=\zeta(2k),\quad Z_0=-\tfrac12.
+\]
+The determinant of their full coefficient matrix, in this coordinate
+order, is
+\begin{equation}\label{eq:rank-two-full-det}
+ \frac{(-1)^{b-1}\bigl(2-B_{2b-2}\bigr)}
+ {2^b(2b-2)!\,(4b-1)!!}.
+\end{equation}
+This is a formal-rank assertion; it does not assert arithmetic
+independence of the numerical coordinates.
+\end{theorem}
+
+\subsection{A finite Pad\'e calculation, proved explicitly}
+
+We use Bernoulli numbers with generating function
+\[
+ \frac{t}{e^t-1}=\sum_{r\geq0}B_r\frac{t^r}{r!},
+ \qquad B_1=-\frac12,
+\]
+and write
+\[
+ \mu_r=\frac{B_{2r}}{(2r)!},\qquad
+ F(z)=\sum_{r\geq0}\mu_rz^r
+     =\frac{\sqrt z}{2}\coth\frac{\sqrt z}{2}.
+\]
+The expression involving $\sqrt z$ is an even power series and hence
+defines a single-valued holomorphic germ at $z=0$.
+
+\begin{lemma}[Explicit exponential Pad\'e identity]
+\label{lem:exp-pade-rank}
+For $N\geq0$, define
+\[
+ P_N(t)=\sum_{k=0}^N
+   \frac{(2N-k)!\,N!}{(2N)!\,k!\,(N-k)!}\,t^k.
+\]
+Then
+\begin{equation}\label{eq:exp-pade-rank}
+ e^tP_N(-t)-P_N(t)
+ =\frac{(-1)^N(N!)^2}{(2N)!(2N+1)!}\,t^{2N+1}
+  +O(t^{2N+2}).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For $0\leq r\leq2N$, the coefficient of $t^r$ in
+$e^tP_N(-t)$ equals
+\[
+ \frac{(2N-r)!}{(2N)!}
+ \sum_{k=0}^N(-1)^k\binom Nk
+                 \binom{2N-k}{2N-r}.
+\]
+The sum is the coefficient of $x^{2N-r}$ in
+\[
+ \sum_{k=0}^N(-1)^k\binom Nk(1+x)^{2N-k}
+ =x^N(1+x)^N.
+\]
+It is therefore $\binom Nr$ for $r\leq N$ and zero for $N<r\leq2N$.
+These are precisely the coefficients of $P_N(t)$ through degree
+$2N$.  The next coefficient is
+\[
+ \frac1{(2N)!}\sum_{k=0}^N
+       \frac{(-1)^k\binom Nk}{2N+1-k}
+ =\frac1{(2N)!}\int_0^1x^N(x-1)^N\,dx,
+\]
+which gives the stated beta-integral value.
+\end{proof}
+
+For $n\geq0$, take $N=2n+1$ and form the polynomials
+\begin{align}
+ q_n(t^2)&=\frac{P_{2n+1}(t)-P_{2n+1}(-t)}t,
+ \\
+ r_n(t^2)&=\frac{P_{2n+1}(t)+P_{2n+1}(-t)}2.
+\end{align}
+Both have degree $n$ and $q_n(0)=1$.  Direct simplification gives
+\begin{equation}\label{eq:pade-coth-rank}
+ F(z)q_n(z)-r_n(z)
+ =h_nz^{2n+1}+O(z^{2n+2}),
+ \qquad
+ h_n=\frac{((2n+1)!)^2}{(4n+2)!(4n+3)!}.
+\end{equation}
+Indeed, after setting $z=t^2$, the left side is exactly
+\[
+ -\frac{e^tP_{2n+1}(-t)-P_{2n+1}(t)}{e^t-1}.
+\]
+This proves both the vanishing coefficients and the leading
+coefficient in \eqref{eq:pade-coth-rank}; no normality theorem for
+Pad\'e approximants is being assumed.
+
+Write
+\begin{equation}\label{eq:q-explicit-rank}
+ q_n(z)=\sum_{\ell=0}^nq_{n,\ell}z^\ell,
+ \qquad
+ q_{n,\ell}=
+ \frac{2(4n+1-2\ell)!\,(2n+1)!}
+ {(4n+2)!\,(2\ell+1)!\,(2n-2\ell)!},
+\end{equation}
+and reverse its coefficients:
+\[
+ \pi_n(x)=x^nq_n(1/x).
+\]
+This is a monic polynomial of degree $n$.
+Let $\mathcal L$ be the linear functional on polynomials specified by
+$\mathcal L(x^r)=\mu_r$.  Comparing coefficients in
+\eqref{eq:pade-coth-rank} proves
+\begin{align}
+ \mathcal L(x^k\pi_n(x))&=0 &&(1\leq k\leq n),
+       \label{eq:orthogonality-rank}\\
+ \mathcal L(\pi_n)&=c_n,
+ &c_n&=\frac{(2n+1)(2n+2)!}{(4n+2)!},
+       \label{eq:constant-moment-rank}\\
+ \mathcal L(x^{n+1}\pi_n)&=h_n.
+       \label{eq:shifted-norm-rank}
+\end{align}
+Here \eqref{eq:constant-moment-rank} is the coefficient of $z^n$
+in $r_n(z)$.
+
+\subsection{The normalized Bernoulli Hankel determinant}
+
+Put
+\[
+ H_b=(\mu_{i+j})_{0\leq i,j<b},\qquad
+ \Delta_n=\det(\mu_{i+j+1})_{0\leq i,j<n},\qquad\Delta_0=1.
+\]
+The functional $\mathcal N(g)=\mathcal L(xg)$ makes the monic
+polynomials $\pi_0,\pi_1,\ldots$ orthogonal by
+\eqref{eq:orthogonality-rank}.  Their squared norms are $h_j$:
+the polynomial $\pi_j(x)-x^j$ has degree less than $j$, so
+\[
+ \mathcal N(\pi_j^2)=\mathcal L(x^{j+1}\pi_j)=h_j.
+\]
+The triangular change from monomials to these monic polynomials has
+determinant $1$.  Therefore
+\begin{equation}\label{eq:delta-product-rank}
+ \Delta_n=\prod_{j=0}^{n-1}
+       \frac{((2j+1)!)^2}{(4j+2)!(4j+3)!}.
+\end{equation}
+In $H_b$, replace its last row by the linear combination of rows
+whose coefficients are those of $\pi_{b-1}$.  This operation leaves
+the determinant unchanged because $\pi_{b-1}$ is monic.
+The resulting last row is $(c_{b-1},0,\ldots,0)$, whence
+\begin{equation}\label{eq:H-product-rank}
+ \det H_b=(-1)^{b-1}c_{b-1}\Delta_{b-1}.
+\end{equation}
+In particular, the Bernoulli Hankel matrix is nonsingular.
+
+There is also a useful analytic explanation of this nonvanishing.
+Euler's even-zeta identity gives, for $r\geq1$,
+\[
+ (-1)^{r-1}\mu_r
+ =2\sum_{m\geq1}(2\pi m)^{-2r}.
+\]
+After conjugation by $\operatorname{diag}(1,-1,1,\ldots)$, the
+bottom-right $(b-1)$-square block of $H_b$ is the negative of a
+positive definite moment matrix.  Positivity is strict because a
+nonzero polynomial cannot vanish at the infinitely many distinct
+points $(2\pi m)^{-2}$.  The top-left entry remains $1$, so its
+Schur complement is positive.  This yields the sign
+$(-1)^{b-1}$ and invertibility independently of the exact product.
+The exceptional initial coefficient $\mu_0=1$ is retained; replacing
+it by a positive Stieltjes mass would change the problem.
+
+\subsection{The mixed matrix is a rank-one perturbation}
+
+The source coefficient formula, specialized to $p=2$, is
+\begin{equation}\label{eq:rank-two-entry}
+ (M_b)_{tk}
+ =\frac{(2b+2t-1)!}{(2b-2k)!}\,\mu_{t+k}
+   +\mathbf1_{k=0}\frac{2t+1}{2}B_{2t}.
+\end{equation}
+Define diagonal matrices
+\[
+ R_b=\operatorname{diag}_{0\leq t<b}(2b+2t-1)!,\qquad
+ E_b=\operatorname{diag}_{0\leq k<b}\frac1{(2b-2k)!},
+\]
+and a column vector $u=(u_t)_{0\leq t<b}$ by
+\[
+ u_t=\mu_t\rho_t,\qquad
+ \rho_t=\frac{(2b)!\,(2t+1)!}{2(2b+2t-1)!}.
+\]
+Then
+\begin{equation}\label{eq:rank-one-factor}
+ M_b=R_b(H_b+u e_0^{\mathsf T})E_b,
+\end{equation}
+where $e_0=(1,0,\ldots,0)^{\mathsf T}$.
+
+Set $n=b-1$.  By \eqref{eq:orthogonality-rank} and
+\eqref{eq:constant-moment-rank}, the first row of $H_b^{-1}$ is the
+coefficient row of $\pi_n/c_n$.  Consequently
+\begin{equation}\label{eq:contraction-rank}
+ e_0^{\mathsf T}H_b^{-1}u
+ =\frac1{c_{b-1}}\sum_{t=0}^{b-1}q_{b-1,b-1-t}\,\mu_t\rho_t.
+\end{equation}
+The factorials in \eqref{eq:q-explicit-rank} cancel to give
+\begin{align}
+ \frac1{c_{b-1}}\sum_{t=0}^{b-1}
+       q_{b-1,b-1-t}\mu_t\rho_t
+ &=\frac1{2b-1}\sum_{t=0}^{b-1}
+       \binom{2b-1}{2t}(2t+1)B_{2t}\\
+ &=1-B_{2b-2}.
+       \label{eq:bernoulli-contraction-rank}
+\end{align}
+For clarity, the last equality is an elementary Bernoulli identity.
+If $N=2b-1\geq3$, then
+\[
+ \sum_{k=0}^N\binom NkB_k=B_N(1)=0,
+ \qquad
+ \sum_{k=0}^Nk\binom NkB_k=-NB_{N-1}.
+\]
+Removing the $k=1$ terms and using $B_k=0$ for odd $k>1$ shows
+\[
+ \sum_{\substack{0\leq k<N\\ k\text{ even}}}
+      (k+1)\binom NkB_k=N(1-B_{N-1}),
+\]
+as required.  The condition $b\geq2$ matters: this identity is not
+the corresponding formula for $N=1$.
+
+The matrix determinant lemma now yields
+\[
+ \det(H_b+u e_0^{\mathsf T})
+ =\det H_b\bigl(2-B_{2b-2}\bigr).
+\]
+It remains to simplify the factorial factor.  Equations
+\eqref{eq:delta-product-rank}--\eqref{eq:H-product-rank} give
+\begin{equation}\label{eq:factorial-cancel-rank}
+ \det R_b\det E_b\det H_b
+ =\frac{(-1)^{b-1}}{2^b(2b-2)!}.
+\end{equation}
+One quick verification, also a proof for every $b$, is induction:
+the left side is $1/2$ at $b=1$ and the quotient of its values at
+$b$ and $b-1$ is
+\[
+ -\frac1{4(b-1)(2b-3)}.
+\]
+This is exactly the quotient on the right side of
+\eqref{eq:factorial-cancel-rank}.
+
+For completeness, $B_{2m}$ cannot equal $2$ for any $m\geq1$ by an
+elementary parity argument; the full von Staudt--Clausen theorem is
+unnecessary.  Work in the ring $\mathbb Z_{(2)}$ of rational numbers
+with odd denominator.  The Bernoulli recurrence gives
+\[
+ (2m+1)(2B_{2m})
+ =2m-1-\sum_{j=1}^{m-1}\binom{2m+1}{2j}(2B_{2j}).
+\]
+Inductively $2B_{2j}\in\mathbb Z_{(2)}$ and is congruent to $1$
+modulo $2$.  The binomial sum in the last display is even modulo
+$2$, since
+\[
+ \sum_{j=1}^{m-1}\binom{2m+1}{2j}
+ =2^{2m}-2m-2.
+\]
+Thus $2B_{2m}$ is also congruent to $1$ modulo $2$.  In particular
+its $2$-adic valuation is $0$, whereas $2\cdot2$ is even.
+This proves $2-B_{2m}\ne0$ and completes
+\eqref{eq:rank-two-det}.  Finally the forward Bernoulli transform
+has diagonal entries $1/(2r+1)$, giving
+\eqref{eq:rank-two-full-det}.
+
+\subsection{An all-order rational extraction identity}
+
+The same calculation identifies one entire row of the inverse,
+without an unspecified matrix inversion.
+
+\begin{theorem}[Explicit extraction of the rational coordinate]
+\label{thm:rational-row-two}
+For $b\geq2$,
+\begin{equation}\label{eq:rational-block-two}
+ \sum_{t=0}^{b-1}\binom{2b-1}{2t}\,C_{b+t}
+ =-\frac{(2b-1)(2-B_{2b-2})}{4}.
+\end{equation}
+Equivalently, with
+\begin{equation}\label{eq:moment-weights-two}
+ w_{b,r}=\sum_{\substack{0\leq t<b\\r\leq b+t}}
+ \binom{2b-1}{2t}\binom{2b+2t+1}{2r}
+       2^{-2(b+t-r)},\qquad 0\leq r\leq2b-1,
+\end{equation}
+the centered moments satisfy
+\begin{equation}\label{eq:rational-moment-two}
+ \sum_{r=0}^{2b-1}w_{b,r}D_r
+ =-\frac{(2b-1)(2-B_{2b-2})}{4}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The rank-one inverse formula and
+\eqref{eq:bernoulli-contraction-rank} show that
+\[
+ e_0^{\mathsf T}(H_b+u e_0^{\mathsf T})^{-1}
+ =\frac{e_0^{\mathsf T}H_b^{-1}}{2-B_{2b-2}}.
+\]
+Insert the coefficient formula for $q_{b-1}$ and the diagonal
+factors in \eqref{eq:rank-one-factor}.  The resulting first row is
+\begin{equation}\label{eq:inverse-first-row-two}
+ (M_b^{-1})_{0t}=
+ \frac{2}{(2b-1)(2-B_{2b-2})}\binom{2b-1}{2t}.
+\end{equation}
+Multiplication by $(C_b,\ldots,C_{2b-1})^{\mathsf T}$ recovers
+$Z_0=-1/2$, which proves \eqref{eq:rational-block-two}.
+Substitution of the source inverse Bernoulli transform
+\[
+ C_j=\sum_{r=0}^j\binom{2j+1}{2r}2^{-2(j-r)}D_r
+\]
+gives \eqref{eq:rational-moment-two}.
+\end{proof}
+
+As an exact check, for $b=3$ the block identity is
+\[
+ C_3+10C_4+5C_5=-\frac{61}{24}.
+\]
+Multiplying its moment form by $1024$ reproduces the source's
+$(2,6)$ identity with coefficients
+$61,8204,116000,370048,303360,56320$ and right side $-7808/3$.
+The source example is therefore a specialization of an all-order
+formula, rather than an isolated elimination.
+
+\subsection{An ordinary convergent series at every even order}
+
+The finite-part identity has a direct, absolutely convergent
+interpretation with an explicitly specified polynomial subtraction.
+Set
+\begin{align}
+ S_b(y)&=\frac{y^{2b+1}}2
+       \bigl((1+y)^{2b-1}+(1-y)^{2b-1}\bigr),
+       \label{eq:S-polynomial-two}\\
+ W_b(x)&=S_b(x+1/2)-S_b(x-1/2)
+        =\sum_{r=0}^{2b-1}w_{b,r}x^{2r}.
+       \label{eq:W-polynomial-two}
+\end{align}
+For an even integer $s\geq2$, define rational coefficients
+\[
+ c_{s,0}=\frac1{s-1},\qquad
+ c_{s,h}=\frac{B_{2h}(1/2)}{(2h)!}(s)_{2h-1}\quad(h\geq1),
+\]
+where $(s)_r$ is a rising factorial.  Put
+\[
+ T_{b,h}=\sum_{i=0}^hc_{2,i}c_{2b,h-i},
+\]
+and define the explicit even polynomial
+\begin{equation}\label{eq:subtraction-two}
+ R_b(x)=\sum_{r=b}^{2b-1}\ \sum_{h=0}^{r-b}
+       w_{b,r}T_{b,h}x^{2(r-b-h)}.
+\end{equation}
+Only the finitely many coefficients with $h\leq b-1$ occur.
+
+\begin{corollary}[Convergent rational tail sums]
+\label{cor:ordinary-two}
+Let $x_n=n+1/2$ and $A_s(n)=\zeta(s)-H_n^{(s)}$.  For every
+$b\geq2$,
+\begin{equation}\label{eq:ordinary-two}
+ \sum_{n=0}^{\infty}
+ \left\{W_b(x_n)A_2(n)A_{2b}(n)-R_b(x_n)\right\}
+ =-\frac{(2b-1)(2-B_{2b-2})}{4}.
+\end{equation}
+The summand is $O(n^{-2})$, so the series is absolutely convergent.
+Equivalently, one may replace the tail product by
+\[
+ A_2(n)A_{2b}(n)
+ =\frac{\psi'(n+1)\psi^{(2b-1)}(n+1)}{(2b-1)!}.
+\]
+\end{corollary}
+
+\begin{proof}
+The centered Hurwitz expansion gives
+\[
+ A_s(n)\sim x_n^{1-s}\sum_{h\geq0}c_{s,h}x_n^{-2h},
+ \qquad
+ A_2(n)A_{2b}(n)\sim
+       x_n^{-2b}\sum_{h\geq0}T_{b,h}x_n^{-2h}.
+\]
+The polynomial $R_b$ in \eqref{eq:subtraction-two} is precisely the
+sum of all nonnegative powers in the product with $W_b$.
+After its subtraction the next possible term is $O(x_n^{-2})$.
+Every removed term has continued sum zero because
+$\zeta(-2r,1/2)=0$ for $r\geq0$.  Thus the absolutely convergent
+sum equals the finite-part moment combination in
+\eqref{eq:rational-moment-two}.  Alternatively, the partial sum of
+each removed centered even power is an odd polynomial in the upper
+integer cutoff with no constant term, which proves the same
+constant-term equality without interchanging a divergent series.
+The polygamma expression is the standard positive-even-order
+identity $A_s(n)=\psi^{(s-1)}(n+1)/(s-1)!$.
+\end{proof}
+
+For example, when $b=2$, multiplication by $64$ gives the compact
+ordinary identity
+\begin{equation}\label{eq:ordinary-24}
+ \sum_{n=0}^{\infty}\left\{
+ (7+412x_n^2+2000x_n^4+1344x_n^6)A_2(n)A_4(n)
+ -448x_n^2-\frac{1216}{3}
+ \right\}=-88.
+\end{equation}
+
+An independently reconstructed example at $b=4$ is also useful for
+checking the size and sign of the subtraction. Define
+\begin{align}
+ \mathsf P_4(X)={}&547+129756X^2+3657584X^4+27896512X^6\notag\\
+ &+71997696X^8+66311168X^{10}+20500480X^{12}+1720320X^{14},
+ \label{eq:P28-example}\\
+ \mathsf R_4(X)={}&245760X^6+2334720X^4+3955712X^2
+                                    +\frac{37765120}{63}.
+ \label{eq:R28-example}
+\end{align}
+These are $2^{14}W_4$ and $2^{14}R_4$, respectively. Then
+\begin{equation}\label{eq:ordinary-28}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}
+    \{\mathsf P_4(x_n)A_2(n)A_8(n)-\mathsf R_4(x_n)\}
+       =-\frac{169984}{3}.}
+\end{equation}
+The associated exact coefficient matrix has determinant
+$\det M_4=-83/483840$ and extraction weights $(1,21,35,7)$.
+The numerical example is not used to infer the formula: every coefficient
+above follows from the proved finite polynomials.
+
+\paragraph{What this resolves and what remains open.}
+The optimal consecutive-prefix conjecture is now proved for every
+even pair with smaller order $2$, as well as the diagonal family
+already settled in the source.  The determinant factor
+$2-B_{q-2}$ explains why a uniform real-sign argument is misleading:
+its sign can change as the even Bernoulli numbers grow.  The nonzero
+factor is instead proved arithmetically.  The following sections extend the determinant method to $p=4,6$ and give
+an exact smaller determinant for every even pair. Nonvanishing for all
+unequal pairs $8\le p<q$ remains open.

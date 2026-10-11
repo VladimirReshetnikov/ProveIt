@@ -1,0 +1,149 @@
+\section{All-order Stieltjes identities and Hurwitz primitives}
+\label{dhr:sec:stieltjes}
+
+\subsection{The complete jet formula}
+Let $e_j=E^{(j)}(0)$, so $e_0=1$ and $e_1=\chi$. All these
+coefficients are explicit finite polygamma polynomials. More precisely,
+put
+\begin{equation}\label{dhr:eq:ell}
+ \ell_j=2\psi^{(j-1)}(1)-\psi^{(j-1)}(r)
+        -\psi^{(j-1)}(a+r-1)-\psi^{(j-1)}(c+r-1).
+\end{equation}
+Then $\log E(u)=\sum_{j\geq1}\ell_j u^j/j!$ and
+$e_j=\Bell_j(\ell_1,\ldots,\ell_j)$. In particular,
+\[
+ e_2=\chi^2+\ell_2,\qquad
+ e_3=\chi^3+3\chi\ell_2+\ell_3.
+\]
+The derivatives $A_j$ are obtained in exactly the same way from the
+finite Gamma product \eqref{dhr:eq:amplitude-E}.
+
+\begin{theorem}[Every fixed Stieltjes order]\label{dhr:thm:jets}
+For every integer $k\geq0$, the following single-bracket series is
+ordinary and absolutely convergent:
+\begin{align}
+ &\sum_{n\geq0}\left[
+ K_n^{(k)}(0)-\frac1{n+\alpha}
+ \sum_{j=0}^k\binom{k}{j}A_j[-\log(n+\alpha)]^{k-j}
+ \right]\notag\\
+ &\qquad=\sum_{j=0}^k\binom{k}{j}A_j
+ \left\{\frac{e_{k-j+1}}{k-j+1}
+       -(-1)^{k-j}\gamma_{k-j}(\alpha)\right\}.
+ \label{dhr:eq:all-jets}
+\end{align}
+The result is locally holomorphic for the parameters in
+Theorem~\ref{dhr:thm:resonance}. The constants $A_j,e_j$ are finite
+Gamma/polygamma expressions; no infinite coefficient extraction is
+needed to compute a fixed row.
+\end{theorem}
+\begin{proof}
+Differentiate the already normally convergent identity
+\eqref{dhr:eq:D-master}, rather than the divergent unsubtracted
+partition. The expansion at zero is
+\[
+ \frac{E(u)}u-\zeta(1+u,\alpha)
+ =\sum_{h\geq0}\left\{\frac{e_{h+1}}{h+1}
+               -(-1)^h\gamma_h(\alpha)\right\}\frac{u^h}{h!}.
+\]
+Leibniz's rule gives the right side of \eqref{dhr:eq:all-jets}.
+Differentiating $(n+\alpha)^{-1-u}$ gives the logarithmic polynomial
+on the left. The normal-convergence statement proved in
+Theorem~\ref{dhr:thm:resonance} supplies absolute convergence of the
+resulting bracket and justifies every interchange.
+\end{proof}
+
+The first three values $D_k(\alpha)=\partial_u^kD(0;\alpha)$ are
+\begin{align}
+ D_0(\alpha)&=A_0\{\chi-\gamma_0(\alpha)\},\notag\\
+ D_1(\alpha)&=A_1\{\chi-\gamma_0(\alpha)\}
+                   +A_0\{e_2/2+\gamma_1(\alpha)\},\notag\\
+ D_2(\alpha)&=A_2\{\chi-\gamma_0(\alpha)\}
+          +2A_1\{e_2/2+\gamma_1(\alpha)\}
+          +A_0\{e_3/3-\gamma_2(\alpha)\}.
+ \label{dhr:eq:first-jets}
+\end{align}
+The factor $1/(h+1)$ in these rows comes from dividing $E(u)-1$ by
+$u$ before differentiation. Replacing it by one would give an
+incorrect higher-order table.
+
+\subsection{Derivatives in the subtraction point}
+The parameter $\alpha$ specifies the subtraction grid. It does not
+move the particles or change their original weights. Differentiating
+this auxiliary family nevertheless yields useful exact identities
+between the corresponding subtracted sums and the usual Hurwitz
+order ladder.
+
+\begin{proposition}[Hurwitz derivative and shift laws]\label{dhr:prop:alpha}
+For every integer $h\geq1$,
+\begin{equation}\label{dhr:eq:alpha-derivative}
+ \partial_\alpha^hD(u;\alpha)
+ =(-1)^{h+1}A(u)(1+u)_h\zeta(1+u+h,\alpha).
+\end{equation}
+Moreover,
+\begin{equation}\label{dhr:eq:alpha-shift}
+ D(u;\alpha+1)-D(u;\alpha)=A(u)\alpha^{-1-u}.
+\end{equation}
+Every fixed $u$-derivative of these equations is valid, including
+at $u=0$. In particular
+$\partial_\alpha^hD_0(\alpha)=A_0\psi^{(h)}(\alpha)$.
+\end{proposition}
+\begin{proof}
+Use the classical identities
+$\partial_\alpha^h\zeta(s,\alpha)=(-1)^h(s)_h\zeta(s+h,\alpha)$
+and $\zeta(s,\alpha+1)=\zeta(s,\alpha)-\alpha^{-s}$
+\cite{dlmf:hurwitz}. Their substitution in
+\eqref{dhr:eq:D-master} proves both formulas. Joint holomorphy, already
+established, permits the indicated mixed derivatives. The last formula
+also follows immediately from $D_0=A_0(\chi+\psi(\alpha))$.
+\end{proof}
+
+\subsection{Anchored antiderivatives and log-Gamma}
+An anchored primitive fixes the integration constant, which is especially
+important when differentiating in the spectral variable. Let
+$\Rea\alpha_0,\Rea\alpha>0$, with the path in that half-plane.
+
+\begin{theorem}[Every anchored primitive of the spectral jets]
+\label{dhr:thm:primitive}
+The identity
+\begin{equation}\label{dhr:eq:primitive-master}
+ \int_{\alpha_0}^{\alpha}D(u;t)\diff t
+ =\frac{A(u)}u\left\{(\alpha-\alpha_0)E(u)
+                  +\zeta(u,\alpha)-\zeta(u,\alpha_0)\right\}
+\end{equation}
+has a removable singularity at $u=0$. For every $k\geq0$,
+\begin{align}
+ \int_{\alpha_0}^{\alpha}D_k(t)\diff t
+ =\sum_{j=0}^k\binom{k}{j}\frac{A_j}{k-j+1}
+ \big[& (\alpha-\alpha_0)e_{k-j+1}\notag\\
+ &+\zeta^{(k-j+1)}(0,\alpha)
+ -\zeta^{(k-j+1)}(0,\alpha_0)\big].
+ \label{dhr:eq:primitive-jets}
+\end{align}
+In particular,
+\begin{equation}\label{dhr:eq:gamma-primitive}
+ \int_{\alpha_0}^{\alpha}D_0(t)\diff t
+ =A_0\left\{(\alpha-\alpha_0)\chi
+       +\log\Gamma(\alpha)-\log\Gamma(\alpha_0)\right\}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+For $u\ne0$, integrate the identity
+$\partial_t\zeta(u,t)=-u\zeta(1+u,t)$.
+This gives \eqref{dhr:eq:primitive-master}. The numerator vanishes
+at zero because $E(0)=1$ and $\zeta(0,t)=\tfrac12-t$.
+Its divided Taylor series has $h$th derivative at zero
+\[
+ \frac{(\alpha-\alpha_0)e_{h+1}
+       +\zeta^{(h+1)}(0,\alpha)-\zeta^{(h+1)}(0,\alpha_0)}{h+1}.
+\]
+Leibniz's rule proves \eqref{dhr:eq:primitive-jets}. Finally,
+$\zeta'(0,t)=\log\Gamma(t)-\tfrac12\log(2\pi)$
+\cite{dlmf:hurwitz} gives \eqref{dhr:eq:gamma-primitive}.
+\end{proof}
+
+This theorem transports the classical Stieltjes primitive to a
+many-variable resonant harmonic sum. It does not claim a new formula
+for $\int\gamma_k(t)\diff t$ in isolation, nor does it integrate an
+arbitrary many-variable weight with respect to a particle coordinate.
+The distinction identifies precisely which antiderivative has been
+established.

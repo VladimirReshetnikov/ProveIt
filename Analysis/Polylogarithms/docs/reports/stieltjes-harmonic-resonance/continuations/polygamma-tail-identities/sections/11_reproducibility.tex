@@ -1,0 +1,69 @@
+\section{Reproducibility and the limits of computation}
+\label{repro:sec}
+
+The package separates proof, exact verification, and floating-point
+diagnostics.  The proofs of the infinite families appear in the
+article.  Exact checks compare independent finite constructions or
+verify finite polynomial identities.  Numerical residuals test the
+analytic formulas at selected instances; they are not interval
+certificates and do not prove arbitrary-order assertions.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}p{.25\textwidth}X@{}}
+\toprule
+Verification family & Completed evidence \\
+\midrule
+Bicolored parity & 49 exact partial-fraction checks; 48 independent
+Mellin-integral parity comparisons, plus explicit specializations and
+the original Family--2 right-hand side.  The largest parity residual
+was $5.94\cdot10^{-50}$ at 50 working digits. \\
+Adjacent tails & 127 exact assertions, including matrix/operator
+conjugacy and determinants through $b=16$, recurrence signs through
+$c_{40}$, and source-coordinate cancellation.  Eight numerical
+diagnostics had maximum scaled residual $1.62\cdot10^{-77}$. \\
+Gamma sectors & Independent Bell-polynomial and normal-form construction
+through weight 16; 49 square coefficients, 17 full sectors, and the
+hyperbolic-sine-integral generator agree exactly. \\
+Hurwitz products & Four independent local-subtraction quadratures and
+one logarithmic order-derivative quadrature, all at 85 working digits;
+absolute residuals were below $7\cdot10^{-85}$. \\
+Spectral polynomials & Independent principal-part checks, frozen-residue
+cancellation, the exact mixed residue difference, and a separately
+regularized trigamma-square quadrature. \\
+Mixed sixth coordinate & Six principal parts, a Laurent constant,
+two formal harmonic-word tables, 24 finite-harmonic checks, 54 finite
+tail-ordering checks, and the exact weight-five reduction.  The
+115-digit mixed identity residual was $1.76\cdot10^{-99}$. \\
+Full sixth moment & Independent local-series quadrature for $Q_6$ and
+Mellin integrals for all five strict-depth slopes.  The 90-digit
+end-to-end residual was $9.90\cdot10^{-88}$. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The scripts require Python 3, SymPy, and mpmath.  The actual run used
+SymPy 1.14.0 and mpmath 1.3.0.  Exact arithmetic uses rational numbers
+or independent symbolic constants.  In the numerical tail calculations,
+the finite sum and the asymptotic Hurwitz tail are evaluated with
+separately specified cutoffs and working precision; the JSON records
+retain those parameters and the observed discrepancies.
+
+The package includes:
+\begin{itemize}
+\item the compiled PDF, one self-contained TeX source, and modular
+TeX sources with stable theorem labels;
+\item exact Gamma normal-form and mixed-coordinate data;
+\item independent verification scripts and their completed JSON records;
+\item the pinned source/archive audit, a claim ledger, and proposed
+integration changes;
+\item a build command, dependency notes, and a package checksum manifest.
+\end{itemize}
+
+No original incoming report is silently replaced.  No source conjecture
+outside the explicitly proved cases is marked solved.  A suggested
+integration is to add the article as a new incoming research report,
+then promote the two proved source claims using the precise statements
+in Section~\ref{audit:sec}.  The source revision and archive digests
+make that comparison reproducible even if the repository subsequently
+changes.

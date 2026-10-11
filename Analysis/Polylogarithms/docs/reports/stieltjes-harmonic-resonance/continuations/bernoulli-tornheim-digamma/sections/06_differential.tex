@@ -1,0 +1,683 @@
+% Research component for root integration. All labels have the dq prefix.
+% Bibliography required: OlverShakiban1978; incoming canonical fifth report.
+% This is a quotient of VECTOR SPACES, not a quotient algebra by an ideal.
+
+\section{Canonical integration by parts for polygamma polynomials}
+\label{dq:section}
+
+The incoming canonical fifth-moment report asks for an all-degree
+classification of differential monomials after integration by parts,
+with their finite endpoint constants retained. The next theorem answers
+the formal integration-by-parts part of that question. It also gives an
+exact reduction algorithm and a smaller parity sector for the inverse-Gamma
+polynomials. The vector-space dimensions below do not count arithmetically
+independent constants, or independent images under any particular spectral
+map. Additional special-function identities can reduce the resulting
+integrals further; the sixth-degree calculation below does exactly this.
+
+Differential-polynomial methods and the exactness of the Euler-operator
+complex are established tools; see Olver--Shakiban
+\cite{OlverShakiban1978}. The elementary construction below is included
+in full to fix the particular grading, basis, and endpoint convention
+needed for this application.
+
+\subsection{The formal vector-space quotient and a triangular basis}
+
+Let
+\[
+ \mathscr R=\mathbb Q[X_1,X_2,\ldots],\qquad
+ D=\sum_{j\ge1}X_{j+1}\frac{\partial}{\partial X_j}.
+\]
+Each polynomial involves finitely many variables, so this derivation
+is well defined. Give $X_j$ weight $j$ and factor degree one. Write
+$\mathscr R_{N,\ell}$ for the span of monomials of weight $N$ and
+factor degree $\ell$, and $\mathscr R_N=\bigoplus_\ell\mathscr R_{N,\ell}$.
+The derivation raises weight by one and preserves factor degree.
+The substitution $X_j=\psi^{(j-1)}(x)$ intertwines $D$ with $d/dx$.
+
+For a partition $\lambda=(\lambda_1\ge\cdots\ge\lambda_\ell>0)$,
+put $X_\lambda=\prod_{i=1}^\ell X_{\lambda_i}$.
+Let $\mathscr B_N$ consist of the partitions of $N$ whose largest
+part occurs at least twice. At weights zero and one, use separately
+the representatives $1$ and $X_1$.
+
+\begin{theorem}[Canonical differential-polynomial normal form]
+\label{dq:normalform}
+For $N\ge2$, the classes
+\[
+ \{X_\lambda:\lambda\in\mathscr B_N\}
+\]
+are a basis of the vector space $\mathscr R_N/D\mathscr R_{N-1}$.
+Every $F\in\mathscr R_N$ has a unique decomposition
+\begin{equation}\label{dq:decomposition}
+ F=\mathcal N(F)+D\mathcal T(F),\qquad
+ \mathcal N(F)\in\operatorname{span}_{\mathbb Q}
+                 \{X_\lambda:\lambda\in\mathscr B_N\},
+ \quad\mathcal T(F)\in\mathscr R_{N-1}.
+\end{equation}
+If $p_\ell(N)$ is the number of partitions of $N$ into exactly
+$\ell$ parts, then
+\begin{equation}\label{dq:dimensions}
+ \dim \frac{\mathscr R_{N,\ell}}{D\mathscr R_{N-1,\ell}}
+   =p_\ell(N)-p_\ell(N-1),\qquad
+ \dim \frac{\mathscr R_N}{D\mathscr R_{N-1}}
+   =p(N)-p(N-1).
+\end{equation}
+The decomposition is produced by a terminating rational algorithm.
+Every retained monomial uses derivatives of order at most
+$\lfloor N/2\rfloor-1$ after substitution into $\psi$.
+\end{theorem}
+
+\begin{proof}
+Order partitions lexicographically by their decreasing lists of parts.
+Let a monomial have a unique largest part $M\ge2$. Decrease this
+part to $M-1$, and call the resulting partition $\mu$. If $b$ is
+the multiplicity of $M-1$ in $\mu$, the product rule gives
+\begin{equation}\label{dq:pivot}
+ D X_\mu=bX_\lambda+R_\lambda.
+\end{equation}
+Every monomial in $R_\lambda$ has largest part at most $M-1$:
+it arises by differentiating one of the smaller factors of $X_\mu$.
+Thus every such partition is lexicographically smaller than $\lambda$.
+Replace $X_\lambda$ by $b^{-1}DX_\mu-b^{-1}R_\lambda$.
+Applying this replacement to the largest remaining unique-largest
+partition strictly decreases a finite ordered set of partitions of $N$,
+so it terminates in the asserted remainder. The replacement preserves
+factor degree.
+
+For independence, apply $D$ to the partition monomials of weight $N-1$.
+The leading partition is obtained by increasing one largest part by one;
+its coefficient is the multiplicity of that largest part and is nonzero.
+This is a bijection between partitions of $N-1$ and partitions of $N$
+with a unique largest part. It also preserves the number of parts.
+Distinct derivative columns therefore have distinct leading partitions.
+No nonzero linear combination of those columns can be supported entirely
+on repeated-largest partitions. This proves both independence and
+injectivity of $D$ on $\mathscr R_{N-1}$, and hence uniqueness of
+the primitive in \eqref{dq:decomposition}. Counting the columns and
+rows gives \eqref{dq:dimensions}. Finally $2\lambda_1\le N$ for
+each retained partition, giving the derivative-order bound.
+\end{proof}
+
+The quotient is a vector-space quotient: $D\mathscr R$ is not in
+general an ideal, so multiplication of classes is not being asserted.
+The ordinary generating series, including weights zero and one, is
+\begin{equation}\label{dq:Hilbert}
+ \sum_{N\ge0}\dim(\mathscr R_N/D\mathscr R_{N-1})q^N
+ =q+\prod_{j\ge2}\frac1{1-q^j}.
+\end{equation}
+The convention is $D\mathscr R_{-1}=0$. The extra $q$ records
+$X_1$, since differentiation kills the constant polynomial.
+With factor degree recorded by $z$, the corresponding series is
+\[
+ (1-q)\prod_{j\ge1}(1-zq^j)^{-1}+q.
+\]
+
+For example, the respective bases at weights four, five, and six are
+\[
+ \begin{array}{c|l}
+ 4& X_1^4,\ X_2^2\\
+ 5& X_1^5,\ X_1X_2^2\\
+ 6& X_1^6,\ X_1^2X_2^2,\ X_2^3,\ X_3^2.
+ \end{array}
+\]
+This explains formally why the fifth digamma calculation introduces
+$\psi(\psi')^2$ after the scalar power. It does not assert that its
+integral is independent of the spectral constants already present.
+
+\subsection{The exact endpoint functional}
+
+For a meromorphic function with a finite principal part at zero, use
+the original-coordinate finite part
+\[
+ \operatorname{FP}\int_0^1f(x)\,dx
+ =\operatorname{CT}_{\varepsilon\downarrow0}\int_\varepsilon^1 f(x)\,dx.
+\]
+Here the constant term is taken after all negative powers of
+$\varepsilon$ and all nonconstant powers of $\log\varepsilon$ are removed.
+For every differential polynomial $T$,
+\begin{equation}\label{dq:endpointfunctional}
+ \operatorname{FP}\int_0^1 DT(\psi,\psi',\ldots)\,dx
+ =\mathcal E(T):=T(\psi(1),\psi'(1),\ldots)
+          -\operatorname{CT}_{x=0}T(\psi(x),\psi'(x),\ldots).
+\end{equation}
+This follows by the fundamental theorem of calculus before the constant
+term is taken. In particular a total derivative cannot simply be
+discarded in the finite-part problem.
+
+The functional is an explicitly finite polynomial calculation. At
+weight $w$, use only
+\begin{equation}\label{dq:endpointtruncation}
+ U_w(x)=-x^{-1}-\gamma+
+       \sum_{k=1}^{w-1}(-1)^{k+1}\zeta(k+1)x^k,
+\end{equation}
+and substitute $X_j=U_w^{(j-1)}(x)$ to obtain the constant term.
+Terms omitted from $\psi$ start at $x^w$; in a weight-$w$ monomial,
+any occurrence of an omitted term has positive total exponent even
+when all other factors contribute their leading poles. Thus it cannot
+affect the constant coefficient. The endpoint at one uses
+\[
+ X_1=-\gamma,\qquad X_j=(-1)^j(j-1)!\zeta(j)\quad(j\ge2).
+\]
+Consequently $\mathcal E(T)\in\mathbb Q[\gamma,\zeta(2),\ldots,\zeta(w)]$
+for every $T\in\mathscr R_w$.
+
+For a formula with entirely finite summation ranges, define
+$\beta_1=-\gamma$ and $\beta_j=(-1)^j(j-1)!\zeta(j)$ for $j\ge2$.
+Set
+\[
+ \alpha_{j,-j}=(-1)^j(j-1)!,\quad \alpha_{1,0}=-\gamma,
+ \quad
+ \alpha_{j,k}=(-1)^{j+k}\frac{(j+k-1)!}{k!}\zeta(j+k)
+ \quad(k\ge0,\ j+k\ge2).
+\]
+All other negative-index coefficients are zero. For a partition
+$\lambda$ of $w$,
+\begin{equation}\label{dq:finiteendpoint}
+ \mathcal E(X_\lambda)=\prod_i\beta_{\lambda_i}
+ -\sum_{\substack{
+ k_i\in\{-\lambda_i,0,1,\ldots,w-\lambda_i\}\\
+ k_1+\cdots+k_\ell=0}}
+       \prod_i\alpha_{\lambda_i,k_i}.
+\end{equation}
+This supplies every endpoint constant at arbitrary degree without
+leaving an unspecified finite-part operation.
+
+The normal-form theorem therefore becomes the exact analytic identity
+\begin{equation}\label{dq:integratednormalform}
+ \operatorname{FP}\int_0^1F(\psi,\psi',\ldots)\,dx
+ =\sum_{\lambda\in\mathscr B_N}
+   [X_\lambda]\mathcal N(F)\,
+   \operatorname{FP}\int_0^1\prod_i\psi^{(\lambda_i-1)}(x)\,dx
+   +\mathcal E(\mathcal T(F)).
+\end{equation}
+Its proof uses finite algebra and \eqref{dq:endpointfunctional}; it
+does not interchange divergent integrals of individual terms.
+
+\subsection{Inverse-Gamma polynomials and the parity reduction}
+
+Define formal differential polynomials by
+\begin{equation}\label{dq:Arecurrence}
+ A_0=1,\qquad A_{m+1}=X_1A_m-DA_m.
+\end{equation}
+On substituting $X_j=\psi^{(j-1)}$, these become
+\[
+ A_m(x)=(-1)^m\Gamma(x)\frac{d^m}{dx^m}\frac1{\Gamma(x)},
+ \qquad
+ \frac{\Gamma(x)}{\Gamma(x-t)}=
+                 \sum_{m\ge0}A_m(x)\frac{t^m}{m!}.
+\]
+Write $N_m=\mathcal N(A_m)$ and $T_m=\mathcal T(A_m)$, with
+$N_0=1,T_0=0,N_1=X_1,T_1=0$.
+
+\begin{theorem}[Factor parity and an explicit all-degree recurrence]
+\label{dq:parity}
+Every monomial of $N_m$ has factor degree congruent to $m$ modulo two.
+Thus its number of possible canonical coordinates is at most
+\begin{equation}\label{dq:paritycount}
+ r_m=\sum_{\ell\equiv m\ (2)}
+             \bigl(p_\ell(m)-p_\ell(m-1)\bigr)\qquad(m\ge2).
+\end{equation}
+For $m\ge1$, the complete pair $(N_{m+1},T_{m+1})$ is computed
+from $(N_m,T_m)$ by setting
+\[
+ (R,S)=(\mathcal N,\mathcal T)(X_1N_m-X_2T_m)
+\]
+and then
+\begin{equation}\label{dq:pairrecurrence}
+ N_{m+1}=R,\qquad
+ T_{m+1}=S+X_1T_m-N_m-DT_m.
+\end{equation}
+All coefficient operations are finite and rational.
+\end{theorem}
+
+\begin{proof}
+Here is a polynomial form of the adjoint argument, retaining its
+boundary explicitly. Introduce a function $F$ with $F'=X_1$, and
+write $p=e^F,q=e^{-F}$. The products below are differential
+polynomials because the exponential factors cancel. The Lagrange
+concomitant is
+\[
+ L_m=\sum_{j=0}^{m-1}(-1)^j p^{(j)}q^{(m-1-j)}.
+\]
+Termwise differentiation telescopes to
+\[
+ DL_m=pq^{(m)}+(-1)^{m-1}p^{(m)}q
+       =(-1)^m A_m(X)-A_m(-X).
+\]
+Equivalently, put $B_j(X)=(-1)^jA_j(-X)$ and write
+$L_m=\sum_{j=0}^{m-1}(-1)^jB_j(X)B_{m-1-j}(-X)$;
+then the argument is an identity inside $\mathscr R$ and does not
+require choosing an antiderivative $F$.
+
+The normal-form projection respects factor degree, and replacing every
+$X_j$ by $-X_j$ multiplies a degree-$\ell$ monomial by $(-1)^\ell$.
+Applying the unique projection to the concomitant identity yields
+$N_m(-X)=(-1)^mN_m(X)$, proving the parity assertion and
+\eqref{dq:paritycount}. Finally substitute $A_m=N_m+DT_m$ into
+\eqref{dq:Arecurrence} and use
+$X_1DT_m=D(X_1T_m)-X_2T_m$. The result is
+\[
+ A_{m+1}=X_1N_m-X_2T_m+D(X_1T_m-N_m-DT_m),
+\]
+which proves \eqref{dq:pairrecurrence}.
+\end{proof}
+
+The values of $r_m$ for $m=2,\ldots,12$ are
+\[
+ 1,1,2,2,3,3,5,6,8,9,13.
+\]
+These are formal upper bounds for the number of coordinates in
+the particular Gamma normal form. No nonvanishing assertion for all
+allowed coefficients is required. Some low-degree remainders are
+\begin{align}
+ N_4&=X_1^4-X_2^2,\notag\\
+ N_5&=X_1^5-5X_1X_2^2,\notag\\
+ N_6&=X_1^6-15X_1^2X_2^2+X_3^2,\label{dq:N4567}\\
+ N_7&=X_1^7-35X_1^3X_2^2+7X_1X_3^2,\notag\\
+ N_8&=X_1^8-70X_1^4X_2^2+28X_1^2X_3^2-7X_2^4-X_4^2.
+ \notag
+\end{align}
+In particular the weight-six basis element $X_2^3$ is excluded by
+parity. Its absence is a structural consequence, not a fitted numerical
+cancellation.
+
+\subsection{Appell transport of the reduced differential polynomials}
+
+Let
+\[
+ P_j(Y)=j![t^j]\Gamma(1-t)e^{tY},\qquad
+ C_m(x)=m![t^m]\frac{\Gamma(1-t)\Gamma(x)}{\Gamma(x-t)}.
+\]
+These are the established scalar and differential Gamma normalizers
+from the incoming fifth-moment report. The operator $\partial_{X_1}$
+commutes with $D$, and the repeated-largest normal-form space is
+stable under $\partial_{X_1}$. Uniqueness gives
+\[
+ \partial_{X_1}N_m=mN_{m-1}.
+\]
+Consequently the canonical remainder of $C_m$ is obtained by expanding
+$N_m$ as a polynomial in $X_1$ and replacing each power $X_1^j$ by
+$P_j(\psi)$. Explicitly, with $K_j=N_j|_{X_1=0}$,
+\begin{equation}\label{dq:Appelltransport}
+ \mathcal N(C_m)=\sum_{j=0}^m\binom mj P_j(\psi)K_{m-j}.
+\end{equation}
+For example,
+\begin{align}
+ \mathcal N(C_6)&=P_6(\psi)-15P_2(\psi)(\psi')^2+(\psi'')^2,
+ \label{dq:C6normal}\\
+ \mathcal N(C_7)&=P_7(\psi)-35P_3(\psi)(\psi')^2
+                                  +7P_1(\psi)(\psi'')^2.
+ \label{dq:C7normal}
+\end{align}
+The primitive can be obtained by the same finite Gamma coefficient
+convolution applied to the $T_j$; constant ambiguities do not affect
+its endpoint functional.
+
+Moreover, if $C_m=\mathcal N(C_m)+D\widetilde T_m$, then
+\begin{equation}\label{dq:Appellendpointalgebra}
+ \mathcal E(\widetilde T_m)\in
+            \mathbb Q[\zeta(2),\ldots,\zeta(m-1)].
+\end{equation}
+It is homogeneous of weight $m-1$. To see this, put $y=\psi+\gamma$
+and use
+\[
+ \Gamma(1-t)e^{-\gamma t}
+  =\exp\left(\sum_{j\ge2}\frac{\zeta(j)}j t^j\right).
+\]
+The primitive is a differential polynomial in $y$ with these zeta
+coefficients. Both $y(1)=0$ and the constant Laurent coefficient of
+$y$ at zero are zero, so neither endpoint calculation introduces
+$\gamma$. The finite formula \eqref{dq:finiteendpoint} proves
+the assertion at every degree.
+
+\subsection{The inherited spectral bridge in the new normal form}
+
+Use the conventions
+\[
+ \frac1{\Gamma(1+u)}=\sum_{j\ge0}c_ju^j,\qquad
+ \lambda_d=[u]\zeta(1+u,\underbrace{1,\ldots,1}_{d-1}),
+ \quad d\ge1.
+\]
+The coefficient $[u]$ is a Laurent coefficient, not a derivative at
+a pole. In particular $\lambda_1=-\gamma_1$ under the convention
+$\zeta(1+u)=u^{-1}+\gamma-\gamma_1u+\cdots$.
+The established Gamma integral bridge is
+\begin{equation}\label{dq:inheritedCbridge}
+ \int_0^1C_m(x)\,dx=m!(c_m-\lambda_{m-1}),\qquad m\ge2.
+\end{equation}
+Its complete integrand is continuous at zero. Combining this formula
+with \eqref{dq:Appelltransport} and the exact endpoint functional
+gives an all-degree finite recipe which isolates the single highest
+height-one coefficient and specifies every remaining mixed integral.
+
+For comparison, the equivalent inverse-Gamma bridge is
+\begin{equation}\label{dq:inheritedAbridge}
+ \mathcal L_m:=\operatorname{FP}\int_0^1 A_m(x)\,dx
+ =m![t^m]\frac{\sin(\pi t)}{\pi t}
+  -m!\sum_{d=1}^{m-1}(-1)^{m-d-1}c_{m-d-1}\lambda_d.
+\end{equation}
+This follows directly by multiplying the generating family $C_m$
+by $1/\Gamma(1-t)$, retaining
+$\operatorname{FP}\int C_0=1$ and
+$\operatorname{FP}\int C_1=\gamma$, and using
+$1/(\Gamma(1-t)\Gamma(1+t))=\sin(\pi t)/(\pi t)$.
+Thus the new normal form changes the finite coordinate list and
+retains the already established spectral normalization.
+
+\section{A direct formula for coincident polygamma products}
+\label{dq:bilinearsection}
+
+The manuscript already gives general translated polygamma products
+in first Hurwitz derivatives, in particular its formula
+\texttt{shj:polyclosurezeta}. The following coincident, original-coordinate
+finite part has the corresponding ordinary-zeta form. A direct proof
+is supplied because a collision limit cannot in general be moved through
+a finite-part prescription without checking its local normalization.
+
+Put $H_0=0$ and $H_d=\sum_{j=1}^d1/j$.
+For nonnegative integers $r,s$ with $d=r+s\ge1$, define
+$\sigma_r=(-1)^{r+1}$ and $\sigma_s=(-1)^{s+1}$.
+
+\begin{theorem}[Coincident bilinear polygamma finite parts]
+\label{dq:bilinear}
+In the original coordinate $x$,
+\begin{align}
+ &\operatorname{FP}\int_0^1\psi^{(r)}(x)\psi^{(s)}(x)\,dx\notag\\
+ &\quad=d!\left\{(\sigma_r+\sigma_s)\zeta'(d+1)
+ +\left[\sigma_r(H_d-H_s)+\sigma_s(H_d-H_r)\right]
+                                      \zeta(d+1)\right\}.
+ \label{dq:bilinearformula}
+\end{align}
+In particular, for every $r\ge1$,
+\begin{equation}\label{dq:squareformula}
+ \operatorname{FP}\int_0^1(\psi^{(r)}(x))^2\,dx
+ =2(-1)^{r+1}(2r)!
+    \left\{\zeta'(2r+1)+(H_{2r}-H_r)\zeta(2r+1)\right\}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+At the pole $x=-n$, write $v=x+n$ and
+\[
+ \psi(-n+v)=-v^{-1}+a_0(n)+\sum_{k\ge1}a_k(n)v^k,
+\]
+where $a_0(n)=H_n-\gamma$ and
+$a_k(n)=H_n^{(k+1)}+(-1)^{k+1}\zeta(k+1)$ for $k\ge1$.
+In every case $\Delta a_k(n)=n^{-k-1}$.
+Let $p_j(n)$ denote the coefficient of $v^{-j}$ in the product.
+There is a constant highest coefficient at order $d+2$, and for
+$1\le j\le d+1$ the other coefficients are
+\begin{equation}\label{dq:bilinearpoles}
+ p_j(n)=(d+1-j)!a_{d+1-j}(n)
+ \left\{\mathbf1_{j\le r+1}\frac{\sigma_r r!}{(r+1-j)!}
+       +\mathbf1_{j\le s+1}\frac{\sigma_s s!}{(s+1-j)!}\right\}.
+\end{equation}
+This is just multiplication of each leading pole by the other's
+analytic Taylor series. In particular
+\[
+ \Delta p_1(n)=d!(\sigma_r+\sigma_s)n^{-d-1}.
+\]
+
+Here are the convergence and normalization details. The normalized
+Mittag--Leffler expansion is
+\[
+ f(z)=P_0(z)+\kappa+
+           \sum_{n\ge1}\{P_n(z)-P_n(0)\},\qquad
+ P_n(z)=\sum_j\frac{p_j(n)}{(z+n)^j},
+\]
+where $\kappa$ is the local Laurent constant at zero. Its normal
+convergence follows from $p_j(n)=O(1+\log n)$ and one subtraction.
+The whole-circle contour argument eliminates the entire remainder:
+integrate $z(f(w)-P_0(w))/(w(w-z))$ on $|w|=N+1/2$.
+Digamma reflection and the differentiated cotangent reflection formulas
+bound all factors by $O(1+\log N)$ on this circle, so the integral
+tends to zero. Moreover
+\[
+ \kappa-\sum_{n=1}^NP_n(0)
+       =\frac1{2\pi}\int_{-\pi}^{\pi}f((N+1/2)e^{i\theta})\,d\theta
+       \longrightarrow0.
+\]
+For the last limit, outside an arc of length $O(\log N/N)$ at the
+negative real axis, at least one differentiated digamma factor tends
+to zero by the sectorial asymptotic and reflection. On the exceptional
+arc the uniform logarithmic bound times its length tends to zero.
+This uses $d\ge1$; the undifferentiated square is a separate case.
+
+Integrate the normal expansion to one before passing to the cutoff.
+Finite summation by parts in its higher-pole terms gives
+\[
+ \sum_{j\ge2}\sum_{n\ge1}
+              \frac{\Delta p_j(n)}{(j-1)n^{j-1}},
+\]
+and the simple poles give $-\sum_{n\ge1}\Delta p_1(n)\log n$.
+All terminal terms vanish: $p_j(N)/(N+1)^{j-1}\to0$ for $j\ge2$;
+also $p_1(N)\log(N+1)\to0$, since it is zero when $d$ is odd,
+and proportional to the decaying tail $a_d(N)$ when $d$ is even.
+The grouped sums are absolutely convergent. They are precisely the
+original-coordinate finite part, by integration before constant-term
+extraction at zero.
+
+The logarithmic sum is $d!(\sigma_r+\sigma_s)\zeta'(d+1)$.
+For the higher poles use the finite identity
+\begin{equation}\label{dq:binomialharmonic}
+ r!\sum_{h=1}^r\frac{(d-h)!}{(r-h)!h}
+                 =d!(H_d-H_{d-r}),\qquad0\le r\le d.
+\end{equation}
+After division by $d!$, this identity is obtained by integrating
+\[
+ \sum_{h=1}^r\binom rh t^{h-1}(1-t)^{d-h}
+       =\frac{(1-t)^{d-r}-(1-t)^d}{t}
+\]
+from zero to one. The beta integrals on the left and the finite
+geometric sum on the right give exactly \eqref{dq:binomialharmonic}.
+Applying it once to each term in \eqref{dq:bilinearpoles} gives
+the zeta coefficient in \eqref{dq:bilinearformula}. Setting $s=r$
+proves \eqref{dq:squareformula}.
+\end{proof}
+
+The cases needed below are
+\begin{equation}\label{dq:twosquares}
+ \operatorname{FP}\int_0^1(\psi')^2\,dx=2\zeta(3)+4\zeta'(3),
+ \qquad
+ \operatorname{FP}\int_0^1(\psi'')^2\,dx=-28\zeta(5)-48\zeta'(5).
+\end{equation}
+
+\section{The canonical sixth and seventh digamma identities}
+\label{dq:sixthsection}
+
+Write $z_j=\zeta(j)$ in this section and put $y=\psi+\gamma$.
+The sixth scalar polynomial is explicitly
+\begin{align}
+ P_6(\psi)={}&y^6+15z_2y^4+40z_3y^3
+          +(45z_2^2+90z_4)y^2\notag\\
+ &+(120z_2z_3+144z_5)y
+     +15z_2^3+90z_2z_4+40z_3^2+120z_6.
+ \label{dq:P6}
+\end{align}
+Define the one retained mixed moment
+\begin{equation}\label{dq:M6}
+ \widetilde M_6=\operatorname{FP}\int_0^1
+                          (\psi(x)+\gamma)^2(\psi'(x))^2\,dx.
+\end{equation}
+This is a fully specified original-coordinate finite part, with an
+ordinary convergent subtracted representation obtained by its finite
+Laurent principal part.
+More explicitly,
+\begin{equation}\label{dq:M6principal}
+ y^2(\psi')^2=x^{-6}-2z_3x^{-3}-z_4x^{-2}
+                 +6(z_2z_3-z_5)x^{-1}+O(1).
+\end{equation}
+Consequently
+\begin{align}
+ \widetilde M_6={}&-\frac15+z_3+z_4\notag\\
+ &+\int_0^1\left\{y^2(\psi')^2-x^{-6}+2z_3x^{-3}
+         +z_4x^{-2}-6(z_2z_3-z_5)x^{-1}\right\}\,dx.
+ \label{dq:M6ordinary}
+\end{align}
+The complete integrand in braces has a removable singularity at zero.
+
+\begin{theorem}[A canonical sixth-degree bridge with one mixed moment]
+\label{dq:canonicalsixth}
+With the conventions already fixed,
+\begin{align}
+ \boxed{\begin{aligned}
+ \operatorname{FP}\int_0^1P_6(\psi(x))\,dx
+ ={}&720(c_6-\lambda_5)+15\widetilde M_6\\
+ &+60z_2\zeta'(3)+48\zeta'(5)+90z_2z_3+270z_5.
+ \end{aligned}}
+ \label{dq:canonicalsixthformula}
+\end{align}
+Thus this scalar Gamma--Appell combination has only the highest
+height-one coefficient $\lambda_5$ and one specified mixed moment,
+apart from ordinary constants and ordinary zeta derivatives. This is
+not an elimination or an independence theorem for $\widetilde M_6$.
+\end{theorem}
+
+\begin{proof}
+For the inverse-Gamma polynomial, the exact primitive from the normal
+algorithm is
+\begin{align}
+ T_6={}&-3\psi^5+20\psi^3\psi'-15\psi^2\psi''
+       -15\psi(\psi')^2+6\psi\psi'''+9\psi'\psi''-\psi''''.
+ \label{dq:T6}
+\end{align}
+Direct differentiation, or the finite recurrence, gives
+\[
+ A_6=\psi^6-15\psi^2(\psi')^2+(\psi'')^2+T_6'.
+\]
+For $C_6$, form the polynomial
+\begin{align}
+ \widetilde T_6={}&T_6[y]
+  +15z_2(-2y^3+4y\psi'-\psi'')\notag\\
+  &+40z_3(-\tfrac32y^2+\psi')-(45z_2^2+90z_4)y,
+ \label{dq:TC6}
+\end{align}
+where $T_6[y]$ means \eqref{dq:T6} with every undifferentiated
+$\psi$ replaced by $y$ and its derivatives unchanged. Then
+\begin{equation}\label{dq:C6exact}
+ C_6=P_6(\psi)-15(y^2+z_2)(\psi')^2+(\psi'')^2
+                              +\widetilde T_6'.
+\end{equation}
+The two endpoint values are
+\begin{align}
+ \widetilde T_6(1)&=52z_2z_3+24z_5,\notag\\
+ \operatorname{CT}_{x=0}\widetilde T_6(x)
+                  &=112z_2z_3+266z_5,\notag\\
+ \mathcal E(\widetilde T_6)&=-60z_2z_3-242z_5.
+ \label{dq:C6endpoints}
+\end{align}
+They follow by substituting
+$y=-x^{-1}+z_2x-z_3x^2+z_4x^3-z_5x^4+O(x^5)$,
+or directly from \eqref{dq:finiteendpoint}. Apply finite parts to
+\eqref{dq:C6exact}, use \eqref{dq:inheritedCbridge}, and then use
+both evaluations in \eqref{dq:twosquares}. Every term in
+\eqref{dq:canonicalsixthformula} follows, including the endpoint
+contribution and the $z_2\zeta'(3)$ correction.
+\end{proof}
+
+For a fully expanded ordinary coefficient,
+\begin{align}
+ 720c_6={}&\gamma^6-15\gamma^4z_2+40\gamma^3z_3
+       +45\gamma^2z_2^2-90\gamma^2z_4\notag\\
+ &-120\gamma z_2z_3+144\gamma z_5
+       -15z_2^3+90z_2z_4+40z_3^2-120z_6.
+ \label{dq:c6}
+\end{align}
+
+\subsection{The raw sixth power}
+
+Let $Q_6=\operatorname{FP}\int_0^1\psi^6$ and
+$M_6=\operatorname{FP}\int_0^1\psi^2(\psi')^2$.
+The endpoint difference of \eqref{dq:T6} is
+\begin{equation}\label{dq:rawsixthendpoint}
+ \mathcal E(T_6)=60\gamma^3z_2-150\gamma^2z_3-105\gamma z_4
+                              +210z_2z_3-242z_5.
+\end{equation}
+Combining this with \eqref{dq:inheritedAbridge} gives the complete
+raw-power formula
+\begin{align}
+ Q_6={}&15M_6-720\lambda_5+720\gamma\lambda_4
+          -360(\gamma^2-z_2)\lambda_3\notag\\
+ &+120(\gamma^3-3\gamma z_2+2z_3)\lambda_2\notag\\
+ &-30(\gamma^4-6\gamma^2z_2+8\gamma z_3
+                       +3z_2^2-6z_4)\lambda_1\notag\\
+ &-135z_6+48\zeta'(5)-60\gamma^3z_2+150\gamma^2z_3
+             +105\gamma z_4-210z_2z_3+270z_5.
+ \label{dq:rawsixth}
+\end{align}
+The term $-135z_6=-\pi^6/7$ is the entire contour constant of
+the sixth inverse-Gamma bridge. It is not an endpoint correction.
+
+\subsection{The next odd degree}
+
+The algorithm also gives a compact seventh-degree extension. Define
+\[
+ W_7=\operatorname{FP}\int_0^1P_3(\psi)(\psi')^2\,dx,
+ \qquad
+ K_7=\operatorname{FP}\int_0^1P_1(\psi)(\psi'')^2\,dx.
+\]
+Then
+\begin{equation}\label{dq:canonicalseventh}
+ \boxed{\displaystyle
+ \operatorname{FP}\int_0^1P_7(\psi)\,dx
+ =5040(c_7-\lambda_6)+35W_7-7K_7+231z_3^2+2380z_6.}
+\end{equation}
+Here $P_1(\psi)=y$ and $P_3(\psi)=y^3+3z_2y+2z_3$.
+For reproducibility, a primitive for $A_7-N_7$ is
+\begin{align}
+ T_7={}&-\tfrac72\psi^6+35\psi^4\psi'-35\psi^3\psi''
+        -\tfrac{105}2\psi^2(\psi')^2+21\psi^2\psi'''\notag\\
+ &+63\psi\psi'\psi''-7\psi\psi''''+14(\psi')^3
+        -14\psi'\psi'''-\tfrac{21}2(\psi'')^2+\psi'''''.
+ \label{dq:T7}
+\end{align}
+In addition to $T_6$ already displayed, the lower primitives needed
+for the Gamma convolution are
+\begin{align*}
+ T_5&=-\tfrac52\psi^4+10\psi^2\psi'-5\psi\psi''
+                         -\tfrac52(\psi')^2+\psi''',\\
+ T_4&=-2\psi^3+4\psi\psi'-\psi'',\\
+ T_3&=-\tfrac32\psi^2+\psi',\qquad T_2=-\psi.
+\end{align*}
+The primitive for $C_7-\mathcal N(C_7)$ is
+\begin{align*}
+ \widetilde T_7={}&T_7[y]+21z_2T_5[y]+70z_3T_4[y]\\
+  &+(105z_2^2+210z_4)T_3[y]+(420z_2z_3+504z_5)T_2[y].
+\end{align*}
+The finite endpoint algorithm gives
+\[
+ \mathcal E(\widetilde T_7)
+ =-448z_2z_4-231z_3^2-1596z_6
+ =-231z_3^2-2380z_6.
+\]
+Combining it with \eqref{dq:C7normal} and the inherited Gamma
+bridge proves \eqref{dq:canonicalseventh}. The certificate contains
+the full polynomial identity, so this seventh-degree formula does
+not rely on a numerical extrapolation from degree six.
+
+\subsection{Proof status, verification, and remaining question}
+
+The accompanying exact program checks every partition at every weight
+through twelve: it verifies the decomposition identity, the vanishing
+normal form of every total derivative, the bidegree count, the adjoint
+concomitant identity, and the parity restriction. It also independently
+expands the local Laurent polynomials for the displayed sixth and
+seventh endpoint constants. These finite checks corroborate the
+proofs; the terminating algorithm and the dimension theorem themselves
+hold at all degrees by the arguments above.
+
+This resolves the formal integration-by-parts classification requested
+in the incoming programme and gives complete degree-six and degree-seven
+applications. The next separate task is to determine the image of this
+formal quotient in an explicitly specified family of harmonic spectral
+coordinates. Its kernel may contain additional special-function
+relations. Neither the partition count nor the parity count can be
+used to assert arithmetic independence of the remaining constants.
+
+% Suggested bibliography entry for the surrounding article:
+% \bibitem{OlverShakiban1978}
+% P. J. Olver and C. Shakiban, A resolution of the Euler operator. I,
+% Proc. Amer. Math. Soc. 69 (1978), 223--229.
+% DOI: 10.1090/S0002-9939-1978-0486822-8.
+% Primary author-hosted PDF: https://www-users.cse.umn.edu/~olver/s_/reo.pdf
