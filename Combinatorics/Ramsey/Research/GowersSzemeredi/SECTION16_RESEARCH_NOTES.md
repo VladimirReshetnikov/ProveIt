@@ -3098,6 +3098,181 @@ Exactly three inputs are dimension-one facts:
 Each stage is the dimension-two construction one level up. The new
 ingredient is the uniform class.
 
+### L.5a Route (II) in dimension three is complete (2026-10-11)
+
+**Result.** Theorem 16.2 and Corollary 16.11 hold in dimension three
+without any Milićević hypothesis:
+- `theorem_16_2_three_of_profiles` and `corollary_16_11_three_of_profiles`
+  (Proofs16PolyCoverThreeTheorem). These are light and kernel-checked
+  locally; their axioms are propext, Classical.choice and Quot.sound. They
+  take the recurrence profiles in dimensions one and two at constants
+  `K, p ≤ 2^2000`, the same hypotheses as `theorem_18_2_six_of_profiles`.
+- `theorem_16_2_three` and `corollary_16_11_three`
+  (Proofs16PolyCoverThreeExplicit). This is the heavy bridge: it supplies
+  those profiles from `section16RecurrenceProfileWith_explicit` and
+  `lengthSix_explicit_constants`. It is stub-checked here: the only extra
+  axioms are opaque stand-ins for the four heavy facts. The final check is
+  on the full-verification host.
+
+Every earlier dimension-three statement (Part J, Proofs16Variety*) assumes
+`MilicevicDeepVarietyStructure`, `MilicevicDeepEventuallyPrime` or
+polynomially bounded controls. This one assumes none of them.
+
+**How the stages landed.**
+
+| Stage | Modules |
+|---|---|
+| D1 | Proofs16UniformCoverTwoBounds |
+| D2 | Proofs16ThreeSlices, Proofs16ThreeCylinders, Proofs16WithSum, Proofs16ProductTranslate, Proofs16PolyPieceThreeInputs |
+| D3 | Proofs16PolyFamilyThree, Proofs16PolyPieceThreeData |
+| D4 | Proofs16PolyCoverThree, plus the bridge Proofs16PolyCoverThreeBridge |
+| D5 | Proofs16PrintedControls, Proofs16PolyCoverThreeBounds, Proofs16PolyCoverThreeTheorem, Proofs16PolyCoverThreeExplicit |
+
+**The envelope.** Write `B = W₀·2/(γθρ)` with `W₀ = K₁ + p₁ + K₂ + p₂`.
+- The count of `PolyCoverAt 3` is at most `B^(2^321)`.
+- The width exponent is at least `B^(-2^361)`.
+- The dimension-two pieces are bounded in the base `B^(2^136)`. There the
+  general-base bounds of D1 apply: count `≤ w^(2^89)` and exponent
+  `≥ w^(-2^130)`.
+- `theorem162At_of_polyCover` then needs `D = 2^361 ≤ 2^(2^11)` and
+  `W₀ ≤ 2^2002 ≤ 2^(2^512 − 1)`. Both margins are enormous: the printed
+  controls of Theorem 16.2 allow degree `2^(2^(k+8))`.
+
+**A defect found on the way.** Proofs18LengthSixCounts (2b12bac)
+re-declared `section16BaseFamilyBound_le_power`. The peer's
+Proofs16BaseFamilyPowerBound already had a sharper version (exponent
+`10002`). Each module built green on its own, but the facade imports both,
+so the duplicate broke it. It is now the corollary
+`section16BaseFamilyBound_le_dyadic_power` (exponent `2^14`), derived from
+the peer's lemma. A source-level scan of all 6998 top-level names in
+GowersSzemeredi finds no other live duplicate. The one other hit,
+`multiplyLinear_downward_closed_holds`, is in the orphan module
+Proofs16Closure, which nothing imports.
+
+**Next.** Route (II) in every dimension. The dimension-three construction
+used dimension two in three places:
+1. the uniform class `PolyPieceTwo` and its family cover;
+2. Lemma 15.6's arrangements at `k = 2`;
+3. the abstract family Lemma 16.6 at `k = 1, 2`.
+
+The induction needs a `UniformCoverAt k` statement: a cover of the
+spectra of any `M` pieces of the dimension-`k` uniform class, with
+envelope controls in a base `w`. Two things must then be shown:
+- `UniformCoverAt k` together with the family lemma at `k` gives
+  `UniformCoverAt (k+1)`;
+- `UniformCoverAt k` gives `PolyCoverAt (k+1)`.
+
+The exponent tower grows by a fixed factor per dimension, so the degrees
+are about `2^(c·k)`, far below `2^(2^(k+8))`.
+
+Theorem 18.2 at length seven needs dimension-three inputs of the same kind
+that dimensions one and two supplied at length six. That is the
+recurrence profile, or the lifted family cover, not just `Theorem162At 3`.
+Whether `PolyCoverAt 3` and the uniform class give them directly is open.
+L.4 lists what length seven consumes.
+
+### L.6 Route (II) in every dimension: interface, degree budget, stages (plan, 2026-10-11)
+
+**Why not dimension by dimension.** Each catalogue item (16.2, 16.11, and
+through them 18.2 and 18.7 at every length) quantifies over all `k`. One
+generic induction step is needed. The dimension-three modules (L.5a) are
+its template, not its instance: they name faces (`vTF`, `vFT`, `cylMid`,
+…) and carry numeral exponents.
+
+**The interface.** The induction hypothesis is relation-level, so no
+generic class of pieces has to be defined:
+
+    UniformCoverAt k Cnt Exp :=
+      ∀ θ γ ∈ (0,1], ∀ N prime, ∀ n (Γ : Fin n → relations in dim k),
+        (∀ i, |Γ i| ≤ γ⁻² N^k ∧ RelationProductProperty γ (Γ i)) →
+        ∃ J : Fin n → Finset (Point N k), (∀ i, (1−θ)N^k ≤ |J i|) ∧
+          MultiplyLinearWith (Cnt θ γ n) (Exp θ γ n) (⋃ i, Γ i ↾ J i)
+
+`PolyCoverAt k (Cnt · · 1) (Exp · · 1)` is the case `n = 1`. The
+dimension-three proof consumed exactly this, in three places, each at its
+own `(θ′, γ′)`:
+- the spectra of all pieces, at `(threeBudget, threeDelta)`;
+- the stacked slices, at `(threeBudget, γ)`;
+- the remainder faces, at `(threeBudget, γ)`.
+
+In each place it decomposed into `PolyPieceTwo` pieces off a good set and
+then used `section16_uniform_cover_two`. Dimensions one and two give the
+interface from `section16_poly_piece_decomposition_two` plus the uniform
+cover, and from the Freiman-graph base case.
+
+**The step `UniformCoverAt j (j ≤ k) ⇒ UniformCoverAt (k+1)`.** It follows
+the dimension-three proof:
+1. Greedy peeling plus Lemma 15.6 (already generic in `k`) give pieces
+   `φ = (−1)^k f(init, last) + rem`.
+2. Spectra are `k`-dimensional product relations: use `UniformCoverAt k`.
+3. The remainder is `section16PhiRemainder` (generic, Section16), a signed
+   sum over the `2^k − 1` vertices `e ≠ 1`. The translated vertex `e`
+   depends only on the coordinates `S(e) = {i | e i}` and the last one, so
+   its graph is a lift of a face relation of dimension `|S(e)| + 1 ≤ k`.
+   Cover it with `UniformCoverAt (|S|+1)`, lift along the unused
+   coordinates (a generic `relation_lift` through a coordinate
+   embedding), and sum with `MultiplyLinearWith.relationSum` iterated
+   over a `Finset`.
+4. Slices are `k`-dimensional sections with the product property: use
+   `UniformCoverAt k` at `n·m·samples` relations.
+5. Pieces from different relations are stacked as in L.3 step C. The
+   interface is already a family statement, so the step returns a family
+   statement.
+
+**Degree budget.** This is what decides whether all `k` fit the printed
+controls. Write `L = log₂(degree)` for the count `C` and the width
+exponent `E`, in a base `W₀·2/(γθρ)`. The dimension-three numbers
+decompose as:
+- count `321 ≈ 89 + 128 + 104`: the dimension-two count, then
+  `t₂ = log₂ deg θ₁(2) = 2^7`, then stacking;
+- width `361 ≈ 130 + 229`: the dimension-two exponent, then the slice
+  base, which is a count.
+
+`θ₁(k) = (θγ/4)^(2^(2^(k+5)))`, so `t_k = 2^(k+5)`. If the step keeps two
+properties:
+- (P1) count degrees never involve width degrees (true at dimension three:
+  counts come from `famPieceGraphBound`, samples and `Pb`, all counts);
+- (P2) the per-step overhead `c` is a constant, not a function of the
+  degrees,
+
+then
+- `L^C_{k+1} ≤ L^C_k + 2^(k+5) + c`, so `L^C_k ≤ 2^(k+6) + ck`;
+- `L^E_{k+1} ≤ L^E_k + L^C_{k+1} + c′`, so `L^E_k ≤ 2^(k+7) + O(k²)`.
+
+The printed controls allow `L ≤ 2^(k+8)` (`theorem162At_of_polyCover`).
+That leaves a factor 2 in every dimension. Without P1 the recursion is
+`L_{k+1} ≈ 2L_k + 2^(k+5)`, so `L_k ≈ k·2^(k+4)`, which exceeds `2^(k+8)`
+from `k ≈ 16`. So the generic statement must carry *symbolic* degree
+functions `LC k`, `LE k : Nat` with these recursions, and numeral crude
+bounds are not enough. The Bohr radius `ζ = 2^(−s(θ,γ,k))` enters only
+additively, as `log ζ⁻¹ ≤ u^(2^(2^(k+6)))` inside the cap (as at dimension
+three: `nz = 2^256 + 1`). So it adds `2^(k+6)` to `L^E` once and does not
+compound.
+
+**Stages.**
+- (E1) `UniformCoverAt` and its instances at `k = 1, 2` from existing
+  results. Specialization `UniformCoverAt k ⇒ PolyCoverAt k`.
+- (E2) Generic face lifts: for `S ⊆ Fin k`, the coordinate embedding
+  `Point N (|S|+1) ↪ Point N (k+1)` coordinates, the lift of
+  `MultiplyLinearWith`, and the finite iterated `relationSum`.
+- (E3) Generic piece data at dimension `k+1` (spectrum, remainder by
+  vertices, slices), from Lemma 15.6 at `k`.
+- (E4) The step, with symbolic controls.
+- (E5) The degree recursion and the comparison with
+  `2^(2^(k+8))`; then `Theorem162At k` and `Corollary1611At k` for all `k`,
+  hence `theorem_16_2` and `corollary_16_11` (heavy bridge: the profiles in
+  every dimension already come from `section16RecurrenceProfileWith_explicit`).
+
+**A side finding on Theorem 18.1.** At degree `k` it needs a function
+discrepancy bound with parameters at least `section18Exponent α k =
+α^(2^(2^(k+10)))`, polynomial in `α`. The cubic route is not blocked by
+Theorem 16.2. Its exponential factor `(1/2)^((2/α)^(2^53))` comes from
+Section 13 (`theorem_13_12_fejer_odd_square_explicit`, box size
+`m ≥ N^(…)`), so polynomial covers in dimension two would not help there.
+The length-six σ inherits that factor through `lsSigma3`. Further
+question: is the Section 13 loss intrinsic, or an artifact of the explicit
+iteration?
+
 ## F. Routes
 
 1. **Quantitative repair (research).**
