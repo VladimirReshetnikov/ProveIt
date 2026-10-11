@@ -1453,3 +1453,25 @@ The review checks 643 runtime pins, exact source/diagram outcomes, all 83
 source endpoint proofs, both strict descents and the saved diagram witness
 with producers disabled. It also checks the supplemental old-index failure
 probe and completed-transition counts, without treating progress as success.
+
+[pachner_epochs.tex](pachner_epochs.tex) proves the strict restart/event and
+height-bit bounds and adds an explicit per-epoch source search. A genuine
+nonempty diagram yields an independently replayed disc after 33 descents,
+54 to 21 tetrahedra, with a 51-move original-source chain. The per-epoch
+upward allowance one produces nine total upward events and is not described
+as a single total-budget-one witness. All 1,514 tests and 26 focused tests
+pass. A stationary source and all local caps still use complete fallback.
+Both unsuccessful Euler-ordering pilots and negative controls are preserved.
+Neither epoch mode nor the optional stage becomes a default. The general
+recognition closure and component-cost obligations remain open. Records are
+`data/pachner-epochs-*` and `data/epoch-order-pilot.*`.
+
+The current [PDF](report.pdf) has 595 pages. Section 150 starts on page 587;
+the assessment is section 151 on page 590. Rendered pages 587–592 pass visual
+review, including the complete theorem, policy scope, audit/timing evidence,
+assessment continuation and references. All references resolve and only
+the four existing overflow warnings remain. Reproduce publication checks
+with `python -B data/pachner_epochs_review.py --publication` from this directory.
+They check 646 runtime pins, exact disabled/capped complete verdicts, all
+timing outcomes and all three saved original-source disc chains with
+epoch/move/transport producers disabled during replay.

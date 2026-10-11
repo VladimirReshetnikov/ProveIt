@@ -1,0 +1,112 @@
+\section{Strict descent epochs reach an actual transported disc}
+\label{sec:pachner-epochs}
+
+The on-demand cover engine reaches useful moves, but its small single-family
+search still returns no new nonempty-diagram witness in the preceding audit.
+This continuation tests two ways to turn that exploration into reach. Exact
+Euler-based event ordering alone does not succeed on the selected controls.
+Restarting bounded \emph{strict descents} on successively smaller sources
+produces an actual new transported disc for the genus-one-miss diagram.
+The new policy is explicit, with a per-epoch upward allowance and a full
+original-source proof; it does not change the existing total-upward family.
+
+\subsection{Failed ordering and monotone pilots}
+
+The existing bipyramid compiler scores Euler jumps and normal-disc changes
+with a fixed number of exact integer operations on five local heights.
+An ordering-only scratch experiment prefers downward Euler gains and upward
+moves with smaller Euler loss. All eight calls on four selected actual
+diagrams remain inconclusive at the two-million-unit allowance. This finite
+negative observation neither proves such orderings useless in general nor
+justifies adding a runtime policy with no demonstrated witness.
+
+The maintained monotone \code{descend\_cocycle} pilot instead tries only
+$3\to2$ moves, with exact score selection and independently replayed transport.
+It is inexpensive on the selected diagrams, but most have no initial
+eligible downward move; the optimized-positive control has three without
+obtaining a disc. These observations motivate using the complete bounded
+first-descent primitive to unlock a source, then restarting from the smaller
+endpoint rather than remaining inside one original cover.
+
+\subsection{One actual source chain through strictly smaller triangulations}
+
+An epoch starts at source $(T_i,h_i)$ and calls
+\code{find\_pachner\_descent} with at most $U$ total upward events \emph{in that
+call}. A successful result is independently replayed and has
+\[
+                     |T_{i+1}|<|T_i|.
+\]
+The returned integral cochain becomes the next source cochain. All actual
+move/transport records are concatenated; no new diagram exterior is silently
+substituted. The adapter checks the coherent surface at the initial source
+and after each successful epoch. Only an independently verified essential
+disc component supplies the positive result.
+
+The scope is deliberately different from one bounded family. A chain of
+$e$ epochs can have up to $eU$ upward events, although each epoch has at
+most $U$. A stationary result of the bounded descent primitive or a resource
+cap remains inconclusive for the knot. It is not a terminal recognition
+theorem for that manifold. The new mode is never described as a witness
+with a whole-chain upward bound $U$.
+
+\begin{proposition}[Strict restart and geometric bit bounds]
+From a supplied $t$-tetrahedron marked source, the epoch policy has at most
+$t$ successful restarts. Its completed first-descent move chain has at most
+$t(2U+1)$ events. Geometry, cochain transport and bounded descent search have
+$2^{O(U)}\operatorname{poly}(t+B)$ bit cost, with source/proof encoding growth
+charged; component queries and essentiality replay remain separate costs.
+\end{proposition}
+\begin{proof}
+Tetrahedron count is a nonnegative integer decreasing at every successful
+epoch. Its first descent has $u\le U$ and $d=u+1$, hence at most $2U+1$
+events. Summing gives the restart and event bounds.
+For the height accounting, let $H$ bound the span of each current integral
+height row. A formal bipyramid has five vertices. The old edge graph is
+connected, so differences between its aligned vertex heights are sums of
+at most four old edge differences, each bounded by $H$ in absolute value.
+The new tetrahedron heights restrict those aligned values; untouched rows
+retain their spans. Thus one move has new span at most $4H$.
+After $m$ moves, bit lengths are at most $B+O(m)$, including the zero-span
+case. With $m\le t(2U+1)$ this is polynomial in $t,U,B$. The live cell count
+within an epoch is at most $t+U$. Applying the preceding complete
+$2^{O(U)}$ bounded-descent geometry bound at most $t+1$ times and charging
+transport and retained full snapshots preserves the displayed form.
+No component-query or essentiality cost is removed by this argument.
+\end{proof}
+
+This is a concrete polynomial restart measure. It does not prove that a
+small per-epoch $U$ reaches an essential disc for every unknot, that a
+stationary source can be recognized cheaply, or that the hierarchy's other
+pattern/cutting operations have controlled representations. The general
+obligations of Section~\ref{sec:missing} therefore remain.
+
+\subsection{Shared allowances and original-source proof authority}
+
+\code{pachner\_epoch\_seed\_decide} prepares and binds the original exterior,
+optional boundary shellings and one initial cocycle/span choice. It shares
+one cooperative work allowance and one geometric-node allowance across
+initial observation, every epoch and full positive replay. A separate epoch
+limit can stop the chain, without invalidating already accepted moves or
+providing a negative knot verdict. A failed component query also remains
+inconclusive. Caller exceptions propagate through the same guarded replay
+interface as ordinary transported witnesses.
+
+A positive result uses the unchanged \code{diagram-transport-disc-v1}
+schema: original PD input and source exterior, optional shellings, original
+height rows, every actual transport step, final coordinates and the terminal
+disc proof. The independent checker replays the whole concatenated chain
+from that original input. It uses neither the epoch search nor an asserted
+intermediate outcome; the final source cannot be replaced by another knot's
+exterior. Missing or reordered moves, changed cochain values and a false
+positive count are rejected.
+
+The recognizer and CLI expose this as an explicit optional mode.
+\code{pachner\_seed\_epochs=0} keeps the single-family policy unchanged.
+A positive value bounds the number of strict descent epochs, with the
+upward allowance now explicitly \emph{per epoch}. The CLI option is
+\code{--pachner-seed-epochs}, used with \code{--pachner-seed}. Neither the
+optional stage nor epoch mode becomes a default. A miss continues the
+maintained complete recognizer, and its global deadline stays global.
+
+\subsection{Actual diagram witnesses and complete-call measurements}
+\input{pachner_epochs_results.tex}

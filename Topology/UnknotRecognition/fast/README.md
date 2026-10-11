@@ -3910,3 +3910,21 @@ new asymptotic complexity class is claimed. Reproduce with
 `causal_research.cover_oracle` audit, source-benchmark and diagram-benchmark.
 The preceding `causal_research.native` byte-identity audit describes its
 frozen integration release; the current cover-oracle audit supersedes it.
+
+An explicit strict-descent epoch policy is available through
+`pachner_epoch_seed_decide` or `recognize(..., use_pachner_seed=True,
+pachner_seed_epochs=64)`. CLI: `--pachner-seed --pachner-seed-epochs 64`.
+Zero epochs preserves the single-family policy. With epochs enabled, the
+upward allowance applies per epoch, not to the concatenated trace. One
+node/work allowance covers preparation, all epoch searches and positive replay.
+Only independently replayed strict tetrahedron descents allow restarts; a
+stationary or capped source remains inconclusive and uses complete fallback.
+
+A genuine genus-one-miss diagram obtains a transported disc after 33 descents
+from 54 to 21 tetrahedra. The full original-source proof has nine upward and
+forty-two downward events in 51 steps, and independent replay rejects missing,
+reordered or changed moves and input substitution. All 1,514 tests and 26
+focused tests pass. The geometric restart count is bounded by the initial
+tetrahedron count, but no small-upward universal reach or terminal theorem
+is claimed. Epoch mode and the optional Pachner stage stay off by default.
+Reproduce the actual-diagram audit with `causal_research.epochs`.
