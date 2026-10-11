@@ -1,5 +1,5 @@
 import GowersSzemeredi.CompletionAudit
-import GowersSzemeredi.Proofs05IntegerRuns
+import GowersSzemeredi.Proofs05IntegerRefinement
 import Lean.Util.CollectAxioms
 
 /-! Native audit of the integer-representative fidelity follow-up, together
@@ -21,7 +21,16 @@ run_cmd do
     ``LeanProofs.GowersSzemeredi.mem_integerRunIndices,
     ``LeanProofs.GowersSzemeredi.integerRunIndices_between,
     ``LeanProofs.GowersSzemeredi.integerRunIndices_eq_Icc,
-    ``LeanProofs.GowersSzemeredi.integerRun_has_representatives
+    ``LeanProofs.GowersSzemeredi.integerRun_has_representatives,
+    ``LeanProofs.GowersSzemeredi.integerRun_partition,
+    ``LeanProofs.GowersSzemeredi.ModAP.integer_representative_partition,
+    ``LeanProofs.GowersSzemeredi.ModAP.centered_integer_representative_partition,
+    ``LeanProofs.GowersSzemeredi.ModAP.integer_representative_refinement_large,
+    ``LeanProofs.GowersSzemeredi.integer_representative_singleton_partition,
+    ``LeanProofs.GowersSzemeredi.ModAP.integer_representative_refinement,
+    ``LeanProofs.GowersSzemeredi.lemma_5_12_integer_representatives_holds,
+    ``LeanProofs.GowersSzemeredi.integer_representative_partition_refinement,
+    ``LeanProofs.GowersSzemeredi.lemma_5_13_integer_representatives_holds
   ]
   for name in checked do
     let info ← getConstInfo name
@@ -30,4 +39,4 @@ run_cmd do
     for axiomName in (← collectAxioms name) do
       unless allowed.contains axiomName do
         throwError "{name} depends on unapproved axiom {axiomName}"
-  logInfo "Checked thirteen integer-representative theorems; only approved axioms."
+  logInfo "Checked twenty-two integer-representative theorems; only approved axioms."

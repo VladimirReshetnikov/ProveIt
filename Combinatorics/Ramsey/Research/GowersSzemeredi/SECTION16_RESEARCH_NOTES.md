@@ -4284,10 +4284,25 @@ integer-representative conclusion for every ordinary progression whose
 unreduced terms lie below the modulus, without primality assumptions.
 
 The editorial note before Lemma 5.12 records this formalization issue.
-The catalogue proofs of Lemmas 5.12--5.13 normalize the modular orbit,
-which proves the current weaker properness conclusion. They still need
-the genuine geometric refinement and its stated quantitative cell count.
-No counterexample to the paper's Lemmas 5.12--5.13 is claimed.
+The previous catalogue proofs of Lemmas 5.12--5.13 normalize the modular
+orbit, proving only the weaker properness conclusion. The new
+`Proofs05IntegerRuns` constructs genuine integer progressions by splitting
+the increasing unreduced sequence at each quotient boundary. The new
+`Proofs05IntegerRefinement` proves both genuine geometric conclusions with
+the printed quantitative cell counts. Dirichlet approximation selects
+`1<=u<=floor(sqrt(m))` with centered step `e*floor(sqrt(m))<N`; residue-class
+partitioning and quotient runs give at most `4*floor(sqrt(m))` cells when
+`m>=4`. Singleton partitions handle the smaller and empty cases. The
+construction preserves all points and works over every nonzero modulus.
+
+The Cauchy--Schwarz assembly proves more generally that a progression
+partition of any finite residue set `S` has an integer-representative
+refinement with at most `4*sqrt(|S|*M)` cells. Empty cells and arbitrary
+initial modular parameterizations are allowed. Lemma 5.13 is its special
+case `S=univ`. The numbered catalogue now requires these stronger conclusions,
+and `Proofs05Progressions` uses their genuine proofs. A refreshed full native
+audit is running serially. No counterexample to the paper's
+Lemmas 5.12--5.13 is claimed; other fidelity obligations remain open.
 
 ## F. Routes
 
