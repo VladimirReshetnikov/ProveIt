@@ -6632,6 +6632,54 @@ compiled cache retained. Completion of that broader audit is recorded
 separately. The displayed15.5 threshold and positive-real16.8 refutation are
 now settled; original15.5 without a largeness hypothesis remains open.
 
+### L.47. Recovering the original half bound in Lemma 5.2 (2026-10-12)
+
+`lemma_5_2_printed_half` proves t*M/(2*N), with the same positive-even M,
+2*M<=N, missing centered interval, and frequency cutoff as the earlier
+quarter-bound theorem. The stronger original bound was not false; the
+previous energy estimate discarded useful information.
+
+With K=floor(N^2/M^2)>=4, the zero-frequency interval energy is M^2, so the
+nonzero energy is N*M-M^2. The cutoff inequalities give N^2<(K+1)*M^2 and
+N<=K*M. Multiplication by N therefore gives
+N^2/(2*K)<M^2/2+M^3/(2*N). If all low coefficients are below t*M/(2*N),
+the low contribution is at most t*M^2/2-t*M^3/(2*N), while the high tail
+is strictly below t*M^2/2+t*M^3/(2*N). Their sum contradicts the exact
+lower bound t*M^2. The t=0 case is handled separately.
+
+The existing `lemma_5_2_holds` is now a compatibility consequence of this
+stronger result. The Section05 comments no longer call the original bound
+erroneous; the annotated statement and proof restore its half constant.
+MissingIntervalHalfCoreAudit passed8 native modules with only the standard
+axioms. The expanded downstream audit was yielded at a completed-module
+boundary for this foundational proof change, retaining its compiled cache;
+its resumed combined check is recorded separately. Other original Weyl and
+intermediate bounds remain open.
+
+### L.48. Exact fixed-real graph budget in Lemma 13.4 (2026-10-12)
+
+`IsStage134DataAtRealBound` separates the real graph budget from the actual
+positive natural cardinality of the affine family. Its floor uses the real
+budget itself, preserving the exact displayed progression scale. The new
+`lemma_13_4_fixed_real_bound` uses section13QBound(theta) in that formula;
+`lemma_13_4_at_real_graph_bound` works at every larger real budget as well.
+
+The actual covering count q0 is at most the real budget Q. Therefore the
+scale with denominator16*Q is at most the scale with denominator16*q0.
+For m=floor(scale), the length l=m-1 lies strictly below the actual-count
+scale, so the existing common Bohr-step construction and translated-
+progression averaging apply. Floors0 and1 are handled by an empty proper
+progression. The graph-count bound, exact floor, nonzero step, weighted
+mass alpha^32*N^31*|P|/8, and complete affine spectral coverage are all
+retained, under the same prime and corrected theta-range assumptions.
+
+FixedGraphBudgetCoreAudit passed21 native modules using only the standard
+axioms, including both new theorems and the prior actual-count theorem.
+This closes the source ledger's fixed-real-floor obligation. The broader
+build was yielded at a completed-module boundary for this source-fidelity
+proof and resumed with the new combined target using its retained cache.
+Its completion remains a separate verification result.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

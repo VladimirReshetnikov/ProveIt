@@ -58,12 +58,13 @@ class BundlePrimitiveAnnuliTests(unittest.TestCase):
             self.assertEqual(a['census']['histogram'], self.result['census']['histogram'])
             self.assertTrue(verify_normal_cut_handlebodies(raw, rows, a['certificate']))
 
-    def test_no_spare_boundary_rejects_bundle_rule_and_unproved_core_fallback(self):
+    def test_no_spare_boundary_rejects_bundle_rule_but_whole_kernel_succeeds(self):
         for name in ('fibonacci_lst_09/mixed',):
             c = next(c for c in self.bank if c['id'] == name)
             a = normal_cut_handlebodies(c['triangulation'], c['coordinates'], record_certificate=True)
-            self.assertEqual(a['status'], 'INCONCLUSIVE')
-            self.assertEqual(a['reason'], 'annular_core_attachment')
+            self.assertEqual(a['status'], 'COMPLETE')
+            self.assertEqual(a['certificate']['schema'], 'normal-cut-handlebodies-v5')
+            self.assertTrue(verify_normal_cut_handlebodies(c['triangulation'], c['coordinates'], a['certificate']))
         p = self.result['certificate']
         summary = deepcopy(p['parallelity']['summary'])
         r = p['primitive_annuli']['components'][0]

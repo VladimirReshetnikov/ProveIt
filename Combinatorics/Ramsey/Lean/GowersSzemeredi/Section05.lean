@@ -9,8 +9,9 @@ numbered results in Section 5 of "A new proof of Szemeredi's theorem", together
 with elementary monotonicity facts about their explicit thresholds.  No
 numbered result is asserted here.
 
-The transcription is corrected where the printed statement conflicts with
-its proof.  In particular, Lemma 5.2 has the factor `1 / 4`; the polynomial
+The transcription records several proof-supported variants. The legacy
+Lemma 5.2 predicate has factor `1 / 4`; `lemma_5_2_printed_half` separately
+recovers the stronger printed factor `1 / 2`. The polynomial
 partition results use the target-length form actually produced by their
 proofs; Corollary 5.8 has density increment `alpha / 16`; the iterated
 exponents in Lemma 5.10 and Corollary 5.11 are parenthesized according to
@@ -136,9 +137,10 @@ def lemma_5_1 : Prop :=
         ‖fourier (indicator (centeredInterval N M)) r‖ <=
           (N : Real) / (2 * centeredAbs r))
 
-/-- **Lemma 5.2.** A set avoiding a centered interval has a large low
-Fourier coefficient.  The conclusion uses `t M / (4 N)`, as obtained in the
-proof (rather than the erroneous `t M / (2 N)` in the printed statement). -/
+/-- **Lemma 5.2, legacy weaker predicate.** A set avoiding a centered interval
+has a large low Fourier coefficient. This predicate retains `t M / (4 N)`
+for compatibility; `lemma_5_2_printed_half` proves the original stronger
+`t M / (2 N)` bound under the same hypotheses. -/
 def lemma_5_2 : Prop :=
   forall (N M t : Nat) [NeZero N] (A : Finset (ZMod N)),
     1 < N -> 0 < M -> Even M -> 2 * M <= N -> A.card = t ->

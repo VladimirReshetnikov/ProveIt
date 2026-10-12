@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-12",
+  "status": "passed",
+  "command": "python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.MissingIntervalHalfCoreAudit",
+  "verified_native_module_count": 8,
+  "source_inputs": "Combinatorics/Ramsey/Research/GowersSzemeredi/verification/2026-10-12-missing-interval-half-inputs.json",
+  "input_manifest_sha256": "9a832820790468409a4a5cca3961f74058bdb96e822c840667610834ad157872",
+  "log_sha256": "5458eb81448e13e60eb11556b4dfb29e9be441d6d547bc13dca0688eac7547d4",
+  "approved_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "scope": "Original t*M/(2*N) bound of Lemma5.2 under the existing positive-even interval and 2*M<=N hypotheses; legacy quarter-bound consequence.",
+  "mechanism": "Exclude frequency zero from the interval Fourier energy: N*M-M^2. With K=floor(N^2/M^2), use N<=K*M and N^2<(K+1)*M^2 to obtain the strict tail estimate N^2/(2*K)<M^2/2+M^3/(2*N).",
+  "limits": [
+    "This audit covers the new original numerical bound and its compatibility theorem.",
+    "Other original Weyl and intermediate bounds remain open.",
+    "The expanded downstream and facade checks are separate pending builds."
+  ]
+}
