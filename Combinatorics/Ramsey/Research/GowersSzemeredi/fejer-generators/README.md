@@ -29,6 +29,7 @@ map").
 | `assemble_coverf.py` | `Proofs18Cover{Modulus,Density,Exponents}Fejer` | `Proofs18Cover{Modulus,Density,Exponents}` |
 | `assemble_headf.py` | `Proofs18CoverFejerHeadline` | `Proofs18CoverDegrees`, `…TightBase`, `…ThresholdsSharp` (+ hand-written closed forms) |
 | `mk_fejer_low_short.py` | `Proofs18CoverFejerLowDegrees`, `…ShortLengths` | `Proofs18CoverSharperLowDegrees`, `Proofs18CoverThresholdsSharp` |
+| `assemble_l163sharp.py` | `Proofs16BaseCaseRestrictionSharp` | `Proofs16BaseCaseRestriction` |
 | `assemble_polyf.py` | `Proofs16PolynomialFejer` | `Proofs16PolynomialStructure`, `…Corollary` |
 | `mkstub_fejer18.py`, `mkstub_auditfejer.py` | stub checks of `Proofs18CoverFejerAllDegrees` and the Fejér block of `CompletionAudit.lean` | — |
 

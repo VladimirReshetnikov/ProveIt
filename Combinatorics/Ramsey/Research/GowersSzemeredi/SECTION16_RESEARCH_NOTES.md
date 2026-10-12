@@ -4864,6 +4864,10 @@ The Lemma 16.3 rounding remark stands on its own. The density
 `2^(−1882)·γ^9312·θ^1165` (`section16_product_restriction`). In the
 dimension-two counts θ is the piece budget, so the actual exponent would
 lower the seed from about `2^46` to `2^43`. No headline constant changes.
+Formalized: `Proofs16BaseCaseRestrictionSharp`
+(`section16_product_restriction_sharp`, with `lemma163Alpha_le_sharp` and
+`section16_product_restriction_of_sharp` recovering the printed lemma). The
+sharp form does not even use `γ ≤ 1` or `θ ≤ 1`.
 
 **L.16g: where the class recursion squares (analysis, 2026-10-12).** L.16f
 traced the `d + 5` barrier to `a_{l+1} ≈ 2^(l+5)·a_l²`. The square enters
