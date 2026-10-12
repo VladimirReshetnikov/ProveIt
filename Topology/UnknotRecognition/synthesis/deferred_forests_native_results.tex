@@ -86,18 +86,18 @@ annular rows and auxiliary columns that vanish on the source rows. Changing
 this raw certificate model requires additional geometric operations, not
 another enumeration of its forests.
 
-\paragraph{Next verifier optimization, reviewed separately.}
+\paragraph{Initial verifier-optimization review.}
 The gap-contraction patch in report~106 applies to its isolated pinned
 baseline and passes all six delivered gap-prefix tests in 0.106 seconds.
-Its four target runtime modules still match that baseline. The proposal
+At that checkpoint its four target runtime modules matched the baseline. The proposal
 replaces repeated gap sums at every endpoint with an authenticated prefix
 table and binary search, reducing that stage from $O(PG)$ to
 $O(G+P\log(G+2))$ arithmetic operations for $P$ pairing rows and $G$ gaps.
 It imports no producer code into the independent verifiers. This isolated
 review is not native integration, a full-suite run of that patch, or a
 measurement of its performance on the current recognizer. The other
-report~106 proposals remain outside this review. It is a concrete next
-local performance target; it does not bound total orbit-trace length.
+report~106 proposals remain outside this review. The subsequent native
+integration and measurements are in Section~\ref{marked-cut:gap-prefix}.
 
 \paragraph{Complete-query measurements and an explicit timing follow-up.}
 Three unchanged producer modules from \texttt{0feb251bd5601} form the

@@ -1820,7 +1820,7 @@ General quasi-polynomial recognition remains unproved.
 
 `deferred_forests_native.tex` integrates report 105's all-lower-forests
 raw-completeness theorem into the core, absorbed core and complete annular
-kernel. All verifiers remain unchanged. The adaptive third attempt shares
+kernel. That producer integration left all verifiers unchanged. The adaptive third attempt shares
 expensive queries and preserves all 110 previous certificates. Fresh
 coverage reaches 111/120, with 104 literal positive agreements. A separate
 coupled-forest source probe replays 114 positive core reductions and gives
@@ -1833,3 +1833,9 @@ bound O(G + P log(G+2)), replacing repeated endpoint scans in three orbit
 checkers. Report 106's corresponding producer scan is also integrated.
 The source-pinned validation and paired complete-query experiment are in
 `data/gap-prefix-*`; this local bound does not bound native trace length.
+The complete gap-prefix comparison preserves all 111 positive certificates
+on 120 sources. Validation covers 1,737 methods across the broad run and
+its fourteen-method missing-Regina rerun. The separate report 110 matrix
+probe finds exactly one optimally deferred row in each of the two bare-core
+refusals, without performing geometric passive transport. Reports 111 and
+112 are preserved as incoming research only, pending separate review.
