@@ -474,9 +474,10 @@ def lemma_13_6_without_preceding_context : Prop :=
 /-- **Lemma 13.6.** The preceding Stage 13.4 data at `theta=lambda` and the
 standing prime-modulus convention are explicit. The printed proof invokes
 Lemmas 13.4 and 13.5 together at this cutoff to control the same step.
-The `2^-43*alpha^224` bounds propagate the proof-supported `alpha^6/20000`
-correction to Theorem 10.13; the stronger printed `2^-26*alpha^128` bounds
-rely on that theorem's inconsistent claim. -/
+The bounds below retain the earlier safe extraction variant. The original
+printed `2^-26*alpha^128` bounds are now proved, independently of the still
+unproved original Theorem 10.13 estimate: see `lemma_13_6_printed_bounds_holds`
+in Proofs13PrintedAllDensities. No refutation of that stronger estimate is claimed. -/
 def lemma_13_6 : Prop :=
   ∀ (N : Nat) [NeZero N] (S : Section13Context N) (D : Stage134Data N)
       (E : Stage135Data N),
@@ -696,9 +697,11 @@ def corollary_13_10 : Prop :=
         E'.card ∧
       BilinearOn E' S.phi
 
-/-- **Lemma 13.11.** The respected proportion is corrected from the statement's
-`1-2^-73` to `1-2^-44`, which is what the proof and Theorem 13.12 use.  The
-large-`N` threshold inherited from Lemma 12.6 is made explicit. -/
+/-- **Lemma 13.11.** This legacy companion records the sufficient `1-2^-44`
+proportion used in the later context. The original stronger `1-2^-73`
+proportion is also proved, with the better density exponent `2^64`, by
+`lemma_13_11_purified_seventy_three` in Proofs13PurifiedContext. The original
+claim has not been refuted. The threshold inherited from Lemma12.6 is explicit. -/
 def lemma_13_11 : Prop :=
   ∀ alpha : Real, 0 < alpha → alpha ≤ 1 → ∃ N0 : Nat,
     ∀ (N : Nat) [NeZero N] [Fact N.Prime], N0 ≤ N →
