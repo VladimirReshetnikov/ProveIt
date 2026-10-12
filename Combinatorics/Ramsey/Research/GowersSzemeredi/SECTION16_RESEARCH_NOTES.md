@@ -4965,6 +4965,43 @@ are needed at once:
 * the per-relation count property for the slice cover.
 Until both are found, `d + 6` / `L + 4` stands as the limit.
 
+**L.16i: `d + 5` and `L + 3` for large degrees and lengths, with the present
+lift (correction of L.16f–h; plan, 2026-10-12).** L.16f measured only the
+*maximum* envelope ratio over all degrees, and that maximum is the
+small-dimension transient. Per degree, the exact recursion with the base
+budget from `V` gives envelopes tending to about `108·2^k < 128·2^k`
+(`d + 5` from `d = 10`). The obstacle to a *proof* is the slack of the
+proved class invariant, not the lift. The invariant
+`log₂ D_l ≤ (c+8)·2^l` carries a uniform `+8·2^l`, but the recursion
+`D_{l+1} ≤ 2^(l+6)·a_l·(a_l + D_l)·P + T` only needs the slack to grow
+additively, by `5l + 22` per step. So the invariant
+
+  `2^(l+6)·a_l ≤ 2^(14·2^l)`,  `D_l ≤ 2^(14·2^l + 3(l+4)²)`   (l ≥ 2)
+
+should be provable: it holds on the exact values for `l ≤ 15`, and
+`3(l+5)² − 3(l+4)² = 6l + 27 ≥ 5l + 22`. It gives the class degree
+`uDegQ l = 2^(14·2^l + 3(l+4)² + 2)`. With it and the base budget
+`μ₀ = 2^(k+4) + 3` (the `V` term; `fixDegF k = 2^(k+4) + 1` in place of
+`fixDeg`), the exact envelope model gives
+* Theorem 18.1 at **`d + 5` for every `d ≥ 12`** (and `d + 6` below);
+* Theorem 18.2 at **`L + 3` for every `L ≥ 14`** (and `L + 4` below).
+
+So "the route stops at `d + 6`" (L.16f–h) holds only uniformly in `d`.
+L.16g's squaring governs the small-dimension peak, not the asymptotics.
+
+*Plan.*
+1. The refined split invariant (`splitPairWith`, Nat arithmetic) and the
+   class covers at `uDegQ`.
+2. The fixed-parameter bounds of the Fejér step directly at `fixDegF`.
+   θ₁′⁻¹ ≤ `X^(4F)` and `F ≤ 2^(5k+14)`, so the budget, `θ₂/2` and δ fit
+   under `X^(2^(2^(k+4)+1))` for `k ≥ 1`. The monotone transfer of
+   `Proofs18FejerEnvelopeBase` is no longer enough.
+3. Copies of the generic step lemmas with `fixDegF` in place of `fixDeg`
+   (`slice_const_le`, `uCount_scale_le`, `baseCF_recipPowerLB`, `eta_step`,
+   `yIn_step`). The cube constants need only
+   `2(2(k+3))^(k+3) ≤ 2^(2^(k+4)+1)`.
+4. The Cover modules again, at `(fixDegF, uDegQ)`, and the closed forms.
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`
