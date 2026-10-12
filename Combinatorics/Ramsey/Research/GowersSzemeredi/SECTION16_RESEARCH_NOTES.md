@@ -4451,7 +4451,7 @@ bilinear frequency map works over every prime. Both parent progressions
 are the entire cyclic group with genuine integer interval representatives.
 
 The native audit checks all six new range results and the exact strengthened
-statement over 1,460 modules with only the approved axioms. This resolves
+statement over 1,461 modules with only the approved axioms. This resolves
 the modulus-range gap identified in L.19. It does not by itself establish
 genuine integer progressions in the large-width Fejer branch, or finish
 the remaining intermediate integer-box statements. No counterexample to
@@ -4470,7 +4470,7 @@ No points, width powers, or rounding guarantees are discarded, and the
 modulus need not be prime.
 
 The native `BoxPartitionFidelityAudit` checks all six new public results
-over a 1,462-module closure, with only the approved axioms. This supplies
+over a 1,463-module closure, with only the approved axioms. This supplies
 the genuine version of the prescribed-step residue primitive used in the
 multilinear height and Section 16 constructions. Their remaining geometric
 certificates still need to be propagated through those constructions; the
