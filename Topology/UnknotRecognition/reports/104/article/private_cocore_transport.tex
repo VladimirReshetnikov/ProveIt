@@ -1,0 +1,581 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{listings}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,pdftitle={Private-Cocore Transport Without Passive Matrices},pdfauthor={Research note for the ProveIt project}}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,frame=single}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\clash}{\mathsf{many}}
+\newcommand{\owner}{\mathsf{owner}}
+\newcommand{\Priv}{\operatorname{Priv}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\nnz}{\operatorname{nnz}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\sat}{\operatorname{sat}_2}
+\newcommand{\dpriv}{\delta_{\mathrm{priv}}}
+\newcommand{\repo}{\texttt{ProveIt}}
+\newcommand{\commit}{\texttt{32008c6397fa6f3613c4dda277ab18e99dcdd36e}}
+\title{Private-Cocore Transport Without Passive Matrices\\[5pt]
+\large Exact Owner Algebras, Bounded-Exception Atlases,\\and a Domination Barrier for Compressed Unknot Hierarchies}
+\author{Research note for Vladimir Reshetnikov's ProveIt project\\\small Prepared with ChatGPT; proofs and executable research artifacts}
+\date{12 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+A maintained terminal query in ProveIt's compressed normal-cut pipeline transports all unsigned incidence rows of pending annular midpoint curves through a real handle-cancellation schedule, then searches for private surviving cocores. We show that the full passive matrix is unnecessary for this query. A column needs only one of $q+2$ states: empty, one occurrence with its owner, or at least two occurrences. After source validation, the producer and an independently implemented verifier use $O(s+z+m+n+q)$ structural operations, where $s,z$ count real and passive source nonzeros. The verifier uses a saturated total and an owner residue, with no probabilistic equality assumption.
+
+We also prove order-independent passive transport for a fixed acyclic source-unit matching, including orders that create real fill; a column-private normalization avoids that fill. For queries omitting at most $k$ passive curves, a bounded-support atlas of $O((k+1)n)$ entries answers every such query exactly. A counting lower bound limits further columnwise compression. A complete branching algorithm uses at most $(k+1)(n+1)^k$ search nodes. An exact reduction from graph domination shows that unrestricted exception selection is NP-complete and W[2]-hard, even with no real pivots and two unit entries per column.
+
+The package includes 45 unit tests, exhaustive and differential audits, a standalone replay checker, controlled matrix benchmarks, and a source-pinned integration contract. These are local algorithmic improvements and a restricted quasipolynomial search theorem, not an unrestricted quasipolynomial unknot recognizer.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{Research position and the precise bottleneck}
+\subsection{What was inspected}
+The maintained code and articles were inspected at the following repository commit:
+\begin{center}\commit\end{center}
+The essential inputs are the source files \path{synthesis/column_cancellation.tex}, \path{synthesis/core_primitive_annuli.tex}, and \path{fast/fastunknot/core_primitive_annuli_verify.py}, under \path{Topology/UnknotRecognition/}. We also read the project README, the incoming-directory inventory, and the intake instructions in \path{docs/incoming/README.md}. The source audit records exact blob identifiers. The binary incoming archives were not unpacked in this session; comparisons with earlier work below are comparisons with the inspected maintained text, not a claim to have reviewed every incoming manuscript.
+
+The maintained discussion already proves complete rectangular positive cancellation by sparse column peeling and explicitly separates that result from passive-curve transport. Its primitive-annulus verifier reconstructs real and passive incidence rows, replays the real pivots densely, and then selects the least surviving column that meets one pending curve once and all the others zero times. The maintained cost estimate for that replay is $O(T^3)$ saturated arithmetic operations when the relevant dimensions are $O(T)$ \cite{repoColumn,repoAnnuli,repoVerifier}.
+
+That last condition is much less information than the matrix contains. For a final column $h$, write its passive incidence vector as
+\[
+ v_h=(m_{1h},\ldots,m_{qh})\in\N^q.
+\]
+The column is private for curve $i$ precisely when $v_h=e_i$. In particular, \emph{a total of at least two occurrences makes the column unusable for every curve in the full pending family}, even when both occurrences have the same owner. This observation is the starting point of the paper.
+
+\subsection{What is, and is not, new here}
+We do not claim novelty for column peeling, uniquely restricted matchings, positive handle-cancellation geometry, or evaluating positive expressions in quotient algebras. The matching background is classical \cite{GHL}; the general provenance-algebra principle is also established \cite{GKT}. The inspected ProveIt material supplies the geometric meaning of the unsigned pivot update and the private-cocore implication \cite{repoColumn,repoAnnuli}.
+
+The proposed additions are the exact query-specific owner compression; a separately implemented linear replay contract; the bounded-exception atlas with a state-information lower bound; the complete exception search and its domination obstruction; and the use of source-unit matching confluence to normalize passive transport without changing the fixed matching's answer. The proofs are supplied in full. No claim of exhaustive literature priority is made.
+
+\subsection{Relation to the announced complexity target}
+The Oxford 2021 lecture, slide 13, visibly states an $n^{O(\log n)}$ recognition bound \cite{LackenbyTalk}. The July 2026 preprint gives a hierarchy algorithm; Section 9 distinguishes the number of iterations from the unspecified costs of some operations, while Proposition 14.2 gives a polynomial construction under its stated uniform-type and essential-pattern hypotheses \cite{Lackenby2026}. These are different statements and must not be conflated.
+
+Our aim is to remove a concrete local cost without inserting an unproved global premise. The unrestricted recognizer still needs a complete source-authenticated geometric implementation and an end-to-end hierarchy accounting argument. The final complexity section identifies exactly what the present kernels contribute and what they leave untouched.
+
+\section{Unsigned positive cancellation and source matchings}
+\subsection{The algebraic model}
+Let $A\in\N^{m\times n}$ describe real attaching-curve occurrences, and let $M\in\N^{q\times n}$ describe passive occurrences. The row and column labels are part of the source. Inactive forest columns have already been removed from the counts, although their numerical labels may be retained as zero columns.
+
+A positive singleton pivot at real row $r$ and live column $g$ is permitted when $a_{rg}=1$. It deletes $r,g$ and performs
+\begin{align}
+ a'_{jh}&=a_{jh}+a_{jg}a_{rh} &&(j\ne r,\ h\ne g),\label{eq:realpivot}\\
+ m'_{ih}&=m_{ih}+m_{ig}a_{rh} &&(h\ne g).\label{eq:passivepivot}
+\end{align}
+All occurrences are unsigned. Neither cancellation of opposite signs nor free reduction of group words is permitted in this model.
+
+A \emph{complete real schedule} deletes all $m$ real rows. A pivot has \emph{zero real fill} when its additions to all remaining real entries vanish. Passive fill is allowed and is often substantial.
+
+\begin{lemma}[Exact zero-fill predicate]\label{lem:zerofill}
+A singleton pivot has zero real fill if and only if its live row has no other nonzero entry or its live column has no other incident real row.
+\end{lemma}
+\begin{proof}
+The fill entries are all products $a_{jg}a_{rh}$ with $j\ne r,h\ne g$. If the live row or column is private, every such product is zero. Conversely, if both contain another positive entry, one of these products is positive. Nonnegativity is essential.
+\end{proof}
+
+\subsection{Linear validation of a mixed zero-fill schedule}
+Give each scheduled row a deletion time $t(r)$ and each pivot column its deletion time $t(h)$. Give surviving columns time $m$. A complete schedule has distinct rows and columns and a unit source entry at every proposed pivot. During zero-fill cancellation, all live real entries are unchanged source entries. Therefore the pivot at time $t$ is valid exactly when
+\[
+ \bigl\{h:a_{rh}>0,\ t(h)>t\bigr\}=\varnothing
+ \quad\text{or}\quad
+ \bigl\{j:a_{jg}>0,\ t(j)>t\bigr\}=\varnothing.
+\]
+A source scan computes both predicates for every pivot. In the same scan, it builds weighted arcs
+\[
+ g\longrightarrow h\quad\text{of weight }a_{rh},\qquad t(h)>t(r).
+\]
+All arcs point to later columns. Each source nonzero contributes at most one forward arc. This includes the native row-leaf shortcut, not merely column-private peeling. Requiring source-triangularity in the supplied order would incorrectly exclude some valid row-leaf schedules.
+
+\begin{proposition}[Source schedule compiler]\label{prop:compiler}
+Given sparse $A$ and a complete proposed schedule, the mixed zero-fill test and its forward program can be constructed in $O(s+m+n)$ structural work and storage, where $s=\nnz(A)$. The compiler accepts exactly the complete zero-real-fill schedules.
+\end{proposition}
+\begin{proof}
+Assign and check deletion times, rejecting repeated labels, missing rows, and nonunit source pivots. For each source entry, mark whether it lies later in its row and whether its row lies later than its column. Apply Lemma~\ref{lem:zerofill} at each pivot. Induction on time proves that every accepted pivot sees the claimed unchanged live source submatrix. Conversely, a genuine zero-fill schedule leaves that source submatrix unchanged and satisfies the two predicates. The scan and initialization have the stated cost.
+\end{proof}
+
+\subsection{Acyclic matching normalization and passive confluence}
+There is a useful larger class. Pair each real row $r$ with a distinct column $p(r)$ such that the \emph{source} entry $a_{r,p(r)}$ is one. Call this a source-unit full-row matching. On the matched rows form a weighted directed graph with arc
+\[
+ r\longrightarrow j\quad\text{of weight }a_{r,p(j)}
+ \quad (r\ne j,\ a_{r,p(j)}>0).
+\]
+Let $Q$ be its weighted adjacency matrix. Let $U$ be the unmatched columns, and put $W=A_{*,U}$, $B=M_{*,p(*)}$, and $E=M_{*,U}$, with columns of $B$ ordered by their matched rows.
+
+\begin{theorem}[Acyclic source-unit matching confluence]\label{thm:matching}
+For a source-unit full-row matching the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item its directed matched incidence graph is acyclic;
+\item at least one order of the matched pairs is a valid complete positive schedule;
+\item every order of the matched pairs is a valid complete positive schedule.
+\end{enumerate}
+When these conditions hold, every order has the same final passive matrix
+\begin{equation}
+ M^{\mathrm{fin}}=E+B\Bigl(I+Q+\cdots+Q^{m-1}\Bigr)W.\label{eq:pathformula}
+\end{equation}
+A topological ordering of the matched graph gives a column-private schedule with no real fill. It can be found in $O(s+m+n)$ structural work.
+\end{theorem}
+\begin{proof}
+Suppose first that the graph is acyclic. Its weighted paths contain no repeated vertices. During elimination, a current off-diagonal matched entry is the sum of weights of paths between the corresponding live vertices whose internal vertices have been eliminated. A current matched diagonal is its original one, since no nonempty closed directed path exists. This invariant follows by induction from~\eqref{eq:realpivot}: newly available paths are precisely those passing through the newly eliminated vertex, and their weights factor into the incoming and outgoing path weights. The same argument applies to paths ending at unmatched columns. Thus every chosen pivot remains one, in every elimination order.
+
+For passive rows, a path starts with an initial passive occurrence at a matched column and then follows the real weighted graph until an unmatched column is reached. The passive update~\eqref{eq:passivepivot} splices exactly those paths. On completion every such path has been counted once, giving~\eqref{eq:pathformula}. This also proves order independence of the whole final matrix, not only its private columns.
+
+Conversely, suppose the matched graph contains a directed cycle and that a complete positive schedule exists. Before any cycle vertex is removed, all cycle edges have positive weight. Deleting a cycle vertex of a cycle of length greater than one creates a positive shortcut between its cycle predecessor and successor. Repeat this tracking as vertices are removed. Eventually it creates a positive loop at the last remaining cycle vertex. Its diagonal is at least its source one plus that positive contribution, so it cannot be a singleton pivot. Equivalently, a two-cycle immediately adds a positive term to the other diagonal. This contradicts completeness.
+
+Finally, at a source of the current directed acyclic graph, no other live real row meets its matched column. Eliminate sources in topological order. All pivots are column-private, and Kahn's queue algorithm visits each source entry only a constant number of times.
+\end{proof}
+
+The acyclicity criterion is the familiar absence of an alternating cycle for the induced bipartite matching; with unit matched entries, it is equivalently a permanent-one matched minor. We use that classical criterion, rather than present it as a new matching theorem. The explicit unsigned passive-transport confluence is the feature needed here.
+
+\begin{example}[Fill can be removed without changing the query]
+Take
+\[
+ A=\begin{pmatrix}1&1&0\\1&0&1\end{pmatrix},\qquad p(1)=1,\quad p(2)=3.
+\]
+Eliminating row 1 first creates fill in row 2. Eliminating row 2 first is column-private. Both orders are valid and have exactly the same final passive counts at column 2 for every source $M$.
+\end{example}
+
+\begin{remark}[Source-zero pivots remain outside the theorem]
+For $A=\left(\begin{smallmatrix}1&1\\1&0\end{smallmatrix}\right)$, eliminating $(1,1)$ creates a unit at the source-zero entry $(2,2)$, and the positive schedule completes. That supplied pairing is not source-unit. One must find another source matching, prove a more general normalization theorem, or retain the existing replay. The implementation rejects this case rather than silently applying Theorem~\ref{thm:matching}.
+\end{remark}
+
+\section{The minimal owner algebra}
+\subsection{Only a unit vector can witness privacy}
+For $q\ge1$, define
+\[
+ \mathcal O_q=\{\eps,\clash,1,\ldots,q\}.
+\]
+Here $\eps$ means zero occurrences, $i$ means exactly one occurrence owned by curve $i$, and $\clash$ means total multiplicity at least two. Define
+\[
+ \pi(v)=\begin{cases}
+ \eps,&v=0,\\
+ i,&v=e_i,\\
+ \clash,&\sum_i v_i\ge2.
+ \end{cases}
+\]
+Addition has identity $\eps$; the sum of any two nonempty states is $\clash$. In particular, $i+i=\clash$, not $i$. Scalar action by $a\in\N$ sends every state to $\eps$ when $a=0$, fixes it when $a=1$, and sends a nonempty state to $\clash$ when $a\ge2$.
+
+\begin{lemma}[Exact positive quotient]\label{lem:quotient}
+For $u,v\in\N^q$ and $a\in\N$,
+\[
+ \pi(u+v)=\pi(u)+\pi(v),\qquad \pi(av)=a\pi(v).
+\]
+Consequently $\mathcal O_q$ is an $\N$-semimodule quotient for the operations used in passive transport.
+\end{lemma}
+\begin{proof}
+A sum is zero exactly when both summands are zero. It is a unit vector exactly when one summand is that unit vector and the other is zero. Every remaining case has total at least two. Multiplication is equally immediate from whether $a$ is zero, one, or at least two. The semimodule identities follow from those on $\N^q$ through the surjective map $\pi$.
+\end{proof}
+
+We deliberately call this a semimodule rather than claim that multiplying two arbitrary owner labels has a geometric meaning. Only addition and multiplication by nonnegative scalar incidences occur.
+
+\subsection{The linear owner transport algorithm}
+Initialize one state per source column:
+\[
+ x_h=\sum_{i=1}^q m_{ih}\,i\quad\text{in }\mathcal O_q.
+\]
+For each compiled pivot column $g$ and forward arc $g\to h$ of weight $a$, update $x_h\gets x_h+a x_g$, then discard $x_g$. On surviving columns the output is $\pi(v_h^{\mathrm{fin}})$.
+
+\begin{theorem}[All private cocores without the passive matrix]\label{thm:linear}
+Let $A,M$ be source unsigned incidence matrices, and let a validated complete zero-real-fill schedule be supplied. Set
+\[
+ L=s+z+m+n+q,\qquad s=\nnz(A),\quad z=\nnz(M).
+\]
+The exact set of private surviving columns and their owners, including the least private original column for each passive curve, can be computed in $O(L)$ structural operations and $O(L)$ storage. The passive transport state itself needs only $O(n+q)$ labels in addition to the source program. No expanded occurrence count and no $q\times n$ passive matrix is constructed.
+
+The same conclusion holds for a supplied acyclic source-unit matching after the linear normalization of Theorem~\ref{thm:matching}.
+\end{theorem}
+\begin{proof}
+Initialization visits each passive source nonzero once. By Lemma~\ref{lem:quotient}, every program update is the exact image of~\eqref{eq:passivepivot}. Induction through the forward program proves correctness. A surviving state $i$ is exactly the predicate $v_h^{\mathrm{fin}}=e_i$. Scanning original columns in increasing order records the canonical least witness for each owner, matching the maintained verifier's choice rule.
+
+Each forward source arc is evaluated once, so transport uses $O(s+z+m+n+q)$ work. The compiler and optional normalizer have the same structural bound. All labels have $O(\log(m+n+q+2))$ bits; input-count bits are accounted for separately in Section~\ref{sec:bits}.
+\end{proof}
+
+\begin{example}[Exponential occurrences, constant-size states]
+Let real row $j$ have $a_{j,j}=1$ and $a_{j,j+1}=2$, for $j=1,\ldots,m$. Start one passive occurrence at column 1. Its final multiplicity at column $m+1$ is $2^m$. The source has $2m$ nonzeros, and the owner state becomes $\clash$ at the first transfer. No integer of size $2^m$ is created. A binary source weight $2^B$ is likewise handled by a comparison with one, rather than by expanding $2^B$ crossings.
+\end{example}
+
+\subsection{Optimality of the state space}
+\begin{theorem}[Minimal universally compositional owner summary]\label{thm:minimal}
+For $q\ge1$, any deterministic column summary that is closed under nonnegative addition and scalar action and can recover the exact private owner after every positive continuation has at least $q+2$ distinguishable states. The owner algebra attains this bound.
+\end{theorem}
+\begin{proof}
+The $q$ inputs $e_i$ are pairwise distinguishable by their immediate owners. Each differs from $0$ and $2e_1$, which have no immediate owner. Finally, $0$ and $2e_1$ must differ because adding $e_1$ yields a private state from $0$ and a nonprivate state from $2e_1$. Thus at least $q+2$ states are necessary. Lemma~\ref{lem:quotient} and Theorem~\ref{thm:linear} show that the $q+2$ proposed states suffice.
+\end{proof}
+
+This is a lower bound for a generic positive column-summary interface, not for every conceivable global algorithm on special geometric sources. It identifies precisely the information the local query cannot discard.
+
+\section{Independent exact replay and bit accounting}\label{sec:bits}
+\subsection{A two-channel verifier without fingerprints}
+The producer uses owner tags. The verifier instead propagates two scalars at each column:
+\[
+ c_h=\min\!\left(2,\sum_i m_{ih}\right),\qquad
+ r_h=\sum_{i=1}^q i\,m_{ih}\pmod{q+1}.
+\]
+The first channel is evaluated in the saturated semiring $\{0,1,2\}$; the second in $\mathbb Z/(q+1)\mathbb Z$. A weighted arc applies the ordinary respective multiply-add operations. Source coefficients are reduced in the appropriate channel.
+
+\begin{proposition}[Deterministic residue identification]\label{prop:residue}
+On a surviving column, $c_h=1$ if and only if the full passive vector is a unit vector. In this event $r_h$ is its unique owner in $\{1,\ldots,q\}$. No primality assumption on $q+1$ is needed.
+\end{proposition}
+\begin{proof}
+Saturation at two preserves positive addition and multiplication and hence the exact zero/one predicate for the total. When that total is one, precisely one coefficient is one. The weighted sum is then the corresponding label $i$, already strictly between zero and $q+1$. Its residue uniquely determines $i$. When the total is zero or at least two the residue is never used to certify privacy.
+\end{proof}
+
+An ordinary modular checksum could collide. This construction is not relying on an absence of collisions: an independently exact total restricts the decoded value to an interval on which reduction is injective. The code has no prime generator, random seed, or probabilistic equality test.
+
+\subsection{The certificate contract}
+The standalone certificate contains the schema, source dimensions $n,q$, a complete pivot schedule, and a length-$q$ list of least private columns, with $-1$ recording absence. The verifier independently reads $A,M$, validates source labels and the mixed no-fill conditions, performs the two-channel evaluation, and compares the entire list. It accepts absence claims as well as presence claims for this \emph{matrix} query. A caller requesting a complete primitive family additionally requires all entries to be nonnegative.
+
+\begin{theorem}[Linear independent matrix replay]\label{thm:verify}
+A certificate with $O((m+q)\log(m+n+q+2))$ bits of pivot and witness labels can be independently checked in $O(L)$ structural operations on word-size labels and residues, plus the cost of reading and reducing source integers. The checker need not construct the producer's graph or import its code.
+\end{theorem}
+\begin{proof}
+Deletion-time predicates take a source scan by Proposition~\ref{prop:compiler}. A second scan through pivot rows, keeping only later columns, evaluates the two scalar channels. The initial passive scan and terminal comparison are linear in $z+n+q$. Proposition~\ref{prop:residue} proves that the resulting labels are exact. Distinct rows, distinct columns, complete coverage, and unit source entries are all checked explicitly.
+\end{proof}
+
+The supplied \path{verify.py} imports neither producer nor atlas modules. The saved-certificate replay loads that file directly, without importing the package initializer. The test suite also disables producer entry points during a replay. A hash is not being substituted for source authentication: the source matrices are separate verifier inputs, and the topological caller must derive them from authenticated geometry.
+
+\subsection{Structural cost versus bit cost}
+Let $I$ be the bit length of the sparse source encodings, including binary weights and labels, and put $\ell=\lceil\log_2(m+n+q+2)\rceil$. The owner producer manipulates $O(\ell)$-bit labels and checks whether source weights are zero, one, or larger. The independent verifier also reduces source weights modulo $q+1$. Even with elementary binary division, a conservative bound is polynomial in $I$ and $\ell$, for example
+\[
+ O\bigl((I+L)\ell^2\bigr)
+\]
+bit operations after a standard indexed sparse representation is available. This intentionally conservative estimate is not a sharp multiplication-complexity claim. Certificate reading and integer parsing must be charged.
+
+The structural theorem is deterministic for indexed adjacency arrays. The Python reference uses dictionaries for sparse rows and sets in the search. Those implementation choices are not an adversarial constant-time hashing theorem. A deterministic array or sorted-adjacency implementation gives the stated structural accounting; sorting an initially unindexed representation adds its own preprocessing cost.
+
+\section{An atlas for all bounded-exception queries}
+\subsection{Why the minimal owner state is insufficient}
+Suppose $v_h=e_1+e_2$. Its full-family owner state is $\clash$. If curve 2 is omitted from the tested family, the same column is private for curve 1. The owner algebra correctly answers the full query but cannot answer arbitrary deletion queries afterward.
+
+Fix an exception budget $0\le k\le q$. We seek one reusable summary that is exact for every deleted-owner set $D$ with $|D|\le k$. An exception is an omitted \emph{passive curve in the query}, not an omitted real handle, a removed source constraint, or permission to discard a topological attachment.
+
+\subsection{Bounded-support signatures}
+For $v\in\N^q$ define
+\[
+ \sigma_k(v)=
+ \begin{cases}
+ \{(i,\min(2,v_i)):v_i>0\},&|\supp(v)|\le k+1,\\
+ \top,&|\supp(v)|>k+1.
+ \end{cases}
+\]
+The finite case is stored as a sorted tuple of at most $k+1$ labeled coefficients. Addition merges support sets and saturates each coefficient at two. If the union has more than $k+1$ labels, the result is $\top$. Adding to $\top$ leaves $\top$. Multiplication by zero sends every signature, including $\top$, to the empty signature; a positive scalar preserves support and saturates coefficients.
+
+\begin{lemma}[Exact truncated-support calculus]\label{lem:atlasalgebra}
+For $u,v\in\N^q$ and $a\in\N$, the signature of $u+v$ and of $av$ is obtained by the preceding signature operations alone.
+\end{lemma}
+\begin{proof}
+Nonnegative addition takes the union of supports. An already overflowing support cannot shrink under addition. For nonzero scalar multiplication support is unchanged; for zero it is empty. Saturation at two commutes with the coefficient arithmetic. Thus every operation agrees with applying $\sigma_k$ afterward to the exact vector.
+\end{proof}
+
+\begin{theorem}[Exact bounded-exception atlas]\label{thm:atlas}
+On a validated source program, all terminal signatures $\sigma_k(v_h^{\mathrm{fin}})$ can be computed in
+\[
+ O\bigl((k+1)L\bigr)
+\]
+structural work and $O((k+1)n+L)$ storage. A deleted set $D$, $|D|\le k$, is then answered exactly in $O((k+1)n+q)$ work: remove its labels from each nonoverflow signature, and report an owner exactly when one label of coefficient one remains. An overflow signature can never produce a private column after an allowed deletion.
+\end{theorem}
+\begin{proof}
+Evaluate the source program in the signature calculus. Lemma~\ref{lem:atlasalgebra} proves exactness by induction. A merge of sorted signatures costs $O(k+1)$; every program arc is used once. At a terminal with overflowing support, at least $k+2$ distinct owners were present. Removing at most $k$ leaves at least two, so privacy is impossible. At a nonoverflow terminal every relevant owner and its exact zero/one/multiple status is stored. Deleting labels and inspecting the remaining tuple is therefore exact. Scanning terminals in original label order recovers canonical least witnesses.
+\end{proof}
+
+The terminal atlas occupies $O((k+1)n\log(q+2))$ bits of owner/weight entries, besides column labels. It is not a full passive matrix. With $k\ll q$, this can be a substantial saving even when the exact final passive matrix is dense.
+
+\subsection{An information lower bound}
+\begin{theorem}[Distinct supports cannot generally be merged]\label{thm:atlaslower}
+For $0\le k<q$, any exact summary answering the private-owner query after every deletion of at most $k$ owners must distinguish at least $\binom{q}{k+1}$ possible inputs. In particular it requires at least
+\[
+ \log_2\binom{q}{k+1}
+\]
+bits in the worst case.
+\end{theorem}
+\begin{proof}
+For every $(k+1)$-element set $S$, consider $v_S=\sum_{i\in S}e_i$. If $S\ne T$, choose $i\in S\setminus T$ and delete $D=S\setminus\{i\}$. The query on $v_S$ returns owner $i$. The query on $v_T$ cannot return $i$, since that owner was absent. Therefore the summaries of $v_S,v_T$ must differ.
+\end{proof}
+
+For $k+1$ small relative to $q$, this lower bound has order $(k+1)\log(q/(k+1))$. The explicit atlas's $O((k+1)\log(q+2))$-bit signature is correspondingly close to optimal. This is a per-column information statement; geometric restrictions could reduce the set of signatures that actually occur.
+
+\section{Complete exception selection and its obstruction}
+\subsection{Fixed-system primitive deficiency}
+For a nonnegative terminal matrix $V$ with $q$ passive rows, define
+\[
+ \dpriv(V)=\min\bigl\{|D|:\text{every }i\notin D\text{ has a column private within }[q]\setminus D\bigr\}.
+\]
+The empty retained family is allowed, so the minimum always exists and is at most $q$. This parameter is not the deferred-real-row parameter of positive-cancellation planning. Here the real matching is fixed, and only the passive family being tested varies.
+
+At a search state $D$, compute least private columns using the atlas. If some retained row $i$ lacks one, every successful extension $D'\supseteq D$ must either delete $i$, or expose some column $h$ with coefficient $v_{ih}=1$. In the latter case it must delete all other owners in $\supp(v_h)$. Overflow columns are irrelevant under budget $k$.
+
+\begin{theorem}[Complete bounded-exception search]\label{thm:search}
+After building the budget-$k$ atlas, the preceding branching rule decides whether $\dpriv(V)\le k$. It uses at most
+\[
+ \sum_{j=0}^{k}(n+1)^j\le(k+1)(n+1)^k
+\]
+search nodes, with polynomial work per node. In particular, if $L\le N^c$ and $k=O(\log N)$, this exact local search takes $N^{O(\log N)}$ time. For $k=O((\log N)^2)$ it takes $2^{O((\log N)^3)}$ time.
+\end{theorem}
+\begin{proof}
+Fix a state $D$ and a missing retained owner $i$. Branch to $D\cup\{i\}$, and for each column whose stored coefficient at $i$ is one, branch to $D\cup(\supp(v_h)\setminus\{i\})$. Reject branches exceeding budget and remove duplicates.
+
+Any successful extension deletes $i$ or uses a witness column for $i$. Its other owners must all belong to that extension, so one branch is contained in it. This proves completeness inductively. Every retained branch adds at least one owner: a branch adding none would already have supplied a private column, contrary to the choice of $i$. Hence depth is at most $k$ and branching at most $n+1$. The atlas provides the stated polynomial node work. Substitution of the assumed size and budget bounds proves the two asymptotic claims.
+\end{proof}
+
+The implementation returns \texttt{INCONCLUSIVE} when a node cap is reached. Without a cap it distinguishes a found subfamily from absence of one within the specified fixed-system budget. Neither negative status is a knottedness verdict.
+
+\subsection{An exact graph-domination reduction}
+\begin{theorem}[Domination is already present without any real pivots]\label{thm:domination}
+Let $G=(X,F)$ be a finite simple graph. Form a passive matrix $V_G$ with one row per vertex, one column per edge, and entry one at the two endpoints of each edge. Take no real rows or pivots. Then
+\[
+ \dpriv(V_G)=\gamma(G),
+\]
+where $\gamma(G)$ is the minimum size of a dominating set, including the requirement that isolated vertices belong to the dominating set.
+\end{theorem}
+\begin{proof}
+After deleting $D\subseteq X$, an edge column $uv$ is private for retained vertex $u$ exactly when $v\in D$. Thus every retained vertex has a private column exactly when every vertex outside $D$ has a neighbor in $D$. This is precisely the definition that $D$ dominates $G$. An isolated vertex has a zero row and must be deleted, as required. The feasible sets, and therefore the optimum values, coincide.
+\end{proof}
+
+\begin{corollary}[A complexity barrier for the unrestricted matrix query]\label{cor:hardness}
+Deciding $\dpriv(V)\le k$ is NP-complete, and is W[2]-hard parameterized by $k$, already when there are no real pivots and every column has exactly two unit entries.
+\end{corollary}
+\begin{proof}
+A deleted set and its private-column witnesses can be checked in polynomial time, proving membership in NP. Theorem~\ref{thm:domination} is a polynomial parameter-preserving reduction from Dominating Set. Its W[2]-completeness is standard in parameterized domination theory \cite{CP}.
+
+For a self-contained classical hardness reduction, start with a nonempty Set Cover instance in which every element belongs to some set. Make one clique vertex per set and one independent vertex per element; join an element vertex to the sets containing it. A set cover is a dominating set of this graph. Conversely, replace any element vertex in a dominating set by one containing set vertex. That replacement still dominates the element, and a set vertex dominates the entire set clique. Every other element outside the original dominating set was dominated by an included set vertex and remains covered. This gives a set cover no larger than the dominating set. Hence the two optimum values agree. Set Cover is one of the classical NP-complete covering problems \cite{Karp}. Compose with Theorem~\ref{thm:domination}.
+\end{proof}
+
+The algorithm of Theorem~\ref{thm:search} is an XP bound: the input-size exponent depends on $k$. It is not an $f(k)N^{O(1)}$ fixed-parameter tractability theorem. More importantly, the reduction concerns \emph{arbitrary unsigned matrices}. We have not proved that every reduction instance is realizable by the native disjoint annulus source charts. No NP-hardness or W[2]-hardness assertion about that narrower geometric family follows without a realization theorem.
+
+\begin{example}[A small nontrivial residual]
+Take four rows with supports $\{1\}$, $\{1,2\}$, $\{2,3\}$, and $\{3\}$, all entries one. This is the edge-incidence matrix of a four-vertex path. Its deficiency is two. Deleting the second and fourth owners exposes a private column for each remaining owner. The saved experiment searches budgets zero, one, and two; the first two fail and the third succeeds.
+\end{example}
+
+\section{Topological meaning and safe native integration}
+\subsection{The geometric premise is not an incidence matrix}
+The maintained primitive-annulus theorem starts with authenticated source midpoint curves. Its source charts establish embeddedness, disjointness from real attaching curves, directed core paths, and component ownership. Its disk-slide argument proves the unsigned update~\eqref{eq:passivepivot}. Those are indispensable hypotheses \cite{repoAnnuli}. A freely reduced relator, a signed cellular boundary, or a user-supplied row of integers does not provide them.
+
+\begin{proposition}[Preservation of the maintained full-family query]\label{prop:native}
+Assume the maintained source-authentication and geometric pivot-transport hypotheses, and a complete real cancellation supported by the source compiler or matching theorem. Replacing dense passive replay by the owner kernel gives exactly the same private columns and canonical least witnesses. A complete successful family therefore supplies exactly the same private-cocore criterion used by the maintained whole-cut genus calculation.
+\end{proposition}
+\begin{proof}
+Under the stated geometric hypotheses, the actual unsigned counts evolve by~\eqref{eq:passivepivot}. Theorem~\ref{thm:linear} gives the exact unit-vector predicates. For source-unit normalization, Theorem~\ref{thm:matching} also gives equality of the original and normalized final passive matrices. The surviving column set is unchanged because the matched pairs are unchanged. Canonical least choices therefore agree. Source ownership checks are retained separately; they cannot be replaced by the owner labels of the algebraic kernel.
+\end{proof}
+
+This proposition changes an arithmetic implementation of an already justified geometric query. It neither proves source authentication anew nor transports arbitrary future embedded boundary-pattern strands.
+
+\subsection{What a small exception set can legitimately mean}
+\begin{proposition}[Residual two-handle factorization]\label{prop:residual}
+Let $H$ be an orientable genus-$g$ handlebody with an embedded complete cocore disk system, and let $\alpha_1,\ldots,\alpha_q$ be disjoint embedded attaching circles for two-handles. Suppose a set $D$ passes the private-column test on the retained family. Then the manifold obtained by attaching all $q$ two-handles has a handle description consisting of a genus
+\[
+ g-(q-|D|)
+\]
+handlebody and $|D|$ remaining two-handles, whose attaching curves are transported by the actual cancellations.
+\end{proposition}
+\begin{proof}
+For each retained attaching circle choose its private disk. These disks are distinct and pairwise disjoint. Each meets its designated retained circle once and every other retained circle zero times. The standard simultaneous primitive-family cancellation therefore cancels the retained two-handles with those one-handles. The other attaching circles are carried along by the same geometric operation; they need not be disjoint from the canceled disks. The remaining handlebody has the displayed genus and retains exactly the exceptional two-handles.
+\end{proof}
+
+The conclusion is a topological factorization, not a polynomial-size residual encoding theorem. To use it in the annular bundle pipeline one must first supply its actual annulus-gluing handle description, including connecting handles and source ownership. The exception atlas does not authorize omission of attachments, and it does not construct their transported embedded words or charts. Those residual data are an explicit next research target.
+
+\subsection{Schema and implementation contract}
+The existing \texttt{core-primitive-annuli-v1} record contains all final passive rows. It would be unsound to stop checking those fields while continuing to accept that same schema. The delivered kernel therefore has a \emph{new standalone matrix-query schema}; the native adapter does not register it as a whole-cut topological certificate.
+
+The proposed integration path is to keep source curve reconstruction unchanged, extract exactly its unsigned real and passive source counts, invoke the new matrix producer and independent checker, and retain the component-owner checks on selected handles. A future native schema may omit full final rows only after its enclosing source verifier and all dispatch paths have been updated. Old v1 records must continue to use their old semantics and replay. Unsupported fill-created source-zero pivots must fall back rather than trigger a topological refusal.
+
+The adapter accepts already reconstructed source curves, not arbitrary asserted curves. It is accompanied by source-shaped interface tests. Those tests check field conventions and incidence extraction only: they are not native source-geometry audits. The current delivery does not modify the recognizer's default pipeline.
+
+\section{Executed validation and controlled measurements}
+\subsection{Tests that were actually run}
+The package's 45 named unit tests all pass. They cover empty systems, column-private chains, mixed row/column schedules, repeated-owner collisions, large binary weights, malformed source entries, duplicate pivots, certificate mutations, canonical least witnesses, producer-disabled replay, source-unit normalization, and atlas queries. Tests compare exact integer matrix replay with the compressed answers, not only one saturated implementation with another.
+
+The separate exhaustive audit records the following completed counts:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Audit & Completed cases\\
+\midrule
+All ternary $2\times3$ source schedule checks & 8,748\\
+Accepted zero-real-fill schedules & 396\\
+Binary passive-matrix differential cases & 25,344\\
+Source-unit matching checks & 486\\
+Successful matching-order transfer replays & 540\\
+Truncated-signature addition identities & 26,244\\
+Truncated-signature scalar identities & 1,296\\
+Simple graphs of order at most five & 1,100\\
+Graph/deleted-set domination equivalences & 33,867\\
+\bottomrule
+\end{tabular}
+\end{center}
+The matching-order unit test additionally compares all $5!$ orders on each of 20 seeded acyclic weighted sources, using the \emph{entire exact final passive matrix}. The atlas tests compare every allowed deletion set on small vectors and compare complete search against exhaustive subset enumeration on 180 seeded instances. A saved full-family certificate independently replays by loading only the checker file.
+
+These finite checks support implementation validation. The mathematical theorems are proved above and do not depend on exhaustive testing being extrapolated to arbitrary size.
+
+\subsection{Benchmark protocol and results}
+The baseline is a separate dense saturated implementation of the maintained matrix-update and least-private-column loop. Source geometry, orbit queries, core discovery, full certificate serialization, and whole-knot recognition are excluded. The owner producer includes source validation; the ``certified'' time includes that producer followed by the independent checker. The same source inputs are used for every method, and equality of answers is checked before timing. Each reported value is the median of seven runs in the supplied Python environment, with garbage collection before each run. Methods are timed sequentially; no confidence interval or hardware-portability claim is made.
+
+\begin{center}
+\small
+\begin{tabular}{lrrrrrrr}
+\toprule
+Family & $m$ & $n$ & $q$ & Dense ms & Owner ms & Certified ms & Ratio\\
+\midrule
+tiny & 1 & 2 & 1 & 0.020 & 0.039 & 0.055 & 0.37\\
+tiny & 2 & 4 & 2 & 0.023 & 0.044 & 0.057 & 0.41\\
+chain & 16 & 33 & 16 & 0.565 & 0.087 & 0.120 & 4.72\\
+chain & 48 & 97 & 48 & 12.589 & 0.158 & 0.288 & 43.68\\
+chain & 96 & 193 & 96 & 92.755 & 0.281 & 0.468 & 198.37\\
+dense & 24 & 72 & 48 & 4.041 & 0.978 & 1.851 & 2.18\\
+\bottomrule
+\end{tabular}
+\end{center}
+The ratio is dense-query time divided by producer-plus-checker time, not a whole-recognizer speedup. The 96-row chain fixture gives a $198.37$ ratio for that comparison and a $330.15$ ratio against production alone. Its source is deliberately sparse, while the baseline performs dense loops. The dense fixture gives only a $2.18$ certified ratio. On the two tiny fixtures the new certified path is approximately $2.7$ and $2.4$ times slower. These regressions are retained, not discarded.
+
+The sparse chain has source rows $\{j:1,j+1:2\}$, except for a final weight one, and each passive row has a shared entry plus its own private terminal. Thus every passive curve still has a valid private witness, while repeated dense replay incurs avoidable work. This is an operator stress fixture, not a knot family or a native normal-cut example.
+
+\subsection{What was not run}
+The full ProveIt test suite, Regina-enabled geometry audits, and end-to-end recognizer benchmarks were not run here. The supplied native adapter was tested only on source-shaped fixtures. There is no claim that the new proof schema is already registered in the repository, that all source-authenticated families support it, or that a whole-knot running time improved by any quoted ratio.
+
+\section{Complexity ledger toward a quasipolynomial recognizer}
+\subsection{The established local improvement}
+For the maintained parameter regime $m,n,q=O(T)$, the dense passive replay has a cubic upper bound. The new query uses $O(s+z+T)$ structural work, with binary input costs explicit. If source charts also give $s+z=O(T)$, this becomes linear structural work; if the source incidence data are dense, their quadratic input size remains and must be read. This is a query theorem, not an assertion that every surrounding source-construction operation is linear.
+
+The bounded-exception atlas changes the cost of $R$ different deletion queries from repeated transport toward
+\[
+ O\bigl((k+1)L+R((k+1)n+q)\bigr),
+\]
+plus any costs of presenting the queried deleted sets. It does not need to enumerate all $\binom{q}{\le k}$ sets at preprocessing time.
+
+\subsection{A conditional composition statement}
+\begin{proposition}[Explicit local-to-global accounting]\label{prop:composition}
+Suppose a complete recognition procedure on an $N$-bit input makes at most $H(N)$ authenticated local calls. Suppose each call supplies source size at most $S(N)$, source integer bit size at most $B(N)$, and exception budget at most $K(N)$. Assume the time for source construction, other hierarchy operations, and actual residual handling is at most $G(N)$. Then using the present kernels gives the conservative total bound
+\[
+ G(N)+H(N)\,\poly(S(N),B(N),K(N))
+                  (S(N)+1)^{K(N)}.
+\]
+In particular, this expression is quasipolynomial when all the displayed factors have the appropriate quasipolynomial or polynomial bounds and $K(N)=O(\log N)$ with $S(N)\le N^{O(1)}$.
+\end{proposition}
+\begin{proof}
+Apply the local transport, atlas, and branching bounds at each call and sum their costs. The source and residual costs are counted in $G$, not omitted. Taking logarithms of the displayed factors gives the claimed conditional quasipolynomial consequence.
+\end{proof}
+
+The proposition is cost accounting, not a theorem that its hypotheses hold for arbitrary knot exteriors. The potentially decisive unproved inputs remain quantitative source-faithful hierarchy depth or reset control, constructive admissibility and weak reduction, useful surface coverage, and a succinct residual geometric representation. Faster terminal private-cocore queries do not bound those quantities.
+
+\subsection{The hardness result informs the route forward}
+The domination reduction says that an unrestricted promise-free optimizer for private exceptions contains a general covering problem even before any hierarchy geometry enters. Therefore the promising next step is not to assume that an arbitrary sparse incidence table has a tiny or easily optimized exception set. A serious route must use additional native structure: restricted support graphs, planarity or bounded expansion when genuinely proved, source topology forcing bounded deficiency, or residual representations that avoid optimizing this parameter altogether.
+
+Likewise, the owner query is complete for privacy in the \emph{supplied final disk system}. Different source forests or matchings can expose different primitive families. Order normalization for one fixed source-unit matching does not establish confluence over all possible matchings or over all embedded disk systems.
+
+\section{Further research questions with concrete success criteria}
+\paragraph{1. Native proof-schema integration.}
+Can the full source-authenticated primitive-annulus verifier adopt the new query record while keeping every old schema replayable? The immediate success criterion is a new schema with hostile-record tests, producer-disabled geometric replay, and no change to whole-cut censuses on the maintained source corpus. Counts alone are insufficient.
+
+\paragraph{2. Ordered residual attachments.}
+Can the exceptional attaching circles in Proposition~\ref{prop:residual} be transported as source-authenticated ribbon or corner-aware grammars of polynomial bit size? A group word or an incidence vector is not enough to recover an embedded boundary pattern. The target is an actual reconstruction contract and a polynomial-time independent verifier.
+
+\paragraph{3. Geometric realizability of the domination reduction.}
+Which graph-incidence matrices arise from simultaneous disjoint native midpoint curves and one cocore system? Either a realization theorem transfers the hardness barrier to a genuine geometric subproblem, or a forbidden-configuration theorem identifies exploitable structure. At present neither conclusion is assumed.
+
+\paragraph{4. Structure-sensitive exception algorithms.}
+Do native support graphs have bounded treewidth, bounded expansion, or a useful separator profile after authenticated kernelization? Prove the structural property before importing a fixed-parameter or separator algorithm. The bounded-exception atlas is already an exact interface on which such an algorithm can operate.
+
+\paragraph{5. Matching choice rather than matching order.}
+Can one choose a source-unit full-row matching that optimizes the private-family census? Theorem~\ref{thm:matching} removes order as a source of arithmetic ambiguity for a fixed matching, but does not solve the choice problem. A useful first result would identify source classes on which all full-row matchings have the same private success set.
+
+\paragraph{6. Fill-created source-zero pivots.}
+Can a legacy schedule whose pivots include units created at source-zero positions be mapped to a source-unit certificate while preserving its terminal passive answers? Ordinary full-cancellation completeness by peeling does not by itself preserve the resulting disk system or passive witnesses. A proof must address the witness transport, not merely existence of another full schedule.
+
+\paragraph{7. Query updates and changing passive families.}
+Can owner and exception summaries be updated after a small authenticated source modification with time depending on the affected dependency subgraph rather than the whole source? The source graph's acyclic structure permits dependency tracking, but the resulting bound must include updates that turn an overflow signature back into a small support.
+
+\paragraph{8. Global usefulness of small residuals.}
+Can the actual hierarchy guarantee $O(\log N)$ exceptional handles, or a different residual parameter of that order, without an expensive global search? A proof must count source size, integer bits, hierarchy resets, and residual geometry together. This is the step that would connect the local quasipolynomial search theorem to a complete recognition complexity theorem.
+
+\section{Conclusion}
+The private-cocore query can be separated from the passive matrix it was using. Positive source transport admits a minimal exact owner summary and an independent scalar replay. Source-unit matching normalization additionally removes real fill without changing the fixed matching's passive answer. A bounded-support extension answers all small-exception queries from one atlas, while the domination reduction identifies a genuine combinatorial obstacle to unrestricted exception optimization.
+
+The result is a proof-backed local performance improvement, a reusable exact query interface, and a sharper research target for residual geometry. The delivered code and measurements support that scope. They do not replace the still-needed source-authenticated global hierarchy construction and cost proof.
+
+\appendix
+\section{Executable layout and reproduction}
+The package is self-contained and uses only the Python standard library, with Python 3.10 or later syntax. From its root:
+\begin{lstlisting}
+PYTHONPATH=src:tests python -m unittest discover -s tests -v
+PYTHONPATH=src:tests python experiments/audit.py
+PYTHONPATH=src:tests python experiments/domination_audit.py
+python experiments/replay_saved.py
+PYTHONPATH=src:tests python experiments/benchmark.py
+cd article
+pdflatex -interaction=nonstopmode -halt-on-error private_cocore_transport.tex
+pdflatex -interaction=nonstopmode -halt-on-error private_cocore_transport.tex
+\end{lstlisting}
+On Windows the path separator in \texttt{PYTHONPATH} is a semicolon. The supplied \path{reproduce.py} sets import paths portably. Benchmark numbers are environment-specific and may change on reproduction; the archived measurements remain in \path{data/benchmarks.json}.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.49\textwidth}p{0.48\textwidth}@{}}
+\toprule
+Path & Role\\
+\midrule
+\path{src/private_cocore/core.py} & Source compiler, normalization, owner producer\\
+\path{src/private_cocore/verify.py} & Independent two-channel checker\\
+\path{src/private_cocore/atlas.py} & Bounded-exception summaries and complete search\\
+\path{src/private_cocore/native_adapter.py} & Proposed authenticated-source interface\\
+\path{tests/} & Differential oracles and 45 unit tests\\
+\path{experiments/} & Exhaustive audits, saved replay, benchmarks\\
+\path{integration/} & Source audit, claim ledger, integration instructions\\
+\path{data/} & Recorded outputs and saved certificate\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Source pins and claim boundaries}
+The inspected native verifier blob is
+\begin{center}\texttt{73f39a237b7bedbffbfcdb9f8d545ece7aa8e095}.\end{center}
+The primitive-annulus article blob is
+\begin{center}\texttt{a836faad84dfb7168cec7137b54cf69876aebe08}.\end{center}
+The rectangular-cancellation article blob is
+\begin{center}\texttt{29d8eb3ae71c9fe54514cd42480862c8ffc6dad0}.\end{center}
+The integration audit lists their complete paths. The supplied adapter is not an overwrite patch against these files. The report should be ingested using the repository's normal incoming-report process, with its delivered bytes preserved before any integration edits. No report number is reserved by this package.
+
+\begin{thebibliography}{99}
+\bibitem{LackenbyTalk}
+Marc Lackenby. \emph{Unknot recognition in quasi-polynomial time}. Oxford lecture slides, 2021. Slide 13 contains the announced bound; later slides describe the hierarchy speed-up program. \url{https://people.maths.ox.ac.uk/lackenby/quasipolynomial-talk.pdf}. Consulted 12 October 2026.
+
+\bibitem{Lackenby2026}
+Marc Lackenby. \emph{Incompressible surfaces, hierarchies and unknot recognition}. arXiv:2607.23350v1, 25 July 2026. Sections 9 and 14. \url{https://arxiv.org/abs/2607.23350}.
+
+\bibitem{GHL}
+Martin Charles Golumbic, Tirza Hirst, and Moshe Lewenstein. Uniquely restricted matchings. \emph{Algorithmica} 31 (2001), 139--154. \url{https://doi.org/10.1007/s00453-001-0004-z}.
+
+\bibitem{GKT}
+Todd J. Green, Grigoris Karvounarakis, and Val Tannen. Provenance semirings. \emph{Proceedings of PODS 2007}, 31--40. \url{https://doi.org/10.1145/1265530.1265535}.
+
+\bibitem{CP}
+David Cattan\'eo and Simon Perdrix. \emph{The Parameterized Complexity of Domination-type Problems and Application to Linear Codes}. arXiv:1209.5267, 2012; revised version 2, 2015. \url{https://arxiv.org/abs/1209.5267}.
+
+\bibitem{Karp}
+Richard M. Karp. Reducibility among combinatorial problems. In \emph{Complexity of Computer Computations}, 1972, 85--103. \url{https://doi.org/10.1007/978-1-4684-2001-2_9}.
+
+\bibitem{repoColumn}
+Vladimir Reshetnikov's ProveIt repository. \emph{Complete rectangular cancellation by sparse column peeling}. \path{Topology/UnknotRecognition/synthesis/column_cancellation.tex}. Commit \commit; blob pinned in Appendix B.
+
+\bibitem{repoAnnuli}
+Vladimir Reshetnikov's ProveIt repository. \emph{Core-side primitive annuli with passive geometric transport}. \path{Topology/UnknotRecognition/synthesis/core_primitive_annuli.tex}. Same commit; blob pinned in Appendix B.
+
+\bibitem{repoVerifier}
+Vladimir Reshetnikov's ProveIt repository. \path{Topology/UnknotRecognition/fast/fastunknot/core_primitive_annuli_verify.py}. Same commit; blob pinned in Appendix B. The inspected implementation reconstructs dense real/passive rows and verifies \texttt{core-primitive-annuli-v1} records.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,140 @@
+\section{Reproduction and artifact map}
+\label{sec:reproduction}
+
+\subsection{Pin the input before applying the change}
+
+The integration patch is relative to the ProveIt repository root. Its target
+commit is\par\noindent\sourcecommit.\par
+Its manifest records the SHA-256 of every supplied
+file and the original hash of each modified file. The package does not
+include or apply any of the ten incoming ZIP patches.
+
+For a clean comparison, retain one checkout at that commit and apply
+\smallpath{integration/proveit-relative-top-handles.patch} to another.
+The command \code{git apply --check} should succeed before applying it.
+The parallel \smallpath{integration/overlay/} tree is a convenient full-file
+alternative. It is not an additional patch to apply afterwards.
+
+\subsection{Run the focused release checks}
+
+Set \code{PACK} to the absolute unpacked package path and \code{FAST} to
+the target repository's \smallpath{Topology/UnknotRecognition/fast} path.
+Then run:
+\begin{quote}\small
+\begin{verbatim}
+python "$PACK/tools/run_targeted_tests.py" \
+  --fast-dir "$FAST" --output-dir /tmp/top-release-check
+
+cd "$FAST"
+python core_top_research/audit.py \
+  --fast-dir "$FAST" \
+  --reference ../synthesis/data/boundary-kernel-audit.json \
+  --oracle-top --output /tmp/extended-audit.json \
+  --save-certificates /tmp/new-top-certificates
+\end{verbatim}
+\end{quote}
+The test runner selects the eight named focused modules and writes a full
+log plus machine-readable counts. All 67 methods pass in the separate clean
+patch application. The runner also requires the unchanged source fixtures
+\smallpath{synthesis/data/core-three-handle-probe.json},
+\smallpath{synthesis/data/handle-reducible-trefoil.json}, and
+\smallpath{reports/57/results/discovery_corpus.json}, relative to
+\smallpath{Topology/UnknotRecognition/}; it checks these before starting.
+The corpus audit requires the retained
+reference JSON and compares all 106 cases; \code{--oracle-top} uses Regina
+for fresh explicit cuts on the ten former exclusions. Omit that flag when
+only the native source replay is required. These fresh explicit checks can
+be more expensive than the compressed native operation.
+
+The current audit script can also test a baseline checkout by pointing
+\code{--fast-dir} at its unmodified fast directory and omitting
+\code{--oracle-top}. The script itself must be invoked from the new package
+or overlay, since it is not part of the pinned baseline.
+
+\subsection{Reproduce local and structural experiments}
+
+From the patched fast directory:
+\begin{quote}\small
+\begin{verbatim}
+python core_top_research/benchmark.py \
+  --output /tmp/top-scheduler-benchmark.json
+python core_top_research/template_audit.py \
+  --output /tmp/template-audit.json
+python core_top_research/forest_audit.py \
+  --output /tmp/forest-exchange-audit.json
+python core_top_research/chain_audit.py \
+  --subdivision-source /tmp/forest-exchange-audit.json \
+  --output /tmp/chain-compatibility-audit.json
+cp /tmp/forest-exchange-audit.json \
+  core_top_research/forest_exchange_audit.json
+python core_top_research/residual_kernel_audit.py \
+  --output /tmp/residual-kernel-audit.json
+python core_top_research/residual_kernel_audit.py \
+  --replay-only "$PACK/evidence/residual_kernel_audit.json"
+\end{verbatim}
+\end{quote}
+The default benchmark uses the reported six sizes, nine scheduler/A--A
+pairs and five combined-stage pairs. Hardware and load changes can alter
+timings; the exact work counts, source hashes, and proof consequences are
+the reproducible mathematical comparisons. The residual-kernel audit
+recreates its finite matrix tests and the native corpus. Its subdivision
+fixtures are read from the required neighbouring file
+\smallpath{core_top_research/forest_exchange_audit.json}; the copy command
+above supplies that file. Alternatively, copy the archive's retained
+\smallpath{evidence/forest_exchange_audit.json} to that location before the
+kernel audit. The replay-only command reads its supplied JSON directly.
+
+\subsection{Build the article and inspect the evidence}
+
+All TeX sections and the vector timing figure are included. From
+\smallpath{article/}, build with
+\begin{quote}\small
+\begin{verbatim}
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+  Relative_Top_Handles.tex
+\end{verbatim}
+\end{quote}
+The article uses standard TeX Live packages. The optional
+\smallpath{tools/render_evidence.py} regenerates the timing table and figure
+from the retained JSON with Matplotlib. It does not run a new measurement.
+
+The key evidence files are:
+\begin{center}\small
+\begin{tabular}{@{}p{0.42\textwidth}p{0.53\textwidth}@{}}
+\toprule
+File under \path{evidence/} & Contents\\
+\midrule
+\path{baseline_audit.json}, \path{extended_audit.json}
+& Per-case results, source corpus hash, proof sizes, and oracle comparisons\\
+\path{new_certificates/}
+& Exact source/vector inputs and all seven new whole-cut certificates\\
+\path{top_scheduler_benchmark.json}
+& Six real source triangulations, both traces, operation counts, raw paired
+samples, A/A controls, and stage timings\\
+\path{template_audit.json}
+& Fixed source tree, 64 compatible vectors, and binary-scale proofs\\
+\path{forest_exchange_evidence.json}
+& Abstract planner examples, independent replays, and exhaustive-test summary\\
+\path{forest_exchange_audit.json}
+& Native restricted-strategy results and eight subdivision fixtures\\
+\path{chain_compatibility_audit.json}
+& Uncapped source matrices, chain checks, ranks, mandatory cycles, and traces\\
+\path{residual_kernel_audit.json}
+& Quotient matrices, source lifts, exact stopping rows, and retained replay cases\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Claim boundaries for later integration}
+
+The article gives mathematical proofs, and the package gives independent
+programmatic replay and regression evidence. It is not a formal proof
+assistant development. The abstract failure witnesses establish a failure
+of a named matrix strategy. The native whole-cut successes establish
+unmarked handlebody censuses for specified cuts. Neither is automatically
+a final essential-boundary-pattern certificate or an unknot verdict.
+
+The archive's claim ledger and integration notes repeat these contracts so
+that a future importer need not infer them from benchmark filenames. All
+third-party sources are referenced by public links; their full papers or
+lecture slides are not redistributed in this package.

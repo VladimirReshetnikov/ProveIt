@@ -1,0 +1,254 @@
+\section{An exact kernel for exceptional rows after a fixed forest}
+\label{sec:exceptional}
+
+The forced-long-row strategy excludes instances that already admit an easy
+raw cancellation. A complementary approach keeps the long rows and contracts
+the short-row structure around them. The resulting theorem concerns a
+\emph{fixed} choice of top-handle forest and a fixed primal forest. It does
+not optimize those choices. Its advantage is an exact description of both
+the remaining decision problem and the source stopping obstruction.
+
+\subsection{The quotient and its ground convention}
+
+Let $A=(a_{ec})$ be the nonnegative occurrence matrix of the rows retained
+after the chosen top forest; here $A$ again denotes integer counts, before
+any reduction modulo two. As in \cref{sec:joint}, put
+$b_{ec}=\min(2,a_{ec})$. Partition its row labels into $S\sqcup L$, where
+every row of $S$ is short. Usually $L$ consists of all rows with
+$\sum_c b_{ec}>2$, but the theorem allows additional exceptional rows.
+Write $k=|L|$ and form the graph $H[S]$ of \cref{lem:graphic}, with
+column vertices $C$ and ground $\omega$.
+
+If $H[S]$ has a cycle, its edge rows already constitute a stopping set of
+$A$. Consequently full raw cancellation is impossible in the designated
+positive model, irrespective of the exceptional rows. We may therefore
+assume that $H[S]$ is a forest. In particular its edges have actual unit
+incidences; a repeated crossing or zero short row would have been a loop.
+Include isolated column vertices when forming its components. Denote the
+component containing $\omega$ by $K_\omega$, and the set of all other,
+\emph{free} components by $\mathcal K$.
+
+The exceptional-row quotient has row set $L$, column set $\mathcal K$,
+and entries
+\begin{equation}
+ q_{eK}=\min\left(2,\sum_{c\in K} b_{ec}\right),
+ \qquad e\in L,\quad K\in\mathcal K.
+ \label{eq:exceptional-quotient}
+\end{equation}
+There is no column for $K_\omega$. Saturating before aggregation gives
+the same result as aggregating the original counts and then saturating.
+The sums in \eqref{eq:exceptional-quotient} count occurrences, not merely
+the number of incidence sites. Two unit occurrences at different vertices
+of one tree contribute two.
+
+\begin{example}[Why the grounded component is omitted]
+Take
+\[
+ A=\begin{pmatrix}1&0\\1&2\end{pmatrix},
+ \qquad S=\{\text{first row}\},\qquad
+ L=\{\text{second row}\}.
+\]
+The first column belongs to the grounded component, so $Q=(2)$. Both
+source rows form a stopping set. If the grounded component were retained
+as a quotient column, the erroneous quotient $(1\;2)$ would have a unit
+pivot. There is no corresponding source pivot: the ground is not an
+available one-handle, and its incident short edge cannot be removed
+through the occupied column.
+\end{example}
+
+\subsection{All stopping projections and their maximal lifts}
+
+Allow the empty stopping set. For $R\subseteq L$, mark every column
+vertex $c$ with $\sum_{e\in R}b_{ec}>0$, and also mark $\omega$.
+In each component $K$ of $H[S]$, let $T_K(R)$ be the minimal subtree
+spanning the marked vertices in $K$. Equivalently, take the union of all
+paths between marked vertices. Its edge set is empty when there are fewer
+than two marked vertices. Let
+\[
+ T(R)=\bigcup_K E\bigl(T_K(R)\bigr)\subseteq S,
+\]
+using the original short-row labels on these edges. Thus the construction
+records source rows, not only an isomorphism type of a smaller matrix.
+
+\begin{theorem}[Exact exceptional-row kernel and obstruction lift]
+\label{thm:residual-kernel}
+Assume $H[S]$ is a forest and define $Q$ by
+\eqref{eq:exceptional-quotient}.
+\begin{enumerate}
+\item A subset $R\subseteq L$ is the exceptional-row projection of a
+stopping set of $A$ if and only if $R$ is a stopping set of $Q$.
+\item If $R$ is a stopping set of $Q$, then $R\cup T(R)$ is the unique
+largest stopping set of $A$ whose intersection with $L$ is exactly $R$.
+\item If $R_* = \operatorname{Stop}(Q)$ is the canonical largest
+stopping set, then
+\begin{equation}
+ \operatorname{Stop}(A)=R_*\cup T(R_*).
+ \label{eq:stopping-lift}
+\end{equation}
+In particular, $A$ is completely peelable if and only if $Q$ is
+completely peelable. By the prior stopping-persistence theorem, the same
+equivalence holds for existence of full positive raw cancellation.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Let $P$ be a source stopping set and put $R=P\cap L$. Suppose a free
+component $K$ has total exceptional incidence exactly one on $R$. This
+incidence occurs at one vertex $v$, with coefficient one. Consider the
+subforest consisting of the selected short edges $P\cap S$ in $K$. If
+$v$ is isolated in it, the source column sum at $v$ is one, a
+contradiction. Otherwise its selected tree has at least two leaves. At
+most one is $v$, and none is ground. A different leaf has one selected
+short incidence and no exceptional incidence, again a contradiction.
+Thus no free component has total exceptional incidence one. Saturation
+preserves this predicate, so $R$ is a stopping set of $Q$.
+
+We also claim $P\cap S\subseteq T(R)$. Each nonground leaf of a
+nontrivial selected short tree must have a positive incidence from $R$;
+otherwise its source column sum would be one. Every leaf is therefore
+marked, with ground allowed as an additional marked leaf. Every selected
+edge lies on a path between two leaves of its selected tree. That path
+is the unique path between those vertices in the original forest, so the
+edge belongs to $T(R)$. This proves the claim and the maximality assertion
+once the proposed lift is shown to be stopping.
+
+Conversely, assume $R$ is stopping for $Q$. At a nonground vertex of
+$T(R)$ with degree at least two, the selected short rows alone contribute
+at least two. A nonground leaf is marked and therefore receives at least
+one exceptional incidence as well as its one short incidence. Its total
+is again at least two. A vertex with degree zero and positive exceptional
+incidence can only be the single marked vertex of a free component:
+otherwise a path to another marked vertex, including ground when present,
+would meet it. In this case the entire exceptional incidence of that free
+component is concentrated there. The stopping condition for $Q$ makes
+that total at least two. All other degree-zero column vertices receive
+zero. Ground itself is not a matrix column. Hence every source column
+sum of $R\cup T(R)$ is zero or at least two, proving that it is stopping.
+
+The two directions establish the first two assertions, including empty
+sets. For the third, every source stopping set projects into $R_*$, and
+the marked subtree construction is monotone under inclusion of $R$.
+Thus every source stopping set is contained in $R_*\cup T(R_*)$.
+This set is itself stopping by the second assertion, proving
+\eqref{eq:stopping-lift}. A matrix peels completely exactly when its
+largest stopping set is empty. Finally, the equivalence between full
+peeling and full positive raw cancellation is the prior result of
+\cite{incoming-stopping}; no geometric operation beyond that positive
+model is introduced here.
+\end{proof}
+
+The theorem describes a whole family of obstructions. A quotient stopping
+set can have several source stopping extensions, but its largest extension
+has the explicit minimal-subtree formula. The quotient therefore preserves
+more information than a successful-cancellation boolean or a rank test.
+
+\subsection{Constructive schedules and source replay}
+
+The decision equivalence has a direct constructive lift. Suppose a
+quotient pivot deletes exceptional row $e$ at free component $K$. Among
+the currently active exceptional rows, the total incidence in $K$ is
+exactly one. There is therefore a unique source incidence $(e,c)$ in
+that component, and its coefficient is one. Root the current short tree
+at $c$ and remove its other leaves inward. Each removed nonground leaf
+has one short edge and no active exceptional incidence, so its source
+column is a legal unit leaf. After these removals, $(e,c)$ is itself a
+legal source pivot.
+Once this quotient column is used, its unique active exceptional incidence
+is deleted and no future active exceptional incidence remains in that
+free component. Pruning it therefore removes no edge needed by the final
+marked subtree $T(R_*)$.
+
+Apply this procedure to each quotient pivot. If every exceptional row is
+removed, the remaining short forest peels by \cref{lem:graphic}. If the
+quotient stops at $R_*$, mark its incidence sites and ground, then remove
+every unmarked nonground leaf of the remaining short forest. Exactly the
+minimal subtrees in \eqref{eq:stopping-lift} remain. This gives a maximal
+source peeling prefix and its exact canonical residual even in an
+incomplete case.
+
+The lifted trace consists only of pairs of original row and column
+labels. A verifier can check each pair by summing its input column over
+the then-active source rows, without trusting the quotient construction.
+Checking that the final residual has no column sum one certifies
+maximality. Unlike a producer using general positive pivots, this
+no-fill trace retains the original entries throughout. General positive
+pivots may change the labels and entries of a surviving obstruction;
+their residual row list need not equal $\operatorname{Stop}(A)$.
+
+\subsection{A bounded number of exceptional column patterns}
+
+The quotient can still contain many free components with identical effects
+on its $k$ rows. Order $L$ and associate to a quotient column $K$ its
+signature
+\[
+ \sigma(K)=(q_{eK})_{e\in L}\in\{0,1,2\}^{k}.
+\]
+Delete all-zero columns and retain one representative of each nonzero
+signature. Denote the resulting matrix by $\widehat Q$. Keep every row,
+including zero rows, and retain the component-to-representative map for
+lifting to the source.
+
+\begin{corollary}[Column-pattern kernel]
+\label{cor:pattern-kernel}
+The matrices $Q$ and $\widehat Q$ have exactly the same stopping row
+subsets. Therefore $\widehat Q$ determines
+$\operatorname{Stop}(A)$ through \cref{thm:residual-kernel}. It has $k$
+rows and at most
+\[
+ \min\bigl(|\mathcal K|,3^k-1\bigr)
+\]
+columns, with entries in $\{0,1,2\}$.
+\end{corollary}
+
+\begin{proof}
+Equal column signatures have equal sums on every subset of the row set
+$L$, and hence have the same predicate of being a unit column on that
+subset. Repeating this predicate adds no stopping constraint. A zero
+column imposes none. These observations prove preservation of the entire
+stopping family. There are $3^k-1$ possible nonzero ternary signatures.
+\end{proof}
+
+Preserving zero rows is essential. A row whose incidences all lie in the
+grounded component becomes a zero quotient row and is a singleton
+quotient stopping set. Its source obstruction is the row together with
+the appropriate paths to ground. Removing that row would change the
+answer. By contrast, the single long row $(1,1,1)$ with no short rows
+gives three identical unit quotient columns and compresses to $(1)$;
+its successful pivot is preserved.
+
+\subsection{Complexity and the remaining scope}
+
+Let $N$ count the explicit row labels, column labels, and nonzero entries,
+and put $s=|\mathcal K|$. Forest testing, component labeling, incidence
+aggregation, and leaf pruning admit $O(N)$ graph operations. Comparing a
+binary input count with two requires no expansion in its magnitude.
+For a simple deterministic implementation, forming dense signatures takes
+$O(ks)$ ternary entries and lexicographically sorting them takes
+$O(ks\log(s+2))$ symbol comparisons. Only signatures of components
+actually present are formed: there is no loop over $3^k$ possible
+patterns. Sparse alternatives are available, but unnecessary for the
+polynomial preprocessing claim. Label sorting and integer input handling
+contribute their ordinary bit costs. The supplied research implementation
+also uses direct source scans during lifting; these are polynomial and
+are not presented as an optimal implementation bound.
+
+The bounded decision matrix and the source lift data serve different
+purposes. The matrix has at most $k(3^k-1)$ ternary entries; the forest and
+the maps needed to reproduce original source rows can retain linear-sized
+input information. No bound on $k$ in terms of crossing number, hierarchy
+depth, or coordinate bit length is proved here. Nor does the theorem
+control how the quotient changes under a different top or primal forest.
+In particular, \cref{prop:not-matroid} still prevents replacing the
+arbitrary-row joint problem by the short-row matroid argument.
+
+For one explicitly supplied matrix, ordinary sparse column peeling
+already gives a linear-time decision. The kernel is a structural reduction
+that isolates the exceptional incidence data and reconstructs exact source
+obstructions; it is not by itself a faster one-shot recognition algorithm.
+Its potential use in repeated geometric choices requires further theorems
+bounding the exceptional interface and the cost of updating it. It also
+does not supply the cyclic order or boundary-mark transport needed to turn
+counts into a marked geometric certificate. The construction is new to
+the present repository audit relative to the inspected incoming packages;
+we make no assertion of priority over the full literature on stopping
+sets or graph reduction.

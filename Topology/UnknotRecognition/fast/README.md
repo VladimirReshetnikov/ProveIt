@@ -4393,8 +4393,8 @@ Pachner-generated fixtures validate nested boundary-forest chains and
 repeated endpoints; ten produce certified whole-cut censuses. Two genuine
 handlebody misses are caused by the selected dual forest, as demonstrated
 by six independently replayed alternative certificates in the retained
-`three-handles-choice-probe` experiment. The production selector currently
-uses one deterministic forest.
+`three-handles-choice-probe` experiment. The subsequent weighted selector
+below resolves both of these particular misses.
 
 
 Complete-query measurements compare native production plus replay with
@@ -4404,3 +4404,70 @@ interior (1,2) source, multiplicity `2**16384` gives a certificate for
 `2**16385` balls in 2.38 seconds including replay, with a 29.7 MB serialized
 proof. The article reports all samples, variation, A/A controls and the
 limitations of this finite capacity test.
+
+
+### Moment-coded boundary interfaces
+
+`fastunknot.parallelity_boundary_moments.normal_parallelity_moment_words`
+compiles the authenticated residual fibre cover into one scalar orbit census.
+Endpoint sums and sums of squares recover exact endpoint pairs; canonically
+owned edge mass supplies each gap's `unmarked_edges` length. Removing that
+field gives the previous cyclic interface, including fibre flips and proper
+interval versus full-circle attachments. No large endpoint masks are rebuilt.
+
+Use `normal_cut_handlebodies(..., boundary_method='moments')` for a complete
+supplied-cut query with this backend. It reuses the already constructed source
+geometry. The four source queries and one boundary query share the cycle
+allowance; independent whole-cut replay counts all five traces. Earlier mask
+proofs remain supported. The default remains `boundary_method='masks'` because
+complete-query performance varies by input: the seven paired measurements
+favor moments on five cases and masks on two.
+
+The standalone checker is `verify_parallelity_moment_words` in the companion
+`parallelity_boundary_moments_verify` module. The public
+`moments_from_parallelity_packet` adapter independently authenticates an
+external source packet and additionally binds active loops to base profiles;
+its checker is `verify_parallelity_moment_packet`. That upstream replay is
+additional work, and is included in the packet checker's operation budget.
+
+Both `codec='pair'` and the retained `codec='four'` arithmetic reference are
+supported by the standalone API. Complete unique label coverage, exact square
+roots, parity and range checks are mandatory. All inputs still require the
+validated native geometric contract. Gap lengths and local fibre flips do
+not encode arbitrary hidden boundary markings. The theory and bit-size
+bounds are in [moment_boundary.tex](../synthesis/moment_boundary.tex); a
+uniform bound for every maintained weighted-orbit trace remains unproved.
+
+All 1,710 maintained tests pass. The 120-case backend audit preserves all
+102 completed censuses and 92 earlier mask-certificate hashes, with 95
+agreements against retained literal Regina references. Full certificate
+sizes fall by 0.39–19.65% in the seven timed cases; median paired mask/moment
+time ratios range from 0.932 to 1.142. The article retains regressions,
+raw samples, A/A controls and source pins.
+
+### Weighted source top forests
+
+`normal_cut_handlebodies(..., top_forest='max_weight')` now chooses a dual
+spanning tree that minimizes retained raw attaching passages outside the
+fixed lower forest. A maximum heap extends the existing degree/xor queue;
+graph selection takes `O(T log(T+1))` comparisons after source preparation
+and cost construction. `top_forest='queue'` reproduces the earlier selector.
+The low-level `reduce_core_three_handles` retains `strategy='queue'` as its
+default and accepts `strategy='max_weight'` explicitly.
+
+On the 120-source audit, completed cuts increase from 102 to 104, preserving
+all earlier completed censuses. Queue mode preserves all 102 earlier proof
+hashes; the 85 proofs without top reductions are unchanged under either
+mode. Fresh literal Regina cuts agree with all 97 comparable positives;
+seven larger inputs exceed the explicit expansion cap. Raw retained cost
+decreases on 23 of the 24 cores with three-handles. Common-success paired
+timings show no broad elapsed-time gain, so the improvement is a proved
+local cost optimum and two additional certified cuts.
+
+The independent geometric checkers and v6 certificate schema are unchanged.
+Additive cost optimality does not imply complete later raw cancellation,
+complete handlebody recognition, or a general quasi-polynomial bound.
+See [weighted_top_forest.tex](../synthesis/weighted_top_forest.tex) for proofs,
+counterexamples, scope of the restricted polynomial forest solver, and all
+timing samples and validation records.
+All 1,716 maintained tests pass, with no skips.

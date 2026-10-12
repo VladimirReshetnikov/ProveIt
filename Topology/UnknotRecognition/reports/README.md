@@ -108,6 +108,13 @@ modification times.
 | `95/` | `ProveIt_Saturated_Bundle_Cancellation_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | source-saturated bundle rows, exact full-row column peeling and stopping certificates | placed only; delivered tests not rerun and patches unapplied |
 | `96/` | `ProveIt_Scalar_Separators_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | source-bound rank-one separator search, scalar continuation and connected ray witnesses | placed only; delivered tests not rerun and patches unapplied |
 | `97/` | `ProveIt_Unknot_Stopping_Cores_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | rectangular stopping-set persistence, timestamp replay, exact passengers and saturated cuts | placed only; delivered tests not rerun and patches unapplied |
+| `98/` | `ProveIt_Component_Gauge_Cut_Atlases_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | component-relative gauges, exact marked cuts on disconnected graph grammars and symbolic coloring witnesses | placed only; delivered tests not rerun and patches unapplied |
+| `99/` | `ProveIt_Dual_Forest_Normalization_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | source dual forests, stopping-set transversals and polynomial forest choice for sparse active columns | placed only; delivered tests not rerun and patches unapplied |
+| `100/` | `ProveIt_Dual_Forests_Homological_Progress_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | weighted dual forests and rational homology-image certificates under authenticated hierarchy hypotheses | placed only; delivered tests not rerun and patches unapplied |
+| `101/` | `ProveIt_Flag_Regularization_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | occurrence-preserving affine flag regularization and the missing general native atlas exporter | placed only; delivered tests not rerun and patches unapplied |
+| `102/` | `ProveIt_Positive_Cancellation_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | complete rectangular positive cancellation, optimal row deferral and exact passive-count transport | placed only; delivered tests not rerun and patches unapplied |
+| `103/` | `ProveIt_Relative_Top_Handles_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | relative top-handle elimination, universal source trees, homological short-row rigidity and exceptional-row kernels | placed only; delivered tests not rerun and patches unapplied |
+| `104/` | `ProveIt_Private_Cocore_Transport_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | owner-state private-cocore transport, source-unit normalization and bounded-exception atlases | placed only; delivered tests not rerun and overlay unapplied |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -780,3 +787,82 @@ timestamp replay and a source-core obstruction before boundary discovery.
 The fresh 106-case audit retains all 85 certified cuts; all old certificates
 replay, and six failures avoid boundary discovery. This is a local kernel
 improvement, not a completed hierarchy or general recognition bound.
+
+Report 93's source-bound moment boundary compiler is now an explicit native
+option, documented in its added [integration status](93/INTEGRATION-STATUS.md).
+One weighted query supplies endpoint pairing, fibre flags and exact gap
+lengths, with a separate source-reconstructing verifier. The 120-case audit
+preserves all 102 complete censuses and all 92 historical mask certificates.
+Five of seven paired complete-operation measurements favor moments, while
+two favor masks, so masks remain the default. The synthesis proves the
+logarithmic scalar-weight bit bound and records the remaining native trace
+and global hierarchy obligations. Delivered report files remain unchanged.
+
+
+## Later arrivals of 12 October 2026: reports 98–103
+
+The five archives from `41ee7b20e` become reports 98–102 in ASCII archive
+order; the later archive from `ada929648` becomes report 103. All 663
+extracted files were inventoried by Git blob identity. The six delivery
+READMEs and main manuscripts are new; prior placement trees confirm 255
+reused blobs, primarily dependencies and runtime snapshots. The packages
+remain separate intact numbered reports under the unknot intake rule.
+
+Only each archive's single wrapper was removed. Delivered articles, PDFs,
+code, patches and evidence are preserved; no verification suite, patch
+application or soundness review was performed during placement. Existing
+ignore rules govern checksum manifests; no checksum or line-ending audit
+was made. The archives are retired here and remain recoverable from their
+arrival commits. The [placement record](../synthesis/data/incoming-98-103-placement.json)
+records source anchors, manuscript identities and prior placement commits.
+
+Report 98 is pinned to `d5c9a97fac18`, report 101 to `fe8702d8a864`, and
+reports 99, 100, 102 and 103 to `8cb7d9d25ac8`. Their source audits retain
+the exact read scope. All test counts and timings inside these packages
+remain delivered evidence. None claims a complete general quasi-polynomial
+unknot recognizer.
+
+The mathematical entry points are [component gauges](98/article/component_gauge_atlases.tex),
+[dual normalization](99/article/dual_forest_normalization.tex),
+[homological progress](100/article/dual_forests_and_homological_progress.tex),
+[flag regularization](101/article.tex),
+[positive cancellation](102/article/positive_cancellation.tex), and
+[relative top handles](103/article/Relative_Top_Handles.tex).
+Their proposals overlap with recent native work but are not interchangeable:
+weighted forest objectives, source-relative port preservation, algebraic
+progress witnesses and generic affine regularization have different source
+contracts. Integration and comparison with the maintained implementation
+are separate work.
+
+The subsequent weighted-forest integration is recorded in added status
+files for [99](99/INTEGRATION-STATUS.md) and [100](100/INTEGRATION-STATUS.md).
+It minimizes retained raw incidence with a maximum-weight dual tree and
+unchanged source verifiers. The fresh 120-source audit improves completed
+cut censuses from 102 to 104, preserves all earlier successes and agrees
+with 97 fresh literal positive references. The original queue remains
+available. Report 99's restricted exact solver was separately tested from
+an isolated copy; it adds no bare-core completions on this bank and remains
+a research component. Delivered report files are unchanged.
+
+
+## Further arrival of 12 October 2026: report 104
+
+The private-cocore transport archive from `dc68ebe67` is preserved intact as
+report 104, with only its single wrapper removed. All 34 extracted files
+were inventoried by Git blob identity and have no prior history match. The
+complete [article](104/article/private_cocore_transport.tex), PDF, code,
+proposed overlay and supplied evidence remain as delivered. The package is
+pinned to `32008c6397fa6f3613c4dda277ab18e99dcdd36e`; its source audit
+records the three maintained files reviewed and the unreviewed incoming
+archive boundary.
+
+The report studies a query-specific owner algebra, passive transport under
+source-unit matching normalization and bounded-exception search. Its
+quasi-polynomial statement is conditional on the exception parameter and
+encoded-input bounds; it does not claim a general recognizer. No test,
+patch application or soundness review was performed during placement.
+Delivered numerical claims remain the author's evidence. Existing ignore
+rules apply to checksum manifests without special handling; no checksum
+or line-ending audit was made. The committed archive is retired and remains
+recoverable from its arrival commit. See the separate
+[placement record](../synthesis/data/incoming-104-placement.json).

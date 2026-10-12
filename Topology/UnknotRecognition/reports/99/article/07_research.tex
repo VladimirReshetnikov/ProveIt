@@ -1,0 +1,263 @@
+\section{Toward a quasi-polynomial hierarchy}
+\label{sec:research}
+
+\subsection{What this work removes from the complexity budget}
+There are three different sizes that must not be conflated: the original
+diagram size $n$, the encoded size of a current triangulated or uniform
+handle state, and the expanded weight of a normal surface in that state.
+The new normalization controls an operation in the second size while
+avoiding dependence on the third as a unary parameter.  It does not yet
+control how many states are discovered from the first.
+
+In particular, a source with many interior vertices no longer forces an
+immediate failure of the finite census method.  Theorem~\ref{thm:native}
+removes all its top handles in polynomial encoded time, with no assumption
+that their number is logarithmic.  The polynomial selection theorem also
+removes a possible enumeration of dual trees in its stated column regime.
+For a general matrix, however, the complete selection search retains its
+$w^s$ parameter dependence.  The native geometric bound reduces its
+original-column difficulty to cycle-compatible triple-unit columns, but
+the augmented interface matrix can introduce additional difficulty.
+
+The global composition issue can be stated without hiding an oracle.
+Suppose a hierarchy discovery procedure makes at most $Q(n)$ state visits,
+including revisits and rejected branches,
+every state and emitted certificate has encoded size at most $S(n)$,
+and the total discovery, transition-generation, local processing, and replay
+work charged to each state visit costs at most $S(n)^d$, for a fixed
+constant $d$.  A sequential implementation then costs at most
+$Q(n)S(n)^{O(1)}$, plus the explicitly accounted input and output work.
+If $Q(n)=2^{O((\log n)^3)}$ and $S(n)=n^{O(1)}$, this is the announced
+quasi-polynomial scale.  This elementary composition observation is a
+budgeting rule, not a new recognition theorem.
+
+Lackenby's bound $L(g+1)^L$ gives the same scale if a suitable implemented
+hierarchy can establish $L=O((\log n)^2)$, $g=n^{O(1)}$, and polynomial
+encoded work at every node.  The linear hierarchy bound in the 2026
+preprint, by itself, does not imply that logarithmic-square value of $L$
+for arbitrary input.  Likewise a theorem that a small certificate exists
+does not bound the work of finding it.  These are the principal gaps to
+be closed, rather than details that can be suppressed in a local runtime.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Complexity obligations and their present status.}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.30\textwidth}>{\raggedright\arraybackslash}p{0.60\textwidth}}
+\toprule
+Obligation & Status in this work\\
+\midrule
+Compressed cutting & Established in prior literature; the native pipeline
+implements a source-certified form.\\
+Remove native core three-handles & Proved and implemented in polynomial
+encoded time for the admitted source contract.\\
+Choose a tree for raw completion & Polynomial in the sparse active-column
+case; complete parameterized search in general.\\
+Transport recorded bundle ports & Proved and implemented for the current
+exposed zero-/one-handle port charts.\\
+Transport arbitrary hierarchy patterns & Open implementation and proof
+obligation when patterns cross the cancellation support.\\
+Find suitable surfaces efficiently & Not solved by this operator;
+uniform discovery costs must be bounded.\\
+Control state size and hierarchy depth & Must be established relative to
+the original diagram, including all resets and certificates.\\
+Decide every terminal state & The current raw kernel is sufficient but
+incomplete; fourteen corpus cuts remain inconclusive.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Priority 1: remove the certified interface obstructions}
+\paragraph{Question 1: which additional geometric moves discharge the three
+saved annular stopping sets?}
+The negative packets make this question sharply testable.  On the three
+cuts in Table~\ref{tab:interfaces}, altering only the dual spanning tree
+cannot work.  A next implementation should keep the authenticated source
+and change a precisely named operation: the presentation of a bundle
+attachment, a permitted disk-bundle absorption, or a certified lower-handle
+move.  It should then show how the formerly nondeletable stopping rows
+become removable or disappear under an actual geometric equivalence.
+The success criterion is a new replayable genus census, not merely an
+algebraic simplification of the row matrix.
+
+\paragraph{Question 2: can an interface obstruction be localized to a
+bounded subsurface?}
+The saved stopping sets have sizes seven, four, and one.  Trace their
+annular curves through the ordered boundary skeleton and determine the
+smallest marked subsurface carrying them, together with its complementary
+attachment data.  A useful theorem would show that a certified local
+replacement has cost polynomial in the subsurface's encoded complexity
+and preserves its gluing map relative to the complement.  A graph support
+or homology calculation alone cannot guarantee this embedding statement.
+
+\paragraph{Question 3: can primitive but nonunit attaching curves be
+recognized with a compressed geometric certificate?}
+The ball example shows why unsigned raw counts can stall on a primitive
+curve.  One candidate extension is a sequence of boundary isotopies or
+slides whose bands are specified by compressed paths and whose effect
+on every other ordered attaching curve is independently replayed.
+The target is not unrestricted free reduction of a word: cancelling
+algebraic inverse letters can conceal geometric intersections with other
+bands.  A successful theorem must bound both the move sequence and the
+description of the transported curves.  The singleton annular obstruction
+is a useful first native test case.
+
+\subsection{Priority 2: solve the remaining native column geometry}
+\paragraph{Question 4: is forest-compatible peeling polynomial for
+cycle-compatible triple-unit columns?}
+Propositions~\ref{prop:three} and~\ref{prop:cycle} show that the original
+native columns lie in a much narrower class than general sparse matrices.
+The remaining active shape is $(1,1,1)$, and its edges form a triangle,
+a parallel pair plus a loop, or three loops.  The question is whether
+these geometric restrictions allow an exact extension of the source-SCC
+method.  They do not restore matroid exchange, as the explicit counterexample
+shows.  An affirmative algorithm therefore needs additional structure;
+a negative complexity result would require a reduction that respects
+these constraints, preferably with a genuine native realization.
+
+\paragraph{Question 5: is the number of triple-unit columns a useful
+parameter?}
+Let $k$ count the original columns of shape $(1,1,1)$ after the chosen
+lower forest.  A strong target would be an algorithm of cost
+$2^{\poly(k)}\poly(m,I)$, or an explicit smaller parameter based on the
+interaction graph of those columns.  This would complement the current
+$m^{O(s)}$ search when $s$ is large but $k$ is small.  The immediate
+combinatorial model consists of ordinary reachability plus two-premise
+activation rules.  Treating a two-premise rule as either of its individual
+arcs is unsound; both prerequisites must be discharged, and the initial
+deletion set must remain a graphic forest.
+
+\paragraph{Question 6: can graphic rank be used earlier inside the
+activation process?}
+For ordinary source components, disjointness converts all obligations
+into a partition matroid.  Ternary activation may create overlapping
+obligations.  One approach is to maintain certified disjoint stopping
+families and their contracted ranks throughout the search, extracting
+short rank defects before branching.  Another is to identify separators
+in the joint dual/dependency incidence graph and combine states recording
+both connectivity and activation.  The research obligation is an explicit
+state-count bound; declaring a separator small without bounding all
+boundary partitions does not establish quasi-polynomial complexity.
+
+\paragraph{Question 7: what exactly does changing the lower forest buy?}
+The complete search theorem fixes the zero-/one-handle spanning forest.
+Changing it changes which cocores survive, and can change the available
+raw pivots.  Study paired choices of a lower forest and an upper dual
+forest while retaining the source geometric cycles.  A first experiment
+should exhaust both choices on the smallest authenticated failures,
+record whether success depends on the lower choice, and save a replayable
+certificate.  A theorem that bounds a representative family of lower
+forests would be more valuable than unrestricted double enumeration.
+
+\subsection{Priority 3: make hierarchy interfaces compositional}
+\paragraph{Question 8: can arbitrary marked boundary patterns be transported
+through the cancellation balls with bounded encoding growth?}
+The present proof fixes exposed native ports.  In a general sutured or
+patterned hierarchy, marked curves may cross the support of the selected
+top cancellation.  The next geometric compiler must specify how such
+curves move across the boundary disk $E$ and the replacement collar,
+prove that the cyclic order and essential intersections are preserved,
+and bound the growth of the compressed description.  A useful target is
+a polynomial bound in the input pattern length and source chart size
+per complete forest reduction, rather than a separate expansion at every
+three-handle.
+
+\paragraph{Question 9: can support-stratum reuse extend beyond the dual
+tree without losing source authentication?}
+Corollary~\ref{cor:support} identifies a valid reuse opportunity: the
+dual graph and selected tree depend only on zero versus positive source
+edge weights.  The full boundary words and bundle multiplicities need
+not be constant on that stratum.  Seek a reusable symbolic template for
+the retained chart whose variable lengths and endpoint offsets are
+explicit arithmetic expressions in normal coordinates.  Each evaluation
+must still authenticate the relevant source equalities.  This would
+remove repeated structural work while keeping multiplicity-dependent
+attachments honest.
+
+\paragraph{Question 10: can local normalization be made confluent at a
+useful level of abstraction?}
+Different dual trees produce homeomorphic cores with potentially different
+raw cancellation success.  Full geometric confluence is therefore too
+strong for the present representation.  A more useful target is a canonical
+summary of the remaining obstruction class, perhaps in terms of marked
+boundary components and a certified family of stopping/rank witnesses.
+The summary must preserve the information needed by subsequent cuts;
+equal Euler characteristic, equal genus totals, or equal homology alone
+does not suffice.
+
+\subsection{Priority 4: close the discovery and global-size gaps}
+\paragraph{Question 11: which supplied surfaces can be found with a proved
+encoded-time bound?}
+Start with a restricted source class where the existence theorem supplies
+a normal disk or hierarchy surface of bounded combinatorial type.  Specify
+the actual discovery algorithm, the bit lengths of its intermediate
+coordinates, and the total unsuccessful work before a certificate is
+found.  A normal-coordinate vector supplied by an experiment is an input
+to this work's operator, not a discovery algorithm.  A promising bridge
+to the hierarchy programme is a certified search over compressed surface
+templates whose count can be bounded independently of expanded weight.
+
+\paragraph{Question 12: can one charge every reset to a monotone global
+quantity?}
+The incoming reports already discuss causal reset budgets and cographic
+persistence.  The next step should connect those budgets to the actual
+geometric importer and this top normalization.  If an attachment change
+invalidates a previous certificate or reintroduces branching, the reset
+must have a reason recorded in a global potential.  Seek a statement
+bounding the total number and cumulative encoded cost of resets along
+every search path.  Independent local size bounds do not prevent an
+algorithm from returning to exponentially many distinct states.
+
+\paragraph{Question 13: can the total certificate, including all rejected
+branches, be kept quasi-polynomial?}
+Positive compressed certificates are often small while a search transcript
+is large.  Distinguish a certificate needed to verify the eventual answer
+from evidence needed to justify exhaustive failure of a branch.  The
+rank defects here illustrate a beneficial compression of negative search.
+Identify analogous short obstructions for other hierarchy operations,
+and prove that their discovery cost is also controlled.  A concise
+negative certificate discovered only after exponential search does not
+resolve the runtime question.
+
+\paragraph{Question 14: which terminal procedure should replace raw
+cancellation when it is inadequate?}
+The present kernel gives useful sufficient certificates, but the geometric
+ball example proves its incompleteness in the broader handle category.
+An eventual complete hierarchy needs a terminal method with a proved
+worst-case budget for every permitted terminal state.  Candidate directions
+include restricted geometric simplification, a certified comparison to
+standard handlebodies, or a different hierarchy refinement.  The choice
+should be evaluated against the actual terminal-state contract rather
+than the full unrestricted handlebody problem.
+
+\subsection{Priority 5: verification and credible performance measurement}
+\paragraph{Question 15: what is the smallest independent trusted kernel?}
+The current replay reduces dependence on discovery code but remains Python
+and relies on the existing source geometry checker.  A serious next step
+is a written specification for integer decoding, source incidence,
+tree reduction, and ordered boundary transport, followed by a small
+reference checker or proof-assistant formalization.  The parity constraint
+is a useful independently derivable invariant, but should be checked on
+uncapped source counts: capping three to two changes parity.
+
+\paragraph{Question 16: where is the practical crossover on nonconstructed
+inputs?}
+The reported family isolates compression and the finite enumeration
+family isolates tree choice.  Neither is a realistic input distribution
+for all unknot recognition.  Extend measurement to a stratified native
+corpus, reporting triangulation size, coordinate bit length, number of
+interior vertices, number of triple-unit columns, interface size, genus
+census, certificate size, wall time, and peak memory.  Compare complete
+queries with randomized paired order and report regressions.  For an
+end-to-end claim, include preprocessing, surface discovery, all rejected
+cuts, final certificate production, and replay.
+
+\subsection{Suggested next sequence of work}
+The most informative immediate sequence is to resolve the three saved
+interface obstructions with a named geometric extension; characterize
+cycle-compatible ternary activation on native cores; and implement marked
+pattern transport for the resulting reductions.  In parallel, one should
+build an accounting layer that records discovery costs and state sizes
+against the original diagram.  These tasks turn the current local theorem
+and measured coverage improvement into reusable components of a hierarchy
+argument.  The general quasi-polynomial recognition theorem remains the
+goal to be proved after those obligations are met.

@@ -1771,3 +1771,37 @@ assessment starts on page 628. Pages 624–630 have been visually reviewed,
 including source reconstruction charts, both cell and encoded-size proofs,
 the full homology evidence, complete timing table and assessment update.
 All references resolve and only the four pre-existing overflow warnings remain.
+### One-query moment boundary interfaces (12 October 2026)
+
+The new [moment boundary section](moment_boundary.tex) derives endpoint
+pairing and exact original-edge gap lengths from one scalar weighted query.
+It proves complete-label decoding and the
+`O(log(N+1) + log(p+1))` scalar-weight bit bound. The native supplied-cut
+API exposes `boundary_method='moments'`, with independent source replay and
+a shared five-trace budget. Masks remain the default because complete-query
+paired medians favor moments on five of seven cases and masks on two.
+
+The 120-case differential audit preserves all 102 completed censuses and
+all 92 historical mask-certificate hashes; 95 completed cases agree with
+retained literal references. Every measured full certificate shrinks.
+The source-pinned audit, retained baseline, raw timing samples, test logs
+and publication checker are under `data/moment-boundary-*`. The article
+distinguishes these local bounds from the unproved native scheduling,
+surface-discovery, pattern-transport and global hierarchy bounds.
+
+### Weighted source dual forests (12 October 2026)
+
+The [weighted forest section](weighted_top_forest.tex) proves that complete
+source top reductions are precisely dual spanning trees and that a maximum
+weight tree minimizes retained raw attaching incidence for the fixed lower
+forest. The native default now uses a priority heap; queue mode reproduces
+the earlier proofs, and independent geometric checkers remain unchanged.
+
+The 120-source audit gains two certified cuts, reaching 104 completed
+censuses with 97 fresh literal positive agreements. Raw retained cost falls
+on 23 of 24 cores with three-handles. Paired full-query timings are near
+parity where both modes succeed; new positive timings include work the old
+mode refused. A separate report-99 probe adds no bare-core coverage with
+its restricted polynomial solver. All evidence, baseline modules and the
+publication checker are under `data/weighted-forest-*`. Global recognition
+complexity remains unproved.

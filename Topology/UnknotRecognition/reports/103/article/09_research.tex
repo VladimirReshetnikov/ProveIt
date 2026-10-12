@@ -1,0 +1,236 @@
+\section{Consequences for the quasipolynomial programme}
+\label{sec:research}
+
+\subsection{What the local theorem removes from the global problem}
+
+The native source top handles need no separate combinatorial search. For
+every supplied normal surface, a linear trace exists, and a single source
+tree works uniformly across all its coordinate supports. A hierarchy
+controller can therefore eliminate this class of three-handles before a
+terminal core test without branching over possible rooted schedules merely
+to obtain a valid reduction.
+
+This does not imply that all deletion trees are interchangeable for the
+later general raw problem. \Cref{sec:chain} proves interchangeability for a
+specific short-row strategy, while \cref{sec:exceptional} isolates the
+additional information carried by long rows. The next useful search target
+is consequently the interaction of exceptional attaching curves with
+forest components, rather than unrestricted enumeration of short-row
+forests that homology already controls.
+
+\begin{proposition}[Conditional preservation of a global bound]
+\label{prop:global}
+Suppose a correct complete hierarchy algorithm on an $n$-crossing input
+visits at most $N(n)$ source states, each with encoded size at most $L(n)$.
+Suppose the required source verification, top reduction, and selected
+terminal operations at one state cost at most $L(n)^c$, for a fixed $c$.
+Then these operations contribute at most $O(N(n)L(n)^c)$ bit work. If
+both $N$ and $L$ are quasipolynomial in $n$, their contribution remains
+quasipolynomial. The source top reducer adds no coordinate-support search
+factor to this estimate.
+\end{proposition}
+
+\begin{proof}
+Sum the stated per-state cost over the visited states. If
+$N(n)\leq\exp(O((\log(n+2))^a))$ and
+$L(n)\leq\exp(O((\log(n+2))^b))$, their product is
+$\exp(O((\log(n+2))^{\max(a,b)}))$. The uniform source-tree theorem
+supplies one valid top schedule without an enumeration of supports or trees.
+\end{proof}
+
+This is accounting, not a proof of the missing hypotheses. In particular,
+polynomial verification of a supplied state does not bound the number of
+candidate states, and a short hierarchy does not bound the time needed to
+select its next admissible decomposing surface. The present work does not
+establish either $N$ or $L$ for a complete recognizer.
+
+\subsection{Immediate integration and performance questions}
+
+\begin{question}[Reuse authenticated source work]
+Can one immutable validated-source context serve the parallelity, boundary,
+top-incidence, and terminal checks without repeating the same triangulation
+and coordinate reconstruction?
+\end{question}
+
+The largest local benchmark spends more time on common incidence
+reconstruction than on the new queue. This is a concrete next performance
+target. A suitable design would expose source invariants through an
+internally constructed object, retain exact input identity, and make
+untrusted serialized objects pass the full constructor. The producer and
+verifier should still have separate geometric reconstructions where
+independence is part of the certificate contract. A successful change
+should report whole-query timings, retained memory, and invalid-input
+rejection, not only cache-hit speed.
+
+\begin{question}[Choose a stable top policy without losing terminal cases]
+When does the universal source-tree policy give the same terminal success
+set as the queue, and when does a different valid top tree help with
+exceptional rows?
+\end{question}
+
+The template proves validity and makes caching possible. It does not prove
+optimality after the rows change. A useful experiment should compare
+policies on actual source cuts, retain the full attaching records, and
+separate short-row cases governed by homology from long-row cases where a
+choice could matter. An abstract graph example violating the chain identity
+is not suitable evidence. The minimal-subtree stopping lift provides a
+specific geometric region to inspect when a policy differs.
+
+\begin{question}[Extend the kernel to the complete finite terminal matrix]
+Can the exceptional-row quotient be compiled directly on the combined
+core and saturated-bundle boundary kernel, with the original geometric
+projection and private-cocore accounting preserved?
+\end{question}
+
+The current quotient experiment covers cores. The seven new whole-cut
+successes show that the top adapter already composes with several existing
+bundle terminal paths, but the remaining obstructions occur in the full
+assembly. The next adapter should retain row ownership, complete interface
+circles, and the proof that omitted private columns cannot become valid
+pivots. It should then lift a quotient stopping set to the corresponding
+source annuli and core attaching curves. This would produce a better
+description of each unresolved whole cut, without claiming that the
+description itself resolves it.
+
+\subsection{Geometric questions that could change the asymptotics}
+
+\begin{question}[Transport a full inherited boundary pattern]
+Can the two/three-handle collar homeomorphisms be encoded and composed in
+polynomial bit size while transporting arbitrary admissible pattern curves
+and trivalent graphs?
+\end{question}
+
+For the current parallelity ports, support avoidance makes the relative map
+simple. A general pattern may cross the support. One possible approach is
+to retain local PL boundary maps as a composition grammar, with source
+flags and affine rank intervals on each patch. The hard part is then an
+exact intersection and admissibility checker that operates on the grammar
+without expanding its maps. The needed theorem must bound both the grammar
+and the complexity of the queries used by the next hierarchy step. A
+short list of moves alone does not bound the expanded boundary pattern.
+
+\begin{question}[Exploit few exceptional rows]
+For a geometrically authenticated state with $k$ exceptional rows, can a
+complete useful family of forest changes or local geometric repairs be
+searched in $(t+b_x)^{O(k+1)}$ time, or with another bound that becomes
+quasipolynomial when $k$ is logarithmic?
+\end{question}
+
+This is a proposed target, not a conjecture supported by a proof. The
+fixed-forest quotient gives an exact state description and at most
+$3^k-1$ nonzero capped column types. It does not show that the set of all
+such descriptions reachable by forest changes is small, nor that local
+changes preserve completeness of a search. A serious attempt should first
+seek a counterexample to any claimed exchange axiom or locality bound.
+\Cref{prop:not-matroid} already rules out the simplest unrestricted
+matroid formulation.
+
+\begin{question}[Change the primal forest and cocore system]
+Can a primal zero/one-handle forest be chosen so that the number or total
+interaction complexity of the exceptional rows is provably small?
+\end{question}
+
+The homological rigidity theorem fixes that forest. Changing it changes the
+surviving columns and can change which attaching curves are short. This
+is a more plausible source of useful freedom than short-row dual-tree
+exchange. The exact parameter to minimize should incorporate geometry:
+the number of long rows alone ignores the number and placement of their
+pin columns in the quotient. A proposed optimization should retain a
+certificate for the cocore correspondence and should not substitute free
+group exponent reduction for geometric intersection reduction.
+
+\begin{question}[Destroy a lifted stopping core by controlled geometric moves]
+Which handle slides, disk exchanges, or boundary bigon removals can reduce
+the unsigned intersection data near a lifted stopping set while preserving
+the marked manifold and a useful global complexity measure?
+\end{question}
+
+The exact lift identifies the exceptional rows and the short-tree paths
+that keep them blocked. It therefore localizes a candidate repair region.
+It does not prove that a necessary repair is confined there. The desired
+statement would give a complete family of repairs, a compact proof for
+each move, and a potential that decreases by a controlled amount. A
+counterexample where all useful repairs leave this region would be equally
+valuable, because it would rule out an attractive but incomplete search.
+
+\begin{question}[Batch compressed primitive reductions]
+Can large families of equivalent curve slides be accelerated in the
+compressed source coordinates, with an exact geometric certificate for
+their combined effect?
+\end{question}
+
+Compressed free-group primitivity is a relevant comparison, but it is not a
+replacement for embedded curve data. Kapovich's 2026 work distinguishes
+rank-two polynomial algorithms from more general compressed settings and
+gives the family $ab^{2^n}$ as a warning about exponentially many elementary
+Whitehead descent steps~\cite{kapovich2026}. A geometrically useful batching
+theorem must specify how an accelerated algebraic step acts on the actual
+boundary curves, their disjointness, and the protected pattern. Large binary
+coordinates make batched operations attractive precisely because expanding
+the implied elementary moves defeats the objective.
+
+\subsection{Global control and verification questions}
+
+\begin{question}[Find a stable hierarchy potential]
+Is there a potential on authenticated marked source states whose decrease
+controls both useful-surface selection and the cost of rebuilding the
+compressed representation?
+\end{question}
+
+Removing top handles changes two handle counts equally and preserves Euler
+characteristic. It is not by itself a strict decrease of a global
+topological complexity. The potential must account for source size,
+coordinate bit length, pattern complexity, and any reset that invalidates
+cached geometry. A bound on the number of moves inside a phase is
+insufficient if the next phase rebuilds a much larger state. A candidate
+proof should state a recurrence for these quantities together, rather than
+prove separate bounds that depend circularly on one another.
+
+\begin{question}[Control useful surface discovery]
+Can the existing separator, first-return, and surface-batch proposals be
+connected to an authenticated complete choice of the next decomposing
+surface, with explicit bit bounds?
+\end{question}
+
+The incoming reports provide several useful compressed graph and normal
+coordinate operators. Their output graphs, surfaces, and retained marks
+must still be connected to the admissibility and essentiality conditions
+of a complete hierarchy. The source top theorem can be used after such a
+choice; it does not make the choice complete. A deliverable at this stage
+should include both a source exporter and a negative certificate describing
+what exhaustive failure means in the chosen restricted problem.
+
+\begin{question}[Make the source interface reentrant]
+Can later hierarchy states with several boundary components be accepted
+by a generalized source constructor without losing the topology and
+pattern checks now guaranteed at the one-torus entry point?
+\end{question}
+
+The relative top theorem already permits several nonempty boundary
+components. The native validator does not. Generalizing it is more than
+removing the torus test: all consumers of boundary component counts,
+compressing disks, source provenance, and essential-pattern criteria must
+be given explicit contracts. This is a natural point to connect the
+initial knot-diagram provenance certificate to the sequence of derived
+states.
+
+\begin{question}[Mechanize the small certificate kernel]
+Which of the cap inventory, rooted trace, graphic peeling, and quotient
+stopping-lift lemmas can be formalized first, while keeping the required
+PL geometric theorem explicit?
+\end{question}
+
+The finite combinatorial checker is small enough to make formalization
+realistic. A useful first milestone is a theorem that every accepted trace
+has the exact graph and row consequences stated here. The source geometry
+then remains a clearly named theorem connecting that finite kernel to
+embedded handles. Python tests and independent implementations provide
+strong regression evidence but are not machine-checked proofs of the PL
+statement.
+
+The highest-value next steps are the source-context optimization, the full
+terminal stopping lift, and a marked geometric repair operation with a
+proved completeness or progress property. They address observed costs or
+specific unresolved geometry. Another abstract forest optimizer without
+the chain and embedding constraints would not address the main barrier
+identified by this work.

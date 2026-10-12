@@ -1,0 +1,169 @@
+\section{Native implementation and certificate composition}
+\label{sec:implementation}
+
+\subsection{The actual integration point}
+
+The change is an adapter inside \code{normal_cut_handlebodies}, operating
+after construction of the original compressed parallelity geometry. The
+marked boundary data are subsequently constructed from the original source
+packet, independently of this reduction. If the source core has three-handles, the adapter
+reconstructs its cap packet, runs the rooted queue, and passes the reduced
+core to the existing terminal paths. These paths include raw core
+cancellation, disk-bundle absorption, primitive annulus handling, and the
+finite bundle-boundary kernel. Sources without three-handles follow the
+existing path and retain their old certificate versions.
+
+Only two previously maintained Python files are modified:
+\begin{itemize}
+\item \smallpath{fastunknot/normal_cut_handlebodies.py};
+\item \smallpath{fastunknot/normal_cut_handlebodies_verify.py}.
+\end{itemize}
+The new source packet, queue, independent top replay, and template API are
+in three additional modules. The abstract forest-exchange producer and its
+independent verifier are separate research modules. They do not change the
+default terminal policy. The exceptional-row and chain experiments are
+also supplied as research code rather than silently changing recognition
+dispatch.
+
+The public whole-cut operation accepts a \emph{supplied} normal vector.
+It does not search for the surface. The resulting histogram says that the
+components of that particular cut are handlebodies of specified genera and
+multiplicities. A cut of a nontrivial knot exterior can have such a
+histogram; this result alone is not an unknot certificate. The new adapter
+does not change the general exponential guarantee of the complete diagram
+recognizer.
+
+\subsection{Source-bound top proof}
+
+The added trace has the following strict schema:
+\begin{quote}\small\ttfamily
+\begin{tabular}{@{}l@{}}
+\{ schema: 'normal-core-top-reduction-v1',\\
+\quad input\_sha256: source-and-coordinate fingerprint,\\
+\quad moves: [[original\_two\_id, original\_three\_id], ...],\\
+\quad surviving\_two\_handles: [ascending original IDs] \}
+\end{tabular}
+\end{quote}
+The fingerprint indexes the exact normalized input. Mathematical replay does
+not rest on a collision-resistance assumption: the checker also reconstructs
+the source geometry, exact coordinate rows, full exceptional rank inventory,
+and endpoint occurrences against which the moves are tested.
+
+The independent top checker imports no producer or queue function. It
+reconstructs canonical endpoint orientation from all local source edges,
+checks each proposed pair against the current live endpoint multiset,
+rejects repeated or nonexistent IDs, and compares the exact final survivor
+list. It requires exactly one deletion per source interior vertex. A loop
+has two contacts and cannot be forged into an eligible singleton by
+deduplicating its endpoints.
+
+The reduced geometry is constructed only after a successful trace. Every
+surviving two-handle record is copied with a new dense ID; its source edge,
+rank, and full attaching cycle stay unchanged. The zero/one handles,
+parallelity polygons, rank maps, free sides, and ports retain their
+original records. The original source summary remains a summary of the
+\emph{original} source decomposition. Its core handle counts should not be
+misread as post-reduction counts; its Euler characteristic remains valid
+because equal numbers of two- and three-handles have been removed.
+
+\subsection{The whole-cut version-6 wrapper}
+
+The enclosing proof stores
+\begin{quote}\small\ttfamily
+\begin{tabular}{@{}l@{}}
+\{ schema: 'normal-cut-handlebodies-v6',\\
+\quad parallelity: original source parallelity proof,\\
+\quad boundary: original marked boundary proof,\\
+\quad top\_reduction: the source-bound top trace,\\
+\quad terminal: one existing terminal schema v1 through v5,\\
+\quad census: the final handlebody histogram \}.
+\end{tabular}
+\end{quote}
+The nested terminal object has no duplicate source proofs or census and
+cannot recursively be version 6. The checker validates the outer fields,
+replays both original source proofs, decodes their exact geometry, applies
+the independent top trace, and then runs the old terminal verifier on the
+reduced geometry. This order is essential. Modifying the geometry first and
+passing the altered object to an original source verifier would discard the
+source authority needed for the relative argument.
+
+The original six orbit-proof operation counts continue to determine the
+existing \code{max_operations} gate. The new top trace has a separate
+linear source bound and uses the same cooperative interruption callback.
+It does not consume an undocumented normal-surface enumeration budget.
+Callback exceptions propagate; a callable with false boolean value is still
+called. Huge integers use the existing exact hexadecimal certificate codec.
+
+\subsection{Reusable source templates}
+
+The template module exposes
+\begin{quote}\small
+\code{compile_source_top_tree(triangulation)}\par
+\code{verify_source_top_tree(triangulation, template)}\par
+\code{specialize_source_top_tree(triangulation, coordinates, geometry, template)}.
+\end{quote}
+The compiled object contains the source fingerprint and an ordered list of
+vertex, parent, and source-edge triples. Template verification checks parent
+precedence and exact source edges without invoking the compiler. The
+specializer emits the same top-trace schema as the queue; the independent
+top checker therefore accepts it without trusting the template planner.
+
+Templates are an optional API in this release. The default adapter uses the
+linear queue, which is already inexpensive and chooses rows in the
+maintained diagnostic's source setting. Choosing a universal template
+instead can change the surviving two-handle rows. Its effect on raw
+completion for genuine geometric inputs with long rows remains to be
+determined. The uniform validity theorem does not establish downstream
+optimality. A policy change should consequently be measured with the
+complete terminal consumer.
+
+\subsection{The forest prototype's trust boundary}
+
+The abstract planner accepts three-handle labels, cap endpoint occurrence
+lists, and nonnegative occurrence rows. Missing cap ends mean exterior
+boundary. The two mappings use the same row labels. Its positive certificate
+contains a dual forest, an ordered two/three trace, and an ordered
+one/two unit-column trace. Failure certificates contain a disconnected
+boundary-free cap component, a forced-row cycle, or a rank-deficiency
+witness with an optimal residual tree.
+
+The separate verifier recomputes graphic ranks by component traversal and
+the contraction rank identity. It does not invoke the producer's exchange
+routine. It checks supplied one/two traces through source occurrence
+timestamps and supplied two/three traces through endpoint multiplicities.
+Testing with producer functions disabled verifies this software separation.
+
+These are certificates of the supplied graph cancellation model. Its
+argument list does not authenticate embedded attaching curves, compatible
+port collars, or the chain-complex identity. A topological caller must
+supply those facts. On native inputs the new source top checker provides
+the cap-side authentication, while the source-parallelity reconstruction
+provides the attaching cycles. \Cref{sec:chain} explains why this extra
+structure changes which forest-search claims are meaningful.
+
+\subsection{A reviewable integration contract}
+
+The package contains a patch against \sourcecommit, an overlay of every
+changed or added source file, focused tests, raw experiment data, source
+hashes, and build instructions. Apply the patch or copy the overlay, not
+both. Incoming packages were inspected but not applied as dependencies.
+Thus the patch targets the actual maintained baseline rather than an
+unrecorded mixture of proposals.
+
+A successful integration should preserve the following invariants:
+\begin{enumerate}
+\item Original source proofs authenticate the original geometry before any
+new terminal transformation.
+\item Exact source end occurrences, including double contacts at loops,
+determine top eligibility.
+\item The relative theorem protects the complete native parallelity
+interface; broader boundary patterns require their own transport contract.
+\item An inconclusive raw or restricted-forest result never becomes a
+negative knot or handlebody verdict.
+\item The new helper remains independent of normal multiplicity expansion.
+\end{enumerate}
+
+The code is intentionally additive at this boundary. A wider redesign of
+the hierarchy controller, an integration of the research matroid planner,
+or a change to the complete recognizer's claimed complexity requires
+additional work beyond this package.

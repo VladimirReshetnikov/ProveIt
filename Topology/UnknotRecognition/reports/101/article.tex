@@ -1,0 +1,733 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{xcolor,xurl,hyperref,fancyhdr}
+\usepackage{enumitem}
+\definecolor{inkblue}{RGB}{28,62,92}
+\hypersetup{colorlinks=true,linkcolor=inkblue,citecolor=inkblue,urlcolor=inkblue,pdftitle={Occurrence-Preserving Flag Regularization of Compressed Normal Cuts},pdfauthor={Research continuation prepared for ProveIt}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Compressed flag regularization}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}
+\setlist{itemsep=3pt,topsep=4pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Flag}{\operatorname{Fl}}
+\newcommand{\sd}{\operatorname{sd}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\bitsize}{\operatorname{bits}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\sourcepin}{\texttt{fe8702d8a864daf4fcfde1cf4ef8dbcc6d83b69c}}
+\newcommand{\faceposet}{\mathcal L}
+\newcommand{\Atlas}{\mathcal A}
+\newcommand{\Cells}{\mathcal C}
+\newcommand{\Unknown}{\textsc{Unknown}}
+\title{\bfseries Occurrence-Preserving Flag Regularization\\of Compressed Normal Cuts\\[7pt]
+\large Linear encoded size, independent geometric replay,\\and an exponential refinement barrier}
+\author{Research continuation prepared for the ProveIt project\\\small Developed with ChatGPT; mathematical and implementation review invited}
+\date{12 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The current ProveIt implementation describes raw normal cuts using binary cell families and source attaching charts. Its cells need not be regular: different local faces can identify in the global quotient. The recent modular-Morse certificate operator, however, needs authenticated regular PL cells. We address this representation gap.
+
+For a coherent affine atlas of bounded-dimensional convex cell prototypes, we construct an occurrence-preserving flag subdivision with linear encoded size when local prototype complexity is bounded. No represented rank is enumerated, and no globally stable endpoint refinement is constructed. A single subdivision gives regular simplicial cells; a second gives an abstract simplicial complex. Applying the construction to the canonical raw normal-cut cellulation yields a conservative bound of \(4607T\) output cell families for a \(T\)-tetrahedron source, independently of normal multiplicity, with \(O(T(B+\log(T+1)))\) encoded bits. We also prove that a natural globally invariant refinement strategy can require exponentially many rank pieces even for a cycle. Marked subcomplexes and source occurrence addresses survive the construction, and repeated subdivision introduces no new rank endpoints or offsets.
+
+The delivered standard-library compiler has an independent replay checker whose completeness test uses face-poset counts rather than the producer's enumeration. Executed evidence includes 32 unit tests, 448 recorded symbolic replay checks, direct finite source-flag quotients, the repository's one-tetrahedron solid-torus fixture, an actual bridge to the predecessor Morse format, and 16,385-bit rank bounds. A complete local representation query is about 23.93 times faster than its literal counterpart on a retained 256-layer case, but is slower on tiny cases. The full nonzero native normal-cut atlas exporter, useful matching discovery, admissible patterned hierarchies, and general quasi-polynomial recognition remain separate implementation and proof obligations.
+\end{abstract}
+\vfill
+\begin{center}\small
+Targeted repository source pin: \sourcepin.\\
+A research package for integration, not a production recognizer replacement.\\
+Classical subdivision and collapse results are attributed explicitly; no literature-wide priority claim is made.
+\end{center}
+\thispagestyle{empty}
+\clearpage
+\begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\clearpage
+
+\section{Research position and the concrete improvement}
+\label{sec:position}
+
+\subsection{What the maintained source already supplies}
+The relevant starting point is not a list of uncompressed normal discs. The maintained raw-cut construction already retains cells in dimensions zero through three, binary affine incidence families, source tetrahedron charts, and the unscaled normal coordinates. Its source theorem gives linear encoded storage and polynomial construction and replay in the tetrahedron count and coordinate bit length \cite{rawcut}. The more recent all-dimensional parallelity construction also gives an inherited complementary core with at most \(30T\) handles and a conservative \(66T\) core-port bound \cite{parallelity}. These are existing achievements, not claims introduced here.
+
+A different issue remains. The original triangulation may identify different edges, faces, or vertices of a local cell. A raw cut retains those occurrences correctly, but its global characteristic maps need not be embeddings. Consequently a regular-cell matching checker cannot simply consume a raw boundary matrix or a list with repeated coefficients removed. The incoming modular-Morse report explicitly identifies source-faithful regularization as a missing operation \cite{morse}. The present work targets that operation.
+
+The retained one-tetrahedron solid-torus fixture makes the distinction concrete. Its empty normal cut has one vertex, three edges, three faces and one tetrahedron in its source CW structure. The local tetrahedron has four vertex occurrences, not one. The quotient is a solid torus, not a ball, and its characteristic tetrahedron is not an embedded closed simplex. Any regularization must preserve the attaching occurrences responsible for this topology.
+
+\subsection{Relation to the quasi-polynomial objective}
+Lackenby's announced quasi-polynomial unknot-recognition programme motivates the overall target \cite{announcement}. The July 2026 manuscript develops hierarchy algorithms and their certification; its introduction explicitly leaves possible speed-ups to further work \cite{lackenby}. We use the generic complexity class
+\[
+                 2^{(\log n)^{O(1)}}
+\]
+rather than silently identifying bounds with different powers of \(\log n\). A polynomial encoded regularization primitive is compatible with that target. It does not by itself bound surface discovery, admissibility repairs, hierarchy depth, or the number of failed searches.
+
+\subsection{The contribution and its attribution boundary}
+The underlying topological facts about one and two barycentric subdivisions are classical. Hatcher states that an unordered simplicial CW structure becomes regular after one barycentric subdivision and becomes an abstract simplicial complex after two \cite{hatcher}. We give the necessary local proof in the polytopal source-atlas model because the occurrence labels, rank recipes, and bit bounds are the actual algorithmic issue.
+
+The research contribution is the combined construction: a bounded-local-complexity affine atlas, an occurrence-indexed compiler that never closes a global refinement under all rank maps, an explicit normal-cut family bound, preservation of source and marking data, and independent semantic replay. The exponential refinement obstruction explains why the absence of global refinement is essential rather than merely an implementation preference. The numerical subdivision identities used below are combinatorial consequences of the construction, not proposed new general facts about ordinary barycentric subdivision.
+
+\subsection{Exactly what was implemented}
+The package implements the general affine polytopal atlas, exact convex-template checks, the flag compiler, independent replay, marked subcomplexes, finite tetrahedral source import, binary products with a segment or circle, and a bridge to the predecessor Morse packet. It executes the empty-cut source from the pinned native fixture and its relabellings. It does \emph{not} invoke the native \code{normal_cut_cell_complex} implementation or claim that its complete nonzero-normal-coordinate exporter has already been integrated. Section~\ref{sec:native} proves the existence, construction method and bound for that exporter; Section~\ref{sec:implementation} records the narrower delivered source coverage.
+
+\section{The affine polytopal source model}
+\label{sec:model}
+
+\subsection{Convex local prototypes}
+Fix \(d\leq 3\). A prototype \(P\) is a full-dimensional convex polytope in \(\mathbb R^{\dim P}\), given by its distinct extreme vertices with rational coordinates. Clearing denominators gives an integer-coordinate model without changing its face lattice. A zero-dimensional prototype consists of one point. Write \(\faceposet(P)\) for the nonempty faces, including \(P\) itself.
+
+Each face is stored as its subset of the local vertex set. These are \emph{local} vertices. Distinct local vertices are allowed to have the same global image. A map of face lattices is specified by a bijection of the vertices of a source face onto the vertices of a target prototype; it must carry exactly the source face lattice onto the target face lattice. Such an isomorphism has a canonical PL realization after facewise barycentric subdivision. We use that realization when coordinates on different prototypes are not related by one affine map.
+
+\begin{definition}[Families and occurrence charts]
+An affine polytopal atlas \(\Atlas\) consists of finitely many families
+\[
+                         U(i),\qquad i\in I_U=[a_U,b_U)\cap\Z,
+\]
+with nonempty intervals and assigned prototypes \(P_U\). For \emph{every} proper nonempty local face \(f<P_U\), the interval \(I_U\) has a finite partition into chart domains \(J\). A chart on \(J\) specifies
+\begin{equation}\label{eq:chart}
+ (U,f,i)\longmapsto \bigl(V,\epsilon i+c,\phi\bigr),
+ \qquad \epsilon\in\{-1,1\},
+\end{equation}
+where the image rank is in \(I_V\) and \(\phi:f\to P_V\) is a face-lattice isomorphism. Different local faces remain different chart occurrences, even when their target families and rank maps coincide.
+\end{definition}
+
+The use of half-open intervals is fixed throughout this article and code. The predecessor Morse packet uses inclusive upper endpoints; the adapter changes \([a,b)\) to \([a,b-1]\) explicitly. A constant map from a singleton rank interval can always be written with slope \(+1\); no long constant-rank map is admitted by this particular atlas format.
+
+\subsection{Coherence rather than just a chain identity}
+For local faces \(g<f<P_U\), a chart from \(U\) through \(f\) followed by the chart of the corresponding face of \(P_V\) must agree with the direct chart of \(g\), on every nonempty intersection of the relevant domains. Agreement includes the target family, the affine rank function, and the complete vertex bijection. This is the \emph{nested-face coherence condition}.
+
+The condition is stronger than \(\partial^2=0\). It specifies which local corner is carried to which target corner, not merely the sum of signed cellular coefficients. It also prevents a chart from describing only some of a cell's boundary: every proper local face has total, disjoint domain coverage.
+
+\begin{proposition}[The represented CW quotient]\label{prop:quotient}
+A coherent atlas defines a finite polytopal CW quotient \(X(\Atlas)\). Its open cells are exactly the pairs \((U,i)\). Each proper local face is attached using its designated occurrence chart, and no two distinct open cells of the same dimension are identified. The characteristic map of a closed cell need not be injective on its boundary.
+\end{proposition}
+\begin{proof}
+Attach the cell copies in increasing dimension. The zero-cells are distinct points. Suppose the lower skeleton has been constructed. The charts prescribe a map on each proper face of a higher prototype into that skeleton. On intersecting faces the nested-face equations identify the restrictions through their common faces, so these maps glue to a continuous PL boundary map. Attach the open interior along that complete boundary. Different new interiors remain disjoint by construction. Repeating the process constructs the finite quotient. All maps used on subdivided local faces are PL; the finiteness here concerns the represented object and is not an instruction to enumerate it.
+\end{proof}
+
+This proposition does not assert that an arbitrary atlas is a manifold. Source authentication is the separate assertion that this quotient is the particular normal-cut piece, triangulation, product, or other geometric object being discussed. A hash binds a certificate to a supplied atlas; it does not prove that external geometric assertion.
+
+\subsection{Marked subcomplexes}
+A mark is a label together with an interval in a family. For each label, its marked cells must form a subcomplex: every chart image of a marked rank is marked in the lower family. Several labels may be retained independently. This covers the entire source boundary and any already-cellular pattern or interface. A curve cutting across the interior of a polygon is not automatically such a mark; a separate source refinement must first make it cellular.
+
+\subsection{Encoded parameters}
+Let \(F,R,M\) count families, proper-face chart pieces, and marked intervals. Let \(K\) bound the number of nonempty faces of a local prototype and let
+\[
+ Q=\max_P\#\{(f_0<\cdots<f_k=P):f_j\in\faceposet(P)\}.
+\]
+Let \(B\) bound the bit lengths of integer rank endpoints, affine offsets and prototype coordinates, using canonical finite identifiers. Literal names and source labels are charged to input size when they are strings. For fixed \(d\),
+\[
+                   Q\leq 1+K+\cdots+K^d
+\]
+is a sufficient polynomial bound. For a fixed bounded-complexity catalogue, \(K,Q\) are constants. The numerical maximum rank may nevertheless be exponential in \(B\).
+
+\section{Polynomial validation without represented-cell expansion}
+\label{sec:validation}
+
+\begin{lemma}[Exact convex-template validation]\label{lem:convex}
+In fixed dimension at most three, the complete convex face lattice of an integer vertex list can be recovered and checked in polynomial bit time. Interior or redundant purported vertices can be rejected.
+\end{lemma}
+\begin{proof}
+For a full-dimensional \(d\)-polytope, examine each set of \(d\) vertices spanning a candidate supporting hyperplane. Exact determinants determine whether all vertices lie on one side, and the zero set gives a facet. Deduplicate these facet sets. Every proper face is an intersection of at most \(d\) suitably independent supporting facets: choose normals spanning the normal space of its affine hull. Thus all nonempty intersections of up to \(d\) facets, together with the whole polytope, give the face lattice. The dimension is fixed, so both enumerations have polynomial length. Exact rational elimination checks affine dimensions. Finally every supplied vertex must occur as a singleton face. Determinants and coordinate arithmetic have polynomial bit size in the input.
+\end{proof}
+
+\begin{proposition}[Symbolic atlas validation]\label{prop:validation}
+Convex-template correctness, face-isomorphism validity, total chart coverage, nested-face coherence and marked-subcomplex closure can be checked in polynomial bit time in the atlas description. No loop with a represented rank as its iteration bound is required.
+\end{proposition}
+\begin{proof}
+For coverage, sort the chart intervals for each local face occurrence and compare adjacent endpoints. For a chart \(i\mapsto\epsilon i+c\), the image interval has endpoints
+\[
+ [a+c,b+c)\quad(\epsilon=1),\qquad
+ [c-b+1,c-a+1)\quad(\epsilon=-1).
+\]
+These formulas also give inverse images because the map is an isometry of integer ranks.
+
+For coherence, take two successive charts and pull the domain of the second back through the first. Intersect it with the first domain and the domains of the direct charts. On each nonempty intersection the two vertex permutations must agree. The two affine functions agree throughout the integer interval exactly when they agree at its first and last integers; a singleton is handled by the same test. All comparisons concern finitely many record intersections. A deliberately unsophisticated implementation uses at most a polynomial number, for example \(O(KR^3)\) such local comparisons. This is a polynomial-time statement, not a claim of a linear-time validator.
+
+For a marked interval, intersect it with each outgoing chart domain and require its image to be covered by the target's marked intervals. Again endpoints suffice. The convex and face-lattice operations have polynomial cost by Lemma~\ref{lem:convex}. Intermediate compositions have slopes \(\pm1\) and sums of a bounded number of offsets, so their bit lengths remain polynomial.
+\end{proof}
+
+The implementation keeps partitions \emph{per occurrence}. It does not repeatedly split every family until all rank maps carry every interval atom onto a globally chosen atom. Section~\ref{sec:barrier} proves that the latter operation can be exponentially more expensive even on a very elementary geometric input.
+
+\section{The occurrence-preserving flag construction}
+\label{sec:construction}
+
+\subsection{Cells indexed by a maximal carrier}
+For every family \(U\) and every strictly increasing nonempty face chain ending in its whole prototype,
+\[
+                         \xi=(f_0<\cdots<f_k=P_U),
+\]
+introduce a family \(U_\xi(i)\), \(i\in I_U\), with standard simplex prototype \(\Delta^k\). Its vertices correspond to the listed local faces in increasing dimension. Its \emph{carrier} is the original open cell \(U(i)\).
+
+The use of the maximal carrier is what makes the inventory unambiguous. A chain ending in a proper face of \(P_U\) is not a new interior simplex of \(U(i)\); it is attached to the corresponding flag cell of the designated lower carrier. On the other hand, two chains ending in \(P_U\) remain different when different local face occurrences happen to have equal global images.
+
+\subsection{All face maps, not just facets}
+A nonempty proper face of \(\Delta^k\) corresponds to a nonempty proper subsequence \(\eta\) of \(\xi\). There are two cases.
+
+If \(\eta\) still ends in \(P_U\), its target is \(U_\eta(i)\), with the identity rank map. If its last face is \(g<P_U\), take the supplied occurrence chart
+\[
+             (U,g,i)\longmapsto(V,\epsilon i+c,\phi).
+\]
+Its target is
+\begin{equation}\label{eq:flag-face}
+                         V_{\phi(\eta)}(\epsilon i+c).
+\end{equation}
+The image chain ends in \(P_V\). The target simplex vertex map is the identity in the order of the retained chain vertices. Copy the chart's rank domain exactly. A codimension-one-only consumer can discard the other face charts after verification; the general atlas stores them because they support repeated subdivision and direct coherence checks.
+
+\begin{theorem}[Source-faithful regularization]\label{thm:regular}
+The above construction produces a coherent simplicial atlas \(\Flag\Atlas\). There is a canonical PL homeomorphism
+\[
+                       X(\Flag\Atlas)\cong X(\Atlas).
+\]
+Every closed output simplex is embedded. Thus one flag subdivision gives a regular simplicial CW structure, possibly with several different simplices having the same global vertex set.
+\end{theorem}
+\begin{proof}
+Within each local prototype take its ordinary barycentric triangulation. A simplex in the interior of that prototype is precisely a chain ending in the whole prototype, since the barycenter of the whole polytope occurs with positive coefficient on its relative interior. Chains ending in a proper face describe the triangulation of that face. A face-lattice isomorphism carries local face barycenters to the corresponding target face barycenters and is affine on each flag simplex. Its restriction to a subflag is the analogous lower-dimensional map. The original coherence squares therefore imply exactly the coherence squares for \eqref{eq:flag-face}. Local barycentric triangulations glue through the original occurrences, giving the stated PL homeomorphism.
+
+It remains to prove regularity; a numerical chain identity would not do this. Fix an output simplex associated to \(\xi\). Take two of its points that have equal image in the quotient. For each point, choose the largest face in \(\xi\) whose barycentric coefficient is positive. A positive coefficient at the barycenter of that face places the point in the relative interior of that face. The designated occurrence map takes it into the corresponding global open cell, whose dimension is the dimension of that largest face. Since equal points cannot lie in different open cells, the two largest faces have the same dimension. A strictly increasing chain has only one face of each of its dimensions, so those local largest faces are identical.
+
+On that local face, both points use the same occurrence chart into the same target prototype. The face-lattice realization is a PL homeomorphism, and the characteristic map is injective on the target open cell. Consequently the two points are equal. This proves injectivity on the entire closed output simplex, including its boundary. Compactness and the Hausdorff property turn that continuous injection into an embedding. The argument retains occurrences throughout; it never identifies two different flags merely because their quotient vertex names agree.
+\end{proof}
+
+\begin{corollary}[Two subdivisions]\label{cor:two}
+A second flag subdivision is an abstract simplicial complex: every output simplex is uniquely determined by its set of output vertices. It has the same PL realization as the source.
+\end{corollary}
+\begin{proof}
+After the first subdivision the cells are regular simplices. Vertices of the second subdivision correspond to actual first-subdivision cells. A second-subdivision simplex is a strictly nested chain of those cells, and their dimensions recover the chain order from its vertex set. Its maximal cell specifies an embedded local simplex, in which each of its lower faces has only one occurrence. Thus two different second-subdivision simplices cannot have the same vertex set. The homeomorphism is the composition supplied by Theorem~\ref{thm:regular}.
+\end{proof}
+
+\begin{example}[The smallest destructive deduplication]\label{ex:loop}
+Let a circle have one vertex \(v\) and one loop edge \(e\). Its two local endpoint occurrences are distinct even though both map to \(v\). The first flag subdivision has vertices \(v,b_e\) and two different edges between them. It is regular and has \(H_1\cong\Z\). Deduplicating these edges by the set \(\{v,b_e\}\) produces an interval and destroys \(H_1\). A second flag subdivision gives the ordinary four-edge circle. This is why regular simplicial cells and an abstract simplicial complex are different output contracts.
+\end{example}
+
+\section{Encoded-size and arithmetic bounds}
+\label{sec:bounds}
+
+\begin{theorem}[Linear encoded output for bounded local complexity]\label{thm:size}
+Let an atlas have parameters \(F,R,M,Q,d\) from Section~\ref{sec:model}. Its flag atlas has at most \(QF\) families, at most
+\begin{equation}\label{eq:record-bound}
+                    (2^{d+1}-2)Q(F+R)
+\end{equation}
+proper-face chart pieces, and at most \(QM\) marked intervals. Its carrier certificate has one record per output family. Construction after input validation has polynomial bit time and no represented-rank expansion. For bounded local prototype complexity the encoded output size is linear in the input's record-and-integer description size.
+\end{theorem}
+\begin{proof}
+Each source family contributes at most \(Q\) chains ending in its whole prototype. Each such chain has at most \(2^{d+1}-2\) nonempty proper subchains. A subchain retaining the maximal face contributes a single identity chart; these account for at most \((2^{d+1}-2)QF\) records. For a subchain whose maximal face is proper, every chart piece of that original face is copied. A fixed input chart can be used for at most \((2^{d+1}-2)Q\) chain/subchain choices. This gives the second term of \eqref{eq:record-bound}. Each marked interval is inherited by at most \(Q\) families.
+
+The compiler enumerates local finite face chains and subsequences, creates the names of their target families, and copies the rank data. The number of operations is bounded by the stated output counts times local face-map and finite dictionary costs. No operation requires iterating from \(a_U\) to \(b_U\). Binary endpoints and offsets are copied, not expanded into lists. Prototype coordinates for the output are those of standard simplices. Family identifiers and source addresses have the usual logarithmic or explicitly charged string cost. Input validation has polynomial bit time by Proposition~\ref{prop:validation}.
+\end{proof}
+
+\begin{proposition}[Rank-spectrum invariance]\label{prop:rank-spectrum}
+Flag subdivision introduces no new numerical rank endpoint or nonidentity affine rank map. Every output rank-domain endpoint, family endpoint, and marked-interval endpoint is copied from the input, and every output rank map is either an input rank map or \(i\mapsto i\). In particular, repeated subdivision does not increase the maximum bit length of rank endpoints or offsets, apart from the harmless constants \(0,1\).
+\end{proposition}
+\begin{proof}
+The two cases of the construction use either the whole source family interval with the identity map or an existing occurrence-chart domain with its unchanged rank map. Family intervals and marking intervals are inherited. Applying this statement inductively proves the assertion for any number of subdivisions.
+\end{proof}
+
+The preceding result is stronger than merely saying that all arithmetic is polynomial. The compiler itself performs no successive composition of large rank shifts. The validator may compare composed maps locally, but those temporary expressions are not new geometric records.
+
+\subsection{Exact local counts}
+For a \(j\)-simplex, the number of output \(k\)-simplices whose carrier is its interior is
+\begin{equation}\label{eq:stirling}
+            q_k(\Delta^j)=(k+1)!\,{j+1\brace k+1},\qquad 0\leq k\leq j,
+\end{equation}
+where the brace is a Stirling number of the second kind. Indeed a chain of \(k+1\) nonempty nested vertex subsets ending in the whole set is the same as an ordered partition into its \(k+1\) successive nonempty differences. In dimensions zero through three the vectors are
+\[
+ (1),\qquad (1,2),\qquad (1,6,6),\qquad (1,14,36,24).
+\]
+Thus a tetrahedral carrier contributes \(75\) flag families, not \(24\): the latter number counts only tetrahedra. Omitting its lower-dimensional interior flags would make an incomplete CW inventory.
+
+For a polygon with \(m\) sides, the total number of carrier-ending flags is \(1+4m\). For a convex three-polytope with \(v,e,f\) vertices, edges and facets, it is
+\begin{equation}\label{eq:poly-count}
+                   Q(P)=1+(v+e+f)+6e+4e=1+v+f+11e.
+\end{equation}
+The middle terms count incident proper-face pairs and vertex--edge--facet triples. Every edge has two endpoints and lies in two facets. Counting vertex--facet incidences around the facet polygons gives the remaining \(2e\) pair contribution. These exact counts will give the normal-cut constant below.
+
+\section{Specialization to canonical raw normal cuts}
+\label{sec:native}
+
+\subsection{Source hypotheses}
+Let \(M\) be a finite, validated, compact triangulated 3-manifold with \(T\geq1\) tetrahedra, and let \(S\) be an admissible integral standard normal surface with matching coordinates and at most one quadrilateral type per tetrahedron. Write
+\[
+                         M_S=M\setminus\operatorname{int}\nu(S).
+\]
+The native input contract additionally requires a connected orientable source with one torus boundary. The regularization argument uses the local source cut and therefore does not need connectedness or two-sidedness of \(S\). Both local frontier sides must be retained when \(S\) is one-sided.
+
+Use the canonical raw cellulation in \cite{rawcut}: source and cut vertices, source-edge gaps and normal-arc copies, source-face regions and horizontal normal-disc copies, and the tetrahedron chambers. Let \(B\) be the maximum coordinate bit length. The raw source record counts are bounded by \(16T,30T,26T,5T\) in dimensions zero through three, respectively. These are family counts, not numbers of represented cells.
+
+\begin{lemma}[Bounded local type splitting]\label{lem:type-splitting}
+The raw source families can be assigned fixed convex local prototypes after increasing their family counts to at most
+\[
+                         16T,\quad30T,\quad52T,\quad11T
+\]
+in dimensions zero through three. Every polygon prototype has at most six sides. Every chamber prototype has at most ten facets, sixteen vertices and twenty-four edges.
+\end{lemma}
+\begin{proof}
+Points and edge segments already have fixed local types; identified global endpoints do not change the local interval prototype. A horizontal normal polygon is a triangle or a quadrilateral. An original face centre is one polygon of at most six sides. In a corner arm, the first region is a triangle and subsequent regions are quadrilaterals. Splitting a polygon family at this one tip event suffices for its unlabelled local type, so doubling the raw polygon-family bound is conservative. Source-label changes between triangle and quadrilateral stacks belong in occurrence-chart guards and do not require different abstract polygon types of equal degree.
+
+Within a source tetrahedron, the quadrilateral chain has at most three nonempty types: its two exceptional endpoints and its interior quadrilateral prisms. When the quadrilateral count is zero it has a single central chamber instead. Each of the at most four triangle arms has at most two types: the tip and the intervening triangular prisms. Hence at most \(3+4\cdot2=11\) chamber families occur per tetrahedron.
+
+The local regions admit convex realizations. Place triangle planes close to their respective source vertices and place parallel quadrilateral planes in a middle slab, so the prescribed compatible discs are pairwise disjoint. A triangle prism or tip and an interior quadrilateral prism have bounded facet inventories directly. An exceptional chamber has at most four original tetrahedron-face facets, four triangle-type bounding facets and two quadrilateral bounding facets, hence at most ten in total. For a convex three-polytope, \(v-e+f=2\) and \(3v\leq2e\), whence \(v\leq2f-4\) and \(e\leq3f-6\). The stated bounds follow from \(f\leq10\).
+\end{proof}
+
+The placements in this proof are local realizations, not an assertion that all original face pairings are affine on those chosen Euclidean coordinates. Matching normal arcs have source-prescribed order and are glued by the corresponding PL face maps. These maps extend over the cut polygons and chambers and yield the canonical normal isotopy class. Their occurrence data, rather than accidental coordinate coincidence, define the atlas.
+
+\begin{lemma}[A linear occurrence atlas]\label{lem:native-atlas}
+The type-split canonical raw cellulation has a coherent affine polytopal atlas with \(O(T)\) proper-face chart records. Its complete encoded size, including source addresses and local convex prototypes, is
+\[
+                         O\bigl(T(B+\log(T+1))\bigr).
+\]
+It can be constructed and independently checked in polynomial bit time from the validated source and the normal coordinates.
+\end{lemma}
+\begin{proof}
+The source cell constructor retains local flags before quotienting: tetrahedron and face occurrences, normal-disc side, corner or edge occurrence, and ordered rank. After Lemma~\ref{lem:type-splitting}, each cell has a bounded number of local proper faces. For each such face choose one local descending flag path to its global carrier. Read the corresponding source rank maps and local vertex identifications along this path. Path length is at most three. Compose its rank isometries and pull back only the finitely many rank events encountered by that particular path.
+
+Each local source occurrence has only a bounded number of events: stack endpoints, triangle/quad transitions, and the newly separated tip or chain-end events. A fixed-depth path therefore gives a bounded number of chart pieces. Source edges of high degree do not spoil this count. Their many \emph{incoming} tetrahedron or source-face occurrences are separate records; their own outgoing endpoint charts still have only the two end events. Summing the local flag incidences over tetrahedra is \(O(T)\). No common refinement of every use of a global edge is needed.
+
+On a nonexceptional stack, a proper-face occurrence advances with the stack rank, possibly reversing it or shifting it by one of the source offsets. Thus the rank slope is \(\pm1\). Contacts with original source vertices occur at exceptional singleton ranks; any constant singleton map has the canonical slope-one spelling. This is the affine model of Section~\ref{sec:model}.
+
+Target type-split intervals are handled by intersecting the one occurrence chart with their endpoints. This is a fixed local operation, not a repeated propagation to all other users. The local source flags recover the complete vertex bijection of a face; they do not identify flags with merely equal quotient vertices. The original source gluing guarantees the nested-face equations. An independent checker can reconstruct the local cut prototypes and follow the alternative source flag routes, then check those equations using Proposition~\ref{prop:validation}.
+
+If \(D\) is the number of normal discs then \(D\leq7T2^B\). Namespace endpoints and stack offsets consequently have \(O(B+\log(T+1))\) bits. Convex local prototypes can be obtained by intersecting constantly many source or disc planes; rational local placements and clearing their bounded number of denominators preserve this bit bound. Source tetrahedron and flag identifiers have logarithmic size. With \(O(T)\) records, the claimed storage and polynomial construction bounds follow.
+\end{proof}
+
+\begin{theorem}[An explicit regular-family bound for normal cuts]\label{thm:4607}
+The canonical raw normal cut \(M_S\) admits a source-faithful regular simplicial atlas with at most
+\begin{equation}\label{eq:4607}
+                              4607T
+\end{equation}
+cell families in all dimensions combined. It retains the full boundary as a marked subcomplex, uses \(O(T)\) incidence-chart records, and has \(O(T(B+\log(T+1)))\) encoded bits. Construction and source replay have polynomial bit complexity, independently of the numerical normal multiplicity. One further flag subdivision gives an abstract simplicial complex with the same asymptotic encoded bound.
+\end{theorem}
+\begin{proof}
+Apply Theorem~\ref{thm:regular} to the atlas in Lemma~\ref{lem:native-atlas}. A point contributes one carrier-ending flag, an interval three, a polygon with at most six sides at most \(25\), and a chamber at most
+\[
+                         1+16+10+11\cdot24=291
+\]
+by \eqref{eq:poly-count}. The family count is therefore bounded by
+\[
+            16T+3(30T)+25(52T)+291(11T)=4607T.
+\]
+All local complexities are bounded constants, so Theorem~\ref{thm:size} gives \(O(T)\) proper-face charts and the claimed bit bound. The boundary is a source subcomplex, and the marking theorem in Section~\ref{sec:marks} transports it without change of its geometric realization. A second subdivision uses only simplex prototypes in dimension at most three, so the same linear asymptotic record argument applies.
+\end{proof}
+
+The constant \(4607\) is a uniform conservative bound, not an empirical fit and not a measured native family count. It deliberately includes lower-dimensional flags and loose source-family bounds. It says nothing about the number of handles in an \emph{admissible patterned} hierarchy. In particular, the bounded inherited core from the parallelity construction can fail admissibility even in the retained empty-cut example \cite{parallelity,fixture}.
+
+\subsection{The remaining native exporter work is specific}
+The theorem supplies an algorithm and a complexity proof for the canonical geometry. A production implementation must still encode the chosen local prototype vertex orders, map native cyclic recipes to those orders, bind every output carrier to its raw source occurrence, and independently replay those maps for nonzero normal coordinates. Tests must cover empty stacks, repeated source-edge sectors, self-face pairings, interior original vertices, odd/even one-sided multiples, and large coordinates. Merely labelling an existing raw packet \code{regular: true} would not implement the theorem. The supplied finite tetrahedral importer executes the zero-cut simplicial specialization, not this full nonzero-coordinate exporter.
+
+\section{Why globally stable refinement can be exponential}
+\label{sec:barrier}
+
+\begin{definition}[Stable atom refinement]
+For a rank-chart system, a stable atom refinement chooses interval partitions of its family domains so that every chart maps every source atom in its domain bijectively onto a target atom. It also respects any required marked singleton. This is a stronger requirement than keeping independent guarded charts.
+\end{definition}
+
+\begin{theorem}[A cycle refinement barrier]\label{thm:barrier}
+For every \(N\geq2\), a circle has an affine atlas of \(O(1)\) records and \(O(\log N)\) rank bits, with a specified vertex, for which every stable atom refinement has at least \(N\) atoms in each of its vertex and edge families. Thus stable global refinement can have exponential output size in the binary input length, even when the represented complex is already regular.
+\end{theorem}
+\begin{proof}
+Use vertices \(v_i\) and edges \(e_i\), indexed cyclically by \(i\in\Z/N\Z\). Let the endpoints of \(e_i\) be \(v_i\) and \(v_{i+1}\). The first endpoint is an identity chart. The second is the translation \(i\mapsto i+1\) on \([0,N-1)\), with the singleton wrap chart at \(N-1\). Mark \(v_0\).
+
+The identity endpoint chart forces the edge and vertex partitions to coincide. The other endpoint chart forces their atoms to be carried to atoms by the cyclic translation. The marked vertex is a singleton atom. Its translates \(v_1,\ldots,v_{N-1}\) must therefore also be singleton atoms. The edge atoms are the same singletons by the first endpoint map. The source has two families, constantly many chart pieces and one marked interval. Taking \(N=2^b\) gives exponentially many atoms in a description using \(O(b)\) rank bits. For \(N\geq3\) the source is the ordinary regular polygonal circle, so nonregularity is not responsible for the obstruction.
+\end{proof}
+
+This is a lower bound on a specified normalization strategy, not on all possible encodings or on all algorithms for the circle. It does not contradict Theorem~\ref{thm:size}. The flag compiler copies each chart where it is used and never asks for a globally stable partition. Nested-face checks only descend in dimension; they do not chase the bidirectional incidence graph around the circle until every breakpoint has propagated everywhere.
+
+The practical consequence is important for the next native layer. Adding a general-purpose ``normalize every interval partition'' pass between raw cutting and a certificate checker could destroy the binary complexity that the raw constructor has already achieved. The data format should permit independently guarded incidence maps all the way through regularization and replay.
+
+\section{Marks, coordinate changes and compositional provenance}
+\label{sec:marks}
+
+\begin{theorem}[Marked-subcomplex transport]\label{thm:marks}
+Let \(A\subset X(\Atlas)\) be a marked cell subcomplex. Mark the output flag cell \(U_\xi(i)\) exactly when its carrier \(U(i)\) is marked. These cells form a subcomplex \(\Flag A\), and the homeomorphism of Theorem~\ref{thm:regular} restricts to a PL homeomorphism
+\[
+                            \Flag A\cong A.
+\]
+Each source marked interval creates at most \(Q\) marked intervals, without requiring a split of any cell family at marking endpoints.
+\end{theorem}
+\begin{proof}
+Deleting a flag vertex while retaining the carrier stays in the same marked source cell. Deleting the carrier moves to a face of that source cell, which is marked because \(A\) is a subcomplex. This proves downward closure. Locally the marked output cells are precisely the barycentric subdivision of the source cells belonging to \(A\). The gluing homeomorphism therefore restricts to their union. The interval and counting statements follow by copying the source mark for each carrier-ending flag.
+\end{proof}
+
+In particular, \(\partial M_S\) is preserved as its actual source boundary. A collapse certificate to one vertex does \emph{not} imply that an arbitrary boundary pattern has been replaced by a pattern on that vertex. The retained marked source boundary remains the input to the appropriate boundary-pattern test.
+
+\begin{proposition}[Naturality under supplied source changes]\label{prop:naturality}
+Suppose a supplied isomorphism of affine atlases is given on guarded rank intervals by whole-cell face-lattice isomorphisms and affine rank isometries, and commutes with the occurrence charts. It induces an isomorphism of flag atlases by applying the local face isomorphism to each member of each flag. The induced source map commutes with the PL realization maps and preserves any respected marks. At most \(Q\) flag-map records are needed per supplied whole-cell map record.
+\end{proposition}
+\begin{proof}
+Strict inclusions, face dimensions and maximal faces are preserved. Thus a flag maps to a flag of the same length. Applying the source isomorphism before or after taking a proper face gives the same result by its commuting-chart hypothesis and formula~\eqref{eq:flag-face}. This proves compatibility with all attachments. Inverse whole-cell maps provide the inverse flag maps. Marks depend only on the carrier. Finally there are at most \(Q\) carrier-ending flags over each mapped source family.
+\end{proof}
+
+The executed coordinate-gauge tests use exactly this situation. Each family independently changes its rank coordinate by \(i=\alpha j+\beta\), \(\alpha\in\{-1,1\}\). Charts and marked intervals are transformed rather than re-enumerated. Tetrahedron vertex relabellings exercise the corresponding finite source isomorphisms.
+
+\begin{proposition}[Repeated subdivision budget]\label{prop:history}
+Start with a simplicial affine atlas in dimension at most three, and retain its successive flag atlases and carrier records as a provenance history. There is a universal constant \(C\), for example \(C=1200\) for the record categories used here, such that after \(h\) further subdivisions the total record count is \(O(C^hS_0)\), where \(S_0\) is the initial family/chart/mark count. Rank bit length does not increase. A chain of source addresses for any specified output cell can be recovered in \(O(h)\) record steps.
+\end{proposition}
+\begin{proof}
+For simplex prototypes \(Q\leq75\) and \(2^{d+1}-2\leq14\). Families, charts, marks and the new carrier records are bounded by
+\[
+  75F+14\cdot75(F+R)+75M+75F
+       \leq1200(F+R+M).
+\]
+The output is again simplicial, so this applies at every step. Summing the geometric growth over retained stages proves the history bound. Proposition~\ref{prop:rank-spectrum} handles rank bit lengths. Each carrier record points directly to one earlier family and its finite local flag, so following a specified cell's ancestry requires one step per stage, not expansion of the represented family.
+\end{proof}
+
+Consequently \(O(\log n)\) subdivision-only stages incur a polynomial record factor, and \(O((\log n)^c)\) such stages incur a quasi-polynomial factor. This observation does not bound the number or complexity of \emph{cutting} stages: it isolates the cost of regularization from those separate operations.
+
+\begin{proposition}[Local coordinate provenance]\label{prop:coordinates}
+Inside a specified original flag simplex, the vertices created by \(h\) subsequent barycentric subdivisions have rational barycentric coordinates with denominator dividing \(((d+1)!)^h\). They therefore have \(O(h)\) coefficient bits for fixed \(d\). Relative to a bounded-complexity rational original prototype, local source coordinates have polynomial bit length in the prototype coordinate size and \(h\).
+\end{proposition}
+\begin{proof}
+Each new vertex is the average of at most \(d+1\) vertices of a face in its parent simplex. At each stage the new denominator divides a previous common denominator times one of \(1,\ldots,d+1\), and hence divides that denominator times \((d+1)!\). All coefficients lie in \([0,1]\), so numerator sizes have the same bound. The first flag simplex has vertices at the averages of the vertices of original faces. With bounded local vertex count their denominator contribution is a fixed factor. Substituting the rational original vertex coordinates proves the final claim.
+\end{proof}
+
+This is a constructive size theorem for geometric provenance, not a claim that the delivered code exports arbitrary native witness coordinates. Its immediate algorithmic purpose is to rule out an additional uncontrolled numerical cost when a future source wrapper lifts selected simplex witnesses back into its local cut charts.
+
+\section{Independent replay by local counting and semantics}
+\label{sec:replay}
+
+\subsection{Certificate contents}
+The certificate schema \code{affine-flag-regularization-v1} contains the source-atlas digest, the complete output atlas, and one carrier record per output family. A carrier record contains its output family identifier, source family identifier, and the strictly nested list of original local face masks. The source atlas is supplied to the verifier independently of this certificate.
+
+The verifier does not call the compiler. Nor does it call the producer's recursive flag enumerator. Instead, it checks that every supplied carrier flag is valid and that the set is complete using a separate dynamic count.
+
+\begin{lemma}[Face-poset completeness counts]\label{lem:counts}
+For a face \(f\), let \(a_k(f)\) count chains of length \(k+1\) ending in \(f\). Then
+\[
+ a_0(f)=1,\qquad a_{k+1}(f)=\sum_{g<f}a_k(g).
+\]
+If a collection of distinct valid carrier-ending flags has exactly these counts in every dimension, it contains every valid carrier-ending flag.
+\end{lemma}
+\begin{proof}
+Every chain of length \(k+2\) ending in \(f\) has a unique penultimate face \(g<f\), and its preceding part is a chain counted by \(a_k(g)\). Conversely every such preceding chain extends uniquely by appending \(f\). This proves the recurrence. A finite subset of a finite set having the same cardinality is the whole set; apply this separately to each length.
+\end{proof}
+
+\begin{theorem}[Sound semantic replay]\label{thm:replay}
+Assume the supplied source atlas passes the validation contract of Section~\ref{sec:validation}. A polynomial-time checker can verify that a supplied certificate describes exactly its flag regularization, without invoking the producer or enumerating represented ranks. It may accept different chart partitions representing the same piecewise maps.
+\end{theorem}
+\begin{proof}
+First validate the output atlas, including its convex standard-simplex templates, chart coverage and coherence. Check each carrier flag for strict inclusion, a correct maximal source face, the right output dimension and the inherited family interval. Reject repeated carrier/flag pairs and missing output-family metadata. Lemma~\ref{lem:counts} then verifies the complete family inventory.
+
+Next inspect each output face chart. Its local simplex face specifies a subsequence of the carrier flag. If the maximal carrier is retained, require the same source family, precisely that subsequence and the identity rank map. If it is not retained, compare against each original occurrence chart met on the domain, requiring the exact image flag, target family and affine function in \eqref{eq:flag-face}. Equality is checked at the integer endpoints of every nonempty intersection. Output chart coverage was already checked, so these comparisons establish equality everywhere, not just on tested ranks. The ordered simplex vertex map must be the identity.
+
+For marks, compare the output family's labelled interval union with the original carrier's labelled union by their combined finite endpoint partition. Finally check the source digest as a binding. Every step concerns a polynomial number of finite records and bounded-depth face operations. The argument does not rely on the particular partition boundaries chosen by the producer.
+\end{proof}
+
+\subsection{What independence means here}
+The source and output model validator, exact integer routines and convex-template code are shared trusted components. The certificate producer and semantic replay are separate modules. Replay proves completeness using the recurrence above rather than rebuilding the producer's list. The tests disable both \code{flags.compile_flags} and \code{flags.ending_flags} while running replay, and also replace one output chart by two semantically identical guarded charts; the latter remains accepted.
+
+This is a precise independence boundary, not a claim of independent implementations of every arithmetic operation. A future native source exporter needs its own source-chart checker in addition to this general atlas replay. A valid atlas and a matching digest are insufficient to authenticate an unseen normal-cut source.
+
+\subsection{Failure semantics}
+Malformed proof data cause rejection. A rejected flag certificate does not mean that the source manifold is knotted, noncollapsible, or a nonball. A source atlas can also be perfectly valid while representing a nonmanifold or a nonball. The separate geometry and terminal-theorem hypotheses must still be checked. Cooperative cancellation propagates and never returns a partial success. No routine in the new package returns \textsc{Unknot} or \textsc{Knotted}.
+
+\section{The bridge to Morse certificates}
+\label{sec:morse}
+
+\subsection{The geometric hypothesis is now explicit}
+The predecessor arithmetic operator validates supplied matching intervals and proves acyclicity using affine or synchronized modular ranks \cite{morse}. It deliberately assumes a complete regular cell incidence structure. The flag atlas supplies precisely that structure once its source has been geometrically authenticated.
+
+\begin{theorem}[Source-bound ball certificate]\label{thm:ball}
+Suppose an authenticated affine source atlas represents a compact PL 3-manifold \(W\). Suppose its flag regularization is verified and a complete matching on its codimension-one incidences is verified acyclic, with exactly one critical vertex and no other critical cell. Then \(W\) is a PL 3-ball.
+\end{theorem}
+\begin{proof}
+Theorem~\ref{thm:regular} gives the same PL space with regular simplex closures and the complete geometric incidences. An acyclic matching with only one critical vertex yields an elementary collapse to that vertex. For completeness, this implication can be seen directly. In the current largest dimension, every cell is matched to a codimension-one face. Make a directed dependency from one maximal-dimensional cell to a distinct other one when the first contains the second's matched face. Each dependency is a directed two-step path in the matching graph. The dependency graph is acyclic, so it has a source; that cell's matched face has no other maximal-dimensional coface and is a free face. Collapse this pair and repeat, then descend in dimension. The sole unmatched vertex remains. Regularity ensures these are geometric elementary collapses, not cancellations of coefficients.
+
+The classical PL result that a collapsible PL manifold is a ball now applies. Discrete Morse and collapse background is given in \cite{forman}; the PL-manifold qualification and Whitehead's ball consequence are also discussed in \cite{abl}. Since regularization is a PL homeomorphism, the original \(W\) is a PL ball.
+\end{proof}
+
+The theorem does not say that every triangulated ball has a successful supplied matching on its first flag subdivision. It is a certificate implication. A matching search that fails must leave the terminal query inconclusive, and admissibility or essentiality of a retained boundary pattern still needs the appropriate separate theorem.
+
+\subsection{An explicit family-scale cone matching}
+To execute the interface rather than merely describe it, the package supplies a complete matching for disjoint copies of one convex polytope. This is a controlled geometric source and not a general matching-discovery claim.
+
+\begin{proposition}[Uniform cone certificate]\label{prop:cone}
+Let \(P\) be a convex polytope and let \(N\) copies be given by binary family multiplicity. Their flag atlases admit a matching with exactly \(N\) critical vertices and no other critical cells. Matching and rank descriptions have size independent of \(N\), apart from \(O(\log N)\) integer bits.
+\end{proposition}
+\begin{proof}
+The flag subdivision of \(P\) is the cone on the subdivision of its boundary with apex \(b_P\). Pair every boundary flag \(\xi\) with the cone flag \(\xi<P\). Leave the apex unmatched. Do this on the whole rank interval of every copy family, using the relevant top-deletion face chart.
+
+Orient unmatched incidences downward and matched incidences upward. Give a boundary flag of dimension \(k\) rank \(2k+2\), its cone flag of dimension \(k+1\) rank \(2k+1\), and the apex rank zero. A matched upward edge decreases the rank by one. Every other boundary or cone incidence decreases the rank by at least one, including incidences to the apex. The directed graph is therefore acyclic. The ranks have zero slope in the copy index, and each pairing is one interval recipe. There is one unmatched apex per copy, hence exactly \(N\) critical vertices.
+\end{proof}
+
+The executed adapter converts the half-open flag intervals to the inclusive predecessor format and passes its actual \code{prepare} and \code{verify_affine} routines. Finite cases also pass the predecessor's literal acyclicity and elementary-collapse checks. The \(16{,}385\)-bit multiplicity test retains \(N\), not one, critical vertices. It therefore cannot accidentally certify a disconnected collection of \(N\) balls as one ball.
+
+\section{Implementation and executed geometric evidence}
+\label{sec:implementation}
+
+\subsection{Module boundaries}
+The implementation requires Python 3.10 or later and the standard library. The retained run's exact Python and platform strings are in \code{results/audit.json}. The modules have distinct roles:
+\begin{center}\small
+\begin{tabularx}{\linewidth}{lX}\toprule
+Module & Responsibility\\\midrule
+\code{atlas.py} & Convex prototypes, intervals, charts, nested-face validation, marks and exact serialization.\\
+\code{flags.py} & Occurrence-preserving construction and carrier metadata.\\
+\code{replay.py} & Independent count-and-semantics certificate verification.\\
+\code{sources.py} & Exact convex sources, finite tetrahedron pairings, and binary segment/circle products.\\
+\code{reference.py} & Explicitly capped finite rank expansion, direct source-flag quotient, regularity and field-homology oracles.\\
+\code{morse_adapter.py} & Incidence conversion and source-checked cone matching.\\
+\code{third_party/ranked_morse.py} & Unmodified predecessor arithmetic implementation, with its retained licence and hash.\\\bottomrule
+\end{tabularx}
+\end{center}
+
+Integers longer than 256 bits are serialized using tagged hexadecimal strings. This avoids hidden dependence on Python's decimal digit-conversion limit without changing a process-global safety setting. The format is a research interchange format, not a hardened network service: callers must still impose byte, family, prototype-size and time limits on hostile inputs. The literal oracles have explicit cell-count caps and are never used by the compressed compiler or replay.
+
+\subsection{Finite tetrahedral source import}
+The tetrahedral importer begins with explicit face pairings, validates reciprocal permutations, and computes each local-face orbit together with its vertex map to a chosen representative. It rejects nontrivial local-face holonomy, such as a face returning with a nonidentity permutation of its own vertices. This is the nonfolding input contract needed to present those orbits as open simplex cells. The importer does not decide whether all vertex links are manifold links.
+
+Its independent finite source oracle subdivides the local tetrahedra first and unions \emph{full flag occurrences} across the original face pairings. It does not call the source importer or the flag compiler. An exact correspondence compares every resulting cell and every codimension-one incidence with the compressed result. This is a geometric source quotient comparison, not merely an Euler-characteristic comparison.
+
+\subsection{The native empty-cut solid torus}
+The fixture is exactly the one in \cite{fixture}:
+\begin{verbatim}
+{"tetrahedra": [[
+  {"tetrahedron": 0, "permutation": [1,2,3,0]},
+  {"tetrahedron": 0, "permutation": [3,0,1,2]},
+  null, null
+]]}
+\end{verbatim}
+Its normal vector is zero. Thus the source simplicial cellulation is the canonical empty raw cut. The tested source binding is to this explicit gluing description; no live native normal-cut API run is being represented as having occurred.
+
+The literal source comparison verifies the first regularization with cell counts
+\[
+                          (8,38,54,24),
+\]
+and the second with counts
+\[
+                          (124,736,1188,576).
+\]
+The first is regular; the second has no two different simplices with the same vertex set. Over both \(\F_2\) and \(\F_3\), the first output has Betti vector \((1,1,0,0)\). Its retained boundary has vector \((1,2,1,0)\). These agree with a solid torus and its torus boundary. All 24 vertex relabellings of the source tetrahedron also pass the direct source-flag comparison. Homology is used as additional evidence, not as a ball-recognition criterion.
+
+\subsection{Test and audit inventory}
+All \textbf{32 unit tests pass}. The separate reproducible audit records the following counts:
+\begin{center}\small
+\begin{tabularx}{\linewidth}{rX}\toprule
+Count & Executed audit category\\\midrule
+145 & All one-tetrahedron partial face-pairing specifications: one unpaired case, 36 single-pair cases, and 108 two-pair cases.\\
+70 & Specifications accepted by the nonfolding source-atlas importer and compared with the direct source-flag quotient.\\
+75 & Specifications rejected for nontrivial local-face holonomy; these are recorded outside the importer contract, not silently skipped.\\
+24 & Additional relabellings of the pinned native solid-torus fixture.\\
+33 & Convex-copy cases from 11 templates and three multiplicities, with literal cone-matching checks.\\
+300 & Seeded product cases, including reversed and shifted family coordinates, with complete literal comparisons and homology over two fields.\\
+11 & Second-subdivision checks on the convex catalogue, including uniqueness of global simplex vertex sets.\\
+5 & Binary stress cases with serialization/replay, reaching 16,385-bit rank bounds.\\
+448 & Recorded successful symbolic replay checks in this separate audit.\\\bottomrule
+\end{tabularx}
+\end{center}
+
+The direct source-flag comparisons check \(11{,}075\) cells and \(30{,}100\) codimension-one incidences across their cases. The separate convex/product literal comparisons check \(143{,}673\) cells and \(359{,}282\) incidences. These are totals across cases, not a count of distinct mathematical types. The retained audit took approximately \(21.96\) seconds on the recorded environment.
+
+The convex catalogue includes a point, interval, triangle, tetrahedron, square, pentagon, cube, octahedron, square pyramid, triangular prism and truncated tetrahedron. Thus the general compiler is tested beyond simplex prototypes and includes nonsimple three-polytope vertices. Negative tests cover missing or overlapping source data, wrong nested-face maps, wrong ranks, lost marks, duplicate carrier records, wrong source binding, invalid prototypes, noninteger fields and cancellation. The complete assertion details are in the source and retained logs; these tests are not a replacement for the proofs.
+
+\subsection{A source class with binary-scale geometry}
+For \(N>1\), the controlled product source \(\Delta^2\times S^1\), with \(N\) segments in the circle factor, uses 14 original cell families. Its flag output has exactly 196 families and 1289 proper-face chart records. The physical cell counts are
+\begin{equation}\label{eq:product-count}
+                    (14N,62N,84N,36N),
+\end{equation}
+so the total is \(196N\). Its side boundary is retained as a marked subcomplex. All rank intervals are binary; the serial products do not have to be listed. The case \(N=1\) has fewer chart guards because an empty nonwrap domain is omitted.
+
+This controlled product is a genuine polytopal solid-torus source, but it is not asserted to be a native knot-diagram benchmark or to simulate all normal cuts. Its role is to test arbitrary-precision affine recipes, boundary retention, regularization and serialization at a size where literal expansion is impossible.
+
+\section{Measured local representation cost}
+\label{sec:benchmarks}
+
+\subsection{What each arm computes}
+Both arms receive the same already-constructed product source atlas. The encoded arm constructs the complete flag certificate, independently replays it and serializes all its output chart and carrier data. The literal arm constructs every flag cell, checks regularity and ordered face identities, and serializes the explicit codimension-one incidence structure and marks. Source preparation and cleanup are outside timers. The convex-template caches are warmed for all arms.
+
+The formats and verification paths differ: the encoded arm includes all proper-face charts and carrier proof records, whereas the literal arm lists all cells with their facets. Both represent the same subdivided source, and a complete literal equality check is performed outside timing. This is a paired local representation query, not an equal-byte-format contest and not an end-to-end recognition benchmark.
+
+Five shuffled measured rounds follow one warmup round per size. Two literal arms provide an identical-operation A/A control. The ratio column is the median paired literal-A/encoded ratio; values above one favour the encoded operation. A/A is the median literal-A/literal-B ratio.
+
+\begin{center}\small
+\input{results/timing_table.tex}
+\end{center}
+
+At \(N=256\), the encoded median is \(31.52\) ms and the literal median is \(752.28\) ms, with paired ratio \(23.93\) and A/A ratio \(1.002\). The encoded serialization is \(161{,}242\) bytes versus \(2{,}404{,}286\) explicit bytes. At \(N=1\), however, the encoded operation is about \(5.2\) times slower and its certificate is much larger: \(141{,}468\) versus \(7{,}572\) bytes. The small-input regression is part of the result.
+
+An initial pilot also requested \(N=1024\). Its pre-timing full literal equality check did not finish within the whole command's 200-second limit. The partial pilot output is retained in \code{results/benchmark_pilot_partial.txt}; no 1024-layer timing or speed ratio is reported. The completed measured workload was capped at 256 layers and rerun in full. The article's table uses only that retained completed run. A production integration should not infer a crossover threshold from the censored pilot.
+
+\subsection{Large-bit queries without an explicit baseline}
+The following completed encoded queries use \(N=2^b+1\). Each includes construction, independent replay and serialization; five samples follow a warmup. The rank bound has \(b+1\) bits, and the family/chart counts stay fixed.
+\begin{center}\small
+\input{results/stress_table.tex}
+\end{center}
+
+At 16,385 rank bits the namespace is vastly larger than 16,385 cells. The query represents \(196(2^{16384}+1)\) cells but serializes a certificate of about \(7.84\) MB. Large integer conversion and repeated proof fields therefore have a real cost even though no interval is expanded. These measurements support the encoded-size mechanism; they do not establish uniformly fast recognition or constant-time big-integer arithmetic.
+
+\subsection{Reproduction}
+From the package root:
+\begin{verbatim}
+python -B tests/test_flags.py
+python -B code/audit.py
+python -B code/benchmark.py
+python -B code/demo.py --mode solid-torus
+sh build.sh
+\end{verbatim}
+The test runner exits nonzero on failure. The audit and benchmark scripts write machine-readable records under \code{results/}. Rerunning timings naturally changes their numerical values. The publication checker supplied with the package verifies source hashes, retained fixture replay, measurement accounting and the presence of the delivered article and proof artifacts.
+
+\section{What remains for the full hierarchy bound}
+\label{sec:hierarchy}
+
+\begin{proposition}[A conditional accounting statement]\label{prop:global}
+Consider a recognition procedure on an \(n\)-crossing input whose successful and unsuccessful geometric states together number \(G(n)\). Suppose every such state has a source-authenticated atlas and certificates of at most \(L(n)\) bits, all required nonregularized work takes total time \(H(n)\), and at most a fixed number of flag constructions/replays is performed per state. Then adding these regularization operations gives a total running time bounded by
+\[
+                          H(n)+G(n)\,\poly(L(n)).
+\]
+In particular, quasi-polynomial bounds on all three quantities imply a quasi-polynomial total bound.
+\end{proposition}
+\begin{proof}
+Each regularization and replay has polynomial bit complexity in its complete supplied description by Theorems~\ref{thm:size} and \ref{thm:replay}. Sum that cost over all states and add the other work. The closure of \(2^{(\log n)^{O(1)}}\) under a fixed polynomial and multiplication gives the final statement.
+\end{proof}
+
+This proposition is bookkeeping with explicit hypotheses. It does not prove the necessary bounds on \(G,L,H\). In particular, none of the following follows from the linear normal-cut family theorem: a bound on all unsuccessful normal-surface attempts; discovery of a short acyclic matching; an admissibility repair preserving the required boundary pattern; a bound on non-product geometric complexity after arbitrary later cuts; or a global hierarchy depth theorem.
+
+The actual progress is more precise. A supplied canonical raw normal cut need not be expanded merely to obtain regular cells, and the regularity hypothesis of the Morse operator has a constructive bounded-encoding route. That removes one specific source of potential exponential cost and one specific logical mismatch. It also means that a future global proof should charge the regularization cost to encoded source size rather than to the number of normal discs.
+
+\section{Further research questions and integration priorities}
+\label{sec:future}
+
+\subsection{A fully native nonzero-cut exporter}
+Implement the chart construction in Lemma~\ref{lem:native-atlas} directly against the current raw packet. Can its independent checker reuse the native source-coordinate orientation oracle while avoiding the producer's cycle ordering? The decisive deliverable is a source-bound atlas for every tested native cut, including the existing one-sided and torsion-sensitive examples, with measured record counts and exact traceability of every polygon corner. This is the first integration priority.
+
+\subsection{Relative regularization without unnecessary interior flags}
+The global \(4607T\) bound is intentionally loose. A terminal checker may need regularity only on the subcomplex touched by a candidate collapse or a selected small disc. Can one subdivide a source-identified neighbourhood of that subcomplex, extend over adjacent cells without global breakpoint propagation, and prove a bound in terms of the touched carrier count and its incidence boundary? Such a result could reduce the substantial constant factor and small-input penalty.
+
+\subsection{Compressed lifting of elementary collapses}
+The cone matching in Proposition~\ref{prop:cone} executes one simple case. A more general target is an occurrence-aware, guarded family construction that lifts a supplied sequence of source-relative elementary collapses into first-flag matchings, with a proof that all newly required recipe boundaries stay polynomial. Ordinary subdivision preserves appropriate collapse behaviour, but its compressed, source-patterned implementation and its discovery costs must be proved separately.
+
+\subsection{Short matching discovery on native parallelity geometry}
+Can the existing product handles and bounded inherited core yield a matching with a bounded number of modular rank templates after regularization? The relevant parameter should be a property actually exported by native geometry, not an assumed bounded width. A useful theorem would identify a source-verifiable sufficient condition, produce the matching rather than merely check it, and account for failure paths.
+
+\subsection{Patterned admissibility and cellular interfaces}
+A boundary pattern crossing face interiors requires a source-authenticated refinement before Theorem~\ref{thm:marks} applies. Can pattern arcs and corner-port data be incorporated into the local atlas with a record bound depending on their supplied interval complexity, while retaining the actual embedding and cyclic order? This is not answered by attaching labels to existing boundary cells. It is also not answered by the inherited core handle-count bound.
+
+\subsection{Avoiding redundant second subdivision}
+The predecessor matching format needs regular cells, not a global abstract simplicial complex. Where else in the pipeline is the stronger contract genuinely necessary? Removing an unjustified automatic second subdivision can save an entire fixed-dimensional expansion of the encoded inventory. Conversely, a consumer that indexes simplices solely by vertex sets must either demand the second subdivision or carry actual cell identifiers.
+
+\subsection{Succinct embedded witnesses and provenance}
+The local coordinate bound in Proposition~\ref{prop:coordinates} supports source-coordinate lifting. Can a family-encoded disc, annulus or boundary noose be certified as an embedded subcomplex using source orbit methods, without listing its cells? Such a theorem should separate completeness of the included flag inventory, intrinsic surface topology, and ambient embedding. Only the ambient source-address mechanism is supplied here.
+
+\subsection{A global complexity regime supported by exported invariants}
+A promising next theorem would define a class of native hierarchy states closed under the implemented cut, parallelity and admissibility operations, with an explicit encoded-size potential and a decreasing progress measure. Proposition~\ref{prop:global} identifies the required quantities but does not bound them. The research question is to derive those bounds from exported source invariants, including unsuccessful transitions, rather than to posit quasi-polynomially many states.
+
+\section{Conclusion}
+The normal-cut geometry need not be flattened into an explicit triangulation in order to obtain regular cells. Occurrence-preserving flag families provide a constructive alternative with an explicit \(4607T\) bound for the canonical source cellulation, polynomial binary-time verification, and retained boundary data. The construction is protected against a genuine exponential failure mode of globally stable interval refinement.
+
+The delivered implementation executes the generic atlas theorem, direct finite geometric source comparisons, an empty native source specialization, and the Morse incidence interface. Its strongest unfinished implementation task is the full native nonzero-cut source exporter; its strongest unfinished global task is still the hierarchy/discovery complexity argument. The distinction is substantive: the regularization theorem is proved, the tested source coverage is recorded exactly, and no general quasi-polynomial recognizer is claimed by this package.
+
+\appendix
+\section{Algorithmic form and data contract}
+\label{app:algorithm}
+The central construction can be summarized without any represented-cell loop:
+\begin{verbatim}
+validate(source)
+for each source family U:
+    for each local face flag xi ending in P_U:
+        create family (U, xi), with unchanged rank interval
+        record source carrier U and flag xi
+for each created family (U, xi):
+    for each nonempty proper subsequence eta of xi:
+        if eta retains the maximal source face:
+            attach to (U, eta) by the identity rank map
+        else:
+            for each original chart of eta's maximal local face:
+                map eta through its local vertex isomorphism
+                copy that chart's rank domain, slope, and offset
+    copy all marked intervals of U
+\end{verbatim}
+
+The mandatory source-atlas fields are prototypes, families, proper-face charts and marked intervals. A chart stores its upper family, local face mask, half-open source domain, lower family, slope, offset and ordered vertex map. Its domain is attached to a particular \emph{occurrence}; it is not an assertion that all uses of either family share that partition. The output additionally records the maximal source carrier and its complete local face flag.
+
+The independent checker proves family completeness by dynamic counts and proves map completeness by output chart coverage plus comparison with source semantics. It accepts a semantically equivalent subdivision of a chart interval. It does not need the producer's order of families or chart records to establish geometric equality.
+
+\section{Claim and evidence ledger}
+\footnotesize
+\begin{longtable}{p{0.39\linewidth}p{0.55\linewidth}}\toprule
+Claim & Status and evidence\\\midrule\endhead
+One subdivision gives regular cells; two give an abstract simplicial complex & Classical topological background, attributed to Hatcher; a source-atlas proof is given in Theorem~\ref{thm:regular} and Corollary~\ref{cor:two}.\\
+Linear encoded flag construction for bounded local complexity & Proved in Theorem~\ref{thm:size}; implemented in the general polytopal atlas compiler.\\
+Explicit \(4607T\) canonical normal-cut family bound & Proved in Theorem~\ref{thm:4607} from local type splitting and source family counts. The full nonzero native exporter is not yet implemented in this package.\\
+Exponential stable-refinement obstruction & Proved for the explicitly defined atom-refinement strategy in Theorem~\ref{thm:barrier}; not a lower bound for all encodings.\\
+Marked subcomplexes, coordinate-gauge naturality, rank-spectrum invariance & Proved; marks and coordinate changes exercised by executable tests.\\
+History record bound and local rational coordinate bound & Proved in Propositions~\ref{prop:history}--\ref{prop:coordinates}. Arbitrary native witness-coordinate export is not implemented.\\
+Independent semantic flag replay & Implemented and tested with producer disabled; shared exact model validation is disclosed.\\
+Finite tetrahedral source authentication & Implemented for reciprocal pairings with trivial local-face holonomy. Manifold-link recognition is not supplied.\\
+Native empty-cut solid-torus source & Executed from the exact pinned gluing fixture, with direct flag-orbit comparison and all 24 vertex relabellings. No live native API invocation is claimed.\\
+Morse-format bridge and cone witnesses & Executed against unmodified predecessor code, including literal finite collapses and large critical multiplicities.\\
+Local representation timings & Completed paired measurements through 256 layers, with tiny-input regressions and the earlier censored 1024-layer precheck disclosed.\\
+Native regression suite and knot-diagram benchmarks & Not run.\\
+General quasi-polynomial recognition & Not established by this contribution.\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\section{Source audit and integration notes}
+\label{app:sources}
+The targeted source revision is \sourcepin. The inspected raw-cut article has Git blob
+\begin{center}\code{dc12b1a58aedaed78f00b63109b0aa5214832ca1}.\end{center}
+The inspected all-dimensional parallelity article has blob
+\begin{center}\code{d7293976bea14fce6b4848bf6a2d7a20134c2491}.\end{center}
+The retained native obstruction fixture has blob
+\begin{center}\code{2ea36d9d629c133e540cce4802ef76aa7342b2af}.\end{center}
+The native raw-cell implementation was also inspected at that source pin for its family, source-chart and incidence contracts. This was a targeted review, not a full checkout or regression run. The branch moved during the review; all source-dependent claims here refer to the indicated snapshot and the identified files.
+
+The incoming modular-Morse archive was obtained as an existing user artifact. Its arithmetic module and licence are included unmodified under \code{third_party/}; their exact SHA-256 hashes are retained in the provenance file and package manifest. The earlier scalar-separator, sparse-cut-grammar and cographic archives were also inspected for research continuity, but none is used as a hidden theorem or runtime dependency of the new construction.
+
+Suggested intake is a new report directory, with the final report number assigned by the repository maintainer. The code should remain an experimental reference package until the native source exporter and its independent replay are added. Do not replace a production recognition path with the controlled product source or the cone example. Keep existing exact recognition fallbacks after an inconclusive new terminal attempt.
+
+\begin{thebibliography}{99}
+\bibitem{announcement}
+Mathematical Institute, University of Oxford,
+\emph{Marc Lackenby announces a new unknot recognition algorithm that runs in quasi-polynomial time}, 2021.
+\url{https://www.maths.ox.ac.uk/node/38304}.
+
+\bibitem{lackenby}
+M.~Lackenby, \emph{Incompressible surfaces, hierarchies and unknot recognition}, arXiv:2607.23350v1, 25 July 2026. Introduction and Sections 9, 10 and 14.
+\url{https://arxiv.org/html/2607.23350v1}.
+
+\bibitem{hatcher}
+A.~Hatcher, \emph{Algebraic Topology}, appendix ``CW Complexes with Simplicial Structures'', especially pp.~533--534, online version consulted 12 October 2026.
+\url{https://pi.math.cornell.edu/~hatcher/AT/ATsimplicial.pdf}.
+
+\bibitem{forman}
+R.~Forman, \emph{A user's guide to discrete Morse theory}, S\'eminaire Lotharingien de Combinatoire \textbf{48} (2002), Article B48c.
+\url{https://www.mat.univie.ac.at/~slc/wpapers/s48forman.pdf}.
+
+\bibitem{abl}
+K.~A.~Adiprasito, B.~Benedetti and F.~H.~Lutz, \emph{Extremal examples of collapsible complexes and random discrete Morse theory}, arXiv:1404.4239. Consulted for the PL-manifold condition and the classical collapsible-manifold ball consequence.
+\url{https://arxiv.org/abs/1404.4239}.
+
+\bibitem{rawcut}
+ProveIt contributors, \emph{Full three-dimensional normal cuts in affine cell families},
+\path{Topology/UnknotRecognition/synthesis/cut_cells.tex}, at revision \sourcepin.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/fe8702d8a864daf4fcfde1cf4ef8dbcc6d83b69c/Topology/UnknotRecognition/synthesis/cut_cells.tex}.
+
+\bibitem{parallelity}
+ProveIt contributors, \emph{Source parallelity in all handle dimensions and a bounded inherited core},
+\path{Topology/UnknotRecognition/synthesis/parallelity.tex}, at the same source revision.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/fe8702d8a864daf4fcfde1cf4ef8dbcc6d83b69c/Topology/UnknotRecognition/synthesis/parallelity.tex}.
+
+\bibitem{fixture}
+ProveIt contributors,
+\path{Topology/UnknotRecognition/synthesis/data/parallelity-admissibility-obstruction.json}, at the same source revision. Exact gluing source retained in this package.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/fe8702d8a864daf4fcfde1cf4ef8dbcc6d83b69c/Topology/UnknotRecognition/synthesis/data/parallelity-admissibility-obstruction.json}.
+
+\bibitem{morse}
+Research continuation prepared for ProveIt, \emph{Modular Morse Certificates for Compressed Unknot Hierarchies: Polynomial-time collapse verification, an exponential affine-ranking barrier, and source-authenticated prism witnesses}, 12 October 2026.
+Incoming package \path{ProveIt_Modular_Morse_Certificates_2026-10-12.zip}; source reference revision \code{704600626606a9097cfd89d4e3d2bbc63c8dd1cb}. Sections 2, 3, 6 and 10, and the delivered arithmetic module.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/docs/incoming}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,246 @@
+\section{Native dual normalization with retained interfaces}
+\label{sec:geometry}
+
+\subsection{Source contract and size parameters}
+The native normal-surface validator supplies a connected finite triangulation
+of a compact orientable three-manifold with one torus boundary.  Generalized
+face pairings and self-identifications are permitted only when the validator's
+manifold checks pass.  The normal vector is nonnegative and integral, satisfies
+the matching equations and quadrilateral constraints, and belongs to the
+existing source contract.  We do not weaken any of these checks.
+
+Write $t$ for the number of tetrahedra, and $B$ for the largest bit length of
+a coordinate or local edge weight, with $B\geq1$.  The source constructor
+\code{normal_parallelity_geometry.py} partitions the cut into interval-bundle
+regions and a finite complementary handle core.  Its $i$-handles are denoted
+$H_i$.  The core has boundedly many local nonparallel regions per source
+tetrahedron.  Crude bounds adequate here are
+\begin{equation}\label{eq:handle-bounds}
+ |H_0|\leq6t,\quad |H_1|\leq8t,\quad |H_2|\leq12t,
+ \quad |H_3|\leq4t.
+\end{equation}
+Indeed, a tetrahedron contributes at most two central pieces and four
+triangle tips; a paired face contributes at most four nonparallel regions;
+each interior source edge contributes at most its two extreme gaps; and
+three-handles correspond to interior source vertices.  The total number of
+one-handle crossings in all source two-handle cycles is at most $12t$:
+each local tetrahedral edge occurs in at most two extreme cycles.
+
+The encoded core is thus small even when a normal coordinate is enormous.
+Its three-handles retain their source vertex and incident link triangles.
+Each two-handle retains its source edge, its gap rank, and its full cyclic
+attaching chart.  These records are geometric incidence data; they are
+strictly stronger than a signed cellular boundary matrix.
+
+\subsection{The graph of actual belt-point occurrences}
+\begin{definition}[Rooted dual graph]
+Let $K$ be an authenticated finite three-dimensional handle core.  The
+\emph{dual graph} $D$ has one vertex for each three-handle and a formal root
+$\rootv$ for boundary not capped by a three-handle.  A two-handle is
+$D^2\times I$ and has belt sphere $\{0\}\times\partial I$, consisting of
+two points.  Its edge joins the labels of these two actual belt-point
+occurrences.  A point in a three-handle's attaching sphere receives that
+vertex label; an uncapped point receives $\rootv$.
+\end{definition}
+
+The root need not be a connected boundary component.  It is an algebraic
+device joining all places at which cancellation can terminate.  Edges from
+the root to itself and edges whose two ends are the same three-handle are
+loops.  A loop has two occurrences, not zero.  This distinction prevents a
+signed boundary coefficient from being mistaken for geometric cancellation.
+
+For native cores, the graph is recovered without tracing an expanded normal
+surface.  Fix an oriented source edge $e$, with original endpoints $u,v$ and
+normal intersection weight $w_e$.
+\begin{enumerate}
+\item If $w_e=0$, there is a single core gap.  Its dual edge joins the labels
+  of $u$ and $v$.
+\item If $w_e>0$, there are two extreme core gaps.  Rank zero joins $u$ to
+  $\rootv$, and rank $w_e$ joins $\rootv$ to $v$.
+\end{enumerate}
+An original boundary vertex is assigned $\rootv$.  The other $w_e-1$ gaps
+belong to the parallelity structure and are never enumerated by this step.
+
+\begin{lemma}[Correct source orientation]\label{lem:orientation}
+The native source edge identifier is a representative of the signed
+union-find class of local tetrahedral edges.  At that representative the
+orientation parity is zero.  Thus decoding its local edge $(a,b)$ with
+$a<b$ identifies the original endpoint of rank zero as $a$, and that of the
+maximum rank as $b$, even when the two global endpoint vertices coincide.
+\end{lemma}
+\begin{proof}
+The parity stored by the signed equivalence structure is the parity between
+a local edge and its representative.  A representative is related to itself
+with parity zero.  The source rank convention reverses ranks precisely when
+this parity is one.  At the representative no reversal occurs, so the
+claimed identification follows directly from the local edge parameter.
+The global equality of vertex labels does not identify the two local endpoint
+germs.
+\end{proof}
+
+One must not use an unordered endpoint cache to choose between the two
+extreme ranks.  The implementation decodes the representative itself; the
+independent checker reconstructs the same geometric fact separately.
+
+\begin{lemma}[Root reachability]\label{lem:rooted}
+For every native source and admissible normal vector, every vertex of $D$
+is connected to $\rootv$.
+\end{lemma}
+\begin{proof}
+The one-skeleton of the connected source triangulation is connected and
+contains boundary vertices.  Identify all boundary vertices with one root.
+Boundary edges then become root loops; removing them does not affect root
+reachability.  Keep every interior source edge of zero normal weight.  Replace
+each positive-weight interior edge by two root stubs, one from each of its
+original endpoints to the root.  Replacing an edge in this way preserves root
+reachability: any path that formerly used that edge can pass through the root
+instead.  The resulting graph, after discarding irrelevant root loops, is
+exactly the graph just compiled from extreme core gaps.  Its nonroot vertices
+are exactly the interior source vertices, equivalently the core three-handles.
+\end{proof}
+
+\subsection{Geometric cancellation, including the relative assertion}
+The following is a source-specific use of the classical handle cancellation
+theorem: the attaching sphere of a $(k+1)$-handle must meet the belt sphere
+of a $k$-handle transversely in one point \cite[Theorem~5.4]{Milnor1965}.
+Here the belt sphere is zero-dimensional, so the compiled occurrence data
+give the required geometric intersection directly.
+
+\begin{lemma}[Rooted dual forest cancellation]\label{lem:dual-cancel}
+Suppose every component of an authenticated dual graph meets its root.
+For any spanning tree $T$ after the roots have been identified, there is a
+sequence of geometric two-/three-handle cancellations deleting precisely
+the two-handles labeled by $T$ and every three-handle.  The surviving
+two-handles retain their attaching maps to the abstract zero-/one-handle
+base.  No algebraic free reduction or two-handle slide is needed.
+
+If a specified exposed boundary subcomplex has a collar disjoint from the
+dual cancellation balls and tubes, the reduction preserves its labeled
+embedding up to the relative boundary identification.
+\end{lemma}
+\begin{proof}
+Orient the tree toward the root.  Choose a vertex adjacent to the already
+exposed root region.  Its parent edge has one belt point in that
+three-handle's attaching sphere and the other in exposed boundary.  The
+classical cancellation criterion therefore applies.  Cancel the pair.
+Other edges formerly incident with that three-handle now meet exposed
+boundary.  On the dual graph this is precisely contraction of the selected
+edge into the root.  Continue outward along the tree.  Each step removes one
+three-handle; after $|H_3|$ steps the selected tree edges and all three-handles
+have disappeared.
+
+There is an elementary boundary-ball proof of each step, which also
+establishes the relative assertion.  Write the cancelling two-handle as
+$h_e=D^2\times[-1,1]$, with caps $D_e^\pm$.  Label it so that the
+three-handle's attaching sphere $\Sigma$ contains $D_e^+$ and not
+$D_e^-$.  Let $R$ contain all other handles.  Other three-handle spheres
+miss both caps, so their attachments can be made before this pair.  Then
+$\Delta=\overline{\Sigma\setminus D_e^+}$ is a disk in $\partial R$.
+Together with the attaching annulus $A_e$ of $h_e$, it forms a disk
+$E=\Delta\cup A_e$ in $\partial R$.  Meanwhile
+$h_e\cup_{D_e^+}h_3$ is a three-ball $B$, and the original manifold is
+$R\cup_E B$.  Adding a ball along a boundary disk adds only a collar.
+The collar can be straightened relative to its boundary circle and to
+every exposed patch in $R$ outside the interior of $E$.
+
+The move alters the upper attachment boundary but does not introduce a
+slide of any retained two-handle over another one.  Consequently the
+attaching maps of all retained two-handles to the abstract lower base can
+be kept as before.  This is a statement about the resulting handle
+description.  It does not assert that a homeomorphism fixes every point of
+the entire old lower submanifold.
+\end{proof}
+
+\begin{lemma}[Native exposed ports]\label{lem:ports}
+The exposed core-facing ports of the native parallelity construction can be
+retained by the reduction in Lemma~\ref{lem:dual-cancel}, with their incidence,
+cyclic order, and side labels unchanged.
+\end{lemma}
+\begin{proof}
+The native constructor places each core-facing port on an exposed region of
+a zero-handle or a one-handle; its chart records \code{core_dimension} as
+zero or one.  There are no ports in the interiors of core two- or
+three-handles.  They are actual boundary patches of the complementary core,
+not patches later covered by a three-handle.
+
+In the boundary-ball proof of Lemma~\ref{lem:dual-cancel}, every port is
+therefore contained in $R$.  It misses the interior of $E$: that interior
+is an internal gluing region in $R\cup_E B$, not exposed boundary.
+If a port edge meets $\partial E$, use the collar straightening fixed on
+that circle.  The relative identification thus fixes all exposed port
+patches.  Iterating this argument retains their product-chart boundary
+identifications.  No port is deleted, reordered, or reattached, so its
+signed word and its incidence with the unchanged abstract lower charts
+are retained.
+\end{proof}
+
+This argument applies to the authenticated native ports.  A proposed future
+boundary pattern that crosses the cancellation support must supply its own
+transport.  The mere fact that a pattern has a small graph or an Euler
+characteristic does not meet this requirement.
+
+\begin{theorem}[Native top-handle normalization]\label{thm:native}
+Given an authenticated native parallelity geometry, all core three-handles
+can be removed by a certified geometric reduction.  Its reduced core and
+retained exposed interfaces describe the same cut manifold with the same
+parallelity attachments.  The reduction removes exactly $s=|H_3|$
+two-handles, preserves Euler characteristic, and needs $O(t)$ graph records.
+
+Graph compilation and a breadth-first tree use $O(t)$ arithmetic/label
+operations.  Independent union-find verification uses
+$O(t\alpha(t))$ label operations.  The arithmetic involves $B$-bit weights
+and $O(\log(t+1))$-bit labels, so a deterministic array implementation has
+polynomial bit cost, for example
+\[
+ O\bigl(tB+t\alpha(t)\log(t+1)\bigr)
+\]
+in a logarithmic-cost random-access model, after source authentication,
+for the canonical bounded-size certificate.  The delivered producer uses
+arrays and breadth-first search; replay uses separate arrays and union-find.
+A multi-tape Turing implementation also has polynomial bit cost, without
+asserting this exact random-access bound.  For arbitrary malformed input,
+verification time additionally includes its actual encoded length; a huge
+invalid identifier must be read before it can be rejected.
+\end{theorem}
+\begin{proof}
+Apply Lemma~\ref{lem:rooted}, construct a tree, and use
+Lemmas~\ref{lem:dual-cancel} and~\ref{lem:ports}.  A tree on $s+1$ vertices
+has $s$ edges.  Removing equal numbers of two- and three-handles leaves the
+alternating handle count unchanged.  The size bounds
+\eqref{eq:handle-bounds} and the local edge-weight formula give the operation
+bounds.  The independent checker needs only to reconstruct the selected
+edge endpoints, reject cycles, and verify that all $s$ vertices reach the
+root.  The list of selected original two-handle identifiers has
+$O(s\log(t+1))$ bits; all retained charts can be shared or copied from the
+authenticated source.
+\end{proof}
+
+\begin{corollary}[Support-stable normalization]\label{cor:support}
+For a fixed source triangulation, the dual graph, using semantic labels
+$(e,\text{zero})$, $(e,\text{left})$, and $(e,\text{right})$, depends only
+on the set of edges with zero normal weight.  A selected dual tree is valid
+throughout that stratum.  In particular it is valid for every positive
+integer multiple of a supplied normal vector.
+\end{corollary}
+\begin{proof}
+The two cases in the graph compiler use only $w_e=0$ or $w_e>0$.
+The endpoint labels come from the source vertices and remain fixed.
+Multiplication by a positive integer preserves every zero test.  Maximum
+ranks are updated to the current $w_e$ when actual chart identifiers are
+reconstructed.
+\end{proof}
+
+\begin{proposition}[Optimal initial deletion cost]\label{prop:max-tree}
+Assign a nonnegative cost $c_e$ to every native two-handle, such as its
+attaching-cycle length or its raw occurrence count after a fixed lower
+forest.  A maximum-weight spanning tree minimizes the total cost of the
+retained two-handles among all dual-tree normalizations.
+\end{proposition}
+\begin{proof}
+For a tree $T$, the retained cost is
+$\sum_{e\in E(D)}c_e-\sum_{e\in T}c_e$.  The first summand is constant.
+Thus minimizing the retained cost is exactly the maximum spanning-tree
+problem.
+\end{proof}
+This objective is inexpensive but does not guarantee subsequent raw
+cancellability.  The next sections address that stricter question.

@@ -1,0 +1,1552 @@
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_cut_dual.py b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_dual.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..5f249ff9d83de2e2cb66942ea7485e25829db35f
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_dual.py
+@@ -0,0 +1,47 @@
++"""Native normal-cut completion after exact source 2/3 cancellations."""
++
++from .bundle_boundary_kernel import bundle_boundary_kernel
++from .parallelity_boundary_words import normal_parallelity_boundary_words
++from .source_core_dual import source_core_dual_reduction
++
++
++def finish_dual_cut(parallelity, triangulation, coordinates, *, max_cycles=None,
++                    record_certificate=False, check=lambda: None):
++    """Finish from an already discovered source parallelity packet.
++
++    The normal-cut entry point passes its existing packet here, so no weighted
++    orbit discovery is repeated.  This is a conservative terminal method on
++    a supplied cut and supplies no standalone knottedness decision.
++    """
++    check()
++    result = dict(status='INCONCLUSIVE', stats=dict(parallelity=parallelity['stats']),
++                  trust='source cut handlebodies; no standalone knot verdict')
++    reduction = source_core_dual_reduction(parallelity['geometry'], check=check)
++    if reduction is None:
++        result['reason'] = 'dual_core_component_without_boundary'
++        return result
++    geometry, dual_proof, statistics = reduction
++    result['stats']['dual_core'] = statistics
++    remaining = max_cycles
++    if remaining is not None:
++        remaining -= sum(s['orbit_cycles'] for s in parallelity['stats'].values())
++    boundary = normal_parallelity_boundary_words(triangulation, coordinates,
++        max_cycles=remaining, record_certificate=record_certificate, check=check)
++    result['stats']['boundary'] = boundary['stats']
++    if boundary['status'] != 'COMPLETE':
++        result['reason'] = 'boundary_budget_exhausted'
++        return result
++    kernel = bundle_boundary_kernel(geometry, parallelity['summary'],
++                                    boundary['skeleton'], check=check)
++    if kernel is None:
++        result['reason'] = 'dual_reduced_boundary_kernel_stalled'
++        return result
++    kernel_proof, census, kernel_stats = kernel
++    result['stats']['boundary_kernel'] = kernel_stats
++    result.update(status='COMPLETE', census=census)
++    if record_certificate:
++        result['certificate'] = dict(schema='normal-cut-handlebodies-v6',
++            parallelity=parallelity['certificate'], boundary=boundary['certificate'],
++            dual=dual_proof, kernel=kernel_proof, census=census)
++    check()
++    return result
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_cut_dual_verify.py b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_dual_verify.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..91ab47f9ff49fdf1f5815b1c045fd0307ffe1737
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_dual_verify.py
+@@ -0,0 +1,54 @@
++"""Source-authenticated replay of the dual-reduced boundary-kernel census."""
++
++from .bundle_boundary_kernel_verify import replay_bundle_boundary_kernel
++from .integer_codec import certificate_equal
++from .normal_cut_handlebodies_verify import _decode
++from .normal_parallelity_verify import verify_normal_cut_parallelity
++from .parallelity_boundary_words_verify import verify_parallelity_boundary_words
++from .source_core_dual_verify import replay_source_core_dual
++
++
++def verify_normal_cut_dual(triangulation, coordinates, certificate, *,
++                           max_operations=None, check=lambda: None):
++    """Check source packets, dual forest, geometric kernel, and exact census."""
++    check()
++    if max_operations is not None and (type(max_operations) is not int or max_operations < 0):
++        raise ValueError('max_operations must be a nonnegative integer or None')
++    expected = {'schema', 'parallelity', 'boundary', 'dual', 'kernel', 'census'}
++    if (type(certificate) is not dict or set(certificate) != expected or
++            certificate['schema'] != 'normal-cut-handlebodies-v6'):
++        return False
++    p, b = certificate['parallelity'], certificate['boundary']
++    if type(p) is not dict or type(b) is not dict:
++        return False
++    if max_operations is not None:
++        try:
++            operations = 0
++            for name in ('vertex_selector', 'boundary_selector', 'polygon_weights', 'fibre_cover'):
++                proof = p[name]
++                if name.endswith('selector'):
++                    proof = proof['weighted_certificate']
++                operations += len(proof['orbit_proof']['operations'])
++            for name in ('vertex_partition', 'gap_cover'):
++                if b[name] is not None:
++                    operations += len(b[name]['orbit_proof']['operations'])
++        except (KeyError, TypeError):
++            return False
++        if operations > max_operations:
++            return False
++    if not verify_normal_cut_parallelity(triangulation, coordinates, p, check=check):
++        return False
++    if not verify_parallelity_boundary_words(triangulation, coordinates, b, check=check):
++        return False
++    try:
++        geometry, summary, skeleton = _decode(p['geometry']), _decode(p['summary']), _decode(b['skeleton'])
++        dual_proof = _decode(certificate['dual'])
++    except ValueError:
++        return False
++    reduced = replay_source_core_dual(geometry, dual_proof, check=check)
++    if reduced is None:
++        return False
++    census = replay_bundle_boundary_kernel(reduced, summary, skeleton,
++                                           certificate['kernel'], check=check)
++    check()
++    return census is not None and certificate_equal(certificate['census'], census)
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies.py b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies.py
+index c854184ef7de051f0ae74d786ab6601987b44f2d..2c63346f6a92659cda0097c0ffd64ab678643f07 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies.py
+@@ -14,6 +14,7 @@ from .core_primitive_annuli import core_primitive_annuli
+ from .core_handlebody import core_handlebody_certificate
+ from .disk_bundle_absorption import absorb_disk_bundles
+ from .normal_parallelity import normal_cut_parallelity
++from .normal_cut_dual import finish_dual_cut
+ from .parallelity_boundary_words import normal_parallelity_boundary_words
+ 
+ 
+@@ -151,8 +152,8 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
+         result['reason'] = 'parallelity_budget_exhausted'
+         return result
+     if parallelity['geometry']['core']['handles3']:
+-        result['reason'] = 'core_has_three_handles'
+-        return result
++        return finish_dual_cut(parallelity, triangulation, coordinates,
++            max_cycles=max_cycles, record_certificate=record_certificate, check=check)
+     remaining = max_cycles
+     if remaining is not None:
+         remaining -= sum(s['orbit_cycles'] for s in parallelity['stats'].values())
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies_verify.py b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies_verify.py
+index 670e86ab3a2205f3df693ec03b977b4867cd17e0..6c3455ce97330d2415f2e1973987f501161c8b27 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies_verify.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies_verify.py
+@@ -113,6 +113,10 @@ def verify_normal_cut_handlebodies(triangulation, coordinates, certificate, *,
+     check()
+     if max_operations is not None and (type(max_operations) is not int or max_operations < 0):
+         raise ValueError('max_operations must be a nonnegative integer or None')
++    if type(certificate) is dict and certificate.get('schema') == 'normal-cut-handlebodies-v6':
++        from .normal_cut_dual_verify import verify_normal_cut_dual
++        return verify_normal_cut_dual(triangulation, coordinates, certificate,
++            max_operations=max_operations, check=check)
+     fields = {'schema', 'parallelity', 'boundary', 'core', 'census'}
+     if type(certificate) is not dict:
+         return False
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/source_core_dual.py b/Topology/UnknotRecognition/fast/fastunknot/source_core_dual.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..a503276985925d3e775243cd6b7490669bd3f144
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/source_core_dual.py
+@@ -0,0 +1,108 @@
++"""Cancel native core 2/3 pairs using the actual endpoint incidence graph.
++
++The input is a source-authenticated parallelity geometry, not an arbitrary
++boundary matrix.  Interior vertex link triangles identify the 3-handles.  An
++interior edge gap of weight zero has both original endpoint caps; a positive
++weight extreme gap has one original cap and one exposed normal-surface cap.
++The exposed boundary is one formal root.  Its rooted spanning tree specifies
++geometric 2/3 cancellations while leaving the remaining 0/1 charts and their
++exposed port labels available to the existing finite boundary kernel.
++"""
++
++from collections import deque
++
++
++_EDGES = ((0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3))
++_DISJOINT_QUAD = (0, 1, 2, 2, 1, 0)
++
++
++def source_core_dual_graph(geometry, *, check=lambda: None):
++    """Return occurrence-level dual edges; -1 denotes exposed boundary.
++
++    The edge number in the authenticated source is its signed union-find root.
++    It is therefore a local representative with orientation parity zero.  This
++    fact determines which original endpoint belongs to rank zero, including
++    loop edges whose two global vertices happen to coincide.  No normal sheet
++    or parallelity-base instance is expanded.
++    """
++    check()
++    core, rows = geometry['core'], geometry['coordinates']
++    owner = [-1] * (4 * len(rows))
++    flag_visits = 0
++    for h in core['handles3']:
++        check()
++        for t, v in h['link_triangles']:
++            check()
++            owner[4*t + v] = h['id']
++            flag_visits += 1
++    edges = []
++    for h in core['handles2']:
++        check()
++        t, slot = divmod(h['edge'], 6)
++        a, b = _EDGES[slot]
++        row = rows[t]
++        weight = row[a] + row[b] + sum(row[4:]) - row[4 + _DISJOINT_QUAD[slot]]
++        left, right = owner[4*t + a], owner[4*t + b]
++        if weight == 0:
++            if h['rank'] != 0:
++                raise ArithmeticError('zero-weight core gap has nonzero rank')
++        elif h['rank'] == 0:
++            right = -1
++        elif h['rank'] == weight:
++            left = -1
++        else:
++            raise ArithmeticError('a native core gap is not an extreme edge gap')
++        edges.append(dict(two_handle=h['id'], ends=[left, right]))
++    return dict(three_handles=len(core['handles3']), boundary_root=-1, edges=edges,
++                stats=dict(vertex_flag_visits=flag_visits,
++                           dual_edge_visits=len(edges)))
++
++
++def source_core_dual_reduction(geometry, *, check=lambda: None):
++    """Compile one rooted forest and delete its 2-handles and all 3-handles.
++
++    Return (reduced_geometry, certificate, statistics), or None if a dual
++    component cannot reach exposed boundary.  The latter is conservative;
++    it is not a non-handlebody verdict.  A connected finite torus-boundary
++    source satisfies root reachability, but the explicit check is retained.
++    """
++    check()
++    graph = source_core_dual_graph(geometry, check=check)
++    n = graph['three_handles']
++    # Python's -1 index is the last slot, reserved for the boundary root.
++    adjacent = [[] for _ in range(n + 1)]
++    for edge in graph['edges']:
++        check()
++        a, b = edge['ends']
++        adjacent[a].append((b, edge['two_handle']))
++        adjacent[b].append((a, edge['two_handle']))
++    reached = [False] * (n + 1)
++    reached[-1] = True
++    reached_count, queue, picked = 1, deque([-1]), []
++    visits = 0
++    while queue:
++        check()
++        a = queue.popleft()
++        for b, e in adjacent[a]:
++            check()
++            visits += 1
++            if not reached[b]:
++                reached[b] = True
++                reached_count += 1
++                queue.append(b)
++                picked.append(e)
++    if reached_count != n + 1:
++        return None
++    old = geometry['core']
++    removed = [False] * len(old['handles2'])
++    for e in picked:
++        removed[e] = True
++    kept = [h for h in old['handles2'] if not removed[h['id']]]
++    reduced = dict(geometry, core=dict(old, handles3=[],
++        handles2=[dict(h, id=i) for i, h in enumerate(kept)]))
++    proof = dict(schema='source-core-dual-forest-v1', forest=picked)
++    statistics = dict(graph['stats'], adjacency_visits=visits,
++                      removed_three_handles=n, removed_two_handles=len(picked),
++                      retained_two_handles=len(kept))
++    check()
++    return reduced, proof, statistics
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/source_core_dual_verify.py b/Topology/UnknotRecognition/fast/fastunknot/source_core_dual_verify.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..bef23afa38f9a57a047fd068b8c1b1a08ead5b3f
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/source_core_dual_verify.py
+@@ -0,0 +1,98 @@
++"""Independent replay of source geometric dual 2/3 cancellation forests.
++
++Source and geometry authentication belongs to normal_parallelity_verify.
++This checker reconstructs cap occurrences and imports no forest producer.
++It does not infer cap incidence from signed algebraic boundary coefficients.
++"""
++
++from .integer_codec import encoded_integer
++
++
++def replay_source_core_dual(geometry, certificate, *, check=lambda: None):
++    """Return the reduced chart on success and None for a malformed proof."""
++    check()
++    if (type(certificate) is not dict or set(certificate) != {'schema', 'forest'}
++            or certificate['schema'] != 'source-core-dual-forest-v1'
++            or type(certificate['forest']) is not list):
++        return None
++    selected = []
++    for value in certificate['forest']:
++        try:
++            selected.append(encoded_integer(value))
++        except ValueError:
++            return None
++    core, coordinates = geometry['core'], geometry['coordinates']
++    three, two = core['handles3'], core['handles2']
++    n, m = len(three), len(two)
++    if len(selected) != n:
++        return None
++    if any(e < 0 or e >= m for e in selected):
++        return None
++    locations = [n] * (4 * len(coordinates))
++    for i, handle in enumerate(three):
++        check()
++        if type(handle['id']) is not int or handle['id'] != i:
++            return None
++        for t, corner in handle['link_triangles']:
++            check()
++            if (type(t) is not int or type(corner) is not int or
++                    not 0 <= t < len(coordinates) or not 0 <= corner < 4 or
++                    locations[4*t + corner] != n):
++                return None
++            locations[4*t + corner] = i
++    for i, handle in enumerate(two):
++        check()
++        if type(handle['id']) is not int or handle['id'] != i:
++            return None
++
++    parent = list(range(n + 1))
++    sizes = [1] * (n + 1)
++
++    def find(v):
++        while parent[v] != v:
++            parent[v] = parent[parent[v]]
++            v = parent[v]
++        return v
++
++    # n is the exposed-boundary root in this independent replay.  Source edge
++    # roots are local representatives of parity zero, so their smaller local
++    # endpoint is rank zero even when the global edge is a loop.
++    representatives = ((0, 1, 0), (0, 2, 1), (0, 3, 2),
++                       (1, 2, 2), (1, 3, 1), (2, 3, 0))
++    for e in selected:
++        check()
++        h = two[e]
++        if (type(h['edge']) is not int or
++                not 0 <= h['edge'] < 6 * len(coordinates) or
++                type(h['rank']) is not int or h['rank'] < 0):
++            return None
++        t, position = divmod(h['edge'], 6)
++        a, b, q = representatives[position]
++        row = coordinates[t]
++        w = row[a] + row[b] + row[4] + row[5] + row[6] - row[4 + q]
++        left, right = locations[4*t + a], locations[4*t + b]
++        if w == 0:
++            if h['rank'] != 0:
++                return None
++        elif h['rank'] == 0:
++            right = n
++        elif h['rank'] == w:
++            left = n
++        else:
++            return None
++        a, b = find(left), find(right)
++        if a == b:
++            return None
++        if sizes[a] < sizes[b]:
++            a, b = b, a
++        parent[b] = a
++        sizes[a] += sizes[b]
++    if any(find(v) != find(n) for v in range(n)):
++        return None
++    removed = [False] * m
++    for e in selected:
++        removed[e] = True
++    remaining = [dict(h, id=j) for j, h in enumerate(
++        handle for handle in two if not removed[handle['id']])]
++    check()
++    return dict(geometry, core=dict(core, handles2=remaining, handles3=[]))
+diff --git a/Topology/UnknotRecognition/fast/source_core_dual_research/README.md b/Topology/UnknotRecognition/fast/source_core_dual_research/README.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..d96cabf1e59ec74d71e5ee19d6213ace0c19e78d
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/source_core_dual_research/README.md
+@@ -0,0 +1,182 @@
++# Source dual forests for normal-cut handlebody censuses
++
++This extension targets ProveIt commit
++`8cb7d9d25ac8cb64a9d147304e3441e98e94c7a4`.
++It removes the native unconditional refusal of complementary cores containing
++3-handles. It processes the authenticated supplied normal cut; it does not
++discover a useful normal surface or issue a standalone knot verdict.
++
++## Integration
++
++Four new runtime modules provide the source cap-incidence compiler, rooted
++forest reduction, independent replay, and the native boundary-kernel finish:
++
++- `fastunknot/source_core_dual.py`
++- `fastunknot/source_core_dual_verify.py`
++- `fastunknot/normal_cut_dual.py`
++- `fastunknot/normal_cut_dual_verify.py`
++
++The existing `normal_cut_handlebodies` entry point calls `finish_dual_cut` only
++where it previously returned `core_has_three_handles`. The call consumes the
++parallelity packet already computed by that entry point. No weighted orbit
++discovery is repeated. The existing verifier dispatches the new
++`normal-cut-handlebodies-v6` schema to its independent checker; all earlier
++schemas retain their existing paths. No new dependency is required by the
++runtime or the focused tests. Regina is used only by the optional independent
++audit and comparative benchmark.
++
++The dual compiler takes **authenticated source geometry**. Its low-level
++functions are not validators for arbitrary handle descriptions. In native
++use, both source geometry and marked boundary packets are authenticated before
++the final census is accepted. It reconstructs the two actual belt-cap
++occurrences of every source 2-handle, including loops, rather than reading an
++algebraic boundary matrix.
++
++The retained 0/1 charts and port labels are used as abstract charts after
++cancellation. The topological claim is relative to exposed bands, not a
++homeomorphism fixing the entire embedded 0/1 submanifold pointwise. Native
++ports come from strict interior-rank face strips or edge caps; the dual
++cancellations use extreme edge gaps and vertex-link caps. Their interiors are
++disjoint, and the cancellation collars can be chosen to preserve those bands.
++
++## Reproduction
++
++Run commands below from `Topology/UnknotRecognition/fast/` in the patched
++repository. The full repository test suite also requires its existing
++historical report fixtures.
++
++```bash
++python -m unittest discover -s tests -p test_source_core_dual.py -v
++python -m source_core_dual_research.audit --output /tmp/source-dual-audit
++python -m source_core_dual_research.source_parity_audit --output /tmp/source-parity-audit.json
++python -m source_core_dual_research.benchmark_mobius --output /tmp/source-dual-benchmark --rounds 5
++```
++
++The corpus audit loads the original entry-point bytes directly from the
++declared git revision and executes that baseline with unchanged native
++dependencies. Its report records the baseline entry-point hash and corpus
++hash. It saves all seven new positive source/certificate packets and invokes
++Regina on those seven actual cuts. The new entry point leaves all cases without
++3-handles on exactly their prior execution path.
++
++The optional matrix experiments use the accompanying finite solver directory,
++which contains `dual_forest_search.py` and `dual_forest_verify.py`. Replace
++`SOLVER_DIR` below by its absolute path:
++
++```bash
++python -m source_core_dual_research.matrix_audit --output /tmp/matrix_audit.json --solver-dir SOLVER_DIR
++python -m source_core_dual_research.audit_obstructions --matrix-audit /tmp/matrix_audit.json --solver-dir SOLVER_DIR --output /tmp/source-dual-obstructions
++```
++
++The source matrix is built after the current deterministic 0/1 spanning
++forest. The finite boundary matrix additionally contains its real annular
++gluing rows and its finite bundle-boundary columns. Permanently even omitted
++genus columns are inert for unit peeling and are not expanded. The optional
++finite solver does not change native dispatch.
++
++## Evidence and precise outcomes
++
++| Evidence | Meaning |
++|---|---|
++| `native_audit.json` | All 106 pinned corpus inputs, baseline comparison, preservation checks, independent census replays, seven independent Regina comparisons |
++| `certificates/*.json` | Seven new positive packets, each with triangulation, coordinates, and complete v6 certificate |
++| `matrix_audit.json` | Source matrices for all 106 cases; full finite boundary matrices and exact forest-search results for the ten cases containing 3-handles |
++| `source_parity_audit.json` | Independent uncapped occurrence totals and dual-vertex parity on all 3,239 source columns, plus three supplementary sources with multiple interior vertices |
++| `obstructions/*.json` | Three source-authenticated negative raw-kernel packets, including their finite solver problems and stopping witnesses |
++| `obstructions/obstruction_audit.json` | Independent source/boundary authentication and matrix reconstruction for those three witnesses |
++| `mobius_benchmark.json` | Individual randomized paired samples, environment versions, and timing decomposition |
++| `mobius_benchmark.csv` | Compact table of the same benchmark medians |
++
++The measured pinned baseline completes **85 of 106** censuses. The extension
++completes **92 of 106**, preserving all 85 previous complete censuses exactly.
++All 92 resulting certificates replay independently, and all seven new censuses
++agree with Regina's actual cut followed by exact `recogniseHandlebody` on
++every component. The older README count of 83 is stale for this pinned source;
++the saved baseline bytes and hashes make the 85 figure reproducible.
++
++The ten focused test methods pass. They include all-corpus cap-incidence
++reconstruction using independent local edge representatives and signed
++orientations, loops, multiple interior vertices up to 16, certificate
++mutations, producer-disabled replay, binary serialization, callbacks and
++operation caps, unchanged prior schemas, and a spherical-cut control that
++correctly remains inconclusive. The pure-Python `stellar_torus(k)` generator
++constructs an actual sequence of finite 1-to-4 subdivisions, giving `1+3k`
++tetrahedra and `k` interior vertices; it requires no Regina installation.
++
++## What the matrix audit establishes
++
++For the original source matrices, 81 of 106 cases have maximum column row
++support at most two: 12 have maximum zero, 7 have maximum one, and 62 have
++maximum two. The other 25 have maximum three. Direct uncapped counting also
++finds at most three original geometric occurrences per surviving source
++1-handle in every corpus case.
++
++The separate source-parity audit checks all 3,239 original source columns,
++including the columns later removed by the primal forest. It finds zero
++violations of the bound three or of even dual-vertex incidence modulo two.
++The local cap oracle uses 78 orientation-reversed cycle representatives and
++agrees with the runtime cap compiler. Of the 74 columns consisting of three
++distinct unit entries, seven give a parallel pair plus a loop and 67 give
++three loops. The original corpus has at most one interior vertex per source,
++so three supplementary stellar sources with two, four, and eight interior
++vertices explicitly exercise the remaining triangle case, giving 3, 9, and
++25 such columns. Supplementary records are labelled separately from the 106
++original cases. This checks the occurrence-level boundary-squared relation;
++it does not replace geometric counts by exponent sums.
++
++Among the ten cores containing 3-handles, seven meet the degree-two hypothesis,
++and the polynomial finite solver succeeds on all seven. Exact stopping-set
++search also succeeds on the remaining three **bare-core** matrices. This does
++not imply the entire cuts are handlebodies: the annular gluing rows must still
++be included.
++
++Only four of those ten **full finite boundary matrices** satisfy the
++degree-two hypothesis. Exact search succeeds on the same seven full cases
++accepted by the new native branch. It certifies `NO_FOREST` for the other
++three, with stopping witnesses consisting entirely of nondeletable annular
++rows:
++
++| Corpus case | Witness rows in the finite problem | Witness size |
++|---|---|---:|
++| `pilot/finite_figureEight_interior/0` | 26, 27, 28, 29, 30, 31, 32 | 7 |
++| `interior_2_3/mixed` | 11, 12, 13, 14 | 4 |
++| `finite_trefoil_interior/mixed` | 16 | 1 |
++
++The obstruction audit independently authenticates each parallelity and
++boundary packet, reconstructs its 0/1 forest using explicit partitions,
++reconstructs annular curves with the independent geometric tracer, and
++rebuilds the whole finite problem. Every listed witness has no column of
++total one, and every row is unavailable for dual 2/3 deletion. Thus changing
++the dual forest cannot make these **fixed raw finite boundary kernels**
++completely eliminable. This is neither a non-handlebody certificate nor a
++knottedness certificate; geometric curve normalization, other initial
++forests, different disk systems, or stronger topological moves are outside
++that negative conclusion.
++
++## Complete supplied-cut benchmark
++
++The benchmark fixes the four-tetrahedron interior-vertex torus and scales its
++normal Mobius-band vector. Both paths receive the same source face pairing
++and coordinate vector. Native time includes source processing, compressed
++census production, the complete certificate, and independent replay. Regina
++time includes conversion to Regina objects, actual cutting, component
++triangulation, and exact component recognition. Each point uses five
++randomized paired rounds after a checked warm-up; the seed is 20261012.
++Version and platform information are saved in the JSON report.
++
++| Copies | Expanded Regina tetrahedra | Native producer + replay (ms) | Regina complete query (ms) | Median paired Regina/native ratio |
++|---:|---:|---:|---:|---:|
++| 1 | 91 | 4.056 | 0.895 | 0.225 |
++| 4 | 151 | 26.507 | 1.420 | 0.0528 |
++| 16 | 391 | 27.514 | 3.014 | 0.1069 |
++| 64 | 1,351 | 28.289 | 8.825 | 0.3169 |
++| 256 | 5,191 | 40.501 | 42.282 | 1.044 |
++| 1,024 | 20,551 | 35.723 | 169.545 | 4.824 |
++
++The native method is slower on the small expanded instances, by about 19
++times at four copies. At 256 copies the methods are close; at 1,024 copies the
++measured native complete query is about 4.82 times faster. These are timings
++of the stated supplied-cut operators, not of full unknot recognition, and no
++global quasi-polynomial complexity conclusion follows. Separately, the
++focused tests verify a `2^4096`-scaled input and its exact census of
++`2^4095+1` solid-torus components without expanding any normal sheets.
+diff --git a/Topology/UnknotRecognition/fast/source_core_dual_research/audit.py b/Topology/UnknotRecognition/fast/source_core_dual_research/audit.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..b5cd8c812c7139724cebcf4bb61ad5acfa377019
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/source_core_dual_research/audit.py
+@@ -0,0 +1,103 @@
++"""Pinned baseline versus integrated native cuts; independent Regina checks.
++
++Run from fast/: python -m source_core_dual_research.audit --output DIRECTORY
++The frozen baseline is loaded from git at the declared source revision.  The
++only changed entry points are the source-three-handle producer and v6 replay.
++"""
++
++import argparse
++from collections import Counter
++import hashlib
++import json
++from pathlib import Path
++import subprocess
++import sys
++import time
++import types
++
++from fastunknot.integer_codec import json_safe
++from fastunknot.normal_cut_handlebodies import normal_cut_handlebodies
++from fastunknot.normal_cut_handlebodies_verify import verify_normal_cut_handlebodies
++
++
++PIN = '8cb7d9d25ac8cb64a9d147304e3441e98e94c7a4'
++
++
++def main():
++    parser = argparse.ArgumentParser()
++    parser.add_argument('--output', type=Path, required=True)
++    parser.add_argument('--timeout', type=float, default=20)
++    args = parser.parse_args()
++    root = Path(__file__).resolve().parents[1]
++    args.output.mkdir(parents=True, exist_ok=True)
++    packets = args.output / 'certificates'
++    packets.mkdir(exist_ok=True)
++    source = subprocess.check_output(['git', 'show',
++        PIN + ':Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies.py'],
++        cwd=root.parents[2])
++    baseline = types.ModuleType('fastunknot._source_dual_baseline')
++    baseline.__package__ = 'fastunknot'
++    exec(compile(source, 'pinned_normal_cut_handlebodies.py', 'exec'), baseline.__dict__)
++    corpus_bytes = (root / 'marked_parallelity_research/corpus.json').read_bytes()
++    corpus = json.loads(corpus_bytes)
++    results, counts = [], Counter()
++    start = time.perf_counter()
++    for index, case in enumerate(corpus['cases']):
++        raw, rows = case['triangulation'], case['coordinates']
++        at = time.perf_counter()
++        old = baseline.normal_cut_handlebodies(raw, rows, record_certificate=True)
++        baseline_time = time.perf_counter() - at
++        at = time.perf_counter()
++        new = normal_cut_handlebodies(raw, rows, record_certificate=True)
++        native_time = time.perf_counter() - at
++        counts['baseline_' + old['status']] += 1
++        counts['new_' + new['status']] += 1
++        if new['status'] != 'COMPLETE':
++            counts['inconclusive_' + new['reason']] += 1
++        record = dict(id=case['id'], baseline_status=old['status'],
++            baseline_reason=old.get('reason'), native_status=new['status'],
++            native_reason=new.get('reason'), baseline_seconds=baseline_time,
++            native_seconds=native_time)
++        if old['status'] == 'COMPLETE':
++            assert new['status'] == 'COMPLETE', case['id']
++            assert old['census'] == new['census'], case['id']
++            counts['preserved_complete_censuses'] += 1
++        if new['status'] == 'COMPLETE':
++            at = time.perf_counter()
++            assert verify_normal_cut_handlebodies(raw, rows, new['certificate']), case['id']
++            record['replay_seconds'] = time.perf_counter() - at
++            proof_bytes = json.dumps(json_safe(new['certificate']), sort_keys=True).encode()
++            record.update(census=new['census'], certificate_bytes=len(proof_bytes),
++                          certificate_sha256=hashlib.sha256(proof_bytes).hexdigest())
++            counts['independent_replays'] += 1
++        if old['status'] != 'COMPLETE' and new['status'] == 'COMPLETE':
++            counts['new_certified_cases'] += 1
++            name = case['id'].replace('/', '__')
++            packet = dict(id=case['id'], triangulation=raw, coordinates=rows,
++                          certificate=new['certificate'])
++            (packets / (name + '.json')).write_text(json.dumps(json_safe(packet), indent=2) + '\n')
++            record['dual_statistics'] = new['stats']['dual_core']
++            try:
++                oracle = subprocess.run([sys.executable, '-m',
++                    'marked_parallelity_research.audit_census', '--oracle'],
++                    cwd=root, input=json.dumps(case), text=True,
++                    capture_output=True, timeout=args.timeout, check=True)
++                reference = json.loads(oracle.stdout)
++                record['regina'] = reference
++                assert new['census']['histogram'] == reference['histogram'], case['id']
++                counts['new_regina_agreements'] += 1
++            except subprocess.TimeoutExpired:
++                record['regina'] = dict(status='TIMEOUT', seconds=args.timeout)
++        results.append(record)
++        if (index + 1) % 10 == 0:
++            print(json.dumps(dict(done=index + 1, counts=counts)), flush=True)
++    report = dict(source_revision=PIN,
++        baseline_entry_sha256=hashlib.sha256(source).hexdigest(),
++        corpus_sha256=hashlib.sha256(corpus_bytes).hexdigest(), counts=counts,
++        seconds=time.perf_counter() - start, cases=results)
++    (args.output / 'native_audit.json').write_text(json.dumps(json_safe(report), indent=2) + '\n')
++    print(json.dumps(dict(counts=counts, seconds=report['seconds'])), flush=True)
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/Topology/UnknotRecognition/fast/source_core_dual_research/audit_obstructions.py b/Topology/UnknotRecognition/fast/source_core_dual_research/audit_obstructions.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..840ead91fd5561fc7cd046ea38bfb545ccf0a8bf
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/source_core_dual_research/audit_obstructions.py
+@@ -0,0 +1,155 @@
++"""Independently authenticate the three native annular stopping obstructions.
++
++This audit reconstructs source matrices using explicit component partitions
++and the independent geometric circle tracer.  It authenticates both source
++packets before comparing against the graph/matrix search input.  The negative
++result concerns this fixed raw boundary kernel, not the underlying manifold.
++"""
++
++import argparse
++from collections import Counter
++import json
++from pathlib import Path
++import sys
++
++from fastunknot.disk_bundle_absorption_verify import reconstruct_core_circle
++from fastunknot.integer_codec import json_safe
++from fastunknot.normal_parallelity import normal_cut_parallelity
++from fastunknot.normal_parallelity_verify import verify_normal_cut_parallelity
++from fastunknot.normal_surface_geometry import _prepare, _coordinates, _edge
++from fastunknot.parallelity_boundary_words import normal_parallelity_boundary_words
++from fastunknot.parallelity_boundary_words_verify import verify_parallelity_boundary_words
++
++
++def reconstruct(case, geometry, summary, skeleton):
++    core = geometry['core']
++    component = list(range(len(core['handles0'])))
++    tree = []
++    for h in core['handles1']:
++        a, b = (component[v] for v in h['ends'])
++        if a != b:
++            component = [min(a,b) if x in (a,b) else x for x in component]
++            tree.append(h['id'])
++    on_tree = set(tree)
++    rows = {}
++    for h in core['handles2']:
++        counts = Counter(f['handle'] for f in h['cycle']
++                         if f['dimension'] == 1 and f['handle'] not in on_tree)
++        rows[h['id']] = {c:min(2,n) for c,n in counts.items()}
++    bases = summary['base_profiles']
++    port_base = {p:i for i,b in enumerate(bases) for p in b['core_ports']}
++    annular = {}
++    offset = len(core['handles2'])
++    for index, attachment in enumerate(skeleton['attachment_components']):
++        if attachment['kind'] != 'circle':
++            continue
++        base_choices = {port_base[abs(x)-1] for x in attachment['word']}
++        assert len(base_choices) == 1
++        base = base_choices.pop()
++        traced = reconstruct_core_circle(geometry, attachment)
++        assert traced is not None
++        counts = Counter(x['handle'] for x in traced[0] if x['handle'] not in on_tree)
++        rows[offset+index] = {c:min(2,n) for c,n in counts.items()}
++        annular.setdefault(base, []).append(index)
++    next_column = len(core['handles1'])
++    for i, base in enumerate(bases):
++        if not base['core_ports']:
++            continue
++        circles = annular.get(i, [])
++        number, boundary = len(circles), base['boundary_components']
++        assert base['multiplicity'] == 1 and 0 <= number <= boundary
++        retained = min(number, boundary-1)
++        assert 1-base['euler_characteristic']-retained >= 0
++        for j in range(retained):
++            column = next_column+j
++            rows[offset+circles[j]][column] = 1
++            if number == boundary:
++                rows[offset+circles[-1]][column] = 1
++        next_column += retained
++
++    # A different local edge representative from the native compiler is used:
++    # the first 0-handle flag of each actual attaching cycle, with explicit
++    # signed orientation recovered from the original face pairing.
++    prepared = _prepare(case['triangulation'], lambda: None)
++    analysed = _coordinates(prepared, case['coordinates'], lambda: None)
++    owners = {h['vertex']:h['id']+1 for h in core['handles3']}
++    edges = {}
++    for h in core['handles2']:
++        flag = h['cycle'][0]
++        t, (a,b) = flag['tetrahedron'], flag['local_edge']
++        ends = [owners.get(prepared['vertex_roots'][4*t+v],0) for v in (a,b)]
++        if prepared['edge_orientations'][_edge(t,a,b)]:
++            ends.reverse()
++        w = analysed['weights'][h['edge']]
++        if w:
++            if h['rank'] == 0:
++                ends[1] = 0
++            else:
++                assert h['rank'] == w
++                ends[0] = 0
++        edges[h['id']] = ends
++    ids = sorted(rows)
++    problem = dict(vertices=len(core['handles3'])+1, columns=next_column,
++        edges=[edges.get(r) for r in ids],
++        rows=[[[c,v] for c,v in sorted(rows[r].items())] for r in ids])
++    return problem, ids, tree
++
++
++def main():
++    parser = argparse.ArgumentParser()
++    parser.add_argument('--matrix-audit', type=Path, required=True)
++    parser.add_argument('--solver-dir', type=Path, required=True)
++    parser.add_argument('--output', type=Path, required=True)
++    args = parser.parse_args()
++    sys.path.insert(0, str(args.solver_dir.resolve()))
++    from dual_forest_verify import verify
++    root = Path(__file__).resolve().parents[1]
++    bank = json.loads((root/'marked_parallelity_research/corpus.json').read_text())
++    cases = {c['id']:c for c in bank['cases']}
++    audit = json.loads(args.matrix_audit.read_text())
++    args.output.mkdir(parents=True, exist_ok=True)
++    records = []
++    for record in audit['cases']:
++        result = record.get('finite_boundary_stopping_result', {})
++        if result.get('status') != 'NO_FOREST':
++            continue
++        case = cases[record['id']]
++        raw, coordinates = case['triangulation'], case['coordinates']
++        p = normal_cut_parallelity(raw, coordinates, record_certificate=True)
++        b = normal_parallelity_boundary_words(raw, coordinates, record_certificate=True)
++        assert verify_normal_cut_parallelity(raw, coordinates, p['certificate'])
++        assert verify_parallelity_boundary_words(raw, coordinates, b['certificate'])
++        problem, ids, tree = reconstruct(case, p['geometry'], p['summary'], b['skeleton'])
++        assert problem == record['finite_boundary_problem']
++        assert ids == record['finite_boundary_row_ids']
++        assert tree == record['source_forest']
++        assert verify(problem, result)
++        proof = result['certificate']
++        assert proof['kind'] == 'blocked'
++        witness = proof['witness']
++        assert all(problem['edges'][r] is None for r in witness)
++        totals = Counter()
++        for r in witness:
++            for c, a in problem['rows'][r]:
++                totals[c] += a
++        assert totals and all(a >= 2 for a in totals.values())
++        packet = dict(id=case['id'], triangulation=raw, coordinates=coordinates,
++            parallelity=p['certificate'], boundary=b['certificate'],
++            source_forest=tree, original_row_ids=ids, problem=problem, result=result)
++        name = case['id'].replace('/', '__')+'.json'
++        (args.output/name).write_text(json.dumps(json_safe(packet), indent=2)+'\n')
++        record = dict(id=case['id'], packet=name, witness_rows=witness,
++            witness_original_rows=[ids[r] for r in witness],
++            witness_size=len(witness), every_witness_row_annular=True,
++            witness_column_totals={str(c):a for c,a in sorted(totals.items())},
++            source_and_boundary_authenticated=True, independently_reconstructed_matrix=True,
++            negative_graph_certificate_verified=True)
++        records.append(record)
++        print(json.dumps(record), flush=True)
++    assert len(records) == 3
++    (args.output/'obstruction_audit.json').write_text(json.dumps(dict(cases=records,
++        scope='No dual forest can make this fixed raw finite boundary kernel completely eliminable; no non-handlebody conclusion.'), indent=2)+'\n')
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/Topology/UnknotRecognition/fast/source_core_dual_research/benchmark_mobius.py b/Topology/UnknotRecognition/fast/source_core_dual_research/benchmark_mobius.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..d0abe8214fe8ab1320d197fcb036953c8d4d0130
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/source_core_dual_research/benchmark_mobius.py
+@@ -0,0 +1,110 @@
++"""Paired complete supplied-cut timings on an interior-vertex Mobius family.
++
++Both methods start from the same four-tetrahedron source and normal vector.
++Native totals include certificate production and independent replay.  Regina
++totals include source conversion, actual cutting, component triangulation,
++and exact handlebody recognition.  These are not whole knot-recognition times.
++"""
++
++import argparse
++from collections import Counter
++import csv
++import json
++from pathlib import Path
++import platform
++import random
++import statistics
++import sys
++import time
++
++import regina
++
++from fastunknot.normal_cut_handlebodies import normal_cut_handlebodies
++from fastunknot.normal_cut_handlebodies_verify import verify_normal_cut_handlebodies
++from normal_orbit_research.fixtures import interior_vertex_torus, regina_surface, regina_triangulation
++
++
++def native(raw, rows):
++    start = time.perf_counter()
++    result = normal_cut_handlebodies(raw, rows, record_certificate=True)
++    produced = time.perf_counter()
++    assert result['status'] == 'COMPLETE'
++    assert verify_normal_cut_handlebodies(raw, rows, result['certificate'])
++    stopped = time.perf_counter()
++    return result['census']['histogram'], dict(producer=produced-start,
++        independent_replay=stopped-produced, total=stopped-start)
++
++
++def explicit(raw, rows):
++    start = time.perf_counter()
++    triangulation = regina_triangulation(raw)
++    surface = regina_surface(triangulation, rows)
++    converted = time.perf_counter()
++    cut = surface.cutAlong()
++    cut_finished = time.perf_counter()
++    pieces = list(cut.triangulateComponents())
++    split = time.perf_counter()
++    genera = Counter(p.recogniseHandlebody() for p in pieces)
++    stopped = time.perf_counter()
++    histogram = [dict(genus=g, multiplicity=n) for g, n in sorted(genera.items())]
++    return histogram, dict(source_conversion=converted-start, cut=cut_finished-converted,
++        component_triangulation=split-cut_finished, handlebody_recognition=stopped-split,
++        total=stopped-start, expanded_tetrahedra=cut.size(), components=len(pieces))
++
++
++def main():
++    parser = argparse.ArgumentParser()
++    parser.add_argument('--output', type=Path, required=True)
++    parser.add_argument('--rounds', type=int, default=5)
++    args = parser.parse_args()
++    if args.rounds < 1:
++        raise ValueError('rounds must be positive')
++    args.output.mkdir(parents=True, exist_ok=True)
++    raw, basis = interior_vertex_torus()
++    rng = random.Random(20261012)
++    output = dict(source_revision='8cb7d9d25ac8cb64a9d147304e3441e98e94c7a4',
++        python=sys.version, platform=platform.platform(), regina=regina.versionString(),
++        rounds=args.rounds, random_seed=20261012, timer='perf_counter',
++        scope='Supplied-cut complete query: native proof+replay versus Regina source conversion+cut+components+exact recognition.',
++        cases=[])
++    for copies in (1, 4, 16, 64, 256, 1024):
++        rows = [[copies*v for v in row] for row in basis['mobius']]
++        expected = [dict(genus=1, multiplicity=copies//2+1)]
++        assert native(raw, rows)[0] == explicit(raw, rows)[0] == expected
++        samples = []
++        for _ in range(args.rounds):
++            order = ['native', 'regina']
++            rng.shuffle(order)
++            sample = dict(order=order)
++            for name in order:
++                histogram, timing = (native if name == 'native' else explicit)(raw, rows)
++                assert histogram == expected
++                sample[name] = timing
++            samples.append(sample)
++        nmed = {key: statistics.median(x['native'][key] for x in samples)
++                for key in samples[0]['native']}
++        rmed = {key: statistics.median(x['regina'][key] for x in samples)
++                for key in samples[0]['regina']}
++        item = dict(copies=copies, source_tetrahedra=4, normal_disks=sum(map(sum, rows)),
++            expected=expected, native_median=nmed, regina_median=rmed,
++            median_paired_ratio=statistics.median(x['regina']['total']/x['native']['total']
++                                                 for x in samples), samples=samples)
++        output['cases'].append(item)
++        print(json.dumps({k:v for k,v in item.items() if k!='samples'}), flush=True)
++        (args.output/'mobius_benchmark.json').write_text(json.dumps(output, indent=2)+'\n')
++    with (args.output/'mobius_benchmark.csv').open('w', newline='') as f:
++        writer = csv.writer(f)
++        writer.writerow(['copies','normal_disks','components','expanded_tetrahedra',
++            'native_producer_ms','native_replay_ms','native_total_ms','regina_conversion_ms',
++            'regina_cut_ms','regina_components_ms','regina_recognition_ms','regina_total_ms',
++            'median_paired_regina_over_native'])
++        for item in output['cases']:
++            n, r = item['native_median'], item['regina_median']
++            writer.writerow([item['copies'],item['normal_disks'],r['components'],r['expanded_tetrahedra'],
++                *[1000*n[k] for k in ('producer','independent_replay','total')],
++                *[1000*r[k] for k in ('source_conversion','cut','component_triangulation',
++                                     'handlebody_recognition','total')],item['median_paired_ratio']])
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/Topology/UnknotRecognition/fast/source_core_dual_research/fixtures.py b/Topology/UnknotRecognition/fast/source_core_dual_research/fixtures.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..460e7c04eb7828590ddc7a9fdfbfc2d973c33c9f
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/source_core_dual_research/fixtures.py
+@@ -0,0 +1,61 @@
++"""Pure-Python finite 1-to-4 subdivisions for multiple interior vertices."""
++
++from normal_orbit_research.fixtures import layered_torus
++
++
++def subdivide_first_tetrahedron(raw):
++    """Stellar-subdivide tetrahedron zero, retaining all old face gluings.
++
++    The four children are indexed by their outer old face.  Local vertex zero
++    is the new centre; the remaining local vertices are the sorted vertices
++    on that old face.  This is an actual relative tetrahedral subdivision.
++    """
++    old = raw['tetrahedra']
++    start = len(old) - 1
++    labels = [[4] + [v for v in range(4) if v != f] for f in range(4)]
++    inverses = [{v: j for j, v in enumerate(row)} for row in labels]
++    new = []
++    for tet in old[1:]:
++        faces = []
++        for f, record in enumerate(tet):
++            if record is None:
++                faces.append(None)
++                continue
++            u, p = record['tetrahedron'], record['permutation']
++            if u:
++                faces.append(dict(tetrahedron=u - 1, permutation=p.copy()))
++            else:
++                target = p[f]
++                perm = [0 if v == f else inverses[target][p[v]] for v in range(4)]
++                faces.append(dict(tetrahedron=start + target, permutation=perm))
++        new.append(faces)
++    for face, row in enumerate(labels):
++        record = old[0][face]
++        if record is None:
++            faces = [None]
++        else:
++            u, p = record['tetrahedron'], record['permutation']
++            if u:
++                perm = [p[face]] + [p[v] for v in row[1:]]
++                faces = [dict(tetrahedron=u - 1, permutation=perm)]
++            else:
++                target = p[face]
++                perm = [0] + [inverses[target][p[v]] for v in row[1:]]
++                faces = [dict(tetrahedron=start + target, permutation=perm)]
++        for omitted in row[1:]:
++            target = omitted
++            perm = [inverses[target][face] if v == omitted else inverses[target][v]
++                    for v in row]
++            faces.append(dict(tetrahedron=start + target, permutation=perm))
++        new.append(faces)
++    return {'tetrahedra': new}
++
++
++def stellar_torus(interior_vertices):
++    """Return a genus-one source with k interior vertices and 1+3k cells."""
++    if type(interior_vertices) is not int or interior_vertices < 0:
++        raise ValueError('interior_vertices must be a nonnegative integer')
++    raw, _ = layered_torus(1)
++    for _ in range(interior_vertices):
++        raw = subdivide_first_tetrahedron(raw)
++    return raw, [[0] * 7 for _ in raw['tetrahedra']]
+diff --git a/Topology/UnknotRecognition/fast/source_core_dual_research/matrix_audit.py b/Topology/UnknotRecognition/fast/source_core_dual_research/matrix_audit.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..ec1f25cb89057fad7ef28a0bec92b35328b20e76
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/source_core_dual_research/matrix_audit.py
+@@ -0,0 +1,170 @@
++"""Native source and finite-interface unsigned matrix scope for forest search.
++
++Run from fast/: python -m source_core_dual_research.matrix_audit --output FILE
++Optionally pass --solver-dir pointing to the accompanying finite solver.
++The optional results concern the supplied graph/matrix operation only.
++"""
++
++import argparse
++from collections import Counter
++import hashlib
++import json
++from pathlib import Path
++import sys
++
++from fastunknot.core_handlebody import _forest, _occurrences
++from fastunknot.disk_bundle_absorption import source_core_circle
++from fastunknot.normal_parallelity import normal_cut_parallelity
++from fastunknot.normal_parallelity_geometry import _parallelity_geometry
++from fastunknot.normal_surface_geometry import _prepare, _coordinates
++from fastunknot.parallelity_boundary_words import normal_parallelity_boundary_words
++from fastunknot.source_core_dual import source_core_dual_graph
++
++
++def profile(rows, width):
++    support, totals = Counter(), Counter()
++    for row in rows.values():
++        for c, value in row.items():
++            support[c] += 1
++            totals[c] += value
++    histogram = Counter(support.values())
++    histogram[0] += width - len(support)
++    return dict(rows=len(rows), column_namespace=width,
++        max_row_support=max(support.values(), default=0),
++        max_capped_occurrence_total=max(totals.values(), default=0),
++        column_support_histogram={str(k): v for k, v in sorted(histogram.items())},
++        degree_two=all(v <= 2 for v in support.values()))
++
++
++def finite_boundary_rows(geometry, summary, skeleton):
++    """Research adapter matching the existing boundary-kernel construction.
++
++    Source rows retain their original IDs and later annular rows are marked
++    nondeletable in the dual graphic matroid.  The permanently even omitted
++    genus columns are inert for unit peeling and need not be materialized.
++    """
++    core = geometry['core']
++    tree, _ = _forest(core, lambda: None)
++    rows = _occurrences(core, tree, lambda: None)
++    source_tree = set(tree)
++    profiles = summary['base_profiles']
++    if any(p['boundary_components'] <= 0 for p in profiles):
++        return None
++    owner = {port: i for i, p in enumerate(profiles) for port in p['core_ports']}
++    circles = {}
++    offset = len(core['handles2'])
++    for i, attachment in enumerate(skeleton['attachment_components']):
++        if attachment['kind'] != 'circle':
++            continue
++        bases = {owner[abs(x)-1] for x in attachment['word']}
++        if len(bases) != 1:
++            return None
++        base = bases.pop()
++        crossings, _ = source_core_circle(geometry, attachment['word'])
++        row = {}
++        for crossing in crossings:
++            h = crossing['handle']
++            if h not in source_tree:
++                row[h] = min(2, row.get(h, 0) + 1)
++        rows[offset+i] = row
++        circles.setdefault(base, []).append(i)
++    next_column = len(core['handles1'])
++    for base, p in enumerate(profiles):
++        if not p['core_ports']:
++            continue
++        annuli = circles.get(base, [])
++        a, b, genus = len(annuli), p['boundary_components'], 1-p['euler_characteristic']
++        if p['multiplicity'] != 1 or a > b:
++            return None
++        dedicated = a if a < b else a-1
++        if genus < dedicated:
++            return None
++        columns = list(range(next_column, next_column+dedicated))
++        next_column += dedicated
++        for i, h in zip(annuli, columns):
++            rows[offset+i][h] = 1
++        if a == b:
++            for h in columns:
++                rows[offset+annuli[-1]][h] = 1
++    return rows, next_column
++
++
++def make_problem(geometry, rows, columns):
++    graph = source_core_dual_graph(geometry)
++    ends = {e['two_handle']: [v+1 for v in e['ends']] for e in graph['edges']}
++    ids = sorted(rows)
++    return dict(vertices=graph['three_handles']+1, columns=columns,
++        edges=[ends.get(r) for r in ids],
++        rows=[[[c, a] for c, a in sorted(rows[r].items())] for r in ids]), ids
++
++
++def main():
++    parser = argparse.ArgumentParser()
++    parser.add_argument('--output', type=Path, required=True)
++    parser.add_argument('--solver-dir', type=Path)
++    args = parser.parse_args()
++    if args.solver_dir:
++        sys.path.insert(0, str(args.solver_dir.resolve()))
++        from dual_forest_search import solve_degree_two, solve_by_stopping
++        from dual_forest_verify import verify
++    root = Path(__file__).resolve().parents[1]
++    source = (root / 'marked_parallelity_research/corpus.json').read_bytes()
++    bank = json.loads(source)
++    counts, cases = Counter(), []
++    for case in bank['cases']:
++        prepared = _prepare(case['triangulation'], lambda: None)
++        analysed = _coordinates(prepared, case['coordinates'], lambda: None)
++        geometry = _parallelity_geometry(prepared, analysed, lambda: None)
++        core = geometry['core']
++        tree, _ = _forest(core, lambda: None)
++        rows = _occurrences(core, tree, lambda: None)
++        source_profile = profile(rows, len(core['handles1'])-len(tree))
++        raw_totals = Counter()
++        removed = set(tree)
++        for h in core['handles2']:
++            for flag in h['cycle']:
++                if flag['dimension'] == 1 and flag['handle'] not in removed:
++                    raw_totals[flag['handle']] += 1
++        source_profile['max_raw_occurrence_total'] = max(raw_totals.values(), default=0)
++        assert source_profile['max_raw_occurrence_total'] <= 3
++        record = dict(id=case['id'], three_handles=len(core['handles3']),
++                      source_forest=tree, source_matrix=source_profile)
++        counts['source_max_support_'+str(source_profile['max_row_support'])] += 1
++        counts['source_degree_two'] += source_profile['degree_two']
++        if core['handles3']:
++            counts['three_handle_cases'] += 1
++            counts['three_handle_degree_two'] += source_profile['degree_two']
++            candidates = [('source', rows, len(core['handles1']))]
++            packet = normal_cut_parallelity(case['triangulation'], case['coordinates'])
++            boundary = normal_parallelity_boundary_words(case['triangulation'], case['coordinates'])
++            augmented = finite_boundary_rows(geometry, packet['summary'], boundary['skeleton'])
++            if augmented:
++                aa, width = augmented
++                record['finite_boundary_matrix'] = profile(aa, width-len(tree))
++                candidates.append(('finite_boundary', aa, width))
++            if args.solver_dir:
++                for name, values, width in candidates:
++                    problem, ids = make_problem(geometry, values, width)
++                    result = solve_degree_two(problem)
++                    if result['status'] != 'INCONCLUSIVE':
++                        assert verify(problem, result)
++                    record[name+'_degree_two_result'] = result
++                    result = solve_by_stopping(problem, max_nodes=100000)
++                    if result['status'] != 'INCONCLUSIVE':
++                        assert verify(problem, result)
++                    record[name+'_stopping_result'] = result
++                    record[name+'_row_ids'] = ids
++                    record[name+'_problem'] = problem
++            print(json.dumps({k:v for k,v in record.items() if k in
++                ('id','three_handles','source_matrix','finite_boundary_matrix')}), flush=True)
++        cases.append(record)
++    report = dict(source_revision='8cb7d9d25ac8cb64a9d147304e3441e98e94c7a4',
++        corpus_sha256=hashlib.sha256(source).hexdigest(), counts=counts, cases=cases,
++        scope='Original source 2-handles after fixed native 0/1 forest; augmented matrices separately labelled.')
++    args.output.parent.mkdir(parents=True, exist_ok=True)
++    args.output.write_text(json.dumps(report, indent=2)+'\n')
++    print(json.dumps(counts), flush=True)
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/Topology/UnknotRecognition/fast/source_core_dual_research/source_parity_audit.py b/Topology/UnknotRecognition/fast/source_core_dual_research/source_parity_audit.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..cdbe7671bf92e54f8584928fc767c77a04c96994
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/source_core_dual_research/source_parity_audit.py
+@@ -0,0 +1,163 @@
++"""Independent uncapped source-column parity audit on native dual graphs.
++
++Every source 1-handle is a triangular-face region.  Its original 2-handle
++occurrences total at most three.  Modulo two, those dual edges have even
++incidence at every 3-handle vertex and at the formal boundary root.  This is
++the native occurrence-level form of boundary squared equal to zero; the
++audit never replaces geometric counts by signed exponent sums.
++"""
++
++import argparse
++from collections import Counter, defaultdict
++import hashlib
++import json
++from pathlib import Path
++
++from fastunknot.normal_parallelity_geometry import _parallelity_geometry
++from fastunknot.normal_surface_geometry import _prepare, _coordinates, _edge
++from fastunknot.source_core_dual import source_core_dual_graph
++from source_core_dual_research.fixtures import stellar_torus
++
++
++def cap_oracle(prepared, analysed, geometry):
++    """Use actual attaching-cycle representatives and explicit parity flips."""
++    core = geometry['core']
++    owner = {h['vertex']:h['id']+1 for h in core['handles3']}
++    edges = {}
++    reversed_flags = 0
++    for h in core['handles2']:
++        flag = h['cycle'][0]
++        t, (a,b) = flag['tetrahedron'], flag['local_edge']
++        local = _edge(t,a,b)
++        ends = [owner.get(prepared['vertex_roots'][4*t+v],0) for v in (a,b)]
++        if prepared['edge_orientations'][local]:
++            ends.reverse()
++            reversed_flags += 1
++        weight = analysed['weights'][h['edge']]
++        if weight:
++            if h['rank'] == 0:
++                ends[1] = 0
++            else:
++                assert h['rank'] == weight
++                ends[0] = 0
++        else:
++            assert h['rank'] == 0
++        edges[h['id']] = ends
++    return edges, reversed_flags
++
++
++def fixed_forest(core):
++    """Independent explicit-partition replay of the current primal forest."""
++    component = list(range(len(core['handles0'])))
++    selected = set()
++    for h in core['handles1']:
++        a,b = (component[v] for v in h['ends'])
++        if a != b:
++            component = [min(a,b) if x in (a,b) else x for x in component]
++            selected.add(h['id'])
++    return selected
++
++
++def audit_case(case):
++    prepared = _prepare(case['triangulation'], lambda:None)
++    analysed = _coordinates(prepared, case['coordinates'], lambda:None)
++    geometry = _parallelity_geometry(prepared, analysed, lambda:None)
++    core = geometry['core']
++    edges, flips = cap_oracle(prepared, analysed, geometry)
++    compiled = source_core_dual_graph(geometry)
++    assert {e['two_handle']:[v+1 for v in e['ends']] for e in compiled['edges']} == edges
++    columns = defaultdict(Counter)
++    for h in core['handles2']:
++        for flag in h['cycle']:
++            if flag['dimension'] == 1:
++                columns[flag['handle']][h['id']] += 1
++    tree = fixed_forest(core)
++    totals, retained, patterns, triples = Counter(),Counter(),Counter(),Counter()
++    details = []
++    for c in range(len(core['handles1'])):
++        row = columns[c]
++        total = sum(row.values())
++        assert total <= 3, (case['id'], c, total)
++        totals[total] += 1
++        if c not in tree:
++            retained[total] += 1
++        pattern = '+'.join(map(str,sorted(row.values()))) or '0'
++        patterns[pattern] += 1
++        parity = [0] * (len(core['handles3'])+1)
++        for r, count in row.items():
++            # A dual loop toggles its endpoint twice and therefore contributes
++            # zero, even when its uncapped geometric count is odd.
++            for endpoint in edges[r]:
++                parity[endpoint] ^= count & 1
++        assert not any(parity), (case['id'],c,dict(row),parity)
++        if len(row) == 3:
++            assert set(row.values()) == {1}
++            nonloops = [edges[r] for r in row if edges[r][0] != edges[r][1]]
++            if len(nonloops) == 3:
++                incident = Counter(v for edge in nonloops for v in edge)
++                assert len(incident) == 3 and set(incident.values()) == {2}
++                kind = 'triangle'
++            elif len(nonloops) == 2:
++                assert sorted(nonloops[0]) == sorted(nonloops[1])
++                kind = 'parallel_pair_plus_loop'
++            else:
++                assert not nonloops
++                kind = 'three_loops'
++            triples[kind] += 1
++            details.append(dict(column=c, retained=c not in tree, kind=kind,
++                rows=sorted(row), dual_edges=[edges[r] for r in sorted(row)]))
++        if pattern in ('1','1+2','3'):
++            odd = [r for r,n in row.items() if n % 2]
++            assert len(odd) == 1 and edges[odd[0]][0] == edges[odd[0]][1]
++    return dict(id=case['id'], tetrahedra=len(case['triangulation']['tetrahedra']),
++        three_handles=len(core['handles3']), source_one_handles=len(core['handles1']),
++        source_two_handles=len(core['handles2']), reversed_cycle_edge_representatives=flips,
++        uncapped_total_histogram={str(k):v for k,v in sorted(totals.items())},
++        retained_uncapped_total_histogram={str(k):v for k,v in sorted(retained.items())},
++        coefficient_pattern_histogram=dict(sorted(patterns.items())),
++        triple_unit_classification=dict(sorted(triples.items())),
++        parity_violations=0, triple_unit_columns=details)
++
++
++def main():
++    parser = argparse.ArgumentParser()
++    parser.add_argument('--output', type=Path, required=True)
++    args = parser.parse_args()
++    root = Path(__file__).resolve().parents[1]
++    corpus_bytes = (root/'marked_parallelity_research/corpus.json').read_bytes()
++    bank = json.loads(corpus_bytes)
++    records = [audit_case(case) for case in bank['cases']]
++    stellar = []
++    for n in (2,4,8):
++        raw,rows = stellar_torus(n)
++        stellar.append(audit_case(dict(id='stellar_torus/'+str(n),
++                                      triangulation=raw,coordinates=rows)))
++    assert any(c['triple_unit_classification'].get('triangle',0) for c in stellar)
++    counts = Counter(cases=len(records), parity_violations=0)
++    total, retained, patterns, triples = Counter(),Counter(),Counter(),Counter()
++    for record in records:
++        counts['source_columns'] += record['source_one_handles']
++        counts['source_rows'] += record['source_two_handles']
++        counts['reversed_cycle_edge_representatives'] += record['reversed_cycle_edge_representatives']
++        total.update(record['uncapped_total_histogram'])
++        retained.update(record['retained_uncapped_total_histogram'])
++        patterns.update(record['coefficient_pattern_histogram'])
++        triples.update(record['triple_unit_classification'])
++    report = dict(source_revision='8cb7d9d25ac8cb64a9d147304e3441e98e94c7a4',
++        corpus_sha256=hashlib.sha256(corpus_bytes).hexdigest(), counts=counts,
++        all_column_uncapped_total_histogram=dict(sorted(total.items())),
++        retained_column_uncapped_total_histogram=dict(sorted(retained.items())),
++        coefficient_pattern_histogram=dict(sorted(patterns.items())),
++        triple_unit_classification=dict(sorted(triples.items())), cases=records,
++        supplementary_stellar_cases=stellar,
++        scope='Uncapped original source2handle occurrence columns and occurrence-level source dual cap graph; annular additions excluded.')
++    args.output.parent.mkdir(parents=True,exist_ok=True)
++    args.output.write_text(json.dumps(report,indent=2)+'\n')
++    summary = {k:v for k,v in report.items() if k not in
++               ('cases','source_revision','corpus_sha256','supplementary_stellar_cases')}
++    summary['supplementary_stellar_triples'] = {c['id']:c['triple_unit_classification'] for c in stellar}
++    print(json.dumps(summary),flush=True)
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_source_core_dual.py b/Topology/UnknotRecognition/fast/tests/test_source_core_dual.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..94f675c295cad0422ddc0d1fc4ca14f8d0c32fb4
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_source_core_dual.py
+@@ -0,0 +1,191 @@
++"""Geometric cap incidence, multiple 3-handles, and hostile certificate replay."""
++
++from contextlib import ExitStack
++from copy import deepcopy
++import json
++from pathlib import Path
++import unittest
++from unittest.mock import patch
++
++from fastunknot.integer_codec import json_safe
++from fastunknot.normal_cut_handlebodies import normal_cut_handlebodies
++from fastunknot.normal_cut_handlebodies_verify import verify_normal_cut_handlebodies
++from fastunknot.normal_parallelity import normal_cut_parallelity
++from fastunknot.normal_parallelity_geometry import _parallelity_geometry
++from fastunknot.normal_surface_geometry import _prepare, _coordinates, _edge
++from fastunknot.source_core_dual import source_core_dual_graph, source_core_dual_reduction
++from fastunknot.source_core_dual_verify import replay_source_core_dual
++from normal_orbit_research.fixtures import interior_vertex_torus, layered_torus
++from source_core_dual_research.fixtures import stellar_torus
++
++
++class SourceCoreDualTests(unittest.TestCase):
++    def packet(self, raw, rows):
++        return normal_cut_parallelity(raw, rows, record_certificate=True)
++
++    def test_native_oriented_cap_occurrences_on_all_corpus_sources(self):
++        corpus = Path(__file__).parents[1] / 'marked_parallelity_research/corpus.json'
++        cases = json.loads(corpus.read_text())['cases']
++        flipped = loops = inspected = 0
++        for case in cases:
++            prepared = _prepare(case['triangulation'], lambda: None)
++            analysed = _coordinates(prepared, case['coordinates'], lambda: None)
++            geometry = _parallelity_geometry(prepared, analysed, lambda: None)
++            owner = {h['vertex']: h['id'] for h in geometry['core']['handles3']}
++            expected = []
++            for h in geometry['core']['handles2']:
++                flag = h['cycle'][0]
++                t, (a, b) = flag['tetrahedron'], flag['local_edge']
++                local = _edge(t, a, b)
++                ends = [owner.get(prepared['vertex_roots'][4*t+v], -1) for v in (a, b)]
++                if prepared['edge_orientations'][local]:
++                    ends.reverse()
++                    flipped += 1
++                w = analysed['weights'][h['edge']]
++                if w:
++                    if h['rank'] == 0:
++                        ends[1] = -1
++                    else:
++                        self.assertEqual(h['rank'], w)
++                        ends[0] = -1
++                loops += ends[0] == ends[1]
++                expected.append(dict(two_handle=h['id'], ends=ends))
++                inspected += 1
++            self.assertEqual(source_core_dual_graph(geometry)['edges'], expected)
++        self.assertGreater(flipped, 0)
++        self.assertGreater(loops, 0)
++        self.assertGreater(inspected, 100)
++
++    def test_multiple_interior_vertices_and_reversed_forest_order(self):
++        for count in (1, 2, 4, 8, 16):
++            raw, rows = stellar_torus(count)
++            packet = self.packet(raw, rows)
++            original = deepcopy(packet['geometry'])
++            reduced, proof, stats = source_core_dual_reduction(original)
++            self.assertEqual(stats['removed_three_handles'], count)
++            self.assertEqual(stats['removed_two_handles'], count)
++            self.assertEqual(stats['adjacency_visits'], 2 * stats['dual_edge_visits'])
++            proof['forest'].reverse()
++            self.assertEqual(replay_source_core_dual(original, proof), reduced)
++            self.assertEqual(packet['geometry'], original)
++            self.assertEqual(reduced['ports'], original['ports'])
++            self.assertEqual(reduced['core']['handles0'], original['core']['handles0'])
++            self.assertEqual(reduced['core']['handles1'], original['core']['handles1'])
++            self.assertEqual(sum((-1)**i * len(original['core'][f'handles{i}']) for i in range(4)),
++                             sum((-1)**i * len(reduced['core'][f'handles{i}']) for i in range(4)))
++            result = normal_cut_handlebodies(raw, rows, record_certificate=True)
++            self.assertEqual(result['status'], 'COMPLETE')
++            self.assertEqual(result['census']['histogram'], [dict(genus=1, multiplicity=1)])
++            self.assertTrue(verify_normal_cut_handlebodies(raw, rows, result['certificate']))
++
++    def test_native_unmarked_ports_and_one_sided_cut(self):
++        raw, basis = interior_vertex_torus()
++        for name, expected in (
++                ('boundary_disk', [dict(genus=0, multiplicity=1), dict(genus=1, multiplicity=1)]),
++                ('mobius', [dict(genus=1, multiplicity=1)])):
++            result = normal_cut_handlebodies(raw, basis[name], record_certificate=True)
++            self.assertEqual(result['status'], 'COMPLETE')
++            self.assertEqual(result['certificate']['schema'], 'normal-cut-handlebodies-v6')
++            self.assertEqual(result['census']['histogram'], expected)
++            self.assertTrue(verify_normal_cut_handlebodies(raw, basis[name], result['certificate']))
++
++    def test_spherical_cut_does_not_infer_a_handlebody_from_homology(self):
++        raw, basis = interior_vertex_torus()
++        result = normal_cut_handlebodies(raw, basis['sphere'], record_certificate=True)
++        self.assertEqual(result['status'], 'INCONCLUSIVE')
++        self.assertEqual(result['reason'], 'dual_reduced_boundary_kernel_stalled')
++
++    def test_positive_scaling_invariance_and_huge_binary_census(self):
++        raw, basis = interior_vertex_torus()
++        first = self.packet(raw, basis['mobius'])
++        n = 1 << 4096
++        rows = [[n * v for v in row] for row in basis['mobius']]
++        second = self.packet(raw, rows)
++        self.assertEqual(source_core_dual_graph(first['geometry']),
++                         source_core_dual_graph(second['geometry']))
++        result = normal_cut_handlebodies(raw, rows, record_certificate=True)
++        self.assertEqual(result['status'], 'COMPLETE')
++        self.assertEqual(result['census']['histogram'], [dict(genus=1, multiplicity=n//2+1)])
++        encoded = json.loads(json.dumps(json_safe(result['certificate'])))
++        self.assertTrue(verify_normal_cut_handlebodies(raw, json_safe(rows), encoded))
++
++    def test_independent_replay_with_all_producers_disabled(self):
++        raw, basis = interior_vertex_torus()
++        rows = [[3 * x for x in row] for row in basis['mobius']]
++        proof = normal_cut_handlebodies(raw, rows, record_certificate=True)['certificate']
++        names = (
++            'fastunknot.normal_cut_handlebodies.normal_cut_handlebodies',
++            'fastunknot.normal_cut_dual.finish_dual_cut',
++            'fastunknot.source_core_dual.source_core_dual_graph',
++            'fastunknot.source_core_dual.source_core_dual_reduction',
++            'fastunknot.normal_parallelity.normal_cut_parallelity',
++            'fastunknot.parallelity_boundary_words.normal_parallelity_boundary_words',
++            'fastunknot.bundle_boundary_kernel.bundle_boundary_kernel',
++        )
++        with ExitStack() as stack:
++            for name in names:
++                stack.enter_context(patch(name, side_effect=AssertionError('producer used')))
++            self.assertTrue(verify_normal_cut_handlebodies(raw, rows, proof))
++
++    def test_forest_mutations_and_source_geometry_mutations_are_rejected(self):
++        raw, basis = interior_vertex_torus()
++        rows = basis['boundary_disk']
++        proof = normal_cut_handlebodies(raw, rows, record_certificate=True)['certificate']
++        for forest in ([], [True], [-1], [10**9], ['garbage'], proof['dual']['forest'] * 2):
++            bad = deepcopy(proof)
++            bad['dual']['forest'] = forest
++            self.assertFalse(verify_normal_cut_handlebodies(raw, rows, bad))
++        bad = deepcopy(proof)
++        bad['dual']['forest'][0] = hex(bad['dual']['forest'][0])
++        self.assertTrue(verify_normal_cut_handlebodies(raw, rows, bad))
++        bad = deepcopy(proof)
++        bad['dual']['extra'] = 1
++        self.assertFalse(verify_normal_cut_handlebodies(raw, rows, bad))
++        bad = deepcopy(proof)
++        bad['parallelity']['geometry']['core']['handles3'][0]['link_triangles'].pop()
++        self.assertFalse(verify_normal_cut_handlebodies(raw, rows, bad))
++        bad = deepcopy(proof)
++        bad['parallelity']['geometry']['core']['handles2'][0]['rank'] += 1
++        self.assertFalse(verify_normal_cut_handlebodies(raw, rows, bad))
++        bad = deepcopy(proof)
++        bad['census']['histogram'][0]['genus'] += 1
++        self.assertFalse(verify_normal_cut_handlebodies(raw, rows, bad))
++
++    def test_selected_dual_loops_are_rejected(self):
++        raw, basis = interior_vertex_torus()
++        packet = self.packet(raw, basis['boundary_disk'])
++        geometry = packet['geometry']
++        graph = source_core_dual_graph(geometry)
++        loops = [e['two_handle'] for e in graph['edges'] if e['ends'][0] == e['ends'][1]]
++        self.assertTrue(loops)
++        for e in loops:
++            self.assertIsNone(replay_source_core_dual(geometry,
++                dict(schema='source-core-dual-forest-v1', forest=[e])))
++
++    def test_no_three_handles_keep_the_established_certificate_path(self):
++        raw, rows = layered_torus(2)
++        result = normal_cut_handlebodies(raw, rows, record_certificate=True)
++        self.assertEqual(result['status'], 'COMPLETE')
++        self.assertNotEqual(result['certificate']['schema'], 'normal-cut-handlebodies-v6')
++        self.assertNotIn('dual_core', result['stats'])
++
++    def test_callbacks_and_operation_caps(self):
++        class Cancel:
++            def __bool__(self):
++                return False
++            def __call__(self):
++                raise ValueError('cancelled')
++        raw, basis = interior_vertex_torus()
++        rows = [[3*x for x in row] for row in basis['mobius']]
++        with self.assertRaisesRegex(ValueError, 'cancelled'):
++            normal_cut_handlebodies(raw, rows, check=Cancel())
++        proof = normal_cut_handlebodies(raw, rows, record_certificate=True)['certificate']
++        with self.assertRaisesRegex(ValueError, 'cancelled'):
++            verify_normal_cut_handlebodies(raw, rows, proof, check=Cancel())
++        self.assertFalse(verify_normal_cut_handlebodies(raw, rows, proof, max_operations=0))
++        self.assertEqual(normal_cut_handlebodies(raw, rows, max_cycles=0)['status'], 'INCONCLUSIVE')
++        self.assertTrue(verify_normal_cut_handlebodies(raw, rows, proof, max_operations=100000))
++
++
++if __name__ == '__main__':
++    unittest.main()

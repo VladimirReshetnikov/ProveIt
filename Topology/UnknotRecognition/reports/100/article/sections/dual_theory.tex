@@ -1,0 +1,725 @@
+\section{Eliminating top handles after a compressed normal cut}
+\label{sec:cut-dual}
+
+The ordinary, uncut source presentation already has a complete two/three
+handle reduction.  The incoming \emph{Genus Budgets and Native Interfaces}
+article, Section ``The complete initial empty-pattern compiler'', states
+its queue rule and proves completeness by connectivity of the source
+one-skeleton.  That result, and classical handle cancellation itself, are
+prior work~\cite{prior-genus}.  The extension here concerns the bounded complementary core
+\emph{after an arbitrary normal cut}.  It identifies both sides of every
+endpoint-gap two-handle, proves that the resulting dual graph is still
+rooted-connected, preserves the authenticated interfaces with the
+parallelity bundle, and makes the reduction independently replayable
+without expanding normal coordinates.  In particular, the existing
+\texttt{core\_has\_three\_handles} refusal is not an unavoidable obstruction
+for this source family.
+
+\subsection{The source contract and the geometric side table}
+
+Let $\mathcal T$ be a finite triangulation of a compact connected
+three-manifold $M$ with nonempty boundary.  In the implemented contract,
+$M$ is orientable and has one torus boundary; the topological argument
+below needs only the indicated finite-manifold and boundary hypotheses.
+Vertex links must be discs or spheres, and reversed self-identifications
+of an edge are excluded.  Let $S$ be an embedded normal surface, possibly
+disconnected, one-sided, or empty, given by admissible nonnegative integer
+normal coordinates $x$.  By cutting along $S$ we mean removing the
+interior of a small regular neighbourhood and taking the resulting compact
+manifold with rounded corners.
+
+Use the authenticated source parallelity decomposition
+\[
+  M\mathbin{\backslash\!\backslash}S=K\cup_A B.
+\]
+Here $B$ is the union of the specified interval bundles, $K$ is the bounded
+complementary handle core, and $A=K\cap B$ is its port subsurface.  This
+notation does not assume that $B$ is globally a product.  The source
+construction puts all its core-facing ports in boundary charts of the
+zero- and one-handles of $K$; the two-handles considered below are the
+\emph{endpoint gaps} at source edges.  The endpoint gaps are distinct from
+the interior edge gaps that belong to the parallelity bundle.
+
+For a source edge $e$, choose its globally consistent orientation and let
+$v_-(e),v_+(e)$ be its two endpoint occurrences.  Their global vertex
+identifiers may coincide.  Put
+\[
+  w(e)=|S\cap e|.
+\]
+Let $V_{\mathrm{int}}$ be the set of interior source vertices and use a
+formal symbol $\ast$ for exposed boundary.  Define
+\[
+ \rho(v)=
+ \begin{cases}
+   v,&v\in V_{\mathrm{int}},\\
+   \ast,&v\in\partial M.
+ \end{cases}
+\]
+Each $v\in V_{\mathrm{int}}$ supplies one source three-handle, irrespective
+of the normal coordinates.  A source boundary edge supplies no core
+two-handle.  An interior source edge supplies one endpoint-gap two-handle
+when $w(e)=0$ and two when $w(e)>0$.
+
+\begin{lemma}[The exact dual side table]
+\label{lem:cut-dual-sides}
+The two belt-disc sides of the source core two-handles have the following
+owners:
+\[
+\begin{array}{c|c|c}
+ \text{normal edge weight}&\text{source gap rank}&\text{ordered side owners}\\
+ \hline
+ w(e)=0&0&(\rho(v_-(e)),\rho(v_+(e)))\\
+ w(e)>0&0&(\rho(v_-(e)),\ast)\\
+ w(e)>0&w(e)&(\ast,\rho(v_+(e))).
+\end{array}
+\]
+An occurrence of $\ast$ means an exposed face on the original boundary
+or on the boundary created by cutting $S$.  Repeated interior owners are
+retained with their multiplicity: $(v,v)$ means two intersections with
+the attaching sphere of the same three-handle, not one.
+\end{lemma}
+
+\begin{proof}
+Give an edge neighbourhood its source product chart
+$D^2\times e$.  The normal surface meets the edge in $w(e)$ distinct
+points.  Its complementary intervals are the gaps between successive
+normal points and the two endpoint gaps.  A core two-handle is
+$D^2\times J$, where $J$ is an endpoint gap; its belt sphere consists of
+the two points at the centres of $D^2\times\partial J$.
+
+If $w(e)=0$, the single gap runs between the two source vertices.  A
+finite interior vertex contributes its vertex-link three-ball, while a
+boundary vertex contributes an exposed boundary chart.  This gives the
+first row.  If $w(e)>0$, the initial gap runs from the initial vertex to
+the first normal point, and the final gap runs from the last normal point
+to the final vertex.  Their normal-point sides are exposed after cutting.
+The intervening gaps, if present, lie in $B$ and are not endpoint-gap
+core handles.  This gives the second and third rows.
+
+The argument is local at the edge.  It does not require a coorientation
+of $S$: the two sides of each individual intersection point have local
+product neighbourhoods even when the whole surface is one-sided.
+Likewise, if the endpoint occurrences represent the same global vertex,
+they are still distinct ends of the edge chart and give distinct belt
+points.  This proves the multiplicity assertion.
+\end{proof}
+
+There is a direct formula for reconstructing this table from the existing
+records.  A zero-handle flag in a two-handle attaching cycle gives a local
+source edge $(t,[a,b])$, with $a<b$.  The signed source edge equivalence
+relation gives a bit $\epsilon(t,a,b)$.  Its ordered endpoint flags are
+$(t,a),(t,b)$ when $\epsilon=0$ and $(t,b),(t,a)$ when $\epsilon=1$.
+The three-handle vertex-link triangles assign an interior owner to each
+such vertex flag; unassigned flags must be authenticated boundary vertices.
+The edge weight can also be checked locally:
+\begin{equation}
+ w(e)=x_{t,a}+x_{t,b}
+       +\sum_{j=0}^{2}x_{t,4+j}-x_{t,4+q(a,b)},
+ \label{eq:cut-dual-local-weight}
+\end{equation}
+where $q(a,b)$ is the quadrilateral type that misses the edge $[a,b]$.
+Every term actually contributing to the right side is nonnegative.
+Normal matching makes this value the same around the entire source edge.
+An independent checker can therefore inspect \emph{every} source
+zero-handle flag in the cycle and require the same oriented side pair;
+it need not trust a producer's chosen representative.
+
+\subsection{A universal rooted forest in the cut core}
+
+Define a multigraph $G_x$ with vertex set $V_{\mathrm{int}}\cup\{\ast\}$
+and one edge for each source endpoint-gap two-handle, joining the owners
+in Lemma~\ref{lem:cut-dual-sides}.  Both parallel edges and loops are
+retained.  Several boundary components of the cut manifold may be
+represented by the same formal root.  This is an indexing device: the
+algorithm never glues these boundary components together.
+
+\begin{lemma}[Rooted connectivity survives normal cutting]
+\label{lem:cut-dual-connected}
+Every vertex of $G_x$ is connected to $\ast$.
+\end{lemma}
+
+\begin{proof}
+The source one-skeleton is connected.  Fix an interior vertex $v$ and
+choose an edge path from $v$ to a source boundary vertex, stopping at the
+first boundary vertex encountered.  Every edge before this final endpoint
+is an interior edge, since a boundary edge has both endpoints on the
+boundary.
+
+If all edges on the path have weight zero, the first row of
+Lemma~\ref{lem:cut-dual-sides} turns it into a path in $G_x$ ending at
+$\ast$.  Otherwise, follow the initial weight-zero part of the path.
+At the first positive-weight edge, the endpoint gap incident to the
+current vertex joins that vertex directly to $\ast$.  Either case gives
+the required rooted path.  No upper bound on a nonzero edge weight has
+been used.
+\end{proof}
+
+\begin{lemma}[Relative top-handle cancellation]
+\label{lem:cut-dual-relative}
+Suppose an endpoint-gap two-handle has exactly one side on a surviving
+three-handle and its other side is exposed.  This pair can be cancelled
+geometrically.  The resulting presentation retains the original zero-
+and one-handle records and the original attaching curves of every
+unselected two-handle.  The induced homeomorphism can be chosen to fix
+the port subsurface $A$.
+\end{lemma}
+
+\begin{proof}
+The belt sphere of a two-handle $D^2\times I$ is the two-point set
+$\{0\}\times\partial I$.  By hypothesis, the attaching sphere of the
+chosen three-handle meets precisely one of those points and does so once
+in its source product chart.  It does not meet the other point, which
+lies on exposed boundary.  This is the geometric two/three cancellation
+condition, with actual belt intersections rather than a signed cellular
+coefficient.
+
+The elementary cancellation pushes the three-ball through this single
+two-handle to the exposed side.  Equivalently, in the reversed handle
+picture it absorbs a zero-handle and its single connecting one-handle
+into a boundary collar.  There is no other surviving three-handle using
+the selected two-handle, so no other top attaching sphere needs to slide
+over this pair.  All remaining two-handles retain their attaching maps
+to the zero/one stage.
+
+The source port rectangles come from interior bundle gaps of ranks $1,\ldots,w-1$, whereas selected core gaps have ranks $0$ or $w$. Source vertex three-ball neighbourhoods contain no bundle. Thus the source port rectangles lie in the zero/one boundary charts and are
+disjoint from the attaching regions and belt faces of the endpoint-gap
+two-handle and from the vertex-link attaching sphere.  Shrinking the
+source collars slightly gives a cancellation neighbourhood disjoint
+from $A$.  The cancellation is the identity outside that neighbourhood,
+so its induced pair-homeomorphism fixes $A$.  This assertion concerns the
+presentation and the specified port subsurface.  It does not assert a
+pointwise identification of the entire old zero/one submanifold with the
+entire new one.
+\end{proof}
+
+\begin{theorem}[Complete cut-relative elimination of three-handles]
+\label{thm:cut-dual-complete}
+For every authenticated source normal cut above and every spanning tree
+$D$ of $G_x$, there is a geometric two/three cancellation sequence that
+deletes exactly the two-handles indexed by $D$ and all source three-handles.
+The resulting core $K_D$ satisfies
+\[
+  (K_D,A)\cong(K,A),\qquad
+  K_D\cup_A B\cong M\mathbin{\backslash\!\backslash}S.
+\]
+Its zero/one records and all unselected two-handle attaching cycles are
+unchanged.  In particular, it has the same Euler characteristic as $K$.
+\end{theorem}
+
+\begin{proof}
+Root $D$ at $\ast$ and process its other vertices in any order in which
+parents precede children.  For a vertex $v$, select the two-handle of its
+parent edge.  Its $v$ side still meets the attaching sphere of the
+three-handle $v$ exactly once.  The other side is either originally
+exposed or belongs to a parent three-handle already absorbed into the
+exposed boundary.  It is therefore exposed at this stage.  Apply
+Lemma~\ref{lem:cut-dual-relative}.
+
+Induction deletes one distinct two-handle and one distinct three-handle
+per nonroot vertex.  No selected edge is a loop.  A spanning tree has
+exactly $|V_{\mathrm{int}}|$ edges, so all three-handles are deleted.
+Each step is relative to $A$, hence so is the composite homeomorphism.
+Extend this homeomorphism by the identity on $B$ to recover the whole
+cut manifold.  Each cancellation removes one handle contributing $+1$
+and one contributing $-1$ to Euler characteristic, which proves the
+last assertion.
+\end{proof}
+
+There is also a direct embedded-ball interpretation of the proof.
+Remove the formal root from the selected tree.  Every remaining tree
+component has exactly one selected half-edge leading to exposed boundary;
+two such half-edges would make a cycle through the root.  Its source
+vertex three-balls, joined by the selected endpoint-gap tubes, form a
+regular neighbourhood of a tree and hence a three-ball.  This ball meets
+the boundary of $K$ in the single exposed cap disc.  Its remaining
+frontier is also a disc, so removing it reverses the elementary attachment
+of a ball along a boundary disc.  The source port charts miss these
+selected handles.  Thus the ball removal is relative to $A$.  This
+description does not replace the port contract by a homology computation:
+the tree and its product charts give an actual embedded ball.
+
+The theorem covers an empty normal surface, a one-sided normal surface,
+and arbitrary binary multiplicities.  It assumes the validity of the
+authenticated source charts; arbitrary three-handle summaries or group
+presentations are not substitutes.  It does not assert that the resulting
+core is a handlebody.  Raw one/two cancellation, bundle attachment tests,
+closed bundle bases, and later hierarchy conditions remain separate.
+
+\begin{corollary}[Compatibility with bundle consumers]
+\label{cor:cut-dual-consumers}
+Any subsequent construction whose geometric inputs are the original
+zero/one core charts, the unselected two-handle cycles, and the
+authenticated port subsurface can instead use $K_D$.  In particular,
+source disk-bundle absorption and the existing relative bundle attachment
+constructions are valid after the top reduction.  An absorbed additional
+two-handle is not an eligible edge of $G_x$ and cannot be selected by the
+top-cancellation certificate.
+\end{corollary}
+
+\begin{proof}
+The required charts and attaching subsurface are preserved by
+Theorem~\ref{thm:cut-dual-complete}.  Thus the construction attaches exactly
+the same geometric pieces along the same port data.  Added two-handles
+arise from the specified later attachments, rather than from source edge
+endpoint gaps; they have no source vertex-link side authentication and
+are kept outside the eligible graph.
+\end{proof}
+
+An arbitrary later boundary pattern need not be supported on $A$.  It may
+cross an exposed face of a selected endpoint-gap two-handle.  Transporting
+such a pattern is not supplied by the preceding theorem.  The relative
+scope is precisely the authenticated bundle ports and any marks supported
+there.
+
+\subsection{Support dependence and small reusable certificates}
+
+\begin{proposition}[The dual graph depends only on zero support]
+\label{prop:cut-dual-support}
+For a fixed source triangulation, $G_x$ depends only on the set
+\[
+  Z(x)=\{e:w_x(e)=0\}.
+\]
+Here an edge address is $(e,0)$ when its weight is zero and $(e,-)$ or
+$(e,+)$ for its initial or final gap when its weight is positive.  If
+$Z(x)=Z(y)$, these addresses identify $G_x$ with $G_y$.  Every rooted
+forest trace for one is therefore a valid trace for the other after
+independent source authentication.  In particular, this applies to
+$y=mx$ for every positive integer $m$.
+\end{proposition}
+
+\begin{proof}
+The interior vertices, boundary vertices, and oriented endpoint owners
+are fixed by the source.  The side table has only the dichotomy $w=0$
+or $w>0$; no positive magnitude appears in any owner.  Hence the stated
+addresses give identical multigraphs.  A rooted trace only records those
+edges and their endpoint owners, so the same root-before-child argument
+replays it.  Finally, $w_{mx}(e)=m w_x(e)$ has the same zero set for $m>0$.
+\end{proof}
+
+The normal source coordinates and any other source certificate still need
+to be checked for each input.  The proposition reuses the combinatorial
+top trace, not the truth of source authenticity.  An edge-zero bit vector
+of length $O(t)$ is a sufficient cache key together with the source
+triangulation identifier for a graph-only choice such as breadth-first
+search.  A maximum-weight strategy may depend on finer data through its
+row costs: an already selected trace still replays at the same zero
+support, but need not remain cost-optimal there.  Positive scalar
+multiplication preserves the full bounded-core incidence combinatorics
+and the fixed primal forest, so the raw-incidence costs, as well as a
+deterministically tied maximum-weight choice, are also unchanged under
+$x\mapsto mx$ with $m>0$.  Indeed, core zero-handles are selected by the
+vanishing or positivity of triangle and quadrilateral counts, core
+one-handles by the vanishing or positivity of their normal face-arc
+counts, and endpoint-gap incidences by homogeneous comparisons of the
+corresponding partial sums.  Multiplication by $m>0$ preserves all these
+decisions.  It changes the numerical source-chamber and endpoint-rank
+addresses, but not the finite handle identifiers or their incidence
+cycles.  The spanning-forest choices and their literal row costs follow.
+
+A simple certificate lists the source side pair of every endpoint-gap
+two-handle, the ordered pairs
+\[
+  (\text{three-handle identifier},\text{two-handle identifier}),
+\]
+and the surviving source two-handle identifiers.  An independent checker
+reconstructs the side table, checks every selected handle is live, and
+requires exactly one surviving interior side, with its multiplicity
+equal to one.  It then removes that three-handle and two-handle.  At the
+end it requires that no three-handle survives and that the supplied
+survivor list is exact.  A source side that belonged to an earlier removed
+three-handle is then exposed; a loop with two live occurrences fails the
+singleton test.  Survivors can be densely renumbered for a downstream
+checker, while the certificate retains the original source identifier
+map.  Other records, in particular all zero/one identifiers and ports,
+retain their original indices.
+
+\begin{proposition}[Combinatorial and bit costs]
+\label{prop:cut-dual-cost}
+Let $t$ be the number of source tetrahedra and let $L$ bound the bit length
+of the normal coordinates.  Given authenticated source incidence and
+coordinate data, dual graph construction, a breadth-first spanning tree,
+and trace replay require $O(t)$ combinatorial incidence operations.
+The added trace and side table contain $O(t\log(t+1))$ bits, independent
+of normal weight magnitudes.  Recomputing the local weights by
+\eqref{eq:cut-dual-local-weight} adds $O(tL)$ elementary bit work.
+Independent source reconstruction and validation are additional costs.
+\end{proposition}
+
+\begin{proof}
+There are at most $4t$ source vertex flags, at most $6t$ local edge
+occurrences, and at most two core endpoint gaps per global interior edge.
+The vertex-link flag lists have total length $4t$.  Every source edge-link
+wedge appears in at most two endpoint-gap cycles, so the total number of
+two-handle zero/one flag occurrences is $O(t)$.  Building the side table,
+adjacency lists and rooted tree, and scanning a supplied trace therefore
+use $O(t)$ incidence operations.  There is one move per interior vertex.
+All identifiers and owner labels are bounded by $O(t)$, proving the bit
+size bound.  A local edge weight is a sum of a bounded number of
+$L$-bit coordinates, and the finite chart scan has $O(t)$ such operations.
+This proves the bit-work bound.  It does not identify the cost of the
+existing source-preparation routine with this already-prepared graph cost.
+\end{proof}
+
+\subsection{Choosing the top forest optimally for retained work}
+
+A rooted breadth-first tree guarantees completion of the top phase, but
+different trees delete different two-handle rows.  This gives an exact
+and inexpensive optimization that does not presume that incidence size
+determines downstream recognizability.
+
+\begin{proposition}[Spanning trees are exactly the complete deletion sets]
+\label{prop:cut-dual-tree-sets}
+For the source-side cancellation rule used here, the sets of two-handles
+deleted by complete top-cancellation traces are exactly the spanning
+trees of $G_x$.
+\end{proposition}
+
+\begin{proof}
+One direction is Theorem~\ref{thm:cut-dual-complete}.  Conversely, direct
+each selected edge from the three-handle removed at that move to its
+other endpoint.  That endpoint is $\ast$ or a vertex removed earlier.
+Following directed edges strictly decreases deletion time until it
+reaches $\ast$.  Thus there is no directed or undirected selected cycle,
+and every nonroot vertex has a selected path to $\ast$.  There are exactly
+$|V_{\mathrm{int}}|$ selected edges.  They form a spanning tree.
+\end{proof}
+
+\begin{theorem}[Minimum retained additive incidence]
+\label{thm:cut-dual-weighted}
+Assign a nonnegative cost $c_h$ to each source two-handle $h$, and keep
+all costs fixed during the top reduction.  A maximum-weight spanning
+tree of $G_x$, with edge weight $c_h$, minimizes
+\[
+  \sum_{h\notin D}c_h
+\]
+among every complete pure top-cancellation trace.  Examples include the
+total number of raw attaching occurrences or the number of distinct
+nonzero incidences in a row after a fixed zero/one forest contraction.
+The tree can be computed using $O(t\log(t+1))$ graph comparison operations.
+\end{theorem}
+
+\begin{proof}
+Unselected two-handle rows do not change, so retained cost equals
+$\sum_h c_h-\sum_{h\in D}c_h$.  Proposition~\ref{prop:cut-dual-tree-sets}
+says exactly which deletion sets are allowed.  Maximizing the second
+sum is the maximum-weight spanning-tree problem on a multigraph with
+$O(t)$ edges.  Sorting the edges and applying the usual greedy forest
+algorithm proves the complexity statement.  Loops cannot be selected;
+parallel edges are treated as distinct edges.
+\end{proof}
+
+This optimum concerns an additive retained-work objective.  It does not
+assert that the same tree maximizes the number of later cancellations,
+produces the smallest final certificate, or finds a handlebody whenever
+one exists.  Those are different optimization or recognition questions.
+
+\subsection{Combining a dual forest with exact raw cancellation}
+
+Fix a zero/one spanning forest and a source-authenticated nonnegative
+raw incidence matrix $N=(n_{rh})$.  Its rows include every source
+two-handle and may include additional geometrically authenticated
+two-handles from later bundle constructions; these additional rows are
+not eligible dual edges.  Its columns are the remaining one-handles.
+A nonempty row set $R$ is a stopping set if
+\[
+  \sum_{r\in R} n_{rh}\ne 1\quad\text{for every column }h.
+\]
+Because the entries are nonnegative integers, these sums are zero or at
+least two.  This is the established unsigned stopping condition, not
+an algebraic rank or exponent-sum test.
+
+For a rooted tree $D$, let $N\setminus D$ denote deletion of its eligible
+source rows.  A raw positive pivot at $(r,h)$ requires $n_{rh}=1$, deletes
+that row and column, and updates the surviving entries by
+\[
+ n'_{ij}=n_{ij}+n_{ih}n_{rj}.
+\]
+The prior complete raw-cancellation theorem~\cite{prior-stopping,prior-saturated} says that this operation can
+remove all rows exactly when no nonempty stopping set exists.  Equivalently,
+the unit-column peeling algorithm then removes all rows.  This prior
+theorem supplies the following cut-relative consequence.
+
+\begin{theorem}[Tree transversal criterion]
+\label{thm:cut-dual-stopping}
+For a fixed authenticated matrix and zero/one forest, the following
+conditions are equivalent:
+\begin{enumerate}
+ \item Some complete source two/three forest is followed by a complete
+       sequence of positive raw one/two cancellations.
+ \item Some spanning tree $D$ of $G_x$ satisfies
+       $\operatorname{Stop}(N\setminus D)=\varnothing$.
+ \item Some spanning tree $D$ of $G_x$ meets every nonempty stopping
+       set of $N$, where meeting means sharing an eligible source row.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The possible top deletion sets are exactly the spanning trees by
+Proposition~\ref{prop:cut-dual-tree-sets}.  Their effect on raw incidence
+is literal row deletion.  Applying the prior raw theorem proves the
+equivalence of the first two conditions.  A row set of $N\setminus D$
+is a stopping set precisely when it is a stopping set of $N$ disjoint
+from $D$: its entries and columns have not changed.  Therefore no such
+set remains exactly when $D$ meets every original nonempty stopping set.
+\end{proof}
+
+\subsection{A native five-tetrahedron example with strict coverage gain}
+\label{subsec:cut-dual-native-example}
+
+The included fixture
+\texttt{fast/core\_dual\_fixtures.py}, function
+\texttt{interior\_loop\_torus()}, gives a small exact example in which
+forest selection changes the existence of \emph{any} complete positive
+raw continuation.  This is stronger than observing different outcomes
+from two greedy one/two producers.
+
+Here are its complete face identifications.  Tetrahedra and local vertices
+are numbered from zero.  A permutation word $p_0p_1p_2p_3$ means that
+source vertex $i$ maps to target vertex $p_i$.  The reverse gluing is the
+inverse permutation.  The two unpaired faces are $(0,3)$ and $(1,2)$.
+\[
+\begin{array}{c|c|c}
+ \text{one-handle}&\text{paired faces}&\text{vertex permutation}\\
+ \hline
+ 0&(0,0)\leftrightarrow(4,1)&1230\\
+ 1&(0,1)\leftrightarrow(2,0)&1023\\
+ 2&(0,2)\leftrightarrow(1,3)&0132\\
+ 3&(1,0)\leftrightarrow(2,3)&3201\\
+ 4&(1,1)\leftrightarrow(3,0)&1023\\
+ 5&(2,1)\leftrightarrow(4,3)&0321\\
+ 6&(2,2)\leftrightarrow(3,3)&0132\\
+ 7&(3,1)\leftrightarrow(4,2)&0213\\
+ 8&(3,2)\leftrightarrow(4,0)&1302
+\end{array}
+\]
+All nine gluing permutations are odd, so the displayed tetrahedron
+orientations agree.  The source equivalence relations have two global
+vertices and eight global edges.  Three edges lie in the boundary; the
+remaining five are interior.  The boundary consists of two triangles
+with one vertex and three edges and is a connected torus.  The finite
+vertex-link data are
+\[
+\begin{array}{c|c|c|c|c}
+ \text{source vertex}&\text{link vertices}&\text{link triangles}
+       &\text{unpaired link sides}&\chi(\text{link})\\
+ \hline
+ 0\ \text{(boundary)}&10&12&6&1\\
+ 3\ \text{(interior)}&6&8&0&2.
+\end{array}
+\]
+The same face equivalence check verifies that edge links are intervals
+or circles and that there is no reversed edge identification.  Thus the
+vertex links are respectively a disc and a sphere; these checks certify
+the finite-manifold input contract independently of any historical
+fixture-generation method.
+
+Use the zero normal coordinate vector.  There is no parallelity bundle
+and the cut is the source manifold itself.  The source core has handle
+counts $(5,9,5,1)$, and its canonical zero/one forest is
+$T=\{0,1,2,4\}$.  In source two-handle order, the complete unsigned
+one-handle passage lists and the dual side owners are
+\[
+\begin{array}{c|c|c|c}
+ r&\text{source edge identifier}&\text{ordered passage list}
+     &\text{dual side owners}\\
+ \hline
+ 0&2 &(2,4,6,1)&(\ast,v)\\
+ 1&4 &(2,3,5,0)&(\ast,v)\\
+ 2&5 &(1,5,8,7,0)&(\ast,v)\\
+ 3&11&(4,7,8,6,3)&(v,\ast)\\
+ 4&14&(6,7,5)&(v,v).
+\end{array}
+\]
+The vertex $v$ denotes the single three-handle.  The last dual edge is
+a genuine loop with two incidences at $v$ and is ineligible for its
+cancellation.  In columns $(3,5,6,7,8)$, contraction of $T$ leaves
+\begin{equation}
+ N=\begin{pmatrix}
+  0&0&1&0&0\\
+  1&1&0&0&0\\
+  0&1&0&1&1\\
+  1&0&1&1&1\\
+  0&1&1&1&0
+ \end{pmatrix}.
+ \label{eq:cut-dual-native-matrix}
+\end{equation}
+These lists can be reconstructed simply by walking the five interior
+source edge links in the face table.  The delivered independent source
+checker performs that reconstruction before either top-forest replay or
+raw incidence replay.
+
+\begin{proposition}[A strict source-realized difference between forests]
+\label{prop:cut-dual-native-strict}
+For the source in \eqref{eq:cut-dual-native-matrix}, the canonical
+breadth-first top forest leaves a matrix that admits no full positive
+raw cancellation.  The maximum retained-work saving forest leaves a
+matrix that does admit a complete no-fill cancellation, proving that
+the source manifold is a solid torus.  Their retained raw occurrence
+counts are respectively twelve and nine.
+\end{proposition}
+
+\begin{proof}
+The breadth-first producer encounters the edge of row zero first and
+deletes that two-handle with $v$.  The four remaining rows have column
+totals
+\[
+  (2,3,2,3,2).
+\]
+Their entire row set is therefore a stopping set.  Stopping persistence
+excludes every complete sequence of positive raw pivots, including
+sequences that introduce fill.  This failure is not tied to the later
+producer's pivot order.
+
+The five raw row costs are $(1,2,3,4,3)$.  Eligible edges are rows zero
+through three; row four is a loop.  A maximum-weight rooted tree
+therefore uniquely chooses row three, with cost four.  Delete it with
+the three-handle.  The surviving rows have the following unit-column
+peeling sequence, written in the original source row and one-handle
+labels:
+\[
+  (1,3),\quad(2,8),\quad(4,5),\quad(0,6).
+\]
+At each step the named column has total exactly one among the remaining
+rows.  Hence every cancellation is geometric and introduces no fill.
+After contraction of the four zero/one forest edges, the four one/two
+cancellations leave one zero-handle, one one-handle, and no two- or
+three-handles.  The result is a genus-one handlebody.  Since the normal
+surface was empty, this is a direct geometric certificate that the
+source manifold itself is a solid torus, requiring neither an
+irreducibility assumption nor an external recognition oracle.
+
+The initial raw occurrence total is thirteen.  Deleting a row of cost
+one leaves twelve, while deleting the row of cost four leaves nine.
+\end{proof}
+
+The example establishes a strict useful gain for the weighted producer.
+It does not show that this cost objective always finds a successful tree
+whenever one exists.  Its complete source contract, small face table,
+integer passage lists, and positive certificate make it reproducible
+without the tool that was originally used to discover the fixture.
+
+\subsection{Forest-independent obstructions and finite search}
+
+\begin{corollary}[Graphic-rank obstruction for every top forest]
+\label{cor:cut-dual-rank-obstruction}
+Let $R_1,\ldots,R_k$ be pairwise disjoint nonempty stopping sets of $N$.
+Let $U$ be the set of eligible source dual edges whose row labels belong
+to $\bigcup_iR_i$.  If
+\[
+  r_{G_x}(U)<k,
+\]
+where $r_{G_x}(U)$ is the graphic-matroid rank of $U$, then no top forest
+followed by positive raw cancellation can remove all rows.  In
+particular, a stopping set consisting only of ineligible rows and dual
+loops is such an obstruction.
+\end{corollary}
+
+\begin{proof}
+A successful spanning tree must meet every $R_i$ by
+Theorem~\ref{thm:cut-dual-stopping}.  Since the $R_i$ are disjoint, these
+meetings require at least $k$ distinct edges of $D\cap U$.  But a subset
+of a spanning tree is a forest, so
+$|D\cap U|\le r_{G_x}(U)$.  This contradicts the strict inequality.
+If all eligible edges of one stopping set are loops, its rank is zero.
+\end{proof}
+
+This obstruction has a short independently checkable form: list the
+disjoint row sets, check their unsigned stopping sums from the source
+matrix, and compute
+\[
+ r_{G_x}(U)=|V(G_x)|-c(V(G_x),U),
+\]
+including isolated vertices in the component count.  This is an
+obstruction to the stated compiler family, not a certificate that the
+core is not a ball or that the knot is nontrivial.
+
+\begin{proposition}[Raw-peelable row sets need not form a matroid]
+\label{prop:cut-dual-nonmatroid}
+For a fixed nonnegative integral incidence matrix, let an independent
+row set mean one whose induced row submatrix admits complete raw
+cancellation.  These sets form a hereditary independence system, but
+in general do not satisfy matroid augmentation.  A counterexample of
+minimum possible row and column dimensions is
+\[
+ N=\begin{pmatrix}
+  1&2\\
+  1&1\\
+  1&0
+ \end{pmatrix},
+ \qquad\text{with rows }a,b,c.
+\]
+\end{proposition}
+
+\begin{proof}
+Every row subset of a matrix with no nonempty stopping set also has no
+nonempty stopping set.  The established raw theorem therefore proves
+heredity.
+
+Set $I=\{a\}$ and $J=\{b,c\}$.  The set $I$ is independent by its unit
+entry in the first column.  The set $J$ is independent: its second column
+has total one and removes $b$, after which the first column removes $c$.
+Thus $|I|=1<2=|J|$.  However, the column totals on $I\cup\{b\}$ are
+$(2,3)$, and the totals on $I\cup\{c\}$ are $(2,2)$.  Each is a nonempty
+stopping set.  Neither element of $J\setminus I$ can augment $I$.
+
+Any hereditary independence system on at most two elements is a matroid,
+so three rows are necessary.  With a single column, a nonempty row set
+is raw-peelable exactly when it consists of one row with entry one.
+The other rows are loops of the independence system.  This is a rank-one
+uniform matroid on the unit rows, together with loops, so two columns
+are necessary.  The displayed matrix attains both lower bounds.
+\end{proof}
+
+This is a statement about the general unsigned incidence model; it is
+not an assertion that this smallest matrix is the full incidence of a
+particular source cut.  It rules out an automatic appeal to matroid
+intersection for the tree-transversal condition.  Any additional
+exchange property for a narrower family of source triangulations would
+need a separate geometric theorem.  In particular, the additive optimum
+of Theorem~\ref{thm:cut-dual-weighted} should not be advertised as an
+optimum for downstream complete cancellation.
+
+The failure is not caused solely by doubled individual incidences.
+For the Boolean rows
+\[
+ a=(1,0,0),\quad b=(1,1,0),\quad
+ c=(0,1,1),\quad d=(1,1,1),
+\]
+take $I=\{c,d\}$ and $J=\{a,b,c\}$.  The set $I$ peels $d$ in column
+one and then $c$.  The set $J$ peels $c,b,a$ in columns three, two, one.
+But the totals on $I\cup\{a\}$ are $(2,2,2)$, and those on
+$I\cup\{b\}$ are $(2,3,2)$.  Thus Boolean incidence already violates
+augmentation.  As before, this is a matrix statement, without an
+additional claim that these rows form a particular source handle core.
+
+\begin{proposition}[A finite complete forest search]
+\label{prop:cut-dual-search}
+Let $q=|V_{\mathrm{int}}|$ and $m=|E(G_x)|$.  Enumerating all $q$-element
+edge subsets, retaining the spanning trees, and applying complete
+unit-column peeling to $N\setminus D$ decides the equivalent conditions
+of Theorem~\ref{thm:cut-dual-stopping}.  Its time is bounded by
+\[
+  \binom{m}{q}\operatorname{poly}(t,L,|N|)
+  \le m^q\operatorname{poly}(t,L,|N|).
+\]
+Here $|N|$ denotes the encoded raw matrix size.  For $q=O(\log t)$ and
+polynomial encoded matrix size this is quasipolynomial in $t$, apart
+from the displayed polynomial dependence on coordinate bit length.
+\end{proposition}
+
+\begin{proof}
+Every complete top trace deletes one of the enumerated trees.  The
+independent geometric theorem permits every such tree, and exact
+peeling decides full positive cancellation of its row complement.
+Thus all candidates in the restricted family are considered.  The
+number of candidates and the polynomial tests give the stated bound.
+\end{proof}
+
+In general $q=O(t)$, so this is an exponential worst-case search, not a
+quasipolynomial unknot-recognition algorithm.  Even exhaustive success or
+failure concerns a fixed source chart system, a fixed zero/one forest,
+and the positive raw model.  Changes of disk system, intersection-reducing
+slides, new normal cuts and arbitrary boundary-pattern transport are
+outside the search.  The most useful initial implementation is therefore
+the guaranteed polynomial top phase, optionally with the exact additive
+tree objective, followed by the existing independently certified consumers.

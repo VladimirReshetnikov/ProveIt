@@ -1,0 +1,263 @@
+\section{Choosing the dual forest using raw cancellation obstructions}
+\label{sec:forests}
+
+\subsection{The restricted certificate class}
+Fix a zero-/one-handle spanning forest $F$ in the core.  Contracting $F$
+leaves one zero-handle in each component and some one-handles.  Every
+two-handle has a geometric attaching cycle through their belt disks.  Let
+\[
+          A=(a_{rc})\in\N^{R\times C}
+\]
+be its unsigned occurrence matrix: $r$ labels a two-handle and $c$ a
+surviving one-handle.  Signs and cancellations in the fundamental group are
+not used.  Multiple geometric crossings contribute multiple occurrences.
+One may saturate each count at two because only zero, one, and at least two
+matter to the predicates below.
+
+The same row set $R$ labels the edges of the rooted dual graph $D$.
+When interface relations are included, give each row ineligible for top
+cancellation an artificial root loop.  Such a row cannot be selected in
+a tree; it still participates fully in every stopping test.
+Choosing a dual spanning tree $T\subseteq R$ deletes its rows, by
+Section~\ref{sec:geometry}.  We ask whether all remaining rows can be
+removed by raw geometric one-/two-handle cancellation.  A raw pivot
+$(r,c)$ requires $a_{rc}=1$ and has the unsigned update
+\begin{equation}\label{eq:pivot}
+       a'_{ih}=a_{ih}+a_{ic}a_{rh}
+       \qquad (i\ne r,\ h\ne c),
+\end{equation}
+followed by deletion of $r$ and $c$.  This counts the crossings introduced
+by pushing the other attaching bands through the cancelling pair.  It is
+the conservative raw update used by the existing geometric certifier.
+Saturating after each update preserves every future zero/one test.
+
+\begin{definition}[Forest-compatible raw completion]
+The pair $(D,A)$ is \emph{completable} if some spanning tree $T$ of $D$
+leaves $A[R\setminus T,C]$ completely eliminable by pivots
+\eqref{eq:pivot}.  The lower forest $F$ remains fixed throughout this
+definition.
+\end{definition}
+This problem deliberately excludes normal isotopies that change occurrence
+counts, arbitrary handle slides, and replacement of the lower forest.
+Its positive answers are useful geometric certificates.  Its negative
+answers have only the scope of this definition.
+
+\subsection{Stopping sets and the exact raw criterion}
+We recall the stopping-set theorem of the incoming stopping-core work
+\cite{StoppingCores,SaturatedBundles}, including a proof because its invariant
+is essential to the new search.
+
+\begin{definition}[Stopping set]
+A nonempty set $S\subseteq R$ is a stopping set when
+\begin{equation}\label{eq:stopping}
+          \sum_{r\in S}a_{rc}\ne1
+          \quad\hbox{for every column }c.
+\end{equation}
+Equivalently every column has zero or at least two occurrences in $S$.
+A \emph{unit-column peel} removes the unique row incident with a column
+whose total is one.  The column can be removed as well: it has no other
+occurrences, so this pivot creates no fill.
+\end{definition}
+
+\begin{lemma}[Canonical stopping residual]\label{lem:peeling}
+Exhaustive unit-column peeling leaves the same row set regardless of
+tie-breaking.  This set is the union of all stopping sets.  In particular
+a row restriction is peelable exactly when it contains no stopping set,
+and peelability is hereditary under deleting rows.
+\end{lemma}
+\begin{proof}
+The union of stopping sets is stopping.  If a column had total one on the
+union, its unique contributing row would belong to a constituent stopping
+set on which that column also had total one, a contradiction.
+
+A row in a stopping set cannot be peeled while the stopping set is intact,
+because every column through that row has at least two occurrences within
+the set.  Thus every stopping set survives every sequence of peels.  At
+termination, if rows remain, their set is itself stopping.  It therefore
+equals the union of all stopping sets and is independent of the order.
+Finally a stopping subset of a smaller row restriction would also be a
+stopping subset of the larger restriction, proving heredity.
+\end{proof}
+
+\begin{lemma}[Completeness for raw pivots]\label{lem:raw-complete}
+All rows can be removed by arbitrary raw pivots \eqref{eq:pivot} if and only
+if unit-column peeling removes all rows.
+\end{lemma}
+\begin{proof}
+Peeling is a particular raw pivot sequence.  For the converse, suppose
+$S$ is stopping and perform a raw pivot $(r,c)$.  If $r\notin S$, the
+total $m=\sum_{i\in S}a_{ic}$ is zero or at least two.  In every remaining
+column $h$, the new total is
+\[
+       \sum_{i\in S}a_{ih}+m a_{rh}.
+\]
+It is zero or at least two: a formerly zero total either stays zero or
+increases by at least two, and a positive old total was already at least
+two.  Thus $S$ remains stopping after removal of $c$.
+
+If $r\in S$, then $m\geq2$ because $a_{rc}=1$.  Put
+$S'=S\setminus\{r\}$.  The set $S'$ is nonempty; otherwise $S$ would
+already have total one in column $c$.  In a remaining column its total is
+\[
+ \sum_{i\in S'}a_{ih}+(m-1)a_{rh}
+       \ \geq\ \sum_{i\in S}a_{ih}.
+\]
+An old positive total was at least two, and an old zero total has all its
+summands zero.  Hence $S'$ is stopping.  Inductively a nonempty stopping
+set survives every pivot sequence, preventing complete elimination.
+Lemma~\ref{lem:peeling} now proves the converse.
+\end{proof}
+
+The proof explains why signed exponent sums are inadequate.  A curve with
+raw word $x x^{-1}x$ crosses the belt disk three times, even though its
+group word freely reduces to $x$.  Treating these as one crossing silently
+changes the permitted geometric move class.
+
+\subsection{Spanning trees as transversals of obstructions}
+\begin{theorem}[Forest--stopping-set equivalence]\label{thm:transversal}
+Assume $D$ is connected after boundary roots are identified.  A spanning
+tree $T$ is a successful forest-compatible raw completion if and only if
+\begin{equation}\label{eq:hitting}
+                   T\cap S\ne\varnothing
+       \qquad\hbox{for every stopping set }S\subseteq R.
+\end{equation}
+Thus the problem is to choose a basis of a graphic matroid that is a
+transversal of the stopping-set family.
+\end{theorem}
+\begin{proof}
+If $T$ misses $S$, the same stopping set survives in $R\setminus T$, so
+Lemma~\ref{lem:raw-complete} forbids completion.  Conversely, if the
+restriction to $R\setminus T$ fails to peel, its nonempty canonical
+residual is a stopping set missed by $T$.  Taking the contrapositive proves
+the other direction.
+\end{proof}
+
+The family in \eqref{eq:hitting} can be exponentially large.  The theorem
+is useful because a failed peel exposes a witness without listing the
+whole family.  Moreover, peeling must not irrevocably reserve a row for
+lower cancellation.  A row peeled during a partial search may still be
+chosen later as a dual-tree edge.  Heredity makes this safe.
+
+\subsection{Complete obstruction-guided search}
+Maintain a selected forest $Q$ of dual edges.  Contract it in $D$ and remove
+its rows from $A$.  Compute the stopping residual $K_Q$.  If it is empty,
+extend $Q$ to any spanning tree of $D$ and finish.  Otherwise choose any
+nonempty stopping subset $S\subseteq K_Q$, and branch on the edges
+$e\in S$ that are not loops in $D/Q$.  The child adds $e$ to $Q$.
+An inclusion-minimal stopping witness can be sought by successive row
+removals and re-peeling, but minimality is not required for correctness.
+
+\begin{theorem}[Complete forest search]\label{thm:search}
+The preceding search is sound and complete for forest-compatible raw
+completion.  Let $s=|V(D)|-1$ and let $w$ bound the sizes of the stopping
+witnesses actually used.  Its branching depth is at most $s$, with at most
+\begin{equation}\label{eq:search-nodes}
+                     1+w+w^2+\cdots+w^s
+\end{equation}
+nodes.  If a node, including witness selection, costs $P(N)$ for encoded
+input size $N$, the total cost is bounded by \eqref{eq:search-nodes} times
+$P(N)$.  In particular it is $w^{O(s)}\poly(N)$ when $w\geq2$ and the
+witness routine is polynomial; for $w=1$ it is $O((s+1)P(N))$.
+\end{theorem}
+\begin{proof}
+A successful spanning-tree extension of $Q$ must meet any stopping witness
+$S$ in a row not already in $Q$.  Every such edge is independent of $Q$,
+so it appears in one of the stated branches.  Conversely each branch
+retains independence and deletes exactly the rows that its chosen dual
+edges cancel.  Thus branching neither omits a possible completion nor
+creates a false one.
+
+If $K_Q=\varnothing$, connectivity of $D$ ensures that the forest $Q$
+extends to a spanning tree $T$.  The row set $R\setminus T$
+is a subset of the already peelable set $R\setminus Q$.  Heredity proves
+completion.  The final peel order should be recomputed or checked for
+this actual $T$, rather than treating the earlier exploratory order as
+an unverified certificate.
+
+Each branch increases the forest rank by one.  A forest on $s+1$ vertices
+has at most $s$ edges, proving the depth and node bounds.
+\end{proof}
+
+\begin{corollary}[A local quasi-polynomial regime]
+If the source size and coordinate bit lengths are polynomial in a diagram
+size $n$, and $s\log(w+1)=O((\log n)^k)$ for fixed $k$, this restricted
+forest search has quasi-polynomial bit complexity.  The polynomial
+degree-two-column algorithm in Section~\ref{sec:sparse} requires no small
+bound on $s$.
+\end{corollary}
+This is a local certificate-class bound.  The source triangulation can have
+linearly many interior vertices, and no bound on the total hierarchy work
+follows from it alone.
+
+\begin{proposition}[Packing obstruction]\label{prop:packing}
+Let $Q$ be the currently selected forest, and let
+$S_1,\ldots,S_p$ be pairwise disjoint nonempty stopping sets in
+$R\setminus Q$.  A necessary condition for completion is
+\begin{equation}\label{eq:packing}
+       \rk_{D/Q}\left(\bigcup_{i=1}^p S_i\right)\geq p.
+\end{equation}
+For an edge set $X$, the rank is the number of vertices minus the number
+of connected components of the graph with edge set $X$, including isolated
+vertices and ignoring loops as rank contributions.
+\end{proposition}
+\begin{proof}
+A completion must choose at least one edge from each $S_i$.  Disjointness
+forces at least $p$ distinct chosen edges in their union.  These are part
+of an independent forest in the contracted graph, so its rank is at
+least $p$.
+\end{proof}
+In particular a stopping singleton is a mandatory tree edge.  If mandatory
+edges form a cycle, no forest-compatible completion exists.  A stopping
+witness whose every edge becomes a loop is the rank-zero case.  These
+certificates use exact graph incidences and exact integer tests.
+
+\subsection{Why tree choice matters, even for a ball}
+\begin{example}[A geometric two-edge choice]\label{ex:choice}
+Start with a solid torus, equipped with a fixed meridian belt disk for its
+one-handle.  Choose two disjoint parallel primitive curves on its boundary.
+Arrange the first to cross the belt disk once.  In the annulus complementary
+to the first curve, a finger isotopy of the second adds a cancelling pair
+of crossings, so the second crosses three times while remaining embedded
+and parallel to the first.  Attach two two-handles along the curves and cap
+one of the two resulting sphere boundaries with a three-handle.  Before
+the cap the manifold is $S^2\times I$; after it the manifold is a ball.
+
+The dual graph has one nonroot vertex and two parallel edges $a,b$ to the
+root.  The raw occurrence matrix is
+\[
+                  A=\begin{pmatrix}1\\3\end{pmatrix}.
+\]
+Deleting $b$ leaves a raw singleton and succeeds.  Deleting $a$ leaves a
+stopping singleton and fails.  Both choices are valid topological
+two-/three-handle cancellations.  The difference lies entirely in the
+subsequent restricted raw certificate.
+
+If both primitive curves are given such finger pairs, the matrix becomes
+$(3,3)^{\mathsf T}$.  Each row is a stopping singleton.  Their dual edges
+have rank one, so \eqref{eq:packing} certifies impossibility in the raw
+forest class.  The manifold is still a ball.  Thus even an exhaustive
+negative answer in this class must remain inconclusive for handlebody
+recognition.
+\end{example}
+
+This is a geometric existence example in a general handle structure.
+Its actual column totals are four and six, respectively, so it is not
+a native triangular-face core with the specified cocore.  Capping counts
+preserves the finite cancellation decision, but does not authenticate a
+native realization.  The example establishes that forest choice can
+matter geometrically; the source tests provide the separate native evidence.
+
+\begin{example}[Peelable row sets are not a matroid]\label{ex:nonmatroid}
+Consider rows
+\[
+ r_0=(0,0,1),\quad r_1=(0,1,1),\quad
+ r_2=(1,1,0),\quad r_3=(1,1,1).
+\]
+The row sets $X=\{r_2,r_3\}$ and $Y=\{r_0,r_1,r_2\}$ both peel and
+$|X|<|Y|$.  But the column totals of $X\cup\{r_0\}$ are $(2,2,2)$,
+and those of $X\cup\{r_1\}$ are $(2,3,2)$.  Both enlarged sets are
+stopping.  The augmentation axiom therefore fails.  One cannot solve the
+general problem merely by declaring peelable row sets to be a second
+matroid.  The next section obtains a matroid formulation from a genuine
+structural restriction on column support.
+\end{example}

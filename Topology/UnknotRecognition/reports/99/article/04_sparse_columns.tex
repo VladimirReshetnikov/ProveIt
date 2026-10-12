@@ -1,0 +1,335 @@
+\section{A polynomial theorem for sparse active columns}
+\label{sec:sparse}
+
+\subsection{Replacing peeling by directed reachability}
+Call a column \emph{inert} if none of its entries is one.  Every row
+restriction still has no unit entry in that column, so it can never supply
+a unit-column pivot.  Its sums on stopping sets can never equal one.
+It may therefore be ignored for this decision, while its one-handle is
+retained in the topological count.  Assume every non-inert column of $A$
+has at most two nonzero rows.  Counts can still be arbitrarily large;
+they are not assumed to be zero/one.  Define a
+directed graph $P$ on the row set $R$ as follows.
+\begin{itemize}
+\item A column supported only on $r$ with $a_{rc}=1$ makes $r$ an initial
+  seed.  A singleton entry of two or more makes no seed.
+\item For a column supported on $\{u,v\}$, add an arc $v\to u$ if
+  $a_{uc}=1$, and an arc $u\to v$ if $a_{vc}=1$.
+\item Inert columns, including zero columns, make no contribution.
+  Multiple arcs can be merged.
+\end{itemize}
+The direction records an implication: deleting the tail makes the head a
+unit-column row.  Let $Z$ be the set of initial seeds.
+
+\begin{lemma}[Exact reachability model]\label{lem:reachability}
+For any set $Q$ of rows deleted by top cancellations, the union of $Q$
+and all rows subsequently removed by unit-column peeling is exactly the
+set reachable in $P$ from $Z\cup Q$.
+\end{lemma}
+\begin{proof}
+Every initial seed can peel.  If an arc $v\to u$ comes from a column,
+then that column has exactly one occurrence on $u$ and no possible other
+row except $v$.  Once $v$ is deleted, $u$ can peel.  Induction on path
+length therefore shows that every reachable row is removed.  The
+certifying column cannot have been used and removed while its head row
+was still live: at a unit-column pivot it had no other live owner.
+
+Conversely, a row peeled at any step is certified either by a singleton
+unit column, making it an initial seed, or by a two-row column whose other
+row has already been removed.  In the latter case the corresponding
+directed arc gives a reachability step.  Induction on the peel sequence
+proves the reverse inclusion.
+\end{proof}
+
+Let the strongly connected components of $P$ be contracted into its
+acyclic condensation graph.  Call a component a \emph{mandatory component}
+if it is a source of this condensation graph and contains no initial seed.
+List these components as $S_1,\ldots,S_q$.
+
+\begin{lemma}[The only mandatory groups]\label{lem:mandatory}
+Deleting $Q$ allows complete peeling if and only if
+\[
+                        Q\cap S_i\ne\varnothing
+                           \quad(1\leq i\leq q).
+\]
+The $S_i$ are pairwise disjoint stopping sets.
+\end{lemma}
+\begin{proof}
+A source component with no seed cannot be reached from another component.
+It therefore needs a row of $Q$.  Conversely every component of a finite
+acyclic graph is reachable from some source.  If each source either contains
+a seed or is met by $Q$, all rows are reachable, and
+Lemma~\ref{lem:reachability} applies.
+
+To see that a mandatory component is stopping, consider a column having
+an occurrence on a row of $S_i$.  If it has only one row and count one,
+that row would be a seed.  If it has exactly one row in $S_i$, another row
+outside $S_i$, and count one on the inside row, it would give an incoming
+arc to the source component.  Both cases are impossible.  If both rows
+are inside, the total is at least two; if the only inside count is larger
+than one, the same is true.  An inert column can never sum to one.
+Hence every column has zero or at least two
+occurrences on $S_i$.
+\end{proof}
+
+\subsection{Independent representatives in a graph}
+Each mandatory component is a set of row labels and therefore a set of
+edges of $D$, with ineligible rows represented by root loops.  The groups
+are disjoint.  We need one edge from each group,
+with all chosen edges independent in the graphic matroid.  Such a partial
+forest can be extended to a spanning tree, and any spanning tree meeting
+the groups contains such a partial forest.
+
+For completeness we state and prove the independent-representatives
+criterion, a classical result of Rado \cite{Rado1942}.
+
+\begin{lemma}[Rado's rank criterion]\label{lem:rado}
+Let $M$ be a matroid and $S_1,\ldots,S_q$ finite subsets of its ground set.
+There exist distinct representatives $e_i\in S_i$ forming an independent
+set if and only if
+\begin{equation}\label{eq:rado}
+       \rk_M\left(\bigcup_{i\in J}S_i\right)\geq |J|
+       \qquad\text{for every }J\subseteq\{1,\ldots,q\}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Necessity follows by restricting an independent representative set to $J$.
+The case $q=0$ is empty.  For sufficiency induct on $q$.  The case $q=1$
+says that $S_1$ contains
+a nonloop, which follows from its positive rank.
+
+Suppose a nonempty proper subfamily $J$ is tight in \eqref{eq:rado}.
+By induction choose independent representatives $B$ for $J$.  They have
+cardinality and rank $|J|$, so they span $U_J=\bigcup_{i\in J}S_i$.
+For a set $K$ of remaining groups, contraction by $B$ gives
+\[
+ \rk_{M/B}(U_K)
+   =\rk_M(U_K\cup B)-|J|
+   =\rk_M(U_K\cup U_J)-|J|
+   \geq |K|.
+\]
+Apply induction in the contracted matroid to the remaining groups.  Their
+representatives together with $B$ give the required independent set.
+
+If there is no nonempty proper tight subfamily, every such subfamily has
+rank at least its size plus one.  Choose any nonloop $e\in S_q$.
+For a nonempty set $K\subseteq\{1,\ldots,q-1\}$,
+\[
+            \rk_{M/e}(U_K)\geq\rk_M(U_K)-1\geq |K|.
+\]
+Induction after contracting $e$ supplies the remaining representatives;
+adjoining $e$ finishes the proof.  The contraction treats $e$ as absent
+from the remaining ground set, so the representatives are distinct.
+\end{proof}
+
+\begin{theorem}[Polynomial forest choice in the two-row regime]
+\label{thm:degree-two}
+Suppose $D$ is a connected rooted multigraph, and every non-inert column
+of $A$ has at most two nonzero rows.  Compute the mandatory components
+$S_1,\ldots,S_q$ of $P$.  Then the following are equivalent:
+\begin{enumerate}
+\item $(D,A)$ has a forest-compatible raw completion;
+\item the groups $S_i$ have an independent system of representative edges
+  in the graphic matroid of $D$;
+\item for every set $J$ of mandatory groups,
+\begin{equation}\label{eq:graphic-rado}
+             \rk_D\left(\bigcup_{i\in J}S_i\right)\geq |J|.
+\end{equation}
+\end{enumerate}
+These conditions can be decided in polynomial time.  A positive certificate
+is a spanning tree with an explicit complete peel order.  A negative
+certificate is a subfamily $J$ violating \eqref{eq:graphic-rado}, together
+with the mandatory-component data, which can be recomputed independently.
+\end{theorem}
+\begin{proof}
+Lemma~\ref{lem:mandatory} reduces completion to choosing a spanning tree
+meeting each mandatory group.  Such a tree contains independent
+representatives.  Conversely an independent representative set extends
+to a spanning tree, which meets every group and therefore succeeds.
+Lemma~\ref{lem:rado} proves the equivalence with the rank inequalities.
+
+For the algorithmic assertion, restrict the ground set to the union of
+the groups.  Intersect the graphic matroid with the partition matroid
+allowing at most one edge from each group.  A common independent set
+of size $q$ gives the representatives.  Matroid intersection has a
+polynomial augmenting-path algorithm with independence oracles
+\cite{Edmonds1979}.  Here the oracles are elementary: a
+disjoint-set forest detects graphic cycles, and color counts test the
+partition condition.  The residual exchange graph of a failed maximum
+intersection produces a rank defect; equivalently the matroid-intersection
+min--max theorem and Lemma~\ref{lem:rado} supply the subfamily $J$.
+The delivered implementation extracts such a witness and its checker
+verifies the inequality directly, without trusting an optimality assertion.
+\end{proof}
+
+\subsection{Explicit algorithm and complexity scope}
+The algorithm first scans columns to detect the unsupported case of an
+active column with more than two incident rows.  It then computes seeds,
+arcs, strongly connected
+components, and mandatory groups.  These steps take linear time in the
+matrix incidence size, with standard adjacency-list graph algorithms.
+
+Starting from the empty common independent set, the matroid-intersection
+algorithm builds an exchange graph.  Its vertices are candidate edges.
+Arcs encode exchanges that preserve one of the two matroids, and endpoints
+encode single-element additions that preserve the other.  A shortest
+augmenting path toggles membership and increases the common independent
+set by one.  If no path exists, the reachable set yields the min--max
+certificate.  There are at most $q\leq|R|$ augmentations.  Even a conservative
+implementation using $O(|R|^2)$ oracle calls per augmentation and rebuilding
+a graphic oracle in $O(|R|+|V(D)|)$ operations is polynomial:
+\[
+ O\bigl(I+|R|^3(|R|+|V(D)|)\bigr),
+\]
+where $I$ is the occurrence-input size.  No enumeration of all subsets $J$
+in \eqref{eq:graphic-rado} is required.  The implementation and measured
+operation counts are documented in Sections~\ref{sec:implementation}
+and~\ref{sec:experiments}.
+
+The column restriction is a geometric crossing restriction in an
+authenticated core, not a bound on algebraic rank or on the number of
+vertices of $D$.  Large counts on either of the two rows are permitted.
+For example, an abstract solver input column $(1,2^{1000})^{\mathsf T}$
+contributes just the arc
+from the second row to the first.  A column with entries $(2,2,2)$ is
+inert and harmless for the restriction.  A column with entries $(1,1,1)$
+is outside the theorem.  These large-count examples concern the generalized
+finite solver, not the original native columns bounded below.
+
+\subsection{Why shortest augmentation works, and where the obstruction comes from}
+Here is a self-contained justification for the specialized exchange step.
+Restrict to the union $G$ of the mandatory groups and maintain a rainbow
+forest $F$.  The exchange graph has sources $e\notin F$ for which $F+e$
+is a forest and targets $e\notin F$ of an unrepresented group.  For
+$f\in F$ and $e\notin F$ it has arcs
+\[
+ f\longrightarrow e\quad\hbox{if }F-f+e\hbox{ is a forest},\qquad
+ e\longrightarrow f\quad\hbox{if }F-f+e\hbox{ is rainbow}.
+\]
+Take a shortest source-to-target path
+$e_0,f_1,e_1,\ldots,f_\ell,e_\ell$.  None of its intermediate outside
+vertices is a target, so $e_{i-1}$ has the group of $f_i$, whereas
+$e_\ell$ has a new group.  The symmetric difference is therefore rainbow
+and has $|F|+1$ edges.
+
+For graphic independence, represent edges by vertex-incidence vectors
+over $\mathbb F_2$.  The forest vectors are independent.  The source
+$e_0$ is outside their span.  Every later $e_i$ is not a source, since
+otherwise its suffix would shorten the path.  It therefore has a unique
+fundamental cycle in $F$.  Its expansion in the forest basis has
+coefficient one at $f_i$ and coefficient zero at each $f_j$ with $j<i$;
+a nonzero earlier coefficient would supply the shortcut $f_j\to e_i$.
+Modulo $F\setminus\{f_1,\ldots,f_\ell\}$ these expansions form a
+triangular matrix with unit diagonal.  They are independent, and adding
+$e_0$, outside the original span, preserves independence.  The augmented
+set is a larger rainbow forest.
+
+If no target is reachable, let $W$ be the reachable set of edge labels.
+Every group appearing in $W$ is represented by an edge of $F\cap W$:
+an unrepresented reachable group would give a target, and an outside
+edge in a represented group has an arc to that group's selected edge.
+Thus exactly $|F\cap W|$ groups appear in $W$.  Each outside edge not
+in $W$ is spanned by $F\setminus W$: it is not a source, and its
+fundamental cycle has no reachable selected edge, which would give an
+incoming exchange arc.  Hence
+\[
+                   \rk_D(G\setminus W)=|F\setminus W|.
+\]
+Let $J$ consist of the groups with no edge in $W$.  If $|F|<q$, then
+\[
+ \rk_D\left(\bigcup_{j\in J}S_j\right)
+ \leq |F\setminus W|
+ =|F|-|F\cap W|<q-|F\cap W|=|J|.
+\]
+This supplies the claimed negative certificate directly.  The checker
+only needs the stopping sets and the rank inequality, not the internal
+exchange graph.
+
+\subsection{A geometric bound isolating the remaining native case}
+\begin{proposition}[Three occurrences per native cocore]\label{prop:three}
+For the unsigned matrix of original native core two-handles against
+native one-handle cocores,
+\[
+                         \sum_r a_{rc}\leq3
+                    \qquad\hbox{for every column }c.
+\]
+The same holds after contraction of a fixed lower zero-/one-handle forest
+and any dual-tree row deletion.  It is not asserted after adding boundary
+relations or performing later handle slides.
+\end{proposition}
+\begin{proof}
+Work in one abstract triangular source face before quotient identifications.
+Its disjoint normal arcs have endpoints on distinct local sides.  Every
+complementary disk region meets each of the three sides in at most one
+gap.  This follows inductively: an additional arc splits one region,
+divides its intervals on the two endpoint sides between the children,
+and leaves each other side interval wholly in at most one child.
+Initially the assertion holds for the uncut triangle.
+
+The cocore of a native one-handle is one such face region.  Each geometric
+traversal by a core two-handle corresponds to an actual boundary-gap
+occurrence on that cocore, of which there are at most three.  Different
+occurrences remain counted even if quotient identifications give them
+the same global edge or handle label.  Removing parallelity two-handles
+can only decrease the count.  Lower forest contraction deletes its
+columns and introduces no crossings of retained cocores.  Dual-tree
+normalization deletes rows while retaining their attaching charts.
+\end{proof}
+
+Consequently, up to permutation, every nonzero native column has
+positive-entry multiset
+\[
+        (1),\ (2),\ (3),\ (1,1),\ (1,2),\ \hbox{or }(1,1,1).
+\]
+The last shape is the only one outside Theorem~\ref{thm:degree-two}.
+For its three rows $u,v,w$, peeling gives the two-premise implications
+$\{u,v\}\to w$, $\{u,w\}\to v$, and $\{v,w\}\to u$.
+This is a precise point at which ordinary directed reachability ceases
+to suffice.
+
+\begin{proposition}[Parity compatibility with the dual graph]
+\label{prop:cycle}
+Use the actual unsaturated source counts in this statement.  Before top
+cancellations, the dual edges whose entries in a fixed source column are
+odd form an even-degree subgraph of $D$.  The same statement
+holds for the retained rows in $D/Q$ after contracting a selected dual
+forest $Q$.
+\end{proposition}
+\begin{proof}
+Work over $\mathbb F_2$.  In the handle chain complex, the boundary of
+a three-handle records the actual cap incidences of its two-handles
+modulo two.  Thus $\partial_3$ is the incidence matrix of $D$ with the
+formal root row omitted, transposed to the handle-boundary convention.
+The corresponding row of $\partial_2$ is the unsigned source column
+modulo two.  The identity $\partial_2\partial_3=0$ implies even degree
+at each three-handle vertex.  Loops contribute twice.  The root also
+has even degree, since the sum of all graph degrees is even.  Contraction
+of a nonloop combines its endpoint parity equations and deletes that
+edge; an even subgraph remains even in the contracted multigraph.
+Iterate along $Q$.
+\end{proof}
+
+A native $(1,1,1)$ column is therefore a three-edge mod-two cycle:
+a triangle, a parallel pair together with a loop, or three loops.
+A singleton odd entry must label a dual loop.  These are necessary
+geometric compatibility conditions, not a realization theorem for arbitrary
+matrices.  The nonmatroid example in Section~\ref{sec:forests} already
+has column totals $(2,3,3)$.  It can also satisfy the parity condition:
+make $r_0,r_2,r_3$ three parallel root-to-vertex edges and $r_1$ a loop.
+Its three columns are then even subgraphs.  Thus neither of these two
+necessary conditions restores the matroid exchange axiom.  No native
+triangulated realization of that example is claimed.
+
+\subsection{The boundary between polynomial and general search}
+Theorem~\ref{thm:degree-two} does not establish an intrinsic complexity
+dichotomy for all handle structures.  We do not prove the unrestricted
+problem NP-hard, and an improved algorithm may exist for other classes.
+The exact obstruction-guided procedure remains available when the column
+restriction fails.  Its canonical residual and graphic contraction can
+also expose a smaller two-row instance later in the search.
+
+A practical implementation can therefore use the polynomial solver first,
+then use the general search with an explicit budget.  Positive output
+always carries a tree and checked peel order.  Exhaustion under a budget
+must produce an inconclusive status; it must not be confused with a
+negative rank certificate or an exhaustively checked search tree.

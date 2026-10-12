@@ -1,0 +1,173 @@
+\section{Implementation, certificates, and integration}
+\label{sec:implementation}
+
+\subsection{A small extension to the native entry point}
+The production-facing change is deliberately confined to a supplied-cut
+operation.  Four new modules implement geometric graph compilation, its
+independent replay, the completed boundary-kernel branch, and its replay.
+Two existing entry points acquire a dispatch to the new branch.  The graph
+and reduction routines receive the authenticated geometry that the caller
+has already constructed.  Consequently their introduction does not repeat
+the weighted-orbit discovery that dominates some cuts.
+
+The producer follows this sequence:
+\begin{enumerate}
+\item Compile the actual cap endpoints of every source core two-handle.
+  Maintain a dense array of source vertex flags; exposed flags receive
+  the root label.  No array is indexed by a normal coordinate value.
+\item Find a rooted breadth-first tree.  Delete its two-handles and all
+  three-handles, preserving the surviving two-handle order and assigning
+  consecutive reduced identifiers.  Keep the lower charts, ports, and
+  source coordinates intact.
+\item Construct the existing ordered parallelity boundary skeleton, using
+  the remainder of the caller's orbit budget.  Run the existing finite
+  boundary kernel on the reduced geometry and that skeleton.
+\item If the kernel completes, return its exact component census and, when
+  requested, the composite certificate.  Otherwise return an inconclusive
+  result with the recorded stage and reason.
+\end{enumerate}
+The shipped native producer uses a deterministic breadth-first tree.  The
+more sophisticated forest solvers are delivered as separate research
+modules and are used in the matrix audit.  They are not silently inserted
+into the production entry point.  On the ten affected corpus cuts, exhaustive
+fixed-kernel analysis finds no additional positive census beyond the seven
+obtained by this simpler native branch.
+
+\subsection{The composite certificate and trust boundary}
+The new outer schema is \code{normal-cut-handlebodies-v6}.  Its exact
+fields are \code{schema}, \code{parallelity}, \code{boundary},
+\code{dual}, \code{kernel}, and \code{census}.  The two source packets
+are the existing normal-parallelity and ordered-boundary certificates.
+The new inner schema is \code{source-core-dual-forest-v1}, with just
+\code{schema} and \code{forest}; the latter is a list of original
+two-handle identifiers.
+
+The independent outer checker first authenticates both source packets from
+the supplied triangulation and normal vector.  It then reconstructs cap
+endpoints and checks the supplied tree by union--find.  It requires exactly
+$s$ distinct, valid, acyclic edges and verifies connection to the root.
+It constructs the retained chart separately, replays the existing boundary
+kernel, and compares the claimed census with the reconstructed one.
+The independent dual checker imports no graph compiler or forest producer.
+It uses its own endpoint table, a different root label, and independent
+connectivity bookkeeping.  Sharing the mathematical endpoint convention
+is necessary; sharing a producer's unchecked graph would not be sufficient.
+
+The inner checker is intentionally a checker for \emph{authenticated}
+geometry, not a substitute for the source validator.  Calling it directly
+on an arbitrary dictionary does not authenticate a three-manifold.  This
+precondition is documented in the modules and is enforced by the outer
+entry point.  The contract excludes false inferences from an algebraic
+incidence matrix: a coefficient of $\pm1$ is not accepted as a geometric
+two-/three-handle cancellation without the actual cap occurrences.
+
+Native source integers use the repository's exact integer codec.  Large
+binary multiplicities survive replay and census comparison without a
+machine-word truncation.  The tree itself uses only $O(t)$ source labels.
+Normal weights occur only in endpoint arithmetic and in the already
+existing source and bundle packets.  The statement that the new stage is
+polynomial in encoded size is not a statement that every previous stage's
+implementation has the same tight bound.
+
+\subsection{Failure and resource semantics}
+Successful native output is \code{COMPLETE}; all uncompleted native paths
+are \code{INCONCLUSIVE}.  In particular, inability to root a supplied dual
+graph is conservative even though Theorem~\ref{thm:native} rules it out
+under the native contract.  A stalled boundary kernel is also conservative.
+Neither status asserts that the source knot is nontrivial.
+
+The callback used by the existing pipeline is propagated through graph
+construction, adjacency traversal, boundary processing, and replay.
+The outer verifier's \code{max_operations} parameter bounds the existing
+orbit-proof operation records; it is not a universal bound on every Python
+instruction or on arbitrary malformed input length.  The callback remains
+the surrounding cancellation mechanism.  A hard total verification budget
+would need a separate, consistently charged policy across all imported
+checkers.  The tests preserve the current semantics rather than inventing
+an incompatible interpretation for this one branch.
+
+The finite graph/matrix solvers use \code{SUCCESS}, \code{NO_FOREST},
+and \code{INCONCLUSIVE}.  Their negative statement has a different and
+strictly specified meaning: no compatible tree completes raw cancellation
+in that supplied model.  They can certify this by a disconnected graph
+cut, a disjoint stopping-set rank defect, or a complete obstruction search
+tree.  A disconnected finite input is useful for checker testing; it cannot
+arise from the admitted native source graph.  Work or node exhaustion, and
+the general Python producer's interpreter recursion limit, give only
+\code{INCONCLUSIVE}.  The complete mathematical search theorem refers to
+the finite procedure with sufficient resources.
+
+\subsection{The separate finite graph/matrix implementation}
+The source object has an integer vertex count, an integer column namespace,
+one sparse occurrence row per two-handle, and one graph edge or \code{null}
+per row.  Vertex zero is the root.  A \code{null} row is not eligible for
+top cancellation; this covers the extra annular relations in the boundary
+kernel.  Equivalently, the theory may give every such row an artificial
+root loop.  This convention allows the same stopping criterion to include
+both deletable source relations and nondeletable interface relations.
+
+Counts are replaced by their values capped at two.  Sparse dictionaries
+retain only named columns, so a very large binary column namespace does
+not allocate that many entries.  Input validation rejects duplicate
+incidences and malformed labels.  The graph checker also detects an omitted
+isolated vertex without allocating a declared, potentially enormous
+namespace.  These details keep validation tied to the supplied encoding.
+
+The polynomial producer computes initial unit seeds and directed arcs,
+then the source strongly connected components.  A shortest-path exchange
+algorithm constructs a rainbow graphic forest.  The general producer
+computes the stopping core, optionally shrinks a witness to inclusion
+minimality, contracts a chosen graph edge, and branches only on eligible
+nonloops.  Singleton choices are forced.  Every positive result includes
+the final spanning tree and a peel order on the immutable source rows.
+The verifier checks each advertised unit-column pivot against those rows,
+without running the producer's peeling queue or exchange search.
+
+For a rank obstruction the checker verifies that the listed row groups
+are disjoint, nonempty stopping sets; computes the rank of their eligible
+edge union; and checks that this rank is smaller than the number of groups.
+It does not need to trust that the producer identified strongly connected
+components correctly.  For a negative search tree it checks every node's
+stopping set and exact coverage of the eligible branches, including the
+accumulated forest contractions.  This distinction between discovering
+and checking a witness is central to the implementation.
+
+\subsection{Verification strategy}
+The native focused tests cover the source orientation convention, ordinary
+and loop edges, self-identifications, multiple interior vertices, geometric
+port retention, exact Euler characteristic, source and certificate
+mutations, older-schema dispatch, resource callbacks, one-sided normal
+surfaces, and very large binary multiplicities.  An independent cap oracle
+walks source local incidences on all 106 corpus cuts.  Producer-disabled
+tests ensure that replay does not call the new discovery routines.
+
+The finite focused tests include true augmenting paths of length three,
+rank defects requiring a proper subfamily of source components, exhaustive
+negative proof-tree coverage, loops and parallel edges, ineligible rows,
+nonunit counts, huge sparse namespaces, and adversarial certificate
+mutations.  The larger oracle audit separately enumerates spanning trees
+and nonempty stopping subsets on small cases.  This tests both positive
+and negative claims against a structurally different decision procedure.
+
+These are executable regression and cross-checking tests, not a formal
+proof assistant development.  The manuscript supplies the mathematical
+proofs, and the checkers reduce the executable trust surface.  Regina
+\cite{Regina} supplies a further, independently implemented topological
+comparison for the new native positive censuses.
+
+\subsection{Integration boundaries}
+The package targets the exact source revision \basecommit.  Apply its
+patch to that revision, run the focused tests and source replay, and then
+rebase through the current entry points if the repository has advanced.
+The small dispatch changes should be reviewed especially carefully against
+newer certificate schemas or budget semantics.  The patch does not revise
+the full recognizer's verdict logic, widen the native source validator,
+or assert completeness of the boundary kernel.
+
+The standalone forest module is ready for experimentation but remains a
+separate integration decision.  A future production importer must bind
+its matrix to authenticated geometric words and label every nondeletable
+relation correctly.  The matrix audit included here demonstrates that
+binding for the current fixed boundary kernel; it does not justify
+reusing a cached matrix after an unrecorded change of lower forest,
+interface attachment, or handle slide.

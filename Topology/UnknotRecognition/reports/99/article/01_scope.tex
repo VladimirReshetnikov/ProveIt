@@ -1,0 +1,120 @@
+\section{Research target, source state, and contribution}
+\label{sec:scope}
+
+\subsection{The particular obstruction addressed here}
+The maintained algorithm has several mathematically distinct layers.
+The complete recognizer can use exact invariant computations and other
+certifying procedures.  The normal-surface research pipeline separately
+constructs compressed cuts, their parallelity bundles, finite complementary
+cores, ordered interfaces, and, when a sufficient criterion succeeds,
+handlebody censuses.  A census records every component's genus and binary
+multiplicity.  The latter pipeline supplies potential building blocks for
+hierarchies, but it is not itself the complete unknot recognizer.
+
+This work fixes one precise gap in that pipeline.  At the source revision
+\basecommit\ \cite{ProveIt}, both the core certifier and the supplied-cut entry point
+stop on a nonempty list \code{handles3}.  This is a conservative implementation
+restriction, not a theorem that the corresponding manifolds are difficult.
+The retained source charts already contain sufficient information to
+remove these handles geometrically.  Our first contribution is to recover
+that information, prove the reduction relative to the exposed interfaces,
+and connect it to the existing independently checked boundary kernel.
+
+The pinned files are in
+\code{Topology/UnknotRecognition/fast/fastunknot/}; the principal entry point is
+\code{normal_cut_handlebodies.py}.  The new branch reuses its already computed
+parallelity packet.  It does not start a second parallelity discovery.
+The new certificate is dispatched through
+\code{normal-cut-handlebodies-v6}.  Earlier schemas remain supported.
+The package includes the patch and a machine-readable source manifest.
+
+\subsection{Why this is a continuation of the existing work}
+We inspected the current implementation, the maintained synthesis, and the
+ten archives in \code{docs/incoming} at the pinned revision.  Several tempting
+ideas are already present there and are not claimed as discoveries here.
+In particular:
+\begin{itemize}
+\item unsigned stopping sets and complete unit-column peeling are established
+  by the incoming stopping-core and saturated-bundle reports;
+\item cographic persistence uses chamber graphs to retain simultaneously
+  nonseparating surfaces and accounts for causal resets;
+\item modular Morse certificates verify supplied compressed matchings, with
+  an explicit regular-geometry hypothesis;
+\item genus budgets, sparse cut grammars, and native ordered interfaces already
+  give several complementary size and attachment bounds.
+\end{itemize}
+None of those ten packages implements the native dual two-/three-handle
+normalization developed below.  The combination of dual forest selection
+with the stopping obstruction also poses a new optimization problem within
+this development.  Its degree-two-column case leads to the polynomial
+algorithm in Section~\ref{sec:sparse}.
+
+Our novelty claims are deliberately local: a source-specific compiled
+normalization and certificate interface, together with the stated
+constrained-cancellation characterizations and algorithms.  We make no claim
+that handle cancellation, spanning trees, or matroid intersection are new,
+and no claim of an exhaustive priority search across all literature.
+
+\subsection{Relationship to Lackenby's programme}
+Lackenby's 2026 preprint \cite{Lackenby2026} presents a hierarchy algorithm
+for essential boundary patterns and incompressibility.  Its
+Proposition~9.1 bounds iterations by
+\begin{equation}\label{eq:lackenby-iterations}
+                 L(g+1)^L,
+\end{equation}
+where $L$ bounds hierarchy length and $g$ bounds surface pattern-complexity.
+Its Section~9 explicitly separates this count from a full running-time
+analysis.  The refined construction gives a linear bound on hierarchy
+length in Proposition~10.2; the introduction leaves the intended speed-up
+for further work.
+
+There is also a distinction between two announced exponents.  Early Oxford
+publicity uses $n^{O(\log n)}$ \cite{Oxford2021}.  The author's March 2021 slides
+give $L=O((\log n)^2)$ and $g=O(n^2)$, resulting in
+\begin{equation}\label{eq:announced}
+       n^{O((\log n)^2)}=2^{O((\log n)^3)};
+\end{equation}
+the 2024 Tsinghua seminar description repeats this latter bound
+\cite{LackenbySlides,Tsinghua2024}.  Both are quasi-polynomial, but they
+are not identical.  We aim toward the general quasi-polynomial programme
+without treating a local polynomial operator as a proof of either exponent.
+
+Compressed cutting itself is established prior art.  Theorem~9.3 of
+\cite{Lackenby2021} already gives a polynomial algorithm in triangulation
+size and logarithmic surface weight, using Agol--Hass--Thurston orbit
+methods \cite{AHT2006}.  Theorem~14.4 of \cite{Lackenby2026} gives the
+uniform-handle version, including bundle type and attachment information.
+Our contribution concerns an explicit subsequent native operator and its
+certification.  It does not replace or re-prove those general existence
+theorems.
+
+\subsection{Statements proved and statements left open}
+The main mathematical results are as follows.
+\begin{enumerate}
+\item The native dual graph has $O(t)$ vertices, edges, and incidence work.
+  It is rooted for every admitted source and every admitted normal vector.
+  Its spanning trees give geometric reductions of all core three-handles
+  (Theorem~\ref{thm:native}).
+\item This graph depends only on which source edge weights vanish.  A tree
+  can therefore be reused throughout such a support stratum, including all
+  positive scalar multiples (Corollary~\ref{cor:support}).
+\item For a fixed lower spanning forest, successful dual trees are exactly
+  the graphic bases that intersect every stopping set of the remaining
+  unsigned occurrence matrix (Theorem~\ref{thm:transversal}).
+\item Stopping witnesses give a complete parameterized search; insufficient
+  graphic rank of a family of disjoint witnesses gives a rigorous obstruction
+  (Theorem~\ref{thm:search} and Proposition~\ref{prop:packing}).
+\item If every non-inert column has at most two incident rows, tree selection
+  is polynomial and has explicit positive and negative certificates
+  (Theorem~\ref{thm:degree-two}).  Every original native column has at most
+  three total occurrences, isolating $(1,1,1)$ as the remaining native
+  type (Proposition~\ref{prop:three}); its odd entries form a dual cycle
+  (Proposition~\ref{prop:cycle}).
+\end{enumerate}
+The geometric scope is a supplied compressed cut with authenticated charts.
+The exact search scope fixes the lower zero-/one-handle forest, allows the
+specified dual-tree reduction, and then allows raw unsigned one-/two-handle
+cancellation.  Failure of this restricted search proves no assertion that
+the manifold is not a handlebody or that the original knot is nontrivial.
+Arbitrary handle slides, changes of the lower forest, and hierarchy-wide
+search remain outside that completeness theorem.
