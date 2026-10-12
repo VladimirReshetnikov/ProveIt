@@ -1,0 +1,303 @@
+\section{A polynomial signed-group terminal with an essential Euler gate}
+\label{sec:euler-group-terminal}
+
+The 12 October continuation integrates report~111's source-bound free-group
+terminal into the maintained whole-cut portfolio.  It can certify a cut even
+when the geometric private-column cancellation attempts stop.  Its output is
+an \emph{unmarked} handlebody census.  The certificate proves an actual
+fundamental-group presentation is free and checks the Euler characteristic
+of the original three-dimensional cut.  It does not infer freeness from
+abelianization, and its word substitutions do not supply marked geometric
+slides.  This section gives the theorem, the exact discovery bound, the
+integration contract and fresh validation evidence.  It leaves the general
+quasi-polynomial unknot-recognition goal open.
+
+\subsection{Why a free group needs the original Euler characteristic}
+
+\begin{proposition}[Euler-checked free-group criterion]
+\label{euler-group:criterion}
+Let $W$ be a finite union of compact connected orientable PL
+three-manifolds, every component having nonempty boundary.  Let $c$ be its
+component count.  Suppose the free product of its component fundamental
+groups is $F_r$.  Then all components are handlebodies if and only if
+$\chi(W)=c-r$.  The genus of each component is the rank of its free group.
+\end{proposition}
+\begin{proof}
+Each component group injects into $F_r$ and is therefore free, of finite
+rank $r_i$.  Abelianizing the free product gives $\sum_i r_i=r$.
+Since every component has boundary, $H_3(W_i;\mathbb Q)=0$, and hence
+\[
+ \chi(W)=c-r+\sum_i b_2(W_i).
+\]
+The Euler equality is equivalent to the vanishing of every $b_2(W_i)$.
+The orientation class and the exact sequence of $(W_i,\partial W_i)$ then
+show that $\partial W_i$ is connected: the map from
+$H_3(W_i,\partial W_i;\mathbb Q)=\mathbb Q$ must surject onto
+$H_2(\partial W_i;\mathbb Q)$, whose dimension counts boundary components.
+The boundary Euler identity $\chi(\partial W_i)=2\chi(W_i)$ now says its
+genus is $r_i$.
+
+For completeness, a compact orientable three-manifold with connected
+boundary of genus $g$ and group $F_g$ is a handlebody, without a separate
+irreducibility assumption.  If $g>0$, the positive-genus closed surface
+group cannot inject into a free group: subgroups of free groups are free,
+whereas a closed orientable positive-genus surface group is not free.
+The Loop Theorem gives an essential boundary compression disk.  After
+cutting along it, van Kampen expresses the old group as a free product of
+the new component groups, with an extra free generator for a
+nonseparating cut.  The new groups are free as well.  Repeat boundary
+compressions.  The sum of $2h-1$ over positive-genus boundary components
+strictly decreases, so this ends with spherical boundaries.
+
+Let there be $d$ disks, $v$ final pieces and $b$ final boundary spheres;
+write $s_j$ for the final free ranks.  Boundary Euler characteristic and
+van Kampen give respectively
+\[
+ d=b+g-1,\qquad g=\sum_j s_j+d-v+1.
+\]
+Every piece has boundary, so $b\geq v$.  Combining the equalities gives
+$0=\sum_j s_j+b-v$.  Thus every piece is simply connected and has one
+sphere boundary.  Capping it by a ball and applying the
+three-dimensional Poincare theorem and PL Schoenflies theorem shows it
+is a ball.  Reattaching the disk neighborhoods is attaching one-handles
+to balls, which yields a handlebody.  The converse follows from the usual
+handlebody spine and Euler characteristic.
+\end{proof}
+
+The classical inputs are the Loop Theorem in Hatcher's notes and the
+Poincare theorem; Morgan and Tian give a detailed proof of the latter
+\cite{euler-hatcher-three,euler-morgan-tian}.  The argument above derives
+the precise criterion used here.  It is not a claim that a chosen
+presentation or an arbitrary boundary pattern has a geometric realization
+by the recorded algebraic moves.
+
+The boundary hypothesis holds for these source cuts.  The source is
+connected, compact and orientable with one torus boundary.  A component
+of a cut disjoint from the old boundary has a new boundary from the cut
+surface; a component with neither old nor new boundary would already be
+a separate closed component of the source.  This also covers closed and
+one-sided supplied normal surfaces.
+
+The Euler condition cannot be omitted.  For example $S^2\times I$ has
+trivial fundamental group but two sphere boundaries and $b_2=1$.
+Likewise the interior connected sum of a handlebody with $S^1\times S^2$
+has a free group but a nonzero second Betti number.  Checking only a
+reduced presentation's Euler characteristic would lose precisely this
+obstruction.  The implementation always retains the original source
+three-handles in the Euler ledger.
+
+\subsection{The source presentation and its size}
+
+The terminal currently supports parallelity profiles that are orientable
+product bundles with disk bases.  Ported profiles have multiplicity one;
+unported profiles contribute their binary number of isolated balls.
+Unsupported profiles cause a method refusal.  The compiler receives the
+independently authenticated finite core, base profiles and ordered
+attachment words.
+
+Collapse a spanning forest of the core zero/one-handle graph.  Each
+remaining one-handle is a generator.  Each original two-handle supplies
+its actual signed cyclic attaching word, read from the source-face flags.
+Those flags, not just the endpoints, distinguish the two directions of a
+loop one-handle.  A complete annular attachment of a disk bundle adds
+one two-handle relation.  Its signed midpoint word is recovered from the
+ordered ports and the face-sector endpoint charts; forest crossings are
+erased.  Every such word must close in the authenticated core graph.
+
+For a disk bundle attached along proper intervals, use one ball vertex
+and one edge per attaching disk.  Contract a forest of this graph of
+spaces.  Its remaining edges add free generators.  Connected components
+of this graph specify the component presentations.  Complete port
+ownership and the partition into interval and circle attachments are
+checked, so no attachment can be silently dropped or used twice.
+Original three-handles have no effect on the fundamental group, but
+remain in the source Euler characteristic.
+
+Write $h_j$ for the original core handle counts, $a_\circ$ for full
+annular disk bundles, $d$ for ported disk bundles with proper intervals,
+$j$ for the number of proper interval attachments, $\kappa$ for the
+number of core graph components, $c_f$ for the number of joined graph
+components, and $b$ for the binary count of isolated disk bundles.
+The graph-of-spaces cycle rank is $\beta=j-\kappa-d+c_f$.  If $a,m$ are
+the total generator and relation counts, then
+\[
+ a=h_1-h_0+\kappa+\beta,\qquad m=h_2+a_\circ,\qquad c=c_f+b,
+\]
+and the compiler checks the exact ledger
+\begin{equation}
+ \chi(W)=c-a+m-h_3.
+ \label{euler-group:ledger}
+\end{equation}
+Indeed the direct source expression is
+$h_0-h_1+h_2-h_3+a_\circ+d+b-j$, which gives this identity by substitution.
+All additions involving $b$ use binary arithmetic; the isolated balls
+are never expanded.
+
+For $t$ source tetrahedra, the existing finite constructor gives
+$h_0\leq6t$, $h_1\leq8t$, $h_2\leq12t$, $h_3\leq4t$ and at most $66t$
+core ports.  Interior edge-link wedge lists have total length at most
+$6t$, and at most two endpoint ranks are retained per list.  The total
+one-handle passage length in original two-handle words is therefore at
+most $12t$.  The boundary words partition the ports, so full annular
+words add at most $66t$ letters.  Forest erasure cannot increase length.
+Consequently this presentation satisfies
+\[
+ a\leq74t,\qquad m\leq78t,\qquad L:=\sum_\rho|\rho|\leq78t.
+\]
+These bounds concern the finite presentation, not the bit size of every
+profile or of all source orbit proofs.  With $f$ supplied profile
+records and $E$ their total encoded bit mass together with the finite
+source, the elementary forest and ordering implementation takes a
+conservative $O(t^2+f)$ structural steps plus its arithmetic cost on $E$.
+Source preparation and authentication are separately charged.
+
+\subsection{A nonincreasing Tietze policy with a polynomial bound}
+
+Freely and cyclically reduce each relator.  If a generator $x$ appears
+exactly once, counting both signs, in a donor relator, cyclically rotate
+it to $x^\epsilon u$.  The relation defines $x=u^{-\epsilon}$.  Substitute
+this word, or its inverse, at every occurrence in the other relators;
+delete the donor and $x$; freely and cyclically reduce again.  Record
+relators that become empty.  Each step is an elementary Tietze
+elimination, so it preserves the group.
+
+The producer first chooses a private generator column if one exists.
+Otherwise it tries all singleton donor/generator pairs and accepts only
+candidates whose total reduced relator length does not exceed the
+current length.  It minimizes that new length, breaking ties by row and
+generator labels.  If every relator disappears, the remaining generators
+are a free basis.  If no permitted move remains, it returns
+\code{INCONCLUSIVE}.  Generators absent from every relator stay in the
+ledger and contribute their ranks.
+
+\begin{proposition}[Local discovery and replay cost]
+\label{euler-group:cost}
+For compact indexed labels, put $N=a+m+L+1$.  The implemented policy uses
+$O(N^4)$ indexed word operations for discovery, $O(N^3)$ for independent
+replay, and $O(N^2)$ temporary letter storage.  The recorded elimination
+pairs require $O(m\log(N+1))$ bits, in addition to the source and other
+certificate fields.  The bounds exclude the cost of user callbacks.
+\end{proposition}
+\begin{proof}
+Accepted states have total word length at most $L$.  A stage has at most
+$L$ singleton donor/generator candidates.  Trying one substitutes a word
+of length at most $L$ at at most $L$ positions, producing $O(L^2)$
+temporary letters.  Stack free reduction and trimming inverse endpoints
+are linear in this temporary length.  Including row and generator
+ledgers costs $O(N^2)$ per candidate.  Every accepted move deletes one
+row and one generator, so there are at most $\min(a,m)$ stages.  This
+proves the discovery bound.  A checker receives the chosen pair and
+performs one substitution per stage, proving the replay bound.  Keeping
+one candidate trial at a time proves the storage bound.  Each recorded
+pair consists of two stable indexed labels.
+\end{proof}
+
+In a bit model, indexed-label operations can conservatively be charged
+an additional $O(\log(N+1))$ factor.  For the finite source presentation,
+$N=O(t)$.  Thus the algebraic terminal is polynomial in $t$; the complete
+source query still includes its separate orbit, profile and encoded
+arithmetic costs.  The nonincreasing policy is essential to the stated
+discovery bound, even though an individual Tietze move remains sound
+without it.
+
+This procedure is incomplete even for free groups.  The automorphism
+$\varphi(a)=ab$, $\varphi(b)=a$ has inverse $a\mapsto b$,
+$b\mapsto b^{-1}a$.  Its fourth iterates are $abaababa$ and $abaab$.
+They form a free basis, so
+\[
+ \langle a,b\mid abaababa,abaab\rangle
+\]
+presents the trivial group.  Both relators are positive and neither
+contains a generator exactly once.  The policy stops immediately.
+Adding an unused generator gives the same refusal for a rank-one free
+group.  No useful-surface completeness result follows from this terminal.
+
+Suppose $k$ generator eliminations finish the presentation and $z$
+relators were discarded as trivial.  Then $m=k+z$ and $r=a-k$.
+Equation~\eqref{euler-group:ledger} gives the exact diagnostic
+\[
+ \chi(W)-c+r=z-h_3=\sum_i b_2(W_i).
+\]
+The checker independently requires both $\chi(W)=c-r$ and $z=h_3$.
+Positive defect is a refusal of the handlebody criterion, with the exact
+second-Betti sum available as a diagnostic.  It is not a knottedness
+verdict.
+
+\subsection{Integration, budgets and independent certificates}
+
+The public whole-cut API keeps its source, maximum-passage and deferred
+geometric attempts in their existing order.  Only after all applicable
+attempts refuse does its default \code{group\_fallback=True} try the
+signed-group terminal.  Setting the option to false retains the earlier
+geometric-only policy.  Existing geometric successes return immediately,
+without altering their certificates.
+
+The source parallelity packet and lazy boundary packet are shared by all
+attempts.  The group terminal always uses the \emph{original} source
+core, including its three-handle count, even when a geometric attempt
+used a top-reduced core.  Unsupported base profiles are screened before
+spending boundary orbit allowance.  Both endpoint-mask and moment
+boundary backends are supported.  The four source discoveries and the
+selected boundary discoveries share one \code{max\_cycles} allowance;
+the fallback never starts a second source query with a fresh allowance.
+The direct \path{normal_cut_group_handlebodies} API uses the moment
+boundary backend.
+
+The \path{normal-cut-euler-free-v1} certificate contains the source
+parallelity and boundary proofs, the complete presentation, per-component
+Tietze traces, and the census.  The independent dispatcher authenticates
+source and boundary, reconstructs the signed presentation using separate
+code, replays every substitution and the nonincrease gate, and recomputes
+the free ranks and Euler census.  Its operation cap counts the recorded
+source and boundary orbit operations \emph{plus} all Tietze pivots.  This
+is an operation-record cap, not a machine-instruction bound.  Callback
+exceptions propagate, including falsey callback objects.  Recordless
+production has the same census but does not attach a certificate.
+
+The implementation lives in six new modules:
+\path{free_group_elimination.py}, its independent verifier,
+\path{source_cut_group.py}, its independent verifier,
+\path{normal_cut_groups.py}, and its independent verifier.
+The existing whole-cut producer and dispatcher supply the shared
+portfolio integration.  Original delivered files remain immutable in
+\path{reports/111}; the integration is adapted to the maintained API,
+not an overwrite by the older delivered wrapper.
+
+\subsection{Fresh validation and remaining work}
+
+The exact delivered patch applied cleanly in a scratch copy at its pinned
+base, and its 33 focused tests passed.  In the maintained integration,
+37 focused tests pass, including four new tests for single discovery per
+backend, exact cycle and replay-operation boundaries, replay with
+producer helpers disabled, malformed nested boundary proofs, recordless
+agreement and cooperative cancellation.  Logs and reproducible drivers
+are retained under \path{synthesis/data/euler-group-*}.
+
+The delivered packet runner initially accepted 64 of 76 saved packets.
+It rejected the remaining twelve before replay because their source
+records include a \path{source_three_handles} annotation.  The separate
+maintained replay driver admits exactly that extra annotation and checks
+it against the authenticated core.  It does not change the saved
+certificates or loosen their source verifiers.  The original failed run
+is retained alongside the corrected replay evidence.
+
+The fresh separate-process audit compares the maintained producer with
+commit \code{02f95a64a} on all 120 native cuts.  The old 111 positive
+certificates are byte-identical, and all 112 new positives independently
+replay.  The added case is \path{pilot/finite_figureEight/0}: two handlebodies
+of genera one and two, with $\chi=-1$ and total free rank three.  Its source
+presentation has 25 generators, 22 relators and 53 letters.  A fresh literal
+Regina cut with 319 tetrahedra confirms the same histogram.  This is a
+recognition-coverage gain, not a before/after speed comparison for the old
+inconclusive case.  The corrected saved-packet run independently verifies
+all 76 unchanged delivered certificates with producer helpers disabled.
+
+Broad-suite and controlled timing results are appended when those runs
+finish.  None of these finite experiments proves a general
+recognition bound.  The established polynomial theorem for a single
+AHT orbit schedule remains available; the unresolved global work is the
+coverage and discovery of useful surfaces, controlled marked geometric
+successors and repairs, and a bound on the aggregate number and size of
+queries along a complete hierarchy.  This terminal is a polynomial
+one-sided addition to that programme, with an explicitly incomplete
+search policy.

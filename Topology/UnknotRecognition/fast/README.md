@@ -1,5 +1,18 @@
 # fastunknot 0.3.0: braid and structural certificates with optional shared backends
 
+The 12 October whole-cut portfolio now tries an Euler-checked signed free-group
+terminal after its geometric attempts refuse. `group_fallback=False` retains
+the earlier geometric-only policy. The fallback shares source and boundary
+queries and their cycle budget, and independently checks the original cut's
+Euler characteristic before certifying unmarked handlebodies. On the 120-case
+native bank it certifies 112 cuts; all 111 prior positive certificates remain
+byte-identical. The added figure-eight cut agrees with literal Regina cutting.
+The finite signed-word policy has polynomial local discovery and replay costs,
+but is incomplete even for free groups. See
+[`euler_group_terminal.tex`](../synthesis/euler_group_terminal.tex) for the proof,
+source bounds, API contract and evidence. The general quasi-polynomial goal
+remains open.
+
 `normal_cut_cells.normal_cut_cell_complex(source, coordinates)` now retains
 the complete raw three-dimensional cut in binary CW families, including
 interior vertices, edge gaps, source-face regions, cut chambers and oriented
