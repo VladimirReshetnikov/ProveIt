@@ -4715,6 +4715,46 @@ geometry, and the losses must be absorbed into the printed bounds. The final
 Szemeredi conclusions have unconditional checked proofs; this intermediate
 statement-fidelity work is not evidence that those conclusions are false.
 
+## L.24 Genuine Theorem 13.12 over every prime modulus (2026-10-11)
+
+`Proofs13IntegerEqualCover` covers a length-`L` integer progression by
+length-`m` progressions, for `0 < m <= L`, using index starts
+`min (j*m) (L-m)`. The final block stays inside the parent; no endpoint
+points are lost. The total capacity is at most `2*L`. The existing product
+cover averaging argument then retains one quarter of the density in an
+equal-length square. Together with L.23, `Proofs13IntegerSquareExtraction`
+retains density `delta/16` at any prescribed positive length at most
+`delta*sqrt(m)/16`. The axes have one positive integer step, lie in `[0,N)`,
+and remain subsets of the original modular axes. These constructions need
+only a nonzero modulus.
+
+`Proofs13IntegerSquareBounds` checks all losses against the original source
+constants. Put `A = (2/alpha)^(2^53)`, `e = (1/2)^A` and
+`delta = (alpha/2)^(2^42)`. Away from the near-one range, the printed
+exponent `epsilon` is at most `e/4`. The threshold ensuring
+`32 <= delta*N^(e/4)` is at most `exp(exp((2/alpha)^(2^54)))`, the same
+threshold already sufficient for the Fourier extraction. It follows that
+`ceil(N^epsilon) <= delta*sqrt(m)/16` for the raw square of length
+`m >= N^e`. The density loss is absorbed by
+`(alpha/2)^(2^76) <= delta/16`. Generic real inequalities keep the enormous
+printed powers out of polynomial tactic normalization.
+
+`Proofs13IntegerPrintedTheorem.theorem_13_12_integer_all_prime` combines
+this construction with the previously verified small-width and near-one
+integer squares. It proves the printed size, density, common nonzero step,
+global bilinear restriction and Fourier lower bound over every prime
+modulus, with genuine integer representatives for both axes. The exact
+proposition `theorem_13_12_integer_representatives` has a checked companion.
+The existing numbered catalogue companion now derives from that proof.
+No extra eventual-modulus condition and no weakened numerical bound remain.
+
+`IntegerSquareFidelityAudit` checks all sixteen new public theorems and
+their transitive axioms in a native 1,482-module closure. All 120 numbered
+companions and all preceding fidelity audits pass again; only `propext`,
+`Classical.choice` and `Quot.sound` occur. This closes Theorem 13.12's
+representation gap, not the remaining Section 16 geometry or the complete
+source-fidelity audit of every intermediate paper statement.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

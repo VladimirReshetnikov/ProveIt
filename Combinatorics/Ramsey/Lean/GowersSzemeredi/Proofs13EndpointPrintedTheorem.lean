@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs13EndpointGlobalFourier
 import GowersSzemeredi.Proofs13FejerPrintedRange
 import GowersSzemeredi.Proofs08AffineFrequencyProgression
 import GowersSzemeredi.Proofs13AllPrimeModuli
+import GowersSzemeredi.Proofs13IntegerPrintedTheorem
 
 /-! Close the near-maximal range by using the whole prime cyclic group
 as both progressions. Together with quantitative Fejer extraction this
@@ -75,7 +76,8 @@ theorem theorem_13_12_holds : theorem_13_12 := by
   intro alpha hα hαone
   refine ⟨0, fun N _ _ _ f hf hnot => ?_⟩
   obtain ⟨P, Q, B, phi, h1, h2, hP, hQ, h3, h4, h5, h6, h7, h8⟩ :=
-    theorem_13_12_all_prime alpha hα hαone f hf hnot
-  exact ⟨P, Q, B, phi, bne_iff_ne.mpr h1, h2, hP, hQ, h3, h4, h5, h6, h7, h8⟩
+    theorem_13_12_integer_all_prime alpha hα hαone f hf hnot
+  exact ⟨P, Q, B, phi, bne_iff_ne.mpr h1, h2, hP.isProper, hQ.isProper,
+    h3, h4, h5, h6, h7, h8⟩
 
 end LeanProofs.GowersSzemeredi
