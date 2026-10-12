@@ -5,6 +5,7 @@ import GowersSzemeredi.Proofs18CoverThresholdsSharp
 import GowersSzemeredi.Proofs18CoverVanDerWaerden
 import GowersSzemeredi.Proofs18CoverHeadline
 import GowersSzemeredi.Proofs16PolynomialStructure
+import GowersSzemeredi.Proofs16PolynomialCorollary
 
 /-! **Theorem 18.1 in every degree with exponent `α^(2^(2^(d+7)))`** (Notes L.15c).
 
@@ -116,5 +117,26 @@ theorem theorem_16_2_polynomial_implies_printed : theorem_16_2 := fun k =>
   match k with
   | 0 => theorem_16_2_zero
   | k + 1 => theorem162At_of_polynomial (theorem_16_2_polynomial (by omega))
+
+/-- **Corollary 16.11 with polynomial exponents** in every dimension `k + 1 ≥ 3`:
+a box of width `N^e` carrying a multilinear frequency on an `e` fraction, with
+`e⁻¹ ≤ (2/α)^(2^(236·2^k + k + 24))` (printed: a tower in `1/α`). -/
+theorem corollary_16_11_polynomial {k : Nat} (hk : 2 ≤ k) :
+    ∀ alpha : Real, 0 < alpha → alpha ≤ 1 / 2 →
+      ∃ e : Real, 0 < e ∧ e⁻¹ ≤ (2 / alpha) ^ (2 ^ (236 * 2 ^ k + k + 24)) ∧
+        ∃ N0 : Nat, ∀ (N : Nat) [NeZero N] [Fact N.Prime], N0 ≤ N →
+          ∀ f : ZMod N → Complex, DiscValued f → ¬ UniformOfDegree f alpha (k + 2) →
+            ∃ P : Box N (k + 1), ∃ mu : Point N (k + 1) → ZMod N,
+              IsMultilinear mu ∧ (N : Real) ^ e ≤ P.width ∧
+              e * P.carrier.card ≤ section16LargeMultilinearFrequencyCount f P mu alpha := by
+  intro alpha ha ha2
+  obtain ⟨e, he0, hei, hN⟩ := corollary_16_11_polynomial_of_profiles
+    (fun k => ⌈multiaffinePartitionK (k + 1) (2 ^ (k + 1))⌉₊)
+    (fun k => (k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1)))
+    (fun k => two_le_ceil_multiaffinePartitionK (k + 1) (2 ^ (k + 1)))
+    (fun k => Nat.mul_pos (Nat.succ_pos k) (multiaffinePartitionP_pos _ _))
+    (fun k _ => section16RecurrenceProfileWith_explicit k)
+    (fun k => explicit_family_constants_le k) hk alpha ha ha2
+  exact ⟨e, he0, pw_mono (two_div_ge_two ha ha2) hei (expDegC_tight_le k), hN⟩
 
 end LeanProofs.GowersSzemeredi
