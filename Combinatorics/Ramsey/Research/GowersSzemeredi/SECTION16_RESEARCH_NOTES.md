@@ -4864,6 +4864,10 @@ The Lemma 16.3 rounding remark stands on its own. The density
 `2^(−1882)·γ^9312·θ^1165` (`section16_product_restriction`). In the
 dimension-two counts θ is the piece budget, so the actual exponent would
 lower the seed from about `2^46` to `2^43`. No headline constant changes.
+Formalized: `Proofs16BaseCaseRestrictionSharp`
+(`section16_product_restriction_sharp`, with `lemma163Alpha_le_sharp` and
+`section16_product_restriction_of_sharp` recovering the printed lemma). The
+sharp form does not even use `γ ≤ 1` or `θ ≤ 1`.
 
 **L.16g: where the class recursion squares (analysis, 2026-10-12).** L.16f
 traced the `d + 5` barrier to `a_{l+1} ≈ 2^(l+5)·a_l²`. The square enters
@@ -4902,10 +4906,305 @@ Natural repairs fail:
   (L.12) multiply the width exponents over the `M` members, which is worse.
 
 So the square is a feature of covering many structured pieces with one
-partition, and the route stops at `d + 6` / `L + 4`. Getting past it would
+partition, and *uniformly in the degree* the route stops at `d + 6` / `L + 4`
+(for large degrees see L.16i: `d + 5`, `L + 3`). Getting past it would
 need either a remainder cover whose count does not grow with the number of
 pieces sharing the partition, or a lift that recovers the `h`-dependence of
 the candidate lines without covering `M·q` slice relations. Both are open.
+
+**L.16h: what a per-relation remainder count would buy (analysis,
+2026-10-12; the hypothesis is unproved).** L.16g located the square in the
+samples `r ∝ q·M/τ` with `q ≈ Q_r(M) = M^(a·2^k)`. Consider the
+hypothesis:
+
+> (PR) on the common partition of a class cover of `n` relations, each
+> relation individually uses at most `W^D` maps per cell, a number that
+> does not grow with `n` (the total is still `(n+1)^a·W^D`).
+
+The joint-cover lemma has the analogous property: each function uses at
+most its own count. Under (PR) the per-member candidate count is
+independent of `M`, so the samples scale linearly in `M`. The remainder's
+family exponents then vanish: `sQrN = sErN = 0` in the split degrees, and
+the family exponent grows by a factor of about `2^(k+2)` per step instead of
+squaring. `model_split_exact.py --per-member` runs the exact recursion under
+(PR), from the proved seed `2^46`:
+* `log₂ uDeg_l / 2^l = 12.0, 15.6, 13.3, 9.7, 6.6, 4.2, 2.6, 1.6, 1.0, 0.6,
+  0.3` (`l = 2, …, 12`): the class degree no longer grows like `c·2^l`.
+* The smallest offset `c` with `μ + 1 ≤ 2^(d+c)`, with the base budget from
+  `V` (`fixDeg` at the Fejér `5k + 22`):
+  - `c = 6` at `d = 5, 6`;
+  - `c = 5` at `d = 4` and `7 ≤ d ≤ 10`;
+  - `c = 4` for every `d ≥ 11`.
+
+  The envelope tends to about `33·2^k`, twice the `V`-budget
+  `16·2^k`, so `c = 4` is the floor of this architecture. With the
+  printed `fixDeg` the floor is `c = 5` (envelope tending to about
+  `65·2^k`).
+
+So (PR) together with the Fejér `fixDeg` would give Theorem 18.1 at `d + 4`
+for large degrees. Small degrees stay at `d + 6` through the seed's
+transient. Whether (PR) holds is the question. In the class construction the
+pieces of one relation are found greedily, and a relation's maps on a cell
+come from its own pieces' covers. But each piece's cover is the family
+cover of *all* pieces, whose count grows with the family. (PR) would need
+the family piece cover to certify, per member, only that member's
+candidates. A proof would be a new form of
+`section16_family_piece_large_box_profile` with per-member counts.
+
+*Audit: (PR) does not propagate through this lift.* Suppose (PR) holds in
+dimension `k`. The family lift still splits its loss as `τ/|ι|` per member,
+so every member samples `S ∝ |ι| = M` slices. A member's slices are covered
+inside the joint slice relation of `n·S` members, and its per-relation count
+there grows with that family's size. So the per-member counts in dimension
+`k + 1` grow with `M`, and (PR) fails one level up. Weighting the loss by
+domain (bad mass `≤ 2τ′·|D_c|`) does not help: the `M = n·m` piece domains
+overlap with multiplicity of order `n`. The model's `--per-member` run is
+therefore an upper estimate for a lift that does not exist yet. Two things
+are needed at once:
+* a sampling scheme whose per-member sample size does not grow with the
+  number of members sharing the good set;
+* the per-relation count property for the slice cover.
+Until both are found, `d + 6` / `L + 4` stands as the limit uniformly in the
+degree. (L.16i later showed that the present lift does give `d + 5` / `L + 3`
+for large degrees and lengths.)
+
+**L.16i: `d + 5` and `L + 3` for large degrees and lengths, with the present
+lift (correction of L.16f–h; plan, 2026-10-12).** L.16f measured only the
+*maximum* envelope ratio over all degrees, and that maximum is the
+small-dimension transient. Per degree, the exact recursion with the base
+budget from `V` gives envelopes tending to about `108·2^k < 128·2^k`
+(`d + 5` from `d = 10`). The obstacle to a *proof* is the slack of the
+proved class invariant, not the lift. The invariant
+`log₂ D_l ≤ (c+8)·2^l` carries a uniform `+8·2^l`, but the recursion
+`D_{l+1} ≤ 2^(l+6)·a_l·(a_l + D_l)·P + T` only needs the slack to grow
+additively, by `5l + 22` per step. So the invariant
+
+  `2^(l+6)·a_l ≤ 2^(14·2^l)`,  `D_l ≤ 2^(14·2^l + 3(l+4)²)`   (l ≥ 2)
+
+should be provable: it holds on the exact values for `l ≤ 15`, and
+`3(l+5)² − 3(l+4)² = 6l + 27 ≥ 5l + 22`. It gives the class degree
+`uDegQ l = 2^(14·2^l + 3(l+4)² + 2)`. With it and the base budget
+`μ₀ = 2^(k+4) + 3` (the `V` term; `fixDegF k = 2^(k+4) + 1` in place of
+`fixDeg`), the exact envelope model gives
+* Theorem 18.1 at **`d + 5` for every `d ≥ 12`** (and `d + 6` below);
+* Theorem 18.2 at **`L + 3` for every `L ≥ 14`** (and `L + 4` below).
+
+So "the route stops at `d + 6`" (L.16f–h) holds only uniformly in `d`.
+L.16g's squaring governs the small-dimension peak, not the asymptotics.
+
+*Done (2026-10-12, all light, standard axioms only).*
+* `Proofs18TightClassesFejerQ`: `split_pair_fejer_quad`, `uDegQ`, and
+  `polyCoverAt_classQ`.
+* `Proofs18FejerEnvelopeBaseQ`: the fixed parameters at
+  `fixDegQ k = fixDeg (k − 1)`. Stating it this way lets every generic step
+  lemma be reused unchanged, instantiated at `k − 1`.
+* `Proofs18Cover{Modulus,Density,Exponents}FejerQ` and
+  `Proofs18CoverFejerHeadlineQ`. One step costs exactly
+  `58·2^k + 9(k+4)² + 4(k+3)² + k + 45`, and `μ_k + 4k + 128 ≤ 128·2^k`
+  holds for `k ≥ 10`. This gives `theorem_18_1_d5_of_profiles_cover`
+  (`d ≥ 12`), and `theorem_18_2_L3_of_profiles_cover` and
+  `corollary_18_7_L3_of_profiles_cover` (`L ≥ 14`).
+* Bridge `Proofs18CoverFejerAllDegrees`: `theorem_18_1_d5_twelve_le`,
+  `theorem_18_2_L3_fourteen_le`, `corollary_18_7_L3_fourteen_le`, and
+  `van_der_waerden_L3` (`W(k, r) ≤ 2^2^r^2^2^(k+3)` for `k ≥ 14`). These are
+  stub-checked with the same stub axioms as before, and pinned in
+  `CompletionAudit.lean`.
+
+Theorem 1.3's derivation uses one length at a time (`theorem13AtFrom_of_sharp`,
+`Proofs18CoverHeadlineFrom`), so it holds with constant `2^(−2^(k+3))` for
+every `k ≥ 14` (`theorem_1_3_L3_fourteen_le : Theorem13AtFrom 3 14`); for
+every `k` it stays at `2^(−2^(k+4))`. The polynomial Theorem 16.2 and Corollary 16.11 improve as well
+(`Proofs16PolynomialFejerQ`; bridge `theorem_16_2_polynomial_fejerQ`,
+`corollary_16_11_polynomial_fejerQ`): graph-count exponent
+`14·2^k + 3(k+4)² + 2` (better than `23·2^k` for `k ≥ 5`), and
+`e⁻¹ ≤ (2/α)^(2^(58·2^k + 9(k+4)² + k + 30))` (better than `101·2^k` for
+`k ≥ 2`).
+
+*The plan as carried out.*
+1. The refined split invariant (`splitPairWith`, Nat arithmetic) and the
+   class covers at `uDegQ`.
+2. The fixed-parameter bounds of the Fejér step directly at `fixDegF`.
+   θ₁′⁻¹ ≤ `X^(4F)` and `F ≤ 2^(5k+14)`, so the budget, `θ₂/2` and δ fit
+   under `X^(2^(2^(k+4)+1))` for `k ≥ 1`. The monotone transfer of
+   `Proofs18FejerEnvelopeBase` is no longer enough.
+3. Copies of the generic step lemmas with `fixDegF` in place of `fixDeg`
+   (`slice_const_le`, `uCount_scale_le`, `baseCF_recipPowerLB`, `eta_step`,
+   `yIn_step`). The cube constants need only
+   `2(2(k+3))^(k+3) ≤ 2^(2^(k+4)+1)`.
+4. The Cover modules again, at `(fixDegF, uDegQ)`, and the closed forms.
+
+**L.16j: the dimension-two family exponent, and `d + 4` (plan,
+2026-10-12).** The split recursion squares the family exponent,
+`a_{l+1} ≈ 2^(l+5)·a_l²`, so `log₂ a_l ≈ (log₂ a₂ / 4)·2^l`: the class
+constant is set by the *dimension-two family exponent* `a₂`. The proved
+seed has `a₂ = 2^46` only because `PowerUniformClass.toSplit` sets
+`a = D`. The dimension-two count itself is a fixed-degree polynomial in the
+number `M` of pieces:
+* the base controls are linear in `M`: `famTwoQr M q = 9(Mq + 1)`,
+  `famTwoPb M q r = 3(M·r·q + 1)`;
+* so the samples are `S ≈ 216·M²·q_f/ρ`, and the count
+  `M·max(P_b(S), C(S,2)·P_b(S)²)` is about `M^11·poly(1/(γθρ))`;
+* the width exponent is about `M^(−28)·poly`, from `cubicBaseExponent`
+  and `familyWidthDivisor`.
+
+So the true `a₂` is about `2^5`. With any `a₂ ≤ 2^8`, the invariant
+`2^(l+6)·a_l ≤ 2^(4·2^l)`, `D_l ≤ 2^(4·2^l + 3(l+4)² + 30)` holds (checked on
+the exact values from `(2^5, 2^46)`; `D₂ ≤ 2^154` suffices). The class
+degree is then `4·2^l + 3(l+4)² + 32`, and one step costs `28·2^k + O(k²)`.
+The exact envelope model gives
+* Theorem 18.1 at **`d + 5` for `d ≥ 9`** and **`d + 4` for `d ≥ 13`**;
+* Theorem 18.2 at **`L + 3` for `L ≥ 11`**.
+
+*Plan.*
+1. A dimension-two split class with `a₂ ≤ 2^8`: two-base bounds, in
+   `ν = n + 1` and `W = splitW V θ γ ρ`, for `uniTwoFejerCount` and
+   `uniTwoFejerExp`, in place of the single-base `w^(2^43)`, `w^(2^46)`.
+2. The split invariant with `c = 4` and its class covers.
+3. The Section 18 chain at the new class degree (the `GenParamsQ`
+   generator with `qDeg` replaced), and the closed forms.
+
+*Step 1 (done).* `Proofs16UniformCoverTwoSplit` (light) proves
+`uniTwoFejerCount_le_split` (count `≤ ν^11·W^(2^41)`),
+`uniTwoFejerExp_inv_le_split` (inverse width exponent `≤ ν^29·W^(2^46)`)
+and **`splitUniformClass_two_small : SplitUniformClass 2 V 32 (2^48)`**.
+So `a₂ = 32` is proved, against `2^46` through `toSplit`. The parameter
+degree `2^48` costs nothing: the invariant only needs `D₂ ≤ 2^154`.
+Proof-engineering trap: `linarith` must never see a hypothesis containing
+`W ^ 2 ^ 40`. Its polynomial parser computes `c ^ (2^40)`, and Lean's
+runtime `Nat.pow` panics on exponents above `2^24` ("Nat.pow exponent is too
+big", with no source position). Hence `linarith only [...]` throughout, and
+`add_le_add` terms near the huge powers.
+
+*Step 2 (done).* `Proofs18TightClassesFejerS` (light):
+`split_pair_small_quad` proves `2^(l+6)·a_l ≤ 2^(4·2^l)` and
+`D_l ≤ 2^(4·2^l + 3(l+4)² + 30)` in every dimension `l ≥ 2`, from the seed
+`(32, 2^48)`. `splitUniformClass_all_small` gives the split classes at
+`splitPairWith 32 (2^48) l`. `polyCoverAt_classS` gives the class covers at
+`uDegS l = 2^(4·2^l + 3(l+4)² + 32)`, against `uDegQ`'s `14·2^l + 3(l+4)² + 2`.
+
+*Correction to the plan (audit, 2026-10-12).* The envelope model above omits
+one constraint: the η step (`GenParams.eta_step`) asks for the printed
+`fixDeg k = 2^(k+5) + 7 ≤ m`, where `m ≈ ρ + 2·sDeg` is the density degree.
+At class constant `14` this never binds. At class constant `4`,
+`m ≈ 28·2^k < 32·2^k`, so it would raise one step to `32·2^k`. The envelope
+would then tend to exactly `64·2^k`, which gives `d + 5` (d ≥ 9) and `L + 3`
+(L ≥ 11) but **not** `d + 4` (`models/model_s_chain.py`, both variants). The
+side condition is only a convenience: `eta_step` and `yIn_step` absorb
+`2^(2(k+2)³)·2^(k+1)·(2/α)²` and `2·(2(k+3))^(k+3)`, so `3(k+4)² ≤ m`
+suffices (`cube_le_two_pow_sq`). `Proofs18EtaStepSmall` (light, generated)
+proves `GenParams.eta_step_small` / `yIn_step_small` with that side condition.
+
+*Step 3 (done).* `Proofs18Cover{Modulus,Density,Exponents}FejerS` and
+`Proofs18CoverFejerHeadlineS` (light, generated from the Q chain by
+`assemble_s.py`). Each takes the class covers at `uDegS`, the η step at
+`3(k+4)² ≤ m`, and the same base budget `tightMu0S = tightMu0Q = 2^(k+4) + 9`.
+* `envStepS_le_tight`: one step costs
+  `≤ max(μ + 28·2^k + 9(k+4)² + 4(k+3)² + k + 135, 32·2^k + 8)`.
+  `envStepSTx_le_tight` gives the same bound with cap `64·2^k + 8`; that cap
+  is the `2^(k+6)` of `threshDeg`.
+* `polyGenMuS_le64`: `μ_k + 4k + 128 ≤ 64·2^k` for `k ≥ 11`. The base case
+  `decide`s 130842 ≤ 131072, which is tight.
+* `polyGenMuS_le128` and `genMuXS_le`: `≤ 128·2^k` for `k ≥ 7`.
+* **`theorem_18_1_d4_of_profiles_cover`: Theorem 18.1 at `d + 4` for every
+  `d ≥ 13`.** `theorem_18_1_d5S_of_profiles_cover` gives `d + 5` for every
+  `d ≥ 9` (was `d ≥ 12`).
+* **`theorem_18_2_L3S_of_profiles_cover` and
+  `corollary_18_7_L3S_of_profiles_cover`: `L + 3` for every `L ≥ 11`** (was
+  `L ≥ 14`).
+
+Axioms: `propext`, `Classical.choice`, `Quot.sound` only. Remaining limits:
+* `L + 2` is out of reach of this envelope, because the threshold branch
+  alone is `64·2^k + 8 > 64·2^k`.
+* `d + 3` would need a step of `< 16·2^k`, but the base budget `tightMu0`
+  alone contributes `16·2^k` to `ρ`.
+
+**L.16k: the exact small-dimension class degrees, `d + 5` from degree 4 and
+`L + 3` from length 6 (2026-10-12).** The invariant bound `sDeg l` is loose
+in small dimensions, where the additive slack `3(l+4)² + 32` dominates. The
+true split degrees `splitPairWith 32 (2^48) l` are explicit numbers. Their
+log-degrees `⌈log₂(a_l + D_l + l + 1)⌉` are
+
+| l | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| true | 17 | 49 | 85 | 136 | 210 | 326 | 524 | 881 | 1550 | 2841 | 5371 | 10375 |
+| `sDeg` | 115 | 156 | 211 | 288 | 403 | 588 | 907 | 1488 | 2587 | 4716 | 8899 | 17184 |
+
+(the true class constant tends to about `2.4`). The kernel evaluates them
+(`decide +kernel`; `D₁₂ ≈ 2^10375`, the whole module builds in under a
+minute).
+
+`Proofs18TightClassesFejerT` (light) provides:
+* `tDeg`: the table up to `l = 12`, then `sDeg`;
+* `split_pair_small_le_uDegT`, `tDeg_mono`;
+* `polyCoverAt_classT`: the class covers at `uDegT l = 2^tDeg l`.
+
+The table entries for `l ≤ 5` are below `3(k+4)²`. So the η side condition
+now comes from the base budget: `sq_le_fixDegQ`, `3(k+4)² ≤ fixDegQ k + 64`.
+
+The chain is `Proofs18Cover{Modulus,Density,Exponents}FejerT` and
+`Proofs18CoverFejerHeadlineT`, generated from the S chain by `assemble_t.py`.
+Its envelope peaks at `124.4·2^k` (`k = 3`), below `128·2^k`, and `decide
++kernel` certifies it in dimensions `2, …, 12`. Beyond that the S closed forms
+carry the invariants from `k = 12`. This gives
+* **`theorem_18_1_d5_four_le_of_profiles_cover`: Theorem 18.1 at `d + 5` for
+  every `d ≥ 4`**;
+* `theorem_18_1_d4_eleven_le_of_profiles_cover`: `d + 4` for every `d ≥ 11`;
+* **`theorem_18_2_L3_six_le_of_profiles_cover`: `L + 3` for every `L ≥ 6`**,
+  with the corollary.
+
+The tightest margins are `28` (Theorem 18.1) and `13` (Theorem 18.2), both
+at `k = 3`.
+
+Name trap: the T-suffixed `polyGenMuT` / `polyEnvBound_allT` already exist
+(`Proofs18CoverTightBase`, where T means tight base). The exact-table
+envelope is therefore `polyGenMuE` / `polyEnvBound_allE`. The collision
+showed up only as `has already been declared` together with `decide`
+"proving" false statements, because `decide` evaluated the other definition.
+
+*Every degree and every length.* Degrees `0, …, 3` hold at `d + 5`:
+`Proofs18CoverFejerLowDegrees5`, generated from the `d + 6` module, needs
+`2^16 ≤ 2^(2^(2+5))` and `74 + 1 ≤ 2^(3+5)`. Lengths `L ≤ 5` hold at `L + 3`:
+`Proofs18CoverFejerShortLengths3` puts towers with `21` and `73` on top,
+below `2^7` and `2^8`. The bridge (stub-checked, pinned in CompletionAudit)
+proves:
+* **`theorem_18_1_d5`: Theorem 18.1 at `d + 5` in every degree**;
+* `theorem_18_1_d4_eleven_le`: `d + 4` for `d ≥ 11`;
+* **`theorem_18_2_L3`, `corollary_18_7_L3`: `L + 3` in every length**;
+* `van_der_waerden_L3_all`: `W(k, r) ≤ 2^2^r^2^2^(k+3)` for every `k`;
+* `theorem_1_3_L3`: Theorem 1.3 with constant `2^(-2^(k+3))`.
+
+The printed offsets are `d + 10` and `L + 9`.
+
+**L.16l: the polynomial Bohr radius, and `L + 2` (2026-10-12).** The
+Theorem 18.2 envelope carried a threshold branch `2^(k+6) + 8`, so every
+step costs at least `64·2^k`, and that blocks `L + 2`. The branch comes from
+`zeta_gen_bounds_fejer`, which bounds the inverse tight Bohr radius by
+`exp(X^(2^(2^(k+6)+1)))` by comparison with the printed `θ₁`. This is the
+same looseness that `Proofs18FejerEnvelopeBaseQ` removed for the budget, `T₂`
+and `δ`. Under the Fejér `θ₁` the radius is polynomial:
+`tightZeta_fejer_inv_le_gen` gives `ζ⁻¹ ≤ exp((2/(γθ))^fejerStepT k)`, and
+`2·fejerStepT k ≤ 2^(5k+21)`.
+
+`Proofs18CoverFejerHeadlineU` (light, generated by `assemble_u.py`) contains:
+* `zeta_gen_bounds_fejer5`: `ζ⁻¹ ≤ exp(X^(2^(5k+21)))`;
+* `GenParamsT.MReq_le_expU` and `Tloc_le_expU`: `Z = 5k + 21`, at
+  `threshDegU = max(expDeg + 4, 16·2^k + 5k + 25)`. The `16·2^k` is Lemma
+  15.6's threshold;
+* the Theorem 18.2 recursion `genMuXU`. A step is now
+  `≤ max(μ + 28·2^k + O(k²), 32·2^k + 9)` and `≥ 32·2^k + 9`;
+* `genMuXU_small64`, checked by `decide +kernel` for `k = 9..12`, and the
+  invariant `genMuXU_le64`, `μ_k + 4k + 128 ≤ 64·2^k` for `k ≥ 12`.
+
+This gives **`theorem_18_2_L2_thirteen_le_of_profiles_cover`: `L + 2` for
+every `L ≥ 13`**, with the corollary. The bridge (stub-checked, pinned)
+proves `theorem_18_2_L2_thirteen_le`, `corollary_18_7_L2_thirteen_le`,
+`van_der_waerden_L2` (`W(k, r) ≤ 2^2^r^2^2^(k+2)` for `k ≥ 13`) and
+`theorem_1_3_L2_thirteen_le` (`Theorem13AtFrom 2 13`).
+
+In the model (`models/model_u_chain.py`) the envelope's ratio to `2^k` falls
+below 64 from `k = 9`, so `L ≥ 13` is the method's limit. `L + 2` at shorter
+lengths, and `d + 3` anywhere, would need smaller steps in dimensions `2` to
+`8`.
 
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on

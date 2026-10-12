@@ -1,0 +1,194 @@
+/-! ### Closed forms -/
+
+/-- One step at `(sDeg, tightMu0S)` costs `28·2^k` plus a polynomial, or at
+most `32·2^k + 8`. -/
+theorem envStepS_le_tight {k : Nat} (hk : 1 ≤ k) (μ : Nat) :
+    envStepS k (tightMu0S k) (genMuK k) μ ≤
+      max (μ + 28 * 2 ^ k + 9 * (k + 4) ^ 2 + 4 * (k + 3) ^ 2 + k + 135) (32 * 2 ^ k + 8) := by
+  unfold envStepS GenParamsS.densDegS GenParamsS.expDegS GenParamsS.rhoDegS tightMu0S tightMuV
+    genMuK sDeg
+  rw [fixDegQ_eq hk, two_pow_five_mul, two_pow_four_mul]
+  have := Nat.lt_two_pow_self (n := k)
+  generalize 4 * (k + 3) ^ 2 = q
+  generalize (k + 4) ^ 2 = s
+  generalize 2 ^ k = x at *
+  omega
+
+theorem envStepSTx_le_tight {k : Nat} (hk : 1 ≤ k) (μ : Nat) :
+    envStepSTx k (tightMu0S k) (genMuK k) μ ≤
+      max (μ + 28 * 2 ^ k + 9 * (k + 4) ^ 2 + 4 * (k + 3) ^ 2 + k + 135) (64 * 2 ^ k + 8) := by
+  unfold envStepSTx GenParamsS.densDegS GenParamsS.threshDegS GenParamsS.expDegS
+    GenParamsS.rhoDegS tightMu0S tightMuV genMuK sDeg
+  rw [fixDegQ_eq hk, two_pow_six_mul, two_pow_five_mul, two_pow_four_mul]
+  have := Nat.lt_two_pow_self (n := k)
+  generalize 4 * (k + 3) ^ 2 = q
+  generalize (k + 4) ^ 2 = s
+  generalize 2 ^ k = x at *
+  omega
+
+theorem envStepSTx_ge_tight {k : Nat} (hk : 1 ≤ k) (μ : Nat) :
+    μ + 28 * 2 ^ k ≤ envStepSTx k (tightMu0S k) (genMuK k) μ := by
+  unfold envStepSTx GenParamsS.densDegS GenParamsS.rhoDegS tightMu0S tightMuV sDeg
+  rw [fixDegQ_eq hk, two_pow_four_mul]
+  have := Nat.lt_two_pow_self (n := k)
+  generalize 4 * (k + 3) ^ 2 = q
+  generalize (k + 4) ^ 2 = s
+  generalize 2 ^ k = x at *
+  omega
+
+/-- `(k+5)² ≤ 2·2^k` for `k ≥ 7`. -/
+theorem sq_five_le_two_pow_seven : ∀ k, 7 ≤ k → (k + 5) ^ 2 ≤ 2 * 2 ^ k := by
+  intro k hk
+  induction k, hk using Nat.le_induction with
+  | base => norm_num
+  | succ k hk ih =>
+    have hstep : (k + 1 + 5) ^ 2 ≤ 2 * (k + 5) ^ 2 := by nlinarith
+    calc (k + 1 + 5) ^ 2 ≤ 2 * (2 * 2 ^ k) := by omega
+      _ = 2 * 2 ^ (k + 1) := by rw [pow_succ]; ring
+
+theorem polyGenMuS_seven : polyGenMuS 7 + 4 * 7 + 128 ≤ 128 * 2 ^ 7 := by decide
+
+theorem polyGenMuS_eleven : polyGenMuS 11 + 4 * 11 + 128 ≤ 64 * 2 ^ 11 := by decide
+
+theorem genMuXS_seven : genMuXS 7 + 4 * 7 + 128 ≤ 128 * 2 ^ 7 := by decide
+
+/-- **The Theorem 18.1 envelope at `(sDeg, tightMu0S)`, sharp form**:
+`μ_k + 4k + 128 ≤ 64·2^k` for `k ≥ 11`. -/
+theorem polyGenMuS_le64 : ∀ k, 11 ≤ k → polyGenMuS k + 4 * k + 128 ≤ 64 * 2 ^ k := by
+  intro k hk
+  induction k, hk using Nat.le_induction with
+  | base => exact polyGenMuS_eleven
+  | succ k hk ih =>
+    rw [polyGenMuS_succ (by omega)]
+    have h1 := envStepS_le_tight (k := k + 1) (by omega) (polyGenMuS k)
+    have h2 := four_sq_le_two_pow_ten k (by omega)
+    have h3 : (k + 4) ^ 2 ≤ (k + 5) ^ 2 := Nat.pow_le_pow_left (by omega) 2
+    have h4 : k + 140 ≤ 2 ^ k := le_trans (by nlinarith) h2
+    rw [show k + 1 + 4 = k + 5 by ring, show k + 1 + 3 = k + 4 by ring] at h1
+    rw [pow_succ] at h1 ⊢
+    generalize (k + 5) ^ 2 = s5 at *
+    generalize (k + 4) ^ 2 = s4 at *
+    generalize 2 ^ k = x at *
+    omega
+
+/-- **The Theorem 18.1 envelope at `(sDeg, tightMu0S)`**: `μ_k + 4k + 128 ≤ 128·2^k`
+for `k ≥ 7`. -/
+theorem polyGenMuS_le128 : ∀ k, 7 ≤ k → polyGenMuS k + 4 * k + 128 ≤ 128 * 2 ^ k := by
+  intro k hk
+  induction k, hk using Nat.le_induction with
+  | base => exact polyGenMuS_seven
+  | succ k hk ih =>
+    rw [polyGenMuS_succ (by omega)]
+    have h1 := envStepS_le_tight (k := k + 1) (by omega) (polyGenMuS k)
+    have h2 := sq_five_le_two_pow_seven k hk
+    have h3 : (k + 4) ^ 2 ≤ (k + 5) ^ 2 := Nat.pow_le_pow_left (by omega) 2
+    have h4 : 128 ≤ 2 ^ k := le_trans (by norm_num) (Nat.pow_le_pow_right (by norm_num) hk)
+    have h5 := Nat.lt_two_pow_self (n := k)
+    rw [show k + 1 + 4 = k + 5 by ring, show k + 1 + 3 = k + 4 by ring] at h1
+    rw [pow_succ] at h1 ⊢
+    generalize (k + 5) ^ 2 = s5 at *
+    generalize (k + 4) ^ 2 = s4 at *
+    generalize 2 ^ k = x at *
+    omega
+
+/-- **The Theorem 18.2 envelope at `(sDeg, tightMu0S)`**: `μ_k + 4k + 128 ≤ 128·2^k`
+for `k ≥ 7`. -/
+theorem genMuXS_le : ∀ k, 7 ≤ k → genMuXS k + 4 * k + 128 ≤ 128 * 2 ^ k := by
+  intro k hk
+  induction k, hk using Nat.le_induction with
+  | base => exact genMuXS_seven
+  | succ k hk ih =>
+    rw [genMuXS_succ (by omega)]
+    have h1 := envStepSTx_le_tight (k := k + 1) (by omega) (genMuXS k)
+    have h2 := sq_five_le_two_pow_seven k hk
+    have h3 : (k + 4) ^ 2 ≤ (k + 5) ^ 2 := Nat.pow_le_pow_left (by omega) 2
+    have h4 : 128 ≤ 2 ^ k := le_trans (by norm_num) (Nat.pow_le_pow_right (by norm_num) hk)
+    have h5 := Nat.lt_two_pow_self (n := k)
+    rw [show k + 1 + 4 = k + 5 by ring, show k + 1 + 3 = k + 4 by ring] at h1
+    rw [pow_succ] at h1 ⊢
+    generalize (k + 5) ^ 2 = s5 at *
+    generalize (k + 4) ^ 2 = s4 at *
+    generalize 2 ^ k = x at *
+    omega
+
+theorem genMuXS_ge : ∀ k, 2 ≤ k → 28 * 2 ^ k ≤ genMuXS k := by
+  intro k hk
+  obtain ⟨j, rfl⟩ : ∃ j, k = j + 1 := ⟨k - 1, by omega⟩
+  rw [genMuXS_succ (by omega)]
+  have := envStepSTx_ge_tight (k := j + 1) (by omega) (genMuXS j)
+  omega
+
+/-! ### The headline statements -/
+
+/-- **Theorem 18.1 at every degree `d ≥ 13` with exponent `α^(2^(2^(d+4)))`**,
+from the recurrence profiles and a phase partition. -/
+theorem theorem_18_1_d4_of_profiles_cover (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k)
+    (hp : ∀ k, 0 < pc k)
+    (hrec : ∀ k, 1 ≤ k →
+      Section16RecurrenceProfileWith k (familyRecThr k (Kc k) (pc k)) (familyRecExp k (pc k)))
+    (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 5))))
+    {Kφ : Real} {pφ : Nat} (hpp : ProgressionPhasePartition Kφ pφ) (hpφ : 0 < pφ)
+    (hKφ : Kφ ≤ 2 ^ pφ) (hpφB : (pφ : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64))
+    {d : Nat} (hd : 13 ≤ d) : Theorem181AtSharp 4 d := by
+  have henv := polyEnvBound_allS Kc pc hK hp hrec hconst hpp hpφ hKφ hpφB (d - 2) (by omega)
+  rw [show d - 2 + 2 = d by omega] at henv
+  refine theorem181AtSharp_of_polyEnvBound henv ?_
+  have hle := polyGenMuS_le64 (d - 2) (by omega)
+  have h2 : 2 ^ (d + 4) = 64 * 2 ^ (d - 2) := by
+    rw [show d + 4 = (d - 2) + 6 by omega, pow_add]; ring
+  rw [h2]
+  omega
+
+/-- **Theorem 18.1 at every degree `d ≥ 9` with exponent `α^(2^(2^(d+5)))`**,
+from the recurrence profiles and a phase partition. -/
+theorem theorem_18_1_d5S_of_profiles_cover (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k)
+    (hp : ∀ k, 0 < pc k)
+    (hrec : ∀ k, 1 ≤ k →
+      Section16RecurrenceProfileWith k (familyRecThr k (Kc k) (pc k)) (familyRecExp k (pc k)))
+    (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 5))))
+    {Kφ : Real} {pφ : Nat} (hpp : ProgressionPhasePartition Kφ pφ) (hpφ : 0 < pφ)
+    (hKφ : Kφ ≤ 2 ^ pφ) (hpφB : (pφ : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64))
+    {d : Nat} (hd : 9 ≤ d) : Theorem181AtSharp 5 d := by
+  have henv := polyEnvBound_allS Kc pc hK hp hrec hconst hpp hpφ hKφ hpφB (d - 2) (by omega)
+  rw [show d - 2 + 2 = d by omega] at henv
+  refine theorem181AtSharp_of_polyEnvBound henv ?_
+  have hle := polyGenMuS_le128 (d - 2) (by omega)
+  have h2 : 2 ^ (d + 5) = 128 * 2 ^ (d - 2) := by
+    rw [show d + 5 = (d - 2) + 7 by omega, pow_add]; ring
+  rw [h2]
+  omega
+
+/-- **Theorem 18.2 at every length `L ≥ 11` with `L + 3` in the threshold**,
+from the recurrence profiles. -/
+theorem theorem_18_2_L3S_of_profiles_cover (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k)
+    (hp : ∀ k, 0 < pc k)
+    (hrec : ∀ k, 1 ≤ k →
+      Section16RecurrenceProfileWith k (familyRecThr k (Kc k) (pc k)) (familyRecExp k (pc k)))
+    (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 5))))
+    {L : Nat} (hL : 11 ≤ L) : Theorem182AtSharp 3 L := by
+  have henv := envBound_allXS Kc pc hK hp hrec hconst (L - 4) (by omega)
+  rw [show L - 4 + 2 = L - 2 by omega] at henv
+  have hge := genMuXS_ge (L - 4) (by omega)
+  have hle := genMuXS_le (L - 4) (by omega)
+  have hk := Nat.lt_two_pow_self (n := L - 4)
+  have h4 : 4 ≤ 2 ^ (L - 4) :=
+    le_trans (by norm_num : 4 ≤ 2 ^ 2) (Nat.pow_le_pow_right (by norm_num) (by omega))
+  have h42 : 42 ≤ genMuXS (L - 4) := by omega
+  have hLμ : 4 * L + 20 ≤ 2 ^ genMuXS (L - 4) := by
+    have := Nat.lt_two_pow_self (n := genMuXS (L - 4))
+    omega
+  refine theorem182AtSharp_of_envBound (by omega) henv h42 hLμ ?_
+  have h2 : 2 ^ (L + 3) = 128 * 2 ^ (L - 4) := by
+    rw [show L + 3 = (L - 4) + 7 by omega, pow_add]; ring
+  rw [h2]
+  omega
+
+/-- **Corollary 18.7 at every length `L ≥ 11` with `L + 3`**, from the profiles. -/
+theorem corollary_18_7_L3S_of_profiles_cover (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k)
+    (hp : ∀ k, 0 < pc k)
+    (hrec : ∀ k, 1 ≤ k →
+      Section16RecurrenceProfileWith k (familyRecThr k (Kc k) (pc k)) (familyRecExp k (pc k)))
+    (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 5))))
+    {L : Nat} (hL : 11 ≤ L) : Corollary187AtSharp 3 L :=
+  (theorem_18_2_L3S_of_profiles_cover Kc pc hK hp hrec hconst hL).corollary_18_7
+

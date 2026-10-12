@@ -1,0 +1,50 @@
+import GowersSzemeredi.Proofs18CoverFejerHeadlineT
+
+/-! **Theorem 18.2 and Corollary 18.7 at `L + 2` for every `L ≥ 13`, from the
+recurrence profiles** (Notes L.16l).
+
+The Theorem 18.2 envelope of `Proofs18CoverFejerHeadlineT` carries the
+threshold branch `2^(k+6) + 8`, which keeps it at `64·2^k` and blocks
+`L + 2`. That branch comes from `zeta_gen_bounds_fejer`, which bounds the
+inverse tight Bohr radius by `exp(X^(2^(2^(k+6)+1)))` through the printed
+`θ₁`. Under the Fejér `θ₁` the radius is polynomial in `θ₁′⁻¹`:
+* `zeta_gen_bounds_fejer5`: `ζ⁻¹ ≤ exp(X^(2^(5k+21)))`, from
+  `tightZeta_fejer_inv_le_gen` and `fejerProductExponent k ≤ 2^(5k+14)`;
+* `GenParamsT.MReq_le_expU`, `GenParamsT.Tloc_le_expU`: the requirement on
+  `m` and the modulus threshold at `threshDegU`, which is
+  `max(expDeg + 4, 16·2^k + 5k + 25)` instead of `max(expDeg + 4, 64·2^k + 5)`
+  (generated from the T versions);
+* `envBound_stepUx`, `genMuXU`, `envBound_allXU`: the Theorem 18.2 envelope
+  with that threshold (generated). Each step is now at most
+  `max(μ + 28·2^k + O(k²), 32·2^k + 9)` (`envStepUTx_le_tight`), and at least
+  `32·2^k + 9`;
+* `genMuXU_small64` (`decide +kernel`, `k = 9, …, 12`) and `genMuXU_le64`
+  (`μ_k + 4k + 128 ≤ 64·2^k` for `k ≥ 12`);
+* `theorem_18_2_L2_thirteen_le_of_profiles_cover`,
+  `corollary_18_7_L2_thirteen_le_of_profiles_cover`: `L + 2` at every length
+  `L ≥ 13`. -/
+set_option autoImplicit false
+noncomputable section
+open scoped BigOperators
+namespace LeanProofs.GowersSzemeredi
+
+/-- **The tight Bohr radius under the Fejér `θ₁` is polynomial**:
+`ζ⁻¹ ≤ exp(X^(2^(5k+21)))`. -/
+theorem zeta_gen_bounds_fejer5 (k : Nat) {alpha : Real} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
+    0 < tightZeta (fejerThetaOne alpha (alpha / 2) k / 4) ∧
+      (tightZeta (fejerThetaOne alpha (alpha / 2) k / 4))⁻¹ ≤
+        Real.exp ((2 / alpha) ^ (2 ^ (5 * k + 21))) := by
+  have hX := two_div_ge_two ha ha2
+  obtain ⟨h0, -, hi⟩ := tightZeta_fejer_inv_le_gen (gamma := alpha / 2) (theta := alpha) k
+    (half_pos ha) (by linarith) ha (by linarith)
+  refine ⟨h0, hi.trans (Real.exp_le_exp.mpr ?_)⟩
+  have hval : 2 / (alpha / 2 * alpha) = (2 / alpha) ^ 2 := by field_simp <;> ring
+  rw [hval, ← pow_mul]
+  refine pow_le_pow_right₀ (by linarith) ?_
+  have hF := fejerProductExponent_le k
+  have h14 : 2 ^ 14 ≤ 2 ^ (5 * k + 14) := Nat.pow_le_pow_right (by norm_num) (by omega)
+  have h21 : 2 ^ (5 * k + 21) = 128 * 2 ^ (5 * k + 14) := by
+    rw [show 5 * k + 21 = (5 * k + 14) + 7 by ring, pow_add]; ring
+  unfold fejerStepT
+  omega
+

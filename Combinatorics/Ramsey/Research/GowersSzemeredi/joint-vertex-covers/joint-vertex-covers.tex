@@ -256,8 +256,106 @@ threshold. Hence $W(k,r)\le2^{2^{r^{2^{2^{k+4}}}}}$, and Theorem~1.3 holds with
 density exponent $2^{-2^{k+4}}$.
 \end{theorem}
 
-The next level, $c=5$ for Theorem~18.1, would need a step cost below
-$64\cdot2^k$. The three class terms alone cost $3\cdot22\cdot2^k$.
+\emph{Large degrees.} The proved class bound $23\cdot2^l$ is loose. The class
+recursion only needs slack that grows additively, and indeed
+\[
+  2^{l+6}a_l\le2^{14\cdot2^l},\qquad D_l\le2^{14\cdot2^l+3(l+4)^2}
+\]
+in every dimension $l\ge2$, since $3(l+5)^2-3(l+4)^2=6l+27$ covers the
+$5l+22$ that one step adds. Moreover the Fej\'er $\theta_1$ no longer
+forces the base budget $32\cdot2^k$: the class-base term $16\cdot2^k$
+suffices. One step then costs $58\cdot2^k+O(k^2)$, and the envelopes stay
+below $128\cdot2^k$ from $k=10$ on.
+
+\begin{theorem}\label{thm:fejer5}
+Theorem~18.1 holds with exponent $\alpha^{2^{2^{d+5}}}$ at every degree
+$d\ge12$, and Theorem~18.2 and Corollary~18.7 hold with $L+3$ at every
+length $L\ge14$; in particular $W(k,r)\le2^{2^{r^{2^{2^{k+3}}}}}$ for $k\ge14$,
+and Theorem~1.3 holds with density exponent $2^{-2^{k+3}}$ for $k\ge14$.
+\end{theorem}
+
+The small cases stay at $d+6$ and $L+4$ because of the class recursion's
+transient near $l=4$, where the family exponent squares,
+$a_{l+1}\approx2^{l+5}a_l^2$.
+
+\emph{The dimension-two family exponent.} Since the family exponent squares,
+$\log_2a_l\approx(\log_2a_2/4)\,2^l$, so the constant $14$ above is set by
+$a_2=2^{46}$. That value only reflects the passage from a power class, which
+sets the family exponent equal to the parameter degree. The dimension-two
+controls are polynomials of fixed degree in the number $M=n\,m$ of pieces:
+the base controls are linear in $M$. In the two bases $\nu=n+1$ and
+$W=2V/(\gamma\theta\rho)$:
+\begin{itemize}
+\item the count is at most $\nu^{11}W^{2^{41}}$;
+\item the inverse width exponent is at most $\nu^{29}W^{2^{46}}$.
+\end{itemize}
+So dimension two is a split class with $a_2=32$ and $D_2=2^{48}$, and the
+invariants become
+\[
+  2^{l+6}a_l\le2^{4\cdot2^l},\qquad D_l\le2^{4\cdot2^l+3(l+4)^2+30}.
+\]
+The class degree is then $4\cdot2^l+3(l+4)^2+32$.
+
+At this class degree the density degree of the step is about $28\cdot2^k$.
+That is below the $32\cdot2^k$ which the $\eta$ step of the printed
+envelope asks of it, but the $\eta$ step only absorbs the constant
+$2^{2(k+2)^3}\,2^{k+1}(2/\alpha)^2$, and $3(k+4)^2$ suffices for that. One
+step then costs $28\cdot2^k+O(k^2)$, so the Theorem~18.1 envelope tends to
+$56\cdot2^k<64\cdot2^k$.
+
+\begin{theorem}\label{thm:fejer4}
+Theorem~18.1 holds with exponent $\alpha^{2^{2^{d+4}}}$ at every degree
+$d\ge13$, and with $\alpha^{2^{2^{d+5}}}$ at every degree $d\ge9$.
+Theorem~18.2 and Corollary~18.7 hold with $L+3$ at every length $L\ge11$; in
+particular $W(k,r)\le2^{2^{r^{2^{2^{k+3}}}}}$ and Theorem~1.3 holds with
+density exponent $2^{-2^{k+3}}$ for $k\ge11$.
+\end{theorem}
+
+This Theorem~18.2 envelope cannot reach $L+2$: its threshold branch alone is
+$64\cdot2^k+8>64\cdot2^k$ (but see Theorem~\ref{thm:fejer2}). Nor can $d+3$ be
+reached, since the base budget contributes $16\cdot2^k$ to every step.
+
+\emph{Exact small dimensions.} In small dimensions the slack $3(l+4)^2+32$
+dominates the class degree, but there the split degrees are explicit numbers.
+\begin{center}\small
+\begin{tabular}{l*{12}{r}}
+\toprule
+$l$ & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12\\
+\midrule
+true & 17 & 49 & 85 & 136 & 210 & 326 & 524 & 881 & 1550 & 2841 & 5371 & 10375\\
+bound & 115 & 156 & 211 & 288 & 403 & 588 & 907 & 1488 & 2587 & 4716 & 8899 & 17184\\
+\bottomrule
+\end{tabular}
+\end{center}
+The table compares their log-degrees $\lceil\log_2(a_l+D_l+l+1)\rceil$ with
+the bound $4\cdot2^l+3(l+4)^2+32$; the kernel evaluates them. With these
+degrees the envelope peaks at $124.4\cdot2^k$ (at $k=3$), below
+$128\cdot2^k$. The kernel also evaluates the envelope up to $k=12$, and the
+invariants carry it beyond. Degrees $d\le3$ and lengths $L\le5$ come from the
+explicit corpus bounds.
+
+\begin{theorem}\label{thm:fejer5all}
+Theorem~18.1 holds with exponent $\alpha^{2^{2^{d+5}}}$ in every degree $d$,
+and with $\alpha^{2^{2^{d+4}}}$ at every degree $d\ge11$. Theorem~18.2 and
+Corollary~18.7 hold with $L+3$ in every length $L$. Hence
+$W(k,r)\le2^{2^{r^{2^{2^{k+3}}}}}$ for every $k$, and Theorem~1.3 holds with
+density exponent $2^{-2^{k+3}}$.
+\end{theorem}
+
+\emph{The Bohr radius.} The threshold branch $64\cdot2^k$ of the
+Theorem~18.2 envelope comes from the inverse tight Bohr radius, which was
+bounded by comparison with the printed $\theta_1$ as
+$\exp(X^{2^{2^{k+6}+1}})$. Under the Fej\'er $\theta_1$ the radius is
+polynomial in $\theta_1'^{-1}$, so $\zeta^{-1}\le\exp(X^{2^{5k+21}})$. The
+threshold branch then drops to $16\cdot2^k+5k+25$, which is the threshold of
+Lemma~15.6. Every step costs at most $\max(\mu+28\cdot2^k+O(k^2),\,
+32\cdot2^k+9)$.
+
+\begin{theorem}\label{thm:fejer2}
+Theorem~18.2 and Corollary~18.7 hold with $L+2$ at every length $L\ge13$; in
+particular $W(k,r)\le2^{2^{r^{2^{2^{k+2}}}}}$ and Theorem~1.3 holds with
+density exponent $2^{-2^{k+2}}$ for $k\ge13$.
+\end{theorem}
 
 \section{Theorem 16.2 and Corollary 16.11 with polynomial controls}
 
@@ -294,6 +392,15 @@ With the Fej\'er classes of \S\ref{sec:fejer} both exponents shrink:
 \item the corollary has $e^{-1}\le(2/\alpha)^{2^{101\cdot2^k+k+24}}$\\
   (\lean{corollary\_16\_11\_polynomial\_fejer}).
 \end{itemize}
+With the dimension-two family exponent $32$ (Theorem~\ref{thm:fejer4}) they
+shrink further:
+\begin{itemize}
+\item the graph count becomes
+  $\max(1,(4V/\gamma\theta\rho)^{2^{4\cdot2^k+3(k+4)^2+32}})$\\
+  (\lean{theorem\_16\_2\_polynomial\_fejerS});
+\item the corollary has $e^{-1}\le(2/\alpha)^{2^{32\cdot2^k+9(k+4)^2+k+120}}$\\
+  (\lean{corollary\_16\_11\_polynomial\_fejerS}).
+\end{itemize}
 
 \section{Further questions}
 
@@ -304,20 +411,12 @@ With the Fej\'er classes of \S\ref{sec:fejer} both exponents shrink:
   Lemma~\ref{lem:joint}, should cost about $68\cdot2^k$. The envelope would
   drop from about $472\cdot2^k$ to about $336\cdot2^k$. This changes none of
   the constants in the table.
-\item \emph{The class degree.} Under the Fej\'er $\theta_1$ the face covers
-  have degree $2^{23\cdot2^l}$ (\S\ref{sec:fejer}). The split-class invariant
-  is $2^{l+6}a_l\le2^{14\cdot2^l}$, forced by the dimension-two seed $2^{46}$.
-  That seed is dominated by the dimension-two piece counts, whose Lemma~16.3
-  density $2^{-2000}(\gamma\theta)^{10000}$ multiplies the budget degree by
-  $10^4$. Is there a class construction with a smaller constant? Together
-  with a base budget near $16\cdot2^k$ (the bound on $V$; the Fej\'er
-  $\theta_1$ no longer forces $32\cdot2^k$), it would be needed for $c=5$ in
-  Theorem~18.1. An exact run of the class recursion shows that sharper
-  inputs do not suffice. The actual class degree peaks near $16\cdot2^l$ at
-  $l=4$, because the family exponent squares from one dimension to the next,
-  $a_{l+1}\approx2^{l+5}a_l^2$. Even a dimension-two seed of $2^{36}$ leaves
-  the envelope at $134\cdot2^k>128\cdot2^k$. So $c=5$ seems to need a class
-  step whose family exponent grows linearly rather than quadratically.
+\item \emph{$d+4$ at small degrees.} With the exact small-dimension degrees
+  (Theorem~\ref{thm:fejer5all}), $c=5$ holds in every degree and $c=4$ from
+  degree $11$ on. Between degrees $4$ and $10$ the envelope lies between
+  $64\cdot2^k$ and $124.4\cdot2^k$. Reaching $c=4$ there needs a smaller
+  step in dimensions $2$ to $8$. The base budget alone contributes
+  $16\cdot2^k$, and the class degree about $49$ to $881$.
 \item \emph{Fixed-precision slices with the Fej\'er classes.} Composing the
   two slice controls jointly would lower the step cost from $101\cdot2^k$ to
   about $78\cdot2^k$. That is still above $64\cdot2^k$, so it changes no
@@ -354,6 +453,19 @@ Fej\'er envelope & \lean{Proofs18TightClassesFejer}, \lean{Proofs18FejerEnvelope
 & \lean{Proofs18CoverFejerHeadline}\\
 Theorem~\ref{thm:fejer} & \lean{theorem\_18\_1\_d6}, \lean{theorem\_18\_2\_L4}, \lean{corollary\_18\_7\_L4},\\
 & \lean{van\_der\_waerden\_L4}, \lean{theorem\_1\_3\_L4} (\lean{Proofs18CoverFejerAllDegrees})\\
+Theorem~\ref{thm:fejer5} & \lean{theorem\_18\_1\_d5\_twelve\_le}, \lean{theorem\_18\_2\_L3\_fourteen\_le},\\
+& \lean{Proofs18TightClassesFejerQ}, \lean{Proofs18CoverFejerHeadlineQ}\\
+Theorem~\ref{thm:fejer4} & \lean{theorem\_18\_1\_d4\_thirteen\_le}, \lean{theorem\_18\_1\_d5\_nine\_le},\\
+& \lean{theorem\_18\_2\_L3\_eleven\_le}, \lean{theorem\_1\_3\_L3\_eleven\_le},\\
+& \lean{Proofs16UniformCoverTwoSplit}, \lean{Proofs18TightClassesFejerS},\\
+& \lean{Proofs18EtaStepSmall}, \lean{Proofs18CoverFejerHeadlineS}\\
+Theorem~\ref{thm:fejer5all} & \lean{theorem\_18\_1\_d5}, \lean{theorem\_18\_1\_d4\_eleven\_le}, \lean{theorem\_18\_2\_L3},\\
+& \lean{corollary\_18\_7\_L3}, \lean{van\_der\_waerden\_L3\_all}, \lean{theorem\_1\_3\_L3},\\
+& \lean{Proofs18TightClassesFejerT}, \lean{Proofs18CoverFejerHeadlineT},\\
+& \lean{Proofs18CoverFejerLowDegrees5}, \lean{Proofs18CoverFejerShortLengths3}\\
+Theorem~\ref{thm:fejer2} & \lean{theorem\_18\_2\_L2\_thirteen\_le}, \lean{corollary\_18\_7\_L2\_thirteen\_le},\\
+& \lean{van\_der\_waerden\_L2}, \lean{theorem\_1\_3\_L2\_thirteen\_le},\\
+& \lean{zeta\_gen\_bounds\_fejer5} (\lean{Proofs18CoverFejerHeadlineU})\\
 Fej\'er polynomial 16.2, 16.11 & \lean{Proofs16PolynomialFejer}, \lean{theorem\_16\_2\_polynomial\_fejer},\\
 & \lean{corollary\_16\_11\_polynomial\_fejer}\\
 polynomial Theorem 16.2 & \lean{Proofs16PolynomialStructure}, \lean{theorem\_16\_2\_polynomial}\\
