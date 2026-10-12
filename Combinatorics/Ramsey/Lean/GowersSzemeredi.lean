@@ -1157,6 +1157,8 @@ import GowersSzemeredi.Proofs13NaturalSquareAxes
 import GowersSzemeredi.Proofs13SparseNaturalAxes
 import GowersSzemeredi.Proofs01HeadlineScale
 import GowersSzemeredi.Proofs02RoundingCounterexample
+import GowersSzemeredi.Proofs07SharpBohr
+import GowersSzemeredi.Proofs07CoordinateLinearity
 import GowersSzemeredi.Proofs16PolyPieceTwoDataWith
 import GowersSzemeredi.Proofs16PolyCoverTwoFejer
 import GowersSzemeredi.Proofs18FejerSeedCounts
