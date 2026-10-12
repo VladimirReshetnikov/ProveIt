@@ -1226,6 +1226,11 @@ import GowersSzemeredi.Proofs16JointSliceSpectrum
 import GowersSzemeredi.Proofs16JointSliceCore
 import GowersSzemeredi.Proofs16JointSliceGlobal
 import GowersSzemeredi.Proofs18JointSliceInverseFejer
+import GowersSzemeredi.Proofs18CoverModulusFejerJ
+import GowersSzemeredi.Proofs18CoverDensityFejerJ
+import GowersSzemeredi.Proofs18CoverExponentsFejerJ
+import GowersSzemeredi.Proofs18CoverFejerHeadlineJ
+import GowersSzemeredi.Proofs18CoverFejerLowDegrees4
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
