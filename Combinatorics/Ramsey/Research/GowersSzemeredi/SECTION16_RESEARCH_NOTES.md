@@ -4497,6 +4497,16 @@ class route (route II) in two unrelated roles:
    Theorem 16.2 in dimension `k`. On route II the face counts come from the
    classes, so this `s` is not the Bohr exponent and can stay printed.
 
+*Formalized* (`Proofs16TightRadius`, light, standard axioms only):
+* `tightZeta_le_section10Zeta`: the radius `2^(−2^83/a^11)` meets
+  Lemma 16.5's condition for every `a ≤ α ≤ 1/6`;
+* with `fejerThetaOne θ γ k = (θγ/4)^(fejerProductExponent k)`:
+  - `fejer_tightRadiusExponent_eq`: `s′ = 2^105·(4/(θγ))^(11E)`;
+  - `fejer_tightRadiusExponent_le`: `s′ ≤ (2/(θγ))^(22E+105)`;
+  - `fejer_tightRadiusExponent_large`: `2^(40(k+1)³+1) ≤ s′`.
+
+These are the radius inputs either propagation route needs.
+
 How this was checked: 59 of the 491 ancestors of `Proofs16ClassStep` mention
 `section16Zeta`. They were searched for bounds on `multipleS` and for upper
 bounds on `ζ`, and nothing else turned up. A search is not a proof: the
