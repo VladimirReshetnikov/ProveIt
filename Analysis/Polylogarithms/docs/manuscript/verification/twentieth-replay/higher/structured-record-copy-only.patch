@@ -1,0 +1,20 @@
+-             if generated.read_bytes() != supplied.read_bytes():
+                raise AssertionError('Generated record differs: ' + relative)
++             if generated.suffix == '.csv':
+                import csv
+                with generated.open(encoding='utf-8', newline='') as f:
+                    actual = list(csv.reader(f))
+                with supplied.open(encoding='utf-8', newline='') as f:
+                    expected = list(csv.reader(f))
+            elif generated.suffix == '.json':
+                actual = json.loads(generated.read_text(encoding='utf-8'))
+                expected = json.loads(supplied.read_text(encoding='utf-8'))
+                if relative == 'code/gap_ten/gap_ten_independent_checks.json':
+                    records.append({'name': 'certificate-serialization-identifiers',
+                                    'generated': actual.pop('sha256'),
+                                    'supplied': expected.pop('sha256'),
+                                    'scope': 'Descriptive byte identifiers retained separately; every CSV field was already compared exactly.'})
+            else:
+                actual, expected = generated.read_bytes(), supplied.read_bytes()
+            if actual != expected:
+                raise AssertionError('Generated structured record differs: ' + relative)

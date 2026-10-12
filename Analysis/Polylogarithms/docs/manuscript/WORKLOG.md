@@ -826,3 +826,31 @@ repeat the cold builds. Final pages 130/129/237/85, combined 540, references
 139. Review every changed final body; preserve exact raster evidence and
 all old numbering. General rank, Gaussian periods and other pending branches
 remain active research questions.
+
+
+## Twentieth intake and complete analytic primitive hierarchy, October 12, 2026
+
+Place five original packages (169 members, 165 tracked), retain provenance
+qualifications and every delivered inner name, inspect all-member repeats
+against historical placement trees, and retire the five ZIPs in the same
+placement. Publish raw preservation in 08e5a22eb971 after merging origin/main.
+Run all five full mathematical suites only on isolated copies. Preserve both
+Higher Identities wrapper failures and qualify its copy-only structured
+comparator; reproduce every field of all 73722 gap-ten certificate rows and
+all mathematical subsidiary values. Keep its infinite proof audit separate.
+
+Reconcile the cubic all-index conjecture with Theorem 8.139. Credit the
+independent analytic normal-generator proof and classical Euler homotopy.
+Accept every compensator's finite formula and the analytic primitive series
+on its stated smaller domain, including exact Gamma/Stieltjes translations
+and anchored endpoint terms. Derive an explicit entire affine primitive and
+all-degree coefficients. Enforce zero-constant normalization with +t/2;
+reject its omission independently. Check the sparse recurrence, homotopy and
+affine coefficients through weight eighteen, 139 general monomial identities,
+two 80-digit diagnostics and native Wolfram exact symbolic controls.
+
+Rebuild all four volumes and the combined edition, repeat each cold build,
+inspect all 40 external destinations, and review every changed final body.
+Final pages 130/129/240/85 and combined 543; references 140. Preserve inherited
+visual evidence and numbering. General rank, Gaussian S6/revised S8, full
+compensator support/sign and remaining analytic report branches stay open.

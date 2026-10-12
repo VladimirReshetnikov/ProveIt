@@ -23,7 +23,7 @@ archives=sum((read(V/name) for name in ['incoming-archives.json',
     'research-incoming-archives.json','third-incoming-archives.json',
     'fourth-incoming-archives.json','fifth-incoming-archives.json',
     'sixth-incoming-archives.json','seventh-incoming-archives.json',
-    'eighth-incoming-archives.json','ninth-incoming-archives.json','tenth-incoming-archives.json','eleventh-incoming-archives.json','twelfth-incoming-archives.json','thirteenth-incoming-archives.json','fourteenth-incoming-archives.json','fifteenth-incoming-archives.json','sixteenth-incoming-archives.json','seventeenth-incoming-archives.json','eighteenth-incoming-archives.json','nineteenth-incoming-archives.json']), [])
+    'eighth-incoming-archives.json','ninth-incoming-archives.json','tenth-incoming-archives.json','eleventh-incoming-archives.json','twelfth-incoming-archives.json','thirteenth-incoming-archives.json','fourteenth-incoming-archives.json','fifteenth-incoming-archives.json','sixteenth-incoming-archives.json','seventeenth-incoming-archives.json','eighteenth-incoming-archives.json','nineteenth-incoming-archives.json','twentieth-incoming-archives.json']), [])
 for a in archives:
     archive=B.parents[3]/a['archive']
     blob=archive.read_bytes() if archive.is_file() else subprocess.check_output(['git','show',a['archive_git_revision']+':'+a['archive']],cwd=B.parents[3])
@@ -59,5 +59,9 @@ for p in sorted(V.rglob('*')):
     if p.name in excluded or p.suffix not in {'.json','.tex','.gz','.bin'}:continue
     mode='raw' if p.suffix in {'.gz','.bin'} else 'lf-normalized'
     dependencies[p.relative_to(B).as_posix()]={'sha256':digest(p,mode),'mode':mode}
+# Retain the new qualified runner failures and full suite logs as evidence.
+for p in sorted((V/'twentieth-replay').rglob('*')):
+    if p.is_file() and p.suffix in {'.log','.txt','.patch'}:
+        dependencies[p.relative_to(B).as_posix()]={'sha256':digest(p,'lf-normalized'),'mode':'lf-normalized'}
 save(V/'dependency-sha256.json',dict(sorted(dependencies.items())))
 print('Pinned',len(sources),'canonical sources and',len(dependencies),'dependencies.')
