@@ -1,0 +1,256 @@
+\section{The problem and the contribution}\label{sec:setting}
+
+Let $d(m)$ be the number of positive divisors of $m$. The resonant Lambert
+function
+\begin{equation}\label{eq:F}
+ \F(t)=\sum_{m\ge1}\frac{d(m)}m e^{-mt}
+       =\sum_{a\ge1}\frac{\Li_1(e^{-at})}{a},\qquad \re t>0,
+\end{equation}
+is a direct bridge between the two programs named in the research request.
+It is a superposition of polylogarithms, but its expansion at $t=0$ has a
+factorially divergent tail. Inverting its large logarithmic core produces
+ordinary exponential sectors with a second, much smaller, exponential scale
+inside their Stokes discontinuity.
+
+The incoming manuscript \cite{incoming} obtains an exact finite formula for
+the inverse-sector coefficients and proves their Borel radius. Its
+Section~11.1, equations labelled \texttt{eq:conj-even} and
+\texttt{eq:conj-odd}, leaves the leading coefficient amplitudes conjectural.
+This article proves those formulas and their first correction. It also
+answers the continuation part of the next research question, Section~11.2,
+by checking the hypotheses of an established nonlinear resurgence theorem.
+
+\subsection{Notation and the two independent variables}
+
+Throughout, put
+\begin{equation}\label{eq:constants}
+ A=4\pi^2,\qquad c=\frac A4=\pi^2,\qquad
+ d=\frac{A^2}{288}=\frac{\pi^4}{18},\qquad
+ b_n=\frac{\Gamma(n)}n\quad(n\ge1).
+\end{equation}
+The lower-case constant $d$ in \eqref{eq:constants} has no argument and is
+distinct from the divisor function $d(m)$. Define the formal series
+\begin{equation}\label{eq:R}
+ R(t)=\sum_{n\ge1}r_nt^n,\qquad
+ r_1=-\frac14,\quad
+ r_n=\begin{cases}
+ 4b_nA^{-n}\zeta(n)^2,&n\ge2\text{ even},\\
+ 0,&n\ge3\text{ odd}.
+ \end{cases}
+\end{equation}
+The central object is the unique formal solution
+\begin{equation}\label{eq:implicit}
+ V(q,u)+\frac u2 V(q,u)^2+uR\bigl(qe^{-V(q,u)}\bigr)=0,
+ \qquad V(q,u)=\sum_{n\ge1}C_n(u)q^n.
+\end{equation}
+Here $q$ and $u$ are independent variables: $q$ is the sector variable and
+$u$ is the slow parameter. The equality is an identity of formal series,
+not an evaluation of the divergent series $R$.
+
+To recover the physical inverse, write
+\begin{equation}\label{eq:physical}
+ C_* =\frac{\zeta(2)}2-\gamma^2-2\gamma_1,
+ \quad X=\sqrt{2(Y-C_*)},\quad u=X^{-1},\quad q=e^{\gamma-X},
+ \quad t=qe^{-V}.
+\end{equation}
+The positive square root is used for large real $Y$. The constant
+$\gamma_1$ uses the convention
+$\zeta(1+s)=s^{-1}+\gamma-\gamma_1s+O(s^2)$.
+The actual inverse of \eqref{eq:F} has \eqref{eq:implicit} as its formal
+sector expansion under \eqref{eq:physical}. Large coefficient index $n$ and
+large target $Y$ are different limits; our uniform estimates make their
+interaction explicit.
+
+\subsection{The resolved conjecture}
+
+For $\epsilon\in\{0,1\}$ set
+\[
+ H_0(z)=\cosh z,\qquad H_1(z)=\sinh z,
+\]
+and let a prime denote differentiation with respect to $z$.
+
+\begin{theorem}[Sharp uniform late coefficients]\label{thm:main}
+For every $U>0$, uniformly for complex $|u|\le U$ as $n\to\infty$,
+\begin{align}
+ \frac{(-1)^{n+1}A^nC_n(u)}{4ub_n}
+ &=H_{n\bmod2}(z)+\frac{K_{n\bmod2}(u)}n
+      +O_U(n^{-2}),\qquad z=cu,\label{eq:main-expansion}\\
+ K_\epsilon(u)
+ &=\left(du+\frac{1+u}{2}z^2\right)H_\epsilon(z)
+       +(2+u)zH_\epsilon'(z).\label{eq:K}
+\end{align}
+The quotient at $u=0$ is removable. For odd $n$, the error term on the
+right of \eqref{eq:main-expansion} is in fact $O_U(|u|n^{-2})$.
+
+In particular, uniformly for every real $0<u\le U$,
+\begin{align}
+ C_{2m}(u)
+ &=-\frac{4u\Gamma(2m)}{2mA^{2m}}\cosh(Au/4)
+       \{1+O_U(m^{-1})\},\label{eq:even-main}\\
+ C_{2m+1}(u)
+ &=\frac{4u\Gamma(2m+1)}{(2m+1)A^{2m+1}}\sinh(Au/4)
+       \{1+O_U(m^{-1})\}.\label{eq:odd-main}
+\end{align}
+No lower bound on $u$ is required.
+\end{theorem}
+
+The leading amplitudes in \eqref{eq:even-main}--\eqref{eq:odd-main} are the
+precise conjecture in \cite{incoming}. The estimate, its moving-parameter
+scope, and \eqref{eq:K} strengthen that conjecture. Sections~\ref{sec:leading}
+and \ref{sec:correction} supply elementary coefficient proofs.
+They do not rely on a Borel continuation hypothesis.
+
+The second principal result is analytic.
+
+\begin{theorem}[Borel radius and continuation]\label{thm:analytic-preview}
+For every fixed $u\in\C\setminus\{0\}$, the shifted Borel transform
+\begin{equation}\label{eq:BorelV}
+ \widehat V_u(\xi)=\sum_{n\ge1}\frac{C_n(u)}{\Gamma(n)}\xi^{n-1}
+\end{equation}
+has radius exactly $A$, with genuine singularities at both $A$ and $-A$.
+Its principal germ admits analytic continuation along every path beginning
+at the origin and thereafter avoiding $A\Z$. The formal series $V(q,u)$
+is $1$-summable in each direction not congruent to $0$ or $\pi$ modulo
+$2\pi$. For $u=0$ both $V$ and its Borel transform vanish.
+\end{theorem}
+
+The continuation assertion is an application of Sauzin's theorems
+\cite{Sauzin2015}, after a specific change of coordinates that we prove in
+Section~\ref{sec:continuation}. It determines an allowed singularity set;
+it does not assert that every lattice point is singular on every sheet.
+Section~\ref{sec:Borel} gives explicit boundary models involving logarithms
+and dilogarithms, with a continuously differentiable remainder.
+
+\subsection{Relationship to existing work}
+
+The forward Lambert family and its resurgent arithmetic structure are
+established work of Dorigoni--Kleinschmidt and Broadhurst--Dorigoni
+\cite{DK2021,BD2026}. The present paper studies the late coefficients of a
+specific nonlinear inverse. The starting coefficient formula, polynomial
+signs, Catalan degree, and exact forward Stokes jump belong to the incoming
+report \cite{incoming}; we reproduce short derivations where they make
+this paper self-contained.
+
+The mechanism of one large factorially weighted component has substantial
+antecedents. Bender--Richmond studied rapidly growing Lagrange coefficients
+\cite{BR1984}; Borinsky developed a complete algebra for factorial
+coefficient asymptotics, including composition and inversion
+\cite{Borinsky2018}. In our input the two equal-modulus contributions
+$A^{-n}$ and $(-A)^{-n}$ coexist. We therefore do not apply a theorem for a
+single positive action without checking the additional phase structure.
+Our proof works directly with the finite Lagrange sum and supplies the
+uniform bound missing from the source conjecture. The finite-phase theorem
+in Section~\ref{sec:phases} records the same calculation in reusable form.
+
+The novelty claimed here is scoped: a resolved project conjecture, explicit
+first corrections and Borel boundary formulas for this model, a uniform
+extension to a vanishing slow parameter, and a checked application of
+nonlinear resurgence that answers a stated continuation question.
+Worldwide priority for each model-specific formula has not been established.
+
+\section{The forward expansion and the exact reversion formula}\label{sec:forward}
+
+\subsection{How a sum of polylogarithms acquires factorial coefficients}
+
+For $t>0$, every summand in \eqref{eq:F} is positive and has negative
+derivative. Normal convergence on compact subsets of $\re t>0$ proves
+holomorphy, and monotonicity gives a positive real inverse. The Mellin
+representation is
+\begin{equation}\label{eq:mellin}
+ \F(t)=\frac1{2\pi\ii}\int_{\sigma-\ii\infty}^{\sigma+\ii\infty}
+       \Gamma(s)\zeta(1+s)^2t^{-s}\dd s,\qquad \sigma>0.
+\end{equation}
+It follows by Mellin inversion of $e^{-mt}$ and the absolutely convergent
+Dirichlet identity $\sum d(m)m^{-1-s}=\zeta(1+s)^2$.
+
+At $s=0$ the integrand has a triple pole. Multiplication of the Laurent
+series of $\Gamma(s)$ and $\zeta(1+s)$ yields the residue
+\[
+ \frac12(\log(1/t)+\gamma)^2+C_*.
+\]
+The residue at $s=-n$ is
+\begin{equation}\label{eq:r-residue}
+ r_n=\frac{(-1)^n}{n!}\zeta(1-n)^2.
+\end{equation}
+The zeta functional equation gives \eqref{eq:R}; standard special-function
+conventions follow \cite{DLMF}. In particular $r_2=1/288$,
+and every odd coefficient after $r_1$ vanishes at a trivial zeta zero.
+Shifting the Mellin contour by any fixed number of poles gives the usual
+finite-order asymptotic expansion
+\begin{equation}\label{eq:forward-asym}
+ \F(t)\sim\frac12(\log(1/t)+\gamma)^2+C_*+R(t),
+ \qquad t\to0^+.
+\end{equation}
+Only finitely many terms are asserted at each remainder order. The
+factor $\Gamma(n)/n$ in \eqref{eq:R} proves that $R$ has radius zero.
+
+Substituting \eqref{eq:physical} in \eqref{eq:forward-asym} and cancelling
+$X^2/2+C_*$ gives
+$XV+V^2/2+R(qe^{-V})=0$, which is \eqref{eq:implicit} after division by $X$.
+This calculation explains both the quadratic feedback and the exponential
+composition; neither is introduced as an arbitrary test equation.
+
+\subsection{Formal existence and a finite coefficient formula}
+
+\begin{proposition}[Exact finite reversion]\label{prop:lagrange}
+Equation~\eqref{eq:implicit} has a unique solution in $q\Q[u][[q]]$.
+For $1\le k\le n$, define
+\begin{equation}\label{eq:T}
+ T_{n,k}(u)=\sum_{j=0}^{k-1}\binom{k-1}{j}
+      n^{k-1-j}(k)_j\left(\frac u2\right)^j,
+\end{equation}
+where $(k)_j=k(k+1)\cdots(k+j-1)$ and $(k)_0=1$. Then
+\begin{equation}\label{eq:C-finite}
+ C_n(u)=-\sum_{k=1}^{n}\frac{u^k}{k!}[q^n]R(q)^k\,T_{n,k}(u).
+\end{equation}
+\end{proposition}
+\begin{proof}
+The coefficient of $V$ at $q=V=0$ is $1$, so coefficient recursion gives
+formal existence and uniqueness over $\Q[u]$. To obtain the displayed
+formula, insert an auxiliary variable $\eta$ and write
+\[
+ V=-\eta u\,\frac{R(qe^{-V})}{1+uV/2}.
+\]
+Formal Lagrange inversion in $\eta$ gives
+\[
+ V=\sum_{k\ge1}\frac{(-\eta u)^k}{k!}
+ \left.\partial_v^{k-1}
+ \bigl(R(qe^{-v})^k(1+uv/2)^{-k}\bigr)\right|_{v=0}.
+\]
+Only $k\le n$ contributes to $q^n$, making $\eta=1$ a legitimate
+coefficientwise specialization. Since
+$[q^n]R(qe^{-v})^k=e^{-nv}[q^n]R(q)^k$, Leibniz' rule turns the derivative
+into $(-1)^{k-1}T_{n,k}(u)$. This proves \eqref{eq:C-finite}.
+\end{proof}
+
+\begin{proposition}[Signs, valuations, and the first coefficients]
+\label{prop:structure}
+For all $n\ge1$,
+\begin{align}
+ &(-1)^{n+1}C_n(u)\in\Q_{\ge0}[u]\setminus\{0\},\label{eq:sign}\\
+ &\deg C_n=2n-1,\qquad
+ [u^{2n-1}]C_n=\frac{(-1)^{n+1}\Cat_{n-1}}{2^{3n-1}},\label{eq:degree}\\
+ &\ord_{u=0} C_n=
+ \begin{cases}1,&n=1\text{ or }n\text{ even},\\2,&n\ge3\text{ odd}.
+ \end{cases}\label{eq:valuation}
+\end{align}
+For odd $n\ge3$, $[u^2]C_n=n r_{n-1}/4$. Explicitly,
+\begin{align}
+ C_1(u)&=\frac u4,\nonumber\\
+ C_2(u)&=-\frac u{288}-\frac{u^2}{16}-\frac{u^3}{32},\label{eq:firstC}\\
+ C_3(u)&=\frac{u^2}{384}+\frac{7u^3}{288}
+              +\frac{3u^4}{128}+\frac{u^5}{128}.\nonumber
+\end{align}
+\end{proposition}
+\begin{proof}
+In any nonzero monomial contributing to $[q^n]R^k$, the number of linear
+factors has the parity of $n$. Hence $(-1)^n[q^n]R^k\ge0$, and all
+coefficients of $T_{n,k}$ are nonnegative. The top degree comes only from
+$k=n$, $j=n-1$, using $r_1^n=(-1/4)^n$; evaluation gives
+\eqref{eq:degree}. The linear coefficient is $-r_n$. For odd $n\ge3$, the
+quadratic coefficient is
+$-n[q^n]R^2/2=-n(2r_1r_{n-1})/2=n r_{n-1}/4>0$.
+The displayed first polynomials follow from \eqref{eq:C-finite}.
+These structural facts were proved in \cite{incoming}; the proof is included
+because the exact valuations are essential to uniformity at $u=0$.
+\end{proof}

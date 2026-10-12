@@ -1,0 +1,212 @@
+\section{Certified empty-pattern handle cancellations and cocore discs}
+\label{sec:source-handles}
+
+The inherited core of Section~\ref{sec:parallelity-core} need not be
+admissible. We now implement an initial geometric reduction for the empty
+boundary pattern, together with a new source-bound positive unknot
+certificate. The reduction removes eligible two/three-handle pairs and
+one/two-handle pairs using their actual attaching occurrences. An exposed
+one-handle cocore is accepted as a compressing disc only after an exact
+boundary-homology check. The operation is polynomial in the source
+triangulation size and does not enumerate normal surfaces.
+
+This is one initial stage of the intended hierarchy. Its input is the
+validated finite compact orientable source with one torus boundary and
+empty pattern. It does not discard a pattern on a later hierarchy state,
+and its output does not assert full admissibility. The implementation is
+\code{reduce\_source\_handles}; the recognizer can try it with
+\code{normal\_seed\_handles=True}, or the command-line combination
+\code{--normal-seed --normal-seed-handles}.
+
+\subsection{Source attaching occurrences and geometric cancellations}
+
+The source dual structure has $T$ zero-handles, one one-handle for each
+internal face pair, one two-handle for each interior edge, and one
+three-handle for each interior vertex. Every two-handle carries its cyclic
+edge-link sectors and its oriented passages through the one-handles.
+Repeated occurrences are retained. Its contacts with three-handles are the
+interior endpoints of its source edge, counted with multiplicity. In
+particular, an edge looping at an interior vertex has two such contacts.
+
+The two local moves are the empty-suture versions of Procedures 6 and 2,
+respectively, in Section 6.1 of~\cite{lackenby-parallelity}. A two-handle
+meeting the remaining three-handles in exactly one disc cancels with that
+three-handle. After all three-handles are gone, a one-handle meeting the
+remaining two-handles in exactly one disc cancels with the incident
+two-handle. These are geometric incidence conditions.
+
+For the first phase, a queue tracks source edges with exactly one remaining
+interior endpoint. Removing a vertex handle exposes further edges to the
+boundary. Every interior vertex is reachable from a boundary vertex in the
+source one-skeleton, so this phase removes all three-handles. This is the
+source-specialized realization of the published removal of three-handles
+in a manifold with no closed component.
+
+For the second phase, occurrence counts are maintained at every remaining
+one-handle. When a count is one, remove that handle and its unique incident
+two-handle, then decrement the counts along the removed attaching cycle.
+Each source attaching occurrence is removed at most once. No remaining
+two-handle uses a cancelled one-handle, so the remaining attaching cycles
+retain their original source charts. Three-handles have already been
+removed, avoiding a need to update their attaching data in this phase.
+
+An algebraic coefficient is insufficient. Oppositely oriented occurrences
+can cancel in a boundary matrix while remaining distinct attaching discs.
+Also, a coefficient of one in a single relator does not authorize deleting
+another relator's passage through the same one-handle. The checker accepts
+exactly one occurrence among \emph{all} remaining two-handles; it neither
+freely reduces attaching words nor supplies implicit handle slides.
+
+The original source and the move sequence reconstruct the reduced handle
+presentation geometrically. The result also lists its remaining handle
+identifiers and characteristic zero-handle indices. For empty pattern, an
+end of a one-handle with $d$ incident two-handle occurrences has index
+$-4+2d$. At the producer's fixed point, no one-handle has $d=1$. Handles
+with $d=0$ still require attention. For the empty pattern, the second
+admissibility condition is automatic: any simple closed curve on a spherical
+zero-handle boundary bounds a disc whose intersection with the pattern is
+empty. Consequently, a replayed result in which every reported index is
+nonnegative is admissible for this empty-pattern input. This observation does
+not extend automatically to later states with nonempty patterns.
+
+\subsection{Exposed cocores and the essential-boundary obligation}
+
+A remaining one-handle disjoint from all two-handles has a properly embedded
+disc cocore: its boundary lies on the manifold boundary. A graph path joining
+its two ends without using that one-handle certifies that cutting along the
+cocore leaves the manifold connected. The graph is the zero/one-handle
+incidence graph; higher handles do not join its connected components.
+A forest that processes used one-handles before unused ones supplies
+candidate unused edges outside the forest and connecting paths for them.
+
+Nonseparation alone does not prove that the disc boundary is essential in a
+general reducible source. A nonseparating sphere can give a properly embedded
+nonseparating disc with inessential boundary. The source operator therefore
+checks the boundary cohomology class of each proposed cocore. Its positive
+claim does not assume irreducibility.
+
+\subsection{Transporting a cocore class through the cancellations}
+
+Give the final unused one-handle value one and all other remaining
+one-handles value zero. These are the values of the cocore's dual integral
+cohomology class on the reduced dual graph. Reverse a one/two cancellation.
+If the removed one-handle is $f$ and the removed two-handle has oriented
+attaching cycle $r$, then $f$ occurs exactly once, with sign
+$\epsilon\in\{1,-1\}$. Its original value is forced by
+\[
+ x_f=-\epsilon\sum_{(g,\sigma)\in r,\;g\ne f}\sigma x_g.
+\]
+This reconstructs the class on all original one-handles. Two/three
+cancellations do not add one-handle values. Every original two-handle
+equation is checked afterwards, including those removed with three-handles.
+Thus the packet contains a source cocycle, rather than only a function on
+the final graph.
+
+The verifier uses a different characterization. It checks the prescribed
+values on all remaining one-handles and all original two-handle equations.
+The cancelled one-handle values are then uniquely determined by the
+triangular sequence of unit equations. It does not call the producer's
+reverse-substitution routine.
+
+\subsection{A source boundary period without normal-disc expansion}
+
+For each source tetrahedron $t$ and vertex $v$, construct an integer potential
+$u_{t,v}$. Across a canonical paired face from $t$ to $s$, with permutation
+$p$ and dual value $x_f$, impose
+\[
+ u_{s,p(v)}-u_{t,v}=x_f\qquad(v\text{ on the paired face}).
+\]
+The components of this corner graph are the source vertex stars. Their
+links are spheres or discs, and the source edge equations give consistency.
+The constructor detects any conflicting potential assignment, and the
+verifier checks every face equation directly.
+
+On an oriented source edge from local vertex $a$ to $b$ in tetrahedron $t$,
+put $y_e=u_{t,b}-u_{t,a}$. Face equations make this well defined on global
+oriented edges, and its sum around every source face is zero. Choosing
+reference corners in the vertex stars identifies this primal cocycle,
+up to the overall orientation sign, with the transported dual cocore class:
+a path through a vertex star records the potential difference, and the
+within-tetrahedron segment contributes no dual-face crossing.
+
+Restrict $y$ to the boundary triangulation. A spanning-tree potential test
+finds a closed boundary edge walk $\gamma$ with
+\[
+ \langle y,\gamma\rangle\ne0,
+\]
+or establishes that this candidate's restriction is exact. The certificate
+records the dual values, all corner potentials, the oriented boundary walk
+and its nonzero period. Global edge orientation is taken from the actual
+source edge representative, not from an arbitrary final incidence.
+
+\begin{proposition}
+An accepted cocore certificate with nonzero boundary period gives a properly
+embedded disc with essential boundary on the source torus.
+\end{proposition}
+\begin{proof}
+The geometric cancellation trace identifies the final handle presentation
+with the source manifold. The unused one-handle cocore is a proper disc.
+Its transported dual cohomology class is determined by the unit cancellation
+equations. The corner-potential equations identify its restriction to the
+boundary with $y$, up to sign. Evaluating this restriction on a boundary
+curve is the algebraic intersection with the disc boundary. If that boundary
+were inessential on the torus, it would be null-homologous and every such
+intersection would vanish. The certified nonzero period rules this out.
+\end{proof}
+
+For a source known independently to be the exterior of the input knot, this
+essential disc is an unknot witness. The new
+\code{diagram-handle-disc-v1} wrapper checks the original planar diagram,
+reconstructs its canonical exterior independently, and verifies the entire
+handle and boundary-period certificate. A reducible torus-boundary manifold
+is not accepted as a knot exterior merely because it has a compressing disc.
+
+\subsection{Size, verification and integration}
+
+The sum of original two-handle attaching-cycle lengths is at most $6T$.
+There are $O(T)$ cancellations. The queue phase uses linear incidence updates,
+with source indexing and ordered traversal contributing at most
+$O(T\log T)$ combinatorial work. For a candidate cocore, reverse substitution
+can increase the largest absolute value by at most the length of the
+removed cycle at each step. Since each such cycle is used once and their
+lengths sum to $O(T)$, all transported integers have $O(T)$ bits. Corner
+potentials and the boundary period obey the same bit-length bound.
+
+One candidate uses $O(T)$ arithmetic operations on these integers.
+Testing at most $O(T)$ candidate cocores therefore takes at most $O(T^3)$
+bit operations with elementary integer arithmetic. A positive certificate
+uses $O(T^2)$ bits. These bounds concern the new cancellation/cohomology
+kernel; the established source validator and independent raw-cell
+reconstruction are additional polynomial operations. The intentionally
+simple independent cancellation checker rescans remaining attaching
+occurrences at each proposed one/two cancellation.
+
+Source replay reconstructs its handles from the independent raw cut-cell
+model at zero normal coordinates. It does not call the source-handle
+constructor, scheduler or cocore producer. It verifies exact occurrence
+multiplicities, the remaining handle sets, the graph path and every
+cohomology equation. Move-capped source discovery is inconclusive and emits
+no partial disc certificate. A valid reduction with no disc is not a negative
+recognition result. Its checked index list determines whether it is already
+admissible for the empty pattern; otherwise the unused one-handles remain
+explicit obligations.
+
+The native normal-seed search can run this stage before extracting a cocycle.
+On a miss it continues its existing search. Construction and positive replay
+share the existing work allowance, and public certificate dispatch and the
+command-line interface accept the new proof type. The stage is optional:
+the existing hard survivor corpus supplies no cocore hits from these two
+cancellation rules alone. General boundary-pattern transport, the remaining
+admissibility reductions, and bounded hierarchy search remain obligations.
+
+An unused bridge has a separating cocore. Its boundary is inessential on the
+single boundary torus: an essential torus curve is nonseparating and would
+join the two sides through the boundary complement. In an irreducible knot
+exterior, such a disc cuts off a ball. This identifies the next empty-pattern
+reduction to implement, together with its source-chart transport. It cannot
+be applied to an arbitrary reducible source merely from the Euler
+characteristic of that side. The original diagram provenance, or another
+independent irreducibility justification, must remain part of the authority
+for discarding it.
+
+\input{source_handles_results.tex}

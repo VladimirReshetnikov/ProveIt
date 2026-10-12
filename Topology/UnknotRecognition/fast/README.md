@@ -4201,3 +4201,86 @@ PYTHONPATH=. python -B -m normal_orbit_research.prism_interfaces benchmark --rou
 
 See [prism_interfaces.tex](../synthesis/prism_interfaces.tex) for geometric
 clipping, source ownership, the port bound and the missing topology.
+
+### Empty-pattern source handle reductions and cocore certificates
+
+`source_handle_reduction.reduce_source_handles(raw, record_certificate=True)`
+constructs the source dual handles, cancels eligible 2/3 pairs and then 1/2
+pairs, and returns the remaining source handle identifiers and characteristic
+indices. Geometric attaching occurrences retain multiplicities and signs.
+`source_handle_reduction_verify.verify_source_handle_reduction(raw, proof)`
+reconstructs them independently from the zero-coordinate raw cut cells.
+
+An exposed cocore becomes `compressing_disc` only after transporting its
+integral class back to the source and certifying a nonzero boundary period.
+The proof therefore checks essential boundary even on reducible sources.
+A source compressing disc alone is not a solid-torus or unknot verdict.
+The new `diagram-handle-disc-v1` wrapper also checks the canonical exterior
+against the original knot diagram; public `verify_normal_seed_certificate`
+accepts these source-bound proofs.
+
+Try this optional stage with `normal_seed_decide(diagram, handles=True)`,
+`recognize(diagram, use_normal_seed=True, normal_seed_handles=True)`, or
+`--normal-seed --normal-seed-handles`. A miss continues the existing cocycle
+search. Construction and positive replay share `normal_seed_max_work`.
+The stage remains disabled by default: its first complete-task measurements
+were slower than the existing cocycle path, and it adds no hits on the hard
+survivor corpus. It is an initial empty-pattern reduction; it does not claim
+to implement all admissibility moves or transport a nonempty boundary pattern.
+
+The audit covers 193 source cases and 57 diagram exteriors, including
+reducible controls, and retains 15 diagram-bound cocore certificates. All
+1,626 Regina-enabled tests pass. See [source_handles.tex](../synthesis/source_handles.tex)
+for the cancellation and boundary-period proofs, polynomial kernel bounds,
+measurements and remaining hierarchy obligations.
+
+```sh
+PYTHONPATH=. python -B -m normal_orbit_research.source_handles audit --output ../synthesis/data/source-handles-audit.json
+PYTHONPATH=. python -B -m normal_orbit_research.source_handles benchmark --output ../synthesis/data/source-handles-benchmark.json
+```
+
+### Source-certified handlebody cuts
+
+`fastunknot.normal_cut_handlebodies.normal_cut_handlebodies(source, coordinates,
+record_certificate=True)` now combines the full normal-cut parallelity geometry,
+ordered core-port interfaces, disk-base annulus absorption, geometric core
+cancellations, and disk gluing.
+A successful result gives the exact binary histogram of handlebody genera for
+all cut components. Replay with
+`fastunknot.normal_cut_handlebodies_verify.verify_normal_cut_handlebodies`.
+This implements the interface/core portions of report 85; it is a supplied-cut
+API and does not change the recognizer's default search or return a knot verdict.
+
+Adjacent ports are amalgamated into their actual disk interfaces. A full-circle
+attachment on a disk base is absorbed as a source-authenticated two-handle.
+Its signed endpoint charts distinguish self-paired faces, while cancellation
+counts every unsigned occurrence. An independent adapter reconstructs the
+augmented core and checks all added rows. Such proofs use schema v2; existing
+v1 proofs remain replayable. Nondisk annuli, closed bundle bases, three-handles
+and stalled raw cancellation remain inconclusive. The low-level `core_handlebody_certificate` requires
+source-authenticated geometric handle charts; its matrix is not a group
+presentation or a cellular boundary matrix. Its exact saturated singleton
+updates use actual unsigned occurrences and have a geometric disk-slide proof.
+
+The two ordered-boundary queries and four parallelity queries share `max_cycles`.
+Their independent checkers replay source-bound orbit proofs and validate the
+finite geometry; `max_operations` bounds the combined replay traces. Very large
+multiplicities use the existing exact hexadecimal JSON encoding. Callback
+exceptions propagate. The detailed theory and measured scope are in the
+synthesis section “Ordered bundle interfaces and certified handlebody cuts”.
+
+Reproduce the source audit from `fast/` with Regina installed:
+
+```sh
+python -m marked_parallelity_research.audit_census --output /tmp/marked-cut-audit.json
+python -m marked_parallelity_research.benchmark_census --output /tmp/marked-cut-benchmark.json --rounds 5 --capacity
+```
+
+The second command compares complete supplied-cut classification, including
+native proof replay, with Regina's explicit cut and component recognition.
+It is not a complete knot-recognition benchmark. Run performance measurements
+on an otherwise idle host; literal expansion and oracle timeouts are explicit.
+
+The absorption audit certifies 63 of the 106 supplied cuts (previously 30),
+with 56 exact explicit-cut agreements and seven large-coordinate replays.
+The evidence is retained in `../synthesis/data/disk-absorption-audit.json`.

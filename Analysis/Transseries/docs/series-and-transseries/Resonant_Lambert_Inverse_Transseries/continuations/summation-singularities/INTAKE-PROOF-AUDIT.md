@@ -91,3 +91,13 @@ through order four; the explicit second correction also has a separate
 small-multiset calculation in the text. This supersedes the earlier
 research-status sentence without changing the delivered article. Global
 continuation and a full local alien description remain separate questions.
+
+
+## Subsequent continuation resolution, 12 October 2026
+
+The later [late-coefficient audit](../late-coefficients/INTAKE-PROOF-AUDIT.md)
+accepts the global continuation and off-real summability claim by checking
+the arithmetic kernel, the nonlinear inverse transformation and Sauzin's
+closure hypotheses. Section 1.9 now integrates that stronger result. The
+earlier paragraph's continuation question is therefore resolved for fixed
+coupling; the full singular germs and alien calculus remain separate.

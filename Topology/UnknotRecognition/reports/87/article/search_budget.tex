@@ -1,0 +1,81 @@
+% Conditional accounting lemma; ordinary tree/Kraft-mass counting, not a
+% newly established structural bound for unknot recognition.
+\subsection{A precise conditional global search budget}
+\label{sec:conditional-global-budget}
+
+\begin{theorem}[Search-tree budget]
+\label{thm:search-tree-budget}
+Let an algorithm on an input of size $n$ have a finite rooted search tree
+$\mathcal T$, including rejected children, repeated states, and restarts.
+Write $b(v)$ for the number of children of $v$, and let $H(n)$ bound the
+number of edges on every root-to-leaf path.  Suppose that every such path
+$P$ satisfies
+\[
+ \sum_{v\in P}\log\max\{1,b(v)\}\leq B(n).
+\]
+If all work is chargeable to tree nodes or incoming edges at cost at most
+$W(n)$ per node, then
+\[
+ \#\operatorname{leaves}(\mathcal T)\leq e^{B(n)},\qquad
+ |\mathcal T|\leq 1+H(n)e^{B(n)},
+\]
+and the total cost is at most
+$W(n)\bigl(1+H(n)e^{B(n)}\bigr)$.
+In particular, polynomial $H,W$ and $B(n)=O((\log n)^2)$ give
+$n^{O(\log n)}$ time; $B(n)=O((\log n)^3)$ gives
+$n^{O((\log n)^2)}$ time.
+\end{theorem}
+
+\begin{proof}
+Give the root mass $1$, and divide the mass of every internal node equally
+among its children.  Since the tree is finite, the leaf masses sum to $1$.
+The mass of a leaf is the reciprocal of the product of the positive
+branching numbers along its path, and is therefore at least $e^{-B(n)}$.
+This proves the leaf bound.  Every nonroot node lies on a root-to-leaf
+path, so the union of these paths contains at most $H(n)$ nonroot nodes
+per leaf.  Summing the assumed node charges proves the cost bound.
+\end{proof}
+
+Here $W(n)$ includes state construction, exact arithmetic, surface tests,
+certificate production and replay, and the generation of children.
+Generating a large child list may instead be charged incrementally to
+the respective child nodes.  Failed surface candidates and unsuccessful
+LP attempts must either occur explicitly in the tree or be covered by
+these local charges.  A sequence of unary restarts has zero branching
+charge but consumes depth; the hypothesis on $H$ prevents it from being
+free.  In particular, polynomial encoded state size alone does not bound
+the work of the present simplex backends.
+
+\begin{corollary}[Charging dimension decreases and their replenishment]
+Suppose a nonnegative integer $D(v)$ is assigned to every tree node.
+Designate certain binary branching nodes as conflict nodes, and assume
+$D$ decreases by at least one on either outgoing edge of every such node.
+For a path $P$, let
+\[
+ R(P)=\sum_{\substack{(v,w)\in P\\v\text{ not a conflict node}}}
+       \max\{0,D(w)-D(v)\},\qquad
+ C(P)=\sum_{\substack{v\in P\\v\text{ not a conflict node}}}
+       \log\max\{1,b(v)\}.
+\]
+Then its branching budget is at most
+\[
+ (\log 2)\bigl(D(\mathrm{root})+R(P)\bigr)+C(P).
+\]
+\end{corollary}
+
+\begin{proof}
+If the path traverses $r$ conflict branches, telescoping the changes in
+$D$ gives $0\leq D(\mathrm{leaf})\leq D(\mathrm{root})-r+R(P)$.
+Each conflict node contributes $\log 2$; the other contributions sum to
+$C(P)$.
+\end{proof}
+
+The intrinsic-dimension conflict theorem supplies the required decrease
+within a fixed matching problem.  Replacing a sector, changing the source,
+or restarting a hierarchy can replenish the dimension; the positive
+increases must be charged through $R(P)$, or through a separate proved
+phase budget.  This is a sufficient accounting target, not a bound on
+$R(P)$, $C(P)$, or hierarchy depth.  To obtain a recognizer one must also
+prove that the search rules cover every required possibility and that all
+terminal conclusions are valid; neither the counting lemma nor a capped
+or inconclusive leaf establishes those topological facts.

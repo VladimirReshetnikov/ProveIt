@@ -1,0 +1,149 @@
+\section{Gaussian order derivatives and finite correction formulas}
+\label{sec:kernels}
+
+For $\Rea a>-1$ and real $\xi$, define
+\begin{equation}\label{eq:H-definition}
+ \HH_a(\xi)=\frac1{2\pi}\int_{\R}
+     e^{-i\xi y-y^2/2}(-iy)^a\,dy,
+ \qquad \HH_a^{[j]}(\xi)=\partial_a^j\HH_a(\xi).
+\end{equation}
+The logarithm convention is \eqref{eq:fourier-log}. All fixed order
+derivatives are legitimate by domination at zero and infinity. For
+real $a$ and $\xi$ the two halves of the integral are conjugates.
+
+\begin{proposition}[Parabolic cylinder and Gamma forms]
+\label{prop:H}
+In the standard parabolic-cylinder normalization,
+\begin{align}
+ \HH_a(\xi)&=\frac{e^{-\xi^2/4}}{\sqrt{2\pi}}D_a(-\xi),
+       \label{eq:H-cylinder}\\
+ \HH_a(0)&=\frac{2^{(a-1)/2}}{\Gamma((1-a)/2)},
+ &\partial_\xi\HH_a&=\HH_{a+1}.
+       \label{eq:H-zero}
+\end{align}
+In particular $\HH_0=\normal$ and
+$\HH_{2k}=\normal^{(2k)}$. Each function
+$\HH_a^{[j]}$ used below is an ordinary convergent integral, even
+when a later asymptotic series containing it does not converge.
+\end{proposition}
+
+\begin{proof}
+The derivative identity follows immediately under the integral.
+Splitting into $y>0$ and $y<0$, then using the Gamma integral,
+gives
+\[
+ \HH_a(0)=\frac{2^{(a-1)/2}}{\pi}
+       \Gamma((a+1)/2)\cos(\pi a/2).
+\]
+The reflection formula gives \eqref{eq:H-zero}. Integration by
+parts in $y$, with vanishing boundary term
+$y(-iy)^ae^{-y^2/2-i\xi y}$, gives
+\[
+ \HH_a''+\xi\HH_a'+(a+1)\HH_a=0.
+\]
+The function on the right of \eqref{eq:H-cylinder} satisfies the same
+equation by the parabolic-cylinder differential equation.
+The values of $D_a(0)$ and $D_a'(0)$
+\cite[12.2.4--12.2.7]{dlmf-cylinder} give the same value and first
+derivative at $\xi=0$, namely
+$2^{(a-1)/2}/\Gamma((1-a)/2)$ and
+$2^{a/2}/\Gamma(-a/2)$. Uniqueness for the ordinary differential
+equation proves the identity.
+\end{proof}
+
+\subsection{The correction polynomials in two small parameters}
+
+Define the finite functions
+\begin{align}
+ \mathcal C_0(\xi;q,\eps)&=\normal(\xi),\notag\\
+ \mathcal C_j(\xi;q,\eps)
+ &=\frac1{j!}\sum_{k=1}^j
+     \stir{j}{k}\left(-\frac q2\right)^k\eps^{j-k}
+           \HH_{2k}^{[j]}(\xi),\qquad j\ge1.
+           \label{eq:correction}
+\end{align}
+They are homogeneous of degree $j$ in $(q,\eps)$. The first three are
+\begin{align}
+ \mathcal C_1&=-\frac q2\HH_2^{[1]},\label{eq:C1}\\
+ \mathcal C_2&=-\frac{q\eps}{4}\HH_2^{[2]}
+                  +\frac{q^2}{8}\HH_4^{[2]},\label{eq:C2}\\
+ \mathcal C_3&=-\frac{q\eps^2}{12}\HH_2^{[3]}
+             +\frac{q^2\eps}{8}\HH_4^{[3]}
+             -\frac{q^3}{48}\HH_6^{[3]}.
+             \label{eq:C3}
+\end{align}
+The spatial argument $\xi$ is suppressed on the right. These expressions
+involve order derivatives of the Gaussian kernel; in general they are
+not a Gaussian times an ordinary polynomial in $\xi$.
+
+There is also a finite divided-difference form. For a holomorphic
+function of $a$, put
+\begin{equation}\label{eq:divided-difference}
+ \mathfrak D_\eps^k F(a)
+ =\frac1{\eps^k}\sum_{h=0}^k(-1)^{k-h}\binom{k}{h}F(a+h\eps),
+ \qquad \mathfrak D_0^k F=F^{(k)}.
+\end{equation}
+The apparent poles are removable. The identity
+\begin{equation}\label{eq:stirling-generating}
+ \left(\frac{e^{\eps z}-1}{\eps}\right)^k
+ =k!\sum_{j\ge k}\stir{j}{k}\frac{\eps^{j-k}z^j}{j!}
+\end{equation}
+explains the appearance of the Stirling numbers. We will prove that
+both the $q$-ordered finite expression
+\begin{equation}\label{eq:finite-difference-approx}
+ \sum_{k=0}^N\frac{(-q/2)^k}{k!}
+       \left.\mathfrak D_\eps^k\HH_a(\xi)\right|_{a=2k}
+\end{equation}
+and the total-degree expression
+$\sum_{j=0}^N\mathcal C_j(\xi;q,\eps)$ approximate the same lattice
+law with error $O(L^{-N-1})$. They differ from one another only at
+the omitted orders. Formula \eqref{eq:finite-difference-approx}
+can be useful for computation away from $\eps=0$; near zero it is
+better evaluated using derivatives or the removable integral formula.
+
+\subsection{Finite Gamma moments at the center}
+
+For integers $j,k\ge1$ set
+\begin{equation}\label{eq:M-jk}
+ M_j(k)=\Rea\left[
+   (\partial_z+\log2+i\pi)^j\Gamma(z)
+                      \right]_{z=k+1/2}.
+\end{equation}
+This is also the convergent moment
+\begin{equation}\label{eq:M-integral}
+ M_j(k)=\Rea\int_0^\infty e^{-t}t^{k-1/2}
+                          (\log t+\log2+i\pi)^j\,dt.
+\end{equation}
+
+\begin{corollary}[Central coefficient calculus]
+\label{cor:central-corrections}
+For every $j\ge1$,
+\begin{equation}\label{eq:central-C}
+ \frac{\mathcal C_j(0;q,\eps)}{\normal(0)}
+ =\frac1{2^j j!\sqrt\pi}
+     \sum_{k=1}^j\stir{j}{k}q^k\eps^{j-k}M_j(k).
+\end{equation}
+In particular
+\begin{equation}\label{eq:central-first}
+ \frac{\mathcal C_1(0;q,\eps)}{\normal(0)}
+ =\frac q4(2-\gamma-\log2).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Differentiate the Gamma--cosine expression in the proof of
+\cref{prop:H}. At $a=2k$ it gives
+\[
+ \HH_{2k}^{[j]}(0)=
+       \frac{(-1)^k2^{k-j-1/2}}{\pi}M_j(k).
+\]
+Substitution in \eqref{eq:correction} cancels the two factors
+$(-1)^k$ and proves \eqref{eq:central-C}. For $j=k=1$, use
+$\Gamma(3/2)=\sqrt\pi/2$ and
+$\psi(3/2)=2-\gamma-2\log2$.
+\end{proof}
+
+These formulas can be converted into polygamma values, harmonic numbers,
+zeta values, and the Euler constant by repeated differentiation of
+$\Gamma$ and the half-integer polygamma recurrences. The moment form
+keeps all signs and factors of two in a single finite expression.

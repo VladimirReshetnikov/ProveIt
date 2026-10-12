@@ -1219,9 +1219,83 @@ The theorem concerns additive expansions on compact complex coupling sets.
 It does not assert convergence in correction order, global continuation,
 or a full local alien calculus. The newly arrived Lambert late-coefficient
 report independently overlaps the first correction and asserts additional
-continuation; that separate closure-theorem claim remains under review.
+continuation; that separate closure-theorem claim is accepted in the audit below.
 Angular and direct-endpoint material of summation-singularities is audited
 but not yet integrated into the canonical chapters. All original source
 and authored evidence are unchanged. The compiler checks through order four
 and compares forty independently computed finite coefficients; the written
 proof, not those diagnostics, establishes the infinite uniform assertion.
+
+
+## Lambert continuation and zero coupling, October 12, 2026
+
+The late-coefficients continuation of Resonant_Lambert_Inverse_Transseries
+independently confirms the leading and first-correction amplitudes. Its
+all-order research question is already resolved by Theorem 1.26. Its new
+continuation proof supplies a normally continued divisor-logarithm Borel
+kernel and an explicit tangent-to-identity inverse construction. The
+hypotheses of Sauzin's analytic and summable closure theorems were checked
+against the primary source. Section 1.9 now integrates this argument and
+the exact equation for the sectorial inverse sums. Zero remains in the
+excluded lattice because monodromy can create a pole there on other sheets.
+
+The canonical all-order theorem also extends the report's first-correction
+uniformity at zero positive coupling: normalized odd errors vanish at zero,
+and Schwarz's lemma gives an additional coupling factor at every fixed
+order. This yields relative positive-coupling uniformity without a lower
+cutoff. No assertion is made across complex leading-amplitude zeros or at
+growing coupling. The finite-phase law and exact-completion Stokes transport
+are accepted in the separate intake audit but await canonical synthesis.
+
+The unchanged complete verifier passed on the configured Linux worker with
+its pinned dependencies and required extended-range arithmetic: 5890 exact
+checks, 70 complete finite coefficient cases through n=1025, and 35
+independent 80-digit comparisons. Finite checks remain distinct from the
+analytic proof. The delivered package and PDF are unchanged; only its
+imported ZIP is retired. Order-jet filters and joint coefficient transseries
+remain in incoming pending their own claim review and reconciliation.
+
+## Order filters and concurrent batch 142, October 12, 2026
+
+12 October 2026 (Pacific). Volume I, Section 1.10 integrates the complete
+audited mathematical body of the order-jet continuation: sharp separate
+cancellation costs, the joint conjugate-node ideal, detuning robustness,
+arithmetic rigidity, exact neutral curves, Stieltjes and positive-integral
+zero-order jets, digamma Borel completion and both endpoint inverse charts.
+It connects these results to the preceding exact-completion and inverse
+sections while distinguishing the Fermi and fixed-sheet Lerch limits.
+
+The new Theorem 1.41 answers the report's question 4 for fixed N>=1 and
+integer m>=0. Along the neutral curve the lateral functions agree, but
+their physical completion persists. Rouche and Lagrange give a convergent
+inverse chart with exact coefficients C(w)^k/k times [t^(k-1)]H_w(t)^(-k).
+The resulting physical displacement is asymptotic to C(w)/P'(w), with
+explicit alternating sign and a distinct zero-order logarithmic scale.
+The derivative retains the moving-order chain-rule contribution. This is
+an eventual local theorem, not a growing-N or exact-radius assertion.
+
+Both isolated supplied-suite replays are preserved: 165 exact and 46
+numerical assertions each, at 70 digits. A separate independent 75-digit
+experiment checks six inverse displacements with Cauchy refinement. A
+universal degree-five polynomial composition checks the exact inverse
+coefficients, with four corruption controls. Numerical diagnostics are
+not interval certification; the infinite statements have written proofs.
+
+Final pages 169/131/254/87 (641 total),
+combined 595, 157 references. All four volumes compile independently.
+Coupled builds and combined compilation converge with clean final logs;
+67 external PDF destinations resolve. Manual review opens 24
+changed volume bodies and 6 unmatched combined bodies. Exact
+raster comparison retains 617 prior volume bodies and 569
+prior combined bodies, with 20 combined bodies matched to freshly
+reviewed volumes. Only centered footer page numbers are excluded, with
+other content bounds audited. No current contact sheet was opened.
+
+The archive register covers 137 retired analytic archives and 4861 tracked
+original members; 58 checksum manifests remain in committed arrival ZIPs
+under existing ignore rules. The concurrent upstream intake of both final
+reports was merged and reconciled at the same continuation homes. Original
+article/PDF/evidence files remain preserved, and the imported ZIPs are
+retired. The joint-coefficient report's full analytic audit and canonical
+synthesis remain pending. All PDFs retain ProveIt Contributors authorship.
+No Lean or remote-CI claim is made.

@@ -1,0 +1,40 @@
+The source audit checks 193 triangulations: the 48 saved sources, three
+relabellings of each, and an additional trefoil-exterior connected sum with
+$S^2\times S^1$. Independent replay accepts every reduction. Regina's
+compressing-disc oracle agrees with all 176 positive and 17 negative
+source outcomes. The reducible solid-torus connected sums remain positive
+for a compressing disc while not being solid tori. The reducible trefoil
+control remains negative.
+
+A further 57 canonical diagram exteriors include the hard survivor corpus,
+knotted controls, the empty circle and seeded small random braids. The stage
+produces 15 diagram-bound disc certificates; all agree with the independent
+recognition controls, and Regina confirms the positive source exteriors are
+solid tori. No hard survivor gains a cocore certificate. Thirteen of the 193
+source reductions have all characteristic indices nonnegative and hence
+already satisfy empty-pattern admissibility. None of the 57 canonical
+diagram reductions does: unused bridge handles remain to be treated.
+
+The full Regina-enabled suite passes all 1,626 tests with no skips. Twelve
+new tests cover source reconstruction, geometric multiplicities, exact
+boundary periods, forged proofs, relabellings, cancellation, shared caps,
+public recognition and command-line dispatch.
+
+The following comparison measures the complete native positive-certificate
+stage from its planar diagram: exterior construction, discovery, internal
+positive replay, a second public certificate replay and serialization. The
+existing cocycle path and the optional handle-first path must return the
+same status. Five shuffled paired rounds follow a warmup, with an identical
+existing-path control. This does not time the full recognizer portfolio.
+
+\input{tables/source_handles_timing.tex}
+
+The handle stage is slower on every measured case. Its three direct cocore
+hits cost 2.26--5.66 times the existing stage, and the two misses add about
+26--36 percent. Identical control ratios range from 0.980 to 1.008. These
+measurements justify retaining the optional setting. The current independent
+checker reconstructs the zero-coordinate raw-cell core and rescans remaining
+attaching cycles at each cancellation; reducing that replay overhead is a
+separate optimization opportunity. The present gain is a verified geometric
+reduction and an additional polynomial certificate construction, not a claimed
+portfolio speedup.

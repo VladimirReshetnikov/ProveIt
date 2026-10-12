@@ -1,0 +1,401 @@
+\section{A complementary acceleration: coordinate blocks in normal-sector search}
+\label{sec:sector-blocks}
+
+The marked-interface results address what must be preserved after cutting.
+This section concerns an earlier cost: finding normal-coordinate candidates
+inside one supplied compatible quadrilateral sector.  It does not assume
+that the sector is complete for disc discovery.  The contribution is an
+exact decomposition of the matching search, a source-certified implementation,
+and a genuine solid-torus family on which the maintained exhaustive
+intersection iterator performs exponentially more candidate solves than the
+decomposed iterator.  The linear-algebra principles are classical; the
+source-level decomposition, its interaction with canonical triangle minima,
+and the explicit geometric separation are the contributions developed here.
+
+The comparison is with the repository snapshot identified earlier
+\cite{ProveIt2026}.  Its current modules already contain support contraction,
+matching-sign implications, grouped Euler minima, generic Q-corner screening,
+and special algorithms at matching nullity at most three.  Reports 67 and 75
+also retain anchor-LP and exact witness-reuse approaches.  None of those
+results is being claimed again as a new theorem.  The present interface is
+additive and opt-in; it does not change the recognizer's default dispatch.
+
+\subsection{Matching-coordinate factors and canonical Euler characteristic}
+
+Fix a source accepted by the native finite-manifold validator: a connected,
+compact, orientable triangulated three-manifold with one torus boundary and
+sphere or disc vertex links.  Let $T$ be its tetrahedron count.  A compatible
+sector allows at most one quadrilateral type per tetrahedron.  After
+eliminating triangle matching, write
+\[
+ L=\ker A\subseteq\mathbb R^k,\qquad
+ C=L\cap\mathbb R_{\geq0}^k,
+\]
+where the $k$ coordinates are the allowed quadrilateral types.  A coordinate
+block is a subset $I$ of these indices; $\mathbb R^I$ means vectors supported
+on $I$.  All spaces and eliminations below are over the rationals when
+implemented.
+
+\begin{theorem}[The finest coordinate decomposition]
+\label{sec:sector-coordinate-theorem}
+There is a polynomial-time exact construction of pairwise disjoint blocks
+$I_1,\ldots,I_s$ and a set $Z$ of coordinates identically zero on $L$ such that
+\[
+ L=\bigoplus_{j=1}^s L_j,\qquad
+ L_j=L\cap\mathbb R^{I_j},\qquad
+ C=\bigoplus_{j=1}^s C_j,\quad C_j=L_j\cap\mathbb R_{\geq0}^{I_j}.
+\]
+The nonzero blocks refine every other coordinate direct-sum decomposition.
+Every extreme ray of $C$ belongs to exactly one nonzero $C_j$, and every
+extreme ray of $C_j$ is an extreme ray of $C$.
+\end{theorem}
+\begin{proof}
+Compute a canonical kernel basis $r_1,\ldots,r_d$ with free coordinates
+$f_1,\ldots,f_d$ satisfying $(r_i)_{f_j}=\delta_{ij}$.  The native gauge uses
+the rightmost independent free coordinates; any fixed canonical gauge works.
+Join coordinates that occur together in the support of a basis row.  The
+connected components of this graph on occurring coordinates are the $I_j$;
+the nonoccurring coordinates form $Z$.  Each basis row is supported in one
+component.  Grouping the basis rows therefore proves the direct-sum formula
+for $L$, and coordinatewise nonnegativity proves the formula for $C$.
+
+For the refinement assertion, consider any coordinate decomposition of $L$.
+Project $r_i$ onto one of its summands.  Except in the summand containing
+$f_i$, this projection has every free coordinate zero.  It must therefore
+vanish, because restriction to the free coordinates is injective on $L$.
+Thus every support of $r_i$ lies in a single summand, and so does every
+connected component constructed above.  This argument also explains why
+one must first canonicalize an arbitrarily mixed input basis.
+
+A nonzero vector with nonzero components in two of the $C_j$ decomposes as
+a sum of nonproportional feasible vectors and cannot generate an extreme
+ray.  Conversely, if a vector supported in $I_j$ is decomposed into two
+nonnegative vectors in $C$, both summands vanish outside $I_j$.  Its local
+extremality therefore implies global extremality.  Rational elimination and
+the support graph have polynomial bit complexity in their input encoding.
+\end{proof}
+
+This is an algebraic cone decomposition.  It does not claim that the
+physical components of a normal surface are disjointly partitioned by these
+blocks.  The earlier source-equation support decomposition in report 69 has
+a different, geometric purpose.  Cancellation in eliminated matching rows
+cannot by itself establish physical disjointness.
+
+Let $X(q)$ be the canonical standard-coordinate lift: subtract the least
+triangle potential at each global vertex.  Write $p_c(q)$ for its linear
+corner potentials, $G_v$ for the corners at vertex $v$, and
+$\lambda_v=\chi(\operatorname{link}v)$.  The exact source Euler compiler gives
+\begin{equation}
+\label{sec:sector-euler-formula}
+ F(q):=\chi(X(q))=\gamma\cdot q
+                  -\sum_v\lambda_v\min_{c\in G_v}p_c(q).
+\end{equation}
+Here $\lambda_v$ is one for a boundary vertex and two for an interior vertex.
+
+\begin{lemma}[The canonical-lift defect]
+\label{sec:sector-defect}
+For $q,r\in C$, put
+\[
+ \delta_v(q,r)=\min_c\bigl(p_c(q)+p_c(r)\bigr)
+                     -\min_c p_c(q)-\min_c p_c(r).
+\]
+Then $\delta_v(q,r)\geq0$ and
+\[
+ X(q)+X(r)=X(q+r)+\sum_v\delta_v(q,r)L_v,
+\]
+where $L_v$ is the standard-coordinate vertex-link vector.  Consequently,
+if every $\lambda_v\geq0$, then
+\[
+ F(q+r)\leq F(q)+F(r),\qquad F(aq)=aF(q)\quad(a\geq0).
+\]
+\end{lemma}
+\begin{proof}
+Every sum $p_c(q)+p_c(r)$ is at least the sum of the two separate minima.
+Subtracting the three canonical triangle formulas gives the displayed
+coordinate identity; quadrilateral coordinates agree identically.
+Applying the source Euler covector gives
+$F(q+r)=F(q)+F(r)-\sum_v\lambda_v\delta_v(q,r)$.
+The asserted inequality and positive homogeneity follow.
+\end{proof}
+
+\begin{theorem}[Exact block localization of the Euler maximum]
+\label{sec:sector-euler-maximum}
+Assume $C\ne\{0\}$ and every $\lambda_v\geq0$.  Omit blocks whose feasible
+cone is zero.  Then
+\[
+ \max_{q\in C,\,\|q\|_1=1}F(q)
+ =\max_j\ \max_{q\in C_j,\,\|q\|_1=1}F(q).
+\]
+In particular, the sector contains a canonical positive-Euler normal surface
+if and only if one coordinate block does.  This remains true when triangle
+minima couple several matching blocks.
+\end{theorem}
+\begin{proof}
+The normalized sections are compact.  For a normalized $q$, decompose it
+as $q=\sum_jq_j$ using Theorem~\ref{sec:sector-coordinate-theorem}.  Put
+$w_j=\|q_j\|_1$ and, when $w_j>0$, $u_j=q_j/w_j$.
+The preceding lemma gives
+\[
+ F(q)\leq\sum_jF(q_j)=\sum_{w_j>0}w_jF(u_j)
+                         \leq\max_j\max F|_{C_j\cap\{\|q\|_1=1\}},
+\]
+since $\sum_jw_j=1$.  Every local normalized section is contained in the
+global section, proving the reverse inequality.  Rational polyhedral
+vertices suffice for the maxima of the convex piecewise-linear function;
+clearing denominators produces integral normal coordinates.
+\end{proof}
+
+The sign condition is substantive.  For the abstract model
+$C=\mathbb R_{\geq0}^2$ and $F(x,y)=\min(x,y)$, corresponding to a negative
+minimum weight, both coordinate axes have value zero but the interior has
+positive value.  This model is excluded by the source hypotheses.
+
+Positive Euler is still not a disc predicate.  A positive ray may contain
+a sphere or a boundary-inessential disc, and it need not be the ray required
+by a downstream topological test.  Thus the theorem permits a complete
+Euler exclusion or an Euler witness; it does not permit declaring an
+essential-disc search exhausted after testing only the block Q rays.
+
+\subsection{When complete standard rays also split}
+
+For each global vertex $v$, choose an anchor $a_v\in G_v$.  Say that $v$
+varies on a matching block $I_j$ if some restricted difference
+$(p_c-p_{a_v})|_{L_j}$ is nonzero.  Connect any two blocks on which the same
+vertex varies, and take connected components of this graph.  Call their
+unions $J_1,\ldots,J_u$.  These definitions depend only on differences of
+potentials, so they are invariant under additive linear changes of the
+potential gauge.
+
+\begin{theorem}[Standard rays and minimum-interaction clusters]
+\label{sec:sector-standard-clusters}
+The non-link standard extreme rays of the full sector are exactly the union
+of the non-link standard extreme rays of its sectors restricted to
+$J_1,\ldots,J_u$.  Every such ray occurs in one restricted sector only.
+\end{theorem}
+\begin{proof}
+Write $q=\sum_iq_i$ according to these unions.  At a vertex $v$, all
+nonconstant differences $p_c-p_{a_v}$ vary on at most one $J_i$.
+After the common anchor term cancels in canonical normalization, the
+triangle coordinates at $v$ therefore depend on $q_i$ alone; on every other
+summand they are zero.  If no block varies at $v$, all canonical triangle
+coordinates there are zero.  It follows coordinatewise that
+\[
+                         X(q)=\sum_i X(q_i).
+\]
+
+Every non-link standard extreme ray is canonical: a positive vertex-link
+offset would split it into a nonzero canonical vector and a link vector.
+The displayed identity then forces its quadrilaterals into one $J_i$.
+Conversely, forbidding every Q coordinate outside $J_i$ defines a coordinate
+face of the full standard cone.  An extreme ray of that face is extreme
+in the full cone, and its canonical lift is the same source lift.
+Different unions have disjoint Q supports, preventing duplicates.
+\end{proof}
+
+Let $k_j=|I_j|$, $d_j=\dim L_j$, and $h_j\leq k_j$ be the number of distinct
+projected Q coordinate hyperplanes.  Complete Q enumeration now attempts
+\begin{equation}
+\label{sec:sector-block-cost}
+                         \sum_j\binom{h_j}{d_j-1}
+\end{equation}
+candidate intersections, with zero-dimensional blocks omitted.  The same
+argument handles feasible cones of smaller dimension than their matching
+spaces.  Each candidate has polynomial bit cost; exact rational coefficients
+are controlled by determinants of input-sized matrices.  Source preparation,
+projection, actual coordinate output, and certificate replay must all be
+charged.  For complete standard enumeration, the corresponding sum uses
+the coarser $J_i$, with at most $O(|J_i|^2)$ potential hyperplanes per
+cluster; the maintained low-dimensional envelope algorithms can be retained.
+
+Consequently logarithmic \emph{maximum local} nullity gives a
+quasi-polynomial supplied-sector bound even if total nullity is linear.
+No theorem here bounds that maximum on arbitrary knot exteriors or supplies
+a complete small family of sectors.  A single large cluster can retain the
+original exponential cost.
+
+\subsection{A genuine solid-torus family with exponential iterator separation}
+
+The artifact constructs a simplicial solid torus by triangulating
+$\Delta^2\times S^1$, with the circle divided into three edges.  Each
+triangular prism has its three staircase tetrahedra, giving nine tetrahedra
+and embedded boundary triangles.  Attach a sequence of triangulated
+bipyramid balls along embedded boundary triangles.  Each attachment
+preserves the solid torus.  The outgoing face in the construction contains
+two newly introduced vertices and one existing vertex, so it is again an
+embedded triangle suitable for the next attachment.
+
+For the measured family, one ball has tetrahedra
+\[
+ (D,E,A,B),\qquad(D,E,B,C),\qquad(D,E,C,A),
+\]
+with cyclic internal face pairs.  Allow repository quadrilateral types
+$(1,1,2)$ in those tetrahedra, and no quadrilaterals in the initial torus.
+
+\begin{proposition}[Independent bipyramid matching factors]
+\label{sec:sector-bipyramid}
+With $b$ attached three-tetrahedron balls, the source has $T=9+3b$,
+$k=3b$, and $d=2b$.  Its Q cone is the direct product of $b$ copies of
+\[
+ \{(u_0,u_1,u_2)\geq0:u_0+u_1=u_2\}.
+\]
+Each factor has the canonical matching basis
+$(-1,1,0),(1,0,1)$ and its two extreme rays are
+$(1,0,1)$ and $(0,1,1)$.  The global Q cone therefore has exactly $2b$ rays.
+\end{proposition}
+\begin{proof}
+At the vertex $D$, the three internal face equations for triangle
+potentials $z_0,z_1,z_2$ read
+\[
+ z_0+u_0=z_1,\qquad z_1+u_1=z_2+u_2,\qquad z_2=z_0.
+\]
+Their sum is $u_0+u_1=u_2$.  The cycle at $E$ gives its negative;
+the equatorial vertex graphs are trees and supply no other Q equation.
+Gluing the ball along a boundary triangle joins three pairs of distinct
+vertex graphs by one edge each.  These are bridges, so they create no
+additional triangle-potential cycle or Q relation.  This proves independence
+inductively.  The claimed basis, dimension, and rays follow directly from
+the displayed nonnegative equation.
+\end{proof}
+
+\begin{corollary}[Exponential-to-linear candidate separation]
+\label{sec:sector-separation}
+On this family the maintained exhaustive global Q iterator attempts exactly
+\[
+ \binom{3b}{2b-1}
+       =\Theta\!\left(\frac{(27/4)^b}{\sqrt b}\right)
+\]
+candidate intersections.  The block iterator attempts exactly $3b$ and
+returns the identical $2b$ rays.  Its complete construction and independent
+block-coverage replay have polynomial bit complexity in $b$.
+\end{corollary}
+\begin{proof}
+The three coordinate forms in each two-dimensional factor define three
+distinct hyperplanes; forms on different factors are not proportional.
+The global iterator explicitly visits every $(2b-1)$-subset of these $3b$
+hyperplanes.  The new iterator visits the three one-hyperplane candidates
+in each factor.  The kernel and output coordinates in this family have
+polynomial encoding length, and the independent verifier makes only local
+fixed-dimensional ray reconstructions after its polynomial global source
+and splitting checks.  Stirling's formula gives the asymptotic count.
+\end{proof}
+
+This is a separation for the maintained iterator, not an exponential lower
+bound for the geometric decision problem or for every ray-enumeration
+algorithm.  In the triangular family, one local nonnegativity inequality
+is redundant.  The same construction admits a stronger variant with a
+four-tetrahedron bipyramid ball and types $(1,1,2,2)$: its relation is
+$u_0+u_1=u_2+u_3$, its four coordinate inequalities are irredundant facets,
+and it has four Q rays.  For $b$ such balls, the same proof gives
+\[
+ k=4b,\quad d=3b,\quad
+ \text{global candidates}=\binom{4b}{3b-1},\quad
+ \text{block candidates}=6b,\quad \text{Q rays}=4b.
+\]
+Thus removing redundant inequalities does not remove the general
+independent-factor obstruction to global subset enumeration.
+
+\subsection{A source-realized counterexample to splitting standard rays too far}
+
+The two-ball triangular source already distinguishes the two theorems.
+Put
+\[
+             q=(x,y,x+y,z,w,z+w),\qquad x,y,z,w\geq0.
+\]
+Its four Q rays are the four coordinate axes in these parameters.
+The source's nonconstant vertex potential groups, after anchor shifts and
+duplicate removal, have forms
+\[
+ \{0,y\}\ (\text{twice}),\quad \{0,-z\}\ (\text{twice}),
+ \quad\{0,-x\},\quad\{0,w,w-x\}.
+\]
+Only the last group changes its minimizing form inside the Q cone; its
+minimum is $\min(0,w-x)$.  The canonical standard fan is therefore the
+nonnegative orthant subdivided by $x=w$.  It has five rays, adding
+$e_x+e_w$ to the four coordinate axes.  The extra standard ray has
+\[
+                         q=(1,0,1,0,1,1).
+\]
+It is extreme because the independent conditions $y=0$, $z=0$, and $x=w$
+leave one feasible dimension.  These exact source potential groups and the
+five-ray list are also reconstructed by the independent dense verifier.
+The minimum-interaction construction merges the two matching blocks, as
+required.  A proposed implementation that enumerated standard rays in
+the separate Q blocks would omit this genuine ray.
+
+\subsection{Implementation, verification, and finite evidence}
+
+The new producer is \texttt{fastunknot/sector\_blocks.py}.  It exposes
+complete Q and standard enumeration, complete ray-set certificates, and a
+canonical positive-Euler screen.  Its companion
+\texttt{sector\_blocks\_verify.py} imports neither the block producer nor
+its support-graph construction.  The checker reconstructs the dense
+standard matching model from the original source.  For each submitted
+block and each independently computed kernel basis vector, it checks that
+the coordinate projection still satisfies all Q equations.  It checks
+that every omitted coordinate vanishes on the full kernel.  These identities
+prove the advertised direct-sum coverage without trusting a block count.
+For standard certificates it additionally checks that each vertex varies
+on at most one submitted cluster.  It then reconstructs every local ray
+using the existing independent dense enumerator.
+
+The positive-Euler certificate verifies matching, permitted types,
+canonicality, and positive Euler directly; it asserts no component topology.
+A negative Euler certificate includes complete local Q exhaustions and
+the checked splitting.  Missing blocks, incorrect fine partitions,
+missing or repeated rays, altered source identities, and noncanonical
+positive vectors are rejected.  Candidate limits yield an inconclusive
+result without an exhaustion certificate; callback interruption propagates.
+Existing signed-hexadecimal integer transport is retained for ray entries.
+
+The finite audit covers all 188 retained source sectors of matching
+nullity four or five under the same support-generation policy used by the
+maintained generic Euler tests.  All new Q ray sets equal the old complete
+sets, and all Euler decisions equal the archived complete standard-coordinate
+oracle.  Independent replay accepts every submitted certificate.
+There are 180 split sectors, but only 19 have fewer candidate intersections;
+the total drops from 1,275 to 1,110, with maximum individual factor $10/3$.
+Euler outcomes remain 12 exclusions and 176 positive results.  These are
+sector counts, not counts of distinct knot types or new recognition cases.
+
+Nine focused test methods additionally cover dense changes of kernel basis,
+zero cones, both enumeration phases on all 64 assignments of a three-tetrahedron
+source, the genuine mixed standard ray, malicious certificate mutations,
+integer transport, and cancellation.  The source family has also been
+checked through eight triangular bipyramid attachments.  These finite
+checks supplement the proofs rather than replacing their infinite claims.
+
+\begin{center}
+\begin{tabular}{r r r r r r r}
+\hline
+$b$ & $T$ & Old candidates & Block candidates & Old seconds & Block seconds & Paired gain\\
+\hline
+1 & 12 & 3 & 3 & 0.006644 & 0.006247 & 1.054\\
+2 & 15 & 20 & 6 & 0.016219 & 0.013247 & 1.217\\
+3 & 18 & 126 & 9 & 0.051434 & 0.021766 & 2.363\\
+4 & 21 & 792 & 12 & 0.267364 & 0.032702 & 8.134\\
+5 & 24 & 5005 & 15 & 1.848340 & 0.044701 & 39.974\\
+\hline
+\end{tabular}
+\end{center}
+
+The timing task includes complete source preparation, Q-ray production,
+independent complete ray-set replay, and canonical ray-list hashing.
+The new arm additionally serializes its block certificate.  Each row uses
+three rounds with alternating arm order; times are arm medians and gains
+are medians of paired ratios, which need not equal ratios of the displayed
+medians.  Small cases are near parity and should not be read as strong
+speed claims.  Larger cases exhibit the predicted avoided intersection
+work.  The raw measurements and exact ray hashes are retained in
+\texttt{sector\_block\_research/results/benchmark.json}; the 188-case audit
+is beside it.  These are complete supplied-sector Q-enumeration measurements,
+not end-to-end knot-recognition timings.
+
+The next mathematical targets are more specific than a bound on total
+nullity.  One can ask whether certified geometric reductions control the
+largest surviving matching block; whether source-side forced-zero proofs
+expose smaller blocks than the full linear kernel does; and whether a
+small separator in the minimum-interaction graph admits an exact bounded
+interface representation without expanding binary normal coordinates.
+A separate boundary-aware theorem is required to preserve essential-disc
+information when the Euler screen finds positive but topologically
+unhelpful rays.  Those obligations remain open here.

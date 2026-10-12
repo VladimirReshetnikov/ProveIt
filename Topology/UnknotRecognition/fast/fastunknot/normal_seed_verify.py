@@ -7,6 +7,9 @@ from .integer_codec import certificate_equal, encoded_integer
 
 def verify_normal_seed_certificate(diagram, certificate, *, check=lambda: None):
     check()
+    if type(certificate) is dict and certificate.get('schema') == 'diagram-handle-disc-v1':
+        from .source_handle_disc import verify_handle_disc_certificate
+        return verify_handle_disc_certificate(diagram, certificate, check=check)
     if type(certificate) is dict and certificate.get('schema') == 'diagram-cocycle-lex-v1':
         from .cocycle_lex_verify import inspect_lex_cocycle_certificate
         summary=inspect_lex_cocycle_certificate(diagram,certificate,check=check)

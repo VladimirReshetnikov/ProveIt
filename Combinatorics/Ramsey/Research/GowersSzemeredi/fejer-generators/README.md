@@ -52,6 +52,10 @@ map").
 | `assemble_jy.py` | `Proofs18CoverFejerHeadlineJ` | the Y (Theorem 18.1) and Z (Theorem 18.2) envelopes over the J step, new closed forms and kernel fits |
 | `mk_low4.py` | `Proofs18CoverFejerLowDegrees4` | `Proofs18CoverFejerLowDegrees5` with `5 ↦ 4` |
 | `patch_bridge_j.py` | the joint-slice block of `Proofs18CoverFejerAllDegrees` and `CompletionAudit.lean` | — |
+| `assemble_k.py` | `Proofs18CoverFejerHeadlineK` | `inv_thr_le_ex` and the J Theorem 18.2 step with the partition constant at `partDeg k = (k+3)² + (k+2)(k+1)` (`polyPartConst_le_sharp`) |
+| `patch_bridge_k.py` | the sharp-partition block of `Proofs18CoverFejerAllDegrees` and `CompletionAudit.lean` | — |
+| `assemble_polyj.py` | `Proofs16PolynomialFejerJ` | `Proofs16PolynomialFejerX` at `tDegZ` with the joint-slice frequency box (`expDegJ_tight_le`, `singlePieceEtaFJ_le_density`) |
+| `patch_bridge_polyj.py` | the 16.2 / 16.11 block of `Proofs18CoverFejerAllDegrees` and `CompletionAudit.lean` | — |
 | `mkstub_fejer18.py`, `mkstub_auditfejer.py` | stub checks of `Proofs18CoverFejerAllDegrees` and the Fejér block of `CompletionAudit.lean` | — |
 
 Hand-written modules (no generator): `Proofs15WalshGeneral`,

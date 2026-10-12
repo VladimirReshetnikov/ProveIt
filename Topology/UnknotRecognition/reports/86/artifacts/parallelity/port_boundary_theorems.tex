@@ -1,0 +1,400 @@
+% Research notes for the 2026-10-12 continuation.  This is a section fragment.
+% Citation keys expected: AHT2006, Lackenby2021, Lackenby2026.
+\section{A finite interface for exponentially subdivided bundle boundaries}
+\label{sec:port-boundary-theorem}
+
+The all-dimensional parallelity construction already provides the base
+surface of each source bundle as families of polygons, together with the
+set of core-facing sides, called ports.  A base profile records Euler
+characteristic, orientability, boundary count, and the set of ports in its
+component.  It does not record which boundary circle contains a port or
+the cyclic order of the ports.  The polygon packet contains that information,
+but reading it by walking a boundary circle may require a number of steps
+proportional to the normal weight.  We give a reduction that extracts the
+needed finite interface directly from the compressed packet.
+
+This is an implementation-oriented specialization of earlier algorithmic
+topology.  Lackenby's Theorems 9.2 and 9.3 in \cite{Lackenby2021} already
+give polynomial algorithms for parallelity bundles with attachment data;
+the explanation of the output explicitly includes cyclic order around
+vertical annuli and coherent horizontal-sheet labels for product bundles.
+We do not claim a new existence theorem for that general task.  The
+contribution here is an explicit endpoint-matching reduction for the
+repository's all-dimensional polygon packet, its source-labelled fibre
+charts, and the safe distinction between full and partial disc attachments.
+The repository also already contains the degree-two ordered-boundary
+principle in Report 68, summarized in
+\texttt{synthesis/completion\_theorems.tex}: endpoint count, sum, square
+sum and length recover the two endpoint occurrences of each cut path.
+The present construction integrates that principle with the later complete
+parallelity packet and adds zero-gap flags, the signed fibre cover, and
+executable source-interface verification.
+
+\subsection{The abstract input and the exact output}
+
+Let $B$ be a finite compact surface assembled from a finite, possibly very
+large, collection of polygon copies.  Assume that copies, side pairings and
+their endpoint maps are represented by $s$ binary interval records on a
+corner universe $\{0,\ldots,N-1\}$.  Pairings are integral affine
+isometries, possibly order reversing.  Each polygon-side identification
+gives identifications between its endpoint corners.  Let $V$ denote the
+resulting corner-pairing system.  Its orbits are precisely the vertices of
+the quotient polygonal surface.  The input is required to describe a
+surface; this is a geometric hypothesis, rather than a conclusion of the
+following orbit computation.
+
+Distinguish $p$ individual unglued sides, each specified by one binary
+rank and a unique port label.  Write $e_{j,0}$ and $e_{j,1}$ for the two
+\emph{endpoint flags} of port $j$.  Endpoint flags remain distinct even
+when their corner addresses represent the same quotient vertex.
+Every other unglued side is an old-boundary side.  Let $R$ be $V$ together
+with the endpoint pairing of every old-boundary side.  Crucially, the
+endpoint pairings of the ports are omitted from $R$.
+
+The desired output consists of the following data:
+\begin{enumerate}
+\item a matching $\tau$ of the $2p$ endpoint flags, pairing the two ends of
+  each component of $\partial B$ after the open port sides are deleted;
+\item a bit $z$ for every matched pair, specifying whether the intervening
+  component is a single quotient vertex, rather than an arc containing
+  old-boundary sides;
+\item the cyclic lists of labelled and directed ports on every boundary
+  circle that contains a port, with the $z$ bits on the intervening gaps.
+\end{enumerate}
+If a fibre-reversal bit is attached to each polygon gluing, we also recover
+the fibre transport along each intervening component.  The cyclic lists
+are canonically chosen up to reversal; this does not choose a common
+orientation for different boundary components of the same base surface.
+
+\begin{theorem}[Marked boundary extraction]
+\label{thm:marked-boundary}
+The matching $\tau$, the gap bits $z$, and the cyclic port lists can be
+computed with $O(p^2)$ calls to ordinary interval-orbit counting on systems
+with $O(s+p)$ records and universe size $N$.  Consequently they can be
+computed in time polynomial in $s+p+\log(N+1)$ by the Agol--Hass--Thurston
+orbit-counting theorem.  Their combinatorial output size is $O(p)$.
+
+For the source parallelity packet of a triangulation with $T$ tetrahedra
+and coordinate bit length $L$, this is polynomial in $T+L$, since
+$s=O(T)$, $p\leq66T$, and $\log(N+1)=O(L+\log(T+1))$.
+\end{theorem}
+\begin{proof}
+First quotient the corner universe by $V$.  Interior vertices are
+irrelevant to $\partial B$.  Boundary vertices and the unglued sides form
+a finite cellulation of the disjoint union of circles $\partial B$.
+Deleting the open interiors of the port sides leaves circles with no
+marked endpoints and closed intervals with exactly two marked endpoint
+flags.  An interval is allowed to have no side and consist of a single
+vertex.  This happens precisely when two consecutive port sides share
+a quotient vertex.  If one port itself has coincident endpoint vertices,
+its two endpoint flags must still be counted separately.
+
+Adding the old-boundary side pairings to $V$ identifies exactly the
+vertices within these remaining components.  Hence every $R$-orbit
+containing a marked flag contains exactly two marked flags.  Its two flags
+give $\tau$.  Notice that the assertion concerns flags, not distinct
+integer addresses: two marked flags may have the same address.
+
+Here is a reduction to unweighted orbit counting that avoids any assumption
+about the performance of a weighted implementation.  For a pairing system
+$Q$, write $c(Q)$ for its number of orbits.  For two corner addresses $x,y$,
+adjoin the singleton pairing $x\leftrightarrow y$.  Then
+\[
+ c\bigl(Q\cup\{x\leftrightarrow y\}\bigr)
+ =\begin{cases}
+ c(Q),&x\sim_Q y,\\
+ c(Q)-1,&x\not\sim_Q y.
+ \end{cases}
+\]
+The reason is that one added edge merges exactly two different connected
+components, or merges none.  Compute $c(R)$ once and apply this test to
+each pair of marked addresses.  The resulting equivalence classes on
+endpoint flags have size two, giving $\tau$ in $O(p^2)$ counting calls.
+Repeated addresses cause no difficulty.
+
+For each pair matched by $\tau$, apply the same test to $V$.  The two flags
+represent the same quotient vertex if and only if the remaining interval
+has no old-boundary side.  Indeed, an interval with distinct ends cannot
+have its ends identified in a cellulation of a one-manifold.  This gives
+the bits $z$ with at most $p$ additional counting calls.
+
+Let $\sigma(e_{j,0})=e_{j,1}$ and
+$\sigma(e_{j,1})=e_{j,0}$.  The multigraph on endpoint flags whose edges
+are the $\sigma$ pairs and $\tau$ pairs is 2-regular.  Its components are
+exactly the boundary circles meeting ports.  Traverse alternating port
+and gap edges to obtain each cyclic list.  Each flag and port is visited
+only a constant number of times.  Canonicalize by beginning with the
+smallest label and choosing the lexicographically smaller direction.
+Thus the postprocessing and output size are $O(p)$, apart from the usual
+sorting of labels.  The claimed polynomial bound follows from the basic
+AHT theorem \cite{AHT2006}.
+\end{proof}
+
+This theorem gives a polynomial algorithm as an abstract reduction.
+Using the repository's current orbit engine supplies an implementation
+whose certificate replay is bounded by its realized traces.  Identifying
+that specific implementation with the polynomial AHT theorem requires
+its own complexity proof; the theorem above does not silently supply it.
+
+\subsection{One-query weighted realization}
+
+There is a faster practical realization using the existing weighted
+histogram primitive.  Give endpoint flag $e_{j,a}$ the singleton weight
+$2^{2j+a}$ at its corner address and give all other points zero weight.
+Overlapping singleton weights are added.  Every positive-weight $R$-orbit
+then has a weight containing exactly two set bits.  Those two bits recover
+the matched flags.  The uniqueness of the endpoint labels prevents carries
+and implies that a positive mask has multiplicity one.  Thus the positive
+part of the histogram has exactly $p$ rows; arbitrarily many unmarked
+components contribute only to the zero-weight row.  A second query on $V$
+gives the endpoint vertex partition and the zero-gap information.
+
+The scalar weights have $2p$ bits, not $2^p$ bits.  In particular, the
+binary encoding remains polynomial in $T+L$ even when a boundary path
+contains exponentially many old-boundary sides.  This is a bounded-mark
+use of the weighted primitive; it does not require a general bound on
+all possible weighted histograms.
+
+\subsection{Transport of the interval fibre}
+
+Suppose the polygon packet is equipped with compatible local interval
+fibres.  For every gluing, let $\epsilon\in\{0,1\}$ record reversal of
+the fibre.  Lift its corner maps to two sheets by
+\[
+                (x,a)\longmapsto(g(x),a\mathbin\oplus\epsilon).
+\]
+An old-boundary edge has zero fibre reversal in its polygon chart.  Let
+$\widetilde R$ be the resulting lifted system on $2N$ corner addresses.
+Each marked endpoint has two lifted flags.
+
+\begin{proposition}[Signed gap extraction]
+\label{prop:signed-gap}
+The lifted endpoint matching determines one bit $\eta(e,f)$ for every
+gap matched by $\tau$: continuation from sheet zero at $e$ reaches sheet
+$\eta(e,f)$ at $f$.  It is computable in polynomial encoded time by the
+same orbit-count reduction, or by one weighted query with $4p$ endpoint
+bits.  A valid interval bundle has precisely two lifts of each gap, so the
+lifted matching commutes with the deck involution.
+
+If the total interval bundle is orientable, the xor of the gap bits around
+every cyclic port list is zero.
+\end{proposition}
+\begin{proof}
+Every gap is an interval or a point, and an interval bundle over either
+is trivial.  Its two sheets therefore remain distinct.  The lifted
+components pair the two lifts of each endpoint bijectively with the two
+lifts of the other endpoint.  This bijection is either the identity or
+the transposition, and defines $\eta$.  The same orbit membership test
+as in Theorem~\ref{thm:marked-boundary} computes it.
+
+For the last assertion, the orientation character of the vertical
+line bundle equals that of $B$, because their sum is the orientation
+character of the total space.  The restriction of $TB$ to a boundary
+circle splits into the tangent line of the circle and its outward normal
+line, both orientable.  Hence the fibre character is trivial on every
+boundary circle.  Traversal through a port has zero fibre change in its
+local polygon chart, so the xor of the recorded gap changes is exactly
+this zero character.  The same reasoning applies to a boundary circle
+of a nonorientable base whose total interval bundle is orientable.
+\end{proof}
+
+The zero-holonomy condition is a useful local consistency check.  It does
+not imply that the full bundle is a product: an orientable interval bundle
+over a M\"obius band has trivial fibre holonomy on its boundary but has
+nontrivial fibre holonomy on its core curve.
+
+\subsection{What is and is not determined}
+
+The new interface determines the partition of ports into boundary circles,
+the direction of each port relative to its endpoint chart, their cyclic
+order, whether consecutive ports actually touch, and the fibre transport
+between them.  It does not enumerate the old-boundary sides.  If a base
+profile has $b$ boundary components and $c$ recovered marked circles, the
+remaining $b-c$ unmarked circles are retained as a binary count.
+
+The interface is a complete description of the \emph{marked vertical
+boundary}, in its supplied endpoint and fibre charts.  It is not by itself
+a complete classification of the interval bundle relative to all markings
+on its horizontal boundary.  Such markings, as well as coherent orientation
+choices between different boundary circles, must be transported separately
+when required by a patterned hierarchy.
+
+The omission of cyclic order from a base profile is a real loss of
+information.  A disc with four labelled boundary arcs in order
+$(a,b,c,d)$ is not homeomorphic, relative to the labels, to a disc with
+order $(a,c,b,d)$.  A boundary homeomorphism preserves cyclic order up to
+reversal.  Both discs have identical Euler characteristic, boundary
+count, orientability and port set.  Thus no algorithm using only the
+current numerical profile can construct the required marked boundary
+homeomorphism in general.
+
+\section{Safe replacement of disc-based source bundles}
+\label{sec:disc-bundle-replacement}
+
+Let $K$ be a compact 3-manifold with corners and let
+$E=D^2\times I$ be a product component of the source parallelity bundle.
+Assume that
+\[
+              E\cap K=A\times I,
+              \qquad A\subseteq\partial D^2,
+\]
+where $A$ is a union of the port sides, with the given source attachment
+charts.  The interiors of these interfaces are embedded and different
+bundle components have disjoint interfaces.  Consecutive port sides may
+meet; the cyclic interface tells us when to combine them.  These are
+topological gluing hypotheses already supplied by the full source packet.
+
+\begin{theorem}[Disc bundle replacement with partial attachment]
+\label{thm:disc-replacement}
+There are exactly three possibilities.
+\begin{enumerate}
+\item If $A=\varnothing$, then $E$ is a separate 3-ball component.
+\item If $A=\partial D^2$, then adjoining $E$ is precisely the attachment
+  of one 2-handle, with attaching annulus $\partial D^2\times I$.
+\item If $A$ is nonempty and proper, let $r$ be its number of connected
+  components.  Each component is a closed interval.  Up to transport
+  through collars of the attaching discs, adjoining $E$ is the addition
+  of $r-1$ relative 1-handles to $K$.
+\end{enumerate}
+The homeomorphism preserves any explicitly transported boundary markings.
+In the third case it can be chosen fixed outside collars of the attaching
+discs.  It need not fix the entire originally embedded $K$ pointwise.
+
+For all attached disc-base components together, the number of relative
+handles added in cases (2) and (3) is at most the total number of ports.
+Unattached disc-base components may be retained by binary multiplicity.
+\end{theorem}
+\begin{proof}
+The first two cases are immediate from the product description.  In case
+(3), write $A=A_1\cup\cdots\cup A_r$ in cyclic order.  There is a set of
+$r-1$ disjoint properly embedded arcs in the disc, with endpoints outside
+$A$, which cuts the disc into $r$ discs, each containing exactly one
+$A_i$ on its boundary.  One construction successively cuts off $A_1$,
+then $A_2$, and so on, choosing endpoints in the two adjacent complementary
+boundary intervals.  The dual graph of these cuts is a tree.
+
+Take the product of these arcs with $I$.  They are $r-1$ disjoint vertical
+discs splitting $E$ into $r$ balls.  Each ball meets $K$ in just the disc
+$A_i\times I$.  Absorb it into a collar of that disc in $K$.  This gives
+a 3-manifold $K'$ homeomorphic to $K$ by a homeomorphism fixed away from
+the attaching collars.  Gluing the $r$ pieces back across the cut discs
+is equivalently accomplished by attaching $r-1$ 1-handles between their
+collar patches.  Product charts on the cut discs give the attaching maps.
+Boundary markings on the pieces are carried by the same homeomorphisms,
+so they are not discarded by the replacement.
+
+If a disc component uses $p_i$ ports, then a full-circle attachment uses
+one new 2-handle and has $p_i\geq1$.  A partial attachment has
+$r\leq p_i$ and uses $r-1\leq p_i$ new 1-handles.  Summing gives the bound.
+The components with no ports are disjoint balls and may occur with large
+multiplicity, so a compressed representation must count rather than
+explicitly list them.
+\end{proof}
+
+The case $r=1$ is particularly useful: the whole disc bundle is a collar
+addition and introduces no relative handle.  Replacing every disc base
+indiscriminately by a 2-handle would be wrong for such partial attachments.
+For example, with $r=2$ the correct operation adds a 1-handle, whereas a
+2-handle would have the opposite Euler-characteristic contribution.
+
+\begin{corollary}[Computable relative Euler contribution]
+For a disc product component,
+\[
+ \chi(K\cup E)-\chi(K)=
+ \begin{cases}
+ 1,&A=\varnothing\text{ or }A=\partial D^2,\\
+ 1-r,&A\neq\varnothing,\ A\neq\partial D^2.
+ \end{cases}
+\]
+The cyclic interface determines the applicable case and $r$ without
+expanding the polygon packet.  On a marked boundary circle, $A$ is the
+entire circle exactly when every gap has $z=1$.  Otherwise $r$ is the
+number of gaps with $z=0$.
+\end{corollary}
+\begin{proof}
+Euler characteristic under gluing gives
+$\chi(K\cup E)-\chi(K)=\chi(E)-\chi(A\times I)=1-\chi(A)$.
+The asserted values and the description by gaps follow immediately.
+\end{proof}
+
+This is a local simplification theorem and a bounded relative handle
+presentation.  It does not prove that the transported boundary pattern is
+essential, that the resulting handle structure is admissible, or that its
+0-handles remain in a fixed finite list of types through a hierarchy.
+Those are distinct hypotheses in the hierarchy theorems
+\cite{Lackenby2026}.  In particular, reordering and refining the relative
+handle additions into the hierarchy's required source handle structure
+needs an explicit construction and its own size bound.  The theorem also
+does not authorize discarding unmarked ball components when their inherited
+horizontal boundary markings still have to be checked.
+
+\subsection{Certified implementation and finite geometric comparison}
+
+The supplemental prototype performs three marked weighted-orbit queries:
+the vertex partition, the gap matching, and its fibre double cover.  Its
+independent checker reconstructs the query systems from the authenticated
+source polygon packet and replays all three weighted certificates.  It
+does not invoke the producer's query builder, mask decoder, or cyclic
+traversal.  Source authentication itself remains the responsibility of
+the maintained \texttt{verify\_normal\_cut\_parallelity} operation.
+
+The reproducible focused audit records 11 successful test methods,
+184 finite geometric comparisons, and 54 authenticated source comparisons.
+The finite oracle first glues actual polygon corners, checks their fibre
+charts, and walks the actual boundary cellulation; it does not use the
+compressed interval-query construction.  Among the synthetic cases are
+all 126 subsets of marked sides of discs with one through six sides,
+including the monogon case where the two flags of one port have the same
+corner address.  Annular and M\"obius base charts test fibre transport.
+Source cases include relabellings, interior handles, and the existing rich
+3-manifold fixtures.
+
+Two source examples expose the distinction needed by
+Theorem~\ref{thm:disc-replacement}.  In the two-tetrahedron source
+\texttt{fibonacci\_lst\_02}, coordinate rows
+$(0,0,1,1,1,0,0)$ and $(1,1,1,1,0,0,0)$ give a single disc base supported
+by one selected 2-handle and no selected 0- or 1-handles.  Its eight ports
+form one cyclic list with no old-boundary gaps, so it is precisely a
+full-circle 2-handle attachment.  On the other hand, three parallel
+meridians in the two-tetrahedron layered torus give two attached disc
+bases, each with one proper core interval.  They are collar additions,
+introducing no relative handle, together with two unattached ball products.
+Complete source and interface certificates for these examples accompany
+the prototype.
+
+The large-coordinate regression uses $2^{8192}$ parallel meridians in a
+four-tetrahedron source.  It checks exact JSON transport and independent
+replay with producer routines disabled.  The literal oracle refuses this
+input because it exceeds its explicit expansion cap.  Hostile tests alter
+gap adjacency, cyclic directions, fibre bits, source digests and weight
+masks.  Shared discovery limits, shared verification limits, and cancellation
+are checked separately.  Exhaustion returns no geometric interface.
+
+These observations validate the additional interface computation on the
+tested inputs.  They do not constitute a proof of a global hierarchy
+bound, or a replacement for the topological hypotheses in the preceding
+theorems.  In particular, the returned disc-replacement record is a local
+relative-handle plan; the prototype performs no surgery.
+
+\subsection{Research priorities exposed by this reduction}
+
+The finite interface suggests several concrete next questions.
+\begin{enumerate}
+\item Construct a certificate for the marked boundary homeomorphism and
+  the induced corner pattern after each disc-bundle replacement.  The
+  certificate should use the cyclic interface and source charts, rather
+  than the expanded base disc.
+\item Extend marked-boundary extraction to the endpoints and vertices of
+  a compressed boundary pattern.  Determine conditions under which a
+  polynomial number of pattern events is preserved by a hierarchy step.
+\item Produce a polynomial conversion from the resulting relative
+  handle presentation to an admissible handle structure of uniform type.
+  The inherited $30T$ core bound alone does not establish this.
+\item For annular and nonorientable bases, retain the full relative
+  orientation character between marked boundary circles.  Determine the
+  least extra finite data needed for a bundle homeomorphism relative to
+  both its core interfaces and its horizontal pattern.
+\item Prove the necessary polynomial bound for the repository's actual
+  interval-orbit implementation, or introduce a certified implementation
+  that follows an already proved AHT reduction bound.
+\end{enumerate}

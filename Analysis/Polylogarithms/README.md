@@ -2,17 +2,17 @@
 
 The canonical reading artifact is the collective four-volume manuscript,
 [Polylogarithms and their Arithmetic Bridges](docs/manuscript/README.md),
-authored by **ProveIt Contributors**. The volumes have **149, 130, 253 and
-86 pages**, each compiling independently; the retained
-[combined edition](docs/manuscript/polylogarithms.pdf) has **575 pages**.
-They share twelve chapters, thirteen figures and 150 references. The
+authored by **ProveIt Contributors**. The volumes have **169, 131, 254 and
+87 pages**, each compiling independently; the retained
+[combined edition](docs/manuscript/polylogarithms.pdf) has **595 pages**.
+They share twelve chapters, thirteen figures and 157 references. The
 [editorial ledger](docs/manuscript/EDITORIAL-LEDGER.md) separates accepted
 proofs from pending analytic claims, and the
 [validation record](docs/manuscript/VALIDATION.md) distinguishes proofs,
 finite certificates, numerical diagnostics, PDF builds and visual review.
 
-The inventory covers **1810 textual provenance documents**. **134 incoming
-archives / 4779 original tracked members** are preserved; imported ZIPs are
+The inventory covers **1810 textual provenance documents**. **135 incoming
+archives / 4806 original tracked members** are preserved; imported ZIPs are
 retired in their placement commits and recoverable from arrival history.
 Delivered PDFs, sources, code and receipts retain their original evidence
 scopes. Intake notes use a separate filename, preserving delivered
@@ -23,8 +23,12 @@ correction of the resonant Lambert inverse, with an explicit second
 correction and higher-polylogarithm Borel boundary models. A uniform
 factorial-vertex argument proves the theorem; exact finite algebra and
 forty complete coefficient calculations provide separate implementation
-evidence. Global Borel continuation and the newly arrived reports remain
-separate review work.
+evidence. Its new continuation theorem now proves Borel continuation along
+paths avoiding the lattice, summability away from real directions, and the
+exact sectorial inverse equation. The odd remainder gains an extra coupling
+factor, giving relative uniformity down to zero positive coupling at every
+fixed order. Full singular germs and the two remaining incoming reports
+remain separate work.
 
 The crossed-twist extension now gives the exact finite Fourier correction
 at every positive integer total order, all balanced order jets and their
@@ -708,9 +712,41 @@ transfer dictionary, special-order cancellations and prefix normalizations
 are ready for synthesis. The symmetric Lambert inverse report has a divergent
 ordinary sector series and a nested Stokes scale, so its scope must remain
 distinct from the convergent analytic-tail inverse charts. Its sharp
-large-order amplitudes are conjectural.
+large-order amplitudes, all fixed-order corrections and Borel continuation
+are now proved in Section 1.9 of Volume I.
 
-These reports have not yet been integrated into the four-volume TeX or its
-PDFs. The existing collective author remains **ProveIt Contributors**.
+The Lambert inverse coefficient and continuation results are integrated in
+Volume I. The order-jet and boundary-transfer synthesis remains pending.
+The collective author remains **ProveIt Contributors**.
 The order-jet report's proposed equation-number correction is qualified in
 its audit: the cited arXiv HTML uses 60a/b and the PDF uses 3.36a/b.
+
+
+### Joint coefficients and order-zero filters: intake of 12 October 2026
+
+Two further complete deliveries have their original home in Transseries:
+[joint coefficient transseries](../Transseries/docs/series-and-transseries/Quadratic_Polylogarithm_Feedback_Boundary_Completion/continuations/joint-coefficient-transseries/OVERVIEW.md)
+and [order-jet filters](../Transseries/docs/series-and-transseries/Resonant_Polylogarithm_Transseries/continuations/order-jet-filters/OVERVIEW.md).
+The former proposes the compact joint-window answer to the boundary report's
+Q1 and a positive-window part of Q2; its marginal Gamma moments agree with
+the existing collective chapter. Its local inverse classification overlaps
+the reversion continuation, while the reciprocal-order crossover chart is
+a separate refinement. The latter extends the resonant completion dictionary
+with sharp cancellation filters and an independently continued order-zero
+digamma inverse.
+
+The full default verification programs pass on isolated copies. Fresh evidence
+and scope reconciliation are retained beside the delivered originals; complete
+analytic review and incorporation into the collective manuscript remain
+pending. Numerical evidence is not interval certification. The local
+cut-modulus obstruction affects a proposed real-order extension, not the
+existing integer theorem or the unresolved global inverse-radius question.
+
+
+The collective manuscript's [Volume I](docs/manuscript/volumes/volume-1-polylogarithm-identities.pdf),
+Section 1.10, now integrates sharp order filters, exact Stokes-neutral curves,
+and the order-zero digamma inverse. New Theorem 1.41 proves a convergent
+neutral inverse chart and the nonzero physical displacement that survives
+when the two lateral inverses coincide. The [validation record](docs/manuscript/VALIDATION.md)
+separates the analytic proof, exact coefficient checks, numerical diagnostics,
+and final four-volume PDF review.

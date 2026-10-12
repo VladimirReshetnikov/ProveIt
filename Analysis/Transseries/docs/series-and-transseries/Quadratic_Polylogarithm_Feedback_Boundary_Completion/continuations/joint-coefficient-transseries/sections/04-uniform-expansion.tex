@@ -1,0 +1,243 @@
+\section{The uniform coefficient transseries}
+\label{sec:main-proof}
+
+We now prove the main result. The definition of $B$ in
+\eqref{eq:scale} incorporates all logarithmic changes of the quadratic
+coefficient, including the slowly varying feedback contribution.
+
+\begin{theorem}[Every fixed logarithmic order, uniformly on the lattice]
+\label{thm:all-orders}
+Fix $\Lambda<\infty$, $0<b_-<b_+<\infty$, and an integer $N\ge0$.
+For $L=\log n$, $|\eps L/2|\le\Lambda$, and $b\in[b_-,b_+]$,
+let $X_n$, $B$, $q$, and $\xi_m$ be defined by
+\eqref{eq:pgf}, \eqref{eq:scale}, and \eqref{eq:q-xi}. Then
+\begin{equation}\label{eq:uniform-lattice}
+ \sup_{m\in\mathbb Z}\left|
+ B\Prob(X_n=m)-\sum_{j=0}^N\mathcal C_j(\xi_m;q,\eps)
+ \right|\le C_N L^{-N-1}
+\end{equation}
+for all sufficiently large $n$, uniformly in the stated parameters.
+Consequently the feedback coefficients satisfy
+\begin{equation}\label{eq:all-orders-coefficient}
+ \boxed{\displaystyle
+ nB R_b^n a_n
+ =\normal(\xi)+
+  \sum_{j=1}^N\frac1{j!}\sum_{k=1}^j
+    \stir{j}{k}\left(-\frac q2\right)^k\eps^{j-k}
+           \HH_{2k}^{[j]}(\xi)
+       +O(L^{-N-1}).}
+\end{equation}
+The finite divided-difference expression
+\eqref{eq:finite-difference-approx} has the same error bound.
+\end{theorem}
+
+The theorem resolves the joint coefficient target Q1 in
+\cite{repo-boundary}. It is an absolute estimate. For bounded $\xi$
+it gives relative Gaussian asymptotics because $\normal$ has a
+positive minimum on each compact real interval. Relative conclusions
+for unbounded $\xi$ will be proved separately.
+
+\subsection{Uniform control of the whole Fourier contour}
+
+\begin{lemma}[Uniform Fourier domination]
+\label{lem:fourier-tail}
+Let
+\begin{equation}\label{eq:chi}
+ \chi_n(y)=\E\exp\left(iy\frac{X_n-nA/b}{B}\right).
+\end{equation}
+There are positive constants $c_1,c_2$, uniform in the moving-order
+window and in $b$, such that
+\begin{align}
+ |\chi_n(y)|&\le e^{-c_1y^2}
+       &&(|y|\le Bn^{-1/4}),\label{eq:fourier-small}\\
+ |\chi_n(y)|&\le e^{-c_2\sqrt n}
+       &&(Bn^{-1/4}\le |y|\le\pi B).
+       \label{eq:fourier-large}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+By positivity of the intensities,
+\[
+ -\log|\chi_n(B\theta)|
+  =n\sum_{k\ge1}c_k(1-\cos k\theta).
+\]
+For $|\theta|\le n^{-1/4}$ retain $1\le k\le\lfloor n^{1/4}\rfloor$.
+Then $|k\theta|\le1$, so $1-\cos k\theta\ge c k^2\theta^2$.
+The parameters keep $u$ bounded above. Moreover
+$k^{-\eps}\ge e^{-\Lambda/2}$ on this range, since
+$|\eps|\log k\le\Lambda/2$. Therefore
+\[
+ -\log|\chi_n(B\theta)|
+ \ge c n\theta^2\sum_{k\le n^{1/4}}k^{-1-\eps}
+ \ge c' nL\theta^2.
+\]
+Since $B^2\asymp nL$, this proves \eqref{eq:fourier-small}.
+For $n^{-1/4}\le|\theta|\le\pi$, retain only $k=1$.
+Here $c_1=1/u$ in the intensity notation and
+$1-\cos\theta\ge2\theta^2/\pi^2$, giving
+$-\log|\chi_n(B\theta)|\ge c n\theta^2\ge c\sqrt n$.
+The centering phase has modulus one, proving the second assertion.
+\end{proof}
+
+This argument is insensitive to the cancellation of the Gamma and
+zeta poles. It uses the exact nonnegative coefficients and supplies
+the uniformity that a fixed-order local-limit theorem alone would
+not provide.
+
+\subsection{The exact central reduction}
+
+For $z\in\C$, define the entire divided exponential
+\begin{equation}\label{eq:h-epsilon}
+ h_\eps(z)=\frac{e^{\eps z}-1}{\eps},\qquad h_0(z)=z.
+\end{equation}
+Take $t=-iy/B$ in \cref{lem:local}. The scale equation removes the
+constant quadratic term and gives
+\begin{equation}\label{eq:core-characteristic}
+ \chi_n(y)=\exp\left\{
+     -\frac{y^2}{2}+\frac q2y^2h_\eps(\Log(-iy))+R_n(y)
+                       \right\},
+ \quad |R_n(y)|\le CnB^{-5/2}|y|^{5/2},
+\end{equation}
+whenever $0<|y|<rB$. The limit at zero is understood continuously.
+The sign in this formula follows from
+$(-iy)^2=-y^2$ and
+\[
+ K_\eps(\log B-\Log(-iy))-K_\eps(\log B)
+   =-E_2(\eps)B^{-\eps}h_\eps(\Log(-iy)).
+\]
+Since $nB^{-5/2}=O(n^{-1/4}L^{-5/4})$, the local nonlinear
+remainder is smaller than every fixed inverse power of $L$.
+
+\subsection{A finite expansion with an integrable remainder}
+
+\begin{proof}[Proof of \cref{thm:all-orders}]
+Choose
+$T_L=\sqrt{D_N\log L}$ with a sufficiently large constant $D_N$.
+By \cref{lem:fourier-tail}, the part of the scaled Fourier integral
+with $T_L<|y|\le\pi B$ has absolute size
+$O(L^{-N-1})$: use the Gaussian bound up to $Bn^{-1/4}$ and
+the bound $2\pi B e^{-c_2\sqrt n}$ beyond it.
+
+On $|y|\le T_L$, put $z=\Log(-iy)$ and
+$w=(q/2)y^2h_\eps(z)$. The inequality
+\begin{equation}\label{eq:h-bound}
+ |h_\eps(z)|\le |z|e^{|\eps z|}
+\end{equation}
+follows from $h_\eps(z)=z\int_0^1e^{v\eps z}\,dv$.
+It proves $\sup_{|y|\le T_L}|w|=o(1)$. Near $y=0$ one uses
+$y^2|\log|y||\,|y|^{-|\eps|}\to0$; no uniform bound on
+$|\eps\log|y||$ is assumed. For $1\le|y|\le T_L$ the bound is
+$O(L^{-1}\log L\log\log L)$.
+Equation \eqref{eq:core-characteristic} and the estimate on $R_n$
+therefore allow us to replace $\chi_n$ by
+$e^{-y^2/2}e^w$ in the central integral with error
+$O(nB^{-5/2})$.
+
+Expand the exponential only to the finite order $N$:
+\[
+ e^w=\sum_{k=0}^N\frac{w^k}{k!}+O_N(|w|^{N+1}).
+\]
+The error is integrable against $e^{-y^2/2}$ with bound
+$C_N q^{N+1}$. Indeed \eqref{eq:h-bound} bounds the integrand near
+zero by a constant times
+$|y|^{2N+2-(N+1)|\eps|}(1+|\log|y||)^{N+1}$;
+at infinity a Gaussian dominates the polynomial and logarithmic
+factors. For the fixed $N$, take $n$ large enough that
+$(N+1)|\eps|<1/2$. All these integrals then have a common majorant.
+
+For each $k\le N$, use
+\begin{equation}\label{eq:cube-integral}
+ h_\eps(z)^k=z^k\int_{[0,1]^k}
+      e^{\eps z(v_1+\cdots+v_k)}\,dv_1\cdots dv_k.
+\end{equation}
+Taylor expansion in $\eps$ through degree $N-k$ gives
+\[
+ h_\eps(z)^k
+ =k!\sum_{j=k}^N\stir{j}{k}\frac{\eps^{j-k}z^j}{j!}
+    +\mathcal R_{k,N}(z),
+\]
+where
+\[
+ |\mathcal R_{k,N}(z)|\le
+ C_N|\eps|^{N+1-k}|z|^{N+1}e^{k|\eps z|}.
+\]
+After multiplication by $q^k|y|^{2k}e^{-y^2/2}$, its integral is
+$O(q^k|\eps|^{N+1-k})=O(L^{-N-1})$, by the same domination.
+Thus the total-degree polynomial in $q,\eps$ has an $L^1(dy)$
+error of the asserted order. Its finite terms may be extended from
+$|y|\le T_L$ to the full real axis: their Gaussian tails are
+$O(L^{-N-1})$ after enlarging $D_N$ if needed.
+
+The resulting integrals are
+\[
+ \frac1{2\pi}\int_\R e^{-i\xi_m y-y^2/2}
+       (-iy)^{2k}(\Log(-iy))^j\,dy
+       =\HH_{2k}^{[j]}(\xi_m).
+\]
+Here the factor $y^{2k}$ in $w^k$ contributes $(-1)^k$, producing
+$(-q/2)^k$. Lattice Fourier inversion says
+\[
+ B\Prob(X_n=m)
+ =\frac1{2\pi}\int_{-\pi B}^{\pi B}
+                 e^{-i\xi_m y}\chi_n(y)\,dy.
+\]
+Every error bound above is an $L^1$ bound before insertion of the
+phase. Since $|e^{-i\xi_m y}|=1$, it is uniform in all integers $m$.
+This proves \eqref{eq:uniform-lattice}. The exact coefficient identity
+gives \eqref{eq:all-orders-coefficient}.
+
+If one retains $h_\eps(z)^k$ instead of Taylor-expanding in
+$\eps$, apply finite Fourier inversion to
+\[
+ (-iy)^{2k}h_\eps(\Log(-iy))^k.
+\]
+This gives precisely \eqref{eq:finite-difference-approx}. The same
+$q^{N+1}$ estimate proves its assertion.
+\end{proof}
+
+\begin{remark}[The full formal exponential is not the Fourier law]
+The proof integrates a finite expansion in the central region and
+uses the exact characteristic function on its complement. It does not
+replace the full Fourier law by
+$\exp\{-y^2/2+(q/2)y^2h_\eps(\Log(-iy))\}$ on the whole real axis.
+For fixed positive $q,\eps$ the latter expression can grow at large
+$|y|$. Nor does the theorem assert convergence of the infinite sum
+over $j$. The finite integrals and all fixed-order remainders are the
+claimed objects.
+\end{remark}
+
+\subsection{The elementary normalization requested in Q1}
+
+Put $\xi_0=n(1-A/b)/B_0$, using \eqref{eq:leading-scale}.
+On compact $\xi_0$ sets, \cref{thm:scale,thm:all-orders} give
+\begin{equation}\label{eq:elementary-first}
+\begin{split}
+ nB_0R_b^n a_n={}&\normal(\xi_0)
+   +\frac{C_\lambda\HH_2(\xi_0)
+               -e^{-\lambda}\HH_2^{[1]}(\xi_0)}{L\ph(\lambda)}\\
+ &+O\left(\frac{(\log L)^2}{L^2}\right).
+\end{split}
+\end{equation}
+To verify the scale-change term, write
+$B/B_0=1+\delta$; then
+$(B_0/B)\normal(\xi_0B_0/B)
+=\normal(\xi_0)-\delta(\normal+\xi_0\normal')(\xi_0)+O(\delta^2)$,
+and $-(\normal+\xi\normal')=\HH_2$.
+
+In particular, if $\xi_0$ remains bounded, the leading statement is
+\begin{equation}\label{eq:Q1-solved}
+ n\sqrt{\frac{n\log n}{2b}\ph(\lambda)}\,R_b^n a_n
+ =\normal\left(
+ \frac{n(1-\zeta(2+\eps)/b)}{
+               \sqrt{n\log n\,\ph(\lambda)/(2b)}}\right)+o(1).
+\end{equation}
+At the critical choice $b=A=\zeta(2+\eps)$,
+\begin{equation}\label{eq:critical-joint-leading}
+ a_n\sim R_b^{-n}
+   \sqrt{\frac{A}{\pi\ph(\lambda)}}\,
+                   n^{-3/2}(\log n)^{-1/2},
+\end{equation}
+uniformly over the bounded moving-order window. This is a joint
+transition law; letting $\lambda$ tend to infinity is outside its
+stated uniform parameter set.

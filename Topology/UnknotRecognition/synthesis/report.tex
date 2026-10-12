@@ -783,6 +783,8 @@ No general quasi-polynomial recognition bound is proved.
 \input{cut_cells.tex}
 \input{weighted_transversal.tex}
 \input{parallelity.tex}
+\input{source_handles.tex}
+\input{marked_cut_handlebodies.tex}
 
 \section{Assessment and recommendations}
 
@@ -922,6 +924,17 @@ then extracts source parallelity handles in all dimensions, classifies their
 complete bases and fibre covers, and retains a complementary core with at
 most $30T$ handles and exact source ports. An admissible patterned core,
 pattern transport and the hierarchy complexity proof remain required.
+Section~\ref{sec:source-handles} then implements initial empty-pattern
+two/three and one/two cancellations, with exact source incidences and
+boundary-period certificates for exposed cocore discs. These provide an
+additional independently checked positive native stage without claiming
+that every inherited core is now admissible.
+Section~\ref{sec:marked-cut-handlebodies} recovers ordered bundle interfaces
+and certifies complete handlebody genus histograms using geometric core
+cancellations, source-certified absorption of disk-base annuli, and the
+remaining disk attachments. The absorption extension raises the supplied-cut
+audit from 30 to 63 certificates. Nondisk annular gluing and explicit
+boundary-pattern transport remain geometric implementation tasks.
 
 \paragraph{Obstacles that remain.}
 The six items of Section \ref{sec:missing} remain obligations for a general
@@ -948,6 +961,14 @@ decision fallback; order width alone does not settle it.
 implementation, as several of their reports suggest.
 
 \begin{thebibliography}{99}
+\bibitem{marked-parallelity-report85}
+\emph{Marked parallelity interfaces and certified handlebody cores},
+research report 85, 12 October 2026. Preserved manuscript and implementation
+under \path{Topology/UnknotRecognition/reports/85/}.
+\bibitem{sadykov-cancellation}
+Rustam Sadykov, \emph{Elements of Surgery Theory}, Section 10.1.3,
+Lemma 10.3 (geometric handle cancellation), author-hosted notes,
+\url{https://www.math.ksu.edu/~sadykov/Lecture\%20Notes/Surgery\%20Theory.pdf}.
 \bibitem{regina-boundary-components}
 Regina project, \emph{Boundary component API},
 \code{BoundaryComponent::eulerChar} and component ownership,

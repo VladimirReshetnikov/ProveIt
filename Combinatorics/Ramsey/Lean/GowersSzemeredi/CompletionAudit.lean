@@ -272,6 +272,39 @@ example : ∀ L, 9 ≤ L → LeanProofs.GowersSzemeredi.Corollary187AtSharp 2 L 
   fun _ hL => LeanProofs.GowersSzemeredi.corollary_18_7_L2_nine_le hL
 example : LeanProofs.GowersSzemeredi.Theorem13AtFrom 2 9 :=
   LeanProofs.GowersSzemeredi.theorem_1_3_L2_nine_le
+example : ∀ L, 14 ≤ L → LeanProofs.GowersSzemeredi.Theorem182AtSharp 0 L :=
+  fun _ hL => LeanProofs.GowersSzemeredi.theorem_18_2_L0_fourteen_le hL
+example : ∀ L, 14 ≤ L → LeanProofs.GowersSzemeredi.Corollary187AtSharp 0 L :=
+  fun _ hL => LeanProofs.GowersSzemeredi.corollary_18_7_L0_fourteen_le hL
+example : LeanProofs.GowersSzemeredi.Theorem13AtFrom 0 14 :=
+  LeanProofs.GowersSzemeredi.theorem_1_3_L0_fourteen_le
+example : ∀ L, 11 ≤ L → LeanProofs.GowersSzemeredi.Theorem182AtSharp 1 L :=
+  fun _ hL => LeanProofs.GowersSzemeredi.theorem_18_2_L1_eleven_le hL
+example : ∀ L, 11 ≤ L → LeanProofs.GowersSzemeredi.Corollary187AtSharp 1 L :=
+  fun _ hL => LeanProofs.GowersSzemeredi.corollary_18_7_L1_eleven_le hL
+example : LeanProofs.GowersSzemeredi.Theorem13AtFrom 1 11 :=
+  LeanProofs.GowersSzemeredi.theorem_1_3_L1_eleven_le
+example : ∀ L, 8 ≤ L → LeanProofs.GowersSzemeredi.Theorem182AtSharp 2 L :=
+  fun _ hL => LeanProofs.GowersSzemeredi.theorem_18_2_L2_eight_le hL
+example : ∀ L, 8 ≤ L → LeanProofs.GowersSzemeredi.Corollary187AtSharp 2 L :=
+  fun _ hL => LeanProofs.GowersSzemeredi.corollary_18_7_L2_eight_le hL
+example : LeanProofs.GowersSzemeredi.Theorem13AtFrom 2 8 :=
+  LeanProofs.GowersSzemeredi.theorem_1_3_L2_eight_le
+example : ∀ k : Nat, 1 ≤ k → LeanProofs.GowersSzemeredi.PolyCoverAt k
+    (LeanProofs.GowersSzemeredi.uCount (2 ^ (2 ^ (4 * k + 13))) (2 ^ LeanProofs.GowersSzemeredi.tDegZ k))
+    (LeanProofs.GowersSzemeredi.uExp (2 ^ (2 ^ (4 * k + 13))) (2 ^ LeanProofs.GowersSzemeredi.tDegZ k)) :=
+  fun _ hk => LeanProofs.GowersSzemeredi.theorem_16_2_polynomial_fejerZ hk
+example : ∀ k : Nat, 2 ≤ k → ∀ alpha : Real, 0 < alpha → alpha ≤ 1 / 2 →
+    ∃ e : Real, 0 < e ∧ e⁻¹ ≤ (2 / alpha) ^ (2 ^ (2 * LeanProofs.GowersSzemeredi.tDegZ k + 7 * k + 38)) ∧
+      ∃ N0 : Nat, ∀ (N : Nat) [NeZero N] [Fact N.Prime], N0 ≤ N →
+        ∀ f : ZMod N → Complex, LeanProofs.GowersSzemeredi.DiscValued f →
+          ¬ LeanProofs.GowersSzemeredi.UniformOfDegree f alpha (k + 2) →
+          ∃ P : LeanProofs.GowersSzemeredi.Box N (k + 1),
+            ∃ mu : LeanProofs.GowersSzemeredi.Point N (k + 1) → ZMod N,
+              LeanProofs.GowersSzemeredi.IsMultilinear mu ∧ (N : Real) ^ e ≤ P.width ∧
+              e * P.carrier.card ≤
+                LeanProofs.GowersSzemeredi.section16LargeMultilinearFrequencyCount f P mu alpha :=
+  fun _ hk => LeanProofs.GowersSzemeredi.corollary_16_11_polynomial_fejerJ hk
 
 open Lean Elab Command in
 run_cmd do
@@ -354,7 +387,21 @@ run_cmd do
     ``LeanProofs.GowersSzemeredi.theorem_18_2_L2_nine_le,
     ``LeanProofs.GowersSzemeredi.corollary_18_7_L2_nine_le,
     ``LeanProofs.GowersSzemeredi.van_der_waerden_L2_nine_le,
-    ``LeanProofs.GowersSzemeredi.theorem_1_3_L2_nine_le
+    ``LeanProofs.GowersSzemeredi.theorem_1_3_L2_nine_le,
+    ``LeanProofs.GowersSzemeredi.theorem_18_2_L0_fourteen_le,
+    ``LeanProofs.GowersSzemeredi.corollary_18_7_L0_fourteen_le,
+    ``LeanProofs.GowersSzemeredi.van_der_waerden_L0_fourteen_le,
+    ``LeanProofs.GowersSzemeredi.theorem_1_3_L0_fourteen_le,
+    ``LeanProofs.GowersSzemeredi.theorem_18_2_L1_eleven_le,
+    ``LeanProofs.GowersSzemeredi.corollary_18_7_L1_eleven_le,
+    ``LeanProofs.GowersSzemeredi.van_der_waerden_L1_eleven_le,
+    ``LeanProofs.GowersSzemeredi.theorem_1_3_L1_eleven_le,
+    ``LeanProofs.GowersSzemeredi.theorem_18_2_L2_eight_le,
+    ``LeanProofs.GowersSzemeredi.corollary_18_7_L2_eight_le,
+    ``LeanProofs.GowersSzemeredi.van_der_waerden_L2_eight_le,
+    ``LeanProofs.GowersSzemeredi.theorem_1_3_L2_eight_le,
+    ``LeanProofs.GowersSzemeredi.theorem_16_2_polynomial_fejerZ,
+    ``LeanProofs.GowersSzemeredi.corollary_16_11_polynomial_fejerJ
   ]
   for name in fejer do
     let info ← getConstInfo name
@@ -363,7 +410,7 @@ run_cmd do
     for axiomName in (← collectAxioms name) do
       unless allowed.contains axiomName do
         throwError "{name} depends on unapproved axiom {axiomName}"
-  logInfo "Checked the Fejér-route strengthenings: Theorem 18.1 at d+6 in every degree, Theorem 18.2 and Corollary 18.7 at L+4 in every length, the van der Waerden bound and Theorem 1.3 at k+4, their printed consequences, the polynomial Theorem 16.2 and Corollary 16.11 at the Fejér classes, and d+5 (d >= 12), L+3 (L >= 14) with the van der Waerden bound and Theorem 1.3 at k+3 (k >= 14), and from the small dimension-two seed d+4 (d >= 13), d+5 (d >= 9), L+3 (L >= 11) with the van der Waerden bound and Theorem 1.3 at k+3 (k >= 11), and the polynomial Theorem 16.2 / Corollary 16.11 at its classes, and from the exact small-dimension classes d+5 in every degree, d+4 (d >= 11), L+3 in every length with the van der Waerden bound and Theorem 1.3 at k+3, and from the polynomial Bohr radius L+2 (L >= 13) with the van der Waerden bound and Theorem 1.3 at k+2 (k >= 13), and from the polynomial base budget d+3 (d >= 11), d+4 (d >= 8), L+1 (L >= 13), L+2 (L >= 10) with the van der Waerden bound and Theorem 1.3 at k+1 (k >= 13) and k+2 (k >= 10), and from class constant 5/2 d+2 (d >= 17) and L+0 (L >= 19) with the van der Waerden bound and Theorem 1.3 at k (k >= 19), and the polynomial Theorem 16.2 / Corollary 16.11 at those classes, and with the exact table to dimension 14 d+2 (d >= 16) and L+0 (L >= 18), and with the partition constant at 2^(k+9) d+2 (d >= 15), d+3 (d >= 10), d+4 (d >= 7), and with joint slices d+2 (d >= 12), d+3 (d >= 9), d+4 in every degree, L+0 (L >= 15), L+1 (L >= 12), L+2 (L >= 9) with the van der Waerden bound and Theorem 1.3 at k (k >= 15), k+1 (k >= 12), k+2 (k >= 9); only approved axioms."
+  logInfo "Checked the Fejér-route strengthenings: Theorem 18.1 at d+6 in every degree, Theorem 18.2 and Corollary 18.7 at L+4 in every length, the van der Waerden bound and Theorem 1.3 at k+4, their printed consequences, the polynomial Theorem 16.2 and Corollary 16.11 at the Fejér classes, and d+5 (d >= 12), L+3 (L >= 14) with the van der Waerden bound and Theorem 1.3 at k+3 (k >= 14), and from the small dimension-two seed d+4 (d >= 13), d+5 (d >= 9), L+3 (L >= 11) with the van der Waerden bound and Theorem 1.3 at k+3 (k >= 11), and the polynomial Theorem 16.2 / Corollary 16.11 at its classes, and from the exact small-dimension classes d+5 in every degree, d+4 (d >= 11), L+3 in every length with the van der Waerden bound and Theorem 1.3 at k+3, and from the polynomial Bohr radius L+2 (L >= 13) with the van der Waerden bound and Theorem 1.3 at k+2 (k >= 13), and from the polynomial base budget d+3 (d >= 11), d+4 (d >= 8), L+1 (L >= 13), L+2 (L >= 10) with the van der Waerden bound and Theorem 1.3 at k+1 (k >= 13) and k+2 (k >= 10), and from class constant 5/2 d+2 (d >= 17) and L+0 (L >= 19) with the van der Waerden bound and Theorem 1.3 at k (k >= 19), and the polynomial Theorem 16.2 / Corollary 16.11 at those classes, and with the exact table to dimension 14 d+2 (d >= 16) and L+0 (L >= 18), and with the partition constant at 2^(k+9) d+2 (d >= 15), d+3 (d >= 10), d+4 (d >= 7), and with joint slices d+2 (d >= 12), d+3 (d >= 9), d+4 in every degree, L+0 (L >= 15), L+1 (L >= 12), L+2 (L >= 9) with the van der Waerden bound and Theorem 1.3 at k (k >= 15), k+1 (k >= 12), k+2 (k >= 9), and with the sharp partition constant L+0 (L >= 14), L+1 (L >= 11), L+2 (L >= 8) with the van der Waerden bound and Theorem 1.3 at k (k >= 14), k+1 (k >= 11), k+2 (k >= 8), and the polynomial Theorem 16.2 at the exact table to 14 and Corollary 16.11 with joint slices (exponent 2^(2 tDegZ k + 7k + 38)); only approved axioms."
 
 -- The refutation is checked separately; it is never counted as a proof
 -- of the original printed encoding or hidden among the 120 companions.

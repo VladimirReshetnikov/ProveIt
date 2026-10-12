@@ -1,0 +1,704 @@
+......................................E.....................E...............................................E...........................................................................................................................................................................................................................................E.............E..EE............E.E.............................................................................................................................................E...................................................................................................................................................................EE.EEEE.....................................................................................................................................................................................................E..EEE.EEE...........................................................................................................................................E...........................................................................................................................E..EEE.E.E...............E.E..............................EEEEE..........EEE.........................................................................................E......E.............................................................................................................................................................................................................................
+======================================================================
+ERROR: test_adaptive_potts (unittest.loader._FailedTest.test_adaptive_potts)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_adaptive_potts
+Traceback (most recent call last):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_adaptive_potts.py", line 18, in <module>
+    from test_shadow_scan import diagrams
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_shadow_scan.py", line 21, in <module>
+    from detshadow.diagram import Diagram as ReferenceDiagram, complete_matching
+ModuleNotFoundError: No module named 'detshadow'
+
+
+======================================================================
+ERROR: test_boundary_connectivity (unittest.loader._FailedTest.test_boundary_connectivity)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_boundary_connectivity
+Traceback (most recent call last):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_boundary_connectivity.py", line 15, in <module>
+    from detshadow.diagram import complete_matching
+ModuleNotFoundError: No module named 'detshadow'
+
+
+======================================================================
+ERROR: test_closure_scan (unittest.loader._FailedTest.test_closure_scan)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_closure_scan
+Traceback (most recent call last):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_closure_scan.py", line 18, in <module>
+    from closure_reset.binary import rank, apply
+ModuleNotFoundError: No module named 'closure_reset'
+
+
+======================================================================
+ERROR: setUpClass (test_corridor.CorridorTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_corridor.py", line 72, in setUpClass
+    cls.prior = prior_module()
+                ^^^^^^^^^^^^^^
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_corridor.py", line 26, in prior_module
+    spec.loader.exec_module(module)
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1132, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1190, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/24/reference/graded_transfer_v1.py'
+
+======================================================================
+ERROR: test_sphere_boundary_does_not_certify_a_ball (test_cut_boundary.CutBoundaryTests.test_sphere_boundary_does_not_certify_a_ball)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_cut_boundary.py", line 157, in test_sphere_boundary_does_not_certify_a_ball
+    case = next(r for r in json.loads((ROOT/'reports/57/results/discovery_corpus.json').read_text())['records']
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/57/results/discovery_corpus.json'
+
+======================================================================
+ERROR: test_interior_torsion_is_present_despite_sphere_boundary (test_cut_cells.CutCellTests.test_interior_torsion_is_present_despite_sphere_boundary)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_cut_cells.py", line 140, in test_interior_torsion_is_present_despite_sphere_boundary
+    case = next(r for r in json.loads((ROOT/'reports/57/results/discovery_corpus.json').read_text())['records'] if r['id'] == 'solid_torus_sum_rp3')
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/57/results/discovery_corpus.json'
+
+======================================================================
+ERROR: test_interior_vertices_and_faces_survive_the_raw_cut (test_cut_cells.CutCellTests.test_interior_vertices_and_faces_survive_the_raw_cut)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_cut_cells.py", line 62, in test_interior_vertices_and_faces_survive_the_raw_cut
+    bank = json.loads((ROOT/'reports/57/results/discovery_corpus.json').read_text())['records']
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/57/results/discovery_corpus.json'
+
+======================================================================
+ERROR: test_saved_actual_geometry_cases_and_pairing_size (test_cut_complement.CutComplementTests.test_saved_actual_geometry_cases_and_pairing_size)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_cut_complement.py", line 32, in test_saved_actual_geometry_cases_and_pairing_size
+    bank={r['id']:r['triangulation']for r in json.loads((ROOT/'reports/57/results/discovery_corpus.json').read_text())['records']}
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/57/results/discovery_corpus.json'
+
+======================================================================
+ERROR: test_actual_scaled_sources_match_expanded_chamber_midsections (test_cut_products.CutProductTests.test_actual_scaled_sources_match_expanded_chamber_midsections)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_cut_products.py", line 29, in test_actual_scaled_sources_match_expanded_chamber_midsections
+    bank={r['id']:r['triangulation']for r in json.loads((ROOT/'reports/57/results/discovery_corpus.json').read_text())['records']}
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/57/results/discovery_corpus.json'
+
+======================================================================
+ERROR: test_faithful_jones (unittest.loader._FailedTest.test_faithful_jones)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_faithful_jones
+Traceback (most recent call last):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_faithful_jones.py", line 19, in <module>
+    from test_adaptive_potts import shuffled_grids
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_adaptive_potts.py", line 18, in <module>
+    from test_shadow_scan import diagrams
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_shadow_scan.py", line 21, in <module>
+    from detshadow.diagram import Diagram as ReferenceDiagram, complete_matching
+ModuleNotFoundError: No module named 'detshadow'
+
+
+======================================================================
+ERROR: setUpClass (test_matching_pairs.MatchingPairTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_matching_pairs.py", line 20, in setUpClass
+    cls.bank={r['id']:r for r in json.loads((ROOT/'reports/57/results/discovery_corpus.json').read_text())['records']}
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/57/results/discovery_corpus.json'
+
+======================================================================
+ERROR: test_empty_and_all_zero_spaces_and_cooperative_interruption (test_matching_support.MatchingSupportTests.test_empty_and_all_zero_spaces_and_cooperative_interruption)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_matching_support.py", line 102, in test_empty_and_all_zero_spaces_and_cooperative_interruption
+    raw,support=fixture();kernel=build_sector_kernel(raw,support)
+                ^^^^^^^^^
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_sector_support.py", line 15, in fixture
+    raw=next(r['triangulation']for r in json.loads(BANK.read_text())['records']if r['id']==f'cap_3_5_{caps}')
+                                                   ^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/57/results/discovery_corpus.json'
+
+======================================================================
+ERROR: test_partial_matching_proof_composes_with_complete_Q_support (test_matching_support.MatchingSupportTests.test_partial_matching_proof_composes_with_complete_Q_support)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_matching_support.py", line 47, in test_partial_matching_proof_composes_with_complete_Q_support
+    raw,_=fixture(3);support=[(0,0),(1,0),(2,0),(3,2),(4,2),(5,0)]
+          ^^^^^^^^^^
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_sector_support.py", line 15, in fixture
+    raw=next(r['triangulation']for r in json.loads(BANK.read_text())['records']if r['id']==f'cap_3_5_{caps}')
+                                                   ^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/57/results/discovery_corpus.json'
+
+======================================================================
+ERROR: test_provenance_mutations_are_rejected_with_producers_disabled (test_matching_support.MatchingSupportTests.test_provenance_mutations_are_rejected_with_producers_disabled)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_matching_support.py", line 76, in test_provenance_mutations_are_rejected_with_producers_disabled
+    raw,support=fixture();proof=discover_in_sector(raw,support,phase='standard')['certificate']
+                ^^^^^^^^^
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_sector_support.py", line 15, in fixture
+    raw=next(r['triangulation']for r in json.loads(BANK.read_text())['records']if r['id']==f'cap_3_5_{caps}')
+                                                   ^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/57/results/discovery_corpus.json'
+
+======================================================================
+ERROR: test_source_equations_admit_planar_search_before_generic_Q_enumeration (test_matching_support.MatchingSupportTests.test_source_equations_admit_planar_search_before_generic_Q_enumeration)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_matching_support.py", line 18, in test_source_equations_admit_planar_search_before_generic_Q_enumeration
+    raw,support=fixture()
+                ^^^^^^^^^
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_sector_support.py", line 15, in fixture
+    raw=next(r['triangulation']for r in json.loads(BANK.read_text())['records']if r['id']==f'cap_3_5_{caps}')
+                                                   ^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/57/results/discovery_corpus.json'
+
+======================================================================
+ERROR: test_source_forcing_finds_every_oracle_zero_in_retained_higher_nullity_bank (test_matching_support.MatchingSupportTests.test_source_forcing_finds_every_oracle_zero_in_retained_higher_nullity_bank)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_matching_support.py", line 36, in test_source_forcing_finds_every_oracle_zero_in_retained_higher_nullity_bank
+    bank={r['id']:r for r in json.loads((root/'reports/57/results/discovery_corpus.json').read_text())['records']}
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/57/results/discovery_corpus.json'
+
+======================================================================
+ERROR: test_maintained_coherent_obstruction_requires_a_move_then_has_disc (test_pachner_commitments.PachnerCommitmentTests.test_maintained_coherent_obstruction_requires_a_move_then_has_disc)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_pachner_commitments.py", line 147, in test_maintained_coherent_obstruction_requires_a_move_then_has_disc
+    source = json.loads(path.read_text())
+                        ^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/79/repro/fast/commitment_research/coherent-obstruction-certificate.json'
+
+======================================================================
+ERROR: test_actual_supports_are_used_even_when_all_supplied_covers_overlap (test_pachner_composition.PachnerCompositionTests.test_actual_supports_are_used_even_when_all_supplied_covers_overlap)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_pachner_composition.py", line 59, in test_actual_supports_are_used_even_when_all_supplied_covers_overlap
+    raw, heights, proofs = _fixture()
+                           ^^^^^^^^^^
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_pachner_composition.py", line 21, in _fixture
+    case = json.loads(path.read_text())['cases'][1]
+                      ^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/79/repro/fast/shared_cover_research/results/exhaustion.json'
+
+======================================================================
+ERROR: test_caps_are_fail_closed_and_callback_exception_identity_is_preserved (test_pachner_composition.PachnerCompositionTests.test_caps_are_fail_closed_and_callback_exception_identity_is_preserved)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_pachner_composition.py", line 110, in test_caps_are_fail_closed_and_callback_exception_identity_is_preserved
+    raw, heights, proofs = _fixture()
+                           ^^^^^^^^^^
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_pachner_composition.py", line 21, in _fixture
+    case = json.loads(path.read_text())['cases'][1]
+                      ^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/79/repro/fast/shared_cover_research/results/exhaustion.json'
+
+======================================================================
+ERROR: test_empty_composition_is_verified_identity (test_pachner_composition.PachnerCompositionTests.test_empty_composition_is_verified_identity)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_pachner_composition.py", line 102, in test_empty_composition_is_verified_identity
+    raw, heights, _ = _fixture()
+                      ^^^^^^^^^^
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_pachner_composition.py", line 21, in _fixture
+    case = json.loads(path.read_text())['cases'][1]
+                      ^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/79/repro/fast/shared_cover_research/results/exhaustion.json'
+
+======================================================================
+ERROR: test_order_changes_only_the_exact_cochain_isomorphism_representative (test_pachner_composition.PachnerCompositionTests.test_order_changes_only_the_exact_cochain_isomorphism_representative)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_pachner_composition.py", line 81, in test_order_changes_only_the_exact_cochain_isomorphism_representative
+    raw, heights, proofs = _fixture()
+                           ^^^^^^^^^^
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_pachner_composition.py", line 21, in _fixture
+    case = json.loads(path.read_text())['cases'][1]
+                      ^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/79/repro/fast/shared_cover_research/results/exhaustion.json'
+
+======================================================================
+ERROR: test_overlapping_actual_footprints_and_forged_input_are_rejected (test_pachner_composition.PachnerCompositionTests.test_overlapping_actual_footprints_and_forged_input_are_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_pachner_composition.py", line 70, in test_overlapping_actual_footprints_and_forged_input_are_rejected
+    raw, heights, proofs = _fixture()
+                           ^^^^^^^^^^
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_pachner_composition.py", line 21, in _fixture
+    case = json.loads(path.read_text())['cases'][1]
+                      ^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/79/repro/fast/shared_cover_research/results/exhaustion.json'
+
+======================================================================
+ERROR: test_two_disjoint_gadgets_compose_with_additive_cost_and_loss (test_pachner_composition.PachnerCompositionTests.test_two_disjoint_gadgets_compose_with_additive_cost_and_loss)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_pachner_composition.py", line 35, in test_two_disjoint_gadgets_compose_with_additive_cost_and_loss
+    raw, heights, proofs = _fixture()
+                           ^^^^^^^^^^
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_pachner_composition.py", line 21, in _fixture
+    case = json.loads(path.read_text())['cases'][1]
+                      ^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/79/repro/fast/shared_cover_research/results/exhaustion.json'
+
+======================================================================
+ERROR: test_primitive_power (unittest.loader._FailedTest.test_primitive_power)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_primitive_power
+Traceback (most recent call last):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_primitive_power.py", line 19, in <module>
+    oracle=importlib.util.module_from_spec(spec);spec.loader.exec_module(oracle)
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1132, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1190, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/45/code/oracle.py'
+
+
+======================================================================
+ERROR: test_all_retained_higher_nullity_sectors_against_complete_source_oracles (test_sector_euler.SectorEulerTests.test_all_retained_higher_nullity_sectors_against_complete_source_oracles)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_sector_euler.py", line 119, in test_all_retained_higher_nullity_sectors_against_complete_source_oracles
+    for record in json.loads(bank.read_text())['records']:
+                             ^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/57/results/discovery_corpus.json'
+
+======================================================================
+ERROR: test_generic_Q_enumeration_resets_reused_stats_and_preserves_ray_order (test_sector_euler.SectorEulerTests.test_generic_Q_enumeration_resets_reused_stats_and_preserves_ray_order)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_sector_euler.py", line 212, in test_generic_Q_enumeration_resets_reused_stats_and_preserves_ray_order
+    raw=next(r['triangulation']for r in json.loads(bank.read_text())['records']if r['id']=='fibonacci_lst_09')
+                                                   ^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/57/results/discovery_corpus.json'
+
+======================================================================
+ERROR: test_generic_discovery_skips_the_standard_arrangement_with_replayable_exclusion (test_sector_euler.SectorEulerTests.test_generic_discovery_skips_the_standard_arrangement_with_replayable_exclusion)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_sector_euler.py", line 175, in test_generic_discovery_skips_the_standard_arrangement_with_replayable_exclusion
+    raw=next(r['triangulation']for r in json.loads(bank.read_text())['records']if r['id']=='fibonacci_lst_09')
+                                                   ^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/57/results/discovery_corpus.json'
+
+======================================================================
+ERROR: test_interruption_during_generic_corner_scan_cannot_exclude (test_sector_euler.SectorEulerTests.test_interruption_during_generic_corner_scan_cannot_exclude)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_sector_euler.py", line 161, in test_interruption_during_generic_corner_scan_cannot_exclude
+    raw=next(r['triangulation']for r in json.loads(bank.read_text())['records']if r['id']=='fibonacci_lst_09')
+                                                   ^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/57/results/discovery_corpus.json'
+
+======================================================================
+ERROR: test_positive_nonessential_Q_phase_resumes_with_the_shared_cap (test_sector_euler.SectorEulerTests.test_positive_nonessential_Q_phase_resumes_with_the_shared_cap)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_sector_euler.py", line 196, in test_positive_nonessential_Q_phase_resumes_with_the_shared_cap
+    raw=next(r['triangulation']for r in json.loads(bank.read_text())['records']if r['id']=='cap_1_2_3')
+                                                   ^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/57/results/discovery_corpus.json'
+
+======================================================================
+ERROR: setUpClass (test_sector_integer_transport.SectorIntegerTransportTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_sector_integer_transport.py", line 36, in setUpClass
+    source,support=fixture()
+                   ^^^^^^^^^
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_sector_support.py", line 15, in fixture
+    raw=next(r['triangulation']for r in json.loads(BANK.read_text())['records']if r['id']==f'cap_3_5_{caps}')
+                                                   ^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/57/results/discovery_corpus.json'
+
+======================================================================
+ERROR: test_negative_fallback_replays_and_cap_spans_both_stages (test_sector_planar_adaptive.AdaptivePlanarTests.test_negative_fallback_replays_and_cap_spans_both_stages)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_sector_planar_adaptive.py", line 46, in test_negative_fallback_replays_and_cap_spans_both_stages
+    raw=frozen_source('fibonacci_lst_06')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_sector_planar_adaptive.py", line 18, in frozen_source
+    return next(r['triangulation']for r in json.loads(CORPUS.read_text())['records']if r['id']==name)
+                                                      ^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/57/results/discovery_corpus.json'
+
+======================================================================
+ERROR: test_sparse_search_reuses_the_kernel_across_a_failed_Q_phase (test_sector_planar_adaptive.AdaptivePlanarTests.test_sparse_search_reuses_the_kernel_across_a_failed_Q_phase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_sector_planar_adaptive.py", line 76, in test_sparse_search_reuses_the_kernel_across_a_failed_Q_phase
+    raw=deepcopy(frozen_source('finite_trefoil_interior'))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_sector_planar_adaptive.py", line 18, in frozen_source
+    return next(r['triangulation']for r in json.loads(CORPUS.read_text())['records']if r['id']==name)
+                                                      ^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/57/results/discovery_corpus.json'
+
+======================================================================
+ERROR: test_completed_Q_phase_admits_planar_enumeration_with_original_support (test_sector_support.FeasibleSupportTests.test_completed_Q_phase_admits_planar_enumeration_with_original_support)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_sector_support.py", line 28, in test_completed_Q_phase_admits_planar_enumeration_with_original_support
+    raw,support=fixture();answer=discover_in_sector(raw,support,phase='standard',max_bases=9)
+                ^^^^^^^^^
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_sector_support.py", line 15, in fixture
+    raw=next(r['triangulation']for r in json.loads(BANK.read_text())['records']if r['id']==f'cap_3_5_{caps}')
+                                                   ^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/57/results/discovery_corpus.json'
+
+======================================================================
+ERROR: test_interruption_during_support_recompilation_propagates (test_sector_support.FeasibleSupportTests.test_interruption_during_support_recompilation_propagates)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_sector_support.py", line 89, in test_interruption_during_support_recompilation_propagates
+    raw,support=fixture()
+                ^^^^^^^^^
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_sector_support.py", line 15, in fixture
+    raw=next(r['triangulation']for r in json.loads(BANK.read_text())['records']if r['id']==f'cap_3_5_{caps}')
+                                                   ^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/57/results/discovery_corpus.json'
+
+======================================================================
+ERROR: test_nested_support_proof_mutations_are_rejected_without_producers (test_sector_support.FeasibleSupportTests.test_nested_support_proof_mutations_are_rejected_without_producers)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_sector_support.py", line 67, in test_nested_support_proof_mutations_are_rejected_without_producers
+    raw,support=fixture();proof=discover_in_sector(raw,support,phase='standard')['certificate']
+                ^^^^^^^^^
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_sector_support.py", line 15, in fixture
+    raw=next(r['triangulation']for r in json.loads(BANK.read_text())['records']if r['id']==f'cap_3_5_{caps}')
+                                                   ^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/57/results/discovery_corpus.json'
+
+======================================================================
+ERROR: test_partial_Q_phase_and_shared_standard_cap_never_certify_forced_zeros (test_sector_support.FeasibleSupportTests.test_partial_Q_phase_and_shared_standard_cap_never_certify_forced_zeros)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_sector_support.py", line 47, in test_partial_Q_phase_and_shared_standard_cap_never_certify_forced_zeros
+    raw,support=fixture()
+                ^^^^^^^^^
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_sector_support.py", line 15, in fixture
+    raw=next(r['triangulation']for r in json.loads(BANK.read_text())['records']if r['id']==f'cap_3_5_{caps}')
+                                                   ^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/57/results/discovery_corpus.json'
+
+======================================================================
+ERROR: test_reduced_generic_branch_preserves_full_source_certificate (test_sector_support.FeasibleSupportTests.test_reduced_generic_branch_preserves_full_source_certificate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_sector_support.py", line 58, in test_reduced_generic_branch_preserves_full_source_certificate
+    raw,support=fixture(3);answer=discover_in_sector(raw,support,phase='standard')
+                ^^^^^^^^^^
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_sector_support.py", line 15, in fixture
+    raw=next(r['triangulation']for r in json.loads(BANK.read_text())['records']if r['id']==f'cap_3_5_{caps}')
+                                                   ^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/reports/57/results/discovery_corpus.json'
+
+======================================================================
+ERROR: test_separator_order (unittest.loader._FailedTest.test_separator_order)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_separator_order
+Traceback (most recent call last):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_separator_order.py", line 23, in <module>
+    from test_shadow_scan import diagrams, ReferenceDiagram
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_shadow_scan.py", line 21, in <module>
+    from detshadow.diagram import Diagram as ReferenceDiagram, complete_matching
+ModuleNotFoundError: No module named 'detshadow'
+
+
+======================================================================
+ERROR: test_shadow_fallback (unittest.loader._FailedTest.test_shadow_fallback)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_shadow_fallback
+Traceback (most recent call last):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_shadow_fallback.py", line 13, in <module>
+    from test_shadow_scan import diagrams, ReferenceDiagram, reduced_homology
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_shadow_scan.py", line 21, in <module>
+    from detshadow.diagram import Diagram as ReferenceDiagram, complete_matching
+ModuleNotFoundError: No module named 'detshadow'
+
+
+======================================================================
+ERROR: test_shadow_scan (unittest.loader._FailedTest.test_shadow_scan)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_shadow_scan
+Traceback (most recent call last):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_shadow_scan.py", line 21, in <module>
+    from detshadow.diagram import Diagram as ReferenceDiagram, complete_matching
+ModuleNotFoundError: No module named 'detshadow'
+
+
+======================================================================
+ERROR: test_tait_blocks (unittest.loader._FailedTest.test_tait_blocks)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_tait_blocks
+Traceback (most recent call last):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_tait_blocks.py", line 19, in <module>
+    from detshadow.linalg import signed_laplacian, bareiss
+ModuleNotFoundError: No module named 'detshadow'
+
+
+======================================================================
+ERROR: test_terminal_determinant (unittest.loader._FailedTest.test_terminal_determinant)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_terminal_determinant
+Traceback (most recent call last):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "/workspace/scratch/09ebd0ee5016/ProveIt/Topology/UnknotRecognition/fast/tests/test_terminal_determinant.py", line 11, in <module>
+    from detshadow.linalg import bareiss, quotient_cofactor, signed_laplacian
+ModuleNotFoundError: No module named 'detshadow'
+
+
+----------------------------------------------------------------------
+Ran 1551 tests in 261.780s
+
+FAILED (errors=42)
+Expanded-sheet topology comparisons: 13846
+Independent marked-cover audit: {"marked_comparisons": 196712, "max_sheets": 6, "presentations": 364, "rooted_comparisons": 9100, "transported_sheets": 38746, "unmarked_comparisons": 1061}

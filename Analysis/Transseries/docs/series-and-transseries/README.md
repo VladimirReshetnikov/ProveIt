@@ -2722,3 +2722,66 @@ the direct polylogarithm inverse's endpoint ramification. It continues
 *Transseries_And_Inversion* on factorial-series reversion and inverse
 singularities. Its original modular TeX, PDF, figures and evidence are kept
 together. Proof review and synthesis into the volumes are separate steps.
+
+
+## Sharp Lambert inverse coefficients and continuation, October 12, 2026
+
+[The complete late-coefficient continuation](Resonant_Lambert_Inverse_Transseries/continuations/late-coefficients/INTAKE-PLACEMENT.md)
+is an addition to the resonant Lambert inverse report, continuing
+*Transseries_And_Inversion* on factorial reversion and nonlinear Borel
+continuation. Its first correction overlaps the summation-singularities
+continuation; the collective Polylogarithms manuscript now supplies every
+fixed inverse-index order. The new continuation and summability claims are
+audited separately. The original article, PDF, verification evidence and
+proposed patch remain unchanged. Its imported ZIP is retired in this
+placement; the two other incoming reports remain pending.
+
+
+The [late-coefficient proof audit](Resonant_Lambert_Inverse_Transseries/continuations/late-coefficients/INTAKE-PROOF-AUDIT.md)
+now accepts the continuation and off-real summability argument after checking
+its external closure hypotheses. The complete unchanged verifier passed on
+an isolated Linux copy, with all 5890 exact checks and 70 full coefficient
+cases through n=1025. Volume I of the collective Polylogarithms manuscript
+integrates the continuation theorem and strengthens endpoint uniformity to
+all fixed inverse-index orders. Original evidence remains unchanged.
+
+
+## Joint coefficient transseries and order-jet filters, October 12, 2026
+
+Two complete packages continue *Transseries_And_Inversion* through its
+special-function coefficient asymptotics, order differentiation and exact-core
+inverse passages. Their original TeX, PDFs, code and delivered evidence stay
+with the reports they continue; incorporation into the volume is deferred.
+
+- [Joint coefficient transseries](Quadratic_Polylogarithm_Feedback_Boundary_Completion/continuations/joint-coefficient-transseries/OVERVIEW.md)
+  addresses the parent boundary-completion report's Q1 and the positive part
+  of Q2: compact moving-order/feedback windows, every fixed logarithmic
+  correction and positive Gaussian/power-tail matching. Its reciprocal
+  endpoint classification overlaps the already filed reversion continuation;
+  its moving-order reciprocal chart supplies a further local result.
+- [Order-jet filters](Resonant_Polylogarithm_Transseries/continuations/order-jet-filters/OVERVIEW.md)
+  continues the parent's exact lateral completion and Gamma-jet passages
+  with sharp finite cancellation costs, Stokes-neutral order curves, an
+  order-zero digamma kernel and convergent endpoint inverse charts.
+
+The reconciliation notes record current-source passages, credits and limits.
+All supplied verification programs completed on separate copies with pinned
+packages; their fresh records are separate from delivered evidence. This is
+finite validation and scope reconciliation, not independent acceptance of every
+analytic proof, interval certification, or new Lean formalization. The
+reversion package was already placed in `e8044d932` and is not duplicated.
+
+The concurrent Polylogarithms placement independently chose the same
+order-filter home. Its 23-member inventory and more detailed predecessor
+question mapping are retained in [INTAKE-PLACEMENT.md](Resonant_Polylogarithm_Transseries/continuations/order-jet-filters/INTAKE-PLACEMENT.md).
+The two placement commits are reconciled without copying the report twice.
+
+
+The [complete order-filter proof audit](Resonant_Polylogarithm_Transseries/continuations/order-jet-filters/INTAKE-PROOF-AUDIT.md)
+now accepts the classification, exact neutral curve and order-zero inverse
+arguments. Section 1.10 of the collective Polylogarithms manuscript integrates
+this material. Its new Theorem 1.41 resolves the continuation's fixed-filter
+neutral inverse-transport question with a convergent coefficient formula and
+an explicit physical displacement. Both isolated supplied-suite replays are
+preserved, together with separate exact and numerical checks of the new
+result. The joint-coefficient continuation's full analytic audit remains pending.

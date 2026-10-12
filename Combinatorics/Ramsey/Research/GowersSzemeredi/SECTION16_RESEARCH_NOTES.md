@@ -5403,6 +5403,91 @@ The envelope chain `Proofs18Cover{Modulus,Density,Exponents}FejerJ` and
 
 `d + 1` and `L - 1` stay out of reach: they need an envelope ratio below `8`.
 
+**L.16s: the partition constant, sharply (2026-10-12).** Under joint slices the
+Theorem 18.1 thresholds move only with the class table (`model_jsens.py`).
+A per-step saving of 12 doubly-logarithmic units would give `d + 3` from 8,
+and 21 would give `d + 2` from 11. The dimension-two seed would have to drop
+from `2^48` to `2^42`. The Theorem 18.2 envelope has a different dominant
+term, the partition constant: `inv_thr_le_ex` raises the refinement constant
+to the power `polynomialPartitionConstant (k+2) = ((k+2)!)²·2^((k+3)²)`.
+`polyPartConst_le` charges `4(k+3)²` for its logarithm through `d! ≤ 2^(d²)`.
+Since `(d!)²·2^d ≤ 2^(d²)` (`factorial_sq_mul_two_pow_le`, by induction from
+`(n+1)² ≤ 4^n`), `partDeg k = (k+3)² + (k+2)(k+1)` suffices
+(`polyPartConst_le_sharp`), about half the old charge (301 against 676 at
+`k = 10`). `Proofs18CoverFejerHeadlineK` (`assemble_k.py`) contains
+`inv_thr_le_ex_sharp` and the J step and envelope of Theorem 18.2 with that
+charge (`envStepKTx`, `genMuXK`). In the bridge: Theorem 18.2 and
+Corollary 18.7 at `L + 0` from `L = 14`, `L + 1` from `L = 11`, `L + 2` from
+`L = 8`, with the van der Waerden bound and Theorem 1.3 at the same
+thresholds. The exact logarithm `⌈log₂ 32·PPC⌉` gives the same thresholds
+(`model_jppc.py`). In Theorem 18.1 the constant is charged at `2^(k+9)` and
+the sharp bound saves only 4 units per step, so nothing changes there.
+
+**L.16t: the remaining levers, quantified (2026-10-12).** After L.16r and
+L.16s, the per-term sensitivity models (`model_jsens.py`, `model_ksens.py`,
+`model_jseed2.py` in the session scratch, reproduced by the formulas of
+`assemble_j.py` and `assemble_k.py`) give:
+* Theorem 18.2 is robust. Its thresholds do not move under the exact
+  logarithm of the partition constant, under any dimension-two seed from
+  `2^48` down to `2^41`, or under per-step savings up to 89 units. Even
+  dropping the partition cost entirely only gives `L + 2` from 6.
+* Theorem 18.1 moves only with the class table. A saving of 12 units per step
+  gives `d + 3` from 8, and 21 gives `d + 2` from 11. Among the inputs, only
+  the dimension-two seed has that size: `D₂ ≤ 2^42` gives `d + 3` from 8.
+* The seed cannot get there by sharpening Lemma 16.3. The face and spectrum
+  counts are `section16BaseFamilyBound δ b ≤ (2/(δb))^(2^14)`, with
+  `δ⁻¹ ≤ u^(2^22)` and `b⁻¹ ≤ u^(2^23)`; this is where the `u^(2^38)`
+  comes from. The sharper `lemma163AlphaSharp`
+  (`2^(-1882)·γ^9312·θ^1165`) gives `9314·2^22 + 1165·2^23 ≈ 2^35.5`,
+  hence counts `u^(2^36)` and a seed of about `2^46`, still short of `2^42`.
+  Every exponent here rests on `θ₁′ ≥ u^(-2^19)`, that is on the Fejér
+  product exponent `fejerProductExponent 1 = 229376`. The seed lever is
+  therefore a 16-fold sharpening of Lemmas 15.5/15.6.
+* `d + 1` needs an envelope below `8·2^k`. The step keeps two class degrees,
+  `ρ₁` from the joint vertex covers and one from the joint slices. They
+  compound, because the slice precision `θ_S/4 ~ ρ₁³` is set by `ρ₁`: a
+  cover at the vertex precision cannot capture a slice set of relative
+  density `θ_S`. Removing the second degree needs a step in which the slice
+  sets are fixed before the remainder.
+
+Peer change checked: commit `a74e88d` (source fidelity) made
+`Proofs10Regular` import the new `ComponentTradeoff`. Its edits to
+`Definitions`, `Section10` and `Sections06_07` are comments only. In
+`Proofs10Regular`, `lemma_10_5_holds` keeps its type `lemma_10_5`, and two
+theorems are added (`lemma_10_5_all_tradeoffs_holds`,
+`lemma_10_5_original_sqrt_holds`). The new source compiles against the
+cached dependencies. The trust-mode builds of L.16r/s therefore rest on
+unchanged statements.
+
+**L.16u: Corollary 16.11 with joint slices (2026-10-12).** The frequency box
+of Corollary 16.11 is the frequency box of the single-piece step, so joint
+slices improve it as well. `Proofs16PolynomialFejerJ` (`assemble_polyj.py`,
+from `Proofs16PolynomialFejerX`) contains:
+* `theorem_16_2_polynomial_fejerZ`: Theorem 16.2 with graph count exponent
+  `2^tDegZ k`, the exact table to dimension 14 (was 12);
+* `corollary_16_11_polynomial_fejerJ`: `e⁻¹ ≤ (2/α)^(2^(2·tDegZ k + 7k + 38))`,
+  about `5·2^k` (was `3·tDegX k + 6k + 38`, about `7.5·2^k`; printed
+  `236·2^k`). It goes through `single_piece_frequency_box_global_cover_fejer_joint`,
+  `singlePieceEtaFJ_le_density`, `yIn_boundsJ`, `Eloc_inv_leJ` and
+  `expDegJ_tight_le`.
+Both are in the bridge, pinned and stub-checked.
+
+**L.16v: the dimension-two family exponent and the base envelope, quantified
+(2026-10-12).** Two more inputs, measured on the J and K envelopes
+(`model_aseed.py`, `model_kbase.py`):
+* The family exponent `a₂ = 32` of `splitUniformClass_two_small`.
+  `a₂ ≤ 25` would give Theorem 18.1 `d + 2` from 11, and `a₂ ≤ 13` would
+  also give `d + 3` from 8; Theorem 18.2 does not move. `a₂` must dominate
+  the `(n+1)`-power `29` of `uniTwoFejerExp_inv_le_split`, which decomposes
+  as `1 + 16 + 12`. The 16 is `L⁻¹`: two cubic base exponents (`ν⁴` each)
+  and the 8th power of the family-width divisor. The 12 is `S⁻¹`, a cubed
+  count. These are exponents of corpus definitions (Lemma 16.6 widths, the
+  cubic base exponent), not bookkeeping slack. Reaching 25 needs either new
+  corpus constructions, or a split invariant with separate count and
+  exponent family exponents (the count's power is only 11).
+* The base envelope `EnvBound 3 62` of Theorem 18.2. The thresholds do not
+  move even at base 0.
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`

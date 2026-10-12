@@ -1,0 +1,87 @@
+\paragraph{Source-cut audit.}
+The refreshed 106-case audit certifies 63 whole cuts, compared with 30 before
+absorption. Every new success is among the 33 algebraically eliminable
+candidates identified by the earlier probe, and all previous successes are
+preserved. All 63 source certificates replay independently. Regina's actual
+cut construction and component recognition finish for 99 cases and agree
+exactly with every one of the 56 native successes within the expansion
+limit. Seven large-coordinate successes exceed the 4,096-disk literal cap
+and are independently replayed without expansion. No oracle times out.
+The source pins and per-case results are retained in
+\path{data/disk-absorption-audit.json}.
+
+The 43 remaining refusals comprise 26 nondisk annular cases, seven stalled
+augmented cancellations (three detected by the square leaf obstruction),
+and ten cores with three-handles. These categories are not perfectly
+comparable with the earlier refusal ordering: the boundary and absorption
+checks now precede cancellation, so four previously stalled core cases
+are classified first by their nondisk annuli. They are not lost successes.
+
+The focused checks cover actual same-tetrahedron and same-zero-handle
+self-pairings, source relabellings, signed endpoint charts, malformed and
+omitted absorption records, an omitted cancellation, disabled producers,
+exact hexadecimal transport, resource caps, nondisk refusals and stalled
+augmented cores. Multiplying the two-tetrahedron annular cut by $2^{1024}$
+produces and independently verifies exactly $2^{1024}+1$ solid-torus
+components without enumerating them. The tests also retain the pre-existing
+raw cancellation and disk-gluing checks. These are source-bound whole-cut
+certificates, not an enlargement of the complete useful-surface search.
+
+\paragraph{Full regression.}
+The complete Regina-enabled suite passes all 1,656 tests with no skips in
+517.462 seconds. It includes 13,846 expanded-sheet topology comparisons and
+196,712 independent marked-cover comparisons. The focused absorption, core
+and cut checks also pass (21 tests followed by the additional conservative
+refusal test). The full log is \path{data/disk-absorption-tests.txt}; the
+runtime source pins remain identical to the 106-cut audit.
+
+\paragraph{Paired timings and capacity.}
+After the regression suite finished, eight finite cuts were measured in
+five shuffled paired rounds after warmup. Four use the newly supported
+two-tetrahedron annular family and four use a previously supported
+three-tetrahedron v1 control. All explicit and native histograms agree.
+Input parsing and output serialization are excluded, while the native timer
+includes the complete independent replay. The casewise medians of identical
+explicit-code controls range from 0.976 to 1.073. The driver, full samples,
+source pins and controls are retained in
+\path{data/disk-absorption-benchmark.py} and its companion JSON. Run the driver
+from the repository root with Regina available.
+
+\input{tables/disk_absorption_timing.tex}
+
+Within the new annular family, the 4,096-copy cut improves by 6.152 in
+median paired time: median native production plus replay takes 0.174 seconds,
+whereas explicit construction and recognition take 1.093 seconds. The latter
+builds 98,334 tetrahedra and recognizes 4,097 solid-torus components. The three
+smaller instances favor literal construction; at 16 copies the ratio is
+only 0.024. In the previously supported control, 256 and 4,096 copies favor
+the native path, with paired ratios 2.202 and 34.567 respectively. These
+control gains are not attributed to absorption. There is no universal
+speedup or new default knot-recognition stage.
+
+A separate single-run capacity check on the annular family certifies
+$2^{16384}+1$ solid-torus components in 0.605 seconds, including replay.
+It absorbs one disk-base component and produces a 15,069,104-byte serialized
+certificate. The v1 control at the same multiplicity takes 0.088 seconds,
+uses no absorbed component, and produces 4,388,996 bytes. Neither capacity
+case attempts literal expansion. They demonstrate binary multiplicity
+handling while retaining the cost of the present proof representation.
+
+\paragraph{Next annular target.}
+A source-pinned profile diagnostic finds that 15 of the 26 remaining annular
+refusals have fewer fully attached boundary circles than boundary components
+on every nondisk base involved. There are 19 such base profiles altogether:
+13 annuli with one attached circle, four orientable three-holed spheres with
+two, one orientable five-holed sphere with four, and one nonorientable surface
+with three boundary components and two attached circles. The other profiles
+include nine M\"obius bands attached along their sole boundary, one annulus
+attached along both boundaries, and one nonorientable surface attached along
+both of its boundary components. The diagnostic is retained in
+\path{data/annular-profile-diagnostic.json}.
+
+The first group suggests a simultaneous primitive-annulus rule: arcs joining
+the attached base circles to a remaining boundary component lift to disjoint
+cocore disks in the interval bundle. Their endpoints must avoid every other
+marked attaching interval. Turning that observation into an independently
+checked gluing rule and accounting for all component joins is further work;
+the 15 candidates are not additional certified cuts in this checkpoint.

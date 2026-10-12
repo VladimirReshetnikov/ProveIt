@@ -1,0 +1,653 @@
+\section{Research question and precise scope}
+\label{sec:scope}
+
+The maintained project already has substantial exact infrastructure:
+normal-coordinate validation, compressed component and disc observers,
+independently checked diagram exteriors, coherent cocycle searches,
+complete enumeration inside supplied sectors of small dimension,
+bounded Pachner searches, and compressed cut geometry. Its most recent
+source also contains an all-dimensional source-parallelity construction
+with a linear bound on the inherited complementary core
+\cite{repo}. The question addressed here is how to discover useful normal
+disc vectors without guessing all quadrilateral types or expanding their
+possibly enormous integer coordinates.
+
+The 2021 lecture announcement is the motivation for the quasi-polynomial
+target \cite{slides}. The July 2026 paper gives a new hierarchy algorithm
+and polynomially checkable hierarchy certificates. Its Section 9 explicitly
+leaves some step costs unspecified; Proposition 9.1 bounds iterations by
+$L(g+1)^L$, and the refined construction controls hierarchy length linearly
+\cite{lackenby2026}. These facts do not supply a quasi-polynomial bound for
+the maintained implementation. Our results are a separate, parameterized
+route to discovery.
+
+\subsection{What is established}
+
+The main results are the following.
+\begin{enumerate}
+\item A complete exact search for standard vertex meridian discs with
+at most $k$ cancellation edges, using spaces of dimension at most $k+1$
+on one-vertex, rank-one sources (Theorem~\ref{thm:discovery}).
+\item A sparse-incidence enumeration of the determining equations with
+an explicit $t^{k+O(1)}$ system-count bound
+(Theorem~\ref{thm:incidence}). This is a stronger quantitative statement
+than multiplying the number of edge subsets by the number of equation
+subsets.
+\item An extension with parameter $p+k$, where
+$p=\dim H^1(M;\R)+v-1$ is the dimension of the cocycle space
+(Theorem~\ref{thm:multivertex}).
+\item A new explicit disc and an infinite layered family with cancellation
+parameter exactly one; and, in a different class allowing multiple
+vertices, a linear lower bound for every meridian.
+\item Recovery of the cyclic boundary attachments of compressed
+parallelity bases, together with the appropriate relative handle
+descriptions for disc bases.
+\end{enumerate}
+
+None of the first three statements assumes that a useful quadrilateral
+sector has already been supplied. None proves a logarithmic bound on the
+new parameter for a universally available source family. The last
+distinction is the remaining geometric issue, not a hidden linear-algebra
+cost.
+
+\subsection{Meaning of novelty and validation}
+
+Normal edge coordinates, cocycle-dual surfaces, vertex normal surfaces,
+and hyperplane-based ray enumeration are established tools. Edge-weight
+coordinates are explicitly exposed by Regina \cite{regina}. The local
+four-point calculation below is included with proof, rather than claimed
+as a new fact about normal surfaces. The proposed contribution is their
+combination into a complete cancellation-parameter search, its sparse
+enumeration bound, its explicit source families, and the added compressed
+interface operator. A literature check and comparison with the pinned
+repository found no earlier statement of this particular package of
+results. This is not a claim of exhaustive priority verification.
+
+Computations are used to discover examples and test implementations.
+Finite tests do not establish asymptotic complexity or replace the proofs.
+Likewise, a positive certificate for a supplied triangulation does not
+certify that it is the exterior of a particular input diagram. That source
+correspondence remains an explicit input to any recognition-level use.
+
+\section{Normal surfaces as compatible four-point metrics}
+\label{sec:weights}
+
+Let $\cT$ be a finite triangulation of a compact orientable 3-manifold.
+Self-identifications between distinct faces are permitted, but local edge
+occurrences and their orientations are retained. Write $t$ for the number
+of tetrahedra and $m$ for the number of global edges; always $m\le6t$.
+For a normal surface $S$, let
+\[
+               w_e(S)=|S\cap e|\quad(e\in E(\cT))
+\]
+be its geometric edge weights. Coordinates count intersections, not signed
+intersection numbers and not the sum over repeated local occurrences of
+a global edge.
+
+In one tetrahedron label the vertices $0,1,2,3$. Write $t_i$ for the four
+triangle coordinates and $q_{ij\mid kl}$ for the quadrilateral separating
+$\{i,j\}$ from $\{k,l\}$. This quadrilateral avoids the opposite edges
+$ij,kl$. At most one of the three quadrilateral coordinates is positive.
+Define the three opposite-edge sums
+\[
+ s_0=w_{01}+w_{23},\qquad
+ s_1=w_{02}+w_{13},\qquad
+ s_2=w_{03}+w_{12}.
+\]
+For every face and every one of its corners put
+\[
+                 a_i^{jk}(w)=\frac{w_{ij}+w_{ik}-w_{jk}}2.
+                 \tag{1}\label{eq:arcs}
+\]
+These are the numbers of normal arcs cutting off the corresponding corner.
+
+\begin{lemma}[Local reconstruction]
+\label{lem:local}
+Nonnegative real edge weights in a tetrahedron come from a unique
+admissible real standard normal vector if and only if all twelve corner
+arc values in \eqref{eq:arcs} are nonnegative and the maximum of
+$s_0,s_1,s_2$ is attained at least twice. If all three sums agree, all
+quadrilateral coordinates are zero. Otherwise the strictly smaller sum
+identifies the avoided pair of edges, and its quadrilateral coordinate is
+half the difference between the larger and smaller sums. In either case
+\[
+                    t_i=\min_{\{j,k\}\subset\{0,1,2,3\}\setminus\{i\}}
+                              a_i^{jk}(w).                 \tag{2}\label{eq:triangles}
+\]
+For integral edge weights, the reconstructed coordinates are integral
+exactly when every face has even total edge weight.
+\end{lemma}
+\begin{proof}
+If $q=q_{01\mid23}$ is the occupied type and $T=t_0+t_1+t_2+t_3$,
+the edge equations give
+\[
+                    s_0=T,\qquad s_1=s_2=T+2q.
+\]
+The other types give the other two permutations of this relation. At a
+fixed vertex, two of the corner arc values equal $t_i$, and the third
+equals $t_i+q$. This proves necessity and the reconstruction formula.
+
+Conversely suppose, for example, $s_0\le s_1=s_2$. Set
+$q=(s_1-s_0)/2$ and use (2) for the triangles. Direct substitution into
+the six edge equations gives
+\[
+ w_{01}=t_0+t_1,\quad w_{23}=t_2+t_3,\quad
+ w_{ij}=t_i+t_j+q\quad(ij\notin\{01,23\}).
+\]
+The assumed corner inequalities give $t_i\ge0$, and the sum inequality
+gives $q\ge0$. The formulas determine every coordinate, proving uniqueness.
+The all-equal case is the same calculation with $q=0$.
+
+For integer weights, the parity condition makes every number in (1)
+an integer. It also makes the differences of opposite sums even: for
+example $s_1-s_0$ is even by subtracting the parity equations on the faces
+$012$ and $123$. Thus all reconstructed coordinates are integral.
+The converse follows because each normal arc contributes two endpoints
+to a face.
+\end{proof}
+
+The calculation can be pictured as the distance matrix of a tree with
+four labelled leaves. The pendant lengths are $t_i$, and the single
+internal length is $q$. This picture includes zero lengths and coincident
+leaf locations; strict positivity is not required.
+
+\begin{proposition}[Global edge-coordinate reconstruction]
+\label{prop:global}
+An assignment of nonnegative real weights to the global edges of $\cT$
+is an admissible real normal vector exactly when the local conditions of
+Lemma~\ref{lem:local} hold in every tetrahedron. Local reconstruction then
+gives its unique standard coordinates. If the weights are rational,
+clearing the denominators of those coordinates gives a genuine normal
+surface.
+\end{proposition}
+\begin{proof}
+On a paired face the three global edge weights are the same on both sides,
+with their local labels permuted. Formula (1) therefore gives the same
+three normal arc counts. These are precisely the normal matching
+equations. Conversely a normal surface restricts to each tetrahedron as
+in the lemma. Unique reconstruction on every tetrahedron gives global
+uniqueness. Multiplying rational coordinates by a common denominator
+preserves all matching, nonnegativity and quadrilateral constraints.
+\end{proof}
+
+\subsection{One common set of hyperplanes}
+
+Fix a compatible choice $Q$ of at most one allowed quadrilateral type in
+each tetrahedron. The image $\cC_Q$ of its standard normal cone in edge
+coordinates is a pointed rational polyhedral cone. The edge map is a
+linear isomorphism on this cone and its linear span: express any vector
+in the span as a difference of cone vectors and apply local uniqueness.
+Its defining
+equalities and inequalities have their boundary hyperplanes among:
+\begin{enumerate}
+\item the $m$ equations $w_e=0$;
+\item the three equations $s_i-s_j=0$ per tetrahedron;
+\item the twelve equations $2a_i^{jk}(w)=0$ per tetrahedron.
+\end{enumerate}
+Denote this list by $\cH$, and write
+\[
+                     H=m+15t\le21t.                       \tag{3}\label{eq:H}
+\]
+Repeated or identically zero equations may be removed. Each row has
+support on at most four global edges, including after identifications;
+its coefficients have uniformly bounded absolute value. To describe a
+particular $\cC_Q$, one imposes the appropriate equality between the two
+larger sums, the inequality for the third sum, and the corner inequalities.
+This description explains why searching the common hyperplane list does
+not require prior knowledge of $Q$.
+
+\section{Signed intersections and cancellation support}
+\label{sec:cancellation}
+
+Give every global edge an orientation. For a cooriented properly embedded
+normal surface $S$, let $c_e(S)$ be the algebraic intersection number with
+that edge. A face contains oriented normal arcs with cancelling endpoint
+signs, so its oriented edge sum is zero. Thus $c(S)$ is an integral
+1-cocycle. If an edge has $p_e$ positive and $n_e$ negative intersections,
+then
+\[
+       w_e=p_e+n_e=|p_e-n_e|+2\min(p_e,n_e)=|c_e|+2z_e,
+       \qquad z_e\in\Z_{\ge0}.                             \tag{4}\label{eq:defect}
+\]
+
+\begin{definition}
+The cancellation support of the cooriented surface is
+$F(S)=\{e:z_e>0\}$. Its size counts edges with cancellation, not the
+number of cancelling pairs. Cancellation multiplicities may be very large.
+For a triangulated solid torus, $\kappaV(\cT)$ is the minimum of
+$|F(D)|$ over standard vertex normal meridian discs $D$.
+\end{definition}
+
+By a standard vertex surface we mean that its coordinate ray is an
+extreme ray of the full nonnegative standard matching cone and its
+coordinates are primitive integers. For an admissible vector this is
+equivalent to extremality in any containing admissible coordinate sector:
+such a sector is a coordinate face of the matching cone. The usual
+vertex-disc existence theorem makes the set in the definition nonempty
+for a triangulated solid torus \cite{hlp}. We keep the word \emph{vertex}
+in the parameter because the discovery proof below uses extremality.
+It does not show that an arbitrary small-cancellation disc can be replaced
+by a vertex disc with equally small cancellation.
+
+\begin{lemma}[One vertex fixes the cocycle]
+\label{lem:cocycle}
+Suppose $M$ is connected, orientable, and has torus boundary, $\cT$ has
+one global vertex, and $b_1(M)=1$. Let $c$ be a primitive
+integer generator of its cocycle lattice. An oriented essential disc with
+boundary on the torus boundary has intersection cocycle $c$ or $-c$.
+Consequently its weight vector satisfies
+\[
+                w(D)=b+2z,\qquad b=(|c_e|)_{e\in E}.       \tag{5}\label{eq:base}
+\]
+\end{lemma}
+\begin{proof}
+All 0-coboundaries vanish when there is one global vertex. The cocycle
+lattice is therefore $H^1(M;\Z)$, a free abelian group of rank one.
+An essential simple closed curve on a torus is nonseparating. A small
+boundary collar therefore supplies a path from one side of the disc to
+the other without recrossing it; equivalently the properly embedded disc
+is nonseparating. A closed path crossing it once shows that its dual
+cohomology class is primitive. Its cocycle is consequently one of the two
+generators. Equation (5) now follows from (4).
+\end{proof}
+
+The absolute vector $b$ is itself an admissible normal vector in edge
+coordinates. On a tetrahedron a cocycle is the difference of four local
+heights, so $b_{ij}=|h_i-h_j|$. These are collinear four-point distances
+and satisfy Lemma~\ref{lem:local}. The associated surface is the familiar
+coherent cocycle-dual surface. It need not be a disc.
+
+\begin{lemma}[The coherent positive support has small rank]
+\label{lem:coherent-rank}
+Let $C$ be the nonzero coherent surface of an integral cocycle $c$.
+The standard matching kernel restricted to its positive support has
+dimension at most $p=\dim Z^1(\cT;\R)$. In particular, when $p=1$ and
+$c$ is primitive, $C$ is a primitive standard vertex surface and is
+connected, although its genus need not be zero.
+\end{lemma}
+\begin{proof}
+Fix an ordering of the original cocycle heights in each tetrahedron.
+The supported coordinates are its nonzero successive height gaps: a
+triangle at the minimum, the middle quadrilateral, and a triangle at
+the maximum. A tied height constrains its corresponding gap to zero.
+For any vector $y$ in the supported matching kernel, regard these
+coordinates as formal height gaps. On each local oriented edge the
+formal difference equals $\operatorname{sign}(c_e)w_e(y)$, with the
+local-to-global edge orientation included. This identity is linear and
+does not require $y$ to be nonnegative. If $c_e=0$, all supported normal
+types avoid that edge, so $w_e(y)=0$.
+
+Matching makes these edge weights agree at all occurrences of a global
+edge. The vector $a_e=\operatorname{sign}(c_e)w_e(y)$ is consequently
+a global cocycle. The map $y\mapsto a$ is injective: zero $a$ implies
+zero weights, and the edge map is injective on the fixed quadrilateral
+support. The dimension bound follows. If $p=1$, the nonzero vector $C$
+forces dimension one. A common coordinate divisor of $C$ divides every
+weight $|c_e|$, so primitive $c$ makes $C$ primitive. The primitive-ray
+component argument of Proposition~\ref{prop:vertex-gate} proves
+connectedness.
+\end{proof}
+
+\subsection{Computing the primitive generator}
+
+Build the integral face matrix $A$, using one signed equation per global
+triangular face and summing repeated edge occurrences. Rank-one nullspace
+computation and division by the coordinate gcd produce $c$. The one-vertex
+and rank-one hypotheses are checked, not inferred from a filename. Each
+row of $A$ has sum of absolute coefficients at most three. Cofactors of
+an independent $(m-1)$-row submatrix therefore give a generator with
+\[
+                    \max_e|c_e|\le3^{m-1}.                \tag{6}\label{eq:cbound}
+\]
+Hadamard's inequality proves this bound, and primitive division only
+decreases it. Exact computation has polynomial bit complexity. In
+particular, exponential geometric weights do not entail exponential
+input length for this stage.
+
+\section{Complete discovery from low-dimensional weight spaces}
+\label{sec:flat-search}
+
+For an edge subset $F$ define
+\[
+       W_F=\spanR\bigl(\{b\}\cup\{\mathbf e_f:f\in F\}\bigr),
+       \qquad d_F=\dim W_F\le |F|+1.                     \tag{7}\label{eq:WF}
+\]
+Here $\mathbf e_f$ is the coordinate vector of edge $f$. We deliberately
+search the whole space $W_F$. Requiring a nonnegative cancellation vector
+would make a smaller search, but is unnecessary for soundness: every
+returned candidate is reconstructed and topologically checked. In
+particular, membership in $W_F$ alone is not an orientation certificate.
+
+\begin{lemma}[Determining an extreme ray by active equations]
+\label{lem:active}
+Let $W\subset\R^m$ be a $d$-dimensional linear space and let $w\ne0$
+generate an extreme ray of a sector cone $\cC_Q$. If $w\in W$, then some
+$d-1$ equations from $\cH$, restricted to $W$, are independent and have
+common kernel $\R w$ in $W$.
+\end{lemma}
+\begin{proof}
+The ray stays extreme in $\cC_Q\cap W$: a nonproportional nonnegative
+decomposition there would also be a decomposition in $\cC_Q$.
+Consider all defining equalities and all inequalities active at $w$.
+If their common kernel in $W$ had dimension greater than one, choose a
+direction $u$ not parallel to $w$ in that kernel. For sufficiently small
+$\varepsilon>0$, both $w+\varepsilon u$ and $w-\varepsilon u$ satisfy
+every inactive strict inequality as well as the active equations. They
+give a nonproportional decomposition of $2w$, a contradiction. Thus the
+active kernel is precisely the line $\R w$. Select an independent
+$(d-1)$-row subset. Every selected hyperplane belongs to $\cH$ by (3).
+The argument includes sectors and intersections that are not full
+dimensional.
+\end{proof}
+
+\begin{theorem}[Complete cancellation-supported vertex-disc discovery]
+\label{thm:discovery}
+For a supplied finite triangulation of a compact connected orientable
+3-manifold with exactly one torus boundary, one global vertex and $b_1=1$,
+there is a
+deterministic exact algorithm that finds an essential disc whenever a
+standard vertex essential disc has at most $k$ cancellation edges.
+The algorithm makes at most
+\[
+       \sum_{\substack{F\subseteq E\\|F|\le\min(k,m)}}\binom H{d_F-1}
+       \ \le\ \sum_{j=0}^{\min(k,m)}\binom mj\binom Hj     \tag{8}\label{eq:basic-count}
+\]
+small homogeneous linear-system attempts.
+Each candidate has polynomially bounded encoded length and is checked
+in polynomial bit time. Its overall bit cost is $t^{O(k+1)}$.
+If the input is only known to satisfy the source hypotheses, exhaustion
+of a smaller $k$ is inconclusive for unknot recognition.
+\end{theorem}
+\begin{proof}
+For every $F$ with $|F|\le k$, compute a basis of $W_F$. Enumerate all
+$(d_F-1)$-subsets of $\cH$ and retain those of restricted rank $d_F-1$.
+Find the one-dimensional rational kernel, test its two directions for
+nonnegativity, and apply Lemma~\ref{lem:local} on every tetrahedron.
+Clear denominators in the reconstructed standard coordinates, divide by
+their gcd, and apply the polynomial vertex-disc gate of
+Proposition~\ref{prop:vertex-gate}. The zero-dimensional case contributes
+no ray; a
+one-dimensional space needs the empty equation subset.
+
+If $D$ is a promised vertex disc, take its cancellation set $F$. Equations
+(5) and (7) put its edge ray in $W_F$. The edge isomorphism preserves its
+extremality. Lemma~\ref{lem:active} ensures that one enumerated system
+recovers exactly this ray. Primitive normalization then recovers $D$.
+The tests cannot manufacture a positive result: they verify genuine
+normal coordinates and essential disc topology in the supplied manifold.
+
+The bound counts all systems before pruning or duplicate removal. Exact
+linear algebra, reconstruction and the vertex-disc gate are polynomial
+in the source and coordinate bit lengths. The bit estimate below makes
+these lengths polynomial in $t,k$ and the size of $c$. This proves the
+stated parameterized bound without an assumption about the run time of
+the repository's present interval-orbit engine.
+\end{proof}
+
+\begin{remark}[The displayed count]
+The second inequality in (8) is used for $j\le H/2$, which includes the
+relevant range $j\le m\le6t$ since $H\ge m+15t$. Then
+$d_F-1\le j$ and the binomial coefficients are increasing on that range.
+Zero hyperplanes can be left on the list for this upper bound.
+\end{remark}
+
+\subsection{Encoded size and verification cost}
+
+Let $B$ bound the bit length of $b_e$ and of the source indices. A basis of
+$W_F$ can be selected from $b$ and the coordinate vectors. Restricted
+hyperplane coefficients have $O(B+1)$ bits. For a $d$-column system,
+cofactor bounds give a null vector whose coordinates have
+\[
+                         O(d(B+\log(d+1)))                 \tag{9}\label{eq:bits}
+\]
+bits. Multiplication by the weight-space basis and the half-integer local
+reconstruction preserve a polynomial bound. The produced standard
+coordinates may describe exponentially many discs, but their binary
+encoding and all verification inputs remain polynomial in $t,k,B$.
+No estimate is measured in the expanded piece count.
+
+\subsection{A polynomial gate for the promised vertex discs}
+
+There is a useful way to avoid a stronger-than-needed topology subroutine.
+Let $M_{\!N}$ be the standard normal matching matrix, and for a nonzero
+integral admissible vector $x$ let $J=\supp x$. Its submatrix
+$M_{\!N,J}$ retains exactly the positive coordinate columns.
+
+\begin{proposition}[Rank and boundary parity certify a vertex disc]
+\label{prop:vertex-gate}
+Suppose $\partial M$ is a torus. A primitive nonzero integral admissible
+normal vector $x$ is an essential disc if all three tests hold:
+\[
+ \dim\ker M_{\!N,J}=1,\qquad \chi(x)=1,\qquad
+ [\beta(x)]\ne0\ \text{in }H^1(\partial M;\F),
+\]
+where $\beta(x)_e=w_e(x)\bmod2$ on boundary edges. Every primitive
+standard vertex meridian passes these tests. All tests, including
+admissibility, primitivity and the boundary coboundary quotient, have
+polynomial bit complexity in the encoded source and $x$.
+\end{proposition}
+\begin{proof}
+The nullity test says exactly that the positive support of $x$ spans a
+ray of the standard matching cone. If the surface were disconnected,
+each component would have an integral normal vector $y_i=\lambda_i x$
+with $\lambda_i>0$ and $\sum_i\lambda_i=1$. Since $\gcd(x)=1$, there
+are integers $a_j$ with $\sum_j a_jx_j=1$. Thus
+$\lambda_i=\sum_j a_j(y_i)_j$ is an integer. There can be only one
+component.
+
+On every boundary face, the sum of the three intersection parities is
+zero: each normal arc has two endpoints. Hence $\beta$ is a cocycle.
+It is the mod-two Poincar\'e dual of the boundary curve system, because
+its evaluation on a transverse edge counts precisely those intersections.
+The nonzero class implies that the connected surface has nonempty
+boundary. The classification of compact connected surfaces now makes
+$\chi=1$ equivalent to being a disc. Its single boundary curve is
+essential on the torus exactly when its mod-two homology class is
+nonzero: an essential simple torus curve has primitive integral slope.
+
+Conversely, a standard vertex disc has a one-dimensional supported
+kernel, Euler characteristic one, and an essential simple boundary with
+nonzero mod-two class. Matching ranks are exact rational linear algebra;
+Euler characteristic is a linear normal-coordinate calculation; and
+testing whether $\beta$ belongs to the image of the boundary vertex
+coboundary map is linear algebra over $\F$. All matrices have $O(t)$
+rows and columns. Determinant bounds control the rational bit lengths.
+\end{proof}
+
+The parity must be computed \emph{after} primitive standard-coordinate
+normalization. A doubled disc has zero boundary parity. If the boundary
+has several vertices, a nonzero raw edge-parity vector may still be a
+coboundary, so quotienting by vertex potentials is necessary.
+
+This gate is sufficient for the entire vertex-disc discovery theorem.
+It may reject additional rays that are extreme only in the chosen weight
+space; the completeness promise never required those rays. The main
+search prototype instead reuses the maintained source-bound disc-component
+observer and its independent replay, which can accept more surfaces.
+That implementation has a bound in its realized interval traces; it is
+not identified here with the abstract polynomial AHT theorem \cite{aht}.
+A separate exact implementation of the rank gate accompanies the package.
+Positive total Euler characteristic alone is never a positive certificate:
+it can be contaminated by spheres or inessential components.
+
+\section{Sparse incidence removes one combinatorial factor}
+\label{sec:incidence}
+
+The elementary search chooses $F$ and then chooses equations. Most such
+pairs cannot have the required rank. Each equation in $\cH$ involves at
+most four edges, so an invertible determining system must have a matching
+between its rows and the chosen defect edges. This observation provides a
+different enumeration order.
+
+\begin{theorem}[Incidence enumeration]
+\label{thm:incidence}
+The completeness conclusion of Theorem~\ref{thm:discovery} can be achieved
+with at most
+\[
+  1+\sum_{j=1}^{\min(k,m)}
+   \left(4^j\binom Hj+m\,4^{j-1}\binom H{j-1}\right)       \tag{10}\label{eq:incidence-count}
+\]
+exact system attempts, up to duplicate descriptions. Preparation and
+work per system are polynomial in $t,k,B$. Thus the bit bound has the
+form $t^{k+O(1)}\exp(O(k\log(k+1)))\poly(B)$, with a fixed polynomial
+exponent outside $k$.
+The second summand handles the exceptional case in which all nonzero
+coordinates of $b$ belong to the cancellation set.
+\end{theorem}
+\begin{proof}
+First suppose $F$ has size $j$ and $\supp b\not\subset F$. The listed
+basis $b,\mathbf e_f$ is independent. A meridian has weight
+$b+u$, with $\supp u\subset F$, so its coefficient of $b$ is one.
+Choose $j$ independent active equations as in Lemma~\ref{lem:active}.
+Write their coefficient matrix in these basis coordinates as
+$(a\mid R_F)$. The square matrix $R_F$ is invertible: otherwise a
+nonzero vector supported on $F$ would lie in their common kernel, whereas
+that kernel is the meridian line and every nonzero point on that line
+has a nonzero $b$-coefficient.
+
+A nonzero term in the determinant of $R_F$ matches each row to a different
+edge in its support. Enumerate all $j$-subsets of the global hyperplane
+list and all selections of one supported edge per row. There are at most
+$4^j$ selections. Reject repeated edges and singular resulting matrices.
+For each surviving edge set solve
+\[
+                   R_F u_F=-a.                            \tag{11}\label{eq:affine-solve}
+\]
+Reconstruct and check $w=b+u$. The active system for every promised
+meridian is among these attempts. The method may also return harmless
+extra surfaces; all positive outputs receive the same topological check.
+
+Now suppose $\supp b\subset F$. The meridian weight is supported on
+$F$ itself. In the $j$-dimensional coordinate space $\R^F$, its ray is
+determined by $j-1$ independent active equations. Normalize by
+$\sum_{f\in F}w_f=1$. The resulting $j\times j$ matrix is invertible,
+since the active kernel is the line spanned by the nonnegative meridian
+vector and the normalization is
+nonzero on that ray. A nonzero determinant term matches the normalization
+row to some one of the $m$ edges and matches every other row to one of at
+most four supported edges. Enumerating the $j-1$ hyperplanes, these
+choices, and the associated normalized systems therefore includes every
+such ray. This gives the second summand in (10). Cases with actual
+cancellation size below $k$ are covered at their own value of $j$.
+
+All matrices have order at most $k+1$ and polynomially bounded entries.
+The same cofactor and verification analysis applies. Substituting
+$H\le21t$ into (10), and bounding the finite sum, gives the displayed
+complexity form. The factor depending only on $k$ absorbs integer
+arithmetic and elementary combinatorial bookkeeping of each attempt.
+\end{proof}
+
+Primitive normalization may rescale an affine candidate $b+u$. Therefore
+the enumerated set $F$ is a search-space description, not automatically
+the actual cancellation support of a returned disc. To certify that
+parameter, recompute its final edge weights and compare them with $b$.
+This does not affect completeness: a promised disc occurs at its correct
+affine scale before primitive normalization.
+
+\subsection{The radius-one specialization}
+
+For $k=1$ the nonexceptional candidates are particularly simple. A row
+$\ell\in\cH$ and an edge $e\in\supp\ell$ give
+\[
+                     u_e=-\frac{\ell(b)}{\ell_e}.          \tag{12}\label{eq:oneedge}
+\]
+There are at most $4H$ row-edge incidences. Equivalent rational changes
+can be deduplicated before reconstruction. The exceptional sparse rays
+are coordinate rays. This avoids rebuilding the complete hyperplane list
+for every possible defect edge.
+
+Equation (12) gives a linear number of small arithmetic candidates, not
+an unconditional linear-time recognizer. A candidate can affect every
+tetrahedron incident to a high-degree edge, and the complete vertex-disc gate
+still has its own polynomial cost. A correct implementation reports both
+the number of determining systems and the actual complete query time.
+
+\section{Several vertices and the quasi-polynomial implication}
+\label{sec:multi}
+
+With several vertices, fixing a cohomology class does not fix its cocycle.
+Integral vertex potentials add coboundaries. For a connected triangulation
+with $v$ vertices, put
+\[
+                   p=\dim Z^1(\cT;\R)=v-1+b_1(M).
+\]
+Let $C$ be an $m\times p$ rational basis matrix for its cocycle space.
+Every signed intersection cocycle is $C\alpha$. A fixed-class version
+uses a cohomology generator together with a coboundary basis; for a knot
+exterior these again have total dimension $v$.
+
+\begin{theorem}[Sign-chamber extension]
+\label{thm:multivertex}
+For a finite triangulation of a compact connected orientable 3-manifold
+with torus boundary and $p\ge1$, standard vertex essential discs with at most $k$
+cancellation edges can be discovered in
+\[
+                      t^{O(p+k)}\poly(B)
+\]
+bit time from a supplied triangulation. Here $B$ bounds the encoded
+rational basis and source. For a knot exterior $p=v$.
+\end{theorem}
+\begin{proof}
+Consider the central arrangement in $\R^p$ with equations
+$(C\alpha)_e=0$, omitting rows that vanish identically. Enumerate its
+full-dimensional sign chambers. Their number is at most
+\[
+                    2\sum_{i=0}^{p-1}\binom{m-1}{i}.      \tag{13}\label{eq:chambers}
+\]
+The standard recurrence for the number of regions proves this: adding
+one hyperplane creates at most as many regions as its induced arrangement
+has in dimension $p-1$. Degeneracies only decrease the number.
+An exact incremental enumeration using rational strict-feasibility tests
+has $m^{O(p)}\poly(B)$ bit cost. Strict homogeneous inequalities may be replaced
+by lower bounds of one when seeking a representative of a nonempty
+chamber, since a representative can be positively rescaled.
+
+Give each identically zero row the arbitrary sign $+1$.
+For a chamber sign vector $\sigma$, let $D_\sigma$ be the corresponding
+diagonal sign matrix. Every point in its closure satisfies
+$|C\alpha|=D_\sigma C\alpha$, including coordinates that vanish.
+Every cocycle lies in at least one such closure, so no separate
+enumeration of lower-dimensional sign cells is necessary.
+
+For each chamber and each $|F|\le k$, use
+\[
+             W_{\sigma,F}=\operatorname{im}(D_\sigma C)
+                            +\spanR\{\mathbf e_f:f\in F\}.
+\]
+This space has dimension at most $p+k$. Equation (4) puts every promised
+disc in one of these spaces. Apply Lemma~\ref{lem:active} and the
+reconstruction procedure to its at most $p+k-1$ determining hyperplanes.
+Multiplying the chamber count, the edge-subset count, and the
+hyperplane-subset count gives $t^{O(p+k)}$. Rational determinant bounds
+again control all bit lengths. This proves completeness without
+assuming a bound on the nullity of the full quadrilateral sector.
+\end{proof}
+
+\begin{corollary}[Conditional recognition theorem]
+\label{cor:qp}
+Suppose a procedure constructs and verifies, from every $n$-crossing knot
+diagram and in $n^{O(\log n)}$ bit time, a family of at most
+$n^{O(\log n)}$ exterior triangulations of polynomial encoded size.
+Suppose a fixed known constant $C$ guarantees that every unknot has in
+one of these sources a standard vertex meridian with
+$p+k\le C\log(n+2)$. Then complete execution of the budgeted searches above gives
+unknot recognition in $n^{O(\log n)}$ bit time.
+\end{corollary}
+\begin{proof}
+Put $r(n)=\lfloor C\log(n+2)\rfloor$. Discard sources with $p>r(n)$;
+on each remaining source search only up to $k=r(n)-p$. At least one
+promised source remains for an unknot, and it produces a verified disc
+by the coverage assumption and Theorem~\ref{thm:multivertex}.
+A nontrivial knot has incompressible torus
+boundary, so no verified disc is returned. Completing all searches
+therefore decides the problem. The size and parameter assumptions make
+each search quasi-polynomial; the allowed number of searches preserves
+that bound. Their source certificates and output certificates are
+included in the accounting.
+\end{proof}
+
+This corollary identifies a concrete sufficient structural theorem. The
+present work proves its search component, not its coverage hypothesis.
+In particular, arbitrary triangulations cannot simply be substituted for
+the controlled family: Section~\ref{sec:whitehead} gives an explicit
+linear-cancellation obstruction when multiple vertices are permitted.
