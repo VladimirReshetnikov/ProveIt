@@ -5403,6 +5403,26 @@ The envelope chain `Proofs18Cover{Modulus,Density,Exponents}FejerJ` and
 
 `d + 1` and `L - 1` stay out of reach: they need an envelope ratio below `8`.
 
+**L.16s: the partition constant, sharply (2026-10-12).** Under joint slices the
+Theorem 18.1 thresholds move only with the class table (`model_jsens.py`).
+A per-step saving of 12 doubly-logarithmic units would give `d + 3` from 8,
+and 21 would give `d + 2` from 11. The dimension-two seed would have to drop
+from `2^48` to `2^42`. The Theorem 18.2 envelope has a different dominant
+term, the partition constant: `inv_thr_le_ex` raises the refinement constant
+to the power `polynomialPartitionConstant (k+2) = ((k+2)!)²·2^((k+3)²)`.
+`polyPartConst_le` charges `4(k+3)²` for its logarithm through `d! ≤ 2^(d²)`.
+Since `(d!)²·2^d ≤ 2^(d²)` (`factorial_sq_mul_two_pow_le`, by induction from
+`(n+1)² ≤ 4^n`), `partDeg k = (k+3)² + (k+2)(k+1)` suffices
+(`polyPartConst_le_sharp`), about half the old charge (301 against 676 at
+`k = 10`). `Proofs18CoverFejerHeadlineK` (`assemble_k.py`) contains
+`inv_thr_le_ex_sharp` and the J step and envelope of Theorem 18.2 with that
+charge (`envStepKTx`, `genMuXK`). In the bridge: Theorem 18.2 and
+Corollary 18.7 at `L + 0` from `L = 14`, `L + 1` from `L = 11`, `L + 2` from
+`L = 8`, with the van der Waerden bound and Theorem 1.3 at the same
+thresholds. The exact logarithm `⌈log₂ 32·PPC⌉` gives the same thresholds
+(`model_jppc.py`). In Theorem 18.1 the constant is charged at `2^(k+9)` and
+the sharp bound saves only 4 units per step, so nothing changes there.
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`
