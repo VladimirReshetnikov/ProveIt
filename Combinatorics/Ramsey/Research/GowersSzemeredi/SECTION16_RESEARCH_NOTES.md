@@ -6294,6 +6294,12 @@ scope only. The annotated118-page PDF was rebuilt twice and inspected at
 the sign note and original error on pages75 and84; the published PDF is intact. The last complete1,634-module checkpoint is the historical
 f407e0115 snapshot. The user goal stays active.
 
+Post-merge checkpoint for L.41: incoming main at623fb2007 adds the Fejer-J
+and low-degree final bounds. All43 direct audit input hashes still match
+the verifiedd2f0c80cf snapshot. The merged expected fidelity closure is
+1,652 modules and its fresh native build is running, followed by the facade.
+No claim about that broad gate follows from the unchanged direct inputs.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
