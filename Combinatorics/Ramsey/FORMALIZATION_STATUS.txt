@@ -428,7 +428,16 @@ Verification of the cover route (2026-10-11)
   exponent 2^(23*2^k), vs 2^(68*2^k)) and corollary_16_11_polynomial_fejer
   (e^-1 <= (2/alpha)^(2^(101*2^k+k+24)), vs 236*2^k), from the light
   Proofs16PolynomialFejer. CompletionAudit.lean pins all of them (validated
-  in the stub environment). Stub axioms are those of the d+7/L+5 bridge:
+  in the stub environment).
+  Large degrees and lengths (notes L.16i): with the split invariant using
+  additive slack (Proofs18TightClassesFejerQ, class degree
+  14*2^l + 3(l+4)^2 + 2) and the base budget at the class-base term
+  (Proofs18FejerEnvelopeBaseQ, fixDegQ k = fixDeg (k-1)), the step costs
+  58*2^k + O(k^2) (Proofs18Cover*FejerQ, Proofs18CoverFejerHeadlineQ). This
+  gives theorem_18_1_d5_twelve_le (Theorem181AtSharp 5 d for every d >= 12),
+  theorem_18_2_L3_fourteen_le and corollary_18_7_L3_fourteen_le (L+3 for
+  every L >= 14), and van_der_waerden_L3 (k >= 14). These are bridge theorems,
+  stub-checked and pinned in CompletionAudit. Stub axioms are those of the d+7/L+5 bridge:
   commonDiffPartitionBoundAt_of, multilinearPartitionBoundAt_explicit,
   section16RecurrenceProfileWith_explicit (18.1); the last only (18.2 and
   consequences). Needs the full build on the Codex machine.

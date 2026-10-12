@@ -3,6 +3,7 @@ import GowersSzemeredi.Proofs18CoverFejerHeadline
 import GowersSzemeredi.Proofs18CoverFejerLowDegrees
 import GowersSzemeredi.Proofs18CoverFejerShortLengths
 import GowersSzemeredi.Proofs16PolynomialFejer
+import GowersSzemeredi.Proofs18CoverFejerHeadlineQ
 
 /-! **Theorem 18.1 at `d + 6` and Theorem 18.2 / Corollary 18.7 at `L + 4`
 in every degree and length** (Notes L.16d).
@@ -127,5 +128,39 @@ theorem corollary_16_11_polynomial_fejer {k : Nat} (hk : 2 ≤ k) :
     (fun k _ => section16RecurrenceProfileWith_explicit k)
     (fun k => explicit_family_constants_le k) hk alpha ha ha2
   exact ⟨e, he0, pw_mono (two_div_ge_two ha ha2) hei (expDegF_tight_le k), hN⟩
+
+/-! ### Large degrees and lengths: `d + 5` and `L + 3` (Notes L.16i) -/
+
+/-- **Theorem 18.1 at every degree `d ≥ 12` with `d + 5` in place of `d + 10`.** -/
+theorem theorem_18_1_d5_twelve_le {d : Nat} (hd : 12 ≤ d) : Theorem181AtSharp 5 d := by
+  obtain ⟨K, p, hpp, hp, hK, hpB⟩ := progressionPhasePartition_explicit
+  exact theorem_18_1_d5_of_profiles_cover
+    (fun k => ⌈multiaffinePartitionK (k + 1) (2 ^ (k + 1))⌉₊)
+    (fun k => (k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1)))
+    (fun k => two_le_ceil_multiaffinePartitionK (k + 1) (2 ^ (k + 1)))
+    (fun k => Nat.mul_pos (Nat.succ_pos k) (multiaffinePartitionP_pos _ _))
+    (fun k _ => section16RecurrenceProfileWith_explicit k)
+    (fun k => explicit_family_constants_le k) hpp hp hK hpB hd
+
+/-- **Theorem 18.2 at every length `L ≥ 14` with `L + 3` in place of `L + 9`.** -/
+theorem theorem_18_2_L3_fourteen_le {L : Nat} (hL : 14 ≤ L) : Theorem182AtSharp 3 L :=
+  theorem_18_2_L3_of_profiles_cover
+    (fun k => ⌈multiaffinePartitionK (k + 1) (2 ^ (k + 1))⌉₊)
+    (fun k => (k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1)))
+    (fun k => two_le_ceil_multiaffinePartitionK (k + 1) (2 ^ (k + 1)))
+    (fun k => Nat.mul_pos (Nat.succ_pos k) (multiaffinePartitionP_pos _ _))
+    (fun k _ => section16RecurrenceProfileWith_explicit k)
+    (fun k => explicit_family_constants_le k) hL
+
+/-- **Corollary 18.7 at every length `L ≥ 14` with `L + 3`.** -/
+theorem corollary_18_7_L3_fourteen_le {L : Nat} (hL : 14 ≤ L) : Corollary187AtSharp 3 L :=
+  (theorem_18_2_L3_fourteen_le hL).corollary_18_7
+
+/-- **Van der Waerden numbers for long progressions**: for `k ≥ 14` and
+`r ≥ 2`, `W(k, r) ≤ 2^2^r^2^2^(k+3)`. -/
+theorem van_der_waerden_L3 {k : Nat} (hk : 14 ≤ k) {r : Nat} (hr : 2 ≤ r) (N : Nat)
+    (hN : szemerediThresholdAt 3 (1 / (r : Real)) k ≤ N) (color : Nat → Fin r) :
+    HasMonochromaticAP N r color k :=
+  (theorem_18_2_L3_fourteen_le hk).van_der_waerden hr N hN color
 
 end LeanProofs.GowersSzemeredi

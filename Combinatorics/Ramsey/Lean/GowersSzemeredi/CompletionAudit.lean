@@ -138,6 +138,12 @@ example : ∀ k : Nat, 2 ≤ k → ∀ alpha : Real, 0 < alpha → alpha ≤ 1 /
               e * P.carrier.card ≤
                 LeanProofs.GowersSzemeredi.section16LargeMultilinearFrequencyCount f P mu alpha :=
   fun _ hk => LeanProofs.GowersSzemeredi.corollary_16_11_polynomial_fejer hk
+example : ∀ d, 12 ≤ d → LeanProofs.GowersSzemeredi.Theorem181AtSharp 5 d :=
+  fun _ hd => LeanProofs.GowersSzemeredi.theorem_18_1_d5_twelve_le hd
+example : ∀ L, 14 ≤ L → LeanProofs.GowersSzemeredi.Theorem182AtSharp 3 L :=
+  fun _ hL => LeanProofs.GowersSzemeredi.theorem_18_2_L3_fourteen_le hL
+example : ∀ L, 14 ≤ L → LeanProofs.GowersSzemeredi.Corollary187AtSharp 3 L :=
+  fun _ hL => LeanProofs.GowersSzemeredi.corollary_18_7_L3_fourteen_le hL
 
 open Lean Elab Command in
 run_cmd do
@@ -152,7 +158,11 @@ run_cmd do
     ``LeanProofs.GowersSzemeredi.van_der_waerden_L4,
     ``LeanProofs.GowersSzemeredi.theorem_1_3_L4,
     ``LeanProofs.GowersSzemeredi.theorem_16_2_polynomial_fejer,
-    ``LeanProofs.GowersSzemeredi.corollary_16_11_polynomial_fejer
+    ``LeanProofs.GowersSzemeredi.corollary_16_11_polynomial_fejer,
+    ``LeanProofs.GowersSzemeredi.theorem_18_1_d5_twelve_le,
+    ``LeanProofs.GowersSzemeredi.theorem_18_2_L3_fourteen_le,
+    ``LeanProofs.GowersSzemeredi.corollary_18_7_L3_fourteen_le,
+    ``LeanProofs.GowersSzemeredi.van_der_waerden_L3
   ]
   for name in fejer do
     let info ← getConstInfo name
@@ -161,7 +171,7 @@ run_cmd do
     for axiomName in (← collectAxioms name) do
       unless allowed.contains axiomName do
         throwError "{name} depends on unapproved axiom {axiomName}"
-  logInfo "Checked the Fejér-route strengthenings: Theorem 18.1 at d+6 in every degree, Theorem 18.2 and Corollary 18.7 at L+4 in every length, the van der Waerden bound and Theorem 1.3 at k+4, their printed consequences, and the polynomial Theorem 16.2 and Corollary 16.11 at the Fejér classes; only approved axioms."
+  logInfo "Checked the Fejér-route strengthenings: Theorem 18.1 at d+6 in every degree, Theorem 18.2 and Corollary 18.7 at L+4 in every length, the van der Waerden bound and Theorem 1.3 at k+4, their printed consequences, the polynomial Theorem 16.2 and Corollary 16.11 at the Fejér classes, and d+5 (d >= 12), L+3 (L >= 14) with the van der Waerden bound at k+3 (k >= 14); only approved axioms."
 
 -- The refutation is checked separately; it is never counted as a proof
 -- of the original printed encoding or hidden among the 120 companions.

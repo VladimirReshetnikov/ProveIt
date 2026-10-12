@@ -256,8 +256,26 @@ threshold. Hence $W(k,r)\le2^{2^{r^{2^{2^{k+4}}}}}$, and Theorem~1.3 holds with
 density exponent $2^{-2^{k+4}}$.
 \end{theorem}
 
-The next level, $c=5$ for Theorem~18.1, would need a step cost below
-$64\cdot2^k$. The three class terms alone cost $3\cdot22\cdot2^k$.
+\emph{Large degrees.} The proved class bound $23\cdot2^l$ is loose. The class
+recursion only needs slack that grows additively, and indeed
+\[
+  2^{l+6}a_l\le2^{14\cdot2^l},\qquad D_l\le2^{14\cdot2^l+3(l+4)^2}
+\]
+in every dimension $l\ge2$, since $3(l+5)^2-3(l+4)^2=6l+27$ covers the
+$5l+22$ that one step adds. Moreover the Fej\'er $\theta_1$ no longer
+forces the base budget $32\cdot2^k$: the class-base term $16\cdot2^k$
+suffices. One step then costs $58\cdot2^k+O(k^2)$, and the envelopes stay
+below $128\cdot2^k$ from $k=10$ on.
+
+\begin{theorem}\label{thm:fejer5}
+Theorem~18.1 holds with exponent $\alpha^{2^{2^{d+5}}}$ at every degree
+$d\ge12$, and Theorem~18.2 and Corollary~18.7 hold with $L+3$ at every
+length $L\ge14$; in particular $W(k,r)\le2^{2^{r^{2^{2^{k+3}}}}}$ for $k\ge14$.
+\end{theorem}
+
+The small cases stay at $d+6$ and $L+4$ because of the class recursion's
+transient near $l=4$, where the family exponent squares,
+$a_{l+1}\approx2^{l+5}a_l^2$.
 
 \section{Theorem 16.2 and Corollary 16.11 with polynomial controls}
 
@@ -312,12 +330,13 @@ With the Fej\'er classes of \S\ref{sec:fejer} both exponents shrink:
   $10^4$. Is there a class construction with a smaller constant? Together
   with a base budget near $16\cdot2^k$ (the bound on $V$; the Fej\'er
   $\theta_1$ no longer forces $32\cdot2^k$), it would be needed for $c=5$ in
-  Theorem~18.1. An exact run of the class recursion shows that sharper
-  inputs do not suffice. The actual class degree peaks near $16\cdot2^l$ at
-  $l=4$, because the family exponent squares from one dimension to the next,
-  $a_{l+1}\approx2^{l+5}a_l^2$. Even a dimension-two seed of $2^{36}$ leaves
-  the envelope at $134\cdot2^k>128\cdot2^k$. So $c=5$ seems to need a class
-  step whose family exponent grows linearly rather than quadratically.
+  Theorem~18.1 in \emph{every} degree. Theorem~\ref{thm:fejer5} gives
+  $c=5$ from degree $12$ on. Below that, the actual class degree peaks near
+  $16\cdot2^l$ at $l=4$, because the family exponent squares from one
+  dimension to the next. Even a dimension-two seed of $2^{36}$ leaves the
+  maximum envelope at $134\cdot2^k>128\cdot2^k$. So $c=5$ at small degrees
+  seems to need a class step whose family exponent grows linearly rather
+  than quadratically.
 \item \emph{Fixed-precision slices with the Fej\'er classes.} Composing the
   two slice controls jointly would lower the step cost from $101\cdot2^k$ to
   about $78\cdot2^k$. That is still above $64\cdot2^k$, so it changes no
@@ -354,6 +373,8 @@ Fej\'er envelope & \lean{Proofs18TightClassesFejer}, \lean{Proofs18FejerEnvelope
 & \lean{Proofs18CoverFejerHeadline}\\
 Theorem~\ref{thm:fejer} & \lean{theorem\_18\_1\_d6}, \lean{theorem\_18\_2\_L4}, \lean{corollary\_18\_7\_L4},\\
 & \lean{van\_der\_waerden\_L4}, \lean{theorem\_1\_3\_L4} (\lean{Proofs18CoverFejerAllDegrees})\\
+Theorem~\ref{thm:fejer5} & \lean{theorem\_18\_1\_d5\_twelve\_le}, \lean{theorem\_18\_2\_L3\_fourteen\_le},\\
+& \lean{Proofs18TightClassesFejerQ}, \lean{Proofs18CoverFejerHeadlineQ}\\
 Fej\'er polynomial 16.2, 16.11 & \lean{Proofs16PolynomialFejer}, \lean{theorem\_16\_2\_polynomial\_fejer},\\
 & \lean{corollary\_16\_11\_polynomial\_fejer}\\
 polynomial Theorem 16.2 & \lean{Proofs16PolynomialStructure}, \lean{theorem\_16\_2\_polynomial}\\

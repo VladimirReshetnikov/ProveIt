@@ -4906,7 +4906,8 @@ Natural repairs fail:
   (L.12) multiply the width exponents over the `M` members, which is worse.
 
 So the square is a feature of covering many structured pieces with one
-partition, and the route stops at `d + 6` / `L + 4`. Getting past it would
+partition, and *uniformly in the degree* the route stops at `d + 6` / `L + 4`
+(for large degrees see L.16i: `d + 5`, `L + 3`). Getting past it would
 need either a remainder cover whose count does not grow with the number of
 pieces sharing the partition, or a lift that recovers the `h`-dependence of
 the candidate lines without covering `M·q` slice relations. Both are open.
@@ -4963,7 +4964,9 @@ are needed at once:
 * a sampling scheme whose per-member sample size does not grow with the
   number of members sharing the good set;
 * the per-relation count property for the slice cover.
-Until both are found, `d + 6` / `L + 4` stands as the limit.
+Until both are found, `d + 6` / `L + 4` stands as the limit uniformly in the
+degree. (L.16i later showed that the present lift does give `d + 5` / `L + 3`
+for large degrees and lengths.)
 
 **L.16i: `d + 5` and `L + 3` for large degrees and lengths, with the present
 lift (correction of L.16f–h; plan, 2026-10-12).** L.16f measured only the
@@ -4989,7 +4992,28 @@ should be provable: it holds on the exact values for `l ≤ 15`, and
 So "the route stops at `d + 6`" (L.16f–h) holds only uniformly in `d`.
 L.16g's squaring governs the small-dimension peak, not the asymptotics.
 
-*Plan.*
+*Done (2026-10-12, all light, standard axioms only).*
+* `Proofs18TightClassesFejerQ`: `split_pair_fejer_quad`, `uDegQ`, and
+  `polyCoverAt_classQ`.
+* `Proofs18FejerEnvelopeBaseQ`: the fixed parameters at
+  `fixDegQ k = fixDeg (k − 1)`. Stating it this way lets every generic step
+  lemma be reused unchanged, instantiated at `k − 1`.
+* `Proofs18Cover{Modulus,Density,Exponents}FejerQ` and
+  `Proofs18CoverFejerHeadlineQ`. One step costs exactly
+  `58·2^k + 9(k+4)² + 4(k+3)² + k + 45`, and `μ_k + 4k + 128 ≤ 128·2^k`
+  holds for `k ≥ 10`. This gives `theorem_18_1_d5_of_profiles_cover`
+  (`d ≥ 12`), and `theorem_18_2_L3_of_profiles_cover` and
+  `corollary_18_7_L3_of_profiles_cover` (`L ≥ 14`).
+* Bridge `Proofs18CoverFejerAllDegrees`: `theorem_18_1_d5_twelve_le`,
+  `theorem_18_2_L3_fourteen_le`, `corollary_18_7_L3_fourteen_le`, and
+  `van_der_waerden_L3` (`W(k, r) ≤ 2^2^r^2^2^(k+3)` for `k ≥ 14`). These are
+  stub-checked with the same stub axioms as before, and pinned in
+  `CompletionAudit.lean`.
+
+Theorem 1.3 needs `Theorem182AtSharp c k` for *every* `k`, so it stays at
+`2^(−2^(k+4))`.
+
+*The plan as carried out.*
 1. The refined split invariant (`splitPairWith`, Nat arithmetic) and the
    class covers at `uDegQ`.
 2. The fixed-parameter bounds of the Fejér step directly at `fixDegF`.
