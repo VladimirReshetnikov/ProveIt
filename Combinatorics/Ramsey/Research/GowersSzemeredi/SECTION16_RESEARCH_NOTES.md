@@ -4624,16 +4624,8 @@ lemma directly. So the remaining parameterization stays light.
    **The dimension-two seed is proved**, and it lies inside the `2^48` of
    `split_pair_with_bounds_fourteen`.
 
-*Next: the class step in dimensions `k ≥ 2`.* `class_piece_of_subrelation`
-(`Proofs16ClassStep`) uses `lemma_15_6_of_density_lower_explicit` and the
-printed θ₁ and ζ. Its Fejér copy, together with the class-step degree
-bounds (`Proofs16ClassStepBounds`/`Degrees`, where `stepP` and `stepT`
-become `fejerStepP` and `fejerStepT`), feeds `splitStepDWith` and
-`split_pair_with_bounds`. After that come the envelope and
-Theorems 18.1, 18.2 and 18.7. The counts and exponents
-   (`Proofs18LengthSixCounts`/`Exponents`) with
-   the `W` definitions, giving the seed degrees. The expectation is about
-   `2^35`–`2^40` (L.16c).
+*The class step in dimensions `k ≥ 2`, the envelope and the headline
+statements* are done; see L.16e.
 
 How this was checked: 59 of the 491 ancestors of `Proofs16ClassStep` mention
 `section16Zeta`. They were searched for bounds on `multipleS` and for upper
@@ -4726,6 +4718,194 @@ cascade-cost rule applies. The next barrier, `d + 5`, is `μ₀ = 16·2^k` from
 
 A three-page mathematical write-up of L.12-L.15j is in
 `joint-vertex-covers/joint-vertex-covers.tex` (PDF beside it).
+
+**L.16e: the propagation completed; Theorem 18.1 at `d + 6`, Theorems 18.2
+and 18.7 at `L + 4` in every degree and length (formalized, 2026-10-12).**
+The Fejér θ₁ and the tight radius now reach the headline statements. Every
+module below is light, kernel-checked and uses only the standard axioms,
+except the final bridge, which is stub-checked like its `d + 7` predecessor.
+Most are generated from the corpus modules by scripts with a guard that no
+printed parameter survives (no `section16ThetaOne`, `section16Zeta`,
+`lemma156ExplicitThreshold`, `globalBudget`, `stepP`, `uDeg68`).
+
+*Section 16, dimensions `k ≥ 2`.*
+* `Proofs16ClassPiecesWith`, `Proofs16ClassStepFejer`: the class pieces with
+  `(θ₁, ζ)` as parameters, and the class step at θ₁′ and the tight radius.
+* `Proofs16ClassStepBoundsFejer`: its six degree inputs in `u = 2/(γθ)`.
+  These are θ₁′⁻¹ ≤ `u^(2F)`, budget⁻¹ and δ⁻¹ ≤ `u^(32F)`, pieces and the
+  Lemma 15.6 threshold ≤ `u^(64F)`, and ζ′⁻¹ ≤ `exp(u^(22F+105))`, with
+  `F = fejerProductExponent k ≤ 2^(5k+14)`.
+* `Proofs16ClassStepDegreesFejer`: `powerUniformClass_succ_fejer`, with
+  degrees `D·2^(O(k))`. The printed degrees are `D·2^(2^(O(k)))`.
+* `Proofs16SplitStepFejer`: `splitUniformClass_all_fejer`, a split class in
+  every dimension from the `2^46` seed, with `log₂ D_k ≤ 22·2^k`
+  (`split_pair_fejer_bound`; printed `75·2^k`, tight `68·2^k`).
+
+*Section 18.*
+* `Proofs16SinglePieceCoverGlobalWith`, `Proofs18SinglePieceCoverInverseFejer`:
+  the joint-cover lift with `(θ₁, ζ)` as parameters, and the inverse step at
+  θ₁′ (the printed θ₁ entered Section 18 only through this frequency box).
+* `Proofs18TightClassesFejer`: `polyCoverAt_class23`, the class covers at
+  degree `2^(23·2^l)`. In dimension one the cover holds at any degree
+  `≥ 2^17` (`polyCoverAt_one_uniform_low`). The printed `2^132` there was the
+  dimension-two exponent shared through `sixEb`.
+* `Proofs18FejerEnvelopeBase`: θ₁′ ≥ θ₁, so the budget, `θ₂/2`, δ and the
+  radius are at least the printed ones. Every printed fixed-parameter bound
+  (at `2^fixDeg k`) therefore transfers unchanged.
+* `Proofs18CoverModulusFejer`, `…DensityFejer`, `…ExponentsFejer`:
+  `GenParamsF`, the step's degrees with `23·2^k` in place of `68·2^k`.
+* `Proofs18CoverFejerHeadline`: one step costs `101·2^k + 4(k+3)² + k + 39`.
+  That is `23` (vertex covers) + `32` (base budget) + `2·23` (slices), against
+  the printed `236`. Both envelopes are at most `230·2^k` (`polyGenMuF_le`,
+  `genMuXF_le`; `models/model_fejer_envelope_exact.py` mirrors the Lean
+  definitions and gives at most `219·2^k`). This yields
+  `theorem_18_1_d6_of_profiles_cover` (`d ≥ 4`) and
+  `theorem_18_2_L4_all_of_profiles_cover` (`L ≥ 6`).
+* `Proofs18CoverFejerLowDegrees` (`d ≤ 3`) and `Proofs18CoverFejerShortLengths`
+  (`L ≤ 5`): the corpus's low cases with `6` and `4`.
+* Bridge `Proofs18CoverFejerAllDegrees` (stub `mkstub_fejer18.py`, from
+  `StubAll18`):
+  - `theorem_18_1_d6 : ∀ d, Theorem181AtSharp 6 d`;
+  - `theorem_18_2_L4`, `corollary_18_7_L4` (every `L`), and the three
+    `…_implies_printed`;
+  - `van_der_waerden_L4`: `W(k, r) ≤ 2^2^r^2^2^(k+4)`;
+  - `theorem_1_3_L4`: Theorem 1.3 with constant `2^(−2^(k+4))`.
+
+  - `theorem_16_2_polynomial_fejer`: Theorem 16.2 with graph count
+    `max(1, (4V/(γθρ))^(2^(23·2^k)))` (L.15i had `2^(68·2^k)`), from
+    `Proofs16PolynomialFejer`; `theorem162At_of_polynomial_fejer` gives the
+    printed form;
+  - `corollary_16_11_polynomial_fejer`: Corollary 16.11 with
+    `e⁻¹ ≤ (2/α)^(2^(101·2^k+k+24))` (L.15j had `236·2^k`).
+
+  `CompletionAudit.lean` pins all of these (exact statements plus the axiom
+  whitelist); the block was validated in the stub environment, with the
+  whitelist widened by the stub axioms.
+
+  Stub axioms are exactly those of the `d + 7` / `L + 5` bridge:
+  `commonDiffPartitionBoundAt_of`, `multilinearPartitionBoundAt_explicit` and
+  `section16RecurrenceProfileWith_explicit` for 18.1, and the last alone for
+  18.2 and its consequences.
+
+*Refactor map for the full-build machine.* Each duplicate has an original.
+Folding it means giving the original the parameter and deleting the copy:
+
+| duplicate | original | parameter | `rfl` hook |
+|---|---|---|---|
+| `Proofs16Lemma5With` | `Proofs16Lemma5` | `(t1, ζ)` | `lemma_16_5_with_printed_hyps` |
+| `Proofs16DenseSelectionWith` | `Proofs16DenseSelection`, `…InducedSelection` | `(t1, ζ)` | — |
+| `Proofs16PolyPieceTwoDataWith` | `Proofs16PolyPieceTwoData` | `t1` | `polyPieceBudgetW_printed` etc. |
+| `Proofs16ClassPiecesWith` | `Proofs16ClassPieces` | `(t1, ζ)` | `classBudgetW_printed`, `classPieceThrW_printed` |
+| `Proofs16SinglePieceCoverGlobalWith` | `Proofs16SinglePieceCoverGlobal` | `(t1, ζ)` | `globalBudgetW_printed`, `coverRho1W_printed`, … |
+| `Proofs16PolyCoverTwoFejer`, `Proofs16UniformCoverTwoFejer`, `Proofs18FejerSeed*` | `Proofs16PolyCoverTwo`, `Proofs16UniformCoverTwo(Bounds)`, `Proofs18LengthSix*` | Fejér instance | — |
+| `Proofs16ClassStepFejer`, `…BoundsFejer`, `…DegreesFejer` | `Proofs16ClassStep`, `…Bounds`, `…Degrees` | `(stepP, stepT) ↦ (fejerStepP, fejerStepT)` | `splitStepDWith_stepP` |
+| `Proofs16SplitStepFejer` | `Proofs16SplitStepBounds`, `…AllDimensions` | `(P, T)`, seed | `splitStepDFejer_eq` |
+| `Proofs18SinglePieceCoverInverseFejer`, `Proofs18Cover{Modulus,Density,Exponents}Fejer`, `Proofs18CoverFejerHeadline` | the `…C` modules | class degree, θ₁ | — |
+
+The generator scripts, which record exactly which substitutions were made,
+are in `Research/GowersSzemeredi/fejer-generators/` (with a README mapping
+each script to its module and original).
+
+*What is left.*
+* The full build of the bridge belongs to the Codex machine.
+* The duplicated `…With`/`…Fejer` modules can be folded into
+  θ₁-parametric originals there: their printed instances are the corpus
+  statements by `rfl`.
+* The next level, `d + 5` / `L + 3`, needs a step cost below `64·2^k`
+  (envelope about twice the step cost, budget `2^(k+7)`). The base budget
+  `μ₀ = 32·2^k` (`fixDeg`, kept printed here by the monotone transfer;
+  the Fejér θ₁ alone would allow `16·2^k`, set by `V`) plus three class
+  terms `≥ 3·22·2^k` already exceed that. So `d + 5` would need a smaller
+  class constant as well as the `μ₀` from `V`. The exact envelope model
+  (`model_fejer_envelope_exact.py`, with `fixDeg` replaced by the Fejér
+  budget's `5k + 22`) quantifies this. `d + 5` holds in every degree `d ≥ 4`
+  for a class constant `≤ 10` (maximum envelope ratio `119·2^k`), and fails
+  from `12` up (`130·2^k`). With the printed `fixDeg` it fails even at class
+  constant `8` (`138·2^k`). The split recursion cannot give `≤ 10` from the
+  proved seed. Its invariant is `log₂ D_l ≤ (c+8)·2^l`, which at `l = 2`
+  needs `D₂ ≤ 2^(4(c+8))` and `2^8·a₂ ≤ 2^(4c)`. The seed `D₂ = 2^46` alone
+  forces `c + 8 ≥ 12`, and `a₂ = 2^46` forces `c ≥ 14`. Class constant `10`
+  would need `D₂ ≤ 2^40` and `a₂ ≤ 1` at once. The `+8` comes from
+  `fejerStepP`, `fejerStepT ≤ 2^(5k+20)`. So `d + 5` needs a much smaller
+  dimension-two seed (its piece counts carry the Lemma 16.3 exponent
+  `10^4`) or a different class construction; bookkeeping will not do.
+
+**L.16f: the exact class recursion, and why `d + 5` is out of reach
+(analysis, 2026-10-12).** `models/model_split_exact.py` runs the split-class
+recursion exactly, with integer arithmetic: `splitStepA`, `splitStepDWith`
+at `(fejerStepP, fejerStepT)`, and the seed of `splitUniformClass_two_fejer`.
+It then feeds the actual cover degrees `log₂(a_l + D_l + l + 1)` into the
+envelope of `model_fejer_envelope_exact.py`.
+* *The proved constant 22 is loose.* At seed `2^46` the actual
+  `log₂ uDeg_l / 2^l` is `12.0, 15.6, 16.1, 15.5, 14.7, 14.0, …, 12.8`
+  (`l = 2, …, 12`). It peaks at `l = 4`, because
+  `a_{l+1} ≈ 2^(l+5)·a_l²` and `D_{l+1} ≈ a_l(a_l + D_l)·P` overshoot before
+  the doubling settles, and tends to about `log₂ a₂ / 4 + 1`. With these
+  degrees the `d + 6` envelope is about `177·2^k`, not the proved `230·2^k`.
+* *`d + 5` needs every input at once.* It needs envelope `< 128·2^k`.
+  Even with the base budget from `V` (`fixDeg` at the Fejér `5k + 22`), the
+  envelope is
+  - `147.5·2^k` at the proved seed `2^46`;
+  - `143.6·2^k` at seed `2^43`, the seed if Lemma 16.3's density used the
+    proof's actual `θ^1165` in place of the rounded `θ^10000`;
+  - `134.4·2^k` at an idealized seed `2^36`.
+
+  Shrinking θ₁′'s exponent `F` helps little:
+  `F/2^12` with seed `2^36` is the first combination that fits (`127.6`).
+* So `d + 5` / `L + 3` is not a matter of sharper inputs to this route. The
+  step pays the class degree three times (vertex covers and two slices), and
+  the class degree has a transient peak near `13`–`16` set by the seed's
+  squaring. A different class construction would be needed, for example
+  one whose dimension-`l` degree is linear in the previous one rather than
+  quadratic. This joins the further questions.
+
+The Lemma 16.3 rounding remark stands on its own. The density
+`2^(−2000)(γθ)^10000` is a common lower bound for
+`2^(−1882)·γ^9312·θ^1165` (`section16_product_restriction`). In the
+dimension-two counts θ is the piece budget, so the actual exponent would
+lower the seed from about `2^46` to `2^43`. No headline constant changes.
+
+**L.16g: where the class recursion squares (analysis, 2026-10-12).** L.16f
+traced the `d + 5` barrier to `a_{l+1} ≈ 2^(l+5)·a_l²`. The square enters
+in one place, the family affine lift:
+* `section16_local_affine_lift_family` (`Proofs16FamilyAffineLift`): each
+  member `a ∈ ι` samples `r` last-coordinate values, and needs
+  `6·q·max(1,|ι|) ≤ r·τ`. Here `q` is the number of candidate line maps per
+  point, and the per-member loss is `τ/|ι|`, so that the common good set
+  loses `2τ` (`section16_box_recovered_good_set`: a candidate line carrying
+  a `τ′/q` fraction is hit twice by `6q/τ′` samples).
+* In the class step `q ≤ q_Γ ≤ Q_r(ρ/8)`, the remainder count. That is a
+  product of `2^k` vertex counts, each `(M+1)^a·W^D` at `M = n·m` pieces, so
+  `r = famPieceSamples ≈ 24·Q_r·M/ρ ≈ M^(a·2^k + 1)`.
+* The sampled slices form one relation with `M·r` members, and the
+  dimension-`k` class covers it at count `Pb = (M·r + 1)^a·W^D`, which is
+  `M^(a·(a·2^k + 2))`. This is `sPbN = a·(sSN + 1)` with `sSN = a·2^k + 1`:
+  the square.
+
+Natural repairs fail:
+* *A shared sample for all members.* The good set must be common, so the
+  member losses still add.
+* *Covering the line coefficients instead of the slices.* That is still
+  `M·q` relations, the same polynomial in `n`.
+* *Fewer samples.* `r ∝ q/τ′` is what hitting every heavy candidate twice
+  costs.
+
+* *Organizing by remainder map.* The candidates are indexed by the `Q_r`
+  remainder maps μ_i, with `φ₁(h, x) = ℓ(h, i, x)` linear in `x`. But the
+  dependence of `ℓ(h, i, ·)` on `h` is not given by μ_i. Recovering it is
+  exactly the job of the slice cover, and per remainder map it is still
+  `M·q` relations.
+* *Per-member candidate counts.* One member's remainder needs only
+  `Q_r` at one piece, which does not depend on `n`. But the members share
+  one partition, and on a shared cell a member may use all `q` joint
+  candidates. Separate per-member covers composed by the joint-cover lemma
+  (L.12) multiply the width exponents over the `M` members, which is worse.
+
+So the square is a feature of covering many structured pieces with one
+partition, and the route stops at `d + 6` / `L + 4`. Getting past it would
+need either a remainder cover whose count does not grow with the number of
+pieces sharing the partition, or a lift that recovers the `h`-dependence of
+the candidate lines without covering `M·q` slice relations. Both are open.
 
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
@@ -5297,6 +5477,42 @@ is assumed as a premise.
 five new theorems with only the approved axioms. The unrestricted larger
 budget regime and the stronger original Lemma 13.6 extraction remain open;
 this is a range result, not a completion claim.
+
+### L.34 Original initial extraction up to density 14/15 (2026-10-11)
+
+`PrintedExtractionCoreAudit` directly checks twenty results over 119 native
+modules: nineteen new theorems and the existing corrected Theorem 10.13
+consequence. Exact types of the stronger local model and original printed
+Lemma 13.6 range statement are checked. Only the three approved axioms occur.
+This direct gate does not certify the full downstream catalogue refresh or
+the much larger exported facade, both of which remain to be completed.
+
+The regular-set calculation in `Proofs10Main` retains `alpha^5/20000`
+rather than `alpha^6/20000`; the original corrected companion follows by
+power monotonicity. No original hypothesis or spectrum/Bohr parameter changes.
+The original article's `alpha^3/1000` claim is not asserted by this improvement.
+The five-power edge variants retain the actual selected density and also
+improve the old weaker strong-height mass to `2^(-39)*alpha^192`.
+
+More decisively, fifteen actual edges and the remaining second coordinate
+encode every additive sixteen-edge tuple. Thus `C(h)<=|X_h|^15*N` and a
+strong height satisfies `alpha^32/16<=beta^15`. The convenient consequence
+`beta>=alpha^3/2` already gives `2^(-22)*alpha^21*N^2` through the checked
+six-power extraction when the actual edge density is at most one sixth.
+This exceeds the original printed `2^(-26)*alpha^128*N^2` mass.
+
+Above edge density one sixth, adaptive fibre normalization gives normalized
+density at least one twelfth. Its guaranteed mass exceeds the original
+printed mass for `alpha<=14/15`; the rational comparison is exact.
+`Proofs13PrintedWiderExtraction` assembles the genuine preceding models,
+short-difference selection and existing all-scale numerical budgets to
+prove the original printed masses in this range. Singleton cells handle the
+small scale, while the large scale retains the stronger `10Q` length bound.
+No stronger extraction conclusion is supplied as a premise.
+
+The interval `14/15<alpha<=1` remains open, as does ordinary integer
+geometry in the unrestricted contextual square corollary. No counterexample
+to either original assertion is claimed. The full goal remains active.
 
 ## F. Routes
 

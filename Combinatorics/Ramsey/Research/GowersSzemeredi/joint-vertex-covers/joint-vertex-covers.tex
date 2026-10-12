@@ -169,15 +169,15 @@ $\mu_0=2^{k+5}+9$ suffices; one step then costs $236\cdot2^k+O(k^2)$ and the
 envelopes grow like $472\cdot2^k<512\cdot2^k$.
 
 \begin{center}\small
-\begin{tabular}{lccc}
+\begin{tabular}{lcccc}
 \toprule
-& printed & standard base & tight base\\
+& printed & standard base & tight base & Fej\'er $\theta_1$ (\S\ref{sec:fejer})\\
 \midrule
-Theorem 18.1, exponent $\alpha^{2^{2^{d+c}}}$ & $c=10$ & $c=8$ ($d\ge4$) & $c=7$ (every $d$)\\
-Theorem 18.2, threshold with $L+c$ & $c=9$ & $c=6$ (every $L$) & $c=5$ (every $L$)\\
-Corollary 18.7, threshold with $L+c$ & $c=9$ & $c=6$ (every $L$) & $c=5$ (every $L$)\\
-$W(k,r)\le2^{2^{r^{2^{2^{k+c}}}}}$, $r\ge2$ & $c=9$ & --- & $c=5$\\
-Theorem 1.3, density $(\log\log N)^{-2^{-2^{k+c}}}$ & $c=9$ & --- & $c=5$\\
+Theorem 18.1, exponent $\alpha^{2^{2^{d+c}}}$ & $c=10$ & $c=8$ ($d\ge4$) & $c=7$ & $c=6$ (every $d$)\\
+Theorem 18.2, threshold with $L+c$ & $c=9$ & $c=6$ (every $L$) & $c=5$ & $c=4$ (every $L$)\\
+Corollary 18.7, threshold with $L+c$ & $c=9$ & $c=6$ (every $L$) & $c=5$ & $c=4$ (every $L$)\\
+$W(k,r)\le2^{2^{r^{2^{2^{k+c}}}}}$, $r\ge2$ & $c=9$ & --- & $c=5$ & $c=4$\\
+Theorem 1.3, density $(\log\log N)^{-2^{-2^{k+c}}}$ & $c=9$ & --- & $c=5$ & $c=4$\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -189,10 +189,12 @@ Theorem~1.3 follows from Theorem~18.2 by a calculation in which the constant
 enters only through $2^{k+9}$; repeated with $k+5$, it gives the density
 exponent $2^{-2^{k+5}}$.
 
-The method stops at these constants. The envelope recursion grows like
-$472\cdot2^k$, and $c=6$ for Theorem~18.1 (or $c=4$ for Theorem~18.2) would
-need a step cost below $128\cdot2^k$, while the vertex covers and the two slice
-controls alone cost $204\cdot2^k$.
+With the printed $\theta_1$ the method stops at the tight-base constants. The
+envelope recursion grows like $472\cdot2^k$, and $c=6$ for Theorem~18.1 (or
+$c=4$ for Theorem~18.2) needs a step cost below $128\cdot2^k$, while the
+vertex covers and the two slice controls alone cost $204\cdot2^k$. The last
+column of the table comes from changing $\theta_1$ itself
+(\S\ref{sec:fejer}).
 
 For Theorem~18.2 at $c=5$ one more point matters. The modulus threshold of
 the inverse step contains two pure constants, the Section~5 refinement
@@ -202,6 +204,60 @@ term $40(k+2)^3$ into the envelope and blocks $L+5$ for $L\le10$. The
 threshold is only needed below $\exp(\exp(X^{2^\mu}))$, and
 $2^{2^m}\le\exp(X^{2^j})$ as soon as $m\le2^j$. At that level the
 constants cost only $k+16$, and $L+5$ holds in every length.
+
+\section{A Fej\'er selection and the constants $d+6$, $L+4$}\label{sec:fejer}
+
+The class degree $68\cdot2^l$ and the base budget both come from the
+Section~16 density $\theta_1=(\theta\gamma/4)^{2^{2^{k+5}}}$. Its double
+exponential is created in Lemma~15.5. A point is kept with probability
+$(1+\cos)/2$, which gives a respected arrangement of $M=2^{k+4}$ vertices an
+advantage of only $1+2^{1-M}$ per stage, so $2^{M-1}$ stages are needed.
+
+\emph{One Fej\'er stage.} Keep a point with the Fej\'er weight
+$F_m(u)=|\sum_{j\le m}e(ju/N)|^2/(m+1)^2$ of order
+$m+1=M\lceil6/(\alpha\eta)\rceil$. Averaged over the coefficients, the
+survival probability of an arrangement is a sum over the integer vectors
+$\eta\in[-m,m]^M$ annihilating all its monomials. For arrangements that are
+not $m$-degenerate, these are the multiples $j\varepsilon$ of the parity
+vector. They contribute $\sum_{|j|\le m}(1-|j|/(m+1))^M\ge T$ for respected
+arrangements and only $j=0$ otherwise. Lemma~15.4 extends to coefficients in
+$[-m,m]$, since Corollary~15.2 holds for every coefficient vector, and it
+bounds the $m$-degenerate arrangements. The resulting Lemma~15.5 has exponent
+$2^{k+4}(k+6)$, and Lemma~15.6 has
+\[
+  \theta_1'=(\theta\gamma/4)^{F},\qquad F\le2^{5k+14},
+\]
+in place of $2^{2^{k+5}}$.
+
+\emph{The tight radius.} The Bohr radius $\zeta=2^{-s}$ only has to satisfy
+Lemma~16.5's condition, which needs $s\ge2^{83}/(\theta_1/4)^{11}$. With
+$\theta_1'$ this is $s'\le(2/\theta\gamma)^{22F+105}$, instead of the printed
+$(2/\theta\gamma)^{2^{2^{k+6}}}$.
+
+\emph{Propagation.} With these inputs the dimension-two class has degree
+$2^{46}$ (printed $2^{132}$). The split-class recursion keeps
+$\log_2D_l\le22\cdot2^l$, so the class covers have degree $2^{23\cdot2^l}$
+in place of $2^{68\cdot2^l}$. Since $\theta_1'\ge\theta_1$, the budget, $\theta_2$, $\delta$
+and the radius of Section~18 are at least the printed ones, and every printed
+fixed-parameter bound transfers unchanged. One step of the inverse induction
+then costs
+\[
+  \mu_{\mathrm{new}}=\mu+\underbrace{23\cdot2^k}_{\text{vertices}}
+  +\underbrace{32\cdot2^k}_{\mu_0}+\underbrace{2\cdot23\cdot2^k}_{\text{slices}}
+  +O(k^2)=\mu+101\cdot2^k+O(k^2),
+\]
+and both envelopes are at most $230\cdot2^k$ for $k\ge4$, below the
+$256\cdot2^k$ of $c=6$ and $c=4$.
+
+\begin{theorem}\label{thm:fejer}
+Theorem~18.1 holds in every degree $d$ with exponent $\alpha^{2^{2^{d+6}}}$, and
+Theorem~18.2 and Corollary~18.7 hold in every length $L$ with $L+4$ in the
+threshold. Hence $W(k,r)\le2^{2^{r^{2^{2^{k+4}}}}}$, and Theorem~1.3 holds with
+density exponent $2^{-2^{k+4}}$.
+\end{theorem}
+
+The next level, $c=5$ for Theorem~18.1, would need a step cost below
+$64\cdot2^k$. The three class terms alone cost $3\cdot22\cdot2^k$.
 
 \section{Theorem 16.2 and Corollary 16.11 with polynomial controls}
 
@@ -230,6 +286,15 @@ for every $k\ge2$ (\lean{corollary\_16\_11\_polynomial}). The printed exponent
 is $(\alpha/8)\,c(r^{-1}\alpha/8,\alpha/2)^{r}$ with $r$ polynomial in
 $1/\alpha$, so its reciprocal is exponential in a polynomial of $1/\alpha$.
 
+With the Fej\'er classes of \S\ref{sec:fejer} both exponents shrink:
+\begin{itemize}
+\item the graph count becomes
+  $\max(1,(4V/\gamma\theta\rho)^{2^{23\cdot2^k}})$\\
+  (\lean{theorem\_16\_2\_polynomial\_fejer});
+\item the corollary has $e^{-1}\le(2/\alpha)^{2^{101\cdot2^k+k+24}}$\\
+  (\lean{corollary\_16\_11\_polynomial\_fejer}).
+\end{itemize}
+
 \section{Further questions}
 
 \begin{enumerate}
@@ -239,29 +304,24 @@ $1/\alpha$, so its reciprocal is exponential in a polynomial of $1/\alpha$.
   Lemma~\ref{lem:joint}, should cost about $68\cdot2^k$. The envelope would
   drop from about $472\cdot2^k$ to about $336\cdot2^k$. This changes none of
   the constants in the table.
-\item \emph{The class degree.} The face covers have degree
-  $D_l=2^{68\cdot2^l}$, the fixed point of a class recursion that pays the
-  Section~16 exponent $\theta_1=(\theta\gamma/2)^{2^{2^{k+5}}}$ (about
-  $32\cdot2^k$ in the log-degree) once per dimension. Is there a class
-  construction with log-degree near one $\theta_1$ per dimension?
-\item \emph{The printed $\theta_1$.} Even with joint slices and such a class
-  degree, a step would cost about $134\cdot2^k$, above the $128\cdot2^k$ that
-  $c=6$ for Theorem~18.1 or $c=4$ for Theorem~18.2 would need. Can the
-  double-exponential exponent $2^{2^{k+5}}$ of $\theta_1$ in Lemmas 16.5 and
-  16.7 be lowered? Only that would move these constants further. The
-  exponent is created by the random selection of Lemma~15.5, whose Riesz
-  kernel $(1+\cos)/2$ gives a respected arrangement of $M=2^{k+4}$ vertices
-  an advantage of only $1+2^{1-M}$ per stage. A single Fej\'er stage of
-  order $m\approx M/(\alpha\eta)$ gives an advantage of about
-  $1/(\alpha\eta)$ at density cost $(\alpha\eta/2M)^{M}$, provided Lemma~15.4
-  is extended from ternary to $[-m,m]$ coefficients. Then $\theta_1$ has
-  exponent about $(k+7)\,2^{4k+10}$. An exact model of the class recursion
-  gives a class degree $2^{14\cdot2^l}$ and step cost below $128\cdot2^k$:
-  Theorem~18.1 at $c=6$ and Theorem~18.2 at $c=4$ (notes, L.16). Lemma~15.5
-  with exponent $2^{k+4}(k+6)$ and Lemma~15.6 with exponent at most
-  $2^{5k+14}$ are formalized (\lean{fejer\_arrangement\_restriction},
-  \lean{fejer\_product\_restriction}). The propagation through Section~16
-  is not.
+\item \emph{The class degree.} Under the Fej\'er $\theta_1$ the face covers
+  have degree $2^{23\cdot2^l}$ (\S\ref{sec:fejer}). The split-class invariant
+  is $2^{l+6}a_l\le2^{14\cdot2^l}$, forced by the dimension-two seed $2^{46}$.
+  That seed is dominated by the dimension-two piece counts, whose Lemma~16.3
+  density $2^{-2000}(\gamma\theta)^{10000}$ multiplies the budget degree by
+  $10^4$. Is there a class construction with a smaller constant? Together
+  with a base budget near $16\cdot2^k$ (the bound on $V$; the Fej\'er
+  $\theta_1$ no longer forces $32\cdot2^k$), it would be needed for $c=5$ in
+  Theorem~18.1. An exact run of the class recursion shows that sharper
+  inputs do not suffice. The actual class degree peaks near $16\cdot2^l$ at
+  $l=4$, because the family exponent squares from one dimension to the next,
+  $a_{l+1}\approx2^{l+5}a_l^2$. Even a dimension-two seed of $2^{36}$ leaves
+  the envelope at $134\cdot2^k>128\cdot2^k$. So $c=5$ seems to need a class
+  step whose family exponent grows linearly rather than quadratically.
+\item \emph{Fixed-precision slices with the Fej\'er classes.} Composing the
+  two slice controls jointly would lower the step cost from $101\cdot2^k$ to
+  about $78\cdot2^k$. That is still above $64\cdot2^k$, so it changes no
+  constant in the table.
 \end{enumerate}
 
 \section{Formalization}\label{sec:lean}
@@ -287,6 +347,15 @@ sharper constants & \lean{Proofs18CoverSharper}, \lean{Proofs18CoverTightBase},\
 & \lean{Proofs18CoverThresholdsSharp}, \lean{Proofs18CoverVanDerWaerden},\\
 & \lean{Proofs18CoverHeadline},\\
 & \lean{Proofs18CoverSharperAllDegrees}\\
+Fej\'er Lemmas 15.5, 15.6 & \lean{Proofs15FejerSelection}, \lean{Proofs15FejerProduct}\\
+tight radius, Fej\'er classes & \lean{Proofs16TightRadius}, \lean{Proofs16UniformCoverTwoFejer},\\
+& \lean{Proofs16ClassStepDegreesFejer}, \lean{Proofs16SplitStepFejer}\\
+Fej\'er envelope & \lean{Proofs18TightClassesFejer}, \lean{Proofs18FejerEnvelopeBase},\\
+& \lean{Proofs18CoverFejerHeadline}\\
+Theorem~\ref{thm:fejer} & \lean{theorem\_18\_1\_d6}, \lean{theorem\_18\_2\_L4}, \lean{corollary\_18\_7\_L4},\\
+& \lean{van\_der\_waerden\_L4}, \lean{theorem\_1\_3\_L4} (\lean{Proofs18CoverFejerAllDegrees})\\
+Fej\'er polynomial 16.2, 16.11 & \lean{Proofs16PolynomialFejer}, \lean{theorem\_16\_2\_polynomial\_fejer},\\
+& \lean{corollary\_16\_11\_polynomial\_fejer}\\
 polynomial Theorem 16.2 & \lean{Proofs16PolynomialStructure}, \lean{theorem\_16\_2\_polynomial}\\
 polynomial Cor.~16.11 & \lean{Proofs16PolynomialCorollary}, \lean{corollary\_16\_11\_polynomial}\\
 \bottomrule
@@ -309,7 +378,12 @@ audit's record is
 \lean{Research/GowersSzemeredi/verification/}\\
 \lean{2026-10-11-numbered-and-bounds.json}.
 \end{center}
+The Fej\'er column (\S\ref{sec:fejer}, 2026-10-12) is newer still. Its light
+modules are kernel-checked locally with the standard axioms only. Its bridge
+\lean{Proofs18CoverFejerAllDegrees} is checked against a faithful stub whose
+axioms are exactly those of the $c=7$/$c=5$ bridge, namely the corpus theorems
+that the audit verified. It is not yet in \lean{CompletionAudit.lean}.
 The research notes
-(\lean{SECTION16\_RESEARCH\_NOTES.md}, \S\S L.11--L.16) record the development.
+(\lean{SECTION16\_RESEARCH\_NOTES.md}, \S\S L.11--L.16e) record the development.
 
 \end{document}
