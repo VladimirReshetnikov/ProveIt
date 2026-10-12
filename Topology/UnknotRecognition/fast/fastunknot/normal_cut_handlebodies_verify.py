@@ -2,6 +2,7 @@
 
 from collections import Counter
 
+from .bundle_boundary_kernel_verify import replay_bundle_boundary_kernel
 from .bundle_primitive_annuli_verify import replay_primitive_bundle_annuli
 from .core_primitive_annuli_verify import replay_core_primitive_annuli
 from .core_handlebody_verify import verify_core_handlebody_certificate
@@ -116,7 +117,10 @@ def verify_normal_cut_handlebodies(triangulation, coordinates, certificate, *,
     if type(certificate) is not dict:
         return False
     version = certificate.get('schema')
-    if version == 'normal-cut-handlebodies-v4':
+    if version == 'normal-cut-handlebodies-v5':
+        fields.remove('core')
+        fields.add('kernel')
+    elif version == 'normal-cut-handlebodies-v4':
         fields.update(('absorption', 'core_annuli'))
     elif version == 'normal-cut-handlebodies-v3':
         fields.update(('absorption', 'primitive_annuli'))
@@ -151,6 +155,9 @@ def verify_normal_cut_handlebodies(triangulation, coordinates, certificate, *,
     # Large source integers may use the established exact hexadecimal codec.
     geometry, summary = _decode(p['geometry']), _decode(p['summary'])
     skeleton = _decode(b['skeleton'])
+    if version == 'normal-cut-handlebodies-v5':
+        census = replay_bundle_boundary_kernel(geometry, summary, skeleton, certificate['kernel'], check=check)
+        return census is not None and certificate_equal(certificate['census'], census)
     try:
         core_proof = _decode(certificate['core'])
     except ValueError:

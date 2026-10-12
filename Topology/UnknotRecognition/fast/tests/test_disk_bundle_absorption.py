@@ -53,8 +53,7 @@ class DiskBundleAbsorptionTests(unittest.TestCase):
             self.assertEqual(a['census']['histogram'], self.result['census']['histogram'])
             self.assertTrue(verify_normal_cut_handlebodies(raw, rows, a['certificate']))
     def test_nondisk_annuli_and_stalled_augmented_cores_remain_unresolved(self):
-        for name, reason in [('pilot/fibonacci_lst_04/0', 'raw_cancellation_stalled'),
-                             ('fibonacci_lst_09/mixed', 'annular_core_attachment')]:
+        for name, reason in [('pilot/fibonacci_lst_04/0', 'raw_cancellation_stalled')]:
             c = next(c for c in self.bank if c['id'] == name)
             a = normal_cut_handlebodies(c['triangulation'], c['coordinates'],
                                        record_certificate=True)

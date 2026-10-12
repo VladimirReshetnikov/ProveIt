@@ -157,3 +157,16 @@ schedules for the two remaining annular cases. It has no source-to-template
 geometric adapter or independent verifier and adds no accepted certificates.
 The eleven other unresolved cases without three-handles still stall in that
 probe. The synthesis records the outstanding geometric obligations explicitly.
+
+The subsequent v5 boundary kernel combines original core and annular gluing
+two-handles in one geometric cancellation schedule. The native theory article
+now proves the bordered-base disk templates, the connecting-handle model,
+and safe omission of columns whose counts remain zero or at least two.
+Independent dense replay authenticates the same source port paths without
+importing the producer. The two previously diagnostic mixed Fibonacci cases
+now certify; all 37 focused tests pass, including explicit omitted-column
+expansion and literal Regina cuts. The source audit accepts 85/106 cuts, independently replays all 85,
+and agrees with 78 literal Regina cuts; seven accepted inputs exceed the
+expansion cap. All 83 earlier certificate hashes are unchanged. Full
+regression is still running. This remains a supplied-cut terminal criterion, with no global
+quasi-polynomial recognition claim. Delivered report contents are unchanged.

@@ -8,6 +8,7 @@ attachments, closed bundle bases, or stalled core cancellations are unresolved.
 
 from collections import Counter
 
+from .bundle_boundary_kernel import bundle_boundary_kernel
 from .bundle_primitive_annuli import primitive_bundle_annuli
 from .core_primitive_annuli import core_primitive_annuli
 from .core_handlebody import core_handlebody_certificate
@@ -110,6 +111,22 @@ def _census(geometry, summary, skeleton, components, check, absorbed=frozenset()
                 joined_components=joined, isolated_bundles=isolated, attachments=edges), None
 
 
+def _kernel_fallback(result, parallelity, boundary, record_certificate, check):
+    kernel = bundle_boundary_kernel(parallelity['geometry'], parallelity['summary'],
+                                    boundary['skeleton'], check=check)
+    if kernel is None:
+        return result
+    proof, census, stats = kernel
+    result.pop('reason', None)
+    result.update(status='COMPLETE', census=census)
+    result['stats']['boundary_kernel'] = stats
+    if record_certificate:
+        result['certificate'] = dict(schema='normal-cut-handlebodies-v5',
+            parallelity=parallelity['certificate'], boundary=boundary['certificate'],
+            kernel=proof, census=census)
+    return result
+
+
 def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
                            record_certificate=False, check=lambda: None):
     """Classify the whole supplied cut when the disk-gluing criterion succeeds.
@@ -164,14 +181,14 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
     result['stats']['core'] = core.get('stats', {})
     if core['status'] != 'COMPLETE':
         result['reason'] = core['reason']
-        return result
+        return _kernel_fallback(result, parallelity, boundary, record_certificate, check)
     core_annuli = {}
     if core_side:
         transported = core_primitive_annuli(parallelity['geometry'], parallelity['summary'],
             boundary['skeleton'], augmented, core['certificate'], check=check)
         if transported is None:
             result['reason'] = 'annular_core_attachment'
-            return result
+            return _kernel_fallback(result, parallelity, boundary, record_certificate, check)
         core_annuli_proof, core_annuli, result['stats']['core_annuli'] = transported
     census, reason = _census(parallelity['geometry'], parallelity['summary'],
                             boundary['skeleton'], core['components'], check, absorbed, primitive, core_annuli)

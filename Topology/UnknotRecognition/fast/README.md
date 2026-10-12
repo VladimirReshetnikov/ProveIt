@@ -4307,3 +4307,17 @@ Regina cuts, and seven exceed the expansion cap. All previous 78 canonical
 certificates are byte-for-byte unchanged. Evidence is in
 `../synthesis/data/core-annuli-audit.json`. The greedy core schedule remains
 label-dependent, and a failed schedule is only inconclusive.
+
+The v5 whole-cut fallback now combines original core two-handles with all
+annular gluing two-handles in one source-derived boundary kernel. Standard
+cut arcs in each bordered base provide at most one retained column per named
+boundary circle. Remaining genus columns and connecting columns start with
+zero or two intersections and are never used as pivots; their counts remain
+implicit even when the genus is a large binary integer. Sparse production
+and an independent dense replay use positive geometric counts throughout.
+The article proves the source-to-template construction, safe projection,
+and resulting genus census. This handles the two mixed Fibonacci annular
+cases missed by the separate bundle/core primitive-family criteria. Earlier
+v1--v4 successes remain preferred. Three-handles, failed greedy schedules,
+and general hierarchy discovery remain unresolved; no knot verdict or
+general quasi-polynomial complexity claim is added.
