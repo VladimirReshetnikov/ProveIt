@@ -655,3 +655,19 @@ integrates these results and extends them to every repeated primitive, with
 complete homogeneous polynomials in consecutive reciprocals. The four
 volumes retain ProveIt Contributors authorship. Inverse geometry, exact
 radius and Borel reconstruction retain separate pending audits.
+
+
+### Quadratic feedback boundary report, October 12, 2026
+
+The new [boundary-feedback continuation](../Transseries/docs/series-and-transseries/Quadratic_Polylogarithm_Feedback_Boundary_Completion/README.md)
+has one original home beside its predecessor in Transseries. Its
+[proof audit](../Transseries/docs/series-and-transseries/Quadratic_Polylogarithm_Feedback_Boundary_Completion/INTAKE-PROOF-AUDIT.md)
+checks the dominant radius, supercritical coefficient constant at integer
+and noninteger orders, the three critical laws and the physical threshold.
+This closes the predecessor's explicitly open boundary question, without
+retracting its correct interior theorem. All five full supplied suites
+replayed successfully on an isolated copy; exact arithmetic checks and
+high-precision diagnostics remain distinct from the analytic proof.
+The imported ZIP was removed in placement. Canonical chapter integration
+of this report remains pending; the current 557-page combined edition and
+four volumes contain the separately completed resonant-jet synthesis.

@@ -35,3 +35,14 @@ The current collective manuscript has already published resonant order
 jets in Section 1.6; these new feedback theorems are not yet incorporated
 into its PDFs. Original authorship remains historical evidence; the
 collective manuscript author is ProveIt Contributors.
+
+
+## Subsequent audit and replay
+
+All five supplied verification suites completed in an isolated copy using
+the declared package versions. Fresh outputs and logs are preserved under
+[intake-verification](intake-verification/README.md).
+The [independent proof audit](INTAKE-PROOF-AUDIT.md) checks the complete
+phase classification and physical threshold. The charts, logarithmic
+transfer and crossover branches retain separate canonical integration
+scopes. The original article, data and source-pin evidence are unchanged.
