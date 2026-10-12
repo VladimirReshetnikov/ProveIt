@@ -34,3 +34,19 @@ corpus. Performance measurements and full-suite validation are recorded in the
 synthesis as they complete. No new default knot-recognition dispatch is enabled.
 Full-circle disk-base absorption, arbitrary annular gluing, pattern transport,
 useful-surface discovery and the global hierarchy complexity proof remain work.
+
+The subsequent complete Regina-enabled regression run passes all 1,648 tests
+with no skips (501.552 seconds on this host). An algebraic follow-up probe
+finds 38 disk-base-eligible annular cases, of which 33 admit elimination after
+appending the candidate rows. This is not additional certified coverage: an
+authenticated absorption adapter and verifier are still required.
+
+Fresh complete-cut timings use five shuffled paired rounds after warmup.
+Three of ten cases improve and seven regress against explicit Regina cuts;
+the 4,096-copy one-tetrahedron case has a 55.702 median paired gain. Native
+production and independent replay are both timed; input parsing and output
+serialization are excluded. At eight tetrahedra and multiplicity 2^16384,
+production plus replay takes 12.652 seconds and the serialized certificate
+has 71,291,795 bytes. This is supplied-cut capacity, not complete recognition
+or constant-memory behavior. The synthesis retains every round, regression,
+identical-code control and runtime source pin.
