@@ -940,9 +940,9 @@ delivery source, receipt, README, PDF or provenance is rewritten.
 | Group | Reconciliation and acceptance boundary |
 |---|---|
 | `cubic-gamma-normal-form` | Full exact, endpoint, exploratory and numerical suites pass. The earlier all-index Conjecture 9.1 has exactly the current C_j normalization and is proved by Theorem 8.139. Its local infinite-jet question is answered by Theorem 8.140. Preserve the original unproved status as history. Other specialized endpoint, spectral and Stieltjes applications await their separate analytic integration. |
-| `higher-identities` | Accept the complete Euler-homotopy compensator and analytic primitive series in Section 8.46. Its independently obtained analytic normal generator overlaps Theorem 8.140 and receives explicit credit. Fresh C++ compilation reproduces every field of all 73722 finite gap-ten records; the direct independent checks and all exact/numerical subsidiary programs pass. The unmodified wrapper's byte comparison fails, then a structured comparison fails only on a descriptive serialization identifier. Preserve both failures and qualify the final copy-only portable comparator: every mathematical CSV/JSON value agrees, identifiers are recorded separately, source computations are unchanged. Full gap-ten analytic completion and the Gamma null basis remain pending canonical proof review. All-compensator full support/sign remains conjectural despite the weight-24 probe. |
+| `higher-identities` | Accept the complete Euler-homotopy compensator and analytic primitive series in Section 8.46. Its independently obtained analytic normal generator overlaps Theorem 8.140 and receives explicit credit. Fresh C++ compilation reproduces every field of all 73722 finite gap-ten records; the direct independent checks and all exact/numerical subsidiary programs pass. The unmodified wrapper's byte comparison fails, then a structured comparison fails only on a descriptive serialization identifier. Preserve both failures and qualify the final copy-only portable comparator: every mathematical CSV/JSON value agrees, identifiers are recorded separately, source computations are unchanged. Full gap-ten analytic completion and the Gamma null basis remain pending canonical proof review. The original all-compensator full-support/sign conjecture is now proved by the collective single-integral theorem below; its weight-24 probe remains historical finite evidence. |
 | `mixed-tail-anchor-reductions` | The complete exact/numerical runner passes: 369 exact checks and three corruption controls, including J7/K8/K9 relations and the unequal odd-tail telescoper. Keep compiler bounds and ordinary-convergence conditions. These MZV anchors do not establish arithmetic independence or settle the unrestricted even-tail prefix theorem; canonical analytic integration remains pending. |
-| `rational-hankel-polylogarithms` | All four supplied compiler, structure, spectral and numerical suites pass. Keep rational-pole domains, endpoint anchors, confluent pole budgets and classical norm attribution. Formal sharpness differs from minimal period weight; complete analytic reconciliation remains pending. |
+| `rational-hankel-polylogarithms` | All four supplied compiler, structure, spectral and numerical suites pass. Keep rational-pole domains, endpoint anchors, confluent pole budgets and classical norm attribution. Accept the confluent pole-allocation bound, terminating anchored two-letter compiler, all-rank quadratic-denominator alphabet, Euler primitives and per-element differential equation in Section 8.47, with full analytic proofs. Accept the shifted-double-pole generator and its ordinary endpoint. Formal sharpness, compressed Hahn norms, endpoint principal-part jets and spectral/Stieltjes identities retain separate pending canonical audits; formal sharpness differs from minimal period weight. |
 | `universal-gamma-coefficients-replay` | Independent weight-28 coefficient and 80-digit diagnostic suites pass. The all-index theorem agrees with Theorem 8.139; its distinct source and proof are retained without double-counting closure. The delivered build report explicitly confirms a typeset PDF; it does not certify a new human visual review. |
 
 The canonical extension supplies every zero-constant H_m by B K^{-1}(A_m-N_m),
@@ -952,5 +952,173 @@ collective affine specialization has an explicit entire compensator and
 all-degree coefficients. Its required +t/2 term enforces H_1=0; an independent
 exact control rejects its omission. An independent sparse recurrence and
 homotopy compare every weight through eighteen, with two real/complex affine
-diagnostics. General all-pair rank, Gaussian S6/revised S8 and unrestricted
-compensator support remain open.
+diagnostics. General all-pair rank and Gaussian S6/revised S8 remain open.
+
+
+## Primitive coefficient closure and the full analytic disk, October 11, 2026 (Pacific)
+
+The incoming Higher Identities support/sign conjecture is proved in
+Theorem 8.143, following its weight-24 probe and the collective coefficient
+experiment. Every H_m monomial of weight m-1 is present for m>=2, with sign
+(-1)^(m-factor-degree). One ordinary polynomial integral gives every
+coefficient, including a single highest derivative. H_1=0 is the sole
+weight-one constant exception. Pure u0 coefficients remain -m/2.
+
+The proof reuses the rational R_d kernel from the normal coefficient theorem.
+The normalization primitive of J_d-F_d has highest index at most d-1, so
+the coefficient containing u_d comes from the integrated kernel unchanged.
+The full polynomial Appell identity, with its constant anomaly, and
+injectivity of L_d identify the projected primitive before specialization.
+Reflection cancels one C_d factor in the denominator, leaving a positive
+polynomial integral. This is an all-weight argument, not extrapolation from
+the observed support. Original conjectural source statuses remain unchanged.
+
+The resulting E_1 ordinary projection proves Theorem 8.144: the primitive
+generator converges on the same |t|<R input disk as the normal generator.
+Thus Gamma/Stieltjes translations hold for real x>0 and |t|<x, and anchored
+integration on [a,b] is valid for |t|<a. The earlier homotopy theorem remains
+a correct independent proof on a smaller domain; maximal continuation is
+not claimed. New all-index linear and mixed coefficient identities illustrate
+the formula. General rank and Gaussian S6/revised S8 remain open.
+
+An independent rational reduction checks every weighted-partition monomial
+through weight thirty: 23025 coefficient comparisons and 23024 nonzero
+support/sign checks, through highest index 28. Twelve 75-digit ordinary
+projection/Taylor diagnostics pass; they are not interval certificates.
+Native Wolfram separately constructs both polynomial-integral coefficient
+families and verifies A_m=N_m+D H_m through weight sixteen, with linear/mixed
+families and an exact corruption control. These checks support implementation;
+the written highest-index and Cauchy arguments prove the infinite results.
+
+
+## Rational-pole amplitude sectors and dilogarithms, October 12, 2026 (Pacific)
+
+Continue research with no incoming arrivals. Specialize the free-ring normal
+and primitive hierarchies to U_c=c/x only after projection. Weight homogeneity
+reduces their actual generators to G_c(z) and P_c(z), z=t/x. Theorem 8.145
+evaluates their linear and quadratic amplitude sectors: the quadratic normal
+sector is 2*asinh(z/2)^2, and the quadratic primitive is a classical-dilogarithm
+expression at z and plus/minus z/(2+sqrt(4+z^2)). State analytic zero germs,
+the square-root normalization and |z|<1; the normal quadratic sector alone
+continues to |z|<2. Higher amplitude sectors remain separate questions.
+
+The proof uses canonical factor-degree-two support, the pure-square normal
+coefficient, a scalar ODE and the exact evaluated raw generator (1-z)^(-c).
+The normalized spatial decomposition fixes the primitive germ; an added z
+would satisfy its ODE but violate H_1=0. Derive the all-degree quadratic
+primitive coefficient in factorials and harmonic numbers, plus two ordinary
+antiderivatives of asinh(t/(2x))^2 and log(1-t/x)^2. Branches and endpoint
+conventions are retained. No complete finite special-function formula for
+the full amplitude generator, or arithmetic independence, is claimed.
+
+Independent free-ring recursive reduction checks four amplitude coefficient
+families at each weight through thirty and their exact decomposition. Native
+Wolfram checks both ODEs, local logarithm-germ algebra, every quadratic Taylor
+coefficient through degree thirty, two antiderivative certificates and three
+branch/constant/sign controls. The local logarithm identity is explicitly
+proved and applied; an unqualified global branch substitution is not used.
+Four real/complex numerical ODE cases, two Taylor cases and two paired
+antiderivative cases pass at 80 digits, without interval certification.
+Original reports and earlier evidence remain unchanged; this model is a
+collective continuation rather than an imported new report.
+
+
+## Finite alphabets for all rational Hankel ranks, October 12, 2026 (Pacific)
+
+Reconcile the twentieth rational-hankel-polylogarithms continuation into
+Section 8.47. The formal factorization B+sum V_a C_a V_a^T places harmonic
+dependence in confluent pole minors. A k-row local minor has weight at most
+k(s-k+1), so the r largest positive marginals s,s-2,s-4,... give W_r.
+This invariant is harmonic weight, distinct from ordinary degree and rank.
+Shift merging preserves harmonic weight plus inverse-cutoff order.
+Quasi-shuffles and anchored two-letter rational Hermite reduction then
+prove a finite MPL expression at every rank, with no hidden constants.
+All reduced denominators of degree at most two use only 1,L,L^2,Li2.
+Polynomial parts and separated nonpositive integer poles are included.
+
+The finite differential module has at most 2^W_infinity generators;
+each individual function has a scalar ODE of that order or less. No
+common scalar equation for every rank or minimal period weight is claimed.
+The explicit shifted-double-pole generator has a rigorously convergent
+ordinary zeta endpoint, retaining the combined cancellation in integration
+by parts. Credit the original report and classical Hoffman quasi-shuffle
+and Panzer integration methods; no historical novelty claim is added.
+
+New independent exact checks cover 2793 allocation cases, 32 formal
+determinant gradings, 240 moment-matrix entries, 360 ordered ensemble
+identities, and 41 double-pole Taylor coefficients. Eleven native symbolic
+checks include 31 Taylor coefficients, analytic cancellation boundaries
+and corruption controls. Three 80-digit generator comparisons and one
+endpoint quadrature remain diagnostics, not interval certificates. The
+written proofs, rather than finite checks, establish arbitrary rank.
+The preserved four-suite replay remains valid on unchanged originals;
+unaccepted sharpness, Hahn, endpoint-jet and spectral claims stay pending.
+
+
+## Twenty-first intake: resonant jets and inverse transseries
+
+Five deliveries preserve 118 original members: 115 tracked and three ignored
+records recoverable in arrival history. All five ZIPs were retired in
+placement 594a660a540e, published through 1955407685af. Cumulative preservation
+is 129 archives, 4665 tracked originals and 53 ignored recoverable records.
+Three packages continue the uniform-transition spine in Polylogarithms; two
+have one authoritative original copy in Transseries.
+
+| Group | Qualified scope and reconciliation |
+|---|---|
+| normalized-resonant-jets | Continues the existing Lerch resonance and order calculus with reciprocal-Gamma normalization, minimal centered dilation filters, inverse support and exact half-shift order tuning. Source inspection is explicitly nonatomic and supplies file-level Git blobs, not a common commit pin. Its Bailey-Borwein-Crandall sign correction concerns an external version and awaits independent source-level audit. |
+| resonant-inverse-folds | Continues pole-paired resonance with a primary inverse chart, core Gamma-zeta critical locus, full-tail displacement and dilogarithmic two-sheet charts. The reported head qualifies moving reads; it is not an atomic checkout. Its historical bridge warning already appears in the collective ledger and is not a new canonical correction. |
+| sharp-dilog-reversion | Continues the Transseries nonlinear inverse-transport and quadratic-feedback programme: exact-core Fermi-Dirac reversion, positive Laurent sectors, a proposed exact radius and physical endpoint, with Gamma/periodic Borel jets. Keep its proposed Transseries home and crosslink from Polylogarithms. The final observed revision qualifies earlier moving reads and is not an atomic source pin. |
+| weighted-resonant-inversion | Continues Transseries endpoint inversion with weighted logarithmic deficits, Fuss-Catalan support coefficients, a uniform order-two chart and global coefficient asymptotics. Keep its proposed Transseries home and one authoritative original copy. The stated repository pin exists; claimed external Krattenthaler-Rivoal normalization corrections and the global contour argument require separate audit. |
+| order-jets-resonant-inversion | Continues the existing resonance report: fixed-sheet complex sectors, finite Gamma normalization, higher-logarithmic inverse charts, accumulating critical values and exact Borel reconstruction. Its sector theorem directly targets R1 in sections/07_questions.tex lines 10-16 of resonance-correlations-nonseparable-jets. Growing spectral jets and general growing windows remain open. The external zero-finiteness correction awaits independent verification; no source theorem is silently reclassified. |
+
+
+All five full mathematical replay suites pass on isolated copies. Preserve
+the initial weighted-package missing-matplotlib failure and the earlier
+sharp-dilog local-NumPy run; accepted replays of those two use the declared
+pinned dependencies. Delivered programs and original evidence are unchanged.
+Finite symbolic checks, high-precision diagnostics, conventional proof
+audits and Lean formalization remain different kinds of evidence.
+
+The [proof note](verification/TWENTY-FIRST-INTAKE-AUDIT.md) audits the scoped
+fixed-sector R1 extension and the pure-logarithm normalization. It derives
+an exact order-lowering ladder and finite primitives for every normalized
+resonant jet. Its independent verifier checks 3780 coefficient-basis cases,
+72 finite primitive cancellations and 24 defining-sum diagnostics. The
+all-order proof uses normal convergence and Gamma recurrence.
+
+The combined resonance synthesis and next four-volume PDF release remain
+pending. Current released PDFs contain the previously accepted material.
+Growing jet order R3 and unrestricted growing windows R4 remain open.
+Source-specific corrections proposed for Bailey-Borwein-Crandall,
+Krattenthaler-Rivoal, O'Sullivan and Vepstas remain pending primary-source
+verification here; preserve their arguments without changing current
+canonical statements on an unaudited claim.
+
+
+## Canonical resonant jets and repeated primitives
+
+Section 1.6 integrates the scoped fixed-complex-sector R1 theorem and the
+reciprocal-Gamma pure-logarithm normalization from the twenty-first intake.
+The two overlapping normalized-jet reports receive joint credit. The
+classical Lerch and Hermite formulas retain their DLMF attribution.
+The sector proof keeps the finite-integer-order centered coefficients and
+derives a common majorant before taking parameter derivatives. Growing
+jet order, general growing windows and unrestricted winding remain open.
+
+The collective continuation proves the exact order-lowering ladder,
+including its polynomial endpoint, and every anchored repeated primitive.
+For integration order q, the coefficient array is the complete homogeneous
+polynomial sequence in 1/(m+1), ..., 1/(m+q). A generating-family identity
+proves the result for all jet orders; a finite derivative cancellation
+fixes the endpoint polynomial. This extends the previous one-step audit.
+The m=0 logarithmic family is integrable and included explicitly.
+
+Independent checks comprise 3780 exact tail-coefficient basis cases,
+72 single-primitive and 252 repeated-primitive cancellations, 24 complex
+defining-sum diagnostics at 85 digits, and nine native Wolfram symbolic
+checks. These finite checks support the formulas; the all-index result
+rests on the written normal-convergence and Gamma-recurrence proof.
+No Lean formalization or priority claim is made. The exact inverse-fold,
+sharp-radius, global-coefficient and Borel-reconstruction branches remain
+pending distinct audits; their original evidence is unchanged.

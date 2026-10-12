@@ -1,0 +1,311 @@
+\section{Convergent inverse charts at the critical endpoint}
+\label{sec:charts}
+
+We now resolve the critical singularity beyond its leading equivalent.
+Throughout this section $u=\Uc(s)$, $s>2$, and the inverse is selected by
+$x>0$ when $d>0$.  Its exact equation is
+\eqref{eq:critical-normalform}.  All fractional powers are continued
+from the positive axis in the sector supplied by \cref{lem:delta}.
+A power of a function near $1$ uses the Taylor-series logarithm there.
+Every chart below is holomorphic in finitely many independent small
+coordinates; its convergent Taylor series becomes an exact generalized
+power or logarithmic series after the indicated substitution.
+
+\subsection{The range \texorpdfstring{$2<s<3$}{2<s<3}}
+
+Put
+\[
+ \alpha=s-1,\qquad \beta=2-\alpha=3-s,\qquad
+ C=\Gamma(1-s)>0,
+\]
+and use $B_s$ from \eqref{eq:K-noninteger}.  Thus
+$K_s(x)=Cx^\alpha+x^2B_s(x)$.  Write
+\[
+ B_0=B_s(0)=\frac{1+\zeta(s-2)}2,\qquad
+ B_1=B_s'(0)=-\frac{\zeta(s-3)}6.
+\]
+The two small exponents $\alpha-1$ and $\beta$ are both positive
+and sum to one.  This relation removes the need for a third generator.
+
+\begin{theorem}[A convergent chart with polynomial sectors]
+\label{thm:chart-low}
+Define
+\begin{equation}\label{eq:chart-low-coordinates}
+ q=\left(\frac{Ad}{C}\right)^{1/\alpha},\qquad
+ p=q^{\alpha-1},\qquad z=q^\beta.
+\end{equation}
+There is a unique holomorphic germ $U(p,z)$ at $(0,0)$, with
+$U(0,0)=1$, satisfying
+\begin{equation}\label{eq:chart-low-equation}
+ U^\alpha+\frac zC U^2 B_s(pzU)
+ =1+\frac{pz}{A}U-\frac{C}{2A^2}p^2z.
+\end{equation}
+The critical inverse is exactly
+\begin{equation}\label{eq:chart-low-inverse}
+ x=qU(q^{\alpha-1},q^\beta).
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:chart-low-sectors}
+ U(p,z)=1+\sum_{\ell\ge1}P_\ell(p)z^\ell,
+ \qquad P_\ell\in\R[p],\qquad \deg P_\ell\le2\ell,
+\end{equation}
+with normal convergence on a sufficiently small bidisk.
+\end{theorem}
+
+\begin{proof}
+Substitute $x=qU$ and $d=Cq^\alpha/A$ into
+\eqref{eq:critical-normalform}, then divide by $Cq^\alpha$.
+Since $q=pz$ and $q^\alpha=p^2z$, the result is
+\eqref{eq:chart-low-equation}.  Its derivative in $U$ at
+$(p,z,U)=(0,0,1)$ is $\alpha\ne0$.  The holomorphic implicit
+function theorem gives the germ.  Substitution recovers the original
+equation, and \cref{lem:delta} identifies the selected inverse.
+
+At $z=0$ the solution is $U=1$.  In the perturbation side obtained
+after isolating $U^\alpha-1$, every monomial $p^jz^\ell$ has
+$\ell\ge1$ and $j\le2\ell$.  The three sources of such monomials
+are $pz$, $p^2z$, and $p^jz^{j+1}$ from the analytic tail.
+Induction on the $z$-degree in the implicit coefficient recursion
+preserves this support condition.  It proves the polynomial assertion;
+holomorphy proves convergence.
+\end{proof}
+
+There is a finite formula for every sector polynomial.  Put
+\begin{align*}
+ F_0(h)&=(1+h)^\alpha-1,\\
+ \Psi(p,z,h)&=\frac{pz}{A}(1+h)-\frac{Cp^2z}{2A^2}
+ -\frac zC(1+h)^2B_s(pz(1+h)).
+\end{align*}
+Then
+\begin{equation}\label{eq:chart-low-finite}
+ P_\ell(p)=\sum_{k=1}^{\ell}\frac1k
+ [z^\ell h^{k-1}]
+ \left\{\frac h{F_0(h)}\Psi(p,z,h)\right\}^{k}.
+\end{equation}
+Indeed, insert an auxiliary multiplier on $\Psi$ in $F_0(h)=\Psi$,
+rewrite this as a Lagrange equation for $h$, and extract its coefficients.
+Since $\Psi$ is divisible by $z$, only $k\le\ell$ can contribute.
+This finite extraction agrees with the Taylor coefficients of the
+already established analytic germ; no convergence assertion about the
+auxiliary multiplier is needed.
+
+For example,
+\begin{align}
+ P_1(p)&=-\frac{B_0}{\alpha C}+
+          \frac p{\alpha A}-\frac{Cp^2}{2\alpha A^2},
+          \label{eq:chart-low-P1}\\
+ P_2(p)&=\frac1\alpha\left\{
+ \left(\frac pA-\frac{2B_0}C\right)P_1(p)-\frac{B_1p}C
+ -\frac{\alpha(\alpha-1)}2P_1(p)^2\right\}.
+          \label{eq:chart-low-P2}
+\end{align}
+The whole ladder at $p=0$ has the closed form
+\begin{equation}\label{eq:chart-low-pure}
+ P_\ell(0)=
+ \frac{(-B_0/C)^\ell}{\alpha\,\ell!}
+ \frac{\Gamma((2\ell+1)/\alpha)}
+ {\Gamma(1+(1+\ell\beta)/\alpha)}.
+\end{equation}
+To prove it, set $p=0$ in the chart and put $w=U^\alpha$.
+The equation becomes $w+(B_0/C)zw^{2/\alpha}=1$;
+ordinary Lagrange inversion applied to $w^{1/\alpha}$ gives
+\eqref{eq:chart-low-pure}.
+
+The terms of total Taylor degree at most two are
+\begin{equation}\label{eq:chart-low-first}
+ U=1-\frac{B_0}{\alpha C}z+\frac1{\alpha A}pz
+ +\frac{(5-\alpha)B_0^2}{2\alpha^2C^2}z^2
+ +O((|p|+|z|)^3).
+\end{equation}
+Their asymptotic order after substitution depends on $s$; equal powers
+must be collected when the two exponents are rationally related.
+In particular, if $B_0\ne0$,
+\[
+ x=q-\frac{B_0}{\alpha C}q^{1+\beta}+o(q^{1+\beta}).
+\]
+There is a genuine cancellation possibility.  If $\zeta(s-2)=-1$,
+then $B_0=0$ and the entire ladder \eqref{eq:chart-low-pure} vanishes.
+In this case $U(p,0)=U(0,z)=1$, so $U-1$ is divisible by $pz=q$.
+Equation \eqref{eq:chart-low-P1} therefore gives instead
+\begin{equation}\label{eq:chart-low-cancellation}
+ x=q+\frac{q^2}{\alpha A}+o(q^2).
+\end{equation}
+No uniqueness claim about an order satisfying this cancellation condition
+is needed for the result.
+
+\subsection{An exact Lambert chart at order three}
+
+Let $s=3$, $A=\zeta(2)$, and define the analytic tail $C_3$ by
+\[
+ K_3(x)=\frac{x^2}{2}\left(\log\frac1x+\frac52\right)+x^3C_3(x).
+\]
+By \eqref{eq:K3},
+$C_3(x)=1/12-x/288+O(x^3)$; its Taylor series converges for
+$|x|<2\pi$.
+
+\begin{theorem}[Convergent marginal inverse]
+\label{thm:chart-three}
+For small positive $d$, put
+\begin{equation}\label{eq:three-Lambert-core}
+ \Lambda=-\frac12W_{-1}(-4Ad\ee^{-5}),\qquad
+ \tau=\sqrt{\frac{2Ad}{\Lambda}}.
+\end{equation}
+Thus $\Lambda=\log(1/\tau)+5/2$ and $\tau^2\Lambda=2Ad$.
+There is a holomorphic germ $U(p,w)$ with $U(0,0)=1$ such that
+\begin{equation}\label{eq:three-chart-inverse}
+ x=\tau U(\tau\Lambda,\Lambda^{-1}).
+\end{equation}
+Its defining equation is
+\begin{equation}\label{eq:three-chart-equation}
+ U^2(1-w\log U)+2pw^2U^3C_3(pwU)
+ =1+\frac{pw}{A}U-\frac{p^2w}{4A^2}.
+\end{equation}
+The germ $U-1$ is divisible by $pw$, and
+\begin{equation}\label{eq:three-chart-correction}
+ x=\tau+\tau^2\frac{\Lambda/A-1/6}{2\Lambda-1}
+       +O(\tau^3\Lambda).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The branch $W_{-1}$ in \eqref{eq:three-Lambert-core}, with the
+standard convention of \cite{DLMFLambert}, is selected
+because $\Lambda\to+\infty$.  The core solves
+$\tau^2\{\log(1/\tau)+5/2\}=2Ad$ exactly.
+Put $p=\tau\Lambda$, $w=1/\Lambda$, so that
+$\tau=pw$ and $d=p^2w/(2A)$.  Substitution of $x=\tau U$ in
+\eqref{eq:critical-normalform}, followed by division by $Ad$,
+gives \eqref{eq:three-chart-equation}.  Its derivative in $U$ at
+the origin is $2$, so the holomorphic implicit function theorem applies.
+At $p=0$ or $w=0$, uniqueness gives $U=1$, proving divisibility.
+
+At fixed $w$, the coefficient of $p$ is
+\[
+ [p]U(p,w)=\frac{w/A-w^2/6}{2-w}.
+\]
+The remaining terms are $O(p^2w)$ uniformly for small $w$.
+Multiplication by $\tau$ and physical substitution yield
+\eqref{eq:three-chart-correction}.  The real inverse agrees by
+\cref{lem:delta}, and its sectorial continuation fixes the complex branch.
+\end{proof}
+
+Here too every coefficient is computable by finite extraction.
+For $U=1+\sum_{n\ge1}u_n(w)p^n$, set
+\begin{align*}
+ F_0(h,w)&=(1+h)^2\{1-w\log(1+h)\}-1,\\
+ \Psi(p,w,h)&=\frac{pw}{A}(1+h)-\frac{p^2w}{4A^2}
+ -2pw^2(1+h)^3C_3(pw(1+h)).
+\end{align*}
+Then
+\begin{equation}\label{eq:three-chart-finite}
+ u_n(w)=\sum_{k=1}^{n}\frac1k[p^nh^{k-1}]
+ \left\{\frac h{F_0(h,w)}\Psi(p,w,h)\right\}^{k}.
+\end{equation}
+These are rational functions of $w$, with their only possible finite
+pole at $w=2$, of order at most $2n-1$.  Indeed,
+$F_0(h,w)/h=2-w+O(h)$; extracting $h^{k-1}$ from its negative
+$k$th power requires at most $2k-1$ inverse factors of $2-w$.
+The assertion concerns coefficient functions of a chart proved near
+$w=0$; it does not assert a singularity of a global physical inverse.
+
+\subsection{Noninteger and integer orders above three}
+
+For noninteger $s>3$, put
+\[
+ \mu=s-3>0,\quad C=\Gamma(1-s),\quad
+ B=\frac{1+\zeta(s-2)}2>0,\quad q=\sqrt{Ad/B}.
+\]
+Equation \eqref{eq:K-noninteger} reads
+$K_s(x)=x^2B_s(x)+Cx^{\mu+2}$, with $B_s(0)=B$.
+
+\begin{theorem}[Convergent power and logarithmic charts]
+\label{thm:chart-high}
+For noninteger $s>3$, the critical inverse is
+\begin{equation}\label{eq:chart-high-inverse}
+ x=qU(q,q^\mu),
+\end{equation}
+where $U$ is holomorphic at $(0,0)$, $U(0,0)=1$, and
+\begin{equation}\label{eq:chart-high-equation}
+ U^2\frac{B_s(qU)}B+\frac CB zU^{\mu+2}
+ =1+\frac qA U-\frac{Bq^2}{2A^2}.
+\end{equation}
+For an integer $m\ge4$, let
+\[
+ \nu=m-3,\quad A=\zeta(m-1),\quad
+ B=\frac{1+\zeta(m-2)}2,\quad
+ c_m=\frac{(-1)^{m-1}}{(m-1)!}.
+\]
+Define the analytic function $B_m$ by
+\[
+ K_m(x)=x^2B_m(x)+c_mx^{\nu+2}\log(1/x),\qquad B_m(0)=B.
+\]
+With $q=\sqrt{Ad/B}$, the integer-order inverse is
+\begin{equation}\label{eq:chart-integer-inverse}
+ x=qU(q,q^\nu\log(1/q)),
+\end{equation}
+where $U(0,0)=1$ is holomorphic and satisfies
+\begin{equation}\label{eq:chart-integer-equation}
+ U^2\frac{B_m(qU)}B+\frac{c_m}{B}zU^{\nu+2}
+ -\frac{c_m}{B}q^\nu U^{\nu+2}\log U
+ =1+\frac qA U-\frac{Bq^2}{2A^2}.
+\end{equation}
+Both formulas are exact convergent two-generator expansions.
+\end{theorem}
+
+\begin{proof}
+In each case substitute $x=qU$, $d=Bq^2/A$ into
+\eqref{eq:critical-normalform} and divide by $Bq^2$.
+For the integer case use
+$\log(1/(qU))=\log(1/q)-\log U$.  The respective equations follow.
+Their derivatives in $U$ at the origin are $2$, proving the
+holomorphic charts.  The positive and sectorial branch identifications
+are the same as in \cref{thm:chart-low}.
+\end{proof}
+
+Every mixed coefficient has a finite Lagrange formula of the same kind
+as \eqref{eq:chart-low-finite}.  More precisely, let
+$F_0(h)=(1+h)^2-1$ and move all remaining terms of the relevant chart
+equation to its right side, denoted $\Psi(q,z,h)$.
+Then
+\begin{equation}\label{eq:chart-high-finite}
+ [q^nz^\ell](U-1)=
+ \sum_{k=1}^{n+\ell}\frac1k[q^nz^\ell h^{k-1}]
+ \left\{\frac h{F_0(h)}\Psi(q,z,h)\right\}^{k}.
+\end{equation}
+The constant term of $\Psi$ in $(q,z)$ vanishes, so the sum is finite.
+For the noninteger case the first bivariate terms are
+\begin{equation}\label{eq:chart-high-first}
+ U(q,z)=1-\frac C{2B}z+
+ \left(\frac1{2A}+\frac{\zeta(s-3)}{12B}\right)q
+ +O(|q|^2+|qz|+|z|^2),
+\end{equation}
+and the pure fractional sectors are
+\begin{equation}\label{eq:chart-high-pure}
+ [z^k]U(0,z)=\frac{(-C/B)^k}{2k!}
+ \frac{\Gamma(((\mu+2)k+1)/2)}{\Gamma((\mu k+3)/2)}.
+\end{equation}
+The latter follows by Lagrange inversion of
+$U^2+(C/B)zU^{\mu+2}=1$.
+
+At integer order, collecting equal powers in the absolutely convergent
+double series gives
+\begin{equation}\label{eq:chart-integer-degree}
+ x=q\sum_{j\ge0}q^jQ_j(\log(1/q)),\qquad
+ \deg Q_j\le\lfloor j/\nu\rfloor.
+\end{equation}
+This bound is attained at every $j=\nu k$: the highest logarithmic
+coefficient comes from the $q$-constant part of the chart and equals
+\begin{equation}\label{eq:chart-integer-top}
+ [L^k]Q_{\nu k}(L)=\frac{(-c_m/B)^k}{2k!}
+ \frac{\Gamma(((\nu+2)k+1)/2)}{\Gamma((\nu k+3)/2)}\ne0.
+\end{equation}
+In particular, order four requires the resonant constant
+$B_4'(0)=-H_3/6=-11/36$, and yields
+\begin{equation}\label{eq:chart-four}
+ x=q+\frac{q^2}{12B}\log\frac1q
+ +\left(\frac1{2A}+\frac{11}{72B}\right)q^2
+ +O(q^3\log^2(1/q)).
+\end{equation}
+The harmonic constant is essential: directly substituting $s=4$ in
+the noninteger coefficient \eqref{eq:chart-high-first} would encounter
+$\zeta(1)$ and lose the resonant cancellation.

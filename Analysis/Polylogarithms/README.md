@@ -2,20 +2,20 @@
 
 The canonical reading artifact is the collective four-volume manuscript,
 [Polylogarithms and their Arithmetic Bridges](docs/manuscript/README.md),
-authored by **ProveIt Contributors**. The volumes have **130, 129, 240 and
-85 pages**, each compiling independently; the retained
-[combined edition](docs/manuscript/polylogarithms.pdf) has **543 pages**.
-They share twelve chapters, thirteen figures and 140 references. The
+authored by **ProveIt Contributors**. The volumes have **135, 130, 249 and
+86 pages**, each compiling independently; the retained
+[combined edition](docs/manuscript/polylogarithms.pdf) has **557 pages**.
+They share twelve chapters, thirteen figures and 142 references. The
 [editorial ledger](docs/manuscript/EDITORIAL-LEDGER.md) separates accepted
 proofs from pending analytic claims, and the
 [validation record](docs/manuscript/VALIDATION.md) distinguishes proofs,
 finite certificates, numerical diagnostics, PDF builds and visual review.
 
-The inventory covers **1408 textual provenance documents**. **96 incoming
-archives / 3502 original tracked members** are preserved; imported ZIPs are
+The inventory covers **1810 textual provenance documents**. **129 incoming
+archives / 4665 original tracked members** are preserved; imported ZIPs are
 retired in their placement commits and recoverable from arrival history.
-The latest eighteen deliveries, in three intakes, retain their own PDFs, sources, code and
-receipts. Intake notes use a separate filename, preserving delivered
+Delivered PDFs, sources, code and receipts retain their original evidence
+scopes. Intake notes use a separate filename, preserving delivered
 OVERVIEW files. Original articles and reports remain historical evidence.
 
 The crossed-twist extension now gives the exact finite Fourier correction
@@ -30,8 +30,8 @@ also preserved and audited; their native search is a separate experiment.
 The latest accepted additions prove all positive-integer digamma-power finite
 parts and normalized primitives, reconcile the full fifth-power correction,
 and give a positive Cauchy series for every height-one coefficient. Two
-version-specific source corrections carry exact proofs. All eighteen newest
-packages pass isolated mathematical replay; their broader branches retain
+version-specific source corrections carry exact proofs. Recorded isolated
+mathematical replays retain their stated scopes; broader branches retain
 separate analytic scopes. The differential-polynomial core now proves unsubtracted expansions and
 ordinary finite-part coordinates for every derivative-containing polynomial;
 combined with scalar powers, it handles every fixed differential polynomial.
@@ -613,3 +613,45 @@ exact checks through weight eighteen and native Wolfram symbolic identities
 pass. All five twentieth-intake suites pass on isolated copies; the complete
 73722-case gap-ten finite certificate is reproduced with a disclosed portable
 structured comparator. Its infinite Gamma-basis proof remains pending audit.
+
+
+Theorems 8.143--8.144 prove every primitive coefficient by one ordinary
+polynomial integral, closing unrestricted full support/sign for m>=2 with
+the explicit H_1=0 exception. The entire E_1 finite projections also give
+convergence of the primitive generator on the full holomorphic input disk.
+Gamma/Stieltjes translations hold for |t|<x at positive x, with exact
+endpoints; a weighted generating antiderivative is included. Independent
+exact comparisons cover 23025 coefficients through weight thirty, and native
+symbolic defining identities cover every weight through sixteen. Finite
+evidence is separate from the written all-weight and analytic proofs.
+
+
+Theorem 8.145 evaluates the rational input U_c(x)=c/x through quadratic
+amplitude in classical dilogarithms. Free normal projection precedes
+specialization. An all-degree harmonic coefficient identity and ordinary
+asinh-square/log-square antiderivatives follow, with analytic branches
+fixed on |t/x|<1. Higher amplitude resummations remain open.
+
+
+Section 8.47 proves the confluent pole-multiplicity budget and a terminating
+finite MPL compiler for all rational Hankel ranks. Denominators of degree
+at most two use only 1,L,L^2,Li2, with arbitrary polynomial part and
+nonpositive integer poles. Anchored Euler primitives, finite differential
+modules and a shifted-double-pole ordinary zeta endpoint are included.
+Formal sharpness and spectral/Hahn refinements remain separate audits.
+
+
+### Resonant jets and inverse transseries: twenty-first intake
+
+Five packages now have preserved originals, retired arrival archives, and
+full isolated mathematical replays. The [reconciliation and proof audit](docs/manuscript/verification/TWENTY-FIRST-INTAKE-AUDIT.md)
+maps their overlap and pending claims. Three continue the
+[uniform-transition report](docs/reports/uniform-transition-continuation/RESONANT-INVERSION-INTAKE.md);
+the exact-core dilogarithm and weighted endpoint-inverse packages have one
+original copy in [Transseries](../Transseries/docs/series-and-transseries/README.md).
+The fixed-sector R1 proof is audited, and an exact order-lowering identity
+gives finite primitives for all normalized resonant jets. Section 1.6
+integrates these results and extends them to every repeated primitive, with
+complete homogeneous polynomials in consecutive reciprocals. The four
+volumes retain ProveIt Contributors authorship. Inverse geometry, exact
+radius and Borel reconstruction retain separate pending audits.

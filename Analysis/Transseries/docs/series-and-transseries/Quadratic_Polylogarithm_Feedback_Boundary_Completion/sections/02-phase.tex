@@ -1,0 +1,331 @@
+\section{The complete radius and coefficient classification}
+\label{sec:phase}
+
+Here and below, an equivalent $a_n\sim C R^{-n}n^{-p}(\log n)^{-q}$
+has a strictly positive constant $C$.  This is useful because it proves
+that the specified point really is singular, in addition to describing
+the coefficients.
+
+\begin{theorem}[Complete feedback phase diagram]\label{thm:phase}
+For every $s>0$ and $u>0$, \eqref{eq:model} has a unique holomorphic germ
+at zero.  Every coefficient $a_n(s,u)$ is positive.  The following list
+gives its exact Taylor radius and coefficient equivalent.  In every
+case the positive radius is the unique singularity on the circle of
+convergence, and the Taylor series converges absolutely on that circle.
+
+\begin{enumerate}
+\item If $0<s\le2$, or if $s>2$ and $u<\Uc(s)$, there is a unique
+$t_*\in(0,1)$ such that
+\begin{equation}\label{eq:characteristic}
+ u^2=2\Li_s(t_*)+\Li_{s-1}(t_*)^2.
+\end{equation}
+With $w_* =\Li_{s-1}(t_*)$ and $R=t_*\ee^{w_*-u}$,
+\begin{equation}\label{eq:interior-law}
+ a_n\sim
+ \sqrt{\frac{w_*}{2\pi(1+\Li_{s-2}(t_*))}}\,
+ R^{-n}n^{-3/2}.
+\end{equation}
+This is the interior theorem of \cite{RepoFeedback}.
+
+\item Suppose $s>2$ and $u>\Uc(s)$.  Define
+\begin{equation}\label{eq:boundary-parameters}
+ A=\zeta(s-1),\quad b=\sqrt{u^2-2\zeta(s)},\quad
+ \vc=u-b,\quad \Rb=\ee^{-\vc}.
+\end{equation}
+Then $b>A$, the radius is $\Rb$, and
+\begin{equation}\label{eq:supercritical-law}
+ \boxed{\displaystyle
+ a_n\sim \frac{b^{s-1}}{(b-A)^s}\,\Rb^{-n}n^{-s}.}
+\end{equation}
+This proves the candidate in the incoming source's first research
+question, including every integral $s\ge3$.
+
+\item Suppose $u=\Uc(s)$, $s>2$, so that $b=A$ in
+\eqref{eq:boundary-parameters}.  The radius is again $\Rb$.  If
+$2<s<3$, put $\alpha=s-1$ and $\rho=1/\alpha$.  Then
+\begin{equation}\label{eq:critical-stable}
+ a_n\sim
+ \frac{(A/\Gamma(-\alpha))^{1/\alpha}}{-\Gamma(-1/\alpha)}
+ \,\Rb^{-n}n^{-1-1/\alpha}.
+\end{equation}
+At $s=3$, with $A=\zeta(2)$,
+\begin{equation}\label{eq:critical-log}
+ a_n\sim\sqrt{\frac A\pi}\,
+ \Rb^{-n}n^{-3/2}(\log n)^{-1/2}.
+\end{equation}
+If $s>3$, then
+\begin{equation}\label{eq:critical-gaussian}
+ a_n\sim
+ \sqrt{\frac{A}{2\pi(1+\zeta(s-2))}}\,
+ \Rb^{-n}n^{-3/2}.
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+The transition has two independent parameters.  Changing $u$ determines
+whether the first obstruction is an interior fold or the endpoint
+$t=1$.  Once the endpoint and the fold coincide, changing $s$ determines
+the regularity of the endpoint.  In particular, the vanishing limit of
+the finite-curvature constant as $s\downarrow3$ does not describe the
+$s=3$ law: the logarithm changes the scale.
+
+\subsection{Positivity and the positive real branch}
+
+\begin{lemma}[Positive germ and parametrization]\label{lem:positive}
+The unique germ of \eqref{eq:model} has $a_n\ge1/(un^s)>0$.
+On the increasing part of the positive real branch it is parametrized by
+\begin{equation}\label{eq:parametrization}
+ f_u(t)=u-\sqrt{u^2-2\Li_s(t)},\qquad
+ v=f_u(t),\qquad r=t\ee^{-f_u(t)}.
+\end{equation}
+The first stationary point of $r(t)$, when it exists, is exactly
+\eqref{eq:characteristic}.
+\end{lemma}
+
+\begin{proof}
+Write
+\[
+ \Phi(r,v)=\frac{v^2}{2u}+\frac1u\sum_{n\ge1}\frac{r^n\ee^{nv}}{n^s}.
+\]
+The implicit function theorem applies to $v=\Phi(r,v)$ at $(0,0)$,
+because $\Phi_v(0,0)=0$.  Starting with zero and iterating $\Phi$
+formally produces nonnegative coefficients.  If two zero-constant-term
+series agree through degree $N-1$, their images agree through degree
+$N$, so every coefficient stabilizes after finitely many iterations.
+The direct term $r^n/(un^s)$ proves the strict lower bound.
+
+Solving the quadratic at $v=0,t=0$ selects \eqref{eq:parametrization}.
+Where its square root is positive,
+\begin{equation}\label{eq:radius-derivative}
+ \frac{\dd}{\dd t}\log r(t)=\frac1t
+ \left(1-\frac{\Li_{s-1}(t)}{\sqrt{u^2-2\Li_s(t)}}\right).
+\end{equation}
+The function $2\Li_s(t)+\Li_{s-1}(t)^2$ is strictly increasing on
+$(0,1)$.  Its limit is infinite for $s\le2$ and equals $\Uc(s)^2$
+for $s>2$.  At an interior stationary point the radicand is
+$\Li_{s-1}(t)^2>0$, so the stationary point occurs before a possible
+zero of the radicand.  These facts prove all assertions.
+\end{proof}
+
+\subsection{Global convergence and absence of competing singularities}
+
+We supply the details for $u\ge\Uc(s)$, the previously unproved
+range.  The interior proof uses the same argument with $t_*$ in
+place of $1$.
+
+For $u\ge\Uc(s)$ the radicand is positive on $[0,1]$, and
+\eqref{eq:radius-derivative} is positive for $0<t<1$.
+The parametrized solution therefore increases from $(0,0)$ to
+$(\Rb,\vc)$.  Fix $0\le r<\Rb$.  The real iterates of $\Phi(r,\cdot)$
+starting at zero are bounded above by this solution.  Monotone
+convergence, first in the iteration and then in the coefficient
+index, shows that the formal series converges at this $r$.
+Thus its radius is at least $\Rb$.  Its sum agrees with the
+parametrized branch by local uniqueness and continuation.  Taking
+$r\uparrow\Rb$ gives
+\begin{equation}\label{eq:boundary-sum}
+ \sum_{n\ge1}a_n\Rb^n=\vc<\infty.
+\end{equation}
+Consequently the series converges absolutely and uniformly throughout
+the closed disk $|r|\le\Rb$.
+
+Let $|r|=\Rb$, $r\ne\Rb$.  Strict positivity of every $a_n$ gives
+$|v(r)|<\vc$: equality in the triangle inequality would force
+$r^n/\Rb^n$ to have the same argument for every positive integer $n$.
+It follows that
+\[
+ |r\ee^{v(r)}|<\Rb\ee^{\vc}=1.
+\]
+The defining equation is analytic at this boundary point, and
+\begin{equation}\label{eq:boundary-derivative}
+ |\Phi_v(r,v(r))|
+ \le\frac{|v(r)|+\Li_{s-1}(|r\ee^{v(r)}|)}u
+ <\frac{\vc+A}{u}\le1.
+\end{equation}
+The implicit function theorem extends the germ across every such
+point.  Therefore $\Rb$ is the only possible singularity on the
+circle.  The local singular expansions below prove that it is
+indeed singular and hence that the radius is exactly $\Rb$.
+
+\subsection{An exact integral normal form}
+
+Define, for $s>2$ and $x$ in a small slit neighborhood of zero,
+\begin{equation}\label{eq:DK}
+ D_s(x)=\zeta(s)-\Li_s(\ee^{-x}),\qquad
+ K_s(x)=A x+\frac{x^2}{2}-D_s(x).
+\end{equation}
+Since $D_s'(x)=\Li_{s-1}(\ee^{-x})$,
+\begin{equation}\label{eq:K-integral}
+ \boxed{\displaystyle
+ K_s(x)=\int_0^x(x-t)\bigl(1+\Li_{s-2}(\ee^{-t})\bigr)\,\dd t.}
+\end{equation}
+The integral is along the radial segment on the chosen branch.
+It converges at zero for $s>2$, including $2<s\le3$.
+Indeed the singular part of its integrand is of order
+$t^{s-3}$ or $\log t$, and $s-3>-1$.
+
+Put $x=-\Log t$ and $d=-\Log(r/\Rb)$.  The parametrization gives
+the exact equations
+\begin{align}
+ d&=\Psi_b(x):=x+b-\sqrt{b^2+2D_s(x)},\label{eq:Psi}\\
+ v(r)&=\vc+d-x,\label{eq:v-x}\\
+ (b+x)d-\frac{d^2}{2}&=(b-A)x+K_s(x).\label{eq:normalform}
+\end{align}
+The last identity follows by squaring the first one, using the root
+that tends to $b$.  Conversely, near zero, that root condition recovers
+\eqref{eq:Psi}; no extra local inverse branch is introduced by the
+squaring.  At the critical parameter the linear term disappears:
+\begin{equation}\label{eq:critical-normalform}
+ \boxed{\displaystyle K_s(x)=(A+x)d-\frac{d^2}{2}.}
+\end{equation}
+This single equation is the starting point of all the convergent
+critical charts below.
+
+\subsection{The local singularities}
+
+For nonintegral $s>2$, set $\alpha=s-1$.  Equation
+\eqref{eq:jonquiere} gives the convergent identity
+\begin{equation}\label{eq:K-noninteger}
+ K_s(x)=\Gamma(-\alpha)x^\alpha+x^2 B_s(x),\qquad
+ B_s(x)=\frac{1+\zeta(s-2)}2+
+ \sum_{k\ge3}\zeta(s-k)\frac{(-1)^k x^{k-2}}{k!}.
+\end{equation}
+For an integer $m\ge3$ the corresponding resonant formula is
+\begin{equation}\label{eq:K-integer}
+ K_m(x)=\frac{x^2}{2}
+ +\sum_{\substack{k\ge2\\k\ne m-1}}
+   \zeta(m-k)\frac{(-x)^k}{k!}
+ +\frac{(-x)^{m-1}}{(m-1)!}
+   \bigl(H_{m-1}-\Log x\bigr).
+\end{equation}
+The separate $x^2/2$ remains present when $m=3$.
+In that case
+\begin{equation}\label{eq:K3}
+ K_3(x)=\frac{x^2}{2}\left(\log\frac1x+\frac52\right)
+       +\frac{x^3}{12}-\frac{x^4}{288}+O(x^6).
+\end{equation}
+The absence of the $x^5$ term is $\zeta(-2)=0$.
+
+At $b=A$, \eqref{eq:critical-normalform} now gives
+\begin{equation}\label{eq:Psi-critical-leading}
+ \Psi_A(x)\sim
+ \begin{cases}
+  \dfrac{\Gamma(1-s)}A x^{s-1},&2<s<3,\\[4pt]
+  \dfrac{x^2}{2A}\log(1/x),&s=3,\\[4pt]
+  \dfrac{1+\zeta(s-2)}{2A}x^2,&s>3.
+ \end{cases}
+\end{equation}
+All equivalents hold uniformly on closed subsectors of the slit.
+For $b>A$ the leading term is instead
+$\Psi_b(x)\sim\kappa x$, where $\kappa=1-A/b>0$.
+
+\begin{lemma}[Sectorial inverse and dented continuation]\label{lem:delta}
+Each boundary branch above has a holomorphic inverse $x(d)$ in a
+sufficiently small sector $|\arg d|<\pi-\eta$, for any fixed
+$0<\eta<\pi$, selected by $x>0$ when $d>0$.  Together with
+\eqref{eq:boundary-derivative}, this supplies a dented disk at
+$r=\Rb$ of the type required for singularity transfer.
+\end{lemma}
+
+\begin{proof}
+For $\Psi(x)\sim c x^p$, $c>0$, $p\ge1$, take
+$x_0=(d/c)^{1/p}$.  On a small fixed relative circle
+$|x/x_0-1|=\epsilon$, the normalized function $\Psi(x)/d-1$
+converges uniformly to $(x/x_0)^p-1$, which has one simple zero
+inside.  Rouch\'e's theorem gives a unique root near $x_0$.
+The differentiated convergent expansions show that the derivative
+is nonzero there.  The local implicit inverses glue by uniqueness.
+For $\Psi(x)\sim c x^2\log(1/x)$, the same proof uses
+$x_0=(2d/(c\log(1/d)))^{1/2}$; the slowly varying logarithm has
+ratio tending to one on the relative circle.  These arguments
+use the differentiated expansions, rather than differentiating an
+arbitrary unspecified $o(1)$.
+
+The variable $d=-\Log(r/\Rb)$ is analytic near $r=\Rb$ and equals
+$1-r/\Rb+O((1-r/\Rb)^2)$.  Its slit sector supplies the local
+dent.  The rest of the circle has analytic extensions by
+\eqref{eq:boundary-derivative}.  A finite cover of its compact
+arcs completes a dented disk after its thickness is decreased.
+\end{proof}
+
+\subsection{Proof of the coefficient laws}
+
+For nonintegral $s>2$ and $b>A$, regard $x$ and $x^\alpha$ as
+independent local coordinates.  In \eqref{eq:Psi}, the coefficient
+of its first nonanalytic term is $\Gamma(-\alpha)/b$.
+The inverse therefore has first nonanalytic term
+\[
+ -\frac{\Gamma(-\alpha)}{b\kappa^{\alpha+1}}d^\alpha.
+\]
+One way to verify the factor is to substitute the analytic inverse
+$x_{\rm an}(d)=d/\kappa+O(d^2)$ and divide the perturbation by
+$\Psi'_{\rm an}(0)=\kappa$.  Equation \eqref{eq:v-x} changes its
+sign.  Thus the singular term of $v$ is
+\begin{equation}\label{eq:super-singular}
+ \frac{\Gamma(1-s)}{b\kappa^s}d^{s-1}.
+\end{equation}
+Transfer of $(1-z)^{s-1}$ divides by $\Gamma(1-s)$ and gives
+\eqref{eq:supercritical-law}.
+
+The integer case can be checked directly, avoiding any interchange
+of a parameter limit and a coefficient asymptotic.  For $s=m\ge3$,
+put $j=m-1$.  The singular term of $v$ is
+\begin{equation}\label{eq:integer-super-singular}
+ \frac{(-1)^{j+1}}{b\,j!\,\kappa^m}d^j\Log d.
+\end{equation}
+The exact logarithmic transfer equivalent is
+\[
+ \coef z n (1-z)^j\Log(1-z)
+ \sim(-1)^{j+1}j!\,n^{-j-1}.
+\]
+The signs and factorials cancel, giving the same positive constant
+$1/(b\kappa^m)$.
+
+At criticality, inversion of \eqref{eq:Psi-critical-leading} and
+\eqref{eq:v-x} yields respectively
+\begin{align*}
+ v&=\vc-(A/\Gamma(-\alpha))^{1/\alpha}d^{1/\alpha}
+       +o(d^{1/\alpha}),&&1<\alpha<2,\\
+ v&=\vc-2\sqrt A\,d^{1/2}(\log(1/d))^{-1/2}
+       \left(1+O\left(\frac{\log\log(1/d)}{\log(1/d)}\right)\right),
+       &&s=3,\\
+ v&=\vc-\sqrt{\frac{2A}{1+\zeta(s-2)}}d^{1/2}
+       +o(d^{1/2}),&&s>3.
+\end{align*}
+The term $d$ in \eqref{eq:v-x} is locally analytic and is smaller
+than the displayed singular terms.  Apply \cref{lem:delta} and the
+power--logarithm transfer theorem \cite{FO}.  Since
+$\Gamma(-1/2)=-2\sqrt\pi$, this proves
+\eqref{eq:critical-stable}--\eqref{eq:critical-gaussian}.
+The local expansions prove genuine singularity and complete the
+radius argument.  At an interior point the usual implicit quadratic
+expansion has amplitude
+$\sqrt{2w_* /(1+\Li_{s-2}(t_*))}$; the same transfer gives
+\eqref{eq:interior-law}.  This also reproves the part credited to
+the incoming report.
+
+\begin{corollary}[The physical convergence threshold for every order]
+\label{cor:physical}
+For every $s>0$ there is a unique $t_s\in(0,1)$ satisfying
+\begin{equation}\label{eq:physical-t}
+ \log t_s+\Li_{s-1}(t_s)=0.
+\end{equation}
+Put $u_s^2=2\Li_s(t_s)+\Li_{s-1}(t_s)^2$.
+The Taylor series of $v$ evaluated at $r=-\ee^{-u}$ converges if and
+only if $u\ge u_s$.  At equality it converges absolutely.
+\end{corollary}
+
+\begin{proof}
+The left side of \eqref{eq:physical-t} is strictly increasing from
+$-\infty$ to a positive limit.  In the interior regime,
+$\ee^{-u}/R=\ee^{-w_*}/t_*$, so the condition that the evaluation
+point lie on or within the convergence circle is precisely
+$\log t_*+w_*\ge0$.  Monotonicity of the characteristic equation
+proves the stated threshold.  If $s>2$, then $u_s<\Uc(s)$.
+For all $u\ge\Uc(s)$ the boundary radius instead satisfies
+$\ee^{-u}/\Rb=\ee^{-b}<1$.  Absolute convergence at equality
+follows from \cref{thm:phase}.
+\end{proof}
+
+The incoming report proves this last statement for $0<s\le2$.
+The boundary classification removes that restriction.

@@ -1,0 +1,1487 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array}
+\usepackage{xcolor,xurl}
+\definecolor{linkink}{RGB}{28,61,91}
+\usepackage[colorlinks=true,allcolors=linkink,pdfusetitle]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}\fancyhead[L]{\small Resonant polylogarithm transseries}\fancyhead[R]{\small ProveIt research draft}
+\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\PV}{\operatorname{PV}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\Borel}{\mathcal B}
+\newcommand{\Bell}{\mathcal Y}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\DeclareMathOperator{\sinc}{sinc}
+\numberwithin{equation}{section}
+\allowdisplaybreaks[2]
+\title{Resonant Polylogarithm Transseries:\\Gamma Borel Kernels, Cyclotomic Order Jets,\\and Sharp Dilogarithm Reversion}
+\author{Research draft prepared for Vladimir Reshetnikov\\\small OpenAI ChatGPT}
+\date{11 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We study two operations that expose information invisible in the terminated
+large-argument expansion of an integer-order polylogarithm: differentiation
+in its order and nonlinear inversion. Starting from the classical complete
+Fermi--Dirac expansion, we construct an explicit lattice Borel kernel and
+identify the exponentially small completion with its branch signs fixed.
+At every positive integer order, the first order derivative has a meromorphic
+Borel kernel expressed by a subtracted Gamma product. Its residues recover an
+entire small-argument polylogarithm. A periodic-weight extension gives finite
+digamma and cyclotomic-polylogarithm coordinates, without discarding the zero
+Fourier mode. All higher order-derivative coefficients are given by harmonic
+Bell polynomials, and an exact Gamma quotient resolves the joint large-order
+and integer-resonance limit.
+
+The main reversion result concerns $F_2(x)=-\Li_2(-\ee^x)$. Its inverse about
+its exact quadratic core has alternating exponential sectors whose
+coefficients are positive rational Laurent polynomials. We prove their exact
+radius of convergence, identify the unique dominant square-root singularity,
+and obtain the explicit $N^{-3/2}$ coefficient law. On the physical curve,
+the sector series converges if and only if the target value is at least
+$\pi^2/4$; convergence at equality is absolute. The proof extends to a
+quadratic polylogarithm-feedback family. The article separates these
+derived results from classical input, supplies conventional proofs and
+reproducible checks, and records the limits of the source audit.
+\end{abstract}
+\medskip
+\noindent\textbf{Status.} Research draft with explicit proofs; not externally
+refereed and not Lean-formalized. The sharp reversion package and the
+order-jet/cyclotomic synthesis are proposed contributions, not certified
+claims of worldwide priority. Numerical diagnostics are not interval proofs.
+\newpage
+\tableofcontents
+\newpage
+
+\section{Research setting and the main connection}\label{sec:introduction}
+
+The two repository areas meet naturally at a distinction between a formal
+asymptotic expansion and the analytic function that realizes it. In the
+normalization used here,
+\begin{equation}\label{eq:Fdef}
+ F_s(x):=-\Li_s(-\ee^x),\qquad
+ T_s(x):=F_s(-x)=-\Li_s(-\ee^{-x}),\qquad x>0.
+\end{equation}
+The subscript is the \emph{polylogarithm order}. The conventional normalized
+Fermi--Dirac index is $s-1$, not $s$. In particular, the inverse studied below
+is the inverse in $x$ of $-\Li_2(-\ee^x)$, not a choice of inverse branch in
+the argument of $\Li_2$ itself.
+
+At positive integer order $m$, the algebraic asymptotic expansion terminates:
+\begin{equation}\label{eq:intro-polynomial}
+ P_m(x)=\frac{x^m}{m!}
+ +\sum_{k=1}^{\lfloor m/2\rfloor}
+       \frac{2\eta(2k)}{(m-2k)!}x^{m-2k},
+ \qquad \eta(z)=(1-2^{1-z})\zeta(z).
+\end{equation}
+Nevertheless,
+\begin{equation}\label{eq:intro-exact}
+ F_m(x)=P_m(x)-(-1)^mT_m(x).
+\end{equation}
+Thus termination does not erase exponentially small information. Moreover,
+although the late coefficients vanish at $s=m$, their derivatives in $s$
+do not. Differentiation reveals a factorially divergent tail whose Borel
+poles carry the same small-argument polylogarithm. Inversion, meanwhile,
+converts the small tail into infinitely many coupled exponential sectors.
+The paper makes both mechanisms explicit.
+
+\subsection{What is classical and what is proposed here}
+
+The integral representation and functional equations for polylogarithms
+are classical; we use the conventions in DLMF~\cite{DLMFpoly}.
+Complete Fermi--Dirac expansions including exponentially small terms predate
+this article: see Garoni--Frankel--Glasser~\cite{GFG} and the explicit account
+in Gil--Segura--Temme, Section~3 and Lemma~3.1~\cite{GST}. We do \emph{not}
+claim the complete Sommerfeld formula or its cosecant coefficient generator
+as new.
+
+Likewise, contour Lagrange inversion, Rouch\'e certification, and analytic
+square-root transfer are established methods. The repository already has a
+careful nonlinear Stokes-transport theorem, including countably summable
+perturbations, in \cite{RepoTransport}. We reuse that architecture rather
+than renaming it as a new general theorem. The coefficient-transfer step is
+classical singularity analysis~\cite{FO}.
+
+The proposed additions are the assembled, model-specific statements:
+\emph{the subtracted Gamma kernel for resonant order jets; its finite
+periodic-weight digamma dictionary; the all-order harmonic coefficient
+formula and detuning limit; and especially the positive Laurent formula,
+exact radius, unique dominant singularity, and sharp physical threshold for
+the dilogarithm inverse}. The latter conclusions require more than a formal
+Lagrange formula or a sufficient small-perturbation disk.
+
+The current polylogarithm corpus already distinguishes accepted identities,
+experimental evidence, and pending analytic claims~\cite{RepoPoly}.
+The transseries corpus also contains polylogarithmic feedback with a
+\emph{linear} dominant core and nonanalytic boundary criticality
+\cite{RepoCritical}. Our quadratic feedback theorem is an interior-fold
+result with a different core. It is not presented as the first connection
+between polylogarithms and transseries, nor as a solution of all of that
+corpus's boundary problems.
+
+\subsection{A preview of the sharp threshold}
+
+Let $y>\pi^2/6$ and put
+\begin{equation}\label{eq:u-y}
+ u=\sqrt{2y-\pi^2/3}.
+\end{equation}
+We prove that the inverse has the sector representation
+\begin{equation}\label{eq:intro-inverse}
+ F_2^{-1}(y)=u+\sum_{N\ge1}(-1)^{N-1}a_N(u)\ee^{-Nu},
+ \qquad a_N(u)\in\Q_{>0}[u^{-1}],
+\end{equation}
+precisely when $y\ge\pi^2/4$, including absolute convergence at equality.
+For $\pi^2/6<y<\pi^2/4$, the analytic inverse still exists, but the terms of
+this particular sector series do not tend to zero.
+
+This threshold is a theorem about convergence of an \emph{exact-core
+transseries chart}. It is not a claim about nonexistence of the inverse,
+a numerical failure threshold for all algorithms, or a mere optimal
+truncation rule. Its proof occupies Sections~\ref{sec:dilog}--\ref{sec:physical}.
+
+\subsection{Conventions and proof dependencies}
+
+The logarithm is real on $(0,\infty)$ and is continued with explicit lateral
+signs when necessary. A superscript $+$ on a Borel integral means the path
+passes \emph{above} the positive Borel axis. Consequently, for $\xi>n$, the
+factor $1-(\xi+\ii0)/n$ has argument $-\pi$. This sign matters.
+
+All asymptotic statements in the sector index $N$ hold with the positive
+core parameter $u$ fixed unless uniformity is explicitly stated. All
+power-series identities are identities of analytic germs in their indicated
+variables. The finite exact computations in the package check specified
+instances; the all-order assertions rest on the proofs below.
+
+\section{The classical completion in lattice Borel coordinates}\label{sec:borel}
+
+\subsection{An exact split of the defining integral}
+
+For $\Re s>0$ the standard Fermi--Dirac representation is
+\begin{equation}\label{eq:FDintegral}
+ F_s(x)=\frac1{\Gamma(s)}
+       \int_0^\infty\frac{t^{s-1}}{1+\ee^{t-x}}\dd t.
+\end{equation}
+It immediately gives the following convenient exact decomposition.
+
+\begin{lemma}[Thermal split]\label{lem:split}
+For $x>0$ and $\Re s>0$,
+\begin{equation}\label{eq:split}
+ F_s(x)=\frac{x^s}{\Gamma(s+1)}+
+ \frac1{\Gamma(s)}\int_0^\infty
+ \frac{(x+u)^{s-1}-\mathbf1_{\{u<x\}}(x-u)^{s-1}}
+      {\ee^u+1}\dd u.
+\end{equation}
+The identity and its order derivatives are locally uniform in the half-plane
+$\Re s>0$.
+\end{lemma}
+\begin{proof}
+Split \eqref{eq:FDintegral} at $t=x$. On $t<x$ use
+$(1+\ee^{t-x})^{-1}=1-(1+\ee^{x-t})^{-1}$ and then set $u=x-t$.
+On $t>x$ set $u=t-x$. The integral of $t^{s-1}$ from $0$ to $x$ is
+$x^s/s$. This gives the displayed formula. On a compact order set with
+$\Re s\ge\epsilon>0$, endpoint singularities are bounded by a constant times
+$v^{\epsilon-1}(1+|\log v|^r)$ for each fixed derivative order $r$;
+the upper endpoint has exponential decay. These bounds justify order
+differentiation and local uniformity.
+\end{proof}
+
+Expanding the odd difference near $u=0$ yields the formal Sommerfeld series
+\begin{equation}\label{eq:Sommerfeld}
+ \widehat P_s(x)=\frac{x^s}{\Gamma(s+1)}+
+ \sum_{k\ge1}\frac{2\eta(2k)}{\Gamma(s-2k+1)}x^{s-2k}.
+\end{equation}
+The coefficient identity uses
+$\int_0^\infty u^{2k-1}/(\ee^u+1)\dd u=\Gamma(2k)\eta(2k)$.
+We do not interchange an infinite, potentially divergent, expansion with
+\eqref{eq:split}; finite Taylor expansion with its remainder, or the Borel
+construction below, supplies the asymptotic interpretation.
+
+\subsection{A normally convergent Borel lattice}
+
+Remove the leading power by writing
+\begin{equation}\label{eq:Hformal}
+ \widehat H_s(x)=1+2\sum_{k\ge1}\eta(2k)
+                    s^{\underline{2k}}x^{-2k}.
+\end{equation}
+Our Borel-minor convention is
+\begin{equation}\label{eq:Bconvention}
+ \Borel\!\left(\sum_{n\ge1}h_nx^{-n}\right)(\xi)
+       =\sum_{n\ge1}\frac{h_n}{(n-1)!}\xi^{n-1}.
+\end{equation}
+
+\begin{theorem}[Lattice kernel and exact lateral completion]\label{thm:lattice}
+The Borel minor of $\widehat H_s-1$ is
+\begin{equation}\label{eq:bs}
+ b_s(\xi)=s\sum_{n\ge1}\frac{(-1)^{n-1}}{n}
+       \left[\left(1+\frac\xi n\right)^{s-1}
+             -\left(1-\frac\xi n\right)^{s-1}\right].
+\end{equation}
+This sum converges normally on compact subsets of any coherent continued
+sheet away from the possible singularities $\pm1,\pm2,\ldots$. For
+$\Re s>0$, the lateral Laplace sums
+\begin{equation}\label{eq:Ps}
+ P_s^\pm(x)=\frac{x^s}{\Gamma(s+1)}
+       \left(1+\int_{0}^{\infty\ee^{\pm\ii0}}
+                         \ee^{-x\xi}b_s(\xi)\dd\xi\right)
+\end{equation}
+satisfy
+\begin{align}
+ P_s^\pm(x)&=F_s(x)+\ee^{\mp\ii\pi s}T_s(x),\label{eq:completion}\\
+ P_s^+(x)-P_s^-(x)&=-2\ii\sin(\pi s)T_s(x).\label{eq:jump}
+\end{align}
+Thus, for the arithmetic average $P_s^{\mathrm{av}}=(P_s^++P_s^-)/2$,
+\begin{equation}\label{eq:average}
+ F_s=P_s^{\mathrm{av}}-\cos(\pi s)T_s.
+\end{equation}
+All these statements can be differentiated any fixed number of times in
+$s$, locally uniformly in $\Re s>0$.
+\end{theorem}
+\begin{proof}
+For $|\xi|<1$, expand the two binomials. The coefficient of $\xi^{2k-1}$
+is
+\[
+ 2s\binom{s-1}{2k-1}\sum_{n\ge1}\frac{(-1)^{n-1}}{n^{2k}}
+ =\frac{2\eta(2k)s^{\underline{2k}}}{(2k-1)!},
+\]
+as required. On a fixed compact set, the bracket in the $n$th term is
+$O(n^{-1})$ as $n\to\infty$, uniformly in $s$ on compact sets. The extra
+factor $1/n$ proves normal convergence. Only finitely many terms require
+nontrivial branch choices along any fixed compact continuation path.
+
+On rays strictly above or below the positive axis, the kernel has at most
+polynomial--logarithmic growth, uniformly for $s$ in a compact subset of
+$\Re s>0$. To see this, split the lattice sum at $n\asymp|\xi|$;
+for larger $n$ the preceding difference estimate applies, while the finitely
+many smaller terms are bounded by their power growth on the ray. The
+same estimates with logarithmic factors hold for order derivatives.
+The lateral boundary powers are locally integrable because $\Re s>0$.
+They define \eqref{eq:Ps}, equivalently by ray deformation and boundary
+limits.
+
+In the $n$th integral make the substitution $\xi=nu/x$. Absolute
+integrability of the large-$n$ tail, and local integrability of the finitely
+many branch points, justify summing the integrals. The geometric sum is
+$\sum_{n\ge1}(-1)^{n-1}\ee^{-nu}=(\ee^u+1)^{-1}$. Consequently the integral
+in \eqref{eq:Ps}, after its prefactor is included, becomes
+\[
+ \frac1{\Gamma(s)}\int_0^\infty
+ \frac{(x+u)^{s-1}-(x-u)_{\mp}^{s-1}}{\ee^u+1}\dd u.
+\]
+For $u>x$, the last power is
+$\ee^{\mp\ii\pi(s-1)}(u-x)^{s-1}$. Comparing with \eqref{eq:split} gives
+\[
+ P_s^\pm-F_s
+ =-\frac{\ee^{\mp\ii\pi(s-1)}}{\Gamma(s)}
+       \int_x^\infty\frac{(u-x)^{s-1}}{\ee^u+1}\dd u
+ =\ee^{\mp\ii\pi s}T_s.
+\]
+This proves the signs, the jump, and the average. The same compact-order
+majorants used in Lemma~\ref{lem:split} justify differentiation.
+Finally, the Laplace integral of a finite Taylor remainder of the germ
+$b_s$ gives \eqref{eq:Sommerfeld} asymptotically; the part away from the
+origin is exponentially small on a fixed admissible ray.
+\end{proof}
+
+\begin{corollary}[Integer resonance]\label{cor:integer}
+For every positive integer $m$, $b_m$ is a polynomial, both lateral sums
+are the polynomial $P_m$ of \eqref{eq:intro-polynomial}, and
+\begin{equation}\label{eq:integer-exact}
+ F_m(x)=P_m(x)+(-1)^m\Li_m(-\ee^{-x}).
+\end{equation}
+The perturbative Stokes jump vanishes, but the physical exponential
+completion generally does not.
+\end{corollary}
+\begin{proof}
+Each binomial in \eqref{eq:bs} is a polynomial at $s=m$.
+Equivalently, $1/\Gamma(m-2k+1)=0$ when $2k>m$.
+Equation~\eqref{eq:completion} at $s=m$ now proves the identity.
+\end{proof}
+
+For example,
+\begin{align*}
+ F_1(x)&=x+\log(1+\ee^{-x}),\\
+ F_2(x)&=\frac{x^2}{2}+\frac{\pi^2}{6}+\Li_2(-\ee^{-x}),\\
+ F_3(x)&=\frac{x^3}{6}+\frac{\pi^2x}{6}-\Li_3(-\ee^{-x}).
+\end{align*}
+These checks fix the parity convention independently of Borel terminology.
+
+\section{Integer order derivatives and a Gamma Borel kernel}\label{sec:jets}
+
+\subsection{The factorial tail restored by differentiation}
+
+Write
+\begin{equation}\label{eq:ak}
+ A_k(s)=\frac{2\eta(2k)}{\Gamma(s-2k+1)}.
+\end{equation}
+If $n=2k-m\ge1$, Gamma reflection gives the exact local identity
+\begin{equation}\label{eq:gamma-detuning}
+ A_k(m+\epsilon)=2(-1)^{m+1}\eta(2k)
+           \frac{\sin(\pi\epsilon)}\pi\Gamma(n-\epsilon).
+\end{equation}
+In particular,
+\begin{equation}\label{eq:first-late}
+ A_k(m)=0,\qquad A_k'(m)=2(-1)^{m+1}\eta(2k)\Gamma(2k-m).
+\end{equation}
+Thus the first order derivative has infinitely many nonzero late
+coefficients even though the undifferentiated series terminates.
+
+Define
+\begin{align}\label{eq:Km}
+ K_m(x)={}&\frac{x^m}{m!}\bigl(\log x-\psi(m+1)\bigr)\notag\\
+ &+\sum_{k=1}^{\lfloor m/2\rfloor}
+ \frac{2\eta(2k)x^{m-2k}}{(m-2k)!}
+       \bigl(\log x-\psi(m-2k+1)\bigr).
+\end{align}
+This is the finite power--log part of the first order derivative.
+Put $\tau_0=1$ and $\tau_{2k}=2\eta(2k)$ for $k\ge1$.
+
+\begin{theorem}[Subtracted Gamma kernel]\label{thm:Gamma-kernel}
+For $m\ge1$ the ordinary Borel minor of the late part of
+$\partial_s\widehat P_s|_{s=m}$ is
+\begin{align}
+ B_m(\xi)
+ &=(-1)^{m+1}\xi^{-m-1}
+   \left\{\Gamma(1+\xi)\Gamma(1-\xi)
+           -\sum_{k=0}^{\lfloor m/2\rfloor}\tau_{2k}\xi^{2k}\right\}
+       \label{eq:Gamma-kernel}\\
+ &=(-1)^{m+1}\xi^{-m-1}
+   \left\{\frac{\pi\xi}{\sin\pi\xi}
+           -\sum_{k=0}^{\lfloor m/2\rfloor}\tau_{2k}\xi^{2k}\right\}.
+       \label{eq:csc-kernel}
+\end{align}
+The apparent singularity at zero is removable. Its positive poles have
+residues
+\begin{equation}\label{eq:residues}
+ \Res_{\xi=n}B_m(\xi)=\frac{(-1)^{m+n+1}}{n^m},\qquad n\ge1.
+\end{equation}
+For $J_m(x)=\partial_sF_s(x)|_{s=m}$, one has the exact identity
+\begin{equation}\label{eq:jet-PV}
+ J_m(x)=K_m(x)+\PV\int_0^\infty\ee^{-x\xi}B_m(\xi)\dd\xi
+                   -(-1)^m\left.\partial_sT_s(x)\right|_{s=m}.
+\end{equation}
+Here the principal value is the arithmetic average of the two lateral
+integrals, equivalently the sum of symmetric local principal values at the
+positive integer poles. In particular,
+\begin{equation}\label{eq:jet-jump}
+ \int_+\ee^{-x\xi}B_m(\xi)\dd\xi
+ -\int_-\ee^{-x\xi}B_m(\xi)\dd\xi
+ =-2\pi\ii(-1)^mT_m(x).
+\end{equation}
+\end{theorem}
+\begin{proof}
+The tail in \eqref{eq:first-late} has Borel minor
+\begin{equation}\label{eq:Bm-series}
+ 2(-1)^{m+1}\sum_{k>m/2}\eta(2k)\xi^{2k-m-1}.
+\end{equation}
+The classical generating identity
+$\pi\xi/\sin\pi\xi=1+2\sum_{k\ge1}\eta(2k)\xi^{2k}$
+and Gamma reflection~\cite{DLMFgamma} give
+\eqref{eq:Gamma-kernel}--\eqref{eq:csc-kernel}. The first exponent in
+\eqref{eq:Bm-series} is nonnegative. The residue follows from
+$(\sin\pi\xi)'|_{\xi=n}=\pi(-1)^n$.
+
+For the exact, rather than only formal, assertion, let
+$c_m=\partial_s b_s|_{s=m}$. Differentiating the lattice kernel $m$ times
+in $\xi$ gives
+\begin{equation}\label{eq:Bm-partial}
+ \frac{c_m^{(m)}(\xi)}{m!}
+ =\sum_{n\ge1}\frac{(-1)^{n-1}}{n^m}
+      \left(\frac1{n+\xi}-\frac{(-1)^m}{n-\xi}\right)=B_m(\xi).
+\end{equation}
+Indeed, the $m$th derivative of
+$(1+a\xi)^{m-1}\log(1+a\xi)$ is
+$(m-1)!a^m/(1+a\xi)$; polynomial terms disappear.
+The series converges normally away from its poles.
+
+On either tilted Laplace ray, repeated integration by parts yields
+\[
+ x^m\int\ee^{-x\xi}c_m(\xi)\dd\xi
+ =\int\ee^{-x\xi}c_m^{(m)}(\xi)\dd\xi
+       +\sum_{j=0}^{m-1}x^{m-1-j}c_m^{(j)}(0).
+\]
+The polynomial endpoint contributions, combined with the derivative of
+$x^s/\Gamma(s+1)$ in \eqref{eq:Ps}, are exactly $K_m$.
+For verification, the endpoint at $j=2k-1<m$ contributes
+\[
+ \frac{2\eta(2k)x^{m-2k}}{(m-2k)!}
+       \bigl(\psi(m+1)-\psi(m-2k+1)\bigr),
+\]
+which changes the common $\log x-\psi(m+1)$ to the term in
+\eqref{eq:Km}. Therefore
+\begin{equation}\label{eq:jet-lateral}
+ \left.\partial_sP_s^\pm(x)\right|_{s=m}
+     =K_m(x)+\int_\pm\ee^{-x\xi}B_m(\xi)\dd\xi.
+\end{equation}
+Taking the order derivative of \eqref{eq:completion}, and then averaging,
+proves \eqref{eq:jet-PV}. Subtraction proves \eqref{eq:jet-jump}.
+The sums of pole contributions are absolutely convergent after multiplication
+by $\ee^{-nx}$, so the indicated global principal value is well defined.
+\end{proof}
+
+The first two kernels illustrate the different local parity:
+\begin{align}
+ B_1(\xi)&=\frac{\pi}{\xi\sin\pi\xi}-\frac1{\xi^2},\label{eq:B1}\\
+ B_2(\xi)&=-\frac1{\xi^3}
+       \left(\frac{\pi\xi}{\sin\pi\xi}-1-\frac{\pi^2\xi^2}{6}\right).
+\end{align}
+For the upper lateral integral,
+\begin{equation}\label{eq:upper-jet-real}
+ J_m=K_m+\int_+\ee^{-x\xi}B_m(\xi)\dd\xi
+           -(-1)^m\bigl(T_m'-\ii\pi T_m\bigr),
+\end{equation}
+where $T_m'$ denotes an \emph{order derivative}, not an $x$ derivative.
+Equation~\eqref{eq:upper-jet-real} is the form used in the independent
+complex-ray numerical checks.
+
+\subsection{All higher order coefficients in harmonic coordinates}
+
+The complete exponential Bell polynomials are specified by
+\begin{equation}\label{eq:Bell-def}
+ \exp\left(\sum_{j\ge1}b_j\frac{z^j}{j!}\right)
+       =\sum_{r\ge0}\Bell_r(b_1,\ldots,b_r)\frac{z^r}{r!},
+ \qquad \Bell_0=1.
+\end{equation}
+Let $H_n^{(j)}=\sum_{\ell=1}^n\ell^{-j}$ and $H_n=H_n^{(1)}$, with
+$H_0^{(j)}=0$.
+
+\begin{theorem}[Harmonic Bell formula for every resonant jet]\label{thm:Bell}
+Fix $m\ge1$, $k>m/2$, $n=2k-m$, $r\ge1$, and $x>0$. Define
+\begin{align}
+ b_1&=\log x+\gamma-H_{n-1},\label{eq:b1}\\
+ b_j&=(j-1)!\left((-1)^{j+1}\zeta(j)-H_{n-1}^{(j)}\right),
+                  \qquad j\ge2.\label{eq:bj}
+\end{align}
+Then the individual late coefficient has the exact order-derivative formula
+\begin{equation}\label{eq:Bell-jet}
+ \left.\partial_s^r\!\left(A_k(s)x^{s-2k}\right)\right|_{s=m}
+  =2(-1)^{m+1}\eta(2k)\Gamma(n)x^{-n}
+       r\Bell_{r-1}(b_1,\ldots,b_{r-1}).
+\end{equation}
+The Stokes jump of the full $r$th order jet is obtained by differentiating
+$-2\ii\sin(\pi s)T_s$ exactly $r$ times at $s=m$.
+\end{theorem}
+\begin{proof}
+Divide \eqref{eq:gamma-detuning}, after multiplication by $x^{-n+\epsilon}$,
+by $2(-1)^{m+1}\eta(2k)\Gamma(n)x^{-n}$. The result is
+\[
+ \epsilon\,\frac{\sin\pi\epsilon}{\pi\epsilon}
+        \frac{\Gamma(n-\epsilon)}{\Gamma(n)}x^\epsilon.
+\]
+The logarithm of the factor multiplying $\epsilon$ is analytic near zero.
+Its first derivative is $\log x-\psi(n)=b_1$.
+For $j\ge2$, use
+\[
+ \psi^{(j-1)}(n)=(-1)^j(j-1)!
+               \bigl(\zeta(j)-H_{n-1}^{(j)}\bigr)
+\]
+and
+$\log(\sin\pi\epsilon/(\pi\epsilon))
+ =-\sum_{\ell\ge1}\zeta(2\ell)\epsilon^{2\ell}/\ell$.
+The $j$th derivative is precisely \eqref{eq:bj}.
+The Bell generating identity now gives \eqref{eq:Bell-jet}, since
+$r!/(r-1)!=r$. The full jump statement follows from the locally uniform
+order differentiation already proved in Theorem~\ref{thm:lattice}.
+\end{proof}
+
+For $r=1,2,3$ the respective Bell factors are
+$1$, $2b_1$, and $3(b_1^2+b_2)$. The sign
+$b_2=-\zeta(2)-H_{n-1}^{(2)}$ is worth noting: it includes the contribution
+of the sine factor, not only the Gamma derivative.
+
+\subsection{A noncommuting resonance and large-order limit}
+
+\begin{corollary}[Uniform coefficient detuning]\label{cor:detuning}
+With $n=2k-m\to\infty$, and the value at $\epsilon=0$ understood by
+continuity,
+\begin{equation}\label{eq:detuning-ratio}
+ \frac{A_k(m+\epsilon)}{\epsilon A_k'(m)}
+  =\frac{\sin\pi\epsilon}{\pi\epsilon}
+          \frac{\Gamma(n-\epsilon)}{\Gamma(n)}
+  =\frac{\sin\pi\epsilon}{\pi\epsilon}\,
+          n^{-\epsilon}\bigl(1+O(n^{-1})\bigr).
+\end{equation}
+The last estimate is uniform for $\epsilon$ in any fixed compact subset of
+$\C$. If $\epsilon\to0$ and $\epsilon\log n\to\lambda\in\C$, then
+\begin{equation}\label{eq:detuning-limit}
+ \frac{A_k(m+\epsilon)}{\epsilon A_k'(m)}\longrightarrow\ee^{-\lambda}.
+\end{equation}
+For the coefficient including $x^{s-2k}$, the right side of
+\eqref{eq:detuning-ratio} is multiplied by $x^\epsilon$.
+\end{corollary}
+\begin{proof}
+The first identity is \eqref{eq:gamma-detuning}. Uniform Stirling expansion
+of the Gamma quotient~\cite{DLMFratio}, with $n$ tending to infinity on the positive real
+axis and bounded $\epsilon$, gives the second. The limit follows from
+$n^{-\epsilon}=\exp(-\epsilon\log n)$ and the removable value $1$ of the
+sinc factor. This is a coefficient-level uniform statement; it does not
+by itself assert uniform optimal truncation of the full function.
+\end{proof}
+
+\section{Periodic residues: finite digamma and cyclotomic coordinates}\label{sec:periodic}
+
+The lattice kernel admits an arithmetic extension that directly meets the
+finite-Fourier polylogarithm--polygamma bridge of the repository
+\cite{RepoBridge}. The finite Fourier transform itself is classical;
+the point here is to apply it to a \emph{meromorphic Borel kernel} and its
+entire exponentially small jump, including the zero Fourier coefficient.
+
+Let $c=(c_n)_{n\ge1}$ have period $d\ge1$, with complex entries. Set
+\begin{align}
+ L_c(j)&=\sum_{n\ge1}\frac{c_n}{n^j}
+       =d^{-j}\sum_{a=1}^dc_a\zeta(j,a/d),\qquad j\ge2,
+                                                  \label{eq:Lc}\\
+ T_{m,c}(x)&=\sum_{n\ge1}\frac{c_n\ee^{-nx}}{n^m},\qquad x>0.
+                                                  \label{eq:Tmc}
+\end{align}
+No condition $\sum_ac_a=0$ is imposed.
+
+\begin{theorem}[Periodic Borel-kernel dictionary]\label{thm:periodic}
+For $m\ge1$, the normally convergent meromorphic sum
+\begin{equation}\label{eq:Bmc-def}
+ B_{m,c}(\xi)=\sum_{n\ge1}\frac{c_n}{n^m}
+         \left(\frac1{n+\xi}-\frac{(-1)^m}{n-\xi}\right)
+\end{equation}
+has the finite digamma representation
+\begin{align}\label{eq:Bmc-digamma}
+ B_{m,c}(\xi)=\frac{(-1)^m}{\xi^m}\Bigg\{
+ &\frac1d\sum_{a=1}^dc_a
+    \left[\psi\!\left(\frac{a-\xi}{d}\right)
+          -\psi\!\left(\frac{a+\xi}{d}\right)\right]\notag\\
+ &+2\sum_{k=1}^{\lfloor m/2\rfloor}L_c(2k)\xi^{2k-1}\Bigg\}.
+\end{align}
+The singularity at zero is removable. The positive-pole residues and the
+lateral Laplace jump are
+\begin{align}
+ \Res_{\xi=n}B_{m,c}(\xi)&=(-1)^m\frac{c_n}{n^m},\label{eq:periodic-res}\\
+ \int_+\ee^{-x\xi}B_{m,c}(\xi)\dd\xi
+ -\int_-\ee^{-x\xi}B_{m,c}(\xi)\dd\xi
+ &=-2\pi\ii(-1)^mT_{m,c}(x).\label{eq:periodic-jump}
+\end{align}
+Writing $\omega=\ee^{2\pi\ii/d}$ and
+$\widehat c_p=d^{-1}\sum_{a=1}^dc_a\omega^{-pa}$ gives the finite identity
+\begin{equation}\label{eq:periodic-DFT}
+ T_{m,c}(x)=\sum_{p=0}^{d-1}\widehat c_p\Li_m(\omega^p\ee^{-x}).
+\end{equation}
+The constants in \eqref{eq:Bmc-digamma} also have finite polygamma
+coordinates:
+\begin{equation}\label{eq:periodic-polygamma}
+ L_c(2k)=\frac1{d^{2k}(2k-1)!}
+           \sum_{a=1}^dc_a\psi^{(2k-1)}(a/d).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Introduce the absolutely convergent, subtracted resolvent
+\begin{equation}\label{eq:Sc}
+ S_c(z)=\sum_{n\ge1}c_n\left(\frac1{n+z}-\frac1n\right)
+       =\frac1d\sum_{a=1}^dc_a
+          \left[\psi(a/d)-\psi((a+z)/d)\right].
+\end{equation}
+The equality follows by grouping the standard digamma difference series
+in residue classes. Its convergence does not require a zero mean.
+For
+$R_m(z)=\sum_{n\ge1}c_n/[n^m(n+z)]$ one has
+$R_1=-S_c/z$ and, for $m\ge2$,
+$R_m=(L_c(m)-R_{m-1})/z$. Hence
+\[
+ R_m(z)=\sum_{j=2}^m\frac{(-1)^{m-j}L_c(j)}{z^{m-j+1}}
+                   +\frac{(-1)^m S_c(z)}{z^m}.
+\]
+Now form $R_m(\xi)-(-1)^mR_m(-\xi)$. The odd-$j$ terms cancel and
+\eqref{eq:Bmc-digamma} follows from \eqref{eq:Sc}.
+The local Taylor expansion of \eqref{eq:Bmc-def} is
+\begin{equation}\label{eq:Bmc-series}
+ B_{m,c}(\xi)=2(-1)^{m+1}
+         \sum_{k>m/2}L_c(2k)\xi^{2k-m-1},\qquad |\xi|<1,
+\end{equation}
+which proves removability. This is also the resonant order-jet kernel of
+\eqref{eq:bs} with $(-1)^{n-1}$ replaced by $c_n$.
+
+The residue in \eqref{eq:periodic-res} is immediate from its single pole
+term. On tilted rays the finite digamma expression has at most
+polynomial--logarithmic growth. Closing the upper-minus-lower contour in
+the Laplace-decaying sector gives minus $2\pi\ii$ times the positive
+residue sum. One can take outer radii avoiding the integer poles; the
+exponential factor makes the outer arcs and residue tails tend to zero.
+This proves \eqref{eq:periodic-jump}.
+Finally, $c_n=\sum_p\widehat c_p\omega^{pn}$ and absolute convergence of
+\eqref{eq:Tmc} give \eqref{eq:periodic-DFT}. Grouping the defining Dirichlet
+series gives \eqref{eq:Lc}; the standard Hurwitz-zeta/polygamma identity
+gives \eqref{eq:periodic-polygamma}.
+\end{proof}
+
+\begin{remark}[A nonzero-mean example]\label{rmk:zero-mode}
+Take $c_n=1$ for $n\equiv1\pmod3$ and zero otherwise. Then
+\[
+ B_{1,c}(\xi)=-\frac1{3\xi}
+       \left[\psi\!\left(\frac{1-\xi}{3}\right)
+             -\psi\!\left(\frac{1+\xi}{3}\right)\right],
+\]
+and
+\[
+ T_{m,c}(x)=\frac13\sum_{p=0}^2
+                  \omega^{-p}\Li_m(\omega^p\ee^{-x}).
+\]
+The $p=0$ term is $\Li_m(\ee^{-x})/3$ and cannot be dropped.
+For the alternating sequence $c_n=(-1)^{n-1}$, the theorem reduces to
+Theorem~\ref{thm:Gamma-kernel}. Thus one and the same residue dictionary
+has Gamma, polygamma, Hurwitz-zeta, and cyclotomic-polylogarithm forms.
+\end{remark}
+
+\section{Certified inversion of the integer-order completion}\label{sec:general-inverse}
+
+At integer order, a finite algebraic core is known exactly. Retaining it
+unexpanded avoids the artificial proliferation of algebraic terms that
+would result from first approximating its inverse.
+Fix $m\ge1$ and $u>0$, put $y=P_m(u)$, and regard $q$ as an independent
+complex parameter. The inverse displacement is the germ $\delta(q)$ with
+$\delta(0)=0$ satisfying
+\begin{equation}\label{eq:general-inverse-equation}
+ P_m(u+\delta)-P_m(u)+(-1)^m\Li_m(-q\ee^{-\delta})=0.
+\end{equation}
+The physical substitution is $q=\ee^{-u}$.
+Let
+\begin{equation}\label{eq:Qcore}
+ Q_{m,u}(z)=\frac{P_m(u+z)-P_m(u)}z,
+ \qquad Q_{m,u}(0)=P_m'(u)>0,
+\end{equation}
+and define the finite composition sum
+\begin{equation}\label{eq:composition}
+ C^{(m)}_{N,k}=\coeff{t}{N}\Li_m(t)^k
+   =\sum_{\substack{n_1+\cdots+n_k=N\\n_j\ge1}}
+                     \frac1{(n_1\cdots n_k)^m}.
+\end{equation}
+
+\begin{theorem}[Exact sectors and an analytic certificate]\label{thm:general-inverse}
+The germ $\delta(q)=\sum_{N\ge1}d_N^{(m)}(u)q^N$ has coefficients
+\begin{equation}\label{eq:general-sectors}
+ d_N^{(m)}(u)=(-1)^N\sum_{k=1}^N
+  \frac{(-1)^{(m+1)k}C^{(m)}_{N,k}}{k!}
+  \left.\frac{\mathrm d^{k-1}}{\mathrm dz^{k-1}}
+       \left(\ee^{-Nz}Q_{m,u}(z)^{-k}\right)\right|_{z=0}.
+\end{equation}
+For a convergence certificate, choose $r>0$ such that
+$P_m(u+z)-P_m(u)$ has exactly one zero in $|z|\le r$, namely the simple
+zero at zero, and no boundary zero. Set
+\[
+ L=\min_{|z|=r}|P_m(u+z)-P_m(u)|.
+\]
+If $\rho\ee^r<1$ and
+\begin{equation}\label{eq:certificate}
+ \frac{\rho\ee^r}{1-\rho\ee^r}<L,
+\end{equation}
+then $\delta$ is analytic for $|q|\le\rho$, satisfies $|\delta|<r$, and,
+for $|q|<\rho$,
+\begin{equation}\label{eq:sector-remainder}
+ \left|\delta(q)-\sum_{n=1}^N d_n^{(m)}(u)q^n\right|
+   \le r\frac{(|q|/\rho)^{N+1}}{1-|q|/\rho}.
+\end{equation}
+For each fixed $m\ge2$, $r=1/2$ and $\rho=1/4$ satisfy the certificate
+for all sufficiently large $u$. Thus the physical inverse has a genuinely
+convergent exponential-sector representation at large positive core
+parameter.
+\end{theorem}
+\begin{proof}
+The implicit derivative in $\delta$ at $(q,\delta)=(0,0)$ is $P_m'(u)>0$,
+so the analytic germ exists and is unique. Insert an auxiliary formal
+parameter $\lambda$ into
+\[
+ z=\lambda\,
+   \frac{(-1)^{m+1}\Li_m(-q\ee^{-z})}{Q_{m,u}(z)}.
+\]
+Lagrange inversion, first in $\lambda$, gives the $k$th derivative term in
+\eqref{eq:general-sectors}. The coefficient of $q^N$ in the $k$th power
+of the polylogarithm is $(-1)^NC^{(m)}_{N,k}\ee^{-Nz}$, and it is zero
+for $k>N$. Therefore setting $\lambda=1$ is legitimate coefficientwise
+in the $q$-adic ring and gives the finite formula. This is a specialization
+of the general contour reversion mechanism already developed in
+\cite{RepoTransport}.
+
+For $|z|\le r$, $|q|\le\rho$, the perturbation is analytic and has
+modulus at most $\rho\ee^r/(1-\rho\ee^r)$, since $m\ge1$.
+Rouch\'e's theorem and \eqref{eq:certificate} give exactly one zero,
+counting multiplicity, of \eqref{eq:general-inverse-equation} in the disk.
+It is simple, hence depends holomorphically on $q$. Uniqueness glues the
+local solutions on the parameter disk. Cauchy's estimate gives
+$|d_n^{(m)}|\le r\rho^{-n}$ and summing a geometric tail proves
+\eqref{eq:sector-remainder}.
+
+For fixed $r$ and $m\ge2$,
+\[
+ P_m(u+z)-P_m(u)=P_m'(u)z\,(1+O(u^{-1}))
+\]
+uniformly on $|z|\le r$, and
+$P_m'(u)\sim u^{m-1}/(m-1)!$. Comparison with this linear function
+certifies the single core zero and makes $L\to\infty$.
+The stated fixed $r,\rho$ then work. At $q=\ee^{-u}$ the root gives the
+inverse of $F_m$ by \eqref{eq:integer-exact}; it is the real branch near
+$u$. Its local monotonicity also follows from
+$F_m'=F_{m-1}>0$ for $m\ge2$ on the real axis.
+\end{proof}
+
+For $m=1$ the solution can be found without a certificate:
+\begin{equation}\label{eq:m1inverse}
+ \delta(q)=\log(1-q)=-\sum_{N\ge1}\frac{q^N}{N},\qquad |q|<1.
+\end{equation}
+This checks both the signs and the normalization in
+\eqref{eq:general-sectors}. The general certificate is sufficient; it is
+not asserted to give an exact radius. The next sections replace it by a
+sharp result for $m=2$.
+
+\section{Dilogarithm sectors are positive Laurent polynomials}\label{sec:dilog}
+
+For $m=2$, the exact-core equation is
+\begin{equation}\label{eq:dilog-delta}
+ u\delta+\frac{\delta^2}{2}+\Li_2(-q\ee^{-\delta})=0,
+ \qquad \delta(0)=0.
+\end{equation}
+Reflecting both variables gives a positive equation. Namely, let
+\begin{equation}\label{eq:vdef}
+ v_u(r)=-\delta_u(-r).
+\end{equation}
+Then
+\begin{equation}\label{eq:positive-equation}
+ uv-\frac{v^2}{2}=\Li_2(r\ee^v),\qquad
+ v=\Phi_u(r,v):=\frac{v^2}{2u}+\frac{\Li_2(r\ee^v)}u.
+\end{equation}
+
+\begin{theorem}[Positive finite formula]\label{thm:positive}
+For every $u>0$, write
+$v_u(r)=\sum_{N\ge1}a_N(u)r^N$. With $C_{N,k}=C^{(2)}_{N,k}$,
+\begin{equation}\label{eq:positive-coeff}
+ a_N(u)=\sum_{k=1}^N\frac{C_{N,k}}k
+       \sum_{j=0}^{k-1}
+       \binom{k+j-1}{j}
+       \frac{N^{k-1-j}}{(k-1-j)!\,2^j\,u^{k+j}}.
+\end{equation}
+Every coefficient of every power $u^{-1},\ldots,u^{-(2N-1)}$ is a
+strictly positive rational number, and no other powers occur. The two
+extreme coefficients are
+\begin{equation}\label{eq:extremes}
+ [u^{-1}]a_N(u)=\frac1{N^2},\qquad
+ [u^{-(2N-1)}]a_N(u)=\frac{\operatorname{Cat}_{N-1}}{2^{N-1}},
+ \quad \operatorname{Cat}_{j}=\frac1{j+1}\binom{2j}{j}.
+\end{equation}
+Consequently $d_N^{(2)}(u)=(-1)^{N-1}a_N(u)$.
+\end{theorem}
+\begin{proof}
+Here $Q_{2,u}(z)=u+z/2$. In the $(k-1)$st derivative of
+$\ee^{-Nz}(u+z/2)^{-k}$ every Taylor coefficient contributing to that
+order has sign $(-1)^{k-1}$. Expanding the exponential and the negative
+binomial power in \eqref{eq:general-sectors} therefore gives
+\eqref{eq:positive-coeff}, with total sign $(-1)^{N-1}$.
+
+The rational numbers $C_{N,k}$ are positive whenever $1\le k\le N$.
+For any integer $1\le p\le2N-1$, one can choose $k\le N$ and
+$0\le j<k$ with $p=k+j$, so every indicated power occurs positively.
+The power $u^{-1}$ comes only from $k=1,j=0$, where $C_{N,1}=N^{-2}$.
+The highest power comes only from $k=N,j=N-1$, where $C_{N,N}=1$.
+Its coefficient is
+$\binom{2N-2}{N-1}/(N2^{N-1})$, which is the Catalan expression.
+\end{proof}
+
+The first three coefficients are
+\begin{align}
+ a_1(u)&=\frac1u,\notag\\
+ a_2(u)&=\frac1{4u}+\frac1{u^2}+\frac1{2u^3},\label{eq:first-coeff}\\
+ a_3(u)&=\frac1{9u}+\frac3{4u^2}+\frac7{4u^3}
+                   +\frac3{2u^4}+\frac1{2u^5}.\notag
+\end{align}
+A separate exact recurrence, obtained by iterating the positive map
+$\Phi_u$, verifies the finite formula independently of Lagrange inversion
+in the accompanying program. The positivity, rather than merely the
+existence of a coefficient formula, is the key to the global radius proof.
+
+\section{The exact radius and its unique dominant singularity}\label{sec:radius}
+
+\begin{theorem}[Sharp dilogarithm reversion radius]\label{thm:radius}
+Fix $u>0$. There is a unique $t=t_u\in(0,1)$ satisfying
+\begin{equation}\label{eq:characteristic-t}
+ u^2=2\Li_2(t)+\log^2(1-t).
+\end{equation}
+Set
+\begin{equation}\label{eq:radius-parameters}
+ w=-\log(1-t),\qquad v_c=u-w,\qquad
+ R=R(u)=t\ee^{w-u}=\ee^{-u}\frac{t}{1-t}.
+\end{equation}
+Then $0<w<u$, $v_c>0$, and the Taylor series of $v_u$ has exact radius
+$R$. The point $r=R$ is its unique singularity on the circle $|r|=R$.
+In a slit neighborhood of $R$,
+\begin{equation}\label{eq:sqrt-expansion}
+ v_u(r)=v_c-\sqrt{2w(1-t)}\sqrt{1-r/R}+O(1-r/R),
+\end{equation}
+with a convergent Puiseux expansion in $\sqrt{1-r/R}$.
+The coefficients satisfy
+\begin{equation}\label{eq:large-sector}
+ a_N(u)=\sqrt{\frac{w(1-t)}{2\pi}}\,
+           R^{-N}N^{-3/2}\bigl(1+O(N^{-1})\bigr).
+\end{equation}
+All constants and error terms here are for fixed $u$. Equivalently, the
+unique dominant singularity of $\delta_u(q)$ is at $q=-R$.
+\end{theorem}
+
+\begin{proof}
+\emph{The real characteristic point.}
+The function $2\Li_2(t)+\Li_1(t)^2$ is strictly increasing from zero to
+infinity on $(0,1)$, since its derivative is positive and
+$\Li_1(t)=-\log(1-t)\to\infty$. Thus \eqref{eq:characteristic-t} has a
+unique solution. It implies $w^2<u^2$ and $v_c>0$.
+For $0\le t\le t_u$ define
+\begin{equation}\label{eq:parametric}
+ v(t)=u-\sqrt{u^2-2\Li_2(t)},\qquad r(t)=t\ee^{-v(t)}.
+\end{equation}
+The radicand is positive on this whole interval. Differentiation gives
+\begin{equation}\label{eq:param-derivative}
+ \frac{\mathrm d}{\mathrm dt}\log r(t)
+   =\frac1t\left(1-
+         \frac{\Li_1(t)}{\sqrt{u^2-2\Li_2(t)}}\right).
+\end{equation}
+It is positive for $0<t<t_u$ and vanishes at $t_u$.
+Therefore \eqref{eq:parametric} supplies a real analytic solution for
+$0\le r<R$, tending to $v_c$ at $R$.
+
+\emph{No smaller convergence radius.}
+Starting from $v_0=0$, iterate $v_{j+1}=\Phi_u(r,v_j)$ as a formal power
+series. Coefficients are nonnegative and increase coefficientwise. The
+coefficient of each fixed degree stabilizes, because
+$\partial_v\Phi_u(0,0)=0$ makes the difference between two successive
+iterates gain at least one order in $r$. The limit is the unique formal
+solution. For fixed real $0\le r<R$, the iterates are bounded above by
+the real solution in \eqref{eq:parametric}, since $\Phi_u$ preserves
+order on the relevant positive interval. Monotone convergence of the
+nonnegative coefficients shows that the full series converges for every
+such $r$, hence absolutely for $|r|<R$. Its sum is the real branch just
+constructed, by uniqueness near zero and analytic continuation.
+Moreover, monotone convergence as $r\uparrow R$ gives
+\begin{equation}\label{eq:boundary-sum}
+ \sum_{N\ge1}a_N(u)R^N=v_c<\infty.
+\end{equation}
+
+\emph{The singularity is a genuine square-root fold.}
+At $(R,v_c)$ the defining equation $v=\Phi_u(r,v)$ satisfies
+\begin{equation}\label{eq:fold-derivatives}
+ \Phi_v=1,\qquad R\Phi_r=\frac wu,\qquad
+ \Phi_{vv}=\frac{1+\Li_0(t)}u=\frac1{u(1-t)}.
+\end{equation}
+Both nonzero derivatives are positive. The analytic implicit function
+theorem applied after solving for $r$ as a function of $v$, followed by
+factoring its double zero at $v_c$, gives a convergent square-root
+inverse. In more detail, write $r=R-\alpha(v-v_c)^2+
+O((v-v_c)^3)$ with $\alpha>0$; the analytic square root of the nonvanishing
+factor reduces this to an ordinary analytic inverse in
+$\sqrt{R-r}$. Balancing the first nonzero terms in $v-\Phi_u(r,v)=0$
+gives the coefficient $\sqrt{2R\Phi_r/\Phi_{vv}}=
+\sqrt{2w(1-t)}$. The negative sign follows from $v(r)<v_c$ for $r<R$.
+This proves \eqref{eq:sqrt-expansion} and shows that the radius is not
+larger than $R$.
+
+\emph{Uniqueness on the dominant circle.}
+By \eqref{eq:boundary-sum}, the series converges uniformly and absolutely
+on the closed disk. For $|r|=R$, $r\ne R$, strict triangle inequality gives
+$|v(r)|<v_c$, since every coefficient $a_N$ is positive and the positive
+support includes all $N\ge1$. Consequently
+\[
+ |r\ee^{v(r)}|=R\ee^{\Re v(r)}<R\ee^{v_c}=t_u<1.
+\]
+The defining polylogarithm is analytic there, and
+\[
+ |\Phi_v(r,v(r))|
+ \le\frac{|v(r)|+\Li_1(R\ee^{\Re v(r)})}u
+ <\frac{v_c+w}u=1.
+\]
+The implicit function theorem thus extends $v$ analytically through every
+other point of the circle. A finite covering of its compact complement
+and the local square-root chart at $R$ give a standard dented-disk
+($\Delta$-domain) continuation about the unique dominant singularity.
+
+\emph{Coefficient asymptotics.}
+The elementary singular term satisfies
+\[
+ [r^N](1-r/R)^{1/2}
+   =-\frac{R^{-N}}{2\sqrt\pi}\,N^{-3/2}(1+O(N^{-1})).
+\]
+The convergent Puiseux expansion and the preceding $\Delta$-continuation
+permit termwise singularity transfer~\cite{FO}. Analytic integer-power
+terms contribute no competing singular term; the next half-integer
+power has coefficient $O(R^{-N}N^{-5/2})$. This proves
+\eqref{eq:large-sector}. The relation \eqref{eq:vdef} transports the
+singularity to $q=-R$.
+\end{proof}
+
+\begin{remark}[Why a real fold alone would not suffice]
+Solving the two real characteristic equations would provide a candidate
+radius, but would not exclude a closer complex singularity. The positive
+iteration and the strict boundary derivative estimate in the proof are
+what certify the \emph{exact} radius and its unique dominant point.
+\end{remark}
+
+\section{The sharp physical threshold and an inverse identity}\label{sec:physical}
+
+\begin{theorem}[Necessary and sufficient physical convergence]\label{thm:threshold}
+Let $y>\pi^2/6$ and $u$ be given by \eqref{eq:u-y}. Then
+\begin{equation}\label{eq:physical-series}
+ F_2^{-1}(y)=u+\sum_{N\ge1}(-1)^{N-1}a_N(u)\ee^{-Nu}
+\end{equation}
+is an absolutely convergent identity if and only if
+\begin{equation}\label{eq:physical-threshold}
+ u\ge\frac\pi{\sqrt6},\qquad\text{equivalently}\qquad
+ y\ge\frac{\pi^2}{4}.
+\end{equation}
+At equality convergence is absolute despite evaluation on the Taylor
+circle. Below the threshold, the terms on the right do not tend to zero.
+\end{theorem}
+\begin{proof}
+The physical parameter is $q=\ee^{-u}$. By \eqref{eq:radius-parameters},
+$q\le R$ is equivalent to $t/(1-t)\ge1$, or $t\ge1/2$.
+The characteristic function in \eqref{eq:characteristic-t} is strictly
+increasing. The classical reflection identity gives
+\[
+ \Li_2(1/2)=\frac{\pi^2}{12}-\frac{\log^2 2}{2},\qquad
+ 2\Li_2(1/2)+\log^2 2=\frac{\pi^2}{6}.
+\]
+Thus $q\le R$ is exactly \eqref{eq:physical-threshold}.
+For $q<R$, the series is the analytic germ from \eqref{eq:dilog-delta}.
+For every real $q>0$, that equation has a unique positive solution:
+its left side is negative at $\delta=0$, tends to infinity, and has
+strictly positive $\delta$ derivative
+\[
+ u+\delta+\log(1+q\ee^{-\delta})>0.
+\]
+Consequently the analytic germ is this real root wherever its Taylor
+series converges, and \eqref{eq:integer-exact} identifies the root with
+the required inverse at $q=\ee^{-u}$.
+
+At $q=R$, \eqref{eq:boundary-sum} or \eqref{eq:large-sector} gives absolute
+convergence. Continuity extends the same defining equation and hence the
+same inverse identity to the endpoint. If $q>R$, \eqref{eq:large-sector}
+gives
+$a_Nq^N\sim C(u)(q/R)^NN^{-3/2}$, with $C(u)>0$; terms do not tend to
+zero. Finally $y=u^2/2+\pi^2/6$ converts the threshold in $u$ to that in
+$y$.
+\end{proof}
+
+The derivative $F_2'(x)=\log(1+\ee^x)>0$ and the limits at $\pm\infty$
+show that $F_2$ maps $\R$ bijectively onto $(0,\infty)$. Therefore the
+failure below \eqref{eq:physical-threshold} is solely a failure of this
+expansion, not of the real inverse.
+
+\begin{corollary}[An exact self-referential radius identity]\label{cor:radius-inverse}
+For every $u>0$,
+\begin{equation}\label{eq:radius-inverse}
+ R(u)=\exp\bigl(F_2^{-1}(u^2/2)-u\bigr).
+\end{equation}
+Also $0<R(u)<1$, $R(u)\sim u^2/2$ as $u\downarrow0$, and
+\begin{equation}\label{eq:radius-large-u}
+ \log R(u)=-\frac{\pi^2}{6u}+O(u^{-3})\qquad(u\to\infty).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Let $a=t/(1-t)=\ee^w-1$. The classical Landen identity, obtained also by
+differentiating both sides and matching at $t=0$, is
+\[
+ -\Li_2\!\left(-\frac{t}{1-t}\right)
+     =\Li_2(t)+\frac12\log^2(1-t).
+\]
+The characteristic equation therefore gives $F_2(\log a)=u^2/2$.
+Since $R=\ee^{-u}a$, \eqref{eq:radius-inverse} follows.
+It is an exact functional relation, not an independent shortcut for
+computing an inverse one has not yet evaluated.
+
+The inequalities $t<1$ and $w<u$ give $R=t\ee^{w-u}<1$.
+In $w$ coordinates the characteristic equation is
+\begin{equation}\label{eq:characteristic-w}
+ u^2=w^2+2\Li_2(1-\ee^{-w}).
+\end{equation}
+Its right side has derivative $2w/(1-\ee^{-w})$, with limiting value $2$
+at zero. Hence $w\sim u^2/2$ and $R=\ee^{-u}(\ee^w-1)\sim u^2/2$.
+For large $u$, $w\to\infty$, and the reflection identity gives
+$\Li_2(1-\ee^{-w})=\pi^2/6+O(w\ee^{-w})$.
+Thus
+$w=u-\pi^2/(6u)+O(u^{-3})+O(\ee^{-w})$.
+Using $\log R=w-u+\log(1-\ee^{-w})$ proves
+\eqref{eq:radius-large-u}.
+\end{proof}
+
+\section{A quadratic polylogarithm-feedback extension}\label{sec:feedback}
+
+The sharp-radius argument depends more on positivity than on the special
+functional identities of the dilogarithm. Those identities are what turn
+the general radius criterion into the especially simple threshold
+$\pi^2/4$.
+
+\begin{theorem}[Interior folds for quadratic polylogarithm feedback]\label{thm:feedback}
+Let $s>0$, $u>0$, and let $v$ be the germ with $v(0)=0$ satisfying
+\begin{equation}\label{eq:feedback}
+ uv-\frac{v^2}{2}=\Li_s(r\ee^v).
+\end{equation}
+Suppose there is $t\in(0,1)$ with
+\begin{equation}\label{eq:s-characteristic}
+ u^2=2\Li_s(t)+\Li_{s-1}(t)^2.
+\end{equation}
+This condition holds for every $u>0$ when $0<s\le2$. For $s>2$ it holds
+exactly when
+\begin{equation}\label{eq:Uc}
+ u<U_c(s):=\sqrt{2\zeta(s)+\zeta(s-1)^2}.
+\end{equation}
+The solution $t$ is unique. Put
+\begin{equation}\label{eq:s-radius}
+ w=\Li_{s-1}(t),\quad v_c=u-w,\quad R=t\ee^{w-u}.
+\end{equation}
+Then the Taylor series of $v$ has positive coefficients, exact radius $R$,
+and unique dominant singularity $R$. Its coefficient asymptotic is
+\begin{equation}\label{eq:s-asymptotic}
+ [r^N]v(r)\sim
+ \sqrt{\frac{w}{2\pi\bigl(1+\Li_{s-2}(t)\bigr)}}\,
+       R^{-N}N^{-3/2}.
+\end{equation}
+The positive finite formula \eqref{eq:positive-coeff} remains valid after
+replacing $C_{N,k}$ by $\coeff{z}{N}\Li_s(z)^k$. Its coefficients in
+$u^{-1}$ are then positive real numbers; the extreme coefficients are
+$N^{-s}$ and $\operatorname{Cat}_{N-1}/2^{N-1}$.
+\end{theorem}
+\begin{proof}
+For real $s$, each coefficient $n^{-s}$ is positive. All derivatives with
+respect to $t$ of a polylogarithm in the open interval $(0,1)$ are
+therefore positive. In particular,
+$2\Li_s(t)+\Li_{s-1}(t)^2$ is strictly increasing. Its limit at $t=1$
+is infinite if $s\le2$, and is $U_c(s)^2$ if $s>2$. This proves the
+existence and uniqueness assertions.
+
+Use the same parameterization as \eqref{eq:parametric}, with $\Li_s$
+in place of $\Li_2$. Its logarithmic $r$ derivative is
+$t^{-1}(1-\Li_{s-1}(t)/\sqrt{u^2-2\Li_s(t)})$, positive before the
+characteristic point. Iterating
+$\Phi(r,v)=v^2/(2u)+\Li_s(r\ee^v)/u$ gives nonnegative formal
+coefficients and bounds their sum up to $R$ exactly as in the proof of
+Theorem~\ref{thm:radius}. The Lagrange calculation in
+Theorem~\ref{thm:positive} uses only the quadratic core, so its positive
+finite formula applies unchanged.
+
+At the fold,
+\[
+ R\Phi_r=w/u,\qquad \Phi_{vv}=(1+\Li_{s-2}(t))/u>0.
+\]
+Hence the square-root coefficient is
+$\sqrt{2w/(1+\Li_{s-2}(t))}$.
+Every coefficient is positive. On another point of the circle,
+$|v|<v_c$, $|r\ee^v|<t$, and
+$|\Phi_v|\le(|v|+\Li_{s-1}(|r\ee^v|))/u<1$.
+This proves unique dominance and the same $\Delta$ continuation as before.
+The square-root transfer gives \eqref{eq:s-asymptotic}.
+\end{proof}
+
+For $0<s\le2$, the boundary between convergence and divergence on the
+curve $r=-\ee^{-u}$ can likewise be stated exactly. The unique
+$t_*\in(0,1)$ solving
+\begin{equation}\label{eq:general-physical}
+ \log t_*+\Li_{s-1}(t_*)=0
+\end{equation}
+gives $u_*^2=2\Li_s(t_*)+\Li_{s-1}(t_*)^2$.
+Convergence holds precisely for $u\ge u_*$, including absolute convergence
+at the boundary. This follows from $\ee^{-u}/R=\ee^{-w}/t$ and monotonicity
+of both sides of the characteristic parametrization. For $s=2$,
+$t_*=1/2$. For other values of $s$, \eqref{eq:feedback} is a quadratic
+feedback model, \emph{not} the exact-core inversion equation of $F_s$;
+that identification is special to the dilogarithm case.
+
+\section{An audit safeguard: arithmetic averaging and inversion}\label{sec:averaging}
+
+The repository source~\cite{RepoTransport} already explicitly studies the
+nonlinear real-averaging defect. The calculation below is an illustrative
+restatement and integration safeguard, not a newly discovered phenomenon.
+The exact identity \eqref{eq:average} uses an arithmetic average of
+lateral realizations. It must not be propagated through nonlinear
+inversion as though averaging were a homomorphism. The following elementary
+calculation isolates the obstruction.
+
+\begin{proposition}[First nonlinear averaging defect]\label{prop:average-defect}
+Let $F$ be analytic and locally invertible with inverse $g$, let $T$ be
+analytic near the relevant inverse point, and let $G_\pm(y;\lambda)$ be the
+coherently chosen inverses of $F\pm\ii\lambda T$ for sufficiently small
+$\lambda$. Then
+\begin{equation}\label{eq:averaging-defect}
+ \frac{G_++G_-}{2}
+   =g-\frac{\lambda^2}{2}\frac{\mathrm d}{\mathrm dy}
+               \bigl(g'(y)T(g(y))^2\bigr)+O(\lambda^4),
+\end{equation}
+locally uniformly. The inverse of the arithmetic average of the forward
+functions is exactly $g$, so these operations need not commute.
+\end{proposition}
+\begin{proof}
+The analytic perturbation inverse has the convergent local expansion
+\[
+ G_\pm=g+\sum_{n\ge1}\frac{(\mp\ii\lambda)^n}{n!}
+             \frac{\mathrm d^{n-1}}{\mathrm dy^{n-1}}
+               \bigl(g'(y)T(g(y))^n\bigr).
+\]
+It follows either by a local contour logarithm, as in
+\cite{RepoTransport}, or by Lagrange inversion in the forward coordinate.
+Averaging removes the odd terms; the $n=2$ coefficient is the displayed
+one. Holomorphy in $\lambda$ gives the uniform fourth-order remainder.
+\end{proof}
+
+For $F(x)=x$ and $T(x)=\ee^{-x}$, the defect is
+$+\lambda^2\ee^{-2y}+O(\lambda^4)$. This gives an explicit counterexample,
+not just a warning based on formal terminology. It is relevant when the
+forward polylogarithm happens to equal an arithmetic lateral average,
+as at a half-integer order in \eqref{eq:average}.
+
+This proposition is \emph{not} a counterexample to appropriately defined
+\'Ecalle median summation or to a summation morphism whose hypotheses
+hold. Arithmetic averaging and such nonlinear-compatible summation
+procedures are different constructions. Nor was an erroneous averaging
+claim found in the inspected accepted repository theorem. The proposition
+is a preventive integration note, not an allegation about an unseen text.
+
+\section{Verification, limitations, and proposed integration}\label{sec:verification}
+
+\subsection{Exact replay and numerical diagnostics}
+
+The distributed program \path{code/verify.py} uses Python rational
+arithmetic for the inverse coefficients and SymPy for finite symbolic
+checks. At the recorded run it passed \textbf{118 exact assertions}:
+positivity and complete Laurent support through $N=10$, both extreme
+coefficients at each of those orders, thirty coefficient comparisons
+against an independent fixed-point recurrence at $u=1,2,3$, and finite
+Taylor/residue checks of six Gamma kernels. These assertions are finite
+regressions, not a formal proof of a universally quantified theorem.
+
+The arbitrary-precision run used \texttt{mpmath} at 65 decimal digits.
+Three complex-ray reconstructions of the first order derivative were
+compared with differentiation under the defining Fermi integral, twelve
+higher-jet coefficient comparisons were performed, and six periodic
+kernels were checked in both digamma and convergent Hurwitz-series
+coordinates. Their Fourier tails were separately checked against the
+exponential Dirichlet series. The recorded absolute errors for these
+comparisons were below $10^{-53}$; this is floating-point agreement,
+not an interval certificate.
+
+The radius equation was solved monotonically in its $w$ coordinate.
+Table~\ref{tab:radius} displays selected results, and the full-precision
+records are in \path{data/radii.csv}. In particular, a ratio larger than one
+puts the physical point outside the convergence disk.
+\begin{table}[htbp]\centering
+\caption{Exact-radius diagnostics, rounded from 65-digit calculations.}
+\label{tab:radius}
+\begin{tabular}{rrrr}\toprule
+$u$ & $w$ & $R(u)$ & $\ee^{-u}/R(u)$\\\midrule
+$0.7$ & $0.231283506580$ & $0.129219674046$ & $3.842954313697$\\
+$1$ & $0.447460986781$ & $0.207607344120$ & $1.771996278510$\\
+$\pi/\sqrt6$ & $\log2$ & $0.277329255639$ & $1$\\
+$2$ & $1.418886391532$ & $0.423939922809$ & $0.319232221254$\\
+$4$ & $3.600624855684$ & $0.652423391327$ & $0.028073240678$\\
+$8$ & $7.792136744823$ & $0.811982646785$ & $0.000413140144$\\\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:coeff-limit} checks the fixed-$u$ asymptotic constant by
+positive convolution and the finite formula; these particular larger-$N$
+calculations use binary64, not 65-digit arithmetic. Their slower approach
+at $u=4$ is consistent with, but does not prove, the lack of uniformity
+as $u\to\infty$.
+\begin{table}[htbp]\centering
+\caption{The normalized coefficient
+$a_N(u)R(u)^NN^{3/2}/\sqrt{w(1-t)/(2\pi)}$, which tends to one.}
+\label{tab:coeff-limit}
+\begin{tabular}{rrr}\toprule
+$N$ & $u=2$ & $u=4$\\\midrule
+16 & 0.994010739 & 1.119387718\\
+32 & 0.997036572 & 1.078796636\\
+64 & 0.998528610 & 1.049118033\\
+128 & 0.999267319 & 1.029009229\\
+256 & 0.999634478 & 1.016318713\\\bottomrule
+\end{tabular}
+\end{table}
+
+Direct inverse comparisons at $u=2$ and $u=4$ used up to 24 exact
+coefficient polynomials. At $N=24$, the absolute inverse errors were about
+$5.74\cdot10^{-16}$ and $1.72\cdot10^{-42}$ respectively. The associated
+forward residuals were also checked. These are evaluations of a proved
+convergent expansion; they are not the source of the convergence theorem.
+
+\subsection{A numerical differentiation trap detected during the audit}
+
+A preliminary check used a tiny-step numerical order derivative of
+$-\Li_s(-\ee^{1.5})$ at $s=1$. With the installed \texttt{mpmath 1.3.0},
+that route did not retain the requested accuracy. At 50-digit working
+precision, one observed value was
+\[
+ 0.9040505816228687763214111328125,
+\]
+whereas both the independent defining-integral derivative and the Borel
+reconstruction gave
+\[
+ 0.904050579573149170271101746468683814622500015191\ldots.
+\]
+The discrepancy is approximately $2.05\cdot10^{-9}$; merely quoting the
+working precision would conceal it. This is an observed behavior of that
+specific evaluation route and version, not a general theorem about the
+library or a diagnosis of its internal cause. The final verification
+program does \emph{not} use that route as its reference. It evaluates
+\begin{equation}\label{eq:independent-jet-integral}
+ J_m(x)=\frac1{\Gamma(m)}\int_0^\infty
+    \frac{t^{m-1}(\log t-\psi(m))}{1+\ee^{t-x}}\dd t,
+\end{equation}
+which follows directly from \eqref{eq:FDintegral}. The package includes a
+small reproducer and a version-specific note so the failed preliminary
+check is not silently lost.
+
+\subsection{Source audit and integration boundary}
+
+The audit inspected selected portions of the project READMEs, the initial portion of the
+polylogarithm--polygamma bridge article, the nonlinear Stokes-transport
+title/abstract, proof, and countable-family/flow discussion, and the critical-Hahn
+package README. It did not inspect every chapter of the large canonical
+volumes or every pending incoming article. The last observed main commit
+was \texttt{cbfbc3163e0d038a381808c6db8d39ea12dc0db7}; individual file
+blob identifiers and reading ranges are recorded in \path{SOURCES.md}.
+Some initial reads preceded that commit observation and were made on
+\texttt{main}; the audit is therefore not falsely presented as an atomic
+full-tree checkout.
+
+No new mathematical error was established in the accepted repository
+statements actually inspected. The proposed corrections are narrowly
+scoped safeguards for this contribution: retain exponential completion
+at integer resonance; retain order derivatives of vanishing coefficients;
+fix the lateral sign convention; preserve the zero Fourier mode; do not
+replace a sufficient certificate by an exact-radius claim; and do not
+commute arithmetic averaging with inversion. Existing source warnings
+about evidence versus proof are respected, not rebranded as discoveries.
+
+Recommended placement is a new self-contained research package under
+\path{Analysis/Transseries/docs/series-and-transseries/}, with a backlink
+from the polylogarithm reports. The generic inverse engine should remain
+attributed to its existing source. The sharper, model-specific radius and
+periodic-kernel statements can be considered separately for promotion to
+the canonical volumes after independent proof review. The package changes
+no repository files remotely.
+
+\section{Further research questions and concrete next steps}\label{sec:future}
+
+\paragraph{1. The boundary regime of quadratic polylogarithm feedback.}
+Theorem~\ref{thm:feedback} stops at an interior fold. For $s>2$ and
+$u\ge U_c(s)$, the polylogarithm boundary at $t=1$ competes with or replaces
+the fold. A useful precise target, when $u>U_c(s)$, is the candidate law
+\[
+ [r^N]v(r)\sim
+ \frac{w_0^{s-1}}{(w_0-\zeta(s-1))^s}
+       R_b^{-N}N^{-s},\qquad
+ w_0=\sqrt{u^2-2\zeta(s)},\quad R_b=\ee^{-(u-w_0)}.
+\]
+This expression follows from formal transport of the leading
+polylogarithm singular term, but is \emph{not proved here}. A proof must
+establish the relevant boundary continuation, handle integer-order
+logarithms, and exclude competing singularities. At $u=U_c(s)$, one expects
+different exponents for $2<s<3$, a logarithmic transition at $s=3$, and a
+finite-curvature regime above it. The related linear-core critical-Hahn
+work in \cite{RepoCritical} should be used as a comparison source rather
+than ignored.
+
+\paragraph{2. Joint large-sector and large-core asymptotics.}
+The constant in \eqref{eq:large-sector} tends rapidly to zero as
+$u\to\infty$, while $R(u)\to1$. Determine a uniform law for $N,u\to\infty$,
+including the transition from the fixed-$N$ behavior
+$a_N(u)\sim1/(N^2u)$ to the fixed-$u$ square-root law. The parameter
+$1-t_u=\ee^{-w_u}$ measures the approaching polylogarithm boundary and
+suggests that the product of this quantity with the sector index deserves
+particular attention; the correct full scaling should be derived, not
+assumed from the separate limits.
+
+\paragraph{3. Exact radii for higher integer-order cores.}
+For $m\ge3$, \eqref{eq:general-sectors} is finite and explicit, but
+$Q_{m,u}$ is no longer linear. Classify when an analogous sign pattern
+survives, locate the nearest complex critical value, and determine whether
+any further physical thresholds reduce to known special polylogarithm
+values. The sufficient certificate in Theorem~\ref{thm:general-inverse}
+provides a safe starting region but does not answer those questions.
+
+\paragraph{4. A meromorphic--logarithmic dictionary for higher jets.}
+Theorem~\ref{thm:Bell} gives every coefficient, whereas
+Theorem~\ref{thm:Gamma-kernel} gives a particularly simple global Borel
+kernel only for the first jet. Derive comparable global representations
+for $r\ge2$, with the logarithmic singular germs at every integer made
+explicit. The differentiated lattice formula is available, but an
+arithmetic normal form should keep the harmonic sums and branch constants
+separate and reveal which finite Gamma/polygamma coordinates suffice.
+
+\paragraph{5. Resonance detuning coupled to nonlinear inversion.}
+Equation~\eqref{eq:detuning-limit} resolves the moving order at the
+coefficient level. Construct a uniform inverse chart when the order
+approaches an integer while the core grows, and determine the scale at
+which the restored divergent tail competes with the pre-existing
+exponential inverse sectors. Coefficientwise convergence alone does not
+justify commuting these limits with Borel integration and reversion.
+
+\paragraph{6. Arithmetic cancellation of the first Borel actions.}
+Periodic weights may cancel the first several residues exactly. Determine
+how such cancellations change the first visible inverse sectors, the
+nearest surviving Borel singularities, and optimal truncation. The finite
+DFT in Theorem~\ref{thm:periodic} makes this a concrete algebraic design
+problem. A nonzero mean must remain in the calculation; cancellation of
+some residue classes does not imply disappearance of the zero mode.
+
+\paragraph{7. Nonlinear-compatible real summation.}
+Starting with the explicit jump \eqref{eq:jump}, construct and compare
+real analytic completions whose inverse transport is compatible with a
+chosen summation framework. Proposition~\ref{prop:average-defect} supplies
+a low-order obstruction test. The goal is an actual compatible construction,
+not a relabeling of arithmetic averaging as a median operation.
+
+\paragraph{8. Formalization and certified computation.}
+A practical first formalization target is the positive coefficient formula
+and its two extreme coefficients over $\Q[u^{-1}]$, followed by the
+finite-Fourier residue dictionary. The analytic radius theorem additionally
+needs a positive implicit-series argument, a complex continuation API,
+and a square-root transfer theorem. Separately, replace the current
+floating-point Borel diagnostics by interval enclosures on tilted rays
+with rigorous tail bounds. These tasks are proposed work; the present
+package contains neither a Lean proof nor an interval certificate.
+
+\appendix
+\section{Reproduction guide and result map}\label{app:reproduce}
+
+All manuscript formulas are contained in this one \texttt{article.tex};
+no external image or font file is required. The retained tables are rounded
+from the accompanying CSV files. The following commands reproduce the
+verification and the PDF in a standard Python/TeX environment:
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python code/verify.py --output-dir replay --max-n 256
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+Use a new output directory for a replay rather than overwriting historical
+evidence. The optional \texttt{--skip-borel} switch is explicitly recorded
+as a skipped check; it was \emph{not} used in the final retained run.
+
+\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.28\textwidth}>{\raggedright\arraybackslash}p{.22\textwidth}>{\raggedright\arraybackslash}p{.43\textwidth}@{}}
+\toprule
+Result & Status in this article & Dependency and scope\\\midrule
+\endhead
+Theorem~\ref{thm:lattice} & Classical completion, explicit realization &
+Defining integral, binomial series, normal convergence; no claim that the
+complete Sommerfeld formula is new.\\[5pt]
+Theorems~\ref{thm:Gamma-kernel} and~\ref{thm:Bell} & Derived jet identities &
+Gamma reflection, analytic order differentiation, explicit endpoint terms;
+conventional proofs.\\[5pt]
+Theorem~\ref{thm:periodic} & Derived arithmetic kernel dictionary &
+Subtracted digamma resolvent and finite DFT; zero mean not assumed.\\[5pt]
+Theorem~\ref{thm:general-inverse} & Model specialization of existing tools &
+Lagrange inversion and Rouch\'e certification; sufficient radius only.\\[5pt]
+Theorems~\ref{thm:positive}--\ref{thm:threshold} & Main proposed contribution &
+All-sector positivity, exact radius, unique dominance, sharp endpoint;
+not established merely by the numerical checks.\\[5pt]
+Theorem~\ref{thm:feedback} & Derived interior-fold extension &
+All $0<s\le2$, or $s>2$ below the stated boundary; no boundary theorem
+claimed at or above $U_c(s)$.\\[5pt]
+Proposition~\ref{prop:average-defect} & Exact audit safeguard &
+Elementary perturbative inverse calculation; not a refutation of median
+summation theory.\\\bottomrule
+\end{longtable}
+\normalsize
+
+\begingroup\small
+\begin{thebibliography}{20}
+\setlength{\itemsep}{2pt}
+\bibitem{DLMFpoly}
+NIST Digital Library of Mathematical Functions,
+\emph{\S25.12, Polylogarithms}, especially the integral representation,
+Jonqui\`ere expansion, dilogarithm reflection and Landen identities.
+\url{https://dlmf.nist.gov/25.12}. Accessed 11 October 2026.
+
+\bibitem{DLMFgamma}
+NIST Digital Library of Mathematical Functions,
+\emph{\S5.5, Functional Relations}, Gamma reflection.
+\url{https://dlmf.nist.gov/5.5}. Accessed 11 October 2026.
+
+\bibitem{DLMFratio}
+NIST Digital Library of Mathematical Functions,
+\emph{\S5.11, Asymptotic Expansions}, especially the digamma expansion
+and Gamma-ratio formulas.
+\url{https://dlmf.nist.gov/5.11}. Accessed 11 October 2026.
+
+\bibitem{GFG}
+T. M. Garoni, N. E. Frankel, and M. L. Glasser,
+Complete asymptotic expansions of the Fermi--Dirac integrals,
+\emph{Journal of Mathematical Physics} \textbf{42} (2001), 1860--1868.
+\url{https://doi.org/10.1063/1.1350634}.
+The present source audit inspected the institutional publication record
+and abstract, not the complete article.
+
+\bibitem{GST}
+A. Gil, J. Segura, and N. M. Temme,
+\emph{Complete asymptotic expansions for the relativistic Fermi--Dirac
+integral}, arXiv:2108.11210v2, Section~3 and Lemma~3.1.
+\url{https://arxiv.org/html/2108.11210v2}.
+
+\bibitem{FO}
+P. Flajolet and A. Odlyzko,
+Singularity analysis of generating functions,
+\emph{SIAM Journal on Discrete Mathematics} \textbf{3} (1990), 216--240.
+\url{https://doi.org/10.1137/0403019}.
+
+\bibitem{RepoPoly}
+ProveIt Contributors,
+\emph{Polylogarithms: project README and claim-status overview},
+\path{Analysis/Polylogarithms/README.md}, in the ProveIt repository.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+Reading scope and observed revision are recorded in \path{SOURCES.md}.
+
+\bibitem{RepoBridge}
+V. Reshetnikov,
+\emph{The Polylogarithm--Polygamma Bridge: An Exact Finite Fourier
+Transform, Clausen-Type Laws at Rational Arguments, and the Layers Below
+the Digamma}, 11 June 2026, historical source retained at
+\path{Analysis/Polylogarithms/docs/articles/polylog-polygamma-bridge.tex}.
+The current project ledger, not the historical abstract alone, governs
+accepted claim status.
+
+\bibitem{RepoTrans}
+ProveIt Contributors,
+\emph{Series and transseries: canonical volume and research-package index},
+\path{Analysis/Transseries/docs/series-and-transseries/README.md},
+ProveIt repository, inspected 11 October 2026.
+
+\bibitem{RepoTransport}
+ProveIt research package,
+\emph{Nonlinear Stokes Transport under Logarithmic Inversion},
+\path{Analysis/Transseries/docs/series-and-transseries/Nonlinear_Stokes_Transport_Logarithmic_Inversion/article.tex}.
+Inspected source lines 1--110 and 180--370; blob
+\texttt{1e8b24325554d1f1c94c29f21b794ba62feff755}.
+This is the source for the general contour inverse-transport architecture,
+its countable-family qualification, and the distinction between a
+certificate and a formal formula.
+
+\bibitem{RepoCritical}
+ProveIt research package,
+\emph{Beyond Finite-Action Folds: Critical Hahn Transseries, Stable Sector
+Asymptotics, and Sharp Action Budgets}, README at
+\path{Analysis/Transseries/docs/series-and-transseries/Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/README.md}.
+Inspected at commit
+\texttt{cbfbc3163e0d038a381808c6db8d39ea12dc0db7}; README blob
+\texttt{7d138677987dd1cc6dbfdf5df1aa564bfd08d5dd}.
+Its linear-core model and editorial cross-references are comparison
+material, not analytic results audited in full here.
+\end{thebibliography}
+\endgroup
+\end{document}

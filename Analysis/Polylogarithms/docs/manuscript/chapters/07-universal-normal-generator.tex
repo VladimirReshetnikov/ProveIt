@@ -494,6 +494,308 @@ This coefficient formula holds for $m\ge2$, with $\mathsf H_1=0$;
 the parenthesis is defined as one at $j=0$.
 Expanding the two entire functions proves this all-degree affine
 identity. Every permitted affine monomial is present with its predicted
-sign. The analogous full-support/sign statement for unrestricted
-compensators remains conjectural; the incoming probe through weight
-twenty-four is finite evidence rather than an all-weight proof.
+sign. The incoming full-support/sign probe through weight twenty-four
+suggests the unrestricted formula below. Its original conjectural status
+is preserved in the delivered report; the following argument proves it.
+
+\subsection{Every primitive coefficient and the full analytic disk}
+
+The highest-index extraction used for the normal coefficients has a
+primitive counterpart. Only one highest derivative is needed to cancel
+its rational denominator. This gives a simpler formula than expanding
+the Euler homotopy, and explains the experimentally observed full support.
+
+\begin{theorem}[All compensator coefficients and complete support]
+\label{pgc:coefficient}
+Let $m\ge2$ and $\sum_{j\ge0}(j+1)a_j=m-1$.
+For the pure power, $[u_0^{m-1}]\mathsf H_m=-m/2$.
+Otherwise let $d\ge1$ be the highest index, so $a_d\ge1$, and put
+$\ell=\sum j a_j$. Then
+\begin{equation}\label{pgc:coefficient-formula}
+ \boxed{[u^{\boldsymbol a}]\mathsf H_m=
+ \frac{(-1)^{\ell+1}m!}
+      {2^{d+2}(d+1)!\prod_j a_j!}
+ \int_{-1}^1(1+v)^{d+1}C_d(v)^{a_d-1}
+                          \prod_{j=1}^{d-1}C_j(v)^{a_j}\,dv.}
+\end{equation}
+The integral is an ordinary polynomial integral with a strictly positive
+rational value. Thus every monomial of weight $m-1$ occurs, and its
+coefficient has sign $(-1)^{m-|\boldsymbol a|}$.
+The exceptional weight-one compensator is $\mathsf H_1=0$.
+\end{theorem}
+\begin{proof}
+Use $R_d,W_d,J_d$ from the proof of Theorem~\ref{ung:coefficient} and
+write $S_d(v)=\sum_{j=1}^dC_j(v)X_j$.
+Define $k_d(\mathbf X)=\tfrac12\operatorname{FP}_v
+\int_{-1}^1R_d(v)e^{S_d(v)}\,dv$.
+For odd $d$, $R_d$ has a simple pole at zero and this is the symmetric
+principal value; for even $d$ it is ordinary.
+The identities $L_de^{S_d}=2\partial_ve^{S_d}$, $W_d=2R_d'$ and
+$R_d(-1)=-1$, $R_d(1)=0$ give
+\begin{equation}\label{pgc:raw-kernel}
+                 L_dk_d=e^{S_d(-1)}-J_d.
+\end{equation}
+Integration by parts uses the same coefficientwise symmetric finite
+part as before. Internal boundary differences have zero constant term,
+so no extra local term is suppressed.
+
+Normalize $e^{u_0t}J_d$ in the full polynomial ring. Its normal part is
+$e^{u_0t}F_d$ by the earlier proof. Its zero-constant primitive $P_d$
+contains jets only through index $d-1$: eliminating a single highest
+$u_d$ produces a primitive with highest index $d-1$, and all subsequent
+reductions have lower index. Terms already canonical contribute none.
+The difference has zero coefficients at weights zero, one and two:
+$J_d(0)=1$ and the linear $X_1$ coefficient vanishes by parity.
+The Appell argument used above therefore has no weight-two anomaly here,
+and weight homogeneity gives
+$P_d=t e^{u_0t}p_d(X_1,\ldots,X_{d-1})$.
+
+For the actual projected compensator, that same argument gives
+$\sigma_d\sum_m\mathsf H_mt^m/m!=t/2+t e^{u_0t}h_d(\mathbf X)$.
+The projected decomposition and \eqref{pgc:raw-kernel} imply
+\[
+ L_dh_d=e^{S_d(-1)}-F_d=L_d(k_d+p_d).
+\]
+The operator $L_d=X_1+\sum_{j<d}X_{j+1}\partial_{X_j}$ is injective
+on formal power series. At $d=1$ this is multiplication by $X_1$.
+For larger $d$, take the least power of $X_d$ in a nonzero series;
+its coefficient is annihilated by $L_{d-1}$ if $L_d$ annihilates the
+series, contradicting induction. Hence $h_d=k_d+p_d$.
+In particular every coefficient containing $X_d$ comes from $k_d$.
+This step uses the polynomial Appell structure before specialization;
+the kernel of a specialized spatial derivative is insufficient.
+
+Reflect $X_j$ to $(-1)^jX_j$ and $v$ to $-v$.
+Since $C_j(-v)=(-1)^jC_j(v)$ and
+\[
+ -R_d(-v)=\frac{(1+v)^{d+1}}{\Delta_d(v)},\qquad
+ \Delta_d(v)=2^{d+1}(d+1)!C_d(v),
+\]
+the coefficient containing $X_d^{a_d}$ in $-k_d((-1)^jX_j)$
+is exactly the positive integral in \eqref{pgc:coefficient-formula},
+divided by $2^{d+2}(d+1)!\prod_{j\ge1}a_j!$.
+Its factor $C_d^{a_d}$ cancels the denominator because $a_d\ge1$.
+The outside $t e^{u_0t}$ supplies $m!/a_0!$.
+Undoing the reflection gives $(-1)^{\ell+1}$.
+For the pure power, $R_d(v)+R_d(-v)=-1$ gives $k_d(0)=-1/2$;
+the added $t/2$ cancels precisely the weight-one constant.
+
+All coefficients of $C_j$ and $(1+v)^{d+1}$ are nonnegative.
+The product of the $C_j$ factors has one parity, while $(1+v)^{d+1}$
+contains both parities with positive coefficients. The resulting
+polynomial therefore has a positive even coefficient. Integration over
+$[-1,1]$ keeps its even coefficients with positive rational weights,
+proving strict positivity. Finally $\ell+1=m-|\boldsymbol a|$.
+\end{proof}
+
+For instance the formula gives the all-index coefficient families
+\begin{equation}\label{pgc:linear-mixed}
+ [u_r]\mathsf H_{r+2}=(-1)^{r+1}\quad(r\ge1),\qquad
+ [u_1u_r]\mathsf H_{r+4}=\frac{(-1)^r(r+1)(r+4)}2\quad(r\ge2).
+\end{equation}
+The latter specializes to $9u_1u_2$ in $\mathsf H_6$ and
+$-14u_1u_3$ in $\mathsf H_7$. Arbitrary additional powers of $u_0$
+follow from the Appell factorial factor in the theorem.
+
+Let $E_1(z)=(e^z-1)/z$, with $E_1(0)=1$, and define
+\begin{equation}\label{pgc:ordinary}
+ Q_d(\mathbf X)=\frac12+
+ \sum_{r=1}^d\frac{X_r}{2^{r+2}(r+1)!}
+ \int_{-1}^1(1+v)^{r+1}e^{\sum_{j<r}C_j(v)X_j}
+                                  E_1(C_r(v)X_r)\,dv.
+\end{equation}
+Summing the disjoint highest-index sectors of
+\eqref{pgc:coefficient-formula} gives the entire finite projection
+\begin{equation}\label{pgc:projection}
+ \sigma_d\sum_{m\ge1}\mathsf H_m\frac{t^m}{m!}
+ =\frac t2-t e^{u_0t}Q_d((-1)^1X_1,\ldots,(-1)^dX_d),
+ \qquad X_r=u_rt^{r+1}.
+\end{equation}
+There is no finite-part quadrature in this formula, even at odd indices.
+
+\begin{theorem}[Primitive convergence on the full input disk]
+\label{pgc:analytic}
+If $U$ is holomorphic on $|z-x|<R$, the primitive series
+\eqref{ngp:analytic-series} converges absolutely for $|t|<R$.
+Its value is \eqref{pgc:projection} with the ordinary infinite sum
+\eqref{pgc:ordinary} and $X_r=U^{(r)}(x)t^{r+1}$.
+For varying $x$ it converges locally normally and is jointly holomorphic
+where the corresponding closed disks lie locally in the domain of $U$.
+In particular, for $U$ holomorphic on $|x-x_0|<R$, the translation
+identity \eqref{ngp:translation} holds on $|x-x_0|+|t|<R$.
+\end{theorem}
+\begin{proof}
+Fix $|t|<\rho<R$, let $M=\sup_{|z-x|\le\rho}|U(z)|$ and
+$q=|t|/\rho<1$. Cauchy's estimates and the previously established
+$|C_r(v)|\le1/(r+1)!$ give
+$|X_r|\le M|t|r!q^r$ and
+$\sum_r|C_r(v)X_r|\le M|t|q/(1-q)$.
+The integral representation $E_1(z)=\int_0^1e^{sz}\,ds$ bounds
+its modulus by $e^{|z|}$. Also
+$\int_{-1}^1(1+v)^{r+1}dv=2^{r+2}/(r+2)$.
+Thus the $r$th sector, including the outside $t e^{tU}$, is bounded by
+\begin{equation}\label{pgc:majorant}
+       \frac{M|t|^2e^{M|t|/(1-q)}}{(r+1)(r+2)}q^r.
+\end{equation}
+This is locally summable. Taking absolute Taylor coefficients first
+gives the same majorant, using the positive coefficients of $C_r,E_1$
+and $(1+v)^{r+1}$. Consequently weights and highest indices can be
+regrouped absolutely, and Theorem~\ref{pgc:coefficient} identifies the
+coefficients with the actual $\mathsf H_m/m!$.
+Normal convergence on local disk covers proves joint holomorphy and
+permits spatial differentiation on smaller domains. The coefficientwise
+identity $\mathsf A_m=\mathsf N_m+\mathcal D\mathsf H_m$ therefore
+proves the analytic translation identity on this full domain.
+\end{proof}
+
+For $q\in\mathbb Z_{\ge0}$, real $x>0$ and $|t|<x$, both
+\eqref{ngp:gamma} and \eqref{ngp:stieltjes} now hold.
+They may be integrated termwise over $[a,b]\subset(0,\infty)$
+whenever $|t|<a$, retaining the exact endpoint difference.
+This strengthens the radius-$x/2$ homotopy argument without asserting
+a maximal continuation domain. The single-integral coefficient formula
+and the all-weight support/sign proof resolve the incoming conjecture;
+finite exact and numerical comparisons remain separate evidence.
+
+The full disk also permits an ordinary generating version of every
+weighted primitive. If $Y'=-UY$ and $Y$ is a nonzero local holomorphic
+solution, then on the same domain
+\begin{equation}\label{pgc:weighted-generator}
+ \int Y(x)\bigl(\mathsf G_U(t,x)-1+U(x)\mathsf H_U(x,t)\bigr)dx
+ =-\int_0^tY(x-s)\,ds-Y(x)\mathsf H_U(x,t)+C.
+\end{equation}
+Indeed $Y(x-s)/Y(x)$ is the raw generating function. Summing
+\eqref{ngp:weighted} gives the ordinary identity
+\[
+ \sum_{m\ge1}\mathsf A_{m-1}\frac{t^m}{m!}
+       =\int_0^t\frac{Y(x-s)}{Y(x)}\,ds.
+\]
+Local normal convergence justifies the summation and differentiation.
+Equivalently, direct differentiation uses
+$\partial_x\int_0^tY(x-s)ds=Y(x)-Y(x-t)$ and
+\eqref{ngp:translation}. For $Y=1/\Gamma$, the first term on the
+right is $-\int_0^t\Gamma(x-s)^{-1}ds$; the second retains the exact
+Gamma--polygamma endpoint compensator. Definite integrals retain the
+difference of both endpoint terms, rather than discarding either one.
+
+\subsection{A rational pole: amplitude sectors and classical dilogarithms}
+
+The rational input $U_c(x)=c/x$ gives an explicit bridge from the free
+normal-form hierarchy to classical polylogarithms. Projection is still
+performed in the free polynomial ring, before setting
+$u_j=(-1)^jcj!x^{-j-1}$; one must not renormalize after imposing these
+additional differential relations. For $x>0$ put $z=t/x$ and
+\[
+ \mathcal G_c(z)=\mathsf G_{U_c}(xz,x),\qquad
+ \mathcal P_c(z)=x^{-1}\mathsf H_{U_c}(x,xz).
+\]
+Weight homogeneity makes these functions independent of $x$.
+They are holomorphic for $|z|<1$ and entire in the amplitude $c$:
+the normal and primitive majorants are uniform on compact $c$ sets.
+The notation $[c^j]$ below means their Taylor coefficient in $c$.
+
+\begin{theorem}[The quadratic amplitude sector]\label{rmi:quadratic}
+On $|z|<1$, choose the analytic germs
+\[
+ L=\log(1-z),\qquad w=\operatorname{arsinh}(z/2),\qquad
+ y=\frac{z}{2+\sqrt{4+z^2}}=\tanh(w/2),
+\]
+with $L(0)=w(0)=y(0)=0$ and $\sqrt4=2$. Then
+\begin{align}
+ \mathcal G_c(z)&=1+cz+2c^2w^2+O(c^3),\label{rmi:normal}\\
+ \mathcal P_c(z)&=c\bigl(-z-(1-z)L\bigr)+c^2\Phi(z)+O(c^3),
+                                                    \label{rmi:primitive}\\
+ \Phi(z)&=-2w^2+\tfrac12(1-z)L^2-z\operatorname{Li}_2(z)
+              +2z\bigl(\operatorname{Li}_2(y)-\operatorname{Li}_2(-y)\bigr).
+                                                    \label{rmi:dilog}
+\end{align}
+These are convergent amplitude expansions, locally uniformly in $z$.
+In particular the quadratic normal sector has an ordinary continuation
+to $|z|<2$ through its elementary expression, without asserting that
+continuation for the full generator.
+\end{theorem}
+\begin{proof}
+At factor degree two the only canonical monomials are $u_r^2$,
+including $r=0$. Theorem~\ref{ung:coefficient} gives
+$[u_r^2]\mathsf N_{2r+2}=(-1)^r$; for $r\ge1$ use
+$\int_0^1(1-v^2)^rdv=4^r(r!)^2/(2r+1)!$ in its beta formula.
+Consequently
+\[
+ [c^2]\mathcal G_c(z)
+ =\sum_{r\ge0}\frac{(-1)^r(r!)^2}{(2r+2)!}z^{2r+2}=2w^2.
+\]
+To identify the sum independently, both sides solve
+$(z^2+4)f''+zf'=4$, with $f(0)=f'(0)=0$.
+The coefficient recurrence gives the displayed factorials; the
+elementary expression has the same initial values and derivatives.
+At factor degree one, only $u_0$ survives the normal projection, giving
+$[c]\mathcal G_c=z$.
+
+The evaluated raw Bell polynomial is $(c)_mx^{-m}$, by its recurrence,
+so its generator is $(1-z)^{-c}$. The analytic decomposition becomes
+\begin{equation}\label{rmi:decomposition}
+ (1-z)^{-c}=\mathcal G_c(z)+\mathcal P_c(z)-z\mathcal P_c'(z).
+\end{equation}
+Here the spatial derivative is taken at fixed $t$, since
+$\partial_x(x\mathcal P_c(t/x))=\mathcal P_c-z\mathcal P_c'$.
+The formal zero-constant normalization fixes
+$\mathcal P_c(z)/z\longrightarrow0$ at zero; it excludes an added
+spatially constant term proportional to $t$.
+The linear amplitude equation gives $-z-(1-z)L$.
+At quadratic amplitude, \eqref{rmi:decomposition} requires
+\[
+             \Phi-z\Phi'=\tfrac12L^2-2w^2.
+\]
+Let $B=\operatorname{Li}_2(y)-\operatorname{Li}_2(-y)$.
+The identity $(1+y)/(1-y)=e^w$ and the zero germs fix
+$\log(1+y)-\log(1-y)=w$ on the disk. Thus
+\[
+ \frac{dB}{dz}=w\frac{y'}y=\frac{2w}{z\sqrt{4+z^2}},\qquad
+ \operatorname{Li}_2'(z)=-\frac{L}{z}.
+\]
+All removable values are taken at zero. Substitution in
+\eqref{rmi:dilog} gives precisely the required differential equation
+and $\Phi(z)/z\to0$. These two conditions determine the analytic germ
+uniquely: their difference would be a multiple of $z$.
+The indicated germs extend throughout $|z|<1$. Since
+$\operatorname{Re}\sqrt{4+z^2}>\sqrt3$, the arguments $\pm y$ remain
+in the unit disk, so the displayed dilogarithms have their ordinary
+branches there. The generator convergence theorems justify
+amplitude extraction and identify these germs with the actual sectors.
+\end{proof}
+
+There is also an all-degree harmonic coefficient identity. For $m\ge2$,
+write $H_n^{(1)}=\sum_{j=1}^n1/j$ and
+\[
+ n_m=\begin{cases}
+ (-1)^{m/2-1}((m/2-1)!)^2,&m\text{ even},\\
+ 0,&m\text{ odd}.
+ \end{cases}
+\]
+Then
+\begin{equation}\label{rmi:harmonic}
+ [c^2]\mathsf H_m(U_c,U_c',\ldots)
+ =x^{1-m}\left(\frac{n_m}{m-1}-(m-2)!H_{m-1}^{(1)}\right).
+\end{equation}
+Indeed $[c^2](c)_m=(m-1)!H_{m-1}^{(1)}$, and the evaluated
+coefficientwise decomposition gives
+\[
+ x^m[c^2]\mathsf N_m+(1-m)x^{m-1}[c^2]\mathsf H_m=[c^2](c)_m.
+\]
+For $m=2$ this gives zero, as required by the purely linear $\mathsf H_2$.
+
+The same computation supplies ordinary antiderivatives. With $t$ fixed,
+$z=t/x$ and the same germs,
+\begin{align}
+ \int \operatorname{arsinh}^2\!\left(\frac{t}{2x}\right)dx
+ &=xw^2-t\bigl(\operatorname{Li}_2(y)-\operatorname{Li}_2(-y)\bigr)+C,
+                                                    \label{rmi:asinh-integral}\\
+ \int \log^2(1-t/x)dx
+ &=(x-t)L^2-2t\operatorname{Li}_2(z)+C.\label{rmi:log-integral}
+\end{align}
+Direct differentiation verifies both identities using the derivatives
+in the proof. Their difference is the quadratic primitive sector above.
+The model therefore gives an ordinary classical-dilogarithm evaluation
+with explicit branch and endpoint conventions, rather than only a formal
+coefficient fit. Higher amplitude sectors remain separate resummation
+questions.

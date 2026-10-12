@@ -1,0 +1,21 @@
+import GowersSzemeredi.Proofs18CoverExponentsFejerW
+import GowersSzemeredi.Proofs18CoverFejerHeadlineT
+
+/-! **Theorem 18.1 at `d + 3` for every `d ≥ 11` and at `d + 4` for every
+`d ≥ 8`; Theorem 18.2 / Corollary 18.7 at `L + 1` for every `L ≥ 13` and at
+`L + 2` for every `L ≥ 10`, from the recurrence profiles with polynomial
+family constants** (Notes L.16m).
+
+The Section 18 envelope at `GenParamsW`. Its base budget is
+`tightMu0W k = max(4k + 13, 5k + 21) + 2 = 5k + 23` instead of `16·2^k + 9`
+(`Proofs18FejerEnvelopeBaseW`). That needs the family constants at
+`Kc k + pc k ≤ 2^(2^(4k+16))`, the hypothesis `hconst` here, which the
+explicit constants satisfy. The class covers sit at the exact table `uDegT`,
+and the requirement on `m` uses the polynomial Bohr radius. The step lemmas
+and recursions are generated from `Proofs18CoverFejerHeadlineT`.
+
+Beyond the table one step costs `12·2^k + O(k²)` (`envStepW_le_tight`). The
+Theorem 18.2 threshold branch is `16·2^k + 5k + 28`. Both envelopes tend to
+`24·2^k < 32·2^k`. `decide +kernel` certifies them in dimensions `2, …, 12`,
+and the invariants `μ_k + 4k + 128 ≤ 32·2^k` (`polyGenMuW_le32`,
+`genMuXW_le32`) carry them from `k = 12` on. -/

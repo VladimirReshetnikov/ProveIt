@@ -1,0 +1,298 @@
+\section{Rational Hankel sums and a finite polylogarithm alphabet}
+\label{rha:section}
+
+The rational-pole input of the preceding section resums a differential
+normal form. Rational poles also control a different, finite-cutoff
+construction: Hankel determinants of moments. Here the size of a
+determinant can grow while its generating function remains in one fixed
+polylogarithm alphabet. This provides an exact framework for experiments
+with harmonic determinants, complementary to the retained rank problems
+of Section~\ref{opf:section}. The confluent-pole report
+\cite{rha:reports} supplies the theorem reconciled below. Harmonic degree,
+polylogarithmic weight and arithmetic independence remain distinct.
+
+Let $K$ be a field of characteristic zero embedded in $\mathbb C$, and let
+\begin{equation}\label{rha:weight}
+ R(x)=P(x)+\sum_{a\in A}\sum_{\ell=1}^{s_a}
+                 \frac{c_{a,\ell}}{(x+a)^\ell},
+ \qquad A\subset\mathbb Z_{\ge0}\text{ finite},\quad c_{a,s_a}\ne0,
+\end{equation}
+with $P\in K[x]$ and $c_{a,\ell}\in K$. Put
+\begin{equation}\label{rha:det}
+ D_{r,M}=\det\left(\sum_{n=1}^{M}n^{i+j}R(n)\right)_{0\le i,j<r},
+ \qquad G_r(z)=\sum_{M\ge1}D_{r,M}z^M,\quad r\ge1.
+\end{equation}
+Finite Cauchy--Binet, or direct expansion of two Vandermonde
+determinants, gives
+\begin{equation}\label{rha:ensemble}
+ D_{r,M}=\sum_{1\le n_1<\cdots<n_r\le M}
+       \prod_{i<j}(n_j-n_i)^2\prod_{j=1}^{r}R(n_j).
+\end{equation}
+There is no $r!$ factor. In particular $D_{r,M}=0$ for $M<r$.
+The pole restriction avoids every summation node, and the terms grow at
+most polynomially in $M$. Hence $G_r$ is holomorphic for $|z|<1$.
+
+\subsection{Confluent poles and the weight budget}
+
+Write $h_{a,p}(M)=\sum_{n=1}^{M}(n+a)^{-p}$ and first regard these
+as independent formal variables of weight $p$. For a pole of order $s_a$,
+let $V_a$ have entries
+\[
+ V_a(i,p)=\binom ip(-a)^{i-p}\quad(0\le p\le i),\qquad
+ V_a(i,p)=0\quad(p>i),\quad 0\le p<s_a,
+\]
+where $0^0=1$, and define
+\[
+ C_a(p,q)=\sum_{\ell>p+q}^{s_a}c_{a,\ell}h_{a,\ell-p-q}.
+\]
+Expansion of $x^i$ and $x^j$ around $-a$ proves the exact factorization
+\begin{equation}\label{rha:factor}
+ \boldsymbol\mu_r(M)=B_r(M)+\sum_{a\in A}V_aC_aV_a^{\mathsf T},
+                  \qquad B_r(M)\in\operatorname{Mat}_r(K[M]).
+\end{equation}
+Indeed the terms with $p+q<\ell$ give $C_a$; all others have polynomial
+Faulhaber sums. The transpose is ordinary transpose, including for
+complex residues. A nonzero entry of $C_a$ has weight at most $s_a-p-q$.
+
+\begin{theorem}[Confluent pole allocation]\label{rha:capacity}
+Every monomial in the formal determinant has harmonic weight at most
+\begin{equation}\label{rha:budget}
+ W_r=\max_{\substack{0\le k_a\le s_a\\\sum_a k_a\le r}}
+              \sum_a k_a(s_a-k_a+1).
+\end{equation}
+Equivalently, $W_r$ is the sum of the $r$ largest entries in the multiset
+of positive integers $s_a,s_a-2,s_a-4,\ldots$ from all poles, or all
+entries if fewer than $r$ are available. Thus
+\[
+ W_r\le W_\infty=\sum_a\left\lfloor\frac{(s_a+1)^2}{4}\right\rfloor.
+\]
+For no poles both budgets are zero.
+\end{theorem}
+\begin{proof}
+Concatenate the $V_a$ and use block diagonal $C$ in \eqref{rha:factor}.
+Multilinearity selects $k\le r$ columns from $VCV^{\mathsf T}$ and
+the remainder from $B_r$. Cauchy--Binet then places all harmonic
+dependence in minors $C[I,J]$ of size $k$. A nonzero block-diagonal
+minor selects equally many indices $k_a$ from the row and column sets
+of each pole. Its local weight is bounded by
+\[
+ k_as_a-\sum_{p\in I_a}p-\sum_{q\in J_a}q
+ \le k_as_a-k_a(k_a-1)=k_a(s_a-k_a+1).
+\]
+The $V$ and $B_r$ factors have weight zero. Maximize over the possible
+selections to obtain \eqref{rha:budget}. The successive increments of
+$k(s-k+1)$ are $s,s-2,s-4,\ldots$. They decrease in each block, so
+selecting the largest positive increments respects every block's prefix
+constraint. Zero increments can be omitted; negative ones cannot improve
+the maximum. Their sum proves the saturation formula.
+\end{proof}
+
+Simple poles have $W_r=\min(r,|A|)$. A single pole of orders
+$1,2,3,4,5,6,7$ has stabilized weights $1,2,4,6,9,12,16$.
+Thus neither ordinary harmonic degree nor pole order alone supplies
+the required polylogarithmic weight. For example the two-particle
+triple-pole determinant is $H_M^{(3)}H_M^{(1)}-(H_M^{(2)})^2$,
+of harmonic degree two and weight four.
+
+\subsection{Cutoff corrections and anchored rational integration}
+
+The exact integer-shift identity is
+\begin{equation}\label{rha:shift}
+ h_{a,p}(M)=H_M^{(p)}+\sum_{b=1}^{a}(M+b)^{-p}-H_a^{(p)}.
+\end{equation}
+Assign cost $p$ to a retained harmonic factor or an inverse-cutoff
+factor of order $p$, and zero to the rational constant. Expanding
+\eqref{rha:shift} cannot increase total cost. Partial fractions and
+polynomial division therefore write $D_{r,M}$ as a finite sum of
+\begin{equation}\label{rha:cutoff}
+ p(M)\prod_jH_M^{(b_j)},\qquad
+ \frac{c}{(M+h)^e}\prod_jH_M^{(b_j)},
+\end{equation}
+where $p\in K[M]$, $c\in K$, $1\le h\le\max A$, and respectively
+$\sum_jb_j\le W_r$ or $e+\sum_jb_j\le W_r$.
+Each partial-fraction pole order is at most the sum of the preceding
+denominator orders. The empty harmonic product is one; there are no
+cutoff denominators if $A$ is empty or $A=\{0\}$.
+
+Use decreasing-index finite sums and multiple polylogarithms:
+\[
+ H_M(b_1,\ldots,b_v)=\sum_{M\ge n_1>\cdots>n_v\ge1}
+             \frac{1}{n_1^{b_1}\cdots n_v^{b_v}},\qquad
+ \operatorname{Li}_{b_1,\ldots,b_v}(z)=
+       \sum_{n_1>\cdots>n_v\ge1}
+             \frac{z^{n_1}}{n_1^{b_1}\cdots n_v^{b_v}}.
+\]
+All indices are positive. Partitioning a product according to equal
+summation indices gives the positive quasi-shuffle: for instance
+$H_M(a)H_M(b)=H_M(a,b)+H_M(b,a)+H_M(a+b)$.
+The recursion preserves total weight and integer multiplicities.
+Summing the largest-index geometric tail proves
+\begin{equation}\label{rha:hgen}
+ \sum_{M\ge1}H_M(\mathbf b)z^M
+       =\frac{\operatorname{Li}_{\mathbf b}(z)}{1-z}
+                    \quad(\mathbf b\ne\emptyset).
+\end{equation}
+The empty word instead has generator $z/(1-z)$.
+
+For clarity, the integration step needed by the compiler is proved here.
+Let $I_\emptyset=1$, with kernels $f_0=1/z$ and $f_1=1/(1-z)$,
+and $I_{a\nu}(z)=\int_0^z f_a(t)I_\nu(t)\,dt$ for nonempty words
+ending in $1$. Then
+$\operatorname{Li}_{b_1,\ldots,b_v}=I_{0^{b_1-1}1\cdots0^{b_v-1}1}$.
+
+\begin{lemma}[Anchored two-letter Hermite reduction]\label{rha:hermite}
+Suppose $F$ is a rational linear combination of $1$ and words ending
+in $1$, of lengths at most $w$. Its rational coefficients have poles
+only at $0,1$. If $F$ is holomorphic at zero, its zero-anchored
+primitive has the same form with lengths at most $w+1$.
+An exact terminating algorithm constructs it.
+\end{lemma}
+\begin{proof}
+Partial fractions give $R=Q'+\alpha/z+\beta/(1-z)$ with rational $Q$
+having only those poles. For a nonempty word $\omega=a\nu$,
+\[
+ \int R I_\omega\,dz=Q I_\omega+\alpha I_{0\omega}
+       +\beta I_{1\omega}-\int Q f_a I_\nu\,dz.
+\]
+The remaining word is shorter, so recursion terminates. At the empty
+word the primitive is $Q+\alpha\log z-\beta\log(1-z)$.
+After combining terms, the result is a meromorphic germ plus a constant
+multiple of $\log z$; all other words are analytic at zero.
+Its derivative is holomorphic by hypothesis, forcing both the principal
+part and the $\log z$ coefficient to vanish. Only finitely many Taylor
+coefficients are needed to compute the constant term, because the
+rational factors have finite pole order. Subtract that constant.
+This also proves the assertion for $F/z$ when $F(0)=0$.
+\end{proof}
+
+This is the two-letter specialization of classical hyperlogarithm
+integration; quasi-shuffle and rational-integration attribution are
+retained in \cite{rha:reports}. Define $\theta=z\,d/dz$ and
+\begin{equation}\label{rha:inverse}
+ \mathcal J_hF(z)=z^{-h}\int_0^z t^{h-1}F(t)\,dt,
+                \qquad h\in\mathbb Z_{\ge0}.
+\end{equation}
+For $h=0$ require $F(0)=0$; for $h>0$ the apparent pole is removable.
+Coefficientwise, $\mathcal J_h\sum_{M\ge1}a_Mz^M
+=\sum_{M\ge1}a_Mz^M/(M+h)$. The operator $\theta$ preserves the
+weight bound, whereas $\mathcal J_h$ raises it by at most one.
+
+\subsection{An all-rank finite alphabet}
+
+\begin{theorem}[Finite rational-pole compiler]\label{rha:compiler}
+For every weight \eqref{rha:weight} and rank $r\ge1$, $G_r(z)$ is a
+finite $K(z)$-linear combination of $1$ and positive-index multiple
+polylogarithms of weight at most $W_r$. The prefactors have poles only
+at $0,1$. The identity holds throughout $|z|<1$, with removable values
+at zero taken collectively.
+\end{theorem}
+\begin{proof}
+Apply the confluent expansion, the shift rule and cutoff partial
+fractions \eqref{rha:cutoff}. Quasi-shuffle every harmonic product and
+use \eqref{rha:hgen}. Multiplication by $p(M)$ becomes $p(\theta)$;
+division by $(M+h)^e$ becomes $\mathcal J_h^e$. Lemma~\ref{rha:hermite}
+removes every integral using exact rational operations and a recursion
+of strictly decreasing word length. A term of harmonic weight $b$ and
+inverse-cutoff order $e$ produces weight at most $b+e\le W_r$.
+All constructions are finite and introduce no new letter. Their
+coefficient identities establish equality of Taylor series, while
+analyticity extends equality to the full disk.
+\end{proof}
+
+\begin{corollary}[Every denominator of degree at most two]
+\label{rha:quadratic}
+If the reduced denominator of $R$ has degree at most two and roots at
+nonpositive integers, then, at every rank and with any polynomial part,
+\begin{equation}\label{rha:quadratic-form}
+ G_r(z)=A_r(z)+B_r(z)L+C_r(z)L^2+E_r(z)\operatorname{Li}_2(z),
+                         \qquad L=-\log(1-z),
+\end{equation}
+with prefactors in $K(z)$ having poles only at $0,1$.
+\end{corollary}
+\begin{proof}
+The nonempty pole profiles are $(1)$, $(1,1)$ and $(2)$, with
+$W_\infty\le2$. The positive-index polylogarithms of weight at most
+two are $\operatorname{Li}_1=L$, $\operatorname{Li}_2$, and
+$\operatorname{Li}_{1,1}=L^2/2$. Include the rational empty word.
+\end{proof}
+
+Separated integer poles and repeated double poles therefore have the
+same uniform dilogarithm bound as adjacent simple poles. This is a
+constructive upper bound, not a minimal functional-weight theorem.
+
+\begin{corollary}[Euler primitives and differential equations]
+\label{rha:differential}
+For $e\ge0$, the generator $\sum_{M\ge1}D_{r,M}z^M/M^e$ has weight
+at most $W_r+e$. All ranks for fixed $R$ lie in a differential module
+over $K(z)$ generated by at most $2^{W_\infty}$ functions.
+Each individual $G_r$ satisfies a nonzero scalar differential equation
+over $K(z)$ of order at most $2^{W_\infty}$.
+\end{corollary}
+\begin{proof}
+Iterate $\mathcal J_0$. There are $2^{w-1}$ positive compositions of
+weight $w$, so the empty word and all weights up to $W_\infty$ give
+$2^{W_\infty}$ generators, with differentiation preserving their span.
+The first $2^{W_\infty}+1$ derivatives of any one element are linearly
+dependent over $K(z)$. The assertion is per element: varying rational
+prefactors do not give one common scalar equation for every rank.
+\end{proof}
+
+\subsection{A double pole, a dilogarithm and an ordinary endpoint}
+
+For $R(n)=(n+1)^{-2}$ a monic basis change from $1,n$ to $1,n+1$
+gives
+\[
+ D_{2,M}=B_M=M\bigl(H_{M+1}^{(2)}-1\bigr)-(H_{M+1}-1)^2.
+\]
+The general alphabet theorem predicts a classical dilogarithm before
+the explicit summation is performed.
+\begin{proposition}[A shifted double-pole evaluation]\label{rha:double}
+For $|z|<1$,
+\begin{equation}\label{rha:double-generator}
+ \sum_{M\ge1}B_Mz^M=
+ \frac{(3z-2)\operatorname{Li}_2(z)+(1-z)(3L-L^2)-z}
+      {z(1-z)^2},\qquad L=-\log(1-z).
+\end{equation}
+Its zero value is removable, and its ordinary convergent endpoint is
+\begin{equation}\label{rha:double-endpoint}
+ \sum_{M\ge1}\frac{B_M}{M(M+1)(M+2)}
+       =\frac52\zeta(3)-\frac32\zeta(2)-\frac12.
+\end{equation}
+\end{proposition}
+\begin{proof}
+The shifted harmonic generators are
+\[
+ U=\frac{\operatorname{Li}_2(z)}{z(1-z)}-\frac1{1-z},\qquad
+ V=\frac{\operatorname{Li}_2(z)+L^2-2L}{z(1-z)}+\frac1{1-z},
+\]
+for $H_{M+1}^{(2)}-1$ and $(H_{M+1}-1)^2$, respectively.
+Then $\theta U-V$ gives \eqref{rha:double-generator}.
+The ensemble formula shows $B_M\ge0$; also
+$B_M\le M(\zeta(2)-1)$, so the endpoint converges absolutely.
+Using $\frac12\int_0^1 z^{M-1}(1-z)^2dz=1/[M(M+1)(M+2)]$,
+Tonelli identifies it with $\frac12\int_0^1 N(z)/z^2dz$, where
+$N=(3z-2)\operatorname{Li}_2(z)+(1-z)(3L-L^2)-z$.
+Here $N/z\to0$ at zero, $N(1)=\zeta(2)-1$, and
+\[
+ N'=3\operatorname{Li}_2(z)+L^2-2L+2-\frac{2L}{z}.
+\]
+Integrate by parts, using $\int_0^1\operatorname{Li}_2(z)dz/z=\zeta(3)$,
+$\int_0^1L\,dz/z=\zeta(2)$ and $\int_0^1L^2dz/z=2\zeta(3)$.
+The last identity follows by extracting the quadratic logarithmic
+coefficient of the beta Gamma product; it is also the height-one
+relation $\zeta(2,1)=\zeta(3)$. The remaining cancellation must be
+kept together:
+\[
+ \int_0^1\left(\frac1z-\frac L{z^2}\right)dz
+       =\left[\frac Lz-L\right]_0^1=-1.
+\]
+The result is $\frac12[-\zeta(2)+1+5\zeta(3)-2\zeta(2)-2]$,
+which proves \eqref{rha:double-endpoint}.
+\end{proof}
+
+These classical low-weight Euler reductions are consequences of the
+compiler, without a historical novelty claim. Formal coefficient
+sharpness, compressed Hahn norms, endpoint cancellation jets and
+spectral Stieltjes derivatives in the original delivery retain their
+separate proof-audit scopes. None of the alphabet statements settles
+the unrestricted moment-prefix conjecture or Gaussian $S_6$/revised $S_8$.

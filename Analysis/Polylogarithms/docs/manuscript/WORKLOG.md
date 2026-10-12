@@ -854,3 +854,90 @@ inspect all 40 external destinations, and review every changed final body.
 Final pages 130/129/240/85 and combined 543; references 140. Preserve inherited
 visual evidence and numbering. General rank, Gaussian S6/revised S8, full
 compensator support/sign and remaining analytic report branches stay open.
+
+
+## All primitive coefficients and full-disk translations, October 12, 2026 (Pacific)
+
+Continue research while incoming is empty. Derive the single polynomial
+integral for every H_m coefficient from the rational R_d normal-form kernel.
+Identify its highest-index part before spatial specialization using the
+Appell anomaly and formal L_d injectivity. Reflection cancels one highest
+factor, and positivity of the remaining polynomial coefficients proves
+the unrestricted support/sign conjecture, with the H_1=0 exception.
+
+Resum the disjoint highest sectors into an entire ordinary E_1 projection.
+Its Cauchy majorant proves actual primitive convergence on the full input
+disk, improving the earlier half-radius proof. Extend Gamma/Stieltjes
+translations and anchored integration domains, retain endpoint terms and
+derive the weighted generating antiderivative. Keep maximal continuation
+and arithmetic independence separate. Original source conjecture wording
+remains preserved as history; current canonical status is corrected.
+
+Independently check every weighted-partition coefficient through weight
+thirty (23025 comparisons, 23024 support/sign checks), twelve ordinary
+projection diagnostics and native symbolic defining identities through
+weight sixteen. The algebraic and analytic written proofs establish the
+all-weight results. Rebuild and review all final editions after the weighted
+identity and corrected display layout. Pages 130/129/242/85, combined 545,
+references 140. General rank and Gaussian S6/revised S8 stay open.
+
+
+## Rational-pole amplitude resummation, October 12, 2026 (Pacific)
+
+Continue research with incoming empty. Specialize the free normal hierarchy
+to U_c=c/x only after projection. Identify the quadratic normal generator
+by its exact factorial coefficients and ordinary differential equation.
+Use the raw (1-z)^(-c) decomposition to derive the normalized primitive,
+then evaluate it in classical dilogarithms with analytic germs on |z|<1.
+Prove the all-degree harmonic coefficient identity and both ordinary
+antiderivatives. Preserve the H_1=0 condition, full-generator convergence
+scope and open higher amplitude questions. Independent exact checks cover
+weight thirty; native symbolic branch/ODE/Taylor controls pass. Rebuild all
+five PDFs and review changed scientific bodies before publication. The
+final editions have 130/129/244/85 pages and combined 547, 140 references.
+
+
+## Rational Hankel alphabet, October 12, 2026 (Pacific)
+
+With incoming unchanged, audit and integrate the preserved rational-Hankel
+compiler core. Give full confluent minor allocation, cutoff-cost transport,
+anchored rational integration and finite-alphabet proofs. Separate harmonic
+degree, weight, rank and arithmetic independence. Include the all-rank
+quadratic-denominator consequence, Euler primitives, per-element scalar
+ODEs, and the ordinary shifted-double-pole endpoint with its cancellation.
+Credit the original report and classical methods. Preserve pending
+sharpness, Hahn, endpoint-jet and spectral scopes and unchanged originals.
+
+Independent exact and native checks pass. Rebuild and inspect all five final
+PDFs, then review every changed scientific body. Final pages [130, 129, 248, 85],
+combined 552, references 141. The finite checks support implementation;
+written proofs establish all ranks. General harmonic rank and Gaussian
+S6/revised S8 remain open. No new archive arrived during this work.
+
+
+## Resonant-jet synthesis, October 12, 2026 (Pacific)
+
+October 12, 2026 (Pacific). Section 1.6 integrates the audited fixed-sector
+R1 extension, reciprocal-Gamma pure-logarithm normalization and exact
+monodromy. Theorems 1.16 and 1.17 develop the order-lowering ladder and
+all repeated primitives. Complete homogeneous polynomials in consecutive
+reciprocals give the finite jet coefficients; the polynomial endpoint fixes
+the integration constant. The proof includes the integrable m=0 family.
+Growing jets/windows, inverse geometry and Borel reconstruction remain
+separate research scopes. Original reports are unchanged and credited.
+
+Independent checks pass: 3780 exact coefficient-basis cases, 72 single and
+252 repeated primitive cancellations, 24 direct defining-series diagnostics
+at 85 digits, and nine native Wolfram symbolic checks. The all-order result
+is established by the manuscript's analytic proof, not finite tests.
+
+Final pages 135/130/249/86 (600 total), combined 557,
+142 references. Three coupled rounds, three serial combined passes and
+three cold passes for each volume pass without final log issues.
+All 43 external destinations resolve. Visual review opens 15 changed
+volume bodies and 6 unmatched combined bodies; 585 volume and
+543 combined bodies inherit exact raster-matched review, and 8
+changed combined bodies match freshly reviewed volume pages. Only centered
+footer numbers are excluded, with every other text/image/drawing bound
+checked. No current contact sheet was opened. All five PDFs retain
+ProveIt Contributors authorship. No Lean or remote-CI claim is made.

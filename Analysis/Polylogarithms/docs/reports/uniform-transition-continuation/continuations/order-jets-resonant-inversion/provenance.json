@@ -1,0 +1,192 @@
+{
+  "title": "Polylogarithm Order Jets and Resonant Inversion",
+  "version": "1.0",
+  "date": "2026-10-12",
+  "prepared_for": "Vladimir Reshetnikov",
+  "prepared_with": "OpenAI ChatGPT",
+  "repository": {
+    "url": "https://github.com/VladimirReshetnikov/ProveIt",
+    "commit": "9ec0f0406afe7a5475b03ff65ed91f7e283979b8",
+    "modified": false,
+    "review_scope": "Targeted review of relevant predecessor statements, proofs, definitions, and questions; not a complete audit of every report.",
+    "primary_predecessor_paths": [
+      "Analysis/Polylogarithms/docs/reports/uniform-transition-continuation/continuations/resonance-correlations-nonseparable-jets/sections/02_resonance.tex",
+      "Analysis/Polylogarithms/docs/reports/uniform-transition-continuation/continuations/resonance-correlations-nonseparable-jets/sections/07_questions.tex",
+      "Analysis/Transseries/docs/series-and-transseries/Logarithmic_Critical_Endpoint_Lambert_Charts/article.tex",
+      "Analysis/Transseries/docs/series-and-transseries/Confluent_Critical_Transseries_Exponent_Two_Boundary/Confluent_Critical_Transseries.tex",
+      "Analysis/Transseries/docs/series-and-transseries/Nonlinear_Stokes_Transport_Logarithmic_Inversion/article.tex"
+    ]
+  },
+  "proof_status": "Conventional analytic proofs with independent in-workflow review. Not machine formalized or externally peer reviewed.",
+  "priority_status": "No exhaustive publication-priority claim. Classical inputs and uninspected literature leads are identified.",
+  "verification": {
+    "finite_symbolic_cases": 270,
+    "numerical_parameter_cases": 50,
+    "interval_certified": false,
+    "programs": [
+      "verify_local_jets.py",
+      "verify_borel_jets.py",
+      "verify_complex_resonance.py",
+      "verify_principal_sheet.py"
+    ],
+    "recorded_data_directory": "data"
+  },
+  "runtime": {
+    "python": "3.12.14",
+    "mpmath": "1.3.0",
+    "sympy": "1.14.0",
+    "matplotlib": "3.10.8",
+    "numpy": "2.3.5",
+    "tex": "TeX Live 2023/Debian; pdfTeX 1.40.25",
+    "latexmk": "4.83"
+  },
+  "sources": [
+    {
+      "key": "dlmf-poly",
+      "url": "https://dlmf.nist.gov/25.12",
+      "role": "classical local expansion and integral representation",
+      "access_scope": "relevant text inspected",
+      "consulted": "2026-10-12"
+    },
+    {
+      "key": "dlmf-lerch",
+      "url": "https://dlmf.nist.gov/25.14",
+      "role": "classical shifted local expansion",
+      "access_scope": "relevant text inspected",
+      "consulted": "2026-10-12"
+    },
+    {
+      "key": "dlmf-hurwitz",
+      "url": "https://dlmf.nist.gov/25.11",
+      "role": "Hermite integral majorant",
+      "access_scope": "relevant text inspected",
+      "consulted": "2026-10-12"
+    },
+    {
+      "key": "dlmf-gamma",
+      "url": "https://dlmf.nist.gov/5.11",
+      "role": "uniform gamma-ratio asymptotics",
+      "access_scope": "relevant text inspected",
+      "consulted": "2026-10-12"
+    },
+    {
+      "key": "roughan",
+      "url": "https://arxiv.org/abs/2010.09860",
+      "role": "near-integer computational pairing and attribution",
+      "access_scope": "relevant full-text section inspected",
+      "consulted": "2026-10-12"
+    },
+    {
+      "key": "bailey-borwein",
+      "url": "https://www.davidhbailey.com/dhbpapers/lerch.pdf",
+      "role": "Lerch computation and integer order derivatives",
+      "access_scope": "relevant full-text sections inspected",
+      "consulted": "2026-10-12"
+    },
+    {
+      "key": "flajolet-sedgewick",
+      "url": "https://algo.inria.fr/flajolet/Publications/book.pdf",
+      "role": "generalized logarithmically weighted polylogarithms",
+      "access_scope": "bibliographic and targeted context",
+      "consulted": "2026-10-12"
+    },
+    {
+      "key": "gessel",
+      "url": "https://arxiv.org/abs/1609.05988",
+      "role": "classical Lagrange inversion",
+      "access_scope": "relevant text inspected",
+      "consulted": "2026-10-12"
+    },
+    {
+      "key": "corless",
+      "url": "https://cs.uwaterloo.ca/research/tr/1993/03/W.pdf",
+      "role": "Lambert W background",
+      "access_scope": "relevant text inspected",
+      "consulted": "2026-10-12"
+    },
+    {
+      "key": "kalugin",
+      "url": "https://arxiv.org/abs/1208.0754",
+      "role": "convergence of Lambert W expansions",
+      "access_scope": "targeted context inspected",
+      "consulted": "2026-10-12"
+    },
+    {
+      "key": "costin",
+      "url": "https://arxiv.org/abs/math/0701743",
+      "role": "fractional polylogarithm resurgence context",
+      "access_scope": "relevant text inspected",
+      "consulted": "2026-10-12"
+    },
+    {
+      "key": "dingle",
+      "url": "https://doi.org/10.1007/BF02920379",
+      "role": "classical Fermi-Dirac expansions",
+      "access_scope": "publisher record and abstract inspected",
+      "consulted": "2026-10-12"
+    },
+    {
+      "key": "garoni",
+      "url": "https://doi.org/10.1063/1.1350634",
+      "role": "classical complete asymptotics and exponential correction",
+      "access_scope": "primary publication record and abstract inspected",
+      "consulted": "2026-10-12"
+    },
+    {
+      "key": "gil",
+      "url": "https://ir.cwi.nl/pub/31111/31111.pdf",
+      "role": "classical complete correction and coefficient normalization",
+      "access_scope": "full relevant text, particularly Lemma 3.1, inspected",
+      "consulted": "2026-10-12"
+    },
+    {
+      "key": "vepstas",
+      "url": "https://linas.org/math/polylog.pdf",
+      "role": "external modulus and accumulation claims audited",
+      "access_scope": "relevant full text inspected; 29 October 2023 version",
+      "consulted": "2026-10-12"
+    },
+    {
+      "key": "osullivan",
+      "url": "https://fsw01.bcc.cuny.edu/cormac.osullivan/Research/dilog_zeros_final.pdf",
+      "role": "external overview finiteness assertion audited; positive-real theorem unaffected",
+      "access_scope": "author-hosted version inspected, section 8.1",
+      "consulted": "2026-10-12"
+    },
+    {
+      "key": "osullivan-publications",
+      "url": "https://fsw01.bcc.cuny.edu/cormac.osullivan/Research/research.htm",
+      "role": "identification of author-hosted PDF with published 2016 article",
+      "access_scope": "official publication list inspected",
+      "consulted": "2026-10-12"
+    },
+    {
+      "key": "gawronski",
+      "url": "https://doi.org/10.1007/BF01238513",
+      "role": "underlying citation to finiteness literature",
+      "access_scope": "metadata only; full original hypotheses NOT inspected",
+      "consulted": "2026-10-12"
+    },
+    {
+      "key": "gawronski-stadtmuller",
+      "url": "https://doi.org/10.4153/CMB-1981-042-1",
+      "role": "classical oscillatory boundary accumulation for combinations",
+      "access_scope": "relevant open primary text inspected",
+      "consulted": "2026-10-12"
+    },
+    {
+      "key": "fornberg-kolbig",
+      "url": "https://doi.org/10.1090/S0025-5718-1975-0369278-0",
+      "role": "earlier complex polylogarithm zeros",
+      "access_scope": "primary bibliography/description only; full text NOT obtained",
+      "consulted": "2026-10-12"
+    },
+    {
+      "key": "paulsen",
+      "url": "https://doi.org/10.1080/02781070290032199",
+      "role": "local behavior at z=1",
+      "access_scope": "publisher description only; full text NOT obtained",
+      "consulted": "2026-10-12"
+    }
+  ]
+}

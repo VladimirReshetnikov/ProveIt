@@ -1,0 +1,147 @@
+/-! ### Closed forms -/
+
+/-- Beyond the table one step costs `15·2^(k−1)` plus a polynomial. -/
+theorem envStepX_le_tight {k : Nat} (hk : 13 ≤ k) (μ : Nat) :
+    envStepX k (tightMu0X k) (genMuKX k) μ ≤
+      μ + 15 * 2 ^ (k - 1) + 9 * (k + 4) ^ 2 + 4 * (k + 3) ^ 2 + 6 * k + 59 := by
+  unfold envStepX GenParamsX.densDegX GenParamsX.expDegX GenParamsX.rhoDegX tightMu0X tightMuW
+    genMuKX pDeg
+  rw [tDegX_eq_of_ge hk]
+  have := Nat.lt_two_pow_self (n := k - 1)
+  generalize 4 * (k + 3) ^ 2 = q
+  generalize (k + 4) ^ 2 = s
+  generalize 2 ^ (k - 1) = y at *
+  omega
+
+/-- `32(k+5)² ≤ 2^k` for `k ≥ 15`. -/
+theorem thirtytwo_sq_le_two_pow : ∀ k, 15 ≤ k → 32 * (k + 5) ^ 2 ≤ 2 ^ k := by
+  intro k hk
+  induction k, hk using Nat.le_induction with
+  | base => norm_num
+  | succ k hk ih =>
+    have hstep : (k + 1 + 5) ^ 2 ≤ 2 * (k + 5) ^ 2 := by nlinarith
+    calc 32 * (k + 1 + 5) ^ 2 ≤ 2 * (32 * (k + 5) ^ 2) := by omega
+      _ ≤ 2 * 2 ^ k := Nat.mul_le_mul_left _ ih
+      _ = 2 ^ (k + 1) := by rw [pow_succ]; ring
+
+theorem polyGenMuX_fifteen : polyGenMuX 15 + 4 * 15 + 128 ≤ 16 * 2 ^ 15 := by decide +kernel
+
+/-- **The Theorem 18.1 envelope at class constant `5/2`**: `μ_k + 4k + 128 ≤ 16·2^k`
+for `k ≥ 15`. -/
+theorem polyGenMuX_le16 : ∀ k, 15 ≤ k → polyGenMuX k + 4 * k + 128 ≤ 16 * 2 ^ k := by
+  intro k hk
+  induction k, hk using Nat.le_induction with
+  | base => exact polyGenMuX_fifteen
+  | succ k hk ih =>
+    rw [polyGenMuX_succ (by omega)]
+    have h1 := envStepX_le_tight (k := k + 1) (by omega) (polyGenMuX k)
+    have h2 := thirtytwo_sq_le_two_pow k hk
+    have h3 : (k + 4) ^ 2 ≤ (k + 5) ^ 2 := Nat.pow_le_pow_left (by omega) 2
+    have h4 : 6 * k + 70 ≤ (k + 5) ^ 2 := by nlinarith
+    rw [show k + 1 + 4 = k + 5 by ring, show k + 1 + 3 = k + 4 by ring,
+      show k + 1 - 1 = k by omega] at h1
+    rw [pow_succ]
+    generalize (k + 5) ^ 2 = s5 at *
+    generalize (k + 4) ^ 2 = s4 at *
+    generalize 2 ^ k = x at *
+    omega
+
+/-! ### The headline statement -/
+
+/-- **Theorem 18.1 at every degree `d ≥ 17` with exponent `α^(2^(2^(d+2)))`**,
+from the recurrence profiles with polynomial family constants. -/
+theorem theorem_18_1_d2_seventeen_le_of_profiles_poly (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k)
+    (hp : ∀ k, 0 < pc k)
+    (hrec : ∀ k, 1 ≤ k →
+      Section16RecurrenceProfileWith k (familyRecThr k (Kc k) (pc k)) (familyRecExp k (pc k)))
+    (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ (4 * k + 16)))
+    {Kφ : Real} {pφ : Nat} (hpp : ProgressionPhasePartition Kφ pφ) (hpφ : 0 < pφ)
+    (hKφ : Kφ ≤ 2 ^ pφ) (hpφB : (pφ : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64))
+    {d : Nat} (hd : 17 ≤ d) : Theorem181AtSharp 2 d := by
+  have henv := polyEnvBound_allX Kc pc hK hp hrec hconst hpp hpφ hKφ hpφB (d - 2) (by omega)
+  rw [show d - 2 + 2 = d by omega] at henv
+  refine theorem181AtSharp_of_polyEnvBound henv ?_
+  have hle := polyGenMuX_le16 (d - 2) (by omega)
+  have h2 : 2 ^ (d + 2) = 16 * 2 ^ (d - 2) := by
+    rw [show d + 2 = (d - 2) + 4 by omega, pow_add]; ring
+  rw [h2]
+  omega
+
+
+/-! ### Theorem 18.2 without offset -/
+
+theorem envStepXTx_le_tight {k : Nat} (hk : 13 ≤ k) (μ : Nat) :
+    envStepXTx k (tightMu0X k) (genMuKX k) μ ≤
+      μ + 15 * 2 ^ (k - 1) + 9 * (k + 4) ^ 2 + 4 * (k + 3) ^ 2 + 6 * k + 59 := by
+  unfold envStepXTx GenParamsX.densDegX GenParamsX.threshDegX GenParamsX.expDegX
+    GenParamsX.rhoDegX tightMu0X tightMuW genMuKX pDeg
+  rw [tDegX_eq_of_ge hk]
+  have := Nat.lt_two_pow_self (n := k - 1)
+  generalize 4 * (k + 3) ^ 2 = q
+  generalize (k + 4) ^ 2 = s
+  generalize 2 ^ (k - 1) = y at *
+  omega
+
+theorem envStepXTx_ge (k μ0 μK μ : Nat) : 5 * k + 33 ≤ envStepXTx k μ0 μK μ := by
+  unfold envStepXTx GenParamsX.threshDegX
+  omega
+
+theorem genMuXX_fifteen : genMuXX 15 + 4 * 15 + 128 ≤ 16 * 2 ^ 15 := by decide +kernel
+
+/-- **The Theorem 18.2 envelope at class constant `5/2`**: `μ_k + 4k + 128 ≤ 16·2^k`
+for `k ≥ 15`. -/
+theorem genMuXX_le16 : ∀ k, 15 ≤ k → genMuXX k + 4 * k + 128 ≤ 16 * 2 ^ k := by
+  intro k hk
+  induction k, hk using Nat.le_induction with
+  | base => exact genMuXX_fifteen
+  | succ k hk ih =>
+    rw [genMuXX_succ (by omega)]
+    have h1 := envStepXTx_le_tight (k := k + 1) (by omega) (genMuXX k)
+    have h2 := thirtytwo_sq_le_two_pow k hk
+    have h3 : (k + 4) ^ 2 ≤ (k + 5) ^ 2 := Nat.pow_le_pow_left (by omega) 2
+    have h4 : 6 * k + 70 ≤ (k + 5) ^ 2 := by nlinarith
+    rw [show k + 1 + 4 = k + 5 by ring, show k + 1 + 3 = k + 4 by ring,
+      show k + 1 - 1 = k by omega] at h1
+    rw [pow_succ]
+    generalize (k + 5) ^ 2 = s5 at *
+    generalize (k + 4) ^ 2 = s4 at *
+    generalize 2 ^ k = x at *
+    omega
+
+theorem genMuXX_ge {k : Nat} (hk : 2 ≤ k) : 5 * k + 33 ≤ genMuXX k := by
+  obtain ⟨j, rfl⟩ : ∃ j, k = j + 1 := ⟨k - 1, by omega⟩
+  rw [genMuXX_succ (by omega)]
+  exact envStepXTx_ge _ _ _ _
+
+/-- **Theorem 18.2 at every length `L ≥ 19` with no offset**: threshold
+`2^2^δ^-1^(2^2^L)` (printed: `L + 9`), from the recurrence profiles with
+polynomial family constants. -/
+theorem theorem_18_2_L0_nineteen_le_of_profiles_poly (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k)
+    (hp : ∀ k, 0 < pc k)
+    (hrec : ∀ k, 1 ≤ k →
+      Section16RecurrenceProfileWith k (familyRecThr k (Kc k) (pc k)) (familyRecExp k (pc k)))
+    (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ (4 * k + 16)))
+    {L : Nat} (hL : 19 ≤ L) : Theorem182AtSharp 0 L := by
+  have henv := envBound_allXX Kc pc hK hp hrec hconst (L - 4) (by omega)
+  rw [show L - 4 + 2 = L - 2 by omega] at henv
+  have hge := genMuXX_ge (k := L - 4) (by omega)
+  have hle := genMuXX_le16 (L - 4) (by omega)
+  have h42 : 42 ≤ genMuXX (L - 4) := by omega
+  have hLμ : 4 * L + 20 ≤ 2 ^ genMuXX (L - 4) := by
+    have := Nat.lt_two_pow_self (n := genMuXX (L - 4))
+    omega
+  refine theorem182AtSharp_of_envBound (by omega) henv h42 hLμ ?_
+  have h2 : 2 ^ (L + 0) = 16 * 2 ^ (L - 4) := by
+    rw [show L + 0 = (L - 4) + 4 by omega, pow_add]; ring
+  rw [h2]
+  omega
+
+/-- **Corollary 18.7 at every length `L ≥ 19` with no offset.** -/
+theorem corollary_18_7_L0_nineteen_le_of_profiles_poly (Kc pc : Nat → Nat)
+    (hK : ∀ k, 2 ≤ Kc k) (hp : ∀ k, 0 < pc k)
+    (hrec : ∀ k, 1 ≤ k →
+      Section16RecurrenceProfileWith k (familyRecThr k (Kc k) (pc k)) (familyRecExp k (pc k)))
+    (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ (4 * k + 16)))
+    {L : Nat} (hL : 19 ≤ L) : Corollary187AtSharp 0 L :=
+  (theorem_18_2_L0_nineteen_le_of_profiles_poly Kc pc hK hp hrec hconst hL).corollary_18_7
+
