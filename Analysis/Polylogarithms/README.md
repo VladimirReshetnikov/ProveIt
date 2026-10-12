@@ -2,17 +2,17 @@
 
 The canonical reading artifact is the collective four-volume manuscript,
 [Polylogarithms and their Arithmetic Bridges](docs/manuscript/README.md),
-authored by **ProveIt Contributors**. The volumes have **130, 129, 242 and
+authored by **ProveIt Contributors**. The volumes have **130, 129, 244 and
 85 pages**, each compiling independently; the retained
-[combined edition](docs/manuscript/polylogarithms.pdf) has **545 pages**.
+[combined edition](docs/manuscript/polylogarithms.pdf) has **547 pages**.
 They share twelve chapters, thirteen figures and 140 references. The
 [editorial ledger](docs/manuscript/EDITORIAL-LEDGER.md) separates accepted
 proofs from pending analytic claims, and the
 [validation record](docs/manuscript/VALIDATION.md) distinguishes proofs,
 finite certificates, numerical diagnostics, PDF builds and visual review.
 
-The inventory covers **1408 textual provenance documents**. **96 incoming
-archives / 3502 original tracked members** are preserved; imported ZIPs are
+The inventory covers **1794 textual provenance documents**. **124 incoming
+archives / 4550 original tracked members** are preserved; imported ZIPs are
 retired in their placement commits and recoverable from arrival history.
 The latest eighteen deliveries, in three intakes, retain their own PDFs, sources, code and
 receipts. Intake notes use a separate filename, preserving delivered
@@ -624,3 +624,10 @@ endpoints; a weighted generating antiderivative is included. Independent
 exact comparisons cover 23025 coefficients through weight thirty, and native
 symbolic defining identities cover every weight through sixteen. Finite
 evidence is separate from the written all-weight and analytic proofs.
+
+
+Theorem 8.145 evaluates the rational input U_c(x)=c/x through quadratic
+amplitude in classical dilogarithms. Free normal projection precedes
+specialization. An all-degree harmonic coefficient identity and ordinary
+asinh-square/log-square antiderivatives follow, with analytic branches
+fixed on |t/x|<1. Higher amplitude resummations remain open.

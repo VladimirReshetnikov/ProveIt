@@ -1,3 +1,36 @@
+# Rational-pole amplitude sectors in classical dilogarithms
+
+October 12, 2026 (Pacific). Theorem 8.145 gives the linear and quadratic
+amplitude sectors of the normal and primitive generators for U_c(x)=c/x.
+Project in the free ring before specialization. The quadratic normal
+sector is 2 asinh^2(z/2); its primitive is an explicit combination of
+Li2(z), Li2(y), Li2(-y), log(1-z), and asinh(z/2), where z=t/x and
+y=z/(2+sqrt(4+z^2)). Analytic germs at zero fix every branch on |z|<1.
+The raw-generator decomposition and H_1=0 fix the primitive uniquely,
+excluding an arbitrary term proportional to t. The proof gives an
+all-degree harmonic coefficient formula and two ordinary antiderivatives.
+The quadratic normal sector extends to |z|<2; no such claim is made for
+the entire generator. Higher amplitude sectors remain open.
+
+An independent exact Bell/IBP calculation compares 120 amplitude
+coefficients and 30 weighted defining identities through weight thirty.
+Native Wolfram checks fourteen exact symbolic statements, including
+local branch certificates, Taylor coefficients through weight thirty,
+both antiderivatives and three corruption controls. Eight numerical
+families use 80 digits and are diagnostics, not interval certificates.
+The analytic identities follow from the written coefficient/ODE proof.
+
+Final PDFs: 130/129/244/85 pages (588 total), combined 547,
+140 references. Three coupled rounds, three serial combined passes and
+three cold passes for each volume succeed. All 40 external destinations
+pass. Full-size review covers 4 changed volume bodies and 2 unmatched
+combined bodies; 584 volume bodies and 542 combined bodies match the
+preceding reviewed edition, and 3 changed combined bodies match freshly
+reviewed volumes. Only centered footer numbers are excluded, with every
+other bound audited. No current contact sheets were opened. All original
+reports remain unchanged. General harmonic rank and Gaussian S6/revised
+S8 remain open; this publication makes no Lean or remote-CI claim.
+
 # Every primitive coefficient and convergence on the full input disk
 
 October 12, 2026 (Pacific), following experiments begun October 11.
