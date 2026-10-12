@@ -114,10 +114,10 @@ def _census(geometry, summary, skeleton, components, check, absorbed=frozenset()
 
 
 def _kernel_fallback(result, parallelity, boundary, record_certificate, check, *,
-                     geometry=None, reduction=None, forest=None):
+                     geometry=None, reduction=None, forest=None, defer_forest=False):
     geometry = parallelity['geometry'] if geometry is None else geometry
     kernel = bundle_boundary_kernel(geometry, parallelity['summary'],
-                                    boundary['skeleton'], forest=forest, check=check)
+                                    boundary['skeleton'], forest=forest, defer_forest=defer_forest, check=check)
     if kernel is None:
         return result
     proof, census, stats = kernel
@@ -134,7 +134,7 @@ def _kernel_fallback(result, parallelity, boundary, record_certificate, check, *
 
 
 def _attempt_cut(parallelity, discover_boundary, record_certificate, precheck_core,
-                 top_forest, forest, check):
+                 top_forest, forest, check, *, defer_forest=False):
     """One finite forest choice, sharing immutable source and boundary packets."""
     result = dict(status='INCONCLUSIVE', stats=dict(parallelity=parallelity['stats']),
                   trust='source cut handlebodies; no standalone knot verdict')
@@ -149,12 +149,14 @@ def _attempt_cut(parallelity, discover_boundary, record_certificate, precheck_co
                                                strategy=top_forest)
     prepared_core = None
     if precheck_core:
-        prepared_core = core_handlebody_certificate(geometry['core'], forest=forest, check=check)
+        prepared_core = core_handlebody_certificate(geometry['core'], forest=forest, defer_forest=defer_forest, check=check)
         result['stats']['core_precheck'] = prepared_core.get('stats', {})
         if prepared_core['status'] != 'COMPLETE':
             # Added bundle columns vanish on the original core rows. A source
             # stopping set therefore persists in every supported whole-cut
-            # presentation with this forest. This is only a method refusal.
+            # presentation with this forest. In deferred mode the full-matrix
+            # obstruction holds for every lower forest on these retained rows.
+            # This is only a method refusal.
             result['reason'] = prepared_core['reason']
             return result
     boundary = discover_boundary()
@@ -165,7 +167,7 @@ def _attempt_cut(parallelity, discover_boundary, record_certificate, precheck_co
     if reduction is not None:
         result['reason'] = 'boundary_kernel_cancellation_stalled'
         return _kernel_fallback(result, parallelity, boundary, record_certificate, check,
-                                geometry=geometry, reduction=reduction, forest=forest)
+                                geometry=geometry, reduction=reduction, forest=forest, defer_forest=defer_forest)
     family = primitive_bundle_annuli(parallelity['summary'], boundary['skeleton'], check=check)
     core_side = family is None
     if core_side:
@@ -183,18 +185,18 @@ def _attempt_cut(parallelity, discover_boundary, record_certificate, precheck_co
     augmented, absorption_proof, absorbed = absorption
     core = (prepared_core if prepared_core is not None and
             len(augmented['handles2']) == len(parallelity['geometry']['core']['handles2'])
-            else core_handlebody_certificate(augmented, forest=forest, check=check))
+            else core_handlebody_certificate(augmented, forest=forest, defer_forest=defer_forest, check=check))
     result['stats']['core'] = core.get('stats', {})
     if core['status'] != 'COMPLETE':
         result['reason'] = core['reason']
-        return _kernel_fallback(result, parallelity, boundary, record_certificate, check, forest=forest)
+        return _kernel_fallback(result, parallelity, boundary, record_certificate, check, forest=forest, defer_forest=defer_forest)
     core_annuli = {}
     if core_side:
         transported = core_primitive_annuli(parallelity['geometry'], parallelity['summary'],
             boundary['skeleton'], augmented, core['certificate'], check=check)
         if transported is None:
             result['reason'] = 'annular_core_attachment'
-            return _kernel_fallback(result, parallelity, boundary, record_certificate, check, forest=forest)
+            return _kernel_fallback(result, parallelity, boundary, record_certificate, check, forest=forest, defer_forest=defer_forest)
         core_annuli_proof, core_annuli, result['stats']['core_annuli'] = transported
     census, reason = _census(parallelity['geometry'], parallelity['summary'],
                             boundary['skeleton'], core['components'], check, absorbed, primitive, core_annuli)
@@ -235,14 +237,17 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
     top_forest minimizes retained raw incidence by default; queue retains the
     earlier top-handle selector. Neither choice guarantees later cancellation.
     The adaptive lower policy tries the source forest, then maximum original
-    passage weight on refusal. It shares every orbit query between attempts.
+    passage weight on refusal, then deferred full-matrix selection. It shares
+    every orbit query between attempts. Deferred lower discovery follows a
+    fixed top reduction priced against the historical source lower forest;
+    its completeness concerns lower choices for those retained rows only.
     """
     check()
     if type(boundary_method) is not str or boundary_method not in ('masks', 'moments'):
         raise ValueError('boundary_method must be masks or moments')
     if type(top_forest) is not str or top_forest not in ('queue', 'max_weight'):
         raise ValueError('top_forest must be queue or max_weight')
-    if type(lower_forest) is not str or lower_forest not in ('adaptive', 'source', 'max_passages', 'reverse_id'):
+    if type(lower_forest) is not str or lower_forest not in ('adaptive', 'source', 'max_passages', 'reverse_id', 'deferred'):
         raise ValueError('invalid lower_forest policy')
     if type(precheck_core) is not bool:
         raise ValueError('precheck_core must be bool')
@@ -274,16 +279,16 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
                     max_cycles=remaining, record_certificate=record_certificate, check=check)
         return boundary
 
-    modes = ('source', 'max_passages') if lower_forest == 'adaptive' else (lower_forest,)
+    modes = ('source', 'max_passages', 'deferred') if lower_forest == 'adaptive' else (lower_forest,)
     attempts = []
     source_core = parallelity['geometry']['core']
     for mode in modes:
         check()
-        forest = None if mode == 'source' else select_core_forest(source_core, strategy=mode, check=check)
-        if attempts and set(forest) == set(select_core_forest(source_core, strategy='source', check=check)):
-            break  # Same contractions and raw matrix; no duplicate finite work.
+        forest = None if mode in ('source', 'deferred') else select_core_forest(source_core, strategy=mode, check=check)
+        if attempts and mode == 'max_passages' and set(forest) == set(select_core_forest(source_core, strategy='source', check=check)):
+            continue  # Same fixed forest; still allow full-matrix deferred discovery.
         result = _attempt_cut(parallelity, discover_boundary, record_certificate,
-                              precheck_core, top_forest, forest, check)
+                              precheck_core, top_forest, forest, check, defer_forest=mode == 'deferred')
         attempts.append(dict(strategy=mode, status=result['status'], reason=result.get('reason')))
         if result['status'] == 'COMPLETE' or result.get('reason') == 'boundary_budget_exhausted':
             break
