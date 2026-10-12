@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs18LengthSixThresholds
 import GowersSzemeredi.Proofs18CubicRefinementConstantBounds
 import GowersSzemeredi.Proofs05RefinementConstantBounds
 import GowersSzemeredi.Proofs18LogarithmicPowerEnvelope
+import GowersSzemeredi.Proofs18DoubleExponentialBounds
 
 /-! The exponent and threshold of the length-six discrepancy bound.
 
@@ -166,25 +167,6 @@ def lsThreshold (K1 p1 K2 p2 : Nat) (alpha : Real) : Real :=
       (fejerCubicDiscrepancyParameter (lsY alpha))
       (lsE (familyWidthPrefactor K1) (familyWidthDivisor 1 p1) p2 alpha)
       (6 * ((2 + 1 : Nat) : Real)) (lsSigma3 alpha))
-
-theorem exp_exp_sq_le {Z : Real} :
-    Real.exp (Real.exp Z) * Real.exp (Real.exp Z) ≤ Real.exp (Real.exp (Z + 1)) := by
-  rw [← Real.exp_add, Real.exp_add Z 1]
-  apply Real.exp_le_exp.mpr
-  have he2 : (2 : Real) ≤ Real.exp 1 := by
-    have := Real.add_one_le_exp (1 : Real); linarith only [this]
-  have h0 := (Real.exp_pos Z).le
-  nlinarith only [he2, h0]
-
-theorem pow_add_pow_le {X : Real} {a b : Nat} (hX : 2 ≤ X) (hab : b ≤ a) :
-    X ^ a + X ^ b ≤ X ^ (a + 1) := by
-  have h := pow_le_pow_right₀ (le_trans (by norm_num) hX) hab
-  have h0 := pow_nonneg (le_trans (by norm_num) hX) a
-  rw [pow_succ]
-  nlinarith only [h, h0, hX]
-
-theorem le_exp_exp_of_le_exp {x Y : Real} (hx : x ≤ Real.exp Y) : x ≤ Real.exp (Real.exp Y) :=
-  hx.trans (Real.exp_le_exp.mpr ((Real.add_one_le_exp Y).trans' (by linarith only)))
 
 /-- The short-localization part of `T` is double exponential. -/
 theorem lsShortThreshold_le {K1 p1 K2 p2 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1) (hK2 : 0 < K2)

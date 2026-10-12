@@ -1,5 +1,7 @@
 import GowersSzemeredi.Proofs18GenericEnvelopeStep
-import GowersSzemeredi.Proofs18LengthSixSzemeredi
+import GowersSzemeredi.Proofs18DensityIterationExponentialBudget
+import GowersSzemeredi.Proofs18GeneralIteration
+import GowersSzemeredi.Proofs18SingleLengthStatements
 
 /-! Theorem 18.2 at length `L` from a degree-`(L−2)` envelope
 (Notes L.7a, F4).

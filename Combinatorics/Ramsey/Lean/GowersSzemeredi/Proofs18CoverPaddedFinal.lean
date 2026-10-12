@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs18CoverThresholdsSharp
+import GowersSzemeredi.Proofs18CoverLongThresholds
 import GowersSzemeredi.Proofs16ExplicitRecurrenceProfiles
 
 /-! The printed final bound from one uniform long-progression argument.
@@ -41,7 +41,7 @@ theorem theorem_18_2_of_long_progressions
 /-- Theorem 18.2 with its original statement and threshold, using only the
 general cover at lengths at least six and taking progression prefixes. -/
 theorem theorem_18_2_padded : theorem_18_2 :=
-  theorem_18_2_of_long_progressions fun L hL =>
+  theorem_18_2_of_long_progressions fun _ hL =>
     theorem_18_2_L5_all_of_profiles_cover
       (fun k => ⌈multiaffinePartitionK (k + 1) (2 ^ (k + 1))⌉₊)
       (fun k => (k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1)))

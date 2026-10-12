@@ -6931,6 +6931,39 @@ long-length route. The goal remains active; final statements and bounds
 are unchanged, and this audit does not settle open original intermediate
 statements or replace a full facade check.
 
+### L.55. Direct imports for the uniform final argument (2026-10-12)
+
+The final route no longer imports the specialized length-six envelope or
+Szemeredi proof, Roth's explicit theorem, or the completed four- and five-term
+threshold proofs. Three small modules give the shared results their own homes:
+
+* `Proofs18SingleLengthStatements`: `Theorem182At`, `Corollary187At`, their
+  equivalences with the full statements, and the half-density consequence;
+* `Proofs18DoubleExponentialBounds`: four elementary estimates, including
+  `section18_exp_le_two_rpow`, formerly housed in specialized proofs;
+* `Proofs18CoverLongThresholds`: the existing uniform L+5 argument, without
+  importing separate short-length threshold comparisons.
+
+The general density proof imports `Proofs18GeneralIteration` directly.
+That iteration is essential; an initial import check exposed its previous
+incidental availability through the length-six route. The legacy short-length
+modules re-export the moved declarations, and their explicit bridge now names
+its short-length import. All extracted declarations and proof bodies are
+byte-identical to their previous versions. The prefix proof has only an import
+change and an unused binder-name cleanup.
+
+`FinalAudit` passes 1,197 native modules with only approved axioms. Its entry
+point has 1,196 local modules / 249,652 source lines, down from 1,208 / 253,637
+at L.54: 12 fewer modules and 3,985 fewer lines in the import closure. Against
+the original aggregate baseline, it avoids 93 modules and 15,041 source lines.
+These counts do not describe repository-wide deletions. The original final
+statements and bounds are unchanged.
+
+The combined compatibility audit, including the strengthened Fejer bounds
+and `Proofs18LengthSixExplicit`, is running separately. The immutable focused
+report is `verification/2026-10-12-final-uniform-imports.json`. The goal stays
+active; broader compatibility is not yet claimed for this extraction.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

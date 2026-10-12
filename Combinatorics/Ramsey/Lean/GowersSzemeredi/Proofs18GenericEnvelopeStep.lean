@@ -1,5 +1,7 @@
 import GowersSzemeredi.Proofs18GenericThresholds
-import GowersSzemeredi.Proofs18LengthSixEnvelope
+import GowersSzemeredi.Proofs18DoubleExponentialBounds
+import GowersSzemeredi.Proofs18FejerIterationParameters
+import GowersSzemeredi.Proofs05RefinementConstantBounds
 
 /-! Discrepancy bounds in every degree, with power-of-two envelopes
 (Notes L.7a, F3d).
