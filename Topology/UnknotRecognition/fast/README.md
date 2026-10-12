@@ -4238,3 +4238,40 @@ measurements and remaining hierarchy obligations.
 PYTHONPATH=. python -B -m normal_orbit_research.source_handles audit --output ../synthesis/data/source-handles-audit.json
 PYTHONPATH=. python -B -m normal_orbit_research.source_handles benchmark --output ../synthesis/data/source-handles-benchmark.json
 ```
+
+### Source-certified handlebody cuts
+
+`fastunknot.normal_cut_handlebodies.normal_cut_handlebodies(source, coordinates,
+record_certificate=True)` now combines the full normal-cut parallelity geometry,
+ordered core-port interfaces, geometric core cancellations, and disk gluing.
+A successful result gives the exact binary histogram of handlebody genera for
+all cut components. Replay with
+`fastunknot.normal_cut_handlebodies_verify.verify_normal_cut_handlebodies`.
+This implements the interface/core portions of report 85; it is a supplied-cut
+API and does not change the recognizer's default search or return a knot verdict.
+
+Adjacent ports are amalgamated into their actual disk interfaces. Full-circle
+attachments, closed bundle bases, three-handles and stalled raw cancellation
+remain inconclusive. The low-level `core_handlebody_certificate` requires
+source-authenticated geometric handle charts; its matrix is not a group
+presentation or a cellular boundary matrix. Its exact saturated singleton
+updates use actual unsigned occurrences and have a geometric disk-slide proof.
+
+The two ordered-boundary queries and four parallelity queries share `max_cycles`.
+Their independent checkers replay source-bound orbit proofs and validate the
+finite geometry; `max_operations` bounds the combined replay traces. Very large
+multiplicities use the existing exact hexadecimal JSON encoding. Callback
+exceptions propagate. The detailed theory and measured scope are in the
+synthesis section “Ordered bundle interfaces and certified handlebody cuts”.
+
+Reproduce the source audit from `fast/` with Regina installed:
+
+```sh
+python -m marked_parallelity_research.audit_census --output /tmp/marked-cut-audit.json
+python -m marked_parallelity_research.benchmark_census --output /tmp/marked-cut-benchmark.json --rounds 5 --capacity
+```
+
+The second command compares complete supplied-cut classification, including
+native proof replay, with Regina's explicit cut and component recognition.
+It is not a complete knot-recognition benchmark. Run performance measurements
+on an otherwise idle host; literal expansion and oracle timeouts are explicit.

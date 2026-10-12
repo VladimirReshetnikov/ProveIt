@@ -92,6 +92,12 @@ modification times.
 | `79/` | `unknot_causal_localization_20261009.zip` | complete delivered manuscript, code and evidence | causal localization and shared original-region covers | bounded total upward moves for descent; global unknot bound absent | 36 fresh tests and 124 endpoint plus 18 strict-descent replays pass; connected footprint at most 3U+3 and complete FPT descent theorem preserved |
 | `80/` | `unknot_planar_sectors_20261009.zip` | complete delivered manuscript, code and evidence | complete planar standard rays and uniform double-cap disc classification | supplied compatible sector of matching nullity at most three | native auto-nullity-three path and independent coverage integrated; 1,391 tests and 9,807 oracle sectors pass; complete size-16 discovery improves 4.68x |
 | `81/` | `unknot_planar_sector_overlays_20261009.zip` | complete delivered manuscript, code and evidence | sharp planar interaction count, effective support and canonical Euler convexity | local theorems; alternative patch retained and proposed precheck not installed | 30 fresh tests, 304 independent models, 96 adversarial controls and 607 normalized Euler comparisons pass; full theorem proofs preserved in synthesis |
+| `82/` | `ProveIt_Corner_Aware_Boundary_Kernels_2026-10-12.zip` | complete delivered article, kernel and evidence | no complete recognizer | corner-aware marked surface gluing; native geometric adapter absent | placed only; delivered tests not rerun |
+| `83/` | `ProveIt_Unknot_Four_Copy_Research.zip` | complete delivered article, graph kernel and evidence | no complete recognizer | sharp four-copy marked-cut signatures for connected tiles; ball and embedding premises external | placed only; delivered tests not rerun |
+| `84/` | `ProveIt_Unknot_Interface_Homology_2026-10-12.zip` | complete delivered article, integral homology code and evidence | no complete recognizer | bounded-interface homology with binary bulk ranks; geometric ancestry not checked | placed only; delivered tests not rerun |
+| `85/` | `ProveIt_Unknot_Marked_Parallelity_2026-10-12.zip` | complete delivered article, native snapshot and patch | no complete recognizer | marked bundle interfaces, geometric core cancellations and accepted-cut handlebody census; coordinate block search remains separate | interface/core consumer integrated: 22 focused tests, 30 source-certified cuts, 23 explicit-oracle agreements; see [status](85/INTEGRATION-STATUS.md) |
+| `86/` | `unknot_cancellation_20261012.zip` | complete delivered article, native additions and evidence | parameterized vertex-meridian discovery; global coverage unproved | sparse edge cancellation, polynomial rank gate and relative disc interfaces | placed only; patch unapplied and delivered tests not rerun |
+| `87/` | `unknot_reductions_20261012.zip` | complete delivered article, code overlay and evidence | supplied-sector support certificates; global coverage unproved | exact maximal support, cyclic ports and relative disc-product templates | placed only; patch unapplied and delivered tests not rerun |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -689,3 +695,38 @@ observer calls improve 1.87–2.26x, including a fresh 1.76–2.10x gain over th
 primitive coordinate reference. This is an implementation refinement of the
 report 58 observer and established coorientation theory, with no new diagram
 coverage or general QP claim.
+
+
+## Arrivals of 12 October 2026: reports 82–87
+
+The six archives committed in `a28a49ee5` are preserved in arrival order
+(ASCII archive order within that commit), with only their single wrappers
+removed. All articles, PDFs, code, patches and supplied evidence remain
+as delivered. The archives are retired in the placement commit and remain
+recoverable from their arrival commit. Existing ignore rules determine the
+treatment of checksum manifests; no checksum or line-ending audit was made.
+Delivered run logs are explicitly retained.
+
+The source pins are `ed166080d7db14dd7a91d07788996f02947dd92a` for
+82–84, `d2c5e1707fe783bbed06743ac732d70d83e6f27b` for 85, and
+`90e16db798c8d976bbe0c062e07cf20565e0b63a` for 86–87. All 844
+extracted files were searched by Git blob identity; prior placement trees
+show reused dependencies, snapshots and fixtures, not repeated manuscripts.
+
+Placement does not accept the mathematical claims or install the patches.
+The intake rule in `docs/incoming/README.md` keeps proof review, native
+integration and fresh tests as separate work. The delivered test counts
+and timings are authors' records. None of these packages claims a general
+quasi-polynomial recognizer.
+
+The complete article entry points are [corner kernels](82/article/article.tex),
+[four-copy patterns](83/article/four_copy_patterns.tex),
+[integral homology](84/article.tex), [marked parallelity](85/article.tex),
+[sparse cancellation](86/article/unknot_cancellation.tex), and
+[certified reductions](87/article/article.tex). Their scope overlaps without
+being interchangeable: 82 retains corners for abstract surface surgery;
+83 preserves a marked graph query; 84 computes an algebraic invariant;
+85 authenticates a restricted cut topology; 86 searches a parameterized
+normal-surface family; 87 certifies support and relative attachments.
+Future synthesis must retain the source geometry, pattern transport and
+global search obligations alongside each local theorem.

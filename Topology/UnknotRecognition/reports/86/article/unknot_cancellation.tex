@@ -1,0 +1,141 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=24mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem,xcolor,graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{fancyhdr}
+\hypersetup{pdftitle={Sparse edge cancellation in unknot recognition},pdfauthor={ProveIt research continuation prepared with ChatGPT}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Sparse edge cancellation in unknot recognition}
+\fancyhead[R]{\small ProveIt / 12 October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlist{nosep,leftmargin=*}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\F}{\mathbb F_2}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\spanR}{\operatorname{span}_{\R}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\kappaV}{\kappa_{\mathrm{v}}}
+\newcommand{\cT}{\mathcal T}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\cC}{\mathcal C}
+\title{Sparse edge cancellation in unknot recognition:\\
+complete vertex-disc search, explicit obstructions,\\
+and compressed boundary interfaces}
+\author{A research continuation for Vladimir Reshetnikov's ProveIt project\\
+\small Prepared with ChatGPT; working manuscript with exact computational supplements}
+\date{12 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop a parameter for normal-disc discovery that is independent of the
+number of occupied quadrilateral types. For an oriented normal meridian
+disc, its geometric edge weights differ from the absolute values of its
+signed intersection cocycle only on edges carrying cancellation. On a
+one-vertex triangulation with first Betti number one, a meridian whose
+cancellation set has size $k$ lies in a known linear space of dimension at
+most $k+1$. We prove that all standard vertex meridians with this property
+can be recovered by small exact linear systems, without first discovering
+their quadrilateral sectors. A sparse-incidence refinement reduces the
+number of systems from an elementary $t^{2k+O(1)}$ bound to
+$t^{k+O(1)}$ times a factor depending only on $k$. A supported matching
+minor and boundary cohomology certify the promised vertex discs in
+polynomial bit time, without component-orbit queries. We extend the
+discovery theorem to multiple vertices using sign chambers of the cocycle
+space.
+
+The new search produces a 47-piece vertex disc on the maintained
+eight-tetrahedron example for which the entire primitive coherent family
+has genus two. Its cancellation is confined to one interior edge. An
+explicit one-dimensional calculation explains this disc, and boundary
+layering gives a growing family with the same cancellation parameter.
+Conversely, parallel Whitehead curves give finite triangulations of solid
+tori on which every meridian has linearly many cancellation edges; this
+obstruction allows multiple vertices. We also recover cyclic attachment
+data for compressed parallelity bases and distinguish the correct relative
+handle replacements for different disc-base interfaces.
+
+The package contains additive code, independent certificate replay,
+controlled experiments, and proofs with explicit hypotheses. The
+parameterized discovery theorem is unconditional. A logarithmic parameter
+bound on a constructively chosen family of knot exteriors is not proved,
+so a general quasi-polynomial unknot recognizer is not claimed.
+\end{abstract}
+\clearpage
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage
+
+\input{theory.tex}
+\input{examples.tex}
+\input{interfaces.tex}
+\input{implementation.tex}
+\input{research.tex}
+
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{repo} V. Reshetnikov, \emph{ProveIt, Topology/UnknotRecognition},
+source revision \path{90e16db798c8d976bbe0c062e07cf20565e0b63a}, inspected
+12 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/90e16db798c8d976bbe0c062e07cf20565e0b63a/Topology/UnknotRecognition}.
+\bibitem{hlp} J. Hass, J. C. Lagarias and N. Pippenger,
+\emph{The computational complexity of knot and link problems},
+J. ACM \textbf{46} (1999), 185--211.
+\url{https://arxiv.org/abs/math/9807016}.
+\bibitem{aht} I. Agol, J. Hass and W. P. Thurston,
+\emph{The computational complexity of knot genus and spanning area},
+Trans. Amer. Math. Soc. \textbf{358} (2006), 3821--3850.
+\url{https://arxiv.org/abs/math/0205057}.
+\bibitem{lackenby2026} M. Lackenby,
+\emph{Incompressible surfaces, hierarchies and unknot recognition},
+arXiv:2607.23350v1, 25 July 2026.
+\url{https://arxiv.org/abs/2607.23350}.
+\bibitem{slides} M. Lackenby,
+\emph{Unknot recognition in quasi-polynomial time}, lecture slides,
+February 2021.
+\url{https://people.maths.ox.ac.uk/lackenby/quasipolynomial-talk.pdf}.
+\bibitem{burton-convert} B. A. Burton,
+\emph{Converting between quadrilateral and standard solution sets in
+normal surface theory}, Algebraic \& Geometric Topology \textbf{9}
+(2009), 2121--2174.
+\url{https://arxiv.org/abs/0901.2629}.
+\bibitem{burton-complexity} B. A. Burton,
+\emph{Computational topology and normal surfaces: theoretical and
+experimental complexity bounds}, arXiv:1211.3234v1.
+\url{https://arxiv.org/abs/1211.3234}.
+\bibitem{geometric-index} K. B. Andrist, D. J. Garity, D. D. Repov\v{s}
+and D. G. Wright, \emph{New techniques for computing geometric index},
+Mediterranean J. Math. \textbf{14} (2017), article 237.
+\url{https://arxiv.org/abs/1711.04267};
+\url{https://doi.org/10.1007/s00009-017-1036-1}.
+\bibitem{regina} Regina project, \emph{Normal-surface analysis and
+calculation-engine documentation}, version 7.4.1 used for independent
+experiments.
+\url{https://regina-normal.github.io/docs/surfaces-analysis.html}.
+\bibitem{parallelity} M. Lackenby,
+\emph{The efficient certification of knottedness and Thurston norm},
+author manuscript, Theorems 9.2 and 9.3, pp. 72--73.
+\url{https://people.maths.ox.ac.uk/lackenby/knp13nov20.pdf}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,422 @@
+\section{An exact one-edge escape from the coherent family}
+\label{sec:one-edge}
+
+The pinned source contains a certified counterexample to coherent-only
+normal-disc discovery. Start with the two-tetrahedron layered solid torus,
+then perform six legal $2$--$3$ moves, choosing the following
+$(\text{tetrahedron},\text{face})$ in the current labelling:
+\[
+                 (1,2),(0,1),(2,2),(3,1),(3,2),(6,0).
+\]
+The full source, intermediate face pairings, and move certificates are in
+\path{synthesis/data/coherent-obstruction-certificate.json} of the
+pinned repository. Its final triangulation $T_*$ has eight tetrahedra,
+one vertex and ten edges. Its Regina isomorphism signature is
+\begin{center}\texttt{iHvrQAkbgfeffhhasssvcaj}.\end{center}
+Legal Pachner moves preserve the
+underlying solid torus; the independently replayed source history is
+part of the evidence, not an inference from a successful disc query.
+
+\subsection{The coherent surface and the new vertex disc}
+
+The following table gives the primitive coherent surface $C$ and the new
+meridian $D$. Coordinates in a row are
+$(t_0,t_1,t_2,t_3;q_{01\mid23},q_{02\mid13},q_{03\mid12})$.
+The semicolon separates triangle and quadrilateral coordinates.
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}c cc@{}}
+\toprule
+Tetrahedron & Coherent $C$ & Vertex disc $D$\\
+\midrule
+0 & $(2,2,0,0;0,0,2)$ & $(2,2,0,0;0,0,2)$\\
+1 & $(0,0,2,2;0,2,0)$ & $(0,0,2,2;0,2,0)$\\
+2 & $(0,0,1,2;0,0,2)$ & $(0,0,1,2;0,0,2)$\\
+3 & $(0,2,0,2;0,0,1)$ & $(0,2,0,2;0,0,1)$\\
+4 & $(2,0,0,2;0,1,0)$ & $(2,0,0,2;0,1,0)$\\
+5 & $(0,1,0,1;3,0,0)$ & $(2,3,0,1;1,0,0)$\\
+6 & $(0,1,2,0;2,0,0)$ & $(2,3,2,0;0,0,0)$\\
+7 & $(0,1,0,1;2,0,0)$ & $(2,3,0,1;0,0,0)$\\
+\bottomrule
+\end{tabular}
+\caption{An exact 47-piece meridian outside the primitive coherent family.
+All coordinates are small integers; the accompanying certificates bind
+them to the full face-pairing source.}
+\label{tab:coordinates}
+\end{table}
+
+In increasing validator edge-root order, the weights are
+\begin{center}
+\small
+\begin{tabular}{@{}c rrrrrrrrrr@{}}
+\toprule
+Edge root &0&3&4&6&13&15&18&22&24&30\\
+\midrule
+$w(C)=b$ &6&2&4&2&3&1&3&5&3&1\\
+$w(D)$   &6&2&4&2&3&1&3&5&3&5\\
+\bottomrule
+\end{tabular}
+\end{center}
+The boundary edge roots are $3,13,22$, so the changed edge $30$ is
+interior. Its cancellation multiplicity is $z_{30}=(5-1)/2=2$.
+All other cancellation multiplicities vanish.
+
+The exact certificates give $C$ 41 pieces, Euler characteristic $-3$,
+one connected orientable component and one boundary curve. It has genus
+two. The new $D$ has 47 pieces, Euler characteristic one and one essential
+disc component. Its standard support contains 25 positive coordinates;
+the supported matching matrix has rank 24. Thus the ray is a standard
+vertex ray, not only a ray made extreme by the selected weight space.
+The primitive cocycle lattice has rank one, so every primitive coherent
+surface comes from $c$ or $-c$ and has exactly the same unsigned vector.
+A zero-cancellation meridian would therefore equal $C$, which is
+impossible. Consequently
+\[
+                             \kappaV(T_*)=1.
+\]
+
+The previously retained 51-piece disc changes two edge weights, at roots
+$15$ and $18$, each by four. The new disc improves that explicit witness
+and uses fewer cancellation edges. It does \emph{not} enlarge coverage
+beyond the existing complete search in the coherent surface's full
+quadrilateral sector: $D$ belongs to that sector, with two of its allowed
+quadrilateral coordinates becoming zero. The new contribution is a
+complete parameterization and a less expensive way to discover the disc.
+
+\subsection{The whole two-dimensional cone is explicit}
+
+Consider the affine slice of $W_{\{30\}}$ in which the coherent coefficient
+is one:
+\[
+                         w(s)=b+s\mathbf e_{30}.
+\]
+Only tetrahedra 5, 6 and 7 change under the local reconstruction. In each,
+the coordinates $t_0,t_1$ increase by $s/2$; their occupied $q_0$
+coordinates become respectively
+\[
+                         3-s/2,\quad 2-s/2,\quad 2-s/2.
+\]
+All remaining coordinates are fixed. These vectors are admissible exactly
+for $0\le s\le4$. Negative $s$ would make $t_0$ negative, while $s>4$
+fails the opposite-sum maximum condition in tetrahedra 6 and 7.
+Nonnegativity on edge $0$ forces the coherent coefficient $\lambda\ge0$.
+There are no admissible nonzero rays with coherent coefficient zero:
+putting weight only on edge $30$ gives a negative face-corner expression.
+Thus the admissible cone in this weight space has just the two boundary
+rays $C$ and $D$.
+
+For $0\le s\le4$, direct cell counting gives
+\[
+                   \chi(w(s))=-3+s,\qquad
+                   \#\text{pieces}=41+\frac{3s}{2}.
+\]
+At $s=0,2,4$ the vectors are integral. Independent full topology replay
+finds a connected orientable surface with one boundary curve in every
+case, of genus $2,1,0$, respectively. The geometry behind the search is
+therefore visible: the endpoint $s=4$ removes the remaining handle
+obstruction while changing only one interior edge weight. The genus-one
+intermediate vector is not an extreme ray of this two-dimensional cone.
+
+The complete, untruncated arrangement enumeration on this source gives:
+\begin{center}
+\begin{tabular}{@{}r r r r r@{}}
+\toprule
+Cancellation radius & Weight spaces & Intersections & Admissible rays & Disc vectors\\
+\midrule
+0 & 1 & 1 & 1 & 0\\
+1 & 11 & 73 & 2 & 1\\
+2 & 56 & 5,634 & 5 & 2\\
+\bottomrule
+\end{tabular}
+\end{center}
+All five rays found at radius two happen to be standard vertex rays.
+This observation is specific to the source; the general algorithm may
+emit rays that are extreme only in a restricted space. The counts here
+include complete enumeration and therefore differ from early-return
+search counters in the benchmark.
+
+\section{An infinite dense family with one cancellation edge}
+\label{sec:layering}
+
+The following elementary extension lemma turns the certified eight-tetrahedron
+example into an infinite family.  It also explains why large coordinates
+and quadrilaterals in almost every tetrahedron need not enlarge the new
+discovery parameter.
+
+\subsection{A support-rigid coherent extension}
+
+Let a tetrahedron $\Delta=0123$ be attached along the faces $012$ and
+$013$, so that its old edges are all the edges except $23$.  For real
+heights $h_0,h_1,h_2,h_3$, the \emph{coherent local vector} is obtained
+by taking the level sections of the affine height function.  If
+$h_{v_0}\leq h_{v_1}\leq h_{v_2}\leq h_{v_3}$, its potentially nonzero
+coordinates are the triangle at $v_0$, the quadrilateral separating
+$\{v_0,v_1\}$ from $\{v_2,v_3\}$, and the triangle at $v_3$, with
+coefficients respectively
+\[
+ h_{v_1}-h_{v_0},\qquad h_{v_2}-h_{v_1},\qquad
+ h_{v_3}-h_{v_2}.
+\]
+Tied heights cause zero coordinates; the statement includes those cases.
+
+\begin{lemma}[Injectivity on the coherent support]
+The five old edge weights determine a normal vector supported in the
+positive support of this coherent local vector uniquely.
+\end{lemma}
+
+\begin{proof}
+The supported coordinates are successive height gaps in the displayed
+fixed ordering.  Their edge weights are signed height differences, with
+the signs fixed by that ordering.  Knowing the weights on the connected
+graph $K_4\setminus\{23\}$ determines the four heights up to a common
+additive constant, and hence determines every height gap.  This argument
+is linear and remains valid when some of the gaps are constrained to zero.
+\end{proof}
+
+\begin{proposition}[Preservation of a standard vertex ray]
+Suppose a standard vertex normal vector $x$ on the old triangulation
+extends across $\Delta$ by adding a coherent local vector $u$.  Then
+$x'=(x,u)$ is again a standard vertex vector after primitive normalization.
+If $x$ is primitive integral and $u$ integral, no normalization is needed.
+\end{proposition}
+
+\begin{proof}
+In any nonnegative matching decomposition $x'=y+z$, restriction to the old
+tetrahedra gives a decomposition of $x$.  Its vertex property gives
+$y_{\mathrm{old}}=a x$ and $z_{\mathrm{old}}=(1-a)x$ for some
+$0\leq a\leq1$.  Matching on the attaching faces fixes the five old edge
+weights of $y_\Delta$ to be $a$ times those of $u$.  Nonnegativity forces
+$y_\Delta$ to be supported in the positive support of $u$.  The preceding
+lemma gives $y_\Delta=au$.  Thus $y=ax'$ and the ray is extreme.  An
+integral extension of an integral vector with coordinate gcd one still
+has coordinate gcd one.
+\end{proof}
+
+\subsection{Euler characteristic under a torus diagonal flip}
+
+Assume the attaching faces are the two triangles of a one-vertex torus,
+and that the local heights obey the parallelogram identity
+\[
+ h_0+h_1=h_2+h_3.                                      \tag{P}
+\]
+This identity is the cocycle compatibility condition on the four sides
+of the lifted quadrilateral.  Adding $\Delta$ performs the boundary
+diagonal flip and preserves the underlying solid torus.
+
+For a finite set $A$ of real heights, write
+$\operatorname{span}(A)=\max A-\min A$.  The change in the normal
+surface Euler characteristic is
+\begin{align*}
+ \Delta\chi={}& |h_2-h_3|
+ -\operatorname{span}(h_0,h_2,h_3)
+ -\operatorname{span}(h_1,h_2,h_3)\\
+ &+\operatorname{span}(h_0,h_1,h_2,h_3).                \tag{E}
+\end{align*}
+Indeed, the new edge $23$ contributes the first term to the normal
+surface's zero-cells.  The two new boundary faces contribute the two
+subtracted arc counts.  The coherent pieces in the new tetrahedron
+contribute the final term.  All old cells retain their previous counts.
+
+\begin{lemma}[Zero Euler correction]
+Under (P), the right hand side of (E) is zero.
+\end{lemma}
+
+\begin{proof}
+Put $a=\min(h_2,h_3)$ and $b=\max(h_2,h_3)$.  Since
+$h_0+h_1=a+b$, either both $h_0,h_1$ lie in $[a,b]$, or one lies
+$\delta\geq0$ below $a$ and the other lies $\delta$ above $b$.
+In the first case, all three spans in (E) equal $b-a$.
+In the second case, the two subtracted spans equal $b-a+\delta$
+and the last equals $b-a+2\delta$.  Both cases give zero.
+\end{proof}
+
+If $x$ is a primitive vertex meridian disc whose weights on the three
+boundary edges are coherent for the primitive cocycle, this extension
+is again a meridian disc.  The extension is a primitive vertex surface,
+so it is connected: otherwise its distinct component vectors would
+decompose its ray, and primitivity excludes multiple copies.  Its Euler
+characteristic is one by the lemma.  Its new boundary is the coherent
+curve dual to the same primitive boundary cocycle, which is a single
+essential curve on the two-triangle torus.  Therefore the connected
+surface is an essential disc.  Equivalently, the boundary statement
+follows by writing the two-triangle torus as an affine parallelogram
+quotient: a primitive integral linear functional has a connected
+essential level curve.
+
+The coherent surface for the primitive cocycle also preserves its genus
+and number of components in this construction.  Its coorientation
+extends across the tetrahedron.  Every new coherent normal piece meets
+at least one attaching face: their two height intervals overlap on the
+height interval of edge $01$ and their union is the complete height
+interval of $\Delta$.  Consequently a connected old coherent surface
+remains connected.  The boundary remains one primitive coherent curve,
+and the Euler correction is zero.
+
+\subsection{The explicit Fibonacci family}
+
+Let $T_0=T_*$ be the certified eight-tetrahedron solid torus from
+Section~\ref{sec:one-edge}. Its primitive coherent surface
+$C_0$ has $41$ normal pieces, Euler characteristic $-3$, and one boundary
+component, so it has genus two.  Let $D_0$ be the new $47$-piece standard
+vertex meridian given in the accompanying exact certificate.  It differs
+from the absolute cocycle weights only at the interior edge numbered
+$30$, where $w_{D_0}(30)=|c(30)|+4=5$.  Thus its cancellation support
+has exactly one edge.  The boundary weights are $2,3,5$.
+
+At each step layer a tetrahedron along the boundary edge of smallest
+weight.  With $F_1=F_2=1$, the $j$th added tetrahedron, $j\geq1$, has
+coherent heights, after a local relabelling and perhaps reversing all
+signs,
+\[
+ (h_0,h_1,h_2,h_3)
+ =\bigl(0,F_{j+2},-F_{j+3},F_{j+4}\bigr).
+\]
+The identity $F_{j+4}=F_{j+3}+F_{j+2}$ gives (P).  The old diagonal
+has weight $F_{j+2}$ and the new diagonal has weight $F_{j+5}$.
+The two other boundary edge weights are unchanged.  Hence the three
+boundary weights after $r$ layers are
+\[
+ F_{r+3},\quad F_{r+4},\quad F_{r+5}.
+\]
+The new local triangle coefficients are $F_{j+3}$ at the height
+minimum and maximum, and its quadrilateral coefficient is $F_{j+2}$.
+It contributes $2F_{j+3}+F_{j+2}=F_{j+5}$ normal pieces.
+
+\begin{theorem}[Dense one-cancellation family]
+\label{thm:dense-family}
+For every $r\geq0$, the preceding construction gives a one-vertex
+solid-torus triangulation $T_r$ with $t=r+8$ tetrahedra and a primitive
+standard vertex meridian $D_r$ such that:
+\begin{enumerate}
+\item its cancellation support is exactly the original interior edge $30$;
+\item its quadrilateral support has size $r+6=t-2$;
+\item its number of normal pieces is $F_{r+7}+34$;
+\item the primitive coherent surface $C_r$ is connected, has one boundary
+component, genus two, and $F_{r+7}+28$ pieces.
+\end{enumerate}
+In particular, dense quadrilateral support, exponentially large normal
+coordinates, and persistent failure of the coherent seed are compatible
+with a cancellation-support discovery parameter equal to one.
+\end{theorem}
+
+\begin{proof}
+The base assertions are established by the supplied exact certificates
+and Table~\ref{tab:coordinates}. All four vertices of each new tetrahedron
+belong to attaching faces, so the source retains one vertex. The old
+cocycle coordinates have gcd one and are unchanged, so the extended
+cocycle stays primitive.
+The support-injectivity proposition preserves the standard vertex ray,
+and the Euler and boundary arguments preserve the meridian disc and the
+genus-two coherent surface.  All new coordinates are coherent for the
+extended cocycle; the old defect edge is interior and never changes.
+Thus the cancellation support stays exactly $\{30\}$. Since $C_r$ remains a genus-two surface, no meridian has empty cancellation support; hence $\kappaV(T_r)=1$. Each new
+tetrahedron has a positive quadrilateral coefficient, so the support
+increases by one at each step.  Finally,
+\[
+ \sum_{j=1}^r F_{j+5}=F_{r+7}-F_7=F_{r+7}-13.
+\]
+Adding $47$ or $41$ yields the stated piece counts.  The largest
+coordinate has $\Theta(r)$ bits even though its value grows exponentially.
+\end{proof}
+
+This theorem concerns the discovery parameter.  The base disc lies in
+the same full quadrilateral sector as the coherent surface, so the
+family does not prove a coverage improvement over an existing complete
+search supplied with that sector.  The new theorem keeps a low-dimensional
+edge-weight restriction through ray discovery, independently of the
+number of tetrahedra with quadrilaterals.
+
+
+Exponential coordinate growth in layered solid tori is established in
+normal-surface complexity theory; Burton gives an explicit Fibonacci
+vertex-disc construction \cite{burton-complexity}. The distinguishing
+feature here is its persistence together with a genus-two coherent
+obstruction and exactly one cancellation edge. The table below gives
+some exact sizes; the saved benchmark also reaches $r=64$.
+\begin{center}
+\begin{tabular}{@{}r r r r@{}}
+\toprule
+Layers $r$ & Tetrahedra & Disc pieces & Occupied quadrilateral types\\
+\midrule
+0 & 8 & 47 & 6\\
+1 & 9 & 55 & 7\\
+2 & 10 & 68 & 8\\
+4 & 12 & 123 & 10\\
+8 & 16 & 644 & 14\\
+16 & 24 & 28,691 & 22\\
+32 & 40 & 63,246,020 & 38\\
+64 & 72 & 308,061,521,170,163 & 70\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{A linear cancellation obstruction for arbitrary sources}
+\label{sec:whitehead}
+
+A logarithmic cancellation bound cannot hold for all finite
+triangulations. The obstruction below uses multiple vertices; it is
+therefore separate from the one-vertex theorem and does not resolve its
+most interesting remaining geometric question.
+
+\begin{theorem}[Many forced cancellation edges]
+\label{thm:whitehead}
+There are generalized triangulations $U_r$ of a solid torus with
+$t_r=6r+O(1)$ tetrahedra such that every oriented meridian disc transverse
+to their one-skeleton has at least $r$ cancellation edges. In particular
+$\kappaV(U_r)\ge r=\Omega(t_r)$.
+\end{theorem}
+\begin{proof}
+Choose a fixed Whitehead curve $J$ in a solid torus $V$. Its winding
+number is zero, while its geometric index is two: every meridian disc
+of $V$ meets $J$ at least twice. These properties are established, for
+example, by the geometric-index calculations in Section 5 and Figure 3(a)
+of Andrist--Garity--Repov\v{s}--Wright \cite{geometric-index}.
+
+Choose a fixed tubular neighbourhood $N(J)\cong S^1\times D^2$.
+Triangulate $D^2$ with three fixed boundary vertices and $r$ interior
+vertices $p_1,\ldots,p_r$. Repeated insertion of an interior vertex into
+one triangle gives exactly $2r+1$ triangles and leaves the boundary
+triangulation unchanged. Put the one-vertex, one-edge $\Delta$-complex
+structure on $S^1$. Give the disc vertices a global order, retaining the
+boundary order, and triangulate every product triangular prism by the
+compatible three-tetrahedron staircase subdivision. The resulting
+product has $3(2r+1)$ tetrahedra. Each
+\[
+                            e_j=S^1\times\{p_j\}
+\]
+is one global loop edge, and the $r$ loop edges are distinct and disjoint.
+The triangulation induced on $\partial N(J)$ is independent of $r$.
+
+Glue to a fixed triangulation of
+$V\setminus\operatorname{int}N(J)$. If their boundary triangulations
+need reconciliation, use a fixed triangulated collar. It does not touch
+the interior loop edges. The total tetrahedron count is $6r+O(1)$ and
+the underlying manifold is the solid torus $V$.
+
+Every $e_j$ is parallel to $J$ in its fixed neighbourhood, hence has
+winding number zero and geometric index two in $V$. For every oriented
+meridian $D$,
+\[
+                         c_D(e_j)=0,\qquad w_D(e_j)\ge2.
+\]
+Equation~\eqref{eq:defect} makes each $e_j$ a cancellation edge. This
+argument does not depend on a choice of vertex potential: every
+coboundary evaluates to zero on a loop edge. There are $r$ such edges,
+which proves the bound for all meridians and hence for vertex meridians.
+\end{proof}
+
+The theorem is a representation obstruction, not a lower bound for
+unknot recognition. Its source has $\Theta(r)$ vertices, and the theorem
+does not prove that these obstructions survive a controlled reduction to
+one vertex. The product construction deliberately makes the loops
+separate vertices so that their triangulation cost and cancellation
+contributions are transparent.
+
+A successful global approach must therefore choose its sources. It may
+need certified retriangulations that remove such repeated gadgets, a
+parameter measuring independent obstructions rather than literal edge
+support, or a family of alternative exterior presentations. A bound on
+one convenient triangulation chosen by an unspecified topological
+existence argument would still be insufficient: both discovery of that
+source and the cost of certifying its relation to the diagram belong in
+the complexity theorem.

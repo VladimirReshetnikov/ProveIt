@@ -1,0 +1,179 @@
+\section{Artifact layout, public APIs, and reproduction}
+\label{main:reproduction}
+
+The accompanying archive contains the complete article sources and PDF,
+an additive integration patch, a runnable source snapshot, fixed source
+corpora, proof examples, experiment records, and validation logs.  The snapshot
+is included so that local reproduction does not depend on the current state
+of the repository's main branch.  The patch is separately based on the exact
+revision printed on the title page.
+
+\subsection{Delivered files and their roles}
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}p{.32\textwidth}Y@{}}
+\toprule
+Path & Purpose\\
+\midrule
+\path{article.tex}, \path{sections/} & Complete editable article sources;
+the bibliography is inside the main source.\\
+\path{article.pdf}, \path{build.sh} & Typeset article and local rebuilding command.\\
+\path{integration.patch} & New modules, tests, and reproduction data for the
+pinned repository tree; no existing runtime file is overwritten.\\
+\path{runtime/fast/} & Standard-library native implementation, its pinned
+dependencies, four new test modules, and fixture/benchmark tools.\\
+\path{runtime/synthesis/}, \path{runtime/reports/57/} & Source corpora needed
+by the literal boundary and retained-sector audits.\\
+\path{examples/} & Small independently verified source-bound proof packets,
+including the Q/standard mixed-ray example.\\
+\path{results/} & Case-level audit and timing JSON, source hashes, and logs.\\
+\path{tools/reproduce.py} & Portable smoke, focused-test, audit, and benchmark
+entry points.\\
+\path{provenance/} & Pinned revision, file hashes, environment, patch replay
+checks, and PDF verification record.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The native runtime requires Python and its standard library.  The recorded
+independent explicit-cut comparison uses Regina 7.4.  A machine without Regina
+can run the new native tests and replay the supplied small certificates;
+the explicit comparison mode requires Regina.  Rebuilding the paper requires
+a LaTeX installation with the packages named in \path{article.tex}.  The
+included upstream runtime license is preserved.
+
+\subsection{A source-bound whole-cut example}
+
+From \path{runtime/fast/}, the following computes and independently checks
+the cut along a supplied primitive meridian:
+
+\begin{lstlisting}[language=Python]
+from fastunknot.normal_cut_handlebodies import normal_cut_handlebodies
+from fastunknot.normal_cut_handlebodies_verify import (
+    verify_normal_cut_handlebodies,
+)
+from normal_orbit_research.fixtures import layered_torus
+
+source, coordinates = layered_torus(4)
+answer = normal_cut_handlebodies(
+    source, coordinates, record_certificate=True,
+)
+assert answer['status'] == 'COMPLETE'
+assert verify_normal_cut_handlebodies(
+    source, coordinates, answer['certificate'],
+)
+assert answer['census']['histogram'] == [
+    {'genus': 0, 'multiplicity': 1},
+]
+skeleton = answer['certificate']['boundary']['skeleton']
+assert len(skeleton['ports']) == 15
+assert skeleton['interval_attachments'] == 3
+\end{lstlisting}
+
+This is a theorem about the supplied cut.  Converting it to a knot verdict
+requires the additional surface and exterior hypotheses described above.
+An unresolved result should be passed to a different exact method or retained
+as unresolved; it must not be converted to a negative recognition answer.
+
+For a large common multiplicity, multiply the normal coordinates by the exact
+integer.  The native algorithms consume those binary integers directly.
+When saving a large certificate in JSON, use the established exact codec:
+
+\begin{lstlisting}[language=Python]
+import json
+from fastunknot.integer_codec import json_safe
+
+source, primitive = layered_torus(1)
+m = 1 << 16384
+coordinates = [[m * n for n in row] for row in primitive]
+answer = normal_cut_handlebodies(
+    source, coordinates, record_certificate=True,
+)
+assert answer['census']['ball_components'] == m
+wire = json.dumps(json_safe(answer['certificate']))
+proof = json.loads(wire)
+assert verify_normal_cut_handlebodies(
+    source, json_safe(coordinates), proof,
+)
+\end{lstlisting}
+
+The codec uses explicitly signed hexadecimal strings for sufficiently large
+integer fields, avoiding process-wide decimal-conversion changes.  Equal
+Boolean and integer values are not interchangeable schema fields.  The checker
+validates the prescribed types and source correspondence; successful JSON
+parsing is not itself certificate validation.
+
+\subsection{A sector example that must retain the mixed standard ray}
+
+\begin{lstlisting}[language=Python]
+from sector_block_research.fixtures import capped_bipyramid_chain
+from fastunknot.sector_blocks import certify_sector_block_rays
+from fastunknot.sector_blocks_verify import verify_block_ray_certificate
+
+fixture = capped_bipyramid_chain(2)
+source = fixture['triangulation']
+support = fixture['allowed_types']
+q = certify_sector_block_rays(source, support, phase='quadrilateral')
+s = certify_sector_block_rays(source, support, phase='standard')
+assert len(q['rays']) == 4
+assert len(s['rays']) == 5
+assert verify_block_ray_certificate(source, q['certificate'])
+assert verify_block_ray_certificate(source, s['certificate'])
+\end{lstlisting}
+
+The source and support are the same.  The difference in ray counts is required
+by the proved canonical-minimum interaction, rather than a tolerance or a
+heuristic enumeration choice.  The negative canonical-Euler and positive
+canonical-Euler certificates have separate schema names and weaker topological
+meaning than an essential-disk certificate.
+
+\subsection{Commands and scope of the validation records}
+
+From the archive root:
+\begin{lstlisting}
+python tools/reproduce.py smoke
+python tools/reproduce.py tests
+python tools/reproduce.py audits
+python tools/reproduce.py benchmarks
+bash build.sh
+\end{lstlisting}
+
+The smoke command verifies the saved small proof packets.  The test command
+runs the four new test modules; it does not claim to recreate all 1,644 tests
+of the integrated source tree.  The audits use the included fixed source
+corpora and write new reports under \path{reproduced/}.  Benchmark commands
+run the recorded algorithms with their original sample counts; wall-clock
+times will depend on the host.  The binary capacity cases report exact
+arithmetic and certificate volume, not an explicit-oracle speed ratio.
+
+To reproduce the full integrated suite, check out the pinned repository,
+inspect and apply \path{integration.patch} at the repository root, enter
+\path{Topology/UnknotRecognition/fast/}, and run:
+\begin{lstlisting}
+python -m unittest discover -s tests -v
+\end{lstlisting}
+The delivered log records the actual 1,644-test run.  A subsequent focused
+sector run validates the final generalized fixture as well.  The separate
+runtime snapshot is sufficient for this contribution's focused tests and
+audits; it intentionally does not duplicate every unrelated report in the
+large ProveIt repository.
+
+The integration patch only creates new files.  It does not enable a new
+diagram recognizer policy, replace existing source checkers, or assume that
+all future normal cuts will satisfy the disk-interface criterion.  Its
+purpose is to make the proven local operations and their limits reviewable
+before a hierarchy consumer depends on them.
+
+\subsection{Results that are proved but not implemented in this delivery}
+
+Four extensions are deliberately separated from the measured code:
+the three-unweighted-count partition certificate, reuse of a primitive
+certificate under the replication theorem, exhaustive bounded-genus survivor
+search, and disk-base full-annulus absorption.  Their mathematical statements
+and proofs are in the article.  The current production APIs do not silently
+claim their speed, coverage, or proof format.  The annular eligibility
+diagnostic tests only the stated base-type preconditions.
+
+This distinction makes a later implementation comparison precise.  A future
+patch can add one extension, replay the same source bank, and identify exactly
+which proof language, accepted cut class, and measured work changed.

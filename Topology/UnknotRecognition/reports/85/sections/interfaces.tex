@@ -1,0 +1,855 @@
+\section{Ordered parallelity interfaces with polynomial encoded cost}
+\label{int:section}
+
+The source parallelity construction already retains the complete base surfaces
+of the selected product handles, their fibre twisting, and a bounded collection
+of source-labelled arcs where they meet the complementary core.  Its component
+profiles record which ports belong to a base, but that set does not specify the
+cyclic order of the ports on its boundary.  In particular, several successive
+port rectangles can form one attaching disk.  Counting them as independent
+attaching disks changes the topology of the proposed gluing.
+
+This section supplies an exact ordered interface operator.  It reconstructs
+the ported boundary circles, distinguishes a common endpoint from a nonempty
+original-boundary gap, transports the local fibre charts, and groups the ports
+into the actual connected attaching intervals and circles.  All of this uses
+binary rank data.  The construction does not walk through the potentially
+enormous collection of individual normal polygons.
+
+The relevant predecessor is the source geometry in the repository's
+\texttt{parallelity.tex}, together with its independently reconstructed
+cut-cell reference~\cite{ProveIt2026}.  The orbit-counting engine is the
+Agol--Hass--Thurston algorithm, abbreviated AHT~\cite{AHT2006}.  The results below
+separate three points: the already established polynomial weighted AHT
+operation, a sharper bound for sparse marked weights, and the new extraction
+of ordered topological attachments.  No priority claim for sparse weighted
+orbit computation is intended.
+
+\subsection{The encoded marked-boundary problem}
+\label{int:model}
+
+\begin{definition}[Marked polygonal interval bundle]
+\label{int:definition}
+An encoded marked polygonal interval bundle consists of a compact, possibly
+disconnected surface $B$, an interval bundle $E\to B$, and a polygon-family
+description with the following properties.
+\begin{enumerate}
+\item Polygon copies are indexed by finite integer intervals whose endpoints
+are written in binary.  Each family has an explicitly listed finite sequence
+of sides and corners.
+\item Glued side families have partial affine rank maps of slope $+1$ or
+$-1$, an explicit permutation of their two endpoints, and a separate bit
+specifying whether the interval fibre reverses.  These data describe genuine
+surface and bundle gluings.
+\item Exactly $P$ distinguished free edges are individually named by the
+integers $0,\ldots,P-1$.  Each occurs at one specified rank and has a local
+direction from endpoint zero to endpoint one.  Their union is denoted $A$.
+Every other free edge has the single label ``original boundary.''
+\end{enumerate}
+The original-boundary label in this definition carries no additional marked
+points, curves, slopes, or subdivisions that must be preserved.
+\end{definition}
+
+In the normal-cut application, the distinguished edges are the source core
+ports.  The source constructor accepts its existing validated finite,
+connected, compact, orientable triangulation with one torus boundary and an
+admissible integral standard normal vector.  It allows empty, disconnected,
+and one-sided cutting surfaces.  Its geometry has at most $66T$ ports, where
+$T$ is the number of tetrahedra.  If $D$ is the number of normal disks, its
+corner universe has at most $32D$ points and is represented by $O(T)$
+families and side records~\cite{ProveIt2026}.
+
+The separate fibre bit is essential.  An order-reversing map of a one-point
+rank interval has the same point map as an order-preserving one.  Neither
+that map nor the endpoint permutation alone specifies fibre transport.
+The new construction retains all three pieces of information.
+
+The output concerns precisely those boundary circles of $B$ that meet $A$.
+It does not list every unported boundary circle.  Their number and the base
+topology remain available from the existing base-profile construction.
+
+\subsection{Dense weighted transport and the sharper sparse invariant}
+\label{int:weights}
+
+We first make the complexity accounting explicit.  This also corrects an
+overly cautious reading of later repository passages that express their cost
+only in terms of realized weighted partitions.  The preceding repository
+section \texttt{suffix\_folds.tex} already gives a polynomial bound for those
+partitions.  Classical weighted AHT is likewise polynomial
+\cite[Theorem~16]{AHT2006}.  There is no missing general dense-weight theorem
+at this stage of the source-cut calculation.
+
+\begin{lemma}[The existing suffix-fold bound]
+\label{int:dense}
+Let a valid forward AHT trace on $[0,N)$ start with at most $k$ pairings and
+$R_0$ canonical constant weight runs.  Weights may be signed integer vectors.
+After $\tau$ truncations the maintained suffix-only transport has at most
+\[
+                         R_0+2\tau
+\]
+weight runs.  If the trace has $E$ events, the total number of emitted
+histogram blocks is at most
+\[
+                       E(R_0+2E+4k+2).
+\]
+For additive source intervals $[l_j,h_j)$ with weights $v_j$, every
+intermediate coordinate has absolute value at most
+\[
+                  M=\sum_j(h_j-l_j)\lVert v_j\rVert_\infty.
+\]
+\end{lemma}
+
+\begin{proof}
+This is the suffix-specific argument already established in the
+repository~\cite{ProveIt2026}; we recall it to specify exactly which native
+operation is being bounded.  Suppose a translation truncation retains
+$[0,C)$ and uses period $p$, with $b=C-p$.  Each removed point is sent to
+\[
+               \rho(x)=b+((x-b)\bmod p)\in[b,C).
+\]
+The retained prefix weights stay in place.  Let $J_-$ and $J_+$ be the old
+interior changes strictly below and strictly above $C$, respectively.
+Extend the removed suffix weight by zero.  Its discrete derivative is
+supported at $C$, $N$, and $J_+$.  Summing over residues transports these
+changes into one period.  Consequently every new interior change lies in
+\[
+                   J_-\cup\rho(J_+)\cup\{b,\rho(N)\}.
+\]
+The change at $C$, if there was one, disappears.  Thus at most two new
+boundaries replace the vanished suffix boundaries, giving an increase of at
+most two runs.
+
+For a reversing truncation, the removed suffix is reflected into one
+retained interval.  Its old interior changes are reflected individually;
+only the two endpoints of the receiving interval can be additional changes.
+The same bound follows.  Deletion, trimming, merger, and transmission leave
+the point weights unchanged.  A static contraction retains an ordered
+subsequence of the old values and cannot increase the number of runs.
+Induction proves the first assertion.
+
+No trace operation increases the number of pairings.  The complement of
+their domains and ranges has at most $2k+1$ static gaps.  Intersecting these
+gaps with a weight partition having $R$ runs produces at most $R+4k+2$
+pieces, a deliberately conservative bound.  Summing over at most $E$
+contractions and using $R\le R_0+2E$ gives the displayed output bound.
+
+Finally, every original point contribution moves to exactly one current
+representative or one already emitted orbit.  Taking absolute values before
+adding the contributions proves the mass bound, including signed
+cancellation.  Thus the growth in numerical values costs only logarithmically
+many additional bits.  None of the quotient computations iterates over the
+number of represented points.
+\end{proof}
+
+The useful strengthening for ordered interfaces is independent of the
+number of truncations.
+
+\begin{theorem}[Sparse additive orbit transport]
+\label{int:sparse}
+Supply an interval pseudogroup on $[0,N)$ by $k$ partial integral isometries,
+and supply $K$ singleton weight atoms
+\[
+                        (x_j,w_j),\qquad w_j\in\mathbb Z^d.
+\]
+Locations may repeat and weights may have either sign.  Their weighted orbit
+histogram is computable in time polynomial in
+\[
+                  k,\quad \log(N+2),\quad K,\quad d,
+\]
+and the input weight bit lengths.  Along a valid AHT trace, the active weight
+function is supported at at most $K$ points and has at most $2K+1$ canonical
+runs.  There are at most $K$ distinct nonzero output weight vectors, with at
+most one further zero-weight row.
+
+If the atoms have the unique scalar weights $w_j=2^j$, every active nonzero
+value encodes a disjoint subset of the $K$ labels.  Every nonzero run is a
+singleton, every nonzero histogram row has orbit multiplicity one, and all
+mask values have at most $K$ bits.
+\end{theorem}
+
+\begin{proof}
+Temporarily distinguish the atoms even when their numerical weights are
+equal.  Maintain an allocation of the atoms that have not yet been emitted
+to current universe points.  The weight at a point is the sum of its
+allocated atoms.
+
+Pairing deletion, trimming, periodic merger, and transmission do not move
+the allocated atoms.  A translation truncation maps each atom in the deleted
+suffix to its unique retained representative modulo the carrier period.
+A reflection truncation maps each such atom to its unique reflected
+representative.  When several atoms arrive at the same point, their weights
+are added.  A static contraction emits all atoms at a deleted point as the
+weight of that completed orbit, then reindexes the remaining points
+monotonically.  No operation creates a second copy of an atom.
+
+Induction proves that the atom subsets at all live points and all completed
+orbits are pairwise disjoint.  Hence at most $K$ live points can have nonzero
+weight.  A function supported on $K$ integer points has at most $K$ nonzero
+singleton pieces and at most $K+1$ intervening zero pieces; coalescing equal
+adjacent values can only improve this count.  Every nonzero final orbit
+contains at least one atom, so there are at most $K$ such orbits and at most
+$K$ nonzero histogram rows.  Arbitrarily many unmarked or cancelling orbits
+share the single zero row.
+
+Each weight coordinate is bounded in absolute value by
+$\sum_j |(w_j)_i|$.  Its bit length is therefore at most the maximum input
+coordinate bit length plus $\lceil\log_2(K+1)\rceil$ and a constant.
+The maintained quotient/remainder and reflection operations process the
+bounded run list with binary arithmetic.  A trace of $E$ events consequently
+has polynomial weighted replay cost in the displayed parameters and $E$.
+For example, a conservative implementation-level bound is
+\[
+             O\bigl(E(k+K)\log(k+K+2)+K\log(K+2)\bigr)
+\]
+arithmetic operations, with the vector dimension and actual integer operand
+lengths included in the bit cost.  The polynomial classical AHT trace bound
+then proves the claimed polynomial algorithm~\cite{AHT2006}.
+
+For the unique scalar labels, sums of disjoint subsets of distinct powers
+of two have no binary carries.  Distinct occupied points cannot carry the
+same nonzero mask, because that would allocate one label to two points.
+This also rules out a nonzero constant run of length greater than one and
+rules out two distinct output orbits with the same nonzero mask.  The last
+assertions follow.
+\end{proof}
+
+Thus the new bound can be recorded together with the existing one as
+\[
+                 R\le\min\{R_0+2\tau,\,2K+1\}.
+\]
+Its advantage here is that $K$ is the number of distinguished endpoints,
+which is bounded by the source size.  It is not the number of normal disks.
+
+\subsection{The label partitions in weighted selectors are polynomial too}
+\label{int:selectors}
+
+The existing complete base construction uses weighted least representatives
+to mark individual quotient vertices and boundary components.  Its forward
+implementation retains intervals of surviving original labels; its
+independent checker restores deleted gaps backwards.  Both admit an explicit
+bound that can be combined with Lemma~\ref{int:dense}.
+
+\begin{proposition}[Tagged selector size]
+\label{int:tagged}
+Consider a complete monotone forward trace with $E$ events, at most $k$
+pairings, and $R_0$ initial weight runs.  Let $G$ be the total number of
+contracted static-gap intervals.  Then
+\[
+                 G\le(2k+1)E,
+\]
+and there are at most $1+G$ live original-label intervals at any time.
+The forward tagged selector emits at most
+\[
+          E\bigl(R_0+2E+1+(2k+1)E+4k+2\bigr)
+\]
+raw tagged pieces.  Its coalesced output and its independent backward
+verification have polynomial size and bit cost in the same parameters.
+\end{proposition}
+
+\begin{proof}
+Initially the live original labels form one interval, or none when the
+universe is empty.  Removing a contiguous interval of current ranks can
+split one live original-label interval into two.  If instead it crosses
+several live intervals, it deletes middle intervals and cuts only the two
+end intervals, with no larger increase in their number.  Thus one removed
+gap increases the live interval count by at most one.  Retaining a prefix
+cannot increase it.  This proves the $1+G$ bound.  Each contraction has at
+most $2k+1$ gaps, proving the bound on $G$.
+
+At a contraction the emission routine intersects three ordered partitions:
+the constant weight runs, the live source-label intervals in current-rank
+coordinates, and the static gaps.  If their sizes are $R$, $L$, and $r$,
+the common refinement contains at most $R+L+2r$ relevant pieces.  Substitute
+\[
+                R\le R_0+2E,\qquad
+                L\le1+(2k+1)E,\qquad r\le2k+1
+\]
+and sum over at most $E$ contractions.  This gives the stated conservative
+bound.  Sorting and coalescing these explicitly bounded pieces is
+polynomial, and their endpoints remain binary source labels.
+
+For the independent reverse construction, the selected tagged intervals
+remain disjoint.  Inserting a removed gap has one insertion anchor, which
+can split at most one currently selected interval.  Across all reverse
+insertions there are at most $G$ such new splits beyond the pieces originally
+recorded at contractions.  Truncations insert no selected points: a deleted
+suffix contains no least original representative.  Binary gap insertion,
+sorting, and coalescing therefore also have polynomial cost.  This argument
+applies directly to the producer's live-label operations and the verifier's
+separate backward reconstruction~\cite{ProveIt2026}.
+\end{proof}
+
+\begin{corollary}[Polynomial source-parallelity accounting]
+\label{int:source-polynomial}
+For the validated normal-cut source class with $T$ tetrahedra and $D$ normal
+disks, the source-parallelity base construction, its tagged selectors, and
+the ordered interface construction below have a polynomial-time realization
+in $T$ and $\log(D+2)$.  No extra hypothesis about an uncontrolled number
+of weighted or label partitions is required.
+\end{corollary}
+
+\begin{proof}
+The source geometry has $O(T)$ records and binary rank endpoints.  Its
+corner and polygon universes have sizes bounded by constant multiples of
+$D$~\cite{ProveIt2026}.  The first two source-parallelity queries are the
+weighted corner and boundary selectors.  Proposition~\ref{int:tagged}
+bounds their outputs polynomially in their AHT traces.  The subsequent
+mark-placement operation intersects their ordered representative intervals
+with the $O(T)$ polygon-carrier intervals.  A common refinement of two
+ordered interval families has polynomial size.  Hence the weights supplied
+to the base-component and fibre-cover histograms have polynomially many
+input intervals.  Lemma~\ref{int:dense} bounds both histograms and their
+integer sizes.  Finally, Theorem~\ref{int:sparse} applies to the two ordered
+interface queries.  Choosing classical polynomial AHT schedules for these
+finitely many queries proves the corollary.
+\end{proof}
+
+The new ordered-interface implementation explicitly selects the original
+AHT periodic-overlap threshold with \texttt{periodic\_rule='aht'} in both
+queries.  The pre-existing source-parallelity implementation uses its
+documented forward AHT engine, including its already justified stronger
+Fine--Wilf merger.  The partition bounds above apply to either valid forward
+schedule; their conversion to a worst-case input bound invokes the
+polynomial trace bound for the chosen schedule.  In particular, the existing
+phrases ``polynomial in the realized partitions'' need not be interpreted as
+an additional unresolved source-parallelity hypothesis.  This is a
+clarification of local encoded operations.  It gives no bound on the number
+of cutting surfaces or hierarchy states that a complete recognizer must
+discover.
+
+\subsection{Two marked orbit queries recover the boundary words}
+\label{int:construction}
+
+Give every individual polygon corner its place in a single integer universe
+$[0,N)$.  A gluing of polygon sides identifies their endpoint corners.  The
+source rank maps and corner offsets express those identifications as partial
+integer isometries.  Let $V$ denote the resulting interval equivalence
+system.  Its orbits are the actual quotient vertices of the polygonal
+surface.
+
+For port $p$, introduce the two endpoint tokens
+\[
+                         e=2p,\qquad e=2p+1.
+\]
+Tokens are distinct names even when their corner points are identified or
+are literally the same source corner.  Place the singleton scalar weight
+$2^e$ at the corresponding corner.  The first query is the weighted orbit
+histogram of $V$.  It records which distinguished endpoints are the same
+surface vertex.  At a boundary vertex at most two port endpoints can occur,
+because the boundary is a one-manifold.  Accordingly, each nonzero mask has
+one or two bits and occurs once.
+
+Next add to $V$ the endpoint identifications across every original-boundary
+free edge, omitting every core-port edge.  Call the resulting system $G$.
+It records connectivity along the boundary after the interiors of the port
+edges have been removed.  Its marked components are intervals, including
+the possible one-vertex interval between consecutive port edges.  Each has
+exactly two endpoint tokens.
+
+We do not need to query $G$ separately.  Instead, construct its two-sheeted
+fibre cover $\widetilde G$ on $[0,2N)$.  Across an original corner gluing,
+the source fibre bit either preserves or exchanges the sheets.  Across an
+original-boundary free edge, the local polygon fibre chart preserves them.
+The lifted token $(e,s)$ receives weight
+\[
+                              2^{2e+s},\qquad s\in\{0,1\}.
+\]
+The second query is the weighted histogram of $\widetilde G$.  Every marked
+interval has two disjoint lifts, so the nonzero masks give a perfect
+matching of the $4P$ lifted tokens.  If
+\[
+                            (e,0)\longleftrightarrow(f,b),
+\]
+the matching identifies the gap endpoints $e,f$ and its fibre reversal $b$.
+The other lift must be
+\[
+                            (e,1)\longleftrightarrow(f,1-b).
+\]
+Both relations are checked; in particular $e\ne f$.
+
+\begin{theorem}[Exact ordered interface extraction]
+\label{int:ordered}
+For an encoded marked polygonal interval bundle as in
+Definition~\ref{int:definition}, two sparse weighted orbit queries determine,
+for every boundary circle meeting $A$:
+\begin{enumerate}
+\item the cyclic order and local directions of all its port edges;
+\item whether each intervening original-boundary gap is nonempty or consists
+of a common vertex;
+\item the fibre reversal along each gap in the specified endpoint charts;
+\item the connected components of $A$, classified as intervals or whole
+boundary circles, with the endpoint charts and fibre transport of every
+interval component.
+\end{enumerate}
+The output has $O(P)$ records.  The queries have $2P$ and $4P$ singleton
+tokens, respectively, and their weight partitions have at most $4P+1$ and
+$8P+1$ runs.  The construction has polynomial encoded cost.  If the total
+interval bundle is orientable, the fibre parity around every output
+boundary circle is zero.
+\end{theorem}
+
+\begin{proof}
+The first query computes actual corner equivalence and therefore tells
+exactly which endpoint tokens are the same surface vertex.  Distinct
+token names give disjoint bits, so their masks lose no endpoint information.
+Unmarked vertices contribute only zero weight, regardless of their number.
+
+Consider a boundary circle that contains at least one port.  Removing the
+interiors of its port edges leaves a finite collection of compact intervals.
+An interval can be a single vertex when two port edges are successive with
+no intervening original-boundary edge.  Its two boundary incidences are the
+two endpoint tokens that it carries.  The system $G$ gives exactly these
+interval components: its corner relations identify surface vertices, and
+its additional relations cross precisely the non-port boundary edges.
+Unported boundary circles and interior vertices carry no endpoint labels.
+
+An interval bundle over an interval is trivial.  In the two-sheet fibre
+cover its two endpoint lifts therefore form two disjoint pairs.  The second
+histogram recovers these pairs and the relative fibre chart.  This proves
+the asserted endpoint matching and fibre reversal.  A gap is a single
+vertex if and only if its two tokens belong to the same $V$-orbit.  Indeed,
+the forward implication is immediate.  For the converse, a positive
+original-boundary path beginning and ending at that vertex, in addition to
+the two incident port-edge ends, would give more than two boundary
+incidences there.  That contradicts the boundary one-manifold condition.
+
+Join the recovered gap matching to the fixed port matching
+$2p\leftrightarrow2p+1$.  Each endpoint is incident to one gap and one port,
+so these alternating components are exactly the ported boundary circles.
+Start each component at its least port, entering that port through its
+endpoint zero.  Crossing a port in direction zero to one writes $p+1$;
+crossing it in the other direction writes $-(p+1)$.  Crossing the following
+gap determines the next port endpoint.  This produces a deterministic
+signed cyclic word, up to the normalization just specified.  Every port
+occurs exactly once in one such word, and there are exactly $P$ gaps
+between consecutive ports in the aggregate.
+
+Split a cyclic word at every nonempty original-boundary gap.  Its remaining
+maximal runs are precisely the connected interval components of $A$.
+If there is no such gap, the entire word is one circle component of $A$.
+The local fibre transport along a port is trivial in its own polygon
+chart.  Consequently, the XOR of the intervening gap bits gives the fibre
+transport of each interval run, and the XOR around a cyclic word gives
+its fibre monodromy.  When the total space $E$ is orientable, its interval
+orientation character is $w_1(B)$.  The restriction of $w_1(B)$ to every
+boundary circle vanishes, since that circle has an annular collar in $B$.
+The total XOR around each boundary word is therefore zero.
+
+Both orbit systems have a number of pairing families bounded by a constant
+multiple of the input side and gluing records.  Doubling sheets doubles
+the universe and only multiplies the number of families by a constant; it
+does not expand the universe.  Theorem~\ref{int:sparse}, applied to $2P$
+and $4P$ singleton tokens, gives the stated run and complexity bounds.
+Decoding masks, forming the two matchings, traversing the $P$ port edges,
+and splitting the words use polynomial work and $O(P)$ output records.
+\end{proof}
+
+\begin{corollary}[Source-size bound for ordered normal-cut interfaces]
+\label{int:normal}
+For the source normal-cut geometry, the reduced ordered core interfaces have
+$O(T)$ records and can be computed in time polynomial in $T$ and
+$\log(D+2)$, independently of the numerical normal multiplicities.
+\end{corollary}
+
+\begin{proof}
+Substitute the source bounds $P\le66T$, $N\le32D$, and $O(T)$ polygon-side
+records into Theorem~\ref{int:ordered}.  The geometry and the source-normal
+validation are binary rank operations.  If $D=0$, there are no ports and the
+empty interface follows directly from the source construction.
+\end{proof}
+
+\subsection{Attaching intervals, attaching annuli, and the exact invariant}
+\label{int:attachments}
+
+\begin{corollary}[Connected attachment types]
+\label{int:attachment-types}
+Suppose the output contains $a$ interval components and $c$ circle components
+of $A$.  Then
+\[
+                \chi(A)=a,\qquad
+                H_1(A;\mathbb Z)\cong\mathbb Z^c.
+\]
+In the orientable total-bundle setting, the interval-bundle attachment above
+each component is a disk for an interval component and an annulus for a
+circle component.  Adjacent source ports in one interval run form one
+attaching disk.
+\end{corollary}
+
+\begin{proof}
+A finite disjoint union of compact intervals and circles has the stated
+Euler characteristic and first homology.  The restriction of any interval
+bundle to an interval is a product, hence a disk.  On a boundary circle of
+an orientable total bundle the fibre character is zero by
+Theorem~\ref{int:ordered}; its vertical restriction is therefore an annulus.
+The decomposition into components is the maximal-run decomposition already
+proved, so the several rectangles over consecutive port arcs constitute
+one connected disk, rather than separate attaching disks.
+\end{proof}
+
+The value $a$ agrees with the existing independently checked attachment
+Euler characteristic, computed there as the number of quotient vertices
+incident to core ports minus the number of core ports.  The new operator
+retains the extra information that this Euler characteristic omits:
+the number and identities of entire attaching circles, cyclic order,
+individual interval membership, and fibre transport.
+
+For example, the four-tetrahedron layered-meridian fixture has $15$ ports
+but only three interval attachments.  An especially small annular
+obstruction uses the two-tetrahedron layered source and the coordinate rows
+\[
+                (0,0,1,1,1,0,0),\qquad (1,1,1,1,0,0,0).
+\]
+Its source parallelity base is the edge-cap-only disk already described in
+the repository's parallelity analysis~\cite{ProveIt2026}.  The new output
+has the single word
+\[
+                         (1,2,3,4,5,6,7,8)
+\]
+and every following gap is a common vertex.  Thus $a=0$, $c=1$: its whole
+base boundary is attached, and the corresponding vertical attachment is an
+annulus.  A criterion that permits only attaching disks must exclude this
+case.  It cannot replace the circle by eight independent disk attachments.
+
+\subsection{Replication along a two-sided normal surface}
+\label{int:replication}
+
+The dependence on a large common multiplicity can be separated even more
+strongly when a global coorientation is available.  The following statement
+concerns the source decomposition itself, including its marked attachment
+data; it is not merely a statement about the number of complementary
+components.
+
+\begin{theorem}[Positive-multiplicity replication]
+\label{int:replication-theorem}
+Let $F$ be a nonempty two-sided properly embedded normal surface with
+admissible standard coordinate vector $x$ in a triangulated orientable
+$3$-manifold satisfying the source contract.  Fix a global coorientation
+on each component of $F$.  Write $K_x$ for the source complementary core
+and $E_x\to B_x$ for its selected parallelity bundle.  For every integer
+$m\ge1$, the standard normal surface with coordinates $mx$ admits the
+following source-compatible description.
+\begin{enumerate}
+\item Its core is canonically identified with $K_x$ by the local handle
+types and owners.  Source rank labels on its interface are obtained by
+multiplying the corresponding local gap ranks by $m$.
+\item In every product-handle family, whose local gap ranks have the form
+$1\le r<md$ after replication, retain exactly the copies with $m\mid r$.
+These copies form a union of complete bundle components.  Division of
+their local ranks by $m$ identifies their polygonal bundle, including its
+fibre charts and marked core attachment, with $E_x\to B_x$.
+\item Every source core port belongs to this divisible-rank subbundle.
+The remaining product handles form $m-1$ unported copies of $F\times I$,
+with $m-1$ base copies of $F$.  If $F$ has $q$ connected components, this
+means $(m-1)q$ additional connected unported bases.  Existing unported
+components of $B_x$ are retained as well.
+\item The reduced signed core-port words, the zero-or-positive
+original-boundary gap indicators, and the fibre transport are unchanged
+under the source identification.  In particular, the numbers and owner
+incidences of attaching intervals and attaching circles are unchanged.
+\end{enumerate}
+The identification is by source family and local rank; the flattened
+integer offsets and the numerical polygon-family IDs need not agree.
+Topologically,
+\[
+ \operatorname{Cut}(M,mF)\cong
+ \operatorname{Cut}(M,F)\;\sqcup\;
+ \bigsqcup_{j=1}^{m-1}(F\times I).
+\]
+\end{theorem}
+
+\begin{proof}
+Choose a small two-sided normal collar of $F$ compatible with the fixed
+coorientation.  Replace each local disk of $F$ by $m$ parallel disks in
+that collar.  Face matching follows the old matching and the collar
+coordinate, so this is an embedded normal representative of $mx$.
+There are $m-1$ intervening product slabs over every component of $F$.
+The remaining part of the complement is the old cut complement, with
+its two cut sides shifted to the two exterior copies of the collar.
+This proves the displayed topological decomposition.  We now verify
+its stronger assertion about the specified source handles.
+
+A local product handle lies between consecutive objects in one ordered
+stack: parallel normal disks in a tetrahedron, parallel normal arcs in
+a face, or normal intersection points on an interior edge.  If the old
+stack has size $d$, its product ranks are $1,\ldots,d-1$.  Replication
+replaces each old object by a block of $m$ objects.  The gap between
+successive old blocks has rank $mr$, whereas an interior gap within a
+block has rank not divisible by $m$.  Thus the divisible ranks are
+exactly the old inter-block product handles.  If an old stack has
+$d=1$, its source family was absent; the new ranks $1,\ldots,m-1$
+are all nondivisible, as required.
+
+This distinction is respected by every source gluing.  Expressed in
+\emph{local gap ranks}, each gluing is
+$r\mapsto\varepsilon r+c(x)$, where $\varepsilon\in\{1,-1\}$ and
+$c(x)$ is a homogeneous integral linear combination of the relevant
+normal disk counts.  For example, the prism-to-face maps are $r$,
+$t_v+r$, or $t_v+q-r$, where $t_v$ is a triangle count and $q$ the
+relevant quadrilateral count.  The prism-to-edge and face-to-edge maps
+have the forms $t_v+r$, $w-t_v-r$, $r$, or $w-r$, where $w$ is an
+edge weight; restrictions choose the appropriate family and interval.
+These are gap ranks, so the $-1$ that occurs in a zero-based
+\emph{disk} reflection has already been removed by the source conversion
+to gap coordinates.  After replacing $x$ by $mx$, the offset becomes
+$mc(x)$.  Hence divisible ranks glue only to divisible ranks, and
+division by $m$ recovers every original gluing and its domain.  The
+endpoint permutations and fibre-reversal bits depend on source
+orientations and local disk types, which have not changed.  This proves
+the asserted bundle identification, including local fibre charts.
+
+The complementary source $0$-handles are the chambers at stack ends
+and at changes of disk type.  Its $1$-handles are the corresponding
+nonparallel face regions, its $2$-handles are the two exterior edge
+gaps (or the sole gap for zero edge weight), and its $3$-handles are
+the fixed interior vertex regions.  Positive scaling preserves all
+zero-or-positive tests and disk-type supports.  Consequently their
+types, owners, and attaching charts identify with those for $x$.
+Each core-facing product port occurs at a transition rank such as
+$t_v$, $t_v+q$, an arc count, or its complement in an edge weight.
+These ranks are homogeneous in $x$, so all new port ranks are
+divisible by $m$ and all old ports reappear at their rescaled ranks.
+The possibly newly present product families with old stack size one
+have no such interior divisible rank and contribute no core port.
+
+The product handles at the nondivisible ranks fill precisely the
+slabs inside the replicated collars.  The chosen global coorientation
+orders the $m$ sheets consistently on each component of $F$, thereby
+identifying the slabs as $F\times I$ with indices
+$1,\ldots,m-1$.  A reversed local stack can exchange residue $s$
+with $m-s$; this local effect does not exchange the globally indexed
+slabs after the coorientation is used.  Their bases are the corresponding
+copies of $F$ and their only vertical boundary lies over $\partial F$
+in the original boundary of $M$.  None touches the source core.
+
+Finally, the divisible-rank identification preserves all free-edge
+labels, corner identifications, and fibre bits.  It therefore preserves
+the two pairing problems used by Theorem~\ref{int:ordered} on every
+ported component.  The reduced boundary words, their gap types, and
+their attaching-component decomposition are identical after applying
+the source identification.  This proves all four assertions.
+\end{proof}
+
+\begin{corollary}[Replication of a certified disk cut]
+\label{int:replicated-disk}
+If $F$ is a connected two-sided normal disk and its primitive source cut
+has a valid handlebody census, then every positive multiple has the same
+ported core and contributes $m-1$ additional unported balls.  In particular,
+if the primitive cut is a single ball, the cut along $mF$ consists of
+exactly $m$ balls.
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{int:replication-theorem} and use
+$D^2\times I\cong D^3$ for the additional unported slabs.
+\end{proof}
+
+This theorem permits a future certificate format to retain a primitive
+interface proof and a binary replication factor, once a source-bound
+coorientation certificate has been checked.  The delivered implementation
+still runs its general compressed queries on the supplied vector; it does
+not use such a replication shortcut.  The coorientation hypothesis is
+substantive: for a one-sided component the local sheet order can reverse
+around a loop, and the asserted list of $m-1$ copies of $F$ does not follow.
+The general ordered-interface operator itself remains valid in that case.
+
+For the layered-meridian experiments below, the theorem proves independence
+of the positive scalar $m$ once the primitive disk and its source interface
+have been certified.  It does not prove an interface formula for all
+numbers of layers.  In particular, the observed formulas for the number
+of primitive ports and attaching intervals as the layer count varies
+remain finite experimental observations here; no induction establishing
+an all-layer primitive-interface theorem is claimed.
+
+
+\subsection{Source-bound certificates and implementation contract}
+\label{int:certificates}
+
+The producer is
+\texttt{normal\_parallelity\_boundary\_words}; the independently implemented
+checker is \texttt{verify\_parallelity\_boundary\_words}.  The result retains
+the source port records, including their core-handle owners, and contains
+the following finite data.
+\begin{itemize}
+\item Each gap specifies its two endpoint token IDs, whether original
+boundary is present, and its fibre reversal.  Endpoints are ordered by ID.
+\item Each ported boundary circle contains its signed word, the corresponding
+list of following gap IDs, and the whole-core-circle indicator.
+\item Each connected attachment contains its interval-or-circle type, its
+signed subword, and, for an interval, its entry and exit tokens and fibre
+transport.  A least port ID serves as an anchor for joining it to the
+existing base profile whose port mask contains that ID.
+\end{itemize}
+
+All ports in one connected attachment belong to the same base component.
+A base profile containing a port has multiplicity one in the existing
+source classification.  Thus the anchor joins the ordered interface to
+the base topology without making any choice among repeated unported
+components.
+
+The certificate has schema
+\texttt{parallelity-boundary-words-v1}.  It binds the input fingerprint,
+the proposed interface, the weighted vertex-partition proof, and the
+weighted gap-cover proof.  Verification reconstructs the parallelity
+geometry through the separate raw-cut-derived reference.  It independently
+forms the two pairing systems, checks the supplied AHT traces and weights,
+and reconstructs the proposed words and connected attachments.  It does not
+import the producer's query builder, mask decoder, traversal routine, or
+discovery scheduler.
+
+When $P=0$, the output is the empty interface.  Both proof fields are
+explicitly null; neither orbit query is run.  The checker reconstructs the
+source and verifies the absence of ports, so this shortcut does not rely
+on a caller assertion.  It says nothing about the number of unported base
+boundary circles, which this API has not been asked to enumerate.
+
+A discovery-cycle limit is shared by the two queries.  Exhaustion returns
+an inconclusive status without an interface or certificate.  A verification
+operation limit counts the two supplied ordinary traces.  Cooperative
+cancellation propagates through both paths.  The operation returns geometric
+information about the supplied source and cutting vector; it does not
+itself issue a knot verdict.
+
+\subsection{Independent finite checks and binary scaling}
+\label{int:evidence}
+
+The added test module passed all eight test methods in the recorded run.
+It covers $193$ source/vector cases: all $157$ saved native source cases,
+$16$ layered-meridian cases, eight one-sided cases, and twelve source
+relabellings.  Of these, $182$ are compared with a literal expanded oracle.
+That oracle expands the actual free polygon edges, identifies corner fibre
+charts with a parity union-find, and walks each old-boundary edge one at a
+time.  It separately computes connected components using only the core
+edges, rather than reusing the producer's maximal-word-run routine.  Eleven
+very large native cases use compressed independent source replay and the
+attachment-Euler and base-profile checks instead of exceeding the literal
+oracle's point cap.
+
+Further tests reject altered source fingerprints, core owners, signed
+words, zero-gap flags, fibre bits, endpoint masks, and attachment types.
+They verify exact hexadecimal JSON replay with multiplicity $2^{16384}$,
+shared caps, cancellation, and producer-disabled verification.  Four
+generic sparse-token examples compare weighted translation orbits with
+their exact residue classes, up to a $16384$-bit universe.  The test log is
+\texttt{boundary-words-tests.txt}; the recorded run took $69.940$ seconds.
+
+The separate benchmark uses actual layered-solid-torus normal coordinates
+with $T\in\{1,2,4,8\}$ and
+\[
+                    m=2^e,\qquad
+                    e\in\{0,16,64,256,1024,4096,16384\}.
+\]
+All $28$ certificates are independently replayed.  Selected measurements
+are shown in Table~\ref{int:timings}.  They measure the new ordered-interface
+operator, not a complete unknot-recognition run.  They are individual scale
+measurements, not statistical or competitive timing claims.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{rrrrrrr}
+\hline
+$T$ & $m$ & $P$ & $a$ & Produce (s) & Verify (s) & Certificate bytes \\
+\hline
+2 & $1$ & 2 & 2 & 0.00342 & 0.00371 & 5,949 \\
+2 & $2^{16384}$ & 2 & 2 & 0.17363 & 0.09245 & 4,541,499 \\
+4 & $1$ & 15 & 3 & 0.10266 & 0.08041 & 47,030 \\
+4 & $2^{16384}$ & 15 & 3 & 1.12275 & 0.65597 & 12,861,283 \\
+8 & $1$ & 47 & 3 & 0.70518 & 0.53165 & 164,528 \\
+8 & $2^{16384}$ & 47 & 3 & 4.47206 & 2.50908 & 30,982,516 \\
+\hline
+\end{tabular}
+\caption{Exact source-bound ordered interfaces.  Here $a$ is the number of
+connected interval attachments, not the number $P$ of source ports.}
+\label{int:timings}
+\end{table}
+
+At $T=2$ and $m=2^{16384}$, the largest vertex and cover weight partitions
+have $9$ and $17$ runs, meeting the respective sparse upper bounds.  At
+$T=4$ they have $49$ and $97$ runs, and at $T=8$ they have $145$ and $289$.
+These remain below $4P+1$ and $8P+1$.  The one-tetrahedron examples have
+no ports and use the no-query shortcut; their boundary-interface certificate
+has $294$ bytes at every measured exponent.
+
+The distinction between output structure and proof size is visible in the
+table.  The number of words, ports, and connected attachments stays fixed
+for each source family.  Binary endpoints in the local-reduction traces
+still grow with the multiplicity bit length.  In particular, the
+eight-tetrahedron extreme example has a roughly $31$-million-byte
+certificate, despite its $47$ ports.  The data support polynomial encoded
+scaling and constant combinatorial interface size in these families; they
+do not support a claim of constant certificate size.
+
+\subsection{An alternative certificate using only three orbit counts}
+\label{int:three-count}
+
+The following elementary result supplies an alternative way to authenticate
+the marked partitions.  It is useful both as a separate proof principle and
+as a possible future checker.  It is not an implemented backend of the
+present package.
+
+\begin{theorem}[Three-count certificate for a marked partition]
+\label{int:partition-certificate}
+Let an interval equivalence system have $C$ orbits and let $K>0$ marked
+tokens be placed at specified points.  A proposed partition of the tokens
+into $m$ nonempty blocks is exactly their original orbit partition if and
+only if the following two tests hold.
+\begin{enumerate}
+\item Add singleton pairings forming a spanning tree within each proposed
+block.  The resulting orbit count is still $C$.
+\item In a separate copy of the original system, choose one representative
+token from each proposed block and add singleton pairings forming a tree
+on these $m$ representatives.  The resulting orbit count is $C-m+1$.
+\end{enumerate}
+Thus the original count and these two augmented counts form a three-trace
+certificate of the marked partition.  The $K=0$ case is immediate and
+requires no partition query.
+\end{theorem}
+
+\begin{proof}
+Adding a pairing can only merge original orbits; it cannot split one.
+Therefore the first augmented count equals $C$ precisely when every edge
+of every within-block tree has its ends in the same original orbit.  By
+connectivity of a tree, all tokens in each proposed block then belong to
+one original orbit.
+
+Let $q$ be the number of distinct original orbits occupied by the chosen
+representatives.  Connecting all representatives into one tree merges
+exactly those $q$ orbits into one, irrespective of repetitions among the
+representatives' original orbits.  The second augmented count is therefore
+$C-q+1$.  Requiring it to be $C-m+1$ is equivalent to $q=m$, so the proposed
+blocks belong to distinct original orbits.  Together with the first test,
+this proves exactness.  Conversely, an exact partition plainly satisfies
+both count identities.
+\end{proof}
+
+There are at most $K-1$ added singleton pairings in either augmentation.
+For discovery, equality of two marked points can likewise be tested by
+adding one pairing and checking whether the orbit count drops.  Performing
+at most $\binom K2$ such tests constructs the entire partition in polynomial
+time from the unweighted AHT oracle.  For sparse integer weights, summing
+the weights over these marked blocks then recovers their histogram; the
+remaining unmarked orbits, together with any zero-sum marked blocks, supply
+the zero row.  This gives a slower but conceptually independent polynomial
+alternative to Theorem~\ref{int:sparse}.  The shipped two-query construction
+uses the more economical sparse weighted transport and its separate local
+replay checker.
+
+\subsection{What the ordered interface does and does not settle}
+\label{int:limits}
+
+Replacing each nonempty unmarked boundary path by one recorded gap preserves
+the marked boundary pair and the relative fibre charts needed for the
+interval-attachment calculation.  If a later hierarchy has additional
+pattern marks inside those paths, those marks must be distinguished before
+compression, with their encoded number included in the input bound.  The
+present one-color original-boundary contract cannot silently preserve such
+extra data.
+
+The construction also does not classify arbitrary annular attachments,
+make the inherited core admissible, produce a new compressing disk, or bound
+the number of hierarchy restarts.  Its concrete advance is a source-bound,
+polynomial extraction of the exact connected and ordered attachments that
+the next topological gluing operation requires.  Together with the dense
+and tagged-selector bounds above, it establishes local encoded cost without
+turning that local statement into a global quasi-polynomial recognition
+claim.

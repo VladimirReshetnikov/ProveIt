@@ -1,0 +1,117 @@
+\section{The research target and its antecedents}
+\label{sec:scope}
+
+\subsection{An explicit unresolved coefficient problem}
+
+The inspected repository is pinned to commit
+\begin{center}\small\pin.\end{center}
+The user-specified Polylogarithms and Transseries directories and all
+three archives present in \path{docs/incoming} at that commit were
+inventoried. The relevant integrated chapters and predecessor reports
+were read directly. This is a focused audit of the claims used here,
+not a review of the entire repository.
+
+Question Q1 in the boundary-completion report \cite{repo-boundary}
+asks for a coefficient theorem with
+\begin{equation}\label{eq:window}
+ L=\log n,\qquad s=3+\eps,\qquad
+ \lambda=\frac{\eps L}{2}
+\end{equation}
+bounded, while the feedback distance from criticality varies on its
+natural local-limit scale. That report proves a convergent joint
+\emph{inverse} chart but keeps $s$ fixed in its coefficient theorem.
+Older linear-tail reports provide leading moving-order limits and a
+first central correction under eventually exact power-tail hypotheses
+\cite{repo-gaussian,repo-confluent}. The quadratic outer function changes
+infinitely many Taylor coefficients, so those hypotheses do not
+literally include the present model. At exactly $s=3$, all-order
+logarithmic corrections already appear in the marginal reports and the
+integrated Gamma-moment chapter \cite{repo-marginal,repo-moments}.
+
+We prove the missing joint theorem with every fixed logarithmic order,
+including noncentral locations. Its Fourier remainder is uniform over
+the whole lattice. A further argument converts that absolute control
+into a relative result in a specified expanding positive window.
+The latter is a partial positive-side resolution of Q2 in
+\cite{repo-boundary}; it does not cover arbitrary deviations or the
+negative saddle window.
+
+\subsection{What comes from classical analysis}
+
+The convergent Jonqui\`ere expansion, Gamma recurrence, and
+polylogarithm continuation are classical \cite{dlmf-polylog}.
+Lagrange inversion and its probability interpretation supply the exact
+coefficient representation already used in the repository. Neither
+these tools nor Gaussian local limits are claimed as discoveries.
+
+There is also substantial prior work on nonclassical corrections to
+Gaussian limits. Lam, Blanchet, Burch and Bazant \cite{lam}
+express heavy-tail corrections using parabolic cylinder functions and
+discuss logarithmic effects and matching to the tails. Berger, Birkner
+and Yuan \cite{berger} study Gaussian and single-large-jump local
+deviations, including the critical tail index two. Thus the appearance
+of parabolic cylinder functions and the Gaussian--power-tail transition
+are established phenomena. Their occurrence here is useful because
+the polylogarithmic order moves with $n$ through the collision of two
+singular terms, and the nonlinear feedback is retained exactly.
+
+The proposed contribution is the combined formulation: a uniformly
+pole-paired scale, a finite all-order Stirling calculus for a moving
+order and moving feedback, a fully proved uniform remainder, and the
+two-derivative composition principle. The local ramification theorem
+later in the article is another direct deduction from the classical
+polylogarithm expansion, with a precise repository application. The
+limited comparison performed here cannot certify first priority in
+the entire literature.
+
+\subsection{Results at a glance}
+
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.22\textwidth}>{\raggedright\arraybackslash}p{0.69\textwidth}@{}}
+\toprule
+Result & Mathematical content\\
+\midrule
+Exact normalization & A unique scale $B>1$ solves a paired
+Gamma--zeta equation; it is a Lambert expression when $s=3$.\\
+All fixed orders & A finite sum of Gaussian order derivatives gives
+error $O(L^{-N-1})$, uniform in lattice location.\\
+Central identities & Every central correction is a finite Gamma
+moment; the marginal coefficients match the previous ones exactly.\\
+Composition principle & Higher endpoint derivatives of an analytic
+outer function enter only beyond all fixed inverse-logarithmic orders.\\
+Expanding positive window & Relative power-tail matching holds up to
+any fixed power of $L$; the transition has an explicit Lambert center.\\
+Inverse endpoint theorem & Minimal finite ramification is classified
+for every real $s>1$, including all removable reciprocal orders.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Notation and the meaning of the asymptotics}
+
+All moving-order theorems concern real $\eps$ with
+$|\lambda|\le\Lambda$ for an arbitrary fixed $\Lambda<\infty$.
+The positive feedback coordinate $b$ remains in a fixed compact interval
+$[b_-,b_+]\subset(0,\infty)$. Constants in an $O$ term may depend on
+these sets and the fixed truncation order, but not on $n$, the parameter
+choice within them, or the lattice location when uniformity in that
+location is asserted. A statement to every fixed order does not permit
+the truncation order to grow with $n$.
+
+The logarithm $\Log t$ is principal on the slit plane. On the Fourier
+axis,
+\begin{equation}\label{eq:fourier-log}
+ \Log(-iy)=\log|y|-\frac{\pi i}{2}\operatorname{sgn}(y)
+ \qquad(y\in\R\setminus\{0\}).
+\end{equation}
+The normal density is
+$\normal(\xi)=(2\pi)^{-1/2}e^{-\xi^2/2}$.
+The notation $\HH_a^{[j]}$ always means differentiation in the
+\emph{order} $a$, not in the spatial variable $\xi$.
+The coefficients $\stir{j}{k}$ are Stirling numbers of the second kind.
+
+Inverse-logarithmic sectors in $L$ are transseries sectors in the usual
+asymptotic sense. The nonlinear local remainder below is of size
+$n^{-c}$ times logarithms, hence of exponential size $e^{-cL}$ relative
+to those sectors. We identify its scale separation but do not claim
+to compute all such exponential sectors.

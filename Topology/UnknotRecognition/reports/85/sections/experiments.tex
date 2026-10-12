@@ -1,0 +1,344 @@
+\section{Implementation, independent validation, and measured performance}
+\label{main:experiments}
+
+The delivered implementation adds a certified terminal operation on a supplied
+normal cut, together with the separate sector decomposition of
+Section~\ref{sec:sector-blocks}.  Its computational evidence addresses three
+different questions: whether the certificates survive independent replay,
+which supplied cuts satisfy the current sufficient criterion, and how the
+cost of the compressed operation compares with constructing and recognizing
+an explicit cut.  The experiments do not measure a complete run from a knot
+diagram to a knot verdict.
+
+\subsection{Additive modules and verification boundaries}
+\label{main:exp-implementation}
+
+The contribution consists of eight new modules under \texttt{fast/fastunknot/},
+arranged as four producer/checker pairs.  Existing recognition defaults and
+existing production modules are unchanged.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\linewidth}{@{}p{0.23\linewidth}Y@{}}
+\toprule
+Operation & New modules \\
+\midrule
+Ordered interfaces &
+\texttt{parallelity\_boundary\_words.py}\par
+\texttt{parallelity\_boundary\_words\_verify.py} \\
+Geometric core cancellation &
+\texttt{core\_handlebody.py}\par
+\texttt{core\_handlebody\_verify.py} \\
+Whole-cut census &
+\texttt{normal\_cut\_handlebodies.py}\par
+\texttt{normal\_cut\_handlebodies\_verify.py} \\
+Sector factors &
+\texttt{sector\_blocks.py}\par
+\texttt{sector\_blocks\_verify.py} \\
+\bottomrule
+\end{tabularx}
+\caption{Additive implementations and their separate certificate checkers.
+The research drivers, fixtures, and tests are additional artifacts.}
+\label{main:exp-modules}
+\end{table}
+
+The interface checker reconstructs its geometry through the existing
+raw-cut-derived reference implementation.  It builds the two orbit systems
+independently, invokes the established weighted-orbit checker, and reconstructs
+the signed words and maximal attaching intervals without calling the new
+producer's query builder or traversal.  The core checker obtains unsigned
+incidences from authenticated handle cycles; it accepts no supplied incidence
+summary.  It verifies the spanning forest and either the immutable leaf order
+or the saturated geometric pivot sequence.  The whole-cut checker first
+authenticates both source decompositions and then independently recomputes the
+attachment graph, its connected components, and its genus histogram.
+
+This independence is an implementation boundary, not a claim that the checkers
+have no shared foundations.  They deliberately reuse established source
+validation, exact integer transport, and orbit-proof verification.  The
+geometric arguments in Sections~\ref{int:section} and~\ref{geo:section} justify
+the interpretation of the checked data.  Tests that disable the producer
+functions ensure that certificate acceptance does not accidentally call the
+discovery routines.
+
+The interface schema is \texttt{parallelity-boundary-words-v1}; the conditional
+core schema is \texttt{normal-core-handlebody-v1}; and the source-bound whole-cut
+schema is \texttt{normal-cut-handlebodies-v1}.  For the last of these,
+\texttt{COMPLETE} asserts the exact binary multiplicity census of the supplied
+cut.  \texttt{INCONCLUSIVE} asserts neither non-handlebody topology nor
+knottedness.  A core proof by itself remains conditional on the authenticity
+of its geometric handle charts.
+
+The production allowance \texttt{max\_cycles} is shared by the four inherited
+parallelity queries and the two new interface queries.  Exhausting it leaves
+the attempt unresolved, without a partial accepted census.  The checker can
+cap the total number of supplied orbit operations through
+\texttt{max\_operations}; cooperative cancellation also reaches the finite
+core and graph computations.  These are work controls, not wall-clock
+guarantees.  Large integers use the repository's exact hexadecimal JSON
+transport where needed.  The separate sector schemas and their more limited
+Euler and ray-enumeration meanings are described in
+Section~\ref{sec:sector-blocks}; none silently asserts an essential disc.
+
+\subsection{Regression tests and adversarial checks}
+\label{main:exp-tests}
+
+The recorded integrated run passed \textbf{1,644 tests in 346.562 seconds};
+the log is \texttt{integrated-tests.txt}.  Focused validation also passed the
+13 core/census methods in \texttt{core-census-tests.txt} and the eight boundary
+methods in \texttt{boundary-words-tests.txt}.  These focused counts overlap
+the integrated suite and are not added to it.
+
+The tests check source relabellings, one-sided normal surfaces, empty cuts,
+parallel meridians, interior-vertex obstructions, repeated incidences, exact
+large integers, shared budgets, cancellation, and producer-disabled replay.
+Adversarial mutations alter source fingerprints, endpoint tags, fibre
+transport, signed words, attachment types, core owners, forest labels,
+cancellation schedules, and final genera.  The expected outcome is rejection
+of the altered certificate.
+
+Two finite algebraic audits target the central cancellation mechanisms.
+For 1,200 deterministic random incidence systems, every produced saturated
+schedule is replayed against unbounded nonnegative integer counts.  For
+750 deterministic random square matrices of orders one through five, the
+leaf producer's success is compared with a directly computed permanent.
+The latter test exposed a stale-queue bug during development: a row already
+queued as a leaf could cease to be eligible after another column was removed.
+The producer now rechecks both row survival and its current unique unit
+entry when popping the queue.  This correction preceded the final passing
+runs.  The permanent computation is a test oracle for these small matrices,
+not an operation used by the classifier.
+
+The boundary tests cover 193 source/vector cases, of which 182 are compared
+with a literal expanded polygon-boundary oracle.  That oracle walks actual
+boundary edges and reconstructs the corner/fibre identifications separately
+from the compressed word routine.  Eleven large cases use independent
+compressed replay and source consistency checks instead of exceeding that
+oracle's expansion guard.  Section~\ref{int:evidence} gives the breakdown and
+the separate interface-scale measurements.  The nine focused sector test
+methods, their dense independent ray comparisons, the 188-sector audit, and
+the sector timing experiment are reported in Section~\ref{sec:sector-blocks}.
+
+\subsection{A source-cut census with an independent topological oracle}
+\label{main:exp-census}
+
+The file \path{census-audit.json} records all 106 supplied cuts in
+\path{marked_parallelity_research/corpus.json}, tied to source revision
+\texttt{d2c5e1707fe783bbed06743ac732d70d83e6f27b}.  Every native success was
+independently replayed.  For manageable coordinates, a separate Regina path
+constructs the triangulation from the source face pairings, constructs the
+normal surface, calls \texttt{cutAlong()}, separates the resulting components,
+and calls \texttt{recogniseHandlebody()} on each component.  It uses no native
+core, attachment graph, or genus calculation.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}lr@{}}
+\toprule
+Recorded outcome & Cases \\
+\midrule
+Native \texttt{COMPLETE}, with successful independent replay & 30 \\
+Native \texttt{INCONCLUSIVE} & 76 \\
+\quad Full-circle core attachment & 60 \\
+\quad Raw cancellation stalled & 6 \\
+\quad Core has three-handles & 10 \\
+\midrule
+Explicit Regina oracle completed & 99 \\
+Native successes compared with Regina; all agreed & 23 \\
+Binary cases above the explicit expansion cap & 7 \\
+\bottomrule
+\end{tabular}
+\caption{Whole-cut audit.  Oracle rows describe a second view of the same
+106 cases and are not additional cases.  All seven expansion-capped cases
+have successful native certificates.}
+\label{main:exp-census-counts}
+\end{table}
+
+The corpus oracle refuses expansion above 4,096 normal disks, before
+constructing a Regina cut; its subprocess also has a per-case timeout.
+The recorded run completed all 99 uncapped oracle computations and encountered
+no oracle timeouts.  The seven binary cases were explicitly marked
+\texttt{NOT\_ATTEMPTED\_EXPANSION\_CAP}.  They were checked through native
+certificate replay, without attempting an overflowing or unrepresentable
+explicit cut and without counting the skip as an oracle agreement.
+
+The 30 successful censuses and 23 independent topological agreements are
+finite implementation evidence for the proved criterion.  The 76 unresolved
+cases show that the criterion remains restrictive on this selected corpus.
+In particular, a circle obstruction is a failure of the delivered
+disk-interface consumer, not a claim that the actual cut is not a union of
+handlebodies.
+
+The separate \texttt{annular-absorption-diagnostic.json} examines precisely
+those 60 circle-obstructed cases in light of
+Proposition~\ref{geo:prop-annulus-absorption}.  In 38 cases every obstructing
+full-circle attachment belongs to a disk base; the other 22 have at least
+one circle on a non-disc base.  Fifteen additional boundary queries needed
+by the diagnostic were independently replayed.  This is an eligibility
+diagnostic: it did not append the proposed new two-handles, run augmented
+cancellation, or accept an additional census.  Consequently the measured
+coverage remains 30 of 106, rather than 68 of 106.
+
+\subsection{Paired timings of the complete supplied-cut operation}
+\label{main:exp-timing}
+
+The benchmark environment recorded in \texttt{census-benchmark.json} is
+Python 3.12.14, Regina 7.4, and Linux on x86-64.  Timings use
+\texttt{time.perf\_counter}.  Both arms start from the same face pairings and
+the same supplied standard normal vector in a Fibonacci layered solid torus.
+The vector is the primitive meridian vector multiplied by $m$.  Every timed
+case is checked to give exactly $m$ ball components.
+
+The native arm includes certificate production and independent source-bound
+replay.  The Regina arm includes construction of its triangulation and normal
+surface, explicit cutting, component separation, and handlebody recognition.
+JSON serialization and hashing are outside the native timer.  Each case has
+an initial correctness/warm-up execution of both arms, followed by five
+paired timing rounds.  The order within each pair is shuffled using the
+recorded seed 20261012.
+
+For round $r$, write $n_r$ for native production plus replay and $e_r$ for the
+explicit Regina operation.  The two time columns below are their separate
+medians.  The comparison statistic is
+\[
+ R=\operatorname{median}_{r=1,\ldots,5}\frac{e_r}{n_r},
+ \qquad
+ R\ne
+ \frac{\operatorname{median}_r e_r}{\operatorname{median}_r n_r}
+ \quad\hbox{in general}.
+\]
+Thus $R>1$ favors the native arm.  Each case also has three additional
+Regina-versus-Regina pairs; the final column gives the median of their
+first-run/second-run ratios.  These A/A controls describe timing variability,
+not a second algorithmic comparison.
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{3.4pt}
+\begin{tabular}{@{}rrrrrrrr@{}}
+\toprule
+$T$ & $m$ & $D$ & $T_{\rm cut}$ &
+\shortstack{Native\\median (s)} &
+\shortstack{Regina\\median (s)} &
+$R$ & A/A \\
+\midrule
+1 & 1 & 3 & 31 & 0.001794 & 0.000341 & 0.205 & 1.128 \\
+1 & 16 & 48 & 226 & 0.006797 & 0.001470 & 0.217 & 1.051 \\
+1 & 256 & 768 & 3,346 & 0.007451 & 0.022121 & 2.922 & 0.965 \\
+1 & 4,096 & 12,288 & 53,266 & 0.007727 & 0.429135 & 54.974 & 0.989 \\
+4 & 1 & 29 & 208 & 0.183885 & 0.005508 & 0.030 & 1.064 \\
+4 & 8 & 232 & 1,013 & 0.486196 & 0.026918 & 0.054 & 0.980 \\
+4 & 64 & 1,856 & 7,453 & 0.458985 & 0.182686 & 0.394 & 0.968 \\
+8 & 1 & 228 & 1,093 & 1.665820 & 0.171979 & 0.105 & 1.009 \\
+8 & 8 & 1,824 & 7,393 & 2.325465 & 1.145137 & 0.499 & 0.994 \\
+12 & 1 & 1,592 & 6,573 & 4.704264 & 8.618704 & 1.817 & 1.058 \\
+\bottomrule
+\end{tabular}
+\caption{All ten paired whole-cut benchmark cases.  $D$ counts normal disks;
+$T_{\rm cut}$ is the number of tetrahedra in Regina's explicit cut.
+Each arm median and the median paired ratio are computed from the saved
+individual samples.}
+\label{main:exp-timing-table}
+\end{table}
+
+The results show both overhead and useful savings.  Regina is faster in seven
+of these ten cases, including the small one-copy inputs at $T=1,4,8$.
+The native operation becomes favorable on the one-tetrahedron repeated-disc
+examples at $m=256$ and $m=4096$, and on the $T=12$, $m=1$ input.  The largest
+recorded paired ratio is about $54.97$ at $(T,m)=(1,4096)$; its explicit cut
+contains 53,266 tetrahedra.  At $(12,1)$, the corresponding ratio is about
+$1.82$, with both native proof phases included.
+
+These finite comparisons support the practical value of avoiding explicit
+normal-stack expansion on suitable inputs.  They do not assert a universal
+speed advantage.  Five samples per arm are descriptive measurements; no CPU
+affinity, isolated memory environment, or peak-memory measurement was
+established for this run.  The saved A/A data also include noticeable
+short-duration variation.  No whole-recognizer runtime or empirical
+quasi-polynomial exponent is inferred from this table.
+
+The benchmark has a separate explicit limit of 50,000 normal disks.  It is
+deliberately distinct from the audit's 4,096-disk guard: the largest timed
+explicit example has $D=12,288$ and is allowed here.  Neither limit is a
+bound on the number of tetrahedra in the constructed cut.
+
+\subsection{Binary capacity and actual certificate sizes}
+\label{main:exp-capacity}
+
+Four additional measurements run only the native producer and independent
+checker, with multiplicity $m=2^p$.  All return and verify the histogram
+$\{(0,2^p)\}$.  They are capacity measurements, each from one execution;
+there is no explicit-oracle timing or speed ratio for these enormous cuts.
+The serialized certificates are measured as sorted, uncompressed JSON using
+the project's exact integer codec.  Decimal megabytes mean $10^6$ bytes.
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{3.2pt}
+\begin{tabular}{@{}rrrrrrrr@{}}
+\toprule
+$T$ & $p$ &
+\shortstack{Produce\\(s)} &
+\shortstack{Replay\\(s)} &
+\shortstack{Total\\(s)} &
+\shortstack{Certificate\\bytes} &
+\shortstack{Decimal\\MB} & $P/a$ \\
+\midrule
+1 & 16,384 & 0.008944 & 0.011613 & 0.020556 &
+1,701,021 & 1.701021 & 0/0 \\
+4 & 1,024 & 0.360605 & 0.241919 & 0.602524 &
+2,510,984 & 2.510984 & 15/3 \\
+4 & 16,384 & 1.224719 & 0.858719 & 2.083438 &
+30,078,776 & 30.078776 & 15/3 \\
+8 & 16,384 & 6.404215 & 4.195131 & 10.599347 &
+71,291,795 & 71.291795 & 47/3 \\
+\bottomrule
+\end{tabular}
+\caption{Separate native binary-capacity measurements.  The last column
+lists ports $P$ and maximal interval attachments $a$, rather than their
+numerical quotient.  Serialization and hashing are outside the reported
+production/replay times.}
+\label{main:exp-capacity-table}
+\end{table}
+
+The fixed number of exceptional interfaces does not imply a constant-sized
+proof.  For example, the eight-tetrahedron case still has 47 ports and three
+interval attachments at $m=2^{16384}$, but its full census certificate occupies
+71.291795 decimal MB.  Source coordinates and binary interval endpoints recur
+through the recorded proof traces.  These are genuine output costs even
+though the $2^{16384}$ ball components are never individually materialized.
+The recorded SHA-256 digests identify the exact serialized proofs used in
+the capacity measurements.
+
+\subsection{Reproduction and the limits of the evidence}
+\label{main:exp-reproduction}
+
+The complete per-case census is in \texttt{census-audit.json}; paired samples,
+arm order, A/A samples, capacity times, certificate lengths, and certificate
+digests are in \texttt{census-benchmark.json}.  The diagnostic retains its
+per-case eligibility decisions in
+\path{annular-absorption-diagnostic.json}.  From the repository's
+\texttt{fast/} directory, the supplied census drivers are invoked as follows:
+\begin{lstlisting}
+python -m marked_parallelity_research.audit_census \
+    --output census-audit.json
+python -m marked_parallelity_research.benchmark_census \
+    --output census-benchmark.json --rounds 5 --capacity
+\end{lstlisting}
+Regina is required for the explicit comparison arm.  Native certificate
+production and replay use the repository's Python implementation.
+
+The experimental conclusions have deliberately separate scopes.  Passing
+tests and successful independent replay give evidence about implementation
+correctness.  Agreement with independently constructed Regina cuts checks
+the topological interpretation on the manageable part of the corpus.
+Capacity runs demonstrate processing of large binary multiplicities and
+measure the resulting proof sizes.  The all-input geometric and asymptotic
+claims rest on the theorems, with their stated source and interface
+hypotheses.  Surface discovery, peripheral-data transport, complete hierarchy
+coverage, and a bound on the global recognition search remain outside these
+timings and outside the measured success count.

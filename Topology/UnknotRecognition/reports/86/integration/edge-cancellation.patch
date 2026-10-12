@@ -1,0 +1,1050 @@
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_weight_defect.py b/Topology/UnknotRecognition/fast/fastunknot/normal_weight_defect.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_weight_defect.py
+@@ -0,0 +1,464 @@
++"""Exact normal-disc discovery in small homogeneous edge-weight spaces.
++
++For a finite one-vertex triangulation with first Betti number one, let b be
++the absolute value of its primitive integral cocycle.  For a selected set F
++of global edges, retain the space span(b, {unit_e: e in F}) throughout the
++search.  Its dimension is at most |F|+1, even if quadrilaterals occur in every
++tetrahedron.  Arrangement intersections recover every standard vertex normal
++surface whose edge weights belong to this space; additional rays are harmless.
++
++Every reported disc is independently replayed by the existing native disc
++checker.  Exhaustion is a restricted vertex-disc statement, with no supplied
++knot-diagram correspondence and no claim that all discs have small defect.
++"""
++
++from dataclasses import dataclass
++from fractions import Fraction
++from itertools import combinations
++from math import gcd
++
++from .normal_cocycle import _rank_one_cocycle_seed_details
++from .normal_disk_kernel import (
++    normal_compressing_disk_count, verify_normal_disk_count_certificate,
++)
++from .normal_sector import _nullspace, _primitive, SearchLimit
++from .normal_surface_geometry import (
++    _coordinates, _edge, _EDGES, NormalOrbitError,
++)
++
++
++def local_coordinates_from_weights(weights):
++    """Reconstruct seven rational coordinates from six local edge weights.
++
++    Edge order is 01,02,03,12,13,23.  The largest two opposite-edge sums
++    must agree.  Triangle counts are the minima of their three face-corner
++    arc counts.  Invalid metrics are rejected; parity is not required here,
++    since an entire rational ray is scaled to primitive integral coordinates.
++    """
++    if (not isinstance(weights, (list, tuple)) or len(weights) != 6
++            or any(type(x) not in (int, Fraction) or x < 0 for x in weights)):
++        raise NormalOrbitError('expected six nonnegative rational edge weights')
++    weights = [Fraction(x) for x in weights]
++    indexed = {edge: value for edge, value in zip(_EDGES, weights)}
++
++    def weight(a, b):
++        return indexed[tuple(sorted((a, b)))]
++
++    sums = [weights[0]+weights[5], weights[1]+weights[4],
++            weights[2]+weights[3]]
++    maximum = max(sums)
++    if sums.count(maximum) < 2:
++        raise NormalOrbitError('largest opposite-edge sums must agree')
++    quadrilaterals = [(maximum-value)/2 for value in sums]
++    triangles = []
++    for vertex in range(4):
++        arcs = [(weight(vertex, a)+weight(vertex, b)-weight(a, b))/2
++                for a, b in combinations((v for v in range(4) if v != vertex), 2)]
++        if min(arcs) < 0:
++            raise NormalOrbitError('normal face triangle inequality fails')
++        triangles.append(min(arcs))
++    return triangles + quadrilaterals
++
++
++def _limit(value, name):
++    if value is not None and (type(value) is not int or value < 0):
++        raise ValueError(name+' must be a nonnegative integer or None')
++
++
++def _one_vertex_data(triangulation, check):
++    seed, prepared = _rank_one_cocycle_seed_details(triangulation, check=check)
++    if prepared['vertices'] != 1:
++        raise NormalOrbitError('edge-defect discovery requires one global vertex')
++    baseline = _coordinates(prepared, seed['coordinates'], check)['weights']
++    return prepared, baseline
++
++
++@dataclass
++class WeightSubspace:
++    """An injective edge-coordinate image and its defining arrangement."""
++
++    prepared: dict
++    edges: tuple
++    defect_edges: tuple
++    forms: tuple
++    hyperplanes: tuple
++    dimension: int
++    raw_hyperplanes: int
++
++
++def _build_subspace(prepared, baseline, defect_edges, check):
++    edges = tuple(sorted(baseline))
++    if (not isinstance(defect_edges, (list, tuple))
++            or any(type(e) is not int or e not in baseline for e in defect_edges)
++            or len(set(defect_edges)) != len(defect_edges)):
++        raise ValueError('defect_edges must be distinct global edge labels')
++    selected = tuple(sorted(defect_edges))
++    index = {edge: i for i, edge in enumerate(selected)}
++    # If b is supported in F, its column is dependent and must be dropped.
++    # The resulting image is still exactly span(b, {unit_e: e in F}).
++    keep_baseline = any(baseline[e] and e not in index for e in edges)
++    dimension = len(selected)+int(keep_baseline)
++    if dimension == 0:
++        raise ArithmeticError('a rank-one cocycle has a nonzero absolute vector')
++    forms = {}
++    for edge in edges:
++        check()
++        forms[edge] = ((baseline[edge],) if keep_baseline else ()) + tuple(
++            int(edge == selected[i]) for i in range(len(selected)))
++    planes = set()
++    raw_count = 0
++
++    def add(row):
++        nonlocal raw_count
++        check()
++        raw_count += 1
++        normal = _primitive(row)
++        if any(normal):
++            planes.add(normal)
++
++    for form in forms.values():
++        add(form)
++    for tetrahedron in range(len(prepared['tetrahedra'])):
++        local = {edge: forms[prepared['edge_roots'][_edge(tetrahedron, *edge)]]
++                 for edge in _EDGES}
++
++        def form(a, b):
++            return local[tuple(sorted((a, b)))]
++
++        opposite = [tuple(a+b for a, b in zip(form(0, v), form(*pair)))
++                    for v, pair in ((1, (2, 3)), (2, (1, 3)), (3, (1, 2)))]
++        for a, b in combinations(opposite, 2):
++            add(tuple(x-y for x, y in zip(a, b)))
++        for vertex in range(4):
++            for a, b in combinations((v for v in range(4) if v != vertex), 2):
++                add(tuple(x+y-z for x, y, z
++                          in zip(form(vertex, a), form(vertex, b), form(a, b))))
++    return WeightSubspace(prepared, edges, selected,
++                          tuple(forms[edge] for edge in edges),
++                          tuple(sorted(planes)), dimension, raw_count)
++
++
++def build_weight_subspace(triangulation, defect_edges, *, check=lambda: None):
++    """Build the retained space for caller-supplied global edge labels."""
++    prepared, baseline = _one_vertex_data(triangulation, check)
++    return _build_subspace(prepared, baseline, defect_edges, check)
++
++
++def _initial_stats():
++    return dict(subspaces_visited=0, bases_attempted=0, null_lines=0,
++                nonnegative_directions=0, duplicate_directions=0,
++                admissible_rays=0, positive_euler_rays=0, orbit_queries=0,
++                peak_dimension=0, peak_hyperplanes=0, raw_hyperplanes=0)
++
++
++def weight_subspace_rays(subspace, *, max_bases=None, check=lambda: None,
++                         stats=None, seen=None):
++    """Yield primitive admissible arrangement rays in the retained space.
++
++    These need not all be standard vertex rays.  Every such standard vertex
++    ray in the space is included.  max_bases is a shared count of begun
++    (dimension-1)-hyperplane intersections; caller cancellation propagates.
++    """
++    _limit(max_bases, 'max_bases')
++    if stats is None:
++        stats = _initial_stats()
++    if seen is None:
++        seen = set()
++    stats['subspaces_visited'] += 1
++    stats['peak_dimension'] = max(stats['peak_dimension'], subspace.dimension)
++    stats['peak_hyperplanes'] = max(stats['peak_hyperplanes'], len(subspace.hyperplanes))
++    stats['raw_hyperplanes'] += subspace.raw_hyperplanes
++    for indices in combinations(range(len(subspace.hyperplanes)), subspace.dimension-1):
++        check()
++        if max_bases is not None and stats['bases_attempted'] >= max_bases:
++            raise SearchLimit('edge-weight intersection allowance exhausted')
++        stats['bases_attempted'] += 1
++        null = _nullspace([subspace.hyperplanes[i] for i in indices],
++                          subspace.dimension, check)
++        if len(null) != 1:
++            continue
++        stats['null_lines'] += 1
++        for sign in (1, -1):
++            check()
++            weights = tuple(sign*sum(x*y for x, y in zip(form, null[0]))
++                            for form in subspace.forms)
++            if any(x < 0 for x in weights) or not any(weights):
++                continue
++            stats['nonnegative_directions'] += 1
++            direction = _primitive(weights)
++            if direction in seen:
++                stats['duplicate_directions'] += 1
++                continue
++            # Invalid local metrics are deterministic for a weight direction;
++            # caching them also avoids repeated reconstruction across spaces.
++            seen.add(direction)
++            indexed = dict(zip(subspace.edges, direction))
++            rational_rows = []
++            valid = True
++            for t in range(len(subspace.prepared['tetrahedra'])):
++                check()
++                try:
++                    rational_rows.append(local_coordinates_from_weights([
++                        indexed[subspace.prepared['edge_roots'][_edge(t, a, b)]]
++                        for a, b in _EDGES]))
++                except NormalOrbitError:
++                    valid = False
++                    break
++            if not valid:
++                continue
++            flat = _primitive(x for row in rational_rows for x in row)
++            rows = [list(flat[7*t:7*t+7]) for t in range(len(rational_rows))]
++            # Matching is independently reconstructed by the geometry layer,
++            # rather than inferred solely from the local edge metric formulas.
++            _coordinates(subspace.prepared, rows, check)
++            stats['admissible_rays'] += 1
++            yield rows
++
++
++def enumerate_weight_subspace(triangulation, defect_edges, *, max_bases=None,
++                              check=lambda: None):
++    """Return all admissible arrangement rays for one supplied edge set."""
++    _limit(max_bases, 'max_bases')
++    subspace = build_weight_subspace(triangulation, defect_edges, check=check)
++    stats = _initial_stats()
++    rows = list(weight_subspace_rays(subspace, max_bases=max_bases,
++                                    check=check, stats=stats))
++    return rows, stats
++
++
++def _observe_candidate(triangulation, prepared, rows, stats, max_orbit_cycles, check):
++    analysed = _coordinates(prepared, rows, check)
++    if analysed['euler_characteristic'] <= 0:
++        return None
++    stats['positive_euler_rays'] += 1
++    stats['orbit_queries'] += 1
++    answer = normal_compressing_disk_count(triangulation, rows,
++        max_cycles=max_orbit_cycles, record_certificate=True, check=check)
++    if answer['status'] != 'COMPLETE':
++        raise SearchLimit('normal-disc component query did not complete')
++    if not verify_normal_disk_count_certificate(
++            triangulation, rows, answer['certificate'], check=check):
++        raise ArithmeticError('independent normal-disc replay rejected')
++    return answer['certificate'] if answer['contains_compressing_disk'] else None
++
++
++def discover_in_weight_subspace(triangulation, defect_edges, *, max_bases=None,
++                               max_orbit_cycles=None, check=lambda: None):
++    """Search one supplied edge set, including independent positive replay."""
++    _limit(max_bases, 'max_bases')
++    _limit(max_orbit_cycles, 'max_orbit_cycles')
++    subspace = build_weight_subspace(triangulation, defect_edges, check=check)
++    stats = _initial_stats()
++    try:
++        for rows in weight_subspace_rays(subspace, max_bases=max_bases,
++                                        check=check, stats=stats):
++            proof = _observe_candidate(triangulation, subspace.prepared, rows,
++                                       stats, max_orbit_cycles, check)
++            if proof is not None:
++                return dict(status='DISC_FOUND', coordinates=rows, certificate=proof,
++                            searched_edges=list(subspace.defect_edges), stats=stats,
++                            trust='disc in this supplied triangulation only')
++    except SearchLimit as exc:
++        return dict(status='INCONCLUSIVE', reason=str(exc), stats=stats)
++    return dict(status='NO_VERTEX_DISC_IN_WEIGHT_SUBSPACE', stats=stats,
++                trust='restricted vertex-disc search exhaustion only; '
++                'no knot verdict or independent exhaustion certificate')
++
++
++def weight_defect_search(triangulation, *, max_defect, exact_size=False,
++                        max_subspaces=None, max_bases=None, max_orbit_cycles=None,
++                        check=lambda: None):
++    """Search vertex discs using at most max_defect exceptional global edges.
++
++    The default schedule increases |F| from zero to max_defect.  exact_size
++    searches only sets of that size; padding still covers all smaller sets.
++    Candidate coordinates are binary integers and are never expanded into
++    individual normal discs.  Both search allowances are global, not reset
++    per subspace.  Preparation and exact replay are outside these two counts.
++    """
++    if type(max_defect) is not int or max_defect < 0:
++        raise ValueError('max_defect must be a nonnegative integer')
++    if type(exact_size) is not bool:
++        raise ValueError('exact_size must be bool')
++    for value, name in ((max_subspaces, 'max_subspaces'), (max_bases, 'max_bases'),
++                        (max_orbit_cycles, 'max_orbit_cycles')):
++        _limit(value, name)
++    prepared, baseline = _one_vertex_data(triangulation, check)
++    edges = tuple(sorted(baseline))
++    if max_defect > len(edges):
++        raise ValueError('max_defect exceeds the number of global edges')
++    stats = _initial_stats()
++    stats.update(tetrahedra=len(prepared['tetrahedra']), edges=len(edges),
++                 max_defect=max_defect, exact_size=exact_size)
++    seen = set()
++    sizes = (max_defect,) if exact_size else range(max_defect+1)
++    try:
++        for size in sizes:
++            for selected in combinations(edges, size):
++                check()
++                if (max_subspaces is not None
++                        and stats['subspaces_visited'] >= max_subspaces):
++                    raise SearchLimit('edge-weight subspace allowance exhausted')
++                subspace = _build_subspace(prepared, baseline, selected, check)
++                for rows in weight_subspace_rays(subspace, max_bases=max_bases,
++                                                 check=check, stats=stats, seen=seen):
++                    proof = _observe_candidate(triangulation, prepared, rows,
++                                               stats, max_orbit_cycles, check)
++                    if proof is not None:
++                        return dict(status='DISC_FOUND', coordinates=rows,
++                                    certificate=proof,
++                                    searched_edges=list(selected), stats=stats,
++                                    trust='disc in this supplied triangulation only')
++    except SearchLimit as exc:
++        return dict(status='INCONCLUSIVE', reason=str(exc), stats=stats)
++    return dict(status='NO_VERTEX_DISC_UP_TO_EDGE_DEFECT', max_defect=max_defect,
++                stats=stats, trust='restricted vertex-disc search exhaustion only; '
++                'no knot verdict or independent exhaustion certificate')
++
++
++def _global_hyperplanes(prepared, check):
++    """Sparse unprojected arrangement; every row involves at most four edges."""
++    planes = set()
++
++    def add(terms):
++        check()
++        row = {}
++        for edge, coefficient in terms:
++            row[edge] = row.get(edge, 0)+coefficient
++        row = {edge: value for edge, value in row.items() if value}
++        if not row:
++            return
++        divisor = 0
++        for value in row.values():
++            divisor = gcd(divisor, abs(value))
++        if row[min(row)] < 0:
++            divisor = -divisor
++        planes.add(tuple((edge, row[edge]//divisor) for edge in sorted(row)))
++
++    for edge in sorted(set(prepared['edge_roots'])):
++        add([(edge, 1)])
++    for t in range(len(prepared['tetrahedra'])):
++        def edge(a, b):
++            return prepared['edge_roots'][_edge(t, a, b)]
++
++        sums = [(edge(0, v), edge(*pair))
++                for v, pair in ((1, (2, 3)), (2, (1, 3)), (3, (1, 2)))]
++        for left, right in combinations(sums, 2):
++            add([(e, 1) for e in left]+[(e, -1) for e in right])
++        for vertex in range(4):
++            for a, b in combinations((v for v in range(4) if v != vertex), 2):
++                add([(edge(vertex, a), 1), (edge(vertex, b), 1), (edge(a, b), -1)])
++    return tuple(sorted(planes))
++
++
++def one_edge_defect_search(triangulation, *, max_bases=None, max_orbit_cycles=None,
++                           check=lambda: None):
++    """Search defects zero and one by global sparse constraint incidences.
++
++    An active hyperplane L(w)=0 at a vertex disc with w=b+delta*unit_e
++    yields delta=-L(b)/L_e.  There are O(t) hyperplane-edge incidences.
++    Genuine meridian candidates require a positive even integer delta;
++    the baseline is tested separately.  Only incident tetrahedra are
++    reconstructed before the Euler prefilter.  Independent native disc
++    replay decides every positive.  max_bases counts the baseline plus
++    all begun hyperplane-edge incidences, including arithmetic rejections.
++    """
++    _limit(max_bases, 'max_bases')
++    _limit(max_orbit_cycles, 'max_orbit_cycles')
++    seed, prepared = _rank_one_cocycle_seed_details(triangulation, check=check)
++    if prepared['vertices'] != 1:
++        raise NormalOrbitError('edge-defect discovery requires one global vertex')
++    base_data = _coordinates(prepared, seed['coordinates'], check)
++    baseline = base_data['weights']
++    stats = _initial_stats()
++    stats.update(method='global-one-edge', tetrahedra=len(prepared['tetrahedra']),
++                 edges=len(baseline), max_defect=1, global_hyperplanes=0,
++                 incidence_attempts=0, distinct_offsets=0,
++                 local_tetrahedron_queries=0, admissible_offsets=0)
++
++    def begin():
++        check()
++        if max_bases is not None and stats['bases_attempted'] >= max_bases:
++            raise SearchLimit('edge-weight incidence allowance exhausted')
++        stats['bases_attempted'] += 1
++
++    try:
++        begin()
++        stats['admissible_rays'] += 1
++        proof = _observe_candidate(triangulation, prepared, seed['coordinates'],
++                                   stats, max_orbit_cycles, check)
++        if proof is not None:
++            return dict(status='DISC_FOUND', coordinates=seed['coordinates'],
++                        certificate=proof, searched_edges=[], stats=stats,
++                        trust='disc in this supplied triangulation only')
++        planes = _global_hyperplanes(prepared, check)
++        stats['global_hyperplanes'] = len(planes)
++        incidence = {e: set() for e in baseline}
++        for t in range(len(prepared['tetrahedra'])):
++            check()
++            for j in range(6):
++                incidence[prepared['edge_roots'][6*t+j]].add(t)
++        face_occurrences = {e: 0 for e in baseline}
++        faces = prepared['boundary_faces']+[(t, f) for t, f, _, _, _ in prepared['pairs']]
++        for t, f in faces:
++            check()
++            for a, b in combinations((v for v in range(4) if v != f), 2):
++                face_occurrences[prepared['edge_roots'][_edge(t, a, b)]] += 1
++        seen = set()
++        for plane in planes:
++            constant = sum(value*baseline[e] for e, value in plane)
++            for exceptional, coefficient in plane:
++                begin()
++                stats['incidence_attempts'] += 1
++                delta = Fraction(-constant, coefficient)
++                if delta <= 0 or delta.denominator != 1 or int(delta) % 2:
++                    continue
++                delta = int(delta)
++                if (exceptional, delta) in seen:
++                    continue
++                seen.add((exceptional, delta))
++                stats['distinct_offsets'] += 1
++                replacements = {}
++                euler_change = delta*(2-face_occurrences[exceptional])//2
++                valid = True
++                for t in sorted(incidence[exceptional]):
++                    check()
++                    stats['local_tetrahedron_queries'] += 1
++                    local_weights = []
++                    for j in range(6):
++                        e = prepared['edge_roots'][6*t+j]
++                        local_weights.append(baseline[e]+(delta if e == exceptional else 0))
++                    try:
++                        row = local_coordinates_from_weights(local_weights)
++                    except NormalOrbitError:
++                        valid = False
++                        break
++                    if any(x.denominator != 1 for x in row):
++                        raise ArithmeticError('even edge defect broke normal parity')
++                    row = [int(x) for x in row]
++                    replacements[t] = row
++                    euler_change += sum(row)-sum(seed['coordinates'][t])
++                if not valid:
++                    continue
++                stats['admissible_offsets'] += 1
++                if base_data['euler_characteristic']+euler_change <= 0:
++                    continue
++                rows = [replacements.get(t, row).copy()
++                        for t, row in enumerate(seed['coordinates'])]
++                checked = _coordinates(prepared, rows, check)
++                if checked['euler_characteristic'] != base_data['euler_characteristic']+euler_change:
++                    raise ArithmeticError('local edge-defect Euler update disagreed')
++                primitive = _primitive(x for row in rows for x in row)
++                rows = [list(primitive[7*t:7*t+7]) for t in range(len(rows))]
++                stats['admissible_rays'] += 1
++                proof = _observe_candidate(triangulation, prepared, rows,
++                                           stats, max_orbit_cycles, check)
++                if proof is not None:
++                    return dict(status='DISC_FOUND', coordinates=rows, certificate=proof,
++                                searched_edges=[exceptional], edge_increment=delta,
++                                stats=stats, trust='disc in this supplied triangulation only')
++    except SearchLimit as exc:
++        return dict(status='INCONCLUSIVE', reason=str(exc), stats=stats)
++    return dict(status='NO_VERTEX_DISC_UP_TO_EDGE_DEFECT', max_defect=1, stats=stats,
++                trust='restricted vertex-disc search exhaustion only; '
++                'no knot verdict or independent exhaustion certificate')
+diff --git a/Topology/UnknotRecognition/fast/tests/test_normal_weight_defect.py b/Topology/UnknotRecognition/fast/tests/test_normal_weight_defect.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_normal_weight_defect.py
+@@ -0,0 +1,219 @@
++"""Exact edge-metric reconstruction, discovery, coverage and replay tests."""
++
++from copy import deepcopy
++from fractions import Fraction
++from itertools import combinations
++import json
++from pathlib import Path
++import random
++import unittest
++from unittest.mock import patch
++
++from fastunknot.normal_disk_kernel import verify_normal_disk_count_certificate
++from fastunknot.normal_sector import build_sector_kernel, enumerate_sector, SearchLimit
++from fastunknot.normal_surface_geometry import _coordinates, _prepare, _quad, _EDGES
++from fastunknot.normal_surface_geometry import NormalOrbitError
++from fastunknot.normal_weight_defect import (
++    build_weight_subspace, discover_in_weight_subspace, enumerate_weight_subspace,
++    local_coordinates_from_weights, one_edge_defect_search, weight_defect_search,
++)
++from normal_orbit_research.fixtures import layered_torus, boundary_cap
++
++RECORD = Path(__file__).resolve().parents[2]/'synthesis/data/coherent-obstruction-certificate.json'
++
++
++def flat(rows):
++    return tuple(x for row in rows for x in row)
++
++
++def weights_of_row(row):
++    return [row[a]+row[b]+sum(row[4:])-row[4+_quad(a, b)] for a, b in _EDGES]
++
++
++class NormalWeightDefectTests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        cls.record = json.loads(RECORD.read_text())
++        cls.raw = cls.record['moves'][-1]['triangulation']
++
++    def test_local_reconstruction_including_zero_faces_and_rational_rays(self):
++        rng = random.Random(261012071)
++        for _ in range(1000):
++            row = [rng.randrange(9) for _ in range(4)]+[0, 0, 0]
++            row[4+rng.randrange(3)] = rng.randrange(9)
++            denominator = rng.randrange(1, 13)
++            rational = [Fraction(x, denominator) for x in row]
++            self.assertEqual(local_coordinates_from_weights(weights_of_row(rational)),
++                             rational)
++        self.assertEqual(local_coordinates_from_weights([1]*6),
++                         [Fraction(1, 2)]*4+[0]*3)
++        huge = [2**4096, 0, 3**2048, 0, 0, 5**1024, 0]
++        self.assertEqual(local_coordinates_from_weights(weights_of_row(huge)), huge)
++
++    def test_invalid_local_metrics_are_rejected(self):
++        bad = [None, [], [1]*5, [True]*6, [1.0]*6, [-1]*6,
++               [1, 0, 0, 0, 0, 1], [0, 1, 1, 3, 3, 2]]
++        for value in bad:
++            with self.subTest(value=value):
++                with self.assertRaises(NormalOrbitError):
++                    local_coordinates_from_weights(value)
++
++    def test_dense_layered_meridians_need_no_exceptional_edge(self):
++        for tetrahedra in (1, 2, 8, 32, 64):
++            raw, expected = layered_torus(tetrahedra)
++            result = weight_defect_search(raw, max_defect=0)
++            self.assertEqual(result['status'], 'DISC_FOUND')
++            self.assertEqual(result['coordinates'], expected)
++            self.assertEqual(result['stats']['bases_attempted'], 1)
++            self.assertEqual(result['stats']['peak_dimension'], 1)
++            self.assertTrue(verify_normal_disk_count_certificate(
++                raw, result['coordinates'], result['certificate']))
++
++    def test_coherent_obstruction_is_escaped_by_one_exceptional_edge(self):
++        zero = weight_defect_search(self.raw, max_defect=0)
++        self.assertEqual(zero['status'], 'NO_VERTEX_DISC_UP_TO_EDGE_DEFECT')
++        self.assertNotIn('certificate', zero)
++        result = weight_defect_search(self.raw, max_defect=1)
++        self.assertEqual(result['status'], 'DISC_FOUND')
++        self.assertEqual(result['searched_edges'], [30])
++        self.assertEqual(result['stats']['bases_attempted'], 71)
++        self.assertEqual(result['stats']['subspaces_visited'], 11)
++        prepared = _prepare(self.raw, lambda: None)
++        baseline = _coordinates(prepared, self.record['family_certificate']['coordinates'],
++                                lambda: None)['weights']
++        weights = _coordinates(prepared, result['coordinates'], lambda: None)['weights']
++        self.assertEqual({e: weights[e]-baseline[e] for e in weights if weights[e] != baseline[e]},
++                         {30: 4})
++        support = [(t, q) for t, row in enumerate(result['coordinates'])
++                   for q in range(3) if row[4+q]]
++        self.assertTrue(build_sector_kernel(self.raw, support).is_standard_ray(
++            result['coordinates']))
++        with patch('fastunknot.normal_weight_defect.weight_defect_search',
++                   side_effect=AssertionError), \
++             patch('fastunknot.normal_weight_defect.normal_compressing_disk_count',
++                   side_effect=AssertionError), \
++             patch('fastunknot.normal_cocycle._rank_one_cocycle_seed_details',
++                   side_effect=AssertionError), \
++             patch('fastunknot.normal_disk_kernel.normal_compressing_disk_count',
++                   side_effect=AssertionError):
++            self.assertTrue(verify_normal_disk_count_certificate(
++                self.raw, result['coordinates'], result['certificate']))
++
++    def test_published_two_edge_disc_is_recovered(self):
++        rows, stats = enumerate_weight_subspace(self.raw, [15, 18])
++        self.assertIn(self.record['disc_coordinates'], rows)
++        self.assertEqual(stats['peak_dimension'], 3)
++        self.assertEqual(stats['peak_hyperplanes'], 15)
++        self.assertEqual(stats['bases_attempted'], 105)
++        self.assertEqual(stats['raw_hyperplanes'], 10+15*8)
++
++    def test_global_one_edge_search_and_supplied_subspace_agree(self):
++        optimized = one_edge_defect_search(self.raw)
++        brute = weight_defect_search(self.raw, max_defect=1)
++        supplied = discover_in_weight_subspace(self.raw, [30])
++        self.assertEqual(optimized['status'], 'DISC_FOUND')
++        self.assertEqual(optimized['coordinates'], brute['coordinates'])
++        self.assertEqual(supplied['coordinates'], brute['coordinates'])
++        self.assertEqual(optimized['edge_increment'], 4)
++        self.assertEqual(optimized['stats']['bases_attempted'], 39)
++        self.assertEqual(optimized['stats']['local_tetrahedron_queries'], 10)
++        self.assertLess(optimized['stats']['bases_attempted'],
++                        brute['stats']['bases_attempted'])
++        for cap, expected in ((38, 'INCONCLUSIVE'), (39, 'DISC_FOUND')):
++            self.assertEqual(one_edge_defect_search(self.raw, max_bases=cap)['status'],
++                             expected)
++        raw, disc = layered_torus(32)
++        self.assertEqual(one_edge_defect_search(raw)['coordinates'], disc)
++
++    def test_global_hyperplane_incidence_support_bound(self):
++        from fastunknot.normal_weight_defect import _global_hyperplanes
++        prepared = _prepare(self.raw, lambda: None)
++        planes = _global_hyperplanes(prepared, lambda: None)
++        self.assertTrue(all(0 < len(row) <= 4 for row in planes))
++        self.assertLessEqual(len(planes), prepared['edges']+15*len(self.raw['tetrahedra']))
++
++    def test_dependent_baseline_column_is_removed(self):
++        raw, _ = layered_torus(1)
++        prepared = _prepare(raw, lambda: None)
++        edges = sorted(set(prepared['edge_roots']))
++        subspace = build_weight_subspace(raw, edges)
++        self.assertEqual(subspace.dimension, len(edges))
++        rows, _ = enumerate_weight_subspace(raw, edges)
++        expected = {flat([[1, 1, 1, 1, 0, 0, 0]])}
++        for typ in range(3):
++            rays, _ = enumerate_sector(raw, [(0, typ)])
++            expected.update(flat(ray) for ray in rays)
++        self.assertEqual({flat(row) for row in rows}, expected)
++
++    def test_exact_size_padding_retains_smaller_defects(self):
++        for size in (1, 2):
++            result = weight_defect_search(self.raw, max_defect=size, exact_size=True)
++            self.assertEqual(result['status'], 'DISC_FOUND')
++            self.assertEqual(len(result['searched_edges']), size)
++            self.assertTrue(verify_normal_disk_count_certificate(
++                self.raw, result['coordinates'], result['certificate']))
++
++    def test_global_limits_are_exact_and_never_prove_absence(self):
++        for options in ({'max_bases': 70}, {'max_subspaces': 10},
++                        {'max_bases': 0}, {'max_subspaces': 0}):
++            result = weight_defect_search(self.raw, max_defect=1, **options)
++            self.assertEqual(result['status'], 'INCONCLUSIVE')
++            self.assertNotIn('certificate', result)
++        result = weight_defect_search(self.raw, max_defect=1, max_bases=71,
++                                     max_subspaces=11, max_orbit_cycles=0)
++        self.assertEqual(result['status'], 'DISC_FOUND')
++        with self.assertRaises(SearchLimit):
++            enumerate_weight_subspace(self.raw, [15, 18], max_bases=104)
++        with patch('fastunknot.normal_weight_defect.normal_compressing_disk_count',
++                   return_value={'status': 'INCONCLUSIVE'}):
++            result = weight_defect_search(self.raw, max_defect=1)
++            self.assertEqual(result['status'], 'INCONCLUSIVE')
++            self.assertNotIn('certificate', result)
++
++    def test_bad_options_and_multi_vertex_sources_are_rejected(self):
++        for options in ({'max_defect': True}, {'max_defect': -1}, {'max_defect': 11},
++                        {'max_defect': 0, 'exact_size': 1},
++                        {'max_defect': 0, 'max_bases': True},
++                        {'max_defect': 0, 'max_subspaces': -1},
++                        {'max_defect': 0, 'max_orbit_cycles': 1.5}):
++            with self.subTest(options=options):
++                with self.assertRaises(ValueError):
++                    weight_defect_search(self.raw, **options)
++        for edges in (None, [True], [30, 30], [-1], [1.5], [100]):
++            with self.assertRaises(ValueError):
++                build_weight_subspace(self.raw, edges)
++        multi, _ = boundary_cap(*layered_torus(1))
++        with self.assertRaisesRegex(NormalOrbitError, 'one global vertex'):
++            weight_defect_search(multi, max_defect=0)
++
++    def test_cancellation_propagates_and_input_is_not_mutated(self):
++        original = deepcopy(self.raw)
++        calls = [0]
++
++        class Cancel:
++            def __bool__(self):
++                return False
++
++            def __call__(self):
++                calls[0] += 1
++                if calls[0] == 100:
++                    raise RuntimeError('test cancellation')
++
++        with self.assertRaisesRegex(RuntimeError, 'test cancellation'):
++            weight_defect_search(self.raw, max_defect=1, check=Cancel())
++        weight_defect_search(self.raw, max_defect=1)
++        self.assertEqual(self.raw, original)
++
++    def test_wrong_coordinates_and_source_are_rejected_by_independent_replay(self):
++        result = weight_defect_search(self.raw, max_defect=1)
++        wrong = deepcopy(result['coordinates'])
++        wrong[0][0] += 1
++        self.assertFalse(verify_normal_disk_count_certificate(
++            self.raw, wrong, result['certificate']))
++        raw, _ = layered_torus(8)
++        self.assertFalse(verify_normal_disk_count_certificate(
++            raw, result['coordinates'], result['certificate']))
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/normal_orbit_research/weight_defect.py b/Topology/UnknotRecognition/fast/normal_orbit_research/weight_defect.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/normal_orbit_research/weight_defect.py
+@@ -0,0 +1,352 @@
++"""Reproducible edge-defect discovery, layering and independent audits.
++
++All fixtures are supplied finite solid-torus triangulations.  No benchmark
++asserts a knot-diagram conversion or a change to the default recognizer.
++The optional Regina audit is independent of native witness production.
++"""
++
++import argparse
++from copy import deepcopy
++from fractions import Fraction
++from hashlib import sha256
++from itertools import combinations
++import json
++from pathlib import Path
++import random
++import statistics
++import time
++from unittest.mock import patch
++
++from fastunknot.normal_cocycle import _rank_one_cocycle_seed_details, local_coordinates
++from fastunknot.normal_disk_kernel import (
++    normal_compressing_disk_count, verify_normal_disk_count_certificate,
++)
++from fastunknot.normal_sector import build_sector_kernel, discover_in_sector
++from fastunknot.normal_sector_verify import verify_sector_witness
++from fastunknot.normal_surface_geometry import _prepare, _coordinates, _edge, _EDGES
++from fastunknot.normal_weight_defect import (
++    _build_subspace, _initial_stats, _one_vertex_data, discover_in_weight_subspace,
++    enumerate_weight_subspace, local_coordinates_from_weights,
++    one_edge_defect_search, weight_defect_search, weight_subspace_rays,
++)
++from fastunknot.pachner23 import pachner_23
++from normal_orbit_research.coherent_obstruction import replay as replay_obstruction
++from normal_orbit_research.fixtures import (
++    export_surface, fibonacci, layered_torus, regina_surface, regina_triangulation,
++)
++
++ROOT = Path(__file__).resolve().parents[2]
++OBSTRUCTION = ROOT/'synthesis/data/coherent-obstruction-certificate.json'
++DISC_ONE_EDGE = [
++    [2, 2, 0, 0, 0, 0, 2], [0, 0, 2, 2, 0, 2, 0],
++    [0, 0, 1, 2, 0, 0, 2], [0, 2, 0, 2, 0, 0, 1],
++    [2, 0, 0, 2, 0, 1, 0], [2, 3, 0, 1, 1, 0, 0],
++    [2, 3, 2, 0, 0, 0, 0], [2, 3, 0, 1, 0, 0, 0],
++]
++
++
++def _flat(rows):
++    return tuple(x for row in rows for x in row)
++
++
++def _support(rows):
++    return [(t, q) for t, row in enumerate(rows) for q in range(3) if row[4+q]]
++
++
++def obstruction():
++    record = json.loads(OBSTRUCTION.read_text())
++    return replay_obstruction(record), deepcopy(DISC_ONE_EDGE)
++
++
++def boundary_layer(raw, coordinates, chosen_edge):
++    """Attach one tetrahedron to the two boundary faces at a chosen edge.
++
++    The local shared edge maps to 01, the two old faces to 012 and 013.
++    The oriented edge equivalences determine the full formal face charts.
++    The new diagonal is 23.  The one-vertex torus charts form a parallelogram
++    in cocycle heights; this identity and all normal matching are checked.
++    """
++    seed, prepared = _rank_one_cocycle_seed_details(raw)
++    if prepared['vertices'] != 1 or chosen_edge not in prepared['boundary_incidence']:
++        raise ValueError('expected an edge of the one-vertex torus boundary')
++    occurrences = []
++    for t, f in prepared['boundary_faces']:
++        for a, b in _EDGES:
++            local = _edge(t, a, b)
++            if f not in (a, b) and prepared['edge_roots'][local] == chosen_edge:
++                occurrences.append((t, f, a, b, prepared['edge_orientations'][local]))
++    if len(occurrences) != 2:
++        raise ArithmeticError('boundary layer must have two attaching edge occurrences')
++    t, f, a, b, sign = occurrences[0]
++    u, g, aa, bb, other_sign = occurrences[1]
++    if sign != other_sign:
++        aa, bb = bb, aa
++    c = next(v for v in range(4) if v not in (a, b, f))
++    d = next(v for v in range(4) if v not in (aa, bb, g))
++    first, second = [0]*4, [0]*4
++    first[a], first[b], first[c], first[f] = 0, 1, 2, 3
++    second[aa], second[bb], second[d], second[g] = 0, 1, 3, 2
++    index = len(raw['tetrahedra'])
++    result = deepcopy(raw)
++    result['tetrahedra'][t][f] = dict(tetrahedron=index, permutation=first)
++    result['tetrahedra'][u][g] = dict(tetrahedron=index, permutation=second)
++    result['tetrahedra'].append([None, None,
++        dict(tetrahedron=u, permutation=[second.index(v) for v in range(4)]),
++        dict(tetrahedron=t, permutation=[first.index(v) for v in range(4)])])
++    heights = seed['heights']
++    local_heights = [0, heights[t][b]-heights[t][a], heights[t][c]-heights[t][a],
++                     heights[u][d]-heights[u][aa]]
++    if (local_heights[1] != heights[u][bb]-heights[u][aa]
++            or local_heights[0]+local_heights[1] != local_heights[2]+local_heights[3]):
++        raise ArithmeticError('boundary cocycle charts did not form a parallelogram')
++    extension = local_coordinates(local_heights)
++    result_rows = deepcopy(coordinates)+[extension]
++    new_seed, new_prepared = _rank_one_cocycle_seed_details(result)
++    _coordinates(new_prepared, result_rows, lambda: None)
++    if new_seed['coordinates'] != seed['coordinates']+[extension]:
++        raise ArithmeticError('coherent row failed transport across boundary layering')
++    record = dict(chosen_edge=chosen_edge, tetrahedron=index,
++                  old_faces=[[t, f], [u, g]], charts=[first, second],
++                  heights=local_heights, normal_row=extension)
++    return result, result_rows, record
++
++
++def layered_obstruction(layers):
++    if type(layers) is not int or layers < 0:
++        raise ValueError('layers must be a nonnegative integer')
++    raw, disc = obstruction()
++    moves = []
++    for _ in range(layers):
++        seed, prepared = _rank_one_cocycle_seed_details(raw)
++        baseline = _coordinates(prepared, seed['coordinates'], lambda: None)['weights']
++        edge = min(prepared['boundary_incidence'], key=lambda e: (baseline[e], e))
++        raw, disc, record = boundary_layer(raw, disc, edge)
++        moves.append(record)
++    return raw, disc, moves
++
++
++def family_audit(layer_counts=(0, 1, 2, 4, 8, 16, 32), *, regina=False):
++    cases = []
++    for layers in layer_counts:
++        raw, disc, moves = layered_obstruction(layers)
++        seed, prepared = _rank_one_cocycle_seed_details(raw)
++        base = _coordinates(prepared, seed['coordinates'], lambda: None)
++        data = _coordinates(prepared, disc, lambda: None)
++        defect = {e: (data['weights'][e]-base['weights'][e])//2
++                  for e in data['weights'] if data['weights'][e] != base['weights'][e]}
++        assert defect == {30: 2}
++        assert base['euler_characteristic'] == -3 and data['euler_characteristic'] == 1
++        assert sum(map(sum, disc)) == fibonacci(layers+7)+34
++        assert sum(map(sum, seed['coordinates'])) == fibonacci(layers+7)+28
++        kernel = build_sector_kernel(raw, _support(disc))
++        assert kernel.is_standard_ray(disc)
++        result = normal_compressing_disk_count(raw, disc, record_certificate=True)
++        assert result['contains_compressing_disk']
++        # The verifier is deliberately run with all corresponding producers disabled.
++        with patch('fastunknot.normal_disk_kernel.normal_compressing_disk_count',
++                   side_effect=AssertionError), \
++             patch('fastunknot.normal_weight_defect.one_edge_defect_search',
++                   side_effect=AssertionError):
++            assert verify_normal_disk_count_certificate(raw, disc, result['certificate'])
++        independent = {}
++        if regina and sum(map(sum, disc)) <= 10000:
++            native = regina_triangulation(raw)
++            surface = regina_surface(native, disc)
++            coherent = regina_surface(native, seed['coordinates'])
++            assert native.isSolidTorus() and surface.isCompressingDisc(True)
++            assert coherent.isConnected() and coherent.isOrientable()
++            assert coherent.countBoundaries() == 1 and int(str(coherent.eulerChar())) == -3
++            independent = dict(regina_disc=True, regina_coherent_genus=2,
++                               iso_signature=native.isoSig())
++        elif regina:
++            independent = dict(regina_disc=None,
++                regina_omitted='More than 10,000 normal pieces; Regina documents that '
++                'these surface-topology methods explicitly expand normal discs/arcs. '
++                'Native binary certificates and exact extremality are still verified.')
++        cases.append(dict(layers=layers, tetrahedra=len(raw['tetrahedra']),
++            pieces=sum(map(sum, disc)), coherent_pieces=sum(map(sum, seed['coordinates'])),
++            coordinate_bits=max(x.bit_length() for row in disc for x in row),
++            weight_bits=max(x.bit_length() for x in data['weights'].values()),
++            defect=defect, standard_vertex=True, native_replay=True,
++            chi_disc=1, chi_coherent=-3, kernel_stats=kernel.stats,
++            triangulation=raw, coordinates=disc, layer_records=moves,
++            disk_certificate=result['certificate'], **independent))
++    return dict(cases=cases, scope='supplied solid-torus triangulations; no diagram conversion')
++
++
++def complete_enumeration(max_defect):
++    raw, _ = obstruction()
++    prepared, baseline = _one_vertex_data(raw, lambda: None)
++    edges = tuple(sorted(baseline))
++    stats, seen, rows = _initial_stats(), set(), []
++    start = time.perf_counter()
++    for size in range(max_defect+1):
++        for selected in combinations(edges, size):
++            subspace = _build_subspace(prepared, baseline, selected, lambda: None)
++            rows.extend(weight_subspace_rays(subspace, stats=stats, seen=seen))
++    elapsed = time.perf_counter()-start
++    vertices, discs = 0, []
++    for row in rows:
++        if not any(x for values in row for x in values[4:]):
++            continue
++        vertices += build_sector_kernel(raw, _support(row)).is_standard_ray(row)
++        if _coordinates(prepared, row, lambda: None)['euler_characteristic'] > 0:
++            count = normal_compressing_disk_count(raw, row, record_certificate=True)
++            assert count['status'] == 'COMPLETE'
++            assert verify_normal_disk_count_certificate(raw, row, count['certificate'])
++            if count['contains_compressing_disk']:
++                discs.append(row)
++    return dict(max_defect=max_defect, construction_seconds=elapsed, stats=stats,
++                standard_vertex_rays=vertices, disc_vectors=discs,
++                scope='complete arrangement construction; observer times excluded')
++
++
++def _seeded_sector(raw):
++    seed, _ = _rank_one_cocycle_seed_details(raw)
++    return discover_in_sector(raw, _support(seed['coordinates']), phase='quadrilateral')
++
++
++def benchmark(rounds=7, layer_counts=(0, 8, 32, 64)):
++    rng = random.Random(261012084)
++    arms = dict(coherent=lambda raw: weight_defect_search(raw, max_defect=0),
++                seeded_q_sector=_seeded_sector,
++                all_subspaces_k1=lambda raw: weight_defect_search(raw, max_defect=1),
++                global_one_edge=one_edge_defect_search,
++                supplied_edge=lambda raw: discover_in_weight_subspace(raw, [30]))
++    results, witnesses, fixtures = [], {}, []
++    for layers in layer_counts:
++        raw, expected, _ = layered_obstruction(layers)
++        label = 'obstruction_plus_'+str(layers)
++        seed, _ = _rank_one_cocycle_seed_details(raw)
++        sector = build_sector_kernel(raw, _support(seed['coordinates']))
++        fixtures.append(dict(name=label, tetrahedra=len(raw['tetrahedra']),
++                             pieces=sum(map(sum, expected)), seeded_kernel=sector.stats))
++        for call in arms.values():
++            call(raw)
++        for iteration in range(rounds):
++            order = list(arms)
++            rng.shuffle(order)
++            for name in order:
++                start = time.perf_counter()
++                answer = arms[name](raw)
++                elapsed = time.perf_counter()-start
++                assert answer['status'] == ('NO_VERTEX_DISC_UP_TO_EDGE_DEFECT'
++                                            if name == 'coherent' else 'DISC_FOUND')
++                replay_seconds, verified = None, None
++                if answer['status'] == 'DISC_FOUND':
++                    start = time.perf_counter()
++                    if name == 'seeded_q_sector':
++                        verified = verify_sector_witness(raw, answer['certificate'])
++                    else:
++                        verified = verify_normal_disk_count_certificate(
++                            raw, answer['coordinates'], answer['certificate'])
++                    replay_seconds = time.perf_counter()-start
++                    assert verified
++                    witnesses.setdefault(label, {})[name] = answer
++                results.append(dict(fixture=label, round=iteration, arm=name,
++                    seconds=elapsed, fresh_replay_seconds=replay_seconds,
++                    status=answer['status'], fresh_replay=verified, stats=answer['stats']))
++    summary = []
++    for fixture in fixtures:
++        for arm in arms:
++            samples = [r for r in results if r['fixture'] == fixture['name'] and r['arm'] == arm]
++            replay = [r['fresh_replay_seconds'] for r in samples
++                      if r['fresh_replay_seconds'] is not None]
++            summary.append(dict(fixture=fixture['name'], arm=arm,
++                median_seconds=statistics.median(r['seconds'] for r in samples),
++                min_seconds=min(r['seconds'] for r in samples),
++                max_seconds=max(r['seconds'] for r in samples),
++                median_fresh_replay_seconds=statistics.median(replay) if replay else None,
++                status=samples[0]['status'], stats=samples[0]['stats']))
++    return dict(rounds=rounds, warmup_rounds=1, fixtures=fixtures, samples=results,
++                summary=summary, witnesses=witnesses,
++                measurement='Each discovery time includes cocycle preparation, candidate '
++                'construction, native disc observer, and internal independent replay. '
++                'Fresh replay is separately timed once more and is outside discovery time.',
++                scope='supplied triangulations only; finite structured family; '
++                'coherent arm has restricted exhaustion, not a knottedness verdict')
++
++
++def regina_audit():
++    import regina
++    rng = random.Random(261012089)
++    fixtures = []
++    for initial in (1, 2):
++        raw, _ = layered_torus(initial)
++        fixtures.append(raw)
++        for _ in range(6):
++            sites = [(t, f) for t, row in enumerate(raw['tetrahedra'])
++                     for f, record in enumerate(row)
++                     if record is not None and record['tetrahedron'] != t]
++            if not sites:
++                break
++            raw = pachner_23(raw, *rng.choice(sites))['triangulation']
++            fixtures.append(raw)
++    records = []
++    total_surfaces, coverage_queries, meridians = 0, 0, 0
++    for index, raw in enumerate(fixtures):
++        tri = regina_triangulation(raw)
++        assert tri.isSolidTorus()
++        seed, prepared = _rank_one_cocycle_seed_details(raw)
++        base = _coordinates(prepared, seed['coordinates'], lambda: None)['weights']
++        surfaces = list(regina.NormalSurfaces(tri, regina.NS_STANDARD))
++        cache = {}
++        for surface in surfaces:
++            rows = export_surface(surface)
++            data = _coordinates(prepared, rows, lambda: None)
++            for t, row in enumerate(rows):
++                local = [data['weights'][prepared['edge_roots'][_edge(t, a, b)]]
++                         for a, b in _EDGES]
++                assert local_coordinates_from_weights(local) == row
++            total_surfaces += 1
++            if not surface.isCompressingDisc(True):
++                continue
++            meridians += 1
++            delta = {e: data['weights'][e]-base[e] for e in base}
++            assert all(x >= 0 and x % 2 == 0 for x in delta.values())
++            exceptional = tuple(e for e in sorted(base) if delta[e])
++            if len(exceptional) <= 2:
++                if exceptional not in cache:
++                    candidates, _ = enumerate_weight_subspace(raw, list(exceptional))
++                    cache[exceptional] = {_flat(candidate) for candidate in candidates}
++                    coverage_queries += 1
++                assert _flat(rows) in cache[exceptional]
++            if len(exceptional) <= 1:
++                assert one_edge_defect_search(raw)['status'] == 'DISC_FOUND'
++        records.append(dict(fixture=index, tetrahedra=len(raw['tetrahedra']),
++                            iso_signature=tri.isoSig(), vertex_surfaces=len(surfaces)))
++    return dict(regina_version=regina.versionString(), fixtures=records,
++                reconstructed_vertex_surfaces=total_surfaces, meridians=meridians,
++                exact_subspace_coverage_queries=coverage_queries,
++                family=family_audit(regina=True))
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('mode', choices=('family', 'enumeration', 'benchmark', 'regina', 'all'))
++    parser.add_argument('--output', type=Path, required=True)
++    parser.add_argument('--rounds', type=int, default=7)
++    args = parser.parse_args()
++    if args.rounds < 1:
++        parser.error('--rounds must be positive')
++    result = {}
++    if args.mode in ('family', 'all'):
++        result['family'] = family_audit()
++    if args.mode in ('enumeration', 'all'):
++        result['enumeration'] = [complete_enumeration(k) for k in (0, 1, 2)]
++    if args.mode in ('benchmark', 'all'):
++        result['benchmark'] = benchmark(args.rounds)
++    if args.mode in ('regina', 'all'):
++        result['regina'] = regina_audit()
++    paths = [Path(__file__), ROOT/'fast/fastunknot/normal_weight_defect.py',
++             ROOT/'fast/tests/test_normal_weight_defect.py',
++             ROOT/'fast/fastunknot/normal_sector.py', ROOT/'fast/fastunknot/normal_cocycle.py']
++    result['source_sha256'] = {str(p.relative_to(ROOT)): sha256(p.read_bytes()).hexdigest()
++                               for p in paths}
++    args.output.write_text(json.dumps(result, indent=2)+'\n')
++    print(json.dumps({key: ('complete' if key != 'source_sha256' else value)
++                      for key, value in result.items()}))
++
++
++if __name__ == '__main__':
++    main()

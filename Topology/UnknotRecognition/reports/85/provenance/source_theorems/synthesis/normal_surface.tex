@@ -1,0 +1,175 @@
+\section{An adaptive normal-surface fallback in an isolated worker}
+\label{sec:normal-surface}
+
+\subsection{A complete geometric decision with a different bottleneck}
+
+The built-in complete backend computes Khovanov homology.  We now add an
+optional alternative based on the topology of the knot exterior.  For a
+classical knot $K\subset S^3$, its exterior is a solid torus exactly when
+$K$ is the unknot.  Thus a complete solid-torus recognition algorithm on
+an exact triangulation of the exterior decides both outcomes; a failed
+attempt to find a compressing disc is not by itself a negative verdict.
+
+Normal-surface theory provides an algorithmic framework for that decision.
+A normal surface in a triangulation with $t$ tetrahedra has coordinates for
+four triangle types and three quadrilateral types per tetrahedron.  The
+coordinates are nonnegative integers satisfying face-matching equations;
+at most one quadrilateral type is permitted in each tetrahedron.  These
+constraints encode properly embedded surfaces, including candidates for
+compressing discs.  The local quadrilateral alternatives are one source
+of exponential search even though the matching equations are linear.
+Successful recognition implementations combine such searches with
+simplification and crushing operations.
+
+Burton and Ozlen \cite{burton-ozlen} develop a complete branching algorithm
+using normal-surface methods and report experimental polynomial behaviour,
+while retaining exponential worst-case complexity.  This is motivation for
+trying a different complete algorithm when Khovanov work is expensive,
+not evidence of a polynomial or subexponential theorem for our inputs.
+
+We use Regina's documented \code{isSolidTorus} decision routine
+\cite{regina-solid-torus}.  The wrapper first applies the library's fast
+link simplification, constructs an ideal triangulation of the complement,
+and calls that routine.  It never substitutes \code{knowsSolidTorus}, whose
+Boolean value says whether the property is already known or cheap to
+compute, rather than whether the manifold is a solid torus.  The
+implementation trusts Regina's conversion, simplification and exact
+recognition.  It does not yet export and independently check a sequence of
+normal surfaces or crushing operations.
+
+\subsection{Convention checks and the trust boundary}
+
+Our PD row $(a,b,c,d)$ lists ports counterclockwise, with under-strand ports
+zero and two.  Regina's PD input starts at the incoming underpass.  The
+worker obtains that port $u\in\{0,2\}$ from the validated orientation and
+rotates each row by $u$.  Rotation by two preserves the crossing; rotation
+by one would interchange over and under and is forbidden.  Normalized arc
+labels increase by one for the external API.  The crossing-free input is
+explicitly one trivial link component, rather than an empty link.
+
+The worker independently revalidates the supplied PD with
+\code{Diagram.from\_pd}.  It checks that the imported link has one
+component, is classical and has the same writhe.  After simplification and
+complement construction, it checks that the triangulation is valid,
+orientable and has exactly one boundary component.  These checks guard
+conversion mistakes but are not a replacement for the imported topology.
+
+Every request and result carries a SHA-256 digest of the normalized PD.
+The digest binds the response to its input; it is not a mathematical
+certificate.  Evidence includes the Regina engine version and installed
+distribution version (respectively 7.4 and 7.4.1 in this experiment), initial
+and simplified crossing counts, tetrahedron count, elapsed time and an
+explicit external-engine trust label.  A result with a wrong digest,
+invalid schema, unsupported status, nonzero worker exit or unparsable output
+is inconclusive.  Only a completed, well-formed \code{UNKNOT} or
+\code{KNOTTED} response can decide the query.  Serialized results involving
+such a verdict, including inside connected-sum factors or restarted
+queries, explicitly exclude the external wrapper from the built-in
+Khovanov running-time statement.
+
+\subsection{Switching after cheap filters, with bounded discarded work}
+
+The optional \code{--regina} flag enables the probe only for an undecided
+diagram with at least 32 crossings.  It runs after the existing one-sided
+invariant filters and before RIII search and Khovanov construction.  Small
+inputs avoid interpreter and native-library startup.  Visible factors are
+processed as their own diagrams: an external query never receives the
+whole source braid as if it presented a proper factor.
+
+The local allowance is two seconds by default and is configurable with
+\code{--regina-seconds}.  Python also permits \code{regina\_seconds=None}
+for an uncapped local query.  The standalone \code{regina\_decide} routine
+has the same local allowance semantics and accepts diagrams of any size.
+Installing \code{fastunknot[normal]} supplies the optional dependency;
+the default package remains dependency-free and the default recognizer
+does not dispatch to Regina.
+
+The parent launches a fresh worker using the current Python interpreter.
+It never imports the native Regina module itself.  Native import, request
+conversion, process startup, simplification and recognition all consume
+the local query interval.  The parent polls communication in slices of at
+most 50 milliseconds, checking the global callback before each slice and
+before accepting a result.  Retried communication retains partially sent
+input and already received output.  Every exit path kills a live child,
+waits for it to finish, and closes all three pipes; this includes local
+expiry, global cancellation and exceptions.  Process creation and cleanup
+remain operating-system operations, so this is not a hard real-time
+latency guarantee.
+
+A missing dependency, local expiry or failed worker records an inconclusive
+probe and leaves the original diagram available to the existing RIII and
+Khovanov stages.  A global deadline propagates to \code{UNKNOWN} after
+cleanup.  Time spent on unsuccessful native work is not reset or refunded.
+The \code{max\_objects} parameter still bounds the Khovanov scanner; it is
+not a native-memory ceiling.  This worker uses a time allowance rather
+than an independent bound on Regina's allocations.
+
+Regina's simplifier makes random choices.  Each worker resets its random
+engine to the library default, making these calls reproducible on the same
+build and platform.  This does not promise identical simplification paths
+across machines or versions, and it does not make correctness probabilistic:
+the simplification moves preserve the knot and the terminal recognizer is
+an exact decision routine.  Exhaustion remains inconclusive.
+
+This is an adaptive portfolio based on failure of the cheaper stages,
+with a local cap before the built-in complete fallback.  It is not
+simultaneous racing or a claim of constant-factor optimality relative to
+the best possible backend.  A useful next step is to extract independently
+checkable geometric witnesses.  No general subexponential or
+quasi-polynomial bound follows from the current integration.
+
+\subsection{Measurements with explicit censoring}
+
+The new fixture directory stores PD data generated by Regina 7.4.1 for its
+\code{ExampleLink.monster}, \code{gordian} and \code{gst} examples
+\cite{regina-examples}.  Their crossing counts are 10, 141 and 48.
+The last is the Gompf--Scharlemann--Thompson knot from their slice-ribbon
+investigation, not an unknot fixture.  The Conway diagram is also included
+in the benchmark from the existing corpus.
+
+\code{normal\_research/benchmark.py} runs five measured shuffled rounds
+plus an excluded warm-up for each of four inputs.  Its three arms are the
+default pipeline, an identical default control, and the optional portfolio.
+Each arm receives a fresh validated PD, a four-second global allowance
+and a 50,000-object Khovanov ceiling.  Native attempts always start a new
+interpreter; the portfolio's local native allowance is two seconds.
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Input & Default median (s) & Portfolio median (s) & Completed default / portfolio\\
+\midrule
+Monster unknot & 0.000965 & 0.000968 & 5/5\quad/\quad5/5\\
+GST knot & 0.001993 & 0.001983 & 5/5\quad/\quad5/5\\
+Gordian unknot & $4.043$ (censored) & $1.788$ & 0/5\quad/\quad5/5\\
+Conway knot & 0.001041 & 0.001043 & 5/5\quad/\quad5/5\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+All conclusive verdicts agree.  Both default arms exhaust their time
+allowance on every measured Gordian query, whereas the portfolio recognizes
+it in all five.  The number $4.043$ includes validation and is an observed
+resource-limited duration, \emph{not} a completion time or a denominator
+for a reported completion-speedup factor.  Native evidence records
+simplification from 141 to 111 crossings followed by recognition of a
+119-tetrahedron complement.
+
+The dispatch policy matters.  Standalone native queries, with a three-second
+allowance, take about 0.278 seconds for Monster and 1.402 seconds for Gordian;
+GST exhausts that allowance.  The ordinary Alexander filter rejects GST
+in about two milliseconds, so the integrated portfolio avoids the slower
+native call.  Monster and Conway remain below the crossing threshold.
+These are four concrete examples and one successful hard-unknot improvement,
+not a representative average-case study or an asymptotic conclusion.
+Raw timing samples and verdict evidence are stored in
+\code{results/normal\_surface\_20261008.json}.
+
+Eight new tests check per-crossing conversion, communication across repeated
+polls, missing dependencies, malformed responses, input binding, pipeline
+dispatch, fallback and actual worker cleanup on local and global cancellation.
+With Regina installed they also check six exact native verdicts, global
+exhaustion and an actual CLI recognition of the Gordian unknot.  The full
+integration log and the dependency-free focused log are retained alongside
+the article.  The optional tests are skipped explicitly when Regina is
+not installed; the failure-handling tests still run in that configuration.

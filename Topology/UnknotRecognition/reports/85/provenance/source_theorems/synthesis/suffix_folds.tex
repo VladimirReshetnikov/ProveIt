@@ -1,0 +1,156 @@
+\section{A sharp bound and local arithmetic for suffix weight folds}
+\label{sec:suffix-folds}
+
+The weighted-transport chapter of the research archive reviewed in
+Section~\ref{sec:compact-coordinates} analyses a full-carrier transfer.
+It moves all weights from the rightmost carrier range, including points
+that survive the next truncation, and proves a sharp increase of at most
+three weight runs. The maintained implementation instead moves only the
+points actually removed by truncation. We prove a sharp increase of at
+most two runs for this existing operation, then exploit its small receiving
+interval to avoid redoing vector arithmetic on the untouched prefix.
+The complete weighted certificates and the independent verifier are unchanged.
+
+\subsection{The native two-boundary theorem}
+
+Let the current universe be $[0,N)$, with a canonical complete partition
+into $R$ constant integer-vector runs. Suppose a legal truncation retains
+$[0,C)$, where $0<C<N$. Write $J$ for the interior change points,
+so $R=1+|J|$, and split it into $J_- = J\cap(0,C)$ and
+$J_+ = J\cap(C,N)$. A possible old change at $C$ disappears.
+
+For a positive carrier with period $p$, the native transport sends a
+removed point $x\ge C$ to
+\[
+ \rho(x)=b+((x-b)\bmod p),\qquad b=C-p.
+\]
+Every image belongs to $[b,C)$. This is iteration of the carrier's inverse
+until first reaching the retained prefix: for an overlapping carrier all
+intermediate inverse steps are defined, and for a disjoint carrier only
+one step is needed. These are the same partial-isometry facts used in the
+existing truncation proof. The preexisting prefix weights stay in place.
+
+Extend the removed suffix weights by zero. Their discrete derivative has
+support only at $C$, $N$ and $J_+$. Summation over residue classes maps
+these changes into $[b,C)$; the change at $C$ maps to $b$. Extending that
+residue sum by zero below $b$ can introduce a boundary at $b$, while $C$
+is the endpoint of the new universe. Thus every new interior change belongs
+to
+\[
+ J_-\ \cup\ \rho(J_+)\ \cup\ \{b,\rho(N)\},
+\]
+with endpoints outside $(0,C)$ discarded. At most two new boundaries
+replace the vanished suffix boundaries, and the new run count satisfies
+\[
+ R'\le R+2.
+\]
+If $b=0$, or if $p$ divides $N-C$ so the two extra points coincide, the
+increase is at most one. Simultaneous cancellation of vector jumps only
+reduces these bounds. The reasoning applies to signed vectors without
+any positivity assumption.
+
+For a reversing carrier with left domain endpoint $a$, the removed suffix
+maps through $x\mapsto a+N-1-x$ onto $[a,a+N-C)\subseteq[0,C)$.
+Interior suffix changes move to $a+N-j$ for $j\in J_+$. The only extra
+potential changes are the receiving interval's two endpoints, so again
+$R'\le R+2$. An endpoint at $0$ or $C$ is not an interior change and
+improves the bound. Other trace operations leave point weights fixed.
+Static contraction takes an ordered subsequence of values, which cannot
+increase the number of runs. Consequently, after $T$ native truncations,
+\[
+                  R_T\le R_0+2T.
+\]
+This sharpens the qualitative polynomial accounting in
+Section~\ref{sec:weighted-components}; it does not change the orbit schedule.
+
+The report's legal seven-point example distinguishes the two operations.
+Give every point weight one and take inclusive pairings
+\[
+ [1,2]\longrightarrow[5,6],\quad
+ [3,4]\longrightarrow[4,5],\quad
+ [0,0]\longrightarrow[3,3].
+\]
+The maintained scheduler first truncates $N=7$ to $C=6$ using the first
+carrier, of period four. Only point six is removed, and it maps to point
+two. The native result is
+\[
+ (1\text{ on }[0,2)),\quad(2\text{ on }[2,3)),\quad
+ (1\text{ on }[3,6)),
+\]
+so one run becomes three and the $+2$ bound is attained. The report's full
+range transfer moves both points five and six, leaves point five at zero,
+and produces four runs, attaining its $+3$ bound. Its claim that full-range
+transfer is essential to a small run bound must therefore be read as
+specific to that delivered analysis; our deleted-suffix operation has the
+stronger bound above. We retain the native operation and its separate checker,
+rather than adopting the report's shared producer/checker arithmetic.
+
+\subsection{Encoded-state bounds}
+
+For additive source intervals $[l_i,h_i)$ with vectors $v_i$, put
+\[
+ A=\sum_i(h_i-l_i)\lVert v_i\rVert_\infty.
+\]
+Each original point contribution moves to exactly one representative in its
+orbit. Therefore every intermediate point-weight coordinate has absolute value at most
+$A$, even with overlapping source intervals and signed cancellation. Jump
+coordinates can be twice as large, which adds only a constant number of bits. If the
+input has $m$ intervals, maximum coordinate bit length $L$, and universe
+size $N$, the required coordinate bit length is
+$O(1+L+\log(m+1)+\log(N+1))$. Quotient/remainder transfers perform no loop
+proportional to a quotient or to the number of represented points.
+
+The initial sweep has $R_0\le2m+1$ runs. If the input has $k$ pairings,
+no trace operation increases their number. A static contraction has at most
+$2k+1$ gaps, from the complement of a union of at most $2k$ domain and range
+intervals. Intersecting these gaps with $R$ weight runs produces at most
+$R+4k+2$ emitted blocks. With $E$ trace events, the total emitted blocks,
+and hence the number of distinct final weight vectors, are bounded by
+\[
+             E(R_0+2E+4k+2).
+\]
+Multiplicities use at most $O(\log(N+1))$ bits. This is a coarse general
+weighted-output bound; the sharper normal-surface type bound of the previous
+section concerns a special geometric input class.
+
+Together with the checked polynomial orbit trace, these bounds explicitly
+account for intermediate partitions, integer magnitudes and encoded output.
+Classical AHT already prove polynomial weighted orbit computation, with a
+four-boundary transfer bound in Lemma~15 and polynomial accounting in
+Theorem~16\cite{aht-orbits}. The present suffix-specific statement improves
+the maintained observer's accounting. It supplies no bound on the number
+of geometric hierarchy states or on complete unknot-recognition search.
+
+\subsection{Restricting vector arithmetic to the receiving interval}
+
+Previously, every fold rebuilt a difference map for the entire retained
+prefix, adding and subtracting every retained run's vector at its endpoints.
+This repeated dense $d$-coordinate arithmetic even on runs far outside the
+receiving interval. The new producer preserves the same quotient/remainder
+range additions for the removed suffix. It canonicalizes only those additions
+on their receiving interval and merges that small partition with the existing
+runs there. Untouched prefix and tail runs reuse their immutable vector
+tuples. Coalescing at the receiving boundaries preserves the exact canonical
+partition; no approximate or lazily unresolved weight is returned.
+
+Let $S$ be the number of suffix runs and $P$ the number of retained runs
+intersecting the receiving interval. The new fold uses $O(R)$ traversal
+and copying work, $O(S\log(S+1))$ endpoint comparisons and
+$O((S+P)d)$ coordinate arithmetic and equality work, including boundary
+coalescing. The old prefix reconstruction paid $O(Rd)$ vector work even
+when $S+P$ was small. Both retain flat canonical run lists, so neither
+avoids the linear traversal cost. Binary division, multiplication, integer
+comparison and endpoint bit lengths remain part of the bit model. This is
+an improvement in work on sparse affected regions, not a new scheduling rule.
+
+Only \code{weighted\_orbits.py} changes among pre-existing runtime modules.
+The checker continues its separate residue-anchor/discrete-derivative
+transport and recomputes the complete histogram. Schemas, trace operations,
+normal-coordinate decoding, multiplicities and statistics are unchanged.
+Tests cover 2,000 signed translation folds and 2,000 signed reflection folds
+against direct finite pushforwards, including the exact $+2$ run bound.
+The seven-point example is tested on an actual maintained trace. Other checks
+exercise zero weights, immutable prefix reuse, late cancellation and replay
+with the producer's new overlay disabled.
+
+\input{suffix_folds_results.tex}

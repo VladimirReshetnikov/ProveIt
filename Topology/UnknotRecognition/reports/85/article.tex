@@ -1,0 +1,504 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{teal}{HTML}{136B73}
+\definecolor{shade}{HTML}{F1F5F8}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=teal,urlcolor=teal,
+ pdftitle={Marked parallelity interfaces and certified handlebody cores},
+ pdfauthor={ProveIt research programme; prepared with ChatGPT},
+ pdfsubject={Compressed normal topology and exact sector decomposition}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{ProveIt / Unknot Recognition}}
+\fancyhead[R]{\small Marked parallelity interfaces}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\setlist{topsep=4pt,itemsep=3pt,parsep=0pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}[theorem]{Research question}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\F}{\mathbb F}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\cut}{\mathbin{\backslash\!\backslash}}
+\newcommand{\per}{\operatorname{per}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\bits}{\operatorname{bits}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+ keepspaces=true,frame=single,rulecolor=\color{black!15},
+ backgroundcolor=\color{shade},xleftmargin=3pt,xrightmargin=3pt,
+ aboveskip=9pt,belowskip=9pt,showstringspaces=false}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{9mm}
+{\color{teal}\large\textsc{ProveIt research memorandum}\par}
+\vspace{10mm}
+{\color{ink}\huge\bfseries Marked Parallelity Interfaces\par
+ and Certified Handlebody Cores\par}
+\vspace{6mm}
+{\Large Polynomial local topology and exact sector decomposition\par
+ for the unknot-recognition programme\par}
+\vspace{11mm}
+{\large Prepared for Vladimir Reshetnikov and the ProveIt project\par}
+{\normalsize Research and implementation developed with ChatGPT\par}
+\vspace{4mm}
+{12 October 2026\par}
+\vspace{10mm}
+\begin{abstract}
+The present contribution addresses two explicit bottlenecks in compressed
+unknot recognition.  First, a normal cut already has a source-certified
+parallelity bundle and a complementary core of at most $30T$ handles, but
+component profiles alone do not determine its attaching surfaces.  We recover
+cyclic boundary words, old-boundary gaps, and fibre transitions using two
+additional compressed orbit queries.  Maximal proper runs of core ports are
+disk interfaces; a complete marked boundary circle is an annular interface.
+We combine this information with geometric co-core slides and raw handle
+cancellation.  Saturating occurrence counts at two preserves every admissible
+raw pivot.  In the square, genus-zero case, a source leaf order is complete
+for the entire raw cancellation class, and an explicit induction proves
+that the exceptional core in every Fibonacci layered-torus fixture is a ball.
+Successful certificates give the exact handlebody census of the whole supplied
+cut, including binary multiplicities, without constructing its individual pieces.
+
+Second, we split a supplied quadrilateral-sector matching space into its finest
+coordinate factors.  Although canonical triangle minima can mix those factors,
+nonnegative vertex-link Euler characteristics force the global normalized Euler
+maximum to occur in a single factor.  Complete standard-ray enumeration requires
+a coarser interaction decomposition.  A genuine solid-torus counterexample
+separates these two statements.  Another genuine family reduces the maintained
+global subset iterator from exponentially many candidate solves to linearly
+many local solves, with polynomial source preparation and verification.
+
+The deliverable includes additive Python implementations, separate checkers,
+exact source fixtures, adversarial tests, independent Regina comparisons, and
+reproduction scripts.  These are local algorithmic and geometric results.
+They do not establish a quasi-polynomial bound for the complete recognizer:
+useful-surface coverage, patterned-state transport, and global search bounds
+remain explicit research obligations.
+\end{abstract}
+\vfill
+\noindent\small\textbf{Audited source.}
+\url{https://github.com/VladimirReshetnikov/ProveIt}\par
+\noindent\small\texttt{d2c5e1707fe783bbed06743ac732d70d83e6f27b}\par
+\noindent\small\textbf{Delivery status.} Additive research contribution for review and
+integration; no repository publication is part of this delivery.
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\tableofcontents
+\newpage
+
+\section{Research position and scope}
+\label{main:position}
+
+The appropriate next step is to make compressed geometric information usable
+by an exact topological consumer.  The audited repository already counts and
+classifies normal-surface components, reconstructs actual cut cells and their
+boundaries, and extracts the full source parallelity bundle in handle indices
+zero, one, and two.  It also retains the geometrically attached exceptional
+core.  Replacing that construction with a prism-only approximation would lose
+information and undo an improvement already present in the source.
+
+The missing information addressed here is smaller and more specific.  A list
+of ports belonging to a base component gives membership, but it does not say
+which ports are consecutive, whether old boundary separates them, or whether
+they occupy a complete boundary circle.  Those distinctions decide whether
+the interface with the core is a disk or an annulus.  Once they are available,
+the existing geometric core can support a conservative, independently checked
+handlebody classifier.  A separate source-coordinate decomposition reduces
+some of the search needed to find candidate surfaces in the first place.
+
+\subsection{What is new here, what is inherited, and what is open}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}p{.23\textwidth}Yp{.18\textwidth}@{}}
+\toprule
+Topic & Precise status in this contribution & Classification\\
+\midrule
+Binary orbit computation & Polynomial weighted AHT and the maintained
+suffix-fold bound are used with attribution. & Inherited\\
+Source parallelity & Complete bases, fibre charts, at most $30T$ core handles
+and $66T$ ports already exist. & Inherited\\
+Marked cyclic interface & Two source-derived queries recover maximal
+attachment intervals and full marked circles, with independent replay. & New operator and proofs\\
+Geometric core cancellation & Raw co-core counts admit exact saturation;
+source leaf elimination becomes a certified geometric ball test. & New geometric application\\
+Layered cores & An explicit all-size source calculation gives a ball core
+for every positive multiple of the Fibonacci fixture. & New family theorem\\
+Sector factors & Finest matching blocks, Euler localization, standard
+interaction clusters, and a geometric separation family. & New source-level development\\
+Complete recognition & No bound on useful candidate coverage, all inherited
+patterns, or all hierarchy states is proved. & Open\\
+\bottomrule
+\end{tabularx}
+\caption{The novelty claim is relative to the pinned ProveIt source.  Classical
+linear algebra, handle theory, and orbit algorithms are not claimed as new.}
+\label{main:status-table}
+\end{table}
+
+The permanent-one criterion for raw positive elimination already appears in
+report~56.  Its new role here is geometric: raw occurrences are authenticated
+intersections with a co-core system, and the positive update is realized by
+actual disk slides.  An abstract presentation simplifier is not substituted
+for a three-manifold proof.  Likewise, the polynomial control of dense weight
+runs is already proved in \code{synthesis/suffix\_folds.tex}; the sharper
+sparse-mark bound and explicit selector accounting below assemble the bounds
+needed by the new interface, rather than purporting to discover weighted AHT.
+
+\subsection{Relationship to the quasi-polynomial programme}
+
+We use \emph{quasi-polynomial} in its usual broad sense
+$\exp((\log n)^{O(1)})$.  The stronger target $n^{O(\log n)}$ is
+$\exp(O((\log n)^2))$; these formulations should not be conflated.
+Lackenby's March 2021 lecture handout announces
+$2^{O((\log n)^3)}$ for diagrams with $n$ crossings\cite{Lackenby2021}.
+The July 2026 manuscript gives a new hierarchy-based recognition algorithm;
+its Section~9 explicitly separates iteration counting from an analysis of all
+step costs\cite{Lackenby2026}.  We do not infer a checked implementation or a
+complete complexity proof for ProveIt from an announced bound.
+
+Our local bit-polynomial results are compatible with either target.  They
+eliminate dependence on the \emph{numerical multiplicity} of a supplied cut in
+the accepted class, and the sector result replaces total matching dimension
+by local block dimensions when splitting occurs.  Neither statement bounds
+the number of candidates or the number and size of future patterned states.
+The difference is consequential: polynomial verification of exponentially
+many candidate certificates still permits exponential search.
+
+\section{Input model and the authenticated geometric interface}
+\label{main:model}
+
+The runtime contract is a finite, connected, compact, orientable triangulated
+three-manifold $M$ with one torus boundary, supplied by source face pairings,
+and an admissible integral standard normal vector
+$x\in\N^{7T}$.  The surface $S(x)$ may be empty, disconnected, or one-sided.
+The source validator checks the relevant manifold links, face inverses,
+matching equations, and quadrilateral constraints.  The exact cut is denoted
+$M\cut S$: equivalently, remove the interior of a sufficiently small regular
+neighbourhood and round its corners.  One-sided surfaces use their actual
+normal interval bundle, not two fictitious orientable copies.
+
+Put
+\[
+ D=\sum_i x_i,\qquad B=1+\lceil\log_2(D+1)\rceil.
+\]
+The coordinates have $O(TB)$ bits, and the face pairing has $O(T\log(T+1))$
+bits.  We charge arithmetic on binary endpoints and weights; an operation on
+a $B$-bit integer is not assigned constant cost.  The article uses $n$ only
+for original diagram size and $T$ for the triangulation under discussion.
+No unproved bound relating a later hierarchy triangulation to $n$ is hidden
+by switching those parameters.
+
+\subsection{The inherited source theorem}
+
+The following is the precise established input to the new geometric arguments.
+It is proved in the audited source's parallelity chapter and its raw cut-cell
+construction\cite{ProveIt2026}.
+
+\begin{proposition}[Source parallelity contract, inherited]
+\label{main:source-contract}
+The supplied cut decomposes into an embedded interval bundle $\mathcal B$
+over a possibly disconnected compact surface $B_0$ and a complementary
+geometric handle core $K$.  There is a marked subset $A\subseteq\partial B_0$
+such that
+\[
+ K\cap\mathcal B=p^{-1}(A),\qquad
+ (h_0(K),h_1(K),h_2(K),h_3(K))
+       \leq(6T,8T,12T,4T)
+\]
+coordinatewise.  The packet has $O(T)$ source charts, including the complete
+core attaching cycles, fibre reversals, and at most $P\leq66T$ singleton core
+ports.  Its base representation has at most $17T$ polygon families, $44T$
+gluing families, and $68T$ side slots, with binary rank intervals.
+\end{proposition}
+
+The selected handles are the chambers between consecutive identical normal
+disks, the internal-face strips between consecutive parallel arcs, and the
+gaps between consecutive intersections on an interior edge.  The complete
+base uses truncated triangles and quadrilaterals, rectangles, and edge-link
+polygons.  Its gluing includes every selected zero--one, zero--two and
+one--two contact.  Omitting the last two kinds would invalidate the embedding
+and intersection assertion.  The exceptional lower-index attachments stay
+entirely in $K$; they are not group relators detached from source charts.
+
+Four existing compressed queries determine the base-component profiles,
+actual boundary counts, orientability, and port membership.  They also check
+\begin{equation}
+\label{main:euler-identity}
+ \chi(M\cut S)=\chi(K)+\chi(B_0)-\chi(A).
+\end{equation}
+A base profile containing any port has multiplicity one.  Unported components
+may have large binary multiplicity.  This distinction is necessary when a
+finite attachment graph is formed: it is incorrect to turn a profile of
+multiplicity $m$ into a single ordinary vertex.
+
+\subsection{Trust boundary and certificate meaning}
+
+The source-level geometric result in Proposition~\ref{main:source-contract}
+is a mathematical dependency.  The existing checker reconstructs its charts
+from the raw cut-cell reference model using a different extraction route.
+The new checkers authenticate their inputs through that checker.  Thus an
+accepted certificate depends on the source theorem and the correctness of
+the small verifier stack, as any certified numerical implementation depends
+on its trusted primitives.  It is not a formal proof in Lean, Coq, or Isabelle.
+
+The standalone core helper has a narrower contract: its caller must already
+have authenticated the geometric charts.  A dictionary of integer words with
+the same occurrence matrix is insufficient.  The whole-cut wrapper supplies
+the missing authentication.  A \code{COMPLETE} result from that wrapper means
+an exact census of handlebodies in the \emph{supplied cut}.  It carries no
+standalone knot verdict.  In particular, one ball component in a multi-component
+cut does not establish that the original exterior is a solid torus.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[font=\small,scale=1.05]
+  \fill[shade] (0,0) circle (1.2);
+  \draw[black!35,line width=2pt] (0,0) circle (1.2);
+  \foreach \a/\b in {15/95,140/190,235/300}{
+    \draw[teal,line width=4pt] (\a:1.2) arc (\a:\b:1.2);
+  }
+  \foreach \a in {40,65,165,260,280}{
+    \draw[black!55,line width=.7pt] (\a:1.12)--(\a:1.28);
+  }
+  \node at (0,0) {$B_j$};
+  \node[align=center] at (0,-1.65) {$A=I_1\sqcup I_2\sqcup I_3$\\three disk interfaces};
+  \draw[-{Stealth},black!60] (-2,1.1)--(-.94,.82);
+  \node[align=right,anchor=east] at (-2,1.1) {old boundary};
+  \begin{scope}[xshift=6cm]
+    \fill[shade] (0,0) circle (1.2);
+    \draw[teal,line width=4pt] (0,0) circle (1.2);
+    \foreach \a in {0,45,90,135,180,225,270,315}{
+      \draw[black!55,line width=.7pt] (\a:1.12)--(\a:1.28);
+    }
+    \node at (0,0) {$B_j$};
+    \node[align=center] at (0,-1.65) {$A=S^1$\\one annular interface};
+  \end{scope}
+  \draw[teal,line width=4pt] (1.65,1.25)--(2.2,1.25);
+  \node[anchor=west] at (2.35,1.25) {core-facing ports};
+\end{tikzpicture}
+\caption{Schematic base boundaries.  Subdividing a blue arc into source ports
+does not subdivide its attaching disk.  If every boundary arc faces the core,
+the complete vertical interface is an annulus.  For a disk base, the entire
+right-hand bundle is a two-handle, as proved later.}
+\label{main:interface-figure}
+\end{figure}
+
+\input{sections/interfaces.tex}
+\input{sections/geometry.tex}
+
+\section{A complete certificate for the accepted cut class}
+\label{main:consumer}
+
+We now combine the previous constructions into a single conservative consumer.
+This is a genuine topology operation on a supplied source cut: both the
+exceptional core and all bundle components contribute to the answer.
+
+\subsection{Algorithm and proof}
+
+For each supplied vector, the delivered algorithm performs the following steps.
+\begin{enumerate}
+\item Run the established source parallelity construction and its four orbit
+queries.  Retain the geometric core, base profiles, and source ports.
+\item Reject the attempt as unresolved if the core has a three-handle.
+Contract an increasing-ID spanning forest in its zero/one graph.  Try the
+source leaf order on the raw two/one incidence matrix.  If this stalls and
+the matrix is square, the full raw ball-cancellation class is exhausted.
+Otherwise try a deterministic saturated-count pivot schedule.  A stalled
+schedule returns \code{INCONCLUSIVE}.
+\item Recover the ordered boundary skeleton using the two new queries.
+Reject the attempt as unresolved if any core attachment is a full boundary
+circle or any bundle base is closed.
+\item Construct one vertex for each certified core component, and one for
+each ported base component.  Give them their certified genera and join them
+by one edge for each \emph{maximal attachment interval}.  Compute the genus
+of each connected graph component by disk gluing.  Add unported bundle
+profiles using their binary multiplicities.
+\item Check equation~\eqref{main:euler-identity}, then emit the histogram
+$\{(g,m_g)\}$ and the complete source, orbit, cancellation, and graph proofs.
+\end{enumerate}
+
+The order of cheap rejection and interface discovery is a producer choice.
+The independent checker validates the complete proof regardless of that
+choice.  Failed attempts are not certificates that the cut is not a
+handlebody union.  In particular, the current wrapper deliberately leaves
+the annular absorption theorem in the geometry section as a further
+implementation opportunity, rather than silently adding it to measured coverage.
+
+\begin{theorem}[Sound exact binary handlebody census]
+\label{main:census}
+On an input satisfying the source contract, every accepted
+\code{normal-cut-handlebodies-v1} certificate proves that $M\cut S$ is a
+disjoint union of handlebodies.  Its returned multiplicity $m_g$ is exactly
+the number of components of genus $g$.  No operation needs to enumerate the
+$m_g$ separate components or their normal disks.
+\end{theorem}
+\begin{proof}
+The source and boundary checkers establish the actual decomposition
+$K\cup\mathcal B$, the component profiles, and the maximal components of
+$A$.  The geometric cancellation checker turns each component of $K$ into
+its certified handlebody.  Each bordered bundle is an orientable handlebody
+of genus $1-\chi$ of its base.  Every retained attaching component is a
+proper interval in a base boundary and hence lifts to a genuine embedded
+disk.  The source regularization statement makes distinct attachment disks
+disjoint, including their relevant corner collars.
+
+Consequently the connected components containing the core are exactly those
+of the finite attachment multigraph.  The disk-gluing theorem gives
+\[
+  g(C)=\sum_{v\in V(C)}g(v)+|E(C)|-|V(C)|+1.
+\]
+It applies also to repeated edges: a second disk between already connected
+pieces contributes a cycle and increases the genus by one.  A ported profile
+has multiplicity one, so no vertex represents omitted copies.  Conversely,
+an unported bundle meets no core component and is an isolated component of
+the cut; its source multiplicity must be added unchanged.  This accounts
+for every source piece and proves the claimed histogram.  The final Euler
+identity is a redundant arithmetic check, not the topological justification.
+\end{proof}
+
+\begin{corollary}[Exact all-ball predicate on successful certificates]
+\label{main:allballs}
+For an accepted certificate, the entire cut consists of balls if and only if
+every nonzero histogram entry has genus zero.  The entire cut is one ball if
+and only if the histogram is exactly $\{(0,1)\}$.
+\end{corollary}
+
+The second condition, combined with an independently verified connected
+orientable surface having nonempty boundary and a one-torus source boundary,
+has the terminal implication proved in the geometry section.  A knot verdict
+additionally requires the existing diagram-to-exterior provenance chain.
+Neither surface connectedness nor diagram provenance is inferred from the
+binary number of balls.
+
+\subsection{Time, encoded output, and what has actually been removed}
+
+Let $E$ bound the total event count in the six orbit traces and let $L$ be
+the encoded source size.  The interface section gives polynomial bounds for
+weight runs, tagged selectors, and their integer bit lengths.  With the
+maintained polynomial AHT scheduling theorem, all source/profile/boundary
+work is polynomial in $T$ and $B$.  The new boundary phase explicitly uses
+the classical AHT periodic rule; inherited profile queries retain their
+already justified native scheduler.
+
+There are $O(T)$ core incidences and at most $O(T)$ pivots.  Saturated replay
+uses at most $O(T^3)$ elementary operations on the three-element semiring.
+For a source leaf order, the elimination portion visits each incidence only
+a constant number of times, with heap overhead in the producer.  The current
+forest verification and component bookkeeping can take $O(T^2)$; the
+implementation should not be advertised as a fully linear core checker.
+The finite attachment graph is also of size $O(T)$, with polynomial-time
+bookkeeping.  Binary histogram arithmetic is charged in $L$.
+
+\begin{corollary}[Local bit-polynomial terminal operator]
+\label{main:polyconsumer}
+Without an artificially exhausted work budget, the delivered terminal
+operator finishes in bit-polynomial time in the supplied triangulation and
+normal-vector encoding.  Its successful certificates have polynomial
+encoded size and polynomial replay cost in that encoding.
+\end{corollary}
+
+A supplied successful raw schedule and disk-interface decomposition are
+checkable; this does not claim that every handlebody triangulation satisfies
+the criterion.  For square cores the source leaf theorem does give a complete
+producer within the raw cancellation class for the fixed source forest.
+The delivered positive-genus fallback has no such completeness claim.  The
+stronger exhaustive survivor-set result in
+Proposition~\ref{geo:prop-fixed-genus} supplies a theoretical
+$\binom{k}{g}\poly(T)$ alternative, and is quasi-polynomial for
+$g=O(\log T)$, but that exhaustive search is not implemented here.
+
+The distinction between an endpoint bound and a certificate-size bound is
+visible in the large tests.  The number of boundary words can remain fixed
+while the proof grows substantially with coordinate bit length.  At eight
+tetrahedra and multiplicity $2^{16384}$ the boundary-only certificate is about
+31 MB.  The entire source/census certificate is larger still.  No claim of
+constant memory or constant-size proofs follows from having three interface
+intervals.
+
+For a surface with $m$ parallel meridian disks, an explicit list of the $m$
+cut components already requires $\Omega(m)$ output positions.  If $m=2^b$,
+this is exponential in the extra $b+1$ bits of multiplicity.  Returning
+``$m$ balls'' avoids that output barrier.  On successfully certified inputs
+this is an asymptotic change of representation and operation, even when a
+small explicit C++ computation is faster in wall-clock time.
+
+\input{sections/sectors.tex}
+\input{sections/experiments.tex}
+\input{sections/research.tex}
+\input{sections/reproduction.tex}
+
+\begin{thebibliography}{99}
+\bibitem{AHT2006}
+I. Agol, J. Hass, and W. Thurston,
+\emph{The computational complexity of knot genus and spanning area},
+Transactions of the American Mathematical Society \textbf{358} (2006),
+3821--3850.  Preprint \href{https://arxiv.org/abs/math/0205057}{arXiv:math/0205057}.
+Theorems 12 and 16 are the orbit and weighted-orbit precedents.
+
+\bibitem{Lackenby2021}
+M. Lackenby, \emph{Unknot recognition in quasi-polynomial time},
+Oxford lecture handout, March 2021, slide 7.
+\url{https://people.maths.ox.ac.uk/lackenby/quasipolynomial-talk-oxford-compressed.pdf}.
+
+\bibitem{Lackenby2026}
+M. Lackenby, \emph{Incompressible surfaces, hierarchies and unknot recognition},
+arXiv:2607.23350, version 1, July 2026.
+\url{https://arxiv.org/abs/2607.23350}.
+
+\bibitem{Hatcher2007}
+A. Hatcher, \emph{Notes on Basic 3-Manifold Topology},
+Chapter 1, especially Lemma 1.3 and the discussion of rounding corners.
+Author-hosted notes, accessed 12 October 2026.
+\url{https://pi.math.cornell.edu/~hatcher/3M/3Mfds.pdf}.
+
+\bibitem{SadykovNotes}
+R. Sadykov, \emph{Elements of Surgery Theory},
+Section 10.1.3, Lemma 10.3 (handle cancellation).
+Author-hosted notes, accessed 12 October 2026.
+\url{https://www.math.ksu.edu/~sadykov/Lecture%20Notes/Surgery%20Theory.pdf}.
+
+\bibitem{ProveIt2026}
+V. Reshetnikov and contributors, \emph{ProveIt: Topology/UnknotRecognition},
+source revision \texttt{d2c5e1707fe783bbed06743ac732d70d83e6f27b},
+12 October 2026.  In particular the synthesis chapters on parallelity,
+cut cells, suffix folds, weighted transversals, normal-sector search,
+and retained report 56.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/d2c5e1707fe783bbed06743ac732d70d83e6f27b/Topology/UnknotRecognition}.
+
+\bibitem{Regina}
+B. A. Burton and the Regina development team,
+\emph{Regina: Software for low-dimensional topology},
+source and API documentation, \url{https://regina-normal.github.io/}.
+The delivered experiment metadata records the actual installed version.
+\end{thebibliography}
+\end{document}
