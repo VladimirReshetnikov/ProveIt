@@ -104,3 +104,16 @@ Regina comparisons agree, with seven large-coordinate replays and no timeouts.
 Remaining refusals are 11 annular cases, seven failed core cancellations and
 ten cores with three-handles. Fresh evidence is in
 `../../synthesis/data/primitive-annuli-audit.json`.
+
+The full Regina-enabled suite passes all 1,663 tests with no skips in 515.218
+seconds, including 13,846 expanded-sheet and 196,712 marked-cover comparisons.
+The source pins match the independent 106-case audit. A further core-side
+passive-incidence probe identifies five potential private-column families;
+it is a research diagnostic and adds no accepted topology certificates.
+
+Eight finite timings use five shuffled paired rounds. Two favor the native
+path and six favor explicit cuts; the 1,024-copy paired ratios are 4.184 and
+1.215 on the two new families. A/A medians range from 0.756 to 1.072, so the
+smaller gain is interpreted cautiously. At multiplier 2^16384, production
+plus replay takes 1.932 and 17.867 seconds, with 27.2 MB and 72.9 MB serialized
+proofs. Full results are in `../../synthesis/data/primitive-annuli-benchmark.json`.
