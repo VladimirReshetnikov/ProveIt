@@ -1,0 +1,285 @@
+\section{Every Gamma coefficient and an analytic normal generator}
+\label{ung:section}
+
+The canonical projection of Section~\ref{ibp:section} turns integration
+by parts into a finite rational algorithm. The two universal-normal-form
+continuations \cite{ung:reports} replace that algorithm, for the inverse-Gamma
+hierarchy, by one beta integral for every coefficient. Their independent
+proof routes give the same formula. We reconcile the rational-kernel route
+here, then use its ordinary finite projections to obtain an analytic
+generating identity for arbitrary holomorphic input jets. The latter also
+specifies a domain on which the infinite derivative hierarchy converges.
+
+\subsection{The universal coefficient identity}
+
+Write $\operatorname{nf}$ for the projection of
+Theorem~\ref{ibp:normal}, extended at weights zero and one as there.
+In its differential polynomial ring put
+\[
+ \mathsf A_0=1,\qquad \mathsf A_{m+1}=u_0\mathsf A_m-\mathcal D\mathsf A_m,
+ \qquad \mathsf N_m=\operatorname{nf}(\mathsf A_m).
+\]
+Its raw exponential generator and its projected finite jets are
+\begin{align}
+ \sum_{m\ge0}\mathsf A_m\frac{t^m}{m!}
+ &=\exp\left(\sum_{r\ge0}\frac{(-1)^r u_rt^{r+1}}{(r+1)!}\right),
+ \label{ung:raw}\\
+ \sigma_d\sum_{m\ge0}\mathsf N_m\frac{t^m}{m!}
+ &=e^{u_0t}F_d(X_1,\ldots,X_d),\qquad X_r=u_rt^{r+1},
+ \label{ung:finite}
+\end{align}
+where $\sigma_d$ sets $u_r=0$ for $r>d$. The Appell factor follows
+because translation in $u_0$ commutes with $\mathcal D$ and preserves
+the canonical monomial space. Equations here initially mean formal
+coefficient identities; analytic convergence is established below.
+
+For $r\ge0$ define the explicit positive-coefficient polynomial
+\begin{equation}\label{ung:C}
+ C_r(v)=\frac{(v+1)^{r+1}-(v-1)^{r+1}}{2^{r+1}(r+1)!}
+ =\sum_{\substack{0\le j\le r\\j\equiv r\ (2)}}
+                   \frac{v^j}{2^rj!(r+1-j)!}.
+\end{equation}
+Thus $C_0=1$, $C_1=v/2$, $C_2=(1+3v^2)/24$,
+and $2C_r'=C_{r-1}$.
+
+\begin{theorem}[Every canonical inverse-Gamma coefficient]
+\label{ung:coefficient}
+The coefficient of $u_0^m$ in $\mathsf N_m$ is one. A monomial with
+a unique largest positive derivative index is absent. For a canonical
+monomial $u_0^{a_0}\cdots u_d^{a_d}$ with $d\ge1$, $a_d\ge2$ and
+$m=\sum_{r=0}^d(r+1)a_r$, its coefficient vanishes when
+$\sum r a_r$ is odd. Otherwise it is the finite rational number
+\begin{equation}\label{ung:beta}
+ \boxed{\frac{(-1)^d m!}{4^d d!(d+1)!\prod_{r=0}^d a_r!}
+ \int_0^1(1-v^2)^d C_d(v)^{a_d-2}
+                         \prod_{r=1}^{d-1}C_r(v)^{a_r}\,dv.}
+\end{equation}
+Every permitted coefficient is nonzero and has sign $(-1)^d$.
+Consequently this gives the complete support, including all zeros,
+at every weight and highest derivative order.
+\end{theorem}
+
+\begin{proof}
+Use the Euler variational operator
+$\mathcal E(P)=\sum_{r\ge0}(-\mathcal D)^r\partial_{u_r}P$.
+Its commutator identity gives $\mathcal E\mathcal D=0$.
+For a canonical polynomial, a monomial removed by $\sigma_d$ has
+its highest index greater than $d$ at least twice. A partial derivative
+removes at most one such factor, and subsequent total derivatives
+leave a factor of index greater than $d$. Thus projection commutes with
+the variational operation on canonical representatives, with
+$\delta_d=\sum_{r<d}u_{r+1}\partial_{u_r}$ replacing $\mathcal D$.
+This is why normal projection precedes jet truncation.
+
+Applying $\mathcal E$ to \eqref{ung:raw} and integrating the formal
+translation operator $e^{s\mathcal D}$ for $0\le s\le t$ gives,
+after $s=t(1+v)/2$, the equation
+\begin{equation}\label{ung:Euler-equation}
+ F_d+\sum_{r=1}^d(-1)^r L_d^r\partial_{X_r}F_d
+ =\frac12\int_{-1}^1e^{\sum_{r=1}^d C_r(v)X_r}\,dv,
+ \qquad L_d=X_1+\sum_{r<d}X_{r+1}\partial_{X_r}.
+\end{equation}
+Here the conjugation by $e^{u_0t}$ turns $\delta_d$ into $t^{-1}L_d$.
+Every operation is coefficientwise finite at a fixed weight.
+
+This equation has at most one solution with canonical support. At
+$d=1$ the homogeneous equation is $H-X_1H'=0$; its only possible
+nonzero solution is linear, excluded by canonical support. Inductively,
+specialization at $X_d=0$ reduces the homogeneous equation to the
+lower-dimensional one, because the coefficient of $X_d$ is absent.
+If $H$ is nonzero, let $c\ge2$ be its least occurring power of $X_d$.
+The coefficient of $X_d^{c-1}$ is
+$(-1)^d cL_{d-1}^dH_c=0$.
+The operator $L_s$ is injective on formal series: for $s=1$ it is
+multiplication by $X_1$, and its least power of $X_s$ has coefficient
+killed by $L_{s-1}$ in the inductive case. Hence $H_c=0$, a contradiction.
+
+For every $d\ge1$ put
+\[
+ \Delta_d(v)=(v+1)^{d+1}-(v-1)^{d+1},\qquad
+ R_d(v)=\frac{(v-1)^{d+1}}{\Delta_d(v)},\qquad W_d(v)=2R_d'(v).
+\]
+Direct differentiation gives
+\begin{equation}\label{ung:W}
+ W_d(v)=\frac{4(d+1)(v^2-1)^d}{\Delta_d(v)^2}
+       =\frac{(-1)^d(1-v^2)^d}{4^d d!(d+1)!C_d(v)^2}.
+\end{equation}
+The product rule telescopes to
+\[
+ \sum_{r=0}^d\frac{D_v^r((v-a)^{r+1}R')}{(r+1)!}
+ =\frac{D_v^{d+1}((v-a)^{d+1}R)}{(d+1)!}-R.
+\]
+Subtract the identity at $a=1$ from the one at $a=-1$, using
+$R=R_d$. Since $\Delta_dR_d=(v-1)^{d+1}$, this proves
+\begin{equation}\label{ung:adjoint}
+                    \sum_{r=0}^d2^rD_v^r(C_rW_d)=1.
+\end{equation}
+
+Let $J_d=\frac12\operatorname{FP}_v\int_{-1}^1
+W_d(v)e^{\sum_{r=1}^dC_r(v)X_r}\,dv$.
+For even $d$ the integral is ordinary. For odd $d$ its sole real
+pole is at zero, with $W_d=-1/((d+1)v^2)+O(1)$; use the symmetric
+cutoff and add $e^{\sum C_r(0)X_r}/((d+1)\epsilon)$ before taking
+$\epsilon\downarrow0$. This fixes the finite part and permits
+coefficientwise parameter differentiation.
+The identity $L_d^re^{\sum C_rX_r}=2^rD_v^re^{\sum C_rX_r}$ and
+\eqref{ung:adjoint} show by integration by parts that $J_d$ satisfies
+\eqref{ung:Euler-equation}. The external boundary terms vanish because
+$W_d$ has endpoint zeros of order $d$. Internal boundary terms have
+zero constant coefficient: for a meromorphic boundary expression,
+$B(-\epsilon)-B(\epsilon)$ has no constant term.
+
+Normalize $e^{u_0t}J_d$ coefficientwise. The canonical projection
+preserves its variational derivative, its Appell structure and its
+largest possible index, so its normal part solves
+\eqref{ung:Euler-equation} with canonical support. Uniqueness identifies
+that part with \eqref{ung:finite}. Normalizing a term with a single
+$u_d$ eliminates index $d$; terms with lower index cannot create it.
+Thus coefficients containing $u_d^2$ are unchanged by normalization.
+Their two factors of $C_d$ cancel the denominator in \eqref{ung:W},
+leaving an ordinary polynomial integral. Its parity is $\sum r a_r$,
+which proves \eqref{ung:beta}. At permitted parity all coefficients
+of its remaining polynomial are nonnegative, with at least one positive,
+so the integral is strictly positive. Finally the pure $u_0$ coefficient
+is one, either from \eqref{ung:raw} or the constant term of
+\eqref{ung:Euler-equation}.
+\end{proof}
+
+For example, expanding the polynomial integrand reduces every
+coefficient to the elementary rational beta values
+\[
+ \int_0^1v^e(1-v^2)^d\,dv
+ =\frac{2^dd!}{\prod_{j=0}^d(e+1+2j)}.
+\]
+The formula includes the mixed $u_0,u_1,u_2,u_3$ sectors and all
+higher multiplicities without a new recurrence for each sector.
+
+\subsection{Ordinary projections and analytic resummation}
+
+Define the entire function
+\[
+ E_2(z)=\frac{e^z-1-z}{z^2},\qquad E_2(0)=\tfrac12,
+ \qquad \kappa_r=\frac{(-1)^r}{4^r r!(r+1)!}.
+\]
+The disjoint highest-index sectors of Theorem~\ref{ung:coefficient}
+give the ordinary entire finite projection
+\begin{equation}\label{ung:ordinary-projection}
+ F_d(\mathbf X)=1+\frac12\sum_{r=1}^d\kappa_rX_r^2
+ \int_{-1}^1(1-v^2)^r
+       e^{\sum_{j=1}^{r-1}C_j(v)X_j}E_2(C_r(v)X_r)\,dv.
+\end{equation}
+There are no poles on the integration interval. Its locally uniform
+entire Taylor expansion gives exactly the coefficient formula above.
+
+\begin{theorem}[An analytic normal generator for holomorphic jets]
+\label{ung:analytic}
+Let $U$ be holomorphic on $|z-x|<R$. Then
+\[
+ \mathsf G_U(t,x)=\sum_{m\ge0}
+       \mathsf N_m\bigl(U(x),U'(x),\ldots\bigr)\frac{t^m}{m!}
+\]
+converges absolutely for $|t|<R$. It is the ordinary integral series
+\begin{equation}\label{ung:analytic-generator}
+ \boxed{\displaystyle
+ e^{tU(x)}\left[1+\frac12\sum_{r\ge1}\kappa_rX_r^2
+ \int_{-1}^1(1-v^2)^r
+       e^{\sum_{j<r}C_j(v)X_j}E_2(C_r(v)X_r)\,dv\right],
+ \quad X_r=U^{(r)}(x)t^{r+1}.}
+\end{equation}
+The sum is locally normally convergent on the indicated domain.
+For varying $x$ it is jointly holomorphic wherever the corresponding
+closed disks lie locally inside the domain of $U$.
+If $U$ is entire, the generator is entire in $t$ at every $x$.
+\end{theorem}
+
+\begin{proof}
+Fix $|t|<\rho<R$, let $M=\sup_{|z-x|\le\rho}|U(z)|$ and put
+$q=|t|/\rho<1$. Cauchy's estimate gives
+$|U^{(r)}(x)|\le Mr!\rho^{-r}$.
+For real $|v|\le1$ the positive-coefficient polynomial in
+\eqref{ung:C} satisfies $|C_r(v)|\le C_r(1)=1/(r+1)!$.
+Consequently
+\[
+ |C_r(v)X_r|\le\frac{M|t|q^r}{r+1},\qquad
+ \sum_{r\ge1}|C_r(v)X_r|\le\frac{M|t|q}{1-q}.
+\]
+The entire expansion $E_2(z)=\sum_{k\ge0}z^k/(k+2)!$ implies
+$|E_2(z)|\le\tfrac12e^{|z|}$.
+Using $\int_{-1}^1(1-v^2)^r\,dv\le2$, the $r$th summand in
+\eqref{ung:analytic-generator}, including its external exponential,
+is bounded in modulus by
+\begin{equation}\label{ung:majorant}
+ \frac{M^2|t|^2}{2(r+1)}
+       e^{M|t|/(1-q)}\left(\frac{q^2}{4}\right)^r.
+\end{equation}
+This is a summable geometric majorant, uniform on every smaller
+$t$ disk. Taking absolute Taylor coefficients before integration
+gives the same majorant: replace all jet coefficients by their
+Cauchy bounds and use the positive coefficients of $C_r$ and $E_2$.
+Hence the double sum over highest indices and weights is absolutely
+convergent. It can be regrouped by weight, and
+Theorem~\ref{ung:coefficient} identifies those weights with
+$\mathsf N_m/m!$. This proves the actual generating identity, rather
+than only coefficientwise formal agreement.
+
+Every integral summand is holomorphic, and the uniform majorant
+permits termwise differentiation on smaller domains. Finite disk
+covers give the assertion for varying $x$. For entire $U$ choose
+$\rho>|t|$ arbitrarily. All sums at $t=0$ have their removable values.
+\end{proof}
+
+In particular $U=\psi$ is holomorphic on every disk avoiding
+$0,-1,-2,\ldots$. Thus the canonical polygamma hierarchy has the
+ordinary generator \eqref{ung:analytic-generator} for
+\[
+ |t|<\operatorname{dist}(x,\{0,-1,-2,\ldots\});
+ \qquad x>0\ \Longrightarrow\ |t|<x.
+\]
+The normal projection remains the one in the previously established
+differential identities; their primitive and finite-part formulas
+retain the total-derivative endpoint terms.
+
+For an affine input $U(x)=a+bx$ the integral series has the explicit
+entire evaluation
+\begin{equation}\label{ung:affine}
+ \boxed{\mathsf G_U(t,x)=\frac{e^{t(a+bx)}}2
+   \left(\cosh z+\frac{\sinh z}{z}-z\operatorname{Shi}(z)\right),
+ \qquad z=\tfrac12bt^2,}
+\end{equation}
+where $\operatorname{Shi}(z)=\int_0^z\sinh(w)/w\,dw$ and
+$\sinh z/z$ takes its removable value at zero. Only sector $r=1$
+remains. With $W_1=(1-v^{-2})/2$, integration by parts in its fixed
+symmetric finite part gives
+\[
+ F_1(2z)=\tfrac12\bigl(\sinh z/z+\cosh z-z\operatorname{Shi}(z)\bigr).
+\]
+The ordinary pole-free form \eqref{ung:ordinary-projection} gives the
+same identity without a singular numerical quadrature. This supplies
+all normalized affine Bell polynomials as coefficients of one
+classical entire-function expression.
+Equivalently, at every degree,
+\begin{equation}\label{ung:affine-coefficients}
+ \mathsf N_m(U,b,0,\ldots)=U^m-m!\sum_{k=1}^{\lfloor m/4\rfloor}
+ \frac{U^{m-4k}b^{2k}}
+ {(m-4k)!4^k(2k-1)(2k+1)(2k)!}.
+\end{equation}
+This follows by expanding the three entire functions in
+\eqref{ung:affine}; it retains the canonical projection of the raw
+affine Bell, or Hermite, hierarchy.
+
+The bound also supplies a reproducible truncation prescription.
+With $s=q^2/4$, the sum of sectors beyond $r=d$ is at most
+\[
+ \frac{M^2|t|^2e^{M|t|/(1-q)}}{2(d+2)(1-s)}s^{d+1}.
+\]
+For experimental evaluation use the pole-free expression
+\eqref{ung:ordinary-projection} and the entire local series for $E_2$.
+An independent sparse integration-by-parts implementation agrees with
+the beta formula in all $1596$ tested coefficients through weight
+eighteen. Twenty separate $75$-digit diagnostics compare ordinary
+projections with independent normalized Taylor polynomials and the
+truncation prescription, for real and complex Gamma inputs, an
+exponential, a quadratic and a simple pole. The finite checks diagnose
+the formulas; the all-order coefficient proof and the convergence
+argument establish the infinite statements. No interval or
+proof-assistant certification is asserted.

@@ -7,24 +7,24 @@ organized as four volumes. Each has its own source and compiled PDF.
 |---|---|---|---:|
 | I | Polylogarithm identities, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 130 |
 | II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 129 |
-| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 233 |
+| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 237 |
 | IV | Gamma grids, CM lattice periods, class products and Herglotz arithmetic | [Gamma Grids, CM Periods and Herglotz Arithmetic](volumes/volume-4-cm-and-herglotz.pdf) | 85 |
 
 The volumes partition all twelve chapters and the literature appendix.
 Chapter, theorem and equation numbering is retained so research-report
 citations stay stable. Cross-volume references link to their exact PDF
 destinations; keep the four PDFs together. Each volume has its own contents
-and the shared bibliography of 138 references. The scientific text is shared
+and the shared bibliography of 139 references. The scientific text is shared
 through chapter files and [preamble.tex](preamble.tex), avoiding duplicate
 copies of proofs. See [volume sources and build instructions](volumes/README.md).
 The [combined source](polylogarithms.tex) and its
-[536-page combined snapshot](polylogarithms.pdf) remain available.
+[540-page combined snapshot](polylogarithms.pdf) remain available.
 
-The [inventory](source-inventory.json) accounts for **1,577 textual source
+The [inventory](source-inventory.json) accounts for **1,742 textual source
 files**, including overlapping articles, fragments and correction registers.
 The [editorial ledger](EDITORIAL-LEDGER.md) maps accepted mathematical claims
-and pending research integration. The 107 imported archives preserve 3,956
-original tracked members; 42 ignored bare checksum records remain recoverable
+and pending research integration. The 119 imported archives preserve 4,385
+original tracked members; 46 ignored bare checksum records remain recoverable
 in arrival history. Each imported ZIP was retired in its placement commit.
 All eleven complete mathematical suites in the seventeenth and eighteenth
 intakes pass on isolated copies. Preservation and finite replay do not imply
@@ -59,13 +59,7 @@ and kernel dimension 24. Its entire bounded contribution is already spanned
 by the previous 24 reconstructed relations. A separately reconstructed
 1,008-square minor and 24 exact kernel vectors prove completeness over the
 rationals. Searches with the other first letters retain all depth-five
-coordinates; their target membership remains a separate research question. The complete
-1,032-input first-letter X family now has an exact top-sector rank of 1,008
-and kernel dimension 24. Its entire bounded contribution is already spanned
-by the previous 24 reconstructed relations. A separately reconstructed
-1,008-square minor and 24 exact kernel vectors prove completeness over the
-rationals. Searches with the other first letters retain all depth-five
-coordinates; their target membership remains a separate research question. Further arrivals stay in
+coordinates; their target membership remains a separate research question.  Further arrivals stay in
 the drop zone for their own intake. Other analytic claims retain the
 ledger's pending scopes. The contents number column has been widened so
 long chapter/section numbers remain separated from their titles.
@@ -350,3 +344,18 @@ identity rows for (14,16). Matrix inversion gives ordinary absolutely
 convergent polygamma-product identities for every pair in these three families.
 General all-pair rank, arithmetic independence and Gaussian S6/revised S8
 remain open. Further incoming reports retain a pending intake/audit scope.
+
+
+Section 8.46 now gives every canonical inverse-Gamma coefficient by a finite
+rational beta integral, with complete support and sign. A self-contained
+rational telescoping/variational proof reconciles both universal reports.
+The collective analytic-jet extension turns the formal hierarchy into an
+ordinary locally convergent generator for holomorphic inputs; entire inputs
+give entire generators. An affine/Hermite specialization has an explicit
+hyperbolic-sine-integral evaluation and all-degree rational coefficients.
+
+The nineteenth intake preserves twelve packages and has twelve full isolated
+mathematical replay passes, with an explicitly recorded copy-only output-Path
+repair for the lattice suite and its original failure preserved. The actual
+alpha5 printed typo is corrected to +24*zeta(5); the duplicate README passage
+is removed. Other incoming analytic branches remain tracked in the ledger.
