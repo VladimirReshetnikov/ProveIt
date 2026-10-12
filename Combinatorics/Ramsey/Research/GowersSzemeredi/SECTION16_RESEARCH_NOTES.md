@@ -6087,6 +6087,48 @@ comment ofModAP.IsProper is identified for a later documentation fix; its
 actual cardinality predicate is unchanged. The broad facade is incomplete.
 The full goal remains active.
 
+### L.38 Sharp Bohr averaging and restored original criterion (2026-10-12)
+
+`SharpBohrFidelityAudit` passes over1,631 native modules with seven new
+positive theorems and two separate scope refutations. Only the three approved
+axioms occur. The exact original nonzero criterion, with explicit valid
+radius/domain conventions, has its checked companion. The broader facade
+is still incomplete, and47 inspected source statements do not constitute
+completion of the120-statement semantic review.
+
+`Proofs07TranslationAverage` proves the exact translation-fibre cardinality
+identity and its cross-multiplied average bound for arbitrary finite domains
+mapping into finite abelian groups. Product-set cardinalities retain their
+exact powers. No coordinate-grid ceiling factor is introduced.
+
+For0<delta<=1, chooseL=ceil(delta*N) andI={0,...,L-1}. The productI^K has
+L^|K| points. Averaging preimages of its translates gives a fibreC with
+N*L^|K|<=N^|K|*|C|. Subtracting one member ofC injects it into the Bohr set,
+since coordinate differences have centered magnitude at mostL-1<=delta*N.
+Thus |B|>=delta^|K|*N, yielding a nonzero point atdelta>N^(-1/|K|).
+The original sufficient radius(N/2)^(-1/|K|) is therefore valid. The old
+correction that replaced it by2*N^(-1/|K|) was unnecessarily weak, rather
+than a refutation of the original claim.
+
+The unrestricted positive-radius cardinality bound is actually false:
+N=2,K={0},delta=3 demands at least3 points in a group of size2. This separate
+refutation justifies stating the radius range explicitly. The positive
+cardinality/nonzero results require no primality.
+
+For Corollary7.11, coordinate-linearity is the intended transfer through the
+integer-progression embedding. On{0,3} with targetZMod3, values0,1 are affine
+in progression coordinates, but every ambient formulaa*x+b is constant on
+those two integers. The verified distinction is not a refutation of the
+coordinate-interpreted corollary. The source states that interpretation,
+while the proof of7.10 also restores the OCR-lost full length exponent.
+
+The annotated117-page PDF was rebuilt twice and inspected at the radius
+and coordinate notes, pages40 and42. The original published PDF is intact.
+The semantic review now includes Sections6--7, with73 entries still unread
+and convention/geometry follow-ups recorded. Foundational comment fixes are
+identified for after the broad build so that it is not needlessly invalidated.
+The full goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

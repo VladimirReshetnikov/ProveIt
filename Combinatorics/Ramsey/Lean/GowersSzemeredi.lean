@@ -1157,6 +1157,8 @@ import GowersSzemeredi.Proofs13NaturalSquareAxes
 import GowersSzemeredi.Proofs13SparseNaturalAxes
 import GowersSzemeredi.Proofs01HeadlineScale
 import GowersSzemeredi.Proofs02RoundingCounterexample
+import GowersSzemeredi.Proofs07SharpBohr
+import GowersSzemeredi.Proofs07CoordinateLinearity
 import GowersSzemeredi.Proofs16PolyPieceTwoDataWith
 import GowersSzemeredi.Proofs16PolyCoverTwoFejer
 import GowersSzemeredi.Proofs18FejerSeedCounts
@@ -1221,6 +1223,11 @@ import GowersSzemeredi.Proofs18CoverDensityFejerZ
 import GowersSzemeredi.Proofs18CoverExponentsFejerZ
 import GowersSzemeredi.Proofs18CoverFejerHeadlineZ
 import GowersSzemeredi.Proofs18CoverFejerHeadlineY
+import GowersSzemeredi.Proofs16JointSliceCell
+import GowersSzemeredi.Proofs16JointSliceSpectrum
+import GowersSzemeredi.Proofs16JointSliceCore
+import GowersSzemeredi.Proofs16JointSliceGlobal
+import GowersSzemeredi.Proofs18JointSliceInverseFejer
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

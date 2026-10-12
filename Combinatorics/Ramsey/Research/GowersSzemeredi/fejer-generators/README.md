@@ -44,6 +44,10 @@ map").
 | `assemble_x.py` | `Proofs18Cover{Modulus,Density,Exponents}FejerX`, `Proofs18CoverFejerHeadlineX` | the W chain at `tDegX` with the polynomial Lemma 15.6 threshold; `headline_x_{head,tail}.lean.txt` |
 | `assemble_polys.py` | `Proofs16PolynomialFejerS` | `Proofs16PolynomialFejerQ` (reuses the renames of `assemble_s.py`) |
 | `assemble_polyf.py` | `Proofs16PolynomialFejer` | `Proofs16PolynomialStructure`, `…Corollary` |
+| `assemble_jslice.py` | `Proofs16JointSliceCell` | `Proofs16SinglePieceSpectrum`'s line-cell lemma with the two anchor slices covered jointly (`joint_cover_on`, `E = {a, b}`) |
+| `assemble_jspec.py`, `assemble_jcore.py` | `Proofs16JointSliceSpectrum`, `Proofs16JointSliceCore` | the affine-cell / spectrum-cover lemmas and `single_piece_lift_core_rem` with slice covers |
+| `assemble_jglob.py` | `Proofs16JointSliceGlobal` | `single_piece_lift_global_cover_with` with translated slice covers |
+| `assemble_jinv.py` | `Proofs18JointSliceInverseFejer` | `Proofs18SinglePieceCoverInverseFejer` with the `…FJ` density, width, scale and modulus conditions |
 | `mkstub_fejer18.py`, `mkstub_auditfejer.py` | stub checks of `Proofs18CoverFejerAllDegrees` and the Fejér block of `CompletionAudit.lean` | — |
 
 Hand-written modules (no generator): `Proofs15WalshGeneral`,
