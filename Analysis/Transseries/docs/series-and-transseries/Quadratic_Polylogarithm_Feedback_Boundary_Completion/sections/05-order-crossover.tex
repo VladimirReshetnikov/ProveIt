@@ -1,0 +1,305 @@
+\section{A convergent joint crossover at order three}
+\label{sec:order-crossover}
+
+The fixed-order laws change at $s=3$, while the linear term in
+\eqref{eq:normalform} changes at $b=\zeta(s-1)$. We now resolve both
+transitions in one convergent chart. Throughout this section set
+\begin{equation}\label{oc:paired-functions}
+ A(\eps)=\zeta(2+\eps),\quad A_0=\zeta(2),\quad
+ E_2(\eps)=\frac{\Gamma(1-\eps)}{(1+\eps)(1+\eps/2)},\quad
+ Z(\eps)=\zeta(1+\eps)-\eps^{-1}.
+\end{equation}
+The last two functions are holomorphic near zero, with
+$E_2(0)=1$, $E_2'(0)=\gamma-3/2$, and $Z(0)=\gamma$.
+Pairing the resonant terms in \eqref{eq:jonquiere} gives
+\begin{align}
+ 2K_{3+\eps}(x)&=x^2\{H(\eps,x)+xT(\eps,x)\},
+       \label{oc:paired-K}\\
+ H(\eps,x)&=1+\zeta(1+\eps)-\frac{E_2(\eps)x^\eps}{\eps},
+       \label{oc:H}\\
+ T(\eps,x)&=2\sum_{k\ge3}
+       \frac{(-1)^k\zeta(3+\eps-k)}{k!}x^{k-3}.
+       \label{oc:tail}
+\end{align}
+Here $T$ is jointly holomorphic for small $\eps$ and $|x|<2\pi$;
+the paired Jonqui\`ere expansion converges normally on compact
+subsets. In particular,
+\begin{equation}\label{oc:paired-values}
+ H(0,x)=\log(1/x)+\frac52,\qquad
+ T(\eps,0)=-\frac{\zeta(\eps)}3,\qquad T(0,0)=\frac16.
+\end{equation}
+Thus \eqref{eq:normalform} becomes the exact equation
+\begin{equation}\label{oc:exact-equation}
+ d(2b+2x-d)=2\{b-A(\eps)\}x+x^2\{H(\eps,x)+xT(\eps,x)\}.
+\end{equation}
+The extra $1$ in \eqref{oc:H} records the quadratic feedback term;
+it changes the resonant constant from $3/2$ to $5/2$.
+
+\subsection{The joint order and feedback chart}
+
+Put
+\begin{equation}\label{oc:coordinates}
+ X=\frac12\log\frac1d,\quad
+ h=X^{-1},\quad w=X^{-1}\log X,\quad j=\sqrt{dX},\quad
+ \eps=\lambda h,\quad b=A(\eps)+\eta j.
+\end{equation}
+In particular $d=hj^2$. The scaled displacement
+$\eta=(b-A)/\sqrt{dX}$ measures when the linear and resonant
+quadratic terms compete. Write
+\begin{equation}\label{oc:profile}
+ \ph(\lambda)=\frac{1-\ee^{-\lambda}}\lambda,\quad \ph(0)=1,
+ \qquad
+ S=\sqrt{\eta^2+2A_0\ph(\lambda)},\quad
+ V_0=\frac{2A_0}{S+\eta}.
+\end{equation}
+For real $\lambda,\eta$, these quantities are positive. Define
+\begin{equation}\label{oc:G}
+ G(\lambda,h,w,V)=
+ \frac{1-\ee^{-\lambda}E_2(\lambda h)
+           \ee^{-\lambda w/2}V^{\lambda h}}\lambda
+       +h\{1+Z(\lambda h)\},
+\end{equation}
+using the logarithm near $V_0>0$. Its quotient is holomorphic at
+$\lambda=0$, where
+\begin{equation}\label{oc:G-zero}
+ G(0,h,w,V)=1+\frac w2+h\left(\frac52-\log V\right).
+\end{equation}
+
+\begin{theorem}[Convergent joint crossover]\label{thm:joint-crossover}
+For every compact rectangle of real parameters $(\lambda,\eta)$,
+there is a function $V(\lambda,\eta,h,w,j)$ holomorphic on a common
+complex neighborhood of that rectangle times a polydisc about
+$(h,w,j)=(0,0,0)$, with $V(\lambda,\eta,0,0,0)=V_0$.
+For all sufficiently large real $X$, uniformly on the rectangle,
+the positive feedback inverse in \eqref{oc:coordinates} is exactly
+\begin{equation}\label{oc:joint-chart}
+ \boxed{\displaystyle
+ x=\sqrt{\frac dX}\,
+ V\left(\lambda,\eta,\frac1X,\frac{\log X}{X},\sqrt{dX}\right).}
+\end{equation}
+Its defining holomorphic equation is
+\begin{align}
+ 0={}&V^2G(\lambda,h,w,V)+2\eta V
+      +h^2jV^3T(\lambda h,hjV)\notag\\
+    &-2A(\lambda h)-2j\eta-2hjV+hj^2.
+       \label{oc:joint-implicit}
+\end{align}
+Thus the Taylor series in the three independent small coordinates
+converges after physical substitution; it includes every
+inverse-logarithmic order and all exponential sectors.
+\end{theorem}
+
+\begin{proof}
+At $h=w=j=0$, the right side of \eqref{oc:joint-implicit} is
+$\ph(\lambda)V^2+2\eta V-2A_0$. Its positive root is $V_0$, and
+its derivative there is $2S\ne0$. Joint holomorphy, the implicit
+function theorem, and compactness give a common polydisc; uniqueness
+glues the local functions. Under $x=hjV$, the physical coordinates
+satisfy
+\[
+ x^\eps=\ee^{-\lambda}\ee^{-\lambda w/2}V^{\lambda h},
+ \qquad hH(\eps,x)=G(\lambda,h,w,V).
+\]
+Dividing \eqref{oc:exact-equation} by $d=hj^2$ now gives
+\eqref{oc:joint-implicit} exactly. For the constructed root,
+$b+x-d$ is close to $A_0>0$, so the required square-root branch in
+\eqref{eq:Psi} is preserved.
+
+For completeness the positive-root identification remains valid
+when $\eta<0$. For real $s>2$ and $b>0$, the ratio
+\[
+ \frac{\Li_{s-1}(\ee^{-x})}{\sqrt{b^2+2D_s(x)}}
+\]
+strictly decreases from $A/b$ to zero as $x$ increases from zero
+to infinity. Thus $\Psi_b'(x)$ strictly increases to $1$.
+If $b\ge A$, then $\Psi_b$ increases from zero. If $b<A$, it
+first decreases to a negative minimum and then increases to
+infinity. In either case every $d>0$ has exactly one positive
+preimage. In the latter case this root lies before the interior
+fold when the branch is followed from $r=0$, since $r<\Rb$;
+the endpoint reference $\Rb$ need not itself be the Taylor radius.
+The positive root furnished by the chart is therefore the physical
+one. Finally, the asserted convergence is the ordinary convergence
+of the holomorphic Taylor series, not an inference from its
+formal substitutions.
+\end{proof}
+
+\begin{corollary}[Explicit first correction]\label{cor:joint-first}
+Uniformly on compact real $(\lambda,\eta)$ sets, let
+\begin{equation}\label{oc:first-B}
+ B=\ee^{-\lambda}
+   \left\{\frac12\log X-\log V_0-\gamma+\frac32\right\}
+      +1+\gamma,
+ \qquad V_1=\frac{2\lambda\zeta'(2)-V_0^2B}{2S}.
+\end{equation}
+Then
+\begin{equation}\label{oc:first-correction}
+ x=\sqrt{\frac dX}
+   \left\{V_0+\frac{V_1}{X}
+       +O\left(\frac{(1+\log X)^2}{X^2}\right)\right\}.
+\end{equation}
+More generally, the $j=0$ part of \eqref{oc:joint-chart} is a
+convergent series $\sum_{n\ge0}X^{-n}P_n(\log X;\lambda,\eta)$
+with $\deg P_n\le n$. Truncation after $n=N$ has uniform error
+$O((1+\log X)^{N+1}X^{-N-1})$ inside the braces.
+\end{corollary}
+
+\begin{proof}
+Expand $\log E_2(\eps)=(\gamma-3/2)\eps+O(\eps^2)$ and
+$A(\eps)=A_0+\zeta'(2)\eps+O(\eps^2)$ in
+\eqref{oc:joint-implicit}, first setting $j=0$. Its coefficient
+of $X^{-1}$ is $2SV_1+V_0^2B-2\lambda\zeta'(2)$.
+The remaining assertions follow by grouping the absolutely
+convergent Taylor series in $(h,w)$ by total degree. A monomial
+$h^i w^j$ contributes $X^{-i-j}(\log X)^j$, which proves both
+the degree bound and the Taylor remainder. Terms containing the
+third coordinate $\sqrt{dX}$ are smaller than every fixed inverse
+power of $X$ and are retained in the full chart.
+\end{proof}
+
+At $\lambda=\eta=0$, this recovers the explicit resonance constant:
+\begin{equation}\label{oc:critical-first}
+ x=\sqrt{\frac{2\zeta(2)d}{X}}
+ \left\{1-\frac{\log X-\log(2\zeta(2))+5}{4X}
+       +O\left(\frac{(1+\log X)^2}{X^2}\right)\right\}.
+\end{equation}
+The compact-parameter hypothesis is essential to the stated
+uniform errors; it does not by itself permit $\lambda$ or $\eta$
+to tend to infinity with $X$.
+
+\subsection{Critical support and the first exponential correction}
+
+At $\eta=0$, different analytic coordinates reveal an additional
+restriction on the support. Set $q=X^{-1/2}$ and $z=\sqrt d$, so
+$x=zqU$. There is a holomorphic chart $U(\lambda,q,w,z)$ through
+$U_0=\sqrt{2A_0/\ph(\lambda)}$, determined by
+\begin{align}
+ 0={}&U^2G(\lambda,q^2,w,U)
+       +zq^3U^3T(\lambda q^2,zqU)\notag\\
+    &-2A(\lambda q^2)-2zqU+z^2.
+       \label{oc:critical-implicit}
+\end{align}
+Its existence follows directly from the same implicit-function
+argument, since the derivative at the base root is
+$2\ph(\lambda)U_0\ne0$.
+
+\begin{proposition}[Parity and the first exponential sector]
+\label{prop:critical-support}
+The critical chart satisfies
+\begin{equation}\label{oc:parity}
+ U(\lambda,-q,w,-z)=U(\lambda,q,w,z).
+\end{equation}
+Hence the coefficient of $q^iw^jz^k$ vanishes when $i+k$ is odd.
+Put $h=q^2$ and, at $z=0$, write
+\[
+ U_*=U(\lambda,q,w,0),\quad G_*=G(\lambda,h,w,U_*),\quad
+ M_*=\ee^{-\lambda}E_2(\lambda h)
+             \ee^{-\lambda w/2}U_*^{\lambda h}.
+\]
+The exact first exponential coefficient is
+\begin{equation}\label{oc:first-exp-coefficient}
+ \partial_zU(\lambda,q,w,0)
+ =q\,\frac{2+hU_*^2\zeta(\lambda h)/3}{2G_*-hM_*}.
+\end{equation}
+Consequently, for $x_*=\sqrt{d/X}\,U_*$ on the physical curve,
+\begin{equation}\label{oc:first-exp-sector}
+ x=x_*+\frac dX
+       \frac{2+X^{-1}U_*^2\zeta(\lambda/X)/3}
+            {2G_*-X^{-1}M_*}
+       +O\left(d^{3/2}X^{-1/2}\right).
+\end{equation}
+The correction begins with $d/(X\ph(\lambda))$. All statements
+are uniform for $\lambda$ in compact real sets.
+\end{proposition}
+
+\begin{proof}
+The defining equation \eqref{oc:critical-implicit} is invariant
+under $(q,z)\mapsto(-q,-z)$; uniqueness proves \eqref{oc:parity}.
+At $z=0$, its $U$ derivative equals
+$U_*(2G_*-hM_*)$, because $G_U=-hM_*/U_*$ there.
+Its $z$ derivative equals
+$-q^3U_*^3\zeta(\lambda h)/3-2qU_*$, by
+\eqref{oc:paired-values}. Implicit differentiation proves
+\eqref{oc:first-exp-coefficient}. Taylor's theorem in $z$, followed
+by multiplication by $zq$, gives \eqref{oc:first-exp-sector}.
+The parity statement also independently explains why the
+$z=0$ sector contains integer powers of $X^{-1}$.
+\end{proof}
+
+\subsection{A local complex fold beyond a profile zero}
+
+The real crossover profile is positive, but its nonzero complex
+zeros are $\lambda_0=2\pi\ii k$, $k\ne0$. The following theorem
+concerns local solutions of the continued normal form at $b=A$.
+It makes no assertion that those solutions continue the Taylor germ
+$v(0)=0$ around any specified global path.
+
+\begin{theorem}[Local shifted complex fold]\label{thm:local-complex-fold}
+Fix $\lambda_0=2\pi\ii k\ne0$, and put
+$h=1/X$, $z=\sqrt d$, $\lambda=\lambda_0+\alpha h$,
+$\eps=h(\lambda_0+\alpha h)$, and $x=z\omega$.
+There are holomorphic functions $\alpha_c(h,z)$ and $\omega_c(h,z)$
+near $(0,0)$ with
+\begin{equation}\label{oc:complex-base}
+ \omega_c(0,0)=2\sqrt{A_0},\qquad
+ \alpha_c(0,0)=\alpha_*:=
+ \lambda_0\left\{\frac12\log(4A_0)-2\right\},
+\end{equation}
+on which the local inverse equation has a double root.
+An analytic local coordinate converts that equation into a square
+equal to $(\alpha-\alpha_c(h,z))$ times a nonvanishing holomorphic
+factor. In particular, the scaled-order fold curve satisfies
+\begin{equation}\label{oc:complex-curve}
+ \lambda_c(X)=\lambda_0+
+ \frac{\lambda_0\{\frac12\log(4A_0)-2\}}{X}
+       +O(X^{-2}+X^{-1}\ee^{-X}).
+\end{equation}
+At the unshifted profile zero $\alpha=0$, there are instead two
+ordinary holomorphic root germs in $(h,z)$, through the distinct
+positive constants
+\begin{equation}\label{oc:complex-unshifted}
+ \omega_j=\exp\left\{\frac{5+W_j(-4A_0\ee^{-5})}{2}\right\},
+ \qquad j=0,-1.
+\end{equation}
+Thus the unshifted profile zero itself does not force a
+square-root inverse-logarithmic splitting.
+\end{theorem}
+
+\begin{proof}
+Define, with the logarithm near the indicated positive values,
+\[
+ \widehat H(h,\alpha,\omega)=1+Z(\eps)
+    +\frac{1-E_2(\eps)\ee^{-\alpha h}\omega^\eps}{\eps}.
+\]
+The numerator is divisible by $h$, so this expression is
+holomorphic at $h=0$. Its value there is
+$5/2+\alpha/\lambda_0-\log\omega$. The exact equation is
+\begin{equation}\label{oc:complex-equation}
+ \widehat F:=\omega^2\widehat H+z\omega^3T(\eps,z\omega)
+               -2A(\eps)-2z\omega+z^2=0.
+\end{equation}
+At $h=z=0$ it reduces to
+\[
+ \omega^2\left(\frac52+\frac\alpha{\lambda_0}-\log\omega\right)=2A_0.
+\]
+Its double positive root is exactly \eqref{oc:complex-base}; there
+$\widehat F_{\omega\omega}=-2$ and
+$\widehat F_\alpha=4A_0/\lambda_0\ne0$. Apply the implicit
+function theorem to $(\widehat F,\widehat F_\omega)$ to obtain
+$\alpha_c,\omega_c$. For the normal form, first solve
+$\widehat F_\omega=0$ for a stationary point depending on
+$(h,z,\alpha)$. Taylor expansion about it factors the remaining
+quadratic term by a holomorphic unit. Taking its holomorphic square
+root gives a square coordinate. The value at the stationary point
+has a simple zero at $\alpha_c$, because its $\alpha$ derivative
+is nonzero. This proves the claimed factorization and
+\eqref{oc:complex-curve}.
+
+At $\alpha=0$, the limiting equation is
+$\omega^2(5/2-\log\omega)=2A_0$. Solving it gives
+\eqref{oc:complex-unshifted}. Since $A_0<2$ and $8<\ee^4$,
+its Lambert argument lies strictly between $-1/\ee$ and zero.
+The two stated roots are therefore distinct and simple, and the
+ordinary implicit function theorem supplies their local charts.
+No exhaustion of other complex roots is claimed.
+\end{proof}

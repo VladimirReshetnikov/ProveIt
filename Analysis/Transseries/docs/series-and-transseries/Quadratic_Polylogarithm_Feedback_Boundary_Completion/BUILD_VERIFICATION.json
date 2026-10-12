@@ -1,0 +1,78 @@
+{
+  "status": "passed",
+  "created_utc": "2026-10-12T14:26:35.289855+00:00",
+  "article": {
+    "file": "article.pdf",
+    "pages": 29,
+    "sha256": "633387bf32898c7d1b0e0a38a68520b96eabfbe28b6f18bdebcae04eed2291d7",
+    "page_format": "A4",
+    "embedded_fonts": true,
+    "type3_fonts": false,
+    "latex_warnings": [],
+    "unresolved_references": false,
+    "text_blocks_outside_page": []
+  },
+  "visual_review": {
+    "rendering": "Poppler pdftoppm, 115 dpi, all 29 pages",
+    "coverage": "All page contact sheets reviewed; full-resolution mathematical and figure pages inspected. Pages 01-16 independently checked; revised pages 24-29 checked after final float adjustment.",
+    "result": "No clipping, collisions, broken symbols, unreadable equations, or stranded headings detected."
+  },
+  "mathematical_review": {
+    "phase_theorem": "Independent proof review of positivity, global dominance, sector continuation, all constants and integer logarithmic signs.",
+    "logarithmic_expansion": "Independent moment calculation and exact symbolic checks of the Gamma-transfer formula and first two corrections.",
+    "joint_crossover": "Independent term-by-term rescaling, removable-quotient, physical-branch, parity, and local-fold review.",
+    "coefficient_crossover": "Independent Fourier proof review, including marginal L1 tails; explicit b_n in J scope clarification incorporated.",
+    "source_claims": "Numerical data, antecedents, source restrictions, and claim-status language independently compared."
+  },
+  "verification_runs": [
+    {
+      "program": "code/feedback_verify.py",
+      "exit_code": 0,
+      "finite_phase_cases": 24,
+      "exact_rational_coefficients": 8,
+      "independent_precision_index": 64
+    },
+    {
+      "program": "code/verify_coefficient_crossover.py",
+      "exit_code": 0,
+      "cases": 27,
+      "density_normalization_checks": 3
+    },
+    {
+      "program": "code/verify_critical_charts.py",
+      "exit_code": 0,
+      "cases": 12,
+      "decimal_digits": 180,
+      "symbolic_checks": "passed"
+    },
+    {
+      "program": "code/verify_crossover.py",
+      "exit_code": 0,
+      "cases": 9,
+      "decimal_digits": 200
+    },
+    {
+      "program": "code/verify_joint_crossover.py",
+      "exit_code": 0,
+      "real_cases": 18,
+      "complex_fold_cases": 1,
+      "decimal_digits": 180
+    }
+  ],
+  "environment": {
+    "python": "3.12.14",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+    "numpy": "2.3.5",
+    "mpmath": "1.3.0",
+    "scipy": "1.17.0",
+    "sympy": "1.14.0",
+    "matplotlib": "3.10.8",
+    "pdflatex": "pdfTeX 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian)"
+  },
+  "status_limits": [
+    "Analytic research proofs, not proof-assistant certificates.",
+    "Floating-point roots, residuals and densities are not interval-certified.",
+    "Novelty is assessed relative to the inspected repository; wider publication priority is not certified."
+  ],
+  "rebuild_command": "latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex"
+}

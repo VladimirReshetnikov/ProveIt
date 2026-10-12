@@ -1,0 +1,206 @@
+\section{Every logarithmic coefficient correction at order three}
+\label{sec:logarithmic}
+
+In this section $s=3$, $u=\Uc(3)$, $A=\zeta(2)$, and
+$a_n=a_n(3,\Uc(3))$.  The exact Lambert core from
+\cref{thm:chart-three} determines all inverse powers of the large
+logarithm in the leading singular sector.  The analytic feedback
+correction satisfies $x-\tau=O(\tau^2)$ and is smaller than every
+such logarithmic correction relative to $\tau$.
+
+\subsection{A convergent logarithmic expansion of the exact core}
+
+Put
+\begin{equation}\label{eq:log-core-parameters}
+ L=\log(1/d),\qquad c=5-\log(4A),\qquad T=2\Lambda.
+\end{equation}
+The identities defining $\Lambda$ are equivalent to
+\begin{equation}\label{eq:log-T}
+ T-\log T=L+c,\qquad \tau=2\sqrt{Ad/T}.
+\end{equation}
+Both the factor $4A$ and the additive constant $5$ enter the final
+coefficient correction.
+
+\begin{proposition}[All core logarithmic polynomials]
+\label{prop:core-log-polynomials}
+For sufficiently small positive $d$,
+\begin{equation}\label{eq:core-log-series}
+ \tau=2\sqrt{Ad}\,L^{-1/2}
+ \sum_{j\ge0}\frac{P_j(\log L+c)}{L^j},
+\end{equation}
+where this series converges, and
+\begin{equation}\label{eq:core-log-polynomial-formula}
+ P_0(Y)=1,\qquad
+ P_j(Y)=-\frac1{2j}[h^{j-1}]
+ (1+h)^{-3/2}\{Y+\log(1+h)\}^{j}\quad(j\ge1).
+\end{equation}
+Each $P_j$ has degree $j$.  For every fixed $M\ge0$, truncation
+after $j=M$ has relative remainder
+$O((\log L)^{M+1}/L^{M+1})$.
+\end{proposition}
+
+\begin{proof}
+Write $T=L(1+V)$.  Equation \eqref{eq:log-T} becomes
+\[
+ V=\eta+p\log(1+V),\qquad
+ p=L^{-1},\quad \eta=(\log L+c)/L.
+\]
+The implicit derivative in $V$ at $(p,\eta,V)=(0,0,0)$ is one.
+Thus $V$ and $(1+V)^{-1/2}$ are holomorphic in the two small
+coordinates $(p,\eta)$.  After setting $\eta=pY$, apply ordinary
+Lagrange inversion to $V=p\{Y+\log(1+V)\}$ and the function
+$(1+V)^{-1/2}$.  It gives
+\eqref{eq:core-log-polynomial-formula}.
+Grouping the normally convergent double series by total degree gives
+\eqref{eq:core-log-series}; both $p$ and $pY$ are small on the physical
+curve.  The leading coefficient of $P_j$ is
+$(-1)^j\binom{2j}{j}/4^j$, which is nonzero.
+Cauchy bounds for the double series give the stated remainder and its
+uniform counterpart on closed subsectors.
+\end{proof}
+
+The first polynomials are
+\begin{align}
+ P_1(Y)&=-\frac Y2,\label{eq:core-log-P1}\\
+ P_2(Y)&=\frac{3Y^2}{8}-\frac Y2,\label{eq:core-log-P2}\\
+ P_3(Y)&=-\frac{5Y^3}{16}+Y^2-\frac Y2.\label{eq:core-log-P3}
+\end{align}
+In particular,
+\begin{equation}\label{eq:three-x-logarithmic}
+ x=2\sqrt{Ad/L}\left[
+ 1-\frac{\log L-\log(4A)+5}{2L}
+ +O\left(\frac{(\log L)^2}{L^2}\right)\right].
+\end{equation}
+The $O(\tau^2)$ correction from \eqref{eq:three-chart-correction}
+is absorbed here because it is smaller than every fixed inverse power
+of $L$ relative to the leading term.
+
+\subsection{A finite formula after singularity transfer}
+
+It is useful to state the transfer calculation explicitly: otherwise
+the shift from the Gamma factor can change the constant in the answer.
+For $a$ near $1/2$ define
+\begin{equation}\label{eq:transfer-multipliers}
+ G(a)=\frac1{\Gamma(-a)},\qquad
+ M_k(a)=\frac{(-1)^kG^{(k)}(a)}{k!G(a)}.
+\end{equation}
+For the finite sums of functions $L^{-\beta}P(\log L)$ used here,
+power--logarithm transfer \cite{FO} can be expressed as the asymptotic
+operator
+\begin{equation}\label{eq:log-transfer-operator}
+ [z^n](1-z)^aF\left(\log\frac1{1-z}\right)
+ \sim\frac{n^{-a-1}}{\Gamma(-a)}
+ \left.\frac{\Gamma(-a)}{\Gamma(-a+\partial_L)}F(L)
+ \right|_{L=\log n},
+\end{equation}
+where the operator means
+$\sum_{k\ge0}M_k(a)\partial_L^k$ as an asymptotic derivative
+expansion.  No convergence of this infinite operator is claimed.
+For a finite target order only finitely many derivatives contribute.
+
+The signs can be checked directly on the Hankel contour used in
+singularity analysis.  The substitution $1-z=t/n$ replaces the
+logarithmic argument by $\log n-\log t$.  Taylor expansion of $F$
+there contributes $(-1)^kF^{(k)}(\log n)(\log t)^k/k!$.
+Its Hankel integral is $G^{(k)}(a)$, giving
+\eqref{eq:log-transfer-operator}.  The analytic continuation from
+\cref{lem:delta} permits the contour deformation.  Truncating the
+logarithmic expansion and its differentiated versions gives the usual
+uniform remainder estimates; powers of $1/n$ from the contour scaling
+are smaller than every fixed inverse power of $\log n$.
+
+\begin{theorem}[All logarithmic coefficient corrections]
+\label{thm:all-logarithmic-coefficients}
+For $N\ge0$ define the polynomial
+\begin{equation}\label{eq:transferred-log-polynomials}
+ \mathcal Q_N(Y)=\sum_{j=0}^{N}M_{N-j}(1/2)
+ \prod_{\ell=0}^{N-j-1}
+ \left(\frac{\dd}{\dd Y}-j-\frac12-\ell\right)P_j(Y),
+\end{equation}
+where the empty product is one.  For every fixed $M\ge0$,
+\begin{equation}\label{eq:all-log-coefficient-law}
+ \begin{split}
+ \Rb^n a_n={}&\sqrt{\frac A\pi}\,
+ n^{-3/2}(\log n)^{-1/2}\left[
+ \sum_{N=0}^{M}
+ \frac{\mathcal Q_N(\log\log n+c)}{(\log n)^N}
+ \right.\\[-2pt]
+ &\left.\hspace{35mm}
+ +O\left(\frac{(\log\log n)^{M+1}}{(\log n)^{M+1}}\right)
+ \right].
+ \end{split}
+\end{equation}
+Thus every correction is supplied by finite polynomial and
+Gamma-derivative operations.
+\end{theorem}
+
+\begin{proof}
+For the singular part of $v=\vc+d-x$, replace $x$ by the exact
+core $\tau$.  The omitted terms $x-\tau=O(\tau^2)$ contribute at
+coefficient orders smaller by a positive power of $n$, up to powers of
+its logarithm.  Locally analytic terms do not affect the singular
+expansion.  Also $d=-\Log(r/\Rb)=1-r/\Rb+O((1-r/\Rb)^2)$;
+this replacement changes only corrections smaller by a power of $n$.
+
+Apply \eqref{eq:log-transfer-operator}, with $a=1/2$, to each
+term $L^{-j-1/2}P_j(\log L+c)$ in
+\eqref{eq:core-log-series}.  Repeated differentiation gives exactly
+\[
+ \partial_L^k\{L^{-j-1/2}P_j(\log L+c)\}
+ =L^{-j-k-1/2}
+ \prod_{\ell=0}^{k-1}
+ \left(\frac{\dd}{\dd Y}-j-\frac12-\ell\right)P_j(Y)
+ \bigg|_{Y=\log L+c}.
+\]
+Collecting $j+k=N$ proves \eqref{eq:transferred-log-polynomials}.
+The amplitude of $-\tau$ is $-2\sqrt A$, and
+$\Gamma(-1/2)=-2\sqrt\pi$, giving the positive prefactor in
+\eqref{eq:all-log-coefficient-law}.  The finite-order transfer
+remainder and \cref{prop:core-log-polynomials} prove the stated error.
+\end{proof}
+
+\subsection{The first three terms in closed form}
+
+Let $\psi=\Gamma'/\Gamma$, $\psi_1=\psi'$, and abbreviate their
+values at $-1/2$ by $\psi_*$ and $\psi_{1,*}$.  Formula
+\eqref{eq:transfer-multipliers} gives
+\[
+ M_0=1,\qquad M_1=-\psi_*,\qquad
+ M_2=\frac{\psi_*^2-\psi_{1,*}}2.
+\]
+Substituting \eqref{eq:core-log-P1}--\eqref{eq:core-log-P2} into
+\eqref{eq:transferred-log-polynomials} yields
+\begin{align*}
+ \mathcal Q_0(Y)&=1,\\
+ \mathcal Q_1(Y)&=-\frac{Y-\psi_*}{2},\\
+ \mathcal Q_2(Y)&=\frac38(Y-\psi_*)^2-\frac12(Y-\psi_*)
+                  -\frac38\psi_{1,*}.
+\end{align*}
+The standard digamma recurrence and half-integer values give
+\[
+ \psi_*=2-\gamma-2\log2,\qquad
+ \psi_{1,*}=\frac{\pi^2}{2}+4.
+\]
+Consequently, with
+\begin{equation}\label{eq:log-Hn}
+ H_n=\log\log n-\log A+\gamma+3,
+\end{equation}
+we obtain the explicit refinement
+\begin{equation}\label{eq:three-term-log-law}
+ \boxed{\begin{aligned}
+ \Rb^n a_n={}&\sqrt{\frac A\pi}\,
+ n^{-3/2}(\log n)^{-1/2}\left[
+ 1-\frac{H_n}{2\log n}\right.\\
+ &\left.\quad+
+ \frac{\frac38H_n^2-\frac12H_n-\frac{3\pi^2}{16}-\frac32}
+ {(\log n)^2}
+ +O\left(\frac{(\log\log n)^3}{(\log n)^3}\right)
+ \right].
+ \end{aligned}}
+\end{equation}
+The cancellation of $\log4$ between the exact core and the digamma
+shift leaves the simple constant $-\log A+\gamma+3$.
+The core and feedback charts are convergent analytic constructions;
+\eqref{eq:all-log-coefficient-law} and
+\eqref{eq:three-term-log-law} are coefficient asymptotic expansions.
+These are distinct convergence statements.
