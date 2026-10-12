@@ -1,0 +1,127 @@
+\subsection{Removing source core three-handles relative to the bundle ports}
+\label{marked-cut:three-handles}
+
+The source core retains one three-handle for each interior original vertex.
+These are vertex-link balls, not compressed families. Its two-handles are
+the extreme gaps of interior source edges. This gives a finite dual graph
+in which the boundary is a distinguished root. We can contract a forest
+from the interior vertices to this root before testing one/two cancellation.
+
+\begin{proposition}[Authenticated dual endpoints]
+\label{marked-cut:dual-endpoints}
+Let an interior source edge $e$ have normal weight $w$, with its canonical
+local endpoints ordered as $v_0,v_1$. If $w=0$, the core has one two-handle,
+whose two dual endpoints are the vertex-link regions of $v_0,v_1$. If
+$w>0$, the rank-zero gap has endpoints $v_0$ and the cut boundary, while
+the rank-$w$ gap has endpoints on the cut boundary and $v_1$.
+A source endpoint on the original boundary is also a boundary endpoint.
+Repeated interior-vertex endpoints count twice.
+\end{proposition}
+\begin{proof}
+The dual cocore of an edge-gap two-handle is the source gap interval itself,
+transverse to the edge-link disk. With zero weight that interval extends
+between the two original vertices. With positive weight, its two extreme
+gaps extend from the corresponding vertex to the first or last normal-disk
+intersection, respectively. The latter endpoints are exposed by the cut.
+A vertex contributes a three-handle precisely when its link is a sphere;
+a boundary-vertex link is already a boundary disk. Thus the stated endpoint
+list is the geometric incidence list with three-handle attaching spheres.
+For a loop edge with both ends at the same interior vertex, the two distinct
+ends of the cocore give two intersections, regardless of the equal label.
+\end{proof}
+
+\begin{proposition}[Complete dual boundary forest]
+\label{marked-cut:dual-forest}
+For the validated connected compact source with nonempty boundary, all core
+three-handles can be removed by $O(T)$ two/three-handle cancellations. The
+source zero/one handles and all bundle port charts are preserved. Only the
+cancelled two-handles and three-handles are deleted.
+\end{proposition}
+\begin{proof}
+Create one dual vertex for each interior source vertex and identify all
+original and cut-boundary endpoints with a root. The original source
+one-skeleton is connected and contains a boundary vertex. A path from an
+interior vertex towards the original boundary either follows zero-weight
+edges until reaching that boundary, or first encounters a positive-weight
+edge. In the second case its corresponding extreme gap already gives an
+edge to the cut boundary. Every dual vertex therefore reaches the root.
+Source edges touching an interior vertex have circular links, so their
+required extreme-gap two-handles are all present in the core.
+
+Starting at the root, choose an edge to a remaining interior vertex. Its
+two-handle belt sphere meets exactly that remaining three-handle attaching
+sphere once. The geometric two/three cancellation removes this pair. All
+other endpoints at the removed vertex become boundary endpoints. This is
+the usual dual boundary-forest contraction, and the argument repeats until
+no three-handle remains. Loops at a remaining vertex have two intersections
+and cannot supply the pivot. There are at most $4T$ interior vertices.
+
+The two/three cancellation changes the top handles, leaving all other
+attaching maps into the original zero/one body unchanged. The bundle ports
+lie in that lower body, outside the top-handle attaching regions. The
+cancellation can therefore be performed relative to the marked ports.
+Deleting equal numbers of two- and three-handles also preserves the core
+Euler characteristic used in the independent whole-cut consistency check.
+\end{proof}
+
+\paragraph{Independent source replay.}
+The producer derives endpoint owners from the source vertex partition and
+normal edge weights. The independent checker instead assigns local vertex
+occurrences directly from the authenticated three-handle link triangles.
+It computes each root-edge weight directly from the local normal coordinates:
+triangles at its two ends plus quadrilaterals that meet that edge. No
+producer geometry or cancellation planner is needed. A record supplies the
+complete dual endpoint list, every cancelled pair, and the ordered list of
+surviving original two-handle identifiers. The checker preserves endpoint
+multiplicity, checks a single remaining endpoint at each move, and renumbers
+only the surviving two-handles. The boundary kernel then runs on that
+verified reduced core with the original profiles and port words.
+
+\paragraph{Sparse algorithm and accounting.}
+The producer indexes both occurrences of each dual edge endpoint. A queue
+holds edges with one live interior endpoint; its degree and xor of live
+endpoint labels identify the cancellable pair. Removing a vertex scans each
+of its incident endpoint occurrences once. A self-loop is initially degree
+two and is never an eligible pivot; a temporarily queued record created
+while deleting its two occurrences is stale and is skipped. Each dual edge
+has at most two endpoint occurrences, so this phase has $O(T)$ indexed work
+and storage. The checker simply filters the two authenticated endpoints
+against its live-vertex set at each recorded move. Full coverage and the
+ordered surviving-row list are checked independently. Source preparation,
+integer reading, and the existing whole-cut orbit queries have their own
+costs; this is not a linear bound on the complete cut operator.
+
+The input contract is the source-authenticated parallelity geometry. The
+producer uses its ordinary vertex partition and edge-weight analysis. The
+checker imports neither of those producer routines, neither the source
+geometry builder nor the cancellation queue. It reconstructs owners from
+the authenticated link triangles and computes the root-edge weight locally.
+Equal numbers of deleted two- and three-handles preserve the original
+summary's Euler characteristic, so the unchanged independent genus identity
+still applies.
+
+\paragraph{Whole-cut proofs.}
+New proofs use outer schema \path{normal-cut-handlebodies-v6}. They contain
+the original parallelity and boundary proofs, a
+\path{core-three-handle-reduction-v1} record, and the existing timestamp-based
+boundary-kernel proof. The producer and checker pass the reduced geometry to
+that kernel; source proofs continue to authenticate the original geometry.
+Only two-handle identifiers are renumbered, in surviving source order.
+Core zero/one handles and every port chart retain their original identifiers.
+Sources without three-handles keep their previous certificate routes.
+
+The reduction must precede the source-core stopping-set precheck. A stopping
+subset of original rows can disappear when two/three cancellation deletes
+some of those rows. Applying the precheck to the unreduced core would thus
+be unsound as a completeness-preserving filter for this enlarged method.
+After reduction, the previous monotonicity proof applies to the remaining
+core rows. Exhausting an orbit allowance or interrupting a callback still
+emits no partial certificate.
+
+This extends the existing source-handle cancellation argument of
+Section~\ref{sec:source-handles} to arbitrary supplied normal cuts by using
+extreme edge gaps and cut-boundary endpoints. The local cancellation rule is
+Procedure 6 in Section 6.1 of~\cite{lackenby-parallelity}; the source argument
+above establishes its specific charts and preservation of the bundle ports.
+
+\input{three_handles_results.tex}
