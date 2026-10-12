@@ -2,10 +2,10 @@
 
 The canonical reading artifact is the collective four-volume manuscript,
 [Polylogarithms and their Arithmetic Bridges](docs/manuscript/README.md),
-authored by **ProveIt Contributors**. The volumes have **130, 129, 244 and
+authored by **ProveIt Contributors**. The volumes have **130, 129, 248 and
 85 pages**, each compiling independently; the retained
-[combined edition](docs/manuscript/polylogarithms.pdf) has **547 pages**.
-They share twelve chapters, thirteen figures and 140 references. The
+[combined edition](docs/manuscript/polylogarithms.pdf) has **552 pages**.
+They share twelve chapters, thirteen figures and 141 references. The
 [editorial ledger](docs/manuscript/EDITORIAL-LEDGER.md) separates accepted
 proofs from pending analytic claims, and the
 [validation record](docs/manuscript/VALIDATION.md) distinguishes proofs,
@@ -14,8 +14,8 @@ finite certificates, numerical diagnostics, PDF builds and visual review.
 The inventory covers **1794 textual provenance documents**. **124 incoming
 archives / 4550 original tracked members** are preserved; imported ZIPs are
 retired in their placement commits and recoverable from arrival history.
-The latest eighteen deliveries, in three intakes, retain their own PDFs, sources, code and
-receipts. Intake notes use a separate filename, preserving delivered
+Delivered PDFs, sources, code and receipts retain their original evidence
+scopes. Intake notes use a separate filename, preserving delivered
 OVERVIEW files. Original articles and reports remain historical evidence.
 
 The crossed-twist extension now gives the exact finite Fourier correction
@@ -30,8 +30,8 @@ also preserved and audited; their native search is a separate experiment.
 The latest accepted additions prove all positive-integer digamma-power finite
 parts and normalized primitives, reconcile the full fifth-power correction,
 and give a positive Cauchy series for every height-one coefficient. Two
-version-specific source corrections carry exact proofs. All eighteen newest
-packages pass isolated mathematical replay; their broader branches retain
+version-specific source corrections carry exact proofs. Recorded isolated
+mathematical replays retain their stated scopes; broader branches retain
 separate analytic scopes. The differential-polynomial core now proves unsubtracted expansions and
 ordinary finite-part coordinates for every derivative-containing polynomial;
 combined with scalar powers, it handles every fixed differential polynomial.
@@ -631,3 +631,11 @@ amplitude in classical dilogarithms. Free normal projection precedes
 specialization. An all-degree harmonic coefficient identity and ordinary
 asinh-square/log-square antiderivatives follow, with analytic branches
 fixed on |t/x|<1. Higher amplitude resummations remain open.
+
+
+Section 8.47 proves the confluent pole-multiplicity budget and a terminating
+finite MPL compiler for all rational Hankel ranks. Denominators of degree
+at most two use only 1,L,L^2,Li2, with arbitrary polynomial part and
+nonpositive integer poles. Anchored Euler primitives, finite differential
+modules and a shifted-double-pole ordinary zeta endpoint are included.
+Formal sharpness and spectral/Hahn refinements remain separate audits.
