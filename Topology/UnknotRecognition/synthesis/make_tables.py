@@ -1804,3 +1804,7 @@ if (os.path.exists('data/weighted-sweep-benchmark.json') and
 if os.path.exists('data/cut-boundary-benchmark.json'):
     import runpy
     runpy.run_path('data/cut_boundary_tables.py')
+
+if os.path.exists('data/cut-cells-benchmark.json'):
+    import runpy
+    runpy.run_path('data/cut_cells_tables.py')

@@ -2,10 +2,10 @@
 
 The canonical reading artifact is the collective four-volume manuscript,
 [Polylogarithms and their Arithmetic Bridges](docs/manuscript/README.md),
-authored by **ProveIt Contributors**. The volumes have **130, 129, 233 and
+authored by **ProveIt Contributors**. The volumes have **130, 129, 237 and
 85 pages**, each compiling independently; the retained
-[combined edition](docs/manuscript/polylogarithms.pdf) has **536 pages**.
-They share twelve chapters, thirteen figures and 138 references. The
+[combined edition](docs/manuscript/polylogarithms.pdf) has **540 pages**.
+They share twelve chapters, thirteen figures and 139 references. The
 [editorial ledger](docs/manuscript/EDITORIAL-LEDGER.md) separates accepted
 proofs from pending analytic claims, and the
 [validation record](docs/manuscript/VALIDATION.md) distinguishes proofs,
@@ -584,3 +584,21 @@ checks every remaining case with two algorithms. Formal rank does not imply
 arithmetic independence, and the unrestricted rank and Gaussian questions
 remain open. The seventeenth/eighteenth intake ledger records all eleven
 full isolated replays and their remaining analytic integration branches.
+
+
+Section 8.46 now reconciles the universal rational Beta coefficient formula
+for every derivative index in the canonical inverse-Gamma hierarchy. Its
+complete support/sign theorem and ordinary finite projections have a
+self-contained rational-kernel and variational uniqueness proof. The
+collective analytic-jet extension proves convergence of the infinite normal
+generator on disks of holomorphy, with an entire generator for entire input.
+The affine case has a closed hyperbolic-sine-integral expression and exact
+all-degree coefficients. No infinite convergence for arbitrary formal jets
+or arithmetic independence is inferred.
+
+The fifth reciprocal-Gamma printed coefficient is corrected to end in
++24*zeta(5), with independent symbolic and Wolfram Taylor audits. A repeated
+manuscript README paragraph is removed. The nineteenth intake preserves
+twelve packages and completes all supplied mathematical replays; its lattice
+runner needs one output-Path parenthesis repair on the isolated copy, with
+the unmodified failure preserved. Other analytic branches remain pending.

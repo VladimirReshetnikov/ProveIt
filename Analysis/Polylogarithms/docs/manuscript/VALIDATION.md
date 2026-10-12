@@ -1,3 +1,54 @@
+# Universal normal coefficients and analytic generators
+
+October 12, 2026. Section 8.46 reconciles both universal-normal-form
+continuations with a complete rational telescoping/variational proof. Every
+canonical inverse-Gamma coefficient has one rational Beta integral, with
+all support zeros and signs determined. The ordinary finite projections
+are entire in their finite jet variables. The collective analytic extension
+proves an actual locally convergent infinite normal generator for holomorphic
+input jets, and an entire generator for entire inputs. Gamma specialization
+uses the disk avoiding its poles. The affine case has an explicit Shi/cosh
+generator and an all-degree coefficient identity.
+
+An independent sparse IBP implementation agrees with the Beta formula on
+all 1596 coefficients through weight eighteen; 19 affine coefficient rows
+also pass. Twenty ordinary-integral/Taylor/majorant diagnostics and two
+independent real/complex affine closed-generator diagnostics pass at 75
+working digits. Omitting the linear subtraction gives a forbidden nonzero
+unique-u2 coefficient and is rejected. The written all-order and Cauchy
+arguments establish the infinite theorem; finite comparisons do not infer
+it, and numerical checks are not interval certificates.
+
+The actual alpha5 print error is corrected from the undefined self-referential
+zeta/alpha term to +24*zeta(5). Exact exponential and differentiated-log
+recurrences and independent native Wolfram Gamma Taylor expansion agree.
+The duplicated README passage is removed with an exact context check.
+
+The nineteenth intake preserves 433 members, 429 tracked and four ignored
+recoverable records; its twelve ZIPs were retired in placement 83d796004821,
+published in cc569dca8622. Every specified full mathematical suite passes
+on an isolated copy. The lattice runner's original output-writer failure and
+two fresh partial receipts are retained; its qualified full replay uses
+only a parenthesis repair of the output Path, with no mathematical change.
+Original delivery code and evidence remain unchanged. Source preservation
+now covers 119 archives, 4385 tracked originals, 46 ignored recoverable
+records and 1742 textual sources. Other analytic report branches remain
+distinct pending audits. The general all-pair rank and Gaussian S6/revised
+S8 questions remain open.
+
+The final four volumes have 130/129/237/85 pages (581 total), a 540-page
+combined edition and 139 references. Authorship remains ProveIt Contributors,
+with all earlier theorem/equation numbers, thirteen figures and 94 literature
+leads retained. Three final coupled rounds, three combined passes and three
+cold passes per volume converge; all static page checks and 40 external
+destinations pass. Eleven changed volume bodies and two unmatched combined
+contents pages are reviewed at full size. Exact scientific-body rasters retain
+review for 570 volume and 531 combined bodies; seven further combined bodies
+match the freshly reviewed volumes. Only centered footer numbers are excluded,
+with all other bounds audited. No current contact sheet was opened.
+
+Historical checkpoints below retain their original dated scopes.
+
 # Complete harmonic-tail prefixes and ordinary identity families
 
 October 12, 2026. Section 8.45 proves the analytic centered coefficient

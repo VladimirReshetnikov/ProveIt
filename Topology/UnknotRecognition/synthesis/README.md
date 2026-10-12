@@ -1734,3 +1734,40 @@ assessment starts on page 624. Pages 619–626 have been visually reviewed,
 including the full cell and encoded-cost proofs, source ownership, nonball
 counterexample, complete timing table and assessment update. All references
 resolve and only the four pre-existing overflow warnings remain.
+
+[cut_cells.tex](cut_cells.tex) extends the cut to a full three-dimensional
+raw CW packet with all interior cells, oriented edge/polygon and polygon/chamber
+maps, a marked boundary subcomplex and immutable reconstruction charts. Its
+linear family storage and polynomial encoded-bit work do not expand normal
+copies. This is raw geometry; parallelity removal and a bounded admissible
+handle core remain separate requirements.
+
+All 1,599 maintained tests pass with Regina and no skips. The completed
+1,755-cut audit agrees in full homology over F2 and F3, checks 233,036 integral
+zero compositions, 638,563 edge/polygon and 260,842 polygon/chamber incidences,
+and replays 110 saved source proofs with producers disabled. Ten binary cases
+include a 16,385-bit multiplicity. The source snapshot at `56a70f4da` retains
+682 hashes; its unused benchmark driver is authenticated from Git after the
+later switch to reversible labelled serialization. All operation sources
+still match the audited snapshot.
+
+Complete raw-cut construction, independent replay and serialization have
+paired ratio 25.792 at 4,096 meridian copies and 1.816 on the primitive
+16-tetrahedron source. Native is much slower on tiny cases. All timings,
+controls and regressions are retained. Regina's exact `tightEncoding`
+roundtrip is checked outside the timer; isomorphism canonicalization is
+excluded. Both formats represent the same cut with different refinements.
+
+Reproduce the current source/evidence review with
+`python -B data/cut_cells_review.py --publication`, and regenerate the table
+with `python -B data/cut_cells_tables.py`, from this directory. The raw
+interior representation is now present for the first supplied cut. General
+binary homology, parallelity collapse, core reduction, pattern transport,
+later-source validation and the hierarchy bound remain open. The full
+quasi-polynomial recognition objective is preserved.
+
+The current [PDF](report.pdf) has 634 pages. Section 162 starts on page 624;
+assessment starts on page 628. Pages 624–630 have been visually reviewed,
+including source reconstruction charts, both cell and encoded-size proofs,
+the full homology evidence, complete timing table and assessment update.
+All references resolve and only the four pre-existing overflow warnings remain.

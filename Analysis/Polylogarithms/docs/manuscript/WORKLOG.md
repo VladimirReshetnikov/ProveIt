@@ -787,3 +787,42 @@ Chapter 8 punctuation. Restore that driver from its committed UTF-8 source
 and append only the new input; the resulting diff has exactly two added
 lines. Fix the helper decoding and rebuild every PDF, then repeat cold builds
 and final raster review. The mathematical certificate inputs were unaffected.
+
+
+## Universal coefficients, analytic resummation and confirmed corrections
+
+Place twelve nineteenth manuscripts as 429 unchanged tracked originals,
+retiring their ZIPs in placement 83d796004821 and publishing cc569dca8622.
+Record source pins honestly, including moving per-file provenance without
+one atomic pin. Confirm the 74172-byte affine Library predecessor for the
+selector and universal-Beta reports as later evidence, leaving originals
+unchanged. Two similarly named Gamma packages are different manuscripts.
+
+Run all twelve full mathematical suites on isolated copies. Preserve the
+lattice original AttributeError after its successful mixed-tail comparisons;
+repair only output-Path parentheses on a new copy and complete all six
+programs. Retain the original failure, two fresh partial results, exact patch
+and qualified complete replay. Reproduce the complete native gap-eight
+certificate and both joint-cumulant precisions; fixed-gap analytic acceptance
+remains separate. Independently derive the all-half-gap complementary-minor
+bridge in FIXED-GAP-BRIDGE-AUDIT.md, without claiming the Gamma null basis.
+
+Confirm the actual printed alpha5 error and repeated README passage. Correct
+the Gamma coefficient using its defining series, independent recurrence and
+native Wolfram expansion. Reconcile the two all-index coefficient proofs by
+a self-contained rational-kernel, finite-jet variational and uniqueness
+argument. Derive a new analytic-jet convergence theorem from Cauchy bounds
+and cancellation of the repeated highest derivative. This gives an ordinary
+infinite generator on the disk of holomorphy and an entire generator for
+entire inputs. Derive the explicit affine Shi/cosh expression and all-degree
+coefficients. Keep primitive endpoint terms and distinguish formal support
+from arithmetic independence.
+
+Independently check all 1596 coefficients through weight eighteen, 19 affine
+rows, 20 ordinary projection/Taylor/majorant diagnostics and two closed affine
+diagnostics. Reject a missing-linear-subtraction control. Rebuild and inspect
+the four volumes and combined edition after the final affine formulas, then
+repeat the cold builds. Final pages 130/129/237/85, combined 540, references
+139. Review every changed final body; preserve exact raster evidence and
+all old numbering. General rank, Gaussian periods and other pending branches
+remain active research questions.
