@@ -42,7 +42,7 @@ theorem section16Lemma6QBound_tower_lower {delta theta1 sigma : Real} (k : Nat)
   have hinv : 2 ≤ (delta * (sigma / t))⁻¹ := by
     have h := (inv_le_inv₀ (by norm_num : (0 : Real) < 1 / 2) hb).mpr hbHalf
     norm_num at h
-    exact h
+    simpa only [mul_inv_rev, inv_div] using h
   have hQ : (2 : Real) ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 8))) ≤ multipleQ (sigma / t) delta k := by
     unfold multipleQ multipleC
     rw [← inv_pow]

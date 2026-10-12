@@ -6794,54 +6794,67 @@ stronger k+8 comparison; the published original PDF remains unchanged.
 The expanded downstream target is IntegerOriginalCorollaryFidelityAudit,
 followed separately by the facade. These broader checks remain pending.
 
-### L.50. Comparing the numbered widths with integer polynomial covers (draft, 2026-10-12)
+### L.50. Numbered widths with integer polynomial covers (verified, 2026-10-12)
 
-The new Lemma 16.6 draft pads the natural graph budget to the floor of the
-source's real budget. This budget dominates both explicit recurrence-profile
-constants C and p. For q at least C,p and k>=1, the numerical comparison is
+Lemma 16.6 now has its annotated numerical width and graph budget together
+with ascending integer boxes. Pad the natural graph count to the floor of
+the allowed real budget, which dominates both explicit profile constants C,p.
+For k>=1 and q>=C,p, the comparison is
 
     2 * (2*p*(q+1)^(2*2^(k+1))) * (2*C*(q+1)+1)
       <= ((k+1)^2*2^(k+4))^(2^(k+1)*q).
 
-It converts the polynomial width to the numbered width at every input scale.
-The proof splits according to whether the numbered width is at most one;
-otherwise, its positive power of the input size absorbs the polynomial
-prefactor. Positive integer cell widths absorb the singleton case. Thus no
-new modulus-size threshold is needed for this comparison.
+This converts the polynomial width to the numbered width at every input
+scale. If that width exceeds one, its power of the input size absorbs the
+prefactor; otherwise positive integer cell widths suffice. No additional
+modulus-size threshold is introduced. The covering premise explicitly uses
+ordinary boxes, and the density and loss parameters are in (0,1]. Primality
+is unnecessary once the cover and induced linearity are supplied.
 
-The draft `lemma_16_6_integer_representatives` retains ascending integer
-output boxes and the annotated graph/width bounds. Its covering premise is
-`IntegerMultiplyLinear`, which explicitly uses boxes with integer
-representatives. It does not derive ordinary-box covers from a modular-only
-premise. The density and loss parameters remain in (0,1], and the proof uses
-no primality assumption. A second draft carries this result through the
-two-stage partition in Lemma 16.9, retaining separate spectrum and remainder
-graph counts and the annotated k+1 ambient dimension on the remainder side.
+The integer companion of Lemma 16.9 carries this result through the two-stage
+partition, preserving the separate spectrum and remainder counts, the
+annotated k+1 ambient dimension of the remainder and the sign (-1)^k.
+IntegerNumberedLemma6CoreAudit passes 1,244 current-source modules. The combined
+IntegerNumberedWidthsCoreAudit passes 1,249 modules with only propext,
+Classical.choice and Quot.sound. The wider fidelity and facade checks are
+separate. The paper and ledger now record the proved geometry/bound
+combination with its explicit ordinary-box hypotheses.
 
-These drafts are not yet counted as proved statements. The serial native
-Lemma 16.6 audit is queued behind the current-source Corollary 16.11 audit;
-the Lemma 16.9 draft will be checked after its new prerequisite passes.
-The source-fidelity ledger and paper are unchanged by these drafts.
+### L.51. Integer radii in the finite-pattern bounds (verified, 2026-10-12)
 
-### L.51. Integer radii in the finite-pattern bounds (draft, 2026-10-12)
+Corollary 17.5 now covers every integer radius, with the literal integer
+exponent in a real cardinality bound. Nonnegative radii use the existing
+proof. Negative radii have an empty coefficient domain in positive dimension;
+in dimension zero there is exactly the zero pattern and the exponent is zero.
 
-Corollary 17.5 says integer radius, whereas the checked companion used a
-natural radius. The new wrapper keeps the literal integer exponent in a real
-cardinality bound. For nonnegative radii it uses the existing proof; for
-negative radii the coefficient domain is empty in positive dimension, while
-dimension zero has exactly the zero pattern and exponent zero.
+The affine Corollary 17.6 differs at dimension zero: the free affine offset
+still produces patterns with an empty coefficient tuple. At radius -1,
+dimension 0 and modulus 1 the displayed budget is 1/4, but one pattern exists.
+Lean proves this endpoint counterexample and the integer-radius companion
+with `0<=r or 1<=k`. Every integer radius is therefore covered in the paper's
+usual positive-dimensional context, with no change to the displayed bound.
+The annotated statement makes the endpoint condition explicit. All three
+proofs are included in the 1,249-module combined native audit.
 
-The affine Corollary 17.6 has a different zero-dimensional endpoint: a free
-affine offset still produces patterns when the coefficient tuple is empty.
-At radius -1, dimension0 and modulus1, the displayed bound is1/4 but there
-is one pattern. The new proof draft isolates this endpoint counterexample
-and states the integer-radius companion with `0<=r or 1<=k`. This includes
-every integer radius in the positive-dimensional context of the paper.
-It does not allege a counterexample under that context.
+### L.52. Why the numbered loss parameter must be bounded (verified, 2026-10-12)
 
-`IntegerNumberedWidthsCoreAudit` will check these wrappers and Lemma 16.9
-after Lemma 16.6 passes. These drafts have not yet changed the source-fidelity
-ledger or the annotated paper.
+The restriction 0<sigma<=1 cannot simply be dropped from the numbered budget
+comparison. For delta, theta1 in (0,1] and zeta>0, let
+n=ceil(4/zeta)+1, t=section16T(delta,theta1,k), and sigma=(t/delta)*2n.
+Then delta*sigma/t=2n and the width numerator a=c(sigma/t,delta,k)^t
+is at least 2n. Its reciprocal is the allowed real graph count, hence that
+count is below one and any admissible natural q is zero. At m=2 the required
+width is (zeta/2)*2^(a/2)>2, since 2^n>n>4/zeta.
+
+The native proof shows that these two budgets cannot hold uniformly over
+all positive sigma for any nonempty input box with an axis of size at most
+two. Every nonempty partition cell has that axis contained in the input
+axis, so a proper cell has width at most two. This obstruction holds at
+every nonzero modulus and therefore does not rely on a small-prime exception.
+A separate two-element-modulus corollary is also proved. The annotated Lemmas
+16.6 and 16.9 explicitly use normalized loss, and the editorial note distinguishes
+this numerical obstruction from a claim about unspecified contextual data.
+These proofs are included in the combined 1,249-module audit.
 
 ## F. Routes
 

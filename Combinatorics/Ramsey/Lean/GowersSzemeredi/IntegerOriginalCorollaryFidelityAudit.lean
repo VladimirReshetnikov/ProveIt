@@ -1,2 +1,5 @@
 import GowersSzemeredi.FixedGraphBudgetFidelityAudit
 import GowersSzemeredi.IntegerOriginalCorollaryCoreAudit
+import GowersSzemeredi.Proofs16PolynomialFejerT3
+import GowersSzemeredi.Proofs18CoverFejerAllDegrees
+import GowersSzemeredi.IntegerNumberedWidthsCoreAudit

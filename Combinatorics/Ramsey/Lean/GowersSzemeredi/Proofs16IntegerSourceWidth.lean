@@ -100,7 +100,7 @@ theorem source_width_le_max_polynomial (m b E R : Nat) (hb : 0 < b) (hE : 0 < E)
       = zeta / (4 * (b : Real)) * (2 * (b : Real) * u) := by
           dsimp [u]
           field_simp [hbR.ne']
-          <;> ring
+          ring
     _ ≤ zeta / (4 * (b : Real)) * (m : Real) ^ (a / (4 * (E : Real))) :=
       mul_le_mul_of_nonneg_left hcost' (by positivity)
     _ ≤ _ := le_max_right _ _

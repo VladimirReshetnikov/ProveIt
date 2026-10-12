@@ -55,8 +55,10 @@ theorem corollary_17_6_integer_radius (k M : Nat) (r : Int) (hM : 0 < M)
     refine ⟨F, ?_, ?_⟩
     · have hcast : (F.card : Real) ≤ M * (2 : Real) ^ (2 * r * (k + 1) ^ 3 : Nat) := by
         exact_mod_cast hcard
-      simpa only [← Nat.cast_ofNat (R := Int), ← Nat.cast_add, ← Nat.cast_mul,
-        ← Nat.cast_pow, zpow_natCast] using hcast
+      have he : ((2 * r * (k + 1) ^ 3 : Nat) : Int) =
+          2 * (r : Int) * ((k : Int) + 1) ^ 3 := by simp
+      rw [← he, zpow_natCast]
+      exact hcast
     · simpa only [Int.cast_natCast] using hmem
   have hk : 1 ≤ k := hrk.resolve_left hr
   refine ⟨∅, ?_, ?_⟩
