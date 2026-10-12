@@ -4472,6 +4472,71 @@ formalized, with standard axioms only:
 Steps 1–3 make about 600 modules stale, so per the user's directive they
 run on the machine that does the full builds.
 
+**L.16b: the Bohr exponent `s` is not forced, and θ₁ alone is not enough
+(analysis, 2026-10-12).** Caveat 1 of L.16 guessed how `s` scales from the
+printed degrees. The corpus says exactly what Section 16 needs.
+
+*What `s` must satisfy.* Theorem 16.2's `s = multipleS θ γ k` enters the
+class route (route II) in two unrelated roles:
+1. **Bohr radius `ζ = 2^(−s)`** (`section16Zeta`). The only upper bound on
+   `ζ` is `ζ ≤ section10Zeta(θ₁/4)`, used for Lemma 16.5
+   (`section16_zeta_le_section10Zeta`). It follows from
+   `section16_radius_exponent_budget`:
+   `s ≥ 2^83/(θ₁/4)^11 = 2^105·(2b)^(11A) ≤ b^(22A+105)`, with
+   `b = 2/(θγ)` and `A` the θ₁ exponent. The other uses need only:
+   * `s ≥ 1` (`Proofs16ShortScale`, `Proofs16Lemma6Parameters`);
+   * `ζ ≤ 1/2` or `ζ ≤ 1/32`, that is `s ≥ 5` (`Proofs16AbstractFamily`,
+     `Proofs16LocalizationBudget`, `Proofs16LocalizedThreshold`);
+   * `s ≥ 2^(40(k+1)³+1)`, the Section 5 polynomial-partition threshold
+     (`section16_polynomial_threshold_radius_margin`). The tight choice
+     already gives `s ≥ 2^(22A+105)`, and `22A ≥ 2^(4k+15) > 40(k+1)³`;
+   * or a threshold, where a smaller `s` helps. The printed `s = b^(A²)` (`A² = 2^(2^(k+6))`) is
+   therefore generous by a square: `b^(22A+105)` suffices.
+2. **The relation count `R = (2^k−1)·γ^(−2)·s(2^(−k−2)θ, γ, k)`** of
+   Lemma 16.9 (`section16Lemma9R`). This is the count from the inductive
+   Theorem 16.2 in dimension `k`. On route II the face counts come from the
+   classes, so this `s` is not the Bohr exponent and can stay printed.
+
+How this was checked: 59 of the 491 ancestors of `Proofs16ClassStep` mention
+`section16Zeta`. They were searched for bounds on `multipleS` and for upper
+bounds on `ζ`, and nothing else turned up. A search is not a proof: the
+parameterized build (below) is what will confirm the list.
+
+*Model* (`models/model_tight_s.py`). Same exact mirror as L.16, with Bohr
+degree `stepT = 22A + 105` and the dimension-two seed
+`2^(log₂ stepT(1) + 4)`, Bohr-dominated as in L.16:
+
+| θ₁ | `s` | seed | class constant | envelope max | headline |
+|---|---|---|---|---|---|
+| printed | printed | `2^132` | 66.1 | `467·2^k` | `d+7` / `L+5` (formalized) |
+| printed | tight | `2^72` | 51.1 | `380·2^k` | `d+7` / `L+5` |
+| Fejér | tight | `2^26` | 11.1 | `125·2^k` | **`d+5` / `L+3`** |
+
+*Reading the table.*
+* **Both are needed.** A tight `s` alone gains nothing, and the Fejér θ₁
+  with the printed seed gains nothing either (L.16 sensitivity).
+* **Together they give one level more than L.16 predicted.** The
+  `d + 5` / `L + 3` margin is thin at `k = 3, 4, 5`: the envelope reaches
+  `0.979` of the `128·2^k` budget at `k = 4`. It is `0.77` asymptotically,
+  and the class constant used is the uniform supremum (11.06; the
+  per-dimension values fall to 7.8). Read `d + 5` / `L + 3` as likely,
+  pending exact Lean bounds. `d + 6` / `L + 4` has a margin of about 2.
+* Through L.15g–L.15h, `d + 5` / `L + 3` would give Theorem 1.3 with
+  `2^(−2^(k+3))` and `W(k, r) ≤ 2^2^r^2^2^(k+3)`.
+
+*Revised propagation plan.* Steps 1–3 of L.16 apply, and the Bohr radius
+must be decoupled too. Carry the class route with
+`ζ′ = 2^(−s′)`, `s′ = 2^83/(θ₁′/4)^11`, in place of `section16Zeta`,
+discharging Lemma 16.5's radius condition with the same comparison. Keep
+`section16Lemma9R` printed.
+
+The class route is light (it built locally), but parameterizing it touches
+about 59 + 47 modules. There are two ways to do it:
+* edit the originals to take `(θ₁, ζ)` as parameters, with the printed
+  values as an instance: clean, but a roughly 600-module cascade, so a job
+  for the full-build machine;
+* make parallel copies: local, but it duplicates about 20k lines.
+
 *Propagation (model).* `models/model_fejer.py` mirrors the split-class
 recursion of `Proofs16SplitStepBounds` exactly (`splitStepA`, `splitStepD`).
 Its θ₁-driven inputs are:
