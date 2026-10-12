@@ -19,3 +19,9 @@ See `../../synthesis/weighted_top_forest.tex` and the corresponding
 does not integrate the separate homology-image algebra, a geometric chain
 compiler, paired primal/dual optimization, or a global hierarchy theorem.
 The delivered report files remain unchanged.
+
+The completed native validation passes all 1,716 tests without skips. The
+120-source audit preserves every earlier census and increases complete cuts
+from 102 to 104, with 97 fresh literal positive agreements. All 102 queue
+certificates retain their earlier hashes, and the 85 certificates without
+top reductions are unchanged under the weighted default.

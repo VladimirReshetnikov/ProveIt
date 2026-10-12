@@ -4393,8 +4393,8 @@ Pachner-generated fixtures validate nested boundary-forest chains and
 repeated endpoints; ten produce certified whole-cut censuses. Two genuine
 handlebody misses are caused by the selected dual forest, as demonstrated
 by six independently replayed alternative certificates in the retained
-`three-handles-choice-probe` experiment. The production selector currently
-uses one deterministic forest.
+`three-handles-choice-probe` experiment. The subsequent weighted selector
+below resolves both of these particular misses.
 
 
 Complete-query measurements compare native production plus replay with
@@ -4444,3 +4444,30 @@ agreements against retained literal Regina references. Full certificate
 sizes fall by 0.39–19.65% in the seven timed cases; median paired mask/moment
 time ratios range from 0.932 to 1.142. The article retains regressions,
 raw samples, A/A controls and source pins.
+
+### Weighted source top forests
+
+`normal_cut_handlebodies(..., top_forest='max_weight')` now chooses a dual
+spanning tree that minimizes retained raw attaching passages outside the
+fixed lower forest. A maximum heap extends the existing degree/xor queue;
+graph selection takes `O(T log(T+1))` comparisons after source preparation
+and cost construction. `top_forest='queue'` reproduces the earlier selector.
+The low-level `reduce_core_three_handles` retains `strategy='queue'` as its
+default and accepts `strategy='max_weight'` explicitly.
+
+On the 120-source audit, completed cuts increase from 102 to 104, preserving
+all earlier completed censuses. Queue mode preserves all 102 earlier proof
+hashes; the 85 proofs without top reductions are unchanged under either
+mode. Fresh literal Regina cuts agree with all 97 comparable positives;
+seven larger inputs exceed the explicit expansion cap. Raw retained cost
+decreases on 23 of the 24 cores with three-handles. Common-success paired
+timings show no broad elapsed-time gain, so the improvement is a proved
+local cost optimum and two additional certified cuts.
+
+The independent geometric checkers and v6 certificate schema are unchanged.
+Additive cost optimality does not imply complete later raw cancellation,
+complete handlebody recognition, or a general quasi-polynomial bound.
+See [weighted_top_forest.tex](../synthesis/weighted_top_forest.tex) for proofs,
+counterexamples, scope of the restricted polynomial forest solver, and all
+timing samples and validation records.
+All 1,716 maintained tests pass, with no skips.
