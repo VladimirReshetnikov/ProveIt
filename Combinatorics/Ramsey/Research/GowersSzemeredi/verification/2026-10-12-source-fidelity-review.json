@@ -2,17 +2,18 @@
   "date": "2026-10-12",
   "scope": "Incremental statement-level comparison of actual hypotheses, numerical bounds and geometric meaning. This is separate from the120-companion kernel audit and does not claim completion of unreviewed entries. Current annotated source and original stronger claims are distinguished.",
   "paper": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
-  "paper_sha256": "d526136febb65ac6e87434096651ce1c784a56ca88ae643aac692fe8b3361397",
+  "paper_sha256": "6badc6c08b23d1e4f5ba6f5bba43b38cdf796752d11eb47f34f2cf97bfc12ae0",
   "reviewed_sections01_03_sha256": "d7926af871dbe1323494485a38310b78721b436601eef937dbe41b3dd3782589",
   "statement_count": 120,
-  "reviewed_statement_count": 68,
-  "unreviewed_statement_count": 52,
+  "reviewed_statement_count": 74,
+  "unreviewed_statement_count": 46,
   "goal_complete": false,
   "geometry_conventions": {
-    "modAP_IsProper": "Carrier cardinality equals parameter length; injection only. The definition comment incorrectly also says no wrapping; defer the comment fix until the broad native build is complete to avoid invalidating it.",
+    "modAP_IsProper": "Carrier cardinality equals parameter length, recording injection only. The comment now accurately allows wrapping; ordinary integer representatives are tracked by the stronger geometric predicate.",
     "ordinary_AP": "NatAP.IsProper records a positive integer step and the length/cardinality identity.",
     "source_box": "The Section5 definition explicitly requires all axes to remain progressions with one common difference when Z_N is embedded in Z.",
-    "section13_plain_APs": "The source uses unqualified APs in Z_N without the explicit integer-axis box qualification. Compare their actual context/construction before treating an additional ordinary-axis condition as mandatory."
+    "section13_plain_APs": "The source uses unqualified APs in Z_N without the explicit integer-axis box qualification. Compare their actual context/construction before treating an additional ordinary-axis condition as mandatory.",
+    "source_comment_fixes": "The comments for modular properness, the original7.7 threshold, and the original10.5 square-root clause are now corrected. The broad native closure is refreshing after these foundational documentation edits."
   },
   "statements": [
     {
@@ -830,7 +831,7 @@
       "statement": "corollary_7_6",
       "source_heading_lines": [
         1392,
-        2769
+        2780
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections06_07.lean",
       "encoded_line": 197,
@@ -1170,7 +1171,7 @@
     {
       "statement": "lemma_10_5",
       "source_heading_lines": [
-        2010
+        2015
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section10.lean",
       "encoded_line": 266,
@@ -1181,17 +1182,19 @@
           "line": 782
         }
       ],
-      "status": "verified_variant_original_clause_open",
+      "status": "original_clause_recovered_and_generalized",
       "native_audited_companion": "lemma_10_5_holds",
-      "evidence": "The six component properties match the annotated fifth-power variant, with the anchor and the three proof-used rho/sigma restrictions explicit. The original square-root item(iii) has not been refuted: Proofs10Regular's weighted Markov calculation gives 1440*eta*L*|W|, so a square-root trade-off may be recoverable. It must be proved before dismissing or replacing the original clause. The boundary strips are a union in the checked construction.",
+      "evidence": "The original square-root clause is proved by lemma_10_5_original_sqrt_holds with all six conclusions and the same explicit inherited setup. More strongly, lemma_10_5_all_tradeoffs_holds chooses one W satisfying every real complementary exponent pair t and 1-t simultaneously. The canonical companion remains the t=1/5 downstream variant. The annotated source restores the original t=1/2 clause and identifies the stronger variant used in10.6. Earlier inconsistency wording is corrected.",
       "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
-      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section10.lean"
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section10.lean",
+      "faithful_original_native_companion": "lemma_10_5_original_sqrt_holds",
+      "stronger_native_audited_companion": "lemma_10_5_all_tradeoffs_holds"
     },
     {
       "statement": "lemma_10_6",
       "source_heading_lines": [
-        2075,
-        2135
+        2080,
+        2140
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section10.lean",
       "encoded_line": 293,
@@ -1211,8 +1214,8 @@
     {
       "statement": "lemma_10_7",
       "source_heading_lines": [
-        2129,
-        2254
+        2134,
+        2259
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section10.lean",
       "encoded_line": 309,
@@ -1232,7 +1235,7 @@
     {
       "statement": "lemma_10_8",
       "source_heading_lines": [
-        2147
+        2152
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section10.lean",
       "encoded_line": 323,
@@ -1252,7 +1255,7 @@
     {
       "statement": "lemma_10_9",
       "source_heading_lines": [
-        2158
+        2163
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section10.lean",
       "encoded_line": 335,
@@ -1272,7 +1275,7 @@
     {
       "statement": "lemma_10_10",
       "source_heading_lines": [
-        2232
+        2237
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section10.lean",
       "encoded_line": 362,
@@ -1292,7 +1295,7 @@
     {
       "statement": "corollary_10_11",
       "source_heading_lines": [
-        2242
+        2247
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section10.lean",
       "encoded_line": 374,
@@ -1312,7 +1315,7 @@
     {
       "statement": "lemma_10_12",
       "source_heading_lines": [
-        2263
+        2268
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section10.lean",
       "encoded_line": 401,
@@ -1332,7 +1335,7 @@
     {
       "statement": "theorem_10_13",
       "source_heading_lines": [
-        2330
+        2335
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section10.lean",
       "encoded_line": 473,
@@ -1352,7 +1355,7 @@
     {
       "statement": "corollary_10_14",
       "source_heading_lines": [
-        2364
+        2369
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section10.lean",
       "encoded_line": 501,
@@ -1372,7 +1375,7 @@
     {
       "statement": "proposition_12_1",
       "source_heading_lines": [
-        2423
+        2434
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean",
       "encoded_line": 119,
@@ -1383,13 +1386,18 @@
           "line": 684
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "proposition_12_1_holds"
+      "status": "matched_and_generalized_with_sign_refutation",
+      "native_audited_companion": "proposition_12_1_holds",
+      "evidence": "Nonnegative lambda, unit-disc functions, the product of squared unnormalized first-difference Fourier coefficients and weighted simultaneous quadruple sum match exactly. The existing positive-alpha proof now extends to alpha=0. The unrestricted sign reading is refuted at N=1,p=1,lambda=0,f=0,phi=0,alpha=-1. The annotated source states the sharp nonnegative sign convention.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean",
+      "stronger_native_audited_companion": "proposition_12_1_nonnegative_alpha_holds",
+      "separate_refutation": "proposition_12_1_negative_alpha_counterexample"
     },
     {
       "statement": "lemma_12_2",
       "source_heading_lines": [
-        2498
+        2509
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean",
       "encoded_line": 142,
@@ -1400,13 +1408,16 @@
           "line": 385
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "lemma_12_2_holds"
+      "status": "matched",
+      "native_audited_companion": "lemma_12_2_holds",
+      "evidence": "Positive beta,gamma; two-dimensional domain B of exact size beta*N^2 and a partial phi represented by a total map on B. Every large second-difference coefficient yields at least beta^16*gamma^48*N^8 contained equal-width/equal-height parallelogram pairs with equal alternating phi values. The native proof works over every nonzero modulus.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean"
     },
     {
       "statement": "lemma_12_3",
       "source_heading_lines": [
-        2531
+        2542
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean",
       "encoded_line": 151,
@@ -1417,14 +1428,17 @@
           "line": 334
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "lemma_12_3_holds"
+      "status": "matched",
+      "native_audited_companion": "lemma_12_3_holds",
+      "evidence": "The theta*N^8 pair hypothesis implies theta^7*N^32 respected 8-arrangements. Sixteen vertical edges share one height, all 32 endpoints lie in B, the two x half-sums agree, and the two phi-difference half-sums agree. A negative theta is harmless because the conclusion then has a negative lower bound.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean"
     },
     {
       "statement": "lemma_12_4",
       "source_heading_lines": [
-        2581,
-        2603
+        2592,
+        2614
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean",
       "encoded_line": 158,
@@ -1435,13 +1449,16 @@
           "line": 21
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "lemma_12_4_holds"
+      "status": "matched",
+      "native_audited_companion": "lemma_12_4_holds",
+      "evidence": "The combination has the exact beta^112*gamma^336*N^32 lower bound, retains both endpoint membership and the shared-height arrangement relations, and uses the same unit-disc and positive density/coefficient assumptions.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean"
     },
     {
       "statement": "lemma_12_5",
       "source_heading_lines": [
-        2607
+        2618
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean",
       "encoded_line": 170,
@@ -1452,13 +1469,16 @@
           "line": 3246
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "lemma_12_5_holds"
+      "status": "matched_documented_parameter_range",
+      "native_audited_companion": "lemma_12_5_holds",
+      "evidence": "The eventual-N threshold depends on alpha,beta,eta. The subset B' contains at least (alpha*eta/4)^(2^36)*beta^15*N^32 arrangements, of which at least a 1-eta fraction are respected. The corrected 0<eta<=1 range is explicit. This comparison does not claim a separately kernel-checked refutation of the original unrestricted eta reading for this lemma.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean"
     },
     {
       "statement": "lemma_12_6",
       "source_heading_lines": [
-        2670
+        2681
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean",
       "encoded_line": 183,
@@ -1469,13 +1489,16 @@
           "line": 133
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "lemma_12_6_holds"
+      "status": "matched_documented_uniform_large_modulus_scope",
+      "native_audited_companion": "lemma_12_6_holds",
+      "evidence": "For density at least beta and large Fourier coefficients at every domain point, a threshold depending only on beta,gamma,eta yields at least 2^(-2^37)*beta^(2^43)*gamma^(2^45)*eta^(2^36)*N^32 arrangements and proportion 1-eta respected. The density-uniform restriction theorem discharges the source's inherited eventual-N requirement without dependence on the actual density. The corrected eta range is explicit.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean"
     },
     {
       "statement": "lemma_13_1",
       "source_heading_lines": [
-        2688
+        2699
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean",
       "encoded_line": 265,
@@ -1492,8 +1515,8 @@
     {
       "statement": "corollary_13_2",
       "source_heading_lines": [
-        2745,
-        2767
+        2756,
+        2778
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean",
       "encoded_line": 274,
@@ -1510,7 +1533,7 @@
     {
       "statement": "corollary_13_3",
       "source_heading_lines": [
-        2751
+        2762
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean",
       "encoded_line": 286,
@@ -1527,7 +1550,7 @@
     {
       "statement": "lemma_13_4",
       "source_heading_lines": [
-        2793
+        2804
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean",
       "encoded_line": 376,
@@ -1544,7 +1567,7 @@
     {
       "statement": "lemma_13_5",
       "source_heading_lines": [
-        2845
+        2856
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean",
       "encoded_line": 420,
@@ -1561,7 +1584,7 @@
     {
       "statement": "lemma_13_6",
       "source_heading_lines": [
-        2863
+        2874
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean",
       "encoded_line": 480,
@@ -1578,7 +1601,7 @@
     {
       "statement": "lemma_13_7",
       "source_heading_lines": [
-        2926
+        2937
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean",
       "encoded_line": 558,
@@ -1595,7 +1618,7 @@
     {
       "statement": "lemma_13_8",
       "source_heading_lines": [
-        2956
+        2967
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean",
       "encoded_line": 597,
@@ -1612,7 +1635,7 @@
     {
       "statement": "lemma_13_9",
       "source_heading_lines": [
-        2987
+        2998
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean",
       "encoded_line": 657,
@@ -1629,7 +1652,7 @@
     {
       "statement": "corollary_13_10",
       "source_heading_lines": [
-        2998
+        3009
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean",
       "encoded_line": 686,
@@ -1646,7 +1669,7 @@
     {
       "statement": "lemma_13_11",
       "source_heading_lines": [
-        3013
+        3024
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean",
       "encoded_line": 702,
@@ -1663,7 +1686,7 @@
     {
       "statement": "theorem_13_12",
       "source_heading_lines": [
-        3072
+        3083
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean",
       "encoded_line": 718,
@@ -1680,7 +1703,7 @@
     {
       "statement": "proposition_14_1",
       "source_heading_lines": [
-        3084
+        3095
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 85,
@@ -1697,7 +1720,7 @@
     {
       "statement": "lemma_14_2",
       "source_heading_lines": [
-        3147
+        3158
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 100,
@@ -1714,7 +1737,7 @@
     {
       "statement": "lemma_14_3",
       "source_heading_lines": [
-        3158
+        3169
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 110,
@@ -1731,7 +1754,7 @@
     {
       "statement": "lemma_14_4",
       "source_heading_lines": [
-        3201
+        3212
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 242,
@@ -1748,7 +1771,7 @@
     {
       "statement": "corollary_14_5",
       "source_heading_lines": [
-        3218
+        3229
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 253,
@@ -1765,7 +1788,7 @@
     {
       "statement": "corollary_14_6",
       "source_heading_lines": [
-        3246
+        3257
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 266,
@@ -1782,7 +1805,7 @@
     {
       "statement": "lemma_14_7",
       "source_heading_lines": [
-        3281
+        3292
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 279,
@@ -1799,7 +1822,7 @@
     {
       "statement": "lemma_14_8",
       "source_heading_lines": [
-        3299
+        3310
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 292,
@@ -1816,7 +1839,7 @@
     {
       "statement": "lemma_15_1",
       "source_heading_lines": [
-        3304
+        3315
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 372,
@@ -1833,7 +1856,7 @@
     {
       "statement": "corollary_15_2",
       "source_heading_lines": [
-        3347
+        3358
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 382,
@@ -1855,7 +1878,7 @@
     {
       "statement": "lemma_15_3",
       "source_heading_lines": [
-        3362
+        3373
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 392,
@@ -1872,7 +1895,7 @@
     {
       "statement": "lemma_15_4",
       "source_heading_lines": [
-        3376
+        3387
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 402,
@@ -1889,7 +1912,7 @@
     {
       "statement": "lemma_15_5",
       "source_heading_lines": [
-        3401
+        3412
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 414,
@@ -1906,7 +1929,7 @@
     {
       "statement": "lemma_15_6",
       "source_heading_lines": [
-        3476
+        3487
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 435,
@@ -1923,7 +1946,7 @@
     {
       "statement": "lemma_16_1",
       "source_heading_lines": [
-        3487
+        3498
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 96,
@@ -1940,7 +1963,7 @@
     {
       "statement": "theorem_16_2",
       "source_heading_lines": [
-        3517
+        3528
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 142,
@@ -1962,7 +1985,7 @@
     {
       "statement": "lemma_16_3",
       "source_heading_lines": [
-        3521
+        3532
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 146,
@@ -1979,7 +2002,7 @@
     {
       "statement": "lemma_16_4",
       "source_heading_lines": [
-        3529
+        3540
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 304,
@@ -1996,7 +2019,7 @@
     {
       "statement": "lemma_16_5",
       "source_heading_lines": [
-        3552
+        3563
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 324,
@@ -2013,7 +2036,7 @@
     {
       "statement": "lemma_16_6",
       "source_heading_lines": [
-        3584
+        3595
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 443,
@@ -2030,7 +2053,7 @@
     {
       "statement": "lemma_16_7",
       "source_heading_lines": [
-        3592
+        3603
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 510,
@@ -2047,7 +2070,7 @@
     {
       "statement": "lemma_16_8",
       "source_heading_lines": [
-        3604
+        3615
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 575,
@@ -2064,7 +2087,7 @@
     {
       "statement": "lemma_16_9",
       "source_heading_lines": [
-        3616
+        3627
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 749,
@@ -2081,7 +2104,7 @@
     {
       "statement": "lemma_16_10",
       "source_heading_lines": [
-        3680
+        3691
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 912,
@@ -2098,7 +2121,7 @@
     {
       "statement": "corollary_16_11",
       "source_heading_lines": [
-        3721
+        3732
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 976,
@@ -2115,7 +2138,7 @@
     {
       "statement": "lemma_17_1",
       "source_heading_lines": [
-        3768
+        3779
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 38,
@@ -2132,7 +2155,7 @@
     {
       "statement": "proposition_17_2",
       "source_heading_lines": [
-        3784
+        3795
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 48,
@@ -2149,7 +2172,7 @@
     {
       "statement": "lemma_17_4",
       "source_heading_lines": [
-        3825
+        3836
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 91,
@@ -2166,7 +2189,7 @@
     {
       "statement": "corollary_17_5",
       "source_heading_lines": [
-        3829
+        3840
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 103,
@@ -2183,7 +2206,7 @@
     {
       "statement": "corollary_17_6",
       "source_heading_lines": [
-        3833
+        3844
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 117,
@@ -2200,7 +2223,7 @@
     {
       "statement": "proposition_17_7",
       "source_heading_lines": [
-        3863
+        3874
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 140,
@@ -2217,7 +2240,7 @@
     {
       "statement": "theorem_18_1",
       "source_heading_lines": [
-        3988
+        3999
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 171,
@@ -2244,7 +2267,7 @@
     {
       "statement": "theorem_18_2",
       "source_heading_lines": [
-        4040
+        4051
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 190,
@@ -2271,7 +2294,7 @@
     {
       "statement": "corollary_18_7",
       "source_heading_lines": [
-        4055
+        4066
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 203,
@@ -2315,6 +2338,7 @@
     "Sections06_07 lemma7_7 comment must stop classifying the original nonzero criterion as invalid; it is now recovered.",
     "Distinguish unsupported stronger originals from actual refutations in Section05 comments."
   ],
-  "reviewed_sections08_10_sha256": "8c95157e2645a7a0ff6c7e91138fcc6bd610dfd61ba97e19ac17a2fb445786be",
-  "section10_fibre_cap_scope": "Lean uses positive natural M. No conclusion about the unrestricted real-cap version is claimed by the present comparison."
+  "reviewed_sections08_10_sha256": "bf562311bfa18052c357a28e2a43f7950a47fdc42e4718005efd13b502064c48",
+  "section10_fibre_cap_scope": "Lean uses positive natural M. No conclusion about the unrestricted real-cap version is claimed by the present comparison.",
+  "reviewed_section12_sha256": "9ec50fb44394d0fd1e9516107d9017026bcbf622e1d353be30eeb1a7c83e54c7"
 }

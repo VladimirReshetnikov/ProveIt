@@ -188,6 +188,7 @@ import GowersSzemeredi.Proofs10Selection
 import GowersSzemeredi.Proofs10Regular
 import GowersSzemeredi.Proofs10Shift
 import GowersSzemeredi.Proofs12
+import GowersSzemeredi.Proofs12SourceScope
 import GowersSzemeredi.Proofs12Parallelograms
 import GowersSzemeredi.Proofs12HigherArrangements
 import GowersSzemeredi.Proofs12Amplification

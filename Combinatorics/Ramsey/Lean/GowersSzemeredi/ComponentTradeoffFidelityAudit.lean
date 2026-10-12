@@ -1,0 +1,5 @@
+import GowersSzemeredi.FourTermScopeFidelityAudit
+import GowersSzemeredi.ComponentTradeoffCoreAudit
+
+example : LeanProofs.GowersSzemeredi.lemma_10_5_original_sqrt :=
+  LeanProofs.GowersSzemeredi.lemma_10_5_original_sqrt_holds
