@@ -1288,8 +1288,29 @@ private lemma theorem1013_slice_card {X : Type*} [Fintype X] [DecidableEq X]
   · exact htwo
   · exact hthree
 
-/-- **Gowers, Theorem 10.13.** -/
-theorem theorem_10_13_holds : theorem_10_13 := by
+/-- The proof-supported local model retains five powers of the density.
+The denominator and every spectrum and Bohr parameter are unchanged. -/
+def theorem_10_13_power_five : Prop :=
+  forall (N M : Nat) [NeZero N] (X : Type*) [Fintype X] [DecidableEq X]
+      (D : MultifunctionDomain N X) (phi : X -> ZMod N) (alpha : Real),
+    0 < alpha -> alpha <= 1 / 6 -> 0 < M ->
+    (forall s, (D.fibre s).card <= M) ->
+    (Fintype.card X : Real) = alpha * M * N ->
+    DomainApproxHomOfOrder D phi ((2 : Real) ^ (-(43 : Real))) 8 ->
+    let lambda := section10Lambda alpha
+    let K := domainLargeSpectrum D (lambda * M * N)
+    let k := section10SpectrumParameter alpha
+    let epsilon := section10BohrRadius alpha
+    let zeta := section10Zeta alpha
+    (K.card : Real) <= section10SpectrumBound alpha /\
+      zeta <= (2 : Real) ^ (-((k : Real) + 4)) * epsilon ^ k / k /\
+      exists Y : Finset X, exists psi1 : ZMod N -> ZMod N,
+        alpha ^ 5 * Fintype.card X / 20000 <= Y.card /\
+        HasBohrDifferenceModel D phi K zeta Y psi1
+
+/-- Strengthen the corrected Theorem 10.13 set-size bound from
+`alpha^6/20000` to `alpha^5/20000`. -/
+theorem theorem_10_13_power_five_holds : theorem_10_13_power_five := by
   classical
   intro N M _ X _ _ D phi alpha halpha halphaSixth hM hfibre hcard happrox
   dsimp only
@@ -1398,24 +1419,20 @@ theorem theorem_10_13_holds : theorem_10_13 := by
   have hregularLower : rho ^ 2 * alpha ^ 2 * L * N / 16 ≤ W.card :=
     hregular.2.2.2.1
   have hW₁target :
-      alpha ^ 6 * Fintype.card (Theorem1013Quad X) / 20000 ≤ W₁.card := by
+      alpha ^ 5 * Fintype.card (Theorem1013Quad X) / 20000 ≤ W₁.card := by
     have hfactor : (5 / 6 : Real) < 1 - Real.sqrt theta := by
       have h := theorem1013_theta_small
       change 6 * Real.sqrt theta < 1 at h
       linarith
-    have hbase : 0 ≤ alpha ^ 6 * (L : Real) * N := by positivity
-    have halphaScaled :
-        alpha * (alpha ^ 6 * (L : Real) * N) ≤
-          (1 / 6 : Real) * (alpha ^ 6 * (L : Real) * N) :=
-      mul_le_mul_of_nonneg_right halphaSixth hbase
     have hnumeric :
-        alpha ^ 6 * Fintype.card (Theorem1013Quad X) / 20000 ≤
+        alpha ^ 5 * Fintype.card (Theorem1013Quad X) / 20000 ≤
           (5 / 6 : Real) * (rho ^ 2 * alpha ^ 2 * L * N / 16) := by
       rw [hquadCard]
       dsimp only [rho, theorem1013Rho]
-      nlinarith
+      have hbase : 0 ≤ alpha ^ 6 * (L : Real) * N := by positivity
+      nlinarith only [hbase]
     calc
-      alpha ^ 6 * Fintype.card (Theorem1013Quad X) / 20000 ≤
+      alpha ^ 5 * Fintype.card (Theorem1013Quad X) / 20000 ≤
           (5 / 6 : Real) * (rho ^ 2 * alpha ^ 2 * L * N / 16) := hnumeric
       _ ≤ (5 / 6 : Real) * W.card := by gcongr
       _ ≤ (1 - Real.sqrt theta) * W.card := by
@@ -1434,16 +1451,16 @@ theorem theorem_10_13_holds : theorem_10_13 := by
   let Y : Finset X := theorem1013Slice W₁ p
   have hYcard : Y.card = S.card := by
     simpa only [Y, S] using theorem1013_slice_card W₁ p
-  have hYlarge : alpha ^ 6 * Fintype.card X / 20000 ≤ Y.card := by
+  have hYlarge : alpha ^ 5 * Fintype.card X / 20000 ≤ Y.card := by
     have hcubePos : (0 : Real) < (Fintype.card X : Real) ^ 3 := by positivity
     have hscaled :
-        (alpha ^ 6 * Fintype.card X / 20000) *
+        (alpha ^ 5 * Fintype.card X / 20000) *
             (Fintype.card X : Real) ^ 3 ≤
           (S.card : Real) * (Fintype.card X : Real) ^ 3 := by
       calc
-        (alpha ^ 6 * Fintype.card X / 20000) *
+        (alpha ^ 5 * Fintype.card X / 20000) *
               (Fintype.card X : Real) ^ 3 =
-            alpha ^ 6 * Fintype.card (Theorem1013Quad X) / 20000 := by
+            alpha ^ 5 * Fintype.card (Theorem1013Quad X) / 20000 := by
           rw [theorem1013_quad_card]
           push_cast
           ring
@@ -1494,5 +1511,19 @@ theorem theorem_10_13_holds : theorem_10_13 := by
     phi y - phi z = phi₄ qy - phi₄ qz := hphase.symm
     _ = psi₁ (D₄.index qy - D₄.index qz) := h
     _ = psi₁ (D.index y - D.index z) := by rw [hindex]
+
+/-- The original corrected catalogue statement follows from the stronger
+five-power conclusion by density monotonicity. -/
+theorem theorem_10_13_holds : theorem_10_13 := by
+  intro N M _ X _ _ D phi alpha halpha halphaSixth hM hfibre hcard happrox
+  obtain ⟨hK, hzeta, Y, psi, hY, hmodel⟩ :=
+    theorem_10_13_power_five_holds N M X D phi alpha halpha halphaSixth hM hfibre hcard happrox
+  refine ⟨hK, hzeta, Y, psi, ?_, hmodel⟩
+  have hαone : alpha ≤ 1 := by linarith
+  have hp : alpha ^ 6 ≤ alpha ^ 5 :=
+    pow_le_pow_of_le_one halpha.le hαone (by omega)
+  exact (div_le_div_of_nonneg_right
+    (mul_le_mul_of_nonneg_right hp (Nat.cast_nonneg (Fintype.card X)))
+    (by norm_num : (0 : Real) ≤ 20000)).trans hY
 
 end LeanProofs.GowersSzemeredi

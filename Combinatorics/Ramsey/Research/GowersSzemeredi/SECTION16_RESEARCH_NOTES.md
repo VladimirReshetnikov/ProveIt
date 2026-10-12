@@ -5298,6 +5298,42 @@ five new theorems with only the approved axioms. The unrestricted larger
 budget regime and the stronger original Lemma 13.6 extraction remain open;
 this is a range result, not a completion claim.
 
+### L.34 Original initial extraction up to density 14/15 (2026-10-11)
+
+`PrintedExtractionCoreAudit` directly checks twenty results over 119 native
+modules: nineteen new theorems and the existing corrected Theorem 10.13
+consequence. Exact types of the stronger local model and original printed
+Lemma 13.6 range statement are checked. Only the three approved axioms occur.
+This direct gate does not certify the full downstream catalogue refresh or
+the much larger exported facade, both of which remain to be completed.
+
+The regular-set calculation in `Proofs10Main` retains `alpha^5/20000`
+rather than `alpha^6/20000`; the original corrected companion follows by
+power monotonicity. No original hypothesis or spectrum/Bohr parameter changes.
+The original article's `alpha^3/1000` claim is not asserted by this improvement.
+The five-power edge variants retain the actual selected density and also
+improve the old weaker strong-height mass to `2^(-39)*alpha^192`.
+
+More decisively, fifteen actual edges and the remaining second coordinate
+encode every additive sixteen-edge tuple. Thus `C(h)<=|X_h|^15*N` and a
+strong height satisfies `alpha^32/16<=beta^15`. The convenient consequence
+`beta>=alpha^3/2` already gives `2^(-22)*alpha^21*N^2` through the checked
+six-power extraction when the actual edge density is at most one sixth.
+This exceeds the original printed `2^(-26)*alpha^128*N^2` mass.
+
+Above edge density one sixth, adaptive fibre normalization gives normalized
+density at least one twelfth. Its guaranteed mass exceeds the original
+printed mass for `alpha<=14/15`; the rational comparison is exact.
+`Proofs13PrintedWiderExtraction` assembles the genuine preceding models,
+short-difference selection and existing all-scale numerical budgets to
+prove the original printed masses in this range. Singleton cells handle the
+small scale, while the large scale retains the stronger `10Q` length bound.
+No stronger extraction conclusion is supplied as a premise.
+
+The interval `14/15<alpha<=1` remains open, as does ordinary integer
+geometry in the unrestricted contextual square corollary. No counterexample
+to either original assertion is claimed. The full goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
