@@ -7,6 +7,9 @@ All belt-intersection counts are saturated at two.  No words are expanded,
 freely reduced, or replaced by algebraic exponent sums.
 """
 
+# The column queue and its timestamp checker are adapted from report 97;
+# report 95 independently derives the same full-row criterion from report 56.
+from collections import deque
 from heapq import heappop, heappush
 
 
@@ -48,9 +51,11 @@ def _occurrences(core, tree, check):
 def capped_cancellation_plan(counts, *, check=lambda: None):
     """Return a sound raw singleton schedule for nonnegative occurrence rows.
 
-    This deterministic greedy producer is deliberately incomplete.  The
-    independent verifier accepts any supplied successful schedule.  Values
-    zero, one and at least two carry all information needed for admissibility.
+    Kept as the legacy producer and a comparison oracle.  Its minimum-fill
+    rule is complete for full row cancellation: whenever completion is
+    possible, a zero-fill row or column leaf exists and the minimum score
+    selects one.  The source column queue below avoids repeated rescanning.
+    Values zero, one and at least two carry all information for admissibility.
     Row and column labels must be nonnegative integers.
     """
     rows = {}
@@ -95,6 +100,70 @@ def capped_cancellation_plan(counts, *, check=lambda: None):
         schedule.append([r, c])
     return dict(cancellations=schedule, remaining_rows=sorted(rows),
                 stats=dict(entry_scans=scans, entry_updates=updates))
+
+
+def column_cancellation_plan(counts, *, check=lambda: None):
+    """Completely decide full raw row cancellation without positive fill.
+
+    A unit column leaf has total live incidence one.  Delete its sole row
+    and the column.  Other columns retain their immutable source entries.
+    The process succeeds exactly when *some* positive-singleton schedule
+    can remove every row, for arbitrary rectangular nonnegative matrices.
+
+    If it stops, the surviving rows form the unique greatest nonempty
+    blocked set: every column sum on those rows is zero or at least two.
+    This is an obstruction only to the specified raw cancellation model.
+    Discovery processes each source incidence a bounded number of times.
+    Queue order follows the input dictionaries and needs no label sorting.
+    """
+    check()
+    if type(counts) is not dict:
+        raise ValueError('invalid occurrence matrix')
+    rows, degree, owner_xor = {}, {}, {}
+    incidences = 0
+    for r, values in counts.items():
+        check()
+        if type(r) is not int or r < 0 or type(values) is not dict:
+            raise ValueError('invalid occurrence row')
+        row = {}
+        for c, value in values.items():
+            check()
+            if type(c) is not int or c < 0 or type(value) is not int or value < 0:
+                raise ValueError('invalid occurrence entry')
+            if value:
+                incidences += 1
+                row[c] = min(2, value)
+                degree[c] = degree.get(c, 0) + 1
+                owner_xor[c] = owner_xor.get(c, 0) ^ r
+        rows[r] = row
+    queue = deque(c for c in degree
+                  if degree[c] == 1 and rows[owner_xor[c]][c] == 1)
+    pushes, pops, visits = len(queue), 0, 0
+    schedule = []
+    while queue:
+        check()
+        c = queue.popleft()
+        pops += 1
+        if degree[c] != 1:
+            continue
+        r = owner_xor[c]
+        row = rows.pop(r)
+        if row[c] != 1:
+            raise ArithmeticError('nonunit entry entered the column-leaf queue')
+        schedule.append([r, c])
+        for h in row:
+            check()
+            visits += 1
+            degree[h] -= 1
+            owner_xor[h] ^= r
+            if degree[h] == 1 and rows[owner_xor[h]][h] == 1:
+                queue.append(h)
+                pushes += 1
+    check()
+    return dict(cancellations=schedule, remaining_rows=list(rows),
+                stats=dict(source_incidences=incidences,
+                           incidence_visits=visits, queue_pushes=pushes,
+                           queue_pops=pops, entry_updates=0))
 
 
 def leaf_cancellation_plan(counts, *, check=lambda: None):
@@ -157,17 +226,14 @@ def core_handlebody_certificate(core, *, check=lambda: None):
     planned = leaf_cancellation_plan(counts, check=check)
     method = 'leaf'
     if planned['remaining_rows']:
-        columns = len(core['handles1']) - len(tree)
-        if columns == len(core['handles2']):
-            result.update(reason='raw_ball_cancellation_obstruction',
-                          remaining_two_handles=planned['remaining_rows'],
-                          stats=planned['stats'])
-            return result
-        planned = capped_cancellation_plan(counts, check=check)
-        method = 'capped'
+        planned = column_cancellation_plan(counts, check=check)
+        method = 'column_leaf'
     result['stats'] = planned['stats']
     if planned['remaining_rows']:
-        result.update(reason='raw_cancellation_stalled',
+        reason = ('raw_ball_cancellation_obstruction'
+                  if len(core['handles1']) - len(tree) == len(core['handles2'])
+                  else 'raw_cancellation_stalled')
+        result.update(reason=reason,
                       remaining_two_handles=planned['remaining_rows'])
         return result
     survivors = set(range(len(core['handles1']))) - set(tree)
@@ -180,7 +246,9 @@ def core_handlebody_certificate(core, *, check=lambda: None):
                  if component[core['handles1'][i]['ends'][0]] == representative]
         components.append(dict(id=representative, zero_handles=vertices,
                                remaining_one_handles=loops, genus=len(loops)))
-    proof = dict(schema='normal-core-handlebody-v1', method=method, forest=tree,
+    schema = ('normal-core-handlebody-v2' if method == 'column_leaf'
+              else 'normal-core-handlebody-v1')
+    proof = dict(schema=schema, method=method, forest=tree,
                  cancellations=planned['cancellations'], components=components)
     result.update(status='COMPLETE', certificate=proof, components=components)
     check()

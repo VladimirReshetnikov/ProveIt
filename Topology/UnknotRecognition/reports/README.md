@@ -771,3 +771,12 @@ compilation, surface discovery, terminal graph queries, cancellation and
 restart accounting. None claims a completed general quasi-polynomial
 unknot-recognition implementation. Integration and independent proof review
 are separate work.
+
+Subsequent native integration of reports 95 and 97 is recorded in their added
+[95 status](95/INTEGRATION-STATUS.md) and [97 status](97/INTEGRATION-STATUS.md)
+files. The original delivered files remain unchanged. The synthesis now proves
+complete rectangular raw cancellation by column peeling, with independent
+timestamp replay and a source-core obstruction before boundary discovery.
+The fresh 106-case audit retains all 85 certified cuts; all old certificates
+replay, and six failures avoid boundary discovery. This is a local kernel
+improvement, not a completed hierarchy or general recognition bound.

@@ -126,7 +126,7 @@ predicates} needed for a terminal genus census. It does not construct the
 possibly long disk slides or encode every later boundary-pattern strand.
 A complete hierarchy still needs more geometric information.
 
-\paragraph{Cost and incomplete search.}
+\paragraph{Cost and geometric limitations.}
 There are $O(T)$ real handles and $q\le P=O(T)$ passive curves. At most
 $O(T)$ real pivots update an $(O(T)+q)$-by-$O(T)$ matrix. Dense replay and
 the private-column check take $O(T^3)$ operations on saturated entries.
@@ -136,8 +136,11 @@ is never expanded. These bounds add polynomial work and certificate size to
 the existing source queries.
 
 The success criterion depends on the supplied core schedule and disk system.
-The current greedy core producer is incomplete and label-dependent. In a
-fixed five-relabel test, three sources certify the same census and two stop
+The fixed-matrix core problem is now known to be completely decidable by
+column peeling (Section~\ref{marked-cut:column-peeling}); its earlier
+minimum-fill producer was already complete for that raw decision. The chosen
+source forest and disk system remain label-dependent. In the historical v4
+five-relabel test, three sources certified the same census and two stopped
 at the real core-cancellation stage before passive transport. A different
 cocore system could also expose primitivity when the current private-column
 test fails. Neither a failed schedule nor absence of a private column is a

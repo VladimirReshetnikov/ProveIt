@@ -7,7 +7,7 @@ The enclosing source verifiers, not arbitrary presentations, justify this model.
 """
 from collections import Counter
 
-from .core_handlebody import _forest, _occurrences, capped_cancellation_plan, leaf_cancellation_plan
+from .core_handlebody import _forest, _occurrences, column_cancellation_plan
 from .disk_bundle_absorption import source_core_circle
 
 
@@ -89,14 +89,13 @@ def bundle_boundary_kernel(g, summary, skeleton, *, check=lambda: None):
         if a != b:
             parent[max(a,b)] = min(a,b)
             bridges.append(edge['attachment'])
-    planned = leaf_cancellation_plan(rows, check=check)
-    if planned['remaining_rows']:
-        planned = capped_cancellation_plan(rows, check=check)
+    planned = column_cancellation_plan(rows, check=check)
     if planned['remaining_rows']:
         return None
-    # Even a projected leaf may meet implicit columns twice. Always replay the
-    # full positive pivot formula; 'leaf' here is just a schedule search heuristic.
-    proof = dict(schema='bundle-boundary-kernel-v1', forest=tree, bridge_forest=bridges,
+    # Retained column leaves have no fill on the retained matrix. An omitted
+    # column may meet the donor twice; the projected schedule still lifts to
+    # the complete geometric model without expanding those columns.
+    proof = dict(schema='bundle-boundary-kernel-v2', forest=tree, bridge_forest=bridges,
                  curves=curves, families=families, cancellations=planned['cancellations'])
     removed = {h for _, h in planned['cancellations']}
     groups = {}

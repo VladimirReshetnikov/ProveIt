@@ -1,10 +1,11 @@
-"""Independent source reconstruction and dense replay for the whole-cut kernel.
+"""Independent source reconstruction and timestamp or legacy dense replay for the whole-cut kernel.
 
 No producer, forest helper, census helper, or cancellation planner is imported.
 Inputs must first pass the source parallelity and marked-boundary verifiers.
 """
 from collections import Counter
 
+from .column_cancellation_verify import verify_column_cancellations
 from .disk_bundle_absorption_verify import reconstruct_core_circle
 from .integer_codec import certificate_equal, encoded_integer
 
@@ -15,7 +16,8 @@ def replay_bundle_boundary_kernel(g, summary, skeleton, certificate, *, check=la
     required = {'schema', 'forest', 'bridge_forest', 'curves', 'families', 'cancellations'}
     if type(certificate) is not dict or set(certificate) != required:
         return None
-    if certificate['schema'] != 'bundle-boundary-kernel-v1':
+    version = certificate['schema']
+    if version not in ('bundle-boundary-kernel-v1', 'bundle-boundary-kernel-v2'):
         return None
     core, bases = g['core'], summary['base_profiles']
     if core['handles3'] or any(p['boundary_components'] <= 0 for p in bases):
@@ -111,38 +113,56 @@ def replay_bundle_boundary_kernel(g, summary, skeleton, certificate, *, check=la
     moves = certificate['cancellations']
     if type(moves) is not list or len(moves) != len(raw_rows):
         return None
-    expected = dict(schema='bundle-boundary-kernel-v1', forest=tree, bridge_forest=bridges,
+    expected = dict(schema=version, forest=tree, bridge_forest=bridges,
                     curves=curves, families=families, cancellations=moves)
     if not certificate_equal(certificate, expected):
         return None
     # The retained columns alone determine retained counts under positive
     # pivots. Implicit columns start in {0,2} and can never be chosen.
-    labels = sorted(raw_rows)
-    position = {r:i for i,r in enumerate(labels)}
-    matrix = [[raw_rows[r].get(c,0) for c in range(next_column)] for r in labels]
-    live_rows, live_columns = set(labels), set(columns)
+    decoded_moves = []
     for move in moves:
         check()
-        if type(move) is not list or len(move)!=2:
+        if type(move) is not list or len(move) != 2:
             return None
         try:
-            r,c = map(encoded_integer,move)
+            decoded_moves.append([encoded_integer(x) for x in move])
         except ValueError:
             return None
-        if r not in live_rows or c not in live_columns or matrix[position[r]][c]!=1:
+    if version == 'bundle-boundary-kernel-v2':
+        if not verify_column_cancellations(raw_rows, decoded_moves, check=check):
             return None
-        live_rows.remove(r)
-        live_columns.remove(c)
-        donor = matrix[position[r]]
-        for other in live_rows:
+        live_columns = set(columns)
+        for _, c in decoded_moves:
+            if c not in live_columns:
+                return None
+            live_columns.remove(c)
+    else:
+        labels = sorted(raw_rows)
+        position = {r:i for i,r in enumerate(labels)}
+        matrix = [[raw_rows[r].get(c,0) for c in range(next_column)] for r in labels]
+        live_rows, live_columns = set(labels), set(columns)
+        for move in decoded_moves:
             check()
-            row = matrix[position[other]]
-            coefficient = row[c]
-            for h in live_columns:
-                row[h] = min(2,row[h]+coefficient*donor[h])
-            row[c] = 0
-    if live_rows:
-        return None
+            if type(move) is not list or len(move)!=2:
+                return None
+            try:
+                r,c = map(encoded_integer,move)
+            except ValueError:
+                return None
+            if r not in live_rows or c not in live_columns or matrix[position[r]][c]!=1:
+                return None
+            live_rows.remove(r)
+            live_columns.remove(c)
+            donor = matrix[position[r]]
+            for other in live_rows:
+                check()
+                row = matrix[position[other]]
+                coefficient = row[c]
+                for h in live_columns:
+                    row[h] = min(2,row[h]+coefficient*donor[h])
+                row[c] = 0
+        if live_rows:
+            return None
     unseen, joined, histogram = set(nodes), [], Counter()
     while unseen:
         check()
