@@ -1,0 +1,52 @@
+\paragraph{Validation scope.}
+The 19 focused tests pass in 20.486 seconds. New tests compare 400 small
+multigraphs with all their spanning trees, including loops, parallel edges,
+unreachable vertices, zero costs and 512-bit costs. Genuine source tests
+replay both selectors, preserve the lower charts, compare retained costs,
+exercise twelve relabellings, and check invariance of the top trace and raw
+costs under scaling by $2^{16384}$. The two new positive cuts replay with
+both boundary backends and with the producer helpers disabled. The
+abstract counterexample above is also a regression test.
+
+\paragraph{Paired full-query measurements.}
+The retained queue reducer and whole-cut wrapper are unmodified modules
+from commit \texttt{97e16378b19f}. The baseline wrapper calls that retained
+reducer; all other dependencies and every verifier are shared and unchanged.
+Each successful measurement includes full certificate production and
+independent replay. Five randomly ordered queue/weighted pairs and three
+queue/queue controls were run per source, before the full test suite or
+source audit began. The table reports marginal median times and the median
+of paired queue/weighted ratios, which are different statistics.
+
+\input{data/weighted-forest-table.tex}
+
+The first six cases complete in both modes. Their paired ratios span
+0.981--1.026, while their A/A medians span 0.956--1.012; these measurements
+show no broad elapsed-time advantage. The no-top pilot does not execute
+forest selection and is a control for this variation. The last two queue
+calls return inconclusive at the core precheck, while weighted calls
+produce complete independently verified censuses. Their times therefore
+measure different outcomes; no speedup ratio is reported. The weighted
+positive certificates have 8,963 and 15,371 serialized bytes, respectively.
+The default change is justified by the exact retained-incidence objective
+and the measured additional coverage, not a claimed uniform speedup.
+
+\paragraph{Testing the next restricted forest theorem.}
+A separate probe runs report 99's polynomial solver on the 120 original
+core matrices, before any additional bundle-interface rows. Its eighteen
+standalone tests pass from an isolated copy in 0.004 seconds. All completed
+matrix answers independently replay: 83 have a forest and complete raw
+peeling, two have negative forest certificates, and 35 lie outside its
+at-most-two-rows-per-active-column hypothesis. Among the 24 cores with
+three-handles, these counts are nine, two and thirteen. No bare core that
+the new weighted selector fails to peel gains completion from this
+restricted solver on this bank. This is useful scope evidence against
+assuming that a general finite matroid implementation immediately adds
+native coverage. The solver remains a research dependency, and its
+negative answers concern the fixed matrix/forest model only.
+
+All source pins, retained baseline modules, raw paired samples, audit
+records and test logs are in \path{synthesis/data/weighted-forest-*}.
+The source-to-pattern transport, complete useful-surface discovery,
+hierarchy depth, restart accounting and native orbit-trace bounds needed
+for general quasi-polynomial recognition remain open.

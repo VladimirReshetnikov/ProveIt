@@ -135,7 +135,7 @@ def _kernel_fallback(result, parallelity, boundary, record_certificate, check, *
 
 def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
                            record_certificate=False, precheck_core=True, boundary_method='masks',
-                           check=lambda: None):
+                           top_forest='max_weight', check=lambda: None):
     """Classify the whole supplied cut when the disk-gluing criterion succeeds.
 
     A COMPLETE result is an exact binary multiplicity census of handlebodies.
@@ -146,10 +146,14 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
     optional core precheck defaults on: a raw obstruction skips boundary
     discovery, without claiming any negative topological conclusion. The
     boundary_method chooses legacy endpoint masks or a single moment census.
+    top_forest minimizes retained raw incidence by default; queue retains the
+    earlier top-handle selector. Neither choice guarantees later cancellation.
     """
     check()
     if type(boundary_method) is not str or boundary_method not in ('masks', 'moments'):
         raise ValueError('boundary_method must be masks or moments')
+    if type(top_forest) is not str or top_forest not in ('queue', 'max_weight'):
+        raise ValueError('top_forest must be queue or max_weight')
     if type(precheck_core) is not bool:
         raise ValueError('precheck_core must be bool')
     if type(record_certificate) is not bool:
@@ -166,12 +170,13 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
         return result
     geometry, reduction = parallelity['geometry'], None
     if geometry['core']['handles3']:
-        reduced = reduce_core_three_handles(geometry, check=check)
+        reduced = reduce_core_three_handles(geometry, strategy=top_forest, check=check)
         if reduced is None:
             result['reason'] = 'core_three_handle_reduction_stalled'
             return result
         geometry, reduction = reduced
-        result['stats']['core_reduction'] = dict(cancelled_23=len(reduction['cancellations']))
+        result['stats']['core_reduction'] = dict(cancelled_23=len(reduction['cancellations']),
+                                               strategy=top_forest)
     prepared_core = None
     if precheck_core:
         prepared_core = core_handlebody_certificate(geometry['core'], check=check)

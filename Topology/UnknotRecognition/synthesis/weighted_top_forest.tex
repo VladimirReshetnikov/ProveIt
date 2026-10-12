@@ -1,0 +1,135 @@
+\subsection{Minimizing retained core incidence by a weighted dual forest}
+\label{marked-cut:weighted-top}
+
+The previous source-relative top reduction chooses the first exposed edge
+from a queue. Its completeness concerns removal of all three-handles; it
+need not leave a useful one/two cancellation problem. Reports 99 and 100
+identify a polynomial optimization within the same certified geometric
+operation: assign a fixed cost to every eligible two-handle and choose a
+maximum-weight dual spanning tree. We integrate this objective using the
+existing root-growing queue with a priority heap. The independent geometric
+checker and the v6 whole-cut certificate format are unchanged.
+
+\paragraph{What is being optimized.}
+Fix the deterministic zero/one spanning forest used by the current core
+consumer. For an original two-handle $h$, let $c_h$ be the exact number of
+its attaching-cycle flags that pass through a one-handle outside this
+forest. Count occurrences, including repeated passages, without saturation
+at two or algebraic cancellation. No added bundle relation is an eligible
+dual edge. All $c_h$ are fixed before top reduction. The surviving
+zero/one handles and their incidences are unchanged by the relative top
+cancellations, so the downstream consumer uses the same lower forest.
+
+\begin{proposition}[The feasible complete deletion sets]
+For the source dual graph of Proposition~\ref{marked-cut:dual-endpoints},
+the two-handle sets removed by complete legal top-cancellation traces are
+exactly its spanning trees, rooted at exposed boundary.
+\end{proposition}
+\begin{proof}
+A tree gives a legal trace by processing each parent before its children,
+as in Proposition~\ref{marked-cut:dual-forest}. Conversely, direct every
+selected edge from the interior vertex removed at that step toward its
+other endpoint. That endpoint is the boundary root or an earlier removed
+vertex. Following these directions strictly decreases removal time until
+reaching the root. The selected graph is connected and has one edge for
+each nonroot vertex, so it is a spanning tree. A loop cannot be selected:
+its two live occurrences never give the required single intersection.
+Identifying exposed components with one formal root indexes the operation;
+it does not glue those boundary components topologically.
+\end{proof}
+
+\begin{theorem}[Exact minimum retained additive work]
+Among all complete pure top reductions with fixed costs $c_h$, a
+maximum-weight spanning tree $D$ minimizes the retained cost
+\[
+ C_{\mathrm{ret}}(D)=\sum_{h\notin D}c_h.
+\]
+The implemented choice minimizes the number of literal attaching passages
+outside the fixed lower forest. It need not maximize subsequent raw
+cancellation, minimize proof size, or recognize every handlebody.
+\end{theorem}
+\begin{proof}
+The surviving rows and their costs do not change. Hence
+$C_{\mathrm{ret}}(D)=\sum_hc_h-\sum_{h\in D}c_h$. The preceding proposition
+identifies the feasible deletion sets, reducing the objective to the
+classical maximum spanning-tree problem.
+
+For completeness, the actual heap algorithm has the usual cut-exchange
+proof. Let $R$ be the vertices already connected to the boundary root.
+Choose a largest-cost edge $e$ with one endpoint in $R$ and one outside.
+Suppose an optimal tree containing the earlier choices omits $e$. Adding
+$e$ makes a cycle whose remaining path crosses the same cut at an edge
+$f$. Earlier chosen edges lie inside $R$, so $f$ is not an earlier choice.
+By maximality $c_e\ge c_f$; replace $f$ by $e$ without decreasing total
+cost. Induction gives an optimal spanning tree containing every selected
+edge. Ties may be broken by source edge identifier. This is the classical
+spanning-tree cut argument, not a new general graph optimization theorem;
+see Kruskal's original treatment of spanning-tree optimization at
+\url{https://doi.org/10.1090/S0002-9939-1956-0078686-7}.
+\end{proof}
+
+\paragraph{Implementation and costs.}
+Each dual edge retains its two endpoint occurrences. As before, its live
+degree and xor of live vertex identifiers identify an eligible pair.
+For \path{strategy='max_weight'}, every degree-one edge is inserted in a
+heap with key $(-c_h,h)$. Removing its unique live vertex scans that vertex's
+incident occurrences and inserts newly exposed edges. The heap is exactly
+the current boundary cut, together with stale entries. Stale entries are
+checked and discarded before any cancellation. A loop may momentarily
+have degree one while its two occurrences are being removed in the same
+vertex update, but it has degree zero before the next heap extraction.
+It therefore cannot become a false geometric pivot, regardless of cost.
+
+Every edge is inserted at most once when its degree becomes one; no key
+changes are needed. There are $O(T)$ dual edges and occurrences. After the
+existing source preparation and lower-forest construction, computing costs
+requires $O(T)$ flag visits, heap selection requires $O(T\log(T+1))$
+comparisons, and storage is $O(T)$. Source raw costs and identifiers are
+$O(T)$, so a conservative graph-stage bit bound is
+$O(T\log^2(T+2))$. These counts do not absorb the existing geometry
+reconstruction or orbit discovery costs. Normal sheet multiplicity does
+not appear in the graph-stage record count.
+
+The low-level producer retains \path{strategy='queue'} for exact historical
+reproduction. The whole-cut API uses \path{top_forest='max_weight'} and
+also accepts \path{top_forest='queue'}. Both modes send the same source
+endpoint table, cancellation trace and survivor list to the unchanged
+checker. The checker certifies the geometric reduction, not optimality of
+its cost. Optimality is a producer theorem and is separately tested against
+exhaustive spanning-tree enumeration. No optimality claim is trusted to
+establish a topological verdict.
+
+\paragraph{A genuine source miss resolved by a different tree.}
+The previously retained five-tetrahedron interior-loop solid torus has
+one interior vertex. With the fixed lower forest, its raw rows on columns
+$3,5,6,7,8$ are
+\[
+\begin{pmatrix}
+0&0&1&0&0\\
+1&1&0&0&0\\
+0&1&0&1&1\\
+1&0&1&1&1\\
+0&1&1&1&0
+\end{pmatrix}.
+\]
+Rows zero through three join the interior vertex to the root; row four
+is a dual loop. The old queue removes row zero, leaving column totals
+$2,3,2,3,2$, a raw stopping set. The weighted selector removes row three,
+of cost four, leaving cost nine rather than twelve. The surviving rows
+peel and the independent whole-cut checker certifies one solid torus.
+For the corresponding boundary-link normal surface, it certifies one
+ball and one solid torus. These are source-bound cut censuses, not knot
+recognition verdicts.
+
+\paragraph{Why smaller incidence is not recognition completeness.}
+Even the abstract optimization problems differ. Consider three eligible
+parallel root edges with rows
+$r_0=(0,1,1,1)$ and $r_1=r_2=(1,0,0,0)$. The maximum-cost deletion removes
+$r_0$ and leaves a stopping set; deleting $r_1$ instead permits complete
+peeling. This example is an abstract nonnegative incidence matrix, not an
+authenticated geometric handle structure. It refutes an implication from
+the additive objective alone. The geometric parity and source constraints
+require separate treatment; neither the objective nor this example settles
+complete useful-forest selection for native cores.
+
+\input{weighted_top_forest_results.tex}
