@@ -1,0 +1,165 @@
+\section{Polylogarithm sums and Lerch order derivatives}
+\label{sec:polylog}
+
+The beta moments in the mixed coefficient formula can be summed directly.
+This gives ordinary polylogarithms, not only order derivatives or formal
+spectral symbols. We then give a second family involving Lerch and
+polylogarithm order derivatives.
+
+\subsection{An exact polylogarithm sum for every square kernel}
+Write
+\begin{equation}\label{eq:Pbcoeff}
+ P_b(v)=(1-v^2)^3(1+3v^2)^b
+       =\sum_{j=0}^{b+3}d_{b,j}v^{2j},
+ \qquad c_b=\frac1{18432b!24^b}.
+\end{equation}
+Then \eqref{eq:gb-density} gives
+\begin{equation}\label{eq:gb-rational}
+ g_b(2\ell)=-c_b\sum_{j=0}^{b+3}\frac{d_{b,j}}{2\ell+2j+1}.
+\end{equation}
+The elementary odd-part polylogarithm is
+\[
+ \chi_r(z)=\frac{\Li_r(z)-\Li_r(-z)}2
+ =\sum_{\ell\ge0}\frac{z^{2\ell+1}}{(2\ell+1)^r},\qquad |z|<1.
+\]
+The defining polylogarithm series and its analytic conventions are
+standard \cite{DLMF12}.
+
+\begin{theorem}[All coefficient-weighted odd polylogarithm sums]
+\label{thm:polylog-sum}
+Let $b\ge0$, $m\ge1$, and $|z|<1$. Then
+\begin{equation}\label{eq:polylog-sum}
+ \sum_{\ell\ge0}\frac{g_b(2\ell)z^{2\ell+1}}{(2\ell+1)^m}
+ =-c_b\sum_{j=0}^{b+3}d_{b,j}T_{m,j}(z),
+\end{equation}
+where $T_{m,0}(z)=\chi_{m+1}(z)$ and, for $j\ge1$,
+\begin{equation}\label{eq:T-polylog}
+\begin{split}
+ T_{m,j}(z)={}&\sum_{r=1}^m
+ \frac{(-1)^{m-r}}{(2j)^{m-r+1}}\chi_r(z)\\
+ &+\frac{(-1)^m z^{-2j}}{(2j)^m}
+ \left(\chi_1(z)-\sum_{r=0}^{j-1}\frac{z^{2r+1}}{2r+1}\right).
+\end{split}
+\end{equation}
+The apparent negative powers at $z=0$ are removable.
+\end{theorem}
+\begin{proof}
+Substitution of \eqref{eq:gb-rational} reduces the assertion to evaluating
+\[
+ T_{m,j}(z)=\sum_{\ell\ge0}
+ \frac{z^{2\ell+1}}{(2\ell+1)^m(2\ell+2j+1)}.
+\]
+For $j=0$ this is $\chi_{m+1}$. For $j\ge1$, use the finite partial
+fraction identity, with $x=2\ell+1$ and $c=2j$,
+\begin{equation}\label{eq:partial-fraction}
+ \frac1{x^m(x+c)}=
+ \sum_{r=1}^m\frac{(-1)^{m-r}}{c^{m-r+1}x^r}
+ +\frac{(-1)^m}{c^m(x+c)}.
+\end{equation}
+Sum the terms using absolute convergence. In the last term, shift the
+odd index by $2j$, obtaining \eqref{eq:T-polylog}. The bracket starts
+with $z^{2j+1}$, proving removability at zero.
+\end{proof}
+
+\begin{corollary}[Zeta and harmonic endpoint values]\label{cor:polylog-endpoint}
+The limit at $z=1$ is given by the same finite sum
+\eqref{eq:polylog-sum}, with
+\begin{align}
+ T_{m,0}(1)&=(1-2^{-m-1})\zeta(m+1),\label{eq:T0-one}\\
+ T_{m,j}(1)&=\sum_{r=2}^m
+ \frac{(-1)^{m-r}(1-2^{-r})\zeta(r)}{(2j)^{m-r+1}}
+ +\frac{(-1)^{m+1}}{(2j)^m}
+       \left(H_{2j}-\frac12H_j\right),\qquad j\ge1.
+ \label{eq:Tj-one}
+\end{align}
+An empty sum in \eqref{eq:Tj-one} is zero.
+\end{corollary}
+\begin{proof}
+Combine the two $\chi_1(z)$ terms in \eqref{eq:T-polylog} before
+letting $z\to1$. Their coefficient is a constant multiple of
+$1-z^{-2j}$; its product with the logarithmic singularity tends to zero.
+For $r\ge2$, $\chi_r(1)=(1-2^{-r})\zeta(r)$, and the finite odd
+harmonic sum is $H_{2j}-H_j/2$. The defining series for $T_{m,j}$
+converges absolutely at one. So does the coefficient-weighted series;
+indeed the beta formula gives $g_b(2\ell)=O(\ell^{-4})$ for fixed $b$.
+These observations justify passage to the endpoint.
+\end{proof}
+
+For example, a base normalization consequence is
+\begin{equation}\label{eq:example-odd-sum}
+ \sum_{\ell\ge0}
+ \frac1{(2\ell+1)^2(2\ell+3)(2\ell+5)(2\ell+7)}
+ =\frac{\pi^2}{384}-\frac{17}{1080}.
+\end{equation}
+This example is an elementary partial-fraction evaluation. The uniform
+formula \eqref{eq:polylog-sum} is useful because the coefficients
+$g_b$ have already been identified with every mixed square sector,
+including the previously unanswered $b>0$ family.
+
+Termwise application of $z\partial_z$ lowers $m$, and integration
+against $\dd z/z$ from zero raises $m$. Absolute convergence on compact
+subdisks justifies both operations. Thus \eqref{eq:polylog-sum} also
+provides anchored antiderivatives and derivative identities for the same
+coefficient families, without introducing new undetermined constants.
+
+\subsection{Lerch transforms and polylogarithm order derivatives}
+For $|z|<1$ and $\Re a>1$, set
+\[
+ L_P(z,s;a)=\frac12\int_{-1}^1P(v)\Phi(z,s,a+v)\dd v,
+ \qquad
+ \Phi(z,s,a)=\sum_{n\ge0}\frac{z^n}{(n+a)^s}.
+\]
+The Lerch series is entire in $s$ on this disk, and
+$\partial_a\Phi(z,s-1,a)=-(s-1)\Phi(z,s,a)$
+\cite{DLMF14}. Hence the same proof as Proposition~\ref{prop:Hurwitz}
+gives
+\begin{equation}\label{eq:Lerch-endpoint}
+ L_P(z,s;a)=-\frac12\sum_{j=0}^d
+ \frac{\eval{P^{(j)}(v)\Phi(z,s-j-1,a+v)}}{\fall{s-1}{j+1}}.
+\end{equation}
+Unlike the Hurwitz case, \emph{all} the apparent poles of this expression,
+including $s=1$, are removable after the finite sum is combined.
+
+\begin{proposition}[Order-one Lerch average]\label{prop:Lerch-one}
+For $|z|<1$ and $\Re a>1$,
+\begin{equation}\label{eq:Lerch-one}
+ L_P(z,1;a)=-\frac12\sum_{j=0}^d\frac{(-1)^j}{j!}
+ \eval{P^{(j)}(v)
+ \bigl(\partial_s\Phi(z,-j,a+v)+H_j\Phi(z,-j,a+v)\bigr)}.
+\end{equation}
+At $a=2$ this is a finite expression in $\Li_{-j}(z)$,
+$\partial_s\Li_s(z)|_{s=-j}$, and elementary terms.
+\end{proposition}
+\begin{proof}
+Expand \eqref{eq:Lerch-endpoint} at $s=1+\epsilon$ using
+\eqref{eq:falling-laurent}. Entirety in $s$ forces the coefficient of
+$\epsilon^{-1}$ to cancel. The constant coefficient is exactly
+\eqref{eq:Lerch-one}. At the integer endpoints,
+\begin{equation}\label{eq:Lerch-integer}
+ \Phi(z,s,1)=z^{-1}\Li_s(z),\qquad
+ \Phi(z,s,3)=z^{-3}\bigl(\Li_s(z)-z-z^22^{-s}\bigr).
+\end{equation}
+These follow by shifting the defining series and prove the final claim.
+\end{proof}
+
+For an entirely explicit implementation, put
+$A_j(z)=P^{(j)}(1)z^{-3}-P^{(j)}(-1)z^{-1}$ and write
+$\dot\Li_{-j}(z)=\partial_s\Li_s(z)|_{s=-j}$. The endpoint expression
+inside the summation in \eqref{eq:Lerch-one}, at $a=2$, is
+\begin{equation}\label{eq:Lerch-polylog-explicit}
+\begin{split}
+ &A_j(z)\bigl(\dot\Li_{-j}(z)+H_j\Li_{-j}(z)\bigr)\\
+ &\qquad+P^{(j)}(1)
+ \left(2^jz^{-1}\log2-H_j\bigl(z^{-2}+2^jz^{-1}\bigr)\right).
+\end{split}
+\end{equation}
+The apparent singularities at $z=0$ cancel by
+\eqref{eq:Lerch-integer}. Formula~\eqref{eq:Lerch-one} therefore
+connects every polynomial $v^kW_{b,n}$ to a finite family of polylogarithm
+order derivatives with no infinite reduction step.
+
+The limits $z\to1$ and $s\to1$ should not be interchanged without
+analysis: the Lerch transform is entire in $s$ for $|z|<1$, whereas its
+Hurwitz counterpart can have the genuine residue $\mu_P$ at $s=1$.
+The direct Hurwitz formula in Theorem~\ref{thm:Stieltjes} keeps that
+residue and is the appropriate normalization for Stieltjes constants.

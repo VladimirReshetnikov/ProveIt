@@ -1,0 +1,1383 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype,booktabs,longtable,array,xcolor,fancyhdr,enumitem}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,urlcolor=blue!40!black]{hyperref}
+\usepackage{bookmark}
+\allowdisplaybreaks[2]
+\emergencystretch=2em
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\CT}{CT}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\wt}{wt}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\mz}[1]{\zeta(#1)}
+\newcommand{\sref}[1]{\texttt{#1}}
+\newcommand{\dd}{\,d}
+\newcommand{\sha}{\mathbin{\mathrm{sh}}}
+\newcommand{\shuffle}{\mathrm{sh}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Mixed tails, zeta anchors, and Stieltjes transport}
+\fancyhead[R]{\small ProveIt continuation}
+\fancyfoot[C]{\thepage}
+\setlist[enumerate]{leftmargin=*,itemsep=5pt}
+\hypersetup{pdftitle={Mixed Hurwitz-Tail Moments, Zeta-Anchor Reductions, and Stieltjes Transport},pdfauthor={Research continuation prepared for Vladimir Reshetnikov},pdfsubject={Exact polylogarithm, multiple-zeta, polygamma, Gamma and Stieltjes identities}}
+\begin{document}
+\begin{titlepage}
+\vspace*{10mm}
+{\sffamily\large PROVEIT RESEARCH CONTINUATION\par}
+\vspace{12mm}
+{\LARGE\bfseries Mixed Hurwitz-Tail Moments,\par
+Zeta-Anchor Reductions,\par
+and Stieltjes Transport\par}
+\vspace{8mm}
+{\large Exact identities, a parity-refined finite compiler,\par
+and explicit rational certificates\par}
+\vspace{12mm}
+{Prepared for Vladimir Reshetnikov\par}
+\smallskip
+{11 October 2026\par}
+\vspace{10mm}
+\begin{abstract}
+We continue the harmonic-tail and Gamma--Stieltjes branches of the ProveIt
+polylogarithm programme. Three explicitly defined anchors in the existing
+fifth- and sixth-power moment generators are reduced to ordinary zeta
+products and, at weight eight, a single specified depth-two value.
+The reductions are proved by finite rational combinations of classical
+double-shuffle relations; complete short certificates are printed and
+independently replayed.
+
+For an arbitrary product of integer-order Hurwitz tails, including odd
+and unequal orders, we give a terminating formula for every regular
+centered moment. The answer lies in the rational span of admissible
+multiple zeta values of weight at most $W-1$, where $W$ is the sum of
+the tail orders. For odd centered degree the ceiling improves to $W-2$.
+A separate, simpler formula treats the full $(2,3)$ family and gives
+an ordinary polynomially subtracted series with value exactly $-15$;
+we supply a direct finite telescoper for it.
+
+Finally, weighting by successive differences of a tail product gives
+all-index generalized-Stieltjes sums, polygamma identities, anchored
+Gamma-ratio sums, and primitives in terms of Hurwitz order derivatives
+at zero. A finite multiple-polylogarithm kernel identifies their
+coefficients with convergent final-index multiple-zeta derivatives.
+The article distinguishes these continuations from the already proved
+all-power even-tail recurrences. It includes source-status notes,
+an independently replayable exact certificate suite, numerical
+diagnostics, and a precise further-research agenda.
+\end{abstract}
+\vfill
+\noindent\small\textbf{Scope.} The claims are relative to the explicitly
+inspected source files, not an exhaustive priority claim over the
+literature or the repository. No arithmetic independence, Gaussian
+$S_6/S_8$ identity, or proof-assistant formalization is asserted.
+\end{titlepage}
+\tableofcontents
+\clearpage
+
+\section{Results, sources, and conventions}
+\label{sec:scope}
+
+The starting point is a collection of proved identities, not a blank
+research programme. The quartic reconstruction report \cite{Quartic}
+already evaluates all regular centered quartic trigamma moments.
+The later Bernoulli-cancellation report \cite{Bernoulli} proves the
+all-power recurrence, gives fifth- and sixth-power generators, and
+extends the mechanism to repeated even-order tails. The lattice-contact
+report \cite{Lattice} further treats arbitrary unequal even-order
+products. Those theorems must not be presented as new here.
+
+The present continuation makes three different contributions. First,
+it reduces the named higher anchors $J_7,K_8,K_9$ explicitly. Second,
+it gives a cutoff-normalized compiler for arbitrary integer tail orders,
+with a parity-refined weight ceiling and a particularly simple odd-order
+mixed family. Third, it connects the successive differences of these
+tail products to Stieltjes constants, Gamma ratios, and order derivatives
+of multiple zeta functions. The transport identities use classical
+summation by parts and shift recurrences; the contribution is their
+explicit combined realization and normalization, not the underlying
+summation principle.
+
+The most elementary new specialization is worth displaying first.
+Put
+\begin{equation}\label{eq:AB}
+ A_n=\zeta(2,n+1)=\psi'(n+1),\qquad
+ B_n=\zeta(3,n+1)=-\frac12\psi^{(2)}(n+1),\qquad
+ x_n=n+\frac12.
+\end{equation}
+Then
+\begin{equation}\label{eq:intro-rational}
+\boxed{\displaystyle
+ \sum_{n=0}^{\infty}\left[
+ (23x_n+232x_n^3+240x_n^5)A_nB_n-120x_n^2-76
+ \right]=-15.}
+\end{equation}
+The bracket is a single absolutely summable quantity. None of its
+polynomial pieces is summed separately. Section~\ref{sec:pair} proves
+this by an explicit rational telescoper, independently of the
+multiple-zeta reduction software.
+
+\subsection{A scoped source audit}
+
+The core anchor definitions were read at the immutable repository ref
+\sref{0dfef47533f8}; the supplementary unequal-even-tail report was
+inspected at \sref{cc569dca8622}. Full immutable identifiers are
+recorded in the provenance file and the pinned bibliography links.
+The earlier quartic source and the canonical status files were also
+read. Exact paths and the scope of each read are in
+\sref{SOURCE\_AUDIT.md} and \sref{provenance.json}.
+
+The incoming directory listing and its intake instructions were
+inspected, but its binary archives were not exhaustively extracted or
+audited in this session. In particular, absence from the inspected
+passages is not evidence of absence from every incoming report.
+The article therefore offers explicit proved continuations and
+integration candidates, not a claim that every surrounding open
+question has been surveyed or resolved.
+
+Classical ingredients are credited: Hurwitz asymptotics and Gamma
+relations \cite{DLMF}, products of zeta tails ordered by their minimum
+index \cite{Hoffman}, and double-shuffle relations \cite{IKZ}.
+The existing fifth- and sixth-power generators and their original
+formal-coordinate ranks retain their source attribution.
+
+\subsection{Notation}
+
+We use descending-index multiple zeta values
+\[
+ \zeta(s_1,\ldots,s_d)
+ =\sum_{n_1>\cdots>n_d\ge1}
+     \frac1{n_1^{s_1}\cdots n_d^{s_d}}.
+\]
+An integer word is \emph{admissible} when $s_1\ge2$ and all other
+indices are positive. Its weight is $s_1+\cdots+s_d$. The empty word
+has zeta value $1$. Products can always be expanded into a finite
+linear combination of MZVs by the harmonic, or stuffle, product.
+No independence of the resulting numerical values is assumed.
+
+Bernoulli polynomials satisfy
+\[
+ \frac{te^{xt}}{e^t-1}=\sum_{j\ge0}B_j(x)\frac{t^j}{j!},
+ \qquad B_j=B_j(0),\qquad B_1=-\frac12.
+\]
+For generalized Stieltjes constants our convention is
+\begin{equation}\label{eq:stieltjes-convention}
+ \zeta(1+u,a)=\frac1u+
+ \sum_{q\ge0}\frac{(-1)^q}{q!}\gamma_q(a)u^q,
+ \qquad \gamma_0(a)=-\psi(a).
+\end{equation}
+Order derivatives of zeta functions are always distinguished from
+argument derivatives. Positive real shifts suffice for every
+Stieltjes and Gamma identity below. This avoids any implicit
+choice of logarithmic branches.
+
+\section{Explicit reduction of the higher moment anchors}
+\label{sec:anchors}
+
+For a composition $(a_1,\ldots,a_\ell)$ of $e$, write
+$(a_1,\ldots,a_\ell)\vDash e$. Define the convergent anchor
+\begin{equation}\label{eq:anchor}
+ \mathcal Z_{e,h}=
+ \sum_{(a_1,\ldots,a_\ell)\vDash e}
+ \frac{e!}{a_1!\cdots a_\ell!}
+ \zeta(2a_1,\ldots,2a_{\ell-1},2a_\ell-h).
+\end{equation}
+Only the negative $h$ instances occurring below are needed here.
+Ordering the equal and strictly ordered tail indices gives the
+ordinary identity
+\begin{equation}\label{eq:anchor-drop}
+ \mathcal Z_{e,h}
+ =\sum_{n=1}^{\infty}n^h(A_{n-1}^e-A_n^e),\qquad h\le0.
+\end{equation}
+This ordering argument is classical \cite{Hoffman}; the explicit
+reductions that follow are the additional step.
+
+The Bernoulli-cancellation source defines
+\begin{align}
+ J_7&=\mathcal Z_{2,-3}=2\zeta(2,5)+\zeta(7),\label{eq:Jdef}\\
+ K_8&=\frac56\mathcal Z_{3,-2}+\frac{289}{32}\zeta(8),\label{eq:K8def}\\
+ K_9&=\mathcal Z_{2,-5}-5\mathcal Z_{4,-1}.\label{eq:K9def}
+\end{align}
+In particular,
+\[
+ \mathcal Z_{3,-2}
+ =6\zeta(2,2,4)+3\zeta(2,6)+3\zeta(4,4)+\zeta(8).
+\]
+These definitions are inherited, rather than newly introduced
+unknown constants.
+
+\begin{theorem}[Three explicit anchor reductions]\label{thm:anchors}
+The anchors in \eqref{eq:Jdef}--\eqref{eq:K9def} satisfy
+\begin{align}
+ J_7={}&21\zeta(7)-8\zeta(2)\zeta(5)
+                                  -4\zeta(3)\zeta(4),\label{eq:J7}\\
+ K_8={}&10\zeta(2)\zeta(3)^2-50\zeta(3)\zeta(5)
+                -10\zeta(5,3)+\frac{4927}{96}\zeta(8),\label{eq:K8}\\
+ K_9={}&1086\zeta(9)-222\zeta(2)\zeta(7)
+                +171\zeta(3)\zeta(6)-858\zeta(4)\zeta(5).
+ \label{eq:K9}
+\end{align}
+These are identities of convergent real series. They do not assert
+that $\zeta(5,3)$ is irreducible in any larger class of constants.
+\end{theorem}
+
+\begin{proof}
+Expand the left sides by \eqref{eq:anchor}, and expand products on
+the right by the stuffle product. At each weight the difference
+is a rational vector on the finite set of admissible words.
+Appendix~\ref{app:certificates} specifies a finite family of true
+double-shuffle and duality relations and gives every coefficient
+expressing these three difference vectors as sums of those relations.
+The certificates use respectively $3$, $17$, and $54$ nonzero rows.
+Their rational vector identities are checked independently by
+\sref{verification/exact.py}; the complete row convention and
+coefficient tables are also printed in the appendix.
+
+Each row is a genuine MZV identity, and the stated rational linear
+combination is exactly the target difference, so the difference
+vanishes. This proof uses neither integer-relation recognition nor
+a conjectural completeness theorem for double shuffle.
+\end{proof}
+
+For comparison, the exact computation gives the convenient equivalent
+anchor values
+\begin{align}
+ \mathcal Z_{3,-2}
+   &={}12\zeta(2)\zeta(3)^2-60\zeta(3)\zeta(5)
+           -12\zeta(5,3)+\frac{203}{4}\zeta(8),\label{eq:Z3}\\
+ \mathcal Z_{4,-1}
+   &={}42\zeta(2)\zeta(7)-35\zeta(3)\zeta(6)
+           +170\zeta(4)\zeta(5)-210\zeta(9).\label{eq:Z4}
+\end{align}
+The first follows immediately from \eqref{eq:K8def} and
+\eqref{eq:K8}. For the second, the classical odd-weight double-zeta
+reduction, or the same finite row system, gives
+\[
+ \mathcal Z_{2,-5}
+ =36\zeta(9)-12\zeta(2)\zeta(7)-4\zeta(3)\zeta(6)
+                                    -8\zeta(4)\zeta(5).
+\]
+Insert this into \eqref{eq:K9def}. The auxiliary reduction can also
+be reconstructed with the included exact reducer; it is not inferred
+from a decimal fit.
+
+\subsection{Consequences for the existing quintic and sextic generators}
+
+Retain the inherited elementary combinations
+\begin{align}
+ Q_5&=4\zeta(2)\zeta(3)-10\zeta(5),\label{eq:Q5}\\
+ Q_7&=51\zeta(3)\zeta(4)+10\zeta(2)\zeta(5)
+                              -\frac{301}{4}\zeta(7).\label{eq:Q7}
+\end{align}
+The source proves $\sum_{n\ge0}A_n^4=Q_7$ and
+\begin{equation}\label{eq:inherited-M51}
+ \sum_{n\ge0}x_nA_n^5=-K_8+\frac52Q_7.
+\end{equation}
+Thus the additional arithmetic reduction yields
+\begin{equation}\label{eq:quintic-standard}
+\begin{split}
+ \sum_{n\ge0}x_nA_n^5={}&
+ \frac{255}{2}\zeta(3)\zeta(4)+25\zeta(2)\zeta(5)
+                       -\frac{1505}{8}\zeta(7)\\
+ &-10\zeta(2)\zeta(3)^2+50\zeta(3)\zeta(5)
+                       +10\zeta(5,3)-\frac{4927}{96}\zeta(8).
+\end{split}
+\end{equation}
+The inherited moment relation \eqref{eq:inherited-M51} is explicitly
+credited; its expansion into the standard coordinates in
+\eqref{eq:quintic-standard} is the continuation.
+
+For clarity, let $I^q$ mean the $q$-fold primitive anchored at zero,
+and let $H_d=2\sinh(t/2)G_d$ be the source's regular moment generator.
+Its sextic formula is
+\begin{equation}\label{eq:inherited-H6}
+\begin{split}
+ H_6(t)={}&R_{11}t+6I^2(\cosh(t/2)G_5(t))
+                 -\frac52I^4H_4(t)+\frac12I^8H_2(t)\\
+ &+\frac{K_9}{12}t^3+\frac{J_7}{240}t^5-\frac{Q_5}{10080}t^7,
+ \qquad R_{11}=\mathcal Z_{6,1}.
+\end{split}
+\end{equation}
+Equations \eqref{eq:J7} and \eqref{eq:K9} eliminate the two named
+lower anchors here. The weight-eleven anchor $R_{11}$ is not reduced
+in this article. Nor does rewriting the coordinates prove independence
+of the source's eleven numerical values.
+
+\section{Arbitrary integer-order tail products and regular parity}
+\label{sec:mixed}
+
+Fix a nonempty tuple $\boldsymbol p=(p_1,\ldots,p_d)$ of integers
+$p_i\ge2$. Define
+\begin{equation}\label{eq:mixed-def}
+ T_n=\prod_{i=1}^d\zeta(p_i,n+1),\qquad
+ W=\sum_{i=1}^dp_i,\qquad R=W-d,\qquad x_n=n+\frac12.
+\end{equation}
+Here $R\ge1$. Odd orders are allowed. For integer $p\ge2$,
+\[
+ \zeta(p,n+1)=\frac{(-1)^p}{(p-1)!}\psi^{(p-1)}(n+1),
+\]
+so every result is simultaneously an identity for products of
+polygamma functions.
+
+Set
+\begin{equation}\label{eq:etas}
+ \eta_{p,0}=\frac1{p-1},\qquad
+ \eta_{p,j}=\frac{(p)_{2j-1}}{(2j)!}B_{2j}(1/2)\quad(j\ge1),
+ \qquad
+ c_k=\sum_{k_1+\cdots+k_d=k}\prod_i\eta_{p_i,k_i}.
+\end{equation}
+The centered Hurwitz expansion \cite{DLMF} is
+\begin{equation}\label{eq:centered-expansion}
+ T_n\sim\sum_{k\ge0}c_kx_n^{-R-2k}.
+\end{equation}
+It is an asymptotic expansion, not a convergent series at a fixed $n$.
+
+\begin{proposition}[Poles and ordinary regular moments]\label{prop:regular}
+The series
+\[
+ \mathcal D_{\boldsymbol p}(s)=\sum_{n\ge0}T_nx_n^{-s}
+\]
+converges absolutely for $\Re s>1-R$ and continues meromorphically
+to the plane. Its poles are exactly the simple poles
+$s=1-R-2k$, with residue $c_k\ne0$.
+For each nonnegative integer $m\equiv R\pmod2$, the regular value
+$M_{\boldsymbol p,m}=\mathcal D_{\boldsymbol p}(-m)$ is the ordinary
+absolutely convergent sum
+\begin{equation}\label{eq:regular-sum}
+ \boxed{M_{\boldsymbol p,m}=
+ \sum_{n=0}^{\infty}\left[
+ x_n^mT_n-
+ \sum_{0\le k\le(m-R)/2}c_kx_n^{m-R-2k}\right].}
+\end{equation}
+A sum whose upper bound is negative is empty.
+\end{proposition}
+
+\begin{proof}
+A finite truncation of \eqref{eq:centered-expansion}, with its
+remainder estimate, writes $\mathcal D$ as a normally convergent
+remainder series plus finitely many functions
+$c_k\zeta(s+R+2k,1/2)$. Increasing the truncation continues it to
+successively larger left half-planes. The pole and residue assertions
+follow. Since $\eta_{p,j}$ has sign $(-1)^j$, every term in the
+convolution for $c_k$ has sign $(-1)^k$; hence $c_k$ is nonzero.
+
+At $s=-m$ in the indicated parity, every removed term has added
+Hurwitz value $\zeta(-2j,1/2)=0$. The remainder in the bracket
+is $O(x_n^{-2})$, or faster when no subtraction is needed. This
+proves \eqref{eq:regular-sum}, with no unspecified summation of
+divergent polynomial series.
+\end{proof}
+
+\begin{theorem}[Finite mixed-order reduction and refined weight ceiling]
+\label{thm:compiler}
+For every tuple in \eqref{eq:mixed-def} and every regular degree $m$,
+there is a terminating rational algorithm expressing
+$M_{\boldsymbol p,m}$ as a linear combination of $1$ and admissible
+MZVs of weight at most $W-1$. If $m$ is odd, the bound improves to
+$W-2$. The coefficient algorithm in Section~\ref{sec:compiler}
+specifies the value without choosing a conjectural basis of MZVs.
+\end{theorem}
+
+The all-even case overlaps the source's Bernoulli recurrences, which
+already give finite-span conclusions. The theorem's useful additional
+features are its allowance of arbitrary odd orders, its explicit
+cutoff-normalized finite procedure, and the uniform odd-degree
+refinement. The weight bound is a spanning statement, not a claim
+that a given value has that minimal weight or depth.
+
+\section{A finite-cutoff proof and an executable compiler}
+\label{sec:compiler}
+
+\subsection{Harmonic words and their asymptotic coefficients}
+
+For a word $\boldsymbol w=(w_1,\ldots,w_\ell)$ put
+\[
+ h_{\boldsymbol w}(N)=
+ \sum_{N>n_1>\cdots>n_\ell\ge1}
+       n_1^{-w_1}\cdots n_\ell^{-w_\ell},\qquad
+ h_{\varnothing}(N)=1.
+\]
+This is an \emph{exclusive} cutoff. Also write
+$H_n(\boldsymbol w)=h_{\boldsymbol w}(n+1)$.
+First suppose every $w_i\ge2$. Then
+\begin{equation}\label{eq:h-asymptotic}
+ h_{\boldsymbol w}(N)\sim\sum_{h\ge0}a_{\boldsymbol w,h}N^{-h},
+ \qquad a_{\boldsymbol w,0}=\zeta(\boldsymbol w).
+\end{equation}
+There are no logarithmic terms in this expansion.
+
+Let $z_{q,h}$ denote the coefficient of $N^{-h}$ in
+$\zeta(q,N)$ for $q\ge2$. Explicitly,
+\begin{equation}\label{eq:hurwitz-coeff}
+ z_{q,h}=
+ \begin{cases}
+ (q-1)^{-1},&h=q-1,\\
+ 1/2,&h=q,\\
+ B_{2j}(q)_{2j-1}/(2j)!,&h=q+2j-1,\ j\ge1,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\end{equation}
+The initial conditions and recurrence
+\begin{equation}\label{eq:a-recursion}
+ a_{\varnothing,0}=1,\quad a_{\varnothing,h}=0\ (h>0),\qquad
+ a_{(s,\boldsymbol v),h}
+ =-\sum_{r\ge0}a_{\boldsymbol v,r}z_{s+r,h}\quad(h>0)
+\end{equation}
+compute every required coefficient by finite arithmetic.
+For fixed $h$ only finitely many $r$ contribute.
+
+\begin{lemma}\label{lem:a}
+Equations \eqref{eq:h-asymptotic}--\eqref{eq:a-recursion} are valid
+as asymptotic expansions with remainders to every fixed order.
+For $h>0$, $a_{\boldsymbol w,h}$ is a rational linear combination
+of zeta values of proper suffixes of $\boldsymbol w$.
+\end{lemma}
+\begin{proof}
+For a nonempty word,
+\[
+ \zeta(s,\boldsymbol v)-h_{(s,\boldsymbol v)}(N)
+ =\sum_{n\ge N}n^{-s}h_{\boldsymbol v}(n).
+\]
+Insert any finite asymptotic expansion for the shorter word.
+Since $s\ge2$, its remainder can be summed absolutely and gives
+an error of the next required order. The retained terms are
+$a_{\boldsymbol v,r}\zeta(s+r,N)$. Expanding each of them gives
+\eqref{eq:a-recursion}. Induction on the word length proves all
+assertions, including the suffix statement.
+\end{proof}
+
+\subsection{Cutoff constants with a nonpositive or unit first index}
+
+The finite summation step will introduce a possibly nonpositive first
+index, but all following indices remain at least two. Let
+$\mathcal C(\boldsymbol w)$ denote the coefficient of
+$N^0(\log N)^0$ in the expansion of $h_{\boldsymbol w}(N)$.
+For an admissible word it is simply $\zeta(\boldsymbol w)$.
+The following finite formulas define all other cases that are needed.
+
+For a suffix $\boldsymbol v=(v_1,\ldots,v_\ell)$ with $v_i\ge2$,
+\begin{equation}\label{eq:C-one}
+\begin{split}
+ \mathcal C(1,\boldsymbol v)={}&\gamma\zeta(\boldsymbol v)
+ -\sum_{j=1}^{\ell}\zeta(v_1,\ldots,v_j,1,v_{j+1},\ldots,v_\ell)\\
+ &-\sum_{j=1}^{\ell}\zeta(v_1,\ldots,v_j+1,\ldots,v_\ell).
+\end{split}
+\end{equation}
+For the empty suffix this means $\mathcal C(1)=\gamma$.
+All the other displayed MZVs converge.
+
+For $r\ge0$ define the Faulhaber polynomial
+\begin{equation}\label{eq:Faulhaber}
+ P_r(X)=\sum_{k=1}^{X}k^r
+ =\frac{B_{r+1}(X+1)-B_{r+1}(1)}{r+1}
+ =\sum_{\ell\ge1}p_{r,\ell}X^\ell.
+\end{equation}
+The expression is polynomial notation, not a restriction that $X$
+be an integer. If the suffix is empty, set
+\begin{equation}\label{eq:C-empty}
+ \mathcal C(-r)=P_r(-1)=-\mathbf1_{r=0}.
+\end{equation}
+If the suffix is $(s,\boldsymbol u)$, set
+\begin{equation}\label{eq:C-negative}
+ \mathcal C(-r,s,\boldsymbol u)
+ =\CT_N\!\left[P_r(N-1)h_{(s,\boldsymbol u)}(N)\right]
+   -\sum_{\ell\ge1}p_{r,\ell}
+             \mathcal C(s-\ell,\boldsymbol u).
+\end{equation}
+The constant term of a polynomial times $h$ is obtained directly
+from the coefficients in \eqref{eq:a-recursion}. Each recursive
+call in \eqref{eq:C-negative} has shorter length.
+
+\begin{lemma}[Exact meaning of the cutoff constants]\label{lem:C}
+Equations \eqref{eq:C-one}--\eqref{eq:C-negative} equal the actual
+asymptotic cutoff constants. Their recursion terminates and introduces
+only rational numbers, admissible MZVs, and a term linear in $\gamma$.
+\end{lemma}
+\begin{proof}
+The finite stuffle identity for $h_1(N)h_{\boldsymbol v}(N)$
+isolates $h_{1,\boldsymbol v}(N)$. All other terms converge;
+$h_1(N)=\log N+\gamma+O(N^{-1})$ and
+$h_{\boldsymbol v}(N)=\zeta(\boldsymbol v)+O(N^{-1})$.
+Taking the constant term gives \eqref{eq:C-one}.
+
+For a nonpositive first index, reverse the finite sums:
+\[
+ h_{(-r,s,\boldsymbol u)}(N)
+ =P_r(N-1)h_{(s,\boldsymbol u)}(N)
+       -\sum_{\ell\ge1}p_{r,\ell}h_{(s-\ell,\boldsymbol u)}(N).
+\]
+This is an exact identity for every positive integer $N$.
+Taking cutoff constants gives \eqref{eq:C-negative}. The empty
+suffix gives $P_r(N-1)$ itself, whose constant is $P_r(-1)$.
+Induction proves termination and the stated form of the answer.
+\end{proof}
+
+\subsection{The master formula}
+
+Multiplying the finite identities
+$\zeta(p,n+1)=\zeta(p)-H_n^{(p)}$ gives
+\begin{equation}\label{eq:tail-harmonic-expansion}
+ T_n=\sum_{\boldsymbol w}b_{\boldsymbol w}H_n(\boldsymbol w).
+\end{equation}
+All entries in every nonempty $\boldsymbol w$ are at least two.
+The coefficients $b_{\boldsymbol w}$ are finite polynomials in
+ordinary zeta values. They are generated by the stuffle product,
+starting from $b_{\varnothing}=1$ and multiplying one factor
+$\zeta(p)-H_n^{(p)}$ at a time. Every homogeneous term satisfies
+$\wt(b_{\boldsymbol w})+\wt(\boldsymbol w)=W$.
+
+Define the centered discrete primitive
+\begin{equation}\label{eq:Fm}
+ F_m(X)=\frac{B_{m+1}(X+1/2)-B_{m+1}(1/2)}{m+1}
+       =\sum_{h\ge1}f_{m,h}X^h.
+\end{equation}
+It has zero constant term and
+$F_m(n+1)-F_m(n)=x_n^m$.
+
+\begin{theorem}[Finite coefficient formula]\label{thm:master}
+For the regular degrees in Proposition~\ref{prop:regular},
+\begin{equation}\label{eq:master}
+ \boxed{M_{\boldsymbol p,m}=
+ \sum_{\boldsymbol w\ne\varnothing}b_{\boldsymbol w}
+ \sum_{h\ge1}f_{m,h}
+ \left[a_{\boldsymbol w,h}
+ -\mathcal C(w_1-h,w_2,\ldots,w_\ell)\right].}
+\end{equation}
+All sums are finite. After the stuffle product is expanded, the
+coefficient of $\gamma$ is zero.
+\end{theorem}
+
+\begin{proof}
+For a nonempty word, reversing the finite sums gives
+\begin{equation}\label{eq:finite-centered}
+ \sum_{n=0}^{N-1}x_n^m H_n(\boldsymbol w)
+ =F_m(N)h_{\boldsymbol w}(N)
+ -\sum_{h\ge1}f_{m,h}h_{(w_1-h,w_2,\ldots,w_\ell)}(N).
+\end{equation}
+Indeed, the contribution with largest harmonic index $k$ has the
+inner sum $\sum_{n=k}^{N-1}x_n^m=F_m(N)-F_m(k)$.
+Insert \eqref{eq:tail-harmonic-expansion} and take cutoff constants.
+The empty word contributes $F_m(N)$, whose constant is zero.
+Lemmas~\ref{lem:a} and \ref{lem:C} give precisely \eqref{eq:master}.
+
+It remains to identify this constant with the ordinary sum.
+Every subtracted monomial in \eqref{eq:regular-sum} is an even power
+of $x_n$. Its finite sum is $F_{2j}(N)$, whose constant is zero.
+The sum of the remaining bracket tends to the ordinary value, with
+an $O(N^{-1})$ remainder. Thus the original cutoff constant is that
+value.
+
+Finally, regular parity makes every exponent in the centered
+asymptotic summand even. Its partial sums have no logarithmic term.
+In the finite reduction, every occurrence of $\gamma$ comes from
+$h_1(N)=\log N+\gamma+o(1)$ and carries exactly the same coefficient
+as the corresponding logarithm. That total coefficient is zero.
+This proves the cancellation without treating $\gamma$ as an
+independent transcendental number.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:compiler}]
+The recursions decrease either the suffix length or a bounded
+coefficient index, so they terminate. For $h>0$, the term
+$a_{\boldsymbol w,h}$ contains only proper suffixes and hence
+has weight at most $\wt(\boldsymbol w)-2$.
+If $w_1-h\ge1$, the non-$\gamma$ terms in the corresponding
+cutoff constant have weight $\wt(\boldsymbol w)-h$.
+If $w_1-h\le0$, the negative-index recursion gives weights at
+most the weight of the remaining suffix, again no more than
+$\wt(\boldsymbol w)-2$. This last bound follows inductively
+from \eqref{eq:C-negative}; its polynomial boundary term uses
+only suffix values, and each subsequent positive leading index
+is reduced rather than increased.
+
+Multiplying by $b_{\boldsymbol w}$ and expanding products preserves
+total weight. Since $h\ge1$, this gives the bound $W-1$.
+When $m$ is odd, $F_m$ is an even polynomial with zero constant
+term, so every nonzero $f_{m,h}$ has $h\ge2$. The same argument
+then gives $W-2$.
+\end{proof}
+
+\section{The complete odd-degree (2,3) family}
+\label{sec:pair}
+
+The general compiler simplifies sharply for the product in
+\eqref{eq:AB}. Its total weight is $5$, so all its regular moments
+lie in $\operatorname{span}_{\Q}\{1,\zeta(2),\zeta(3)\}$.
+A direct formula computes these three coefficients without a
+general MZV reduction.
+
+Let $P(X)=\sum_{j\ge1}p_{2j}X^{2j}$ be any even rational polynomial
+with $P(0)=0$, and set
+\[
+ W_P(x)=P(x+1/2)-P(x-1/2),\qquad
+ \mathscr M(P)=\sum_{m\text{ odd}}[x^m]W_P(x)\,M_{(2,3),m}.
+\]
+The last expression means one ordinary bracketed sum with the
+subtractions prescribed in \eqref{eq:regular-sum}.
+Put
+\begin{equation}\label{eq:pair-L}
+ \lambda(P)=\sum_{j\ge1}p_{2j}B_{2j-2},\qquad
+ Q(X)=P(X)-p_2X^2,
+\end{equation}
+and define rational polynomials by finite power sums:
+\begin{equation}\label{eq:pair-RS}
+ R_Q(N)=\sum_{k=1}^N\frac{Q(k)}{k^3},\qquad
+ S_Q(N)=\sum_{k=1}^N\frac{Q(k)}{k^2}.
+\end{equation}
+They are polynomials because $Q$ is divisible by $X^4$.
+
+\begin{theorem}[All odd-degree mixed coefficients]\label{thm:pair}
+With the preceding definitions,
+\begin{equation}\label{eq:pair-master}
+ \boxed{\mathscr M(P)=p_2\zeta(3)+\lambda(P)\zeta(2)+\rho(Q),}
+\end{equation}
+where the rational number $\rho(Q)$ is given by the finite
+coefficient extraction
+\begin{equation}\label{eq:pair-rho}
+ \rho(Q)=\CT_N\left[
+ Q(N)A_NB_N+R_Q(N)A_N+S_Q(N)B_N\right].
+\end{equation}
+The asymptotic expansions of $A_N$ and $B_N$ at infinity make
+\eqref{eq:pair-rho} a finite Bernoulli calculation.
+In particular, $p_2=\lambda(P)=0$ gives a rational ordinary sum.
+\end{theorem}
+
+\begin{proof}
+First assume $p_2=0$ and write $P=Q$. Define
+$V_n=P(n)A_nB_n+R_P(n)A_n+S_P(n)B_n$.
+The shifts $A_{n+1}=A_n-(n+1)^{-2}$ and
+$B_{n+1}=B_n-(n+1)^{-3}$ give
+\begin{equation}\label{eq:pair-V}
+ V_{n+1}-V_n=W_P(x_n)A_nB_n+E_P(n+1),
+\end{equation}
+where
+\[
+ E_P(y)=\frac{P(y)}{y^5}-\frac{R_P(y)}{y^2}-\frac{S_P(y)}{y^3}.
+\]
+Faulhaber's formula shows that this Laurent polynomial has no
+$y^{-1}$ term and that its $y^{-2}$ coefficient is $-\lambda(P)$.
+For completeness, the linear coefficient of $R_P$ is $p_4/2$,
+the quadratic coefficient of $S_P$ is $p_4/2$, and the linear
+coefficient of $S_P$ is $\lambda(P)$. The possible $y^{-1}$
+coefficient is therefore $p_4-p_4/2-p_4/2=0$.
+Thus $E_P(y)=E_P^{\rm pol}(y)-\lambda(P)y^{-2}$.
+
+Sum \eqref{eq:pair-V} for $0\le n<N$ and take cutoff constants.
+The finite sum of the polynomial $E_P^{\rm pol}(k)$, $1\le k\le N$,
+is a polynomial in $N$ with zero constant. Also $V_0=0$ and
+$H_N^{(2)}\to\zeta(2)$. The ordinary-sum normalization from
+Proposition~\ref{prop:regular} now gives
+$\mathscr M(P)=\rho(P)+\lambda(P)\zeta(2)$.
+
+For $P(X)=X^2$, finite summation by parts reduces the value to
+\[
+ \sum_{k\ge1}\frac{A_k}{k}+\sum_{k\ge1}B_k+\zeta(3)
+ =\zeta(2,1)+\zeta(2)-\zeta(3)+\zeta(3)
+ =\zeta(2)+\zeta(3).
+\]
+We used the classical Euler identity $\zeta(2,1)=\zeta(3)$.
+Adding $p_2$ times this case proves \eqref{eq:pair-master}.
+\end{proof}
+
+Taking $P=F_1,F_3,F_5$ gives, respectively,
+\begin{align}
+ \sum_{n\ge0}x_nA_nB_n
+   &={}\frac{\zeta(2)+\zeta(3)}2,\label{eq:pair1}\\
+ \sum_{n\ge0}\left(x_n^3A_nB_n-\frac12\right)
+   &={}-\frac{\zeta(2)}{12}-\frac{\zeta(3)}8-\frac5{48},\label{eq:pair3}\\
+ \sum_{n\ge0}\left(x_n^5A_nB_n-\frac{x_n^2}{2}+\frac16\right)
+   &={}\frac{47\zeta(2)}{1440}+\frac{7\zeta(3)}{96}+\frac{11}{288}.
+ \label{eq:pair5}
+\end{align}
+Theorem~\ref{thm:pair} is an all-degree result; these examples are
+not the basis of an extrapolation.
+
+\subsection{A direct finite proof of the rational identity}
+
+The combination $23F_1+232F_3+240F_5$ simplifies to
+$P(X)=40X^6+8X^4$. Its $p_2$ is zero and
+$\lambda(P)=40B_4+8B_2=0$. More explicitly, define
+\begin{equation}\label{eq:telescoper}
+\begin{split}
+ U_n={}&8n^4(5n^2+1)A_nB_n
+ +2n(n+1)(5n^2+5n+2)A_n\\
+ &+4n^2(n+1)^2(2n+1)B_n-34n^3+9n^2-33n.
+\end{split}
+\end{equation}
+Direct substitution of the two tail shifts gives the exact identity
+\begin{equation}\label{eq:telescoper-difference}
+ U_{n+1}-U_n=(23x_n+232x_n^3+240x_n^5)A_nB_n-120x_n^2-76.
+\end{equation}
+Here $U_0=0$. The ordinary uncentered expansions are
+\begin{align*}
+ A_n&=n^{-1}-\tfrac12n^{-2}+\tfrac16n^{-3}
+                      -\tfrac1{30}n^{-5}+O(n^{-7}),\\
+ B_n&=\tfrac12n^{-2}-\tfrac12n^{-3}+\tfrac14n^{-4}
+                      -\tfrac1{12}n^{-6}+O(n^{-8}).
+\end{align*}
+They give $U_n=-15+11/(3n)+O(n^{-2})$. Summing
+\eqref{eq:telescoper-difference} proves \eqref{eq:intro-rational}.
+Absolute convergence also follows directly from the centered
+subtraction, whose remainder is $O(x_n^{-2})$.
+
+Equivalently, in polygamma notation,
+\begin{equation}\label{eq:polygamma-rational}
+\begin{split}
+ \sum_{n\ge0}\bigl[&(23x_n+232x_n^3+240x_n^5)
+                \psi'(n+1)\psi^{(2)}(n+1)\\
+                &\hspace{25mm}+240x_n^2+152\bigr]=30.
+\end{split}
+\end{equation}
+The sign here follows from $B_n=-\psi^{(2)}(n+1)/2$.
+
+\subsection{Some further genuinely mixed examples}
+
+The same finite compiler gives the following exact identities.
+They illustrate odd-order participation and are accompanied by
+full coefficient records in \sref{results/mixed\_moments.json}:
+\begin{align}
+ \sum_{n\ge0}A_n^2B_n
+   &={}\frac32\zeta(3)^2+\frac76\zeta(6),\label{eq:mixed-cubic0}\\
+ \sum_{n\ge0}x_n^2A_n^2B_n
+   &={}\frac13\zeta(2)+\frac43\zeta(3)-\frac7{12}\zeta(4)
+                   -\frac18\zeta(3)^2-\frac7{72}\zeta(6),\label{eq:mixed-cubic2}\\
+ \sum_{n\ge0}\left(x_n^4A_n^2B_n-\frac12\right)
+   &={}-\frac3{20}\zeta(2)-\frac7{15}\zeta(3)+\frac7{24}\zeta(4)
+       +\frac7{160}\zeta(3)^2+\frac{49}{1440}\zeta(6)-\frac3{40}.
+ \label{eq:mixed-cubic4}
+\end{align}
+With $C_n=\zeta(4,n+1)=\psi^{(3)}(n+1)/6$, an unweighted
+weight-eight example is
+\begin{equation}\label{eq:ABC}
+ \sum_{n\ge0}A_nB_nC_n
+ =-\frac{15}{2}\zeta(2)\zeta(3)^2+30\zeta(3)\zeta(5)
+                   +\frac92\zeta(5,3)-\frac{1261}{72}\zeta(8).
+\end{equation}
+All unsubtracted sums displayed here converge absolutely.
+The proofs are Theorem~\ref{thm:master} followed by the finite
+classical relation system of Appendix~\ref{app:certificates};
+the exact verifier regenerates these outputs. The unweighted
+index-ordering principle itself is not new \cite{Hoffman}.
+
+\section{A finite polylogarithm kernel and final-index zeta derivatives}
+\label{sec:polylog}
+
+Return to an arbitrary tuple $\boldsymbol p$. For $|z|<1$ set
+\[
+ \Li_{w_1,\ldots,w_\ell}(z)
+ =\sum_{n_1>\cdots>n_\ell\ge1}
+       \frac{z^{n_1}}{n_1^{w_1}\cdots n_\ell^{w_\ell}},
+ \qquad \Li_{\varnothing}(z)=1,
+\]
+and use the coefficients from \eqref{eq:tail-harmonic-expansion}
+to define the finite kernel
+\begin{equation}\label{eq:Fkernel}
+ \mathcal F_{\boldsymbol p}(z)=\sum_{\boldsymbol w}
+                                  b_{\boldsymbol w}\Li_{\boldsymbol w}(z).
+\end{equation}
+Its depth is at most $d$ in this explicit representation; no minimal
+functional depth is claimed.
+
+\begin{proposition}[The ordinary generating function]\label{prop:kernel}
+For $|z|<1$,
+\begin{equation}\label{eq:tailGF}
+ \boxed{\sum_{n\ge0}T_nz^n=\frac{\mathcal F_{\boldsymbol p}(z)}{1-z}.}
+\end{equation}
+For example,
+\begin{equation}\label{eq:F23}
+\begin{split}
+ \mathcal F_{2,3}(z)={}&\zeta(2)\zeta(3)-\zeta(3)\Li_2(z)
+ -\zeta(2)\Li_3(z)\\
+ &+\Li_{2,3}(z)+\Li_{3,2}(z)+\Li_5(z).
+\end{split}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The absolutely convergent identity
+$\sum_{n\ge0}H_n(\boldsymbol w)z^n=\Li_{\boldsymbol w}(z)/(1-z)$
+follows by summing first over $n\ge n_1$. Apply it to the finite
+expansion \eqref{eq:tail-harmonic-expansion}. Formula
+\eqref{eq:F23} uses $H_n^{(2)}H_n^{(3)}=H_n(2,3)+H_n(3,2)+H_n^{(5)}$.
+\end{proof}
+
+Define a holomorphic Dirichlet family on $\Re s>1-R$ by
+\begin{equation}\label{eq:Edef}
+ \mathcal E_{\boldsymbol p}(s)=\sum_{n\ge1}\frac{T_{n-1}}{n^s}.
+\end{equation}
+For an ordered set partition $\pi=(B_1,\ldots,B_\ell)$ of
+$\{1,\ldots,d\}$, let $w_{\pi,j}=\sum_{i\in B_j}p_i$.
+Every ordered partition is included once, even when different
+partitions give the same word.
+
+\begin{theorem}[MZV and Mellin realizations]\label{thm:E}
+On $\Re s>1-R$,
+\begin{equation}\label{eq:E-MZV}
+ \mathcal E_{\boldsymbol p}(s)=\sum_{\pi}\left[
+ \zeta(w_{\pi,1},\ldots,w_{\pi,\ell},s)
+ +\zeta(w_{\pi,1},\ldots,w_{\pi,\ell-1},w_{\pi,\ell}+s)
+ \right].
+\end{equation}
+Every series on the right converges there. On $\Re s>0$ it also has
+the ordinary integral representation
+\begin{equation}\label{eq:E-integral}
+ \boxed{\mathcal E_{\boldsymbol p}(s)=\frac1{\Gamma(s)}
+ \int_0^1\frac{\mathcal F_{\boldsymbol p}(z)}{1-z}
+                                  (-\log z)^{s-1}\dd z.}
+\end{equation}
+The identities may be differentiated any finite number of times
+in $s$ on compact subsets of their respective domains.
+\end{theorem}
+
+\begin{proof}
+In $T_{n-1}$ every tail index is at least $n$. Group equal tail
+indices and order their blocks decreasingly. The distinguished
+index $n$ is either strictly below the last block or equal to it.
+These are exactly the two terms in \eqref{eq:E-MZV}. Absolute
+convergence follows from $T_{n-1}=O(n^{-R})$; the same bounds with
+fixed powers of $\log n$ give local uniformity of all derivatives.
+The individual multiple series satisfy the same convergence
+conditions: all proper initial block sums are at least twice
+the number of blocks, and the full sum satisfies the condition
+because $\Re s>1-R$.
+
+For the integral, use
+$n^{-s}=\Gamma(s)^{-1}\int_0^1z^{n-1}(-\log z)^{s-1}\dd z$
+and \eqref{eq:tailGF}. Absolute convergence justifies the exchange.
+Near $z=1$, the generating function is bounded when $R>1$ and
+is at most logarithmic when $R=1$. Near zero it is bounded.
+These endpoint bounds also justify all order derivatives for
+$\Re s>0$.
+\end{proof}
+
+At $s=1$ a particularly useful all-index form uses the polynomials
+\begin{equation}\label{eq:Gamma-Appell}
+ \mathscr P_q(y)=q![u^q]\frac{e^{uy}}{\Gamma(1+u)}.
+\end{equation}
+For example,
+\[
+ \mathscr P_0=1,\quad \mathscr P_1=y+\gamma,\quad
+ \mathscr P_2=(y+\gamma)^2-\zeta(2),
+\]
+\[
+ \mathscr P_3=(y+\gamma)^3-3\zeta(2)(y+\gamma)+2\zeta(3).
+\]
+Differentiating \eqref{eq:E-integral} gives
+\begin{equation}\label{eq:E-jets}
+ \mathcal E_{\boldsymbol p}^{(q)}(1)=
+ \int_0^1\frac{\mathcal F_{\boldsymbol p}(z)}{1-z}
+                         \mathscr P_q(\log(-\log z))\dd z.
+\end{equation}
+All cancellations in $\mathcal F$ are kept inside the integral.
+The reciprocal-Gamma coefficient construction is classical; its
+use here fixes the constants in the tail-weighted Stieltjes identities.
+
+\section{Stieltjes sums, polygamma derivatives, and anchored primitives}
+\label{sec:transport}
+
+Let
+\begin{equation}\label{eq:Delta}
+ \Delta_n=T_{n-1}-T_n\quad(n\ge1),\qquad
+ Z_{\boldsymbol p}=T_0=\prod_i\zeta(p_i).
+\end{equation}
+These positive weights satisfy
+\begin{equation}\label{eq:Delta-properties}
+ \sum_{n\ge1}\Delta_n=Z_{\boldsymbol p},\qquad
+ \sum_{n>k}\Delta_n=T_k,\qquad
+ \Delta_n=O(n^{-R-1}).
+\end{equation}
+Only these elementary tail properties are required for the first
+transport theorem. They follow either from telescoping or from
+$\zeta(p,n)-\zeta(p,n+1)=n^{-p}$.
+
+\begin{theorem}[Every Stieltjes index and argument]\label{thm:Stieltjes}
+For every $q\ge0$ and $a>0$,
+\begin{equation}\label{eq:Stieltjes}
+ \boxed{\sum_{n\ge1}\Delta_n\gamma_q(n+a)
+ =Z_{\boldsymbol p}\gamma_q(a)
+       -\sum_{k\ge0}T_k\frac{\log^q(k+a)}{k+a}.}
+\end{equation}
+Both sums converge absolutely, locally uniformly for $a>0$.
+At $a=1$ this becomes the convergent final-index derivative identity
+\begin{equation}\label{eq:Stieltjes-MZV}
+ \sum_{n\ge1}\Delta_n\gamma_q(n+1)
+ =Z_{\boldsymbol p}\gamma_q(1)
+                 -(-1)^q\mathcal E_{\boldsymbol p}^{(q)}(1).
+\end{equation}
+The finite MZV expression \eqref{eq:E-MZV} and the polylogarithm
+integral \eqref{eq:E-jets} specify the derivative on the right.
+\end{theorem}
+
+\begin{proof}
+Comparing Laurent coefficients in the Hurwitz shift equation gives
+\begin{equation}\label{eq:gamma-shift}
+ \gamma_q(n+a)=\gamma_q(a)
+           -\sum_{k=0}^{n-1}\frac{\log^q(k+a)}{k+a}.
+\end{equation}
+Multiply by $\Delta_n$, sum, and use \eqref{eq:Delta-properties}.
+The double sum of absolute values is bounded by
+$\sum_k T_k|\log^q(k+a)|/(k+a)$, which converges because $R\ge1$.
+Also $\gamma_q(n+a)=O(1+\log^{q+1}(n+1))$, either directly from
+\eqref{eq:gamma-shift} or from Hurwitz asymptotics. Hence the left
+sum is absolutely convergent. The same estimates are uniform
+for $a$ in any compact subinterval of $(0,\infty)$.
+Finally, differentiation of \eqref{eq:Edef} at $s=1$ gives
+\eqref{eq:Stieltjes-MZV}.
+\end{proof}
+
+For an elementary check, take one tail of order two, so
+$\Delta_n=n^{-2}$. The $q=0$ identity reduces to the classical
+Euler sum $\sum H_n/n^2=2\zeta(3)$. At $q=1$ it gives the
+ordinary derivative identity
+\begin{equation}\label{eq:gamma1-example}
+ \sum_{n\ge1}\frac{\gamma_1(n+1)}{n^2}
+ =\zeta(2)\gamma_1(1)
+   +\left.\frac{\partial}{\partial s}\zeta(2,s)\right|_{s=1}
+   +\zeta'(3).
+\end{equation}
+No singular multiple-zeta regularization is needed: the differentiated
+series converges in a neighborhood of $s=1$.
+
+\begin{corollary}[Every polygamma order]\label{cor:polygamma}
+For $r\ge0$ and $a>0$,
+\begin{equation}\label{eq:polygamma-transport}
+ \sum_{n\ge1}\Delta_n\psi^{(r)}(n+a)
+ =Z_{\boldsymbol p}\psi^{(r)}(a)
+       +(-1)^rr!\sum_{k\ge0}\frac{T_k}{(k+a)^{r+1}}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+For $r=0$ this is \eqref{eq:Stieltjes} with $q=0$ and
+$\gamma_0=-\psi$. For general $r$, use the differentiated digamma
+shift equation and the same absolutely convergent interchange.
+\end{proof}
+
+\subsection{Gamma ratios and all Stieltjes primitives}
+
+\begin{theorem}[Anchored Gamma and Hurwitz-zero primitives]\label{thm:primitives}
+For $a,b>0$,
+\begin{equation}\label{eq:Gamma-ratio}
+\begin{split}
+ \sum_{n\ge1}\Delta_n\log\frac{\Gamma(n+b)}{\Gamma(n+a)}
+ ={}&Z_{\boldsymbol p}\log\frac{\Gamma(b)}{\Gamma(a)}
+       +\sum_{k\ge0}T_k\log\frac{k+b}{k+a}.
+\end{split}
+\end{equation}
+For $q\ge0$ set
+\[
+ \mathcal J_q(a,b)=\left.\partial_s^{q+1}\zeta(s,b)\right|_{s=0}
+             -\left.\partial_s^{q+1}\zeta(s,a)\right|_{s=0}.
+\]
+Then
+\begin{equation}\label{eq:zero-primitive}
+\begin{split}
+ &\sum_{n\ge1}\Delta_n\mathcal J_q(n+a,n+b)-Z_{\boldsymbol p}\mathcal J_q(a,b)\\
+ &\hspace{10mm}=(-1)^q\sum_{k\ge0}T_k
+          \left[\log^{q+1}(k+b)-\log^{q+1}(k+a)\right].
+\end{split}
+\end{equation}
+All these series converge absolutely, and their anchors vanish when
+$a=b$. The $q=0$ case of \eqref{eq:zero-primitive} is
+\eqref{eq:Gamma-ratio}.
+\end{theorem}
+
+\begin{proof}
+The finite Gamma product gives
+\[
+ \log\frac{\Gamma(n+b)}{\Gamma(n+a)}
+ =\log\frac{\Gamma(b)}{\Gamma(a)}
+                   +\sum_{k=0}^{n-1}\log\frac{k+b}{k+a}.
+\]
+The inner difference is $O((k+1)^{-1})$, so the same summation
+argument as before proves \eqref{eq:Gamma-ratio}.
+
+To prove the all-index primitive identity, differentiate
+$\partial_a\zeta(s,a)=-s\zeta(s+1,a)$ at $s=0$, using
+\eqref{eq:stieltjes-convention}. One obtains
+\begin{equation}\label{eq:zero-derivative}
+ \partial_a\left.\partial_s^{q+1}\zeta(s,a)\right|_{s=0}
+ =-(q+1)(-1)^q\gamma_q(a).
+\end{equation}
+Integrate \eqref{eq:Stieltjes} from $a$ to $b$ and multiply by
+$-(q+1)(-1)^q$. The elementary logarithmic primitive gives
+\eqref{eq:zero-primitive}. Uniform convergence on the compact
+interval between $a$ and $b$ justifies the integration. Finally,
+$\zeta'(0,a)=\log\Gamma(a)-\frac12\log(2\pi)$ gives the
+$q=0$ identification \cite{DLMF}.
+\end{proof}
+
+\subsection{A local analytic Gamma generator with explicit coefficients}
+
+Setting $a=1$, $b=1+z$ in \eqref{eq:Gamma-ratio} gives, initially
+for real $|z|<1$ and then holomorphically in that disk,
+\begin{equation}\label{eq:Gamma-generator}
+\begin{split}
+ &\sum_{n\ge1}\Delta_n\log\frac{\Gamma(n+1+z)}{\Gamma(n+1)}
+                  -Z_{\boldsymbol p}\log\Gamma(1+z)\\
+ &\hspace{15mm}=\sum_{m\ge1}\frac{(-1)^{m+1}}m
+                                     \mathcal E_{\boldsymbol p}(m)z^m.
+\end{split}
+\end{equation}
+Here the branch is the analytic logarithm fixed to zero at $z=0$.
+The coefficients are the finite convergent MZV combinations
+\eqref{eq:E-MZV}. Absolute convergence on $|z|\le r<1$ follows
+from the logarithm series and $T_k=O((k+1)^{-R})$.
+This gives an anchored antiderivative family rather than a formula
+with unspecified additive constants.
+
+\section{Proof audit, computational evidence, and integration}
+\label{sec:audit}
+
+\subsection{What the finite checks establish}
+
+The delivered code has two logically distinct parts. The exact
+certificate verifier parses only restricted rational/MZV arithmetic,
+expands stuffle products, independently forms binary shuffles by
+interleaving positions, and reconstructs every cited relation.
+It checks that each target difference equals the stated rational
+combination exactly. A changed coefficient is deliberately rejected
+for each of the three main anchor certificates.
+
+The mixed-moment tests independently check finite centered summation
+identities at rational cutoffs, the tail-product stuffle expansion,
+Euler-constant cancellation, the refined weight ceilings, agreement
+with the repeated-tail expansion, and the separate one-tail Faulhaber
+formula for the $(2,3)$ family. The $-15$ telescoper is checked as
+an identity of rational functions in $n,A,B$, not merely on sampled
+special-function values. The exact ranks of the stated finite row
+matrices are also recomputed. Their ranks concern rational relations
+on formal word coordinates, not dimensions of numerical period spaces.
+
+The final replay passes 369 exact assertions, including three deliberate
+corruption controls. Complete records are in \sref{results/exact.json}.
+The shortened certificates retain exactly the required nonzero relation
+rows; every retained row is reconstructed from its defining words.
+The numerical suite contains 40 comparisons at 90 working
+decimal digits, including the three anchor sums, multiple truncations
+of $\zeta(5,3)$ and fifteen mixed moments, finite Stieltjes and Gamma
+transport, and a polylogarithm integral. Their largest recorded
+residual is below $10^{-68}$ in the delivered run.
+
+These numerical comparisons are diagnostics, \emph{not} interval
+certificates. Tail acceleration uses finite asymptotic expansions
+at two separate truncation choices. The analytic proofs supply
+convergence and equality; decimal agreement supplies an independent
+check of signs, constants, and normalization. There is no Lean or
+other proof-assistant formalization in this package.
+
+\subsection{A real normalization hazard, not an attributed source error}
+
+The exclusive cutoff matters. One has
+\[
+ h_{(0)}(N)=N-1,\qquad \CT_N h_{(0)}(N)=-1,
+\]
+whereas the inclusive cutoff $\sum_{n=1}^{N}1=N$ has constant zero.
+Replacing \eqref{eq:C-empty} by the inclusive value would silently
+change the finite moment compiler. The separate check
+$M_{(2),1}=-1/4$ detects such mistakes. This warning is not an
+allegation that the inspected predecessor made that substitution.
+
+No mathematical error in the specific predecessor formulas used
+here was found in this audit. A confirmed editorial issue in the
+inspected canonical README is the verbatim repetition of the paragraph
+beginning with the complete 1,032-input first-letter-$X$ family and
+its rank 1,008/kernel dimension 24. The proposed correction is simply
+to remove the duplicate copy if it remains in the integration baseline.
+The more important attribution correction in this research process
+was to retain the newer report's ownership of the all-power recurrence
+rather than relabel that theorem as a new result.
+
+\subsection{Repository placement}
+
+A natural report destination is the continuation
+\sref{mixed-tail-anchor-reductions} under the existing
+\sref{stieltjes-harmonic-resonance} spine, with a cross-reference
+from the mixed-tail material of the lattice-contact report.
+The package contains a short integration fragment, a claim-status
+map, and source-audit notes. It does not modify the remote repository,
+apply a canonical-manuscript patch, or change the status of the
+Gaussian $S_6$, revised $S_8$, or general unequal-tail reconstruction
+problems. Canonical integration should preserve the attribution
+boundaries set out in Section~\ref{sec:scope}.
+
+\section{Further research questions}
+\label{sec:questions}
+
+\paragraph{1. Reduce the remaining weight-eleven sextic anchor.}
+The explicit value $R_{11}=\mathcal Z_{6,1}$ remains an admissible
+finite MZV combination. A natural next task is to reduce it into
+chosen weight-eleven coordinates, with a compact exact certificate,
+and then rewrite the entire sextic generator in those coordinates.
+No numerical independence is required to perform this reduction.
+
+\paragraph{2. Find a mixed-order analytic generator with all anchors fixed.}
+The compiler proves a finite arithmetic span for arbitrary integer
+orders, including odd orders. The even-order source has stronger
+analytic generating-function recurrences. Construct an equally
+explicit recurrence for arbitrary mixed parity, determine its
+necessary boundary terms, and give its finite multiple-polylogarithm
+realization with all endpoint constants specified.
+
+\paragraph{3. Classify rational polynomial combinations.}
+For the $(2,3)$ family the two conditions $p_2=\lambda(P)=0$
+produce rational values, with a finite telescoping construction.
+Find analogous coefficient conditions for other mixed products.
+The first concrete candidates are $(2,2,3)$ and $(2,3,4)$, whose
+small formal coordinate spaces are visible in the supplied tables.
+This is a rational coefficient-space problem, not a problem of
+proving arithmetic independence.
+
+\paragraph{4. Introduce rational and unequal argument shifts.}
+Replace $\zeta(p_i,n+1)$ by $\zeta(p_i,n+a_i)$, first for positive
+rational $a_i$. The centered polynomial subtraction no longer has
+all its Hurwitz corrections equal to zero. Determine a finite
+colored-MZV or Lerch-coordinate compiler retaining every correction,
+and identify which parity-refined weight statements survive.
+
+\paragraph{5. Differentiate the tail orders themselves.}
+The Stieltjes transport already gives final-index derivatives of
+MZVs. Differentiating the individual orders $p_i$ would introduce
+logarithmic decorations on all ordered blocks. Prove a joint
+continuation and differentiation theorem with explicit correction
+terms at any new resonant parameter values. Finite experimental
+agreement should not substitute for that local-uniform analysis.
+
+\paragraph{6. Formalize the finite and analytic layers separately.}
+The restricted rational certificate checker and the finite summation
+identity \eqref{eq:finite-centered} are suitable first targets for
+formalization. The next layer is the asymptotic remainder theorem
+and its conversion of cutoff constants into ordinary subtracted
+sums. Keeping these layers separate would prevent a finite rank
+certificate from being mistaken for an analytic or transcendence proof.
+
+\appendix
+\section{Complete finite certificates for the three anchors}
+\label{app:certificates}
+
+This appendix makes the finite proof of Theorem~\ref{thm:anchors}
+reconstructible without any numerical MZV database. All row indices
+below are one-based. For weight $w$, list the admissible compositions
+of $w$ in the order generated by choosing the first part increasingly,
+then the next part increasingly, recursively. This gives $2^{w-2}$
+columns, one for each formal MZV word.
+
+For an index word $u=(u_1,\ldots,u_r)$, its binary encoding is
+$0^{u_1-1}1\cdots0^{u_r-1}1$. Decode any binary word ending in $1$
+by counting the zero runs plus one. Let $u*v$ be the positive
+stuffle product of index words, and let $u\sha v$ denote the sum
+obtained by shuffling their binary encodings and decoding. Here
+$\sha$ is written in the tables' generating rule as the ordinary
+shuffle operation; repeated words retain their multiplicities.
+
+The ordered relation list is constructed as follows. For
+$k=1,\ldots,w-2$, take $u=(1)$ if $k=1$, and otherwise take every
+admissible composition $u$ of $k$ in the preceding order. For each
+$u$, take every admissible composition $v$ of $w-k$ in that order.
+Append the coefficient vector of
+\begin{equation}\label{eq:DSrow}
+ \mathcal R(u,v)=\zeta(u*v)-\zeta(u\mathbin{\shuffle}v),
+\end{equation}
+omitting a row only when its entire coefficient vector is zero.
+After these rows, append $\zeta(u)-\zeta(u^\vee)$ for every
+admissible word $u$ of weight $w$, in the same order, omitting
+self-dual words. The dual $u^\vee$ is obtained by reversing the
+binary encoding and exchanging zero and one. Duplicate nonzero
+rows are not removed.
+
+For convergent $u,v$, \eqref{eq:DSrow} is the equality between
+the series product and the iterated-integral product. For $u=(1)$,
+the same row is the one-leading-one regularized double-shuffle
+identity: the divergent leading word cancels and the surviving
+combination is admissible. This special case can be obtained by
+subtracting the common logarithmic term before taking the endpoint
+limit; it is also a direct instance of \cite{IKZ}. Duality follows
+from reversal and $t\mapsto1-t$ in the iterated integrals.
+Thus every row used is a proved identity.
+
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+Weight & Columns & Rows & Rational row rank & Rows in anchor certificate\\
+\midrule
+7&32&80&29&3\\
+8&64&168&60&17\\
+9&128&384&123&54\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Let $D_7,D_8,D_9$ be the left side minus the right side of
+\eqref{eq:J7}, \eqref{eq:K8}, \eqref{eq:K9}, respectively,
+after the anchor definitions and all stuffle products are expanded.
+The tables give the exact vector identities
+\begin{equation}\label{eq:certidentity}
+ D_w=\sum_j c_j\mathcal R_{w,j}.
+\end{equation}
+All unlisted coefficients are zero. Ranks in the preceding table
+are only diagnostics of this finite relation system; equality in
+\eqref{eq:certidentity}, not a completeness conjecture, proves
+the three anchor identities.
+
+\subsection*{Weight 7 certificate}
+\begin{center}
+\small
+\begin{tabular}{rr@{\qquad}rr@{\qquad}rr}
+\toprule
+$j$&$c_j$&$j$&$c_j$&$j$&$c_j$\\
+\midrule
+
+16&$-10$&24&$3$&32&$-1$\\[3pt]
+
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Weight 8 certificate}
+\begin{center}
+\small
+\begin{tabular}{rr@{\qquad}rr@{\qquad}rr}
+\toprule
+$j$&$c_j$&$j$&$c_j$&$j$&$c_j$\\
+\midrule
+
+24&$\frac{85}{33}$&28&$\frac{85}{11}$&30&$\frac{265}{33}$\\[3pt]
+
+31&$- \frac{125}{11}$&32&$\frac{635}{132}$&40&$\frac{415}{132}$\\[3pt]
+
+44&$\frac{995}{132}$&46&$\frac{301}{132}$&47&$- \frac{68}{33}$\\[3pt]
+
+48&$- \frac{1347}{88}$&56&$- \frac{250}{33}$&60&$- \frac{665}{132}$\\[3pt]
+
+62&$- \frac{71}{12}$&63&$\frac{343}{66}$&64&$\frac{5239}{264}$\\[3pt]
+
+72&$\frac{895}{132}$&80&$- \frac{951}{88}$&&\\[3pt]
+
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Weight 9 certificate}
+\begin{center}
+\small
+\begin{tabular}{rr@{\qquad}rr@{\qquad}rr}
+\toprule
+$j$&$c_j$&$j$&$c_j$&$j$&$c_j$\\
+\midrule
+
+30&$-480$&31&$-960$&32&$80$\\[3pt]
+
+44&$40$&46&$- \frac{985544}{417}$&47&$- \frac{1276904}{139}$\\[3pt]
+
+48&$\frac{17615752}{5421}$&52&$120$&54&$- \frac{560744}{139}$\\[3pt]
+
+55&$- \frac{1753280}{139}$&56&$\frac{9541218}{1807}$&58&$- \frac{696688}{139}$\\[3pt]
+
+59&$- \frac{1545888}{139}$&60&$\frac{6447172}{1807}$&61&$- \frac{2298480}{139}$\\[3pt]
+
+62&$- \frac{31629680}{5421}$&63&$- \frac{18416956}{1807}$&64&$- \frac{12669404}{5421}$\\[3pt]
+
+76&$-50$&78&$\frac{224942}{417}$&79&$\frac{185462}{139}$\\[3pt]
+
+80&$\frac{743996}{5421}$&84&$- \frac{280}{3}$&86&$\frac{660508}{417}$\\[3pt]
+
+87&$\frac{346688}{139}$&88&$- \frac{434087}{2224}$&90&$\frac{72448}{139}$\\[3pt]
+
+91&$- \frac{322884}{139}$&92&$- \frac{9854045}{7228}$&93&$- \frac{1463144}{139}$\\[3pt]
+
+94&$\frac{7674219}{14456}$&95&$\frac{2933377}{834}$&96&$\frac{259435535}{86736}$\\[3pt]
+
+111&$\frac{258000}{139}$&112&$- \frac{3555872}{1807}$&116&$80$\\[3pt]
+
+118&$\frac{563662}{417}$&119&$- \frac{2868}{139}$&120&$- \frac{3082043}{6672}$\\[3pt]
+
+122&$- \frac{18272}{417}$&123&$- \frac{507776}{417}$&124&$- \frac{22787469}{14456}$\\[3pt]
+
+125&$- \frac{723812}{139}$&126&$- \frac{6757760}{5421}$&127&$- \frac{6947744}{5421}$\\[3pt]
+
+128&$- \frac{29083111}{86736}$&142&$- \frac{402598}{417}$&144&$- \frac{3716515}{1807}$\\[3pt]
+
+150&$\frac{157344}{139}$&151&$\frac{879564}{139}$&156&$\frac{185281999}{86736}$\\[3pt]
+
+158&$\frac{166192045}{86736}$&159&$\frac{2900207}{7228}$&160&$- \frac{5417647}{10842}$\\[3pt]
+
+\bottomrule
+\end{tabular}
+\end{center}
+
+
+\section{Reproduction and artifact contents}
+\label{app:repro}
+
+The standalone source is \sref{article.tex}; the PDF is compiled
+from it without external figures or a bibliography database.
+The Python dependencies used in the delivered run are recorded
+in \sref{requirements.txt} and \sref{results/environment.json}.
+From the package directory, run
+\begin{verbatim}
+python verification/run_all.py
+python build.py
+\end{verbatim}
+The exact verifier does not need network access or a repository
+checkout. The numerical comparisons use mpmath. The complete
+coefficient certificates are in \sref{certificates/}; the independent
+verifier accepts only restricted arithmetic syntax when reading them.
+The generated example table is \sref{results/mixed\_moments.json}.
+Original delivery evidence is in \sref{results/}; rerunning a suite
+rewrites its corresponding result file, not repository source files.
+
+\begin{thebibliography}{9}
+\bibitem{DLMF}
+F. W. J. Olver et al., eds., \emph{NIST Digital Library of Mathematical
+Functions}, Sections 25.11 and 25.12, Hurwitz zeta and polylogarithms.
+\href{https://dlmf.nist.gov/25.11}{dlmf.nist.gov/25.11} and
+\href{https://dlmf.nist.gov/25.12}{dlmf.nist.gov/25.12}.
+
+\bibitem{Hoffman}
+M. E. Hoffman, Sums of products of Riemann zeta tails,
+\emph{Mediterranean Journal of Mathematics} \textbf{13} (2016),
+2771--2781. DOI: 10.1007/s00009-015-0653-9.
+\href{https://arxiv.org/abs/1602.03399}{arXiv:1602.03399}.
+
+\bibitem{IKZ}
+K. Ihara, M. Kaneko, and D. Zagier,
+Derivation and double shuffle relations for multiple zeta values,
+\emph{Compositio Mathematica} \textbf{142} (2006), 307--338.
+\href{https://doi.org/10.1112/S0010437X0500182X}{DOI:10.1112/S0010437X0500182X}.
+
+\bibitem{Repo}
+ProveIt Contributors, \emph{Polylogarithms and their Arithmetic Bridges},
+canonical manuscript and status README,
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/Polylogarithms/docs/manuscript}{ProveIt polylogarithm manuscript}.
+The exact scope of this article's inspection is recorded in
+\sref{SOURCE\_AUDIT.md}.
+
+\bibitem{Quartic}
+ProveIt research continuation, \emph{Harmonic-Tail Reconstruction,
+Quartic Trigamma Moments, and Spectral Stieltjes Calculus},
+11 October 2026. Report continuation
+\sref{quartic-spectral-reconstruction} in the
+\sref{stieltjes-harmonic-resonance} spine.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/0dfef47533f8bbf23d12aa4f1894b9bea61f6e0a/Analysis/Polylogarithms/docs/reports/stieltjes-harmonic-resonance/continuations/quartic-spectral-reconstruction}{Pinned repository location}.
+
+\bibitem{Bernoulli}
+ProveIt research continuation, \emph{Bernoulli Cancellation,
+Harmonic Gaps, and Spectral Faces}, 11 October 2026.
+In particular, the all-power theorem and the fifth/sixth-power
+anchor definitions and generators.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/0dfef47533f8bbf23d12aa4f1894b9bea61f6e0a/Analysis/Polylogarithms/docs/reports/stieltjes-harmonic-resonance/continuations/bernoulli-tails-spectral-faces}{Pinned repository location}.
+
+\bibitem{Lattice}
+ProveIt research continuation, \emph{Lattice Contacts and Mixed Zeta
+Identities}, 11 October 2026. Unequal even-order tail recurrence
+and its stated mixed generators.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/cc569dca8622dfc8fa02906da37d0a1b8831b5e7/Analysis/Polylogarithms/docs/reports/stieltjes-correlation-calculus/continuations/lattice-contacts-mixed-zeta}{Supplementary pinned repository location}.
+\end{thebibliography}
+\end{document}

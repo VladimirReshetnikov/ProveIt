@@ -1149,6 +1149,15 @@ import GowersSzemeredi.Proofs16Lemma5With
 import GowersSzemeredi.Proofs16DenseSelectionWith
 import GowersSzemeredi.Proofs16IntegerPrintedCorollary
 import GowersSzemeredi.Proofs13PrintedSquareBounds
+import GowersSzemeredi.Proofs16PolyPieceTwoDataWith
+import GowersSzemeredi.Proofs16PolyCoverTwoFejer
+import GowersSzemeredi.Proofs18FejerSeedCounts
+import GowersSzemeredi.Proofs18FejerSeedExponents
+import GowersSzemeredi.Proofs16UniformCoverTwoFejer
+import GowersSzemeredi.Proofs16ClassPiecesWith
+import GowersSzemeredi.Proofs16ClassStepFejer
+import GowersSzemeredi.Proofs16ClassStepBoundsFejer
+import GowersSzemeredi.Proofs16ClassStepDegreesFejer
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

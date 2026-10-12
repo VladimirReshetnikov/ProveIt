@@ -4580,6 +4580,61 @@ Next in the dimension-two chain:
 * then the counts and exponents of `Proofs18LengthSix*`, to prove the
   dimension-two seed.
 
+*Progress* (all light, standard axioms only):
+* `Proofs16DenseSelectionWith`: `section16_dense_induced_selection_with`
+  and `lemma_16_7_with`. Lemma 16.7 never used the printed θ₁ beyond
+  `θ₁ ≥ 0`.
+* `Proofs16PolyPieceTwoDataWith`: `section16_poly_piece_two_data_with`, the
+  producer of the dimension-two pieces, which seed the split-class
+  recursion. Also the parameterized budget and counts
+  `polyPieceBudgetW`, `polyPieceSpecCountW` and `polyPieceFaceCountW`,
+  which equal the corpus definitions at the printed θ₁ by `rfl`.
+
+*What the map shows.* The family Lemma 16.6 that everything rests on,
+`AbstractFamilyLemma166At` (proved from the recurrence profiles), is
+already generic: it holds for every `0 < ζ ≤ 1/2` and every spectrum
+family. The printed θ₁ and ζ are baked in only by bridges built on it
+(`AllScaleFamilyLemma166At`, `AllScaleLemma166WidthAt`) and by the piece
+producers. The class route and the uniform dimension-two cover
+(`Proofs16PolyCoverTwo`, `Proofs16UniformCoverTwo`) consume the generic
+lemma directly. So the remaining parameterization stays light.
+
+*Remaining for the dimension-two seed:*
+1. *(Done.)* An explicit threshold for the Fejér Lemmas 15.5/15.6:
+   `fejerExplicitThreshold`, `fejer_scale_estimate_explicit`,
+   `fejerProductThreshold`, `fejer_product_of_density_lower_explicit`. The corpus
+   decomposition uses `lemma_15_6_of_density_lower_explicit` because the
+   headline tracks threshold sizes. `fejer_scale_estimate` builds its `N₀`
+   explicitly (`max(m+1, 3, ⌈2c₀/(scale·t)⌉)`) but states only `∃ N₀`.
+2. *(Done: `Proofs16PolyCoverTwoFejer`, `polyCoverAt_two_fejer_of_family_lemma6 :
+   PolyCoverAt 2 polyTwoFejerQb (polyTwoFejerEb A Bq)`, the Fejér instance
+   rather than a parameterized copy.)* The greedy decomposition
+   (`section16_poly_piece_two_of_subrelation`,
+   `section16_poly_cover_two_large`) with the Fejér Lemma 15.6 at `k = 1`
+   and `section16_poly_piece_two_data_with` at the tight radius.
+3. *(Done: `Proofs18FejerSeedCounts`, `Proofs18FejerSeedExponents`. The
+   count is at most `w^(2^44)` (printed `2^90`) and the inverse width exponent
+   at most `w^(2^46)` (printed `2^132`). The Bohr term no longer dominates; the
+   piece counts (`2^38`) do. So the seed is about `2^46`, inside the `2^48` of
+   `split_pair_with_bounds_fourteen`.)*
+4. *(Done: `Proofs16UniformCoverTwoFejer`.)* The uniform class and the seed:
+   `powerUniformClass_two_fejer : PowerUniformClass 2 V (2^43) (2^46) (2^15)`
+   (printed `(2^89, 2^130, 2^45)`) and `splitUniformClass_two_fejer`, a split
+   class at `a = D = 2^46` (printed `2^130`, used as `splitSeed = 2^132`).
+   **The dimension-two seed is proved**, and it lies inside the `2^48` of
+   `split_pair_with_bounds_fourteen`.
+
+*Next: the class step in dimensions `k ≥ 2`.* `class_piece_of_subrelation`
+(`Proofs16ClassStep`) uses `lemma_15_6_of_density_lower_explicit` and the
+printed θ₁ and ζ. Its Fejér copy, together with the class-step degree
+bounds (`Proofs16ClassStepBounds`/`Degrees`, where `stepP` and `stepT`
+become `fejerStepP` and `fejerStepT`), feeds `splitStepDWith` and
+`split_pair_with_bounds`. After that come the envelope and
+Theorems 18.1, 18.2 and 18.7. The counts and exponents
+   (`Proofs18LengthSixCounts`/`Exponents`) with
+   the `W` definitions, giving the seed degrees. The expectation is about
+   `2^35`–`2^40` (L.16c).
+
 How this was checked: 59 of the 491 ancestors of `Proofs16ClassStep` mention
 `section16Zeta`. They were searched for bounds on `multipleS` and for upper
 bounds on `ζ`, and nothing else turned up. A search is not a proof: the

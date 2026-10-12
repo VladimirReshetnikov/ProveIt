@@ -1,0 +1,584 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[letterpaper,margin=0.94in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,longtable}
+\usepackage{xcolor,xurl,hyperref,fancyhdr}
+\definecolor{navy}{HTML}{183B56}
+\hypersetup{colorlinks=true,linkcolor=navy,citecolor=navy,urlcolor=navy,pdftitle={Universal Gamma Normal Forms},pdfauthor={Research continuation prepared for the ProveIt project}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Universal Gamma normal forms}\fancyhead[R]{\small ProveIt research continuation}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}\setlength{\emergencystretch}{3em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}\DeclareMathOperator{\FP}{FP}\DeclareMathOperator{\wt}{wt}
+\newcommand{\Q}{\mathbb Q}\newcommand{\C}{\mathbb C}\newcommand{\Ncal}{\mathcal N}\newcommand{\Acal}{\mathcal A}\newcommand{\dd}{\,\mathrm d}
+\newcommand{\pin}{\texttt{7a966d1d81f97a9bdcc2a561646ebb5356cb70ef}}
+\title{\textbf{Universal Gamma Normal Forms}\\[6pt]\large A beta-integral formula for every canonical coefficient,\\complete mixed sectors, and exact harmonic--polylogarithmic consequences}
+\author{Research continuation prepared for Vladimir Reshetnikov\\and the ProveIt project}
+\date{11 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give a uniform, nonrecursive formula for every coefficient in the canonical integration-by-parts normal form of the inverse-Gamma differential hierarchy. A single polynomial beta integral replaces the previously available sector recurrences. It applies to every derivative order, determines the sign of every nonzero canonical coefficient, and proves that the known factor-parity obstruction accounts for all coefficient zeros. The formula resolves the inspected report's complete next-sector question and its request for a closed expression for the all-depth numerator polynomials. We provide an explicit finite double sum for the entire third-derivative sector, a positive finite formula for the earlier second-derivative numerators, and a resummed integral for every finite projection. The coefficient of $u_1u_3^3$ at weight fourteen is $-3185/3$, so integral Bell coefficients do not imply integral canonical representatives. Beta differentiation and Euler integration yield exact generalized-harmonic sums and polylogarithmic functions; the existing Gamma--height-one Stieltjes bridge becomes fully coefficient-explicit with every endpoint retained. Written proofs establish the infinite families. Independent exact algebra and floating-point diagnostics are supplied separately. Novelty is assessed relative to the specified inspected sources, not asserted against the entire literature.
+\end{abstract}
+\tableofcontents
+\clearpage
+
+\section{Research target, inherited material, and conventions}
+The research request names the canonical manuscript and the incoming directory of the ProveIt repository. This continuation follows the differential-polynomial and Gamma-sector thread rather than presenting another version of an already available harmonic generating function. The principal comparison source is the report \emph{harmonic-tail-gamma}, especially its sections on Gamma sectors, Gamma moments, and further research, read at revision \pin\ \cite{repo,sector}. Its question 5 asks for the complete projection retaining $u_0,u_1,u_2,u_3$, including arbitrary powers of the lower derivatives alongside $u_3^2$. Its question 6 asks for a finite expression for the numerator polynomials $p_b(k)$ beyond their established recurrence. The theorem below answers both and extends to every higher projection.
+
+The canonical functional-monomial decomposition is inherited. A literature antecedent is the integro-differential algebra construction of Guo, Regensburger, and Rosenkranz \cite{guo}; the repository gives a direct triangular proof in its canonical integration-by-parts chapter \cite{ibp}. The Appell property, factor parity, the pure polygamma-square coefficients, the complete second-derivative recurrence, and the scalar Gamma--Stieltjes bridge are also inherited. Our new contribution relative to these inspected sources is the uniform beta formula, its nonvanishing and sign converse, its explicit solution of all sectors, and the finite formulas extracted from it.
+
+This is a targeted comparison, not a certification of the whole manuscript or every incoming archive. Some incoming names were visible in directory listings without their interiors being read in the retained source record. No absence or error is inferred from those interiors. A later main-branch search returned a different revision; all source claims here refer to the displayed pinned reads. Neither the Gaussian $S_6$ identity, the revised $S_8$ identity, nor the full unequal-tail first-prefix conjecture is proved here.
+
+All formal polynomials have rational coefficients. Their numerical evaluation at digamma derivatives may satisfy additional identities. A dimension or nonzero coefficient in the formal algebra is not an assertion of arithmetic independence of any special values. Finite parts, when used, are constant terms in the original spatial coordinate $x$; they are not silently changed by a substitution.
+
+\section{The canonical differential algebra}
+Let
+\[
+ \Acal=\Q[u_0,u_1,\ldots],\qquad
+ D=\sum_{r\ge0}u_{r+1}\frac{\partial}{\partial u_r},
+ \qquad \wt(u_r)=r+1.
+\]
+Every polynomial uses finitely many variables. A monomial is \emph{canonical} if it is constant, a power of $u_0$, or its largest positive index occurs at least twice. The canonical projection is denoted by $\Ncal$.
+
+\begin{proposition}[Inherited normal decomposition]\label{normal}
+Every $P\in\Acal$ has a unique expression
+\[
+ P=\Ncal(P)+DH(P),
+\]
+where $\Ncal(P)$ is a rational linear combination of canonical monomials and $H(P)$ has zero constant term. The projection preserves weight and factor degree. It is linear, but not multiplicative.
+\end{proposition}
+\begin{proof}
+If a monomial has a unique largest index $r\ge1$, write it as $u_ru_{r-1}^aV$, with $V$ using indices at most $r-2$. Then
+\begin{equation}\label{step}
+ u_ru_{r-1}^aV
+ =D\left(\frac{u_{r-1}^{a+1}V}{a+1}\right)
+ -\frac{u_{r-1}^{a+1}DV}{a+1}.
+\end{equation}
+Each remaining monomial has smaller largest index, so reduction terminates. For uniqueness, a nonconstant polynomial $H$ with largest variable index $r$ contributes the nonzero term $u_{r+1}\partial H/\partial u_r$ to $DH$. These terms have a unique largest index; no nonzero canonical polynomial has that leading support. Thus a total derivative cannot be a nonzero canonical polynomial. Finally $\Ncal(u_1)=0$ but $\Ncal(u_1^2)=u_1^2$, proving the last qualification.
+\end{proof}
+Define the inverse-Gamma hierarchy by
+\begin{equation}\label{hierarchy}
+ A_0=1,\qquad A_{m+1}=u_0A_m-DA_m,
+ \qquad N_m=\Ncal(A_m).
+\end{equation}
+Its exponential generating function is
+\begin{equation}\label{bell}
+ A(t)=\sum_{m\ge0}A_m\frac{t^m}{m!}
+ =\exp\left(\sum_{r\ge0}\frac{(-1)^ru_rt^{r+1}}{(r+1)!}\right).
+\end{equation}
+Under $u_r=\psi^{(r)}(x)$, the differential operator becomes $d/dx$, and
+\begin{equation}\label{gamma}
+ A_m(x)=(-1)^m\Gamma(x)\frac{\mathrm d^m}{\mathrm dx^m}\Gamma(x)^{-1},
+ \qquad A(t,x)=\frac{\Gamma(x)}{\Gamma(x-t)}.
+\end{equation}
+The first identity follows by induction; the second is the Taylor expansion of the reciprocal Gamma function. Gamma differentiation and its standard local expansions are as in \cite{dlmf}.
+
+The known initial normal forms include
+\begin{align*}
+N_4&=u_0^4-u_1^2,\\
+N_6&=u_0^6-15u_0^2u_1^2+u_2^2,\\
+N_8&=u_0^8-70u_0^4u_1^2+28u_0^2u_2^2-7u_1^4-u_3^2,\\
+N_9&=u_0^9-126u_0^5u_1^2+84u_0^3u_2^2
+       -63u_0u_1^4-9u_0u_3^2+10u_2^3.
+\end{align*}
+These examples are checks on the conventions, not new claims.
+
+\section{A universal beta-integral formula}
+Put
+\begin{equation}\label{phi}
+ \phi_j(v)=v^{j+1}+(-1)^j(1-v)^{j+1}\qquad(j\ge0).
+\end{equation}
+The apparent leading terms cancel, so $\phi_j$ has degree $j$; in particular
+\[
+ \phi_0=1,\quad \phi_1=2v-1,\quad
+ \phi_2=1-3v+3v^2,\quad
+ \phi_3=4v^3-6v^2+4v-1.
+\]
+For a multi-index $\alpha=(\alpha_0,\ldots,\alpha_d)$ set
+\[
+ u^\alpha=\prod_{j=0}^d u_j^{\alpha_j},\qquad
+ w=\sum_{j=0}^d(j+1)\alpha_j,\qquad
+ F_\alpha=\prod_{j=0}^d\alpha_j!\bigl((j+1)!\bigr)^{\alpha_j}.
+\]
+
+\begin{theorem}[Every canonical coefficient]\label{master}
+Suppose $d\ge1$, $\alpha_d\ge2$, and all $\alpha_j$ are nonnegative integers. Then
+\begin{equation}\label{mastereq}
+\boxed{
+ [u^\alpha]N_w
+ =\frac{(-1)^d(d+1)w!}{F_\alpha}
+ \int_0^1 v^d(1-v)^d\,
+ \phi_d(v)^{\alpha_d-2}
+ \prod_{j=0}^{d-1}\phi_j(v)^{\alpha_j}\dd v .}
+\end{equation}
+The integral is a polynomial beta integral, hence a rational number. Together with $[u_0^w]N_w=1$, and the absence of noncanonical monomials, this determines every coefficient at every weight.
+\end{theorem}
+
+For a completely finite arithmetic version, expand
+\[
+ \phi_d(v)^{\alpha_d-2}\prod_{j<d}\phi_j(v)^{\alpha_j}
+ =\sum_{\ell=0}^L q_\ell v^\ell.
+\]
+Then the integral in \eqref{mastereq} is exactly
+\begin{equation}\label{finitebeta}
+ \sum_{\ell=0}^L q_\ell
+ \frac{(d+\ell)!\,d!}{(2d+\ell+1)!}.
+\end{equation}
+This formula is nonrecursive in the desired coefficient. No expansion of all partitions at weight $w$ is required.
+
+\subsection{Proof: isolate the last integration-by-parts step}
+For fixed $d$, let $\sigma_d$ set $u_r=0$ for $r>d$, and put
+\[
+ \delta_d=\sum_{r=0}^{d-1}u_{r+1}\partial_{u_r},\qquad
+ I_df=\int_0^{u_d}f(u_0,\ldots,u_{d-1},z)\dd z.
+\]
+Both are operations on polynomials in $u_0,\ldots,u_d$.
+
+\begin{lemma}[Highest-sector extraction]\label{sectorlemma}
+For a monomial $M$ whose highest index is $d$ with multiplicity at least two, its coefficient in $\Ncal(P)$ equals its coefficient in
+\begin{equation}\label{sectoroperator}
+ \sigma_dP+
+ \sum_{R>d}(-1)^{R-d}\delta_d I_d\delta_d^{R-d-1}
+                 \sigma_d(\partial_{u_R}P).
+\end{equation}
+The sum is finite for a polynomial $P$.
+\end{lemma}
+\begin{proof}
+It suffices to examine a monomial. A repeated highest index above $d$ is already canonical and cannot contribute. More generally a monomial containing two factors of index greater than $d$ cannot reduce to the desired sector: before the unique top index can pass the second highest one, formula \eqref{step} creates a repeated highest index still greater than $d$.
+
+The only remaining original terms are $u_RV$ with $R>d$ and $V$ using indices at most $d$. Until the top index reaches $d+1$, formula \eqref{step} gives successive remainders $-u_{R-1}DV$. Any term in the lower factor that acquires an index greater than $d$ cannot reach the target sector by the preceding observation. Thus $D$ can be replaced by $\delta_d$ throughout these intermediate steps. The result is
+$(-1)^{R-d-1}u_{d+1}\delta_d^{R-d-1}V$.
+For the last step the exact identity is
+\[
+ u_{d+1}W=D(I_dW)-\delta_d(I_dW).
+\]
+The target coefficients in the latter remainder are already canonical. Terms having only one $u_d$ reduce to smaller highest index and cannot affect them. This proves \eqref{sectoroperator}, including its sign and the order of its two operators.
+\end{proof}
+
+\subsection{Proof: beta resummation and cancellation of the boundary}
+Apply Lemma~\ref{sectorlemma} coefficientwise to \eqref{bell}. Write $A_d=\sigma_d A(t)$. Since
+\[
+ \sigma_d\partial_{u_R}A(t)=\frac{(-1)^Rt^{R+1}}{(R+1)!}A_d,
+\]
+all the signs in the correction combine to $(-1)^d$. The beta identity yields
+\begin{equation}\label{resumproof}
+\begin{split}
+ \sum_{R>d}\frac{t^{R+1}}{(R+1)!}\delta_d^{R-d-1}A_d
+ &=\frac1{(d+1)!}\int_0^t(t-s)^{d+1}e^{s\delta_d}A_d\dd s,\\
+ e^{s\delta_d}A_d&=\exp\left(\sum_{j=0}^d b_j(s)u_j\right),\\
+ b_j(s)&=\frac{s^{j+1}-(s-t)^{j+1}}{(j+1)!}.
+\end{split}
+\end{equation}
+These are formal identities: any fixed coefficient of $t$ involves finitely many polynomial operations. In particular no infinite sum of spatial integrals is being asserted.
+
+For fixed $\alpha$, let $C(s)=\prod_j b_j(s)^{\alpha_j}/\alpha_j!$. Because $b'_j=b_{j-1}$ for $j\ge1$, direct coefficient extraction, using $\alpha_d\ge2$, gives
+\begin{equation}\label{coeffderivative}
+ [u^\alpha]\delta_d I_d\exp\left(\sum_j b_j(s)u_j\right)
+ =\frac{C'(s)}{b_d(s)}.
+\end{equation}
+For example, the term $u_d\partial_{u_{d-1}}$ contributes the factor $\alpha_db_{d-1}/b_d^2$ times $C(s)$, and all other terms give the other logarithmic derivatives of $C$ divided by $b_d$.
+
+Consequently the sought coefficient in $\Ncal(A(t))$ is
+\[
+ C(0)+(-1)^d\int_0^t
+ \frac{(t-s)^{d+1}}{(d+1)!}\frac{C'(s)}{b_d(s)}\dd s.
+\]
+Integrate by parts. At $s=0$ the quotient $(t-s)^{d+1}/((d+1)!b_d(s))$ equals $(-1)^d$, so the boundary cancels $C(0)$ exactly. The endpoint at $s=t$ vanishes. Furthermore
+\[
+ \frac{\mathrm d}{\mathrm ds}
+ \frac{(t-s)^{d+1}}{(d+1)!b_d(s)}
+ =-\frac{(d+1)t\,s^d(t-s)^d}{((d+1)!)^2b_d(s)^2}.
+\]
+If $d$ is odd, $b_d$ vanishes at $s=t/2$. There is no singular integration here: $C/b_d$ is a polynomial because $\alpha_d\ge2$, and the final integrand $C/b_d^2$ is also a polynomial. Thus the integration-by-parts identity is valid across the apparent pole after cancellation.
+
+Finally substitute $s=tv$. Each $b_j(tv)$ becomes $t^{j+1}\phi_j(v)/(j+1)!$. Collecting the powers of $t$ gives \eqref{mastereq}. Formula \eqref{finitebeta} follows from Euler's beta integral. This proves the theorem.
+
+\section{Exact signs, complete zero classification, and nonintegrality}
+\begin{corollary}[No zeros beyond the parity obstruction]\label{sign}
+For a canonical multi-index as in Theorem~\ref{master}, put
+$\epsilon(\alpha)=\sum_{j\text{ odd}}\alpha_j$. The coefficient $[u^\alpha]N_w$ is zero precisely when $\epsilon(\alpha)$ is odd. Otherwise it is nonzero and has sign $(-1)^d$.
+\end{corollary}
+\begin{proof}
+For even $j$, $\phi_j(v)$ is positive on $[0,1]$. For odd $j$, its sign in the interior is that of $2v-1$, and $\phi_j(1-v)=-\phi_j(v)$. Subtracting two from the highest multiplicity changes neither parity. An odd total of odd-index factors makes the integral antisymmetric, hence zero. An even total makes the integrand nonnegative and strictly positive except at the midpoint and endpoints, so its integral is positive. The only remaining sign is the prefactor $(-1)^d$.
+\end{proof}
+The inherited factor parity says that factor degree and weight have the same parity. Since their difference is $\sum j\alpha_j$, Corollary~\ref{sign} proves the previously missing converse for coefficients: every canonical monomial permitted by this parity actually occurs.
+
+For example, the square family is immediately
+\begin{equation}\label{squares}
+ [u_0^a u_d^2]N_{a+2d+2}
+ =(-1)^d\binom{a+2d+2}{2d+2},
+\end{equation}
+recovering the known square coefficients by $B(d+1,d+1)$. The usefulness of the master formula is that it continues to arbitrary mixed multiplicities without a new differential equation.
+
+\begin{proposition}[An explicit nonintegral coefficient]\label{noninteger}
+The coefficient of $u_1u_3^3$ in $N_{14}$ is $-3185/3$.
+\end{proposition}
+\begin{proof}
+In \eqref{mastereq} take $d=3$, $\alpha_1=1$, $\alpha_3=3$. The integral is
+\[
+ \int_0^1v^3(1-v)^3(2v-1)\bigl(v^4-(1-v)^4\bigr)\dd v
+ =\frac1{128}\left(\frac13-\frac25+\frac29-\frac1{11}\right)
+ =\frac1{1980}.
+\]
+The prefactor is $-4\cdot14!/(2!\,3!\,(4!)^3)=-2102100$, proving the value.
+\end{proof}
+Thus integrality of the original exponential Bell polynomials does not survive this rational normal projection. This is a counterexample to a natural possible extrapolation from small tables; we do not attribute an integrality conjecture to a repository source in which it was not located.
+
+\section{Closed solution of the second-derivative numerator problem}
+Use the earlier sector variables
+\[
+ y=u_1t^2/2,\qquad z=u_2t^3,\qquad
+ \sigma_2\Ncal(A(t))=e^{u_0t}\sum_{b\ge0}z^bf_b(y).
+\]
+The source \cite{sector} gives $f_1=0$, the entire even function
+\[
+ f_0(y)=\frac12\left(\cosh y+\frac{\sinh y}{y}-y\,\operatorname{Shi}(y)\right),
+ \qquad \operatorname{Shi}(y)=\int_0^y\frac{\sinh s}{s}\dd s,
+\]
+and a recurrence for $r_b(k)=k![y^k]f_b(y)$. It proves that
+$r_b(k)=p_b(k)/\prod_{h=0}^b(k+2h+1)$ for even $k$ and $b\ge2$, with numerator degree $b-2$. We now solve those numerator polynomials explicitly.
+
+\begin{theorem}[Finite formula for all sector numerators]\label{pb}
+For $b\ge2$ and even $k\ge0$,
+\begin{align}
+ r_b(k)&=\frac{3}{b!24^b}\int_0^1
+       v^k(1-v^2)^2(1+3v^2)^{b-2}\dd v,\label{rbintegral}\\
+ &=\frac1{b!24^{b-1}}\sum_{j=0}^{b-2}
+ \frac{\binom{b-2}{j}3^j}{(k+2j+1)(k+2j+3)(k+2j+5)}.\label{rbfinite}
+\end{align}
+As a polynomial identity in $X$,
+\begin{equation}\label{pbfinite}
+\boxed{
+ p_b(X)=\frac1{b!24^{b-1}}\sum_{j=0}^{b-2}\binom{b-2}{j}3^j
+ \prod_{\substack{0\le h\le b\\h\notin\{j,j+1,j+2\}}}(X+2h+1).}
+\end{equation}
+In particular every coefficient of $p_b$ is positive, its degree is exactly $b-2$, and its leading coefficient is $1/(4b!6^{b-1})$.
+\end{theorem}
+\begin{proof}
+Apply Theorem~\ref{master} to $u_0^a u_1^k u_2^b$ and set $v=2x-1$ in its integral. Then $\phi_1(x)=v$, $\phi_2(x)=(1+3v^2)/4$, and $x^2(1-x)^2=(1-v^2)^2/16$. Reflection doubles the half interval when $k$ is even, giving \eqref{rbintegral}. Expand the last power and use
+\[
+ \int_0^1 v^q(1-v^2)^2\dd v
+ =\frac8{(q+1)(q+3)(q+5)}.
+\]
+This proves \eqref{rbfinite}; multiplication by the common denominator proves \eqref{pbfinite}. Each product has $b-2$ positive linear factors. Their leading coefficients sum to $4^{b-2}/(b!24^{b-1})$, which is the asserted number.
+\end{proof}
+The first three polynomials are
+\[
+ p_2(X)=\frac1{48},\qquad
+ p_3(X)=\frac{2X+5}{1728},\qquad
+ p_4(X)=\frac{X^2+7X+9}{20736}.
+\]
+The degree and leading coefficient agree with the inherited recurrence theorem, while \eqref{pbfinite} supplies the requested nonrecursive answer. It also proves coefficient positivity without inference from computed examples.
+
+\begin{corollary}[Entire and bivariate sector generators]\label{bivariable}
+For $b\ge2$,
+\[
+ f_b(y)=\frac3{b!24^b}\int_0^1(1-v^2)^2(1+3v^2)^{b-2}\cosh(yv)\dd v.
+\]
+Moreover
+\begin{equation}\label{bivar}
+\begin{split}
+ \sum_{b\ge2}z^bf_b(y)&=3\int_0^1
+ \frac{(1-v^2)^2\cosh(yv)}{(1+3v^2)^2}\\
+ &\qquad\times\left(e^{z(1+3v^2)/24}-1-\frac{z(1+3v^2)}{24}\right)\dd v.
+\end{split}
+\end{equation}
+Both formulas define entire functions in the displayed finite-dimensional variables.
+\end{corollary}
+\begin{proof}
+Expand the cosine hyperbolic and exponential on the compact interval. Their series converge uniformly on compact subsets of parameter space, so coefficient extraction and integration commute. Formula \eqref{rbintegral} identifies every coefficient.
+\end{proof}
+
+\section{The complete third-derivative sector and every higher projection}
+\begin{theorem}[Explicit third-derivative mixed coefficients]\label{third}
+Let $a,k,b\ge0$, $c\ge2$, and $w=a+2k+3b+4c$. If $k+c$ is odd, the coefficient of $u_0^au_1^ku_2^bu_3^c$ in $N_w$ is zero. If $k+c$ is even, that coefficient is
+\begin{equation}\label{thirdfinite}
+\boxed{
+ -\frac{12w!}{a!k!b!c!\,2^k24^b48^c}
+ \sum_{i=0}^b\sum_{j=0}^{c-2}
+ \frac{\binom bi3^i\binom{c-2}{j}}
+ {\displaystyle\prod_{h=0}^3(k+c+2i+2j-1+2h)} .}
+\end{equation}
+In the even case it is strictly negative. This includes arbitrary powers of both lower positive derivatives.
+\end{theorem}
+\begin{proof}
+In Theorem~\ref{master} set $v=2x-1$. Besides the identities used above,
+\[
+ \phi_3(x)=\frac{v(1+v^2)}2,
+ \qquad x^3(1-x)^3=\frac{(1-v^2)^3}{64}.
+\]
+The even-parity coefficient becomes
+\[
+ -\frac{w!}{4a!k!b!c!2^k24^b48^c}
+ \int_0^1v^{k+c-2}(1-v^2)^3(1+3v^2)^b(1+v^2)^{c-2}\dd v.
+\]
+Expand the last two powers and apply
+$\int_0^1v^q(1-v^2)^3\dd v=48/\prod_{h=0}^3(q+1+2h)$.
+This gives \eqref{thirdfinite}. The odd case follows from reflection, and every summand in the even case is positive before the prefactor.
+\end{proof}
+Together with the $u_0$ term and the highest-index-one and highest-index-two sectors, this determines the complete $\sigma_3$ projection requested by the source. It is stronger than a recurrence only for a fixed power of $u_3$.
+
+There is a concise resummed answer for all projections. Put
+$z_j=u_jt^{j+1}/(j+1)!$ and interpret the quotient below by its removable extension when its denominator vanishes.
+\begin{theorem}[Universal sector generator]\label{allgenerator}
+As a coefficientwise formal identity,
+\begin{equation}\label{universalgen}
+\begin{split}
+ \Ncal(A(t))&=e^{u_0t}+\sum_{d\ge1}(-1)^d(d+1)\int_0^1 v^d(1-v)^d e^{\sum_{j<d}z_j\phi_j(v)}\\
+ &\qquad\times\frac{e^{z_d\phi_d(v)}-1-z_d\phi_d(v)}{\phi_d(v)^2}\dd v.
+\end{split}
+\end{equation}
+For a finite projection $\sigma_D$, truncate this sum at $d=D$. Each resulting sector integral is entire in its finitely many variables.
+\end{theorem}
+\begin{proof}
+Expand both exponentials. The subtracted numerator starts at multiplicity two of the highest index, so each term belongs to precisely one canonical sector. Its coefficient is exactly \eqref{mastereq}. The sector of index $d$ begins at weight $2d+2$, hence only finitely many sectors enter a given coefficient of $t$. Finally
+$(e^{zq}-1-zq)/q^2=z^2\int_0^1(1-s)e^{szq}\dd s$
+provides a joint entire extension at $q=0$, and compact-interval integration preserves entire dependence.
+\end{proof}
+The finite-dimensional entire assertion must not be confused with convergence of the infinite sum after substituting an arbitrary infinite derivative sequence. No such additional analytic convergence is required or claimed.
+
+\section{Generalized harmonic sums from the coefficient family}
+For $n,r\ge0$ define $E_{n,r}$ by
+\[
+ \prod_{j=1}^n\left(1+\frac yj\right)=\sum_{r=0}^nE_{n,r}y^r.
+\]
+Then $E_{n,0}=1$, $E_{n,1}=H_n$, and
+$E_{n,2}=(H_n^2-H_n^{(2)})/2$. The elementary binomial generating identity is
+\begin{equation}\label{eharmonic}
+ \sum_{n\ge0}E_{n,r}z^n
+ =\frac{[-\log(1-z)]^r}{r!(1-z)}\qquad(|z|<1).
+\end{equation}
+The repository already develops this generator and its Gamma reduction \cite{harmonic}. The following family records its exact interaction with the newly explicit canonical coefficients.
+
+\begin{theorem}[All harmonic depths, finite beta derivatives]\label{harmonics}
+For $b\ge2$ and $r\ge0$, the ordinary convergent sum
+$T_{b,r}=\sum_{n\ge0}E_{n,r}r_b(2n)$ satisfies
+\begin{align}
+ T_{b,r}&=\frac3{b!24^b r!}\int_0^1
+ (1-v^2)(1+3v^2)^{b-2}[-\log(1-v^2)]^r\dd v,\label{harmonicint}\\
+ &=\frac{3(-1)^r}{2b!24^b r!}
+ \sum_{j=0}^{b-2}\binom{b-2}{j}3^j
+ \left.\frac{\partial^r}{\partial\beta^r}
+ B(j+\tfrac12,\beta)\right|_{\beta=2}.\label{harmonicbeta}
+\end{align}
+Every such value belongs to
+$\Q[\log2,\zeta(2),\ldots,\zeta(r)]$, with the evident interpretation at $r=0,1$.
+\end{theorem}
+\begin{proof}
+Use \eqref{rbintegral} at $k=2n$ and sum by \eqref{eharmonic}. All summands are nonnegative for the real integral; Tonelli's theorem applies and the final logarithmic integral is finite. Alternatively the finite rational formula gives decay $O(n^{-3})$, while $E_{n,r}=O((1+\log n)^r)$. Expand $(1+3v^2)^{b-2}$ and put $t=v^2$ to obtain \eqref{harmonicbeta}.
+
+The logarithmic derivatives of the beta function at the stated point are
+\[
+ \left.\partial_\beta^q\log B(a,\beta)\right|_{\beta=2}
+ =\psi^{(q-1)}(2)-\psi^{(q-1)}(a+2),\qquad a=j+\tfrac12.
+\]
+The first is a rational number plus $2\log2$, and each subsequent derivative is a rational number plus a rational multiple of $\zeta(q)$. This follows directly from the polygamma recurrence and the half-integer Hurwitz formula. Repeated differentiation of an exponential is a finite Bell polynomial in these logarithmic derivatives. Since $B(j+1/2,2)$ is rational, the claimed algebra follows.
+\end{proof}
+Two explicit examples, without elementary-harmonic notation, are
+\begin{align}
+ \sum_{n\ge0}\frac{H_n}{(2n+1)(2n+3)(2n+5)}
+ &=\frac5{36}-\frac{\log2}{6},\label{hexample1}\\
+ \sum_{n\ge0}\frac{H_n^2-H_n^{(2)}}{(2n+1)(2n+3)(2n+5)}
+ &=\frac{14}{27}-\frac{5\log2}{9}
+   +\frac{(\log2)^2}{3}-\frac{\zeta(2)}6.\label{hexample2}
+\end{align}
+They result from the first two derivatives of $B(1/2,\beta)$ at $\beta=2$. These low-depth rational-kernel identities also admit elementary derivations and are not individually asserted to be historically new.
+
+\subsection{An independent Gamma-coordinate expression}
+For $\Re a>0$ define
+\[
+ \frac{\Gamma(a)\Gamma(1-y)}{\Gamma(a-y)}
+ =\sum_{j\ge0}C_j(a)y^j.
+\]
+The inherited convergent resolvent-difference identity is
+\[
+ \sum_{n\ge0}E_{n,r}\left(\frac1{n+a}-\frac1{n+b}\right)
+ =C_{r+1}(b)-C_{r+1}(a).
+\]
+A partial-fraction decomposition of \eqref{rbfinite} therefore gives
+\begin{equation}\label{harmonicgamma}
+\begin{split}
+ T_{b,r}&=\frac1{16b!24^{b-1}}\sum_{j=0}^{b-2}\binom{b-2}{j}3^j\\
+ &\qquad\times\bigl[-C_{r+1}(j+\tfrac12)+2C_{r+1}(j+\tfrac32)
+       -C_{r+1}(j+\tfrac52)\bigr].
+\end{split}
+\end{equation}
+This supplies a second finite special-function route to \eqref{harmonicbeta}, used by the accompanying diagnostics. The numerator harmonics remain unshifted; they must not be identified with a convention in which numerator and denominator shift together.
+
+\section{Polylogarithmic Euler primitives and exact endpoints}
+For $b\ge2$, $m\ge0$, and $|z|<1$, set
+\begin{equation}\label{polylogdef}
+ F_{b,m}(z)=\sum_{n\ge1}\frac{r_b(2n)}{n^m}z^n.
+\end{equation}
+\begin{theorem}[Finite polylogarithmic closure]\label{polylogs}
+These functions satisfy
+\begin{equation}\label{polylogint}
+ F_{b,m}(z)=\frac3{b!24^b}\int_0^1
+ (1-v^2)^2(1+3v^2)^{b-2}\Li_m(zv^2)\dd v,
+\end{equation}
+where $\Li_0(w)=w/(1-w)$. For $m\ge1$,
+$zF'_{b,m}(z)=F_{b,m-1}(z)$ and $F_{b,m}(0)=0$.
+Every $F_{b,m}$ has a finite expression in ordinary polylogarithms, rational functions, and the analytic germ $\operatorname{arctanh}\sqrt z/\sqrt z$. For $m\ge1$ its value at $z=1$ is a rational linear combination of $1,\log2,\zeta(2),\ldots,\zeta(m)$.
+\end{theorem}
+\begin{proof}
+Absolute convergence on compact subdisks justifies summing \eqref{rbintegral}; Euler differentiation follows termwise. Expand
+$W_b(v)=(1-v^2)^2(1+3v^2)^{b-2}=\sum_jw_jv^{2j}$.
+It remains to evaluate
+\[
+ K_{j,m}(z)=\int_0^1v^{2j}\Li_m(zv^2)\dd v
+ =\sum_{n\ge1}\frac{z^n}{n^m(2n+2j+1)}.
+\]
+With $a=j+1/2$,
+\begin{align}
+ K_{j,0}(z)&=z^{-j-1/2}\left(\operatorname{arctanh}\sqrt z
+             -\sum_{h=0}^j\frac{z^{h+1/2}}{2h+1}\right),\label{kzero}\\
+ K_{j,m}(z)&=\sum_{\ell=1}^m
+   \frac{(-1)^{m-\ell}\Li_\ell(z)}{2a^{m-\ell+1}}
+   +\frac{(-1)^m}{a^m}K_{j,0}(z).\label{krecursion}
+\end{align}
+The first formula is its power series; the second is the repeated elementary partial fraction
+$1/(n^m(n+a))=1/(an^m)-1/(an^{m-1}(n+a))$.
+Apparent singularities at zero are removable by the defining series. These are disk identities; additional continuation requires carrying the branches consistently.
+
+For the endpoint, the same recurrence starts at
+$\sum_{n\ge1}1/(n(n+a))=(\psi(a+1)+\gamma)/a$, yielding
+\begin{equation}\label{kendpoint}
+ K_{j,m}(1)=\frac12\left[
+ \sum_{\ell=2}^m\frac{(-1)^{m-\ell}\zeta(\ell)}{a^{m-\ell+1}}
+ +\frac{(-1)^{m-1}(\psi(a+1)+\gamma)}{a^m}\right].
+\end{equation}
+The half-integer digamma value is rational minus $2\log2$. Finite linear combination proves the assertion. The original series is absolutely convergent at $z=1$ for every $m\ge0$; cancellation must be performed before taking the endpoint in the $m=0$ partial fractions.
+\end{proof}
+For example,
+\begin{align}
+ \sum_{n\ge1}\frac1{n(2n+1)(2n+3)(2n+5)}
+ &=\frac{47}{450}-\frac{2\log2}{15},\label{pexample1}\\
+ \sum_{n\ge1}\frac1{n^2(2n+1)(2n+3)(2n+5)}
+ &=\frac{\zeta(2)}{15}-\frac{1291}{3375}
+       +\frac{92\log2}{225}.\label{pexample2}
+\end{align}
+More generally, \eqref{polylogdef} gives an anchored hierarchy of antiderivatives for $\mathrm dz/z$, not merely a collection of isolated endpoint sums.
+
+\section{Gamma, polygamma, and harmonic Stieltjes moment identities}
+The following application uses the scalar bridge already proved in the repository \cite{moments}. Its role here is to turn the universal coefficient theorem into explicit combinations of higher polygamma moments without suppressing boundary contributions.
+
+Write
+\[
+ \frac1{\Gamma(1+u)}=\sum_{j\ge0}c_ju^j,\qquad
+ \lambda_d=[u^1]\zeta(1+u,\{1\}^{d-1})\quad(d\ge1).
+\]
+The multiple zeta convention has the largest summation index first; $[u^1]$ is a Laurent coefficient. Thus $\lambda_1=-\gamma_1$ in the ordinary Stieltjes normalization
+$\zeta(1+u)=u^{-1}+\sum_{m\ge0}(-1)^m\gamma_mu^m/m!$.
+For $d>1$ the quantities are higher harmonic Stieltjes data, not silently replaced by ordinary generalized Stieltjes constants.
+
+\begin{lemma}[Ordinary integral for the Laurent coordinate]\label{lambda}
+Let $L(v)=-\log(1-e^{-v})$ and
+$V_d(v)=L(v)^d-\mathbf1_{(0,1)}(v)(-\log v)^d$. Then
+\begin{equation}\label{lambdaintegral}
+ \lambda_d=c_{d+1}+\frac1{d!}\int_0^\infty\frac{V_d(v)}v\dd v.
+\end{equation}
+The displayed integral is absolutely convergent.
+\end{lemma}
+\begin{proof}
+The strict unit-index harmonic generating function is
+$\sum_{n\ge1}H_{n-1}(\{1\}^{d-1})e^{-nv}=-(L(v)^d)'/d!$.
+Mellin integration by parts first in $\Re u>0$ gives
+\[
+ \zeta(1+u,\{1\}^{d-1})
+ =\frac1{\Gamma(1+u)u^d}
+ +\frac{u}{d!\Gamma(1+u)}\int_0^\infty v^{u-1}V_d(v)\dd v.
+\]
+Near zero, $L(v)=-\log v+O(v)$, so $V_d(v)/v$ is locally integrable with logarithmic growth. At infinity it decays exponentially up to $1/v$. The subtracted Mellin integral is holomorphic in a neighborhood of $u=0$, permitting extraction of $[u^1]$ and proving the formula.
+\end{proof}
+
+Let $A_m=N_m+DH_m$ be the unique normal decomposition, and set
+\[
+ \mathcal E(H_m)=H_m(\psi(1),\psi'(1),\ldots)
+              -[x^0]H_m(\psi(x),\psi'(x),\ldots).
+\]
+The constant is taken after multiplying all pole and regular terms. It is not obtained by substituting individual constant coefficients into $H_m$.
+
+\begin{theorem}[Fully coefficient-explicit polygamma combinations]\label{momenttransfer}
+For $m\ge2$,
+\begin{equation}\label{momentformula}
+\begin{split}
+ \FP_x\int_0^1N_m(\psi(x),\psi'(x),\ldots)\dd x
+ &=K_m-\mathcal E(H_m)\\
+ &\quad-m!\sum_{d=1}^{m-1}(-1)^{m-1-d}c_{m-1-d}\lambda_d,
+\end{split}
+\end{equation}
+where $K_{2r}=(-1)^r\pi^{2r}/(2r+1)$ and $K_{2r+1}=0$.
+Every coefficient on the left is given by Theorem~\ref{master}; $H_m$ is the finite rational primitive from \eqref{step}; its endpoint belongs to $\Q[\gamma,\zeta(2),\ldots,\zeta(m-1)]$.
+\end{theorem}
+\begin{proof}
+We recall the inherited scalar step to fix the normalization. The coefficientwise fixed-coordinate integral of
+$\Gamma(1-t)\Gamma(x)/\Gamma(x-t)$ is
+\[
+ \frac1{\Gamma(1+t)}-\sum_{d\ge1}\lambda_dt^{d+1}.
+\]
+For degrees $m\ge2$ its spatial coefficient is continuous at zero, because the residue of the quotient there is exactly $-t$; integrating it gives $m!(c_m-\lambda_{m-1})$. This also follows by the beta-integral subtraction underlying Lemma~\ref{lambda}, as detailed in \cite{moments}. The constant and linear fixed-coordinate integrals are $1$ and $\gamma$. Multiply by $1/\Gamma(1-t)$ and use $1/(\Gamma(1+t)\Gamma(1-t))=\sin(\pi t)/(\pi t)$ to obtain the right side of \eqref{momentformula} before the endpoint term. Finally integrate $A_m=N_m+DH_m$ from $\varepsilon$ to $1$ and take the constant term. This subtracts precisely $\mathcal E(H_m)$.
+
+The endpoint is finite algebra using
+$\psi(x)=-x^{-1}-\gamma+\sum_{j\ge2}(-1)^j\zeta(j)x^{j-1}$.
+At weight $m-1$, terms through $\zeta(m-1)$ suffice. The value at $1$ is obtained from $\psi(1)=-\gamma$ and
+$\psi^{(r)}(1)=(-1)^{r+1}r!\zeta(r+1)$ for $r\ge1$.
+\end{proof}
+This theorem does not evaluate each mixed moment separately. It evaluates a precisely specified combination; claiming a reduction for the individual terms would require further relations. The beta formula makes that combination explicit at arbitrary weight instead of requiring a new partition computation for its coefficients.
+
+For $x,x_0>0$ there is also the ordinary anchored identity
+\begin{equation}\label{anchor}
+\begin{split}
+ \int_{x_0}^xN_m(\psi(v),\psi'(v),\ldots)\dd v
+ =\int_{x_0}^x A_m(v)\dd v
+ -H_m(\psi(x),\psi'(x),\ldots)
+ +H_m(\psi(x_0),\psi'(x_0),\ldots).
+\end{split}
+\end{equation}
+It is the exact primitive transport, not an assertion that the remaining Gamma-ratio primitive is elementary.
+
+\section{Audit, reproducibility, and further research}
+\subsection{Source-status and correction register}
+The inspected second-derivative recurrence and its degree theorem were already available. They must not be promoted as discoveries of this continuation. The new formula \eqref{pbfinite} answers their stated closed-form continuation question. Likewise, the formal normal space and its parity are prior input; Corollary~\ref{sign} adds strict nonvanishing of every allowed coefficient and an exact sign law.
+
+No newly false inherited mathematical theorem was identified in the selected proof chain. Proposition~\ref{noninteger} rules out an integrality extrapolation, without inventing a source that asserted it. A minor editorial issue in the read manuscript overview is a repeated consecutive paragraph describing the complete 1,032-input first-letter-$X$ family; removing one copy would preserve the mathematical content. Its presence in that snapshot should not be confused with a claim about every later revision.
+
+Three important boundaries remain unchanged. Normalization is linear rather than multiplicative. Higher derivatives are discarded only after projection, unless an independent extraction theorem such as Lemma~\ref{sectorlemma} justifies the operation. Spatial finite parts retain the endpoint functional. In particular, replacing $H_m$ by zero after integration by parts would alter \eqref{momentformula}.
+
+\subsection{Independent computational checks}
+The supplied exact program constructs the Bell hierarchy from $A_{m+1}=u_0A_m-DA_m$ and normalizes its monomials directly by \eqref{step}. A separate implementation computes \eqref{mastereq} by integer polynomial multiplication and rational beta moments. The default comparison covers every canonical monomial through weight 28, including parity-forced zeros. The explicit nonintegral coefficient is independently compared with the direct normal projection. A changed-coefficient control checks that the equality test rejects a deliberate error.
+
+The numerical program specifies 54 diagnostics: 24 polynomial beta integrals, 10 reciprocal-Gamma derivative comparisons, 12 beta-versus-Gamma evaluations of the harmonic family, and 8 convergent series-versus-polylogarithm integrals. The scripts write their exact counts, residuals, software versions, and completion status to JSON. The JSON records, rather than this paragraph, are the authoritative statement of which replay completed in a particular environment. Floating-point diagnostics are not rigorous interval enclosures and do not establish the infinite-family theorems. Those theorems are proved in the text. No proof-assistant formalization is claimed.
+
+\subsection{Further research questions}
+\begin{enumerate}
+\item \textbf{Arithmetic denominators.} Determine the exact denominator of a canonical coefficient from its multi-index. Proposition~\ref{noninteger} excludes general integrality, but the beta formula should permit precise prime-adic divisibility statements and classifications of integral subfamilies.
+\item \textbf{Sector numerator zero geometry.} The formula for $p_b$ has positive coefficients. Determine whether its roots possess a uniform interlacing or half-plane property, using the explicit finite sum rather than low-degree extrapolation.
+\item \textbf{Canonical moments versus individual moments.} Identify additional exact relations that separate the mixed polygamma integrals occurring in \eqref{momentformula}. State the admissible multiple-zeta derivative alphabet before claiming reduction or minimality.
+\item \textbf{Shifted harmonic Stieltjes coefficients.} The source's genuinely mixed coefficients of its moving-pole Barnes--Hurwitz remainder are not determined by the Gamma boundary alone. Seek identities coupling these mixed coefficients to the new sector integrals while preserving both shifts and normalization.
+\item \textbf{Several dependent functions.} Extend the last-step extraction to differential polynomials in several functions, with an explicit choice of canonical support. Repeated highest derivatives of different functions introduce a nontrivial choice of complement.
+\item \textbf{Analytic meaning of the infinite sector sum.} Find derivative-growth hypotheses under which \eqref{universalgen}, after specialization, converges as an analytic function rather than only coefficientwise. A proof must control the infinite highest-index sum, not just each entire finite sector.
+\item \textbf{Arithmetic polylogarithm specializations.} Study the functions $F_{b,m}$ at algebraic points, roots of unity, and rationally related arguments. Identify genuinely new functional relations rather than rebranding their finite partial fractions.
+\item \textbf{Formal certification and integration.} Formalize the sparse monomial reduction, the last-step lemma, and the beta coefficient identity. Keep the finite algebra certificate separate from the analytic Mellin and finite-part arguments, then integrate the proved union into the canonical manuscript.
+\end{enumerate}
+
+\section*{Conclusion}
+The Gamma-sector problem admits a uniform solution because all high-index contributions to a fixed canonical sector can be reduced to one last integration-by-parts step. Resumming those steps produces a beta kernel; its boundary cancels the original Bell coefficient, leaving \eqref{mastereq}. This explains, rather than merely tabulates, all signs and zeros. The same formula solves the previously recursive numerator problem and every next derivative sector. Its harmonic and polylogarithmic consequences have finite exact reductions, while its Stieltjes moment application retains the necessary endpoint and arithmetic qualifications.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{repo} ProveIt Contributors, \emph{Polylogarithms and their Arithmetic Bridges}, canonical manuscript and research reports, inspected revision \pin. Repository paths \nolinkurl{Analysis/Polylogarithms/docs/manuscript} and \nolinkurl{docs/incoming}. \url{https://github.com/VladimirReshetnikov/ProveIt}.
+\bibitem{ibp} ProveIt manuscript, \emph{Canonical integration by parts and Gamma parity}, \nolinkurl{Analysis/Polylogarithms/docs/manuscript/chapters/07-ibp-normal-forms.tex}, at the revision in \cite{repo}.
+\bibitem{sector} ProveIt research report \emph{harmonic-tail-gamma}, \emph{A variational equation for all Gamma coefficients of derivative order at most two}, and \emph{Source audit, integration decisions, and further research}. Files \nolinkurl{sections/04_gamma_sectors.tex} and \nolinkurl{sections/08_audit_research.tex} under \nolinkurl{Analysis/Polylogarithms/docs/reports/stieltjes-harmonic-resonance/continuations/harmonic-tail-gamma}, at the revision in \cite{repo}.
+\bibitem{moments} The same report, \emph{Exact Gamma moments and their endpoint terms}, \nolinkurl{sections/05_gamma_moments.tex}, at the revision in \cite{repo}.
+\bibitem{harmonic} ProveIt report \emph{stieltjes-harmonic-identities}, \emph{A Gamma coefficient calculus for shifted harmonic sums}, \nolinkurl{sections/harmonic.tex}, under the same research-continuations parent directory, at the revision in \cite{repo}.
+\bibitem{guo} L. Guo, G. Regensburger, and M. Rosenkranz, \emph{On integro-differential algebras}, Journal of Pure and Applied Algebra \textbf{218} (2014), 456--473. \url{https://doi.org/10.1016/j.jpaa.2013.06.015}. Preprint \url{https://arxiv.org/abs/1212.0266}.
+\bibitem{dlmf} NIST, \emph{Digital Library of Mathematical Functions}, sections 5.7, 5.12, 5.15, and 25.11, for Gamma expansions, beta integrals, polygamma functions, and Hurwitz zeta. \url{https://dlmf.nist.gov/5.7}; \url{https://dlmf.nist.gov/5.12}; \url{https://dlmf.nist.gov/5.15}; \url{https://dlmf.nist.gov/25.11}.
+\end{thebibliography}
+\end{document}

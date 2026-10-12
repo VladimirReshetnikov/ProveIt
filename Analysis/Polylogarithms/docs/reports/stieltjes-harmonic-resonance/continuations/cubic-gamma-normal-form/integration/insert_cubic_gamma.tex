@@ -1,0 +1,50 @@
+% Additive host-manuscript fragment. No document class or preamble.
+% Assumes the host has already defined its functional normal-form map N.
+% The complete all-index proof is in the accompanying report, Sections 2--5.
+\subsection{Complete cubic-background inverse-Gamma coefficients}
+\label{cgnf:section}
+
+Work in $\mathbb Q[u_0,u_1,\ldots]$ with $D u_j=u_{j+1}$.
+Let $\mathsf N$ be the canonical functional-monomial projection modulo
+$D\mathbb Q[u_0,u_1,\ldots]$, and define
+\[
+ A_0=1,\qquad A_{m+1}=u_0A_m-DA_m,\qquad N_m=\mathsf N(A_m).
+\]
+The specialization $\sigma_3$ sets $u_j=0$ for $j>3$ and is taken
+\emph{after} normal reduction. Put
+\[
+ y=u_1t^2/2,\quad z=u_2t^3,\quad w=u_3t^4,\qquad
+ h(v)=(1+3v^2)/24,\quad k(v)=(v+v^3)/48,
+\]
+and let $E_2(x)=(e^x-1-x)/x^2$, with $E_2(0)=1/2$.
+
+\begin{theorem}[Cubic-background beta density]\label{cgnf:main}
+There is the following entire generating identity:
+\[
+ \sum_{m\ge0}\sigma_3N_m\frac{t^m}{m!}=e^{u_0t}F(y,z,w),
+\]
+where
+\begin{align*}
+ F(y,z,w)={}&\frac12\left(\cosh y+\frac{\sinh y}{y}
+                         -y\operatorname{Shi}(y)\right)\\
+ &+\frac{z^2}{384}\int_{-1}^1(1-v^2)^2e^{yv}E_2(zh(v))\,dv\\
+ &-\frac{w^2}{18432}\int_{-1}^1(1-v^2)^3e^{yv+zh(v)}E_2(wk(v))\,dv.
+\end{align*}
+For $m=a+2k+3b+4n$, $a,k,b\ge0$, and $n\ge2$, the coefficient
+$[u_0^a u_1^k u_2^b u_3^n]N_m$ is zero when $k+n$ is odd. When
+$k+n$ is even it equals
+\[
+ -\frac{m!}{192a!2^kk!b!n!24^b48^{n-2}}
+ \sum_{j=0}^b\sum_{\ell=0}^{n-2}
+ \frac{\binom bj3^j\binom{n-2}{\ell}}
+ {\prod_{r=0}^3(k+n+2j+2\ell-1+2r)}.
+\]
+\end{theorem}
+
+The complete proof uses the finite-jet Euler identity, the injectivity of
+$(2y+(z/2)\partial_y)^3$, and an explicit all-index polynomial density
+identity. It is given in the accompanying report, not inferred from the
+finite coefficient table. Under $u_j=\psi^{(j)}(x)$, the canonical
+identity $A_m=N_m+DH_m$ retains the endpoint $[H_m]_A^B$ in every definite
+integral; the projection $\sigma_3N_m$ additionally retains the remainder
+$N_m-\sigma_3N_m$.

@@ -1,0 +1,107 @@
+\section{Gamma identities, harmonic values, and retained primitives}
+\label{sec:gamma}
+
+The normal-form theorem is an identity in a free differential algebra.
+Its analytic meaning must keep both the primitive in
+\eqref{eq:decomp} and the distinction between a projection and the full
+normal polynomial.
+
+\begin{theorem}[Transport with the exact endpoint]\label{thm:endpoint}
+Let $0<A<B$, $m\ge0$, and write
+$U(x)=(\psi(x),\psi'(x),\ldots)$. Then
+\begin{equation}\label{eq:Gamma-endpoint}
+\begin{split}
+ \int_A^B N_m(U(x))\dd x
+ ={}&(-1)^m\int_A^B\Gamma(x)
+       \frac{\mathrm d^m}{\mathrm dx^m}\frac1{\Gamma(x)}\dd x\\
+ &-H_m(U(B))+H_m(U(A)).
+\end{split}
+\end{equation}
+The polynomial $H_m$ is computed by the terminating rational construction
+in Proposition~\ref{prop:normal}. In particular, the formula gives an
+anchored primitive for every normal combination $N_m$ without suppressing
+an integration-by-parts boundary constant.
+\end{theorem}
+\begin{proof}
+Substitute $u_r=\psi^{(r)}(x)$ into
+$A_m=N_m+\D H_m$. Under this substitution $\D$ is ordinary argument
+differentiation. Use \eqref{eq:Gamma-realization} and integrate over the
+compact interval. All functions are analytic there.
+\end{proof}
+
+For use with the compact cubic formula, let
+$R_m=N_m-\sigma_3N_m$. The precise projected identity is therefore
+\begin{equation}\label{eq:projected-endpoint}
+\begin{split}
+ \int_A^B(\sigma_3N_m)(U(x))\dd x
+ ={}&(-1)^m\int_A^B\Gamma(x)(\Gamma^{-1})^{(m)}(x)\dd x\\
+ &-[H_m(U(x))]_A^B-\int_A^BR_m(U(x))\dd x.
+\end{split}
+\end{equation}
+One must not erase the last term when the higher-derivative sector is
+nonzero. For $m\le9$ it vanishes by weight, but it need not vanish from
+weight ten onward.
+
+\subsection{Two explicit normal polynomials}
+The weight-eight identity is
+\begin{equation}\label{eq:N8}
+ N_8=u_0^8-70u_0^4u_1^2+28u_0^2u_2^2-7u_1^4-u_3^2.
+\end{equation}
+For this case the complete endpoint polynomial is
+\begin{equation}\label{eq:H8}
+\begin{split}
+ H_8={}&-4u_0^7+56u_0^5u_1-70u_0^4u_2-140u_0^3u_1^2
+       +56u_0^3u_3\\
+ &+252u_0^2u_1u_2-28u_0^2u_4+112u_0u_1^3
+       -112u_0u_1u_3\\
+ &-84u_0u_2^2+8u_0u_5-98u_1^2u_2+20u_1u_4+36u_2u_3-u_6.
+\end{split}
+\end{equation}
+Direct differentiation verifies $A_8=N_8+\D H_8$.
+Equations~\eqref{eq:Gamma-endpoint}, \eqref{eq:N8}, and \eqref{eq:H8}
+are an ordinary finite-interval integral identity involving digamma,
+trigamma, and higher polygammas, with an entirely explicit endpoint.
+
+At weight eleven,
+\begin{equation}\label{eq:N11}
+\begin{split}
+ N_{11}={}&u_0^{11}-330u_0^7u_1^2+462u_0^5u_2^2
+ -1155u_0^3u_1^4-165u_0^3u_3^2\\
+ &+550u_0^2u_2^3+990u_0u_1^2u_2^2+11u_0u_4^2-55u_2u_3^2.
+\end{split}
+\end{equation}
+Thus $R_{11}=11u_0u_4^2$. This gives a concrete test of why the
+projection alone cannot be substituted for the full $N_{11}$ in an
+unqualified Gamma integral. The coefficient $-55$ is the first coupled
+case of \eqref{eq:square-answer}. The full $H_{11}$ and other exact
+primitives are supplied as rational JSON certificates.
+
+\subsection{Generalized harmonic numbers}
+Let $H_N^{(r)}=\sum_{j=1}^Nj^{-r}$, $H_N=H_N^{(1)}$, and let
+$\gamma$ denote Euler's constant. The standard shift formulas give
+\begin{equation}\label{eq:harmonic-substitution}
+ u_0=H_N-\gamma,\qquad
+ u_r=(-1)^{r+1}r!\bigl(\zeta(r+1)-H_N^{(r+1)}\bigr),\quad r\ge1,
+\end{equation}
+at $x=N+1$ \cite{DLMF5,DLMF25}. Let $U_N$ denote this tuple. Then
+\begin{equation}\label{eq:harmonic-identity}
+ N_m(U_N)+(\D H_m)(U_N)
+ =m![t^m]\frac{\Gamma(N+1)}{\Gamma(N+1-t)}.
+\end{equation}
+The right side also equals
+\begin{equation}\label{eq:harmonic-generator}
+ m![t^m]\exp\left((H_N-\gamma)t-
+ \sum_{r\ge2}\frac{\zeta(r)-H_N^{(r)}}r\,t^r\right).
+\end{equation}
+This follows by substituting \eqref{eq:harmonic-substitution} into
+\eqref{eq:Bell}. It is initially a local analytic series in $t$ and an
+identity of every finite coefficient. The derivative $\D H_m$ is formed
+in the free differential algebra \emph{before} substitution; it is not a
+finite difference in $N$.
+
+Consequently \eqref{eq:square-answer} and the nonlinear coefficients
+specify exact mixed harmonic-tail contributions to every identity
+\eqref{eq:harmonic-identity}. This is a systematic family of identities,
+not a claim that the individual harmonic products have been shown
+arithmetically independent or that every integral of one isolated
+polygamma monomial has been separately evaluated.

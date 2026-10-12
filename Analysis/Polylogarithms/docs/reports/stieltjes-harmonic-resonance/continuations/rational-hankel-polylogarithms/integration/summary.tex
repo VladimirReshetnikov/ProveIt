@@ -1,0 +1,67 @@
+% Optional manuscript bridge. Requires amsmath, amssymb, amsthm and the
+% host's theorem environment. No preamble or unprefixed labels are added.
+% Full proofs: A Finite Polylogarithm Alphabet for Rational Hankel Sums.
+\section{Rational Hankel sums and a finite polylogarithm alphabet}
+\label{rhp:section}
+Let
+\[
+ R(x)=P(x)+\sum_{a\in A}\sum_{\ell=1}^{s_a}
+       c_{a,\ell}(x+a)^{-\ell},\qquad A\subset\mathbb Z_{\ge0},
+\]
+and put
+\[
+ D_{r,M}=\det\left(\sum_{n=1}^M n^{i+j}R(n)\right)_{0\le i,j<r}.
+\]
+For a pole of order $s$, retain the positive entries of
+$s,s-2,s-4,\ldots$. Let $W_r$ be the sum of the $r$ largest entries in
+the multiset obtained from all poles, or all entries if fewer than $r$
+are available.
+
+\begin{theorem}[Confluent pole allocation and exact reduction]
+\label{rhp:compiler}
+The generating function $\sum_{M\ge1}D_{r,M}z^M$ is a finite rational
+linear combination of $1$ and positive-index multiple polylogarithms
+of weight at most $W_r$. Rational prefactors have poles only at $0,1$,
+and the identity holds for $|z|<1$ with removable values at zero.
+In particular, every integral quadratic denominator gives, at every
+rank, an expression of the form
+\[
+ A(z)+B(z)L+C(z)L^2+E(z)\operatorname{Li}_2(z),
+       \qquad L=-\log(1-z),
+\]
+with rational coefficients, even with an arbitrary polynomial part.
+\end{theorem}
+\begin{proof}[Proof mechanism]
+The local harmonic block at $-a$ factors through the derivative columns
+$\binom ip(-a)^{i-p}$. Its $(p,q)$ entry is
+$\sum_{\ell>p+q}c_{a,\ell}h_{a,\ell-p-q}$ and has harmonic weight at
+most $s_a-p-q$. A minor selecting $k_a$ rows and columns at that pole
+has weight at most $k_a(s_a-k_a+1)$. Cauchy--Binet and optimization give
+$W_r$. Integer shift corrections preserve the sum of harmonic weight
+and inverse-cutoff order. Finite harmonic quasi-shuffles, followed by
+anchored operators
+\[
+ \mathcal J_hF(z)=z^{-h}\int_0^z t^{h-1}F(t)\,dt,
+\]
+and rational Hermite reduction produce the stated finite expression.
+The complete report gives the full proof, exact algorithm, Gamma-product
+sharp coefficient, endpoint cancellation jets, and all-rank spectral
+Stieltjes identities.
+\end{proof}
+
+As explicit convergent examples, the report proves
+\[
+ \sum_{M\ge1}\frac{H_M H_M^{(3)}-(H_M^{(2)})^2}{M(M+1)}
+       =\frac{35}{2}\zeta(5)-9\zeta(2)\zeta(3)
+\]
+and
+\[
+ \sum_{M\ge1}\frac{M(H_{M+1}^{(2)}-1)-(H_{M+1}-1)^2}
+                        {M(M+1)(M+2)}
+       =\frac52\zeta(3)-\frac32\zeta(2)-\frac12.
+\]
+The familiar low-weight zeta reductions are illustrative consequences,
+not claims of historical novelty. Formal harmonic sharpness is distinct
+from minimal functional weight, and neither this result nor its exact
+checks resolves the unrestricted moment-prefix, $S_6$, or revised
+$S_8$ conjectures.
