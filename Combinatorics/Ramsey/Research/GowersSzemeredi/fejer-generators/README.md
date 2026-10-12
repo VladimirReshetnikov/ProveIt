@@ -65,6 +65,7 @@ map").
 | `assemble_t3.py` | `Proofs16SplitTwoTrackClassesT3` | the two-track recursion from the tight seed, the table `tDegT3` |
 | `assemble_k3.py` | `Proofs18Cover{Modulus,Density,Exponents}FejerJT3`, `Proofs18CoverFejerHeadlineK3` | the J chain and the K (Theorem 18.2) envelope over `tDegT3`, `L + 0` from 13 |
 | `patch_k3.py` | the tight-count block of `Proofs18CoverFejerAllDegrees`, `CompletionAudit.lean`, notes, status, TeX | — |
+| `assemble_polyt3.py`, `patch_polyt3.py` | `Proofs16PolynomialFejerT3` and its bridge block | Theorem 16.2 / Corollary 16.11 at `tDegT3` |
 | `mkstub_fejer18.py`, `mkstub_auditfejer.py` | stub checks of `Proofs18CoverFejerAllDegrees` and the Fejér block of `CompletionAudit.lean` | — |
 
 Hand-written modules (no generator): `Proofs15WalshGeneral`,

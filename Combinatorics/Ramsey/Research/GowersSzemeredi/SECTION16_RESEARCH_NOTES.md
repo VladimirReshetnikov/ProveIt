@@ -5558,6 +5558,12 @@ chain `Proofs18Cover{Modulus,Density,Exponents}FejerJT3`; and
 `tDegT3`. In the bridge: Theorem 18.2 and Corollary 18.7 at `L + 0` from
 `L = 13`, `W(k, r) ≤ 2^2^r^2^2^k` and Theorem 1.3 with density exponent
 `2^(-2^k)` for `k ≥ 13`. Theorem 18.1 does not move.
+The polynomial Theorem 16.2 and Corollary 16.11 move with the class table:
+`Proofs16PolynomialFejerT3` (`assemble_polyt3.py`) gives Theorem 16.2 with graph
+count exponent `2^tDegT3 k` and Corollary 16.11 with
+`e⁻¹ ≤ (2/α)^(2^(2·tDegT3 k + 7k + 38))` (`theorem_16_2_polynomial_fejerT3`,
+`corollary_16_11_polynomial_fejerJT3`). `tDegT3` is 6–22% below `tDegZ` in
+dimensions 3–14.
 
 **L.16z: where the thresholds stand, measured (2026-10-12).** The results are
 Theorem 18.1 at `d + 4` in every degree, `d + 3` from 8 and `d + 2` from 11;
@@ -5603,6 +5609,22 @@ Theorem 18.2 base) is set by the cubic inverse threshold
 (`exp exp X^(2^62)`), the gain (`2^60`) and the exponent (`exp X^(2^61)`).
 `L + 2` in every length would need about 11, far below these constants of
 the cubic inverse theorem.
+
+The route to `d + 1`, examined (L.16z addendum). The two class degrees per step
+compound because the slice cover runs at a precision `θ_S/4 ~ ρ₁³` set by the
+first cover's output, and a class count `Q(t)` carries the full class degree in
+its dependence on `t`. A three-base class, with count
+`(n+1)^a·(V·2/(γθ))^D·(1/ρ)^E`, would make the second cover cost only its
+precision exponent `E`. In the split step, however, the piece bound `Pb` is the
+lower count at family size `M·S` and precision `ρ/4`, and the samples
+`S ~ Qr·M/ρ` have `ρ`-exponent `E·2^k + 1`. So `Pb` has `ρ`-exponent
+`a(E·2^k + 1) + E`, and `E' ≈ 2a·E·2^k`: `log E` grows like `Σ log a_k ~ c·2^k`,
+the same growth as `log D`. Tracking the precision separately therefore does
+not remove the compounding. Covering the remainder and the slices jointly would
+need the anchor pair before the remainder (the anchors come from the
+spectrum cell), and covering all anchors jointly costs `Q^|J|` with `|J| ~ N`.
+Reordering the covers (slices first) compounds the same way, since the vertex
+covers are also `k`-dimensional (`nonTop_card_le_k` is exact).
 
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
