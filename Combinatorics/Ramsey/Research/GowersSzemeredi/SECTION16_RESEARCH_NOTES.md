@@ -5459,6 +5459,35 @@ theorems are added (`lemma_10_5_all_tradeoffs_holds`,
 cached dependencies. The trust-mode builds of L.16r/s therefore rest on
 unchanged statements.
 
+**L.16u: Corollary 16.11 with joint slices (2026-10-12).** The frequency box
+of Corollary 16.11 is the frequency box of the single-piece step, so joint
+slices improve it as well. `Proofs16PolynomialFejerJ` (`assemble_polyj.py`,
+from `Proofs16PolynomialFejerX`) contains:
+* `theorem_16_2_polynomial_fejerZ`: Theorem 16.2 with graph count exponent
+  `2^tDegZ k`, the exact table to dimension 14 (was 12);
+* `corollary_16_11_polynomial_fejerJ`: `e⁻¹ ≤ (2/α)^(2^(2·tDegZ k + 7k + 38))`,
+  about `5·2^k` (was `3·tDegX k + 6k + 38`, about `7.5·2^k`; printed
+  `236·2^k`). It goes through `single_piece_frequency_box_global_cover_fejer_joint`,
+  `singlePieceEtaFJ_le_density`, `yIn_boundsJ`, `Eloc_inv_leJ` and
+  `expDegJ_tight_le`.
+Both are in the bridge, pinned and stub-checked.
+
+**L.16v: the dimension-two family exponent and the base envelope, quantified
+(2026-10-12).** Two more inputs, measured on the J and K envelopes
+(`model_aseed.py`, `model_kbase.py`):
+* The family exponent `a₂ = 32` of `splitUniformClass_two_small`.
+  `a₂ ≤ 25` would give Theorem 18.1 `d + 2` from 11, and `a₂ ≤ 13` would
+  also give `d + 3` from 8; Theorem 18.2 does not move. `a₂` must dominate
+  the `(n+1)`-power `29` of `uniTwoFejerExp_inv_le_split`, which decomposes
+  as `1 + 16 + 12`. The 16 is `L⁻¹`: two cubic base exponents (`ν⁴` each)
+  and the 8th power of the family-width divisor. The 12 is `S⁻¹`, a cubed
+  count. These are exponents of corpus definitions (Lemma 16.6 widths, the
+  cubic base exponent), not bookkeeping slack. Reaching 25 needs either new
+  corpus constructions, or a split invariant with separate count and
+  exponent family exponents (the count's power is only 11).
+* The base envelope `EnvBound 3 62` of Theorem 18.2. The thresholds do not
+  move even at base 0.
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`

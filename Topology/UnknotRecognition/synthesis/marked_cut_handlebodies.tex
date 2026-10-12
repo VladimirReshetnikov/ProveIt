@@ -1,0 +1,245 @@
+\section{Ordered bundle interfaces and certified handlebody cuts}
+\label{sec:marked-cut-handlebodies}
+
+The source decomposition of Section~\ref{sec:parallelity-core} now has a
+native consumer that proves the topological type of a restricted class of
+\emph{whole normal cuts}. It recovers the cyclic order of core-facing ports,
+certifies geometric cancellations in the inherited core, and glues the
+resulting handlebodies along their actual disk interfaces. Its output is a
+binary histogram of component genera, including isolated bundles with very
+large multiplicities. This integrates the interface and core portions of
+report~85~\cite{marked-parallelity-report85}; its separate sector-block
+algorithms are not part of this implementation.
+
+The source remains a validated finite, connected, compact, orientable
+triangulation with one torus boundary, together with an admissible integral
+standard normal vector. The surface may be empty, disconnected or one-sided.
+The consumer does not infer a ball from its boundary or homology. Successful
+certificates prove a handlebody census; unresolved cases carry no negative
+recognition conclusion. A knot conclusion would additionally require the
+appropriate connected cutting surface and authenticated diagram exterior.
+
+\subsection{Two source queries recover the marked boundary}
+
+Let $P$ be the number of source ports. The source construction bounds
+$P\le66T$ and supplies the complete polygonal interval bundle, including
+corner contacts and a separate fibre-reversal bit at every gluing. Number
+the two ends of port $p$ by $2p$ and $2p+1$.
+
+The first query imposes only corner identifications and assigns the distinct
+weights $2^j$ to endpoint tokens $j$. Its weighted orbit histogram gives the
+partition of port endpoints into actual base vertices. At a marked boundary
+vertex there are one or two such tokens. The second query doubles the corner
+universe by the interval-fibre orientation. It adds the original-boundary
+edges but omits all port edges, and assigns distinct weights to the lifted
+endpoint tokens. Every component with a marked endpoint is then a lift of
+an interval joining two port ends. Each such interval has two lifts; their
+endpoint pairing determines the fibre transport bit.
+
+\begin{proposition}[Source-bound boundary skeleton]
+\label{marked-cut:skeleton}
+The two weighted queries determine each ported base boundary circle as a
+signed cyclic port word, together with its intervening gaps, the presence
+or absence of original boundary in each gap, and its fibre transport.
+They distinguish the maximal attaching intervals from whole attaching
+circles. The returned active skeleton has $P$ gaps and $P$ port edges.
+\end{proposition}
+\begin{proof}
+Remove the interiors of all port edges from the completed boundary circles.
+A circle containing a port becomes a collection of intervals whose ends
+are the named tokens. An interval can degenerate to a single common vertex
+when two ports are consecutive. The second query gives the endpoint
+matching of these intervals. The first query distinguishes a degenerate
+interval from a positive original-boundary path: precisely the former has
+both tokens in the same vertex orbit. These conclusions use the source
+boundary's one-manifold structure; they do not follow from an arbitrary
+pairing supplied by a caller.
+
+Alternately cross a port and its matched gap. This traverses each ported
+boundary circle exactly once, up to orientation and starting point. The
+implementation starts at the least unused port in its positive local
+chart. Multiply the fibre bits around the circle; orientability of the
+three-dimensional total bundle forces trivial boundary holonomy. Consecutive
+ports separated only by zero gaps form one maximal attaching interval.
+If a circle has no positive gap, its complete vertical boundary is an
+annulus. Otherwise the vertical bundle over each maximal closed interval
+is a disk. Unported boundary circles are intentionally omitted here; their
+counts and base topology are already in the source profiles.
+\end{proof}
+
+The distinction is necessary. Fifteen individual ports in the four-tetrahedron
+layered meridian example form only three attaching disks. Treating each
+port as an independent disk changes the gluing graph and its genus. Likewise,
+a whole attaching circle must not be cut into an arbitrary collection of
+disks. No extra peripheral curves or inherited pattern words inside an
+original-boundary gap are preserved by this observer.
+
+\subsection{Sparse weights retain a polynomial interface}
+
+The queries use $2P$ and $4P$ singleton atoms. Under the suffix-only weighted
+transport of Section~\ref{sec:weighted-transversal}, every atom is either at
+one current point or in an already emitted orbit. Thus at most $K$ points
+carry atoms when the query started with $K$ atoms. Its canonical piecewise
+constant weight function has at most $2K+1$ runs, independently of the
+number of truncations. Repeated atom locations simply combine their weights.
+With distinct powers of two, every nonzero weight is a disjoint subset mask
+of at most $K$ bits and each nonzero output mask has multiplicity one.
+
+Consequently the two interface queries have at most $4P+1$ and $8P+1$
+weight runs. The ordinary interval-orbit trace, binary source ranks and
+these bounded masks give polynomial encoded work in $T$ and the input
+coordinate bit lengths. This is a bound for the supplied-cut interface,
+not a bound on the number of surfaces a complete hierarchy must search.
+The independent checker reconstructs the polygon geometry from raw cut
+cells, builds both queries separately, replays their weighted certificates,
+and traverses the resulting endpoint permutation. It imports none of the
+interface producer's decoder or query routines.
+
+\subsection{Geometric singleton pivots in the core}
+
+The inherited core has at most $30T$ handles. For this consumer it must have
+no three-handles. Contract a spanning forest of its zero/one-handle graph;
+the remaining one-handles have a complete cocore disk system $D_h$.
+For each two-handle attaching curve $\alpha_i$, retain its actual unsigned
+intersection count
+\[
+ n_{ih}=|\alpha_i\cap\partial D_h|.
+\]
+The alternating source sectors determine these counts, including repeated
+occurrences. Forest contraction deletes only the tree-handle entries.
+Signed exponent sums or freely reduced words cannot replace this matrix.
+
+\begin{lemma}[Geometric positive pivot]
+\label{marked-cut:pivot}
+If $n_{rg}=1$, attaching the two-handle $r$ reduces the handlebody genus by
+one and admits a new complete disk system on the other columns with
+\[
+ n'_{ih}=n_{ih}+n_{ig}n_{rh}\qquad(i\ne r,\ h\ne g).
+\]
+\end{lemma}
+\begin{proof}
+Keep $D_g$ fixed. Along $\alpha_r$, choose an intersection with another
+$\partial D_h$ adjacent to the unique intersection with $\partial D_g$.
+Slide $D_h$ over a parallel copy of $D_g$ along a thin band following the
+intervening arc. Its interior misses all disk boundaries and all other
+attaching curves. The smoothing removes that intersection with $\alpha_r$;
+for every other curve $\alpha_i$ the replacement adds exactly $n_{ig}$
+intersections. The disks remain an embedded complete system. Repeat until
+$\alpha_r$ misses every disk except $D_g$. Disk $D_h$ has been slid exactly
+$n_{rh}$ times. The selected one/two-handle pair now cancels by the geometric
+one-point cancellation theorem~\cite[Lemma 10.3]{sadykov-cancellation}.
+The surviving attaching curves have precisely the displayed incidences.
+\end{proof}
+
+This gives a topological existence certificate even when the expanded disk
+slides would be very long. It does not yet encode the transported position
+of every later boundary-pattern strand. This distinction separates it from
+the no-slide source reductions in Section~\ref{sec:source-handles}.
+
+Only the values zero, one and at least two are needed for subsequent pivots.
+The map $n\mapsto\min(2,n)$ preserves addition and multiplication into the
+saturated nonnegative semiring. Hence the independent checker updates
+\[
+ c'_{ih}=\min(2,c_{ih}+c_{ig}c_{rh})
+\]
+on constant-sized entries without losing the singleton predicate. A complete
+schedule has $O(T)$ pivots, $O(T\log(T+1))$ bits of source labels, and at most
+$O(T^3)$ matrix operations. A connected core with $v$ zero-handles, $e$
+one-handles and $f$ two-handles then has genus $e-v+1-f$.
+
+\subsection{A complete source test within the square raw model}
+
+For a square remaining incidence matrix, a successful positive-pivot sequence
+exists exactly when source row-leaf deletion removes every row and column.
+A leaf is a row with exactly one live nonzero, equal to one. The justification
+is the permanent-one criterion proved in report~85 and the earlier immutable
+source closure of report~56. Reversing a successful positive pivot preserves
+uniqueness of the edge-labelled perfect matching. A nonnegative square
+matrix with permanent one has a unique matching with unit matched entries;
+orient every other row incidence toward its column. A directed cycle would
+produce a second matching, so there is a sink row leaf. Induction removes
+all rows. Conversely, a row leaf has no fill term in any surviving column,
+so every source leaf deletion is a valid geometric pivot.
+
+The permanent is a proof device and is never computed. The producer maintains
+source incidence lists and a heap of eligible row labels, costing
+$O(I+T\log(T+1))$ structural operations for $I$ source incidences. The checker
+uses deletion times and scans immutable rows. In the rectangular case the
+producer first tries this leaf order, then a deterministic saturated pivot
+schedule. Failure is inconclusive. Even square completeness is only for this
+raw cancellation model on the selected forest, not recognition of all balls.
+
+\subsection{Assembling the entire cut}
+
+An orientable interval bundle over a connected bordered surface $B$ is a
+handlebody of genus $1-\chi(B)$. Indeed a system of $1-\chi(B)$ proper arcs
+cuts $B$ into a disk; their inverse images cut the total bundle into a ball.
+This includes the orientable bundle over a nonorientable base. Closed bases
+are excluded by the current consumer.
+
+The full source product-intersection theorem identifies the core/bundle
+intersection with the vertical bundle over the closed core-labelled base
+arcs, including endpoint contacts. After adjacent ports are amalgamated,
+distinct proper runs have separated closures and compatible corner collars.
+Their vertical bundles are disjoint embedded disks on both sides. This
+geometric input is indispensable; a cyclic word alone would not prove it.
+
+\begin{proposition}[Exact binary handlebody census]
+\label{marked-cut:census}
+Suppose every core component has a verified cancellation certificate, all
+bundle bases have nonempty boundary, and every attaching run is proper.
+Each component of the cut is a handlebody. For a connected component $C$ of
+the disk-attachment multigraph, its genus is
+\[
+ G_C=\sum_{v\in V(C)}g_v+|E(C)|-|V(C)|+1.
+\]
+Unported bundle profiles contribute their binary multiplicities of isolated
+handlebodies. These contributions determine the complete genus histogram.
+\end{proposition}
+\begin{proof}
+Vertices represent the certified core handlebodies and individual ported
+bundle components; each maximal disk interface gives one edge. Choose
+meridian systems in all pieces disjoint from the marked boundary disks.
+This is possible by a boundary isotopy of the finitely many disks away
+from a chosen meridian system, extended through a collar. Cut along these
+meridians and the gluing disks outside a spanning tree. The remainder is a
+tree of balls joined along disks, hence a ball by successively absorbing
+leaf balls. The number of cut disks is exactly the displayed genus.
+Ported profiles have multiplicity one by their distinct source ownership.
+Every unported component is separate from the core and must be counted
+with its full multiplicity. No expansion of that multiplicity is needed.
+\end{proof}
+
+The producer uses union-find for this graph; the checker reconstructs the
+components by graph search. Both verify the redundant Euler identity
+$\chi(K)+\chi(\mathcal B)-\chi(K\cap\mathcal B)$. That identity is a
+consistency check, not the ball proof. The complete cut is one ball exactly
+when the histogram is $\{(0,1)\}$. A union of many balls is distinguished from
+one ball even when its multiplicity has thousands of bits.
+
+\subsection{Implementation contracts and the next geometric extension}
+
+Three APIs each have an independently implemented verifier:
+\begin{itemize}
+\item \path{normal_parallelity_boundary_words} recovers the ordered interface;
+\item \path{core_handlebody_certificate} certifies the inherited core;
+\item \path{normal_cut_handlebodies} assembles the complete cut census.
+\end{itemize}
+The low-level core API
+assumes authenticated geometric charts; the whole-cut wrapper supplies them.
+The six orbit discoveries share the cycle allowance, and replay counts all
+six supplied traces against its operation cap. Callback exceptions propagate.
+Integer transport uses the existing exact hexadecimal codec; the native
+integration also decodes core component quantities before graph arithmetic,
+including signed and uppercase hexadecimal forms, while rejecting booleans.
+
+A full attaching circle on a \emph{disk} base can be absorbed as a two-handle,
+as proved in report~85. Its actual face-sector ports supply an unsigned
+incidence row and source flags distinguish the ends even for self-pairings.
+That extension is not implemented in this checkpoint. General annular gluing,
+three-handle removal in cut cores, explicit pattern transport, useful-surface
+coverage and a global bound on hierarchy descriptions remain separate tasks.
+The optional initial cocore stage and the full exponential fallback are
+unchanged; this API does not dispatch a new knot-recognition verdict.
+
+\input{marked_cut_results.tex}
