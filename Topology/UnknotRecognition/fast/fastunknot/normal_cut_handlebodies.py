@@ -11,7 +11,7 @@ from collections import Counter
 from .bundle_boundary_kernel import bundle_boundary_kernel
 from .bundle_primitive_annuli import primitive_bundle_annuli
 from .core_primitive_annuli import core_primitive_annuli
-from .core_handlebody import core_handlebody_certificate
+from .core_handlebody import core_handlebody_certificate, select_core_forest
 from .core_three_handle_reduction import reduce_core_three_handles
 from .disk_bundle_absorption import absorb_disk_bundles
 from .normal_parallelity import normal_cut_parallelity
@@ -114,10 +114,10 @@ def _census(geometry, summary, skeleton, components, check, absorbed=frozenset()
 
 
 def _kernel_fallback(result, parallelity, boundary, record_certificate, check, *,
-                     geometry=None, reduction=None):
+                     geometry=None, reduction=None, forest=None):
     geometry = parallelity['geometry'] if geometry is None else geometry
     kernel = bundle_boundary_kernel(geometry, parallelity['summary'],
-                                    boundary['skeleton'], check=check)
+                                    boundary['skeleton'], forest=forest, check=check)
     if kernel is None:
         return result
     proof, census, stats = kernel
@@ -133,44 +133,14 @@ def _kernel_fallback(result, parallelity, boundary, record_certificate, check, *
     return result
 
 
-def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
-                           record_certificate=False, precheck_core=True, boundary_method='masks',
-                           top_forest='max_weight', check=lambda: None):
-    """Classify the whole supplied cut when the disk-gluing criterion succeeds.
-
-    A COMPLETE result is an exact binary multiplicity census of handlebodies.
-    An INCONCLUSIVE result is neither a knottedness nor a non-handlebody proof.
-    Source validity is the established compact orientable one-torus contract.
-    The four source queries and one or two boundary queries share the cycle
-    allowance; cancellation callbacks also cover the finite core/interface work. The
-    optional core precheck defaults on: a raw obstruction skips boundary
-    discovery, without claiming any negative topological conclusion. The
-    boundary_method chooses legacy endpoint masks or a single moment census.
-    top_forest minimizes retained raw incidence by default; queue retains the
-    earlier top-handle selector. Neither choice guarantees later cancellation.
-    """
-    check()
-    if type(boundary_method) is not str or boundary_method not in ('masks', 'moments'):
-        raise ValueError('boundary_method must be masks or moments')
-    if type(top_forest) is not str or top_forest not in ('queue', 'max_weight'):
-        raise ValueError('top_forest must be queue or max_weight')
-    if type(precheck_core) is not bool:
-        raise ValueError('precheck_core must be bool')
-    if type(record_certificate) is not bool:
-        raise ValueError('record_certificate must be bool')
-    if max_cycles is not None and (type(max_cycles) is not int or max_cycles < 0):
-        raise ValueError('max_cycles must be a nonnegative integer or None')
-    result = dict(status='INCONCLUSIVE', stats={},
+def _attempt_cut(parallelity, discover_boundary, record_certificate, precheck_core,
+                 top_forest, forest, check):
+    """One finite forest choice, sharing immutable source and boundary packets."""
+    result = dict(status='INCONCLUSIVE', stats=dict(parallelity=parallelity['stats']),
                   trust='source cut handlebodies; no standalone knot verdict')
-    parallelity = normal_cut_parallelity(triangulation, coordinates,
-        max_cycles=max_cycles, record_certificate=record_certificate, check=check)
-    result['stats']['parallelity'] = parallelity['stats']
-    if parallelity['status'] != 'COMPLETE':
-        result['reason'] = 'parallelity_budget_exhausted'
-        return result
     geometry, reduction = parallelity['geometry'], None
     if geometry['core']['handles3']:
-        reduced = reduce_core_three_handles(geometry, strategy=top_forest, check=check)
+        reduced = reduce_core_three_handles(geometry, strategy=top_forest, lower_forest=forest, check=check)
         if reduced is None:
             result['reason'] = 'core_three_handle_reduction_stalled'
             return result
@@ -179,7 +149,7 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
                                                strategy=top_forest)
     prepared_core = None
     if precheck_core:
-        prepared_core = core_handlebody_certificate(geometry['core'], check=check)
+        prepared_core = core_handlebody_certificate(geometry['core'], forest=forest, check=check)
         result['stats']['core_precheck'] = prepared_core.get('stats', {})
         if prepared_core['status'] != 'COMPLETE':
             # Added bundle columns vanish on the original core rows. A source
@@ -187,19 +157,7 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
             # presentation with this forest. This is only a method refusal.
             result['reason'] = prepared_core['reason']
             return result
-    remaining = max_cycles
-    if remaining is not None:
-        remaining -= sum(s['orbit_cycles'] for s in parallelity['stats'].values())
-    if boundary_method == 'moments':
-        # Reuse our already constructed source geometry. The standalone packet
-        # API replays an external packet; this internal producer needs no such
-        # duplicate replay. The final checker authenticates both source proofs.
-        fingerprint = parallelity['certificate']['input_sha256'] if record_certificate else None
-        boundary = _compile_moment_boundary(parallelity['geometry'], fingerprint, remaining,
-                                             record_certificate, check, 'pair')
-    else:
-        boundary = normal_parallelity_boundary_words(triangulation, coordinates,
-            max_cycles=remaining, record_certificate=record_certificate, check=check)
+    boundary = discover_boundary()
     result['stats']['boundary'] = boundary['stats']
     if boundary['status'] != 'COMPLETE':
         result['reason'] = 'boundary_budget_exhausted'
@@ -207,7 +165,7 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
     if reduction is not None:
         result['reason'] = 'boundary_kernel_cancellation_stalled'
         return _kernel_fallback(result, parallelity, boundary, record_certificate, check,
-                                geometry=geometry, reduction=reduction)
+                                geometry=geometry, reduction=reduction, forest=forest)
     family = primitive_bundle_annuli(parallelity['summary'], boundary['skeleton'], check=check)
     core_side = family is None
     if core_side:
@@ -225,18 +183,18 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
     augmented, absorption_proof, absorbed = absorption
     core = (prepared_core if prepared_core is not None and
             len(augmented['handles2']) == len(parallelity['geometry']['core']['handles2'])
-            else core_handlebody_certificate(augmented, check=check))
+            else core_handlebody_certificate(augmented, forest=forest, check=check))
     result['stats']['core'] = core.get('stats', {})
     if core['status'] != 'COMPLETE':
         result['reason'] = core['reason']
-        return _kernel_fallback(result, parallelity, boundary, record_certificate, check)
+        return _kernel_fallback(result, parallelity, boundary, record_certificate, check, forest=forest)
     core_annuli = {}
     if core_side:
         transported = core_primitive_annuli(parallelity['geometry'], parallelity['summary'],
             boundary['skeleton'], augmented, core['certificate'], check=check)
         if transported is None:
             result['reason'] = 'annular_core_attachment'
-            return _kernel_fallback(result, parallelity, boundary, record_certificate, check)
+            return _kernel_fallback(result, parallelity, boundary, record_certificate, check, forest=forest)
         core_annuli_proof, core_annuli, result['stats']['core_annuli'] = transported
     census, reason = _census(parallelity['geometry'], parallelity['summary'],
                             boundary['skeleton'], core['components'], check, absorbed, primitive, core_annuli)
@@ -257,5 +215,79 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
         if core_side:
             result['certificate'].update(schema='normal-cut-handlebodies-v4',
                                          absorption=absorption_proof, core_annuli=core_annuli_proof)
+    check()
+    return result
+
+
+def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
+                           record_certificate=False, precheck_core=True, boundary_method='masks',
+                           top_forest='max_weight', lower_forest='adaptive', check=lambda: None):
+    """Classify the whole supplied cut when the disk-gluing criterion succeeds.
+
+    A COMPLETE result is an exact binary multiplicity census of handlebodies.
+    An INCONCLUSIVE result is neither a knottedness nor a non-handlebody proof.
+    Source validity is the established compact orientable one-torus contract.
+    The four source queries and one or two boundary queries share the cycle
+    allowance; cancellation callbacks also cover the finite core/interface work. The
+    optional core precheck defaults on: a raw obstruction skips boundary
+    discovery, without claiming any negative topological conclusion. The
+    boundary_method chooses legacy endpoint masks or a single moment census.
+    top_forest minimizes retained raw incidence by default; queue retains the
+    earlier top-handle selector. Neither choice guarantees later cancellation.
+    The adaptive lower policy tries the source forest, then maximum original
+    passage weight on refusal. It shares every orbit query between attempts.
+    """
+    check()
+    if type(boundary_method) is not str or boundary_method not in ('masks', 'moments'):
+        raise ValueError('boundary_method must be masks or moments')
+    if type(top_forest) is not str or top_forest not in ('queue', 'max_weight'):
+        raise ValueError('top_forest must be queue or max_weight')
+    if type(lower_forest) is not str or lower_forest not in ('adaptive', 'source', 'max_passages', 'reverse_id'):
+        raise ValueError('invalid lower_forest policy')
+    if type(precheck_core) is not bool:
+        raise ValueError('precheck_core must be bool')
+    if type(record_certificate) is not bool:
+        raise ValueError('record_certificate must be bool')
+    if max_cycles is not None and (type(max_cycles) is not int or max_cycles < 0):
+        raise ValueError('max_cycles must be a nonnegative integer or None')
+    result = dict(status='INCONCLUSIVE', stats={},
+                  trust='source cut handlebodies; no standalone knot verdict')
+    parallelity = normal_cut_parallelity(triangulation, coordinates,
+        max_cycles=max_cycles, record_certificate=record_certificate, check=check)
+    result['stats']['parallelity'] = parallelity['stats']
+    if parallelity['status'] != 'COMPLETE':
+        result['reason'] = 'parallelity_budget_exhausted'
+        return result
+    boundary = None
+    def discover_boundary():
+        nonlocal boundary
+        if boundary is None:
+            remaining = max_cycles
+            if remaining is not None:
+                remaining -= sum(s['orbit_cycles'] for s in parallelity['stats'].values())
+            if boundary_method == 'moments':
+                fingerprint = parallelity['certificate']['input_sha256'] if record_certificate else None
+                boundary = _compile_moment_boundary(parallelity['geometry'], fingerprint, remaining,
+                                                     record_certificate, check, 'pair')
+            else:
+                boundary = normal_parallelity_boundary_words(triangulation, coordinates,
+                    max_cycles=remaining, record_certificate=record_certificate, check=check)
+        return boundary
+
+    modes = ('source', 'max_passages') if lower_forest == 'adaptive' else (lower_forest,)
+    attempts = []
+    source_core = parallelity['geometry']['core']
+    for mode in modes:
+        check()
+        forest = None if mode == 'source' else select_core_forest(source_core, strategy=mode, check=check)
+        if attempts and set(forest) == set(select_core_forest(source_core, strategy='source', check=check)):
+            break  # Same contractions and raw matrix; no duplicate finite work.
+        result = _attempt_cut(parallelity, discover_boundary, record_certificate,
+                              precheck_core, top_forest, forest, check)
+        attempts.append(dict(strategy=mode, status=result['status'], reason=result.get('reason')))
+        if result['status'] == 'COMPLETE' or result.get('reason') == 'boundary_budget_exhausted':
+            break
+    if len(attempts) > 1 or lower_forest not in ('source', 'adaptive'):
+        result['stats']['lower_forest_attempts'] = attempts
     check()
     return result

@@ -70,7 +70,8 @@ class WeightedTopForestTests(unittest.TestCase):
     def test_two_new_loop_cuts_both_boundary_backends(self):
         for c in [c for c in EXTRA if c['id'] in ('interior_loop/empty', 'interior_loop/boundary_link')]:
             raw, rows = c['triangulation'], c['coordinates']
-            self.assertEqual(normal_cut_handlebodies(raw, rows, top_forest='queue')['status'], 'INCONCLUSIVE')
+            self.assertEqual(normal_cut_handlebodies(raw, rows, top_forest='queue',
+                                                   lower_forest='source')['status'], 'INCONCLUSIVE')
             for backend in ('masks', 'moments'):
                 r = normal_cut_handlebodies(raw, rows, record_certificate=True, boundary_method=backend)
                 self.assertEqual(r['status'], 'COMPLETE')

@@ -36,7 +36,8 @@ class ColumnWholeCutTests(unittest.TestCase):
         self.assertEqual(core_handlebody_certificate(core)['status'], 'INCONCLUSIVE')
         name = 'fastunknot.normal_cut_handlebodies.normal_parallelity_boundary_words'
         with patch(name, side_effect=RuntimeError('boundary requested')):
-            a = normal_cut_handlebodies(c['triangulation'], c['coordinates'], record_certificate=True)
+            a = normal_cut_handlebodies(c['triangulation'], c['coordinates'], record_certificate=True,
+                                       lower_forest='source')
             self.assertEqual(a['status'], 'INCONCLUSIVE')
             self.assertNotIn('boundary', a['stats'])
             self.assertNotIn('certificate', a)

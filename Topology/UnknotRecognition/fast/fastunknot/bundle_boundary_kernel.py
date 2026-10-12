@@ -7,19 +7,24 @@ The enclosing source verifiers, not arbitrary presentations, justify this model.
 """
 from collections import Counter
 
-from .core_handlebody import _forest, _occurrences, column_cancellation_plan
+from .core_handlebody import _chosen_forest, _occurrences, column_cancellation_plan
 from .disk_bundle_absorption import source_core_circle
 
 
-def bundle_boundary_kernel(g, summary, skeleton, *, check=lambda: None):
-    """Return (certificate, census, stats), or None for a conservative refusal."""
+def bundle_boundary_kernel(g, summary, skeleton, *, forest=None, check=lambda: None):
+    """Return (certificate, census, stats), or None for a conservative refusal.
+
+    A supplied source lower forest is retained throughout all bundle rows;
+    v3 replay independently checks its acyclicity and component coverage.
+    With no forest argument the historical canonical v2 proof is preserved.
+    """
     check()
     core, profiles = g['core'], summary['base_profiles']
     if core['handles3'] or any(p['boundary_components'] <= 0 for p in profiles):
         return None
-    tree, component = _forest(core, check)
+    tree, component = _chosen_forest(core, forest, check)
     rows = _occurrences(core, tree, check)
-    forest = set(tree)
+    tree_set = set(tree)
     owner = {port: i for i, p in enumerate(profiles) for port in p['core_ports']}
     port_core = {}
     for port in g['ports']:
@@ -41,14 +46,14 @@ def bundle_boundary_kernel(g, summary, skeleton, *, check=lambda: None):
             row = {}
             for crossing in crossings:
                 h = crossing['handle']
-                if h not in forest:
+                if h not in tree_set:
                     row[h] = min(2, row.get(h, 0) + 1)
             rows[offset+i] = row
             circles.setdefault(base, []).append(i)
             curves.append(dict(attachment=i, base_profile=base, crossings=crossings))
     next_column, families = len(core['handles1']), []
     column_node = {h['id']: ('core', component[h['ends'][0]]) for h in core['handles1']
-                   if h['id'] not in forest}
+                   if h['id'] not in tree_set}
     for base, p in enumerate(profiles):
         check()
         if not p['core_ports']:
@@ -95,7 +100,8 @@ def bundle_boundary_kernel(g, summary, skeleton, *, check=lambda: None):
     # Retained column leaves have no fill on the retained matrix. An omitted
     # column may meet the donor twice; the projected schedule still lifts to
     # the complete geometric model without expanding those columns.
-    proof = dict(schema='bundle-boundary-kernel-v2', forest=tree, bridge_forest=bridges,
+    proof = dict(schema='bundle-boundary-kernel-v2' if forest is None else 'bundle-boundary-kernel-v3',
+                 forest=tree, bridge_forest=bridges,
                  curves=curves, families=families, cancellations=planned['cancellations'])
     removed = {h for _, h in planned['cancellations']}
     groups = {}

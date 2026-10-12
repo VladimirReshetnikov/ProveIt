@@ -7,13 +7,14 @@ remaining three-handle and its other endpoint is already on the boundary.
 from collections import deque
 from heapq import heapify, heappop, heappush
 
-from .core_handlebody import _forest
+from .core_handlebody import _forest, _chosen_forest
 from .normal_surface_geometry import _prepare, _coordinates, _EDGES
 
 
-def _raw_costs(core, check):
+def _raw_costs(core, check, lower_forest=None):
     """Exact uncapped passage counts outside the fixed lower spanning forest."""
-    tree, _ = _forest(core, check)
+    tree, _ = (_forest(core, check) if lower_forest is None else
+               _chosen_forest(core, lower_forest, check))
     tree = set(tree)
     costs = {}
     for handle in core['handles2']:
@@ -74,7 +75,7 @@ def _dual_moves(ends, vertices, costs, check):
     return None if alive else (moves, remaining)
 
 
-def reduce_core_three_handles(geometry, *, strategy='queue', check=lambda: None):
+def reduce_core_three_handles(geometry, *, strategy='queue', lower_forest=None, check=lambda: None):
     """Return (reduced_geometry, certificate), or None if the forest stalls.
 
     ``max_weight`` minimizes retained raw passage count outside the existing
@@ -107,7 +108,7 @@ def reduce_core_three_handles(geometry, *, strategy='queue', check=lambda: None)
             raise ArithmeticError('invalid zero-weight edge gap')
         ends[h['id']] = endpoints
         records.append(dict(two_handle=h['id'], ends=endpoints))
-    costs = _raw_costs(core, check) if strategy == 'max_weight' else None
+    costs = _raw_costs(core, check, lower_forest) if strategy == 'max_weight' else None
     plan = _dual_moves(ends, by_vertex.values(), costs, check)
     if plan is None:
         return None

@@ -17,22 +17,45 @@ def replay_bundle_boundary_kernel(g, summary, skeleton, certificate, *, check=la
     if type(certificate) is not dict or set(certificate) != required:
         return None
     version = certificate['schema']
-    if version not in ('bundle-boundary-kernel-v1', 'bundle-boundary-kernel-v2'):
+    if version not in ('bundle-boundary-kernel-v1', 'bundle-boundary-kernel-v2', 'bundle-boundary-kernel-v3'):
         return None
     core, bases = g['core'], summary['base_profiles']
     if core['handles3'] or any(p['boundary_components'] <= 0 for p in bases):
         return None
     if not core['handles0']:
         return None
-    # Independent set-merging constructs the canonical source forest.
+    # v1/v2 reconstruct the canonical forest; v3 checks any supplied spanning
+    # forest directly. No producer selector or disjoint-set helper is used.
     component = list(range(len(core['handles0'])))
     tree = []
-    for h in core['handles1']:
-        check()
-        a, b = (component[v] for v in h['ends'])
-        if a != b:
+    if version == 'bundle-boundary-kernel-v3':
+        supplied = certificate['forest']
+        if type(supplied) is not list:
+            return None
+        seen = set()
+        for value in supplied:
+            check()
+            try:
+                edge = encoded_integer(value)
+            except ValueError:
+                return None
+            if edge in seen or not 0 <= edge < len(core['handles1']):
+                return None
+            seen.add(edge)
+            a, b = (component[v] for v in core['handles1'][edge]['ends'])
+            if a == b:
+                return None
             component = [min(a,b) if x in (a,b) else x for x in component]
-            tree.append(h['id'])
+            tree.append(edge)
+        if any(component[h['ends'][0]] != component[h['ends'][1]] for h in core['handles1']):
+            return None
+    else:
+        for h in core['handles1']:
+            check()
+            a, b = (component[v] for v in h['ends'])
+            if a != b:
+                component = [min(a,b) if x in (a,b) else x for x in component]
+                tree.append(h['id'])
     on_tree = set(tree)
     columns = {h['id']: ('core', component[h['ends'][0]]) for h in core['handles1']
                if h['id'] not in on_tree}
@@ -128,7 +151,7 @@ def replay_bundle_boundary_kernel(g, summary, skeleton, certificate, *, check=la
             decoded_moves.append([encoded_integer(x) for x in move])
         except ValueError:
             return None
-    if version == 'bundle-boundary-kernel-v2':
+    if version in ('bundle-boundary-kernel-v2', 'bundle-boundary-kernel-v3'):
         if not verify_column_cancellations(raw_rows, decoded_moves, check=check):
             return None
         live_columns = set(columns)
