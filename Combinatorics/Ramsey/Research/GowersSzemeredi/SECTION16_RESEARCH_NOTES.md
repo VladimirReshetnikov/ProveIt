@@ -4395,7 +4395,7 @@ proof uses the unused envelope slack to keep d+7 in every degree, with
 stronger offsets 1, 2 and 4 at degrees one, two and three. The linear
 function discrepancy bound works over every nonzero modulus, without
 requiring the function to be balanced. `IntegerFidelityAudit` verifies all
-20 new genuine-inverse and small-width results over 1,457 modules, using
+20 new genuine-inverse and small-width results over 1,458 modules, using
 only the approved axioms. The genuine Theorem 18.1 now has an exact proved
 standalone statement at every degree; this closes its representation gap,
 while the remaining intermediate integer-box statements still need work.
