@@ -1,0 +1,1541 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{microtype,booktabs,longtable,array}
+\usepackage{xcolor,xurl}
+\definecolor{ink}{RGB}{28,56,80}
+\usepackage[colorlinks=true,allcolors=ink]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Polylogarithmic Lambert inversion}
+\fancyhead[R]{\small ProveIt research contribution}
+\fancyfoot[C]{\thepage}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\Disc}{\operatorname{Disc}}
+\newcommand{\PV}{\operatorname{PV}}
+\newcommand{\arsinh}{\operatorname{arsinh}}
+\newcommand{\artanh}{\operatorname{artanh}}
+\newcommand{\Cat}{\operatorname{Cat}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\C}{\mathbb C}\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}\newcommand{\N}{\mathbb N}
+\newcommand{\F}{\mathcal F}\newcommand{\CC}{\mathcal C}
+\newcommand{\HH}{\mathcal H}
+\newcommand{\B}{\widehat{\mathcal R}}
+\newcommand{\Sc}{\mathcal S}
+\newcommand{\ua}{\mathfrak a}\newcommand{\uz}{\mathfrak z}
+\hypersetup{pdftitle={Double Resonance and Nested Stokes Geometry in Polylogarithmic Lambert Inversion},pdfauthor={Research contribution prepared for Vladimir Reshetnikov with OpenAI assistance}}
+\begin{document}
+\begin{center}
+{\small\scshape Analysis / Polylogarithms / Transseries}\par\vspace{10pt}
+{\LARGE\bfseries Double Resonance and Nested Stokes Geometry}\par\vspace{5pt}
+{\Large\bfseries in Polylogarithmic Lambert Inversion}\par\vspace{12pt}
+{\normalsize Prepared for Vladimir Reshetnikov with OpenAI assistance}\par
+{\small 12 October 2026}
+\end{center}
+\begin{abstract}
+We study the symmetric specialization
+$\F_\eps(t)=\sum_{a,b\ge1}(a/b)^\eps e^{-abt}/(ab)$
+of the established two-index Lambert family. Three Mellin poles coalesce
+at $\eps=0$, producing a quadratic logarithmic core. A centered Gamma--zeta
+normalization gives every resonant order jet and removes its next-to-leading
+logarithmic degree. The trivial zeros suppress every odd perturbative power
+beyond the linear term; the second order jet restores that entire parity
+sector, with an explicit arithmetic Borel kernel and a Stokes jump exactly
+$\pi^2/2$ times the unperturbed jump.
+
+The principal inverse contribution is a uniform arcsinh crossover when
+$\eps=\lambda/X$ and the target is $X^2/2$. We compute its first three
+corrections and the displacement of the two complex folds of its singular
+core. At exact resonance we give a finite formula for every inverse-sector
+coefficient, prove alternating coefficientwise signs, determine exact
+valuations and Catalan highest-degree terms, and prove zero ordinary
+radius but exact Borel radius $4\pi^2$ for every positive fixed slow
+parameter. An elementary Mellin proof fixes the exact real completion.
+Lagrange inversion then transports the entire divisor-weighted Stokes jump
+to the inverse. In the physical variable the jump is doubly exponentially
+small. The arithmetic average of the lateral inverses differs from the
+real inverse by a second-action term whose leading coefficient simplifies
+to $-1$. Every asserted theorem has a conventional proof; finite symbolic
+checks, numerical diagnostics, a scoped source audit, and further research
+questions accompany the article.
+\end{abstract}
+\noindent\textbf{Status.} Unrefereed mathematical research with explicit proofs;
+not a Lean formalization. The Lambert family and its general resurgent
+infrastructure are prior work. The explicit resonant inverse and jet
+refinements are proposed contributions, not certified claims of worldwide
+priority. No repository files were modified.
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Research setting, antecedents, and principal results}
+\label{sec:intro}
+
+\subsection{Why this particular intersection}
+A single polylogarithm near its unit argument has a locally convergent
+power--log expansion after the appropriate pole cancellation. Summing
+polylogarithms on a multiplicative lattice changes the analytic class.
+The resulting Lambert-type function has a factorially divergent
+perturbative tail and an arithmetic lattice of Borel singularities.
+Nonlinear inversion then produces two distinct exponential levels:
+ordinary sectors of size $e^{-nX}$ and Stokes sectors of size
+$\exp(-4\pi^2 e^{X-\gamma})$.
+
+The distinction is consequential for the two ProveIt projects. The
+Polylogarithms sources develop normalized Gamma/zeta order bridges; the
+Transseries sources distinguish exact cores, formal reversion, analytic
+charts, and residual transport. This article connects those operations
+without importing a convergence assertion from the wrong analytic class.
+The inspected bridge chapter explicitly regularizes trivial zeros before
+taking logarithms, and the transseries overview explicitly distinguishes
+coefficient-form from operator-form Lagrange inversion
+\cite{repo-bridge,repo-transseries}.
+
+\subsection{Prior work and the claimed scope of this contribution}
+The family considered here is not new. With trivial characters and
+$q=e^{-t}$ it is exactly
+\[
+ \F_\eps(t)=\Xi_{1-\eps,1+\eps}(1,1;q)
+\]
+in the notation of Broadhurst and Dorigoni \cite{BD2025}, who treat
+arbitrary pairs of indices and Dirichlet characters and their full
+resurgent expansions. Their 2026 overview states this general family and
+its transformed nonperturbative terms explicitly \cite{BD2026}.
+Dorigoni and Kleinschmidt had already developed resurgent expansions of
+Lambert series and iterated Eisenstein integrals \cite{DK2021}.
+Accordingly, neither the family, the Mellin method, the existence of
+arithmetic Borel singularities, nor the general phenomenon of hidden
+exponential contributions is claimed here as a discovery.
+
+Our narrower proposed refinements are a centered triple-collision jet
+calculus, a closed parity-jet Stokes identity, an arcsinh inverse crossover
+with explicit Gamma--Stieltjes corrections, a finite rational inverse
+coefficient formula with sharp structural consequences, and explicit
+nonlinear transport to a nested exponential scale. The formulas are
+proved directly, making their normalization and domains independently
+checkable. The exact scalar median identity is treated as a useful
+specialization of the established Lambert/Voronoi structure, not as a new
+general transformation formula.
+
+The library counterparts of three recent research drafts were also
+compared at the level of their abstracts and selected relevant
+statements: the Gamma-normalized resonant Lerch jets, the uniform
+single-polylogarithm fold analysis, and the Fermi--Dirac/dilogarithm
+reversion package \cite{prior-jets,prior-folds,prior-fermi}.
+Their analytic tails and singular cores differ from the double Lambert
+sum here. We do not claim to have extracted or audited every member of
+the five incoming ZIP archives. Section~\ref{sec:audit} specifies the
+boundary of the inspection.
+
+\subsection{A preview of the exact identities}
+Write $d(n)$ for the number of positive divisors of $n$, and put
+\begin{equation}\label{eq:A}
+ A=4\pi^2,\qquad
+ C_*={\zeta(2)\over2}-\gamma^2-2\gamma_1.
+\end{equation}
+The real resonant function is
+\[
+ \F_0(t)=\sum_{n\ge1}{d(n)\over n}e^{-nt}
+        =-\sum_{a\ge1}{\log(1-e^{-at})\over a},\qquad t>0.
+\]
+Its exact Borel completion is
+\begin{equation}\label{eq:preview-median}
+ \F_0(t)=\frac12(\log(1/t)+\gamma)^2+C_*-\frac t4
+ -2\sum_{n\ge1}d(n)\int_0^\infty
+ e^{-\xi/t}\log\left|1-\frac{\xi^2}{A^2n^2}\right|\frac{\dd\xi}{\xi}.
+\end{equation}
+The two lateral values of the logarithm give a jump
+\begin{equation}\label{eq:preview-jump}
+ J(t)=4\pi\ii\sum_{n\ge1}d(n)E_1(An/t),\qquad
+ E_1(x)=\int_x^\infty{e^{-v}\over v}\dd v.
+\end{equation}
+If $g_0$ is the real inverse of $\F_0$, and $g_\pm$ are the nearby
+inverses of $\F_0\pm J/2$, then, with $t=g_0(Y)\to0^+$,
+\begin{align}
+ g_+(Y)-g_-(Y)
+ &\sim {\ii\over\pi}\,{t^2\over\log(1/t)+\gamma}e^{-A/t},
+ \label{eq:preview-inverse-jump}\\
+ \frac{g_+(Y)+g_-(Y)}2-g_0(Y)
+ &\sim -{t^2\over(\log(1/t)+\gamma)^2}e^{-2A/t}.
+ \label{eq:preview-bias}
+\end{align}
+The coefficient $-1$ in the second line is an exact simplification, not a
+fitted numerical constant. Arithmetic averaging in that line is not being
+identified with the general nonlinear notion of median resummation.
+
+\section{The symmetric family and its Mellin representation}
+\label{sec:mellin}
+
+\begin{definition}
+For $\Re t>0$ and $\eps\in\C$, define
+\begin{align}
+ D_\eps(n)&=\sum_{ab=n}(a/b)^\eps,\label{eq:divisor-weight}\\
+ \F_\eps(t)&=\sum_{a,b\ge1}{(a/b)^\eps\over ab}e^{-abt}
+ =\sum_{n\ge1}{D_\eps(n)\over n}e^{-nt}.
+ \label{eq:family}
+\end{align}
+The powers use real logarithms of positive integers. All logarithms of
+$t$ below use the branch real on the positive axis, unless a different
+local continuation is explicitly specified.
+\end{definition}
+
+\begin{proposition}[Analyticity, symmetry, and the polylogarithm bridge]
+\label{prop:family}
+The family is jointly holomorphic on $\{\Re t>0\}\times\C$, even in
+$\eps$, and satisfies
+\begin{equation}\label{eq:polylog-bridge}
+ \F_\eps(t)=\sum_{a\ge1}a^{\eps-1}\Li_{1+\eps}(e^{-at}).
+\end{equation}
+For real $\eps$ and $t>0$ it is positive and strictly decreasing in $t$,
+with range $(0,\infty)$. For $c>|\Re\eps|$ it has the Mellin formula
+\begin{equation}\label{eq:mellin}
+ \F_\eps(t)=\frac1{2\pi\ii}\int_{c-\ii\infty}^{c+\ii\infty}
+ \Gamma(s)\zeta(1+s-\eps)\zeta(1+s+\eps)t^{-s}\dd s.
+\end{equation}
+\end{proposition}
+\begin{proof}
+On a compact parameter set with $|\Re\eps|\le M$,
+$|D_\eps(n)|\le d(n)n^M$. Exponential decay in $n$ gives normal
+convergence, also after any fixed number of parameter or $t$ derivatives.
+Interchanging $a$ and $b$ proves evenness. Expanding the defining
+polylogarithm series proves \eqref{eq:polylog-bridge}; that series
+normalization is classical \cite{DLMFpolylog}.
+For real $\eps$, the summands are positive and their $t$ derivatives are
+negative. The limit at infinity is zero. Pairing $(a,b)$ with $(b,a)$
+gives $D_\eps(n)\ge d(n)$, while the partial sum of $1/(ab)$ over
+$a,b\le M$ tends to infinity as $M\to\infty$. Thus the limit at zero is
+infinite. Finally insert Mellin inversion for $e^{-abt}$. Absolute
+convergence on the line follows from $c>|\Re\eps|$ and the two
+absolutely convergent Dirichlet series. The exponential decay of
+$\Gamma(c+\ii v)$ completes the interchange and also permits
+$|\arg t|<\pi/2$.
+\end{proof}
+
+The Dirichlet series of the finite arithmetic weights is particularly
+simple:
+\begin{equation}\label{eq:weight-dirichlet}
+ \sum_{n\ge1}{D_\eps(n)\over n^z}
+ =\zeta(z-\eps)\zeta(z+\eps),\qquad \Re z>1+|\Re\eps|.
+\end{equation}
+For later use set
+\begin{equation}\label{eq:divisor-moments}
+ M_r(n)=\sum_{ab=n}\log^r(a/b).
+\end{equation}
+Then $M_{2r+1}(n)=0$ and
+\begin{equation}\label{eq:moment-zeta}
+ \sum_{n\ge1}{M_{2r}(n)\over n^z}
+ =\sum_{j=0}^{2r}(-1)^j\binom{2r}{j}
+ \zeta^{(j)}(z)\zeta^{(2r-j)}(z),\qquad \Re z>1.
+\end{equation}
+This exact identity expresses the order jets both in finite divisor
+moments and in ordinary zeta derivatives.
+
+\section{Three coalescing poles and all centered order jets}
+\label{sec:collision}
+Use the Stieltjes convention
+\begin{equation}\label{eq:stieltjes}
+ \zeta(1+z)=\frac1z+\sum_{r\ge0}{(-1)^r\gamma_r\over r!}z^r,
+ \qquad \gamma_0=\gamma.
+\end{equation}
+For $0<|\eps|<1$ define the singular core
+\begin{equation}\label{eq:core}
+ \CC_\eps(L)=\Gamma(\eps)\zeta(1+2\eps)e^{\eps L}
+ +\Gamma(-\eps)\zeta(1-2\eps)e^{-\eps L}
+ +\zeta(1-\eps)\zeta(1+\eps).
+\end{equation}
+Each of the first two terms has a double pole in $\eps$; the sum does not.
+
+\begin{theorem}[Uniform pole cancellation and complete power coefficients]
+\label{thm:collision}
+The apparent singularity of $\CC_\eps(L)$ at $\eps=0$ is removable,
+and the result is entire in $L$ and holomorphic and even in $|\eps|<1$.
+Its resonant value is
+\begin{equation}\label{eq:core0}
+ \CC_0(L)=\frac12(L+\gamma)^2+C_*.
+\end{equation}
+For every $N\ge0$, $0<\rho<1$, and $\eta>0$,
+\begin{equation}\label{eq:asymptotic}
+ \F_\eps(t)=\CC_\eps(\log(1/t))+
+ \sum_{k=1}^{N}r_k(\eps)t^k+O(t^{N+1}),
+ \qquad
+ r_k(\eps)={(-1)^k\over k!}\zeta(1+\eps-k)\zeta(1-\eps-k),
+\end{equation}
+uniformly for $|\eps|\le\rho$ and
+$|\arg t|\le\pi/2-\eta$ as $t\to0$. On smaller parameter disks the
+same assertion can be differentiated any fixed number of times in
+$\eps$.
+\end{theorem}
+\begin{proof}
+The Mellin integrand has the three moving poles $s=\eps,-\eps,0$.
+Their residues give \eqref{eq:core}. A fixed circle $|s|=r$ with
+$\rho<r<1$ represents their sum by a contour integral. Its integrand is
+holomorphic in $\eps$ on a slightly larger disk and entire in $L$.
+This proves removability, uniformity, and symmetry without subtracting
+large singular quantities numerically.
+
+At $\eps=0$, multiply
+\[
+ \Gamma(s)=s^{-1}-\gamma+
+ \tfrac12(\gamma^2+\zeta(2))s+O(s^2),\qquad
+ \zeta(1+s)^2=s^{-2}+2\gamma s^{-1}+\gamma^2-2\gamma_1+O(s).
+\]
+The coefficients of $s^{-3},s^{-2},s^{-1}$ in the product are
+$1,\gamma,\zeta(2)/2-\gamma^2/2-2\gamma_1$.
+Taking the residue after multiplication by $e^{sL}$ gives
+\eqref{eq:core0}.
+
+Shift the Mellin line to $\Re s=-N-1-\delta$, with
+$0<\delta<1$. The additional poles crossed are the Gamma poles
+$s=-1,\ldots,-N-1$, whose residues are exactly $r_k(\eps)t^k$.
+Polynomial bounds for zeta in fixed vertical strips, together with
+Stirling's exponential decay and the prescribed $t$ sector, give a
+uniform $O(t^{N+1+\delta})$ remaining integral. Absorbing the
+$k=N+1$ term proves the displayed remainder. Choose a larger compact
+parameter disk still inside $|\eps|<1$ and apply Cauchy's formula to
+obtain the derivative assertions. The Gamma expansion and zeta
+functional identities used here have their standard normalizations
+\cite{DLMFgamma,DLMFzeta}.
+\end{proof}
+
+\subsection{A centered finite formula for every logarithmic jet}
+Define the removable analytic functions
+\begin{equation}\label{eq:normalizers}
+ \ua(z)=z^2\Gamma(z)\zeta(1+2z)e^{-\gamma z}
+       =\sum_{j\ge0}a_jz^j,\qquad
+ \uz(z)=z^2\zeta(1-z)\zeta(1+z)=\sum_{j\ge0}z_jz^j.
+\end{equation}
+Their initial coefficients are
+\begin{align}
+ a_0&=\tfrac12,&a_1&=0,&a_2&=b:=\frac{\zeta(2)}4-\gamma^2-2\gamma_1,
+ \label{eq:a012}\\
+ a_3&=\frac43\gamma^3+4\gamma\gamma_1+2\gamma_2-\frac{\zeta(3)}6,
+ &z_0&=-1,&z_2&=\delta_0:=\gamma^2+2\gamma_1.
+ \label{eq:a3z2}
+\end{align}
+All odd $z_j$ vanish. The notation $z_j$ is a coefficient label, not a
+zeta value.
+
+\begin{theorem}[Centered triple-resonance jets]
+\label{thm:centered-jets}
+Let $W=L+\gamma$. For every $r\ge0$,
+\begin{equation}\label{eq:centered-jets}
+ \left.\partial_\eps^{2r}\CC_\eps(L)\right|_{\eps=0}
+ =(2r)!\left\{2\sum_{j=0}^{2r+2}
+       {a_jW^{2r+2-j}\over(2r+2-j)!}+z_{2r+2}\right\}.
+\end{equation}
+Its degree is exactly $2r+2$, its leading coefficient is
+$1/((2r+1)(2r+2))$, and the coefficient of $W^{2r+1}$ is zero.
+Every odd order jet vanishes. Formula \eqref{eq:normalizers}, together
+with the convergent log-Gamma series, is a finite coefficient algorithm
+in Stieltjes constants and zeta values for each fixed jet.
+\end{theorem}
+\begin{proof}
+The centered identity is
+\begin{equation}\label{eq:centered-core}
+ \CC_\eps(L)=\frac{
+ \ua(\eps)e^{\eps W}+\ua(-\eps)e^{-\eps W}+\uz(\eps)}{\eps^2}.
+\end{equation}
+The numerator is even and its constant term is $2a_0+z_0=0$.
+Extracting $\eps^{2r+2}$ proves \eqref{eq:centered-jets};
+$a_0=1/2$ and $a_1=0$ give the two highest-degree assertions.
+For completeness,
+\[
+ \ua(z)=\exp\left(-2\gamma z+
+       \sum_{m\ge2}\frac{(-1)^m\zeta(m)}m z^m\right)
+       \left(\frac12+\gamma z-2\gamma_1z^2+2\gamma_2z^3+\cdots\right).
+\]
+Multiplication gives \eqref{eq:a012}--\eqref{eq:a3z2} and computes
+any prescribed finite order using only finite Taylor data.
+\end{proof}
+
+Thus the centered second jet has the form
+\[
+ \left.\partial_\eps^2\CC_\eps(L)\right|_0
+ =\frac{W^4}{12}+2bW^2+4a_3W+4a_4+2z_4.
+\]
+The missing cubic term is a structural consequence of the centering,
+not a numerical cancellation. Combining Theorems~\ref{thm:collision}
+and~\ref{thm:centered-jets} gives a complete asymptotic expansion of
+$\sum_n M_{2r}(n)e^{-nt}/n$ at every fixed order $2r$.
+
+\section{Arithmetic Borel kernels and second-jet parity restoration}
+\label{sec:borel}
+
+\subsection{Reflection before differentiation}
+For $k\ge2$ the zeta functional equation gives
+\begin{equation}\label{eq:reflected-r}
+ r_k(\eps)=\frac{2\{1+(-1)^k\cos(\pi\eps)\}}{A^k}
+ \frac{\Gamma(k-\eps)\Gamma(k+\eps)}{k!}
+ \zeta(k-\eps)\zeta(k+\eps).
+\end{equation}
+Indeed, apply
+$\zeta(1-z)=2(2\pi)^{-z}\cos(\pi z/2)\Gamma(z)\zeta(z)$
+to $z=k-\eps,k+\eps$, then use the cosine product formula.
+The restriction $k\ge2$, $|\eps|<1$ avoids the Dirichlet-series
+boundary at $1$. The linear coefficient is retained separately:
+\begin{equation}\label{eq:r1}
+ r_1(\eps)=-\zeta(\eps)\zeta(-\eps).
+\end{equation}
+
+\begin{definition}[Shifted Borel normalization]
+For the formal tail $\mathcal R_\eps(t)=\sum_{k\ge2}r_k(\eps)t^k$,
+put
+\begin{equation}\label{eq:borel-convention}
+ \B_\eps(\xi)=\sum_{k\ge2}{r_k(\eps)\over\Gamma(k)}\xi^{k-1}.
+\end{equation}
+Thus Laplace integration has no extra factor $1/t$:
+$\int_0^\infty e^{-\xi/t}\xi^{k-1}\dd\xi=\Gamma(k)t^k$.
+\end{definition}
+
+\begin{theorem}[Normally convergent hypergeometric divisor kernel]
+\label{thm:hypergeometric-borel}
+Let
+\begin{equation}\label{eq:H}
+ H_\eps(z)=\Gamma(1-\eps)\Gamma(1+\eps)
+ \left\{z\,{}_2F_1(1-\eps,1+\eps;2;z)-z\right\}.
+\end{equation}
+For $|\eps|<1$, the Borel germ has the representation
+\begin{equation}\label{eq:general-borel}
+ \B_\eps(\xi)=\frac2\xi\sum_{n\ge1}D_\eps(n)
+ \left\{H_\eps\left(\frac\xi{An}\right)
+       +\cos(\pi\eps)H_\eps\left(-\frac\xi{An}\right)\right\}.
+\end{equation}
+It converges normally, jointly in $\eps$ and $\xi$, on compact
+subsets of $|\eps|<1$ and
+$\C\setminus(( -\infty,-A]\cup[A,\infty))$, with the value at
+$\xi=0$ filled in. Parameter differentiation is legitimate there.
+At resonance it reduces to the elementary logarithmic kernel
+\begin{equation}\label{eq:borel0}
+ \B_0(\xi)=-\frac2\xi\sum_{n\ge1}d(n)
+             \log\left(1-\frac{\xi^2}{A^2n^2}\right).
+\end{equation}
+The Taylor radius of this germ is exactly $A$.
+\end{theorem}
+\begin{proof}
+The coefficient of $z^k$, $k\ge2$, in $H_\eps$ is
+\[
+ \frac{\Gamma(k-\eps)\Gamma(k+\eps)}{k!\,\Gamma(k)}.
+\]
+Insert this coefficient into \eqref{eq:general-borel}, apply
+\eqref{eq:weight-dirichlet}, and compare with
+\eqref{eq:reflected-r}. This proves the germ identity. For large $n$,
+$H_\eps(\xi/(An))=O_K(n^{-2})$ uniformly on any stated compact
+set; also $|D_\eps(n)|\le d(n)n^\rho$ for some $\rho<1$.
+The majorant $\sum d(n)n^{-2+\rho}$ converges. Finitely many
+remaining hypergeometric terms have their usual analytic branches away
+from their cuts. This proves normal convergence and the derivative claim.
+
+At $\eps=0$,
+$z\,{}_2F_1(1,1;2;z)=-\log(1-z)$, giving
+$H_0(z)=-\log(1-z)-z$ and hence \eqref{eq:borel0}.
+The $n=1$ term has a nonzero logarithmic singularity at $\xi=A$;
+all $n\ge2$ terms are analytic nearby. The same holds at $-A$.
+The germ is analytic in $|\xi|<A$, proving the exact radius.
+\end{proof}
+
+\subsection{An entire parity sector restored by the second jet}
+At $\eps=0$, formula \eqref{eq:reflected-r} gives
+\begin{equation}\label{eq:even-coefficients}
+ r_1(0)=-\frac14,\qquad
+ r_{2m}(0)=\frac{4\Gamma(2m)}{2m\,A^{2m}}\zeta(2m)^2>0,
+ \qquad r_{2m+1}(0)=0\quad(m\ge1).
+\end{equation}
+In particular the nonzero even coefficients grow factorially. The
+vanishing odd coefficients have a double, rather than simple, zero as
+functions of the order parameter.
+
+\begin{theorem}[Exact parity activation and its Stokes multiplier]
+\label{thm:parity}
+For every odd $k\ge3$,
+\begin{equation}\label{eq:second-jet-coef}
+ r_k''(0)=\frac{2\zeta'(1-k)^2}{k!}
+ =\frac{2\pi^2}{A^k}\frac{\Gamma(k)^2}{k!}\zeta(k)^2>0.
+\end{equation}
+The Borel transform of the restored odd-power part is
+\begin{equation}\label{eq:odd-jet-borel}
+ \widehat{\mathcal J}_{\rm odd}(\xi)
+ :=\sum_{\substack{k\ge3\\k\ {\rm odd}}}
+       {r_k''(0)\over\Gamma(k)}\xi^{k-1}
+ =\frac{2\pi^2}{\xi}\sum_{n\ge1}d(n)
+ \left\{\artanh\left(\frac\xi{An}\right)-\frac\xi{An}\right\}.
+\end{equation}
+For the lateral boundary values continued from zero,
+\begin{align}
+ \Disc\B_0(\xi)
+ &=\frac{4\pi\ii}{\xi}\sum_{An<\xi}d(n),\qquad \xi>0,
+ \label{eq:disc0}\\
+ \Disc\widehat{\mathcal J}_{\rm odd}(\xi)
+ &=\frac{2\pi^3\ii}{\xi}\sum_{An<\xi}d(n)
+ =\frac{\pi^2}{2}\Disc\B_0(\xi).
+ \label{eq:discjet}
+\end{align}
+Consequently the corresponding lateral Laplace jumps satisfy the exact
+identity
+\begin{equation}\label{eq:jet-jump}
+ (\Sc_+-\Sc_-)\mathcal J_{\rm odd}(t)
+ =2\pi^3\ii\sum_{n\ge1}d(n)E_1(An/t)
+ =\frac{\pi^2}{2}(\Sc_+-\Sc_-)\mathcal R_0(t),\qquad t>0.
+\end{equation}
+\end{theorem}
+\begin{proof}
+For odd $k\ge3$, the factor in braces in \eqref{eq:reflected-r}
+is $1-\cos(\pi\eps)$, whose second derivative at zero is $\pi^2$.
+The other factors are nonzero and analytic there. This proves the
+second expression in \eqref{eq:second-jet-coef}. Alternatively,
+$\zeta(1-k+\eps)\zeta(1-k-\eps)
+=-\zeta'(1-k)^2\eps^2+O(\eps^4)$, and $(-1)^k=-1$;
+this proves the first expression, including its sign.
+
+After division by $\Gamma(k)$ the coefficient is
+$2\pi^2\zeta(k)^2/(kA^k)$. The identity
+$\sum_{k\ge3,\ k\,\mathrm{odd}}z^k/k=\artanh z-z$,
+followed by $\zeta(k)^2=\sum d(n)n^{-k}$, proves
+\eqref{eq:odd-jet-borel}. All interchanges first take place in
+$|\xi|<A$; the same large-$n$ estimates as before extend them to
+compact slitted domains.
+
+We fix the signs explicitly. For $\xi>An$, approaching from the upper
+half-plane makes $1-\xi^2/(A^2n^2)$ approach the negative axis from
+below. Thus its logarithm has upper-minus-lower jump $-2\pi\ii$.
+The minus sign in \eqref{eq:borel0} gives \eqref{eq:disc0}.
+Similarly
+$\artanh z=(\log(1+z)-\log(1-z))/2$ has jump $\pi\ii$ for
+$z>1$. This gives \eqref{eq:discjet}. Integrating each step function
+against $e^{-\xi/t}/\xi$ produces $E_1(An/t)$.
+The divisor sum converges exponentially, justifying the integration.
+\end{proof}
+
+\begin{remark}
+``Odd-power part'' refers to the original powers $t^k$, not to parity
+in the Borel coordinate: the shifted transform uses $\xi^{k-1}$.
+The theorem concerns this projected part of the second jet. It does not
+assert that the \emph{whole} second order jet is $\pi^2/2$ times the
+original function.
+\end{remark}
+
+\subsection{Finite all-order harmonic and zeta-derivative coordinates}
+The regular Gamma product in \eqref{eq:reflected-r} satisfies
+\begin{equation}\label{eq:gamma-product-jets}
+ \frac{\Gamma(k-\eps)\Gamma(k+\eps)}{\Gamma(k)^2}
+ =\exp\left(\sum_{j\ge1}
+ \frac{\zeta(2j)-H_{k-1}^{(2j)}}j\eps^{2j}\right),
+ \qquad H_m^{(r)}=\sum_{\ell=1}^m\ell^{-r}.
+\end{equation}
+This follows by adding the Taylor series of the two log-Gamma factors;
+$\psi^{(2j-1)}(k)=(2j-1)!(\zeta(2j)-H_{k-1}^{(2j)})$.
+Consequently, for every $r\ge0$ and $k\ge2$,
+\begin{align}
+ r_k^{(2r)}(0)
+ &=\frac{2\Gamma(k)^2(2r)!}{k!A^k}[\eps^{2r}]
+ \Bigg(\{1+(-1)^k\cos(\pi\eps)\}
+ \exp\left(\sum_{j=1}^{r}
+ {\zeta(2j)-H_{k-1}^{(2j)}\over j}\eps^{2j}\right)
+ \nonumber\\[-2pt]
+ &\hspace{42mm}\times
+ \sum_{\ell=0}^{r}\frac{\eps^{2\ell}}{(2\ell)!}
+ \sum_{j=0}^{2\ell}(-1)^j\binom{2\ell}{j}
+ \zeta^{(j)}(k)\zeta^{(2\ell-j)}(k)\Bigg).
+ \label{eq:all-coefficient-jets}
+\end{align}
+Only finitely many coefficients are used at each prescribed order.
+Together with \eqref{eq:centered-jets}, this supplies both the logarithmic
+core and every power coefficient of every symmetric order derivative.
+No differentiation of a singular logarithm at a trivial zero is needed.
+
+\section{An exact real completion and its arithmetic jump}
+\label{sec:median}
+The existence of a real function with a prescribed asymptotic expansion
+does not, by itself, fix any beyond-all-orders real term. We therefore
+prove the equality to the specified Lambert function, rather than infer
+it from reality or conjugacy of lateral values.
+
+\begin{theorem}[Exact logarithmic Borel completion]
+\label{thm:median}
+For every $t>0$, define
+\[
+ \Sc_\pm\mathcal R_0(t)=\int_0^\infty e^{-\xi/t}\B_0(\xi\pm\ii0)\dd\xi.
+\]
+The integrals exist, with integrable logarithmic boundary singularities,
+and
+\begin{align}
+ \F_0(t)&=\CC_0(\log(1/t))-\frac t4
+ +\frac12\{\Sc_+\mathcal R_0(t)+\Sc_-\mathcal R_0(t)\},
+ \label{eq:median-exact}\\
+ \Sc_+\mathcal R_0(t)-\Sc_-\mathcal R_0(t)
+ &=J(t)=4\pi\ii\sum_{n\ge1}d(n)E_1(An/t).
+ \label{eq:stokes-exact}
+\end{align}
+Thus the forward lateral functions are exactly
+\begin{equation}\label{eq:forward-laterals}
+ \F_\pm(t):=\CC_0(\log(1/t))-t/4+\Sc_\pm\mathcal R_0(t)
+ =\F_0(t)\pm J(t)/2.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+First note an integrability estimate. For fixed $t>0$ and $a\ge1$,
+\[
+ \int_0^\infty e^{-\xi/t}
+ \left|\log\left|1-\frac{\xi^2}{a^2}\right|\right|
+ \frac{\dd\xi}{\xi}\le\frac{K_t}{a^2}.
+\]
+On $\xi\le a/2$ use $|\log(1-v)|\le C v$ for $0\le v\le1/4$.
+On $\xi>a/2$ substitute $\xi=au$ and retain half the exponential
+for integrability; the remaining factor is exponentially small in $a$.
+The logarithmic singularity at $u=1$ is integrable. The imaginary step
+part has an even smaller exponential integral. Summation over $a=An$
+is therefore justified by $\sum d(n)n^{-2}<\infty$.
+
+It remains to identify the real part. The elementary Mellin identity
+\begin{equation}\label{eq:log-mellin}
+ \int_0^\infty u^{-w-1}\log|1-u^2|\dd u
+ =\frac\pi w\cot\frac{\pi w}{2},\qquad 0<\Re w<2,
+\end{equation}
+follows by integration by parts, interpreted symmetrically at $u=1$,
+and the substitution $v=u^2$. In detail, the derivative integral is
+$-w^{-1}\PV\int_0^\infty v^{-w/2}/(1-v)\dd v$;
+$\PV\int_0^\infty v^{a-1}/(1-v)\dd v=\pi\cot(\pi a)$
+gives \eqref{eq:log-mellin}. The latter identity also follows by
+splitting at $1$ and using the digamma reflection formula.
+
+For
+\[
+ K(x)=-2\int_0^\infty e^{-u/x}\log|1-u^2|\frac{\dd u}{u},
+\]
+Mellin inversion of the exponential and \eqref{eq:log-mellin} imply
+\begin{equation}\label{eq:K-mellin}
+ K(x)=\frac1{2\pi\ii}\int_{b-\ii\infty}^{b+\ii\infty}
+ -\frac{2\pi}{w}\cot\frac{\pi w}{2}\Gamma(w)x^w\dd w,
+ \qquad 0<b<2.
+\end{equation}
+Absolute integration in the intermediate Mellin variable follows from
+$0<b<2$ and Gamma decay, so this step does not rely on a formal exchange.
+Choose $1<b<2$, sum $d(n)K(t/(An))$, and apply
+$\sum d(n)n^{-w}=\zeta(w)^2$. The real average in
+\eqref{eq:median-exact} is therefore
+\begin{equation}\label{eq:median-MB}
+ \frac1{2\pi\ii}\int_{b-\ii\infty}^{b+\ii\infty}
+ -\frac{2\pi}{w}\cot\frac{\pi w}{2}
+ \Gamma(w)\zeta(w)^2(t/A)^w\dd w.
+\end{equation}
+
+On the other hand, shift \eqref{eq:mellin} for $\eps=0$ to
+$\Re s=-b$. The poles crossed give $\CC_0(\log(1/t))-t/4$.
+The functional equation yields
+\[
+ \Gamma(s)\zeta(1+s)^2
+ =-\frac{2\pi}{s}\cot\frac{\pi s}{2}
+   \Gamma(-s)\zeta(-s)^2 A^s.
+\]
+Putting $w=-s$, including the orientation change, turns the remaining
+integral precisely into \eqref{eq:median-MB}. This proves the exact
+identity, including any possible flat real term. Equation
+\eqref{eq:stokes-exact} is Theorem~\ref{thm:parity} integrated once.
+\end{proof}
+
+\begin{corollary}[Arithmetic Stokes data]
+The positive Borel singularities lie at $An$, $n\ge1$. The logarithmic
+jump accumulates the divisor counting function, and its Laplace image is
+an absolutely convergent sum of exponential integrals. In particular,
+\begin{equation}\label{eq:J-leading}
+ J(t)=\frac{4\pi\ii}{A}\,t e^{-A/t}\bigl(1+O(t)\bigr)
+ \qquad(t\to0^+).
+\end{equation}
+\end{corollary}
+\begin{proof}
+The local singularities and jump were determined explicitly. Integration
+by parts in $E_1(A/t)$ gives its first term and an $O(t)$ relative
+remainder. Every $n\ge2$ term is exponentially smaller; the bound
+$d(n)\le n$ is already sufficient to sum that tail.
+\end{proof}
+
+\section{Uniform inverse crossover and the displaced core folds}
+\label{sec:crossover}
+
+\subsection{A convergent chart for the core, not for the full tail}
+We use a scaled target $Y=X^2/2$ and set
+\begin{equation}\label{eq:crossover-variables}
+ u=X^{-1},\qquad \eps=\lambda u,\qquad w=u(L+\gamma).
+\end{equation}
+The scaled core equation is $G(w,\lambda,u)=0$, where
+\begin{equation}\label{eq:G}
+ G(w,\lambda,u)=
+ \frac{\ua(\lambda u)e^{\lambda w}
+       +\ua(-\lambda u)e^{-\lambda w}+\uz(\lambda u)}{\lambda^2}
+ -\frac12.
+\end{equation}
+The value at $\lambda=0$ is removable. The cancellation $a_1=0$ is
+what eliminates a term linear in $u$.
+
+\begin{theorem}[Arcsinh crossover and its first corrections]
+\label{thm:crossover}
+Define the branches
+\begin{equation}\label{eq:hs}
+ h(\lambda)=\frac{2\arsinh(\lambda/2)}{\lambda},\quad h(0)=1,
+ \qquad s(\lambda)=\sqrt{1+\lambda^2/4},\quad s(0)=1.
+\end{equation}
+On every compact subset of $|\lambda|<2$, the core inverse has a
+holomorphic chart
+\begin{equation}\label{eq:core-chart}
+ L_c=\frac{h(\lambda)}u-\gamma+uB(u,\lambda),
+\end{equation}
+for sufficiently small $u$, with a genuinely convergent Taylor series
+in $u$. Its first two coefficients are
+\begin{equation}\label{eq:B-coeffs}
+ B(0,\lambda)=-\frac{C_*+b\lambda^2}{s(\lambda)},
+ \qquad \partial_uB(0,\lambda)=-2a_3\lambda^2.
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:Lc-explicit}
+ L_c=Xh(\lambda)-\gamma-
+ \frac{C_*+b\lambda^2}{X\sqrt{1+\lambda^2/4}}
+ -\frac{2a_3\lambda^2}{X^2}+O(X^{-3}).
+\end{equation}
+For real $\lambda$, the same assertion holds uniformly on any fixed
+compact interval, using analytic neighborhoods of that interval.
+\end{theorem}
+\begin{proof}
+At $u=0$,
+\[
+ G(w,\lambda,0)=\frac{\cosh(\lambda w)-1}{\lambda^2}-\frac12.
+\]
+The branch $w=h(\lambda)$ solves this equation because
+$\cosh(2\arsinh(\lambda/2))=1+\lambda^2/2$.
+Its $w$ derivative is
+$\sinh(\lambda h)/\lambda=s(\lambda)$, which does not vanish
+in $|\lambda|<2$ or at any real $\lambda$.
+The holomorphic implicit function theorem therefore gives a unique
+chart $w(u,\lambda)$ locally along this branch. Uniqueness glues the
+local charts on compact sets. The absence of a linear $u$ term in
+\eqref{eq:G} implies $w=h+u^2B$.
+
+Writing $c_\lambda=1+\lambda^2/2$, the expansion is
+\begin{align*}
+ G(w,\lambda,u)
+ &=\frac{\cosh(\lambda w)-1}{\lambda^2}-\frac12
+   +u^2\{2b\cosh(\lambda w)+\delta_0\}\\
+ &\quad+2a_3\lambda u^3\sinh(\lambda w)+O(u^4).
+\end{align*}
+Since $2b+\delta_0=C_*$, the $u^2$ coefficient gives
+$sB(0,\lambda)+C_*+b\lambda^2=0$.
+The $u^3$ coefficient gives
+$s\partial_uB(0,\lambda)+2a_3\lambda\sinh(\lambda h)=0$.
+Using $\sinh(\lambda h)=\lambda s$ proves
+\eqref{eq:B-coeffs} and \eqref{eq:Lc-explicit}.
+For a real compact interval $s(\lambda)>0$ throughout, so the same
+argument supplies uniform neighborhoods and estimates.
+\end{proof}
+
+Every higher coefficient can be computed recursively from the analytic
+equation \eqref{eq:G}. For example, if
+$w=h+B_0u^2+B_1u^3+B_2u^4+\cdots$, then
+\begin{equation}\label{eq:B2}
+ B_2=-\frac{\tfrac12c_\lambda B_0^2
+      +2b\lambda^2s(\lambda)B_0
+      +\lambda^2(2a_4c_\lambda+z_4)}{s(\lambda)}.
+\end{equation}
+At $\lambda=0$ this reduces to $B_2=-C_*^2/2$, as required by
+$L_c=\sqrt{X^2-2C_*}-\gamma$.
+
+\subsection{Transport from the core to the actual positive inverse}
+\begin{theorem}[First exponential correction in the crossover window]
+\label{thm:actual-crossover}
+Fix a compact real interval of $\lambda$ values. Let
+$\eps=\lambda/X$, let $L_c$ be the core root of
+Theorem~\ref{thm:crossover}, and put $t_c=e^{-L_c}$.
+The unique positive solution of $\F_\eps(t)=X^2/2$ has
+$L=\log(1/t)$ satisfying
+\begin{equation}\label{eq:actual-crossover}
+ L-L_c=\frac{\zeta(\eps)\zeta(-\eps)}
+                 {\partial_L\CC_\eps(L_c)}t_c
+       +O(t_c^2/X),
+\end{equation}
+uniformly as $X\to\infty$. Hence
+\begin{equation}\label{eq:t-crossover}
+ t=t_c-\frac{\zeta(\eps)\zeta(-\eps)}
+                 {\partial_L\CC_\eps(L_c)}t_c^2
+       +O(t_c^3/X).
+\end{equation}
+The denominator is $Xs(\lambda)+O(X^{-1})$.
+\end{theorem}
+\begin{proof}
+Differentiate the scaled core equation with respect to $L$:
+$\partial_L\CC_\eps(L_c)=XG_w(w_c,\lambda,u)$.
+The chart gives $G_w=s(\lambda)+O(u^2)$, uniformly bounded away
+from zero on the real compact set. Also $\partial_L^2\CC_\eps$
+is uniformly bounded there. By Theorem~\ref{thm:collision},
+\[
+ \F_\eps(e^{-L})=\CC_\eps(L)+r_1(\eps)e^{-L}+O(e^{-2L}).
+\]
+The derivative in $L$ is positive and comparable to $X$ near $L_c$;
+this follows either from the differentiated Mellin remainder or from
+the positive defining sum. A residual estimate first gives
+$L-L_c=O(t_c/X)$. Substitute this estimate back into the equation
+and Taylor expand the core and $e^{-L}$ once. Then
+\[
+ 0=\partial_L\CC_\eps(L_c)(L-L_c)+r_1(\eps)t_c+O(t_c^2).
+\]
+Use \eqref{eq:r1} and divide by the derivative. Exponentiation gives
+\eqref{eq:t-crossover}; the square of $O(t_c/X)$ is absorbed by
+the stated remainder. Positivity and uniqueness are supplied by
+Proposition~\ref{prop:family}.
+\end{proof}
+
+A finite $1/X$ truncation of $L_c$ does \emph{not} isolate the
+exponential correction: its omitted algebraic error is much larger.
+Formula \eqref{eq:actual-crossover} uses the entire analytic core root,
+not a short truncation of \eqref{eq:Lc-explicit}.
+
+\subsection{Explicit critical-locus displacement for the complex core}
+\begin{theorem}[Two moving simple folds of the normalized core]
+\label{thm:folds}
+Set
+\begin{equation}\label{eq:Dfold}
+ D=\delta_0-2b=3\gamma^2+6\gamma_1-\frac{\zeta(2)}2.
+\end{equation}
+Near $(w,\lambda,u)=(\pi/2,\pm2\ii,0)$ there are unique analytic
+solutions of $G=G_w=0$. They satisfy
+\begin{align}
+ \lambda_\pm(u)&=\pm2\ii\{1+Du^2\}+O(u^4),
+ \label{eq:fold-lambda}\\
+ w_\pm(u)&=\frac\pi2\{1-Du^2\}+8a_3u^3+O(u^4).
+ \label{eq:fold-w}
+\end{align}
+Each remains a simple fold: locally, the two core inverse branches have
+a square-root interchange as $\lambda$ encircles the critical value.
+This assertion concerns the singular core $\CC_\eps$, not the full
+Lambert function at these complex scalings.
+\end{theorem}
+\begin{proof}
+At the positive imaginary point,
+\[
+ G=G_w=0,\quad G_{ww}=-1,\quad G_\lambda=\ii/2,
+ \quad G_{w\lambda}=\ii\pi/4.
+\]
+The Jacobian of $(G,G_w)$ with respect to $(\lambda,w)$ is
+nonzero. The implicit function theorem gives the critical locus.
+The $u^2$ term of $G$ at the point is $\delta_0-2b=D$, so
+$(\ii/2)(\lambda_+(u)-2\ii)+Du^2=O(u^3)$.
+This gives the $u^2$ coefficient of \eqref{eq:fold-lambda}.
+The $u^2$ coefficient in $G_w=0$ gives
+$w_+(u)-\pi/2=-\pi Du^2/2+O(u^3)$.
+
+The order-$u^3$ term in $G$ is proportional to
+$\sinh(\lambda w)$ and vanishes at the limiting fold; hence
+$\lambda_+$ has no $u^3$ term. Its $w$ derivative at that point
+is $2a_3\lambda^2\cosh(\lambda w)=8a_3$, giving the displayed
+$8a_3u^3$ term in $w_+$. Evenness of $G$ in $\lambda$ gives the
+negative branch. Finally $G_{ww}\ne0$ and $G_\lambda\ne0$
+persist. Taylor expansion and the Weierstrass preparation theorem
+reduce the equation to a nondegenerate quadratic in the local $w$
+coordinate; its discriminant has a simple zero in $\lambda$.
+That is precisely the asserted square-root interchange.
+\end{proof}
+
+The fold location $\lambda=\pm2\ii$ is distinct from the secondary
+resonances $2\pi\ii k$ in the single-polylogarithm crossover discussed
+in the earlier draft \cite{prior-folds}. The distinction follows from
+the different leading functions: $\cosh(\lambda w)-1$ here, rather
+than $(1-e^{-\lambda})/\lambda$ there.
+
+\section{Exact inverse-sector coefficients: signs, Catalan degrees, and divergence}
+\label{sec:coefficients}
+At exact resonance it is preferable to absorb the constant $C_*$ into
+the large variable. In this section only, set
+\begin{equation}\label{eq:exact-core-vars}
+ X=\sqrt{2(Y-C_*)},\qquad u=X^{-1},\qquad
+ q=e^{\gamma-X},\qquad L=X-\gamma+V.
+\end{equation}
+This $X$ differs from the scaled-target variable of
+Section~\ref{sec:crossover}; both definitions are explicitly tied to
+their targets. The positive branch is used, and $Y$ is sufficiently
+large. Then $t=qe^{-V}$. Define the formal series including the linear
+term
+\begin{equation}\label{eq:R-all}
+ R(q)=\sum_{n\ge1}r_nq^n,\qquad r_n=r_n(0).
+\end{equation}
+The formal inverse equation is
+\begin{equation}\label{eq:formal-inverse}
+ V+\frac u2V^2+uR(qe^{-V})=0.
+\end{equation}
+Here $q$ and $u$ are independent formal variables for coefficient
+extraction. They are specialized to the physical relation
+\eqref{eq:exact-core-vars} only afterward.
+
+\begin{theorem}[Finite coefficient formula and sharp polynomial structure]
+\label{thm:inverse-coefficients}
+There is a unique solution
+\begin{equation}\label{eq:V-series}
+ V(q,u)=\sum_{n\ge1}C_n(u)q^n\in q\Q[u][[q]]
+\end{equation}
+of \eqref{eq:formal-inverse}. For every $n\ge1$ it is given by
+\begin{equation}\label{eq:C-formula}
+ C_n(u)=-\sum_{k=1}^{n}\frac{u^k}{k!}[q^n]R(q)^k
+ \sum_{j=0}^{k-1}\binom{k-1}{j}n^{k-1-j}(k)_j\left(\frac u2\right)^j.
+\end{equation}
+Its structural properties are
+\begin{align}
+ \deg C_n&=2n-1,&
+ [u^{2n-1}]C_n&=\frac{(-1)^{n+1}\Cat_{n-1}}{2^{3n-1}},
+ \label{eq:C-degree}\\
+ (-1)^{n+1}C_n(u)&\in\Q_{\ge0}[u]\setminus\{0\},
+ \label{eq:C-sign}\\
+ \operatorname{ord}_{u=0}C_n
+ &=\begin{cases}1,&n=1\text{ or }n\text{ even},\\2,&n\ge3\text{ odd},\end{cases}
+ \label{eq:C-valuation}\\
+ [u]C_n&=-r_n,&
+ [u^2]C_n&=\frac n4r_{n-1}\quad(n\ge3\text{ odd}).
+ \label{eq:C-lowest}
+\end{align}
+In \eqref{eq:C-sign} every nonzero coefficient is strictly positive
+after the indicated sign change. In particular every inverse sector is
+present, although every odd forward coefficient beyond the linear term
+vanishes.
+\end{theorem}
+\begin{proof}
+The constant term in $q$ must be $V=0$; the derivative with respect to
+$V$ at $q=V=0$ is $1$. Equating coefficients recursively gives a unique
+solution over $\Q[u]$, since each $r_n$ is rational.
+
+For an explicit formula introduce an auxiliary variable $\eta$ and
+write
+\[
+ V=-\eta u\frac{R(qe^{-V})}{1+uV/2}.
+\]
+Formal Lagrange inversion in $\eta$ yields
+\begin{equation}\label{eq:eta-Lagrange}
+ V=\sum_{k\ge1}\frac{(-\eta u)^k}{k!}
+ \left.\left(\frac{\partial}{\partial v}\right)^{k-1}
+ \left\{R(qe^{-v})^k(1+uv/2)^{-k}\right\}\right|_{v=0}.
+\end{equation}
+Because $R$ has positive $q$ valuation, only $k\le n$ contributes
+to $q^n$. Thus setting $\eta=1$ is legitimate coefficientwise, even
+though no analytic convergence of $R$ is being assumed.
+For the $q^n$ coefficient,
+$[q^n]R(qe^{-v})^k=e^{-nv}[q^n]R(q)^k$.
+Leibniz' rule gives
+\[
+ \left.\partial_v^{k-1}\{e^{-nv}(1+uv/2)^{-k}\}\right|_0
+ =(-1)^{k-1}\sum_{j=0}^{k-1}
+ \binom{k-1}{j}n^{k-1-j}(k)_j(u/2)^j.
+\]
+Combining signs proves \eqref{eq:C-formula}.
+
+Since $k+j\le2k-1\le2n-1$, the degree is at most $2n-1$.
+The only term of that degree has $k=n$, $j=n-1$, and uses
+$[q^n]R^n=r_1^n=(-1/4)^n$. Hence its coefficient is
+\[
+ -\frac{(-1/4)^n}{n!}\frac{(n)_{n-1}}{2^{n-1}}
+ =\frac{(-1)^{n+1}}{2^{3n-1}}
+   \frac{(2n-2)!}{n!(n-1)!},
+\]
+which is exactly \eqref{eq:C-degree}, and is nonzero.
+
+For the sign assertion, every nonzero monomial contributing to
+$[q^n]R^k$ consists of factors $r_1<0$ and $r_{2m}>0$.
+The number of $r_1$ factors has the same parity as $n$.
+Consequently $(-1)^n[q^n]R^k\ge0$. Every coefficient of the inner
+polynomial in \eqref{eq:C-formula} is nonnegative, so no cancellation
+can reverse this sign. The degree computation ensures nonvanishing.
+The coefficient of $u$ comes only from $k=1$, and is $-r_n$.
+For odd $n\ge3$ this vanishes. The coefficient of $u^2$ comes only
+from $k=2,j=0$ and equals $-n[q^n]R^2/2$.
+For odd $n\ge3$, $[q^n]R^2=2r_1r_{n-1}=-r_{n-1}/2$.
+This proves \eqref{eq:C-lowest} and the exact valuations.
+\end{proof}
+
+The first three coefficients, useful as normalization checks, are
+\begin{align}
+ C_1(u)&=\frac u4,\label{eq:C1}\\
+ C_2(u)&=-\frac u{288}-\frac{u^2}{16}-\frac{u^3}{32},
+ \label{eq:C2}\\
+ C_3(u)&=\frac{u^2}{384}+\frac{7u^3}{288}
+         +\frac{3u^4}{128}+\frac{u^5}{128}.
+ \label{eq:C3}
+\end{align}
+The supplied exact verifier independently substitutes all coefficients
+through $q^8$ into \eqref{eq:formal-inverse}. The proof, rather than
+that finite computation, establishes the all-order assertions.
+
+\subsection{Exact Borel radius of the inverse-sector series}
+\begin{theorem}[Gevrey order and sharp Borel radius]
+\label{thm:inverse-gevrey}
+For every $U>0$, the polynomials in
+Theorem~\ref{thm:inverse-coefficients} satisfy, uniformly for
+$|u|\le U$,
+\begin{equation}\label{eq:gevrey-bound}
+ |C_n(u)|\le K_U A^{-n}\Gamma(n)e^{K_U\sqrt n}.
+\end{equation}
+For every fixed real $u>0$, the ordinary series
+$\sum C_n(u)q^n$ has radius zero, whereas its shifted Borel transform
+\begin{equation}\label{eq:inverse-borel}
+ \widehat V_u(\xi)=\sum_{n\ge1}\frac{C_n(u)}{\Gamma(n)}\xi^{n-1}
+\end{equation}
+has radius exactly $A=4\pi^2$. In particular it is a Gevrey-one
+series, but not a convergent exponential-sector chart at fixed $u>0$.
+The point $\xi=-A$ is a singularity of the Borel germ.
+\end{theorem}
+\begin{proof}
+Formula \eqref{eq:even-coefficients} gives a constant $K>0$ with
+$|r_m|\le K A^{-m}(m-1)!$ for all $m\ge1$.
+For a composition $m_1+\cdots+m_k=n$ with $m_i\ge1$,
+$\prod_i(m_i-1)!\le(n-k)!$. Counting the compositions gives
+\begin{equation}\label{eq:composition-bound}
+ |[q^n]R(q)^k|
+ \le K^k A^{-n}(n-k)!\binom{n-1}{k-1}
+ =K^k A^{-n}\frac{(n-1)!}{(k-1)!}.
+\end{equation}
+Also $(k)_j\le(2n)^j$ for $0\le j\le k-1$, so the absolute
+value of the inner sum in \eqref{eq:C-formula} is at most
+$n^{k-1}(1+U)^{k-1}$. Therefore
+\[
+ |C_n(u)|\le A^{-n}\Gamma(n)KU
+ \sum_{j=0}^{n-1}\frac{\{KUn(1+U)\}^j}{(j+1)!j!}.
+\]
+The elementary bound
+$\sum_{j\ge0}x^j/(j!)^2\le e^{2\sqrt x}$ for $x\ge0$
+follows by comparison with the product
+$e^{\sqrt x}e^{\sqrt x}$. This proves \eqref{eq:gevrey-bound}.
+For any $A'<A$, its right-hand side is at most
+$K_{U,A'}(A')^{-n}\Gamma(n)$, which is the usual Gevrey-one
+estimate. In particular the Borel radius is at least $A$.
+
+Fix $u>0$. For even $n$, all terms in $C_n(u)$ have the same
+negative sign, and the $k=1$ term gives
+\[
+ |C_n(u)|\ge u r_n
+ =\frac{4u\Gamma(n)}{nA^n}\zeta(n)^2.
+\]
+This lower bound proves radius zero for the ordinary series and Borel
+radius at most $A$. Thus the latter radius is exactly $A$.
+Finally \eqref{eq:C-sign} shows that $\widehat V_u(-\xi)$ has
+nonnegative Taylor coefficients. A power series with nonnegative
+coefficients and finite radius $A$ cannot be analytic at its positive
+endpoint $A$: otherwise its Taylor expansion about a point just below
+$A$, with nonnegative derivatives, can be rearranged to make the
+original series converge at a point beyond $A$. This contradiction
+is the elementary positive-coefficient form of Pringsheim's argument.
+Applied to $\widehat V_u(-\xi)$, it proves singularity at $-A$.
+\end{proof}
+
+\begin{remark}[What the sharp radius does not prove]
+The theorem locates the nearest guaranteed negative-axis singularity and
+fixes the radius of the Borel germ. It does not, by itself, prove global
+analytic continuation of the inverse Borel transform, classify all its
+singularities, or identify every alien derivative. The lateral inverse
+functions in Section~\ref{sec:inverse-stokes} are defined analytically
+from the \emph{exact forward lateral functions}, so their jump does not
+depend on those stronger unproved assertions.
+\end{remark}
+
+\subsection{The actual inverse and finite-sector error control}
+\begin{theorem}[Physical specialization of the formal coefficients]
+\label{thm:physical-sectors}
+Let $t=g_0(Y)$, with the physical variables \eqref{eq:exact-core-vars},
+and let $V=\log(q/t)$. For every fixed $N\ge1$,
+\begin{equation}\label{eq:physical-V}
+ V=\sum_{n=1}^{N}C_n(1/X)q^n+O(q^{N+1}/X),
+ \qquad X\to+\infty.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:t-first}
+ t=q\left(1-\frac{q}{4X}+O(q^2/X)\right),
+ \qquad
+ \frac A t=\frac A q+\frac{A}{4X}+O(q/X).
+\end{equation}
+\end{theorem}
+\begin{proof}
+The exact expansion \eqref{eq:asymptotic} at $\eps=0$, with a
+fixed finite remainder order, gives
+\[
+ 0=XV+\frac12V^2+\sum_{m=1}^{N}r_mq^m e^{-mV}+O(q^{N+1})
+\]
+near $V=0$. Monotonicity first gives $V=O(q/X)$, for example by
+comparing the residual at $V=0$ with the derivative, which is
+$X+O(q)$. Substitute
+$V_N=\sum_{n\le N}C_n(1/X)q^n$.
+The formal coefficient identity cancels every power through $q^N$.
+Since $N$ is fixed and the coefficients are polynomials bounded as
+$1/X\to0$, the remaining residual is $O(q^{N+1})$.
+The derivative of the exact equation is bounded below by $X/2$ in
+this neighborhood, giving the stated $O(q^{N+1}/X)$ correction.
+Using $C_1=1/(4X)$ and exponentiating proves \eqref{eq:t-first}.
+\end{proof}
+
+This is an asymptotic statement at every fixed sector order. It is not
+an assertion that the infinite divergent series may be evaluated at the
+physical pair $(q,1/X)$ by ordinary summation.
+
+\section{Exact inverse Stokes transport and the nested exponential scale}
+\label{sec:inverse-stokes}
+The forward jump in \eqref{eq:stokes-exact} is explicit. We now transport
+it through functional inversion without silently linearizing away the
+higher nonlinear sectors.
+
+\subsection{A convergent Lagrange formula in the Stokes parameter}
+Let $g_0$ denote the positive inverse of $\F_0$. For $Y$ sufficiently
+large, let $g_\eta(Y)$ be the local inverse near $t=g_0(Y)$ of
+\begin{equation}\label{eq:Feta}
+ \F_\eta(z)=\F_0(z)+\frac\eta2J(z).
+\end{equation}
+The analytic continuations used here lie in a small disk around positive
+$t$; $E_1(An/z)$ uses the continuation from positive $z$.
+For $\eta=\pm1$ this agrees with the two forward lateral functions.
+
+\begin{theorem}[All-order analytic transport of the arithmetic jump]
+\label{thm:inverse-transport}
+For sufficiently large real $Y$, the inverse $g_\eta(Y)$ is holomorphic
+in $\eta$ on a disk of radius greater than $1$, and
+\begin{equation}\label{eq:inverse-transport}
+ g_\eta(Y)=g_0(Y)+\sum_{k\ge1}\frac{(-\eta)^k}{k!}
+ \partial_Y^{k-1}\left[
+ g_0'(Y)\left\{\frac{J(g_0(Y))}{2}\right\}^{k}\right].
+\end{equation}
+The series is actually convergent at $\eta=\pm1$. Consequently
+\begin{align}
+ g_+(Y)-g_-(Y)
+ &=-2\sum_{j\ge0}\frac1{(2j+1)!}
+ \partial_Y^{2j}\left[
+ g_0'(Y)\left\{\frac{J(g_0(Y))}{2}\right\}^{2j+1}\right],
+ \label{eq:inverse-jump-all}\\
+ \frac{g_+(Y)+g_-(Y)}2-g_0(Y)
+ &=\sum_{j\ge1}\frac1{(2j)!}
+ \partial_Y^{2j-1}\left[
+ g_0'(Y)\left\{\frac{J(g_0(Y))}{2}\right\}^{2j}\right].
+ \label{eq:inverse-average-all}
+\end{align}
+These formulas retain the entire arithmetic divisor sum in $J$, not
+only its first action.
+\end{theorem}
+\begin{proof}
+First establish a domain in which the series is more than formal.
+Let $t=g_0(Y)$ and $W=\log(1/t)+\gamma$. On a disk
+$|z-t|\le c t^2$, with fixed sufficiently small $c>0$, the differentiated
+Mellin expansion gives
+\[
+ \F_0'(z)=-\frac{\log(1/z)+\gamma}{z}-\frac14+O(z),
+ \qquad \F_0''(z)=O(W/t^2).
+\]
+The disk stays in the right half-plane. Taylor's theorem then shows
+that on its boundary
+$|\F_0(z)-Y|\ge c_1 Wt$, and that $\F_0(z)-Y$ has one simple
+zero inside. The exponential integral representation gives uniformly
+\[
+ |J(z)|\le c_2 t e^{-A/t},
+\]
+since $1/z=1/t+O(1)$ throughout the disk; the arithmetic tail is
+summable uniformly there.
+Put $\rho(t)=\exp(3A/(4t))$. Then
+$\rho(t)|J(z)|=O(t e^{-A/(4t)})=o(Wt)$.
+Rouch\'e's theorem shows that for every $|\eta|\le\rho(t)$ the
+perturbed equation has exactly one zero in the disk, counted with
+multiplicity. It is therefore simple, and the implicit function theorem
+makes it holomorphic in $\eta$. In particular its Taylor series
+converges at $\eta=\pm1$ for small enough $t$.
+
+To compute that Taylor series, use the local coordinate
+$v=\F_0(z)$ and write $z=g_0(v)$, extending the inverse locally in
+$Y$. Equation \eqref{eq:Feta} becomes
+\[
+ v=Y-\eta h(v),\qquad h(v)=J(g_0(v))/2.
+\]
+Lagrange--B\"urmann applied to the analytic function $g_0(v)$ gives
+\eqref{eq:inverse-transport}. Taking its odd and even parts in
+$\eta$ gives the other two identities. This argument uses ordinary
+local analytic inversion in an auxiliary parameter, not an assumed
+convergence of the factorial $q$-sector series.
+\end{proof}
+
+\subsection{The first two inverse Stokes effects}
+\begin{theorem}[Nested jump and exact leading averaging defect]
+\label{thm:nested}
+For $t=g_0(Y)\to0^+$, $W=\log(1/t)+\gamma$, and $A=4\pi^2$,
+\begin{align}
+ g_+(Y)-g_-(Y)
+ &=\frac{4\pi\ii}{A}\frac{t^2}{W}e^{-A/t}\{1+O(t)\},
+ \label{eq:nested-jump}\\
+ \frac{g_+(Y)+g_-(Y)}2-g_0(Y)
+ &=-\frac{t^2}{W^2}e^{-2A/t}\{1+O(t)\}.
+ \label{eq:nested-bias}
+\end{align}
+In the physical variables of \eqref{eq:exact-core-vars},
+\begin{align}
+ g_+(Y)-g_-(Y)
+ &=\frac{\ii}{\pi}\frac{q^2}{X}
+   \exp\left(-\frac A q-\frac{A}{4X}\right)\{1+O(q)\},
+ \label{eq:nested-q}\\
+ \frac{g_+(Y)+g_-(Y)}2-g_0(Y)
+ &=-\frac{q^2}{X^2}
+   \exp\left(-\frac{2A}{q}-\frac{A}{2X}\right)\{1+O(q)\}.
+ \label{eq:bias-q}
+\end{align}
+Thus inversion exposes a doubly exponential Stokes level, with leading
+action $A/q=Ae^{X-\gamma}$.
+\end{theorem}
+\begin{proof}
+The exact forward expansion and \eqref{eq:J-leading} imply
+\begin{equation}\label{eq:derivatives-leading}
+ g_0'(Y)=-\frac{t}{W}\{1+O(t/W)\},\qquad
+ J(t)=\frac{4\pi\ii}{A}t e^{-A/t}\{1+O(t)\}.
+\end{equation}
+The first term of \eqref{eq:inverse-jump-all} is
+$-g_0'(Y)J(t)$, giving \eqref{eq:nested-jump}.
+For rigor in discarding the remaining terms, the proof of
+Theorem~\ref{thm:inverse-transport} bounds $g_\eta(Y)-t$ by
+$ct^2$ on $|\eta|=\rho(t)$. Its Taylor coefficients are therefore
+bounded by $ct^2\rho(t)^{-k}$. The remaining odd terms begin at
+$k=3$, and are $O(t^2e^{-9A/(4t)})$, which is negligible relative
+to the first term.
+
+The first term of \eqref{eq:inverse-average-all} is
+\begin{equation}\label{eq:bias-leading-exact}
+ \frac18\partial_Y\{g_0'(Y)J(t)^2\}.
+\end{equation}
+The remaining even terms begin at $k=4$ and are
+$O(t^2e^{-3A/t})$, again negligible. Since
+$\partial_Y=g_0'(Y)\partial_t$, the leading product inside
+\eqref{eq:bias-leading-exact} is
+\[
+ \frac{16\pi^2}{A^2}\frac{t^3}{W}e^{-2A/t}.
+\]
+Differentiating its exponential and multiplying by $-t/W$ gives
+\[
+ -\frac{32\pi^2}{A}\frac{t^2}{W^2}e^{-2A/t}.
+\]
+Division by $8$ leaves $-4\pi^2/A=-1$. Derivatives of the
+algebraic prefactor, and the differentiated remainder terms, produce a
+relative $O(t)$ error. These derivative estimates follow either by
+integration by parts in $E_1$ with differentiated remainders or by its
+exact derivative; they are not obtained by differentiating an arbitrary
+uncontrolled $O$ term. This proves \eqref{eq:nested-bias}.
+
+Finally Theorem~\ref{thm:physical-sectors} gives
+$t=q\{1-q/(4X)+O(q^2/X)\}$, $W=X+O(q/X)$, and
+$A/t=A/q+A/(4X)+O(q/X)$. Substitute these expressions in the
+two preceding formulas. The exponent error is $O(q/X)$, so it can
+be exponentiated into a relative $1+O(q)$ factor, proving
+\eqref{eq:nested-q}--\eqref{eq:bias-q}.
+\end{proof}
+
+\begin{remark}[A normalization safeguard]
+Replacing $t$ merely by $q$ \emph{inside} $e^{-A/t}$ loses the
+specific algebraic exponential multiplier $e^{-A/(4X)}$.
+Although that multiplier tends to $1$, it matters when resolving
+successive slow corrections within the same nested action.
+At the same time, arithmetic averaging of $g_+$ and $g_-$ is not the
+same operation as inverting the arithmetic average of $\F_+$ and
+$\F_-$. Equation \eqref{eq:nested-bias} quantifies that difference.
+This does not contradict multiplicativity properties of a properly
+defined nonlinear median summation operator: no such operator is being
+identified with a plain arithmetic average of the inverse branches.
+\end{remark}
+
+\section{Verification and reproducibility}
+\label{sec:verification}
+The proofs above are independent of the verification program. The
+program is intended to catch normalization, sign, indexing, branch,
+and transcription errors before integration.
+
+\subsection{Exact checks}
+The SymPy portion constructs \eqref{eq:C-formula} through $n=8$ using
+rational zeta values. It then substitutes the resulting polynomials
+into \eqref{eq:formal-inverse} by an independent recurrence for the
+coefficients of $e^{-mV}$:
+\[
+ E_0=1,\qquad
+ E_n=-\frac mn\sum_{j=1}^n jC_j E_{n-j}.
+\]
+Every residual coefficient through $q^8$ is checked to be exactly zero.
+The program also checks the polynomial degrees, valuations, all
+coefficient signs, the Catalan leading coefficients, and the
+odd-sector $u^2$ coefficients. A separate symbolic multiplication
+checks $a_0,a_1,a_2,a_3$ in the centered normalizer. These are finite
+exact checks, not formal proofs of the infinite family.
+
+\subsection{Numerical diagnostics}
+The mpmath portion compares the two sides of the reflected coefficient
+identity at real and complex orders; checks the second-jet formula at
+three odd indices; verifies pole coalescence; solves the scaled core
+equation and its two-variable critical equations; and compares the
+forward asymptotic expansion with the absolutely convergent
+$\Li_1$ sum. An optional SciPy calculation independently compares
+\eqref{eq:median-MB} with the original Lambert sum at $t=1$ and
+$t=3$. It truncates the vertical integral at height $55$ and records
+the adaptive quadrature error estimate. That estimate is not an
+interval certificate.
+
+For the most delicate inverse checks, the program solves
+$\F_0(z)+J(z)/2=\F_0(t)$ at $t=1,1/2,1/4$ with increased precision.
+Newton iteration uses the independently differentiated convergent
+series
+\begin{equation}\label{eq:numeric-derivatives}
+ \F_0'(t)=-\sum_{a\ge1}\frac{e^{-at}}{1-e^{-at}},\qquad
+ J'(t)=\frac{4\pi\ii}{t}\sum_{n\ge1}d(n)e^{-An/t}.
+\end{equation}
+The conjugate root is the lower lateral inverse. The recorded ratios
+test both the first-action imaginary splitting and the much smaller
+second-action real bias. Near this nested scale, a default generic
+secant solver is not a reliable residual certificate; explicit Newton
+steps and a final residual check are used instead.
+
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$t$ & Working digits & Jump / leading term & Bias / leading term\\
+\midrule
+$1$   & $80$  & $0.686714522854$ & $0.494775281614$\\
+$1/2$ & $125$ & $0.900289105501$ & $0.829028586173$\\
+$1/4$ & $205$ & $0.963296642480$ & $0.938079390839$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are ratios to the asymptotic leading terms in
+\eqref{eq:nested-jump} and \eqref{eq:nested-bias}, not relative errors
+in the exact identities. Their approach to $1$ is a diagnostic for the
+stated small-$t$ laws. A recorded zero root residual at finite working
+precision means only that the residual rounded to zero; it is not an
+exact certificate.
+
+\subsection{How to reproduce}
+From the package directory, run
+\begin{verbatim}
+python verification/verify.py --output verification/results.json
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The file \texttt{verification/results.json} records the actual run,
+including software versions and the scope of each check. The flag
+\texttt{--skip-lateral} omits only the higher-precision lateral-root
+diagnostics. SciPy is optional; without it, the independent Mellin
+quadrature is explicitly marked as not run. No network access is
+needed by the verification program or the TeX build.
+
+\section{Source audit, corrections, and integration boundaries}
+\label{sec:audit}
+
+\subsection{What was inspected}
+The repository was anchored at commit
+\texttt{6207c3d40047fd8d1400a4d509fee71c9a3a8132}, whose recorded
+message was ``New research reports.'' The inspection included the
+Polylogarithms overview, the Transseries overview and its
+series-and-transseries overview, the incoming directory inventory and
+README, the manuscript chapter inventory, and the normalized
+positive--negative derivative-bridge chapter. Three library research
+drafts were used for an abstract-level comparison and selected
+statement checks. The ZIP byte contents were not downloaded; no
+byte-identity claim between those library drafts and individual ZIP
+members is made. This is a targeted research audit, not a validation
+of the entire repository.
+
+\subsection{No unsupported source-specific correction}
+No new erroneous theorem in the inspected repository material has been
+established by this work. In particular, the convergence claims in the
+selected prior drafts concern holomorphic analytic tails and do not
+conflict with Theorem~\ref{thm:inverse-gevrey}. We therefore provide no
+patch that weakens or rewrites those existing theorems.
+
+Two \emph{proposed integration safeguards} are mathematically substantive.
+First, replacing a single polylogarithm by the Lambert superposition
+\eqref{eq:family} destroys the analyticity of the ordinary tail at the
+origin: \eqref{eq:even-coefficients} proves radius zero. Any extension
+that asserted an ordinary convergent inverse-sector series for this
+new family at fixed $u>0$ would be false, and
+Theorem~\ref{thm:inverse-gevrey} supplies its correct Gevrey replacement.
+Second, interpreting the arithmetic mean of the lateral inverse
+branches as the real inverse would be false, with the explicit
+nonzero counterterm \eqref{eq:nested-bias}. Neither warning is
+attributed to an inspected source that did not make the offending claim.
+
+\subsection{Recommended integration shape}
+The contribution is designed as a standalone research package, with
+cross-links from Polylogarithms and Transseries. A suitable topic label is
+\texttt{resonant-lambert-inverse-transseries}. The Borel and
+Mellin statements should cite the established Lambert literature rather
+than replace it. The new package should retain separate status labels
+for conventional proofs, exact finite checks, ordinary numerical
+diagnostics, and future proof-assistant work. No theorem here has been
+compiled in Lean, and no numerical output is presented as a rigorous
+interval enclosure.
+
+The \texttt{AUDIT.md}, \texttt{PROVENANCE.md}, and \texttt{CLAIMS.md}
+files summarize these distinctions outside the TeX article. The package
+does not alter the canonical manuscript or publish any repository commit.
+
+\section{Further research questions}
+\label{sec:questions}
+The following problems are concrete continuations, not premises used
+in the preceding proofs.
+
+\subsection{Sharp large-order constants of the inverse sectors}
+Theorem~\ref{thm:inverse-gevrey} fixes the exponential Borel scale but
+not the full large-order coefficient law. A natural conjecture, for
+fixed $u>0$, is
+\begin{align}
+ C_{2m}(u)&\sim-\frac{4u\Gamma(2m)}{2mA^{2m}}
+                         \cosh(Au/4),\label{eq:conj-even}\\
+ C_{2m+1}(u)&\sim\frac{4u\Gamma(2m+1)}{(2m+1)A^{2m+1}}
+                         \sinh(Au/4).\label{eq:conj-odd}
+\end{align}
+These are \emph{unproved in this article}. For each fixed number of
+factors in \eqref{eq:C-formula}, the contribution of one large even
+index and the remaining linear indices leads to the displayed
+hyperbolic series. A proof must control the sum over the number of
+factors uniformly with $m$; the current $e^{K\sqrt n}$ upper bound
+is not sufficient for that interchange. The conjecture would distinguish
+the amplitudes at $+A$ and $-A$ and sharpen the reversion calculus.
+
+\subsection{Full inverse Borel continuation}
+Does $\widehat V_u$ continue along every path avoiding an explicit
+additive arithmetic action set? Can one describe its positive-axis
+singularity directly from \eqref{eq:C-formula}, rather than from
+analytic inversion of the forward lateral functions? The answer would
+turn the present exact transport identities into a more complete
+resurgent classification of the formal inverse itself.
+
+\subsection{Uniform Stokes transport away from exact resonance}
+The hypergeometric kernel \eqref{eq:general-borel} is jointly analytic
+in the order parameter. Deriving its full discontinuity in closed
+hypergeometric coordinates, and then resolving the scaled regime
+$\eps=\lambda/X$, should connect the arcsinh crossover to moving
+arithmetic Stokes amplitudes. All branch choices and the distinction
+between core and full function must remain explicit.
+
+\subsection{From core folds to full complex Lambert folds}
+Theorem~\ref{thm:folds} concerns only the singular core. One may ask
+whether suitable sectors permit a full-function deformation of those
+critical loci, and whether the resulting inverse is uniformly described
+by a quadratic local normal form with an exponentially small
+arithmetic displacement. Direct substitution into a complex scaled
+path is not enough: the full Lambert sum must remain in a domain of
+analytic continuation with controlled remainders.
+
+\subsection{Character pairs and higher collision multiplicity}
+The two-character family in \cite{BD2025} permits the same inverse
+questions with twisted divisor weights. Primitive character parities
+should determine the vanishing order of perturbative sectors. Another
+extension is the product-lattice sum over $r$ positive integers, whose
+Mellin kernel contains $r$ zeta factors. At equal indices it has an
+$(r+1)$-fold pole and an $r$-th degree logarithmic core. Its inverse
+would naturally introduce $e^{-cY^{1/r}}$ sectors and nested Stokes
+levels. Explicit centered order-jet formulas are a tractable first step.
+
+\subsection{Certified computation and formal proof organization}
+An interval implementation of the logarithmic Borel integral would
+provide a practical check of exponentially small corrections without
+subtraction of enormous nearly equal terms. On the formal side, the
+coefficient formula, sign theorem, Catalan degree, and finite
+composition estimates are natural initial targets. Mellin contour
+shifts, parameter-uniform asymptotics, and analytic Stokes transport
+form a separate, substantially larger analytic formalization task.
+
+\section*{Conclusion}
+\addcontentsline{toc}{section}{Conclusion}
+The double Lambert specialization connects classical polylogarithms,
+Gamma--Stieltjes order calculus, arithmetic Borel singularities, and
+nonlinear transseries inversion in a single exactly normalized example.
+The triple pole creates a quadratic logarithmic core; its scaled inverse
+has an arcsinh crossover. Trivial-zero parity produces a full missing
+forward sector, restored both by the second order jet and, through a
+different mechanism, by nonlinear reversion. The reversion coefficients
+have an exact rational formula, Catalan top degree, alternating signs,
+and a sharp Borel scale despite ordinary divergence. Finally, the exact
+arithmetic jump survives inversion as a nested exponential hierarchy,
+and the first real averaging defect has the particularly simple
+coefficient $-1$. These results provide a focused bridge between the
+two repository areas while keeping classical input, proposed refinements,
+proofs, tests, and unresolved extensions separate.
+
+\begin{thebibliography}{20}
+\bibitem{BD2025}
+D. Broadhurst and D. Dorigoni,
+\emph{Resurgent Lambert series with characters},
+arXiv:2507.21352, version 1 (28 July 2025), especially Sections 2.3 and 3.
+\url{https://arxiv.org/html/2507.21352v1}.
+
+\bibitem{BD2026}
+D. Broadhurst and D. Dorigoni,
+\emph{Resurgent Lambert series from Feynman and beyond},
+arXiv:2607.14020v1 (15 July 2026), Section 4, equations (30)--(31).
+\url{https://arxiv.org/html/2607.14020v1}.
+
+\bibitem{DK2021}
+D. Dorigoni and A. Kleinschmidt,
+\emph{Resurgent expansion of Lambert series and iterated Eisenstein integrals},
+Communications in Number Theory and Physics \textbf{15} (2021), 1--57;
+arXiv:2001.11035.
+\url{https://arxiv.org/abs/2001.11035}.
+
+\bibitem{DLMFpolylog}
+NIST Digital Library of Mathematical Functions, Section 25.12,
+\emph{Polylogarithms}, especially equation 25.12.10.
+\url{https://dlmf.nist.gov/25.12}.
+
+\bibitem{DLMFzeta}
+NIST Digital Library of Mathematical Functions, Section 25.4,
+\emph{Reflection Formulas} for the Riemann zeta function.
+\url{https://dlmf.nist.gov/25.4}.
+
+\bibitem{DLMFgamma}
+NIST Digital Library of Mathematical Functions, Section 5.7,
+\emph{Series Expansions} for the Gamma function.
+\url{https://dlmf.nist.gov/5.7}.
+
+\bibitem{repo-polylog}
+V. Reshetnikov, \emph{ProveIt: Analysis/Polylogarithms}, repository
+overview, inspected 12 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/6207c3d40047fd8d1400a4d509fee71c9a3a8132/Analysis/Polylogarithms}.
+
+\bibitem{repo-bridge}
+V. Reshetnikov, \emph{ProveIt}, manuscript chapter
+\texttt{08-bridges.tex}, ``One normalized functional equation for all
+derivative bridges,'' inspected at the same commit.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/6207c3d40047fd8d1400a4d509fee71c9a3a8132/Analysis/Polylogarithms/docs/manuscript/chapters/08-bridges.tex}.
+
+\bibitem{repo-transseries}
+V. Reshetnikov, \emph{ProveIt: Analysis/Transseries}, overview and
+\texttt{docs/series-and-transseries/README.md}, inspected 12 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/6207c3d40047fd8d1400a4d509fee71c9a3a8132/Analysis/Transseries}.
+
+\bibitem{repo-incoming}
+V. Reshetnikov, \emph{ProveIt: docs/incoming}, inventory and README,
+inspected at the same commit.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/6207c3d40047fd8d1400a4d509fee71c9a3a8132/docs/incoming}.
+
+\bibitem{prior-jets}
+\emph{Resonant Polylogarithmic Jets and Convergent Inverse Transseries:
+Gamma normal forms, optimal dilation filters, arithmetic sector selection,
+and exact order tuning}, research draft prepared for V. Reshetnikov,
+11 October 2026. Library source \texttt{resonant\_polylog\_transseries.tex};
+abstract and selected normal-form statements inspected.
+
+\bibitem{prior-folds}
+\emph{Resonant Polylogarithm Inversion: Uniform Order Crossover,
+Gamma--Zeta Fold Loci, and Convergent Exponential Sectors}, research draft
+prepared for V. Reshetnikov, 11 October 2026. Library source
+\texttt{article(20261012-045040).tex}; abstract and selected core statements
+inspected.
+
+\bibitem{prior-fermi}
+\emph{Resonant Polylogarithm Transseries: Gamma Borel Kernels,
+Cyclotomic Order Jets, and Sharp Dilogarithm Reversion}, research draft
+prepared for V. Reshetnikov, 11 October 2026. Library source
+\texttt{article(20261012-044824).tex}; abstract and selected convergence
+statements inspected.
+\end{thebibliography}
+\end{document}
