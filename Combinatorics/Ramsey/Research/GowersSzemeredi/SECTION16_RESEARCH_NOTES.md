@@ -5297,6 +5297,17 @@ The bridge (stub-checked, pinned in CompletionAudit) proves:
 * `theorem_1_3_L0_nineteen_le`: `Theorem13AtFrom 0 19`, the density constant
   `2^(-2^k)`.
 
+**L.16o: the exact class table to dimension 14 (2026-10-12).** The
+`d + 2` / `L + 0` thresholds of 17 and 19 come from small dimensions. Two
+more exact entries, `20323` and `40154` for `l = 13, 14`, are
+kernel-evaluated (`D₁₄ ≈ 2^40154`). With them the invariant base moves to
+`k = 14` (margin about 5000), which lowers both thresholds by one.
+`Proofs18TightClassesFejerZ` and the Z chain (`assemble_z.py`, generated from
+X) give `theorem_18_1_d2_sixteen_le_of_profiles_poly` (`d ≥ 16`) and
+`theorem_18_2_L0_eighteen_le_of_profiles_poly` (`L ≥ 18`). The model
+(`model_z.py`) shows that more exact entries gain nothing: tables to `16`, `18`
+and `20` give the same thresholds.
+
 The model (`models/model_w_chain.py`) puts the method's limits here. The
 asymptotic ratio `24` is below `32` but above `16`, so `d + 2` and `L + 0`
 need a smaller class constant beyond the table, and the true one is about
