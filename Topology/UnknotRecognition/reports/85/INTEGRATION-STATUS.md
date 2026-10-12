@@ -167,6 +167,16 @@ importing the producer. The two previously diagnostic mixed Fibonacci cases
 now certify; all 37 focused tests pass, including explicit omitted-column
 expansion and literal Regina cuts. The source audit accepts 85/106 cuts, independently replays all 85,
 and agrees with 78 literal Regina cuts; seven accepted inputs exceed the
-expansion cap. All 83 earlier certificate hashes are unchanged. Full
-regression is still running. This remains a supplied-cut terminal criterion, with no global
+expansion cap. All 83 earlier certificate hashes are unchanged. The full Regina-enabled
+regression passes all 1,678 tests with no skips, including 13,846 expanded-sheet
+and 196,712 marked-cover comparisons. This remains a supplied-cut terminal criterion, with no global
 quasi-polynomial recognition claim. Delivered report contents are unchanged.
+
+The direct v5 audit independently certifies the same 85 cuts among all 96
+without three-handles. Six five-pair benchmarks retain both gains and
+regressions: the nine-tetrahedron 256-copy case improves 2.281x, while the
+other five cases favor explicit Regina construction. Binary-capacity queries
+at 2^16384 finish in 46.349 and 43.830 seconds; complete serialized certificates
+are 138,607,389 and 137,651,867 bytes. A separate two/three-handle probe has
+seven promising candidate censuses, but no production acceptance is added
+without an independently verified reduction adapter.
