@@ -114,6 +114,7 @@ modification times.
 | `101/` | `ProveIt_Flag_Regularization_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | occurrence-preserving affine flag regularization and the missing general native atlas exporter | placed only; delivered tests not rerun and patches unapplied |
 | `102/` | `ProveIt_Positive_Cancellation_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | complete rectangular positive cancellation, optimal row deferral and exact passive-count transport | placed only; delivered tests not rerun and patches unapplied |
 | `103/` | `ProveIt_Relative_Top_Handles_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | relative top-handle elimination, universal source trees, homological short-row rigidity and exceptional-row kernels | placed only; delivered tests not rerun and patches unapplied |
+| `104/` | `ProveIt_Private_Cocore_Transport_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | owner-state private-cocore transport, source-unit normalization and bounded-exception atlases | placed only; delivered tests not rerun and overlay unapplied |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -832,3 +833,36 @@ weighted forest objectives, source-relative port preservation, algebraic
 progress witnesses and generic affine regularization have different source
 contracts. Integration and comparison with the maintained implementation
 are separate work.
+
+The subsequent weighted-forest integration is recorded in added status
+files for [99](99/INTEGRATION-STATUS.md) and [100](100/INTEGRATION-STATUS.md).
+It minimizes retained raw incidence with a maximum-weight dual tree and
+unchanged source verifiers. The fresh 120-source audit improves completed
+cut censuses from 102 to 104, preserves all earlier successes and agrees
+with 97 fresh literal positive references. The original queue remains
+available. Report 99's restricted exact solver was separately tested from
+an isolated copy; it adds no bare-core completions on this bank and remains
+a research component. Delivered report files are unchanged.
+
+
+## Further arrival of 12 October 2026: report 104
+
+The private-cocore transport archive from `dc68ebe67` is preserved intact as
+report 104, with only its single wrapper removed. All 34 extracted files
+were inventoried by Git blob identity and have no prior history match. The
+complete [article](104/article/private_cocore_transport.tex), PDF, code,
+proposed overlay and supplied evidence remain as delivered. The package is
+pinned to `32008c6397fa6f3613c4dda277ab18e99dcdd36e`; its source audit
+records the three maintained files reviewed and the unreviewed incoming
+archive boundary.
+
+The report studies a query-specific owner algebra, passive transport under
+source-unit matching normalization and bounded-exception search. Its
+quasi-polynomial statement is conditional on the exception parameter and
+encoded-input bounds; it does not claim a general recognizer. No test,
+patch application or soundness review was performed during placement.
+Delivered numerical claims remain the author's evidence. Existing ignore
+rules apply to checksum manifests without special handling; no checksum
+or line-ending audit was made. The committed archive is retired and remains
+recoverable from its arrival commit. See the separate
+[placement record](../synthesis/data/incoming-104-placement.json).
