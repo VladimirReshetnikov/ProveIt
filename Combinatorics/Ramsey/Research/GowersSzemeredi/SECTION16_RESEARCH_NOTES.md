@@ -4787,6 +4787,46 @@ is to retain these certificates through short-parent covers, final-axis
 tiling, family linearization and the structural cover induction. The
 polynomial profile alone does not prove those faithful cover statements.
 
+## L.26 Genuine contained-step tiling and retiled family linearity (2026-10-11)
+
+`Proofs16IntegerContainedSteps` proves that an ordinary progression `R`
+with at least two points, contained in an ordinary progression `B`, has
+step `p * B.step` for a positive natural `p`, with
+`p * (R.length-1) <= B.length-1`. The first two points give the step
+ratio, and the first and last points give the span bound. Natural steps
+in `[0,N)` are less than `N` when the progression has two points, so
+equality of modular steps recovers equality of these actual integer steps.
+Canonical reduction also reflects carrier containment.
+
+If `I` is an ordinary progression parallel to `B` and at least as long,
+the same span bound supplies the prescribed-step budget for tiling `I`
+into progressions of lengths `v-1` or `v`. The target partition covers all
+points and every cell has `R.step`. This is independent of the modulus.
+
+`Proofs16IntegerProductTiling` proves that casting a natural partition
+inside `[0,N)` preserves the exact partition. Appending each final-axis
+cell to an ascending integer base box retains an ascending certificate and
+minimum width `v-1`. Unlike the relative modular-step construction, this
+integer construction needs no prime modulus, unit step or short-parent
+condition; the natural containment and parallelism suffice.
+
+`Proofs16IntegerRetiledRecurrence` retains the recurrence estimate when
+the base partition is retiled along an ordinary final axis. The output
+boxes and their base projections have ascending integer certificates;
+their final axes have genuine representatives. Product assembly and
+flattening preserve the original width, support and frequency-times-step
+estimates. The common frequency graphs give one partition on which every
+family member is linear. `IntegerSection16RecurrenceProfileWith.retiled_family`
+connects this construction to the actual explicit profile of L.25.
+
+`RetiledIntegerFidelityAudit` checks eleven new public theorems over
+1,492 native modules, with only the three approved standard axioms. This
+closes the final-axis tiling and retiled-family certificate propagation
+for the displayed integer parents. The remaining Section 16 work must
+produce those parents in genuine short-parent relation covers and retain
+the certificates through the family and structural cover induction. The
+full statement-by-statement source-fidelity audit is also still pending.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
