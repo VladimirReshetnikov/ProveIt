@@ -5558,6 +5558,12 @@ chain `Proofs18Cover{Modulus,Density,Exponents}FejerJT3`; and
 `tDegT3`. In the bridge: Theorem 18.2 and Corollary 18.7 at `L + 0` from
 `L = 13`, `W(k, r) ≤ 2^2^r^2^2^k` and Theorem 1.3 with density exponent
 `2^(-2^k)` for `k ≥ 13`. Theorem 18.1 does not move.
+The polynomial Theorem 16.2 and Corollary 16.11 move with the class table:
+`Proofs16PolynomialFejerT3` (`assemble_polyt3.py`) gives Theorem 16.2 with graph
+count exponent `2^tDegT3 k` and Corollary 16.11 with
+`e⁻¹ ≤ (2/α)^(2^(2·tDegT3 k + 7k + 38))` (`theorem_16_2_polynomial_fejerT3`,
+`corollary_16_11_polynomial_fejerJT3`). `tDegT3` is 6–22% below `tDegZ` in
+dimensions 3–14.
 
 **L.16z: where the thresholds stand, measured (2026-10-12).** The results are
 Theorem 18.1 at `d + 4` in every degree, `d + 3` from 8 and `d + 2` from 11;
