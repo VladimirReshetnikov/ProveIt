@@ -1,13 +1,21 @@
 Gowers Szemeredi formalization checkpoint — 2026-10-11
 
 Scope
-  Post-merge integration: origin/main at623fb2007 adds the Fejer-J and
-  low-degree bounds to CompletionAudit. The current expanded fidelity graph
-  has1,652 modules and is rebuilding before the exported facade. The direct
-  43-module purification/sign inputs are unchanged by the merge and retain
-  their completed checks atd2f0c80cf. The incoming and global gates are not
-  certified by that narrower checkpoint. Semantic review remains86/120;
-  all remaining original scope and bound obligations are preserved.
+  Source comparison now covers all 120 numbered statements. This is an
+  inspection count, not a claim that all original statements are proved.
+  Theorem 18.2 and Corollary 18.7 match the printed bounds and require
+  positive-step integer progressions. Theorem 18.1 also has a proved
+  ordinary-integer partition companion. Original stronger intermediate
+  bounds, characteristic ranges and some geometry/bound combinations remain
+  open in verification/2026-10-12-source-fidelity-review.json.
+
+  The post-merge PurifiedContextFidelityAudit is still running. Its original
+  parent shell has exited, so the exported facade must be started explicitly
+  after the queued direct audit; do not assume it will run automatically.
+  WalshScopeCoreAudit is queued for the new Boolean all-prime proof,
+  characteristic-two and sign counterexamples, endpoint/degeneracy
+  extensions, and recovery of the original 16.5 coefficient in the corrected
+  Section 16 context. Those drafts are not yet certified.
 
   Latest direct checkpoint: PurifiedContextCoreAudit passes over 43 native
   modules with only the three approved axioms. The ORIGINAL 2^-73 error
@@ -16,9 +24,9 @@ Scope
   modulus threshold depending on alpha,b. Lemma13.1 and Corollary13.2 extend
   to alpha=0; their unrestricted negative-sign readings are refuted at the
   prime modulus2, as is the strengthened Proposition12.1 sign counterexample.
-  Source review now covers86/120, with34 unread. The exact fixed-real-bound
+  Source review now covers120/120; unresolved entries remain open. The exact fixed-real-bound
   floor convention in13.4 and other inspected scope/bound obligations remain
-  open. The expanded full fidelity gate is running, followed by the facade;
+  open. The expanded full fidelity gate is running; the facade is still pending;
   neither broad gate is certified by the43-module direct audit. Goal active.
 
   Latest direct checkpoint: ComponentTradeoffCoreAudit passes over 15 native
