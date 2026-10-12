@@ -1,0 +1,1554 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[a4paper,margin=26mm,headheight=14pt]{geometry}
+\usepackage{microtype,booktabs,array,longtable,enumitem,xcolor}
+\usepackage{fancyhdr,hyperref}
+\definecolor{ink}{HTML}{183447}
+\definecolor{accent}{HTML}{226D7A}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+ pdftitle={Order Derivatives Recover Hidden Polylogarithmic Transseries},
+ pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Polylogarithmic order jets and hidden transseries}
+\fancyhead[R]{\small 12 October 2026}\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}\setlength{\parindent}{1.15em}
+\setlist{itemsep=3pt,topsep=4pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}
+\newcommand{\ii}{\mathrm i}\newcommand{\e}{\mathrm e}
+\newcommand{\dd}{\,\mathrm d}\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\Res}{\operatorname{Res}}\newcommand{\PV}{\operatorname{PV}}
+\newcommand{\FP}{\operatorname{Fp}}\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\B}{\mathcal B}\newcommand{\Sp}{\mathcal S_+}
+\newcommand{\Sm}{\mathcal S_-}\newcommand{\Med}{\mathcal M}
+\newcommand{\eps}{\varepsilon}\newcommand{\muh}{\widehat\mu}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\newcommand{\pin}{\texttt{7bd1ce58abe522b83cd3368bbafa1be97837b75d}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\setlength{\parindent}{0pt}
+\vspace*{9mm}
+{\color{accent}\large SPECIAL FUNCTIONS AND TRANSSERIES\hfill RESEARCH REPORT}\par
+\vspace{19mm}
+{\color{ink}\fontsize{29}{35}\selectfont\bfseries
+Order Derivatives Recover\\[3pt]
+Hidden Polylogarithmic\\[3pt]
+Transseries}\par
+\vspace{10mm}
+{\Large Exact completion, resonance jets,\\[3pt]
+and finite reflection rigidity}\par
+\vspace{12mm}
+{\large Prepared for Vladimir Reshetnikov and the ProveIt research program}\par
+\vspace{4mm}
+{12 October 2026}\par
+\vspace{12mm}
+\begin{abstract}
+We study shifted Lambert--polylogarithm sums
+$F_s(t,a)=\sum_{\ell\ge0}\Li_s(\e^{-(\ell+a)t})$.
+At each positive integer order $m$, a reflection combination has a finite
+algebraic expansion but a generally nonzero, exactly computable
+exponential remainder. Its first order derivative restores a divergent
+series with double Borel poles. With an explicit Borel normalization, the
+Stokes discontinuity of this derivative is exactly $\pi\ii$ times the
+hidden remainder. We also identify the derivative itself: its linear
+median requires a convergent dual correction with logarithmic divisor
+weights. This identification is proved by Mellin inversion, not inferred
+from the discontinuity.
+
+For arbitrary finite sets of real shifts, we classify all terminating
+integer-order tails and give finite Fourier--M\"obius certificates.
+A nonzero reflection-compatible measure on $r$ atoms has a hidden action
+among the first $r$ lattice actions; midpoint grids show the bound is
+sharp. More generally, the joint kernel of the zeroth and first order
+ tails, on finite measures, is precisely the span of Lebesgue measure.
+An all-order collision formula shows how reflection removes the explicit
+Stieltjes term and lowers the logarithmic degree at every order jet.
+Proofs, a source audit, and reproducible exact and numerical checks are
+included. Scalar Lambert resurgence and the order-one $q$-product
+completion are credited to earlier literature and repository work.
+\end{abstract}
+\vfill
+\noindent\small\textbf{Status.} Conventional mathematical proofs are supplied.
+The results have not been independently refereed or proof-assistant
+formalized. The intended contribution is the combined all-order,
+all-real-shift formulation and its finite rigidity consequences;
+first-priority in the literature is not asserted.
+\end{titlepage}
+\hypersetup{pageanchor=true}\setcounter{page}{1}
+\begingroup
+\small\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{The problem and the contribution}
+\label{sec:scope}
+
+A finite asymptotic expansion need not determine an analytic function.
+In the family studied here, reflection can annihilate every coefficient
+of a divergent tail while leaving infinitely many exponentially small
+terms. The point of this report is to recover those terms from a
+\emph{specified analytic deformation}: differentiation in the
+polylogarithm order. We prove both the recovery formula and the analytic
+completion of the differentiated function.
+
+The variables and the principal observables are
+\begin{align}
+ F_s(t,a)&=\sum_{\ell\ge0}\Li_s(\e^{-(\ell+a)t})
+       =\sum_{k\ge1}\frac{\e^{-akt}}{k^s(1-\e^{-kt})},
+       \qquad t>0,\quad0<a<1,\label{eq:F}\\
+ \eps_m&=(-1)^{m+1},\qquad m\in\N,\quad m\ge1,\notag\\
+ K_m(t,a)&=F_m(t,a)+\eps_mF_m(t,1-a),\label{eq:K}\\
+ J_m(t,a)&=\left.\partial_s\left(F_s(t,a)
+                    +\eps_mF_s(t,1-a)\right)\right|_{s=m}.
+                    \label{eq:J}
+\end{align}
+The sign $\eps_m$ is held fixed during differentiation.
+Let $P_m$ denote the explicit finite Laurent polynomial in
+Theorem~\ref{thm:reflection}, and let $P_m^{[1]}$ denote the finite
+power--logarithmic part in Proposition~\ref{prop:jet-tail}.
+The main relations have the form
+\begin{align}
+ K_m&=P_m+N_m,\label{eq:overview-base}\\
+ J_m&=P_m^{[1]}+t^m\Med\widetilde J_m+\Xi_m,\label{eq:overview-jet}\\
+ t^m(\Sp-\Sm)\widetilde J_m&=\pi\ii N_m.\label{eq:overview-jump}
+\end{align}
+Here $\widetilde J_m$ is a Gevrey-1 formal series with an explicitly
+meromorphic Borel transform. Both $N_m$ and $\Xi_m$ are convergent series
+in $Q=\e^{-4\pi^2/t}$; the coefficients of $\Xi_m$ include $\log t$.
+The linear median $\Med=(\Sp+\Sm)/2$ is defined only for the displayed
+linear summation problem. No claim about nonlinear median operations
+is needed.
+
+\subsection{What is classical, and what is developed here}
+The polylogarithm, Hurwitz-zeta special values, Bernoulli Fourier
+expansions, and the zeta functional equations used below are classical
+\cite{dlmf}. Dorigoni--Kleinschmidt analyze Lambert-series resurgence,
+including the survival of nonperturbative terms when an odd-integer
+asymptotic tail vanishes \cite[Section~2.2]{dk}. Thus neither the existence
+of hidden exponential terms nor the general strategy of deforming a
+parameter is being presented as a new phenomenon.
+
+Fantini--Rella study $q$-Pochhammer resurgence and character-weighted
+combinations \cite{fr}. A ProveIt report already gives an exact
+Mellin--Borel completion for the order-one shifted $q$-factorial and a
+finite Fourier--M\"obius criterion for rational weights \cite{repoq}.
+Since $F_1(t,a)=-\log(\e^{-at};\e^{-t})_\infty$, that report directly
+overlaps the $m=1$ background of this one.
+
+The development here is the explicit first-order-jet completion for all
+$m\ge1$ and all real $0<a<1$, the normalization-sensitive identity
+\eqref{eq:overview-jump}, arbitrary-real-atomic reflection rigidity, its
+sharp action-detection theorem, and the general-measure one-jet kernel.
+The all-order collision formula supplies a separate bridge to
+Hurwitz-zeta derivatives, harmonic numbers, and Stieltjes constants.
+These are proved independently below. A limited literature comparison
+cannot certify that every formula is absent from all earlier work.
+
+\subsection{Repository boundary}
+The detailed comparison with \cite{repoq} is pinned to
+\begin{center}\small\pin.\end{center}
+The Polylogarithms index, the Transseries index, and the incoming-directory
+instructions were also inspected \cite{repoindex}. The binary incoming
+archives were inventoried but not unpacked in this session. The
+552-page combined Polylogarithms manuscript and the whole Transseries
+collection were not audited. In particular, no claim is made to resolve
+the separate S6/S8 polylogarithmic conjectures or to review every
+incoming resonance manuscript. Section~\ref{sec:audit} records a narrow
+cross-reference correction and distinguishes it from mathematical
+corrections required by the new double-pole problem.
+
+\section{Analytic setup and Mellin inversion}
+\label{sec:mellin-setup}
+
+We use $B_n(a)$ defined by
+\begin{equation}
+ \frac{z\e^{az}}{\e^z-1}=\sum_{n\ge0}B_n(a)\frac{z^n}{n!},
+ \quad B_n=B_n(0),\quad B_1=-\tfrac12.
+ \label{eq:Bernoulli}
+\end{equation}
+Write $H_n^{(r)}=\sum_{k=1}^nk^{-r}$, $H_n=H_n^{(1)}$,
+and $H_0^{(r)}=0$. The Stieltjes convention is
+\begin{equation}
+ \zeta(1+u)=\frac1u+\sum_{j\ge0}\frac{(-1)^j\gamma_j}{j!}u^j,
+ \qquad\gamma_0=\gamma.
+ \label{eq:Stieltjes}
+\end{equation}
+A prime on $\zeta(w,a)$ always denotes differentiation in its first
+argument, not in $a$.
+
+\begin{lemma}[Analyticity and Mellin representation]\label{lem:Mellin}
+For real $0<a<1$, $F_s(t,a)$ is entire in $s$ and holomorphic in
+$\Re t>0$. For $t>0$ and $c>\max(1,1-\Re s)$,
+\begin{equation}
+ F_s(t,a)=\frac1{2\pi\ii}\int_{(c)}
+  \Gamma(w)\zeta(w,a)\zeta(s+w)t^{-w}\dd w.
+ \label{eq:MB}
+\end{equation}
+Every fixed order derivative is obtained by replacing $\zeta(s+w)$
+with its corresponding derivative. These operations are uniform on
+compact subsets of the stated domains, including real $a$-intervals
+strictly inside $(0,1)$.
+\end{lemma}
+\begin{proof}
+The second series in \eqref{eq:F} and each of its $s$-derivatives are
+normally convergent on such compact sets: their terms are bounded by
+$C\e^{-\delta k}k^M(1+\log k)^r$ for suitable $\delta>0$ and $M$.
+Expanding $(1-\e^{-kt})^{-1}$ gives the first series and the absolutely
+convergent double exponential sum. Insert
+\[
+ \e^{-x}=\frac1{2\pi\ii}\int_{(c)}\Gamma(w)x^{-w}\dd w
+\]
+into that sum. The two Dirichlet series converge absolutely when
+$c>1$ and $c+\Re s>1$. Exponential vertical decay of $\Gamma$ justifies
+Fubini and differentiation. This proves \eqref{eq:MB}.
+\end{proof}
+
+The standard identities needed later are
+\begin{align}
+ \zeta(-k,a)&=-\frac{B_{k+1}(a)}{k+1},\qquad k\ge0,
+       \label{eq:zeta-B}\\
+ B_n(1-a)&=(-1)^nB_n(a),\label{eq:B-reflection}\\
+ \frac{B_n(a)}{n!}&=-\sum_{d\ne0}\frac{\e^{2\pi\ii da}}{(2\pi\ii d)^n},
+       \qquad n\ge2,\label{eq:B-Fourier}\\
+ \zeta(w,a)&=2\Gamma(1-w)(2\pi)^{w-1}
+  \left(\sin\frac{\pi w}{2}\,C_{1-w}(a)
+             +\cos\frac{\pi w}{2}\,S_{1-w}(a)\right),
+       \quad\Re w<0,\label{eq:HFE}\\
+ \zeta(z)&=2^z\pi^{z-1}\sin\frac{\pi z}{2}
+                     \Gamma(1-z)\zeta(1-z),\label{eq:RFE}
+\end{align}
+where $C_v(a)=\sum_{d\ge1}\cos(2\pi da)d^{-v}$ and
+$S_v(a)=\sum_{d\ge1}\sin(2\pi da)d^{-v}$ whenever these series converge
+absolutely. The displayed applications of \eqref{eq:HFE} are on lines
+where they do. Equations \eqref{eq:zeta-B}--\eqref{eq:RFE} are standard
+\cite[Sections~24.8, 25.4, 25.11]{dlmf}.
+
+Contour shifts to any fixed negative nonintegral line are justified by
+vertical-strip bounds for the zeta functions and their derivatives,
+together with the exponential factor from $\Gamma(w)$. They give
+Poincar\'e expansions as $t\to0^+$, with a remainder estimated by the
+new vertical integral. For complex $t$, the same argument works on
+closed subsectors of $|\arg t|<\pi/2$. We do not obtain order derivatives
+by differentiating a nonuniform, noninteger-order expansion: we first
+differentiate the convergent Mellin integral.
+
+\section{Collision jets and Stieltjes cancellation}
+\label{sec:collision}
+
+At $s=m\ge1$, the pole of $\zeta(s+w)$ meets the Gamma pole at
+$w=1-m$. This collision controls the logarithmic part of the expansion.
+The following coefficient formula handles every derivative order at
+once.
+
+\begin{theorem}[All-order collision residue]\label{thm:collision}
+Set $n=m-1$, $L=\log t$, and
+\begin{equation}
+ B_{n,a}(u)=u\Gamma(-n+u)\zeta(-n+u,a).
+ \label{eq:Bcollision}
+\end{equation}
+This function is holomorphic at $u=0$. The residue at $w=-n$ in the
+Mellin representation of $\partial_s^rF_s(t,a)|_{s=m}$ is
+\begin{equation}
+ (-1)^rt^n\left\{
+ r!\coef{u}{r+1}\bigl(\e^{-uL}B_{n,a}(u)\bigr)
+                  +\gamma_r B_{n,a}(0)\right\},\qquad r\ge0.
+ \label{eq:collision-general}
+\end{equation}
+In particular, this is a polynomial in $L$ of degree at most $r+1$.
+\end{theorem}
+\begin{proof}
+The singular and constant terms of the order derivative are
+\[
+ \zeta^{(r)}(1+u)=\frac{(-1)^rr!}{u^{r+1}}
+                            +(-1)^r\gamma_r+O(u).
+\]
+The remaining factors are $t^n\e^{-uL}B_{n,a}(u)/u$.
+The singular term selects the coefficient of $u^{r+1}$, while the
+constant term selects $B_{n,a}(0)$. Every $O(u)$ term has zero residue.
+This proves \eqref{eq:collision-general}, including all signs and
+factorials.
+\end{proof}
+
+For reflection, introduce
+\begin{equation}
+ Z_m(w,a)=\zeta(w,a)+\eps_m\zeta(w,1-a).
+ \label{eq:Z}
+\end{equation}
+By \eqref{eq:zeta-B} and \eqref{eq:B-reflection},
+$Z_m(1-m,a)=0$. Consequently the Gamma singularity in
+\begin{equation}
+ A_{m,a}(u)=\Gamma(1-m+u)Z_m(1-m+u,a)
+ \label{eq:Acollision}
+\end{equation}
+is removable.
+
+\begin{corollary}[Reflection removes one logarithmic degree]
+\label{cor:collision-reflection}
+For the fixed-parity order jet
+$\partial_s^r(F_s(t,a)+\eps_mF_s(t,1-a))|_{s=m}$, the collision
+contribution is exactly
+\begin{equation}
+ (-1)^rr!t^{m-1}\coef{u}{r}
+                       \bigl(\e^{-uL}A_{m,a}(u)\bigr).
+ \label{eq:collision-reflected}
+\end{equation}
+There is no explicit $\gamma_r B(0)$ term, and the logarithmic degree
+is at most $r$. Its coefficient of $L^r$ is $t^{m-1}A_{m,a}(0)$.
+\end{corollary}
+\begin{proof}
+For the reflected combination, the function in
+\eqref{eq:Bcollision} is $uA_{m,a}(u)$, whose constant term is zero.
+Substitute into Theorem~\ref{thm:collision}. The coefficient of $L^r$
+comes from $(-uL)^r/r!$; its sign cancels the external $(-1)^r$.
+\end{proof}
+
+This cancellation refers to the explicit Stieltjes constants contributed
+by the pole at $1$. It does not say that Hurwitz-zeta derivatives cannot
+be reexpressed in bases involving other constants. It also does not
+remove all logarithms: a first jet usually has a $t^{m-1}\log t$ term.
+
+\subsection{Harmonic-number generation of the collision coefficients}
+The finite Gamma factor has the convergent local expansion
+\begin{equation}
+ u\Gamma(-n+u)=\frac{(-1)^n}{n!}
+ \exp\left((H_n-\gamma)u+
+ \sum_{r\ge2}\frac{H_n^{(r)}+(-1)^r\zeta(r)}r u^r\right),
+ \qquad |u|<1.
+ \label{eq:Gamma-harmonic}
+\end{equation}
+Indeed, the left side equals
+$(-1)^n\Gamma(1+u)\prod_{k=1}^n(1-u/k)^{-1}/n!$.
+Taking its local logarithm proves \eqref{eq:Gamma-harmonic}. Together
+with the Taylor coefficients of $\zeta(-n+u,a)$, this gives a finite,
+algorithmic expression for every collision jet. Only finitely many
+harmonic sums and Hurwitz-zeta derivatives are required at each order.
+
+For example, with $Z_j=Z_m^{(j)}(1-m,a)$ and $h=H_{m-1}-\gamma$,
+\begin{align}
+ A_{m,a}(0)&=\frac{(-1)^{m-1}}{(m-1)!}Z_1,\notag\\
+ A_{m,a}'(0)&=\frac{(-1)^{m-1}}{(m-1)!}
+                               \left(\frac{Z_2}{2}+hZ_1\right),\notag\\
+ \coef{u}{2}A_{m,a}(u)&=\frac{(-1)^{m-1}}{(m-1)!}
+ \left(\frac{Z_3}{6}+\frac{hZ_2}{2}
+       +\frac{h^2+H_{m-1}^{(2)}+\zeta(2)}2 Z_1\right).
+ \label{eq:A-coefficients}
+\end{align}
+The second-order reflected collision is therefore
+$t^{m-1}(A(0)L^2-2A'(0)L+A''(0))$.
+This exact formula already reaches the Gamma/polygamma and Stieltjes
+part of the Polylogarithms program without conjectural constant
+reduction.
+
+\section{The ordinary integer-order Borel kernel}
+\label{sec:base-borel}
+
+Before imposing reflection, the integer-order expansion of a single
+shift is
+\begin{equation}
+ F_m(t,a)\sim P_m^F(t,a)+t^{m-1}\widetilde R_{m,a}(t),
+ \qquad\widetilde R_{m,a}(t)=\sum_{j\ge1}c_{m,j}(a)t^{2j},
+ \label{eq:F-expansion}
+\end{equation}
+where
+\begin{align}
+ P_m^F(t,a)&=\frac{\zeta(m+1)}t+
+ \sum_{\substack{0\le k\le m\\k\ne m-1}}
+       \frac{(-t)^k}{k!}\zeta(-k,a)\zeta(m-k)\notag\\
+ &\quad+\frac{(-t)^{m-1}}{(m-1)!}
+ \left(\zeta'(1-m,a)
+       +(H_{m-1}-\log t)\zeta(1-m,a)\right),\label{eq:PF}\\
+ c_{m,j}(a)&=\frac{(-1)^{m-1}B_{m+2j}(a)B_{2j}}
+                         {(m+2j)!\,2j}.
+                         \label{eq:c-coeff}
+\end{align}
+These formulas follow by shifting \eqref{eq:MB}. The pole at $w=1$
+gives the $t^{-1}$ term, the collision is Theorem~\ref{thm:collision}
+with $r=0$, and the trivial zeta zeros leave only the displayed tail.
+
+\subsection{Normalization and continuation}
+For a formal power series with zero constant term we use
+\begin{equation}
+ \B(t^r)=\frac{\xi^{r-1}}{(r-1)!},\qquad
+ \mathcal L_\theta b(t)=\int_0^{\e^{\ii\theta}\infty}
+                                      \e^{-\xi/t}b(\xi)\dd\xi.
+ \label{eq:Borel-normalization}
+\end{equation}
+There is no factor $1/t$ in the Laplace transform. Let
+\begin{align}
+ A_N&=4\pi^2N,\label{eq:actions}\\
+ D_m(N,a)&=\sum_{d\mid N}
+       \frac{\e^{2\pi\ii da}+(-1)^m\e^{-2\pi\ii da}}{d^m}.
+       \label{eq:D}
+\end{align}
+
+\begin{theorem}[Meromorphic simple-pole kernel]\label{thm:base-borel}
+The Borel transform of $\widetilde R_{m,a}$ is
+\begin{equation}
+ \B\widetilde R_{m,a}(\xi)=
+ \frac{2(-1)^{m-1}}{(2\pi\ii)^m}
+ \sum_{N\ge1}D_m(N,a)\frac{\xi}{A_N^2-\xi^2}.
+ \label{eq:base-kernel}
+\end{equation}
+The series is normally convergent off the lattice $\{\pm A_N:N\ge1\}$.
+At either $\xi=A_N$ or $\xi=-A_N$, its residue is
+\begin{equation}
+ \frac{(-1)^m}{(2\pi\ii)^m}D_m(N,a).
+ \label{eq:base-residue}
+\end{equation}
+A displayed pole is removable exactly when this coefficient vanishes.
+The formal tail is Gevrey-1 and is Borel--Laplace summable in every
+nonreal direction that is compatible with the Laplace exponential.
+\end{theorem}
+\begin{proof}
+Insert \eqref{eq:B-Fourier} and
+$B_{2j}=(-1)^{j+1}2(2j)!\zeta(2j)/(2\pi)^{2j}$ into
+\eqref{eq:c-coeff}. Expand $\zeta(2j)$ as a Dirichlet series, pair the
+positive and negative Fourier indices, and sum
+\[
+ \sum_{j\ge1}\frac{\xi^{2j-1}}{(4\pi^2dn)^{2j}}
+                  =\frac{\xi}{(4\pi^2dn)^2-\xi^2}.
+\]
+This gives \eqref{eq:base-kernel} near zero, with $N=dn$.
+For every $N$, $|D_m(N,a)|\le2\sum_{d\mid N}d^{-m}
+\le2(1+\log N)$. On a compact set, the large-$N$ summands are
+$O((1+\log N)N^{-2})$, proving normal convergence and meromorphic
+continuation. Each rational summand has residue $-1/2$ at both of its
+poles, which gives \eqref{eq:base-residue}.
+
+On a ray separated from the real axis,
+$|A_N^2-\xi^2|\ge c_\theta(A_N^2+|\xi|^2)$.
+Split the sum at $N\asymp1+|\xi|$ to obtain at most logarithmic growth
+at infinity, and $O(\xi)$ at zero. Thus the corresponding Laplace
+integrals converge, and their termwise evaluation is justified.
+Analyticity of the Borel germ in $|\xi|<4\pi^2$ gives the Gevrey-1
+coefficient estimate by Cauchy's inequality. Expanding the integrand
+near zero and estimating the remainder of the Laplace integral gives
+the stated formal expansion of its sum.
+\end{proof}
+
+Reflection removes this entire kernel, since its Bernoulli coefficient
+has degree $m+2j$ and
+$B_{m+2j}(a)+\eps_m B_{m+2j}(1-a)=0$.
+It is essential not to conclude from this that the reflected analytic
+function equals its finite polynomial.
+
+\section{Exact reflection and a convergent dual polylogarithm}
+\label{sec:reflection}
+
+Define
+\begin{align}
+ h_m(d,a)&=\e^{2\pi\ii da}+\eps_m\e^{-2\pi\ii da},\notag\\
+ E_m(N,a)&=\sum_{d\mid N}\frac{h_m(d,a)}{d^m},\label{eq:E}\\
+ \Phi_m(Q,a)&=\sum_{N\ge1}E_m(N,a)Q^N\notag\\
+ &=\sum_{\ell\ge1}\left(\Li_m(\e^{2\pi\ii a}Q^\ell)
+              +\eps_m\Li_m(\e^{-2\pi\ii a}Q^\ell)\right),
+       \quad |Q|<1.\label{eq:Phi}
+\end{align}
+These are normally convergent power series. The factor $(-1)^m$ in
+$D_m$ has changed to $\eps_m=(-1)^{m+1}$ in $E_m$: the two divisor
+sequences encode complementary reflection components.
+
+\begin{theorem}[Exact reflected duality]\label{thm:reflection}
+For every integer $m\ge1$, real $0<a<1$, and $t>0$,
+\begin{equation}
+ K_m(t,a)=P_m(t,a)+\left(\frac{\ii t}{2\pi}\right)^{m-1}
+                         \Phi_m(\e^{-4\pi^2/t},a),
+ \label{eq:reflection-exact}
+\end{equation}
+where the finite Laurent polynomial is
+\begin{align}
+ P_m(t,a)&=\frac{(1+\eps_m)\zeta(m+1)}t
+ +\sum_{\substack{0\le k\le m\\k\ne m-1}}
+       \frac{(-t)^k}{k!}\zeta(m-k)Z_m(-k,a)\notag\\
+ &\quad+\frac{(-t)^{m-1}}{(m-1)!}Z_m'(1-m,a).
+ \label{eq:P-reflection}
+\end{align}
+In particular, $N_m=K_m-P_m$ is given exactly by the convergent dual
+series, not merely by its first exponential term.
+\end{theorem}
+\begin{proof}
+In the Mellin integral for $K_m$, the zeta factor $\zeta(w,a)$ is replaced
+by $Z_m(w,a)$. Shift to $\Re w=-m-\delta$, where $0<\delta<1$.
+The crossed residues are precisely \eqref{eq:P-reflection}: the
+collision loses its logarithm because $Z_m(1-m,a)=0$.
+
+Put $v=1-m-w$ and
+\[
+ H_m(v,a)=\sum_{d\ge1}\frac{h_m(d,a)}{d^{m+v}}.
+\]
+Combining \eqref{eq:HFE}, \eqref{eq:RFE}, and
+$\Gamma(w)\Gamma(1-w)=\pi/\sin(\pi w)$ gives
+\begin{equation}
+ \Gamma(w)\zeta(m+w)Z_m(w,a)
+ =\left(\frac{\ii}{2\pi}\right)^{m-1}(4\pi^2)^{-v}
+              \Gamma(v)\zeta(v)H_m(v,a).
+ \label{eq:FE-product}
+\end{equation}
+For clarity, when $m$ is odd, $Z_m$ keeps the cosine Fourier series;
+when $m$ is even, it keeps the sine Fourier series, with
+$H_m=2\ii S_{m+v}$. In either case the elementary trigonometric factors
+in \eqref{eq:FE-product} reduce to the displayed constant. The identity
+holds across any removable zeros by analytic continuation.
+
+The reflected remainder is consequently
+\begin{equation}
+ \left(\frac{\ii t}{2\pi}\right)^{m-1}
+ \frac1{2\pi\ii}\int_{(1+\delta)}
+  \Gamma(v)\zeta(v)H_m(v,a)X^{-v}\dd v,
+ \qquad X=\frac{4\pi^2}t.
+ \label{eq:reflection-MB}
+\end{equation}
+Both Dirichlet series converge absolutely on this line. Termwise
+Mellin inversion evaluates \eqref{eq:reflection-MB} as
+\[
+ \left(\frac{\ii t}{2\pi}\right)^{m-1}
+ \sum_{d,n\ge1}\frac{h_m(d,a)}{d^m}\e^{-Xdn},
+\]
+which is \eqref{eq:reflection-exact}. All sums in this last expression
+converge absolutely for every $t>0$.
+\end{proof}
+
+\begin{remark}[An exact transseries, not only an asymptotic statement]
+The action set is $4\pi^2\N$. It is locally finite, and the exponential
+block is an ordinary convergent power series in $Q$. Its coefficients
+are explicit divisor sums. The identity therefore supplies an analytic
+realization of the full exponentially small block, while the ordinary
+power expansion contains none of that block's coefficients.
+\end{remark}
+
+\section{The order derivative and its double-pole kernel}
+\label{sec:jet-borel}
+
+\begin{proposition}[Finite part and activated coefficients]
+\label{prop:jet-tail}
+The fixed-parity first jet \eqref{eq:J} has the expansion
+\begin{equation}
+ J_m(t,a)\sim P_m^{[1]}(t,a)+t^m\widetilde J_m(t,a),
+ \qquad\widetilde J_m(t,a)=\sum_{j\ge1}d_{m,j}(a)t^{2j},
+ \label{eq:jet-expansion}
+\end{equation}
+where
+\begin{align}
+ P_m^{[1]}(t,a)&=\frac{(1+\eps_m)\zeta'(m+1)}t+
+ \sum_{\substack{0\le k\le m\\k\ne m-1}}
+       \frac{(-t)^k}{k!}\zeta'(m-k)Z_m(-k,a)\notag\\
+ &\quad+\frac{(-t)^{m-1}}{(m-1)!}
+ \left((\log t-H_{m-1}+\gamma)Z_m'(1-m,a)
+                          -\frac12Z_m''(1-m,a)\right),
+       \label{eq:P-jet}\\
+ d_{m,j}(a)&=\frac{(-1)^{m+j+1}(2j)!\,B_{m+2j+1}(a)\zeta(2j+1)}
+                        {(m+2j+1)!(2\pi)^{2j}}.
+       \label{eq:d-coeff}
+\end{align}
+\end{proposition}
+\begin{proof}
+Differentiate the Mellin integral first and then shift its contour.
+The finite residues away from $w=1-m$ give the first line of
+\eqref{eq:P-jet}. Corollary~\ref{cor:collision-reflection} with $r=1$
+gives the second line.
+
+For $k>m$, the coefficient at $t^k$ is
+$(-1)^kZ_m(-k,a)\zeta'(m-k)/k!$.
+When $k=m+2j-1$, the Bernoulli reflection makes $Z_m(-k,a)=0$.
+When $k=m+2j$, the zero of $\zeta(-2j)$ is replaced by its nonzero
+derivative. Differentiating \eqref{eq:RFE} at $-2j$ gives
+\begin{equation}
+ \zeta'(-2j)=\frac{(-1)^j(2j)!}{2(2\pi)^{2j}}\zeta(2j+1),
+ \qquad j\ge1.
+ \label{eq:trivial-zero-derivative}
+\end{equation}
+Also $Z_m(-m-2j,a)=-2B_{m+2j+1}(a)/(m+2j+1)$.
+Substitution proves \eqref{eq:d-coeff}.
+\end{proof}
+
+The entire activated tail is therefore driven by derivatives at the
+trivial zeros of the Riemann zeta function. This explains both its odd
+zeta values and its one-step change of power parity.
+
+\begin{theorem}[Explicit double-pole Borel transform]
+\label{thm:jet-borel}
+Let $C_m=(-1)^m/(2\pi\ii)^{m+1}$. Then
+\begin{equation}
+ \B\widetilde J_m(\xi,a)=C_m\sum_{N\ge1}\frac{E_m(N,a)}N
+                  \frac{2A_N^2\xi}{(A_N^2-\xi^2)^2}.
+ \label{eq:jet-kernel}
+\end{equation}
+This is normally convergent off the action lattice and is of at most
+polynomial growth on rays separated from the real axis. At $\xi=A_N$,
+the coefficient of $(\xi-A_N)^{-2}$ is
+\begin{equation}
+ 2\pi^2 C_mE_m(N,a),
+ \label{eq:double-coeff}
+\end{equation}
+and the coefficient of $(\xi-A_N)^{-1}$ is zero. The double-pole
+coefficient at $-A_N$ is the negative of \eqref{eq:double-coeff}.
+The series $\widetilde J_m$ is Gevrey-1 and summable off the real Borel
+rays.
+\end{theorem}
+\begin{proof}
+Apply the Bernoulli Fourier expansion to \eqref{eq:d-coeff} and expand
+$\zeta(2j+1)$. After division by $(2j-1)!$, the extra factor is $2j$.
+For $A\ne0$,
+\begin{equation}
+ \sum_{j\ge1}2j\frac{\xi^{2j-1}}{A^{2j}}
+                  =\frac{2A^2\xi}{(A^2-\xi^2)^2}.
+ \label{eq:double-geometric}
+\end{equation}
+The leftover divisor weight is $d^{-m}/N$, giving
+\eqref{eq:jet-kernel} with the stated constant.
+The large-$N$ bound on compact sets is now
+$O((1+\log N)N^{-3})$. On an allowed ray, use
+$|A_N^2-\xi^2|\ge c(A_N^2+|\xi|^2)$ and split at
+$N\asymp1+|\xi|$; this proves polynomial growth and Laplace convergence.
+
+Finally,
+\begin{equation}
+ \frac{2A^2\xi}{(A^2-\xi^2)^2}
+          =\frac{\dd}{\dd\xi}\frac{\xi^2}{A^2-\xi^2}.
+ \label{eq:kernel-derivative}
+\end{equation}
+A derivative of a meromorphic function has zero residue. Its double
+coefficients at $A$ and $-A$ are $A/2$ and $-A/2$, respectively.
+Multiplication by $C_mE_m(N,a)/N$ proves \eqref{eq:double-coeff}.
+The same Cauchy and Laplace arguments as in
+Theorem~\ref{thm:base-borel} give the Gevrey and summability assertions.
+\end{proof}
+
+A zero residue of the \emph{Borel kernel} does not mean a zero Stokes
+jump. The residue must be taken after multiplication by the Laplace
+exponential; that operation turns each double pole into a nonzero
+simple-pole coefficient. The next section computes it with its sign.
+
+\section{Exact order-jet completion and recovery of the hidden block}
+\label{sec:completion}
+
+For $t>0$, define $\Sp$ and $\Sm$ by Laplace rays immediately above
+and below the positive Borel axis, respectively. More precisely, one
+can use fixed rays of angles $\theta$ and $-\theta$, where
+$0<\theta<\pi/2$, and deform within the indicated half-planes. Their
+values are independent of the particular such angle. The difference
+of the upper and lower contours is clockwise around positive poles.
+
+\subsection{The finite-part kernel needed for a double pole}
+
+\begin{lemma}[A simple-pole representation of the linear median]
+\label{lem:I}
+For $\lambda>0$, let
+\begin{equation}
+ I(\lambda)=\PV\int_0^\infty \e^{-\lambda y}\frac{y^2}{1-y^2}\dd y
+ =-\frac1\lambda+
+ \frac12\left(\e^{-\lambda}\operatorname{Ei}(\lambda)
+                    +\e^\lambda E_1(\lambda)\right).
+ \label{eq:I}
+\end{equation}
+It is $O(\lambda^{-1}+1)$ at zero and $O(\lambda^{-3})$ at infinity.
+For $1<\Re v<3$,
+\begin{equation}
+ \int_0^\infty\lambda^{v-1}I(\lambda)\dd\lambda
+                      =\frac\pi2\Gamma(v)\tan\frac{\pi v}{2}.
+ \label{eq:I-Mellin}
+\end{equation}
+For $A>0$, $t>0$, and $\lambda=A/t$, the upper and lower Laplace
+integrals of the double-pole kernel satisfy
+\begin{equation}
+ \int_0^{\e^{\pm\ii\theta}\infty}
+ \e^{-\xi/t}\frac{2A^2\xi}{(A^2-\xi^2)^2}\dd\xi
+ =\lambda I(\lambda)\ \pm\ \frac{\pi\ii\lambda}{2}\e^{-\lambda}.
+ \label{eq:double-Laplace}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Use $y^2/(1-y^2)=-1+1/(1-y^2)$ and partial fractions. The elementary
+exponential-integral evaluations give \eqref{eq:I}. They give the
+endpoint estimates as well: in particular
+$I(\lambda)\sim\sum_{j\ge1}(2j)!\lambda^{-2j-1}$ at infinity.
+This last expansion is asymptotic, not a convergent series.
+
+For the Mellin transform, first omit $(1-\delta,1+\delta)$ from the
+$y$-integral. Away from the pole, the absolute integral after integrating
+in $\lambda$ converges at both endpoints precisely when
+$1<\Re v<3$. Subtracting the value of the pole numerator at $y=1$
+shows that the difference between the truncated and principal-value
+kernels is bounded by
+$C\delta(1+\lambda)\e^{-\lambda/2}$ for $0<\delta<1/2$.
+This bound is integrable against $\lambda^{\Re v-1}\dd\lambda$.
+Consequently the limit commutes with the Mellin integral, giving
+\begin{align*}
+ \Gamma(v)\PV\int_0^\infty\frac{y^{2-v}}{1-y^2}\dd y
+ &=\frac{\Gamma(v)}2\PV\int_0^\infty\frac{u^{(1-v)/2}}{1-u}\dd u\\
+ &=\frac\pi2\Gamma(v)\cot\frac{\pi(3-v)}2
+  =\frac\pi2\Gamma(v)\tan\frac{\pi v}2.
+\end{align*}
+The principal-value cotangent identity follows by splitting at $1$,
+inverting the integration variable in the second part, and using the
+partial fraction expansion of the cotangent. Mellin inversion is
+valid on any vertical line $1<c<3$; the Gamma factor supplies
+exponential decay there.
+
+For \eqref{eq:double-Laplace}, use \eqref{eq:kernel-derivative} and
+integrate by parts on a nonreal ray. The endpoint contributions vanish.
+After $\xi=Ay$, the resulting integral is $\lambda$ times the lateral
+integral defining $I$. The residue of $y^2/(1-y^2)$ at $y=1$ is $-1/2$.
+The upper contour contributes $+\pi\ii\e^{-\lambda}/2$ relative to
+the symmetric principal value, and the lower contour contributes its
+negative. This proves the formula and fixes its orientation.
+\end{proof}
+
+The double-pole Laplace integral itself does \emph{not} possess an
+ordinary Cauchy principal value on the real line. Its linear median is
+a Hadamard finite part, equivalently the simple-pole expression in
+\eqref{eq:double-Laplace}. This distinction is necessary even though
+the double-pole kernel has zero residue before the exponential is
+inserted.
+
+\subsection{The exact logarithmic dual correction}
+Define
+\begin{align}
+ \Xi_m(t,a)&=\left(\frac{\ii t}{2\pi}\right)^{m-1}
+ \sum_{d\ge1}\frac{h_m(d,a)}{d^m}
+             \frac{\log(t/(2\pi d))}{\e^{4\pi^2d/t}-1}.
+ \label{eq:Xi}
+\end{align}
+For every $t>0$ this series converges absolutely. It is an exact
+polylogarithmic order-derivative block: if
+\begin{equation}
+ \Phi_{s\mid m}(Q,a)=\sum_{\ell\ge1}
+ \left(\Li_s(\e^{2\pi\ii a}Q^\ell)
+              +\eps_m\Li_s(\e^{-2\pi\ii a}Q^\ell)\right),
+ \label{eq:fixed-Phi}
+\end{equation}
+then
+\begin{equation}
+ \Xi_m(t,a)=\left(\frac{\ii t}{2\pi}\right)^{m-1}
+ \left(\log\frac{t}{2\pi}\,\Phi_m(Q,a)
+          +\left.\partial_s\Phi_{s\mid m}(Q,a)\right|_{s=m}\right).
+ \label{eq:Xi-order}
+\end{equation}
+The parity sign, again, is fixed.
+
+\begin{theorem}[Exact first-jet completion and activation]
+\label{thm:activation}
+Under the hypotheses of Theorem~\ref{thm:reflection},
+\begin{align}
+ J_m(t,a)&=P_m^{[1]}(t,a)+t^m\Med\widetilde J_m(t,a)+\Xi_m(t,a),
+                    \label{eq:exact-J-median}\\
+ t^m(\Sp-\Sm)\widetilde J_m(t,a)
+              &=\pi\ii\bigl(K_m(t,a)-P_m(t,a)\bigr).
+                    \label{eq:activation}\\
+ J_m(t,a)&=P_m^{[1]}(t,a)+t^m\mathcal S_\pm\widetilde J_m(t,a)
+             +\Xi_m(t,a)\mp\frac{\pi\ii}{2}N_m(t,a).
+                    \label{eq:exact-J-lateral}
+\end{align}
+The linear median also has the absolutely convergent kernel formula
+\begin{equation}
+ t^m\Med\widetilde J_m(t,a)
+       =\left(\frac{\ii t}{2\pi}\right)^{m-1}
+                         \sum_{N\ge1}E_m(N,a)I(A_N/t).
+ \label{eq:median-I}
+\end{equation}
+\end{theorem}
+\begin{proof}
+\emph{Identification of the analytic function.}
+Differentiate \eqref{eq:MB} in $s$ before specializing to $s=m$, and
+then form the reflected combination. Shift to
+$\Re w=-m-\delta$ with $0<\delta<1$. Proposition~\ref{prop:jet-tail}
+computes the crossed residues as $P_m^{[1]}$.
+
+In the remainder set $v=1-m-w$ as in
+Theorem~\ref{thm:reflection}. Logarithmic differentiation of the
+Riemann functional equation, wherever none of its factors is zero,
+gives the multiplier
+\[
+ \log(2\pi)-\psi(v)-\frac{\zeta'(v)}{\zeta(v)}
+                                +\frac\pi2\tan\frac{\pi v}{2}.
+\]
+To avoid any artificial division by a zeta zero, put
+$G(v)=\Gamma(v)\zeta(v)$ and use the holomorphic product expression
+\begin{equation}
+ \log(2\pi)G(v)-G'(v)+\frac\pi2\tan\frac{\pi v}{2}G(v).
+ \label{eq:FE-jet-product}
+\end{equation}
+The identity extends across removable zeros. The exact remainder is
+\begin{equation}
+ \left(\frac{\ii t}{2\pi}\right)^{m-1}
+ \frac1{2\pi\ii}\int_{(1+\delta)}
+ \left(\log(2\pi)G-G'+\frac\pi2\tan\frac{\pi v}2G\right)
+                         H_m(v,a)X^{-v}\dd v.
+ \label{eq:jet-remainder-MB}
+\end{equation}
+There are no tangent poles on this line.
+
+Integrate the $-G'$ term by parts along the vertical contour. The
+horizontal endpoint terms vanish by Gamma decay. The first two terms
+of the integrand become
+\[
+ G(v)\left(\log\frac{t}{2\pi}H_m(v,a)+H_m'(v,a)\right)X^{-v},
+\]
+since $\log(2\pi)-\log X=\log(t/(2\pi))$.
+The series for $H_m$ and $H_m'$ converge absolutely. Mellin inversion
+of their Dirichlet expansions therefore gives exactly \eqref{eq:Xi}.
+
+For the last term in \eqref{eq:jet-remainder-MB}, expand
+$\zeta(v)H_m(v,a)=\sum_{N\ge1}E_m(N,a)N^{-v}$.
+Lemma~\ref{lem:I} identifies the resulting inverse Mellin integral with
+$I(XN)$. Thus the remainder not accounted for by $\Xi_m$ is the
+right side of \eqref{eq:median-I}.
+This series converges absolutely because
+$E_m(N,a)=O(1+\log N)$ and $I(XN)=O(N^{-3})$ for fixed $X>0$.
+
+\emph{Identification with the Borel median.}
+Integrate \eqref{eq:jet-kernel} termwise on upper and lower rays,
+which is justified by the absolute majorants in
+Theorem~\ref{thm:jet-borel}. Lemma~\ref{lem:I} gives their average.
+The constants simplify using
+\begin{equation}
+ 4\pi^2 C_m=\left(\frac{\ii}{2\pi}\right)^{m-1}.
+ \label{eq:constant-check}
+\end{equation}
+Indeed, $A_N/(tN)=4\pi^2/t$ in every summand. This proves
+\eqref{eq:median-I}, and hence \eqref{eq:exact-J-median}.
+
+\emph{The discontinuity.}
+By \eqref{eq:double-Laplace}, the difference of the two lateral
+integrals of one rational summand is
+$\pi\ii(A_N/t)\e^{-A_N/t}$. Multiplying by
+$t^mC_mE_m(N,a)/N$ and summing gives
+\[
+ 4\pi^3\ii C_m t^{m-1}\sum_{N\ge1}E_m(N,a)Q^N
+ =\pi\ii\left(\frac{\ii t}{2\pi}\right)^{m-1}\Phi_m(Q,a).
+\]
+Theorem~\ref{thm:reflection} identifies the last factor with $N_m$.
+This proves \eqref{eq:activation}. Combining it with the median identity
+gives \eqref{eq:exact-J-lateral}.
+\end{proof}
+
+\begin{remark}[A direct residue check]
+At $\xi=A_N$, write the Borel principal part as
+$c_N(\xi-A_N)^{-2}$, with $c_N=2\pi^2C_mE_m(N,a)$.
+The residue of the \emph{Laplace integrand} is
+$-c_Nt^{-1}\e^{-A_N/t}$. The upper-minus-lower contour multiplies this
+by $-2\pi\ii$. This reproduces the positive factor in
+\eqref{eq:activation} and independently explains why simply taking
+residues of the unweighted Borel kernel would miss the jump.
+\end{remark}
+
+\subsection{Complex sectors and transseries interpretation}
+All exact identities proved for $t>0$ continue to $\Re t>0$ with the
+principal $\Log t$ and the corresponding analytic continuations of the
+lateral sums. To see this without manipulating formal symbols,
+$I(A_N/t)$ is holomorphic there by \eqref{eq:I}; its large-$N$
+estimates are uniform on compact subsets. The sums in
+\eqref{eq:median-I}, \eqref{eq:Phi}, and \eqref{eq:Xi} are consequently
+normally convergent. Both sides of the identities are holomorphic and
+agree on the positive real axis. Alternatively, fixed nonreal Laplace
+rays give overlapping sectorial definitions of the same continuations.
+
+On a closed subsector $|\arg t|\le\pi/2-\eta$,
+$\Re(4\pi^2/t)\ge4\pi^2\sin\eta/|t|$. The factors $Q^N$ are then
+uniformly exponentially small. The exact structure of the first jet is
+one Borel-summed power block plus convergent sectors
+$t^{m-1}(\alpha_N\Log t+\beta_N)Q^N$.
+No accumulating action set or formal-support completion is needed for
+this particular transseries. The boundary directions $\arg t=\pm\pi/2$
+are not covered by this small-exponential assertion.
+
+\section{Finite reflection rigidity and action detection}
+\label{sec:atomic}
+
+Let
+\begin{equation}
+ \mu=\sum_{j=1}^r c_j\delta_{a_j},\qquad
+ 0<a_j<1,
+ \label{eq:atomic}
+\end{equation}
+where the $a_j$ are distinct and the displayed $c_j$ are nonzero.
+Let $R(a)=1-a$, write $R_*\mu$ for the reflected measure, and define
+\begin{equation}
+ F_{s,\mu}(t)=\int F_s(t,a)\dd\mu(a),\qquad
+ \muh(n)=\int\e^{2\pi\ii na}\dd\mu(a).
+ \label{eq:weighted}
+\end{equation}
+The atoms need not be rational. By a \emph{terminating tail} we mean
+that the integer-order power--logarithmic expansion has only finitely
+many nonzero coefficients. The fixed finite logarithmic collision part
+is not included in the word ``tail.''
+
+\begin{theorem}[Atomic reflection rigidity with a finite certificate]
+\label{thm:atomic}
+For $m\ge1$, the following conditions are equivalent:
+\begin{enumerate}[label=(\roman*),leftmargin=12mm]
+\item the asymptotic expansion of $F_{m,\mu}$ terminates;
+\item all its tail coefficients $t^{m+2j-1}$, $j\ge1$, vanish;
+\item $R_*\mu=\eps_m\mu$;
+\item all positive-pole coefficients in its normalized Borel tail vanish.
+\end{enumerate}
+Let $M$ be the number of distinct points in
+$\operatorname{supp}(\mu)\cup R(\operatorname{supp}(\mu))$.
+For condition (iv), it suffices to check the first $M$ action locations;
+in particular, at most $2r$ checks suffice.
+\end{theorem}
+\begin{proof}
+The weighted Borel kernel in Theorem~\ref{thm:base-borel} has divisor
+coefficients
+\begin{equation}
+ D_{m,\mu}(N)=\sum_{d\mid N}\frac{h_\mu(d)}{d^m},
+ \quad h_\mu(d)=\muh(d)+(-1)^m\muh(-d).
+ \label{eq:D-mu}
+\end{equation}
+M\"obius inversion is the exact identity
+\begin{equation}
+ h_\mu(n)=n^m\sum_{d\mid n}\mu_{\mathrm{Mob}}(n/d)D_{m,\mu}(d).
+ \label{eq:Mobius}
+\end{equation}
+Thus the vanishing of $D_{m,\mu}(1),\ldots,D_{m,\mu}(M)$ implies
+$h_\mu(1)=\cdots=h_\mu(M)=0$.
+
+The latter are the first $M$ Fourier coefficients of
+$\nu=\mu+(-1)^mR_*\mu$. Write this measure on its at most $M$
+distinct nodes, with $z_j=\e^{2\pi\ii a_j}$. The matrix
+$(z_j^n)_{1\le n,j\le M}$ is invertible: its determinant is a nonzero
+product of the $z_j$ and the Vandermonde factors $z_k-z_j$.
+Padding with zero coefficients if necessary gives $\nu=0$, which is
+condition (iii).
+
+Conversely, (iii) and Bernoulli reflection give (ii), and (ii) gives
+(i). If (i) holds, the Borel germ is a polynomial. Its meromorphic
+continuation \eqref{eq:base-kernel} must equal that polynomial wherever
+both are defined; hence every residue vanishes and (iv) holds.
+This proves all implications and the finite certificate.
+\end{proof}
+
+The finite certificate refers to action-pole data, not to an arbitrary
+list of the first $M$ Taylor coefficients. Those are different finite
+linear systems. At rational shifts, finite Fourier transforms give a
+natural alternative presentation; for arbitrary real shifts the
+Vandermonde proof avoids any rationality hypothesis.
+
+\begin{theorem}[Hidden actions are visible in one order derivative]
+\label{thm:action-detection}
+Suppose the nonzero measure \eqref{eq:atomic} satisfies
+$R_*\mu=\eps_m\mu$. Then its exact hidden remainder is
+\begin{equation}
+ N_{m,\mu}(t)=F_{m,\mu}(t)-P_{m,\mu}(t)
+ =\left(\frac{\ii t}{2\pi}\right)^{m-1}
+       \sum_{N\ge1}b_{m,\mu}(N)Q^N,
+ \quad b_{m,\mu}(N)=\sum_{d\mid N}\frac{\muh(d)}{d^m}.
+ \label{eq:N-mu}
+\end{equation}
+Here $P_{m,\mu}=\tfrac12\int P_m(t,a)\dd\mu(a)$.
+The first nonzero coefficient in \eqref{eq:N-mu} occurs at an index
+$N_0\le r$. The first order derivative has its first nonzero positive
+double Borel pole at exactly $A_{N_0}$, and its jump is
+$\pi\ii N_{m,\mu}$.
+\end{theorem}
+\begin{proof}
+Since $R_*\mu=\eps_m\mu$, integration of a reflected pair gives
+$\int K_m(t,a)\dd\mu(a)=2F_{m,\mu}(t)$. Also
+$\muh(-d)=\eps_m\muh(d)$, so that
+$\tfrac12\int E_m(N,a)\dd\mu(a)=b_{m,\mu}(N)$.
+Integrating Theorem~\ref{thm:reflection} proves \eqref{eq:N-mu}.
+The same reasoning applies to the fixed-parity order derivative;
+Theorems~\ref{thm:jet-borel} and \ref{thm:activation} identify its
+double-pole coefficient and its discontinuity.
+
+If $\muh(1),\ldots,\muh(r)$ all vanished, the $r\times r$
+Vandermonde system for the original atomic measure would force
+$c_1=\cdots=c_r=0$. Choose the first nonzero Fourier coefficient,
+with index $n_0\le r$. Every proper-divisor term in
+$b_{m,\mu}(n_0)$ vanishes, leaving
+$b_{m,\mu}(n_0)=\muh(n_0)/n_0^m\ne0$. Earlier $b$'s are zero.
+This proves $N_0=n_0\le r$ and the matching double-pole assertion.
+\end{proof}
+
+On prescribed nodes, the hidden coefficients recover the weights by
+an explicit two-stage linear procedure. First use
+\begin{equation}
+ \muh(n)=n^m\sum_{d\mid n}\mu_{\mathrm{Mob}}(n/d)b_{m,\mu}(d).
+ \label{eq:recover-muh}
+\end{equation}
+Then solve the Vandermonde system on the known $\e^{2\pi\ii a_j}$.
+This is an exact identification statement; it does not assert numerical
+stability for nearly colliding nodes.
+
+\subsection{Sharpness by midpoint grids}
+For $r\ge1$, set
+\begin{equation}
+ \mu_r=\sum_{j=0}^{r-1}\delta_{(j+1/2)/r}.
+ \label{eq:midpoint}
+\end{equation}
+This measure is reflection-symmetric. Its Fourier coefficients are
+\begin{equation}
+ \widehat\mu_r(n)=
+ \begin{cases}
+ r(-1)^k,&n=rk,\\
+ 0,&r\nmid n.
+ \end{cases}
+ \label{eq:midpoint-Fourier}
+\end{equation}
+For every odd $m$, Theorem~\ref{thm:action-detection} therefore has
+$N_0=r$. In particular,
+\begin{equation}
+ N_{m,\mu_r}(t)=
+ -r^{1-m}\left(\frac{\ii t}{2\pi}\right)^{m-1}
+ \e^{-4\pi^2r/t}+O\left(t^{m-1}\e^{-8\pi^2r/t}\right)
+ \quad(t\to0^+).
+ \label{eq:midpoint-first}
+\end{equation}
+The first $r-1$ activated poles vanish, so the bound $r$ cannot be
+improved uniformly. This arithmetic cancellation also has the exact
+lattice explanation
+\begin{equation}
+ \sum_{j=0}^{r-1}F_s\left(t,\frac{j+1/2}{r}\right)
+                         =F_s(t/r,1/2),
+ \label{eq:grid-distribution}
+\end{equation}
+obtained by partitioning the index $r\ell+j$. Equation
+\eqref{eq:grid-distribution} holds for every complex $s$, not only at
+integer order, and can therefore be differentiated in $s$.
+
+\section{The one-jet kernel for general measures}
+\label{sec:general-measures}
+
+Atomicity excludes a genuine continuous blind component. Let $\lambda$
+denote Lebesgue measure of mass one on $(0,1)$. Direct integration gives
+\begin{equation}
+ \int_0^1 F_s(t,a)\dd a=\frac{\zeta(s+1)}t,
+ \qquad\Re s>0.
+ \label{eq:Haar}
+\end{equation}
+Thus a nonzero continuous measure can have both its base tail and every
+order-derivative tail equal to zero. The next theorem shows that this
+is the \emph{only} simultaneous blind component.
+
+For a finite complex Borel measure $\mu$ on $(0,1)$, its Bernoulli
+moments $M_n(\mu)=\int B_n(a)\dd\mu(a)$ always exist. Formal high-tail
+coefficients are defined by integrating the polynomial coefficients of
+the single-shift expansion. For an analytic interpretation of both
+$F_{m,\mu}$ and its first jet, it suffices to assume
+\begin{equation}
+ \int_{(0,1)}\left(1+|\log a|^2+|\log(1-a)|^2\right)\dd|\mu|(a)<\infty.
+ \label{eq:measure-integrability}
+\end{equation}
+Indeed, for $m=1$ the original series and its first jet grow at most
+like $1+|\log a|$ and $1+|\log a|^2$ near the singular endpoint;
+these bounds follow by splitting their $k$-sums at $k\asymp1/a$.
+For $m\ge2$ the corresponding endpoint bounds are no worse.
+The coefficient theorem below does not require interchanging a measure integral with the initial Mellin contour; such an interchange would require stronger endpoint moment hypotheses.
+
+\begin{theorem}[Complete one-jet kernel]\label{thm:one-jet}
+Fix $m\ge1$. On finite complex Borel measures on $(0,1)$, the joint
+kernel of the two maps
+\begin{equation}
+ \mu\longmapsto\text{high tail of }F_{m,\mu},\qquad
+ \mu\longmapsto\text{high tail of }
+                          \left.\partial_sF_{s,\mu}\right|_{s=m}
+ \label{eq:jet-map}
+\end{equation}
+is exactly $\C\lambda$. The same conclusion holds when ``zero high
+tail'' is replaced by ``eventually terminating high tail.''
+Consequently the two tails determine an arbitrary finite measure
+modulo a constant multiple of Lebesgue measure, and they determine an
+atomic measure uniquely.
+\end{theorem}
+\begin{proof}
+The coefficient formula \eqref{eq:c-coeff} and the nonvanishing of
+$B_{2j}$ show that a zero base tail implies
+\[
+ M_{m+2j}(\mu)=0,\qquad j\ge1.
+\]
+Independently of any reflection condition, the coefficient in the first
+jet at $t^{m+2j}$ is a nonzero scalar multiple of
+$M_{m+2j+1}(\mu)$, because \eqref{eq:trivial-zero-derivative} is nonzero.
+Thus a zero first-jet tail also implies
+$M_{m+2j+1}(\mu)=0$. Together, these say $M_n(\mu)=0$ for every
+$n\ge m+2$. Eventual termination gives the same statement for all
+sufficiently large $n$.
+
+Let $\mathcal E(z)=\int\e^{az}\dd\mu(a)$. This is entire, since
+$0<a<1$ and $\mu$ is finite. The Bernoulli generating function gives
+\[
+ \frac{z\mathcal E(z)}{\e^z-1}
+       =\sum_{n\ge0}\frac{M_n(\mu)}{n!}z^n
+       =P(z),\qquad |z|<2\pi,
+\]
+where $P$ is a polynomial. Multiplying through and applying the
+identity theorem yields
+\begin{equation}
+ \mathcal E(z)=\frac{\e^z-1}{z}P(z)\quad\text{for all }z\in\C,
+ \label{eq:measure-entire}
+\end{equation}
+with the removable value at $z=0$ understood. At every nonzero integer
+$n$, this gives $\muh(n)=\mathcal E(2\pi\ii n)=0$.
+The zeroth coefficient is $\alpha=\mu((0,1))$.
+
+Regarding $(0,1)$ as the circle with its endpoint removed, $\mu$ and
+$\alpha\lambda$ therefore agree on all trigonometric polynomials.
+Those polynomials are uniformly dense in the continuous functions on
+the circle. Finite measures that agree on them agree on all continuous
+functions and hence are identical. Thus $\mu=\alpha\lambda$.
+Conversely, integrating \eqref{eq:Bernoulli} over $a\in(0,1)$ shows
+$M_n(\lambda)=0$ for all $n\ge1$, so all the high tails vanish for
+$\lambda$. Equation \eqref{eq:Haar} gives its analytic interpretation.
+A nonzero finite atomic measure cannot be a multiple of the nonatomic
+measure $\lambda$, proving the last assertion.
+\end{proof}
+
+This result is linear injectivity modulo a completely identified
+one-dimensional component. It does not depend on assuming the base
+tail is already zero. For a measure in the reflection nullspace,
+Theorem~\ref{thm:activation} gives the stronger interpretation of the
+first-jet data as the actual hidden exponential function.
+
+\begin{proposition}[General-measure reflection classification]
+\label{prop:measure-reflection}
+Let $\alpha=\mu((0,1))$. The base tail at order $m$ terminates if and
+only if
+\begin{equation}
+ R_*(\mu-\alpha\lambda)=\eps_m(\mu-\alpha\lambda).
+ \label{eq:measure-reflection}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Integrate the normally convergent Borel kernel
+\eqref{eq:base-kernel}. As in Theorem~\ref{thm:atomic}, termination
+forces every residue to vanish. M\"obius inversion then makes all
+positive Fourier coefficients of
+$\nu=\mu+(-1)^mR_*\mu$ vanish. Its reflection parity supplies the
+negative coefficients as well. By Fourier uniqueness,
+$\nu=(1+(-1)^m)\alpha\lambda$. Rearranging gives
+\eqref{eq:measure-reflection}. Conversely, Lebesgue measure contributes
+no tail and the remaining reflection component cancels the Bernoulli
+coefficients term by term.
+\end{proof}
+
+Theorem~\ref{thm:one-jet} is therefore sharp in two different senses:
+no nonzero atomic measure is invisible to the pair of tails, but a
+Lebesgue component is invisible to every order jet. The explicit
+integral \eqref{eq:Haar} prevents an unjustified extension of atomic
+injectivity to all finite measures without this quotient.
+
+\section{Low-order identities and diagnostic examples}
+\label{sec:examples}
+
+\subsection{Order one: a Gamma reflection constant}
+Using $\zeta'(0,a)=\log\Gamma(a)-\tfrac12\log(2\pi)$ and the Gamma
+reflection formula, Theorem~\ref{thm:reflection} gives
+\begin{equation}
+ \begin{split}
+ F_1(t,a)+F_1(t,1-a)
+ &=\frac{\pi^2}{3t}-\log(2\sin\pi a)-\frac t2B_2(a)\\
+ &\quad+2\sum_{d\ge1}\frac{\cos(2\pi da)}{d(\e^{4\pi^2d/t}-1)}.
+ \end{split}
+ \label{eq:m1}
+\end{equation}
+This is in the established $q$-product completion family, not an
+independent priority claim. Its fixed-parity order derivative has the
+finite part
+\begin{equation}
+ P_1^{[1]}(t,a)=\frac{2\zeta'(2)}t
+  -(\log t+\gamma)\log(2\sin\pi a)
+  -\frac{\zeta''(0,a)+\zeta''(0,1-a)}2
+  +tB_2(a)\zeta'(0).
+ \label{eq:m1-jet-P}
+\end{equation}
+Here $\zeta'(0)=-\tfrac12\log(2\pi)$. The convergent extra block is
+\begin{equation}
+ \Xi_1(t,a)=2\sum_{d\ge1}
+ \frac{\cos(2\pi da)\log(t/(2\pi d))}{d(\e^{4\pi^2d/t}-1)}.
+ \label{eq:m1-Xi}
+\end{equation}
+Equations \eqref{eq:m1-jet-P}, \eqref{eq:m1-Xi}, and
+\eqref{eq:median-I} constitute an exact identity for a logarithmically
+weighted Lambert sum involving Hurwitz-zeta second derivatives.
+
+\subsection{A nonzero flat block with a zero base Borel kernel}
+At $a=1/2$, \eqref{eq:m1} becomes
+\begin{equation}
+ 2F_1(t,1/2)=\frac{\pi^2}{3t}-\log2+\frac{t}{24}
+              +2\sum_{d\ge1}\frac{(-1)^d}{d(\e^{4\pi^2d/t}-1)}.
+ \label{eq:half}
+\end{equation}
+The normalized base Borel kernel is identically zero. Nevertheless,
+the last sum begins with $-2Q$, so it is not identically zero.
+The first order derivative has double poles and its jump is exactly
+$\pi\ii$ times that last sum. At $t=2$, the hidden remainder is of
+order $10^{-9}$; the delivered verification checks it by subtracting
+the finite core at 90-digit working precision, not by comparing only
+power-series coefficients.
+
+\subsection{Order two: an antisymmetric identity}
+The next case has no $t^{-1}$ term:
+\begin{equation}
+ \begin{split}
+ F_2(t,a)-F_2(t,1-a)
+ &=\zeta(2)(1-2a)
+       -t\bigl(\zeta'(-1,a)-\zeta'(-1,1-a)\bigr)
+       +\frac{t^2}{6}B_3(a)\\
+ &\quad-\frac t\pi\sum_{d\ge1}
+                     \frac{\sin(2\pi da)}{d^2(\e^{4\pi^2d/t}-1)}.
+ \end{split}
+ \label{eq:m2}
+\end{equation}
+The order-one and order-two formulas exhibit the parity switch:
+cosines survive in the hidden block for odd $m$, and sines survive
+for even $m$. At $m$ even and $a=1/2$, the reflected observable is
+identically zero. This is a zero measure after antisymmetric pairing,
+not an exception to atomic detection.
+
+\subsection{Direct coefficient reconstruction}
+Suppose an admissible atomic combination has hidden series
+$\sum b_NQ^N$. The first recovered Fourier coefficients are
+\begin{align*}
+ \muh(1)&=b_1,\qquad
+ \muh(2)=2^m(b_2-b_1),\qquad
+ \muh(3)=3^m(b_3-b_1),\\
+ \muh(4)&=4^m(b_4-b_2),\qquad
+ \muh(6)=6^m(b_6-b_3-b_2+b_1).
+\end{align*}
+These exact identities separate the divisor convolution from the
+geometric Fourier problem. For a midpoint grid with $r=3$, the first
+two recovered modes vanish and $\muh(3)=-3$; the first action is
+$12\pi^2$, not $4\pi^2$.
+
+\section{Source audit and corrections that matter}
+\label{sec:audit}
+
+\subsection{A confirmed cross-reference mismatch}
+At the pinned commit, the source of \cite{repoq}, near its labels
+\texttt{eq:FR60a} and \texttt{eq:FR60b}, describes the equations of
+Fantini--Rella Conjecture~5 as ``(60a)--(60b)'' in arXiv:2506.08265v2.
+The inspected v2 PDF, dated 1 April 2026, displays these as
+\emph{(3.36a)--(3.36b)}, on its printed page 17 \cite{fr}.
+The proposed correction is to change that external equation reference
+to (3.36a)--(3.36b), retaining the repository's internal LaTeX labels
+if desired. This is a version-specific documentary correction, not a
+refutation of the mathematical identities. The delivery includes the
+exact target sentence and replacement in a separate note.
+
+\subsection{Double poles require a different finite part}
+A potentially consequential extension error would be to apply ordinary
+Cauchy principal-value integration directly to
+\eqref{eq:jet-kernel}. For a nonzero local coefficient $c$, the symmetric
+integral of $c/(\xi-A)^2$ outside an $\epsilon$-neighborhood diverges
+like $2c/\epsilon$. The Laplace factor does not remove this divergence.
+The repair is either a Hadamard finite part or the integrated-by-parts
+simple-pole kernel of Lemma~\ref{lem:I}.
+
+This is a warning for the new order-jet problem. The inspected
+$q$-Gamma report \cite{repoq} uses simple poles and already distinguishes
+its symmetric kernel from its exponential completion. It is not being
+accused of making the double-pole error.
+
+\subsection{Specialization must not replace analytic differentiation}
+Theorem~\ref{thm:reflection} holds at integer $m$. Differentiating its
+right side as though $m$ were a free complex variable is unjustified:
+there is no specified holomorphic family of the parity sign
+$\eps_m$, and the finite part changes at resonance. The correct
+procedure is to differentiate $F_s+\eps_mF_s\circ R$ with the sign
+fixed, on the initial Mellin contour, and only then specialize.
+The missing tangent term in \eqref{eq:FE-jet-product} would be lost by
+a naive differentiation of the specialized reflection formula.
+That term is precisely the Borel-summed block of the first jet.
+
+\subsection{Other distinctions retained in this report}
+The zero base Borel kernel in \eqref{eq:half} coexists with a nonzero
+flat remainder. This distinction is already explicit in the earlier
+Lambert and repository literature; it is not a newly discovered error
+there. Likewise, the linear median used here must not be substituted
+for an algebra-compatible median in nonlinear products or inverse
+functions.
+
+The Fourier kernels in this report assume real shifts. For nonreal
+$a$, a coefficient such as $\sin(2\pi da)$ can grow exponentially in
+$d$, so the displayed Dirichlet expansions generally cease to converge.
+One cannot claim complex-parameter uniformity by simply inserting
+complex $a$ into them. Endpoint atoms at $a=0$ are also outside the
+stated hypotheses. Finally, the Lebesgue counterexample
+\eqref{eq:Haar} shows why the atomic injectivity theorem requires either
+atomicity or the explicit quotient in Theorem~\ref{thm:one-jet}.
+
+\section{Reproducibility and verification scope}
+\label{sec:verification}
+
+The mathematical arguments above prove infinite identities by contour
+shifts, functional equations, normal convergence, and finite-dimensional
+uniqueness. The accompanying program performs a different task: it
+checks coefficients, constants, orientations, and representative
+numerical identities that are especially vulnerable to transcription
+errors. It is not a proof assistant and it does not establish priority.
+
+\subsection{Exact symbolic and arithmetic checks}
+The delivered run records \textbf{732 passing exact assertions} in
+SymPy~1.14.0. They include Bernoulli reflection cancellation and the
+activated coefficients for $1\le m,j\le8$; rational-kernel residues and
+double-pole principal parts; the $\pi\ii$ normalization through
+$m=24$; generic collision jets through derivative order six;
+Fourier--M\"obius calculations in exact cyclotomic fields of moduli
+$3$ through $10$; midpoint-grid delay; and the Bernoulli multiplication
+formula. The free-variable symbolic tests are distinguished in the
+record from finite arithmetic instances. These computations support,
+but do not replace, the general proofs.
+
+\subsection{High-precision diagnostics}
+There are \textbf{61 passing numerical assertions}, primarily at
+90 decimal digits using mpmath~1.3.0. The independent contour tests use
+55 digits. The error recorded is
+\begin{equation}
+ \frac{|\mathrm{LHS}-\mathrm{RHS}|}
+           {\max(1,|\mathrm{LHS}|,|\mathrm{RHS}|)}.
+ \label{eq:error-metric}
+\end{equation}
+It is a scaled absolute floating-point error, not an interval enclosure.
+The largest observed errors in the delivered run are summarized below.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{75mm}rr@{}}
+\toprule
+Diagnostic & Count & Largest observed error\\
+\midrule
+Exact reflection completion & 36 & $2.46\times10^{-91}$\\
+Exact first-order-jet completion & 10 & $5.84\times10^{-47}$\\
+Acceleration refinement & 10 & $5.84\times10^{-47}$\\
+Independent rotated-contour jump & 2 & rounded to zero\\
+Independent linear-median kernel & 2 & $5.74\times10^{-57}$\\
+Nonzero hidden remainder at $a=1/2$ & 1 & $2.55\times10^{-91}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The acceptance thresholds were $10^{-75}$ for reflection and the hidden
+remainder, $10^{-38}$ for the full first-jet identities and refinement,
+and $10^{-42}$ for the contour tests. A rounded zero in one diagnostic
+is not a claim of exact numerical equality.
+
+The reflection tests use $m=1,\ldots,6$, shifts
+$a=1/3,1/2,\sqrt2/3$, and $t=2,5$. The first-jet tests use
+$m=1,\ldots,5$, shifts $1/3,\sqrt2/3$, and $t=3+m/2$.
+The original jet is computed from its convergent series with the exact
+weight $-\log k$, not by differencing nearby orders.
+The contour tests integrate the rational double-pole kernel on rays of
+angles $\pm0.32$ radians at $\lambda=4,9$, and compare to
+\eqref{eq:double-Laplace}. They check the sign convention independently
+of the arithmetic summations.
+
+\subsection{Why the median evaluation is accelerated}
+Directly summing \eqref{eq:median-I} gives only an $N^{-3}$ tail.
+For accurate evaluation, subtract finitely many terms of the asymptotic
+expansion of $I$ from each summand and sum those terms globally using
+\eqref{eq:d-coeff}. For any fixed integer $J\ge1$, this gives the
+\emph{exact infinite-sum identity}
+\begin{equation}
+ \begin{split}
+ t^m\Med\widetilde J_m
+ &=t^m\sum_{j=1}^Jd_{m,j}(a)t^{2j}\\
+ &\quad+\left(\frac{\ii t}{2\pi}\right)^{m-1}
+ \sum_{N\ge1}E_m(N,a)
+ \left(I(A_N/t)-\sum_{j=1}^J\frac{(2j)!}{(A_N/t)^{2j+1}}\right).
+ \end{split}
+ \label{eq:accelerated}
+\end{equation}
+Only the outer $N$-sum is numerically truncated. The delivered run uses
+$J=12$, $N\le72$ and compares with $J=13$, $N\le80$.
+This is finite subtraction, not an assertion that the factorial
+asymptotic series converges. The numerical truncation and floating-point
+rounding are not interval-certified; their agreement is a diagnostic.
+
+The general-measure kernel theorem is established by its generating-
+function proof. The numerical suite does not purport to test all finite
+measures, unknown support recovery, or complex-shift analytic continuation.
+
+\section{Further research questions}
+\label{sec:future}
+
+\subsection{Higher order jets and logarithmic Borel singularities}
+Corollary~\ref{cor:collision-reflection} determines every collision
+polynomial, but this report gives a complete Borel kernel and exact
+completion only for the first order derivative. Higher derivatives of
+$\zeta(s+w)$ introduce polygamma terms, higher derivatives of the
+functional-equation trigonometric factor, and logarithmic divisor
+weights. An explicit all-jet completion should be sought with a clear
+separation of local collision polynomials, lateral discontinuities,
+and independently identified flat blocks. The first task is to obtain
+and prove the second-order kernel, rather than infer it by formal
+specialization.
+
+\subsection{Two shifted lattice directions}
+Replacing the $k^{-s}$ factor by a second shifted lattice sum leads to
+Mellin products of the form
+$\Gamma(w)\zeta(w,a)\zeta(s+w,b)$. The two Hurwitz functional equations
+create a matrix of reflection sectors rather than a single parity.
+Which sectors terminate, and how many order jets are needed to detect
+all finite atomic measures on the two-torus? The one-dimensional
+Lebesgue blind component suggests that continuous product components
+will have to be identified explicitly.
+
+\subsection{Unknown shifts and inverse arithmetic data}
+Theorem~\ref{thm:action-detection} gives a finite reconstruction on known
+nodes. Unknown-node recovery suggests a Prony-type reconstruction from
+Fourier coefficients obtained by M\"obius inversion. Sharp sample
+counts, treatment of collisions and multiplicities, and certified
+recovery from approximate Stokes data remain separate problems. Exact
+identifiability should be settled before numerical stability is claimed.
+
+\subsection{Complex shifts and moving endpoints}
+A kernel holomorphic in a complex neighborhood of $a$ must replace the
+real Fourier representation; a local meromorphic or integral
+representation is a plausible route. A second problem is the
+nonuniform limit in which $a$ approaches $0$ or $1$ together with $t$.
+The fixed-shift Gamma core then changes scale. Neither extension follows
+from the normal-convergence statements used here.
+
+\subsection{Nonlinear inversion after completion}
+The exact functions $N_m$ and $\Xi_m$ can be transported through a
+regular inverse or a critical inverse chart. Existing repository work
+already treats the distinction between formal inversion and inversion
+of the physically completed function \cite{repoq}. A useful new
+application would choose an actual critical point of a Lambert--
+polylogarithm combination and compute its first nonzero ramified
+exponential sectors from the completed forward function. Merely applying
+a formal inverse theorem to an unspecified flat completion would not
+settle that problem.
+
+\subsection{Formalization and reusable exact certificates}
+The Bernoulli reflection, divisor convolution, M\"obius inversion,
+Vandermonde uniqueness, and midpoint-grid distribution are finite
+algebraic targets for formalization. They should be separated from the
+analytic Mellin shifts and finite-part integrals. A later analytic
+formalization would need parameter differentiation under normal
+convergence, a contour-shift theorem with stated growth bounds, and a
+precise double-pole finite-part convention. The supplied Python checks
+are not substitutes for those proof-assistant declarations.
+
+\section*{Conclusion}
+\addcontentsline{toc}{section}{Conclusion}
+Reflection can remove an entire perturbative tail without removing the
+analytic function's exponentially small remainder. For shifted
+Lambert--polylogarithm sums, the first order derivative restores exactly
+the complementary Fourier information, now at double Borel poles.
+Mellin inversion identifies the derivative's missing logarithmic dual
+block and proves the factor-$\pi\ii$ recovery law. Finite atomic
+reflection rigidity turns that analytic statement into a finite
+identification theorem, while the general-measure result isolates
+Lebesgue measure as the sole simultaneous blind component.
+
+\appendix
+\section{A compact dependency and status ledger}
+\label{app:ledger}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{45mm}p{58mm}p{35mm}@{}}
+\toprule
+Result & Main dependencies & Evidence status\\
+\midrule
+All-order collision formula & Mellin differentiation and Laurent coefficients
+ & Proof; finite jet checks\\[3pt]
+Simple-pole Borel kernel & Bernoulli Fourier expansion and a geometric series
+ & Proof; exact normalization checks\\[3pt]
+Exact reflected duality & Hurwitz/Riemann functional equations and Mellin inversion
+ & Proof; 36 numerical instances\\[3pt]
+Double-pole activation & Trivial-zero derivatives and contour orientation
+ & Proof; independent contour tests\\[3pt]
+Exact first-jet completion & Mellin integration by parts and the $I$ kernel
+ & Proof; 10 numerical instances\\[3pt]
+Atomic reflection and action bound & M\"obius inversion and Vandermonde uniqueness
+ & Proof; exact cyclotomic tests\\[3pt]
+General one-jet kernel & Bernoulli generating function and Fourier uniqueness
+ & Proof; not numerically certified\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+No theorem in this ledger is asserted to be Lean-formalized. The
+literature comparison, source cross-reference check, symbolic tests,
+numerical diagnostics, and PDF build are distinct evidence scopes.
+The source report's broader claims about other conjectures are not
+required by any proof in this article.
+
+\section{Rebuilding the package}
+The top-level \texttt{Makefile} builds this article with three ordinary
+pdfLaTeX passes and runs the exact and numerical checks separately.
+The verification script accepts \texttt{--mode exact},
+\texttt{--mode numerical}, or \texttt{--mode all}, and writes only the
+explicit output path. Its exact dependencies are listed in
+\texttt{requirements.txt}. A typical replay is
+\begin{verbatim}
+python verification/verify.py --mode exact \
+  --output verification/exact_results.json
+python verification/verify.py --mode numerical \
+  --output verification/numerical_results.json
+make pdf
+\end{verbatim}
+The delivered records were produced with Python~3.13.5, SymPy~1.14.0,
+and mpmath~1.3.0. Replays should be made on a copy of the package if the
+original recorded outputs are to remain unchanged. The report was
+prepared with ChatGPT assistance; no independent referee review is
+implied by the internal proof-review notes.
+
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{References}
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions.
+Sections 24.8 (Bernoulli Fourier series), 25.4 (Riemann-zeta functional
+equation), 25.11 (Hurwitz zeta), and 25.12 (polylogarithms).
+\url{https://dlmf.nist.gov/24.8},
+\url{https://dlmf.nist.gov/25.4},
+\url{https://dlmf.nist.gov/25.11},
+\url{https://dlmf.nist.gov/25.12}.
+Consulted for the classical identities used in this report.
+
+\bibitem{dk}
+D.~Dorigoni and A.~Kleinschmidt,
+\emph{Resurgent expansion of Lambert series and iterated Eisenstein
+integrals}, 2020.
+\url{https://arxiv.org/abs/2001.11035}.
+In particular, the scalar odd-integer degeneration and surviving
+nonperturbative sectors are discussed in Section~2.2.
+
+\bibitem{fr}
+V.~Fantini and C.~Rella,
+\emph{Modular resurgence, $q$-Pochhammer symbols, and quantum operators
+from mirror curves}, arXiv:2506.08265v2, 1 April 2026.
+\url{https://arxiv.org/abs/2506.08265v2}.
+The inspected Conjecture~5 appears on printed page~17,
+Eqs.~(3.36a)--(3.36b).
+
+\bibitem{repoq}
+ProveIt research report,
+\emph{Critical Stokes Reversion and $q$-Gamma Cores}, source dated
+4 October 2026, pinned to commit \pin.
+Repository path:
+\path{Analysis/Transseries/docs/series-and-transseries/}%
+\path{Mellin_Borel_Completion_q_Gamma_Critical_Reversion/}%
+\path{critical_stokes_q_reversion.tex}.
+The inspected ranges include the title/scope, simple-pole kernel,
+Mellin completion proof, and rational-weight criterion.
+Repository: \url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{repoindex}
+V.~Reshetnikov and ProveIt contributors,
+\emph{ProveIt repository documentation}.
+Inspected paths:
+\path{Analysis/Polylogarithms/README.md},
+\path{Analysis/Transseries/README.md},
+and \path{docs/incoming/README.md}, together with the incoming directory
+listing. Live indexes were read on 12 October 2026; the detailed
+mathematical comparison is pinned separately in \cite{repoq}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\end{thebibliography}
+\end{document}

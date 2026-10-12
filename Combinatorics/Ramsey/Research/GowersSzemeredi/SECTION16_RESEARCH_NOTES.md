@@ -6129,6 +6129,43 @@ and convention/geometry follow-ups recorded. Foundational comment fixes are
 identified for after the broad build so that it is not needlessly invalidated.
 The full goal remains active.
 
+### L.39 Four-term scope and Sections 8--10 comparison (2026-10-12)
+
+`FourTermScopeFidelityAudit` passes over 1,634 native modules with only
+`propext`, `Classical.choice` and `Quot.sound`. Two new public theorems
+remove primality from the four-term theorem and weaken exact density to
+`delta*N <= |A|`. The same absolute exponent witness is used. The dense
+branch is a four-set union bound over every group of order at least two;
+the threshold itself excludes the one-element modulus. The remaining
+branch reuses the existing all-modulus quadratic iteration.
+
+The separate, previously proved unrestricted-eta counterexample to Lemma
+9.3 is now explicitly included in the audit. Full domain, identity map,
+alpha=beta=1 and eta=8 demand more additive sixteen-tuples than the whole
+group contains. The annotated paper records this and makes Corollary9.4's
+inherited eventual-N condition explicit.
+
+Statement comparison now covers 68/120 entries. Sections8--10 retain the
+actual tuple counts, Fourier normalization, nested proportion losses and
+inherited component setup. Lemmas10.3 and10.5 now state the restrictions
+used in their proofs; radius ranges and nonempty K are explicit in10.10--11.
+Two proof transcription errors are fixed: N^3 rather than N^4 in10.2's last
+count, and rx rather than rd in10.10's boundary display. The corrected10.13
+statement uses the same integer ceiling as Lean for its spectrum parameter.
+
+Inspection does not close every original claim. Theorem10.13's original
+alpha^3/1000 extraction and real-parameter radius remain open, as does
+extension from the positive integer fibre-cap convention to arbitrary real
+caps if the latter is intended. Lemma10.5's original square-root clause
+must not be classified as false: the existing weighted error estimate is
+1440*eta*L*|W|, whereas the original exceptional proportion and threshold
+multiply to1500*eta. Recover its original clause from that budget in a
+subsequent kernel proof, rather than relying on the old 'inconsistent'
+comment. The fifth-power variant used downstream is already verified.
+
+The exported facade has progressed through further native OAI modules but
+has not yet passed. Its cache is retained. The goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

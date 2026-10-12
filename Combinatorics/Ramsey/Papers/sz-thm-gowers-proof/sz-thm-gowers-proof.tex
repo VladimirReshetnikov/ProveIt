@@ -8,7 +8,7 @@
 \title{A NEW PROOF OF SZEMERÉDI'S THEOREM }
 
 \author{W.T. Gowers}
-\date{Editorial annotations from the Lean formalization, 11 October 2026}
+\date{Editorial annotations from the Lean formalization, 12 October 2026}
 
 
 %New command to display footnote whose markers will always be hidden
@@ -1624,6 +1624,12 @@ $$
 
 If we now sum over $s$, we have the required statement (after a small change to the definition of the $\psi_{s}$ ). \(\square\)
 
+\emph{Editorial note on scope (2026-10-12).}
+The checked four-term theorem also holds for every nonzero composite
+modulus, and the density hypothesis can be weakened to $|A|\geqslant\delta N$.
+The same absolute exponent works: the density iteration already applies
+to every modulus, and the dense case uses only a four-set union bound.
+
 Theorem 8.2. There is an absolute constant $C$ with the following property. Let $A$ be a subset of $\mathbb{Z}_{N}$ with cardinality $\delta N$. If $N \geqslant \exp \exp \left((1 / \delta)^{C}\right)$, then A contains an arithmetic progression of length four.
 
 Proof. Our assumption certainly implies that $N \geqslant 32 k^{2} \delta^{-k}$. Suppose now that the result is false. Then Corollary 3.6 implies that $A$ is not $\alpha$ quadratically uniform, where $\alpha=(\delta / 2)^{64}$. By Lemma 3.1 (in particular the implication of (i) from (v)) there is a set $B \subset \mathbb{Z}_{N}$ of cardinality at least $\alpha N / 2$ together with a function $\phi: B \rightarrow \mathbb{Z}_{N}$, such that $\left|\Delta(f ; k)^{\wedge}(\phi(k))\right| \geqslant$ $\alpha N / 2$ for every $k \in B$. In particular,
@@ -1744,6 +1750,13 @@ $$
 
 Hence, the number of sequences with the desired properties is, as stated, at least $\gamma^{7} N^{15}$. \(\square\)
 
+\emph{Editorial note on the parameter range (2026-10-12).}
+The restriction $0<\eta\leqslant1$ is required. Without an upper restriction,
+$B=\mathbb Z_N$, $\phi(x)=x$, $\alpha=\beta=1$ and $\eta=8$ would demand
+at least $2^{2^{19}}N^{15}$ additive sixteen-tuples in a subset of
+$\mathbb Z_N$, whereas the whole group has exactly $N^{15}$.
+This counterexample is verified separately from the corrected positive lemma.
+
 Lemma 9.3. Let $0<\eta\leqslant 1$, let $B \subset \mathbb{Z}_{N}$ be a set of size $\beta N$ and let $\phi: B \rightarrow \mathbb{Z}_{N}$ be a function with at least $\alpha \beta^{15} N^{15}$ sequences $a_{1}, \ldots, a_{16}$ such that
 
 
@@ -1815,7 +1828,7 @@ $$
 If $N$ is large enough that $(\alpha \eta / 4)^{2^{19}} \beta^{15} N \geqslant 3^{16}$, then the values for the above expectations and the upper estimate for the number of degenerate configurations imply that there exists a set $B^{\prime}$ such that $\eta X \geqslant Y$ and $X \geqslant(\alpha \eta / 4)^{2^{19}} \beta^{15} N^{15}$, as was claimed. \(\square\)
 
 Lemmas 9.2 and 9.3 combined show that a somewhat additive function can be restricted to an approximate homomorphism of order eight.\\
-Corollary 9.4. Let $B \subset \mathbb{Z}_{N}$ have size $\beta N$, let $\phi: B \rightarrow \mathbb{Z}_{N}$ be $\gamma \beta^{3}$ -additive and let $0<\eta\leqslant 1$. There is a subset $B^{\prime} \subset B$ containing at least $\left(\gamma^{7} \beta^{6} \eta / 4\right)^{2^{19}} \beta^{15} N^{15}$ sequences $\left(a_{1}, \ldots, a_{16}\right)$ with $a_{1}+\cdots+a_{8}=a_{9}+\cdots+a_{16}$, such that the restriction of $\phi$ to $B^{\prime}$ is a $(1-\eta)$-homomorphism of order eight.\\
+Corollary 9.4. Let $B \subset \mathbb{Z}_{N}$ have size $\beta N$, let $\phi: B \rightarrow \mathbb{Z}_{N}$ be $\gamma \beta^{3}$ -additive and let $0<\eta\leqslant 1$. For sufficiently large $N$ in terms of $\beta$, $\gamma$ and $\eta$, there is a subset $B^{\prime} \subset B$ containing at least $\left(\gamma^{7} \beta^{6} \eta / 4\right)^{2^{19}} \beta^{15} N^{15}$ sequences $\left(a_{1}, \ldots, a_{16}\right)$ with $a_{1}+\cdots+a_{8}=a_{9}+\cdots+a_{16}$, such that the restriction of $\phi$ to $B^{\prime}$ is a $(1-\eta)$-homomorphism of order eight.\\
 Proof. Lemma 9.2 allows us to take $\alpha=\left(\gamma \beta^{3}\right)^{7} \beta^{-15}=\gamma^{7} \beta^{6}$ in Lemma 9.3. \(\square\)
 
 \section*{10 Properties of Approximate Homomorphisms}
@@ -1945,13 +1958,13 @@ $$
 \sum_{x, y \in X^{\prime}} \epsilon(x, y) q(x, y) \leqslant 5 \eta \sum_{x, y \in X} q(x, y) .
 $$
 
-We must also count the additive quadruples $(x, y, z, w)$ such that either $x \notin X^{\prime}$ or $y \notin X^{\prime}$, which means that either $\left|X_{r(x)}\right|$ or $\left|X_{r(y)}\right|$ is less than $5 \eta \alpha^{2} M$. There are easily seen to be at most $2\left(5 \eta \alpha^{2} M N\right)(\alpha M N)(\alpha M N) M$ $=10 \eta \alpha^{4} M^{4} N^{4}$ of them. Since there are at least $\alpha^{4} M^{4} N^{3}$ additive quadruples, this number is at most $10 \eta \sum_{x, y \in X} q(x, y)$. This estimate, together with the earlier one, proves the lemma. \(\square\)
+We must also count the additive quadruples $(x, y, z, w)$ such that either $x \notin X^{\prime}$ or $y \notin X^{\prime}$, which means that either $\left|X_{r(x)}\right|$ or $\left|X_{r(y)}\right|$ is less than $5 \eta \alpha^{2} M$. There are easily seen to be at most $2\left(5 \eta \alpha^{2} M N\right)(\alpha M N)(\alpha M N) M$ $=10 \eta \alpha^{4} M^{4} N^{3}$ of them. Since there are at least $\alpha^{4} M^{4} N^{3}$ additive quadruples, this number is at most $10 \eta \sum_{x, y \in X} q(x, y)$. This estimate, together with the earlier one, proves the lemma. \(\square\)
 
 We are aiming to find a large subset of $X$ where the error $\epsilon(x, y)$ is almost always small. The above lemma suggests that we can achieve this by choosing a subset of a "component" of the weighted graph given by $q$. Roughly speaking, we do this by picking a random point $x \in X$ and taking the set of all $y$ in a neighbourhood of $x$ (in an appropriate weighted sense). Such a set will be a union of sets $\left|X_{r}\right|$. For technical reasons it will be very convenient to have all the $X_{r}$ that we choose of approximately the same size, and to have other properties of a similar kind. These properties will be obtained by somewhat messy averaging arguments.
 
 To make these ideas more precise, let us define some more functions and prove another lemma. For every $x \in X$, let $R(x)=\left|X_{r(x)}\right|$, let $Q(x)=$ $\sum_{y \in X} q(x, y)$ and let $E(x)=\sum_{y \in X} \epsilon(x, y) q(x, y)$.
 
-Lemma 10.3. There exists $x \in X$ such that $R(x) \geqslant \alpha^{2} M / 2, Q(x) \geqslant$ $\alpha^{3} M^{3} N^{2} / 4$ and $E(x) \leqslant 60 \eta Q(x)$.
+Lemma 10.3. Assume that $\sigma\leqslant\eta\alpha^2$, as in Lemma 10.2. There exists $x \in X$ such that $R(x) \geqslant \alpha^{2} M / 2, Q(x) \geqslant$ $\alpha^{3} M^{3} N^{2} / 4$ and $E(x) \leqslant 60 \eta Q(x)$.
 
 Proof. Lemma 10.1 tells us that $\sum_{x \in X} Q(x) \geqslant \alpha^{4} M^{4} N^{3}$ and that $Q(x) \leqslant$ $\alpha^{2} M^{3} N^{2}$ for every $x$. Let $X^{\prime}$ be the set of $x \in X$ such that $R(x) \geqslant \alpha^{2} M / 2$. Clearly, $\left|X \backslash X^{\prime}\right| \leqslant \alpha^{2} M N / 2$, so
 
@@ -1988,7 +2001,13 @@ as stated. \(\square\)
 
 For the next lemma, we use the notation $W+d$ to stand for all elements $x \in X$ such that there exists $w \in W$ with $r(x)=r(w)+d$.
 
-Lemma 10.5. There exists a subset $W \subset X$ with the following properties.
+\emph{Editorial note on the regular-component clause (2026-10-12).}
+Item (iii) below uses the fifth-power trade-off needed in Lemma 10.6.
+The original square-root trade-off is a separate verification obligation;
+it is not refuted by the use of this variant. The smallness conditions on
+$\rho$ and $\sigma$, used explicitly in the proof, are now stated.
+
+Lemma 10.5. Let $0<\rho\leqslant\min\{\alpha/192,\alpha^2/32\}$ and assume that $\sigma\leqslant\eta\rho^4\alpha/384$. With the anchor chosen in Lemma 10.3, there exists a subset $W \subset X$ with the following properties.
 
 \begin{itemize}
   \item[(i)] $W$ is a union of sets of the form $X_{r}$.
@@ -2210,17 +2229,17 @@ Since $1-6 \theta^{1 / 2}>0$ and $d_{1}+d_{2}=d_{3}+d_{4}$, (5) and (6) imply th
 
 We shall now specialize to the case where $B$ is a Bohr neighbourhood. (For the definition and elementary facts, see §7.) First, we need some more easy results about such sets.
 
-Lemma 10.10. Let $K$ be a set of size $k$, let $B=B(K, \delta)$ and let $d \in B(K, \zeta)$. Then $|B \cap(B+d)| \geqslant\left(1-2^{k+1} \delta^{-k} k \zeta\right)|B|$.
+Lemma 10.10. Let $0<\delta\leqslant1$ and $0\leqslant\zeta\leqslant\delta$. Let $K$ be a set of size $k$, let $B=B(K, \delta)$ and let $d \in B(K, \zeta)$. Then $|B \cap(B+d)| \geqslant\left(1-2^{k+1} \delta^{-k} k \zeta\right)|B|$.
 
 Proof. If $x \in B \backslash(B+d)$, then for some $r \in K$ we must have
 
 $$
-(\delta-\zeta) N \leqslant|r d| \leqslant \delta N,
+(\delta-\zeta) N \leqslant|r x| \leqslant \delta N,
 $$
 
 as otherwise $x$ would belong to $B(K, \delta-\zeta)$, which would imply that $x-d \in B$. It follows that the cardinality of $B \backslash(B+d)$ is at most $2 k \zeta N$. Since $B$ has cardinality at least $(\delta / 2)^{k} N$, the result follows. \(\square\)
 
-Corollary 10.11. Let $K$ be a set of size $k$, let $B=B(K, \delta)$, let $B^{\prime} \subset B$ be a set of size at least $(7 / 8)|B|$, let $\zeta=2^{-(k+4)} \delta^{k}/k$ and let $C=B(K, \zeta)$. Then $C \subset B^{\prime}-B^{\prime}$ and any homomorphism $\psi$ from $B^{\prime}$ to $\mathbb{Z}_{N}$ induces a homomorphism $\psi_{1}$ from $C$ to $\mathbb{Z}_{N}$.
+Corollary 10.11. Let $0<\delta\leqslant1$ and let $K$ be a nonempty set of size $k$, let $B=B(K, \delta)$, let $B^{\prime} \subset B$ be a set of size at least $(7 / 8)|B|$, let $\zeta=2^{-(k+4)} \delta^{k}/k$ and let $C=B(K, \zeta)$. Then $C \subset B^{\prime}-B^{\prime}$ and any homomorphism $\psi$ from $B^{\prime}$ to $\mathbb{Z}_{N}$ induces a homomorphism $\psi_{1}$ from $C$ to $\mathbb{Z}_{N}$.
 
 Proof. If $d \in C$, then $|B \cap(B+d)| \geqslant(7 / 8)|B|$, by Lemma 10.10 and our choice of $\zeta$. This implies that $\left|B^{\prime} \cap\left(B^{\prime}+d\right)\right| \geqslant(5 / 8)|B|$ and in particular that $d \in B^{\prime}-B^{\prime}$.
 
@@ -2308,7 +2327,7 @@ The original numerical conclusions of Lemmas 13.6--13.9 and Corollary 13.10
 are recovered below using a sharper edge count and a dense bilinear piece,
 so propagating weaker Section 13 constants is unnecessary.
 
-Theorem 10.13. Let $0<\alpha\leqslant1/6$, let $\eta=2^{-43}$ and let $X=X_{0} \cup \cdots \cup X_{N-1}$ be the domain of a $(1-\eta)$-homomorphism $\phi$ of order eight. Suppose that $\left|X_{i}\right| \leqslant M$ for each $i$ and that $|X|=\alpha M N$. Let $g(s)$ be the size of $X_{s}$ for every $s$, let $\lambda=$ $2^{-37} \alpha^{11 / 2}$ and define $K$ to be $\left\{r \in \mathbb{Z}_{N}:|\hat{g}(r)| \geqslant \lambda M N\right\}$. Then $|K| \leqslant 2^{74} \alpha^{-10}$. Let $k=2^{74} \alpha^{-10}$, let $\epsilon=\alpha^{-4} \lambda^{4} / \pi$ and let $\zeta=2^{-155 k} \alpha^{18 k}/k \leqslant 2^{-(k+4)} \epsilon^{k}/k$. If $C=B(K, \zeta)$, then there is a homomorphism $\psi_{1}: C \rightarrow \mathbb{Z}_{N}$ together with a subset $Y \subset X$ of size at least $\alpha^{6}|X| / 20000$ such that, whenever $y, z \in Y$ and $r(y)-r(z) \in C$, we have $\phi(y)-\phi(z)=\psi_{1}(r(y)-r(z))$.
+Theorem 10.13. Let $0<\alpha\leqslant1/6$, let $\eta=2^{-43}$ and let $X=X_{0} \cup \cdots \cup X_{N-1}$ be the domain of a $(1-\eta)$-homomorphism $\phi$ of order eight. Suppose that $\left|X_{i}\right| \leqslant M$ for each $i$ and that $|X|=\alpha M N$. Let $g(s)$ be the size of $X_{s}$ for every $s$, let $\lambda=$ $2^{-37} \alpha^{11 / 2}$ and define $K$ to be $\left\{r \in \mathbb{Z}_{N}:|\hat{g}(r)| \geqslant \lambda M N\right\}$. Then $|K| \leqslant 2^{74} \alpha^{-10}$. Let $k=\lceil2^{74} \alpha^{-10}\rceil$, let $\epsilon=\alpha^{-4} \lambda^{4} / \pi$ and let $\zeta=2^{-155 k} \alpha^{18 k}/k \leqslant 2^{-(k+4)} \epsilon^{k}/k$. If $C=B(K, \zeta)$, then there is a homomorphism $\psi_{1}: C \rightarrow \mathbb{Z}_{N}$ together with a subset $Y \subset X$ of size at least $\alpha^{6}|X| / 20000$ such that, whenever $y, z \in Y$ and $r(y)-r(z) \in C$, we have $\phi(y)-\phi(z)=\psi_{1}(r(y)-r(z))$.
 
 Proof. Let $B=B(K, \epsilon)$ and let $L=\alpha^{3} M^{4} N^{3}$. We know that $|2 X-2 X|=$ $(\alpha M N)^{4}$ and that $\left|(2 X-2 X)_{s}\right| \leqslant \alpha^{3} M^{4} N^{3}=L$ for every $s$. Now we shall show that $2 X-2 X$ is $(B, \sigma L)$-invariant.
 
