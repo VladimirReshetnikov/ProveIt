@@ -1,3 +1,4 @@
+import GowersSzemeredi.Proofs03Basic
 import GowersSzemeredi.Sections12_13
 import GowersSzemeredi.Proofs05BoxPartition
 

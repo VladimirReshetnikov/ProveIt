@@ -305,14 +305,7 @@ private lemma context_vertical_restriction {N : Nat} [NeZero N]
           (N : Real) := by
       rw [← Finset.sum_div, hsumReal]
       field_simp [show (N : Real) ≠ 0 by exact_mod_cast NeZero.ne N]
-    calc
-      (2 : Real) ^ (-(1882 : Real)) * a ^ 9312 *
-            ((B.card : Real) / (N : Real) ^ 2) ^ 1165 * (N : Real) ^ 2 =
-          (2 : Real) ^ (-(1882 : Real)) * a ^ 9312 *
-            ((∑ x : ZMod N, (verticalSection B x).card / (N : Real)) /
-              (N : Real)) ^ 1165 * (N : Real) ^ 2 := by rw [hdensity]
-      _ ≤ ∑ x : ZMod N, ((T x).card : Real) := hTcard
-      _ = B'.card := hcardReal.symm
+    simpa only [← hdensity, ← hcardReal] using hTcard
   · intro x
     rw [context_vertical_join_section]
     exact hTfreiman x
@@ -354,14 +347,7 @@ private lemma context_horizontal_restriction {N : Nat} [NeZero N]
           (N : Real) := by
       rw [← Finset.sum_div, hsumReal]
       field_simp [show (N : Real) ≠ 0 by exact_mod_cast NeZero.ne N]
-    calc
-      (2 : Real) ^ (-(1882 : Real)) * a ^ 9312 *
-            ((B.card : Real) / (N : Real) ^ 2) ^ 1165 * (N : Real) ^ 2 =
-          (2 : Real) ^ (-(1882 : Real)) * a ^ 9312 *
-            ((∑ y : ZMod N, (horizontalSection B y).card / (N : Real)) /
-              (N : Real)) ^ 1165 * (N : Real) ^ 2 := by rw [hdensity]
-      _ ≤ ∑ y : ZMod N, ((T y).card : Real) := hTcard
-      _ = B'.card := hcardReal.symm
+    simpa only [← hdensity, ← hcardReal] using hTcard
   · intro y
     rw [context_horizontal_join_section]
     exact hTfreiman y

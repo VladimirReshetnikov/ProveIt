@@ -1,6 +1,5 @@
 import GowersSzemeredi.Proofs18GeneralPhaseInverseAssembly
 import GowersSzemeredi.Proofs18FejerCubicParameters
-import GowersSzemeredi.Proofs18CubicDiscrepancy
 import GowersSzemeredi.Proofs18FejerCubicTwistedDiscrepancy
 
 /-! A fully explicit threshold for the cubic function inverse theorem. -/

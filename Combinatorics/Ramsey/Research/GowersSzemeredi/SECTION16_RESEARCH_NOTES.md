@@ -7090,9 +7090,15 @@ private inequality, instantiated at exponents 1 and 12,359. Its theorem is
 and expanded compatibility audits are running separately; the latter includes
 the old context/Fourier/odd-square theorems and their affected consumers.
 
-The measured final import closure is 654 modules / 138,775 lines, down by
-four modules / 3,916 lines from L.58. Seven old modules are no longer imported
-and three shared modules replace them. The source-preservation comparisons
+Two further fibre-sum conversions reduce to one rewrite each, removing
+14 lines. The Fejer cubic localization and discrepancy modules also import
+their lower-level inputs directly, without the older cubic extraction route.
+The older cubic theorems remain in the expanded compatibility audit.
+
+The measured final import closure is 650 modules / 138,291 lines, down by
+eight modules / 4,400 lines from L.58. Eleven old modules are no longer imported
+and three shared modules replace them. The current dependency snapshot is
+`verification/2026-10-12-final-section13-direct-dependencies.json`. The source-preservation comparisons
 and dependency snapshot are in
 `verification/2026-10-12-final-section13-inputs-dependencies.json`.
 These are import-closure counts, not repository-wide deletions. The final

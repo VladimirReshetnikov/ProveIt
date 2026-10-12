@@ -1,3 +1,4 @@
+import GowersSzemeredi.Proofs13QuadraticPartition
 import GowersSzemeredi.Proofs18RelativeBalance
 
 /-! Discrepancy selection after discarding a small exceptional family of

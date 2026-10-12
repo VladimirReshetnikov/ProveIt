@@ -1,5 +1,5 @@
 import GowersSzemeredi.Proofs18FejerCubicParameters
-import GowersSzemeredi.Proofs18CubicCellModels
+import GowersSzemeredi.Proofs18PartitionPrimeModels
 import GowersSzemeredi.Proofs17FejerCubicLocalization
 
 /-! Explicit old-modulus threshold forcing every selected local prime above

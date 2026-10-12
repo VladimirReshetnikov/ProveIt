@@ -7,6 +7,8 @@ import GowersSzemeredi.Proofs13PurifiedContext
 import GowersSzemeredi.Proofs13SmallIntegerSquare
 import GowersSzemeredi.Proofs13PolyRowExponent
 import GowersSzemeredi.Proofs13ExplicitOddSquare
+import GowersSzemeredi.Proofs17ExplicitCubicLocalization
+import GowersSzemeredi.Proofs18CubicDiscrepancy
 import Lean.Util.CollectAxioms
 
 open Lean Elab Command in
@@ -27,7 +29,8 @@ run_cmd do
       ``LeanProofs.GowersSzemeredi.exists_odd_nat_between_half,
       ``LeanProofs.GowersSzemeredi.lemma_13_11_holds,
       ``LeanProofs.GowersSzemeredi.theorem_13_12_with_explicit_bound,
-      ``LeanProofs.GowersSzemeredi.theorem_13_12_odd_square] do
+      ``LeanProofs.GowersSzemeredi.theorem_13_12_odd_square,
+      ``LeanProofs.GowersSzemeredi.cubic_nonuniformity_localized_phase_removal_with_upper] do
     let info ← getConstInfo name
     unless info.isTheorem do
       throwError "{name} is not a theorem"

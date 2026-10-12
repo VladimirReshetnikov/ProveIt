@@ -1,3 +1,4 @@
+import GowersSzemeredi.Proofs13OddFourierSquare
 import GowersSzemeredi.Proofs13FourierBoxTransport
 import GowersSzemeredi.Proofs17LocalizedPhaseRemoval
 import GowersSzemeredi.Proofs17PartitionEnergy

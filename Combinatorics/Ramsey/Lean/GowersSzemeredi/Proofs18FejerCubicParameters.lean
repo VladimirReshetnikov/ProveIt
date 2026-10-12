@@ -1,4 +1,6 @@
-import GowersSzemeredi.Proofs18CubicDiscrepancy
+import GowersSzemeredi.Proofs18QuadraticDiscrepancy
+import GowersSzemeredi.Proofs18BoundaryRefinement
+import GowersSzemeredi.Proofs05Downstream
 
 /-! Cubic inverse parameters retaining the stronger Fejer exponents 53 and 42. -/
 set_option autoImplicit false
