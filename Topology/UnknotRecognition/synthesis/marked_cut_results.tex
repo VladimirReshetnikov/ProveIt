@@ -1,4 +1,8 @@
-\subsection{Native source audit and evidence boundaries}
+\subsection{Initial disk-interface audit and evidence boundaries}
+
+This subsection preserves the first checkpoint before annulus absorption.
+Its source pins and timings describe that earlier implementation; the
+subsequent extension is recorded in Section~\ref{marked-cut:disk-absorption}.
 
 The integrated audit replays the 106 source cuts supplied with report~85.
 It produces 30 complete certificates, all accepted by the independent
@@ -24,3 +28,54 @@ exercise exact hexadecimal transport before the graph calculation.
 Fresh audit data and source pins are in
 \path{data/marked-cut-audit.json}. These checks concern supplied-cut topology,
 not completeness of surface discovery or a global knot-recognition bound.
+
+The full Regina-enabled regression suite passes all 1,648 tests with no
+skips in 501.552 seconds on this host. Its existing expanded-sheet and
+marked-cover audits also complete. The runtime source pins remain identical
+to the independent 106-case cut audit. The replay-specific hexadecimal
+regression accepts valid signed/uppercase encodings and rejects malformed
+strings and booleans.
+
+A separate algebraic feasibility probe examines the 60 annular refusals.
+Exactly 38 have only disk-base circle attachments. Appending the proposed
+unsigned two-handle rows permits complete saturated cancellation in 33 of
+those 38 cases. This is a prioritization diagnostic, not 33 additional
+topological certificates: the source-chart absorption constructor and its
+independent checker are still absent. The probe and its source pins are
+retained in \path{data/marked-cut-annulus-probe.py} and the corresponding
+JSON. Its command is run from the repository root; it never supplies a knot
+verdict or changes the accepted census.
+
+\subsection{Complete-cut timings and binary capacity}
+
+After the full regression run finished, ten finite cuts were measured in
+five shuffled paired rounds after warmup. Both arms start with the same
+face pairings and normal coordinates. The native arm constructs its entire
+certificate and independently verifies it; the explicit arm builds Regina's
+cut triangulation and recognizes every connected component. Input parsing
+and output serialization are outside these timing intervals. Separate
+identical-explicit controls have casewise median ratios between 0.982 and
+1.089. The raw rounds and source pins are retained in
+\path{data/marked-cut-benchmark.json}.
+
+\input{tables/marked_cut_timing.tex}
+
+Three of the ten finite cases favor the native implementation; seven favor
+the explicit reference. The 4,096-copy one-tetrahedron example improves by
+55.702 in median paired time, while the twelve-tetrahedron single meridian
+improves by 2.707. The small four-tetrahedron single-meridian example has a
+ratio of only 0.032: proof construction and replay dominate. These measurements
+justify neither a universal speedup nor a new default recognition stage.
+They demonstrate the intended benefit of avoiding literal cut expansion
+while preserving the complete component query and independent evidence.
+
+The separate capacity runs use multiplicity $2^{16384}$. Production plus
+replay takes 0.024 seconds for one tetrahedron, 2.406 seconds for four, and
+12.652 seconds for eight. Their serialized certificates contain 1,701,021,
+30,078,776 and 71,291,795 bytes respectively. At four tetrahedra and
+multiplicity $2^{1024}$, the corresponding figures are 0.783 seconds and
+2,510,984 bytes. These are single-run capacity observations; no expanded
+reference was attempted. Large binary topology can therefore be certified
+without enumerating its pieces, but the present proof representation still
+has a substantial size cost. The eight-tetrahedron case retains 47 ports
+and three maximal disk attachments rather than expanding its multiplicity.

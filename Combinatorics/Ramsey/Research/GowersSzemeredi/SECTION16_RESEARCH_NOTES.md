@@ -5488,6 +5488,26 @@ Both are in the bridge, pinned and stub-checked.
 * The base envelope `EnvBound 3 62` of Theorem 18.2. The thresholds do not
   move even at base 0.
 
+**L.16w: the split step combined by `max` (2026-10-12).** A split class
+carries one family exponent `a` and one parameter degree `D` for its count,
+its width exponent and its threshold. The step bounds the three separately,
+then combined them by a sum: `splitStepA = sCountN + sExpN` and
+`splitStepDFejer = countW + expW + thrDeg`. Every control of a split class
+is monotone in `(a, D)`, so the `max` suffices
+(`splitUniformClass_succ_fejer_max`; the step lemma is unchanged except for
+its monotonicity targets). Since `max ≤ sum` (`splitStepAMax_le_sum`,
+`splitStepDMaxWith_le_sum`), the invariants at class constants `4` and `5/2`
+carry over unchanged. Only the exact table moves: `tDegM` is
+`…, 134, 205, 317, 505, 842, 1472, 2684, 5057, 9746, 19064, 37637`
+(dimensions 4–14) against `…, 136, 210, 326, 524, 881, 1550, 2841, 5371,
+10375, 20323, 40154` for the sum, about 4–6% lower
+(`Proofs18TightClassesFejerM`, `assemble_m.py`). Over these classes the
+joint-slice chain (`Proofs18Cover{Modulus,Density,Exponents}FejerJM`,
+`Proofs18CoverFejerHeadlineJM`, `assemble_jm.py`) gives Theorem 18.1 at
+`d + 2` from `d = 11` (`theorem_18_1_d2_eleven_le`). The other thresholds do
+not move. A split invariant with separate count and exponent exponents
+(dimension-two count `(11, 2^41)`) would also give `d + 3` from 8.
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`
@@ -6384,6 +6404,91 @@ and low-degree final bounds. All43 direct audit input hashes still match
 the verifiedd2f0c80cf snapshot. The merged expected fidelity closure is
 1,652 modules and its fresh native build is running, followed by the facade.
 No claim about that broad gate follows from the unchanged direct inputs.
+
+### L.42 Sections14--15 review while the native refresh runs (2026-10-12)
+
+The actual statement comparison now covers100/120 entries, including all
+fourteen numbered Section14--15 results. Twenty entries in Sections16--18
+remain unread. This count is inspection, not proof completion. The full
+1,652-module audit is confirmed live and its cache is advancing; no
+restart follows from an observation timeout. The new scope core check is
+queued behind it and has not yet certified the prepared Lean modules.
+
+The published PDF confirms that Corollary14.6 prints gamma exponent
+k*4^(k+1) and Lemma14.8 prints7*k*4^(k+1). The verified companions instead
+use3*k*4^(k+1) and21*k*4^(k+1); the direct extraction calculation supports
+2*k*4^(k+1)+8*2^k. Neither original stronger exponent is proved or refuted
+by this review. The source-bound ledger now keeps those duties explicit.
+
+The annotated15.5 threshold also requires separate work. Its condition
+(t*beta^15)*N>=Cdeg, t=(alpha*eta/4)^E, is weaker than the currently proved
+explicit selection threshold max3(2*Cdeg/((1-eta)*t*beta^15)) for eta<1.
+The exact eventual-N companion is proved, but it must not be presented as
+verification of the sharper displayed condition or the literal original
+reading without largeness. Positive product/density and dimension conventions
+are recorded rather than silently treating omitted endpoint cases as closed.
+
+Prepared scope work includes a direct Boolean rigidity proof using only
+the full polynomial moment, with arbitrary integer coefficients at every
+prime; it avoids division by2. A characteristic-two signed-pattern example
+uses k=2,h_i=1 and coefficients1 on the two patterns with first sign negative,
+0 otherwise. The degeneracy bound atN=2 is covered by its enormous stated
+coefficient against the whole parameter space. An unrestricted real-theta
+version of14.7 has trivial nonpositive conclusions at theta<=0. Separate
+zero-weight and summed-slice counterexamples are also prepared. These are
+not counted as checked theorems or used to rewrite the paper before their
+queued kernel/axiom audit succeeds. In the summed-slice example f=1,N=3,k=2,
+the proposed g_y is constant3, so its quadratic correlation is27 rather than9.
+The valid14.3 native proof keeps slices separate and averages their squared
+Fourier coefficients instead of asserting that false identity.
+
+The goal remains active. The full refresh and facade, the20 unreviewed
+statements and all original-bound/scope obligations remain outstanding.
+
+### L.43 All-prime moments, characteristic obstructions and restored mass (2026-10-12)
+
+The direct `WalshScopeCoreAudit` passes 56 native modules with only
+`propext`, `Classical.choice` and `Quot.sound`. Its seven positive theorems
+and five refutation theorems are recorded with exact input hashes in
+`verification/2026-10-12-walsh-scope.json`.
+
+The Boolean version of Corollary 15.2 holds over every prime, even two,
+for arbitrary integer coefficients; invariance of the full moment alone
+suffices. The sign-pattern version of Lemma 15.1 instead has a native
+characteristic-two counterexample. Lemma 15.4 extends to every prime:
+at two, its coefficient dominates the whole parameter space. Lemma 14.7
+extends to all real lower-bound parameters.
+
+The stronger alpha^5/20000 extraction recovers the original Lemma 16.5
+coefficient 2^-22 in place of 2^-27. This keeps the corrected theta1 from
+Lemma 16.4 and does not discharge the stronger original arrangement count.
+The paper now states this distinction beside the restored coefficient.
+
+Lemma 17.1 has a separate native obstruction at N=k=2: the monomial
+x0*x1 has mixed second difference one, whereas every proposed signed sum
+of one-variable phases has mixed second difference zero. The obstruction
+even allows arbitrary phase functions. In the corrected prime ranges,
+Lemma 17.1 and Proposition 17.2 now derive factorial invertibility rather
+than requiring it as an extra premise. Proposition 17.2's original degree
+bound remains open.
+
+Two further native examples clarify the source proof: negative alpha
+refutes the unrestricted sign reading of Proposition 14.1, and the
+summed-slice correlation step in Lemma 14.3 gives 27 rather than 9 for
+the constant-one example at N=3,k=2. The numbered Lemma 14.3 itself remains
+proved by the frozen-slice argument.
+
+All 120 numbered statements have now been compared with the source.
+This is an inspection milestone, not proof completion. The per-statement
+ledger retains original-bound, range and geometry obligations, including
+the distinction between the corrected Corollary 16.11 exponent and its
+original numerical exponent with ordinary integer geometry.
+
+The prior broad `PurifiedContextFidelityAudit` passed all 1,652 modules.
+After merging origin/main, the expanded `WalshScopeFidelityAudit` also
+passes all 1,663 modules. The exported facade remains a separate running
+check; neither narrower checkpoint certifies its additional imports. The annotated PDF was rebuilt twice; pages 86,93,101,109 were
+visually inspected, and the original published PDF is untouched.
 
 ## F. Routes
 

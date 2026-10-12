@@ -2,7 +2,9 @@
 
 from collections import Counter
 
+from .bundle_primitive_annuli_verify import replay_primitive_bundle_annuli
 from .core_handlebody_verify import verify_core_handlebody_certificate
+from .disk_bundle_absorption_verify import replay_disk_bundle_absorption
 from .integer_codec import encoded_integer, certificate_equal
 from .normal_parallelity_verify import verify_normal_cut_parallelity
 from .parallelity_boundary_words_verify import verify_parallelity_boundary_words
@@ -18,11 +20,10 @@ def _decode(value):
     return value
 
 
-def _recount(g, summary, skeleton, components, check):
+def _recount(g, summary, skeleton, components, check, absorbed=frozenset(), primitive=None):
+    primitive = {} if primitive is None else primitive
     profiles = summary['base_profiles']
     if any(p['boundary_components'] <= 0 for p in profiles):
-        return None
-    if any(a['kind'] != 'interval' for a in skeleton['attachment_components']):
         return None
     vertex_component = {}
     for c in components:
@@ -42,13 +43,17 @@ def _recount(g, summary, skeleton, components, check):
             return None
         core_port[port['id']] = vertex_component[v]
     genus = {('core', c['id']): c['genus'] for c in components}
-    genus.update({('base', i): 1 - p['euler_characteristic']
-                  for i, p in enumerate(profiles) if p['core_ports']})
+    genus.update({('base', i): 1 - p['euler_characteristic'] - primitive.get(i, 0)
+                  for i, p in enumerate(profiles) if p['core_ports'] and i not in absorbed})
     neighbors = {node: [] for node in genus}
     edges = []
     for i, a in enumerate(skeleton['attachment_components']):
         check()
         ports = [abs(x) - 1 for x in a['word']]
+        if a['kind'] == 'circle' and by_port[ports[0]] in absorbed:
+            continue
+        if a['kind'] != 'interval' and not (a['kind'] == 'circle' and by_port[ports[0]] in primitive):
+            return None
         choices = {(by_port[p], core_port[p]) for p in ports}
         if len(choices) != 1:
             return None
@@ -103,9 +108,16 @@ def verify_normal_cut_handlebodies(triangulation, coordinates, certificate, *,
     if max_operations is not None and (type(max_operations) is not int or max_operations < 0):
         raise ValueError('max_operations must be a nonnegative integer or None')
     fields = {'schema', 'parallelity', 'boundary', 'core', 'census'}
-    if type(certificate) is not dict or set(certificate) != fields:
+    if type(certificate) is not dict:
         return False
-    if certificate['schema'] != 'normal-cut-handlebodies-v1':
+    version = certificate.get('schema')
+    if version == 'normal-cut-handlebodies-v3':
+        fields.update(('absorption', 'primitive_annuli'))
+    elif version == 'normal-cut-handlebodies-v2':
+        fields.add('absorption')
+    elif version != 'normal-cut-handlebodies-v1':
+        return False
+    if set(certificate) != fields:
         return False
     p, b = certificate['parallelity'], certificate['boundary']
     if type(p) is not dict or type(b) is not dict:
@@ -136,8 +148,21 @@ def verify_normal_cut_handlebodies(triangulation, coordinates, certificate, *,
         core_proof = _decode(certificate['core'])
     except ValueError:
         return False
-    if not verify_core_handlebody_certificate(geometry['core'], core_proof, check=check):
+    augmented, absorbed = geometry['core'], frozenset()
+    primitive = {}
+    if version == 'normal-cut-handlebodies-v3':
+        primitive = replay_primitive_bundle_annuli(summary, skeleton,
+                                                  certificate['primitive_annuli'], check=check)
+        if primitive is None:
+            return False
+    if version in ('normal-cut-handlebodies-v2', 'normal-cut-handlebodies-v3'):
+        replay = replay_disk_bundle_absorption(geometry, summary, skeleton,
+                                               certificate['absorption'], primitive_bases=primitive, check=check)
+        if replay is None:
+            return False
+        augmented, absorbed = replay
+    if not verify_core_handlebody_certificate(augmented, core_proof, check=check):
         return False
-    expected = _recount(geometry, summary, skeleton, core_proof['components'], check)
+    expected = _recount(geometry, summary, skeleton, core_proof['components'], check, absorbed, primitive)
     check()
     return expected is not None and certificate_equal(certificate['census'], expected)

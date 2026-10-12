@@ -1,13 +1,27 @@
 Gowers Szemeredi formalization checkpoint — 2026-10-11
 
 Scope
-  Post-merge integration: origin/main at623fb2007 adds the Fejer-J and
-  low-degree bounds to CompletionAudit. The current expanded fidelity graph
-  has1,652 modules and is rebuilding before the exported facade. The direct
-  43-module purification/sign inputs are unchanged by the merge and retain
-  their completed checks atd2f0c80cf. The incoming and global gates are not
-  certified by that narrower checkpoint. Semantic review remains86/120;
-  all remaining original scope and bound obligations are preserved.
+  Source comparison now covers all 120 numbered statements. This is an
+  inspection count, not a claim that all original statements are proved.
+  Theorem 18.2 and Corollary 18.7 match the printed bounds and require
+  positive-step integer progressions. Theorem 18.1 also has a proved
+  ordinary-integer partition companion. Original stronger intermediate
+  bounds, characteristic ranges and some geometry/bound combinations remain
+  open in verification/2026-10-12-source-fidelity-review.json.
+
+  Completed broad checkpoint: PurifiedContextFidelityAudit passes all 1,652
+  native modules at the recorded pre-merge source snapshot. Its exact input
+  hashes are in verification/2026-10-12-purified-context-full-inputs.json.
+  After merging origin/main, WalshScopeFidelityAudit passes the expanded
+  1,663-module graph, including the incoming bounds and new scope proofs.
+
+  Latest direct checkpoint: WalshScopeCoreAudit passes 56 native modules.
+  Seven positive results recover the all-prime Boolean/degeneracy bounds,
+  all-real Lemma 14.7, the original Lemma 16.5 coefficient in its corrected
+  context, and the corrected prime-range phase results. Five refutation
+  theorems cover four distinct sign, characteristic and proof-step claims.
+  Only propext, Classical.choice and Quot.sound occur. Editorial notes and
+  the annotated 119-page PDF are updated. The exported facade is pending.
 
   Latest direct checkpoint: PurifiedContextCoreAudit passes over 43 native
   modules with only the three approved axioms. The ORIGINAL 2^-73 error
@@ -16,10 +30,10 @@ Scope
   modulus threshold depending on alpha,b. Lemma13.1 and Corollary13.2 extend
   to alpha=0; their unrestricted negative-sign readings are refuted at the
   prime modulus2, as is the strengthened Proposition12.1 sign counterexample.
-  Source review now covers86/120, with34 unread. The exact fixed-real-bound
+  Source review now covers120/120; unresolved entries remain open. The exact fixed-real-bound
   floor convention in13.4 and other inspected scope/bound obligations remain
-  open. The expanded full fidelity gate is running, followed by the facade;
-  neither broad gate is certified by the43-module direct audit. Goal active.
+  open. The completed 1,652-module gate is recorded separately above;
+  the exported facade remains pending. Goal active.
 
   Latest direct checkpoint: ComponentTradeoffCoreAudit passes over 15 native
   modules, with only the three approved axioms. Lemma 10.5's ORIGINAL
@@ -638,6 +652,9 @@ Verification of the cover route (2026-10-11)
   joint slices (notes L.16u, Proofs16PolynomialFejerJ): theorem_16_2_polynomial_fejerZ,
   corollary_16_11_polynomial_fejerJ (exponent 2^(2 tDegZ k + 7k + 38)).
   Stub-checked and pinned.
+  Split step combined by max (notes L.16w, Proofs18TightClassesFejerM,
+  Proofs18Cover*FejerJM, Proofs18CoverFejerHeadlineJM): theorem_18_1_d2_eleven_le
+  (d+2, d >= 11). Stub-checked and pinned.
 
 Sharper exponents for Theorems 18.1 and 18.2 — 2026-10-11 (notes L.15)
   The joint-cover envelopes are a quarter of the printed budgets, so:
