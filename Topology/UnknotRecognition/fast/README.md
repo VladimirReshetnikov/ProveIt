@@ -4471,3 +4471,28 @@ See [weighted_top_forest.tex](../synthesis/weighted_top_forest.tex) for proofs,
 counterexamples, scope of the restricted polynomial forest solver, and all
 timing samples and validation records.
 All 1,716 maintained tests pass, with no skips.
+
+## Deferred lower-forest discovery
+
+The whole-cut API now accepts `lower_forest='deferred'`; its adaptive
+policy tries this after the existing source and maximum-passage choices.
+`core_handlebody_certificate(..., defer_forest=True)` and
+`bundle_boundary_kernel(..., defer_forest=True)` first peel the full raw
+matrix, then find a spanning source forest disjoint from the pivots. A
+supplied `forest` and deferred discovery are mutually exclusive.
+
+For authenticated cycle rows this decides whether any lower forest allows
+complete raw cancellation, without enumerating forests. The kernel includes
+all annular rows before discovery, and absorption triggers new discovery
+when it adds rows. Certificates still execute the forest first, using
+existing core v2 and kernel v3 formats and unchanged independent checkers.
+The adaptive attempts share source and boundary discovery and one budget.
+
+The fresh 120-source audit completes 111 cuts and preserves all 110 prior
+positive certificates exactly. All 104 directly comparable positive cuts
+agree with fresh Regina cutting; seven exceed the literal expansion cap.
+The new success is `pachner23_5_8_2/mixed`. Nine remain inconclusive.
+These results concern a local sufficient certificate class, not a complete
+quasi-polynomial recognizer. See
+[the implementation article](../synthesis/deferred_forests_native.tex) and
+[evidence](../synthesis/data/deferred-forest-audit.json).

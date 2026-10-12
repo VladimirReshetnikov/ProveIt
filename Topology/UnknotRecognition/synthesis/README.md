@@ -1817,3 +1817,13 @@ Six retained baseline modules and eight paired full-query measurements
 show no consistent common-positive speedup; the improvement is certified
 coverage. Source pins and evidence are under `data/lower-forest-*`.
 General quasi-polynomial recognition remains unproved.
+
+`deferred_forests_native.tex` integrates report 105's all-lower-forests
+raw-completeness theorem into the core, absorbed core and complete annular
+kernel. All verifiers remain unchanged. The adaptive third attempt shares
+expensive queries and preserves all 110 previous certificates. Fresh
+coverage reaches 111/120, with 104 literal positive agreements. A separate
+coupled-forest source probe replays 114 positive core reductions and gives
+two independent stopping-set packing obstructions; four bounded searches
+are inconclusive on cases the incumbent already solves. Full evidence and
+paired timings are under `data/deferred-forest-*`.

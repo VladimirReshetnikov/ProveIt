@@ -37,3 +37,24 @@ Evidence is under `synthesis/data/lower-forest-report105-*` and
 `lower-forest-deferred-probe.*`. The review leaves the production policy,
 110-source success count and remaining global complexity obligations as
 stated in the lower-forest integration.
+
+## Subsequent native integration
+
+The maintained core and bundle kernel now support deferred lower discovery.
+The kernel includes every annular row first, and disk absorption recomputes
+discovery on its augmented core. Existing core v2 and kernel v3 checkers are
+unchanged. The adaptive third attempt shares source/boundary packets and
+preserves all prior positives. The former `pachner23_5_8_2/mixed` target now
+has a maintained absorbed-core proof: whole-cut coverage is 111/120, with
+104 fresh literal agreements and 110 previous certificate hashes unchanged.
+
+A separate bounded research adapter now tests the exceptional selector on
+full source-core columns. It compares source charts with the independent
+reference reconstruction, checks proposed trees and traces, independently
+replays source top reduction and then checks deferred core certificates.
+It has 114 positives, four inconclusive searches and two finite negatives.
+There is no new bare-core gain on this bank. Both negatives also have
+independently checked disjoint stopping-set packings larger than the
+available number of top deletions. The coupled selector is still research
+code; it is not the production default or an annular successor adapter.
+See `deferred_forests_native.tex` and `data/deferred-forest-*` for exact scope.
