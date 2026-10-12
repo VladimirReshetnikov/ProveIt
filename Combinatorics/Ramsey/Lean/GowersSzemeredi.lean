@@ -1167,6 +1167,7 @@ import GowersSzemeredi.Proofs18FejerEnvelopeBase
 import GowersSzemeredi.Proofs18CoverModulusFejer
 import GowersSzemeredi.Proofs18CoverDensityFejer
 import GowersSzemeredi.Proofs18CoverExponentsFejer
+import GowersSzemeredi.Proofs18CoverFejerHeadline
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
