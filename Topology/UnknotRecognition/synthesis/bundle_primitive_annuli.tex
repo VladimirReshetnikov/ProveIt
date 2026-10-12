@@ -1,0 +1,154 @@
+\subsection{Simultaneously primitive bundle annuli}
+\label{marked-cut:primitive-annuli}
+
+The next extension handles nondisk bases when at least one boundary component
+is not fully attached to the core. It uses the topology of the embedded
+interval bundle to certify a simultaneous primitive family. It does not infer
+primitivity from an abelian word, or merely from the topology of the annuli.
+The certificate concludes the genus census of the whole cut; it supplies no
+explicit transported boundary pattern for a later hierarchy stage.
+
+A primitive family of annuli in a handlebody has pairwise disjoint dual disks,
+each meeting its designated annulus in one spanning arc and avoiding all the
+others. This is the standard geometric notion used in
+Schultens--Weidmann~\cite[Definition~6 and Lemma~2]{schultens-weidmann-primitive}.
+Their stated gluing lemma assumes essential annuli on the opposite side.
+The special source-bundle argument below gives an explicit handle cancellation
+proof and does not require a test of that additional assumption.
+
+\begin{proposition}[A spare base boundary gives a primitive family]
+\label{marked-cut:primitive-family}
+Let $P\to F$ be an orientable interval-bundle component over a connected
+compact surface with $b>0$ boundary components. Suppose $a$ distinct complete
+base boundary circles are core-labelled, with $0<a<b$. Their vertical annuli
+form a simultaneous primitive family in the handlebody $P$, relative to all
+other proper interval attachments. Cutting along its dual disks leaves a
+connected handlebody of genus $1-\chi(F)-a$. The assertion allows
+nonorientable $F$ and a twisted interval bundle.
+\end{proposition}
+\begin{proof}
+Choose a boundary component $C_0$ outside the $a$ complete attaching circles.
+It has an open arc outside the core-labelled set: otherwise the complete
+ordered boundary skeleton would have counted it among those circles. An
+unported boundary component is entirely outside that set.
+
+In $F$, choose disjoint properly embedded arcs $\gamma_i$ joining each
+fully attached circle $C_i$ to distinct points in this free arc of $C_0$.
+One way to see their existence is to join distinct boundary components
+successively. An arc between two distinct boundary components is
+nonseparating; cutting along it merges those components and leaves the
+surface connected. The subsequent arcs can meet the remaining free portion
+of $C_0$. Reversing the cuts gives the required disjoint arcs. This argument
+uses neither orientability nor a bound on the genus.
+
+Each preimage $D_i=p^{-1}(\gamma_i)$ is a properly embedded disk, since an
+interval bundle over an arc is a rectangle. Its boundary meets the designated
+vertical annulus in a single fibre, a spanning arc, and is disjoint from
+all other complete attaching annuli. Its other vertical end lies in the
+chosen free part of $C_0$; its horizontal edges lie on the horizontal bundle
+boundary. Thus the disks avoid every remaining proper interval attachment.
+Their interiors are disjoint because the base arcs are disjoint.
+
+Cutting $P$ along these disks is the interval bundle over the surface cut
+along the $\gamma_i$. This base is connected, bordered and has Euler
+characteristic $\chi(F)+a$. Its orientable total interval bundle is a
+handlebody of genus $1-\chi(F)-a$, by the bordered-bundle argument already
+used above. Reattaching the disks supplies $a$ distinguished one-handles,
+each traversed exactly once by its corresponding annulus and avoided by
+the other attaching annuli and disks.
+\end{proof}
+
+\begin{proposition}[Whole-cut gluing with primitive annuli]
+\label{marked-cut:primitive-census}
+First absorb disk-base full circles and certify the resulting core
+components as handlebodies. Suppose every other ported bundle has a bordered
+base and its full-circle attachments satisfy $a<b$. Then the remaining
+annular and disk interfaces glue these pieces into handlebodies. In each
+connected attachment graph component the genus is
+\[
+ g=\sum_{v\in V}(g_v-a_v)+|E|-|V|+1,
+\]
+where $g_v$ is the core or bundle genus, $a_v$ counts primitive annuli at a
+bundle vertex and is zero at core vertices, and $E$ includes both disk and
+primitive-annulus attachments. Unported bundle components retain their
+separate binary multiplicities.
+\end{proposition}
+\begin{proof}
+For an annulus gluing, cut the annulus along a spanning arc to a disk.
+Gluing that disk is represented by a connecting one-handle; restoring the
+annulus is represented by a two-handle whose attaching curve runs once
+around each of the two annuli, with connecting arcs through that handle.
+This is the usual relative handle description obtained by thickening a
+one-vertex, one-edge cell structure on the annulus. The connecting handle
+joins the two corresponding components, or creates a cycle if they are
+already connected.
+
+Use the distinguished one-handle on the bundle side supplied by
+Proposition~\ref{marked-cut:primitive-family}. The new two-handle intersects
+its cocore exactly once. No other attachment intersects that cocore, because
+the dual disks avoid all other annuli and proper interval interfaces.
+The pair therefore cancels geometrically. All these cancellations may be
+performed successively: each annulus uses its own distinguished handle.
+The opposite core annulus may be compressible; it adds no intersection with
+a cocore lying in this bundle. An arbitrary gluing map of an annulus still
+carries its essential core circle once around the target annulus, so a twist
+of the gluing does not change the unique bundle-side intersection.
+
+What remains is a family of handlebodies of genera $g_v-a_v$, joined along
+one disk for every original disk or primitive annulus interface. A spanning
+tree of the attachment graph joins the pieces without adding genus; each
+remaining edge adds one one-handle. Orientability is inherited from the
+source cut. This proves the formula, including
+repeated attachments between the same two pieces. Bundle-side dual disks
+avoid the original proper disk interfaces, so this cancellation does not
+invalidate their simultaneous use.
+
+For an independent Euler check, write $D$ and $A$ for the disk and annular
+edge counts. Since $|E|=D+A$ and $\sum a_v=A$, the formula gives
+$\chi=\sum_v(1-g_v)-D$. This is precisely the source gluing identity:
+disks have Euler characteristic one and annuli zero. Previously absorbed
+disk bundles have already been included in the augmented core.
+\end{proof}
+
+\paragraph{A finite certificate rather than an expanded disk system.}
+The producer groups the complete attaching circles by their authenticated
+base owner. Disk bases are left to the source-chart absorption adapter.
+Every other such base must have multiplicity one, $b>a$, and
+$1-\chi(F)\ge a$. The record names all its annular attachment indices,
+$b-a$ spare boundary components, and reduced genus $1-\chi(F)-a$.
+The boundary checker has already proved which circles are wholly attached
+and which maximal attachments are proper intervals. Counting a proper
+interval as a complete annulus would change that source-verified record.
+
+The independent module \path{bundle_primitive_annuli_verify} reconstructs
+owners, complete-circle lists, spare counts and genus deductions without
+calling the producer. Only these independently established base owners may
+be skipped by the disk-absorption checker. The latter still authenticates
+every actually absorbed two-handle. Core cancellation then proceeds as
+before; the final graph checker uses the reduced bundle genera and includes
+the primitive annuli as connecting edges. Producer and checker use separate
+graph algorithms, and both retain the original source-cut Euler identity.
+
+These proofs use schema \path{normal-cut-handlebodies-v3}. Schemas v1 and v2
+remain replayable, and a cut without primitive annuli retains its earlier
+schema. A schema downgrade cannot omit the new argument: the earlier
+checkers still reject unabsorbed annuli. The six weighted queries, shared
+orbit budgets and source input contract are unchanged. A refused family or
+stalled augmented core proves neither non-handlebodyness nor knottedness.
+
+\paragraph{Size, running time and remaining obligations.}
+There are at most $P$ complete attaching circles. The new record has $O(P)$
+indices and binary integers; no dual disk system, base genus, normal sheet
+stack or boundary component family is expanded. Grouping uses $O(P)$ finite
+incidences and sorting at most $O(P\log P)$ comparisons. If the source profile
+integers have at most $B$ bits, the added arithmetic and record sizes are
+polynomial in $T+B$, with record size $O(P(B+\log(T+P)))$ bits. The previous
+source-orbit and saturated-core bounds therefore still dominate in order.
+
+The spare-boundary hypothesis is sufficient, not necessary. A M\"obius band
+attached along its only boundary and an annulus attached along both boundaries
+remain outside this argument. Explicit transport of arbitrary boundary
+patterns, handling every inherited core, useful-surface coverage and a global
+quasi-polynomial hierarchy bound remain separate requirements.
+
+\input{primitive_annuli_results.tex}

@@ -1,0 +1,5 @@
+import GowersSzemeredi.PurifiedContextFidelityAudit
+import GowersSzemeredi.WalshScopeCoreAudit
+
+example : LeanProofs.GowersSzemeredi.corollary_15_2_all_primes :=
+  LeanProofs.GowersSzemeredi.corollary_15_2_all_primes_holds

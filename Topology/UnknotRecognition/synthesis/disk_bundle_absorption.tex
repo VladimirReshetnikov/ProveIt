@@ -1,0 +1,118 @@
+\subsection{Certified absorption of disk-base annuli}
+\label{marked-cut:disk-absorption}
+
+The next implementation checkpoint removes a specific obstruction left by
+whole-circle interfaces. A general annulus is still outside the disk-gluing
+criterion, but a complete vertical annulus of a disk-base bundle determines
+an actual two-handle. The implementation now constructs its source attaching
+curve, authenticates it independently, and includes that handle in the
+geometric cancellation proof. This implements the absorption proposition of
+report~85; it does not interpret an arbitrary presentation row
+as an embedded attaching curve.
+
+\begin{proposition}[Augmented source core]
+\label{marked-cut:absorbed-core}
+Suppose a source-certified bundle component has a disk base and its entire
+base boundary is attached to the core. It can be absorbed as one two-handle,
+without adding zero-, one-, or three-handles. Its raw intersection count with
+one-handle $h$ is the number of its core-one ports owned by $h$, counting
+all occurrences without signs or cancellation. Any collection of these
+components can be absorbed simultaneously. The added handles and their total
+raw occurrences number at most $P$, the number of source ports.
+\end{proposition}
+\begin{proof}
+The bundle over a disk is $D^2\times I$, and its complete attaching region
+is $\partial D^2\times I$. This is the defining attaching region of a
+three-dimensional two-handle. The two horizontal disks remain free boundary.
+Take the midpoint of every interval fibre along the attaching annulus.
+All source transition maps, including fibre reversals, preserve the midpoint,
+so these local sections define an embedded attaching circle.
+
+A core-zero port contributes an arc within its named zero-handle boundary.
+A core-one port is a face-sector side of an edge-cap polygon. Its midpoint
+arc traverses the lateral boundary of the corresponding source one-handle
+from one end to the other, meeting its cocore once. Thus each such port
+contributes one unsigned occurrence. Two occurrences with opposite signs
+still contribute two intersections.
+
+The complete lower attachments of the complementary source handles remain
+in the core. The product contacts occupy their recorded boundary regions,
+disjoint from the original two-handle attaching regions after compatible
+corner rounding. Consequently the new attaching circles can be placed at
+the same two-handle stage as the old ones. Distinct bundle components have
+disjoint attaching annuli. Absorption therefore changes neither the embedded
+cut manifold nor the interfaces of the remaining bundles. Each absorbed
+component uses at least one port, and distinct components use disjoint
+ports, proving both bounds.
+\end{proof}
+
+\paragraph{Face flags authenticate the actual path.}
+Write the two source ends of one-handle $h$ as
+$(t_h,f_h)$ and $(u_h,g_h)$. For a core-one port inspect its two cap-edge
+endpoint flags. Their order must match these two flags or their reverse.
+Call the resulting local sign $\delta_p\in\{+1,-1\}$. If the canonical
+boundary word traverses that port with sign $s_p$, the corresponding raw
+one-handle crossing has sign $s_p\delta_p$. Its initial and terminal
+zero-handles are read from the appropriate ends of $h$.
+
+Both tetrahedron and face are essential. In a self-paired tetrahedron the
+one-handle can have equal tetrahedron labels and even equal zero-handle
+owners at its ends, while its two face flags still differ. Comparing only
+tetrahedron labels would lose this distinction. Every core-zero port stays
+at its owner vertex. The producer and independent checker require the end
+of every oriented port path to equal the beginning of the next, including
+the final-to-initial join. Deleting the stationary portions then gives the
+alternating zero/one cycle used by the existing core checker. The signs
+are retained as chart evidence; the cancellation matrix remains unsigned.
+A circle with no one-handle crossings contributes a zero row and cannot
+silently disappear from the required cancellation schedule.
+
+\paragraph{Eligibility and independent replay.}
+The adapter requires a single base owner, signature $(\chi,b)=(1,1)$,
+orientability, a product bundle, and multiplicity one. The circle must
+exhaust that component's port set, and no component may be absorbed twice.
+These facts are obtained from the source-verified base profiles and ordered
+interface, rather than from the proposed absorption record. Because the
+base has exactly one boundary component, a complete circle uses its whole
+vertical boundary. A component with a nondisk base remains unresolved.
+
+The new whole-cut certificate schema is
+\path{normal-cut-handlebodies-v2}. Its absorption record names the source
+attachment, base profile, appended two-handle, and every directed crossing.
+The independent module \path{disk_bundle_absorption_verify} reconstructs
+these data from authenticated polygons and endpoint flags. It imports no
+producer. Only after exact comparison does it return an augmented geometric
+core to the existing independent cancellation checker. Every added row must
+be eliminated; the genus calculation uses the surviving one-handles of
+this augmented core. Version-one certificates remain replayable, and cuts
+requiring no absorption continue to use version one.
+
+\paragraph{The whole-cut census after absorption.}
+Remove absorbed bases and their annular attachments from the bundle/core
+graph, replacing the old core by the augmented core. All remaining bases
+must be bordered and all their attachments must be proper intervals.
+The disk-gluing theorem then gives the same genus formula
+\[
+ g(X)=\sum_{v\in V(X)}g(v)+|E(X)|-|V(X)|+1.
+\]
+An absorbed disk contributes one to the core Euler characteristic and
+removes a bundle of Euler characteristic one; its attaching annulus has
+Euler characteristic zero. Hence the original source-cut Euler identity
+remains the correct final check. Unported bundle multiplicities are counted
+as before. This proves the complete histogram only when all augmented core
+cancellations and all remaining disk gluings succeed.
+
+\paragraph{Cost and scope.}
+The adapter adds $O(P)$ records and $O(P\log(T+P))$ bits of finite chart data;
+it never expands the binary normal multiplicities. Constructing the records
+is linear in the finite source data, while the checker also sorts port sets
+in $O(P\log P)$ comparisons. The augmented core still has $O(T)$ handles and
+raw occurrences, so the existing polynomial saturated-cancellation bounds
+apply unchanged in order. The six weighted orbit queries and their shared
+budgets are unchanged. Failure of a cancellation schedule or rejection of a
+nondisk annulus carries no negative topology conclusion. This advances the
+supplied-cut terminal operator, but does not provide useful-surface discovery,
+arbitrary boundary-pattern transport, or a global quasi-polynomial hierarchy
+bound.
+
+\input{disk_absorption_results.tex}

@@ -26,7 +26,7 @@ class NormalCutHandlebodyTests(unittest.TestCase):
                                  [dict(genus=0, multiplicity=n)] if n else
                                  [dict(genus=1, multiplicity=1)])
 
-    def test_adjacent_ports_are_one_disk_and_circles_are_excluded(self):
+    def test_adjacent_ports_are_one_disk_and_disk_circles_are_absorbed(self):
         raw, rows = layered_torus(4)
         a = normal_cut_handlebodies(raw, rows, record_certificate=True)
         skeleton = a['certificate']['boundary']['skeleton']
@@ -37,8 +37,8 @@ class NormalCutHandlebodyTests(unittest.TestCase):
                            'marked_parallelity_research/corpus.json').read_text())['cases']
         c = next(c for c in bank if c['id'] == 'pilot/fibonacci_lst_02/0')
         a = normal_cut_handlebodies(c['triangulation'], c['coordinates'])
-        self.assertEqual(a['status'], 'INCONCLUSIVE')
-        self.assertEqual(a['reason'], 'annular_core_attachment')
+        self.assertEqual(a['status'], 'COMPLETE')
+        self.assertEqual(a['census']['histogram'], [dict(genus=1, multiplicity=2)])
 
     def test_one_sided_surfaces_can_give_solid_torus_cuts(self):
         raw, _ = layered_torus(1)
