@@ -989,3 +989,35 @@ Native Wolfram separately constructs both polynomial-integral coefficient
 families and verifies A_m=N_m+D H_m through weight sixteen, with linear/mixed
 families and an exact corruption control. These checks support implementation;
 the written highest-index and Cauchy arguments prove the infinite results.
+
+
+## Rational-pole amplitude sectors and dilogarithms, October 12, 2026 (Pacific)
+
+Continue research with no incoming arrivals. Specialize the free-ring normal
+and primitive hierarchies to U_c=c/x only after projection. Weight homogeneity
+reduces their actual generators to G_c(z) and P_c(z), z=t/x. Theorem 8.145
+evaluates their linear and quadratic amplitude sectors: the quadratic normal
+sector is 2*asinh(z/2)^2, and the quadratic primitive is a classical-dilogarithm
+expression at z and plus/minus z/(2+sqrt(4+z^2)). State analytic zero germs,
+the square-root normalization and |z|<1; the normal quadratic sector alone
+continues to |z|<2. Higher amplitude sectors remain separate questions.
+
+The proof uses canonical factor-degree-two support, the pure-square normal
+coefficient, a scalar ODE and the exact evaluated raw generator (1-z)^(-c).
+The normalized spatial decomposition fixes the primitive germ; an added z
+would satisfy its ODE but violate H_1=0. Derive the all-degree quadratic
+primitive coefficient in factorials and harmonic numbers, plus two ordinary
+antiderivatives of asinh(t/(2x))^2 and log(1-t/x)^2. Branches and endpoint
+conventions are retained. No complete finite special-function formula for
+the full amplitude generator, or arithmetic independence, is claimed.
+
+Independent free-ring recursive reduction checks four amplitude coefficient
+families at each weight through thirty and their exact decomposition. Native
+Wolfram checks both ODEs, local logarithm-germ algebra, every quadratic Taylor
+coefficient through degree thirty, two antiderivative certificates and three
+branch/constant/sign controls. The local logarithm identity is explicitly
+proved and applied; an unqualified global branch substitution is not used.
+Four real/complex numerical ODE cases, two Taylor cases and two paired
+antiderivative cases pass at 80 digits, without interval certification.
+Original reports and earlier evidence remain unchanged; this model is a
+collective continuation rather than an imported new report.

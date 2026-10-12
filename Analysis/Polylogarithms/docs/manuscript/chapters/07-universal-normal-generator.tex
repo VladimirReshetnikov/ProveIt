@@ -677,3 +677,125 @@ $\partial_x\int_0^tY(x-s)ds=Y(x)-Y(x-t)$ and
 right is $-\int_0^t\Gamma(x-s)^{-1}ds$; the second retains the exact
 Gamma--polygamma endpoint compensator. Definite integrals retain the
 difference of both endpoint terms, rather than discarding either one.
+
+\subsection{A rational pole: amplitude sectors and classical dilogarithms}
+
+The rational input $U_c(x)=c/x$ gives an explicit bridge from the free
+normal-form hierarchy to classical polylogarithms. Projection is still
+performed in the free polynomial ring, before setting
+$u_j=(-1)^jcj!x^{-j-1}$; one must not renormalize after imposing these
+additional differential relations. For $x>0$ put $z=t/x$ and
+\[
+ \mathcal G_c(z)=\mathsf G_{U_c}(xz,x),\qquad
+ \mathcal P_c(z)=x^{-1}\mathsf H_{U_c}(x,xz).
+\]
+Weight homogeneity makes these functions independent of $x$.
+They are holomorphic for $|z|<1$ and entire in the amplitude $c$:
+the normal and primitive majorants are uniform on compact $c$ sets.
+The notation $[c^j]$ below means their Taylor coefficient in $c$.
+
+\begin{theorem}[The quadratic amplitude sector]\label{rmi:quadratic}
+On $|z|<1$, choose the analytic germs
+\[
+ L=\log(1-z),\qquad w=\operatorname{arsinh}(z/2),\qquad
+ y=\frac{z}{2+\sqrt{4+z^2}}=\tanh(w/2),
+\]
+with $L(0)=w(0)=y(0)=0$ and $\sqrt4=2$. Then
+\begin{align}
+ \mathcal G_c(z)&=1+cz+2c^2w^2+O(c^3),\label{rmi:normal}\\
+ \mathcal P_c(z)&=c\bigl(-z-(1-z)L\bigr)+c^2\Phi(z)+O(c^3),
+                                                    \label{rmi:primitive}\\
+ \Phi(z)&=-2w^2+\tfrac12(1-z)L^2-z\operatorname{Li}_2(z)
+              +2z\bigl(\operatorname{Li}_2(y)-\operatorname{Li}_2(-y)\bigr).
+                                                    \label{rmi:dilog}
+\end{align}
+These are convergent amplitude expansions, locally uniformly in $z$.
+In particular the quadratic normal sector has an ordinary continuation
+to $|z|<2$ through its elementary expression, without asserting that
+continuation for the full generator.
+\end{theorem}
+\begin{proof}
+At factor degree two the only canonical monomials are $u_r^2$,
+including $r=0$. Theorem~\ref{ung:coefficient} gives
+$[u_r^2]\mathsf N_{2r+2}=(-1)^r$; for $r\ge1$ use
+$\int_0^1(1-v^2)^rdv=4^r(r!)^2/(2r+1)!$ in its beta formula.
+Consequently
+\[
+ [c^2]\mathcal G_c(z)
+ =\sum_{r\ge0}\frac{(-1)^r(r!)^2}{(2r+2)!}z^{2r+2}=2w^2.
+\]
+To identify the sum independently, both sides solve
+$(z^2+4)f''+zf'=4$, with $f(0)=f'(0)=0$.
+The coefficient recurrence gives the displayed factorials; the
+elementary expression has the same initial values and derivatives.
+At factor degree one, only $u_0$ survives the normal projection, giving
+$[c]\mathcal G_c=z$.
+
+The evaluated raw Bell polynomial is $(c)_mx^{-m}$, by its recurrence,
+so its generator is $(1-z)^{-c}$. The analytic decomposition becomes
+\begin{equation}\label{rmi:decomposition}
+ (1-z)^{-c}=\mathcal G_c(z)+\mathcal P_c(z)-z\mathcal P_c'(z).
+\end{equation}
+Here the spatial derivative is taken at fixed $t$, since
+$\partial_x(x\mathcal P_c(t/x))=\mathcal P_c-z\mathcal P_c'$.
+The formal zero-constant normalization fixes
+$\mathcal P_c(z)/z\longrightarrow0$ at zero; it excludes an added
+spatially constant term proportional to $t$.
+The linear amplitude equation gives $-z-(1-z)L$.
+At quadratic amplitude, \eqref{rmi:decomposition} requires
+\[
+             \Phi-z\Phi'=\tfrac12L^2-2w^2.
+\]
+Let $B=\operatorname{Li}_2(y)-\operatorname{Li}_2(-y)$.
+The identity $(1+y)/(1-y)=e^w$ and the zero germs fix
+$\log(1+y)-\log(1-y)=w$ on the disk. Thus
+\[
+ \frac{dB}{dz}=w\frac{y'}y=\frac{2w}{z\sqrt{4+z^2}},\qquad
+ \operatorname{Li}_2'(z)=-\frac{L}{z}.
+\]
+All removable values are taken at zero. Substitution in
+\eqref{rmi:dilog} gives precisely the required differential equation
+and $\Phi(z)/z\to0$. These two conditions determine the analytic germ
+uniquely: their difference would be a multiple of $z$.
+The indicated germs extend throughout $|z|<1$. Since
+$\operatorname{Re}\sqrt{4+z^2}>\sqrt3$, the arguments $\pm y$ remain
+in the unit disk, so the displayed dilogarithms have their ordinary
+branches there. The generator convergence theorems justify
+amplitude extraction and identify these germs with the actual sectors.
+\end{proof}
+
+There is also an all-degree harmonic coefficient identity. For $m\ge2$,
+write $H_n^{(1)}=\sum_{j=1}^n1/j$ and
+\[
+ n_m=\begin{cases}
+ (-1)^{m/2-1}((m/2-1)!)^2,&m\text{ even},\\
+ 0,&m\text{ odd}.
+ \end{cases}
+\]
+Then
+\begin{equation}\label{rmi:harmonic}
+ [c^2]\mathsf H_m(U_c,U_c',\ldots)
+ =x^{1-m}\left(\frac{n_m}{m-1}-(m-2)!H_{m-1}^{(1)}\right).
+\end{equation}
+Indeed $[c^2](c)_m=(m-1)!H_{m-1}^{(1)}$, and the evaluated
+coefficientwise decomposition gives
+\[
+ x^m[c^2]\mathsf N_m+(1-m)x^{m-1}[c^2]\mathsf H_m=[c^2](c)_m.
+\]
+For $m=2$ this gives zero, as required by the purely linear $\mathsf H_2$.
+
+The same computation supplies ordinary antiderivatives. With $t$ fixed,
+$z=t/x$ and the same germs,
+\begin{align}
+ \int \operatorname{arsinh}^2\!\left(\frac{t}{2x}\right)dx
+ &=xw^2-t\bigl(\operatorname{Li}_2(y)-\operatorname{Li}_2(-y)\bigr)+C,
+                                                    \label{rmi:asinh-integral}\\
+ \int \log^2(1-t/x)dx
+ &=(x-t)L^2-2t\operatorname{Li}_2(z)+C.\label{rmi:log-integral}
+\end{align}
+Direct differentiation verifies both identities using the derivatives
+in the proof. Their difference is the quadratic primitive sector above.
+The model therefore gives an ordinary classical-dilogarithm evaluation
+with explicit branch and endpoint conventions, rather than only a formal
+coefficient fit. Higher amplitude sectors remain separate resummation
+questions.

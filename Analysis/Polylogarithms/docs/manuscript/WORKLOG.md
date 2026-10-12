@@ -880,3 +880,18 @@ weight sixteen. The algebraic and analytic written proofs establish the
 all-weight results. Rebuild and review all final editions after the weighted
 identity and corrected display layout. Pages 130/129/242/85, combined 545,
 references 140. General rank and Gaussian S6/revised S8 stay open.
+
+
+## Rational-pole amplitude resummation, October 12, 2026 (Pacific)
+
+Continue research with incoming empty. Specialize the free normal hierarchy
+to U_c=c/x only after projection. Identify the quadratic normal generator
+by its exact factorial coefficients and ordinary differential equation.
+Use the raw (1-z)^(-c) decomposition to derive the normalized primitive,
+then evaluate it in classical dilogarithms with analytic germs on |z|<1.
+Prove the all-degree harmonic coefficient identity and both ordinary
+antiderivatives. Preserve the H_1=0 condition, full-generator convergence
+scope and open higher amplitude questions. Independent exact checks cover
+weight thirty; native symbolic branch/ODE/Taylor controls pass. Rebuild all
+five PDFs and review changed scientific bodies before publication. The
+final editions have 130/129/244/85 pages and combined 547, 140 references.
