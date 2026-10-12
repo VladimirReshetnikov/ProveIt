@@ -1,0 +1,28 @@
+import GowersSzemeredi.Proofs18CoverExponentsFejerS
+import GowersSzemeredi.Proofs18CoverFejerHeadlineQ
+
+/-! **Theorem 18.1 at `d + 4` for every `d ≥ 13` and at `d + 5` for every
+`d ≥ 9`, and Theorem 18.2 / Corollary 18.7 at `L + 3` for every `L ≥ 11`,
+from the recurrence profiles** (Notes L.16j).
+
+The Section 18 envelope at `GenParamsS`. The class covers sit at degree
+`uDegS l = 2^sDeg l`, `sDeg l = 4·2^l + 3(l+4)² + 32` (`polyCoverAt_classS`,
+from the dimension-two class at family exponent `32`). The η step uses the
+polynomial side condition of `eta_step_small`. The step lemmas and
+recursions are generated from `Proofs18CoverFejerHeadlineQ`; the closed forms
+are new.
+
+One step now costs `28·2^k + 9(k+4)² + 4(k+3)² + k + 135`
+(`envStepS_le_tight`; the threshold branch is at most `64·2^k + 8`), so the
+Theorem 18.1 envelope tends to `56·2^k < 64·2^k`:
+* `polyGenMuS_le64`: `μ_k + 4k + 128 ≤ 64·2^k` for `k ≥ 11`;
+* `polyGenMuS_le128`, `genMuXS_le`: `μ_k + 4k + 128 ≤ 128·2^k` for `k ≥ 7`.
+This yields
+* `theorem_18_1_d4_of_profiles_cover`: Theorem 18.1 with exponent
+  `α^(2^(2^(d+4)))` at every degree `d ≥ 13`;
+* `theorem_18_1_d5S_of_profiles_cover`: `d + 5` at every degree `d ≥ 9`
+  (previously `d ≥ 12`);
+* `theorem_18_2_L3S_of_profiles_cover`, `corollary_18_7_L3S_of_profiles_cover`:
+  `L + 3` at every length `L ≥ 11` (previously `L ≥ 14`).
+The Theorem 18.2 threshold branch alone is `64·2^k + 8 > 64·2^k`, so `L + 2`
+is out of reach of this envelope. -/

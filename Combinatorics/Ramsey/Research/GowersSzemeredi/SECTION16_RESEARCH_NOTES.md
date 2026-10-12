@@ -5082,6 +5082,42 @@ big", with no source position). Hence `linarith only [...]` throughout, and
 `splitPairWith 32 (2^48) l`. `polyCoverAt_classS` gives the class covers at
 `uDegS l = 2^(4·2^l + 3(l+4)² + 32)`, against `uDegQ`'s `14·2^l + 3(l+4)² + 2`.
 
+*Correction to the plan (audit, 2026-10-12).* The envelope model above omits
+one constraint: the η step (`GenParams.eta_step`) asks for the printed
+`fixDeg k = 2^(k+5) + 7 ≤ m`, where `m ≈ ρ + 2·sDeg` is the density degree.
+At class constant `14` this never binds. At class constant `4`,
+`m ≈ 28·2^k < 32·2^k`, so it would raise one step to `32·2^k`. The envelope
+would then tend to exactly `64·2^k`, which gives `d + 5` (d ≥ 9) and `L + 3`
+(L ≥ 11) but **not** `d + 4` (`models/model_s_chain.py`, both variants). The
+side condition is only a convenience: `eta_step` and `yIn_step` absorb
+`2^(2(k+2)³)·2^(k+1)·(2/α)²` and `2·(2(k+3))^(k+3)`, so `3(k+4)² ≤ m`
+suffices (`cube_le_two_pow_sq`). `Proofs18EtaStepSmall` (light, generated)
+proves `GenParams.eta_step_small` / `yIn_step_small` with that side condition.
+
+*Step 3 (done).* `Proofs18Cover{Modulus,Density,Exponents}FejerS` and
+`Proofs18CoverFejerHeadlineS` (light, generated from the Q chain by
+`assemble_s.py`). Each takes the class covers at `uDegS`, the η step at
+`3(k+4)² ≤ m`, and the same base budget `tightMu0S = tightMu0Q = 2^(k+4) + 9`.
+* `envStepS_le_tight`: one step costs
+  `≤ max(μ + 28·2^k + 9(k+4)² + 4(k+3)² + k + 135, 32·2^k + 8)`.
+  `envStepSTx_le_tight` gives the same bound with cap `64·2^k + 8`; that cap
+  is the `2^(k+6)` of `threshDeg`.
+* `polyGenMuS_le64`: `μ_k + 4k + 128 ≤ 64·2^k` for `k ≥ 11`. The base case
+  `decide`s 130842 ≤ 131072, which is tight.
+* `polyGenMuS_le128` and `genMuXS_le`: `≤ 128·2^k` for `k ≥ 7`.
+* **`theorem_18_1_d4_of_profiles_cover`: Theorem 18.1 at `d + 4` for every
+  `d ≥ 13`.** `theorem_18_1_d5S_of_profiles_cover` gives `d + 5` for every
+  `d ≥ 9` (was `d ≥ 12`).
+* **`theorem_18_2_L3S_of_profiles_cover` and
+  `corollary_18_7_L3S_of_profiles_cover`: `L + 3` for every `L ≥ 11`** (was
+  `L ≥ 14`).
+
+Axioms: `propext`, `Classical.choice`, `Quot.sound` only. Remaining limits:
+* `L + 2` is out of reach of this envelope, because the threshold branch
+  alone is `64·2^k + 8 > 64·2^k`.
+* `d + 3` would need a step of `< 16·2^k`, but the base budget `tightMu0`
+  alone contributes `16·2^k` to `ρ`.
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`
