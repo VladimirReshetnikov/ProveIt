@@ -5246,6 +5246,19 @@ The profile theorems are:
 Build trap: `build_trust.py` never rebuilds a dependency that already has an
 olean, so a regenerated upstream module must be built explicitly first.
 
+The bridge (stub-checked, pinned in CompletionAudit) proves:
+* `explicit_family_constants_poly_le`: the explicit constants are at most
+  `2^(2^(4k+16))`;
+* **`theorem_18_1_d3_eleven_le` (`d + 3`, `d ≥ 11`)**,
+  `theorem_18_1_d4_eight_le` (`d + 4`, `d ≥ 8`);
+* **`theorem_18_2_L1_thirteen_le` and `corollary_18_7_L1_thirteen_le`
+  (`L + 1`, `L ≥ 13`)**, `theorem_18_2_L2_ten_le` and
+  `corollary_18_7_L2_ten_le` (`L + 2`, `L ≥ 10`);
+* `van_der_waerden_L1` (`W(k, r) ≤ 2^2^r^2^2^(k+1)` for `k ≥ 13`) and
+  `van_der_waerden_L2_ten_le`;
+* `theorem_1_3_L1_thirteen_le` (`Theorem13AtFrom 1 13`) and
+  `theorem_1_3_L2_ten_le`.
+
 The model (`models/model_w_chain.py`) puts the method's limits here. The
 asymptotic ratio `24` is below `32` but above `16`, so `d + 2` and `L + 0`
 need a smaller class constant beyond the table, and the true one is about

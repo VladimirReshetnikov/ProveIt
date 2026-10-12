@@ -193,6 +193,22 @@ example : ∀ L, 13 ≤ L → LeanProofs.GowersSzemeredi.Corollary187AtSharp 2 L
   fun _ hL => LeanProofs.GowersSzemeredi.corollary_18_7_L2_thirteen_le hL
 example : LeanProofs.GowersSzemeredi.Theorem13AtFrom 2 13 :=
   LeanProofs.GowersSzemeredi.theorem_1_3_L2_thirteen_le
+example : ∀ d, 11 ≤ d → LeanProofs.GowersSzemeredi.Theorem181AtSharp 3 d :=
+  fun _ hd => LeanProofs.GowersSzemeredi.theorem_18_1_d3_eleven_le hd
+example : ∀ d, 8 ≤ d → LeanProofs.GowersSzemeredi.Theorem181AtSharp 4 d :=
+  fun _ hd => LeanProofs.GowersSzemeredi.theorem_18_1_d4_eight_le hd
+example : ∀ L, 13 ≤ L → LeanProofs.GowersSzemeredi.Theorem182AtSharp 1 L :=
+  fun _ hL => LeanProofs.GowersSzemeredi.theorem_18_2_L1_thirteen_le hL
+example : ∀ L, 13 ≤ L → LeanProofs.GowersSzemeredi.Corollary187AtSharp 1 L :=
+  fun _ hL => LeanProofs.GowersSzemeredi.corollary_18_7_L1_thirteen_le hL
+example : ∀ L, 10 ≤ L → LeanProofs.GowersSzemeredi.Theorem182AtSharp 2 L :=
+  fun _ hL => LeanProofs.GowersSzemeredi.theorem_18_2_L2_ten_le hL
+example : ∀ L, 10 ≤ L → LeanProofs.GowersSzemeredi.Corollary187AtSharp 2 L :=
+  fun _ hL => LeanProofs.GowersSzemeredi.corollary_18_7_L2_ten_le hL
+example : LeanProofs.GowersSzemeredi.Theorem13AtFrom 1 13 :=
+  LeanProofs.GowersSzemeredi.theorem_1_3_L1_thirteen_le
+example : LeanProofs.GowersSzemeredi.Theorem13AtFrom 2 10 :=
+  LeanProofs.GowersSzemeredi.theorem_1_3_L2_ten_le
 
 open Lean Elab Command in
 run_cmd do
@@ -233,7 +249,18 @@ run_cmd do
     ``LeanProofs.GowersSzemeredi.theorem_18_2_L2_thirteen_le,
     ``LeanProofs.GowersSzemeredi.corollary_18_7_L2_thirteen_le,
     ``LeanProofs.GowersSzemeredi.van_der_waerden_L2,
-    ``LeanProofs.GowersSzemeredi.theorem_1_3_L2_thirteen_le
+    ``LeanProofs.GowersSzemeredi.theorem_1_3_L2_thirteen_le,
+    ``LeanProofs.GowersSzemeredi.explicit_family_constants_poly_le,
+    ``LeanProofs.GowersSzemeredi.theorem_18_1_d3_eleven_le,
+    ``LeanProofs.GowersSzemeredi.theorem_18_1_d4_eight_le,
+    ``LeanProofs.GowersSzemeredi.theorem_18_2_L1_thirteen_le,
+    ``LeanProofs.GowersSzemeredi.corollary_18_7_L1_thirteen_le,
+    ``LeanProofs.GowersSzemeredi.theorem_18_2_L2_ten_le,
+    ``LeanProofs.GowersSzemeredi.corollary_18_7_L2_ten_le,
+    ``LeanProofs.GowersSzemeredi.van_der_waerden_L1,
+    ``LeanProofs.GowersSzemeredi.van_der_waerden_L2_ten_le,
+    ``LeanProofs.GowersSzemeredi.theorem_1_3_L1_thirteen_le,
+    ``LeanProofs.GowersSzemeredi.theorem_1_3_L2_ten_le
   ]
   for name in fejer do
     let info ← getConstInfo name
@@ -242,7 +269,7 @@ run_cmd do
     for axiomName in (← collectAxioms name) do
       unless allowed.contains axiomName do
         throwError "{name} depends on unapproved axiom {axiomName}"
-  logInfo "Checked the Fejér-route strengthenings: Theorem 18.1 at d+6 in every degree, Theorem 18.2 and Corollary 18.7 at L+4 in every length, the van der Waerden bound and Theorem 1.3 at k+4, their printed consequences, the polynomial Theorem 16.2 and Corollary 16.11 at the Fejér classes, and d+5 (d >= 12), L+3 (L >= 14) with the van der Waerden bound and Theorem 1.3 at k+3 (k >= 14), and from the small dimension-two seed d+4 (d >= 13), d+5 (d >= 9), L+3 (L >= 11) with the van der Waerden bound and Theorem 1.3 at k+3 (k >= 11), and the polynomial Theorem 16.2 / Corollary 16.11 at its classes, and from the exact small-dimension classes d+5 in every degree, d+4 (d >= 11), L+3 in every length with the van der Waerden bound and Theorem 1.3 at k+3, and from the polynomial Bohr radius L+2 (L >= 13) with the van der Waerden bound and Theorem 1.3 at k+2 (k >= 13); only approved axioms."
+  logInfo "Checked the Fejér-route strengthenings: Theorem 18.1 at d+6 in every degree, Theorem 18.2 and Corollary 18.7 at L+4 in every length, the van der Waerden bound and Theorem 1.3 at k+4, their printed consequences, the polynomial Theorem 16.2 and Corollary 16.11 at the Fejér classes, and d+5 (d >= 12), L+3 (L >= 14) with the van der Waerden bound and Theorem 1.3 at k+3 (k >= 14), and from the small dimension-two seed d+4 (d >= 13), d+5 (d >= 9), L+3 (L >= 11) with the van der Waerden bound and Theorem 1.3 at k+3 (k >= 11), and the polynomial Theorem 16.2 / Corollary 16.11 at its classes, and from the exact small-dimension classes d+5 in every degree, d+4 (d >= 11), L+3 in every length with the van der Waerden bound and Theorem 1.3 at k+3, and from the polynomial Bohr radius L+2 (L >= 13) with the van der Waerden bound and Theorem 1.3 at k+2 (k >= 13), and from the polynomial base budget d+3 (d >= 11), d+4 (d >= 8), L+1 (L >= 13), L+2 (L >= 10) with the van der Waerden bound and Theorem 1.3 at k+1 (k >= 13) and k+2 (k >= 10); only approved axioms."
 
 -- The refutation is checked separately; it is never counted as a proof
 -- of the original printed encoding or hidden among the 120 companions.
