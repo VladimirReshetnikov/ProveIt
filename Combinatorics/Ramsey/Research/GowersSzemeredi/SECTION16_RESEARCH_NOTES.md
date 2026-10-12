@@ -4624,16 +4624,8 @@ lemma directly. So the remaining parameterization stays light.
    **The dimension-two seed is proved**, and it lies inside the `2^48` of
    `split_pair_with_bounds_fourteen`.
 
-*Next: the class step in dimensions `k ≥ 2`.* `class_piece_of_subrelation`
-(`Proofs16ClassStep`) uses `lemma_15_6_of_density_lower_explicit` and the
-printed θ₁ and ζ. Its Fejér copy, together with the class-step degree
-bounds (`Proofs16ClassStepBounds`/`Degrees`, where `stepP` and `stepT`
-become `fejerStepP` and `fejerStepT`), feeds `splitStepDWith` and
-`split_pair_with_bounds`. After that come the envelope and
-Theorems 18.1, 18.2 and 18.7. The counts and exponents
-   (`Proofs18LengthSixCounts`/`Exponents`) with
-   the `W` definitions, giving the seed degrees. The expectation is about
-   `2^35`–`2^40` (L.16c).
+*The class step in dimensions `k ≥ 2`, the envelope and the headline
+statements* are done; see L.16e.
 
 How this was checked: 59 of the 491 ancestors of `Proofs16ClassStep` mention
 `section16Zeta`. They were searched for bounds on `multipleS` and for upper
@@ -4726,6 +4718,75 @@ cascade-cost rule applies. The next barrier, `d + 5`, is `μ₀ = 16·2^k` from
 
 A three-page mathematical write-up of L.12-L.15j is in
 `joint-vertex-covers/joint-vertex-covers.tex` (PDF beside it).
+
+**L.16e: the propagation completed; Theorem 18.1 at `d + 6`, Theorems 18.2
+and 18.7 at `L + 4` in every degree and length (formalized, 2026-10-12).**
+The Fejér θ₁ and the tight radius now reach the headline statements. Every
+module below is light, kernel-checked and uses only the standard axioms,
+except the final bridge, which is stub-checked like its `d + 7` predecessor.
+Most are generated from the corpus modules by scripts with a guard that no
+printed parameter survives (no `section16ThetaOne`, `section16Zeta`,
+`lemma156ExplicitThreshold`, `globalBudget`, `stepP`, `uDeg68`).
+
+*Section 16, dimensions `k ≥ 2`.*
+* `Proofs16ClassPiecesWith`, `Proofs16ClassStepFejer`: the class pieces with
+  `(θ₁, ζ)` as parameters, and the class step at θ₁′ and the tight radius.
+* `Proofs16ClassStepBoundsFejer`: its six degree inputs in `u = 2/(γθ)`.
+  These are θ₁′⁻¹ ≤ `u^(2F)`, budget⁻¹ and δ⁻¹ ≤ `u^(32F)`, pieces and the
+  Lemma 15.6 threshold ≤ `u^(64F)`, and ζ′⁻¹ ≤ `exp(u^(22F+105))`, with
+  `F = fejerProductExponent k ≤ 2^(5k+14)`.
+* `Proofs16ClassStepDegreesFejer`: `powerUniformClass_succ_fejer`, with
+  degrees `D·2^(O(k))`. The printed degrees are `D·2^(2^(O(k)))`.
+* `Proofs16SplitStepFejer`: `splitUniformClass_all_fejer`, a split class in
+  every dimension from the `2^46` seed, with `log₂ D_k ≤ 22·2^k`
+  (`split_pair_fejer_bound`; printed `75·2^k`, tight `68·2^k`).
+
+*Section 18.*
+* `Proofs16SinglePieceCoverGlobalWith`, `Proofs18SinglePieceCoverInverseFejer`:
+  the joint-cover lift with `(θ₁, ζ)` as parameters, and the inverse step at
+  θ₁′ (the printed θ₁ entered Section 18 only through this frequency box).
+* `Proofs18TightClassesFejer`: `polyCoverAt_class23`, the class covers at
+  degree `2^(23·2^l)`. In dimension one the cover holds at any degree
+  `≥ 2^17` (`polyCoverAt_one_uniform_low`). The printed `2^132` there was the
+  dimension-two exponent shared through `sixEb`.
+* `Proofs18FejerEnvelopeBase`: θ₁′ ≥ θ₁, so the budget, `θ₂/2`, δ and the
+  radius are at least the printed ones. Every printed fixed-parameter bound
+  (at `2^fixDeg k`) therefore transfers unchanged.
+* `Proofs18CoverModulusFejer`, `…DensityFejer`, `…ExponentsFejer`:
+  `GenParamsF`, the step's degrees with `23·2^k` in place of `68·2^k`.
+* `Proofs18CoverFejerHeadline`: one step costs `101·2^k + 4(k+3)² + k + 39`.
+  That is `23` (vertex covers) + `32` (base budget) + `2·23` (slices), against
+  the printed `236`. Both envelopes are at most `230·2^k` (`polyGenMuF_le`,
+  `genMuXF_le`; `models/model_fejer_envelope_exact.py` mirrors the Lean
+  definitions and gives at most `219·2^k`). This yields
+  `theorem_18_1_d6_of_profiles_cover` (`d ≥ 4`) and
+  `theorem_18_2_L4_all_of_profiles_cover` (`L ≥ 6`).
+* `Proofs18CoverFejerLowDegrees` (`d ≤ 3`) and `Proofs18CoverFejerShortLengths`
+  (`L ≤ 5`): the corpus's low cases with `6` and `4`.
+* Bridge `Proofs18CoverFejerAllDegrees` (stub `mkstub_fejer18.py`, from
+  `StubAll18`):
+  - `theorem_18_1_d6 : ∀ d, Theorem181AtSharp 6 d`;
+  - `theorem_18_2_L4`, `corollary_18_7_L4` (every `L`), and the three
+    `…_implies_printed`;
+  - `van_der_waerden_L4`: `W(k, r) ≤ 2^2^r^2^2^(k+4)`;
+  - `theorem_1_3_L4`: Theorem 1.3 with constant `2^(−2^(k+4))`.
+
+  Stub axioms are exactly those of the `d + 7` / `L + 5` bridge:
+  `commonDiffPartitionBoundAt_of`, `multilinearPartitionBoundAt_explicit` and
+  `section16RecurrenceProfileWith_explicit` for 18.1, and the last alone for
+  18.2 and its consequences.
+
+*What is left.*
+* The full build of the bridge belongs to the Codex machine.
+* The duplicated `…With`/`…Fejer` modules can be folded into
+  θ₁-parametric originals there: their printed instances are the corpus
+  statements by `rfl`.
+* The next level, `d + 5` / `L + 3`, needs a step cost below `64·2^k`
+  (envelope about twice the step cost, budget `2^(k+7)`). The base budget
+  `μ₀ = 32·2^k` (`fixDeg`, kept printed here by the monotone transfer;
+  the Fejér θ₁ alone would allow `16·2^k`, set by `V`) plus three class
+  terms `≥ 3·22·2^k` already exceed that. So `d + 5` would need a smaller
+  class constant as well as the `μ₀` from `V`.
 
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on

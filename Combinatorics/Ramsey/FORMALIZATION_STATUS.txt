@@ -388,19 +388,46 @@ Verification of the cover route (2026-10-11)
   Proofs15FejerProduct: fejer_product_restriction is Lemma 15.6 with density
   (beta*gamma/2)^(fejerProductExponent k), fejerProductExponent k <=
   2^(5k+14) (printed 2^(2^(k+5))); lemma_15_6_of_fejer_product recovers the
-  printed Lemma 15.6. Propagating this theta_1 through Section 16 (which
-  hardwires section16ThetaOne) is not done; fejer_scale_estimate and
-  fejer_product_of_density_lower (the exact interface Lemma 16.4 consumes)
-  are proved, and notes L.16 give the refactor plan for the full-build machine.
+  printed Lemma 15.6. fejer_scale_estimate and fejer_product_of_density_lower
+  (the exact interface Lemma 16.4 consumes) are proved.
   Proofs16TightRadius (notes L.16b): the Bohr radius 2^(-2^83/a^11) meets
   Lemma 16.5's condition for any a; under the Fejer theta_1 its exponent is
   at most (2/(theta*gamma))^(22E+105) and at least 2^(40(k+1)^3+1).
   Proofs16SplitFejerDegrees (notes L.16c): with those inputs the split-class
   degrees satisfy log2 D_k <= (c+8)*2^k for a seed 2^8*a2 <= 2^(4c),
   D2 <= 2^(4(c+8)); at c = 14, any seed a2 <= 2^48, D2 <= 2^88 gives
-  22*2^k (vs 68*2^k). The dimension-two seed under the Fejer theta_1 and
-  tight radius (expected about 2^35-2^40) is not yet proved. By the model this
-  reaches d+6/L+4; the d+5/L+3 of notes L.16b is withdrawn.
+  22*2^k (vs 68*2^k). The d+5/L+3 of notes L.16b is withdrawn.
+
+  Theorem 18.1 at d+6, Theorems 18.2 / Corollary 18.7 at L+4 (notes L.16d,
+  L.16e, 2026-10-12). The Fejer theta_1 and the tight radius are propagated
+  through Sections 16 and 18 in parallel light modules (suffix With/Fejer;
+  their printed instances are the corpus statements by rfl, so a later
+  refactor on the full-build machine can fold them into parametric
+  originals). Standard axioms only, kernel-checked locally:
+  - dimension two: Proofs16Lemma5With, Proofs16DenseSelectionWith,
+    Proofs16PolyPieceTwoDataWith, Proofs16PolyCoverTwoFejer,
+    Proofs18FejerSeedCounts, Proofs18FejerSeedExponents,
+    Proofs16UniformCoverTwoFejer (split-class seed 2^46, printed 2^132);
+  - dimensions k >= 2: Proofs16ClassPiecesWith, Proofs16ClassStepFejer,
+    Proofs16ClassStepBoundsFejer, Proofs16ClassStepDegreesFejer,
+    Proofs16SplitStepFejer (splitUniformClass_all_fejer, log2 D_k <= 22*2^k);
+  - Section 18: Proofs16SinglePieceCoverGlobalWith,
+    Proofs18SinglePieceCoverInverseFejer, Proofs18TightClassesFejer
+    (polyCoverAt_class23), Proofs18FejerEnvelopeBase,
+    Proofs18CoverModulusFejer / DensityFejer / ExponentsFejer,
+    Proofs18CoverFejerHeadline (step cost 101*2^k vs 236*2^k; envelopes
+    <= 230*2^k; theorem_18_1_d6_of_profiles_cover, d >= 4, and
+    theorem_18_2_L4_all_of_profiles_cover, L >= 6),
+    Proofs18CoverFejerLowDegrees (d <= 3), Proofs18CoverFejerShortLengths
+    (L <= 5).
+  Bridge Proofs18CoverFejerAllDegrees (heavy; stub-checked, not built
+  locally): theorem_18_1_d6 : forall d, Theorem181AtSharp 6 d;
+  theorem_18_2_L4, corollary_18_7_L4 (every L); the three ..._implies_printed;
+  van_der_waerden_L4 (W(k,r) <= 2^2^r^2^2^(k+4)); theorem_1_3_L4 (Theorem 1.3
+  with constant 2^(-2^(k+4))). Stub axioms are those of the d+7/L+5 bridge:
+  commonDiffPartitionBoundAt_of, multilinearPartitionBoundAt_explicit,
+  section16RecurrenceProfileWith_explicit (18.1); the last only (18.2 and
+  consequences). Needs the full build on the Codex machine.
 
 Sharper exponents for Theorems 18.1 and 18.2 — 2026-10-11 (notes L.15)
   The joint-cover envelopes are a quarter of the printed budgets, so:
