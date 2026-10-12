@@ -6300,6 +6300,46 @@ the verifiedd2f0c80cf snapshot. The merged expected fidelity closure is
 1,652 modules and its fresh native build is running, followed by the facade.
 No claim about that broad gate follows from the unchanged direct inputs.
 
+### L.42 Sections14--15 review while the native refresh runs (2026-10-12)
+
+The actual statement comparison now covers100/120 entries, including all
+fourteen numbered Section14--15 results. Twenty entries in Sections16--18
+remain unread. This count is inspection, not proof completion. The full
+1,652-module audit is confirmed live and its cache is advancing; no
+restart follows from an observation timeout. The new scope core check is
+queued behind it and has not yet certified the prepared Lean modules.
+
+The published PDF confirms that Corollary14.6 prints gamma exponent
+k*4^(k+1) and Lemma14.8 prints7*k*4^(k+1). The verified companions instead
+use3*k*4^(k+1) and21*k*4^(k+1); the direct extraction calculation supports
+2*k*4^(k+1)+8*2^k. Neither original stronger exponent is proved or refuted
+by this review. The source-bound ledger now keeps those duties explicit.
+
+The annotated15.5 threshold also requires separate work. Its condition
+(t*beta^15)*N>=Cdeg, t=(alpha*eta/4)^E, is weaker than the currently proved
+explicit selection threshold max3(2*Cdeg/((1-eta)*t*beta^15)) for eta<1.
+The exact eventual-N companion is proved, but it must not be presented as
+verification of the sharper displayed condition or the literal original
+reading without largeness. Positive product/density and dimension conventions
+are recorded rather than silently treating omitted endpoint cases as closed.
+
+Prepared scope work includes a direct Boolean rigidity proof using only
+the full polynomial moment, with arbitrary integer coefficients at every
+prime; it avoids division by2. A characteristic-two signed-pattern example
+uses k=2,h_i=1 and coefficients1 on the two patterns with first sign negative,
+0 otherwise. The degeneracy bound atN=2 is covered by its enormous stated
+coefficient against the whole parameter space. An unrestricted real-theta
+version of14.7 has trivial nonpositive conclusions at theta<=0. Separate
+zero-weight and summed-slice counterexamples are also prepared. These are
+not counted as checked theorems or used to rewrite the paper before their
+queued kernel/axiom audit succeeds. In the summed-slice example f=1,N=3,k=2,
+the proposed g_y is constant3, so its quadratic correlation is27 rather than9.
+The valid14.3 native proof keeps slices separate and averages their squared
+Fourier coefficients instead of asserting that false identity.
+
+The goal remains active. The full refresh and facade, the20 unreviewed
+statements and all original-bound/scope obligations remain outstanding.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

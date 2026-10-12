@@ -5,8 +5,8 @@
   "paper_sha256": "1fcd9b08223924626bfae7d0c73044ee8226b14f5978a9439c5908e96ec6799d",
   "reviewed_sections01_03_sha256": "d7926af871dbe1323494485a38310b78721b436601eef937dbe41b3dd3782589",
   "statement_count": 120,
-  "reviewed_statement_count": 86,
-  "unreviewed_statement_count": 34,
+  "reviewed_statement_count": 100,
+  "unreviewed_statement_count": 20,
   "goal_complete": false,
   "geometry_conventions": {
     "modAP_IsProper": "Carrier cardinality equals parameter length, recording injection only. The comment now accurately allows wrapping; ordinary integer representatives are tracked by the stronger geometric predicate.",
@@ -1762,8 +1762,11 @@
           "line": 959
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "proposition_14_1_holds"
+      "status": "matched_nonnegative_sign_scope",
+      "native_audited_companion": "proposition_14_1_holds",
+      "evidence": "The first-coordinate correlations, weighted product of squared Fourier norms, alpha*N^(4*p+1) premise and alpha^4*N^3 simultaneous energy conclusion match. Lean includes alpha=0. The unrestricted negative sign reading has a prime-two zero-weight counterexample prepared for kernel checking.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean"
     },
     {
       "statement": "lemma_14_2",
@@ -1779,8 +1782,11 @@
           "line": 130
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "lemma_14_2_holds"
+      "status": "matched_positive_product_parameter_scope",
+      "native_audited_companion": "lemma_14_2_holds",
+      "evidence": "Every gamma*N Fourier coefficient of the k-fold difference yields the weighted gamma^(8*p)/N product property for arbitrary finite families of parallel restrictions and nonnegative weights. Primality is unnecessary. Lean makes gamma>0 explicit; a possible zero endpoint is not covered by this companion.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean"
     },
     {
       "statement": "lemma_14_3",
@@ -1796,8 +1802,11 @@
           "line": 496
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "lemma_14_3_holds"
+      "status": "matched_positive_parameter_statement_proof_identity_open",
+      "native_audited_companion": "lemma_14_3_holds",
+      "evidence": "The cube-correlation sum and conjugation parity match C^(|epsilon|+k), and the coefficient cutoff is gamma*N^(k+1). The native proof uses frozen slices and an average of squared coefficients. The source equation (g_y)_h=f_(y,h), with g_y a sum of slices, introduces cross terms and is false already for constant f=1,N=3,k=2 (27 versus9). A separate native counterexample to this proof step is awaiting its check; the numbered positive statement remains proved.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean"
     },
     {
       "statement": "lemma_14_4",
@@ -1813,8 +1822,11 @@
           "line": 698
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "lemma_14_4_holds"
+      "status": "matched_positive_dimension_density_conventions",
+      "native_audited_companion": "lemma_14_4_holds",
+      "evidence": "The complete configuration contains all4^k vertices and respects every coordinate face. The lower bound beta^(4^k)*gamma^(2*k*4^k)*N^(3*k) matches. Lean uses k>=1, beta>0 and0<gamma<=1. Trivial zero-density or zero-dimensional extensions are not asserted by that companion if those are included in the source convention.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean"
     },
     {
       "statement": "corollary_14_5",
@@ -1830,8 +1842,11 @@
           "line": 942
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "corollary_14_5_holds"
+      "status": "matched_positive_dimension_density_conventions",
+      "native_audited_companion": "corollary_14_5_holds",
+      "evidence": "The same bound counts contained congruent cube pairs with equal alternating values. The configuration-to-pair map retains ordered parameters rather than merely identifying coincident vertices. The positive dimension/density conventions are explicit.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean"
     },
     {
       "statement": "corollary_14_6",
@@ -1847,8 +1862,11 @@
           "line": 838
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "corollary_14_6_holds"
+      "status": "verified_correction_original_gamma_exponent_open",
+      "native_audited_companion": "corollary_14_6_holds",
+      "evidence": "The published PDF confirms the original gamma exponent k*4^(k+1), rather than the checked safe3*k*4^(k+1). The construction directly supports2*k*4^(k+1)+8*2^k. Neither a proof nor a kernel counterexample for the original stronger exponent has been supplied; do not mark it false merely because the printed calculation does not imply it.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean"
     },
     {
       "statement": "lemma_14_7",
@@ -1864,8 +1882,11 @@
           "line": 712
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "lemma_14_7_holds"
+      "status": "matched_positive_theta_companion_unrestricted_endpoint_pending",
+      "native_audited_companion": "lemma_14_7_holds",
+      "evidence": "The respected two-arrangement premise theta*N^(5*k+3) yields theta^7*N^(17*k+15) eight-arrangements, with all common sides, endpoint containment, additive cross-sections and alternating image relations. The catalogue assumes theta>0. A prepared companion covers every real theta using the nonpositive conclusion for theta<=0; its kernel check is queued.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean"
     },
     {
       "statement": "lemma_14_8",
@@ -1881,8 +1902,11 @@
           "line": 18
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "lemma_14_8_holds"
+      "status": "verified_correction_original_gamma_exponent_open",
+      "native_audited_companion": "lemma_14_8_holds",
+      "evidence": "The original PDF states beta^(7*4^(k+1))*gamma^(7*k*4^(k+1))*N^(17*k+15). The verified corrected companion has gamma exponent21*k*4^(k+1), from seven times the safe14.6 bound. The original smaller exponent remains unproved and unrefuted.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean"
     },
     {
       "statement": "lemma_15_1",
@@ -1898,8 +1922,11 @@
           "line": 18
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "lemma_15_1_holds"
+      "status": "matched_odd_prime_correction_even_prime_refutation_pending",
+      "native_audited_companion": "lemma_15_1_holds",
+      "evidence": "The signed Walsh moments, nonzero sides, ternary labels and modular scalar-multiple conclusion agree. Lean makes odd primality explicit. With separately indexed sign patterns at N=2,k=2,h_i=1, eta is1 on the two patterns whose first sign is negative and0 otherwise; all moments vanish but eta is not a constant, while the full Walsh character is constant modulo2. The prepared native refutation is awaiting its check.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean"
     },
     {
       "statement": "corollary_15_2",
@@ -1920,8 +1947,11 @@
           "line": 314
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "corollary_15_2_holds"
+      "status": "odd_prime_companion_all_prime_recovery_pending",
+      "native_audited_companion": "corollary_15_2_holds",
+      "evidence": "The Boolean moments and modular parity-multiple conclusion match, but the catalogue inherits oddness from its half-side proof. A direct proof is prepared over every prime, including2, using only the full moment and arbitrary integer coefficients. Its two-vertex isolation factors are plus or minus h_i rather than2*h_i, so division by2 is unnecessary. This generalization awaits its kernel check.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean"
     },
     {
       "statement": "lemma_15_3",
@@ -1937,8 +1967,11 @@
           "line": 264
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "lemma_15_3_holds"
+      "status": "matched_prime_fibre_bound",
+      "native_audited_companion": "lemma_15_3_holds",
+      "evidence": "For a nonconstant multilinear function over a prime field, both exact bounds match: fibre size <=N^k-(N-1)^k<=k*N^(k-1). Dimension0 is vacuous because every function on the singleton domain is constant. Primality is material: nonconstant2*x modulo4 has a two-point zero fibre in dimension1.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean"
     },
     {
       "statement": "lemma_15_4",
@@ -1954,8 +1987,11 @@
           "line": 1131
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "lemma_15_4_holds"
+      "status": "matched_odd_prime_companion_all_prime_recovery_pending",
+      "native_audited_companion": "lemma_15_4_holds",
+      "evidence": "The ternary degeneracy definition tests every coordinate monomial against the distinguished arrangement parity relation. The odd-prime bound3^(2*d*2^k)*k*N^((2*d+1)*k+2*d-2) matches for positive k,d. A prepared all-prime extension handles N=2 by bounding the entire parameter space; the coefficient already dominates it. That extension awaits kernel checking.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean"
     },
     {
       "statement": "lemma_15_5",
@@ -1971,8 +2007,11 @@
           "line": 3631
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "lemma_15_5_holds"
+      "status": "eventual_statement_verified_displayed_threshold_open",
+      "native_audited_companion": "lemma_15_5_holds",
+      "evidence": "The verified companion quantifies positive alpha,beta,0<eta<=1 and someN0 depending on all parameters and k. Its count (alpha*eta/4)^E*beta^15*N^(17*k+15), E=2^(2^(k+4)+k+3), and respected proportion1-eta match. The current annotated explicit condition t*beta^15*N>=3^(2^(k+4))*k is not the threshold provided by selection_scale_estimate_explicit: that theorem uses max3 (2*Cdeg/((1-eta)*t*beta^15)) for eta<1. The sharper displayed condition and the literal no-largeness original reading remain open, without a counterexample claim.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean"
     },
     {
       "statement": "lemma_15_6",
@@ -1988,8 +2027,11 @@
           "line": 141
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "lemma_15_6_holds"
+      "status": "original_coarse_numeric_bound_verified_eventual_scope",
+      "native_audited_companion": "lemma_15_6_holds",
+      "evidence": "The exact coarse bound (beta*gamma/2)^(2^(2^(k+5)))*N^(17*k+15) and respected proportion1-2^-44 survive the corrected21*k*4^(k+1) intermediate exponent. The companion makes positive k,0<beta,gamma<=1 and the inherited N0 explicit. The intended eventual statement is proved; the unqualified no-threshold original reading is not established by that companion.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean"
     },
     {
       "statement": "lemma_16_1",
@@ -2389,5 +2431,7 @@
   "reviewed_sections08_10_sha256": "bf562311bfa18052c357a28e2a43f7950a47fdc42e4718005efd13b502064c48",
   "section10_fibre_cap_scope": "Lean uses positive natural M. No conclusion about the unrestricted real-cap version is claimed by the present comparison.",
   "reviewed_section12_sha256": "fc21ac0e49cd99be4f4874c910f24404c5b511b8cb95505bb9c6f4d637cbb1cf",
-  "reviewed_section13_sha256": "e74ee2328b9b0d68a3c6f007ac7cf921eac9271134a31ed9f681795e013a174b"
+  "reviewed_section13_sha256": "e74ee2328b9b0d68a3c6f007ac7cf921eac9271134a31ed9f681795e013a174b",
+  "reviewed_sections14_15_sha256": "825a463ac702ac86cfbfd6c3198dc89129de4c92b6e028690ca4c54e5364a376",
+  "new_scope_proofs_kernel_status": "WalshScopeCoreAudit queued behind the confirmed-live full1652-module audit; no new all-prime/counterexample completion claim yet."
 }
