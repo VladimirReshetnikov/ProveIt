@@ -1,0 +1,147 @@
+\subsection{Core-side primitive annuli with passive geometric transport}
+\label{marked-cut:core-annuli}
+
+A bundle whose whole base boundary is attached need not supply the dual disks
+used in Section~\ref{marked-cut:primitive-annuli}. In five of the remaining
+source examples, the required disks instead exist in the simplified core.
+The new certificate authenticates the annular midpoint curves and carries
+their unsigned intersection counts through the actual core-cancellation
+schedule. A surviving cocore that meets one pending annulus once and every
+other pending annulus zero times is a \emph{private cocore} for that annulus.
+A complete set of these cocores certifies a simultaneous primitive family
+on the core side.
+
+\paragraph{Source curves precede transport.}
+Every full attaching circle on a nondisk base is traced using its signed
+port word. A zero-dimensional port stays in its source zero-handle. A
+one-dimensional port must be a face-sector side of an edge-cap polygon;
+the ordered tetrahedron/face flags authenticate its direction through the
+source one-handle. Consecutive endpoint owners must form a closed core path.
+The curve is the midpoint section of the interval fibres. Its embeddedness
+and disjointness from the real two-handle attaching curves follow from the
+source product-intersection theorem, including the actual disk bundles
+already absorbed as two-handles.
+
+The extracted chart routines are shared with disk-base absorption, but the
+producer and independent checker retain separate implementations. The
+checker reconstructs endpoint flags and paths from authenticated source
+geometry. An arbitrary group word or a claimed incidence row cannot supply
+this prerequisite.
+
+\begin{proposition}[Passive geometric pivot transport]
+\label{marked-cut:passive-pivot}
+Let the authenticated core have a successful geometric cancellation schedule,
+and let $\beta_1,\ldots,\beta_q$ be pairwise disjoint annular midpoint curves
+outside the real two-handle attaching regions. If a real pivot eliminates
+row $r$ and cocore column $g$, then the passive counts satisfy
+\[
+ m'_{ih}=m_{ih}+m_{ig}n_{rh}\qquad(h\ne g),
+\]
+where $n$ is the current real attaching-curve incidence matrix. This formula
+holds simultaneously for all passive curves. Saturation at two preserves
+exactly which final entries are zero or one.
+\end{proposition}
+\begin{proof}
+Apply the disk slides in Lemma~\ref{marked-cut:pivot}. Every sliding band
+follows the real attaching curve $\alpha_r$ and has interior disjoint from
+all other real and passive curves. Each slide of $D_h$ over $D_g$ adds
+exactly $m_{ig}$ intersections with $\beta_i$. There are $n_{rh}$ such
+slides. After the unique-intersection cancellation, $\beta_i$ remains a
+boundary curve and has the displayed intersection counts with the surviving
+complete disk system. The same bands work for every passive curve because
+the curves are pairwise disjoint from the band interiors.
+
+The initial counts are actual unsigned source crossings; opposite traversal
+signs do not cancel. Every subsequent expression uses only addition and
+multiplication of nonnegative integers. The map $x\mapsto\min(2,x)$ preserves
+both operations in the saturated semiring, so it preserves the final zero
+and singleton predicates even if the unsaturated counts become very large.
+\end{proof}
+
+\begin{proposition}[Private cocores certify a simultaneous family]
+\label{marked-cut:core-private-family}
+Suppose that, after the real core cancellations, every pending annulus $i$
+has a surviving column $h_i$ with $m_{i h_i}=1$ and $m_{j h_i}=0$ for all
+$j\ne i$. Then the annuli form a simultaneous primitive family in their
+respective core handlebodies. The columns $h_i$ are necessarily distinct.
+\end{proposition}
+\begin{proof}
+The surviving cocores belong to one embedded complete disk system, so they
+are pairwise disjoint. The stated counts say that each designated disk meets
+its midpoint curve once and the other midpoint curves zero times. Replace
+each attaching annulus by a sufficiently thin regular neighborhood of its
+midpoint curve, using a boundary isotopy. Its intersection with its designated
+disk is then one spanning arc, and its intersections with the other designated
+disks are empty. These isotopies are simultaneous because the annuli are
+disjoint. Finite proper disk-attachment regions, also disjoint from the annuli,
+can be avoided by a small simultaneous boundary isotopy of the cocore disks.
+Thus the primitive family is relative to those remaining disk interfaces.
+A column cannot serve two curves, since it would have to contain both a
+singleton and a zero at one of their rows.
+\end{proof}
+
+\paragraph{Whole-cut gluing and ownership.}
+Use the annulus-gluing one/two-handle description in
+Proposition~\ref{marked-cut:primitive-census}, with the private handle now on
+the core side. Each new two-handle cancels its private core one-handle, while
+the connecting handle remains. The disks are simultaneous, so one gluing
+does not invalidate another. Core components inherit orientability from the
+source cut. For each connected attachment graph component,
+\[
+ g=\sum_{v\in V}(g_v-a_v)+|E|-|V|+1,
+\]
+where $a_v$ now counts the private annuli owned by core vertex $v$, and is
+zero at bundle vertices. Here $E$ includes both proper disk interfaces and
+all remaining nondisk annuli. Each selected cocore must belong to the same
+verified core component as its source curve; the whole-cut graph checker
+also checks that ownership. The original source Euler identity is unchanged.
+
+The current producer first tries the complete bundle-side rule. If that fails,
+it defers every nondisk circle, absorbs only genuine disk-base components,
+and requires a successful core cancellation. It then attempts the private
+column test on \emph{all} pending nondisk circles simultaneously. It does not
+mix a partial bundle-side family with a partial core-side family. This avoids
+assuming compatibility between two independently chosen disk systems. A
+failed core schedule or a passive row without a private singleton remains
+inconclusive.
+
+\paragraph{Independent replay.}
+The new whole-cut schema is \path{normal-cut-handlebodies-v4}. The annular
+record contains each source attachment and base owner, its directed source
+crossings, its final saturated row on the surviving columns, and its private
+column and core component. The enclosing verifier authenticates the source
+parallelity and boundary proofs, checks actual disk absorption, and verifies
+the augmented core cancellation before interpreting this record.
+
+The producer transports sparse rows. The independent module
+\path{core_primitive_annuli_verify} reconstructs both real and passive rows,
+then performs a dense replay of every supplied real pivot. It recomputes the
+canonical least private column and compares every recorded field. It imports
+no producer. Only after all these checks does the final graph computation
+deduct the corresponding core genera. Schemas v1--v3 remain replayable;
+a downgrade to an earlier schema cannot silently omit the passive proof.
+
+This is an authenticated transport of the \emph{midpoint intersection
+predicates} needed for a terminal genus census. It does not construct the
+possibly long disk slides or encode every later boundary-pattern strand.
+A complete hierarchy still needs more geometric information.
+
+\paragraph{Cost and incomplete search.}
+There are $O(T)$ real handles and $q\le P=O(T)$ passive curves. At most
+$O(T)$ real pivots update an $(O(T)+q)$-by-$O(T)$ matrix. Dense replay and
+the private-column check take $O(T^3)$ operations on saturated entries.
+The added final rows use $O(PT)$ entries with $O(\log(T+P))$-bit labels;
+the directed source paths together use $O(P)$ crossings. Normal multiplicity
+is never expanded. These bounds add polynomial work and certificate size to
+the existing source queries.
+
+The success criterion depends on the supplied core schedule and disk system.
+The current greedy core producer is incomplete and label-dependent. In a
+fixed five-relabel test, three sources certify the same census and two stop
+at the real core-cancellation stage before passive transport. A different
+cocore system could also expose primitivity when the current private-column
+test fails. Neither a failed schedule nor absence of a private column is a
+negative topological certificate. Global useful-surface coverage and the
+quasi-polynomial hierarchy bound remain unresolved.
+
+\input{core_annuli_results.tex}
