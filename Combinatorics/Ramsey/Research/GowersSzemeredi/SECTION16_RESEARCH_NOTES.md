@@ -4272,7 +4272,18 @@ bridge `Proofs18CoverSharperAllDegrees`, stub axiom
 `section16RecurrenceProfileWith_explicit` only, and both are checked by
 `CompletionAudit.lean`.
 
-A three-page mathematical write-up of L.12-L.15g is in
+**L.15h: Theorem 1.3 with constant `2^(-2^(k+5))`.** Theorem 1.3 (density
+`(log log N)^(-2^(-2^(k+9)))` forces a `k`-term progression) follows from
+Theorem 18.2 by a real-power calculation in which the constant enters only
+through `2^(k+9)` (`theorem_1_3_holds_of_theorem_18_2`). Repeated with `k + c`
+(`Proofs18CoverHeadline`, light: `theorem_1_3_constantAt`, `Theorem13At c`
+with `theorem13At_nine_iff : Theorem13At 9 ↔ theorem_1_3` by `Iff.rfl`,
+`headline_density_thresholdAt`, `theorem13At_of_sharp`), Theorem 18.2 at
+`L + 5` gives **Theorem 1.3 with constant `2^(-2^(k+5))`** (`theorem_1_3_L5`,
+bridge `Proofs18CoverSharperAllDegrees`, stub axiom
+`section16RecurrenceProfileWith_explicit` only; in `CompletionAudit.lean`).
+
+A three-page mathematical write-up of L.12-L.15h is in
 `joint-vertex-covers/joint-vertex-covers.tex` (PDF beside it).
 
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
