@@ -1,0 +1,97 @@
+{
+  "passed": true,
+  "checks": 16,
+  "target_sha256": "e533e2d2f1afa6efe55179ae0a0675dda421d5b8dacaf298ad33080b1c841cb1",
+  "scope": "Dispatcher adapter and transport boundary checks; no producer or benchmark invoked.",
+  "records": [
+    {
+      "name": "duplicate_object_key",
+      "passed": true,
+      "exception": "ValueError",
+      "detail": "duplicate JSON object key: 'id'"
+    },
+    {
+      "name": "floating_coordinate",
+      "passed": true,
+      "exception": "ValueError",
+      "detail": "certificate packets require exact integers, not 1.0"
+    },
+    {
+      "name": "boolean_coordinate",
+      "passed": true,
+      "exception": "ValueError",
+      "detail": "integer fields require integers or signed hexadecimal strings"
+    },
+    {
+      "name": "decimal_string_coordinate",
+      "passed": true,
+      "exception": "ValueError",
+      "detail": "integer fields require integers or signed hexadecimal strings"
+    },
+    {
+      "name": "NaN",
+      "passed": true,
+      "exception": "ValueError",
+      "detail": "certificate packets require exact integers, not NaN"
+    },
+    {
+      "name": "positive_infinity",
+      "passed": true,
+      "exception": "ValueError",
+      "detail": "certificate packets require exact integers, not Infinity"
+    },
+    {
+      "name": "negative_infinity",
+      "passed": true,
+      "exception": "ValueError",
+      "detail": "certificate packets require exact integers, not -Infinity"
+    },
+    {
+      "name": "ambiguous_layout",
+      "passed": true,
+      "exception": "ValueError",
+      "detail": "unrecognized or ambiguous source packet layout"
+    },
+    {
+      "name": "non_object_packet",
+      "passed": true,
+      "exception": "ValueError",
+      "detail": "packet must be a JSON object"
+    },
+    {
+      "name": "wrong_coordinate_row_size",
+      "passed": true,
+      "exception": "ValueError",
+      "detail": "source coordinates must have seven entries per row"
+    },
+    {
+      "name": "boolean_source_identifier",
+      "passed": true,
+      "exception": "ValueError",
+      "detail": "source id must be a string"
+    },
+    {
+      "name": "missing_certificate",
+      "passed": true,
+      "exception": "ValueError",
+      "detail": "certificate must be an object with a string schema"
+    },
+    {
+      "name": "hexadecimal_source_replays",
+      "passed": true
+    },
+    {
+      "name": "zero_operation_cap_rejects",
+      "passed": true
+    },
+    {
+      "name": "boolean_certificate_rank_rejects",
+      "passed": true
+    },
+    {
+      "name": "malformed_cli_nonzero_exit",
+      "passed": true,
+      "exit_code": 1
+    }
+  ]
+}

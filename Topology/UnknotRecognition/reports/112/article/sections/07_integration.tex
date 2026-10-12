@@ -1,0 +1,217 @@
+\section{Delivered artifacts and integration}
+\label{sec:integration}
+
+The archive is intended to be reviewable before integration into the
+repository. It contains the article source and PDF, the changed native
+modules and tests, a patch against the pinned source, a small runnable
+snapshot with the required unchanged dependencies, the original verifier,
+raw source packets, exact observed results, and reproduction programs.
+The source checkpoint is \BaseCommit.
+
+\subsection{Native changes}
+
+All six changed or new repository files are under
+\code{Topology/UnknotRecognition/fast/}. The files are:
+
+\begingroup\small
+\begin{longtable}{L{0.46\textwidth}L{0.46\textwidth}}
+\toprule
+Path below the native fast directory & Purpose\\
+\midrule
+\endhead
+\code{fastunknot/weighted_run_rope.py} &
+New deterministic AVL run sequence and local weight transport.\\
+\addlinespace
+\code{fastunknot/weighted_orbit_verify.py} &
+Select lazy transport in ordinary histogram replay and retain the
+explicit original reference verifier.\\
+\addlinespace
+\code{fastunknot/normal_chamber_graph.py} &
+New source-derived component-label, side-marker, and chamber-graph
+producer.\\
+\addlinespace
+\code{fastunknot/normal_chamber_graph_verify.py} &
+New independently reconstructed chamber-graph checker.\\
+\addlinespace
+\code{tests/test_weighted_run_rope.py} &
+Literal arithmetic oracles, structural invariants, legal-trace
+separation, and invalid-proof checks.\\
+\addlinespace
+\code{tests/test_normal_chamber_graph.py} &
+Literal component/subcut references, source-bound graph checks,
+encoding, relabelling, and resource-limit tests.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+The chamber observer adds the schema
+\code{normal-chamber-graph-v1}. Existing weighted-orbit and supplied-cut
+certificate schemas are unchanged. The integration does not modify the
+diagram recognizer's verdict dispatch. Successful chamber export and
+successful supplied-cut certification remain their respective local
+geometric conclusions.
+
+\subsection{Package layout and provenance}
+
+\begin{longtable}{L{0.42\textwidth}L{0.50\textwidth}}
+\toprule
+Archive location & Content\\
+\midrule
+\endhead
+\code{article/} &
+Main \LaTeX\ source, section files, bibliography, generated tables,
+vector figure, and compiled PDF.\\
+\addlinespace
+\code{integration/overlay/} &
+Only the six modified/new files, at their repository-relative paths.\\
+\addlinespace
+\code{integration/proveit_lazy_replay_chamber_graphs.patch} &
+Unified patch against the pinned repository.\\
+\addlinespace
+\code{integration/native_snapshot/} &
+Runnable package and the fixture/test dependency closure needed for the
+new checks; it is not a second full repository.\\
+\addlinespace
+\code{integration/reference/} &
+Exact original weighted verifier used for baseline comparison.\\
+\addlinespace
+\code{results/} &
+Original paired timing samples, complete-suite and focused logs,
+native audit records, and source fixture records.\\
+\addlinespace
+\code{examples/} &
+Complete three-meridian and large connected-meridian source/certificate
+packets.\\
+\addlinespace
+\code{scripts/} &
+Portable benchmark, chamber audit, stored-packet replay, and figure
+generation programs.\\
+\addlinespace
+\code{reproduce.py} &
+A small command-line entry point for the bundled checks and optional
+benchmark reproduction.\\
+\bottomrule
+\end{longtable}
+
+The recorded benchmark source and the later portability adaptation are
+both retained. The portability adaptation adds explicit package,
+fixture, and baseline-verifier paths; it does not alter the timed worker
+body or the measured native implementation. Source hashes identify the
+baseline and measured files. The archive manifest identifies its
+delivered files, and the integration provenance records the source pin.
+
+\subsection{Reproduction without external services}
+
+From the unzipped archive root, the bundled checks are:
+
+\begin{lstlisting}
+python reproduce.py
+\end{lstlisting}
+
+This runs the eighteen new test methods and verifies the two complete
+stored chamber packets. It needs Python 3.10 or newer and the bundled
+standard-library-based native source. It does not need a network
+connection, a Git checkout, Regina, or an external topology service.
+Use the following optional modes to repeat the original scope of the
+measurements and the complete chamber audit:
+
+\begin{lstlisting}
+python reproduce.py --synthetic
+python reproduce.py --native
+python reproduce.py --chamber-audit
+\end{lstlisting}
+
+New results are written under \code{reproduced/}; the original observations
+under \code{results/} remain the evidence reported in this article.
+The native comparison includes one warmup per case and backend,
+alternates variant order, and checks every result digest. The synthetic
+comparison times whole weighted verification and reports generation
+separately. Wall-clock measurements will vary across machines.
+
+The article can be rebuilt from \code{article/} with:
+
+\begin{lstlisting}
+latexmk -pdf -interaction=nonstopmode \
+  -halt-on-error Lazy_Replay_and_Native_Chamber_Graphs.tex
+\end{lstlisting}
+
+A conventional \LaTeX\ installation with the packages named in the main
+source is sufficient; the already generated vector figure is included.
+Regenerating that figure and the numerical tables additionally needs
+Matplotlib and runs \texttt{python} \code{scripts/make_figures.py} from the archive
+root. It reads the original JSON records and does not rerun timings.
+
+\subsection{Applying the source changes}
+
+In a review checkout at the pinned revision, the patch can be checked
+and applied with:
+
+\begin{lstlisting}
+git apply --check /path/to/archive/integration/\
+proveit_lazy_replay_chamber_graphs.patch
+git apply /path/to/archive/integration/\
+proveit_lazy_replay_chamber_graphs.patch
+\end{lstlisting}
+
+The package includes an applicability check against clean pinned source
+files. If later repository changes overlap these paths, they require
+ordinary source review and a fresh regression run. In particular, the
+incoming source-reuse and endpoint-contraction patches concern adjacent
+costs and have not been silently incorporated into the measured baseline.
+
+For the full maintained suite in an integrated checkout, run from
+\code{Topology/UnknotRecognition/fast/}:
+
+\begin{lstlisting}
+python -B -m unittest discover -s tests
+\end{lstlisting}
+
+The recorded full-suite command uses the actual maintained checkout.
+The compact snapshot is intended for the new tests, packet replay, and
+included benchmarks; it does not claim to reproduce every unrelated
+maintained test without the rest of the repository.
+
+\Needspace{10\baselineskip}
+\subsection{Claim and evidence ledger}
+
+\begin{longtable}{L{0.30\textwidth}L{0.34\textwidth}L{0.28\textwidth}}
+\toprule
+Claim & Basis & Limit\\
+\midrule
+\endhead
+Receiver-independent fold cost &
+Exact lazy-action, balanced-tree, and residue proofs &
+Integer, histogram, and unweighted-trace costs are explicit separate terms.\\
+\addlinespace
+Asymptotic replay separation &
+Arbitrary-parameter legal star family &
+Comparison with the specified eager method; no hard-knot family asserted.\\
+\addlinespace
+Native chamber graph correctness &
+Component-label census, normal double, side census, independent charts &
+Supplied admissible surface, explicit representatives, current source domain.\\
+\addlinespace
+All labelled subcut partitions &
+Regluing theorem and graph connectivity &
+Nonseparation does not prove incompressibility or handlebody structure.\\
+\addlinespace
+Observed replay improvements &
+All retained paired samples and exact accepted result digests &
+The aggregate native complete-query time regressed in this run.\\
+\addlinespace
+Large-coordinate feasibility &
+Complete native \(128\)-tetrahedron packet &
+One component; single-orbit shortcut; no expanded graph with exponentially
+many labelled edges.\\
+\addlinespace
+General quasi-polynomial recognition &
+Research target and explicit outstanding dependencies &
+Not proved or implemented by this continuation.\\
+\bottomrule
+\end{longtable}
+
+The next source-level milestone is a compressed geometric dual route whose
+complete validation dependencies survive one actual hierarchy edit.
+The new observer supplies component and side identities for that work.
+The new replay method reduces an already measurable cost of checking the
+resulting local certificates.

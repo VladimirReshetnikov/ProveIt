@@ -1,0 +1,1574 @@
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/free_group_elimination.py b/Topology/UnknotRecognition/fast/fastunknot/free_group_elimination.py
+new file mode 100644
+index 000000000..716138baa
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/free_group_elimination.py
+@@ -0,0 +1,170 @@
++"""Small, nonincreasing Tietze certificates of freeness.
++
++This module proves a group is free.  It does not interpret word cancellation
++as a geometric handle move.  The source-cut wrapper supplies the separate
++topological and Euler-characteristic hypotheses needed for handlebodies.
++"""
++
++from collections import Counter
++from hashlib import sha256
++import json
++
++
++def _presentation(generators, relators):
++    if type(generators) is not list or type(relators) is not list:
++        raise ValueError('generators and relators must be lists')
++    if any(type(g) is not int or g <= 0 for g in generators):
++        raise ValueError('generator labels must be positive integers')
++    if len(set(generators)) != len(generators):
++        raise ValueError('duplicate generator label')
++    alphabet = set(generators)
++    rows = {}
++    for row in relators:
++        if type(row) is not dict or type(row.get('id')) is not int or row['id'] < 0:
++            raise ValueError('invalid relator label')
++        word = row.get('word')
++        if type(word) is not list or any(type(x) is not int or abs(x) not in alphabet
++                                         for x in word):
++            raise ValueError('invalid signed relator word')
++        if row['id'] in rows:
++            raise ValueError('duplicate relator label')
++        rows[row['id']] = tuple(word)
++    original = dict(generators=sorted(generators),
++                    relators=[dict(id=r, word=list(rows[r])) for r in sorted(rows)])
++    digest = sha256(json.dumps(original, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
++    return alphabet, rows, digest
++
++
++def cyclic_reduce(word, *, check=lambda: None):
++    """Freely reduce, then remove inverse letters at the two cyclic ends."""
++    stack = []
++    for letter in word:
++        check()
++        if stack and stack[-1] == -letter:
++            stack.pop()
++        else:
++            stack.append(letter)
++    lo, hi = 0, len(stack)
++    while lo < hi and stack[lo] == -stack[hi - 1]:
++        check()
++        lo += 1
++        hi -= 1
++    return tuple(stack[lo:hi])
++
++
++def _normalise(rows, check):
++    current, dropped = {}, []
++    for r in sorted(rows):
++        word = cyclic_reduce(rows[r], check=check)
++        if word:
++            current[r] = word
++        else:
++            dropped.append(r)
++    return current, dropped
++
++
++def _substitution(word, generator):
++    positions = [i for i, x in enumerate(word) if abs(x) == generator]
++    if len(positions) != 1:
++        raise ValueError('pivot generator is not a singleton in its relator')
++    index = positions[0]
++    tail = word[index + 1:] + word[:index]
++    return tuple(-x for x in reversed(tail)) if word[index] > 0 else tail
++
++
++def _trial(rows, row_id, generator, check):
++    image = _substitution(rows[row_id], generator)
++    inverse = tuple(-x for x in reversed(image))
++    result, dropped, visits = {}, [], 0
++    for r, word in rows.items():
++        check()
++        if r == row_id:
++            continue
++
++        def letters():
++            nonlocal visits
++            for x in word:
++                replacement = image if x == generator else inverse if x == -generator else (x,)
++                for y in replacement:
++                    visits += 1
++                    yield y
++
++        reduced = cyclic_reduce(letters(), check=check)
++        if reduced:
++            result[r] = reduced
++        else:
++            dropped.append(r)
++    return result, dropped, visits
++
++
++def certify_free_group(generators, relators, *, check=lambda: None):
++    """Try a deterministic polynomial policy and return COMPLETE/INCONCLUSIVE.
++
++    Initially trivial relators are deleted.  A column private to one relator
++    is preferred.  Otherwise all current singleton generator/relator pairs
++    are tried, and a pair with minimum resulting total cyclically reduced
++    length is accepted only when that length does not increase.  Ties use
++    relator then generator labels.  There is no backtracking or completeness
++    claim for this policy.  At most one generator disappears per pivot, and
++    no accepted state exceeds the initial reduced total length.
++    """
++    check()
++    alive, source, digest = _presentation(generators, relators)
++    rows, dropped = _normalise(source, check)
++    length = sum(map(len, rows.values()))
++    initial_length = length
++    moves, lengths = [], [length]
++    stats = dict(initial_generators=len(alive), initial_relators=len(source),
++                 source_word_length=sum(map(len, source.values())),
++                 initial_reduced_length=length, peak_accepted_length=length,
++                 candidate_trials=0, trial_letter_visits=0, private_pivots=0,
++                 substitution_pivots=0, trivial_relators=len(dropped))
++    while rows:
++        check()
++        total, singles = Counter(), []
++        for r, word in rows.items():
++            counts = Counter(map(abs, word))
++            total.update(counts)
++            singles.extend((r, g) for g, n in counts.items() if n == 1)
++        private = [(r, g) for r, g in singles if total[g] == 1]
++        if private:
++            r, g = min(private)
++            next_rows = dict(rows)
++            del next_rows[r]
++            newly_dropped = []
++            next_length = length - len(rows[r])
++            stats['private_pivots'] += 1
++        else:
++            best = None
++            for r, g in sorted(singles):
++                check()
++                candidate, removed, visits = _trial(rows, r, g, check)
++                stats['candidate_trials'] += 1
++                stats['trial_letter_visits'] += visits
++                new_length = sum(map(len, candidate.values()))
++                score = (new_length, r, g)
++                if new_length <= length and (best is None or score < best[0]):
++                    best = score, candidate, removed
++            if best is None:
++                stats.update(final_generators=len(alive), final_relators=len(rows),
++                             final_length=length, pivots=len(moves),
++                             trivial_relators=len(dropped))
++                return dict(status='INCONCLUSIVE', reason='no_nonincreasing_singleton',
++                            remaining_generators=sorted(alive),
++                            remaining_relators=[dict(id=r, word=list(w)) for r, w in rows.items()],
++                            stats=stats)
++            (next_length, r, g), next_rows, newly_dropped = best
++            stats['substitution_pivots'] += 1
++        alive.remove(g)
++        moves.append([r, g])
++        dropped.extend(newly_dropped)
++        rows, length = next_rows, next_length
++        lengths.append(length)
++    stats.update(final_generators=len(alive), final_relators=0, final_length=0,
++                 pivots=len(moves), trivial_relators=len(dropped))
++    proof = dict(schema='free-presentation-elimination-v1', presentation_sha256=digest,
++                 policy='nonincreasing', moves=moves, free_generators=sorted(alive),
++                 free_rank=len(alive), trivial_relators=sorted(dropped),
++                 initial_reduced_length=initial_length)
++    return dict(status='COMPLETE', free_rank=len(alive), certificate=proof,
++                accepted_lengths=lengths, stats=stats)
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/free_group_elimination_verify.py b/Topology/UnknotRecognition/fast/fastunknot/free_group_elimination_verify.py
+new file mode 100644
+index 000000000..c9a7c67cc
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/free_group_elimination_verify.py
+@@ -0,0 +1,121 @@
++"""Independent literal replay of nonincreasing Tietze freeness certificates.
++
++The checker imports neither the search policy nor its reduction routines.
++It accepts any legal complete trace satisfying the advertised length bound.
++"""
++
++from hashlib import sha256
++import json
++
++
++def _reduced(values, check):
++    stack = []
++    for value in values:
++        check()
++        if stack and value + stack[-1] == 0:
++            stack.pop()
++        else:
++            stack.append(value)
++    first, last = 0, len(stack)
++    while first < last and stack[first] + stack[last - 1] == 0:
++        first += 1
++        last -= 1
++    return stack[first:last]
++
++
++def replay_free_group(generators, relators, certificate, *, check=lambda: None):
++    """Return verified rank/labels/statistics, or None for a malformed proof."""
++    check()
++    keys = {'schema', 'presentation_sha256', 'policy', 'moves', 'free_generators',
++            'free_rank', 'trivial_relators', 'initial_reduced_length'}
++    if (type(certificate) is not dict or set(certificate) != keys
++            or certificate['schema'] != 'free-presentation-elimination-v1'
++            or certificate['policy'] != 'nonincreasing'):
++        return None
++    if (type(generators) is not list or type(relators) is not list
++            or any(type(g) is not int or g <= 0 for g in generators)
++            or len(set(generators)) != len(generators)):
++        return None
++    live = set(generators)
++    original, rows, dropped = [], {}, []
++    for record in relators:
++        if type(record) is not dict:
++            return None
++        r, word = record.get('id'), record.get('word')
++        if (type(r) is not int or r < 0 or r in rows
++                or type(word) is not list
++                or any(type(x) is not int or abs(x) not in live for x in word)):
++            return None
++        rows[r] = word[:]
++        original.append(dict(id=r, word=word))
++    canonical = dict(generators=sorted(generators), relators=sorted(original, key=lambda r: r['id']))
++    digest = sha256(json.dumps(canonical, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
++    if certificate['presentation_sha256'] != digest:
++        return None
++    for r in sorted(rows):
++        rows[r] = _reduced(rows[r], check)
++        if not rows[r]:
++            dropped.append(r)
++    for r in dropped:
++        del rows[r]
++    length = sum(len(word) for word in rows.values())
++    initial = certificate['initial_reduced_length']
++    moves = certificate['moves']
++    if (type(initial) is not int or initial != length or type(moves) is not list
++            or len(moves) > min(len(generators), len(relators))):
++        return None
++    lengths = [length]
++    for move in moves:
++        check()
++        if type(move) is not list or len(move) != 2 or any(type(x) is not int for x in move):
++            return None
++        r, g = move
++        if r not in rows or g not in live:
++            return None
++        donor = rows[r]
++        where = [i for i, letter in enumerate(donor) if abs(letter) == g]
++        if len(where) != 1:
++            return None
++        i = where[0]
++        # p g^eps q = 1.  Cyclic conjugation gives g^eps q p = 1.
++        tail = donor[i + 1:] + donor[:i]
++        image = [-x for x in reversed(tail)] if donor[i] == g else tail
++        inverse = [-x for x in reversed(image)]
++        del rows[r]
++        current_dropped = []
++        for other in sorted(rows):
++            word = rows[other]
++
++            def expanded():
++                for x in word:
++                    if x == g:
++                        yield from image
++                    elif x == -g:
++                        yield from inverse
++                    else:
++                        yield x
++
++            value = _reduced(expanded(), check)
++            rows[other] = value
++            if not value:
++                current_dropped.append(other)
++        for other in current_dropped:
++            del rows[other]
++        dropped.extend(current_dropped)
++        current_length = sum(len(word) for word in rows.values())
++        if current_length > length:
++            return None
++        lengths.append(current_length)
++        length = current_length
++        live.remove(g)
++    if rows:
++        return None
++    labels, rank, trivial = (certificate['free_generators'], certificate['free_rank'],
++                             certificate['trivial_relators'])
++    if (type(rank) is not int or rank != len(live) or type(labels) is not list
++            or any(type(g) is not int for g in labels) or labels != sorted(live)
++            or type(trivial) is not list or any(type(r) is not int for r in trivial)
++            or trivial != sorted(dropped)):
++        return None
++    return dict(free_rank=rank, free_generators=labels, pivots=len(moves),
++                trivial_relators=len(trivial), accepted_lengths=lengths)
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_cut_groups.py b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_groups.py
+new file mode 100644
+index 000000000..cb3c530d3
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_groups.py
+@@ -0,0 +1,119 @@
++"""Euler-checked free-group terminals for complete normal cuts with disk bases.
++
++An accepted output is an unmarked handlebody census.  The topological theorem
++uses the Loop Theorem and the three-dimensional Poincare theorem.  Group-word
++substitutions are not claimed to be geometric handle slides or marked maps.
++"""
++
++from collections import Counter
++
++from .free_group_elimination import certify_free_group
++from .normal_parallelity import normal_cut_parallelity
++from .parallelity_boundary_moments import _compile as _compile_moment_boundary
++from .source_cut_group import compile_disk_cut_presentation
++
++
++def _census(presentation, ranks):
++    isolated = presentation['isolated_ball_count']
++    histogram = Counter({0: isolated}) if isolated else Counter()
++    joined = []
++    for component, rank in zip(presentation['components'], ranks):
++        histogram[rank] += 1
++        joined.append(dict(id=component['id'], core_components=component['core_components'],
++                           interval_bases=component['interval_bases'],
++                           annular_bases=component['annular_bases'], genus=rank))
++    count, total_rank = len(ranks) + isolated, sum(ranks)
++    euler = presentation['source_euler_characteristic']
++    defect = euler - count + total_rank
++    if defect:
++        return None, defect
++    return dict(histogram=[dict(genus=g, multiplicity=n) for g, n in sorted(histogram.items()) if n],
++                components=count, ball_components=histogram[0],
++                all_balls=all(g == 0 for g, n in histogram.items() if n),
++                euler_characteristic=euler, free_rank_sum=total_rank,
++                joined_components=joined, isolated_ball_count=isolated), 0
++
++
++def _group_terminal(geometry, summary, skeleton, check):
++    presentation = compile_disk_cut_presentation(geometry, summary, skeleton, check=check)
++    if presentation is None:
++        return dict(status='INCONCLUSIVE', reason='non_disk_parallelity_base', stats={})
++    groups, ranks, details = [], [], []
++    for component in presentation['components']:
++        check()
++        reduced = certify_free_group(component['generators'], component['relators'], check=check)
++        details.append(dict(component=component['id'], **reduced['stats']))
++        if reduced['status'] != 'COMPLETE':
++            return dict(status='INCONCLUSIVE', reason='group_elimination_stalled',
++                        component=component['id'],
++                        stats=dict(presentation=presentation['stats'], group_components=details))
++        groups.append(dict(component=component['id'], proof=reduced['certificate']))
++        ranks.append(reduced['free_rank'])
++    census, defect = _census(presentation, ranks)
++    stats = dict(presentation=presentation['stats'], group_components=details,
++                 euler_defect=defect,
++                 trivial_relators=sum(d['trivial_relators'] for d in details))
++    if census is None:
++        # For a valid source and correct free presentations, this is the
++        # exact sum of second Betti numbers.  It is never a knot verdict.
++        if defect < 0:
++            raise ArithmeticError('free presentation contradicts source Euler characteristic')
++        return dict(status='INCONCLUSIVE', reason='positive_second_betti_number',
++                    second_betti_sum=defect, stats=stats)
++    return dict(status='COMPLETE', presentation=presentation, groups=groups,
++                census=census, stats=stats)
++
++
++def normal_cut_group_handlebodies(triangulation, coordinates, *, max_cycles=None,
++                                 record_certificate=False, check=lambda: None):
++    """Produce a source-bound terminal census using finite group elimination.
++
++    Unsupported bases, orbit budgets, and a stalled deterministic word policy
++    return INCONCLUSIVE.  COMPLETE certifies the entire cut, including binary
++    families of isolated balls.  Source validity is the maintained compact,
++    connected, orientable triangulation with one torus boundary contract.
++    """
++    check()
++    if type(record_certificate) is not bool:
++        raise ValueError('record_certificate must be bool')
++    if max_cycles is not None and (type(max_cycles) is not int or max_cycles < 0):
++        raise ValueError('max_cycles must be a nonnegative integer or None')
++    result = dict(status='INCONCLUSIVE', stats={},
++                  trust='source cut unmarked handlebodies; no standalone knot verdict')
++    parallelity = normal_cut_parallelity(triangulation, coordinates,
++        max_cycles=max_cycles, record_certificate=record_certificate, check=check)
++    result['stats']['parallelity'] = parallelity['stats']
++    if parallelity['status'] != 'COMPLETE':
++        result['reason'] = 'parallelity_budget_exhausted'
++        return result
++    for p in parallelity['summary']['base_profiles']:
++        check()
++        if (p['euler_characteristic'], p['boundary_components'], p['orientable'], p['product']) != (1, 1, True, True):
++            result['reason'] = 'non_disk_parallelity_base'
++            return result
++    remaining = max_cycles
++    if remaining is not None:
++        remaining -= sum(s['orbit_cycles'] for s in parallelity['stats'].values())
++    fingerprint = parallelity['certificate']['input_sha256'] if record_certificate else None
++    boundary = _compile_moment_boundary(parallelity['geometry'], fingerprint, remaining,
++                                        record_certificate, check, 'pair')
++    result['stats']['boundary'] = boundary['stats']
++    if boundary['status'] != 'COMPLETE':
++        result['reason'] = 'boundary_budget_exhausted'
++        return result
++    terminal = _group_terminal(parallelity['geometry'], parallelity['summary'],
++                               boundary['skeleton'], check)
++    result['stats']['terminal'] = terminal['stats']
++    if terminal['status'] != 'COMPLETE':
++        result['reason'] = terminal['reason']
++        if 'second_betti_sum' in terminal:
++            result['second_betti_sum'] = terminal['second_betti_sum']
++        return result
++    result.update(status='COMPLETE', census=terminal['census'])
++    if record_certificate:
++        result['certificate'] = dict(schema='normal-cut-euler-free-v1',
++            parallelity=parallelity['certificate'], boundary=boundary['certificate'],
++            presentation=terminal['presentation'], groups=terminal['groups'],
++            census=terminal['census'])
++    check()
++    return result
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_cut_groups_verify.py b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_groups_verify.py
+new file mode 100644
+index 000000000..a2906bcc1
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_groups_verify.py
+@@ -0,0 +1,99 @@
++"""Independent source, presentation, Tietze, and Euler replay for group terminals."""
++
++from collections import Counter
++
++from .free_group_elimination_verify import replay_free_group
++from .integer_codec import certificate_equal, encoded_integer
++from .normal_parallelity_verify import verify_normal_cut_parallelity
++from .parallelity_boundary_moments_verify import verify_parallelity_moment_words
++from .source_cut_group_verify import verify_disk_cut_presentation
++
++
++def _decoded(value):
++    if isinstance(value, list):
++        return [_decoded(item) for item in value]
++    if isinstance(value, dict):
++        return {key: _decoded(item) for key, item in value.items()}
++    if isinstance(value, str) and value.lower().lstrip('+-').startswith('0x'):
++        return encoded_integer(value)
++    return value
++
++
++def verify_normal_cut_group_handlebodies(triangulation, coordinates, certificate, *,
++                                         max_operations=None, check=lambda: None):
++    """Replay all source traces and finite certificates without invoking search.
++
++    max_operations bounds the aggregate number of recorded orbit operations
++    and Tietze pivots; it is not a machine-instruction counter.  Cooperative
++    callback exceptions and invalid-source exceptions propagate.
++    """
++    check()
++    if max_operations is not None and (type(max_operations) is not int or max_operations < 0):
++        raise ValueError('max_operations must be a nonnegative integer or None')
++    fields = {'schema', 'parallelity', 'boundary', 'presentation', 'groups', 'census'}
++    if (type(certificate) is not dict or set(certificate) != fields
++            or certificate['schema'] != 'normal-cut-euler-free-v1'):
++        return False
++    p, b = certificate['parallelity'], certificate['boundary']
++    if type(p) is not dict or type(b) is not dict or type(certificate['groups']) is not list:
++        return False
++    if max_operations is not None:
++        try:
++            operations = 0
++            for name in ('vertex_selector', 'boundary_selector', 'polygon_weights', 'fibre_cover'):
++                proof = p[name]['weighted_certificate'] if name.endswith('selector') else p[name]
++                operations += len(proof['orbit_proof']['operations'])
++            if b['census'] is not None:
++                operations += len(b['census']['orbit_proof']['operations'])
++            operations += sum(len(g['proof']['moves']) for g in certificate['groups'])
++        except (KeyError, TypeError):
++            return False
++        if operations > max_operations:
++            return False
++    if not verify_normal_cut_parallelity(triangulation, coordinates, p, check=check):
++        return False
++    if not verify_parallelity_moment_words(triangulation, coordinates, b, check=check):
++        return False
++    try:
++        geometry, summary = _decoded(p['geometry']), _decoded(p['summary'])
++        skeleton, presentation = _decoded(b['skeleton']), _decoded(certificate['presentation'])
++        groups = _decoded(certificate['groups'])
++    except (ValueError, TypeError):
++        return False
++    if not verify_disk_cut_presentation(geometry, summary, skeleton, presentation, check=check):
++        return False
++    parts = presentation['components']
++    if len(groups) != len(parts):
++        return False
++    histogram, joined, rank_sum, trivial_sum = Counter(), [], 0, 0
++    for component, group in zip(parts, groups):
++        check()
++        if (type(group) is not dict or set(group) != {'component', 'proof'}
++                or type(group['component']) is not int or group['component'] != component['id']):
++            return False
++        replay = replay_free_group(component['generators'], component['relators'],
++                                    group['proof'], check=check)
++        if replay is None:
++            return False
++        rank = replay['free_rank']
++        rank_sum += rank
++        trivial_sum += replay['trivial_relators']
++        histogram[rank] += 1
++        joined.append(dict(id=component['id'], core_components=component['core_components'],
++                           interval_bases=component['interval_bases'],
++                           annular_bases=component['annular_bases'], genus=rank))
++    isolated = presentation['isolated_ball_count']
++    histogram[0] += isolated
++    count = len(parts) + isolated
++    source_euler = (summary['core_euler_characteristic'] + summary['bundle_euler_characteristic']
++                    - summary['attachment_euler_characteristic'])
++    if count - rank_sum != source_euler:
++        return False
++    if trivial_sum != len(geometry['core']['handles3']):
++        return False
++    expected = dict(histogram=[dict(genus=g, multiplicity=n) for g, n in sorted(histogram.items()) if n],
++                    components=count, ball_components=histogram[0],
++                    all_balls=all(g == 0 for g, n in histogram.items() if n),
++                    euler_characteristic=source_euler, free_rank_sum=rank_sum,
++                    joined_components=joined, isolated_ball_count=isolated)
++    return certificate_equal(certificate['census'], expected)
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies.py b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies.py
+index 0bec55d62..f8d46d549 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies.py
+@@ -133,7 +133,7 @@ def _kernel_fallback(result, parallelity, boundary, record_certificate, check, *
+     return result
+ 
+ 
+-def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
++def _geometric_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
+                            record_certificate=False, precheck_core=True, boundary_method='masks',
+                            top_forest='max_weight', check=lambda: None):
+     """Classify the whole supplied cut when the disk-gluing criterion succeeds.
+@@ -259,3 +259,31 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
+                                          absorption=absorption_proof, core_annuli=core_annuli_proof)
+     check()
+     return result
++
++
++def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
++                           record_certificate=False, precheck_core=True, boundary_method='masks',
++                           top_forest='max_weight', group_fallback=False, check=lambda: None):
++    """Run geometric cancellation, optionally followed by an Euler/group terminal.
++
++    The optional fallback preserves every geometric success.  Its accepted
++    census is unmarked and uses the complete source cut, a verified free-group
++    certificate, and the exact Euler check.  It does not produce a geometric
++    cancellation schedule or a marked successor map.  The two stages each
++    receive max_cycles, so the enabled portfolio has at most twice that orbit
++    discovery allowance.  Cooperative callbacks cover both stages.
++    """
++    if type(group_fallback) is not bool:
++        raise ValueError('group_fallback must be bool')
++    result = _geometric_cut_handlebodies(triangulation, coordinates,
++        max_cycles=max_cycles, record_certificate=record_certificate,
++        precheck_core=precheck_core, boundary_method=boundary_method,
++        top_forest=top_forest, check=check)
++    if not group_fallback or result['status'] == 'COMPLETE':
++        return result
++    from .normal_cut_groups import normal_cut_group_handlebodies
++    alternative = normal_cut_group_handlebodies(triangulation, coordinates,
++        max_cycles=max_cycles, record_certificate=record_certificate, check=check)
++    alternative['stats']['geometric_attempt'] = result['stats']
++    alternative['stats']['geometric_reason'] = result.get('reason')
++    return alternative
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies_verify.py b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies_verify.py
+index 53800ca04..2a37b30aa 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies_verify.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies_verify.py
+@@ -119,6 +119,10 @@ def verify_normal_cut_handlebodies(triangulation, coordinates, certificate, *,
+     if type(certificate) is not dict:
+         return False
+     version = certificate.get('schema')
++    if version == 'normal-cut-euler-free-v1':
++        from .normal_cut_groups_verify import verify_normal_cut_group_handlebodies
++        return verify_normal_cut_group_handlebodies(triangulation, coordinates, certificate,
++            max_operations=max_operations, check=check)
+     if version in ('normal-cut-handlebodies-v5', 'normal-cut-handlebodies-v6'):
+         fields.remove('core')
+         fields.add('kernel')
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/source_cut_group.py b/Topology/UnknotRecognition/fast/fastunknot/source_cut_group.py
+new file mode 100644
+index 000000000..31a314fbe
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/source_cut_group.py
+@@ -0,0 +1,284 @@
++"""Whole-cut fundamental-group presentations for authenticated disk bases.
++
++The caller authenticates ``geometry``, ``summary``, and the ordered boundary
++``skeleton`` using the maintained source checkers.  This module then compiles
++the complete graph of spaces, including all disk-bundle circles and intervals.
++It performs no group simplification and makes no handlebody decision.
++
++Only bounded source handle/port lists are visited.  Isolated disk bundles are
++counted with their binary multiplicities, and their copies are never expanded.
++"""
++
++
++def _forest(core, check):
++    """Canonical source graph forest, independently of the raw planner."""
++    parent = list(range(len(core['handles0'])))
++
++    def root(v):
++        while parent[v] != v:
++            parent[v] = parent[parent[v]]
++            v = parent[v]
++        return v
++
++    tree = []
++    for i, handle in enumerate(core['handles1']):
++        check()
++        if handle['id'] != i or len(handle['ends']) != 2:
++            raise ValueError('noncanonical source one-handle labels')
++        a, b = map(root, handle['ends'])
++        if a != b:
++            parent[max(a, b)] = min(a, b)
++            tree.append(i)
++    return tree, [root(i) for i in range(len(parent))]
++
++
++def _original_word(core, handle, tree, check):
++    """Read signs from source face flags, including loop one-handles."""
++    cycle = handle['cycle']
++    if not cycle or len(cycle) % 2:
++        raise ValueError('source two-handle is not an alternating closed walk')
++    word = []
++    for i in range(0, len(cycle), 2):
++        check()
++        vertex, flag = cycle[i:i + 2]
++        following = cycle[(i + 2) % len(cycle)]
++        if (vertex['dimension'], flag['dimension'], following['dimension']) != (0, 1, 0):
++            raise ValueError('source two-handle has nonalternating flags')
++        h = core['handles1'][flag['handle']]
++        side = (flag['tetrahedron'], flag['face'])
++        source = (h['tetrahedron'], h['face'])
++        target = (h['target_tetrahedron'], h['target_face'])
++        if side == source and source != target:
++            sign = 1
++        elif side == target and source != target:
++            sign = -1
++        else:
++            raise ValueError('two-handle flag has no oriented source face')
++        endpoints = h['ends'] if sign == 1 else h['ends'][::-1]
++        if endpoints != [vertex['handle'], following['handle']]:
++            raise ValueError('oriented two-handle walk fails endpoint continuity')
++        if h['id'] not in tree:
++            word.append(sign * (h['id'] + 1))
++    return word, cycle[0]['handle']
++
++
++def _annular_word(g, attachment, tree, check):
++    """Read the actual annular midpoint in authenticated source port charts."""
++    core = g['core']
++    paths, word = [], []
++    for letter in attachment['word']:
++        check()
++        port = g['ports'][abs(letter) - 1]
++        h = port['core_handle']
++        if port['core_dimension'] == 0:
++            paths.append((h, h))
++            continue
++        polygon = g['polygons'][port['polygon']]
++        edge = port['edge']
++        if (port['core_dimension'] != 1 or polygon['kind'] != 'edge_cap'
++                or polygon['edges'][edge]['kind'] != 'face_sector'):
++            raise ValueError('annulus uses an unsupported one-handle chart')
++        handle = core['handles1'][h]
++        ends = [(handle['tetrahedron'], handle['face']),
++                (handle['target_tetrahedron'], handle['target_face'])]
++        flags = [(polygon['vertices'][(edge + j) % len(polygon['vertices'])]['tetrahedron'],
++                  polygon['vertices'][(edge + j) % len(polygon['vertices'])]['face'])
++                 for j in (0, 1)]
++        if flags == ends and ends[0] != ends[1]:
++            sign = 1
++        elif flags == ends[::-1] and ends[0] != ends[1]:
++            sign = -1
++        else:
++            raise ValueError('annulus face-sector endpoints are inconsistent')
++        sign *= 1 if letter > 0 else -1
++        endpoints = handle['ends'] if sign == 1 else handle['ends'][::-1]
++        paths.append(tuple(endpoints))
++        if h not in tree:
++            word.append(sign * (h + 1))
++    if not paths or any(paths[i][1] != paths[(i + 1) % len(paths)][0]
++                        for i in range(len(paths))):
++        raise ValueError('annular midpoint is not a closed source path')
++    return word, paths[0][0]
++
++
++def compile_disk_cut_presentation(g, summary, skeleton, *, check=lambda: None):
++    """Return a canonical whole-cut group presentation, or ``None``.
++
++    ``None`` means that some base is not an orientable product disk, or an
++    incident profile is not a single base copy.  It is never a topological
++    negative.  Malformed chart data raises ``ValueError``; the intended caller
++    first runs the established independent source and boundary checkers.
++
++    Components have one-based generator labels and a list of relators with
++    explicit signed words.  Core forests and interval bridge forests have been
++    collapsed.  Three-handles do not affect these group presentations, but do
++    contribute to the authenticated global Euler characteristic returned here.
++    """
++    check()
++    core, profiles = g['core'], summary['base_profiles']
++    for p in profiles:
++        check()
++        if (p['euler_characteristic'] != 1 or p['boundary_components'] != 1
++                or not p['orientable'] or not p['product']):
++            return None
++        if p['core_ports'] and p['multiplicity'] != 1:
++            return None
++    tree_list, component = _forest(core, check)
++    tree = set(tree_list)
++    port_base, port_component = {}, {}
++    for i, p in enumerate(profiles):
++        for port in p['core_ports']:
++            check()
++            if port in port_base:
++                raise ValueError('a source port belongs to two bases')
++            port_base[port] = i
++    for i, port in enumerate(g['ports']):
++        check()
++        if port['id'] != i or i not in port_base:
++            raise ValueError('source port labels or base ownership are invalid')
++        d, h = port['core_dimension'], port['core_handle']
++        if d == 0:
++            vertex = h
++        elif d == 1:
++            vertex = core['handles1'][h]['ends'][0]
++        else:
++            raise ValueError('source port has no zero/one-handle owner')
++        port_component[i] = component[vertex]
++
++    attachments, by_base, used_ports = [], {}, set()
++    for i, a in enumerate(skeleton['attachment_components']):
++        check()
++        if a['kind'] not in ('interval', 'circle') or not a['word']:
++            raise ValueError('invalid source attachment component')
++        ports = [abs(x) - 1 for x in a['word']]
++        if any(type(x) is not int or x == 0 for x in a['word']):
++            raise ValueError('invalid signed source port')
++        if len(set(ports)) != len(ports) or used_ports.intersection(ports):
++            raise ValueError('source attachment ports are not disjoint')
++        used_ports.update(ports)
++        owners = {(port_base[p], port_component[p]) for p in ports}
++        if len(owners) != 1:
++            raise ValueError('connected attachment has inconsistent owners')
++        b, c = owners.pop()
++        record = dict(id=i, kind=a['kind'], base_profile=b, core_component=c)
++        attachments.append(record)
++        by_base.setdefault(b, []).append(record)
++    if used_ports != set(port_base):
++        raise ValueError('ordered attachments do not partition source ports')
++
++    circles, interval_bases = [], []
++    for b, p in enumerate(profiles):
++        if not p['core_ports']:
++            continue
++        incident = by_base[b]
++        annuli = [a for a in incident if a['kind'] == 'circle']
++        if annuli:
++            if len(annuli) != 1 or len(incident) != 1:
++                raise ValueError('a disk full boundary is used by other attachments')
++            circles.append(annuli[0])
++        else:
++            interval_bases.append(b)
++
++    # Absorbing a disk's complete vertical annulus adds a true two-handle.
++    raw_rows = []
++    for i, h in enumerate(core['handles2']):
++        check()
++        if h['id'] != i:
++            raise ValueError('noncanonical source two-handle labels')
++        word, vertex = _original_word(core, h, tree, check)
++        raw_rows.append(dict(id=i, word=word, source_kind='core',
++                             core_component=component[vertex]))
++    offset = len(core['handles2'])
++    for a in circles:
++        check()
++        word, vertex = _annular_word(g, skeleton['attachment_components'][a['id']],
++                                    tree, check)
++        if component[vertex] != a['core_component']:
++            raise ValueError('annular attaching row has inconsistent component')
++        raw_rows.append(dict(id=offset + a['id'], word=word,
++                             source_kind='disk_annulus',
++                             core_component=component[vertex]))
++
++    # A disk bundle meeting the core along intervals is a ball vertex, with
++    # one connecting one-handle per interval.  Nonforest edges are free letters.
++    nodes = [('core', c) for c in sorted(set(component))]
++    nodes += [('base', b) for b in interval_bases]
++    parent = {v: v for v in nodes}
++
++    def root(v):
++        while parent[v] != v:
++            parent[v] = parent[parent[v]]
++            v = parent[v]
++        return v
++
++    bridge_forest, stable = [], []
++    next_generator = len(core['handles1']) + 1
++    for a in attachments:
++        check()
++        if a['kind'] != 'interval':
++            continue
++        x, y = root(('core', a['core_component'])), root(('base', a['base_profile']))
++        if x != y:
++            parent[max(x, y)] = min(x, y)
++            bridge_forest.append(a['id'])
++        else:
++            stable.append((a, next_generator))
++            next_generator += 1
++    groups = {}
++    for node in nodes:
++        groups.setdefault(root(node), []).append(node)
++    ordered = sorted(groups.values(), key=lambda vs: min(v[1] for v in vs if v[0] == 'core'))
++    parts, part_by_core = [], {}
++    for nodes_here in ordered:
++        cores = sorted(v[1] for v in nodes_here if v[0] == 'core')
++        bases = sorted(v[1] for v in nodes_here if v[0] == 'base')
++        label = min(cores)
++        part = dict(id=label, core_components=cores, interval_bases=bases,
++                    annular_bases=[], generators=[], relators=[],
++                    attachment_cycle_rank=0)
++        parts.append(part)
++        for c in cores:
++            part_by_core[c] = part
++    for h in core['handles1']:
++        check()
++        if h['id'] not in tree:
++            part_by_core[component[h['ends'][0]]]['generators'].append(h['id'] + 1)
++    for a, generator in stable:
++        part = part_by_core[a['core_component']]
++        part['generators'].append(generator)
++        part['attachment_cycle_rank'] += 1
++    for a in circles:
++        part_by_core[a['core_component']]['annular_bases'].append(a['base_profile'])
++    for r in raw_rows:
++        c = r.pop('core_component')
++        part_by_core[c]['relators'].append(r)
++    for p in parts:
++        p['annular_bases'].sort()
++        p['relators'].sort(key=lambda r: r['id'])
++        alphabet = set(p['generators'])
++        if any(abs(x) not in alphabet for r in p['relators'] for x in r['word']):
++            raise ValueError('relator crosses whole-cut connected components')
++    isolated = sum(p['multiplicity'] for p in profiles if not p['core_ports'])
++    euler = (summary['core_euler_characteristic'] + summary['bundle_euler_characteristic']
++             - summary['attachment_euler_characteristic'])
++    active_generators = sum(len(p['generators']) for p in parts)
++    active_relators = sum(len(p['relators']) for p in parts)
++    handle_euler = (len(parts) + isolated - active_generators + active_relators
++                    - len(core['handles3']))
++    if handle_euler != euler:
++        raise ValueError('compiled whole-cut handles violate source Euler identity')
++    check()
++    return dict(schema='source-disk-cut-presentation-v1', components=parts,
++                isolated_ball_count=isolated, core_forest=tree_list,
++                bridge_forest=bridge_forest, source_euler_characteristic=euler,
++                stats=dict(core_zero_handles=len(core['handles0']),
++                           core_one_handles=len(core['handles1']),
++                           core_two_handles=len(core['handles2']),
++                           core_three_handles=len(core['handles3']),
++                           ports=len(g['ports']), disk_profiles=len(profiles),
++                           annular_relators=len(circles),
++                           interval_attachments=sum(a['kind'] == 'interval' for a in attachments),
++                           stable_generators=len(stable),
++                           generators=active_generators,
++                           relators=active_relators,
++                           word_length=sum(len(r['word']) for p in parts for r in p['relators'])))
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/source_cut_group_verify.py b/Topology/UnknotRecognition/fast/fastunknot/source_cut_group_verify.py
+new file mode 100644
+index 000000000..4981458c7
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/source_cut_group_verify.py
+@@ -0,0 +1,283 @@
++"""Independent replay of source-bound whole-cut disk-base presentations.
++
++This checker imports neither the presentation compiler nor any cancellation
++producer.  It authenticates supplied forests by separate graph traversals,
++reads every relator from the source face and polygon charts, and reconstructs
++the whole-cut graph of spaces.  Native enclosing checkers must first authenticate
++the triangulation-derived geometry, summary and ordered boundary skeleton.
++"""
++
++from .integer_codec import certificate_equal, encoded_integer
++
++
++def _components(vertices, edges, check):
++    adjacent = {v: [] for v in vertices}
++    for u, v in edges:
++        check()
++        if u not in adjacent or v not in adjacent:
++            raise ValueError('edge endpoint is outside the graph')
++        adjacent[u].append(v)
++        adjacent[v].append(u)
++    unseen, groups, owner = set(vertices), [], {}
++    while unseen:
++        seed = min(unseen)
++        todo, reached = [seed], set()
++        while todo:
++            check()
++            u = todo.pop()
++            if u in reached:
++                continue
++            reached.add(u)
++            todo.extend(v for v in adjacent[u] if v not in reached)
++        unseen.difference_update(reached)
++        group = sorted(reached)
++        groups.append(group)
++        for v in group:
++            owner[v] = group[0]
++    return groups, owner
++
++
++def _spanning_forest(vertices, edges, chosen, check):
++    """Check forestness by edge counts and independent component traversals."""
++    if type(chosen) is not list:
++        raise ValueError('forest must be a list')
++    labels = [encoded_integer(x) for x in chosen]
++    if labels != sorted(set(labels)) or any(i not in edges for i in labels):
++        raise ValueError('forest has repeated or unknown edge labels')
++    groups, owner = _components(vertices, edges.values(), check)
++    forest_groups, forest_owner = _components(vertices, [edges[i] for i in labels], check)
++    if groups != forest_groups or len(labels) != len(vertices) - len(groups):
++        raise ValueError('supplied edges do not form a spanning forest')
++    if owner != forest_owner:
++        raise ValueError('forest component partition is inconsistent')
++    return labels, groups, owner
++
++
++def _replay(g, summary, skeleton, proof, check):
++    if type(proof) is not dict or proof.get('schema') != 'source-disk-cut-presentation-v1':
++        return None
++    core, profiles = g['core'], summary['base_profiles']
++    for p in profiles:
++        check()
++        if (p['euler_characteristic'] != 1 or p['boundary_components'] != 1
++                or p['orientable'] is not True or p['product'] is not True
++                or (p['core_ports'] and p['multiplicity'] != 1)):
++            return None
++    zeros = list(range(len(core['handles0'])))
++    edge_table = {}
++    oriented_faces = {}
++    for i, h in enumerate(core['handles1']):
++        check()
++        if h['id'] != i or len(h['ends']) != 2:
++            raise ValueError('source one-handle labels are not canonical')
++        u, v = h['ends']
++        edge_table[i] = (u, v)
++        forward = (h['tetrahedron'], h['face'])
++        backward = (h['target_tetrahedron'], h['target_face'])
++        if forward == backward:
++            raise ValueError('source one-handle has only one face flag')
++        oriented_faces[i, forward] = (u, v, 1)
++        oriented_faces[i, backward] = (v, u, -1)
++    forest, core_groups, core_owner = _spanning_forest(zeros, edge_table,
++                                                       proof['core_forest'], check)
++    forest_set = set(forest)
++
++    # Build the positive direction of each port directly from its own chart.
++    port_table, base_ports = {}, {}
++    for b, p in enumerate(profiles):
++        check()
++        for port in p['core_ports']:
++            if port in base_ports:
++                raise ValueError('base profiles repeat a core port')
++            base_ports[port] = b
++    for i, p in enumerate(g['ports']):
++        check()
++        if p['id'] != i or i not in base_ports:
++            raise ValueError('source core port partition is invalid')
++        d, h = p['core_dimension'], p['core_handle']
++        if d == 0:
++            begin, end, letter = h, h, None
++        elif d == 1:
++            polygon = g['polygons'][p['polygon']]
++            edge = p['edge']
++            if (polygon['kind'] != 'edge_cap'
++                    or polygon['edges'][edge]['kind'] != 'face_sector'):
++                raise ValueError('source port is not a one-handle face-sector chart')
++            v0 = polygon['vertices'][edge]
++            v1 = polygon['vertices'][(edge + 1) % len(polygon['vertices'])]
++            begin, end, direction = oriented_faces[h, (v0['tetrahedron'], v0['face'])]
++            other_begin, other_end, other_direction = oriented_faces[h, (v1['tetrahedron'], v1['face'])]
++            if (other_begin, other_end, other_direction) != (end, begin, -direction):
++                raise ValueError('a port does not cross opposite one-handle faces')
++            letter = direction * (h + 1)
++        else:
++            raise ValueError('core port dimension is invalid')
++        if core_owner[begin] != core_owner[end]:
++            raise ValueError('source port joins different core graph components')
++        port_table[i] = (base_ports[i], core_owner[begin], begin, end, letter)
++    if set(base_ports) != set(port_table):
++        raise ValueError('base profile includes an absent port')
++
++    used, attachments, incident = set(), [], {}
++    annular_rows = []
++    offset = len(core['handles2'])
++    for i, a in enumerate(skeleton['attachment_components']):
++        check()
++        if a['kind'] not in ('circle', 'interval') or type(a['word']) is not list or not a['word']:
++            raise ValueError('invalid boundary attachment type')
++        pairs, steps, word = set(), [], []
++        for signed in a['word']:
++            check()
++            if type(signed) is not int or signed == 0:
++                raise ValueError('invalid signed port')
++            port = abs(signed) - 1
++            if port in used:
++                raise ValueError('a port is used by several attachment positions')
++            used.add(port)
++            b, c, begin, end, letter = port_table[port]
++            pairs.add((b, c))
++            if signed < 0:
++                begin, end = end, begin
++                if letter is not None:
++                    letter = -letter
++            steps.append((begin, end))
++            if letter is not None and abs(letter) - 1 not in forest_set:
++                word.append(letter)
++        if len(pairs) != 1:
++            raise ValueError('attachment has inconsistent base/core owners')
++        b, c = pairs.pop()
++        record = dict(id=i, kind=a['kind'], base=b, core=c)
++        attachments.append(record)
++        incident.setdefault(b, []).append(record)
++        if a['kind'] == 'circle':
++            if any(steps[j][1] != steps[(j + 1) % len(steps)][0]
++                   for j in range(len(steps))):
++                raise ValueError('annular source path is not closed')
++            annular_rows.append((c, dict(id=offset + i, word=word,
++                                         source_kind='disk_annulus')))
++    if used != set(port_table):
++        raise ValueError('ordered boundary words omit a source port')
++    interval_bases, annular_bases = [], []
++    for b, p in enumerate(profiles):
++        check()
++        if not p['core_ports']:
++            continue
++        attached = incident[b]
++        n_circles = sum(a['kind'] == 'circle' for a in attached)
++        if n_circles:
++            if len(attached) != 1:
++                raise ValueError('full disk boundary shares another attachment')
++            annular_bases.append((b, attached[0]['core']))
++        else:
++            interval_bases.append(b)
++
++    # Whole-cut components follow the disk-intersection graph, independently
++    # of any cancellation or claimed component labels in the presentation.
++    nodes = [('core', vs[0]) for vs in core_groups]
++    nodes += [('base', b) for b in interval_bases]
++    interval_edges = {a['id']: (('core', a['core']), ('base', a['base']))
++                      for a in attachments if a['kind'] == 'interval'}
++    bridges, joined_groups, joined_owner = _spanning_forest(nodes, interval_edges,
++                                                           proof['bridge_forest'], check)
++    by_core, components = {}, []
++    for vs in joined_groups:
++        cores = sorted(v[1] for v in vs if v[0] == 'core')
++        if not cores:
++            raise ValueError('ported disk component has no core vertex')
++        p = dict(id=cores[0], core_components=cores,
++                 interval_bases=sorted(v[1] for v in vs if v[0] == 'base'),
++                 annular_bases=[], generators=[], relators=[],
++                 attachment_cycle_rank=0)
++        components.append(p)
++        for c in cores:
++            by_core[c] = p
++    components.sort(key=lambda p: p['id'])
++    for i, (u, v) in edge_table.items():
++        check()
++        if i not in forest_set:
++            by_core[core_owner[u]]['generators'].append(i + 1)
++    next_generator = len(edge_table) + 1
++    for a in attachments:
++        check()
++        if a['kind'] == 'interval' and a['id'] not in bridges:
++            p = by_core[a['core']]
++            p['generators'].append(next_generator)
++            p['attachment_cycle_rank'] += 1
++            next_generator += 1
++    for b, c in annular_bases:
++        by_core[c]['annular_bases'].append(b)
++
++    # Original attaching loops: signs come from face flags, never exponent sums
++    # of the unsigned cancellation matrix or a simplified group presentation.
++    for i, h in enumerate(core['handles2']):
++        check()
++        walk = h['cycle']
++        if h['id'] != i or not walk or len(walk) % 2:
++            raise ValueError('source two-handle walk has invalid shape')
++        word = []
++        component = None
++        for j in range(0, len(walk), 2):
++            check()
++            zero, one, successor = walk[j], walk[j + 1], walk[(j + 2) % len(walk)]
++            if (zero['dimension'], one['dimension'], successor['dimension']) != (0, 1, 0):
++                raise ValueError('source attaching loop is not alternating')
++            handle = one['handle']
++            begin, end, direction = oriented_faces[handle, (one['tetrahedron'], one['face'])]
++            if zero['handle'] != begin or successor['handle'] != end:
++                raise ValueError('source attaching loop has incorrect endpoint flags')
++            here = core_owner[begin]
++            if component is not None and component != here:
++                raise ValueError('source attaching loop changes graph components')
++            component = here
++            if handle not in forest_set:
++                word.append(direction * (handle + 1))
++        by_core[component]['relators'].append(dict(id=i, word=word, source_kind='core'))
++    for c, row in annular_rows:
++        by_core[c]['relators'].append(row)
++    for p in components:
++        p['relators'].sort(key=lambda r: r['id'])
++        p['annular_bases'].sort()
++
++    isolated = sum(p['multiplicity'] for p in profiles if not p['core_ports'])
++    euler = (summary['core_euler_characteristic'] + summary['bundle_euler_characteristic']
++             - summary['attachment_euler_characteristic'])
++    generators = sum(len(p['generators']) for p in components)
++    relators = sum(len(p['relators']) for p in components)
++    if (len(components) + isolated - generators + relators
++            - len(core['handles3'])) != euler:
++        raise ValueError('source Euler characteristic disagrees with the compiled handles')
++    expected = dict(schema='source-disk-cut-presentation-v1', components=components,
++                    isolated_ball_count=isolated, core_forest=forest,
++                    bridge_forest=bridges, source_euler_characteristic=euler,
++                    stats=dict(core_zero_handles=len(core['handles0']),
++                               core_one_handles=len(core['handles1']),
++                               core_two_handles=len(core['handles2']),
++                               core_three_handles=len(core['handles3']),
++                               ports=len(g['ports']), disk_profiles=len(profiles),
++                               annular_relators=len(annular_rows),
++                               interval_attachments=len(interval_edges),
++                               stable_generators=len(interval_edges) - len(bridges),
++                               generators=generators, relators=relators,
++                               word_length=sum(len(r['word']) for p in components for r in p['relators'])))
++    return expected if certificate_equal(proof, expected) else None
++
++
++def verify_disk_cut_presentation(g, summary, skeleton, presentation, *, check=lambda: None):
++    """Check the whole presentation against already authenticated source data."""
++    check()
++    callback_failed = False
++
++    def callback():
++        nonlocal callback_failed
++        try:
++            check()
++        except BaseException:
++            callback_failed = True
++            raise
++
++    try:
++        return _replay(g, summary, skeleton, presentation, callback) is not None
++    except (KeyError, IndexError, TypeError, ValueError):
++        if callback_failed:
++            raise
++        return False
+diff --git a/Topology/UnknotRecognition/fast/tests/test_euler_group_terminal.py b/Topology/UnknotRecognition/fast/tests/test_euler_group_terminal.py
+new file mode 100644
+index 000000000..be10705fa
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_euler_group_terminal.py
+@@ -0,0 +1,108 @@
++import copy
++import json
++from pathlib import Path
++import unittest
++
++from fastunknot.normal_cut_groups import normal_cut_group_handlebodies
++from fastunknot.normal_cut_groups_verify import verify_normal_cut_group_handlebodies
++from fastunknot.normal_cut_handlebodies import normal_cut_handlebodies
++from fastunknot.normal_cut_handlebodies_verify import verify_normal_cut_handlebodies
++
++
++ROOT = Path(__file__).resolve().parents[1]
++
++
++class EulerGroupTerminalTests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        cls.cases = {}
++        for name in ('corpus.json', 'three_handle_corpus.json'):
++            data = json.loads((ROOT / 'marked_parallelity_research' / name).read_text())
++            cls.cases.update((c['id'], c) for c in data['cases'])
++        cls.target = cls.cases['pilot/finite_figureEight/0']
++        cls.result = normal_cut_group_handlebodies(cls.target['triangulation'],
++                                                  cls.target['coordinates'], record_certificate=True)
++
++    def test_missed_figure_eight_is_certified(self):
++        result = self.result
++        self.assertEqual(result['status'], 'COMPLETE')
++        self.assertEqual(result['census']['histogram'],
++                         [dict(genus=1, multiplicity=1), dict(genus=2, multiplicity=1)])
++        self.assertFalse(result['census']['all_balls'])
++        self.assertEqual(result['census']['euler_characteristic'], -1)
++        self.assertEqual(result['census']['free_rank_sum'], 3)
++        stats = result['stats']['terminal']['presentation']
++        self.assertEqual((stats['generators'], stats['relators'], stats['word_length']), (25, 22, 53))
++        self.assertTrue(verify_normal_cut_group_handlebodies(self.target['triangulation'],
++                        self.target['coordinates'], result['certificate']))
++
++    def test_existing_verifier_dispatches_new_schema(self):
++        self.assertTrue(verify_normal_cut_handlebodies(self.target['triangulation'],
++                        self.target['coordinates'], self.result['certificate']))
++
++    def test_opt_in_fallback(self):
++        old = normal_cut_handlebodies(self.target['triangulation'], self.target['coordinates'])
++        self.assertEqual(old['status'], 'INCONCLUSIVE')
++        new = normal_cut_handlebodies(self.target['triangulation'], self.target['coordinates'],
++                                     record_certificate=True, group_fallback=True)
++        self.assertEqual(new['status'], 'COMPLETE')
++        self.assertTrue(verify_normal_cut_handlebodies(self.target['triangulation'],
++                        self.target['coordinates'], new['certificate']))
++
++    def test_free_group_with_positive_h2_is_refused(self):
++        case = self.cases['pilot/solid_torus_sum_s2xs1/0']
++        result = normal_cut_group_handlebodies(case['triangulation'], case['coordinates'])
++        self.assertEqual(result['status'], 'INCONCLUSIVE')
++        self.assertEqual(result['reason'], 'positive_second_betti_number')
++        self.assertEqual(result['second_betti_sum'], 1)
++
++    def test_census_and_euler_mutations_rejected(self):
++        for field, value in [('components', 1), ('free_rank_sum', 2),
++                             ('all_balls', True), ('euler_characteristic', 0)]:
++            proof = copy.deepcopy(self.result['certificate'])
++            proof['census'][field] = value
++            self.assertFalse(verify_normal_cut_group_handlebodies(self.target['triangulation'],
++                             self.target['coordinates'], proof), field)
++
++    def test_presentation_and_group_mutations_rejected(self):
++        proof = copy.deepcopy(self.result['certificate'])
++        proof['presentation']['components'][0]['relators'][0]['word'][0] *= -1
++        self.assertFalse(verify_normal_cut_group_handlebodies(self.target['triangulation'],
++                         self.target['coordinates'], proof))
++        proof = copy.deepcopy(self.result['certificate'])
++        proof['groups'][0]['proof']['free_rank'] += 1
++        self.assertFalse(verify_normal_cut_group_handlebodies(self.target['triangulation'],
++                         self.target['coordinates'], proof))
++
++    def test_wrong_source_rejected(self):
++        coordinates = copy.deepcopy(self.target['coordinates'])
++        coordinates = [[2 * x for x in row] for row in coordinates]
++        self.assertFalse(verify_normal_cut_group_handlebodies(self.target['triangulation'],
++                         coordinates, self.result['certificate']))
++
++    def test_operation_cap_and_invalid_options(self):
++        self.assertFalse(verify_normal_cut_group_handlebodies(self.target['triangulation'],
++                         self.target['coordinates'], self.result['certificate'], max_operations=0))
++        for value in (-1, True):
++            with self.assertRaises(ValueError):
++                normal_cut_group_handlebodies(self.target['triangulation'],
++                                               self.target['coordinates'], max_cycles=value)
++        with self.assertRaises(ValueError):
++            normal_cut_handlebodies(self.target['triangulation'], self.target['coordinates'],
++                                   group_fallback='yes')
++
++    def test_cooperative_stop(self):
++        class Stop(RuntimeError):
++            pass
++        def check():
++            raise Stop()
++        with self.assertRaises(Stop):
++            normal_cut_group_handlebodies(self.target['triangulation'],
++                                          self.target['coordinates'], check=check)
++        with self.assertRaises(Stop):
++            verify_normal_cut_group_handlebodies(self.target['triangulation'],
++                self.target['coordinates'], self.result['certificate'], check=check)
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_free_group_elimination.py b/Topology/UnknotRecognition/fast/tests/test_free_group_elimination.py
+new file mode 100644
+index 000000000..b9c899c27
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_free_group_elimination.py
+@@ -0,0 +1,90 @@
++import copy
++import unittest
++
++from fastunknot.free_group_elimination import certify_free_group, cyclic_reduce
++from fastunknot.free_group_elimination_verify import replay_free_group
++
++
++def rows(*words):
++    return [dict(id=i, word=list(w)) for i, w in enumerate(words)]
++
++
++class FreeGroupEliminationTests(unittest.TestCase):
++    def assert_free(self, generators, relators, rank):
++        result = certify_free_group(generators, relators)
++        self.assertEqual(result['status'], 'COMPLETE')
++        self.assertEqual(result['free_rank'], rank)
++        replay = replay_free_group(generators, relators, result['certificate'])
++        self.assertIsNotNone(replay)
++        self.assertEqual(replay['free_rank'], rank)
++        self.assertTrue(all(a >= b for a, b in zip(result['accepted_lengths'],
++                                                 result['accepted_lengths'][1:])))
++        return result
++
++    def test_signed_substitution_crosses_stopping_set(self):
++        result = self.assert_free([1, 2], rows([1, 2], [1, 2, 2]), 0)
++        self.assertEqual(result['accepted_lengths'], [5, 1, 0])
++        self.assertEqual(result['stats']['substitution_pivots'], 1)
++
++    def test_negative_pivot_and_cyclic_conjugation(self):
++        self.assert_free([1, 2, 3], rows([3, -1, 2, -3], [1, -2, 3]), 1)
++
++    def test_trivial_relators_are_counted(self):
++        result = self.assert_free([1, 2], rows([1, -1], [], [1]), 1)
++        self.assertEqual(result['certificate']['trivial_relators'], [0, 1])
++
++    def test_relationless_group_keeps_unused_generators(self):
++        self.assert_free([1, 7, 40], [], 3)
++
++    def test_fibonacci_automorphism_is_an_honest_refusal(self):
++        # Images of a free basis under phi(a)=ab, phi(b)=a, iterated four times.
++        relators = rows([1, 2, 1, 1, 2, 1, 2, 1], [1, 2, 1, 1, 2])
++        result = certify_free_group([1, 2], relators)
++        self.assertEqual(result['status'], 'INCONCLUSIVE')
++        self.assertEqual(result['stats']['candidate_trials'], 0)
++
++    def test_torsion_group_not_certified(self):
++        self.assertEqual(certify_free_group([1], rows([1, 1]))['status'], 'INCONCLUSIVE')
++
++    def test_certificate_mutations(self):
++        generators, relators = [1, 2], rows([1, 2], [1, 2, 2])
++        proof = self.assert_free(generators, relators, 0)['certificate']
++        for field, value in [('free_rank', 1), ('free_rank', False),
++                             ('free_generators', [1]), ('trivial_relators', [0]),
++                             ('initial_reduced_length', 6), ('presentation_sha256', '0' * 64),
++                             ('moves', []), ('moves', [[0, 99]]), ('policy', 'arbitrary')]:
++            broken = copy.deepcopy(proof)
++            broken[field] = value
++            self.assertIsNone(replay_free_group(generators, relators, broken), field)
++
++    def test_source_relator_bound_to_hash(self):
++        source = rows([1, 2], [1, 2, 2])
++        proof = self.assert_free([1, 2], source, 0)['certificate']
++        altered = rows([1, -2], [1, 2, 2])
++        self.assertIsNone(replay_free_group([1, 2], altered, proof))
++
++    def test_cyclic_normalization_preserves_relative_signs(self):
++        self.assertEqual(cyclic_reduce([3, 1, 2, -1, -3]), (2,))
++        self.assertEqual(cyclic_reduce([3, 1, 2, -1, 2, -3]), (1, 2, -1, 2))
++        self.assertEqual(cyclic_reduce([3, 1, -1, 2, -3]), (2,))
++        self.assertEqual(cyclic_reduce([1, -1]), ())
++
++    def test_invalid_labels(self):
++        for generators, relators in [([True], []), ([0], []), ([1, 1], []),
++                                      ([1], rows([2])), ([1], rows([0]))]:
++            with self.assertRaises(ValueError):
++                certify_free_group(generators, relators)
++
++    def test_cooperative_stop(self):
++        class Stop(RuntimeError):
++            pass
++        def check():
++            raise Stop()
++        with self.assertRaises(Stop):
++            certify_free_group([1], rows([1]), check=check)
++        with self.assertRaises(Stop):
++            replay_free_group([1], rows([1]), {}, check=check)
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_source_cut_group.py b/Topology/UnknotRecognition/fast/tests/test_source_cut_group.py
+new file mode 100644
+index 000000000..86242344a
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_source_cut_group.py
+@@ -0,0 +1,186 @@
++"""Source-bound group compilation, independent replay and adversarial packets."""
++
++from copy import deepcopy
++import json
++from pathlib import Path
++import unittest
++from unittest.mock import patch
++
++from fastunknot.integer_codec import json_safe
++from fastunknot.normal_parallelity import normal_cut_parallelity
++from fastunknot.parallelity_boundary_words import normal_parallelity_boundary_words
++from fastunknot.source_cut_group import compile_disk_cut_presentation
++from fastunknot.source_cut_group_verify import verify_disk_cut_presentation
++from normal_orbit_research.fixtures import layered_torus
++
++
++FAST = Path(__file__).resolve().parents[1]
++
++
++class SourceCutGroupTests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        cls.bank = {}
++        for name in ('corpus.json', 'three_handle_corpus.json'):
++            path = FAST/'marked_parallelity_research'/name
++            cls.bank.update((c['id'], c) for c in json.loads(path.read_text())['cases'])
++        cls.cache = {}
++
++    @classmethod
++    def source(cls, name):
++        if name not in cls.cache:
++            c = cls.bank[name]
++            p = normal_cut_parallelity(c['triangulation'], c['coordinates'])
++            b = normal_parallelity_boundary_words(c['triangulation'], c['coordinates'])
++            if p['status'] != 'COMPLETE' or b['status'] != 'COMPLETE':
++                raise AssertionError('unbounded source compiler unexpectedly refused')
++            g, summary, skeleton = p['geometry'], p['summary'], b['skeleton']
++            proof = compile_disk_cut_presentation(g, summary, skeleton)
++            cls.cache[name] = g, summary, skeleton, proof
++        return cls.cache[name]
++
++    def test_native_figure_eight_exact_signed_words(self):
++        g, summary, skeleton, proof = self.source('pilot/finite_figureEight/0')
++        self.assertTrue(verify_disk_cut_presentation(g, summary, skeleton, proof))
++        self.assertEqual(proof['stats']['generators'], 25)
++        self.assertEqual(proof['stats']['relators'], 22)
++        self.assertEqual(proof['stats']['word_length'], 53)
++        self.assertEqual(proof['source_euler_characteristic'], -1)
++        first = proof['components'][0]
++        self.assertEqual(first['generators'], [33, 41, 45, 49, 57, 61, 65])
++        self.assertEqual(first['relators'][0]['word'], [65, 45, -61, -41, -61, -49])
++        self.assertEqual([r['source_kind'] for r in first['relators']],
++                         ['disk_annulus'] * 5)
++
++    def test_interval_attachment_cycles_supply_free_generators(self):
++        g, summary, skeleton, proof = self.source('lst_3_7/mixed')
++        self.assertTrue(verify_disk_cut_presentation(g, summary, skeleton, proof))
++        self.assertEqual(proof['stats']['interval_attachments'], 8)
++        self.assertEqual(proof['stats']['stable_generators'], 3)
++        self.assertEqual(sum(p['attachment_cycle_rank'] for p in proof['components']), 3)
++        stable = {x for p in proof['components'] for x in p['generators']
++                  if x > len(g['core']['handles1'])}
++        self.assertEqual(len(stable), 3)
++        self.assertTrue(all(abs(x) not in stable for p in proof['components']
++                            for r in p['relators'] for x in r['word']))
++
++    def test_original_three_handles_remain_in_euler_ledger(self):
++        g, summary, skeleton, proof = self.source('interior_loop/empty')
++        self.assertEqual(len(g['core']['handles3']), 1)
++        self.assertTrue(verify_disk_cut_presentation(g, summary, skeleton, proof))
++        stats = proof['stats']
++        chi = (len(proof['components']) + proof['isolated_ball_count']
++               - stats['generators'] + stats['relators'] - stats['core_three_handles'])
++        self.assertEqual(chi, proof['source_euler_characteristic'])
++
++    def test_binary_isolated_disks_are_not_expanded(self):
++        raw, primitive = layered_torus(1)
++        multiple = 1 << 4097
++        coordinates = [[multiple * x for x in row] for row in primitive]
++        p = normal_cut_parallelity(raw, coordinates)
++        b = normal_parallelity_boundary_words(raw, coordinates)
++        proof = compile_disk_cut_presentation(p['geometry'], p['summary'], b['skeleton'])
++        self.assertEqual(proof['isolated_ball_count'], multiple - 1)
++        self.assertLess(proof['stats']['generators'], 100)
++        self.assertLess(proof['stats']['word_length'], 100)
++        safe = json_safe(proof)
++        self.assertIsInstance(safe['isolated_ball_count'], str)
++        self.assertTrue(verify_disk_cut_presentation(p['geometry'], p['summary'], b['skeleton'], safe))
++
++    def test_nondisk_base_is_a_supported_contract_refusal(self):
++        g, summary, skeleton, proof = self.source('pilot/fibonacci_lst_04/0')
++        self.assertIsNone(proof)
++        self.assertFalse(verify_disk_cut_presentation(g, summary, skeleton, {}))
++
++    def test_independent_replay_does_not_call_any_producer(self):
++        g, summary, skeleton, proof = self.source('pilot/finite_figureEight/0')
++        with patch('fastunknot.source_cut_group.compile_disk_cut_presentation',
++                   side_effect=AssertionError('compiler must not be called')), \
++             patch('fastunknot.source_cut_group._annular_word',
++                   side_effect=AssertionError('producer chart reader must not be called')), \
++             patch('fastunknot.source_cut_group._original_word',
++                   side_effect=AssertionError('producer chart reader must not be called')):
++            self.assertTrue(verify_disk_cut_presentation(g, summary, skeleton, proof))
++
++    def test_changed_original_or_annular_sign_is_rejected(self):
++        g, summary, skeleton, proof = self.source('pilot/finite_figureEight/0')
++        for part in (0, 1):
++            bad = deepcopy(proof)
++            bad['components'][part]['relators'][0]['word'][0] *= -1
++            self.assertFalse(verify_disk_cut_presentation(g, summary, skeleton, bad))
++
++    def test_component_reassignment_and_missing_relator_are_rejected(self):
++        g, summary, skeleton, proof = self.source('pilot/finite_figureEight/0')
++        bad = deepcopy(proof)
++        bad['components'][0]['relators'].append(bad['components'][1]['relators'].pop())
++        self.assertFalse(verify_disk_cut_presentation(g, summary, skeleton, bad))
++        bad = deepcopy(proof)
++        bad['components'][0]['relators'].pop()
++        self.assertFalse(verify_disk_cut_presentation(g, summary, skeleton, bad))
++
++    def test_invalid_core_and_bridge_forests_are_rejected(self):
++        for case, key in [('pilot/finite_figureEight/0', 'core_forest'),
++                          ('lst_3_7/mixed', 'bridge_forest')]:
++            g, summary, skeleton, proof = self.source(case)
++            bad = deepcopy(proof)
++            bad[key].pop()
++            self.assertFalse(verify_disk_cut_presentation(g, summary, skeleton, bad))
++            bad = deepcopy(proof)
++            bad[key].append(bad[key][0])
++            self.assertFalse(verify_disk_cut_presentation(g, summary, skeleton, bad))
++
++    def test_forged_metadata_extra_fields_and_boolean_labels_are_rejected(self):
++        g, summary, skeleton, proof = self.source('pilot/finite_figureEight/0')
++        for key in ('source_euler_characteristic', 'isolated_ball_count'):
++            bad = deepcopy(proof)
++            bad[key] += 1
++            self.assertFalse(verify_disk_cut_presentation(g, summary, skeleton, bad))
++        bad = deepcopy(proof)
++        bad['trusted'] = True
++        self.assertFalse(verify_disk_cut_presentation(g, summary, skeleton, bad))
++        bad = deepcopy(proof)
++        bad['components'][0]['generators'][0] = True
++        self.assertFalse(verify_disk_cut_presentation(g, summary, skeleton, bad))
++
++    def test_malformed_source_face_and_annular_port_are_rejected(self):
++        g, summary, skeleton, proof = self.source('pilot/finite_figureEight/0')
++        damaged = deepcopy(g)
++        damaged['core']['handles2'][0]['cycle'][1]['face'] = 5
++        self.assertFalse(verify_disk_cut_presentation(damaged, summary, skeleton, proof))
++        changed = deepcopy(skeleton)
++        word = changed['attachment_components'][0]['word']
++        position = next(i for i, letter in enumerate(word)
++                        if g['ports'][abs(letter) - 1]['core_dimension'] == 1
++                        and g['ports'][abs(letter) - 1]['core_handle'] not in proof['core_forest'])
++        word[position] *= -1
++        self.assertFalse(verify_disk_cut_presentation(g, summary, changed, proof))
++
++    def test_source_euler_identity_is_checked(self):
++        g, summary, skeleton, proof = self.source('pilot/finite_figureEight/0')
++        broken = deepcopy(summary)
++        broken['attachment_euler_characteristic'] += 1
++        with self.assertRaises(ValueError):
++            compile_disk_cut_presentation(g, broken, skeleton)
++        self.assertFalse(verify_disk_cut_presentation(g, broken, skeleton, proof))
++
++    def test_callbacks_propagate_inside_replay_including_value_error(self):
++        g, summary, skeleton, proof = self.source('pilot/finite_figureEight/0')
++        for error in (RuntimeError, ValueError, KeyError):
++            for operation in ('compile', 'verify'):
++                ticks = 0
++
++                def stop():
++                    nonlocal ticks
++                    ticks += 1
++                    if ticks == 7:
++                        raise error('stop after source replay has started')
++
++                with self.assertRaises(error):
++                    if operation == 'compile':
++                        compile_disk_cut_presentation(g, summary, skeleton, check=stop)
++                    else:
++                        verify_disk_cut_presentation(g, summary, skeleton, proof, check=stop)
++
++
++if __name__ == '__main__':
++    unittest.main()

@@ -1,0 +1,280 @@
+\section{Receiver-independent evaluation of weighted orbit folds}
+\label{sec:lazy-weight-theory}
+
+The existing native suffix-fold theorem~\cite{suffix} gives
+$R\le R_0+2\tau$ canonical weight runs after $\tau$ truncations,
+including signed vector weights. Static contraction cannot increase this
+number. The mass bound and polynomial selector accounting are also already
+established in the repository~\cite{weighted}. Classical weighted orbit computation was
+proved polynomial by Agol--Hass--Thurston
+\cite[Lemma~15 and Theorem~16]{aht}.
+Our change concerns how much of that bounded state must be visited after
+one particular fold. The preceding native implementation still scans the
+entire run list, and performs vector arithmetic on every receiving run.
+A lazy additive run tree removes both dependencies.
+
+\subsection{Exact lazy actions on canonical run trees}
+
+A run is a pair $(\ell,v)$, where $\ell$ is a positive integer length and
+$v\in\mathbb Z^d$. A canonical run sequence has unequal values in consecutive
+runs. Its lengths sum to the current universe size. Store it in a balanced
+binary tree whose leaves are runs. Each subtree stores its leaf count,
+height, total length, first value, last value, and a pending additive tag.
+Heights are balanced by the number of leaves, independently of their
+possibly enormous integer lengths.
+
+\begin{lemma}[Uniform additions preserve internal run boundaries]
+\label{lem:lazy-translation}
+For any $u,v,z\in\mathbb Z^d$, one has $u=v$ if and only if
+$u+z=v+z$. Consequently adding the same vector $z$ to every point of a
+canonical subtree changes none of its internal run boundaries. It can be
+represented by adding $z$ to the subtree tag and to its two endpoint
+values. Canonicalization after reconnecting this subtree is required only
+at the two external seams.
+\end{lemma}
+\begin{proof}
+Subtract $z$ from the equality in either direction. The internal adjacencies
+are unchanged, so every old unequal pair remains unequal. Only an adjacency
+between an updated value and an unupdated value can change its equality
+status, and these are precisely the external seams.
+\end{proof}
+
+The tag denotes a common increment not yet propagated to descendants.
+Before a split or rotation changes a tagged node's descendants, the tag is
+pushed to the current children and cleared at that node. Otherwise the scope
+of the increment would change. This push rule is part of the invariant,
+not an optional implementation convention.
+
+\begin{proposition}[Run-tree primitives]
+\label{prop:run-tree}
+A deterministic height-balanced run tree on $R$ canonical runs supports
+splitting at an arbitrary integer position, concatenation with boundary
+coalescing, and adding a constant vector on a contiguous position interval
+using $O(\log(R+2))$ structural operations and $O(d\log(R+2))$ integer
+additions or comparisons. These operations need not inspect the other leaves
+of the affected interval. Reporting or deleting $s$ specified consecutive
+runs costs $O(s+\log(R+2))$ structural operations, apart from output work.
+\end{proposition}
+\begin{proof}
+Use a leaf-oriented AVL tree, with empty-tree height zero and leaf height
+one. Joining trees of heights $a,b$ takes $O(|a-b|+1)$ structural operations,
+and its output height $c$ lies in
+$\{\max(a,b),\max(a,b)+1\}$. Indeed, join descends the taller spine until
+the two heights differ by at most one. The height gap decreases at each
+descent, and each returning frame requires at most one single or double
+rotation. Induction gives the stated output-height property. The minimum
+number of leaves in an AVL tree satisfies the Fibonacci height recurrence,
+so every height in question is $O(\log(R+2))$.
+
+Stored subtree lengths identify the child containing a split position.
+Only one root-to-leaf path is followed; if the position is inside a leaf,
+that leaf becomes two positive-length runs of equal value in the two
+separate output trees. Push pending tags along the path and use AVL joins
+to reassemble its off-path pieces. The sum of these join costs is
+logarithmic, not the product of two logarithmic bounds. To see this
+explicitly, first observe inductively that each output fragment has height
+at most that of the subtree being split. At a right turn on the split path,
+let $a$ be the left sibling's height and $b$ the height of the left fragment
+returned from the right child. The original AVL inequality gives
+$b\le a+1$. The newly joined left fragment has some height $c\ge b$.
+If $a\ge b$, then $a-b\le c-b$; if $b>a$, then $b-a\le1$.
+Consequently this join costs $O(c-b+1)$. As the split returns toward the
+root, the height of the accumulated left fragment increases only at right
+turns. These height increases telescope to at most the original root
+height. Left turns give the symmetric telescoping bound for the right
+fragment. There are at most one root-height's worth of returning frames,
+so all joins and tag pushes together take $O(\log(R+2))$ structural work.
+
+For concatenation, compare the last realized value of the left tree with
+the first realized value of the right. If unequal, use a balanced join.
+If equal, remove these two extreme leaves, replace them by one leaf with
+their combined length, and perform balanced joins. No new interior equality
+can appear: the old neighbors of each removed leaf were unequal to its
+value. Access, removal, and joining follow logarithmic-height paths.
+
+For a range addition, split at its two endpoints, apply the tag update of
+Lemma~\ref{lem:lazy-translation} to the middle tree, and concatenate the
+three pieces canonically. Reporting a detached subtree visits each of its
+leaves once. Empty pieces are omitted. All endpoint arithmetic is on binary
+integers and never iterates over a leaf's numerical length.
+\end{proof}
+
+\subsection{Translation folds from one anchor and their jump locations}
+
+Consider a legal native truncation from $[0,N)$ to $[0,C)$. For a positive
+carrier let $p>0$ be its period and $b=C-p\ge0$. The deleted suffix is
+pushed by
+\[
+ \rho(x)=b+((x-b)\bmod p)
+\]
+onto $[b,C)$. Let $f$ be the old suffix weight, extended by zero off
+$[C,N)$, and define the added residue sum
+\[
+ F(r)=\sum_{x\equiv r\pmod p}f(x),\qquad b\le r<C.
+\]
+For $b<r<C$, finite summation gives
+\begin{equation}\label{eq:lazy-residue-jump}
+ F(r)-F(r-1)=\sum_{x\equiv r\pmod p}\bigl(f(x)-f(x-1)\bigr).
+\end{equation}
+One anchor determines the remaining additive constant. If the suffix
+intersects $S$ constant runs $[l_j,h_j)$ with values $v_j$, then
+\begin{equation}\label{eq:lazy-residue-anchor}
+ F(b)=\sum_{j=1}^{S}
+ \left(\left\lfloor\frac{h_j-1-b}{p}\right\rfloor
+       -\left\lfloor\frac{l_j-1-b}{p}\right\rfloor\right)v_j.
+\end{equation}
+Only the clipped suffix run endpoints are used. Every left endpoint
+contributes $+v_j$ to its residue jump and every right endpoint contributes
+$-v_j$. Combine coincident locations, omit the jump at $b$ when integrating
+from the anchor, and sort the remaining locations. This produces $O(S+1)$
+constant addition intervals. The operations on quotient and residue values
+use binary division and multiplication; they do not enumerate a residue
+class or repeat a shift a numerical number of times.
+
+\begin{theorem}[Receiver-independent native fold]
+\label{thm:lazy-fold}
+Suppose the old weight function has $R$ canonical runs and the deleted suffix
+meets $S$ runs. A native translation fold can be evaluated exactly in
+\[
+ O\bigl((S+1)\log(R+2)+S\log(S+1)\bigr)
+\]
+structural and endpoint-order operations and
+$O(d(S+1)\log(R+2))$ vector-coordinate operations, with binary integer costs
+charged separately. A reflection fold obeys the same bound without the
+$S\log(S+1)$ sorting term. Neither bound contains the number of receiving
+runs or of untouched prefix runs. The resulting tree denotes the same
+canonical function as the established native suffix-only operation.
+\end{theorem}
+\begin{proof}
+Split off and report the deleted suffix, costing $O(S+\log(R+2))$ by
+Proposition~\ref{prop:run-tree}. For translation, compute
+\eqref{eq:lazy-residue-anchor} and the $O(S)$ residue events in
+\eqref{eq:lazy-residue-jump}. Sorting and integrating them gives the exact
+piecewise-constant function $F$ on the receiving interval. Add each nonzero
+constant piece with the run-tree range-add primitive. There are $O(S+1)$
+pieces, and all are inside the retained prefix. Their interiors are disjoint,
+so the sum of the range updates is exactly $F$. The old prefix remains
+pointwise unchanged except for the prescribed additions. Exact seam
+coalescing after every update leaves a canonical result.
+
+For reflection $x\mapsto K-x$, the image of $[l_j,h_j)$ is
+$[K-h_j+1,K-l_j+1)$. These intervals occur in reverse order and remain
+disjoint, so they can be reported directly in increasing image order and
+added as constant ranges. No sorting of image endpoints is needed.
+
+During successive range additions there can be temporary boundaries that
+cancel only after a neighboring interval is updated. At most two boundaries
+per update are introduced. Thus the transient run count is $O(R+S+1)=O(R+1)$;
+using its logarithm instead of $\log(R+2)$ changes only the constant factor.
+This justifies the height bound throughout the operation, not merely at its
+end. The proof makes no assumption that a nonzero vector has positive
+coordinates.
+\end{proof}
+
+\subsection{Full-trace cost and integer sizes}
+
+Let a complete forward trace contain $\tau$ truncations and $E$ events in
+all. For truncation $t$, let $S_t$ be its deleted suffix run count. For
+contraction $j$, let $G_j$ be its number of static gaps and $D_j$ the number
+of constant run pieces actually emitted. Put $R_* = R_0+2\tau$ using the
+existing native run-growth theorem.
+
+\begin{corollary}[Weighted replay ledger]
+\label{cor:lazy-replay}
+After canonical input preparation, the new weight evaluator requires
+\[
+ O\left(
+ R_0+E+\sum_{t=1}^{\tau}
+       \bigl((S_t+1)\log(R_*+2)+S_t\log(S_t+1)\bigr)
+ +\sum_j\bigl(G_j\log(R_*+2)+D_j\bigr)
+ \right)
+\]
+structural work, together with the corresponding exact vector arithmetic
+and histogram costs. This is additional to validation and maintenance of
+the unweighted pairing trace. It contains no cumulative receiver-run term
+$\sum_t P_t$.
+\end{corollary}
+\begin{proof}
+Sum Theorem~\ref{thm:lazy-fold}. For a contraction, split out each static gap,
+report its runs to the histogram, remove it, and concatenate the surviving
+pieces. Using position lengths rather than absolute labels automatically
+closes the removed gap. Each gap costs logarithmic split/join work; reporting
+costs exactly the deleted run pieces. The input tree can be built bottom-up
+from its already canonical list in $O(R_0)$ work. Pairing deletion, trimming,
+merger, and transmission do not change the weight function. No work for
+those events is charged to the weight tree beyond the $O(E)$ event-dispatch
+term. Pairing-row maintenance is charged separately.
+\end{proof}
+
+\Needspace{12\baselineskip}
+For additive input intervals $[a_i,b_i)$ with vector values $v_i$, define
+\[
+ A=\sum_i(b_i-a_i)\lVert v_i\rVert_\infty.
+\]
+\begin{lemma}[Coefficient bound for delayed transfers]
+\label{lem:lazy-bits}
+During replay of legal native folds and contractions, each stored base
+value, pending lazy tag, endpoint-value cache, and sum of inherited tags
+has every coordinate bounded by $A$ in absolute value. The auxiliary
+derivative and anchor arithmetic has magnitude $O(A)$. Hence replay uses
+$O(1+\log(A+1))$ coefficient bits and $O(\log(N+1))$ endpoint bits, where
+$N$ is the initial universe size. Input validation additionally reads all
+supplied coefficient bits, including values assigned to empty intervals.
+\end{lemma}
+\begin{proof}
+For the proof only, introduce one atom $(i,x)$ for every input-interval
+occurrence $i$ and every integer $x\in[a_i,b_i)$, carrying vector $v_i$.
+The sum of the atoms' infinity norms is $A$. No implementation step
+constructs these atoms. The standard orbit-transport invariant partitions
+them between active points and finalized orbits. A fold moves the atoms
+at each deleted point to its retained image, and a contraction finalizes
+the atoms at its deleted points. Thus the active allocations are disjoint.
+
+Refine this mathematical invariant pointwise through the lazy tree.
+Partition an active point's allocated atoms between its leaf's stored
+base value and the pending tags along its root-to-leaf path. Each part's
+vector sum equals the corresponding stored numerical value or tag.
+The atom subsets attached to one constant-valued leaf or tag may differ
+from point to point; their vector sums agree. Initially the complete
+allocation is in the leaf base. A uniform addition transfers disjoint
+atoms from the detached suffix into each receiving point; place them in
+the updated tag, or in the base when the receiving subtree is a leaf.
+Pushing a tag redistributes its pointwise subsets to the same children
+before any child's scope changes. Splitting restricts these subsets to
+the two intervals. A rotation changes only the bracketing after this
+redistribution. Coalescing equal boundary leaves places each point's
+current allocation in its new base. These operations preserve the
+partition invariant. If a tag or addition has numerical value zero,
+its zero-sum atom subset may be rebased pointwise without changing any
+stored number; cancellation therefore causes no exception to the
+invariant. This is auxiliary proof bookkeeping, not extra runtime work.
+
+Every stored base, tag, inherited-tag sum, and realized endpoint cache is
+therefore the sum of some subset of the input atoms, and its coordinate
+magnitude is at most $A$. This also proves
+$\sum_j(h_j-l_j)\lVert v_j\rVert_\infty\le A$ for the current runs.
+An anchor's run multiplicity is at most its run length, so each partial
+anchor sum has magnitude at most $A$. For the suffix extended by zero,
+the sum of the norms of its endpoint jumps is at most
+$2\sum_j\lVert v_j\rVert_\infty\le2A$. Every partial collision sum of
+mapped jumps is therefore bounded by $2A$, and combining such sums with
+an anchor is bounded by $3A$. All scalar multipliers in the anchor are
+counts of integer points; all divisions use a strictly positive integer
+period. Their operands have $O(\log(N+1))$ bits. The result follows.
+\end{proof}
+
+The fine structural bound is deterministic for the AVL transport and its
+comparison sort of residue events. The delivered Python source
+canonicalizer and histogram accumulator also use dictionaries. Their
+map-operation counts are separate from the tree ledger: a constant-time
+or average-case hash-table model must not be silently promoted to a
+worst-case comparison bound. Sorting an endpoint-event list and using an
+ordered histogram map or a sorted emission ledger would give deterministic
+comparison bounds with the corresponding sorting factors. The delivered
+code retains its established source and histogram routines.
+
+The star-family separation below is a statement about the actual specified
+flat and lazy evaluation methods. It is not a lower bound for every weighted
+orbit algorithm, and it does not bound the number of topology hierarchy
+states.
+

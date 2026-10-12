@@ -35,5 +35,11 @@ Old certificate formats and the inverse representative map are unchanged.
 The detailed proof and evolving validation record are in
 `synthesis/gap_prefix_replay.tex` and `synthesis/data/gap-prefix-*`.
 Four retained baseline modules support separate-interpreter paired complete
-queries and corpus certificate comparisons. Full validation is in progress.
+queries and corpus certificate comparisons. The complete 120-source audit preserves all 111 positive certificates and
+nine inconclusive outcomes. Eleven paired complete-query measurements are
+recorded, including tiny-input regressions. All 1,737 maintained methods
+are covered across the broad run (1,723 passes, one missing-Regina error,
+thirteen dependency skips) and the exact fourteen-method Regina 7.4 rerun,
+which passes without skips. Both logs are retained; this is not a clean
+single-run claim.
 The original delivered package files remain unchanged.

@@ -1,0 +1,576 @@
+% Research notes for integration into the parent article.
+% Requires amsmath, amssymb, amsthm and theorem/lemma/proposition/corollary.
+% Classical reference keys suggested: HatcherNotes, PerelmanExtinction.
+
+\section{A terminal criterion from freeness and Euler characteristic}
+\label{sec:free-euler-terminal}
+
+The preceding terminal proposal assumed irreducibility of every whole-cut
+component.  The source validator does not establish that hypothesis.  A
+different, exact gate removes the need to establish irreducibility and
+also removes the need for a separate boundary-component census.  The
+topological ingredients below are classical.  The contribution to the
+current programme is their use with a source-authenticated whole-cut
+presentation and an independently authenticated Euler characteristic.
+
+All manifolds in this section are compact orientable PL three-manifolds.
+Surfaces and disks are locally flat.  Homology without specified
+coefficients has rational coefficients.  Every component of the manifold
+under consideration is assumed to have nonempty boundary.  This last
+condition holds for the entire normal cut of the current connected
+compact source manifold with nonempty boundary, even if the normal
+surface has closed or one-sided components.  A complementary component
+must meet the original boundary or a side of the cutting surface; a
+component meeting neither would be a closed-and-open component of the
+original connected manifold.
+
+\begin{lemma}[Free group and the boundary rank]
+\label{lem:free-boundary-rank}
+Let $N$ be connected, with connected boundary of genus $g$.  If
+$\pi_1(N)\cong F_g$, then $N$ is a genus-$g$ handlebody.
+\end{lemma}
+\begin{proof}
+This proof makes its Poincar\'e-theorem input explicit and does not assume
+irreducibility.  A positive-genus boundary surface cannot have its
+fundamental group embedded in a free group: subgroups of free groups are
+free, whereas closed orientable positive-genus surface groups are not.
+The Loop Theorem therefore supplies a properly embedded compression
+disk~\cite[Theorem 3.1]{HatcherNotes}.
+Cut along such a disk whenever a positive-genus boundary component
+remains.  Van Kampen's theorem expresses the original group as the free
+product of the cut-component groups, together with an additional free
+generator when a disk does not separate the manifold.  Thus every new
+component again has free fundamental group.
+
+The disk-cut process terminates because
+\[
+ \mu=\sum_{F\subset\partial N,\ g(F)>0}(2g(F)-1)
+\]
+strictly decreases under every compression.  An essential separating
+compression decreases this quantity by one; a nonseparating compression
+decreases it by two, except on a torus, where it decreases it by one.
+The Loop Theorem is used only as an existence theorem in this argument;
+the proposed terminal algorithm does not search for these disks.
+
+Suppose that after $d$ disk cuts there are $v$ connected components,
+with a total of $b$ spherical boundary components and free-group ranks
+$r_1,\ldots,r_v$.  All these components have nonempty boundary, so
+$b\geq v$.  Every disk compression adds two to the Euler characteristic
+of the boundary, hence
+\[
+ 2b=2-2g+2d,\qquad d=b+g-1.
+\]
+Reconstructing $N$ attaches $d$ one-handles to the $v$ pieces.  The graph
+of these attachments is connected.  Van Kampen and abelianization give
+\[
+ g=\sum_{i=1}^v r_i+d-v+1
+  =g+\sum_{i=1}^v r_i+b-v.
+\]
+Every term in $\sum_i r_i+b-v$ is nonnegative.  Consequently all $r_i$
+are zero and $b=v$.  Each terminal component is simply connected and has
+one sphere boundary.  Capping this boundary by a ball gives a closed
+simply connected three-manifold.  The three-dimensional Poincar\'e
+theorem~\cite{PerelmanExtinction} identifies it with $S^3$; the PL Schoenflies theorem, equivalently
+Alexander's theorem in this dimension, then identifies the uncapped
+component with a ball~\cite[Theorem 1.1]{HatcherNotes}.  Reversing the disk cuts constructs $N$ from balls
+and one-handles, so it is a handlebody.  Its genus is $g$.
+\end{proof}
+
+\begin{theorem}[Aggregate free-group--Euler criterion]
+\label{thm:free-euler}
+Let
+\[
+ W=\coprod_{i=1}^{c}N_i
+\]
+be a finite disjoint union of connected compact orientable PL
+three-manifolds with nonempty boundary.  Form the algebraic free product
+of the component groups.  Suppose
+\[
+ *_{i=1}^c\pi_1(N_i)\cong F_r.
+\]
+Then the following are equivalent:
+\begin{enumerate}
+\item $\chi(W)=c-r$;
+\item $H_2(W;\mathbb Q)=0$;
+\item every $N_i$ is a handlebody.
+\end{enumerate}
+When they hold, if $\pi_1(N_i)\cong F_{r_i}$, the genus of $N_i$ is
+$r_i$ and $\sum_i r_i=r$.  In particular, $W$ is a union of balls if and
+only if, in addition, $r=0$.
+\end{theorem}
+\begin{proof}
+Each free-product factor injects into $F_r$.  By the Nielsen--Schreier
+theorem and finite generation, it is a finite-rank free group $F_{r_i}$.
+Abelianizing the free product gives $\sum_i r_i=r$.  Since every component
+has nonempty boundary, $H_3(N_i)=0$, and therefore
+\begin{equation}
+ \chi(W)=c-r+\sum_{i=1}^c b_2(N_i).
+ \label{eq:aggregate-beta-two}
+\end{equation}
+This proves the equivalence of the first two assertions.
+
+Assume $b_2(N_i)=0$, and write $b_i=|\pi_0(\partial N_i)|\geq1$.
+The homology sequence of the pair contains
+\[
+ H_3(N_i,\partial N_i)\longrightarrow H_2(\partial N_i)
+       \longrightarrow H_2(N_i)=0.
+\]
+The first group is one-dimensional, generated by the relative orientation
+class, and the second has dimension $b_i$.  The first map has rank one:
+it sends the orientation class to the sum of the boundary orientation
+classes.  Exactness forces $b_i=1$.  Doubling $N_i$ along its boundary
+gives a closed odd-dimensional manifold, of Euler characteristic zero;
+thus $\chi(\partial N_i)=2\chi(N_i)$.  If its connected boundary has
+genus $g_i$, this identity and $b_2(N_i)=0$ give
+\[
+ 1-g_i=\chi(N_i)=1-r_i,
+\]
+so $g_i=r_i$.  Lemma~\ref{lem:free-boundary-rank} shows that $N_i$ is a
+handlebody.  The converse follows from the homology of a handlebody.
+\end{proof}
+
+There is no need to match two independently produced component
+histograms in this theorem.  It suffices to authenticate the entire
+free product, the total component count, and the total Euler
+characteristic.  In fact, a group certificate is allowed to mix
+generators from different algebraic components.  If a genus histogram is
+wanted without a separate boundary census, the implementation should
+retain the source component of each generator and certify freeness
+componentwise.  That stronger bookkeeping is useful for output, but is
+not required for the all-handlebody conclusion.
+
+The distinction between group topology and a geometric move is essential.
+Deleting a freely trivial relator is a Tietze transformation, even though
+deleting the corresponding two-handle can change the manifold.  The
+Euler gate above accounts for the topology that the fundamental group
+does not see.  The checker must use the source Euler characteristic, not
+the Euler characteristic of a simplified presentation complex.
+
+\paragraph{Sharpness of the gate.}
+The manifold $S^2\times I$ has trivial fundamental group, one connected
+component and Euler characteristic two.  It fails $\chi=c-r$, and has
+two boundary components.  Similarly,
+$H_g\mathbin{\#}(S^1\times S^2)$ has connected genus-$g$ boundary and
+free fundamental group of rank $g+1$.  Its Euler characteristic is
+$1-g$, so its excess over $c-r=-g$ is one.  These are genuine
+non-handlebody obstructions invisible to freeness alone.  Conversely,
+Euler characteristic and abelianization alone cannot replace the
+free-group certificate; a punctured nontrivial homology sphere is the
+standard obstruction.
+
+\section{A finite whole-cut group compiler for disk parallelity bases}
+\label{sec:disk-group-compiler}
+
+Assume the existing source-parallelity and ordered-interface verifiers
+have authenticated a normal cut of a $t$-tetrahedron source, and every
+parallelity base is a disk.  The latter assertion includes orientability,
+product structure, Euler characteristic one and exactly one boundary
+component.  A ported base has multiplicity one by source authentication.
+Unported disk bundles may occur with binary-encoded multiplicity.  The
+construction below retains the entire source core, including all its
+two- and three-handles.
+
+Write $h_j$ for the number of source core $j$-handles, and $\kappa$ for
+the number of components of its zero/one-handle graph.  Fix a spanning
+forest of this graph.  Every nonforest one-handle becomes a generator.
+The cyclic attaching curve of every source two-handle becomes a signed
+relator by erasing tree crossings.  Signs are read from source face
+flags.  Comparing only zero-handle endpoint labels is insufficient when
+a one-handle is a loop; its two source face flags still distinguish its
+two directions.  Attaching a three-handle along a sphere does not change
+the fundamental group, so it contributes no relator and is retained in
+the Euler ledger.
+
+There are two possibilities for a ported disk bundle.  Its vertical
+boundary can be an entire attaching annulus, in which case the ball
+$D^2\times I$ is exactly a two-handle attached along $\partial D^2\times I$.
+Trace the authenticated annular midpoint through the core and append its
+signed word as a relator.  Alternatively its intersection with the core
+is a nonempty disjoint union of attaching disks, corresponding to proper
+interval components of its base boundary.  The bundle itself is a ball.
+It therefore contributes a contractible vertex space, and each attaching
+disk contributes an edge with trivial edge group in the graph-of-spaces
+description.  Because a disk base has only one boundary component, a
+full circle and proper interval attachments cannot occur on that same
+base.  An unported disk bundle is an isolated ball.
+
+Let $a_\circ$ be the number of full annular disk bundles, $d$ the number
+of disk bundles with proper interval attachments, and $j$ the number of
+those interval attachments.  Form a graph $\Gamma$ with the $\kappa$
+core components and these $d$ disk balls as vertices, and the $j$
+attaching disks as edges.  If $c_f=|\pi_0(\Gamma)|$, its cycle rank is
+\[
+ \beta=j-\kappa-d+c_f.
+\]
+Van Kampen gives the free product of the augmented core groups and an
+additional free factor of total rank $\beta$, with the distribution
+among components specified by $\Gamma$.  These additional generators
+have no occurrences in any relator.  This graph calculation uses
+contractible attaching disks, so no unspecified geometric slide or
+primitive-curve claim is involved.
+
+\begin{theorem}[Disk-base whole-cut presentation]
+\label{thm:disk-compiler}
+Under the authenticated source hypotheses just stated, the construction
+produces a presentation of the algebraic free product of the fundamental
+groups of all whole-cut components.  Its numbers of generators and
+relators are
+\begin{equation}
+ a=h_1-h_0+\kappa+\beta,
+ \qquad m=h_2+a_\circ.
+ \label{eq:compiler-counts}
+\end{equation}
+If there are $b$ unported disk balls, counted with their binary
+multiplicities, the number of whole-cut components is $c=c_f+b$.
+Furthermore
+\begin{equation}
+ \chi(W)=c-a+m-h_3.
+ \label{eq:source-presentation-ledger}
+\end{equation}
+For the current native source format there is a uniform linear bound
+on $a$, $m$ and total literal signed relator length.  The conservative
+bounds
+\[
+ a\leq74t,\qquad m\leq78t,\qquad
+ \sum_{\rho}|\rho|\leq78t
+\]
+suffice.  No term depends on the represented normal-surface weight.
+\end{theorem}
+\begin{proof}
+A zero/one-handle core is a regular neighborhood of its graph.  Collapsing
+a spanning forest gives its standard free generators, and the usual
+handle presentation theorem attaches each two-handle relation using its
+signed curve.  Source flags and the annular-midpoint reconstruction
+authenticate the precise words.  Three-handles do not change the group.
+The preceding graph-of-spaces argument then proves the presentation claim
+and~\eqref{eq:compiler-counts}, including the trivial groups of the
+isolated balls.
+
+Euler characteristic is additive across these gluings.  A full annular
+disk bundle contributes $\chi(D^2\times I)-\chi(S^1\times I)=1$.
+A disk bundle with proper interval attachments contributes one, with one
+subtracted for every attaching disk.  Thus
+\[
+ \chi(W)=h_0-h_1+h_2-h_3+a_\circ+d+b-j.
+\]
+Substituting $\beta=j-\kappa-d+c_f$, $c=c_f+b$ and the counts of
+\eqref{eq:compiler-counts} proves~\eqref{eq:source-presentation-ledger}.
+
+The existing constructor bounds
+\[
+ h_0\leq6t,\ h_1\leq8t,\ h_2\leq12t,\ h_3\leq4t,
+ \qquad p\leq66t,
+\]
+where $p$ is the number of core ports.  The sum of the lengths of all
+interior edge-link wedge lists is at most $6t$, because each local
+tetrahedral edge occurs in one such list.  Every list is used at most
+twice, at the two endpoint ranks.  The sum of one-handle crossings in
+all source two-handle attaching cycles is therefore at most $12t$.
+The ordered-interface verifier partitions the ports into boundary words,
+each visiting each port once; consequently the additional full annular
+words have total length at most $p\leq66t$.  Erasing forest crossings
+only decreases length.  There are at most $p$ full circle bundles and
+at most $p$ proper interval attachments.  In particular,
+$a\leq h_1+j\leq74t$ and $m\leq h_2+p\leq78t$.
+\end{proof}
+
+The active graph, relators and port incidences have $O(t)$ records, but
+the compiler must also inspect every supplied base-profile record,
+including unported disk families.  Let $f$ denote the number of those
+records and let $E$ denote the exact total bit mass of the supplied
+profile and finite-source data.  A conservative structural bound for
+the delivered forest/ordering implementation is $O(t^2+f)$ graph and
+record steps, together with its exact arithmetic cost on the integers
+in $E$.  In particular, a minimum-label disjoint-set implementation is
+not silently assigned an inverse-Ackermann or linear bound.  Source
+preparation and source certificate checking have their separate costs.
+If the normal coordinates have at most $B$ bits each, the finite chart
+and source-label description has $O(t(B+\log(t+2)))$ bits; the finite
+group presentation itself needs only $O(t\log(t+2))$ bits after generators
+are indexed.  These statements do not bound the list of profiles or an
+entire existing orbit certificate by the size of the chart description.
+
+\section{Exact polynomial terminal reduction with controlled word length}
+\label{sec:no-growth-tietze}
+
+For this finite group presentation, free and cyclic word reduction may
+use sign cancellations that the earlier unsigned raw model deliberately
+excluded.  We use only explicit signed words.  A current relator $\rho$
+admits a defining-generator elimination at $x$ when $x$ or $x^{-1}$
+occurs exactly once in $\rho$, counting both signs.  Rotate its cyclic
+word to
+\[
+ \rho=x^{\varepsilon}u,\qquad\varepsilon\in\{1,-1\},
+\]
+where $u$ contains no occurrence of $x$.  The relation is the definition
+$x=u^{-\varepsilon}$.  Substitute this expression for every occurrence
+of $x$ in every other relator, substitute its inverse for $x^{-1}$,
+delete $\rho$ and $x$, then freely and cyclically reduce the other
+relators.  A freely trivial relator can be discarded; its deletion is
+recorded in the count $z$ below.
+
+The proposed deterministic producer examines available defining-generator
+eliminations and accepts one only if the total cyclically reduced relator
+length does not increase.  It stops when every relator is gone or no
+admitted candidate remains.  All source generators, including ones absent
+from every relator, remain in the generator ledger until explicitly
+eliminated.  A final empty relator list presents the free group whose rank
+is the number of surviving generators.
+
+\begin{theorem}[Soundness and polynomial local complexity]
+\label{thm:bounded-tietze}
+Let $a,m$ be the numbers of source generators and relators, and $L$ the
+total literal source word length.  Use compact integer generator and row
+labels, or charge the input-label dictionary separately.  Put
+$N=a+m+L+1$.  The procedure above
+is a sound one-sided freeness test and terminates after at most
+$\min(a,m)$ defining-generator eliminations.  A straightforward exact
+implementation uses $O(N^4)$ indexed word operations for discovery,
+$O(N^3)$ for independent replay of a supplied elimination trace, and
+$O(N^2)$ working letter storage.  A trace recording source row labels
+and eliminated generator labels has $O(m\log(N+1))$ bits; all
+substitutions and trivial-relator drops can be reconstructed.
+\end{theorem}
+\begin{proof}
+Free reduction leaves the represented relator unchanged.  Cyclic rotation
+or cyclic reduction replaces it by a conjugate, so its normal closure is
+unchanged.  A unique occurrence of $x$ makes $\rho$ an explicit
+definition of that generator.  Substitution followed by deleting the
+definition is an elementary Tietze elimination, with inverse operation
+adjoining the generator and its defining relation.  Deleting a freely
+trivial relator removes an identity.  These facts prove soundness,
+independently of the length policy.  Each elimination removes one
+generator and one relator, proving termination.
+
+At every accepted state the total reduced relator length is at most $L$.
+There are at most $L$ candidate row/generator pairs, since each contains a
+distinct occurrence within its donor row.  For one candidate, the donor
+tail has length at most $L$, and at most $L$ letters in all other words
+are replaced.  The total temporary substituted length is at most
+$O(L^2)$.  A stack reduction and endpoint trim reduce those words in
+linear time in that temporary length.  Accounting also for generator and
+row ledgers costs $O(N^2)$ per candidate.  Testing at most $N$ candidates
+at at most $N$ elimination stages gives $O(N^4)$ discovery work.
+
+A verifier receives the chosen row/generator pair at each stage and
+needs no candidate search.  It reconstructs the donor solution, all
+substitutions, reductions, empty-relator deletions, the length gate and
+the final generator ledger.  Thus it uses $O(N^3)$ work.  At most
+$O(N^2)$ temporary letters are required.  Stable labels use
+$O(\log(N+1))$ bits, so the listed pairs have the asserted size.  Source
+authentication and any appended source proof are additional to this
+small algebraic trace.
+\end{proof}
+
+This is a complexity theorem for a specified one-sided producer, not a
+decision theorem for group freeness.  An inconclusive result may reflect
+the absence of a suitable generator, the length policy, or an
+unfortunate earlier choice.  No order-independence or completeness
+assertion is made for this greedy signed procedure.  The broader
+certificate format may admit other exactly checkable Tietze moves, but
+their discovery costs require separate bounds.
+
+\begin{example}[A free presentation with no initial admitted move]
+Define an automorphism of $F(a,b)$ by
+\[
+ \varphi(a)=ab,\qquad\varphi(b)=a.
+\]
+Its inverse is given by $a\mapsto b$ and $b\mapsto b^{-1}a$, as direct
+substitution verifies.  The two words
+\[
+ \varphi^4(a)=abaababa,\qquad\varphi^4(b)=abaab
+\]
+therefore form a free basis.  In particular,
+\[
+ \langle a,b\mid abaababa,abaab\rangle
+\]
+is the trivial group: applying the inverse automorphism four times takes
+its relators to $a,b$.  Both displayed words are positive and cyclically
+reduced.  Their $(a,b)$ occurrence counts are $(5,3)$ and $(3,2)$, so
+neither relator has a generator occurring once.  The proposed producer
+has no initial defining-generator move and returns inconclusive.
+Adjoining an unused generator $c$ gives the same refusal for a
+presentation of $F_1$.  This is an exact algebraic counterexample to
+completeness and needs no group-recognition oracle.
+\end{example}
+
+There is nevertheless a precise inclusion at the level of certificates.
+Every complete unsigned column-leaf trace has a signed Tietze trace that
+never increases length: its pivot generator occurs once in the entire
+current relator family, so deleting its donor requires no substitution
+in another relator.  Free and cyclic reductions cannot delete that unique
+occurrence before its pivot.  This proves inclusion of the old
+certificate class; it does not prove that an arbitrary greedy signed
+choice preserves the old successful ordering.  Retaining the older
+producer as a fast path makes the inclusion operational.
+
+For a strict algebraic contrast, take
+\[
+ \langle x,y\mid xyx^{-1},\ yxy^{-1}\rangle.
+\]
+Its unsigned incidence matrix is
+\[
+ \begin{pmatrix}2&1\\1&2\end{pmatrix},
+\]
+whose two rows form a stopping set.  Cyclic reduction instead gives the
+relators $y$ and $x$, and two defining-generator eliminations certify the
+trivial group.  This is an algebraic illustration; the native experiment
+provides the separate source-authenticated geometric example.
+
+\begin{corollary}[Resolving the earlier linear-deferral ball family]
+\label{cor:linear-deferral-resolved}
+The geometric ball family of report 102~\cite{Report102}, consisting after forest
+contraction of $q$ blocks with unsigned matrix
+$\left(\begin{smallmatrix}1&1\\1&2\end{smallmatrix}\right)$, has a
+signed terminal certificate with $2q$ defining-generator eliminations,
+no trivial-relator deletions, and strictly decreasing relator length.
+Its entire $2q$-row matrix is a raw stopping set, and its old raw
+deferral number is $q$.  The signed certificate has
+$O(q\log(q+2))$ bits.
+\end{corollary}
+\begin{proof}
+Start with one zero-handle and two canceling one/two-handle pairs, a
+handle presentation of a ball.  The initial two-handle words are $x,y$.
+Slide the first two-handle over the second along the standard positive
+band, and then slide the second over the new first.  Choose the bands
+in the zero-handle boundary away from all cocore boundaries.  Equivalently,
+perform these disk slides in the complementary handlebody of the
+standard genus-two Heegaard splitting of $S^3$.  The complementary
+disk system remains complete, so the resulting two-handle attachment
+still gives a ball.  This is the geometric realization from report 102;
+it is not inferred from words alone.
+
+With these positive bands, the two words are $xy,yxy$.  Cyclically
+rotating the second gives $xy^2$.  They are initially positive and
+cyclically reduced.  Eliminate $x$ using $xy$, so
+$x=y^{-1}$; the second relator freely reduces to $y$.  Eliminate $y$.
+The total lengths are $5,1,0$.  There are no empty-relator deletions.
+Take $q$ copies and form their boundary connected sum along disks
+disjoint from all attaching regions.  The result is a ball.  After
+contracting the connecting zero/one forest its matrix is block diagonal,
+and its word alphabets are disjoint.  The two signed moves therefore
+apply independently in every block.
+
+Each block's two rows form a stopping set, so the whole $2q$-row set is
+stopping.  Any raw deferral scheme must remove at least one row from
+each of the $q$ disjoint block obstructions.  Conversely, deferring the
+second row of each block leaves a singleton pivot for the first.  Hence
+the raw deferral number is exactly $q$, as proved in report 102.
+The $2q$ signed row/generator choices use $O(\log(q+2))$ bits per move,
+proving the certificate bound.  The new conclusion is the short signed
+resolution of the earlier geometric obstruction family.
+\end{proof}
+
+The family is geometric, but is not asserted to have been exported by
+the native normal-cut source constructor.  The separate native target
+establishes actual additional coverage in that narrower source class.
+The displayed block decomposition permits a mathematically linear
+blockwise construction and replay, but the delivered global solver is
+only assigned the $O(N^4)$ discovery and $O(N^3)$ replay bounds above.
+No linear replay implementation is claimed by the block corollary.
+
+Abelianization is insufficient even when an exponent-sum determinant is
+one.  Consider
+\[
+ \mathcal P=\langle x,y\mid x^3y^{-5},\ (xy)^2x^{-3}\rangle.
+\]
+The exponent-sum matrix is
+\[
+ \begin{pmatrix}3&-5\\-1&2\end{pmatrix}
+\]
+with determinant one.  The group is nevertheless nontrivial: under the
+usual right-to-left permutation convention, assign
+\[
+ x=(1\ 2\ 3),\qquad y=(1\ 3\ 5\ 2\ 4).
+\]
+Then $x^3=y^5=1$ and $xy=(2\ 4)(3\ 5)$, so both relators vanish in
+the permutation group, while $x$ has nonidentity image.  This exact
+witness explains why the terminal test certifies the entire group and
+does not replace it by its exponent-sum matrix.
+
+\section{Three-handles give an exact allowance for trivial relators}
+\label{sec:relator-allowance}
+
+The source count identity~\eqref{eq:source-presentation-ledger} gives a
+particularly compact interpretation of the Euler gate.  It is useful
+both for implementation and for diagnosing a refusal.
+
+\begin{theorem}[Relator-deletion ledger and early homology obstruction]
+\label{thm:relator-ledger}
+Start with the disk-base whole-cut presentation of
+Theorem~\ref{thm:disk-compiler}.  Suppose a valid signed trace has
+performed $k$ defining-generator eliminations and discarded $z$ freely
+trivial relators, including all such initial normalizations.  Then
+\begin{equation}
+ b_2(W;\mathbb Q)\geq z-h_3.
+ \label{eq:early-relator-defect}
+\end{equation}
+If all relators have disappeared, equality holds:
+\begin{equation}
+ b_2(W;\mathbb Q)=z-h_3.
+ \label{eq:complete-relator-defect}
+\end{equation}
+In particular, a completed free-group trace passes the Euler gate
+exactly when $z=h_3$.  If $z>h_3$ at any intermediate stage, the
+authenticated whole cut already has positive second Betti number and
+at least one component is not a handlebody.
+\end{theorem}
+\begin{proof}
+The current presentation has
+\[
+ a'=a-k,\qquad m'=m-k-z,
+ \qquad a'-m'=a-m+z.
+\]
+Its abelianization has at most $m'$ independent linear relations on $a'$
+generators, so
+\[
+ b_1(W;\mathbb Q)\geq a'-m'=a-m+z.
+\]
+All components have nonempty boundary; consequently
+$b_2(W)=\chi(W)-c+b_1(W)$.  Insert
+$\chi(W)=c-a+m-h_3$ to obtain~\eqref{eq:early-relator-defect}.
+
+If $m'=0$, the remaining presentation is free, of rank
+$r=a'=a-k$, and $m=k+z$.  Substitution into the same Euler formula gives
+\[
+ b_2(W)=\chi(W)-c+r=m-k-h_3=z-h_3.
+\]
+The aggregate criterion of Theorem~\ref{thm:free-euler} now proves the
+last conclusions.
+\end{proof}
+
+Thus when the core has no three-handles, a complete trace with no
+freely-trivial relator deletions automatically satisfies the terminal
+Euler condition.  A three-handle is not silently discarded from the
+manifold: its contribution is recorded by the necessary equality
+$z=h_3$.  A completed trace with $z<h_3$ would contradict the authenticated
+source hypotheses, because it would give negative $b_2$; it is not a
+legitimate alternative terminal topology.  A partial trace with
+$z>h_3$ is a genuine obstruction to the whole cut being a union of
+handlebodies, but has no direct implication that the original knot is
+nontrivial: the chosen cut itself may simply be unsuitable for the
+intended hierarchy.
+
+Binary families cause no growth in this argument.  Adding $b$ isolated
+disk balls adds $b$ to both $c$ and $\chi$, contributes no generator or
+relator, and leaves every equation above invariant.  Only the bit length
+of $b$, not its value, enters the arithmetic cost.
+
+\paragraph{Terminal scope.}
+The successful certificate establishes an abstract homeomorphism type
+and, with componentwise group ledgers, a genus census.  It supplies no
+meridian disk system in marked source coordinates and no transported
+boundary pattern.  Its local polynomial cost does not provide the
+hierarchy construction, a bounded marked successor, progress, or the
+global depth bound required for quasi-polynomial unknot recognition.
+
+% Source references checked in this task:
+% Hatcher, Notes on Basic 3-Manifold Topology, current linked 75-page PDF:
+% https://pi.math.cornell.edu/~Hatcher/3M/3Mfds.pdf
+% Theorem 1.1 printed p.1 (Alexander); Theorem 3.1 printed p.56 (Loop).
+% The PDF retains pre-Perelman historical text; do not cite that old status.
+% Perelman, Finite extinction time for the solutions to the Ricci flow
+% on certain three-manifolds, arXiv:math/0307245 (2003).
+% https://arxiv.org/abs/math/0307245
+% Clay official solved status and account:
+% https://www.claymath.org/millennium/poincare-conjecture/

@@ -1,0 +1,137 @@
+\section{Certificate architecture and native integration}
+\label{sec:implementation}
+
+\subsection{Three independently replayed layers}
+
+The new implementation separates authenticated geometry, algebraic
+simplification and the topological terminal gate. The producer writes enough
+information for a checker to reconstruct each layer. Table~\ref{tab:modules}
+lists the six new production modules; two existing entry-point files acquire
+an opt-in wrapper and schema dispatch.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{P{0.44\linewidth}P{0.48\linewidth}}
+\toprule
+Module pair in \code{fastunknot/} & Responsibility \\
+\midrule
+\code{source\_cut\_group.py}\newline
+\code{source\_cut\_group\_verify.py} & Build/reconstruct the whole-cut disk-base presentation, forests, signs, component partition and source Euler ledger \\
+\code{free\_group\_elimination.py}\newline
+\code{free\_group\_elimination\_verify.py} & Discover/replay exact nonincreasing singleton Tietze traces \\
+\code{normal\_cut\_groups.py}\newline
+\code{normal\_cut\_groups\_verify.py} & Bind the native source proofs, presentation, free ranks and Euler-checked genus census \\
+\bottomrule
+\end{tabular}
+\caption{The production/checker split. All new production paths use the Python standard library.}
+\label{tab:modules}
+\end{table}
+
+The whole certificate has schema \code{normal-cut-euler-free-v1}. Its
+\code{parallelity} field contains the existing authenticated source proof;
+\code{boundary} contains ordered native moment-boundary data;
+\code{presentation} contains the finite whole-cut presentation;
+\code{groups} contains one elimination proof per active cut component; and
+\code{census} records the claimed genus histogram and aggregate counts. Isolated
+disk-ball families retain their exact binary multiplicities.
+
+The source checker reconstructs signed crossings from tetrahedron-face flags,
+checks continuity of attaching words, and verifies the graph component
+partition. It checks proposed spanning forests by graph partition and edge
+count, independently of the producer's forest construction. It checks every
+core two-handle, every full annular disk attachment and every interval bridge.
+The source two-handle or annular reader in the producer can be disabled without
+preventing replay. Authenticated source three-handles contribute to the Euler
+count even though they have no presentation relator.
+
+The algebra checker uses the original source presentation and the recorded
+row/generator choices. A SHA-256 digest additionally binds the normalized
+serialization of the source labels and literal words. Soundness does not rely
+on hiding source data behind a digest: the whole-cut verifier independently
+reconstructs and compares the presented source data. The checker verifies the
+unique occurrence, solves its sign correctly, substitutes in every remaining
+word, records identities, enforces the length policy and checks the complete
+surviving-generator ledger. It does not import the producer.
+
+Finally, the terminal checker authenticates $c,r,\chi$ and compares
+$\chi=c-r$, as well as the equivalent complete-trace condition $z=h_3$.
+Keeping both is useful as an implementation consistency check. Neither
+equality licenses a manifold verdict unless all source hypotheses and the
+complete group trace have already passed.
+
+\subsection{API behaviour and failure semantics}
+
+The direct entry point is:
+\begin{lstlisting}[language=Python]
+from fastunknot.normal_cut_groups import normal_cut_group_handlebodies
+result = normal_cut_group_handlebodies(
+    triangulation, coordinates, record_certificate=True)
+\end{lstlisting}
+Its dedicated replay function is
+\code{verify\_normal\_cut\_group\_handlebodies}. The legacy verifier
+\code{verify\_normal\_cut\_handlebodies} dispatches the new schema as well.
+To retain the geometric path as a fast path, use:
+\begin{lstlisting}[language=Python]
+from fastunknot.normal_cut_handlebodies import normal_cut_handlebodies
+result = normal_cut_handlebodies(
+    triangulation, coordinates, group_fallback=True,
+    record_certificate=True)
+\end{lstlisting}
+The default is \code{group\_fallback=False}; all earlier default producer
+behaviour and legacy proof schemas remain intact. A geometric success returns
+immediately. A geometric refusal can invoke the new terminal. This arrangement
+makes the certificate-class inclusion operational without asserting that the
+greedy signed policy preserves every possible earlier peeling order.
+
+A source containing a nondisk base, an exhausted orbit budget or a stalled
+word policy returns \Inconclusive. A completed free trace with positive Euler
+defect reports \code{positive\_second\_betti\_number} and its exact aggregate
+value, while retaining \Inconclusive{} as its API status. This is an obstruction
+to this cut being all handlebodies, not a knot decision. The mathematical early
+$z>h_3$ gate is not yet exported as a separate negative certificate.
+
+The direct producer shares its \code{max\_cycles} allowance across source
+parallelity queries and its boundary query. The optional two-stage wrapper
+passes the specified allowance separately to each stage; enabling the fallback
+therefore permits up to twice that orbit-cycle allowance across the portfolio.
+This deliberately simple compatibility interface is documented rather than
+described as a shared global budget. The verifier's \code{max\_operations}
+counts recorded source orbit operations and Tietze pivots, not all machine
+instructions. Cooperative callbacks remain the general interruption mechanism.
+Their exceptions, including \code{ValueError} and \code{KeyError}, propagate;
+they must not be mistaken for malformed-certificate refusals.
+
+\subsection{Exact integers and the trusted boundary}
+
+The native integer codec supports very large multiplicities through an exact
+hexadecimal JSON representation. The new path accepts both ordinary in-memory
+integers and this established serialization. It never coerces a count to
+floating point. Strict integer checks reject Boolean values in integer fields.
+An isolated family with multiplicity $2^{16384}$ is represented by its bit
+string and contributes directly to $c$ and $\chi$; the compiler never loops over
+its balls.
+
+There remains shared trusted infrastructure: the Python runtime, basic exact
+arithmetic, source validation, and the existing independent orbit and ordered
+boundary verifiers. The new producer/checker pairs reduce common algorithmic
+failure modes, but do not constitute two implementations of the entire source
+geometry stack. Regression tests and explicit Regina comparisons challenge this
+boundary. The theorem's use of Poincar\'e is a mathematical implication, not a
+request for the program to construct Ricci flow or a homeomorphism.
+
+\subsection{Why marked geometry must remain separate}
+
+A Tietze identity certifies the group. It does not show that a specified
+attaching curve meets a specified meridian disk once, nor that a disk system
+can be changed while fixing a peripheral marking. The distinction has concrete
+precedents in Lackenby's discussion of thickenable presentations and fixed
+meridian systems~\cite[Section 6.1]{LackenbyStable2026}. The present source
+compiler is geometric, the word simplifier is algebraic, and the Euler theorem
+recovers only the final unmarked homeomorphism type.
+
+This suggests a disciplined integration point: use the new result to discharge
+an unmarked terminal query. A hierarchy requiring an essential boundary pattern
+or a marked successor must separately authenticate that information. Free
+generators in the output are names in an abstract presentation; interpreting
+them as source-coordinate meridians would require additional constructions and
+proofs.

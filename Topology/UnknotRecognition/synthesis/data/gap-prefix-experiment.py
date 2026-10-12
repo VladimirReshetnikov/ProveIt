@@ -99,7 +99,7 @@ def worker(package):
         result = dict(id=key, status=status, proof_sha256=digest(payload), proof_bytes=len(payload),
                       census=answer.get('census'), produce=produced-start, replay=end-produced,
                       total=end-start)
-        print(json.dumps(result), flush=True)
+        print(json.dumps(json_safe(result)), flush=True)
 
 
 class Workers:
@@ -142,9 +142,21 @@ def main(mode):
                   baseline_sha256={p.name: digest(p.read_bytes()) for p in BASE.glob('*.py')},
                   corpus_sha256={p.name: digest(p.read_bytes()) for p in CORPORA},
                   python=sys.version, platform=platform.platform(), seed=261012106, cases=[])
+    start_index = 0
+    if mode == 'audit' and target.exists():
+        previous = json.loads(target.read_text())
+        assert not previous.get('finished'), 'audit already complete'
+        for field in ('native_source_sha256', 'baseline_sha256', 'corpus_sha256'):
+            assert previous[field] == report[field]
+        start_index = len(previous['cases'])
+        assert [c['id'] for c in previous['cases']] == [c['id'] for c in cases()][:start_index]
+        report['cases'] = previous['cases']
+        report['completed_prefix_driver_sha256'] = previous['driver_sha256']
+        report['completed_prefix_cases'] = start_index
+        report['resume_reason'] = 'Worker JSON response census exceeded the decimal digit cap; use the existing exact integer codec. Completed records retained unchanged.'
     rng = random.Random(report['seed'])
     with Workers() as w:
-        for key in (SYNTHETIC + IDS if mode == 'benchmark' else [c['id'] for c in cases()]):
+        for key in (SYNTHETIC + IDS if mode == 'benchmark' else [c['id'] for c in cases()][start_index:]):
             a = w.query('before', key); b = w.query('after', key)
             for field in ('status', 'proof_sha256', 'census'):
                 assert a[field] == b[field], (key, field)

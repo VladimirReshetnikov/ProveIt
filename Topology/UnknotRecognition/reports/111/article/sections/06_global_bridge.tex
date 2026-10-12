@@ -1,0 +1,293 @@
+% Integration notes: requires amsmath, amssymb, amsthm and theorem/proposition.
+% Approximately 3--5 article pages after house-style compression if needed.
+
+\section{From terminal certification to global complexity}
+\label{sec:global-bridge}
+
+The target considered here is
+\[
+ n^{O(\log n)}=\exp\bigl(O((\log n)^2)\bigr),
+\]
+where $n\geq2$ is the original diagram size.  The broader term
+\emph{quasi-polynomial} also permits higher fixed powers of $\log n$ in
+the exponential.  We distinguish these bounds explicitly.  None of the
+global geometric hypotheses below has been proved for every native
+hierarchy state in this package.
+
+The new terminal algorithm removes one local obstruction: a source cut
+with disk parallelity bases can be accepted through a signed group proof
+even when its unsigned stopping core is large.  It does not produce the
+surfaces leading to that cut, control the number of candidates, or
+transport a boundary pattern through subsequent cuts.  The following
+results identify precise ways to control those remaining costs.
+
+\subsection{Amortized branching, including long repair sequences}
+
+Consider the full finite computation tree of a hierarchy search.  A
+node can be a genuine choice of cutting surface, a conjunction requiring
+several cut pieces to be solved, or a deterministic repair.  Count every
+recursive subproblem, including unsuccessful candidates.  Cheap rejected
+candidates may instead be charged to the node's local work, provided
+their entire generation and rejection cost is bounded there.
+
+\begin{proposition}[An amortized branching bound]
+\label{prop:entropy-search}
+Suppose the following conditions hold for inputs of size $n$.
+\begin{enumerate}
+\item The search has a proved sound and complete hierarchy specification.
+      Source creation, candidate generation, admissibility checking,
+      marked transport and terminal discovery and verification cost at most $n^C$
+      per node and per emitted recursive edge.  All required encoded
+      states and local source proofs have at most $n^C$ bits.
+\item Every root-to-leaf path has at most $n^C$ nodes.
+\item If $b(v)\geq1$ is the number of children of a nonleaf node, then
+      every root-to-leaf path $P$ satisfies
+      \[
+         \sum_{v\in P\text{ nonleaf}}\log_2 b(v)
+                      \leq A(\log_2 n)^2.
+      \]
+\end{enumerate}
+Then the total search, including unsuccessful candidates, costs
+$n^{O(\log n)}$ bit operations.
+
+A local sufficient condition for the third hypothesis is a certified
+integer mass $1\leq M(v)\leq n^D$, nonincreasing along deterministic
+edges, for which every branching edge $v\to w$ satisfies
+\begin{equation}
+ \log_2 b(v)\leq
+ K\bigl((\log_2 M(v))^2-(\log_2 M(w))^2\bigr)+e(v,w),
+ \label{eq:quadratic-log-charge}
+\end{equation}
+where all charges are nonnegative and their sum on each path is
+$O((\log n)^2)$.
+\end{proposition}
+\begin{proof}
+Assign equal conditional probability $1/b(v)$ to every edge leaving
+each nonleaf node.  A leaf $\ell$ has probability
+\[
+ p_\ell=\prod_{v\in P_\ell}b(v)^{-1}\geq
+             2^{-A(\log_2 n)^2}.
+\]
+Leaf probabilities sum to one.  Hence there are at most
+$2^{A(\log_2 n)^2}$ leaves.  Every node lies on a root-to-leaf path, so
+the node count is at most the maximum path length times the number of
+leaves.  The edge count is smaller than the node count.  Multiplying by
+the stated local bit cost proves the bound.
+
+For the sufficient condition, sum~\eqref{eq:quadratic-log-charge} along
+a path.  The squared-log terms telescope; deterministic edges have zero
+branching cost and nonnegative potential drop.  The initial potential
+is at most $D^2(\log_2 n)^2$, and the accumulated charges have the stated
+bound.  This gives the required path sum.
+\end{proof}
+
+For example, if every branching child has mass at most half its parent
+and $b(v)\leq M(v)^K$, then~\eqref{eq:quadratic-log-charge} holds with
+zero extra charge.  Indeed, with $x=\log_2 M(v)\geq1$, the potential
+drop is at least $x^2-(x-1)^2=2x-1\geq x$.  Thus a balanced
+marked-cut theorem with polynomially many local alternatives is enough,
+even if polynomially long deterministic repairs occur between its
+branching steps.  The mass need not be the number of represented normal
+disks; it must be a source-certified quantity with the proved decrease.
+
+The path-length and encoding hypotheses have independent roles.  A
+branching estimate does not bound an arbitrarily long unary computation,
+and a bounded number of handle families does not bound the bit length of
+their endpoints or the number of newly split marking intervals.  The
+terminal cost is polynomial when the current $t$, profile list, integer
+bit mass and source-proof size are polynomial in $n$.  This fact does
+not establish the corresponding transport bounds for a successor.
+
+\subsection{An exact small terminal key supplied by the new compiler}
+
+The signed disk-base compiler has a useful compression property beyond
+its one-shot runtime.  Here $W$ is the authenticated compact orientable
+PL whole cut, every component has nonempty boundary, and every parallelity
+base is a disk.  Write $a,m$ for its initial generator and relator counts
+and $h_3$ for its source three-handle count.  The source ledger is
+\[
+ \chi(W)=c-a+m-h_3,
+ \qquad r_0:=c-\chi(W)=a-m+h_3.
+\]
+The whole-cut criterion says exactly that $W$ is a union of handlebodies
+when its component-group free product is free of rank $r_0$.
+
+\begin{proposition}[Exact residual terminal kernel]
+\label{prop:terminal-key}
+Apply any independently verified finite Tietze prefix to the compiled
+presentation.  Suppose $s$ surviving generators occur in no remaining
+relator.  Remove these generators from the displayed presentation and
+call the remaining presentation $Q$.  Put $r_*=r_0-s$.  Then
+\begin{equation}
+ W\text{ is a union of handlebodies}\quad\Longleftrightarrow\quad
+ G(Q)\cong F_{r_*},
+ \label{eq:residual-terminal}
+\end{equation}
+where the right side is false for $r_*<0$.
+
+Let $k\geq1$ bound the number of generators, relators and literal letters
+of $Q$ in total.  Impossible target ranks can be rejected immediately.
+For $0\leq r_*\leq k$, compact relabelling gives a key $(Q,r_*)$ with
+$O(k\log(k+2))$ bits, and there are
+$2^{O(k\log(k+2))}$ such keys.  Normal-coordinate magnitudes and
+isolated-ball multiplicities do not occur in this terminal key.
+\end{proposition}
+\begin{proof}
+The full current group is $G(Q)*F_s$.  If $G(Q)\cong F_{r_*}$, its
+free product with $F_s$ has rank $r_0$, giving the forward terminal
+conclusion.  Conversely, if $G(Q)*F_s\cong F_{r_0}$, then $G(Q)$ is an
+embedded finitely generated subgroup and hence free.  Abelianization
+shows that its rank is exactly $r_0-s$.  This proves the equivalence.
+
+If the required rank is negative the test is already negative.  A free
+group presented on at most $k$ generators cannot have rank exceeding
+$k$, so values outside $0\leq r_*\leq k$ can be separated immediately.
+Encode the words with row separators over a signed alphabet of at most
+$k$ generators.  The encoded string has $O(k)$ symbols from an alphabet
+of $O(k)$ symbols, together with the generator count and target rank.
+This proves both the bit bound and the counting bound.  The source
+compiler's Euler formula shows that isolated balls cancel between $c$
+and $\chi(W)$, while a verified Tietze prefix eliminates all dependence
+on the original geometric labels for this algebraic predicate.
+\end{proof}
+
+This is an exact reduction of the terminal predicate, not an algorithm
+for deciding arbitrary group freeness.  The present signed policy is
+still one-sided.  Equal syntactic keys permit reuse of an algebraic
+certificate after replaying the source compiler and the relabelling map.
+Each source occurrence still needs its own authenticated binding.  A
+cached greedy refusal remains a refusal of that policy.
+
+The initial active key has $O(t\log(t+2))$ bits.  If future normalizations
+guarantee residual size
+\[
+       k\log(k+2)=O((\log n)^2),
+\]
+there are at most $n^{O(\log n)}$ distinct relabelled syntactic terminal
+keys.  In particular $k=O(\log n)$ gives the smaller bound
+$n^{O(\log\log n)}$.  The parameter is the remaining signed
+presentation size, not the old unsigned deferral number: the earlier
+$q$-block geometric stopping family reduces to the empty residual even
+though its raw deferral is $q$.
+
+This cache cannot identify hierarchy states.  Equal abstract groups and
+Euler data do not identify peripheral curves, marked faces, or admissible
+next surfaces.  Nor does a small number of terminal keys bound the cost
+of generating the geometric states that reach them.
+
+\subsection{A precise marked-interface route to memoization}
+
+There is a distinct route when many search histories give the same
+future marked problem.  The required equivalence is stronger than
+isomorphism of the terminal groups.
+
+\begin{proposition}[Source-replayable interface quotient]
+\label{prop:marked-interface-quotient}
+Suppose a sound and complete marked hierarchy specification admits
+keys with the following properties, where $1\leq k\leq n^C$.
+\begin{enumerate}
+\item A key has at most $k$ active atoms compactly labelled in
+      $\{1,\ldots,k\}$, at most $O(k)$ incidence
+      and cyclic-order records, and at most $O(k)$ references to a fixed
+      source dictionary of at most $n^C$ exact objects.  The dictionary
+      has polynomial total bit mass.  Each record has bounded arity and
+      uses only atom labels, dictionary labels and a fixed finite alphabet.
+\item Equal keys have source-replayable equivalences preserving the
+      entire continuation problem: boundary pattern, orientations,
+      peripheral data, admissibility and the correctness of all cuts.
+      A representative key has at most $n^C$ candidate rules with at most
+      $n^C$ child keys each, generated and checked in polynomial time.
+      These rules are complete for every source realization of that key.
+\item Terminal acceptance and its certificate are computed in polynomial
+      time per key, or the terminal certificates are included among the
+      polynomially generated candidate rules.  Merely knowing that a
+      short certificate exists does not satisfy this hypothesis.
+      Each terminal proof and each local source equivalence has a
+      polynomial-size, polynomially checkable representation.  The
+      source-lifting verifier can compose these objects as a proof DAG
+      in time polynomial in $n$ per DAG node.  Source reconstruction,
+      coordinate arithmetic, reindexing and marked transport are included
+      in these bounds; the proof does not require exponentially expanding
+      shared histories.
+\end{enumerate}
+Then the hierarchy can be solved in
+\[
+ \exp\bigl(O(k(\log n+\log(k+2)))\bigr)\operatorname{poly}(n)
+\]
+time.  In particular $k=O(\log n)$ yields $n^{O(\log n)}$.
+\end{proposition}
+\begin{proof}
+There are at most
+\[
+ (n^C)^{O(k)}(k+1)^{O(k)}
+   =\exp\bigl(O(k(\log n+\log(k+2)))\bigr)
+\]
+keys.  Generate the reachable quotient once, reusing every previously
+seen key.  The number of rules and child references is the key count
+times a polynomial in $n$.
+
+A rule can require all its children to be accepted, while several rules
+at one key represent alternative choices.  Thus acceptance is the least
+fixed point of a finite monotone OR/AND rule system.  Maintain, for each
+rule, the number of children not yet accepted; enqueue its parent when
+that count reaches zero.  Each child reference is processed once.  Cycles
+do not certify themselves: a key is accepted only after an accepting
+terminal or a rule whose children were accepted earlier.  Back-pointers
+therefore give an acyclic accepting proof, even if the explored quotient
+contains cycles.  The completeness hypothesis identifies this fixed
+point with the original finite-proof hierarchy problem.  The source
+lifting hypothesis makes the resulting proof DAG valid for the original
+marked input.  All generation, fixed-point and replay costs have the
+stated bound.
+\end{proof}
+
+The common dictionary is a substantive requirement.  Its entries may be
+very large integers, provided there are only polynomially many exact
+entries and the total bit mass is polynomial.  If each of $k$ marked
+coordinates instead varies freely over $B$ bits, the key bound becomes
+$2^{O(k(B+\log k))}$.  With $k=\Theta(\log n)$ and
+$B=\Theta((\log n)^2)$, this gives $\exp(O((\log n)^3))$, not the
+target $n^{O(\log n)}$.  Proving that successor endpoints stay in a
+small dictionary, or proving an equally strong exact normal form, is
+part of the geometric work.
+
+\subsection{The concrete next bridge and the exponent traps}
+
+The most direct continuation from the implemented operator is a
+\emph{marked balanced-cut theorem}: after source-authenticated
+parallelity compression, either the entire piece has disk bases and a
+bounded signed terminal certificate, or a polynomially generated,
+complete family of marked cuts satisfies the mass charge in
+\eqref{eq:quadratic-log-charge}.  Every chosen successor must retain
+polynomial bit size and an exact transport of its inherited pattern.
+The new finite group compiler enlarges the acceptable terminal class;
+the missing theorem is the guaranteed arrival in that class or the
+controlled progress of every recursive alternative.  A proof that a
+particular word policy always succeeds on the guaranteed terminal class
+would be required; its current Fibonacci counterexample prevents a
+general freeness-completeness claim.
+
+There are three common accounting failures.  Polynomial local work at
+polynomial branching depth can still cost $2^{n^{\Omega(1)}}$ even with
+two children per level.  A branching factor $n^{O(\log n)}$ at each of
+$O(\log n)$ levels gives
+$n^{O((\log n)^2)}=\exp(O((\log n)^3))$.  By contrast, multiplying a
+total call count $n^{O(\log n)}$ by a per-call cost
+$n^{O(\log n)}$ preserves $n^{O(\log n)}$: exponents add for total
+work, whereas branch choices multiply along a path.  Finally, counting
+only successfully emitted surfaces omits the potentially dominant cost
+of unsuccessful surface searches.  Both propositions above explicitly
+charge those searches and require a complete candidate mechanism.
+
+\paragraph{Recheck of the native constants.}
+The bounds $a\leq74t$ and $m,L\leq78t$ remain valid for the present
+source format.  Their word-length argument uses the source validator's
+exclusion of reverse-edge identifications and its circle-link condition:
+an interior edge-link traversal visits each local tetrahedral edge
+occurrence exactly once, so all wedge lists total at most $6t$; at most
+two endpoint ranks double this to $12t$.  The additional annular words
+use at most the $66t$ authenticated ports once in total.  These bounds
+do not constrain the full base-profile list, integer bit mass, source
+proof length, transported marking intervals, or the tetrahedron count
+of later successor states.  Those quantities cannot be absorbed into
+the constants $74$ and $78$.

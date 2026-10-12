@@ -1,0 +1,1393 @@
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_chamber_graph.py b/Topology/UnknotRecognition/fast/fastunknot/normal_chamber_graph.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..b52e0f88ec4066fb01f66b91b6038c732876f698
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_chamber_graph.py
+@@ -0,0 +1,223 @@
++"""Source-authenticated chamber graphs for labelled normal components.
++
++The input is one embedded normal surface and one representative disc per
++component.  Component labels are checked by an exact scalar orbit census;
++the orientation double must have twice as many components.  A second
++scalar census locates the two sides of every component in the actual cut.
++Normal copies are never enumerated.  This is an observer, not a knot test.
++"""
++
++from .interval_orbits import count_orbits
++from .normal_cut_complement import _chamber_system
++from .normal_surface_geometry import (
++    _arc_system, _coordinates, _edge, _fingerprint, _prepare,
++)
++from .integer_codec import encoded_integer
++from .weighted_orbits import weighted_orbit_histogram
++
++
++def _representatives(rows, supplied, check):
++    if supplied is None:
++        supplied = []
++        for t, row in enumerate(rows):
++            check()
++            present = next((c for c, n in enumerate(row) if n), None)
++            if present is not None:
++                supplied = [dict(tetrahedron=t, column=present, rank=0)]
++                break
++    if type(supplied) is not list:
++        raise ValueError('representatives must be a list of normal disc records')
++    result = []
++    for record in supplied:
++        check()
++        if type(record) is not dict or set(record) != {'tetrahedron', 'column', 'rank'}:
++            raise ValueError('a representative requires tetrahedron, column and rank')
++        t, c, r = (encoded_integer(record[key]) for key in ('tetrahedron', 'column', 'rank'))
++        if not (0 <= t < len(rows) and 0 <= c < 7 and 0 <= r < rows[t][c]):
++            raise ValueError('normal disc representative is outside the source')
++        result.append(dict(tetrahedron=t, column=c, rank=r))
++    return result
++
++
++def _markers(prepared, analysed, representatives, check):
++    """Locate an edge vertex and both adjacent chambers of each marked disc."""
++    rows = analysed['rows']
++    offsets, total = {}, 0
++    for edge, weight in sorted(analysed['weights'].items()):
++        check()
++        offsets[edge] = total
++        total += weight
++    layout, size = [], 0
++    for row in rows:
++        check()
++        quad = sum(row[4:])
++        typ = next((c - 4 for c in range(4, 7) if row[c]), None)
++        chain = size
++        size += quad + 1
++        arms = []
++        for value in row[:4]:
++            arms.append(size)
++            size += value
++        layout.append((chain, arms, quad, typ))
++    records = []
++    for label, representative in enumerate(representatives):
++        check()
++        t, c, rank = (representative[key] for key in ('tetrahedron', 'column', 'rank'))
++        row = rows[t]
++        chain, arms, quad, typ = layout[t]
++        if c < 4:
++            a, b = c, next(v for v in range(4) if v != c)
++            edge_rank = rank
++            minus = arms[c] + rank
++            plus = (minus + 1 if rank + 1 < row[c] else
++                    chain + (quad if typ is not None and c not in (0, typ + 1) else 0))
++        else:
++            a, b = 0, next(v for v in range(4) if v not in (0, c - 3))
++            edge_rank = row[a] + rank
++            minus, plus = chain + rank, chain + rank + 1
++        local = _edge(t, a, b)
++        root = prepared['edge_roots'][local]
++        backwards = prepared['edge_orientations'][local] ^ int(a > b)
++        point = offsets[root] + (analysed['weights'][root] - 1 - edge_rank
++                                 if backwards else edge_rank)
++        records.append(dict(label=label, surface_point=point,
++                            negative_chamber=minus, positive_chamber=plus))
++    return total, size, records
++
++
++def _graph(histogram, count, check):
++    """Decode the exact scalar side census with stable chamber labels."""
++    if count == 0:
++        return dict(vertices=1, edges=[], chamber_masks=[0], cycle_rank=0)
++    masks, used = [], 0
++    for record in histogram:
++        check()
++        weight, multiplicity = record['weight'][0], record['orbits']
++        if weight <= 0 or multiplicity != 1 or weight.bit_length() > 2 * count or used & weight:
++            raise ArithmeticError('invalid authenticated side partition')
++        masks.append(weight)
++        used |= weight
++    if used != (1 << (2 * count)) - 1:
++        raise ArithmeticError('the chamber census lost a side marker')
++    masks.sort(key=lambda mask: (mask & -mask).bit_length())
++    location = {}
++    for vertex, mask in enumerate(masks):
++        while mask:
++            check()
++            bit = mask & -mask
++            location[bit.bit_length() - 1] = vertex
++            mask -= bit
++    edges = [[location[2 * i], location[2 * i + 1]] for i in range(count)]
++    parent = list(range(len(masks)))
++
++    def root(v):
++        while parent[v] != v:
++            parent[v] = parent[parent[v]]
++            v = parent[v]
++        return v
++
++    for a, b in edges:
++        check()
++        parent[root(a)] = root(b)
++    if not masks or len({root(v) for v in parent}) != 1:
++        raise ArithmeticError('the chamber graph of a connected source is disconnected')
++    return dict(vertices=len(masks), edges=edges, chamber_masks=masks,
++                cycle_rank=count - len(masks) + 1)
++
++
++def normal_chamber_graph(triangulation, coordinates, representatives=None, *,
++                         max_cycles=None, record_certificate=False, check=lambda: None):
++    """Export the oriented graph dual to all components of a normal surface.
++
++    Representatives are explicit ``{tetrahedron, column, rank}`` records,
++    indexed from zero.  A missing list tries the first disc; this succeeds
++    only for a connected surface (or the empty surface).  Labels must be
++    exhaustive and distinct, and every component must be two-sided.  Failure
++    of these conditions or of an orbit allowance returns INCONCLUSIVE.
++
++    The two endpoints of edge i are the chambers on the locally chosen
++    negative and positive sides of representative i.  They determine a
++    coorientation because the entire component has been proved two-sided.
++    Any subset J is simultaneously nonseparating precisely when deleting
++    the graph edges J leaves a connected graph.  No geometric dual routes,
++    edit-persistence proof, hierarchy step or knot verdict are supplied.
++    """
++    check()
++    if type(record_certificate) is not bool:
++        raise ValueError('record_certificate must be bool')
++    if max_cycles is not None and (type(max_cycles) is not int or max_cycles < 0):
++        raise ValueError('max_cycles must be a nonnegative integer or None')
++    prepared = _prepare(triangulation, check)
++    analysed = _coordinates(prepared, coordinates, check)
++    chosen = _representatives(analysed['rows'], representatives, check)
++    points, chambers, marks = _markers(prepared, analysed, chosen, check)
++    count = len(chosen)
++    result = dict(status='INCONCLUSIVE', stats=dict(orbit_cycles=0),
++                  trust='source-labelled chamber graph; no knot or edit-persistence verdict')
++    proofs = {}
++    if analysed['normal_disks'] == 0:
++        graph = _graph([], 0, check)
++    else:
++        if count == 0:
++            result['reason'] = 'representatives_do_not_label_components'
++            return result
++        size, pairs = _arc_system(prepared, analysed, check=check)
++        if size != points:
++            raise ArithmeticError('surface marker namespace disagrees')
++        weights = [(m['surface_point'], m['surface_point'] + 1, [1 << i])
++                   for i, m in enumerate(marks)]
++        labelled = weighted_orbit_histogram(size, pairs, weights, dimension=1,
++            max_cycles=max_cycles, record_certificate=record_certificate, check=check)
++        result['stats']['surface_labels'] = labelled['stats']
++        used = labelled['stats']['orbit_cycles']
++        result['stats']['orbit_cycles'] = used
++        if labelled['status'] != 'COMPLETE':
++            result['reason'] = 'shared_orbit_allowance_exhausted'
++            return result
++        expected = [dict(weight=[1 << i], orbits=1) for i in range(count)]
++        if labelled['histogram'] != expected:
++            result['reason'] = 'representatives_do_not_label_components'
++            return result
++        size, pairs = _arc_system(prepared, analysed, scale=2, check=check)
++        doubled = count_orbits(size, pairs, max_cycles=None if max_cycles is None else max_cycles - used,
++                               record_certificate=record_certificate, check=check)
++        used += doubled.cycles
++        result['stats']['orientation_double'] = dict(orbit_cycles=doubled.cycles, **doubled.stats)
++        result['stats']['orbit_cycles'] = used
++        if not doubled.complete:
++            result['reason'] = 'shared_orbit_allowance_exhausted'
++            return result
++        if doubled.orbits != 2 * count:
++            result['reason'] = 'one_sided_surface_component'
++            return result
++        size, pairs = _chamber_system(prepared, analysed['rows'], check)
++        if size != chambers:
++            raise ArithmeticError('chamber marker namespace disagrees')
++        weights = []
++        for i, marker in enumerate(marks):
++            check()
++            for side, key in enumerate(('negative_chamber', 'positive_chamber')):
++                point = marker[key]
++                weights.append((point, point + 1, [1 << (2 * i + side)]))
++        sides = weighted_orbit_histogram(size, pairs, weights, dimension=1,
++            max_cycles=None if max_cycles is None else max_cycles - used,
++            record_certificate=record_certificate, check=check)
++        result['stats']['chamber_sides'] = sides['stats']
++        used += sides['stats']['orbit_cycles']
++        result['stats']['orbit_cycles'] = used
++        if sides['status'] != 'COMPLETE':
++            result['reason'] = 'shared_orbit_allowance_exhausted'
++            return result
++        graph = _graph(sides['histogram'], count, check)
++        if record_certificate:
++            proofs = dict(surface_labels=labelled['certificate'],
++                          orientation_double=doubled.certificate, chamber_sides=sides['certificate'])
++    result.update(status='COMPLETE', graph=graph, representatives=chosen, markers=marks,
++                  surface_components=count, normal_disks=analysed['normal_disks'],
++                  surface_points=points, chamber_points=chambers)
++    if record_certificate:
++        result['certificate'] = dict(schema='normal-chamber-graph-v1',
++            input_sha256=_fingerprint(triangulation, analysed, check),
++            representatives=chosen, markers=marks, graph=graph, proofs=proofs)
++    check()
++    return result
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_chamber_graph_verify.py b/Topology/UnknotRecognition/fast/fastunknot/normal_chamber_graph_verify.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..21bb3f199a71408121dc65142f584f842b54752f
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_chamber_graph_verify.py
+@@ -0,0 +1,208 @@
++"""Independent source reconstruction for labelled normal chamber graphs.
++
++No chamber-graph exporter, complement producer, graph decoder or orbit search
++is imported.  Representative sides come from the independent raw cut-cell
++reference; chamber pairings come from the independent face-region reference.
++The established finite source validator and normal arc system are shared.
++"""
++
++from .integer_codec import certificate_equal, encoded_integer
++from .interval_orbit_verify import verify_orbit_certificate
++from .normal_cut_cells_verify import _reference_cells
++from .normal_cut_complement_verify import _reference_chambers
++from .normal_surface_geometry import _arc_system, _coordinates, _edge, _fingerprint, _prepare
++from .weighted_orbit_verify import verify_weighted_orbit_certificate
++
++
++def _decode_representatives(rows, records, check):
++    if type(records) is not list:
++        return None
++    decoded = []
++    for record in records:
++        check()
++        if type(record) is not dict or set(record) != {'tetrahedron', 'column', 'rank'}:
++            return None
++        try:
++            t, c, r = (encoded_integer(record[key]) for key in ('tetrahedron', 'column', 'rank'))
++        except ValueError:
++            return None
++        if not (0 <= t < len(rows) and 0 <= c < 7 and 0 <= r < rows[t][c]):
++            return None
++        decoded.append((t, c, r))
++    return decoded
++
++
++def _source_markers(prepared, analysed, representatives, check):
++    cells = _reference_cells(prepared, analysed, check)
++    families = {(f['tetrahedron'], f['column'], f['side']): f
++                for f in cells['faces'] if f['kind'] == 'horizontal'}
++    carriers = {}
++    for item in cells['face_incidence']:
++        check()
++        if item['kind'] == 'horizontal':
++            key = item['tetrahedron'], item['column'], item['side']
++            carriers.setdefault(key, []).append(item)
++    offsets, size = {}, 0
++    for edge in sorted(analysed['weights']):
++        check()
++        offsets[edge] = size
++        size += analysed['weights'][edge]
++    result = []
++    for label, (t, c, r) in enumerate(representatives):
++        check()
++        family = families[t, c, 0]
++        # Select the same source edge as the public marker convention, then
++        # derive its point through a genuine independently oriented face arc.
++        anchor = c if c < 4 else 0
++        other = min(v for v in range(4) if v != anchor and
++                    (c < 4 or v != c - 3))
++        arc = next(a for a in family['cycle'] if a['kind'] == 'normal_arc'
++                   and a['corner'] == anchor and a['face'] != other)
++        local_rank = arc['rank'][0] * r + arc['rank'][1]
++        local = _edge(t, anchor, other)
++        edge = prepared['edge_roots'][local]
++        reverse = bool(prepared['edge_orientations'][local]) != (anchor > other)
++        vertex = offsets[edge] + (analysed['weights'][edge] - 1 - local_rank
++                                  if reverse else local_rank)
++        sides = []
++        for side in (0, 1):
++            point = families[t, c, side]['start'] + r
++            candidates = [a for a in carriers[t, c, side]
++                          if a['face_start'] <= point < a['face_stop']]
++            if len(candidates) != 1:
++                raise ArithmeticError('the reference normal face has no unique chamber')
++            slope, offset = candidates[0]['chamber']
++            sides.append(slope * point + offset)
++        result.append(dict(label=label, surface_point=vertex,
++                           negative_chamber=sides[0], positive_chamber=sides[1]))
++    return size, cells['chamber_points'], result
++
++
++def _expected_graph(histogram, components, check):
++    values = []
++    for entry in histogram:
++        check()
++        try:
++            value = encoded_integer(entry['weight'][0])
++            multiplicity = encoded_integer(entry['orbits'])
++        except (ValueError, KeyError, IndexError, TypeError):
++            return None
++        if value <= 0 or multiplicity != 1 or value >= 1 << (2 * components):
++            return None
++        values.append(value)
++    values.sort(key=lambda x: (x & -x).bit_length())
++    owners = []
++    for side in range(2 * components):
++        check()
++        where = [v for v, value in enumerate(values) if value & (1 << side)]
++        if len(where) != 1:
++            return None
++        owners.append(where[0])
++    edges = [[owners[2 * i], owners[2 * i + 1]] for i in range(components)]
++    if not values:
++        return None
++    neighbours = {v: [] for v in range(len(values))}
++    for a, b in edges:
++        check()
++        neighbours[a].append(b)
++        neighbours[b].append(a)
++    found, pending = {0}, [0]
++    for vertex in pending:
++        check()
++        for other in neighbours[vertex]:
++            if other not in found:
++                found.add(other)
++                pending.append(other)
++    if len(found) != len(values):
++        return None
++    return dict(vertices=len(values), edges=edges, chamber_masks=values,
++                cycle_rank=components - len(values) + 1)
++
++
++def verify_normal_chamber_graph(triangulation, coordinates, certificate, *,
++                                max_operations=None, check=lambda: None):
++    """Verify source-bound component labels, coorientability and every edge.
++
++    The operation limit bounds the combined number of recorded orbit events,
++    rather than elapsed time.  A limit or malformed certificate returns False.
++    Source errors and cancellation callbacks propagate as in native verifiers.
++    Successful replay proves the chamber graph; it does not authenticate a
++    subsequent edit, support footprint or geometric dual-loop description.
++    """
++    check()
++    if max_operations is not None and (type(max_operations) is not int or max_operations < 0):
++        raise ValueError('max_operations must be a nonnegative integer or None')
++    fields = {'schema', 'input_sha256', 'representatives', 'markers', 'graph', 'proofs'}
++    if type(certificate) is not dict or set(certificate) != fields:
++        return False
++    if certificate['schema'] != 'normal-chamber-graph-v1':
++        return False
++    prepared = _prepare(triangulation, check)
++    analysed = _coordinates(prepared, coordinates, check)
++    if certificate['input_sha256'] != _fingerprint(triangulation, analysed, check):
++        return False
++    reps = _decode_representatives(analysed['rows'], certificate['representatives'], check)
++    if reps is None:
++        return False
++    proofs = certificate['proofs']
++    if analysed['normal_disks'] == 0:
++        expected = dict(vertices=1, edges=[], chamber_masks=[0], cycle_rank=0)
++        return (reps == [] and certificate_equal(certificate['markers'], [])
++                and proofs == {} and certificate_equal(certificate['graph'], expected))
++    components = len(reps)
++    if not components or type(proofs) is not dict or set(proofs) != {
++            'surface_labels', 'orientation_double', 'chamber_sides'}:
++        return False
++    traces = []
++    for key in ('surface_labels', 'orientation_double', 'chamber_sides'):
++        check()
++        proof = proofs[key]
++        if type(proof) is not dict:
++            return False
++        trace = proof if key == 'orientation_double' else proof.get('orbit_proof')
++        if type(trace) is not dict or type(trace.get('operations')) is not list:
++            return False
++        traces.append(trace)
++    if max_operations is not None and sum(len(t['operations']) for t in traces) > max_operations:
++        return False
++    points, chamber_points, marks = _source_markers(prepared, analysed, reps, check)
++    if not certificate_equal(certificate['markers'], marks):
++        return False
++    size, pairs = _arc_system(prepared, analysed, check=check)
++    if size != points:
++        return False
++    weights = [(m['surface_point'], m['surface_point'] + 1, [1 << i])
++               for i, m in enumerate(marks)]
++    labelled = proofs['surface_labels']
++    if not verify_weighted_orbit_certificate(size, pairs, weights, labelled,
++                                             dimension=1, check=check):
++        return False
++    expected = [dict(weight=[1 << i], orbits=1) for i in range(components)]
++    if not certificate_equal(labelled['histogram'], expected):
++        return False
++    size, pairs = _arc_system(prepared, analysed, scale=2, check=check)
++    doubled = proofs['orientation_double']
++    if not verify_orbit_certificate(size, pairs, doubled, check=check):
++        return False
++    try:
++        double_components = encoded_integer(doubled['orbit_count'])
++    except (ValueError, KeyError):
++        return False
++    if double_components != 2 * components:
++        return False
++    size, pairs = _reference_chambers(prepared, analysed['rows'], check)
++    if size != chamber_points:
++        return False
++    weights = []
++    for i, m in enumerate(marks):
++        check()
++        for bit, key in ((2 * i, 'negative_chamber'), (2 * i + 1, 'positive_chamber')):
++            point = m[key]
++            weights.append((point, point + 1, [1 << bit]))
++    sides = proofs['chamber_sides']
++    if not verify_weighted_orbit_certificate(size, pairs, weights, sides,
++                                             dimension=1, check=check):
++        return False
++    graph = _expected_graph(sides['histogram'], components, check)
++    check()
++    return graph is not None and certificate_equal(certificate['graph'], graph)
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/weighted_orbit_verify.py b/Topology/UnknotRecognition/fast/fastunknot/weighted_orbit_verify.py
+index c8a05deff183e490cbafed0978654c390774a100..11cf5fbfc77202dbaeaf8d6e9d457ff4dffb41c7 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/weighted_orbit_verify.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/weighted_orbit_verify.py
+@@ -12,6 +12,7 @@
+ import re
+ 
+ from .interval_orbit_verify import verify_orbit_certificate
++from .weighted_run_rope import LocalTransport, RunRopeError
+ 
+ 
+ class _InvalidWeightedProof(ValueError):
+@@ -226,7 +227,18 @@
+     return a + d - hi, a + d - lo, -1
+ 
+ 
+-def _replay(size, pairs, runs, trace, dimension, poll):
++def _replay(size, pairs, runs, trace, dimension, poll, transport=None):
++    # Both backends replay the same already authenticated interval trace.
++    # The flat implementation remains an executable reference comparator.
++    if transport is None:
++        contract = _contract_weights
++        translation = _translation_fold
++        reflection = _reflection_fold
++    else:
++        runs = transport.prepare(runs, poll)
++        contract = transport.contract
++        translation = transport.translation
++        reflection = transport.reflection
+     histogram = defaultdict(int)
+     for event in trace:
+         poll()
+@@ -259,7 +271,7 @@
+             pairs[target] = [a, b, c, d, sign * left_sign * right_sign]
+         elif kind == "contract":
+             gaps = [[_integer(x) for x in gap] for gap in event["gaps"]]
+-            runs, size = _contract_weights(runs, size, gaps, histogram, poll)
++            runs, size = contract(runs, size, gaps, histogram, poll)
+ 
+             def shift(point):
+                 return point - sum(hi - lo + 1 for lo, hi in gaps if hi < point)
+@@ -271,9 +283,9 @@
+             cut = _integer(event["new_size"])
+             a, b, c, d, sign = pairs[index]
+             if sign == 1:
+-                runs = _translation_fold(runs, size, cut, c - a, dimension, poll)
++                runs = translation(runs, size, cut, c - a, dimension, poll)
+             else:
+-                runs = _reflection_fold(runs, size, cut, a + d, dimension, poll)
++                runs = reflection(runs, size, cut, a + d, dimension, poll)
+             removed = size - cut
+             if cut == c:
+                 del pairs[index]
+@@ -287,6 +299,12 @@
+     if size != 0 or pairs or runs:
+         raise _InvalidWeightedProof("Weighted trace did not finish")
+     return dict(histogram)
++
++
++def _replay_local(size, pairs, runs, trace, dimension, poll, metrics=None):
++    """Replay weights while retaining untouched run subtrees by identity."""
++    return _replay(size, pairs, runs, trace, dimension, poll,
++                   transport=LocalTransport(metrics))
+ 
+ 
+ def _check_weighted_certificate(size, pairings, weight_intervals, certificate,
+@@ -353,7 +371,7 @@
+             final_mass = _add(final_mass, _scale(value, count))
+         poll()
+         return original_mass == final_mass
+-    except _InvalidWeightedProof:
++    except (_InvalidWeightedProof, RunRopeError):
+         return False
+ 
+ 
+@@ -369,4 +387,12 @@
+     """
+     return _check_weighted_certificate(
+         size, pairings, weight_intervals, certificate, dimension=dimension, check=check,
++        replay_weights=_replay_local, single_orbit_shortcut=True)
++
++
++def verify_weighted_orbit_certificate_reference(size, pairings, weight_intervals, certificate,
++                                                *, dimension=None, check=None):
++    """The retained flat-run reference verifier, with the same public checks."""
++    return _check_weighted_certificate(
++        size, pairings, weight_intervals, certificate, dimension=dimension, check=check,
+         replay_weights=_replay, single_orbit_shortcut=True)
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/weighted_run_rope.py b/Topology/UnknotRecognition/fast/fastunknot/weighted_run_rope.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..b3d8a94c9e820301336b57e84c343f25a94c2842
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/weighted_run_rope.py
+@@ -0,0 +1,312 @@
++"""Local additive-weight transport on deterministic AVL run sequences.
++
++Coordinates are implicit prefix lengths.  Splitting and joining a sequence
++therefore never rewrites the coordinates of an untouched run.  This module
++does not authenticate an orbit trace: its caller must do that independently.
++Translation transport uses a residue anchor and the discrete derivative;
++reflection transport reverses the deleted suffix's run order.  Constant
++additions are lazy on whole receiver subtrees: their internal run partition
++is never visited, since adding one vector preserves all internal equalities.
++"""
++
++
++class RunRopeError(ValueError):
++    """A checked transport operation violates the run-sequence contract."""
++
++
++class _Node:
++    __slots__ = ('left', 'right', 'span', 'height', 'count', 'value', 'lazy',
++                 'first_span', 'last_span', 'first_value', 'last_value')
++
++    def __init__(self, span, value=None, left=None, right=None):
++        self.left, self.right, self.span, self.value = left, right, span, value
++        self.lazy = None
++        if left is None:
++            self.height = self.count = 1
++            self.first_span = self.last_span = span
++            self.first_value = self.last_value = value
++        else:
++            self.height = 1 + max(left.height, right.height)
++            self.count = left.count + right.count
++            self.first_span, self.last_span = left.first_span, right.last_span
++            self.first_value, self.last_value = left.first_value, right.last_value
++
++
++def _sum(left, right):
++    return tuple(a + b for a, b in zip(left, right))
++
++
++def _add_tree(node, increment):
++    """Add one vector in constant structural time, deferring child updates."""
++    if node is None or not any(increment):
++        return node
++    if node.left is None:
++        return _Node(node.span, _sum(node.value, increment))
++    result = _Node(node.span, left=node.left, right=node.right)
++    result.lazy = increment if node.lazy is None else _sum(node.lazy, increment)
++    if not any(result.lazy):
++        result.lazy = None
++    result.first_value = _sum(node.first_value, increment)
++    result.last_value = _sum(node.last_value, increment)
++    return result
++
++
++def _push(node):
++    if node is None or node.lazy is None:
++        return node
++    return _branch(_add_tree(node.left, node.lazy), _add_tree(node.right, node.lazy))
++
++
++def _branch(left, right):
++    if left is None:
++        return right
++    if right is None:
++        return left
++    return _Node(left.span + right.span, left=left, right=right)
++
++
++def _height(node):
++    return 0 if node is None else node.height
++
++
++def _balance(left, right):
++    """Balance a join whose child heights differ by at most two."""
++    if _height(left) > _height(right) + 1:
++        left = _push(left)
++        if _height(left.left) >= _height(left.right):
++            return _branch(left.left, _branch(left.right, right))
++        pivot = _push(left.right)
++        return _branch(_branch(left.left, pivot.left), _branch(pivot.right, right))
++    if _height(right) > _height(left) + 1:
++        right = _push(right)
++        if _height(right.right) >= _height(right.left):
++            return _branch(_branch(left, right.left), right.right)
++        pivot = _push(right.left)
++        return _branch(_branch(left, pivot.left), _branch(pivot.right, right.right))
++    return _branch(left, right)
++
++
++def _join(left, right):
++    """AVL concatenation, without inspecting or coalescing boundary values."""
++    if left is None:
++        return right
++    if right is None:
++        return left
++    if left.height > right.height + 1:
++        left = _push(left)
++        return _balance(left.left, _join(left.right, right))
++    if right.height > left.height + 1:
++        right = _push(right)
++        return _balance(_join(left, right.left), right.right)
++    return _branch(left, right)
++
++
++def _split(node, point):
++    """Split at a prefix length, sharing all unaffected subtrees."""
++    if node is None:
++        if point != 0:
++            raise RunRopeError('split outside an empty run sequence')
++        return None, None
++    if point == 0:
++        return None, node
++    if point == node.span:
++        return node, None
++    if not 0 < point < node.span:
++        raise RunRopeError('split outside a run sequence')
++    if node.left is None:
++        return _Node(point, node.value), _Node(node.span - point, node.value)
++    node = _push(node)
++    if point < node.left.span:
++        left, middle = _split(node.left, point)
++        return left, _join(middle, node.right)
++    if point == node.left.span:
++        return node.left, node.right
++    middle, right = _split(node.right, point - node.left.span)
++    return _join(node.left, middle), right
++
++
++def _concat(left, right):
++    """Concatenate canonical runs, coalescing just the touching pair."""
++    if left is None or right is None:
++        return _join(left, right)
++    if left.last_value != right.first_value:
++        return _join(left, right)
++    a, b, value = left.last_span, right.first_span, left.last_value
++    prefix, _ = _split(left, left.span - a)
++    _, suffix = _split(right, b)
++    return _join(_join(prefix, _Node(a + b, value)), suffix)
++
++
++def _segments(node, reverse=False):
++    """Visit only this subtree's leaves in either direction."""
++    stack = [(node, None)] if node is not None else []
++    while stack:
++        current, inherited = stack.pop()
++        if current.left is None:
++            value = current.value if inherited is None else _sum(current.value, inherited)
++            yield current.span, value
++        else:
++            if current.lazy is not None:
++                inherited = (current.lazy if inherited is None else
++                             _sum(current.lazy, inherited))
++            if reverse:
++                stack.extend(((current.left, inherited), (current.right, inherited)))
++            else:
++                stack.extend(((current.right, inherited), (current.left, inherited)))
++
++
++def _append(entries, span, value):
++    if span <= 0:
++        if span < 0:
++            raise RunRopeError('negative run length')
++        return
++    if entries and entries[-1][1] == value:
++        entries[-1] = (entries[-1][0] + span, value)
++    else:
++        entries.append((span, value))
++
++
++def _build(entries):
++    def build(first, stop):
++        if stop == first:
++            return None
++        if stop == first + 1:
++            span, value = entries[first]
++            return _Node(span, value)
++        middle = (first + stop) // 2
++        return _branch(build(first, middle), build(middle, stop))
++    return build(0, len(entries))
++
++
++def from_runs(runs, poll=lambda: None):
++    """Build once from a canonical covering run list already checked by caller."""
++    entries, position = [], 0
++    for lo, hi, value in runs:
++        poll()
++        if lo != position or hi <= lo:
++            raise RunRopeError('initial runs do not cover their interval')
++        _append(entries, hi - lo, value)
++        position = hi
++    return _build(entries)
++
++
++def to_runs(root):
++    """Materialize for diagnostics only; transport does not call this helper."""
++    answer, position = [], 0
++    for span, value in _segments(root):
++        answer.append((position, position + span, value))
++        position += span
++    return answer
++
++
++def _range_adds(target, additions, poll, metrics):
++    """Add canonical consecutive intervals without enumerating receiver runs."""
++    retained, tail = None, target
++    for span, value in additions:
++        poll()
++        middle, tail = _split(tail, span)
++        middle = _add_tree(middle, value)
++        retained = _concat(retained, middle)
++        metrics['range_adds'] += 1
++    if tail is not None:
++        raise RunRopeError('local additions do not cover their receiver interval')
++    return retained
++
++
++class LocalTransport:
++    """A per-replay transport owner; no source or proof survives the call."""
++
++    def __init__(self, metrics=None):
++        self.metrics = {} if metrics is None else metrics
++        self.metrics.update(initial_runs=0, maximum_runs=0, folds=0,
++                            source_runs=0, target_runs=0, range_adds=0,
++                            static_gaps=0, emitted_runs=0)
++
++    def prepare(self, runs, poll):
++        root = from_runs(runs, poll)
++        self.metrics['initial_runs'] = self.metrics['maximum_runs'] = len(runs)
++        return root
++
++    def _record(self, root):
++        self.metrics['maximum_runs'] = max(
++            self.metrics['maximum_runs'], 0 if root is None else root.count)
++        return root
++
++    def translation(self, root, size, cut, period, dimension, poll):
++        """Fold suffix jumps modulo period, anchored at its first residue."""
++        if root is None or root.span != size or not 0 < period <= cut < size:
++            raise RunRopeError('invalid translation weight fold')
++        prefix, suffix = _split(root, cut)
++        before, target = _split(prefix, cut - period)
++        self.metrics['folds'] += 1
++        self.metrics['source_runs'] += suffix.count
++        self.metrics['target_runs'] += target.count
++        mapped, anchor, position = [], (0,) * dimension, 0
++        preceding = (0,) * dimension
++        for span, value in _segments(suffix):
++            poll()
++            stop = position + span
++            multiplicity = (stop - 1) // period - (position - 1) // period
++            anchor = _sum(anchor, tuple(multiplicity * x for x in value))
++            # Form the actual jump before reducing its coordinate modulo p.
++            # Adjacent source endpoints cancel here, leaving at most S+1
++            # mapped jump records for S canonical suffix runs.
++            mapped.append((position % period,
++                           tuple(a - b for a, b in zip(value, preceding))))
++            position = stop
++            preceding = value
++        mapped.append((position % period, tuple(-x for x in preceding)))
++        mapped.sort(key=lambda item: item[0])
++        added, previous, current = [], 0, anchor
++        index = 0
++        while index < len(mapped):
++            poll()
++            point, increment = mapped[index]
++            index += 1
++            while index < len(mapped) and mapped[index][0] == point:
++                increment = _sum(increment, mapped[index][1])
++                index += 1
++            if point == 0:
++                continue
++            _append(added, point - previous, current)
++            current = _sum(current, increment)
++            previous = point
++        _append(added, period - previous, current)
++        replacement = _range_adds(target, added, poll, self.metrics)
++        return self._record(_concat(before, replacement))
++
++    def reflection(self, root, size, cut, centre, dimension, poll):
++        """Reflect the removed suffix and add only on its retained image."""
++        left, right = centre - size + 1, centre - cut + 1
++        if (root is None or root.span != size or not 0 <= left < right <= cut < size):
++            raise RunRopeError('invalid reflection weight fold')
++        prefix, suffix = _split(root, cut)
++        before, rest = _split(prefix, left)
++        target, after = _split(rest, right - left)
++        self.metrics['folds'] += 1
++        self.metrics['source_runs'] += suffix.count
++        self.metrics['target_runs'] += target.count
++        replacement = _range_adds(target, _segments(suffix, reverse=True),
++                                  poll, self.metrics)
++        return self._record(_concat(_concat(before, replacement), after))
++
++    def contract(self, root, size, gaps, histogram, poll):
++        """Delete static gaps without traversing retained run interiors."""
++        if (0 if root is None else root.span) != size:
++            raise RunRopeError('static gap size differs from run sequence')
++        tail, retained, position, removed = root, None, 0, 0
++        for lo, hi in gaps:
++            poll()
++            if not position <= lo <= hi < size:
++                raise RunRopeError('static gaps are not ordered disjoint intervals')
++            unchanged, rest = _split(tail, lo - position)
++            deleted, tail = _split(rest, hi - lo + 1)
++            for span, value in _segments(deleted):
++                poll()
++                histogram[value] += span
++                self.metrics['emitted_runs'] += 1
++            retained = _concat(retained, unchanged)
++            position = hi + 1
++            removed += hi - lo + 1
++            self.metrics['static_gaps'] += 1
++        return self._record(_concat(retained, tail)), size - removed
+diff --git a/Topology/UnknotRecognition/fast/tests/test_normal_chamber_graph.py b/Topology/UnknotRecognition/fast/tests/test_normal_chamber_graph.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..89e0b45a600dfa1cef74a65c96b6144f61197557
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_normal_chamber_graph.py
+@@ -0,0 +1,317 @@
++"""Native chamber graphs against explicitly glued small normal cut models."""
++
++from contextlib import ExitStack
++from copy import deepcopy
++import json
++from pathlib import Path
++import random
++import unittest
++from unittest.mock import patch
++
++from fastunknot.integer_codec import encoded_integer
++from fastunknot.normal_chamber_graph import normal_chamber_graph
++from fastunknot.normal_chamber_graph_verify import verify_normal_chamber_graph
++from fastunknot.normal_cut_cells_verify import _reference_cells
++from fastunknot.normal_cut_complement_verify import _reference_chambers
++from fastunknot.normal_surface_geometry import _coordinates, _prepare, _quad
++from normal_orbit_research.fixtures import layered_torus
++from tests.test_normal_surface_orbits import relabel
++
++
++class DSU:
++    def __init__(self, count):
++        self.parent = list(range(count))
++
++    def root(self, vertex):
++        while self.parent[vertex] != vertex:
++            vertex = self.parent[vertex]
++        return vertex
++
++    def join(self, a, b):
++        a, b = self.root(a), self.root(b)
++        if a != b:
++            self.parent[b] = a
++
++
++def literal_disc_components(prepared, rows):
++    """Glue individual discs by face-arc ranks, independent of edge orbits."""
++    discs = [(t, c, r) for t, row in enumerate(rows)
++             for c, count in enumerate(row) for r in range(count)]
++    if len(discs) > 20000:
++        raise ValueError('literal reference is deliberately bounded')
++    number = {disc: i for i, disc in enumerate(discs)}
++    dsu = DSU(len(discs))
++
++    def stack(t, face, vertex):
++        row = rows[t]
++        col = 4 + _quad(face, vertex)
++        ranks = range(row[col]) if vertex in (0, col - 3) else range(row[col] - 1, -1, -1)
++        return ([(t, vertex, r) for r in range(row[vertex])]
++                + [(t, col, r) for r in ranks])
++
++    for t, f, u, g, permutation in prepared['pairs']:
++        for vertex in range(4):
++            if vertex == f:
++                continue
++            a, b = stack(t, f, vertex), stack(u, g, permutation[vertex])
++            if len(a) != len(b):
++                raise AssertionError('literal face arcs do not match')
++            for x, y in zip(a, b):
++                dsu.join(number[x], number[y])
++    groups = {}
++    for i, disc in enumerate(discs):
++        groups.setdefault(dsu.root(i), []).append(disc)
++    return list(groups.values())
++
++
++def literal_chamber_model(prepared, analysed, groups):
++    """Expand actual cut cells and all omitted-surface gluings for an oracle."""
++    cells = _reference_cells(prepared, analysed, lambda: None)
++    if cells['chamber_points'] > 20000:
++        raise ValueError('literal cut reference is deliberately bounded')
++    dsu = DSU(cells['chamber_points'])
++    incidence = {}
++    for item in cells['face_incidence']:
++        for face in range(item['face_start'], item['face_stop']):
++            slope, offset = item['chamber']
++            incidence.setdefault(face, []).append(slope * face + offset)
++    for family in cells['faces']:
++        if family['kind'] == 'horizontal' or family['boundary']:
++            continue
++        for face in range(family['start'], family['stop']):
++            endpoints = incidence[face]
++            if len(endpoints) != 2:
++                raise AssertionError('interior original face has wrong valence')
++            dsu.join(*endpoints)
++    horizontal = {(f['tetrahedron'], f['column'], f['side']): f['start']
++                  for f in cells['faces'] if f['kind'] == 'horizontal'}
++    gates = []
++    for group in groups:
++        group_gates = []
++        for t, c, r in group:
++            group_gates.append(tuple(incidence[horizontal[t, c, side] + r][0]
++                                     for side in (0, 1)))
++        gates.append(group_gates)
++    return dsu, gates
++
++
++def labelled_representatives(groups):
++    return [dict(tetrahedron=g[0][0], column=g[0][1], rank=g[0][2]) for g in groups]
++
++
++def check_literal_graph(test, raw, rows, *, exhaustive_limit=8):
++    prepared = _prepare(raw, lambda: None)
++    analysed = _coordinates(prepared, rows, lambda: None)
++    groups = literal_disc_components(prepared, analysed['rows'])
++    reps = labelled_representatives(groups)
++    output = normal_chamber_graph(raw, rows, reps, record_certificate=True)
++    doubled = literal_disc_components(prepared, [[2 * x for x in row] for row in analysed['rows']])
++    if len(doubled) != 2 * len(groups):
++        test.assertEqual(output['status'], 'INCONCLUSIVE')
++        test.assertEqual(output['reason'], 'one_sided_surface_component')
++        test.assertNotIn('certificate', output)
++        return output, 0
++    test.assertEqual(output['status'], 'COMPLETE')
++    test.assertTrue(verify_normal_chamber_graph(raw, rows, output['certificate']))
++    base, gates = literal_chamber_model(prepared, analysed, groups)
++    test.assertEqual(output['graph']['vertices'], len({base.root(v) for v in base.parent}))
++    k = len(groups)
++    choices = range(1 << k) if k <= exhaustive_limit else [0, (1 << k) - 1]
++    checked = 0
++    for chosen in choices:
++        literal = deepcopy(base)
++        graph = DSU(output['graph']['vertices'])
++        for i, endpoints in enumerate(output['graph']['edges']):
++            if chosen & (1 << i):
++                continue
++            graph.join(*endpoints)
++            for pair in gates[i]:
++                literal.join(*pair)
++        expected = len({literal.root(v) for v in literal.parent})
++        actual = len({graph.root(v) for v in graph.parent})
++        test.assertEqual(actual, expected)
++        # Regenerate a separate cut from exactly the selected component
++        # coordinates, then expand its independent chamber relation.
++        selected_rows = [[0] * 7 for _ in rows]
++        for i, group in enumerate(groups):
++            if chosen & (1 << i):
++                for t, c, _ in group:
++                    selected_rows[t][c] += 1
++        _coordinates(prepared, selected_rows, lambda: None)
++        size, pairings = _reference_chambers(prepared, selected_rows, lambda: None)
++        regenerated = DSU(size)
++        for a, b, c, d, sign in pairings:
++            for rank in range(b - a + 1):
++                regenerated.join(a + rank, c + rank if sign == 1 else d - rank)
++        test.assertEqual(actual, len({regenerated.root(v) for v in regenerated.parent}))
++        checked += 1
++    return output, checked
++
++
++class NormalChamberGraphTests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        cls.bank = json.loads((Path(__file__).parents[1]
++            / 'marked_parallelity_research/corpus.json').read_text())['cases']
++        cls.base = cls.bank[0]
++        cls.raw, cls.rows = cls.base['triangulation'], cls.base['coordinates']
++
++    def test_native_small_corpus_and_all_regluing_subsets(self):
++        checks, positives, one_sided = 0, 0, 0
++        for case in self.bank:
++            rows = [[encoded_integer(x) for x in row] for row in case['coordinates']]
++            if sum(map(sum, rows)) > 500:
++                continue
++            output, number = check_literal_graph(self, case['triangulation'], rows)
++            checks += number
++            positives += output['status'] == 'COMPLETE'
++            one_sided += output.get('reason') == 'one_sided_surface_component'
++        self.assertGreater(positives, 40)
++        self.assertGreater(one_sided, 0)
++        self.assertGreater(checks, 100)
++
++    def test_parallel_components_are_labelled_without_coordinate_division(self):
++        for scale in (2, 3, 7):
++            rows = [[scale * x for x in row] for row in self.rows]
++            reps = [dict(tetrahedron=0, column=2, rank=i) for i in range(scale)]
++            result = normal_chamber_graph(self.raw, rows, reps, record_certificate=True)
++            self.assertEqual(result['status'], 'COMPLETE')
++            self.assertEqual(result['surface_components'], scale)
++            self.assertEqual(result['graph']['vertices'], scale + 1)
++            self.assertTrue(verify_normal_chamber_graph(self.raw, rows, result['certificate']))
++            refused = normal_chamber_graph(self.raw, rows)
++            self.assertEqual(refused['reason'], 'representatives_do_not_label_components')
++            self.assertNotIn('graph', refused)
++
++    def test_actual_one_sided_surface_and_its_two_sided_double(self):
++        rows = [[0, 0, 0, 0, 0, 1, 0]]
++        result = normal_chamber_graph(self.raw, rows)
++        self.assertEqual(result['reason'], 'one_sided_surface_component')
++        result = normal_chamber_graph(self.raw, [[2 * x for x in rows[0]]], record_certificate=True)
++        self.assertEqual(result['status'], 'COMPLETE')
++        self.assertTrue(verify_normal_chamber_graph(self.raw, [[2 * x for x in rows[0]]], result['certificate']))
++
++    def test_same_component_marked_twice_is_rejected(self):
++        reps = [dict(tetrahedron=0, column=c, rank=0) for c in (2, 3)]
++        result = normal_chamber_graph(self.raw, self.rows, reps, record_certificate=True)
++        self.assertEqual(result['reason'], 'representatives_do_not_label_components')
++        self.assertNotIn('certificate', result)
++
++    def test_empty_surface_and_invalid_representatives(self):
++        rows = [[0] * 7 for _ in self.rows]
++        result = normal_chamber_graph(self.raw, rows, record_certificate=True)
++        self.assertEqual(result['graph'], dict(vertices=1, edges=[], chamber_masks=[0], cycle_rank=0))
++        self.assertTrue(verify_normal_chamber_graph(self.raw, rows, result['certificate']))
++        for reps in ({}, [dict(tetrahedron=False, column=2, rank=0)],
++                     [dict(tetrahedron=0, column=2, rank=1)], [dict(tetrahedron=0, column=7, rank=0)]):
++            with self.assertRaises(ValueError):
++                normal_chamber_graph(self.raw, self.rows, reps)
++
++    def test_source_mutations_producer_disabled_and_hexadecimal_fields(self):
++        result = normal_chamber_graph(self.raw, self.rows, record_certificate=True)
++        proof = result['certificate']
++        changes = [
++            lambda p: p.update(input_sha256='0' * 64),
++            lambda p: p['representatives'][0].update(rank=True),
++            lambda p: p['markers'][0].update(surface_point=999),
++            lambda p: p['markers'][0].update(positive_chamber=999),
++            lambda p: p['graph'].update(cycle_rank=999),
++            lambda p: p['graph']['edges'][0].__setitem__(1, 0),
++            lambda p: p['proofs']['orientation_double'].update(orbit_count=1),
++            lambda p: p['proofs']['surface_labels']['histogram'][0].update(weight=[2]),
++            lambda p: p['proofs']['chamber_sides']['histogram'][0].update(orbits=2),
++            lambda p: p['proofs'].pop('orientation_double'),
++        ]
++        for change in changes:
++            malformed = deepcopy(proof)
++            change(malformed)
++            self.assertFalse(verify_normal_chamber_graph(self.raw, self.rows, malformed))
++        encoded = deepcopy(proof)
++        encoded['representatives'][0]['tetrahedron'] = '0x0'
++        encoded['markers'][0]['label'] = '+0X0'
++        with ExitStack() as stack:
++            for name in ('fastunknot.normal_chamber_graph.normal_chamber_graph',
++                         'fastunknot.normal_chamber_graph._markers',
++                         'fastunknot.normal_chamber_graph._graph',
++                         'fastunknot.normal_cut_complement._chamber_system',
++                         'fastunknot.weighted_orbits.weighted_orbit_histogram',
++                         'fastunknot.interval_orbits.count_orbits'):
++                stack.enter_context(patch(name, side_effect=AssertionError('producer called')))
++            self.assertTrue(verify_normal_chamber_graph(self.raw, self.rows, encoded))
++
++    def test_shared_allowance_and_callback_propagation(self):
++        result = normal_chamber_graph(self.raw, self.rows, record_certificate=True)
++        used = result['stats']['orbit_cycles']
++        self.assertGreater(used, 0)
++        self.assertEqual(normal_chamber_graph(self.raw, self.rows, max_cycles=used)['status'], 'COMPLETE')
++        for cap in (0, used - 1):
++            incomplete = normal_chamber_graph(self.raw, self.rows, max_cycles=cap, record_certificate=True)
++            self.assertEqual(incomplete['status'], 'INCONCLUSIVE')
++            self.assertNotIn('certificate', incomplete)
++            self.assertNotIn('graph', incomplete)
++        self.assertFalse(verify_normal_chamber_graph(self.raw, self.rows, result['certificate'], max_operations=0))
++
++        def stop():
++            raise RuntimeError('cancelled')
++
++        with self.assertRaises(RuntimeError):
++            normal_chamber_graph(self.raw, self.rows, check=stop)
++        with self.assertRaises(RuntimeError):
++            verify_normal_chamber_graph(self.raw, self.rows, result['certificate'], check=stop)
++
++    def test_binary_component_explosion_is_not_expanded(self):
++        case = next(c for c in self.bank if c['id'] == 'binary/1/16384')
++        result = normal_chamber_graph(case['triangulation'], case['coordinates'], record_certificate=True)
++        self.assertEqual(result['status'], 'INCONCLUSIVE')
++        self.assertEqual(result['reason'], 'representatives_do_not_label_components')
++        self.assertLess(result['stats']['orbit_cycles'], 100)
++        self.assertNotIn('certificate', result)
++        self.assertNotIn('graph', result)
++
++    def test_relabelled_multi_component_source(self):
++        rng = random.Random(209119)
++        rows = [[3 * x for x in row] for row in self.rows]
++        for _ in range(10):
++            raw, moved = relabel(self.raw, rows, rng)
++            check_literal_graph(self, raw, moved)
++
++    def test_quad_ranks_label_order_and_local_coorientation_reversal(self):
++        raw, base = layered_torus(1)
++        rows = [[3 * x for x in base[0]]]
++        reps = [dict(tetrahedron=0, column=0, rank=i) for i in range(3)]
++        result = normal_chamber_graph(raw, rows, reps, record_certificate=True)
++
++        def renamed(masks, permutation):
++            values = [sum(1 << permutation[b] for b in range(6) if mask & (1 << b))
++                      for mask in masks]
++            return sorted(values, key=lambda v: (v & -v).bit_length())
++
++        reversed_labels = normal_chamber_graph(raw, rows, reps[::-1], record_certificate=True)
++        self.assertEqual(reversed_labels['graph']['chamber_masks'],
++                         renamed(result['graph']['chamber_masks'], [4, 5, 2, 3, 0, 1]))
++        # On this actual component, triangle (0,1,2) chooses the opposite
++        # local coorientation from triangle (0,0,0); other labels stay fixed.
++        flipped = [dict(tetrahedron=0, column=1, rank=2), *reps[1:]]
++        changed = normal_chamber_graph(raw, rows, flipped, record_certificate=True)
++        self.assertEqual(changed['graph']['chamber_masks'],
++                         renamed(result['graph']['chamber_masks'], [1, 0, 2, 3, 4, 5]))
++        quads = [dict(tetrahedron=0, column=6, rank=i) for i in range(3)]
++        changed_quad = normal_chamber_graph(raw, rows, quads, record_certificate=True)
++        self.assertEqual(changed_quad['graph'], result['graph'])
++        for output in (reversed_labels, changed, changed_quad):
++            self.assertTrue(verify_normal_chamber_graph(raw, rows, output['certificate']))
++
++    def test_connected_exponential_coordinate_meridian(self):
++        raw, rows = layered_torus(128)
++        representative = [dict(tetrahedron=0, column=6, rank=rows[0][6] - 1)]
++        output = normal_chamber_graph(raw, rows, representative, record_certificate=True)
++        self.assertEqual(output['status'], 'COMPLETE')
++        self.assertEqual(output['graph'], dict(vertices=1, edges=[[0, 0]],
++                                              chamber_masks=[3], cycle_rank=1))
++        self.assertGreater(output['normal_disks'], 10 ** 27)
++        self.assertEqual(output['surface_components'], 1)
++        self.assertTrue(verify_normal_chamber_graph(raw, rows, output['certificate']))
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_weighted_run_rope.py b/Topology/UnknotRecognition/fast/tests/test_weighted_run_rope.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..60956c519122b9855b7875d14e5196cc97de5609
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_weighted_run_rope.py
+@@ -0,0 +1,215 @@
++"""Local lazy weight transport against flat replay and literal finite maps."""
++
++from collections import defaultdict
++from copy import deepcopy
++import random
++import unittest
++
++from fastunknot.interval_orbits import IntervalPairing
++from fastunknot.weighted_orbits import weighted_orbit_histogram
++from fastunknot.weighted_orbit_verify import (
++    _canonical_pairings, _initial_weights, _replay, _replay_local,
++    verify_weighted_orbit_certificate, verify_weighted_orbit_certificate_reference)
++from fastunknot.weighted_run_rope import (
++    LocalTransport, _add_tree, _concat, _segments, _split, from_runs, to_runs)
++
++
++def runs_of(values):
++    runs = []
++    for point, value in enumerate(values):
++        if runs and runs[-1][2] == value:
++            runs[-1] = (runs[-1][0], point + 1, value)
++        else:
++            runs.append((point, point + 1, value))
++    return runs
++
++
++def expand(root):
++    return [value for span, value in _segments(root) for _ in range(span)]
++
++
++def check_structure(test, root):
++    if root is None:
++        return
++    if root.left is None:
++        test.assertIsNone(root.right)
++        test.assertIsNone(root.lazy)
++        test.assertEqual(root.height, 1)
++        test.assertEqual(root.count, 1)
++        test.assertEqual(root.first_span, root.span)
++        test.assertEqual(root.last_span, root.span)
++        test.assertEqual(root.first_value, root.value)
++        test.assertEqual(root.last_value, root.value)
++        return
++    check_structure(test, root.left)
++    check_structure(test, root.right)
++    test.assertLessEqual(abs(root.left.height - root.right.height), 1)
++    test.assertEqual(root.height, 1 + max(root.left.height, root.right.height))
++    test.assertEqual(root.span, root.left.span + root.right.span)
++    test.assertEqual(root.count, root.left.count + root.right.count)
++    test.assertEqual(root.first_span, root.left.first_span)
++    test.assertEqual(root.last_span, root.right.last_span)
++    left, right = root.left.first_value, root.right.last_value
++    if root.lazy is not None:
++        left = tuple(a + b for a, b in zip(left, root.lazy))
++        right = tuple(a + b for a, b in zip(right, root.lazy))
++    test.assertEqual(root.first_value, left)
++    test.assertEqual(root.last_value, right)
++    # Adjacent subtrees can carry different inherited tags, so compare their
++    # effective boundary values before the current node's common addition.
++    test.assertNotEqual(root.left.last_value, root.right.first_value)
++
++
++class WeightedRunRopeTests(unittest.TestCase):
++    def test_random_lazy_updates_and_splits_preserve_avl_and_canonical_runs(self):
++        rng = random.Random(261012181)
++        values = [(rng.randrange(-4, 5), rng.randrange(-3, 4)) for _ in range(150)]
++        root = from_runs(runs_of(values))
++        for _ in range(500):
++            lo, hi = sorted(rng.sample(range(len(values) + 1), 2))
++            delta = (rng.randrange(-3, 4), rng.randrange(-3, 4))
++            before, rest = _split(root, lo)
++            middle, after = _split(rest, hi - lo)
++            root = _concat(_concat(before, _add_tree(middle, delta)), after)
++            values[lo:hi] = [tuple(a + b for a, b in zip(v, delta)) for v in values[lo:hi]]
++            self.assertEqual(to_runs(root), runs_of(values))
++            check_structure(self, root)
++
++    def test_translation_and_reflection_against_literal_fibres(self):
++        rng = random.Random(261012182)
++        for _ in range(1000):
++            size = rng.randrange(2, 90)
++            values = [(rng.randrange(-4, 5), rng.randrange(-4, 5)) for _ in range(size)]
++            old = runs_of(values)
++            cut = rng.randrange(1, size)
++            period = rng.randrange(1, cut + 1)
++            local = LocalTransport()
++            root = local.prepare(old, lambda: None)
++            folded = local.translation(root, size, cut, period, 2, lambda: None)
++            expected = list(values[:cut])
++            for point in range(cut, size):
++                target = cut - period + (point - cut) % period
++                expected[target] = tuple(a + b for a, b in zip(expected[target], values[point]))
++            self.assertEqual(to_runs(folded), runs_of(expected))
++            self.assertLessEqual(folded.count, len(old) + 2)
++            check_structure(self, folded)
++            if size - cut <= cut:
++                left = rng.randrange(cut - (size - cut) + 1)
++                centre = left + size - 1
++                reflected = local.reflection(root, size, cut, centre, 2, lambda: None)
++                expected = list(values[:cut])
++                for point in range(cut, size):
++                    target = centre - point
++                    expected[target] = tuple(a + b for a, b in zip(expected[target], values[point]))
++                self.assertEqual(to_runs(reflected), runs_of(expected))
++                self.assertLessEqual(reflected.count, len(old) + 2)
++                check_structure(self, reflected)
++
++    def test_static_deletion_preserves_order_and_cannot_increase_run_count(self):
++        rng = random.Random(261012183)
++        for _ in range(400):
++            size = rng.randrange(1, 120)
++            values = [(rng.randrange(-2, 3),) for _ in range(size)]
++            deleted = [rng.randrange(2) == 1 for _ in range(size)]
++            gaps = []
++            for point, remove in enumerate(deleted):
++                if remove:
++                    if gaps and gaps[-1][1] == point - 1:
++                        gaps[-1][1] = point
++                    else:
++                        gaps.append([point, point])
++            old = runs_of(values)
++            hist = defaultdict(int)
++            local = LocalTransport()
++            root = local.prepare(old, lambda: None)
++            result, remaining = local.contract(root, size, gaps, hist, lambda: None)
++            expected = [value for point, value in enumerate(values) if not deleted[point]]
++            expected_hist = defaultdict(int)
++            for point, value in enumerate(values):
++                if deleted[point]:
++                    expected_hist[value] += 1
++            self.assertEqual(to_runs(result), runs_of(expected))
++            self.assertEqual(remaining, len(expected))
++            self.assertEqual(hist, expected_hist)
++            self.assertLessEqual(0 if result is None else result.count, len(old))
++            check_structure(self, result)
++
++    def test_exponential_coordinates_and_signed_vectors(self):
++        large = (1 << 8192) + 37
++        runs = [(0, large, (7, -3)), (large, 3 * large + 1, (-2, 5))]
++        local = LocalTransport()
++        root = local.prepare(runs, lambda: None)
++        folded = local.translation(root, 3 * large + 1, large, large, 2, lambda: None)
++        self.assertEqual(to_runs(folded), [(0, 1, (1, 12)), (1, large, (3, 7))])
++        self.assertEqual(local.metrics['source_runs'], 1)
++        self.assertEqual(local.metrics['range_adds'], 2)
++        check_structure(self, folded)
++
++    def test_one_source_run_does_not_enumerate_many_receiving_runs(self):
++        width, steps = 4000, 12
++        values = [(i % 2,) for i in range(width)]
++        source = runs_of(values) + [(width, (steps + 1) * width, (1,))]
++        # The adjacent last prefix value and suffix value must coalesce.
++        root = from_runs(source)
++        local = LocalTransport()
++        local.prepare([], lambda: None)
++        calls = 0
++        def poll():
++            nonlocal calls
++            calls += 1
++        size = (steps + 1) * width
++        for _ in range(steps):
++            root = local.translation(root, size, size - width, size - width, 1, poll)
++            size -= width
++        self.assertLess(calls, 20 * steps)
++        self.assertEqual(local.metrics['source_runs'], steps)
++        self.assertGreater(local.metrics['target_runs'], width * steps - steps)
++        self.assertEqual(to_runs(root), [(i, i + 1, (steps + i % 2,)) for i in range(width)])
++        check_structure(self, root)
++
++    def test_complete_legal_aht_trace_matches_both_public_verifiers(self):
++        width, steps = 40, 8
++        size = (steps + 1) * width
++        pairs = [IntervalPairing(0, width - 1, j * width, (j + 1) * width - 1)
++                 for j in range(1, steps + 1)]
++        weights = [(i, i + 1, [i % 2]) for i in range(width)]
++        weights.append((width, size, [1]))
++        produced = weighted_orbit_histogram(size, pairs, weights, record_certificate=True)
++        proof = produced['certificate']
++        self.assertEqual(produced['histogram'], [dict(weight=[steps], orbits=width // 2),
++                                                 dict(weight=[steps + 1], orbits=width // 2)])
++        self.assertTrue(verify_weighted_orbit_certificate(size, pairs, weights, proof))
++        self.assertTrue(verify_weighted_orbit_certificate_reference(size, pairs, weights, proof))
++        dimension, runs = _initial_weights(size, weights, 1, lambda: None)
++        trace = proof['orbit_proof']['operations']
++        metrics = {}
++        new = _replay_local(size, _canonical_pairings(size, pairs), runs, trace,
++                            dimension, lambda: None, metrics)
++        old = _replay(size, _canonical_pairings(size, pairs), runs, trace,
++                      dimension, lambda: None)
++        self.assertEqual(new, old)
++        self.assertEqual(metrics['source_runs'], steps)
++        self.assertEqual(metrics['folds'], steps)
++        for key in ('histogram', 'weights', 'orbit_proof'):
++            bad = deepcopy(proof)
++            if key == 'histogram':
++                bad[key][0]['orbits'] += 1
++            elif key == 'weights':
++                bad[key][0][2][0] += 1
++            else:
++                bad[key]['orbit_count'] += 1
++            self.assertFalse(verify_weighted_orbit_certificate(size, pairs, weights, bad))
++
++    def test_callback_exception_propagates_through_lazy_fold(self):
++        class Stop(Exception):
++            pass
++        local = LocalTransport()
++        root = from_runs([(0, 50, (1,)), (50, 100, (2,))])
++        def stop():
++            raise Stop('cancelled')
++        with self.assertRaisesRegex(Stop, 'cancelled'):
++            local.translation(root, 100, 50, 50, 1, stop)
++
++
++if __name__ == '__main__':
++    unittest.main()
