@@ -2744,3 +2744,16 @@ an isolated Linux copy, with all 5890 exact checks and 70 full coefficient
 cases through n=1025. Volume I of the collective Polylogarithms manuscript
 integrates the continuation theorem and strengthens endpoint uniformity to
 all fixed inverse-index orders. Original evidence remains unchanged.
+
+
+## Order-jet filters and the order-zero inverse, October 12, 2026
+
+[The complete order-filter continuation](Resonant_Polylogarithm_Transseries/continuations/order-jet-filters/INTAKE-PLACEMENT.md)
+continues the resonant polylogarithm report's higher-jet and arithmetic
+cancellation questions, and the Transseries_And_Inversion discussion of
+exact completion and inverse transport. It classifies the cost of cancelling
+Stokes jumps and physical completions, constructs exact moving-order neutral
+curves, and supplies Stieltjes, positive-integral and digamma coordinates
+for the order-zero inverse. The delivered article, PDF and verification
+evidence are preserved unchanged. Proof audit and collective synthesis are
+separate milestones. Its imported ZIP is retired in this placement.
