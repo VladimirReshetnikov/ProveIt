@@ -3847,6 +3847,15 @@ as we wanted. \(\square\)
 
 We now prove a proposition which is not exactly what we need later. Rather, it is a special case, which we give in the hope that the more general result, which is a bit complicated, will be easier to understand.
 
+\emph{Editorial note on the polynomial degree (2026-10-12).}
+The printed degree bound $k$ is false, even when $k+1<N$. Lean verifies
+a counterexample with $N=3$, $k=1$, $\alpha=1/2$,
+$f(s)=\omega^{s^2}$ and $\sigma(x)=2x$. The Fourier energy in the
+hypothesis is $27$. For every polynomial $\phi$ of degree at most one,
+the energy after twisting by $\omega^{-\phi}$ is $9$, which is less than
+$\alpha N^{k+2}=27/2$. The corrected degree $k+1$ is therefore necessary
+in general, and its stated prime-range version is proved in Lean.
+
 Proposition 17.2. Let $f: \mathbb{Z}_{N} \rightarrow D$. Suppose that $k+1<N$ and that there is a $k$-linear function $\sigma: \mathbb{Z}_{N}^{k} \rightarrow \mathbb{Z}_{N}$ such that
 
 $$
@@ -3924,8 +3933,13 @@ $$
 $$
 
 we find that $g$ is not $\beta(m / p)^{k+2}$-uniform (in $\mathbb{Z}_{p}$ ) of degree $k$.\\
-% ed.: Positivity of alpha is necessary: for alpha=0 the zero function
-% satisfies the displayed hypothesis but cannot fail zero-uniformity.
+\emph{Editorial note on strict positivity (2026-10-12).}
+Lean verifies the necessity of $\alpha>0$: at $N=3$, $k=1$, $m=1$,
+take a one-point box, $f=0$ and $\sigma=0$. All the other hypotheses
+hold with $\alpha=0$, but every phase twist is still zero and is
+zero-uniform on every partition. Thus the nonnegative-parameter
+variant of the following proposition is false.
+
 Proposition 17.7. Let $\alpha>0$ and let $f: \mathbb{Z}_{N} \rightarrow D$. Suppose that there is a product $P=P_{1} \times \cdots \times P_{k}$ of arithmetic progressions $P_{i}$ of common difference $d$ and odd length $m \leqslant N^{1 / 2}$, and a $k$-linear function $\sigma: P \rightarrow \mathbb{Z}_{N}$ such that
 
 $$

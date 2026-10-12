@@ -1168,3 +1168,61 @@ article/PDF/evidence files remain preserved, and the imported ZIPs are
 retired. The joint-coefficient report's full analytic audit and canonical
 synthesis remain pending. All PDFs retain ProveIt Contributors authorship.
 No Lean or remote-CI claim is made.
+
+## Joint coefficient synthesis and matched endpoint derivatives, October 12, 2026
+
+12 October 2026 (Pacific). Volume I, Sections 1.11--1.12 integrate the
+complete mathematical body of the joint-coefficient continuation. The
+exact compound-Poisson representation leads to a pole-paired moving-order
+scale and an all-fixed-order Stirling expansion, with absolute error
+uniform on the lattice. The marginal Gamma constants agree exactly with
+the preceding Lambert-moment polynomials. Positive analytic composition,
+positive-tail matching through every fixed power of log(n), the Lambert
+transition center, and the convergent reciprocal-order inverse chart are
+proved together with their parameter and branch restrictions. The inverse
+ramification classification is credited to both overlapping continuations.
+
+The new Theorem 1.63 compares two positive analytic models matching their
+first r-1 endpoint derivatives. Their first difference has scale n/B^r,
+amplitude (-1)^r A^r delta_r/r!, and exactly the r-th spatial derivatives
+of the universal correction kernels at every fixed logarithmic order.
+Convex interpolation preserves Fourier domination at this smaller scale.
+Corollary 1.64 gives the critical cubic coefficient difference
+-A^3 delta_3 q/(3 B^4). Its Gaussian term vanishes at the center and its
+first logarithmic correction is fixed by H_5^[1](0)=-4. This answers a
+part of the report's higher-derivative question without claiming a full
+single-model transseries or growing-order uniformity.
+
+The supplied three-program isolated replay remains preserved and its
+finite records enter the canonical receipt gates. New independent checks
+give 24 exact transport identities, matched cubic endpoint identities,
+four corruption controls and nine 75-digit Fourier comparisons. A
+separate 65-digit positive recurrence computes 21 coefficient locations
+at n=256,1024,4096 and lambda=-1/2,0,1/2 as specified in its grid; nine
+selected records agree on repetition at 85 digits to their stored 45
+significant digits. All seven central differences have the predicted sign.
+Finite approximation errors do not improve monotonically at every order
+or location. These are non-interval diagnostics; the general theorem is
+proved by the written contour argument.
+
+Final pages 190/131/254/87 (662 total),
+combined 616, 162 references and thirteen inherited scientific figures.
+All four volumes compile independently in three passes; coupled reference
+states converge and the combined build has clean final logs. All 70
+external PDF destinations resolve. The sparse extra contents page in
+Volume I was eliminated with a local contents font adjustment.
+
+Manual visual review opens 29 changed final volume bodies and
+7 unmatched combined bodies. Exact raster comparisons retain
+633 prior volume bodies and 586 prior combined bodies; another
+23 combined bodies match freshly reviewed volume pages. Only centered
+footer page numbers are excluded, with text/image/drawing bounds audited.
+No current contact sheet was opened. All PDFs retain ProveIt Contributors.
+
+The archive register remains 137 retired analytic archives / 4861 tracked
+original members / 58 archive-only checksum records. Original report and
+replay evidence is preserved; docs/incoming contains only its README at
+this audit. This completes the joint report's canonical synthesis, not
+the continuing research goal. Negative growing relative windows, global
+removable-endpoint geometry and full smaller-sector expansions remain
+open. No Lean or remote-CI claim is made.

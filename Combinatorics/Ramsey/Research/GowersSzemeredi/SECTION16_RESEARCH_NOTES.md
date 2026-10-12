@@ -5488,6 +5488,26 @@ Both are in the bridge, pinned and stub-checked.
 * The base envelope `EnvBound 3 62` of Theorem 18.2. The thresholds do not
   move even at base 0.
 
+**L.16w: the split step combined by `max` (2026-10-12).** A split class
+carries one family exponent `a` and one parameter degree `D` for its count,
+its width exponent and its threshold. The step bounds the three separately,
+then combined them by a sum: `splitStepA = sCountN + sExpN` and
+`splitStepDFejer = countW + expW + thrDeg`. Every control of a split class
+is monotone in `(a, D)`, so the `max` suffices
+(`splitUniformClass_succ_fejer_max`; the step lemma is unchanged except for
+its monotonicity targets). Since `max ≤ sum` (`splitStepAMax_le_sum`,
+`splitStepDMaxWith_le_sum`), the invariants at class constants `4` and `5/2`
+carry over unchanged. Only the exact table moves: `tDegM` is
+`…, 134, 205, 317, 505, 842, 1472, 2684, 5057, 9746, 19064, 37637`
+(dimensions 4–14) against `…, 136, 210, 326, 524, 881, 1550, 2841, 5371,
+10375, 20323, 40154` for the sum, about 4–6% lower
+(`Proofs18TightClassesFejerM`, `assemble_m.py`). Over these classes the
+joint-slice chain (`Proofs18Cover{Modulus,Density,Exponents}FejerJM`,
+`Proofs18CoverFejerHeadlineJM`, `assemble_jm.py`) gives Theorem 18.1 at
+`d + 2` from `d = 11` (`theorem_18_1_d2_eleven_le`). The other thresholds do
+not move. A split invariant with separate count and exponent exponents
+(dimension-two count `(11, 2^41)`) would also give `d + 3` from 8.
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`
@@ -6449,8 +6469,8 @@ x0*x1 has mixed second difference one, whereas every proposed signed sum
 of one-variable phases has mixed second difference zero. The obstruction
 even allows arbitrary phase functions. In the corrected prime ranges,
 Lemma 17.1 and Proposition 17.2 now derive factorial invertibility rather
-than requiring it as an extra premise. Proposition 17.2's original degree
-bound remains open.
+than requiring it as an extra premise. The original Proposition 17.2 degree gap at this checkpoint is resolved
+by the counterexample in L.44.
 
 Two further native examples clarify the source proof: negative alpha
 refutes the unrestricted sign reading of Proposition 14.1, and the
@@ -6469,6 +6489,44 @@ After merging origin/main, the expanded `WalshScopeFidelityAudit` also
 passes all 1,663 modules. The exported facade remains a separate running
 check; neither narrower checkpoint certifies its additional imports. The annotated PDF was rebuilt twice; pages 86,93,101,109 were
 visually inspected, and the original published PDF is untouched.
+
+### L.44 Refuting the original phase degree and the zero endpoint (2026-10-12)
+
+`PhaseDegreeCoreAudit` passes 16 native modules, checking two separate
+refutations and the corrected prime-range Proposition 17.2 with only the
+three approved axioms. `PhaseDegreeFidelityAudit` passes the combined
+1,667-module graph. The reports and exact input manifests are under
+`verification/2026-10-12-phase-degree*.json`.
+
+The printed degree-k conclusion in Proposition 17.2 is false even with
+positive dimension, 0<alpha<=1/2 and k+1<N. At N=3,k=1, take
+f(s)=exponential(s^2), sigma(x)=2*x, and alpha=1/2. Direct character
+orthogonality gives Fourier energy27 in the hypothesis. Every polynomial
+of degree at most one is affine, and twisting by any such polynomial
+leaves a quadratic phase with correlation energy9. This is less than27/2.
+`proposition_17_2_printed_degree_counterexample` formalizes this argument;
+the already checked corrected degree k+1 remains valid in the documented
+prime range. The source ledger now classifies the printed degree as
+refuted, rather than leaving it merely unsupported.
+
+`proposition_17_7_zero_parameter_counterexample` separately verifies the
+strict alpha>0 requirement. At N=3,k=m=1, the zero function and zero
+frequency on a one-point box satisfy all the other hypotheses with
+alpha=0. Every phase twist remains zero-uniform on every partition,
+contradicting the asserted failure of uniformity. The positive-alpha
+corrected statement remains checked by the numbered fidelity audit.
+
+After integrating the incoming Fejer-JM improvements and resolving the
+facade import conflict by retaining both export sets, the expanded
+`PhaseDegreeFidelityAudit` also passes all1,672 modules. Its separate
+post-merge report records the exact source snapshot.
+
+The paper has visible notes for both examples. Its annotated119-page PDF
+was rebuilt twice; pages109,111,112 were visually inspected. The original
+published PDF is unchanged. Public exports were placed in the facade's
+import header. The much larger5,917-module facade build was deliberately
+yielded only after its active module finished, to check these obligations,
+and then resumed from the preserved cache. Its final gate is still open.
 
 ## F. Routes
 
