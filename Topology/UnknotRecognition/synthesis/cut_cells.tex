@@ -181,3 +181,89 @@ general later-piece validation and the hierarchy depth bound are still
 required. Ordinary recognition is unchanged. This supplies concrete compressed
 cutting data for the original quasi-polynomial objective without claiming
 that objective complete.
+
+\subsection{Complete source and interior-homology evidence}
+
+All 1,599 maintained tests pass with Regina available and no skips, and
+all ten focused cut-cell tests pass. The complete audit covers 1,755 finite
+cuts: 1,635 pilot surfaces, 48 mixed cases, 36 analytic examples and 36
+relabellings. Every marked boundary genus inventory, Euler value and full
+homology vector over $\mathbb F_2$ and $\mathbb F_3$ agrees with an actual
+Regina cut. It checks 233,036 integral zero compositions, 638,563 edge/polygon
+incidences and 260,842 polygon/chamber incidences. The boundary subcomplex
+also passes its orientation and connected-vertex-link checks.
+
+Ten large binary cases include meridians, vertex links and odd/even one-sided
+multiples. In the 16,385-bit one-tetrahedron meridian case, seven vertex,
+15 edge, 15 polygon and three chamber families retain the entire raw cut;
+no represented cell is expanded. All 110 saved source proofs replay with
+the cell constructor, producer orientation, summaries and orbit discovery
+disabled. The audit's 682-hash source snapshot is retained at revision
+\code{56a70f4da}. The sole subsequently changed snapshot file is the unused
+benchmark driver; its archived Git content is authenticated separately while
+all operation sources match the current implementation.
+
+The actual full-cut homology oracle accounts for torsion in finite-field
+homology using the universal coefficient theorem. If $H_1$ has $p$-torsion
+rank $t_p$, then
+\[
+       b_1(\mathbb F_p)=\operatorname{rank}H_1+t_p,
+       \qquad b_2(\mathbb F_p)=\operatorname{rank}H_2+t_p.
+\]
+Every cut component has nonempty boundary, so $b_3=0$. This oracle performs
+explicit integer homology on expanded cuts; it is not the native constructor's
+runtime. The retained audit took 1,743.062 seconds, with live sampling locating
+its cost in Regina's homology calculation.
+
+Reproduce the audit from \code{fast/} with:
+\begin{quote}\small
+\code{python -B -m normal\_orbit\_research.cut\_cells --output FILE}
+\end{quote}
+Its data and full-suite log are \code{data/cut-cells-audit.json} and
+\code{data/cut-cells-tests.txt}. The native constructor and checker use
+only the Python standard library; the independent oracle uses the project's
+Regina extra, with Python distribution 7.4.1 and engine version string 7.4.
+
+\subsection{Full raw-cut construction and serialization measurements}
+
+Both measured arms construct a full representation of the same source cut.
+Native constructs the binary CW packet, independently verifies its source
+proof and serializes the entire result, including reconstruction charts and
+coordinates. Regina constructs its explicit three-dimensional triangulation
+and serializes its reversible labelled \code{tightEncoding}. Its exact
+\code{tightDecoding} roundtrip is checked outside timing. Isomorphism
+canonicalization is excluded. The two formats and geometric refinements
+differ, while the native source proof authenticates its actual attaching maps.
+
+Five shuffled paired rounds follow one warmup round, with an identical
+Regina control. All 105 measured samples and 21 warmups finish. Euler values
+agree in the timed cases; geometric validity comes from the separate source,
+chain and homology audit, not that scalar timing check. Input preparation,
+cleanup, garbage collection, decoding and comparison are outside timers.
+The ratio is the median paired Regina/native ratio; values above one favour
+native. The A/A column compares the identical Regina arms.
+\input{tables/cut_cells.tex}
+
+The 1,024- and 4,096-copy cases give ratios 5.407 and 25.792 with controls
+0.962 and 0.997. The latter has native median 4.489 ms against 117.196 ms
+Regina, with 41,869 serialized native bytes against 421,039 Regina bytes.
+The primitive 16-tetrahedron case gives ratio 1.816 with control 1.045;
+its native and Regina medians are 52.066 and 101.950 ms. Native is much
+slower on tiny inputs: the one-copy ratio is 0.059. All regressions and
+controls are retained. Neither the timing ratios nor the binary-family
+bound imply a general recognition speedup.
+
+Run the timing driver from \code{fast/}:
+\begin{quote}\small
+\code{python -B benchmark\_cut\_cells.py --output FILE}
+\end{quote}
+The current source-pinned records are \code{data/cut-cells-benchmark.json}.
+The complete publication review replays the 110 saved proofs, verifies the
+archived source snapshot and current operation/benchmark sources, checks
+every timing round and reviews the article:
+\begin{quote}\small
+\code{python -B data/cut\_cells\_review.py --publication}
+\end{quote}
+Run that review from \code{synthesis/}. Parallelity removal, bounded core
+geometry, pattern transport and the full hierarchy complexity proof remain
+the next requirements for the original quasi-polynomial goal.
