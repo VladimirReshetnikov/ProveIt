@@ -1,5 +1,5 @@
 import GowersSzemeredi.Proofs18LengthSixSzemeredi
-import GowersSzemeredi.Proofs16PolynomialLemma9WithRemainder
+import GowersSzemeredi.Proofs16ExplicitRecurrenceProfiles
 import GowersSzemeredi.Proofs16VarietyTheoremThree
 
 /-! **Theorem 18.2 and Corollary 18.7 at length six.**
@@ -25,20 +25,6 @@ kernel-checked statement. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
-
-/-- The recurrence profile in dimension `k` at the explicit constants. -/
-theorem section16RecurrenceProfileWith_explicit (k : Nat) :
-    Section16RecurrenceProfileWith k
-      (familyRecThr k (Nat.ceil (multiaffinePartitionK (k + 1) (2 ^ (k + 1))))
-        ((k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1))))
-      (familyRecExp k ((k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1)))) := by
-  have hK := two_le_multiaffinePartitionK (k + 1) (2 ^ (k + 1))
-  have hp := multiaffinePartitionP_pos (k + 1) (2 ^ (k + 1))
-  exact section16RecurrenceProfileWith_of_polynomial k _ _
-    (polynomialSection16RecurrenceProfileAt_of k hK (Nat.mul_pos (Nat.succ_pos k) hp)
-      (commonDiffPartitionTwoBoundAt_of k hK hp
-        (commonDiffPartitionBoundAt_of k hK hp
-          (multilinearPartitionBoundAt_explicit (k + 1) (Nat.succ_pos k)))))
 
 theorem lengthSix_explicit_constants :
     2 ≤ explicitVarietyK ∧ 0 < (1 + 1) * explicitVarietyP ∧ 2 ≤ explicitLiftK ∧

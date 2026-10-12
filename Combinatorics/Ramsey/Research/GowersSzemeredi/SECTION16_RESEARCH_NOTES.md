@@ -6856,6 +6856,41 @@ A separate two-element-modulus corollary is also proved. The annotated Lemmas
 this numerical obstruction from a claim about unspecified contextual data.
 These proofs are included in the combined 1,249-module audit.
 
+### L.53. Simplifying the final proof's recurrence inputs (2026-10-12)
+
+The final covering proof previously imported its all-dimensional recurrence
+profile through the length-six theorem. That bridge also brought in the
+older explicit variety decomposition and its fixed-dimensional constants,
+even though the general profile only needs the partition construction and
+its all-dimensional numerical bounds.
+
+The generic partition inequalities now live in Proofs05ExplicitPartitionBounds.
+Proofs16ExplicitRecurrenceProfiles assembles the family recurrence profile
+and its bounds directly. The old modules import these declarations, retaining
+their names and statements. The profile is used directly through definitional
+equality, without an extra conversion theorem. In the final length split,
+L<6 now invokes the existing result for L<=5; L>=6 uses the general cover.
+It no longer imports the separately proved length-six bridge for an unused
+endpoint of the short-length branch.
+
+Compared with the unchanged proof sources at commit2d4382ed1, the local
+import closure of Proofs18CoverExplicit falls from1,289 to1,214 modules and
+from264,693 to254,988 source lines. The strengthened Fejer bridge falls
+from1,402 to1,327 modules and from300,689 to290,984 lines. These are import
+closure measurements, excluding external Mathlib sources; they do not claim
+that9,705 lines were deleted from the repository. The legacy proofs remain
+available to their own users. The generic all-dimensional bridge loses97
+modules from its import closure.
+
+FinalProofSimplificationAudit has compiled the original quantitative final
+theorem, both headline consequences and the stronger coloring bounds through
+the simplified inputs, checking only propext, Classical.choice and Quot.sound.
+The serial native invocation passes all 1,404 modules, including the separate
+compatibility check of the old length-six module. A complete facade check
+remains separate. The ongoing
+objective is to shorten and simplify the final proof while preserving its
+statement and bounds; this first reduction does not close that objective.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
