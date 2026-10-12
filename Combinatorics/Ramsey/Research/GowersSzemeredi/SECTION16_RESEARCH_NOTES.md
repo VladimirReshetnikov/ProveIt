@@ -5579,6 +5579,14 @@ threshold:
 So the remaining thresholds are set by the structure of the step: two class
 degrees per step (L.16t) and the doubling of the split recursion
 (`a_{k+1} ≈ 3a_k²·2^k`). `d + 1` still needs a class constant below 2.
+Two more checks on the same baseline. Separate count and exponent degrees
+in the envelope (`PolyCoverAt` with `Q` at the count degree, which is all
+that `ρ₁` and the slices use) change nothing: the two tracks have degrees
+`40/47, 74/77` in dimensions 2–3 and agree to within 3 from dimension 4 on.
+`d + 3` in every degree misses at `d = 4…7` by 111–282 units, and degree 3
+would need the base envelope `74 + 1 ≤ 64`. `L + 2` in every length misses at
+`L = 6, 7` by 26 and 51 units, which would need the base envelope
+`EnvBound 3 62` down to about 11.
 
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
