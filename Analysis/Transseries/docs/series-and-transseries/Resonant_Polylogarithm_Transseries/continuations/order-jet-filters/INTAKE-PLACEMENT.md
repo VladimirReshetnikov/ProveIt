@@ -1,23 +1,65 @@
-# Intake placement, 12 October 2026
+# Order-jet filters: placement and attribution
 
-Continues the parent report's exact lateral completion, order jets and inverse charts with finite polynomial filters, an order-zero digamma kernel and inverse charts. It is a continuation of that analytic family, not of the distinct symmetric double-Lambert inverse.
+12 October 2026. Manuscript 02 of the three-report analytic arrival.
 
-The delivered package is retained whole beside its thematic parent, including
-its original PDF, TeX sources, programs and evidence. Only the outer archive
-wrapper was removed. The 23 delivered files were copied from a fresh
-extraction outside the repository. Existing ignore rules apply; no checksum
-manifest or line-ending audit was performed.
+This is a continuation of Resonant_Polylogarithm_Transseries, answering its
+questions 4 (higher order jets) and 6 (arithmetic cancellation), and extending
+its positive-integer Gamma kernel to order zero. It belongs beside that
+report, within the Transseries_And_Inversion programme of exact completion
+and nonlinear inverse transport. All delivered files remain together and
+unchanged. The proposed standalone placement is superseded by this existing
+report relationship; proposed integration patches are not applied.
 
-The archive `ProveIt_Polylogarithm_Order_Jet_Filters_2026-10-12.zip` arrived in `685563d2d` and is retired by this
-placement. It remains recoverable from that commit under `docs/incoming/`.
-The author's source pin is `8f5afd4d7565df808359f6a0c22f87f79a119bb9`.
-Git blob searches and historical placement trees show this is a new package,
-not a repeated delivery. The reversion archive arriving in the same original
-inventory was already placed by `e8044d932`; it is not copied again.
+The source pin is `8f5afd4d7565df808359f6a0c22f87f79a119bb9`.
+The archive `docs/incoming/ProveIt_Polylogarithm_Order_Jet_Filters_2026-10-12.zip` is recoverable
+from arrival `685563d2df2f88e7489d34bf747369098616e5bb`.
+All 23 members were checked against Git blob history and matching commit
+trees in the three-package preflight. Only requirements.txt duplicates
+earlier content; this report was not already placed. The existing ignore
+rule leaves SHA256SUMS.txt in the committed archive. No checksum manifest
+or line ending was checked or normalized. Byte preservation is checked
+against the external extraction; verification runs use a separate copy.
 
-The names and layout remain as delivered. The proposed destination in the
-delivery notes is superseded by this thematic continuation path. Build and
-replay instructions in the delivered README remain valid from a copy of this
-directory. Programs were run only on a separate scratch copy; fresh evidence
-and reconciliation are recorded separately from this placement. No collective
-manuscript or Transseries volume is rebuilt or promoted by placement.
+The source's unread-archive boundary is now reconciled: Lambert order jets
+concern a double Lambert/Mellin expansion, quadratic boundaries concern a
+feedback singularity, and resonant Lambert inversion concerns factorial
+reversion. None supplies this Fermi order-filter classification. The
+collective manuscript's fixed-sheet Lerch resonance section is a different
+limit (argument tending to one); its order-derivative methods provide a
+bridge, not an identification of the analytic models.
+
+Placement and ZIP retirement precede canonical editing. They do not imply
+proof acceptance, Lean formalization, interval certification, or a rebuilt
+collective PDF. Original historical authorship is preserved; the collective
+author remains ProveIt Contributors. A concurrent intake on origin/main placed both this report and the
+joint-coefficient continuation in commit 16cfc70aa2, replayed them in
+8415aba32c, and catalogued batch 142 in abe39ce3a9. Both chose this same
+order-filter home. This merge retains one copy of each original member and
+all parallel reconciliation and verification evidence. The independent
+analytic proof audit and canonical synthesis remain separate work.
+
+## Original package members
+
+- `BUILD_VALIDATION.json`
+- `CORRECTIONS_AND_SCOPE.md`
+- `FURTHER_RESEARCH.md`
+- `Makefile`
+- `README.md`
+- `SHA256SUMS.txt`
+- `SOURCE_AUDIT.md`
+- `article.pdf`
+- `article.tex`
+- `code/design_filter.py`
+- `code/verify.py`
+- `data/borel.json`
+- `data/exact.json`
+- `data/joint_filter_3.json`
+- `data/jump_filter_2.json`
+- `data/large_inverse.json`
+- `data/neutral.json`
+- `data/small_inverse.json`
+- `data/stieltjes.json`
+- `data/verification_summary.json`
+- `integration/INTEGRATION.md`
+- `requirements.txt`
+- `theorem_map.csv`

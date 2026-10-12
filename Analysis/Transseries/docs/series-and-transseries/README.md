@@ -2770,3 +2770,8 @@ packages; their fresh records are separate from delivered evidence. This is
 finite validation and scope reconciliation, not independent acceptance of every
 analytic proof, interval certification, or new Lean formalization. The
 reversion package was already placed in `e8044d932` and is not duplicated.
+
+The concurrent Polylogarithms placement independently chose the same
+order-filter home. Its 23-member inventory and more detailed predecessor
+question mapping are retained in [INTAKE-PLACEMENT.md](Resonant_Polylogarithm_Transseries/continuations/order-jet-filters/INTAKE-PLACEMENT.md).
+The two placement commits are reconciled without copying the report twice.
