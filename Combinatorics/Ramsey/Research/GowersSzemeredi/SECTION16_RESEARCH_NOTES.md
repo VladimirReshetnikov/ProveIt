@@ -5052,6 +5052,45 @@ public results, the exact explicit profile and all preceding audits over
 1,505 modules with only `propext`, `Classical.choice` and `Quot.sound`.
 The full statement-by-statement source-fidelity audit remains pending.
 
+## L.30 Genuine relation lifting, sampled interpolation and piece-family covers (2026-10-11)
+
+`Proofs16IntegerRelationLift` uses genuine short parents and natural
+contained-step tiling to lift a relation across an unused coordinate.
+The lifted graphs are constant in that coordinate. It retains the exact
+good-set mass, graph budget `max(Qb,3^(k+1)*M)` and width exponent `Eb/16`.
+The geometric argument now needs only a nonzero modulus, because natural
+step ratios replace the modular unit-step calculation.
+
+`Proofs16IntegerCompressedFamily` synchronizes tiling for all family
+members and preserves the interpolation candidate count. Its sampled
+slice relation cover produces ascending base cells and ordinary parallel
+parents; the final-axis partition retains integer representatives.
+`Proofs16IntegerLocalAffineLift` performs the same sample recovery and
+finite good-set intersection, preserving the original sample requirement,
+loss `2*tau+epsilon` and short-axis width. Interpolation continues to use
+the prime-modulus hypothesis.
+
+`Proofs16IntegerFamilyAffineLift` pads line counts and lifts the full line
+cover family, including the rounded sample size. Every flattened output
+cell has an ascending certificate. `Proofs16IntegerAllScaleCover` handles
+the remaining short boxes with the exact integer coarse cover and the
+same capped exponent.
+
+`Proofs16IntegerFamilyPieceCover` composes the genuine abstract remainder
+step with rounded affine lifting. Its explicit large-box profile and
+all-scale simultaneous piece-family union retain the original rounded
+thresholds, graph counts and width controls, now with
+`IntegerMultiplyLinearWith`. Spectrum, remainder and sampled-slice covers
+are still explicit induction inputs. The higher-dimensional class
+construction must produce them from its lower-dimensional hypothesis;
+this conditional family result is not counted as that global theorem.
+
+`FamilyLiftIntegerFidelityAudit` checks twelve new public theorems and
+all preceding catalogue and fidelity audits over 1,512 native modules.
+Only `propext`, `Classical.choice` and `Quot.sound` occur. The remaining
+structural work is the genuine class-cover induction and the complete
+statement-by-statement source-fidelity audit.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
