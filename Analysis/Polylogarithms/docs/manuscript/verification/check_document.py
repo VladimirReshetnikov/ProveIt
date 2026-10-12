@@ -14,7 +14,7 @@ actual={p.relative_to(B.parent).as_posix() for folder in ('articles','reports')
         for p in (B.parent/folder).rglob('*')
         if p.is_file() and p.suffix in ('.tex','.md','.txt')
         and not any(x in ('code','data','figures','provenance','src','scripts','results','certificates','tables') for x in p.relative_to(B.parent).parts)
-        and 'requirements' not in p.name.lower()}
+        and 'requirements' not in p.name.lower() and not p.name.startswith('SHA256SUMS')}
 unlisted=sorted(actual-{row['path'] for row in inventory})
 changed=[row['path'] for row in inventory if hashlib.sha256((B.parent/row['path']).read_bytes()).hexdigest()!=row['sha256']]
 ledger=(B/'EDITORIAL-LEDGER.md').read_text(encoding='utf-8')

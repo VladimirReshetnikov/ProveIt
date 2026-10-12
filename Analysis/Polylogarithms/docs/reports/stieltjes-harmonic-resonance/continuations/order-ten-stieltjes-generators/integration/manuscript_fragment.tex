@@ -1,0 +1,107 @@
+% Integration fragment for the ProveIt manuscript.
+% Assumes amsmath, amssymb, amsthm, mathtools, cleveref, and booktabs.
+% Labels are namespaced with otc:.
+
+\section{Complete reconstruction at smaller order ten}
+\label{otc:sec:rank}
+
+Let $A_s(n)=\zeta(s,n+1)=\zeta(s)-H_n^{(s)}$ and let $M_{a,b}$ be the
+rational late-coordinate matrix already defined in the harmonic-tail
+reconstruction chapter.  The effective fixed-order theorem gives
+$\det M_{5,b}\ne0$ for every $b\ge1920$.  The remaining finite interval
+admits an exact one-prime certificate.
+
+\begin{theorem}[Complete order-ten family]
+\label{otc:thm:rank}
+For every integer $b\ge6$,
+\[
+  \det M_{5,b}\ne0.
+\]
+Equivalently, for every even $q>10$, the first $q$ centered moments of
+$A_{10}(n)A_q(n)$ have full formal rank on the prescribed coordinate
+list.
+\end{theorem}
+
+\begin{proof}
+For $b\ge1920$ this is the effective eventual-rank theorem.  For
+$6\le b\le1919$, reduce modulo $P=1{,}000{,}003$.  At $b=6,7,8,9$ use
+the direct matrix $M_{5,b}$; at $10\le b\le1919$ use the exact retained
+$5\times5$ matrix.  All denominators are units modulo $P$, and all 1914
+published residues are nonzero.  The complete vector and two independent
+replays are supplied with the continuation package.  The exact retained
+determinant multiplier transfers nonvanishing to $M_{5,b}$.
+\end{proof}
+
+\subsection{Ordinary polygamma reconstruction}
+
+Let $N^{(b)}=M_{5,b}^{-1}$ and define
+\[
+ w_{b,k,r}=\sum_{t=0}^{b-1}N^{(b)}_{kt}
+ \binom{2(b+t)+1}{2r}2^{-2(b+t-r)},
+ \qquad
+ P_{b,k}(x)=\sum_{r=0}^{2b-1}w_{b,k,r}x^{2r}.
+\]
+If
+\[
+ A_s(n)\sim\sum_{m\ge0}\alpha_{s,m}(n+\tfrac12)^{1-s-2m},
+ \quad
+ \alpha_{s,0}=\frac1{s-1},\quad
+ \alpha_{s,m}=\frac{B_{2m}(1/2)}{(2m)!}(s)_{2m-1},
+\]
+let $Q_{b,k}$ be the nonnegative-power part of
+$P_{b,k}(x)A_{10}(n)A_{2b}(n)$ under this expansion.
+
+\begin{theorem}[Ordinary coordinate extraction]
+\label{otc:thm:ordinary}
+For $b\ge6$ and $0\le k<b$,
+\[
+ \sum_{n=0}^{\infty}\left(
+ P_{b,k}(n+\tfrac12)A_{10}(n)A_{2b}(n)
+ -Q_{b,k}(n+\tfrac12)\right)=\zeta(2k),
+\]
+with $\zeta(0)=-1/2$.  The summand is $O(n^{-2})$.  Since
+$A_s(n)=\psi^{(s-1)}(n+1)/(s-1)!$ for even $s$, this is also an
+ordinary convergent product-polygamma identity.
+\end{theorem}
+
+\section{Two analytic generators}
+\label{otc:sec:generators}
+
+Use
+\[
+ \operatorname{Li}_{r,s}(x,y)
+ =\sum_{m>n\ge1}\frac{x^my^n}{m^rn^s}.
+\]
+A direct partition by the minimum index gives
+\begin{equation}
+\sum_{n\ge0}A_p(n)A_q(n)z^n
+=\frac{\zeta(p)\zeta(q)-\operatorname{Li}_{p,q}(1,z)
+-\operatorname{Li}_{q,p}(1,z)-\operatorname{Li}_{p+q}(z)}{1-z}.
+\label{otc:eq:tail-generator}
+\end{equation}
+Polynomial centered weights are produced by
+$z\,d/dz+1/2$.
+
+For integer-shift Stieltjes constants, put
+$G(\alpha)=\zeta(1+\alpha)-1/\alpha$ and
+\begin{align*}
+\mathcal K(\alpha,\beta;z)={}&
+\operatorname{Li}_{1+\alpha,1+\beta}(1,z)
+-\frac{\operatorname{Li}_{1+\beta}(z)}{\alpha}\\
+&+\operatorname{Li}_{1+\beta,1+\alpha}(1,z)
+-\frac{\operatorname{Li}_{1+\alpha}(z)}{\beta}
++\operatorname{Li}_{2+\alpha+\beta}(z).
+\end{align*}
+The pole-subtracted combinations extend holomorphically at
+$(\alpha,\beta)=(0,0)$, and
+\begin{equation}
+\sum_{n\ge0}\gamma_r(n+1)\gamma_s(n+1)z^n
+=\frac{\gamma_r\gamma_s-(-1)^{r+s}r!s!
+[\alpha^r\beta^s]\mathcal K(\alpha,\beta;z)}{1-z}.
+\label{otc:eq:stieltjes-generator}
+\end{equation}
+In particular,
+\[
+\sum_{n\ge0}(\gamma-H_n)^2z^n
+=\frac{(\gamma+\log(1-z))^2+\operatorname{Li}_2(z)}{1-z}.
+\]

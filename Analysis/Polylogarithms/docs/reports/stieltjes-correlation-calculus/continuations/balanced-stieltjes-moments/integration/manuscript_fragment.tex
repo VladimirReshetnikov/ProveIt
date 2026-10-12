@@ -1,0 +1,61 @@
+% Optional manuscript entry point. Requires amsmath/amssymb and a theorem environment.
+% Full proofs and analytic conventions are in the accompanying standalone report.
+\section{Balanced translation moments of Stieltjes constants}
+\label{bsm:sec:integration}
+For $a,x>0$ and $q\ge0$, define
+\[
+ \mathcal C_q(x,a)=\frac{\log^{q+1}x}{q+1}
+ +\sum_{j=0}^{q}(-1)^j\binom qj\gamma_j(x+a)\log^{q-j}x,
+ \qquad
+ Q_q(u)=q![z^q]\frac{\Gamma(u+z)}{\Gamma(u)\Gamma(1+z)}.
+\]
+The associated generator is
+$x^z\zeta(1+z,x+a)-1/z$. Its inverse-power coefficient at $x^{-k}$
+is $(-1)^kB_k(a)(1+z)_{k-1}/k!$. Differentiation in $z$ therefore
+annihilates all powers through $x^{-q}$.
+
+\begin{theorem}[Balanced translation moments]
+\label{bsm:thm:integration-summary}
+For $0<\operatorname{Re}u<q+1$, the integral converges absolutely and
+\[
+ \int_0^\infty x^{u-1}\mathcal C_q(x,a)\,\mathrm{d}x
+       =\frac{\pi}{\sin\pi u}\zeta(1-u,a)Q_q(u).
+\]
+At positive integers the complete right side is evaluated by removable
+limits. If $q\ge m\ge1$, then
+\[
+ \int_0^\infty x^{m-1}\mathcal C_q(x,a)\,\mathrm{d}x
+ =\frac{(-1)^{m+q}q!}{m}B_m(a)
+       \sum_{j=0}^{m-1}(-1)^j e_j(1,1/2,\ldots,1/(m-1))\zeta(q+1-j).
+\]
+If instead $q=m-1$ and $B_m(a)=0$, then the additional moment converges and
+\[
+ \int_0^\infty x^{m-1}\mathcal C_{m-1}(x,a)\,\mathrm{d}x
+             =(-1)^{m-1}\zeta^{[1]}(1-m,a).
+\]
+\end{theorem}
+
+\begin{proof}
+In its initial absolute domain, the beta integral gives
+$\int_0^\infty x^{p-1}\zeta(v,x+a)\,\mathrm{d}x
+=\Gamma(p)\Gamma(v-p)\zeta(v-p,a)/\Gamma(v)$.
+Subtract $x^{1-v}/(v-1)$, first at infinity and then with the matching
+finite-origin term. Set $p=u+z$, $v=1+z$ and differentiate at $z=0$ on
+$0<\operatorname{Re}u<1$. The uniform expansion above enlarges the
+ordinary convergence strip to $0<\operatorname{Re}u<q+1$, which justifies
+analytic continuation there.
+
+At $u=m$, the Gamma quotient is the polynomial
+$\prod_{j=1}^{m-1}(1+z/j)$. For $q\ge m$ its degree forces $Q_q(m)=0$;
+its first $u$-derivative and the digamma Taylor series yield the displayed
+finite zeta sum. For $q=m-1$, $Q_{m-1}(m)=1$ instead. A Bernoulli root
+cancels the Hurwitz factor and removes the first uncancelled tail,
+so the remaining removable limit is the order derivative stated above.
+\end{proof}
+
+The standalone continuation also proves uniqueness within the normalized
+homogeneous logarithmic ansatz, the exact finite-shift convergence criterion,
+all logarithmic exceptional moments, the full mixed filtered Stieltjes
+moment germ, and anchored primitive and argument-derivative identities.
+These statements do not evaluate the distinct harmonic constants $R_{r,k}$
+or resolve the Gaussian $S_6$ and revised $S_8$ conjectures.

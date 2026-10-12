@@ -1,0 +1,195 @@
+% Research notes for the parent report.  This is an input fragment.
+% Standard amsmath, amssymb, amsthm theorem/proof environments are assumed.
+
+\section{A Barnes-integral companion}
+\label{bim:section}
+
+This section records evaluated consequences of the classical first Barnes
+lemma.  The underlying integral is not new: it is NIST DLMF
+\href{https://dlmf.nist.gov/5.13.E3}{Equation 5.13.3} \cite{DLMF}.  The present
+contribution is the selection and complete differentiation of the
+centered fourth moment and the pure trigamma correlation.  No historical priority claim is made for these specializations.  These ordinary integrals are
+distinct from the higher-dimensional Gamma density used in the recent
+\emph{Gamma Normalizations and Colored Moments} report.
+
+For complex parameters of positive real part, put
+\begin{align}
+ W(a,b,c,d;x)&=\Gamma(a+ix)\Gamma(b+ix)
+                  \Gamma(c-ix)\Gamma(d-ix),\\
+ F(a,b,c,d)&=\frac{\Gamma(a+c)\Gamma(a+d)
+                       \Gamma(b+c)\Gamma(b+d)}
+                      {\Gamma(a+b+c+d)}.
+\end{align}
+Barnes' first lemma states
+\begin{equation}\label{bim:barnes}
+ \frac1{2\pi}\int_{-\infty}^{\infty}W(a,b,c,d;x)\,dx
+                              =F(a,b,c,d).
+\end{equation}
+Every finite parameter derivative can be passed under this integral.
+Indeed, on a compact parameter set inside the four right half-planes,
+Stirling's formula gives exponential decay $e^{-2\pi|x|}$ times a
+fixed polynomial in $1+|x|$; differentiating adds only a fixed power of
+$1+\log(2+|x|)$.  This also proves that all integrals below are ordinary
+absolutely convergent integrals.
+
+\subsection{Centered mixed moments}
+
+For $\sigma>0$ define
+\begin{equation}\label{bim:density}
+ p_\sigma(x)=\frac{\Gamma(4\sigma)}
+                   {2\pi\Gamma(2\sigma)^4}
+                        |\Gamma(\sigma+ix)|^4,
+ \qquad \int_{\mathbb R}p_\sigma(x)\,dx=1.
+\end{equation}
+Write $\mathbb E_\sigma$ for integration against this density, and put
+\begin{equation}\label{bim:center}
+ m_\sigma=2\psi(2\sigma)-\psi(4\sigma),\qquad
+ U_\sigma(x)=\psi(\sigma+ix)-m_\sigma.
+\end{equation}
+The following formulas involve only ordinary polygamma values:
+\begin{align}
+ \mathbb E_\sigma U_\sigma&=0,\label{bim:mean}\\
+ \mathbb E_\sigma U_\sigma^2&=-\psi'(4\sigma),
+                                               \label{bim:square}\\
+ \mathbb E_\sigma|U_\sigma|^2
+          &=\psi'(2\sigma)-\psi'(4\sigma),      \label{bim:abs-square}\\
+ \mathbb E_\sigma\bigl(U_\sigma|U_\sigma|^2\bigr)
+          &=-\psi''(4\sigma),                  \label{bim:cubic}\\
+ \mathbb E_\sigma|U_\sigma|^4
+          &=\psi'(4\sigma)^2
+             +2\bigl(\psi'(2\sigma)-\psi'(4\sigma)\bigr)^2
+             -\psi'''(4\sigma).                \label{bim:fourth}
+\end{align}
+The left side of \eqref{bim:cubic} is real by the change $x\mapsto-x$.
+
+\begin{proof}
+Set $L=\log F$.  At $a=b=c=d=\sigma$, all first logarithmic
+derivatives equal $m_\sigma$.  Subtract this linear term by replacing
+$F/F(\sigma,\sigma,\sigma,\sigma)$ with
+\[
+ \widetilde F(a,b,c,d)
+ =e^{-m_\sigma(a+b+c+d-4\sigma)}
+      \frac{F(a,b,c,d)}{F(\sigma,\sigma,\sigma,\sigma)}.
+\]
+Its single-slot integral insertions are $U_\sigma$ in the slots $a,b$
+and $\overline U_\sigma$ in $c,d$.  The first derivatives of
+$\log\widetilde F$ vanish.  For distinct slots the remaining derivatives
+needed here are
+\begin{align*}
+ L_{ab}=L_{cd}&=q=-\psi'(4\sigma),\\
+ L_{ac}=L_{ad}=L_{bc}=L_{bd}
+      &=p=\psi'(2\sigma)-\psi'(4\sigma),\\
+ L_{abc}=L_{abd}=L_{acd}=L_{bcd}&=-\psi''(4\sigma),\\
+ L_{abcd}&=-\psi'''(4\sigma).
+\end{align*}
+The derivatives of $\widetilde F=e^{\log\widetilde F}$ of orders two
+and three give the first four assertions.  Its $abcd$ derivative is
+$L_{ab}L_{cd}+L_{ac}L_{bd}+L_{ad}L_{bc}+L_{abcd}$, because every
+partition containing a singleton has zero contribution.  This is
+$q^2+2p^2-\psi'''(4\sigma)$ and proves \eqref{bim:fourth}.
+\end{proof}
+
+\subsection{Eliminating all digamma insertions from a trigamma correlation}
+
+\begin{theorem}\label{bim:trigamma}
+For $\sigma>0$ one has
+\begin{align}
+ \mathbb E_\sigma\psi'(\sigma+ix)&=2\psi'(2\sigma),
+                                                   \label{bim:trigamma-mean}\\
+ \mathbb E_\sigma\left|\psi'(\sigma+ix)\right|^2
+                  &=4\psi'(2\sigma)^2+\psi'''(2\sigma).
+                                                   \label{bim:trigamma-square}
+\end{align}
+More generally, if $\Re u,\Re v>0$ and $s=u+v$, then
+\begin{equation}\label{bim:unequal-trigamma}
+\begin{split}
+ &\int_{\mathbb R}\Gamma(u+ix)^2\Gamma(v-ix)^2
+                         \psi'(u+ix)\psi'(v-ix)\,dx\\
+ &\qquad=2\pi\frac{\Gamma(s)^4}{\Gamma(2s)}
+                           \bigl(4\psi'(s)^2+\psi'''(s)\bigr).
+\end{split}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Use the constant-coefficient operators
+\[
+ D_+=\partial_a^2-\partial_a\partial_b,
+ \qquad D_-=\partial_c^2-\partial_c\partial_d.
+\]
+After setting $a=b=u$ the first operator inserts exactly
+$\psi'(u+ix)$, since the two copies of $\psi(u+ix)^2$ cancel.  The
+second operator inserts $\psi'(v-ix)$ after $c=d=v$.
+
+For an explicit right-side calculation, center as above, now at
+$a=b=u,c=d=v$; the common first logarithmic derivative is
+$2\psi(s)-\psi(2s)$.  Put
+\[
+ \begin{gathered}
+ A=\psi'(s),\quad B=\psi'(2s),\quad
+ A_3=\psi'''(s),\quad B_3=\psi'''(2s),\\
+ d=2A-B,\quad q=-B,\quad p=A-B.
+ \end{gathered}
+\]
+Centering does not affect $D_+D_-\widetilde F$ at coalescence: the extra
+terms contain $\partial_a-\partial_b$ or
+$\partial_c-\partial_d$, which vanish by the respective symmetries.
+The required derivatives are
+\begin{align*}
+ \widetilde F_{aacc}&=d^2+2p^2+A_3-B_3,\\
+ \widetilde F_{aacd}=\widetilde F_{abcc}&=dq+2p^2-B_3,\\
+ \widetilde F_{abcd}&=q^2+2p^2-B_3.
+\end{align*}
+Consequently
+\[
+ D_+D_-\widetilde F=(d-q)^2+A_3=4A^2+A_3.
+\]
+Multiplying by $2\pi F(u,u,v,v)$ proves
+\eqref{bim:unequal-trigamma}; setting $u=v=\sigma$ proves
+\eqref{bim:trigamma-square}.  The second-order calculation
+$\widetilde F_{aa}-\widetilde F_{ab}=d-q=2A$ gives
+\eqref{bim:trigamma-mean}.
+\end{proof}
+
+The unequal-shift formula can equally be written using
+$\psi'(z)=\zeta(2,z)$ and $\psi'''(z)=6\zeta(4,z)$.  Thus it is a
+Gamma-weighted Hurwitz-zeta convolution with two independently chosen
+argument shifts.  The only shift invariant on the right is their sum.
+
+\subsection{Explicit half- and quarter-argument evaluations}
+
+At $\sigma=1/2$, the Gamma reflection formula makes
+$p_{1/2}(x)=(\pi/2)\operatorname{sech}^2(\pi x)$ and
+$U_{1/2}(x)=\psi(1/2+ix)+\gamma+1$.  Equations
+\eqref{bim:abs-square}, \eqref{bim:fourth}, and
+\eqref{bim:trigamma-square} become
+\begin{align}
+ \int_{\mathbb R}\frac{|\psi(1/2+ix)+\gamma+1|^2}
+                            {\cosh^2(\pi x)}\,dx
+                   &=\frac2\pi,\label{bim:half-square}\\
+ \int_{\mathbb R}\frac{|\psi(1/2+ix)+\gamma+1|^4}
+                            {\cosh^2(\pi x)}\,dx
+                   &=\frac2\pi\left(9-\frac{\pi^2}{3}
+                                          -\frac{7\pi^4}{180}\right),
+                                               \label{bim:half-fourth}\\
+ \int_{\mathbb R}\frac{|\psi'(1/2+ix)|^2}
+                            {\cosh^2(\pi x)}\,dx
+                   &=\frac{16\pi^3}{45}.\label{bim:half-trigamma}
+\end{align}
+Here the cancellation of Euler's constant is exact after centering.
+
+At $\sigma=1/4$, put $V(x)=\psi(1/4+ix)+\gamma+4\log2$.
+The normalization is $p_{1/4}(x)=|\Gamma(1/4+ix)|^4/(2\pi^3)$, and
+one obtains the equally short evaluations
+\begin{align}
+ \int_{\mathbb R}|\Gamma(1/4+ix)|^4|V(x)|^2\,dx&=\frac{2\pi^5}{3},
+                                                   \label{bim:quarter-square}\\
+ \int_{\mathbb R}|\Gamma(1/4+ix)|^4|V(x)|^4\,dx&=\frac{11\pi^7}{30},
+                                                   \label{bim:quarter-fourth}\\
+ \int_{\mathbb R}|\Gamma(1/4+ix)|^4|\psi'(1/4+ix)|^2\,dx&=4\pi^7.
+                                                   \label{bim:quarter-trigamma}
+\end{align}
+The special-value reductions use DLMF
+\href{https://dlmf.nist.gov/5.15.E2}{5.15.2} and
+\href{https://dlmf.nist.gov/5.15.E3}{5.15.3}.
+

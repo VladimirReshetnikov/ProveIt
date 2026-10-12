@@ -1,0 +1,83 @@
+\section{An explicit \texorpdfstring{$(10,16)$}{(10,16)} reconstruction of \texorpdfstring{$\zeta(2)$}{zeta(2)}}
+\label{sec:explicit-identity}
+
+We record one fully expanded member of
+\cref{thm:ordinary-reconstruction}.  The pair $(10,16)$ is the first
+gap-six instance beyond the adjacent and gap-four order-ten cases.  Let
+\begin{equation}
+ L=14{,}612{,}936{,}162{,}752{,}272{,}720{,}199{,}680
+ \label{eq:explicit-L}
+\end{equation}
+and define
+\begin{equation}
+ \mathscr P(x)=\sum_{r=0}^{15}c_rx^{2r},
+ \label{eq:explicit-P}
+\end{equation}
+where the integer coefficients $c_r$ are listed in
+\cref{tab:explicit-coefficients}.  Also put
+\begin{align}
+ \mathscr R(x)={}&
+ 1{,}552{,}076{,}939{,}623{,}430{,}612{,}844{,}544
+ \notag\\
+ &+2{,}244{,}965{,}091{,}528{,}662{,}071{,}640{,}064\,x^2
+ \notag\\
+ &+169{,}465{,}732{,}042{,}429{,}783{,}080{,}960\,x^4
+ \notag\\
+ &+2{,}907{,}927{,}622{,}440{,}764{,}571{,}648\,x^6.
+ \label{eq:explicit-R}
+\end{align}
+
+\begin{theorem}[Explicit ordinary identity]
+\label{thm:explicit-1016}
+With $x_n=n+1/2$,
+\begin{equation}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}
+ \left\{
+ 135\,\mathscr P(x_n)
+ [\zeta(10)-H_n^{(10)}][\zeta(16)-H_n^{(16)}]
+ +\mathscr R(x_n)
+ \right\}=L\zeta(2).}
+ \label{eq:explicit-1016}
+\end{equation}
+The summand is $O(n^{-2})$.  Equivalently,
+\begin{equation}
+ \sum_{n=0}^{\infty}
+ \left\{
+ \frac{135\,\mathscr P(x_n)}{9!15!}
+ \psi^{(9)}(n+1)\psi^{(15)}(n+1)
+ +\mathscr R(x_n)
+ \right\}=L\zeta(2).
+ \label{eq:explicit-1016-polygamma}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Take $b=8$ and $k=1$ in
+\cref{thm:ordinary-reconstruction}.  Exact inversion of the rational
+matrix $M_{5,8}$ gives
+\[
+ P_{8,1}(x)=\frac{\mathscr P(x)}
+ {108{,}243{,}971{,}575{,}942{,}760{,}890{,}368}.
+\]
+The nonnegative asymptotic part \eqref{eq:Qbk} is
+\begin{align*}
+ Q_{8,1}(x)={}&-\frac{23127748662582496}{217749717276577245}
+ -\frac{1238984692719613}{8064804343576935}x^2\\
+ &-\frac{168349079333176}{14516647818438483}x^4
+ -\frac{14443832747344}{72583239092192415}x^6.
+\end{align*}
+Multiplying
+$\sum_n(P_{8,1}A_{10}A_{16}-Q_{8,1})=\zeta(2)$ by $L$, noting that
+$L$ is $135$ times the denominator of $P_{8,1}$, gives
+\eqref{eq:explicit-1016}.  Equation
+\eqref{eq:explicit-1016-polygamma} follows from
+\eqref{eq:polygamma-tail}.  The exact generator and verifier reconstruct
+all displayed integers from \eqref{eq:source-M}, rather than checking a
+pre-entered formula.
+\end{proof}
+
+The high-precision script evaluates the ordinary series directly and
+agrees with $\zeta(2)$ after normalization to more than forty decimal
+places.  This is recorded only as a diagnostic; the proof is the exact
+matrix inversion and asymptotic subtraction above.

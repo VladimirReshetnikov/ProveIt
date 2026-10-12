@@ -1,3 +1,50 @@
+# Complete harmonic-tail prefixes and ordinary identity families
+
+October 12, 2026. Section 8.45 proves the analytic centered coefficient
+model, exact retained determinant normalization and constructive eventual
+nonvanishing theorem, then complete fixed smaller orders ten, twelve and
+fourteen. Orders ten/twelve retain report attribution. The new order-fourteen
+certificate covers every one of 80632 remaining integers; its exact threshold
+B7=80640 covers the infinite remainder. All 161281 Bernoulli coefficients
+and every determinant agree between independent algorithms. Integer
+convolution and accumulation bounds are explicit, and no floating-point
+nonzero test enters the proof. Formal rank does not assert arithmetic
+independence, and the unrestricted and Gaussian questions remain open.
+
+Five independent exact rational original/retained determinant comparisons
+pass, with wrong-sign controls rejected. The first order-fourteen pair
+(14,16) has all eight ordinary identity rows and finite counterterms
+explicitly compiled. The general inverse construction gives absolutely
+convergent polygamma-product identities for every pair in the three complete
+families. An independent exact Python and Wolfram replay confirms the
+exceptional order-ten matrix, both inverse products and its determinant.
+Written infinite proofs, finite exact certificates and numerical diagnostics
+retain separate roles.
+
+All eleven full mathematical suites in the seventeenth/eighteenth intake
+pass on isolated copies, including fresh native and independent Python
+complete order-twelve checks. Preserve 107 imported archives as 3956 tracked
+original members, with 42 ignored records recoverable in arrival history;
+1577 textual sources are covered by the inventory and ledger. Each imported
+ZIP was retired in its placement commit. Original delivery files and evidence
+remain unchanged. Later incoming reports retain a separate pending scope.
+
+The final four PDFs have 130/129/233/85 pages (577 total); the combined
+edition has 536 pages and 138 references. Authorship remains ProveIt
+Contributors. Every earlier theorem/equation number, thirteen figures and
+94 literature leads is retained. Three coupled rounds, three combined passes
+and three cold passes per volume converge. All static page checks and 40
+external destinations pass. Full-size review covers 15 changed volume
+bodies and 2 unmatched combined bodies; 562 volume and 523
+combined bodies retain their previous review by exact raster agreement, and
+11 changed combined bodies match the freshly reviewed volumes. Only
+centered footer numbers are excluded, with all other bounds audited.
+No current contact sheet was opened. A helper encoding error in inherited
+punctuation was caught by raster comparison, repaired from committed UTF-8
+source, and followed by full final rebuilding and repeated review.
+
+Historical checkpoints below retain their original dated scope.
+
 # Crossed twists, balanced jets and ordinary logarithmic moments
 
 October 11, 2026. The four independently compiling collective volumes have

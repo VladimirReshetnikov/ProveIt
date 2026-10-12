@@ -851,3 +851,38 @@ The completed 16603-row native search has rank 4985 modulo 2147483647,
 43 more than the preceding first-letter experiment, and does not close the
 target. This is a finite-field diagnostic. It establishes neither rational
 nonmembership nor a period counterexample; Gaussian S6/revised S8 stay open.
+
+
+## Seventeenth and eighteenth intakes: reconstruction and spectral families
+
+Preserve eleven reports with 460 original members, 454 tracked and six
+ignored bare checksum records recoverable in arrival history. Their ZIPs
+were retired in the placement commits a66ad4645c37 and 2d24f7987790;
+both placements were published with a normal merge and fast-forward push.
+All eleven specified full mathematical suites pass on isolated copies.
+They supply exact finite checks and numerical diagnostics, with separate
+analytic acceptance. Original sources, recorded results, PDFs and delivered
+notes remain unchanged. The deeply nested tail-boundaries package has a
+short parent path to preserve every inner filename within Windows limits.
+
+| Group | Reconciliation and acceptance boundary |
+|---|---|
+| `alternating-tails-spectral-defects` | Accept the qualified order-ten congruence as a dependency of Section 8.45's complete prefix proof. Other alternating/cyclotomic generators and higher spectral defects remain separate integration branches. |
+| `finite-difference-determinants` | Positive rank-one finite-difference seeds, mixed spectral correlations and Stieltjes jets continue the determinant-resonance spine; full replay passes, further canonical proof integration pending. |
+| `higher-quadratic-jets` | The predecessor Library article now has an exact byte match with the preserved quadratic-spectrum report; retain the original provenance qualification and record this later evidence separately. All-order defects, resonant finite parts, mass normalization and collision limits remain distinct audit branches. |
+| `higher-spectral-defects` | Overlaps the quadratic and alternating higher-defect routes. Preserve the preliminary/final source anchors and resonant extra term; full replay passes, analytic integration pending. |
+| `quartic-spectral-reconstruction` | Accept the general retained determinant normalization and effective eventual theorem in Section 8.45. Its complete order-eight and quartic/spectral identities retain separate pending integration scopes. The all-a theorem is eventual, not a complete all-pair rank claim. |
+| `affine-gamma-polarization` | All-order derivative-square and spectral/profile sectors continue the normalized Gamma core. Retain coefficient-class restrictions, primitive anchors and functional-selector fields; full mixed u2/u3 and arithmetic-independence claims are not established. |
+| `bernoulli-tails-spectral-faces` | Accept its completed order-ten prefix scope with the other completion reports. All-power tails, marked gaps and spectral faces remain separately queued analytic branches. |
+| `bilinear-tails-determinants` | Accept the independent complete order-ten proof and its original-matrix normalization. Its proposed complementary-sector first coefficient is already available from two canonical reductions; the full generator remains separate. Other bilinear/contact/degree families remain pending. |
+| `dougall-termination` | Exact summed rational termination is distinct from termwise rationality. Preserve symmetric resonance and all-depth half-center families; full exact and three numerical parts pass, analytic integration pending. |
+| `tail-kernels-boundary-products` | Accept complete orders ten and twelve, using the infinite threshold proof and complete finite residue certificates. Rational adjacent products, independent Mellin shifts and the Stieltjes edge remain separate branches. Its source evidence is stored under reports/tail-boundaries. |
+| `vertical-lattice-jets` | Compensated Hurwitz lattice sampling, Stieltjes jets, finite differences and contact filters retain anchors, summation prescriptions and oversubtraction guards. Classical Gamma/q-Pochhammer attribution requires the cited primary paper before canonical integration. Its local duplicate-README proposal is preserved and not executed. |
+
+Section 8.45 combines the common analytic coefficient model, exact Padé
+normalization, constructive eventual theorem and complete fixed-order
+certificates. The order-fourteen extension independently certifies all
+80632 remaining cases and supplies ordinary convergent polygamma-product
+identities at every larger even order. Formal coefficient rank is not
+arithmetic independence. General higher fixed orders, Gaussian S6/revised
+S8 and all separately queued analytic families remain open.

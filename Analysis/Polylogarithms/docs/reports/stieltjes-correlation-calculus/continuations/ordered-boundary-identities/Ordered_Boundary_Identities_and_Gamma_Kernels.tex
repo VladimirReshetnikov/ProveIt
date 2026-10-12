@@ -1,0 +1,3141 @@
+% Standalone assembly. Edit article.tex and sections/, then run build.py.
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{booktabs,array,longtable}
+\usepackage{microtype}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,pdftitle={Ordered Boundary Identities and Gamma-Kernel Reconstruction},pdfauthor={ProveIt Contributors}}
+\urlstyle{same}
+\setlength{\emergencystretch}{3em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\CT}{CT}
+\DeclareMathOperator{\supp}{supp}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\Ord}{\mathcal O}
+\newcommand{\Kern}{\mathcal K}
+\newcommand{\Def}{\mathcal D}
+\newcommand{\Bell}{\mathcal B}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\repo}{\texttt{e3d7ec5d3f9be259c1f91edaea4389f4e79b5b03}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Ordered boundary identities}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlist{itemsep=3pt,topsep=5pt}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{16mm}
+{\small\sffamily\color{MidnightBlue} PROVEIT \quad / \quad POLYLOGARITHMS AND THEIR ARITHMETIC BRIDGES\par}
+\vspace{15mm}
+{\LARGE\bfseries Ordered Boundary Identities\par}
+\vspace{2mm}
+{\Large\bfseries and Gamma-Kernel Reconstruction\par}
+\vspace{4mm}
+{\Large Boundary localization, polylogarithmic cancellation,\par
+ generalized Stieltjes jets, and Gamma kernels\par}
+\vspace{13mm}
+{\large ProveIt Contributors\par}
+\vspace{3mm}
+{Prepared for Vladimir Reshetnikov\par}
+\vspace{5mm}
+{11 October 2026\par}
+\vfill
+\begin{minipage}{0.88\textwidth}
+\small
+\textbf{Research status.} This article supplies ordinary mathematical proofs,
+exact finite algebra, and separately labelled numerical diagnostics.
+It is a continuation of the current manuscript and all seven incoming
+polylogarithm packages inspected at the repository revision printed below.
+Historical priority is not asserted for the new formulations.
+No proof-assistant formalization is claimed.
+\par\medskip
+\textbf{Source revision.}\quad\texttt{e3d7ec5d3f9be259c1f91edaea4389f4e79b5b03}
+\end{minipage}
+\vspace{10mm}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+% Begin included source: sections/01_scope
+\begin{abstract}
+An ordered assignment of independently shifted finite-difference weights
+contains information that its determinantal symmetrization erases. We
+recover that information explicitly. For two particles, two finite
+summations by parts reduce the ordered double sum to a single two-shift
+zeta kernel. This gives its joint meromorphic continuation, every polar
+coefficient, all convergent positive-integer-order evaluations and their
+finite parts, a divided-difference
+digamma generating function, and a Gamma primitive. Oblique poles explain
+direction-dependent values at parameters where every pointwise weight
+vanishes. A cutoff generating function is then proved on an entire
+two-order parameter domain: its sole depth-two polylogarithm has the
+factor $(1-z)^2$, which explains the endpoint reduction. Beta
+parametrization yields ordinary convergent identities involving every
+generalized Stieltjes constant. At arbitrary particle number, transferring
+the stencils to the ordered Vandermonde square localizes the sum to
+collision blocks; an explicit finite algorithm uses at most
+$\lfloor(r+1)/2\rfloor$ free summation indices. A separate Gamma-integral
+basis solves the fixed-gap null equation for unequal even harmonic
+tails. Its exact normalization and nonzero determinant asymptotic prove
+eventual optimal reconstruction on every fixed-gap ray; the first
+relative correction is an explicit harmonic-number expression.
+All formulas retain their convergence domains, confluence conventions,
+and finite-part coordinates. Exact algebraic tests and numerical checks
+accompany the proofs.
+\end{abstract}
+
+\section{The source questions and the mathematical setting}
+\label{sec:scope}
+
+\subsection{A continuation of the current material}
+
+The source snapshot is the ProveIt revision \repo, obtained on
+11 October 2026. Both requested directories were inspected: the canonical
+manuscript and the seven then-present incoming archives. The manuscript's
+claim ledger remains the authority for accepted canonical results
+\cite{repo:manuscript,repo:ledger}; an incoming report's delivery status
+does not by itself amount to canonical proof acceptance.
+
+The most direct target is the incoming \emph{Finite-Difference
+Determinants} report \cite{repo:finite}. Its section entitled
+``Unsymmetrized mixed-order sums'' asks which additional coordinates are
+needed for an individual ordering of independent spectral labels.
+Its existing polarization theorem gives only the sum over assignments.
+It also asks for a finite description of noninteger-order cutoff
+generators and for extensions to other annihilating stencils. These
+questions are mathematically related: shifting the finite differences
+onto the ordered summation domain exposes the boundaries at which
+the extra coordinates live.
+
+The present two-particle result answers the individual-ordering question
+on an open complex domain, not only at isolated integer values.
+It shows that a one-index kernel is enough. That kernel has explicit
+Hurwitz expansions and, at positive integer orders, a finite polygamma
+evaluation. The all-particle result is different: it gives a finite
+localization formula and a bound on the number of free indices, rather
+than incorrectly extrapolating a universal single-zeta formula.
+
+A second target comes from the harmonic-tail Gamma continuation
+\cite{repo-gamma}. Its exact fixed-gap reduction leaves an
+$m$-dimensional null equation, where the two tail orders differ by
+$2m$. Section~\ref{gb:section} constructs a basis by ordinary integrals
+against $|\Gamma(\tfrac14+\tfrac{ix}{2})|^{4m}$. The distinct
+decay scales of these integrals produce a nonzero limiting Vandermonde
+determinant. This proves that, for every fixed $m$, the first $2b$
+moments form the optimal formal prefix for all sufficiently large
+$(p,q)=(2b-2m,2b)$. The theorem is complementary to the existing
+eventual result with the smaller order fixed \cite{repo:quartic}. Neither assertion alone
+settles every unequal pair.
+
+The current sources also make clear why old open labels cannot simply
+be reused. Several finite-order harmonic-tail reconstruction cases have
+already received proofs in recent reports. The short Gaussian $S_6$
+and revised $S_8$ evaluations, by contrast, remain conjectural in the
+current canonical manuscript \cite{repo:ledger,repo:gaussian}. None of
+the ordered identities below is represented as a proof of either
+Gaussian evaluation.
+
+\subsection{Classical ingredients and the scope of originality}
+
+Finite summation by parts, finite differences, partial fractions,
+Hurwitz continuation, and Gamma differentiation are classical.
+The general rational-summability role of discrete residues is treated
+by Chen--Singer and Arreche--Sitaula \cite{chen-singer,arreche-sitaula}.
+Multivariable zeta functions can have intersecting polar hyperplanes
+and direction-sensitive Laurent behavior; this phenomenon is not new
+in itself \cite{matsumoto-ono-wakabayashi}. Beta parametrization is also
+an established method for zeta products \cite{shpot-paris}.
+
+The contributions claimed here are the explicit ordered boundary
+identity, its complete consequences in this family, the finite cutoff
+polylogarithm formula and its endpoint cancellation, and the
+all-particle collision-block reduction. Their derivations were checked
+against the inspected sources. The literature search does not establish
+worldwide historical priority. In particular, finite polygamma
+reduction of a rational one-index summand is a classical step; it is
+the preceding reduction of the ordered ensemble that supplies the
+new application.
+
+The Gamma basis, its normalization, and its fixed-gap consequences form
+the second group of contributions. Classical Fourier transforms of
+Gamma products provide useful context \cite{ramanujan-transform};
+the result here concerns a specific higher-power weight, its
+sinh/tanh modes, and the repository's exact reconstruction determinant.
+
+\subsection{Notation and analytic conventions}
+
+For $\Rea a>0$ we use the principal logarithm in
+$(n+a)^{-s}=\exp(-s\log(n+a))$. Thus every shifted denominator in
+the original series stays in the right half-plane. Write
+\[
+ (s)_j=s(s+1)\cdots(s+j-1),\qquad (s)_0=1,
+ \qquad \psi(a)=\frac{\Gamma'(a)}{\Gamma(a)}.
+\]
+For positive integers $p$,
+\[
+ H_n^{(p)}=\sum_{k=1}^{n}k^{-p},\qquad H_0^{(p)}=0.
+\]
+The same finite sum defines $H_n^{(s)}$ for complex $s$.
+We use the Stieltjes convention
+\begin{equation}\label{eq:stieltjes-convention}
+ \zeta(1+u,a)=\frac1u+
+    \sum_{m=0}^{\infty}\frac{(-1)^m\gamma_m(a)}{m!}u^m,
+ \qquad \gamma_0(a)=-\psi(a).
+\end{equation}
+Derivatives of $\zeta$ without an argument qualifier differentiate its
+first variable. Standard relations used below include
+\begin{equation}\label{eq:classical-ladders}
+ \partial_a\zeta(s,a)=-s\zeta(s+1,a),\qquad
+ \zeta(p,a)=\frac{(-1)^p}{(p-1)!}\psi^{(p-1)}(a)\quad(p\ge2),
+\end{equation}
+and $\zeta'(0,a)=\log\Gamma(a)-\tfrac12\log(2\pi)$
+\cite{dlmf:hurwitz,dlmf:gamma}.
+
+An equality continued from a normally convergent domain is always an
+equality of those continuations. It need not equal the result of
+substituting exceptional parameters into every summand first.
+Likewise, a finite part is the constant in a declared Laurent
+coordinate; a hard cutoff is a different operation unless their
+agreement is proved.
+
+For $|z|<1$ our multiple-polylogarithm convention is
+\begin{equation}\label{eq:mpl-convention}
+ \Li_{t,s}(z,1)=\sum_{k>j\ge1}\frac{z^k}{k^t j^s}.
+\end{equation}
+The exponential factor makes this entire in the two order variables.
+This is independent of the convergence restrictions of its value at
+$z=1$.
+
+% End included source: sections/01_scope
+\tableofcontents
+\clearpage
+% Begin included source: sections/02_ordered
+\section{The ordered two-particle boundary identity}
+\label{sec:ordered}
+
+Define
+\begin{equation}\label{eq:weight-two}
+ w_n(s,a)=\frac12\bigl((n+a)^{-s}-2(n+a+1)^{-s}
+                           +(n+a+2)^{-s}\bigr)
+\end{equation}
+and retain the ordering of its labels:
+\begin{equation}\label{eq:ordered-def}
+ \Ord(s,t;a,b)=\sum_{0\le m<n}(n-m)^2w_m(s,a)w_n(t,b).
+\end{equation}
+In particular, exchanging $(s,a)$ and $(t,b)$ generally changes the
+answer. Let
+\begin{equation}\label{eq:kernel-def}
+ \Kern(s,t;x,y)=\sum_{k=0}^{\infty}(k+x)^{-s}(k+y)^{-t},
+ \qquad \Rea(s+t)>1,
+\end{equation}
+and set
+\begin{equation}\label{eq:boundary-coefficient}
+ E_s(a)=\frac{a^{-s}-(a+1)^{-s}}2.
+\end{equation}
+
+\begin{theorem}[Ordered boundary reduction]\label{thm:ordered}
+For
+\begin{equation}\label{eq:ordered-domain}
+ \Rea a,\Rea b>0,\qquad \Rea t>1,\qquad \Rea(s+t)>0,
+\end{equation}
+the sum \eqref{eq:ordered-def} converges absolutely and locally
+normally, and
+\begin{equation}\label{eq:ordered-main}
+ \boxed{\Ord(s,t;a,b)=E_s(a)\zeta(t,b+1)
+ +\frac14\bigl\{\Kern(s,t;a+2,b+1)-\Kern(s,t;a,b+1)\bigr\}.}
+\end{equation}
+On the portion $0<\Rea(s+t)\le1$, the kernel difference means the
+single combined convergent series
+\begin{equation}\label{eq:kernel-difference}
+ \Def(s,t;a,b)=\sum_{k=0}^{\infty}(k+b+1)^{-t}
+                  \bigl\{(k+a+2)^{-s}-(k+a)^{-s}\bigr\}.
+\end{equation}
+All fixed finite derivatives in the four parameters can be taken
+termwise on compact subsets of \eqref{eq:ordered-domain}.
+\end{theorem}
+
+\subsection{Convergence on the asymmetric domain}
+
+Repeated integration of a second derivative gives
+\begin{equation}\label{eq:second-difference-integral}
+ w_n(s,a)=\frac{s(s+1)}2\int_0^1\int_0^1
+               (n+a+u+v)^{-s-2}\dd u\dd v.
+\end{equation}
+Consequently $w_n(s,a)=O((n+1)^{-\Rea s-2})$, uniformly on compact
+parameter sets, including neighborhoods of $s=0,-1$.
+For a fixed outer index $n$, bound $(n-m)^2$ by $n^2$.
+The inner sum of $(m+1)^{-\Rea s-2}$ is bounded when
+$\Rea s>-1$, grows logarithmically at $\Rea s=-1$, and is
+$O(n^{-\Rea s-1})$ when $\Rea s<-1$. Combining these bounds with
+the outer weight gives convergence under \eqref{eq:ordered-domain}.
+On compact sets one can decrease the real exponents slightly to
+obtain a single summable majorant, so the transition at $\Rea s=-1$
+causes no loss of normality. Cauchy estimates on slightly larger
+compact neighborhoods justify every fixed derivative.
+
+The first difference in \eqref{eq:kernel-difference} is
+$O((k+1)^{-\Rea s-1})$. Thus its combined series has precisely the
+sufficient domain $\Rea(s+t)>0$ used in the theorem. No separate
+summation of divergent kernel terms is involved.
+
+\subsection{A finite identity with both upper endpoints}
+
+The proof works for arbitrary finite sequences before any special
+function is introduced. Put $f_n=(n+a)^{-s}$ and $g_n=(n+b)^{-t}$,
+and define $A_{-1}=A_0=0$ and
+\begin{equation}\label{eq:A-n}
+ A_n=\sum_{m=0}^{n-1}(n-m)^2(f_m-2f_{m+1}+f_{m+2}).
+\end{equation}
+Collecting the coefficient of each $f_k$ gives, for $n\ge1$,
+\begin{equation}\label{eq:A-explicit}
+ A_n=n^2f_0+(-n^2-2n+1)f_1
+                  +2\sum_{k=2}^{n}f_k+f_{n+1}.
+\end{equation}
+Taking two backward differences yields
+\begin{equation}\label{eq:A-difference}
+ A_n-2A_{n-1}+A_{n-2}
+          =2(f_0-f_1)-f_{n-1}+f_{n+1}\qquad(n\ge1).
+\end{equation}
+At $n=1$ this is a direct check, using $A_{-1}=0$.
+
+Let $\Ord_N$ denote the restriction $n\le N$ in
+\eqref{eq:ordered-def}. Shifting the three finite sums in
+$4\Ord_N=\sum_{n=1}^N A_n(g_n-2g_{n+1}+g_{n+2})$ gives
+\begin{align}\label{eq:finite-ordered}
+ 4\Ord_N={}&\sum_{n=1}^{N}g_n
+              \{2(f_0-f_1)-f_{n-1}+f_{n+1}\}\notag\\
+ &+g_{N+1}(A_{N-1}-2A_N)+g_{N+2}A_N.
+\end{align}
+This is an exact finite identity. In particular, no endpoint term
+has been inferred from an asymptotic prescription.
+
+\begin{proof}[Proof of \cref{thm:ordered}]
+The upper boundary in \eqref{eq:finite-ordered} can be grouped as
+\[
+ A_N(g_{N+2}-g_{N+1})+g_{N+1}(A_{N-1}-A_N).
+\]
+Formula \eqref{eq:A-explicit} shows that $A_N$ is bounded by a sum
+of $O(N^2)$ and $O(N^{1-\Rea s})$, with a logarithmic enlargement
+at a borderline exponent. Its first backward difference is bounded
+by the corresponding $O(N)$ and $O(N^{-\Rea s})$ terms.
+Since $g_{N+2}-g_{N+1}=O(N^{-\Rea t-1})$, the grouped boundary
+tends to zero under \eqref{eq:ordered-domain}. The estimates are
+locally uniform with an arbitrarily small exponent margin.
+The remaining sum in \eqref{eq:finite-ordered} is
+$4E_s(a)\zeta(t,b+1)+\Def(s,t;a,b)$.
+Division by four proves the theorem.
+\end{proof}
+
+\subsection{What symmetrization removes}
+
+The existing polarized determinant evaluates
+$\tfrac12(\Ord(s,t;a,b)+\Ord(t,s;b,a))$.
+The two one-index kernel differences satisfy the finite shift identity
+\begin{equation}\label{eq:kernel-symmetry}
+ \Def(s,t;a,b)+\Def(t,s;b,a)
+ =-a^{-s}(b+1)^{-t}-(a+1)^{-s}b^{-t}.
+\end{equation}
+Indeed, shift the first positive kernel once, pair it with the
+opposite negative kernel, and retain its missing zeroth term;
+do the same with the other pair. This is first legitimate in an
+absolute-convergence domain and then holds by continuation.
+Combining \eqref{eq:kernel-symmetry} with \eqref{eq:ordered-main}
+recovers the existing polarized formula. It also identifies exactly
+which information the averaging has removed.
+
+At a common shift and common order,
+\begin{equation}\label{eq:diagonal-recovery}
+ \Ord(s,s;a,a)=E_s(a)\zeta(s,a)
+                  -\frac{a^{-2s}}2+
+                     \frac{[a(a+1)]^{-s}}4.
+\end{equation}
+This is the known two-particle specialization of the incoming
+single-zeta determinant \cite{repo:finite}. Thus the present theorem
+extends that formula while preserving its normalization.
+
+% End included source: sections/02_ordered
+% Begin included source: sections/03_continuation
+\section{Joint continuation, oblique poles, and directional values}
+\label{sec:continuation}
+
+\subsection{A convergent expansion in single Hurwitz zeta functions}
+
+Set $\delta=a-b$ and $y=b+1$. For a sufficiently large integer $M$,
+expand each shifted factor about $k+y$ on the tail $k\ge M$.
+This gives
+\begin{align}\label{eq:hurwitz-expansion}
+ \Def(s,t;a,b)={}&
+ \sum_{k=0}^{M-1}(k+y)^{-t}
+       \bigl\{(k+a+2)^{-s}-(k+a)^{-s}\bigr\}\notag\\
+ &+\sum_{j=1}^{\infty}\frac{(-1)^j(s)_j}{j!}
+      \bigl\{(\delta+1)^j-(\delta-1)^j\bigr\}
+           \zeta(s+t+j,M+y).
+\end{align}
+Choose $M$ so that both $|\delta+1|$ and $|\delta-1|$ are
+strictly smaller than $|M+y|$; on any compact set a uniform strict
+inequality is available. The factor $(s)_j/j!$ grows at most
+polynomially in $j$ on compact $s$-sets, whereas the large-order
+Hurwitz series supplies geometric decay after multiplication by
+the displayed shift powers. The finitely many possible small-order
+zeta poles are handled separately. Hence the tail is locally normally
+convergent away from those poles, together with every fixed derivative.
+This proves joint meromorphic continuation to all $(s,t)\in\C^2$.
+
+\begin{theorem}[Complete polar data]\label{thm:poles}
+The possible polar divisors of $\Ord$ are
+\begin{equation}\label{eq:polar-divisors}
+ t=1,\qquad s+t=1-j\quad(j=1,2,\ldots).
+\end{equation}
+Away from intersections, their residues in the indicated linear
+coordinates are
+\begin{align}\label{eq:polar-coefficients}
+ \Res_{t=1}\Ord&=E_s(a),\notag\\
+ \Res_{s+t=1-j}\Ord&=
+ C_j(s;\delta):=\frac{(-1)^j(s)_j}{4j!}
+              \bigl\{(\delta+1)^j-(\delta-1)^j\bigr\}.
+\end{align}
+These coefficient formulas continue across intersections. Every local
+expression is a sum of terms with single linear denominators and a
+holomorphic remainder; no product denominator is required. A listed
+divisor can disappear on a special shift or order locus. The divisor
+$s+t=1$ is absent identically.
+\end{theorem}
+
+\begin{proof}
+In \eqref{eq:hurwitz-expansion} a pole occurs only when
+$s+t+j=1$, with residue equal to its explicit coefficient, since
+Hurwitz zeta has residue one. The $j=0$ binomial coefficient is zero
+in the difference, so its would-be divisor cancels before
+continuation. The other term in \eqref{eq:ordered-main} has only
+$t=1$ as a possible pole. Local normal convergence of the remaining
+tail proves the stated local decomposition.
+\end{proof}
+
+\begin{corollary}[Cancellation in the averaged sum]\label{cor:pole-cancellation}
+Every oblique polar divisor cancels between $\Ord(s,t;a,b)$ and
+$\Ord(t,s;b,a)$.
+\end{corollary}
+\begin{proof}
+Equation \eqref{eq:kernel-symmetry} is entire in both orders. One
+can also check residues directly: on $s+t=1-j$,
+$(t)_j=(-1)^j(s)_j$, and replacing $\delta$ by $-\delta$
+reverses the required coefficient. Thus the cancellation is an exact
+functional identity, not a numerical relation between periods.
+\end{proof}
+
+\subsection{Four intersections at which every weight vanishes}
+
+Both $w_n(0,a)$ and $w_n(-1,a)$ vanish for every $n$. The continued
+ordered sum nevertheless has directional values at pairs of these
+parameters. The origin gives the simplest explanation.
+
+\begin{theorem}[Universal origin behavior]\label{thm:origin}
+Near $(s,t)=(0,0)$,
+\begin{equation}\label{eq:origin-germ}
+ \Ord(s,t;a,b)=-\frac{s}{2(s+t)}+H(s,t;a,b),
+ \qquad H\text{ holomorphic},\qquad H(0,0;a,b)=0.
+\end{equation}
+Consequently, if $\alpha+\beta\ne0$,
+\begin{equation}\label{eq:origin-ray}
+ \lim_{\varepsilon\to0}
+ \Ord(\alpha\varepsilon,\beta\varepsilon;a,b)
+        =-\frac{\alpha}{2(\alpha+\beta)}.
+\end{equation}
+The limit is independent of both spatial shifts.
+\end{theorem}
+
+\begin{proof}
+The $j=1$ coefficient in \eqref{eq:polar-coefficients} is exactly
+$-s/2$. All other divisors miss a sufficiently small neighborhood
+of the origin. After subtracting this polar term, the remainder
+is holomorphic. On the punctured slice $s=0$ the explicit
+formula \eqref{eq:ordered-main} vanishes identically, so the
+holomorphic remainder vanishes at the origin. Substitution of a
+non-tangent line proves \eqref{eq:origin-ray}.
+\end{proof}
+
+The diagonal value $-1/4$ recovers the specialization anomaly already
+recorded in \cite{repo:finite}. Formula \eqref{eq:origin-ray} is more
+informative: the slice $s=0$ has limit zero, the slice $t=0$ has limit
+$-1/2$, and general slopes interpolate rationally. These are limits
+of the same meromorphic continuation, not different summation rules
+chosen for the pointwise zero series.
+
+\begin{theorem}[The complete $2\times2$ zero-weight table]\label{thm:zero-table}
+Let $m,n\in\{0,1\}$ and $\alpha+\beta\ne0$. Along
+$s=-m+\alpha\varepsilon$, $t=-n+\beta\varepsilon$,
+\begin{equation}\label{eq:zero-ray}
+ \lim_{\varepsilon\to0}\Ord(s,t;a,b)
+       =\frac{\alpha}{\alpha+\beta}\,c_{m,n}(\delta),
+\end{equation}
+where
+\begin{equation}\label{eq:zero-table}
+ \begin{array}{c|cc}
+ c_{m,n}(\delta)&n=0&n=1\\\hline
+ m=0&-\tfrac12&\tfrac{\delta}{2}\\[2pt]
+ m=1&-\tfrac{\delta}{2}&\tfrac{3\delta^2+1}{12}
+ \end{array}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Only $j=m+n+1$ supplies a divisor through the given point.
+Its coefficient $C_j(s;\delta)$ vanishes at $s=-m$ and has
+derivative $c_{m,n}(\delta)$ there. The first three polynomials are
+\[
+ C_1=-\frac s2,\qquad
+ C_2=\frac{\delta s(s+1)}2,\qquad
+ C_3=-\frac{(3\delta^2+1)s(s+1)(s+2)}{12}.
+\]
+The restrictions $\Ord(0,t;a,b)$ and $\Ord(-1,t;a,b)$ are
+identically zero meromorphic functions of $t$, directly from
+\eqref{eq:ordered-main}. Thus the holomorphic remainder at the
+chosen point vanishes. Expanding the one polar quotient proves
+the table and the directional limit.
+\end{proof}
+
+No limit is asserted for directions with $\alpha+\beta=0$.
+They lie on the polar hyperplane itself, where cancellation of a
+numerator at one point does not define a restriction of the
+meromorphic function to the whole line.
+
+% End included source: sections/03_continuation
+% Begin included source: sections/04_integer_gamma
+\section{Finite polygamma evaluation and a digamma master}
+\label{sec:integer}
+
+The one-index reduction is useful only if its new kernel can be handled
+explicitly. At integer orders it is finite; at confluence its apparent
+singularities disappear; and the entire positive-order family is
+generated by one function of two shifts.
+
+\subsection{Partial fractions with all simple poles paired}
+
+\begin{proposition}\label{prop:partial-fractions}
+Let $p,q$ be positive integers and $\Rea x,\Rea y>0$. If $x\ne y$, put
+$D=y-x$ and
+\begin{align}
+ A_k&=(-1)^{p-k}\binom{p+q-k-1}{q-1}D^{-(p+q-k)},\quad 1\le k\le p,
+ \label{eq:pf-a}\\
+ B_l&=(-1)^p\binom{p+q-l-1}{p-1}D^{-(p+q-l)},\quad 1\le l\le q.
+ \label{eq:pf-b}
+\end{align}
+Then $A_1+B_1=0$ and
+\begin{equation}\label{eq:finite-kernel}
+ \Kern(p,q;x,y)=A_1\{\psi(y)-\psi(x)\}
+ +\sum_{k=2}^{p}A_k\zeta(k,x)
+ +\sum_{l=2}^{q}B_l\zeta(l,y).
+\end{equation}
+The empty sums are zero. At $x=y$ the value is $\zeta(p+q,x)$.
+\end{proposition}
+
+\begin{proof}
+Expand $(X+D)^{-q}$ at $X=0$, and $X^{-p}$ at $X=-D$.
+The respective principal parts of $X^{-p}(X+D)^{-q}$ have coefficients
+\eqref{eq:pf-a} and \eqref{eq:pf-b}. Their difference from that rational
+function is entire and vanishes at infinity, hence is zero.
+Its $X^{-1}$ coefficient at infinity gives $A_1+B_1=0$.
+Consequently the only two series which would diverge separately occur
+as the convergent pair
+\[
+ A_1\sum_{n\ge0}\left(\frac1{n+x}-\frac1{n+y}\right)
+ =A_1\{\psi(y)-\psi(x)\}.
+\]
+All higher powers sum absolutely. This proves \eqref{eq:finite-kernel}.
+The confluent value follows directly from the original kernel.
+\end{proof}
+
+More generally, confluence comes with every Taylor coefficient:
+\begin{equation}\label{eq:kernel-confluence}
+ \Kern(s,t;x,x+h)=\sum_{r=0}^{\infty}
+ \frac{(-1)^r(t)_r}{r!}h^r\zeta(s+t+r,x),\qquad |h|<|x|.
+\end{equation}
+Here $\Rea x>0$ and $\Rea(x+h)>0$; on compact sets a uniformly
+smaller disk is understood.
+The identity follows first for $\Rea(s+t)>1$ by the binomial theorem,
+since $|n+x|\ge |x|$, and then meromorphically. It is preferable to
+subtracting nearly cancelling negative powers of $D$ when computing
+close shifts. The finite formula and \eqref{eq:classical-ladders}
+establish a finite polygamma evaluation of every
+$\Ord(p,q;a,b)$ with $p\ge1$, $q\ge2$.
+
+\subsection{The exact parity left by equal shifts}
+
+\begin{theorem}\label{thm:parity}
+For $p\ge1$, $q\ge2$, $N=p+q$ and $\Rea a>0$, define
+\[
+ L_j=\begin{cases}\binom{N-j-1}{q-1},&j\le p,\\0,&j>p,\end{cases}
+ \qquad
+ R_j=\begin{cases}\binom{N-j-1}{p-1},&j\le q,\\0,&j>q.\end{cases}
+\]
+Then
+\begin{align}
+ \Ord(p,q;a,a)={}&E_p(a)\zeta(q,a+1)\notag\\
+ &+\frac{(-1)^q}{4}\sum_{j=2}^{\max(p,q)}
+ \{1-(-1)^{N-j}\}\{L_j+(-1)^jR_j\}\zeta(j,a+1)\notag\\
+ &-\frac14\sum_{k=1}^{p}\binom{N-k-1}{q-1}
+ \{(-1)^q(a+1)^{-k}+(-1)^{p-k}a^{-k}\}.
+ \label{eq:ordered-parity}
+\end{align}
+Only orders $j$ with $p+q+j$ odd occur in the correction in the second
+line. When $p=q$, that entire line vanishes.
+\end{theorem}
+
+\begin{proof}
+Apply \eqref{eq:finite-kernel} to
+$\Kern(p,q;a+2,a+1)-\Kern(p,q;a,a+1)$, so that $D=-1$ and $D=1$.
+Use $\zeta(j,a)=a^{-j}+\zeta(j,a+1)$ and
+$\zeta(j,a+2)=\zeta(j,a+1)-(a+1)^{-j}$, together with the same
+shift recurrence for $\psi$. For $j\ge2$ the resulting coefficient is
+$(-1)^q\{1-(-1)^{N-j}\}\{L_j+(-1)^jR_j\}/4$.
+The simple-pole pairs contribute only the finite third line.
+If $p=q$, then $L_j=R_j$: the second brace vanishes for odd $j$,
+and the first vanishes for even $j$.
+\end{proof}
+
+This is a statement about explicit coefficients. It makes no claim
+that the special values remaining in a particular formula are
+arithmetically independent.
+
+\begin{example}[The ordering survives]\label{ex:ordered-values}
+Two equal-shift evaluations are
+\begin{align}
+ \Ord(2,3;1,1)&=\frac38\zeta(3)-\frac32\zeta(2)+\frac{33}{16},
+ \label{eq:example-23}\\
+ \Ord(3,2;1,1)&=\frac{31}{16}\zeta(2)-\frac{95}{32}.
+ \label{eq:example-32}
+\end{align}
+Their average is the previously polarized example
+$7\zeta(2)/32+3\zeta(3)/16-29/64$ in \cite{repo:finite}.
+Confluent shifts give a different cancellation:
+\begin{align}
+ \Ord(2,2;1,2)&=\frac14\zeta(4)+\frac14\zeta(2)-\frac9{16},
+ \label{eq:example-1122}\\
+ \Ord(2,2;2,1)&=\frac7{36}\zeta(2)-\frac14\zeta(4)-\frac{11}{576}.
+ \label{eq:example-2211}
+\end{align}
+The $\zeta(4)$ term is an exact confluence contribution erased when
+the two assignments are added.
+\end{example}
+
+\subsection{One master function generates all positive orders}
+
+Define the holomorphic divided difference
+\[
+ \Psi[x,y]=\begin{cases}
+ \dfrac{\psi(y)-\psi(x)}{y-x},&x\ne y,\\[5pt]
+ \psi'(x),&x=y.
+ \end{cases}
+\]
+For $\Rea a,\Rea b>0$ set
+\begin{equation}\label{eq:digamma-master}
+ F(a,b)=-\frac{\psi(b+1)}{2a(a+1)}
+ +\frac14\{\Psi[a+2,b+1]-\Psi[a,b+1]\}.
+\end{equation}
+
+\begin{theorem}[Digamma master]\label{thm:digamma-master}
+For $p\ge1$ and $q\ge2$,
+\begin{equation}\label{eq:master-derivatives}
+ \Ord(p,q;a,b)=
+ \frac{(-1)^{p+q-2}}{(p-1)!(q-1)!}
+ \partial_a^{p-1}\partial_b^{q-1}F(a,b).
+\end{equation}
+For real $a,b>0$ and $|x|<a$, $|y|<b$ this is equivalently
+\begin{equation}\label{eq:master-geometric}
+ \sum_{p\ge1}\sum_{q\ge2}x^{p-1}y^{q-1}\Ord(p,q;a,b)
+ =F(a-x,b-y)-F(a-x,b).
+\end{equation}
+Both apparent singularities $b=a\pm1$ in a quotient version of $F$
+are removable.
+\end{theorem}
+
+\begin{proof}
+The residue of $\Ord(1,t;a,b)$ at $t=1$ is
+$E_1(a)=1/(2a(a+1))$. The constant of the Hurwitz zeta factor there is
+$-\psi(b+1)$, while $\Kern(1,1;x,y)=\Psi[x,y]$ is convergent.
+Thus \eqref{eq:digamma-master} is precisely
+$\FP_{t=1}\Ord(1,t;a,b)$ with $a,b$ fixed.
+
+Direct differentiation of the weights gives
+\begin{equation}\label{eq:weight-derivatives}
+ \partial_a^k w_n(s,a)=(-1)^k(s)_k w_n(s+k,a).
+\end{equation}
+For $q\ge2$,
+\[
+ \partial_b^{q-1}\Ord(1,t;a,b)
+ =(-1)^{q-1}(t)_{q-1}\Ord(1,t+q-1;a,b).
+\]
+The $b$ derivative kills the residue, and the right side is regular at
+$t=1$. Its value is $(-1)^{q-1}(q-1)!\Ord(1,q;a,b)$.
+Differentiate in $a$ and use \eqref{eq:weight-derivatives} again.
+This proves \eqref{eq:master-derivatives}; Taylor expansion proves
+\eqref{eq:master-geometric}.
+
+There is also a direct convergence interpretation. Summing the
+geometric weight expansions produces $w_m(1,a-x)$ in the inner
+index and $w_n(1,b-y)-w_n(1,b)$ in the outer index. The latter
+difference has one additional power of decay. Their original ordered
+sum is absolutely convergent on the stated polydisk. This proves that
+\eqref{eq:master-geometric} is an ordinary generating identity.
+\end{proof}
+
+The slightly larger domain $a>0$, $b>-1$, $|x|<a$, $|y|<b+1$
+also works: the outer summation starts at $n=1$. We retain the
+smaller common shift domain elsewhere to keep the original definitions
+uniform.
+
+\subsection{Nonlinear harmonic weights and Gamma ratios}
+
+Let $\Bell_r$ denote the complete exponential Bell polynomial, normalized by
+\begin{equation}\label{eq:bell-definition}
+ \exp\left(\sum_{j\ge1}x_j\frac{v^j}{j!}\right)
+ =\sum_{r\ge0}\Bell_r(x_1,\ldots,x_r)\frac{v^r}{r!}.
+\end{equation}
+For $h_j(n,a)=\sum_{\ell=0}^{2}(n+a+\ell)^{-j}$, one has
+\begin{equation}\label{eq:bell-weight}
+ w_n(p,a)=\frac{\Gamma(n+a)}{\Gamma(n+a+3)}
+ \frac{\Bell_{p-1}(h_1,1!h_2,\ldots,(p-2)!h_{p-1})}{(p-1)!}.
+\end{equation}
+For $p=1$ the Bell polynomial is $\Bell_0=1$.
+Indeed $w_n(1,a)=\Gamma(n+a)/\Gamma(n+a+3)$, and the logarithmic
+derivatives of this ratio are $(-1)^j(j-1)!h_j$.
+Equation \eqref{eq:weight-derivatives} and the Bell formula for
+successive derivatives prove \eqref{eq:bell-weight}.
+
+This translates the ordered identities into explicit nonlinear
+harmonic sums. For example, write
+$P_n=(n+1)(n+2)(n+3)$ and
+$h_{j,n}=H_{n+3}^{(j)}-H_n^{(j)}$. Then \eqref{eq:example-23} becomes
+\begin{equation}\label{eq:harmonic-example}
+ \sum_{0\le m<n}\frac{(n-m)^2h_{1,m}(h_{1,n}^2+h_{2,n})}{P_mP_n}
+ =\frac34\zeta(3)-3\zeta(2)+\frac{33}{8}.
+\end{equation}
+All higher Bell combinations are supplied by the same finite master,
+with no new summation coordinates. At integral shifts they involve
+finite harmonic differences; at arbitrary shifts the $h_j$ are
+finite polygamma differences by the usual recurrence.
+
+\subsection{A Gamma primitive under common translation}
+
+For $a,b>0$, $h\ge0$, define
+$\Lambda_h(x)=\log\Gamma(x+h)-\log\Gamma(x)$.
+Then
+\begin{equation}\label{eq:gamma-primitive}
+ \begin{split}
+ \int_0^h\Def(1,1;a+c,b+c)\dd c
+ ={}&\frac{\Lambda_h(b+1)-\Lambda_h(a+2)}{b-a-1}\\
+ &-\frac{\Lambda_h(b+1)-\Lambda_h(a)}{b-a+1}.
+ \end{split}
+\end{equation}
+At a zero denominator its quotient is the confluent derivative
+$\Lambda_h'(x)=\psi(x+h)-\psi(x)$. To prove the identity, replace
+each $\Kern(1,1)$ by its digamma divided difference; common
+translation leaves its denominator constant, and the primitive of
+$\psi$ is $\log\Gamma$. This also proves the holomorphic path version
+in the right half-plane. For positive integral $h$, the Gamma ratios
+are finite products, so the primitive becomes a finite logarithmic
+identity. Further argument derivatives generate polygamma primitives
+of all positive-order kernels.
+
+% End included source: sections/04_integer_gamma
+% Begin included source: sections/05_polylogarithms
+\section{The cutoff polylogarithm and its disappearing depth}
+\label{sec:polylog}
+
+The ordered endpoint evaluation is accompanied by an explicit cutoff
+identity. This is useful both as a proof of the endpoint cancellation
+and as a finite transform for noninteger orders, one of the questions
+raised in \cite{repo:finite}.
+
+\subsection{An identity entire in the two orders}
+
+For $|z|<1$ put
+\begin{align}
+ G_{s,t}(z)&=\sum_{0\le m<n}(n-m)^2
+             w_m(s,1)w_n(t,1)z^{n+1},\label{eq:cutoff-g}\\
+ B_{s,t}(z)&=\sum_{k\ge1}\frac{z^k}{k^s(k+1)^t},
+ \qquad c_s=\frac{1-2^{-s}}2,\qquad \Theta=z\frac{\dd}{\dd z},
+ \label{eq:cutoff-b}\\
+ U_t(z)&=\frac{(1-z)^2}{z^2}\Li_t(z)+2-z^{-1}-2^{-t}.
+ \label{eq:cutoff-u}
+\end{align}
+The last expression has a removable singularity at zero and equals
+$2\sum_{n\ge0}w_n(t,1)z^{n+1}$. The same convention will apply to
+the removable negative powers of $z$ in the next formula.
+
+\begin{theorem}[Finite cutoff formula]\label{thm:cutoff}
+For all $s,t\in\C$ and $|z|<1$,
+\begin{align}
+ G_{s,t}(z)={}&\frac{(1-z)^2}{2z^2}\Li_{t,s}(z,1)
+ +\frac{z-1}{2z}\Li_{s+t}(z)
+ +\frac14B_{t,s}(z)-\frac1{4z}B_{s,t}(z)\notag\\
+ &+\frac12\left(c_s\Theta^2-\Theta-\frac12\right)U_t(z)
+ +\frac12-2^{-t-2}.
+ \label{eq:cutoff-master}
+\end{align}
+Every term is entire in $s,t$ on the open unit disk. At positive
+integer orders the two $B$ functions are finite combinations of
+ordinary polylogarithms. The only depth-two term in this representation
+has the explicit factor $(1-z)^2$.
+\end{theorem}
+
+\begin{proof}
+The inner finite identity of Section~\ref{sec:ordered}, with $a=1$,
+becomes
+\begin{equation}\label{eq:inner-harmonic}
+ \sum_{m=0}^{n-1}(n-m)^2w_m(s,1)
+ =H_{n+1}^{(s)}+c_s(n+1)^2-(n+1)-\frac12
+   +\frac1{2(n+2)^s}.
+\end{equation}
+It also holds at $n=0$, since the right side then vanishes.
+For $k\ge1$, the three generating identities needed for its harmonic
+part are
+\begin{align}
+ \sum_{k\ge1}\frac{z^kH_k^{(s)}}{k^t}
+   &=\Li_{t,s}(z,1)+\Li_{s+t}(z),\notag\\
+ \sum_{k\ge1}\frac{z^kH_k^{(s)}}{(k+1)^t}
+   &=z^{-1}\Li_{t,s}(z,1),\notag\\
+ \sum_{k\ge1}\frac{z^kH_k^{(s)}}{(k+2)^t}
+   &=z^{-2}\Li_{t,s}(z,1)-z^{-1}B_{s,t}(z).
+ \label{eq:harmonic-generators}
+\end{align}
+They follow by writing the finite harmonic sum and changing the
+outer index; the term subtracted in the last line is precisely the
+last inner index in the shifted nested sum.
+
+Multiply \eqref{eq:inner-harmonic} by $w_n(t,1)z^{n+1}$ and sum.
+Its quadratic polynomial contributes
+$\tfrac12(c_s\Theta^2-\Theta-\tfrac12)U_t$.
+The harmonic contribution, by \eqref{eq:harmonic-generators}, is
+\[
+ \frac{(1-z)^2}{2z^2}\Li_{t,s}(z,1)
+ +\frac12\Li_{s+t}(z)-\frac1{2z}B_{s,t}(z).
+\]
+The final term $1/(2(n+2)^s)$ contributes
+\[
+ \frac14B_{t,s}(z)-\frac1{2z}\Li_{s+t}(z)
+ +\frac1{4z}B_{s,t}(z)+\frac12-2^{-t-2}.
+\]
+Adding gives \eqref{eq:cutoff-master}. On compact sets of orders,
+every summand grows at most polynomially in its indices before the
+exponential factor is applied. All rearrangements therefore converge
+normally and prove the identity for every pair of complex orders.
+\end{proof}
+
+\subsection{Finite classical polylogarithms at integer orders}
+
+For positive integers $p,q$, use the coefficients of
+\eqref{eq:pf-a}--\eqref{eq:pf-b} with $D=1$. Then
+\begin{equation}\label{eq:b-classical}
+ B_{p,q}(z)=\sum_{k=1}^{p}A_k\Li_k(z)
+ +\sum_{l=1}^{q}B_lz^{-1}\{\Li_l(z)-z\}.
+\end{equation}
+This follows by summing the rational partial fractions against $z^n$.
+At $|z|<1$ the two simple-pole sums need not be paired for convergence,
+although pairing is necessary before taking their individual endpoint
+values. Since $\Theta\Li_\nu=\Li_{\nu-1}$, the differential term in
+\eqref{eq:cutoff-master} is also finite in classical polylogarithms.
+Thus the integer-order generator is explicitly in depth at most two,
+and its depth-two coefficient is known exactly.
+
+\begin{corollary}[Endpoint cancellation]\label{cor:cutoff-endpoint}
+For positive integers $p\ge1$, $q\ge2$, the radial limit is
+\begin{equation}\label{eq:cutoff-endpoint}
+ \Ord(p,q;1,1)=c_p\zeta(q)-\frac12+2^{-p-2}
+ +\frac14\{B_{q,p}(1)-B_{p,q}(1)\}.
+\end{equation}
+Together with \eqref{eq:b-classical}, interpreted through its paired
+simple poles, this yields the parity formula
+\eqref{eq:ordered-parity} at $a=1$.
+\end{corollary}
+
+\begin{proof}
+Here $\Li_{q,p}(1,1)$ converges: the inner harmonic sum is bounded
+for $p>1$ and grows only logarithmically for $p=1$, whereas $q\ge2$.
+Its factor $(1-z)^2$ makes its contribution zero. The factor
+$z-1$ similarly kills $\Li_{p+q}(z)$.
+Finite summation by parts for the three moments of the single weight
+gives
+\[
+ U_q(1)=1-2^{-q},\qquad
+ (\Theta U_q)(1)=1,\qquad
+ (\Theta^2U_q)(1)=2\zeta(q)-1.
+\]
+These moments converge for $q>1$. Substitution into
+\eqref{eq:cutoff-master} gives \eqref{eq:cutoff-endpoint}.
+Absolute convergence of the original double sum justifies its radial
+limit as well.
+\end{proof}
+
+There is a broader analytic interpretation. If $\Rea t>1$ and
+$\Rea(s+t)>0$, the original $G_{s,t}$ has the endpoint
+$\Ord(s,t;1,1)$. The depth-two contribution still tends to zero
+radially. Indeed
+$\sum_{j<k}j^{-\Rea s}$ is
+$O(1+k^{\max(1-\Rea s,0)}\log(k+1))$, and a direct comparison of
+the resulting power series with a Laplace integral proves
+$(1-z)^2\Li_{t,s}(z,1)\to0$ on this domain. Some of the remaining
+separated terms can diverge and must be kept in the combination in
+\eqref{eq:cutoff-master}. The identity of the collective endpoint
+with the boundary formula is valid; replacing a divergent component
+by an unannounced regularized value is unnecessary.
+
+\subsection{A finite noninteger-order transform}
+
+Writing $B_{s,t}$ as a one-index series already reduces depth, but a
+standard special-function transform makes the answer more explicit.
+Let
+\[
+ \Phi(z,v,c)=\sum_{k\ge0}\frac{z^k}{(k+c)^v},\qquad |z|<1,
+\]
+be the Lerch transcendent \cite{dlmf:lerch}. For $\Rea s,\Rea t>0$,
+\begin{equation}\label{eq:b-beta-lerch}
+ B_{s,t}(z)=\frac{z\Gamma(s+t)}{\Gamma(s)\Gamma(t)}
+ \int_0^1u^{s-1}(1-u)^{t-1}
+       \Phi(z,s+t,2-u)\dd u.
+\end{equation}
+To prove it, apply the beta identity
+\begin{equation}\label{eq:feynman-basic}
+ X^{-s}Y^{-t}=\frac{\Gamma(s+t)}{\Gamma(s)\Gamma(t)}
+ \int_0^1\frac{u^{s-1}(1-u)^{t-1}}{[uX+(1-u)Y]^{s+t}}\dd u
+\end{equation}
+with $X=k$, $Y=k+1$ and sum $z^k$. The initial exchange is absolutely
+convergent. Both sides then continue in their order variables from
+that domain; the continued $B$ itself is entire for $|z|<1$.
+Equations \eqref{eq:cutoff-master} and \eqref{eq:b-beta-lerch}
+give a finite description of the cutoff generator for noninteger
+orders using ordinary polylogarithms, one depth-two polylogarithm,
+and two ordinary beta--Lerch transforms. No assumption that arbitrary
+complex orders have finite integer partial fractions is made.
+
+\subsection{Euler primitives}
+
+For a function vanishing at zero, define
+$\mathcal J f(z)=\int_0^z f(u)\dd u/u$ within the unit disk.
+Termwise integration yields, for every integer $\ell\ge0$,
+\begin{equation}\label{eq:euler-primitives}
+ \mathcal J^\ell G_{s,t}(z)
+ =\sum_{0\le m<n}\frac{(n-m)^2}{(n+1)^\ell}
+             w_m(s,1)w_n(t,1)z^{n+1}.
+\end{equation}
+At positive integer orders these remain finite combinations of
+depth-at-most-two polylogarithms and rational functions. One constructive
+proof uses \eqref{eq:inner-harmonic}: the coefficient is a rational
+function of $k=n+1$, times $H_k^{(p)}$, plus a rational function.
+Dividing by $k^\ell$ introduces only additional integer-order poles
+at $0,-1,-2$. Partial fractions reduce each term to one of
+\eqref{eq:harmonic-generators} with shifted orders, or to its finite
+index-shift analogues. Shifting $H_{k+c}^{(p)}$ changes it by a
+finite rational sum, so no further nested index is introduced.
+This proves closure under these primitives constructively; it does
+not assert a minimal transcendental basis at the endpoint.
+
+% End included source: sections/05_polylogarithms
+% Begin included source: sections/06_stieltjes
+\section{Ordinary Stieltjes identities and their primitives}
+\label{sec:stieltjes}
+
+Two complementary constructions produce every generalized Stieltjes
+constant. The first subtracts a single asymptotic term from the original
+ordered summand and retains ordinary convergence. The second takes
+derivatives of a beta transform precisely on a hyperplane where the
+two Hurwitz residues cancel.
+
+\subsection{Subtracting before summing}
+
+For $\Rea s>0$ and $\Rea a,\Rea b>0$, put
+\[
+ I_n(s,a)=\sum_{m=0}^{n-1}(n-m)^2w_m(s,a),\qquad
+ c_2(t)=\frac{t(t+1)}2.
+\]
+Define the bracketed series
+\begin{equation}\label{eq:subtracted-series}
+ \mathcal U(s,t;a,b)=
+ \sum_{n=1}^{\infty}
+ \left[
+ w_n(t,b)I_n(s,a)-E_s(a)c_2(t)(n+b)^{-t}
+ \right].
+\end{equation}
+The subtraction is inside each summand.
+
+\begin{theorem}[Convergent Stieltjes jets]\label{thm:subtracted-jets}
+The series \eqref{eq:subtracted-series} is locally normally convergent
+for $\Rea s>0$, $\Rea t>0$. On this domain,
+\begin{equation}\label{eq:subtracted-identity}
+ \mathcal U(s,t;a,b)=\frac14\Def(s,t;a,b)
+       +(1-c_2(t))E_s(a)\zeta(t,b+1),
+\end{equation}
+with a removable singularity at $t=1$.
+For $m\ge0$ define the ordinarily convergent logarithmic difference
+\begin{equation}\label{eq:j-m}
+ J_m(s;a,b)=\sum_{k=0}^{\infty}
+ \frac{\{(k+a+2)^{-s}-(k+a)^{-s}\}
+                 \log^m(k+b+1)}{k+b+1}.
+\end{equation}
+With $\mathcal U_m=\partial_t^m\mathcal U(s,1;a,b)$ and
+$E=E_s(a)$, the exact identities are
+\begin{align}
+ \mathcal U_0&=\frac14J_0-\frac32E,\label{eq:u-zero}\\
+ \mathcal U_1&=-\frac14J_1-\frac E2\{1+3\gamma_0(b+1)\},
+ \label{eq:u-one}\\
+ \mathcal U_m&=(-1)^m\left[
+ \frac14J_m+\frac{3m}{2}E\gamma_{m-1}(b+1)
+ -\frac{m(m-1)}2E\gamma_{m-2}(b+1)
+ \right],\quad m\ge2.
+ \label{eq:u-all}
+\end{align}
+Every $\mathcal U_m$ on the left is obtained by differentiating the
+bracketed original series term by term.
+\end{theorem}
+
+\begin{proof}
+The finite identity for $I_n$ gives
+$I_n(s,a)=E_s(a)(n+b)^2+O(n)$ locally uniformly for $\Rea s>0$.
+For the second difference,
+\[
+ w_n(t,b)=c_2(t)(n+b)^{-t-2}+O(n^{-\Rea t-3})
+\]
+uniformly on compact parameter sets. Their product after the
+subtraction is $O(n^{-\Rea t-1})$; any fixed order derivative only
+introduces powers of $\log n$, and a small compact-set margin
+absorbs them. Thus the series is locally normal.
+
+For $\Rea t>1$, subtract the Hurwitz series from the ordered
+boundary identity. This proves \eqref{eq:subtracted-identity} there
+and hence throughout the stated domain by analytic continuation.
+At $t=1+v$,
+\[
+ 1-c_2(1+v)=-\frac32v-\frac12v^2.
+\]
+Multiply this polynomial by \eqref{eq:stieltjes-convention}.
+The $m$th derivative of $\Def(s,t;a,b)$ at $t=1$ is
+$(-1)^mJ_m$, justified by its normally convergent combined series.
+Extracting the constant, the linear coefficient, and the general
+coefficient proves \eqref{eq:u-zero}--\eqref{eq:u-all}.
+\end{proof}
+
+These identities provide a uniform way of expressing Stieltjes
+constants through logarithmically weighted ordered harmonic kernels.
+They are not divergent double sums assigned values after the fact:
+their defining brackets are summable before any continuation is used.
+
+\begin{example}[An explicit nonlinear harmonic subtraction]
+At $a=b=1$, $s=2$, the values are
+\[
+ E=\frac38,\qquad J_0=\frac{11}{4}-2\zeta(2),\qquad
+ \mathcal U_0=\frac18-\frac12\zeta(2).
+\]
+For $s=3$ one instead obtains
+$J_0=15/8-2\zeta(3)$ and
+$\mathcal U_0=-3/16-\zeta(3)/2$.
+In both cases the left side of \eqref{eq:subtracted-series} is
+explicit in the harmonic Bell weights \eqref{eq:bell-weight}.
+\end{example}
+
+\subsection{The hard cutoff has a different constant}
+
+Let $\Ord_N$ denote the original ordered sum with $n\le N$.
+For $\Rea s>0$,
+\begin{equation}\label{eq:hard-cutoff}
+ \lim_{N\to\infty}
+ \{\Ord_N(s,1;a,b)-E_s(a)\log(N+b)\}
+ =\FP_{t=1}\Ord(s,t;a,b)-\frac32E_s(a),
+\end{equation}
+where the finite part keeps $s,a,b$ fixed. To prove it directly,
+write the finite sum as
+$\mathcal U_N(s,1;a,b)+E_s(a)\sum_{n=1}^N(n+b)^{-1}$.
+The first term tends to \eqref{eq:u-zero}; the second, after
+subtracting $E_s(a)\log(N+b)$, tends to $-E_s(a)\psi(b+1)$.
+But
+\begin{equation}\label{eq:fixed-order-fp}
+ \FP_{t=1}\Ord(s,t;a,b)
+ =-E_s(a)\psi(b+1)+\frac14J_0(s;a,b).
+\end{equation}
+This proves \eqref{eq:hard-cutoff}. Equivalently, the upper endpoints
+in the exact finite summation by parts have limit $-3E_s(a)/2$.
+
+For example,
+\[
+ F(1,1)=\frac{\gamma}{4}-\frac38,\qquad
+ \lim_{N\to\infty}\left\{\Ord_N(1,1;1,1)-\frac14\log(N+1)\right\}
+ =\frac{\gamma}{4}-\frac34.
+\]
+There is no contradiction: the two operations retain different
+boundary constants. A diagonal Laurent coordinate $s=t$ would also
+differentiate the residue $E_s(a)$ and is yet another declared
+coordinate. These distinctions should be preserved in any integration
+of the formulas into the manuscript.
+
+\subsection{A beta transform on the cancelled polar hyperplane}
+
+For $\Rea x,\Rea y>0$, $\Rea s,\Rea t>0$ and initially
+$\Rea(s+t)>1$, summing
+\eqref{eq:feynman-basic} gives
+\begin{equation}\label{eq:k-beta}
+ \Kern(s,t;x,y)=\frac{\Gamma(s+t)}{\Gamma(s)\Gamma(t)}
+ \int_0^1u^{s-1}(1-u)^{t-1}
+       \zeta(s+t,y+(x-y)u)\dd u.
+\end{equation}
+For $\Def$ take the difference of the two integrands before
+continuing. The Hurwitz pole at $s+t=1$ then cancels identically.
+This is a direct instance of the beta-parametrization method for
+zeta products; compare \cite{shpot-paris}. The following all-order
+Stieltjes identity uses that cancellation.
+
+\begin{theorem}[Beta--Stieltjes difference identity]\label{thm:beta-stieltjes}
+Suppose $0<\Rea\sigma<1$ and $\Rea a,\Rea b>0$. Set
+\begin{align*}
+ A_\pm(u)&=b+1+(a-b\pm1)u,\\
+ T_m(\sigma;a,b)&=\sum_{k=0}^{\infty}
+ \{(k+a+2)^{-\sigma}-(k+a)^{-\sigma}\}
+ (k+b+1)^{\sigma-1}[-\log(k+b+1)]^m,
+\end{align*}
+and define
+\begin{align}
+ \ell_1(u)&=\log(1-u)+\psi(1)-\psi(1-\sigma),\notag\\
+ \ell_j&=\psi^{(j-1)}(1)-\psi^{(j-1)}(1-\sigma),\qquad j\ge2.
+ \label{eq:beta-ells}
+\end{align}
+Then, for every integer $m\ge0$,
+\begin{equation}\label{eq:beta-stieltjes-all}
+ \begin{split}
+ T_m(\sigma;a,b)=\frac{\sin(\pi\sigma)}{\pi}
+ \int_0^1&u^{\sigma-1}(1-u)^{-\sigma}\\[-2pt]
+ {}\times&\sum_{j=0}^{m}\binom mj(-1)^j
+ \Bell_{m-j}(\ell_1(u),\ldots,\ell_{m-j})
+ \{\gamma_j(A_+(u))-\gamma_j(A_-(u))\}\dd u.
+ \end{split}
+\end{equation}
+Both the sum and the integral converge ordinarily. The sum has
+summands $O(k^{-2}\log^m k)$.
+\end{theorem}
+
+\begin{proof}
+In the difference of \eqref{eq:k-beta}, put
+$s=\sigma$, $t=1-\sigma+v$. Its integral is
+\[
+ \frac{\Gamma(1+v)}{\Gamma(\sigma)\Gamma(1-\sigma+v)}
+ \int_0^1 u^{\sigma-1}(1-u)^{-\sigma+v}
+ \{\zeta(1+v,A_+(u))-\zeta(1+v,A_-(u))\}\dd u.
+\]
+The expression in braces is holomorphic at $v=0$; its $j$th
+derivative there is $(-1)^j(\gamma_j(A_+)-\gamma_j(A_-))$.
+The factor outside the braces, divided by its value at $v=0$,
+has logarithmic derivatives \eqref{eq:beta-ells}. The constant
+factor is $\sin(\pi\sigma)/\pi$ by Gamma reflection.
+The Bell product rule \eqref{eq:bell-definition} therefore gives
+\eqref{eq:beta-stieltjes-all}.
+
+All endpoint powers have real exponents greater than $-1$, uniformly
+for $v$ in a sufficiently small disk. Additional logarithms are
+integrable. The shifts $A_\pm(u)$ remain in a compact subset of the
+right half-plane, so the differentiated Hurwitz difference is
+bounded there. These facts justify differentiation under the
+integral. On the series side, the shifted difference gains one
+power of $k$, giving $O(k^{-2+\lvert\Rea v\rvert}\log^m k)$
+uniformly near zero. Differentiating it gives exactly $T_m$.
+\end{proof}
+
+At $\sigma=\tfrac12$,
+\begin{equation}\label{eq:half-beta-ells}
+ \ell_1(u)=\log[4(1-u)],\qquad
+ \ell_j=(-1)^j(j-1)!(2-2^j)\zeta(j),\quad j\ge2.
+\end{equation}
+Thus the transform has an arcsine weight and Bell coefficients
+expressed entirely in ordinary zeta values. At $a=b=1$ there is
+also the geometrically convergent single-zeta-derivative series
+\begin{equation}\label{eq:beta-jet-zeta}
+ T_m(\sigma;1,1)
+ =-2\sum_{h=0}^{\infty}\frac{(\sigma)_{2h+1}}{(2h+1)!}
+       \zeta^{(m)}(2h+2,2).
+\end{equation}
+Indeed the Hurwitz expansion of $\Def$ has only odd shift powers
+when $a=b$, and along $s+t=1+v$ its zeta argument is $2h+2+v$.
+The shift-to-tail ratio is $1/2$, so differentiating this expansion
+is locally normal. In particular,
+$T_0(\tfrac12;1,1)=-1/\sqrt2$; the next subsection explains its
+elementary telescoping origin.
+
+\subsection{Arcsine Gamma identities and Stieltjes primitives}
+
+Some symmetric members simplify further and should be identified
+as recurrence consequences, rather than presented as independent
+priority claims. For $a>0$,
+\begin{align}
+ \int_0^1\frac{\psi(a+1+u)-\psi(a+1-u)}{\sqrt{u(1-u)}}\dd u
+ &=\frac{\pi}{\sqrt{a(a+1)}},\label{eq:arcsine-psi}\\
+ \int_0^1\frac{\log\Gamma(a+1+u)-\log\Gamma(a+1-u)}
+                       {\sqrt{u(1-u)}}\dd u
+ &=2\pi\log\frac{\sqrt a+\sqrt{a+1}}2.
+ \label{eq:arcsine-gamma}
+\end{align}
+To prove these, replace $u$ by $1-u$ in the second member of each
+difference inside its integral. The recurrences for $\psi$ and
+$\Gamma$ then leave respectively $1/(a+u)$ and $\log(a+u)$.
+The first arcsine integral is obtained by $u=(1+\cos\theta)/2$;
+integrating it in $a$ and comparing as $a\to\infty$ gives the
+second. This proof fixes the normalization of the logarithm,
+including the factor $2$ in its denominator.
+
+From $\gamma_m(a+1)-\gamma_m(a)=-\log^m(a)/a$ one likewise obtains
+the all-order identity
+\begin{equation}\label{eq:arcsine-stieltjes}
+ \int_0^1\frac{\gamma_m(a+1+u)-\gamma_m(a+1-u)}
+                      {\sqrt{u(1-u)}}\dd u
+ =-\int_0^1\frac{\log^m(a+u)}{(a+u)\sqrt{u(1-u)}}\dd u.
+\end{equation}
+For instance, its $m=1$ value is
+\begin{equation}\label{eq:arcsine-gamma-one}
+ -\frac{\pi}{\sqrt{a(a+1)}}
+ \log\frac{4a(a+1)}{(\sqrt a+\sqrt{a+1})^2}.
+\end{equation}
+For a direct evaluation, set $A=a+\tfrac12$, $B=\tfrac12$,
+$D=\sqrt{A^2-B^2}$ and $r=B/(A+D)$. Then
+$A+B\cos\theta=(A+D)(1+2r\cos\theta+r^2)/2$.
+The Fourier series of its logarithm and the Poisson kernel of its
+reciprocal give
+\[
+ \int_0^\pi\frac{\log(A+B\cos\theta)}{A+B\cos\theta}\dd\theta
+ =\frac{\pi}{D}\log\frac{2D^2}{A+D}.
+\]
+Their series converge absolutely since $0<r<1$; substitution is
+\eqref{eq:arcsine-gamma-one} with the required negative sign.
+
+There is also a canonical primitive without an arbitrary periodic
+ambiguity. Define
+$S_m(a)=\int_1^a\gamma_m(x)\dd x$ for $a>0$.
+The elementary integral
+\[
+ \int_1^2\zeta(1+v,a)\dd a
+ =\frac{\zeta(v,1)-\zeta(v,2)}{v}=\frac1v
+\]
+shows, coefficient by coefficient, that $\int_1^2\gamma_m(a)\dd a=0$.
+Integrating the shift recurrence consequently gives
+\begin{equation}\label{eq:stieltjes-primitive-recurrence}
+ S_m(a+1)-S_m(a)=-\frac{\log^{m+1}a}{m+1}.
+\end{equation}
+The same symmetry argument yields
+\begin{equation}\label{eq:arcsine-primitive}
+ \int_0^1\frac{S_m(a+1+u)-S_m(a+1-u)}{\sqrt{u(1-u)}}\dd u
+ =-\frac1{m+1}\int_0^1\frac{\log^{m+1}(a+u)}{\sqrt{u(1-u)}}\dd u.
+\end{equation}
+For $m=0$, $S_0(a)=-\log\Gamma(a)$, and this reduces exactly to
+\eqref{eq:arcsine-gamma}. Equations
+\eqref{eq:beta-stieltjes-all} and \eqref{eq:arcsine-primitive}
+exhibit two different sources of all-order identities: cancellation
+of a zeta pole in a beta transform, and integration of the elementary
+shift recurrence.
+
+% End included source: sections/06_stieltjes
+% Begin included source: sections/07_localization
+\section{All-rank localization of ordered finite-difference sums}
+\label{sec:localization}
+
+The incoming finite-difference report proves determinant identities for
+symmetrized assignments of orders and shifts, and explicitly asks which
+coordinates are needed for an individual ordered assignment
+\cite[Sections 3 and 9]{repo:finite}.  We give a finite construction for
+arbitrary rank.  Its central fact is a support cancellation: after the
+differences are transferred to the ordered Vandermonde polynomial, two
+isolated free labels annihilate the coefficient.  The construction retains
+the individual assignment of every order and shift.
+
+\subsection{The ordered sum and its exact transported coefficient}
+
+Fix an integer $r\ge2$ and put $d=2r-2$.  For
+$\mathbf s=(s_1,\ldots,s_r)\in\C^r$ and
+$\Rea a_i>0$, define
+\begin{align}
+ w_i(n)&=\frac1{d!}\sum_{j=0}^{d}(-1)^j\binom dj
+                       (n+a_i+j)^{-s_i},
+                       \label{loc:weights}\\
+ \mathcal Z_r(\mathbf s;\mathbf a)
+   &=\sum_{0\le n_1<\cdots<n_r}
+          \Delta(\mathbf n)^2\prod_{i=1}^r w_i(n_i),
+                       \label{loc:ordered-sum}
+\end{align}
+where $\Delta(\mathbf x)=\prod_{i<v}(x_v-x_i)$.
+All powers use the principal logarithm in the right half-plane.  We shall
+distinguish two domains:
+\[
+ \Omega=\{\Rea s_i>1,\ \Rea a_i>0\text{ for every }i\},
+ \qquad
+ \Omega_0=\{\Rea s_i>d+1,\ \Rea a_i>0\text{ for every }i\}.
+\]
+
+\begin{theorem}[Finite ordered reduction in every rank]
+\label{loc:main}
+The series \eqref{loc:ordered-sum} converges absolutely and locally normally
+on $\Omega$.  On $\Omega_0$ it is an explicit finite sum of expressions
+\begin{equation}
+ \sum_{0\le N_1<\cdots<N_q}
+    Q(N_1,\ldots,N_q)
+    \prod_{\ell=1}^q\prod_{i\in B_\ell}
+                      (N_\ell+A_i)^{-s_i},
+ \qquad \Rea A_i>0,
+ \label{loc:reduced-form}
+\end{equation}
+multiplied, where necessary, by finite products of shifted powers.
+Here $Q$ is a polynomial, the label sets $B_\ell$ are consecutive blocks,
+and
+\[
+ q\le\left\lfloor\frac{r+1}{2}\right\rfloor.
+\]
+The contribution anchored at the lower boundary has at most
+$\lfloor r/2\rfloor$ free indices.  Equations
+\eqref{loc:sector-polynomial}, \eqref{loc:free-sector}, and
+\eqref{loc:anchored-sector} below give all coefficients and shifts by
+finite sums.  Every expression in this construction converges absolutely
+on $\Omega_0$.  Their collective sum has a holomorphic continuation to
+$\Omega$, equal there to \eqref{loc:ordered-sum}.
+\end{theorem}
+
+The number $q$ counts summation variables in the displayed representation.
+The theorem makes no assertion that this number is minimal, or that any
+special values obtained from different sectors are arithmetically
+independent.
+
+For the convergence statement, the finite-difference integral is
+\begin{equation}
+ w_i(n)=\frac{(s_i)_d}{d!}
+       \int_{[0,1]^d}
+       (n+a_i+u_1+\cdots+u_d)^{-s_i-d}\dd\mathbf u.
+ \label{loc:difference-integral}
+\end{equation}
+The sign is positive because $d$ is even.  On compact subsets of the
+parameter domain this gives
+$|w_i(n)|\le C(1+n)^{-\Rea s_i-d}$.  For nonnegative integer nodes,
+\begin{equation}
+ |\Delta(\mathbf n)|^2\le\prod_{i=1}^r(1+n_i)^d.
+ \label{loc:vandermonde-bound}
+\end{equation}
+The resulting product majorant proves normal convergence on $\Omega$.
+If the differences in \eqref{loc:weights} are expanded before summation,
+each factor is only bounded by $C(1+n_i)^{-\Rea s_i}$; the same argument
+then proves absolute convergence on $\Omega_0$.  This is the initial
+domain for the coefficient transport.
+
+On integer tuples define the chamber polynomial
+\begin{equation}
+ P(\mathbf x)=\ind_{\{0\le x_1<\cdots<x_r\}}
+                                      \Delta(\mathbf x)^2
+ \label{loc:chamber}
+\end{equation}
+and the finite stencil
+\begin{equation}
+ C_r(\mathbf k)=
+ \sum_{\mathbf j\in\{0,\ldots,d\}^r}
+       (-1)^{j_1+\cdots+j_r}\prod_{i=1}^r\binom d{j_i}
+       P(\mathbf k-\mathbf j).
+ \label{loc:transport-coefficient}
+\end{equation}
+Expanding \eqref{loc:weights}, setting $k_i=n_i+j_i$, and collecting the
+common shifted powers gives the exact identity
+\begin{equation}
+ \mathcal Z_r(\mathbf s;\mathbf a)
+ =\frac1{(d!)^r}\sum_{k_1,\ldots,k_r\ge0}
+               C_r(\mathbf k)\prod_{i=1}^r(k_i+a_i)^{-s_i}
+ \qquad\text{on }\Omega_0.
+ \label{loc:transport}
+\end{equation}
+Expanded absolute convergence justifies every regrouping.  There is no
+unaccounted upper endpoint: the regrouping is performed on the full
+absolutely convergent series.  Also, $C_r(\mathbf k)=0$ if any $k_i<0$,
+since every nonzero term in \eqref{loc:transport-coefficient} has
+$k_i=x_i+j_i\ge0$.
+
+\subsection{Collision blocks and the two-singleton cancellation}
+
+The shifted tuple $\mathbf k$ need not be increasing.  If
+$C_r(\mathbf k)\ne0$, however, some stencil term has a strictly increasing
+tuple $\mathbf k-\mathbf j$.  Necessarily
+\begin{equation}
+ k_{i+1}-k_i\ge1-d\qquad(1\le i<r).
+ \label{loc:gap-lower}
+\end{equation}
+Partition the labels $1,\ldots,r$ into maximal consecutive blocks by
+placing a cut precisely when
+\begin{equation}
+ k_{i+1}-k_i>d.
+ \label{loc:cut}
+\end{equation}
+The internal adjacent gaps therefore belong to the finite set
+$\{1-d,\ldots,d\}$.  Across a cut, every stencil assignment remains
+strictly ordered, because
+$k_{i+1}-j_{i+1}-k_i+j_i\ge d+1-d=1$.
+
+The first block is called \emph{anchored} when $k_1<d$; every other block
+is free.  If $k_1\ge d$, all blocks are free.  Only the first block can
+be anchored.  Indeed, the chamber condition in \eqref{loc:chamber}
+requires just $x_1\ge0$ together with strict order, which already implies
+nonnegativity of the later coordinates.
+
+\begin{lemma}[Two free singleton blocks give zero]
+\label{loc:singleton}
+If the block decomposition of $\mathbf k$ contains two free blocks of
+size one, then $C_r(\mathbf k)=0$.
+\end{lemma}
+
+\begin{proof}
+Let $i$ be one free singleton, and fix every stencil variable except
+$j_i$.  All chamber indicators are independent of $j_i$: its neighboring
+cuts remain ordered for every shift, and it cannot change the lower
+boundary condition.  As a polynomial in $x_i=k_i-j_i$, the Vandermonde
+square has degree $d=2r-2$, with leading coefficient
+\[
+ \Delta(\mathbf x_{\widehat i})^2
+       =\prod_{\substack{p<v\\p,v\ne i}}(x_v-x_p)^2.
+\]
+Consequently
+\[
+ \sum_{j_i=0}^d(-1)^{j_i}\binom d{j_i}\Delta(\mathbf x)^2
+       =d!\,\Delta(\mathbf x_{\widehat i})^2.
+\]
+Let $v$ be the second free singleton.  Its indicators are still
+independent of $j_v$, but the remaining polynomial has degree
+$2(r-2)=d-2$ in $x_v$.  Its $d$th backward difference is zero.  Summing
+over the other stencil variables preserves this cancellation.
+\end{proof}
+
+At most one surviving free block can therefore be a singleton.  If
+there are $q$ free blocks and no anchor, they use at least $2q-1$ labels;
+hence $q\le\lfloor(r+1)/2\rfloor$.  If an anchor is present, it uses at
+least one additional label, giving $r\ge2q$ and
+$q\le\lfloor r/2\rfloor$.  This proves the support part of
+Theorem~\ref{loc:main}.  We now turn it into a finite formula without
+leaving any block-coordinate choices implicit.
+
+\subsection{An explicit finite construction of every sector}
+
+Choose a consecutive block composition
+$\mathcal B=(B_1,\ldots,B_p)$ of $\{1,\ldots,r\}$, and write
+$b_\ell=|B_\ell|$ and $\ell(i)$ for the block containing $i$.  In each
+block choose integer offsets $u_i$ with first offset zero and
+\begin{equation}
+ u_{i+1}-u_i\in\{1-d,\ldots,d\}
+                    \quad(i,i+1\in B_\ell).
+ \label{loc:offsets}
+\end{equation}
+There are finitely many choices.  Put
+\[
+ k_i=t_{\ell(i)}+u_i,
+ \qquad c_\ell=d+u_{\max B_\ell},
+\]
+and introduce the finite internal indicator
+\[
+ \varepsilon_{\mathcal B,\mathbf u}(\mathbf j)
+ =\prod_{\ell=1}^p\prod_{\substack{i,i+1\in B_\ell}}
+       \ind_{\{u_{i+1}-u_i+j_i-j_{i+1}\ge1\}}.
+\]
+Discard a pattern if this indicator is zero for every stencil tuple.
+For every retained pattern, an admissible tuple gives
+\begin{equation}
+ u_i\ge i-\min B_\ell-d\quad(i\in B_\ell),
+ \qquad c_\ell\ge b_\ell-1\ge0.
+ \label{loc:offset-feasibility}
+\end{equation}
+To see the first inequality, sum the internal strict inequalities from
+the first label of the block to $i$, then use $j_i-j_{\min B_\ell}\ge-d$.
+The second is its instance at the last label.
+
+Define the following polynomial in the block bases:
+\begin{align}
+ \mathcal C_{\mathcal B,\mathbf u}(\mathbf t)
+ ={}&\sum_{\mathbf j\in\{0,\ldots,d\}^r}
+       (-1)^{|\mathbf j|}\prod_{i=1}^r\binom d{j_i}
+       \varepsilon_{\mathcal B,\mathbf u}(\mathbf j)
+       \prod_{i<v}
+       \bigl(t_{\ell(v)}-t_{\ell(i)}+u_v-u_i-j_v+j_i\bigr)^2.
+ \label{loc:sector-polynomial}
+\end{align}
+It has integer coefficients and satisfies
+\begin{equation}
+ \deg_{t_\ell}\mathcal C_{\mathcal B,\mathbf u}
+                         \le 2b_\ell(r-b_\ell).
+ \label{loc:sector-degree}
+\end{equation}
+Pairs of labels in the same block do not depend on its base; each of
+the $b_\ell(r-b_\ell)$ cross-block pairs contributes at most degree two.
+
+For an unanchored sector the base conditions are exactly
+\[
+ t_1\ge d,\qquad t_{\ell+1}>t_\ell+c_\ell.
+\]
+Set
+\begin{equation}
+ e_1=d,\qquad e_\ell=d+\sum_{v<\ell}c_v,
+ \qquad t_\ell=N_\ell+e_\ell.
+ \label{loc:free-bases}
+\end{equation}
+The conditions become $0\le N_1<\cdots<N_p$.  Moreover,
+$e_\ell+u_i\ge0$ by \eqref{loc:offset-feasibility}, so every shifted
+argument stays in the right half-plane.  This sector contributes exactly
+\begin{equation}
+ \frac1{(d!)^r}
+ \sum_{0\le N_1<\cdots<N_p}
+       \mathcal C_{\mathcal B,\mathbf u}(\mathbf N+\mathbf e)
+       \prod_{\ell=1}^p\prod_{i\in B_\ell}
+                    (N_\ell+e_\ell+u_i+a_i)^{-s_i}.
+ \label{loc:free-sector}
+\end{equation}
+The stencil polynomial is exactly $C_r(\mathbf k)$ on this sector:
+cross-block order and the lower-bound condition are automatic, leaving
+precisely the indicators in \eqref{loc:sector-polynomial}.
+
+For an anchored sector choose the finite integer
+$h=k_1\in\{0,\ldots,d-1\}$ and set $t_1=h$.  Let
+$\mathcal C_{\mathcal B,\mathbf u;h}(t_2,\ldots,t_p)$ be
+\eqref{loc:sector-polynomial} with $t_1=h$ and the additional indicator
+$\ind_{\{j_1\le h\}}$ inserted in the summand.  Discard patterns with
+no admissible stencil tuple under this extra constraint.  If $p\ge2$,
+set
+\begin{equation}
+ e_2=h+c_1+1,\qquad
+ e_\ell=e_2+\sum_{v=2}^{\ell-1}c_v\quad(\ell\ge3),
+ \qquad t_\ell=N_\ell+e_\ell.
+ \label{loc:anchored-bases}
+\end{equation}
+The free variables satisfy $0\le N_2<\cdots<N_p$.  Feasibility of the
+anchored block gives $h+u_i\ge0$ for its labels, and in particular
+$e_2=d+h+u_{\max B_1}+1\ge d+1$.  Together with
+\eqref{loc:offset-feasibility}, this also ensures positive real parts for
+all the free shifted arguments.  The anchored sector is
+\begin{align}
+ &\frac1{(d!)^r}
+   \prod_{i\in B_1}(h+u_i+a_i)^{-s_i}
+   \sum_{0\le N_2<\cdots<N_p}
+     \mathcal C_{\mathcal B,\mathbf u;h}
+                      (N_2+e_2,\ldots,N_p+e_p)
+ \notag\\[-2pt]
+ &\hspace{44mm}\times
+       \prod_{\ell=2}^p\prod_{i\in B_\ell}
+                   (N_\ell+e_\ell+u_i+a_i)^{-s_i}.
+ \label{loc:anchored-sector}
+\end{align}
+For $p=1$, the sum and the free product are absent, so the contribution
+is a finite scalar expression.
+
+Every possible nonzero coefficient in \eqref{loc:transport} belongs to
+exactly one of these sectors: its cuts determine the composition, the
+first coordinate in each block determines the base, and subtraction
+determines the offsets.  Conversely, the indicated inequalities give
+exactly those cuts and internal gaps.  There are finitely many
+compositions, offsets, and anchored values $h$.  Summing
+\eqref{loc:free-sector} and \eqref{loc:anchored-sector} over them, and
+discarding the zero sectors of Lemma~\ref{loc:singleton}, is therefore
+the promised finite construction.
+
+For completeness, each separated sector converges absolutely on
+$\Omega_0$.  If a free block has $b$ labels, its polynomial degree in
+the associated variable is at most $2b(r-b)$, while the sum of the real
+parts of its denominator exponents is greater than $b(d+1)$.  Their
+difference satisfies
+\[
+ b(d+1)-2b(r-b)=b(2b-1)\ge1,
+\]
+with strict improvement supplied by $\Rea s_i>d+1$.  A product
+majorant over unrestricted nonnegative free variables is summable.
+The same bounds apply locally uniformly to the parameters.  This proves
+the convergence assertions and completes the proof of
+Theorem~\ref{loc:main}.
+
+If a representation without polynomial numerators is preferred, choose
+one denominator $(N+A)^{-s}$ in each free block.  Expanding
+$N^k=((N+A)-A)^k$ removes any monomial numerator by finitely many integer
+decrements of that exponent.  The preceding degree estimate proves
+absolute convergence of these terms on $\Omega_0$ as well, and no new
+summation variable is introduced.
+
+\begin{remark}[Collective continuation and separated convergence]
+\label{loc:continuation-caution}
+The original series is holomorphic on $\Omega$.  Since the finite
+localized expression agrees with it on the nonempty subdomain
+$\Omega_0$, the former gives a holomorphic continuation of the latter
+collectively.  The degree estimate above does not prove that each
+separated sector, or each individual exponent-shifted term, converges
+on all of $\Omega$.  Finite cancellation between offset patterns may be
+needed there.  This distinction is part of the theorem's domain
+statement, not an appeal to formal rearrangement outside convergence.
+\end{remark}
+
+\subsection{Rank three: the complete two-index contact part}
+
+For $r=3$, $d=4$, write $f_i(k)=(k+a_i)^{-s_i}$.  The unanchored
+composition $(1,2)\mid(3)$ is described by
+\[
+ k_1\ge4,\qquad h=k_2-k_1\in\{-3,\ldots,4\},
+ \qquad k_3-k_2>4.
+\]
+Summing the isolated third stencil first, exactly as in
+Lemma~\ref{loc:singleton}, gives
+\begin{align}
+ C_3(k_1,k_2,k_3)&=24A(h),\label{loc:rank3-contact}\\
+ A(h)&=\sum_{j,k=0}^4(-1)^{j+k}\binom4j\binom4k
+                  (h+j-k)^2\ind_{\{h+j-k>0\}}.
+                  \label{loc:rank3-A}
+\end{align}
+This entire integer contact table has a short generating expression:
+\begin{equation}
+ \sum_{h\in\Z}A(h)z^h
+   =(1-z^{-1})^4(1-z)^4\frac{z(1+z)}{(1-z)^3}
+   =z^{-3}(1+z)(1-z)^5.
+ \label{loc:rank3-generating}
+\end{equation}
+Indeed, $z(1+z)/(1-z)^3=\sum_{h\ge1}h^2z^h$, and the two finite
+stencils multiply this series by the displayed Laurent factors.
+One may first work in $0<|z|<1$, where every intermediate series
+converges.  The final Laurent polynomial proves
+\[
+\begin{array}{c|rrrrrrr}
+ h&-3&-2&-1&0&1&2&3\\\hline
+ A(h)&1&-4&5&0&-5&4&-1
+\end{array}
+\qquad A(h)=0\quad(|h|\ge4).
+\]
+
+The resulting two-index contribution of $(1,2)\mid(3)$ is
+\begin{equation}
+ \mathcal T_{12\mid3}
+  =\frac1{24^2}\sum_{h=-3}^3 A(h)
+       \sum_{0\le n<m}
+       f_1(n+4)f_2(n+4+h)f_3(m+8+h).
+ \label{loc:rank3-first}
+\end{equation}
+The other unanchored two-block composition, $(1)\mid(2,3)$, gives
+\begin{equation}
+ \mathcal T_{1\mid23}
+  =\frac1{24^2}\sum_{h=-3}^3 A(h)
+       \sum_{0\le n<m}
+       f_1(n+4)f_2(m+8)f_3(m+8+h).
+ \label{loc:rank3-second}
+\end{equation}
+Every remaining surviving sector has at most one free index.  Thus
+\begin{equation}
+ \mathcal Z_3=\mathcal T_{12\mid3}+\mathcal T_{1\mid23}
+                         +\mathcal E_3,
+ \label{loc:rank3-decomposition}
+\end{equation}
+where $\mathcal E_3$ is exactly the finite sum prescribed by
+\eqref{loc:free-sector}--\eqref{loc:anchored-sector} over the remaining
+compositions and anchor choices.  More explicitly, it consists of the
+unanchored one-block sectors, all anchored one-block sectors, and the
+anchored two-block sectors; anchored three-block sectors and
+unanchored three-block sectors vanish by Lemma~\ref{loc:singleton}.
+This is a finite formula for its one-index correction, with no
+undetermined coefficient.
+
+The contact contribution is not vacuous: the admissible tuple
+$(5,6,20)$ has $h=1$ and
+\begin{equation}
+ C_3(5,6,20)=24A(1)=-120.
+ \label{loc:rank3-nonzero}
+\end{equation}
+This proves the existence of two-index support in the construction.
+Further identities can still simplify the complete sum for special
+choices of the orders or shifts; \eqref{loc:rank3-nonzero} is not a
+minimal-depth assertion.
+
+\subsection{General integer stencils and stronger annihilation}
+
+The support mechanism depends on polynomial moments of the stencil,
+rather than on consecutive binomial coefficients.  The next result
+retains $d=2r-2$, even when the stencil has a larger support.
+
+\begin{corollary}[Finite integer stencils]
+\label{loc:general-stencil}
+Let $L\ge d$ be an integer and, for each label $i$, choose coefficients
+$\alpha_{i,\lambda}\in\C$ supported on $0\le\lambda\le L$ such that
+\begin{equation}
+ \sum_{\lambda=0}^L\alpha_{i,\lambda}\lambda^k=0
+                      \qquad(0\le k<d).
+ \label{loc:stencil-moments}
+\end{equation}
+Replace \eqref{loc:weights} by
+\[
+ w_{i,\alpha}(n)=\sum_{\lambda=0}^L
+                     \alpha_{i,\lambda}(n+a_i+\lambda)^{-s_i}.
+\]
+The corresponding ordered sum has the conclusions of
+Theorem~\ref{loc:main}, with the same bounds
+$\lfloor(r+1)/2\rfloor$ and $\lfloor r/2\rfloor$ on its free indices.
+If every stencil also annihilates degree $d$, the bounds improve to
+$\lfloor r/2\rfloor$ for the unanchored part and
+$\lfloor(r-1)/2\rfloor$ for the anchored part.
+\end{corollary}
+
+\begin{proof}
+The exact transported coefficient is now
+\begin{equation}
+ C_\alpha(\mathbf k)=
+   \sum_{\boldsymbol\lambda\in\{0,\ldots,L\}^r}
+          \left(\prod_i\alpha_{i,\lambda_i}\right)
+          P(\mathbf k-\boldsymbol\lambda).
+ \label{loc:general-coefficient}
+\end{equation}
+The factor $(d!)^{-r}$ is absent unless it was included in the chosen
+coefficients.  Expanded absolute convergence on $\Omega_0$ justifies
+the same transport.  A nonzero coefficient has adjacent gaps at least
+$1-L$.  Make a cut at gaps greater than $L$, and anchor the first
+block when $k_1<L$.
+
+At a free singleton $i$, a degree-$d$ polynomial is reduced to its
+leading coefficient times
+\[
+ \mu_i=\sum_{\lambda=0}^L
+                 \alpha_{i,\lambda}(-\lambda)^d.
+\]
+This follows by expanding each power of $k_i-\lambda$ and using
+\eqref{loc:stencil-moments}.  A second free singleton then occurs in
+a polynomial of degree $d-2$, so its stencil annihilates the term.
+The previous counting argument gives the original bounds.  If each
+$\mu_i=0$, even the first free singleton annihilates the coefficient.
+Every free block then uses at least two labels; with or without an
+anchor this gives exactly the two improved bounds.
+
+The full finite sector construction is unchanged after replacing the
+geometric thresholds $d$ by $L$, the shift range by $\{0,\ldots,L\}$,
+and the binomial stencil product by $\prod_i\alpha_{i,\lambda_i}$.
+In particular internal offset increments belong to
+$\{1-L,\ldots,L\}$, $c_\ell=L+u_{\max B_\ell}\ge b_\ell-1$, and
+the unanchored first base is $L$.  The anchored first base has finitely
+many choices $0\le h<L$, with the condition $\lambda_1\le h$.
+Feasibility gives $u_i\ge i-\min B_\ell-L$, so the same base
+substitutions keep all shifted arguments in the right half-plane.
+The polynomial degree bound \eqref{loc:sector-degree} does not change.
+Consequently $\Omega_0$, with $d=2r-2$, still suffices for convergence
+of every separated sector, independently of $L$.
+
+Finally Taylor's formula with a uniform remainder, applied to
+$(n+a_i+\lambda)^{-s_i}$ through degree $d-1$ in $\lambda$, gives
+\[
+ w_{i,\alpha}(n)=O\bigl((1+n)^{-\Rea s_i-d}\bigr)
+\]
+locally uniformly in the parameters.  The polynomial terms vanish by
+\eqref{loc:stencil-moments}; the finite support bounds the remainders.
+Equation~\eqref{loc:vandermonde-bound} proves original normal
+convergence on $\Omega$, and the collective continuation follows as
+before.
+\end{proof}
+
+Every consecutive finite difference of order strictly greater than
+$2r-2$ satisfies the stronger hypothesis.  For nonintegral rational
+stencils, transport onto one integer lattice would instead require
+separate residue classes; global moment cancellation alone does not
+justify the integer-sector argument above.
+
+The transport itself is discrete summation by parts.  Discrete residues
+provide a classical framework for rational summability
+\cite{chen-singer}.  Here the specific additional ingredient is the
+support of the ordered chamber coefficient and the loss of two
+Vandermonde degrees after a singleton is removed.  That mechanism works
+with arbitrary complex orders and unequal shifts on the stated genuine
+convergence domains, and resolves the finite-coordinate representation
+question for this family in \cite{repo:finite}.
+
+% End included source: sections/07_localization
+% Begin included source: sections/08_gamma_basis
+\section{A Gamma integral basis and eventual reconstruction at every fixed gap}
+\label{gb:section}
+
+The preceding sections develop identities by localizing a finite-difference
+operator at its boundary.  We now apply a different analytic construction
+to a remaining reconstruction problem in the repository: the optimal
+initial moments of two unequal even harmonic tails.  The inherited
+fixed-gap reduction expresses the obstruction as a rational determinant
+of size half the gap \cite{repo-gamma}.  We construct its entire null
+space by ordinary Gamma integrals, determine the exact normalization,
+and obtain a nonzero determinant asymptotic.  Consequently the optimal
+prefix holds eventually on \emph{every fixed-gap ray}.  This differs from
+the previously established eventual result with the smaller order fixed
+\cite{repo:quartic}:
+here both orders tend to infinity while their difference remains fixed.
+
+The Gamma recurrence, Stirling expansion, and Fourier-transform setting
+are classical \cite{dlmf:gamma,dlmf-stirling,ramanujan-transform}.
+The contributions established below are the explicit basis for this
+particular null equation, its exact bridge to the inherited rational
+determinant, the fixed-gap asymptotic, and its harmonic-number correction.
+This is a statement of the advance relative to the inspected material;
+it does not assert historical priority.  Throughout the section, rank
+means rank of the specified rational \emph{formal coordinate matrix}.
+No arithmetic independence of evaluated zeta values or moments is
+assumed or concluded.
+
+\subsection{The inherited moments and the determinant to be studied}
+
+For integers $1\le a<b$, write
+\[
+ p=2a,\qquad q=2b,\qquad m=b-a\ge1,
+ \qquad x_n=n+\tfrac12.
+\]
+Thus $b$ is half the larger order and $m$ is half the gap.  Define
+\begin{equation}\label{gb:tails}
+ A_p(n)=\zeta(p,n+1)=\zeta(p)-H_n^{(p)},\qquad
+ D_{p,q}(s)=\sum_{n=0}^{\infty}A_p(n)A_q(n)x_n^{-s}.
+\end{equation}
+The defining series converges absolutely for $\Rea s>3-p-q$.
+Let $D_r=D_{p,q}(-2r)$, using meromorphic continuation when necessary.
+These points are regular.  Indeed the centered Hurwitz expansion has
+the form
+\[
+ A_p(n)\sim\frac{x_n^{1-p}}{p-1}
+ +\sum_{k\ge1}\frac{B_{2k}(1/2)}{(2k)!}
+       (p)_{2k-1}x_n^{1-p-2k}.
+\]
+Subtracting finitely many terms from the product continues
+\eqref{gb:tails} successively to larger half-planes.  Its possible poles
+lie at $s=3-p-q-2\ell$, $\ell\ge0$, all odd integers.  In particular
+the even arguments used in $D_r$ are regular.
+
+The inherited two-tail calculus supplies blocks $C_j$ and the mutually
+inverse Bernoulli transforms
+\begin{align}
+ D_r&=\sum_{j=0}^r\frac{\binom{2r}{2j}}{2j+1}
+          B_{2r-2j}(1/2)C_j,\label{gb:forward}\\
+ C_j&=\sum_{r=0}^j\binom{2j+1}{2r}2^{-2(j-r)}D_r.
+ \label{gb:inverse}
+\end{align}
+Here $B_n(x)$ denotes a Bernoulli polynomial and $B_n=B_n(0)$, with
+$B_1=-1/2$.  For $j\ge b$ the late coordinates are
+\begin{equation}\label{gb:late}
+ C_j=\sum_{k=0}^{b-1}a_{jk}Z_k,\qquad
+ Z_k=\zeta(2k),\qquad Z_0=-\tfrac12.
+\end{equation}
+Their exact rational coefficients, also inherited, are as follows.
+Put $d=2j+1$ and $e=d-p-q+2k+1$.  If $e<0$ set $a_{jk}=0$;
+otherwise set
+\begin{equation}\label{gb:source-entry}
+ a_{jk}=B_e\left\{
+ \frac{\binom{d-q+1}{p-2k}}{d-q+1}
+ +\frac{\binom{d-p+1}{q-2k}}{d-p+1}\right\}.
+\end{equation}
+Each binomial summand is omitted unless its lower index lies between
+$2$ and its upper index.  In particular, a lower index of zero is
+\emph{omitted}.  This convention is essential: it determines the
+constant subtraction in the differential equation below.  Equations
+\eqref{gb:forward}--\eqref{gb:source-entry} are inputs from
+\cite[Section~2, inherited moment coordinates]{repo-gamma}.
+
+Define the $b\times b$ late-block matrix
+\begin{equation}\label{gb:M}
+ M_{a,b}=(a_{b+r,k})_{0\le r,k<b}.
+\end{equation}
+On the ordered formal labels
+\[
+ C_0,\ldots,C_{b-1},\quad Z_0,\ldots,Z_{b-1},
+\]
+the coefficient matrix of $C_0,\ldots,C_{2b-1}$ is
+$\operatorname{diag}(I_b,M_{a,b})$.  The forward transform
+\eqref{gb:forward} is triangular with diagonal $1/(2r+1)$.
+Consequently the determinant of the complete matrix for the first
+$q=2b$ moments $D_0,\ldots,D_{2b-1}$ is
+\begin{equation}\label{gb:full-prefix}
+             \frac{\det M_{a,b}}{(4b-1)!!}.
+\end{equation}
+Thus the optimal-prefix question is exactly the nonvanishing of
+\eqref{gb:M}.  If it is nonzero, those first $2b$ moments generate
+every later moment in the inherited formal coordinate system, and
+evaluation gives the corresponding rational generation statements for
+the actual constants.  Fewer than $2b$ rows cannot have rank $2b$ on
+these $2b$ specified labels.
+
+\subsection{The fixed-gap recurrence and its exact normalization}
+
+For the remainder of the section fix $m\ge1$.  To distinguish the
+recurrence coefficients from both the tails and Bernoulli numbers, put
+\begin{equation}\label{gb:recurrence-factors}
+ \mathfrak a_r=\begin{cases}
+ 0,&1\le r\le m,\\
+ (2r)^{\underline{2m}},&r>m,
+ \end{cases}
+ \qquad
+ \mathfrak b_N=(2N-1)^{\underline{2m}},\qquad
+ d_N=2(\mathfrak a_N+\mathfrak b_N)\quad(N>m).
+\end{equation}
+The underline denotes a falling factorial.  All $d_N$ in this range
+are strictly positive.  Let
+\begin{equation}\label{gb:beta}
+ \beta_k=\frac{2|B_{2k}|}{(2k)!}
+        =\frac{4\zeta(2k)}{(2\pi)^{2k}}>0,
+ \qquad k\ge1.
+\end{equation}
+The rational fundamental array is defined by
+\begin{align}
+ C^{[m]}_{r,j}&=\delta_{rj}&& (1\le r,j\le m),\label{gb:initial}\\
+ C^{[m]}_{N,j}&=\frac1{d_N}\sum_{r=1}^{N-1}
+   \beta_{N-r}(\mathfrak a_r+\mathfrak b_N)C^{[m]}_{r,j}
+       &&(N>m,\ 1\le j\le m).\label{gb:recurrence}
+\end{align}
+The superscript separates this array from the moment blocks $C_j$.
+For $b>m$ write
+\begin{equation}\label{gb:F}
+                  F_{b,m}=(C^{[m]}_{b+i,j})_{1\le i,j\le m}.
+\end{equation}
+
+For an even formal series $R(z)=\sum_{n\ge1}r_nz^{2n}$, define
+\begin{equation}\label{gb:cot-operator}
+ \mathcal T_mR
+ =\bigl(R^{(2m)}-R^{(2m)}(0)\bigr)\cot(z/2)
+                      +\bigl(R\cot(z/2)\bigr)^{(2m)}.
+\end{equation}
+Both terms combine to an odd formal Taylor series: the subtraction
+removes the possible pole in the first product, while $R\cot(z/2)$
+is an odd Taylor series.  Expanding
+\[
+ \cot(z/2)=\frac2z-\sum_{k\ge1}\beta_kz^{2k-1}
+\]
+shows that, for $N>m$, its coefficient at $z^{2N-2m-1}$ is
+\begin{equation}\label{gb:coefficient}
+ d_Nr_N-\sum_{r=1}^{N-1}
+      \beta_{N-r}(\mathfrak a_r+\mathfrak b_N)r_r.
+\end{equation}
+The value $\mathfrak a_m=0$ records precisely the subtracted
+$R^{(2m)}(0)$.  Since $d_N>0$, the first $m$ coefficients are
+arbitrary and determine all later ones uniquely.  The formal null
+space of $\mathcal T_m$ has dimension exactly $m$.
+
+\begin{proposition}[Inherited boundary reduction, with normalization]
+\label{gb:bridge}
+For $b>m\ge1$,
+\begin{equation}\label{gb:bridge-formula}
+ \boxed{\displaystyle
+ \det M_{b-m,b}
+ =\frac{(-1)^{b(b-1)/2}}{4^bb!}
+       \left(\prod_{N=m+1}^{b+m}d_N\right)\det F_{b,m}.}
+\end{equation}
+This is the complementary-minor theorem of
+\cite[Theorem~\texttt{gap:complementary}]{repo-gamma}.
+\end{proposition}
+
+\begin{proof}
+We reproduce the normalization argument so that the subsequent
+Gamma determinant can be checked against the original coordinates.
+Set $h(t)=\coth(t/2)$ and
+\[
+ \mathcal L_mQ=(Q^{(2m)}-Q^{(2m)}(0))h+(Qh)^{(2m)}.
+\]
+Let $K_{m,b}$ map the coefficients $(q_1,\ldots,q_b)$ of
+$Q(t)=\sum_{n=1}^bq_nt^{2n}$ to the coefficients of
+$t,t^3,\ldots,t^{2b-1}$ in $\mathcal L_mQ$.
+Write $h(t)=\sum_{k\ge0}h_kt^{2k-1}$, where $h_0=2$ and
+$h_k=2B_{2k}/(2k)!$ for $k\ge1$.  In row $r$, indexed from zero,
+put $N=r+m+1$.  The entry in column $n$ is
+\[
+ h_{N-n}(\mathfrak a_n+\mathfrak b_N)\quad(n\le N),
+\]
+and is zero for $n>N$.  In \eqref{gb:source-entry}, substitution
+$j=b+r$, $k=b-n$ gives Bernoulli index $2(N-n)$ and the upper/lower
+binomial pairs
+\[
+ (2r+2,\,2n-2m),\qquad(2r+2m+2,\,2n).
+\]
+Multiplication by $2(2n)!/(2r+1)!$ therefore gives exactly the
+displayed operator entry, including the omission when $n\le m$.
+If $M^{\mathrm{rev}}$ denotes column reversal, then
+\[
+ K_{m,b}=
+ \operatorname{diag}_{0\le r<b}\!\left(\frac2{(2r+1)!}\right)
+ M_{b-m,b}^{\mathrm{rev}}
+ \operatorname{diag}_{1\le n\le b}\!\bigl((2n)!\bigr),
+\]
+so
+\begin{equation}\label{gb:operator-conjugacy}
+ \det K_{m,b}=(-1)^{b(b-1)/2}4^bb!\det M_{b-m,b}.
+\end{equation}
+
+The relation $h_k=(-1)^{k-1}\beta_k$ for $k\ge1$ and
+\eqref{gb:recurrence} imply that
+\[
+ Q_j(t)=\sum_{n\ge1}(-1)^{n-j}C^{[m]}_{n,j}t^{2n},
+ \qquad1\le j\le m,
+\]
+are formal null solutions of $\mathcal L_m$, with initial
+$m\times m$ coefficient block equal to the identity.  Replace
+the first $m$ columns of $K_{m,b}$ by the corresponding linear
+combinations given by the truncations of these solutions through
+$n=b$.  This changes no determinant.  The first $b-m$ rows of
+those columns vanish.  Their bottom $m$ rows equal $-TQ_+$, where
+$T$ is lower triangular with diagonal $d_{b+1},\ldots,d_{b+m}$ and
+\[
+ (Q_+)_{ij}=(-1)^{b+i-j}C^{[m]}_{b+i,j}.
+\]
+Indeed each truncated null equation is the negative of its omitted
+future terms, and its newest future coefficient has factor $d_{b+i}$.
+Moving the first $m$ columns to the end leaves the other diagonal
+block triangular with diagonal $d_{m+1},\ldots,d_b$.  It follows that
+\[
+ \det K_{m,b}=(-1)^{m(b-m)+m}
+       \left(\prod_{N=m+1}^{b+m}d_N\right)\det Q_+.
+\]
+Factoring its row and column signs gives
+$\det Q_+=(-1)^{mb}\det F_{b,m}$.  The combined exponent
+$2mb-m(m-1)$ is even.  Equation \eqref{gb:operator-conjugacy}
+now proves \eqref{gb:bridge-formula}.
+\end{proof}
+
+\subsection{An explicit Gamma integral basis}
+
+Define the positive even weight
+\begin{equation}\label{gb:W}
+ W_m(x)=\left|\Gamma\!\left(\tfrac14+\tfrac{ix}{2}\right)\right|^{4m}
+ \qquad(x\in\mathbb R)
+\end{equation}
+and the odd multipliers
+\begin{equation}\label{gb:P}
+ P_j(x)=\sinh\!\bigl(\pi(m-j)x\bigr)\quad(1\le j<m),
+ \qquad P_m(x)=\tanh(\pi x).
+\end{equation}
+Their order is chosen to agree with their distinct decay scales.
+
+\begin{theorem}[Gamma basis and exact top moments]\label{gb:basis}
+For $1\le j\le m$, the integral
+\begin{equation}\label{gb:R}
+ R_j(z)=4\sin(z/2)\int_0^\infty
+                  \sinh(xz)P_j(x)W_m(x)\dd x
+\end{equation}
+defines an even holomorphic function in $|\Rea z|<j\pi$.
+Its germ at zero satisfies $\mathcal T_mR_j=0$ and
+\begin{equation}\label{gb:top-derivative}
+ R_j^{(2m)}(0)=0\quad(j<m),\qquad
+ R_m^{(2m)}(0)=(-1)^{m+1}2^{2m+2}\pi^m.
+\end{equation}
+The $m$ germs form a basis of the formal null space of
+\eqref{gb:cot-operator}.  Their Taylor radii are exactly $j\pi$.
+\end{theorem}
+
+The contour argument below proves the null equation and the exact
+derivatives.  The basis assertion will follow from the positive
+initial determinant in \cref{gb:normalization}; the exact Taylor
+radii will follow independently from \cref{gb:coefficient-asymptotic}.
+This order of proof avoids assuming either linear independence or
+the location of a singularity from the integral representation alone.
+
+\begin{proof}[Contour proof]
+Stirling's formula gives, as $x\to+\infty$,
+\[
+ W_m(x)=2^m(2\pi)^{2m}x^{-m}e^{-m\pi x}(1+O(x^{-2})).
+\]
+Together with \eqref{gb:P}, this proves absolute convergence in
+the stated strips, locally uniform convergence of all differentiated
+integrals, and evenness of \eqref{gb:R}.  We use the usual meromorphic
+Gamma function and the integer-power continuation
+\[
+ W_m(y)=\left[
+ \Gamma(\tfrac14+iy/2)\Gamma(\tfrac14-iy/2)\right]^{2m}.
+\]
+There is no branch choice for this continuation; the absolute-value
+notation in \eqref{gb:W} is used only on the real line.
+
+For any one of the allowed odd multipliers $P$, put
+\[
+ G_P(t)=\int_{\mathbb R}e^{ixt}P(x)W_m(x)\dd x,
+ \qquad Q_P(t)=2\sinh(t/2)G_P(t).
+\]
+These integrals and all their derivatives converge absolutely for
+real $t$ and define analytic germs.  Since $G_P$ is odd, $Q_P$ is
+even and vanishes at zero.  With $D=d/dt$, let
+\[
+ E_P(t)=e^t(D+\tfrac12)^{2m}G_P(t)
+                 -e^{-t}(D-\tfrac12)^{2m}G_P(t).
+\]
+The identities $Q_P=(e^{t/2}-e^{-t/2})G_P$ and
+$Q_P\coth(t/2)=(e^{t/2}+e^{-t/2})G_P$ yield, by differentiation,
+\begin{equation}\label{gb:contour-algebra}
+ \coth(t/2)Q_P^{(2m)}(t)
+       +(Q_P(t)\coth(t/2))^{(2m)}
+                    =\frac{E_P(t)}{\sinh(t/2)}.
+\end{equation}
+
+In the first integral defining $E_P$, substitute $y=x-i$;
+its contour is $\mathbb R-i$.  In the second substitute $y=x+i$;
+its contour is $\mathbb R+i$.  The factors $e^{\pm t}$ disappear
+under these substitutions.  Gamma recurrence gives exactly
+\begin{equation}\label{gb:gamma-cancellation}
+ (iy-\tfrac12)^{2m}W_m(y+i)
+ =(iy+\tfrac12)^{2m}W_m(y-i)=2^{2m}V_m(y),
+\end{equation}
+where
+\[
+ V_m(y)=\left[
+ \Gamma(\tfrac34+iy/2)\Gamma(\tfrac34-iy/2)\right]^{2m}.
+\]
+For example the first equality shifts
+$\Gamma(-1/4+iy/2)$ to $\Gamma(3/4+iy/2)$; its recurrence
+factor is $iy/2-1/4$.  The second equality has the opposite sign
+before taking the even power, hence the same factor $2^{2m}$.
+
+Every allowed multiplier satisfies $P(y+i)=P(y-i)$.  Both shifted
+integrands are therefore the same meromorphic function
+\[
+ \mathcal F_P(y)=2^{2m}e^{iyt}V_m(y)P(y+i).
+\]
+The nearest Gamma poles of $V_m$ are $y=\pm3i/2$, outside
+$|\Im y|\le1$.  For $P(x)=\sinh(\pi kx)$, $1\le k<m$,
+the multiplier is $P(y+i)=(-1)^k\sinh(\pi ky)$, an entire
+function.  Uniform Stirling estimates on the closed strip give
+a polynomial times $e^{-\pi(m-k)|\Rea y|}$ as a bound for the
+integrand, with a constant depending on the fixed real $t$.
+For the tanh multiplier, $P(y+i)=\tanh(\pi y)$; away from its
+finite poles it is bounded at the two ends of the strip, and
+the decay is a polynomial times $e^{-m\pi|\Rea y|}$.
+Thus the vertical sides of the rectangle between the two horizontal
+contours vanish as their real parts tend to infinity.  Its bottom
+side runs from left to right, so bottom minus top equals
+$+2\pi i$ times the enclosed residue sum.
+
+In the sinh case there are no enclosed poles and $E_P(t)=0$.
+In the tanh case the only enclosed poles are the simple poles
+$y=\pm i/2$.  Each tanh residue is $1/\pi$, and
+$V_m(i/2)=V_m(-i/2)=\pi^m$.  Hence
+\[
+ \Res_{y=\pm i/2}\mathcal F_P(y)
+      =2^{2m}\pi^{m-1}e^{\mp t/2},
+\]
+and
+\begin{equation}\label{gb:residue-result}
+ E_{\tanh}(t)=i\,2^{2m+2}\pi^m\cosh(t/2).
+\end{equation}
+All shifts have now been justified using pole-free Gamma factors,
+the two explicitly listed tanh poles, and decaying vertical sides.
+
+The second summand on the left of \eqref{gb:contour-algebra} is
+analytic at zero.  Its first summand has Laurent coefficient
+$2Q_P^{(2m)}(0)$ at $t^{-1}$.  Comparing this coefficient shows
+that $Q_P^{(2m)}(0)=0$ for a sinh multiplier and
+$Q_P^{(2m)}(0)=i2^{2m+2}\pi^m$ for tanh.  Equations
+\eqref{gb:contour-algebra} and \eqref{gb:residue-result} therefore
+give the exact germ identity
+\[
+ (Q_P^{(2m)}-Q_P^{(2m)}(0))\coth(t/2)
+                  +(Q_P\coth(t/2))^{(2m)}=0.
+\]
+Finally set $R_P(z)=iQ_P(iz)$.  Pairing positive and negative
+$x$ in $G_P(iz)$ gives precisely \eqref{gb:R}.  Rotation uses
+$\coth(iz/2)=-i\cot(z/2)$ and yields
+$\mathcal T_mR_P=0$.  Since
+$R_P^{(2m)}(0)=i(-1)^mQ_P^{(2m)}(0)$, it also gives
+\eqref{gb:top-derivative}.
+\end{proof}
+
+\begin{corollary}[Exact ordinary Gamma moments]\label{gb:moment-identities}
+Put $\phi_n(x)=\Im(x+i/2)^{2n}$.  The Taylor coefficients of
+\eqref{gb:R} are
+\begin{equation}\label{gb:t}
+ t_{n,j}:=[z^{2n}]R_j(z)
+      =\frac4{(2n)!}\int_0^\infty\phi_n(x)P_j(x)W_m(x)\dd x.
+\end{equation}
+For every $m\ge1$,
+\begin{align}
+ \int_0^\infty\phi_m(x)\sinh(\pi kx)W_m(x)\dd x&=0
+                  &&(1\le k<m),\label{gb:orthogonality}\\
+ \int_0^\infty\phi_m(x)\tanh(\pi x)W_m(x)\dd x
+          &=(-1)^{m+1}2^{2m}\pi^m.\label{gb:evaluation}
+\end{align}
+All these integrals converge absolutely.
+\end{corollary}
+
+\begin{proof}
+The elementary generating identity
+\[
+ \sin(z/2)\sinh(xz)=
+       \sum_{n\ge1}\frac{\phi_n(x)}{(2n)!}z^{2n}
+\]
+and local uniform exponential domination justify coefficient
+extraction.  Now apply \eqref{gb:top-derivative}.
+\end{proof}
+
+The vanishing moments have a concrete polynomial interpretation.
+Since $\phi_m(x)/x$ has degree $2m-2$ and its positive zeros are
+\[
+                  \frac12\cot\frac{r\pi}{2m},\qquad1\le r<m,
+\]
+equation \eqref{gb:orthogonality} is an explicit family of
+multiple-orthogonality relations against positive weights on
+$(0,\infty)$.  The zeros follow by writing
+$x+i/2=|x+i/2|e^{i\theta}$, with $0<\theta<\pi/2$, and solving
+$\sin(2m\theta)=0$.  These relations do not imply that every
+later consecutive coefficient determinant has one fixed sign.
+
+\subsection{A positive initial determinant and the exact Gamma representation}
+
+Write
+\[
+ T_m=(t_{n,j})_{1\le n,j\le m},\qquad
+ \Delta(y_1,\ldots,y_m)=\prod_{r<s}(y_s-y_r).
+\]
+
+\begin{proposition}[Positive normalization]\label{gb:normalization}
+The initial determinant is
+\begin{equation}\label{gb:detT}
+                 \det T_m=(-1)^{m(m-1)/2}K_m,
+\end{equation}
+where $K_m>0$ has the absolutely convergent integral representation
+\begin{equation}\label{gb:Km}
+\begin{split}
+ K_m={}&\frac{2^{(m-1)(m-2)/2}}{m!}
+             \left(\prod_{n=1}^m\frac{4n}{(2n)!}\right)\\
+ &\times\int_{(0,\infty)^m}
+       \Delta(x_1^2,\ldots,x_m^2)
+       \Delta(\cosh\pi x_1,\ldots,\cosh\pi x_m)\\
+ &\hspace{38mm}\times
+       \prod_{r=1}^m x_rW_m(x_r)\tanh(\pi x_r)
+                    \dd x_1\cdots\dd x_m.
+\end{split}
+\end{equation}
+Consequently the $R_j$ form a basis of the full formal null space,
+and for every $b>m$,
+\begin{equation}\label{gb:exact-Gamma-determinant}
+ \boxed{\displaystyle
+ \det F_{b,m}=
+  \frac{(-1)^{m(m-1)/2}}{K_m}
+        \det(t_{b+i,j})_{1\le i,j\le m}.}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The polynomial $\phi_n(x)$ has leading term $nx^{2n-1}$ and
+only lower odd powers thereafter.  A triangular row transformation
+therefore gives
+\[
+ \det T_m=\left(\prod_{n=1}^m\frac{4n}{(2n)!}\right)
+       \det\left(\int_0^\infty x^{2n-1}P_j(x)W_m(x)\dd x\right)_{n,j=1}^m.
+\]
+The continuous Cauchy--Binet identity writes the remaining determinant
+as $1/m!$ times the integral of the two alternants
+$\det(x_r^{2n-1})_{n,r}$ and $\det(P_j(x_r))_{r,j}$ against
+$\prod_rW_m(x_r)\dd x_r$.  This identity follows directly by
+expanding the two determinants, applying Fubini, and permuting the
+integration variables; absolute convergence justifies each operation.
+The first alternant is $\prod_rx_r\,\Delta(x_1^2,\ldots,x_m^2)$.
+
+For the second alternant put $u=\pi x$, $v=\cosh u$, and use
+\[
+              \frac{\sinh(ku)}{\tanh u}=vU_{k-1}(v),
+\]
+where $U_{k-1}$ is the Chebyshev polynomial of the second kind,
+with degree $k-1$ and leading coefficient $2^{k-1}$.
+After factoring $\tanh(\pi x_r)$ from row $r$, the column
+degrees are $m-1,m-2,\ldots,1,0$.  Their leading-coefficient
+product is $2^{(m-1)(m-2)/2}$.  Reversing the columns thus gives
+\[
+\begin{split}
+ \det(P_j(x_r))={}&(-1)^{m(m-1)/2}2^{(m-1)(m-2)/2}\\
+ &\times\prod_r\tanh(\pi x_r)
+              \Delta(\cosh\pi x_1,\ldots,\cosh\pi x_m).
+\end{split}
+\]
+This proves \eqref{gb:detT}--\eqref{gb:Km}.  For distinct
+positive $x_r$, the two Vandermondes have the same sign, since
+both $x\mapsto x^2$ and $x\mapsto\cosh(\pi x)$ are strictly
+increasing.  The integrand in \eqref{gb:Km} is strictly positive
+away from the collision hyperplanes.  Its exponential growth from
+the cosh Vandermonde is at most
+$\prod_re^{(m-1)\pi x_r}$, while each $W_m(x_r)$ supplies
+$e^{-m\pi x_r}$ times a polynomial factor.  At zero all factors
+are bounded or vanish.  This proves convergence and $K_m>0$.
+
+All $R_j$ are null germs, and their first $m$ coefficient columns
+are independent by \eqref{gb:detT}.  The formal null space has
+dimension $m$ by \eqref{gb:coefficient}, so they form a basis.
+Their coefficient vectors obey \eqref{gb:recurrence}; consequently
+\[
+                  (t_{b+i,j})_{i,j=1}^m=F_{b,m}T_m.
+\]
+Taking determinants proves \eqref{gb:exact-Gamma-determinant}.
+\end{proof}
+
+\subsection{A Laplace-moment lemma with controlled error}
+
+The asymptotic argument must retain one term beyond the leading
+Laplace phase.  At every even mode that leading phase is real and
+its imaginary part vanishes.  The following lemma supplies the
+necessary next term without requiring an analytic continuation of
+the error in a real density.
+
+\begin{lemma}\label{gb:Laplace}
+Let $m\ge1$ be fixed, $R>0$, and $a\in\mathbb R\setminus\{0\}$.
+Suppose a real, locally bounded function $f$ on $[0,\infty)$ satisfies
+\[
+             f(x)=ax^{-m}e^{-Rx}(1+O(x^{-2}))\qquad(x\to\infty).
+\]
+As integers $N\to\infty$,
+\begin{equation}\label{gb:Laplace-formula}
+ \int_0^\infty(x+i/2)^Nf(x)\dd x
+ =ae^{iR/2}\frac{\Gamma(N-m+1)}{R^{N-m+1}}
+       \left(1+\frac{imR}{2(N-m)}+O(N^{-2})\right).
+\end{equation}
+The implicit constant may depend on $f,m,R$.
+\end{lemma}
+
+\begin{proof}
+Choose fixed $X>1$ beyond which the asserted density estimate holds.
+The integral over $[0,X]$ is $O(C^N)$ for a fixed $C$, hence
+negligible compared with
+$S_N=\Gamma(N-m+1)R^{-N+m-1}$ by Stirling's formula.
+The absolute error made on $[X,\infty)$ by replacing $f(x)$ with
+$ax^{-m}e^{-Rx}$ is bounded by a constant times
+\[
+             \int_X^\infty|x+i/2|^Nx^{-m-2}e^{-Rx}\dd x.
+\]
+Split this integral at $x=N^{2/3}$.  On the lower part it is at most
+$\exp(\tfrac23N\log N+O(N))$, whereas
+$S_N=\exp(N\log N+O(N))$.  This part is smaller than any fixed
+inverse power of $N$ times $S_N$.  On the upper part,
+\[
+ \frac{|x+i/2|^N}{x^N}
+   =\left(1+\frac1{4x^2}\right)^{N/2}
+   \le\exp\!\left(\frac{N}{8x^2}\right)
+\]
+is uniformly bounded.  Its integral is therefore at most a constant
+times $\Gamma(N-m-1)R^{-N+m+1}=O(N^{-2}S_N)$.
+This estimate uses only real-variable bounds on the density error.
+
+For the model integral set $y=x+i/2$.  After factoring $e^{iR/2}$,
+its integrand is
+$y^{N-m}(1-i/(2y))^{-m}e^{-Ry}$ on the ray
+$[X,\infty)+i/2$.  Shift that ray to $[X,\infty)$ inside
+$\Rea y\ge X$.  No pole is crossed.  The short vertical segment
+at $X$ contributes $O(C^N)$, and the vertical segment at infinity
+vanishes for each $N$ because of $e^{-R\Rea y}$.
+Uniformly for real $y\ge X$,
+\[
+                 (1-i/(2y))^{-m}=1+\frac{im}{2y}+O(y^{-2}).
+\]
+Integration of the first two terms, extending their lower limit to
+zero at another $O(C^N)$ cost, gives
+\[
+ ae^{iR/2}\left\{
+ \frac{\Gamma(N-m+1)}{R^{N-m+1}}
+ +\frac{im}{2}\frac{\Gamma(N-m)}{R^{N-m}}\right\}.
+\]
+The last term has absolute size $O(N^{-2}S_N)$ by the same Gamma
+ratio estimate.  This proves \eqref{gb:Laplace-formula}.
+\end{proof}
+
+Define the constants
+\begin{equation}\label{gb:mode-constants}
+ \lambda_j=j\pi,\qquad \xi_j=(j\pi)^{-2},\qquad
+ A_m^*=2^m(2\pi)^{2m},\qquad
+ a_j=\begin{cases}A_m^*/2,&j<m,\\A_m^*,&j=m.
+ \end{cases}
+\end{equation}
+Conjugate Gamma asymptotics contain only even inverse powers after
+the leading factor.  Thus
+\begin{equation}\label{gb:density-asymptotic}
+ P_j(x)W_m(x)=a_jx^{-m}e^{-\lambda_jx}(1+O(x^{-2})).
+\end{equation}
+The further exponential terms in sinh or tanh are absorbed into the
+indicated error.  In particular, there is no $x^{-1}$ correction.
+
+\begin{proposition}[Distinct coefficient scales and exact radii]
+\label{gb:coefficient-asymptotic}
+Put $d_j=m+\ind_{2\mid j}$ and
+\begin{equation}\label{gb:Lj}
+ L_j=\begin{cases}
+ 4a_j\sin(j\pi/2)\lambda_j^{m-1},&j\text{ odd},\\
+ 2ma_j\cos(j\pi/2)\lambda_j^m,&j\text{ even}.
+ \end{cases}
+\end{equation}
+All $L_j$ are nonzero, and
+\begin{equation}\label{gb:t-asymptotic}
+ t_{n,j}=L_j\lambda_j^{-2n}(2n)^{-d_j}(1+O(n^{-1})).
+\end{equation}
+The Taylor radius of $R_j$ is exactly $\lambda_j=j\pi$.
+\end{proposition}
+
+\begin{proof}
+Apply \cref{gb:Laplace} to \eqref{gb:density-asymptotic}, take
+the imaginary part, and multiply by $4/(2n)!$.  If $j$ is odd,
+$e^{i\lambda_j/2}=\pm i$ and the leading term survives.  Since
+$\Gamma(2n-m+1)/\Gamma(2n+1)\sim(2n)^{-m}$, this gives the
+first line of \eqref{gb:Lj}.  If $j$ is even, the leading phase
+is $\pm1$ and its imaginary part is zero.  The next term in
+\eqref{gb:Laplace-formula} gives instead
+\[
+ \frac{4a_j\cos(j\pi/2)}{(2n)!}
+ \frac{m}{2}\frac{\Gamma(2n-m)}{\lambda_j^{2n-m}},
+\]
+which is the second line of \eqref{gb:Lj} and the exponent $m+1$.
+The $O(N^{-2})$ error in the lemma is small enough to give a
+relative $O(n^{-1})$ error even in this second case.  Finally
+\eqref{gb:t-asymptotic} implies
+$\lim_{n\to\infty}|t_{n,j}|^{1/(2n)}=\lambda_j^{-1}$.
+The Cauchy--Hadamard formula proves the exact radius.  This also
+provides another proof of independence: the smallest surviving
+radius in any nontrivial linear combination cannot cancel.
+\end{proof}
+
+\subsection{Eventual optimal reconstruction for every fixed gap}
+
+Set
+\begin{equation}\label{gb:asymptotic-normalization}
+ D_m=m^2+\lfloor m/2\rfloor,\qquad
+ \mathcal A_m=
+ \frac{\prod_{j=1}^m|L_j|}{K_m}
+       \left(\prod_{j=1}^m\xi_j\right)
+       \prod_{j<k}(\xi_j-\xi_k)>0.
+\end{equation}
+
+\begin{theorem}[Fixed-gap determinant asymptotic]\label{gb:eventual}
+For each fixed integer $m\ge1$, as $b\to\infty$,
+\begin{equation}\label{gb:det-asymptotic}
+ \boxed{\displaystyle
+ \det F_{b,m}\sim
+ (-1)^{\lfloor m^2/4\rfloor}\mathcal A_m
+ (2b)^{-D_m}\bigl[\pi^{2m}(m!)^2\bigr]^{-b}.}
+\end{equation}
+In particular, there exists an integer $B(m)>m$ such that every
+pair $(p,q)=(2b-2m,2b)$ with $b\ge B(m)$ has an optimal first-$q$
+formal moment prefix.  Its late-block determinant has eventual sign
+\begin{equation}\label{gb:eventual-sign}
+ \operatorname{sgn}\det M_{b-m,b}
+        =(-1)^{b(b-1)/2+\lfloor m^2/4\rfloor}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+From column $j$ of $(t_{b+i,j})_{i,j=1}^m$, factor
+$L_j\lambda_j^{-2b}(2b)^{-d_j}$.  By
+\eqref{gb:t-asymptotic}, the remaining matrix tends entrywise to
+$V=(\xi_j^i)_{i,j=1}^m$.  Its determinant is
+\[
+ \det V=\left(\prod_j\xi_j\right)
+                   \prod_{j<k}(\xi_k-\xi_j)\ne0.
+\]
+The distinct numbers $\xi_1>\cdots>\xi_m>0$ give sign
+$(-1)^{m(m-1)/2}$, which cancels the same sign in
+\eqref{gb:exact-Gamma-determinant}.  Furthermore
+\[
+ \prod_j\operatorname{sgn}L_j
+    =(-1)^{\sum_{j=1}^m\lfloor j/2\rfloor}
+    =(-1)^{\lfloor m^2/4\rfloor},\qquad
+ \sum_jd_j=m^2+\lfloor m/2\rfloor,
+\]
+and
+$\prod_j\lambda_j^{-2b}=[\pi^{2m}(m!)^2]^{-b}$.
+These identities prove \eqref{gb:det-asymptotic} with the positive
+constant \eqref{gb:asymptotic-normalization}.  A sequence with a
+nonzero asymptotic equivalent is nonzero and has the same sign
+for all sufficiently large indices.  Apply the exact positive-factor
+bridge \eqref{gb:bridge-formula} and then \eqref{gb:full-prefix}.
+\end{proof}
+
+\begin{remark}[Scope of the theorem]\label{gb:scope}
+The assertion is eventual for each \emph{fixed gap} $2m$ and
+does not provide a numerical value of $B(m)$.  It leaves only
+finitely many possible exceptional pairs on each such ray, but
+does not prove the entire gap-six family or the general
+all-unequal-even conjecture.  No uniform assertion as $m$ grows
+with $b$ follows from the fixed-$m$ errors used here.
+\end{remark}
+
+For $m=1$, \eqref{gb:evaluation} gives $K_1=8\pi$, and
+\eqref{gb:asymptotic-normalization} gives $\mathcal A_1=4/\pi$.
+The fundamental adjacent-gap sequence therefore satisfies
+\[
+        C^{[1]}_{b+1,1}\sim\frac{2}{\pi b}\,\pi^{-2b}.
+\]
+For $m=2$ the eventual sign of $\det F_{b,2}$ is negative,
+consistent with the inherited theorem for every gap-four pair.
+For $m=3$ it is positive.  Finite exact checks give
+$\det F_{b,3}<0$ at $b=4,5,6$ and $\det F_{b,3}>0$ at
+$7\le b\le40$.  These observations illustrate a sign transition;
+the proof of eventual positivity is \cref{gb:eventual}, and the
+finite checks are not a proof of nonvanishing for every gap-six pair.
+
+\subsection{All-orders coefficients and a harmonic-number correction}
+
+The Gamma construction supplies more than a leading equivalent.
+It gives an explicit Poincare expansion to every finite order,
+and the first determinant correction has a concise harmonic-number
+form.  Let Euler numbers be defined by
+\[
+                \operatorname{sech}z=
+                \sum_{k\ge0}E_{2k}\frac{z^{2k}}{(2k)!}.
+\]
+Define rational numbers $w_{m,r}$ by the formal identity
+\begin{equation}\label{gb:w-series}
+ \sum_{r\ge0}w_{m,r}X^r
+   =\exp\!\left(\sum_{k\ge1}
+            \frac{m|E_{2k}|}{k\,2^{2k+1}}X^k\right).
+\end{equation}
+Thus $w_{m,0}=1$ and $w_{m,1}=m/8$.
+For $\ell\ge0$ set
+\begin{equation}\label{gb:b-coefficients}
+ b_{m,\ell}=\sum_{r=0}^{\lfloor\ell/2\rfloor}
+  w_{m,r}\frac{(m+2r)_{\ell-2r}}{(\ell-2r)!}
+                     (i/2)^{\ell-2r}.
+\end{equation}
+
+\begin{proposition}[All-orders mode construction]\label{gb:all-orders}
+For each fixed mode $j$, with $\lambda_j,a_j$ as in
+\eqref{gb:mode-constants},
+\begin{equation}\label{gb:all-orders-moments}
+ \int_0^\infty(x+i/2)^NP_j(x)W_m(x)\dd x
+ \sim a_je^{i\lambda_j/2}
+       \sum_{\ell\ge0}b_{m,\ell}
+       \frac{\Gamma(N-m-\ell+1)}{
+                            \lambda_j^{N-m-\ell+1}}.
+\end{equation}
+This is a Poincare expansion: truncation after any fixed $\ell=L$
+has error of size
+$O(\Gamma(N-m-L)\lambda_j^{-N+m+L})$.
+Taking imaginary parts retains even $\ell$ when $j$ is odd and
+odd $\ell$ when $j$ is even.  In particular,
+\begin{equation}\label{gb:t-first-correction}
+ t_{n,j}=L_j\lambda_j^{-2n}(2n)^{-d_j}
+       \left(1+\frac{d_j(d_j-1)}{4n}+O(n^{-2})\right).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The shifted logarithmic Stirling expansion is
+\[
+ \log\Gamma(z+\alpha)\sim
+ (z+\alpha-\tfrac12)\log z-z+\tfrac12\log(2\pi)
+ +\sum_{n\ge1}\frac{(-1)^{n+1}B_{n+1}(\alpha)}{n(n+1)z^n},
+\]
+with a remainder of the next prescribed algebraic order in each
+closed subsector of $|\arg z|<\pi$ \cite{dlmf-stirling}.
+Apply it with $\alpha=1/4$ and $z=\pm ix/2$.
+The conjugate pair cancels odd inverse powers.  Using
+\[
+ B_{2k+1}(1/4)=-\frac{(2k+1)E_{2k}}{4^{2k+1}}
+\]
+gives
+\[
+ \log W_m(x)\sim
+ \log A_m^*-m\log x-m\pi x
+       +\sum_{k\ge1}\frac{m|E_{2k}|}{k\,2^{2k+1}x^{2k}}.
+\]
+Exponentiation to any fixed order proves
+\begin{equation}\label{gb:W-all-orders}
+ W_m(x)\sim A_m^*x^{-m}e^{-m\pi x}
+                       \sum_{r\ge0}w_{m,r}x^{-2r}.
+\end{equation}
+The corrections to the leading exponential in $P_j$ are themselves
+exponentially smaller, so they contribute less than any fixed
+inverse power after the leading density has been removed.
+
+For each term $x^{-m-2r}e^{-\lambda_jx}$ in the resulting density,
+repeat the shift $y=x+i/2$ from \cref{gb:Laplace}.  Its algebraic
+factor becomes
+\[
+ y^{-m-2r}\left(1-\frac{i}{2y}\right)^{-m-2r}
+   =y^{-m-2r}\sum_{h\ge0}
+       \frac{(m+2r)_h}{h!}\left(\frac{i}{2y}\right)^h.
+\]
+Collecting terms with $2r+h=\ell$ gives exactly
+\eqref{gb:b-coefficients}.  To justify any fixed truncation, split
+at fixed $X>1$ as in the lemma, retain the finitely many necessary
+density terms, and bound its real remainder by the first omitted
+power of $x^{-1}$ times the leading exponential.  The split at
+$N^{2/3}$ bounds its moment by the corresponding Gamma ratio.
+The finitely many model contours have the same pole-free deformation,
+and Taylor's remainder for $(1-i/(2y))^{-m-2r}$ is uniform for
+$y\ge X$.  These bounds prove the stated remainder in
+\eqref{gb:all-orders-moments}; no contour continuation of the real
+Stirling remainder is used.
+
+For even $\ell$ the coefficient $b_{m,\ell}$ is real, and for
+odd $\ell$ it is purely imaginary.  Thus the phase
+$e^{ij\pi/2}$ gives the asserted parity selection.  At odd $j$
+the leading imaginary term has $\ell=0$ and the next possible
+one has $\ell=2$.  At even $j$ the leading one has $\ell=1$,
+with $b_{m,1}=im/2$, and the next possible one has $\ell=3$.
+In either case the first relative inverse-power correction comes
+solely from the factorial ratio
+\[
+ \frac{\Gamma(N-d+1)}{\Gamma(N+1)}
+ =N^{-d}\left(1+\frac{d(d-1)}{2N}+O(N^{-2})\right)
+ \qquad(d\in\mathbb N).
+\]
+For integer $d$ this follows directly by expanding
+$\prod_{r=0}^{d-1}(N-r)^{-1}$.  Set $N=2n$ and $d=d_j$
+to obtain \eqref{gb:t-first-correction}.
+\end{proof}
+
+\begin{theorem}[The harmonic first correction]\label{gb:harmonic-correction}
+Let $e=\lfloor m/2\rfloor$ and $H_0=0$.  Define
+\begin{equation}\label{gb:kappa}
+ \boxed{\displaystyle
+ \kappa_m=-\frac{m^2(m+3)+e(2m+3)}4
+       +\sum_{r=1}^{e}r\bigl(H_{m+2r}-H_{m-2r}\bigr).}
+\end{equation}
+Then
+\begin{equation}\label{gb:det-first-correction}
+\begin{split}
+ \det F_{b,m}={}&(-1)^{\lfloor m^2/4\rfloor}\mathcal A_m
+       (2b)^{-D_m}\bigl[\pi^{2m}(m!)^2\bigr]^{-b}\\
+ &\times\left(1+\frac{\kappa_m}{b}+O(b^{-2})\right).
+\end{split}
+\end{equation}
+More generally, this determinant has an expansion to every finite
+inverse-power order.  For fixed $m$, all its normalized coefficients
+belong to $\Q[\pi^2]$.
+\end{theorem}
+
+\begin{proof}
+Factor the same column scales as in the proof of
+\cref{gb:eventual}.  By \eqref{gb:t-first-correction}, the remaining
+entry in row $i$, column $j$ is
+\[
+ \xi_j^i\left\{1+\frac1b
+           \left(\frac{d_j(d_j-1)}4-id_j\right)+O(b^{-2})\right\}.
+\]
+For $V=(\xi_j^i)_{i,j=1}^m$, the first relative correction in its
+determinant is therefore
+\begin{equation}\label{gb:kappa-trace}
+ \frac14\sum_{j=1}^md_j(d_j-1)-\sum_{j=1}^md_j\eta_j,
+ \qquad
+ \eta_j=\left(V^{-1}\operatorname{diag}(1,\ldots,m)V\right)_{jj}.
+\end{equation}
+The diagonal quantities can be computed without matrix inversion.
+Differentiating the Vandermonde product gives
+\[
+ \eta_j=\xi_j\frac{\partial}{\partial\xi_j}\log\det V
+       =1+\sum_{k\ne j}\frac{\xi_j}{\xi_j-\xi_k}.
+\]
+For $\xi_j=(j\pi)^{-2}$, partial fractions give
+\begin{equation}\label{gb:eta-harmonic}
+ \eta_j=m+\frac34+\frac j2(H_{m-j}-H_{m+j}).
+\end{equation}
+Indeed $\xi_j/(\xi_j-\xi_k)=k^2/(k^2-j^2)$, and
+\[
+ \sum_{k\ne j}\left(\frac1{k-j}-\frac1{k+j}\right)
+        =H_{m-j}-H_{m+j}+\frac{3}{2j}.
+\]
+Also $\sum_j\eta_j=m(m+1)/2$, either by the trace or by
+pairing the summands in the Vandermonde expression.  Since
+$d_j=m+\ind_{2\mid j}$, substitution into
+\eqref{gb:kappa-trace} gives
+\[
+ -\frac{m^2(m+3)}4+\frac{me}{2}
+                         -\sum_{r=1}^e\eta_{2r}.
+\]
+Equation \eqref{gb:eta-harmonic} now simplifies it to
+\eqref{gb:kappa}, proving \eqref{gb:det-first-correction}.
+
+For higher orders, insert any desired finite truncation of
+\eqref{gb:all-orders-moments} into the fixed-size determinant.
+Its leading Vandermonde is nonzero, so division by that leading
+term gives a valid Poincare expansion.  Relative to $L_j$, parity
+selection leaves only even powers of $\lambda_j=j\pi$ in the
+mode corrections.  The factorial-ratio expansions have rational
+coefficients, while ratios of Vandermonde expressions in the
+$\xi_j$ cancel their common powers of $\pi^{-2}$.  Thus each
+normalized determinant coefficient is a polynomial in $\pi^2$
+with rational coefficients, as claimed.
+\end{proof}
+
+For orientation, the first correction values are
+\[
+ \kappa_1=-1,\qquad\kappa_2=-\frac{14}{3},\qquad
+ \kappa_3=-\frac{217}{15},\qquad\kappa_4=-\frac{949}{35}.
+\]
+The series in \eqref{gb:w-series} and
+\eqref{gb:all-orders-moments} are formal asymptotic constructions;
+convergence is not asserted.  The argument also does not establish
+a complete exponentially improved expansion or an explicit error
+constant sufficient to certify a numerical $B(m)$.
+
+\subsection{A hypergeometric form of the null equation}
+
+The differential equation itself has a useful classical
+hypergeometric form.  Let $Q$ be any even analytic null germ of
+$\mathcal L_m$ and write $c=Q^{(2m)}(0)$.  On the local branches
+near $u=1$ with $\log1=0$ and $\sqrt1=1$, define
+\[
+ Y(u)=\frac{Q(\tfrac12\log u)}{\sqrt u-1},\qquad
+                    \Theta=u\frac{d}{du}.
+\]
+The apparent singularity at $u=1$ is removable because $Q(t)=O(t^2)$.
+Then
+\begin{equation}\label{gb:hypergeometric}
+ \left[\Theta^{2m}-u(\Theta+\tfrac12)^{2m}\right]Y(u)
+            =-\frac{c}{2^{2m+1}}(1+\sqrt u).
+\end{equation}
+To verify it, set $Q(t)=(e^t-1)F(t)$, so that
+$Q(t)\coth(t/2)=(e^t+1)F(t)$.  Multiplication of
+$\mathcal L_mQ=0$ by $e^t-1$ gives
+\[
+ D^{2m}F-e^{2t}(D+1)^{2m}F=-\tfrac c2(1+e^t).
+\]
+Now $u=e^{2t}$ and $D=2\Theta$, proving
+\eqref{gb:hypergeometric}.  Its homogeneous operator is the standard
+generalized hypergeometric operator associated with
+\[
+ {}_{2m}F_{2m-1}
+ \left(\begin{matrix}\tfrac12,\ldots,\tfrac12\\1,\ldots,1\end{matrix};u\right)
+\]
+\cite{dlmf-hypergeometric}.  This operator identification is classical
+algebra.  The Gamma basis selects and normalizes the relevant
+analytic null germs at $u=1$ and connects them to the harmonic-tail
+coefficient matrix; that connection is the substantive result here.
+
+\subsection{Verification and the next finite obstruction}
+
+The accompanying scripts separate exact algebra from numerical
+diagnostics.  Direct Gamma quadrature at $45$ decimal digits for
+$m=1,2,3$ and $1\le n\le m+3$ gives all 18 coefficient recurrence
+residuals below $10^{-46}$ and all six top-derivative identity
+residuals below $10^{-42}$, with the normalizations recorded
+separately. A separate calculation evaluates $T_m$
+by Gamma quadrature at $60$ digits, then propagates the exact
+recurrence to compare the determinant with
+\eqref{gb:det-asymptotic}.  The recorded ratios are
+\begin{center}
+\begin{tabular}{@{}crrrr@{}}
+\toprule
+ & $b=20$ & $b=40$ & $b=80$ & $b=120$\\
+\midrule
+$m=1$ & $0.951663$ & $0.975424$ & $0.987607$ & $0.991714$\\
+$m=2$ & $0.796107$ & $0.891056$ & $0.943647$ & $0.961999$\\
+$m=3$ & $0.456866$ & $0.687818$ & $0.832149$ & $0.885309$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Their approach to one is a consistency check on the explicit
+normalization; the infinite theorem is proved above independently
+of these finite computations.
+
+The most direct continuation is to make the remainder in
+\eqref{gb:det-asymptotic} effective, obtain a certified cutoff for
+each fixed $m$, and use exact rational arithmetic below it.  The
+gap-six case is a natural first target because its initial sign
+transition rules out a blanket positivity shortcut.  Further questions
+include exact evaluations of $K_m$, a classification of finite
+sign changes, and uniform asymptotics when $m$ grows with $b$.
+The Gamma moments also suggest parameter deformations of
+\eqref{gb:W} and \eqref{gb:cot-operator}; any such extension must
+recheck the contour residues and the original coordinate bridge.
+
+% End included source: sections/08_gamma_basis
+% Begin included source: sections/09_audit_research
+\section{Research status, verification, and next questions}
+\label{sec:audit}
+
+\subsection{What has been established}
+
+The proof-bearing deliverable is the article itself. The programs
+check finite algebra and independent numerical instances; they are
+not substituted for its convergence, continuation, contour, or
+asymptotic arguments. The principal advances can be mapped precisely
+to the source questions.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.45\textwidth}>{\raggedright\arraybackslash}p{0.25\textwidth}@{}}
+\toprule
+Source question & Result supplied here & Remaining scope\\
+\midrule
+\endfirsthead
+\toprule
+Source question & Result supplied here & Remaining scope\\
+\midrule
+\endhead
+Individual ordered mixed labels &
+Theorem~\ref{thm:ordered} gives the exact two-particle identity on an
+open complex domain. Theorems~\ref{thm:poles} and
+\ref{thm:digamma-master} give its continuation and all positive-order
+values. &
+Higher rank is handled by finite localization, not a universal
+single-zeta assertion.\\[5pt]
+Noninteger cutoff generators &
+Theorem~\ref{thm:cutoff} and \eqref{eq:b-beta-lerch} give a finite
+polylogarithm and beta--Lerch transform, entire in both orders on
+the disk. &
+The endpoint requires its own convergence domain and collective
+cancellations.\\[5pt]
+Other annihilating stencils &
+Section~\ref{sec:localization} proves a finite block formula for
+critical integer stencils and a stronger reduction under one further
+annihilation condition. &
+This is a sufficient family, not a classification of arbitrary
+noninteger grids.\\[5pt]
+All unequal even harmonic-tail prefixes &
+Section~\ref{gb:section} proves eventual optimality on every fixed-gap
+ray, with exact Gamma normalization and a nonzero signed asymptotic. &
+No effective threshold is provided. The full all-pairs conjecture,
+including complete gap-six coverage, remains open here.\\[5pt]
+Stieltjes derivatives and primitives &
+Theorems~\ref{thm:subtracted-jets} and \ref{thm:beta-stieltjes}
+provide ordinary all-order identities. Equations
+\eqref{eq:gamma-primitive} and \eqref{eq:arcsine-primitive}
+give compatible primitives. &
+Elementary symmetric arcsine cases are recurrence consequences;
+they are not independent priority claims.\\[5pt]
+Short Gaussian $S_6$ and revised $S_8$ &
+Their present source status has been checked and preserved. &
+Neither identity is proved or refuted by this article.\\
+\bottomrule
+\end{longtable}
+
+The incoming bilinear and tail-kernel reports already supply complete
+smaller-order-ten and smaller-order-twelve reconstruction
+theorems \cite{repo:bilinear,repo:tail-kernels}. They should
+retain their existing attribution and audit status. Reproving or
+relabeling an already supplied finite case would not constitute a
+new research advance; the fixed-gap theorem instead changes which
+infinite direction is controlled.
+
+\subsection{Audit findings and a proposed correction}
+
+No newly false inherited mathematical theorem was identified in the
+material used for this article. There is a concrete editorial defect:
+the manuscript README repeats consecutively the complete paragraph
+describing the 1,032-input first-letter-$X$ family, its rank 1,008,
+and its kernel dimension 24 \cite{repo:manuscript}. The package includes
+a narrowly scoped patch removing the second copy. This is a proposed
+README correction, not a modification of a mathematical statement.
+
+Several distinctions matter when the new results are integrated.
+The source already records that the old $S_8$ candidate was rejected
+and the revised candidate is still conjectural. The small residual
+enclosures for $S_6$ and revised $S_8$ establish proximity, not zero.
+Likewise, the canonical modular relation searches do not assert
+rational nonmembership or a counterexample to a period equality
+\cite{repo:ledger,repo:gaussian}. These are inherited status safeguards,
+not newly discovered errors.
+
+For the present contribution, the analogous precise statements are:
+the zero-weight limits in Section~\ref{sec:continuation} concern a
+meromorphic continuation; the constant in \eqref{eq:hard-cutoff} is
+not the fixed-coordinate Laurent constant; block formulas outside
+their separated convergence domain are interpreted collectively;
+and full rank of a formal moment matrix does not prove arithmetic
+independence of the evaluated constants. The Gamma argument also
+shows why positivity of the scalar recurrence does not imply
+positivity of every minor: even modes lose their leading Laplace
+phase, and the determinant has the parity-dependent sign derived
+in Section~\ref{gb:section}.
+
+\subsection{Reproducibility and the independent checks}
+
+The package contains modular TeX, a self-contained assembled TeX
+file, the compiled PDF, a build command, a claim-status file, exact
+source locations, and portable verification programs. Source
+repository material was inspected at the pinned revision and kept
+unchanged. The generated correction patch is separate.
+
+The ordered-boundary suite checks the finite summation-by-parts
+identity on 240 arbitrary rational sequence/cutoff cases, the rational
+partial-fraction identity on 36 order pairs, 570 parity coefficients,
+420 coefficients of the cutoff generator, and all four entries of
+the zero-weight directional table. Four explicit infinite-sum values
+are also compared with directly accumulated original ordered sums,
+using both positive tail envelopes and separately labelled accelerated
+diagnostics.
+
+The corollary suite checks 13 exact master-function derivatives and
+special values and nine exact formal Stieltjes coefficients. It
+compares the geometric master with the original resolvent-weighted
+ordered sum, tests two subtracted harmonic sums, follows six
+unaccelerated hard-cutoff limits, and evaluates nine arcsine integrals.
+The beta--Stieltjes suite checks five Bell--Leibniz coefficients,
+independent Stieltjes-value samples, and twelve numerical beta
+integrals through jet order two, including independently varied
+shifts. Its expansion and endpoint truncations are recorded
+separately from floating-point roundoff.
+
+The localization suite supplies 147 exact checks, including
+finite-support transport, the full contact table, both rank-three
+two-index sectors, singleton cancellation through rank five, and a
+deliberately corrupted control. The Gamma suite compares directly
+integrated basis coefficients with the rational recurrence for
+$m=1,2,3$, checks the exact inhomogeneous moment, and records
+finite-index ratios to the determinant asymptotic. A separate exact
+suite checks the Bernoulli matrix against its complementary-minor
+normalization and the harmonic correction. The independent proof
+audit rederives the contour shifts, both residues, the initial
+determinant, the parity-sensitive asymptotics, and the source bridge.
+This is internal independent checking, not external peer review or
+proof-assistant verification.
+
+All numerical comparisons are diagnostics at their stated working
+precisions. The proof of eventual nonvanishing is the nonzero
+limiting Vandermonde determinant, not an extrapolation of the
+displayed finite data. In particular, a finite gap-six sign table
+does not provide the missing effective cutoff.
+
+\subsection{Further research questions}
+
+The following questions are arranged by how directly the present
+proofs supply a route forward. They concern exact identities and
+structural classification; estimates enter only where needed to
+turn an eventual identity theorem into a finite decision.
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=*]
+\item \textbf{Complete the fixed-gap prefix conjectures.}
+For each fixed $m$, turn the nonzero asymptotic into an explicit
+computable threshold $B(m)$ and combine it with exact rational
+determinants below that threshold. The specific next case is gap
+six. The exact values at $b=4,5,6$ are negative, and the checked
+values $7\le b\le40$ are positive. The strengthened conjecture
+\[
+ \det F_{b,3}>0\qquad(b\ge7)
+\]
+is consistent with both the finite data and the proved eventual
+sign, but is not proved here. A successful completion must justify
+the transition from a finite table to all indices.
+
+\item \textbf{Evaluate the Gamma normalization constants.}
+The positive integral $K_m$ is exact, and $K_1=8\pi$.
+Find closed Gamma, hypergeometric, or modular descriptions of
+$K_2,K_3,\ldots$. The multiple-orthogonality interpretation suggests
+studying the associated moment determinant rather than integrating
+each entry separately. A recurrence in $m$, if it exists, would be
+particularly useful.
+
+\item \textbf{Connect the two eventual regimes.}
+The new theorem fixes the gap while the earlier theorem fixes the
+smaller order. Can one obtain a two-parameter determinant expansion
+that covers the region between those rays? The limiting nodes
+$(j\pi)^{-2}$ become less separated as $m$ grows, so a proof must
+control the full determinant, not merely reuse fixed-$m$ error
+constants. This is a possible route toward the all-pairs conjecture.
+
+\item \textbf{Classify the finite sign changes.}
+The exact Gamma representation is valid at every $b>m$, while its
+sign is presently asymptotic. Determine the number and locations of
+the finite sign transitions for each $m$. A variation-diminishing
+statement adapted to the polynomials
+$\operatorname{Im}(x+i/2)^{2n}$ could replace a false appeal to
+unqualified total positivity.
+
+\item \textbf{Deform the Gamma basis.}
+Replace the quarter shift by a parameter and seek the corresponding
+shift equation, residue forcing, and reconstruction matrix. Identify
+which deformations preserve a finite set of sinh/tanh modes and
+which create additional residue terms. Differentiating a valid
+deformation would give new exact polygamma-weighted orthogonality
+identities; the deformation itself must be proved before its
+derivatives are used.
+
+\item \textbf{Determine the actual higher-rank period coordinates.}
+The block theorem gives at most
+$\lfloor(r+1)/2\rfloor$ free ordered indices. At rank three the
+two-index contact sector is nonzero, but this does not prove
+arithmetical depth two. Determine which integer orders, shift
+collisions, or label symmetries reduce these sectors to single
+Hurwitz values, and which require genuine nested periods.
+The explicit contact polynomial provides a finite starting point.
+
+\item \textbf{Compute all-rank polar geometry from the blocks.}
+The two-particle oblique residues are explicit polynomials.
+At higher rank, the finite sector formula should organize polar
+hyperplanes by free blocks and their mergers. Prove a complete
+local Laurent description, including its behavior when the original
+finite-difference weights vanish. This would extend the directional
+table without confusing a pointwise specialization with a limit.
+
+\item \textbf{Classify stencils by ordered boundary support.}
+The annihilation conditions proved here are sufficient. Seek
+necessary conditions for a prescribed maximum number of free
+blocks, first for finite integer stencils. A discrete-residue
+criterion might recognize additional cancellations invisible to
+degree counting. Nonuniform or noninteger grids require a separate
+analysis because there is no common integer transport lattice.
+
+\item \textbf{Find new exact beta--Stieltjes evaluations.}
+For rational $\sigma$, special shifts may combine the beta weight
+with multiplication or reflection formulas. Determine when
+\eqref{eq:beta-stieltjes-all} reduces to a finite expression in
+zeta derivatives, log-Gamma values, and lower Stieltjes constants,
+rather than the generally infinite but geometric expansion
+\eqref{eq:beta-jet-zeta}. Confluent shift derivatives offer a
+systematic way to introduce polygamma factors.
+
+\item \textbf{Construct higher-rank cutoff formulas.}
+Insert a common outer cutoff before transporting the stencils.
+Track the factors of $1-z$ attached to free collision blocks and
+determine whether the endpoint depth reduction can be read directly
+from them. Section~\ref{sec:polylog} proves this mechanism at rank
+two. A higher-rank formula should retain all finite endpoint terms
+before any limiting operation.
+
+\item \textbf{Return to Gaussian periods with a new functional route.}
+The short $S_6$ and revised $S_8$ questions remain worthwhile, but
+the inspected finite relation spaces have already been analyzed
+carefully. New work should supply a functional identity, a genuinely
+larger motivic or iterated-integral relation, or a rigorously changed
+candidate. Further decimal agreement alone cannot settle either
+equality. The ordered kernels here may suggest new generating
+relations, but no such implication is presently proved.
+\end{enumerate}
+
+\subsection{Suggested integration}
+
+The ordered identity and its cutoff generator naturally continue
+the finite-difference report. The beta--Stieltjes identities belong
+with the Hurwitz and Stieltjes calculus, with their ordinary
+convergence hypotheses retained. The all-rank transport theorem
+can be kept as a separate structural continuation. The Gamma basis
+should follow the exact fixed-gap determinant reduction in the
+harmonic-tail Gamma branch, with its inherited coordinate convention
+printed explicitly.
+
+The accompanying integration note lists these destinations, theorem
+dependencies, a proposed status update, and the README patch.
+Canonical acceptance should record the proved fixed-gap eventual
+statement at its actual scope; it should not silently promote the
+remaining full reconstruction or Gaussian conjectures.
+
+% End included source: sections/09_audit_research
+% Begin included source: references
+\clearpage
+\begin{thebibliography}{99}
+\addcontentsline{toc}{section}{References}
+\raggedright
+
+\bibitem{repo:manuscript}
+ProveIt Contributors,
+\emph{Polylogarithms and their Arithmetic Bridges}, collective
+manuscript, README and source chapters.
+Repository snapshot \repo, 11 October 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e3d7ec5d3f9be259c1f91edaea4389f4e79b5b03/Analysis/Polylogarithms/docs/manuscript/README.md}{Pinned manuscript README}.
+
+\bibitem{repo:ledger}
+ProveIt Contributors,
+\emph{Editorial Ledger}, canonical claim and integration statuses,
+same repository snapshot.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e3d7ec5d3f9be259c1f91edaea4389f4e79b5b03/Analysis/Polylogarithms/docs/manuscript/EDITORIAL-LEDGER.md}{Pinned editorial ledger}.
+
+\bibitem{repo:gaussian}
+ProveIt Contributors,
+\emph{Revised \(S_8\) candidate}, manuscript Chapter 4 source,
+with the surrounding Gaussian status and certification discussion.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e3d7ec5d3f9be259c1f91edaea4389f4e79b5b03/Analysis/Polylogarithms/docs/manuscript/chapters/04-S8-candidate.tex}{Pinned candidate source}.
+
+\bibitem{repo:finite}
+ProveIt Contributors,
+\emph{Finite-Difference Determinants}, incoming research report,
+11 October 2026; especially Sections 2--4 and 9, and the subsequent
+finite-algorithm continuation.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e3d7ec5d3f9be259c1f91edaea4389f4e79b5b03/docs/incoming/ProveIt_Finite_Difference_Determinants_2026-10-11.zip}{Pinned incoming archive}.
+
+\bibitem{repo-gamma}
+ProveIt Contributors,
+\emph{Harmonic-tail Gamma continuation}, Section 2,
+\texttt{02\_gap\_four.tex}; inherited moment coordinates,
+operator conjugacy, and Theorem \texttt{gap:complementary}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e3d7ec5d3f9be259c1f91edaea4389f4e79b5b03/Analysis/Polylogarithms/docs/reports/stieltjes-harmonic-resonance/continuations/harmonic-tail-gamma/sections/02_gap_four.tex}{Pinned source and exact determinant normalization}.
+The earlier adjacent-tail conventions are in
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e3d7ec5d3f9be259c1f91edaea4389f4e79b5b03/Analysis/Polylogarithms/docs/reports/stieltjes-harmonic-resonance/continuations/differential-polygamma-lerch-jets/sections/08_adjacent_tails.tex}{the differential-polygamma continuation}.
+
+\bibitem{repo:bilinear}
+ProveIt Contributors,
+\emph{Bilinear Tails and Harmonic Determinants}, incoming report,
+11 October 2026; rational boundary certificates, cutoff jets,
+and order-ten reconstruction.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e3d7ec5d3f9be259c1f91edaea4389f4e79b5b03/docs/incoming/ProveIt_Bilinear_Tails_and_Determinants_2026-10-11.zip}{Pinned incoming archive}.
+
+\bibitem{repo:tail-kernels}
+ProveIt Contributors,
+\emph{Tail Kernels and Boundary Products}, incoming report,
+11 October 2026; Sections 6 and 7 supply complete smaller-order-ten
+and smaller-order-twelve reconstruction theorems.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e3d7ec5d3f9be259c1f91edaea4389f4e79b5b03/docs/incoming/ProveIt_Tail_Kernels_and_Boundary_Products_2026-10-11.zip}{Pinned incoming archive}.
+All seven incoming archives and their specific roles are listed in
+the accompanying source map.
+
+\bibitem{repo:quartic}
+ProveIt Contributors,
+\emph{Quartic Spectral Reconstruction}, incoming report,
+11 October 2026; Section 3 proves eventual reconstruction with the
+smaller order fixed, and Section 8 poses the order-ten/twelve tasks
+subsequently addressed in the other incoming reports.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e3d7ec5d3f9be259c1f91edaea4389f4e79b5b03/docs/incoming/ProveIt_Quartic_Spectral_Reconstruction_2026-10-11.zip}{Pinned incoming archive}.
+
+\bibitem{dlmf:hurwitz}
+NIST Digital Library of Mathematical Functions,
+\emph{Hurwitz Zeta Function}, Section 25.11.
+\url{https://dlmf.nist.gov/25.11}.
+Definitions, continuation, argument derivatives, Gamma relation,
+and asymptotic expansions.
+
+\bibitem{dlmf:lerch}
+NIST Digital Library of Mathematical Functions,
+\emph{Lerch's Transcendent}, Section 25.14.
+\url{https://dlmf.nist.gov/25.14}.
+
+\bibitem{dlmf:gamma}
+NIST Digital Library of Mathematical Functions,
+\emph{Gamma Function: Functional Relations and Integral Representations},
+Sections 5.5 and 5.9.
+\url{https://dlmf.nist.gov/5.5};
+\url{https://dlmf.nist.gov/5.9}.
+
+\bibitem{dlmf-stirling}
+NIST Digital Library of Mathematical Functions,
+\emph{Gamma Function: Asymptotic Expansions}, Section 5.11.
+\url{https://dlmf.nist.gov/5.11}.
+
+\bibitem{dlmf-hypergeometric}
+NIST Digital Library of Mathematical Functions,
+\emph{Generalized Hypergeometric Functions: Differential Equations},
+Section 16.8.
+\url{https://dlmf.nist.gov/16.8}.
+
+\bibitem{chen-singer}
+S. Chen and M. F. Singer,
+\emph{Residues and Telescopers for Rational Functions},
+arXiv:1203.4200 (2012).
+\url{https://arxiv.org/abs/1203.4200}.
+
+\bibitem{arreche-sitaula}
+C. E. Arreche and H. P. Sitaula,
+\emph{A computational approach to rational summability and its
+applications via discrete residues},
+arXiv:2503.15636 (2025).
+\url{https://arxiv.org/abs/2503.15636}.
+
+\bibitem{matsumoto-ono-wakabayashi}
+K. Matsumoto, T. Onozuka, and I. Wakabayashi,
+\emph{Laurent series expansions of multiple zeta-functions of
+Euler--Zagier type at integer points},
+arXiv:1601.05918 (2016).
+\url{https://arxiv.org/abs/1601.05918}.
+
+\bibitem{shpot-paris}
+M. A. Shpot and R. B. Paris,
+\emph{Integrals of products of Hurwitz zeta functions via Feynman
+parametrization and two double sums of Riemann zeta functions},
+arXiv:1609.05658 (2016).
+\url{https://arxiv.org/abs/1609.05658}.
+
+\bibitem{ramanujan-transform}
+D. Chakrabarti and G. K. Srinivasan,
+\emph{On a remarkable formula of Ramanujan},
+arXiv:1206.5122 (2012).
+\url{https://arxiv.org/abs/1206.5122}.
+Classical Gamma Fourier-transform context; no identification with the
+specific fixed-gap basis proved here is asserted.
+
+\end{thebibliography}
+
+% End included source: references
+\end{document}

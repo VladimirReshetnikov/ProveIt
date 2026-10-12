@@ -1,0 +1,975 @@
+\section{A Gamma integral basis and eventual reconstruction at every fixed gap}
+\label{gb:section}
+
+The preceding sections develop identities by localizing a finite-difference
+operator at its boundary.  We now apply a different analytic construction
+to a remaining reconstruction problem in the repository: the optimal
+initial moments of two unequal even harmonic tails.  The inherited
+fixed-gap reduction expresses the obstruction as a rational determinant
+of size half the gap \cite{repo-gamma}.  We construct its entire null
+space by ordinary Gamma integrals, determine the exact normalization,
+and obtain a nonzero determinant asymptotic.  Consequently the optimal
+prefix holds eventually on \emph{every fixed-gap ray}.  This differs from
+the previously established eventual result with the smaller order fixed
+\cite{repo:quartic}:
+here both orders tend to infinity while their difference remains fixed.
+
+The Gamma recurrence, Stirling expansion, and Fourier-transform setting
+are classical \cite{dlmf:gamma,dlmf-stirling,ramanujan-transform}.
+The contributions established below are the explicit basis for this
+particular null equation, its exact bridge to the inherited rational
+determinant, the fixed-gap asymptotic, and its harmonic-number correction.
+This is a statement of the advance relative to the inspected material;
+it does not assert historical priority.  Throughout the section, rank
+means rank of the specified rational \emph{formal coordinate matrix}.
+No arithmetic independence of evaluated zeta values or moments is
+assumed or concluded.
+
+\subsection{The inherited moments and the determinant to be studied}
+
+For integers $1\le a<b$, write
+\[
+ p=2a,\qquad q=2b,\qquad m=b-a\ge1,
+ \qquad x_n=n+\tfrac12.
+\]
+Thus $b$ is half the larger order and $m$ is half the gap.  Define
+\begin{equation}\label{gb:tails}
+ A_p(n)=\zeta(p,n+1)=\zeta(p)-H_n^{(p)},\qquad
+ D_{p,q}(s)=\sum_{n=0}^{\infty}A_p(n)A_q(n)x_n^{-s}.
+\end{equation}
+The defining series converges absolutely for $\Rea s>3-p-q$.
+Let $D_r=D_{p,q}(-2r)$, using meromorphic continuation when necessary.
+These points are regular.  Indeed the centered Hurwitz expansion has
+the form
+\[
+ A_p(n)\sim\frac{x_n^{1-p}}{p-1}
+ +\sum_{k\ge1}\frac{B_{2k}(1/2)}{(2k)!}
+       (p)_{2k-1}x_n^{1-p-2k}.
+\]
+Subtracting finitely many terms from the product continues
+\eqref{gb:tails} successively to larger half-planes.  Its possible poles
+lie at $s=3-p-q-2\ell$, $\ell\ge0$, all odd integers.  In particular
+the even arguments used in $D_r$ are regular.
+
+The inherited two-tail calculus supplies blocks $C_j$ and the mutually
+inverse Bernoulli transforms
+\begin{align}
+ D_r&=\sum_{j=0}^r\frac{\binom{2r}{2j}}{2j+1}
+          B_{2r-2j}(1/2)C_j,\label{gb:forward}\\
+ C_j&=\sum_{r=0}^j\binom{2j+1}{2r}2^{-2(j-r)}D_r.
+ \label{gb:inverse}
+\end{align}
+Here $B_n(x)$ denotes a Bernoulli polynomial and $B_n=B_n(0)$, with
+$B_1=-1/2$.  For $j\ge b$ the late coordinates are
+\begin{equation}\label{gb:late}
+ C_j=\sum_{k=0}^{b-1}a_{jk}Z_k,\qquad
+ Z_k=\zeta(2k),\qquad Z_0=-\tfrac12.
+\end{equation}
+Their exact rational coefficients, also inherited, are as follows.
+Put $d=2j+1$ and $e=d-p-q+2k+1$.  If $e<0$ set $a_{jk}=0$;
+otherwise set
+\begin{equation}\label{gb:source-entry}
+ a_{jk}=B_e\left\{
+ \frac{\binom{d-q+1}{p-2k}}{d-q+1}
+ +\frac{\binom{d-p+1}{q-2k}}{d-p+1}\right\}.
+\end{equation}
+Each binomial summand is omitted unless its lower index lies between
+$2$ and its upper index.  In particular, a lower index of zero is
+\emph{omitted}.  This convention is essential: it determines the
+constant subtraction in the differential equation below.  Equations
+\eqref{gb:forward}--\eqref{gb:source-entry} are inputs from
+\cite[Section~2, inherited moment coordinates]{repo-gamma}.
+
+Define the $b\times b$ late-block matrix
+\begin{equation}\label{gb:M}
+ M_{a,b}=(a_{b+r,k})_{0\le r,k<b}.
+\end{equation}
+On the ordered formal labels
+\[
+ C_0,\ldots,C_{b-1},\quad Z_0,\ldots,Z_{b-1},
+\]
+the coefficient matrix of $C_0,\ldots,C_{2b-1}$ is
+$\operatorname{diag}(I_b,M_{a,b})$.  The forward transform
+\eqref{gb:forward} is triangular with diagonal $1/(2r+1)$.
+Consequently the determinant of the complete matrix for the first
+$q=2b$ moments $D_0,\ldots,D_{2b-1}$ is
+\begin{equation}\label{gb:full-prefix}
+             \frac{\det M_{a,b}}{(4b-1)!!}.
+\end{equation}
+Thus the optimal-prefix question is exactly the nonvanishing of
+\eqref{gb:M}.  If it is nonzero, those first $2b$ moments generate
+every later moment in the inherited formal coordinate system, and
+evaluation gives the corresponding rational generation statements for
+the actual constants.  Fewer than $2b$ rows cannot have rank $2b$ on
+these $2b$ specified labels.
+
+\subsection{The fixed-gap recurrence and its exact normalization}
+
+For the remainder of the section fix $m\ge1$.  To distinguish the
+recurrence coefficients from both the tails and Bernoulli numbers, put
+\begin{equation}\label{gb:recurrence-factors}
+ \mathfrak a_r=\begin{cases}
+ 0,&1\le r\le m,\\
+ (2r)^{\underline{2m}},&r>m,
+ \end{cases}
+ \qquad
+ \mathfrak b_N=(2N-1)^{\underline{2m}},\qquad
+ d_N=2(\mathfrak a_N+\mathfrak b_N)\quad(N>m).
+\end{equation}
+The underline denotes a falling factorial.  All $d_N$ in this range
+are strictly positive.  Let
+\begin{equation}\label{gb:beta}
+ \beta_k=\frac{2|B_{2k}|}{(2k)!}
+        =\frac{4\zeta(2k)}{(2\pi)^{2k}}>0,
+ \qquad k\ge1.
+\end{equation}
+The rational fundamental array is defined by
+\begin{align}
+ C^{[m]}_{r,j}&=\delta_{rj}&& (1\le r,j\le m),\label{gb:initial}\\
+ C^{[m]}_{N,j}&=\frac1{d_N}\sum_{r=1}^{N-1}
+   \beta_{N-r}(\mathfrak a_r+\mathfrak b_N)C^{[m]}_{r,j}
+       &&(N>m,\ 1\le j\le m).\label{gb:recurrence}
+\end{align}
+The superscript separates this array from the moment blocks $C_j$.
+For $b>m$ write
+\begin{equation}\label{gb:F}
+                  F_{b,m}=(C^{[m]}_{b+i,j})_{1\le i,j\le m}.
+\end{equation}
+
+For an even formal series $R(z)=\sum_{n\ge1}r_nz^{2n}$, define
+\begin{equation}\label{gb:cot-operator}
+ \mathcal T_mR
+ =\bigl(R^{(2m)}-R^{(2m)}(0)\bigr)\cot(z/2)
+                      +\bigl(R\cot(z/2)\bigr)^{(2m)}.
+\end{equation}
+Both terms combine to an odd formal Taylor series: the subtraction
+removes the possible pole in the first product, while $R\cot(z/2)$
+is an odd Taylor series.  Expanding
+\[
+ \cot(z/2)=\frac2z-\sum_{k\ge1}\beta_kz^{2k-1}
+\]
+shows that, for $N>m$, its coefficient at $z^{2N-2m-1}$ is
+\begin{equation}\label{gb:coefficient}
+ d_Nr_N-\sum_{r=1}^{N-1}
+      \beta_{N-r}(\mathfrak a_r+\mathfrak b_N)r_r.
+\end{equation}
+The value $\mathfrak a_m=0$ records precisely the subtracted
+$R^{(2m)}(0)$.  Since $d_N>0$, the first $m$ coefficients are
+arbitrary and determine all later ones uniquely.  The formal null
+space of $\mathcal T_m$ has dimension exactly $m$.
+
+\begin{proposition}[Inherited boundary reduction, with normalization]
+\label{gb:bridge}
+For $b>m\ge1$,
+\begin{equation}\label{gb:bridge-formula}
+ \boxed{\displaystyle
+ \det M_{b-m,b}
+ =\frac{(-1)^{b(b-1)/2}}{4^bb!}
+       \left(\prod_{N=m+1}^{b+m}d_N\right)\det F_{b,m}.}
+\end{equation}
+This is the complementary-minor theorem of
+\cite[Theorem~\texttt{gap:complementary}]{repo-gamma}.
+\end{proposition}
+
+\begin{proof}
+We reproduce the normalization argument so that the subsequent
+Gamma determinant can be checked against the original coordinates.
+Set $h(t)=\coth(t/2)$ and
+\[
+ \mathcal L_mQ=(Q^{(2m)}-Q^{(2m)}(0))h+(Qh)^{(2m)}.
+\]
+Let $K_{m,b}$ map the coefficients $(q_1,\ldots,q_b)$ of
+$Q(t)=\sum_{n=1}^bq_nt^{2n}$ to the coefficients of
+$t,t^3,\ldots,t^{2b-1}$ in $\mathcal L_mQ$.
+Write $h(t)=\sum_{k\ge0}h_kt^{2k-1}$, where $h_0=2$ and
+$h_k=2B_{2k}/(2k)!$ for $k\ge1$.  In row $r$, indexed from zero,
+put $N=r+m+1$.  The entry in column $n$ is
+\[
+ h_{N-n}(\mathfrak a_n+\mathfrak b_N)\quad(n\le N),
+\]
+and is zero for $n>N$.  In \eqref{gb:source-entry}, substitution
+$j=b+r$, $k=b-n$ gives Bernoulli index $2(N-n)$ and the upper/lower
+binomial pairs
+\[
+ (2r+2,\,2n-2m),\qquad(2r+2m+2,\,2n).
+\]
+Multiplication by $2(2n)!/(2r+1)!$ therefore gives exactly the
+displayed operator entry, including the omission when $n\le m$.
+If $M^{\mathrm{rev}}$ denotes column reversal, then
+\[
+ K_{m,b}=
+ \operatorname{diag}_{0\le r<b}\!\left(\frac2{(2r+1)!}\right)
+ M_{b-m,b}^{\mathrm{rev}}
+ \operatorname{diag}_{1\le n\le b}\!\bigl((2n)!\bigr),
+\]
+so
+\begin{equation}\label{gb:operator-conjugacy}
+ \det K_{m,b}=(-1)^{b(b-1)/2}4^bb!\det M_{b-m,b}.
+\end{equation}
+
+The relation $h_k=(-1)^{k-1}\beta_k$ for $k\ge1$ and
+\eqref{gb:recurrence} imply that
+\[
+ Q_j(t)=\sum_{n\ge1}(-1)^{n-j}C^{[m]}_{n,j}t^{2n},
+ \qquad1\le j\le m,
+\]
+are formal null solutions of $\mathcal L_m$, with initial
+$m\times m$ coefficient block equal to the identity.  Replace
+the first $m$ columns of $K_{m,b}$ by the corresponding linear
+combinations given by the truncations of these solutions through
+$n=b$.  This changes no determinant.  The first $b-m$ rows of
+those columns vanish.  Their bottom $m$ rows equal $-TQ_+$, where
+$T$ is lower triangular with diagonal $d_{b+1},\ldots,d_{b+m}$ and
+\[
+ (Q_+)_{ij}=(-1)^{b+i-j}C^{[m]}_{b+i,j}.
+\]
+Indeed each truncated null equation is the negative of its omitted
+future terms, and its newest future coefficient has factor $d_{b+i}$.
+Moving the first $m$ columns to the end leaves the other diagonal
+block triangular with diagonal $d_{m+1},\ldots,d_b$.  It follows that
+\[
+ \det K_{m,b}=(-1)^{m(b-m)+m}
+       \left(\prod_{N=m+1}^{b+m}d_N\right)\det Q_+.
+\]
+Factoring its row and column signs gives
+$\det Q_+=(-1)^{mb}\det F_{b,m}$.  The combined exponent
+$2mb-m(m-1)$ is even.  Equation \eqref{gb:operator-conjugacy}
+now proves \eqref{gb:bridge-formula}.
+\end{proof}
+
+\subsection{An explicit Gamma integral basis}
+
+Define the positive even weight
+\begin{equation}\label{gb:W}
+ W_m(x)=\left|\Gamma\!\left(\tfrac14+\tfrac{ix}{2}\right)\right|^{4m}
+ \qquad(x\in\mathbb R)
+\end{equation}
+and the odd multipliers
+\begin{equation}\label{gb:P}
+ P_j(x)=\sinh\!\bigl(\pi(m-j)x\bigr)\quad(1\le j<m),
+ \qquad P_m(x)=\tanh(\pi x).
+\end{equation}
+Their order is chosen to agree with their distinct decay scales.
+
+\begin{theorem}[Gamma basis and exact top moments]\label{gb:basis}
+For $1\le j\le m$, the integral
+\begin{equation}\label{gb:R}
+ R_j(z)=4\sin(z/2)\int_0^\infty
+                  \sinh(xz)P_j(x)W_m(x)\dd x
+\end{equation}
+defines an even holomorphic function in $|\Rea z|<j\pi$.
+Its germ at zero satisfies $\mathcal T_mR_j=0$ and
+\begin{equation}\label{gb:top-derivative}
+ R_j^{(2m)}(0)=0\quad(j<m),\qquad
+ R_m^{(2m)}(0)=(-1)^{m+1}2^{2m+2}\pi^m.
+\end{equation}
+The $m$ germs form a basis of the formal null space of
+\eqref{gb:cot-operator}.  Their Taylor radii are exactly $j\pi$.
+\end{theorem}
+
+The contour argument below proves the null equation and the exact
+derivatives.  The basis assertion will follow from the positive
+initial determinant in \cref{gb:normalization}; the exact Taylor
+radii will follow independently from \cref{gb:coefficient-asymptotic}.
+This order of proof avoids assuming either linear independence or
+the location of a singularity from the integral representation alone.
+
+\begin{proof}[Contour proof]
+Stirling's formula gives, as $x\to+\infty$,
+\[
+ W_m(x)=2^m(2\pi)^{2m}x^{-m}e^{-m\pi x}(1+O(x^{-2})).
+\]
+Together with \eqref{gb:P}, this proves absolute convergence in
+the stated strips, locally uniform convergence of all differentiated
+integrals, and evenness of \eqref{gb:R}.  We use the usual meromorphic
+Gamma function and the integer-power continuation
+\[
+ W_m(y)=\left[
+ \Gamma(\tfrac14+iy/2)\Gamma(\tfrac14-iy/2)\right]^{2m}.
+\]
+There is no branch choice for this continuation; the absolute-value
+notation in \eqref{gb:W} is used only on the real line.
+
+For any one of the allowed odd multipliers $P$, put
+\[
+ G_P(t)=\int_{\mathbb R}e^{ixt}P(x)W_m(x)\dd x,
+ \qquad Q_P(t)=2\sinh(t/2)G_P(t).
+\]
+These integrals and all their derivatives converge absolutely for
+real $t$ and define analytic germs.  Since $G_P$ is odd, $Q_P$ is
+even and vanishes at zero.  With $D=d/dt$, let
+\[
+ E_P(t)=e^t(D+\tfrac12)^{2m}G_P(t)
+                 -e^{-t}(D-\tfrac12)^{2m}G_P(t).
+\]
+The identities $Q_P=(e^{t/2}-e^{-t/2})G_P$ and
+$Q_P\coth(t/2)=(e^{t/2}+e^{-t/2})G_P$ yield, by differentiation,
+\begin{equation}\label{gb:contour-algebra}
+ \coth(t/2)Q_P^{(2m)}(t)
+       +(Q_P(t)\coth(t/2))^{(2m)}
+                    =\frac{E_P(t)}{\sinh(t/2)}.
+\end{equation}
+
+In the first integral defining $E_P$, substitute $y=x-i$;
+its contour is $\mathbb R-i$.  In the second substitute $y=x+i$;
+its contour is $\mathbb R+i$.  The factors $e^{\pm t}$ disappear
+under these substitutions.  Gamma recurrence gives exactly
+\begin{equation}\label{gb:gamma-cancellation}
+ (iy-\tfrac12)^{2m}W_m(y+i)
+ =(iy+\tfrac12)^{2m}W_m(y-i)=2^{2m}V_m(y),
+\end{equation}
+where
+\[
+ V_m(y)=\left[
+ \Gamma(\tfrac34+iy/2)\Gamma(\tfrac34-iy/2)\right]^{2m}.
+\]
+For example the first equality shifts
+$\Gamma(-1/4+iy/2)$ to $\Gamma(3/4+iy/2)$; its recurrence
+factor is $iy/2-1/4$.  The second equality has the opposite sign
+before taking the even power, hence the same factor $2^{2m}$.
+
+Every allowed multiplier satisfies $P(y+i)=P(y-i)$.  Both shifted
+integrands are therefore the same meromorphic function
+\[
+ \mathcal F_P(y)=2^{2m}e^{iyt}V_m(y)P(y+i).
+\]
+The nearest Gamma poles of $V_m$ are $y=\pm3i/2$, outside
+$|\Im y|\le1$.  For $P(x)=\sinh(\pi kx)$, $1\le k<m$,
+the multiplier is $P(y+i)=(-1)^k\sinh(\pi ky)$, an entire
+function.  Uniform Stirling estimates on the closed strip give
+a polynomial times $e^{-\pi(m-k)|\Rea y|}$ as a bound for the
+integrand, with a constant depending on the fixed real $t$.
+For the tanh multiplier, $P(y+i)=\tanh(\pi y)$; away from its
+finite poles it is bounded at the two ends of the strip, and
+the decay is a polynomial times $e^{-m\pi|\Rea y|}$.
+Thus the vertical sides of the rectangle between the two horizontal
+contours vanish as their real parts tend to infinity.  Its bottom
+side runs from left to right, so bottom minus top equals
+$+2\pi i$ times the enclosed residue sum.
+
+In the sinh case there are no enclosed poles and $E_P(t)=0$.
+In the tanh case the only enclosed poles are the simple poles
+$y=\pm i/2$.  Each tanh residue is $1/\pi$, and
+$V_m(i/2)=V_m(-i/2)=\pi^m$.  Hence
+\[
+ \Res_{y=\pm i/2}\mathcal F_P(y)
+      =2^{2m}\pi^{m-1}e^{\mp t/2},
+\]
+and
+\begin{equation}\label{gb:residue-result}
+ E_{\tanh}(t)=i\,2^{2m+2}\pi^m\cosh(t/2).
+\end{equation}
+All shifts have now been justified using pole-free Gamma factors,
+the two explicitly listed tanh poles, and decaying vertical sides.
+
+The second summand on the left of \eqref{gb:contour-algebra} is
+analytic at zero.  Its first summand has Laurent coefficient
+$2Q_P^{(2m)}(0)$ at $t^{-1}$.  Comparing this coefficient shows
+that $Q_P^{(2m)}(0)=0$ for a sinh multiplier and
+$Q_P^{(2m)}(0)=i2^{2m+2}\pi^m$ for tanh.  Equations
+\eqref{gb:contour-algebra} and \eqref{gb:residue-result} therefore
+give the exact germ identity
+\[
+ (Q_P^{(2m)}-Q_P^{(2m)}(0))\coth(t/2)
+                  +(Q_P\coth(t/2))^{(2m)}=0.
+\]
+Finally set $R_P(z)=iQ_P(iz)$.  Pairing positive and negative
+$x$ in $G_P(iz)$ gives precisely \eqref{gb:R}.  Rotation uses
+$\coth(iz/2)=-i\cot(z/2)$ and yields
+$\mathcal T_mR_P=0$.  Since
+$R_P^{(2m)}(0)=i(-1)^mQ_P^{(2m)}(0)$, it also gives
+\eqref{gb:top-derivative}.
+\end{proof}
+
+\begin{corollary}[Exact ordinary Gamma moments]\label{gb:moment-identities}
+Put $\phi_n(x)=\Im(x+i/2)^{2n}$.  The Taylor coefficients of
+\eqref{gb:R} are
+\begin{equation}\label{gb:t}
+ t_{n,j}:=[z^{2n}]R_j(z)
+      =\frac4{(2n)!}\int_0^\infty\phi_n(x)P_j(x)W_m(x)\dd x.
+\end{equation}
+For every $m\ge1$,
+\begin{align}
+ \int_0^\infty\phi_m(x)\sinh(\pi kx)W_m(x)\dd x&=0
+                  &&(1\le k<m),\label{gb:orthogonality}\\
+ \int_0^\infty\phi_m(x)\tanh(\pi x)W_m(x)\dd x
+          &=(-1)^{m+1}2^{2m}\pi^m.\label{gb:evaluation}
+\end{align}
+All these integrals converge absolutely.
+\end{corollary}
+
+\begin{proof}
+The elementary generating identity
+\[
+ \sin(z/2)\sinh(xz)=
+       \sum_{n\ge1}\frac{\phi_n(x)}{(2n)!}z^{2n}
+\]
+and local uniform exponential domination justify coefficient
+extraction.  Now apply \eqref{gb:top-derivative}.
+\end{proof}
+
+The vanishing moments have a concrete polynomial interpretation.
+Since $\phi_m(x)/x$ has degree $2m-2$ and its positive zeros are
+\[
+                  \frac12\cot\frac{r\pi}{2m},\qquad1\le r<m,
+\]
+equation \eqref{gb:orthogonality} is an explicit family of
+multiple-orthogonality relations against positive weights on
+$(0,\infty)$.  The zeros follow by writing
+$x+i/2=|x+i/2|e^{i\theta}$, with $0<\theta<\pi/2$, and solving
+$\sin(2m\theta)=0$.  These relations do not imply that every
+later consecutive coefficient determinant has one fixed sign.
+
+\subsection{A positive initial determinant and the exact Gamma representation}
+
+Write
+\[
+ T_m=(t_{n,j})_{1\le n,j\le m},\qquad
+ \Delta(y_1,\ldots,y_m)=\prod_{r<s}(y_s-y_r).
+\]
+
+\begin{proposition}[Positive normalization]\label{gb:normalization}
+The initial determinant is
+\begin{equation}\label{gb:detT}
+                 \det T_m=(-1)^{m(m-1)/2}K_m,
+\end{equation}
+where $K_m>0$ has the absolutely convergent integral representation
+\begin{equation}\label{gb:Km}
+\begin{split}
+ K_m={}&\frac{2^{(m-1)(m-2)/2}}{m!}
+             \left(\prod_{n=1}^m\frac{4n}{(2n)!}\right)\\
+ &\times\int_{(0,\infty)^m}
+       \Delta(x_1^2,\ldots,x_m^2)
+       \Delta(\cosh\pi x_1,\ldots,\cosh\pi x_m)\\
+ &\hspace{38mm}\times
+       \prod_{r=1}^m x_rW_m(x_r)\tanh(\pi x_r)
+                    \dd x_1\cdots\dd x_m.
+\end{split}
+\end{equation}
+Consequently the $R_j$ form a basis of the full formal null space,
+and for every $b>m$,
+\begin{equation}\label{gb:exact-Gamma-determinant}
+ \boxed{\displaystyle
+ \det F_{b,m}=
+  \frac{(-1)^{m(m-1)/2}}{K_m}
+        \det(t_{b+i,j})_{1\le i,j\le m}.}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The polynomial $\phi_n(x)$ has leading term $nx^{2n-1}$ and
+only lower odd powers thereafter.  A triangular row transformation
+therefore gives
+\[
+ \det T_m=\left(\prod_{n=1}^m\frac{4n}{(2n)!}\right)
+       \det\left(\int_0^\infty x^{2n-1}P_j(x)W_m(x)\dd x\right)_{n,j=1}^m.
+\]
+The continuous Cauchy--Binet identity writes the remaining determinant
+as $1/m!$ times the integral of the two alternants
+$\det(x_r^{2n-1})_{n,r}$ and $\det(P_j(x_r))_{r,j}$ against
+$\prod_rW_m(x_r)\dd x_r$.  This identity follows directly by
+expanding the two determinants, applying Fubini, and permuting the
+integration variables; absolute convergence justifies each operation.
+The first alternant is $\prod_rx_r\,\Delta(x_1^2,\ldots,x_m^2)$.
+
+For the second alternant put $u=\pi x$, $v=\cosh u$, and use
+\[
+              \frac{\sinh(ku)}{\tanh u}=vU_{k-1}(v),
+\]
+where $U_{k-1}$ is the Chebyshev polynomial of the second kind,
+with degree $k-1$ and leading coefficient $2^{k-1}$.
+After factoring $\tanh(\pi x_r)$ from row $r$, the column
+degrees are $m-1,m-2,\ldots,1,0$.  Their leading-coefficient
+product is $2^{(m-1)(m-2)/2}$.  Reversing the columns thus gives
+\[
+\begin{split}
+ \det(P_j(x_r))={}&(-1)^{m(m-1)/2}2^{(m-1)(m-2)/2}\\
+ &\times\prod_r\tanh(\pi x_r)
+              \Delta(\cosh\pi x_1,\ldots,\cosh\pi x_m).
+\end{split}
+\]
+This proves \eqref{gb:detT}--\eqref{gb:Km}.  For distinct
+positive $x_r$, the two Vandermondes have the same sign, since
+both $x\mapsto x^2$ and $x\mapsto\cosh(\pi x)$ are strictly
+increasing.  The integrand in \eqref{gb:Km} is strictly positive
+away from the collision hyperplanes.  Its exponential growth from
+the cosh Vandermonde is at most
+$\prod_re^{(m-1)\pi x_r}$, while each $W_m(x_r)$ supplies
+$e^{-m\pi x_r}$ times a polynomial factor.  At zero all factors
+are bounded or vanish.  This proves convergence and $K_m>0$.
+
+All $R_j$ are null germs, and their first $m$ coefficient columns
+are independent by \eqref{gb:detT}.  The formal null space has
+dimension $m$ by \eqref{gb:coefficient}, so they form a basis.
+Their coefficient vectors obey \eqref{gb:recurrence}; consequently
+\[
+                  (t_{b+i,j})_{i,j=1}^m=F_{b,m}T_m.
+\]
+Taking determinants proves \eqref{gb:exact-Gamma-determinant}.
+\end{proof}
+
+\subsection{A Laplace-moment lemma with controlled error}
+
+The asymptotic argument must retain one term beyond the leading
+Laplace phase.  At every even mode that leading phase is real and
+its imaginary part vanishes.  The following lemma supplies the
+necessary next term without requiring an analytic continuation of
+the error in a real density.
+
+\begin{lemma}\label{gb:Laplace}
+Let $m\ge1$ be fixed, $R>0$, and $a\in\mathbb R\setminus\{0\}$.
+Suppose a real, locally bounded function $f$ on $[0,\infty)$ satisfies
+\[
+             f(x)=ax^{-m}e^{-Rx}(1+O(x^{-2}))\qquad(x\to\infty).
+\]
+As integers $N\to\infty$,
+\begin{equation}\label{gb:Laplace-formula}
+ \int_0^\infty(x+i/2)^Nf(x)\dd x
+ =ae^{iR/2}\frac{\Gamma(N-m+1)}{R^{N-m+1}}
+       \left(1+\frac{imR}{2(N-m)}+O(N^{-2})\right).
+\end{equation}
+The implicit constant may depend on $f,m,R$.
+\end{lemma}
+
+\begin{proof}
+Choose fixed $X>1$ beyond which the asserted density estimate holds.
+The integral over $[0,X]$ is $O(C^N)$ for a fixed $C$, hence
+negligible compared with
+$S_N=\Gamma(N-m+1)R^{-N+m-1}$ by Stirling's formula.
+The absolute error made on $[X,\infty)$ by replacing $f(x)$ with
+$ax^{-m}e^{-Rx}$ is bounded by a constant times
+\[
+             \int_X^\infty|x+i/2|^Nx^{-m-2}e^{-Rx}\dd x.
+\]
+Split this integral at $x=N^{2/3}$.  On the lower part it is at most
+$\exp(\tfrac23N\log N+O(N))$, whereas
+$S_N=\exp(N\log N+O(N))$.  This part is smaller than any fixed
+inverse power of $N$ times $S_N$.  On the upper part,
+\[
+ \frac{|x+i/2|^N}{x^N}
+   =\left(1+\frac1{4x^2}\right)^{N/2}
+   \le\exp\!\left(\frac{N}{8x^2}\right)
+\]
+is uniformly bounded.  Its integral is therefore at most a constant
+times $\Gamma(N-m-1)R^{-N+m+1}=O(N^{-2}S_N)$.
+This estimate uses only real-variable bounds on the density error.
+
+For the model integral set $y=x+i/2$.  After factoring $e^{iR/2}$,
+its integrand is
+$y^{N-m}(1-i/(2y))^{-m}e^{-Ry}$ on the ray
+$[X,\infty)+i/2$.  Shift that ray to $[X,\infty)$ inside
+$\Rea y\ge X$.  No pole is crossed.  The short vertical segment
+at $X$ contributes $O(C^N)$, and the vertical segment at infinity
+vanishes for each $N$ because of $e^{-R\Rea y}$.
+Uniformly for real $y\ge X$,
+\[
+                 (1-i/(2y))^{-m}=1+\frac{im}{2y}+O(y^{-2}).
+\]
+Integration of the first two terms, extending their lower limit to
+zero at another $O(C^N)$ cost, gives
+\[
+ ae^{iR/2}\left\{
+ \frac{\Gamma(N-m+1)}{R^{N-m+1}}
+ +\frac{im}{2}\frac{\Gamma(N-m)}{R^{N-m}}\right\}.
+\]
+The last term has absolute size $O(N^{-2}S_N)$ by the same Gamma
+ratio estimate.  This proves \eqref{gb:Laplace-formula}.
+\end{proof}
+
+Define the constants
+\begin{equation}\label{gb:mode-constants}
+ \lambda_j=j\pi,\qquad \xi_j=(j\pi)^{-2},\qquad
+ A_m^*=2^m(2\pi)^{2m},\qquad
+ a_j=\begin{cases}A_m^*/2,&j<m,\\A_m^*,&j=m.
+ \end{cases}
+\end{equation}
+Conjugate Gamma asymptotics contain only even inverse powers after
+the leading factor.  Thus
+\begin{equation}\label{gb:density-asymptotic}
+ P_j(x)W_m(x)=a_jx^{-m}e^{-\lambda_jx}(1+O(x^{-2})).
+\end{equation}
+The further exponential terms in sinh or tanh are absorbed into the
+indicated error.  In particular, there is no $x^{-1}$ correction.
+
+\begin{proposition}[Distinct coefficient scales and exact radii]
+\label{gb:coefficient-asymptotic}
+Put $d_j=m+\ind_{2\mid j}$ and
+\begin{equation}\label{gb:Lj}
+ L_j=\begin{cases}
+ 4a_j\sin(j\pi/2)\lambda_j^{m-1},&j\text{ odd},\\
+ 2ma_j\cos(j\pi/2)\lambda_j^m,&j\text{ even}.
+ \end{cases}
+\end{equation}
+All $L_j$ are nonzero, and
+\begin{equation}\label{gb:t-asymptotic}
+ t_{n,j}=L_j\lambda_j^{-2n}(2n)^{-d_j}(1+O(n^{-1})).
+\end{equation}
+The Taylor radius of $R_j$ is exactly $\lambda_j=j\pi$.
+\end{proposition}
+
+\begin{proof}
+Apply \cref{gb:Laplace} to \eqref{gb:density-asymptotic}, take
+the imaginary part, and multiply by $4/(2n)!$.  If $j$ is odd,
+$e^{i\lambda_j/2}=\pm i$ and the leading term survives.  Since
+$\Gamma(2n-m+1)/\Gamma(2n+1)\sim(2n)^{-m}$, this gives the
+first line of \eqref{gb:Lj}.  If $j$ is even, the leading phase
+is $\pm1$ and its imaginary part is zero.  The next term in
+\eqref{gb:Laplace-formula} gives instead
+\[
+ \frac{4a_j\cos(j\pi/2)}{(2n)!}
+ \frac{m}{2}\frac{\Gamma(2n-m)}{\lambda_j^{2n-m}},
+\]
+which is the second line of \eqref{gb:Lj} and the exponent $m+1$.
+The $O(N^{-2})$ error in the lemma is small enough to give a
+relative $O(n^{-1})$ error even in this second case.  Finally
+\eqref{gb:t-asymptotic} implies
+$\lim_{n\to\infty}|t_{n,j}|^{1/(2n)}=\lambda_j^{-1}$.
+The Cauchy--Hadamard formula proves the exact radius.  This also
+provides another proof of independence: the smallest surviving
+radius in any nontrivial linear combination cannot cancel.
+\end{proof}
+
+\subsection{Eventual optimal reconstruction for every fixed gap}
+
+Set
+\begin{equation}\label{gb:asymptotic-normalization}
+ D_m=m^2+\lfloor m/2\rfloor,\qquad
+ \mathcal A_m=
+ \frac{\prod_{j=1}^m|L_j|}{K_m}
+       \left(\prod_{j=1}^m\xi_j\right)
+       \prod_{j<k}(\xi_j-\xi_k)>0.
+\end{equation}
+
+\begin{theorem}[Fixed-gap determinant asymptotic]\label{gb:eventual}
+For each fixed integer $m\ge1$, as $b\to\infty$,
+\begin{equation}\label{gb:det-asymptotic}
+ \boxed{\displaystyle
+ \det F_{b,m}\sim
+ (-1)^{\lfloor m^2/4\rfloor}\mathcal A_m
+ (2b)^{-D_m}\bigl[\pi^{2m}(m!)^2\bigr]^{-b}.}
+\end{equation}
+In particular, there exists an integer $B(m)>m$ such that every
+pair $(p,q)=(2b-2m,2b)$ with $b\ge B(m)$ has an optimal first-$q$
+formal moment prefix.  Its late-block determinant has eventual sign
+\begin{equation}\label{gb:eventual-sign}
+ \operatorname{sgn}\det M_{b-m,b}
+        =(-1)^{b(b-1)/2+\lfloor m^2/4\rfloor}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+From column $j$ of $(t_{b+i,j})_{i,j=1}^m$, factor
+$L_j\lambda_j^{-2b}(2b)^{-d_j}$.  By
+\eqref{gb:t-asymptotic}, the remaining matrix tends entrywise to
+$V=(\xi_j^i)_{i,j=1}^m$.  Its determinant is
+\[
+ \det V=\left(\prod_j\xi_j\right)
+                   \prod_{j<k}(\xi_k-\xi_j)\ne0.
+\]
+The distinct numbers $\xi_1>\cdots>\xi_m>0$ give sign
+$(-1)^{m(m-1)/2}$, which cancels the same sign in
+\eqref{gb:exact-Gamma-determinant}.  Furthermore
+\[
+ \prod_j\operatorname{sgn}L_j
+    =(-1)^{\sum_{j=1}^m\lfloor j/2\rfloor}
+    =(-1)^{\lfloor m^2/4\rfloor},\qquad
+ \sum_jd_j=m^2+\lfloor m/2\rfloor,
+\]
+and
+$\prod_j\lambda_j^{-2b}=[\pi^{2m}(m!)^2]^{-b}$.
+These identities prove \eqref{gb:det-asymptotic} with the positive
+constant \eqref{gb:asymptotic-normalization}.  A sequence with a
+nonzero asymptotic equivalent is nonzero and has the same sign
+for all sufficiently large indices.  Apply the exact positive-factor
+bridge \eqref{gb:bridge-formula} and then \eqref{gb:full-prefix}.
+\end{proof}
+
+\begin{remark}[Scope of the theorem]\label{gb:scope}
+The assertion is eventual for each \emph{fixed gap} $2m$ and
+does not provide a numerical value of $B(m)$.  It leaves only
+finitely many possible exceptional pairs on each such ray, but
+does not prove the entire gap-six family or the general
+all-unequal-even conjecture.  No uniform assertion as $m$ grows
+with $b$ follows from the fixed-$m$ errors used here.
+\end{remark}
+
+For $m=1$, \eqref{gb:evaluation} gives $K_1=8\pi$, and
+\eqref{gb:asymptotic-normalization} gives $\mathcal A_1=4/\pi$.
+The fundamental adjacent-gap sequence therefore satisfies
+\[
+        C^{[1]}_{b+1,1}\sim\frac{2}{\pi b}\,\pi^{-2b}.
+\]
+For $m=2$ the eventual sign of $\det F_{b,2}$ is negative,
+consistent with the inherited theorem for every gap-four pair.
+For $m=3$ it is positive.  Finite exact checks give
+$\det F_{b,3}<0$ at $b=4,5,6$ and $\det F_{b,3}>0$ at
+$7\le b\le40$.  These observations illustrate a sign transition;
+the proof of eventual positivity is \cref{gb:eventual}, and the
+finite checks are not a proof of nonvanishing for every gap-six pair.
+
+\subsection{All-orders coefficients and a harmonic-number correction}
+
+The Gamma construction supplies more than a leading equivalent.
+It gives an explicit Poincare expansion to every finite order,
+and the first determinant correction has a concise harmonic-number
+form.  Let Euler numbers be defined by
+\[
+                \operatorname{sech}z=
+                \sum_{k\ge0}E_{2k}\frac{z^{2k}}{(2k)!}.
+\]
+Define rational numbers $w_{m,r}$ by the formal identity
+\begin{equation}\label{gb:w-series}
+ \sum_{r\ge0}w_{m,r}X^r
+   =\exp\!\left(\sum_{k\ge1}
+            \frac{m|E_{2k}|}{k\,2^{2k+1}}X^k\right).
+\end{equation}
+Thus $w_{m,0}=1$ and $w_{m,1}=m/8$.
+For $\ell\ge0$ set
+\begin{equation}\label{gb:b-coefficients}
+ b_{m,\ell}=\sum_{r=0}^{\lfloor\ell/2\rfloor}
+  w_{m,r}\frac{(m+2r)_{\ell-2r}}{(\ell-2r)!}
+                     (i/2)^{\ell-2r}.
+\end{equation}
+
+\begin{proposition}[All-orders mode construction]\label{gb:all-orders}
+For each fixed mode $j$, with $\lambda_j,a_j$ as in
+\eqref{gb:mode-constants},
+\begin{equation}\label{gb:all-orders-moments}
+ \int_0^\infty(x+i/2)^NP_j(x)W_m(x)\dd x
+ \sim a_je^{i\lambda_j/2}
+       \sum_{\ell\ge0}b_{m,\ell}
+       \frac{\Gamma(N-m-\ell+1)}{
+                            \lambda_j^{N-m-\ell+1}}.
+\end{equation}
+This is a Poincare expansion: truncation after any fixed $\ell=L$
+has error of size
+$O(\Gamma(N-m-L)\lambda_j^{-N+m+L})$.
+Taking imaginary parts retains even $\ell$ when $j$ is odd and
+odd $\ell$ when $j$ is even.  In particular,
+\begin{equation}\label{gb:t-first-correction}
+ t_{n,j}=L_j\lambda_j^{-2n}(2n)^{-d_j}
+       \left(1+\frac{d_j(d_j-1)}{4n}+O(n^{-2})\right).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The shifted logarithmic Stirling expansion is
+\[
+ \log\Gamma(z+\alpha)\sim
+ (z+\alpha-\tfrac12)\log z-z+\tfrac12\log(2\pi)
+ +\sum_{n\ge1}\frac{(-1)^{n+1}B_{n+1}(\alpha)}{n(n+1)z^n},
+\]
+with a remainder of the next prescribed algebraic order in each
+closed subsector of $|\arg z|<\pi$ \cite{dlmf-stirling}.
+Apply it with $\alpha=1/4$ and $z=\pm ix/2$.
+The conjugate pair cancels odd inverse powers.  Using
+\[
+ B_{2k+1}(1/4)=-\frac{(2k+1)E_{2k}}{4^{2k+1}}
+\]
+gives
+\[
+ \log W_m(x)\sim
+ \log A_m^*-m\log x-m\pi x
+       +\sum_{k\ge1}\frac{m|E_{2k}|}{k\,2^{2k+1}x^{2k}}.
+\]
+Exponentiation to any fixed order proves
+\begin{equation}\label{gb:W-all-orders}
+ W_m(x)\sim A_m^*x^{-m}e^{-m\pi x}
+                       \sum_{r\ge0}w_{m,r}x^{-2r}.
+\end{equation}
+The corrections to the leading exponential in $P_j$ are themselves
+exponentially smaller, so they contribute less than any fixed
+inverse power after the leading density has been removed.
+
+For each term $x^{-m-2r}e^{-\lambda_jx}$ in the resulting density,
+repeat the shift $y=x+i/2$ from \cref{gb:Laplace}.  Its algebraic
+factor becomes
+\[
+ y^{-m-2r}\left(1-\frac{i}{2y}\right)^{-m-2r}
+   =y^{-m-2r}\sum_{h\ge0}
+       \frac{(m+2r)_h}{h!}\left(\frac{i}{2y}\right)^h.
+\]
+Collecting terms with $2r+h=\ell$ gives exactly
+\eqref{gb:b-coefficients}.  To justify any fixed truncation, split
+at fixed $X>1$ as in the lemma, retain the finitely many necessary
+density terms, and bound its real remainder by the first omitted
+power of $x^{-1}$ times the leading exponential.  The split at
+$N^{2/3}$ bounds its moment by the corresponding Gamma ratio.
+The finitely many model contours have the same pole-free deformation,
+and Taylor's remainder for $(1-i/(2y))^{-m-2r}$ is uniform for
+$y\ge X$.  These bounds prove the stated remainder in
+\eqref{gb:all-orders-moments}; no contour continuation of the real
+Stirling remainder is used.
+
+For even $\ell$ the coefficient $b_{m,\ell}$ is real, and for
+odd $\ell$ it is purely imaginary.  Thus the phase
+$e^{ij\pi/2}$ gives the asserted parity selection.  At odd $j$
+the leading imaginary term has $\ell=0$ and the next possible
+one has $\ell=2$.  At even $j$ the leading one has $\ell=1$,
+with $b_{m,1}=im/2$, and the next possible one has $\ell=3$.
+In either case the first relative inverse-power correction comes
+solely from the factorial ratio
+\[
+ \frac{\Gamma(N-d+1)}{\Gamma(N+1)}
+ =N^{-d}\left(1+\frac{d(d-1)}{2N}+O(N^{-2})\right)
+ \qquad(d\in\mathbb N).
+\]
+For integer $d$ this follows directly by expanding
+$\prod_{r=0}^{d-1}(N-r)^{-1}$.  Set $N=2n$ and $d=d_j$
+to obtain \eqref{gb:t-first-correction}.
+\end{proof}
+
+\begin{theorem}[The harmonic first correction]\label{gb:harmonic-correction}
+Let $e=\lfloor m/2\rfloor$ and $H_0=0$.  Define
+\begin{equation}\label{gb:kappa}
+ \boxed{\displaystyle
+ \kappa_m=-\frac{m^2(m+3)+e(2m+3)}4
+       +\sum_{r=1}^{e}r\bigl(H_{m+2r}-H_{m-2r}\bigr).}
+\end{equation}
+Then
+\begin{equation}\label{gb:det-first-correction}
+\begin{split}
+ \det F_{b,m}={}&(-1)^{\lfloor m^2/4\rfloor}\mathcal A_m
+       (2b)^{-D_m}\bigl[\pi^{2m}(m!)^2\bigr]^{-b}\\
+ &\times\left(1+\frac{\kappa_m}{b}+O(b^{-2})\right).
+\end{split}
+\end{equation}
+More generally, this determinant has an expansion to every finite
+inverse-power order.  For fixed $m$, all its normalized coefficients
+belong to $\Q[\pi^2]$.
+\end{theorem}
+
+\begin{proof}
+Factor the same column scales as in the proof of
+\cref{gb:eventual}.  By \eqref{gb:t-first-correction}, the remaining
+entry in row $i$, column $j$ is
+\[
+ \xi_j^i\left\{1+\frac1b
+           \left(\frac{d_j(d_j-1)}4-id_j\right)+O(b^{-2})\right\}.
+\]
+For $V=(\xi_j^i)_{i,j=1}^m$, the first relative correction in its
+determinant is therefore
+\begin{equation}\label{gb:kappa-trace}
+ \frac14\sum_{j=1}^md_j(d_j-1)-\sum_{j=1}^md_j\eta_j,
+ \qquad
+ \eta_j=\left(V^{-1}\operatorname{diag}(1,\ldots,m)V\right)_{jj}.
+\end{equation}
+The diagonal quantities can be computed without matrix inversion.
+Differentiating the Vandermonde product gives
+\[
+ \eta_j=\xi_j\frac{\partial}{\partial\xi_j}\log\det V
+       =1+\sum_{k\ne j}\frac{\xi_j}{\xi_j-\xi_k}.
+\]
+For $\xi_j=(j\pi)^{-2}$, partial fractions give
+\begin{equation}\label{gb:eta-harmonic}
+ \eta_j=m+\frac34+\frac j2(H_{m-j}-H_{m+j}).
+\end{equation}
+Indeed $\xi_j/(\xi_j-\xi_k)=k^2/(k^2-j^2)$, and
+\[
+ \sum_{k\ne j}\left(\frac1{k-j}-\frac1{k+j}\right)
+        =H_{m-j}-H_{m+j}+\frac{3}{2j}.
+\]
+Also $\sum_j\eta_j=m(m+1)/2$, either by the trace or by
+pairing the summands in the Vandermonde expression.  Since
+$d_j=m+\ind_{2\mid j}$, substitution into
+\eqref{gb:kappa-trace} gives
+\[
+ -\frac{m^2(m+3)}4+\frac{me}{2}
+                         -\sum_{r=1}^e\eta_{2r}.
+\]
+Equation \eqref{gb:eta-harmonic} now simplifies it to
+\eqref{gb:kappa}, proving \eqref{gb:det-first-correction}.
+
+For higher orders, insert any desired finite truncation of
+\eqref{gb:all-orders-moments} into the fixed-size determinant.
+Its leading Vandermonde is nonzero, so division by that leading
+term gives a valid Poincare expansion.  Relative to $L_j$, parity
+selection leaves only even powers of $\lambda_j=j\pi$ in the
+mode corrections.  The factorial-ratio expansions have rational
+coefficients, while ratios of Vandermonde expressions in the
+$\xi_j$ cancel their common powers of $\pi^{-2}$.  Thus each
+normalized determinant coefficient is a polynomial in $\pi^2$
+with rational coefficients, as claimed.
+\end{proof}
+
+For orientation, the first correction values are
+\[
+ \kappa_1=-1,\qquad\kappa_2=-\frac{14}{3},\qquad
+ \kappa_3=-\frac{217}{15},\qquad\kappa_4=-\frac{949}{35}.
+\]
+The series in \eqref{gb:w-series} and
+\eqref{gb:all-orders-moments} are formal asymptotic constructions;
+convergence is not asserted.  The argument also does not establish
+a complete exponentially improved expansion or an explicit error
+constant sufficient to certify a numerical $B(m)$.
+
+\subsection{A hypergeometric form of the null equation}
+
+The differential equation itself has a useful classical
+hypergeometric form.  Let $Q$ be any even analytic null germ of
+$\mathcal L_m$ and write $c=Q^{(2m)}(0)$.  On the local branches
+near $u=1$ with $\log1=0$ and $\sqrt1=1$, define
+\[
+ Y(u)=\frac{Q(\tfrac12\log u)}{\sqrt u-1},\qquad
+                    \Theta=u\frac{d}{du}.
+\]
+The apparent singularity at $u=1$ is removable because $Q(t)=O(t^2)$.
+Then
+\begin{equation}\label{gb:hypergeometric}
+ \left[\Theta^{2m}-u(\Theta+\tfrac12)^{2m}\right]Y(u)
+            =-\frac{c}{2^{2m+1}}(1+\sqrt u).
+\end{equation}
+To verify it, set $Q(t)=(e^t-1)F(t)$, so that
+$Q(t)\coth(t/2)=(e^t+1)F(t)$.  Multiplication of
+$\mathcal L_mQ=0$ by $e^t-1$ gives
+\[
+ D^{2m}F-e^{2t}(D+1)^{2m}F=-\tfrac c2(1+e^t).
+\]
+Now $u=e^{2t}$ and $D=2\Theta$, proving
+\eqref{gb:hypergeometric}.  Its homogeneous operator is the standard
+generalized hypergeometric operator associated with
+\[
+ {}_{2m}F_{2m-1}
+ \left(\begin{matrix}\tfrac12,\ldots,\tfrac12\\1,\ldots,1\end{matrix};u\right)
+\]
+\cite{dlmf-hypergeometric}.  This operator identification is classical
+algebra.  The Gamma basis selects and normalizes the relevant
+analytic null germs at $u=1$ and connects them to the harmonic-tail
+coefficient matrix; that connection is the substantive result here.
+
+\subsection{Verification and the next finite obstruction}
+
+The accompanying scripts separate exact algebra from numerical
+diagnostics.  Direct Gamma quadrature at $45$ decimal digits for
+$m=1,2,3$ and $1\le n\le m+3$ gives all 18 coefficient recurrence
+residuals below $10^{-46}$ and all six top-derivative identity
+residuals below $10^{-42}$, with the normalizations recorded
+separately. A separate calculation evaluates $T_m$
+by Gamma quadrature at $60$ digits, then propagates the exact
+recurrence to compare the determinant with
+\eqref{gb:det-asymptotic}.  The recorded ratios are
+\begin{center}
+\begin{tabular}{@{}crrrr@{}}
+\toprule
+ & $b=20$ & $b=40$ & $b=80$ & $b=120$\\
+\midrule
+$m=1$ & $0.951663$ & $0.975424$ & $0.987607$ & $0.991714$\\
+$m=2$ & $0.796107$ & $0.891056$ & $0.943647$ & $0.961999$\\
+$m=3$ & $0.456866$ & $0.687818$ & $0.832149$ & $0.885309$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Their approach to one is a consistency check on the explicit
+normalization; the infinite theorem is proved above independently
+of these finite computations.
+
+The most direct continuation is to make the remainder in
+\eqref{gb:det-asymptotic} effective, obtain a certified cutoff for
+each fixed $m$, and use exact rational arithmetic below it.  The
+gap-six case is a natural first target because its initial sign
+transition rules out a blanket positivity shortcut.  Further questions
+include exact evaluations of $K_m$, a classification of finite
+sign changes, and uniform asymptotics when $m$ grows with $b$.
+The Gamma moments also suggest parameter deformations of
+\eqref{gb:W} and \eqref{gb:cot-operator}; any such extension must
+recheck the contour residues and the original coordinate bridge.

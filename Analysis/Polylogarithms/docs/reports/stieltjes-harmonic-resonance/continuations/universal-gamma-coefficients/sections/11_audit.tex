@@ -1,0 +1,82 @@
+\section{Source audit, validation, and further research}
+\label{sec:audit}
+
+\subsection{The comparison baseline}
+
+The pinned repository revision is \texttt{\sourcecommit}. The principal textual dependencies inspected are the canonical manuscript overview, the three-variable Gamma-sector proof, and the earlier report's explicit research questions. The latter two source blobs are recorded in \src{data/provenance.json}. The incoming directory was also inspected at the metadata level. Its binary archive members were not retrieved, so the present work does not claim to have compared every incoming theorem or to have audited every preserved report.
+
+The manuscript's normal-form convention and finite-jet variational principle are used with attribution and independently reproved. The main new proof relative to the inspected targets is the universal rational kernel \eqref{eq:Wd}, its all-order adjoint identity, and the resulting complete coefficient formula. The earlier requests for the next projection and for closed all-$b$ numerators are resolved by Theorem~\ref{thm:universal}, Theorem~\ref{thm:mixed}, and Corollary~\ref{cor:pb}. The generator \eqref{eq:entire-generator} also specifies every higher finite projection.
+
+The search and comparison performed here do not establish priority over the entire literature. In particular, special cases such as the pure-square coefficient family and elementary rational Euler-sum mechanisms should remain attributed as prior or classical where appropriate. The exact new proof does not depend on a historical novelty claim.
+
+\subsection{A concrete truncation regression}
+
+No false inherited theorem was established in the inspected normal-form proof chain. The earlier report correctly warns that normalization must precede projection. A small exact counterexample makes that warning executable:
+\begin{align}
+ \sigma_3\Nc(\Ac_6)&=u_0^6-15u_0^2u_1^2+u_2^2,\label{eq:correct-truncation}\\
+ \Nc(\sigma_3\Ac_6)&=u_0^6-15u_0^2u_1^2-5u_2^2.\label{eq:wrong-truncation}
+\end{align}
+Thus the incorrect order of operations loses $6u_2^2$. The supplied replay asserts both values. This is a regression test supporting the existing warning, not a claim that the repository's stated theorem made the error.
+
+The inspected manuscript overview also repeats the paragraph beginning with the complete $1{,}032$-input first-letter $X$ family. Removing its second copy is an editorial cleanup, not a mathematical correction. No proposed change in this package silently overwrites historical source files.
+
+\subsection{Validation and its logical role}
+
+The following results were actually obtained by the supplied scripts.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.50\linewidth}p{0.43\linewidth}@{}}
+\toprule
+Independent check & Recorded outcome\\
+\midrule
+Full Fraction normalizer versus universal positive beta formula & 28,629 coefficient comparisons through weight 30; 2,974 nonzero coefficients; highest derivative index 14.\\[4pt]
+Four-variable finite formula versus the full normalizer & 2,724 comparisons through weight 30, including zero predictions.\\[4pt]
+Full decomposition $\Ac_m=\Nc_m+D\Hc_m$ & 31 exact polynomial identities, weights 0 through 30.\\[4pt]
+Specialized rational Euler recurrence & 18 rational-function identities, with $k$ left symbolic.\\[4pt]
+Kernel and endpoint arithmetic & Three explicit rational kernel identities and twelve endpoint-vanishing checks.\\[4pt]
+Applications and support & Two exact harmonic endpoints, three arithmetic-step values, three moment cancellations, and nineteen support counts.\\[4pt]
+Numerical diagnostics & 65 comparisons at 60 working decimal digits; maximum scaled residual approximately $4.20\times10^{-58}$.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These checks overlap; their counts must not be added as if they were disjoint independent samples. The universal coefficient proof is Theorem~\ref{thm:universal}, not the number 28,629. The numerical residual is a floating-point diagnostic, not a certified error enclosure. No proof-assistant formalization or rigorous interval certification is claimed.
+
+The normalizer and the universal coefficient evaluator use different algorithms: one recursively removes unique highest derivatives and stores exact primitives; the other multiplies positive central polynomials and integrates beta moments. The four-variable rational recurrence supplies a third finite route. The sign-corruption control verifies that changing the $u_2u_3^2$ coefficient at weight eleven from $-55$ to $55$ is rejected.
+
+\subsection{Integration recommendations}
+
+The natural placement is a continuation of the manuscript's differential-polynomial and Gamma--Appell material. Retain the inherited normal-form and finite-jet lemmas as prerequisites; add the universal kernel theorem, complete coefficient theorem, support/sign corollary, and entire generator as the new structural spine. The four-variable tables then become applications rather than separate foundational recurrences.
+
+Preserve the raw-versus-normalized and full-versus-projected distinctions in every notation. The analytic primitives need the full $\Nc_m$ and $\Hc_m$; the coefficient extractor may use a finite projection only after normal reduction. For the ordinary polylogarithmic series, distinguish the inclusion or exclusion of $k=0$. For the rational interpolation in $k$, do not extend the parity-zero rule to arbitrary complex arguments.
+
+The arbitrary unequal-order optimal tail-prefix problem, the Gaussian $S_6$ identity, and the current $S_8$ period candidate are outside the resolved scope. None of the new support, coefficient, or Gamma primitive formulas supplies a proof of those period equalities. No arithmetic independence or minimal-depth statement is inferred from these calculations.
+
+\subsection{Further research questions}
+
+\begin{enumerate}[leftmargin=*,itemsep=7pt]
+\item \textbf{A closed total-derivative certificate.}
+The coefficient formula removes recursion from $\Nc_m$, but $\Hc_m$ is still computed by a terminating reduction. Find a comparably compact rational-kernel or finite-sum formula for every coefficient of $\Hc_m$, with the constant normalization fixed. This would give a wholly nonrecursive compiler for the weighted primitives.
+
+\item \textbf{Exact denominator and integrality classification.}
+The beta formula gives explicit rational coefficients and common denominators. Determine the reduced denominator of a coefficient directly from its exponent vector, and characterize the monomials with integral coefficients. The occurrence of $-3185/3$ at weight fourteen shows that integrality cannot simply be assumed.
+
+\item \textbf{Several independent differential fields.}
+Develop a canonical complement for independent fields $u^{(1)},\ldots,u^{(r)}$ and mixed inverse-Gamma products. Substitution into a single combined field is already covered by the universal theorem; the new question is a normal form that retains the individual field labels and their mixed integration-by-parts relations.
+
+\item \textbf{The numerical image of the full coefficient theorem.}
+Combine the universal normal coefficients with the repository's fixed-coordinate spectral and height-one zeta machinery. Evaluate explicitly specified unweighted polygamma moments, retaining the endpoint functional of $D\Hc_m$, and identify the resulting marked-zeta coordinates. The weighted primitive alone does not perform this reduction.
+
+\item \textbf{Exact arithmetic-step harmonic transforms.}
+Extend the explicit step-three and step-four examples to harmonic-number weights and arbitrary rational residue classes. Derive the resulting finite cyclotomic polylogarithm formulas with all branch constants, and compare different step factorizations within a declared relation system.
+
+\item \textbf{An analytic infinite-jet generator.}
+The all-order formula is formal and each finite projection is entire. Determine useful hypotheses on an infinite jet $(u_r)$ under which the sum over highest derivative order converges, and relate its analytic continuation to the original Gamma ratio. This requires controlling the infinite-jet substitution, not merely its individual finite projections.
+
+\item \textbf{Difference and $q$-difference analogues.}
+Find the appropriate replacement for the canonical complement and the telescoping kernel when the derivation is replaced by a difference operator or a weighted Leibniz rule. An analogue must track the changed product rule; inserting $q$-Gamma functions into the present ordinary-derivative formula is not the requested structural extension.
+
+\item \textbf{Formal verification of the structural spine.}
+Formalize the functional-monomial reduction, the telescoping identity \eqref{eq:telescoping}, and the positive beta coefficient theorem. These are finite algebraic statements at the core of the analytic generator. The existing exact Python checks provide test cases, but are not substitutes for a formal proof.
+\end{enumerate}

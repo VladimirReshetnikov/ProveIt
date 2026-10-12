@@ -1,0 +1,657 @@
+% Standalone article section for the parent manuscript.
+% Requires amsmath, amssymb, amsthm, hyperref and ordinary theorem/corollary/remark.
+% New macros: \gsZ, \gsJ, \gsB, \gsV, \gsQ, \gsE, \gsT, \gsL.
+% Bibliography keys: ShpotParis, Connon, DLMF, RepoTailKernels,
+% RepoBilinear.  Proposed bibliography text is supplied separately.
+\newcommand{\gsZ}{\mathcal Z}
+\newcommand{\gsJ}{\mathcal J}
+\newcommand{\gsB}{\mathcal B}
+\newcommand{\gsV}{\mathcal V}
+\newcommand{\gsQ}{\mathcal Q}
+\newcommand{\gsE}{\mathcal E}
+\newcommand{\gsT}{\mathcal T}
+\newcommand{\gsL}{\mathcal L}
+
+\section{Independent nonperiodic shifts: a completed product generator}
+\label{gs:section}
+
+The ordinary integral
+\[
+ \int_0^1\gamma_m^{(r)}(a+x)\gamma_n^{(t)}(b+x)\,dx,
+ \qquad \Re a,\Re b>0,
+\]
+has two independent argument shifts.  It is a different object from a
+periodically translated product.  Question R8 of \emph{Tail Kernels and
+Boundary Products} asks for an order-generating formula, especially its
+antisymmetric first-argument-derivative component
+\cite{RepoTailKernels}.  This section supplies such a formula in an
+explicit function class: finitely many Gauss hypergeometric terms,
+holomorphic Gamma divided differences, and two geometrically convergent
+single Hurwitz-zeta series.  It also gives a smaller function class for
+all products of ordinary polygamma functions.
+
+The mechanism extends the classical product-integral method of
+Shpot and Paris \cite{ShpotParis}.  Their coincident shift is the
+case $a=b=1$ before the spectral poles are removed.  The logarithmic
+series occurring in digamma-square integrals is also classical; see
+Connon \cite{Connon}.  The additions established here are the
+independent-shift completion as a \emph{joint} holomorphic germ, its
+explicit antisymmetric derivative, and the finite closure of all
+ordinary argument derivatives in one logarithmic Hurwitz family.
+These are claims relative to the inspected project sources; historical
+priority for every specialization is not asserted.
+
+\subsection{Unfolding the two-dimensional lattice}
+
+For $\Re A,\Re B>0$ and $\Re(s+t)>1$, define the elementary
+incomplete-beta kernel
+\begin{align}
+ \gsB_{s,t}(A,B)
+ &=\int_0^\infty\frac{dy}{(y+A)^s(y+B)^t}\notag\\
+ &=\frac{B^{1-s-t}}{s+t-1}\,
+ {}_2F_1\left(s,s+t-1;s+t;1-\frac AB\right).
+ \label{gs:beta-kernel}
+\end{align}
+The first expression fixes the branches of the second.  Thus the
+formula is regular when $A=B$, with value
+$A^{1-s-t}/(s+t-1)$.
+
+\begin{theorem}[Exact diagonal unfolding]\label{gs:unfolding}
+For $\Re s,\Re t>1$ and $\Re a,\Re b>0$,
+\begin{equation}\label{gs:unfolded}
+ \int_0^1\zeta(s,a+x)\zeta(t,b+x)\,dx
+ =\sum_{k=0}^\infty\gsB_{s,t}(a+k,b)
+  +\sum_{k=1}^\infty\gsB_{s,t}(a,b+k).
+\end{equation}
+Both sums converge absolutely and locally normally in this domain.
+\end{theorem}
+
+\begin{proof}
+Expand both Hurwitz functions by their absolutely convergent Dirichlet
+series.  On the lattice half-plane $m\ge n\ge0$, put $m=n+k$.
+For each fixed $k\ge0$, the intervals $n+x$, $0\le x\le1$, tile the
+positive real axis; consequently
+\[
+ \sum_{n=0}^\infty\int_0^1
+ (x+n+k+a)^{-s}(x+n+b)^{-t}\,dx
+ =\gsB_{s,t}(a+k,b).
+\]
+The complementary half-plane $n>m\ge0$ gives the second sum, starting
+at $k=1$.  This starting index is essential: the lattice diagonal is
+counted once.  Absolute convergence follows by replacing the complex
+shifts with lower bounds for their real parts and applying the same
+argument to positive integrands.  The bounds are uniform on compact
+subsets, proving normal convergence.
+\end{proof}
+
+Choose integers $K\ge0$ and $L\ge1$, and write
+\begin{equation}\label{gs:cd}
+ c=K+a-b,\qquad d=L+b-a.
+\end{equation}
+They may always be chosen so large that
+\begin{equation}\label{gs:cutoff-condition}
+ \Re c>|b|,\qquad \Re d>|a|.
+\end{equation}
+The choices can be kept fixed on any sufficiently small neighborhood
+of given shifts.  Put
+\begin{equation}\label{gs:finite-prefix}
+ \Phi_{s,t}(a,b)=
+ \sum_{k=0}^{K-1}\gsB_{s,t}(a+k,b)
+ +\sum_{k=1}^{L-1}\gsB_{s,t}(a,b+k),
+\end{equation}
+where an empty sum is zero.  A useful accelerated form of
+\eqref{gs:unfolded} is
+\begin{align}
+ I(s,t;a,b)={}&\Phi_{s,t}(a,b)
+ +B(1-t,s+t-1)\zeta(s+t-1,c)\notag\\
+ &+B(1-s,s+t-1)\zeta(s+t-1,d)\notag\\
+ &-\sum_{j=0}^\infty
+ \frac{(-1)^j(s)_j b^{j+1-t}}{j!(j+1-t)}\zeta(s+j,c)\notag\\
+ &-\sum_{j=0}^\infty
+ \frac{(-1)^j(t)_j a^{j+1-s}}{j!(j+1-s)}\zeta(t+j,d),
+ \label{gs:meromorphic-master}
+\end{align}
+where $I$ denotes the integral on the left of \eqref{gs:unfolded}.
+Here $B$ without calligraphic type is Euler's beta function.
+Identity \eqref{gs:meromorphic-master} is understood meromorphically;
+its separate terms need not be regular at integral orders.
+
+Indeed, for a fixed $q$ with $\Re q>|b|$, the change of variable
+$y+b=z$ in \eqref{gs:beta-kernel}, followed by subtraction of the
+interval $0<z<b$, gives
+\begin{equation}\label{gs:strip-evaluation}
+ \gsB_{s,t}(q+b,b)=q^{1-s-t}B(1-t,s+t-1)
+ -\sum_{j=0}^\infty
+ \frac{(-1)^j(s)_j b^{j+1-t}}{j!(j+1-t)}q^{-s-j}.
+\end{equation}
+This first holds where the beta integral and the subtracted interval
+both converge, and then holds by meromorphic continuation.  Summing
+over $q=c,c+1,\ldots$ proves \eqref{gs:meromorphic-master}; the other
+tail follows by exchange of the two factors.  Alternatively one may
+first subtract the $j=0$ term and continue the resulting normally
+convergent remainder.  In either derivation, the condition
+\eqref{gs:cutoff-condition} gives a geometric majorant for the
+$j$-series on compact sets avoiding the displayed poles.
+
+\subsection{Removal of both spectral poles without an iterated limit}
+
+Use the standard convention
+\begin{equation}\label{gs:stieltjes-convention}
+ \gsZ(u,z)=\zeta(1+u,z)-\frac1u
+ =\sum_{m=0}^\infty\frac{(-1)^m\gamma_m(z)}{m!}u^m.
+\end{equation}
+For $\Re z>0$ this is entire in $u$.  The required ordinary product
+generator is
+\begin{equation}\label{gs:target-master}
+ \gsJ(u,v;a,b)=\int_0^1\gsZ(u,a+x)\gsZ(v,b+x)\,dx.
+\end{equation}
+We now evaluate it; its definition alone is not the claimed result.
+The Hurwitz recurrence and argument-derivative formulas used below
+have the conventions of DLMF, \S25.11 \cite{DLMF}.
+
+Define the universal Gamma functions
+\[
+ \gsQ(u,v)=\frac{\Gamma(1+u+v)}{\Gamma(1+u)\Gamma(1+v)},
+ \qquad \gsE(w)=\frac{\pi w}{\sin\pi w}.
+\]
+The following quotient has a joint removable singularity:
+\begin{equation}\label{gs:universal-quotient}
+ \gsT(u,v)=
+ \frac{u+v-\gsQ(u,v)\{u\gsE(v)+v\gsE(u)\}}
+ {uv(u+v)}.
+\end{equation}
+For an explicitly holomorphic interpretation, write
+\begin{align}
+ \gsT(u,v)&=-\frac{\gsQ(u,v)-1}{uv}
+ -\gsQ(u,v)\sum_{h=1}^\infty e_{2h}
+       \frac{u^{2h-1}+v^{2h-1}}{u+v},\label{gs:universal-holomorphic}\\
+ e_{2h}&=2(1-2^{1-2h})\zeta(2h).
+\end{align}
+Each quotient in the series is a polynomial; also
+$\gsQ-1$ is divisible by $uv$ in the ring of convergent power
+series.  In particular $\gsT(0,0)=-2\zeta(2)$.
+
+The only infinite series in the completed answer are
+\begin{equation}\label{gs:V}
+ \gsV(u,v;c,z)=
+ -\sum_{j=1}^\infty
+ \frac{(-1)^j(1+u)_j z^{j-v}}{j!(j-v)}
+                    \zeta(1+u+j,c),\qquad \Re c>|z|.
+\end{equation}
+They are holomorphic near $(u,v)=(0,0)$, locally normally in all
+variables.  No term at $j=0$ is included.
+
+\begin{theorem}[Completed independent-shift generator]
+\label{gs:completed}
+Under \eqref{gs:cd}--\eqref{gs:cutoff-condition}, the ordinary integral
+\eqref{gs:target-master} is the following joint holomorphic germ:
+\begin{align}
+ \boxed{\begin{aligned}
+ \gsJ(u,v;a,b)={}&\Phi_{1+u,1+v}(a,b)+\gsT(u,v)\\
+ &+\frac{b^{-v}\gsZ(u,c)
+       -\gsQ(u,v)\gsE(v)\gsZ(u+v,c)}{v}\\
+ &+\frac{a^{-u}\gsZ(v,d)
+       -\gsQ(u,v)\gsE(u)\gsZ(u+v,d)}{u}\\
+ &+\gsV(u,v;c,b)+\gsV(v,u;d,a).
+ \end{aligned}}
+ \label{gs:completed-formula}
+\end{align}
+Every displayed divided difference has its unique holomorphic value
+on its zero-denominator face.  All mixed spectral and argument
+derivatives may be taken term by term in the two $\gsV$ series.
+The result is independent of the permissible integers $K,L$.
+\end{theorem}
+
+\begin{proof}
+The unit-interval integral of one Hurwitz function is
+\[
+ \int_0^1\zeta(s,a+x)\,dx=\frac{a^{1-s}}{s-1}.
+\]
+Consequently, with $s=1+u$, $t=1+v$,
+\begin{equation}\label{gs:pole-removal}
+ \gsJ(u,v;a,b)=I(1+u,1+v;a,b)
+             -\frac{a^{-u}+b^{-v}-1}{uv}.
+\end{equation}
+In \eqref{gs:meromorphic-master}, isolate $j=0$ in each series and
+use
+\[
+ B(-v,1+u+v)=-\frac{\gsQ(u,v)\gsE(v)}v,
+ \qquad
+ B(-u,1+u+v)=-\frac{\gsQ(u,v)\gsE(u)}u.
+\]
+Replacing each Hurwitz function with its pole plus \eqref{gs:stieltjes-convention}
+leaves precisely the two divided differences in
+\eqref{gs:completed-formula}.  The remaining rational pole terms
+combine to \eqref{gs:universal-quotient}.  Formula
+\eqref{gs:universal-holomorphic} proves that this last apparent
+singularity is jointly removable, including on $u+v=0$.
+The numerator of the first divided difference vanishes identically
+on $v=0$; that of the second vanishes on $u=0$.
+
+For normal convergence, on a compact subset of
+$\Re c>|z|$ choose $\rho<1$ with $|z|/\Re c\le\rho$.
+For large $j$, the defining Hurwitz series gives a bound of the form
+$C(\Re c)^{-j}$ times a fixed polynomial in $j$; the Pochhammer
+ratio $(1+u)_j/j!$ also has polynomial growth uniformly for $u$ in
+a compact neighborhood of zero.  Thus the summands in
+\eqref{gs:V} are bounded by $C'j^M\rho^j$.  Cauchy's estimates
+on a slightly larger compact set give the same conclusion after any
+fixed mixed differentiation.  The finite prefix is holomorphic
+because $\Re(2+u+v)>1$ near the origin.
+The meromorphic identity therefore extends to a holomorphic equality.
+Its left side is independent of $K,L$, proving the final assertion.
+\end{proof}
+
+\begin{corollary}[Every independent-shift Stieltjes product]
+\label{gs:all-indices}
+For all $m,n,r,t\ge0$ and $\Re a,\Re b>0$,
+\begin{equation}\label{gs:all-indices-formula}
+ \int_0^1\gamma_m^{(r)}(a+x)\gamma_n^{(t)}(b+x)\,dx
+ =(-1)^{m+n}
+ \left.\partial_a^r\partial_b^t\partial_u^m\partial_v^n
+                  \gsJ(u,v;a,b)\right|_{u=v=0},
+\end{equation}
+where the right side is evaluated by the explicit convergent formula
+\eqref{gs:completed-formula}.  All constants of integration and all
+spectral regularizations are fixed by this formula.
+\end{corollary}
+
+This is a convergent reduction, not a claim of finite reduction to
+ordinary zeta values at arbitrary shifts.  To obtain a prescribed
+coefficient, expand the finite Gamma germ through the required degree,
+use generalized Stieltjes constants at $c,d$, and extract that degree
+in each geometrically convergent series.  The resulting coefficients
+involve finite harmonic sums from $(1+u)_j$, powers of $\log a$ and
+$\log b$, and Hurwitz order derivatives.  Each requested coefficient
+therefore has an explicit, rapidly convergent single-sum expression.
+More explicitly, the entire generalized-harmonic contribution is
+encoded by the finite-product identity
+\[
+ \frac{(1+u)_j}{j!}
+ =\exp\left\{\sum_{k=1}^\infty
+        \frac{(-1)^{k+1}}{k}H_j^{(k)}u^k\right\},
+ \qquad H_j^{(k)}=\sum_{h=1}^j h^{-k},\quad |u|<1.
+\]
+
+\subsection{The finite terms are polylogarithmic at integral orders}
+
+There is no need to introduce parameter derivatives of a hypergeometric
+function as additional undefined constants.  For positive $A>B$, put
+$q=A-B$ and $z=q/A$.  Equation \eqref{gs:beta-kernel} becomes
+\begin{equation}\label{gs:polylog-kernel}
+ \gsB_{1+u,1+v}(A,B)
+ =q^{-1-u-v}\int_0^z
+       \frac{\exp\{(u+v)\log y-v\log(1-y)\}}{1-y}\,dy.
+\end{equation}
+Every fixed Taylor coefficient is a finite linear combination of
+harmonic polylogarithms on the alphabet $\{0,1\}$ and logarithms;
+this follows by the shuffle product for powers of $\log y$ and
+$\log(1-y)$ followed by one integration with kernel $1/(1-y)$.
+The coefficient of total degree $N$ has weight at most $N+1$ before
+multiplication by powers of $\log q$.  Other positive $A,B$ follow
+by exchange of the two factors, and the diagonal is elementary.
+For example, writing $\ell=\log(A/B)$,
+\begin{align}
+ \gsB_{1,1}(A,B)&=\frac{\ell}{A-B},\notag\\
+ \left.\partial_u\gsB_{1+u,1+v}(A,B)\right|_{0,0}
+ &=-\frac{\ell\log A+\operatorname{Li}_2(1-B/A)}{A-B},\notag\\
+ \left.\partial_v\gsB_{1+u,1+v}(A,B)\right|_{0,0}
+ &=-\frac{\ell\log A+\operatorname{Li}_2(1-B/A)-\ell^2/2}{A-B}.
+ \label{gs:dilog-prefix}
+\end{align}
+Thus the finite prefix contributes explicitly reducible polylogarithms,
+whereas the independent-shift information in general remains in the
+two single zeta series.
+
+\subsection{An explicit first Stieltjes coefficient}
+
+The first spectral coefficient already combines generalized Stieltjes
+constants, harmonic numbers, dilogarithms, and Hurwitz order
+derivatives.  Define
+\[
+ D_1(A,B)=-\frac{\log(A/B)\log A+
+                   \operatorname{Li}_2(1-B/A)}{A-B},
+ \qquad D_1(A,A)=-\frac{1+\log A}{A},
+\]
+and let $\Phi^{[1]}(a,b)$ be the finite prefix
+\eqref{gs:finite-prefix} with every $\gsB$ replaced by $D_1$.
+These formulas are real and continuous for all $A,B>0$.
+
+\begin{corollary}[A harmonic--Stieltjes product identity]
+\label{gs:gamma1-digamma}
+For $a,b>0$, choose $K,L$ satisfying
+\eqref{gs:cutoff-condition} and use \eqref{gs:cd}.  Then
+\begin{align}
+ \int_0^1\gamma_1(a+x)\psi(b+x)\,dx
+ ={}&\Phi^{[1]}(a,b)+\zeta(3)-\gamma_2(c)-\frac12\gamma_2(d)
+       \notag\\
+ &+\log b\,\gamma_1(c)+\zeta(2)\psi(c)
+   +\left\{\zeta(2)-\frac12\log^2a\right\}\psi(d)\notag\\
+ &-\sum_{j=1}^\infty\frac{(-b)^j}{j}
+       \{H_j\zeta(j+1,c)+\zeta'(j+1,c)\}\notag\\
+ &-\sum_{j=1}^\infty\frac{(-a)^j}{j}
+          \left(\frac1j-\log a\right)\zeta(j+1,d).
+ \label{gs:gamma1-digamma-formula}
+\end{align}
+Here $H_j=\sum_{k=1}^j1/k$ and the prime on $\zeta$ denotes its
+first spectral derivative.  Both infinite sums converge geometrically.
+\end{corollary}
+
+\begin{proof}
+The left side is $\partial_u\gsJ(0,0;a,b)$ under the convention
+\eqref{gs:stieltjes-convention}.  The universal term contributes
+$\partial_u\gsT(0,0)=\zeta(3)$, and
+$\partial_u(1+u)_j|_{u=0}=j!H_j$ accounts for the harmonic number.
+On the face $v=0$, the first divided difference in
+\eqref{gs:completed-formula} equals
+\[
+ -\{\log b+\psi(1+u)+\gamma\}\gsZ(u,c)
+ -\partial_u\gsZ(u,c).
+\]
+Its derivative at zero is
+$\log b\,\gamma_1(c)+\zeta(2)\psi(c)-\gamma_2(c)$.
+The derivative of the second divided difference is
+$\{\zeta(2)-\tfrac12\log^2a\}\psi(d)-\tfrac12\gamma_2(d)$.
+The finite prefix follows from \eqref{gs:dilog-prefix}; differentiating
+the two normally convergent $\gsV$ series gives the displayed sums.
+\end{proof}
+
+\subsection{A compact logarithmic Hurwitz family}
+
+For an integer $p\ge1$, $c>0$, $z\ge0$, set
+\begin{equation}\label{gs:L-definition}
+ \gsL_p(c,z)=\sum_{n=0}^\infty
+       \frac{\log(1+z/(n+c))}{(n+c)^p}.
+\end{equation}
+This is an ordinary absolutely convergent series; it extends
+holomorphically to a neighborhood of the positive real parameter
+domain.  When $|z|<\Re c$, it has the geometric zeta expansion
+\begin{equation}\label{gs:L-zeta}
+ \gsL_p(c,z)=-\sum_{j=1}^\infty
+                    \frac{(-z)^j}{j}\zeta(p+j,c).
+\end{equation}
+It is convenient notation for an explicit convergent series, not a
+claim that this logarithmic zeta family is historically new.
+
+Put $R_p=\partial_z\gsL_p$.  Direct partial fractions give the
+terminating rules
+\begin{align}
+ R_1(c,z)&=\frac{\psi(c+z)-\psi(c)}z,\label{gs:R1}\\
+ R_p(c,z)&=\frac{\zeta(p,c)-R_{p-1}(c,z)}z\quad(p\ge2),\label{gs:Rp}\\
+ \partial_c\gsL_p(c,z)
+ &=-p\gsL_{p+1}(c,z)+R_p(c,z)-\zeta(p+1,c).
+ \label{gs:L-derivative}
+\end{align}
+All apparent singularities at $z=0$ are removable.  In particular,
+\begin{equation}\label{gs:Gamma-primitive}
+ \gsL_1(c,z)=\int_0^z\frac{\psi(c+y)-\psi(c)}y\,dy,
+\end{equation}
+with its additive constant fixed by $\gsL_1(c,0)=0$.
+This identifies the precise Gamma primitive needed by the independent
+shifts.  Its derivative is the divided difference of the logarithmic
+derivative of $\Gamma$.
+
+For completeness, one two-parameter member generates the full family:
+\begin{equation}\label{gs:L-generator}
+ \sum_{p=1}^\infty w^{p-1}\gsL_p(c,z)
+ =\gsL_1(c-w,z+w)-\gsL_1(c-w,w),\qquad |w|<c,
+\end{equation}
+locally where all logarithms have their anchored branches.  Summing
+the geometric series $\sum_{p\ge1}w^{p-1}(n+c)^{-p}$ proves this
+identity.  The finite shift rule
+\begin{equation}\label{gs:L-shift}
+ \gsL_p(c+1,z)=\gsL_p(c,z)-c^{-p}\log(1+z/c)
+\end{equation}
+makes evaluation at large $z/c$ straightforward: shift $c$ until
+\eqref{gs:L-zeta} converges geometrically, retaining only finitely
+many elementary logarithms.
+
+\subsection{An explicit two-shift digamma product}
+
+Define the continuous divided difference
+\[
+ D(A,B)=\frac{\log(A/B)}{A-B},\qquad D(A,A)=\frac1A.
+\]
+For the moment suppose $a,b>0$ and $|a-b|<1$, and abbreviate
+\[
+ c=1+a-b,\qquad d=1+b-a.
+\]
+
+\begin{theorem}[Ordinary independent-shift digamma identity]
+\label{gs:digamma}
+\begin{align}
+ \boxed{\begin{aligned}
+ \int_0^1\psi(a+x)\psi(b+x)\,dx
+ ={}&D(a,b)+\gamma_1(c)+\gamma_1(d)-2\zeta(2)\\
+ &+\log b\,\psi(c)+\log a\,\psi(d)\\
+ &+\gsL_1(c,b)+\gsL_1(d,a).
+ \end{aligned}}
+ \label{gs:digamma-formula}
+\end{align}
+For arbitrary $a,b>0$, choose $K\ge0,L\ge1$ so that the $c,d$ in
+\eqref{gs:cd} are positive, and replace $D(a,b)$ by
+\[
+ \sum_{k=0}^{K-1}D(a+k,b)+\sum_{k=1}^{L-1}D(a,b+k).
+\]
+All other terms retain the form in \eqref{gs:digamma-formula} with
+these $c,d$.
+\end{theorem}
+
+\begin{proof}
+Set $u=v=0$ in \eqref{gs:completed-formula}.
+The first divided difference becomes
+$\gamma_1(c)-\log b\,\gamma_0(c)$, because both first derivatives
+of $\gsQ\gsE$ vanish at the origin.  The second is the exchanged
+expression.  Also $\gsV(0,0;c,b)=\gsL_1(c,b)$,
+$\gamma_0=-\psi$, and $\gsT(0,0)=-2\zeta(2)$.
+This proves the assertion under the geometric conditions.
+The ordinary logarithmic series extends it to all stated positive
+parameters.  Independence of the cutoffs can alternatively be checked
+without analytic continuation: increasing $K$ by one adds
+$D(K+a,b)$ to the prefix, while the shift formulas for $\gamma_1$,
+$\psi$, and \eqref{gs:L-shift} subtract exactly that same number.
+The argument for $L$ is identical.
+\end{proof}
+
+The diagonal is particularly transparent:
+\begin{equation}\label{gs:diagonal-digamma}
+ \int_a^{a+1}\psi(x)^2\,dx
+ =\frac1a-2\gamma\log a+2\gamma_1-2\zeta(2)
+                         +2\gsL_1(1,a),\qquad a>0.
+\end{equation}
+This specialization belongs to the established digamma-square and
+logarithmic-series literature \cite{Connon}; it is included as a
+normalization check, not relabelled as a new result.
+
+\subsection{The antisymmetric first-derivative component}
+
+Let
+\begin{equation}\label{gs:W0}
+ W_0(A,B)=
+ \frac{2\log(A/B)-(A-B)(A^{-1}+B^{-1})}{(A-B)^2},
+ \qquad W_0(A,A)=0.
+\end{equation}
+For $a,b>0$, $|a-b|<1$, keep $c=1+a-b,d=1+b-a$.
+
+\begin{theorem}[Explicit antisymmetric derivative]
+\label{gs:Wronskian}
+The ordinary integral
+\[
+ W(a,b)=\int_0^1
+ \{\psi(a+x)\psi'(b+x)-\psi'(a+x)\psi(b+x)\}\,dx
+\]
+has the exact evaluation
+\begin{align}
+ \boxed{\begin{aligned}
+ W(a,b)={}&W_0(a,b)\\
+ &+2\bigl\{\zeta'(2,d)-\zeta'(2,c)
+       +\log a\,\zeta(2,d)-\log b\,\zeta(2,c)\\
+ &\hspace{19mm}+\gsL_2(c,b)-\gsL_2(d,a)\bigr\}\\
+ &+\frac{2\psi(c)-\psi(a+1)}b
+       +\frac{\psi(b+1)-2\psi(d)}a.
+ \end{aligned}}
+ \label{gs:Wronskian-formula}
+\end{align}
+For arbitrary positive shifts, use \eqref{gs:cd}, replace $W_0(a,b)$
+by its two finite-prefix sums, and replace $\psi(a+1),\psi(b+1)$
+by $\psi(K+a),\psi(L+b)$ respectively.
+\end{theorem}
+
+\begin{proof}
+Apply $\partial_b-\partial_a$ to \eqref{gs:digamma-formula}.
+The finite divided difference gives $W_0$.
+For $c=K+a-b$ one has
+$(\partial_b-\partial_a)c=-2$, and the corresponding derivative
+of $d$ is $2$.  Formula \eqref{gs:L-derivative} gives
+\[
+ (\partial_b-\partial_a)\gsL_1(c,b)
+ =2\gsL_2(c,b)-R_1(c,b)+2\zeta(2,c),
+\]
+and the exchanged term has the opposite form.  The standard identity
+\[
+ \gamma_1'(z)=\zeta(2,z)+\zeta'(2,z)
+\]
+follows by differentiating the Hurwitz shift derivative at its spectral
+pole.  It cancels the explicit $\zeta(2,c),\zeta(2,d)$ terms just
+produced.  Finally use \eqref{gs:R1}, $c+b=K+a$, and $d+a=L+b$.
+Every differentiation is justified by normal convergence of the
+ordinary logarithmic series on compact positive parameter sets.
+\end{proof}
+
+The symmetric companion is the elementary endpoint identity
+\begin{equation}\label{gs:symmetric}
+ \int_0^1
+ \{\psi'(a+x)\psi(b+x)+\psi(a+x)\psi'(b+x)\}\,dx
+ =\frac{\psi(a)}b+\frac{\psi(b)}a+\frac1{ab}.
+\end{equation}
+Combining \eqref{gs:Wronskian-formula} and \eqref{gs:symmetric}
+therefore evaluates each ordered first-derivative product separately.
+The antisymmetric formula contains information not supplied by
+integration by parts alone.
+
+\subsection{Closure under every ordinary argument derivative}
+
+Write $q=r+t$.  In differentiating \eqref{gs:digamma-formula}, the
+only non-elementary series that must remain after $q$ derivatives are
+\begin{equation}\label{gs:highest-L}
+ q!\{(-1)^r\gsL_{q+1}(c,b)+(-1)^t\gsL_{q+1}(d,a)\}.
+\end{equation}
+All other terms reduce finitely to polygamma values, rational
+functions, logarithms, and Hurwitz-zeta order derivatives.  For
+$q>0$, even the two generalized Stieltjes constants disappear:
+\begin{equation}\label{gs:gamma1-derivatives}
+ \gamma_1^{(q)}(z)=(-1)^{q+1}q!
+        \{\zeta'(q+1,z)+H_q\zeta(q+1,z)\}.
+\end{equation}
+To prove \eqref{gs:highest-L}, note that the highest remaining
+$\gsL$ term in a derivative with respect to $a$ of $\gsL_p(c,b)$
+is $-p\gsL_{p+1}$, whereas a derivative with respect to $b$ has
+highest term $p\gsL_{p+1}$.  The remaining $R_p$ terms terminate
+by \eqref{gs:R1}--\eqref{gs:Rp}.  Induction gives the displayed
+coefficient.  The other term is exchanged.  Equation
+\eqref{gs:gamma1-derivatives} follows by taking the coefficient of
+the linear spectral term in
+$\partial_z^q\zeta(1+u,z)=(-1)^q(1+u)_q\zeta(q+1+u,z)$.
+Thus the rules are a terminating reduction algorithm, rather than an
+instruction to leave arbitrary derivatives unevaluated.
+
+For example, a completely explicit trigamma-square identity is
+\begin{align}
+ \int_a^{a+1}\psi'(x)^2\,dx
+ ={}&\frac1{3a^3}+4\zeta'(3)+\frac{4\zeta(2)}a
+        +4\zeta(3)\log a\notag\\
+ &-\frac{2\{\psi(1+a)+\gamma\}}{a^2}
+        -4\gsL_3(1,a),\qquad a>0.
+ \label{gs:trigamma-square}
+\end{align}
+It is obtained by differentiating the two independent shifts first
+and only then setting $a=b$.  Merely differentiating
+\eqref{gs:diagonal-digamma} twice would yield the sum of several
+ordered derivative products, not this individual square.
+
+\subsection{Diagonal limits and the inherited coincident finite parts}
+
+There are two different diagonal operations.  Setting $a=b>0$
+is an ordinary holomorphic specialization of
+\eqref{gs:completed-formula}.  Sending the common shift to zero is
+a boundary operation and requires removal of the local divergences.
+For fixed indices $m,n,r,t$, write
+\[
+ P(x)=\gamma_m^{(r)}(x)\gamma_n^{(t)}(x).
+\]
+The exact recurrence
+$\gamma_m(x)=x^{-1}\log^m x+\gamma_m(1+x)$ supplies its finite
+singular expansion
+\[
+ P(x)=\sum_{\alpha\ge1,h\ge0}C_{\alpha,h}x^{-\alpha}\log^h x
+           +O(1+|\log x|^M)
+\]
+near zero, with finitely many terms in the displayed singular sum.
+The coefficients are explicit products of the Laurent singular
+polynomials and Taylor derivatives at one.  For each monomial let
+$A_{\alpha,h}(x)$ be an antiderivative with zero constant term in
+its power-log expansion.  Then
+\begin{equation}\label{gs:boundary-limit}
+ \lim_{a\downarrow0}\left\{
+ \int_0^1P(a+x)\,dx
+       +\sum_{\alpha,h}C_{\alpha,h}A_{\alpha,h}(a)\right\}
+ =\operatorname{FP}\int_0^1P(x)\,dx.
+\end{equation}
+Indeed, the shifted integral is $\int_a^{1+a}P$, and its difference
+from $\int_a^1P$ tends to zero.  After integration, the singular
+monomials contribute $-C_{\alpha,h}A_{\alpha,h}(a)$; the remaining
+integral converges by the displayed local bound.  This proves the
+boundary compatibility for every fixed order, in the original
+coordinate $x$, without exchanging an unjustified spectral limit
+with a finite-part operation.
+
+For example, \eqref{gs:diagonal-digamma} and
+\eqref{gs:trigamma-square} give the exact checks
+\begin{align}
+ \operatorname{FP}\int_0^1\psi(x)^2\,dx
+     &=2\gamma_1-2\zeta(2),\notag\\
+ \operatorname{FP}\int_0^1\psi(x)\psi'(x)\,dx
+     &=\zeta(2),\notag\\
+ \operatorname{FP}\int_0^1\psi'(x)^2\,dx
+     &=2\zeta(3)+4\zeta'(3).
+ \label{gs:boundary-checks}
+\end{align}
+These agree with the inherited coincident product generator.  They
+are compatibility checks, not newly claimed coincident evaluations.
+Unequal-rate collisions $a,b\to0$ are not covered by a claim that
+one can omit the local subtractions; their path-dependent corrections
+remain a separate question.
+
+\subsection{Source reconciliation and further targets}
+
+There is a concrete status correction to the incoming research list.
+Question R7 of \emph{Tail Kernels and Boundary Products} asks for all
+nonpositive-order continuations of the alternating square law.
+The cutoff-jet section of the independently archived
+\emph{Bilinear Tails and Determinants} already proves the requisite
+normal subtractions, all cutoff contacts, their spectral jets, the
+order-zero $1/4$ discrepancy, and the change under a translated cutoff
+\cite{RepoBilinear}.  R7 should therefore be marked resolved by
+that report, with its stated coordinate convention.  Its Gamma-square
+specializations should not be counted again as new results here.
+
+The completed generator resolves R8 in the explicit convergent function
+class described above.  It does not claim that arbitrary independent
+shifts reduce to finitely many ordinary zeta constants.  Three sharper
+questions remain:
+\begin{enumerate}
+\item Determine special rational pairs $(a,b)$ for which the two
+logarithmic Hurwitz series in \eqref{gs:Wronskian-formula} reduce
+further to a finite collection of classical polylogarithms and Gamma
+values.  The coincident and complementary-shift cases should be
+separated from generic rational pairs.
+\item Derive functional equations in the shift difference $a-b$
+that relate finite descriptions of the prefix by polylogarithms
+to the two geometric zeta series.  The exact $K,L$ invariance gives
+necessary tests for any proposed relation.
+\item Compute the local correction for $a=\lambda\epsilon$,
+$b=\mu\epsilon$ with fixed positive $\lambda,\mu$ and compare its
+constant term with the coincident finite part.  The generator makes
+this a defined two-parameter collision problem, but the diagonal
+compatibility theorem alone does not settle it.
+\end{enumerate}

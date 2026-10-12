@@ -1,0 +1,190 @@
+\section{The cutoff polylogarithm and its disappearing depth}
+\label{sec:polylog}
+
+The ordered endpoint evaluation is accompanied by an explicit cutoff
+identity. This is useful both as a proof of the endpoint cancellation
+and as a finite transform for noninteger orders, one of the questions
+raised in \cite{repo:finite}.
+
+\subsection{An identity entire in the two orders}
+
+For $|z|<1$ put
+\begin{align}
+ G_{s,t}(z)&=\sum_{0\le m<n}(n-m)^2
+             w_m(s,1)w_n(t,1)z^{n+1},\label{eq:cutoff-g}\\
+ B_{s,t}(z)&=\sum_{k\ge1}\frac{z^k}{k^s(k+1)^t},
+ \qquad c_s=\frac{1-2^{-s}}2,\qquad \Theta=z\frac{\dd}{\dd z},
+ \label{eq:cutoff-b}\\
+ U_t(z)&=\frac{(1-z)^2}{z^2}\Li_t(z)+2-z^{-1}-2^{-t}.
+ \label{eq:cutoff-u}
+\end{align}
+The last expression has a removable singularity at zero and equals
+$2\sum_{n\ge0}w_n(t,1)z^{n+1}$. The same convention will apply to
+the removable negative powers of $z$ in the next formula.
+
+\begin{theorem}[Finite cutoff formula]\label{thm:cutoff}
+For all $s,t\in\C$ and $|z|<1$,
+\begin{align}
+ G_{s,t}(z)={}&\frac{(1-z)^2}{2z^2}\Li_{t,s}(z,1)
+ +\frac{z-1}{2z}\Li_{s+t}(z)
+ +\frac14B_{t,s}(z)-\frac1{4z}B_{s,t}(z)\notag\\
+ &+\frac12\left(c_s\Theta^2-\Theta-\frac12\right)U_t(z)
+ +\frac12-2^{-t-2}.
+ \label{eq:cutoff-master}
+\end{align}
+Every term is entire in $s,t$ on the open unit disk. At positive
+integer orders the two $B$ functions are finite combinations of
+ordinary polylogarithms. The only depth-two term in this representation
+has the explicit factor $(1-z)^2$.
+\end{theorem}
+
+\begin{proof}
+The inner finite identity of Section~\ref{sec:ordered}, with $a=1$,
+becomes
+\begin{equation}\label{eq:inner-harmonic}
+ \sum_{m=0}^{n-1}(n-m)^2w_m(s,1)
+ =H_{n+1}^{(s)}+c_s(n+1)^2-(n+1)-\frac12
+   +\frac1{2(n+2)^s}.
+\end{equation}
+It also holds at $n=0$, since the right side then vanishes.
+For $k\ge1$, the three generating identities needed for its harmonic
+part are
+\begin{align}
+ \sum_{k\ge1}\frac{z^kH_k^{(s)}}{k^t}
+   &=\Li_{t,s}(z,1)+\Li_{s+t}(z),\notag\\
+ \sum_{k\ge1}\frac{z^kH_k^{(s)}}{(k+1)^t}
+   &=z^{-1}\Li_{t,s}(z,1),\notag\\
+ \sum_{k\ge1}\frac{z^kH_k^{(s)}}{(k+2)^t}
+   &=z^{-2}\Li_{t,s}(z,1)-z^{-1}B_{s,t}(z).
+ \label{eq:harmonic-generators}
+\end{align}
+They follow by writing the finite harmonic sum and changing the
+outer index; the term subtracted in the last line is precisely the
+last inner index in the shifted nested sum.
+
+Multiply \eqref{eq:inner-harmonic} by $w_n(t,1)z^{n+1}$ and sum.
+Its quadratic polynomial contributes
+$\tfrac12(c_s\Theta^2-\Theta-\tfrac12)U_t$.
+The harmonic contribution, by \eqref{eq:harmonic-generators}, is
+\[
+ \frac{(1-z)^2}{2z^2}\Li_{t,s}(z,1)
+ +\frac12\Li_{s+t}(z)-\frac1{2z}B_{s,t}(z).
+\]
+The final term $1/(2(n+2)^s)$ contributes
+\[
+ \frac14B_{t,s}(z)-\frac1{2z}\Li_{s+t}(z)
+ +\frac1{4z}B_{s,t}(z)+\frac12-2^{-t-2}.
+\]
+Adding gives \eqref{eq:cutoff-master}. On compact sets of orders,
+every summand grows at most polynomially in its indices before the
+exponential factor is applied. All rearrangements therefore converge
+normally and prove the identity for every pair of complex orders.
+\end{proof}
+
+\subsection{Finite classical polylogarithms at integer orders}
+
+For positive integers $p,q$, use the coefficients of
+\eqref{eq:pf-a}--\eqref{eq:pf-b} with $D=1$. Then
+\begin{equation}\label{eq:b-classical}
+ B_{p,q}(z)=\sum_{k=1}^{p}A_k\Li_k(z)
+ +\sum_{l=1}^{q}B_lz^{-1}\{\Li_l(z)-z\}.
+\end{equation}
+This follows by summing the rational partial fractions against $z^n$.
+At $|z|<1$ the two simple-pole sums need not be paired for convergence,
+although pairing is necessary before taking their individual endpoint
+values. Since $\Theta\Li_\nu=\Li_{\nu-1}$, the differential term in
+\eqref{eq:cutoff-master} is also finite in classical polylogarithms.
+Thus the integer-order generator is explicitly in depth at most two,
+and its depth-two coefficient is known exactly.
+
+\begin{corollary}[Endpoint cancellation]\label{cor:cutoff-endpoint}
+For positive integers $p\ge1$, $q\ge2$, the radial limit is
+\begin{equation}\label{eq:cutoff-endpoint}
+ \Ord(p,q;1,1)=c_p\zeta(q)-\frac12+2^{-p-2}
+ +\frac14\{B_{q,p}(1)-B_{p,q}(1)\}.
+\end{equation}
+Together with \eqref{eq:b-classical}, interpreted through its paired
+simple poles, this yields the parity formula
+\eqref{eq:ordered-parity} at $a=1$.
+\end{corollary}
+
+\begin{proof}
+Here $\Li_{q,p}(1,1)$ converges: the inner harmonic sum is bounded
+for $p>1$ and grows only logarithmically for $p=1$, whereas $q\ge2$.
+Its factor $(1-z)^2$ makes its contribution zero. The factor
+$z-1$ similarly kills $\Li_{p+q}(z)$.
+Finite summation by parts for the three moments of the single weight
+gives
+\[
+ U_q(1)=1-2^{-q},\qquad
+ (\Theta U_q)(1)=1,\qquad
+ (\Theta^2U_q)(1)=2\zeta(q)-1.
+\]
+These moments converge for $q>1$. Substitution into
+\eqref{eq:cutoff-master} gives \eqref{eq:cutoff-endpoint}.
+Absolute convergence of the original double sum justifies its radial
+limit as well.
+\end{proof}
+
+There is a broader analytic interpretation. If $\Rea t>1$ and
+$\Rea(s+t)>0$, the original $G_{s,t}$ has the endpoint
+$\Ord(s,t;1,1)$. The depth-two contribution still tends to zero
+radially. Indeed
+$\sum_{j<k}j^{-\Rea s}$ is
+$O(1+k^{\max(1-\Rea s,0)}\log(k+1))$, and a direct comparison of
+the resulting power series with a Laplace integral proves
+$(1-z)^2\Li_{t,s}(z,1)\to0$ on this domain. Some of the remaining
+separated terms can diverge and must be kept in the combination in
+\eqref{eq:cutoff-master}. The identity of the collective endpoint
+with the boundary formula is valid; replacing a divergent component
+by an unannounced regularized value is unnecessary.
+
+\subsection{A finite noninteger-order transform}
+
+Writing $B_{s,t}$ as a one-index series already reduces depth, but a
+standard special-function transform makes the answer more explicit.
+Let
+\[
+ \Phi(z,v,c)=\sum_{k\ge0}\frac{z^k}{(k+c)^v},\qquad |z|<1,
+\]
+be the Lerch transcendent \cite{dlmf:lerch}. For $\Rea s,\Rea t>0$,
+\begin{equation}\label{eq:b-beta-lerch}
+ B_{s,t}(z)=\frac{z\Gamma(s+t)}{\Gamma(s)\Gamma(t)}
+ \int_0^1u^{s-1}(1-u)^{t-1}
+       \Phi(z,s+t,2-u)\dd u.
+\end{equation}
+To prove it, apply the beta identity
+\begin{equation}\label{eq:feynman-basic}
+ X^{-s}Y^{-t}=\frac{\Gamma(s+t)}{\Gamma(s)\Gamma(t)}
+ \int_0^1\frac{u^{s-1}(1-u)^{t-1}}{[uX+(1-u)Y]^{s+t}}\dd u
+\end{equation}
+with $X=k$, $Y=k+1$ and sum $z^k$. The initial exchange is absolutely
+convergent. Both sides then continue in their order variables from
+that domain; the continued $B$ itself is entire for $|z|<1$.
+Equations \eqref{eq:cutoff-master} and \eqref{eq:b-beta-lerch}
+give a finite description of the cutoff generator for noninteger
+orders using ordinary polylogarithms, one depth-two polylogarithm,
+and two ordinary beta--Lerch transforms. No assumption that arbitrary
+complex orders have finite integer partial fractions is made.
+
+\subsection{Euler primitives}
+
+For a function vanishing at zero, define
+$\mathcal J f(z)=\int_0^z f(u)\dd u/u$ within the unit disk.
+Termwise integration yields, for every integer $\ell\ge0$,
+\begin{equation}\label{eq:euler-primitives}
+ \mathcal J^\ell G_{s,t}(z)
+ =\sum_{0\le m<n}\frac{(n-m)^2}{(n+1)^\ell}
+             w_m(s,1)w_n(t,1)z^{n+1}.
+\end{equation}
+At positive integer orders these remain finite combinations of
+depth-at-most-two polylogarithms and rational functions. One constructive
+proof uses \eqref{eq:inner-harmonic}: the coefficient is a rational
+function of $k=n+1$, times $H_k^{(p)}$, plus a rational function.
+Dividing by $k^\ell$ introduces only additional integer-order poles
+at $0,-1,-2$. Partial fractions reduce each term to one of
+\eqref{eq:harmonic-generators} with shifted orders, or to its finite
+index-shift analogues. Shifting $H_{k+c}^{(p)}$ changes it by a
+finite rational sum, so no further nested index is introduced.
+This proves closure under these primitives constructively; it does
+not assert a minimal transcendental basis at the endpoint.

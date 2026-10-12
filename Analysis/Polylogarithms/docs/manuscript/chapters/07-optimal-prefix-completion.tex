@@ -1,0 +1,650 @@
+\section{Harmonic-tail reconstruction and complete even-order prefixes}
+\label{opf:section}
+
+Gamma residue calculations naturally produce products of Hurwitz tails.
+Their centered even moments offer a second route to exact identities:
+first replace the moments by Bernoulli coordinates, then reconstruct the
+coordinates from a finite initial prefix. The determinant experiments in
+the preserved reports \cite{opf:reports} lead to a uniform proof for each
+fixed smaller order. We present the common reduction once. Complete
+certificates close smaller orders ten and twelve from those reports,
+and the independent extension below closes smaller order fourteen.
+
+\subsection{Centered continuation and the coefficient model}
+
+Fix integers $1\le a<b$, put $p=2a$, $q=2b$, and define
+\[
+ A_s(n)=\zeta(s,n+1)=\zeta(s)-H_n^{(s)},\qquad x_n=n+\tfrac12,
+ \qquad \mathcal D_{p,q}(w)=\sum_{n\ge0}A_p(n)A_q(n)x_n^{-w}.
+\]
+The defining half-plane is $\Re w>3-p-q$. The centered expansion
+\begin{equation}\label{opf:tail-expansion}
+ A_s(n)\sim\frac{x_n^{1-s}}{s-1}
+ +\sum_{h\ge1}\frac{B_{2h}(1/2)}{(2h)!}(s)_{2h-1}
+                                x_n^{1-s-2h}
+\end{equation}
+continues $\mathcal D$ by finitely many subtractions on every compact
+parameter set. Its possible poles are odd integers
+$3-p-q-2h$, so $D_r=\mathcal D_{p,q}(-2r)$ is regular for every
+integer $r\ge0$. Equivalently, $D_r$ is the constant coefficient in
+the full large-$N$ expansion of the partial sum through $n=N-1$.
+Indeed, every nondecaying subtraction is an even power of $x_n$,
+whose partial sum is an odd polynomial in $N$; its continued sum
+is $\zeta(-2h,1/2)=0$. This fixes the cutoff coordinate.
+
+Define the triangular transforms
+\begin{align}
+ C_j&=\sum_{r=0}^j\binom{2j+1}{2r}2^{-2(j-r)}D_r,
+ \label{opf:C}\\
+ D_r&=\sum_{j=0}^r\frac{\binom{2r}{2j}}{2j+1}
+                                  B_{2r-2j}(1/2)C_j.
+ \label{opf:D}
+\end{align}
+The Bernoulli generating function proves the inverse formula
+coefficientwise. Let $Z_k=\zeta(2k)$, $0\le k<b$, with $Z_0=-1/2$.
+For every $j\ge b$ the exact late-coordinate identity is
+\begin{equation}\label{opf:late}
+ C_j=\sum_{k=0}^{b-1}M_{j-b,k}Z_k,
+\end{equation}
+where, for all $t\ge0$ and $0\le k<b$,
+\begin{equation}\label{opf:M}
+ M_{tk}=B_{2(t+k-a+1)}
+ \left\{\frac{\binom{2t+2}{2a-2k}}{2t+2}
+ +\frac{\binom{2b+2t-2a+2}{2b-2k}}{2b+2t-2a+2}\right\}.
+\end{equation}
+Negative Bernoulli indices give zero. Each binomial summand is
+omitted unless its lower index lies between two and its upper index.
+In particular, a lower index zero is omitted. Write $M_{a,b}$ for
+the square block $0\le t,k<b$.
+
+Here is a direct analytic justification of \eqref{opf:late}. Put
+$h=2j+1$. Summation by parts at the finite cutoff gives
+\begin{align*}
+ C_j=\operatorname{CT}_{N}\biggl[&N^h A_p(N)A_q(N)
+ +\sum_{m=1}^N m^{h-q}A_p(m)
+ +\sum_{m=1}^N m^{h-p}A_q(m)
+ +\sum_{m=1}^N m^{h-p-q}\biggr].
+\end{align*}
+The two positive odd exponents $h-q,h-p$ permit Faulhaber expansion.
+For an odd positive integer $r$,
+\[
+ \sum_{m=1}^{n-1}m^r=
+ \frac1{r+1}\sum_{\ell=0}^{r}\binom{r+1}{\ell}B_\ell
+                                                  n^{r+1-\ell}.
+\]
+There is no additional constant term: the $B_{r+1}$ in the
+Bernoulli-polynomial formula cancels. The two $B_1=-1/2$ terms
+cancel the final harmonic sum. The even Bernoulli terms give
+exactly \eqref{opf:M}, including the omitted lower-index-zero terms.
+More explicitly, after that cancellation the endpoint remainder is
+\[
+ \begin{aligned}
+ &N^h A_p(N)A_q(N)+Q_{h-q}(N)A_p(N)+Q_{h-p}(N)A_q(N)\\
+ &\quad-\sum_{(s,r)=(p,h-q),(q,h-p)}\ \sum_{\substack{0\le\ell\le r\\\ell\text{ even}}}
+ \frac{\binom{r+1}{\ell}B_\ell}{r+1}A_{s-r-1+\ell}(N).
+ \end{aligned}
+\]
+Here tails with nonpositive even order mean their Hurwitz-polynomial
+continuations. This remainder has zero constant coefficient.
+To check this without discarding a finite counterterm, use its
+formal Euler--Maclaurin series: for even $s$,
+$\mathsf A_s(-N)=-\mathsf A_s(N)-N^{-s}$, and for odd $r$,
+$Q_r(-N)=Q_r(N)-N^r$, where $Q_r(N)=\sum_{m=1}^N m^r$.
+Substitution makes the combined remainder odd in $N$. These are
+identities of asymptotic Laurent series, not evaluations of the
+Hurwitz tail at a negative integer. A finite number of their terms
+suffices for every fixed $j$, by the remainder bound in
+\eqref{opf:tail-expansion}. Thus no divergent interchange is used.
+
+Before evaluating these coordinates, regard
+$C_0,\ldots,C_{b-1},Z_0,\ldots,Z_{b-1}$ as a formal rational
+coordinate list. The first $2b=q$ moment rows have determinant
+\begin{equation}\label{opf:prefix-determinant}
+ \det M_{a,b}/(4b-1)!!.
+\end{equation}
+This follows from the block diagonal matrix $\operatorname{diag}(I_b,M_{a,b})$
+for the $C$ rows and the diagonal entries $1/(2r+1)$ of
+\eqref{opf:D}. Formal coefficient rank is the claim being proved;
+it does not imply arithmetic independence of the evaluated constants.
+Every rational coefficient identity nevertheless remains valid after
+evaluation.
+
+\begin{theorem}[Effective eventual reconstruction]\label{opf:main}
+For every fixed integer $a\ge1$, a terminating exact algorithm
+constructs an integer $B_a$ for which $\det M_{a,b}\ne0$ at every
+integer $b\ge B_a$. Consequently the complete fixed-order prefix
+question reduces to the finite set $a<b<B_a$.
+\end{theorem}
+
+The following normalization and threshold proof are the common
+argument of the quartic reconstruction report \cite{opf:reports}.
+We retain the full scalar multiplier and finite Pad\'e calculation,
+which make the later certificates certificates of the original
+matrix rather than of an experimentally related surrogate.
+
+\subsection{Exact normalization of the retained determinant}
+
+Assume initially $b\ge2a$. For $0\le i,\ell<a$ define
+\[
+ n_i=b-a+i,\quad N_{i\ell}=2(n_i-\ell)+1,\quad
+ R_\ell=2b-2a+2+2\ell,
+\]
+\[
+ F_{i\ell}=\frac1{(2\ell+1)!}
+ \prod_{r=0}^{2\ell-1}(2n_i-r)(2n_i+3+r),
+\]
+and define integer-polynomial coefficients $d_{ih}$ by
+\begin{equation}\label{opf:newton}
+ (2n_i+2-y)(4n_i+2-y)^{\underline{2i}}
+       =\sum_{h=0}^{2i+1}d_{ih}y^{\underline h}.
+\end{equation}
+They lie in $\mathbb Z[b]$: the change of basis from ordinary
+powers to falling powers has integer Stirling-number coefficients.
+Let $U_1,\ldots,U_{2a-1}$ be independent variables and put
+\begin{equation}\label{opf:A}
+ \mathcal A_{i\ell}=2F_{i\ell}+
+ \frac{R_\ell!}
+ {(2n_i+1)(2n_i+2)(2\ell+2)!N_{i\ell}!}
+ \sum_{k=0}^{i}d_{i,2k+1}N_{i\ell}^{\underline{2k+1}}
+            U_{a-i+\ell+k}.
+\end{equation}
+The inherited reduction is the theorem ``Reduction to a determinant
+of size $a$,'' equation \texttt{eq:general-small-det}, in the source
+file \texttt{03b\_general\_hankel.tex}~\cite{dpm:reports,opf:reports}.
+We give its exact multiplier and the normalization argument, so
+that no nonvanishing statement about an uncomputed inverse matrix
+is needed.
+
+\begin{lemma}[Exact source-to-retained determinant multiplier]
+\label{opf:normalization}
+Put
+\[
+ h_n=\frac{((2n+1)!)^2}{(4n+2)!(4n+3)!},\qquad
+ c_n=\frac{(2n+1)(2n+2)!}{(4n+2)!},
+ \qquad \epsilon_{a,b}=a(b-a)+\frac{a(a-1)}2.
+\]
+For $b\ge2a$, with $U_j=2B_{2b-2j}$,
+\begin{equation}\label{opf:exact-multiplier}
+ \det M_{a,b}=(-1)^{\epsilon_{a,b}}
+ \frac{\prod_{t=0}^{b-1}(2b+2t-2a+1)!}
+      {\prod_{k=0}^{b-1}(2b-2k)!}
+ \left(\prod_{n=0}^{b-a-1}h_n\right)
+ \left(\prod_{i=0}^{a-1}c_{n_i}\right)\det\mathcal A.
+\end{equation}
+Every scalar factor other than the displayed sign is strictly
+positive. In particular,
+\begin{equation}\label{opf:equivalence}
+ \det M_{a,b}\ne0
+ \quad\Longleftrightarrow\quad
+ \det\mathcal A\bigl(b;2B_{2b-2},\ldots,2B_{2b-4a+2}\bigr)\ne0.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Set $\mu_j=B_{2j}/(2j)!$ for $j\ge0$ and $\mu_j=0$ for $j<0$.
+Cancelling factorials in \eqref{opf:M} gives
+\[
+ M_{a,b}=R(H+U^{\mathrm{pert}})E,
+ \quad R_{tt}=(2b+2t-2a+1)!,\quad E_{kk}=\frac1{(2b-2k)!},
+\]
+where $H_{tk}=\mu_{t+k-a+1}$ and
+\[
+ U^{\mathrm{pert}}_{tk}=\mathbf1_{k<a}\mu_{t+k-a+1}
+ \frac{(2t+1)!(2b-2k)!}
+ {(2a-2k)!(2b+2t-2a+1)!}.
+\]
+The diagonal symbols $R,E$ in this proof are matrices; $R_\ell$
+in \eqref{opf:A} is the previously defined integer.
+
+The explicit monic Pad\'e rows are
+\[
+ \pi_n(x)=\sum_{t=0}^np_{nt}x^t,\qquad
+ p_{nt}=\frac{2(2n+2t+1)!(2n+1)!}
+ {(4n+2)!(2n-2t+1)!(2t)!}.
+\]
+For $\mathcal N(x^r)=\mu_{r+1}$ they satisfy
+\begin{equation}\label{opf:pade-orthogonality}
+ \mathcal N(x^j\pi_n)=0\ (0\le j<n),\qquad
+ \mathcal N(x^n\pi_n)=h_n.
+\end{equation}
+Here is a finite verification of the normalization. Define
+\[
+ P_N(t)=\sum_{k=0}^N
+ \frac{(2N-k)!N!}{(2N)!k!(N-k)!}t^k.
+\]
+Direct coefficient comparison gives
+\[
+ e^tP_N(-t)-P_N(t)
+ =\frac{(-1)^N(N!)^2}{(2N)!(2N+1)!}t^{2N+1}
+       +O(t^{2N+2}).
+\]
+Indeed, the coefficients through $2N$ reduce to the finite identity
+$\sum_k(-1)^k\binom Nk(1+x)^{2N-k}=x^N(1+x)^N$;
+the next coefficient is
+$(2N)!^{-1}\int_0^1x^N(x-1)^N\,dx$.
+Taking $N=2n+1$, set
+\[
+ q_n(t^2)=\frac{P_N(t)-P_N(-t)}t,\qquad
+ r_n(t^2)=\frac{P_N(t)+P_N(-t)}2.
+\]
+For $\Phi(z)=\sum_{j\ge0}\mu_jz^j
+=\frac{\sqrt z}{2}\coth\frac{\sqrt z}{2}$ this proves
+\[
+ \Phi(z)q_n(z)-r_n(z)=h_nz^{2n+1}+O(z^{2n+2}),
+ \qquad \pi_n(x)=x^nq_n(1/x).
+\]
+Coefficient comparison proves \eqref{opf:pade-orthogonality};
+it also gives, for $n\ge\ell\ge0$,
+\begin{equation}\label{opf:constant-pade-row}
+ \sum_{t=0}^np_{nt}\mu_{t-\ell}=c_n
+ \frac1{(2\ell+1)!}
+ \prod_{r=0}^{2\ell-1}(2n-r)(2n+3+r).
+\end{equation}
+Specifically, this sum is $[z^{n-\ell}]r_n(z)$, and its
+factorial coefficient formula is the right side. Thus both
+$c_n$ and $h_n$ have been obtained without an assumed Pad\'e
+normality assertion.
+
+Replace row $n$ of $H+U^{\mathrm{pert}}$ by the linear combination
+with coefficients $p_{nt}$, for $0\le n<b$. This simultaneous
+transformation is unit lower triangular. In columns $k\ge a$ the
+result is $\mathcal N(x^{k-a}\pi_n)$. Hence the final $a$ rows
+vanish there, while the first $b-a$ rows in those columns form an
+upper triangular square matrix with diagonal
+$h_0,\ldots,h_{b-a-1}$. The retained $a$-square matrix is
+\[
+ A^{\mathrm{ret}}_{ik}=
+ \sum_{t=0}^{n_i}p_{n_it}\mu_{t+k-a+1}
+ \left(1+\frac{(2t+1)!(2b-2k)!}
+ {(2a-2k)!(2b+2t-2a+1)!}\right).
+\]
+Moving the first $a$ columns past the others contributes
+$(-1)^{a(b-a)}$. Reverse the retained columns, putting
+$\ell=a-1-k$, and divide row $i$ by $c_{n_i}$.
+This adds the determinant factor
+$(-1)^{a(a-1)/2}\prod_i c_{n_i}$.
+
+It remains to identify this divided matrix with \eqref{opf:A}.
+Its unperturbed entry is $F_{i\ell}$ by
+\eqref{opf:constant-pade-row}. Writing $n=n_i$, $N=N_{i\ell}$,
+and
+\[
+ W(j)=(j+2\ell+1)(2n+2\ell+j+1)^{\underline{2i}},\qquad
+ C=\frac{R_\ell!}{(2n+1)(2n+2)(2\ell+2)!N!},
+\]
+factorial cancellation gives the perturbation entry
+$2C\sum_{r=0}^{n-\ell}\binom N{2r}B_{2r}W(2r)$.
+Since $W(N-y)$ is exactly the polynomial in \eqref{opf:newton},
+use the finite identity
+\[
+ \sum_{j=0}^N\binom Nj B_j(N-j)^{\underline h}
+    =N^{\underline h}B_{N-h}(1).
+\]
+It follows immediately by taking $N^{\underline h}$ outside
+the binomial sum and using the defining translation formula for
+Bernoulli polynomials. Here $N\ge2i+3$, so all indices $N-h$
+are at least two. Only odd $h$ survive. Restoring the omitted
+$j=1$ term, with $B_1=-1/2$, gives
+\[
+ \sum_r\binom N{2r}B_{2r}W(2r)
+  =\sum_{k=0}^i d_{i,2k+1}N^{\underline{2k+1}}
+           B_{2b-2(a-i+\ell+k)}+\frac N2W(1).
+\]
+Finally, $CNW(1)=F_{i\ell}$ by factorial cancellation. The divided
+retained entry is therefore $2F_{i\ell}$ plus the Bernoulli term
+in \eqref{opf:A}. Restoring all row and column factors proves
+\eqref{opf:exact-multiplier}.
+\end{proof}
+
+For reference, the unperturbed base determinant has the exact
+normalization
+\begin{equation}\label{opf:base-determinant}
+ \det H=(-1)^{\epsilon_{a,b}}
+ \left(\prod_{n=0}^{b-a-1}h_n\right)
+ \left(\prod_{i=0}^{a-1}c_{n_i}\right)\det F\ne0.
+\end{equation}
+One can verify the last inequality without using it in the lemma.
+Conjugate $H$ by $\operatorname{diag}(1,-1,\ldots)$.
+Euler's Bernoulli formula shows that entries with $t+k\ge a$
+come from a strictly definite positive moment matrix,
+with sign $(-1)^a$. For $a=2h$ the resulting block matrix is
+$\left(\begin{smallmatrix}0&B\\B^{\mathsf T}&P\end{smallmatrix}\right)$,
+where $P$ is positive definite and $B$ has full row rank $h$.
+For $a=2h+1$ it is
+$\left(\begin{smallmatrix}ee^{\mathsf T}&B\\B^{\mathsf T}&-P\end{smallmatrix}\right)$,
+where $P$ is positive definite, $e=(0,\ldots,0,1)^{\mathsf T}$,
+and the first $h$ rows of $B$ have a nonsingular antitriangular
+minor. The Schur complements are respectively strictly negative
+and strictly positive. The inertia is $(b-h,h)$ in the even case
+and $(h+1,b-h-1)$ in the odd case. Together with
+\eqref{opf:base-determinant}, this also proves $\det F>0$.
+Strict positivity of the moment blocks follows from
+$\sum_{m\ge1}(2\pi m)^{-2s}P_0((2\pi m)^{-2})^2>0$ for a
+nonzero polynomial $P_0$ and $s\ge1$.
+
+\subsection{The general highest-degree determinant identity}
+
+All denominators can be cleared constructively. Set
+\begin{align*}
+ J_a(b)&=\prod_{i=0}^{a-1}(2n_i+1)(2n_i+2),\\
+ E_a(b)&=\prod_{i,\ell=0}^{a-1}
+           \prod_{r=1}^{\max\{0,2i-4\ell-1\}}(R_\ell+r),\\
+ D_a(b)&=(2a)!J_a(b)E_a(b),\qquad
+ e_a=\sum_{i,\ell=0}^{a-1}\max\{0,2i-4\ell-1\}.
+\end{align*}
+The symbols $E_a(b)$ and $D_a(b)$ here are auxiliary polynomials;
+they are unrelated to the moment coordinates.
+Because $N_{i\ell}-R_\ell=2i-4\ell-1$, the polynomial $D_a$
+clears every negative factorial ratio in \eqref{opf:A}, every
+row denominator, and every constant factorial denominator.
+Consequently
+\[
+ \widetilde{\mathcal A}=D_a\mathcal A
+       \in\mathbb Z[b,U_1,\ldots,U_{2a-1}]^{a\times a},
+ \qquad \mathsf P_a=\det\widetilde{\mathcal A}
+       \in\mathbb Z[b,U_1,\ldots,U_{2a-1}].
+\]
+Also $D_a(b)>0$ for $b\ge2a$.
+
+Put
+\[
+ F_0=(2b-4a+2)!,\qquad
+ V_j=U_j\frac{F_0}{(2b-2j)!},\qquad
+ \kappa_a=\frac{a!((2a)!)^a}{\prod_{\ell=0}^{a-1}(2\ell+2)!},
+\]
+and
+\begin{align}
+ \Gamma_a(b)={}&\kappa_aJ_a(b)^{a-1}E_a(b)^a
+ \prod_{i=0}^{a-1}(4n_i+2)^{\underline{2i}}
+ \prod_{\ell=0}^{a-1}\prod_{r=1}^{2a+2\ell}(2b-4a+2+r).
+ \label{opf:Gamma}
+\end{align}
+The subscript $[a]$ denotes the part homogeneous of total degree
+$a$ in the $U$ variables. The exact factorization is
+\begin{equation}\label{opf:leading}
+ (\mathsf P_a)_{[a]}
+ =(-1)^{a(a+1)/2}\Gamma_a(b)
+           \det(V_{i+j+1})_{0\le i,j<a}.
+\end{equation}
+To prove it, write $T=\mathcal A-2F$ and substitute the $V$ variables.
+For the term $U_{a-i+\ell+k}$,
+$N_{i\ell}-(2k+1)=2b-2(a-i+\ell+k)$, so all nonconstant
+factorials cancel. Exactly as in the order-eight proof,
+\[
+ T=\operatorname{diag}\!\left(\frac1{(2n_i+1)(2n_i+2)}\right)
+    L\,(V_{a-i+\ell})_{0\le i,\ell<a}
+    \operatorname{diag}\!\left(\frac{R_\ell!}{F_0(2\ell+2)!}\right),
+\]
+where $L_{i,i-k}=d_{i,2k+1}$ and
+$d_{i1}=-(i+1)(4n_i+2)^{\underline{2i}}$.
+The $a$ diagonal signs of $L$, together with row reversal of the
+middle matrix, give $(-1)^{a(a+1)/2}$. The remaining products are
+precisely \eqref{opf:Gamma} after multiplication by $D_a^a$.
+This proves \eqref{opf:leading} for every $a$, without evaluating
+any large determinant experimentally.
+
+At $U_j=2B_{2b-2j}$, Euler's Bernoulli formula gives
+\begin{equation}\label{opf:actual-leading}
+ \left|(\mathsf P_a)_{[a]}\right|
+ =\frac{\Gamma_a(b)(4F_0)^a}{(2\pi)^{2a(b-a)}}
+   \det\bigl(\zeta(2b-4a+2+2i+2j)\bigr)_{0\le i,j<a}.
+\end{equation}
+Its sign is $(-1)^{ab+a(a+1)/2}$. Define the positive rational
+number
+\[
+ V_a=\prod_{1\le r<s\le a}(r^{-2}-s^{-2})^2,
+ \qquad V_1=1.
+\]
+Keeping the first $a$ support points in Cauchy--Binet proves
+\begin{equation}\label{opf:moment-lower}
+ \det\bigl(\zeta(2b-4a+2+2i+2j)\bigr)
+       \ge V_a(a!)^{-2b+4a-2}>0.
+\end{equation}
+Thus the highest-degree term is always nonzero in the stated range.
+
+\subsection{An exact algorithm for a sufficient threshold}
+
+Let $\|f\|_1$ denote the sum of the absolute values of all integer
+coefficients of a polynomial in $b,U_1,\ldots,U_{2a-1}$. Compute
+\[
+ E_a^*=\max_{0\le i,\ell<a}\|
+                  \widetilde{\mathcal A}_{i\ell}\|_1,
+ \qquad K_a=a!(E_a^*)^a,
+ \qquad g_a=6a^2-4a+ae_a.
+\]
+These are finite integer calculations on only $a^2$ explicitly given
+entries; no expansion of the whole determinant is required.
+The coefficient norm is submultiplicative, so the full coefficient
+norm of $\mathsf P_a$ is at most $K_a$.
+
+Each scaled entry has degree at most $6a+e_a-4$ in $b$.
+For the nonconstant part this follows from
+$\deg_b d_{ih}\le2i+1-h$, the degree $h$ of
+$N_{i\ell}^{\underline h}$, and the degree difference
+$R_\ell-N_{i\ell}=1+4\ell-2i$; the total bound is
+$\deg D_a+4\ell$. The same bound holds for $D_aF_{i\ell}$.
+Hence $\deg_b\mathsf P_a\le g_a$.
+The factored polynomial \eqref{opf:Gamma} also has degree exactly
+$g_a$. Every linear factor in it is at least $b$ when $b\ge4a$,
+so
+\[
+ \Gamma_a(b)\ge\kappa_a b^{g_a}\quad(b\ge4a).
+\]
+
+For $b\ge4a+10$, define
+\[
+ T_{a,b}=\frac{8(2b)^{4a-4}F_0}{(2\pi)^{2b-4a+2}}\ge1.
+\]
+For the last inequality, put $s_0=2b-4a+2\ge26$;
+$26!>8^{26}$ implies $s_0!>8^{s_0}$ by induction,
+and $2\pi<8$.
+As before, $|2B_{2b-2j}|\le T_{a,b}$ for $1\le j\le2a-1$.
+Since the remaining terms have total $U$ degree at most $a-1$,
+\[
+ |(\mathsf P_a)_{[\le a-1]}|
+      \le K_a b^{g_a}T_{a,b}^{a-1}.
+\]
+Combining this with \eqref{opf:actual-leading} and
+\eqref{opf:moment-lower}, cancelling the common powers of $2\pi$,
+and then using $1<2\pi<8$, gives
+\begin{equation}\label{opf:bound}
+ \frac{|(\mathsf P_a)_{[\le a-1]}|}{|(\mathsf P_a)_{[a]}|}
+ \le R_a(b):=C_a\frac{b^{L_a}(8a!)^{2b}}{(2b-4a+2)!},
+\end{equation}
+where every constant is explicit and rational:
+\begin{align}
+ L_a&=4(a-1)^2,\qquad \chi_a=2a^2-6a+2,\notag\\
+ C_a&=\frac{K_a\,8^{a-1+\max(\chi_a,0)}2^{L_a}}
+ {\kappa_a4^aV_a(a!)^{4a-2}}.
+ \label{opf:constant}
+\end{align}
+The use of $8^{\max(\chi_a,0)}$ also covers $a=1,2$, where
+$\chi_a$ is negative.
+
+Here is a terminating purely arithmetic prescription. Start at
+\[
+ B_a^{(0)}=\max\{4a+10,\ L_a,\ 16a!\},
+\]
+and increase the integer $b$ until the exact rational comparison
+$R_a(b)<1$ holds. Define $B_a$ to be that first integer. The procedure
+must terminate, because for every $b\ge B_a^{(0)}$,
+\[
+ \frac{R_a(b+1)}{R_a(b)}
+ =\left(1+\frac1b\right)^{L_a}
+ \frac{(8a!)^2}{(2b-4a+4)(2b-4a+3)}<\frac34.
+\]
+Indeed $b\ge L_a$ gives $(1+1/b)^{L_a}<3$,
+$b\ge4a$ makes both denominator factors at least $b$, and
+$b\ge16a!$ supplies the last numerical factor.
+The comparison uses integer factorials and powers after clearing
+the fixed rational denominator of $C_a$.
+
+For every $b\ge B_a$, \eqref{opf:bound} is strictly less than one,
+so the highest-degree term cannot be cancelled. Equations
+\eqref{opf:equivalence} and $D_a(b)>0$ prove
+Theorem~\ref{opf:main}. In particular, for each input $a$ one may
+inspect the finite set $a<b<B_a$ exactly: this either proves the
+entire fixed-order family or produces a genuine counterexample.
+The construction does not perform those finite calculations for all
+$a$, and does not settle the unrestricted conjecture.
+
+
+\subsection{Complete smaller orders ten, twelve and fourteen}
+
+\begin{theorem}[Three complete fixed-order families]\label{opf:complete}
+For $a\in\{5,6,7\}$ and every integer $b>a$, $\det M_{a,b}\ne0$.
+For every even $q>p$ with $p\in\{10,12,14\}$, the first $q$
+centered moments $D_0,\ldots,D_{q-1}$ therefore have formal rank $q$.
+Every later $D_r$ is an explicitly constructible rational combination
+of that same prefix.
+\end{theorem}
+
+\begin{proof}
+The eventual theorem gives sufficient thresholds
+$B_5=1920$, $B_6=11520$, and $B_7=80640$.
+For $a=7$, exact expansion of the $49$ scaled entries in
+\eqref{opf:A} gives $e_7=56$, $g_7=658$, $L_7=144$, and
+\[
+ E_7^*<2^{315}.
+\]
+The stored exact rational comparison \eqref{opf:bound} is less than one
+already at $B_7^{(0)}=16\cdot7!=80640$. The complete coefficient
+construction, factorial cancellations and comparison are regenerated
+by \path{verification/prefix-order-fourteen/eventual_threshold.py}.
+For $a=6$ the boundary-product report also proves the simpler
+entry bound $E_6^*<2^{512}$ by counting factors in the scaled entries.
+Substituting that bound in \eqref{opf:constant} gives the same
+sufficient $B_6=11520$; its exact integer comparison is retained
+with the full replay. These calculations instantiate the written
+infinite theorem; they do not infer it from samples.
+
+At order ten, the alternating-tail certificate proves the uniform
+congruence $2B_{2m}\equiv\mathcal B(m)\pmod{2^{16}}$ for $m\ge12$,
+where
+\[
+ \mathcal B(m)=1+20068m-26384m^2+2816m^3-19712m^4
+                                      +4096m^5-24576m^6.
+\]
+For completeness, this uniform congruence comes from Faulhaber's
+identity for the sum of $2m$th powers below $256$. The $h=2$
+correction vanishes, and the corrections $h\ge3$ have valuation
+at least $8h-v_2(h)-1\ge23$, using the standard Bernoulli
+denominator bound $v_2(B_{2r})\ge-1$.
+After division by $128$, the even summands vanish when $m\ge12$.
+For odd $v$, expand $v^{2m}=(1+(v^2-1))^m$; since $8\mid v^2-1$,
+terms beyond degree seven vanish at the required precision.
+Exact coefficient comparison of
+$128^{-1}\sum_{v=1,3,\ldots,255}\sum_{j=0}^7
+\binom{X}{j}(v^2-1)^j$ gives $\mathcal B(X)$ modulo $2^{16}$,
+with rational coefficient valuations checked before any reduction.
+
+Let $P_{10}(b;U)$ be the normalized integral numerator of
+$\det\mathcal A/\det F$ fixed by the preserved 439-group
+coefficient certificate. Its defining identity is
+\[
+ \frac{\det\mathcal A}{\det F}
+ =\frac{P_{10}(b;U)}{138240(2b-7)(2b-5)D_{10}(b)},
+\]
+where the integer polynomial $D_{10}$ is specified by
+\begin{align*}
+ \det F={}&\frac{16384}{4465125}(b-3)(b-2)^2(b-1)
+                  (2b-7)(2b-5)^2(2b-3)\\
+ &\cdot(4b-15)(4b-13)(4b-11)^2(4b-9)^2\\
+ &\cdot(4b-7)^2(4b-5)(4b-3)D_{10}(b).
+\end{align*}
+The finite coefficient verification clears row denominators, sums
+all $120$ signed permutation products and checks this defining
+identity coefficientwise. It also checks that $D_{10}(b)$ is odd
+at every integer $b$, and the other displayed factors are nonzero
+for $b\ge10$. Its finite polynomial numerator substitution is
+$P_{10}(b;\mathcal B(b-1),\ldots,\mathcal B(b-9))
+\equiv32R(b)\pmod{2^{16}}$, with
+\begin{align*}
+ R(b)={}&-512b^8+128b^7-928b^6-816b^5+464b^4\\
+        &+352b^3+118b^2+217b+694.
+\end{align*}
+The finite determinant expansion preserves all $10403$ coefficients.
+Every coefficient beyond the linear one is even and that linear
+coefficient is odd, so $v_2(R(x)-R(y))=v_2(x-y)$. The unique root
+modulo $2048$ is $962$. Thus, for $b\ge21$ outside that class,
+the numerator is nonzero. Exact source matrices cover $6\le b\le20$.
+The only remaining integer below $1920$ is $962$. The
+boundary-product report computes
+\[
+ \det\mathcal A(5,962)\equiv60407\pmod{65537},\qquad
+ \det M_{5,962}\equiv15578\pmod{65537}.
+\]
+All factorial and Bernoulli denominators are units at that prime.
+Our independent rational reconstruction additionally checks the
+five-square matrix, both inverse products, and its nonzero determinant;
+a separate Wolfram calculation confirms every rational entry and
+the determinant. The congruence proof, exceptional certificate and
+eventual theorem cover every $b\ge6$. The two order-ten completions
+in the newer reports retain credit for this synthesis.
+
+At order twelve, the complete certificate gives nonzero residues
+modulo the prime $65537$ for all $11513$ integers $7\le b\le11519$.
+At order fourteen, our certificate gives nonzero residues modulo
+the prime $7340033$ for all $80632$ integers $8\le b\le80639$.
+In each case use the original $b$-square matrix for $b<2a$ and
+\eqref{opf:A} otherwise. The prime exceeds every factorial index
+and every cleared denominator occurring in this finite range;
+Bernoulli numbers are computed as the coefficients of
+$t/(e^t-1)$ over the field. A nonzero modular determinant therefore
+proves the corresponding rational determinant is nonzero.
+Together with \eqref{opf:exact-multiplier} and the eventual ranges,
+this covers every integer $b>a$ in all three cases.
+
+For reproducibility, the order-twelve full replay freshly builds
+the native C++ verifier and compares its entire residue list with
+the independent Python implementation. The order-fourteen replay
+computes all $161281$ Bernoulli coefficients twice, using FLINT
+series inversion and exact integer Kronecker convolution with a
+complete product identity. Its native forward-difference/Gaussian
+elimination determinants agree on every case with a separate
+symbolic Stirling construction and division-free subset expansion.
+All convolution and signed integer accumulation bounds are checked
+before use; no floating-point rank or determinant enters the proof.
+The complete residue lists and source programs are preserved.
+Finally, \eqref{opf:late} and \eqref{opf:D} reconstruct every later
+moment from the now invertible prefix.
+\end{proof}
+
+\subsection{Ordinary convergent identities from the reconstructed coordinates}
+
+The rank result has an analytic payoff at every larger even order.
+For any pair covered by Theorem~\ref{opf:complete} and $0\le k<b$, set
+\begin{align}
+ P_{a,b,k}(x)&=\sum_{t=0}^{b-1}(M_{a,b}^{-1})_{kt}
+ \bigl\{(x+\tfrac12)^{2b+2t+1}-(x-\tfrac12)^{2b+2t+1}\bigr\}
+ =\sum_{r=0}^{2b-1}w_{a,b,k,r}x^{2r},\label{opf:weight}\\
+ s_{p,0}&=1/(p-1),\qquad
+ s_{p,h}=B_{2h}(1/2)(p)_{2h-1}/(2h)!\quad(h\ge1),\notag\\
+ \alpha_h&=\sum_{v=0}^h s_{p,v}s_{q,h-v},\notag\\
+ S_{a,b,k}(x)&=\sum_{r=a+b-1}^{2b-1}w_{a,b,k,r}
+           \sum_{h=0}^{r-a-b+1}\alpha_h x^{2(r-a-b+1-h)}.
+ \label{opf:subtraction}
+\end{align}
+Then the following are ordinary absolutely convergent sums:
+\begin{equation}\label{opf:ordinary}
+ \boxed{\sum_{n\ge0}\left\{
+ P_{a,b,k}(x_n)\frac{\psi^{(p-1)}(n+1)\psi^{(q-1)}(n+1)}
+                         {(p-1)!(q-1)!}-S_{a,b,k}(x_n)
+                    \right\}=\zeta(2k).}
+\end{equation}
+Indeed, \eqref{opf:subtraction} removes every nondecaying term
+of the centered product expansion, leaving $O(x_n^{-2})$.
+The polynomial difference in \eqref{opf:weight} is exactly the
+$C$ transform, and the inverse matrix makes its continued sum $Z_k$.
+Each subtracted even monomial has zero centered continued sum,
+so the remaining ordinary sum has that same value. For even $p$,
+$\psi^{(p-1)}(n+1)=(p-1)!A_p(n)$, which gives the displayed form.
+This construction supplies exact identities with rational finite
+counterterms for all the stated pairs, including smaller order fourteen.
+
+The unrestricted prefix conjecture still requires every fixed
+$a\ge8$ finite completion (and any other unaccepted smaller-order
+branches). No arithmetic independence or Gaussian period identity
+follows from the coefficient theorem. The proof combines a written
+analytic reduction, an infinite nonvanishing argument, and complete
+exact finite certificates, with distinct roles for each.

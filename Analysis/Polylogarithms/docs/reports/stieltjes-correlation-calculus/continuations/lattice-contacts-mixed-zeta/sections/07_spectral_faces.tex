@@ -1,0 +1,764 @@
+% Self-contained article sections.  Standard packages: amsmath, amssymb,
+% amsthm, mathtools.  Standard theorem environments are used.
+% Macros expected from parent: \Li, \dd, \ii, \Ree, \C, \N.
+% No additional custom macros are required.  Labels use the prefix sfj:.
+
+\section{Exact coefficients for every spectral face}
+\label{sfj:sec:faces}
+
+The newest incoming spectral-face report gives an all-order common-ray
+formula and asks, at the end of its spectral section, for complete
+collision coefficients and independently variable spectral orders
+\cite{RepoBernoulli}.  We answer both questions.  A further
+specialization evaluates every face with just one displaced mass by
+an ordinary series of \emph{depth-two} polylogarithms.  The classical
+Dirichlet integral, Gamma product, and polylogarithm differentiation
+identities are ingredients, not novelty claims
+\cite{Carlson,DLMF}.
+
+\subsection{The inherited face normalization}
+
+Let $k\ge2$, let $b_1,\ldots,b_k$ be real, and let
+\[
+ \Sigma_k=\{t_i\ge0:\ t_1+\cdots+t_k=1\}.
+\]
+The measure is $dt_1\cdots dt_{k-1}$, with the last coordinate
+eliminated.  For a nonempty subset $T\subseteq\{1,\ldots,k\}$ put
+\[
+ t_T=\sum_{i\in T}t_i,\qquad
+ b_T=\frac{\sum_{i\in T}t_i b_i}{t_T}.
+\]
+The perspective $t_TF(b_T)$ is filled by zero when $t_T=0$.  Define
+\begin{align}
+ \mathcal H_k(F;t)&=
+ \sum_{\varnothing\ne T\subseteq\{1,\ldots,k\}}
+       (-1)^{k-|T|}t_TF(b_T),\label{sfj:eq:face}\\
+ I_k(F;b_1,\ldots,b_k)&=
+ \int_{\Sigma_k}\mathcal H_k(F;t)\frac{dt}{t_1\cdots t_k}.
+ \label{sfj:eq:I}
+\end{align}
+The notation $I_J$ denotes the same construction with the labels in a
+subset $J$.  This is exactly the predecessor's face normalization; in
+particular no Euclidean surface-area factor is inserted.
+
+For $F\in C^1([\min b_i,\max b_i])$, the integral is ordinary and
+absolutely convergent.  Indeed the perspective is Lipschitz on its
+nonnegative coordinate cone, because
+\[
+ \partial_{t_i}\{t_TF(b_T)\}
+      =F(b_T)+F'(b_T)(b_i-b_T)\quad(i\in T).
+\]
+Terms cancel in pairs when any coordinate is zero.  Consequently
+$|\mathcal H_k(F;t)|\le C\min_i t_i$.  On a region where one
+coordinate is maximal, it is at least $1/k$ and
+$\min_i t_i\le(\prod_{i\ne i_{\max}}t_i)^{1/(k-1)}$.
+This also proves that
+\begin{equation}\label{sfj:eq:normal-face-domain}
+ \int_{\Sigma_k}\mathcal H_k(F;t)\prod_i t_i^{\alpha_i-1}\,dt
+ \quad\hbox{is holomorphic if}\quad
+ \Ree\alpha_i>-\frac1{k-1}\ \hbox{for every }i,
+\end{equation}
+with locally normally convergent logarithmic derivatives.  These
+elementary estimates justify every face integral used below.  Constants
+and affine functions are annihilated by $\mathcal H_k$.
+
+\subsection{A finite harmonic formula at every polynomial degree}
+
+For $m\ge2$ and $\ell\ge0$ define
+\begin{equation}\label{sfj:eq:complete-harmonic}
+ \mathfrak h_\ell(m)
+  =[v^\ell]\prod_{j=1}^{m-1}(1-v/j)^{-1}.
+\end{equation}
+Thus $\mathfrak h_\ell(m)$ is the complete homogeneous polynomial
+of degree $\ell$ in $1,1/2,\ldots,1/(m-1)$.  In the usual generalized
+harmonic notation, its first values are
+\[
+ 1,\qquad H_{m-1},\qquad
+ \frac{H_{m-1}^2+H_{m-1}^{(2)}}2,\qquad
+ \frac{H_{m-1}^3+3H_{m-1}H_{m-1}^{(2)}+2H_{m-1}^{(3)}}6.
+\]
+It is also the weakly ordered harmonic sum
+$H_{m-1}^{\star}(\{1\}^{\ell})$.
+
+\begin{theorem}[Every monomial face integral]
+\label{sfj:thm:monomial}
+Let $k\ge2$ and $m\ge2$.  For a vector
+$\boldsymbol h=(h_1,\ldots,h_k)\in\N_0^k$ let
+$d(\boldsymbol h)=|\{i:h_i>0\}|$.  Then
+\begin{equation}\label{sfj:eq:monomial}
+ \boxed{\displaystyle
+ I_k(B\mapsto B^m;\boldsymbol b)
+  =m\!\sum_{h_1+\cdots+h_k=m}
+   (-1)^{k-d}(k-d)!\,\mathfrak h_{k-d}(m)
+                  \prod_{h_i>0}\frac{b_i^{h_i}}{h_i}.}
+\end{equation}
+The right side is a finite symmetric polynomial with rational
+coefficients.  The formula extends to complex $b_i$ as a polynomial
+identity.
+\end{theorem}
+
+\begin{proof}
+The perspective is homogeneous of degree one.  Radial integration
+therefore gives
+\[
+ I_k(F;\boldsymbol b)=
+ \int_{(0,\infty)^k} e^{-\sum_i t_i}
+            \mathcal H_k(F;t)\frac{dt_1\cdots dt_k}{\prod_i t_i};
+\]
+the radial factor is $\int_0^\infty e^{-\rho}\,d\rho=1$.
+For a monomial of degree $m\ge2$, use
+\[
+ t_T b_T^m=\frac{(\sum_{i\in T}t_i b_i)^m}{t_T^{m-1}},\qquad
+ t_T^{1-m}=\frac1{(m-2)!}\int_0^\infty
+                      v^{m-2}e^{-vt_T}\,dv.
+\]
+Fix a monomial vector $\boldsymbol h$ with support $U$ and $d=|U|$.
+The alternating sum over $T\supseteq U$ is
+\[
+ e^{-v\sum_{i\in U}t_i}
+             \prod_{j\notin U}(e^{-vt_j}-1).
+\]
+Integrating the active and inactive coordinates respectively gives
+\[
+ \frac{\Gamma(h_i)}{(1+v)^{h_i}},\qquad
+ \int_0^\infty e^{-t}\frac{e^{-vt}-1}{t}\,dt=-\log(1+v).
+\]
+The last identity follows by differentiating in $v$ and fixing the
+value at zero.  Every resulting term is absolutely integrable: its
+remaining majorant is a constant times
+$v^{m-2}(1+v)^{-m}\log^{k-d}(1+v)$.  Thus the use of Fubini is
+legitimate after the finite inclusion--exclusion has been combined.
+We obtain
+\begin{align*}
+ I_k(B^m;\boldsymbol b)
+  =m(m-1)\sum_{|\boldsymbol h|=m}
+     (-1)^{k-d}\prod_{h_i>0}\frac{b_i^{h_i}}{h_i}
+       \int_0^\infty
+        \frac{v^{m-2}\log^{k-d}(1+v)}{(1+v)^m}\,dv.
+\end{align*}
+On setting $x=(1+v)^{-1}$, the integral becomes
+\[
+ \int_0^1(1-x)^{m-2}(-\log x)^{\ell}\,dx
+       =\frac{\ell!}{m-1}\mathfrak h_\ell(m),\qquad \ell=k-d.
+\]
+To verify the last equality, expand the elementary beta integral
+\[
+ \int_0^1x^u(1-x)^{m-2}\,dx
+ =\frac1{m-1}\prod_{j=1}^{m-1}(1+u/j)^{-1}
+\]
+at $u=0$.  Substitution proves the stated formula.
+\end{proof}
+
+At $m=2$, Theorem~\ref{sfj:thm:monomial} reduces to the predecessor's
+factorial variance identity
+\begin{equation}\label{sfj:eq:quadratic}
+ I_k(B^2;\boldsymbol b)
+   =(-1)^{k-1}(k-2)!\sum_{i<j}(b_i-b_j)^2.
+\end{equation}
+The new formula supplies every degree beyond that quadratic term.  For
+example,
+\begin{equation}\label{sfj:eq:three-polynomials}
+ I_3(B^2;0,1,2)=6,\qquad I_3(B^3;0,1,2)=18,\qquad
+ I_3(B^4;0,1,2)=\frac{97}{2},\qquad
+ I_3(B^5;0,1,2)=\frac{245}{2}.
+\end{equation}
+
+\subsection{Complete convergent collision expansions}
+
+\begin{corollary}[All collision coefficients]
+\label{sfj:cor:collision}
+Suppose $F$ is holomorphic on $|z-B|<R$ and let
+$M=\max_i|\beta_i|$.  For $|\epsilon|M<R$,
+\begin{equation}\label{sfj:eq:collision}
+ I_k(F;B+\epsilon\beta_1,\ldots,B+\epsilon\beta_k)
+  =\sum_{m=2}^\infty
+       \frac{F^{(m)}(B)}{m!}\epsilon^m
+                     I_k(B^m;\boldsymbol\beta),
+\end{equation}
+normally on compact subsets of this disk.  Every coefficient is given
+by the finite harmonic formula \eqref{sfj:eq:monomial}.
+\end{corollary}
+\begin{proof}
+The constant and affine Taylor terms vanish.  On each smaller closed
+disk, the Taylor series and its first derivative converge uniformly.
+The boundary estimate preceding \eqref{sfj:eq:normal-face-domain}
+is a continuous $C^1$ estimate and permits termwise integration.
+Cauchy estimates on an intermediate disk give a geometric majorant,
+including the harmless linear factor in $m$ from the derivative.
+\end{proof}
+
+The Gamma example is especially explicit.  For $a>0$ and $B\ge0$ put
+\begin{align}
+ G_a(B)&=\log\Gamma(a+\ii\sqrt B)
+          +\log\Gamma(a-\ii\sqrt B)-\log(2\pi),
+                    \label{sfj:eq:gammaG}\\
+ R_m(a;B)&=\sum_{n=0}^\infty\bigl((n+a)^2+B\bigr)^{-m}.
+                    \label{sfj:eq:resolvent}
+\end{align}
+The Gamma logarithms are analytic logarithms continued from positive
+real arguments.  The paired function is analytic as a function of
+$B$ on the disk of radius $a^2+B_0$ about any $B_0\ge0$.  The
+Gamma product, or differentiation of its normally convergent logarithmic
+difference, gives
+\begin{equation}\label{sfj:eq:gamma-derivatives}
+ G_a^{(m)}(B)=(-1)^m(m-1)!R_m(a;B),\qquad m\ge1.
+\end{equation}
+Consequently
+\begin{equation}\label{sfj:eq:gamma-collision}
+ \boxed{\displaystyle
+ I_k(G_a;B+\epsilon\boldsymbol\beta)
+   =\sum_{m=2}^\infty\frac{(-1)^m\epsilon^m}{m}
+                  R_m(a;B)I_k(B^m;\boldsymbol\beta),
+ \quad |\epsilon|M<a^2+B.}
+\end{equation}
+At $B=0$ the resolvent is simply $\zeta(2m,a)$.  For instance,
+\begin{equation}\label{sfj:eq:gamma-three-example}
+ I_3(G_a;0,\epsilon,2\epsilon)
+   =3\zeta(4,a)\epsilon^2-6\zeta(6,a)\epsilon^3
+       +\frac{97}{8}\zeta(8,a)\epsilon^4
+       -\frac{49}{2}\zeta(10,a)\epsilon^5+\cdots,
+ \qquad 2|\epsilon|<a^2.
+\end{equation}
+The positive integer resolvents themselves have a finite polygamma
+description.  For $B>0$,
+\begin{equation}\label{sfj:eq:resolvent-digamma}
+ R_1(a;B)=
+ \frac{\psi(a+\ii\sqrt B)-\psi(a-\ii\sqrt B)}{2\ii\sqrt B},
+ \qquad
+ R_m(a;B)=\frac{(-1)^{m-1}}{(m-1)!}
+                 \partial_B^{m-1}R_1(a;B).
+\end{equation}
+Their apparent singularities at $B=0$ are removable.
+
+\subsection{All logarithmic face moments have a rational compiler}
+
+For independent parameters $\alpha_1,\ldots,\alpha_k$ define
+\[
+ A=\sum_i\alpha_i,\qquad
+ Q_k(\boldsymbol\alpha)=
+       \frac{\Gamma(1+A)}{\prod_i\Gamma(1+\alpha_i)},\qquad
+ K_{k,m}(\boldsymbol\alpha;\boldsymbol b)
+   =Q_k(\boldsymbol\alpha)
+       \int_{\Sigma_k}\mathcal H_k(B^m;t)
+                                      \prod_i t_i^{\alpha_i-1}\,dt.
+\]
+For an increment $v$, let
+$\Delta_v f(y)=(f(y+v)-f(y))/v$, with $\Delta_0f=f'$.
+
+\begin{theorem}[Rational normalized face moments]
+\label{sfj:thm:rational}
+Let $m\ge2$ and $f_m(y)=(1+y)_{m-1}^{-1}$.  For
+$U=\{i:h_i>0\}$, write $A_U=\sum_{i\in U}\alpha_i$.  Then
+\begin{equation}\label{sfj:eq:rational}
+ \boxed{\displaystyle
+ K_{k,m}=m!\sum_{|\boldsymbol h|=m}
+  \left(\prod_{i=1}^k\frac{b_i^{h_i}}{h_i!}\right)
+  \left(\prod_{i\in U}(1+\alpha_i)_{h_i-1}\right)
+  \left(\prod_{j\notin U}\Delta_{\alpha_j}\right)f_m(A_U).}
+\end{equation}
+In particular this Gamma-normalized integral is a rational function of
+all the spectral parameters, holomorphic in a neighborhood of zero.
+Its Taylor coefficients give all its logarithmically weighted face
+moments by finite rational algebra.  Removing $Q_k$ introduces only
+the finite zeta coefficients in the Taylor series of $\log\Gamma$.
+\end{theorem}
+\begin{proof}
+Repeat the orthant proof of Theorem~\ref{sfj:thm:monomial} with powers
+$t_i^{\alpha_i-1}$.  The radial factor is $\Gamma(1+A)$, and the
+normalization leaves division by $\prod_i\Gamma(1+\alpha_i)$.
+For $i\in U$ the coordinate integral contributes
+$(1+\alpha_i)_{h_i-1}(1+v)^{-h_i-\alpha_i}$.  For $j\notin U$
+it contributes
+$((1+v)^{-\alpha_j}-1)/\alpha_j$.
+After $x=(1+v)^{-1}$, the remaining integral is
+\[
+ \int_0^1(1-x)^{m-2}x^{A_U}
+            \prod_{j\notin U}\frac{x^{\alpha_j}-1}{\alpha_j}\,dx.
+\]
+It equals
+$(m-2)!\,(\prod_{j\notin U}\Delta_{\alpha_j})f_m(A_U)$ by the
+ordinary beta integral.  This proves the formula first where the
+coordinate integrations are absolute.  The face estimate and the
+removable finite differences extend both sides holomorphically to
+zero.  At zero, $f_m^{(\ell)}(0)=
+(-1)^\ell\ell!\mathfrak h_\ell(m)/(m-1)!$, which recovers
+\eqref{sfj:eq:monomial} independently.
+\end{proof}
+
+\section{A depth-two polylogarithm evaluation of every repeated-mass face}
+\label{sfj:sec:polylog}
+
+The general collision expansion has a stronger closed consequence when
+all but one mass agree.  It holds at arbitrary nonnegative displacement,
+beyond the disk used by the collision series.
+
+\begin{lemma}[One-dimensional reduction of a repeated-mass face]
+\label{sfj:lem:repeated}
+Let $F\in C^2([B,B+\delta])$, where $\delta\ge0$.  For $k\ge2$,
+\begin{equation}\label{sfj:eq:one-dimensional}
+ \boxed{\displaystyle
+ I_k(F;\underbrace{B,\ldots,B}_{k-1},B+\delta)
+  =(-1)^{k-1}\int_0^1
+   \frac{d}{dt}\left\{\frac{F(B+\delta t)-F(B)}t\right\}
+                            [-\log(1-t)]^{k-1}\,dt.}
+\end{equation}
+The quotient is filled by its limiting value at zero; the integral is
+ordinary and absolutely convergent.
+\end{lemma}
+\begin{proof}
+After translating $B$ and scaling $\delta$, it suffices to check a
+polynomial $F$.  Constants and affine terms vanish on both sides.
+For $F(t)=t^m$, $m\ge2$, only the composition supported on the single
+nonzero mass survives in \eqref{sfj:eq:monomial}; its value is
+$(-1)^{k-1}(k-1)!\mathfrak h_{k-1}(m)$.  The right side gives
+\[
+ (-1)^{k-1}(m-1)\int_0^1
+           t^{m-2}[-\log(1-t)]^{k-1}\,dt,
+\]
+which has exactly the same value by the beta coefficient calculation.
+For general $C^2$ functions, approximate $F''$ uniformly by
+polynomials and integrate twice, preserving $F(B)$ and $F'(B)$.
+The face estimate gives continuity of the left side in the $C^1$
+norm.  On the right,
+\[
+ \frac{d}{dt}\frac{F(B+\delta t)-F(B)}t
+       =\delta^2\int_0^1 uF''(B+\delta tu)\,du,
+\]
+so uniform $C^2$ convergence and integrability of every fixed power of
+$-\log(1-t)$ give continuity there as well.  This proves the lemma.
+\end{proof}
+
+We use the strict-index double polylogarithm
+\begin{equation}\label{sfj:eq:double-polylog}
+ \Li_{1,p}(z)=\sum_{m>n\ge1}\frac{z^m}{m n^p}
+    =\sum_{m=2}^\infty\frac{H_{m-1}^{(p)}}m z^m,
+     \qquad |z|<1.
+\end{equation}
+In particular
+$\frac{d}{dz}\Li_{1,p}(z)=\Li_p(z)/(1-z)$.
+
+\begin{theorem}[Every repeated-mass Gamma face has depth two]
+\label{sfj:thm:gamma-polylog}
+Let $a>0$, $B\ge0$, $\delta\ge0$, and $k\ge2$.  With $G_a$ as in
+\eqref{sfj:eq:gammaG},
+\begin{equation}\label{sfj:eq:gamma-polylog}
+ \boxed{\displaystyle
+ I_k(G_a;\underbrace{B,\ldots,B}_{k-1},B+\delta)
+  =(-1)^{k-1}(k-1)!
+     \sum_{n=0}^\infty
+       \Li_{1,k-1}\!\left(
+             \frac{\delta}{(n+a)^2+B+\delta}\right).}
+\end{equation}
+The sum is ordinary and absolutely convergent.  It converges normally
+when $(a,B,\delta)$ ranges over a compact subset of
+$\{a>0,B\ge0,\delta\ge0\}$.  Thus the dimension of the face does
+not force polylogarithm depth greater than two in this parameter sector.
+\end{theorem}
+
+\begin{proof}
+The Gamma product gives the normally convergent logarithmic difference
+\begin{equation}\label{sfj:eq:gamma-difference}
+ G_a(B+\delta t)-G_a(B)
+       =-\sum_{n=0}^\infty
+          \log\left(1+\frac{\delta t}{(n+a)^2+B}\right).
+\end{equation}
+For $u\ge0$, define
+\[
+ J_k(u)=\int_0^1
+  \frac{\log(1+ut)-ut/(1+ut)}{t^2}
+                            [-\log(1-t)]^{k-1}\,dt.
+\]
+Its integrand is nonnegative; the apparent singularity at $t=0$ is
+removable.  Differentiation under the integral is justified on compact
+$u$-intervals and gives
+\[
+ J_k'(u)=u\int_0^1\frac{[-\log(1-t)]^{k-1}}{(1+ut)^2}\,dt.
+\]
+Set $q=u/(1+u)$ and $y=1-t$.  Expanding $(1-qy)^{-2}$, with
+nonnegative terms, yields
+\[
+ J_k'(u)
+  =\frac{(k-1)!}{1+u}\Li_{k-1}\!\left(\frac{u}{1+u}\right).
+\]
+Since
+\[
+ \frac{d}{du}\Li_{1,k-1}\!\left(\frac{u}{1+u}\right)
+      =\frac1{1+u}\Li_{k-1}\!\left(\frac{u}{1+u}\right)
+\]
+and both functions vanish at zero, we have
+$J_k(u)=(k-1)!\Li_{1,k-1}(u/(1+u))$.
+Insert \eqref{sfj:eq:gamma-difference} into
+Lemma~\ref{sfj:lem:repeated}; positivity permits Tonelli's theorem,
+and this scalar identity gives \eqref{sfj:eq:gamma-polylog}.
+
+For the convergence assertion, all arguments lie in $[0,q_0]$, where
+$q_0=\delta/(a^2+B+\delta)<1$.  From
+$H_{m-1}^{(p)}/m\le1$ for $p\ge1$,
+\[
+ 0\le\Li_{1,p}(q)\le\frac{q^2}{1-q}.
+\]
+The summands are therefore $O((n+a)^{-4})$, uniformly on the stated
+compact parameter sets.  This proves finiteness as well as normal
+convergence.  The case $\delta=0$ is immediate.
+\end{proof}
+
+For $k=2$ this is the previously known log-square covariance,
+since $\Li_{1,1}(q)=\frac12\log^2(1-q)$.  For $k=3$, the double
+polylogarithm reduces entirely to classical dilogarithms and
+trilogarithms:
+\begin{equation}\label{sfj:eq:Li12-classical}
+ \Li_{1,2}(q)=2\Li_3(1-q)-2\zeta(3)
+            -\log(1-q)\{\Li_2(1-q)+\zeta(2)\},\qquad 0<q<1.
+\end{equation}
+The formula follows by differentiating both sides and taking the
+limit at $q=0$.  It provides an exact classical-polylogarithm lattice
+evaluation of the first genuinely higher face.
+
+For example, at $a=1$, $B=0$, and $\delta=3/10$,
+\begin{equation}\label{sfj:eq:numeric-example}
+ I_3(G_1;0,0,3/10)
+   =2\sum_{n=1}^\infty\Li_{1,2}\!\left(\frac{3}{10n^2+3}\right)
+   =0.0727899864111738847269555921654165064396\ldots.
+\end{equation}
+The decimal is a diagnostic value, not an interval enclosure.
+
+\begin{remark}[A weighted extension]
+The same proof applies when $G_a$ is replaced by the first spectral
+jet $F_1(B)$ of $\sum_{n\ge0}W(n+a)((n+a)^2+B)^{-s}$ and
+$\deg W\le2$.  Its second mass derivative is the ordinary series
+$\sum W(n+a)((n+a)^2+B)^{-2}$.  More explicitly, with $x_n=n+a$,
+\[
+ F_1(B+\delta t)-F_1(B)-\delta tF_1'(B)
+ =-\sum_{n=0}^{\infty}W(x_n)
+   \left\{\log\left(1+\frac{\delta t}{x_n^2+B}\right)
+                       -\frac{\delta t}{x_n^2+B}\right\}.
+\]
+This twice-anchored sum and its first two $t$ derivatives converge
+normally on compact displacement intervals, since their summands are
+$O(x_n^{\deg W-4})$.  Equality follows from the common second
+derivative and the two zero initial values at $t=0$.  Every face
+annihilates the two displayed affine terms.  The right side of
+\eqref{sfj:eq:gamma-polylog}
+then acquires the factor $W(n+a)$.  Its convergence follows from
+$W(n+a)=O(n^2)$.  At higher polynomial degree, additional subtractions
+are necessary and are not silently included in this statement.
+\end{remark}
+
+\section{Independent orders: the exact polar obstruction and mixed jets}
+\label{sfj:sec:independent}
+
+The common-ray family can be holomorphic at zero for every fixed ray
+even when the joint family is not a holomorphic germ.  This is a
+material distinction in extending the predecessor's theorem.
+
+\subsection{A complete holomorphy criterion}
+
+Fix $a>0$, $r\ge2$, masses $B_i\ge0$, and a polynomial
+$W(x)=\sum_{d=0}^Dw_dx^d$.  Put $x_n=n+a$, $A=\sum_i\alpha_i$,
+and initially, for $\Ree A>(D+1)/2$, set
+\begin{equation}\label{sfj:eq:joint}
+ \mathscr Z_W(\boldsymbol\alpha)
+    =\sum_{n=0}^\infty W(x_n)
+                  \prod_{i=1}^r(x_n^2+B_i)^{-\alpha_i}.
+\end{equation}
+All quadratic factors are positive, and their powers use real
+logarithms.  Define the finite polynomials
+\begin{equation}\label{sfj:eq:polar-poly}
+ C_h(\boldsymbol\alpha)
+  =[v^h]\prod_{i=1}^r(1+B_iv)^{-\alpha_i},\qquad
+ P_W(\boldsymbol\alpha)=\sum_{h\ge1}w_{2h-1}C_h(\boldsymbol\alpha).
+\end{equation}
+Only $h\le(D+1)/2$ occurs in $P_W$.
+
+\begin{theorem}[The complete joint polar part]
+\label{sfj:thm:pole}
+Near $\boldsymbol\alpha=0$ there is a holomorphic function
+$\mathscr H_W$ such that
+\begin{equation}\label{sfj:eq:pole}
+ \boxed{\displaystyle
+ \mathscr Z_W(\boldsymbol\alpha)
+     =\frac{P_W(\boldsymbol\alpha)}{2A}
+                         +\mathscr H_W(\boldsymbol\alpha),\qquad
+ \mathscr H_W(0)=\sum_{d=0}^D w_d\zeta(-d,a).}
+\end{equation}
+The quotient is a prescribed polar subtraction; its part divisible
+by $A$ is of course holomorphic.  The joint spectrum is holomorphic
+at zero if and only if either $W$ is even or all the masses $B_i$
+are equal.
+\end{theorem}
+
+\begin{proof}
+Choose a finite head so that $B_i/x_n^2<\rho<1$ on the tail.  A
+finite binomial expansion with an analytic remainder gives
+\[
+ \prod_i(x_n^2+B_i)^{-\alpha_i}
+     =x_n^{-2A}\sum_{h=0}^{K}C_h(\boldsymbol\alpha)x_n^{-2h}
+                      +\text{remainder}.
+\]
+Take $K$ sufficiently large that the weighted remainder and all
+required parameter derivatives converge normally near zero; any
+$K$ with $2K+2>D+1$ leaves a strict convergence margin after a
+small neighborhood is chosen.  The removed terms are finite sums of
+$w_dC_h(\boldsymbol\alpha)\zeta(2A+2h-d,a+N)$, plus the retained
+head.  Only $2h-d=1$ gives a pole through the origin, and its
+residue is exactly $w_dC_h/(2A)$.  Subtracting these terms proves
+\eqref{sfj:eq:pole}.  At zero, $C_0=1$ and $C_h(0)=0$ for $h\ge1$;
+the finite head and tail then give the displayed value of
+$\mathscr H_W(0)$.
+
+If $W$ is even, the polar polynomial vanishes.  If every mass is
+$B$, then $C_h=(-1)^h(A)_hB^h/h!$, which is divisible by $A$ for
+$h\ge1$.  These prove sufficiency.  Conversely, suppose $w_{2H-1}$
+is the highest nonzero odd coefficient and $B_i\ne B_j$.  Restrict
+to $\alpha_i=t$, $\alpha_j=-t$, and all other parameters zero.
+Then $A=0$ and
+\[
+ \prod_\ell(1+B_\ell v)^{-\alpha_\ell}
+  =\exp\{t[\log(1+B_jv)-\log(1+B_iv)]\}.
+\]
+The coefficient of $t^H$ in $C_H$ is
+$(B_j-B_i)^H/H!$.  Lower $C_h$ have degree at most $h<H$ and
+cannot cancel it.  Thus $P_W$ is not divisible by $A$, proving
+necessity.
+\end{proof}
+
+For a fixed vector $\boldsymbol\lambda$ with
+$L=\sum_i\lambda_i\ne0$, every straight ray has the finite limit
+\begin{equation}\label{sfj:eq:direction-limit}
+ \lim_{t\to0}\mathscr Z_W(t\boldsymbol\lambda)
+ =\sum_dw_d\zeta(-d,a)+\frac1L\sum_i\lambda_i p_W(B_i),\qquad
+ p_W(B)=\sum_{h\ge1}\frac{(-1)^hw_{2h-1}}{2h}B^h.
+\end{equation}
+This follows from the linear coefficient
+$C_h(t\boldsymbol\lambda)=
+t(-1)^h\sum_i\lambda_iB_i^h/h+O(t^2)$.
+For example, $a=1$, $W=x$, and $(B_1,B_2)=(0,1)$ give
+\begin{equation}\label{sfj:eq:direction-counterexample}
+ \lim_{t\to0}\mathscr Z_x(t,t)=-\frac13,
+ \qquad
+ \lim_{t\to0}\mathscr Z_x(t,2t)=-\frac5{12}.
+\end{equation}
+
+Even agreement of all straight-ray limits does not suffice.  For
+$W=x^3+x/2$ and $(B_1,B_2)=(0,1)$, the polar term is
+$\alpha_2^2/(4(\alpha_1+\alpha_2))$.  Every non-tangential straight
+ray has the same zero-order limit, but along
+$\alpha_2=t$, $\alpha_1=-t+t^3$ this term is $1/(4t)$.
+The joint germ is therefore singular.  These are obstructions to an
+unqualified extension, not errors in the correctly scoped common-ray
+theorem of the predecessor.
+
+\begin{corollary}[Periodic mean cancellation]
+If a bounded periodic weight $c_n$ is inserted in every sum, with
+mean $\bar c$, the polar term in \eqref{sfj:eq:pole} is multiplied
+by $\bar c$.  The joint germ is holomorphic exactly when
+$\bar c=0$, or $W$ is even, or all masses agree.
+\end{corollary}
+\begin{proof}
+For a period $q$, the auxiliary Dirichlet series is
+$q^{-z}\sum_{v=0}^{q-1}c_v\zeta(z,(a+v)/q)$ and its residue at
+$z=1$ is $\bar c$.  All other parts of the proof are unchanged.
+\end{proof}
+
+\subsection{The holomorphic mixed defect after an explicit subtraction}
+
+Write
+\[
+ E_W(s;B)=\sum_{n\ge0}W(x_n)(x_n^2+B)^{-s},\qquad
+ F_j(B)=\left.\partial_s^jE_W(s;B)\right|_{s=0}.
+\]
+The one-mass functions are holomorphic at zero and
+$F_0(B)=\sum_dw_d\zeta(-d,a)+p_W(B)$.  Define
+\begin{equation}\label{sfj:eq:joint-defect}
+ \mathscr D_W(\boldsymbol\alpha)
+   =\frac1A\sum_i\alpha_iE_W(A;B_i)
+                           -\mathscr Z_W(\boldsymbol\alpha).
+\end{equation}
+Let $p_h=(-1)^hw_{2h-1}/(2h)$, and set
+\begin{equation}\label{sfj:eq:joint-local}
+ \mathscr L_W(\boldsymbol\alpha)
+  =\sum_{h\ge1}p_h\left\{
+    \frac{\sum_i\alpha_iB_i^h}{A}
+    -\frac{h!}{(A)_h}
+       \sum_{h_1+\cdots+h_r=h}
+          \prod_i\frac{(\alpha_i)_{h_i}B_i^{h_i}}{h_i!}
+                         \right\}.
+\end{equation}
+This is a finite rational function.  Its $h=1$ term is identically
+zero.  In several variables its apparent origin singularities should
+\emph{not} in general be filled by a common-ray value.  For instance,
+\begin{equation}\label{sfj:eq:joint-local-cubic}
+ \mathscr L_{x^3}(\boldsymbol\alpha)
+   =\frac{\sum_{i<j}\alpha_i\alpha_j(B_i-B_j)^2}{4A(1+A)}.
+\end{equation}
+
+\begin{theorem}[Independent-order face decomposition]
+\label{sfj:thm:joint-faces}
+Put
+\[
+ \mathcal G_W(u;B)=\frac{E_W(u;B)-F_0(B)}u
+       =\sum_{j\ge1}\frac{F_j(B)}{j!}u^{j-1},
+ \qquad
+ Q_J(\boldsymbol\alpha)=
+ \frac{\Gamma(1+\sum_{i\in J}\alpha_i)}
+                      {\prod_{i\in J}\Gamma(1+\alpha_i)}.
+\]
+The difference $\widetilde{\mathscr D}_W=
+\mathscr D_W-\mathscr L_W$ is holomorphic near zero and equals
+\begin{equation}\label{sfj:eq:joint-faces}
+ \boxed{\displaystyle
+ \widetilde{\mathscr D}_W(\boldsymbol\alpha)
+   =-\sum_{\substack{J\subseteq\{1,\ldots,r\}\\|J|\ge2}}
+       \left(\prod_{i\in J}\alpha_i\right)Q_J(\boldsymbol\alpha)
+       \int_{\Sigma_J}\mathcal H_J(\mathcal G_W(A;\cdot);t)
+                              \prod_{i\in J}t_i^{\alpha_i-1}\,dt.}
+\end{equation}
+A sufficient neighborhood for all displayed integrals and zero-point
+germs is $\max_i|\alpha_i|<1/(4r)$.  The formula supplies ordinary,
+absolutely convergent integrals and locally normal derivatives there.
+\end{theorem}
+
+\begin{proof}
+For initially positive real parts, the usual Dirichlet parameterization
+of the product in \eqref{sfj:eq:joint} has total order $A$.
+Finite subset inversion decomposes the perspective into its faces.
+Under the Dirichlet measure with parameters $\alpha_i$, the mass
+$t_J$ has mean $A_J/A$, where $A_J=\sum_{i\in J}\alpha_i$, and
+is independent of the normalized coordinates within $J$.  Thus the
+contribution of face $J$ is
+\[
+ \frac{A_J}{A}\frac{\Gamma(A_J)}{\prod_{i\in J}\Gamma(\alpha_i)}
+ \int_{\Sigma_J}\mathcal H_J(E_W(A;\cdot);t)
+                                         \prod_{i\in J}t_i^{\alpha_i-1}\,dt
+ =\frac{\prod_{i\in J}\alpha_i}{A}Q_J
+                    \int_{\Sigma_J}\mathcal H_J(E_W(A;\cdot);t)
+                                         \prod_{i\in J}t_i^{\alpha_i-1}\,dt.
+\]
+The singleton terms give the weighted endpoint average in
+\eqref{sfj:eq:joint-defect}.  Splitting $E_W(A;B)=F_0(B)+
+A\mathcal G_W(A;B)$ yields \eqref{sfj:eq:joint-faces}; ordinary
+Dirichlet polynomial moments give exactly \eqref{sfj:eq:joint-local}
+for the $F_0$ part.  The identity continues meromorphically from its
+common absolute-convergence domain.  In the stated polydisk,
+$|A|<1/4$, each one-mass zero germ is holomorphic, and
+\eqref{sfj:eq:normal-face-domain} permits every face integral and
+its derivatives.  This proves the claimed joint holomorphy.
+\end{proof}
+
+For even $W$, the local term is zero and both the joint spectrum and
+the joint defect are holomorphic.  More generally, the \emph{raw
+defect} $\mathscr D_W$ is holomorphic at zero precisely when the odd
+part of $W$ has degree at most one, or all masses agree.  With periodic
+weights, mean zero is an additional sufficient and necessary alternative.
+Indeed its polar numerator is the negative of the degree-at-least-two
+part of $P_W$; the highest-degree restriction used in
+Theorem~\ref{sfj:thm:pole} proves necessity.  This criterion explains
+why the spectrum and its defect have different analytic boundaries.
+
+\subsection{A particularly simple formula for distinct mixed derivatives}
+
+For a set $J$ put
+\[
+ \Pi_J(\boldsymbol\alpha;t)=
+ \exp\left\{\sum_{i\in J}\alpha_i\log t_i+
+  \sum_{n\ge2}\frac{(-1)^n\zeta(n)}n
+    \left[\left(\sum_{i\in J}\alpha_i\right)^n-
+                             \sum_{i\in J}\alpha_i^n\right]\right\}.
+\]
+This is $Q_J\prod_{i\in J}t_i^{\alpha_i}$.  If $\boldsymbol\nu$
+is a nonnegative multiindex, extraction from
+\eqref{sfj:eq:joint-faces} gives the finite identity
+\begin{align}\label{sfj:eq:all-mixed}
+ \partial^{\boldsymbol\nu}\widetilde{\mathscr D}_W(0)
+ ={}&-\boldsymbol\nu!\!
+ \sum_{\substack{J\subseteq\operatorname{supp}\boldsymbol\nu\\|J|\ge2}}
+ \sum_{j=1}^{|\boldsymbol\nu|-|J|+1}\frac1{j!}
+ \int_{\Sigma_J}\mathcal H_J(F_j;t)
+       [\boldsymbol\alpha^{\boldsymbol\nu-\boldsymbol1_J}]
+        \{A^{j-1}\Pi_J(\boldsymbol\alpha;t)\}
+                          \frac{dt}{\prod_{i\in J}t_i}.
+\end{align}
+Thus a face contributes only if each of its labels is differentiated
+at least once.  The inner jet has order at most
+$|\boldsymbol\nu|-|J|+1$.
+
+\begin{corollary}[Squarefree mixed derivatives]
+\label{sfj:cor:squarefree}
+If $U$ contains $m\ge2$ distinct labels, then
+\begin{equation}\label{sfj:eq:squarefree}
+ \boxed{\displaystyle
+ \left(\prod_{i\in U}\partial_{\alpha_i}\right)
+             \widetilde{\mathscr D}_W(0)
+ =-\sum_{\substack{J\subseteq U\\|J|\ge2}}
+           \frac{I_J(F_{m-|J|+1})}{m-|J|+1}.}
+\end{equation}
+No logarithmic simplex weights or Gamma Taylor corrections remain.
+For three labels this is
+\[
+ \partial_{\alpha_1}\partial_{\alpha_2}\partial_{\alpha_3}
+          \widetilde{\mathscr D}_W(0)
+ =-\tfrac12\{I_{12}(F_2)+I_{13}(F_2)+I_{23}(F_2)\}
+                                      -I_{123}(F_1).
+\]
+\end{corollary}
+\begin{proof}
+In \eqref{sfj:eq:all-mixed}, every variable belonging to $J$ is
+already supplied by the face prefactor.  The remaining variables are
+outside $J$, whereas $\Pi_J$ contains only variables in $J$.
+Consequently it contributes only its constant coefficient.  The
+required monomial is supplied by $A^{m-|J|}$ and has coefficient
+$(m-|J|)!$.  Division by $(m-|J|+1)!$ gives the stated factor.
+\end{proof}
+
+For $\deg W\le2$, this has an ordinary logarithmic-sum interpretation.
+Put $L_i(n)=\log((n+a)^2+B_i)$.  With $r\ge2$ labels,
+\begin{equation}\label{sfj:eq:ordinary-log-identity}
+ \sum_{n=0}^\infty W(n+a)
+    \left\{\frac1r\sum_{i=1}^rL_i(n)^r-\prod_{i=1}^rL_i(n)\right\}
+ =(-1)^{r+1}
+      \sum_{\substack{J\subseteq\{1,\ldots,r\}\\|J|\ge2}}
+           \frac{I_J(F_{r-|J|+1})}{r-|J|+1}.
+\end{equation}
+The leading and first-order changes in $B_i/(n+a)^2$ cancel in the
+braces.  The summand is therefore
+$O(n^{\deg W-4}\log^{r-2}(2+n))$, and the sum is absolutely
+convergent.  This same estimate locally in the order parameters
+justifies termwise differentiation of the defect.  The local term is
+zero at these polynomial degrees.  Taking the squarefree derivative
+in the pointwise defect proves \eqref{sfj:eq:ordinary-log-identity}.
+
+\subsection{Verification and the remaining scope}
+
+The supplied exact implementation compares
+\eqref{sfj:eq:monomial} against a separately constructed rational
+Dirichlet-moment formula for $2\le k\le5$ and $2\le m\le8$;
+all 28 cases agree exactly over the rational numbers.  Six additional
+quadratic variance checks cover $2\le k\le7$.
+
+The numerical program uses 48 decimal digits.  It compares direct
+triangle face integrals of degrees $3,4,6$ against the finite formula;
+their absolute residuals are respectively approximately
+$1.02\cdot10^{-26}$, $3.42\cdot10^{-25}$, and
+$1.33\cdot10^{-23}$.  The repeated-mass one-dimensional formula and
+the independently expanded positive double-polylogarithm series agree
+for $k=2,\ldots,6$ to residuals below $1.7\cdot10^{-38}$.
+Most significantly, the original \emph{two-dimensional Gamma face}
+in \eqref{sfj:eq:numeric-example} was evaluated directly on all six
+coordinate-ordering sectors.  At Gauss--Legendre orders $16,24,32$,
+its residual against the polylogarithm lattice value decreases from
+$2.33\cdot10^{-19}$ to $3.00\cdot10^{-28}$ and then
+$4.41\cdot10^{-37}$.  The sector map is
+$t=(1,u,uv)/(1+u+uv)$ and its weighted measure is $du\,dv/(uv)$.
+The face numerator is retained as a combined expression throughout.
+
+These computations are finite algebraic checks and numerical
+diagnostics, not interval certificates or substitutes for the proofs.
+The results complete the specified all-order collision and
+independent-order extensions relative to the inspected spectral-face
+report, and give a global depth-two evaluation in the one-displaced-mass
+sector.  They do not prove a finite classical-polylogarithm reduction
+for arbitrary distinct masses or every polylogarithm weight.  Natural
+next targets are a finite dictionary for two distinct mass clusters,
+arithmetic reductions of the resulting double-polylogarithm lattice
+sums, and a basis-independent description of the joint polar
+subtraction when the affine spectral factors have different degrees.

@@ -1,0 +1,312 @@
+\section{Source reconciliation, verification, and further research}
+\label{sec:audit}
+
+\subsection{Which earlier questions are settled}
+
+The following table records the precise scope of the continuation.
+The source labels refer to the incoming reports at the pinned
+snapshot, not to a moving version of the repository.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.65\textwidth}@{}}
+\toprule
+\textbf{Earlier target} & \textbf{Result and remaining scope}\\
+\midrule
+\endhead
+Vertical lattice, Questions 1 and 6 \cite{RepoVertical}
+&
+Theorems~\ref{thm:minimal-contact} and \ref{thm:filter-all}
+give every minimal contact and the exact periodic mean criterion.
+All derivative orders are covered.\\[5pt]
+Vertical lattice, Question 7 \cite{RepoVertical}
+&
+Theorem~\ref{thm:modular} gives exact transport for horizontal
+shift \(a=1\), near every nonpositive even order and near \(s=1\),
+with every derivative correction. A general arbitrary-shift
+transport remains open.\\[5pt]
+Unequal products beyond two factors \cite{RepoBernoulli,RepoMixed}
+&
+Theorem~\ref{mtp:generator} handles every finite collection of
+positive even tail orders and every regular centered moment.
+The separate conjecture about optimal unequal bilinear
+prefixes remains open.\\[5pt]
+Independent nonperiodic Stieltjes shifts, R8 \cite{RepoTailKernels}
+&
+Theorem~\ref{gs:completed} supplies an explicit jointly
+holomorphic convergent generator, including all argument
+derivatives. A finite reduction in a prescribed classical
+constant alphabet is a stronger question.\\[5pt]
+Higher spectral collisions and independent orders
+\cite{RepoBernoulli}
+&
+The face-moment formula gives all polynomial collision
+coefficients. The one-displacement Gamma sector is evaluated
+by depth-two polylogarithms. The joint polar part and its
+finite local correction are explicit.\\[5pt]
+Alternating nonpositive-order square law, R7
+\cite{RepoTailKernels}
+&
+Already resolved in the separate Bilinear Tails archive
+\cite{RepoBilinear}; update its status and cite that
+proof. It is not counted as a new result here.\\[5pt]
+Gaussian \(S_6\) and revised \(S_8\)
+\cite{RepoManuscript}
+&
+Remain conjectural. The present results do not supply the
+missing period relations.\\
+\bottomrule
+\end{longtable}
+
+\subsection{A concrete correction to the research ledger}
+
+In the Tail Kernels archive, R7 asks for the alternating square
+continuation at all nonpositive orders. At the same snapshot,
+\texttt{sections/04\_cutoff\_jets.tex} in the Bilinear Tails
+archive already proves the required normally convergent
+continuation, full contact formula, and translated-cutoff rule
+\cite{RepoTailKernels,RepoBilinear}. Its theorem labels
+\texttt{cut:normal}, \texttt{cut:contacts}, and
+\texttt{cut:translation} locate the exact claims.
+The order-zero value \(1/4\), despite the vanishing
+pointwise summands in the relevant representation, is explicitly
+reconciled there. The Gamma specializations have labels
+\texttt{cut:Gamma} and \texttt{cut:Gammasquare}.
+
+The proposed replacement ledger entry is:
+\begin{quote}
+\textbf{R7: resolved.} Cite the all-order cutoff continuation in
+\emph{Bilinear Alternating Tails and Harmonic Determinants},
+Section 4. Preserve the specified cutoff coordinate and its
+order-zero contact. Remaining extensions should be stated
+separately from the already established nonpositive-order law.
+\end{quote}
+This corrects the status shared between two reports. It does not
+identify a false theorem in the resolving report.
+
+\subsection{Three safeguards for subsequent integration}
+
+\paragraph{Finite parts must retain their coordinate.}
+For the new lattice formula, the constant left after deleting
+positive powers of \(\log K\) is
+\({\cal F}_M^{(d)}(-N)+C_{N,d}(\log h)\).
+Deleting positive powers of the physical-radius logarithm
+\(\log R\), \(R=hK\), instead gives
+\({\cal F}_M^{(d)}(-N)+C_{N,d}(0)\).
+The analytic continuation value is obtained only after the entire
+contact polynomial has been removed. These are three specified
+operations; their constant differences should not be suppressed
+in a shared definition of \emph{regularized sum}.
+
+\paragraph{Periodic cancellation does not imply absolute convergence.}
+A nonzero mean-zero periodic multiplier removes the critical
+contact at every fixed derivative order. The resulting two
+half-lattice series converge by summation by parts. They are in
+general conditional, since the terms still have critical
+power-log magnitudes. An additional horizontal difference
+improves the decay and gives absolute convergence.
+Theorem~\ref{thm:filter-all} and
+\eqref{eq:relative-lattice} keep these claims distinct.
+
+\paragraph{A common-ray limit is insufficient for independent orders.}
+The predecessor's common-ray spectral theorem is correctly
+scoped. An unqualified extension to independent orders would
+be false. For instance, with \(W(x)=x\), \(a=1\), and masses
+\(0,1\), the limits along \((\alpha_1,\alpha_2)=(t,t)\) and
+\((t,2t)\) are \(-1/3\) and \(-5/12\).
+Even equality of all nontangential straight-ray limits would
+not suffice: the example \(W(x)=x^3+x/2\) has polar part
+\[
+ \frac{\alpha_2^2}{4(\alpha_1+\alpha_2)}.
+\]
+It tends to zero on every fixed ray with nonzero total direction,
+but along \(\alpha_2=t\),
+\(\alpha_1=-t+t^3\) it equals \(1/(4t)\).
+The joint polar decomposition, rather than a ray calculation,
+is the appropriate hypothesis for mixed differentiation.
+
+\subsection{Reproducible verification}
+
+The companion files separate exact algebra from numerical
+diagnostics. All arithmetic determinants and finite polynomial
+identities are computed over rational or symbolic exact rings.
+The floating-point checks compare independently organized
+expressions, including direct quadratures, finite cutoff sums,
+and Mellin contours.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.67\textwidth}@{}}
+\toprule
+\textbf{Component} & \textbf{Verification supplied}\\
+\midrule
+\endhead
+Lattice contacts
+&
+60 exact coefficient and Pochhammer checks, two mutation
+controls, and 27 finite-lattice diagnostics at 55 digits.
+The next two Euler--Maclaurin coefficients are used to check
+the remainder when its leading polynomial nearly cancels.\\[4pt]
+Modular transport
+&
+Nine exact kernel-polynomial checks, four direct
+Lambert-versus-contour comparisons at 42 digits,
+two classical boundary checks, and an independent
+self-dual contour evaluation.\\[4pt]
+Mixed tails
+&
+306 exact moments for all multisets of one through four
+orders from \(\{2,4,6\}\), through the tested moment range,
+against finite summation by parts; 825 boundary-parity
+checks; exact six- and eight-coordinate determinants;
+a finite telescoping certificate; and 90-digit checks
+of the short identities.\\[4pt]
+Independent shifts
+&
+16 exact cancellation checks and 42 numerical checks
+at 65 digits, including complex shifts, both spectral
+axes, \(u+v=0\), prefix invariance, and the explicit
+\(\gamma_1\times\psi\) coefficient.
+The largest recorded absolute residual is approximately
+\(1.02\times10^{-56}\).\\[4pt]
+Spectral faces
+&
+34 exact rational checks and 11 numerical comparisons
+at 48-digit working precision. The original
+two-dimensional Gamma face is checked against the
+polylogarithmic lattice expression with increasing
+quadrature orders.\\
+\bottomrule
+\end{longtable}
+
+These calculations are regression diagnostics for the stated
+proofs. They do not establish global arithmetic independence,
+replace a normal-convergence argument, or certify decimal
+enclosures. All domains, branch conventions, and limiting
+operations used in the identities are established in the text.
+The verification programs and their recorded outputs are
+included so that future integration can detect sign, endpoint,
+normalization, or coefficient regressions.
+
+\subsection{Further research questions}
+\label{sec:questions}
+
+The following questions are ordered by their connection to the
+new mechanisms and by the prospect of obtaining further exact
+identities. Each asks for a structural statement or evaluation.
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=*]
+\item \textbf{Optimal prefixes for arbitrary unequal tails.}
+The mixed recurrence proves a finite span, and the two worked
+products have complete rational prefix certificates.
+Determine the minimal formal coordinate dimension for a
+general even-order multiset \(I\), after a declared system of
+MZV reductions, and determine when its first admissible
+moments already span that space. The existing unequal
+bilinear optimal-prefix conjecture is a particularly precise
+first target. A proof should establish an explicit nonzero
+determinant, rather than infer rank from evaluated decimals.
+
+\item \textbf{Direct telescoping certificates for elegant tail identities.}
+The short cubic identity admits a finite telescoping
+certificate in products of Hurwitz tails. Characterize the
+centered polynomial combinations for which such a certificate
+exists. Can the polarized recurrence be compiled into a
+finite certificate with a prescribed maximal tail order?
+This could systematically produce short ordinary identities
+whose cancellations hide a much larger moment system.
+
+\item \textbf{Minimal functional depth of mixed generators.}
+The bound \(d-1\) is constructive but need not be sharp.
+Classify the order multisets for which the anchored generator
+reduces to classical polylogarithms, or to depth two
+independently of \(d\). The classification must distinguish
+functional identities from numerical MZV reductions at the
+endpoint \(t=0\).
+
+\item \textbf{More than one displaced spectral mass.}
+For \(k-1\) equal masses and one displaced mass, depth two
+suffices in every dimension. Determine the exact function
+class for two displaced masses and, more generally, for a
+fixed number of distinct mass clusters. Is depth controlled
+by the number of clusters rather than the number of factors?
+A useful result would give a finite multiple-polylogarithm
+formula with explicit branches and ordinary convergence,
+not merely rename the remaining simplex integral.
+
+\item \textbf{Complete logarithmic collision coefficients.}
+The rational normalized face formula produces every
+logarithmically weighted polynomial moment by differentiation.
+Find compact closed forms for the first genuinely nonsquarefree
+mixed order derivatives, and organize their coefficients by
+harmonic star sums and zeta weight. Determine which Gamma
+normalization coefficients cancel before any MZV reduction.
+
+\item \textbf{Independent-order continuation beyond quadratic spectra.}
+For quadratic factors, the odd powers of \(W\) give the exact
+polar obstruction through a single total-order divisor.
+Develop the corresponding finite polar-part classification
+for higher-degree polynomial spectra and shifted linear
+factors. Identify the natural local subtraction that is
+compatible with multiplication, parameter differentiation,
+and periodic mean cancellation.
+
+\item \textbf{Modular transport with arbitrary horizontal shift.}
+Extend the exact order-dependent contour identity from
+\(a=1\) to general \(a\). Rational shifts should first be
+organized into finite systems with additive characters and
+Hurwitz factors. For irrational shifts, determine the
+additional integral transform explicitly. The fixed-cutoff
+contact polynomial should remain visible throughout the
+transport.
+
+\item \textbf{Arithmetic reductions of the logarithmic Hurwitz family.}
+For which rational pairs \((c,z)\) does
+\[
+ \mathcal L_p(c,z)=
+ \sum_{n\ge0}\frac{\log(1+z/(n+c))}{(n+c)^p}
+\]
+reduce to a finite specified alphabet of polylogarithms,
+Gamma values, and zeta derivatives?
+The generating and differential relations in the
+independent-shift section impose strong compatibility
+conditions. Generic rational arguments should not be
+assumed to have such a reduction.
+
+\item \textbf{Unequal-rate Stieltjes boundary collisions.}
+Set \(a=\lambda\epsilon\), \(b=\mu\epsilon\) with fixed
+\(\lambda,\mu>0\), and let \(\epsilon\downarrow0\).
+Compute the complete singular power-log primitive and
+the remaining constant for arbitrary Stieltjes indices
+and argument derivatives. Determine the exact path
+correction relative to the common-shift finite part.
+The diagonal unfolding and explicit finite-prefix
+derivatives provide a starting point.
+
+\item \textbf{Three independently shifted Stieltjes factors.}
+Extend the evaluated two-factor germ to three factors
+with independent shifts and orders. Partitioning the
+summation lattice into minimum-index regions suggests
+finite Lauricella-type prefixes. The central problem is
+to remove all intersecting spectral poles jointly while
+retaining geometric convergence after every derivative.
+
+\item \textbf{The unresolved Gaussian period identities.}
+The manuscript's \(S_6\) and revised \(S_8\) candidates
+need exact period relations. The existing high-precision
+residuals and bounded relation-space calculations do
+not supply them. Seek a new functional relation or
+contour deformation that escapes the already tested
+relation spaces, and exhibit its exact coefficient
+certificate before numerical evaluation. The new
+mixed-tail rank results concern different spaces and
+should not be used as evidence of a Gaussian proof.
+
+\item \textbf{A formal proof layer for the finite core.}
+The nilpotent polarized Bernoulli identity, the exact
+boundary-parity cancellation, the contact-polynomial
+coefficient identity, and the rational face compiler
+are natural Lean targets. Separate their finite
+algebraic statements from Euler--Maclaurin continuation
+and normal-convergence lemmas. This would make later
+analytic generalizations depend on a small reusable
+verified algebraic core, without claiming that the
+current Python checks constitute formal proofs.
+\end{enumerate}
+

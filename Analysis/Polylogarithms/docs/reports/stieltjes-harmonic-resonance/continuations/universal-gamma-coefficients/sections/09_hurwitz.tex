@@ -1,0 +1,101 @@
+\section{Arithmetic-step Gamma and Hurwitz--Stieltjes bridges}
+\label{sec:hurwitz}
+
+The rational interpolation of a coefficient column gives a direct link to Gamma products and ordinary Stieltjes primitives. This complements the power-series polylogarithmic lift.
+
+\subsection{Step sums and Gamma products}
+
+Let $\rho(x)=\sum_jd_j/(x+\alpha_j)$ be the rational function in \eqref{eq:rho}. For $h>0$ and real $x> -\min_j\alpha_j$, put
+\[
+ S_h(x)=\sum_{n\ge0}\rho(hn+x).
+\]
+All identities below also continue analytically away from their poles, with compatible logarithm branches.
+
+\begin{proposition}[Gamma-product primitive]\label{prop:steps}
+The sum converges absolutely and
+\begin{align}
+ S_h(x)&=-\frac1h\sum_jd_j\psi\left(\frac{x+\alpha_j}{h}\right),\label{eq:steps}\\
+ \frac{\mathrm d^q}{\mathrm dx^q}S_h(x)
+ &=-\frac1{h^{q+1}}\sum_jd_j\psi^{(q)}\left(\frac{x+\alpha_j}{h}\right),
+ \qquad q\ge0,\label{eq:steps-derivative}\\
+ \int_{x_0}^xS_h(t)\dd t
+ &=-\sum_jd_j\log\frac{\Gamma((x+\alpha_j)/h)}
+                              {\Gamma((x_0+\alpha_j)/h)}.\label{eq:steps-primitive}
+\end{align}
+\end{proposition}
+\begin{proof}
+The moment cancellations \eqref{eq:moment-cancel} give $\rho(x)=O(x^{-4})$ and justify the convergent sum. For a finite cutoff $N$, the digamma recurrence gives
+\[
+ \sum_{n=0}^{N}\frac1{hn+x+\alpha_j}
+ =\frac1h\left\{\psi\left(N+1+\frac{x+\alpha_j}{h}\right)
+                -\psi\left(\frac{x+\alpha_j}{h}\right)\right\}.
+\]
+The common logarithmic divergence cancels because $\sum d_j=0$, and the remaining upper-end difference tends to zero. This proves \eqref{eq:steps}. Differentiation of the normally convergent series, or of its finite digamma expression, proves \eqref{eq:steps-derivative}; integration gives \eqref{eq:steps-primitive} with its exact anchor.
+\end{proof}
+
+For $h=2$ and the fixed parity shift, the arguments differ by integers, so repeated use of the digamma recurrence reduces the sum to a rational function. Other arithmetic steps can retain genuine rational-argument Gamma and polygamma values.
+
+For the stripped mixed weight $R$ from \eqref{eq:Rexample}, the same calculation gives
+\begin{align}
+ \sum_{n\ge0}R(3n)&=-\frac{11}{384}+\frac{\log3}{128}
+                         +\frac{5\sqrt3\,\pi}{1152},\label{eq:Rstep3}\\
+ \sum_{n\ge0}R(4n)&=\frac{13}{360}-\frac{\pi}{96}.\label{eq:Rstep4}
+\end{align}
+To verify these values, substitute the four coefficients of \eqref{eq:Rpartial} in \eqref{eq:steps}. Reduce shifts using $\psi(z+1)=\psi(z)+1/z$ and then apply the reflection and multiplication formulas at thirds or quarters. The accompanying exact script independently carries out these finite reductions. Equation~\eqref{eq:sumR} is the corresponding step-two case.
+
+\subsection{A balanced entire Hurwitz family}
+
+For the same fixed coefficients and $a_j(x)=(x+\alpha_j)/h$, define
+\begin{equation}\label{eq:Zbalanced}
+ Z(s,x)=\sum_jd_j\zeta(s,a_j(x)).
+\end{equation}
+The Hurwitz zeta function has only its usual simple pole at $s=1$, with residue one. Hence $\sum d_j=0$ makes $Z$ entire in $s$. The stronger cancellations in \eqref{eq:moment-cancel} also give
+\begin{equation}\label{eq:Zzeros}
+ Z(0,x)=Z(-1,x)=0.
+\end{equation}
+Indeed the special values at $0$ and $-1$ are polynomials of degrees one and two in $a_j(x)$, and the three moment cancellations annihilate them. These are exact identities, not assertions about zeros of an individual Hurwitz zeta function.
+
+Use the Stieltjes convention
+\begin{equation}\label{eq:stieltjes}
+ \zeta(1+s,a)=\frac1s+\sum_{q\ge0}\frac{(-1)^q}{q!}\gamma_q(a)s^q.
+\end{equation}
+The balanced coefficients
+\[
+ B_q(x)=\sum_jd_j\gamma_q(a_j(x))
+\]
+therefore satisfy
+\begin{equation}\label{eq:balanced-Laurent}
+ Z(1+s,x)=\sum_{q\ge0}\frac{(-1)^q}{q!}B_q(x)s^q,
+ \qquad B_0(x)=hS_h(x).
+\end{equation}
+The last equality uses $\gamma_0(a)=-\psi(a)$.
+
+\begin{proposition}[All-index ordinary Stieltjes primitives]\label{prop:balanced-primitives}
+For every $q\ge0$,
+\begin{equation}\label{eq:balanced-primitive}
+ \int_{x_0}^x B_q(t)\dd t
+ =\frac{(-1)^{q+1}h}{q+1}
+       \left[\partial_s^{q+1}Z(s,x)\big|_{s=0}
+             -\partial_s^{q+1}Z(s,x_0)\big|_{s=0}\right].
+\end{equation}
+In particular
+\begin{equation}\label{eq:ZprimeGamma}
+ \partial_sZ(0,x)=\sum_jd_j\log\Gamma(a_j(x)),
+\end{equation}
+so the case $q=0$ is exactly the Gamma-product primitive in Proposition~\ref{prop:steps}.
+\end{proposition}
+\begin{proof}
+The parameter derivative identity $\partial_a\zeta(s,a)=-s\zeta(s+1,a)$ gives
+\[
+ \partial_xZ(s,x)=-\frac{s}{h}Z(s+1,x).
+\]
+Insert \eqref{eq:balanced-Laurent} and compare the coefficient of $s^{q+1}$. This yields
+\[
+ \partial_x\partial_s^{q+1}Z(0,x)
+ =-\frac{(-1)^q(q+1)}hB_q(x),
+\]
+which integrates to \eqref{eq:balanced-primitive}. Finally,
+$\zeta'(0,a)=\log\Gamma(a)-\frac12\log(2\pi)$ and $\sum d_j=0$ give \eqref{eq:ZprimeGamma}.
+\end{proof}
+
+These Hurwitz parameter identities are classical \cite{DLMFHurwitz}. Here they provide an explicitly normalized bridge from the new universal coefficient densities to Gamma products and every Stieltjes order. Neither a finite part in the spatial variable nor a hidden additive constant occurs in \eqref{eq:balanced-primitive}.

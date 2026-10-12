@@ -1,0 +1,417 @@
+\section{Every minimally compensated vertical-lattice derivative}
+\label{sec:lattice}
+
+The vertical-lattice report \cite{RepoVertical} proves a normally
+convergent sampling formula after Euler--Maclaurin compensation, and
+computes a single extra Bernoulli term at the first negative-even
+derivative. Its Questions 1 and 6 ask for all higher minimally
+compensated derivatives and for the periodic filters that remove their
+contacts. We answer both questions. The answer is a single polynomial
+in the logarithm of the cutoff, specified by an elementary generating
+function. In particular, higher derivative order does not require
+additional moments of a periodic filter.
+
+\subsection{The inherited sampling identity and its exact domain}
+
+Let \(h>0\), \(\tau=2\pi/h\), and \(\Ree a>0\). All powers use the
+analytic logarithm on the right half-plane. Write
+\[
+ w_n=a+\ii hn,\qquad q=e^{-\tau},\qquad z=e^{-\tau a}.
+\]
+The generalized Stieltjes constants have the convention
+\begin{equation}\label{eq:lattice-stieltjes}
+ \zeta(1+u,w)=\frac1u+
+       \sum_{m=0}^{\infty}\frac{(-1)^m}{m!}\gamma_m(w)u^m,
+ \qquad \gamma_0(w)=-\psi(w).
+\end{equation}
+We use \(B_1=-1/2\). For \(M\geq0\), define
+\begin{align}
+ R_M(s,w)&=\zeta(s,w)-\frac{w^{1-s}}{s-1}-\frac12w^{-s}
+ -\sum_{j=1}^{M}\frac{B_{2j}}{(2j)!}(s)_{2j-1}w^{1-s-2j},
+ \label{eq:root-remainder}\\
+ {\cal L}_{\nu}(q,z)&=\sum_{k=1}^{\infty}
+             \frac{z^k}{k^\nu(1-q^k)},\label{eq:root-lambert}\\
+ {\cal B}_M(s;a,\tau)&={\cal L}_{1-s}(q,z)
+       -\frac12\Li_{1-s}(z)-\frac1\tau\Li_{2-s}(z)\notag\\
+ &\hspace{7mm}
+       -\sum_{j=1}^{M}\frac{B_{2j}\tau^{2j-1}}{(2j)!}
+                    \Li_{2-s-2j}(z),\label{eq:root-bracket}\\
+ {\cal F}_M(s;a,h)&=\frac{\tau^s}{\Gamma(s)}{\cal B}_M(s;a,\tau).
+ \label{eq:root-spectral}
+\end{align}
+The removable value at \(s=1\) is understood in \(R_M\).
+Both \(R_M(s,w)\) and \({\cal F}_M(s;a,h)\) are entire in \(s\).
+
+For completeness, the previously established sampling formula is
+\begin{equation}\label{eq:root-master}
+ \sum_{n\in\mathbb Z}R_M(s,a+\ii hn)={\cal F}_M(s;a,h),
+ \qquad \Ree s>-2M.
+\end{equation}
+It includes all fixed order derivatives on compact subsets of that
+strict half-plane. One direct proof applies Poisson periodization to
+\[
+ \frac{t^{s-1}e^{-at}}{\Gamma(s)}
+ \left(\frac1{1-e^{-t}}-\frac1t-\frac12
+       -\sum_{j=1}^{M}\frac{B_{2j}}{(2j)!}t^{2j-1}\right)
+ \quad(t>0),
+\]
+extended by zero for \(t\leq0\). The density tends to zero at the
+origin on the stated sufficient half-plane, and its
+Fourier coefficients are absolutely summable there. The standard
+Hurwitz expansion \cite[Section 25.11]{DLMF} gives the required
+normal convergence. We credit \eqref{eq:root-master} to the preceding
+report; it is the starting point, not a new claim.
+
+\subsection{A universal power-lattice cutoff lemma}
+
+The following elementary lemma isolates the whole obstruction.
+
+\begin{lemma}\label{lem:power-cutoff}
+For \(a,h\) as above and \(u\) in a sufficiently small complex
+neighborhood of zero, put
+\[
+ P_K(u)=\sum_{n=-K}^{K}(a+\ii hn)^{-1-u},\qquad
+ P_\infty^{\mathrm{an}}(u)=
+       \frac{\tau^{1+u}}{\Gamma(1+u)}\Li_{-u}(e^{-\tau a}).
+\]
+Then, locally uniformly in \(u\) and \(a\),
+\begin{equation}\label{eq:power-cutoff}
+ P_K(u)=P_\infty^{\mathrm{an}}(u)
+    +\frac{2}{h}\frac{\sin(\pi u/2)}{u}
+                   e^{-u\log(hK)}
+    +O\!\left(K^{-1-\Ree u}\right).
+\end{equation}
+The sine quotient is filled by its removable value. Derivatives of
+order \(j\) of the error at zero are
+\(O(K^{-1}(1+\log K)^j)\).
+\end{lemma}
+
+\begin{proof}
+For \(\Ree u>0\), ordinary periodization of
+\(t^u e^{-at}/\Gamma(1+u)\) gives
+\(\sum_n(a+\ii hn)^{-1-u}=P_\infty^{\mathrm{an}}(u)\).
+The omitted paired tail has the expansion
+\[
+ (a+\ii hn)^{-1-u}+(a-\ii hn)^{-1-u}
+ =-2\sin(\pi u/2)(hn)^{-1-u}+O(n^{-2-\Ree u}).
+\]
+Since
+\(\sum_{n>K}n^{-1-u}=K^{-u}/u+O(K^{-1-\Ree u})\),
+subtracting the tail proves \eqref{eq:power-cutoff} in that half-plane.
+To see the uniform continuation through \(u=0\), use the exact tail
+expression
+\begin{align*}
+ &( \ii h)^{-1-u}\zeta(1+u,K+1-\ii a/h)\\
+ &\hspace{12mm}
+ +(-\ii h)^{-1-u}\zeta(1+u,K+1+\ii a/h).
+\end{align*}
+Its two residues cancel at \(u=0\). Euler--Maclaurin applied to
+these two Hurwitz functions proves the stated expansion on a full
+neighborhood. Differentiating that expansion introduces only powers
+of \(\log K\). The sector and parameter estimates are uniform on
+compact subsets of \(\Ree a>0\).
+\end{proof}
+
+At \(u=0\), the lemma gives the familiar distinction
+\[
+ \lim_{K\to\infty}P_K(0)
+ =\frac{\tau}{2}\coth\frac{\tau a}{2}
+ =\tau\Li_0(e^{-\tau a})+\frac{\tau}{2}.
+\]
+The extra \(\tau/2\) is the zeroth member of the entire cutoff
+generating function in \eqref{eq:power-cutoff}.
+
+\subsection{The all-order contact polynomial}
+
+For an even nonnegative integer \(N\), define
+\begin{equation}\label{eq:root-beta}
+ M=N/2,\qquad
+ \beta_N=\frac{B_{N+2}}{(N+1)(N+2)},\qquad
+ A_N(u)=\prod_{j=1}^{N}\left(1-\frac uj\right).
+\end{equation}
+An empty product equals one. Define the polynomial
+\begin{equation}\label{eq:contact-polynomial}
+ \boxed{\displaystyle
+ C_{N,d}(X)=
+  \frac{\tau\beta_N}{2}\,d!\,[u^d]\!
+  \left\{uA_N(u)\frac{\sin(\pi u/2)}{\pi u/2}e^{-Xu}\right\},
+  \qquad d\geq1.}
+\end{equation}
+Its degree is \(d-1\), with nonzero leading coefficient
+\((\tau\beta_N/2)d(-1)^{d-1}\).
+
+\begin{theorem}[Complete minimal-contact law]\label{thm:minimal-contact}
+For every even \(N\geq0\), every \(d\geq1\), and \(\Ree a>0\),
+\begin{equation}\label{eq:minimal-contact}
+ \boxed{\displaystyle
+ \sum_{n=-K}^{K}
+   \left.\partial_s^dR_{N/2}(s,a+\ii hn)\right|_{s=-N}
+ =
+ {\cal F}_{N/2}^{(d)}(-N;a,h)
+ +C_{N,d}\bigl(\log(hK)\bigr)
+ +O\!\left(\frac{(1+\log K)^{d-1}}K\right).}
+\end{equation}
+Here and below the superscript on \({\cal F}\) denotes the order
+derivative. The error is uniform for \(a\) in compact subsets of
+the right half-plane.
+
+For odd \(N\geq1\), put \(M=(N+1)/2\). Then all the corresponding
+derivative sums are absolutely convergent, and
+\begin{equation}\label{eq:odd-all-jets}
+ \sum_{n\in\mathbb Z}
+ \left.\partial_s^dR_M(s,a+\ii hn)\right|_{s=-N}
+ ={\cal F}_M^{(d)}(-N;a,h).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For even \(N\), the difference of two successive compensations is
+exactly
+\begin{equation}\label{eq:one-more-subtraction}
+ R_{N/2}(-N+u,w)-R_{N/2+1}(-N+u,w)
+ =\beta_N uA_N(u)w^{-1-u}.
+\end{equation}
+Indeed,
+\[
+ \frac{B_{N+2}}{(N+2)!}(-N+u)_{N+1}
+       =\beta_N uA_N(u).
+\]
+The oversubtracted series is normally convergent in
+\(\Ree u>-2\). Its omitted tail after \(d\) derivatives at zero is
+\(O(K^{-2}(1+\log K)^{d-1})\), since its leading coefficient
+contains the factor \(u\). In the initial half-plane \(\Ree u>0\),
+\eqref{eq:root-master} and \eqref{eq:one-more-subtraction} also imply
+\[
+ {\cal F}_{N/2}(-N+u)-{\cal F}_{N/2+1}(-N+u)
+       =\beta_NuA_N(u)P_\infty^{\mathrm{an}}(u).
+\]
+Both sides continue holomorphically. Apply Lemma~\ref{lem:power-cutoff}
+to the truncated version of \eqref{eq:one-more-subtraction}. Its
+explicit cutoff contribution is
+\[
+ \frac{2\beta_N}{h}A_N(u)\sin(\pi u/2)e^{-u\log(hK)}
+ =\frac{\tau\beta_N}{2}\,
+       uA_N(u)\frac{\sin(\pi u/2)}{\pi u/2}e^{-u\log(hK)}.
+\]
+Taking the \(d\)th coefficient proves the theorem and the stated
+error. For odd \(N\), the minimally chosen \(M\) already satisfies
+\(-N>-2M\), so \eqref{eq:odd-all-jets} is an immediate application
+of normal convergence in \eqref{eq:root-master}.
+\end{proof}
+
+This proof also explains why merely differentiating the first-order
+Bernoulli correction is insufficient: the factor
+\(A_N(u)\sin(\pi u/2)/(\pi u/2)\) itself contributes higher
+coefficients.
+
+\begin{corollary}[Two explicit cutoff conventions]\label{cor:cutoff-coordinate}
+The constant term of the cutoff expansion in powers of \(\log K\)
+is
+\begin{equation}\label{eq:index-finite-part}
+ \FP_{\log K}\sum_{n\in\mathbb Z}
+     \partial_s^dR_{N/2}(-N,a+\ii hn)
+ ={\cal F}_{N/2}^{(d)}(-N;a,h)+C_{N,d}(\log h).
+\end{equation}
+The constant term when the large variable is instead the physical
+radius \(R=hK\) is
+\begin{equation}\label{eq:radius-finite-part}
+ \FP_{\log R}\sum_{|hn|\leq R}
+     \partial_s^dR_{N/2}(-N,a+\ii hn)
+ ={\cal F}_{N/2}^{(d)}(-N;a,h)+C_{N,d}(0).
+\end{equation}
+Only positive powers of the specified logarithm are discarded in
+either definition. Their difference is exactly
+\(C_{N,d}(\log h)-C_{N,d}(0)\).
+\end{corollary}
+
+\begin{proof}
+Theorem~\ref{thm:minimal-contact} supplies a polynomial plus a term
+that tends to zero. Taking its constant coefficient in the indicated
+variable proves both formulas. Replacing \(R/h\) by its integer part
+changes the asymptotic by a quantity tending to zero.
+\end{proof}
+
+\subsection{Harmonic and zeta coefficients}
+
+Let \(Y_j\) denote the complete exponential Bell polynomials,
+defined by
+\[
+ \exp\left(\sum_{r=1}^{\infty}x_r\frac{u^r}{r!}\right)
+   =\sum_{j=0}^{\infty}Y_j(x_1,\ldots,x_j)\frac{u^j}{j!}.
+\]
+The Euler product for sine and the finite product in
+\eqref{eq:root-beta} give
+\begin{align}
+ x_1&=-X-H_N,\notag\\
+ x_r&=-(r-1)!\left(H_N^{(r)}
+                +\mathbf1_{2\mid r}\,2^{1-r}\zeta(r)\right),
+                  \qquad r\geq2,\label{eq:contact-bell}\\
+ C_{N,d}(X)&=\frac{\tau\beta_N}{2}\,d\,
+       Y_{d-1}(x_1,\ldots,x_{d-1}).\label{eq:contact-bell-value}
+\end{align}
+Thus the contact coefficients involve finite harmonic numbers and
+even zeta values only; no unspecified Laurent coefficient remains.
+Writing \(L=X+H_N\) and
+\(V=H_N^{(2)}+\zeta(2)/2\), the first four are
+\begin{align}
+ C_{N,1}&=\frac{\tau\beta_N}{2},&
+ C_{N,2}&=-\tau\beta_N L,\notag\\
+ C_{N,3}&=\frac{3\tau\beta_N}{2}(L^2-V),&
+ C_{N,4}&=2\tau\beta_N
+       \bigl(-L^3+3LV-2H_N^{(3)}\bigr).
+ \label{eq:first-four-contacts}
+\end{align}
+For \(N=0\), in particular,
+\begin{equation}\label{eq:gamma-cubic-contact}
+ C_{0,1}=\frac{\tau}{24},\qquad
+ C_{0,2}(X)=-\frac{\tau X}{12},\qquad
+ C_{0,3}(X)=\frac{\tau}{8}
+                    \left(X^2-\frac{\pi^2}{12}\right).
+\end{equation}
+The constant \(-\tau\pi^2/96\) at the third derivative is missed
+if the sine factor is dropped.
+
+For explicit evaluation of the analytic term in
+\eqref{eq:minimal-contact}, define \(E_j^{(N)}\) by
+\begin{equation}\label{eq:root-E}
+ \exp\left((\log\tau+\gamma-H_N)u+
+   \sum_{r=2}^{\infty}
+       \frac{(-1)^{r+1}\zeta(r)-H_N^{(r)}}r u^r\right)
+   =\sum_{j=0}^{\infty}E_j^{(N)}\frac{u^j}{j!}.
+\end{equation}
+The reciprocal-Gamma factorization then gives, for every \(M\),
+\begin{equation}\label{eq:root-analytic-jets}
+ {\cal F}_M^{(d)}(-N;a,h)
+ =(-1)^NN!\tau^{-N}d
+   \sum_{j=0}^{d-1}\binom{d-1}{j}E_j^{(N)}
+       \partial_s^{d-1-j}{\cal B}_M(-N;a,\tau).
+\end{equation}
+This coefficient formula is inherited from \cite{RepoVertical};
+the new result supplies its exact minimal-cutoff interpretation.
+All order derivatives on the right are normally convergent
+polylogarithm or Lambert--polylogarithm derivatives.
+
+\subsection{Periodic filters: the mean is the only obstruction}
+
+Let \(c_n\) have period \(p\) and mean
+\(\bar c=p^{-1}\sum_{r=0}^{p-1}c_r\). Define
+\begin{equation}\label{eq:filtered-analytic}
+ {\cal F}_{M,c}(s;a,h)=
+    \sum_{r=0}^{p-1}c_r\,
+       {\cal F}_M(s;a+\ii hr,ph).
+\end{equation}
+
+\begin{theorem}[All-order filter criterion]\label{thm:filter-all}
+For even \(N\) and \(d\geq1\),
+\begin{equation}\label{eq:weighted-contact}
+ \sum_{n=-K}^{K}c_n\partial_s^dR_{N/2}(-N,a+\ii hn)
+ =
+ {\cal F}_{N/2,c}^{(d)}(-N;a,h)
+ +\bar c\,C_{N,d}(\log(hK))+o(1).
+\end{equation}
+If \(\bar c=0\), the positive and negative halves both converge
+ordinarily, locally uniformly in the order parameter near \(-N\);
+every derivative equals the corresponding derivative of
+\eqref{eq:filtered-analytic}. No finite part is needed.
+The condition \(\bar c=0\) is necessary and sufficient for all
+contacts to vanish. There are no additional discrete-moment
+conditions at higher derivative order.
+\end{theorem}
+
+\begin{proof}
+Decompose \(c_n=\bar c+(c_n-\bar c)\). The constant part is
+Theorem~\ref{thm:minimal-contact}. Partial sums of the mean-zero
+part are bounded. Summation by parts, using
+\[
+ \partial_s^dR_{N/2}(-N,a+\ii hn)
+     =O\!\left(\frac{(1+\log|n|)^{d-1}}{|n|}\right)
+\]
+and its first difference
+\(O((1+\log|n|)^{d-1}/n^2)\), proves convergence of each half.
+The same argument before differentiation is locally uniform in
+\(\Ree(s+N)>-1\). In \(\Ree(s+N)>0\) the sums equal
+\eqref{eq:filtered-analytic} by absolute convergence and residue-class
+splitting; analytic continuation proves equality near \(s=-N\).
+Necessity follows already from
+\(C_{N,1}=\tau\beta_N/2\neq0\).
+\end{proof}
+
+For the alternating filter this yields the particularly simple
+all-order identity
+\begin{equation}\label{eq:alternating-all-jets}
+ \sum_{n\in\mathbb Z}(-1)^n
+      \partial_s^dR_{N/2}(-N,a+\ii hn)
+ =
+ 2{\cal F}_{N/2}^{(d)}(-N;a,2h)
+   -{\cal F}_{N/2}^{(d)}(-N;a,h).
+\end{equation}
+The two half-sums specify the summation convention; absolute
+convergence is not asserted. For every two shifts \(a,b\) in the
+right half-plane, the relative identity
+\begin{equation}\label{eq:relative-lattice}
+ \begin{split}
+ &\sum_{n\in\mathbb Z}c_n
+ \left\{\partial_s^dR_{N/2}(-N,a+\ii hn)
+       -\partial_s^dR_{N/2}(-N,b+\ii hn)\right\}\\
+ &\hspace{10mm}
+ ={\cal F}_{N/2,c}^{(d)}(-N;a,h)
+       -{\cal F}_{N/2,c}^{(d)}(-N;b,h)
+ \end{split}
+\end{equation}
+is absolutely convergent for every bounded periodic \(c\).
+The leading reciprocal-logarithmic term is independent of the
+horizontal shift, so subtraction improves it to
+\(O(n^{-2}(1+\log|n|)^{d-1})\).
+
+\subsection{Gamma and all Stieltjes antiderivatives}
+
+At \(N=0\), write \(D_d(w)=\partial_s^dR_0(0,w)\). Direct
+differentiation of the fixed subtractions gives
+\begin{equation}\label{eq:Dd-explicit}
+ D_d(w)=\zeta^{(d)}(0,w)
+       +d!\,w\sum_{j=0}^{d}\frac{(-\Log w)^j}{j!}
+       -\frac12(-\Log w)^d.
+\end{equation}
+The first instance is the usual Stirling remainder,
+\[
+ D_1(w)=\log\Gamma(w)-(w-\tfrac12)\Log w+w-\tfrac12\log(2\pi).
+\]
+Its vertical Gamma product belongs to the published work of
+Arabi Ardehali and Rosengren \cite{ArdehaliRosengren}, as the
+preceding report correctly records. Our contribution here is the
+explicit all-\(d\) minimal-cutoff and filter law.
+
+For example,
+\begin{equation}\label{eq:D2-cutoff}
+ \begin{split}
+ &\sum_{n=-K}^{K}
+ \left\{\zeta''(0,w_n)+w_n\bigl(\Log^2w_n-2\Log w_n+2\bigr)
+                       -\tfrac12\Log^2w_n\right\}\\
+ &\hspace{9mm}
+ ={\cal F}_0''(0;a,h)-\frac{\tau}{12}\log(hK)
+            +O(K^{-1}\log K).
+ \end{split}
+\end{equation}
+This identity is simultaneously a formula for compensated
+antiderivatives of the first generalized Stieltjes constant:
+expansion of
+\(\partial_w\zeta(s,w)=-s\zeta(s+1,w)\) gives
+\begin{equation}\label{eq:stieltjes-primitive-root}
+ \partial_w\zeta^{(d)}(0,w)=(-1)^d d\,\gamma_{d-1}(w),
+ \qquad d\geq1.
+\end{equation}
+Thus
+\[
+ {\mathfrak A}_m(w)=\frac{(-1)^{m+1}}{m+1}
+       \left(\zeta^{(m+1)}(0,w)-\zeta^{(m+1)}(0,1)\right)
+\]
+is the uniquely anchored primitive
+\(\mathfrak A_m'(w)=\gamma_m(w)\),
+\(\mathfrak A_m(1)=0\). Theorem~\ref{thm:minimal-contact},
+\eqref{eq:Dd-explicit}, and \eqref{eq:root-analytic-jets}
+evaluate every corresponding compensated lattice sum using finite
+harmonic/zeta coefficients and Lambert--polylogarithm order
+derivatives. Formula \eqref{eq:relative-lattice} supplies an
+ordinary absolutely convergent version whenever two anchors are
+compared.
+

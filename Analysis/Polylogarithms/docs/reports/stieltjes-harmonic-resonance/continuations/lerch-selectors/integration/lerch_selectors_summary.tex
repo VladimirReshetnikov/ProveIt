@@ -1,0 +1,92 @@
+% Optional manuscript fragment. Requires amsmath, amssymb and theorem.
+% No global macros. Full proofs and precise attribution are in article.tex.
+\subsection{Polynomial Lerch selectors and their resonance obstruction}
+\label{plsint:section}
+
+Let $a>0$, $L\ge1$ be an integer, $0<|z|\le1$, and $\lambda=z^L$.
+For $P\in\mathbb C[u]$ define
+\[
+ T_P(z,s;a,L)=\int_0^L P(u)\Phi(z,s,a+u)\,du,
+ \qquad c_j=P^{(j)}(L)-\lambda P^{(j)}(0).
+\]
+Here $\Phi(z,s,a)=\sum_{n\ge0}z^n(n+a)^{-s}$ initially in its
+absolute convergence domain. Put $F_j(s)=\prod_{k=1}^{j+1}(s-k)$.
+Repeated integration by parts and integer translation give
+\begin{align*}
+ T_P={}&-\lambda^{-1}\sum_j\frac{c_j}{F_j(s)}\Phi(z,s-j-1,a)\\
+ &+\lambda^{-1}\sum_j\frac{P^{(j)}(L)}{F_j(s)}
+                      \sum_{\ell=0}^{L-1}z^\ell(a+\ell)^{j+1-s}.
+\end{align*}
+The shifted Lerch functions together with the displayed finite
+exponentials are independent over $\mathbb C(s)$: clear rational
+denominators in a relation and extract the least nonzero Dirichlet
+coefficient as $s\to+\infty$. Thus the nonzero $c_j$ are the exact
+functional support, not merely coordinates in a chosen formal list.
+
+\begin{theorem}[Single-order classification and endpoint obstruction]
+\label{plsint:classification}
+Modulo the $\mathbb C(s)$-span of $(a+\ell)^{-s}$, $0\le\ell<L$,
+a polynomial selects exactly the order $s-N$, $N\ge1$, if and only if
+\[
+ P(u)=\begin{cases}
+ C L^{N-1}H_{N-1}(u/L;\lambda),&\lambda\ne1,\\
+ C L^N B_N(u/L)+C_0,&\lambda=1,
+ \end{cases}\qquad C\ne0,
+\]
+where the classical Frobenius--Euler polynomials are defined by
+\[
+ \frac{(1-\lambda)e^{xt}}{e^t-\lambda}
+       =\sum_{d\ge0}H_d(x;\lambda)t^d/d!.
+\]
+No nonresonant single-order polynomial vanishes with its first
+ derivative at both endpoints. At resonance, the single-order
+polynomials with this property are precisely the nonzero multiples of
+$B_{2r}(u/L)-B_{2r}$, $r\ge2$. Their endpoint zeros are exactly double.
+\end{theorem}
+
+The basis formula is classical (Kim and Kim, arXiv:1211.6640, Theorem 1).
+For the obstruction, use
+$H_d(0;\lambda)=(-1)^d A_d(\lambda)/(1-\lambda)^d$,
+where $A_d$ is the Eulerian polynomial. Its zeros are simple and
+negative, and adjacent Eulerian polynomials have no common zero.
+The Appell derivative identity then excludes a double endpoint zero.
+
+For $N=2r\ge4$, the constructive replacement for the impossible
+single-order deformation is the exact identity
+\[
+ B_N(u)-B_N
+ =\sum_{\substack{2\le j\le N\\ j\ {
+m even}}}
+       \binom Nj B_{N-j}H_j(u;z)
+       +\frac{N(1+z)}{2(1-z)}H_{N-1}(u;z).
+\]
+Its functional support has $r+1$ coordinates for $z\ne\pm1$, $r$ at
+$z=-1$, and one at $z=1$. Full proofs, all spectral and Stieltjes
+jets, and anchored primitives are in the continuation report.
+For example,
+\[
+ \int_0^1 u^2(1-u)^2\psi'(1+u)\,du
+           =\frac{3\zeta(3)}{\pi^2}-\frac13,
+\]
+\[
+ \int_0^1 u^2(1-u)^2\gamma_1(1+u)\,du
+ =-2\zeta''(-3)-\frac{22}{3}\zeta'(-3)+\frac5{432}.
+\]
+
+\paragraph{A separate coefficient resolution.}
+The question on page 9 of arXiv:2609.13796v1 has the all-parameter
+answer $\alpha_j=(-1)^{j-1}\binom{v-1}{j}$, because
+\[
+ \prod_{j=1}^{v-1}(1-t/j)^{-1}
+ =\sum_{j=1}^{v-1}\frac{(-1)^{j-1}\binom{v-1}{j}}{1-t/j}.
+\]
+The continuation keeps the paper's Definition 1. It corrects the
+Mellin normalization and the interpolation sign in that version.
+These external corrections are not attributed to the canonical
+manuscript.
+
+\paragraph{Status.}
+The integer-length selector question is resolved in the stated
+functional setting. The general unequal-tail prefix conjecture,
+$S_6$, and revised $S_8$ remain untouched. Numerical checks of the
+report are diagnostics, not interval certificates or formal proofs.

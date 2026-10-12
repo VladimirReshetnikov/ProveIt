@@ -1,0 +1,70 @@
+\section{Reproducibility and the role of computation}
+\label{repro:section}
+
+The package contains the complete article as one standalone TeX file,
+the modular source, its compiled PDF, all verification programs, and
+the recorded results. The exact source revision and the inherited
+inputs are identified in the bibliography. No running service,
+unpublished data, or repository mutation is required to reproduce the
+calculations. The mathematical assertions are separated into three
+types of evidence.
+
+\paragraph{Analytic proofs.}
+The joint-cumulant theorem is proved by a classical Gamma integral and
+finite polynomial injectivity. The effective reconstruction tail is
+proved by an explicit two-term phase expansion and a rational
+determinant margin. The monomial collision theorem is proved by
+uniform local subtraction, finite selection of exponents, and
+holomorphic cancellation of paired singular branches. The ordinary
+Barnes evaluations follow by differentiated integral identities.
+The limit and sum convergence arguments are part of those proofs.
+
+\paragraph{Exact finite computation.}
+The C++ program \texttt{verify\_gap\_eight.cpp} uses only unsigned
+integer arithmetic and arithmetic in the prime field
+$\mathbb F_{2147483647}$. All $8187$ determinant residues for
+$5\le b\le8191$ are explicitly recorded. The verifier checks the
+prime and every needed denominator and independently checks all
+$8194$ cotangent coefficients against the sine and cosine series.
+An independent replay of the compiled program reproduced the complete
+certificate exactly. The SymPy bridge program separately checks the
+original Bernoulli matrices and their rational determinant reduction
+for $5\le b\le16$, and the concrete $(14,22)$ sum has its own exact
+generator. The finite-field certificate proves rational nonvanishing;
+it does not estimate a real determinant or deduce its sign.
+
+\paragraph{Independent symbolic and numerical diagnostics.}
+The Gamma program performs $122$ exact algebra assertions and $17$
+integral checks. The latter extract cumulants from determinants of
+independently integrated moment entries; they do not substitute the
+same Gamma quotient on both sides. The two precision runs and their
+residuals are described in Section~\ref{gc:section}.
+The Stieltjes compiler implements the finite contact rule using exact
+SymPy expressions. Its test program performs $72$ exact assertions,
+including comparisons with derivatives of the elementary logarithmic
+kernel, the first-index dilogarithmic contact, and the inherited
+fixed-rate law. Five nonreal spectral checks compare the paired branch
+series with the original convergent kernel integral; three further
+checks compare the classical primitive with direct integration.
+At $64$ digits the largest scaled spectral residual is below
+$8.2\times10^{-56}$.
+
+The separate \texttt{identity\_audit.py} evaluates ordered collision
+remainders and six Barnes moment formulas at $90$ decimal digits.
+The Barnes residuals are below $3\times10^{-91}$. The collision
+diagnostics deliberately include a nonresonant irrational exponent
+ratio, for which a small positive exponent makes convergence slow.
+That example is recorded with its vanishing-term acceleration rather
+than mislabeled as a rapidly convergent check. All floating-point
+residuals are diagnostics, not rigorous numerical error intervals.
+The exact theorem does not depend on their size.
+
+\paragraph{How to reproduce.}
+The \texttt{README.md} gives the precise build and verification
+commands. The minimal numerical dependencies are Python~3,
+SymPy, and mpmath; the certificate additionally needs a C++17
+compiler. The TeX uses standard mathematical packages and compiles
+with pdfLaTeX through \texttt{latexmk}. Internal analytical audit
+notes identify the delicate normalizations and remainder arguments.
+These are separate derivations within this research workflow and are
+not a claim of external peer review or proof-assistant certification.

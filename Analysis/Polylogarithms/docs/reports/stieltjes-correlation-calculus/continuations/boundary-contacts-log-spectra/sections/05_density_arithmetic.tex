@@ -1,0 +1,335 @@
+\section{Mellin moments, harmonic collisions, and polylogarithmic transforms}
+\label{da:section}
+
+The compact density has a useful arithmetic structure. This section
+identifies it explicitly and shows how the same polynomials connect the
+spectral formulas to Gamma ratios, polygamma differences, generalized
+harmonic numbers, and multiple polylogarithms. The coefficient identities
+and height-one reductions used in this bridge are classical. Their role
+here is to give computable consequences of the logarithmic density, not
+to assert a new historical origin for those identities.
+
+\subsection{The beta generating function of the density}
+
+Retain the polynomials \(P_r\) of \eqref{sp:coincident-polynomial} and put
+\[
+ y(t)=\log\frac{1-t}{t},\qquad 0<t<1.
+\]
+Since \(P_r(y)=-\pi^{-1}\Im(y-i\pi)^r\) for real \(y\), coefficient
+expansion gives the entire generating identity
+\begin{equation}\label{da:Pgen}
+ \sum_{r\ge1}P_r(y)\frac{w^r}{r!}
+       =e^{wy}\frac{\sin\pi w}{\pi}.
+\end{equation}
+For complex \(w\), the right side is the analytic continuation of this
+polynomial coefficient identity; no imaginary-part operation is applied
+to a complex parameter \(w\).
+
+\begin{theorem}[Every Mellin moment of the logarithmic density]
+\label{da:mellin}
+For \(\Re s>0\), define the ordinary integral
+\[
+ M_r(s)=\int_0^1 t^{s-1}P_r(y(t))\dd t,\qquad r\ge1.
+\]
+For \(w\) in a neighborhood of zero,
+\begin{equation}\label{da:mellin-gen}
+ \boxed{\displaystyle
+  \sum_{r\ge1}M_r(s)\frac{w^r}{r!}
+     =\frac{w\Gamma(s-w)}{\Gamma(s+1)\Gamma(1-w)}.}
+\end{equation}
+More generally, the underlying integral of \eqref{da:Pgen} equals this
+Gamma ratio whenever \(\Re(s-w)>0\) and \(\Re(1+w)>0\).
+\end{theorem}
+
+\begin{proof}
+On a sufficiently small closed disk about \(w=0\), the integrand and all
+fixed \(w\)-derivatives are bounded by
+\[
+ C\,t^{\Re s-1-\eta}(1-t)^{-\eta}
+       (1+|\log t|^j+|\log(1-t)|^j),
+\]
+with \(0<\eta<\min(1,\Re s)\). This is integrable. Thus
+coefficient extraction may be interchanged with the integral.
+Euler's beta integral and the Gamma reflection relation then give
+\begin{align*}
+ \int_0^1t^{s-1}e^{wy(t)}\frac{\sin\pi w}{\pi}\dd t
+ &=\frac{\sin\pi w}{\pi}
+      \frac{\Gamma(s-w)\Gamma(1+w)}{\Gamma(s+1)}\\
+ &=\frac{w\Gamma(s-w)}{\Gamma(s+1)\Gamma(1-w)}.
+\end{align*}
+This proves both the generating identity and its stated domain.
+\end{proof}
+
+Let \(Y_n\) denote the complete exponential Bell polynomials, normalized by
+\[
+ \exp\left(\sum_{j\ge1}a_j\frac{w^j}{j!}\right)
+      =\sum_{n\ge0}Y_n(a_1,\ldots,a_n)\frac{w^n}{n!},
+ \qquad Y_0=1.
+\]
+Taking the logarithm of the Gamma ratio in \eqref{da:mellin-gen} gives
+the finite polygamma formula
+\begin{equation}\label{da:polygamma-moment}
+ M_r(s)=\frac r{s}Y_{r-1}(a_1(s),\ldots,a_{r-1}(s)),
+ \quad
+ a_j(s)=(-1)^j\{\psi^{(j-1)}(s)-\psi^{(j-1)}(1)\}.
+\end{equation}
+In particular,
+\begin{align*}
+ M_1(s)&=\frac1s,\\
+ M_2(s)&=\frac2s\{\psi(1)-\psi(s)\},\\
+ M_3(s)&=\frac3s\bigl\{(\psi(s)-\psi(1))^2+
+                                   \psi'(s)-\psi'(1)\bigr\}.
+\end{align*}
+All \(s\)-derivatives of these identities are ordinary logarithmic Mellin
+moments, justified by the same endpoint majorants.
+
+\begin{corollary}[Stirling moments and exact orthogonality]
+\label{da:stirling}
+Let \(\stir nr\) be the unsigned Stirling number of the first kind, with
+\(\stir nr=0\) when \(n<r\). For every \(k\ge0\), \(r\ge1\),
+\begin{equation}\label{da:stirling-moment}
+ \boxed{\displaystyle
+  \int_0^1 t^kP_r\!\left(\log\frac{1-t}{t}\right)\dd t
+    =(-1)^{r-1}\frac{r!}{(k+1)!}\stir{k+1}{r}.}
+\end{equation}
+Thus \(P_r(y(t))\) is orthogonal to every polynomial in \(t\) of degree
+less than \(r-1\), with respect to ordinary Lebesgue integration.
+\end{corollary}
+
+\begin{proof}
+At \(s=k+1\), the right side of \eqref{da:mellin-gen} is
+\[
+ \frac{w(1-w)_k}{(k+1)!}.
+\]
+Expanding this finite polynomial using
+\(u(u+1)\cdots(u+k)=\sum_r\stir{k+1}{r}u^r\)
+gives \eqref{da:stirling-moment} with its sign. The asserted
+orthogonality follows from the vanishing Stirling numbers.
+\end{proof}
+
+This moment formula also makes the harmonic content explicit:
+\[
+ \frac{\stir{k+1}{r}}{k!}
+ =e_{r-1}\left(1,\frac12,\ldots,\frac1k\right),
+\]
+where \(e_j\) is the elementary symmetric polynomial, and \(e_0=1\).
+Equivalently, \eqref{da:polygamma-moment} at \(s=k+1\) has
+\(a_j=-(j-1)!H_k^{(j)}\). These finite formulas make exact moment
+calculation possible without numerical quadrature.
+
+\subsection{A transform from ordinary to height-one multiple polylogarithms}
+
+For \(|z|<1\) and \(s\in\mathbb C\), use
+\[
+ \Li_s(z)=\sum_{n\ge1}\frac{z^n}{n^s}.
+\]
+The height-one multiple polylogarithm needed here can be defined directly
+by the locally normally convergent series
+\begin{equation}\label{da:heightone-definition}
+ \Li_{s+1,\one{r-1}}(z)
+   =\sum_{n\ge1}\frac{z^n}{n^{s+1}}H_{n-1}(\one{r-1}),
+\end{equation}
+where
+\[
+ H_m(\one d)=
+   \sum_{m\ge n_1>\cdots>n_d\ge1}\frac1{n_1\cdots n_d},
+ \qquad H_m(\one0)=1.
+\]
+Thus the nesting convention is specified rather than inferred from
+notation.
+
+\begin{theorem}[The logarithmic-density polylogarithm transform]
+\label{da:polylog}
+For every \(r\ge1\), every \(s\in\mathbb C\), and \(|z|<1\),
+\begin{equation}\label{da:polylog-transform}
+ \boxed{\displaystyle
+ \int_0^1 P_r\!\left(\log\frac{1-t}{t}\right)
+                \frac{\Li_s(zt)}t\dd t
+   =(-1)^{r-1}r!\,\Li_{s+1,\one{r-1}}(z).}
+\end{equation}
+The integral and series are locally normal in \(s\). Consequently every
+order derivative satisfies
+\begin{equation}\label{da:polylog-order-jets}
+ \int_0^1P_r(y(t))\frac{\partial_s^j\Li_s(zt)}t\dd t
+  =(-1)^{r-1}r!\,
+       \partial_s^j\Li_{s+1,\one{r-1}}(z),\qquad j\ge0.
+\end{equation}
+For integer \(s\ge1\), the ordinary endpoint value at \(z=1\) is
+\begin{equation}\label{da:mzv-transform}
+ \int_0^1P_r(y(t))\frac{\Li_s(t)}t\dd t
+   =(-1)^{r-1}r!\,\zeta(s+1,\one{r-1}).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For \(|z|\le R<1\) and \(s\) in a compact set, the polylogarithm
+series and any fixed order derivative are dominated by
+\(\sum_n R^n n^A(1+\log^j n)\). Near zero,
+\(\Li_s(zt)/t\) remains bounded uniformly on these sets; near one
+the only additional factor is an integrable polynomial in
+\(\log(1-t)\). Absolute termwise integration and
+\eqref{da:stirling-moment} give
+\[
+ (-1)^{r-1}r!\sum_{n\ge1}
+       \frac{z^n}{n^s n!}\stir nr.
+\]
+The finite identity
+\(\stir nr/(n-1)!=H_{n-1}(\one{r-1})\) turns this into
+\eqref{da:heightone-definition}. The same domination justifies the
+order derivatives.
+
+For real \(0\le z<1\) and integer \(s\ge1\),
+\(|\Li_s(zt)|\le\Li_s(t)\). At \(s=1\) this grows at most as
+\(|\log(1-t)|\), and at \(s>1\) it is bounded near one.
+Dominated convergence gives the endpoint integral. The positive series
+in \eqref{da:heightone-definition} converges at one because its first
+index is at least two, proving \eqref{da:mzv-transform}.
+\end{proof}
+
+\begin{corollary}[An all-order ordinary zeta integral]
+\label{da:zeta-integral}
+For every integer \(r\ge1\),
+\begin{equation}\label{da:zeta-integral-formula}
+ \int_0^1P_r\!\left(\log\frac{1-t}{t}\right)
+       \frac{-\log(1-t)}t\dd t
+     =(-1)^{r-1}r!\,\zeta(r+1).
+\end{equation}
+For example,
+\begin{equation}\label{da:pi-four}
+ \boxed{\displaystyle
+ \int_0^1\left(3\log^2\frac{1-t}{t}-\pi^2\right)
+             \frac{-\log(1-t)}t\dd t=\frac{\pi^4}{15}.}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The all-one iterated integral is
+\(\Li_{\one r}(z)=(-\log(1-z))^r/r!\), by induction using its
+derivative and its zero value at \(z=0\). Integration once against
+\(dz/z\), followed by \(u=-\log(1-z)\), gives
+\[
+ \zeta(2,\one{r-1})
+  =\frac1{r!}\int_0^1\frac{(-\log(1-z))^r}{z}\dd z
+  =\frac1{r!}\int_0^\infty\frac{u^r}{e^u-1}\dd u
+  =\zeta(r+1).
+\]
+The last equality follows by expanding \(1/(e^u-1)\) into its
+positive exponential series and integrating. Apply
+\eqref{da:mzv-transform} at \(s=1\). The case \(r=3\), together with
+\(\zeta(4)=\pi^4/90\), gives \eqref{da:pi-four}.
+\end{proof}
+
+\subsection{Every confluent logarithmic coefficient}
+
+For \(a>0\), \(\beta\ge0\), define the convergent resolvents
+\[
+ R_k(a;\beta)=\sum_{n\ge0}\frac1{((n+a)^2+\beta)^k}
+   =\frac{(-1)^{k-1}}{(k-1)!}\partial_\beta^{\,k-1}Q_a(\beta),
+ \qquad k\ge1.
+\]
+For \(r\) independent displacements satisfying
+\(|\delta_j|<a^2+\beta\), the ordinary product sum has the convergent
+collision expansion
+\begin{align}
+ &\sum_{n\ge0}\prod_{j=1}^r
+     \log\left(1+\frac{\delta_j}{(n+a)^2+\beta}\right)\notag\\
+ &\quad=
+ \sum_{k_1,\ldots,k_r\ge1}
+   \frac{(-1)^{k_1+\cdots+k_r-r}
+             \delta_1^{k_1}\cdots\delta_r^{k_r}}
+        {k_1\cdots k_r}\,
+       R_{k_1+\cdots+k_r}(a;\beta).
+ \label{da:independent-collision}
+\end{align}
+All branches are the ones obtained from the convergent logarithm series
+at zero. On smaller closed polydisks, the series is absolutely and normally
+convergent: the absolute logarithm series is bounded by a constant times
+\(((n+a)^2+\beta)^{-1}\) in each factor, and the product is summable.
+This proves the interchange and permits every fixed parameter derivative.
+
+When all displacements equal \(\delta\), the classical logarithm-power
+coefficients give a particularly short all-order formula:
+\begin{equation}\label{da:confluent-stirling}
+ \boxed{\displaystyle
+ \sum_{n\ge0}\log^r\left(1+\frac{\delta}{(n+a)^2+\beta}\right)
+   =r!\sum_{k\ge r}\frac{(-1)^{k-r}}{k!}\stir kr
+                          \delta^kR_k(a;\beta).}
+\end{equation}
+For \(r=2\), this recovers the harmonic coefficient in the inherited
+second-jet collision expansion \cite{ProveItHigherDefects}. For \(r=3\),
+\begin{align}
+ &\sum_{n\ge0}\log^3\left(1+\frac{\delta}{(n+a)^2+\beta}\right)\notag\\
+ &\qquad=
+ 3\sum_{k\ge3}\frac{(-1)^{k-3}\delta^k}{k}
+       \{H_{k-1}^2-H_{k-1}^{(2)}\}R_k(a;\beta).
+ \label{da:cubic-harmonic}
+\end{align}
+At \(\beta=0\), \(R_k(a;0)=\zeta(2k,a)\); at an integer shift
+\(a=M\), it is \(\zeta(2k)-H_{M-1}^{(2k)}\).
+Thus the compact density, the convergent mass expansion, and the
+polygamma expression for \(R_k\) are three independently useful
+representations of the same all-order logarithmic sum.
+
+\subsection{Half-lattices and bilateral polylogarithmic kernels}
+
+Digamma reflection gives the particularly simple half-lattice kernel
+\begin{equation}\label{da:half-lattice}
+ Q_{1/2}(t)=\frac{\pi}{2\sqrt t}\tanh(\pi\sqrt t),
+ \qquad Q_{1/2}(0)=\frac{\pi^2}{2}.
+\end{equation}
+For example the cubic repeated-mass identity becomes
+\begin{align}
+ &\sum_{n\ge0}\log^3
+    \frac{(n+\frac12)^2+\nu}{(n+\frac12)^2+\beta}\notag\\
+ &\quad=\frac{\pi}{2}\int_\beta^\nu
+    \left\{3\log^2\frac{\nu-t}{t-\beta}-\pi^2\right\}
+                  \frac{\tanh(\pi\sqrt t)}{\sqrt t}\dd t,
+       \qquad \nu>\beta\ge0 .
+ \label{da:half-cubic}
+\end{align}
+The apparent endpoint at \(t=0\) is removable in the hyperbolic kernel,
+so this remains an ordinary integral when \(\beta=0\).
+
+For \(0<a<1\), define the bilateral resolvent
+\[
+ Q_a^{\mathrm{bil}}(t)=Q_a(t)+Q_{1-a}(t).
+\]
+Reflection and the convergent geometric Fourier series give
+\begin{align}
+ Q_a^{\mathrm{bil}}(t)
+ &=\frac{\pi}{\sqrt t}
+     \frac{\sinh(2\pi\sqrt t)}
+          {\cosh(2\pi\sqrt t)-\cos(2\pi a)}\notag\\
+ &=\frac{\pi}{\sqrt t}
+       \left\{1+2\Re\Li_0(e^{-2\pi\sqrt t+2\pi ia})\right\},
+             \qquad t>0. \label{da:bilateral-kernel}
+\end{align}
+Here \(\Li_0(z)=z/(1-z)\), so the kernel is elementary.
+The bilateral full spectral jet
+\(J_{N,r}^{\mathrm{bil}}(a)=J_{N,r}(a)+J_{N,r}(1-a)\) therefore is
+\begin{align}
+ J_{N,r}^{\mathrm{bil}}(a;\boldsymbol\mu)
+ ={}&(2N)^r\{\zeta^{(r)}(0,a)+\zeta^{(r)}(0,1-a)\}\notag\\
+ &+(-1)^r\int_0^\infty
+          \rho_{N,r}(t)Q_a^{\mathrm{bil}}(t)\dd t.
+ \label{da:bilateral-jet}
+\end{align}
+This is a finite polylogarithmic-integrand description at every order,
+while retaining the displayed mass-zero Hurwitz derivatives. It does not
+assert a finite evaluation of the remaining mass integral.
+
+There is also an explicit anchored shift primitive of the bilateral
+kernel. For \(0<a,a_*<1\), put \(q_a(t)=e^{-2\pi\sqrt t+2\pi ia}\). Then
+\begin{equation}\label{da:bilateral-primitive}
+ \int_{a_*}^{a}Q_u^{\mathrm{bil}}(t)\dd u
+   =\frac{\pi(a-a_*)+
+          \Im\{\Li_1(q_a(t))-\Li_1(q_{a_*}(t))\}}{\sqrt t}.
+\end{equation}
+Indeed \(\partial_a\Li_1(q_a)=2\pi i\Li_0(q_a)\).
+The continuous value at \(t=0\) is
+\(\pi\{\cot(\pi a_*)-\cot(\pi a)\}\).
+Integration of \eqref{da:bilateral-jet} or of its compact connected
+version against the shift therefore gives anchored ordinary
+polylogarithmic integrals. The required interchanges follow from the
+locally uniform bounds already proved for \(Q_a\) and its reflected
+partner.

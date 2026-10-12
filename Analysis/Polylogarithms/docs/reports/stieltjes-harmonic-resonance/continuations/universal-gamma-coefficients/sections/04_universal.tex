@@ -1,0 +1,104 @@
+\section{The complete coefficient theorem}
+\label{sec:universal}
+
+\subsection{Uniqueness under canonical support}
+
+A series in $x_1,\ldots,x_d$ has canonical support when every monomial whose highest present index is $r$ has exponent at least two at $x_r$. Constants are allowed. This is precisely the support inherited from \eqref{eq:appell} after removing $e^{u_0t}$.
+
+\begin{lemma}[Canonical uniqueness]\label{lem:unique}
+Equation~\eqref{eq:general-PDE} has at most one formal solution with canonical support.
+\end{lemma}
+\begin{proof}
+Take the difference $H$ of two such solutions. For $d=1$, the homogeneous equation is $H-x_1H'=0$, whose formal solutions are multiples of $x_1$; canonical support excludes that monomial.
+
+For $d\ge2$, specialize $x_d=0$. The derivative $\partial_{x_d}H$ vanishes there because the coefficient of $x_d$ is absent. Thus $H|_{x_d=0}$ satisfies the lower-order homogeneous equation and is zero by induction. If $H\ne0$, let $c\ge2$ be its smallest nonzero exponent of $x_d$, with coefficient $H_c(x_1,\ldots,x_{d-1})$. The coefficient of $x_d^{c-1}$ in the homogeneous equation is
+\[
+ (-1)^d c L_{d-1}^d H_c=0.
+\]
+The operator $L_s=x_1+\sum_{r=1}^{s-1}x_{r+1}\partial_{x_r}$ is injective on formal series in $s$ variables. For $s=1$ it is multiplication by $x_1$. Inductively, the lowest nonzero power of $x_s$ in a putative element of its kernel would have coefficient killed by $L_{s-1}$, which is impossible. Thus $H_c=0$, a contradiction.
+\end{proof}
+
+\subsection{Universal beta coefficients}
+
+\begin{theorem}[Every coefficient, every derivative order]\label{thm:universal}
+Let $m\ge0$ and write $\Nc_m=\Nc(\Ac_m)$. Its coefficient at $u_0^m$ is one. Any other monomial has a highest positive index $d\ge1$. If that index occurs only once, the coefficient is zero. For exponents $a_0,\ldots,a_d$ with $a_d\ge2$ and $m=\sum(r+1)a_r$, the coefficient is zero when $\sum r a_r$ is odd. When that sum is even, it is given by \eqref{eq:main-intro}.
+
+Equivalently, if
+\begin{equation}\label{eq:Pexpansion}
+ C_d(v)^{a_d-2}\prod_{r=1}^{d-1}C_r(v)^{a_r}
+ =\sum_e p_e v^e,
+\end{equation}
+then the permitted coefficient is the finite rational number
+\begin{equation}\label{eq:positive-beta}
+ \boxed{\displaystyle
+ [u_0^{a_0}\cdots u_d^{a_d}]\Nc_m
+ =\frac{(-1)^d m!}{2^d(d+1)!\prod_{r=0}^d a_r!}
+       \sum_e\frac{p_e}{\prod_{j=0}^d(e+1+2j)}.}
+\end{equation}
+Every $p_e$ in \eqref{eq:Pexpansion} is nonnegative, and at least one is positive.
+\end{theorem}
+
+\begin{proof}
+Normalize $e^{u_0t}J_d(\boldsymbol x)$ coefficientwise using Proposition~\ref{prop:normal}. Its coefficients are polynomials in $u_0,\ldots,u_d$, so normal reduction cannot create a larger index. Translation in $u_0$ again gives an Appell factor, say $e^{u_0t}\widehat F_d$. Normalization preserves the Euler variational derivative. Lemma~\ref{lem:intertwining}, followed by the finite-jet principle, shows that $\widehat F_d$ satisfies \eqref{eq:general-PDE}. It has canonical support, hence $\widehat F_d=F_d$ by Lemma~\ref{lem:unique}.
+
+Now inspect a coefficient whose exponent of $u_d$ is at least two. Such a monomial in the raw series is already canonical. Normalizing a term with a single $u_d$ removes its highest index entirely: after isolating the original term in $DT$, all remaining terms have index at most $d-1$. Terms with no $u_d$ cannot create it. Therefore normalization does not change any coefficient containing $u_d^2$ or a higher power.
+
+Its coefficient before normalization is
+\[
+ \frac{m!}{\prod_{r=0}^d a_r!}\,
+ \frac12\FP\int_{-1}^1W_d(v)\prod_{r=1}^dC_r(v)^{a_r}\dd v.
+\]
+Substitute \eqref{eq:Wd}. The two factors of $C_d$ cancel, leaving a polynomial integrand. Thus the finite part is now an ordinary integral. Its parity is $\sum r a_r$. It vanishes for odd parity, and for even parity the symmetric integral becomes the integral from zero to one, giving \eqref{eq:main-intro}.
+
+Finally, for every integer $e\ge0$,
+\begin{equation}\label{eq:beta-elementary}
+ \int_0^1v^e(1-v^2)^d\dd v
+ =\frac12 B\left(\frac{e+1}{2},d+1\right)
+ =\frac{2^d d!}{\prod_{j=0}^d(e+1+2j)}.
+\end{equation}
+Apply this to \eqref{eq:Pexpansion} to obtain \eqref{eq:positive-beta}. The positivity assertion follows from \eqref{eq:Cr}. The pure $u_0^m$ coefficient is unchanged by normalization, since a total derivative cannot contain a pure power of $u_0$.
+\end{proof}
+
+\begin{corollary}[Complete support and sign]\label{cor:sign}
+A canonical derivative-containing monomial occurs in $\Nc_m$ if and only if $\sum r a_r$ is even. Every such coefficient has sign $(-1)^d$, where $d$ is its highest derivative index. There are no additional accidental zeros.
+\end{corollary}
+\begin{proof}
+For permitted parity, every denominator and at least one numerator in \eqref{eq:positive-beta} is strictly positive. The claimed sign and nonvanishing follow.
+\end{proof}
+
+The parity condition is equivalently that weight and factor degree have the same parity. It agrees with the earlier centered-Gamma parity theorem, but the explicit nonvanishing and sign conclusion here follows from the universal positive beta formula.
+
+\subsection{An ordinary entire generator}
+
+The finite parts were useful for the proof; they are not necessary in the final generator.
+
+\begin{theorem}[All finite projections as ordinary integrals]\label{thm:entire}
+For every $d\ge1$,
+\begin{equation}\label{eq:entire-generator}
+ \boxed{\displaystyle
+ F_d(\boldsymbol x)=1+\frac12\sum_{r=1}^d\int_{-1}^1
+ W_r(v)\exp\left(\sum_{j=1}^{r-1}C_j(v)x_j\right)
+ \bigl(e^{C_r(v)x_r}-1-C_r(v)x_r\bigr)\dd v.}
+\end{equation}
+Every apparent singularity on the integration interval is removable. The right side is entire in $\boldsymbol x\in\C^d$ and its Taylor series is exactly the canonical generating function \eqref{eq:appell}.
+\end{theorem}
+\begin{proof}
+The bracket begins with $C_r(v)^2x_r^2/2$, canceling the only possible singularity of $W_r$. The resulting integrand is continuous in $v$ and holomorphic in all parameters, locally uniformly on compact parameter sets. Its Taylor series may therefore be integrated termwise. The $r$th summand contains exactly the monomials with highest derivative index $r$ occurring at least twice, with coefficients from Theorem~\ref{thm:universal}. Distinct summands have disjoint highest-index supports. The constant one supplies the pure $u_0$ sector after multiplication by $e^{u_0t}$.
+\end{proof}
+
+There is also a well-defined infinite formal version of \eqref{eq:entire-generator}: at weight $m$, only $r$ satisfying $2(r+1)\le m$ can contribute. No analytic convergence assertion is made for arbitrary infinite sequences of numerical jet variables.
+
+\subsection{A support-count identity}
+
+Let $s_m$ count the nonzero monomials of $\Nc_m$. Corollary~\ref{cor:sign} gives the formal series
+\begin{equation}\label{eq:support-series}
+ \sum_{m\ge0}s_mq^m=
+ \frac1{1-q}\left[1+\frac12\sum_{d\ge1}q^{2d+2}
+ \left\{\prod_{r=1}^d\frac1{1-q^{r+1}}+
+        \prod_{r=1}^d\frac1{1-(-1)^rq^{r+1}}\right\}\right].
+\end{equation}
+Indeed remove the two mandatory factors at the highest index, then average the two parity-generating products. The factor $(1-q)^{-1}$ supplies arbitrary powers of $u_0$. For $0\le m\le18$ the counts are
+\[
+ 1,1,1,1,2,2,3,3,5,6,8,9,13,15,20,24,32,38,49.
+\]
+This counts formal monomials, not linearly independent numerical periods after a special-function substitution.

@@ -1,0 +1,194 @@
+% Parent-ready source/status fragment. No preamble.
+\section{Source audit, integration decisions, and further research}
+\label{status:section}
+
+The source anchor for this continuation is ProveIt revision
+\texttt{03112a7d3b91} \cite{ProveIt}.
+The audit concerns the incoming passages used in the proofs and the
+manuscript's relevant status records. It is not a certification of
+every result in the repository. The three main advances have the
+following precise relation to that source state.
+
+\subsection{What the present results change}
+
+\begin{enumerate}
+\item \textbf{Joint Gamma--polygamma moments.}
+The Gamma-normalization report's
+\path{sections/02_gaussian.tex} proves the paired deformation and
+the single-trigamma Gaussian moments through degree $n+1$;
+research question Q2 in
+\path{sections/06_audit_research.tex} asks for the joint
+polygamma moments \cite{GammaIncoming}.
+Theorem~\ref{gc:main} separates all joint cumulants through total
+weight $2n+2$, with weight $q+1$ assigned to $R_q$.
+It includes digamma and even polygamma orders. Formula
+\eqref{gc:moment} then evaluates every retained ordinary moment,
+and Corollary~\ref{gc:wick} gives the centered positive-order Wick
+rule. This answers the joint-separation question in the stated
+weighted range; the beyond-range classification remains open.
+The nonzero small-$\sigma$ skewness limit in
+Proposition~\ref{gc:sharpness} supplies an obstruction relevant to
+the same report's Q1, but does not evaluate the general first
+excluded trigamma moment.
+The underlying Gustafson integral remains classical
+\cite{DerkachovManashov}; its Gamma normalizer and the paired law
+retain their incoming attribution.
+
+\item \textbf{Effective reconstruction and the complete gap-eight ray.}
+Section~8 of the ordered-boundary report gives eventual
+nonsingularity at each fixed gap; Section~9, research question~1,
+asks for an effective threshold and finite completion
+\cite{OrderedIncoming}. Theorem~\ref{eg:effective} supplies an
+explicit computable $B(m)$ for every fixed half-gap $m$.
+The later gap-six report's
+\path{sections/05_audit_and_questions.tex}, question Q1,
+explicitly asks for complete gap-eight coverage \cite{GapSix}.
+Theorem~\ref{eg:eight-main} proves this for every
+$(p,q)=(2b-8,2b)$, $b\ge5$, using a proved analytic tail and an
+exact finite-field completion. Corollary~\ref{eg:eight-identities}
+turns that result into ordinary convergent polygamma-product
+identities. The unrestricted all-pairs prefix conjecture remains
+open. The finite certificate proves nonvanishing, and does not
+prove positivity at every intervening finite index.
+
+\item \textbf{Stieltjes collisions at different monomial scales.}
+The gap-six report's Section~4 treats fixed positive rates
+$a=\lambda\epsilon$, $b=\mu\epsilon$; its question Q10 asks for
+$a=\lambda\epsilon^\alpha$, $b=\mu\epsilon^\beta$ with
+$\alpha\ne\beta$ \cite{GapSix}.
+Theorem~\ref{mc:main} evaluates the constant for every positive
+monomial pair and every fixed pair of Stieltjes indices and
+argument derivatives. Its proof also specifies all divergent
+terms through that constant by finite truncation. The three
+resonance conditions in \eqref{mc:three-mechanisms} identify the
+additional contacts, including the singular--singular contact.
+The earlier lattice-contact report's Q9 asked only for fixed
+unequal rates \cite{LatticeIncoming}; that problem was already
+answered by the gap-six report and is not reclaimed here.
+General nonmonomial paths and three independently shifted factors
+remain outside the present theorem. The trigamma-tail contact
+family \eqref{mc:stieltjes-tail-contact} and its polylogarithmic
+generator and primitive are explicit evaluated consequences of
+the new scale classification.
+\end{enumerate}
+
+The Barnes-integral companion supplies additional ordinary integral
+evaluations obtained by explicitly differentiating a classical Barnes
+lemma \cite{DLMF}. It should be credited in that form. A bounded
+literature search and comparison with the inspected incoming material
+support the stated continuation choices; they do not establish global
+historical novelty.
+
+\subsection{Errors, status corrections, and essential qualifications}
+
+No newly false inherited mathematical theorem was found in the
+specific dependencies used for these results. The changes above are
+proved extensions and research-status updates. They should not be
+presented as corrections to formulas which the sources stated correctly.
+In particular, the incoming Gamma report already restricts its finite
+Gaussian law, and the gap-six report already distinguishes finite-field
+nonvanishing from a real-sign theorem.
+
+One source-list reconciliation is necessary. The gap-six report's Q4
+and the ordered-boundary report's question~2 ask for evaluations of
+$K_m$. The later Gamma-normalization report already supplies them
+\cite{GammaIncoming,GapSix,OrderedIncoming}. These questions should be
+marked answered by that predecessor, rather than counted among the
+present results. The repeated README paragraph about the 1,032-input
+first-letter-$X$ family, rank 1,008 and kernel dimension 24 remains
+present at the pinned revision. Earlier incoming reports already
+identified this editorial duplication. Removing its second occurrence
+would be an inherited editorial cleanup, not a new mathematical erratum.
+
+Three conventions are material to the proofs. The Gamma moment
+classification retains its total-weight restriction: beyond that range,
+Newton relations prevent unrestricted comparison of power-sum
+coefficients. The Bernoulli reconstruction matrix retains the omission
+of a lower binomial index zero; evaluating that entry as
+$\binom n0=1$ changes the problem. The Stieltjes constant is taken in
+the displayed small parameter, with the fixed-coordinate finite part
+kept distinct from the path-dependent constant. Spectral pole pairs
+must be combined before their removable values and derivatives are
+taken. These are integration requirements, not newly discovered
+mistakes in the cited sources.
+
+The manuscript's short $S_6$ and revised $S_8$ candidates remain open;
+the old rejected $S_8$ candidate remains rejected. None of the Gamma
+moment, reconstruction, or collision theorems implies those polylogarithmic
+period identities. Numerical proximity and rank in a specified formal
+relation space do not supply their missing exact equalities.
+The verification artifacts here likewise distinguish exact finite
+certificates from floating-point diagnostics. The analytic arguments
+justify convergence, continuation and coefficient extraction.
+
+\subsection{Further questions directed toward exact identities}
+
+\begin{enumerate}
+\item \textbf{Evaluate the first excluded polygamma cumulants.}
+At total weight $2n+3$ and above, determine the relations induced
+by $e_{2n+3},e_{2n+4},\ldots$ and identify additional integral
+identities that separate the remaining cumulants. The immediate
+scalar target is the exact $(n+2)$nd trigamma Gaussian defect at
+general $n,\sigma$. The proved $n=1$ small-shift limit is a
+normalization constraint on any proposed formula.
+
+\item \textbf{Develop joint moment formulas for unequal Gamma clusters.}
+Allow several distinct base shifts with specified multiplicities.
+Determine which mixed polygamma moments can be separated by
+independent deformations within each cluster, how their finite
+coordinate relations change when clusters merge, and which new
+ordinary integrals arise at the first unresolved degrees. A useful
+answer would give explicit polygamma or finite hypergeometric
+coefficients, rather than only a differentiated generating integral.
+
+\item \textbf{Find closed reconstruction rows and identities in $b$.}
+The gap-eight theorem specifies $P_b$ by a rational inverse matrix.
+Find finite-sum descriptions or recurrences for its coefficients and
+for the corresponding subtraction polynomial. Decide which inverse
+rows yield especially short zeta-valued identities. The exact
+leading coefficient and the ordinary sum in
+\eqref{eg:eight-sum} provide tests for every proposed recurrence.
+
+\item \textbf{Replace fixed-gap finite completion by structural algebra.}
+Find a recurrence invariant, factorization, or appropriate
+variation-diminishing statement that proves nonvanishing for an
+entire gap ray without checking every exceptional index separately.
+Such a theorem must respect the known early sign behavior.
+Connecting this structure with the fixed-smaller-order results is a
+concrete route toward the unrestricted unequal-even prefix problem.
+
+\item \textbf{Compute collision constants for nonmonomial paths.}
+Take $a=\lambda\epsilon^\alpha A(\epsilon)$ and
+$b=\mu\epsilon^\beta B(\epsilon)$, with prescribed analytic or
+power--logarithm expansions and nonzero leading coefficients.
+Determine the finite jets of $A,B$ that can affect a specified
+constant and derive its exact transformation law under a change of
+the small parameter. The monomial resonance rules identify the
+base exponents with which these additional coefficients interact.
+
+\item \textbf{Evaluate three-factor Stieltjes collision contacts.}
+For three independently shifted derivatives, classify contributions
+from every singular subset and pair all intersecting spectral poles
+before differentiating. Seek a finite evaluated contact formula in
+logarithms, generalized harmonic numbers and zeta derivatives, and
+identify precisely where multivariable polylogarithms or other new
+functions become necessary.
+
+\item \textbf{Generate and integrate the higher contact families.}
+For fixed Stieltjes and derivative orders, sum the integer-resonance
+contacts against $z^j$ and determine their polylogarithmic alphabet.
+The trigamma-tail generator and its anchored primitive are the first
+case. Compute further Euler primitives, ordinary or finite-part
+endpoint values, and character-weighted versions; determine which
+reduce to zeta products and which retain genuine multiple
+polylogarithms.
+
+\item \textbf{Construct an explicit functional route to $S_6$ or revised
+$S_8$.}
+If one of the new generators or integral deformations is to inform
+these period problems, first exhibit its exact map to the canonical
+residual, including all products and branch constants. A new
+functional or iterated-integral identity outside the tested relation
+spaces would constitute progress; an unrelated rank theorem or
+additional decimal agreement would not.
+\end{enumerate}

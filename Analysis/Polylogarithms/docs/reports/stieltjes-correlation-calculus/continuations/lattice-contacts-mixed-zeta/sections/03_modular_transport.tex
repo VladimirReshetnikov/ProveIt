@@ -1,0 +1,351 @@
+\section{Exact modular transport of the order derivatives}
+\label{sec:modular}
+
+Question 7 of \cite{RepoVertical} asks for an exact
+\(\tau\leftrightarrow4\pi^2/\tau\) transport, including the
+nonmodular terms. At horizontal shift \(a=1\), we give one
+holomorphic identity near every nonpositive even order and another
+near the Stieltjes order \(s=1\). Their derivatives are specified
+by finite polynomial recurrences and complete residue formulas.
+
+This section uses classical Mellin-transform technology. The eta
+and Ramanujan specializations, the zeta functional equation, and
+the existence of modular relations for generalized Stieltjes
+constants are established literature, not novelty claims.
+In particular, the all-index modular relations of Dixit,
+Sathyanarayana and Sharan \cite{DixitStieltjes} preclude any claim
+that modular Stieltjes identities themselves originate here.
+The contribution to the present continuation is the explicit
+order-dependent kernel, its residue compiler, and its compatibility
+with the fixed-cutoff law of Section~\ref{sec:lattice}.
+
+\subsection{One contour identity before coefficient extraction}
+
+Put
+\begin{equation}\label{eq:mod-lambda}
+ \Lambda(s,\tau)=\sum_{n=1}^{\infty}
+       \frac{n^{s-1}}{e^{n\tau}-1},\qquad
+ \tau^*=\frac{4\pi^2}{\tau},\qquad
+ \alpha=\frac{2\pi}{\tau},\qquad L=\log\alpha.
+\end{equation}
+The function \(\Lambda\) is entire in \(s\). It is exactly
+\({\cal L}_{1-s}(e^{-\tau},e^{-\tau})\), so subtracting the
+finite polylogarithm terms in \eqref{eq:root-bracket} recovers
+the vertically sampled family.
+
+For \(M\geq0\), let
+\begin{align}
+ {\cal Q}_M(s,\tau)
+  ={}&\frac{\zeta(2-s)}{\tau}
+   +\Gamma(s)\zeta(s)\tau^{-s}-\frac12\zeta(1-s)\notag\\
+ &+\sum_{j=1}^{M+1}\frac{B_{2j}}{(2j)!}
+          \zeta(2-2j-s)\tau^{2j-1}.
+ \label{eq:mod-residue-even}
+\end{align}
+Near \(s=1\), instead put
+\begin{equation}\label{eq:mod-residue-one}
+ {\cal Q}_*(s,\tau)=
+   \frac{\zeta(2-s)}{\tau}
+   +\Gamma(s)\zeta(s)\tau^{-s}-\frac12\zeta(1-s).
+\end{equation}
+The apparently singular terms are combined before their removable
+values are taken.
+
+\begin{theorem}[Local modular transport]\label{thm:modular}
+Fix \(\tau>0\). If \(M\geq0\) and \(|s+2M|<1/4\), then
+\begin{equation}\label{eq:modular-master}
+ \boxed{\displaystyle
+ \Lambda(s,\tau)={\cal Q}_M(s,\tau)
+  +\frac{\alpha^s}{2\pi\ii}
+   \int_{\Ree w=3/2}
+       \Gamma(w)\zeta(w)\zeta(w+1-s)
+       \frac{\cos(\pi w/2)}{\cos(\pi(s-w)/2)}
+       (\tau^*)^{-w}\,\dd w.}
+\end{equation}
+If \(|s-1|<1/4\), the same identity holds with
+\({\cal Q}_M\) replaced by \({\cal Q}_*\).
+The contour is oriented upward. Both identities are holomorphic
+through their central orders, and the integral admits every fixed
+order derivative under its sign.
+\end{theorem}
+
+\begin{proof}
+For \(c>\max(1,\Ree s)\), Mellin inversion and absolute convergence
+give
+\begin{equation}\label{eq:lambert-mellin}
+ \Lambda(s,\tau)=\frac1{2\pi\ii}
+       \int_{\Ree z=c}\Gamma(z)\zeta(z)\zeta(z+1-s)
+                                  \tau^{-z}\,\dd z.
+\end{equation}
+In the stated neighborhoods one may take \(c=3/2\) and move the
+contour to \(\Ree z=\Ree s-3/2\).
+Near \(s=-2M\), the poles crossed are \(z=1,s,0\) and
+\(z=1-2j\), \(1\leq j\leq M+1\). Their residues are exactly
+\eqref{eq:mod-residue-even}. The negative even poles of Gamma
+are canceled by the trivial zeros of \(\zeta(z)\).
+Near \(s=1\), only \(z=1,s,0\) are crossed, giving
+\eqref{eq:mod-residue-one}.
+
+The two zeta functional equations \cite[Section 25.4]{DLMF} imply
+the meromorphic identity
+\begin{equation}\label{eq:mod-functional-factor}
+ \begin{split}
+ \Gamma(z)\zeta(z)\zeta(z+1-s)
+  ={}&(2\pi)^{2z-s}\Gamma(s-z)\zeta(s-z)\zeta(1-z)\\
+ &\times
+ \frac{\cos(\pi(s-z)/2)}{\cos(\pi z/2)}.
+ \end{split}
+\end{equation}
+Substitute \(w=s-z\) on the new contour; the resulting integral
+is the one in \eqref{eq:modular-master}.
+Stirling's formula gives exponential decay, while the zeta
+factors have at most polynomial growth on the fixed vertical
+strips. The trigonometric quotient and all its order derivatives
+are bounded there on compact parameter sets: the denominator has
+no zero on the contour in either stated neighborhood. These facts
+justify the contour motion and differentiated integrals.
+Away from the central collisions the residue computation is
+ordinary. The formulas below explicitly remove those collisions,
+or equivalently one may use the identity theorem and the
+holomorphic left-hand side.
+\end{proof}
+
+At \(s=-2M\), the trigonometric quotient is the constant
+\((-1)^M\). Thus the zeroth derivative has the classical
+Ramanujan form
+\begin{equation}\label{eq:ramanujan-recovered}
+ \Lambda(-2M,\tau)=
+ {\cal Q}_M(-2M,\tau)+(-1)^M\alpha^{-2M}
+                         \Lambda(-2M,\tau^*).
+\end{equation}
+For \(M=0\), it becomes the eta transformation
+\begin{equation}\label{eq:eta-recovered}
+ \Lambda(0,\tau)-\Lambda(0,\tau^*)
+   =\frac{\zeta(2)}{\tau}
+     +\frac12\log\frac{\tau}{2\pi}-\frac{\tau}{24}.
+\end{equation}
+For example, at \(M=1\),
+\begin{align}
+ \Lambda(-2,\tau)
+ ={}&\frac{\zeta(4)}{\tau}
+   -\frac{\zeta(3)}2\left(1+\frac{\tau^2}{4\pi^2}\right)
+   +\frac{\zeta(2)\tau}{12}+\frac{\tau^3}{1440}\notag\\
+ &-\frac{\tau^2}{4\pi^2}\Lambda(-2,\tau^*).
+ \label{eq:zeta3-recovered}
+\end{align}
+These are useful normalization checks. The positive
+\(\tau^3/1440\) sign in the last polynomial is forced by
+\(B_4\zeta(0)>0\).
+
+\subsection{A finite polynomial compiler for every derivative}
+
+Define polynomials \(p_j(X)\) by
+\begin{equation}\label{eq:mod-kernel-recurrence}
+ p_0(X)=1,\qquad
+ p_{j+1}(X)=-(1+X^2)p_j'(X)-Xp_j(X).
+\end{equation}
+They satisfy
+\begin{equation}\label{eq:mod-kernel-generator}
+ \frac1{\cos v+X\sin v}
+      =\sum_{j=0}^{\infty}p_j(X)\frac{v^j}{j!}.
+\end{equation}
+Indeed, differentiating a shifted secant proves the recurrence.
+The first values are
+\[
+ p_1=-X,\qquad p_2=1+2X^2,\qquad
+ p_3=-5X-6X^3,\qquad p_4=5+28X^2+24X^4.
+\]
+
+For \(M,j,\ell\geq0\), set
+\begin{equation}\label{eq:Tmod}
+ {\cal T}_{j,\ell}^{(M)}(x)=
+ \frac{(-1)^\ell}{2\pi\ii}
+ \int_{\Ree w=3/2}
+  \Gamma(w)\zeta(w)\zeta^{(\ell)}(w+1+2M)
+  p_j\!\left(\tan\frac{\pi w}{2}\right)x^{-w}\,\dd w.
+\end{equation}
+Every integral is absolutely convergent. For \(j=0\),
+\[
+ {\cal T}_{0,\ell}^{(M)}(x)
+       =\left.\partial_s^\ell\Lambda(s,x)\right|_{s=-2M}.
+\]
+
+\begin{corollary}[All negative-even modular derivatives]\label{cor:mod-jets}
+For every \(r\geq0\),
+\begin{equation}\label{eq:mod-jets}
+ \boxed{\displaystyle
+ \partial_s^r\Lambda(-2M,\tau)
+ ={\cal Q}_M^{(r)}(-2M,\tau)
+  +(-1)^M\alpha^{-2M}
+  \sum_{\substack{j,\ell,k\geq0\\j+\ell+k=r}}
+       \frac{r!}{j!\ell!k!}
+       \left(\frac{\pi}{2}\right)^j
+       L^k\,{\cal T}_{j,\ell}^{(M)}(\tau^*).}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Put \(s=-2M+u\). The quotient in
+\eqref{eq:modular-master} becomes
+\[
+ \frac{(-1)^M}
+ {\cos(\pi u/2)+\tan(\pi w/2)\sin(\pi u/2)}.
+\]
+Expand this by \eqref{eq:mod-kernel-generator},
+\(\alpha^u=e^{Lu}\), and
+\(\zeta(w+1+2M-u)\). Normal convergence allows coefficient
+extraction. The multinomial coefficient is the ordinary
+Leibniz coefficient.
+\end{proof}
+
+The terms \(j=0\) are the familiar transformed Lambert
+derivatives. The finitely many \(j\geq1\) terms are the exact
+nonmodular correction. Omitting them is already wrong at the
+first derivative. This is an identity with explicitly specified
+ordinary contour integrals, not an assertion that those integrals
+always reduce to a finite list of polylogarithm values.
+
+The corresponding critical-order compiler is equally explicit.
+Define
+\begin{equation}\label{eq:Umod}
+ {\cal U}_{j,\ell}(x)=
+ \frac{(-1)^\ell}{2\pi\ii}
+ \int_{\Ree w=3/2}
+    \Gamma(w)\zeta(w)\zeta^{(\ell)}(w)
+    Xp_j(-X)x^{-w}\,\dd w,\qquad
+    X=\cot\frac{\pi w}{2}.
+\end{equation}
+Since the trigonometric quotient at \(s=1+u\) is
+\[
+ \frac{X}{\cos(\pi u/2)-X\sin(\pi u/2)},
+\]
+we obtain
+\begin{equation}\label{eq:critical-mod-jets}
+ \partial_s^r\Lambda(1,\tau)
+  ={\cal Q}_*^{(r)}(1,\tau)
+   +\alpha\!
+    \sum_{j+\ell+k=r}\frac{r!}{j!\ell!k!}
+          \left(\frac{\pi}{2}\right)^j L^k
+                                  {\cal U}_{j,\ell}(\tau^*).
+\end{equation}
+Thus every critical-order derivative is transported by finitely
+many integrals involving \(\zeta(w)\zeta^{(\ell)}(w)\).
+
+\subsection{The colliding residues and their Stieltjes coefficients}
+
+The finite residue terms in the preceding formulas require care.
+At zero, let
+\begin{equation}\label{eq:mod-e}
+ e_j=\left.\frac{\dd^j}{\dd u^j}
+                 \left(e^{Lu}\sec\frac{\pi u}{2}\right)\right|_{u=0}.
+\end{equation}
+Then \(e_0=1\), \(e_1=L\),
+\(e_2=L^2+\pi^2/4\), and
+\(e_3=L^3+3\pi^2L/4\). The zeta functional equation gives
+\[
+ \Gamma(s)\zeta(s)\tau^{-s}-\frac12\zeta(1-s)
+ =\frac12\zeta(1-s)
+           \left(\alpha^s\sec\frac{\pi s}{2}-1\right).
+\]
+The factor in parentheses vanishes at zero. Multiplying the
+full Laurent series, including its pole, yields
+\begin{equation}\label{eq:Qzero-jets}
+ \begin{split}
+ {\cal Q}_0^{(r)}(0,\tau)
+ ={}&(-1)^r\left(\frac{\zeta^{(r)}(2)}{\tau}
+                  +\frac{\tau}{12}\zeta^{(r)}(0)\right)\\
+ &+\frac12\left\{-\frac{e_{r+1}}{r+1}
+        +\sum_{j=0}^{r-1}\binom rj\gamma_j e_{r-j}\right\}.
+ \end{split}
+\end{equation}
+The sum is empty at \(r=0\). In particular, the residue at
+derivative order \(r\) needs one extra coefficient \(e_{r+1}\).
+Replacing the Laurent germ by its regular part would delete this
+term.
+
+For \(M\ge1\) there is no Laurent collision at \(s=-2M\).
+The same \(e_j\), with \(L=\log\alpha\), give every residue
+derivative without separately differentiating a singular Gamma
+factor:
+\begin{equation}\label{eq:Qnegative-jets}
+ \begin{split}
+ {\cal Q}_M^{(r)}(-2M,\tau)
+ ={}&(-1)^r\left\{\frac{\zeta^{(r)}(2M+2)}{\tau}
+    +\sum_{j=1}^{M+1}\frac{B_{2j}\tau^{2j-1}}{(2j)!}
+                    \zeta^{(r)}(2M+2-2j)\right\}\\
+ &+\frac12\left\{(-1)^M\alpha^{-2M}
+      \sum_{\ell=0}^{r}\binom r\ell(-1)^\ell
+                \zeta^{(\ell)}(2M+1)e_{r-\ell}
+              -(-1)^r\zeta^{(r)}(2M+1)\right\}.
+ \end{split}
+\end{equation}
+Indeed the functional-equation expression immediately preceding
+\eqref{eq:Qzero-jets} is a product of two holomorphic functions
+at these orders. Ordinary Leibniz differentiation proves
+\eqref{eq:Qnegative-jets}.
+
+At \(s=1\), let
+\begin{equation}\label{eq:mod-A}
+ a_j=\left.\frac{\dd^j}{\dd u^j}
+            \left(\Gamma(1+u)\tau^{-u}\right)\right|_{u=0}.
+\end{equation}
+These are Bell polynomials generated by
+\[
+ \Gamma(1+u)\tau^{-u}
+ =\exp\left(-(\gamma+\log\tau)u+
+          \sum_{m=2}^{\infty}\frac{(-1)^m\zeta(m)}m u^m\right).
+\]
+The two colliding terms at \(s=1+u\) combine as
+\[
+ \frac1{\tau}
+ \left\{\frac{A(u)-1}{u}
+       +\sum_{j=0}^{\infty}\frac{\gamma_j u^j}{j!}
+                              \bigl(1+(-1)^j A(u)\bigr)\right\},
+ \qquad A(u)=\Gamma(1+u)\tau^{-u}.
+\]
+Consequently,
+\begin{equation}\label{eq:Qone-jets}
+ \boxed{\displaystyle
+ {\cal Q}_*^{(r)}(1,\tau)=
+ \frac1{\tau}\left\{\frac{a_{r+1}}{r+1}+\gamma_r+
+     \sum_{j=0}^{r}\binom rj(-1)^j\gamma_j a_{r-j}\right\}
+       -\frac{(-1)^r}{2}\zeta^{(r)}(0).}
+\end{equation}
+This is a finite formula in ordinary Stieltjes constants,
+zeta values, and logarithms for every \(r\).
+The first two cases are
+\begin{align}
+ {\cal Q}_*(1,\tau)&=\frac{\gamma-\log\tau}{\tau}+\frac14,
+ \label{eq:Qone-first}\\
+ {\cal Q}_*'(1,\tau)&=
+       \frac{\log^2\tau-\gamma^2+\zeta(2)}{2\tau}
+                    +\frac12\zeta'(0).
+ \label{eq:Qone-second}
+\end{align}
+Cancellation of \(\gamma_1\) in the latter identity is exact.
+
+\subsection{A self-dual integral evaluation}
+
+At \(\tau=2\pi\), \(M=0\), and \(r=1\), the Lambert
+derivatives on the two sides of \eqref{eq:mod-jets} cancel.
+Using \eqref{eq:Qzero-jets} gives the explicit identity
+\begin{equation}\label{eq:self-dual-integral}
+ \boxed{\displaystyle
+ \frac1{2\pi\ii}\int_{\Ree w=3/2}
+   \Gamma(w)\zeta(w)\zeta(w+1)
+      \tan\frac{\pi w}{2}\,(2\pi)^{-w}\,\dd w
+ =-\frac{\zeta'(2)}{\pi^2}-\frac{\pi}{8}
+                              +\frac{\log(2\pi)}6.}
+\end{equation}
+The integral is absolutely convergent; no principal value occurs.
+Higher self-dual derivatives give finite linear identities among
+the integrals \({\cal T}_{j,\ell}^{(0)}(2\pi)\), with complete
+Stieltjes coefficients supplied by \eqref{eq:Qzero-jets}.
+
+Equations \eqref{eq:modular-master}--\eqref{eq:critical-mod-jets},
+together with the finite subtractions in \eqref{eq:root-bracket},
+answer the modular-transport question at \(a=1\) in the indicated
+order neighborhoods. General horizontal shifts, and finite
+polylogarithmic reductions of the correction integrals, remain
+separate questions.
+

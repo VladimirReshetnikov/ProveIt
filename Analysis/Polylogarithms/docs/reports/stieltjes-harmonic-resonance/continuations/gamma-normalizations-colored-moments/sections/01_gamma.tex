@@ -1,0 +1,256 @@
+\section{An exact Gamma moment determinant}
+\label{gn:sec:determinant}
+
+The incoming ordered-boundary report asks for closed evaluations of the
+positive constants $K_m$ that normalize its Gamma integral basis
+\cite[Section~8 and Section~9, question~2]{repoordered}.  All of these
+constants can be evaluated.  The decisive step is to remove the source's
+last moment by its already proved orthogonality relation and recognize
+the remaining determinant as Gustafson's symplectic Barnes integral.
+We first state the parameterized determinant with its full normalization.
+This is a reformulation of a classical integral, and it is credited as
+such; its application to the particular source constants and the moment
+identities developed below are the results of the present continuation.
+
+For $n\ge1$ and $\mathbf a=(a_1,\ldots,a_{2n+2})$ satisfying
+$\Re a_\ell>0$, put
+\begin{equation}\label{gn:eq:weight}
+ W_{\mathbf a}(x)=\prod_{\ell=1}^{2n+2}
+       \Gamma(a_\ell+ix/2)\Gamma(a_\ell-ix/2),
+ \qquad A=\sum_{\ell=1}^{2n+2}a_\ell.
+\end{equation}
+Define the matrix and its determinant by
+\begin{equation}\label{gn:eq:matrix}
+ \mathsf B_n(\mathbf a)_{r,k}
+ =\int_0^\infty x^{2r-1}\sinh(k\pi x)W_{\mathbf a}(x)\dd x,
+ \qquad
+ \mathcal D_n(\mathbf a)=\det\mathsf B_n(\mathbf a),
+ \quad 1\le r,k\le n.
+\end{equation}
+The sinh columns are in increasing order.  This convention is relevant
+when the result is applied to a source matrix with its columns reversed.
+
+\begin{theorem}[Parameterized Gamma moment determinant]
+\label{gn:thm:determinant}
+For $\Re a_\ell>0$,
+\begin{equation}\label{gn:eq:determinant}
+ \boxed{\displaystyle
+ \mathcal D_n(\mathbf a)
+ =2^{2n^2}\pi^{n(n+1)}
+       \frac{\prod_{\ell<j}\Gamma(a_\ell+a_j)}{\Gamma(A)}.}
+\end{equation}
+Every entry is an absolutely convergent ordinary integral.  The entries,
+their determinant, and every fixed mixed parameter derivative are
+holomorphic on this domain and may be differentiated under the integral.
+The determinant is nonzero throughout the domain and is positive when
+all parameters are positive real numbers.
+\end{theorem}
+
+\begin{proof}
+Stirling's formula uniformly on compact parameter sets gives
+$W_{\mathbf a}(x)=O(x^C e^{-(n+1)\pi x})$ for some finite $C$.
+The largest sinh factor grows as $e^{n\pi x}$.  A fixed parameter
+derivative adds at most powers of $\log(2+x)$ and preserves an integrable
+exponential majorant.  At zero all Gamma arguments remain in a compact
+subset of the right half-plane.  These observations prove the asserted
+convergence and permit the uses of Fubini and parameter differentiation.
+
+Write
+\[
+ \Delta(y_1,\ldots,y_n)=\prod_{j<k}(y_k-y_j)
+\]
+and introduce the integral
+\begin{equation}\label{gn:eq:I}
+\begin{split}
+ \mathcal I_n(\mathbf a)
+ ={}&\int_{(0,\infty)^n}
+    \Delta(x_1^2,\ldots,x_n^2)
+    \Delta(\cosh\pi x_1,\ldots,\cosh\pi x_n)\\
+ &\hspace{12mm}\times
+       \prod_{j=1}^n x_j\sinh(\pi x_j)W_{\mathbf a}(x_j)
+          \dd x_1\cdots\dd x_n.
+\end{split}
+\end{equation}
+Expanding the two determinants in the continuous Cauchy--Binet identity
+and using Fubini gives
+\begin{equation}\label{gn:eq:andreief}
+ \mathcal D_n(\mathbf a)
+      =\frac{2^{n(n-1)/2}}{n!}\mathcal I_n(\mathbf a).
+\end{equation}
+Indeed, the polynomial alternant is
+$\det(x_j^{2r-1})=\prod_jx_j\,\Delta(x_1^2,\ldots,x_n^2)$,
+while
+\[
+ \det(\sinh(k\pi x_j))_{j,k=1}^n
+  =2^{n(n-1)/2}\prod_j\sinh(\pi x_j)
+                   \Delta(\cosh\pi x_1,\ldots,\cosh\pi x_n).
+\]
+The second identity follows from
+$\sinh(ku)=\sinh(u)U_{k-1}(\cosh u)$ and the leading coefficient
+$2^{k-1}$ of the Chebyshev polynomial $U_{k-1}$.
+
+For precision, the classical integral used next is Gustafson's
+symplectic Barnes integral \cite{gustafson1994}, in the normalization
+reproduced in \cite[equation~(2)]{derkachov2017}:
+\begin{equation}\label{gn:eq:gustafson}
+\begin{split}
+ &\int_{\mathbb R^n}
+ \frac{\displaystyle\prod_{j=1}^n\prod_{\ell=1}^{2n+2}
+                 \Gamma(a_\ell+iu_j)\Gamma(a_\ell-iu_j)}
+ {\displaystyle\prod_j\Gamma(2iu_j)\Gamma(-2iu_j)
+       \prod_{j<k}\Gamma(iu_j+iu_k)\Gamma(iu_j-iu_k)
+                    \Gamma(-iu_j+iu_k)\Gamma(-iu_j-iu_k)}
+                  \dd\mathbf u\\
+ &\hspace{22mm}=(2\pi)^n2^nn!
+       \frac{\prod_{\ell<j}\Gamma(a_\ell+a_j)}{\Gamma(A)}.
+\end{split}
+\end{equation}
+The right-half-plane hypotheses place all numerator poles on the
+appropriate sides of the imaginary integration axes in its Barnes
+form.  The integrand is even in each $u_j$, so the positive-orthant
+integral equals $(2\pi)^nn!$ times the Gamma quotient.
+
+Set $x_j=2u_j$.  Reflection yields the single-variable factor
+\begin{equation}\label{gn:eq:single-reflection}
+ \frac1{\Gamma(ix_j)\Gamma(-ix_j)}
+          =\frac{x_j\sinh(\pi x_j)}\pi,
+\end{equation}
+and each four-factor interaction contributes
+\begin{equation}\label{gn:eq:pair-reflection}
+\begin{split}
+ &\left\{
+ \Gamma\left(\tfrac i2(x_j+x_k)\right)
+ \Gamma\left(-\tfrac i2(x_j+x_k)\right)
+ \Gamma\left(\tfrac i2(x_k-x_j)\right)
+ \Gamma\left(-\tfrac i2(x_k-x_j)\right)
+ \right\}^{-1}\\
+ &\hspace{14mm}=
+ \frac{(x_k^2-x_j^2)(\cosh\pi x_k-\cosh\pi x_j)}{8\pi^2}.
+\end{split}
+\end{equation}
+The factor $2^{-n}$ from $\dd\mathbf u$ must also be retained.
+Consequently \eqref{gn:eq:gustafson} gives
+\begin{equation}\label{gn:eq:I-evaluation}
+ \mathcal I_n(\mathbf a)
+ =2^{2n+3n(n-1)/2}\pi^{n(n+1)}n!
+       \frac{\prod_{\ell<j}\Gamma(a_\ell+a_j)}{\Gamma(A)}.
+\end{equation}
+Combining this with \eqref{gn:eq:andreief} proves
+\eqref{gn:eq:determinant}, since the two powers of $2$ add to $2n^2$.
+The Gamma quotient is nonzero in the stated domain.  For positive
+parameters the two Vandermonde factors in \eqref{gn:eq:I} have the same
+sign, and the integrand is strictly positive away from collisions.
+This proves the positivity assertion as well.
+\end{proof}
+
+The case $n=0$ may be included with the empty determinant and empty
+integral both equal to one.  Its Gamma quotient is then
+$\Gamma(a_1+a_2)/\Gamma(a_1+a_2)=1$.
+
+\section{Closed evaluation of every Gamma-basis normalization}
+\label{gn:sec:normalization}
+
+We recall exactly the source data needed for the application.  For an
+integer $m\ge1$, set
+\begin{align}
+ W_m(x)&=|\Gamma(\tfrac14+ix/2)|^{4m},
+       &\phi_r(x)&=\Im(x+i/2)^{2r},\label{gn:eq:source-weight}\\
+ P_j(x)&=\sinh(\pi(m-j)x)\quad(1\le j<m),
+       &P_m(x)&=\tanh(\pi x),\label{gn:eq:source-multipliers}\\
+ t_{r,j}&=\frac4{(2r)!}\int_0^\infty
+                 \phi_r(x)P_j(x)W_m(x)\dd x,
+       &T_m&=(t_{r,j})_{r,j=1}^m.\label{gn:eq:source-matrix}
+\end{align}
+The incoming report proves the exact top moments
+\begin{equation}\label{gn:eq:source-top}
+ t_{m,j}=0\quad(j<m),\qquad
+ t_{m,m}=(-1)^{m+1}\frac{2^{2m+2}\pi^m}{(2m)!},
+\end{equation}
+by Gamma recurrence and a contour shift crossing precisely two tanh
+poles.  It also proves
+\begin{equation}\label{gn:eq:source-normalization}
+ \det T_m=(-1)^{m(m-1)/2}K_m,\qquad K_m>0.
+\end{equation}
+Equations \eqref{gn:eq:source-top} and
+\eqref{gn:eq:source-normalization} are inherited results, specifically
+the source theorem \texttt{gb:basis}, corollary
+\texttt{gb:moment-identities}, and proposition
+\texttt{gb:normalization} \cite{repoordered}.  The following evaluation
+answers the open question about the remaining positive constant.
+
+\begin{theorem}[All Gamma normalization constants]
+\label{gn:thm:K}
+For every integer $m\ge1$,
+\begin{equation}\label{gn:eq:K}
+ \boxed{\displaystyle
+ K_m=\frac{2^{2m^2+2}(m-1)!\,\pi^{m(4m-1)/2}}
+              {\Gamma(m/2)\prod_{r=1}^m(2r)!}.}
+\end{equation}
+In particular,
+\begin{equation}\label{gn:eq:K-values}
+ K_1=8\pi,\qquad
+ K_2=\frac{64}{3}\pi^7,\qquad
+ K_3=\frac{16384}{135}\pi^{16}.
+\end{equation}
+The constants satisfy the two-step recurrence
+\begin{equation}\label{gn:eq:K-recurrence}
+ \boxed{\displaystyle
+ \frac{K_{m+2}}{K_m}
+   =\frac{2^{8m+9}(m+1)\pi^{8m+7}}
+              {(2m+2)!(2m+4)!}.}
+\end{equation}
+Each $K_m$ is a positive rational multiple of
+$\pi^{2m^2-\lceil m/2\rceil}$.
+\end{theorem}
+
+\begin{proof}
+Expand $\det T_m$ along the last row, using
+\eqref{gn:eq:source-top}.  Since
+$\phi_r(x)=rx^{2r-1}$ plus lower odd powers, triangular row elimination
+in the remaining $(m-1)\times(m-1)$ minor extracts
+\[
+                  \prod_{r=1}^{m-1}\frac{4r}{(2r)!}.
+\]
+Reversing the source sinh-column order $m-1,\ldots,1$ to the increasing
+order $1,\ldots,m-1$ contributes the sign
+$(-1)^{(m-1)(m-2)/2}$.  The remaining determinant is exactly
+$\mathcal D_{m-1}(1/4,\ldots,1/4)$, so
+\begin{equation}\label{gn:eq:detT-factorization}
+\begin{split}
+ \det T_m={}&(-1)^{m+1+(m-1)(m-2)/2}
+ \frac{2^{2m+2}\pi^m}{(2m)!}
+   \left(\prod_{r=1}^{m-1}\frac{4r}{(2r)!}\right)\\
+ &\hspace{24mm}\times\mathcal D_{m-1}(1/4,\ldots,1/4).
+\end{split}
+\end{equation}
+The sign equals $(-1)^{m(m-1)/2}$: the exponents differ by two.
+Theorem~\ref{gn:thm:determinant}, with $2m$ quarter parameters, gives
+\begin{equation}\label{gn:eq:quarter-minor}
+ \mathcal D_{m-1}(1/4,\ldots,1/4)
+ =2^{2(m-1)^2}\pi^{m(m-1)}
+       \frac{\Gamma(1/2)^{m(2m-1)}}{\Gamma(m/2)}.
+\end{equation}
+Substitute $\Gamma(1/2)=\sqrt\pi$, compare with
+\eqref{gn:eq:source-normalization}, and collect the factorials and
+powers.  This yields \eqref{gn:eq:K}.  At $m=1$ the minor is empty,
+so the same computation remains valid.  Taking the quotient of the
+formulas at $m+2$ and $m$, and using
+$\Gamma(m/2+1)=(m/2)\Gamma(m/2)$, proves
+\eqref{gn:eq:K-recurrence}.  The final assertion follows from the
+integer and half-integer Gamma evaluations.
+\end{proof}
+
+The result makes the inherited exact Gamma determinant representation
+fully explicit.  For example, if $F_{b,m}$ is the rational fundamental
+matrix of the source recurrence, its already proved identity becomes
+\begin{equation}\label{gn:eq:F-explicit}
+ \det F_{b,m}
+ =(-1)^{m(m-1)/2}
+   \frac{\Gamma(m/2)\prod_{r=1}^m(2r)!}
+        {2^{2m^2+2}(m-1)!\pi^{m(4m-1)/2}}
+       \det(t_{b+i,j})_{i,j=1}^m.
+\end{equation}
+This evaluates a previously unspecified normalization.  It preserves
+the source's distinction between its eventual fixed-gap nonvanishing
+theorem and its still open all-pairs reconstruction conjecture.
+

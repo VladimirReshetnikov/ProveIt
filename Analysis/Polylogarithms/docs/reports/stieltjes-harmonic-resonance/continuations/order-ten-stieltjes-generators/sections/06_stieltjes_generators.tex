@@ -1,0 +1,226 @@
+\section{Integer-shift Stieltjes correlations from a regularized depth-two kernel}
+\label{sec:stieltjes-generator}
+
+The tail generator admits a useful singular-order limit.  Write the
+Laurent expansion of the Hurwitz zeta function at one as
+\begin{equation}
+ \zeta(1+\alpha,a)=\frac1\alpha+
+ \sum_{r=0}^{\infty}\frac{(-1)^r}{r!}\gamma_r(a)\alpha^r,
+ \label{eq:stieltjes-laurent}
+\end{equation}
+where $\gamma_r(1)=\gamma_r$ and $\gamma_0=\gamma$; see, for example,
+\cite{DLMF,Coffey}.  At integer shifts,
+\begin{equation}
+ \gamma_r(n+1)=\gamma_r-
+ \sum_{m=1}^n\frac{\log^r m}{m}.
+ \label{eq:stieltjes-shift}
+\end{equation}
+This follows by comparing \eqref{eq:stieltjes-laurent} in
+$\zeta(1+\alpha,n+1)=\zeta(1+\alpha)-\sum_{m=1}^nm^{-1-\alpha}$.
+
+\subsection{Single-index order derivatives}
+
+\begin{proposition}[Integer-shift Stieltjes generator]
+\label{prop:single-stieltjes-generator}
+For every $r\ge0$ and $|z|<1$,
+\begin{equation}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}\gamma_r(n+1)z^n
+ =\frac{\gamma_r-(-1)^r
+ \left.\partial_s^r\Li_s(z)\right|_{s=1}}{1-z}.}
+ \label{eq:single-stieltjes-generator}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Sum \eqref{eq:stieltjes-shift} over $n$ and interchange the absolutely
+convergent sums.  The logarithmic Dirichlet series is
+\[
+ \sum_{m\ge1}\frac{z^m\log^r m}{m}
+ =(-1)^r\left.\partial_s^r\Li_s(z)\right|_{s=1}.
+\]
+\end{proof}
+
+The point of the next theorem is that products do not require an
+uncontrolled double convolution of the shifted constants.  A single
+pole-subtracted depth-two kernel generates all of them.
+
+\subsection{The bivariate regularized kernel}
+
+For $|z|<1$, define
+\begin{align}
+ \K(\alpha,\beta;z)={}&
+ \Li_{1+\alpha,1+\beta}(1,z)
+       -\frac{\Li_{1+\beta}(z)}{\alpha}
+ \notag\\
+ &+\Li_{1+\beta,1+\alpha}(1,z)
+       -\frac{\Li_{1+\alpha}(z)}{\beta}
+ +\Li_{2+\alpha+\beta}(z).
+ \label{eq:K-kernel}
+\end{align}
+Although the displayed terms have poles, their specified differences
+are regular.
+
+\begin{lemma}[Holomorphy of the pole subtraction]
+\label{lem:K-holomorphic}
+For every fixed $|z|<1$, $\K(\alpha,\beta;z)$ extends holomorphically
+to a neighborhood of $(0,0)$.
+\end{lemma}
+
+\begin{proof}
+For $\Re\alpha>0$,
+\begin{align*}
+ \Li_{1+\alpha,1+\beta}(1,z)
+ &=\sum_{n\ge1}\frac{z^n}{n^{1+\beta}}
+   \zeta(1+\alpha,n+1),\\
+ \Li_{1+\alpha,1+\beta}(1,z)
+ -\frac{\Li_{1+\beta}(z)}{\alpha}
+ &=\sum_{n\ge1}\frac{z^n}{n^{1+\beta}}
+ \left(\zeta(1+\alpha,n+1)-\frac1\alpha\right).
+\end{align*}
+The parenthesis is holomorphic at $\alpha=0$.  On compact subsets of a
+small bidisk it grows at most polynomially in $\log(n+1)$, whereas
+$|z|^n$ decays exponentially.  The series is therefore locally
+normally convergent and holomorphic in both variables.  The second
+pole-subtracted term is symmetric, and the ordinary polylogarithm in
+\eqref{eq:K-kernel} is already holomorphic in its order near two.
+\end{proof}
+
+Put
+\begin{equation}
+ G(\alpha)=\zeta(1+\alpha)-\frac1\alpha
+ =\sum_{r\ge0}\frac{(-1)^r\gamma_r}{r!}\alpha^r.
+ \label{eq:G-alpha}
+\end{equation}
+
+\begin{theorem}[All-index Stieltjes correlation generator]
+\label{thm:stieltjes-correlation-generator}
+For $|z|<1$ and $(\alpha,\beta)$ near $(0,0)$,
+\begin{equation}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}
+ \left(\zeta(1+\alpha,n+1)-\frac1\alpha\right)
+ \left(\zeta(1+\beta,n+1)-\frac1\beta\right)z^n
+ =\frac{G(\alpha)G(\beta)-\K(\alpha,\beta;z)}{1-z}.}
+ \label{eq:parameter-correlation}
+\end{equation}
+Consequently, for all $r,s\ge0$,
+\begin{equation}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}\gamma_r(n+1)\gamma_s(n+1)z^n
+ =\frac{\gamma_r\gamma_s
+ -(-1)^{r+s}r!s!\,[\alpha^r\beta^s]
+       \K(\alpha,\beta;z)}{1-z}.}
+ \label{eq:stieltjes-correlation}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply \cref{thm:two-tail-generator} formally first in the half-plane
+$\Re\alpha,\Re\beta>0$, with $p=1+\alpha$ and $q=1+\beta$.  Also use
+the one-tail identity
+\[
+ \sum_{n\ge0}\zeta(1+\alpha,n+1)z^n
+ =\frac{\zeta(1+\alpha)-\Li_{1+\alpha}(z)}{1-z}.
+\]
+Subtract $1/\alpha$ from the first factor and $1/\beta$ from the
+second.  The zeta terms combine into $G(\alpha)G(\beta)$, while the
+remaining polylogarithmic terms combine into $-\K$.  This proves
+\eqref{eq:parameter-correlation} in a nonempty domain.  The holomorphic
+extensions from \cref{lem:K-holomorphic} continue it to a neighborhood
+of the origin.  Coefficient extraction using
+\eqref{eq:stieltjes-laurent} gives
+\eqref{eq:stieltjes-correlation}.
+\end{proof}
+
+\subsection{Digamma square and an anchored antiderivative}
+
+Since $\gamma_0(n+1)=\gamma-H_n=-\psi(n+1)$, the lowest coefficient of
+\cref{thm:stieltjes-correlation-generator} simplifies completely.
+
+\begin{corollary}[Digamma-square generating function]
+\label{cor:digamma-square}
+For $|z|<1$,
+\begin{equation}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}(\gamma-H_n)^2z^n
+ =\sum_{n=0}^{\infty}\psi(n+1)^2z^n
+ =\frac{(\gamma+\log(1-z))^2+\Li_2(z)}{1-z}.}
+ \label{eq:digamma-square}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The elementary generating functions
+\[
+ \sum_{n\ge0}H_nz^n=-\frac{\log(1-z)}{1-z},
+ \qquad
+ \sum_{n\ge0}H_n^2z^n
+ =\frac{\Li_2(z)+\log^2(1-z)}{1-z}
+\]
+follow by summing the defining single and double harmonic sums.  Expand
+$(\gamma-H_n)^2$ and combine them.
+\end{proof}
+
+Termwise integration provides the anchored primitive requested by the
+factor $1/(n+1)$.
+
+\begin{theorem}[Anchored digamma-square primitive]
+\label{thm:digamma-square-primitive}
+For $0\le z<1$,
+\begin{align}
+ \sum_{n=0}^{\infty}\frac{(\gamma-H_n)^2}{n+1}z^{n+1}
+ ={}&\frac{\gamma^3-(\gamma+\log(1-z))^3}{3}
+ -\Li_2(z)\log(1-z)-I(z),
+ \label{eq:digamma-primitive}\\
+ I(z):={}&\int_0^z\frac{\log^2(1-t)}t\dd t
+ \notag\\
+ ={}&2\zeta(3)+\log^2(1-z)\log z
+ +2\log(1-z)\Li_2(1-z)-2\Li_3(1-z).
+ \label{eq:I-closed}
+\end{align}
+In particular,
+\begin{equation}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}
+ \frac{(\gamma-H_n)^2}{(n+1)2^{n+1}}
+ =\frac{\gamma^3-(\gamma-\log2)^3}{3}
+ +\frac{\pi^2\log2}{12}-\frac{\log^32}{6}-\frac{\zeta(3)}4.}
+ \label{eq:half-digamma-primitive}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Integrate \eqref{eq:digamma-square} from $0$ to $z$.  The square term
+is integrated by the substitution $u=\gamma+\log(1-t)$.  Integration
+by parts gives
+\[
+ \int_0^z\frac{\Li_2(t)}{1-t}\dd t
+ =-\Li_2(z)\log(1-z)-I(z).
+\]
+Differentiating the right side of \eqref{eq:I-closed} and checking its
+zero value at $z=0$ proves the closed form.  At $z=1/2$, substitute the
+classical evaluations
+\[
+ \Li_2(\tfrac12)=\frac{\pi^2}{12}-\frac{\log^22}{2},
+ \qquad
+ \Li_3(\tfrac12)=\frac78\zeta(3)-\frac{\pi^2\log2}{12}
+                  +\frac{\log^32}{6}
+\]
+and simplify.
+\end{proof}
+
+More generally, integrating \eqref{eq:stieltjes-correlation} gives an
+anchored antiderivative for every pair of indices:
+\begin{equation}
+ \sum_{n=0}^{\infty}
+ \frac{\gamma_r(n+1)\gamma_s(n+1)}{n+1}z^{n+1}
+ =\int_0^z
+ \frac{\gamma_r\gamma_s-(-1)^{r+s}r!s!
+ [\alpha^r\beta^s]\K(\alpha,\beta;t)}{1-t}\dd t.
+ \label{eq:all-index-primitive}
+\end{equation}
+The point is not merely the integral notation: the integrand is a
+finite coefficient of the explicitly specified depth-two kernel
+\eqref{eq:K-kernel}, so order derivatives and anchored primitives are
+controlled by one common analytic object.
