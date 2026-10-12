@@ -1,0 +1,167 @@
+\section{Scope, source frontier, and principal results}
+\label{scope:section}
+
+This article continues the program in the two directories specified
+by the project owner: the polylogarithm manuscript and the incoming
+research contributions \cite{RepoManuscript,RepoIncoming}. All
+repository assertions refer to the pinned revision
+\begin{center}\small\ttfamily
+c4036d60715916ae72dd18983782fdb182840b86.
+\end{center}
+The incoming index at that revision contains eleven archives.
+We extracted them, reconciled their overlapping research-status
+lists, and read the proof dependencies used below. This matters:
+an open question in an earlier contribution can already be solved
+in a later archive at the same revision.
+
+In particular, the smaller-order-ten and smaller-order-twelve
+moment families had already been completed, as had the complete
+gap-two and gap-four families, several Stieltjes spectral faces,
+and arbitrary mixed even-tail products
+\cite{BilinearIncoming,TailKernelsIncoming,OrderedIncoming,LatticeIncoming}.
+Those results are inputs or context, and are not claimed anew.
+The useful remaining targets were the complete gap-six family,
+complex rational harmonic degree, and unequal-rate boundary
+collisions. The new theorems address these three targets directly.
+
+\subsection{What changes at this frontier}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.23\textwidth}
+ >{\raggedright\arraybackslash}p{0.40\textwidth}
+ >{\raggedright\arraybackslash}p{0.29\textwidth}@{}}
+\toprule
+Question at the pinned revision & Result in this article & Precise scope\\
+\midrule
+\endfirsthead
+\toprule
+Question at the pinned revision & Result in this article & Precise scope\\
+\midrule
+\endhead
+Optimal moment prefix for all even pairs with gap six &
+Theorem~\ref{gs:main}: the first $q$ centered moments reconstruct
+all moments for $p=q-6$, $q\ge8$ even. &
+Full formal coefficient rank; an analytic infinite range plus an
+exact finite certificate.\\[7pt]
+Harmonic degree for complex rational weights &
+Theorem~\ref{cr:degree}: degree equals generic pencil rank for
+every nonzero complex rational weight. &
+Rational dependence on cutoff; only finitely many admissible
+cutoff exceptions. No positivity hypothesis.\\[7pt]
+Explicit adjacent-pole determinants beyond small rank &
+Theorems~\ref{hp:hahn-top} and \ref{hp:all-r-generator}: a
+three-by-three Hahn formula and a classical-polylogarithm
+generator for every particle count. &
+Specified two-pole family, with every endpoint residue included.\\[7pt]
+Unequal-rate Stieltjes boundary collisions &
+Theorems~\ref{urc:constant-theorem} and \ref{urc:full-theorem}:
+all index and argument-derivative orders, with a finite contact
+formula for the constant. &
+Fixed positive rates, and locally uniform joint spectral
+subtraction.\\
+\bottomrule
+\end{longtable}
+
+Several identity consequences have a particularly short form.
+For example, with $H_M=\sum_{k=1}^M1/k$, the positive ensemble
+in Section~\ref{hp:section} satisfies
+\[\begin{aligned}
+ &\sum_{0\le n_1<n_2<n_3<M}
+ \frac{\prod_{i<j}(n_j-n_i)^2}{\prod_i(n_i+1)(n_i+2)}\\
+ &\qquad=
+ -\frac{M(M+1)(M+2)}3H_M^2+
+ \frac{4M^2(M+2)}3H_M+
+ \frac{M^3(M^2-18M-31)}{12(M+1)}.
+\end{aligned}\]
+The boundary calculation produces the equally compact ordered
+identity
+\[
+ \operatorname{CT}_{\epsilon\downarrow0}
+ \int_0^1\psi'(x+\lambda\epsilon)\psi(x+\mu\epsilon)\,dx
+ =\zeta(2)\left(\frac\mu\lambda+\log\frac\mu\lambda\right),
+ \qquad\lambda,\mu>0.
+\]
+Here $\operatorname{CT}$ is explicitly the coefficient of
+$\epsilon^0(\log\epsilon)^0$, not the value of a divergent
+unsubtracted integral. The article supplies the complete
+subtractions as well as this constant.
+
+\subsection{The three mechanisms}
+
+The first mechanism turns a limiting determinant into an exact
+all-index result. The incoming Gamma basis has three exponential
+scales for gap six. The middle scale loses its leading imaginary
+phase, so a one-term Laplace estimate cannot prove the theorem.
+Retaining the next term produces a normalized reciprocal-square
+Vandermonde. A quantitative error comparison proves nonvanishing
+for every $b\ge2048$, and exact recurrence arithmetic covers
+$4\le b\le2047$. Estimates are used only to finish an identity and
+reconstruction problem; no inequality is presented as the main
+research output.
+
+The second mechanism is algebraic. If a symmetric rational matrix
+$G(z)$ has a rank-one difference
+\[
+ G(z)-G(z-1)=w(z)p(z)p(z)^{\mathsf T}
+\]
+with $w\ne0$ and independent rational components of $p$, then
+$G$ cannot be generically singular. Otherwise its rank stabilizes
+at large integer cutoffs, equal ranks force its image to remain
+fixed, and the update vectors lie in a fixed proper subspace.
+That would make a nonzero constant combination of the components
+of $p$ vanish identically. This elementary argument works over
+every field of characteristic zero, including complex fields with
+isotropic vectors.
+
+The third mechanism is local at the singular endpoint. The
+Hurwitz recurrence splits each Stieltjes generating function into
+one explicit singular power and an analytic function at one.
+Only a critical Taylor coefficient of the analytic factor can
+contribute to the rate-dependent constant. The singular--singular
+term carries a beta or polylogarithmic kernel but contributes
+strictly negative powers of the collision parameter. The resulting
+constant is therefore much smaller than the full two-shift
+integral.
+
+\subsection{Conventions and logical status}
+
+We use $B_1=-1/2$, rising factorials $(a)_k$, and falling
+factorials $a^{\underline k}$. Generalized harmonic numbers are
+$H_N^{(s)}(a)=\sum_{n=0}^N(n+a)^{-s}$, while the unshifted
+notation $H_M$ runs from $1$ to $M$. The polygamma convention is
+$\psi^{(r)}=d^{r+1}\log\Gamma/dz^{r+1}$, so
+$\psi^{(r)}(z)=(-1)^{r+1}r!\zeta(r+1,z)$ for $r\ge1$.
+The generalized Stieltjes constants are fixed by
+\[
+ \zeta(1+u,z)=\frac1u+
+       \sum_{m\ge0}\frac{(-1)^m}{m!}\gamma_m(z)u^m.
+\]
+Unless otherwise stated, argument derivatives are indicated by
+parenthesized superscripts; spectral derivatives are written
+explicitly.
+
+Formal harmonic coordinates and formal zeta labels are independent
+symbols in their specified coefficient spaces. A rank theorem for
+that space is not a theorem of arithmetic independence for its
+evaluated constants. Similarly a cutoff generating function is
+first an identity on $|x|<1$; a boundary value or an antiderivative
+at one is given its own convergence argument.
+
+The article contains four kinds of evidence. Analytic and
+algebraic proofs establish the general statements. Exact modular
+nonvanishing is part of the gap-six proof on a finite, explicitly
+bounded interval. Other exact finite checks verify symbolic
+formulas and normalizations, without being substituted for general
+proofs. High-precision quadratures are diagnostics, with no claim
+that floating-point residuals are certified enclosures.
+
+The methods of Christoffel transformations, Hahn polynomials,
+rational discrete residues, Euler sums, and local finite-part
+subtraction are established. They are credited to primary
+references where used \cite{Krattenthaler2023,DLMF,ChenSinger2012,
+Xu2017,XuWang2019,ShpotParis2016}. The claimed advances are the
+precise theorems and specializations relative to the inspected
+ProveIt frontier. The literature review supports that distinction
+but is not an exhaustive historical-priority search. Independent
+internal proof audits are included; external peer review and
+proof-assistant formalization remain separate tasks.
+

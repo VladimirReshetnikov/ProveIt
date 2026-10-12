@@ -4,14 +4,11 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
-\usepackage[version=4]{mhchem}
-\usepackage{stmaryrd}
-\usepackage{bbold}
 
 \title{A NEW PROOF OF SZEMERÉDI'S THEOREM }
 
 \author{W.T. Gowers}
-\date{}
+\date{Editorial annotations from the Lean formalization, 11 October 2026}
 
 
 %New command to display footnote whose markers will always be hidden
@@ -980,6 +977,22 @@ Corollary 5.11. Let $k \geqslant 2$, let $K=k^{2} 2^{k+3}$, let $P$ be a box in 
 Proof. We can apply Lemma $5.10 q$ times, obtaining a sequence of finer and finer partitions into boxes, such that for each refinement another of the $\mu_{i}$ satisfies the conclusion of that lemma. The width of the boxes at the final stage of this process is at least the number obtained by raising $m$ to the power $K^{-2^{k}} q$ times, which is $m^{K^{-2^{k}} q}$. The worst estimate for the diameter comes at the last refinement, and gives $2 m^{-K^{-2^{k} q}} N$. \(\square\)
 
 To end this section, we now give four simple lemmas, all of which are closely related to results that have already appeared in this paper (such as Lemma 2.3, Lemma 2.4 and Corollary 2.5). It will be convenient to have them stated explicitly.
+
+\emph{Editorial note on the formalization (2026-10-11).}
+Here ``proper'' requires an arithmetic progression of integer representatives,
+not merely a modular parametrization with distinct terms. For example,
+$6,0,1$ modulo $7$ has distinct terms, but its representative set
+$\{0,1,6\}$ is not an integer arithmetic progression. Lean proves this
+counterexample. The existing predicate \texttt{ModAP.IsProper} checks only
+distinctness; \texttt{ModAP.HasIntegerRepresentatives} records the stronger
+geometric condition. Thus carrier-preserving normalization alone does not
+prove the integer-representative conclusions of Lemmas 5.12--5.13.
+This is a distinction between the two formal predicates, not a
+counterexample to either lemma below.
+Lean now proves both lemmas with the stronger integer-representative
+conclusion and the displayed cell counts, for every nonzero modulus.
+Moreover, the refinement bound in Lemma 5.13 holds for a partition of any
+finite set $S\subseteq\mathbb Z_N$, with $N$ replaced by $|S|$ in the bound.
 
 Lemma 5.12. Let $Q \subset \mathbb{Z}_{N}$ be a mod- $N$ arithmetic progression of size $m$. Then $Q$ can be partitioned into at most $4 m^{1 / 2}$ proper arithmetic progressions.
 
@@ -3339,13 +3352,25 @@ which is at most the diameter of $\nu_{i}\left(Q_{j^{\prime}}\right)$. \(\square
 
 We are about to state a somewhat complicated inductive hypothesis (Theorem 16.2 below) which will be used to prove the main result of this section. First, let us extend slightly the definition of the product property from §14. Let $\Gamma$ be any subset of $\mathbb{Z}_{N}^{k} \times \mathbb{Z}_{N}$ and let $\gamma>0$. We shall say that $\Gamma$ has the product property with parameter $\gamma$ if, for every subset $B \subset \mathbb{Z}_{N}^{k}$ and every function $\phi: B \rightarrow \mathbb{Z}_{N}$ with graph contained in $\Gamma$ (in other words, $(x, \phi(x)) \in \Gamma$ for every $x \in B$), $\phi$ has the product property with parameter $\gamma$. We shall sometimes abbreviate this as the $\gamma$-product property.
 
-Before making the next definition, let us define three similar functions. We let $c(\theta, \gamma, k)=(\gamma \theta)^{2^{2^{k+8}}}, q(\theta, \gamma, k)=1 / c(\theta, \gamma, k)$ and $s(\theta, \gamma, k)=(2 /(\theta \gamma))^{2^{2^{k+6}}}$. We shall now define $\Gamma$ to be $(\gamma, r)$-multiply $k$-linear if, for every $\theta>0$ and every box $P$ of width $m$, there exists a subset $H \subset P$ of cardinality at least $(1-\theta)|P|$ together with a partition of $P$ into boxes $P_{1}, \ldots, P_{M}$ of width at least $m^{c\left(r^{-1} \theta, \gamma, k\right)^{r}}$ such that for each $j$ there are $k$-linear functions $\mu_{1}, \ldots, \mu_{q}$ defined on $P_{j}$, where $q \leqslant q\left(r^{-1} \theta, \gamma, k\right)^{r}$, such that, for every $x \in P_{j} \cap H$ and every $y$ with $(x, y) \in \Gamma$, $y=\mu_{i}(x)$ for some $i$. Loosely speaking, this says that every box $P$ can be partitioned into further boxes $P_{j}$ such that, after a small bit of $\Gamma$ has been thrown away, for every $j$, $\Gamma \cap\left(P_{j} \times \mathbb{Z}_{N}\right)$ is contained in the union of the graphs of not too many $k$-linear functions. If $r=1$, we shall say simply that $\Gamma$ is $\gamma$-multiply $k$-linear. If we do not wish to specify $k$, then we shall say that $\Gamma$ is $(\gamma, r)$-multiply multilinear.
+Before making the next definition, let us define three similar functions. We let $c(\theta, \gamma, k)=(\gamma \theta)^{2^{2^{k+8}}}, q(\theta, \gamma, k)=1 / c(\theta, \gamma, k)$ and $s(\theta, \gamma, k)=(2 /(\theta \gamma))^{2^{2^{k+6}}}$. We shall now define $\Gamma$ to be $(\gamma, r)$-multiply $k$-linear if, for every $0<\theta\leqslant1$ and every box $P$ of width $m$, there exists a subset $H \subset P$ of cardinality at least $(1-\theta)|P|$ together with a partition of $P$ into boxes $P_{1}, \ldots, P_{M}$ of width at least $m^{c\left(r^{-1} \theta, \gamma, k\right)^{r}}$ such that for each $j$ there are $k$-linear functions $\mu_{1}, \ldots, \mu_{q}$ defined on $P_{j}$, where $q \leqslant q\left(r^{-1} \theta, \gamma, k\right)^{r}$, such that, for every $x \in P_{j} \cap H$ and every $y$ with $(x, y) \in \Gamma$, $y=\mu_{i}(x)$ for some $i$. Loosely speaking, this says that every box $P$ can be partitioned into further boxes $P_{j}$ such that, after a small bit of $\Gamma$ has been thrown away, for every $j$, $\Gamma \cap\left(P_{j} \times \mathbb{Z}_{N}\right)$ is contained in the union of the graphs of not too many $k$-linear functions. If $r=1$, we shall say simply that $\Gamma$ is $\gamma$-multiply $k$-linear. If we do not wish to specify $k$, then we shall say that $\Gamma$ is $(\gamma, r)$-multiply multilinear.
+
+\emph{Editorial note on the formalization (2026-10-11).}
+Loss parameters in the multiple-linearity and cover statements are interpreted
+in $(0,1]$, and product parameters in $(0,1]$. The literal uncapped quantifier
+``every $\theta>0$'' in the multiple-linearity definition cannot hold:
+with $\gamma=r=1$, $\theta=2$, $N=2$ and a width-two one-dimensional box,
+the displayed exponent is at least $2$. A partition would therefore require
+a proper cell of width at least $4$ inside $\mathbb Z_2$, where every proper
+cell has width at most $2$. Lean separately proves this width-only
+counterexample. The definition and Theorem 16.2 use the bounded
+parameter ranges already required by their Lean statements. This correction
+is separate from the explicit-cover repair of Lemma 16.10.
 
 It is an immediate consequence of the definition that if $\Gamma$ is a $(\gamma, r)$-multiply multilinear set and $\Gamma^{\prime} \subset \Gamma$, then $\Gamma^{\prime}$ is also $(\gamma, r)$-multiply multilinear.
 
 The next theorem is the main inductive statement we shall need in order to prove an appropriate generalization of Theorem 13.12 to functions that fail to be uniform of degree $k+1$. (See Corollary 16.11 below.)
 
-Theorem 16.2. Let $\Gamma \subset \mathbb{Z}_{N}^{k} \times \mathbb{Z}_{N}$ have cardinality at most $\gamma^{-2} N^{k}$ and satisfy the product property with parameter $\gamma$. Then for every $\theta>0$ there is a subset $J$ of $\mathbb{Z}_{N}^{k}$ of size at least $(1-\theta) N^{k}$, such that $\Gamma \cap\left(J \times \mathbb{Z}_{N}\right)$ is $\left(\gamma, \gamma^{-2} s(\theta, \gamma, k)\right)$-multiply $k$-linear.
+Theorem 16.2. Let $0<\gamma\leqslant1$ and let $\Gamma \subset \mathbb{Z}_{N}^{k} \times \mathbb{Z}_{N}$ have cardinality at most $\gamma^{-2} N^{k}$ and satisfy the product property with parameter $\gamma$. Then for every $0<\theta\leqslant1$ there is a subset $J$ of $\mathbb{Z}_{N}^{k}$ of size at least $(1-\theta) N^{k}$, such that $\Gamma \cap\left(J \times \mathbb{Z}_{N}\right)$ is $\left(\gamma, \gamma^{-2} s(\theta, \gamma, k)\right)$-multiply $k$-linear.
 
 We shall split the proof of Theorem 16.2 into a number of lemmas, most of them easy. First, we check that the induction starts.
 
@@ -3481,6 +3506,33 @@ We have just shown that $\phi_{1}$ has a property similar to multiple multilinea
 % for every rho and box, a cover by at most max(b, C(r,2) b^2) multilinear
 % graphs on boxes of width sqrt((floor(l)/8)^e)/4, with r = ceil(6q/sigma)
 % sampled slices and b, e the slice controls; the unit claim is refuted.
+\emph{Editorial note on Lemma 16.10 (2026-10-11).}
+The standalone encoding using only the packaged cross-section and all-box
+line-cover assumptions does not imply the unit-parameter conclusion below:
+Lean proves its negation by a counterexample. This refutes that explicit
+two-premise formulation, not every possible interpretation with additional
+contextual hypotheses. The documented correction accepted for this
+formalization is an explicit modular-cover conclusion. For $k\geqslant1$,
+prime $N$, $0<\theta,\gamma\leqslant1$, and $0<\rho\leqslant1$, put
+$\sigma=\rho/4$ and take the cover counts $q_\gamma,q_\delta$ and width
+$l$ supplied by Lemma 16.9. Set
+\[
+\begin{aligned}
+ S&=\gamma^{-2}s(2^{-(k+2)}\theta,\gamma,k), &
+ r&=\left\lceil 6\max(1,q_\gamma)/\sigma\right\rceil,\\
+ b&=q(\sigma/(rS),\gamma,k)^{rS}, &
+ e&=c(\sigma/(rS),\gamma,k)^{rS}.
+\end{aligned}
+\]
+Under the same two packaged assumptions, every modular box with injective
+axis parametrizations admits a partition and a good set of relative mass
+at least $1-\rho$, on which $\phi_1$ is covered in each cell by at most
+$\max\{b,\binom r2 b^2\}$ multilinear graphs. The cell widths are at least
+$\frac14\sqrt{(\lfloor l\rfloor/8)^e}$. Lean proves this corrected statement.
+These controls depend on $\rho$; they do not establish the printed
+unit-parameter claim. The later all-dimensional inverse and final
+Szemer\'edi bounds are proved by the separate joint-cover construction.
+
 Lemma 16.10. The function $\phi_{1}$ is itself $(\gamma, 1)$-multiply $(k+1)$-linear.\\
 Proof. We begin by remarking that, since $\phi_{1}$ is a translation of a restriction of $\phi$, property (i) of Lemma 16.4 implies that the restriction of $\phi_{1}$ to any cross-section of $B_{1}$ formed by fixing the final variable $x$ is $\left(\gamma, \gamma^{-2} s\left(2^{-(k+2)} \theta, \gamma, k\right)\right)$-multiply multilinear of the appropriate dimension.
 

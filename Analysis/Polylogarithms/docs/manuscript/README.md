@@ -5,37 +5,32 @@ organized as four volumes. Each has its own source and compiled PDF.
 
 | Volume | Material | PDF | Pages |
 |---|---|---|---:|
-| I | Polylogarithm identities, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 129 |
-| II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 128 |
-| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 218 |
-| IV | Gamma grids, CM lattice periods, class products and Herglotz arithmetic | [Gamma Grids, CM Periods and Herglotz Arithmetic](volumes/volume-4-cm-and-herglotz.pdf) | 84 |
+| I | Polylogarithm identities, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 130 |
+| II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 129 |
+| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 233 |
+| IV | Gamma grids, CM lattice periods, class products and Herglotz arithmetic | [Gamma Grids, CM Periods and Herglotz Arithmetic](volumes/volume-4-cm-and-herglotz.pdf) | 85 |
 
 The volumes partition all twelve chapters and the literature appendix.
 Chapter, theorem and equation numbering is retained so research-report
 citations stay stable. Cross-volume references link to their exact PDF
 destinations; keep the four PDFs together. Each volume has its own contents
-and the shared bibliography of 136 references. The scientific text is shared
+and the shared bibliography of 138 references. The scientific text is shared
 through chapter files and [preamble.tex](preamble.tex), avoiding duplicate
 copies of proofs. See [volume sources and build instructions](volumes/README.md).
 The [combined source](polylogarithms.tex) and its
-[521-page combined snapshot](polylogarithms.pdf) remain available.
+[536-page combined snapshot](polylogarithms.pdf) remain available.
 
-The [inventory](source-inventory.json) accounts for **1,408 textual source
-files**, including overlapping assembled articles, fragments and correction
-registers. The [editorial ledger](EDITORIAL-LEDGER.md) maps their mathematical
-status and identifies pending research integration. Ninety-six incoming
-archives are preserved as **3,502 original tracked members**. The first sixty packages have full isolated replay passes. In the latest
-batch, the full harmonic-parity suite and selected complete-Cayley certificate
-pass; the other deliveries retain pending full-replay and analytic scopes.
-Preservation and finite replay do not imply that every theorem is integrated. The imported
-ZIPs have been retired from the drop zone under its intake procedure; the
-arrival commits and recovery paths remain recorded in
-`verification/*incoming-archives.json` and the retirement records. Thirty-six ignored
-SHA256SUMS members remain recoverable in their recorded arrival archives; the
-existing ignore rules were followed without manifest verification. The latest eighteen packages, in three six-report intakes, extend the
-harmonic-resonance and Stieltjes-correlation spines. All eighteen full mathematical
-replays pass on isolated copies. Unaccepted branches retain explicit analytic
-proof-audit scopes in the ledger.
+The [inventory](source-inventory.json) accounts for **1,577 textual source
+files**, including overlapping articles, fragments and correction registers.
+The [editorial ledger](EDITORIAL-LEDGER.md) maps accepted mathematical claims
+and pending research integration. The 107 imported archives preserve 3,956
+original tracked members; 42 ignored bare checksum records remain recoverable
+in arrival history. Each imported ZIP was retired in its placement commit.
+All eleven complete mathematical suites in the seventeenth and eighteenth
+intakes pass on isolated copies. Preservation and finite replay do not imply
+that every report theorem has been accepted or integrated. Original delivered
+sources, PDFs and recorded evidence remain unchanged.
+
 Volume III now proves the all-index fixed-coordinate periodic contact law,
 its Bernoulli primitives and ordinary vanishing-weight Hurwitz identities.
 A self-contained first-resonance Rogers-Dougall proof gives all fixed mixed
@@ -310,3 +305,48 @@ The joint 9395-by-8786 native matrix has rank 4942 modulo 2147483647 and
 does not close the target. This is a completed finite-field diagnostic,
 separate from the proved X-family kernel theorem and the open period identity.
 Convergent length-split 2+5 and 3+4 products are a next research direction.
+
+
+Section 8.44 now extends the common-interval beta mixture across integer
+twists at every positive integer total order. A fixed affine finite part
+gives a finite Fourier correction; balanced order jets have explicit
+logarithmic coefficients, with rank c-1 and kernel given by zero sums in
+each occupied twist chamber. Centered logarithmic moments of every order
+q >= r+s reduce to finite even-zeta combinations. In particular,
+
+```text
+integral(0,1) log(t/(1-t))^(2k)/(1-2t)^2 dt = 2 (2k)! zeta(2k), k >= 1.
+```
+
+These are ordinary absolutely convergent integrals. Independent exact
+density, jet, chamber and binomial-multiplicity audits pass, alongside
+separate complex finite-part and Mellin quadrature diagnostics. The later
+logarithmic Mellin finite parts and Stieltjes primitive families retain
+their pending audit scope.
+
+The two convergent S6 length splits 2+5 and 3+4 now have complete exact
+input covers of 3604 rows each. Lossless sparse records retain all 39634508
+projected coefficient pairs, with an independently checked input set and
+coordinate bounds. The joint input matrix has 16603 rows and 8786 columns;
+its native finite-field target search remains separate from the accepted
+proofs and from any rational period certificate.
+
+
+The completed 16603-row native search has rank 4985 modulo 2147483647,
+43 more than the preceding first-letter experiment, and does not close the
+target. This is a finite-field diagnostic. It establishes neither rational
+nonmembership nor a period counterexample; Gaussian S6/revised S8 stay open.
+
+
+Section 8.45 now reconciles harmonic-tail optimal-prefix reconstruction.
+The common analytic coefficient formula, exact retained determinant and
+effective eventual theorem are proved explicitly. Complete smaller orders
+ten and twelve retain incoming-report attribution; an independent extension
+proves smaller order fourteen for every larger even order. Its complete
+80632-case certificate, exact threshold B7=80640, two Bernoulli tables and
+two determinant algorithms are preserved and reproduced. A separate rational
+audit checks the original-matrix normalization and compiles all eight ordinary
+identity rows for (14,16). Matrix inversion gives ordinary absolutely
+convergent polygamma-product identities for every pair in these three families.
+General all-pair rank, arithmetic independence and Gaussian S6/revised S8
+remain open. Further incoming reports retain a pending intake/audit scope.

@@ -1,0 +1,439 @@
+% Requires amsmath, amssymb, amsthm and standard theorem environments.
+% References to add: repolattice, okudaueno, dlmfbeta,
+% dlmfgamma.  Bibitems and precise source coverage are in
+% two_cluster_source_status.txt.  Every label has the prefix tc:.
+
+\section{An explicit polylogarithm dictionary for two mass clusters}
+\label{tc:sec:clusters}
+
+The incoming \emph{Lattice Contacts and Mixed Zeta Identities} report
+evaluates a Gamma face when all but one mass agree.  Its spectral-face
+section then asks for a finite dictionary for two distinct mass
+clusters; its research question~Q4 asks more broadly about displaced
+masses and the dependence of depth on the number of clusters
+\cite{repolattice}.  We evaluate the entire two-cluster sector,
+with arbitrary positive cluster multiplicities.  The result is a
+finite combination of ordinary one-variable multiple polylogarithms
+inside an absolutely convergent spectral sum.  In particular, two
+equal displaced masses require depth at most three, independently
+of the total number of factors.
+
+The argument uses classical beta integration, aggregation of Dirichlet
+parameters, the Gamma product, and coefficient extraction.  The
+transformation under exchange of clusters is a specialization of
+classical multiple-polylogarithm Landen formulas
+\cite{okudaueno}; it is not asserted to be a new general
+transformation law.  The contribution relative to the inspected
+incoming source is the explicit all-multiplicity dictionary and its
+convergence and depth statement.  Minimality of the resulting depth
+and a bound depending only on the number of distinct clusters remain
+unproved.
+
+\subsection{The ordinary face and its independent regulators}
+
+Let $k\ge2$, $b_1,\ldots,b_k\in\mathbb R$, and
+\[
+ \Sigma_k=\{(t_1,\ldots,t_k):t_i\ge0,\ \sum_i t_i=1\}.
+\]
+The measure $dt$ means $dt_1\cdots dt_{k-1}$ after eliminating
+$t_k$; it has no additional Euclidean surface factor.  For nonempty
+$T\subseteq\{1,\ldots,k\}$ set
+\[
+ t_T=\sum_{i\in T}t_i,\qquad
+ b_T=\frac{\sum_{i\in T}t_i b_i}{t_T},
+\]
+and give $t_TF(b_T)$ the value zero when $t_T=0$.  Define
+\begin{align}
+ \mathcal H_k(F;t)
+  &=\sum_{\varnothing\ne T\subseteq\{1,\ldots,k\}}
+       (-1)^{k-|T|}t_TF(b_T),\label{tc:eq:face-integrand}\\
+ I_k(F;b_1,\ldots,b_k)
+  &=\int_{\Sigma_k}\mathcal H_k(F;t)
+                    \frac{dt}{t_1\cdots t_k}.
+                    \label{tc:eq:ordinary-face}
+\end{align}
+Constants and affine functions are annihilated.
+
+These are ordinary integrals.  To see convergence for $F\in C^1$
+on the mass interval, each perspective is Lipschitz because
+\[
+ \partial_{t_i}\{t_TF(b_T)\}
+    =F(b_T)+F'(b_T)(b_i-b_T),\qquad i\in T.
+\]
+The alternating sum vanishes on every coordinate face, so
+$|\mathcal H_k(F;t)|\le C\min_i t_i$.
+On the region where $t_j$ is maximal, $t_j\ge1/k$ and
+\[
+ \min_i t_i\le\left(\prod_{i\ne j}t_i\right)^{1/(k-1)}.
+\]
+Consequently the integral is absolutely convergent.  The same argument
+allows sufficiently small independent complex powers $t_i^{\alpha_i}$
+and any fixed powers of their logarithms.
+
+For $\alpha_i>0$, $A=\sum_i\alpha_i$, let
+\[
+ D_F(\boldsymbol\alpha;\boldsymbol b)
+   =\frac{\Gamma(A)}{\prod_i\Gamma(\alpha_i)}
+      \int_{\Sigma_k}F\!\left(\sum_i t_i b_i\right)
+                            \prod_i t_i^{\alpha_i-1}\,dt.
+\]
+If $A_T=\sum_{i\in T}\alpha_i$, the classical beta integral
+\cite{dlmfbeta} gives
+\begin{equation}\label{tc:eq:independent-regulators}
+ \frac{\Gamma(1+A)}{\prod_i\Gamma(1+\alpha_i)}
+ \int_{\Sigma_k}\mathcal H_k(F;t)
+                     \prod_i t_i^{\alpha_i-1}\,dt
+ =\frac{1}{\prod_i\alpha_i}
+   \sum_{\varnothing\ne T}(-1)^{k-|T|}
+                  A_TD_F(\boldsymbol\alpha_T;\boldsymbol b_T).
+\end{equation}
+Here the notation on the right denotes the Dirichlet mean formed
+only from the labels in $T$, not the random barycenter on the left.
+The identity follows from
+$\mathbb E[t_TF(b_T)]=(A_T/A)D_F(\boldsymbol\alpha_T;\boldsymbol b_T)$.
+It is important that the $\alpha_i$ are independent until the
+squarefree coefficient is taken.  The left side is holomorphic near
+zero and has value $I_k(F;\boldsymbol b)$ there.
+
+\subsection{One scalar beta integral for arbitrary multiplicities}
+
+Let $r,s\ge1$, $k=r+s$, and write $B^r,C^s$ for $r$ copies of
+$B$ followed by $s$ copies of $C$.  Put $\delta=C-B$ and
+\begin{align}
+ E_F(t)&=F(B+\delta t)-(1-t)F(B)-tF(C),\label{tc:eq:chord}\\
+ Q(X,Y)&=\frac{\Gamma(1+X+Y)}{\Gamma(1+X)\Gamma(1+Y)}.
+                                                     \label{tc:eq:Q}
+\end{align}
+
+\begin{theorem}[Scalar beta representation for two clusters]
+\label{tc:thm:beta}
+For $F\in C^2$ on the interval with endpoints $B,C$,
+\begin{equation}\label{tc:eq:beta-representation}
+ \boxed{\displaystyle
+ I_{r+s}(F;B^r,C^s)
+   =r!s!\,[X^{r-1}Y^{s-1}]\,
+      Q(X,Y)\int_0^1
+      \frac{E_F(t)}{t(1-t)}(1-t)^X t^Y\,dt.}
+\end{equation}
+The integral on the right is holomorphic, for example for
+$\Re X,\Re Y>-1$, and the coefficient may be taken under the integral.
+\end{theorem}
+
+\begin{proof}
+Aggregate the independent regulators belonging to the $B$ cluster
+into $X$ and those belonging to the $C$ cluster into $Y$.  The
+proportion of the $C$ cluster has beta density
+$t^{Y-1}(1-t)^{X-1}/\mathrm B(Y,X)$.  Thus the full-set term
+$AD_F$ from \eqref{tc:eq:independent-regulators} becomes
+\begin{align}
+ \mathcal M_F(X,Y)
+ &=\frac{\Gamma(1+X+Y)}{\Gamma(X)\Gamma(Y)}
+     \int_0^1 F(B+\delta t)t^{Y-1}(1-t)^{X-1}\,dt\notag\\
+ &=XF(B)+YF(C)
+   +XYQ(X,Y)\int_0^1
+          \frac{E_F(t)}{t(1-t)}(1-t)^Xt^Y\,dt.
+                                                     \label{tc:eq:M}
+\end{align}
+The second line follows by subtracting the endpoint chord and
+integrating it exactly.  Since $E_F(t)=O(t(1-t))$, it proves
+holomorphy of the full-set term near $(0,0)$ without leaving
+unremoved beta poles.
+
+In the alternating sum in \eqref{tc:eq:independent-regulators},
+each proper-subset term is holomorphic by the same chord
+subtraction, or is linear when it contains only one cluster.
+Every proper subset omits at least one regulator.  Its coefficient
+of $\alpha_1\cdots\alpha_k$ is therefore zero.  In the full-set term,
+the corresponding coefficient is
+$r!s![X^rY^s]\mathcal M_F(X,Y)$: the squarefree coefficient in the
+$r$th power of a sum of $r$ independent variables is $r!$.
+The chord term in \eqref{tc:eq:M} is linear and contributes nothing.
+Taking the removable value of
+\eqref{tc:eq:independent-regulators} proves
+\eqref{tc:eq:beta-representation}.  Integrable powers at the two
+endpoints justify every fixed coefficient extraction.
+\end{proof}
+
+All kernels in this formula are explicit finite polynomials.  Indeed,
+\begin{equation}\label{tc:eq:logQ}
+ \log Q(X,Y)=\sum_{n=2}^{\infty}
+  \frac{(-1)^n\zeta(n)}n
+      \bigl((X+Y)^n-X^n-Y^n\bigr).
+\end{equation}
+For instance, with $L=\log(1-t)$ and $M=\log t$,
+\begin{align}
+ [XY]Qe^{XL+YM}&=LM+\zeta(2),\label{tc:eq:kernel22}\\
+ [X^2Y]Qe^{XL+YM}&=\tfrac12L^2M+\zeta(2)L-\zeta(3),\\
+ [X^2Y^2]Qe^{XL+YM}
+  &=\tfrac14L^2M^2+\zeta(2)LM-\zeta(3)(L+M)
+      +\tfrac32\zeta(4)+\tfrac12\zeta(2)^2.
+\end{align}
+These provide ordinary log-Gamma integral identities without any
+endpoint finite-part prescription.
+
+\subsection{The finite composition sum}
+
+Our one-variable multiple polylogarithm convention is
+\begin{equation}\label{tc:eq:MPL}
+ \operatorname{Li}_{a_0,a_1,\ldots,a_d}(z)
+  =\sum_{n_0>n_1>\cdots>n_d\ge1}
+      \frac{z^{n_0}}{n_0^{a_0}n_1^{a_1}\cdots n_d^{a_d}},
+ \qquad |z|<1.
+\end{equation}
+Only the outer index receives $z$.  Its branch on
+$\mathbb C\setminus[1,\infty)$ is continued from zero by the
+usual iterated integrals; there is no branch singularity at zero.
+For $r,s\ge1$, $k=r+s$, define the finite combination
+\begin{equation}\label{tc:eq:P}
+ \boxed{\displaystyle
+ P_{r,s}(z)=\sum_{d=1}^{s}\binom{k-d-1}{r-1}
+      \sum_{\substack{p_1+\cdots+p_d=k-1\\p_i\ge1}}
+                \operatorname{Li}_{1,p_1,\ldots,p_d}(z).}
+\end{equation}
+Every term has weight $k$ and depth at most $s+1$.
+
+\begin{lemma}[Exact logarithmic face]
+\label{tc:lem:logarithm}
+If $x>0$ and $B,C\ge0$, set
+$q=(C-B)/(x^2+C)$.  Then
+\begin{equation}\label{tc:eq:logarithmic-face}
+ I_{r+s}\bigl(U\mapsto-\log(x^2+U);B^r,C^s\bigr)
+     =(-1)^{r+s-1}r!s!P_{r,s}(q).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+First suppose $C\ge B$, so $0\le q<1$.  The logarithm is
+\[
+ -\log(x^2+C)-\log\bigl(1-q(1-t)\bigr).
+\]
+The constant contributes only a linear term to
+$\mathcal M_F(X,Y)$.  Applying the beta moment to the convergent
+logarithmic series gives
+\begin{equation}\label{tc:eq:log-generating-function}
+ \mathcal M_F(X,Y)+(X+Y)\log(x^2+C)
+   =X\sum_{m=1}^{\infty}\frac{q^m}{m}
+            \prod_{j=1}^{m-1}\frac{1+X/j}{1+(X+Y)/j}.
+\end{equation}
+This series and its parameter derivatives converge normally for
+$|q|<1$ and $X,Y$ in a sufficiently small fixed neighborhood of
+zero.  One may use the Gamma-ratio expression for the product to
+obtain a polynomial bound in $m$, uniformly on compact parameter
+sets; the geometric factor $q^m$ then dominates every derivative.
+
+For a finite product,
+\[
+ \prod_{j=1}^{m-1}\frac{1+X/j}{1+(X+Y)/j}
+   =\prod_{j=1}^{m-1}\left(1-\frac{Y}{j+X+Y}\right).
+\]
+Choose $d$ nonconstant factors and expand their denominators.
+The coefficient of $X^{r-1}Y^s$ is
+\begin{align}
+ &(-1)^{k-1}\sum_{d=1}^{s}\binom{k-d-1}{r-1}
+  \sum_{\substack{p_1+\cdots+p_d=k-1\\p_i\ge1}}
+  \sum_{m>j_1>\cdots>j_d\ge1}
+                \frac{1}{j_1^{p_1}\cdots j_d^{p_d}}.
+                                                     \label{tc:eq:coefficient}
+\end{align}
+For clarity, the $d$ selected factors supply $(-Y)^d$.
+Their denominator expansions supply a total power
+$(X+Y)^{k-d-1}$ and sign $(-1)^{k-d-1}$.
+The remaining coefficient is precisely
+$\binom{k-d-1}{r-1}$.  This proves the sign and every binomial
+coefficient in \eqref{tc:eq:coefficient}; no relation among zeta
+values has been used.  Summing in $m$ identifies exactly
+\eqref{tc:eq:P}.  The coefficient identity from
+Theorem~\ref{tc:thm:beta} proves
+\eqref{tc:eq:logarithmic-face} for $0\le q<1$.
+
+Both sides are holomorphic in $q$ on
+$\mathbb C\setminus[1,\infty)$.  On the integral side this follows
+by subtracting the endpoint chord of $-\log(1-q(1-t))$;
+on each compact subset the subtracted numerator is uniformly
+$O(t(1-t))$.  The identity theorem therefore includes $q<0$,
+which is the case $C<B$.  In particular, the analytic continuation
+uses real logarithms and real multiple polylogarithms on the whole
+real interval $q<1$.
+\end{proof}
+
+\subsection{Gamma faces, convergence, and depth}
+
+For $a>0$ and $U\ge0$ define
+\begin{equation}\label{tc:eq:G}
+ G_a(U)=\log\Gamma(a+i\sqrt U)+\log\Gamma(a-i\sqrt U)
+                      -\log(2\pi),
+\end{equation}
+where the two logarithms are continued from positive real arguments.
+Their sum is real.  The classical Gamma product
+\cite{dlmfgamma} gives
+\begin{equation}\label{tc:eq:Gamma-product}
+ G_a(U)=2\log\Gamma(a)-\log(2\pi)
+          -\sum_{n=0}^{\infty}
+                    \log\left(1+\frac{U}{(n+a)^2}\right).
+\end{equation}
+
+\begin{theorem}[Every two-cluster Gamma face]
+\label{tc:thm:Gamma}
+For $a>0$, $B,C\ge0$ and $r,s\ge1$,
+\begin{equation}\label{tc:eq:Gamma-dictionary}
+ \boxed{\displaystyle
+ I_{r+s}(G_a;B^r,C^s)
+   =(-1)^{r+s-1}r!s!
+      \sum_{n=0}^{\infty}
+       P_{r,s}\!\left(\frac{C-B}{(n+a)^2+C}\right).}
+\end{equation}
+The spectral sum is ordinary and absolutely convergent, locally
+normally in the stated real parameters.  The same identity has a
+dictionary of depth at most $\min(r,s)+1$, obtained if necessary by
+exchanging the two clusters and using the continued branch on
+the negative real axis.  This is an upper bound on a supplied
+representation, not a claim of minimal functional depth.
+\end{theorem}
+
+\begin{proof}
+Apply the ordinary face functional termwise to
+\eqref{tc:eq:Gamma-product}.  This is justified directly in the
+scalar beta formula: the endpoint-chord remainder of the $n$th
+logarithm is bounded in $C^0$ by a constant times
+$t(1-t)(C-B)^2(n+a)^{-4}$ on each compact parameter set.
+The fixed logarithmic beta kernels are integrable.  Alternatively,
+the second derivatives of the log terms converge normally and the
+face is continuous in the $C^2$ norm.  Constants disappear, and
+Lemma~\ref{tc:lem:logarithm} gives the displayed result.
+
+Each $P_{r,s}(z)$ is $O(z^2)$ at zero, since its first index is one
+and its depth is at least two.  The arguments in the tail are
+$O(n^{-2})$.  Hence the spectral summands are $O(n^{-4})$,
+uniformly on compact subsets.  A finite number of initial arguments
+may lie to the left of $-1$ if $C<B$; their analytically continued
+values are regular.  This proves absolute and local normal
+convergence without a small-displacement hypothesis.
+
+The first expression has depth at most $s+1$.
+The same face with the two clusters exchanged has depth at most
+$r+1$.  Taking the smaller establishes the asserted bound.
+\end{proof}
+
+The symmetry just used gives the precise transformation
+\begin{equation}\label{tc:eq:Landen}
+ P_{r,s}(z)=P_{s,r}\!\left(\frac{z}{z-1}\right),
+       \qquad z\in\mathbb C\setminus[1,\infty).
+\end{equation}
+It also follows from the classical composition form of the
+multiple-polylogarithm Landen connection formula
+\cite{okudaueno}.  Here it provides a check on branch conventions
+and a useful way to choose the smaller-depth expression.
+
+The first collision coefficient checks all factorial normalizations:
+\begin{equation}\label{tc:eq:collision-check}
+ I_{r+s}(G_a;B^r,(B+\delta)^s)
+  =\frac{(-1)^{r+s-1}}2rs(r+s-2)!\,
+     \delta^2\sum_{n=0}^{\infty}
+                     \bigl((n+a)^2+B\bigr)^{-2}
+       +O(\delta^3).
+\end{equation}
+This agrees with the predecessor's factorial-variance monomial
+formula.  The full dictionary is global for $B,C\ge0$, whereas
+that local collision expansion need not converge at the desired
+displacement.
+
+\subsection{Two equal displaced masses and a worked ordinary integral}
+
+For $s=1$, \eqref{tc:eq:P} becomes
+$P_{r,1}=\operatorname{Li}_{1,r}$ and recovers precisely the
+incoming one-displaced theorem.  For $s=2$ it gives the new
+all-multiplicity specialization
+\begin{equation}\label{tc:eq:two-displaced}
+ \boxed{\displaystyle
+ P_{r,2}(z)=r\operatorname{Li}_{1,r+1}(z)
+     +\sum_{j=1}^{r}\operatorname{Li}_{1,j,r+1-j}(z).}
+\end{equation}
+Thus $r$ equal base masses and two equal displaced masses have
+depth at most three for every $r$.  No increase in the base
+multiplicity increases this bound.
+
+For example, set
+$E_a(t)=G_a(B+(C-B)t)-(1-t)G_a(B)-tG_a(C)$ and
+$q_n=(C-B)/((n+a)^2+C)$.  The case $r=s=2$ gives the completely
+ordinary identity
+\begin{align}
+ &\int_0^1\frac{E_a(t)}{t(1-t)}
+                 \bigl(\log t\log(1-t)+\zeta(2)\bigr)\,dt
+       \notag\\
+ &\qquad=-\sum_{n=0}^{\infty}
+   \left(2\operatorname{Li}_{1,3}(q_n)
+         +\operatorname{Li}_{1,1,2}(q_n)
+         +\operatorname{Li}_{1,2,1}(q_n)\right).
+                                                     \label{tc:eq:worked-integral}
+\end{align}
+At $a=2.3$, $B=0.2$, $C=0.9$, the associated face
+$I_4(G_a;B,B,C,C)$ is
+\[
+ -0.0836254300916287651503714290194933682217772138996833\ldots.
+\]
+This decimal is an independently checked diagnostic; the identity
+is proved above for the full parameter domain.
+
+\subsection{Mass derivatives and anchored polylogarithmic primitives}
+
+Delete the first index one in \eqref{tc:eq:P} and put
+\begin{equation}\label{tc:eq:Rpolylog}
+ R_{r,s}(z)=\sum_{d=1}^{s}\binom{r+s-d-1}{r-1}
+   \sum_{\substack{p_1+\cdots+p_d=r+s-1\\p_i\ge1}}
+                       \operatorname{Li}_{p_1,\ldots,p_d}(z).
+\end{equation}
+The defining strict series gives
+$P'_{r,s}(z)=R_{r,s}(z)/(1-z)$.  It follows that
+\begin{align}
+ \partial_C I_{r+s}(G_a;B^r,C^s)
+   &=(-1)^{r+s-1}r!s!
+       \sum_{n=0}^{\infty}
+           \frac{R_{r,s}(q_n)}{(n+a)^2+C},\label{tc:eq:Cderivative}\\
+ \partial_B I_{r+s}(G_a;B^r,C^s)
+   &=-(-1)^{r+s-1}r!s!
+       \sum_{n=0}^{\infty}
+           \frac{R_{r,s}(q_n)}{(n+a)^2+B}.
+                                                     \label{tc:eq:Bderivative}
+\end{align}
+These are total derivatives of the repeated cluster parameters:
+$\partial_C$ moves all $s$ copies of $C$ together.  They should not
+be confused with a derivative in just one independently labelled mass.
+The displayed expressions have depth at most $s$; exchanging clusters
+gives a representation with depth at most $\min(r,s)$.
+
+Termwise differentiation is legitimate.  For the tail, the arguments
+lie in one fixed small disk, where $P(z)=O(z^2)$ and $R(z)=O(z)$;
+local holomorphic extensions and Cauchy estimates give normal
+convergence of every fixed parameter derivative.  The finitely many
+initial summands stay off their cuts.  Consequently these equations
+also give higher polygamma identities after further differentiation.
+Since $I_{r+s}(G_a;B^{r+s})=0$, integration of
+\eqref{tc:eq:Cderivative} from $C=B$ to the desired endpoint is an
+anchored antiderivative with no undetermined constant.
+
+\subsection{Verification and the exact scope of the resolved question}
+
+The supplied script compares two independently organized exact
+coefficient calculations: the incoming monomial-face formula at
+$0^r,1^s$, and \eqref{tc:eq:P} after the substitution
+$z=u/(1+u)$.  It checks $r,s\in\{1,2,3,4\}$ and monomial degrees
+$2$ through $15$, together with the corresponding Landen
+coefficients, for a total of $448$ exact rational assertions.
+Four numerical comparisons at $90$ decimal digits use the ordinary
+beta integral on one side and strict harmonic sums with a
+Hurwitz-zeta spectral tail on the other.  Their absolute residuals
+range from $9.8\times10^{-77}$ to $3.3\times10^{-75}$.
+One case has $C-B>a^2+B$, outside the predecessor's local
+collision-series disk.  These are floating-point diagnostics,
+not certified interval enclosures or proof-assistant proofs.
+
+The result resolves the request at the end of the incoming
+spectral-face section for an explicit dictionary when the mass set
+has exactly two distinct values, allowing every multiplicity.  It
+partially advances Q4 of that report.  It does not evaluate two
+\emph{unequal} displaced masses above a third base mass, does not
+prove that every two-cluster expression reduces to depth two, and
+does not establish a minimal depth theorem.  A precise next target
+is the three-cluster case $B^r,C,D$ with $C\ne D$, where an
+aggregation into three independent regulator sums should retain
+the same ordinary face normalization.

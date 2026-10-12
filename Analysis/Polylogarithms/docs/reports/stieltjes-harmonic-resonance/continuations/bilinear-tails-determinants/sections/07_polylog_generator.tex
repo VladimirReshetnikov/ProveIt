@@ -1,0 +1,199 @@
+\section{A cutoff polylogarithm identity and its Euler primitive}
+\label{hier:gf-section}
+
+The first rank-two member of the new hierarchy gives a compact
+polylogarithmic consequence.  Its weight is
+\begin{equation}\label{hier:gf-weight}
+ R(n)=\frac1{(n+1)^2}-\frac1{(n+2)^2},
+\end{equation}
+whereas the predecessor's explicit repeated-pole generator uses the
+distinct second-difference weight
+$\tfrac12\{(n+1)^{-2}-2(n+2)^{-2}+(n+3)^{-2}\}$.
+Define the finite ordered determinant sum
+\begin{equation}\label{hier:gf-cutoff}
+ Z_N=\sum_{0\le n<k\le N}(k-n)^2R(n)R(k),\qquad Z_0=0.
+\end{equation}
+
+Our one-direction multiple-polylogarithm convention is
+\begin{equation}\label{hier:gf-convention}
+ \operatorname{Li}_{s_1,\ldots,s_j}(z)
+ =\sum_{n_1>\cdots>n_j\ge1}
+       \frac{z^{n_1}}{n_1^{s_1}\cdots n_j^{s_j}},
+ \qquad |z|<1,
+\end{equation}
+with positive integer indices.  Thus only the largest summation index
+carries $z$; in a multiple-argument convention this is
+$\operatorname{Li}_{s_1,\ldots,s_j}(z,1,\ldots,1)$.
+In particular the shuffle identity has normalization
+$\operatorname{Li}_1(z)^2=2\operatorname{Li}_{1,1}(z)$.
+
+\begin{theorem}[Finite cutoff and its complete generator]
+\label{hier:gf-theorem}
+For $M=N+1\ge1$,
+\begin{equation}\label{hier:gf-finite}
+ \boxed{\displaystyle
+ Z_{M-1}=
+ 2\left(1-\frac1{(M+1)^2}\right)H_M
+ -(H_M^{(2)})^2
+ -\frac{M^2}{(M+1)^2}\bigl(H_M^{(2)}+1\bigr).}
+\end{equation}
+The generating function $G(z)=\sum_{N\ge0}Z_Nz^{N+1}$ satisfies
+\begin{align}\label{hier:gf-closed}
+ z(1-z)G(z)={}&2\operatorname{Li}_1(z)-\operatorname{Li}_2(z)
+                 -z-z\operatorname{Li}_4(z)\notag\\
+ &+2(1-z)\bigl(\operatorname{Li}_{1,2}(z)
+                         -\operatorname{Li}_{2,1}(z)\bigr)
+ -(1+z)\operatorname{Li}_{2,2}(z).
+\end{align}
+All series are absolutely and locally normally convergent for $|z|<1$.
+The quotient in \eqref{hier:gf-closed} is interpreted by its removable
+value at zero; $G(z)=\tfrac5{48}z^2+O(z^3)$.
+\end{theorem}
+\begin{proof}
+Use the monic moment basis $1,n+1$, which leaves the determinant
+unchanged, and put $p=M+1$.  Telescoping gives its three moments as
+\[
+ \mu_0=1-p^{-2},\qquad
+ \mu_1=H_M^{(2)}-Mp^{-2},\qquad
+ \mu_2=2H_M-H_M^{(2)}-1+2p^{-1}-p^{-2}.
+\]
+Expanding $\mu_0\mu_2-\mu_1^2$ proves \eqref{hier:gf-finite}.
+The basic absolutely convergent summation identities are
+\begin{align*}
+ \sum_{M\ge1}H_M^{(p)}z^M
+    &=\frac{\operatorname{Li}_p(z)}{1-z},\qquad
+ \sum_{M\ge1}\frac{z^M H_M^{(p)}}{(M+1)^q}
+    =z^{-1}\operatorname{Li}_{q,p}(z),\\
+ \sum_{M\ge1}(H_M^{(2)})^2z^M
+    &=\frac{2\operatorname{Li}_{2,2}(z)+\operatorname{Li}_4(z)}{1-z},
+ \qquad
+ \sum_{M\ge1}\frac{z^M}{(M+1)^q}
+    =z^{-1}\operatorname{Li}_q(z)-1.
+\end{align*}
+The square identity follows by splitting its two inner indices into
+the two strict orderings and the diagonal.  Substitute these formulas
+into \eqref{hier:gf-finite}, after writing
+$M^2/(M+1)^2=1-2/(M+1)+1/(M+1)^2$.  Collecting terms gives
+\eqref{hier:gf-closed}.
+
+Equation \eqref{hier:gf-finite} gives $Z_N=O(\log(N+2))$.
+Every multiple-polylogarithm series in \eqref{hier:gf-convention}
+also converges normally on compact subdisks, since its inner sums
+grow at most polynomially while $z^{n_1}$ decays geometrically.
+These estimates justify all interchanges.  The original generating
+series proves that the apparent singularity at zero is removable;
+$Z_0=0$ and $Z_1=R(0)R(1)=5/48$ give the stated initial terms.
+\end{proof}
+
+\begin{corollary}[An anchored Euler primitive]
+\label{hier:gf-primitive}
+For $|z|<1$, set
+$I(z)=\int_0^zG(t)\,dt/t$ along any path in the disk.  Then
+\begin{align}\label{hier:gf-primitive-closed}
+ I(z)={}&\frac{
+ \operatorname{Li}_1(z)^2+2\operatorname{Li}_{2,1}(z)
+ -\operatorname{Li}_{1,2}(z)+\operatorname{Li}_{2,2}(z)
+ +\operatorname{Li}_2(z)-\operatorname{Li}_1(z)}{z}\notag\\
+ &-\operatorname{Li}_5(z)-\operatorname{Li}_{1,4}(z)
+     -2\operatorname{Li}_{3,2}(z)
+     -2\operatorname{Li}_{1,2,2}(z).
+\end{align}
+The removable value at zero is $I(0)=0$, and
+\[
+ I(z)=\sum_{N\ge0}\frac{Z_N}{N+1}z^{N+1}
+     =\frac5{96}z^2+O(z^3).
+\]
+\end{corollary}
+\begin{proof}
+Let $\theta=z\,d/dz$.  From the absolutely convergent series,
+\[
+ \theta\operatorname{Li}_{p,\boldsymbol s}
+      =\operatorname{Li}_{p-1,\boldsymbol s}\quad(p>1),\qquad
+ \theta\operatorname{Li}_{1,\boldsymbol s}
+      =\frac{z}{1-z}\operatorname{Li}_{\boldsymbol s}.
+\]
+For an empty $\boldsymbol s$ the second formula means
+$\theta\operatorname{Li}_1=z/(1-z)$.
+These identities also prove
+$\operatorname{Li}_1^2=2\operatorname{Li}_{1,1}$ by comparing
+derivatives and values at zero.  Apply them to
+\eqref{hier:gf-primitive-closed}: its Euler derivative is the function $G(z)$ specified by
+\eqref{hier:gf-closed}.  The convergent expansions at zero give the
+zero integration constant and the stated removability.  Alternatively,
+coefficientwise division of \eqref{hier:gf-finite} by $M$ gives the
+same formula by
+\[
+ \frac1{M(M+1)^2}
+  =\frac1M-\frac1{M+1}-\frac1{(M+1)^2}.
+\]
+\end{proof}
+
+The raw generator has a representation of depth at most two, although
+its coefficient determinant has harmonic degree two.  Its displayed
+Euler primitive uses depth at most three.  These are explicit
+representations, not claims of minimal depth under functional identities.
+
+\subsection{A convergent second Euler endpoint}
+
+\begin{corollary}[An ordinary-zeta endpoint]
+\label{hier:gf-endpoint}
+The second Euler primitive has the absolutely convergent value
+\begin{align}\label{hier:gf-endpoint-value}
+ \sum_{N\ge0}\frac{Z_N}{(N+1)^2}
+ &=\int_0^1\frac{-\log z}{z}G(z)\,dz\notag\\
+ &=1+3\zeta(2)-2\zeta(3)-\frac34\zeta(4)
+                     -\zeta(3)^2-\frac{19}{24}\zeta(6).
+\end{align}
+The new content here is the determinant endpoint identity; the
+weight-six multiple-zeta reductions used below are classical.
+\end{corollary}
+\begin{proof}
+The estimate $Z_N=O(\log(N+2))$ proves convergence.  Positivity of
+$Z_N$ also permits Tonelli's theorem in the integral representation.
+Divide \eqref{hier:gf-finite} by $M^2$ and collect its rational
+coefficients to obtain the pointwise identity
+\[
+ \frac{Z_{M-1}}{M^2}
+ =-\frac{(H_M^{(2)})^2}{M^2}
+  -\frac{2H_M}{(M+1)^2}
+  +\frac{4H_M}{M(M+1)}
+  -\frac{H_M^{(2)}+1}{(M+1)^2}.
+\]
+Every term is separately summable.  The standard nested-series
+interpretation and elementary telescoping give
+\[
+ \sum_{M\ge1}\frac{H_M}{M(M+1)}=\zeta(2),\qquad
+ \sum_{M\ge1}\frac{H_M}{(M+1)^2}=\zeta(2,1)=\zeta(3),
+ \qquad
+ \sum_{M\ge1}\frac{H_M^{(2)}}{(M+1)^2}=\zeta(2,2)=\frac34\zeta(4).
+\]
+Splitting coincident and strictly ordered indices gives
+\begin{equation}\label{hier:gf-square-Euler}
+ \sum_{M\ge1}\frac{(H_M^{(2)})^2}{M^2}
+ =2\zeta(2,2,2)+2\zeta(4,2)+\zeta(2,4)+\zeta(6)
+ =\zeta(3)^2+\frac{19}{24}\zeta(6).
+\end{equation}
+For clarity, the three weight-six inputs are
+\[
+ \zeta(2,2,2)=\frac3{16}\zeta(6),\qquad
+ \zeta(4,2)=\zeta(3)^2-\frac43\zeta(6),\qquad
+ \zeta(2,4)=\frac{25}{12}\zeta(6)-\zeta(3)^2.
+\]
+They follow from short classical calculations.  Expanding the cube
+of $\zeta(2)$ by coincident indices gives the first.  Euler's formula
+$2\zeta(m,1)=m\zeta(m+1)-\sum_{j=1}^{m-2}
+\zeta(j+1)\zeta(m-j)$, with $m=5$, gives
+$\zeta(5,1)=\tfrac34\zeta(6)-\tfrac12\zeta(3)^2$;
+see \cite[Eq.~(1.3)]{hier:BB2005}.  Equating the convergent shuffle
+and stuffle products
+\[
+ \zeta(3)^2=2\zeta(3,3)+6\zeta(4,2)+12\zeta(5,1),
+ \qquad
+ \zeta(3)^2=2\zeta(3,3)+\zeta(6)
+\]
+then gives the second weight-six input.  Finally,
+$\zeta(2,4)+\zeta(4,2)=\zeta(2)\zeta(4)-\zeta(6)$ gives the third.
+The same Euler formula at $m=2$ supplies $\zeta(2,1)=\zeta(3)$.
+Substitution into the summable pointwise identity proves
+\eqref{hier:gf-endpoint-value}.
+\end{proof}

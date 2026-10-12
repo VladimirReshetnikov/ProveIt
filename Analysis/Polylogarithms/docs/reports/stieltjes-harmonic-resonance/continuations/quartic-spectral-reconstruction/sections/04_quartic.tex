@@ -1,0 +1,537 @@
+% Article-ready section.  Requires amsmath, amssymb, amsthm, booktabs.
+% Bibliography items appear in quartic_bibliography.tex.
+% New claim: the all-moment quartic extension, not the classical zeroth sum.
+
+\section{All regular centered quartic trigamma moments}
+\label{qtm:section}
+
+The incoming reconstruction report asks for an explicit quartic extension
+of its centered cubic moments, with a fixed coordinate space and a
+generator \cite[Question 5 and Section 6]{Reconstruction}.  We answer that
+question.  The starting, unweighted quartic sum is already evaluated
+explicitly by Hoffman \cite[Corollary 4.4 and the following example]{Hoffman}.
+The contribution here is the complete family of centered
+polynomial-subtracted moments, the finite Bernoulli formula connecting it
+to the cubic family, and the generator with all initial constants fixed.
+
+\subsection{Definition and ordinary summation convention}
+
+Throughout this section set
+\begin{equation}\label{qtm:definitions}
+ A_n=\psi'(n+1)=\zeta(2)-H_n^{(2)},\qquad
+ x_n=n+\tfrac12,\qquad
+ \mathcal V(s)=\sum_{n=0}^{\infty}A_n^4x_n^{-s}
+ \quad(\Re s>-3).
+\end{equation}
+Use $B_1=-1/2$ for ordinary Bernoulli numbers.  Define
+\begin{equation}\label{qtm:h}
+ h_k=\sum_{a+b+c+d=k}
+ B_{2a}(1/2)B_{2b}(1/2)B_{2c}(1/2)B_{2d}(1/2),
+ \qquad a,b,c,d\ge0.
+\end{equation}
+For example
+\[
+ h_0=1,\qquad h_1=-\frac13,\qquad h_2=\frac{19}{120},
+ \qquad h_3=-\frac{1871}{15120}.
+\]
+
+\begin{proposition}[Regular parity and prescribed subtractions]
+\label{qtm:regularity}
+The only poles of $\mathcal V$ are simple poles at $s=-3-2k$,
+$k\ge0$, with residues $h_k$.  In particular all the values
+\begin{equation}\label{qtm:Vr}
+ V_r=\mathcal V(-2r),\qquad r\ge0,
+\end{equation}
+are regular.  They are represented by the ordinary absolutely convergent
+series
+\begin{equation}\label{qtm:ordinary}
+ \boxed{\displaystyle
+ V_r=\sum_{n=0}^{\infty}\left(
+ x_n^{2r}A_n^4-\sum_{k=0}^{r-2}h_kx_n^{2r-4-2k}\right).}
+\end{equation}
+The inner sum is empty for $r=0,1$.
+\end{proposition}
+
+\begin{proof}
+The centered Hurwitz asymptotic expansion gives
+\[
+ A_n\sim\sum_{j\ge0}B_{2j}(1/2)x_n^{-2j-1},\qquad
+ A_n^4\sim\sum_{k\ge0}h_kx_n^{-4-2k}.
+\]
+Subtract an arbitrary finite number of terms and add the corresponding
+Hurwitz functions $h_k\zeta(s+4+2k,1/2)$.  The remainder series is
+normally convergent in successively larger left half-planes.  This
+continues $\mathcal V$ meromorphically and gives the listed poles and
+residues.  Every term in the definition of $h_k$ has sign $(-1)^k$,
+because $B_{2j}(1/2)$ has sign $(-1)^j$, including $j=0$.
+Consequently $h_k\ne0$ and the poles are actual.
+
+At $s=-2r$ the added terms corresponding to $0\le k\le r-2$
+are $h_k\zeta(4+2k-2r,1/2)=0$, since
+$\zeta(-2m,1/2)=0$ for every integer $m\ge0$.  The remaining
+summand in \eqref{qtm:ordinary} is $O(x_n^{-2})$; for $r=0$ it
+is even $O(x_n^{-4})$.  This proves the asserted ordinary identity.
+\end{proof}
+
+\subsection{The finite formula}
+
+We use two explicitly evaluated starting constants:
+\begin{align}
+ Q_5&=4\zeta(2)\zeta(3)-10\zeta(5),\label{qtm:Q5}\\
+ Q_7&=51\zeta(3)\zeta(4)+10\zeta(2)\zeta(5)
+                  -\frac{301}{4}\zeta(7).\label{qtm:Q7}
+\end{align}
+The cubic coefficients inherited from the incoming report are
+\begin{align}
+ C_1&=9\zeta(3)-\frac{17}{4}\zeta(4),\label{qtm:C1}\\
+ C_j&=9B_{2j-2}\zeta(3)-\frac12\delta_{j,2}\zeta(2)
+       +R_j,\qquad j\ge2,\label{qtm:Cj}\\
+ R_j&=-\frac{3}{2(2j-1)}
+ \sum_{h=0}^{j-2}(2h+1)\binom{2j-1}{2h+3}
+ B_{2j-4-2h}B_{2h}+\frac14\delta_{j,3}.
+ \label{qtm:Rj}
+\end{align}
+These formulas are reproduced to make the new quartic answer directly
+computable; their cubic evaluation is not a new claim of this section.
+
+Define $D_0=Q_7$ and, for $j\ge1$, set
+\begin{equation}\label{qtm:Dj}
+ \boxed{\displaystyle
+ D_j=\frac2j\sum_{\ell=1}^{j}
+ \binom{2j}{2\ell}B_{2j-2\ell}C_\ell+\varepsilon_j,\qquad
+ \varepsilon_j=
+ \begin{cases}
+ Q_5,&j=1,\\
+ -3\zeta(3),&j=2,\\
+ \dfrac{2j-5}{2}B_{2j-6},&j\ge3.
+ \end{cases}}
+\end{equation}
+In particular
+\begin{align}
+ D_1&=2C_1+Q_5,\notag\\
+ D_2&=\frac{15}{2}\zeta(3)-\frac{17}{4}\zeta(4)
+                 -\frac12\zeta(2)-\frac12,\notag\\
+ D_3&=-\frac7{10}\zeta(3)+\frac{17}{12}\zeta(4)
+                 -\frac56\zeta(2)-\frac35,\notag\\
+ D_4&=\frac{23}{35}\zeta(3)-\frac{17}{12}\zeta(4)
+                 +\frac7{12}\zeta(2)-\frac{81}{560}.
+ \label{qtm:Dexamples}
+\end{align}
+
+\begin{theorem}[Complete quartic Bernoulli formula]
+\label{qtm:main}
+For every $r\ge0$,
+\begin{equation}\label{qtm:mainformula}
+ \boxed{\displaystyle
+ V_r=\frac1{2r+1}\sum_{j=0}^{r}
+ \binom{2r+1}{2j+1}B_{2r-2j}(1/2)D_j.}
+\end{equation}
+Consequently every sum \eqref{qtm:ordinary} lies in the fixed space
+\begin{equation}\label{qtm:space}
+ \operatorname{span}_{\mathbb Q}
+ \{Q_7,Q_5,\zeta(2),\zeta(3),\zeta(4),1\}.
+\end{equation}
+The first six moments span all six formal coordinates: in the order
+displayed in \eqref{qtm:space}, their coefficient determinant is
+\begin{equation}\label{qtm:det}
+ \det [V_0,\ldots,V_5]_{\mathrm{coordinates}}
+       =\frac{7361}{49896000}\ne0.
+\end{equation}
+This is a statement about the specified coefficient formulas, not an
+assertion of arithmetic independence of these six real constants.
+\end{theorem}
+
+Here are the first four identities in compact form:
+\begin{align}
+ V_0&=Q_7,\label{qtm:V0}\\
+ V_1&=\frac{Q_5}{3}-\frac{Q_7}{12}
+                +6\zeta(3)-\frac{17}{6}\zeta(4),\label{qtm:V1}\\
+ V_2&=-\frac{Q_5}{6}+\frac{7Q_7}{240}-\frac1{10}\zeta(2)
+        -\frac32\zeta(3)+\frac{17}{30}\zeta(4)-\frac1{10},
+        \label{qtm:V2}\\
+ V_3&=\frac{7Q_5}{48}-\frac{31Q_7}{1344}+\frac1{168}\zeta(2)
+        +\frac{13}{20}\zeta(3)+\frac{17}{672}\zeta(4)
+        +\frac{11}{280}.\label{qtm:V3}
+\end{align}
+The first two are convergent without subtractions.  The next two are,
+respectively,
+\[
+ \sum_{n\ge0}(x_n^4A_n^4-1),\qquad
+ \sum_{n\ge0}(x_n^6A_n^4-x_n^2+1/3).
+\]
+
+\subsection{Finite summation proof and the boundary cancellation}
+
+Write $\operatorname{CT}_N$ for the coefficient of
+$N^0(\log N)^0$ in a finite-cutoff asymptotic expansion.  It will be
+applied only after an exact finite identity has been established.
+Set
+\begin{equation}\label{qtm:T}
+ T_{d,m}=\operatorname{CT}_N\sum_{k=1}^Nk^m A_k^d,
+ \qquad b_d(a)=[N^{-a}]A_N^d.
+\end{equation}
+The coefficients $b_d(a)$ are rational and are fixed by
+\begin{equation}\label{qtm:uncentered}
+ A_N\sim\sum_{a\ge1}B_{a-1}N^{-a}.
+\end{equation}
+When a sum converges, its constant term is its ordinary value.  In
+particular, with the descending-index convention for multiple zeta values,
+\begin{equation}\label{qtm:linearnegative}
+ T_{1,-p}=\zeta(2,p)\quad(p\ge1),\qquad
+ T_{0,-p}=\zeta(p)\quad(p\ge2),\qquad T_{0,-1}=\gamma.
+\end{equation}
+The following elementary formula will also be used:
+\begin{equation}\label{qtm:oddlinear}
+ T_{1,q}=\frac{2-q}{4}B_{q-1}-\frac12\delta_{q,1}\gamma,
+ \qquad q\ge1\text{ odd}.
+\end{equation}
+For completeness let $F_q(N)=\sum_{k=1}^Nk^q$.  Finite summation by
+parts gives
+\[
+ \sum_{k=1}^Nk^qA_k
+   =F_q(N)A_N+\sum_{k=1}^N\frac{F_q(k-1)}{k^2}.
+\]
+Insert Faulhaber's polynomial and \eqref{qtm:uncentered}.  For odd
+$q\ge3$, only its quadratic and degree-$q$ terms can contribute
+nonzero constant coefficients, and they give $(2-q)B_{q-1}/4$.
+At $q=1$, the second sum is $(N-H_N)/2$ and the first term has
+constant coefficient $1/4$, giving $1/4-\gamma/2$.
+
+The inherited cubic coefficient has the finite-cutoff form
+\begin{equation}\label{qtm:Ccutoff}
+ C_\ell=3T_{2,2\ell-2}+3T_{1,2\ell-4}
+          +T_{0,2\ell-6}+b_3(2\ell).
+\end{equation}
+This is the cubic summation identity proved in the incoming report.
+One may verify its explicit evaluation
+\eqref{qtm:C1}--\eqref{qtm:Rj} by applying the preceding summation
+by parts once more to the quadratic tail.  Its degree-$2\ell-2$
+Faulhaber term cancels the explicit linear tail in
+\eqref{qtm:Ccutoff}; the remaining odd linear powers are evaluated
+by \eqref{qtm:oddlinear}.  The terms at zero and negative powers
+give $C_1$, the $-\zeta(2)/2$ exception at $\ell=2$, and the
+boundary contribution $1/4$ at $\ell=3$.  Thus every low-index
+exception retained in \eqref{qtm:Cj} is required.
+
+The quartic coordinate corresponding to the odd monomial $k^{2j+1}$ is
+\begin{equation}\label{qtm:Dcutoff}
+ \widehat D_j=4T_{3,2j-1}+6T_{2,2j-3}
+              +4T_{1,2j-5}+T_{0,2j-7}+b_4(2j+1).
+\end{equation}
+We now prove $\widehat D_j=D_j$ with no limit of a divergent
+series taken before the cancellation.
+
+For $j\ge1$, put $m=2j-1$ and
+\begin{equation}\label{qtm:Faulhaber}
+ F_m(N)=\sum_{k=1}^Nk^m
+   =\sum_{\ell=1}^j f_{2\ell}N^{2\ell}+\frac12N^m,
+ \qquad
+ f_{2\ell}=\frac1{2j}\binom{2j}{2\ell}B_{2j-2\ell}.
+\end{equation}
+This includes $j=1$.  Since $F_m(k-1)=F_m(k)-k^m$ and
+$A_{k-1}=A_k+k^{-2}$, the exact finite identity is
+\begin{equation}\label{qtm:cubicSBP}
+ \sum_{k=1}^Nk^m A_k^3
+ =F_m(N)A_N^3+
+ \sum_{k=1}^NF_m(k-1)
+       \left(\frac{3A_k^2}{k^2}+\frac{3A_k}{k^4}+\frac1{k^6}\right).
+\end{equation}
+Multiply this by four and add the other terms in
+\eqref{qtm:Dcutoff}.  The coefficient $-k^m/2$ in $F_m(k-1)$
+cancels the entire quadratic-tail sum $6T_{2,m-2}$.  The even
+Faulhaber powers form precisely four copies of
+\eqref{qtm:Ccutoff}; their boundary terms cancel the even part of
+$4F_m(N)A_N^3$.  Taking constant coefficients only now yields
+\begin{equation}\label{qtm:preboundary}
+ \widehat D_j=
+ 4\sum_{\ell=1}^j f_{2\ell}C_\ell
+ +2b_3(2j-1)+b_4(2j+1)
+ -2T_{1,2j-5}-T_{0,2j-7}.
+\end{equation}
+
+The decisive rational identity is
+\begin{equation}\label{qtm:boundary}
+ 2b_3(2j-1)+b_4(2j+1)=
+ \begin{cases}0,&j=1,2,\\B_{2j-6},&j\ge3.\end{cases}
+\end{equation}
+Here is a direct proof.  In a formal variable $u=N^{-1}$, let
+$E_0(u)=\sum_{k\ge0}B_{2k}u^{2k}$.  Then
+$A=uE_0(u)-u^2/2$.  The odd parts of the third and fourth powers are
+\[
+ (A^3)_{\mathrm{odd}}=u^3E_0(u)^3+\frac34u^5E_0(u),\qquad
+ (A^4)_{\mathrm{odd}}=-2u^5E_0(u)^3-\frac12u^7E_0(u).
+\]
+The $E_0^3$ terms cancel in the indicated pair of coefficients,
+leaving $[u^{2j-6}]E_0(u)$.  This proves \eqref{qtm:boundary}.
+
+For $j=1$, \eqref{qtm:linearnegative} and the classical evaluation
+$\zeta(2,3)=9\zeta(5)/2-2\zeta(2)\zeta(3)$ give the correction
+$-2\zeta(2,3)-\zeta(5)=Q_5$.  For $j=2$, the correction is
+$-2\zeta(2,1)-\zeta(3)=-3\zeta(3)$.  For $j=3$,
+\eqref{qtm:oddlinear} makes the two Euler constants cancel:
+\[
+ 1-2(1/4-\gamma/2)-\gamma=\frac12.
+\]
+For $j\ge4$, the last ordinary-power sum has zero constant
+coefficient, and \eqref{qtm:oddlinear} gives
+\[
+ B_{2j-6}-\frac{7-2j}{2}B_{2j-6}
+       =\frac{2j-5}{2}B_{2j-6}.
+\]
+Substitution in \eqref{qtm:preboundary} proves
+\eqref{qtm:Dj} for every $j\ge1$.
+
+For $j=0$, all sums in \eqref{qtm:Dcutoff} converge and the
+boundary vanishes.  Sorting the four tail indices, or expanding the
+displayed powers, gives
+\begin{align}\label{qtm:D0MZV}
+ \widehat D_0={}&24\zeta(2,2,2,1)+12\zeta(2,2,3)
+              +12\zeta(2,4,1)+12\zeta(4,2,1)\notag\\
+             &+4\zeta(2,5)+6\zeta(4,3)+4\zeta(6,1)+\zeta(7)
+              =Q_7.
+\end{align}
+The last evaluation is Hoffman's explicitly printed quartic example;
+his sum starts at $n=1$, so adding $A_0^4=\zeta(2)^4$ removes
+his $-175\zeta(8)/24$ term.  It is also reconstructed in the
+supplementary exact shuffle/stuffle verifier.
+
+Finally,
+\begin{equation}\label{qtm:centeredF}
+ \sum_{n=0}^{k-1}x_n^{2r}
+  =\frac1{2r+1}\sum_{j=0}^{r}
+   \binom{2r+1}{2j+1}B_{2r-2j}(1/2)k^{2j+1}.
+\end{equation}
+Every subtracted even-power sum in \eqref{qtm:ordinary} has zero
+constant coefficient as a polynomial in $N$.  Finite summation by
+parts using \eqref{qtm:centeredF} therefore gives
+\eqref{qtm:mainformula}.  The fixed space follows from
+\eqref{qtm:Cj} and \eqref{qtm:Dj}.  The first six coefficient rows,
+provided explicitly in the supplementary data, give
+\eqref{qtm:det} by rational elimination.  This completes the proof.
+
+\subsection{An analytic generator with fixed initial constants}
+
+For a holomorphic function $f$ define its anchored repeated primitive by
+\begin{equation}\label{qtm:Ik}
+ (I^kf)(t)=\frac1{(k-1)!}\int_0^t(t-u)^{k-1}f(u)\,du,
+ \qquad k\ge1.
+\end{equation}
+Paths lie in the disk $|t|<2\pi$; the integral is path-independent
+there.  The established square and cubic generators are
+\begin{align}
+ G_2(t)&=\frac{t}{2\sinh(t/2)}
+ \left(3\zeta(3)-\frac1{4t}
+       \int_0^t(t-u)u^2\coth(u/2)\,du\right),
+       \label{qtm:G2}\\
+ G_3(t)&=\frac1{2\sinh(t/2)}I^2
+ \left(3\cosh(t/2)G_2(t)-\frac{17}{4}\zeta(4)
+                 -\frac14\zeta(2)t^2+\frac{t^4}{96}\right).
+       \label{qtm:G3}
+\end{align}
+Both formulas are inherited \cite{Square,Reconstruction}.
+In particular $2\sinh(t/2)G_3(t)=\sum_{j\ge1}C_jt^{2j}/(2j)!$.
+
+\begin{theorem}[Quartic moment generator]
+\label{qtm:generator}
+The exponential generating series
+\begin{equation}\label{qtm:G4def}
+ G_4(t)=\sum_{r\ge0}V_r\frac{t^{2r}}{(2r)!}
+\end{equation}
+converges for $|t|<2\pi$ and equals
+\begin{equation}\label{qtm:G4}
+ \boxed{\displaystyle
+ G_4(t)=\frac{Q_7t+Q_5t^3/6
+       +4I^2\!\left(\cosh(t/2)G_3(t)\right)
+       -2I^4\!\left(\sinh(t/2)G_2(t)\right)}
+       {2\sinh(t/2)}.}
+\end{equation}
+The apparent singularity at zero is removable, with $G_4(0)=Q_7$.
+The quotient is an even holomorphic function on the disk.
+\end{theorem}
+
+\begin{proof}
+Set
+\[
+ D(t)=\sum_{j\ge0}D_j\frac{t^{2j+1}}{(2j+1)!},\quad
+ C(t)=2\sinh(t/2)G_3(t),\quad E(t)=\frac t2\coth(t/2).
+\]
+The Bernoulli transform \eqref{qtm:mainformula} is exactly
+$G_4(t)=D(t)/(2\sinh(t/2))$.  Summing the convolution in
+\eqref{qtm:Dj} gives
+\begin{align*}
+ D''(t)
+   &=4\frac{E(t)C(t)}t+Q_5t-\frac12\zeta(3)t^3
+       +\frac12I^4(tE(t))\\
+   &=4\cosh(t/2)G_3(t)+Q_5t
+       -2I^2\!\left(\sinh(t/2)G_2(t)\right).
+\end{align*}
+To check the last cancellation directly, \eqref{qtm:G2} implies
+\[
+ \sinh(t/2)G_2(t)=\frac32\zeta(3)t-\frac14I^2(tE(t)).
+\]
+Thus the cubic polynomial from $-3\zeta(3)$ at $j=2$ cancels
+the first term in this last identity after integration.  Integrating
+$D''$ twice with $D(0)=0$, $D'(0)=Q_7$ proves
+\eqref{qtm:G4}.  All the Bernoulli series and inherited generators
+converge on $|t|<2\pi$; the anchored integrals preserve holomorphy.
+The numerator is odd and has first term $Q_7t$, while the denominator
+is odd with first term $t$.  This proves the stated parity, value, and
+removability.  No assertion that $2\pi$ is the exact Taylor radius is
+needed here.
+\end{proof}
+
+\subsection{Finite polylogarithmic form and a rational extraction}
+
+Formula \eqref{qtm:G4} is an explicit triangular integral generator.
+It also gives a finite polylogarithm expression, with depth at most three,
+by the following anchored rule.  Put $z=e^{-t}$ and write
+$L_{\boldsymbol a}(t)=\operatorname{Li}_{\boldsymbol a}(z)$, with
+the argument on the outer index:
+\[
+ L_{a_1,\ldots,a_d}(t)
+   =\sum_{n_1>\cdots>n_d\ge1}
+        \frac{e^{-tn_1}}{n_1^{a_1}\cdots n_d^{a_d}}\qquad(t>0).
+\]
+The complete inherited cubic expression is reproduced here to make
+the finite compiler self-contained
+\cite[Section 6, finite depth-two generator]{Reconstruction}:
+\begin{align}
+ C(t)={}&
+ \left(9\zeta(4)+6t\zeta(3)-\frac{t^4}{16}\right)L_2(t)
+ +\left(12\zeta(3)-\frac{t^3}{2}\right)L_3(t)
+       \notag\\
+ &-3t^2L_4(t)-12tL_5(t)-\frac{45}{2}L_6(t)
+       -\frac32t^2L_{2,2}(t)
+       \notag\\
+ &-6t\left(L_{3,2}(t)+L_{2,3}(t)\right)
+       -9\left(L_{4,2}(t)+L_{2,4}(t)\right)-12L_{3,3}(t)
+       \notag\\
+ &+\frac{15}{2}\zeta(6)-6\zeta(3)^2+6t\zeta(5)
+       +\frac12t^3\zeta(3)+\frac18t^2\zeta(4)
+       -\frac1{48}t^4\zeta(2)-\frac{t^6}{1440}.
+ \label{qtm:Cpolylog}
+\end{align}
+Initially this expression is read for real $0<t<2\pi$; the integral
+formula \eqref{qtm:G3} specifies its holomorphic continuation through
+zero and throughout the disk.  The derivative identities
+\[
+ \frac d{dt}L_{a+1,\boldsymbol b}=-L_{a,\boldsymbol b},\qquad
+ \frac d{dt}L_{1,\boldsymbol a}
+       =-\frac{z}{1-z}L_{\boldsymbol a}
+\]
+show that multiplication by $z/(1-z)$ raises the needed depth by at
+most one.  The incoming expression for
+$C(t)=2\sinh(t/2)G_3(t)$ is a finite sum of polynomials times
+polylogarithms of depth at most two, plus zeta polynomials, as displayed
+in \eqref{qtm:Cpolylog}.  Since
+\[
+ 4\cosh(t/2)G_3(t)=2C(t)+4\frac{z}{1-z}C(t),
+\]
+the new generator has depth at most three after the two anchored
+integrations.  The remaining term uses only classical polylogarithms:
+\begin{equation}\label{qtm:Tpolylog}
+ T(t):=2\sinh(t/2)G_2(t)
+ =2t\zeta(3)+3\zeta(4)-\frac{t^4}{48}
+   -\frac{t^2}{2}\operatorname{Li}_2(z)
+   -2t\operatorname{Li}_3(z)-3\operatorname{Li}_4(z).
+\end{equation}
+Consequently the numerator of \eqref{qtm:G4} can alternatively be
+compiled from the finite expression
+\begin{equation}\label{qtm:finitecompiler}
+ Q_7t+\frac{Q_5t^3}{6}+2I^2C
+       +4I^2\left(\frac{z}{1-z}C\right)-I^4T.
+\end{equation}
+This asserts a sufficient finite function class, not its minimal depth.
+
+Here is an exact endpoint prescription for that compilation.  If
+$F_j'=-F_{j-1}$, an unanchored $k$-fold primitive of $t^mF_0(t)$ is
+\begin{equation}\label{qtm:primitivecompiler}
+ (-1)^k\sum_{j=0}^m\binom{k+j-1}{j}
+      \frac{m!}{(m-j)!}t^{m-j}F_{k+j}(t).
+\end{equation}
+Subtract its Taylor polynomial of degree $k-1$ at zero to obtain
+the anchored primitive.  For the twofold integration of
+$zL_{\boldsymbol a}/(1-z)$, the only possibly divergent endpoint
+is the first-index-one value when the polynomial degree is zero.
+It must be combined before taking a limit.  The convergent constant
+\[
+ \lambda_{\boldsymbol a}
+  =\lim_{t\downarrow0}
+   \left(L_{1,\boldsymbol a}(t)
+             -\zeta(\boldsymbol a)\operatorname{Li}_1(e^{-t})\right)
+\]
+is minus the sum of all the convergent terms in the stuffle of
+$(1)$ with $\boldsymbol a$, excluding its leading $(1,\boldsymbol a)$
+term.  Indeed, for a nonempty word appearing in $C$ its first index
+is at least two, so
+\[
+ \sum_{n\ge1}\frac{H_{n-1}^{(\boldsymbol a)}
+                         -\zeta(\boldsymbol a)}{n}
+\]
+converges absolutely, and dominated convergence identifies it with
+the displayed limit.  The finite harmonic stuffle evaluates this
+sum, since
+$H_N\bigl(H_N^{(\boldsymbol a)}-\zeta(\boldsymbol a)\bigr)\to0$.
+Here $H_N^{(\boldsymbol a)}$ uses the same strict descending-index
+convention as the multiple zeta values.  Pure zeta-polynomial terms in
+\eqref{qtm:Cpolylog} are included by adjoining the empty word:
+$L_{\varnothing}=1$, $\zeta(\varnothing)=1$,
+$L_{1,\varnothing}=\operatorname{Li}_1(e^{-t})$, and
+$\lambda_{\varnothing}=0$.
+In particular, the degree-zero empty-word coefficient is
+$15\zeta(6)/2-6\zeta(3)^2$.
+With this convention the degree-zero coefficients in $C$ satisfy
+$\sum c_{0,\boldsymbol a}\zeta(\boldsymbol a)=C(0)=0$.
+Thus all the divergent $\operatorname{Li}_1$ endpoints cancel in
+\eqref{qtm:finitecompiler}, leaving exactly the prescribed
+$\lambda_{\boldsymbol a}$ combination.  This rule fixes the integration
+constants rather than leaving an undetermined polynomial.
+
+The six-coordinate theorem also produces ordinary rational evaluations.
+For example set
+\begin{align*}
+ P(x)={}&5233+697660x^2+9382304x^4+28113792x^6\\
+        &+21816576x^8+3886080x^{10},\\
+ R(x)={}&3886080x^6+20521216x^4+21456896x^2
+                         +\frac{940103168}{315}.
+\end{align*}
+Then
+\begin{equation}\label{qtm:rational}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}\bigl(P(x_n)\psi'(n+1)^4-R(x_n)\bigr)
+       =-\frac{775936}{3}.}
+\end{equation}
+Its summand is $O(x_n^{-2})$.  This is an exact rational elimination
+of the six proved coefficient rows, with the same polynomial
+subtractions as \eqref{qtm:ordinary}.
+
+\subsection{Verification and the remaining question}
+
+The supplementary program reconstructs each finite-cutoff coordinate
+without using \eqref{qtm:Dj}.  It recursively applies Faulhaber's
+polynomial and $A_{k-1}=A_k+k^{-2}$, and expands the convergent
+negative-power tail sums into ordinary multiple zeta values.  A separate
+shuffle/stuffle and duality computation reduces weights through seven.
+It agrees with \eqref{qtm:Dj} for $0\le j\le24$, checks the
+boundary cancellation at 24 indices, and reconstructs the first 20
+centered moments independently.  It also verifies 24 generator
+coefficients, the stated six-coordinate determinant, and the rational
+identity \eqref{qtm:rational} by exact arithmetic.
+
+For a separate numerical diagnostic, the defining finite sums in
+\eqref{qtm:ordinary} were evaluated at 120 decimal working digits and
+supplemented by centered Hurwitz tails.  The two choices
+$(N,J)=(120,36)$ and $(240,54)$ use $N$ direct summands and retain
+$J$ asymptotic coefficients.  For $0\le r\le8$, the largest
+second-cutoff residual against the closed formulas is below
+$3.6\times10^{-90}$.  The data record both cutoffs and the residuals.
+These are numerical diagnostics, not interval certificates; the finite
+summation proof establishes the all-index result.
+
+The quartic case of the stated incoming question is therefore answered.
+For fifth and higher powers, the useful next target is an analogue of
+\eqref{qtm:boundary} that identifies all surviving lower-tail terms
+before constants are taken.  It should determine a fixed coordinate
+space and a generator at each power.  The present quartic theorem
+does not assert that the same six constants suffice for those powers.
+

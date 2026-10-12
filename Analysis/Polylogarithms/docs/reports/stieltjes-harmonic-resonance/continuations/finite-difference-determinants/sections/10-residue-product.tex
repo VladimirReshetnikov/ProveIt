@@ -1,0 +1,88 @@
+\section{Derivation of the Gamma product for the residue}
+\label{app:product}
+
+The following determinant is a classical finite algebraic ingredient of
+the source's Gauss--Vandermonde proof. We include its derivation so the
+normalization in \eqref{eq:residue-product} can be checked independently.
+
+\begin{lemma}[A rational factorial determinant]\label{lem:factorial-det}
+For indeterminates $x_0,\ldots,x_{L-1},t$,
+\begin{equation}\label{eq:factorial-det}
+ \det_{0\le i,j<L}\frac{(x_i)_j}{(x_i+t)_j}
+ =\frac{\displaystyle\prod_{j=0}^{L-1}(t)_j
+             \prod_{0\le i<k<L}(x_k-x_i)}
+        {\displaystyle\prod_{i=0}^{L-1}(x_i+t)_{L-1}}.
+\end{equation}
+It is an identity of rational functions and hence holds wherever the
+specialized expressions are defined, with removable values interpreted
+by cancellation.
+\end{lemma}
+\begin{proof}
+Multiply row $i$ by $(x_i+t)_{L-1}$. Column $j$ becomes the polynomial
+\[
+ p_j(x)=(x)_j(x+t+j)_{L-1-j},
+\]
+of degree at most $L-1$. Its evaluation determinant is the Vandermonde
+in the $x_i$ times the determinant of the polynomial coefficients.
+Evaluate at $x_i=-i$. The matrix is lower triangular, since $(-i)_j=0$
+for $j>i$, and its diagonal is
+$(-1)^ii!(t)_{L-1-i}$. Dividing its determinant by the Vandermonde
+at $0,-1,\ldots,-(L-1)$ leaves $\prod_{j=0}^{L-1}(t)_j$.
+Dividing out the original row factors proves the identity.
+\end{proof}
+
+Set $L=r-1$ and $d=2r-2$. Since the two polynomial bases
+$\fall ni$ and $(n+a)_j$ are monic in their respective degrees,
+Cauchy--Binet gives
+\begin{equation}\label{eq:residue-mixed-moment}
+ V_r(1,a)=\det_{0\le i,j<L}
+ \sum_{n\ge0}\fall ni(n+a)_j
+             \frac{\Gamma(n+a)}{\Gamma(n+a+d+1)}.
+\end{equation}
+Terms $n<i$ vanish. Shift $n=i+k$ and apply Gauss summation
+\cite{dlmf:gauss}. Because $i+j\le2r-4=d-2$, its excess
+$d-i-j$ is positive. The resulting entry is
+\begin{equation}\label{eq:residue-entry}
+ M_{ij}=\frac{\Gamma(i+1)\Gamma(a+i+j)\Gamma(d-i-j)}
+                    {\Gamma(d+1-j)\Gamma(a+d)}.
+\end{equation}
+Factor the row terms $\Gamma(i+1)\Gamma(a+i)\Gamma(d-i)$,
+the column terms $(-1)^j/\Gamma(d+1-j)$, and one factor
+$1/\Gamma(a+d)$ per row. The remaining determinant is
+\[
+ \det_{0\le i,j<L}\frac{(a+i)_j}{(1-d+i)_j}.
+\]
+Apply Lemma~\ref{lem:factorial-det} with
+$x_i=a+i$ and $t=1-d-a$. None of the denominator rising factorials
+vanishes in the required range of indices. Its Vandermonde is
+$\prod_{k=0}^{L-1}k!$. Substitution gives the intermediate product
+\begin{align}
+ V_r(1,a)={}&
+ \frac{\prod_{i=0}^{L-1}\Gamma(i+1)\Gamma(a+i)\Gamma(d-i)}
+      {\Gamma(a+d)^L}
+ \prod_{j=0}^{L-1}\frac{(-1)^j}{\Gamma(d+1-j)}\notag\\
+ &\times
+ \frac{\prod_{j=0}^{L-1}(1-d-a)_j\prod_{k=0}^{L-1}k!}
+      {\prod_{i=0}^{L-1}(1-d+i)_{L-1}}.
+ \label{eq:residue-intermediate}
+\end{align}
+Using
+\[
+ (1-d-a)_j=(-1)^j\frac{\Gamma(a+d)}{\Gamma(a+d-j)},\qquad
+ (1-d+i)_{L-1}=(-1)^{L-1}
+       \frac{\Gamma(d-i)}{\Gamma(d-i-L+1)},
+\]
+and $d-L+1=r$, the signs cancel and
+\eqref{eq:residue-intermediate} becomes
+\[
+ \prod_{j=0}^{r-2}
+ \frac{j!\,\Gamma(a+j)\Gamma(j+1)\Gamma(r-j)}
+       {\Gamma(2r-1-j)\Gamma(a+2r-2-j)}.
+\]
+This proves \eqref{eq:residue-product} for $\Rea a>0$. In particular,
+\[
+ V_2(1,a)=\frac1{2a(a+1)},\qquad
+ V_3(1,a)=\frac1{72a(a+1)^2(a+2)^2(a+3)}.
+\]
+No additional $L!$ is introduced, since the defining ensemble uses
+strictly ordered indices throughout.

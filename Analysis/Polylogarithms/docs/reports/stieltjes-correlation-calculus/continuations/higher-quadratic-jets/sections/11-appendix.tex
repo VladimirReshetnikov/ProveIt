@@ -1,0 +1,97 @@
+\appendix
+\section{Independent Hurwitz expansions used in the verification}
+\label{hqj:sec:appendix}
+
+This appendix gives the separate analytic formulas used for the most
+important numerical comparisons. They are useful identities in their
+own right and make the independence of the implementations inspectable.
+Let
+\[
+R_a(z)=\zeta(z,a)+\zeta(z,1-a),\qquad g=\min(a,1-a).
+\]
+All primes in this appendix mean derivatives of $R_a$ in $z$.
+
+\subsection{The second jet at a negative integer}
+For fixed $m\ge0$ and $0<b<g$, define for $0\le j\le m$
+\[
+h_{mj}=H_m-H_{m-j},\qquad
+h_{mj}^{(2)}=H_m^{(2)}-H_{m-j}^{(2)},\qquad q_j=2j-2m.
+\]
+Differentiating \eqref{hqj:eq:Ebinomial} gives
+\begin{align}
+M_m(a,b)={}&\sum_{j=0}^m\binom mjb^{2j}
+\left\{(h_{mj}^2-h_{mj}^{(2)})R_a(q_j)
+-4h_{mj}R_a'(q_j)+4R_a''(q_j)\right\}
+\notag\\
+&+\sum_{j=m+1}^{\infty}
+\frac{(-1)^{j+m}b^{2j}}{j\binom{j-1}{m}}
+\left\{2(H_{j-m-1}-H_m)R_a(q_j)+4R_a'(q_j)\right\}.
+\label{hqj:eq:appendix-M}
+\end{align}
+For $j\le m$, logarithmic differentiation of $(s)_j$ at $s=-m$
+gives the finite harmonic differences. For $j>m$, separate its simple
+factor $s+m$ and use
+\[
+\frac{(-1)^j(-m+\varepsilon)_j}{j!}
+=\frac{(-1)^{j+m}}{j\binom{j-1}{m}}
+\left\{\varepsilon+(H_{j-m-1}-H_m)\varepsilon^2+O(\varepsilon^3)\right\}.
+\]
+This proves \eqref{hqj:eq:appendix-M}. There are no colliding Hurwitz
+poles at $q_j$, since every $q_j$ is even. Comparing this formula with
+\eqref{hqj:eq:second-all} gives a proved Hurwitz--polylogarithm integral
+identity for every $m$, independent of numerical testing.
+
+\subsection{The two-mass second derivative without using the defect}
+For $0<u,v<g^2$, expand the two quadratic factors independently:
+\begin{equation}\label{hqj:eq:double-Pochhammer}
+\mathcal Z_P(s;a;u,v)=
+\sum_{d=0}^Dp_d\sum_{j,k\ge0}
+\frac{(-1)^{j+k}(s)_j(s)_k}{j!k!}u^jv^k
+R_a(4s+2j+2k-2d).
+\end{equation}
+Normal convergence follows from the geometric factors relative to
+the lattice gap. At $s=0$, all potential Hurwitz arguments are even,
+so no pole correction is required. Collecting by $\ell=j+k$ yields
+\begin{align}
+\mathcal Z_P''(0;a;u,v)
+={}&16\sum_{d=0}^Dp_dR_a''(-2d)
+\notag\\
+&+\sum_{\ell\ge1}(-1)^\ell\sum_{d=0}^Dp_d
+\biggl[\frac{u^\ell+v^\ell}{\ell}
+\left\{2H_{\ell-1}R_a(2\ell-2d)+8R_a'(2\ell-2d)\right\}
+\notag\\[-2pt]
+&\hspace{28mm}+2R_a(2\ell-2d)
+\sum_{j=1}^{\ell-1}\frac{u^jv^{\ell-j}}{j(\ell-j)}\biggr].
+\label{hqj:eq:product-direct}
+\end{align}
+The $j=k=0$ term contributes the first line. Terms with exactly one
+positive index use
+$(s)_\ell/\ell!=s/\ell+H_{\ell-1}s^2/\ell+O(s^3)$;
+terms with both indices positive use their two linear coefficients.
+This proves \eqref{hqj:eq:product-direct} directly from the defining
+product spectrum. The separate code route does not call
+$\mathcal K_P$, the Bessel recurrence, or the product-defect theorem.
+Its agreement with \eqref{hqj:eq:product-second} is therefore a useful
+cross-check of signs and scale normalization.
+
+\section{Selected symbolic and numerical receipts}
+\label{hqj:sec:receipts}
+The delivered receipts include all individual checks. Two sample values
+from the executed factorization and second-jet diagnostics are
+\begin{align*}
+\sum_{n\ge0}\arctan^2\!\left(\frac{0.4}{n+0.7}\right)
+&\approx0.3939890185058070693735654866107854335592,\\
+\Delta_2(1;0.7,0.4)
+&\approx-1.575956074023228277494261946443141734237.
+\end{align*}
+These displayed decimals illustrate the normalization. They are not
+claimed as interval-enclosed values. The actual test files retain
+50-digit working-precision values and scaled errors.
+
+The rational constructions also detect simple implementation errors
+exactly. Replacing $C_1(s)=2s^2$ by $3s^2$ fails the Pochhammer
+coefficient comparison; omitting $B_1(y)=2y$ fails the differentiated
+Bessel equation; omitting the lower-jet term in
+\eqref{hqj:eq:raw-transport} fails the Gamma-normalization relation.
+The final negative controls are intentionally false statements, not
+failed mathematical claims retained as theorems.

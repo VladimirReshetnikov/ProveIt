@@ -1,0 +1,65 @@
+\section{Reproducible artifacts and exact certificates}
+\label{sec:replay}
+
+\subsection{Package layout}
+
+The package contains the modular source \src{article.tex}, the section files, a single-file assembled \src{Universal_Gamma_Normal_Forms.tex}, and the compiled PDF. The mathematical scripts use Python with SymPy and mpmath; the principal coefficient proof replay uses exact rational arithmetic.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.41\linewidth}p{0.52\linewidth}@{}}
+\toprule
+File & Purpose\\
+\midrule
+\src{code/normal_forms.py} & Independent Fraction-based normalizer and primitive generator.\\
+\src{code/universal_coefficients.py} & Positive beta formula for any exponent vector.\\
+\src{code/mixed_coefficients.py} & Specialized four-variable rational coefficients.\\
+\src{code/pde_recurrence.py} & Independent symbolic recurrence from the four-variable Euler equation.\\
+\src{code/check_universal.py} & Every Bell monomial through weight thirty.\\
+\src{code/check_exact.py} & Four-variable, decomposition, kernel, and regression checks.\\
+\src{code/check_applications.py} & Finite harmonic reductions, arithmetic steps, and support counts.\\
+\src{code/check_numeric.py} & High-precision analytic diagnostics.\\
+\src{data/normal_forms_through_18.json} & Full $\Ac_m$, $\Nc_m$, and $\Hc_m$ as rational monomial lists.\\
+\src{data/claim_ledger.json} & Theorem scopes, dependencies, and limitations.\\
+\src{data/provenance.json} & Pinned source paths and observed blob identifiers.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+A monomial is encoded by its exponent vector $(a_0,a_1,\ldots)$ and a rational coefficient string. Trailing zero exponents may be removed. The supplied normalizer verifies
+\[
+ \Ac_m-\Nc_m-D\Hc_m=0
+\]
+as equality of exact dictionaries of monomials. It does not obtain $\Nc_m$ by reading the closed formula it is checking.
+
+\subsection{Replay commands}
+
+From the package root:
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python code/check_universal.py
+python code/check_exact.py
+python code/check_applications.py
+python code/check_numeric.py
+python build.py
+\end{verbatim}
+The scripts resolve their output paths relative to their own location. They do not require the ProveIt repository, network access, a Wolfram kernel, or a proof assistant. The build requires a standard LaTeX installation with pdfLaTeX and the packages declared in the preamble.
+
+\subsection{A coefficient can be checked in isolation}
+
+For example:
+\begin{verbatim}
+from code.universal_coefficients import coefficient
+assert coefficient((0, 0, 1, 2)) == -55
+\end{verbatim}
+For a nonintegral coefficient, use exact rational arithmetic:
+\begin{verbatim}
+from fractions import Fraction
+from code.universal_coefficients import coefficient
+assert coefficient((0, 1, 0, 3)) == Fraction(-3185, 3)
+\end{verbatim}
+The first exponent vector has weight eleven and the second weight fourteen. The general call computes the coefficient from positive beta moments, independently of any precomputed table. Noncanonical and wrong-parity inputs return zero.
+
+\subsection{Scope of the data}
+
+The committed JSON reports record actual replays, including working precision and elapsed runtime. Re-running a numerical diagnostic may change its last digits or timing. The source manifest and SHA-256 checksums identify the files in the delivered package; they do not constitute mathematical proof. PDF compilation and rendered-page inspection are recorded separately from the mathematical checks.

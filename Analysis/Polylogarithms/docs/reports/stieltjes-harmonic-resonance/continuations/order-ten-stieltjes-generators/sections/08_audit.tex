@@ -1,0 +1,93 @@
+\section{Audit findings, corrections, and integration consequences}
+\label{sec:audit}
+
+The source formulas used in the proof were rederived at the interfaces
+where normalization mistakes are most likely: the omitted-binomial
+convention in $M_{a,b}$, the factor two in the Bernoulli coordinates
+$U_j=2B_{2b-2j}$, the retained-column reversal, and the scalar
+multiplier in \eqref{eq:exact-multiplier}.  No mathematical
+contradiction was found in those inherited formulas.  The following
+status and presentation corrections should nevertheless be made when
+this package is integrated.
+
+\subsection{Research-status updates}
+
+\begin{enumerate}[label=\textbf{A\arabic*.}]
+\item The statement that the smaller-order-ten family remains open is
+now obsolete.  It should be replaced by
+\cref{thm:complete-order-ten}: every $M_{5,b}$ with $b\ge6$ is
+nonsingular.
+
+\item The exceptional congruence class
+$b\equiv962\pmod{2048}$ in the preceding $2$-adic theorem was a
+limitation of that congruence, not a candidate zero set.  The new finite
+certificate includes every member of this class below $1920$, beginning
+with $b=962$, and the inherited eventual theorem covers all members at
+or above $1920$.
+
+\item The broad unequal-order conjecture is still open.  Completion of
+$p=10$ must not be described as a proof for all $p<q$.  The next fixed
+smaller order is $p=12$, and the all-order problem requires control
+uniform in $a$.
+\end{enumerate}
+
+\subsection{Certificate wording}
+
+The residue vector is deliberately mixed: for $b<10$ it contains the
+direct source determinant, while for $b\ge10$ it contains the normalized
+five-square determinant.  Calling every entry ``the residue of
+$\det M_{5,b}$'' would be inaccurate.  The exact definition is
+\eqref{eq:proof-residue}; equivalence to source nonvanishing follows
+from the nonzero multiplier.  The JSON metadata and integration notes
+preserve this distinction.
+
+A checksum alone is not a certificate.  The proof objects are the full
+residue vector, the formulas generating each matrix, the denominator
+argument, and the replay programs.  The SHA-256 value only detects
+accidental or silent modification of that data.
+
+\subsection{Analytic normalization}
+
+The ordinary identities require the centered coordinate
+$x_n=n+1/2$.  At this center the subtraction polynomial contains only
+even powers and every such monomial has zero Hurwitz-zeta regularized
+sum because $\zeta(-2j,1/2)=0$.  Replacing $x_n$ by $n+1$ without
+recomputing the asymptotic polynomial would introduce nonzero Bernoulli
+counterterms and invalidate \eqref{eq:ordinary-reconstruction}.
+Likewise, omitting the constant term of $Q_{b,k}$ is not harmless:
+$\zeta(0,1/2)=0$ is exactly what permits that constant to be subtracted
+without changing the regularized value.
+
+\subsection{Novelty and literature scope}
+
+The inspected project already contains extensive work on harmonic-tail
+reconstruction, Stieltjes correlations, and multiple polylogarithms.
+This report claims the following relative contributions only:
+
+\begin{itemize}
+\item the exact completion of the $p=10$ fixed-order family;
+\item the explicit all-coordinate ordinary identities that follow from
+that completion;
+\item the two-tail generator \eqref{eq:two-tail-generator} in the
+normalization used here; and
+\item the pole-subtracted kernel \eqref{eq:K-kernel} and its coefficient
+formula for integer-shift Stieltjes products.
+\end{itemize}
+
+A targeted literature search found the standard multiple-polylogarithm,
+Hurwitz-zeta, Bernoulli, and Stieltjes ingredients, but not these exact
+combined formulas in this normalization.  This is not a comprehensive
+priority search, and no global first-discovery claim is made.  The
+article remains an unrefereed research draft.
+
+\subsection{Recommended manuscript placement}
+
+The determinant theorem belongs immediately after the current
+fixed-order and eventual-rank material.  The ordinary reconstruction
+and polylogarithmic generator can follow the harmonic-tail chapter as a
+new all-coordinate consequence.  The Stieltjes kernel is logically
+independent of the order-ten certificate and may instead be placed in
+the shifted-Stieltjes chapter, with a cross-reference to the tail
+generator from which it is obtained by singular-order regularization.
+The supplied integration fragment and claim ledger use namespaced labels
+to avoid collisions during that editorial split.

@@ -1,0 +1,77 @@
+\section{Generalized harmonic-number identities}
+\label{sec:harmonic}
+
+Let $H_n^{(s)}=\sum_{j=1}^n j^{-s}$ for positive integer $s$, with $H_0^{(s)}=0$. The ordinary harmonic numbers are $H_n=H_n^{(1)}$.
+
+\begin{theorem}[All-order harmonic transform]\label{thm:harmonic}
+For $b\ge0$, $c\ge2$, $s\ge1$, and $|z|<1$,
+\begin{equation}\label{eq:harmonic-transform}
+ \boxed{\displaystyle
+ \sum_{\substack{k\ge0\\k+c\ \mathrm{even}}}
+ r_{b,c}(k)H_k^{(s)}z^k
+ =\frac12\int_0^1K_{b,c}(v)
+ \left\{\frac{\Li_s(zv)}{1-zv}
+       +(-1)^c\frac{\Li_s(-zv)}{1+zv}\right\}\dd v.}
+\end{equation}
+At $z=1$ the integral converges ordinarily and is reducible to a finite combination of $G_{s,a}(1)$ and $G_{s,a}(-1)$ with positive integer $a$. Consequently its value lies in
+$\Q+\Q\log2+\sum_{h=2}^{s}\Q\zeta(h)$.
+\end{theorem}
+
+\begin{proof}
+Absolute summation gives
+\[
+ \sum_{k\ge0}H_k^{(s)}t^k=
+ \sum_{j\ge1}\frac1{j^s}\sum_{k\ge j}t^k
+ =\frac{\Li_s(t)}{1-t}.
+\]
+Insert the polynomial-moment representation \eqref{eq:rho}, then apply the parity projector. For $|z|<1$, the series is locally uniformly absolutely convergent on $0\le v\le1$, which proves \eqref{eq:harmonic-transform}.
+
+At $z=1$, each quotient $K_{b,c}(v)/(1-v)$ and $K_{b,c}(v)/(1+v)$ is a polynomial, because $K_{b,c}$ contains $(1-v^2)^3$. The possible logarithm from $\Li_1(v)$ is integrable even after this cancellation. Dominated convergence applies to the original sum as well, using $r_{b,c}(k)=O(k^{-4})$ and $H_k=O(1+\log k)$. Expand the two polynomial quotients. Each monomial integral is
+\[
+ \int_0^1v^{a-1}\Li_s(\pm v)\dd v=G_{s,a}(\pm1),
+\]
+by absolute convergence of the integrated series. Lemma~\ref{lem:G} and \eqref{eq:G1} complete the finite reduction.
+\end{proof}
+
+The same proof applies at arbitrary highest derivative order after replacing $K_{b,c}$ with the polynomial density from Theorem~\ref{thm:universal}. Its endpoint factor is $(1-v^2)^d$. For $d\ge1$, cancellation of $1\mp v$ still leaves a polynomial and the logarithm is integrable. Thus the method is not restricted to the four-variable sector.
+
+\subsection{Three explicit evaluations}
+
+The mixed coefficient \eqref{eq:r12}, with its constant normalization removed, supplies the simple rational function
+\begin{equation}\label{eq:Rexample}
+ R(k)=\frac1{(k+1)(k+5)(k+7)(k+9)}
+     =\int_0^1v^kP(v)\dd v,
+ \qquad P(v)=\frac{(1-v^2)^3(1+3v^2)}{192}.
+\end{equation}
+Its partial fraction expansion is
+\begin{equation}\label{eq:Rpartial}
+ R(k)=\frac1{192(k+1)}-\frac1{32(k+5)}
+       +\frac1{24(k+7)}-\frac1{64(k+9)}.
+\end{equation}
+Equations~\eqref{eq:Rexample}--\eqref{eq:Rpartial} are independently checkable polynomial identities, and fix every normalization in the following results:
+\begin{align}
+ \sum_{n\ge0}R(2n)&=\frac1{252},\label{eq:sumR}\\
+ \sum_{n\ge0}H_{2n}R(2n)
+   &=\frac{299}{70560}-\frac{\log2}{252},\label{eq:sumHR}\\
+ \sum_{n\ge0}H_{2n}^{(2)}R(2n)
+   &=-\frac{66161}{11113200}
+      +\frac{275\pi^2}{774144}
+      +\frac{67\log2}{13230}.\label{eq:sumH2R}
+\end{align}
+
+For clarity, here is a finite certificate for the two harmonic evaluations. The two polynomial quotients needed in Theorem~\ref{thm:harmonic} are
+\[
+ \frac{P(v)}{2(1-v)}=
+ \frac{(1-v)^2(1+v)^3(1+3v^2)}{384},\qquad
+ \frac{P(v)}{2(1+v)}=
+ \frac{(1+v)^2(1-v)^3(1+3v^2)}{384}.
+\]
+Expand these degree-seven polynomials, multiply each coefficient of $v^{a-1}$ by $G_{s,a}(1)$ or $G_{s,a}(-1)$ respectively, and add. Formula~\eqref{eq:G1} and the alternating version of \eqref{eq:Gs} give \eqref{eq:sumHR} for $s=1$ and \eqref{eq:sumH2R} for $s=2$. The script \src{code/check_applications.py} performs exactly these finite rational reductions; it does not use period recognition. For \eqref{eq:sumR}, the certificate is simply
+\[
+ \int_0^1\frac{P(v)}{1-v^2}\dd v
+ =\frac1{192}\int_0^1(1-v^2)^2(1+3v^2)\dd v=\frac1{252}.
+\]
+
+\subsection{What is new in the harmonic applications}
+
+The transformation of a rational weight into a polynomial integral and the reduction of the last monomial integrals are elementary mechanisms. The contribution here is their systematic source in the completely resolved Gamma normal-form coefficients, together with exact families, explicit values, and replayable certificates. These evaluations are not asserted to be historically unprecedented individual constants. A higher-order harmonic sum does not acquire new transcendence information from the finite formula; for example, this argument says nothing about numerical independence of its zeta coordinates.

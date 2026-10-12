@@ -1,0 +1,592 @@
+\section{Stieltjes collisions at different powers of the small parameter}
+\label{mc:section}
+
+The unequal-rate collision theorem in the latest gap-six report
+\cite[Section~4 and research question~10]{GapSix} assumes
+$a=\lambda\epsilon$ and $b=\mu\epsilon$ with fixed positive rates.
+Its proof explicitly leaves different powers of $\epsilon$ open.
+Here we resolve that question for every pair of positive monomial
+scales and every fixed pair of Stieltjes indices and argument
+derivatives. The additional constants occur at explicitly classified
+rational ratios of the exponents. In particular, the product of the
+two singular parts can now contribute a constant.
+
+The local subtraction argument is a classical asymptotic method;
+related generalized Stieltjes-transform methods appear in
+\cite{TicaGalapon}. The contribution here is the complete resonance
+classification and its evaluated contact formula for this family,
+rather than a claim to invent finite-part asymptotics.
+
+\subsection{A compact identity before the general theorem}
+
+Write $\gamma$ for Euler's constant, and put
+\begin{equation}\label{mc:D}
+ D(a,b)=\frac{\log(b/a)}{b-a}
+       =\int_0^\infty\frac{dx}{(x+a)(x+b)},\qquad a,b>0.
+\end{equation}
+The value at $a=b$ is $1/a$. A derivative in the first argument is
+written $D_a$; explicitly,
+\begin{equation}\label{mc:Da}
+ D_a(a,b)=-\frac1{a(b-a)}+
+                    \frac{\log(b/a)}{(b-a)^2}.
+\end{equation}
+
+\begin{theorem}[A two-scale ordered digamma identity]\label{mc:ordered-limit}
+Fix $\lambda,\mu,\alpha,\beta>0$, and set
+$a=\lambda\epsilon^\alpha$, $b=\mu\epsilon^\beta$.
+Then, as $\epsilon\downarrow0$,
+\begin{equation}\label{mc:ordered-uniform}
+ \boxed{\displaystyle
+ \int_0^1\psi'(x+a)\psi(x+b)\,dx
+ =D_a(a,b)+\frac{\psi(1+b)}a
+                   +\zeta(2)\log\frac ba+o(1).}
+\end{equation}
+Every term on the left is an ordinary convergent integral. The
+subtraction on the right is exact to a remainder tending to zero
+along every indicated monomial path.
+\end{theorem}
+
+\begin{proof}
+Let $h(x)=\psi(1+x)$, so that $\psi(x)=-1/x+h(x)$.
+Expand the product and integrate the term
+$h(x+b)/(x+a)^2$ by parts. The difference between the two sides of
+\eqref{mc:ordered-uniform}, without $o(1)$, is
+\begin{align}\label{mc:ordered-remainder}
+ &-D_a(1+a,1+b)-\frac{h(1+b)}{1+a}
+     +\zeta(2)\log\frac{1+a}{1+b}\notag\\
+ &\quad+\int_0^1\left\{
+       \frac{h'(x+b)-\zeta(2)}{x+a}
+      -\frac{h'(x+a)-\zeta(2)}{x+b}\right\}dx
+      +\int_0^1h'(x+a)h(x+b)\,dx.
+\end{align}
+In the middle integral replace $h'(x+b)$ and $h'(x+a)$ by
+$h'(x)$. The two errors are
+$O(b(1+|\log a|)+a(1+|\log b|))$.
+Since $h'(x)-\zeta(2)=O(x)$, the remaining difference tends to
+zero by dominated convergence. The first, second, and last terms
+in \eqref{mc:ordered-remainder} tend respectively to
+\[
+ \frac12,\qquad \gamma-1,\qquad
+ \frac12\bigl(\psi(2)^2-\psi(1)^2\bigr)=\frac12-\gamma.
+\]
+They cancel. A positive power of $\epsilon$ times any fixed power
+of $|\log\epsilon|$ tends to zero, proving the statement.
+\end{proof}
+
+For a function with a power--logarithm expansion, let
+$\operatorname{CT}_{\epsilon}$ denote the coefficient of
+$\epsilon^0(\log\epsilon)^0$. It does not mean the ordinary limit
+of a divergent integral. Let $\mathbf1_{\mathcal E}$ denote the
+indicator of the stated condition.
+
+\begin{corollary}[An explicit resonance law]\label{mc:ordered-CT}
+Suppose $q=\alpha/\beta>1$, and set $j=2/(q-1)$.
+For $I(\epsilon)$ equal to the integral in
+\eqref{mc:ordered-uniform},
+\begin{align}\label{mc:ordered-constant}
+ \operatorname{CT}_{\epsilon}I
+ ={}&\zeta(2)\log\frac\mu\lambda
+  +\mathbf1_{q\in\mathbb Z_{\ge2}}
+       (-1)^{q+1}\frac{\mu^q}{\lambda}\zeta(q+1)\notag\\
+ &+\mathbf1_{j\in\mathbb Z_{\ge1}}
+       \frac{\lambda^j}{\mu^{j+2}}
+                  \left((j+1)\log\frac\mu\lambda-1\right).
+\end{align}
+A term whose indicator is zero is omitted, including its
+integer-indexed notation. In particular, at $\lambda=\mu=1$,
+\begin{equation}\label{mc:ordered-examples}
+ \operatorname{CT}_{\epsilon}I=
+ \begin{cases}
+  -1-\zeta(3),&q=2,\\
+  -1+\zeta(4),&q=3,\\
+  (-1)^{q+1}\zeta(q+1),&q\in\mathbb Z,\ q\ge4,\\
+  -1,&q=1+2/j,\ j\ge3,\\
+  0,&q\notin\mathbb Z_{\ge2}\ \text{and }2/(q-1)\notin\mathbb Z_{\ge1}.
+ \end{cases}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Use the convergent expansion
+$\psi(1+b)=-\gamma+\sum_{\ell\ge1}(-1)^{\ell+1}
+\zeta(\ell+1)b^\ell$ for $|b|<1$.
+In $\psi(1+b)/a$, exponent zero requires $\ell\beta=\alpha$.
+If $\rho=a/b$, the other singular term has the convergent expansion
+\begin{equation}\label{mc:Da-series}
+ D_a(a,b)=-\frac1{ab}
+ +\frac1{b^2}\sum_{k\ge0}\rho^k
+                   \left((k+1)\log\frac ba-1\right).
+\end{equation}
+Here exponent zero requires $k(\alpha-\beta)=2\beta$.
+Extracting the constant in $\log\epsilon$ proves the result.
+\end{proof}
+
+These are new exact values of specified asymptotic coefficients.
+They also give ordinary renormalized limits by subtracting the
+finitely many divergent powers and logarithms in
+\eqref{mc:Da-series} and the displayed digamma series. For example,
+if $L=\log\epsilon$, the first two cases are
+\begin{align}\label{mc:q2limit}
+ \lim_{\epsilon\downarrow0}\bigg[
+  \int_0^1\psi'(x+\epsilon^2)\psi(x+\epsilon)dx
+   +\epsilon^{-3}+(1+\gamma+L)\epsilon^{-2}\notag\\
+ \hspace{28mm}
+   +(1+2L-\zeta(2))\epsilon^{-1}
+   +(3+\zeta(2))L\bigg]
+ &=-1-\zeta(3),\\[3pt]
+ \lim_{\epsilon\downarrow0}\bigg[
+  \int_0^1\psi'(x+\epsilon^3)\psi(x+\epsilon)dx
+   +\epsilon^{-4}+\gamma\epsilon^{-3}
+   +(1+2L-\zeta(2))\epsilon^{-2}\notag\\
+ \hspace{28mm}
+   +\zeta(3)\epsilon^{-1}
+   +(4+2\zeta(2))L\bigg]
+ &=-1+\zeta(4).
+ \label{mc:q3limit}
+\end{align}
+The convergence is established analytically by the theorem;
+the numerical diagnostics in the package test the signs and
+the independent expansions.
+
+\subsection{Definitions for arbitrary Stieltjes indices}
+
+We fix the standard convention
+\begin{equation}\label{mc:stieltjes}
+ Z(u,x)=\zeta(1+u,x)-\frac1u
+     =\sum_{m\ge0}\frac{(-1)^m}{m!}\gamma_m(x)u^m,
+ \qquad \gamma_0(x)=-\psi(x).
+\end{equation}
+Argument derivatives are indicated by a parenthesized superscript.
+Put
+\begin{equation}\label{mc:notation}
+ \begin{gathered}
+ P_r(u)=(-1)^r(1+u)_r,\qquad
+ A_r(u)=\frac{(1+u)_r}{r!},\\
+ Z_r(u,x)=\partial_x^r Z(u,x),\qquad
+ g_h(u)=\left.\partial_x^h Z(u,x)\right|_{x=1}.
+ \end{gathered}
+\end{equation}
+These are holomorphic near $u=0$. The Hurwitz recurrence
+\cite[\S25.11]{DLMF} gives the exact splitting
+\begin{equation}\label{mc:split}
+       Z_r(u,x)=P_r(u)x^{-r-1-u}+Z_r(u,1+x).
+\end{equation}
+In particular $g_0(u)=\zeta(1+u)-1/u$ and, for $h\ge1$,
+\begin{equation}\label{mc:g-explicit}
+        g_h(u)=(-1)^h(1+u)_h\zeta(1+u+h).
+\end{equation}
+Thus every derivative of $g_h$ is a finite combination of
+ordinary zeta derivatives and generalized harmonic numbers;
+for $h=0$ its coefficients are the ordinary Stieltjes constants.
+
+The reference finite part is
+\begin{equation}\label{mc:FP}
+ F_{m,n}^{r,t}=\operatorname{CT}_{\delta\downarrow0}
+  \int_\delta^1\gamma_m^{(r)}(x)\gamma_n^{(t)}(x)\,dx.
+\end{equation}
+It uses the coordinate $\delta$ exactly as displayed. An explicit
+holomorphic germ $\mathcal F_{r,t}(u,v)$ for these coefficients
+can be defined entirely by an ordinary convergent integral.
+With $R=r+t+1$, set
+\begin{align}\label{mc:FP-remainder}
+ \mathcal R(u,v;x)={}&Z_r(u,x)Z_t(v,x)
+       -P_r(u)P_t(v)x^{-R-1-u-v}\notag\\
+ &-P_r(u)\sum_{k=0}^r\frac{g_{t+k}(v)}{k!}x^{k-r-1-u}
+  -P_t(v)\sum_{k=0}^t\frac{g_{r+k}(u)}{k!}x^{k-t-1-v},\\
+ \mathcal F_{r,t}(u,v)={}&\int_0^1\mathcal R(u,v;x)dx
+  -\frac{P_r(u)P_t(v)}{R+u+v}\notag\\
+ &-P_r(u)\sum_{k=0}^{r-1}\frac{g_{t+k}(v)}{k!(r-k+u)}
+  -P_t(v)\sum_{k=0}^{t-1}\frac{g_{r+k}(u)}{k!(t-k+v)}.
+ \label{mc:FP-germ}
+\end{align}
+Empty sums vanish. Then
+$F_{m,n}^{r,t}=(-1)^{m+n}\partial_u^m\partial_v^n
+\mathcal F_{r,t}(0,0)$.
+The critical powers $x^{-1}\log^h x$ contribute zero to the
+constant on $(0,1)$; this explains their omission from the two
+rational sums in \eqref{mc:FP-germ}. This construction agrees with
+the inherited convention \cite{GapSix,LatticeIncoming}.
+
+For example, those sources give
+\begin{equation}\label{mc:FP-values}
+ \begin{gathered}
+ F_{0,0}^{0,0}=2\gamma_1-2\zeta(2),\quad
+ F_{0,0}^{1,0}=\zeta(2),\quad
+ F_{0,0}^{1,1}=2\zeta(3)+4\zeta'(3),\\
+ F_{1,0}^{0,0}=\tfrac32\gamma_2+2\gamma\zeta(2)-\zeta(3).
+ \end{gathered}
+\end{equation}
+These baseline evaluations are credited to the previous work.
+The new result evaluates every change caused by the different scales.
+
+\subsection{The complete constant formula}
+
+Assume henceforth that $\alpha>\beta>0$ and define
+\begin{equation}\label{mc:scales}
+ a=\lambda\epsilon^\alpha,\quad b=\mu\epsilon^\beta,
+ \quad d=\alpha-\beta,\quad \tau=\lambda/\mu,
+ \quad R=r+t+1.
+\end{equation}
+The opposite ordering follows by exchanging the factors.
+Introduce the finite set
+\begin{equation}\label{mc:resonance-set}
+ \mathscr L_r(\alpha,\beta)
+ =\{(k,\ell):0\le k<r,\ \ell\in\mathbb Z_{\ge1},\
+                      \beta\ell=\alpha(r-k)\}.
+\end{equation}
+It has at most $r$ members, including at rational ratios with
+large numerator or denominator. Define the following removable germ:
+\begin{align}\label{mc:mixed-contact}
+ \mathcal C_{r,t}(u,v;\lambda,\mu;\alpha,\beta)
+ ={}&(-1)^r g_{r+t}(v)
+                  \frac{\lambda^{-u}-A_r(u)}u\notag\\
+ &+(-1)^r\sum_{(k,\ell)\in\mathscr L_r(\alpha,\beta)}
+   \frac{\mu^\ell\lambda^{k-r-u}}{\ell!}
+                 (1+u)_{r-k-1}\,g_{t+k+\ell}(v).
+\end{align}
+The first quotient is removable since $A_r(0)=1$.
+
+There is one possible singular--singular contact. If
+$j=\beta R/d$ is a positive integer, set
+\begin{align}\label{mc:singular-contact}
+ \mathcal H_j(u,v)={}&
+ \frac{(-1)^t\mu^{-R-v}\tau^j}{u\Gamma(1+v)}\notag\\
+ &\quad\times\left\{
+ \frac{\lambda^{-u}\Gamma(R+j+v)}{(1-u)_j}
+ -\frac{\mu^{-u}\Gamma(1-u)\Gamma(R+j+u+v)}{j!}
+                 \right\}.
+\end{align}
+The numerator vanishes identically at $u=0$, so this is a
+holomorphic two-variable germ. Define $\mathcal H_*=\mathcal H_j$
+when $\beta R/d=j\in\mathbb Z_{\ge1}$, and $\mathcal H_*=0$
+otherwise. The quotient must be removed before taking derivatives.
+
+\begin{theorem}[All-index monomial collision constants]\label{mc:main}
+For every $m,n,r,t\in\mathbb Z_{\ge0}$ and all positive parameters
+in \eqref{mc:scales}, the integral
+\[
+ I_{m,n}^{r,t}(\epsilon)
+   =\int_0^1\gamma_m^{(r)}(x+a)
+                   \gamma_n^{(t)}(x+b)\,dx
+\]
+has a power--logarithm asymptotic expansion through its constant.
+Its exact constant is
+\begin{align}\label{mc:main-constant}
+ \boxed{\begin{aligned}
+ \operatorname{CT}_{\epsilon}I_{m,n}^{r,t}
+  =F_{m,n}^{r,t}+(-1)^{m+n}\partial_u^m\partial_v^n
+    \big[&\mathcal C_{r,t}(u,v;\lambda,\mu;\alpha,\beta)\\
+       +&\mathcal C_{t,r}(v,u;\mu,\lambda;\beta,\alpha)
+         +\mathcal H_*(u,v)\big]_{u=v=0}.
+ \end{aligned}}
+\end{align}
+Every correction in this formula is a finite expression in
+logarithms, ordinary zeta values and derivatives, Stieltjes constants
+at one, and generalized harmonic numbers. There is no new
+unevaluated spectral constant in the correction.
+\end{theorem}
+
+There are precisely three possible mechanisms for extra constants:
+\begin{equation}\label{mc:three-mechanisms}
+ \beta\ell=\alpha(r-k),\qquad
+ \alpha\ell=\beta(t-k),\qquad
+ j(\alpha-\beta)=\beta(r+t+1).
+\end{equation}
+The two first equations have the finite ranges specified above;
+the last has at most one admissible integer $j$. If $\alpha/\beta$
+is irrational, all three resonance contributions vanish. Only the
+first, critical quotient in each $\mathcal C$ remains. These are
+selection rules for an asymptotic coefficient, not statements of
+discontinuity of the original positive-shift integral.
+
+\subsection{A two-shift expansion with analytic coefficients retained}
+
+We prove the theorem in two steps. Keeping the analytic coefficients
+at their actual small shifts is the useful replacement for a
+fixed-ratio Taylor truncation. Define
+\begin{equation}\label{mc:kernel}
+ \mathcal B_{r,t}(u,v;a,b)
+  =P_r(u)P_t(v)\int_0^\infty
+             (x+a)^{-r-1-u}(x+b)^{-t-1-v}\,dx.
+\end{equation}
+This is an ordinary absolutely convergent integral for $u,v$ near
+zero. It also has the elementary incomplete-beta representation
+used below.
+
+\begin{lemma}[Uniform germ along monomial paths]\label{mc:uniform-germ}
+For fixed exponents and rates as in \eqref{mc:scales}, locally
+uniformly on some complex neighborhood of $(u,v)=(0,0)$,
+\begin{align}\label{mc:uniform-expansion}
+ &\int_0^1 Z_r(u,x+a)Z_t(v,x+b)dx
+    =\mathcal F_{r,t}(u,v)+\mathcal B_{r,t}(u,v;a,b)\notag\\
+ &\quad+(-1)^r\sum_{k=0}^{r-1}
+     (1+u)_{r-k-1}a^{k-r-u}Z_{t+k}(v,1+b)
+   +(-1)^r g_{r+t}(v)\frac{a^{-u}-A_r(u)}u\notag\\
+ &\quad+(-1)^t\sum_{k=0}^{t-1}
+     (1+v)_{t-k-1}b^{k-t-v}Z_{r+k}(u,1+a)
+   +(-1)^t g_{r+t}(u)\frac{b^{-v}-A_t(v)}v+o(1).
+\end{align}
+All fixed spectral derivatives of the remainder tend to zero.
+\end{lemma}
+
+\begin{proof}
+Use \eqref{mc:split}. The singular--singular product on $(0,1)$
+equals \eqref{mc:kernel} minus its tail on $(1,\infty)$; the latter
+tends uniformly to $P_r(u)P_t(v)/(R+u+v)$.
+For the first mixed product, use Taylor's theorem in $x$ at the
+point $1+b$:
+\[
+ Z_t(v,1+b+x)=\sum_{k=0}^r
+          \frac{Z_{t+k}(v,1+b)}{k!}x^k+O(x^{r+1}).
+\]
+The remainder has a bound uniform for small $b$ and for $v$ in a
+fixed disk. After multiplication by the singular factor it is
+bounded by $Cx^{-\eta}$, with $\eta<1$, independent of the
+relative sizes of $a,b$. Dominated convergence therefore applies.
+For $k<r$ the beta integral gives
+\begin{align*}
+ P_r(u)\int_0^1x^k(x+a)^{-r-1-u}dx
+ ={}&(-1)^rk!(1+u)_{r-k-1}a^{k-r-u}\\
+ &-\frac{P_r(u)}{r-k+u}+o(1).
+\end{align*}
+For $k=r$ its removable version is
+\[
+ P_r(u)\int_0^1x^r(x+a)^{-r-1-u}dx
+   =(-1)^rr!\frac{a^{-u}-A_r(u)}u+o(1).
+\]
+One can first take $\Re u>0$, subtract the tail, and continue;
+the divided difference is uniformly holomorphic near zero.
+Replacing the coefficient of the critical term at $1+b$ by its
+value at one costs $O(b\,a^{-\eta}(1+|\log a|))$ on a small disk.
+Choose $\eta>0$ so small that $\beta-\alpha\eta>0$; the error
+then tends to zero. For the exchanged term also impose
+$\alpha-\beta\eta>0$. The upper endpoints and the remaining
+integrals give exactly \eqref{mc:FP-germ}. This proves local
+uniformity. Cauchy's integral formula on a slightly larger disk
+justifies every prescribed spectral derivative.
+\end{proof}
+
+The Taylor expansion
+\[
+ Z_{t+k}(v,1+b)=\sum_{\ell\ge0}
+                       g_{t+k+\ell}(v)\frac{b^\ell}{\ell!}
+\]
+now shows that a noncritical mixed term has base exponent
+$\alpha(k-r)+\beta\ell$. Taking it far enough to have a positive
+remainder exponent is always a finite task. Exponent zero gives
+$\mathscr L_r(\alpha,\beta)$; the critical quotient contributes
+its constant in $\log\epsilon$ by replacing $a^{-u}$ with
+$\lambda^{-u}$. This proves exactly the two $\mathcal C$ terms.
+
+\subsection{Pairing the singular branches before differentiation}
+
+Put $A=r+1+u$, $B=t+1+v$, $C=A+B-1=R+u+v$ and
+$\rho=a/b$. For $0<a<b$, the substitution
+$y=(x+a)/(x+b)$ gives
+\begin{equation}\label{mc:incomplete-beta}
+ \frac{\mathcal B_{r,t}}{P_r(u)P_t(v)}
+  =(b-a)^{-C}\left\{
+     \frac{\Gamma(1-A)\Gamma(C)}{\Gamma(B)}
+      -\int_0^\rho y^{-A}(1-y)^{C-1}\,dy\right\}.
+\end{equation}
+At generic nonintegral $A$ the last integral is understood by its
+analytic continuation; the original integral in
+\eqref{mc:kernel} fixes the branch and the removable values.
+Expansion of this incomplete beta function, or the usual
+hypergeometric connection formula \cite[\S15.8]{DLMF}, gives
+two normally convergent series for $0<\rho<1$:
+\begin{align}\label{mc:two-branches}
+ \frac{\mathcal B_{r,t}}{P_r(u)P_t(v)}
+ ={}&b^{-C}\frac{\Gamma(1-A)}{\Gamma(B)}
+             \sum_{j\ge0}\frac{\Gamma(C+j)}{j!}\rho^j\notag\\
+ &+a^{1-A}b^{-B}
+      \sum_{k\ge0}(-1)^k(B)_k
+                         \frac{\Gamma(A-1-k)}{\Gamma(A)}\rho^k.
+\end{align}
+The individual series have poles at $u=0$. Their sum is
+holomorphic, and the poles must be paired at equal base exponents.
+
+The $k<r$ terms of the second branch are holomorphic and have
+base exponents
+$-\alpha r-\beta(t+1)+k(\alpha-\beta)<0$.
+For each $j\ge0$, pair the first-branch term indexed by $j$ with
+the second-branch term indexed by $k=r+j$. Their common base
+exponent is
+\begin{equation}\label{mc:paired-exponent}
+                    E_j=-\beta R+j(\alpha-\beta).
+\end{equation}
+After the Gamma reflection and recurrence identities, the paired
+term is $\epsilon^{E_j}\mathcal H_j(u,v;L)$, where $L=\log\epsilon$
+and
+\begin{align}\label{mc:H-log}
+ \mathcal H_j(u,v;L)={}&
+ \frac{(-1)^t\mu^{-R-v}\tau^j\epsilon^{-\beta v}}
+                   {u\Gamma(1+v)}\notag\\
+ &\times\left\{
+ \frac{\lambda^{-u}\epsilon^{-\alpha u}\Gamma(R+j+v)}{(1-u)_j}
+ -\frac{\mu^{-u}\epsilon^{-\beta u}
+              \Gamma(1-u)\Gamma(R+j+u+v)}{j!}\right\}.
+\end{align}
+For each fixed $L$, this is holomorphic in $(u,v)$.
+Its constant in $L$ after any fixed spectral differentiation is
+obtained by setting $L=0$ before differentiating; the result is
+\eqref{mc:singular-contact}.
+
+Choose a finite integer $J$ with $(J+1)(\alpha-\beta)>\beta R$,
+then choose the spectral radius $\eta>0$ small enough that also
+$(J+1)(\alpha-\beta)-\beta R-(\alpha+\beta)\eta>0$.
+On this sufficiently small spectral disk the tail $j>J$ in the
+paired series tends uniformly to zero: the coefficient growth
+is at most polynomial in $j$, while $\rho^j$ is geometric.
+The divided difference in $u$ introduces only a fixed logarithmic
+factor, which can be absorbed by shrinking the spectral disk.
+Thus only $E_j=0$ can contribute a constant, and this is exactly
+the condition defining $\mathcal H_*$. Together with the preceding
+mixed-term analysis this proves Theorem~\ref{mc:main} and also
+provides all divergent terms through a finite truncation of
+\eqref{mc:uniform-expansion} and \eqref{mc:two-branches}.
+
+\subsection{Harmonic and zeta evaluations of the new contacts}
+
+At spectral degree zero, the singular contact is particularly
+simple. With $H_0=0$,
+\begin{equation}\label{mc:H00}
+ \boxed{\displaystyle
+ \mathcal H_j(0,0)=(-1)^t\frac{(R+j-1)!}{j!}
+       \frac{\lambda^j}{\mu^{R+j}}
+             \left(\log\frac\mu\lambda+H_j-H_{R+j-1}\right).}
+\end{equation}
+This follows by differentiating the numerator of
+\eqref{mc:singular-contact} once in $u$.
+The derivative of $\log(1-u)_j^{-1}$ is $H_j$ at zero;
+the derivative of
+$\log\Gamma(1-u)+\log\Gamma(R+j+u)$ is $H_{R+j-1}$.
+Formula \eqref{mc:H00} recovers the second resonance family in
+Corollary~\ref{mc:ordered-CT}.
+
+For arbitrary spectral degrees, the finite Taylor computations use
+\begin{align}\label{mc:harmonic-jets}
+ \log\frac{j!}{(1-u)_j}&=\sum_{h\ge1}\frac{H_j^{(h)}}h u^h,\notag\\
+ \log\Gamma(N+u)-\log\Gamma(N)
+ &=\psi(N)u+
+       \sum_{h\ge2}\frac{(-1)^h}{h}
+                 \bigl(\zeta(h)-H_{N-1}^{(h)}\bigr)u^h.
+\end{align}
+Truncate these convergent expansions at the required degree and
+exponentiate, equivalently using complete Bell polynomials.
+This proves the stated finite constant alphabet constructively.
+
+For completeness, the singular contact can be evaluated without
+leaving even a Gamma derivative in the answer. Put $M=R+j$ and
+$D=m+n+1$, and form two finite polynomials:
+\begin{align}\label{mc:finite-logarithms}
+ Q_D(u,v)={}&-u\log\lambda-v\log\mu
+       +\sum_{h=1}^D\frac{H_j^{(h)}}h u^h
+       +\sum_{h=1}^D\frac{(-1)^{h+1}H_{M-1}^{(h)}}h v^h,
+       \notag\\
+ T_D(u,v)={}&-(u+v)\log\mu
+       +\sum_{h=1}^D\frac{(-1)^{h+1}H_{M-1}^{(h)}}h(u+v)^h
+       \notag\\
+ &+\sum_{h=2}^D\frac{\zeta(h)}h
+          \left[u^h+(-1)^h\bigl((u+v)^h-v^h\bigr)\right].
+\end{align}
+Define the finite exponential polynomial
+$\mathcal E_D(X)=\sum_{k=0}^D X^k/k!$.
+Then the evaluated contact is
+\begin{equation}\label{mc:finite-jet}
+\begin{split}
+ &(-1)^{m+n}\partial_u^m\partial_v^n\mathcal H_j(0,0)\\
+ &\quad=
+ \frac{(-1)^{m+n+t}m!n!(M-1)!}{j!}
+     \frac{\lambda^j}{\mu^M}
+ [u^{m+1}v^n]\left\{\mathcal E_D(Q_D)-\mathcal E_D(T_D)\right\}.
+\end{split}
+\end{equation}
+The notation $[u^av^b]$ extracts a coefficient from an ordinary
+finite polynomial. To prove the formula, divide the two Gamma products
+in \eqref{mc:singular-contact} by their common constant $(M-1)!/j!$.
+Their logarithms, including the amplitude factors, have Taylor
+polynomials $Q_D$ and $T_D$. Euler's constant cancels in each.
+Both polynomials have zero constant term, so terms beyond the $D$th
+power of their exponential cannot affect the requested coefficient.
+Division by the removable $u$ is exactly extraction at $u^{m+1}$.
+This gives a finite expression in harmonic numbers and ordinary zeta
+values at every specified pair of Stieltjes indices. The two mixed
+contacts are obtained just as finitely by multiplying the polynomials
+$(1+u)_k$, the exponential of $-u\log\lambda$, and the zeta jets
+in \eqref{mc:g-explicit}.
+
+There is an especially transparent first-Stieltjes example. Take
+$r=t=0$, so $R=1$. A singular contact occurs exactly when
+$\alpha/\beta=1+1/j$, $j\ge1$. Direct expansion of
+\eqref{mc:singular-contact} yields
+\begin{align}\label{mc:H10}
+ -\partial_u\mathcal H_j(0,0)
+ =\frac{\lambda^j}{\mu^{j+1}}\bigg[&\zeta(2)-H_j^{(2)}\notag\\
+ &+\frac{(H_j-\log\mu)^2-(H_j-\log\lambda)^2}{2}\bigg].
+\end{align}
+Consequently, for $a=\epsilon^{j+1}$ and $b=\epsilon^j$,
+\begin{equation}\label{mc:stieltjes-tail-contact}
+ \boxed{\displaystyle
+ \operatorname{CT}_{\epsilon}\int_0^1
+          \gamma_1(x+\epsilon^{j+1})\gamma_0(x+\epsilon^j)dx
+   =\frac32\gamma_2+2\gamma\zeta(2)-\zeta(3)
+                         +\zeta(2)-H_j^{(2)}.}
+\end{equation}
+The new term is the ordinary trigamma tail
+$\zeta(2)-H_j^{(2)}=\psi'(j+1)$.
+Thus all positive integer trigamma tails appear as exact
+Stieltjes collision contacts.
+
+This family also has a classical polylogarithmic generator:
+for $|z|<1$,
+\begin{equation}\label{mc:polylog-generator}
+ \sum_{j\ge1}\bigl(\zeta(2)-H_j^{(2)}\bigr)z^j
+       =\frac{\zeta(2)z-\operatorname{Li}_2(z)}{1-z}.
+\end{equation}
+Its ordinary primitive can be normalized at zero using
+\begin{equation}\label{mc:polylog-primitive}
+ \int_0^z\frac1t
+       \sum_{j\ge1}\bigl(\zeta(2)-H_j^{(2)}\bigr)t^jdt
+   =2\operatorname{Li}_{2,1}(z)-\operatorname{Li}_3(z)
+      +(\operatorname{Li}_2(z)-\zeta(2))\log(1-z).
+\end{equation}
+Here $\operatorname{Li}_{2,1}(z)=
+\sum_{n>k\ge1}z^n/(n^2k)$, on its analytic branch at zero.
+The generating identity is an elementary interchange of absolutely
+convergent sums. The primitive identity is checked by differentiation
+using $\frac{d}{dz}\operatorname{Li}_{2,1}(z)
+=\operatorname{Li}_{1,1}(z)/z=\log^2(1-z)/(2z)$ together with
+the corresponding product derivatives; an independent quadrature check
+is recorded with the computational artifacts. In fact classical
+polylogarithms suffice: for $0<z<1$, the same primitive equals
+\begin{equation}\label{mc:classical-primitive}
+ 2\zeta(3)-\operatorname{Li}_3(z)-2\operatorname{Li}_3(1-z)
+                +\log(1-z)\operatorname{Li}_2(1-z).
+\end{equation}
+To verify this expression directly, differentiate and use Euler's
+dilogarithm reflection identity; its limit at zero is zero. At
+$z=1$ it gives the endpoint identity
+$\sum_{j\ge1}(\zeta(2)-H_j^{(2)})/j=\zeta(3)$.
+The elementary generating and primitive identities are classical
+Euler-sum consequences; their role here is to evaluate the newly
+identified contact family, not to claim those consequences as
+independently new polylogarithm identities.
+
+\subsection{What the different-scale theorem changes}
+
+The fixed-rate source remains correct with its stated hypotheses.
+It must not be extrapolated by substituting an
+$\epsilon$-dependent rate in a remainder proved only for fixed rates.
+Two changes are essential: high Taylor coefficients at one can
+survive when $b^\ell/a^{r-k}$ has exponent zero, and the two
+singular Frobenius branches can jointly have exponent zero.
+Both effects are present in \eqref{mc:ordered-examples}; the
+first-index law \eqref{mc:stieltjes-tail-contact} isolates the
+second effect without argument derivatives.
+
+The theorem does not assert uniformity as the exponent ratio
+approaches a resonance while $\epsilon$ also varies. In that
+transition, a factor $\epsilon^{E_j}$ must be retained rather than
+replaced by its constant coefficient. Formula \eqref{mc:H-log}
+provides the exact local term for such a further analysis.

@@ -1,0 +1,3221 @@
+\documentclass[11pt]{article}
+% BEGIN preamble.tex
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,bm}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage{xcolor}
+\definecolor{navy}{HTML}{173B57}
+\definecolor{teal}{HTML}{076C78}
+\usepackage[colorlinks=true,linkcolor=navy,citecolor=teal,urlcolor=teal,breaklinks=true]{hyperref}
+\usepackage{bookmark}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\itshape Bilinear tails and harmonic determinants}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}{Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\FP}{\operatorname{FP}}
+\newcommand{\CT}{\operatorname{CT}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\Ima}{\operatorname{Im}}
+\newcommand{\Real}{\operatorname{Re}}
+\newcommand{\Imag}{\operatorname{Im}}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\ee}{\boldsymbol e}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+
+% END preamble.tex
+
+\hypersetup{
+ pdftitle={Bilinear Alternating Tails and Harmonic Determinants},
+ pdfauthor={Research continuation prepared for Vladimir Reshetnikov},
+ pdfsubject={Exact special-function identities, cutoff jets, and reconstruction}}
+\begin{document}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{8mm}
+{\large\color{teal}\sffamily PROVEIT\quad RESEARCH CONTINUATION\par}
+\vspace{14mm}
+{\Huge\bfseries\color{navy}Bilinear Alternating Tails\par
+\vspace{3mm}and Harmonic Determinants\par}
+\vspace{8mm}
+{\Large Rational certificates, Gamma identities, cutoff jets,\par
+\vspace{2mm}and complete order-ten reconstruction\par}
+\vspace{10mm}
+{\large Prepared for Vladimir Reshetnikov\par}
+\vspace{2mm}
+{11 October 2026\par}
+\vspace{11mm}
+{\color{teal}\hrule height .8pt}
+\vspace{7mm}
+\noindent\textbf{Abstract.}
+We develop exact identities from alternating Hurwitz tails and finite
+rational moment determinants. A classical Gamma quotient gives two
+bilinear endpoint laws with independent complex orders and shifts,
+all mixed generalized-Stieltjes derivatives, and anchored primitives
+expressed solely through Gamma ratios. We classify the rational
+two-adjacent-product certificates by an integer-orbit divisor condition
+and obtain explicit two-variable polygamma kernels. For the diagonal
+square law we calculate every nonpositive-order cutoff contact and
+every spectral jet, including the precise change under translating
+the cutoff. For real rational weights, we prove that total formal
+harmonic degree equals the generic coefficient-pencil rank, with only
+finitely many deficient numerical cutoffs. A positive finite-difference
+family realizes every rank at the same critical decay and has an exact
+hierarchy of spectral poles with Gamma-product leading coefficients. A critical two-particle
+cutoff has a depth-two polylogarithm generator, an explicit Euler
+primitive, and an ordinary-zeta integral endpoint. Finally, an exact polynomial congruence completes all smaller-order-ten
+harmonic-tail reconstructions and supplies an ordinary convergent
+polygamma identity family. A cyclotomic audit identifies a previously
+proved coefficient that should be removed from an open-test list.
+Proofs, exact computational certificates, independent diagnostics,
+source attribution, and further research targets are supplied.
+\vfill
+\noindent\small
+\textbf{Inspected repository revision}\par
+\texttt{da2792fc9cc8ef19c6a314be6c65e1437fbdc66b}\par
+\vspace{3mm}
+\textbf{Research status}\par
+New results are distinguished from inherited inputs and open questions.
+The order-ten argument includes an exact finite computer-assisted
+certificate. No arithmetic-independence or exhaustive priority claim
+is made.
+\end{titlepage}
+
+\tableofcontents
+\clearpage
+% BEGIN sections/01_scope.tex
+\section{Scope, principal results, and provenance}
+\label{scope:sec}
+
+This article continues the polylogarithm and special-function programme
+in ProveIt at repository revision
+\texttt{da2792fc9cc8ef19c6a314be6c65e1437fbdc66b}, with particular attention
+to the unified manuscript and the five research packages then present
+in \path{docs/incoming}. The principal outcomes are exact identities
+and structural nonvanishing theorems. Bounds enter only as tools for
+one reconstruction proof.
+
+The work has two related starting points. An alternating tail satisfies
+a first-order inhomogeneous recurrence; a Gamma quotient converts it
+to a homogeneous second-order recurrence with useful bilinear endpoint
+identities. A finite sum of rational moments has an affine harmonic
+matrix pencil; compressing onto a maximal-rank kernel determines its
+highest formal harmonic degree. In each case the finite object is
+established first. Infinite sums, derivatives, primitives, and Laurent
+coefficients follow with the relevant limiting operation stated.
+
+\subsection{Principal results}
+
+\begin{enumerate}[leftmargin=*]
+\item \textbf{Independent alternating tails.}
+For independently varying complex orders and shifts, a classical Gamma
+quotient produces both symmetric and alternating bilinear endpoint
+laws (Theorem~\ref{bil:master}). Every independent mixed spectral
+derivative at order one has an explicit formula in generalized
+Stieltjes constants (Theorem~\ref{bil:stieltjes-all}). Anchored
+integration produces a pure Gamma identity, including
+\[
+ \sum_{n=1}^{\infty}
+ \frac{[h(n+2)-h(n+1)]^2}{h(n+1)h(n+2)}
+       =3-\frac\pi2-\frac4\pi,
+ \qquad h(z)=\sqrt2\,\frac{\Gamma((z+1)/2)}{\Gamma(z/2)}.
+\]
+\item \textbf{A complete rational certificate classification.}
+Within the two-adjacent-product ansatz, the exact condition is
+$P(x)/Q(x)=cS(x)S(x-1)$ with rational $S$ and outer color $\pm1$
+(Theorem~\ref{rat:classification}). Its divisor criterion gives
+obstructions as well as constructive certificates. A pair of adjacent
+quadratics yields explicit two-variable polygamma kernels.
+\item \textbf{Every negative-order cutoff jet.}
+The square-law endpoint has an even inverse-power expansion. Its
+coefficient $c_m(s)$ determines every contact at $s=-m$, including
+all spectral derivatives, and gives an exact translation rule for a
+different cutoff coordinate (Theorem~\ref{cut:contacts} and
+Corollary~\ref{cut:translation}). For the natural cutoff, odd contacts
+vanish; at even $m$, the derivative threshold $r>m$ is sharp.
+\item \textbf{Harmonic degree equals pencil rank for real rational weights.}
+The total formal degree is the generic rank over the rational cutoff
+field. Only finitely many numerical cutoffs can be deficient, and a
+precise kernel-compression test finds them
+(Theorem~\ref{deg:main} and Corollary~\ref{deg:rational}). A signed
+example shows why fixed-cutoff and generic claims differ.
+\item \textbf{Every rank at the same critical decay.}
+A shorter finite-difference stencil realizes every harmonic rank
+$\rho=1,\ldots,r$ with decay $n^{-(2r-1)}$. Its spectral continuation
+has exact poles of orders $\rho,\rho-1,\ldots,1$ at $1,2,\ldots,\rho$,
+with explicit leading Laurent coefficients. The highest-order pole
+has a Gamma-product coefficient
+(Theorems~\ref{hier:rank} and \ref{hier:poles}). Its two-particle
+cutoff has a short depth-two polylogarithm generator, an explicit
+Euler primitive, and an ordinary-zeta integral endpoint
+(Section~\ref{hier:gf-section}).
+\item \textbf{Completion of all smaller-order-ten reconstructions.}
+For every even $q>10$, the first $q$ centered even moments of the
+$(10,q)$ harmonic-tail product have full formal rank $q$
+(Theorem~\ref{ten:main}). A new coefficientwise Bernoulli congruence
+closes the exact gap between two preceding reports. The resulting
+ordinary convergent polygamma identities are given in
+Corollary~\ref{ten:identity}.
+\end{enumerate}
+
+A separate audit establishes that the first complementary cyclotomic
+test coefficient already follows from two proved manuscript formulas
+(Proposition~\ref{audit:coefficient}). This is a correction to its
+research status and cross-references, with credit retained by the
+original reductions.
+
+\subsection{What changes in the existing question list}
+
+\begingroup\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.26\textwidth}>{\raggedright\arraybackslash}p{.43\textwidth}>{\raggedright\arraybackslash}p{.25\textwidth}@{}}
+\toprule
+Source question & Exact outcome here & Scope that remains \\
+\midrule
+\endfirsthead
+\toprule Source question & Exact outcome here & Scope that remains \\
+\midrule\endhead
+Alternating-tail report, Question 1 & The order-ten exceptional
+progression is eliminated; the order-eight completion is inherited
+from the quartic report. & All smaller orders at most ten are now
+covered; larger smaller orders remain. \\
+\addlinespace
+Same report, Question 4 & Necessary and sufficient rational
+factorization for both adjacent products; independent quadratic
+kernels. & Certificates in larger classes and with more products. \\
+\addlinespace
+Same report, Question 5 & Entire endpoint continuation, normally
+convergent subtractions, all nonpositive-order contacts and their jets. &
+Multivariable contacts beyond the diagonal square law. \\
+\addlinespace
+Same report, Question 6 & Independently ordered and shifted
+\emph{alternating} tails, with weights supplied by the Gamma
+normalization. & The question's ordinary Hurwitz product, arbitrary
+outer order, and its full moving-pole catalogue remain open. \\
+\addlinespace
+Same report, Question 7 & Its first displayed coefficient is already
+determined by manuscript identities; the implication is written out. &
+The complete complementary two-resolvent generator. \\
+\addlinespace
+Finite-difference report, second research topic & Equality of degree
+and rank for every real rational weight over $\R(N)$, with a precise
+fixed-cutoff test. & Arbitrary complex weights and minimal depth
+under functional relations. \\
+\addlinespace
+Finite-difference spectral family & All critical ranks, exact pole
+orders, and highest Laurent coefficients for shorter stencils. &
+General Gauss-ensemble overlapping resonances and unrestricted
+higher-rank pencil classification. \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+The source-question wording matters. In particular, a Gamma-weighted
+alternating identity is substantial progress on independent parameters,
+but it does not evaluate every independently weighted ordinary Hurwitz
+product. Likewise the rank theorem concerns formal harmonic coordinates,
+not arithmetic independence of the resulting numbers.
+
+\subsection{Classical input and the limits of the novelty claim}
+
+Alternating Hurwitz recurrences, their Stieltjes expansions, and the
+associated Gamma quotient are classical ingredients
+\cite{bil:HuKim,bil:WangHuKim}. The alternating-Hurwitz asymptotic
+expansions and their spectral derivatives are already treated by
+Hu--Kim \cite{HuKimAsymptotic}; the present contact theorem applies them
+to a specific quadratic endpoint and computes the resulting finite-part
+discrepancy. Products of zeta tails also have substantial prior
+literature, including Hoffman \cite{bil:Hoffman}. Rational difference
+equations and their rational solution algorithms long predate the
+specialized divisor calculation used here \cite{rat:Abramov}.
+
+The determinant work starts from the finite-difference report's rational
+harmonic decomposition and its rank upper bound \cite{FiniteDifferenceIncoming}.
+The order-ten proof reuses the fixed-size Bernoulli determinant and
+the real-variable domination method with explicit credit
+\cite{GeneralHankel,AlternatingIncoming,QuarticIncoming}. Its new
+congruence, the complete coverage argument, and the resulting uniform
+reconstruction statement are separated from those reused ingredients.
+
+Thus ``new'' in this article means a proved development absent from
+the inspected project corpus and not located in the targeted primary
+literature search. It is not a claim that an exhaustive priority search
+has excluded every previously published specialization. The proofs are
+the basis for the mathematical claims. Numerical agreement is used only
+to detect mistakes. No integer-relation fit is promoted to a theorem.
+
+\subsection{Conventions and the rational harmonic decomposition}
+
+The Hurwitz zeta function and generalized Stieltjes constants use
+\[
+ \zeta(1+u,a)=\frac1u+
+       \sum_{j\ge0}\frac{(-1)^j\gamma_j(a)}{j!}u^j,
+ \qquad \gamma_0(a)=-\psi(a).
+\]
+All Gamma logarithms and complex powers in right half-planes use the
+holomorphic branches real on the positive axis. Shift derivatives and
+spectral derivatives are distinguished. An empty determinant or product
+is one. Ordinary harmonic numbers are
+$H_n^{(s)}=\sum_{k=1}^{n}k^{-s}$, with $H_0^{(s)}=0$; shifted
+cutoff sums are $H_N^{(q)}(a)=\sum_{n=0}^{N}(n+a)^{-q}$.
+
+For clarity, here is the elementary decomposition behind the later
+degree theorem. Given a rational weight $R$ without poles on the
+nonnegative integers, expand each $x^kR(x)$, $0\le k\le2r-2$, into
+its polynomial part and principal parts. Polynomial sums are rational
+in $N$ by Faulhaber's formula. Group the pole shifts modulo integer
+translation and choose one representative $a_\nu$ per orbit. A shifted
+principal-part sum differs from $H_N^{(q)}(a_\nu)$ by finitely many
+lower and upper endpoint terms, all rational in $N$. It follows exactly
+that
+\begin{equation}\label{scope:harmonic-decomposition}
+ \left(\sum_{n=0}^{N}n^{i+j}R(n)\right)_{0\le i,j<r}
+ =D_N+\sum_{\nu,q}H_N^{(q)}(a_\nu)C_{\nu,q},
+\end{equation}
+where $D_N$ is rational in $N$ and the symmetric matrices
+$C_{\nu,q}$ do not depend on $N$. For a real rational weight,
+conjugate coordinates may be replaced by real and imaginary parts.
+Replacing these harmonic coordinates by independent indeterminates
+defines the formal pencil and its degree. This replacement is a
+bookkeeping construction; no algebraic-independence assertion is
+needed or made.
+
+For infinite expressions, ``finite part'' always has a displayed
+meaning: either a Laurent coefficient in a spectral variable or the
+constant term in powers and logarithms of a specified cutoff.
+Different prescriptions are compared through their explicit endpoint
+contacts, rather than silently identified.
+
+% END sections/01_scope.tex
+
+% BEGIN sections/02_bilinear_gamma.tex
+% Integration-ready research section; labels bil:*; bibliography keys below.
+\section{A Gamma normalization for independently shifted Hurwitz tails}
+\label{bil:section}
+
+The diagonal square law in the preceding report leaves open what happens
+when both tail orders and both shifts vary independently. A normalization
+by an elementary Gamma quotient gives a finite endpoint formula in all
+four variables. The resulting weight is determined by the two orders;
+an arbitrary additional outer power is not being evaluated here.
+
+\subsection{The normalization and its difference equation}
+
+For $\Re z>0$ write
+\begin{align}
+ \mathcal B_s(z)
+ &=2^{-s}\left\{\zeta\left(s,\frac z2\right)
+                    -\zeta\left(s,\frac{z+1}{2}\right)\right\},
+                    \label{bil:alternating-hurwitz}\\
+ \ell(z)&=\frac12\log2+\log\Gamma\left(\frac{z+1}{2}\right)
+                     -\log\Gamma\left(\frac z2\right),\qquad
+ h(z)=e^{\ell(z)}.\label{bil:h}
+\end{align}
+The difference in \eqref{bil:alternating-hurwitz} has its removable
+value at $s=1$ and is entire in $s$. All logarithms of Gamma in
+\eqref{bil:h} are the holomorphic branches on the right half-plane that
+are real on the positive axis. Powers of $h$ mean $e^{s\ell}$.
+The elementary recurrences give
+\begin{equation}\label{bil:basic-recurrences}
+ \mathcal B_s(z)+\mathcal B_s(z+1)=z^{-s},\qquad
+ \ell(z)+\ell(z+1)=\log z,\qquad h(z)h(z+1)=z.
+\end{equation}
+The alternating Hurwitz recurrence and its order derivatives are
+classical; see Hu--Kim \cite{bil:HuKim}. The quotient $h$ is also
+classical: in the notation of Wang--Hu--Kim \cite{bil:WangHuKim},
+$h(z)=\sqrt{\pi/2}/\widetilde\Gamma(z)$.
+
+Set
+\begin{equation}\label{bil:tau-v}
+ \tau_s(z)=h(z)^s\mathcal B_s(z),\qquad
+ V_s(z)=\frac{z^s-(z-1)^s}{h(z)^{2s}}\quad(\Re z>1).
+\end{equation}
+Neither $h$ nor this rewriting of $\mathcal B_s$ is asserted to be a
+new special function. Their useful feature is the homogeneous equation
+\begin{equation}\label{bil:homogeneous}
+ \boxed{\tau_s(z-1)-\tau_s(z+1)=V_s(z)\tau_s(z).}
+\end{equation}
+Indeed, multiplication of the two adjacent recurrences for
+$\mathcal B_s$ by the appropriate powers of $h$ gives
+\[
+ \tau_s(z\pm1)=h(z)^{-s}
+                  -\left(\frac{h(z\pm1)}{h(z)}\right)^s\tau_s(z).
+\]
+Subtracting and using \eqref{bil:basic-recurrences} proves
+\eqref{bil:homogeneous}.
+
+\subsection{Two exact bilinear endpoint laws}
+
+\begin{theorem}[Independent orders and shifts]\label{bil:master}
+Let $\Re a,\Re b>0$. For $p,q\in\mathbb C$ put
+\[
+ u_n=\tau_p(n+a+1),\qquad v_n=\tau_q(n+b+1),\qquad
+ C_n=u_nv_{n+1}+u_{n+1}v_n,\quad
+ D_n=u_nv_{n+1}-u_{n+1}v_n.
+\]
+These definitions include $n=-1$. For every integer $N\ge0$,
+\begin{align}
+ &\sum_{n=0}^{N}
+ \{V_p(n+a+1)+V_q(n+b+1)\}u_nv_n
+       =C_{-1}-C_N,\label{bil:finite-plus}\\
+ &\sum_{n=0}^{N}(-1)^n
+ \{V_p(n+a+1)-V_q(n+b+1)\}u_nv_n
+       =D_{-1}+(-1)^ND_N.\label{bil:finite-minus}
+\end{align}
+If $\Re(p+q)>0$, both series converge absolutely and locally normally,
+and hence
+\begin{align}
+ &\sum_{n\ge0}\{V_p(n+a+1)+V_q(n+b+1)\}u_nv_n\notag\\
+ &\hspace{8mm}=\tau_p(a)\tau_q(b+1)+\tau_p(a+1)\tau_q(b),
+                                      \label{bil:plus}\\
+ &\sum_{n\ge0}(-1)^n\{V_p(n+a+1)-V_q(n+b+1)\}u_nv_n\notag\\
+ &\hspace{8mm}=\tau_p(a)\tau_q(b+1)-\tau_p(a+1)\tau_q(b).
+                                      \label{bil:minus}
+\end{align}
+All fixed mixed derivatives in $p,q,a,b$ may be taken term by term
+in this domain. The second equality also holds as an ordinary,
+possibly conditional, series on $\Re(p+q)>-2$.
+\end{theorem}
+
+\begin{proof}
+The homogeneous equation yields
+\[
+ C_{n-1}-C_n=\{V_p(n+a+1)+V_q(n+b+1)\}u_nv_n,
+\]
+and
+\[
+ D_{n-1}+D_n=\{V_p(n+a+1)-V_q(n+b+1)\}u_nv_n.
+\]
+The first identity telescopes. Multiplying the second by $(-1)^n$
+also telescopes, since consecutive signs are opposite. This proves
+both finite identities, including their lower signs.
+
+The standard Hurwitz expansion and the Gamma quotient expansion give,
+uniformly on compact sets of orders and shifts,
+\begin{align}
+ \mathcal B_s(z)&=\frac12z^{-s}
+                       \left(1+\frac{s}{2z}+O(z^{-2})\right),\notag\\
+ h(z)&=z^{1/2}\left(1-\frac1{4z}+O(z^{-2})\right),\notag\\
+ \tau_s(z)&=\frac12z^{-s/2}
+                       \left(1+\frac{s}{4z}+O(z^{-2})\right),
+                         \label{bil:asymptotics}\\
+ V_s(z)&=\frac{s}{z}+O(z^{-2}).\notag
+\end{align}
+These expansions hold for arbitrary bounded complex $s$, with
+sufficiently many terms in the Hurwitz expansion when needed. Thus
+the summands in \eqref{bil:plus} and \eqref{bil:minus} are
+$O(n^{-1-\Re(p+q)/2})$, locally uniformly, and
+$C_N=O(N^{-\Re(p+q)/2})$. The leading terms cancel in $D_N$, giving
+$D_N=O(N^{-1-\Re(p+q)/2})$. This proves absolute normal convergence
+and the endpoint limits when $\Re(p+q)>0$. Cauchy's formula gives
+the derivative assertion. Finally the finite identity
+\eqref{bil:finite-minus} itself proves ordinary convergence on
+$\Re(p+q)>-2$, since its remaining endpoint tends to zero there.
+\end{proof}
+
+The Hurwitz and Gamma expansions invoked here are classical
+\cite{bil:DLMF}; the contribution is the bilinear finite endpoint
+calculus built from them. On setting $p=q=s$ and $a=b$, division
+of \eqref{bil:plus} by two gives precisely
+\[
+ \sum_{n\ge0}\{(n+a+1)^s-(n+a)^s\}\mathcal B_s(n+a+1)^2
+ =\mathcal B_s(a+1)-a^s\mathcal B_s(a+1)^2.
+\]
+Thus the earlier square law is a diagonal specialization of this
+four-variable family.
+
+\begin{corollary}[The first boundary contact]\label{bil:contact}
+For $p+q=0$, the ordinary symmetric series in
+\eqref{bil:finite-plus} converges absolutely and satisfies
+\begin{align}
+ &\sum_{n\ge0}\{V_p(n+a+1)+V_{-p}(n+b+1)\}
+           \tau_p(n+a+1)\tau_{-p}(n+b+1)\notag\\
+ &=\tau_p(a)\tau_{-p}(b+1)
+        +\tau_p(a+1)\tau_{-p}(b)-\frac12.\label{bil:contact-half}
+\end{align}
+\end{corollary}
+\begin{proof}
+The $n^{-1}$ terms in the sum of the two $V$'s cancel, so the
+summand is $O(n^{-2})$. Equation \eqref{bil:asymptotics} gives
+$C_N\to1/2$. Now pass to the limit in \eqref{bil:finite-plus}.
+\end{proof}
+In particular the ordinary boundary value differs by $1/2$ from the
+analytic endpoint continuation from $\Re(p+q)>0$. On the diagonal,
+the division by two explains the earlier $1/4$ contact. The present
+statement does not confuse those two notions of value.
+
+\subsection{All independent Stieltjes orders}
+
+Use the convention
+\[
+ \zeta(1+t,z)=\frac1t+
+       \sum_{j\ge0}\frac{(-1)^j\gamma_j(z)}{j!}t^j.
+\]
+For $r\ge0$ define the following explicit finite expressions:
+\begin{align}
+ T_r(z)&=\frac{h(z)}2
+  \sum_{j=0}^{r}\binom rj
+  (\ell(z)-\log2)^{r-j}(-1)^j
+  \left\{\gamma_j\left(\frac z2\right)
+         -\gamma_j\left(\frac{z+1}{2}\right)\right\},
+                                        \label{bil:T-jet}\\
+ J_r(z)&=\frac1{h(z)^2}
+  \left\{z(\log z-2\ell(z))^r
+      -(z-1)(\log(z-1)-2\ell(z))^r\right\}.
+                                        \label{bil:J-jet}
+\end{align}
+Here $\Re z>0$ suffices in \eqref{bil:T-jet}, and $\Re z>1$ is
+used in \eqref{bil:J-jet}. Direct coefficient extraction gives
+\[
+ T_r(z)=\left.\partial_s^r\tau_s(z)\right|_{s=1},\qquad
+ J_r(z)=\left.\partial_s^r V_s(z)\right|_{s=1}.
+\]
+For example $T_0(z)=h(z)\mathcal B_1(z)$ and $J_0(z)=h(z)^{-2}$.
+
+\begin{theorem}[Every independent mixed Stieltjes jet]
+\label{bil:stieltjes-all}
+For $r,s\ge0$ and $\Re a,\Re b>0$, write $z_n=n+a+1$ and
+$w_n=n+b+1$. Put
+\begin{align*}
+ X_{r,s}(z,w)&=\sum_{j=0}^{r}\binom rj
+                         J_j(z)T_{r-j}(z)T_s(w),\\
+ Y_{r,s}(z,w)&=\sum_{k=0}^{s}\binom sk
+                         T_r(z)J_k(w)T_{s-k}(w).
+\end{align*}
+Then the following are ordinary absolutely convergent identities:
+\begin{align}
+ \sum_{n\ge0}\{X_{r,s}(z_n,w_n)+Y_{r,s}(z_n,w_n)\}
+ &=T_r(a)T_s(b+1)+T_r(a+1)T_s(b),\label{bil:jets-plus}\\
+ \sum_{n\ge0}(-1)^n\{X_{r,s}(z_n,w_n)-Y_{r,s}(z_n,w_n)\}
+ &=T_r(a)T_s(b+1)-T_r(a+1)T_s(b).\label{bil:jets-minus}
+\end{align}
+\end{theorem}
+\begin{proof}
+Apply $\partial_p^r\partial_q^s$ to \eqref{bil:plus} and
+\eqref{bil:minus} at $(p,q)=(1,1)$. The product rule gives the two
+finite binomial sums exactly. Each individual scalar summand in these
+sums is $O(n^{-2}\log^{r+s}(n+2))$, so no regularization or
+cancellation between divergent scalar series is implicit.
+\end{proof}
+
+For the first mixed jet, $r=s=1$, the symmetric summand is explicitly
+\[
+ \{J_0(z)+J_0(w)\}T_1(z)T_1(w)
+ +J_1(z)T_0(z)T_1(w)+J_1(w)T_1(z)T_0(w).
+\]
+Its sum is $T_1(a)T_1(b+1)+T_1(a+1)T_1(b)$. Thus independent
+first Stieltjes coefficients at different shifts already occur in
+an exact finite endpoint identity, and \eqref{bil:jets-plus}--
+\eqref{bil:jets-minus} give every higher pair without an inference
+from a single diagonal derivative.
+
+\subsection{Anchored primitives and a pure Gamma square identity}
+
+Differentiating \eqref{bil:h} shows
+\begin{equation}\label{bil:h-derivative}
+ \ell'(z)=\mathcal B_1(z),\qquad \tau_1(z)=h'(z).
+\end{equation}
+Hence the $(p,q)=(1,1)$ laws have elementary primitives in the Gamma
+quotient itself. Let $A=[a_0,a_1]$ and $B=[b_0,b_1]$ be oriented
+real intervals with positive endpoints, and define
+\[
+ U_A(t)=h(t+a_1)-h(t+a_0),\qquad
+ R_A(t)=\frac1{h(t+a_0)}-\frac1{h(t+a_1)},
+\]
+with analogous notation for $B$. Double integration of
+\eqref{bil:plus} and \eqref{bil:minus}, using
+$\int h'/h^2=-1/h$, gives
+\begin{align}
+ \sum_{n\ge1}\{R_A(n)U_B(n)+U_A(n)R_B(n)\}
+ &=U_A(0)U_B(1)+U_A(1)U_B(0),\label{bil:primitive-plus}\\
+ \sum_{n\ge1}(-1)^{n-1}\{R_A(n)U_B(n)-U_A(n)R_B(n)\}
+ &=U_A(0)U_B(1)-U_A(1)U_B(0).\label{bil:primitive-minus}
+\end{align}
+These anchored identities have no unspecified integration constants.
+Uniform convergence on the compact rectangles justifies integration;
+alternatively $U_A(n)=O(n^{-1/2})$ and $R_A(n)=O(n^{-3/2})$
+give absolute convergence directly.
+
+\begin{corollary}[A Gamma quotient increment square]\label{bil:gamma-square}
+For positive real $a,b$,
+\begin{equation}\label{bil:gamma-square-formula}
+ \boxed{\sum_{n=1}^{\infty}
+   \frac{\{h(n+b)-h(n+a)\}^{2}}{h(n+a)h(n+b)}
+   =\{h(b)-h(a)\}\{h(b+1)-h(a+1)\}.}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Take the same interval $A=B=[a,b]$ in
+\eqref{bil:primitive-plus} and divide by two.
+There is also a particularly short finite certificate. If
+$U_n=h(n+b)-h(n+a)$, the recurrence $h(z)h(z+1)=z$ gives
+\[
+ U_{n-1}U_n-U_nU_{n+1}
+       =\frac{U_n^2}{h(n+a)h(n+b)}.
+\]
+Thus the sum through $n=N$ equals $U_0U_1-U_NU_{N+1}$, and
+$U_NU_{N+1}=O(N^{-1})$ tends to zero.
+\end{proof}
+At $(a,b)=(1,2)$ the right side is
+\begin{equation}\label{bil:gamma-square-example}
+ 3-\frac\pi2-\frac4\pi.
+\end{equation}
+Indeed $h(1)=\sqrt{2/\pi}$, $h(2)=\sqrt{\pi/2}$, and
+$h(3)=2\sqrt{2/\pi}$. Equation \eqref{bil:gamma-square-formula}
+also extends holomorphically to $\Re a,\Re b>0$, with the algebraic
+square as written and no complex conjugation.
+
+\subsection{Scope and further targets}
+
+The classical ingredients are the alternating Hurwitz recurrence,
+Gamma shift formula, and a two-solution discrete Lagrange identity.
+Products of zeta tails already have a broad literature, including
+Hoffman's multiple-zeta treatment \cite{bil:Hoffman}. The claims here
+are the displayed independently parameterized endpoint laws, their
+explicit mixed Stieltjes coefficients, and the anchored Gamma
+consequences, as additions to the inspected project material. A
+literature search did not locate these particular forms; this is not
+a proof of priority. No numerical independence assertion is used.
+
+Two precise extensions remain. First, adjoining an independent outer
+power to \eqref{bil:plus} generally breaks the displayed telescoper;
+one should describe the additional coordinate and its moving polar
+hyperplanes. Second, at $p+q=-2m$ with $m>0$, the exact upper endpoint
+provides a systematic continuation scheme, but the complete
+independent-order contact algebra is not established by
+Corollary~\ref{bil:contact} alone.
+
+% END sections/02_bilinear_gamma.tex
+
+% BEGIN sections/03_rational_certificates.tex
+% Integration-ready research section; labels rat:*.
+\section{Exactly when a rational adjacent-tail certificate exists}
+\label{rat:section}
+
+The previous incoming report explicitly asks which pairs of polynomial
+denominators admit a rational certificate made from both adjacent
+tail products. The answer is a factorization criterion. It explains
+why generic shifted powers require a larger coefficient class, while
+also producing a simple two-variable polygamma kernel.
+
+\subsection{The complete rational coefficient criterion}
+
+Let $P,Q\in\mathbb C[x]\setminus\{0\}$ and write formally
+\[
+ E_{n-1}=E_n+\frac{(-1)^n}{P(n)},\qquad
+ F_{n-1}=F_n+\frac{(-1)^n}{Q(n)}.
+\]
+The actual tails will later be $E_n=\sum_{k>n}(-1)^k/P(k)$ and
+$F_n=\sum_{k>n}(-1)^k/Q(k)$. For a fixed nonzero number $t$ consider
+\begin{equation}\label{rat:ansatz}
+ K_n=t^n\{A(n)E_nF_{n+1}+B(n)E_{n+1}F_n\},\qquad
+ A,B\in\mathbb C(x).
+\end{equation}
+By cancellation of linear-tail terms we mean cancellation of their
+formal coefficients after applying the two recurrences, with $E_n,F_n$
+treated as independent indeterminates. This is the precise certificate
+class being classified; possible identities exploiting additional
+relations between specific tails are not excluded.
+
+\begin{theorem}[Rational certificate classification]\label{rat:classification}
+A nonzero rational coefficient pair $(A,B)$ in \eqref{rat:ansatz}
+eliminates both linear-tail terms if and only if
+\begin{equation}\label{rat:factorization}
+ t\in\{1,-1\},\qquad
+ \frac{P(x)}{Q(x)}=cS(x)S(x-1)
+\end{equation}
+for a nonzero rational function $S$ and a nonzero constant $c$.
+For a fixed admissible $t$, all coefficient pairs are proportional to
+\begin{equation}\label{rat:coefficients}
+ A(x)=Q(x+1)S(x),\qquad B(x)=tQ(x+1)S(x+1).
+\end{equation}
+If $P/Q$ is constant, the $t=-1$ certificate gives the trivial zero
+identity for proportional actual tails.
+\end{theorem}
+
+\begin{proof}
+Put $H=A+B$. Direct substitution into $K_n-K_{n-1}$ shows that
+linear-tail cancellation is equivalent to
+\begin{equation}\label{rat:coefficient-equations}
+ \frac{A(x)}{Q(x+1)}=t^{-1}\frac{B(x-1)}{Q(x)},\qquad
+ \frac{B(x)}{P(x+1)}=t^{-1}\frac{A(x-1)}{P(x)}.
+\end{equation}
+Neither coefficient can vanish unless both do. Eliminating $B$ yields
+\[
+ \frac{A(x)}{A(x-2)}=
+ t^{-2}\frac{Q(x+1)P(x)}{Q(x)P(x-1)}.
+\]
+Both rational ratios apart from $t^{-2}$ tend to one at infinity,
+so $t^2=1$. Put $R=P/Q$ and $S(x)=A(x)/Q(x+1)$. The remaining
+equation is
+\[
+ \frac{S(x)}{S(x-2)}=\frac{R(x)}{R(x-1)}.
+\]
+Consequently $R(x)/(S(x)S(x-1))$ is a rational function of period
+one. A periodic rational function is constant: a pole would generate
+infinitely many poles, and a nonconstant polynomial cannot be
+periodic. This proves the necessity of \eqref{rat:factorization}.
+Conversely that factorization and \eqref{rat:coefficients} satisfy
+\eqref{rat:coefficient-equations} by substitution. The quotient of
+two solutions for $A$ is rational and of period two, so it is
+constant, proving uniqueness up to scalar.
+\end{proof}
+
+This elementary argument is a specialized rational difference-equation
+calculation, within the classical subject of rational summation and
+recurrence solutions \cite{rat:Abramov}. It does not claim a new general
+algorithm for rational recurrences.
+
+\begin{corollary}[Root-orbit criterion]\label{rat:root-orbits}
+On each orbit $\alpha+\mathbb Z$ let $m_j$ be the multiplicity of
+$x=\alpha+j$ as a zero of $P/Q$, with negative multiplicities for
+poles. A rational $S$ in \eqref{rat:factorization} exists if and only if
+\begin{equation}\label{rat:root-balance}
+ \sum_{j\in\mathbb Z}(-1)^jm_j=0
+ \quad\hbox{on every such orbit}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+If $s_j$ are the multiplicities for $S$, factorization is equivalent
+to $m_j=s_j+s_{j-1}$. Starting below the finite support of $(m_j)$,
+the unique solution is
+$s_j=\sum_{k\le j}(-1)^{j-k}m_k$. It has finite support exactly
+under \eqref{rat:root-balance}. The remaining nonzero multiplicative
+constant is absorbed into $c$.
+\end{proof}
+
+For example, for positive integer orders $p,q$ and shifted powers
+$P(x)=(x+a)^p$, $Q(x)=(x+b)^q$, the criterion holds exactly when
+\begin{equation}\label{rat:powers-obstruction}
+ p=q\quad\hbox{and}\quad a-b\in2\mathbb Z.
+\end{equation}
+If $a-b$ is not an integer the two roots occupy separate orbits.
+If it is an integer $d$, the condition is $p=(-1)^dq$, yielding
+\eqref{rat:powers-obstruction}. This is an obstruction only to
+\eqref{rat:ansatz}, not to special-function endpoint evaluations in
+larger coefficient classes. The Gamma normalization in
+Section~\ref{bil:section} supplies just such a larger class.
+
+\subsection{Convergence and the finite endpoint}
+
+Assume $\deg P,\deg Q\ge1$, no positive integer zeros, and an
+admissible factorization. Put
+\[
+ H_t(x)=Q(x+1)\{S(x)+tS(x+1)\},\qquad
+ W_t(n)=t^n\{H_t(n)-tH_t(n-1)\}.
+\]
+The certificate calculation gives exactly
+\begin{equation}\label{rat:finite-difference}
+ K_n-K_{n-1}=W_t(n)E_nF_n.
+\end{equation}
+Suppose also that the displayed coefficient values are finite on the
+summation lattice and at the lower endpoint; removable values may be
+taken. To state the endpoint without alternating signs in the tails,
+write
+\[
+ e_n=\sum_{j\ge0}\frac{(-1)^j}{P(n+1+j)},\qquad
+ f_n=\sum_{j\ge0}\frac{(-1)^j}{Q(n+1+j)}.
+\]
+Then, whenever $S(0)$ is finite and nonzero,
+\begin{align}
+ \sum_{n\ge0}W_t(n)e_nf_n
+ &=S(0)e_0+\frac{t}{cS(0)}f_0
+       -tH_t(-1)e_0f_0.\label{rat:endpoint}
+\end{align}
+The finite version subtracts
+\[
+ t^N\{A(N)e_Nf_{N+1}+B(N)e_{N+1}f_N\}
+\]
+from the right side of \eqref{rat:endpoint}. This also gives a
+safe lower-cutoff version if one of the coefficient functions has a
+pole at one of the first lattice points.
+
+For completeness, write $p=\deg P$, $q=\deg Q$. Factorization forces
+$d=(p+q)/2$ to be an integer at least one. Alternating summation
+gives $e_n=O(n^{-p})$, $f_n=O(n^{-q})$, while $A,B=O(n^d)$.
+For $t=1$, the difference of $H_1$ is $O(n^{d-1})$. For $t=-1$,
+$S(n)-S(n+1)$ lowers the degree by at least one, so $H_{-1}$ and
+its adjacent sum are $O(n^{d-1})$. Thus every series in
+\eqref{rat:endpoint} is absolutely convergent, and its upper endpoint
+is $O(N^{-d})$. For positive-order rational tails all endpoints
+reduce by partial fractions to finite polygamma values at half-shifts.
+
+\subsection{Two independently shifted adjacent quadratic tails}
+
+Define, for positive integer $p$,
+\begin{equation}\label{rat:D-definition}
+ D_p(z)=\mathcal B_p(z)-\mathcal B_p(z+1),\qquad
+ D(z)=D_1(z)=2\mathcal B_1(z)-\frac1z.
+\end{equation}
+In particular
+\[
+ D(n+x)=\sum_{j\ge0}\frac{(-1)^j}
+                          {(n+x+j)(n+x+j+1)}.
+\]
+The denominators $P(k)=(k+x-1)(k+x)$ and
+$Q(k)=(k+y-1)(k+y)$ satisfy \eqref{rat:factorization} with
+$S(k)=(k+x)/(k+y)$ and $c=1$. This works for independent $x,y$;
+the roots within each quadratic are adjacent.
+
+\begin{theorem}[Finite two-variable polygamma kernels]\label{rat:kernels}
+For $\Re x,\Re y>0$, both series below converge absolutely and
+locally normally:
+\begin{align}
+ \sum_{n\ge0}(2n+x+y)D(n+x)D(n+y)
+ &=\frac12\left\{\frac{x}{y}D(x)+\frac{y}{x}D(y)
+                -(2xy-x-y)D(x)D(y)\right\},\label{rat:ordinary}\\
+ \sum_{n\ge0}(-1)^nD(n+x)D(n+y)
+ &=\frac12D(x)D(y)
+    +\frac{x^2D(x)-y^2D(y)}{2xy(x-y)}.\label{rat:alternating}
+\end{align}
+The quotient at $x=y$ is interpreted by continuity. In particular,
+\begin{equation}\label{rat:diagonal}
+ \sum_{n\ge0}(-1)^nD(n+x)^2
+     =\frac12D(x)^2+\frac{D(x)}x+\frac12D'(x).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For the stated $P,Q,S$, the two rational coefficients are
+\[
+ A(n)=(n+x)(n+y+1),\qquad
+ B(n)=t(n+y)(n+x+1).
+\]
+For $t=1$, $H_1(n)-H_1(n-1)=2(2n+x+y)$ and
+$H_1(-1)=2xy-x-y$. Substitution in \eqref{rat:endpoint} and
+division by two proves \eqref{rat:ordinary}. For $t=-1$,
+$H_{-1}(n)=x-y$ and $W_{-1}(n)=2(x-y)(-1)^n$.
+The resulting endpoint is
+\[
+ \frac{x}{y}D(x)-\frac{y}{x}D(y)+(x-y)D(x)D(y),
+\]
+which proves \eqref{rat:alternating} for $x\ne y$.
+The locally normal series has a limit on the diagonal. Taking that
+limit on the right gives \eqref{rat:diagonal}. The estimates
+$D(n+x)=O(n^{-2})$ prove all claimed convergence statements.
+\end{proof}
+
+For example, with $L=\log2$,
+\begin{align}
+ \sum_{n\ge0}(-1)^nD(n+1)^2&=2L^2-\frac{\pi^2}{12},\label{rat:example1}\\
+ \sum_{n\ge0}(-1)^nD(n+1)D(n+2)&=1-2L^2,\label{rat:example2}\\
+ \sum_{n\ge0}(2n+3)D(n+1)D(n+2)&=2(1-L)^2.\label{rat:example3}
+\end{align}
+These follow from $D(1)=2L-1$, $D(2)=3/2-2L$, and
+$D'(1)=1-\pi^2/6$.
+
+\subsection{Every mixed integer order at independent shifts}
+
+Let $K(x,y)$ and $M(x,y)$ denote the right sides of
+\eqref{rat:alternating} and \eqref{rat:ordinary}, respectively.
+For $p,q\ge1$ set
+\[
+ \mathfrak D_{p,q}=
+ \frac{(-1)^{p+q-2}}{(p-1)!(q-1)!}
+       \partial_x^{p-1}\partial_y^{q-1}.
+\]
+The shift derivative formula gives
+$D^{(r)}(z)=(-1)^rr!D_{r+1}(z)$. Therefore
+\begin{equation}\label{rat:all-orders}
+ \boxed{\sum_{n\ge0}(-1)^nD_p(n+x)D_q(n+y)
+                    =\mathfrak D_{p,q}K(x,y).}
+\end{equation}
+The right side is a finite expression in polygamma values and a
+confluent divided difference; it contains no tail sum. Likewise
+\begin{align}
+ &\sum_{n\ge0}\bigl\{(2n+x+y)D_p(n+x)D_q(n+y)\notag\\
+ &\qquad-\boldsymbol1_{p\ge2}D_{p-1}(n+x)D_q(n+y)
+          -\boldsymbol1_{q\ge2}D_p(n+x)D_{q-1}(n+y)\bigr\}
+            =\mathfrak D_{p,q}M(x,y).\label{rat:all-orders-ordinary}
+\end{align}
+When an indicator is zero its corresponding term is absent. The
+formula follows by differentiating the linear weight as well as both
+tails, so no lower-order correction has been omitted.
+
+The identities hold meromorphically away from the nonpositive-integer
+coordinate poles, with the diagonal $x=y$ removable. Their proof uses
+only rational cancellation and differentiation of normally convergent
+series. The obstruction \eqref{rat:powers-obstruction} and the positive
+kernel family \eqref{rat:all-orders} concern different denominator
+classes and are fully compatible.
+
+% END sections/03_rational_certificates.tex
+
+% BEGIN sections/04_cutoff_jets.tex
+\section{All cutoff jets of the alternating square law}
+\label{cut:sec}
+
+The preceding independent-order identities grow from a finite endpoint
+identity. This section resolves Question 5 of the incoming alternating-tail
+report \cite{AlternatingIncoming}: continue its ordinary square law through
+all nonpositive orders, calculate every cutoff contact, and distinguish the
+continued value from the constant term of the original finite sums. The
+alternating Hurwitz asymptotic expansion itself is classical; in particular,
+Hu and Kim give its remainder theory and spectral derivatives
+\cite{HuKimAsymptotic}. The contribution here is the explicit quadratic
+endpoint polynomial, its all-index contact formula, its sharp derivative
+threshold, and the resulting Gamma identities.
+
+\subsection{A finite identity valid at every spectral order}
+
+Throughout this section $\Rea a>0$. All powers and logarithms use the
+holomorphic branch in the right half-plane. Recall
+\begin{equation}\label{cut:B}
+ \mathcal B_s(x)=2^{-s}\left\{\zeta\left(s,\frac{x}{2}\right)
+                    -\zeta\left(s,\frac{x+1}{2}\right)\right\}.
+\end{equation}
+It is entire in $s$, with the common Hurwitz pole at one cancelled.
+Put
+\begin{align}
+ F_s(x)&=x^s\mathcal B_s(x)\mathcal B_s(x+1),\label{cut:F}\\
+ g_s(x)&=\{x^s-(x-1)^s\}\mathcal B_s(x)^2,\label{cut:g}\\
+ S_N(s,a)&=\sum_{n=0}^{N}g_s(n+a+1),\qquad X=N+a+1.
+ \label{cut:SN}
+\end{align}
+
+\begin{lemma}[Exact endpoint identity]\label{cut:finite}
+For every complex $s$ and every integer $N\ge0$,
+\begin{equation}\label{cut:finiteeq}
+ S_N(s,a)=F_s(a)-F_s(X).
+\end{equation}
+For $\Rea s>0$, the original series converges absolutely and locally
+normally to $F_s(a)$. Its unique entire continuation as a function of $s$
+is therefore $F_s(a)$.
+\end{lemma}
+\begin{proof}
+The recurrence
+$\mathcal B_s(x)+\mathcal B_s(x+1)=x^{-s}$ gives
+\[
+ F_s(x-1)-F_s(x)
+ =\{x^s-(x-1)^s\}\mathcal B_s(x)^2.
+\]
+Telescoping proves the finite formula without any limiting argument.
+For $\Rea s>0$, the standard tail expansion gives
+$F_s(X)=O(X^{-\Rea s})$ and
+$g_s(n+a+1)=O(n^{-\Rea s-1})$, uniformly on compact parameter sets.
+This proves the convergence assertion. Both sides of the finite identity
+are entire in $s$, so it already applies at every negative integer.
+\end{proof}
+
+An entire continuation is a function; a cutoff finite part is a summation
+prescription. Their agreement on a convergence half-plane does not make
+them identical at every exceptional parameter. We calculate the discrepancy
+instead of adopting an implicit convention.
+
+\subsection{The endpoint has only even inverse powers}
+
+Let $E_j(x)$ be the Euler polynomials, normalized by
+\begin{equation}\label{cut:Euler}
+ \frac{2e^{xt}}{e^t+1}=\sum_{j\ge0}E_j(x)\frac{t^j}{j!}.
+\end{equation}
+Thus $E_0(0)=1$, $E_1(0)=-1/2$, and $E_{2j}(0)=0$ for $j\ge1$.
+For $j\ge0$ define the rational polynomials
+\begin{equation}\label{cut:a}
+ a_j(s)=\frac{(-1)^jE_j(0)}{2j!}(s)_j,
+ \qquad (s)_0=1.
+\end{equation}
+Define $c_0(s)=1/4$ and, for $k\ge1$,
+\begin{equation}\label{cut:c}
+ c_k(s)=-\sum_{j=1}^{k-1}a_j(s)a_{k-j}(s).
+\end{equation}
+In particular $c_{2j+1}=0$. Every nonzero $c_{2j}$ has degree $2j$.
+The first three nonconstant polynomials are
+\begin{align}
+ c_2(s)&=-\frac{s^2}{16},\label{cut:firstc}\\
+ c_4(s)&=\frac{s^2(s+1)(s+2)}{96},\notag\\
+ c_6(s)&=-\frac{s^2(s+1)(s+2)(17s^2+99s+154)}{11520}.\notag
+\end{align}
+
+\begin{proposition}[Even endpoint expansion]\label{cut:expansion}
+For every $K\ge0$,
+\begin{equation}\label{cut:expansioneq}
+ F_s(x)=\sum_{j=0}^{K}c_{2j}(s)x^{-s-2j}
+           +O\bigl(x^{-\Rea s-2K-2}\bigr)
+\end{equation}
+as $x\to+\infty$, locally uniformly in $s$ and in bounded right-half-plane
+shifts of $x$. Every fixed spectral derivative has the differentiated
+expansion, with the corresponding finite powers of $\log x$. A derivative
+in $x$ improves the remainder by one inverse power.
+\end{proposition}
+\begin{proof}
+The alternating Hurwitz expansion is
+\[
+ \mathcal B_s(x)\sim x^{-s}\sum_{j\ge0}a_j(s)x^{-j}.
+\]
+One may obtain the needed uniform remainder by applying the ordinary
+Hurwitz Euler--Maclaurin expansion to the two terms in \eqref{cut:B},
+using more terms than required and cancelling their common pole at one.
+The usual remainder integral is uniform on each compact $s$-set after
+enough terms have been retained \cite{DLMFZeta,HuKimAsymptotic}.
+Its formal coefficients are also determined uniquely by
+$\mathcal B_s(x)+\mathcal B_s(x+1)=x^{-s}$: the formal operator
+$(1+e^{\partial_x})^{-1}$ acting on $x^{-s}$ gives \eqref{cut:a}.
+Cauchy's formula on a slightly larger compact set justifies every fixed
+spectral derivative of the remainder. The derivative identity
+$\partial_x\mathcal B_s(x)=-s\mathcal B_{s+1}(x)$ supplies the
+corresponding derivative remainder in $x$.
+
+Write $A=x^s\mathcal B_s(x)$. By the same recurrence,
+\[
+ F_s(x)=x^{-s}(A-A^2)
+       =x^{-s}\left\{\frac14-\left(A-\frac12\right)^2\right\}.
+\]
+All positive even coefficients of $A$ vanish. Thus $A-1/2$ has only
+odd inverse powers, its square has only even inverse powers, and
+\eqref{cut:c} gives every coefficient. Multiplying finite expansions with
+their uniform remainders proves the assertion, rather than assuming
+convergence of the infinite asymptotic series.
+\end{proof}
+
+\subsection{A convergent subtraction on every half-plane}
+
+For $K\ge0$ set
+\begin{equation}\label{cut:PK}
+ P_K(s,x)=\sum_{j=0}^{K}c_{2j}(s)x^{-s-2j}.
+\end{equation}
+
+\begin{theorem}[Normally convergent continuation]\label{cut:normal}
+On $\Rea s>-2K-2$, $\Rea a>0$, the following series converges absolutely
+and locally normally, including after every fixed parameter derivative:
+\begin{align}
+ &\sum_{n=0}^{\infty}\bigl\{
+    g_s(n+a+1)-P_K(s,n+a)+P_K(s,n+a+1)\bigr\}\notag\\
+ &\hspace{30mm}=F_s(a)-P_K(s,a).
+ \label{cut:normaleq}
+\end{align}
+Consequently adding $P_K(s,a)$ gives the same entire continuation
+$F_s(a)$ on all these overlapping half-planes.
+\end{theorem}
+\begin{proof}
+Subtract the finite telescoping difference of $P_K$ from
+\eqref{cut:finiteeq}. The remaining upper endpoint is
+$F_s(X)-P_K(s,X)=O(X^{-\Rea s-2K-2})$ and tends to zero on the stated
+half-plane. Each summand is a unit difference of this remainder; the
+$x$-derivative version of Proposition~\ref{cut:expansion} bounds it by
+$O(n^{-\Rea s-2K-3})$. Uniformity on compact sets and Cauchy's formula
+give local normal convergence and all fixed parameter derivatives.
+\end{proof}
+
+This is an ordinary convergent-series realization of the continued
+function. It explicitly specifies what was subtracted. It neither assigns
+an ordinary value to a divergent unmodified series nor discards the exact
+upper endpoint.
+
+\subsection{Every nonpositive-order contact and every spectral derivative}
+
+For a fixed nonnegative integer $m$ and derivative order $r$, expand
+$\partial_s^rS_N(s,a)|_{s=-m}$ in powers of $X=N+a+1$ and $\log X$.
+Its \emph{natural-cutoff finite part} is the coefficient of
+$X^0(\log X)^0$. Denote it by $\FP_X$.
+The preceding expansion supplies such an asymptotic expansion to any
+fixed order, with a remainder tending to zero after enough terms.
+
+\begin{theorem}[Complete contact formula]\label{cut:contacts}
+For every $m,r\ge0$ and $\Rea a>0$,
+\begin{equation}\label{cut:contacteq}
+ \boxed{\displaystyle
+ \FP_X\left.\partial_s^rS_N(s,a)\right|_{s=-m}
+   =\left.\partial_s^rF_s(a)\right|_{s=-m}-c_m^{(r)}(-m).}
+\end{equation}
+The contacts have the following exact properties:
+\begin{enumerate}
+\item If $m$ is odd, every natural-cutoff contact is zero.
+\item If $m$ is even, the contact vanishes for $r>m$, and the threshold
+is sharp:
+\begin{equation}\label{cut:top}
+ c_m^{(m)}(-m)=-\frac12 E_{m+1}(0)\ne0.
+\end{equation}
+\item At derivative order zero,
+\begin{equation}\label{cut:Eulercontact}
+ c_m(-m)=\frac14[x^m]\{E_m(x)E_m(x+1)\}.
+\end{equation}
+For even $m=2j\ge2$ this becomes
+\begin{equation}\label{cut:Eulerconvolution}
+ c_{2j}(-2j)
+ =-\frac14\sum_{\substack{1\le k<2j\\k\text{ odd}}}
+     \binom{2j}{k}^{\!2}E_k(0)E_{2j-k}(0),
+\end{equation}
+which is nonzero and has sign $(-1)^j$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Differentiate the endpoint expansion before setting $s=-m$.
+For each $k$,
+\[
+ \left.\partial_s^r\{c_k(s)X^{-s-k}\}\right|_{s=-m}
+ =X^{m-k}\sum_{\ell=0}^{r}\binom r\ell
+       c_k^{(\ell)}(-m)(-\log X)^{r-\ell}.
+\]
+Only $k=m$ has exponent zero, and only $\ell=r$ has logarithmic degree
+zero. The finite identity therefore gives \eqref{cut:contacteq}.
+If $m$ is odd, $c_m$ is identically zero. Degree at most $m$ gives the
+vanishing for $r>m$.
+
+For the exact top coefficient, replace each $(s)_j$ in \eqref{cut:a}
+by its leading monomial $s^j$. The resulting generating series is
+\[
+ A(t)=\frac1{1+e^{-t}}=\frac12+\frac12\tanh(t/2).
+\]
+The endpoint's leading-coefficient series is
+\[
+ A(t)-A(t)^2=A'(t)=\frac1{4\cosh^2(t/2)}.
+\]
+Its coefficient of $t^m$ is
+$(-1)^{m+1}E_{m+1}(0)/(2m!)$; for even $m$ this proves
+\eqref{cut:top}. Odd Euler values at zero are nonzero, for example by
+their elementary Bernoulli-number formula.
+
+Finally $\mathcal B_{-m}(x)=E_m(x)/2$ is the classical Euler
+specialization \cite{HuKimAsymptotic}. Hence
+$F_{-m}(x)=x^{-m}E_m(x)E_m(x+1)/4$.
+Its constant coefficient gives \eqref{cut:Eulercontact}. For even
+$m\ge2$, use $E_m(x+1)=2x^m-E_m(x)$ and $E_m(0)=0$ to obtain
+\eqref{cut:Eulerconvolution}. Each summand in that convolution has
+sign $(-1)^{j+1}$, so its negative quarter has the asserted nonzero sign.
+\end{proof}
+
+\begin{center}
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+$m$&0&2&4&6&8\\
+\midrule
+$c_m(-m)$&$1/4$&$-1/4$&$1$&$-43/4$&$230$\\
+$c_m^{(m)}(-m)$&$1/4$&$-1/8$&$1/4$&$-17/16$&$31/4$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+At $s=0$ every unmodified summand is exactly zero, whereas
+$F_0(a)=1/4$. Formula~\eqref{cut:contacteq} gives $0=1/4-1/4$.
+At $s=-2$, the summand simplifies to $-(2n+2a+1)/4$, so
+\[
+ S_N(-2,a)=\frac{a^2-X^2}{4},\qquad
+ F_{-2}(a)=\frac{a^2-1}{4}.
+\]
+The natural-cutoff constant is $a^2/4$, exactly the continued value
+minus the contact $-1/4$. The first two derivative contacts at this
+same order are $c_2'(-2)=1/4$ and $c_2''(-2)=-1/8$.
+
+\subsection{The cutoff coordinate is part of the formula}
+
+The usual integer cutoff $N$ and the natural cutoff $X=N+a+1$ have
+different constant terms. The conversion is finite and explicit.
+Let $T=X-h$ for a fixed complex number $h$. Define the degree-at-most-$m$
+polynomial in $s$
+\begin{equation}\label{cut:translated}
+ C_m(s;h)=\sum_{k=0}^{m}c_k(s)
+                 \binom{-s-k}{m-k}h^{m-k}.
+\end{equation}
+The generalized binomial here is its polynomial expression, so its
+spectral derivatives at integers are unambiguous.
+
+\begin{corollary}[Translated-cutoff contacts]\label{cut:translation}
+For all $m,r\ge0$,
+\begin{equation}\label{cut:translationeq}
+ \FP_T\left.\partial_s^rS_N(s,a)\right|_{s=-m}
+ =\left.\partial_s^rF_s(a)\right|_{s=-m}
+  -\left.\partial_s^r C_m(s;h)\right|_{s=-m}.
+\end{equation}
+Take $h=a+1$ to obtain the finite part in powers of $N$.
+Every translated contact still vanishes for $r>m$.
+At $r=0$ its value is
+$\sum_{k=0}^{m}c_k(-m)h^{m-k}$.
+\end{corollary}
+\begin{proof}
+Expand $X^{-s-k}=T^{-s-k}(1+h/T)^{-s-k}$ by its finite asymptotic
+binomial expansion. At $s=-m$, the unique term capable of contributing
+a constant has binomial index $m-k$. Differentiating first retains its
+spectral coefficient and logarithms; the logarithm-free constant is
+exactly the derivative in \eqref{cut:translationeq}. Terms with $k>m$
+already decay. The polynomial degree bound follows from
+$\deg c_k\le k$ and
+$\deg_s\binom{-s-k}{m-k}=m-k$.
+\end{proof}
+
+For example the natural contact at $s=-1$ is zero but the contact in
+$T=X-h$ is $h/4$. Thus ``odd negative orders have no contact'' is
+correct only with the displayed natural coordinate. Translation does
+not preserve that parity assertion.
+
+One can also write the highest derivative in closed form. Define
+Euler polynomials of order two by
+\[
+ \frac{4e^{xt}}{(e^t+1)^2}
+ =\sum_{m\ge0}E_m^{(2)}(x)\frac{t^m}{m!}.
+\]
+The same leading-coefficient calculation gives
+\begin{equation}\label{cut:translatedtop}
+ \partial_s^m C_m(s;h)=\frac{(-1)^m}{4}E_m^{(2)}(h+1).
+\end{equation}
+This includes \eqref{cut:top} when $h=0$ and $m$ is even.
+
+\subsection{Explicit Gamma identities at order zero}
+
+The classical Lerch formula gives
+\begin{equation}\label{cut:Lerch}
+ \left.\partial_s\mathcal B_s(x)\right|_{s=0}
+ =-\log h(x),\qquad
+ h(x)=\sqrt2\,\frac{\Gamma((x+1)/2)}{\Gamma(x/2)}.
+\end{equation}
+Put
+\begin{equation}\label{cut:rho}
+ \rho(x)=\frac12\log x-\log h(x)
+ =\log\left\{\sqrt{\frac{x}{2}}\,
+          \frac{\Gamma(x/2)}{\Gamma((x+1)/2)}\right\}.
+\end{equation}
+The normalized endpoint immediately gives
+\begin{align}
+ \left.\partial_sF_s(a)\right|_{s=0}
+    &=-\frac14\log a,\label{cut:Fzero}\\
+ \left.\partial_s^2F_s(a)\right|_{s=0}
+    &=\frac14\log^2a-2\rho(a)^2.\notag
+\end{align}
+Indeed, with $D_s(a)=a^s\mathcal B_s(a)-1/2$,
+$F_s(a)=a^{-s}(1/4-D_s(a)^2)$, $D_0=0$, and $D'_0=\rho(a)$.
+In particular the natural finite part of the second spectral derivative
+at $a=1,s=0$ is $-\tfrac12\log^2(\pi/2)$.
+
+There is an ordinary convergent version with a useful polarization.
+For $\Rea a,\Rea b>0$ write
+\[
+ \delta_a(n)=\log\frac{n+a+1}{n+a},\qquad
+ \rho_a(n)=\rho(n+a).
+\]
+
+\begin{corollary}[A bilinear logarithmic Gamma sum]\label{cut:Gamma}
+For $\Rea a,\Rea b>0$,
+\begin{align}
+ \sum_{n=0}^{\infty}\bigl\{
+   \delta_a(n)\rho_b(n)+\delta_b(n)\rho_a(n)
+        -\tfrac12\delta_a(n)\delta_b(n)\bigr\}
+ =2\rho(a)\rho(b).
+ \label{cut:Gammaeq}
+\end{align}
+The convergence is absolute and locally normal. At $a=b$ this reduces to
+\begin{equation}\label{cut:Gammasquare}
+ \sum_{n=0}^{\infty}\delta_a(n)
+       \left\{\rho_a(n)-\frac14\delta_a(n)\right\}=\rho(a)^2.
+\end{equation}
+In particular the value at $a=1$ is $\tfrac14\log^2(\pi/2)$.
+\end{corollary}
+\begin{proof}
+The recurrence $h(x)h(x+1)=x$ implies
+$\rho(x)+\rho(x+1)=\tfrac12\log((x+1)/x)$.
+Multiply the two shifted recurrences and rearrange:
+\[
+ 2\{\rho_a(n)\rho_b(n)-\rho_a(n+1)\rho_b(n+1)\}
+ =\delta_a(n)\rho_b(n)+\delta_b(n)\rho_a(n)
+            -\tfrac12\delta_a(n)\delta_b(n).
+\]
+Telescoping proves the formula. Stirling's expansion gives
+$\rho(n+a)=O(n^{-1})$ with a unit difference $O(n^{-2})$, so the
+summand is $O(n^{-3})$ locally uniformly and the upper endpoint vanishes.
+The square case follows by division by two. Equivalently it is the
+second derivative of the normally subtracted identity
+\eqref{cut:normaleq} at $s=0$.
+\end{proof}
+
+Every fixed shift derivative of \eqref{cut:Gammaeq} is an ordinary
+convergent identity with rational functions, logarithms and polygamma
+functions. For higher spectral derivatives at zero or at $-m$, the
+finite formula \eqref{cut:contacteq} uses only finitely many Hurwitz
+order derivatives at the same integer. No independent arithmetic
+reduction of those order derivatives is asserted.
+
+% END sections/04_cutoff_jets.tex
+
+% BEGIN sections/05_degree_rank.tex
+\section{The harmonic degree is generically equal to the pencil rank}
+\label{deg:sec}
+
+The finite-difference determinant report proves an upper bound for the
+harmonic degree and asks when that bound is strict.  For real rational
+weights, the answer is particularly clean: it is never strict over the
+field of rational functions in the cutoff.  At a specified integer
+cutoff it can be strict, but only at finitely many cutoffs.  Positivity
+removes these exceptions once enough nodes have been included.
+
+\subsection{An affine symmetric-pencil lemma}
+
+Let $C_1,\ldots,C_t$ be real symmetric $r\times r$ matrices, write
+\[
+ C(X)=\sum_{j=1}^tX_jC_j,
+ \qquad \rho=\operatorname{rank}_{\mathbb R(X)} C(X),
+ \qquad q=r-\rho,
+\]
+and let $D$ be another real symmetric matrix.  The variables $X_j$ are
+formal independent variables.  Their introduction makes no assertion
+about algebraic independence of special functions.
+
+\begin{lemma}[Compression and the highest degree]
+\label{deg:compression}
+The polynomial $P(X)=\det(D+C(X))$ has total degree at most $\rho$.
+Choose any $v\in\mathbb R^t$ such that $C(v)$ has rank $\rho$, and let
+$K$ be a real $r\times q$ matrix whose columns form its kernel.
+Then
+\begin{equation}\label{deg:isotropic}
+ K^{\mathsf T}C_jK=0\qquad(1\le j\le t).
+\end{equation}
+If $K^{\mathsf T}DK$ is nonsingular, $P$ has total degree exactly $\rho$.
+For a generic maximal-rank direction, nonsingularity of this compression
+is also necessary.
+\end{lemma}
+\begin{proof}
+In each determinant term, selecting more than $\rho$ columns from
+$C(X)$ gives zero, which proves the upper bound.  Put $A=C(v)$ and
+choose an invertible real matrix $S=[U\ K]$ so that
+\[
+ S^{\mathsf T}AS=\begin{pmatrix} A_0&0\\0&0\end{pmatrix},
+ \qquad \det A_0\ne0.
+\]
+For every $j$, the rank of $A+zC_j$ is at most $\rho$ for every real
+$z$: every $(\rho+1)$-minor of the whole pencil is identically zero.
+For sufficiently small $z$, its upper-left $\rho\times\rho$ block
+remains invertible.  The Schur complement of this block must therefore
+vanish identically.  Its coefficient of $z$ is exactly
+$K^{\mathsf T}C_jK$, proving \eqref{deg:isotropic}.
+
+The coefficient of $z^\rho$ in $\det(D+zA)$ is
+\begin{equation}\label{deg:leading-direction}
+ \frac{\det A_0}{(\det S)^2}\det(K^{\mathsf T}DK).
+\end{equation}
+This follows by taking the $zA_0$ entry in each of the first $\rho$
+rows and columns after the congruence by $S$; the remaining block is
+$K^{\mathsf T}DK$.  Thus a nonzero compression proves degree $\rho$.
+Conversely, if the degree-$\rho$ homogeneous part is nonzero, it does
+not vanish at a generic real maximal-rank direction, and
+\eqref{deg:leading-direction} makes that compression nonsingular.
+The conventions for $q=0$ are that $K$ has no columns and its
+compressed determinant is one.
+\end{proof}
+
+There is a direct symbolic version that avoids expanding the full
+$r\times r$ determinant.  Choose a nonsingular principal
+$\rho\times\rho$ submatrix of $C(X)$ and, after a simultaneous
+permutation of rows and columns, write
+\[
+ C(X)=\begin{pmatrix} A&B\\B^{\mathsf T}&F\end{pmatrix}.
+\]
+Over $\mathbb R(X)$, the rank condition gives $F=B^{\mathsf T}A^{-1}B$.
+Set
+\begin{equation}\label{deg:generic-kernel}
+ K(X)=\begin{pmatrix}-A^{-1}B\\I_q\end{pmatrix}.
+\end{equation}
+Then the highest homogeneous part has the exact expression
+\begin{equation}\label{deg:highest}
+ [P]_{\rho}(X)=\det A\,
+                  \det\bigl(K(X)^{\mathsf T}DK(X)\bigr).
+\end{equation}
+Although the displayed factors are rational functions, their product is
+the indicated homogeneous polynomial.  The expression remains valid
+when it vanishes.  A symmetric matrix of rank $\rho$ over a field of
+characteristic zero has a nonsingular principal minor of size $\rho$;
+this follows, for example, by symmetric elimination with $1\times1$
+and $2\times2$ nonsingular pivots.
+
+\subsection{Sharpness for moment matrices, including signed weights}
+
+Let $w_n\in\mathbb R$ be a sequence and put
+\begin{equation}\label{deg:moment}
+ M_N=\sum_{n=0}^N w_n v(n)v(n)^{\mathsf T},
+ \qquad v(n)=(1,n,\ldots,n^{r-1})^{\mathsf T}.
+\end{equation}
+Suppose that a decomposition
+\begin{equation}\label{deg:decomp}
+ M_N=D_N+\sum_{j=1}^t h_j(N)C_j
+\end{equation}
+holds with real $h_j(N)$ and real symmetric matrices $D_N,C_j$,
+where the $C_j$ are independent of $N$.  Define
+$P_N(X)=\det(D_N+C(X))$ and let $\delta_N$ be its total degree,
+with degree $-\infty$ assigned to the zero polynomial.
+
+\begin{theorem}[Only finitely many deficient cutoffs]
+\label{deg:main}
+Assume there are an integer $N_*\ge0$ and $\epsilon\in\{1,-1\}$ such
+that $\epsilon w_n>0$ for every integer $n>N_*$.  Then
+\[
+ \delta_N\le\rho\quad\text{for all }N,
+\]
+and at most $r(r-\rho)$ integers $N\ge N_*$ satisfy
+$\delta_N<\rho$.
+If all nonzero $w_n$ have the same sign and at least $r$ distinct
+nodes of positive absolute weight have been included by cutoff $N$,
+then $\delta_N=\rho$ at that cutoff.
+
+If in addition $D_N$ has entries rational in $N$, then
+\begin{equation}\label{deg:generic-sharp}
+ \deg_X\det(D_N+C(X))=\rho
+ \qquad\text{over }\mathbb R(N).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Choose one real maximal-rank direction and its kernel matrix $K$ as in
+Lemma~\ref{deg:compression}.  Such a real direction exists because a
+nonzero maximal minor is a nonzero real polynomial.  Equation
+\eqref{deg:isotropic} and \eqref{deg:decomp} imply
+\begin{equation}\label{deg:gram}
+ G_N:=K^{\mathsf T}D_NK
+ =K^{\mathsf T}M_NK
+ =\sum_{n=0}^N w_n p(n)p(n)^{\mathsf T},
+ \qquad p(n)=K^{\mathsf T}v(n).
+\end{equation}
+The components of $p$ are linearly independent real polynomials of
+degree at most $r-1$.
+
+For $N\ge N_*$, the matrix
+\[
+ \epsilon(G_{N+r}-G_N)
+ =\sum_{n=N+1}^{N+r}\epsilon w_n p(n)p(n)^{\mathsf T}
+\]
+is positive definite.  Indeed, a nonzero linear combination of the
+components of $p$ is a nonzero polynomial of degree at most $r-1$;
+it cannot vanish at all $r$ displayed nodes.  Along any one of the
+$r$ residue classes of cutoffs modulo $r$, the ordered eigenvalues of
+$\epsilon G_N$ therefore increase strictly.  Each of the $q=r-\rho$
+eigenvalues can equal zero at most once.  Consequently at most $q$
+cutoffs in each residue class have singular $G_N$, and at most $rq$
+cutoffs in total do.  By Lemma~\ref{deg:compression}, degree deficiency
+can occur only at those cutoffs.  This also treats $q=0$, for which
+there are no exceptions.
+
+If the weights in the cutoff have one sign and at least $r$ distinct
+nonzero nodes, the same polynomial argument makes $G_N$ definite
+directly.  Finally, in the rational case $\det G_N$ is a rational
+function of $N$.  It is nonzero at some integer cutoff by the preceding
+argument, hence is not the zero rational function.  Formula
+\eqref{deg:leading-direction} proves \eqref{deg:generic-sharp}.
+\end{proof}
+
+\begin{corollary}[Resolution for real rational weights]
+\label{deg:rational}
+Let $R$ be a nonzero real rational function having no pole at a
+nonnegative integer.  Form its finite moment matrices and their
+harmonic decomposition as in the finite-difference determinant report.
+Then their formal harmonic degree over $\mathbb R(N)$ is exactly the
+generic harmonic-pencil rank.  At most finitely many nonnegative
+integer cutoffs have smaller degree.  For $R(n)>0$ at all
+nonnegative integers, every $N\ge r-1$ has the exact generic degree.
+\end{corollary}
+\begin{proof}
+A nonzero real rational function has constant nonzero sign for all
+sufficiently large positive arguments.  The residue construction gives
+the decomposition \eqref{deg:decomp} with rational $D_N$.  Apply
+Theorem~\ref{deg:main}.  When poles and residues are represented using
+nonreal conjugate pairs, replace each conjugate pair of formal harmonic
+coordinates by its formal real and imaginary parts.  This invertible
+linear change makes the coefficient matrices real and preserves both
+generic rank and total degree.
+\end{proof}
+
+The real hypothesis in this proof is substantive: it supplies definiteness
+of the sufficiently late increments.  No corresponding theorem for an
+arbitrary complex rational weight is asserted here.  Likewise, formal
+degree does not by itself prove a minimal multiple-polylogarithm depth
+under functional relations.
+
+\subsection{An exact test for exceptional cutoffs}
+
+In the generic kernel formula \eqref{deg:generic-kernel}, replace $K$ by
+the polynomial matrix
+\[
+ \widetilde K(X)=
+ \begin{pmatrix}-\operatorname{adj}(A)B\\(\det A)I_q\end{pmatrix}.
+\]
+After clearing denominators in $N$, compute the polynomial
+\begin{equation}\label{deg:exception-certificate}
+ Q(N,X)=\det\bigl(\widetilde K(X)^{\mathsf T}D_N
+                                      \widetilde K(X)\bigr).
+\end{equation}
+For an admissible cutoff $N_0$, degree is deficient if and only if
+$Q(N_0,X)$ is identically zero.  Equivalently, all its coefficients in
+$X$ vanish.  Over an exact coefficient field, their greatest common
+divisor as polynomials in $N$ gives precisely the exceptional cutoffs
+among its admissible nonnegative integer roots.  Denominator zeros must
+be excluded or checked from the original finite moment formula.  This
+uses a determinant of size $r-\rho$, not an expansion of the original
+determinant.  A single fixed maximal-rank direction gives a cheaper
+finite candidate list, which the generic test can then filter.
+
+\subsection{A positive example and a genuine signed exception}
+
+Take $r=3$ and first let
+\[
+ R(x)=\frac1{x+1}+\frac1{x+2}.
+\]
+There is one harmonic variable $X=H_N^{(1)}(1)$, and its coefficient is
+\[
+ C=\begin{pmatrix}2&-3&5\\-3&5&-9\\5&-9&17\end{pmatrix},
+ \qquad \operatorname{rank}C=2,
+ \qquad K=(2,3,1)^{\mathsf T}.
+\]
+Since $K^{\mathsf T}v(n)=(n+1)(n+2)$, the leading coefficient is
+\begin{equation}\label{deg:positive-example}
+ [P_N]_2=\frac{(N+1)(N+2)^2(N+3)}2 X^2.
+\end{equation}
+Here the top-left $2\times2$ minor of $C$ has determinant one.
+
+For the signed weight
+\begin{equation}\label{deg:signed-weight}
+ R(x)=\frac1{x+1}-\frac7{5(x+2)}
+     =\frac{3-2x}{5(x+1)(x+2)},
+\end{equation}
+the same kernel has compressed moment
+\[
+ K^{\mathsf T}D_NK
+ =-\frac{(N-2)(N+1)(N+2)(N+3)}{10}.
+\]
+The relevant principal minor of $C$ has determinant $-7/5$, so
+\begin{equation}\label{deg:signed-leading}
+ [P_N]_2=\frac{7(N-2)(N+1)(N+2)(N+3)}{50}X^2.
+\end{equation}
+The only exceptional nonnegative cutoff is $N=2$, where the entire
+formal polynomial is
+\begin{equation}\label{deg:signed-exception}
+ P_2(X)=\frac{620X-1137}{500}.
+\end{equation}
+Substituting the actual $X=H_2^{(1)}(1)=11/6$ gives $-1/1500$, also
+equal to the three-node Vandermonde square times
+$R(0)R(1)R(2)$.  Thus a fixed-cutoff exception is real, even when the
+finite moment determinant itself is nonzero.  It does not contradict
+generic sharpness over $\mathbb R(N)$.
+
+% END sections/05_degree_rank.tex
+
+% BEGIN sections/06_spectral_hierarchy.tex
+\section{A critical finite-difference hierarchy of every harmonic rank}
+\label{hier:sec}
+
+The original finite-difference construction uses a stencil of order
+$2r-2$ and confines its special-function dependence to one moment entry.
+Shorter stencils give an explicit hierarchy whose harmonic ranks run
+through every value from one to $r$, while the integer-order weights
+retain the same critical decay.  Its spectral continuation has a
+completely determined staircase of pole orders.  This is a spectral
+finite-difference family; the more general overlapping resonances of
+the earlier Gauss ensemble are a separate question.
+
+Fix integers
+\begin{equation}\label{hier:parameters}
+ r\ge2,\qquad 1\le\rho\le r,\qquad
+ d=2r-2,\qquad h=d-\rho+1=2r-\rho-1.
+\end{equation}
+For $\Re a>0$, use the right-half-plane logarithm to define
+\begin{equation}\label{hier:weight}
+ w_n^{[h]}(s,a)=\frac1{h!}\sum_{j=0}^h(-1)^j\binom hj
+                                      (n+a+j)^{-s}.
+\end{equation}
+The corresponding ordered ensemble is
+\begin{equation}\label{hier:ensemble}
+ Z_{r,\rho}(s,a)=
+ \sum_{0\le n_1<\cdots<n_r}
+ \Delta(n_1,\ldots,n_r)^2\prod_{i=1}^r w_{n_i}^{[h]}(s,a).
+\end{equation}
+There is no additional $1/r!$ because the indices are strictly ordered.
+
+\subsection{Finite moments and exact shifted-zeta closure}
+
+Define finite polynomials and endpoint functions by
+\begin{align}
+ b_k(a;h)&=\frac1{h!}\sum_{j=0}^h(-1)^j\binom hj(-a-j)^k,
+                                                        \label{hier:b}\\
+ E_k(s,a;h)&=-\frac1{h!}\sum_{j=1}^h(-1)^j\binom hj
+       \sum_{\ell=0}^{j-1}(\ell-j)^k(\ell+a)^{-s}.
+                                                        \label{hier:E}
+\end{align}
+The convention $0^0=1$ applies to zeroth moments.  Polynomial
+annihilation gives
+\begin{equation}\label{hier:annihilation}
+ b_0=\cdots=b_{h-1}=0,\qquad b_h=1.
+\end{equation}
+For $0\le\ell\le\rho-1$ let $C_\ell(a;h)$ be the symmetric Hankel
+matrix with entries
+\begin{equation}\label{hier:C}
+ (C_\ell)_{ij}=\binom{i+j}{\ell}b_{i+j-\ell}(a;h),
+ \qquad 0\le i,j<r,
+\end{equation}
+with a term set to zero if its lower index is negative or if
+$\ell>i+j$.  Also let $E(s,a;h)=(E_{i+j}(s,a;h))_{i,j<r}$.
+
+\begin{theorem}[A finite shifted-zeta determinant]
+\label{hier:closure}
+The ensemble \eqref{hier:ensemble} is absolutely and locally normally
+convergent for $\Re s>\rho$, $\Re a>0$, and there
+\begin{equation}\label{hier:closed}
+ \boxed{\displaystyle
+ Z_{r,\rho}(s,a)=\det\left(
+ E(s,a;h)+\sum_{\ell=0}^{\rho-1}
+                    \zeta(s-\ell,a)C_\ell(a;h)\right).}
+\end{equation}
+The right side gives its meromorphic continuation to all $s\in\mathbb C$.
+Its only possible poles are $1,2,\ldots,\rho$.
+\end{theorem}
+\begin{proof}
+For $\Re s>0$ the weight has the integral representation
+\begin{equation}\label{hier:laplace}
+ w_n^{[h]}(s,a)=\frac1{h!\Gamma(s)}
+ \int_0^\infty t^{s-1}e^{-(n+a)t}(1-e^{-t})^h\,dt.
+\end{equation}
+Repeated finite differences, or expansion of this kernel at zero,
+give locally uniformly
+\begin{equation}\label{hier:decay}
+ w_n^{[h]}(s,a)=\frac{(s)_h}{h!}(n+a)^{-s-h}
+                     +O((n+1)^{-\Re s-h-1}).
+\end{equation}
+For ordered indices, $|\Delta(\boldsymbol n)|^2\le
+\prod_i(n_i+1)^{2(i-1)}$.  The least decaying factor is summable
+when $\Re s+h-d>1$, precisely $\Re s>\rho$.
+
+For a moment of degree $k\le d$, initially take $\Re s>d+1$ so
+that all separately shifted sums converge.  Shift the index by $j$
+and expand
+\[
+ (n-j)^k=\sum_{\ell=0}^k\binom k\ell
+                      (-a-j)^{k-\ell}(n+a)^\ell.
+\]
+The lower endpoints give \eqref{hier:E}, and the infinite shifted
+sums give
+\begin{equation}\label{hier:moment}
+ \sum_{n\ge0}n^k w_n^{[h]}(s,a)
+ =E_k(s,a;h)+\sum_{\ell=0}^{k-h}
+     \binom k\ell b_{k-\ell}(a;h)\zeta(s-\ell,a).
+\end{equation}
+An empty sum is zero.  Both sides are holomorphic on their common
+normal-convergence half-plane, so the identity theorem extends this
+identity to $\Re s>\rho$.  Finite Cauchy--Binet and passage to the
+normal limit give \eqref{hier:closed}.  Each endpoint function is
+entire in $s$, and every Hurwitz factor has just its displayed pole.
+\end{proof}
+
+For later cutoff use, define
+$H_N^{(z)}(a)=\sum_{n=0}^N(n+a)^{-z}$ for every complex $z$ and
+\begin{equation}\label{hier:upper}
+ T_{k,N}(s,a;h)=\frac1{h!}\sum_{j=1}^h(-1)^j\binom hj
+       \sum_{\ell=N+1}^{N+j}(\ell-j)^k(\ell+a)^{-s}.
+\end{equation}
+The exact finite counterpart of \eqref{hier:moment} is
+\begin{equation}\label{hier:finite-moment}
+ \sum_{n=0}^N n^k w_n^{[h]}(s,a)
+ = E_k+T_{k,N}+
+   \sum_{\ell=0}^{k-h}\binom k\ell b_{k-\ell}
+                                     H_N^{(s-\ell)}(a).
+\end{equation}
+It holds for every $s$, including orders at which the infinite
+ensemble has a pole.  It follows from the finite index-shift identity;
+no divergent series is split in its proof.
+
+\subsection{Exact rank and the unique highest harmonic monomial}
+
+\begin{theorem}[Every rank at the same critical decay]
+\label{hier:rank}
+At $s=\rho$ and real $a>0$, the rational weight
+$R_{r,\rho,a}(n)=w_n^{[h]}(\rho,a)$ is positive and obeys
+\begin{equation}\label{hier:critical}
+ R_{r,\rho,a}(n)=\binom{2r-2}{\rho-1}n^{-(2r-1)}
+                                      +O(n^{-2r}).
+\end{equation}
+Its harmonic pencil has generic rank exactly $\rho$.
+
+Put $L=r-\rho$ and let
+\begin{equation}\label{hier:Vcutoff}
+ V_{L,N}(a)=\det\left(
+   \sum_{n=0}^N n^{i+j}R_{r,\rho,a}(n)\right)_{0\le i,j<L},
+ \qquad V_{0,N}=1.
+\end{equation}
+This is rational in $N$ (and rational in $a$).  The degree-$\rho$
+homogeneous part of the full $r$-particle cutoff determinant, with
+formal harmonic variables $X_q$ corresponding to $H_N^{(q)}(a)$, is
+exactly
+\begin{equation}\label{hier:top}
+ \boxed{\displaystyle
+ (-1)^{\rho(\rho-1)/2}V_{L,N}(a)X_\rho^\rho.}
+\end{equation}
+It is nonzero whenever $N\ge L-1$, with this cutoff condition vacuous
+when $L=0$.
+\end{theorem}
+\begin{proof}
+Positivity follows from \eqref{hier:laplace}.  In
+\eqref{hier:decay}, $h+\rho=2r-1$ and
+$(\rho)_h/h!=\binom{2r-2}{\rho-1}$.
+
+By \eqref{hier:annihilation}, $C_\ell$ is supported in its final
+$\rho-\ell$ rows and columns.  In its final
+$(\rho-\ell)\times(\rho-\ell)$ block, every entry below the first
+possible anti-diagonal in moment order vanishes, and the entries on
+that anti-diagonal all equal
+$\binom{h+\ell}{\ell}$.  In particular, all matrices lie in the
+same final $\rho\times\rho$ block.  Within that block $C_0$ has
+zeros for relative indices $i+j<\rho-1$ and ones when
+$i+j=\rho-1$; all other $C_\ell$ start strictly after that
+anti-diagonal.  Hence
+\begin{equation}\label{hier:block-det}
+ \det\left(\sum_{\ell=0}^{\rho-1}Y_\ell
+                  (C_\ell)_{\rm bottom}\right)
+     =(-1)^{\rho(\rho-1)/2}Y_0^\rho.
+\end{equation}
+Only the reversing permutation can contribute: its column-index sum
+already equals the minimum possible sum of nonzero entries in all
+rows.  Thus the pencil has rank $\rho$.
+
+At $s=\rho$, $Y_\ell$ is the formal variable $X_{\rho-\ell}$.
+To obtain degree $\rho$ in the full determinant one must take all
+these entries from the final block.  The complementary determinant
+is \eqref{hier:Vcutoff}, which proves \eqref{hier:top}.
+Its moments have degree at most $2L-2<h$, so
+\eqref{hier:finite-moment} expresses each using finite rational
+endpoints alone.  Positivity of the weight makes this $L\times L$
+Gram matrix positive definite once at least $L$ distinct nodes have
+been included.  This proves the last assertion, including the empty
+case $L=0$.
+\end{proof}
+
+For example, $r=3,\rho=2,h=3$ gives the positive critical weight
+\[
+ R(x)=\frac16\left\{\frac1{(x+a)^2}-\frac3{(x+a+1)^2}
+              +\frac3{(x+a+2)^2}-\frac1{(x+a+3)^2}\right\}.
+\]
+Its two coefficient matrices, indexed by harmonic orders, are
+\[
+ C^{(1)}=\begin{pmatrix}0&0&0\\0&0&0\\0&0&4\end{pmatrix},
+ \qquad
+ C^{(2)}=\begin{pmatrix}0&0&0\\0&0&1\\0&1&-4a-6\end{pmatrix}.
+\]
+The exact leading harmonic term is
+$-\bigl(\sum_{n=0}^N R(n)\bigr)X_2^2$, and its coefficient is
+nonzero for every $N\ge0$.
+
+\subsection{Exact pole orders and the leading Laurent coefficients}
+
+For an integer $m$ with $1\le m\le\rho$, put
+\begin{equation}\label{hier:pole-parameters}
+ \eta=\rho-m+1,\qquad L=r-\eta,
+ \qquad \beta_m=\binom{h+m-1}{m-1}.
+\end{equation}
+Define the convergent lower-particle normalization
+\begin{equation}\label{hier:lower-normalization}
+ G_{L,h}^{(m)}(a)=
+ \det\left(\sum_{n\ge0}n^{i+j}w_n^{[h]}(m,a)\right)_{0\le i,j<L},
+ \qquad G_{0,h}^{(m)}=1.
+\end{equation}
+
+\begin{theorem}[A staircase of exact spectral poles]
+\label{hier:poles}
+For real $a>0$, $Z_{r,\rho}(s,a)$ has a pole of exact order
+$\rho-m+1$ at every $m=1,\ldots,\rho$.  Its leading coefficient is
+\begin{equation}\label{hier:leading-Laurent}
+ \boxed{\displaystyle
+ \lim_{s\to m}(s-m)^{\eta}Z_{r,\rho}(s,a)
+ =(-1)^{\eta(\eta-1)/2}\beta_m^{\eta}G_{L,h}^{(m)}(a).}
+\end{equation}
+The lower normalization is strictly positive.  For complex $a$ with
+$\Re a>0$, the same identity holds holomorphically, but at special
+complex parameters the leading coefficient is not asserted nonzero.
+\end{theorem}
+\begin{proof}
+Only $\zeta(s-m+1,a)$ has a pole at $s=m$; its residue is one.
+Consequently the continued moment matrix has the local form
+\[
+ M(s)=\frac{C_{m-1}}{s-m}+A(s)
+\]
+with $A$ holomorphic.  The residue matrix is supported in its final
+$\eta\times\eta$ block.  This block has zeros before the
+anti-diagonal and constant anti-diagonal $\beta_m$, so its
+determinant is
+$(-1)^{\eta(\eta-1)/2}\beta_m^{\eta}$.
+
+In the full determinant, the coefficient of $(s-m)^{-\eta}$ is this
+residue determinant times the complementary top-left $L\times L$
+minor of $A(m)$.  These top-left entries have no pole and coincide
+with ordinary moments of $w_n^{[h]}(m,a)$.  Indeed, their largest
+degree is $2L-2$ and the weight decays as $n^{-m-h}$; the required
+strict inequality is
+\[
+ m+h-(2L-2)>1,
+\]
+which here has left side $\eta+2>1$.  The same inequality holds in
+a small complex neighborhood, so normal convergence identifies the
+analytic moment entries with their series there.  This proves
+\eqref{hier:leading-Laurent}.  At positive real $a$, the Laplace
+formula makes the weight strictly positive on infinitely many nodes,
+so the lower Gram determinant is strictly positive.  The pole order
+is therefore exact.
+\end{proof}
+
+\subsection{A Gamma product at the highest-order pole}
+
+At $m=1$, put $L=r-\rho$.  The normalization in the preceding theorem
+has the finite product
+\begin{equation}\label{hier:Gamma-product}
+ \boxed{\displaystyle
+ G_{L,h}^{(1)}(a)=
+ \prod_{j=0}^{L-1}
+ \frac{(j!)^2\Gamma(a+j)\Gamma(h-L+1-j)}
+      {\Gamma(h+1-j)\Gamma(a+h-j)}.}
+\end{equation}
+In particular, the leading Laurent coefficient at $s=1$ is
+$(-1)^{\rho(\rho-1)/2}$ times this product.  For $\rho=r$ it is
+the nonzero constant $(-1)^{r(r-1)/2}$.
+
+Here is a derivation that also fixes the normalization.  The beta
+partial-fraction identity gives
+\[
+ w_n^{[h]}(1,a)=\frac{\Gamma(n+a)}{\Gamma(n+a+h+1)}.
+\]
+Replace the two monomial bases of the $L$-particle moment determinant
+by the monic bases $n^{\underline i}$ and $(n+a)_j$.  The mixed
+moment is
+\begin{equation}\label{hier:mixed-moment}
+ M_{ij}=\frac{\Gamma(i+1)\Gamma(a+i+j)\Gamma(h-i-j)}
+                  {\Gamma(h+1-j)\Gamma(a+h)},
+ \qquad 0\le i,j<L.
+\end{equation}
+To see this, write $n=i+k$ and sum the resulting Gauss series with
+parameters $i+1,a+i+j,a+i+h+1$.  Its excess is $h-i-j>0$;
+in our parameters $h>2L-2$.  Thus the sum is justified by absolute
+convergence.
+
+After factoring rows and columns in \eqref{hier:mixed-moment}, the
+remaining determinant is
+\[
+ \det_{0\le i,j<L}\frac{(a+i)_j}{(1-h+i)_j}.
+\]
+The elementary factorial determinant
+\[
+ \det\frac{(x_i)_j}{(x_i+t)_j}
+ =\frac{\prod_{j=0}^{L-1}(t)_j\,
+             \prod_{i<k}(x_k-x_i)}
+            {\prod_{i=0}^{L-1}(x_i+t)_{L-1}}
+\]
+follows by multiplying each row by $(x_i+t)_{L-1}$ and comparing
+polynomial coefficients; evaluation at $x_i=-i$ computes the
+coefficient determinant.  Apply it with $x_i=a+i$ and $t=1-h-a$.
+Use
+\[
+ (1-h-a)_j=(-1)^j\frac{\Gamma(a+h)}{\Gamma(a+h-j)},\qquad
+ (1-h+i)_{L-1}=(-1)^{L-1}
+                    \frac{\Gamma(h-i)}{\Gamma(h-i-L+1)}.
+\]
+All signs cancel, and the remaining factors give
+\eqref{hier:Gamma-product}.  This is the same classical factorial
+determinant mechanism as the predecessor's residue product; the new
+point is its role as the coefficient of a pole of arbitrary order
+$\rho$ in the shorter-stencil spectral family.
+
+\subsection{A complete two-particle formula and its Stieltjes finite parts}
+
+For $r=\rho=2$ one has $h=1$.  Directly from the three moment
+identities,
+\begin{equation}\label{hier:r2}
+ \boxed{\displaystyle
+ Z_{2,2}(s,a)=2a^{-s}\zeta(s-1,a)
+        +(1-2a)a^{-s}\zeta(s,a)-\zeta(s,a)^2.}
+\end{equation}
+Thus, for every integer $m\ge3$, the ordinary convergent sum
+\begin{align}\label{hier:r2-sum}
+ &\sum_{0\le n<k}(k-n)^2
+ \bigl((n+a)^{-m}-(n+a+1)^{-m}\bigr)
+ \bigl((k+a)^{-m}-(k+a+1)^{-m}\bigr)\notag\\
+ &\hspace{12mm}=2a^{-m}\zeta(m-1,a)
+            +(1-2a)a^{-m}\zeta(m,a)-\zeta(m,a)^2.
+\end{align}
+For example, $a=1,m=3$ gives
+$2\zeta(2)-\zeta(3)-\zeta(3)^2$.
+
+Use the convention
+\[
+ \zeta(1+u,a)=\frac1u+
+    \sum_{k\ge0}\frac{(-1)^k\gamma_k(a)}{k!}u^k,
+ \qquad c=\frac1a-2.
+\]
+Expanding \eqref{hier:r2} at the double pole gives the full first
+three Laurent terms
+\begin{align}\label{hier:r2-s1}
+ Z_{2,2}(1+u,a)
+ ={}&-\frac1{u^2}+\frac{c-2\gamma_0(a)}u\notag\\
+ &+2\gamma_1(a)-\gamma_0(a)^2
+       +c\bigl(\gamma_0(a)-\log a+1\bigr)+O(u).
+\end{align}
+At the simple pole $s=2$,
+\begin{align}\label{hier:r2-s2}
+ \operatorname{FP}_{s=2}Z_{2,2}(s,a)
+ ={}&2a^{-2}\bigl(\gamma_0(a)-\log a\bigr)
+ +(1-2a)a^{-2}\zeta(2,a)-\zeta(2,a)^2.
+\end{align}
+These may be written entirely in generalized Stieltjes and polygamma
+coordinates using $\gamma_0(a)=-\psi(a)$ and $\zeta(2,a)=\psi'(a)$.
+They are spectral Laurent finite parts.  No equality with an
+unsubtracted endpoint sum or a hard-cutoff constant is implicit.
+
+There is a particularly simple check at order zero. Substitution of
+$\zeta(0,a)=1/2-a$ and
+$\zeta(-1,a)=-(a^2-a+1/6)/2$ into \eqref{hier:r2} gives
+\begin{equation}\label{hier:zero-contact}
+                  Z_{2,2}(0,a)=\frac1{12}
+\end{equation}
+for its spectral continuation. Yet at $s=0$ every weight
+$(n+a)^0-(n+a+1)^0$ is exactly zero, so the unmodified defining
+sum at that parameter has ordinary value zero. The discrepancy is
+an explicit example of noncommutation between continuation and
+specialization of the original infinite sum; \eqref{hier:zero-contact}
+does not assign $1/12$ to an ordinary sum of zero terms.
+
+All further Laurent coefficients of \eqref{hier:closed} are obtained
+by finite determinant arithmetic from the Hurwitz expansions at the
+relevant shifted orders.  In particular, at $s=m$ the coordinates are
+the generalized Stieltjes constants from the sole resonant Hurwitz
+factor, together with finitely many ordinary Hurwitz derivatives from
+the nonresonant factors and elementary endpoint logarithms.  This is
+an exact coefficient-generation procedure, without a claim that the
+resulting higher constants admit an additional classical reduction.
+
+% END sections/06_spectral_hierarchy.tex
+
+% BEGIN sections/07_polylog_generator.tex
+\section{A cutoff polylogarithm identity and its Euler primitive}
+\label{hier:gf-section}
+
+The first rank-two member of the new hierarchy gives a compact
+polylogarithmic consequence.  Its weight is
+\begin{equation}\label{hier:gf-weight}
+ R(n)=\frac1{(n+1)^2}-\frac1{(n+2)^2},
+\end{equation}
+whereas the predecessor's explicit repeated-pole generator uses the
+distinct second-difference weight
+$\tfrac12\{(n+1)^{-2}-2(n+2)^{-2}+(n+3)^{-2}\}$.
+Define the finite ordered determinant sum
+\begin{equation}\label{hier:gf-cutoff}
+ Z_N=\sum_{0\le n<k\le N}(k-n)^2R(n)R(k),\qquad Z_0=0.
+\end{equation}
+
+Our one-direction multiple-polylogarithm convention is
+\begin{equation}\label{hier:gf-convention}
+ \operatorname{Li}_{s_1,\ldots,s_j}(z)
+ =\sum_{n_1>\cdots>n_j\ge1}
+       \frac{z^{n_1}}{n_1^{s_1}\cdots n_j^{s_j}},
+ \qquad |z|<1,
+\end{equation}
+with positive integer indices.  Thus only the largest summation index
+carries $z$; in a multiple-argument convention this is
+$\operatorname{Li}_{s_1,\ldots,s_j}(z,1,\ldots,1)$.
+In particular the shuffle identity has normalization
+$\operatorname{Li}_1(z)^2=2\operatorname{Li}_{1,1}(z)$.
+
+\begin{theorem}[Finite cutoff and its complete generator]
+\label{hier:gf-theorem}
+For $M=N+1\ge1$,
+\begin{equation}\label{hier:gf-finite}
+ \boxed{\displaystyle
+ Z_{M-1}=
+ 2\left(1-\frac1{(M+1)^2}\right)H_M
+ -(H_M^{(2)})^2
+ -\frac{M^2}{(M+1)^2}\bigl(H_M^{(2)}+1\bigr).}
+\end{equation}
+The generating function $G(z)=\sum_{N\ge0}Z_Nz^{N+1}$ satisfies
+\begin{align}\label{hier:gf-closed}
+ z(1-z)G(z)={}&2\operatorname{Li}_1(z)-\operatorname{Li}_2(z)
+                 -z-z\operatorname{Li}_4(z)\notag\\
+ &+2(1-z)\bigl(\operatorname{Li}_{1,2}(z)
+                         -\operatorname{Li}_{2,1}(z)\bigr)
+ -(1+z)\operatorname{Li}_{2,2}(z).
+\end{align}
+All series are absolutely and locally normally convergent for $|z|<1$.
+The quotient in \eqref{hier:gf-closed} is interpreted by its removable
+value at zero; $G(z)=\tfrac5{48}z^2+O(z^3)$.
+\end{theorem}
+\begin{proof}
+Use the monic moment basis $1,n+1$, which leaves the determinant
+unchanged, and put $p=M+1$.  Telescoping gives its three moments as
+\[
+ \mu_0=1-p^{-2},\qquad
+ \mu_1=H_M^{(2)}-Mp^{-2},\qquad
+ \mu_2=2H_M-H_M^{(2)}-1+2p^{-1}-p^{-2}.
+\]
+Expanding $\mu_0\mu_2-\mu_1^2$ proves \eqref{hier:gf-finite}.
+The basic absolutely convergent summation identities are
+\begin{align*}
+ \sum_{M\ge1}H_M^{(p)}z^M
+    &=\frac{\operatorname{Li}_p(z)}{1-z},\qquad
+ \sum_{M\ge1}\frac{z^M H_M^{(p)}}{(M+1)^q}
+    =z^{-1}\operatorname{Li}_{q,p}(z),\\
+ \sum_{M\ge1}(H_M^{(2)})^2z^M
+    &=\frac{2\operatorname{Li}_{2,2}(z)+\operatorname{Li}_4(z)}{1-z},
+ \qquad
+ \sum_{M\ge1}\frac{z^M}{(M+1)^q}
+    =z^{-1}\operatorname{Li}_q(z)-1.
+\end{align*}
+The square identity follows by splitting its two inner indices into
+the two strict orderings and the diagonal.  Substitute these formulas
+into \eqref{hier:gf-finite}, after writing
+$M^2/(M+1)^2=1-2/(M+1)+1/(M+1)^2$.  Collecting terms gives
+\eqref{hier:gf-closed}.
+
+Equation \eqref{hier:gf-finite} gives $Z_N=O(\log(N+2))$.
+Every multiple-polylogarithm series in \eqref{hier:gf-convention}
+also converges normally on compact subdisks, since its inner sums
+grow at most polynomially while $z^{n_1}$ decays geometrically.
+These estimates justify all interchanges.  The original generating
+series proves that the apparent singularity at zero is removable;
+$Z_0=0$ and $Z_1=R(0)R(1)=5/48$ give the stated initial terms.
+\end{proof}
+
+\begin{corollary}[An anchored Euler primitive]
+\label{hier:gf-primitive}
+For $|z|<1$, set
+$I(z)=\int_0^zG(t)\,dt/t$ along any path in the disk.  Then
+\begin{align}\label{hier:gf-primitive-closed}
+ I(z)={}&\frac{
+ \operatorname{Li}_1(z)^2+2\operatorname{Li}_{2,1}(z)
+ -\operatorname{Li}_{1,2}(z)+\operatorname{Li}_{2,2}(z)
+ +\operatorname{Li}_2(z)-\operatorname{Li}_1(z)}{z}\notag\\
+ &-\operatorname{Li}_5(z)-\operatorname{Li}_{1,4}(z)
+     -2\operatorname{Li}_{3,2}(z)
+     -2\operatorname{Li}_{1,2,2}(z).
+\end{align}
+The removable value at zero is $I(0)=0$, and
+\[
+ I(z)=\sum_{N\ge0}\frac{Z_N}{N+1}z^{N+1}
+     =\frac5{96}z^2+O(z^3).
+\]
+\end{corollary}
+\begin{proof}
+Let $\theta=z\,d/dz$.  From the absolutely convergent series,
+\[
+ \theta\operatorname{Li}_{p,\boldsymbol s}
+      =\operatorname{Li}_{p-1,\boldsymbol s}\quad(p>1),\qquad
+ \theta\operatorname{Li}_{1,\boldsymbol s}
+      =\frac{z}{1-z}\operatorname{Li}_{\boldsymbol s}.
+\]
+For an empty $\boldsymbol s$ the second formula means
+$\theta\operatorname{Li}_1=z/(1-z)$.
+These identities also prove
+$\operatorname{Li}_1^2=2\operatorname{Li}_{1,1}$ by comparing
+derivatives and values at zero.  Apply them to
+\eqref{hier:gf-primitive-closed}: its Euler derivative is the function $G(z)$ specified by
+\eqref{hier:gf-closed}.  The convergent expansions at zero give the
+zero integration constant and the stated removability.  Alternatively,
+coefficientwise division of \eqref{hier:gf-finite} by $M$ gives the
+same formula by
+\[
+ \frac1{M(M+1)^2}
+  =\frac1M-\frac1{M+1}-\frac1{(M+1)^2}.
+\]
+\end{proof}
+
+The raw generator has a representation of depth at most two, although
+its coefficient determinant has harmonic degree two.  Its displayed
+Euler primitive uses depth at most three.  These are explicit
+representations, not claims of minimal depth under functional identities.
+
+\subsection{A convergent second Euler endpoint}
+
+\begin{corollary}[An ordinary-zeta endpoint]
+\label{hier:gf-endpoint}
+The second Euler primitive has the absolutely convergent value
+\begin{align}\label{hier:gf-endpoint-value}
+ \sum_{N\ge0}\frac{Z_N}{(N+1)^2}
+ &=\int_0^1\frac{-\log z}{z}G(z)\,dz\notag\\
+ &=1+3\zeta(2)-2\zeta(3)-\frac34\zeta(4)
+                     -\zeta(3)^2-\frac{19}{24}\zeta(6).
+\end{align}
+The new content here is the determinant endpoint identity; the
+weight-six multiple-zeta reductions used below are classical.
+\end{corollary}
+\begin{proof}
+The estimate $Z_N=O(\log(N+2))$ proves convergence.  Positivity of
+$Z_N$ also permits Tonelli's theorem in the integral representation.
+Divide \eqref{hier:gf-finite} by $M^2$ and collect its rational
+coefficients to obtain the pointwise identity
+\[
+ \frac{Z_{M-1}}{M^2}
+ =-\frac{(H_M^{(2)})^2}{M^2}
+  -\frac{2H_M}{(M+1)^2}
+  +\frac{4H_M}{M(M+1)}
+  -\frac{H_M^{(2)}+1}{(M+1)^2}.
+\]
+Every term is separately summable.  The standard nested-series
+interpretation and elementary telescoping give
+\[
+ \sum_{M\ge1}\frac{H_M}{M(M+1)}=\zeta(2),\qquad
+ \sum_{M\ge1}\frac{H_M}{(M+1)^2}=\zeta(2,1)=\zeta(3),
+ \qquad
+ \sum_{M\ge1}\frac{H_M^{(2)}}{(M+1)^2}=\zeta(2,2)=\frac34\zeta(4).
+\]
+Splitting coincident and strictly ordered indices gives
+\begin{equation}\label{hier:gf-square-Euler}
+ \sum_{M\ge1}\frac{(H_M^{(2)})^2}{M^2}
+ =2\zeta(2,2,2)+2\zeta(4,2)+\zeta(2,4)+\zeta(6)
+ =\zeta(3)^2+\frac{19}{24}\zeta(6).
+\end{equation}
+For clarity, the three weight-six inputs are
+\[
+ \zeta(2,2,2)=\frac3{16}\zeta(6),\qquad
+ \zeta(4,2)=\zeta(3)^2-\frac43\zeta(6),\qquad
+ \zeta(2,4)=\frac{25}{12}\zeta(6)-\zeta(3)^2.
+\]
+They follow from short classical calculations.  Expanding the cube
+of $\zeta(2)$ by coincident indices gives the first.  Euler's formula
+$2\zeta(m,1)=m\zeta(m+1)-\sum_{j=1}^{m-2}
+\zeta(j+1)\zeta(m-j)$, with $m=5$, gives
+$\zeta(5,1)=\tfrac34\zeta(6)-\tfrac12\zeta(3)^2$;
+see \cite[Eq.~(1.3)]{hier:BB2005}.  Equating the convergent shuffle
+and stuffle products
+\[
+ \zeta(3)^2=2\zeta(3,3)+6\zeta(4,2)+12\zeta(5,1),
+ \qquad
+ \zeta(3)^2=2\zeta(3,3)+\zeta(6)
+\]
+then gives the second weight-six input.  Finally,
+$\zeta(2,4)+\zeta(4,2)=\zeta(2)\zeta(4)-\zeta(6)$ gives the third.
+The same Euler formula at $m=2$ supplies $\zeta(2,1)=\zeta(3)$.
+Substitution into the summable pointwise identity proves
+\eqref{hier:gf-endpoint-value}.
+\end{proof}
+
+% END sections/07_polylog_generator.tex
+
+% BEGIN sections/08_order_ten.tex
+% Research fragment: all labels begin ten:. Standard amsmath/amsthm required.
+% Cite AlternatingIncoming, QuarticIncoming, and GeneralHankel as the inspected project sources.
+\section{Complete reconstruction for smaller tail order ten}
+\label{ten:section}
+
+The two latest incoming reconstruction reports leave a particularly
+small but genuine gap.  The alternating-tail report proves the order-ten
+prefix theorem outside $b\equiv962\pmod{2048}$, while the quartic
+reconstruction report proves it for every $b\ge1920$
+\cite{AlternatingIncoming,QuarticIncoming}.  We complete the family.  The new step is
+a coefficientwise congruence with one additional bit of precision:
+its only exceptional class is $b\equiv3010\pmod{4096}$, which lies
+entirely inside the range of the second report's real-variable argument.
+We reproduce that argument at order ten, with explicit constants, to
+make the resulting nonvanishing proof complete.  The small determinant
+normalization and its Pad\'e origin are credited to the source reports;
+the modulus-$2^{17}$ congruence and the completed family are the present
+contribution.  No claim of arithmetic independence of numerical special
+values is involved.
+
+\subsection{Statement and exact meaning of reconstruction}
+
+Let
+\[
+ A_s(n)=\zeta(s,n+1)=\zeta(s)-H_n^{(s)},\qquad x_n=n+\tfrac12,
+ \qquad
+ D_{10,2b}(w)=\sum_{n\ge0}A_{10}(n)A_{2b}(n)x_n^{-w}.
+\]
+The series initially converges for $\operatorname{Re}w>-2b-7$.
+Its centered Euler--Maclaurin continuation is regular at nonpositive
+even integers.  Write $D_r=D_{10,2b}(-2r)$ and use the source's
+triangular coordinates
+\begin{align}
+ C_j&=\sum_{r=0}^{j}\binom{2j+1}{2r}2^{-2(j-r)}D_r,
+ \label{ten:C}\\
+ D_r&=\sum_{j=0}^{r}\frac{\binom{2r}{2j}}{2j+1}
+             B_{2r-2j}(1/2)C_j.
+ \label{ten:D}
+\end{align}
+For $j\ge b$, each $C_j$ is a rational combination of
+$Z_k=\zeta(2k)$, $0\le k<b$, with $Z_0=-1/2$.  The words
+\emph{formal rank} refer to rational coefficient vectors in the
+formal basis
+\[
+ C_0,\ldots,C_{b-1},Z_0,\ldots,Z_{b-1};
+\]
+they do not refer to the linear independence of the values after
+evaluation.
+
+Put $\mu_j=B_{2j}/(2j)!$ for $j\ge0$, and $\mu_j=0$ for $j<0$.
+The late coordinate matrix is
+\begin{equation}\label{ten:M}
+ (M_{5,b})_{tk}=\mu_{t+k-4}
+ \left\{\frac{(2b+2t-9)!}{(2b-2k)!}
+ +\mathbf1_{k<5}\frac{(2t+1)!}{(10-2k)!}\right\},
+ \qquad 0\le t,k<b.
+\end{equation}
+In particular,
+$(C_b,\ldots,C_{2b-1})^{\mathsf T}
+=M_{5,b}(Z_0,\ldots,Z_{b-1})^{\mathsf T}$.
+Formula \eqref{ten:M} also defines the late coordinate row for
+every integer $t\ge0$.  Its binomial form, useful without factorial
+conventions, is
+\[
+ B_{2t+2k-8}\left\{
+ \frac{\binom{2t+2}{10-2k}}{2t+2}
+ +\frac{\binom{2b+2t-8}{2b-2k}}{2b+2t-8}\right\},
+\]
+where negative Bernoulli indices give zero and a summand is omitted
+unless its lower binomial index lies between $2$ and its upper index.
+These are the inherited finite Bernoulli moment formulas
+\cite{GeneralHankel}.  The full first-$2b$ coordinate determinant is
+$\det M_{5,b}/(4b-1)!!$.
+
+\begin{theorem}[Complete order-ten optimal prefix]\label{ten:main}
+For every integer $b\ge6$, $M_{5,b}$ is nonsingular.  Consequently,
+for every even $q>10$, the $q$ moments
+\[
+ D_{10,q}(0),D_{10,q}(-2),\ldots,D_{10,q}(-2(q-1))
+\]
+have full formal rank $q$.  Every subsequent centered even moment
+is an explicit rational linear combination of this prefix.
+\end{theorem}
+
+The conclusion now holds for every unequal even pair whose smaller
+order is at most ten, using the previously established smaller-order
+families.  It does not establish the unrestricted conjecture at
+smaller orders twelve and above, nor the full gap-six family.
+
+\subsection{A finite five-dimensional definition of the numerator}
+
+The following normalization is retained from \cite{AlternatingIncoming}.
+For $0\le i,\ell\le4$, define
+\[
+ n_i=b-5+i,\quad N_{i\ell}=2(n_i-\ell)+1,
+ \quad R_\ell=2b-8+2\ell,
+\]
+\[
+ F_{i\ell}=\frac1{(2\ell+1)!}
+       \prod_{r=0}^{2\ell-1}(2n_i-r)(2n_i+3+r),
+\]
+and define Newton coefficients $d_{ih}$ by the finite identity
+\begin{equation}\label{ten:Newton}
+ (2n_i+2-y)(4n_i+2-y)^{\underline{2i}}
+       =\sum_{h=0}^{2i+1}d_{ih}y^{\underline h}.
+\end{equation}
+Equivalently,
+\[
+ d_{ih}=\frac1{h!}\sum_{r=0}^{h}(-1)^{h-r}\binom hr
+       (2n_i+2-r)(4n_i+2-r)^{\underline{2i}}.
+\]
+For independent variables $U_1,\ldots,U_9$ put
+\begin{equation}\label{ten:calA}
+ \mathcal A_{i\ell}=2F_{i\ell}+
+ \frac{R_\ell!}{(2n_i+1)(2n_i+2)(2\ell+2)!N_{i\ell}!}
+ \sum_{k=0}^{i}d_{i,2k+1}N_{i\ell}^{\underline{2k+1}}
+                 U_{5-i+\ell+k}.
+\end{equation}
+All factorial ratios with $b$-dependent arguments have fixed index
+differences and therefore mean finite rational products in $b$.
+
+Set
+\begin{align*}
+ \Delta_{10}(b)={}&4096b^{12}-110592b^{11}+1236992b^{10}
+ -7303680b^9+23705088b^8\\
+ &-38140416b^7+14925056b^6+24490080b^5-4469984b^4\\
+ &-15838992b^3-2571948b^2+4244400b+1488375,
+\end{align*}
+and define the finite rational expression
+\begin{equation}\label{ten:Pdef}
+ P_{10}(b;U)=138240(2b-7)(2b-5)\Delta_{10}(b)
+                       \frac{\det\mathcal A}{\det F}.
+\end{equation}
+Exact coefficient arithmetic gives
+\begin{align}\label{ten:Fdet}
+ \det F={}&\frac{16384}{4465125}(b-3)(b-2)^2(b-1)
+     (2b-7)(2b-5)^2(2b-3)\notag\\
+ &\cdot(4b-15)(4b-13)(4b-11)^2(4b-9)^2(4b-7)^2
+          (4b-5)(4b-3)\Delta_{10}(b).
+\end{align}
+The expression $P_{10}$ belongs to $\mathbb Z[b,U_1,\ldots,U_9]$.
+It has $439$ monomials when grouped by the $U$ exponents, or
+$10403$ monomials after expanding also in $b$.  Its coefficients
+have degree at most $24$ in $b$.  Equations
+\eqref{ten:Newton}--\eqref{ten:Pdef} specify it completely, without
+interpolation or a dependence on an unspecified fitted expression.
+The accompanying exact verifier independently reconstructs
+\eqref{ten:Fdet}, clears the five row denominators of
+\eqref{ten:calA}, sums the $120$ signed permutation products, and
+compares every coefficient of \eqref{ten:Pdef} with the inherited
+integer certificate.  Thus the reused certificate is independently
+replayed as an algebraic identity.
+
+For $b\ge10$, with $H=(\mu_{t+k-4})_{0\le t,k<b}$, define
+\[
+ \rho_{5,b}=\frac{\det M_{5,b}}
+ {\displaystyle
+  \frac{\prod_{t=0}^{b-1}(2b+2t-9)!}
+       {\prod_{k=0}^{b-1}(2b-2k)!}\det H}.
+\]
+The source reduction is
+\begin{equation}\label{ten:rho}
+ \rho_{5,b}
+ =\left.\frac{\det\mathcal A}{\det F}\right|_{U_j=2B_{2b-2j}}
+ =\frac{P_{10}(b;2B_{2b-2},\ldots,2B_{2b-18})}
+ {138240(2b-7)(2b-5)\Delta_{10}(b)}.
+\end{equation}
+Here $H$ is nonsingular.  One direct proof conjugates $H$ by
+$\operatorname{diag}(1,-1,1,\ldots)$ and partitions after its first
+three rows and columns.  The resulting matrix has blocks
+\[
+ \begin{pmatrix}ee^{\mathsf T}&B\\B^{\mathsf T}&-P\end{pmatrix},
+ \qquad e=(0,0,1)^{\mathsf T},
+\]
+where $P$ is positive definite by the representation
+$2\sum_{m\ge1}(2\pi m)^{-2s}p((2\pi m)^{-2})^2>0$ for
+$s\ge1$ and a nonzero polynomial $p$.  The first two rows of $B$
+have a nonsingular antitriangular minor.  Consequently
+$ee^{\mathsf T}+BP^{-1}B^{\mathsf T}$ is positive definite.
+
+For completeness, the exact nonzero multiplier behind
+\eqref{ten:rho} can be obtained without assuming Pad\'e normality.
+The monic polynomials
+\[
+ \pi_n(x)=\sum_{t=0}^{n}
+ \frac{2(2n+2t+1)!(2n+1)!}
+ {(4n+2)!(2n-2t+1)!(2t)!}x^t
+\]
+satisfy, for $\mathcal N(x^r)=\mu_{r+1}$,
+\[
+ \mathcal N(x^j\pi_n)=0\ (j<n),\qquad
+ \mathcal N(x^n\pi_n)=h_n,
+ \quad h_n=\frac{((2n+1)!)^2}{(4n+2)!(4n+3)!}.
+\]
+These finite identities follow by coefficient comparison in the
+diagonal Pad\'e formula for $e^t$, as in \cite{QuarticIncoming}; they
+can also be checked directly using the Bernoulli generating function.
+The same coefficients give
+\[
+ \sum_{t=0}^{n}[x^t]\pi_n(x)\,\mu_{t-\ell}
+ =c_n f_\ell(n),\qquad
+ c_n=\frac{(2n+1)(2n+2)!}{(4n+2)!},
+\]
+where $f_\ell(n)=F_{i\ell}$ when $n=n_i$.
+Apply these monic row combinations to
+$H+U^{\mathrm{pert}}$, where
+\[
+ U^{\mathrm{pert}}_{tk}
+ =\mathbf1_{k<5}\mu_{t+k-4}
+ \frac{(2t+1)!(2b-2k)!}{(10-2k)!(2b+2t-9)!}.
+\]
+The last five transformed rows vanish in columns $k\ge5$.
+The complementary block is upper triangular with diagonal
+$h_0,\ldots,h_{b-6}$.  Reverse the retained five columns and
+divide row $i$ by $c_{n_i}$.  The unperturbed entries become $F$.
+For the perturbation use the elementary Bernoulli identity
+\[
+ \sum_{j=0}^{N}\binom Nj B_j(N-j)^{\underline h}
+       =N^{\underline h}B_{N-h}(1).
+\]
+Since $b\ge10$, all the retained indices $N-h$ are at least two;
+only odd $h$ survive.  Restoring the omitted $j=1$ term supplies
+one further copy of $F$, explaining the necessary factor $2F$
+in \eqref{ten:calA}.  This proves
+\begin{equation}\label{ten:multiplier}
+ \det M_{5,b}=(-1)^{5b-15}
+ \frac{\prod_{t=0}^{b-1}(2b+2t-9)!}
+      {\prod_{k=0}^{b-1}(2b-2k)!}
+ \left(\prod_{n=0}^{b-6}h_n\right)
+ \left(\prod_{i=0}^{4}c_{n_i}\right)\det\mathcal A.
+\end{equation}
+The same argument with the perturbation absent gives the identical
+multiplier for $\det H$ and $\det F$, proving \eqref{ten:rho}.
+
+\subsection{One additional bit removes the remaining finite obstruction}
+
+All congruences in this subsection are in $\mathbb Z_{(2)}$,
+the rationals with odd denominator.  We use the classical fact
+$v_2(B_{2m})=-1$ for $m\ge1$.
+
+\begin{lemma}[A doubled Bernoulli congruence]\label{ten:B17}
+For every integer $m\ge13$,
+\[
+ 2B_{2m}\equiv\mathcal B_{17}(m)\pmod{131072},
+\]
+where
+\begin{equation}\label{ten:Bpoly}
+ \mathcal B_{17}(x)=1+20068x-26384x^2+2816x^3+45824x^4
+             +4096x^5-24576x^6+65536x^8.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Faulhaber's identity, with $L=512$, gives
+\[
+ \sum_{a=0}^{L-1}a^{2m}
+ =LB_{2m}+\sum_{h=2}^{2m+1}
+      \binom{2m}{h-1}\frac{L^h}{h}B_{2m+1-h}.
+\]
+The $h=2$ term vanishes.  Every term with $h\ge3$ has valuation
+at least $9h-v_2(h)-1\ge26$.  Divide by $256$ and reduce modulo
+$2^{17}$.  The even $a$ terms vanish because $2m\ge26$.
+For odd $a$, expand
+$a^{2m}=(1+(a^2-1))^m$; since $8\mid a^2-1$, terms with
+binomial degree at least nine have valuation at least $27-8>17$
+after division.  Therefore
+\begin{equation}\label{ten:finite-average}
+ 2B_{2m}\equiv\frac1{256}
+ \sum_{a=1,3,\ldots,511}\sum_{j=0}^{8}
+          \binom mj(a^2-1)^j\pmod{2^{17}}.
+\end{equation}
+Expand the finite right side as a polynomial in $m$.  Its rational
+coefficients all have odd denominators, and their reductions modulo
+$2^{17}$, in increasing powers, are
+\[
+ (1,20068,-26384,2816,45824,4096,-24576,0,65536).
+\]
+This is an exact finite coefficient calculation, reproduced by the
+verifier from the $256$ odd support points and the nine displayed
+binomial terms.  It gives \eqref{ten:Bpoly} and proves the lemma.
+\end{proof}
+
+Define
+\begin{equation}\label{ten:Rpoly}
+ \begin{split}
+ \mathcal R(b)={}&1536b^8+128b^7-928b^6-816b^5+464b^4\\
+                 &-1696b^3-1930b^2-1831b+694.
+ \end{split}
+\end{equation}
+The new coefficientwise polynomial identity is
+\begin{equation}\label{ten:congruence}
+ P_{10}\bigl(b;\mathcal B_{17}(b-1),\ldots,
+                    \mathcal B_{17}(b-9)\bigr)
+       \equiv32\mathcal R(b)\pmod{131072}.
+\end{equation}
+This is verified in $\mathbb Z[b]$, not only at selected integer
+arguments.  A compact exact procedure is to group the numerator's
+$10403$ terms by their $439$ $U$-monomials, substitute the nine
+explicit polynomials, multiply modulo $131072$, and compare every
+coefficient with \eqref{ten:Rpoly}.  The provided script carries
+out precisely those finite ring operations, after independently
+rebuilding the numerator from \eqref{ten:calA}.  Thus
+\eqref{ten:congruence} is a finite algebraic certificate whose
+entire input is displayed or defined by finite products above.
+
+The linear coefficient of $\mathcal R$ is odd, and every coefficient
+of degree at least two is even.  Hence for distinct integers $x,y$,
+\begin{equation}\label{ten:isometry}
+ v_2(\mathcal R(x)-\mathcal R(y))=v_2(x-y).
+\end{equation}
+Indeed, the quotient by $x-y$ is the odd integer $-1831$ plus an
+even integer.  Direct substitution gives
+\[
+ \mathcal R(3010)\equiv0\pmod{4096},\qquad
+ \mathcal R(962)\equiv2048\pmod{4096}.
+\]
+Equation \eqref{ten:isometry} proves that $3010$ is the unique
+zero class modulo $4096$.
+
+\begin{proposition}[The new uniform congruence range]\label{ten:range}
+For $b\ge22$ and $b\not\equiv3010\pmod{4096}$,
+$M_{5,b}$ is nonsingular, and
+\begin{equation}\label{ten:valuation}
+ v_2(\rho_{5,b})=v_2(b-3010)-5.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Every $b-j$ in \eqref{ten:rho} is at least $13$.  Thus
+\eqref{ten:B17} and \eqref{ten:congruence} give
+\[
+ \frac{P_{10}(b;2B_{2b-2},\ldots,2B_{2b-18})}{32}
+          \equiv\mathcal R(b)\pmod{4096}.
+\]
+Outside the unique zero class, \eqref{ten:isometry} gives
+$v_2(\mathcal R(b))=v_2(b-3010)<12$.
+The numerator therefore has valuation $5+v_2(b-3010)$.
+The denominator in \eqref{ten:rho} has valuation $10$:
+$138240=2^{10}\cdot135$, and all three remaining factors are odd
+at integer $b$.  This proves the nonvanishing and
+\eqref{ten:valuation}.
+\end{proof}
+
+\subsection{A self-contained sufficient real-variable threshold}
+
+We specialize the general highest-degree argument of
+\cite{QuarticIncoming}; this subsection is a credited reproduction
+with the explicit order-ten constants independently recomputed.
+Let
+\[
+ J(b)=\prod_{i=0}^{4}(2n_i+1)(2n_i+2),\qquad
+ E(b)=\prod_{i,\ell=0}^{4}\prod_{r=1}^{\max\{0,2i-4\ell-1\}}
+                  (R_\ell+r),\qquad D(b)=10!J(b)E(b).
+\]
+Here $\deg E=20$ and $\deg D=30$.  Clearing the fixed factorial
+and row denominators in \eqref{ten:calA} gives
+\[
+ \widetilde{\mathcal A}=D\mathcal A
+     \in\mathbb Z[b,U_1,\ldots,U_9]^{5\times5},\qquad
+ \mathscr P=\det\widetilde{\mathcal A}.
+\]
+Every entry has $b$-degree at most $46$, so $\deg_b\mathscr P\le230$.
+If $\|f\|_1$ denotes the sum of absolute values of all coefficients,
+exact expansion of the $25$ entries gives
+\[
+ E^*:=\max_{i,\ell}\|\widetilde{\mathcal A}_{i\ell}\|_1
+ =602847821074996042728613866361551228764160.
+\]
+Consequently $\|\mathscr P\|_1\le K:=120(E^*)^5$.
+The number $E^*$ is independently recomputed from the entry formulas
+by the accompanying threshold script; it is not inferred from
+numerical samples.
+
+Put $F_0=(2b-18)!$ and
+\[
+ V_j=U_j\frac{F_0}{(2b-2j)!},\qquad
+ \kappa=\frac{120(10!)^5}{2!4!6!8!10!}
+         =14932726824960000000.
+\]
+The part of $\mathscr P$ homogeneous of total degree five in $U$
+has the exact form
+\begin{equation}\label{ten:leading}
+ \mathscr P_{[5]}=-\mathscr G(b)\det(V_{i+j+1})_{0\le i,j\le4},
+\end{equation}
+where
+\[
+ \mathscr G(b)=\kappa J(b)^4E(b)^5
+ \prod_{i=0}^{4}(4n_i+2)^{\underline{2i}}
+ \prod_{\ell=0}^{4}\prod_{r=1}^{10+2\ell}(2b-18+r).
+\]
+To see the structural factorization, write
+$T=\mathcal A-2F$ and use $U_j=(2b-2j)!V_j/F_0$ in
+\eqref{ten:calA}.  The identity
+$N_{i\ell}-(2k+1)=2b-2(5-i+\ell+k)$ cancels the factorials.
+The remaining matrix factors as
+\[
+ T=\operatorname{diag}\!\left(\frac1{(2n_i+1)(2n_i+2)}\right)
+       L\,(V_{5-i+\ell})_{0\le i,\ell\le4}
+       \operatorname{diag}\!\left(\frac{R_\ell!}{F_0(2\ell+2)!}\right),
+\]
+where $L_{i,i-k}=d_{i,2k+1}$ is lower triangular.  Its diagonal is
+$d_{i1}=-(i+1)(4n_i+2)^{\underline{2i}}$, which follows directly
+from the difference of \eqref{ten:Newton} at $y=1$ and $y=0$.
+Reverse the five middle rows and multiply all row factors and
+$D^5$.  This gives exactly \eqref{ten:leading}.
+
+At $U_j=2B_{2b-2j}$, Euler's Bernoulli formula yields
+\begin{equation}\label{ten:actualleading}
+ |\mathscr P_{[5]}|
+ =\frac{\mathscr G(b)(4F_0)^5}{(2\pi)^{10b-50}}
+       \det\bigl(\zeta(2b-18+2i+2j)\bigr)_{0\le i,j\le4}.
+\end{equation}
+The determinant is strictly positive.  Indeed, Cauchy--Binet for
+the discrete moments on $m^{-2}$ gives
+\[
+ \det\bigl(\zeta(2b-18+2i+2j)\bigr)
+ =\sum_{m_1<\cdots<m_5}(m_1\cdots m_5)^{-2b+18}
+                  \prod_{r<s}(m_r^{-2}-m_s^{-2})^2.
+\]
+Keeping $(m_1,\ldots,m_5)=(1,2,3,4,5)$ gives the lower bound
+\[
+ V\,120^{-2b+18},\qquad
+ V=\prod_{1\le r<s\le5}(r^{-2}-s^{-2})^2
+          =\frac{2401}{36864000000000000}.
+\]
+For $b\ge20$ every linear factor of $\mathscr G$ is at least $b$,
+and its degree is $230$, so $\mathscr G(b)\ge\kappa b^{230}$.
+For $b\ge30$,
+\[
+ |2B_{2b-2j}|\le
+ T_b:=\frac{8(2b)^{16}(2b-18)!}{(2\pi)^{2b-18}},
+ \qquad 1\le j\le9,
+\]
+using $\zeta(2b-2j)<2$.  Also $T_b\ge1$: since $2b-18\ge42$,
+the elementary comparison $26!>8^{26}$ and induction suffice.
+All lower-degree terms of $\mathscr P$ have total $U$-degree at
+most four.  Therefore
+\[
+ |\mathscr P_{[\le4]}|\le Kb^{230}T_b^4.
+\]
+Divide by \eqref{ten:actualleading}, cancel the powers of $2\pi$
+before using $2\pi<8$, and obtain
+\begin{equation}\label{ten:bound}
+ \frac{|\mathscr P_{[\le4]}|}{|\mathscr P_{[5]}|}
+ \le R(b):=C\frac{b^{64}960^{2b}}{(2b-18)!},\qquad
+ C=\frac{K8^{26}2^{64}}{\kappa4^5V120^{18}}.
+\end{equation}
+Every constant is explicit and rational.  Exact integer comparison
+after clearing denominators gives
+\[
+ R(1920)<2^{-546}<1.
+\]
+The verifier checks this stronger margin.  Moreover, for $b\ge1920$,
+\[
+ \frac{R(b+1)}{R(b)}=
+ \left(1+\frac1b\right)^{64}
+      \frac{960^2}{(2b-16)(2b-17)}<\frac34.
+\]
+For a simple uniform justification, $(1+1/b)^{64}<3$,
+both denominator factors exceed $b$, and $b\ge1920=2\cdot960$.
+Thus the highest-degree term cannot be cancelled for any $b\ge1920$.
+Since $D(b)>0$ and the multiplier \eqref{ten:multiplier} is nonzero,
+we have proved
+\begin{equation}\label{ten:eventual}
+             \det M_{5,b}\ne0\qquad(b\ge1920).
+\end{equation}
+
+\subsection{Completion, and an independent audit of the old exception}
+
+For $22\le b<1920$, one cannot have $b\equiv3010\pmod{4096}$.
+Proposition~\ref{ten:range} therefore proves nonvanishing throughout
+this interval.  Equation \eqref{ten:eventual} supplies all
+$b\ge1920$.  The remaining $6\le b\le21$ are checked directly
+from the rational source matrix \eqref{ten:M}; the machine-readable
+record contains every nonzero determinant.  Most of these base cases
+are already contained in \cite{AlternatingIncoming}; they are recomputed here.
+For example,
+\[
+ \det M_{5,6}=-\frac{7097067}{2867200},\qquad
+ \det M_{5,8}=\frac{537653622905129}{68669669376000}.
+\]
+This proves Theorem~\ref{ten:main}.
+
+The old exceptional index $b=962$ also has a short independent exact
+audit.  Its numerator satisfies
+\begin{equation}\label{ten:962}
+ P_{10}(962;2B_{1922},2B_{1920},\ldots,2B_{1906})
+       \equiv2386755584\pmod{2^{32}}.
+\end{equation}
+The residue has valuation $16$, giving $v_2(\rho_{5,962})=6$.
+Two independent calculations of the nine Bernoulli residues agree:
+the recurrence
+\[
+ (2m+1)(2B_{2m})=2m-1-
+        \sum_{j=1}^{m-1}\binom{2m+1}{2j}(2B_{2j}),
+\]
+with odd division modulo $2^{32}$, and the Faulhaber power sum over
+the $32768$ odd integers below $65536$, performed modulo $2^{47}$
+before dividing by $2^{15}$.  Finally, evaluating the rational
+five-dimensional determinant \eqref{ten:calA} directly, with
+these integer residues as inputs, gives the same residue
+\eqref{ten:962} as the sparse numerator.  This audit is not needed
+once the uniform congruence is proved, but it verifies the exact
+location where the two preceding reports failed to overlap.
+
+\subsection{An ordinary convergent family of polygamma identities}
+
+For every $b\ge6$ and $0\le k<b$, let
+\begin{equation}\label{ten:Q}
+ Q_{b,k}(x)=\sum_{t=0}^{b-1}(M_{5,b}^{-1})_{kt}
+       \bigl((x+\tfrac12)^{2b+2t+1}
+                    -(x-\tfrac12)^{2b+2t+1}\bigr).
+\end{equation}
+This form is shorter than an expansion of the even polynomial.
+The identity
+\[
+ (x+\tfrac12)^{2j+1}-(x-\tfrac12)^{2j+1}
+ =\sum_{r=0}^{j}\binom{2j+1}{2r}2^{-2(j-r)}x^{2r}
+\]
+shows that \eqref{ten:Q} is precisely the inverse coordinate
+combination dictated by \eqref{ten:C}.
+
+Define
+\[
+ \eta_{s,0}=\frac1{s-1},\qquad
+ \eta_{s,j}=\frac{(s)_{2j-1}B_{2j}(1/2)}{(2j)!}\quad(j\ge1),
+ \qquad c_{b,\ell}=\sum_{j=0}^{\ell}\eta_{10,j}\eta_{2b,\ell-j}.
+\]
+Let $S_{b,k}(x)$ be the polynomial consisting of the nonnegative
+powers in the formal expansion
+\[
+ Q_{b,k}(x)x^{-2b-8}\sum_{\ell\ge0}c_{b,\ell}x^{-2\ell}.
+\]
+It is an even polynomial of degree at most $2b-10$, with rational
+coefficients determined by finitely many terms.
+
+\begin{corollary}[All order-ten reconstruction identities]
+\label{ten:identity}
+For every integer $b\ge6$ and $0\le k<b$,
+\begin{equation}\label{ten:polygamma}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}\left\{
+ Q_{b,k}(x_n)
+ \frac{\psi^{(9)}(n+1)\psi^{(2b-1)}(n+1)}{9!\,(2b-1)!}
+             -S_{b,k}(x_n)\right\}=\zeta(2k).}
+\end{equation}
+The series is ordinary and absolutely convergent.
+\end{corollary}
+\begin{proof}
+For even $s$, $A_s(n)=\psi^{(s-1)}(n+1)/(s-1)!$.
+By \eqref{ten:C}, \eqref{ten:Q}, and the exact matrix inverse,
+the continued sum of $Q_{b,k}(x_n)A_{10}(n)A_{2b}(n)$ is
+$\zeta(2k)$.  The centered Euler--Maclaurin expansion of the product
+is exactly the formal product used to define $S_{b,k}$.
+Removing all nonnegative powers leaves $O(x_n^{-2})$.
+Every removed power is even and has centered continued sum
+$\zeta(-2r,1/2)=0$, $r\ge0$.  Therefore the continued sum agrees
+with the displayed absolutely convergent series.
+\end{proof}
+
+Here is a completely explicit member, included to make the
+reconstruction mechanism concrete.  Let
+\begin{align*}
+ P(x)={}&58535757x^{23}+145331415x^{21}-98765059x^{19}\\
+        &+92514527x^{17}-73310041x^{15}+28468113x^{13}.
+\end{align*}
+Then
+\begin{equation}\label{ten:explicitidentity}
+ \begin{split}
+ \sum_{n=0}^{\infty}\Bigg\{&
+    [P(n+1)-P(n)]
+        [\zeta(10)-H_n^{(10)}][\zeta(12)-H_n^{(12)}]\\
+   &-\frac{149591379(n+\tfrac12)^2+1835020425}{11}
+                          \Bigg\}
+       =-\frac{574862427}{8}.
+ \end{split}
+\end{equation}
+It follows from the $k=0$ row of $M_{5,6}^{-1}$:
+\[
+ \frac4{574862427}
+ (28468113,-73310041,92514527,-98765059,145331415,58535757).
+\]
+The numerical pair $(10,12)$ was already within the source's finite
+range; the explicit identity is an illustration of the now-uniform
+construction, not the new nonvanishing case.  All coefficients,
+counterterms, and the exact inverse-row check are included in the
+identity artifact.
+
+\paragraph{Further questions specific to this completion.}
+The unrestricted rank problem remains open in the inspected corpus
+for smaller order at least twelve.  A natural next question is whether
+one can prove a general overlap principle between the finite
+$2$-adic exceptional classes and the constructive real-variable
+threshold, without computing an increasingly large numerator.
+Another is whether a determinant representation makes the lower
+Bernoulli-degree terms sign-compatible, giving nonvanishing directly
+and avoiding a domination threshold.  The gap-six family, where the
+generic nearby-Bernoulli contraction falls outside its stable range,
+still calls for a separate argument.  Finally, one may seek compact
+closed forms for the inverse rows in \eqref{ten:Q}; the existence
+and rational computability proved here do not by themselves make
+those coefficients small.
+
+% END sections/08_order_ten.tex
+
+% BEGIN sections/09_cyclotomic_audit.tex
+\section{A cyclotomic test case already determined by the manuscript}
+\label{audit:cyclo}
+
+The incoming alternating-tail report asks, as the first test in its
+complementary-sector Question 7, for
+$\Imag Z(2,1;i,-i)$, where
+\[
+ Z(2,1;i,-i)=\sum_{k>m\ge1}\frac{i^k(-i)^m}{k^2m}.
+\]
+The full two-resolvent complementary-sector generator remains open.
+However, this particular coefficient is already an exact consequence of
+two results in the pinned unified manuscript. Recording that implication
+is an integration correction, not a newly discovered period evaluation.
+
+\begin{proposition}[Explicit complementary coefficient]\label{audit:coefficient}
+Put $\lambda_3=\Imag\Li_3((1+i)/2)$. Then
+\begin{equation}\label{audit:coefficient-value}
+ \boxed{\displaystyle
+ \Imag Z(2,1;i,-i)
+   =\lambda_3-\frac{\pi\log^2 2}{32}-\frac{\pi^3}{128}.}
+\end{equation}
+Equivalently,
+\begin{equation}\label{audit:coefficient-integral}
+ \int_0^1\frac{\log t\log(1-t)}{1+t^2}\dd t
+ =\lambda_3-\frac{\pi\log^2 2}{32}-\frac{\pi^3}{128}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Use the one-direction convention
+$\Li_{a,b}(z)=\sum_{k>m\ge1}z^k/(k^a m^b)$.
+The inverse-color theorem in
+\path{chapters/04-depth.tex}, equation
+\texttt{inverse:eq:mixedb1}, gives
+\[
+ Z(2,1;z,z^{-1})
+ =2\Li_3(z)+\Li_{2,1}(z)+\Li_{1,2}(z)-\zeta(2)\Li_1(z).
+\]
+The iterated-integral shuffle identity is
+$\Li_1(z)\Li_2(z)=\Li_{1,2}(z)+2\Li_{2,1}(z)$.
+Hence
+\begin{equation}\label{audit:coefficient-reduction}
+ Z(2,1;z,z^{-1})
+ =2\Li_3(z)+\Li_1(z)\Li_2(z)-\Li_{2,1}(z)-\zeta(2)\Li_1(z).
+\end{equation}
+At $z=i$, put $L=\log2$ and $G=\beta(2)$. The standard values are
+\[
+ \Li_1(i)=-L/2+i\pi/4,\quad
+ \Li_2(i)=-\pi^2/48+iG,\quad
+ \Imag\Li_3(i)=\pi^3/32.
+\]
+The proved height-one specialization in
+\path{chapters/04-shuffle-parity.tex} is
+\[
+ \Imag\Li_{2,1}(i)
+ =-GL/2+\pi L^2/32-\lambda_3+3\pi^3/128.
+\]
+Substituting these identities into
+\eqref{audit:coefficient-reduction} cancels the Catalan terms and yields
+\eqref{audit:coefficient-value}. Both inherited reductions are proved in
+the source, not inferred from a numerical fit \cite{ProveItPin}.
+
+For the integral form, use the same manuscript's inverse-color integral
+representation, or insert the elementary Mellin formula for $k^{-2}$
+directly in the absolutely convergent double sum. It gives
+\[
+ Z(2,1;i,-i)
+ =i\int_0^1\frac{\log t\log(1-t)}{1-it}\dd t.
+\]
+Taking the imaginary part proves \eqref{audit:coefficient-integral}.
+The endpoint logarithms are integrable and $1-it$ does not vanish on the
+integration interval, so no limiting branch choice is hidden here.
+\end{proof}
+
+The numerical value is
+\[
+ 0.2806725061826611243960680536045272754284\ldots.
+\]
+This is a finite reduction into the explicitly stated classical
+trilogarithm collection. It does not reduce $\lambda_3$ further and does
+not prove its independence from any smaller set of constants. Nor does
+it settle the full complementary generator or the distinct Gaussian
+$S_6$ and revised $S_8$ conjectures.
+
+The proposed status update is therefore precise: retain Question 7 for
+the full complementary family, mark its displayed first coefficient as
+already determined by the manuscript, and include
+\eqref{audit:coefficient-value} as the missing cross-reference. The source
+proofs of inverse-color transport and height-one reduction deserve the
+credit.
+
+% END sections/09_cyclotomic_audit.tex
+
+% BEGIN sections/10_research_questions.tex
+\section{Further research questions with concrete mathematical targets}
+\label{future:sec}
+
+The following are proposals for further work, not consequences claimed
+in the preceding theorems. They prioritize exact structural statements
+and finite evaluations. A question asking for a classification allows
+a counterexample with a proved exceptional set as a useful answer.
+
+\subsection{Reconstruction beyond order ten}
+
+\begin{question}[All unequal even orders]
+For every $1\le a<b$, is the first-$2b$ centered even-moment prefix
+of the $(2a,2b)$ tail product nonsingular in its formal source
+coordinates? The present article completes $a=5$; the project now
+has all $a\le5$. A decisive next result would be a structural
+noncancellation theorem for the fixed-size Bernoulli determinant,
+or a proved description of any exceptional pairs.
+\end{question}
+
+\begin{question}[A uniform overlap principle]
+Can one relate the precision of a doubled-Bernoulli congruence to the
+constructive real-variable threshold for arbitrary fixed $a$?
+At $a=5$ the sole exceptional class has least positive representative
+$3010$, exceeding the threshold $1920$. Higher precision alone does
+not prove nonvanishing: a compatible $2$-adic root may persist. The
+target is a theorem ensuring coverage by two complementary arguments,
+not a table of increasingly long nonzero prefixes.
+\end{question}
+
+\begin{question}[The full gap-six family]
+Give a bordered-Hankel reduction that retains the moving $B_0$ and
+$B_1$ endpoint terms for $b=a+3$. The stable fixed-order contraction
+requires $b\ge2a$ and therefore does not cover this family uniformly.
+A formula with all boundary terms retained could settle the global
+gap-six conjecture without extrapolating the finitely checked pairs.
+\end{question}
+
+\begin{question}[Compact inverse rows]
+Find a product, determinant of uniformly smaller size, or short
+recurrence for the polynomials $Q_{b,k}$ of
+Corollary~\ref{ten:identity}. Their exact rational computability is
+proved, but the displayed $(10,12)$ example shows that naive expanded
+coefficients grow rapidly. A compact expression should also identify
+the subtraction polynomial directly and preserve ordinary convergence.
+\end{question}
+
+\subsection{Beyond the bilinear Gamma normalization}
+
+\begin{question}[Every bilinear contact hyperplane]
+For the two independent orders in Theorem~\ref{bil:master}, compute
+the constant terms of $C_N$ and $(-1)^ND_N$ on the further resonant
+hyperplanes $p+q=-2m$. The first symmetric contact is $1/2$ at
+$p+q=0$. Seek closed bivariate contact polynomials, every independent
+$p,q$ jet, and the exact change under translating the cutoff.
+The diagonal answer in Section~\ref{cut:sec} is a mandatory check;
+it does not determine all transverse derivatives.
+\end{question}
+
+\begin{question}[Independent outer weights and ordinary Hurwitz tails]
+Construct a finite-cutoff identity for
+$\zeta(p,n+a)\zeta(q,n+b)(n+c)^{-w}$ with independent
+$p,q,w,a,b,c$, retaining an explicit remainder or a precisely defined
+finite collection of additional functions. Determine its moving
+polar hyperplanes and residues before differentiating on them.
+The Gamma-weighted alternating identities do not settle this ordinary
+Hurwitz problem; a valid result must state the size and analytic
+meaning of any newly required coordinate collection.
+\end{question}
+
+\begin{question}[More colors and higher products]
+For tails with a primitive $d$th-root twist, can a product of Gamma
+quotients convert the $d$-step recurrence into a finite bilinear
+endpoint law? For three tail factors, identify the smallest adjacent
+product ansatz whose linear and quadratic residual terms can all
+cancel. A useful target is a divisor-orbit criterion extending
+Theorem~\ref{rat:classification}, together with one ordinary convergent
+three-factor evaluation that genuinely lies outside its bilinear case.
+\end{question}
+
+\begin{question}[The remaining logarithmic Gamma generator]
+The logarithmic square sum in Corollary~\ref{cut:Gamma} is explicit,
+but the earlier twisted logarithmic-Gamma correction generator has
+an independent outer resolvent. Determine whether it belongs to a
+finite stated collection of classical or multiple-Gamma functions,
+or prove a functional obstruction in a declared difference-equation
+class. A failure of numerical reduction is not such an obstruction.
+\end{question}
+
+\subsection{Harmonic pencils, spectral coefficients, and polylogarithms}
+
+\begin{question}[Complex weights and sharp cutoff exceptions]
+Does generic degree--rank equality extend to every complex rational
+weight? If not, classify the smallest counterexamples using the
+kernel-compression identity \eqref{deg:highest}. For real weights,
+determine whether the bound $r(r-\rho)$ on late deficient cutoffs is
+sharp in the rational-moment class, and how it improves for special
+polynomial kernel spaces. The real proof uses definite increments;
+it cannot be transferred to a complex bilinear Gram form by wording
+alone.
+\end{question}
+
+\begin{question}[Higher-rank pencils and their realizations]
+Classify rational residue data whose entire harmonic pencil has
+generic rank two, then rank $\rho$. The family in
+Theorem~\ref{hier:rank} realizes every rank, but does not classify all
+pencils: the maximal-rank kernel need not be a common kernel.
+Seek exact finite residue conditions and identify which such pencils
+come from positive rational weights. This would complement the
+existing rank-one classification.
+\end{question}
+
+\begin{question}[All Laurent coefficients in compact form]
+For the hierarchy $Z_{r,\rho}(s,a)$, find short formulas or recurrences
+for the lower normalizations $G_{L,h}^{(m)}(a)$ at $m\ge2$, and for
+the complete principal and finite parts at every pole. The leading
+coefficient at $m=1$ is a Gamma product. At higher orders, confluent
+deformations of the mixed factorial moments may reduce determinant
+growth. Any claimed formula should reproduce both finite parts in
+\eqref{hier:r2-s1}--\eqref{hier:r2-s2} and distinguish them from
+hard-cutoff constants.
+\end{question}
+
+\begin{question}[Complementary cyclotomic generators and exact depth]
+Construct the full complementary two-resolvent generator requested
+in the alternating report, retaining the evaluated coefficient
+\eqref{audit:coefficient-value} as a boundary check. In parallel,
+determine minimal depth for concrete harmonic-determinant generating
+functions inside a specified shuffle, differential, or symbol
+calculus. Formal harmonic degree predicts a useful representation
+bound; it does not by itself prove minimal polylogarithmic depth.
+The Gaussian $S_6$ and revised $S_8$ assertions remain separate
+conjectures requiring exact reductions or counterexamples.
+\end{question}
+
+\subsection{A practical order of attack}
+
+The next finite target is smaller order twelve: derive its exact
+fixed-size numerator, determine a sufficiently precise Bernoulli
+congruence, and compare the exceptional classes with the real-variable
+threshold. The next analytic target is the first off-diagonal contact
+hyperplane $p+q=-2$, where the new bilinear endpoint contains enough
+independent parameters to reveal which diagonal parity cancellations
+survive. The next determinant target is a rank-two residue
+classification, tested against both the positive shorter-stencil
+family and a pencil without a common kernel.
+
+For formal verification, the finite bilinear recurrence, rational
+root-orbit criterion, and symmetric-pencil compression lemma are
+small natural starting points. The order-ten congruence can then be
+checked in a polynomial ring modulo $2^{17}$ from the finite Newton
+matrix. Such formalization would strengthen the trust chain without
+altering the claimed mathematics or replacing a proof by decimal
+agreement.
+
+% END sections/10_research_questions.tex
+
+% BEGIN sections/11_verification.tex
+\section{Verification, source corrections, and integration}
+\label{verification:sec}
+
+\subsection{Proofs and exact computational certificates}
+
+The bilinear, rational-certificate, cutoff-contact, harmonic-degree,
+and spectral-hierarchy theorems have proofs in the article. Their
+finite formulas also admit independent symbolic and numerical
+replays. The order-ten completion additionally uses an exact finite
+computer-assisted certificate: a polynomial defined by a $5\times5$
+Newton/factorial determinant is reconstructed coefficientwise, then
+substituted into an explicit congruence in $\Z[b]/(2^{17})$.
+All of the inputs, finite algorithms, and integer comparisons are
+included. The proof does not depend on floating-point nonzero tests.
+
+The complete polynomial reconstruction sums all $120$ signed
+permutation products and matches $10\,403$ expanded coefficients,
+stored in $439$ groups. The old exceptional integer $b=962$ is
+checked separately by two Bernoulli computations and by direct
+evaluation of the $5\times5$ determinant. The sufficient threshold
+$b=1920$ is regenerated from the source entry formulas and compared
+using exact integers. Finite source matrices handle $6\le b\le21$.
+
+\subsection{Reproducible diagnostics}
+
+The included programs use Python, SymPy, and mpmath; the observed
+versions were Python 3.12, SymPy 1.14.0, and mpmath 1.3.0. They need
+no network access. The package README supplies commands and file
+locations. The separate result records preserve the precision and
+test method rather than presenting all checks as equivalent evidence.
+
+\begingroup\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.24\textwidth}>{\raggedright\arraybackslash}p{.42\textwidth}>{\raggedright\arraybackslash}p{.28\textwidth}@{}}
+\toprule
+Component & Exact checks or independent route & Role \\
+\midrule\endfirsthead
+\toprule Component & Exact checks or independent route & Role \\
+\midrule\endhead
+Bilinear tails & Five symbolic cancellations; 28 numerical checks,
+including independent Laplace integrals for Stieltjes jets. &
+Recurrence-sign, normalization, domain, and example diagnostics. \\
+\addlinespace
+Cutoff jets and cyclotomic audit & 74 exact Euler-polynomial and
+translated-coefficient checks through order twelve; 12 numerical
+checks, including independent quadrature. & Contact signs, sharp
+threshold, differentiated finite sums, and the inherited trilogarithm
+coefficient. \\
+\addlinespace
+Degree and spectral hierarchy & 45 exact checks, including all
+ranks for $r=2,\ldots,6$; 19 numerical checks through independent
+Mellin moments and Laurent limits. & Non-common-kernel example,
+signed cutoff exception, pole normalization, Gamma products, and
+Stieltjes finite parts. \\
+\addlinespace
+Polylogarithm generator & 122 exact cutoff and Taylor-coefficient
+checks; independent endpoint evaluation from direct moments and
+harmonic tail expansions. & Generator, anchored primitive, and
+ordinary-zeta endpoint; 65-digit numerical diagnostics. \\
+\addlinespace
+Order-ten completion & Full coefficient reconstruction, uniform
+congruence, exact base matrices and threshold; two independent
+Bernoulli residue calculations. & Exact finite certificates supporting
+the uniform nonvanishing theorem. \\
+\addlinespace
+Explicit $(10,12)$ identity & Exact inverse-row and counterterm
+arithmetic; independent numerical cutoff/tail diagnostics. & An
+ordinary convergent illustration of the uniform family. \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+The 45-digit bilinear checks have residuals below $3.1\cdot10^{-45}$.
+Independent Mellin comparisons for the determinant formulas agree
+at roughly $10^{-79}$ relative error at 80-digit precision;
+the finite-step Laurent extrapolations have residuals of order
+$10^{-24}$. The polylogarithm endpoint checks have errors below
+$2\cdot10^{-41}$ and $4\cdot10^{-48}$ with two truncation orders.
+The displayed $(10,12)$ identity has numerical residuals
+below $4\cdot10^{-68}$. These are numerical diagnostics, not certified
+interval bounds. They neither prove global identities nor establish
+independence of constants. The written arguments and exact algebraic
+certificates have that separate role.
+
+Independent mathematical audits checked the bilinear endpoint
+normalization, the rational factor $cS(0)$, translated cutoff jets,
+the pencil compression argument, the finite-difference residue
+blocks, and the Gamma-product normalization. No unresolved
+discrepancy was found in those checks. This records the verification
+performed; it does not describe the article as externally refereed
+or formally verified in a proof assistant.
+
+\subsection{Corrections and status updates proposed for ProveIt}
+
+The concrete correction is to the first coefficient in the incoming
+complementary-sector question. Add the formula in
+Proposition~\ref{audit:coefficient} and cross-reference the existing
+inverse-color and height-one manuscript reductions. Retain the full
+generator question. The correction concerns an overlooked implication,
+not an incorrect proved identity.
+
+The order-ten progression should now be marked proved by
+Theorem~\ref{ten:main}; its prior congruence remains valid on its
+original range. The new result does not invalidate that earlier proof.
+The degree--rank question should be split into the proved real-rational
+generic theorem, the explicit finite-cutoff exception test, and the
+remaining complex/depth questions. The ordinary-square continuation
+question is resolved with its cutoff coordinate included in the
+statement.
+
+Two presentation precautions are mathematically necessary. First,
+``odd negative orders have no contact'' is true for $X=N+a+1$;
+it is false for an arbitrary translated cutoff. Second, all-coordinate
+formal rank is not arithmetic independence of zeta values. These
+qualifications should travel with the imported statements.
+
+No new error in the already proved core manuscript is asserted by
+this audit, and this work is not an exhaustive audit of the whole
+repository. The Gaussian $S_6$ and revised $S_8$ statements are not
+proved here. The unrestricted even-order prefix theorem, complete
+gap-six family, ordinary independent-order outer-weight problem,
+and full complementary generator remain explicitly open.
+
+\subsection{Integration boundary}
+
+The package supplies a modular \path{article.tex}, section sources,
+a flattened standalone TeX file, the rendered PDF, exact verification
+programs and records, and source/status notes. Section labels have
+disjoint prefixes so individual results can be imported. The supplied
+source pin and question map identify what was inspected. The work
+does not modify the repository, supersede all earlier reports, or
+bundle their generated build files.
+
+% END sections/11_verification.tex
+
+% BEGIN references.tex
+\begin{thebibliography}{99}
+\raggedright
+
+\bibitem{ProveItPin}
+V. Reshetnikov, ProveIt repository, unified polylogarithm manuscript.
+Inspected revision
+\texttt{da2792fc9cc8ef19c6a314be6c65e1437fbdc66b},
+11 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+Relevant manuscript files are
+\path{Analysis/Polylogarithms/docs/manuscript/chapters/04-depth.tex}
+and \path{chapters/04-shuffle-parity.tex} relative to that manuscript.
+
+\bibitem{AlternatingIncoming}
+ProveIt research corpus,
+\emph{Alternating Tails and Higher Spectral Defects},
+incoming package
+\path{ProveIt_Alternating_Tails_Spectral_Defects_2026-10-11.zip},
+at the revision in \cite{ProveItPin}.
+Sections on polynomial adjacent-tail certificates and order-ten
+congruences; further-research Questions 1--7.
+
+\bibitem{FiniteDifferenceIncoming}
+ProveIt research corpus, \emph{Finite Difference Determinants},
+incoming package
+\path{ProveIt_Finite_Difference_Determinants_2026-10-11.zip},
+at the revision in \cite{ProveItPin}.
+Relevant sections:
+\path{sections/02-spectral.tex},
+\path{sections/06-classification.tex},
+\path{sections/09-questions.tex}, and
+\path{sections/10-residue-product.tex}.
+
+\bibitem{QuarticIncoming}
+ProveIt research corpus,
+\emph{Harmonic-Tail Reconstruction, Quartic Trigamma Moments,
+and Spectral Stieltjes Calculus},
+incoming package
+\path{ProveIt_Quartic_Spectral_Reconstruction_2026-10-11.zip},
+at the revision in \cite{ProveItPin}.
+Sections 2--3 supply the inherited order-eight completion and the
+general constructive eventual-rank argument.
+
+\bibitem{GeneralHankel}
+ProveIt research corpus, \emph{Bernoulli--Tornheim--Digamma continuation},
+``A fixed-size determinant for every pair of even orders,''
+\path{sections/03b_general_hankel.tex}, in
+\path{Analysis/Polylogarithms/docs/reports/stieltjes-harmonic-resonance/continuations/bernoulli-tornheim-digamma/},
+at the revision in \cite{ProveItPin}.
+
+\bibitem{HigherQuadraticIncoming}
+ProveIt research corpus,
+incoming package
+\path{ProveIt_Higher_Quadratic_Jets_2026-10-11.zip},
+at the revision in \cite{ProveItPin}.
+Inspected as prior context; its higher-order jet constructions are
+not claimed as new in the present article.
+
+\bibitem{HigherSpectralIncoming}
+ProveIt research corpus,
+incoming package
+\path{ProveIt_Higher_Spectral_Defects_2026-10-11.zip},
+at the revision in \cite{ProveItPin}.
+Inspected as prior context; the present shorter-stencil family is
+distinguished from its general spectral-defect questions.
+
+\bibitem{bil:HuKim}
+S. Hu and M.-S. Kim,
+\emph{On the Stieltjes constants and gamma functions with respect to
+alternating Hurwitz zeta functions},
+J. Math. Anal. Appl. \textbf{509} (2022), no. 1, article 125930.
+\url{https://arxiv.org/abs/2106.14674}.
+
+\bibitem{bil:WangHuKim}
+W. Wang, S. Hu, and M.-S. Kim,
+\emph{On gamma functions with respect to the alternating Hurwitz zeta
+functions}, arXiv:2405.02854v4 (2024).
+\url{https://arxiv.org/abs/2405.02854v4}.
+
+\bibitem{HuKimAsymptotic}
+S. Hu and M.-S. Kim,
+\emph{Asymptotic expansions for the alternating Hurwitz zeta function
+and its derivatives}, arXiv:2103.15528v6 (2023).
+\url{https://arxiv.org/abs/2103.15528}.
+The underlying uniform expansions, Euler specializations, and
+spectral derivative calculus are classical input here.
+
+\bibitem{bil:Hoffman}
+M. E. Hoffman,
+\emph{Sums of products of Riemann zeta tails},
+Mediterr. J. Math. \textbf{13} (2016), 2771--2781.
+\url{https://doi.org/10.1007/s00009-015-0653-9};
+\url{https://arxiv.org/abs/1602.03399}.
+
+\bibitem{rat:Abramov}
+S. A. Abramov,
+\emph{The rational component of the solution of a first-order linear
+recurrence relation with rational right-hand side},
+U.S.S.R. Comput. Math. Math. Phys. \textbf{15} (1975), no. 4,
+216--221.
+\url{https://doi.org/10.1016/0041-5553(75)90181-0}.
+
+\bibitem{DLMFZeta}
+NIST Digital Library of Mathematical Functions, Section 25.11,
+Hurwitz zeta function.
+\url{https://dlmf.nist.gov/25.11}.
+
+\bibitem{bil:DLMF}
+NIST Digital Library of Mathematical Functions, Sections 5.5 and 5.11,
+Gamma functional relations and asymptotic expansions.
+\url{https://dlmf.nist.gov/5.5};
+\url{https://dlmf.nist.gov/5.11}.
+
+% Add this item inside the article's thebibliography environment.
+\bibitem{hier:BB2005}
+Jonathan M. Borwein and David M. Bradley,
+\emph{On Two Fundamental Identities for Euler Sums},
+preprint, January 2005, especially Eq.~(1.3).
+\url{https://carmamaths.org/resources/jon/Preprints/Papers/ArXiv/Zeta21/z21.pdf}.
+
+\end{thebibliography}
+
+% END references.tex
+
+\end{document}

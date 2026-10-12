@@ -1,0 +1,3285 @@
+% Self-contained source generated from article.tex and its distributed sections.
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,longtable,array,enumitem,microtype,xcolor,xurl}
+\usepackage{fancyhdr}
+\definecolor{inkblue}{RGB}{26,57,89}
+\usepackage[colorlinks=true,linkcolor=inkblue,citecolor=inkblue,urlcolor=inkblue]{hyperref}
+\usepackage{bookmark}
+\emergencystretch=3em
+\allowdisplaybreaks[1]
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\sech}{sech}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\newcommand{\sourcepin}{\texttt{73f18ef013d5b74eafc883efb2c15210642df12a}}
+\newcommand{\shortpin}{\texttt{73f18ef}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Harmonic tails and spectral Stieltjes calculus}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\title{\textbf{Harmonic-Tail Reconstruction,\\
+Quartic Trigamma Moments,\\and Spectral Stieltjes Calculus}\\[8pt]
+\large Exact continuations of the ProveIt polylogarithm programme}
+\author{Research continuation prepared for Vladimir Reshetnikov}
+\date{11 October 2026}
+\hypersetup{pdftitle={Harmonic-Tail Reconstruction, Quartic Trigamma Moments, and Spectral Stieltjes Calculus},pdfauthor={Research continuation prepared for Vladimir Reshetnikov},pdfsubject={Exact identities, harmonic reconstruction, polylogarithms and spectral Stieltjes derivatives}}
+\begin{document}
+\maketitle
+\begin{abstract}
+We continue several specific problems in the ProveIt manuscript and its
+incoming reports.  First, we complete optimal-prefix reconstruction for
+every unequal even pair with smaller tail order eight.  A structural
+factorization identifies the highest Bernoulli-degree determinant with a
+strictly positive zeta moment determinant; an exact finite certificate
+closes the residue class left open in the preceding report.  The same
+factorization proves effective eventual reconstruction for every fixed
+smaller even order, reducing each fixed-order conjecture to finitely many
+explicit rational matrices.
+
+Second, we evaluate every regular centered quartic trigamma moment after
+prescribed polynomial subtraction.  The values lie in six specified
+formal coordinates, and a finite Bernoulli transform, an anchored analytic
+generator, and a finite polylogarithm construction of depth at most three
+are given.  Hoffman's classical unweighted quartic evaluation supplies
+one starting constant and is explicitly credited.
+
+Third, we evaluate the second spectral factorization defect for any
+number of quadratic masses by ordinary logarithmic sums and an elementary
+one-dimensional resolvent integral, including every confluent coefficient.
+Finite formulas at all higher spectral derivatives retain the otherwise
+lost Hurwitz jets.  A one-sided counterpart identifies all generalized
+Stieltjes corrections, treats the source's conjugate-linear factorization
+problem, and gives an anchored dilogarithm--Gamma primitive.
+We also correct a research-status overlap concerning the already
+established entire multiple-harmonic interpolant.  Proofs, exact finite
+certificates, independent numerical diagnostics, provenance, and a
+concrete further-research agenda accompany the article.
+\end{abstract}
+\begin{center}
+\small Source snapshot: \sourcepin.\\
+All claims of continuation are relative to this inspected snapshot;
+the article is a research draft with explicit proofs and replay artifacts.
+\end{center}
+\clearpage
+\begingroup\small
+\tableofcontents
+\endgroup
+\clearpage
+
+% BEGIN EMBEDDED sections/01_scope.tex
+\section{Scope, exact targets, and conventions}
+\label{sec:scope}
+
+The useful unit of progress in this programme is a proved identity or a
+precisely delimited structural theorem.  Several nearby special-value
+problems already have substantial proofs, and several plausible-looking
+new directions are already present in earlier reports.  Accordingly,
+the results below are attached to specific source questions before their
+proofs are developed.  Bounds appear only inside the reconstruction and
+convergence proofs; they are not independent objectives of the article.
+
+The principal new conclusions are the complete order-eight theorem,
+the effective fixed-order theorem, the all-moment quartic evaluation,
+and the higher spectral factorization calculus.  These conclusions have
+different logical content.  A nonzero rational determinant proves a
+coefficient-rank statement; it does not prove independence of the real
+constants later substituted into the coordinates.  A normally convergent
+subtracted sum is an ordinary identity; the divergent raw sum preceding
+that subtraction is not assigned an unspecified value.
+
+\subsection{The concrete questions being continued}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.29\textwidth}>{\raggedright\arraybackslash}p{0.35\textwidth}>{\raggedright\arraybackslash}p{0.30\textwidth}@{}}
+\toprule
+Source target & Result here & Boundary retained\\
+\midrule
+\endhead
+Reconstruction report, Q1: the omitted class
+$b\equiv1\pmod{16}$ for $(8,2b)$ \cite{Reconstruction}
+& Theorem~\ref{r8c:main} covers every $b\ge5$.
+& The unrelated Gaussian period conjectures are unaffected.\\[5pt]
+Reconstruction report, Q2: general unequal even orders
+& Theorem~\ref{ert:main} gives a terminating threshold algorithm for
+each fixed smaller order.
+& The remaining finite set is not checked for every smaller order.\\[5pt]
+Reconstruction report, Q5: a quartic formula, fixed space, and generator
+& Theorems~\ref{qtm:main} and \ref{qtm:generator} give the complete
+regular parity family and six formal coordinates.
+& Fifth and higher powers require additional analysis.\\[5pt]
+Quadratic-spectrum report, Q7: several factors beyond the first derivative
+\cite{Quadratic}
+& Theorems~\ref{msj:thm:second}, \ref{msj:thm:quadrature}, and
+\ref{msj:thm:confluent} give the cross term and its full confluent series.
+& A finite classical-polylogarithm reduction of the integral at arbitrary
+parameters is not asserted.\\[5pt]
+Quadratic-spectrum report, Q2: higher conjugate-linear defects
+& Corollary~\ref{cor:linear-jets} gives every spectral order, with the
+correct scale and all Stieltjes terms.
+& The first-derivative parity criterion does not eliminate higher
+nonlocal terms.\\[5pt]
+Same-direction report, Q2: entire higher-depth connected interpolation
+\cite{SameDirection}
+& Section~\ref{sec:audit} identifies the existing all-depth interpolant
+and geometric kernel exactly.
+& This is an attribution and research-status correction, not a new
+entire-family theorem.\\
+\bottomrule
+\end{longtable}
+
+Two additional constructions go beyond those literal questions.
+Theorem~\ref{thm:alljets} isolates the Hurwitz-pole contribution at every
+derivative order for arbitrary polynomial weights and several quadratic
+factors.  Theorem~\ref{thm:primitive} integrates a nonlinear second-jet
+identity explicitly in the shift, using dilogarithms and a Gamma ratio.
+Both have their normalization fixed in the statement.
+
+\subsection{Source pin and attribution}
+
+The repository was inspected at commit \sourcepin, including the
+canonical manuscript status files and the relevant harmonic, Gaussian,
+Hurwitz, and spectral branches.  All six archives currently in
+\src{docs/incoming} at that pin were extracted and triaged.  The detailed
+proof development uses the reconstruction, quadratic-spectrum, and
+same-direction reports; the Beta-crossing, Gamma-continuation, and
+shift-and-twist reports were also considered when selecting targets.
+The exact source paths and SHA-256 digests are recorded in
+\src{provenance.json}.  This is not an assertion that every theorem in
+the four-volume manuscript has been audited.
+
+Classical ingredients include Bernoulli--Hurwitz asymptotics, Euler's
+Bernoulli formula, polygamma partial fractions, Gamma reflection, and
+normalized Mellin continuation \cite{DLMF}.  Hoffman's quartic tail
+sum \cite{Hoffman}, the Ihara--Nakamura--Yamamoto interpolant
+\cite{INY}, and the first-derivative multiplicative-anomaly framework
+\cite{EVZ,PolynomialAnomaly} are attributed where used.  Inherited
+determinant reductions and cubic formulas are identified explicitly.
+No claim of exhaustive historical priority is inferred from absence in
+the inspected repository.
+
+\subsection{Common conventions}
+
+We use
+\[
+ H_n^{(s)}=\sum_{k=1}^n k^{-s},\qquad H_0^{(s)}=0,\qquad
+ A_s(n)=\zeta(s,n+1),\qquad x_n=n+\tfrac12
+\]
+in the centered harmonic sections.  For an integer $s\ge2$,
+$A_s(n)=\zeta(s)-H_n^{(s)}$.  The polygamma convention is
+\[
+ \psi^{(m)}(z)=(-1)^{m+1}m!\,\zeta(m+1,z),\qquad m\ge1.
+\]
+In particular $A_2(n)=\psi'(n+1)$ and
+$A_{2k}(n)=\psi^{(2k-1)}(n+1)/(2k-1)!$.
+
+Bernoulli polynomials are normalized by
+\[
+ \frac{te^{xt}}{e^t-1}=\sum_{m\ge0}B_m(x)\frac{t^m}{m!},
+ \qquad B_m=B_m(0),\qquad B_1=-\tfrac12.
+\]
+The crucial centered zero is
+\[
+ \zeta(-2j,1/2)=0\qquad(j\ge0).
+\]
+It makes the specified polynomial subtractions have zero continued
+sum.  A shifted analogue must restore its nonzero Hurwitz values;
+this midpoint normalization is not silently transported to other shifts.
+
+Superscripts on $\zeta$ and on spectral families denote derivatives
+in their first, spectral variable unless stated otherwise.  We use
+\[
+ \zeta(1+u,a)=\frac1u+
+       \sum_{m\ge0}\frac{(-1)^m}{m!}\gamma_m(a)u^m,
+ \qquad \gamma_0(a)=-\psi(a).
+\]
+Thus the order derivative of $\zeta$ and the parameter derivative of a
+Stieltjes constant are different operations.  All exchanges of spectral
+differentiation and infinite sums below follow a locally uniform
+subtraction argument, rather than formal differentiation at a pole.
+
+The one-variable multiple polylogarithm uses the outer-index argument:
+\[
+ \Li_{s_1,\ldots,s_d}(z)=
+ \sum_{n_1>\cdots>n_d\ge1}
+       \frac{z^{n_1}}{n_1^{s_1}\cdots n_d^{s_d}}.
+\]
+At $z=1$ with admissible positive integer indices this is the
+descending-index multiple zeta value.  In the finite generator formulas
+we first take $z=e^{-t}$ with real $t>0$; the anchored integral formulas
+specify the holomorphic continuation through the cancellations at $t=0$.
+
+\subsection{Why the proofs use subtractions and leading determinants}
+
+The harmonic and spectral problems share a finite algebraic step but have
+different analytic mechanisms.  For reconstruction, the source matrix is
+indefinite.  Its highest degree in a fixed number of Bernoulli variables
+nevertheless factors into a positive discrete moment determinant.  The
+factorial size of the Bernoulli variables makes that highest-degree part
+dominate eventually.  The exact exceptional arithmetic remains visible
+and is handled separately for order eight.
+
+For quartic moments, summation by parts reduces the problem from the
+fourth tail power to the inherited cubic coordinates.  A specific
+boundary cancellation removes the remaining cubic Bernoulli convolution.
+The surviving lower-power terms explain all exceptional low indices;
+they cannot be discarded by parity alone.
+
+For spectral derivatives, the common-scale difference vanishes to order
+two in the spectral parameter before summation.  A resonant Hurwitz
+pole can lower that order by one.  Its residue, regular Stieltjes
+coefficients, and higher coefficient of the vanishing factor all matter.
+The finite subtraction formulas retain those contributions while leaving
+an ordinary summable remainder.  This is the source of the extra local
+term in \eqref{one:x5second} and of the higher bilateral correction in
+\eqref{msj:eq:third-contact}.
+
+% END EMBEDDED sections/01_scope.tex
+
+
+% BEGIN EMBEDDED sections/02_rank_eight.tex
+% Research fragment for the parent article. All labels use r8c:.
+% Source revision: 73f18ef013d5b74eafc883efb2c15210642df12a.
+% New contribution: complete p=8 nonvanishing, leading Hankel factorization.
+\section{The complete order-eight reconstruction theorem}
+\label{r8c:section}
+
+The incoming reconstruction report \cite[Section 5]{Reconstruction} proves
+optimal-prefix reconstruction for $(p,q)=(8,2b)$ when
+$b\not\equiv1\pmod {16}$, while explicitly leaving the remaining
+residue class open. We prove nonvanishing for that class as well.
+The proof identifies the highest Bernoulli-degree part of the exact
+four-dimensional determinant as a positive zeta moment determinant.
+A uniform comparison handles all $b\ge512$; exact finite arithmetic
+then closes the $31$ outstanding smaller cases. The conclusion is an
+exact reconstruction theorem and yields ordinary convergent identities
+for products of higher polygammas. No arithmetic independence of
+special values is used or claimed.
+
+\subsection{Source coordinates and the matrix whose rank is at issue}
+
+Put
+\[
+ A_s(n)=\zeta(s,n+1)=\zeta(s)-H_n^{(s)},\qquad x_n=n+\tfrac12,
+ \qquad D_{b,r}=D_{8,2b}(-2r),
+\]
+where
+\[
+ D_{8,2b}(s)=\sum_{n\ge0}A_8(n)A_{2b}(n)x_n^{-s}
+\]
+is initially defined for $\operatorname{Re}s>-2b-5$ and is continued
+by its centered asymptotic expansion. Its nonpositive even arguments
+are regular. The inherited inverse Bernoulli coordinates are
+\begin{align}
+ C_j&=\sum_{r=0}^j\binom{2j+1}{2r}2^{-2(j-r)}D_{b,r},
+ \label{r8c:C}\\
+ D_{b,r}&=\sum_{j=0}^r\frac{\binom{2r}{2j}}{2j+1}
+ B_{2r-2j}(1/2)C_j.
+ \label{r8c:D}
+\end{align}
+For $j\ge b$ these reduce to a rational linear combination of
+$Z_k=\zeta(2k)$, $0\le k<b$, where $Z_0=-1/2$.
+The exact late block $M_b=(M_{ik})_{0\le i,k<b}$ is
+\begin{equation}\label{r8c:M}
+ M_{ik}=B_{2i+2k-6}
+ \left\{\frac{\binom{2i+2}{8-2k}}{2i+2}
+ +\frac{\binom{2b+2i-6}{2b-2k}}{2b+2i-6}\right\}.
+\end{equation}
+An entry with negative Bernoulli index is zero. A binomial summand is
+omitted unless its lower index is at least $2$ and at most its upper
+index. This exclusion includes lower index zero. Thus
+\[
+ (C_b,\ldots,C_{2b-1})^{\mathsf T}
+       =M_b(Z_0,\ldots,Z_{b-1})^{\mathsf T}.
+\]
+More generally, use the same entry formula for every $i\ge0$ and
+$0\le k<b$.  The finite Bernoulli-binomial moment formula from
+\cite{GeneralHankel} is
+\[
+ C_j=\sum_{k=0}^{b-1}M_{j-b,k}Z_k\qquad(j\ge b).
+\]
+Thus these coefficients also specify every later coordinate,
+not only the square block used for the rank proof.
+The determinant of the first $2b$ moments in the formal coordinate
+list $C_0,\ldots,C_{b-1},Z_0,\ldots,Z_{b-1}$ is
+$\det M_b/(4b-1)!!$. This is a statement about rational coefficient
+rank, before evaluating the coordinates as complex numbers.
+
+\begin{theorem}[All unequal pairs with smaller order eight]
+\label{r8c:main}
+For every integer $b\ge5$, $\det M_b\ne0$. Consequently, for every
+even $q>8$, the moments
+\[
+ D_{8,q}(0),D_{8,q}(-2),\ldots,D_{8,q}(-2(q-1))
+\]
+have full formal rank $q$, and every later centered even moment is
+an explicit rational linear combination of this prefix.
+\end{theorem}
+
+\subsection{An explicitly defined four-dimensional determinant}
+
+We retain the source normalization, to make the comparison of claims
+and certificates unambiguous. For $0\le i,\ell\le3$ set
+\[
+ n_i=b-4+i,\quad N_{i\ell}=2(n_i-\ell)+1,\quad
+ R_\ell=2b-6+2\ell,
+\]
+\[
+ F_{i\ell}=\frac1{(2\ell+1)!}
+       \prod_{r=0}^{2\ell-1}(2n_i-r)(2n_i+3+r).
+\]
+An empty product is one. For
+\[
+ W_{i\ell}(z)=(z+2\ell+1)
+                 (2n_i+2\ell+z+1)^{\underline{2i}},
+\]
+define the Newton coefficients
+\begin{equation}\label{r8c:d}
+ d_{i\ell h}=\frac1{h!}\sum_{j=0}^{h}
+ (-1)^{h-j}\binom hj W_{i\ell}(N_{i\ell}-j).
+\end{equation}
+The underline means a falling factorial. With independent variables
+$U_1,\ldots,U_7$, put
+\begin{equation}\label{r8c:smallA}
+ \mathcal A_{i\ell}=2F_{i\ell}+
+ \frac{R_\ell!}
+ {(2n_i+1)(2n_i+2)(2\ell+2)!N_{i\ell}!}
+ \sum_{\substack{1\le h\le2i+1\\ h\ \mathrm{odd}}}
+ d_{i\ell h}N_{i\ell}^{\underline h}
+ U_{4-i+\ell+(h-1)/2}.
+\end{equation}
+Ratios of factorials with fixed index difference mean their finite
+rational products in $b$.
+
+Set
+\begin{align}
+ D_8(b)={}&256b^8-3584b^7+18496b^6-40544b^5+25984b^4
+ \notag\\
+ &+18424b^3-5856b^2-8316b-2025,
+ \label{r8c:D8}\\
+ P(b;U)&=576(2b-5)D_8(b)\frac{\det\mathcal A(b;U)}{\det F(b)}.
+ \label{r8c:Pdef}
+\end{align}
+The source's finite polynomial certificate proves
+$P\in\mathbb Z[b,U_1,\ldots,U_7]$, of degree at most four in
+$U$, and gives
+\begin{align}
+ \det F={}&\frac{256}{4725}(b-2)(b-1)(2b-5)(2b-3)
+ (4b-11)(4b-9)\notag\\
+ &\hspace{8mm}\cdot(4b-7)^2(4b-5)(4b-3)D_8(b).
+ \label{r8c:Fdet}
+\end{align}
+The integer $D_8(b)$ is odd at every integer $b$, so these denominators
+are nonzero in the stated range.
+
+Here is its exact connection to the source matrix. Let
+\[
+ \mu_r=\begin{cases}B_{2r}/(2r)!,&r\ge0,\\0,&r<0,\end{cases}
+ \qquad H_b=(\mu_{i+j-3})_{0\le i,j<b},
+\]
+\[
+ R_b=\operatorname{diag}_{0\le i<b}(2b+2i-7)!,\qquad
+ E_b=\operatorname{diag}_{0\le k<b}\frac1{(2b-2k)!}.
+\]
+For every integer $b\ge8$ the inherited reduction is
+\begin{equation}\label{r8c:ratio}
+ \frac{\det M_b}{\det R_b\det E_b\det H_b}
+ =\frac{P(b;2B_{2b-2},\ldots,2B_{2b-14})}
+ {576(2b-5)D_8(b)}.
+\end{equation}
+The matrix $H_b$ is nonsingular. One short proof conjugates it by
+$\operatorname{diag}(1,-1,1,-1,\ldots)$ and partitions after the
+first two indices. The lower-right block is a positive definite
+moment matrix on the points $(2\pi m)^{-2}$, $m\ge1$. The
+upper-left block is zero, and the rectangular off-diagonal block
+has row rank two: its first two columns form a nonsingular
+antitriangular matrix. Its Schur complement is negative definite.
+Hence $H_b$ has exactly two negative eigenvalues and is nonsingular.
+Thus nonvanishing of the numerator of \eqref{r8c:ratio} proves the
+rank assertion.
+
+All formulas in this subsection are inherited definitions or
+reductions. The proof below supplies the previously missing global
+nonvanishing. In particular, the symbolic certificate is used as a
+finite algebraic identity, not as an extrapolation from values of $b$.
+
+\subsection{The highest-degree part is a zeta moment determinant}
+
+Write $P=P_4+P_{\le3}$ according to total degree in $U_1,\ldots,U_7$.
+For an integer $b\ge8$, set
+\[
+ F_0=(2b-14)!,\qquad
+ \alpha_j=\frac{(2b-2j)!}{F_0},\qquad V_j=\frac{U_j}{\alpha_j}
+       \quad(1\le j\le7),
+\]
+and define
+\begin{align}
+ G(b)={}&12288(b-6)^4(b-5)^4(b-4)^4(b-3)^3(b-2)^2(b-1)
+ \notag\\
+ &\cdot(2b-13)^4(2b-11)^4(2b-9)^4(2b-7)^3
+ (2b-5)^3(2b-3)^2(2b-1).
+ \label{r8c:G}
+\end{align}
+
+\begin{lemma}[Highest-degree Hankel factorization]\label{r8c:hankel}
+The exact identity is
+\begin{equation}\label{r8c:P4}
+ P_4(b;U)=G(b)\det(V_{i+j+1})_{0\le i,j\le3}.
+\end{equation}
+At the actual doubled Bernoulli values, this becomes
+\begin{equation}\label{r8c:P4zeta}
+ P_4(b;2B_{2b-2},\ldots,2B_{2b-14})
+ =\frac{256G(b)F_0^4}{(2\pi)^{8b-32}}
+       \det\bigl(\zeta(2b-14+2i+2j)\bigr)_{0\le i,j\le3}>0.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+This factorization has a direct structural proof. In
+\eqref{r8c:d}, substitute $z=N_{i\ell}-y$. Then
+\[
+ W_{i\ell}(N_{i\ell}-y)
+    =(2n_i+2-y)(4n_i+2-y)^{\underline{2i}},
+\]
+which is independent of $\ell$. Write its Newton coefficients as
+$d_{ih}$. In particular,
+\begin{equation}\label{r8c:d1}
+ d_{i1}=-(i+1)(4n_i+2)^{\underline{2i}}.
+\end{equation}
+Indeed the coefficient is the value at $y=1$ minus the value at
+$y=0$; using
+$(x-1)^{\underline{2i}}=x^{\underline{2i}}(x-2i)/x$
+and $4n_i+2=2(2n_i+1)$ gives \eqref{r8c:d1}.
+
+Let $T=\mathcal A-2F$. In a term with $h=2k+1$, the Bernoulli
+variable index is $j=4-i+\ell+k$ and
+$N_{i\ell}-h=2b-2j$. Thus substitution of $U_j=\alpha_jV_j$
+cancels the factorials in \eqref{r8c:smallA}. Define
+\[
+ \rho_i=\frac1{(2n_i+1)(2n_i+2)},\qquad
+ \sigma_\ell=\frac{R_\ell!}{F_0(2\ell+2)!},
+\]
+and the lower triangular matrix $L$ by
+$L_{i,i-k}=d_{i,2k+1}$ for $0\le k\le i$.
+Then the exact matrix identity is
+\[
+ T=\operatorname{diag}(\rho_i)\,L\,
+       (V_{4-i+\ell})_{0\le i,\ell\le3}
+       \operatorname{diag}(\sigma_\ell).
+\]
+Reversing its four middle rows has sign $(-1)^6=1$ and gives
+the Hankel matrix in \eqref{r8c:P4}. The diagonal entries of $L$
+are \eqref{r8c:d1}. Taking determinants, multiplying by
+$576(2b-5)D_8(b)/\det F(b)$, and cancelling the finite products
+in \eqref{r8c:Fdet} gives exactly \eqref{r8c:G}.
+Since the highest-degree part of $\det(2F+T)$ is $\det T$,
+this proves \eqref{r8c:P4}. An independent coefficient check in the
+accompanying script verifies all sixteen Hankel monomials.
+
+Euler's Bernoulli formula \cite[Eq. 24.8.1]{DLMF} gives
+\[
+ V_j=(-1)^{b-j+1}\frac{4F_0}{(2\pi)^{2b-2j}}
+                     \zeta(2b-2j).
+\]
+Factoring the row and column signs and powers of $2\pi$ in the
+determinant, and then reversing both its rows and its columns,
+gives \eqref{r8c:P4zeta}. All signs cancel. Its positivity follows
+from the strictly positive moment representation proved next.
+\end{proof}
+
+\begin{lemma}[An explicit positive contribution]\label{r8c:positive}
+For every real $n>1/2$,
+\begin{equation}\label{r8c:zeta-lower}
+ \det\bigl(\zeta(2n+2i+2j)\bigr)_{0\le i,j\le3}
+ \ge \frac{30625}{48922361856}\,24^{-2n}>0.
+\end{equation}
+\end{lemma}
+\begin{proof}
+With $x_m=m^{-2}$, the entries are the moments
+$\sum_{m\ge1}x_m^{n+i+j}$. Cauchy--Binet for a finite truncation,
+followed by convergence of each entry, yields
+\[
+ \det\bigl(\zeta(2n+2i+2j)\bigr)
+ =\sum_{m_1<m_2<m_3<m_4}
+   (m_1m_2m_3m_4)^{-2n}
+   \prod_{i<j}(m_i^{-2}-m_j^{-2})^2.
+\]
+Every summand is positive. Keeping the term $(1,2,3,4)$ proves
+\eqref{r8c:zeta-lower}, since
+\[
+ \prod_{1\le i<j\le4}(i^{-2}-j^{-2})^2
+       =\frac{30625}{48922361856}=:V.
+\]
+No limiting determinant sign is inferred numerically.
+\end{proof}
+
+\subsection{Uniform domination of every lower-degree term}
+
+The integer polynomial defined by \eqref{r8c:Pdef} has $94$
+monomials when grouped by the seven $U$ variables. Every coefficient
+of $P_{\le3}$ has degree at most $15$ in $b$, and its full integer
+coefficient norm is exactly
+\begin{equation}\label{r8c:K}
+ K:=\sum_{\substack{\text{monomials }c b^rU^\nu\text{ of }P\\
+                         |\nu|\le3}}|c|
+       =1465775272343372.
+\end{equation}
+This finite integer is obtained by exact coefficient extraction,
+independently replayed from the source polynomial certificate.
+It is an upper bound on the whole lower-degree contribution, with
+no cancellation assumed.
+
+For $b\ge512$, let
+\[
+ T_b=\frac{8(2b)^{12}(2b-14)!}{(2\pi)^{2b-14}}.
+\]
+Every actual variable satisfies $|2B_{2b-2j}|\le T_b$:
+use $\zeta(2b-2j)<2$, bound the factorial ratio by $(2b)^{12}$,
+and use $2\pi>1$ for the remaining nonnegative exponent.
+Also $T_b\ge1$. For example $20!>8^{20}$, the ratio for subsequent
+even factorials is greater than $8^2$, and $2\pi<8$.
+Consequently
+\begin{equation}\label{r8c:small-bound}
+ |P_{\le3}(b;2B_{2b-2},\ldots,2B_{2b-14})|
+ \le Kb^{15}T_b^3.
+\end{equation}
+For $b\ge14$, every $b-j$ factor in \eqref{r8c:G} is at least
+$b/2$, and every $2b-j$ factor is at least $b$. There are $18$
+factors of the first kind and $21$ of the second, with multiplicity.
+Thus
+\[
+ G(b)\ge\frac{3}{64}b^{39}.
+\]
+Combining this with \eqref{r8c:P4zeta} and
+\eqref{r8c:zeta-lower} gives
+\[
+ P_4\ge
+ \frac{12Vb^{39}((2b-14)!)^4}{(2\pi)^{8b-32}}\,24^{-2b+14}.
+\]
+Dividing \eqref{r8c:small-bound} by this expression, first cancelling
+the common powers of $2\pi$ and then using $2\pi<8$, proves
+\begin{equation}\label{r8c:ratio-bound}
+ \frac{|P_{\le3}|}{P_4}
+ \le R_b:=C\,\frac{b^{12}192^{2b}}{(2b-14)!},\qquad
+ C=\frac{K2^{73}}{3V24^{14}}
+   =\frac{211240479050703917773579966480384}{602791875}.
+\end{equation}
+The cancellation before replacing $2\pi$ is useful: it avoids
+artificially weakening the exponential factor.
+
+All that remains here is elementary exact integer arithmetic:
+\begin{equation}\label{r8c:base-bound}
+ R_{512}<2^{-675}<1,
+ \qquad
+ \frac{R_{b+1}}{R_b}
+ =\left(1+\frac1b\right)^{12}
+   \frac{192^2}{(2b-12)(2b-13)}<1\quad(b\ge512).
+\end{equation}
+The first inequality means the exact integer comparison
+\[
+ 2^{675}\,211240479050703917773579966480384\,
+       512^{12}192^{1024}
+       <602791875\cdot1010!,
+\]
+which is verified in the accompanying script. For the second,
+$(513/512)^{12}<2$ and $2\cdot192^2<1011\cdot1012$ suffice.
+It follows that $P=P_4+P_{\le3}>0$ for every $b\ge512$.
+The threshold is chosen for a transparent uniform proof; no minimal
+threshold is asserted.
+
+\subsection{Finite completion of the omitted residue class}
+
+For completeness, the inherited congruence proof gives, for $b\ge11$,
+\[
+ P(b;2B_{2b-2},\ldots,2B_{2b-14})
+       \equiv4(b-1)(4b+15)\pmod {64}
+       \quad\text{in }\mathbb Z_{(2)}.
+\]
+It uses $2B_{2m}\equiv1+4m+16m^2\pmod {64}$ for $m\ge4$,
+together with its symbolic determinant certificate. Thus $P\ne0$
+when $b\not\equiv1\pmod {16}$. The source checks $5\le b\le10$
+directly. Its congruence assertion does not supply the omitted
+residue class, and no extrapolation of its valuation formula is
+used here.
+
+Below $512$ the only remaining indices are $b=16k+1$,
+$1\le k\le31$. The following table records the exact valuation
+of $P$ at every such index.
+\begin{center}
+\begin{tabular}{r r@{\qquad}r r@{\qquad}r r@{\qquad}r r}
+\hline
+$b$&$v_2(P)$&$b$&$v_2(P)$&$b$&$v_2(P)$&$b$&$v_2(P)$\\
+\hline
+17&6&33&7&49&6&65&10\\
+81&6&97&7&113&6&129&8\\
+145&6&161&7&177&6&193&9\\
+209&6&225&7&241&6&257&8\\
+273&6&289&7&305&6&321&11\\
+337&6&353&7&369&6&385&8\\
+401&6&417&7&433&6&449&9\\
+465&6&481&7&497&6&&\\
+\hline
+\end{tabular}
+\end{center}
+Every entry is certified by a nonzero residue modulo $2^{32}$;
+all $31$ residues are included in the machine-readable record.
+They can be obtained either from exact rational Bernoulli numbers
+or entirely in modular arithmetic using
+\[
+ (2m+1)\,(2B_{2m})
+ =2m-1-\sum_{j=1}^{m-1}\binom{2m+1}{2j}\,(2B_{2j}).
+\]
+The divisor $2m+1$ is odd, so the recurrence is valid modulo
+$2^{32}$. Two independent implementations agree on every residue.
+In particular no finite numerical approximation is treated as a
+nonvanishing certificate. As an explicit first new value,
+\[
+ \frac{\det M_{17}}{\det R_{17}\det E_{17}\det H_{17}}
+   =-\frac{5564518155020169678178976040991}{8937041637533625}.
+\]
+This settles the previously omitted pair $(p,q)=(8,34)$.
+The inherited cases, this finite table, and
+\eqref{r8c:base-bound} cover every $b\ge5$, proving
+Theorem~\ref{r8c:main}.
+
+\subsection{An all-order family of ordinary polygamma identities}
+
+The rank theorem supplies explicit identities as well as a decision
+about a matrix. For $b\ge5$ and $0\le k<b$, define
+\begin{align}
+ w_{k,r}^{(b)}&=
+ \sum_{t=0}^{b-1}(M_b^{-1})_{kt}
+ \binom{2(b+t)+1}{2r}2^{-2(b+t-r)},
+ \label{r8c:w}\\
+ Q_{b,k}(x)&=\sum_{r=0}^{2b-1}w_{k,r}^{(b)}x^{2r},
+ \label{r8c:Q}
+\end{align}
+where the summand is zero for $r>b+t$. These are finite rational
+formulas for every coefficient. Put
+\[
+ \eta_{s,0}=\frac1{s-1},\qquad
+ \eta_{s,j}=\frac{(s)_{2j-1}B_{2j}(1/2)}{(2j)!}\quad(j\ge1),
+ \qquad
+ c_{b,\ell}=\sum_{j=0}^{\ell}\eta_{8,j}\eta_{2b,\ell-j}.
+\]
+Let $S_{b,k}(x)$ be the polynomial formed by retaining the
+nonnegative powers in the formal product
+\[
+ Q_{b,k}(x)x^{-2b-6}\sum_{\ell\ge0}c_{b,\ell}x^{-2\ell}.
+\]
+Only finitely many terms enter this polynomial, and its degree is
+at most $2b-8$. Then
+\begin{equation}\label{r8c:ordinary}
+ \boxed{\sum_{n=0}^{\infty}
+ \left\{Q_{b,k}(x_n)
+ \frac{\psi^{(7)}(n+1)\psi^{(2b-1)}(n+1)}{7!\,(2b-1)!}
+       -S_{b,k}(x_n)\right\}=\zeta(2k).}
+\end{equation}
+This is an ordinary absolutely convergent series. Indeed
+\eqref{r8c:w} and \eqref{r8c:C} identify its continued moment
+with the $k$th row of $M_b^{-1}M_b$, giving $\zeta(2k)$.
+The centered Hurwitz expansion is
+\[
+ A_8(n)A_{2b}(n)\sim x_n^{-2b-6}
+                      \sum_{\ell\ge0}c_{b,\ell}x_n^{-2\ell}.
+\]
+The polynomial $S_{b,k}$ removes every nondecaying term, leaving
+$O(x_n^{-2})$. Each removed nonnegative even power has centered
+continued sum $\zeta(-2j,1/2)=0$, so the ordinary convergent sum
+has precisely the same value. Thus no unspecified summation of a
+divergent series remains in \eqref{r8c:ordinary}.
+
+To reconstruct a later moment, first use \eqref{r8c:C} on the
+initial prefix, invert $M_b$, form every later $C_j$ from the
+source Bernoulli-binomial formula, and finally use \eqref{r8c:D}.
+Every operation is finite rational arithmetic. This completes the
+order-eight family. The still-uncovered pairs have smaller even order
+at least ten and order gap at least six; their optimal-prefix
+conjecture remains separate.
+
+% END EMBEDDED sections/02_rank_eight.tex
+
+
+% BEGIN EMBEDDED sections/03_eventual_rank.tex
+% Optional companion theorem. All labels use ert:.
+\section{Effective eventual reconstruction for every fixed even order}
+\label{ert:section}
+
+The structural factorization used for order eight has an all-order
+consequence. It reduces the full conjecture at each fixed smaller
+order to an explicitly bounded finite calculation. It does not prove
+that all those finitely many matrices are nonsingular.
+
+\begin{theorem}[Effective eventual optimal-prefix rank]
+\label{ert:main}
+For every integer $a\ge1$ there is a constructible integer $B_a$
+such that the optimal-prefix coefficient matrix $M_{a,b}$ is
+nonsingular for every integer $b\ge B_a$. Thus, for every fixed
+even tail order $p=2a$, only finitely many larger even orders can
+possibly fail the source optimal-prefix conjecture. The formulas
+below give a terminating algorithm for an integer $B_a$, using
+finite polynomial arithmetic and exact integer comparisons.
+\end{theorem}
+
+Here and below, the general source matrix is
+\begin{equation}\label{ert:M}
+ (M_{a,b})_{ik}=B_{2(i+k-a+1)}
+ \left\{\frac{\binom{2i+2}{2a-2k}}{2i+2}
+ +\frac{\binom{2b+2i-2a+2}{2b-2k}}{2b+2i-2a+2}\right\},
+ \quad0\le i,k<b.
+\end{equation}
+Negative Bernoulli indices give zero; each binomial summand is
+omitted unless its lower index lies between $2$ and its upper index.
+This is the same normalization as \eqref{r8c:M} at $a=4$.
+
+\subsection{Exact normalization of the retained determinant}
+
+Assume initially $b\ge2a$. For $0\le i,\ell<a$ define
+\[
+ n_i=b-a+i,\quad N_{i\ell}=2(n_i-\ell)+1,\quad
+ R_\ell=2b-2a+2+2\ell,
+\]
+\[
+ F_{i\ell}=\frac1{(2\ell+1)!}
+ \prod_{r=0}^{2\ell-1}(2n_i-r)(2n_i+3+r),
+\]
+and define integer-polynomial coefficients $d_{ih}$ by
+\begin{equation}\label{ert:newton}
+ (2n_i+2-y)(4n_i+2-y)^{\underline{2i}}
+       =\sum_{h=0}^{2i+1}d_{ih}y^{\underline h}.
+\end{equation}
+They lie in $\mathbb Z[b]$: the change of basis from ordinary
+powers to falling powers has integer Stirling-number coefficients.
+Let $U_1,\ldots,U_{2a-1}$ be independent variables and put
+\begin{equation}\label{ert:A}
+ \mathcal A_{i\ell}=2F_{i\ell}+
+ \frac{R_\ell!}
+ {(2n_i+1)(2n_i+2)(2\ell+2)!N_{i\ell}!}
+ \sum_{k=0}^{i}d_{i,2k+1}N_{i\ell}^{\underline{2k+1}}
+            U_{a-i+\ell+k}.
+\end{equation}
+The inherited reduction is the theorem ``Reduction to a determinant
+of size $a$,'' equation \texttt{eq:general-small-det}, in the source
+file \texttt{03b\_general\_hankel.tex}~\cite{GeneralHankel}.
+We give its exact multiplier and the normalization argument, so
+that no nonvanishing statement about an uncomputed inverse matrix
+is needed.
+
+\begin{lemma}[Exact source-to-retained determinant multiplier]
+\label{ert:normalization}
+Put
+\[
+ h_n=\frac{((2n+1)!)^2}{(4n+2)!(4n+3)!},\qquad
+ c_n=\frac{(2n+1)(2n+2)!}{(4n+2)!},
+ \qquad \epsilon_{a,b}=a(b-a)+\frac{a(a-1)}2.
+\]
+For $b\ge2a$, with $U_j=2B_{2b-2j}$,
+\begin{equation}\label{ert:exact-multiplier}
+ \det M_{a,b}=(-1)^{\epsilon_{a,b}}
+ \frac{\prod_{t=0}^{b-1}(2b+2t-2a+1)!}
+      {\prod_{k=0}^{b-1}(2b-2k)!}
+ \left(\prod_{n=0}^{b-a-1}h_n\right)
+ \left(\prod_{i=0}^{a-1}c_{n_i}\right)\det\mathcal A.
+\end{equation}
+Every scalar factor other than the displayed sign is strictly
+positive. In particular,
+\begin{equation}\label{ert:equivalence}
+ \det M_{a,b}\ne0
+ \quad\Longleftrightarrow\quad
+ \det\mathcal A\bigl(b;2B_{2b-2},\ldots,2B_{2b-4a+2}\bigr)\ne0.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Set $\mu_j=B_{2j}/(2j)!$ for $j\ge0$ and $\mu_j=0$ for $j<0$.
+Cancelling factorials in \eqref{ert:M} gives
+\[
+ M_{a,b}=R(H+U^{\mathrm{pert}})E,
+ \quad R_{tt}=(2b+2t-2a+1)!,\quad E_{kk}=\frac1{(2b-2k)!},
+\]
+where $H_{tk}=\mu_{t+k-a+1}$ and
+\[
+ U^{\mathrm{pert}}_{tk}=\mathbf1_{k<a}\mu_{t+k-a+1}
+ \frac{(2t+1)!(2b-2k)!}
+ {(2a-2k)!(2b+2t-2a+1)!}.
+\]
+The diagonal symbols $R,E$ in this proof are matrices; $R_\ell$
+in \eqref{ert:A} is the previously defined integer.
+
+The explicit monic Pad\'e rows are
+\[
+ \pi_n(x)=\sum_{t=0}^np_{nt}x^t,\qquad
+ p_{nt}=\frac{2(2n+2t+1)!(2n+1)!}
+ {(4n+2)!(2n-2t+1)!(2t)!}.
+\]
+For $\mathcal N(x^r)=\mu_{r+1}$ they satisfy
+\begin{equation}\label{ert:pade-orthogonality}
+ \mathcal N(x^j\pi_n)=0\ (0\le j<n),\qquad
+ \mathcal N(x^n\pi_n)=h_n.
+\end{equation}
+Here is a finite verification of the normalization. Define
+\[
+ P_N(t)=\sum_{k=0}^N
+ \frac{(2N-k)!N!}{(2N)!k!(N-k)!}t^k.
+\]
+Direct coefficient comparison gives
+\[
+ e^tP_N(-t)-P_N(t)
+ =\frac{(-1)^N(N!)^2}{(2N)!(2N+1)!}t^{2N+1}
+       +O(t^{2N+2}).
+\]
+Indeed, the coefficients through $2N$ reduce to the finite identity
+$\sum_k(-1)^k\binom Nk(1+x)^{2N-k}=x^N(1+x)^N$;
+the next coefficient is
+$(2N)!^{-1}\int_0^1x^N(x-1)^N\,dx$.
+Taking $N=2n+1$, set
+\[
+ q_n(t^2)=\frac{P_N(t)-P_N(-t)}t,\qquad
+ r_n(t^2)=\frac{P_N(t)+P_N(-t)}2.
+\]
+For $\Phi(z)=\sum_{j\ge0}\mu_jz^j
+=\frac{\sqrt z}{2}\coth\frac{\sqrt z}{2}$ this proves
+\[
+ \Phi(z)q_n(z)-r_n(z)=h_nz^{2n+1}+O(z^{2n+2}),
+ \qquad \pi_n(x)=x^nq_n(1/x).
+\]
+Coefficient comparison proves \eqref{ert:pade-orthogonality};
+it also gives, for $n\ge\ell\ge0$,
+\begin{equation}\label{ert:constant-pade-row}
+ \sum_{t=0}^np_{nt}\mu_{t-\ell}=c_n
+ \frac1{(2\ell+1)!}
+ \prod_{r=0}^{2\ell-1}(2n-r)(2n+3+r).
+\end{equation}
+Specifically, this sum is $[z^{n-\ell}]r_n(z)$, and its
+factorial coefficient formula is the right side. Thus both
+$c_n$ and $h_n$ have been obtained without an assumed Pad\'e
+normality assertion.
+
+Replace row $n$ of $H+U^{\mathrm{pert}}$ by the linear combination
+with coefficients $p_{nt}$, for $0\le n<b$. This simultaneous
+transformation is unit lower triangular. In columns $k\ge a$ the
+result is $\mathcal N(x^{k-a}\pi_n)$. Hence the final $a$ rows
+vanish there, while the first $b-a$ rows in those columns form an
+upper triangular square matrix with diagonal
+$h_0,\ldots,h_{b-a-1}$. The retained $a$-square matrix is
+\[
+ A^{\mathrm{ret}}_{ik}=
+ \sum_{t=0}^{n_i}p_{n_it}\mu_{t+k-a+1}
+ \left(1+\frac{(2t+1)!(2b-2k)!}
+ {(2a-2k)!(2b+2t-2a+1)!}\right).
+\]
+Moving the first $a$ columns past the others contributes
+$(-1)^{a(b-a)}$. Reverse the retained columns, putting
+$\ell=a-1-k$, and divide row $i$ by $c_{n_i}$.
+This adds the determinant factor
+$(-1)^{a(a-1)/2}\prod_i c_{n_i}$.
+
+It remains to identify this divided matrix with \eqref{ert:A}.
+Its unperturbed entry is $F_{i\ell}$ by
+\eqref{ert:constant-pade-row}. Writing $n=n_i$, $N=N_{i\ell}$,
+and
+\[
+ W(j)=(j+2\ell+1)(2n+2\ell+j+1)^{\underline{2i}},\qquad
+ C=\frac{R_\ell!}{(2n+1)(2n+2)(2\ell+2)!N!},
+\]
+factorial cancellation gives the perturbation entry
+$2C\sum_{r=0}^{n-\ell}\binom N{2r}B_{2r}W(2r)$.
+Since $W(N-y)$ is exactly the polynomial in \eqref{ert:newton},
+use the finite identity
+\[
+ \sum_{j=0}^N\binom Nj B_j(N-j)^{\underline h}
+    =N^{\underline h}B_{N-h}(1).
+\]
+It follows immediately by taking $N^{\underline h}$ outside
+the binomial sum and using the defining translation formula for
+Bernoulli polynomials. Here $N\ge2i+3$, so all indices $N-h$
+are at least two. Only odd $h$ survive. Restoring the omitted
+$j=1$ term, with $B_1=-1/2$, gives
+\[
+ \sum_r\binom N{2r}B_{2r}W(2r)
+  =\sum_{k=0}^i d_{i,2k+1}N^{\underline{2k+1}}
+           B_{2b-2(a-i+\ell+k)}+\frac N2W(1).
+\]
+Finally, $CNW(1)=F_{i\ell}$ by factorial cancellation. The divided
+retained entry is therefore $2F_{i\ell}$ plus the Bernoulli term
+in \eqref{ert:A}. Restoring all row and column factors proves
+\eqref{ert:exact-multiplier}.
+\end{proof}
+
+For reference, the unperturbed base determinant has the exact
+normalization
+\begin{equation}\label{ert:base-determinant}
+ \det H=(-1)^{\epsilon_{a,b}}
+ \left(\prod_{n=0}^{b-a-1}h_n\right)
+ \left(\prod_{i=0}^{a-1}c_{n_i}\right)\det F\ne0.
+\end{equation}
+One can verify the last inequality without using it in the lemma.
+Conjugate $H$ by $\operatorname{diag}(1,-1,\ldots)$.
+Euler's Bernoulli formula shows that entries with $t+k\ge a$
+come from a strictly definite positive moment matrix,
+with sign $(-1)^a$. For $a=2h$ the resulting block matrix is
+$\left(\begin{smallmatrix}0&B\\B^{\mathsf T}&P\end{smallmatrix}\right)$,
+where $P$ is positive definite and $B$ has full row rank $h$.
+For $a=2h+1$ it is
+$\left(\begin{smallmatrix}ee^{\mathsf T}&B\\B^{\mathsf T}&-P\end{smallmatrix}\right)$,
+where $P$ is positive definite, $e=(0,\ldots,0,1)^{\mathsf T}$,
+and the first $h$ rows of $B$ have a nonsingular antitriangular
+minor. The Schur complements are respectively strictly negative
+and strictly positive. The inertia is $(b-h,h)$ in the even case
+and $(h+1,b-h-1)$ in the odd case. Together with
+\eqref{ert:base-determinant}, this also proves $\det F>0$.
+Strict positivity of the moment blocks follows from
+$\sum_{m\ge1}(2\pi m)^{-2s}P_0((2\pi m)^{-2})^2>0$ for a
+nonzero polynomial $P_0$ and $s\ge1$.
+
+\subsection{The general highest-degree determinant identity}
+
+All denominators can be cleared constructively. Set
+\begin{align*}
+ J_a(b)&=\prod_{i=0}^{a-1}(2n_i+1)(2n_i+2),\\
+ E_a(b)&=\prod_{i,\ell=0}^{a-1}
+           \prod_{r=1}^{\max\{0,2i-4\ell-1\}}(R_\ell+r),\\
+ D_a(b)&=(2a)!J_a(b)E_a(b),\qquad
+ e_a=\sum_{i,\ell=0}^{a-1}\max\{0,2i-4\ell-1\}.
+\end{align*}
+The symbols $E_a(b)$ and $D_a(b)$ here are auxiliary polynomials;
+they are unrelated to the moment coordinates.
+Because $N_{i\ell}-R_\ell=2i-4\ell-1$, the polynomial $D_a$
+clears every negative factorial ratio in \eqref{ert:A}, every
+row denominator, and every constant factorial denominator.
+Consequently
+\[
+ \widetilde{\mathcal A}=D_a\mathcal A
+       \in\mathbb Z[b,U_1,\ldots,U_{2a-1}]^{a\times a},
+ \qquad \mathscr P_a=\det\widetilde{\mathcal A}
+       \in\mathbb Z[b,U_1,\ldots,U_{2a-1}].
+\]
+Also $D_a(b)>0$ for $b\ge2a$.
+
+Put
+\[
+ F_0=(2b-4a+2)!,\qquad
+ V_j=U_j\frac{F_0}{(2b-2j)!},\qquad
+ \kappa_a=\frac{a!((2a)!)^a}{\prod_{\ell=0}^{a-1}(2\ell+2)!},
+\]
+and
+\begin{align}
+ \Gamma_a(b)={}&\kappa_aJ_a(b)^{a-1}E_a(b)^a
+ \prod_{i=0}^{a-1}(4n_i+2)^{\underline{2i}}
+ \prod_{\ell=0}^{a-1}\prod_{r=1}^{2a+2\ell}(2b-4a+2+r).
+ \label{ert:Gamma}
+\end{align}
+The subscript $[a]$ denotes the part homogeneous of total degree
+$a$ in the $U$ variables. The exact factorization is
+\begin{equation}\label{ert:leading}
+ (\mathscr P_a)_{[a]}
+ =(-1)^{a(a+1)/2}\Gamma_a(b)
+           \det(V_{i+j+1})_{0\le i,j<a}.
+\end{equation}
+To prove it, write $T=\mathcal A-2F$ and substitute the $V$ variables.
+For the term $U_{a-i+\ell+k}$,
+$N_{i\ell}-(2k+1)=2b-2(a-i+\ell+k)$, so all nonconstant
+factorials cancel. Exactly as in the order-eight proof,
+\[
+ T=\operatorname{diag}\!\left(\frac1{(2n_i+1)(2n_i+2)}\right)
+    L\,(V_{a-i+\ell})_{0\le i,\ell<a}
+    \operatorname{diag}\!\left(\frac{R_\ell!}{F_0(2\ell+2)!}\right),
+\]
+where $L_{i,i-k}=d_{i,2k+1}$ and
+$d_{i1}=-(i+1)(4n_i+2)^{\underline{2i}}$.
+The $a$ diagonal signs of $L$, together with row reversal of the
+middle matrix, give $(-1)^{a(a+1)/2}$. The remaining products are
+precisely \eqref{ert:Gamma} after multiplication by $D_a^a$.
+This proves \eqref{ert:leading} for every $a$, without evaluating
+any large determinant experimentally.
+
+At $U_j=2B_{2b-2j}$, Euler's Bernoulli formula gives
+\begin{equation}\label{ert:actual-leading}
+ \left|(\mathscr P_a)_{[a]}\right|
+ =\frac{\Gamma_a(b)(4F_0)^a}{(2\pi)^{2a(b-a)}}
+   \det\bigl(\zeta(2b-4a+2+2i+2j)\bigr)_{0\le i,j<a}.
+\end{equation}
+Its sign is $(-1)^{ab+a(a+1)/2}$. Define the positive rational
+number
+\[
+ V_a=\prod_{1\le r<s\le a}(r^{-2}-s^{-2})^2,
+ \qquad V_1=1.
+\]
+Keeping the first $a$ support points in Cauchy--Binet proves
+\begin{equation}\label{ert:moment-lower}
+ \det\bigl(\zeta(2b-4a+2+2i+2j)\bigr)
+       \ge V_a(a!)^{-2b+4a-2}>0.
+\end{equation}
+Thus the highest-degree term is always nonzero in the stated range.
+
+\subsection{An exact algorithm for a sufficient threshold}
+
+Let $\|f\|_1$ denote the sum of the absolute values of all integer
+coefficients of a polynomial in $b,U_1,\ldots,U_{2a-1}$. Compute
+\[
+ E_a^*=\max_{0\le i,\ell<a}\|
+                  \widetilde{\mathcal A}_{i\ell}\|_1,
+ \qquad K_a=a!(E_a^*)^a,
+ \qquad g_a=6a^2-4a+ae_a.
+\]
+These are finite integer calculations on only $a^2$ explicitly given
+entries; no expansion of the whole determinant is required.
+The coefficient norm is submultiplicative, so the full coefficient
+norm of $\mathscr P_a$ is at most $K_a$.
+
+Each scaled entry has degree at most $6a+e_a-4$ in $b$.
+For the nonconstant part this follows from
+$\deg_b d_{ih}\le2i+1-h$, the degree $h$ of
+$N_{i\ell}^{\underline h}$, and the degree difference
+$R_\ell-N_{i\ell}=1+4\ell-2i$; the total bound is
+$\deg D_a+4\ell$. The same bound holds for $D_aF_{i\ell}$.
+Hence $\deg_b\mathscr P_a\le g_a$.
+The factored polynomial \eqref{ert:Gamma} also has degree exactly
+$g_a$. Every linear factor in it is at least $b$ when $b\ge4a$,
+so
+\[
+ \Gamma_a(b)\ge\kappa_a b^{g_a}\quad(b\ge4a).
+\]
+
+For $b\ge4a+10$, define
+\[
+ T_{a,b}=\frac{8(2b)^{4a-4}F_0}{(2\pi)^{2b-4a+2}}\ge1.
+\]
+For the last inequality, put $s_0=2b-4a+2\ge26$;
+$26!>8^{26}$ implies $s_0!>8^{s_0}$ by induction,
+and $2\pi<8$.
+As before, $|2B_{2b-2j}|\le T_{a,b}$ for $1\le j\le2a-1$.
+Since the remaining terms have total $U$ degree at most $a-1$,
+\[
+ |(\mathscr P_a)_{[\le a-1]}|
+      \le K_a b^{g_a}T_{a,b}^{a-1}.
+\]
+Combining this with \eqref{ert:actual-leading} and
+\eqref{ert:moment-lower}, cancelling the common powers of $2\pi$,
+and then using $1<2\pi<8$, gives
+\begin{equation}\label{ert:bound}
+ \frac{|(\mathscr P_a)_{[\le a-1]}|}{|(\mathscr P_a)_{[a]}|}
+ \le R_a(b):=C_a\frac{b^{L_a}(8a!)^{2b}}{(2b-4a+2)!},
+\end{equation}
+where every constant is explicit and rational:
+\begin{align}
+ L_a&=4(a-1)^2,\qquad \chi_a=2a^2-6a+2,\notag\\
+ C_a&=\frac{K_a\,8^{a-1+\max(\chi_a,0)}2^{L_a}}
+ {\kappa_a4^aV_a(a!)^{4a-2}}.
+ \label{ert:constant}
+\end{align}
+The use of $8^{\max(\chi_a,0)}$ also covers $a=1,2$, where
+$\chi_a$ is negative.
+
+Here is a terminating purely arithmetic prescription. Start at
+\[
+ B_a^{(0)}=\max\{4a+10,\ L_a,\ 16a!\},
+\]
+and increase the integer $b$ until the exact rational comparison
+$R_a(b)<1$ holds. Define $B_a$ to be that first integer. The procedure
+must terminate, because for every $b\ge B_a^{(0)}$,
+\[
+ \frac{R_a(b+1)}{R_a(b)}
+ =\left(1+\frac1b\right)^{L_a}
+ \frac{(8a!)^2}{(2b-4a+4)(2b-4a+3)}<\frac34.
+\]
+Indeed $b\ge L_a$ gives $(1+1/b)^{L_a}<3$,
+$b\ge4a$ makes both denominator factors at least $b$, and
+$b\ge16a!$ supplies the last numerical factor.
+The comparison uses integer factorials and powers after clearing
+the fixed rational denominator of $C_a$.
+
+For every $b\ge B_a$, \eqref{ert:bound} is strictly less than one,
+so the highest-degree term cannot be cancelled. Equations
+\eqref{ert:equivalence} and $D_a(b)>0$ prove
+Theorem~\ref{ert:main}. In particular, for each input $a$ one may
+inspect the finite set $a<b<B_a$ exactly: this either proves the
+entire fixed-order family or produces a genuine counterexample.
+The construction does not perform those finite calculations for all
+$a$, and does not settle the unrestricted conjecture.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{rrrr}
+\toprule
+$a$ & Smaller order $p=2a$ & Sufficient $B_a$ & Guaranteed even $q$ \\
+\midrule
+1 & 2  & 16   & $q\ge32$ \\
+2 & 4  & 45   & $q\ge90$ \\
+3 & 6  & 142  & $q\ge284$ \\
+4 & 8  & 467  & $q\ge934$ \\
+5 & 10 & 1920 & $q\ge3840$ \\
+\bottomrule
+\end{tabular}
+\caption{Exact sufficient thresholds returned by the constructive
+algorithm. No minimality is asserted.}
+\label{ert:threshold-table}
+\end{table}
+
+The first four rows of Table~\ref{ert:threshold-table} are exact
+diagnostics of the general construction; complete-family results
+already establish reconstruction for every larger even order in those
+cases, including the order-eight theorem proved here. The fifth row
+gives a concrete further consequence: for smaller order $p=10$,
+optimal-prefix reconstruction holds for every even $q\ge3840$.
+The algorithm computes $B_5=1920$ by an exact rational comparison.
+It does not check the remaining finite range $6\le b<1920$.
+
+% END EMBEDDED sections/03_eventual_rank.tex
+
+
+% BEGIN EMBEDDED sections/04_quartic.tex
+% Article-ready section.  Requires amsmath, amssymb, amsthm, booktabs.
+% Bibliography items appear in quartic_bibliography.tex.
+% New claim: the all-moment quartic extension, not the classical zeroth sum.
+
+\section{All regular centered quartic trigamma moments}
+\label{qtm:section}
+
+The incoming reconstruction report asks for an explicit quartic extension
+of its centered cubic moments, with a fixed coordinate space and a
+generator \cite[Question 5 and Section 6]{Reconstruction}.  We answer that
+question.  The starting, unweighted quartic sum is already evaluated
+explicitly by Hoffman \cite[Corollary 4.4 and the following example]{Hoffman}.
+The contribution here is the complete family of centered
+polynomial-subtracted moments, the finite Bernoulli formula connecting it
+to the cubic family, and the generator with all initial constants fixed.
+
+\subsection{Definition and ordinary summation convention}
+
+Throughout this section set
+\begin{equation}\label{qtm:definitions}
+ A_n=\psi'(n+1)=\zeta(2)-H_n^{(2)},\qquad
+ x_n=n+\tfrac12,\qquad
+ \mathcal V(s)=\sum_{n=0}^{\infty}A_n^4x_n^{-s}
+ \quad(\Re s>-3).
+\end{equation}
+Use $B_1=-1/2$ for ordinary Bernoulli numbers.  Define
+\begin{equation}\label{qtm:h}
+ h_k=\sum_{a+b+c+d=k}
+ B_{2a}(1/2)B_{2b}(1/2)B_{2c}(1/2)B_{2d}(1/2),
+ \qquad a,b,c,d\ge0.
+\end{equation}
+For example
+\[
+ h_0=1,\qquad h_1=-\frac13,\qquad h_2=\frac{19}{120},
+ \qquad h_3=-\frac{1871}{15120}.
+\]
+
+\begin{proposition}[Regular parity and prescribed subtractions]
+\label{qtm:regularity}
+The only poles of $\mathcal V$ are simple poles at $s=-3-2k$,
+$k\ge0$, with residues $h_k$.  In particular all the values
+\begin{equation}\label{qtm:Vr}
+ V_r=\mathcal V(-2r),\qquad r\ge0,
+\end{equation}
+are regular.  They are represented by the ordinary absolutely convergent
+series
+\begin{equation}\label{qtm:ordinary}
+ \boxed{\displaystyle
+ V_r=\sum_{n=0}^{\infty}\left(
+ x_n^{2r}A_n^4-\sum_{k=0}^{r-2}h_kx_n^{2r-4-2k}\right).}
+\end{equation}
+The inner sum is empty for $r=0,1$.
+\end{proposition}
+
+\begin{proof}
+The centered Hurwitz asymptotic expansion gives
+\[
+ A_n\sim\sum_{j\ge0}B_{2j}(1/2)x_n^{-2j-1},\qquad
+ A_n^4\sim\sum_{k\ge0}h_kx_n^{-4-2k}.
+\]
+Subtract an arbitrary finite number of terms and add the corresponding
+Hurwitz functions $h_k\zeta(s+4+2k,1/2)$.  The remainder series is
+normally convergent in successively larger left half-planes.  This
+continues $\mathcal V$ meromorphically and gives the listed poles and
+residues.  Every term in the definition of $h_k$ has sign $(-1)^k$,
+because $B_{2j}(1/2)$ has sign $(-1)^j$, including $j=0$.
+Consequently $h_k\ne0$ and the poles are actual.
+
+At $s=-2r$ the added terms corresponding to $0\le k\le r-2$
+are $h_k\zeta(4+2k-2r,1/2)=0$, since
+$\zeta(-2m,1/2)=0$ for every integer $m\ge0$.  The remaining
+summand in \eqref{qtm:ordinary} is $O(x_n^{-2})$; for $r=0$ it
+is even $O(x_n^{-4})$.  This proves the asserted ordinary identity.
+\end{proof}
+
+\subsection{The finite formula}
+
+We use two explicitly evaluated starting constants:
+\begin{align}
+ Q_5&=4\zeta(2)\zeta(3)-10\zeta(5),\label{qtm:Q5}\\
+ Q_7&=51\zeta(3)\zeta(4)+10\zeta(2)\zeta(5)
+                  -\frac{301}{4}\zeta(7).\label{qtm:Q7}
+\end{align}
+The cubic coefficients inherited from the incoming report are
+\begin{align}
+ C_1&=9\zeta(3)-\frac{17}{4}\zeta(4),\label{qtm:C1}\\
+ C_j&=9B_{2j-2}\zeta(3)-\frac12\delta_{j,2}\zeta(2)
+       +R_j,\qquad j\ge2,\label{qtm:Cj}\\
+ R_j&=-\frac{3}{2(2j-1)}
+ \sum_{h=0}^{j-2}(2h+1)\binom{2j-1}{2h+3}
+ B_{2j-4-2h}B_{2h}+\frac14\delta_{j,3}.
+ \label{qtm:Rj}
+\end{align}
+These formulas are reproduced to make the new quartic answer directly
+computable; their cubic evaluation is not a new claim of this section.
+
+Define $D_0=Q_7$ and, for $j\ge1$, set
+\begin{equation}\label{qtm:Dj}
+ \boxed{\displaystyle
+ D_j=\frac2j\sum_{\ell=1}^{j}
+ \binom{2j}{2\ell}B_{2j-2\ell}C_\ell+\varepsilon_j,\qquad
+ \varepsilon_j=
+ \begin{cases}
+ Q_5,&j=1,\\
+ -3\zeta(3),&j=2,\\
+ \dfrac{2j-5}{2}B_{2j-6},&j\ge3.
+ \end{cases}}
+\end{equation}
+In particular
+\begin{align}
+ D_1&=2C_1+Q_5,\notag\\
+ D_2&=\frac{15}{2}\zeta(3)-\frac{17}{4}\zeta(4)
+                 -\frac12\zeta(2)-\frac12,\notag\\
+ D_3&=-\frac7{10}\zeta(3)+\frac{17}{12}\zeta(4)
+                 -\frac56\zeta(2)-\frac35,\notag\\
+ D_4&=\frac{23}{35}\zeta(3)-\frac{17}{12}\zeta(4)
+                 +\frac7{12}\zeta(2)-\frac{81}{560}.
+ \label{qtm:Dexamples}
+\end{align}
+
+\begin{theorem}[Complete quartic Bernoulli formula]
+\label{qtm:main}
+For every $r\ge0$,
+\begin{equation}\label{qtm:mainformula}
+ \boxed{\displaystyle
+ V_r=\frac1{2r+1}\sum_{j=0}^{r}
+ \binom{2r+1}{2j+1}B_{2r-2j}(1/2)D_j.}
+\end{equation}
+Consequently every sum \eqref{qtm:ordinary} lies in the fixed space
+\begin{equation}\label{qtm:space}
+ \operatorname{span}_{\mathbb Q}
+ \{Q_7,Q_5,\zeta(2),\zeta(3),\zeta(4),1\}.
+\end{equation}
+The first six moments span all six formal coordinates: in the order
+displayed in \eqref{qtm:space}, their coefficient determinant is
+\begin{equation}\label{qtm:det}
+ \det [V_0,\ldots,V_5]_{\mathrm{coordinates}}
+       =\frac{7361}{49896000}\ne0.
+\end{equation}
+This is a statement about the specified coefficient formulas, not an
+assertion of arithmetic independence of these six real constants.
+\end{theorem}
+
+Here are the first four identities in compact form:
+\begin{align}
+ V_0&=Q_7,\label{qtm:V0}\\
+ V_1&=\frac{Q_5}{3}-\frac{Q_7}{12}
+                +6\zeta(3)-\frac{17}{6}\zeta(4),\label{qtm:V1}\\
+ V_2&=-\frac{Q_5}{6}+\frac{7Q_7}{240}-\frac1{10}\zeta(2)
+        -\frac32\zeta(3)+\frac{17}{30}\zeta(4)-\frac1{10},
+        \label{qtm:V2}\\
+ V_3&=\frac{7Q_5}{48}-\frac{31Q_7}{1344}+\frac1{168}\zeta(2)
+        +\frac{13}{20}\zeta(3)+\frac{17}{672}\zeta(4)
+        +\frac{11}{280}.\label{qtm:V3}
+\end{align}
+The first two are convergent without subtractions.  The next two are,
+respectively,
+\[
+ \sum_{n\ge0}(x_n^4A_n^4-1),\qquad
+ \sum_{n\ge0}(x_n^6A_n^4-x_n^2+1/3).
+\]
+
+\subsection{Finite summation proof and the boundary cancellation}
+
+Write $\operatorname{CT}_N$ for the coefficient of
+$N^0(\log N)^0$ in a finite-cutoff asymptotic expansion.  It will be
+applied only after an exact finite identity has been established.
+Set
+\begin{equation}\label{qtm:T}
+ T_{d,m}=\operatorname{CT}_N\sum_{k=1}^Nk^m A_k^d,
+ \qquad b_d(a)=[N^{-a}]A_N^d.
+\end{equation}
+The coefficients $b_d(a)$ are rational and are fixed by
+\begin{equation}\label{qtm:uncentered}
+ A_N\sim\sum_{a\ge1}B_{a-1}N^{-a}.
+\end{equation}
+When a sum converges, its constant term is its ordinary value.  In
+particular, with the descending-index convention for multiple zeta values,
+\begin{equation}\label{qtm:linearnegative}
+ T_{1,-p}=\zeta(2,p)\quad(p\ge1),\qquad
+ T_{0,-p}=\zeta(p)\quad(p\ge2),\qquad T_{0,-1}=\gamma.
+\end{equation}
+The following elementary formula will also be used:
+\begin{equation}\label{qtm:oddlinear}
+ T_{1,q}=\frac{2-q}{4}B_{q-1}-\frac12\delta_{q,1}\gamma,
+ \qquad q\ge1\text{ odd}.
+\end{equation}
+For completeness let $F_q(N)=\sum_{k=1}^Nk^q$.  Finite summation by
+parts gives
+\[
+ \sum_{k=1}^Nk^qA_k
+   =F_q(N)A_N+\sum_{k=1}^N\frac{F_q(k-1)}{k^2}.
+\]
+Insert Faulhaber's polynomial and \eqref{qtm:uncentered}.  For odd
+$q\ge3$, only its quadratic and degree-$q$ terms can contribute
+nonzero constant coefficients, and they give $(2-q)B_{q-1}/4$.
+At $q=1$, the second sum is $(N-H_N)/2$ and the first term has
+constant coefficient $1/4$, giving $1/4-\gamma/2$.
+
+The inherited cubic coefficient has the finite-cutoff form
+\begin{equation}\label{qtm:Ccutoff}
+ C_\ell=3T_{2,2\ell-2}+3T_{1,2\ell-4}
+          +T_{0,2\ell-6}+b_3(2\ell).
+\end{equation}
+This is the cubic summation identity proved in the incoming report.
+One may verify its explicit evaluation
+\eqref{qtm:C1}--\eqref{qtm:Rj} by applying the preceding summation
+by parts once more to the quadratic tail.  Its degree-$2\ell-2$
+Faulhaber term cancels the explicit linear tail in
+\eqref{qtm:Ccutoff}; the remaining odd linear powers are evaluated
+by \eqref{qtm:oddlinear}.  The terms at zero and negative powers
+give $C_1$, the $-\zeta(2)/2$ exception at $\ell=2$, and the
+boundary contribution $1/4$ at $\ell=3$.  Thus every low-index
+exception retained in \eqref{qtm:Cj} is required.
+
+The quartic coordinate corresponding to the odd monomial $k^{2j+1}$ is
+\begin{equation}\label{qtm:Dcutoff}
+ \widehat D_j=4T_{3,2j-1}+6T_{2,2j-3}
+              +4T_{1,2j-5}+T_{0,2j-7}+b_4(2j+1).
+\end{equation}
+We now prove $\widehat D_j=D_j$ with no limit of a divergent
+series taken before the cancellation.
+
+For $j\ge1$, put $m=2j-1$ and
+\begin{equation}\label{qtm:Faulhaber}
+ F_m(N)=\sum_{k=1}^Nk^m
+   =\sum_{\ell=1}^j f_{2\ell}N^{2\ell}+\frac12N^m,
+ \qquad
+ f_{2\ell}=\frac1{2j}\binom{2j}{2\ell}B_{2j-2\ell}.
+\end{equation}
+This includes $j=1$.  Since $F_m(k-1)=F_m(k)-k^m$ and
+$A_{k-1}=A_k+k^{-2}$, the exact finite identity is
+\begin{equation}\label{qtm:cubicSBP}
+ \sum_{k=1}^Nk^m A_k^3
+ =F_m(N)A_N^3+
+ \sum_{k=1}^NF_m(k-1)
+       \left(\frac{3A_k^2}{k^2}+\frac{3A_k}{k^4}+\frac1{k^6}\right).
+\end{equation}
+Multiply this by four and add the other terms in
+\eqref{qtm:Dcutoff}.  The coefficient $-k^m/2$ in $F_m(k-1)$
+cancels the entire quadratic-tail sum $6T_{2,m-2}$.  The even
+Faulhaber powers form precisely four copies of
+\eqref{qtm:Ccutoff}; their boundary terms cancel the even part of
+$4F_m(N)A_N^3$.  Taking constant coefficients only now yields
+\begin{equation}\label{qtm:preboundary}
+ \widehat D_j=
+ 4\sum_{\ell=1}^j f_{2\ell}C_\ell
+ +2b_3(2j-1)+b_4(2j+1)
+ -2T_{1,2j-5}-T_{0,2j-7}.
+\end{equation}
+
+The decisive rational identity is
+\begin{equation}\label{qtm:boundary}
+ 2b_3(2j-1)+b_4(2j+1)=
+ \begin{cases}0,&j=1,2,\\B_{2j-6},&j\ge3.\end{cases}
+\end{equation}
+Here is a direct proof.  In a formal variable $u=N^{-1}$, let
+$E_0(u)=\sum_{k\ge0}B_{2k}u^{2k}$.  Then
+$A=uE_0(u)-u^2/2$.  The odd parts of the third and fourth powers are
+\[
+ (A^3)_{\mathrm{odd}}=u^3E_0(u)^3+\frac34u^5E_0(u),\qquad
+ (A^4)_{\mathrm{odd}}=-2u^5E_0(u)^3-\frac12u^7E_0(u).
+\]
+The $E_0^3$ terms cancel in the indicated pair of coefficients,
+leaving $[u^{2j-6}]E_0(u)$.  This proves \eqref{qtm:boundary}.
+
+For $j=1$, \eqref{qtm:linearnegative} and the classical evaluation
+$\zeta(2,3)=9\zeta(5)/2-2\zeta(2)\zeta(3)$ give the correction
+$-2\zeta(2,3)-\zeta(5)=Q_5$.  For $j=2$, the correction is
+$-2\zeta(2,1)-\zeta(3)=-3\zeta(3)$.  For $j=3$,
+\eqref{qtm:oddlinear} makes the two Euler constants cancel:
+\[
+ 1-2(1/4-\gamma/2)-\gamma=\frac12.
+\]
+For $j\ge4$, the last ordinary-power sum has zero constant
+coefficient, and \eqref{qtm:oddlinear} gives
+\[
+ B_{2j-6}-\frac{7-2j}{2}B_{2j-6}
+       =\frac{2j-5}{2}B_{2j-6}.
+\]
+Substitution in \eqref{qtm:preboundary} proves
+\eqref{qtm:Dj} for every $j\ge1$.
+
+For $j=0$, all sums in \eqref{qtm:Dcutoff} converge and the
+boundary vanishes.  Sorting the four tail indices, or expanding the
+displayed powers, gives
+\begin{align}\label{qtm:D0MZV}
+ \widehat D_0={}&24\zeta(2,2,2,1)+12\zeta(2,2,3)
+              +12\zeta(2,4,1)+12\zeta(4,2,1)\notag\\
+             &+4\zeta(2,5)+6\zeta(4,3)+4\zeta(6,1)+\zeta(7)
+              =Q_7.
+\end{align}
+The last evaluation is Hoffman's explicitly printed quartic example;
+his sum starts at $n=1$, so adding $A_0^4=\zeta(2)^4$ removes
+his $-175\zeta(8)/24$ term.  It is also reconstructed in the
+supplementary exact shuffle/stuffle verifier.
+
+Finally,
+\begin{equation}\label{qtm:centeredF}
+ \sum_{n=0}^{k-1}x_n^{2r}
+  =\frac1{2r+1}\sum_{j=0}^{r}
+   \binom{2r+1}{2j+1}B_{2r-2j}(1/2)k^{2j+1}.
+\end{equation}
+Every subtracted even-power sum in \eqref{qtm:ordinary} has zero
+constant coefficient as a polynomial in $N$.  Finite summation by
+parts using \eqref{qtm:centeredF} therefore gives
+\eqref{qtm:mainformula}.  The fixed space follows from
+\eqref{qtm:Cj} and \eqref{qtm:Dj}.  The first six coefficient rows,
+provided explicitly in the supplementary data, give
+\eqref{qtm:det} by rational elimination.  This completes the proof.
+
+\subsection{An analytic generator with fixed initial constants}
+
+For a holomorphic function $f$ define its anchored repeated primitive by
+\begin{equation}\label{qtm:Ik}
+ (I^kf)(t)=\frac1{(k-1)!}\int_0^t(t-u)^{k-1}f(u)\,du,
+ \qquad k\ge1.
+\end{equation}
+Paths lie in the disk $|t|<2\pi$; the integral is path-independent
+there.  The established square and cubic generators are
+\begin{align}
+ G_2(t)&=\frac{t}{2\sinh(t/2)}
+ \left(3\zeta(3)-\frac1{4t}
+       \int_0^t(t-u)u^2\coth(u/2)\,du\right),
+       \label{qtm:G2}\\
+ G_3(t)&=\frac1{2\sinh(t/2)}I^2
+ \left(3\cosh(t/2)G_2(t)-\frac{17}{4}\zeta(4)
+                 -\frac14\zeta(2)t^2+\frac{t^4}{96}\right).
+       \label{qtm:G3}
+\end{align}
+Both formulas are inherited \cite{Square,Reconstruction}.
+In particular $2\sinh(t/2)G_3(t)=\sum_{j\ge1}C_jt^{2j}/(2j)!$.
+
+\begin{theorem}[Quartic moment generator]
+\label{qtm:generator}
+The exponential generating series
+\begin{equation}\label{qtm:G4def}
+ G_4(t)=\sum_{r\ge0}V_r\frac{t^{2r}}{(2r)!}
+\end{equation}
+converges for $|t|<2\pi$ and equals
+\begin{equation}\label{qtm:G4}
+ \boxed{\displaystyle
+ G_4(t)=\frac{Q_7t+Q_5t^3/6
+       +4I^2\!\left(\cosh(t/2)G_3(t)\right)
+       -2I^4\!\left(\sinh(t/2)G_2(t)\right)}
+       {2\sinh(t/2)}.}
+\end{equation}
+The apparent singularity at zero is removable, with $G_4(0)=Q_7$.
+The quotient is an even holomorphic function on the disk.
+\end{theorem}
+
+\begin{proof}
+Set
+\[
+ D(t)=\sum_{j\ge0}D_j\frac{t^{2j+1}}{(2j+1)!},\quad
+ C(t)=2\sinh(t/2)G_3(t),\quad E(t)=\frac t2\coth(t/2).
+\]
+The Bernoulli transform \eqref{qtm:mainformula} is exactly
+$G_4(t)=D(t)/(2\sinh(t/2))$.  Summing the convolution in
+\eqref{qtm:Dj} gives
+\begin{align*}
+ D''(t)
+   &=4\frac{E(t)C(t)}t+Q_5t-\frac12\zeta(3)t^3
+       +\frac12I^4(tE(t))\\
+   &=4\cosh(t/2)G_3(t)+Q_5t
+       -2I^2\!\left(\sinh(t/2)G_2(t)\right).
+\end{align*}
+To check the last cancellation directly, \eqref{qtm:G2} implies
+\[
+ \sinh(t/2)G_2(t)=\frac32\zeta(3)t-\frac14I^2(tE(t)).
+\]
+Thus the cubic polynomial from $-3\zeta(3)$ at $j=2$ cancels
+the first term in this last identity after integration.  Integrating
+$D''$ twice with $D(0)=0$, $D'(0)=Q_7$ proves
+\eqref{qtm:G4}.  All the Bernoulli series and inherited generators
+converge on $|t|<2\pi$; the anchored integrals preserve holomorphy.
+The numerator is odd and has first term $Q_7t$, while the denominator
+is odd with first term $t$.  This proves the stated parity, value, and
+removability.  No assertion that $2\pi$ is the exact Taylor radius is
+needed here.
+\end{proof}
+
+\subsection{Finite polylogarithmic form and a rational extraction}
+
+Formula \eqref{qtm:G4} is an explicit triangular integral generator.
+It also gives a finite polylogarithm expression, with depth at most three,
+by the following anchored rule.  Put $z=e^{-t}$ and write
+$L_{\boldsymbol a}(t)=\operatorname{Li}_{\boldsymbol a}(z)$, with
+the argument on the outer index:
+\[
+ L_{a_1,\ldots,a_d}(t)
+   =\sum_{n_1>\cdots>n_d\ge1}
+        \frac{e^{-tn_1}}{n_1^{a_1}\cdots n_d^{a_d}}\qquad(t>0).
+\]
+The complete inherited cubic expression is reproduced here to make
+the finite compiler self-contained
+\cite[Section 6, finite depth-two generator]{Reconstruction}:
+\begin{align}
+ C(t)={}&
+ \left(9\zeta(4)+6t\zeta(3)-\frac{t^4}{16}\right)L_2(t)
+ +\left(12\zeta(3)-\frac{t^3}{2}\right)L_3(t)
+       \notag\\
+ &-3t^2L_4(t)-12tL_5(t)-\frac{45}{2}L_6(t)
+       -\frac32t^2L_{2,2}(t)
+       \notag\\
+ &-6t\left(L_{3,2}(t)+L_{2,3}(t)\right)
+       -9\left(L_{4,2}(t)+L_{2,4}(t)\right)-12L_{3,3}(t)
+       \notag\\
+ &+\frac{15}{2}\zeta(6)-6\zeta(3)^2+6t\zeta(5)
+       +\frac12t^3\zeta(3)+\frac18t^2\zeta(4)
+       -\frac1{48}t^4\zeta(2)-\frac{t^6}{1440}.
+ \label{qtm:Cpolylog}
+\end{align}
+Initially this expression is read for real $0<t<2\pi$; the integral
+formula \eqref{qtm:G3} specifies its holomorphic continuation through
+zero and throughout the disk.  The derivative identities
+\[
+ \frac d{dt}L_{a+1,\boldsymbol b}=-L_{a,\boldsymbol b},\qquad
+ \frac d{dt}L_{1,\boldsymbol a}
+       =-\frac{z}{1-z}L_{\boldsymbol a}
+\]
+show that multiplication by $z/(1-z)$ raises the needed depth by at
+most one.  The incoming expression for
+$C(t)=2\sinh(t/2)G_3(t)$ is a finite sum of polynomials times
+polylogarithms of depth at most two, plus zeta polynomials, as displayed
+in \eqref{qtm:Cpolylog}.  Since
+\[
+ 4\cosh(t/2)G_3(t)=2C(t)+4\frac{z}{1-z}C(t),
+\]
+the new generator has depth at most three after the two anchored
+integrations.  The remaining term uses only classical polylogarithms:
+\begin{equation}\label{qtm:Tpolylog}
+ T(t):=2\sinh(t/2)G_2(t)
+ =2t\zeta(3)+3\zeta(4)-\frac{t^4}{48}
+   -\frac{t^2}{2}\operatorname{Li}_2(z)
+   -2t\operatorname{Li}_3(z)-3\operatorname{Li}_4(z).
+\end{equation}
+Consequently the numerator of \eqref{qtm:G4} can alternatively be
+compiled from the finite expression
+\begin{equation}\label{qtm:finitecompiler}
+ Q_7t+\frac{Q_5t^3}{6}+2I^2C
+       +4I^2\left(\frac{z}{1-z}C\right)-I^4T.
+\end{equation}
+This asserts a sufficient finite function class, not its minimal depth.
+
+Here is an exact endpoint prescription for that compilation.  If
+$F_j'=-F_{j-1}$, an unanchored $k$-fold primitive of $t^mF_0(t)$ is
+\begin{equation}\label{qtm:primitivecompiler}
+ (-1)^k\sum_{j=0}^m\binom{k+j-1}{j}
+      \frac{m!}{(m-j)!}t^{m-j}F_{k+j}(t).
+\end{equation}
+Subtract its Taylor polynomial of degree $k-1$ at zero to obtain
+the anchored primitive.  For the twofold integration of
+$zL_{\boldsymbol a}/(1-z)$, the only possibly divergent endpoint
+is the first-index-one value when the polynomial degree is zero.
+It must be combined before taking a limit.  The convergent constant
+\[
+ \lambda_{\boldsymbol a}
+  =\lim_{t\downarrow0}
+   \left(L_{1,\boldsymbol a}(t)
+             -\zeta(\boldsymbol a)\operatorname{Li}_1(e^{-t})\right)
+\]
+is minus the sum of all the convergent terms in the stuffle of
+$(1)$ with $\boldsymbol a$, excluding its leading $(1,\boldsymbol a)$
+term.  Indeed, for a nonempty word appearing in $C$ its first index
+is at least two, so
+\[
+ \sum_{n\ge1}\frac{H_{n-1}^{(\boldsymbol a)}
+                         -\zeta(\boldsymbol a)}{n}
+\]
+converges absolutely, and dominated convergence identifies it with
+the displayed limit.  The finite harmonic stuffle evaluates this
+sum, since
+$H_N\bigl(H_N^{(\boldsymbol a)}-\zeta(\boldsymbol a)\bigr)\to0$.
+Here $H_N^{(\boldsymbol a)}$ uses the same strict descending-index
+convention as the multiple zeta values.  Pure zeta-polynomial terms in
+\eqref{qtm:Cpolylog} are included by adjoining the empty word:
+$L_{\varnothing}=1$, $\zeta(\varnothing)=1$,
+$L_{1,\varnothing}=\operatorname{Li}_1(e^{-t})$, and
+$\lambda_{\varnothing}=0$.
+In particular, the degree-zero empty-word coefficient is
+$15\zeta(6)/2-6\zeta(3)^2$.
+With this convention the degree-zero coefficients in $C$ satisfy
+$\sum c_{0,\boldsymbol a}\zeta(\boldsymbol a)=C(0)=0$.
+Thus all the divergent $\operatorname{Li}_1$ endpoints cancel in
+\eqref{qtm:finitecompiler}, leaving exactly the prescribed
+$\lambda_{\boldsymbol a}$ combination.  This rule fixes the integration
+constants rather than leaving an undetermined polynomial.
+
+The six-coordinate theorem also produces ordinary rational evaluations.
+For example set
+\begin{align*}
+ P(x)={}&5233+697660x^2+9382304x^4+28113792x^6\\
+        &+21816576x^8+3886080x^{10},\\
+ R(x)={}&3886080x^6+20521216x^4+21456896x^2
+                         +\frac{940103168}{315}.
+\end{align*}
+Then
+\begin{equation}\label{qtm:rational}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}\bigl(P(x_n)\psi'(n+1)^4-R(x_n)\bigr)
+       =-\frac{775936}{3}.}
+\end{equation}
+Its summand is $O(x_n^{-2})$.  This is an exact rational elimination
+of the six proved coefficient rows, with the same polynomial
+subtractions as \eqref{qtm:ordinary}.
+
+\subsection{Verification and the remaining question}
+
+The supplementary program reconstructs each finite-cutoff coordinate
+without using \eqref{qtm:Dj}.  It recursively applies Faulhaber's
+polynomial and $A_{k-1}=A_k+k^{-2}$, and expands the convergent
+negative-power tail sums into ordinary multiple zeta values.  A separate
+shuffle/stuffle and duality computation reduces weights through seven.
+It agrees with \eqref{qtm:Dj} for $0\le j\le24$, checks the
+boundary cancellation at 24 indices, and reconstructs the first 20
+centered moments independently.  It also verifies 24 generator
+coefficients, the stated six-coordinate determinant, and the rational
+identity \eqref{qtm:rational} by exact arithmetic.
+
+For a separate numerical diagnostic, the defining finite sums in
+\eqref{qtm:ordinary} were evaluated at 120 decimal working digits and
+supplemented by centered Hurwitz tails.  The two choices
+$(N,J)=(120,36)$ and $(240,54)$ use $N$ direct summands and retain
+$J$ asymptotic coefficients.  For $0\le r\le8$, the largest
+second-cutoff residual against the closed formulas is below
+$3.6\times10^{-90}$.  The data record both cutoffs and the residuals.
+These are numerical diagnostics, not interval certificates; the finite
+summation proof establishes the all-index result.
+
+The quartic case of the stated incoming question is therefore answered.
+For fifth and higher powers, the useful next target is an analogue of
+\eqref{qtm:boundary} that identifies all surviving lower-tail terms
+before constants are taken.  It should determine a fixed coordinate
+space and a generator at each power.  The present quartic theorem
+does not assert that the same six constants suffice for those powers.
+
+
+% END EMBEDDED sections/04_quartic.tex
+
+
+% BEGIN EMBEDDED sections/05_bilateral.tex
+% Article-ready fragment. Classical references and the source-report citation
+% should be wired into the parent bibliography when integrating this file.
+\section{Several quadratic factors beyond the first spectral derivative}
+\label{msj:sec:main}
+
+The incoming quadratic-spectrum report \cite{Quadratic} proves additivity of the first
+spectral derivative for any even polynomial weight and any finite list
+of masses. Its explicit next question asks for the second derivative,
+the logarithmic cross term, and the limit when two masses coincide.
+The following results answer that question with an ordinary convergent
+series and a one-dimensional integral of elementary functions. They also
+identify the finite corrections needed at every higher spectral order.
+The classical multiplicative-anomaly framework \cite{EVZ} concerns first derivatives
+of spectral zeta functions; the statements below concern the additional
+higher derivatives. No historical-priority claim is needed for this
+continuation of the inspected repository.
+
+Fix $0<a<1$, put $v_n=(n+a)^2$ for $n\in\mathbb Z$, and let
+\[
+ P(v)=\sum_{d=0}^{D}p_dv^d,\qquad B_j>0\quad(1\le j\le r),\qquad r\ge2.
+\]
+The parameter $B_j$ is the squared mass. Initially in their respective
+half-planes of absolute convergence, define
+\begin{align}
+ \mathcal E_P(s;a,B)&=\sum_{n\in\mathbb Z}P(v_n)(v_n+B)^{-s},
+ \label{msj:eq:E}\\
+ \mathcal Z_{P,\boldsymbol B}(s;a)
+ &=\sum_{n\in\mathbb Z}P(v_n)
+                  \prod_{j=1}^{r}(v_n+B_j)^{-s}.
+ \label{msj:eq:Z}
+\end{align}
+Their continuations are holomorphic at $s=0$. Indeed, a tail expansion
+uses integer powers of $v_n^{-1}$, and a possible pole at zero would
+require an odd power $(n+a)^{-1}$. The detailed subtraction proof below
+also supplies this continuation directly.
+
+Write
+\begin{equation}
+ \mathfrak D_k(P;a,\boldsymbol B)
+ =r^{k-1}\sum_{j=1}^{r}\mathcal E_P^{[k]}(0;a,B_j)
+       -\mathcal Z_{P,\boldsymbol B}^{[k]}(0;a),
+ \qquad k\ge1,
+ \label{msj:eq:defect}
+\end{equation}
+where square brackets indicate derivatives in the spectral parameter.
+The factors $r^{k-1}$ are part of the definition. They result from
+comparing the factors at the same spectral scale:
+\begin{equation}
+ \mathfrak D(s)=\frac1r\sum_j\mathcal E_P(rs;a,B_j)
+                           -\mathcal Z_{P,\boldsymbol B}(s;a),
+ \qquad \mathfrak D_k=\mathfrak D^{[k]}(0).
+ \label{msj:eq:common-scale}
+\end{equation}
+The already established first-derivative identity is $\mathfrak D_1=0$.
+
+\subsection{An exact second-derivative formula}
+
+For a function with a Laurent expansion at $v=\infty$, let
+$\operatorname{Pol}_{\infty}$ retain its nonnegative integer powers of
+$v$. Define
+\begin{align}
+ T_P(v;B,C)
+ &=\operatorname{Pol}_{\infty}
+       \left\{P(v)\log^2\frac{v+B}{v+C}\right\},
+ \label{msj:eq:T2}\\
+ S_P(a;B,C)
+ &=\sum_{n\in\mathbb Z}
+ \left\{P(v_n)\log^2\frac{v_n+B}{v_n+C}-T_P(v_n;B,C)\right\}.
+ \label{msj:eq:S2}
+\end{align}
+Every term in the subtraction is explicit. In fact,
+\begin{align}
+ q_k(B,C)&=(-1)^k\sum_{m=1}^{k-1}
+ \frac{(B^m-C^m)(B^{k-m}-C^{k-m})}{m(k-m)},\qquad k\ge2,
+ \label{msj:eq:qcoeff}\\
+ T_P(v;B,C)&=\sum_{d=2}^{D}p_d\sum_{k=2}^{d}q_k(B,C)v^{d-k}.
+ \label{msj:eq:T2-explicit}
+\end{align}
+Empty sums are zero. Thus the weights $P(v)=1$ and $P(v)=v$ need no
+subtraction. For $P(v)=v^2$ the only subtraction is $(B-C)^2$, while
+for $P(v)=v^3$ it is
+\[
+ (B-C)^2v-(B-C)^2(B+C).
+\]
+
+\begin{theorem}[Second spectral derivative for any number of masses]
+\label{msj:thm:second}
+The series \eqref{msj:eq:S2} is ordinary and absolutely convergent, and
+\begin{equation}
+ \boxed{\displaystyle
+ \mathfrak D_2(P;a,\boldsymbol B)
+     =\sum_{1\le i<j\le r}S_P(a;B_i,B_j).}
+ \label{msj:eq:second-pairwise}
+\end{equation}
+Consequently
+\begin{equation}
+ \mathcal Z_{P,\boldsymbol B}^{[2]}(0;a)
+ =r\sum_j\mathcal E_P^{[2]}(0;a,B_j)
+                       -\sum_{i<j}S_P(a;B_i,B_j).
+ \label{msj:eq:second-evaluation}
+\end{equation}
+For $\deg P\le1$, the pair correction is the unsubtracted convergent
+sum of logarithm squares. In particular, for $P=1$ it is nonzero whenever
+at least two masses are distinct. Thus first-derivative additivity does
+not extend unchanged to second derivatives.
+\end{theorem}
+
+\begin{proof}
+At a fixed $v>0$ write $L_j=\log(v+B_j)$. Twice differentiating the
+common-scale summand at zero gives
+\[
+ P(v)\left\{r\sum_jL_j^2-\left(\sum_jL_j\right)^2\right\}
+        =P(v)\sum_{i<j}(L_i-L_j)^2.
+\]
+The logarithm difference has the expansion
+\[
+ \log\frac{v+B}{v+C}
+   =\sum_{m\ge1}\frac{(-1)^{m+1}(B^m-C^m)}{m v^m}
+\]
+on a sufficiently large tail. Squaring proves
+\eqref{msj:eq:qcoeff} and \eqref{msj:eq:T2-explicit}; the subtracted
+summand is $O(v^{-1})$, uniformly for masses in a compact positive set.
+It therefore has an absolutely convergent bilateral sum.
+
+It remains to retain the exact value of the removed polynomial. Put
+\begin{equation}
+ \mathcal H_a(s)=\zeta(2s,a)+\zeta(2s,1-a).
+ \label{msj:eq:H}
+\end{equation}
+For every integer $m\ge0$,
+\begin{equation}
+ \mathcal H_a(-m)=0,
+ \label{msj:eq:trivial-zero}
+\end{equation}
+because $\zeta(-2m,x)=-B_{2m+1}(x)/(2m+1)$ and
+$B_{2m+1}(1-a)=-B_{2m+1}(a)$. Hence each removed $v^m$ has zero
+bilateral spectral value. The common-scale normal-convergence argument
+in Theorem~\ref{msj:thm:alljets} makes this differentiation and restoration
+precise and gives zero finite correction at order two. This proves
+\eqref{msj:eq:second-pairwise}. With an affine weight, the raw tail is
+$O(v^{-1})$ or better. With $P=1$ every pair summand is nonnegative and
+a distinct pair has strictly positive summands, giving the final claim.
+\end{proof}
+
+For two masses, the mixed logarithmic coordinate is equivalently
+\begin{equation}
+ \operatorname{Reg}\sum_{n\in\mathbb Z}
+  P(v_n)\log(v_n+B)\log(v_n+C)
+ =\frac{\mathcal E_P^{[2]}(0;a,B)+\mathcal E_P^{[2]}(0;a,C)
+                     -S_P(a;B,C)}2.
+ \label{msj:eq:cross-term}
+\end{equation}
+Here $\operatorname{Reg}$ denotes the analytic continuation determined
+by the common quadratic spectral coordinate. Formula
+\eqref{msj:eq:S2}, or the ordinary integral below, makes the new
+cross-term correction explicit; it does not subtract two unspecified
+divergent sums.
+
+\subsection{An elementary integral for the entire correction}
+
+The classical bilateral resolvent, from cotangent partial fractions \cite{DLMF}, is
+\begin{equation}
+ R_a(t)=\sum_{n\in\mathbb Z}\frac1{v_n+t}
+       =\frac{\pi}{\sqrt t}
+        \frac{\sinh(2\pi\sqrt t)}
+             {\cosh(2\pi\sqrt t)-\cos(2\pi a)},\qquad t>0.
+ \label{msj:eq:resolvent}
+\end{equation}
+It follows by pairing the cotangent partial fractions at
+$a+i\sqrt t$ and $a-i\sqrt t$. Set
+\[
+ f_P(t)=P(-t)R_a(t).
+\]
+
+\begin{theorem}[Ordinary logarithmic quadrature]
+\label{msj:thm:quadrature}
+For $B>C>0$,
+\begin{equation}
+ \boxed{\displaystyle
+ S_P(a;B,C)=2\int_C^B f_P(t)
+                     \log\frac{B-t}{t-C}\,\mathrm dt.}
+ \label{msj:eq:quadrature}
+\end{equation}
+The integral is ordinary and absolutely convergent; its only endpoint
+singularities are logarithmic. For arbitrary positive $B,C$, use
+$S_P(a;B,C)=S_P(a;C,B)$ and $S_P(a;B,B)=0$. A form with a continuous
+integrand on the square is
+\begin{equation}
+ S_P(a;B,C)=\int_C^B\int_C^B
+      \frac{f_P(t)-f_P(u)}{u-t}\,\mathrm du\,\mathrm dt,
+ \label{msj:eq:double-quadrature}
+\end{equation}
+where the diagonal value is $-f_P'(t)$.
+\end{theorem}
+
+\begin{proof}
+Polynomial division gives
+\[
+ P(v)/(v+t)=Q_t(v)+P(-t)/(v+t)
+\]
+with a polynomial $Q_t$. Therefore subtraction of the polynomial part
+and summation of the rational remainder give
+\begin{align*}
+ &\sum_{n\in\mathbb Z}(1-\operatorname{Pol}_{\infty})
+          \frac{P(v_n)}{(v_n+t)(v_n+u)}\\
+ &\hspace{35mm}=\frac{P(-t)R_a(t)-P(-u)R_a(u)}{u-t}.
+\end{align*}
+The statement at $u=t$ follows by continuity. For $(t,u)$ in a compact
+positive square, every subtracted summand is uniformly $O(v_n^{-1})$.
+Normal convergence permits integration of this identity over $[C,B]^2$.
+Since
+\[
+ \int_C^B\frac{\mathrm dt}{v+t}=\log\frac{v+B}{v+C},
+\]
+and finite polynomial extraction commutes with these integrals, the
+left side becomes \eqref{msj:eq:S2}. This proves
+\eqref{msj:eq:double-quadrature}.
+
+To reduce the square integral, omit temporarily the strip
+$|u-t|\le\varepsilon$, split the numerator, and interchange $u,t$ in
+its second term. The result tends to
+\[
+ 2\int_C^B f_P(t)\bigl(\log(B-t)-\log(t-C)\bigr)\,\mathrm dt.
+\]
+The omitted-strip contribution tends to zero because the divided
+difference extends continuously to the diagonal. The endpoint
+logarithms are integrable. Thus the temporary symmetric exclusion is
+only a proof device; the final integral needs no principal value or
+finite-part convention.
+\end{proof}
+
+For example, at $a=1/2$, $P=1$, $B=4$, $C=1$, the exact correction is
+\begin{equation}
+ \sum_{n\in\mathbb Z}
+ \log^2\frac{(n+1/2)^2+4}{(n+1/2)^2+1}
+ =2\pi\int_1^4\frac{\tanh(\pi\sqrt t)}{\sqrt t}
+                      \log\frac{4-t}{t-1}\,\mathrm dt.
+ \label{msj:eq:example-unweighted}
+\end{equation}
+At the quartic weight $P(v)=v^2$, the corresponding exact identity is
+\begin{equation}
+ \sum_{n\in\mathbb Z}\left[
+ (n+1/2)^4\log^2\frac{(n+1/2)^2+4}{(n+1/2)^2+1}-9\right]
+ =2\pi\int_1^4 t^{3/2}\tanh(\pi\sqrt t)
+                       \log\frac{4-t}{t-1}\,\mathrm dt.
+ \label{msj:eq:example-weighted}
+\end{equation}
+Both series and both integrals are ordinary convergent expressions.
+
+\subsection{Every confluent coefficient in finite resolvents}
+
+Let $H_m=\sum_{j=1}^m1/j$ and $H_0=0$, and put
+$\rho=\min(a,1-a)$. For $k\ge1$, define the rationally subtracted
+resolvent moment
+\begin{equation}
+ R_{P,k}(a;C)
+ =\sum_{n\in\mathbb Z}(1-\operatorname{Pol}_{\infty})
+                         \frac{P(v_n)}{(v_n+C)^k}.
+ \label{msj:eq:Rpk}
+\end{equation}
+As above, this is an absolutely convergent series after its explicit
+polynomial division.
+
+\begin{theorem}[Complete confluent expansion]
+\label{msj:thm:confluent}
+For $C>0$ and $|h|<C+\rho^2$,
+\begin{align}
+ S_P(a;C+h,C)
+ &=2\sum_{k=2}^{\infty}\frac{(-1)^kH_{k-1}}{k}
+                       h^k R_{P,k}(a;C),
+ \label{msj:eq:confluent-resolvent}\\
+ &=-2\sum_{k=2}^{\infty}\frac{H_{k-1}}{k!}
+                       f_P^{(k-1)}(C)h^k.
+ \label{msj:eq:confluent-elementary}
+\end{align}
+Here $S_P(a;C+h,C)$ denotes its principal-logarithm analytic
+continuation from positive masses to this disk.  Indeed every
+$v_n+C+h$ has positive real part on the disk, so the logarithms
+and the explicitly subtracted series define a single holomorphic
+function there.
+Each coefficient has the finite reduction
+\begin{equation}
+ R_{P,k}(a;C)
+ =\frac{(-1)^{k-1}}{(k-1)!}f_P^{(k-1)}(C)
+ =\sum_{\ell=0}^{\min(D,k-1)}
+       \frac{P^{(\ell)}(-C)}{\ell!}
+                          \mathcal E_1(k-\ell;a,C).
+ \label{msj:eq:Rpk-finite}
+\end{equation}
+The values $\mathcal E_1(N;a,C)$ at positive integers are obtained by
+differentiating the elementary function \eqref{msj:eq:resolvent}, or
+by the manuscript's finite polygamma partial fractions.
+\end{theorem}
+
+\begin{proof}
+The elementary Taylor identity
+\[
+ \log^2(1+x)=2\sum_{k=2}^{\infty}\frac{(-1)^kH_{k-1}}{k}x^k,
+ \qquad |x|<1,
+\]
+follows by differentiating both sides and using
+$\log(1+x)/(1+x)=\sum_{m\ge1}(-1)^{m+1}H_mx^m$.
+Apply it with $x=h/(v_n+C)$, extract the polynomial parts before
+summation, and use locally uniform convergence on the stated disk.
+This proves \eqref{msj:eq:confluent-resolvent}.
+
+Differentiating $f_P(C)$ under the subtracted resolvent sum proves the
+first equality in \eqref{msj:eq:Rpk-finite}. For the second, expand
+$P(v)$ at $v=-C$. Terms with $\ell\ge k$ are polynomials and disappear
+under $1-\operatorname{Pol}_{\infty}$; the other terms give the displayed
+finite sum. The derivative formula yields
+\eqref{msj:eq:confluent-elementary}. The function $f_P$ is meromorphic
+in $C$, with possible poles only at $C=-v_n$. The nearest possible pole
+is at distance $C+\rho^2$, which also proves the claimed disk of
+convergence. Zeros of $P$ can only remove poles and enlarge this disk.
+\end{proof}
+
+The first terms are
+\[
+ S_P(a;C+h,C)=h^2R_{P,2}(a;C)-h^3R_{P,3}(a;C)
+                   +\frac{11}{12}h^4R_{P,4}(a;C)+O(h^5).
+\]
+In particular, for $P=1$, $a=1/2$, and $C=1$,
+\begin{equation}
+ S_1(1/2;1+h,1)
+ =\frac12\left(\pi\tanh\pi-\pi^2\operatorname{sech}^2\pi\right)h^2
+                                                    +O(h^3).
+ \label{msj:eq:confluent-example}
+\end{equation}
+This explicitly evaluates the first nonzero coefficient when two
+quadratic factors merge.
+
+\subsection{A finite correction formula at every spectral order}
+
+The vanishing \eqref{msj:eq:trivial-zero} removes polynomial
+counterterms at the second derivative. Higher derivatives also produce
+polynomials times powers of $\log v$, whose spectral values need not
+vanish. The following formula retains every such contribution.
+
+Define
+\begin{align}
+ A(s,z)&=\frac1r\sum_{j=1}^r(1+B_jz)^{-rs}
+                         -\prod_{j=1}^r(1+B_jz)^{-s}
+          =\sum_{q\ge2}a_q(s)z^q,
+ \label{msj:eq:A}\\
+ a_q(s)&=(-1)^q\left\{
+  \frac1r\sum_{j=1}^r\frac{(rs)_qB_j^q}{q!}
+  -\sum_{q_1+\cdots+q_r=q}\prod_{j=1}^r
+                      \frac{(s)_{q_j}B_j^{q_j}}{q_j!}\right\}.
+ \label{msj:eq:aq}
+\end{align}
+The coefficient polynomials $a_q(s)$ are divisible by $s^2$; the
+coefficients $a_0,a_1$ vanish identically. Put
+\begin{equation}
+ T(s,v)=\sum_{d=2}^{D}p_d\sum_{q=2}^{d}a_q(s)v^{d-q}.
+ \label{msj:eq:T-spectral}
+\end{equation}
+
+\begin{theorem}[All-order ordinary remainder and finite Hurwitz jets]
+\label{msj:thm:alljets}
+For $s$ in a neighborhood of zero,
+\begin{align}
+ \mathfrak D(s)
+ &=\sum_{n\in\mathbb Z}v_n^{-rs}
+             \bigl(P(v_n)A(s,v_n^{-1})-T(s,v_n)\bigr)
+ \notag\\
+ &\quad+\sum_{d=2}^{D}p_d\sum_{q=2}^{d}
+                           a_q(s)\mathcal H_a(rs+q-d).
+ \label{msj:eq:regulator}
+\end{align}
+The first series is normally convergent near zero. For $k\ge2$, define
+\begin{align}
+ F_k(v)&=(-1)^kP(v)\left\{
+     r^{k-1}\sum_j\log^k(v+B_j)
+            -\left(\sum_j\log(v+B_j)\right)^k\right\},
+ \label{msj:eq:raw-k}\\
+ T_k(v)&=\sum_{d=2}^{D}p_d\sum_{q=2}^{d}
+       \sum_{j=2}^{k}\binom{k}{j}a_q^{[j]}(0)
+                (-r\log v)^{k-j}v^{d-q},
+ \label{msj:eq:Tk}\\
+ C_k&=\sum_{d=2}^{D}p_d\sum_{q=2}^{d}
+       \sum_{j=2}^{k-1}\binom{k}{j}a_q^{[j]}(0)
+                 r^{k-j}\mathcal H_a^{[k-j]}(q-d).
+ \label{msj:eq:Ck}
+\end{align}
+Then the exact $k$th spectral defect is
+\begin{equation}
+ \boxed{\displaystyle
+ \mathfrak D_k=\sum_{n\in\mathbb Z}\bigl(F_k(v_n)-T_k(v_n)\bigr)+C_k.}
+ \label{msj:eq:alljets}
+\end{equation}
+The remainder series is ordinary and absolutely convergent. Its
+summand is $O(v_n^{-1}(1+|\log v_n|^{k-2}))$. All correction terms are
+finite Hurwitz-zeta jets at nonpositive even integers. For affine $P$,
+both $T_k$ and $C_k$ vanish at every $k\ge2$.
+\end{theorem}
+
+\begin{proof}
+At $s=0$, the two terms in \eqref{msj:eq:A} both equal one, and their
+first $s$ derivatives both equal $-\sum_j\log(1+B_jz)$. Thus
+$a_q(s)=O(s^2)$. Expansion to first degree in $z$ shows that $a_1=0$.
+The Pochhammer expansion proves \eqref{msj:eq:aq} exactly.
+
+On a sufficiently large lattice tail, Taylor expansion in $z=v^{-1}$
+and the definition of $T$ give
+\[
+ P(v)A(s,v^{-1})-T(s,v)=O(v^{-1})
+\]
+uniformly for $s$ in a compact neighborhood of zero. Multiplication by
+$v^{-rs}$ leaves a normally convergent series, for example on
+$|\operatorname{Re}s|<1/(4r)$. Finitely many smaller $v_n$ cause no
+difficulty: the exact functions $A(s,v_n^{-1})$ are used there,
+without applying a possibly invalid small-$z$ expansion.
+
+Restoring the removed monomials by
+$\sum_n v_n^{d-q-rs}=\mathcal H_a(rs+q-d)$ gives
+\eqref{msj:eq:regulator}, first in a common half-plane after a finite
+head is separated and then by meromorphic continuation. Alternatively,
+the same head-tail construction is a direct definition of this
+continuation. None of the restored factors has a pole at zero:
+$q-d$ is an integer, whereas the only pole of $\mathcal H_a$ is at
+$1/2$. This proves the asserted holomorphy and normal convergence.
+
+Differentiate \eqref{msj:eq:regulator} $k$ times. The first raw
+derivative is \eqref{msj:eq:raw-k}, and the derivative of
+$v^{-rs}T(s,v)$ is \eqref{msj:eq:Tk}. In the restored finite sum,
+the terms with $j=0,1$ vanish because $a_q$ is divisible by $s^2$;
+the term $j=k$ vanishes by \eqref{msj:eq:trivial-zero}. The remaining
+terms are exactly \eqref{msj:eq:Ck}. Derivatives of the normal tail
+give the stated polynomial-logarithmic bound. For $D\le1$, all finite
+sums are empty.
+\end{proof}
+
+The second-derivative theorem follows immediately: at $k=2$ the
+finite sum $C_2$ is empty, the raw derivative is the pairwise square,
+and $T_2$ is precisely its polynomial part. At the third derivative
+the correction can already be nonzero. For two masses and $P(v)=v^2$,
+\begin{align}
+ F_3(v)&=-3v^2\log\bigl((v+B)(v+C)\bigr)
+                         \log^2\frac{v+B}{v+C},
+ \label{msj:eq:third-raw}\\
+ T_3(v)&=-6(B-C)^2\log v,
+ \label{msj:eq:third-subtraction}\\
+ C_3&=-12(B-C)^2\log(2\sin\pi a).
+ \label{msj:eq:third-contact}
+\end{align}
+Indeed $a_2(s)=\tfrac12(B-C)^2s^2$ in this case, while Lerch's
+identity and Gamma reflection give
+\[
+ \mathcal H_a'(0)=2\bigl(\zeta'(0,a)+\zeta'(0,1-a)\bigr)
+                 =-2\log(2\sin\pi a).
+\]
+Formula \eqref{msj:eq:third-contact} is therefore a concrete check on
+the sign and the scale factor in the general correction law. Discarding
+it would change the third spectral derivative.
+
+\subsection{Polylogarithmic coordinates for the finite corrections}
+
+Define the symmetric polylogarithm
+\[
+ \mathcal C_s(a)=\frac{\operatorname{Li}_s(e^{2\pi ia})
+                          +\operatorname{Li}_s(e^{-2\pi ia})}{2}.
+\]
+For real $s$ this is the real part of the first polylogarithm; the
+symmetric definition retains holomorphic dependence on complex $s$.
+The symmetric Hurwitz functional equation gives, for $m\ge0$ and
+$u$ near zero,
+\begin{equation}
+ \mathcal H_a(-m+u)
+ =4(-1)^m\frac{\Gamma(2m+1-2u)}{(2\pi)^{2m+1-2u}}
+                  \sin(\pi u)\mathcal C_{2m+1-2u}(a).
+ \label{msj:eq:H-polylog}
+\end{equation}
+Consequently $\mathcal H_a^{[h]}(-m)$ is a finite combination of
+polylogarithm order derivatives at $2m+1$, of order at most $h-1$,
+and Gamma derivatives at $2m+1$. The zero of $\sin(\pi u)$ is
+responsible for this reduction in order. For example,
+\begin{equation}
+ \mathcal H_a'(-m)=
+ \frac{2(-1)^m(2m)!}{(2\pi)^{2m}}\mathcal C_{2m+1}(a).
+ \label{msj:eq:Hprime-polylog}
+\end{equation}
+Thus the finite corrections in \eqref{msj:eq:Ck} use polylogarithm
+order derivatives only through order $k-3$. This is a finite reduction
+of the correction, not a claim that the ordinary remainder in
+\eqref{msj:eq:alljets} always reduces to finitely many polylogarithms.
+
+\subsection{A confluent law simultaneously at every spectral order}
+
+\begin{theorem}[All-order mass-coalescence law]
+\label{msj:thm:allconfluent}
+Let $B>0$ and fixed real numbers $c_1,\ldots,c_r$ be given, and set
+$B_j=B+\varepsilon c_j$. For every $k\ge2$,
+\begin{align}
+ \mathfrak D_k(P;a,\boldsymbol B)
+ &=\binom{k}{2}r^{k-2}\varepsilon^2
+       \left(r\sum_jc_j^2-\Bigl(\sum_jc_j\Bigr)^2\right)
+                    \mathcal E_P^{[k-2]}(2;a,B)
+       +O(\varepsilon^3).
+ \label{msj:eq:allconfluence}
+\end{align}
+The right side is well defined even when its defining raw series at
+$s=2$ diverges: $\mathcal E_P(s;a,B)$ has no pole at an integer.
+For $\deg P\le1$ it is an ordinary spectral derivative of a convergent
+resolvent series. If all $c_j$ are equal, the masses remain identical
+and every defect vanishes exactly.
+\end{theorem}
+
+\begin{proof}
+For a fixed $v$, expand the common-scale expression in
+\eqref{msj:eq:common-scale} through second order in $\varepsilon$.
+The constant and linear coefficients cancel. The quadratic term is
+\[
+ \frac{s^2\varepsilon^2}{2}
+ \left(r\sum_jc_j^2-\Bigl(\sum_jc_j\Bigr)^2\right)(v+B)^{-rs-2}.
+\]
+The same tail subtraction as above justifies this identity for the
+continued families, locally uniformly in $s$ near zero. Hence
+\[
+ \mathfrak D(s)=\frac{s^2\varepsilon^2}{2}
+ \left(r\sum_jc_j^2-\Bigl(\sum_jc_j\Bigr)^2\right)
+                 \mathcal E_P(rs+2;a,B)+O(\varepsilon^3).
+\]
+Taking its $k$th derivative gives \eqref{msj:eq:allconfluence}.
+The single-mass tail expansion has possible poles only at half-integers,
+which proves the assertion at $s=2$. When all masses are equal,
+$\mathcal Z_{P,\boldsymbol B}(s;a)=\mathcal E_P(rs;a,B)$, so
+\eqref{msj:eq:common-scale} is identically zero.
+\end{proof}
+
+\subsection{A global Hurwitz-jet evaluation of the individual terms}
+
+For completeness, the individual second derivatives in
+\eqref{msj:eq:second-evaluation} can be evaluated without leaving an
+unevaluated multivariate spectral zeta function. Choose an integer
+$N\ge0$ such that $B<(N+\rho)^2$, and define
+\[
+ \mathcal H_{a,N}(s)=\zeta(2s,N+a)+\zeta(2s,N+1-a).
+\]
+Separating the $2N$ lattice terms with positive coordinates
+$n+a$ and $n+1-a$, $0\le n<N$, gives the geometrically convergent
+formula
+\begin{align}
+ \mathcal E_P^{[2]}(0;a,B)
+ &=\sum_{n=0}^{N-1}\sum_{x\in\{n+a,n+1-a\}}
+                         P(x^2)\log^2(x^2+B)
+ \notag\\
+ &\quad+\sum_{d=0}^{D}p_d\Bigg\{
+    \mathcal H_{a,N}^{[2]}(-d)
+ \notag\\
+ &\hspace{20mm}+2\sum_{q=1}^{\infty}\frac{(-1)^qB^q}{q}
+       \left[H_{q-1}\mathcal H_{a,N}(q-d)
+                         +\mathcal H_{a,N}'(q-d)\right]\Bigg\}.
+ \label{msj:eq:individual-second}
+\end{align}
+Every spectral argument here is an integer in the $\mathcal H$ variable,
+so no pole is substituted separately. This identity follows directly
+from
+\[
+ (s)_q=(q-1)!s\bigl(1+H_{q-1}s+O(s^2)\bigr)
+\]
+and the binomial expansion of $(x^2+B)^{-s}$ on the chosen tail.
+The strict tail-radius condition justifies spectral differentiation
+term by term. Higher derivatives use the same finite Pochhammer
+coefficient calculus, or unsigned Stirling numbers of the first kind.
+Together with \eqref{msj:eq:quadrature}, this supplies a global exact
+evaluation of the several-mass second derivative in ordinary Hurwitz
+jets and an explicitly anchored elementary integral.
+
+\subsection{Verification and the remaining boundary}
+
+The accompanying Python program constructs the Pochhammer spectral
+coefficients and the direct logarithmic coefficients independently over
+the rational numbers. It compares the resulting ordinary remainders
+with independent finite-head Hurwitz continuations, evaluates the
+resolvent quadrature directly, checks the nonzero third-order correction,
+and compares the convergent confluent series with its integral.
+Numerical diagnostics are distinct from the all-order proofs above;
+they are not interval certificates.
+
+The answered repository question is the several-mass second derivative
+and its confluent limit, with the ordinary logarithmic cross term made
+explicit. The one-dimensional integral in \eqref{msj:eq:quadrature}
+is itself an exact evaluation coordinate. A finite reduction of that
+integral to a specified algebra of ordinary polylogarithms for arbitrary
+$a,B,C$ remains a separate question. For odd or noninteger spectral
+weights, resonant odd powers can occur and additional local Laurent
+terms must be retained; the parity-protected bilateral formula above
+does not silently assert their absence.
+
+% END EMBEDDED sections/05_bilateral.tex
+
+
+% BEGIN EMBEDDED sections/04_stieltjes_jets.tex
+\section{Every spectral derivative of a product of quadratic factors}
+\label{sec:onesided}
+
+The preceding quadratic-spectrum report asks both for higher factorization
+derivatives and for the logarithmic cross term for several masses
+\cite[Section 7, questions 2 and 7]{Quadratic}.  We give a finite
+subtraction formula at every derivative order, and then state its
+conjugate-linear specialization to the precise defect in question 2.
+Its one-sided version
+also identifies exactly which generalized Stieltjes constants occur.
+First-derivative multiplicative anomalies are classical
+\cite{EVZ,PolynomialAnomaly}; the result here concerns the specified
+higher derivatives and their explicit normalization.
+
+Fix $a>0$, an integer $r\ge2$, nonnegative real numbers
+$B_1,\ldots,B_r$, and a polynomial
+$W(x)=\sum_{d=0}^{D}w_dx^d$.  Write $x_n=n+a$ and
+$Q_j(x)=x^2+B_j$.  In their initial half-planes of absolute convergence set
+\begin{align}
+ E_{W,j}(s;a)&=\sum_{n\ge0}W(x_n)Q_j(x_n)^{-s},\\
+ Z_{W,\boldsymbol B}(s;a)&=
+       \sum_{n\ge0}W(x_n)\prod_{j=1}^rQ_j(x_n)^{-s}.
+\end{align}
+For the quadratic factors $Q_j$, logarithms are real logarithms of
+positive numbers.  The conjugate-linear specialization below explicitly
+uses principal complex logarithms.
+The normalized difference is
+\begin{equation}\label{one:defect}
+ \mathfrak D_W(s)=\frac1r\sum_{j=1}^rE_{W,j}(rs;a)
+                         -Z_{W,\boldsymbol B}(s;a),\qquad
+ \Delta_m(W)=\mathfrak D_W^{(m)}(0).
+\end{equation}
+Thus $\Delta_m=r^{m-1}\sum_jE_{W,j}^{(m)}(0)-Z_{W,\boldsymbol B}^{(m)}(0)$.
+The factor $r^{m-1}$ is part of the definition, and cannot be omitted
+when comparing different total spectral degrees.
+
+\subsection{A finite coefficient algebra}
+Define polynomials $h_k(s)$ by the Taylor expansion at $t=0$,
+\begin{equation}\label{one:h}
+ h(s,t)=\frac1r\sum_{j=1}^r(1+B_jt)^{-rs}
+                -\prod_{j=1}^r(1+B_jt)^{-s}
+       =\sum_{k\ge2}h_k(s)t^k.
+\end{equation}
+An entirely finite formula for each coefficient is
+\begin{equation}\label{one:hk}
+ h_k(s)=(-1)^k\left\{
+ \frac{(rs)_k}{r\,k!}\sum_jB_j^k
+ -\sum_{k_1+\cdots+k_r=k}
+                \prod_{j=1}^r\frac{(s)_{k_j}B_j^{k_j}}{k_j!}
+                  \right\}.
+\end{equation}
+Here $(s)_0=1$.  Put $A_{k,j}=h_k^{(j)}(0)$; it is zero for $j>k$.
+Both $h_0$ and $h_1$ vanish identically, and every $h_k$ is divisible
+by $s^2$.  The latter assertion follows before coefficient extraction:
+$h(0,t)=\partial_sh(0,t)=0$.  In particular, if
+\begin{equation}\label{one:variance}
+ V(\boldsymbol B)=\sum_{i<j}(B_i-B_j)^2,
+\end{equation}
+then $h_2(s)=V(\boldsymbol B)s^2/2$.
+
+\begin{theorem}[Finite subtraction at all spectral orders]
+\label{thm:alljets}
+Choose any integer
+\begin{equation}\label{one:K}
+ K\ge\max\left(1,\left\lfloor\frac{D+1}{2}\right\rfloor\right).
+\end{equation}
+The functions in \eqref{one:defect} are holomorphic at zero, and
+\begin{align}\label{one:master}
+ \mathfrak D_W(s)={}&\mathcal R_K(s)
+   +\sum_{d=0}^{D}w_d\sum_{k=2}^{K}
+                     h_k(s)\zeta(2rs+2k-d,a),\\
+ \mathcal R_K(s)={}&\sum_{n\ge0}W(x_n)x_n^{-2rs}
+       \left\{h(s,x_n^{-2})-\sum_{k=2}^{K}h_k(s)x_n^{-2k}\right\}.
+       \label{one:remainder}
+\end{align}
+The remainder is holomorphic in
+$\Re s>(D-2K-1)/(2r)$, with normally convergent fixed spectral
+derivatives there.  Every apparent pole of the finite sum at $s=0$
+is removable after multiplication by $h_k(s)$.
+
+For $m\ge1$ define
+\begin{align}
+ L_j(x)&=\log(x^2+B_j),\\
+ T_m(x)&=(-1)^m\left\{r^{m-1}\sum_j L_j(x)^m
+                         -\left(\sum_jL_j(x)\right)^m\right\},
+                         \label{one:T}\\
+ U_{k,m}(X)&=\sum_{j=2}^{m}\binom mj A_{k,j}(-2rX)^{m-j}.
+                         \label{one:U}
+\end{align}
+An empty sum is zero.  Then the following is an ordinary convergent
+series plus a finite, explicit correction:
+\begin{equation}\label{one:jet}
+ \boxed{\begin{aligned}
+ \Delta_m(W)={}&\sum_{n\ge0}W(x_n)
+       \left\{T_m(x_n)-\sum_{k=2}^{K}x_n^{-2k}
+                                      U_{k,m}(\log x_n)\right\}\\
+ &+\sum_{d=0}^{D}w_d\sum_{k=2}^{K}\mathcal C_{m,k}(2k-d;a),
+ \end{aligned}}
+\end{equation}
+where, if $\nu\ne1$,
+\begin{equation}\label{one:regularC}
+ \mathcal C_{m,k}(\nu;a)=
+       \sum_{j=2}^{m}\binom mj A_{k,j}(2r)^{m-j}
+                                     \zeta^{(m-j)}(\nu,a),
+\end{equation}
+and at the resonant value $\nu=1$,
+\begin{equation}\label{one:resonantC}
+ \boxed{\displaystyle
+ \mathcal C_{m,k}(1;a)=\frac{A_{k,m+1}}{2r(m+1)}
+       +\sum_{j=2}^{m}\binom mj A_{k,j}(-2r)^{m-j}
+                                     \gamma_{m-j}(a).}
+\end{equation}
+Consequently only $\gamma_0(a),\ldots,\gamma_{m-2}(a)$ can occur at
+the $m$th derivative.  They occur only through odd weight monomials
+$x^{2k-1}$ with $k\ge2$.
+\end{theorem}
+
+\begin{proof}
+For sufficiently large $\Re s$, subtract the finite Taylor polynomial
+in \eqref{one:h} from each summand in \eqref{one:defect}; the removed
+powers sum to the Hurwitz functions in \eqref{one:master}.  This proves
+the equality where all series converge absolutely.
+
+On a compact set of $s$ and masses, the Taylor remainder is
+$O(x^{-2K-2})$ as $x\to\infty$, uniformly with every fixed spectral
+derivative.  A derivative of $x^{-2rs}$ introduces only a power of
+$\log x$.  Hence the summands of \eqref{one:remainder} are bounded
+by $C x^{D-2K-2-2r\Re s}(1+\log x)^M$, which is summable in the
+stated half-plane.  This argument uses the Taylor expansion only for
+large $x$.  The finitely many small $x_n$ are kept in the original
+expression, so no assumption such as $B_j<a^2$ is needed.
+It proves normal convergence, holomorphy, and the legitimacy of
+termwise differentiation.  It also continues the original identity
+from its initial half-plane to a neighborhood of zero.
+
+The same finite-subtraction argument applied separately to
+$\prod_j(1+B_jt)^{-s}$ and $(1+B_jt)^{-s}$ proves that the original
+spectral functions are holomorphic at zero.  Their positive-$t$-degree
+coefficients vanish at $s=0$ and thus cancel any simple Hurwitz pole;
+their degree-zero terms are $\zeta(-d,a)$, regular at zero.
+
+The only finite term in \eqref{one:master} with a pole at zero has
+$2k-d=1$.  The Stieltjes convention is
+\begin{equation}\label{one:stieltjes}
+ \zeta(1+u,a)=\frac1u+
+                 \sum_{j\ge0}\frac{(-1)^j}{j!}\gamma_j(a)u^j.
+\end{equation}
+Since $h_k(s)=O(s^2)$, the product is holomorphic.  At a nonresonant
+integer, the ordinary product rule gives \eqref{one:regularC}.
+At a resonance, the pole is $1/(2rs)$, so its $m$th coefficient
+contributes $A_{k,m+1}/(2r(m+1))$.  The regular coefficients in
+\eqref{one:stieltjes} give the remaining terms of
+\eqref{one:resonantC}.  This proves the finite correction exactly,
+including its sign and the extra local term.
+
+Finally, differentiating the actual summands in the remainder gives
+\eqref{one:T} and \eqref{one:U}.  The normal convergence just proved
+allows the differentiation, and yields \eqref{one:jet}.  Increasing
+$K$ merely transfers an exactly summed term between the remainder
+and the correction, so the answer is independent of that choice.
+\end{proof}
+
+\subsection{The local first derivative and the nonlocal second derivative}
+
+The first derivative is particularly short:
+\begin{corollary}[First-derivative residue]\label{cor:firstanomaly}
+For the convention \eqref{one:defect},
+\begin{equation}\label{one:first}
+ \Delta_1(W)=\frac1{4r}[x^{-1}]\,W(x)
+       \sum_{i<j}\left\{\log\frac{x^2+B_i}{x^2+B_j}\right\}^{\!2}.
+\end{equation}
+It is independent of $a$.  If $\deg W\le2$, it vanishes for all masses.
+For $W=x^3$, it equals $V(\boldsymbol B)/(4r)$.
+\end{corollary}
+\begin{proof}
+The remainder and nonresonant corrections start at order $s^2$.
+Moreover $\partial_s^2h(0,t)$ equals the sum of the pairwise squared
+logarithmic differences in \eqref{one:first}.  Substitute $m=1$
+in \eqref{one:resonantC}.
+\end{proof}
+
+At the second derivative the pairwise logarithmic squares are still
+present, but are no longer purely local.  In addition, at resonances
+one must retain $A_{k,3}/(6r)$.  The next examples make both features
+explicit.
+
+\begin{corollary}[A single Stieltjes coefficient at every derivative]
+\label{cor:singleStieltjes}
+Take $r=2$, $W=x^3$, $B\ne C$, and set $\delta=B-C$.
+For every integer $m\ge2$, put
+\begin{equation}\label{one:cm}
+ c_m=\binom m2(-4)^{m-2}\delta^2.
+\end{equation}
+With $T_m$ as in \eqref{one:T},
+\begin{equation}\label{one:isolated}
+ \boxed{\displaystyle
+ \Delta_m(x^3)=
+   \sum_{n\ge0}\left\{x_n^3T_m(x_n)
+                -c_m\frac{\log^{m-2}x_n}{x_n}\right\}
+       +c_m\gamma_{m-2}(a).}
+\end{equation}
+The displayed series converges absolutely and locally uniformly in
+$a>0$ and the masses.  Also $\Delta_1(x^3)=\delta^2/8$.
+\end{corollary}
+\begin{proof}
+Choose $K=2$.  Here $h_2(s)=\delta^2s^2/2$ exactly, so
+$A_{2,2}=\delta^2$ and $A_{2,j}=0$ for $j>2$.
+There is just the single resonant integer $2k-d=1$.  Equations
+\eqref{one:jet} and \eqref{one:resonantC} give the result.
+\end{proof}
+
+For clarity the first two instances are
+\begin{align}
+ \Delta_2(x^3)&=\sum_{n\ge0}\left\{
+      x_n^3\log^2\frac{x_n^2+B}{x_n^2+C}-\frac{\delta^2}{x_n}\right\}
+                         -\delta^2\psi(a),\label{one:x3second}\\
+ \Delta_3(x^3)&=\sum_{n\ge0}\left\{
+      -3x_n^3\log((x_n^2+B)(x_n^2+C))
+                     \log^2\frac{x_n^2+B}{x_n^2+C}
+                 +12\delta^2\frac{\log x_n}{x_n}\right\}
+                         -12\delta^2\gamma_1(a).\label{one:x3third}
+\end{align}
+In \eqref{one:x3second} the summand is $O(x_n^{-3})$; in
+\eqref{one:x3third} it is $O(x_n^{-3}\log x_n)$.
+The all-order formula isolates one prescribed generalized Stieltjes
+constant, instead of introducing an undefined finite part of a
+logarithmic series.
+
+There is already an additional local correction at the next odd weight.
+For $W=x^5$ and $r=2$,
+\begin{equation}\label{one:x5second}
+ \begin{split}
+ \Delta_2(x^5)={}&\sum_{n\ge0}\left\{
+ x_n^5\log^2\frac{x_n^2+B}{x_n^2+C}
+       -\delta^2x_n+\frac{\delta^2(B+C)}{x_n}\right\}\\
+ &+\delta^2\zeta(-1,a)
+       -\delta^2(B+C)\gamma_0(a)-\frac{\delta^2(B+C)}4.
+ \end{split}
+\end{equation}
+Indeed $A_{3,2}=-\delta^2(B+C)$ and
+$A_{3,3}=-3\delta^2(B+C)$.  The final term in
+\eqref{one:x5second} comes from the latter coefficient multiplied
+by the Hurwitz pole.  Simply assigning finite parts to the squared
+logarithm would miss it.
+
+\subsection{The source's conjugate-linear factorization problem}
+\label{one:linear-section}
+
+The second question in \cite{Quadratic} specifically factors a single
+quadratic into its two conjugate linear factors.  This requires a
+different spectral scale from a product of two quadratics.  Here is the
+explicit specialization, including that scale.  For $a,b>0$ define
+\[
+ F_{W,\pm}(s)=\sum_{n\ge0}W(x_n)(x_n\pm ib)^{-s},\qquad
+ Z_W(s)=\sum_{n\ge0}W(x_n)(x_n^2+b^2)^{-s},
+\]
+using principal logarithms.  Since $x_n>0$,
+$\log(x_n+ib)+\log(x_n-ib)=\log(x_n^2+b^2)$ without a branch term.
+Put
+\[
+ \widehat{\mathfrak D}_W(s)=\tfrac12
+        \{F_{W,+}(2s)+F_{W,-}(2s)\}-Z_W(s),\qquad
+ \widehat\Delta_m=\widehat{\mathfrak D}_W^{(m)}(0).
+\]
+The relevant coefficient polynomials are
+\begin{align}
+ \widehat h(s,t)
+ &=\tfrac12\{(1+ibt)^{-2s}+(1-ibt)^{-2s}\}
+                              -(1+b^2t^2)^{-s}
+    =\sum_{k\ge1}\eta_k(s)t^{2k},\label{one:linear-h}\\
+ \eta_k(s)&=(-1)^kb^{2k}
+       \left\{\frac{(2s)_{2k}}{(2k)!}-\frac{(s)_k}{k!}\right\},
+ \qquad \widehat A_{k,j}=\eta_k^{(j)}(0).
+ \label{one:linear-eta}
+\end{align}
+Every $\eta_k$ is divisible by $s^2$, although its degree can now
+be $2k$.  In particular $\eta_1(s)=-2b^2s^2$.
+
+\begin{corollary}[Every conjugate-linear spectral defect]
+\label{cor:linear-jets}
+Choose $K$ as in \eqref{one:K}.  The complete formula
+\eqref{one:jet} holds for $\widehat\Delta_m$ with these replacements:
+the finite coefficient sums begin at $k=1$; $A_{k,j}$ is replaced by
+$\widehat A_{k,j}$; every spectral scale $2r$ is replaced by $2$;
+and the raw derivative becomes
+\begin{equation}\label{one:linear-T}
+ \widehat T_m(x)=(-1)^m\left\{
+   2^{m-1}(\ell_+(x)^m+\ell_-(x)^m)
+                    -(\ell_+(x)+\ell_-(x))^m\right\},\qquad
+ \ell_\pm(x)=\log(x\pm ib).
+\end{equation}
+In particular the resonant correction is exactly
+\begin{equation}\label{one:linear-contact}
+ \widehat{\mathcal C}_{m,k}(1;a)
+ =\frac{\widehat A_{k,m+1}}{2(m+1)}
+    +\sum_{j=2}^m\binom mj\widehat A_{k,j}(-2)^{m-j}
+                                      \gamma_{m-j}(a).
+\end{equation}
+All remainder sums are ordinary and absolutely convergent.
+\end{corollary}
+\begin{proof}
+The exact finite-subtraction identity is
+\begin{align*}
+ \widehat{\mathfrak D}_W(s)
+ ={}&\sum_{n\ge0}W(x_n)x_n^{-2s}
+       \left\{\widehat h(s,x_n^{-1})-
+                         \sum_{k=1}^K\eta_k(s)x_n^{-2k}\right\}\\
+ &+\sum_{d=0}^D w_d\sum_{k=1}^K
+                            \eta_k(s)\zeta(2s+2k-d,a).
+\end{align*}
+Its tail is normally convergent for $\Re s>(D-2K-1)/2$.
+The finitely many terms with $x_n\le b$ are kept exactly, so the
+binomial expansion is used only within its tail disk.  The principal
+logarithms are analytic because the linear factors stay in the right
+half-plane.  Taylor differentiation of this identity is the proof of
+Theorem~\ref{thm:alljets} with scale $2$ and coefficient
+\eqref{one:linear-eta}; its pole is $1/(2s)$.
+This proves the stated correction and convergence claims.
+\end{proof}
+
+For the first odd weight $W=x$, put
+$\widehat c_m=-4b^2\binom m2(-2)^{m-2}$ for $m\ge2$.
+Then the exact all-order identity simplifies to
+\begin{equation}\label{one:linear-isolate}
+ \widehat\Delta_m(x)=\sum_{n\ge0}\left\{
+ x_n\widehat T_m(x_n)-\widehat c_m
+                         \frac{\log^{m-2}x_n}{x_n}\right\}
+                         +\widehat c_m\gamma_{m-2}(a),
+ \qquad \widehat\Delta_1(x)=-b^2.
+\end{equation}
+At order two, $\widehat T_2(x)=-4\arctan^2(b/x)$, so
+\begin{equation}\label{one:linear-second}
+ \boxed{\displaystyle
+ \widehat\Delta_2(x)=
+ 4\sum_{n\ge0}\left\{\frac{b^2}{x_n}
+                       -x_n\arctan^2\frac b{x_n}\right\}
+                                      +4b^2\psi(a).}
+\end{equation}
+Evenness of $W$ removes the first-derivative local anomaly but does
+not remove the higher nonlocal part.  Already at $W=1$,
+\[
+ \widehat\Delta_2(1)=-4\sum_{n\ge0}\arctan^2\frac b{n+a}.
+\]
+The individual linear terms themselves have finite Hurwitz evaluations:
+\begin{equation}\label{one:linear-hurwitz}
+ F_{W,\pm}^{(m)}(0)=
+ \sum_{d=0}^D w_d\sum_{j=0}^d\binom dj
+       (\mp ib)^{d-j}\zeta^{(m)}(-j,a\pm ib).
+\end{equation}
+Thus the corollary evaluates every $Z_W^{(m)}(0)$ using a finite
+complex-Hurwitz part and the explicitly convergent remainder.
+For example,
+\begin{equation}\label{one:linear-unweighted}
+ Z_1''(0)=4\Re\zeta''(0,a+ib)
+                     +4\sum_{n\ge0}\arctan^2\frac b{n+a}.
+\end{equation}
+Equations \eqref{one:linear-contact} and \eqref{one:linear-T}
+answer the stated higher-jet factorization problem without assuming that
+its first-derivative parity criterion persists.
+
+\subsection{A digamma integral and an anchored dilogarithm primitive}
+
+The cubic-weight second derivative has a compact ordinary integral.
+For $B>C\ge0$,
+\begin{equation}\label{one:digammaintegral}
+ \boxed{\displaystyle
+ \Delta_2(x^3)=2\int_C^B
+       t\,\Re\psi(a+i\sqrt t)
+                       \log\frac{B-t}{t-C}\,dt.}
+\end{equation}
+The endpoint logarithms are integrable.  To prove it, first use
+\[
+ \log^2\frac{x^2+B}{x^2+C}
+       =\int_C^B\!\int_C^B\frac{ds\,dt}{(x^2+s)(x^2+t)}.
+\]
+The normally convergent digamma difference is
+\[
+ \sum_{n\ge0}\left\{\frac{x_n}{x_n^2+t}-\frac1{x_n}\right\}
+        =\psi(a)-\Re\psi(a+i\sqrt t).
+\]
+Partial fractions first give the subtracted double sum
+$\psi(a)+(f(s)-f(t))/(t-s)$, where
+$f(t)=t\Re\psi(a+i\sqrt t)$.  The term $\delta^2\psi(a)$
+from integrating its constant part is cancelled by the explicit
+$-\delta^2\psi(a)$ in \eqref{one:x3second}.  The remaining kernel is
+$(f(s)-f(t))/(t-s)$.
+The diagonal is removable.  A symmetric exclusion of $s=t$, followed
+by elementary integration of $1/(t-s)$, gives
+$2\int_C^B f(t)\log((B-t)/(t-C))dt$.  This proves
+\eqref{one:digammaintegral} without separating divergent series.
+
+For an explicit primitive in the shift, set $\delta=B-C>0$,
+$y=(x^2+B)/(x^2+C)>1$, and define
+\begin{align}
+ J_2(y)&=-\frac{y\log^2y}{y-1}-2\Li_2(1-y),\label{one:J2}\\
+ J_3(y)&=-\frac{\log^2y}{2(y-1)^2}+\frac12\log^2y
+       +\Li_2(1-y)-\frac{\log y}{y-1}
+       +\log(y-1)-\log y,\label{one:J3}\\
+ \Phi_{B,C}(x)&=-\frac{\delta^2}{2}J_3(y)
+       +\frac{C\delta}{2}J_2(y)-\delta^2\log x
+       +\frac{\delta^2}{2}\log\delta-\frac34\delta^2.
+       \label{one:Phi}
+\end{align}
+Here $1-y<0$, so the dilogarithm is real and unambiguous.
+
+\begin{theorem}[Convergent dilogarithm--Gamma primitive]
+\label{thm:primitive}
+For $a,a_0>0$ and $B>C\ge0$,
+\begin{equation}\label{one:primitive}
+ \boxed{\begin{aligned}
+ \int_{a_0}^{a}\Delta_2(x^3;u,B,C)\,du
+ ={}&\sum_{n\ge0}\{\Phi_{B,C}(n+a)-\Phi_{B,C}(n+a_0)\}\\
+ &-\delta^2\log\frac{\Gamma(a)}{\Gamma(a_0)}.
+ \end{aligned}}
+\end{equation}
+Even the two sums of $\Phi$ separately converge absolutely.  Every
+normalization constant has been fixed in \eqref{one:Phi}.
+\end{theorem}
+\begin{proof}
+Direct differentiation using
+$\Li_2'(z)=-\log(1-z)/z$ gives
+$J_2'(y)=\log^2y/(y-1)^2$ and
+$J_3'(y)=\log^2y/(y-1)^3$.
+The substitution $v=x^2=\delta/(y-1)-C$ consequently proves
+\[
+ \Phi_{B,C}'(x)=x^3\log^2\frac{x^2+B}{x^2+C}-\frac{\delta^2}{x}.
+\]
+As $y=1+\varepsilon\downarrow1$, $J_2(y)\to0$ and
+$J_3(y)=\log\varepsilon-3/2+O(\varepsilon)$.
+These expansions show that the last two constants in
+\eqref{one:Phi} make $\Phi_{B,C}(x)\to0$ as $x\to\infty$.
+Since its derivative is $O(x^{-3})$, one has
+$\Phi_{B,C}(x)=O(x^{-2})$.  Its series and its differentiated
+series are therefore locally normally convergent for $a>0$.
+Sum the derivative and use \eqref{one:x3second} together with
+$(\log\Gamma)'=\psi$.  Evaluation at $a_0$ fixes the anchor and
+proves the displayed identity.
+\end{proof}
+
+The higher Stieltjes terms in \eqref{one:isolated} also have the
+classical anchored primitives
+\begin{equation}\label{one:Stieltjesprimitive}
+ \int_{a_0}^a\gamma_n(u)\,du
+   =\frac{(-1)^{n+1}}{n+1}
+       \{\zeta^{(n+1)}(0,a)-\zeta^{(n+1)}(0,a_0)\}.
+\end{equation}
+This follows by expanding
+$\partial_a\zeta(s,a)=-s\zeta(s+1,a)$ at $s=0$; it is not a
+new identity claimed by this article.  Equation \eqref{one:primitive}
+provides the additional explicit dilogarithmic primitive for the
+convergent nonlinear part at the second derivative.
+
+% END EMBEDDED sections/04_stieltjes_jets.tex
+
+
+% BEGIN EMBEDDED sections/07_audit.tex
+\section{Source audit and proposed corrections}
+\label{sec:audit}
+
+The inspected sources support the preceding developments, but the
+research-status map needs an additional cross-reference.  The correction
+below concerns attribution and an already answered construction problem.
+It does not invalidate the same-direction spectral representations.
+No counterexample to the inspected source reconstruction or quadratic
+factorization theorems was found.
+
+\subsection{The connected double family is an established interpolant}
+
+For $\Re q>0$ write
+\[
+ Z_q(s_1,\ldots,s_d)=
+  \sum_{n_1>\cdots>n_d\ge0}\prod_{j=1}^d(n_j+q)^{-s_j},
+ \qquad Z_q(\varnothing)=1,
+\]
+initially in an absolute-convergence domain.  The same-direction report
+defines
+\begin{equation}\label{audit:connected}
+ \mathcal C_{A,B}(q)=\zeta(A,B)-Z_q(A,B)
+                      +\zeta(A,q)\{\zeta(B,q)-\zeta(B)\}.
+\end{equation}
+The earlier independent-orders report defines the relative interpolant
+by ordered convolution \cite{IndependentOrders}:
+\begin{equation}\label{audit:relative}
+ Z_b(w)=\sum_{w=uv}Z_a(u)\mathcal H_{a,b}(v),
+ \qquad \mathcal H_{a,b}(\varnothing)=1.
+\end{equation}
+The sum is over prefix--suffix decompositions of the word.  At depth two,
+\begin{align*}
+ \mathcal H_{q,1}(A,B)
+ &=\zeta(A,B)-Z_q(A,B)
+                  -\zeta(A,q)\{\zeta(B)-\zeta(B,q)\}.
+\end{align*}
+Thus there is an exact identity of the full functions,
+\begin{equation}\label{audit:identification}
+ \boxed{\mathcal C_{A,B}(q)=\mathcal H_{q,1}(A,B)
+                              =\Psi(A,B;q-1).}
+\end{equation}
+The final member is the Ihara--Nakamura--Yamamoto interpolant
+\cite[Proposition 2.1 and Corollary 4.2]{INY}.  Their theorem already
+gives entire dependence on all independent indices at arbitrary depth.
+The relative report explicitly cites that result and develops its
+two-endpoint form.  This identification is algebraic on an open
+convergence domain, so it does not rely on uniqueness from values at
+integer $q$.
+
+For clarity, the established general finite expression is
+\begin{equation}\label{audit:star}
+ \mathcal H_{q,1}(s_1,\ldots,s_d)=
+  \sum_{j=0}^d(-1)^j
+   Z_q^\star(s_j,\ldots,s_1)\,
+                         \zeta(s_{j+1},\ldots,s_d).
+\end{equation}
+The empty prefix and suffix have value one, and $Z_q^\star$ uses weak
+inequalities.  This is the convolution inverse of the strict ordered
+series.  It preserves the published entire normalization, rather than
+choosing separate finite parts for its meromorphic constituents.
+
+The corresponding divided-difference kernel is also already available
+\cite{INY,HarmonicGaps}.  If $X_0=0$, $X_j=v_1+\cdots+v_j$, then an
+equivalent convenient form is
+\begin{equation}\label{audit:kernel}
+ K_q^{(d)}(v_1,\ldots,v_d)
+   =(-1)^d[e^{X_0},e^{X_1},\ldots,e^{X_d}]
+                         (y\mapsto y^{d-q}).
+\end{equation}
+Here the brackets are the divided difference in $y$, extended
+confluently when nodes coincide.  Its normalized Mellin transform is
+$\mathcal H_{q,1}$, initially when every $\Re s_j>0$.
+At $d=2$ it is precisely the kernel of the same-direction report.
+To compare with the earlier formula using nodes $e^{-X_j}$, invert
+each node in its finite barycentric sum: the product of all nodes
+cancels the exponential prefactor, leaving the sign $(-1)^d$ and
+the power $d-q$ in \eqref{audit:kernel}.
+
+The shift law and the depth-two stuffle law in this normalization are
+\begin{align}
+ \mathcal H_{q+1,1}(s_1,\ldots,s_d)
+ &=\mathcal H_{q,1}(s_1,\ldots,s_d)
+                   +q^{-s_1}\mathcal H_{q,1}(s_2,\ldots,s_d),
+                   \label{audit:shift}\\
+ h_q(s)h_q(t)
+ &=\mathcal H_{q,1}(s,t)+\mathcal H_{q,1}(t,s)+h_q(s+t),
+ \quad h_q(s)=\zeta(s)-\zeta(s,q).
+ \label{audit:stuffle}
+\end{align}
+They are inherited identities for entire functions.  Sign conventions
+can be checked immediately: the same-direction report uses the
+depth-one difference $\zeta(s,q)-\zeta(s)=-h_q(s)$, which accounts
+for the apparent change of sign in its displayed laws.
+
+\paragraph{Proposed source edit.}
+The attribution paragraph of \cite{SameDirection} should identify its
+entire connected double family as the depth-two specialization of
+\cite{INY,IndependentOrders}.  Its second further-research question
+should no longer ask for existence, entireness, shift/stuffle laws, or
+the basic higher divided-difference kernel.  Those constructions are
+already available.  A useful replacement asks for explicit minimal
+coordinate reductions on specified mixed nonpositive-index loci,
+or for comparisons between genuinely different normalizations.
+The Barnes and beta--Newton same-direction representations remain
+separate results and are not affected by this correction.
+
+\subsection{Updates justified by the new proofs}
+
+The order-eight statement in \cite{Reconstruction} correctly retained
+the congruence qualification $b\not\equiv1\pmod{16}$.  It was not a
+false theorem.  After the present proof and certificate are accepted,
+the collective statement may be strengthened to every $b\ge5$ and its
+Q1 closed.  The original congruence proof remains useful as the finite
+range reduction.  Its previously rejected simple valuation extrapolation
+should remain rejected; the new proof does not restore that formula.
+
+The same report's Q5 is now answered for the fourth power and its
+regular even moments.  The statement should refer to the six displayed
+formal coordinates and the all-index Bernoulli transform.  It should
+not assert independence of the evaluated constants or promote fifth
+and higher powers to the same status.  The starting value $V_0=Q_7$
+must retain Hoffman's attribution.
+
+For \cite{Quadratic}, Q7 is answered by the pairwise logarithmic
+correction and the confluent resolvent formulas, while Q2 is answered
+by Corollary~\ref{cor:linear-jets}.  The latter uses the source's
+linear factors and spectral scale two.  A product of two quadratic
+factors has scale four; confusing them changes every higher correction.
+The explicit primitive in Theorem~\ref{thm:primitive} is progress on
+the mixed primitive direction, not a classification of all shift--mass
+integrals.
+
+\subsection{Corrections that must accompany higher-order reuse}
+
+Three points are essential when extending the existing formulas.
+First, the identity $\mathcal H_a(-m)=0$ does not imply
+$\mathcal H_a'(-m)=0$.  At bilateral third order the omitted term
+would be exactly $-12(B-C)^2\log(2\sin\pi a)$ for $P(v)=v^2$.
+Second, multiplication by a Hurwitz pole uses one more coefficient
+of the vanishing factor than multiplication by its regular part.
+The term $A_{k,m+1}/(2r(m+1))$ in
+\eqref{one:resonantC} is therefore required.  Its first additional
+second-order example is $-\delta^2(B+C)/4$ in
+\eqref{one:x5second}.  Third, an antiderivative of a summand is not
+automatically summable: the constant in $\Phi_{B,C}$ is fixed so
+that it decays to zero.  Without it, the separate series of primitives
+would diverge.
+
+These are requirements of the new extensions, not errors falsely
+attributed to source theorems that only treated first derivatives.
+The article and integration notes retain this distinction.
+
+\subsection{Unchanged arithmetic conjectures}
+
+The canonical Gaussian $S_6$ identity and the revised $S_8$ candidate
+remain conjectural in this continuation \cite{Manuscript}.  The rejected
+older $S_8$ vector remains different from the revised candidate.  No
+failed relation search, small residual, or finite formal rank calculation
+is converted here into an arithmetic proof or a nonreduction assertion.
+Likewise, no new claim is made about the transcendence or numerical
+independence of the six quartic coordinates.  These boundaries should
+remain visible when the results are integrated into the collective text.
+
+% END EMBEDDED sections/07_audit.tex
+
+
+% BEGIN EMBEDDED sections/08_research.tex
+\section{Further research questions with exact targets}
+\label{sec:research}
+
+The following problems are organized around the structures proved above.
+Each asks for an identity, a finite reduction, or a proof of a specified
+conjecture.  A successful result should identify the precise function
+class and normalization before a computation is interpreted.
+
+\begin{enumerate}[leftmargin=*,label=\textbf{R\arabic*.}]
+\item \textbf{Complete every fixed-order reconstruction family.}
+Theorem~\ref{ert:main} supplies a finite decision procedure once $a$
+is fixed. For $a=5$, the exact threshold $B_5=1920$ reduces the
+smaller-order-ten problem to $6\le b<1920$; the adjacent case
+$b=6$ and the gap-four case $b=7$ are already proved. Complete the
+remaining cases using exact arithmetic, then apply the same procedure
+at $a=6$, corresponding to smaller order twelve. A structural
+factorization or a congruence may eliminate most of the finite range
+before direct determinants are formed.  The target is a complete
+all-$b$ theorem for each family, with every exceptional index accounted
+for, rather than a larger table of experiments.
+
+\item \textbf{Remove the fixed-order qualification.}
+The leading positive determinant gives eventual nonvanishing but does
+not control the lower Bernoulli degrees uniformly at small separation.
+Find a determinant identity, an arithmetic invariant, or a recurrence
+which prevents cancellation for all $a<b$.  The existing adjacent
+and gap-four cases, together with the complete small-order families,
+provide exact consistency constraints.  A proof uniform in $a$ would
+settle the remaining unrestricted optimal-prefix conjecture.
+
+\item \textbf{Give closed coefficient rows for higher-order reconstruction.}
+The ordinary identities \eqref{r8c:ordinary} use a completely specified
+rational inverse matrix.  Seek a product formula or a fixed-size kernel
+for its rows, comparable to the known smaller-order inverse construction.
+It should specify every polynomial coefficient directly and retain all
+subtraction constants.  A formal reference to an unevaluated inverse
+or to unknown minors is a weaker endpoint than such a closed kernel.
+
+\item \textbf{Find the fifth- and higher-power tail cancellation.}
+For each integer $d\ge5$, continue
+$\sum_{n\ge0}\psi'(n+1)^d x_n^{-s}$ on its regular parity lattice.
+The quartic boundary identity \eqref{qtm:boundary} suggests combining
+the parity components of successive powers before applying finite
+summation.  Determine which lower tail powers survive, identify a fixed
+coordinate space for each $d$, and construct its anchored generator.
+The dimension and the required weights should be proved, not inferred
+from the first few moments.
+
+\item \textbf{Treat the resonant parity as a separate spectral family.}
+For the quartic family, the points $s=-3-2k$ are actual poles with
+explicit residues $h_k$.  Determine their Laurent constants and
+higher spectral coefficients by a normalization compatible with
+\eqref{qtm:ordinary}.  These coefficients will involve logarithmic
+moments, so the regular even-moment theorem cannot simply be
+differentiated at its discrete values.  An anchored analytic generator
+for the Laurent family would be a natural next object.
+
+\item \textbf{Determine the functional depth of the quartic generator.}
+The present construction gives a finite depth-at-most-three expression.
+Specify allowable transformations of arguments and products, then ask
+whether the particular depth-three combination reduces further.
+A symbolic relation must be checked by a functional derivative
+identity and an anchored endpoint.  Formal symbol or shuffle rank
+should not be interpreted as arithmetic irreducibility of a value.
+
+\item \textbf{Extend exact reconstruction to mixed and shifted tails.}
+Replace the identical fourth power by
+$\prod_j\zeta(s_j,n+a_j)$, beginning with positive integer orders
+and a common rational shift.  Determine which parity cancellations
+survive and the finite replacement for
+$\zeta(-2m,1/2)=0$.  Character twists should be handled only after
+the shift-dependent counterterms are explicit.  The goal is ordinary
+convergent identities with a specified finite arithmetic coordinate set.
+
+\item \textbf{Reduce the spectral logarithmic quadrature on special loci.}
+For rational $a$ and selected algebraic masses, seek finite reductions
+of \eqref{msj:eq:quadrature} and \eqref{one:digammaintegral} into
+polylogarithm order derivatives, Gamma derivatives, or a precisely
+defined multiple-Gamma family.  The ordinary integral is already an
+exact answer at arbitrary parameters.  A finite special-function
+reduction is an additional theorem and should not be assumed from
+the first-derivative factorization.
+
+\item \textbf{Classify noninteger-weight resonance crossings.}
+Replace a polynomial monomial by $x^\rho$ in the one-sided master.
+As $\rho$ crosses an odd integer, an argument of the Hurwitz function
+passes through one.  Construct a joint Laurent formula in $s$ and
+$\rho$ which specializes to \eqref{one:resonantC} and distinguishes
+different orders of taking limits.  The local coefficient at each
+crossing must match the polynomial theorem exactly.
+
+\item \textbf{Build primitive formulas at every spectral order.}
+The primitive \eqref{one:primitive} treats the nonlinear second jet
+with a completely fixed dilogarithmic anchor.  Higher logarithmic
+powers lead naturally to multiple polylogarithms after the same
+rational substitution.  Develop a finite integration rule for each
+$m$ and combine it with the classical primitives of
+$\gamma_{m-2}(a)$.  Also determine when differentiation in a mass
+commutes with an anchored shift primitive without an additional
+endpoint term.
+
+\item \textbf{Project the Stieltjes identities to arithmetic characters.}
+At $a=p/q$, apply finite character sums to the all-order correction
+formulas.  Give an exact dictionary between the resulting combinations
+of $\gamma_j(p/q)$, Hurwitz derivatives, and Dirichlet-$L$ derivatives.
+The reflected even and odd channels should be retained separately.
+The first useful deliverable would cover small denominators with
+the full logarithmic normalization in $q$.
+
+\item \textbf{Return to the Gaussian period identities with new functional input.}
+The unresolved $S_6$ and revised $S_8$ identities require a relation
+that survives the known restrictions of the explored Cayley relation
+systems.  The higher-depth polylogarithms appearing in the quartic
+generator offer additional functional expressions, but no connection
+to the target period is established here.  A useful next result would
+give an explicit map from one such functional identity to the exact
+canonical residual, including all lower-weight and branch terms.
+
+\item \textbf{Formalize the finite and analytic interfaces.}
+The Newton triangularization, Bernoulli modular recurrence, finite
+summation identities, and resonant coefficient extraction are suitable
+finite proof-assistant targets.  The separate analytic obligations are
+normal convergence of the subtracted families and their agreement
+with the original series on a common half-plane.  A formalization
+should state those interfaces explicitly.  Validated interval
+evaluation of the remaining quadratures is a different project from
+formal proof and can be added independently.
+\end{enumerate}
+
+% END EMBEDDED sections/08_research.tex
+
+\appendix
+
+% BEGIN EMBEDDED sections/09_reproducibility.tex
+\section{Reproduction, certificates, and evidence boundaries}
+\label{sec:reproduce}
+
+The package contains the modular article source, a standalone combined
+\TeX{} source, the compiled PDF, exact coefficient data, the inherited
+order-eight certificate with provenance, and independent Python
+verification programs.  All mathematical verification programs operate
+without a network connection.  They require Python 3, SymPy, and mpmath;
+the article builds with a standard modern \LaTeX{} installation.
+
+\subsection{What the finite certificates establish}
+
+The order-eight verifier reconstructs the source four-dimensional
+matrix from finite differences, clears denominators, and checks its
+determinant by the defining 24 permutation products.  It replays
+3,852 exact polynomial coefficient comparisons in the inherited
+certificate.  The new leading Hankel factor is checked both by
+coefficient extraction and by its triangular structural factor.
+The constants $K$, $V$, and $C$, the exact factorial comparison at
+$b=512$, and all 31 remaining indices are evaluated exactly.  The
+finite indices are checked by both rational Bernoulli numbers and a
+separate recurrence modulo $2^{32}$.
+
+The all-$b$ conclusion does not follow from a finite sampling rule.
+It follows from the analytic domination proof, the inherited
+congruence reduction, and the exhaustive finite residual set.  The
+general fixed-order theorem uses its constructive factorial comparison
+to prove termination; the example thresholds do not stand in for
+that termination argument.
+
+Ten additional exact normalization comparisons use $a=1,\ldots,5$
+and $b=2a,2a+1$.  They independently compare the original matrix,
+its shifted Hankel block, the finite Pad\'e sums, and the retained
+weighted-Bernoulli matrix.  The separate threshold script computes
+every coefficient norm used in the table in
+Section~\ref{ert:section} by exact arithmetic.
+
+The artifact \src{order8_identity_b17_k0.json} specifies all integer
+coefficients of the ordinary convergent extraction identity for
+$(p,q)=(8,34)$.  Its generator verifies the coordinate cancellation
+against the original matrix, so the example does not depend on
+transcribing a long printed coefficient list.
+
+The quartic verifier reconstructs the finite-cutoff coordinates through
+Faulhaber's formula, independently of the closed $D_j$ expression.
+A separate exact shuffle, stuffle, and duality calculation reduces
+the multiple zeta values through weight seven.  The replay checks
+25 quartic coordinates, 20 centered moments, 24 boundary identities,
+24 generator coefficients, the six-coordinate determinant, and the
+two coefficient identities behind the rational extraction.
+
+The bilateral spectral verifier compares rational Pochhammer
+coefficients with coefficients constructed directly from powers of
+elementary logarithmic series.  It checks 798 exact rational
+identities, including several numbers of masses.  The one-sided
+verifier adds 142 exact symbolic identities, including the general
+Hurwitz Laurent product, the additional local pole term, both
+dilogarithm derivatives, the primitive normalization, and the
+conjugate-linear coefficients.
+
+The columns of the first six quartic rows correspond, in order, to
+$Q_7$, $Q_5$, $\zeta(2)$, $\zeta(3)$, $\zeta(4)$, and $1$:
+\[
+\begingroup\renewcommand{\arraystretch}{1.6}
+\begin{pmatrix}
+1&0&0&0&0&0\\
+-\frac1{12}&\frac13&0&6&-\frac{17}{6}&0\\
+\frac7{240}&-\frac16&-\frac1{10}&-\frac32&\frac{17}{30}&-\frac1{10}\\
+-\frac{31}{1344}&\frac7{48}&\frac1{168}&\frac{13}{20}&\frac{17}{672}&\frac{11}{280}\\
+\frac{127}{3840}&-\frac{31}{144}&\frac{299}{2160}&-\frac{2551}{5040}&-\frac{289}{540}&-\frac{17}{840}\\
+-\frac{2555}{33792}&\frac{127}{256}&-\frac{3667}{6336}&\frac{45929}{67200}&\frac{497267}{253440}&\frac{1187}{277200}
+\end{pmatrix}
+\endgroup
+\]
+Their exact determinant is $7361/49896000$.
+
+\subsection{Independent numerical diagnostics}
+
+The numerical work tests different representations, with every working
+precision and cutoff stored in its JSON record.  The quartic checks
+use 120 decimal working digits and two finite-head/centered-Hurwitz-tail
+choices, $(N,J)=(120,36)$ and $(240,54)$.  For $0\le r\le8$, the
+largest residual from the second choice is below
+$3.6\times10^{-90}$.
+
+The bilateral calculations use 75 decimal working digits.  The
+spectral continuations and logarithmic tails are constructed separately;
+the elementary resolvent quadrature and confluent expression provide
+additional comparisons.  In particular, at $a=1/2$ and masses $4,1$,
+\[
+ S_1=4.25062684984826912051041637407031330017\ldots,
+\]
+whereas at $P(v)=v^2$,
+\[
+ S_{v^2}=-66.37570183951562430903381244813937818\ldots.
+\]
+These values illustrate that the subtraction and the polynomial weight
+are part of the identity; the sign of the unweighted logarithmic square
+is not a sign rule for every subtracted weighted sum.
+
+The one-sided diagnostics use 85 decimal working digits and 22 strict
+comparisons, with tolerance $10^{-60}$.  Individual spectral families
+use 11 head terms and 72 tail coefficients; the elementary logarithmic
+sums use 12 head terms and 64 coefficients.  The largest recorded
+strict difference is below $2\times10^{-71}$.  The choices include
+$(a,B,C)=(1/3,9,0)$, for which $B/a^2=81$; thus the implementation
+does not depend on an invalid global small-mass expansion.  Both
+orientations of the anchored primitive are compared with a separate
+Gamma quadrature.  Two further large-$x$ checks test its asymptotic
+normalization.
+
+None of these decimal diagnostics is an interval certificate or a proof
+of an identity.  They test the independently derived formulas and
+their implementation.  The proofs of meromorphic continuation,
+normal convergence, and all-index cancellation are in the article.
+No proof-assistant formalization is supplied.
+
+\subsection{Entry points and integration}
+
+Run \src{python verification/run_all.py} to execute the default
+mathematical suites in isolated subprocesses.  The exact order-eight
+source replay is included in that default.  The scripts also run
+individually in their respective directories.  The recorded receipts
+identify their actual runtime versions and completion status.
+
+Build the article with
+\src{latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex}.
+Alternatively compile \src{article_singlefile.tex} twice with
+pdf\LaTeX{}.  The combined source embeds every section and bibliography
+and has no external mathematical-input dependency.
+
+The integration notes specify the source claims to update, the theorem
+boundaries to retain, and suggested manuscript destinations.  Historical
+incoming reports need not be overwritten: the new proof can be added
+as a continuation with explicit cross-references.  The machine-readable
+\src{CLAIM_STATUS.json} separates new proved claims, inherited inputs,
+editorial corrections, and unresolved questions.  The final
+\src{SHA256SUMS} covers all distributed source, code, data, and PDF
+files other than that manifest itself.  Rebuilding may alter PDF
+metadata; a new build should receive its own rendered review.
+
+% END EMBEDDED sections/09_reproducibility.tex
+
+
+% BEGIN EMBEDDED references.tex
+\begin{thebibliography}{99}
+
+\bibitem{Manuscript}
+V. Reshetnikov and ProveIt Contributors,
+\emph{Polylogarithms and their Arithmetic Bridges}, collective manuscript,
+four volumes and associated research reports.  Inspected source revision
+\sourcepin, 11 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/73f18ef013d5b74eafc883efb2c15210642df12a/Analysis/Polylogarithms/docs/manuscript}.
+
+\bibitem{Reconstruction}
+ProveIt research collection,
+\emph{Exact Reconstruction and Higher Resonances in Polygamma--Zeta Calculus}, incoming research report,
+11 October 2026.  In particular Sections 2, 5, 6, and 9.
+Archive \src{ProveIt_Polygamma_Reconstruction_and_Resonance_2026-10-11.zip}
+in \src{docs/incoming}, at \sourcepin.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/73f18ef013d5b74eafc883efb2c15210642df12a/docs/incoming}.
+
+\bibitem{GeneralHankel}
+ProveIt research collection, Bernoulli--Tornheim--digamma continuation,
+\emph{The general Hankel reduction}, source section
+\src{Analysis/Polylogarithms/docs/reports/stieltjes-harmonic-resonance/continuations/bernoulli-tornheim-digamma/sections/03b_general_hankel.tex},
+at \sourcepin.  The general small determinant and Pad\'e row
+reduction are reproduced in Section~\ref{ert:section}.
+
+\bibitem{Square}
+ProveIt Contributors, \emph{Centered trigamma moments}, manuscript source
+\src{Analysis/Polylogarithms/docs/manuscript/chapters/07-centered-trigamma-moments.tex},
+at \sourcepin.  The all-even square moment formula and its
+Li$_2$/Li$_3$/Li$_4$ generator.
+
+\bibitem{Quadratic}
+ProveIt research collection, \emph{Quadratic-Spectrum Stieltjes
+Identities}, incoming research report, 10 October 2026.  In particular
+Sections 5--7 and further-research questions 2 and 7.
+Archive \src{ProveIt_Quadratic_Spectrum_Stieltjes_2026-10-10.zip}
+in \src{docs/incoming}, at \sourcepin.
+
+\bibitem{SameDirection}
+ProveIt research collection, \emph{Same-Direction Polylogarithm Products},
+incoming research report, 10 October 2026.  Connected coordinates,
+same-direction representations, attribution paragraph, and
+further-research question 2.
+Archive \src{ProveIt_Same_Direction_Complex_Orders_2026-10-10.zip}
+in \src{docs/incoming}, at \sourcepin.
+
+\bibitem{IndependentOrders}
+ProveIt research collection, independent-orders continuation,
+\emph{An entire normalization for all independent harmonic exponents},
+source section
+\src{Analysis/Polylogarithms/docs/reports/stieltjes-harmonic-resonance/continuations/independent-orders/sections/02_hurwitz.tex},
+at \sourcepin.  The relative interpolant, its exact identification
+with the published interpolant, and the endpoint and stuffle laws.
+
+\bibitem{HarmonicGaps}
+ProveIt research collection, harmonic-gaps and mixed-moments continuation,
+\emph{A jointly entire kernel for all zero-block decorations},
+source section
+\src{Analysis/Polylogarithms/docs/reports/stieltjes-harmonic-resonance/continuations/harmonic-gaps-mixed-moments/sections/02_joint_generator.tex},
+at \sourcepin.  In particular the established divided-difference
+kernel and its normalized Mellin transform.
+
+\bibitem{Hoffman}
+M. E. Hoffman, \emph{Sums of products of Riemann zeta tails},
+Mediterranean Journal of Mathematics \textbf{13} (2016), 2771--2781.
+\url{https://doi.org/10.1007/s00009-015-0653-9}.
+Preprint \url{https://arxiv.org/abs/1602.03399}.
+The fourth-power evaluation is printed immediately after Corollary 4.4.
+
+\bibitem{INY}
+K. Ihara, Y. Nakamura, and S. Yamamoto,
+\emph{Interpolant of truncated multiple zeta functions},
+The Ramanujan Journal \textbf{67} (2025), article 1.
+Published 4 March 2025.
+\url{https://doi.org/10.1007/s11139-025-01045-2}.
+
+\bibitem{EVZ}
+E. Elizalde, L. Vanzo, and S. Zerbini,
+\emph{Zeta-function regularization, the multiplicative anomaly and
+the Wodzicki residue}, preprint (1997).
+\url{https://arxiv.org/abs/hep-th/9701060}.
+
+\bibitem{PolynomialAnomaly}
+E. G\"urel,
+\emph{Resolution of multiplicative anomaly of zeta regularization for
+polynomials}, arXiv:2504.14563, version 2, 3 September 2025.
+\url{https://arxiv.org/abs/2504.14563}.
+
+\bibitem{DLMF}
+F. W. J. Olver et al., eds., \emph{NIST Digital Library of Mathematical
+Functions}.  In particular Sections 5.5 and 5.15 (Gamma and polygamma),
+24.8 (Bernoulli Fourier expansions), and 25.2, 25.11, 25.12 (zeta,
+Hurwitz zeta, and polylogarithms).  Accessed 11 October 2026.
+\url{https://dlmf.nist.gov/}.
+
+\end{thebibliography}
+
+% END EMBEDDED references.tex
+
+\end{document}

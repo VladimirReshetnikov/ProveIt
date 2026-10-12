@@ -1,0 +1,1600 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage[margin=0.95in,headheight=15pt]{geometry}
+\usepackage{microtype,booktabs,longtable,array,fancyhdr,xcolor,xurl,enumitem}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,urlcolor=blue!40!black]{hyperref}
+\usepackage{bookmark}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newcommand{\Q}{\mathbb Q}\newcommand{\C}{\mathbb C}\newcommand{\N}{\mathbb N}
+\newcommand{\D}{\mathcal D}\newcommand{\NF}{\mathcal N}\newcommand{\HF}{\mathcal H}
+\newcommand{\A}{\mathcal A}\newcommand{\CC}{\mathcal C}
+\newcommand{\dd}{\,\mathrm d}\newcommand{\ii}{\mathrm i}
+\newcommand{\av}[1]{\left\langle #1\right\rangle}
+\DeclareMathOperator{\Li}{Li}\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\CT}{CT}\DeclareMathOperator{\Res}{Res}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{3pt}
+\setlist{itemsep=4pt,topsep=5pt}
+\allowdisplaybreaks[2]
+\setcounter{tocdepth}{2}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small A universal beta formula for Gamma normal forms}
+\fancyhead[R]{\small ProveIt continuation}
+\fancyfoot[C]{\thepage}
+\hypersetup{pdftitle={A Universal Beta Formula for Gamma Normal Forms},pdfauthor={Research continuation prepared for Vladimir Reshetnikov with OpenAI assistance},pdfsubject={All functional coefficients, polynomial-background polarization, harmonic moments, Hurwitz and Stieltjes identities}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{0.7cm}
+{\large\sffamily PROVEIT / ANALYSIS / POLYLOGARITHMS\par}
+\vspace{1.0cm}
+{\Huge\bfseries A Universal Beta Formula\\[0.15em] for Gamma Normal Forms\par}
+\vspace{0.7cm}
+{\Large All coefficients, exact support and signs,\\[0.2em]
+endpoint primitives, and polylogarithmic--Stieltjes transforms\par}
+\vspace{0.75cm}
+{\large Research continuation prepared for Vladimir Reshetnikov\par}
+\vspace{0.2cm}
+{Mathematical derivations and computational checks with OpenAI assistance\par}
+\vspace{0.2cm}
+{11 October 2026\par}
+\vspace{0.75cm}
+\begin{minipage}{0.94\textwidth}
+\small
+\textbf{Abstract.}
+We give a finite rational formula for every coefficient in the canonical
+integration-by-parts normal form of
+$(-1)^m\Gamma(x)(\Gamma(x)^{-1})^{(m)}$.
+Each coefficient is one polynomial beta integral. The formula determines
+its exact support: the previously known factor-parity condition is also
+sufficient, and every nonzero coefficient has the sign of the parity of
+its highest derivative index. Thus the mixed-square question in the
+preceding affine-polarization report is solved for all orders, as are the
+higher-multiplicity and coupled sectors of this particular Gamma hierarchy.
+
+The proof transports a constant-coefficient quadratic identity to every
+polynomial background by an auxiliary differential operator. The highest
+quadratic variation then determines the full normal form, not only its
+quadratic sector. A finite entire generating function and an explicit
+Euler-homotopy primitive retain all integration endpoints.
+The resulting polynomial weights give finite Hurwitz and Lerch endpoint
+formulas, generalized-harmonic logarithmic moments, all-order Stieltjes
+averages and anchored primitives, and finite polylogarithmic evaluations.
+A degree-eight weight yields explicit trigamma, $\gamma_0$, $\gamma_1$,
+and log-sine identities.
+
+The classical normal-form complement, the affine square kernel, and the
+standard special-function calculus are credited to their sources.
+The all-order proofs are separate from 8,350 independent rational
+coefficient comparisons through weight 32 and 20 floating-point analytic
+diagnostics. Historical priority beyond the inspected sources is not
+asserted. No proof-assistant formalization or interval certification is
+claimed.
+\end{minipage}
+\vfill
+{\small\sffamily Complete proofs \enspace / \enspace exact rational certificates
+\enspace / \enspace additive repository integration\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage\pagenumbering{arabic}
+
+\section{The continuation problem and the universal formula}
+\label{ubg:sec:main}
+
+The immediate predecessor, \emph{Affine Polarization of Gamma Normal
+Forms} \cite{Affine}, determines every coefficient of
+$u_0^a u_1^k u_r^2$. Its first further-research question asks for the
+coupled family $u_0^a u_1^k u_2^b u_3^2$, with $b>0$; its second asks for
+nonlinear polarization and higher multiplicities. The earlier
+\emph{Exact Harmonic-Tail Reconstruction and Variational Gamma Identities}
+\cite{HTG} gives the complete $u_0,u_1,u_2$ projection through a
+variational recurrence. We solve these coefficient questions in a
+stronger form: every functional monomial of the ordinary inverse-Gamma
+hierarchy has an explicit finite formula.
+
+This is a theorem about a specified rational differential-polynomial
+normal form. It does not assert that arbitrary individual polygamma
+integrals have elementary antiderivatives, or that a set of zeta values
+is arithmetically independent. The original Gaussian $S_6$, revised
+$S_8$, and general unequal harmonic-tail moment-prefix questions are
+not settled here.
+
+Let
+\begin{equation}\label{ubg:eq:ring}
+ \mathscr R=\Q[u_0,u_1,u_2,\ldots],\qquad
+ \D u_j=u_{j+1},\qquad \operatorname{wt}(u_j)=j+1.
+\end{equation}
+A monomial is \emph{functional} if it is a power of $u_0$, including $1$,
+or if its largest positive index occurs at least twice. Write $\NF$
+for the unique projection onto the rational span of these monomials,
+along total derivatives. Its construction and uniqueness are recalled
+in Section~\ref{ubg:sec:normal}. Define
+\begin{equation}\label{ubg:eq:hierarchy}
+ A_0=1,\qquad A_{m+1}=u_0A_m-\D A_m,\qquad N_m=\NF(A_m).
+\end{equation}
+Under $u_j=\psi^{(j)}(x)$, with $\psi^{(0)}=\psi$, one has
+\begin{equation}\label{ubg:eq:Gamma-hierarchy}
+ A_m(\psi(x),\psi'(x),\ldots)
+   =(-1)^m\Gamma(x)\frac{\dd^m}{\dd x^m}\frac1{\Gamma(x)}.
+\end{equation}
+
+For a polynomial $Q(v)$ put
+\begin{equation}\label{ubg:eq:average}
+ \av{Q}=\frac12\int_{-1}^1Q(v)\dd v,
+ \qquad
+ \Theta_j(v)=\frac{(v+1)^{j+1}-(v-1)^{j+1}}
+                 {2^{j+1}(j+1)!}\quad(j\ge1).
+\end{equation}
+The first three polynomials are
+\begin{equation}\label{ubg:eq:first-theta}
+ \Theta_1=\frac v2,\qquad
+ \Theta_2=\frac{1+3v^2}{24},\qquad
+ \Theta_3=\frac{v+v^3}{48}.
+\end{equation}
+All nonzero coefficients of $\Theta_j$ are positive, and
+$\Theta_j(-v)=(-1)^j\Theta_j(v)$.
+
+\begin{theorem}[Every functional coefficient]\label{ubg:thm:universal}
+Let $d\ge1$, $a,e_1,\ldots,e_d\ge0$, and $e_d\ge2$. Put
+\[
+ M=u_0^a\prod_{j=1}^d u_j^{e_j},\qquad
+ m=a+\sum_{j=1}^d(j+1)e_j,
+\]
+and define the rational polynomial
+\begin{equation}\label{ubg:eq:weight-polynomial}
+ P_M(v)=(1-v^2)^d\Theta_d(v)^{e_d-2}
+                      \prod_{j=1}^{d-1}\Theta_j(v)^{e_j}.
+\end{equation}
+Then
+\begin{equation}\label{ubg:eq:universal}
+ \boxed{\displaystyle
+ [M]N_m=
+ \frac{(-1)^d m!}
+ {2^{2d}d!(d+1)!\,a!\prod_{j=1}^d e_j!}\,\av{P_M}.}
+\end{equation}
+The coefficient of $u_0^m$ is $1$. A monomial with a unique largest
+positive index has coefficient zero. Coefficients at a different total
+weight are zero.
+\end{theorem}
+
+The average in \eqref{ubg:eq:universal} is a finite rational operation:
+if $P_M(v)=\sum q_kv^k$, then
+$\av{P_M}=\sum_{k\text{ even}}q_k/(k+1)$. Thus the theorem is not an
+implicit recurrence or a numerical integral prescription. It avoids
+constructing the full Bell polynomial or reducing all of its partitions.
+
+\begin{corollary}[Exact support and sign]\label{ubg:cor:sign}
+For the functional monomial in Theorem~\ref{ubg:thm:universal},
+\begin{equation}\label{ubg:eq:support}
+ [M]N_m=0\quad\Longleftrightarrow\quad
+                      \sum_{j=1}^d je_j\text{ is odd}.
+\end{equation}
+When the coefficient is nonzero, its sign is exactly $(-1)^d$.
+\end{corollary}
+\begin{proof}
+The integrand has parity $\sum je_j-2d$, which is the parity in
+\eqref{ubg:eq:support}. In the even case it is strictly positive for
+$0<v<1$, since every $\Theta_j(v)$ is positive there. The prefactor in
+\eqref{ubg:eq:universal} has sign $(-1)^d$.
+\end{proof}
+
+The parity condition alone was already available from centering
+\cite{Manuscript,HTG,Affine}. Its sufficiency and the uniform sign law
+follow from the new coefficient formula. In particular, there are no
+additional accidental zero coefficients within this functional basis.
+
+\subsection{A positive finite-sum version}
+Suppose the parity is even and write
+\[
+ R_M(v)=\Theta_d(v)^{e_d-2}\prod_{j<d}\Theta_j(v)^{e_j}
+                 =\sum_{\ell\ge0}r_\ell v^{2\ell}.
+\]
+Every $r_\ell\ge0$, and only finitely many are nonzero. The beta integral
+\begin{equation}\label{ubg:eq:beta-basic}
+ \int_0^1v^{k}(1-v^2)^d\dd v
+  =\frac{2^dd!}{\prod_{h=0}^d(k+2h+1)},\qquad \Re k>-1,
+\end{equation}
+gives the equivalent formula
+\begin{equation}\label{ubg:eq:positive-coefficient}
+ [M]N_m=
+ \frac{(-1)^dm!}{2^d(d+1)!\,a!\prod_j e_j!}
+ \sum_{\ell\ge0}\frac{r_\ell}{\prod_{h=0}^d(2\ell+2h+1)}.
+\end{equation}
+This representation does not subtract alternating coefficients of
+$(1-v^2)^d$. It also makes the nonvanishing transparent.
+
+\section{Canonical reduction and the centered Gamma series}
+\label{ubg:sec:normal}
+
+The complement used here is classical in differential algebra
+\cite[Section 4.4.1]{GRR} and is already established in the ProveIt
+manuscript \cite{Manuscript}. We include the elementary proof because
+an exact coefficient theorem depends on the precise choice of complement.
+
+\begin{lemma}[Functional decomposition]\label{ubg:lem:normal}
+Every $P\in\mathscr R$ has a unique decomposition
+\begin{equation}\label{ubg:eq:decomposition}
+ P=\NF(P)+\D\HF(P),\qquad \NF(P)\text{ functional},
+ \qquad [1]\HF(P)=0.
+\end{equation}
+Both maps preserve factor degree. On a homogeneous polynomial of
+positive weight $m$, the remainder has weight $m$ and the primitive
+has weight $m-1$.
+\end{lemma}
+\begin{proof}
+If a monomial has unique largest index $r\ge1$, write it as
+$u_r u_{r-1}^aV$, where $V$ uses indices below $r-1$. Then
+\begin{equation}\label{ubg:eq:ibp}
+ u_r u_{r-1}^aV
+ =\D\left(\frac{u_{r-1}^{a+1}V}{a+1}\right)
+       -\frac{u_{r-1}^{a+1}\D V}{a+1}.
+\end{equation}
+Every monomial of the remainder has largest index below $r$.
+Repeated replacement terminates. The stated gradings are preserved.
+For uniqueness, let a nonconstant $H$ have largest variable index $j$.
+The terms $u_{j+1}\partial H/\partial u_j$ in $\D H$ are nonzero,
+have largest index $j+1$ exactly once, and cannot cancel terms of
+smaller largest index. Hence $\D H$ cannot be functional. The only
+remaining freedom in $H$ is a scalar, removed by the normalization.
+\end{proof}
+
+The quotient is a vector-space quotient, not an algebra quotient.
+For example, $\NF(u_1)=0$ but $\NF(u_1^2)=u_1^2$.
+Nor may one truncate high derivatives before reduction:
+$\NF(u_0u_4)=u_2^2$. All restrictions to finitely many jet variables
+below are performed \emph{after} applying $\NF$.
+
+The exponential generating function of \eqref{ubg:eq:hierarchy} is
+\begin{equation}\label{ubg:eq:A-series}
+ \A(t)=\sum_{m\ge0}A_m\frac{t^m}{m!}
+ =\exp\left(\sum_{j\ge0}\frac{(-1)^j u_jt^{j+1}}{(j+1)!}\right).
+\end{equation}
+Its centered translate is
+\begin{align}
+ \CC(t)&=e^{t\D/2}\A(t)
+ =\exp\left(\sum_{j\ge0}
+       \frac{u_{2j}t^{2j+1}}{2^{2j}(2j+1)!}\right),
+ \label{ubg:eq:centered}\\
+ \NF\CC(t)&=\NF\A(t)=\sum_{m\ge0}N_m\frac{t^m}{m!}.
+ \label{ubg:eq:same-normal}
+\end{align}
+Indeed, $(e^{t\D/2}-1)P(t)$ is a total derivative coefficientwise.
+Under the digamma substitution, \eqref{ubg:eq:A-series} is
+$\Gamma(x)/\Gamma(x-t)$, while \eqref{ubg:eq:centered} is
+$\Gamma(x+t/2)/\Gamma(x-t/2)$ near $t=0$ away from poles.
+
+Translation $u_0\mapsto u_0+c$ commutes with $\D$ and preserves the
+functional span, so it commutes with $\NF$. Consequently
+\begin{equation}\label{ubg:eq:Appell}
+ \partial_{u_0}\NF\CC(t)=t\NF\CC(t),\qquad
+ \partial_{u_0}N_m=mN_{m-1}.
+\end{equation}
+Let $\sigma_d$ set $u_j=0$ for $j>d$, and put $z_j=u_jt^{j+1}$.
+The weight grading and \eqref{ubg:eq:Appell} give unique series $F_d$ with
+\begin{equation}\label{ubg:eq:Fd}
+ \sigma_d\NF\CC(t)=e^{tu_0}F_d(z_1,\ldots,z_d),
+ \qquad F_0=1.
+\end{equation}
+Normal support implies
+\begin{equation}\label{ubg:eq:initial-Fd}
+ F_d|_{z_d=0}=F_{d-1},\qquad
+ \partial_{z_d}F_d|_{z_d=0}=0.
+\end{equation}
+The problem is therefore to determine the second derivative of $F_d$
+with respect to its highest jet coordinate. This is precisely what
+quadratic variation on a polynomial background accomplishes.
+
+\section{Weighted quadratic forms and the affine kernel}
+\label{ubg:sec:affine}
+
+We first recover the affine square kernel of \cite{Affine}. This
+part is an inherited input, reproduced to fix its normalization and
+to expose the transport operation used in the next section.
+Let
+\begin{equation}\label{ubg:eq:Kt}
+ K_t(\xi)=\frac{2\sinh(t\xi/2)}\xi,
+ \qquad K_t(0)=t.
+\end{equation}
+The centered series is formally $\CC(t)=\exp(K_t(\D)u_0)$.
+For a perturbation $u_0=q+px+\varepsilon h(x)$, the quadratic
+coefficient is
+\begin{equation}\label{ubg:eq:quadratic-affine}
+ [\varepsilon^2]\CC(t)=\frac12 e^{tq+tpx}(K_t(\partial_x)h)^2.
+\end{equation}
+
+\begin{lemma}[Diagonal uniqueness with variable coefficients]
+\label{ubg:lem:diagonal}
+A finite local quadratic differential expression in $h$ can be reduced,
+modulo an ordinary total $x$-derivative, to a sum
+$\sum_r a_r(x)(h^{(r)})^2$. The diagonal coefficients are unique.
+If a term before reduction is $a(x)h^{(i)}h^{(j)}$, no square of
+order greater than $\lfloor(i+j)/2\rfloor$ is needed.
+These statements also hold coefficientwise for formal $t$-series
+with finite differential order at every coefficient.
+\end{lemma}
+\begin{proof}
+Integration by parts moves a derivative from the larger index to the
+smaller one or to the coefficient. The former reduces the difference
+of indices, and the latter reduces their sum. Terms of neighboring
+orders are reduced by
+$2h^{(r)}h^{(r+1)}=((h^{(r)})^2)'$.
+This proves existence and the order assertion.
+
+For uniqueness, suppose $\sum_{r=0}^R a_r(x)(h^{(r)})^2$ is a local
+total derivative. Its Euler derivative with respect to $h$ is zero.
+The coefficient of $h^{(2R)}$ in that Euler derivative is
+$2(-1)^R a_R(x)$. Thus $a_R=0$, and descending induction gives all
+$a_r=0$. Explicit $x$-dependence of the coefficients causes no problem.
+The primitive must be a finite-order local differential expression;
+an unrestricted nonlocal antiderivative is not part of this quotient.
+\end{proof}
+
+\begin{lemma}[Affine diagonal kernel]\label{ubg:lem:affine}
+Let $\kappa$ be an auxiliary constant, independent of $t$. Modulo local
+total derivatives,
+\begin{equation}\label{ubg:eq:affine-diagonal}
+ \frac12e^{\kappa x}(K_t(\partial_x)h)^2
+ \equiv e^{\kappa x}\sum_{r\ge0}t^{2r+2}
+           g_r(t\kappa/2)(h^{(r)})^2,
+\end{equation}
+where
+\begin{align}
+ c_r&=\frac{(-1)^r}{2^{2r+1}r!(r+1)!},
+ \label{ubg:eq:cr}\\
+ g_r(y)&=c_r\av{(1-v^2)^r e^{yv}}
+       =c_r\int_0^1(1-v^2)^r\cosh(yv)\dd v.
+ \label{ubg:eq:gr}
+\end{align}
+Every coefficient of the primitive in \eqref{ubg:eq:affine-diagonal}
+can be chosen as $e^{\kappa x}$ times a quadratic differential polynomial
+with coefficients in $\Q[\kappa]$.
+\end{lemma}
+\begin{proof}
+Polarize a quadratic expression using derivative symbols $\xi_1,\xi_2$.
+A weighted derivative has symbol divisible by
+$\xi_1+\xi_2+\kappa$. In the quotient put
+$\xi_1=\xi$, $\xi_2=-\xi-\kappa$, and
+$\eta=-\xi(\xi+\kappa)$. The symbol of $(h^{(r)})^2$ is $\eta^r$.
+Symmetric polynomials subject to this linear relation form the polynomial
+ring in $\eta$ over $\Q[\kappa]$.
+
+With $y=t\kappa/2$, the product-to-sum identity gives
+\begin{align}
+ \frac12K_t(\xi)K_t(-\xi-\kappa)
+ &=\frac{\cosh y-\cosh\sqrt{y^2-t^2\eta}}\eta\notag\\
+ &=\sum_{r\ge0}\frac{(-1)^rt^{2r+2}}{(r+1)!}
+       \left(\partial_{y^2}^{\,r+1}\cosh y\right)\eta^r.
+ \label{ubg:eq:affine-symbol}
+\end{align}
+The entire series $\cosh\sqrt z=\sum_{n\ge0}z^n/(2n)!$ introduces no
+branch, and the numerator is divisible by $\eta$.
+The beta integral \eqref{ubg:eq:beta-basic}, compared coefficientwise
+with the last line, gives exactly \eqref{ubg:eq:gr}. At every power
+of $t$, the difference of the two quadratic symbols is divisible by
+$\xi_1+\xi_2+\kappa$. Polynomial division gives the asserted local
+primitive without introducing denominators in $\kappa$.
+\end{proof}
+
+The indices $r=0,1$ in \eqref{ubg:eq:affine-diagonal} are diagonal
+\emph{quadratic-variation} coefficients. They are not the constant and
+linear coefficients of a normal-form generating function. Confusing
+these meanings would destroy the highest-variation argument below.
+
+\section{Polynomial-background transport and the all-order proof}
+\label{ubg:sec:transport}
+
+The essential new operation is simple: differential superposition in
+the auxiliary affine slope transports the \emph{entire local identity},
+including its primitive, to an arbitrary polynomial weight. It is not
+a substitution of a variable slope into a constant-coefficient quotient.
+
+\begin{lemma}[Differential superposition]\label{ubg:lem:superposition}
+Let $P_t(X)$ be a polynomial in $X$ with formal $t$-series coefficients,
+with $P_t(X)=O(t)$. For any constant $a$, coefficientwise in $t$,
+\begin{equation}\label{ubg:eq:superposition}
+ \left.e^{P_t(\partial_\kappa)}e^{\kappa(x+a)}\right|_{\kappa=0}
+                         =e^{P_t(x+a)}.
+\end{equation}
+The operation commutes with $\partial_x$ and hence transports local
+integration-by-parts identities to local integration-by-parts identities.
+\end{lemma}
+\begin{proof}
+The exponential $e^{\kappa(x+a)}$ is an eigenfunction of every polynomial
+in $\partial_\kappa$. Expanding the outer exponential proves
+\eqref{ubg:eq:superposition}. Because $P_t=O(t)$, only finitely many
+powers of that operator are relevant at a specified coefficient of $t$.
+The operators $\partial_x$ and $\partial_\kappa$ commute. Locality in
+the perturbation and finite differential order at each coefficient are
+preserved. The assertion remains valid with $a=tv/2$ and subsequent
+integration over the compact parameter interval $-1\le v\le1$.
+\end{proof}
+
+Let $b(x)$ be an arbitrary polynomial background, and define its centered
+integral
+\begin{equation}\label{ubg:eq:background-P}
+ P_t(x)=\int_{-t/2}^{t/2}b(x+s)\dd s.
+\end{equation}
+The integral here means its finite polynomial expansion, so no analytic
+assumption on $b$ is necessary. For $u_0=b(x)+\varepsilon h(x)$,
+\begin{equation}\label{ubg:eq:quadratic-general}
+ [\varepsilon^2]\CC(t)=\frac12e^{P_t(x)}(K_t(\partial_x)h)^2.
+\end{equation}
+Taylor expansion at $x$ gives the key identity
+\begin{equation}\label{ubg:eq:shifted-background}
+ P_t(x+tv/2)
+ =t b(x)+\sum_{j\ge1}b^{(j)}(x)t^{j+1}\Theta_j(v).
+\end{equation}
+Indeed, the coefficient of $b^{(j)}(x)$ is
+$j!^{-1}\int_{-t/2}^{t/2}(tv/2+s)^j\dd s$, which is
+$t^{j+1}\Theta_j(v)$.
+
+\begin{theorem}[Polynomial-background quadratic kernel]
+\label{ubg:thm:transport}
+If $b$ has degree at most $d$ and $z_j=b^{(j)}(x)t^{j+1}$, the unique
+diagonal form of \eqref{ubg:eq:quadratic-general} is
+\begin{equation}\label{ubg:eq:general-diagonal}
+ e^{tb(x)}\sum_{r\ge0}t^{2r+2}
+       G_r(z_1,\ldots,z_d)(h^{(r)})^2,
+\end{equation}
+where
+\begin{equation}\label{ubg:eq:Gr}
+ \boxed{\displaystyle
+ G_r(\boldsymbol z)=c_r\av{(1-v^2)^r
+                    \exp\left(\sum_{j=1}^d z_j\Theta_j(v)\right)}.}
+\end{equation}
+Each $G_r$ is an entire function of the finitely many $z_j$.
+\end{theorem}
+\begin{proof}
+Apply $e^{P_t(\partial_\kappa)}$ to the affine local identity
+\eqref{ubg:eq:affine-diagonal}, and evaluate at $\kappa=0$.
+Its left side becomes \eqref{ubg:eq:quadratic-general}.
+On the right, write the factor $e^{\kappa x}g_r(t\kappa/2)$ as
+\[
+ c_r\av{(1-v^2)^r e^{\kappa(x+tv/2)}}.
+\]
+Lemma~\ref{ubg:lem:superposition} sends this to
+$c_r\av{(1-v^2)^r e^{P_t(x+tv/2)}}$.
+Now use \eqref{ubg:eq:shifted-background}.
+The transported primitive is local, and diagonal uniqueness is supplied
+by Lemma~\ref{ubg:lem:diagonal}. Compact integration of an exponential
+of a polynomial proves entire dependence on the finite parameter list.
+\end{proof}
+
+\begin{proposition}[The highest-variation equation]
+\label{ubg:prop:highest}
+For every $d\ge1$, the canonical generating function
+\eqref{ubg:eq:Fd} satisfies
+\begin{equation}\label{ubg:eq:highest}
+ \boxed{\displaystyle
+ \partial_{z_d}^2F_d(z_1,\ldots,z_d)=2G_d(z_1,\ldots,z_d).}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Take a polynomial $b$ of degree at most $d$, but perturb it by an
+arbitrary $h$; do not truncate $h^{(j)}$ for $j>d$.
+The identity $\CC-\NF\CC=\D H$ implies equality of the diagonal
+quadratic variations of the two sides after substitution.
+
+First consider a normal monomial with largest index $r>d$.
+Its highest factor must occur at least twice. At order $\varepsilon^2$
+it contributes only if it contains exactly two factors above $d$,
+both of them $u_r$. Its contribution is already a diagonal square
+$(h^{(r)})^2$ of order $r>d$. Monomials with three or more factors
+above $d$ do not contribute to quadratic variation at all.
+
+For a monomial involving only $u_0,\ldots,u_d$, the second variation
+contains terms $h^{(i)}h^{(j)}$ with $i,j\le d$.
+Unless $i=j=d$, Lemma~\ref{ubg:lem:diagonal} shows that its diagonal
+reduction has order at most $d-1$. Thus the coefficient of the square
+$(h^{(d)})^2$ in the diagonal variation of the normal form is precisely
+\[
+ \frac12\partial_{u_d}^2\bigl(e^{tu_0}F_d\bigr)
+ =\frac12e^{tu_0}t^{2d+2}\partial_{z_d}^2F_d.
+\]
+Theorem~\ref{ubg:thm:transport} gives the coefficient on the original
+centered density as $e^{tu_0}t^{2d+2}G_d$.
+Diagonal uniqueness proves the equality after every polynomial-background
+substitution. At a fixed $x$, arbitrary values of $b(x),\ldots,b^{(d)}(x)$
+are realized by a polynomial of degree $d$. Hence this is an identity
+in the independent jet variables, proving \eqref{ubg:eq:highest}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{ubg:thm:universal}]
+By \eqref{ubg:eq:highest}, the coefficient of
+$z_1^{e_1}\cdots z_d^{e_d}$ in $F_d$, for $e_d\ge2$, is
+\[
+ \frac{2c_d}{\prod_{j=1}^d e_j!}
+ \av{(1-v^2)^d\Theta_d(v)^{e_d-2}
+                         \prod_{j<d}\Theta_j(v)^{e_j}}.
+\]
+Multiply by the coefficient $1/a!$ from $e^{tu_0}$ and by $m!$ from
+the exponential generating convention. Since
+$2c_d=(-1)^d/(2^{2d}d!(d+1)!)$, this is \eqref{ubg:eq:universal}.
+The initial conditions \eqref{ubg:eq:initial-Fd} supply the remaining
+highest-index cases, and $F_0=1$ supplies the pure powers of $u_0$.
+\end{proof}
+
+This proof is all-order. The finite rational comparisons reported later
+are independent checks of normalizations and implementation, not the
+reason the coefficient theorem holds for untested weights.
+
+\section{Entire finite-jet generators and solved coefficient families}
+\label{ubg:sec:families}
+
+\subsection{A recursion-free generating function}
+Define the entire divided difference
+\begin{equation}\label{ubg:eq:E2}
+ E_2(z,w)=\frac{e^{zw}-1-zw}{w^2}
+       =\sum_{n\ge2}\frac{z^nw^{n-2}}{n!},
+ \qquad E_2(z,0)=\frac{z^2}{2}.
+\end{equation}
+Two integrations of the highest-variation equation, using
+\eqref{ubg:eq:initial-Fd}, give the following complete generator.
+
+\begin{corollary}[Finite-jet generating function]\label{ubg:cor:generator}
+For every $d\ge0$,
+\begin{equation}\label{ubg:eq:generator}
+ \boxed{\displaystyle
+ F_d=1+\sum_{r=1}^d2c_r\av{(1-v^2)^r
+       \exp\left(\sum_{j<r}z_j\Theta_j(v)\right)
+       E_2(z_r,\Theta_r(v))}.}
+\end{equation}
+It is entire in $(z_1,\ldots,z_d)$. All apparent divisions by zeros of
+$\Theta_r$ are removable. The infinite sum over $r$ is also meaningful
+as a formal $t$-series after $z_j=u_jt^{j+1}$, because the $r$th
+summand starts at weight $2r+2$.
+\end{corollary}
+
+This formula closes the full finite-jet coefficient problem. In
+particular, the higher powers of the highest derivative are determined
+by integrating its quadratic variation twice in that coordinate.
+There is no need to compute a cubic or quartic symbol in several
+independent derivative variables. Such symbols remain useful for other
+hierarchies, but they are not an unresolved step for the coefficients
+in \eqref{ubg:eq:hierarchy}.
+
+For $d=1$, write $y=z_1/2$. Equation~\eqref{ubg:eq:generator} recovers
+the predecessor's low sector,
+\begin{equation}\label{ubg:eq:F1}
+ F_1(2y)=\frac12\left(\cosh y+\frac{\sinh y}{y}
+                      -y\int_0^y\frac{\sinh w}{w}\dd w\right),
+\end{equation}
+with its removable value at the origin. For a quadratic background,
+\eqref{ubg:eq:Gr} becomes the particularly simple heat identity
+\begin{align}
+ G_r(2y,z)
+ &=e^{z/24}e^{(z/8)\partial_y^2}g_r(y)\notag\\
+ &=c_r\int_0^1(1-v^2)^r e^{z(1+3v^2)/24}\cosh(yv)\dd v.
+ \label{ubg:eq:heat}
+\end{align}
+The scalar factor $e^{z/24}$ is essential: it is the constant term in
+the centered integral of the quadratic background. Dropping it would
+produce an incorrect mixed coefficient even at weight eleven.
+
+\subsection{The previously open mixed-square family}
+\begin{corollary}[All lower quadratic powers with every higher square]
+\label{ubg:cor:mixed}
+Let $r\ge3$ and $a,k,b\ge0$, and put $m=a+2k+3b+2r+2$.
+For even $k$,
+\begin{equation}\label{ubg:eq:mixed}
+ \boxed{\displaystyle
+ [u_0^a u_1^k u_2^b u_r^2]N_m
+ =\frac{(-1)^r m!}
+ {a!\,2^{k+r+1}k!(r+1)!\,b!24^b}
+ \sum_{j=0}^b\frac{\binom bj3^j}
+                 {\prod_{\ell=0}^r(k+2j+2\ell+1)}.}
+\end{equation}
+For odd $k$ the coefficient is zero.
+\end{corollary}
+\begin{proof}
+In \eqref{ubg:eq:universal}, set $e_r=2$, $e_1=k$, $e_2=b$, and
+all other exponents zero. Expand $(1+3v^2)^b$ and apply
+\eqref{ubg:eq:beta-basic}. The factor $1/2!$ for the highest square
+cancels the factor $2$ in the highest-variation equation.
+\end{proof}
+
+At $b=0$ this is the affine theorem of \cite{Affine}.
+At $r=3$ and every $b>0$ it answers that report's first explicit
+coefficient question. The restriction $r\ge3$ is important: when
+$r=2$, the two displayed factors involving $u_2$ must be combined,
+changing their factorial normalization.
+The complete combined $u_2$ sector is instead the following formula.
+
+\begin{corollary}[A finite replacement for the three-variable recurrence]
+\label{ubg:cor:u2}
+Let $b\ge2$, $a,k\ge0$, and $m=a+2k+3b$. For even $k$,
+\begin{equation}\label{ubg:eq:u2}
+ [u_0^a u_1^k u_2^b]N_m
+ =\frac{m!}{a!\,2^kk!\,b!24^{b-1}}
+ \sum_{j=0}^{b-2}
+ \frac{\binom{b-2}j3^j}
+ {(k+2j+1)(k+2j+3)(k+2j+5)}.
+\end{equation}
+Odd $k$ gives zero. This evaluates the all-$u_2$ family previously
+specified by the variational recurrence in \cite[Section 4]{HTG}.
+\end{corollary}
+\begin{proof}
+Use $d=2$ in Theorem~\ref{ubg:thm:universal} and the same beta integral.
+\end{proof}
+
+\subsection{Nonlinear sectors and explicit normal forms}
+The universal theorem is not confined to highest squares. For example,
+\begin{equation}\label{ubg:eq:cubic}
+ \boxed{[u_1u_3^3]N_{14}=-\frac{3185}{3}.}
+\end{equation}
+Here $\Theta_1\Theta_3=(v^2+v^4)/96$, so the calculation is a sum of
+two elementary beta integrals. In particular, the normal form is not
+in general integral over $\mathbb Z$, even though the original Bell
+polynomial $A_m$ has integer coefficients.
+The first mixed-square values include
+\begin{equation}\label{ubg:eq:small-mixed}
+ [u_2u_3^2]N_{11}=-55,\qquad
+ [u_2^2u_3^2]N_{14}=-3640,\qquad
+ [u_2u_4^2]N_{13}=91.
+\end{equation}
+The entire low normal forms are useful normalization checks:
+\begin{align}
+ N_4={}&u_0^4-u_1^2,\label{ubg:eq:N4}\\
+ N_8={}&u_0^8-70u_0^4u_1^2-7u_1^4
+                         +28u_0^2u_2^2-u_3^2,\label{ubg:eq:N8}\\
+ N_{11}={}&u_0^{11}-330u_0^7u_1^2-1155u_0^3u_1^4
+             +462u_0^5u_2^2+990u_0u_1^2u_2^2\notag\\
+ &+550u_0^2u_2^3-165u_0^3u_3^2-55u_2u_3^2+11u_0u_4^2.
+ \label{ubg:eq:N11}
+\end{align}
+These finite polynomials are not presented as historically new by
+themselves. The new assertion is the all-monomial formula which
+produces every such polynomial without an integration-by-parts search.
+
+\subsection{A support-counting identity}
+Let $s_m$ be the number of nonzero monomials of $N_m$.
+The exact support theorem gives, as a formal power series,
+\begin{equation}\label{ubg:eq:support-generator}
+ \sum_{m\ge0}s_mq^m
+ =\frac1{1-q}\left\{1+\frac12\sum_{d\ge1}q^{2d+2}
+  \left[\prod_{j=1}^d\frac1{1-q^{j+1}}
+       +\prod_{j=1}^d\frac1{1-(-1)^jq^{j+1}}\right]\right\}.
+\end{equation}
+To prove it, reserve two copies of the highest variable $u_d$, allow
+arbitrary remaining nonnegative exponents below and at $d$, and apply
+the even-parity projector. The factor $(1-q)^{-1}$ accounts for $u_0$.
+Each coefficient involves only finitely many $d$.
+This counts support, not arithmetic relations among the values obtained
+after substituting polygamma functions.
+
+\section{Explicit primitives and Gamma--harmonic endpoint identities}
+\label{ubg:sec:primitives}
+
+The normal form is only half of an integration identity. We now give
+a finite formula for its retained endpoint primitive.
+Let
+\begin{equation}\label{ubg:eq:Euler}
+ \mathscr E(R)=\sum_{r\ge0}(-\D)^r\frac{\partial R}{\partial u_r}
+\end{equation}
+be the Euler derivative. All sums are finite for a fixed polynomial.
+The commutator
+$\partial_{u_r}\D=\D\partial_{u_r}+\partial_{u_{r-1}}$, with the last
+term omitted for $r=0$, gives $\mathscr E(\D H)=0$ by cancellation.
+
+\begin{proposition}[An explicit normalized primitive]
+\label{ubg:prop:homotopy}
+Let $R=\D H$ and decompose $R=\sum_{h\ge1}R_h$ by factor degree.
+Then its unique constant-free primitive is
+\begin{equation}\label{ubg:eq:homotopy}
+ \boxed{\displaystyle
+ \HF(R)=\sum_{h\ge1}\frac1h
+  \sum_{r\ge1}\sum_{j=0}^{r-1}
+   u_{r-1-j}(-\D)^j\frac{\partial R_h}{\partial u_r}.}
+\end{equation}
+In particular, with $R=A_m-N_m$, the same expression gives the
+primitive $H_m$ in $A_m=N_m+\D H_m$.
+\end{proposition}
+\begin{proof}
+Euler's identity for factor degree and repeated integration by parts give
+\begin{align*}
+ hR_h&=\sum_{r\ge0}u_r\frac{\partial R_h}{\partial u_r}\\
+ &=u_0\mathscr E(R_h)+\D\left(
+    \sum_{r\ge1}\sum_{j=0}^{r-1}
+        u_{r-1-j}(-\D)^j\frac{\partial R_h}{\partial u_r}\right).
+\end{align*}
+Because $\D$ preserves factor degree, each $R_h$ is itself a total
+derivative and its Euler derivative vanishes. Division by $h$ proves
+the formula. Every displayed summand has positive factor degree, so
+there is no scalar term; uniqueness follows from
+Lemma~\ref{ubg:lem:normal}.
+\end{proof}
+
+For $0<\alpha<\beta$, substitution in the exact polynomial identity yields
+\begin{align}
+ &\int_\alpha^\beta(-1)^m\Gamma(x)
+             \frac{\dd^m}{\dd x^m}\frac1{\Gamma(x)}\dd x\notag\\
+ &\hspace{1cm}=\int_\alpha^\beta N_m(\psi(x),\psi'(x),\ldots)\dd x
+      +H_m(\psi(\beta),\ldots)-H_m(\psi(\alpha),\ldots).
+ \label{ubg:eq:ordinary-identity}
+\end{align}
+All integrals here are ordinary convergent integrals.
+For instance $H_4=-2u_0^3+4u_0u_1-u_2$, so
+\begin{equation}\label{ubg:eq:fourth-identity}
+ \int_\alpha^\beta
+ \left\{\Gamma(x)(\Gamma(x)^{-1})^{(4)}-\psi(x)^4+\psi'(x)^2\right\}\dd x
+ =\left[-2\psi^3+4\psi\psi'-\psi''\right]_\alpha^\beta.
+\end{equation}
+The supplied rational JSON certificates give $A_m,N_m,H_m$ explicitly
+for weights $4,8,11,14,18$; the algorithms work at every finite weight.
+
+At positive integer endpoints the entries are harmonic-tail polynomials:
+\begin{align}
+ \psi(N+1)&=H_N-\gamma,\notag\\
+ \psi^{(j)}(N+1)&=(-1)^{j+1}j!
+          \bigl(\zeta(j+1)-H_N^{(j+1)}\bigr),\qquad j\ge1,
+ \label{ubg:eq:harmonic-endpoints}
+\end{align}
+where $H_N^{(q)}=\sum_{n=1}^Nn^{-q}$. These are the standard
+polygamma recurrence and zeta specialization \cite{DLMFpsi}.
+Equations~\eqref{ubg:eq:universal}, \eqref{ubg:eq:homotopy}, and
+\eqref{ubg:eq:harmonic-endpoints} therefore specify all endpoint constants
+in \eqref{ubg:eq:ordinary-identity} by finite rational operations in
+harmonic numbers and zeta values.
+
+\paragraph{Fixed-coordinate finite parts.}
+If the lower endpoint is zero, retain the coordinate $x$ and define the
+finite part by the constant term of the cutoff expansion after removing
+negative powers and logarithmic divergences. Since $H_m(\psi(x),\ldots)$
+has a Laurent expansion at zero, the corresponding identity is
+\begin{equation}\label{ubg:eq:FP-endpoint}
+ \FP\int_0^\beta(A_m-N_m)(\psi(x),\ldots)\dd x
+  =H_m(\psi(\beta),\ldots)
+                     -[x^0]H_m(\psi(x),\ldots).
+\end{equation}
+The last term is generally not zero. This is the same endpoint convention
+as in the manuscript and predecessor \cite{Manuscript,Affine}; no
+coordinate-invariant finite-part assertion is intended.
+
+\paragraph{What this does not imply.}
+The theorem evaluates a particular differential-polynomial combination
+and its primitive. It does not turn each remaining normal monomial into
+a total derivative. For example, functional monomials were chosen
+precisely as a complement to total derivatives. Claims about individual
+integrals require additional analytic identities, such as the transforms
+in the next sections.
+
+\section{Beta logarithmic moments and generalized harmonic numbers}
+\label{ubg:sec:logmoments}
+
+The quadratic-background coefficients naturally introduce the weights
+\begin{equation}\label{ubg:eq:Prb}
+ P_{r,b}(v)=(1-v^2)^r(1+3v^2)^b,
+                  \qquad r,b\in\mathbb Z_{\ge0}.
+\end{equation}
+Their ordinary logarithmic moments have a finite all-order expression.
+For a finite alphabet $\boldsymbol x=(x_0,\ldots,x_r)$, let
+$h_m(\boldsymbol x)$ be the complete homogeneous polynomial defined by
+\begin{equation}\label{ubg:eq:complete-homogeneous}
+ \prod_{\ell=0}^r(1-x_\ell t)^{-1}
+          =\sum_{m\ge0}h_m(\boldsymbol x)t^m.
+\end{equation}
+This notation includes $h_0=1$.
+
+\begin{proposition}[Every logarithmic beta moment]
+\label{ubg:prop:beta-logs}
+For $\Re k>-1$, $m\ge0$, and $r,b\ge0$,
+\begin{align}
+ &\int_0^1v^kP_{r,b}(v)(-\log v)^m\dd v\notag\\
+ &=m!\,2^rr!\sum_{j=0}^b\binom bj3^j
+ \frac{h_m\bigl((k+2j+1)^{-1},\ldots,(k+2j+2r+1)^{-1}\bigr)}
+      {\prod_{\ell=0}^r(k+2j+2\ell+1)}.
+ \label{ubg:eq:beta-logs}
+\end{align}
+The dots in the alphabet mean spacing by two in the denominator.
+\end{proposition}
+\begin{proof}
+Expand $(1+3v^2)^b$ and apply \eqref{ubg:eq:beta-basic}. Repeated
+$k$-differentiation is justified uniformly on compact subsets of
+$\Re k>-1$ by $v^{\Re k}|\log v|^m$ domination. Differentiating a
+product of reciprocal linear factors gives $(-1)^m m!$ times that
+product times its complete homogeneous polynomial in the reciprocals.
+\end{proof}
+
+The power sums of the alphabet in \eqref{ubg:eq:beta-logs} are polygamma
+differences. With $x=(k+2j+1)/2$ and $q\ge1$,
+\begin{equation}\label{ubg:eq:polygamma-alphabet}
+ \sum_{\ell=0}^r\frac1{(k+2j+2\ell+1)^q}
+ =\frac{(-1)^{q-1}}{2^q(q-1)!}
+       \left\{\psi^{(q-1)}(x+r+1)-\psi^{(q-1)}(x)\right\}.
+\end{equation}
+For $k=2n$, $n\ge0$, the same sum is
+\begin{align}
+ &H_{2(n+j+r+1)}^{(q)}-H_{2(n+j)}^{(q)}\notag\\
+ &\hspace{1cm}-2^{-q}
+       \left\{H_{n+j+r+1}^{(q)}-H_{n+j}^{(q)}\right\}.
+ \label{ubg:eq:harmonic-alphabet}
+\end{align}
+Together with the Newton identities for $h_m$, these formulas express
+all moments in generalized harmonic numbers at integer parameters.
+For example $h_1=p_1$, $h_2=(p_1^2+p_2)/2$, and
+$h_3=(p_1^3+3p_1p_2+2p_3)/6$, where $p_q$ denotes the power sum.
+The analytic statements are classical beta differentiation; their role
+here is to turn the new coefficient weights into explicit harmonic and
+polygamma identities at every logarithmic order.
+
+\section{Finite Hurwitz endpoint formulas for the coefficient weights}
+\label{ubg:sec:Hurwitz}
+
+The universal formula supplies rational polynomial weights, not just
+rational coefficients. Their special-function transforms can be
+computed by a common finite endpoint calculus. Polynomial-weight
+Hurwitz integration is classical; see Espinosa--Moll
+\cite{EM1,EM2} and the standard formulas in \cite{DLMFzeta}.
+Here we give a self-contained version and apply it to the weights
+arising from all Gamma sectors.
+
+Let $P$ be an even polynomial of degree $D$, vanishing at $\pm1$ to
+order at least $r\ge1$. Every nonzero weight $P_M$ in
+\eqref{ubg:eq:weight-polynomial} has this property with $r=d$.
+For real $A>B>0$, define
+\begin{equation}\label{ubg:eq:IP}
+ I_P(s;A,B)=\int_{-1}^1P(v)\zeta(s,A+Bv)\dd v,
+ \qquad \mu_P=\int_{-1}^1P(v)\dd v.
+\end{equation}
+Unlike the average notation in the coefficient theorem, $I_P$ uses
+the \emph{full} integral. We keep this normalization visible in all
+residues and examples.
+
+\begin{theorem}[Finite endpoints and the Mellin bridge]
+\label{ubg:thm:endpoints}
+With $d_j=P^{(j)}(1)$,
+\begin{equation}\label{ubg:eq:endpoints}
+ \boxed{\displaystyle
+ I_P(s;A,B)=\sum_{j=r}^D
+ \frac{(-1)^j d_j}
+      {B^{j+1}(1-s)_{j+1}}
+ \left\{\zeta(s-j-1,A+B)-(-1)^j\zeta(s-j-1,A-B)\right\}.}
+\end{equation}
+Here $(a)_n=a(a+1)\cdots(a+n-1)$ is the rising factorial.
+The equality is meromorphic in $s$. The only possible pole of the
+whole expression is $s=1$, with residue $\mu_P$.
+For $\Re s>1$ it also equals the ordinary convergent Mellin integral
+\begin{equation}\label{ubg:eq:Mellin}
+ I_P(s;A,B)=\frac1{\Gamma(s)}\int_0^\infty
+    \frac{t^{s-1}e^{-At}}{1-e^{-t}}
+       \left(\int_{-1}^1P(v)e^{-Btv}\dd v\right)\dd t.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The standard parameter derivative is
+$\partial_a\zeta(s,a)=-s\zeta(s+1,a)$ \cite{DLMFzeta}.
+Consequently an antiderivative in $v$ of $\zeta(s,A+Bv)$ is
+$\zeta(s-1,A+Bv)/(B(1-s))$.
+Repeated integration by parts terminates after degree $D$ and gives
+\eqref{ubg:eq:endpoints}, because $P^{(j)}(-1)=(-1)^jd_j$ and
+$d_j=0$ for $j<r$.
+Initially exclude the finite exceptional set where a displayed
+intermediate expression is singular; meromorphic continuation gives
+the identity elsewhere.
+
+The Hurwitz zeta function, uniformly for its parameter in the compact
+positive interval $[A-B,A+B]$, has only the simple pole at $s=1$ with
+residue $1$. Integrating its holomorphic pole-subtracted germ proves
+the assertion about the whole sum. This also shows why apparent
+singularities of individual endpoint terms must be combined before
+evaluation.
+
+Finally insert the standard Mellin representation of $\zeta(s,a)$.
+Near zero the absolute integrand is $O(t^{\Re s-2})$; at infinity it
+is dominated by a polynomial times $e^{-(A-B)t}$. Fubini's theorem
+proves \eqref{ubg:eq:Mellin} in its stated domain.
+\end{proof}
+
+At $s\ne1$, the compact integral \eqref{ubg:eq:IP} is an ordinary
+integral even when the infinite Mellin integral does not converge.
+The latter must not be used outside its convergence domain without an
+explicit continuation or subtraction procedure.
+
+For $q\ge1$, the polygamma and Gamma specializations are
+\begin{align}
+ \int_{-1}^1P(v)\psi^{(q)}(A+Bv)\dd v
+       &=(-1)^{q+1}q!\,I_P(q+1;A,B),\label{ubg:eq:psi-transform}\\
+ \int_{-1}^1P(v)\log\Gamma(A+Bv)\dd v
+       &=\left.\partial_s I_P(s;A,B)\right|_{s=0}
+                                      +\frac{\mu_P}{2}\log(2\pi).
+ \label{ubg:eq:Gamma-transform}
+\end{align}
+These follow from
+$\psi^{(q)}(a)=(-1)^{q+1}q!\zeta(q+1,a)$ and
+$\zeta'(0,a)=\log\Gamma(a)-\tfrac12\log(2\pi)$
+\cite{DLMFpsi,DLMFzeta}. Differentiation in $s,A,B$ is legitimate on
+compact subsets away from genuine poles and away from the parameter
+boundary $A=B$.
+
+\section{Every Stieltjes order and every anchored parameter primitive}
+\label{ubg:sec:Stieltjes}
+
+Use the Laurent convention
+\begin{equation}\label{ubg:eq:Stieltjes-convention}
+ \zeta(1+\varepsilon,a)=\frac1\varepsilon+
+      \sum_{m\ge0}\frac{(-1)^m\gamma_m(a)}{m!}\varepsilon^m,
+ \qquad \gamma_0(a)=-\psi(a).
+\end{equation}
+For $j\ge0$, define complete-harmonic coefficients by
+\begin{equation}\label{ubg:eq:hj}
+ \prod_{\ell=1}^j(1-\varepsilon/\ell)^{-1}
+     =\sum_{n\ge0}h_n^{(j)}\varepsilon^n.
+\end{equation}
+For the empty product, $h_0^{(0)}=1$ and $h_n^{(0)}=0$ for $n>0$.
+For example
+\[
+ h_1^{(j)}=H_j,\qquad
+ h_2^{(j)}=\frac{H_j^2+H_j^{(2)}}2,\qquad
+ h_3^{(j)}=\frac{H_j^3+3H_jH_j^{(2)}+2H_j^{(3)}}6.
+\]
+Write $\zeta^{[\ell]}(s,a)=\partial_s^\ell\zeta(s,a)$ for spectral
+derivatives, to distinguish them from parameter derivatives.
+
+\begin{theorem}[All-order Stieltjes endpoint formula]
+\label{ubg:thm:Stieltjes}
+For $P,A,B$ as in Theorem~\ref{ubg:thm:endpoints}, set
+\begin{equation}\label{ubg:eq:cj}
+ c_j(P,B)=\frac{(-1)^jP^{(j)}(1)}{B^{j+1}j!}.
+\end{equation}
+Then for every $m\ge0$,
+\begin{align}
+ &\int_{-1}^1P(v)\gamma_m(A+Bv)\dd v\notag\\
+ &=(-1)^{m+1}m!\sum_{j=r}^D c_j(P,B)
+    \sum_{\ell=0}^{m+1}\frac{h_{m+1-\ell}^{(j)}}{\ell!}
+     \left\{\zeta^{[\ell]}(-j,A+B)
+                -(-1)^j\zeta^{[\ell]}(-j,A-B)\right\}.
+ \label{ubg:eq:all-Stieltjes}
+\end{align}
+In particular, the required endpoint spectral derivatives have orders
+at most $m+1$, at the finitely many nonpositive integers $-j$.
+\end{theorem}
+\begin{proof}
+At $s=1+\varepsilon$,
+\begin{equation}\label{ubg:eq:denominator-Stieltjes}
+ \frac1{(1-s)_{j+1}}
+   =-\frac1{\varepsilon j!}
+                \prod_{\ell=1}^j(1-\varepsilon/\ell)^{-1}.
+\end{equation}
+Insert this in \eqref{ubg:eq:endpoints}, Taylor-expand the two zeta
+values, and compare the coefficient of $\varepsilon^m$ with
+\eqref{ubg:eq:Stieltjes-convention}. The finite endpoint sum permits
+coefficient extraction term by term. On the compact parameter interval,
+the pole-subtracted Hurwitz germ is jointly holomorphic, so its Laurent
+coefficients are the ordinary integrals of $\gamma_m$.
+\end{proof}
+
+Thus the Stieltjes calculation is an explicit convolution with complete
+harmonic numbers, not an unspecified instruction to ``differentiate a
+regularized expression.'' The residue identity, obtained at the
+previous coefficient, is
+\begin{equation}\label{ubg:eq:residue-check}
+ -\sum_{j=r}^D c_j(P,B)
+       \left\{\zeta(-j,A+B)-(-1)^j\zeta(-j,A-B)\right\}
+          =\mu_P.
+\end{equation}
+It gives a useful exact Bernoulli-polynomial check of all endpoint
+normalizations.
+
+\subsection{Arbitrary orders of antiderivation in the center}
+For integers $m\ge0$, $d\ge1$, define
+\begin{equation}\label{ubg:eq:Stieltjes-primitive}
+ \mathcal B_{P;m,d}(A;B)=
+ \frac{(-1)^{m+1}m!}{(d-1)!}
+ \sum_{\ell=0}^{m+1}\frac{h_{m+1-\ell}^{(d-1)}}{\ell!}
+ \left.\partial_s^\ell I_P(s;A,B)\right|_{s=1-d}.
+\end{equation}
+
+\begin{theorem}[All anchored primitives]\label{ubg:thm:primitives}
+For $A>B>0$,
+\begin{equation}\label{ubg:eq:primitive-derivative}
+ \partial_A^d\mathcal B_{P;m,d}(A;B)
+       =\int_{-1}^1P(v)\gamma_m(A+Bv)\dd v.
+\end{equation}
+Fix an anchor $A_0>B$. The unique $d$-fold primitive whose first $d$
+initial data vanish at $A_0$ is
+\begin{equation}\label{ubg:eq:anchored}
+ \mathcal B_{P;m,d}(A;B)
+ -\sum_{h=0}^{d-1}\frac{(A-A_0)^h}{h!}
+            \partial_A^h\mathcal B_{P;m,d}(A_0;B).
+\end{equation}
+\end{theorem}
+\begin{proof}
+The repeated Hurwitz parameter derivative gives, meromorphically in $s$,
+\[
+ \partial_A^d\left\{\frac{I_P(s-d;A,B)}{(1-s)_d}\right\}
+                                =I_P(s;A,B).
+\]
+Set $s=1+\varepsilon$ and use
+\[
+ \frac1{(-\varepsilon)_d}
+ =-\frac1{\varepsilon(d-1)!}
+       \prod_{\ell=1}^{d-1}(1-\varepsilon/\ell)^{-1}.
+\]
+The coefficient of $\varepsilon^m$, multiplied by $(-1)^mm!$, is
+\eqref{ubg:eq:Stieltjes-primitive}. Holomorphic dependence on $A$ in
+$\Re A>B$ permits commutation of the derivative and coefficient
+extraction. Subtracting the Taylor polynomial supplies the stated
+initial conditions. The difference of any two such primitives is a
+polynomial in $A$ of degree at most $d-1$, hence is zero.
+\end{proof}
+
+For $m=0,d=1$, the anchored primitive simplifies to the ordinary Gamma
+ratio integral
+\begin{equation}\label{ubg:eq:Gamma-anchored}
+ -\int_{-1}^1P(v)
+       \log\frac{\Gamma(A+Bv)}{\Gamma(A_0+Bv)}\dd v.
+\end{equation}
+Equations~\eqref{ubg:eq:endpoints} and
+\eqref{ubg:eq:Stieltjes-primitive} also give a finite endpoint expression
+for every higher primitive. No unchosen polynomial integration constant
+is hidden in the notation.
+
+\section{Lerch deformations, polylogarithms, and Fourier endpoint identities}
+\label{ubg:sec:polylog}
+
+\subsection{A finite polylogarithmic endpoint calculus}
+For $|\xi|<1$, the Lerch series is
+\[
+ \Phi(\xi,s,a)=\sum_{n\ge0}\frac{\xi^n}{(n+a)^s},\qquad a>0,
+\]
+where positive real denominators use the real logarithm
+\cite{DLMFlerch}. It converges normally in $s$ on every compact set.
+Define
+\begin{equation}\label{ubg:eq:Lerch-transform}
+ L_P(s;A,B;\xi)=\int_{-1}^1P(v)\Phi(\xi,s,A+Bv)\dd v.
+\end{equation}
+The same finite integration-by-parts proof gives
+\begin{equation}\label{ubg:eq:Lerch-endpoints}
+ L_P(s;A,B;\xi)=\sum_{j=r}^D
+ \frac{(-1)^jd_j}{B^{j+1}(1-s)_{j+1}}
+ \left\{\Phi(\xi,s-j-1,A+B)-(-1)^j\Phi(\xi,s-j-1,A-B)\right\}.
+\end{equation}
+The whole expression is entire in $s$; every apparent exceptional value
+is obtained by joint continuation. In $\Re s>0$ its ordinary Mellin
+representation replaces $1-e^{-t}$ in \eqref{ubg:eq:Mellin} by
+$1-\xi e^{-t}$. The weaker lower-end restriction follows because the
+new denominator is nonzero at $t=0$.
+
+If $A\pm B$ are positive integers and $0<|\xi|<1$, the elementary identity
+\begin{equation}\label{ubg:eq:integer-Lerch}
+ \Phi(\xi,s,N)=\xi^{-N}
+ \left\{\Li_s(\xi)-\sum_{n=1}^{N-1}\frac{\xi^n}{n^s}\right\}
+\end{equation}
+turns \eqref{ubg:eq:Lerch-endpoints} into a finite combination of
+polylogarithms at shifted orders and finite harmonic-type sums.
+Every spectral derivative and every center primitive follows from the
+same identities. The apparent singularity at $\xi=0$ in
+\eqref{ubg:eq:integer-Lerch} is removable after the displayed difference
+is formed. At $\xi=1$, passage to Hurwitz zeta must respect the genuine
+pole and the original convergence domain; the entire-in-$s$ statement
+for $|\xi|<1$ is not uniform across that boundary.
+
+\subsection{A finite zeta formula at every complex Fourier order}
+The same endpoint polynomial also evaluates a Fourier-polylogarithm
+integral without a Hurwitz parameter.
+
+\begin{proposition}[Fourier endpoint identity]\label{ubg:prop:Fourier}
+Let $P$ be an even polynomial of degree $D$, with $P(\pm1)=0$.
+For $\Re s>1$,
+\begin{equation}\label{ubg:eq:Fourier-polylog}
+ \boxed{\displaystyle
+ \int_{-1}^1P(v)\Li_s(e^{2\pi\ii v})\dd v
+ =2\sum_{\ell=1}^{D/2}
+      \frac{(-1)^{\ell+1}P^{(2\ell-1)}(1)}{(2\pi)^{2\ell}}
+           \zeta(s+2\ell).}
+\end{equation}
+The integer upper limit is harmless because $D$ is even; zero
+endpoint derivatives may be omitted. The identity may be differentiated
+in $s$ any fixed number of times within this half-plane.
+\end{proposition}
+\begin{proof}
+For $n\ge1$, repeated integration by parts gives the exact terminating
+Fourier coefficient
+\[
+ \int_{-1}^1P(v)e^{2\pi\ii nv}\dd v
+ =2\sum_{\ell=1}^{D/2}
+       \frac{(-1)^{\ell+1}P^{(2\ell-1)}(1)}{(2\pi n)^{2\ell}}.
+\]
+The even endpoint derivatives cancel between $1$ and $-1$, and the
+last constant derivative has zero integral over the integer number
+of periods. Now use the absolutely uniformly convergent unit-circle
+series for $\Li_s$ when $\Re s>1$ \cite{DLMFpolylog}. Summing $n^{-s}$
+times the finite Fourier coefficient gives
+\eqref{ubg:eq:Fourier-polylog}. Spectral derivatives introduce only
+powers of $\log n$, preserving normal convergence on smaller compact
+subsets of the half-plane.
+\end{proof}
+
+At $s=1$, the ordinary integrable logarithmic boundary value gives
+\begin{equation}\label{ubg:eq:logsine-general}
+ \int_{-1}^1P(v)\log(2|\sin\pi v|)\dd v
+ =-2\sum_{\ell=1}^{D/2}
+   \frac{(-1)^{\ell+1}P^{(2\ell-1)}(1)}{(2\pi)^{2\ell}}
+                           \zeta(2\ell+1).
+\end{equation}
+One rigorous route is to insert a radial factor $0<\rho<1$ into the
+Fourier series and use $\Li_1(z)=-\log(1-z)$.
+The real part converges in $L^1$ to $-\log(2|\sin\pi v|)$:
+near each integer the absolute logarithm is dominated by an integrable
+constant plus $|\log|v-n||$, uniformly for $\rho$ sufficiently close
+to one. The integrated Fourier series is absolutely summable by its
+explicit coefficients. The imaginary part cancels by parity.
+No unregulated ordinary-integral statement at $s=0$ or negative orders
+is inferred; such boundary values can involve distributional terms.
+
+\section{A degree-eight bridge: four explicit evaluations}
+\label{ubg:sec:examples}
+
+The first genuinely mixed-square coefficient $u_2u_3^2$ produces
+\begin{equation}\label{ubg:eq:P31}
+ P(v)=P_{3,1}(v)=(1-v^2)^3(1+3v^2)
+                 =1-6v^4+8v^6-3v^8.
+\end{equation}
+On the interval $1\le x\le3$ put
+\begin{equation}\label{ubg:eq:W}
+ W(x)=P(x-2)=(x-1)^3(3-x)^3\bigl(1+3(x-2)^2\bigr).
+\end{equation}
+Its mass is $\int_1^3W(x)\dd x=128/105$.
+The endpoint derivatives provide a compact exact certificate:
+\begin{center}
+\small
+\begin{tabular}{c r r r r r r}
+\toprule
+$j$&3&4&5&6&7&8\\
+\midrule
+$P^{(j)}(1)$&$-192$&$-2304$&$-14400$&$-54720$&$-120960$&$-120960$\\
+$(-1)^jP^{(j)}(1)/j!$&$32$&$-96$&$120$&$-76$&$24$&$-3$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here $A=2$, $B=1$ in the compact Hurwitz transform. Integer translation
+reduces its finite endpoint formula to
+\begin{equation}\label{ubg:eq:I31}
+ I_P(s;2,1)=\sum_{j=3}^8\frac{(-1)^jP^{(j)}(1)}{(1-s)_{j+1}}
+   \left\{(1-(-1)^j)\zeta(s-j-1)-1-2^{j+1-s}\right\}.
+\end{equation}
+This one meromorphic identity proves the following evaluations.
+
+\subsection{Trigamma and the zeroth Stieltjes constant}
+\begin{align}
+ \boxed{\displaystyle
+ \int_1^3W(x)\psi'(x)\dd x
+  =-\frac{32}{35}-\frac{48}{\pi^2}\zeta(3)
+          +\frac{900}{\pi^4}\zeta(5)-\frac{1890}{\pi^6}\zeta(7).}
+ \label{ubg:eq:trigamma-example}
+\end{align}
+For completeness, at $s=2+\varepsilon$,
+\[
+ \frac1{(1-s)_{j+1}}
+  =\frac1{\varepsilon(j-1)!}
+       \left\{1+(H_{j-1}-1)\varepsilon+O(\varepsilon^2)\right\}.
+\]
+The table shows that the total residue in \eqref{ubg:eq:I31} is zero.
+Its elementary finite part is $-32/35$; all $\log2$ terms cancel.
+For odd $j=2n+1$, the zeta derivative is reduced by the standard
+functional-equation consequence \cite{DLMFintegers}
+\[
+ \zeta'(-2n)=\frac{(-1)^n(2n)!}{2(2\pi)^{2n}}\zeta(2n+1).
+\]
+This gives \eqref{ubg:eq:trigamma-example} with no appeal to a numerical
+integer-relation guess.
+
+The constant term at the genuine pole $s=1$ is
+\begin{equation}\label{ubg:eq:gamma0-example}
+ \boxed{\displaystyle
+ \int_1^3W(x)\gamma_0(x)\dd x
+ =-\frac{547}{1800}-64\zeta'(-3)-240\zeta'(-5)-48\zeta'(-7).}
+\end{equation}
+Since $\gamma_0=-\psi$, this is also an explicit weighted digamma
+integral. The derivatives in this and the next display are derivatives
+of the ordinary Riemann zeta function in its argument.
+
+\subsection{An explicit first-Stieltjes integral}
+The next coefficient of \eqref{ubg:eq:I31} gives
+\begin{align}
+ \int_1^3W(x)\gamma_1(x)\dd x
+ ={}&\frac{3499687}{10584000}-\frac{32}{21}\log2
+       +\frac{352}{3}\zeta'(-3)+548\zeta'(-5)
+                       +\frac{4356}{35}\zeta'(-7)\notag\\
+   &+32\zeta''(-3)+120\zeta''(-5)+24\zeta''(-7).
+ \label{ubg:eq:gamma1-example}
+\end{align}
+To check all terms without numerical approximation, put
+$c_j=(-1)^jP^{(j)}(1)/j!$ and expand
+\[
+ B_j(\varepsilon)=(1-(-1)^j)\zeta(-j+\varepsilon)
+                               -1-2^je^{-\varepsilon\log2}.
+\]
+Then $I_P(1+\varepsilon;2,1)$ is
+\[
+ -\frac1\varepsilon\sum_{j=3}^8c_j B_j(\varepsilon)
+             \left\{1+H_j\varepsilon
+                  +\tfrac12(H_j^2+H_j^{(2)})\varepsilon^2+\cdots\right\}.
+\]
+The coefficient of $\varepsilon$ is the negative of the right side
+of \eqref{ubg:eq:gamma1-example}. This proves the displayed rational,
+logarithmic, first-derivative, and second-derivative coefficients
+simultaneously. Theorem~\ref{ubg:thm:Stieltjes} gives every subsequent
+$\gamma_m$ integral by the same finite rule.
+
+\subsection{A function-valued polylogarithm identity and a log-sine value}
+For $\Re s>1$, Proposition~\ref{ubg:prop:Fourier} specializes to
+\begin{equation}\label{ubg:eq:polylog-example}
+ \boxed{\displaystyle
+ \int_1^3W(x)\Li_s(e^{2\pi\ii x})\dd x
+    =\frac{24}{\pi^4}\zeta(s+4)
+      -\frac{450}{\pi^6}\zeta(s+6)
+      +\frac{945}{\pi^8}\zeta(s+8).}
+\end{equation}
+The unit-circle polylogarithm here is defined by its convergent series
+or equivalently its radial boundary value from the disk. This is an
+identity in a complex order, not only a list of special integer values.
+All fixed spectral derivative orders obey the differentiated identity.
+The logarithmic endpoint specialization is
+\begin{equation}\label{ubg:eq:logsine-example}
+ \boxed{\displaystyle
+ \int_1^3W(x)\log(2|\sin\pi x|)\dd x
+   =-\frac{24}{\pi^4}\zeta(5)
+      +\frac{450}{\pi^6}\zeta(7)
+      -\frac{945}{\pi^8}\zeta(9).}
+\end{equation}
+There is an interior logarithmic singularity at $x=2$, but it is
+integrable. No finite-part convention is used in any of
+\eqref{ubg:eq:trigamma-example}--\eqref{ubg:eq:logsine-example}.
+The finite Lerch formula \eqref{ubg:eq:Lerch-endpoints} gives a second,
+disk-valued polylogarithmic deformation of the same weight, independently
+of the Fourier specialization.
+
+\section{Source audit, corrections, and reproducible verification}
+\label{ubg:sec:audit}
+
+\subsection{Provenance and the exact advance}
+The research was based on targeted reads of the canonical manuscript
+metadata and relevant normal-form material, the harmonic-tail Gamma
+continuation \cite{HTG}, and the affine-polarization source
+\cite{Affine}. The incoming directory was inspected at the metadata
+level. The affine article was retrieved as a full TeX file from the
+user's file library; byte identity with a similarly named incoming ZIP
+was not established. Other incoming archives were not exhaustively
+unpacked. This is a targeted continuation, not a complete audit of the
+large and actively changing repository.
+
+The inspected affine TeX file is named
+\src{ProveIt_Affine_Gamma_Polarization_2026-10-11.tex}.
+Its SHA-256 fingerprint is
+\begin{center}\small\ttfamily
+36a06cf61ab08597c5526c3ced33af296fb\\
+536466974211073769ee41218c751
+\end{center}
+The file itself records the older repository metadata anchor
+\src{92ee3aaf3087c0e0c29b9ed952e777de5d6accd0}.
+That is the predecessor's provenance, not a claim that every live
+repository read in this session came from that revision.
+Observed search results moved through several revisions; the final
+additional search results carried
+\src{af91e74dfa841331c51e867542345a3643ee0bf0}.
+The source manifest in the package records this distinction.
+
+The contributions are separated as follows. The functional complement,
+centering, Appell factor, and the affine kernel are inherited and
+explicitly proved again for normalization. The polynomial-background
+transport, its highest-variation use to determine \emph{all} normal
+coefficients, the universal formula, the sufficient support condition,
+and the highest-index sign law constitute the present coefficient
+advance relative to the inspected sources. The finite $u_2$ sum and
+all mixed-square formulas are consequences, not separate conjectural
+extensions. The higher-multiplicity sectors are included in the theorem.
+
+Polynomial-weight Hurwitz integration, beta differentiation, and the
+Lerch--polylogarithm connection are established methods
+\cite{EM1,EM2,DLMFzeta,DLMFlerch,DLMFpolylog}.
+The analytic contribution is their explicit application and all-order
+normalization for the weights supplied by the universal Gamma formula,
+including the worked degree-eight identities. Neither the general
+method nor historical priority for each isolated definite integral is
+claimed as new. Targeted repository and public-source searches did not
+supply the universal formula, but those searches do not establish
+exhaustive historical priority.
+
+\subsection{Corrections and safeguards}
+\paragraph{A definite bibliographic correction.}
+The affine report's bibliography gives pages 456--473 for Guo,
+Regensburger, and Rosenkranz \cite{GRR}. The authors' arXiv record gives
+\emph{Journal of Pure and Applied Algebra} \textbf{218} (2014),
+456--471, with the same DOI. The page range should therefore be changed
+to 456--471. This does not affect any mathematical argument.
+
+\paragraph{A repository editorial duplication.}
+The initially inspected canonical manuscript README, with blob identity
+\src{dc0fa26d0e5c2ede56df37c5640c7319681dfd25}, repeated the paragraph
+about the complete 1,032-input first-letter $X$ family, rank 1,008,
+and kernel 24. Remove the second copy if that duplication remains in
+the integration target. This observation is tied to the inspected blob,
+not a claim about every later version of the moving default branch.
+
+\paragraph{No substantive predecessor error established.}
+The coefficient formulas used from the two direct predecessors agree
+with the present formula in their overlapping sectors. We did not
+identify a substantive mathematical error in those inspected formulas.
+The following are implementation safeguards, not retrospective
+accusations: reduce before truncation; do not multiply projected
+normal forms as though the projection were an algebra homomorphism;
+keep the $e^{z/24}$ factor in the quadratic-background transport;
+combine removable endpoint singularities before evaluation; and retain
+the primitive's lower-end constant in fixed-coordinate finite parts.
+
+\subsection{Independent exact checks}
+The package contains two different algorithms. The coefficient module
+\src{verification/gamma_coefficients.py} uses only polynomial arithmetic
+and the universal beta formula. The reference module
+\src{verification/independent_ibp.py} generates $A_m$ by
+\eqref{ubg:eq:hierarchy} and applies the terminating local reduction
+\eqref{ubg:eq:ibp}; it does not call the coefficient formula.
+
+The exact run checks every functional exponent slot through weight 32,
+including those predicted to vanish. The original Bell polynomial has
+nonzero coefficient at every partition of its weight, so its functional
+slots, together with the reference normal form's support, enumerate the
+whole required test set. The recorded results are:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Check category&Count\\
+\midrule
+Independent rational coefficient comparisons, weights $0$--$32$&8,350\\
+Exact support and sign checks on positive highest indices&8,317\\
+Full identities $A_m=N_m+\D H_m$, weights $0$--$28$&29\\
+Euler-homotopy versus recursive primitive, weights $0$--$18$&19\\
+Appell derivative identities, weights $1$--$32$&32\\
+Mixed-square finite-sum comparisons&1,684\\
+Deliberately corrupted certificates rejected&2\\
+Exact analytic endpoint-algebra assertions&20\\
+\bottomrule
+\end{tabular}
+\end{center}
+The two corrupted certificates change the displayed weight-eleven and
+cubic weight-fourteen coefficients while retaining their independently
+computed primitives; the polynomial identity fails as it should.
+The exact endpoint assertions include Bernoulli-polynomial evaluations
+at thirteen nonpositive spectral orders, the residue, and the rational
+and harmonic coefficient algebra of the worked examples.
+The supplied CSV contains all 8,350 coefficient slots, including zeros.
+The JSON certificates contain complete $A_m,N_m,H_m$ data at the five
+selected weights, not just numerical evaluations.
+
+\subsection{Numerical diagnostics and their limits}
+The analytic script was run with 65 decimal digits using Python 3.13.5,
+mpmath 1.3.0, and SymPy 1.14.0. All 20 diagnostics passed their declared
+local tolerances. They include real and complex Hurwitz orders,
+trigamma, $\gamma_0$, $\gamma_1$, a log-sine integral, a finite
+polylogarithmic endpoint formula, mixed beta moments, four logarithmic
+orders, an anchored Gamma primitive, and an ordinary Gamma endpoint
+identity.
+
+For independent quadrature values $L,R$, the recorded residual is
+$|L-R|/(1+|L|+|R|)$. The largest recorded residual is about
+$4.82\times10^{-34}$, in the refinement comparison between 32- and
+48-point Gauss--Legendre quadrature for the $\gamma_1$ integral; its
+declared tolerance is $10^{-31}$. The finer quadrature versus the
+finite endpoint value differs by about $2.68\times10^{-52}$ in the
+same scaled measure. These are floating-point diagnostics, not rigorous
+interval enclosures, and 65-digit working precision does not mean that
+every integral has 65 certified digits.
+
+For orientation, the four ordinary integrals in
+\eqref{ubg:eq:trigamma-example}, \eqref{ubg:eq:gamma0-example},
+\eqref{ubg:eq:gamma1-example}, and \eqref{ubg:eq:logsine-example} begin
+\[
+ \begin{gathered}
+ 0.83786519860377187790,\qquad -0.47562629189112816162,\\
+ -0.11146849703321255941,\qquad 0.11670482124545205075,
+ \end{gathered}
+\]
+respectively. The finite identities and their proofs, rather than these
+decimal values, are the research statements.
+
+\paragraph{Replay and integration.}
+From the package root, run
+\begin{verbatim}
+python verification/check_exact.py
+python verification/check_analytic.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The exact coefficient checks need only the Python standard library.
+The analytic checks require the two packages listed above.
+The archive includes an additive integration plan and a compact theorem
+fragment with unique \src{ubg:} labels. No connected repository files
+were modified. The result has not been formalized in a proof assistant.
+
+\section{Further research questions after the coefficient theorem}
+\label{ubg:sec:questions}
+
+The all-monomial theorem changes the frontier: finding the next mixed
+Gamma coefficient is no longer an open problem for this hierarchy.
+The following targets concern genuinely additional structure rather
+than an already solved sector.
+
+\paragraph{1. Exact denominators and arithmetic normalization.}
+Determine the least positive integer $D_m$ for which $D_mN_m$ has
+integer coefficients, and characterize the denominator of an individual
+coefficient from its exponent vector. The first cubic example
+$-3185/3$ rules out a blanket integrality statement. The positive finite
+sum \eqref{ubg:eq:positive-coefficient} gives a concrete starting point
+for prime-adic cancellation identities. A satisfactory answer should
+specify exact valuations or divisibility laws, not merely denominator
+bounds.
+
+\paragraph{2. Analytic summation of the full normal-form series.}
+For an analytic function $u_0(x)$, determine when the formal infinite
+sum underlying \eqref{ubg:eq:generator} converges after all jet
+substitutions, and identify its analytic value. The theorem proves
+entire dependence for every \emph{fixed finite jet}, not convergence
+of the infinitely many jets of $\psi(x)$. It would be particularly
+useful to obtain an exact integral representation on a specified
+$(x,t)$ domain and the corresponding summed endpoint primitive.
+
+\paragraph{3. General centered profiles and products of Gamma ratios.}
+Replace $K_t(\D)$ by an even profile with leading term $t$, or consider
+finite products of centered Gamma ratios. The affine predecessor
+already supplies square symbols for general symmetric profiles
+\cite{Affine}. Differential superposition still provides a route to
+polynomial backgrounds. Determine which profiles admit an equally
+simple full-coefficient measure, and give necessary and sufficient
+conditions for the exact sign law to survive. Positivity of the Gamma
+beta kernel is a special input, not a formal consequence for every
+profile.
+
+\paragraph{4. Arithmetic selection by coefficient weights.}
+The predecessor's Bernoulli selectors diagonalize certain polynomial
+Hurwitz integrals into single shifted zeta terms \cite{Affine}.
+Classify the universal weights $P_M$ that lie in one selector line,
+or in a prescribed low-dimensional selector span. This asks which
+actual Gamma coefficient patterns produce a small number of zeta
+values, rather than redoing the existing classification of arbitrary
+even polynomial weights.
+
+\paragraph{5. Exact values of individual nonlinear polygamma integrals.}
+The universal normal form supplies all linear relations arising from
+this Gamma hierarchy, but it does not evaluate every surviving
+functional integral. A concrete target is to identify the natural
+function algebra for
+$\int_1^2\psi'(x)(\psi'''(x))^3\dd x$, or for a parameterized version
+with independently shifted arguments. Investigate a finite reduction
+to multiple Hurwitz or multiple-polylogarithmic quantities with fixed
+branches, and distinguish an actual evaluation from a relation in
+which new unevaluated integrals remain.
+
+\paragraph{6. Endpoint collisions in the Stieltjes and Lerch transforms.}
+The present formulas assume $A>B>0$. Continue the exact endpoint
+identities as $A\downarrow B$, keeping a specified coordinate and
+subtraction convention. Which weights kill every local singular term,
+and which leave a nonzero contact contribution? The ordinary log-sine
+limit at order one does not settle the distributional limits at
+nonpositive polylogarithm orders. The repository's boundary-contact
+work should be used rather than silently identifying the two regimes.
+
+\paragraph{7. A proof-carrying compiler.}
+Formalize the terminating functional decomposition, weighted quadratic
+symbol, differential superposition, and highest-variation extraction.
+The theorem splits naturally into finite polynomial identities and
+coefficientwise formal-series arguments. A first practical milestone
+is a proof-assistant checker for the supplied rational certificates;
+a separate milestone is a formal all-order proof. Certified interval
+versions of the analytic diagnostics would add numerical evidence but
+would not substitute for either formal theorem.
+
+\paragraph{8. Preserve the original period and tail-rank targets.}
+The exact Gaussian $S_6$ and revised $S_8$ candidates still require
+branch-controlled polylogarithmic identities with their complete
+lower-weight constants. The general unequal harmonic-tail moment-prefix
+rank question still requires a genuine determinant or independence
+argument. The present coefficient theorem gives additional exact
+identities and endpoint tools, but no implication resolving those
+separate questions is claimed.
+
+\subsection*{Conclusion}
+The normal-form coefficient problem has a uniform answer: its highest
+quadratic variation on a polynomial background is a compact exponential
+beta integral, and two integrations in the highest jet recover every
+multiplicity. This yields a finite rational formula for every functional
+coefficient, a complete support criterion, and a uniform sign law.
+Keeping the primitive gives exact Gamma--harmonic endpoint identities;
+retaining the polynomial weight gives finite zeta, Stieltjes, and
+polylogarithmic transforms. The distinctions between formal reduction,
+ordinary integration, joint meromorphic continuation, and numerical
+verification remain explicit throughout.
+
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{Manuscript}
+ProveIt Contributors, \emph{Polylogarithms and their Arithmetic Bridges}.
+Canonical manuscript, especially the normal-form material and chapters
+\src{07-ibp-normal-forms.tex} and
+\src{07-differential-polynomial-moments.tex}.
+Targeted repository reads, 11 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/Polylogarithms/docs/manuscript}.
+The incoming-directory inspection was at
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/docs/incoming}.
+
+\bibitem{HTG}
+\emph{Exact Harmonic-Tail Reconstruction and Variational Gamma Identities}.
+ProveIt working report, 11 October 2026. Especially
+\src{sections/04_gamma_sectors.tex}; article blob identity
+\src{445e67f0cd60313113387d52d44d4ddc6eeaf244}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/Polylogarithms/docs/reports/stieltjes-harmonic-resonance/continuations/harmonic-tail-gamma}.
+
+\bibitem{Affine}
+\emph{Affine Polarization of Gamma Normal Forms: All derivative-square
+coefficients, polylogarithmic kernels, and Stieltjes averages}.
+Research continuation prepared for Vladimir Reshetnikov, 11 October 2026.
+Full TeX source retrieved from the user's file library as
+\src{ProveIt_Affine_Gamma_Polarization_2026-10-11.tex}.
+Sections 2--3 and 11 are the direct normal-form input and open-question
+source. The exact source fingerprint and inspection limits appear in
+Section~\ref{ubg:sec:audit} and the package manifest.
+
+\bibitem{GRR}
+Li Guo, Georg Regensburger, and Markus Rosenkranz,
+\emph{On integro-differential algebras}.
+Journal of Pure and Applied Algebra \textbf{218} (2014), 456--471.
+\url{https://doi.org/10.1016/j.jpaa.2013.06.015}.
+Author preprint and journal-reference record:
+\url{https://arxiv.org/abs/1212.0266}.
+Section 4.4.1 supplies the classical functional-monomial construction.
+
+\bibitem{EM1}
+Olivier R. Espinosa and Victor H. Moll,
+\emph{On some definite integrals involving the Hurwitz zeta function}.
+Author preprint, 2000.
+\url{https://arxiv.org/abs/math/0012078}.
+Cited for the established polynomial-weight Hurwitz, Bernoulli,
+and log-Gamma integration programme.
+
+\bibitem{EM2}
+Olivier R. Espinosa and Victor H. Moll,
+\emph{On some integrals involving the Hurwitz zeta function: part 2}.
+Author preprint, 2001.
+\url{https://arxiv.org/abs/math/0107082}.
+Cited for established antiderivative and generalized-polygamma methods.
+
+\bibitem{DLMFpsi}
+NIST Digital Library of Mathematical Functions, \S5.15,
+\emph{Polygamma Functions}. Consulted 11 October 2026.
+\url{https://dlmf.nist.gov/5.15}.
+
+\bibitem{DLMFzeta}
+NIST Digital Library of Mathematical Functions, \S25.11,
+\emph{Hurwitz Zeta Function}. Consulted 11 October 2026.
+\url{https://dlmf.nist.gov/25.11}.
+Definitions, parameter derivatives, integer shifts, Bernoulli values,
+Mellin representation, and log-Gamma specialization.
+
+\bibitem{DLMFintegers}
+NIST Digital Library of Mathematical Functions, \S25.6,
+\emph{Integer Arguments}. Consulted 11 October 2026.
+\url{https://dlmf.nist.gov/25.6}.
+
+\bibitem{DLMFlerch}
+NIST Digital Library of Mathematical Functions, \S25.14,
+\emph{Lerch's Transcendent}. Consulted 11 October 2026.
+\url{https://dlmf.nist.gov/25.14}.
+
+\bibitem{DLMFpolylog}
+NIST Digital Library of Mathematical Functions, \S25.12,
+\emph{Polylogarithms}. Consulted 11 October 2026.
+\url{https://dlmf.nist.gov/25.12}.
+\end{thebibliography}
+\end{document}

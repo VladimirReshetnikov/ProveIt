@@ -1,0 +1,196 @@
+\section{All-order factorization defects: local residues and convergent terms}
+\label{hqj:sec:local}
+
+Define initially in their absolute-convergence half-planes
+\begin{align}
+Z_W(s;a,b)&=\sum_{n\ge0}W(x_n)(x_n^2+b^2)^{-s},\label{hqj:eq:ZW}\\
+F_{W,\pm}(s;a,b)&=\sum_{n\ge0}W(x_n)(x_n\pm ib)^{-s}.
+\end{align}
+Their initial conditions are respectively $\Rea s>(D+1)/2$ and
+$\Rea s>D+1$. Introduce the common-scale difference
+\begin{align}
+\mathcal D_W(s)&=\tfrac12\bigl(F_{W,+}(2s)+F_{W,-}(2s)\bigr)-Z_W(s),
+\label{hqj:eq:defect-germ}\\
+\Delta_r(W;a,b)&=\mathcal D_W^{(r)}(0)
+=2^{r-1}\bigl(F_{W,+}^{(r)}(0)+F_{W,-}^{(r)}(0)\bigr)-Z_W^{(r)}(0).
+\label{hqj:eq:defect}
+\end{align}
+The factors of two are part of the definition and are essential from
+second order onward.
+
+Set
+\begin{equation}\label{hqj:eq:logs}
+\ell_\pm(x)=\log(1\pm ib/x),\qquad
+L(x)=\log(1+b^2/x^2),\qquad
+D_b(x)=\ell_+(x)-\ell_-(x)=2i\arctan(b/x).
+\end{equation}
+The letter $D_b$ is a logarithmic difference, not the degree of $W$.
+Pointwise, the summand of \eqref{hqj:eq:defect-germ}, after removing
+$W(x)x^{-2s}$, is
+\begin{equation}\label{hqj:eq:cosh}
+e^{-sL(x)}\bigl(\cosh(sD_b(x))-1\bigr)
+=\sum_{k\ge2}h_k(x)s^k,
+\end{equation}
+where
+\begin{equation}\label{hqj:eq:hk}
+h_k(x)=\sum_{q=1}^{\lfloor k/2\rfloor}
+\frac{D_b(x)^{2q}(-L(x))^{k-2q}}{(2q)!(k-2q)!}.
+\end{equation}
+In particular,
+\[
+h_2=\tfrac12D_b^2,\qquad h_3=-\tfrac12LD_b^2,
+\qquad h_4=\tfrac14L^2D_b^2+\tfrac1{24}D_b^4.
+\]
+Only even powers of $x^{-1}$ occur in every $h_k$.
+
+\subsection{An explicit finite-subtraction operator}
+For fixed $k$, let
+\begin{equation}\label{hqj:eq:Sk}
+S_k(x)=\sum_{e\ge-1}a_{k,e}x^e
+\end{equation}
+be the finite part of the expansion of $W(x)h_k(x)$ at infinity containing
+all exponents at least $-1$. Put $R_k=a_{k,-1}$, with missing coefficients
+understood to be zero. Then $W(x)h_k(x)-S_k(x)=O(x^{-2})$.
+Define
+\begin{align}
+\mathcal H_k(t)={}&\sum_{n\ge0}\bigl(W(x_n)h_k(x_n)-S_k(x_n)\bigr)x_n^{-t}
++\sum_{e\ge-1}a_{k,e}\zeta(t-e,a),\label{hqj:eq:Hk}\\
+\mathcal H_{k,\mathrm{reg}}(t)={}&\mathcal H_k(t)-R_k/t.
+\end{align}
+The series is normally convergent for $\Rea t>-1$. In a neighborhood of
+zero the second line is holomorphic. This construction fixes the
+regularizing coordinate to be $x_n=n+a$.
+
+\begin{theorem}[Complete local/nonlocal decomposition]\label{hqj:thm:local}
+The functions in \eqref{hqj:eq:ZW} and the two linear-factor functions are
+holomorphic at $s=0$ after meromorphic continuation. For every $r\ge1$,
+\begin{equation}\label{hqj:eq:all-local}
+\boxed{\quad
+\frac{\Delta_r(W;a,b)}{r!}
+=\frac{R_{r+1}}2+
+\sum_{k=2}^r\frac{2^{r-k}}{(r-k)!}
+\mathcal H_{k,\mathrm{reg}}^{(r-k)}(0).
+\quad}
+\end{equation}
+Every regular derivative in this formula has the ordinary convergent
+representation
+\begin{align}
+\mathcal H_{k,\mathrm{reg}}^{(j)}(0)
+={}&(-1)^j\sum_{n\ge0}\bigl(W(x_n)h_k(x_n)-S_k(x_n)\bigr)\log^j x_n
+\notag\\
+&+\sum_{e\ne-1}a_{k,e}\zeta^{(j)}(-e,a)
++a_{k,-1}(-1)^j\gamma_j(a).
+\label{hqj:eq:regular-derivative}
+\end{align}
+The coefficients $a_{k,e}$ are finite polynomials in $b$ and the
+coefficients of $W$. No unperformed divergent sum is present on the right.
+\end{theorem}
+\begin{proof}
+Choose a finite head so that the remaining $x_n$ exceed $2b$. On the tail,
+the inverse-$x$ expansions of the logarithms and exponentials converge
+uniformly on compact sets of $s$ near zero. Subtract their terms through
+inverse degree $D+1$. The resulting summand is locally uniformly
+$O(x_n^{-2+2|\Rea s|})$, up to a fixed polynomial in $\log x_n$ after
+any fixed number of derivatives. It is therefore normally summable for
+$|\Rea s|<1/4$. The subtracted terms are finite multiples of
+$\zeta(2s+j-d,a+N)$.
+
+The only possible pole at zero is the term with $j-d=1$.
+For each individual spectrum its inverse-power coefficient vanishes at
+least linearly in $s$, canceling that simple pole. The degree-zero
+coefficient only gives Hurwitz values at nonpositive integers and is
+regular. The finite head is entire in $s$. This proves holomorphy of
+the individual spectra at zero.
+
+For the difference, \eqref{hqj:eq:cosh} starts at $s^2$. The same
+subtraction argument allows coefficient extraction from
+$\sum_{k\ge2}s^k\mathcal H_k(2s)$. Since
+\[
+\mathcal H_k(2s)=\frac{R_k}{2s}
++\sum_{j\ge0}\frac{2^j\mathcal H_{k,\mathrm{reg}}^{(j)}(0)}{j!}s^j,
+\]
+the coefficient of $s^r$ is exactly \eqref{hqj:eq:all-local}.
+Only $k\le r+1$ can contribute. The finite head and the tail can be
+recombined in \eqref{hqj:eq:Hk}; its ordinary remainder converges even
+when $b>a$. Finally differentiating that normally convergent remainder
+and using \eqref{hqj:eq:stieltjes} gives
+\eqref{hqj:eq:regular-derivative}.
+\end{proof}
+
+\subsection{The first two orders, and what parity really proves}
+At the first order, Theorem~\ref{hqj:thm:local} recovers the predecessor's
+local formula:
+\begin{align}
+\Delta_1(W;a,b)
+&=\tfrac14[x^{-1}]W(x)D_b(x)^2\notag\\
+&=\sum_{j\ge1}w_{2j-1}\frac{(-1)^j b^{2j}}j
+\left(H_{2j}-\tfrac12H_j\right).
+\label{hqj:eq:first-defect}
+\end{align}
+The sum is finite and independent of $a$. Its vanishing for every $b>0$
+is equivalent to $W$ being even. For example
+\[
+\Delta_1(1)=0,\qquad \Delta_1(x)=-b^2,\qquad
+\Delta_1(x^3)=\tfrac23b^4.
+\]
+These are cited predecessor results, also recovered here.
+
+For the second derivative we obtain instead
+\begin{equation}\label{hqj:eq:second-defect-reg}
+\Delta_2(W)=\Reg_x\sum_{n\ge0}W(x_n)D_b(x_n)^2
+-\tfrac12[x^{-1}]W(x)L(x)D_b(x)^2,
+\end{equation}
+where $\Reg_x$ is precisely \eqref{hqj:eq:Hk} with the constant Laurent
+term extracted at $t=0$. Evenness of $W$ removes every $R_k$, because
+an even inverse-power expansion cannot contain $x^{-1}$. It does
+\emph{not} remove the regular parts in \eqref{hqj:eq:all-local}.
+
+\begin{corollary}[An ordinary convergent second defect]\label{hqj:cor:atan}
+For every $a,b>0$,
+\begin{equation}\label{hqj:eq:atan-square}
+\boxed{\Delta_2(1;a,b)=-4\sum_{n=0}^{\infty}
+\arctan^2\!\left(\frac{b}{n+a}\right).}
+\end{equation}
+In particular this defect is strictly negative.
+\end{corollary}
+\begin{proof}
+For $W=1$, $D_b^2=O(x^{-2})$, so no subtraction or residue occurs.
+Insert $D_b=2i\arctan(b/x)$ in \eqref{hqj:eq:second-defect-reg}.
+\end{proof}
+The sign is used to give an exact counterexample, not as the principal
+research target. The predecessor correctly warned against higher-jet
+factorization; \eqref{hqj:eq:atan-square} makes its missing term explicit.
+
+\begin{theorem}[Universal higher-order rigidity]\label{hqj:thm:rigidity}
+Fix $a>0$ and an integer $r\ge2$. For $W\in\C[x]$,
+\[
+\Delta_r(W;a,b)=0\quad\hbox{for every }b>0
+\quad\Longleftrightarrow\quad W=0.
+\]
+Thus even weights are the exact first-order kernel, but the kernel at
+each fixed higher order is trivial when vanishing is required for all
+positive masses.
+\end{theorem}
+\begin{proof}
+Suppose $W\ne0$. There is an $n\ge0$ with $W(x_n)\ne0$. Continue the
+finite-head/tail expression in the complex $b$-plane along a path from
+the positive real axis to a punctured neighborhood of $b_0=ix_n$,
+avoiding the other points $\pm ix_k$. Choose the head large enough that
+the remaining tail has $x_k>|b_0|+1$. Its uniformly convergent
+inverse-power representation is holomorphic near $b_0$. All other
+head terms are also holomorphic there on the continued local branches.
+
+For the $n$th term, $x_n+ib$ has a simple zero at $b_0$, while
+$x_n-ib$ is nonzero. Formula \eqref{hqj:eq:defect} gives the coefficient
+of the highest logarithmic power $\log^r(b-b_0)$ as
+\[
+(-1)^r\bigl(2^{r-1}-1\bigr)W(x_n),
+\]
+which is nonzero. Lower powers of that logarithm and holomorphic terms
+cannot cancel it. If the original function vanished on the entire
+positive real axis, its analytic continuation would vanish along the
+chosen path by the identity theorem, contradicting this local
+singularity. The converse for $W=0$ is immediate.
+\end{proof}
+This is an analytic vanishing theorem for a specified family. It is not
+a theorem about algebraic independence of numerical special values.

@@ -1,0 +1,714 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,breaklinks=true]{hyperref}
+\hypersetup{pdftitle={Connected Spectral Jets and Mixed Gamma Primitives},pdfauthor={ProveIt research continuation},pdfsubject={Exact Gamma, Stieltjes, Hurwitz-zeta and polylogarithmic identities}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Connected spectral jets and Gamma identities}\fancyhead[R]{\small ProveIt continuation}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\Ima}{\operatorname{Im}}
+\newcommand{\FP}{\operatorname{FP}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\bs}{\boldsymbol{s}}
+\newcommand{\bu}{\boldsymbol{u}}
+\newcommand{\ba}{\boldsymbol{\alpha}}
+\newcommand{\bb}{\boldsymbol{\beta}}
+\newcommand{\bk}{\boldsymbol{k}}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\cF}{\mathcal F}
+\newcommand{\cC}{\mathcal C}
+\newcommand{\cJ}{\mathcal J}
+\newcommand{\stirling}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
+\DeclareMathOperator{\diag}{diag}
+\title{Connected Spectral Jets and Mixed Gamma Primitives\\[4pt]\large All-index Stieltjes identities, simultaneous shift collisions,\\and polylogarithmic generating functions}
+\author{A research continuation for Vladimir Reshetnikov's ProveIt project}
+\date{11 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We study the inclusion--exclusion combination of an arbitrary number of shifted linear spectral factors, keeping their spectral parameters independent. At the critical polynomial weight, its complete local singularity is
+\[
+ (-1)^m\Bigl(\prod_j u_j\Bigr)\frac{\prod_j s_j}{s_1+\cdots+s_m}.
+\]
+Subtracting this term before restricting the spectral parameters gives a holomorphic germ whose derivatives are explicit, absolutely convergent logarithmic sums with generalized Stieltjes constants. On the equal spectral line, an $m$-fold connected combination can therefore have a nonzero derivative of order $m-1$, not merely order $m$. In particular, an eight-spectrum cubic identity has second derivative $-2uvw/3$.
+We derive a one-dimensional digamma integral for every unmarked logarithmic product, an all-index Gauss multiplication law, a complete confluent formula for mixed mass derivatives, and a beta-integral antiderivative with generalized harmonic coefficients. Normally convergent expansions give all spectral derivatives in terms of Hurwitz-zeta derivatives, and ordinary polylogarithms give the corresponding generating functions. A polynomial-weight extension computes every leading connected anomaly by one finite coefficient extraction.
+The proofs are analytic; exact algebra and numerical diagnostics are supplied separately. The contribution is the connected, independently regulated construction and its consequences, not a claim of priority for classical binomial continuation, divided differences, or first-derivative multiplicative anomalies.
+\end{abstract}
+\vspace{3pt}
+\noindent\textbf{Status.} Theorems below have proofs in this article. They are not proof-assistant formalizations and have not undergone independent peer review. Publication-level novelty is not established. The general unequal-tail optimal-prefix conjecture and the Gaussian $S_6$ and revised $S_8$ conjectures are not settled here.
+\newpage
+\tableofcontents
+\newpage
+
+\section{Research position, conventions, and the main examples}
+\subsection{What is continued, and what is not repeated}
+Selected canonical ProveIt manuscript sources and the incoming-report register were inspected directly. The incoming binary archives were inventoried, but their complete contents were not available to this review; overlap with those archives remains an explicit intake check. The manuscript already develops shifted Stieltjes correlations, higher Gamma derivatives, signed polylogarithmic kernels, and even harmonic-tail moment reconstruction. Its canonical-digamma continuation proves a finite moment-prefix theorem but leaves the general optimal first-$q$ assertion open; a subsequent report proves the adjacent even-order family. We do not promote that full conjecture on the basis of finite determinant computations. Relevant source paths and content hashes are recorded in the accompanying provenance file \cite{repo,tailrank,adjacent}.
+
+The present direction is complementary: isolate the genuine interaction of \emph{all} shifted factors by inclusion--exclusion, retain independent spectral parameters, and identify the singular hyperplane before taking a diagonal. Ordinary first-derivative multiplicative anomalies already have substantial literature; G\"urel gives polynomial-spectrum formulas using binomial subtraction \cite{gurel}. That method and the basic Hurwitz continuation are background here, not new claims. Divided-difference and Gamma identities used below are also classical \cite{deboor,dlmfgamma,dlmfzeta}. The new package proposes the combined higher connected theory and the identities it produces for further repository audit.
+
+We use $a>0$, $x_n=n+a$, $m\ge1$, and shifts $u_j$ satisfying
+\begin{equation}\label{eq:massdomain}
+ \Rea(a+u_j)>0\qquad(1\le j\le m).
+\end{equation}
+Each individual linear factor uses the principal logarithm in the right half-plane. A bracketed spectral product is raised to a power using the \emph{sum of these factor logarithms}; we do not assume that the principal logarithm of a product is the sum of its principal logarithms. For positive real shifts this distinction disappears. Put
+\[
+ U=\prod_{j=1}^m u_j,\qquad S=s_1+\cdots+s_m,
+ \qquad |\ba|=\alpha_1+\cdots+\alpha_m.
+\]
+The notation $\log\Gamma(z)$ denotes the holomorphic logarithm on $\operatorname{Re}z>0$ that is real on the positive axis, not the pointwise principal logarithm of the number $\Gamma(z)$. An order derivative $\zeta^{(r)}(z,a)$ always differentiates the first argument. A polygamma $\psi^{(r)}$ differentiates its displayed argument. Our Stieltjes convention is
+\begin{equation}\label{eq:stieltjes}
+ \zeta(1+w,a)=\frac1w+\sum_{r=0}^{\infty}\frac{(-1)^r}{r!}\gamma_r(a)w^r,
+ \qquad \gamma_0(a)=-\psi(a).
+\end{equation}
+The Taylor series in \eqref{eq:stieltjes} is used locally; the pole-subtracted Hurwitz function is entire in $w$ \cite{dlmfzeta}.
+
+\subsection{A cubic identity that detects the singularity}
+For $I\subseteq\{1,2,3\}$ let
+\begin{equation}\label{eq:ZIexample}
+ Z_I(s)=\sum_{n=0}^{\infty}x_n^2
+ \left[x_n^{3-|I|}\prod_{j\in I}(x_n+u_j)\right]^{-s},
+ \qquad (u_1,u_2,u_3)=(u,v,w),
+\end{equation}
+initially for $\Rea s>1$ and thereafter by meromorphic continuation. Every $Z_I$ is regular at zero. Define
+\[
+ C(s)=Z_{123}(s)-Z_{12}(s)-Z_{13}(s)-Z_{23}(s)
+       +Z_1(s)+Z_2(s)+Z_3(s)-Z_{\varnothing}(s).
+\]
+We prove
+\begin{equation}\label{eq:cubicheadline}
+ C(0)=C'(0)=0,\qquad C''(0)=-\frac23uvw.
+\end{equation}
+Thus pointwise $O(s^3)$ cancellation of the summand does \emph{not} imply $O(s^3)$ cancellation after spectral continuation. A simple Hurwitz pole lowers the order by one. The next derivative has the ordinary convergent expression
+\begin{align}\label{eq:cubicthird}
+ C'''(0)=-6\biggl\{uvw\gamma_0(a)+\sum_{n=0}^{\infty}
+ \biggl[x_n^2\log\left(1+\frac u{x_n}\right)
+ \log\left(1+\frac v{x_n}\right)\log\left(1+\frac w{x_n}\right)
+ -\frac{uvw}{x_n}\biggr]\biggr\}.
+\end{align}
+All three shifts may coincide. For $u=v=w>0$, the quantity in braces is exactly
+\begin{equation}\label{eq:cubicgamma}
+ -\int_0^u t^2\psi(a+t)
+ \left[3\log^2\frac{t}{u-t}-\pi^2\right]\dd t.
+\end{equation}
+The $-\pi^2$ term is indispensable. Equations \eqref{eq:cubicheadline}--\eqref{eq:cubicgamma} are instances of the all-depth results below.
+
+\section{Independent spectral parameters and the complete critical pole}
+Define the entire-in-$s$ divided spectral difference
+\begin{equation}\label{eq:Ddef}
+ D_s(x,u)=
+ \begin{cases}
+ \displaystyle\frac{(x+u)^{-s}-x^{-s}}s,&s\ne0,\\[5pt]
+ \displaystyle-\log\left(1+\frac ux\right),&s=0.
+ \end{cases}
+\end{equation}
+The elementary identity
+\begin{equation}\label{eq:Dprimitive}
+ D_s(x,u)=-\int_0^u(x+t)^{-1-s}\dd t
+\end{equation}
+uses the straight segment, which stays in the permitted half-plane after adding $x$. It proves holomorphy at $s=0$ without a cancellation-prone quotient.
+
+The connected critical spectrum is
+\begin{equation}\label{eq:Cdef}
+ \cC_m(\bs;a,\bu)=
+ \sum_{n=0}^{\infty}x_n^{m-1}
+ \prod_{j=1}^m\bigl((x_n+u_j)^{-s_j}-x_n^{-s_j}\bigr).
+\end{equation}
+For $\Rea S>0$ this series converges absolutely and locally uniformly. In the smaller initial domain $\Rea S>m$, expansion of the product is the usual $2^m$-term inclusion--exclusion of separately convergent spectra. Analytic continuation gives the same connected function.
+
+\begin{theorem}[Canonical critical germ]\label{thm:germ}
+There is a function $\cH_m(\bs;a,\bu)$, holomorphic for $\Rea S>-1$ and the mass domain \eqref{eq:massdomain}, such that
+\begin{equation}\label{eq:mainpole}
+ \cC_m(\bs;a,\bu)=
+ \left(\prod_{j=1}^m s_j\right)
+ \left\{\frac{(-1)^mU}{S}+\cH_m(\bs;a,\bu)\right\}.
+\end{equation}
+The normalization is specified by the normally convergent formula
+\begin{align}\label{eq:Hnormal}
+ \cH_m(\bs;a,\bu)
+ ={}&(-1)^mU\left(\zeta(1+S,a)-\frac1S\right)\\
+ &+\sum_{n=0}^{\infty}\left[
+ x_n^{m-1}\prod_{j=1}^mD_{s_j}(x_n,u_j)
+ -(-1)^mU x_n^{-1-S}\right].\nonumber
+\end{align}
+When $m\ge2$ and $U\ne0$, $\cC_m$ has no jointly holomorphic extension to a neighborhood of $\bs=0$. It nevertheless has holomorphic restrictions to every line $\bs=\bm\lambda t$ with $\sum_j\lambda_j\ne0$.
+\end{theorem}
+\begin{proof}
+Uniformly on compact sets of spectral parameters and masses,
+\[
+ D_s(x,u)=-u x^{-1-s}+\frac{(1+s)u^2}{2}x^{-2-s}
+             +O(x^{-3-\Rea s}).
+\]
+This follows either from \eqref{eq:Dprimitive} or from the binomial expansion after $x$ exceeds a fixed multiple of all $|u_j|$. Consequently the summand on the second line of \eqref{eq:Hnormal} is $O(x^{-2-\Rea S})$. On a compact subset of $\Rea S>-1$ it has a summable majorant. Derivatives introduce only fixed powers of $\log x$, which remain summable after shrinking the compact neighborhood. This proves joint normal convergence and holomorphy. Finite initial terms cause no difficulty.
+
+For $\Rea S>0$, adding the subtracted leading terms gives exactly \eqref{eq:mainpole}; hence it gives the continuation. The first line in \eqref{eq:Hnormal} is holomorphic also at $S=0$ by \eqref{eq:stieltjes}. For $m\ge2$, the numerator $\prod s_j$ is not divisible by the linear polynomial $S$. At generic points of $S=0$ arbitrarily close to zero the polar coefficient is nonzero, so no neighborhood can carry a holomorphic extension. On a non-tangent line the polar term is a constant times $t^{m-1}$; the remaining term is holomorphic. For $m=1$, by contrast, the apparent factor $s_1/S$ is one and there is no such obstruction.
+\end{proof}
+
+\begin{corollary}[Directional jet and its first invariant regular term]\label{cor:direction}
+Let $\lambda_j\ne0$, $\sigma=\sum_j\lambda_j\ne0$, and set $C_{\bm\lambda}(t)=\cC_m(\bm\lambda t;a,\bu)$. Then
+\begin{align}
+ C_{\bm\lambda}^{(r)}(0)&=0 &&(0\le r<m-1),\label{eq:lowzero}\\
+ C_{\bm\lambda}^{(m-1)}(0)&=
+ \frac{(-1)^m(m-1)!U\prod_j\lambda_j}{\sigma},\label{eq:directionanomaly}\\
+ C_{\bm\lambda}^{(m)}(0)&=m!\left(\prod_j\lambda_j\right)\cH_m(0;a,\bu).
+ \label{eq:directionregular}
+\end{align}
+In particular, the $m$th derivative divided by $m!\prod\lambda_j$ is independent of the chosen non-tangent direction. Higher directional coefficients are the ordinary polarization of the holomorphic germ $\cH_m$.
+\end{corollary}
+\begin{proof}
+Insert $S=\sigma t$ in \eqref{eq:mainpole}. The polar contribution is exactly a monomial of degree $m-1$, so it contributes nothing to the next derivative. Taylor expansion of $\cH_m(\bm\lambda t)$ proves all assertions.
+\end{proof}
+
+\begin{remark}[What simultaneous regularization means here]
+The subtraction precedes restriction to a spectral diagonal. It is not permissible to set $S=0$ in the unnormalized multivariate expression or to infer multivariate holomorphy from its many regular one-variable restrictions. This theorem resolves that issue for the explicitly defined connected linear-factor family. It is not a general theorem on products or pullbacks of all singular Stieltjes distributions.
+\end{remark}
+
+\section{All-index convergent identities and a mixed Gauss law}
+For $r\in\N_0$, write
+\begin{equation}\label{eq:Qr}
+ Q_r(x,u)=\frac{\log^{r+1}(x+u)-\log^{r+1}x}{r+1}
+          =\int_0^u\frac{\log^r(x+t)}{x+t}\dd t.
+\end{equation}
+For a multi-index $\ba\in\N_0^m$, let $N=|\ba|$.
+
+\begin{theorem}[All-index mixed Gamma--Stieltjes primitives]\label{thm:Falpha}
+The functions
+\begin{equation}\label{eq:Falpha}
+ \boxed{\quad
+ \cF_{\ba}(a;\bu)=U\gamma_N(a)+
+ \sum_{n=0}^{\infty}\left[
+ x_n^{m-1}\prod_{j=1}^m Q_{\alpha_j}(x_n,u_j)
+ -\frac{U\log^N x_n}{x_n}\right]\quad}
+\end{equation}
+are absolutely and locally uniformly convergent, and
+\begin{equation}\label{eq:FalphaH}
+ \cF_{\ba}(a;\bu)=(-1)^{m+N}\partial^{\ba}_{\bs}\cH_m(0;a,\bu).
+\end{equation}
+They vanish whenever any shift is zero. They satisfy the exact shift law
+\begin{equation}\label{eq:Fshift}
+ \cF_{\ba}(a+1;\bu)-\cF_{\ba}(a;\bu)
+ =-a^{m-1}\prod_{j=1}^mQ_{\alpha_j}(a,u_j).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Expansion at large $x$ gives
+$Q_r(x,u)=u\log^r(x)/x+O(x^{-2}(1+\log^r x))$ on compact mass sets. The bracket in \eqref{eq:Falpha} is therefore $O(x^{-2}(1+\log^N x))$.
+Direct differentiation of \eqref{eq:Ddef}, or its integral, gives
+\[
+ \left.\partial_s^rD_s(x,u)\right|_{s=0}=(-1)^{r+1}Q_r(x,u).
+\]
+Differentiate \eqref{eq:Hnormal}; Theorem~\ref{thm:germ} justifies doing so termwise. Since every spectral variable enters $S$ with coefficient one,
+\[
+ \left.\partial^{\ba}\left(\zeta(1+S,a)-1/S\right)\right|_0
+ =(-1)^N\gamma_N(a).
+\]
+This proves \eqref{eq:FalphaH}. To obtain \eqref{eq:Fshift}, remove the first summand and use
+$\gamma_N(a+1)-\gamma_N(a)=-\log^N(a)/a$, which follows from the Hurwitz shift relation. The two subtraction terms cancel exactly.
+\end{proof}
+
+For the zero multi-index write $\cF_m=\cF_{(0,\ldots,0)}$. At depth one,
+\begin{equation}\label{eq:depthone}
+ \cF_1(a;u)=\log\Gamma(a)-\log\Gamma(a+u).
+\end{equation}
+Indeed its derivative in $u$ is $-\psi(a+u)$ by the digamma series, and its value at $u=0$ is zero. Thus the terminology ``mixed Gamma primitive'' denotes a precise extension of a Gamma difference. It does \emph{not} identify these functions with the usual Barnes multiple Gamma functions.
+
+\begin{theorem}[Gauss distribution with the complete Stieltjes correction]\label{thm:gauss}
+For every integer $q\ge1$,
+\begin{align}\label{eq:gaussH}
+ \sum_{h=0}^{q-1}\cH_m\left(\bs;\frac{a+h}{q},\frac{\bu}{q}\right)
+ =q^{1-m}\left\{q^S\cH_m(\bs;a,\bu)
+       +(-1)^mU\frac{q^S-1}{S}\right\}.
+\end{align}
+Consequently
+\begin{align}\label{eq:gaussF}
+ \sum_{h=0}^{q-1}\cF_{\ba}\left(\frac{a+h}{q};\frac{\bu}{q}\right)
+ =q^{1-m}\biggl\{
+ \sum_{\bb\le\ba}\binom{\ba}{\bb}
+ (-\log q)^{N-|\bb|}\cF_{\bb}(a;\bu)
+ +\frac{(-1)^N U(\log q)^{N+1}}{N+1}\biggr\}.
+\end{align}
+In particular,
+\begin{equation}\label{eq:gausszero}
+ \sum_{h=0}^{q-1}\cF_m\left(\frac{a+h}{q};\frac{\bu}{q}\right)
+ =q^{1-m}\bigl(\cF_m(a;\bu)+U\log q\bigr).
+\end{equation}
+\end{theorem}
+\begin{proof}
+For $\Rea S>0$, regroup the absolutely convergent normalized connected sum into the residue classes $qn+h$. Since
+$D_s(x/q,u/q)=q^sD_s(x,u)$ and the weight scales by $q^{1-m}$, its left side is $q^{S+1-m}$ times the unscaled sum. Subtracting the prescribed poles leaves \eqref{eq:gaussH}. Holomorphy extends it to the stated germ. Differentiate with the multi-index product rule and use
+\[
+ \left.\partial^{\ba}\frac{e^{S\log q}-1}{S}\right|_0
+ =\frac{(\log q)^{N+1}}{N+1}.
+\]
+The signs in \eqref{eq:FalphaH} give \eqref{eq:gaussF}. This explicitly checks the normalization rather than assuming that scaling commutes with a finite part.
+\end{proof}
+
+\section{Simultaneous mass collisions and an all-index collapse}
+Define
+\begin{equation}\label{eq:mixedderiv}
+ M_{\ba}(a;\bu)=\partial_{u_1}\cdots\partial_{u_m}\cF_{\ba}(a;\bu).
+\end{equation}
+\begin{theorem}[Ordinary mixed derivative and full collision]\label{thm:collision}
+For $N=|\ba|$,
+\begin{align}\label{eq:ordinarymixed}
+ M_{\ba}(a;\bu)=\gamma_N(a)+\sum_{n=0}^{\infty}
+ \left[x_n^{m-1}\prod_{j=1}^m
+ \frac{\log^{\alpha_j}(x_n+u_j)}{x_n+u_j}
+ -\frac{\log^N x_n}{x_n}\right].
+\end{align}
+This series is normally convergent. At a simultaneous collision $u_1=\cdots=u_m=u$, it depends on $\ba$ only through $N$:
+\begin{equation}\label{eq:collision}
+ \boxed{\quad
+ M_{\ba}(a;u,\ldots,u)=\cJ_{m,N}(a,u)
+ =\gamma_N(a+u)+(-1)^N
+ \sum_{r=1}^{m-1}\binom{m-1}{r}(-u)^r
+ \zeta^{(N)}(r+1,a+u).\quad}
+\end{equation}
+In particular $M_{\ba}(a;0,\ldots,0)=\gamma_N(a)$.
+\end{theorem}
+\begin{proof}
+Differentiate \eqref{eq:Falpha} using \eqref{eq:Qr}; all differentiated brackets have the same $x^{-2}$ logarithmic majorant. On the mass diagonal the logarithms combine to $\log^N(x+u)$, independently of their original allocation. Expand
+\[
+ \frac{x^{m-1}}{(x+u)^m}
+ =\sum_{r=0}^{m-1}\binom{m-1}{r}\frac{(-u)^r}{(x+u)^{r+1}}.
+\]
+For $r\ge1$ the sums are absolutely convergent order derivatives of Hurwitz zeta. The $r=0$ difference is also convergent, and the Laurent expansion of the Hurwitz difference gives
+\[
+ \sum_{n\ge0}\left[\frac{\log^N(x_n+u)}{x_n+u}
+                -\frac{\log^N x_n}{x_n}\right]
+ =\gamma_N(a+u)-\gamma_N(a).
+\]
+This proves \eqref{eq:collision}, including arbitrary coincident shifts, without a singular partial-fraction limit.
+\end{proof}
+
+For $m=3$ the formula reads
+\begin{equation}\label{eq:collision3}
+ \cJ_{3,N}(a,u)=\gamma_N(a+u)
+ +(-1)^N\bigl[-2u\zeta^{(N)}(2,a+u)+u^2\zeta^{(N)}(3,a+u)\bigr].
+\end{equation}
+Thus, for example, the mixed mass derivatives belonging to spectral indices $(2,0,0)$ and $(1,1,0)$ agree on the full mass diagonal, even though their off-diagonal logarithmic sums need not agree. This is an equality of functions; it requires no conjecture about independence of zeta values.
+
+\subsection{Unmarked divided differences and their confluent limit}
+For distinct nodes, $[t_1,\ldots,t_m]f$ denotes the divided difference of order $m-1$. It extends continuously to repeated nodes; if all nodes equal $u$, its value is $f^{(m-1)}(u)/(m-1)!$ \cite{deboor}.
+
+\begin{proposition}[Finite digamma closure]\label{prop:dd}
+With $f_a(t)=t^{m-1}\psi(a+t)$,
+\begin{equation}\label{eq:dd}
+ M_{\bm0}(a;\bu)=-[u_1,\ldots,u_m]f_a.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:confluentpsi}
+ \cJ_{m,0}(a,u)
+ =-\frac1{(m-1)!}\frac{\mathrm d^{m-1}}{\mathrm du^{m-1}}
+       \bigl(u^{m-1}\psi(a+u)\bigr).
+\end{equation}
+\end{proposition}
+\begin{proof}
+For distinct nodes, partial fractions give
+\[
+ \frac{x^{m-1}}{\prod_j(x+u_j)}
+ =\sum_j\frac{A_j}{x+u_j},\qquad
+ A_j=\frac{u_j^{m-1}}{\prod_{k\ne j}(u_j-u_k)},\qquad \sum_jA_j=1.
+\]
+The digamma difference series then turns \eqref{eq:ordinarymixed} at $N=0$ into $-\sum_j A_j\psi(a+u_j)$, which is \eqref{eq:dd}. Both the original normally convergent expression and its divided-difference continuation are holomorphic across collisions. Their confluent values agree. Alternatively, \eqref{eq:confluentpsi} follows immediately from \eqref{eq:collision} and the polygamma--Hurwitz identity.
+\end{proof}
+
+\section{One-dimensional Gamma integrals at arbitrary depth}
+The preceding mixed derivatives can be integrated over a box because $\cF_m$ vanishes on each coordinate face. Therefore
+\begin{equation}\label{eq:box}
+ \cF_m(a;\bu)
+ =-\int_0^{u_1}\cdots\int_0^{u_m}
+       [t_1,\ldots,t_m]\bigl(t^{m-1}\psi(a+t)\bigr)
+       \dd t_m\cdots\dd t_1.
+\end{equation}
+For positive real masses this multiple primitive collapses to one ordinary integral.
+
+\begin{theorem}[Unequal-mass Gamma integral]\label{thm:gammaint}
+Suppose $u_j>0$ and $b=\max_j u_j$. For $0<t<b$, away from the finitely many mass values, set
+\begin{equation}\label{eq:unequalP}
+ \mathcal P_{\bu}(t)=\frac1\pi\Ima
+ \prod_{j=1}^m\left(\log\left|\frac{t}{t-u_j}\right|
+                 +i\pi\,\mathbf1_{t<u_j}\right).
+\end{equation}
+Then
+\begin{equation}\label{eq:unequalGamma}
+ \boxed{\qquad
+ \cF_m(a;\bu)=-\int_0^b t^{m-1}\psi(a+t)\mathcal P_{\bu}(t)\dd t.
+ \qquad}
+\end{equation}
+The integral is absolutely convergent, including repeated masses.
+When all masses are $u>0$, define
+\begin{align}\label{eq:Pm}
+ P_m(L)&=\frac{(L+i\pi)^m-(L-i\pi)^m}{2\pi i}\\
+ &=\sum_{j=0}^{\lfloor(m-1)/2\rfloor}(-1)^j\binom m{2j+1}
+          \pi^{2j}L^{m-2j-1}.\nonumber
+\end{align}
+Then
+\begin{equation}\label{eq:diagonalGamma}
+ \boxed{\qquad
+ \cF_m(a;u,\ldots,u)
+ =-\int_0^u t^{m-1}\psi(a+t)P_m\left(\log\frac{t}{u-t}\right)\dd t.
+ \qquad}
+\end{equation}
+Every derivative in $a$ is obtained by replacing $\psi$ with the corresponding polygamma.
+\end{theorem}
+\begin{proof}
+Let $f$ be holomorphic on a neighborhood of $[0,b]$ and let a positively oriented contour surround that interval inside the domain of $f$. Cauchy's formula for divided differences, followed by integration of its resolvent factors, gives
+\begin{align}\label{eq:Cauchybox}
+ \int_0^{u_1}\cdots\int_0^{u_m}[t_1,\ldots,t_m]f\dd\bm t
+ =\frac1{2\pi i}\oint f(z)\prod_{j=1}^m
+        \left(\int_0^{u_j}\frac{\dd t}{z-t}\right)\dd z.
+\end{align}
+The inner function is the analytic continuation of
+$R_j(z)=\log(z/(z-u_j))$ determined by $R_j(z)\to0$ at infinity. On the lower bank of $(0,u_j)$ its value is
+$\log|t/(t-u_j)|+i\pi$; on the upper bank the sign of $i\pi$ is reversed. Outside that interval both boundary values are the same real logarithm. Shrinking the contour around the cut, the lower-minus-upper jump of the \emph{product} is $2\pi i\mathcal P_{\bu}(t)$. Small endpoint circles contribute zero because their integrands grow only as fixed powers of logarithms. Thus \eqref{eq:Cauchybox} is $\int_0^b f(t)\mathcal P_{\bu}(t)\dd t$.
+
+Take $f(t)=t^{m-1}\psi(a+t)$, which is holomorphic around the interval, and use \eqref{eq:box}. The endpoint behavior is at most logarithmic to a fixed power, so the integral is absolutely convergent. Repeated masses merely raise that finite power; they introduce no nonintegrable singularity. When the masses coincide, the product jump is exactly \eqref{eq:Pm}. Differentiation in $a$ is justified on compact subsets of $a>0$ by the same integrable logarithmic majorant.
+\end{proof}
+
+\begin{remark}[Relation to the existing signed kernels]
+The polynomial jump mechanism and the height-one signed kernels belong to the earlier kernel calculus; the manuscript's all-depth chapter develops a much broader geometry \cite{kernels}. We do not claim a new kernel or a new proof of that geometry. The use here is its exact pairing with a critical logarithmic spectral primitive, together with independent spectral parameters and the collision identities above. In particular, replacing the jump of a product by a sum of its individual jumps loses mixed $\pi^2$ corrections.
+\end{remark}
+
+For reference,
+\[
+ P_1=1,\qquad P_2=2L,\qquad P_3=3L^2-\pi^2,\qquad
+ P_4=4L^3-4\pi^2L,\qquad P_5=5L^4-10\pi^2L^2+\pi^4.
+\]
+These give ordinary finite-interval Gamma and polygamma evaluations at every depth, not unspecified finite parts.
+
+\section{Harmonic coefficients and normally convergent zeta-jet series}
+Define the polynomial
+\begin{equation}\label{eq:Pk}
+ E_k(s)=\prod_{h=1}^{k-1}\left(1+\frac{s}{h}\right),\qquad E_1(s)=1.
+\end{equation}
+It satisfies $(s)_k/k!=sE_k(s)/k$. Its derivatives are
+\begin{equation}\label{eq:Ekderiv}
+ E_k^{(r)}(0)=r!\,e_r\left(1,\frac12,\ldots,\frac1{k-1}\right),
+\end{equation}
+with $e_r=0$ for $r\ge k$. Equivalently they are complete exponential Bell polynomials in
+\[
+ H_{k-1},\ -1!H_{k-1}^{(2)},\ 2!H_{k-1}^{(3)},\ldots,
+ (-1)^{r-1}(r-1)!H_{k-1}^{(r)}.
+\]
+This is the standard logarithm-to-product coefficient identity, and supplies finite harmonic-number formulas at every jet order.
+
+\begin{theorem}[All-index Hurwitz expansion]\label{thm:zetajets}
+Suppose $\max_j|u_j|<a$. For $K=|\bk|$ and $\bk\in\N^m$, set
+$c_{\bk}=(-1)^K\prod_j u_j^{k_j}/k_j$. Then
+\begin{align}\label{eq:Hseries}
+ \cH_m(\bs;a,\bu)
+ ={}&(-1)^mU\left(\zeta(1+S,a)-\frac1S\right)\\
+ &+\sum_{\substack{\bk\in\N^m\\K>m}}
+ c_{\bk}\left(\prod_jE_{k_j}(s_j)\right)
+ \zeta(1+S+K-m,a).\nonumber
+\end{align}
+The series converges normally near $\bs=0$, including all spectral derivatives. Explicitly,
+\begin{align}\label{eq:jetformula}
+ \partial^{\ba}\cH_m(0;a,\bu)
+ ={}&(-1)^{m+N}U\gamma_N(a)\\
+ &+\sum_{\substack{\bk\in\N^m\\K>m}}c_{\bk}
+ \sum_{\bb\le\ba}\binom{\ba}{\bb}
+ \left(\prod_jE_{k_j}^{(\beta_j)}(0)\right)
+ \zeta^{(N-|\bb|)}(1+K-m,a).\nonumber
+\end{align}
+For arbitrary masses in \eqref{eq:massdomain}, choose an integer $M$ with $a+M>\max_j|u_j|$, retain $n<M$ explicitly in \eqref{eq:Hnormal}, and apply the same expansion to the tail.
+\end{theorem}
+\begin{proof}
+For $|u|<x$, expand
+\[
+ D_s(x,u)=x^{-s}\sum_{k\ge1}\frac{(-1)^ku^k}{k x^k}E_k(s).
+\]
+Multiplication and summation over $n$ give \eqref{eq:Hseries}; the unique $K=m$ composition has every $k_j=1$ and is exactly the displayed pole-bearing term. To justify the expansion uniformly, choose a compact mass polydisc with $\max |u_j|\le\rho a$, $\rho<1$, and a compact spectral neighborhood. The products $E_k(s)$ have at most polynomial growth in $k$ on that neighborhood, as follows from their Gamma quotient or the product itself. The Hurwitz factor at increasing positive real order is bounded by a constant times $a^{-K}$ times a fixed polynomial in $K$. The number of compositions of $K$ into $m$ positive parts is $\binom{K-1}{m-1}$. Geometric decay $\rho^K$ dominates all these factors and the additional powers of $\log K$ from derivatives. This proves normal convergence. The multivariate Leibniz rule now yields \eqref{eq:jetformula}. The final statement follows by splitting a finite number of summands before expanding.
+\end{proof}
+
+\subsection{The equal-mass Stirling expansion}
+Let $\stirling{k}{m}$ denote the unsigned Stirling number of the first kind. The identity
+$(-\log(1-z))^m=m!\sum_{k\ge m}\stirling{k}{m}z^k/k!$ gives
+\begin{equation}\label{eq:StirlingF}
+ \cF_m(a;u,\ldots,u)
+ =u^m\gamma_0(a)+m!\sum_{r=1}^{\infty}
+ \frac{(-1)^r\stirling{m+r}{m}}{(m+r)!}
+ u^{m+r}\zeta(r+1,a),\qquad |u|<a.
+\end{equation}
+For $m=3$, the first terms are
+\begin{equation}\label{eq:F3series}
+ \cF_3(a;u,u,u)
+ =u^3\gamma_0(a)-\frac32u^4\zeta(2,a)
+ +\frac74u^5\zeta(3,a)-\frac{15}{8}u^6\zeta(4,a)+\cdots.
+\end{equation}
+The coefficients are exact. Equation \eqref{eq:StirlingF} and the Gamma integral \eqref{eq:diagonalGamma} give independent computational routes to the same quantity.
+
+\section{Polylogarithmic generators and their exact boundary subtraction}
+For $|z|<1$, define the absolutely convergent generator
+\begin{equation}\label{eq:Balpha}
+ B_{\ba}(z;\bu)=\sum_{n=1}^{\infty}n^{m-1}z^n
+                \prod_jQ_{\alpha_j}(n,u_j).
+\end{equation}
+The following statement isolates the complete leading polylogarithmic singularity, including its order derivatives.
+
+\begin{theorem}[All-index polylogarithmic boundary identity]\label{thm:polylog}
+Let $N=|\ba|$ and suppose $\Rea(1+u_j)>0$. The function
+\begin{equation}\label{eq:Bsubtract}
+ B_{\ba}(z;\bu)-
+ U(-1)^N\left.\partial_v^N\Li_v(z)\right|_{v=1}
+\end{equation}
+has an absolutely and uniformly convergent power series on $|z|\le1$. Its value at $z=1$ is
+\begin{equation}\label{eq:Blimit}
+ \cF_{\ba}(1;\bu)-U\gamma_N(1).
+\end{equation}
+For $\max_j|u_j|<1$ it has the normally convergent polylogarithmic expansion obtained from \eqref{eq:jetformula} by replacing each zeta-order derivative with the corresponding polylogarithm-order derivative, multiplying the resulting expression by $(-1)^{m+N}$, and omitting the separately displayed Stieltjes term.
+In the unmarked case,
+\begin{equation}\label{eq:Bpoly}
+ B_{\bm0}(z;\bu)=
+ \sum_{\bk\in\N^m}(-1)^{K-m}
+ \left(\prod_j\frac{u_j^{k_j}}{k_j}\right)\Li_{K-m+1}(z).
+\end{equation}
+\end{theorem}
+\begin{proof}
+The coefficient of \eqref{eq:Bsubtract} is precisely the bracket from \eqref{eq:Falpha} with $a=1$. It is $O(n^{-2}(1+\log^Nn))$ and hence summable uniformly on the closed unit disk. Evaluation at $z=1$ proves \eqref{eq:Blimit}. Expanding the normalized differences as in Theorem~\ref{thm:zetajets}, now with the geometrically convergent factor $z^n$, gives the stated derivative expansion. For the zero multi-index it reduces to \eqref{eq:Bpoly}. The order derivative of $\Li_v$ is taken in its defining series in the disk \cite{dlmfpolylog}.
+\end{proof}
+
+For $N=0$, since $\Li_1(z)=-\log(1-z)$, the canonical spectral constant differs from the simple Abel constant by $U\gamma$:
+\begin{equation}\label{eq:Abelcorrection}
+ \cF_m(1;\bu)=U\gamma+
+ \lim_{z\uparrow1}\bigl(B_{\bm0}(z;\bu)+U\log(1-z)\bigr).
+\end{equation}
+This is not an optional choice of integration constant: it follows from the prescribed pole subtraction.
+
+\subsection{A kernel moment formula explaining the harmonic coefficients}
+The following classical beta calculation is useful both as a proof tool and as an independent exact check of the jump kernel.
+\begin{proposition}[Gamma transform of the logarithmic jump polynomial]\label{prop:kernelmoment}
+For $\Rea v>0$,
+\begin{equation}\label{eq:kernelmoment}
+ \int_0^1 y^{v-1}P_m\left(\log\frac y{1-y}\right)\dd y
+ =\frac{m!}{\Gamma(v+1)}[z^m]\frac{\Gamma(v+z)}{\Gamma(z)}.
+\end{equation}
+For every integer $n\ge1$, this is
+\begin{equation}\label{eq:integerkernel}
+ \int_0^1 y^{n-1}P_m\left(\log\frac y{1-y}\right)\dd y
+ =\begin{cases}m!\stirling n m/n!,&n\ge m,\\0,&n<m.\end{cases}
+\end{equation}
+\end{proposition}
+\begin{proof}
+From \eqref{eq:Pm},
+$\sum_{m\ge1}P_m(L)z^m/m!=e^{zL}\sin(\pi z)/\pi$.
+Multiply by $y^{v-1}$ and integrate for sufficiently small $z$. The beta integral and Gamma reflection formula yield
+\[
+ \frac{\sin\pi z}{\pi}B(v+z,1-z)
+ =\frac{\Gamma(v+z)}{\Gamma(v+1)\Gamma(z)}.
+\]
+Coefficient extraction proves \eqref{eq:kernelmoment}. At integer $v=n$, the Gamma quotient is the polynomial $(z)_n$, whose coefficients are unsigned Stirling numbers. This proves the exact moment cancellation, not merely numerical orthogonality.
+\end{proof}
+
+For context, the same calculation yields the height-one projection
+\begin{equation}\label{eq:heightone}
+ \int_0^1\frac1y P_m\left(\log\frac y{1-y}\right)\Li_s(zy)\dd y
+ =m!\Li_{s+1,\{1\}^{m-1}}(z),\qquad |z|<1,
+\end{equation}
+where the outer index receives $z$ and the remaining indices are strict. This is a bridge to the existing signed-kernel spine, not a claim to have newly discovered the height-one multiple polylogarithms. For arbitrary complex $s$ the disk series and its order derivatives converge normally. Indeed \eqref{eq:integerkernel} gives coefficient $m!\stirling n m/(n!n^s)$, and
+$\stirling n m/n!=H_{n-1}(\{1\}^{m-1})/n$.
+
+\section{Gamma-normalized collision antiderivatives}
+The collision formula has an ordinary beta-integral inverse. For $m\ge2$ define the pole-subtracted generator
+\begin{equation}\label{eq:Jgenerator}
+ \cJ_m(w;a,t)=\sum_{r=0}^{m-1}\binom{m-1}{r}(-t)^r
+                \zeta(1+w+r,a+t)-\frac1w.
+\end{equation}
+The subtraction removes the only pole at $w=0$, and
+$(-1)^N\partial_w^N\cJ_m(0;a,t)=\cJ_{m,N}(a,t)$.
+
+\begin{theorem}[Collision antiderivative]\label{thm:primitive}
+For $a>0$, $u>0$, and $w$ in a neighborhood of zero,
+\begin{align}\label{eq:Gammaoperator}
+ \cJ_m(w;a,u)
+ =\frac{\Gamma(1+w)}{\Gamma(m+w)}u^{-w}
+ \frac{\mathrm d^{m-1}}{\mathrm du^{m-1}}
+ \left[u^{m-1+w}\left(\zeta(1+w,a+u)-\frac1w\right)\right],
+\end{align}
+where the bracket is understood by its removable continuation at $w=0$. Consequently
+\begin{equation}\label{eq:betaprimit}
+ \int_0^1(1-y)^{m-2}y^w\cJ_m(w;a,uy)\dd y
+ =\frac{\Gamma(1+w)\Gamma(m-1)}{\Gamma(m+w)}
+      \left(\zeta(1+w,a+u)-\frac1w\right).
+\end{equation}
+Let $h_r^\star(1,1/2,\ldots,1/(m-1))$ denote the complete homogeneous symmetric polynomial, with $h_0^\star=1$. Then, for every $N\ge0$,
+\begin{align}\label{eq:allprimitive}
+ &\int_0^1(1-y)^{m-2}
+ \sum_{k=0}^N\binom Nk(-\log y)^{N-k}\cJ_{m,k}(a,uy)\dd y\\
+ &\qquad=\frac1{m-1}\sum_{k=0}^N\binom Nk(N-k)!
+ h_{N-k}^\star\left(1,\frac12,\ldots,\frac1{m-1}\right)
+ \gamma_k(a+u).\nonumber
+\end{align}
+All displayed integrals are ordinary absolutely convergent integrals.
+\end{theorem}
+\begin{proof}
+Apply the Leibniz rule to the derivative in \eqref{eq:Gammaoperator} and use
+\[
+ \partial_u^r\zeta(1+w,a+u)
+ =(-1)^r\frac{\Gamma(1+w+r)}{\Gamma(1+w)}\zeta(1+w+r,a+u).
+\]
+The Gamma factors from differentiating $u^{m-1+w}$ cancel these factors term by term, leaving the finite sum in \eqref{eq:Jgenerator}. The same operation sends $1/w$ to $1/w$, so the pole subtraction is preserved exactly.
+
+Write $G(u)=u^{m-1+w}(\zeta(1+w,a+u)-1/w)$. For $w$ near zero with $\Rea w>-1$, its derivatives through order $m-2$ tend to zero at $u=0$. Repeated integration of $G^{(m-1)}$ with kernel $(u-t)^{m-2}/(m-2)!$ therefore recovers $G(u)$ without endpoint terms. Substitute \eqref{eq:Gammaoperator}, then set $t=uy$, to obtain \eqref{eq:betaprimit}.
+
+Differentiate with $(-\partial_w)^N$. The integral is locally dominated by an integrable power of $y$ times a fixed power of $|\log y|$. Finally,
+\[
+ \frac{\Gamma(1+w)\Gamma(m-1)}{\Gamma(m+w)}
+ =\frac1{m-1}\prod_{j=1}^{m-1}\left(1+\frac wj\right)^{-1}
+ =\frac1{m-1}\sum_{r\ge0}(-w)^r h_r^\star.
+\]
+The coefficient rule and \eqref{eq:stieltjes} give \eqref{eq:allprimitive}.
+\end{proof}
+
+For example, at $m=2$,
+\begin{align}
+ \int_0^1\cJ_{2,0}(a,uy)\dd y&=\gamma_0(a+u),\\
+ \int_0^1\left[\cJ_{2,1}(a,uy)-\log y\,\cJ_{2,0}(a,uy)\right]\dd y
+ &=\gamma_1(a+u)+\gamma_0(a+u).
+\end{align}
+The complete homogeneous, rather than elementary, harmonic coefficients in this antiderivative are essential: they arise from the \emph{inverse} Gamma ratio. This is the opposite coefficient convention from \eqref{eq:Ekderiv}.
+
+\section{Polynomial weights and finite local anomaly formulas}
+The critical exponent $m-1$ is not arbitrary. It is the unique degree where the leading connected logarithmic term is proportional to $x^{-1}$.
+
+Let $W(x)=\sum_{d=0}^D w_dx^d$ and replace the weight $x^{m-1}$ in \eqref{eq:Cdef} by $W(x)$. Denote the resulting connected spectrum by $\cC_{m,W}$. For $k\ge m$ set
+\begin{equation}\label{eq:Bkpoly}
+ A_k(\bs;\bu)=(-1)^k\sum_{\substack{\bk\in\N^m\\|\bk|=k}}
+                  \prod_{j=1}^m\frac{u_j^{k_j}}{k_j}E_{k_j}(s_j),
+\end{equation}
+and define the finite polynomial
+\begin{equation}\label{eq:RW}
+ R_W(\bs;\bu)=\sum_{d=m-1}^D w_d A_{d+1}(\bs;\bu).
+\end{equation}
+An empty sum is zero.
+
+\begin{theorem}[All polynomial weights: leading connected anomaly]\label{thm:polyweight}
+Near $\bs=0$ there is a holomorphic $\cH_{m,W}$ such that
+\begin{equation}\label{eq:Wgerm}
+ \cC_{m,W}(\bs)=\left(\prod_js_j\right)
+ \left(\frac{R_W(\bs;\bu)}S+\cH_{m,W}(\bs)\right).
+\end{equation}
+The displayed numerator specifies the asymptotic subtraction convention. In particular, on the equal spectral line,
+\begin{equation}\label{eq:Wjet}
+ \left.\frac{\mathrm d^{m-1}}{\mathrm ds^{m-1}}
+   \cC_{m,W}(s,\ldots,s)\right|_{s=0}
+ =\frac{(-1)^m(m-1)!}{m}
+ [x^{-1}]\left\{W(x)\prod_{j=1}^m\log\left(1+\frac{u_j}{x}\right)\right\}.
+\end{equation}
+All lower derivatives vanish. If $D\le m-2$, the connected function vanishes to order at least $m$ on every non-tangent spectral line. For equal masses, the coefficient in \eqref{eq:Wjet} is explicitly
+\begin{equation}\label{eq:WStirling}
+ m!\sum_{d=m-1}^D w_d\,
+ \frac{(-1)^{d+1-m}\stirling{d+1}{m}}{(d+1)!}u^{d+1}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Expand the normalized product at infinity using \eqref{eq:Bkpoly}. The $x^d$ part of the weight produces Hurwitz factors $\zeta(S+k-d,a)$. Near $S=0$ only $k=d+1$ has a pole, with numerator $A_{d+1}$. Subtract through sufficiently high order so that the remaining series converges normally on a full neighborhood of zero. This proves \eqref{eq:Wgerm} for arbitrary masses, after a finite initial split if necessary.
+
+At $\bs=0$, $E_k(0)=1$, so $R_W(0)$ is $(-1)^m$ times the coefficient of $x^{-1}$ in the logarithmic product. Insert $s_j=s$, whence $S=ms$, and extract degree $m-1$. If $D\le m-2$ there is no polar numerator; equivalently the normalized series is already summable at zero. Formula \eqref{eq:WStirling} follows from the logarithm-power generating series.
+\end{proof}
+
+For $m=3$, $W(x)=x^3$, and distinct masses, the coefficient extraction gives
+\[
+ [x^{-1}]x^3\prod_{j=1}^3\log(1+u_j/x)
+ =-\frac{u_1u_2u_3}{2}(u_1+u_2+u_3).
+\]
+Therefore the eight-spectrum second derivative is
+\begin{equation}\label{eq:cubicweightthree}
+ \frac{u_1u_2u_3}{3}(u_1+u_2+u_3).
+\end{equation}
+This is another exact identity independent of $a$. At the next derivative for a general higher-degree weight, derivatives of $R_W$ do contribute; they must not be discarded. The especially clean directional invariance in Corollary~\ref{cor:direction} uses the constant residue numerator of the critical weight.
+
+\section{Audit, verification, and integration safeguards}
+\subsection{What the proofs do and do not depend on}
+The analytic results depend on a locally uniform asymptotic subtraction, classical Hurwitz continuation, the digamma difference series, beta integration, and Cauchy's divided-difference formula. Every exchange of a derivative, limit, or infinite sum is justified above by a normal-convergence or endpoint argument. No theorem depends on a successful integer-relation search or on an assumed algebraic independence of constants.
+
+The supplied verification script checks rising-factorial coefficients against elementary harmonic polynomials, finite-difference cancellation against independent binomial expressions, jump polynomials, and beta moments against exact Stirling numbers. Numerical diagnostics compare finite-sum/Hurwitz-tail evaluation with a separate Gamma-integral route, exercise coincident and unequal masses, verify shift and Gauss laws including marked spectral orders, evaluate individual continued spectra before combining their derivatives, and test polylogarithmic generators. The actual counts, tolerances, software versions, and residuals are in \texttt{results/validation.json} and \texttt{results/supplemental-validation.json}. The supplemental suite separately checks marked collision jets, higher Stieltjes antiderivatives, and the first regular connected derivative. These are numerical diagnostics, not rigorous ball-arithmetic enclosures. The article's proofs are not replaced by the tests.
+
+\subsection{Corrections and hazards found during the source review}
+No false canonical mathematical theorem was established by this targeted review. In the inspected manuscript README with Git blob
+\texttt{dc0fa26d0e5c2ede56df37c5640c7319681dfd25}, the paragraph beginning ``The complete 1,032-input first-letter X family'' occurs twice consecutively. The integration note recommends deleting only the second occurrence if that exact source version is still current. This is an editorial correction, not a mathematical one.
+
+The following are mathematical safeguards for the new material, rather than allegations that an inspected theorem already makes these mistakes:
+\begin{enumerate}[leftmargin=*,itemsep=3pt]
+\item \textbf{Connected does not mean order $m$ after continuation.} Equation \eqref{eq:cubicheadline} disproves that unrestricted inference. The correct leading order at critical degree is $m-1$.
+\item \textbf{A regular spectral line is not a regular multivariate germ.} The polar hyperplane $S=0$ must be subtracted before any simultaneous differentiation there.
+\item \textbf{A jump is taken after multiplication.} Omitting the $-\pi^2$ term in \eqref{eq:cubicgamma}, or summing isolated boundary jumps, changes the answer.
+\item \textbf{Abel and spectral constants differ.} The correction in \eqref{eq:Abelcorrection} is $U\gamma$, with the sign dictated by \eqref{eq:stieltjes}.
+\item \textbf{Mass derivatives precede collision.} Theorem~\ref{thm:collision} concerns $\partial_{u_1}\cdots\partial_{u_m}$ and then restriction to equal masses. This is not the same as taking $m$ total derivatives of $u\mapsto\cF_{\ba}(a;u,\ldots,u)$.
+\item \textbf{Two harmonic conventions occur.} The zeta-jet compiler uses elementary symmetric coefficients; the inverse Gamma-ratio antiderivative uses complete homogeneous coefficients. Interchanging them is incorrect.
+\end{enumerate}
+
+\subsection{Recommended repository placement}
+A suggested home is a new continuation under the Stieltjes-correlation research reports, with cross-references to the signed-kernel chapter. The standalone source and PDF are intended for normal intake, not automatic promotion of all statements into the canonical book. The accompanying insertion fragment presents the central theorem without altering historical sources. No repository file has been changed by this delivery.
+
+\section{Further research questions}
+\paragraph{1. Finite closure away from full collision.}
+Theorem~\ref{thm:collision} has finite one-variable Hurwitz closure after all mass shifts coincide. Determine precisely which partially confluent spectral-index patterns admit an equally finite closure, and which require irreducible multishift zeta functions. A failure of a specified formula class must not be confused with numerical nonreducibility.
+
+\paragraph{2. General spectral sequences and higher-order poles.}
+Replace $n+a$ by a sequence with a known heat expansion. A pole of order $r$ could lower the first connected jet order by $r$, subject to numerator cancellations. Formulate and prove a complete independently regulated analogue, including logarithmic heat terms and more than one intersecting polar hyperplane.
+
+\paragraph{3. Canonical transverse subtraction beyond critical degree.}
+For a general polynomial weight the full numerator $R_W(\bs)$ fixes one natural scheme. Classify changes under replacing it by another representative modulo $S$, and seek an invariant characterization compatible with scaling, symmetry, and mass integration. The critical constant numerator is the simplest case of this question.
+
+\paragraph{4. Arithmetic specializations of mixed Gamma integrals.}
+Investigate rational $a$ and mass endpoints where \eqref{eq:unequalGamma} reduces to Gamma values, Hurwitz-zeta derivatives at rational arguments, or a finite multiple-polylogarithm alphabet. The multiplication law supplies exact constraints but does not, by itself, prove arithmetic closure.
+
+\paragraph{5. Higher-depth functional equations.}
+The functions $\cF_{\ba}$ satisfy an explicit shift equation and an all-index Gauss law. Determine a useful uniqueness theorem from these relations and normalization data, and compare carefully with Barnes-type and multiple-Gamma constructions without identifying distinct definitions prematurely.
+
+\paragraph{6. Integer coverings and distributional collisions.}
+Combine the connected spectral subtraction with the repository's periodic distributional contact formulas. Establish when the two notions of collision admit a common normalization and when an additional local term remains. The present linear-factor theorem does not settle the full distributional restriction problem.
+
+\paragraph{7. Formalization and certified evaluation.}
+A formal proof can be divided into finite coefficient algebra, normal convergence, Hurwitz pole subtraction, and a Cauchy-integral step. For certified numerics, replace the diagnostic Hurwitz tails by interval arithmetic with explicit remainder control and certify the integrable logarithmic endpoints separately.
+
+\paragraph{8. The original arithmetic and moment-prefix targets.}
+The general first-$q$ mixed-tail determinant and the Gaussian $S_6$ and revised $S_8$ identities remain research targets. The present work provides identities and normalizations that may support them, but no implication settling them is claimed.
+
+\appendix
+\section{A compact route to the main theorem}
+For readers integrating the result into an existing manuscript, the proof core is particularly short. The normalized difference \eqref{eq:Dprimitive} has leading term $-u x^{-1-s}$. Multiplying $m$ such terms and the critical weight $x^{m-1}$ leaves $(-1)^mU x^{-1-S}$. Its sum is $(-1)^mU\zeta(1+S,a)$. All omitted terms are summable in a neighborhood of zero. Subtract $(-1)^mU/S$, differentiate the resulting holomorphic germ, and obtain \eqref{eq:Falpha}. The mixed mass derivative is a product of logarithmic resolvents. At a complete mass collision, a finite binomial expansion gives \eqref{eq:collision}. At zero spectral marking, partial fractions yield a divided difference of $t^{m-1}\psi(a+t)$. Its box integral is the Cauchy product of logarithms, hence the single real integral \eqref{eq:unequalGamma}. Each extension in the article preserves one of these exact normalizations.
+
+\section{Reproduction and evidence policy}
+From the package root run
+\begin{verbatim}
+python verification/verify.py
+python verification/verify_supplemental.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The first two commands write separate exact-check and numerical records under \texttt{results/}. The last command compiles the standalone article. Python requires \texttt{mpmath} and \texttt{sympy}; LaTeX uses common AMS and text packages. The verification suite does not need network access or repository credentials. A checksum manifest covers the delivered sources, PDF, notes, and recorded results. Rebuilding the PDF can change binary metadata; such a rebuild should receive its own checksum and visual inspection.
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{12}
+\small
+\bibitem{repo} ProveIt Contributors, \emph{Polylogarithms and their Arithmetic Bridges}, \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/Polylogarithms/docs/manuscript}{canonical manuscript and editorial README}, consulted 11 October 2026. Exact source coverage is recorded in \texttt{PROVENANCE.json}.
+\bibitem{tailrank} ProveIt research reports, \emph{Canonical Digamma and Fifth Harmonic Bridge}, \href{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/Polylogarithms/docs/reports/stieltjes-harmonic-resonance/continuations/canonical-digamma-fifth/sections/07_tail_rank.tex}{section 07: finite reconstruction of two-tail moments}, consulted 11 October 2026.
+\bibitem{adjacent} ProveIt research reports, \emph{The optimal moment prefix for adjacent even tail orders}, \href{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/Polylogarithms/docs/reports/stieltjes-harmonic-resonance/continuations/polygamma-tail-identities/sections/03_harmonic_tails.tex}{polygamma-tail-identities continuation, section 03}, consulted 11 October 2026.
+\bibitem{kernels} ProveIt Contributors, \emph{Strict depth, signed oscillation and minimal positive compensation}, \href{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/Polylogarithms/docs/manuscript/chapters/05-all-depth-geometry.tex}{canonical chapter fragment 05-all-depth-geometry}. The exact inspected blob is recorded in \texttt{PROVENANCE.json}.
+\bibitem{gurel} E. G\"urel, \emph{Resolution of Multiplicative Anomaly of Zeta Regularization for Polynomials}, \href{https://arxiv.org/abs/2504.14563}{arXiv:2504.14563v1}, 20 April 2025. Prior art for first-derivative anomalies and binomial continuation.
+\bibitem{deboor} C. de Boor, \emph{Divided Differences}, Surveys in Approximation Theory \textbf{1} (2005), 46--69; \href{https://arxiv.org/abs/math/0502036}{arXiv:math/0502036}.
+\bibitem{dlmfzeta} NIST Digital Library of Mathematical Functions, \href{https://dlmf.nist.gov/25.11}{\S25.11, Hurwitz Zeta Function}, consulted 11 October 2026.
+\bibitem{dlmfpolylog} NIST Digital Library of Mathematical Functions, \href{https://dlmf.nist.gov/25.12}{\S25.12, Polylogarithms}, and \href{https://dlmf.nist.gov/25.14}{\S25.14, Lerch's Transcendent}, consulted 11 October 2026.
+\bibitem{dlmfgamma} NIST Digital Library of Mathematical Functions, \href{https://dlmf.nist.gov/5.5}{\S5.5, Gamma functional relations}, and \href{https://dlmf.nist.gov/5.9}{\S5.9, integral representations}, consulted 11 October 2026.
+\end{thebibliography}
+\end{document}

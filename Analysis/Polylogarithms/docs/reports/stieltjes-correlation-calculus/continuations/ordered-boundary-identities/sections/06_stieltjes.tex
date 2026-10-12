@@ -1,0 +1,293 @@
+\section{Ordinary Stieltjes identities and their primitives}
+\label{sec:stieltjes}
+
+Two complementary constructions produce every generalized Stieltjes
+constant. The first subtracts a single asymptotic term from the original
+ordered summand and retains ordinary convergence. The second takes
+derivatives of a beta transform precisely on a hyperplane where the
+two Hurwitz residues cancel.
+
+\subsection{Subtracting before summing}
+
+For $\Rea s>0$ and $\Rea a,\Rea b>0$, put
+\[
+ I_n(s,a)=\sum_{m=0}^{n-1}(n-m)^2w_m(s,a),\qquad
+ c_2(t)=\frac{t(t+1)}2.
+\]
+Define the bracketed series
+\begin{equation}\label{eq:subtracted-series}
+ \mathcal U(s,t;a,b)=
+ \sum_{n=1}^{\infty}
+ \left[
+ w_n(t,b)I_n(s,a)-E_s(a)c_2(t)(n+b)^{-t}
+ \right].
+\end{equation}
+The subtraction is inside each summand.
+
+\begin{theorem}[Convergent Stieltjes jets]\label{thm:subtracted-jets}
+The series \eqref{eq:subtracted-series} is locally normally convergent
+for $\Rea s>0$, $\Rea t>0$. On this domain,
+\begin{equation}\label{eq:subtracted-identity}
+ \mathcal U(s,t;a,b)=\frac14\Def(s,t;a,b)
+       +(1-c_2(t))E_s(a)\zeta(t,b+1),
+\end{equation}
+with a removable singularity at $t=1$.
+For $m\ge0$ define the ordinarily convergent logarithmic difference
+\begin{equation}\label{eq:j-m}
+ J_m(s;a,b)=\sum_{k=0}^{\infty}
+ \frac{\{(k+a+2)^{-s}-(k+a)^{-s}\}
+                 \log^m(k+b+1)}{k+b+1}.
+\end{equation}
+With $\mathcal U_m=\partial_t^m\mathcal U(s,1;a,b)$ and
+$E=E_s(a)$, the exact identities are
+\begin{align}
+ \mathcal U_0&=\frac14J_0-\frac32E,\label{eq:u-zero}\\
+ \mathcal U_1&=-\frac14J_1-\frac E2\{1+3\gamma_0(b+1)\},
+ \label{eq:u-one}\\
+ \mathcal U_m&=(-1)^m\left[
+ \frac14J_m+\frac{3m}{2}E\gamma_{m-1}(b+1)
+ -\frac{m(m-1)}2E\gamma_{m-2}(b+1)
+ \right],\quad m\ge2.
+ \label{eq:u-all}
+\end{align}
+Every $\mathcal U_m$ on the left is obtained by differentiating the
+bracketed original series term by term.
+\end{theorem}
+
+\begin{proof}
+The finite identity for $I_n$ gives
+$I_n(s,a)=E_s(a)(n+b)^2+O(n)$ locally uniformly for $\Rea s>0$.
+For the second difference,
+\[
+ w_n(t,b)=c_2(t)(n+b)^{-t-2}+O(n^{-\Rea t-3})
+\]
+uniformly on compact parameter sets. Their product after the
+subtraction is $O(n^{-\Rea t-1})$; any fixed order derivative only
+introduces powers of $\log n$, and a small compact-set margin
+absorbs them. Thus the series is locally normal.
+
+For $\Rea t>1$, subtract the Hurwitz series from the ordered
+boundary identity. This proves \eqref{eq:subtracted-identity} there
+and hence throughout the stated domain by analytic continuation.
+At $t=1+v$,
+\[
+ 1-c_2(1+v)=-\frac32v-\frac12v^2.
+\]
+Multiply this polynomial by \eqref{eq:stieltjes-convention}.
+The $m$th derivative of $\Def(s,t;a,b)$ at $t=1$ is
+$(-1)^mJ_m$, justified by its normally convergent combined series.
+Extracting the constant, the linear coefficient, and the general
+coefficient proves \eqref{eq:u-zero}--\eqref{eq:u-all}.
+\end{proof}
+
+These identities provide a uniform way of expressing Stieltjes
+constants through logarithmically weighted ordered harmonic kernels.
+They are not divergent double sums assigned values after the fact:
+their defining brackets are summable before any continuation is used.
+
+\begin{example}[An explicit nonlinear harmonic subtraction]
+At $a=b=1$, $s=2$, the values are
+\[
+ E=\frac38,\qquad J_0=\frac{11}{4}-2\zeta(2),\qquad
+ \mathcal U_0=\frac18-\frac12\zeta(2).
+\]
+For $s=3$ one instead obtains
+$J_0=15/8-2\zeta(3)$ and
+$\mathcal U_0=-3/16-\zeta(3)/2$.
+In both cases the left side of \eqref{eq:subtracted-series} is
+explicit in the harmonic Bell weights \eqref{eq:bell-weight}.
+\end{example}
+
+\subsection{The hard cutoff has a different constant}
+
+Let $\Ord_N$ denote the original ordered sum with $n\le N$.
+For $\Rea s>0$,
+\begin{equation}\label{eq:hard-cutoff}
+ \lim_{N\to\infty}
+ \{\Ord_N(s,1;a,b)-E_s(a)\log(N+b)\}
+ =\FP_{t=1}\Ord(s,t;a,b)-\frac32E_s(a),
+\end{equation}
+where the finite part keeps $s,a,b$ fixed. To prove it directly,
+write the finite sum as
+$\mathcal U_N(s,1;a,b)+E_s(a)\sum_{n=1}^N(n+b)^{-1}$.
+The first term tends to \eqref{eq:u-zero}; the second, after
+subtracting $E_s(a)\log(N+b)$, tends to $-E_s(a)\psi(b+1)$.
+But
+\begin{equation}\label{eq:fixed-order-fp}
+ \FP_{t=1}\Ord(s,t;a,b)
+ =-E_s(a)\psi(b+1)+\frac14J_0(s;a,b).
+\end{equation}
+This proves \eqref{eq:hard-cutoff}. Equivalently, the upper endpoints
+in the exact finite summation by parts have limit $-3E_s(a)/2$.
+
+For example,
+\[
+ F(1,1)=\frac{\gamma}{4}-\frac38,\qquad
+ \lim_{N\to\infty}\left\{\Ord_N(1,1;1,1)-\frac14\log(N+1)\right\}
+ =\frac{\gamma}{4}-\frac34.
+\]
+There is no contradiction: the two operations retain different
+boundary constants. A diagonal Laurent coordinate $s=t$ would also
+differentiate the residue $E_s(a)$ and is yet another declared
+coordinate. These distinctions should be preserved in any integration
+of the formulas into the manuscript.
+
+\subsection{A beta transform on the cancelled polar hyperplane}
+
+For $\Rea x,\Rea y>0$, $\Rea s,\Rea t>0$ and initially
+$\Rea(s+t)>1$, summing
+\eqref{eq:feynman-basic} gives
+\begin{equation}\label{eq:k-beta}
+ \Kern(s,t;x,y)=\frac{\Gamma(s+t)}{\Gamma(s)\Gamma(t)}
+ \int_0^1u^{s-1}(1-u)^{t-1}
+       \zeta(s+t,y+(x-y)u)\dd u.
+\end{equation}
+For $\Def$ take the difference of the two integrands before
+continuing. The Hurwitz pole at $s+t=1$ then cancels identically.
+This is a direct instance of the beta-parametrization method for
+zeta products; compare \cite{shpot-paris}. The following all-order
+Stieltjes identity uses that cancellation.
+
+\begin{theorem}[Beta--Stieltjes difference identity]\label{thm:beta-stieltjes}
+Suppose $0<\Rea\sigma<1$ and $\Rea a,\Rea b>0$. Set
+\begin{align*}
+ A_\pm(u)&=b+1+(a-b\pm1)u,\\
+ T_m(\sigma;a,b)&=\sum_{k=0}^{\infty}
+ \{(k+a+2)^{-\sigma}-(k+a)^{-\sigma}\}
+ (k+b+1)^{\sigma-1}[-\log(k+b+1)]^m,
+\end{align*}
+and define
+\begin{align}
+ \ell_1(u)&=\log(1-u)+\psi(1)-\psi(1-\sigma),\notag\\
+ \ell_j&=\psi^{(j-1)}(1)-\psi^{(j-1)}(1-\sigma),\qquad j\ge2.
+ \label{eq:beta-ells}
+\end{align}
+Then, for every integer $m\ge0$,
+\begin{equation}\label{eq:beta-stieltjes-all}
+ \begin{split}
+ T_m(\sigma;a,b)=\frac{\sin(\pi\sigma)}{\pi}
+ \int_0^1&u^{\sigma-1}(1-u)^{-\sigma}\\[-2pt]
+ {}\times&\sum_{j=0}^{m}\binom mj(-1)^j
+ \Bell_{m-j}(\ell_1(u),\ldots,\ell_{m-j})
+ \{\gamma_j(A_+(u))-\gamma_j(A_-(u))\}\dd u.
+ \end{split}
+\end{equation}
+Both the sum and the integral converge ordinarily. The sum has
+summands $O(k^{-2}\log^m k)$.
+\end{theorem}
+
+\begin{proof}
+In the difference of \eqref{eq:k-beta}, put
+$s=\sigma$, $t=1-\sigma+v$. Its integral is
+\[
+ \frac{\Gamma(1+v)}{\Gamma(\sigma)\Gamma(1-\sigma+v)}
+ \int_0^1 u^{\sigma-1}(1-u)^{-\sigma+v}
+ \{\zeta(1+v,A_+(u))-\zeta(1+v,A_-(u))\}\dd u.
+\]
+The expression in braces is holomorphic at $v=0$; its $j$th
+derivative there is $(-1)^j(\gamma_j(A_+)-\gamma_j(A_-))$.
+The factor outside the braces, divided by its value at $v=0$,
+has logarithmic derivatives \eqref{eq:beta-ells}. The constant
+factor is $\sin(\pi\sigma)/\pi$ by Gamma reflection.
+The Bell product rule \eqref{eq:bell-definition} therefore gives
+\eqref{eq:beta-stieltjes-all}.
+
+All endpoint powers have real exponents greater than $-1$, uniformly
+for $v$ in a sufficiently small disk. Additional logarithms are
+integrable. The shifts $A_\pm(u)$ remain in a compact subset of the
+right half-plane, so the differentiated Hurwitz difference is
+bounded there. These facts justify differentiation under the
+integral. On the series side, the shifted difference gains one
+power of $k$, giving $O(k^{-2+\lvert\Rea v\rvert}\log^m k)$
+uniformly near zero. Differentiating it gives exactly $T_m$.
+\end{proof}
+
+At $\sigma=\tfrac12$,
+\begin{equation}\label{eq:half-beta-ells}
+ \ell_1(u)=\log[4(1-u)],\qquad
+ \ell_j=(-1)^j(j-1)!(2-2^j)\zeta(j),\quad j\ge2.
+\end{equation}
+Thus the transform has an arcsine weight and Bell coefficients
+expressed entirely in ordinary zeta values. At $a=b=1$ there is
+also the geometrically convergent single-zeta-derivative series
+\begin{equation}\label{eq:beta-jet-zeta}
+ T_m(\sigma;1,1)
+ =-2\sum_{h=0}^{\infty}\frac{(\sigma)_{2h+1}}{(2h+1)!}
+       \zeta^{(m)}(2h+2,2).
+\end{equation}
+Indeed the Hurwitz expansion of $\Def$ has only odd shift powers
+when $a=b$, and along $s+t=1+v$ its zeta argument is $2h+2+v$.
+The shift-to-tail ratio is $1/2$, so differentiating this expansion
+is locally normal. In particular,
+$T_0(\tfrac12;1,1)=-1/\sqrt2$; the next subsection explains its
+elementary telescoping origin.
+
+\subsection{Arcsine Gamma identities and Stieltjes primitives}
+
+Some symmetric members simplify further and should be identified
+as recurrence consequences, rather than presented as independent
+priority claims. For $a>0$,
+\begin{align}
+ \int_0^1\frac{\psi(a+1+u)-\psi(a+1-u)}{\sqrt{u(1-u)}}\dd u
+ &=\frac{\pi}{\sqrt{a(a+1)}},\label{eq:arcsine-psi}\\
+ \int_0^1\frac{\log\Gamma(a+1+u)-\log\Gamma(a+1-u)}
+                       {\sqrt{u(1-u)}}\dd u
+ &=2\pi\log\frac{\sqrt a+\sqrt{a+1}}2.
+ \label{eq:arcsine-gamma}
+\end{align}
+To prove these, replace $u$ by $1-u$ in the second member of each
+difference inside its integral. The recurrences for $\psi$ and
+$\Gamma$ then leave respectively $1/(a+u)$ and $\log(a+u)$.
+The first arcsine integral is obtained by $u=(1+\cos\theta)/2$;
+integrating it in $a$ and comparing as $a\to\infty$ gives the
+second. This proof fixes the normalization of the logarithm,
+including the factor $2$ in its denominator.
+
+From $\gamma_m(a+1)-\gamma_m(a)=-\log^m(a)/a$ one likewise obtains
+the all-order identity
+\begin{equation}\label{eq:arcsine-stieltjes}
+ \int_0^1\frac{\gamma_m(a+1+u)-\gamma_m(a+1-u)}
+                      {\sqrt{u(1-u)}}\dd u
+ =-\int_0^1\frac{\log^m(a+u)}{(a+u)\sqrt{u(1-u)}}\dd u.
+\end{equation}
+For instance, its $m=1$ value is
+\begin{equation}\label{eq:arcsine-gamma-one}
+ -\frac{\pi}{\sqrt{a(a+1)}}
+ \log\frac{4a(a+1)}{(\sqrt a+\sqrt{a+1})^2}.
+\end{equation}
+For a direct evaluation, set $A=a+\tfrac12$, $B=\tfrac12$,
+$D=\sqrt{A^2-B^2}$ and $r=B/(A+D)$. Then
+$A+B\cos\theta=(A+D)(1+2r\cos\theta+r^2)/2$.
+The Fourier series of its logarithm and the Poisson kernel of its
+reciprocal give
+\[
+ \int_0^\pi\frac{\log(A+B\cos\theta)}{A+B\cos\theta}\dd\theta
+ =\frac{\pi}{D}\log\frac{2D^2}{A+D}.
+\]
+Their series converge absolutely since $0<r<1$; substitution is
+\eqref{eq:arcsine-gamma-one} with the required negative sign.
+
+There is also a canonical primitive without an arbitrary periodic
+ambiguity. Define
+$S_m(a)=\int_1^a\gamma_m(x)\dd x$ for $a>0$.
+The elementary integral
+\[
+ \int_1^2\zeta(1+v,a)\dd a
+ =\frac{\zeta(v,1)-\zeta(v,2)}{v}=\frac1v
+\]
+shows, coefficient by coefficient, that $\int_1^2\gamma_m(a)\dd a=0$.
+Integrating the shift recurrence consequently gives
+\begin{equation}\label{eq:stieltjes-primitive-recurrence}
+ S_m(a+1)-S_m(a)=-\frac{\log^{m+1}a}{m+1}.
+\end{equation}
+The same symmetry argument yields
+\begin{equation}\label{eq:arcsine-primitive}
+ \int_0^1\frac{S_m(a+1+u)-S_m(a+1-u)}{\sqrt{u(1-u)}}\dd u
+ =-\frac1{m+1}\int_0^1\frac{\log^{m+1}(a+u)}{\sqrt{u(1-u)}}\dd u.
+\end{equation}
+For $m=0$, $S_0(a)=-\log\Gamma(a)$, and this reduces exactly to
+\eqref{eq:arcsine-gamma}. Equations
+\eqref{eq:beta-stieltjes-all} and \eqref{eq:arcsine-primitive}
+exhibit two different sources of all-order identities: cancellation
+of a zeta pole in a beta transform, and integration of the elementary
+shift recurrence.

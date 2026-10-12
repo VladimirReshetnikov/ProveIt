@@ -1,0 +1,149 @@
+% ProveIt research insertion fragment. No document preamble.
+% Requires the parent's standard theorem/proof environments and AMS math.
+% Full proofs, scope, literature and checks: accompanying article.tex.
+% All labels in this fragment are prefixed connected:.
+\section{Connected spectral jets and mixed Gamma primitives}
+\label{connected:section}
+Let $a>0$, $x_n=n+a$, $m\ge1$, and $\operatorname{Re}(a+u_j)>0$.
+Each linear factor uses its right-half-plane principal logarithm. A spectral
+product uses the sum of those factor logarithms, not an assumed principal-log
+multiplicativity. Put $U=\prod_j u_j$ and $S=\sum_j s_j$, and define
+\[
+ D_s(x,u)=-\int_0^u(x+t)^{-1-s}\,dt
+ =\frac{(x+u)^{-s}-x^{-s}}s,
+\]
+where the quotient is continued at $s=0$. Thus $D_0=-\log(1+u/x)$.
+The connected critical spectrum is
+\[
+ \mathcal C_m(\boldsymbol{s})
+ =\sum_{n\ge0}x_n^{m-1}
+    \prod_{j=1}^m\bigl((x_n+u_j)^{-s_j}-x_n^{-s_j}\bigr),
+ \qquad\operatorname{Re}S>0.
+\]
+For $\operatorname{Re}S>m$ it is the inclusion--exclusion of $2^m$ separately
+convergent spectra.
+
+\begin{theorem}[Critical connected pole]\label{connected:germ}
+There is a holomorphic function $\mathcal H_m$ on
+$\operatorname{Re}S>-1$ such that
+\begin{equation}\label{connected:pole}
+ \mathcal C_m(\boldsymbol{s})=
+ \left(\prod_js_j\right)
+ \left(\frac{(-1)^mU}{S}+\mathcal H_m(\boldsymbol{s})\right).
+\end{equation}
+Its exact normalization is
+\begin{align*}
+ \mathcal H_m(\boldsymbol{s})={}&(-1)^mU
+       \left(\zeta(1+S,a)-\frac1S\right)\\
+ &+\sum_{n\ge0}\left[x_n^{m-1}\prod_jD_{s_j}(x_n,u_j)
+                      -(-1)^mU x_n^{-1-S}\right].
+\end{align*}
+If $m\ge2$ and $U\ne0$, the unnormalized connected function has no jointly
+holomorphic germ at the origin, although every non-tangent spectral line
+has a regular restriction. On the equal line its derivatives below order
+$m-1$ vanish, and
+\[
+ \left.\frac{d^{m-1}}{dt^{m-1}}\mathcal C_m(t,\ldots,t)\right|_{t=0}
+ =\frac{(-1)^m(m-1)!}{m}U.
+\]
+\end{theorem}
+\begin{proof}
+Uniformly on compact parameter sets,
+$D_s(x,u)=-u x^{-1-s}+O(x^{-2-\operatorname{Re}s})$.
+The subtracted bracket is therefore $O(x^{-2-\operatorname{Re}S})$,
+with the same summability after fixed derivatives introduce logarithmic
+factors. This proves normal convergence. Restoring the subtracted leading
+term gives the Hurwitz function, whose residue at $S=0$ is one.
+The polynomial $\prod_js_j$ is not divisible by $S$ for $m\ge2$.
+On a non-tangent line the quotient instead becomes a monomial of degree
+$m-1$. The stated derivative follows by setting every $s_j=t$.
+\end{proof}
+
+For a multi-index $\boldsymbol\alpha\in\mathbb N_0^m$, put $N=|\boldsymbol\alpha|$
+and
+\[
+ Q_r(x,u)=\frac{\log^{r+1}(x+u)-\log^{r+1}x}{r+1}.
+\]
+Use the convention
+$\zeta(1+w,a)=1/w+\sum_{N\ge0}(-1)^N\gamma_N(a)w^N/N!$.
+
+\begin{theorem}[All-index primitive and complete mass collision]
+\label{connected:primitive}
+The series
+\begin{equation}\label{connected:F}
+ \mathcal F_{\boldsymbol\alpha}(a;\boldsymbol u)
+ =U\gamma_N(a)+\sum_{n\ge0}
+ \left[x_n^{m-1}\prod_jQ_{\alpha_j}(x_n,u_j)
+                  -\frac{U\log^N x_n}{x_n}\right]
+\end{equation}
+is normally and absolutely convergent. It is
+$(-1)^{m+N}\partial_{\boldsymbol s}^{\boldsymbol\alpha}\mathcal H_m(0)$.
+Its mixed mass derivative, taken before restriction to the diagonal, is
+\begin{align}\label{connected:collision}
+ &\left.\partial_{u_1}\cdots\partial_{u_m}
+       \mathcal F_{\boldsymbol\alpha}(a;\boldsymbol u)
+       \right|_{u_1=\cdots=u_m=u}\\
+ &\qquad=\gamma_N(a+u)+(-1)^N
+    \sum_{r=1}^{m-1}\binom{m-1}{r}(-u)^r
+                           \zeta^{(N)}(r+1,a+u).\nonumber
+\end{align}
+Here $\zeta^{(N)}$ differentiates the order, not the shift.
+\end{theorem}
+\begin{proof}
+Differentiation of $D_s$ gives
+$\partial_s^rD_s|_0=(-1)^{r+1}Q_r$, and every subtracted bracket in
+\eqref{connected:F} is $O(x^{-2}(1+\log^N x))$.
+A mixed mass derivative replaces $Q_r$ by $\log^r(x+u)/(x+u)$.
+At a complete collision the logarithms combine to $\log^N(x+u)$.
+The finite identity
+\[
+ \frac{x^{m-1}}{(x+u)^m}
+ =\sum_{r=0}^{m-1}\binom{m-1}{r}\frac{(-u)^r}{(x+u)^{r+1}}
+\]
+reduces every $r\ge1$ sum to a Hurwitz order derivative; the $r=0$
+difference is $\gamma_N(a+u)-\gamma_N(a)$. This proves the result.
+\end{proof}
+
+Write $\mathcal F_m=\mathcal F_{(0,\ldots,0)}$. Here $\log\Gamma$ is the holomorphic logarithm in the right half-plane, real on the positive axis. At depth one,
+$\mathcal F_1(a;u)=\log\Gamma(a)-\log\Gamma(a+u)$.
+For positive real $u$, let
+\[
+ P_m(L)=\sum_{j=0}^{\lfloor(m-1)/2\rfloor}
+          (-1)^j\binom m{2j+1}\pi^{2j}L^{m-2j-1}.
+\]
+Then the ordinary integral formula is
+\begin{equation}\label{connected:gamma}
+ \mathcal F_m(a;u,\ldots,u)
+ =-\int_0^u t^{m-1}\psi(a+t)
+                   P_m\left(\log\frac{t}{u-t}\right)\,dt.
+\end{equation}
+Indeed the unmarked mixed derivative is the negative divided difference
+$-[u_1,\ldots,u_m](t^{m-1}\psi(a+t))$. Integrating over the mass box and
+using Cauchy's divided-difference formula gives a contour integral of the
+product of $m$ logarithms. The lower-minus-upper jump at equal masses is
+$2\pi iP_m(\log(t/(u-t)))$. Its endpoint growth is a finite logarithmic
+power, so the contour shrinks to the displayed absolutely convergent
+integral. In particular $P_3(L)=3L^2-\pi^2$; the constant term cannot be omitted.
+
+The all-index Gauss law is
+\begin{align}\label{connected:gauss}
+ &\sum_{h=0}^{q-1}\mathcal F_{\boldsymbol\alpha}
+    \left(\frac{a+h}{q};\frac{\boldsymbol u}{q}\right)\\
+ &\quad=q^{1-m}\left\{
+ \sum_{\boldsymbol\beta\le\boldsymbol\alpha}
+   \binom{\boldsymbol\alpha}{\boldsymbol\beta}
+   (-\log q)^{N-|\boldsymbol\beta|}
+       \mathcal F_{\boldsymbol\beta}(a;\boldsymbol u)
+ +\frac{(-1)^NU(\log q)^{N+1}}{N+1}\right\},\nonumber
+\end{align}
+where $q\ge1$ is an integer. It follows by splitting the defining normalized
+spectral series into residue classes, then subtracting the specified pole.
+
+\paragraph{Normalization and scope.}
+Mass collision is not the same operation as setting $S=0$ in the unnormalized
+spectral expression. The mixed mass derivative is not the total derivative
+of a one-variable diagonal function. These results are for this explicit
+connected linear-factor family, not a general restriction theorem for singular
+Stieltjes distributions. The accompanying full article proves the all-index
+polylogarithmic expansion and Gamma-normalized antiderivatives and records
+classical inputs, source-review limits, and independent diagnostic checks.

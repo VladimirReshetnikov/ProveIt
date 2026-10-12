@@ -724,3 +724,66 @@ The joint 9395-by-8786 native matrix has rank 4942 modulo 2147483647 and
 does not close the target. This is a completed finite-field diagnostic,
 separate from the proved X-family kernel theorem and the open period identity.
 Convergent length-split 2+5 and 3+4 products are a next research direction.
+
+
+## Beta crossing, ordinary logarithmic moments and complete split inputs
+
+No new relevant incoming or main-branch report at initial inspection.
+Audit and accept the beta-crossing core after its preserved full replay.
+Prove complex affine pushforward smoothness and boundary limits, the finite
+crossed-mode correction, all balanced jets and chamber rank. Retain the
+common-interval hypothesis of the earlier theorem and exhibit exact
+counterexamples to an uncorrected extension or integer-only differentiation.
+Use the centered generator to evaluate every ordinary logarithmic moment
+q >= r+s in even zeta values; an independent ordinary Mellin multiplicity
+route supplies a separate coefficient and quadrature audit. Later finite
+Mellin parts and primitive families remain pending.
+
+Independent density/jets/chambers/multiplicities and real/complex diagnostics
+pass. A checker Boolean conversion was repaired and the full audit replayed.
+Append the material without renumbering old theorems/equations. Rebuild the
+four volumes and combined manuscript, inspect every changed page and fix
+the one orphaned contents entry in III before final coupled and cold builds.
+Final page counts are 130/129/224/85 (568 total), combined 527; bibliography
+137, thirteen figures and 94 historical leads. All 40 destinations pass.
+
+The independent S6 experiment completes both 3604-input convergent length
+splits. Retain its raw JSON records unchanged in scratch and losslessly
+encode all 39634508 coefficient pairs for publication. A separate checker
+imports no delivered code and proves full input-set equality, using an
+independent letter-profile polynomial count; a missing-input control fails.
+Every sparse coordinate, bound and logical byte stream is checked. The
+full 16603-by-8786 integer matrix is exported without dropping top sectors.
+
+After both terminal PASS files were serialized, the raw row generator was
+still releasing a very large symbolic cache. Stop only that completed own
+process after checking its command and both records, preserving every output;
+do not treat its cleanup exit code as a mathematical suite pass. The
+canonical reproducer now streams rows and closes all handles before bypassing
+costly cache destruction at CLI shutdown. The lossless packer and independent
+data audit subsequently complete normally. Its native finite-field target
+search remains a separate diagnostic, with rational reconstruction and exact
+residuals required for any rational membership claim.
+
+
+The completed 16603-row native search has rank 4985 modulo 2147483647,
+43 more than the preceding first-letter experiment, and does not close the
+target. This is a finite-field diagnostic. It establishes neither rational
+nonmembership nor a period counterexample; Gaussian S6/revised S8 stay open.
+
+
+## Complete fixed-order harmonic-tail prefixes, October 12, 2026
+
+Place and publish five seventeenth and six eighteenth reports without changing delivered files. Preserve 454 tracked originals and six ignored recoverable records; retire all eleven ZIPs in their placement commits. Run all eleven full mathematical suites on isolated copies, including fresh native and Python complete order-twelve lists. Record the later exact match for the quadratic predecessor Library article separately from its original provenance. The long boundary-product provenance tree uses a shorter parent path, retaining every inner filename.
+
+Reconcile the analytic centered moment model, Faulhaber constant cancellation, complete Pade multiplier, general highest-degree factorization and effective eventual theorem. Combine the source order-ten congruence with its one missing exact case and eventual threshold; credit the incoming order-ten/twelve completions. Independently reconstruct the exceptional matrix over rationals and in Wolfram, checking every coefficient, both inverse products and the determinant.
+
+Extend to smaller order fourteen: regenerate the exact sufficient threshold B7=80640; certify all 80632 remaining cases over prime 7340033. Two independently generated complete Bernoulli tables agree, with full reciprocal-product identities and safe integer convolution bounds. Native forward-difference/Gaussian determinants match independent symbolic Stirling/subset determinants on every case. Repeat the canonical reproducer in fresh scratch and compare complete preserved payloads. Five exact rational original/retained determinant comparisons and wrong-sign controls pass. Generate all eight ordinary identity weights and counterterms for (14,16), then state the general ordinary convergent identity family in Section 8.45.
+
+The general all-pair rank conjecture, numerical arithmetic independence and Gaussian S6/revised S8 remain open. Ten further packages are observed in incoming; the gap-six delivery claims a complete family, still awaiting intake, full replay and analytic audit. It must not be marked accepted merely from its claim-status record.
+
+The final scientific-body comparison caught a helper encoding error in old
+Chapter 8 punctuation. Restore that driver from its committed UTF-8 source
+and append only the new input; the resulting diff has exactly two added
+lines. Fix the helper decoding and rebuild every PDF, then repeat cold builds
+and final raster review. The mathematical certificate inputs were unaffected.

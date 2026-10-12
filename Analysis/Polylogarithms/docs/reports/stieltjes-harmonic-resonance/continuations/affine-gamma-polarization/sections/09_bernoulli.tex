@@ -1,0 +1,231 @@
+\section{Bernoulli selectors: single-zeta closure and a classification}
+\label{ag:sec:bernoulli}
+
+The beta weight in \eqref{ag:eq:Hcompact} is even and vanishes with its
+first derivative at both endpoints. A different basis of precisely this
+polynomial space makes the arithmetic of the interval $[1,3]$ diagonal.
+Define, for $r\ge2$,
+\begin{equation}\label{ag:eq:Bernoulli-weight}
+ P_r(v)=B_{2r}\left(\frac{v+1}{2}\right)-B_{2r},\qquad
+ I_r(s)=\int_1^3P_r(x-2)\zeta(s,x)\dd x.
+\end{equation}
+Here $B_n(x)$ is defined by
+$te^{xt}/(e^t-1)=\sum_{n\ge0}B_n(x)t^n/n!$, with $B_n=B_n(0)$
+\cite{DLMFBernoulli}. In particular $B_1=-1/2$ but $B_1(1)=1/2$.
+The endpoint derivatives are
+\begin{equation}\label{ag:eq:Bernoulli-d}
+ d_{rj}:=P_r^{(j)}(1)
+ =\frac{(2r)!}{2^j(2r-j)!}B_{2r-j}(1),\qquad 1\le j\le2r.
+\end{equation}
+The only nonzero odd derivative in this range is $j=2r-1$.
+
+\subsection{The full complex-order selector identity}
+\begin{theorem}[One shifted zeta at every complex order]
+\label{ag:thm:single-zeta}
+As meromorphic functions of $s$,
+\begin{equation}\label{ag:eq:single-zeta}
+ \boxed{
+ I_r(s)=-\frac{(2r)!}{2^{2r-1}(1-s)_{2r}}\zeta(s-2r)
+ -\sum_{j=2}^{2r}\frac{(-1)^jd_{rj}}{(1-s)_{j+1}}
+                                    \bigl(1+2^{j+1-s}\bigr).}
+\end{equation}
+The compact integral has only the pole $s=1$, of residue $-2B_{2r}$;
+all other apparent poles in the display cancel.
+\end{theorem}
+\begin{proof}
+The Bernoulli reflection identity makes $P_r$ even. The endpoint values
+and first derivatives vanish. Repeated integration by parts, exactly as
+in Theorem~\ref{ag:thm:hurwitz}, gives
+\[
+ I_r(s)=\sum_{j=2}^{2r}\frac{(-1)^jd_{rj}}{(1-s)_{j+1}}
+       \bigl\{\zeta(s-j-1,3)-(-1)^j\zeta(s-j-1,1)\bigr\}.
+\]
+Integer translation of Hurwitz zeta makes the braces
+\[
+ (1-(-1)^j)\zeta(s-j-1)-1-2^{j+1-s}.
+\]
+All even $j$ therefore contribute only elementary terms. For odd $j$,
+\eqref{ag:eq:Bernoulli-d} vanishes except when $j=2r-1$, because all
+odd Bernoulli numbers beyond $B_1$ are zero. At this last index,
+$d_{r,2r-1}=(2r)!/2^{2r}$. This gives
+\eqref{ag:eq:single-zeta}. Finally,
+$\int_{-1}^1P_r(v)\dd v=-2B_{2r}$, since the integral of
+$B_{2r}(x)$ over $[0,1]$ is zero. The compact representation proves the
+pole assertion.
+\end{proof}
+
+\begin{theorem}[The selector basis and its uniqueness]
+\label{ag:thm:selector-classification}
+Let $\mathscr V_R$ be the rational vector space of even polynomials
+$P(v)$ of degree at most $2R$ such that $P(1)=P'(1)=0$, where $R\ge2$.
+Then $P_2,\ldots,P_R$ form a basis, with the explicit expansion
+\begin{equation}\label{ag:eq:selector-expansion}
+ \boxed{
+ P(v)=\sum_{r=2}^R\frac{2^{2r}P^{(2r-1)}(1)}{(2r)!}\,P_r(v).}
+\end{equation}
+Moreover, for a nonzero $P\in\mathscr V_R$ and a fixed $r\in\{2,\ldots,R\}$,
+the identity
+\begin{equation}\label{ag:eq:selector-class}
+ \int_1^3P(x-2)\zeta(s,x)\dd x
+ =F(s)\zeta(s-2r)+G(s)+2^{-s}H(s)
+\end{equation}
+with rational functions $F,G,H\in\C(s)$ holds if and only if $P$ is a
+nonzero scalar multiple of $P_r$. For rational $P$, that scalar is
+rational. This is a statement about meromorphic functions of $s$, not
+about independence of particular numerical zeta values.
+\end{theorem}
+\begin{proof}
+The dimension of the even-polynomial space is $R+1$. Evaluation of
+$P(1)$ and $P'(1)$ imposes two independent linear conditions, so
+$\dim\mathscr V_R=R-1$. Each $P_r$ belongs to this space and has degree
+$2r$ with nonzero leading coefficient. They are therefore a basis.
+For the odd derivative of order $2j-1$ at $1$, all basis elements vanish
+except $P_j$, whose value is $(2j)!/2^{2j}$. This proves
+\eqref{ag:eq:selector-expansion}.
+
+It remains to justify genuine functional uniqueness, rather than only
+uniqueness in a chosen formal list. The functions
+\begin{equation}\label{ag:eq:functional-independence}
+ 1,\quad 2^{-s},\quad \zeta(s-4),\quad\zeta(s-6),\ldots,\zeta(s-2R)
+\end{equation}
+are linearly independent over $\C(s)$. To see this, clear rational
+denominators in a purported relation. In a right half-plane its
+Dirichlet expansion has the form
+\[
+ \sum_{n\ge1}Q_n(s)n^{-s}=0,
+\]
+where each $Q_n$ is a polynomial of uniformly bounded degree in $s$.
+For $n\ge3$, it is
+$Q_n(s)=\sum_{r=2}^Rp_r(s)n^{2r}$ for fixed polynomials $p_r$;
+only $n=1,2$ have the extra polynomial terms.
+
+If some $Q_n$ were nonzero, choose the smallest such $n_0$ and divide
+by $n_0^{-s}$ for real $s\to+\infty$. The remaining tail is bounded by
+a polynomial in $s$ times an exponentially decaying function. This
+follows from $|Q_n(s)|\le C(1+s)^M n^{2R}$ and the convergent series
+$\sum_{n>n_0}n^{2R}(n_0/n)^s$; splitting off half the exponent bounds
+it by $C'(n_0/(n_0+1))^{s/2}$ for large $s$.
+A nonzero polynomial $Q_{n_0}(s)$ cannot tend to zero exponentially.
+Thus every $Q_n$ is zero. For infinitely many integers $n\ge3$,
+$\sum p_r(s)n^{2r}=0$ as a polynomial in $s$; regarding it as a
+polynomial in $n$ gives $p_r=0$ for every $r$. The two remaining
+coefficients also vanish. This proves \eqref{ag:eq:functional-independence}.
+
+Expand $P$ by \eqref{ag:eq:selector-expansion} and apply
+Theorem~\ref{ag:thm:single-zeta}. The independence just proved forces
+all coefficients except the prescribed $r$ to be zero in
+\eqref{ag:eq:selector-class}. The converse follows from
+\eqref{ag:eq:single-zeta}.
+\end{proof}
+
+The restriction on the elementary remainder in
+\eqref{ag:eq:selector-class} is essential. Allowing arbitrary
+meromorphic coefficients would make such a classification vacuous.
+Likewise, this functional theorem says nothing about possible
+unexpected numerical relations after specializing $s$.
+
+\subsection{Beta--Bernoulli transport}
+For the particular polynomial $(1-v^2)^r$, equation
+\eqref{ag:eq:weight-derivative} makes the selector expansion completely
+explicit:
+\begin{equation}\label{ag:eq:beta-Bernoulli}
+ (1-v^2)^r=(-1)^r2^{2r}\sum_{j=2}^{r}
+       \frac1j\binom r{2j-r-1}
+       \left(B_{2j}\left(\frac{v+1}{2}\right)-B_{2j}\right),
+\end{equation}
+where a binomial coefficient outside $0\le2j-r-1\le r$ is zero.
+Consequently the Gamma-derived Mellin transform on $[1,3]$ satisfies
+\begin{equation}\label{ag:eq:H-selector-transport}
+ \HH_r(s;2,1)=\frac1{4r!(r+1)!}
+                 \sum_{j=2}^{r}\frac1j\binom r{2j-r-1}I_j(s).
+\end{equation}
+This links the affine Gamma square kernel directly to the single-zeta
+selector basis. It also explains why only certain shifted even-order
+zeta coordinates appear in its integer-endpoint reduction.
+
+\subsection{One odd zeta in each trigamma integral}
+Define the rational number
+\begin{equation}\label{ag:eq:Rr}
+ R_r=-\sum_{j=2}^{2r}\frac{(-1)^jd_{rj}}{(j-1)!}
+                         (H_{j-1}-1)(1+2^{j-1}).
+\end{equation}
+\begin{corollary}[Bernoulli-weighted trigamma integrals]
+\label{ag:cor:odd-zeta}
+For every integer $r\ge2$,
+\begin{align}
+ \boxed{\displaystyle
+ \int_1^3\left(B_{2r}\left(\frac{x-1}{2}\right)-B_{2r}\right)
+                                  \psi'(x)\dd x
+ =R_r+\frac{(-1)^r(2r)!}{2^{4r-2}\pi^{2r-2}}\zeta(2r-1).}
+ \label{ag:eq:odd-zeta-integral}
+\end{align}
+\end{corollary}
+\begin{proof}
+For any even $P$ with $P(\pm1)=P'(\pm1)=0$, write
+$d_j=P^{(j)}(1)$. In the finite endpoint expression put
+$s=2+\varepsilon$. The reciprocal denominator is
+\[
+ \frac1{(1-s)_{j+1}}
+ =\frac1{(j-1)!\varepsilon}
+     \left(1+(H_{j-1}-1)\varepsilon+O(\varepsilon^2)\right).
+\]
+The endpoint numerator has constant $-1-2^{j-1}$ and linear coefficient
+$2\mathbf1_{j\text{ odd}}\zeta'(1-j)+2^{j-1}\log2$.
+All pole terms cancel by analyticity of the compact integral.
+The coefficient of $\log2$ is
+\[
+ \sum_{j\ge2}\frac{(-1)^j2^{j-1}d_j}{(j-1)!}=-P'(-1)=0.
+\]
+The remaining value is therefore
+\[
+ \sum_{j\ge2}\frac{(-1)^jd_j}{(j-1)!}
+ \left\{2\mathbf1_{j\text{ odd}}\zeta'(1-j)
+                     -(H_{j-1}-1)(1+2^{j-1})\right\}.
+\]
+For $P=P_r$ only $j=2r-1$ contributes a zeta derivative, and its
+coefficient is $-r(2r-1)/2^{2r-2}$. Finally use
+\[
+ \zeta'(-2n)=\frac{(-1)^n(2n)!}{2(2\pi)^{2n}}\zeta(2n+1)
+ \quad(n\ge1),
+\]
+obtained by differentiating the functional equation at a trivial zero
+\cite{DLMFintegers}. This proves \eqref{ag:eq:odd-zeta-integral}.
+\end{proof}
+
+The first rational offsets are
+\[
+ R_2=0,\quad R_3=-\frac1{40},\quad R_4=\frac3{70},\quad
+ R_5=-\frac{57}{560},\quad R_6=\frac{397}{1155}.
+\]
+For example, the $r=3$ value is
+$-1/40-45\zeta(5)/(64\pi^4)$, and the $r=4$ value is
+$3/70+315\zeta(7)/(128\pi^6)$.
+For $r=2$ the polynomial weight is $W(x)/16$, reproducing
+\eqref{ag:eq:Ipsi1}.
+
+\subsection{All Stieltjes orders in a single negative-odd zeta jet}
+The complex-order identity proves more than the trigamma specialization.
+With $E_j$ from \eqref{ag:eq:homogeneous}, define
+\begin{align}
+ L_r(\varepsilon)={}&
+ \frac{r}{2^{2r-2}}E_{2r-1}(\varepsilon)
+                              \zeta(1-2r+\varepsilon)\notag\\
+ &+\sum_{j=2}^{2r}\frac{(-1)^jd_{rj}}{j!}
+                  E_j(\varepsilon)\bigl(1+2^je^{-\varepsilon\log2}\bigr).
+ \label{ag:eq:selector-L}
+\end{align}
+Equation \eqref{ag:eq:single-zeta} is precisely
+$I_r(1+\varepsilon)=L_r(\varepsilon)/\varepsilon$.
+In particular $L_r(0)=-2B_{2r}$, and for every $m\ge0$,
+\begin{equation}\label{ag:eq:selector-Stieltjes}
+ \boxed{
+ \int_1^3P_r(x-2)\gamma_m(x)\dd x
+       =(-1)^m m![\varepsilon^{m+1}]L_r(\varepsilon).}
+\end{equation}
+This is a finite formula in the spectral derivatives
+$\zeta^{(k)}(1-2r)$, $0\le k\le m+1$, rational numbers,
+generalized harmonic numbers, and powers of $\log2$. It uses only one
+negative-odd spectral center, not an unspecified collection of
+Stieltjes constants. The coefficient rule
+\eqref{ag:eq:hrecurrence} makes the formula executable at every order.
+No numerical independence assertion is needed for any of these identities.

@@ -1,0 +1,177 @@
+\section{Source audit, verification, and integration status}
+\label{ag:sec:audit}
+
+\subsection{What was inspected and what was not}
+The GitHub metadata anchor used for the final source inventory is
+\[
+ \texttt{\pin}.
+\]
+The relevant canonical chapters, the immediate predecessor's Gamma
+sector, and its research-question section were read as TeX through the
+repository connection. The source manifest in the accompanying package
+records exact paths and the returned Git blob identifiers. Some initial
+reads used the default branch; the predecessor's research questions and
+Gamma-section identity were subsequently checked at the displayed
+anchor. A Git blob identifier is not being presented as a SHA-256 hash
+of a locally downloaded file.
+
+The current incoming directory contained five ZIP archives, concerning
+alternating tails, finite-difference determinants, higher quadratic jets,
+higher spectral defects, and quartic spectral reconstruction. The
+repository connection exposed their metadata but not their binary
+contents. The ZIPs were \emph{not} extracted in this continuation.
+Matching-title Library TeX abstracts were retrieved for the
+finite-difference, higher-quadratic-jet, and higher-spectral-defect
+reports. Their identity with the repository ZIP bytes was not
+established. These abstracts concern determinantal or spectral
+factorization problems; they are contextual comparisons, not audited
+proof dependencies. No assertion that every incoming result has been
+read, or that the entire repository has been certified, is made.
+
+The main proof dependencies are therefore unusually explicit: the
+functional-monomial decomposition, the Gamma Bell exponential, elementary
+weighted integration by parts, and the standard Hurwitz and Lerch
+identities. The necessary algebraic decomposition is reproved here.
+The one concrete predecessor question used to measure progress is
+question~5 of \cite[Section~8]{HTG}, concerning the next Gamma
+projection. Repository files have not been modified remotely.
+
+\subsection{Classical inputs and the boundary of the novelty claim}
+The functional-monomial construction is an established component of the
+integro-differential-algebra literature \cite{GRR}; its adoption in the
+canonical manuscript and predecessor is retained with attribution
+\cite{Manuscript,HTG}. The pure derivative-square coefficients, the
+low-index function $f_0$, and the entire $r=2$ family are inherited
+specializations. They should not be relabeled as new theorems during
+integration.
+
+Polynomially weighted Hurwitz integrals and their relations to
+Bernoulli polynomials, log Gamma, and polygamma functions have extensive
+classical antecedents; the papers of Espinosa and Moll explicitly
+study definite and indefinite integrals of this kind \cite{EM1,EM2}.
+The differentiation, translation, Mellin, Bernoulli, and functional-
+equation identities used here are standard \cite{DLMFzeta,DLMFpsi,
+DLMFlerch,DLMFBernoulli,DLMFintegers}. Repeated integration by parts
+itself is not a new method.
+
+The proposed additions relative to the inspected proof chain are the
+all-$r$ affine square-sector coefficient theorem, the arbitrary symmetric
+profile extension, their common beta--Hurwitz transport, and the
+explicit selector classification as a statement over $\C(s)$. The
+all-order Stieltjes coefficient rules and anchored primitive formulas
+are proved consequences in the stated normalization. Particular
+low-order integral values may already occur in the literature.
+This report does not establish global historical priority for each
+formula, nor does it claim a new special-function algebraic-independence
+result at fixed numerical arguments.
+
+\subsection{The exact proof-status distinctions}
+The following status list should accompany any manuscript integration.
+
+\paragraph{Proved here.}
+Theorem~\ref{ag:thm:main} gives every
+$u_0^a u_1^k u_r^2$ coefficient in the canonical inverse-Gamma normal
+form. Section~\ref{ag:sec:profiles} gives its general symmetric-profile
+analogue. The Hurwitz and Lerch transforms, their removable-pole
+prescriptions, all Stieltjes orders, and all anchored shift primitives
+are analytic identities on their specified domains. Theorem~
+\ref{ag:thm:selector-classification} classifies exactly the symmetric,
+endpoint-vanishing polynomial weights with the specified single-zeta
+functional closure. Its necessity uses a proof of independence over
+$\C(s)$, rather than independence of a declared formal list.
+
+\paragraph{A source question partially resolved.}
+The next-Gamma-projection question is answered for $u_3^2$ with arbitrary
+powers of $u_0,u_1$ and no additional $u_2$ factor, and simultaneously
+for every higher derivative square. Terms such as
+$u_0^a u_1^k u_2^b u_3^2$ with $b>0$ lie beyond the quadratic
+high-derivative sector used here. The complete $\sigma_3$ projection is
+not claimed.
+
+\paragraph{Not resolved by this report.}
+The unrestricted unequal-even-tail optimal-prefix conjecture, the
+Gaussian $S_6$ target, and the current revised $S_8$ candidate remain
+separate. The formal Gamma theorem does not evaluate all of its
+finite-part moments. No proof-assistant formalization, independent
+human peer review, or certified numerical enclosure is claimed.
+
+\subsection{Corrections, safeguards, and editorial observations}
+No false inherited mathematical theorem was established by the targeted
+audit. Several errors would arise from tempting but invalid extensions,
+and the package supplies explicit guards against them.
+First, normal reduction must precede truncation of higher derivatives:
+$\NF(u_0u_4)=u_2^2$, whereas truncating $u_4$ beforehand gives zero.
+Second, $\NF$ is not multiplicative. Third, weighted symbol reduction
+requires the Appell primitive property in
+Lemma~\ref{ag:lem:appell-primitive}; allowing an arbitrary
+$x$-dependent primitive would destroy the quotient argument. Fourth,
+removable poles in endpoint formulas must be canceled jointly, not
+by assigning independent finite parts to their summands. Finally,
+$B_1(1)=+1/2$ and $B_1(0)=-1/2$ play different roles in the selector
+calculation. These are proof obligations and implementation safeguards,
+not accusations that the predecessor omitted them.
+
+A minor editorial duplication was observed in the inspected manuscript
+README: the paragraph describing the full-Cayley, 1,032-input first-$X$
+family appeared twice. Removing one copy would improve the overview
+without changing any mathematical claim. That suggestion should be
+checked against the current README before editing, since the repository
+is changing rapidly. No correction to a numbered theorem is proposed
+on the basis of that duplication.
+
+\subsection{Exact finite verification and numerical diagnostics}
+The executable checks distinguish four kinds of exact finite assertion.
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.25\linewidth}rp{0.57\linewidth}@{}}
+\toprule
+Replay & Assertions & Scope\\
+\midrule
+\src{check_algebra.py}&1,255&Normal forms and primitives through weight 18;
+independent Bell sectors; all-index formula specializations; kernel
+coefficient identities; deliberately wrong alternatives rejected.\\[4pt]
+\src{check_endpoint_algebra.py}&728&Beta endpoint derivatives and residues;
+complete-harmonic coefficients; Bernoulli endpoint conventions and
+rational offsets.\\[4pt]
+\src{check_profiles.py}&75&Three independent polynomial profiles compared
+with direct Bell expansion and canonical reduction.\\[4pt]
+\src{check_selectors.py}&129&Selector basis, beta--Bernoulli transport,
+Stieltjes residues, inverse expansions, and an endpoint-sign guard.\\
+\midrule
+Total&2,187&Finite exact rational or symbolic assertions.\\
+\bottomrule
+\end{tabular}
+\end{center}
+The algebra replay compares both sides with independently constructed
+representations. In particular it checks $A_m=N_m+\D T_m$, not merely
+the displayed selected coefficient. The profile replay does not invoke
+the proposed profile formula to create its Bell-polynomial reference.
+The infinite-family assertions nevertheless rest on the mathematical
+proofs in the article, not the largest computed index.
+
+The numerical program has four separately runnable parts: 15 kernel,
+14 transform, 6 Stieltjes, and 21 Lerch/selector comparisons, totaling
+56. At 50 working decimal digits it compares beta integrals with
+hypergeometric values, compact Hurwitz averages with finite endpoint
+expressions, Mellin integrals with both, and polygamma/Stieltjes
+quadratures with their explicit evaluations. It includes a complex
+spectral argument and rational-endpoint root-of-unity filters.
+Errors are scaled by $\max(1,|L|,|R|)$; small absolute values therefore
+do not imply the same number of relative digits.
+
+The largest recorded scaled residual is approximately
+$2.62\times10^{-29}$ in a comparison of two \emph{different quadrature
+orders} for the first Stieltjes average. Its declared tolerance is
+$10^{-23}$. The comparison of the finer quadrature with the finite
+endpoint formula is about $5.49\times10^{-43}$, and the explicit
+quartic $\gamma_1$ evaluation agrees to about $4.22\times10^{-40}$
+in the same scaled measure. The default tolerance for the other
+comparisons is $10^{-30}$, with explicit local overrides documented
+in the program. These are floating-point diagnostics, not interval
+error bounds.
+
+All scripts, exact coefficient tables, normal-form primitives,
+individual results, environment information, and a replay entry point
+are included. The integration fragment preserves unique \src{ag:}
+labels, the distinction between ordinary and finite-part integrals,
+and the nonmultiplicative meaning of the normal projection.

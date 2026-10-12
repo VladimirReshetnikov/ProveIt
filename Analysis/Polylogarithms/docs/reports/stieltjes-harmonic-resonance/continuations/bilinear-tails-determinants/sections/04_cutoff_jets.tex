@@ -1,0 +1,379 @@
+\section{All cutoff jets of the alternating square law}
+\label{cut:sec}
+
+The preceding independent-order identities grow from a finite endpoint
+identity. This section resolves Question 5 of the incoming alternating-tail
+report \cite{AlternatingIncoming}: continue its ordinary square law through
+all nonpositive orders, calculate every cutoff contact, and distinguish the
+continued value from the constant term of the original finite sums. The
+alternating Hurwitz asymptotic expansion itself is classical; in particular,
+Hu and Kim give its remainder theory and spectral derivatives
+\cite{HuKimAsymptotic}. The contribution here is the explicit quadratic
+endpoint polynomial, its all-index contact formula, its sharp derivative
+threshold, and the resulting Gamma identities.
+
+\subsection{A finite identity valid at every spectral order}
+
+Throughout this section $\Rea a>0$. All powers and logarithms use the
+holomorphic branch in the right half-plane. Recall
+\begin{equation}\label{cut:B}
+ \mathcal B_s(x)=2^{-s}\left\{\zeta\left(s,\frac{x}{2}\right)
+                    -\zeta\left(s,\frac{x+1}{2}\right)\right\}.
+\end{equation}
+It is entire in $s$, with the common Hurwitz pole at one cancelled.
+Put
+\begin{align}
+ F_s(x)&=x^s\mathcal B_s(x)\mathcal B_s(x+1),\label{cut:F}\\
+ g_s(x)&=\{x^s-(x-1)^s\}\mathcal B_s(x)^2,\label{cut:g}\\
+ S_N(s,a)&=\sum_{n=0}^{N}g_s(n+a+1),\qquad X=N+a+1.
+ \label{cut:SN}
+\end{align}
+
+\begin{lemma}[Exact endpoint identity]\label{cut:finite}
+For every complex $s$ and every integer $N\ge0$,
+\begin{equation}\label{cut:finiteeq}
+ S_N(s,a)=F_s(a)-F_s(X).
+\end{equation}
+For $\Rea s>0$, the original series converges absolutely and locally
+normally to $F_s(a)$. Its unique entire continuation as a function of $s$
+is therefore $F_s(a)$.
+\end{lemma}
+\begin{proof}
+The recurrence
+$\mathcal B_s(x)+\mathcal B_s(x+1)=x^{-s}$ gives
+\[
+ F_s(x-1)-F_s(x)
+ =\{x^s-(x-1)^s\}\mathcal B_s(x)^2.
+\]
+Telescoping proves the finite formula without any limiting argument.
+For $\Rea s>0$, the standard tail expansion gives
+$F_s(X)=O(X^{-\Rea s})$ and
+$g_s(n+a+1)=O(n^{-\Rea s-1})$, uniformly on compact parameter sets.
+This proves the convergence assertion. Both sides of the finite identity
+are entire in $s$, so it already applies at every negative integer.
+\end{proof}
+
+An entire continuation is a function; a cutoff finite part is a summation
+prescription. Their agreement on a convergence half-plane does not make
+them identical at every exceptional parameter. We calculate the discrepancy
+instead of adopting an implicit convention.
+
+\subsection{The endpoint has only even inverse powers}
+
+Let $E_j(x)$ be the Euler polynomials, normalized by
+\begin{equation}\label{cut:Euler}
+ \frac{2e^{xt}}{e^t+1}=\sum_{j\ge0}E_j(x)\frac{t^j}{j!}.
+\end{equation}
+Thus $E_0(0)=1$, $E_1(0)=-1/2$, and $E_{2j}(0)=0$ for $j\ge1$.
+For $j\ge0$ define the rational polynomials
+\begin{equation}\label{cut:a}
+ a_j(s)=\frac{(-1)^jE_j(0)}{2j!}(s)_j,
+ \qquad (s)_0=1.
+\end{equation}
+Define $c_0(s)=1/4$ and, for $k\ge1$,
+\begin{equation}\label{cut:c}
+ c_k(s)=-\sum_{j=1}^{k-1}a_j(s)a_{k-j}(s).
+\end{equation}
+In particular $c_{2j+1}=0$. Every nonzero $c_{2j}$ has degree $2j$.
+The first three nonconstant polynomials are
+\begin{align}
+ c_2(s)&=-\frac{s^2}{16},\label{cut:firstc}\\
+ c_4(s)&=\frac{s^2(s+1)(s+2)}{96},\notag\\
+ c_6(s)&=-\frac{s^2(s+1)(s+2)(17s^2+99s+154)}{11520}.\notag
+\end{align}
+
+\begin{proposition}[Even endpoint expansion]\label{cut:expansion}
+For every $K\ge0$,
+\begin{equation}\label{cut:expansioneq}
+ F_s(x)=\sum_{j=0}^{K}c_{2j}(s)x^{-s-2j}
+           +O\bigl(x^{-\Rea s-2K-2}\bigr)
+\end{equation}
+as $x\to+\infty$, locally uniformly in $s$ and in bounded right-half-plane
+shifts of $x$. Every fixed spectral derivative has the differentiated
+expansion, with the corresponding finite powers of $\log x$. A derivative
+in $x$ improves the remainder by one inverse power.
+\end{proposition}
+\begin{proof}
+The alternating Hurwitz expansion is
+\[
+ \mathcal B_s(x)\sim x^{-s}\sum_{j\ge0}a_j(s)x^{-j}.
+\]
+One may obtain the needed uniform remainder by applying the ordinary
+Hurwitz Euler--Maclaurin expansion to the two terms in \eqref{cut:B},
+using more terms than required and cancelling their common pole at one.
+The usual remainder integral is uniform on each compact $s$-set after
+enough terms have been retained \cite{DLMFZeta,HuKimAsymptotic}.
+Its formal coefficients are also determined uniquely by
+$\mathcal B_s(x)+\mathcal B_s(x+1)=x^{-s}$: the formal operator
+$(1+e^{\partial_x})^{-1}$ acting on $x^{-s}$ gives \eqref{cut:a}.
+Cauchy's formula on a slightly larger compact set justifies every fixed
+spectral derivative of the remainder. The derivative identity
+$\partial_x\mathcal B_s(x)=-s\mathcal B_{s+1}(x)$ supplies the
+corresponding derivative remainder in $x$.
+
+Write $A=x^s\mathcal B_s(x)$. By the same recurrence,
+\[
+ F_s(x)=x^{-s}(A-A^2)
+       =x^{-s}\left\{\frac14-\left(A-\frac12\right)^2\right\}.
+\]
+All positive even coefficients of $A$ vanish. Thus $A-1/2$ has only
+odd inverse powers, its square has only even inverse powers, and
+\eqref{cut:c} gives every coefficient. Multiplying finite expansions with
+their uniform remainders proves the assertion, rather than assuming
+convergence of the infinite asymptotic series.
+\end{proof}
+
+\subsection{A convergent subtraction on every half-plane}
+
+For $K\ge0$ set
+\begin{equation}\label{cut:PK}
+ P_K(s,x)=\sum_{j=0}^{K}c_{2j}(s)x^{-s-2j}.
+\end{equation}
+
+\begin{theorem}[Normally convergent continuation]\label{cut:normal}
+On $\Rea s>-2K-2$, $\Rea a>0$, the following series converges absolutely
+and locally normally, including after every fixed parameter derivative:
+\begin{align}
+ &\sum_{n=0}^{\infty}\bigl\{
+    g_s(n+a+1)-P_K(s,n+a)+P_K(s,n+a+1)\bigr\}\notag\\
+ &\hspace{30mm}=F_s(a)-P_K(s,a).
+ \label{cut:normaleq}
+\end{align}
+Consequently adding $P_K(s,a)$ gives the same entire continuation
+$F_s(a)$ on all these overlapping half-planes.
+\end{theorem}
+\begin{proof}
+Subtract the finite telescoping difference of $P_K$ from
+\eqref{cut:finiteeq}. The remaining upper endpoint is
+$F_s(X)-P_K(s,X)=O(X^{-\Rea s-2K-2})$ and tends to zero on the stated
+half-plane. Each summand is a unit difference of this remainder; the
+$x$-derivative version of Proposition~\ref{cut:expansion} bounds it by
+$O(n^{-\Rea s-2K-3})$. Uniformity on compact sets and Cauchy's formula
+give local normal convergence and all fixed parameter derivatives.
+\end{proof}
+
+This is an ordinary convergent-series realization of the continued
+function. It explicitly specifies what was subtracted. It neither assigns
+an ordinary value to a divergent unmodified series nor discards the exact
+upper endpoint.
+
+\subsection{Every nonpositive-order contact and every spectral derivative}
+
+For a fixed nonnegative integer $m$ and derivative order $r$, expand
+$\partial_s^rS_N(s,a)|_{s=-m}$ in powers of $X=N+a+1$ and $\log X$.
+Its \emph{natural-cutoff finite part} is the coefficient of
+$X^0(\log X)^0$. Denote it by $\FP_X$.
+The preceding expansion supplies such an asymptotic expansion to any
+fixed order, with a remainder tending to zero after enough terms.
+
+\begin{theorem}[Complete contact formula]\label{cut:contacts}
+For every $m,r\ge0$ and $\Rea a>0$,
+\begin{equation}\label{cut:contacteq}
+ \boxed{\displaystyle
+ \FP_X\left.\partial_s^rS_N(s,a)\right|_{s=-m}
+   =\left.\partial_s^rF_s(a)\right|_{s=-m}-c_m^{(r)}(-m).}
+\end{equation}
+The contacts have the following exact properties:
+\begin{enumerate}
+\item If $m$ is odd, every natural-cutoff contact is zero.
+\item If $m$ is even, the contact vanishes for $r>m$, and the threshold
+is sharp:
+\begin{equation}\label{cut:top}
+ c_m^{(m)}(-m)=-\frac12 E_{m+1}(0)\ne0.
+\end{equation}
+\item At derivative order zero,
+\begin{equation}\label{cut:Eulercontact}
+ c_m(-m)=\frac14[x^m]\{E_m(x)E_m(x+1)\}.
+\end{equation}
+For even $m=2j\ge2$ this becomes
+\begin{equation}\label{cut:Eulerconvolution}
+ c_{2j}(-2j)
+ =-\frac14\sum_{\substack{1\le k<2j\\k\text{ odd}}}
+     \binom{2j}{k}^{\!2}E_k(0)E_{2j-k}(0),
+\end{equation}
+which is nonzero and has sign $(-1)^j$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Differentiate the endpoint expansion before setting $s=-m$.
+For each $k$,
+\[
+ \left.\partial_s^r\{c_k(s)X^{-s-k}\}\right|_{s=-m}
+ =X^{m-k}\sum_{\ell=0}^{r}\binom r\ell
+       c_k^{(\ell)}(-m)(-\log X)^{r-\ell}.
+\]
+Only $k=m$ has exponent zero, and only $\ell=r$ has logarithmic degree
+zero. The finite identity therefore gives \eqref{cut:contacteq}.
+If $m$ is odd, $c_m$ is identically zero. Degree at most $m$ gives the
+vanishing for $r>m$.
+
+For the exact top coefficient, replace each $(s)_j$ in \eqref{cut:a}
+by its leading monomial $s^j$. The resulting generating series is
+\[
+ A(t)=\frac1{1+e^{-t}}=\frac12+\frac12\tanh(t/2).
+\]
+The endpoint's leading-coefficient series is
+\[
+ A(t)-A(t)^2=A'(t)=\frac1{4\cosh^2(t/2)}.
+\]
+Its coefficient of $t^m$ is
+$(-1)^{m+1}E_{m+1}(0)/(2m!)$; for even $m$ this proves
+\eqref{cut:top}. Odd Euler values at zero are nonzero, for example by
+their elementary Bernoulli-number formula.
+
+Finally $\mathcal B_{-m}(x)=E_m(x)/2$ is the classical Euler
+specialization \cite{HuKimAsymptotic}. Hence
+$F_{-m}(x)=x^{-m}E_m(x)E_m(x+1)/4$.
+Its constant coefficient gives \eqref{cut:Eulercontact}. For even
+$m\ge2$, use $E_m(x+1)=2x^m-E_m(x)$ and $E_m(0)=0$ to obtain
+\eqref{cut:Eulerconvolution}. Each summand in that convolution has
+sign $(-1)^{j+1}$, so its negative quarter has the asserted nonzero sign.
+\end{proof}
+
+\begin{center}
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+$m$&0&2&4&6&8\\
+\midrule
+$c_m(-m)$&$1/4$&$-1/4$&$1$&$-43/4$&$230$\\
+$c_m^{(m)}(-m)$&$1/4$&$-1/8$&$1/4$&$-17/16$&$31/4$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+At $s=0$ every unmodified summand is exactly zero, whereas
+$F_0(a)=1/4$. Formula~\eqref{cut:contacteq} gives $0=1/4-1/4$.
+At $s=-2$, the summand simplifies to $-(2n+2a+1)/4$, so
+\[
+ S_N(-2,a)=\frac{a^2-X^2}{4},\qquad
+ F_{-2}(a)=\frac{a^2-1}{4}.
+\]
+The natural-cutoff constant is $a^2/4$, exactly the continued value
+minus the contact $-1/4$. The first two derivative contacts at this
+same order are $c_2'(-2)=1/4$ and $c_2''(-2)=-1/8$.
+
+\subsection{The cutoff coordinate is part of the formula}
+
+The usual integer cutoff $N$ and the natural cutoff $X=N+a+1$ have
+different constant terms. The conversion is finite and explicit.
+Let $T=X-h$ for a fixed complex number $h$. Define the degree-at-most-$m$
+polynomial in $s$
+\begin{equation}\label{cut:translated}
+ C_m(s;h)=\sum_{k=0}^{m}c_k(s)
+                 \binom{-s-k}{m-k}h^{m-k}.
+\end{equation}
+The generalized binomial here is its polynomial expression, so its
+spectral derivatives at integers are unambiguous.
+
+\begin{corollary}[Translated-cutoff contacts]\label{cut:translation}
+For all $m,r\ge0$,
+\begin{equation}\label{cut:translationeq}
+ \FP_T\left.\partial_s^rS_N(s,a)\right|_{s=-m}
+ =\left.\partial_s^rF_s(a)\right|_{s=-m}
+  -\left.\partial_s^r C_m(s;h)\right|_{s=-m}.
+\end{equation}
+Take $h=a+1$ to obtain the finite part in powers of $N$.
+Every translated contact still vanishes for $r>m$.
+At $r=0$ its value is
+$\sum_{k=0}^{m}c_k(-m)h^{m-k}$.
+\end{corollary}
+\begin{proof}
+Expand $X^{-s-k}=T^{-s-k}(1+h/T)^{-s-k}$ by its finite asymptotic
+binomial expansion. At $s=-m$, the unique term capable of contributing
+a constant has binomial index $m-k$. Differentiating first retains its
+spectral coefficient and logarithms; the logarithm-free constant is
+exactly the derivative in \eqref{cut:translationeq}. Terms with $k>m$
+already decay. The polynomial degree bound follows from
+$\deg c_k\le k$ and
+$\deg_s\binom{-s-k}{m-k}=m-k$.
+\end{proof}
+
+For example the natural contact at $s=-1$ is zero but the contact in
+$T=X-h$ is $h/4$. Thus ``odd negative orders have no contact'' is
+correct only with the displayed natural coordinate. Translation does
+not preserve that parity assertion.
+
+One can also write the highest derivative in closed form. Define
+Euler polynomials of order two by
+\[
+ \frac{4e^{xt}}{(e^t+1)^2}
+ =\sum_{m\ge0}E_m^{(2)}(x)\frac{t^m}{m!}.
+\]
+The same leading-coefficient calculation gives
+\begin{equation}\label{cut:translatedtop}
+ \partial_s^m C_m(s;h)=\frac{(-1)^m}{4}E_m^{(2)}(h+1).
+\end{equation}
+This includes \eqref{cut:top} when $h=0$ and $m$ is even.
+
+\subsection{Explicit Gamma identities at order zero}
+
+The classical Lerch formula gives
+\begin{equation}\label{cut:Lerch}
+ \left.\partial_s\mathcal B_s(x)\right|_{s=0}
+ =-\log h(x),\qquad
+ h(x)=\sqrt2\,\frac{\Gamma((x+1)/2)}{\Gamma(x/2)}.
+\end{equation}
+Put
+\begin{equation}\label{cut:rho}
+ \rho(x)=\frac12\log x-\log h(x)
+ =\log\left\{\sqrt{\frac{x}{2}}\,
+          \frac{\Gamma(x/2)}{\Gamma((x+1)/2)}\right\}.
+\end{equation}
+The normalized endpoint immediately gives
+\begin{align}
+ \left.\partial_sF_s(a)\right|_{s=0}
+    &=-\frac14\log a,\label{cut:Fzero}\\
+ \left.\partial_s^2F_s(a)\right|_{s=0}
+    &=\frac14\log^2a-2\rho(a)^2.\notag
+\end{align}
+Indeed, with $D_s(a)=a^s\mathcal B_s(a)-1/2$,
+$F_s(a)=a^{-s}(1/4-D_s(a)^2)$, $D_0=0$, and $D'_0=\rho(a)$.
+In particular the natural finite part of the second spectral derivative
+at $a=1,s=0$ is $-\tfrac12\log^2(\pi/2)$.
+
+There is an ordinary convergent version with a useful polarization.
+For $\Rea a,\Rea b>0$ write
+\[
+ \delta_a(n)=\log\frac{n+a+1}{n+a},\qquad
+ \rho_a(n)=\rho(n+a).
+\]
+
+\begin{corollary}[A bilinear logarithmic Gamma sum]\label{cut:Gamma}
+For $\Rea a,\Rea b>0$,
+\begin{align}
+ \sum_{n=0}^{\infty}\bigl\{
+   \delta_a(n)\rho_b(n)+\delta_b(n)\rho_a(n)
+        -\tfrac12\delta_a(n)\delta_b(n)\bigr\}
+ =2\rho(a)\rho(b).
+ \label{cut:Gammaeq}
+\end{align}
+The convergence is absolute and locally normal. At $a=b$ this reduces to
+\begin{equation}\label{cut:Gammasquare}
+ \sum_{n=0}^{\infty}\delta_a(n)
+       \left\{\rho_a(n)-\frac14\delta_a(n)\right\}=\rho(a)^2.
+\end{equation}
+In particular the value at $a=1$ is $\tfrac14\log^2(\pi/2)$.
+\end{corollary}
+\begin{proof}
+The recurrence $h(x)h(x+1)=x$ implies
+$\rho(x)+\rho(x+1)=\tfrac12\log((x+1)/x)$.
+Multiply the two shifted recurrences and rearrange:
+\[
+ 2\{\rho_a(n)\rho_b(n)-\rho_a(n+1)\rho_b(n+1)\}
+ =\delta_a(n)\rho_b(n)+\delta_b(n)\rho_a(n)
+            -\tfrac12\delta_a(n)\delta_b(n).
+\]
+Telescoping proves the formula. Stirling's expansion gives
+$\rho(n+a)=O(n^{-1})$ with a unit difference $O(n^{-2})$, so the
+summand is $O(n^{-3})$ locally uniformly and the upper endpoint vanishes.
+The square case follows by division by two. Equivalently it is the
+second derivative of the normally subtracted identity
+\eqref{cut:normaleq} at $s=0$.
+\end{proof}
+
+Every fixed shift derivative of \eqref{cut:Gammaeq} is an ordinary
+convergent identity with rational functions, logarithms and polygamma
+functions. For higher spectral derivatives at zero or at $-m$, the
+finite formula \eqref{cut:contacteq} uses only finitely many Hurwitz
+order derivatives at the same integer. No independent arithmetic
+reduction of those order derivatives is asserted.

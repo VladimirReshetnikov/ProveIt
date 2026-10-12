@@ -1,0 +1,129 @@
+% Requires amsmath/amssymb and theorem environments from the host manuscript.
+% Add the separate bibliography entry hsd:continuation.
+\section{Higher spectral defects and beta polarization}
+\label{hsd:int:section}
+Fix $a>0$, $W(x)=\sum_{d=0}^D w_dx^d$, and define the continued linear spectrum
+\[
+ F_{a,W}(s;z)=\sum_{d=0}^D w_d\sum_{h=0}^d
+     \binom dh(-z)^{d-h}\zeta(s-h,a+z),\qquad \Re(a+z)>0.
+\]
+Let $Z_W(s;a,b)=\sum_{n\ge0}W(n+a)((n+a)^2+b^2)^{-s}$ initially in its
+convergence half-plane, and set
+\[
+ \Delta_r(W;a,b)=2^{r-1}\{F_{a,W}^{(r)}(0;ib)+F_{a,W}^{(r)}(0;-ib)\}
+                                      -Z_W^{(r)}(0;a,b).
+\]
+The superscript denotes spectral differentiation.
+For an analytic endpoint function write
+\[
+ \mathcal C_t f(u,v)=f(u)+f(v)-f((1-t)u+tv)-f(tu+(1-t)v).
+\]
+The endpoint-subtracted beta master in \cite{hsd:continuation} gives
+\begin{equation}\label{hsd:int:beta}
+ \frac{F_{a,W}(2s;ib)+F_{a,W}(2s;-ib)}2-Z_W(s;a,b)
+ =\frac{s\Gamma(1+2s)}{4\Gamma(1+s)^2}
+ \int_0^1[t(1-t)]^{s-1}\mathcal C_tF_{a,W}(2s;\cdot)(ib,-ib)\,dt.
+\end{equation}
+The integral is ordinary and holomorphic near $s=0$ after the displayed
+subtraction. Its derivatives may be taken under the integral.
+
+Write $\Gamma(1+2s)/\Gamma(1+s)^2=\sum_{m\ge0}\beta_ms^m$ and
+\[
+ I_{j,p}=\int_0^1\frac{\log^p(t(1-t))}{t(1-t)}
+          \mathcal C_t(F_{a,W}^{(j)}(0;\cdot))(ib,-ib)\,dt.
+\]
+Then, at every $r\ge1$,
+\begin{equation}\label{hsd:int:alljets}
+ \Delta_r=\frac{r!}{4}\sum_{m+j+p=r-1}\frac{2^j\beta_m}{j!p!}I_{j,p}.
+\end{equation}
+Thus the inner spectral order is at most $r-1$.
+The zero jet is
+$F_{a,W}(0;z)=\sum_dw_d\zeta(-d,a)+\sum_dw_d(-1)^{d+1}z^{d+1}/(d+1)$,
+so its endpoint subtraction is a local polynomial independent of $a$.
+At conjugate endpoints it vanishes for even $W$; the positive-order
+integrals need not vanish.
+
+\subsection{The exact second defect}
+Let $\Phi_{a,W}(z)=F_{a,W}'(0;z)$ and
+\[
+ K_{a,W}(u,v)=\int_0^1\frac{\mathcal C_t\Phi_{a,W}(u,v)}{t(1-t)}\,dt,
+ \qquad O_k^{(p)}=H_{2k}^{(p)}-2^{-p}H_k^{(p)},\quad O_k=O_k^{(1)}.
+\]
+\begin{theorem}\label{hsd:int:second}
+For every polynomial $W$ and $a,b>0$,
+\[
+ \Delta_2(W;a,b)=K_{a,W}(ib,-ib)
+ -\sum_{k\ge1}\frac{2(-1)^kw_{2k-1}b^{2k}}k
+                          \bigl(O_k^2+O_k^{(2)}\bigr).
+\]
+The sum is finite. For fixed $a>0$, the identity
+$\Delta_2(W;a,b)=0$ for every $b>0$ holds if and only if $W=0$.
+\end{theorem}
+The local formula follows from the second beta row and the moment
+\[
+ \int_0^1\frac{1-(1-2t)^{2k}}{t(1-t)}\log(t(1-t))\,dt
+                     =-4\bigl(O_k^2+O_k^{(2)}\bigr).
+\]
+For universal vanishing, sufficiently high Taylor coefficients in $b$
+are nonzero multiples of $\sum_{n\ge0}W(n+a)/(n+a)^{2k}$. The first
+nonzero lattice value of a nonzero polynomial dominates these moments
+as $k\to\infty$; see the full proof in \cite{hsd:continuation}.
+In particular,
+\[
+ \Delta_2(1;a,b)=-4\sum_{n\ge0}\arctan^2\!\frac b{n+a},
+\]
+so even parity is not a second-order vanishing criterion.
+
+\subsection{All quadratic masses and their coincident limit}
+Assume $W(x)=P(x^2)$ and put
+$T_{a,W}(\mu)=F_{a,W}'(0;i\sqrt\mu)+F_{a,W}'(0;-i\sqrt\mu)$.
+Define the ordinary mass chord
+\[
+ V_{a,W}(b,c)=\int_0^1\frac{\mathcal C_tT_{a,W}(b^2,c^2)}{t(1-t)}\,dt.
+\]
+For $Z_{W;\mathbf b}(s;a)=\sum_{n\ge0}W(n+a)
+\prod_{j=1}^r((n+a)^2+b_j^2)^{-s}$, continuation gives
+\begin{equation}\label{hsd:int:masses}
+ Z_{W;\mathbf b}''(0;a)=r\sum_{j=1}^r Z_W''(0;a,b_j)
+                         -\sum_{i<j}V_{a,W}(b_i,b_j).
+\end{equation}
+For $|h|<a^2+b^2$ in the analytic squared-mass continuation,
+\begin{equation}\label{hsd:int:confluence}
+ V_{a,W}(b,\sqrt{b^2+h})=
+ \sum_{k\ge2}\frac{2(-1)^kH_{k-1}}k h^kZ_W(k;a,b).
+\end{equation}
+All positive-integer coefficients reduce finitely to polygamma functions
+and Bernoulli polynomials. For example
+$Z_1(1;a,b)=(\psi(a+ib)-\psi(a-ib))/(2ib)$; higher values follow by
+mass differentiation and polynomial division of $W$.
+The diagonal is regular and $V(b,b)=0$.
+
+On the bilateral lattice, replace $T_{a,W}$ by
+\[
+ T_{a,W}^{\rm bil}(\mu)=\sum_{\ell=0}^{\deg P}
+              \frac{P^{(\ell)}(-\mu)}{\ell!}L_\ell(a,\sqrt\mu),
+ \qquad L_\ell(a,b)=E'(-\ell;a,b).
+\]
+The established finite polylogarithm formulas for $L_\ell$ thus give
+finite polylogarithmic covariance integrands. The full report also gives
+an explicit finite-integrand identity for every $E''(-m;a,b)$.
+
+\subsection{Normalized mass primitives}
+For $E(s;a,b)=\sum_{n\in\mathbb Z}((n+a)^2+b^2)^{-s}$, $0<a<1$, define
+\[
+ A_{m,r}(a,\mu)=\left.\partial_t^r\left\{
+                \frac{m!}{(1-t)_m}E(t-m;a,\sqrt\mu)\right\}\right|_{t=0}.
+\]
+Then $\partial_\mu A_{m,r}=mA_{m-1,r}$ and
+\[
+ A_{m,r}(a,\mu)=\sum_{j=0}^{m-1}\binom mj\mu^j A_{m-j,r}(a,0)
+       +m\int_0^\mu(\mu-u)^{m-1}E^{(r)}(0;a,\sqrt u)\,du.
+\]
+All boundary values are finite Hurwitz jets. At second order
+$A_{m,2}=E''(-m)+2H_mE'(-m)$; omitting this harmonic normalization gives
+an inhomogeneous, not a homogeneous, ladder.
+
+These results settle explicit representation and confluence questions.
+They do not establish a smallest function algebra or irreducibility of
+the remaining ordinary integrals. Classical attribution and the
+canonical S6/revised-S8 statuses remain unchanged.

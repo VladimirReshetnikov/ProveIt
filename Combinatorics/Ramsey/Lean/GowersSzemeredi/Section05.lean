@@ -1,4 +1,5 @@
 import GowersSzemeredi.Definitions
+import GowersSzemeredi.Proofs05IntegerRepresentatives
 
 /-!
 # Gowers (2001), Section 5: consequences of Weyl's inequality
@@ -309,21 +310,22 @@ def corollary_5_11 : Prop :=
 /-! ## Final partition and density lemmas -/
 
 /-- **Lemma 5.12.** A modular progression of size `m` has a partition into
-at most `4 sqrt(m)` proper progressions. -/
+at most `4 sqrt(m)` genuine progressions of integer representatives.
+The geometric predicate is stronger than injectivity of modular indices. -/
 def lemma_5_12 : Prop :=
   forall (N m : Nat) [NeZero N] (Q : ModAP N), Q.carrier.card = m ->
     exists L : Nat, exists P : Fin L -> ModAP N,
       IsPartition (fun j => (P j).carrier) Q.carrier /\
-      (forall j, (P j).IsProper) /\ (L : Real) <= 4 * Real.sqrt m
+      (forall j, (P j).HasIntegerRepresentatives) /\ (L : Real) <= 4 * Real.sqrt m
 
 /-- **Lemma 5.13.** A modular-progression partition of `ZMod N` has a
-proper refinement with at most `4 sqrt(N M)` cells. -/
+genuine integer-representative refinement with at most `4 sqrt(N M)` cells. -/
 def lemma_5_13 : Prop :=
   forall (N M : Nat) [NeZero N] (Q : Fin M -> ModAP N),
     IsPartition (fun i => (Q i).carrier) Finset.univ ->
       exists L : Nat, exists R : Fin L -> ModAP N,
         IsRefinement (fun j => (R j).carrier) (fun i => (Q i).carrier) /\
-        (forall j, (R j).IsProper) /\
+        (forall j, (R j).HasIntegerRepresentatives) /\
         (L : Real) <= 4 * Real.sqrt ((N : Real) * M)
 
 /-- **Lemma 5.14.** Removing a fixed polynomial phase after refining a

@@ -1,0 +1,104 @@
+\section{Research targets, source status, and conventions}
+\label{sec:scope}
+
+The relevant source state is the ProveIt commit
+\texttt{da2792fc9cc8ef19c6a314be6c65e1437fbdc66b}, dated
+11 October 2026, 21:44:07 UTC. We inspected the unified manuscript and
+the five archives then present in \texttt{docs/incoming}: the alternating-tail,
+finite-difference-determinant, higher-quadratic-jet, higher-spectral-defect,
+and quartic-reconstruction reports. Their mathematical status must be read
+together. In particular, a question left open in one report can already
+have a partial answer in another report written from an earlier snapshot.
+The exact paths and selected source passages are recorded in
+\texttt{provenance/sources.json}.
+
+The new results concern identities, finite reductions, and exact
+reconstruction. The only estimates used below justify interchange of
+limits or close a determinant argument; they are not the research target.
+
+The proofs share a concrete ordering principle: enforce cancellation
+before summing or specializing parameters. The tail certificates remove
+the linear tail terms. The Mellin operators annihilate finite Lerch
+corrections. The Hurwitz completions remove the moving coordinate
+resonances. The centered moment transform isolates finitely many zeta
+coordinates. Keeping the parameters independent until these steps are
+complete preserves the mixed derivatives and endpoint information.
+
+\subsection{What advances and what is inherited}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.22\textwidth}>{\raggedright\arraybackslash}p{0.43\textwidth}>{\raggedright\arraybackslash}p{0.28\textwidth}@{}}
+\toprule
+Source target & Contribution in this article & Scope\\
+\midrule\endfirsthead
+\toprule Source target & Contribution in this article & Scope\\\midrule\endhead
+Two adjacent bilinear tail certificates \cite{tail-alternating}
+& Necessary and sufficient rational-factorization criterion; exact
+cutoff identity; independent-shift evaluations
+& Complete classification within the stated two-product certificate class.\\[5pt]
+Independently shifted tail identities
+& Two Nielsen-beta kernels, all mixed argument derivatives, and a
+Gamma--Hurwitz rectangular primitive
+& Two freely varying shifts for adjacent quadratic denominators;
+arbitrary independent tail orders are not claimed.\\[5pt]
+Polylogarithm derivatives and antiderivatives
+& A holomorphic neighboring-order combination, finite Mellin-resonance
+operators, and mixed Stieltjes jets
+& All complex polylogarithm orders on explicitly stated domains.\\[5pt]
+Undifferentiated Stieltjes edge \cite{tail-polygamma}
+& Complete joint-pole subtraction and finite ordinary-zeta algorithm
+& Every product with exactly one undifferentiated factor; an endpoint
+law holds for all derivative orders.\\[5pt]
+Optimal first-$q$ moment prefix \cite{tail-alternating,tail-quartic}
+& Complete smaller-order-ten and smaller-order-twelve families
+& All even $q>10$ and $q>12$, respectively; formal coordinate rank.\\
+\bottomrule
+\end{longtable}
+
+The bilinear classification and the two completed reconstruction families
+answer explicit project questions. The Stieltjes completion answers a
+previously excluded boundary case. The Mellin operator and kernel formulas
+are proved here and were not located in the inspected project corpus;
+their classical ingredients are identified when used. The literature
+search is targeted, not an exhaustive priority determination. Products
+of zeta tails, Hurwitz product integrals, rational summation, and Mellin
+transforms all have substantial prior literature
+\cite{Hoffman,EspinosaMoll,ShpotParis,DLMFPolylog}.
+
+\subsection{Notation and analytic conventions}
+
+The Hurwitz zeta function is initially
+\[
+ \zeta(s,a)=\sum_{n=0}^{\infty}(n+a)^{-s},\qquad
+ \Re s>1,\quad\Re a>0,
+\]
+and is then continued. Its generalized Stieltjes constants satisfy
+\begin{equation}\label{eq:stieltjes-convention}
+ \zeta(1+u,a)=\frac1u+
+ \sum_{m=0}^{\infty}\frac{(-1)^m}{m!}\gamma_m(a)u^m.
+\end{equation}
+Thus $\gamma_0(a)=-\psi(a)$ and $\gamma_m=\gamma_m(1)$.
+A prime on $\zeta(s,a)$ differentiates the order $s$; a superscript
+$\gamma_m^{(r)}(a)$ differentiates the argument $a$. We write
+\[
+ H_n^{(r)}=\sum_{k=1}^n k^{-r},\qquad H_0^{(r)}=0,
+ \qquad \psi^{(r)}(a)=(-1)^{r+1}r!\zeta(r+1,a)\quad(r\ge1).
+\]
+Bernoulli numbers use $B_1=-1/2$ and
+$t/(e^t-1)=\sum_{j\ge0}B_jt^j/j!$.
+These normalizations agree with the standard sources
+\cite{DLMFZeta,DLMFPolygamma}.
+
+All powers and logarithms use the principal branch on the initial slit
+or right-half-plane domains. The logarithm of $\Gamma$ on the right
+half-plane is the holomorphic branch real on the positive axis.
+An ordinary sum is the limit of the displayed partial sums. A finite
+part is always specified relative to a coordinate, and a spectral
+continuation is kept distinct from an ordinary divergent sum.
+Local normal convergence means locally uniform absolute convergence.
+
+The phrase \emph{formal coordinate rank} refers to rational linear
+algebra in the explicitly defined source coordinate space. It does not
+assert independence of the evaluated periods. The finite-field
+computations are exact arithmetic certificates with complete replay;
+the analytic arguments remain written mathematical proofs. No
+proof-assistant formalization is claimed.

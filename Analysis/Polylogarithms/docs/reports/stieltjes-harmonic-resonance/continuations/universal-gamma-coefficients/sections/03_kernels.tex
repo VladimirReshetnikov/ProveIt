@@ -1,0 +1,96 @@
+\section{Universal rational kernels}
+\label{sec:kernels}
+
+\subsection{A telescoping adjoint identity}
+
+For $d\ge1$ write
+\begin{equation}\label{eq:DeltaR}
+ \Delta_d(v)=(v+1)^{d+1}-(v-1)^{d+1},\qquad
+ R_d(v)=\frac{(v-1)^{d+1}}{\Delta_d(v)}.
+\end{equation}
+Define
+\begin{equation}\label{eq:Wd}
+ W_d(v)=2R_d'(v)
+       =\frac{4(d+1)(v^2-1)^d}{\Delta_d(v)^2}
+       =\frac{(-1)^d(1-v^2)^d}{4^d d!(d+1)!C_d(v)^2}.
+\end{equation}
+The first three kernels are
+\begin{align}
+ W_1(v)&=\frac{1-v^{-2}}2,\label{eq:W1}\\
+ W_2(v)&=\frac{3(1-v^2)^2}{(1+3v^2)^2},\label{eq:W2}\\
+ W_3(v)&=-\frac{(1-v^2)^3}{4v^2(1+v^2)^2}.\label{eq:W3}
+\end{align}
+
+\begin{theorem}[Universal variational kernel]\label{thm:kernel}
+For every $d\ge1$,
+\begin{equation}\label{eq:adjoint}
+ \sum_{r=0}^d2^r\frac{\mathrm d^r}{\mathrm dv^r}
+      \bigl(C_r(v)W_d(v)\bigr)=1
+\end{equation}
+as an identity of rational functions. The kernel vanishes to order $d$ at $v=\pm1$. On the open real interval $(-1,1)$ it has no pole when $d$ is even, and its only pole when $d$ is odd is the double pole at zero,
+\begin{equation}\label{eq:kernelpole}
+ W_d(v)=-\frac1{(d+1)v^2}+O(1).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For any differentiable $R$ and any $a$, the product rule gives
+\[
+ \frac{D_v^r((v-a)^{r+1}R')}{(r+1)!}
+ =\frac{D_v^{r+1}((v-a)^{r+1}R)}{(r+1)!}
+  -\frac{D_v^r((v-a)^rR)}{r!}.
+\]
+Summing over $0\le r\le d$ telescopes:
+\begin{equation}\label{eq:telescoping}
+ \sum_{r=0}^d\frac{D_v^r((v-a)^{r+1}R')}{(r+1)!}
+ =\frac{D_v^{d+1}((v-a)^{d+1}R)}{(d+1)!}-R.
+\end{equation}
+Since $2^rC_r=((v+1)^{r+1}-(v-1)^{r+1})/(2(r+1)!)$ and $W_d=2R_d'$, subtract \eqref{eq:telescoping} with $a=1$ from the one with $a=-1$. The left side becomes \eqref{eq:adjoint}; the right side becomes
+\[
+ \frac1{(d+1)!}D_v^{d+1}\bigl(\Delta_d(v)R_d(v)\bigr)
+ =\frac1{(d+1)!}D_v^{d+1}(v-1)^{d+1}=1.
+\]
+This proves the all-order rational identity.
+
+The denominator is nonzero at both endpoints, while the numerator has the asserted zeros. On the real interval, the positive-coefficient expansion \eqref{eq:Cr} shows that $C_d$ is positive when $d$ is even, and is $v$ times a polynomial positive in $v^2$ when $d$ is odd. For odd $d$, $\Delta_d(v)=2(d+1)v+O(v^3)$, which gives \eqref{eq:kernelpole}.
+\end{proof}
+
+No guessed determinant or experimental recurrence is used in this theorem. In particular the same two-line telescoping mechanism covers derivative orders not present in the finite replay.
+
+\subsection{The fixed-coordinate finite part used in the proof}
+
+Put
+\[
+ S_d(v)=\sum_{r=1}^d C_r(v)x_r.
+\]
+For even $d$, define $J_d$ by the ordinary integral
+\[
+ J_d(\boldsymbol x)=\frac12\int_{-1}^1W_d(v)e^{S_d(v)}\dd v.
+\]
+For odd $d$, use the symmetric fixed-coordinate finite part
+\begin{equation}\label{eq:JFP}
+ J_d(\boldsymbol x)=\lim_{\epsilon\downarrow0}
+ \left\{\frac12\int_{\epsilon<|v|<1}W_d(v)e^{S_d(v)}\dd v
+       +\frac{e^{S_d(0)}}{(d+1)\epsilon}\right\}.
+\end{equation}
+Equivalently, take the constant term of the truncated integral as $\epsilon\to0$. No unspecified regularization is being used. The possible $v^{-1}$ contribution cancels under the symmetric cutoff. Subtracting the displayed local term leaves an integrable even part, locally uniformly in the parameters, so parameter differentiation is valid. Coefficients of $J_d$ need not individually be rational; rationality of the relevant highest-order coefficients will instead follow from cancellation of $C_d^2$.
+
+A useful integration-by-parts rule is the following. For meromorphic densities near zero with finite principal parts, the constant term of an internal boundary expression $B(-\epsilon)-B(\epsilon)$ is zero. Therefore coefficientwise finite-part integration by parts has only the external endpoint terms. In the present application those external terms also vanish, because $W_d$ has a zero of order $d$ and no more than $d$ integrations by parts are used. This provides the precise justification for the next step.
+
+\begin{lemma}[Intertwining identity]\label{lem:intertwining}
+With $L_d$ as in \eqref{eq:Ld},
+\begin{equation}\label{eq:intertwining}
+ L_d^r e^{S_d(v)}=2^rD_v^r e^{S_d(v)}\qquad(r\ge0).
+\end{equation}
+Moreover, $J_d$ satisfies the same variational equation \eqref{eq:general-PDE} as $F_d$.
+\end{lemma}
+
+\begin{proof}
+The elementary relation $2C_r'=C_{r-1}$ gives
+\[
+ L_de^{S_d}=
+ \left(x_1+\sum_{r=1}^{d-1}x_{r+1}C_r\right)e^{S_d}
+ =2D_ve^{S_d}.
+\]
+Since $L_d$ has no $v$-dependent coefficients, it commutes with $D_v$, proving \eqref{eq:intertwining} by induction. Apply the left side of \eqref{eq:general-PDE} to $J_d$ and transfer each $D_v^r$ to $C_rW_d$. The sign $(-1)^r$ in the Euler equation cancels the integration-by-parts sign. The boundary terms vanish by the preceding finite-part discussion. Theorem~\ref{thm:kernel} then leaves exactly the right side of \eqref{eq:general-PDE}.
+\end{proof}

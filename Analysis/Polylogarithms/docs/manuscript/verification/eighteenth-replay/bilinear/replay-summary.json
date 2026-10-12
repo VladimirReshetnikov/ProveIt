@@ -1,0 +1,85 @@
+{
+  "part": "bilinear",
+  "source_folder": "stieltjes-harmonic-resonance/continuations/bilinear-tails-determinants",
+  "commands": [
+    {
+      "arguments": [
+        "verification/verify_bilinear_tails.py",
+        "results/bilinear_verification.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "verification/verify_cutoff_jets.py",
+        "results/cutoff_jets_checks.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "verification/determinants/verify_exact.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "verification/determinants/verify_numeric.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "verification/determinants/verify_polylog.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "verification/order10/verify_order10_completion.py",
+        "--full",
+        "--output",
+        "results/order10_completion_checks.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "verification/order10/eventual_threshold.py",
+        "5",
+        "--output",
+        "results/order10_eventual_threshold_replay.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "verification/order10/build_order10_identity.py"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "fresh_result_files": [
+    "results/bilinear_verification.json",
+    "results/cutoff_jets_checks.json",
+    "results/order10_completion_checks.json",
+    "results/order10_eventual_threshold_replay.json",
+    "verification/determinants/exact_results.json",
+    "verification/determinants/numeric_results.json",
+    "verification/determinants/polylog_results.json",
+    "verification/order10/order10_explicit_identity_verified.json"
+  ],
+  "source_code_sha256": {
+    "build.py": "7d87080fc6ddca784257992178a73cbb3d61ebf41db8ee73ff327bb5c1dfa278",
+    "verification/verify_bilinear_tails.py": "18749060e8474e070b486618770fae3b5733ace6eba231f373244e7bfa547594",
+    "verification/verify_cutoff_jets.py": "18a9d48525694ae4ad4be448d7f8cd51a0d0e3700999e9406acca7b8d7e757be",
+    "verification/determinants/verify_exact.py": "fb6e1f6ea512d2585d4266eafaa3d018e34bd49f95222078a52891f1a47dd568",
+    "verification/determinants/verify_numeric.py": "1729b1a3ae7c22cb63d6324cee339ae548d9abe55dd0d018023ba36793d56707",
+    "verification/determinants/verify_polylog.py": "278e1a2081f0fdbf60b8a1fe7f13d7ff7785ba229207576f42abe6a6ca895023",
+    "verification/order10/build_order10_identity.py": "a09d15249aab0ecda7d7c68a6f0b566aec2a219b56f0a09bf4ed75fa1c8394d9",
+    "verification/order10/eventual_threshold.py": "45717018b6f6ad709e5a81b13aaba2d440362a7f46a9e6a652b2bed8388f9e4e",
+    "verification/order10/verify_order10_completion.py": "d140539912e2bde8890b34a26893ab712f38ecbabd7d8097687011788d8f7a9b"
+  },
+  "passed": true,
+  "scope": "Complete specified mathematical suites, freshly run on a copy with assertions and UTF-8 enabled. Per-command outputs retained separately. Exact finite assertions, numerical diagnostics and canonical analytic acceptance have separate scopes. No package-manifest validation or original document rebuild is performed."
+}

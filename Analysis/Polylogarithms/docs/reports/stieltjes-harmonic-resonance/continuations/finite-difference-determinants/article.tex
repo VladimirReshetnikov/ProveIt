@@ -1,0 +1,106 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{mathrsfs}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor}
+\definecolor{ink}{HTML}{18384B}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,breaklinks=true]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Finite-difference determinants}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.3em}
+\setlength{\parindent}{1.2em}
+\allowdisplaybreaks[1]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\cof}{cof}
+\DeclareMathOperator{\Rea}{Re}
+\newcommand{\C}{\mathbb C}\newcommand{\Q}{\mathbb Q}\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathcal Z}\newcommand{\Bell}{\mathcal B}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ee}{\bm e}
+\newcommand{\sym}{\mathrm{sym}}
+\newcommand{\pin}{\texttt{73f18ef013d5b74eafc883efb2c15210642df12a}}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\hypersetup{pdftitle={Finite-Difference Determinants: Single-Zeta Closure, Repeated-Pole Classification, and Stieltjes Jets},pdfauthor={OpenAI-assisted research draft for Vladimir Reshetnikov and the ProveIt project},pdfsubject={Exact identities for harmonic determinant sums, Hurwitz zeta, and polylogarithms}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{0.8cm}
+{\small\scshape Analysis / Polylogarithms\par}
+\vspace{0.9cm}
+{\huge\bfseries\color{ink} Finite-Difference\\[0.18em] Determinants\par}
+\vspace{0.7cm}
+{\Large Single-zeta closure, repeated-pole classification,\\[0.25em] and Stieltjes jets\par}
+\vspace{0.8cm}
+{\large A research continuation for Vladimir Reshetnikov\par}
+{and the ProveIt project\par}
+\vspace{0.25cm}
+{OpenAI-assisted mathematical research draft\par}
+{11 October 2026\par}
+\vspace{0.8cm}
+\begin{minipage}{0.92\textwidth}
+\small
+\textbf{Abstract.}
+We solve a rank-one harmonic-data classification problem raised in the
+repository's determinantal harmonic-resonance report. For proper rational
+weights on finitely many translated integer lattices, we give an explicit
+necessary and sufficient residue test. At nonzero critical decay
+$x^{-(2r-1)}$, the criterion is particularly simple: rank one is equivalent
+to being a $(2r-2)$nd finite difference of a proper rational function.
+Repeated poles and several residue classes are allowed.
+
+This algebraic structure produces an independent-complex-order family of
+Vandermonde-square sums. At every particle number its diagonal specialization
+is a finite exponential coefficient plus one Hurwitz zeta value. Polarization
+allows independent orders and shifts without producing products of zeta
+functions. Integer orders yield Gamma-weighted complete-harmonic identities.
+A normally convergent largest-index subtraction gives all Stieltjes jets,
+with the correct distinction between a hard-cutoff constant and a spectral
+finite part. The same rank calculation bounds the depth of rational-weight
+cutoff generators; an explicit repeated-pole example is evaluated in
+$\Li_{2,2}$ and ordinary polylogarithms.
+
+All infinite-family statements have mathematical proofs. The accompanying
+programs record 1,037 exact assertions and 29 numerical diagnostics; the
+latter are not interval certificates. Novelty is assessed against a targeted
+source audit, not the entire literature. The Gaussian $S_6$ and revised
+$S_8$ conjectures are not resolved.
+\end{minipage}
+\vfill
+{\small Repository source anchor: \pin\par}
+{\small Sources, inspection limits, and proposed integration are in Section~\ref{sec:audit}.\par}
+\end{titlepage}
+\pagenumbering{roman}\hypersetup{pageanchor=true}
+\begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\clearpage
+\pagenumbering{arabic}
+\input{sections/01-context}
+\input{sections/02-spectral}
+\input{sections/03-polarization}
+\input{sections/04-gamma}
+\input{sections/05-stieltjes}
+\input{sections/06-classification}
+\input{sections/07-polylogs}
+\input{sections/08-audit}
+\input{sections/09-questions}
+\appendix
+\input{sections/10-residue-product}
+\input{sections/11-algorithms}
+\input{references}
+\end{document}

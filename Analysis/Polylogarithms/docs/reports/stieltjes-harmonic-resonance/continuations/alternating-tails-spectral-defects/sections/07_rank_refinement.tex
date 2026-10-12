@@ -1,0 +1,357 @@
+% Research fragment. No preamble. All results and scope checked below.
+% Primary source inputs: BTD general shifted-Hankel reduction and current
+% Polygamma Reconstruction and Resonance, Section 5 (order eight).
+\section{Higher precision and the order-ten optimal prefix}
+\label{rt:section}
+
+The current reconstruction report proves the order-eight prefix outside
+$b\equiv1\pmod{16}$. We retain its exact four-square contraction and
+its integral numerator $P_8$; that reduction is inherited from \cite{PRR}. The new
+contribution is a higher precision congruence that treats most of that
+exceptional class, together with a new five-square contraction and
+nonvanishing theorem at order ten. No assertion below settles the
+entire gap-six family or all unequal even orders.
+
+\subsection{Notation and the source reduction}
+
+For an integer $s\ge2$, let
+\[
+ A_s(n)=\zeta(s)-H_n^{(s)}=\zeta(s,n+1),\qquad x_n=n+\tfrac12.
+\]
+For even orders $p,q$, define
+\[
+ D_{p,q}(w)=\sum_{n=0}^{\infty}A_p(n)A_q(n)x_n^{-w},
+ \qquad \operatorname{Re}w>3-p-q,
+ \qquad D_r=D_{p,q}(-2r)
+\]
+by meromorphic continuation at the last arguments. The source proves
+regularity there. Put
+\[
+ C_j=\sum_{r=0}^j\binom{2j+1}{2r}2^{-2(j-r)}D_r.
+\]
+Its inverse transform is
+\[
+ D_r=\sum_{j=0}^r\frac{\binom{2r}{2j}}{2j+1}
+                  B_{2r-2j}(1/2)C_j.
+\]
+For $p=2a$, $q=2b$, $a<b$, the source shows that all late $C_j$,
+$j\ge b$, have rational coordinates on
+$Z_k=\zeta(2k)$, $0\le k<b$, where $Z_0=\zeta(0)=-1/2$.
+Thus the formal coordinate space used here has the $2b$ basis labels
+\[
+ C_0,\ldots,C_{b-1},\quad Z_0,\ldots,Z_{b-1}.
+\]
+Their specified numerical values define an evaluation map from this
+formal rational vector space; the labels are independent by definition,
+and the numerical values are not asserted to be independent.
+The exact inverse Bernoulli transforms, late-coordinate interpretation,
+and omitted-binomial convention are inherited from \cite{BTDsource,PRR}.
+The coordinate matrix of $C_0,\ldots,C_{2b-1}$ is
+$\operatorname{diag}(I_b,M_{a,b})$. The displayed inverse transform
+from $C$ to $D$ has diagonal entries $1/(2r+1)$, which explains
+the full-prefix determinant factor.
+
+Let $p=2a$, $q=2b$, $1\le a<b$, and put
+\[
+ \mu_j=\begin{cases}B_{2j}/(2j)!,&j\ge0,\\0,&j<0.\end{cases}
+\]
+We use $B_1=-1/2$; in particular $\mu_0=1$, and the zero values at negative indices are a convention, not analytic continuation.
+The source matrix for the late coordinates of the first $q$ centered
+moments is
+\[
+ (M_{a,b})_{tk}=\mu_{t+k-a+1}
+ \left\{\frac{(2b+2t-2a+1)!}{(2b-2k)!}
+  +\mathbf1_{k<a}\frac{(2t+1)!}{(2a-2k)!}\right\},
+ \qquad 0\le t,k<b.
+\]
+Its full prefix determinant is $\det M_{a,b}/(4b-1)!!$. Let
+$H_{a,b}=(\mu_{t+k-a+1})$ and let $U$ be the rank-$a$ perturbation
+in the source factorization $M_{a,b}=R(H_{a,b}+U)E$. Define
+\[
+ \rho_{a,b}=\frac{\det(H_{a,b}+U)}{\det H_{a,b}}.
+\]
+The source proves $H_{a,b}$ nonsingular \cite{BTDsource}; the diagonal factors $R,E$
+are nonzero. Consequently $\rho_{a,b}\ne0$ is equivalent to the
+optimal first-$q$ formal-rank assertion. These are rational matrix
+identities, not assertions of arithmetic independence of zeta values.
+
+For the finite contraction let $0\le i,\ell<a$ and set
+\begin{align*}
+ n_i&=b-a+i,&N_{i\ell}&=2(n_i-\ell)+1,&R_\ell&=2b-2a+2+2\ell,\\
+ F_{i\ell}&=f_\ell(n_i),&
+ f_\ell(n)&=\frac1{(2\ell+1)!}
+     \prod_{r=0}^{2\ell-1}(2n-r)(2n+3+r).
+\end{align*}
+For $W_{i\ell}(z)=(z+2\ell+1)
+ (2n_i+2\ell+z+1)^{\underline{2i}}$, put
+\[
+ d_{i\ell h}=\frac1{h!}\sum_{j=0}^h
+            (-1)^{h-j}\binom hj W_{i\ell}(N_{i\ell}-j).
+\]
+Using independent symbols $U_1,\ldots,U_{2a-1}$ define
+\begin{equation}\label{rt:A}
+ \mathcal A^{[a]}_{i\ell}
+ =2F_{i\ell}+
+ \frac{R_\ell!}
+ {(2n_i+1)(2n_i+2)(2\ell+2)!N_{i\ell}!}
+ \sum_{\substack{1\le h\le2i+1\\h\text{ odd}}}
+ d_{i\ell h}N_{i\ell}^{\underline h}
+ U_{a-i+\ell+(h-1)/2}.
+\end{equation}
+Factorial ratios are finite rational functions of $b$, since
+$R_\ell-N_{i\ell}=1+4\ell-2i$ is fixed. For $b\ge2a$ the source
+small-determinant theorem gives
+\begin{equation}\label{rt:ratio}
+ \rho_{a,b}=
+ \left.\frac{\det\mathcal A^{[a]}}{\det F}
+                    \right|_{U_j=2B_{2b-2j}}.
+\end{equation}
+Here is the normalization check, including the endpoint correction.
+The source Pad\'e row transformation, followed by reversal of the
+first $a$ columns and division of row $i$ by $c_{n_i}$, takes the
+unperturbed entries to $F_{i\ell}$. Expand
+$W_{i\ell}(z)=\sum_h d_{i\ell h}(N_{i\ell}-z)^{\underline h}$
+in its finite Newton basis and use
+\[
+ \sum_{j=0}^N\binom Nj B_j(N-j)^{\underline h}
+     =N^{\underline h}B_{N-h}(1).
+\]
+For $b\ge2a$, $N-h\ge2$ for retained odd $h$, and the even $h$
+terms have odd index at least three and vanish. Restoring the
+omitted $j=1$ term contributes precisely a second $F_{i\ell}$.
+This gives \eqref{rt:A}; the factors two in $2F$ and
+$U_j=2B_{2b-2j}$ are both necessary. At smaller $b$, the exceptional
+$B_0$ and $B_1(1)$ terms require the direct finite calculation.
+
+\subsection{The new five-square integer certificate}
+
+Put
+\begin{align*}
+ D_{10}(b)={}&4096b^{12}-110592b^{11}+1236992b^{10}-7303680b^9\\
+ &+23705088b^8-38140416b^7+14925056b^6+24490080b^5\\
+ &-4469984b^4-15838992b^3-2571948b^2+4244400b+1488375.
+\end{align*}
+For $a=5$, direct finite polynomial identities give
+\begin{align}\label{rt:Fdet}
+ \det F={}&\frac{16384}{4465125}
+ (b-3)(b-2)^2(b-1)(2b-7)(2b-5)^2(2b-3)\notag\\
+ &\quad\cdot(4b-15)(4b-13)(4b-11)^2(4b-9)^2(4b-7)^2
+ (4b-5)(4b-3)D_{10}(b),\\
+ \frac{\det\mathcal A^{[5]}}{\det F}
+ ={}&\frac{P_{10}(b;U_1,\ldots,U_9)}
+ {138240(2b-7)(2b-5)D_{10}(b)},\label{rt:P10}
+\end{align}
+where $P_{10}\in\mathbb Z[b,U_1,\ldots,U_9]$. The polynomial has
+439 monomials in the nine $U$ variables; their coefficients have
+degree at most 24 in $b$. In the full ten-variable expansion there
+are 10,403 monomials. Its complete coefficients are supplied with
+the exact verification artifact. Equivalently,
+\eqref{rt:A}, \eqref{rt:Fdet}, and \eqref{rt:P10} specify it without
+interpolation or an omitted fitted formula.
+
+The identities can be verified by clearing the least common denominator
+of each row of \eqref{rt:A}, summing the 120 signed permutation
+products, and cross-multiplying \eqref{rt:P10}. All coefficient
+comparisons are over the rational polynomial ring. The delivered
+verifier performs these operations exactly and checks the integer
+coefficients of $P_{10}$. Since $D_{10}(b)$ is odd at every integer
+$b$, the denominator in \eqref{rt:P10} always has valuation 10.
+
+For order eight we retain the current source polynomial \cite{PRR}, normalized by
+\[
+ \rho_{4,b}=
+ \frac{P_8(b;2B_{2b-2},\ldots,2B_{2b-14})}
+ {576(2b-5)D_8(b)},\qquad b\ge8,
+\]
+where
+\[
+ D_8(b)=256b^8-3584b^7+18496b^6-40544b^5+25984b^4
+       +18424b^3-5856b^2-8316b-2025.
+\]
+Its denominator has valuation 6. The independently regenerated
+$P_8$ agrees coefficientwise with the source certificate.
+
+\subsection{A uniform Bernoulli congruence at prescribed precision}
+
+All congruences are in $\mathbb Z_{(2)}$, the rationals with odd
+denominator. We use the source's elementary fact
+$v_2(B_{2j})=-1$ for $j\ge1$; all Bernoulli numbers have valuation
+at least $-1$.
+
+\begin{lemma}\label{rt:general-B}
+Let $K\ge4$ and $m\ge1$ be integers, let $s=\lceil K/2\rceil$, and suppose
+$2m\ge K+s-1$. Set $J=\lfloor(K+s-2)/3\rfloor$. Then
+\[
+ 2B_{2m}\equiv \frac1{2^{s-1}}
+ \sum_{\substack{1\le a<2^s\\a\text{ odd}}}
+ \sum_{j=0}^{J}\binom mj(a^2-1)^j\pmod{2^K}.
+\]
+The right side is a finite integer-valued polynomial in $m$.
+\end{lemma}
+\begin{proof}
+Faulhaber's identity gives
+\[
+ \sum_{a=0}^{2^s-1}a^{2m}
+ =2^sB_{2m}+
+ \sum_{h=2}^{2m+1}\binom{2m}{h-1}\frac{2^{sh}}h
+                         B_{2m+1-h}.
+\]
+The $h=2$ term is zero. For $h\ge3$, its valuation is at least
+$sh-v_2(h)-1\ge s+K-1$. Thus division by $2^{s-1}$ proves
+$2B_{2m}\equiv2^{1-s}\sum a^{2m}\pmod{2^K}$. The even summands
+vanish at this precision because $2m\ge K+s-1$.
+For odd $a$, $a^2-1$ is divisible by eight. Expanding
+$a^{2m}=(1+(a^2-1))^m$ and discarding $j>J$ gives an error of
+valuation at least $3j-s+1\ge K$ in each term. This proves the
+formula. For completeness, sums of even powers of the odd integers below $2^s$ are divisible by $2^{s-1}$: pair $a$ with $a+2^{s-1}$ and induct on $s$. Thus the coefficients in the binomial basis are integers. The finite average may also be retained in its displayed
+rational form; no claim about dividing a congruence by a nonunit
+without increasing its precision is being made.
+\end{proof}
+
+For $K=16$, $s=8$, finite coefficient simplification gives the
+particularly useful integer polynomial
+\begin{equation}\label{rt:B16}
+ \begin{split}
+ \mathcal B(x)={}&1+20068x-26384x^2+2816x^3-19712x^4
+                  +4096x^5-24576x^6,\\
+ 2B_{2m}\equiv{}&\mathcal B(m)\pmod{65536},\qquad m\ge12.
+ \end{split}
+\end{equation}
+For an entirely finite specification of this simplification, expand
+\[
+ \frac1{128}\sum_{a=1,3,\ldots,255}
+       \sum_{j=0}^{7}\binom{x}{j}(a^2-1)^j.
+\]
+Every coefficient of its difference from $\mathcal B(x)$ has
+valuation at least 16. The exact program checks this in
+$\mathbb Q[x]$, including the denominators from $\binom{x}{j}$.
+The degree-seven coefficient vanishes at the displayed precision.
+
+\subsection{Two short congruences and their unique exceptional classes}
+
+Define
+\begin{align*}
+ R_8(b)={}&4096b^9-5120b^8+4864b^7+2176b^6-176b^5\\
+ &-5184b^4-4912b^3-7948b^2+1195b-1727,\\
+ R_{10}(b)={}&-512b^8+128b^7-928b^6-816b^5+464b^4
+                  +352b^3+118b^2+217b+694.
+\end{align*}
+The following are coefficientwise polynomial congruences:
+\begin{align}
+ P_8\bigl(b;\mathcal B(b-1),\ldots,\mathcal B(b-7)\bigr)
+       &\equiv4R_8(b)\pmod{65536},\label{rt:R8}\\
+ P_{10}\bigl(b;\mathcal B(b-1),\ldots,\mathcal B(b-9)\bigr)
+       &\equiv32R_{10}(b)\pmod{65536}.\label{rt:R10}
+\end{align}
+They follow by direct integer polynomial substitution in the finite
+certificates; the accompanying program performs exact modular
+polynomial multiplication and verifies every coefficient. After the
+actual Bernoulli coordinates are substituted, the precision after division
+is explicitly
+\begin{align*}
+ \frac{P_8(b;2B_{2b-2},\ldots,2B_{2b-14})}{4}
+       &\equiv R_8(b)\pmod{16384} &&(b\ge19),\\
+ \frac{P_{10}(b;2B_{2b-2},\ldots,2B_{2b-18})}{32}
+       &\equiv R_{10}(b)\pmod{2048} &&(b\ge21).
+\end{align*}
+
+All coefficients of degree at least two in either $R_8$ or $R_{10}$
+are even, and the linear coefficients are odd. Consequently, for
+all integers $x,y$,
+\begin{equation}\label{rt:isometry}
+ v_2(R_j(x)-R_j(y))=v_2(x-y),\qquad x\ne y,\quad j=8,10.
+\end{equation}
+Indeed, after factoring $x-y$, the remaining polynomial is the odd
+linear coefficient plus an even integer. In particular, a root
+modulo $2^L$ is unique if it exists. Exact substitution gives
+\[
+ R_8(8001)\equiv0\pmod{16384},\qquad
+ R_{10}(962)\equiv0\pmod{2048}.
+\]
+Thus these are the unique exceptional classes at their respective
+precisions. Their existence and uniqueness do not rely on testing
+all residues.
+
+\begin{theorem}[Order-eight refinement]\label{rt:rank8}
+For every integer $b\ge5$ with $b\not\equiv8001\pmod{16384}$,
+$M_{4,b}$ is nonsingular. Equivalently, the first $q=2b$ centered
+moments have full formal rank $q$ for $(p,q)=(8,2b)$. For $b\ge19$
+in this range,
+\[
+             v_2(\rho_{4,b})=v_2(b-8001)-4.
+\]
+\end{theorem}
+\begin{proof}
+For $b\ge19$, each $b-j\ge12$ in the seven Bernoulli coordinates.
+Apply \eqref{rt:B16} and \eqref{rt:R8}. If $b$ is not in the
+exceptional class, \eqref{rt:isometry} gives
+$v_2(R_8(b))=v_2(b-8001)<14$. Hence the true numerator has
+valuation $2+v_2(b-8001)$, and division by the denominator of
+valuation 6 proves the assertion. The existing order-eight theorem
+handles $5\le b\le18$ except $b=17$. Direct calculation gives
+\[
+ \rho_{4,17}=-\frac{5564518155020169678178976040991}
+                         {8937041637533625}\ne0.
+\]
+\end{proof}
+
+\begin{theorem}[Order-ten prefix]\label{rt:rank10}
+For every integer $b\ge6$ with $b\not\equiv962\pmod{2048}$,
+$M_{5,b}$ is nonsingular. Equivalently, the first $q=2b$ centered
+moments have full formal rank $q$ for $(p,q)=(10,2b)$. For $b\ge21$
+in this range,
+\[
+              v_2(\rho_{5,b})=v_2(b-962)-5.
+\]
+\end{theorem}
+\begin{proof}
+For $b\ge21$, all nine indices $b-j$ are at least 12. Equations
+\eqref{rt:B16}, \eqref{rt:R10}, and \eqref{rt:isometry} give
+$v_2(P_{10})=5+v_2(b-962)$ whenever $b\not\equiv962\pmod{2048}$.
+The denominator in \eqref{rt:P10} has valuation 10. This proves
+nonvanishing and the valuation formula.
+For $6\le b\le20$, an exact finite calculation with the displayed
+source matrix gives the respective valuations
+\[
+ -4,-4,-6,-5,-2,-5,-4,-5,-3,-5,-4,-5,-1,-5,-4.
+\]
+The complete nonzero determinants and ratios are recorded in
+\texttt{direct\_rank\_checks.json}; its independent verifier constructs
+$M_{5,b}$ and $H_{5,b}$ from Bernoulli numbers and takes their exact
+rational determinants. It does not invoke the generic contraction
+below its valid threshold $b\ge10$.
+\end{proof}
+
+For example, the previously unsettled gap-six pair $(p,q)=(10,16)$
+is included among these finite base cases, with
+\[
+ \det M_{5,8}=\frac{537653622905129}{68669669376000}>0.
+\]
+The first pair in the excluded order-ten progression has $b=962$;
+its exclusion is a limitation of the congruence, not evidence of a
+zero determinant. The same applies to $b=8001$ in the order-eight
+refinement. The global gap-six conjecture remains open here.
+
+\subsection{A useful lower precision corollary and exact scope}
+
+The same finite calculation at modulus $512$ gives
+\[
+ P_{10}\bigl(b;\mathcal B_9(b-j)\bigr)
+ \equiv32(6b^2-7b+6)\pmod{512},
+\]
+where
+$\mathcal B_9(x)=256x^4+256x^3+240x^2+100x+1$
+represents $2B_{2m}$ modulo $512$ for $m\ge7$. The odd linear
+coefficient again gives a unique zero, now $b\equiv2\pmod{16}$.
+Thus a shorter statement is that order ten is proved outside
+$b\equiv2\pmod{16}$, with
+$v_2(\rho_{5,b})=v_2(b-2)-5$ for $b\ge16$ outside that class.
+The higher precision theorem treats many additional values within it.
+
+Further increases in precision are algorithmic through
+Lemma~\ref{rt:general-B}, but an arbitrarily long list of certified
+residue classes is not a proof for all $b$. In particular, neither
+the order-eight nor the order-ten formula above asserts a global
+valuation law obtained by replacing the exceptional class with a
+single ordinary integer. A proof for the remaining progressions,
+or an independent archimedean nonvanishing argument, is still needed.

@@ -1,0 +1,132 @@
+\section{A multiple-polylogarithm generator for two harmonic tails}
+\label{sec:polylog-generator}
+
+The moment reconstruction has a natural analytic generating function.
+We use the nested-sum convention
+\begin{equation}
+ \Li_{r,s}(x,y)=
+ \sum_{m>n\ge1}\frac{x^m y^n}{m^r n^s},
+ \label{eq:two-variable-mpl}
+\end{equation}
+initially in its domain of absolute convergence.  This is a depth-two
+multiple polylogarithm in two arguments; the notation is chosen to make
+the larger and smaller summation indices visible~\cite{Goncharov,BorweinMPL}.
+
+\begin{theorem}[Two-tail polylogarithmic generator]
+\label{thm:two-tail-generator}
+Let $p,q>1$ be integers and $|z|<1$.  Then
+\begin{equation}
+ \boxed{\displaystyle
+ \calF_{p,q}(z):=\sum_{n=0}^{\infty}A_p(n)A_q(n)z^n
+ =\frac{\zeta(p)\zeta(q)
+ -\Li_{p,q}(1,z)-\Li_{q,p}(1,z)-\Li_{p+q}(z)}{1-z}.}
+ \label{eq:two-tail-generator}
+\end{equation}
+The same function has the Gamma-normalized double Mellin integral
+\begin{equation}
+ \calF_{p,q}(z)=
+ \frac1{\Gamma(p)\Gamma(q)}
+ \int_0^\infty\!\int_0^\infty
+ \frac{t^{p-1}u^{q-1}e^{-t-u}}
+ {(1-e^{-t})(1-e^{-u})(1-ze^{-t-u})}
+ \dd t\dd u.
+ \label{eq:two-tail-mellin}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Expand the two tails and interchange absolutely convergent sums:
+\begin{align*}
+ \calF_{p,q}(z)
+ &=\sum_{m,k\ge1}\frac1{m^pk^q}
+   \sum_{0\le n<\min(m,k)}z^n\\
+ &=\frac1{1-z}\sum_{m,k\ge1}
+   \frac{1-z^{\min(m,k)}}{m^pk^q}.
+\end{align*}
+The part without $z^{\min(m,k)}$ is $\zeta(p)\zeta(q)$.  Splitting the
+remaining double sum into $m>k$, $k>m$, and $m=k$ gives respectively
+$\Li_{p,q}(1,z)$, $\Li_{q,p}(1,z)$, and $\Li_{p+q}(z)$, proving
+\eqref{eq:two-tail-generator}.
+
+For \eqref{eq:two-tail-mellin}, use
+\[
+ A_p(n)=\frac1{\Gamma(p)}\int_0^\infty
+ \frac{t^{p-1}e^{-(n+1)t}}{1-e^{-t}}\dd t
+\]
+and the analogous formula for $A_q(n)$.  Summing the resulting geometric
+series in $ze^{-t-u}$ gives the stated integral.  Positivity for real
+$z\in[0,1)$ and absolute convergence for $|z|<1$ justify the
+interchanges; the complex identity then follows by holomorphy.
+\end{proof}
+
+\subsection{Centered weights as one differential operator}
+
+Let
+\begin{equation}
+ \Eop=z\frac{\dd}{\dd z}+\frac12.
+ \label{eq:centered-Euler}
+\end{equation}
+Because $\Eop z^n=(n+1/2)z^n$, every polynomial weight is encoded by
+functional calculus in this single operator:
+\begin{equation}
+ P(\Eop)\calF_{p,q}(z)
+ =\sum_{n=0}^{\infty}P(n+\tfrac12)A_p(n)A_q(n)z^n.
+ \label{eq:operator-tail}
+\end{equation}
+Likewise,
+\begin{equation}
+ Q(\Eop)\frac1{1-z}
+ =\sum_{n=0}^{\infty}Q(n+\tfrac12)z^n.
+ \label{eq:operator-polynomial}
+\end{equation}
+This gives a compact polylogarithmic normal form for every identity in
+\cref{thm:ordinary-reconstruction}.
+
+\begin{corollary}[Polylogarithmic boundary reconstruction]
+\label{cor:polylog-boundary}
+For $b\ge6$ and $0\le k<b$,
+\begin{equation}
+ \boxed{\displaystyle
+ \lim_{z\uparrow1}
+ \left\{
+ P_{b,k}(\Eop)\calF_{10,2b}(z)
+ -Q_{b,k}(\Eop)\frac1{1-z}
+ \right\}=\zeta(2k),}
+ \label{eq:polylog-boundary}
+\end{equation}
+where $\calF_{10,2b}$ is given explicitly by
+\eqref{eq:two-tail-generator}.  The limit may be taken radially in the
+unit disk.
+\end{corollary}
+
+\begin{proof}
+Equations \eqref{eq:operator-tail} and
+\eqref{eq:operator-polynomial} show that the expression in braces has
+Taylor coefficients equal to the summand of
+\eqref{eq:ordinary-reconstruction}.  That coefficient series is
+absolutely summable, so Abel's theorem identifies the radial limit with
+its sum.
+\end{proof}
+
+Repeated argument differentiation introduces no new function class:
+for every integer $j\ge0$,
+\begin{equation}
+ \left(z\frac{\dd}{\dd z}\right)^j\Li_{r,s}(1,z)
+   =\Li_{r,s-j}(1,z),
+ \qquad
+ \left(z\frac{\dd}{\dd z}\right)^j\Li_r(z)=\Li_{r-j}(z).
+ \label{eq:order-lowering}
+\end{equation}
+Thus \eqref{eq:polylog-boundary} is a finite identity among ordinary
+polylogarithms, depth-two multiple polylogarithms with shifted orders,
+and rational functions.  Formula \eqref{eq:two-tail-mellin} supplies a
+parallel Gamma-integral representation of the same boundary values.
+
+\begin{remark}[Why the numerator is a divided tail]
+The factor $(1-z)^{-1}$ in \eqref{eq:two-tail-generator} is not an
+artifact of summation.  It records the finite geometric prefix
+$1+z+\cdots+z^{\min(m,k)-1}$.  The numerator therefore measures exactly
+the difference between the unrestricted product $\zeta(p)\zeta(q)$ and
+the three regions in which the smaller index has already crossed the
+prefix boundary.
+\end{remark}

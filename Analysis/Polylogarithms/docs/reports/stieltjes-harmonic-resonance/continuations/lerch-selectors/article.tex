@@ -1,0 +1,1690 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm,mathrsfs}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage[breaklinks=true,colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Polynomial Lerch Selectors: Endpoint Obstructions, Resonant Spectral Collapse, and Stieltjes Confluence},pdfauthor={Research continuation for the ProveIt project}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Polynomial Lerch selectors}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{4pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}\newcommand{\Q}{\mathbb Q}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\T}{\mathcal T}
+\newcommand{\E}{\mathcal E}
+\newcommand{\HFE}{\mathsf H}
+\newcommand{\src}[1]{\texttt{\detokenize{#1}}}
+\DeclareMathOperator{\Span}{span}
+\title{\textbf{Polynomial Lerch Selectors}\\[7pt]
+\large Endpoint obstructions, resonant spectral collapse,\\
+and Stieltjes confluence}
+\author{Research continuation prepared for\\Vladimir Reshetnikov's ProveIt project}
+\date{11 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We answer the polynomial-selector question posed in the incoming
+\emph{Affine Gamma Polarization} report for every positive integer
+interval length and every nonzero twist in the closed unit disk.
+A finite vector of paired endpoint derivatives is exactly the support
+of the shifted Lerch functions in the transform, modulo a specified
+finite exponential remainder. Off resonance, the unique single-order
+weights are classical Frobenius--Euler polynomials; at resonance they
+are Bernoulli polynomials, with an arbitrary constant. Functional
+independence over $\C(s)$ makes this a classification of analytic
+functions, not merely of formal coordinates.
+
+Eulerian polynomials give a sharp endpoint obstruction: off resonance
+a nonzero single-order weight cannot vanish to order two at both
+endpoints. At resonance, double zeros occur precisely for the even
+Bernoulli weights of degree at least four, and triple zeros never occur.
+An explicit finite mixture replaces the impossible scalar confluence;
+its number of spectral coordinates drops exactly from $r+1$ to one.
+We derive every removable-integer spectral jet through finite
+generalized-harmonic coefficients and obtain Euler-weighted Gamma
+integrals with one odd zeta value. A joint holomorphic renormalization
+at the Hurwitz pole supplies every mixed twist/Stieltjes jet and
+anchored shift primitives.
+
+Classical polynomial bases and the classical Lerch expansion are
+credited explicitly. The contribution is their exact selector
+classification, endpoint and confluence consequences, and the resulting
+identity calculus in the stated source programme. We also solve an
+explicit coefficient problem in arXiv:2609.13796v1 and correct three
+normalization/sign statements relative to its defining series. The package includes
+969 finite exact assertions and 33 high-precision diagnostics. These
+are not interval certificates or proof-assistant verification. No global
+priority claim or resolution of the $S_6$, revised $S_8$, or general
+unequal-tail prefix problems is made.
+\end{abstract}
+\newpage
+\tableofcontents
+\newpage
+
+\section{The source question and the scope of the answer}
+\label{pls:sec:scope}
+
+The canonical ProveIt manuscript separates its proven identities,
+experimental candidates, and pending analytic integrations
+\cite{Manuscript}. The incoming \emph{Affine Gamma Polarization} report
+extends the Gamma square sector to weighted Hurwitz and Lerch
+transforms. Its Section~11, questions~4 and~5, asks for a functional
+classification of polynomial weights on integer intervals that leave
+one shifted zeta or polylogarithm order plus an elementary remainder,
+and asks how the twisted answer approaches the Bernoulli selectors
+\cite{Affine}. These are the specific continuation questions addressed
+here. We do not repeat that report's Gamma normal-form theorem.
+
+The phrase ``one order'' needs a coefficient field. At a single
+numerical value of $s$, identities between constants could obscure the
+issue. With arbitrary meromorphic coefficients every nonzero function
+could trivially be called a selector. We instead allow coefficients in
+$\C(s)$ and fix the finite exponential remainder arising from integer
+translation. This is the same functional, rather than numerical,
+standard used in the predecessor's Bernoulli classification.
+
+Let $a>0$, $L\ge1$ be an integer, $P\in\C[u]$, and
+$0<|z|\le1$. The central transform is
+\begin{equation}\label{pls:eq:transform}
+ \T_P(z,s;a,L)=\int_0^L P(u)\Phi(z,s,a+u)\dd u,
+ \qquad
+ \Phi(z,s,x)=\sum_{n=0}^\infty\frac{z^n}{(n+x)^s}.
+\end{equation}
+For $|z|<1$ the series is entire in $s$. At $|z|=1$ the identities
+are first proved for $\Re s>1$ and then continued. For $z\ne1$ the
+continued transform is entire; for $z=1$ it is a weighted Hurwitz-zeta
+integral with only a possible pole at $s=1$. Positive bases use their
+real logarithms. No branch ambiguity in $(n+x)^{-s}$ is introduced.
+
+Theorem~\ref{pls:thm:classification} solves the exact selector problem.
+Theorem~\ref{pls:thm:flatness} proves the endpoint obstruction and its
+resonant exception. Theorem~\ref{pls:thm:mixing} describes constructive
+confluence with an exact support count.
+Theorems~\ref{pls:thm:jets} and~\ref{pls:thm:confluence} give the
+spectral and Stieltjes calculi. The concrete Gamma and quartic-weight
+identities in Sections~\ref{pls:sec:gamma} and~\ref{pls:sec:stieltjes}
+are useful normalization tests and applications.
+
+\paragraph{Attribution and novelty scope.}
+Frobenius--Euler polynomials, their Appell property and their endpoint
+basis formula are classical; see Kim and Kim \cite{KimKim}. Eulerian
+real-rootedness is classical as well; modern interlacing proofs include
+Chow \cite{Chow}. Hurwitz differentiation, Lerch translation, and the
+logarithmic Lerch expansion are classical \cite{DLMFHurwitz,DLMFLerch}.
+The predecessor already proves a single-zeta Bernoulli basis on $[1,3]$
+and weighted Stieltjes formulas. We give self-contained proofs where
+short, but do not claim these ingredients as discoveries. The results
+below resolve the stated source questions in an explicit domain and
+exhibit consequences not established in the inspected source sections.
+A finite literature search cannot establish global priority.
+
+\section{Paired endpoint derivatives are the exact spectrum}
+\label{pls:sec:endpoints}
+
+Write
+\begin{equation}\label{pls:eq:F}
+ F_j(s)=\prod_{k=1}^{j+1}(s-k),\qquad j\ge0,
+ \qquad \lambda=z^L.
+\end{equation}
+For a polynomial of degree $D$, set
+\begin{equation}\label{pls:eq:c}
+ c_j(P;\lambda,L)=P^{(j)}(L)-\lambda P^{(j)}(0),
+ \qquad 0\le j\le D.
+\end{equation}
+The elementary remainder space in the next results is
+\begin{equation}\label{pls:eq:elementary}
+ \E_{a,L}=\Span_{\C(s)}\{(a+\ell)^{-s}:0\le\ell<L\}.
+\end{equation}
+The twist is fixed while taking this span. Coefficients may depend on
+that fixed twist and on the fixed interval parameters.
+
+\begin{proposition}[Finite endpoint transform]\label{pls:prop:endpoint}
+As meromorphic functions of $s$,
+\begin{align}
+ \T_P(z,s;a,L)
+ &=-\sum_{j=0}^D\frac{P^{(j)}(L)\Phi(z,s-j-1,a+L)
+                  -P^{(j)}(0)\Phi(z,s-j-1,a)}{F_j(s)}
+                  \label{pls:eq:endpoint}\\
+ &=-\lambda^{-1}\sum_{j=0}^D
+        \frac{c_j(P;\lambda,L)}{F_j(s)}\Phi(z,s-j-1,a)
+      +\mathcal R_P(z,s;a,L),\label{pls:eq:spectrum}
+\end{align}
+where the explicitly elementary remainder is
+\begin{equation}\label{pls:eq:remainder}
+ \mathcal R_P=\lambda^{-1}\sum_{j=0}^D
+     \frac{P^{(j)}(L)}{F_j(s)}
+          \sum_{\ell=0}^{L-1}z^\ell(a+\ell)^{j+1-s}.
+\end{equation}
+All apparent poles other than the possible Hurwitz pole at $s=1$
+cancel in the complete expression.
+\end{proposition}
+\begin{proof}
+Termwise differentiation in an initial convergence domain gives
+$\partial_x\Phi(z,s,x)=-s\Phi(z,s+1,x)$. Successive integration by
+parts terminates after $D+1$ steps. At each step the antiderivative
+contributes the next factor $-(s-k)^{-1}$ while integration by parts
+contributes another minus sign to the continuing integral. Thus the
+boundary sum has the uniform minus sign in
+\eqref{pls:eq:endpoint}. Equivalently,
+$(-1)^j/(1-s)_{j+1}=-1/F_j(s)$.
+
+Integer translation of the absolutely convergent series gives
+\[
+ \Phi(z,\sigma,a)=z^L\Phi(z,\sigma,a+L)
+                  +\sum_{\ell=0}^{L-1}z^\ell(a+\ell)^{-\sigma}.
+\]
+Substitution proves \eqref{pls:eq:spectrum}. Analytic continuation
+then proves the formulas everywhere they are asserted. For $z\ne1$
+on the unit circle, the Mellin representation with denominator
+$1-ze^{-t}$ continues the function to an entire function of $s$:
+near zero its numerator is analytic, and the zeros of $1/\Gamma(s)$
+cancel the Mellin poles at nonpositive integers. The corresponding
+assertion at $z=1$ is the usual Hurwitz continuation. Integration over
+a compact positive interval preserves these properties.
+\end{proof}
+
+\begin{lemma}[Functional independence]\label{pls:lem:independence}
+For distinct nonnegative integers $j_1,\ldots,j_m$, the functions
+\[
+ \Phi(z,s-j_1-1,a),\ldots,\Phi(z,s-j_m-1,a),
+ \quad (a+\ell)^{-s}\ (0\le\ell<L)
+\]
+are linearly independent over $\C(s)$.
+\end{lemma}
+\begin{proof}
+Clear rational denominators in a putative relation. For real $s$
+sufficiently large, expand it into a Dirichlet series
+\[
+ \sum_{n\ge0}Q_n(s)(a+n)^{-s}=0.
+\]
+The polynomials $Q_n(s)$ have uniformly bounded degree in $s$. For
+$n\ge L$ they have the form
+\[
+ Q_n(s)=z^n\sum_{\nu=1}^m p_\nu(s)(a+n)^{j_\nu+1},
+\]
+where the $p_\nu$ are fixed polynomials. The finitely many smaller
+indices contain the elementary coefficients as well. There are
+constants $C,M,K$ for which
+$|Q_n(s)|\le C(1+s)^M(1+n)^K$ on the positive real axis.
+
+If one coefficient polynomial is nonzero, choose the least such
+index $n_0$. Divide the identity by $(a+n_0)^{-s}$. The tail tends
+to zero exponentially, up to a fixed polynomial in $s$. Indeed, for
+large $s$ one can split the exponent in half and bound it by
+\[
+ C'(1+s)^M
+ \left(\frac{a+n_0}{a+n_0+1}\right)^{s/2}
+ \sum_{n>n_0}(1+n)^K
+          \left(\frac{a+n_0}{a+n}\right)^{s/2},
+\]
+where the final sum is uniformly bounded once $s/2>K+2$.
+A nonzero polynomial $Q_{n_0}(s)$ cannot decay exponentially.
+Thus every $Q_n$ is zero.
+
+For infinitely many $n\ge L$, division by $z^n\ne0$ gives
+$\sum_\nu p_\nu(s)(a+n)^{j_\nu+1}=0$. A polynomial in $a+n$
+with infinitely many roots is identically zero; hence each $p_\nu=0$.
+The remaining finite exponential coefficients are then zero too.
+\end{proof}
+
+\begin{corollary}[No hidden spectral cancellation]\label{pls:cor:support}
+Modulo $\E_{a,L}$, the transform has precisely the shifted orders
+$s-j-1$ for which $c_j(P;\lambda,L)\ne0$. This support is unique.
+\end{corollary}
+
+For positive integer $a=A$, the relation
+\begin{equation}\label{pls:eq:integerLi}
+ \Phi(z,\sigma,A)=z^{-A}\left(\Li_\sigma(z)
+                -\sum_{n=1}^{A-1}\frac{z^n}{n^\sigma}\right)
+\end{equation}
+turns this into an exact polylogarithmic statement. The elementary
+space is then enlarged, explicitly, to
+$\Span_{\C(s)}\{n^{-s}:1\le n<A+L\}$.
+The same least-index argument proves independence in that form.
+
+\section{Classification off and at resonance}
+\label{pls:sec:classification}
+
+We call $\lambda=z^L=1$ \emph{resonance}. This concerns the interval
+translation, not only the point $z=1$. Nontrivial roots of unity can
+therefore be resonant, while their Lerch functions remain entire in $s$.
+
+Define the classical Frobenius--Euler polynomials by
+\begin{equation}\label{pls:eq:FEgen}
+ \frac{(1-\lambda)e^{xt}}{e^t-\lambda}
+ =\sum_{d=0}^\infty\HFE_d(x;\lambda)\frac{t^d}{d!},
+ \qquad \lambda\ne1.
+\end{equation}
+They are monic and satisfy
+\begin{align}
+ \partial_x\HFE_d(x;\lambda)&=d\HFE_{d-1}(x;\lambda),
+                 \label{pls:eq:Appell}\\
+ \HFE_d(1;\lambda)-\lambda\HFE_d(0;\lambda)
+                  &=(1-\lambda)\mathbf1_{d=0}.
+                 \label{pls:eq:FEboundary}
+\end{align}
+These identities follow immediately from the generating function.
+The notation $\HFE_d$ is distinguished from generalized harmonic
+numbers $H_n^{(r)}$ used later.
+
+\begin{theorem}[All single-order polynomial selectors]
+\label{pls:thm:classification}
+Fix $a>0$, integer $L\ge1$, and $0<|z|\le1$. Let $N\ge1$.
+A polynomial $P$ has a nonzero single-order representation
+\begin{equation}\label{pls:eq:singledef}
+ \T_P(z,s;a,L)=A(s)\Phi(z,s-N,a)+E(s),
+ \qquad 0\ne A\in\C(s),\quad E\in\E_{a,L},
+\end{equation}
+if and only if one of the following holds.
+
+If $\lambda\ne1$, then
+\begin{equation}\label{pls:eq:nonresclass}
+ P(u)=C L^{N-1}\HFE_{N-1}(u/L;\lambda),\qquad C\ne0.
+\end{equation}
+In particular $\deg P=N-1$, and
+$A(s)=-\lambda^{-1}(1-\lambda)C(N-1)!/F_{N-1}(s)$.
+No nonzero polynomial has an elementary-only transform.
+
+If $\lambda=1$, then
+\begin{equation}\label{pls:eq:resclass}
+ P(u)=C L^N B_N(u/L)+C_0,\qquad C\ne0,
+\end{equation}
+where $B_N$ is the Bernoulli polynomial. Now $\deg P=N$ and
+$A(s)=-CLN!/F_{N-1}(s)$. The elementary-only polynomials are
+exactly the constants.
+\end{theorem}
+\begin{proof}
+For $\lambda\ne1$, \eqref{pls:eq:Appell}--\eqref{pls:eq:FEboundary}
+show that the polynomial $L^d\HFE_d(u/L;\lambda)$ has only one
+nonzero endpoint coordinate, namely $c_d=(1-\lambda)d!$.
+Since these monic polynomials form a basis, every $P$ of degree at
+most $D$ has the classical endpoint expansion
+\begin{equation}\label{pls:eq:FEbasis}
+ P(u)=\sum_{d=0}^D
+       \frac{c_d(P;\lambda,L)L^d}{(1-\lambda)d!}
+                         \HFE_d(u/L;\lambda).
+\end{equation}
+Corollary~\ref{pls:cor:support} proves that a single order is
+possible exactly when one coefficient in this expansion survives.
+The highest endpoint coordinate of a nonzero degree-$D$ polynomial
+is $(1-\lambda)P^{(D)}$, so its sole coordinate must have $d=D$.
+This proves the nonresonant assertion.
+
+At resonance use
+$B_n(1)-B_n(0)=\mathbf1_{n=1}$, which follows from
+$te^{xt}/(e^t-1)$. It gives the anchored expansion
+\begin{equation}\label{pls:eq:Bbasis}
+ P(u)=P(0)+\sum_{N=1}^D
+ \frac{c_{N-1}(P;1,L)L^{N-1}}{N!}
+                      \bigl(B_N(u/L)-B_N(0)\bigr).
+\end{equation}
+Only the coordinate $j=N-1$ is nonzero for a nonconstant basis term.
+The kernel consists of constants: alternatively, a polynomial with
+all paired derivatives zero must be constant, by looking successively
+at its highest nonconstant degree. The independence lemma again
+turns this basis statement into the functional classification.
+\end{proof}
+
+\begin{remark}[A finite interpolation problem, with a singular limit]
+On the monomial basis $1,u,\ldots,u^D$, the endpoint map
+$P\mapsto(c_0,\ldots,c_D)$ is upper triangular and has determinant
+\begin{equation}\label{pls:eq:endpointdet}
+ (1-\lambda)^{D+1}\prod_{j=0}^D j!.
+\end{equation}
+At $\lambda=1$ it has rank $D$, with constants as kernel. The minor
+with rows $c_0,\ldots,c_{D-1}$ and columns $u,\ldots,u^D$ has
+\begin{equation}\label{pls:eq:resdet}
+ \det=L^D\prod_{j=1}^D j!\ne0.
+\end{equation}
+Thus the degree shift in Theorem~\ref{pls:thm:classification} is an
+exact change of rank, not a numerical instability.
+\end{remark}
+
+\section{Endpoint zeros and the Eulerian obstruction}
+\label{pls:sec:flatness}
+
+The source's Gamma-derived weights vanish with their first derivatives
+at both endpoints. Such a condition is not innocuous under twisting.
+We now classify precisely when it is compatible with one order.
+
+Define Eulerian polynomials $A_d$ for $d\ge1$ by
+\begin{equation}\label{pls:eq:Eulerian}
+ \sum_{n=1}^\infty n^d\lambda^n
+       =\frac{\lambda A_d(\lambda)}{(1-\lambda)^{d+1}},
+ \qquad |\lambda|<1.
+\end{equation}
+Here $A_1=1$, $A_2=1+\lambda$, and
+$A_3=1+4\lambda+\lambda^2$. Differentiating the generating series
+with $\lambda\partial_\lambda$ gives
+\begin{equation}\label{pls:eq:Eulerianrec}
+ A_d=(1+(d-1)\lambda)A_{d-1}
+          +\lambda(1-\lambda)A_{d-1}'.
+\end{equation}
+
+\begin{lemma}[The endpoint Eulerian polynomial]\label{pls:lem:Eulerian}
+For $d\ge1$ and $\lambda\ne1$,
+\begin{equation}\label{pls:eq:FEEulerian}
+ \HFE_d(0;\lambda)=\frac{(-1)^d A_d(\lambda)}{(1-\lambda)^d}.
+\end{equation}
+Every zero of $A_d$ is simple and negative. Consecutive $A_d,A_{d-1}$, for $d\ge2$,
+have no common zero.
+\end{lemma}
+\begin{proof}
+For $|\lambda|<1$, write the left side of \eqref{pls:eq:FEgen} at
+$x=0$ as
+$(1-\lambda)\sum_{n\ge0}\lambda^n e^{-(n+1)t}$.
+Taking its $d$th derivative at zero and using
+\eqref{pls:eq:Eulerian} proves \eqref{pls:eq:FEEulerian}.
+Rational continuation proves it for every $\lambda\ne1$.
+
+For completeness, real-rootedness follows directly by induction from
+\eqref{pls:eq:Eulerianrec}. The polynomial $A_{d-1}$ is monic of
+degree $d-2$, has value one at zero, and, inductively, has simple
+negative roots $r_1<\cdots<r_{d-2}$. At each such root,
+\[
+ A_d(r_i)=r_i(1-r_i)A_{d-1}'(r_i)\ne0.
+\]
+These values alternate in sign. There is one zero of $A_d$ in each
+successive gap, one between $r_{d-2}$ and zero, and one to the left
+of $r_1$, by comparing its monic leading sign at $-\infty$.
+These $d-1$ distinct negative zeros exhaust its degree. The base
+$A_2=1+\lambda$ starts the argument; $A_1$ has no roots. The same
+displayed identity proves the asserted absence of common zeros.
+\end{proof}
+
+\begin{theorem}[Sharp endpoint multiplicity obstruction]
+\label{pls:thm:flatness}
+A nonzero polynomial single-order selector has the following endpoint
+possibilities.
+
+For $\lambda\ne1$, its degree-$d$ weight can vanish at both endpoints
+only if $d\ge2$ and $A_d(\lambda)=0$. These zeros of the weight are
+then simple at both endpoints. In particular no nonzero single-order
+selector satisfies
+\begin{equation}\label{pls:eq:doubleflat}
+ P(0)=P'(0)=P(L)=P'(L)=0.
+\end{equation}
+For real $0<z<1$, even simultaneous endpoint values zero are impossible.
+
+At $\lambda=1$, a single-order selector can satisfy
+\eqref{pls:eq:doubleflat} if and only if it is a nonzero multiple of
+\begin{equation}\label{pls:eq:Bernflat}
+ B_{2r}(u/L)-B_{2r},\qquad r\ge2.
+\end{equation}
+Both endpoint zeros then have order exactly two. No nonzero
+single-order selector in either regime has zeros of order three at
+both endpoints.
+\end{theorem}
+\begin{proof}
+For $d\ge1$, \eqref{pls:eq:FEboundary} makes the two endpoint values
+proportional by the nonzero factor $\lambda$. Their vanishing is
+therefore equivalent to $A_d(\lambda)=0$. The cases $d=0,1$ have
+no vanishing endpoint value. If $d\ge2$ and the value is zero, the
+Appell identity makes the derivative proportional to
+$\HFE_{d-1}(0;\lambda)$, which is nonzero by the lemma.
+The derivative at the other endpoint is again multiplied by
+$\lambda$, so it is also nonzero. If $0<z<1$, then $\lambda>0$,
+where $A_d$ has no root.
+
+At resonance the classification permits only
+$C L^N B_N(u/L)+C_0$. For $N=1$ its two endpoint values differ,
+so they cannot both be zero. For $N\ge2$, requiring them both to
+vanish fixes the constant and gives a multiple of
+$B_N(u/L)-B_N$. Its derivative vanishes at both endpoints exactly
+when $B_{N-1}(0)=B_{N-1}(1)=0$, namely when $N\ge4$ is even.
+Its second derivative is a nonzero multiple of $B_{N-2}$, a nonzero
+even Bernoulli number. The zeros have exactly order two.
+\end{proof}
+
+\begin{example}[A nontrivial algebraic twist]\label{pls:ex:algebraic}
+For $L=1$, $z=\sqrt3-2$, and $d=3$, the identity
+$A_3(z)=0$ gives the exact weight
+\begin{equation}\label{pls:eq:algebraicP}
+ \HFE_3(u;\sqrt3-2)
+ =u(u-1)\left(u-\frac{1+\sqrt3}{2}\right).
+\end{equation}
+It selects only $\Li_{s-4}(\sqrt3-2)$ modulo the elementary
+remainder. Both endpoint zeros are simple. This distinguishes
+``endpoint vanishing'' from the stronger and impossible off-resonant
+condition \eqref{pls:eq:doubleflat}.
+\end{example}
+
+\section{Constructive confluence and exact spectral collapse}
+\label{pls:sec:mixing}
+
+The Frobenius--Euler family does not approach the Bernoulli family by
+an innocuous scalar normalization. First we make that obstruction
+precise, and then give an exact finite replacement.
+
+\begin{proposition}[No nonconstant scalar limit]\label{pls:prop:scalar}
+Fix $d\ge1$. Suppose that
+$C(\lambda)\HFE_d(u;\lambda)$ has a finite coefficientwise limit
+as $\lambda\to1$. That limit is constant. The statement also holds
+after the fixed scaling $u\mapsto u/L$.
+\end{proposition}
+\begin{proof}
+The recurrence \eqref{pls:eq:Eulerianrec} gives $A_d(1)=d!$.
+Consequently
+\[
+ \HFE_d(0;\lambda)\sim\frac{(-1)^d d!}{(1-\lambda)^d}.
+\]
+Boundedness of the constant coefficient forces
+$C(\lambda)=O(|1-\lambda|^d)$. By the Appell property, the
+coefficient of $u^j$ is
+$\binom dj\HFE_{d-j}(0;\lambda)$, with pole order at most $d-j$.
+After multiplication by $C(\lambda)$ every coefficient with $j\ge1$
+tends to zero. The constant coefficient may have a finite limit.
+\end{proof}
+
+This proposition concerns one fixed degree and scalar multiplication
+only. It does not forbid finite combinations of different degrees,
+subtraction of lower-degree counterterms, or unbounded-degree limits.
+The finite combination below is especially sparse.
+
+\begin{theorem}[Minimal mixing for the fixed even Bernoulli weight]
+\label{pls:thm:mixing}
+Let $N=2r\ge4$ and $W_N(u)=B_N(u)-B_N$. For $z\ne1$,
+\begin{equation}\label{pls:eq:mixing}
+ \boxed{\displaystyle
+ W_N(u)=\sum_{\substack{2\le j\le N\\j\ {\rm even}}}
+       \binom Nj B_{N-j}\HFE_j(u;z)
+   +\frac{N(1+z)}{2(1-z)}\HFE_{N-1}(u;z).}
+\end{equation}
+For the transform on $[0,1]$, the number of distinct shifted Lerch
+orders modulo the elementary remainder is exactly
+\begin{equation}\label{pls:eq:supportcount}
+ \begin{cases}
+ r+1,& z\notin\{0,1,-1\},\quad |z|\le1,\\
+ r,& z=-1,\\
+ 1,& z=1.
+ \end{cases}
+\end{equation}
+The mixture in \eqref{pls:eq:mixing} is unique in the
+Frobenius--Euler basis, and no representation of this fixed transform
+can use fewer distinct shifted orders in the declared coefficient
+system. On $[0,L]$ with $W_N(u/L)$ the same count holds with $z$
+replaced by $\lambda=z^L$.
+\end{theorem}
+\begin{proof}
+Put $b_j=W_N^{(j)}(1)$. The even nonzero endpoint derivatives are
+\begin{equation}\label{pls:eq:bj}
+ b_j=\frac{N!}{(N-j)!}B_{N-j},\qquad j=2,4,\ldots,N.
+\end{equation}
+There is also the odd derivative $b_{N-1}=N!/2$; every other odd
+derivative is zero, as are $b_0,b_1$.
+For even $j$, the left and right endpoint derivatives coincide.
+For $j=N-1$ they are opposite. Thus
+\begin{equation}\label{pls:eq:mixc}
+ c_j=(1-z)b_j\quad(j\text{ even}),\qquad
+ c_{N-1}=(1+z)N!/2,
+\end{equation}
+and all other coordinates vanish. Substitute these coordinates into
+\eqref{pls:eq:FEbasis} to obtain \eqref{pls:eq:mixing}.
+Every even Bernoulli number in \eqref{pls:eq:bj}, including $B_0$,
+is nonzero. The independence lemma therefore gives the exact count
+\eqref{pls:eq:supportcount}, including its specializations at $z=\pm1$.
+Scaling the interval multiplies $b_j$ by $L^{-j}$ and changes the
+paired endpoint factor to $z^L$, without changing the count.
+\end{proof}
+
+For example,
+\begin{equation}\label{pls:eq:quarticmix}
+ u^2(1-u)^2=\HFE_4(u;z)+\HFE_2(u;z)
+                   +\frac{2(1+z)}{1-z}\HFE_3(u;z).
+\end{equation}
+At $z=-1$ this is simply $E_4(u)+E_2(u)$, where $E_d$ is the
+ordinary Euler polynomial. As $z\to1$, the polynomial on the left
+stays fixed while the individual terms on the right need not have
+finite limits. This is the precise cancellation missed by a scalar
+confluence argument.
+
+For $a=1$, an explicit version of the transform is
+\begin{align}
+ \int_0^1W_N(u)\Phi(z,s,1+u)\dd u
+ ={}&-\frac{N!(1+z)}{2z^2F_{N-1}(s)}\Li_{s-N}(z)
+       \notag\\
+ &-\frac{1-z}{z^2}
+       \sum_{\substack{2\le j\le N\\j\ {\rm even}}}
+                      \frac{b_j\Li_{s-j-1}(z)}{F_j(s)}
+   +\frac1z\sum_{j=2}^N\frac{b_j}{F_j(s)}.
+\label{pls:eq:BernLi}
+\end{align}
+It follows directly from \eqref{pls:eq:spectrum}. Its limit at
+$z=1$ is initially justified for $\Re s>1$. At $s=1$ the limiting
+Hurwitz pole requires the compensation in
+Section~\ref{pls:sec:confluence}; it must not be suppressed by
+substituting into individual summands.
+
+\section{Removable integer orders and harmonic jet coefficients}
+\label{pls:sec:jets}
+
+The endpoint denominators vanish at positive integers, even when the
+integral is entire in $s$. The selector classification allows these
+limits to be evaluated using derivatives at just one polylogarithm
+order. We give a complete finite formula rather than leaving a
+removable $0/0$ expression.
+
+For $z\ne0,1$ in the closed unit disk define
+\begin{align}
+ T_d(z,s)&=\int_0^1\HFE_d(u;z)\Phi(z,s,1+u)\dd u,
+                       \label{pls:eq:Td}\\
+ \Pi_d(s)&=\prod_{k=1}^{d+1}(s-k),\label{pls:eq:Pid}\\
+ R_d(s,z)&=\sum_{j=0}^d\HFE_d^{(j)}(1;z)
+                           \prod_{k=j+2}^{d+1}(s-k).
+                       \label{pls:eq:Rd}
+\end{align}
+The superscript $(j)$ in \eqref{pls:eq:Rd} differentiates the
+polynomial variable. Empty products equal one. The endpoint formula
+and $\Phi(z,\sigma,1)=z^{-1}\Li_\sigma(z)$ yield
+\begin{equation}\label{pls:eq:numerator}
+ \Pi_d(s)T_d(z,s)=\frac{R_d(s,z)}z
+          -\frac{(1-z)d!}{z^2}\Li_{s-d-1}(z)
+          =:N_d(s,z).
+\end{equation}
+The numerator is entire in $s$ and vanishes at each
+$m=1,\ldots,d+1$.
+
+\begin{theorem}[Every integer spectral jet of a selector]
+\label{pls:thm:jets}
+For $1\le m\le d+1$, put
+\begin{equation}\label{pls:eq:pm}
+ p_{d,m}=(-1)^{d+1-m}(m-1)!(d+1-m)!,
+\end{equation}
+and define the analytic germ
+\begin{align}
+ E_{d,m}(\varepsilon)
+ &=\prod_{\substack{1\le k\le d+1\\k\ne m}}
+                  \left(1+\frac{\varepsilon}{m-k}\right)^{-1}
+                  \label{pls:eq:Em}\\
+ &=\exp\left(\sum_{r\ge1}
+ \frac{(-1)^rH_{m-1}^{(r)}+H_{d+1-m}^{(r)}}r
+                                     \varepsilon^r\right).
+                  \label{pls:eq:Emharmonic}
+\end{align}
+Here $H_n^{(r)}=\sum_{k=1}^n k^{-r}$ and $H_0^{(r)}=0$.
+For every integer $h\ge0$,
+\begin{equation}\label{pls:eq:alljets}
+ \boxed{\displaystyle
+ \partial_s^hT_d(z,m)=\frac{h!}{p_{d,m}}
+ [\varepsilon^{h+1}]
+          E_{d,m}(\varepsilon)N_d(m+\varepsilon,z).}
+\end{equation}
+In particular,
+\begin{equation}\label{pls:eq:resvalue}
+ T_d(z,m)=\frac{z^{-1}\partial_sR_d(m,z)
+   -(1-z)d!z^{-2}\left.\partial_\nu\Li_\nu(z)
+                                    \right|_{\nu=m-d-1}}
+                      {p_{d,m}}.
+\end{equation}
+Thus an $h$th spectral derivative requires at most the first $h+1$
+order derivatives at the single center $\nu=m-d-1$.
+\end{theorem}
+\begin{proof}
+Factor the denominator at its simple zero:
+\[
+ \Pi_d(m+\varepsilon)
+   =p_{d,m}\varepsilon E_{d,m}(\varepsilon)^{-1}.
+\]
+Since $N_d(m,z)=0$, division and Taylor coefficient extraction prove
+\eqref{pls:eq:alljets}. Expanding
+$-\log(1+\varepsilon/(m-k))$ gives
+\eqref{pls:eq:Emharmonic}: positive differences contribute
+$(-1)^rH_{m-1}^{(r)}$, while negative differences contribute
+$H_{d+1-m}^{(r)}$. The constant term of $E_{d,m}$ is one, so
+\eqref{pls:eq:resvalue} is the case $h=0$.
+\end{proof}
+
+The coefficient rule is executable without symbolic limits. If
+$E_{d,m}=\sum_{n\ge0}e_n\varepsilon^n$ and
+$A_r=(-1)^rH_{m-1}^{(r)}+H_{d+1-m}^{(r)}$, then
+\begin{equation}\label{pls:eq:ecoef}
+ e_0=1,\qquad e_n=\frac1n\sum_{r=1}^n A_r e_{n-r}.
+\end{equation}
+For example, $e_1=A_1$ and $e_2=(A_1^2+A_2)/2$.
+The first derivative reads
+\[
+ \partial_sT_d(z,m)
+ =\frac{\tfrac12\partial_s^2N_d(m,z)
+               +A_1\partial_sN_d(m,z)}{p_{d,m}}.
+\]
+These are finite generalized-harmonic identities, not asymptotic
+expansions in a large index.
+
+\begin{example}[Degrees zero and one]
+The first two formulas are
+\begin{align}
+ T_0(z,s)&=\frac{z^{-1}-(1-z)z^{-2}\Li_{s-1}(z)}{s-1},
+                                  \label{pls:eq:d0}\\
+ T_1(z,s)&=\frac{(1+z-zs)/(z(1-z))
+                      -(1-z)z^{-2}\Li_{s-2}(z)}{(s-1)(s-2)}.
+                                  \label{pls:eq:d1}
+\end{align}
+Here $\HFE_0=1$ and $\HFE_1(u;z)=u-(1-z)^{-1}$.
+At the first resonance,
+\begin{equation}\label{pls:eq:d0res}
+ \int_1^2\Phi(z,1,x)\dd x
+       =-\frac{1-z}{z^2}
+                       \left.\partial_\nu\Li_\nu(z)\right|_{\nu=0}.
+\end{equation}
+The negative powers of $z$ in these reductions have removable limits
+at $z=0$ when the original polynomial family itself is regular there.
+The classification deliberately excludes $z=0$, where the infinite
+Dirichlet tail disappears and the independence lemma no longer applies.
+\end{example}
+
+\section{Euler weights, Gamma primitives, and one odd zeta}
+\label{pls:sec:gamma}
+
+At $z=-1$, \eqref{pls:eq:FEgen} becomes
+$2e^{ut}/(e^t+1)$, so $\HFE_d(u;-1)=E_d(u)$ is the ordinary
+Euler polynomial. Write
+\begin{equation}\label{pls:eq:G}
+ G(u)=\log\Gamma(1+u/2)-\log\Gamma((1+u)/2).
+\end{equation}
+All arguments are positive and the logarithms are real. The classical
+digamma difference gives \cite{DLMFPsi,DLMFHurwitz}
+\begin{equation}\label{pls:eq:Gprime}
+ G'(u)=\Phi(-1,1,1+u)
+       =\frac12\left\{\psi((u+2)/2)-\psi((u+1)/2)\right\}.
+\end{equation}
+This relation follows either by separating the even and odd terms
+in the alternating series or by Hurwitz translation followed by the
+Laurent expansion at one.
+
+\begin{theorem}[A complete Euler-weighted Gamma family]
+\label{pls:thm:Gamma}
+For $r\ge1$, define the rational number
+\begin{equation}\label{pls:eq:qr}
+ q_r=-\frac{\partial_sR_{2r}(1,-1)}{(2r)!}.
+\end{equation}
+Then the ordinary convergent integrals satisfy
+\begin{align}
+ K_{2r}&:=\int_0^1 E_{2r}(u)\Phi(-1,1,1+u)\dd u\notag\\
+ &=q_r+
+ \frac{(-1)^{r+1}(2^{2r+1}-1)(2r)!}{(2\pi)^{2r}}
+                                        \zeta(2r+1),
+                                        \label{pls:eq:oddzeta}\\
+ \int_0^1 E_{2r-1}(u)G(u)\dd u&=-\frac{K_{2r}}{2r}.
+                                        \label{pls:eq:Gammafamily}
+\end{align}
+The first offsets are
+\begin{equation}\label{pls:eq:qexamples}
+ q_1=-\frac12,\qquad q_2=\frac7{12},\qquad
+ q_3=-\frac{53}{30},\qquad q_4=\frac{8417}{840}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Apply \eqref{pls:eq:resvalue} with $d=2r$, $m=1$, and $z=-1$.
+The denominator is $(2r)!$, so
+\[
+ K_{2r}=q_r-2\left.\partial_\nu\Li_\nu(-1)\right|_{\nu=-2r}.
+\]
+The identity
+$\Li_\nu(-1)=(2^{1-\nu}-1)\zeta(\nu)$, interpreted by
+continuation at $\nu=1$, is classical. At a negative even integer
+$\zeta(-2r)=0$, hence its derivative there is
+$(2^{2r+1}-1)\zeta'(-2r)$. Differentiating the zeta functional
+equation at that simple trivial zero gives \cite{DLMFInteger}
+\[
+ \zeta'(-2r)=\frac{(-1)^r(2r)!}{2(2\pi)^{2r}}\zeta(2r+1).
+\]
+This proves \eqref{pls:eq:oddzeta}. The Euler endpoints
+$E_{2r}(0)=E_{2r}(1)=0$ and the Appell identity
+$E_{2r}'=2rE_{2r-1}$ permit integration by parts in
+\eqref{pls:eq:Gprime}, proving \eqref{pls:eq:Gammafamily} without
+an omitted boundary constant. The finite polynomial
+\eqref{pls:eq:Rd} gives \eqref{pls:eq:qexamples} by rational arithmetic.
+\end{proof}
+
+The simplest member is the explicit log-Gamma identity
+\begin{equation}\label{pls:eq:Gammaexample}
+ \boxed{\displaystyle
+ \int_0^1\left(u-\frac12\right)
+       \log\frac{\Gamma(1+u/2)}{\Gamma((1+u)/2)}\dd u
+    =\frac14-\frac{7\zeta(3)}{4\pi^2}.}
+\end{equation}
+We do not attach a global novelty claim to individual low-degree
+Gamma evaluations; the point is their uniform single-order derivation
+and compatibility with all higher spectral jets.
+
+\subsection{Every positive polygamma order}
+
+For integer $m\ge2$, separation into even and odd terms gives
+\begin{align}
+ \Phi(-1,m,1+u)
+ &=2^{-m}\left\{\zeta\left(m,\frac{1+u}{2}\right)
+                 -\zeta\left(m,\frac{2+u}{2}\right)\right\}\notag\\
+ &=\frac{(-1)^m}{2^m(m-1)!}
+   \left\{\psi^{(m-1)}\left(\frac{1+u}{2}\right)
+         -\psi^{(m-1)}\left(\frac{2+u}{2}\right)\right\}.
+\label{pls:eq:polygamma}
+\end{align}
+For $1\le m\le d+1$, Theorem~\ref{pls:thm:jets} evaluates the
+Euler-weighted integral through the one order derivative at $m-d-1$.
+For $m\ge d+2$, there is no vanishing denominator and
+\begin{equation}\label{pls:eq:eta}
+ \int_0^1E_d(u)\Phi(-1,m,1+u)\dd u
+       =\frac{-R_d(m,-1)+2d!\,\eta(m-d-1)}{\Pi_d(m)},
+\end{equation}
+where $\eta(\nu)=(1-2^{1-\nu})\zeta(\nu)$ and
+$\eta(1)=\log2$. Thus every positive polygamma order has a finite
+one-center evaluation, including the exceptional orders.
+
+For $E_2(u)=u^2-u$ and $R_2(s,-1)=s-1$, the first higher-order
+members are
+\begin{align}
+ \int_0^1(u^2-u)\Phi(-1,2,1+u)\dd u
+       &=1+\frac43\log2+12\zeta'(-1),\label{pls:eq:E2m2}\\
+ \int_0^1(u^2-u)\Phi(-1,3,1+u)\dd u
+       &=\log(\pi/2)-\frac12,\label{pls:eq:E2m3}\\
+ \int_0^1(u^2-u)\Phi(-1,4,1+u)\dd u
+       &=\frac23\log2-\frac12.\label{pls:eq:E2m4}
+\end{align}
+For the first two, use \eqref{pls:eq:resvalue},
+$\zeta(-1)=-1/12$, $\zeta(0)=-1/2$, and
+$\zeta'(0)=-\tfrac12\log(2\pi)$. The last is
+\eqref{pls:eq:eta}. Formula~\eqref{pls:eq:polygamma} turns all three
+into explicit polygamma-difference integrals.
+
+\section{Bernoulli selectors and generalized Stieltjes integrals}
+\label{pls:sec:stieltjes}
+
+Fix $N\ge2$, $a>0$, and
+\begin{equation}\label{pls:eq:IN}
+ I_N(s;a)=\int_0^1\bigl(B_N(u)-B_N\bigr)\zeta(s,a+u)\dd u.
+\end{equation}
+For odd $N\ge3$ the subtracted constant is zero. In all cases the
+weight has mean $-B_N$. Write
+\begin{equation}\label{pls:eq:bNgeneral}
+ b_j=\frac{N!}{(N-j)!}B_{N-j}(1),\qquad 1\le j\le N.
+\end{equation}
+The resonant endpoint calculation gives
+\begin{equation}\label{pls:eq:INclosed}
+ \boxed{\displaystyle
+ I_N(s;a)=-\frac{N!}{F_{N-1}(s)}\zeta(s-N,a)
+          +\sum_{j=1}^N\frac{b_j a^{j+1-s}}{F_j(s)}.}
+\end{equation}
+This general-shift, unit-interval form has the same Bernoulli mechanism
+as the predecessor's $[1,3]$ theorem \cite{Affine}. It is included to
+make the confluence and primitive formulas below directly usable.
+
+We use the Stieltjes convention
+\begin{equation}\label{pls:eq:Stieltjes}
+ \zeta(1+\varepsilon,x)=\frac1\varepsilon
+     +\sum_{m=0}^\infty\frac{(-1)^m}{m!}\gamma_m(x)
+                                               \varepsilon^m,
+ \qquad \gamma_0(x)=-\psi(x).
+\end{equation}
+For $h\ge0$, define
+\begin{equation}\label{pls:eq:Eh}
+ E_h(\varepsilon)=\prod_{k=1}^h(1-\varepsilon/k)^{-1}
+   =\exp\left(\sum_{r\ge1}\frac{H_h^{(r)}}r\varepsilon^r\right).
+\end{equation}
+Put
+\begin{align}
+ Q_N(\varepsilon;a)
+ ={}&(-1)^N N E_{N-1}(\varepsilon)\zeta(1-N+\varepsilon,a)
+        \notag\\
+ &+\sum_{j=1}^N\frac{(-1)^j b_j a^j}{j!}
+            E_j(\varepsilon)e^{-\varepsilon\log a}.
+\label{pls:eq:QN}
+\end{align}
+
+\begin{proposition}[All weighted Stieltjes orders at one center]
+\label{pls:prop:Stieltjes}
+One has $Q_N(0;a)=-B_N$ and, for every $m\ge0$,
+\begin{equation}\label{pls:eq:Stieltjesmoments}
+ \boxed{\displaystyle
+ \int_0^1\bigl(B_N(u)-B_N\bigr)\gamma_m(a+u)\dd u
+   =(-1)^m m![\varepsilon^{m+1}]Q_N(\varepsilon;a).}
+\end{equation}
+This is a finite formula in $\zeta^{(k)}(1-N,a)$ for
+$0\le k\le m+1$, powers of $a$ and $\log a$, rational Bernoulli
+numbers, and generalized harmonic numbers.
+\end{proposition}
+\begin{proof}
+At $s=1+\varepsilon$,
+$F_j(s)^{-1}=(-1)^j E_j(\varepsilon)/(j!\varepsilon)$.
+Substituting into \eqref{pls:eq:INclosed} gives exactly
+$I_N(1+\varepsilon;a)=Q_N(\varepsilon;a)/\varepsilon$.
+The compact integral has residue $\int_0^1(B_N(u)-B_N)\dd u=-B_N$.
+Comparison with \eqref{pls:eq:Stieltjes}, justified uniformly on the
+compact positive interval, proves both assertions.
+\end{proof}
+
+\subsection{Three explicit quartic evaluations}
+
+For $N=4$ the weight is $u^2(1-u)^2$ and $b_2=2$, $b_3=12$,
+$b_4=24$. In particular,
+\begin{equation}\label{pls:eq:I4}
+ I_4(s;a)=-\frac{24\zeta(s-4,a)}{F_3(s)}
+       +\frac{2a^{3-s}}{F_2(s)}+\frac{12a^{4-s}}{F_3(s)}
+                                      +\frac{24a^{5-s}}{F_4(s)}.
+\end{equation}
+At $a=1$ the coefficient generator simplifies to
+\[
+ Q_4(\varepsilon;1)
+   =4E_3(\varepsilon)\zeta(-3+\varepsilon)
+               +E_2(\varepsilon)-2E_3(\varepsilon)+E_4(\varepsilon).
+\]
+Expanding through degree two, using $\zeta(-3)=1/120$, yields
+\begin{align}
+ \int_0^1u^2(1-u)^2\gamma_0(1+u)\dd u
+   &=4\zeta'(-3)-\frac1{45},\label{pls:eq:gamma0quartic}\\
+ \int_0^1u^2(1-u)^2\gamma_1(1+u)\dd u
+   &=-2\zeta''(-3)-\frac{22}{3}\zeta'(-3)+\frac5{432}.
+                                            \label{pls:eq:gamma1quartic}
+\end{align}
+There are no unspecified Stieltjes constants on the right. A different
+integer resonance of the same complex-order identity gives
+\begin{equation}\label{pls:eq:trigammaquartic}
+ \boxed{\displaystyle
+ \int_0^1u^2(1-u)^2\psi'(1+u)\dd u
+          =\frac{3\zeta(3)}{\pi^2}-\frac13.}
+\end{equation}
+Indeed, at $s=2+\varepsilon$ the constant term of
+\eqref{pls:eq:I4} is $-1/3-12\zeta'(-2)$, and
+$\zeta'(-2)=-\zeta(3)/(4\pi^2)$. Every integral here is ordinary
+and absolutely convergent on a compact interval; no finite-part
+convention is involved.
+
+\section{Joint Stieltjes confluence at the untwisted point}
+\label{pls:sec:confluence}
+
+The change of polynomial basis at $z^L=1$ is algebraic. At $z=1$
+there is a second, analytic issue: the Lerch function, entire in its
+order before the limit, approaches a Hurwitz function with a pole.
+The correct limiting object contains an explicit logarithmic term.
+This section proves a joint holomorphic statement that controls every
+order derivative at once.
+
+Let $0<A<B$, and let $w\in L^1([A,B])$ be a fixed complex weight.
+For polynomial weights, all the finite integrals appearing below can
+in turn be reduced by endpoint formulas. Set
+\begin{align}
+ M_w(\mu)&=\int_A^B w(x)e^{\mu x}\dd x,\label{pls:eq:Mw}\\
+ T_w(\mu,\varepsilon)&=\int_A^B
+           w(x)\Phi(e^{-\mu},1+\varepsilon,x)\dd x,
+              \qquad \mu>0.\label{pls:eq:Twmu}
+\end{align}
+For $\varepsilon$ near zero define
+\begin{align}
+ C(\varepsilon,\mu)
+ &=\Gamma(-\varepsilon)\mu^\varepsilon+\frac1\varepsilon
+                    \label{pls:eq:compensator}\\
+ &=\frac{1-\exp\left((\log\mu+\gamma)\varepsilon
+                 +\sum_{r\ge2}\zeta(r)\varepsilon^r/r\right)}
+                 {\varepsilon}.
+                    \label{pls:eq:Cexp}
+\end{align}
+Here $\gamma$ is Euler's constant, $\mu^\varepsilon$ uses the real
+logarithm for $\mu>0$, and the singularity at $\varepsilon=0$ in
+each display is removable. The second formula follows from the
+classical Taylor expansion of $\log\Gamma(1-\varepsilon)$.
+
+\begin{theorem}[Joint holomorphic confluence and every mixed jet]
+\label{pls:thm:confluence}
+The compensated transform
+\begin{equation}\label{pls:eq:Rwdef}
+ \mathscr R_w(\mu,\varepsilon)
+     =T_w(\mu,\varepsilon)-M_w(\mu)C(\varepsilon,\mu)
+\end{equation}
+extends holomorphically to
+$|\mu|<2\pi$, $|\varepsilon|<1$. Its exact expansion there is
+\begin{align}
+ \mathscr R_w(\mu,\varepsilon)
+ ={}&\int_A^B w(x)e^{\mu x}
+               \left(\zeta(1+\varepsilon,x)-\frac1\varepsilon\right)
+                                                       \dd x\notag\\
+ &+\sum_{k=1}^\infty\frac{(-\mu)^k}{k!}
+       \int_A^B w(x)e^{\mu x}\zeta(1+\varepsilon-k,x)\dd x.
+                                      \label{pls:eq:Rwseries}
+\end{align}
+The first bracket is interpreted by its analytic extension at zero.
+For all nonnegative integers $h,m$,
+\begin{align}
+ \left.\partial_\mu^h\partial_\varepsilon^m
+                      \mathscr R_w\right|_{(0,0)}
+ ={}&(-1)^m\int_A^B w(x)x^h\gamma_m(x)\dd x\notag\\
+ &+\sum_{k=1}^h(-1)^k\binom hk
+     \int_A^B w(x)x^{h-k}\zeta^{(m)}(1-k,x)\dd x.
+                                      \label{pls:eq:mixedjets}
+\end{align}
+The superscript on $\zeta$ differentiates its first argument.
+\end{theorem}
+\begin{proof}
+The classical Lerch expansion \cite[Eq.~25.14.3\_1]{DLMFLerch},
+with $z=e^{-\mu}$, is
+\begin{equation}\label{pls:eq:classicalLerch}
+ \Phi(e^{-\mu},1+\varepsilon,x)
+ =e^{\mu x}\left\{\Gamma(-\varepsilon)\mu^\varepsilon
+       +\sum_{k=0}^\infty\zeta(1+\varepsilon-k,x)
+                                     \frac{(-\mu)^k}{k!}\right\}.
+\end{equation}
+Initially $0<\mu<2\pi$ and $\varepsilon$ avoids zero and the
+other exceptional integers. Subtract $e^{\mu x}C$ and separate
+$k=0$. The result is the integrand version of
+\eqref{pls:eq:Rwseries}.
+
+We record the normal-convergence justification needed for the joint
+claim. Fix $0<\delta<1$ and a compact subdisk $|\mu|\le\rho<2\pi$.
+For $k\ge2$, the Hurwitz Fourier formula at
+$s=1+\varepsilon-k$, together with integer translation in the
+positive argument, gives uniformly for $x\in[A,B]$ and
+$|\varepsilon|\le\delta$
+\begin{equation}\label{pls:eq:normalestimate}
+ |\zeta(1+\varepsilon-k,x)|
+ \le C\,\Gamma(k+\delta)(2\pi)^{-k}+C D^k
+\end{equation}
+for fixed $C,D$. To see the uniformity, reduce the argument to
+$y\in[0,1]$. The Fourier sums are bounded by
+$\sum_{n\ge1}n^{-k+\delta}$; their trigonometric factors are
+bounded, and the gamma factor is controlled on the fixed
+$\varepsilon$ disk. At $y=0$ use the continuous negative-order
+limit. Translation back adds finitely many powers
+$(y+j)^{k-1-\varepsilon}$, bounded by $C D^k$ since
+$k-1-\delta>0$. The finite cases and the values $k=0,1$ are
+handled separately after removing the single pole of the $k=0$ term.
+The usual gamma-ratio estimate, or its elementary product form on
+this fixed disk, now makes \eqref{pls:eq:normalestimate} divided by
+$k!$ a polynomial in $k$ times $(2\pi)^{-k}$, plus an entire-series
+term $C D^k/k!$.
+
+Consequently the series in \eqref{pls:eq:Rwseries} is normally
+convergent on compact sub-bidisks and uniformly in $x\in[A,B]$.
+The factor $e^{\mu x}$ is bounded there. Integration against an
+$L^1$ weight preserves normal convergence, so the right side is
+jointly holomorphic. It agrees with \eqref{pls:eq:Rwdef} in the
+initial domain and supplies the claimed extension. Cauchy's theorem
+on smaller disks justifies every spectral derivative as well.
+
+Finally, the coefficient of $\mu^h$ in
+$e^{\mu x}(-\mu)^k/k!$ is
+$(-1)^k x^{h-k}/(k!(h-k)!)$ when $k\le h$, and zero otherwise.
+The regular Hurwitz expansion \eqref{pls:eq:Stieltjes} gives the
+$k=0$ derivative. Multiplying by $h!$ proves
+\eqref{pls:eq:mixedjets}.
+\end{proof}
+
+The estimate inside the proof is only used to justify an exact
+identity and its differentiated limits; no optimization of bounds is
+part of the result.
+
+\subsection{Explicit logarithmic subtraction at every spectral order}
+
+Define
+\begin{equation}\label{pls:eq:Cm}
+ C_m(\mu)=-m![t^{m+1}]
+   \exp\left((\log\mu+\gamma)t+\sum_{r\ge2}\zeta(r)t^r/r\right).
+\end{equation}
+Then $C_m=\partial_\varepsilon^mC(0,\mu)$. With
+$\ell=\log\mu+\gamma$, the first terms are
+\begin{align}
+ C_0(\mu)&=-\ell,\notag\\
+ C_1(\mu)&=-\frac{\ell^2+\zeta(2)}2,\label{pls:eq:Cexamples}\\
+ C_2(\mu)&=-\frac{\ell^3}3-\zeta(2)\ell-\frac{2\zeta(3)}3.
+                    \notag
+\end{align}
+The exact all-order limit is therefore
+\begin{equation}\label{pls:eq:limitjets}
+ \boxed{\displaystyle
+ \lim_{\mu\downarrow0}
+ \left\{\int_A^B w(x)
+        \left.\partial_s^m\Phi(e^{-\mu},s,x)\right|_{s=1}\dd x
+                   -M_w(\mu)C_m(\mu)\right\}
+   =(-1)^m\int_A^B w(x)\gamma_m(x)\dd x.}
+\end{equation}
+In particular, zeroth order requires addition of
+$M_w(\mu)(\log\mu+\gamma)$, not subtraction of that expression.
+The signs are fixed by the Laurent convention
+\eqref{pls:eq:Stieltjes}.
+
+\begin{corollary}[Mean-zero weights need no logarithmic subtraction]
+\label{pls:cor:meanzero}
+If $\int_A^B w(x)\dd x=0$, then the subtraction term in
+\eqref{pls:eq:limitjets} tends to zero for every fixed $m$, and the
+uncompensated limit exists with the displayed value. If that mean is
+nonzero, the uncompensated zeroth-order integral diverges logarithmically.
+\end{corollary}
+\begin{proof}
+In the mean-zero case $M_w(\mu)=O(\mu)$, whereas $C_m(\mu)$ is
+a polynomial of degree $m+1$ in $\log\mu$. Their product tends
+to zero. In the other case $M_w(\mu)$ tends to a nonzero constant
+and $C_0=-\log\mu-\gamma$ is unbounded; the remainder has a finite
+limit by the theorem.
+\end{proof}
+
+For $W_{2r}(u)=B_{2r}(u)-B_{2r}$, the mean is $-B_{2r}\ne0$.
+Thus the endpoint-flat resonant weights in
+Theorem~\ref{pls:thm:flatness} genuinely require the compensation.
+Odd Bernoulli weights $B_{2r+1}(u)$ with $r\ge1$ have mean zero,
+and their fixed-order Stieltjes limits need none. This is a distinction
+between endpoint data and mean data, not a contradiction.
+
+\subsection{A finite coefficient check at the origin}
+
+For $w=1$ on $[1,2]$, \eqref{pls:eq:d0res} gives the original
+Lerch integral through one polylogarithm derivative. The mass is
+$M_w(\mu)=(e^{2\mu}-e^\mu)/\mu$. The extension satisfies
+\begin{equation}\label{pls:eq:originexample}
+ \mathscr R_w(0,0)=0,\qquad
+ \partial_\mu\mathscr R_w(0,0)=\frac12\log(2\pi).
+\end{equation}
+Indeed the first value is
+$-\int_1^2\psi(x)\dd x=0$. The second, by
+\eqref{pls:eq:mixedjets}, is
+$\int_1^2(-x\psi(x)-\zeta(0,x))\dd x$.
+Integration by parts and $\zeta(0,x)=1/2-x$ reduce it to
+$1+\int_1^2\log\Gamma(x)\dd x=\tfrac12\log(2\pi)$,
+using the classical Raabe integral. This verifies both the twist
+coordinate and the sign of the compensator.
+
+\section{Anchored primitives in the Hurwitz argument}
+\label{pls:sec:primitives}
+
+Endpoint closure also survives repeated integration in the shift.
+For this section $P$ and $L$ are fixed; abbreviate
+$T(s;a)=\T_P(z,s;a,L)$. Let $a,a_0>0$, and let $q\ge1$.
+The Pochhammer symbol in the next display is rising:
+$(s-q)_q=(s-q)(s-q+1)\cdots(s-1)$.
+
+\begin{theorem}[All anchored shift primitives]
+\label{pls:thm:primitives}
+Define meromorphically in $s$
+\begin{equation}\label{pls:eq:Jq}
+ J_q(s;a,a_0)=\frac{(-1)^q}{(s-q)_q}
+ \left\{T(s-q;a)-\sum_{j=0}^{q-1}\frac{(a-a_0)^j}{j!}
+                              \partial_a^jT(s-q;a_0)\right\}.
+\end{equation}
+Then
+\begin{equation}\label{pls:eq:Janchor}
+ \partial_a^qJ_q(s;a,a_0)=T(s;a),\qquad
+ \left.\partial_a^jJ_q(s;a,a_0)\right|_{a=a_0}=0
+                              \quad(0\le j<q).
+\end{equation}
+For $z\ne1$ all apparent spectral singularities of $J_q$ are
+removable. For $z=1$ the only possible pole is at $s=1$, with
+\begin{equation}\label{pls:eq:Jresidue}
+ \Res_{s=1}J_q(s;a,a_0)
+     =\frac{(a-a_0)^q}{q!}\int_0^L P(u)\dd u.
+\end{equation}
+Consequently, if $M=\int_0^LP(u)\dd u$, the coefficient
+\begin{equation}\label{pls:eq:Stieltjesprimitive}
+ \mathcal A_{m,q}(a,a_0)=(-1)^m m![\varepsilon^m]
+ \left\{J_q(1+\varepsilon;a,a_0)
+                  -\frac{M(a-a_0)^q}{q!\varepsilon}\right\}
+\end{equation}
+is the unique $q$th anchored primitive of
+$\int_0^LP(u)\gamma_m(a+u)\dd u$.
+\end{theorem}
+\begin{proof}
+Repeated argument differentiation gives
+$\partial_a^qT(s-q;a)=(-1)^q(s-q)_qT(s;a)$.
+The Taylor subtraction proves the anchors, and proves
+\eqref{pls:eq:Janchor} away from the exceptional orders.
+Alternatively the resulting function is the ordinary iterated integral
+\begin{equation}\label{pls:eq:Jintegral}
+ J_q(s;a,a_0)=\frac1{(q-1)!}\int_{a_0}^{a}
+                           (a-v)^{q-1}T(s;v)\dd v,
+\end{equation}
+with the standard oriented integral if $a<a_0$. It gives analytic
+continuation in $s$ and uniqueness with the anchors immediately.
+
+The cancellation is also visible in the finite formula. For $z\ne1$,
+$\Phi(z,-k,a)$ is a polynomial in $a$ of degree at most $k$:
+expand $(n+a)^k$ in the convergent series when $|z|<1$, and then
+continue to the unit circle away from one. At each zero
+$s=1,\ldots,q$ of the Pochhammer factor, the Taylor remainder
+therefore vanishes. For $z=1$, $\zeta(-k,a)=-B_{k+1}(a)/(k+1)$.
+The zeros $s=2,\ldots,q$ still cancel; at $s=1$ the degree-$q$
+term gives precisely \eqref{pls:eq:Jresidue}. The potential pole
+at $s=q+1$ of the shifted $T(s-q)$ has residue independent of $a$,
+so the zeroth Taylor term cancels it. This accounts for every apparent
+singularity of \eqref{pls:eq:Jq}.
+
+Finally apply \eqref{pls:eq:Stieltjes} to the ordinary iterated
+integral \eqref{pls:eq:Jintegral}. Coefficient extraction gives
+\eqref{pls:eq:Stieltjesprimitive}, including all anchors.
+\end{proof}
+
+For $q=1$ the Stieltjes formula is particularly transparent. With
+$z=1$ and $T(s;a)=\int_0^LP(u)\zeta(s,a+u)\dd u$,
+\begin{equation}\label{pls:eq:primitivefirst}
+ \mathcal A_{m,1}(a,a_0)=\frac{(-1)^{m+1}}{m+1}
+       \left\{\partial_s^{m+1}T(0;a)
+                    -\partial_s^{m+1}T(0;a_0)\right\}.
+\end{equation}
+At $m=0$, Lerch's formula for $\zeta'(0,x)$ reduces it to
+\begin{equation}\label{pls:eq:primitiveGamma}
+ \mathcal A_{0,1}(a,a_0)
+ =-\int_0^L P(u)
+              \log\frac{\Gamma(a+u)}{\Gamma(a_0+u)}\dd u.
+\end{equation}
+At $m=1$ it is one half of the corresponding difference of weighted
+$\zeta''(0,x)$ integrals. For selector weights, the endpoint identities
+express these further in finitely many negative-order zeta derivatives.
+This is an exact anchored calculus; an unspecified additive polynomial
+would lose the normalization required by the source programme.
+
+\section{A related open coefficient problem and normalization corrections}
+\label{pls:sec:coefficientproblem}
+
+The literature search located a concrete complementary question in
+Pokaz, Ribi\v ci\'c Penava, and Simsek, arXiv:2609.13796v1
+\cite{PPS}. On page~9, the authors ask for the coefficients in a
+finite Hurwitz--Lerch reduction of a nested series. Their examples
+cover the first few values of a discrete parameter. The complete
+answer is a binomial row. This is an elementary partial-fraction
+resolution of the question as posed in that version, not a claim that
+the partial-fraction method itself is new.
+
+Put $n=v-1\ge1$, $a=x-1>0$, and define
+\begin{equation}\label{pls:eq:hmnodes}
+ h_m^{[n]}=\sum_{m_1+\cdots+m_n=m}\prod_{j=1}^n j^{-m_j},
+ \qquad
+ Z_v(s;a)=-\frac{(s)_v}{(v-1)!}
+              \sum_{m\ge0}\frac{h_m^{[v-1]}}{(a+m)^{s+v}}.
+\end{equation}
+Here $(s)_v$ is rising and $\Re(s+v)>1$ initially. The change
+$m_1=k_1$, $m_j=k_j-k_{j-1}$, and
+$m_{v-1}=m-k_{v-2}$ identifies this with Definition~1 of
+\cite{PPS}, with $Z_v(s;a)=Z(s;a+1,v)$ in that paper's notation.
+
+\begin{theorem}[The coefficient question in \cite{PPS}]
+\label{pls:thm:alphas}
+For every $v\ge2$ and $1\le j\le v-1$, set
+\begin{equation}\label{pls:eq:alphas}
+ \boxed{\alpha_j=(-1)^{j-1}\binom{v-1}{j}.}
+\end{equation}
+Then, identically in $s$ by continuation,
+\begin{equation}\label{pls:eq:Zclosed}
+ \boxed{\displaystyle
+ Z_v(s;a)=-\frac{(s)_v}{(v-1)!}
+           \sum_{j=1}^{v-1}(-1)^{j-1}\binom{v-1}{j}
+                              \Phi(1/j,s+v,a).}
+\end{equation}
+The $j=1$ term is $(v-1)\zeta(s+v,a)$, as required in the
+source question. The function $Z_v(s;a)$ is entire in $s$.
+\end{theorem}
+\begin{proof}
+The generating function for the finite-composition coefficients is
+\[
+ \sum_{m\ge0}h_m^{[n]}t^m=\prod_{j=1}^n(1-t/j)^{-1}.
+\]
+The coefficient of $(1-t/j)^{-1}$ in its partial-fraction expansion is
+\[
+ \prod_{\substack{1\le k\le n\\k\ne j}}(1-j/k)^{-1}
+   =\frac{n!/j}{(-1)^{j-1}(j-1)!(n-j)!}
+   =(-1)^{j-1}\binom nj.
+\]
+Both sides have the same simple poles and principal parts and tend
+to zero at infinity, so the partial-fraction identity is exact.
+Comparing coefficients gives
+\begin{equation}\label{pls:eq:hmclosed}
+ h_m^{[n]}=\sum_{j=1}^n(-1)^{j-1}\binom nj j^{-m}.
+\end{equation}
+These coefficients are bounded as $m\to\infty$; hence the defining
+Dirichlet series is absolutely convergent for $\Re(s+v)>1$.
+Substitute \eqref{pls:eq:hmclosed} and interchange the finite sum to
+obtain \eqref{pls:eq:Zclosed}. Every term with $j\ge2$ is entire.
+The sole Hurwitz pole at $s=1-v$ is canceled by the simple zero of
+$(s)_v$. Thus $Z_v$ is entire.
+\end{proof}
+
+\subsection{Every jet at the canceled Hurwitz pole}
+
+The same harmonic factor as in the selector calculus appears at
+$s_0=1-v$. Write $n=v-1$ and
+$D_n(\varepsilon)=\prod_{k=1}^n(1-\varepsilon/k)=E_n(\varepsilon)^{-1}$.
+Then \eqref{pls:eq:Zclosed} is equivalent near $s_0$ to
+\begin{align}
+ Z_v(1-v+\varepsilon;a)
+ ={}&(-1)^vD_{v-1}(\varepsilon)
+ \Bigg[(v-1)\notag\\[-2pt]
+ &+\varepsilon\left\{(v-1)\sum_{m\ge0}
+          \frac{(-1)^m\gamma_m(a)}{m!}\varepsilon^m
+       +\sum_{j=2}^{v-1}\alpha_j\Phi(1/j,1+\varepsilon,a)
+                   \right\}\Bigg].
+\label{pls:eq:Zjets}
+\end{align}
+This convergent local identity proves every spectral derivative by
+finite coefficient extraction. In particular,
+\begin{align}
+ Z_v(1-v;a)&=(-1)^v(v-1),\label{pls:eq:Zvalue}\\
+ Z_v'(1-v;a)&=(-1)^v\left\{(v-1)(\gamma_0(a)-H_{v-1})
+                 +\sum_{j=2}^{v-1}\alpha_j\Phi(1/j,1,a)\right\}.
+                                      \label{pls:eq:Zderivative}
+\end{align}
+For example $Z_3'(-2;1)=3-2\gamma+2\log2$. Thus the coefficient
+resolution also supplies exact Stieltjes and logarithmic evaluations,
+not just an interpolation of the first few coefficient rows.
+
+\subsection{Normalization fixed by the defining series}
+
+The definition \eqref{pls:eq:hmnodes}, not an inconsistent later
+normalization, is used throughout. Direct Mellin integration of that
+definition gives, for $a>0$ and $\Re(s+v)>1$,
+\begin{equation}\label{pls:eq:ZcorrectMellin}
+ \boxed{\displaystyle
+ Z_v(s;a)=-\frac{1}{(v-1)!\,\Gamma(s)}
+       \int_0^\infty
+       \frac{t^{s+v-1}e^{-at}}{\prod_{j=1}^{v-1}(1-e^{-t}/j)}\dd t.}
+\end{equation}
+At poles of $\Gamma(s)$ this is interpreted by its entire reciprocal.
+To prove it, expand each geometric denominator, integrate
+$t^{s+v-1}e^{-(a+m)t}$, and use
+$(s)_v=\Gamma(s+v)/\Gamma(s)$ by continuation.
+
+In the inspected version of \cite{PPS}, equation~(17) on page~11
+has the prefactor $-(v-1)!/\Gamma(s)$ instead. Relative to its own
+Definition~1 this differs by $((v-1)!)^2$. The subsequent $v=2$
+integral on that page also has an incorrect sign and gamma factor.
+Its corrected form is
+\begin{equation}\label{pls:eq:correctv2}
+ \int_0^\infty\frac{t^{s+1}e^{-at}}{1-e^{-t}}\dd t
+             =\Gamma(s+2)\zeta(s+2,a),
+ \qquad a>0,\quad\Re s>-1.
+\end{equation}
+This follows termwise from a positive kernel when $s$ is real; a
+negative right side in that domain cannot be correct. Both source
+pages were checked in the rendered PDF, not only in extracted text.
+
+One can also settle the sign of the polynomial interpolation without
+a contour orientation convention. Retain the source generating
+function
+\begin{equation}\label{pls:eq:ellgen}
+ F(t,x;v)=\frac{t^v e^{xt}}{\prod_{j=0}^{v-1}(e^t-j)}
+           =\sum_{k\ge0}\ell_k(x;v)\frac{t^k}{k!}.
+\end{equation}
+Algebra gives
+\[
+ F(-t,a+1;v)=
+ -\frac{t^v e^{-at}}{(v-1)!\prod_{j=1}^{v-1}(1-e^{-t}/j)}.
+\]
+Therefore \eqref{pls:eq:ZcorrectMellin} is
+$\Gamma(s)^{-1}\int_0^\infty t^{s-1}F(-t,a+1;v)\dd t$.
+Subtracting a finite Taylor polynomial at zero continues this Mellin
+integral. Its residue at $s=-k$ is
+$(-1)^k\ell_k(a+1;v)/k!$, whereas
+$\Gamma(s)^{-1}\sim(-1)^k k!(s+k)$. Hence
+\begin{equation}\label{pls:eq:correctinterpolation}
+ \boxed{Z_v(-k;a)=\ell_k(a+1;v),\qquad k\ge0.}
+\end{equation}
+The minus sign in equation~(19) of \cite{PPS} is incompatible with
+Definition~1. Already $v=2$, $k=1$ gives $Z_2(-1;a)=1$ and
+$\ell_1(a+1;2)=1$. This correction is scoped to that source and
+normalization; it is not an allegation about the ProveIt manuscript.
+
+\section{Source audit, verification, and integration status}
+\label{pls:sec:audit}
+
+\subsection{What was inspected}
+
+The canonical manuscript README and the incoming-directory metadata were
+read through the connected GitHub tools on 11 October 2026. Selected
+harmonic-tail sections were read at commit
+\texttt{47f2d0da4f1c0e19f9ec8aecb39112756f167d82}.
+A later repository search used a newer indexed commit. These observations
+are not represented as a single frozen snapshot of a changing
+\src{main} branch.
+
+The precise mathematical predecessor for this article is the 1,702-line
+standalone TeX source of \emph{Affine Gamma Polarization}, obtained from
+the user's Library. Its sections on Lerch endpoints, Bernoulli selectors,
+Stieltjes coefficients, and further questions were inspected. Its SHA-256
+and Library version are recorded in \src{source_manifest.json}. The
+GitHub incoming directory independently lists the corresponding named
+archive, but its binary contents were not extracted in this run. We do
+not assert a byte-for-byte comparison between the Library TeX and every
+member of that archive. No external source PDF or predecessor TeX is
+redistributed in this package.
+
+For the external coefficient question, the defining series, the open
+question, the Mellin normalization, and the interpolation statement in
+arXiv:2609.13796v1 were checked in both the HTML and the rendered PDF.
+The relevant printed pages are 3, 9, 11, and 12. The corrections in
+Section~\ref{pls:sec:coefficientproblem} are tied to that version's
+Definition~1. They do not silently change its definition to match a
+later, inconsistent prefactor.
+
+\subsection{Corrections and limitations}
+
+There is no false theorem identified in the reviewed selector portion
+of the incoming ProveIt report. Its open question genuinely leaves room
+for the classification proved here. Three cautions are nevertheless
+necessary when integrating the continuation.
+
+First, one cannot deform a double-flat Bernoulli selector into a
+nonresonant double-flat single-order polynomial. The obstruction is
+Theorem~\ref{pls:thm:flatness}, not a failure to find the appropriate
+normalization. The exact replacement is the finite mixture
+\eqref{pls:eq:mixing}. Second, a fixed-degree Frobenius--Euler selector
+cannot have a nonconstant finite scalar limit at resonance; the
+coefficientwise result in Section~\ref{pls:sec:mixing} explains why
+singular coefficients in the mixture must cancel collectively. Third,
+the limit $z\to1$ cannot be substituted into a spectral jet at $s=1$
+without its pole/contact subtraction. Equations
+\eqref{pls:eq:compensator}--\eqref{pls:eq:limitjets} supply the complete
+subtraction, including Euler's constant and all higher zeta terms.
+
+The external corrections are independent: relative to the defining
+series, equation~(17) of \cite{PPS} has an erroneous factorial factor;
+its displayed $v=2$ integral has the wrong sign and gamma factor; and
+equation~(19) has the wrong interpolation sign. The replacement formulas
+\eqref{pls:eq:ZcorrectMellin}, \eqref{pls:eq:correctv2}, and
+\eqref{pls:eq:correctinterpolation} are derived from the definition and
+checked independently. This is a scoped audit, not a claim to have
+verified every formula in that paper or in the ProveIt volumes.
+
+\subsection{Proof status and dependence}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.30\textwidth}p{0.61\textwidth}@{}}
+\toprule
+Result & Scope and principal justification\\
+\midrule
+Selector classification & Every integer length, $a>0$, and
+$0<|z|\le1$; endpoint identity and functional independence.\\
+Endpoint obstruction & Every degree; Eulerian interlacing and the
+classical Appell boundary relation.\\
+Resonant support collapse & Exact identity at every even degree;
+Frobenius--Euler endpoint reconstruction.\\
+Spectral and Stieltjes jets & Every jet order; analytic removability,
+finite coefficient extraction, and normal convergence.\\
+Anchored primitives & Every primitive order; Taylor subtraction and
+ordinary iterated integration.\\
+External coefficient question & Every $v\ge2$; explicit rational
+partial fractions, not extrapolation of finite rows.\\
+Arithmetic independence & Not asserted after specializing $s$.
+Functional independence over $\C(s)$ is a different theorem.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The Frobenius--Euler basis theorem is already present in Kim and Kim
+\cite{KimKim}; the endpoint transform uses classical Hurwitz/Lerch
+calculus. Integrals of the Hurwitz zeta function, log-Gamma functions,
+and negative-order polygamma functions have a substantial prior
+literature, including Espinosa and Moll \cite{EM1,EM2}. The examples
+here are consequences in a specified selector system, not claims that
+weighted Gamma integrals or their general method were previously
+unknown. Likewise, the coefficient solution in
+Section~\ref{pls:sec:coefficientproblem} is a complete answer to a
+stated question, but uses elementary and classical partial fractions.
+Global bibliographical novelty remains unverified.
+
+\subsection{Exact checks}
+
+The scripts use SymPy 1.14.0 and rational arithmetic. The original
+selector suite contains 667 assertions. The separately implemented
+coefficient-problem suite contributes 302 more, for a total of
+\textbf{969 finite exact assertions}. Six of these are mutation controls
+which deliberately insert an incorrect expression and verify its
+rejection. The checks include the following independent constructions.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.70\textwidth}r@{}}
+\toprule
+Selector-suite family & Assertions\\
+\midrule
+Frobenius--Euler endpoint derivatives & 180\\
+Appell derivatives and endpoint reconstruction & 74\\
+Bernoulli resonant derivatives & 90\\
+Eulerian endpoint identities, factorial values, consecutive gcds & 29\\
+Algebraic twist and exact support strata & 16\\
+Finite-mixture identities and endpoint multiplicities & 25\\
+Removable-integer numerator cancellation & 135\\
+Generalized-harmonic coefficient recurrence & 112\\
+Printed Stieltjes/trigamma identities & 4\\
+Mutation controls & 2\\
+\midrule
+Selector subtotal & 667\\
+\midrule
+External rational partial fractions & 10\\
+Nested-composition coefficients versus binomial rows & 210\\
+Defining generating series versus continued integer values & 78\\
+External normalization/sign mutation controls & 4\\
+\midrule
+Combined total & 969\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The interpolation tests compute the coefficients of the source
+function $F(t,2;v)$ by rational power-series convolution. The other
+side is computed from continued zeta/Lerch values, with the canceled
+pole handled separately. Thus the sign tests do not simply evaluate
+two copies of the same Mellin formula. The external coefficient tests
+also generate the nested coefficients by multiplying geometric series
+rather than by using their binomial answer.
+
+\subsection{Numerical diagnostics}
+
+The two diagnostic suites use mpmath 1.3.0 at 75 decimal digits of
+working precision. There are \textbf{33 comparisons}: 27 for the
+selector calculus and six for the external coefficient and Mellin
+identities. The largest recorded scaled discrepancy is approximately
+$3.075\times10^{-36}$. This comes from the independent quartic
+first-Stieltjes integral, computed with a finite Gauss--Legendre rule;
+its acceptance tolerance is $10^{-32}$. Individual absolute and scaled
+discrepancies and all tolerances are recorded in the result JSON files.
+Working precision is not an accuracy certificate.
+
+The comparisons include direct geometric sums against endpoint
+formulas, removable-order limits, an order derivative, ordinary
+Euler-weighted digamma and log-Gamma quadratures, three quadratic
+polygamma identities, the quartic Stieltjes and trigamma formulas,
+compensated Lerch expansions, a mixed confluence derivative, and an
+anchored primitive. The external Mellin comparisons use an independently
+accumulated nested-coefficient series; its constant tail is summed by
+Hurwitz zeta and its remaining geometric tail is truncated. The
+canceled-pole jet is checked by Cauchy differentiation on a small
+circle, avoiding direct multiplication of a rounded zero by a pole.
+
+These are floating-point diagnostics, not interval-certified enclosures.
+They can detect index, sign, and implementation errors. They do not
+replace any all-order proof, prove numerical period independence, or
+certify global novelty. No theorem prover has been used.
+
+\subsection{Integration proposal}
+
+Retain this article and its scripts as a separate continuation report,
+with the ledger marking the integer-length version of the source's
+questions~4 and~5 as resolved in the stated functional sense.
+The rational-endpoint, noninteger-length question remains separate.
+The primitive and joint-jet theorems advance question~6 but do not
+supply its requested compact degree/order bivariate generating function
+or a complete Barnes-Gamma classification.
+
+Every label in this source uses the \src{pls:} prefix. The package
+includes a short integration fragment, an explicit source manifest,
+reproduction instructions, and exact/numerical receipts. No repository
+files have been edited. In particular, this delivery does not change
+the conjectural status of $S_6$, the revised $S_8$, or the general
+unequal-tail optimal-prefix problem.
+
+\section{Further research questions}
+\label{pls:sec:questions}
+
+\paragraph{1. Prescribed spectral support with higher endpoint vanishing.}
+Classify polynomial weights selecting two or more prescribed shifted
+orders while vanishing to a specified order at both endpoints.
+Theorem~\ref{pls:thm:flatness} settles the one-coordinate obstruction.
+For larger support, the exact problem is the rank of an endpoint matrix
+of Frobenius--Euler polynomials. Determine its exceptional algebraic
+twists and prove minimal support in a declared degree range. Counting
+equations alone does not prove the necessary minors are nonzero.
+
+\paragraph{2. Rational interval lengths and cyclotomic coordinates.}
+For noninteger rational $L$, translation no longer returns the same
+Hurwitz argument modulo a finite prefix. Determine a complete selector
+basis with a finite vector of rational residue-class arguments, then
+use roots-of-unity filters to convert it to polylogarithms or Dirichlet
+$L$-functions. The coefficient field and the permitted finite remainder
+must be fixed before stating uniqueness. Integer $L$ is completely
+covered here; this different endpoint geometry is not.
+
+\paragraph{3. Coalescing geometric poles.}
+Replace the distinct nodes $1,1/2,\ldots,1/(v-1)$ in
+Section~\ref{pls:sec:coefficientproblem} by arbitrary nodes with
+multiplicities. Partial fractions predict finite derivatives in the
+Lerch twist, while the collision limit is governed by divided
+differences. Prove a stable all-jet confluence theorem and determine
+which normalizations give particularly simple Gamma-product or
+Stieltjes interpolation values. Keep the original defining series as
+the normalization anchor.
+
+\paragraph{4. Resonant roots of unity and simultaneous degenerations.}
+At $z^L=1$ with $z\ne1$, spectral support collapses but there is no
+Hurwitz pole. Combine the exact support law with finite Fourier
+transforms to distinguish this pure endpoint resonance from the
+additional logarithmic contact at $z=1$. Study simultaneous variation
+of the interval shift, twist, and spectral order, with an explicit
+finite subtraction at every singular face.
+
+\paragraph{5. A compact degree--Stieltjes generating identity.}
+The coefficient rules in Sections~\ref{pls:sec:jets} and
+\ref{pls:sec:stieltjes} compute every fixed degree and every Stieltjes
+order. Seek a bivariate generating identity that retains a single
+spectral center and exposes the complete-harmonic coefficients without
+a separate finite sum at each degree. Determine which anchored
+primitives close in a specified finite family of multiple-Gamma or
+zeta-derivative functions. This is the remaining substantive part of
+the predecessor's question~6.
+
+\paragraph{6. Nonlinear Gamma sectors with exact selectors.}
+The incoming affine Gamma square-sector formula motivates the beta
+and Bernoulli weights used here. Transport multi-coordinate selectors
+back through that normal-form construction, retaining every endpoint
+term. Seek complete cubic or quartic derivative-sector identities,
+not only diagonal squares or low-degree examples. A useful outcome
+would be a generating formula whose Hurwitz/Lerch transform has a
+provably minimal, prescribed functional spectrum.
+
+\paragraph{7. The remaining harmonic-tail and polylogarithm questions.}
+The general unequal-even-tail optimal-prefix conjecture concerns
+nonvanishing of specific rational coefficient determinants and is not
+implied by the independence lemma here. Find an exact representation
+of those determinants or a recurrence proving nonvanishing. Separately,
+the $S_6$ and revised $S_8$ period candidates require exact parameter
+identities with controlled boundary constants. A failed relation
+search, or an extremely small residual, does not settle either problem.
+
+\paragraph{8. Proof-carrying symbolic integration.}
+Formalize the endpoint map, its basis inversion, the rational
+partial-fraction theorem, and the finite harmonic coefficient
+recurrence in a proof assistant. These finite algebraic cores can be
+checked independently of the harder analytic continuation library.
+Then add normal convergence, argument differentiation, and anchored
+primitive uniqueness. The resulting compiler should emit both an
+identity and a machine-checkable proof of its domain and normalization.
+
+\subsection*{Conclusion}
+
+Paired endpoint derivatives turn an integral-classification problem
+into finite interpolation, while functional independence proves that
+no hidden order has been discarded. Resonance changes the rank and
+therefore the degree of the selector; it also explains why a finite
+mixture, rather than scalar normalization, is needed to recover a
+nonconstant Bernoulli weight. Complete-harmonic coefficients and a
+single explicit logarithmic counterterm then connect this structure to
+Gamma integrals, all Stieltjes jets, and anchored primitives. The same
+attention to finite coefficients resolves the external nested-series
+question and fixes its normalization. All claims retain their precise
+algebraic, analytic, and computational scopes.
+
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{Manuscript}
+ProveIt Contributors, \emph{Polylogarithms and their Arithmetic Bridges},
+canonical manuscript README and selected harmonic-tail continuations.
+Repository sources inspected 11 October 2026; moving-branch and pinned
+reads are distinguished in Section~\ref{pls:sec:audit} and the source manifest.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/Polylogarithms/docs/manuscript}.
+
+\bibitem{Affine}
+\emph{Affine Gamma Polarization}, ProveIt research continuation,
+11 October 2026. Standalone TeX, Library version 1, 1,702 lines.
+Sections 7, 9, and 11 are the principal predecessor material used here.
+Named incoming archive:
+\src{ProveIt_Affine_Gamma_Polarization_2026-10-11.zip}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/docs/incoming}.
+The standalone-source hash is recorded in \src{source_manifest.json}.
+
+\bibitem{KimKim}
+Dae San Kim and Taekyun Kim,
+\emph{Some identities of Frobenius--Euler polynomials arising from
+Frobenius--Euler basis}, arXiv:1211.6640 (2012), especially Theorem 1.
+\url{https://arxiv.org/abs/1211.6640}.
+
+\bibitem{Chow}
+Chak-On Chow, \emph{New proofs of interlacing of zeros of Eulerian
+polynomials}, Journal of Mathematical Analysis and Applications
+\textbf{510} (2022), 126019.
+\url{https://doi.org/10.1016/j.jmaa.2022.126019}.
+
+\bibitem{DLMFLerch}
+NIST Digital Library of Mathematical Functions,
+Section 25.14, \emph{Lerch's Transcendent}, especially the series,
+Mellin representation, translation, and logarithmic expansion.
+\url{https://dlmf.nist.gov/25.14}. Consulted 11 October 2026.
+
+\bibitem{DLMFHurwitz}
+NIST Digital Library of Mathematical Functions,
+Section 25.11, \emph{Hurwitz Zeta Function}, including argument
+derivatives, special values, and Lerch's log-Gamma formula.
+\url{https://dlmf.nist.gov/25.11}. Consulted 11 October 2026.
+
+\bibitem{DLMFInteger}
+NIST Digital Library of Mathematical Functions,
+Section 25.6, \emph{Integer Arguments} of the Riemann zeta function.
+\url{https://dlmf.nist.gov/25.6}. Consulted 11 October 2026.
+
+\bibitem{DLMFPsi}
+NIST Digital Library of Mathematical Functions,
+Section 5.15, \emph{Polygamma Functions}.
+\url{https://dlmf.nist.gov/5.15}. Consulted 11 October 2026.
+
+\bibitem{EM1}
+Olivier R. Espinosa and Victor H. Moll,
+\emph{On some Definite Integrals involving the Hurwitz Zeta function},
+arXiv:math/0012078 (2000).
+\url{https://arxiv.org/abs/math/0012078}.
+
+\bibitem{EM2}
+Olivier R. Espinosa and Victor H. Moll,
+\emph{On some integrals involving the Hurwitz zeta function: part 2},
+arXiv:math/0107082 (2001).
+\url{https://arxiv.org/abs/math/0107082}.
+
+\bibitem{PPS}
+Dora Pokaz, Mihaela Ribi\v ci\'c Penava, and Yilmaz Simsek,
+\emph{Certain families of series involving Hurwitz and Lerch zeta functions},
+arXiv:2609.13796v1, 12 September 2026.
+The open coefficient question is on page 9; the corrected normalization
+and interpolation statements are on pages 11--12. Version-specific
+corrections are proved in Section~\ref{pls:sec:coefficientproblem}.
+\url{https://arxiv.org/abs/2609.13796v1}.
+\end{thebibliography}
+\end{document}

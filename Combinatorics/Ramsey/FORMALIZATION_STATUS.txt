@@ -1,46 +1,297 @@
 Gowers Szemeredi formalization checkpoint — 2026-10-11
 
 Scope
-  The goal remains open. The stronger global bounds still await the complete
-  local production check. Smaller four- and five-term thresholds are proved below.
-  New joint-cover arithmetic (2026-10-11): twenty auxiliary theorems in
-  Proofs18FiniteCoverBudgets, Proofs18CoverEnvelopeArithmetic, and
-  Proofs18CoverSharperArithmetic are checked
-  directly by Lean 4.32.0. Their candidate recursion fits the printed
-  exponent comparisons and stopping inequalities at every degree and length.
-  Exact standard-parameter substitutions are checked as well. Connecting the actual
-  localization width and modulus threshold to this recursion is implemented
-  in the integrated cover route and awaits full production verification.
-  The sharper recursion also satisfies M(k)+2*k+22 <= 1024*2^k for k>=2.
-  Its candidate comparisons permit d+8 in the inverse exponent (d>=4),
-  and L+6 in the progression threshold (L>=6). These stronger mathematical
-  bounds still await verification of the analytic inverse construction.
-  The source catalogue contains all 120 unique numbered theorem, lemma,
-  proposition, and corollary headings in sz-thm-gowers-proof.tex.
-  The source ledger regenerated on 2026-10-11 (scripts/gowers_status.py)
-  now records 120 exact companion signatures and no missing companions.
-  The full Section 18 companions from 199799ee2 were integrated in 3d94a50b8.
-  Their light envelope modules were kernel-checked by that branch, but their
-  explicit bridge was checked with substituted dependency interfaces.
-  This workspace is now checking the production sources and an exact-type
-  axiom audit of one companion for each of the 120 numbered statements.
-  The 531-module dependency build passed locally. The full numbered audit
-  and the stronger-bound audit are still running; signature coverage alone
-  does not establish completion of the goal.
-  The two Section 16 companions and the three Section 18 companions still
-  need the complete local production check. The 115 earlier companions
-  were kernel-checked at the 2026-10-09 checkpoint. This includes the repaired
-  Lemma 16.10, whose explicit cover conclusion is weaker than the printed
-  unit-parameter claim. It must not be counted as a proof of that printed
-  claim. The earlier completed audit included both the repaired companion
-  and the preserved printed encoding counterexample.
-  The JSON ledger records every statement, its TeX heading lines, its Lean
-  definition, and related results. Conditional implications, restricted cases,
-  and counterexamples are not counted as proofs of the full statement.
-  Matching headings does not establish mathematical fidelity: several source
-  statements and shared definitions have documented repairs or unresolved gaps.
-  Counts in the historical checkpoint sections below describe those earlier
-  checkpoints; the current catalogue count is stated here and in the ledger.
+  Active follow-up: the user requested the remaining source-fidelity work
+  and further generalizations. The 120-companion audit below verifies the
+  corrected catalogue, not completion of this broader follow-up. In
+  particular, carrier injectivity alone does not establish integer
+  representatives. Proofs05IntegerRepresentatives proves that distinction using
+  the proper modular progression 6,0,1 modulo 7, and proves the stronger
+  geometric predicate implies carrier-based properness over every
+  nonzero modulus. The paper now explicitly documents this distinction.
+  Proofs05IntegerRuns and Proofs05IntegerRefinement now prove the genuine
+  geometric refinements in Lemmas 5.12--5.13 with their printed cell counts.
+  No primality hypothesis is needed; the latter also applies to partitions
+  of any finite set S, with bound 4*sqrt(|S|*M). The numbered definitions of
+  Lemmas 5.12--5.13 now require HasIntegerRepresentatives, and their
+  companions use the genuine refinements. The refreshed full native audit
+  passed over 1,444 modules: all 120 exact numbered companions, the nine
+  stronger-bound and comparison results, and the 22 integer-representative
+  results use only the three approved axioms. Catalogue integration of
+  Lemmas 5.12--5.13 is verified.
+  Other source-fidelity obligations remain open.
+
+  IntegerBoxesAudit also verifies 25 new short-interval, integer-box and
+  refinement-bound theorems, with only the approved axioms. The geometric
+  box predicate tracks a common positive integer difference; shared
+  reversal, index models, affine transport, discrepancy monotonicity and
+  the square-root/factor-four average-size bound are proved.
+  IntegerFidelityAudit now also verifies 20 genuine-inverse and small-width
+  results over a 1,458-module closure. Theorem 18.1 has genuine integer
+  representatives in every degree with offset d+7; degrees one, two and
+  three have still stronger offsets 1, 2 and 4. The linear function bound
+  applies over every nonzero modulus. The printed bounds of Theorem 13.12
+  hold with genuine two-by-two integer squares for all prime moduli whenever
+  the target side length is at most two. These checks permit only the three
+  approved axioms and do not close the remaining source-fidelity work.
+
+  Theorem 13.12's extra eventual-modulus restriction is now removed by
+  theorem_13_12_without_modulus_threshold_holds, which has an exact checked
+  statement over every prime modulus. The catalogue companion chooses
+  N0=0. The printed target width is at most two below the explicit Fourier
+  threshold, and the near-one range is broadened to alpha>333/334 with a
+  genuine global integer square. ModulusFidelityAudit verifies all six new
+  range results over 1,461 modules using only the approved axioms. The
+  integer-square audit below now closes the large-width geometry as well;
+  no counterexample to the printed Theorem 13.12 is claimed.
+
+  The genuine integer-box residue construction is also proved: canonical
+  ascending axes retain the exact carrier and width, and prescribed-step
+  refinements preserve the original uniform lower width v-1 and positive
+  axis lengths v-1 or v. All axes and cells have one shared orientation.
+  The construction works over every nonzero modulus. Its six public
+  theorems pass BoxPartitionFidelityAudit over 1,463 modules, with only
+  the approved axioms. Propagation through the intermediate multilinear
+  and Section 16 cover constructions remains a separate obligation.
+
+  MultilinearFidelityAudit now verifies 20 further results and the exact
+  genuine integer-box statements of Lemma 5.10, Corollary 5.11 and Lemma
+  16.1 over 1,472 modules. Ascending natural-axis certificates compose
+  under affine transport, the full monomial-height induction, simultaneous
+  refinement, and lift-and-slice recurrence. All original thresholds,
+  width exponents, diameter constants and common-difference estimates are
+  retained. The modulus need not be prime. Their representation gaps are
+  closed; the remaining Section 16 cover and structure constructions
+  still need genuine integer geometry.
+
+  RectangleFidelityAudit verifies eleven further results over 1,477
+  modules, with only the approved axioms. Two proper modular progressions
+  of equal length m and shared step admit genuine integer refinements
+  using one common positive difference, with at most 4*floor(sqrt(m))
+  cells per axis. A subset of relative density delta in their product
+  contains a genuine integer rectangle of relative density at least
+  delta/4, with both side lengths at least delta*sqrt(m)/16. These results
+  hold over every nonzero modulus. The following audit completes the
+  equal-side extraction and the printed numerical comparisons.
+
+  IntegerSquareFidelityAudit verifies sixteen further results and the
+  exact genuine integer-representative statement of Theorem 13.12 over
+  1,482 modules. Clamped equal-length covers remain inside their parent
+  integer progressions and cover every point. Square extraction retains
+  density delta/16 and any positive side length at most delta*sqrt(m)/16.
+  The already verified Fourier modulus threshold absorbs the width loss,
+  rounding and density loss into the original printed bounds. The theorem
+  holds over every prime modulus, without an additional eventual-modulus
+  restriction. The catalogue companion now uses this genuine theorem.
+  The full native check again verifies all 120 exact catalogue companions,
+  all preceding fidelity audits and all sixteen new results, permitting
+  only propext, Classical.choice and Quot.sound. The source-representation
+  gap in Theorem 13.12 is closed. The remaining Section 16 constructions
+  and complete statement-by-statement source audit keep the goal active.
+
+  PolynomialIntegerFidelityAudit verifies eighteen further simultaneous
+  partition and recurrence results over 1,488 modules. Integer certificates
+  survive the common multiaffine height induction, multilinear conversion,
+  lifting, slicing and rounded root-width rescaling. The genuine profile
+  uses exactly the existing named Schmidt constants, thresholds, exponents
+  and factor-two error bound, in every dimension and over every nonzero
+  modulus. Input boxes may use either integer orientation; every output
+  has an ascending natural-axis certificate. The full native and axiom
+  checks pass, including the exact explicit profile type. These results
+  supply the genuine recurrence input for the remaining Section 16 cover
+  constructions; they do not yet close those constructions.
+
+  RetiledIntegerFidelityAudit verifies eleven further contained-step,
+  product-tiling and retiled-family results over 1,492 modules. Containment
+  of ordinary progressions gives an actual positive integer step ratio
+  and a span bound. Parallel final axes can be tiled at that step with
+  lengths v-1 or v. Integer certificates survive product assembly,
+  flattening and the shared family linearity construction, retaining the
+  same width and frequency-times-step estimates. The explicit genuine
+  recurrence profile supplies its recurrence input. All constructions
+  work over every nonzero modulus; unit steps and short-parent conditions
+  are unnecessary for this integer tiling. Only the approved axioms occur.
+  The following local-cover audit supplies the genuine short-parent
+  construction; the structural induction still needs its faithful
+  lower-dimensional relation-cover hypothesis.
+
+  LocalIntegerFidelityAudit verifies eleven further short-parent, factor
+  and abstract family Lemma 16.6 results, and a separate genuine-box
+  refutation of the uncapped loss quantifier, over 1,498 modules. The
+  factor-eight localization, graph-count bound, deleted mass and explicit
+  polynomial profile constants are retained. Input boxes may use either
+  shared integer orientation; every output has an ascending certificate.
+  The abstract family lemma works over every nonzero modulus. It assumes
+  the faithful lower-dimensional IntegerMultiplyLinearWith cover, as in
+  the structural induction; that global hypothesis is not yet proved.
+  Remaining work includes the genuine base relation cover, the remainder
+  family argument and the Section 16 structural induction.
+
+  The paper's literal unbounded loss quantifier is now visibly corrected
+  to 0<theta<=1. At theta=2, gamma=r=1, a width-two integer box in ZMod 2
+  would require a cell of width at least four, which is impossible. The
+  separate theorem multipleLinearity_uncapped_integer_loss_counterexample
+  checks this with genuine integer input and output boxes. The TeX and
+  annotated PDF document the correction; page 95 was visually inspected.
+  This refutation is separate from the positive catalogue proofs and the
+  accepted explicit-cover correction of Lemma 16.10.
+
+  At the preceding completed catalogue checkpoint, all 120
+  numbered statement definitions have exact companion proofs, with no
+  substituted dependency interfaces. The complete serial production check
+  passed over 1,440 modules with Lean 4.32.0 and mathlib v4.32.0. This
+  checkpoint predates the strengthened Lemmas 5.12--5.13 above.
+  NumberedAudit checks each selected theorem's exact statement type and its
+  complete transitive axiom set. CompletionAudit checks the six explicit
+  improved-bound results and three strict comparison theorems as well.
+  Only propext, Classical.choice and Quot.sound are permitted.
+
+  The printed offsets are improved to d+7 in the inverse exponent for d>=4,
+  L+6 in the progression and two-color thresholds for L>=6, and L+5 for
+  L>=11. The stronger mathematical conclusions and their real explicit
+  recurrence/phase-partition dependencies have passed the local check.
+  No improvement over other quantitative Szemeredi proofs is claimed.
+
+  This is a check of the existing catalogue and its documented repairs,
+  not a proof of every literal printed claim. In particular, Lemma 16.10's
+  corrected explicit-cover statement is proved; the original formalized
+  unit-parameter claim is separately refuted by a kernel-checked theorem.
+  Its negation is never counted among the 120 positive companion proofs.
+  On 2026-10-11 the user explicitly accepted the documented correction
+  for Lemma 16.10. This acceptance resolves that correction; it does not
+  resolve the other source/encoding fidelity obligations listed above.
+  Full formalization of every paper statement is not yet complete.
+  The final qualitative and quantitative Szemeredi conclusions (Theorems
+  1.2, 1.3 and 18.2) do have unconditional checked proofs about genuine
+  natural-number progressions, using only the three approved axioms.
+
+  Reproduce the production and axiom checks with:
+    python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.CompletionAudit
+  Reproduce the latest full integer-fidelity checks with:
+    python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.IntegerSquareFidelityAudit
+  Its exact input hashes and verification results are recorded in:
+    Research/GowersSzemeredi/verification/2026-10-11-integer-square-fidelity.json
+  The polynomial recurrence extension is checked with:
+    python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.PolynomialIntegerFidelityAudit
+  The latest full check, including genuine retiled products, is:
+    python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.RetiledIntegerFidelityAudit
+  The extension through genuine short-parent and family covers is:
+    python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.LocalIntegerFidelityAudit
+  The exact input hashes and verification results are recorded in
+    Research/GowersSzemeredi/verification/2026-10-11-numbered-and-bounds.json
+  The source ledger records every numbered definition, TeX heading lines,
+  exact companions and related results. Historical checkpoint counts below
+  refer to their respective earlier states.
+
+How the gap in Gowers's proof was closed — summary (2026-10-11)
+  Three separate obstructions stood between the printed argument and
+  formal proofs of the Section 16 and Section 18 statements. Each was
+  removed by a different repair.
+  1. Section 16, the anchor lift of Lemma 16.10 (notes L, L.3–L.6b).
+     The printed comparison q(sigma/p,gamma,k+1)^p <= q(rho,gamma,k+1)
+     fails because p grows with 1/rho. The union rule for multiply-linear
+     sets costs exponentially in the number of pieces. The printed
+     two-premise encoding of Lemma 16.10 is formally refuted; the catalogue
+     now states a repaired Lemma 16.10 with a weaker explicit cover
+     conclusion, and that statement is proved.
+     Repair (route II): replace the fixed control functions of
+     MultiplyLinear by power-uniform classes with polynomial controls
+     (PolyCoverAt), read every remainder vertex as a lower-dimensional
+     product function (faces as cylinders), and induct over the dimension
+     with explicit degrees. The degrees fit the printed tower slack.
+     Result: theorem_16_2_explicit, corollary_16_11_explicit, every
+     dimension.
+  2. Section 13, Lemma 13.5 (notes L.7c, L.9). The printed proof takes one
+     square root per affine form, so the cell-size exponent sigma of
+     Theorem 18.1 became exponential in 1/alpha at the degree-three base.
+     Repair: a Lemma 13.5 polynomial in the number of forms, from the
+     corpus's common-difference partition (ProgressionPhasePartition).
+     Result: Theorem 18.1 at degree three with polynomial exponents.
+  3. Section 18, the inverse induction (notes L.7a, L.10–L.12). The
+     single-piece step needs one multilinear map for the remainder, a sum
+     over the 2^k - 1 non-top cube vertices. Applying one provider per
+     vertex, each at the density the previous one left, multiplies the
+     degrees (log-degree ~ 136*3^k). That outgrows the printed budgets at
+     degree 10 and length 14. Repair: compose the vertex covers at one
+     precision fixed in advance and pigeonhole once (joint vertex covers);
+     the degrees add (~ 68*2^k + k). The envelope is then <= 1000*2^k
+     against budgets 4096*2^k and 8192*2^k.
+     Result: theorem_18_1_explicit, theorem_18_2_explicit,
+     corollary_18_7_explicit (and theorem_1_2/1_3_explicit) in every
+     degree and length, plus sharper constants (d+7, L+6, L+5 for L >= 11).
+  Write-up: Research/GowersSzemeredi/joint-vertex-covers/joint-vertex-covers.pdf.
+
+Verification of the cover route (2026-10-11)
+  The local faithful stubs (mkstub_cover.py, mkstub_sharp.py) were
+  superseded the same day by the production CompletionAudit (see Scope):
+  1,440 modules built from the actual source, exact-type checks of all 120
+  numbered statements and of the improved-bound results, transitive axioms
+  propext, Classical.choice and Quot.sound only. A local full-closure build
+  started here (about 18 hours on this host) was stopped as redundant.
+  scripts/gowers_bridge_axioms.lean is a quick standalone #print axioms
+  check of the 13 bridge theorems for any later rebuild.
+  Audit coverage after the audit: of the 1,444 recorded input hashes, two
+  no longer match. Proofs18CoverTightBase.lean changed only in its module
+  comment (/-! ... -/, the L.15a audit correction); no declaration changed.
+  The paper .tex was edited afterwards by the integer-representatives work.
+  Added after the audit (notes L.15c): Proofs18CoverSharperLowDegrees
+  (light, kernel-checked) and Proofs18CoverSharperAllDegrees (bridge,
+  faithful stub mkstub_all18.py): theorem_18_1_d7, Theorem 18.1 with
+  exponent alpha^(2^(2^(d+7))) in every degree d (not only d >= 4), and
+  theorem_18_1_d7_implies_printed : theorem_18_1. Also (notes L.15d,
+  Proofs18CoverSharperShortLengths): theorem_18_2_L6 and corollary_18_7_L6,
+  Theorem 18.2 and Corollary 18.7 with L+6 in every length L, and their
+  implications to theorem_18_2 and corollary_18_7 (stub axiom
+  section16RecurrenceProfileWith_explicit only). With the phase-refinement
+  threshold bounded at the exponential level (Proofs18CoverThresholdsSharp,
+  notes L.15e) the cubic stopping term disappears: theorem_18_2_L5 and
+  corollary_18_7_L5 give L+5 in every length (same single stub axiom).
+  The short-lengths module
+  was compiled against the existing oleans while the concurrent Section05
+  edit made the tree stale. CompletionAudit.lean now imports
+  Proofs18CoverSharperAllDegrees, pins the exact statements of the eight
+  every-degree and every-length theorems (theorem_18_1_d7, theorem_18_2_L5,
+  corollary_18_7_L5, theorem_18_2_L6, corollary_18_7_L6 and the three
+  implications to the printed statements) and checks their transitive
+  axioms, so the next production run covers them. The block was validated
+  locally in the faithful-stub environment.
+  Van der Waerden numbers (notes L.15g, Proofs18CoverVanDerWaerden):
+  van_der_waerden_L5, W(k,r) <= 2^(2^(r^(2^(2^(k+5))))) for r >= 2 colours,
+  and Gowers's printed W(k,r) <= 2^2^r^2^2^(k+9) (van_der_waerden_printed);
+  also checked by CompletionAudit.lean.
+  Theorem 1.3 with constant 2^(-2^(k+5)) in place of 2^(-2^(k+9))
+  (notes L.15h, Proofs18CoverHeadline): theorem_1_3_L5 : Theorem13At 5, where
+  Theorem13At 9 is the catalogue's theorem_1_3 by Iff.rfl; also checked by
+  CompletionAudit.lean.
+  Theorem 16.2 with polynomial controls (notes L.15i,
+  Proofs16PolynomialStructure): theorem_16_2_polynomial, graph count
+  max(1, (4V/(gamma theta rho))^(2^(68*2^k))) with V = 2^(2^(2^(k+4)+1)) in
+  every dimension k >= 1, where the printed count is exponential in a
+  polynomial of 1/theta; theorem_16_2_polynomial_implies_printed :
+  theorem_16_2. Both checked by CompletionAudit.lean.
+  Corollary 16.11 with polynomial exponents (notes L.15j,
+  Proofs16PolynomialCorollary): corollary_16_11_polynomial, width N^e and
+  frequency density e with e^-1 <= (2/alpha)^(2^(236*2^k+k+24)) in every
+  dimension k+1 >= 3 (printed: e^-1 = exp(poly(1/alpha))); in CompletionAudit.lean.
+
+  Toward a Fejer Lemma 15.5 (notes L.16, light, standard axioms only):
+  Proofs15WalshGeneral proves Lemma 15.1 / Corollary 15.2 for arbitrary
+  integer coefficients (the ternary hypothesis is never used);
+  Proofs15DegenerateRange proves Lemma 15.4 for coefficients in [-m, m]
+  (degenerate_count_within_le, (2m+1)^(2d*2^k) patterns). These are the
+  inputs a single Fejer-kernel selection of order m needs. That selection
+  would replace the 2^(2^(k+4)+k+3) of Lemma 15.5 by about (k+5)*2^(k+4).
+  Proofs15FejerSelection proves that selection: fejer_arrangement_restriction
+  is Lemma 15.5 with exponent fejerSelectionExponent k = 2^(k+4)*(k+6), in one
+  stage with a Fejer kernel of order m+1 = 2^(k+4)*ceil(6/(alpha*eta)), and
+  lemma_15_5_of_fejer_restriction recovers the printed Lemma 15.5.
+  Proofs15FejerProduct: fejer_product_restriction is Lemma 15.6 with density
+  (beta*gamma/2)^(fejerProductExponent k), fejerProductExponent k <=
+  2^(5k+14) (printed 2^(2^(k+5))); lemma_15_6_of_fejer_product recovers the
+  printed Lemma 15.6. Propagating this theta_1 through Section 16 (which
+  hardwires section16ThetaOne) is not done; fejer_scale_estimate and
+  fejer_product_of_density_lower (the exact interface Lemma 16.4 consumes)
+  are proved, and notes L.16 give the refactor plan for the full-build machine.
 
 Sharper exponents for Theorems 18.1 and 18.2 — 2026-10-11 (notes L.15)
   The joint-cover envelopes are a quarter of the printed budgets, so:
@@ -48,14 +299,13 @@ Sharper exponents for Theorems 18.1 and 18.2 — 2026-10-11 (notes L.15)
     exponent alpha^(2^(2^(d+8))) instead of the printed d+10;
   - theorem_18_2_sharper_six_le: Theorem 18.2 at every length L >= 6 with
     threshold 2^(2^(delta^-1^(2^(2^(L+6))))) instead of the printed L+9.
-  Light module Proofs18CoverSharper (kernel-checked); bridge
-  Proofs18CoverSharperExplicit (faithful stub mkstub_sharp.py, the same
-  corpus axioms as the printed versions). d+7 and L+5 are out of reach at
+  Both the light module Proofs18CoverSharper and the explicit bridge
+  Proofs18CoverSharperExplicit pass the local production and axiom check. d+7 and L+5 are out of reach at
   the standard base budget (envelope ~536*2^k > 512*2^k). With the tight
   class-base bound classV_le_tight (Proofs18CoverTightBase, notes L.15a):
   theorem_18_1_d7_four_le (Theorem 18.1 at d+7, every d >= 4) and
-  theorem_18_2_L5_eleven_le (Theorem 18.2 at L+5, every L >= 11), same stub
-  axioms. Corollary 18.7 follows at the same thresholds
+  theorem_18_2_L5_eleven_le (Theorem 18.2 at L+5, every L >= 11), with actual
+  dependencies checked locally. Corollary 18.7 follows at the same thresholds
   (corollary_18_7_sharper_six_le, corollary_18_7_L5_eleven_le;
   Proofs18CoverColorings, notes L.15b). All are restricted to the stated
   degrees and lengths and are not

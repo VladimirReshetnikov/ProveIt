@@ -1,0 +1,478 @@
+\section{Colored balanced kernels and their Mellin transform}
+\label{sec:colored}
+
+Let
+\[
+ \Omega=\C\setminus[1,\infty),\qquad a>0,\qquad x>0,\qquad \omega\in\Omega.
+\]
+The branch of $\Phi(\omega,s,a)$ is determined by its defining series
+for $|\omega|<1$ and continuation to $\Omega$. Equivalently, for
+$\Re s>0$ it is given by the classical absolutely convergent integral
+\cite[25.14.5]{dlmflerch}
+\begin{equation}\label{col:lerch-integral}
+ \Phi(\omega,s,a)=\frac1{\Gamma(s)}
+  \int_0^\infty\frac{t^{s-1}e^{-at}}{1-\omega e^{-t}}\dd t.
+\end{equation}
+Subtracting Taylor coefficients of its smooth density at zero extends
+it to an entire function of $s$ for each $\omega\in\Omega$.
+
+\begin{definition}[Colored balanced derivative]\label{col:def}
+For an integer $q\ge0$, put
+\begin{align}
+ F_\omega(z;x,a)&=x^z\Phi(\omega,1+z,x+a),\label{col:generator}\\
+ C_q^\omega(x,a)&=\left.\partial_z^qF_\omega(z;x,a)\right|_{z=0}\notag\\
+ &=\sum_{j=0}^q\binom qj\log^{q-j}x\,
+       \partial_s^j\Phi(\omega,1,x+a).\label{col:kernel}
+\end{align}
+Order derivatives are evaluated after analytic continuation in $\omega$.
+\end{definition}
+
+There is no order pole at $s=1$ when $\omega\ne1$ in this domain.
+Thus adding the uncolored term $\log^{q+1}x/(q+1)$ to
+\eqref{col:kernel} would destroy decay rather than improve it.
+
+\subsection{Tail cancellation and uniqueness}
+
+Write
+\begin{equation}\label{col:A}
+ A_k(\omega,a)=\Phi(\omega,-k,a)
+       =(\omega\partial_\omega+a)^k\frac1{1-\omega}.
+\end{equation}
+These are rational functions of $\omega$ and polynomials of degree $k$
+in $a$. Their leading coefficient in $a$ is $1/(1-\omega)$.
+
+\begin{lemma}[Uniform colored expansion]\label{col:tail}
+On compact subsets of $\Omega\times(0,\infty)$, and locally uniformly
+for $z$ near zero,
+\begin{equation}\label{col:F-tail}
+ F_\omega(z;x,a)=
+  \sum_{k=0}^{K}\frac{(-1)^k A_k(\omega,a)}{k!}
+           (1+z)_k x^{-k-1}+O(x^{-K-2}).
+\end{equation}
+Consequently
+\begin{equation}\label{col:C-tail}
+ C_q^\omega(x,a)=
+  \sum_{k=q}^{K}\frac{(-1)^k A_k(\omega,a)}{k!}
+   \left.\partial_z^q(1+z)_k\right|_{z=0}x^{-k-1}
+       +O(x^{-K-2}),
+\end{equation}
+and the leading coefficient is
+$(-1)^q A_q(\omega,a)x^{-q-1}$.
+At zero, $C_q^\omega(x,a)=O(1+|\log x|^q)$.
+\end{lemma}
+
+\begin{proof}
+The density $e^{-at}/(1-\omega e^{-t})$ is analytic at $t=0$,
+with Taylor coefficients $(-1)^k A_k(\omega,a)/k!$.
+Taylor's formula on a small fixed interval and exponential decay
+outside that interval give a Laplace expansion in
+\eqref{col:lerch-integral}. The $k$th term integrates to
+$\Gamma(1+z+k)x^{-1-z-k}$; division by $\Gamma(1+z)$
+and multiplication by $x^z$ give \eqref{col:F-tail}.
+On the stated compact sets, the denominator stays uniformly away
+from zero along $t\ge0$, so the remainders are locally uniform.
+Cauchy differentiation in a slightly larger $z$ disc preserves
+the inverse-power order of the remainder. Since $(1+z)_k$ has
+degree $k$, derivatives of order $q>k$ vanish, and its leading
+coefficient gives $\partial_z^q(1+z)_q=q!$.
+The assertion at zero follows directly from \eqref{col:kernel}.
+\end{proof}
+
+\begin{theorem}[Unique homogeneous balancing]\label{col:unique}
+Fix $\omega\in\Omega$ and $q\ge0$. Among combinations
+\[
+ D(x,a)=\sum_{j=0}^q d_j\log^{q-j}x\,
+                  \partial_s^j\Phi(\omega,1,x+a),\qquad d_0=1,
+\]
+with coefficients independent of $x,a$, the condition
+$D(x,a)=O(x^{-q-1})$ for every $a$ in a nonempty open interval contained in $(0,\infty)$
+forces $d_j=\binom qj$. These coefficients do satisfy that condition.
+\end{theorem}
+
+\begin{proof}
+Put $d(t)=\sum_{j=0}^q d_jt^j$ and $L=\log x$.
+The coefficient arising from the $k$th density term is a polynomial
+in $L$. Its component with $L^{q-r}$ contains
+$d^{(r)}(-1)$ times a nonzero scalar and
+$\partial_s^r(s)_k|_{s=1}$. For $k=r<q$, the latter derivative
+is $r!$. The polynomial $A_r(\omega,a)$ cannot vanish on the
+whole prescribed interval. Successively removing $x^{-1},\ldots,x^{-q}$
+therefore gives $d^{(r)}(-1)=0$ for $r=0,\ldots,q-1$.
+Since $\deg d\le q$ and $d(0)=1$, $d(t)=(1+t)^q$.
+The converse is Lemma~\ref{col:tail}. This proves uniqueness only
+in the displayed ansatz, not among arbitrary $x$-dependent combinations.
+\end{proof}
+
+% Optional insertion after Theorem col:unique. Uses root's notation.
+\begin{remark}[The interval in the shift is essential]
+\label{col:pointwise-counterexample}
+The uniqueness statement can fail if imposed only at one shift.
+Set
+\[
+ a_* = \frac{1+\sqrt2}{2},\qquad
+ \omega_*=-3-2\sqrt2\in\Omega.
+\]
+The rational second moment factors as
+\[
+ A_2(\omega,a_*)
+  =\frac{(3-2\sqrt2)(\omega+3+2\sqrt2)^2}
+          {4(1-\omega)^3}.
+\]
+Consequently $A_2(\omega_*,a_*)=0$ and, by
+$A_3=(\omega\partial_\omega+a_*)A_2$,
+$A_3(\omega_*,a_*)=0$ as well.
+The uniform tail formula therefore gives
+\[
+ C_2^{\omega_*}(x,a_*)=O(x^{-5}),\qquad
+ C_3^{\omega_*}(x,a_*)=O(x^{-5}).
+\]
+Hence the different homogeneous combination
+\[
+ D(x)=2C_3^{\omega_*}(x,a_*)
+                  -\log x\,C_2^{\omega_*}(x,a_*)
+\]
+also satisfies $D(x)=O(x^{-4})$.  In the displayed uniqueness
+ansatz its coefficient vector is
+$\boldsymbol d=(1,4,5,2)$ rather than $(1,3,3,1)$, so it has
+the same normalization $d_0=1$.  The fourth moment is nonzero,
+$A_4(\omega_*,a_*)=(2-\sqrt2)/64$, and the modified kernel is
+not identically the canonical one.  Requiring decay for a
+nonempty open interval of positive shifts excludes this
+pointwise degeneracy exactly as the proof of the theorem requires.
+\end{remark}
+
+\subsection{The exact Mellin identity}
+
+Define the generalized harmonic polynomial $Q_q(u)$ by
+\begin{equation}\label{col:Q}
+ \frac{\Gamma(u+z)}{\Gamma(u)\Gamma(1+z)}
+     =\sum_{q=0}^\infty Q_q(u)\frac{z^q}{q!}.
+\end{equation}
+With
+$H_{u-1}^{(1)}=\psi(u)+\gamma$ and
+$H_{u-1}^{(r)}=\zeta(r)-\zeta(r,u)$ for $r\ge2$, this is
+\[
+ \exp\!\left(\sum_{r=1}^\infty
+          \frac{(-1)^{r-1}}r H_{u-1}^{(r)}z^r\right).
+\]
+In particular,
+$Q_0=1$, $Q_1=H^{(1)}$, and
+$Q_2=(H^{(1)})^2-H^{(2)}$.
+
+\begin{theorem}[Colored balanced Mellin formula]\label{col:mellin}
+For $q\ge0$ and $0<\Re u<q+1$,
+\begin{equation}\label{col:mellin-formula}
+ \boxed{\displaystyle
+ \int_0^\infty x^{u-1}C_q^\omega(x,a)\dd x
+  =\frac{\pi}{\sin\pi u}\,Q_q(u)\Phi(\omega,1-u,a).}
+\end{equation}
+Every apparent singularity at an interior integer is removable.
+The integral is absolutely convergent and locally uniform in
+$u,\omega,a$ on the stated domains.
+\end{theorem}
+
+\begin{proof}
+Initially take $0<\Re u<1$ and $z$ sufficiently close to zero.
+Insert \eqref{col:lerch-integral} into \eqref{col:generator}.
+Absolute Fubini and the Gamma integral give
+\begin{align*}
+ \int_0^\infty x^{u-1}F_\omega(z;x,a)\dd x
+ &=\frac{\Gamma(u+z)}{\Gamma(1+z)}
+       \int_0^\infty\frac{t^{-u}e^{-at}}{1-\omega e^{-t}}\dd t\\
+ &=\frac{\Gamma(u+z)\Gamma(1-u)}{\Gamma(1+z)}
+                  \Phi(\omega,1-u,a).
+\end{align*}
+The behavior at zero and infinity in Lemma~\ref{col:tail}
+justifies locally normal differentiation in $z$.
+Euler reflection then proves \eqref{col:mellin-formula}
+on the initial strip. The differentiated kernel decays as
+$x^{-q-1}$, so its integral is holomorphic on the larger
+strip $0<\Re u<q+1$. Analytic continuation establishes the
+formula there and makes the interior integer poles removable.
+This does not differentiate a divergent integral at an integer.
+\end{proof}
+
+\section{Integer colored moments, Stieltjes differences, and primitives}
+\label{sec:colored-integer}
+
+For $q\ge m\ge1$, let
+\begin{align}
+ L_{m,q}
+ &:=(-1)^q q!\sum_{\ell=m}^\infty
+              \frac{\binom{\ell-1}{m-1}}{\ell^{q+1}}
+ \label{col:L-positive}\\
+ &=(-1)^{m+q+1}q!
+       \sum_{j=0}^{m-1}(-1)^j e_j(1,\tfrac12,\ldots,\tfrac1{m-1})
+                         \zeta(q+1-j).\label{col:L-finite}
+\end{align}
+The first representation is convergent and gives its sign.
+The second is a finite zeta expression, with the empty-list convention
+$e_0=1$.
+
+\begin{theorem}[All ordinary positive-integer moments]\label{col:integer}
+For $q\ge m\ge1$,
+\begin{equation}\label{col:integer-formula}
+ \boxed{\displaystyle
+ \int_0^\infty x^{m-1}C_q^\omega(x,a)\dd x
+             =L_{m,q}\Phi(\omega,1-m,a).}
+\end{equation}
+Thus the complete shift dependence is a polynomial of degree
+$m-1$, with rational functions of the color as coefficients.
+\end{theorem}
+
+\begin{proof}
+At $u=m$, the Gamma quotient in \eqref{col:Q} is
+$\prod_{j=1}^{m-1}(1+z/j)$, hence $Q_q(m)=0$ for $q\ge m$.
+The limit in \eqref{col:mellin-formula} is
+$(-1)^m Q_q'(m)\Phi(\omega,1-m,a)$.
+Differentiating the quotient in $u$ gives
+\[
+ Q_q'(m)=q![z^q]\prod_{j=1}^{m-1}(1+z/j)
+                      \bigl(\psi(m+z)-\psi(m)\bigr).
+\]
+The rational terms in the digamma recurrence become polynomials
+of degree at most $m-1$ after multiplication by the finite product.
+They do not contribute at degree $q$. Expanding
+$\psi(1+z)-\psi(1)=\sum_{r\ge1}(-1)^{r+1}\zeta(r+1)z^r$
+proves $(-1)^mQ_q'(m)=L_{m,q}$ in the finite form.
+Expanding the zeta values and using
+\[
+ \prod_{j=1}^{m-1}(1-\ell/j)
+       =(-1)^{m-1}\binom{\ell-1}{m-1}
+\]
+gives \eqref{col:L-positive}.
+\end{proof}
+
+There is an independent elementary proof for $|\omega|<1$.
+In that disk,
+\begin{equation}\label{col:elementary-series}
+ C_q^\omega(x,a)=\sum_{\ell=0}^\infty
+  \frac{\omega^\ell}{x+\ell+a}
+           \log^q\!\frac{x}{x+\ell+a}.
+\end{equation}
+For $c>0$, the substitution $t=x/(x+c)$ gives
+\begin{equation}\label{col:elementary-moment}
+ \int_0^\infty\frac{x^{m-1}}{x+c}
+                  \log^q\!\frac{x}{x+c}\dd x
+ =c^{m-1}\int_0^1\frac{t^{m-1}\log^q t}{(1-t)^m}\dd t
+ =c^{m-1}L_{m,q}.
+\end{equation}
+Absolute summation proves the theorem in the disk, and locally normal
+continuation in $\omega$ gives the rest of $\Omega$. At $\omega=-1$,
+one must not replace that continuation by the divergent series
+$\sum(-1)^\ell(\ell+a)^{m-1}$.
+
+\subsection{Low-order examples and logarithmic insertions}
+
+For every $q\ge1$ the unweighted moment is independent of the shift:
+\begin{equation}\label{col:unweighted}
+ \boxed{\displaystyle
+ \int_0^\infty C_q^\omega(x,a)\dd x
+       =\frac{(-1)^q q!\zeta(q+1)}{1-\omega}.}
+\end{equation}
+For example,
+\begin{align}
+ \int_0^\infty C_1^\omega(x,a)\dd x
+      &=-\frac{\zeta(2)}{1-\omega},\label{col:first}\\
+ \int_0^\infty xC_2^\omega(x,a)\dd x
+      &=2\bigl(\zeta(2)-\zeta(3)\bigr)
+         \left(\frac{a}{1-\omega}
+                    +\frac{\omega}{(1-\omega)^2}\right).
+ \label{col:second}
+\end{align}
+All fixed logarithmic insertions are equally explicit. For $q\ge m$
+and $r\ge0$,
+\begin{equation}\label{col:log-moments}
+\begin{split}
+ &\int_0^\infty x^{m-1}\log^r x\,C_q^\omega(x,a)\dd x\\
+ &\quad=(-1)^m r![t^r]\left\{
+   \frac{\pi t}{\sin\pi t}\,
+   \frac{Q_q(m+t)}t\,\Phi(\omega,1-m-t,a)\right\}.
+\end{split}
+\end{equation}
+The quotient $Q_q(m+t)/t$ is holomorphic. This is a finite coefficient
+formula in Lerch order derivatives, Gamma derivatives, and generalized
+harmonic polynomials. It follows by differentiating the normally
+convergent Mellin integral, not by termwise integration of its
+individual divergent logarithmic summands.
+
+\subsection{A precise generalized Stieltjes dictionary}
+
+Let $\omega^d=1$ with $\omega\ne1$. Introduce the incoming uncolored
+kernel \cite{repobalanced}
+\begin{equation}\label{col:uncolored}
+ C_q(x,a)=\frac{\log^{q+1}x}{q+1}
+       +\sum_{j=0}^q(-1)^j\binom qj
+                  \gamma_j(x+a)\log^{q-j}x.
+\end{equation}
+The finite residue-class identity for Lerch's function gives
+\begin{equation}\label{col:stieltjes-dictionary}
+ \boxed{\displaystyle
+ C_q^\omega(x,a)=\frac1d\sum_{r=0}^{d-1}
+       \omega^r C_q\!\left(\frac xd,\frac{a+r}{d}\right).}
+\end{equation}
+Indeed
+$\Phi(\omega,s,x+a)=d^{-s}\sum_r\omega^r
+\zeta(s,(x+a+r)/d)$; the $1/z$ poles and the
+$\log^{q+1}(x/d)$ terms cancel because $\sum_r\omega^r=0$.
+This identity translates every preceding colored formula into an
+ordinary integral of a finite combination of generalized Stieltjes
+constants. It also verifies the normalization against the incoming
+finite-filter calculus.
+
+For the alternating color, define
+\[
+ a_-=\frac{x+a}{2},\qquad a_+=\frac{x+a+1}{2}.
+\]
+Then, explicitly,
+\begin{equation}\label{col:alternating-C1}
+ C_1^{-1}(x,a)=\frac12\left[
+    \bigl(\psi(a_+)-\psi(a_-)\bigr)\log\frac x2
+                 +\gamma_1(a_+)-\gamma_1(a_-)\right].
+\end{equation}
+Its ordinary integral is $-\pi^2/12$ for every $a>0$.
+
+\subsection{Exceptional moments and Dirichlet beta values}
+
+\begin{theorem}[A zero of the leading colored tail]\label{col:exceptional}
+If $m\ge1$ and $\Phi(\omega,1-m,a)=0$, then
+\begin{equation}\label{col:exceptional-formula}
+ \boxed{\displaystyle
+ \int_0^\infty x^{m-1}C_{m-1}^\omega(x,a)\dd x
+       =(-1)^{m+1}\partial_s\Phi(\omega,1-m,a).}
+\end{equation}
+The integral is ordinary and absolutely convergent.
+\end{theorem}
+
+\begin{proof}
+The zero hypothesis removes the leading $x^{-m}$ kernel term in
+Lemma~\ref{col:tail}, so the Mellin integral extends
+holomorphically across $u=m$. At $u=m$, $Q_{m-1}(m)=1$ and
+$\Phi(\omega,1-u,a)=-(u-m)\partial_s\Phi(\omega,1-m,a)
+ +O((u-m)^2)$. The removable limit in
+Theorem~\ref{col:mellin} is \eqref{col:exceptional-formula}.
+\end{proof}
+
+Let $\beta(s)=\sum_{n\ge0}(-1)^n(2n+1)^{-s}$ denote Dirichlet's beta
+function, continued in its order. Since
+$\Phi(-1,s,1/2)=2^s\beta(s)$, its negative odd zeros give the following
+family:
+\begin{corollary}[Alternating centered exceptional moments]\label{col:beta}
+For every integer $r\ge1$,
+\begin{equation}\label{col:beta-formula}
+ \boxed{\displaystyle
+ \int_0^\infty x^{2r-1}C_{2r-1}^{-1}(x,\tfrac12)\dd x
+   =\frac{(-1)^r(2r-1)!}{\pi^{2r-1}}\beta(2r).}
+\end{equation}
+In particular, writing $G=\beta(2)$ for Catalan's constant,
+\begin{equation}\label{col:catalan}
+ \int_0^\infty xC_1^{-1}(x,\tfrac12)\dd x=-\frac G\pi.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The completed beta function
+$(4/\pi)^{(s+1)/2}\Gamma((s+1)/2)\beta(s)$ is invariant under
+$s\mapsto1-s$ \cite{dlmfdirichlet}. Comparing its finite values at
+$s=1-2r$ and $s=2r$ yields
+\[
+ \beta'(1-2r)=
+ (-1)^{r-1}2^{2r-1}(2r-1)!\pi^{1-2r}\beta(2r).
+\]
+Substitute this into Theorem~\ref{col:exceptional}.
+The classical functional equation is the input; the ordinary
+Stieltjes-difference integral is its consequence in the new kernel.
+\end{proof}
+
+\subsection{Anchored shift primitives}
+
+For $a,a_0>0$ the quotient below is regular at $z=0$, because
+$\Phi(\omega,0,A)=1/(1-\omega)$ does not depend on $A$:
+\begin{equation}\label{col:primitive}
+\begin{split}
+ \int_{a_0}^a C_q^\omega(x,v)\dd v
+  =-q![z^q]\,\frac{x^z}{z}
+       \left(\Phi(\omega,z,x+a)-\Phi(\omega,z,x+a_0)\right).
+\end{split}
+\end{equation}
+This follows from
+$\partial_A\Phi(\omega,z,A)=-z\Phi(\omega,z+1,A)$.
+It gives every integration constant through the explicit anchor.
+At order zero and a root of unity, the Hurwitz identity
+$\zeta'(0,A)=\log\Gamma(A)-\tfrac12\log(2\pi)$ gives the finite
+Gamma expression
+\begin{equation}\label{col:gamma-primitive}
+ \int_{a_0}^a C_0^\omega(x,v)\dd v
+  =-\sum_{r=0}^{d-1}\omega^r
+       \log\frac{\Gamma((x+a+r)/d)}
+                    {\Gamma((x+a_0+r)/d)}.
+\end{equation}
+All Gamma arguments are positive, and their logarithms are real
+before multiplication by the complex coefficients.
+
+\section{The color-one limit and its exact constant term}
+\label{sec:color-limit}
+
+The formulas above are not uniform at $\omega=1$. The precise
+normalization can nevertheless be determined, and it reconciles the
+colored moment with its uncolored Stieltjes counterpart.
+Fix $q\ge m\ge1$, let $\omega=e^{-\lambda}$ with $\lambda>0$, and set
+\[
+ M_{m,q}(\lambda,a)=\int_0^\infty
+                   x^{m-1}C_q^{e^{-\lambda}}(x,a)\dd x.
+\]
+
+\begin{theorem}[Complete local color expansion]\label{col:coalescence}
+For $0<\lambda<2\pi$,
+\begin{equation}\label{col:coalescence-formula}
+ \boxed{\displaystyle
+ e^{-a\lambda}M_{m,q}(\lambda,a)
+ =L_{m,q}\left\{\frac{\Gamma(m)}{\lambda^m}
+       +\sum_{k=0}^\infty
+             \frac{(-\lambda)^k}{k!}\zeta(1-m-k,a)\right\}.}
+\end{equation}
+The series is convergent. In the cutoff coordinate $\lambda$,
+\begin{align}
+ \lim_{\lambda\downarrow0}
+ \left(e^{-a\lambda}M_{m,q}
+              -L_{m,q}\Gamma(m)\lambda^{-m}\right)
+      &=-\frac{L_{m,q}}m B_m(a),\label{col:renorm}\\
+ \CT_{\lambda=0}M_{m,q}(\lambda,a)
+      &=\frac{L_{m,q}}m\bigl(a^m-B_m(a)\bigr).\label{col:raw-CT}
+\end{align}
+The first line is exactly the uncolored ordinary moment
+$\int_0^\infty x^{m-1}C_q(x,a)\dd x$ from \cite{repobalanced}.
+\end{theorem}
+
+\begin{proof}
+The classical convergent Lerch expansion \cite[25.14.3\_1]{dlmflerch}
+is
+\[
+ e^{-a\lambda}\Phi(e^{-\lambda},s,a)
+    =\Gamma(1-s)\lambda^{s-1}
+       +\sum_{k=0}^\infty\zeta(s-k,a)\frac{(-\lambda)^k}{k!}.
+\]
+Set $s=1-m$ and use Theorem~\ref{col:integer}.
+Its constant term is $L_{m,q}\zeta(1-m,a)
+=-L_{m,q}B_m(a)/m$.
+Multiplying by $e^{a\lambda}$ adds the constant contribution
+$L_{m,q}\Gamma(m)a^m/m!=L_{m,q}a^m/m$ from the pole.
+This proves both normalizations.
+The incoming uncolored coefficient is
+$\kappa_{m,q}=-L_{m,q}/m$, so its moment is the first limit.
+\end{proof}
+
+For example, $M_{1,1}=-\zeta(2)/(1-e^{-\lambda})$ is independent of
+$a$, and its raw constant term is $-\zeta(2)/2$.
+The normalized limit in \eqref{col:renorm}, however, is
+$\zeta(2)(a-\tfrac12)$. Both formulas are correct in their stated
+normalizations. They cannot be identified by discarding the
+$e^{-a\lambda}$ factor.
+
+All logarithmic moment versions follow by differentiating the local
+Mellin expression in $u$ before putting $u=m$. Derivatives of
+$\lambda^{-u}$ produce explicit powers of $\log\lambda$.
+Thus the scalar expansion already specifies the complete mechanism
+for those contacts. It does not assert that the pointwise limit of
+the colored kernels can be integrated across the entire half-line.
+

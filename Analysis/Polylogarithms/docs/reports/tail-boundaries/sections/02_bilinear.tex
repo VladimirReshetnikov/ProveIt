@@ -1,0 +1,276 @@
+\section{Classification of rational bilinear tail certificates}
+\label{sec:bilinear}
+
+The latest alternating-tail report asks whether allowing both adjacent
+products gives a useful classification for two different denominator
+polynomials. We answer that question exactly. The classification is
+relative to an explicit certificate class; failure of its criterion
+does not exclude longer telescopers or other special-function identities.
+
+\subsection{The certificate class and its factorization criterion}
+
+Let $P,Q\in\C[z]$ be nonzero, let $\alpha,\beta,t\ne0$, and suppose
+two sequences satisfy
+\begin{equation}\label{bi:recurrences}
+ E_{n-1}=E_n+\frac{\alpha^n}{P(n)},\qquad
+ F_{n-1}=F_n+\frac{\beta^n}{Q(n)}.
+\end{equation}
+For rational functions $A,B$, consider
+\begin{equation}\label{bi:certificate}
+ T_n=t^n\{A(n+1)E_nF_{n+1}+B(n+1)E_{n+1}F_n\}.
+\end{equation}
+We ask that, after using \eqref{bi:recurrences}, the coefficients of
+$E_n$ and $F_n$ in $T_n-T_{n-1}$ both vanish identically. The remaining
+term is then a rational weight times $E_nF_n$. This is an algebraic
+condition on the certificate, independent of any conjectured numerical
+relation among the tails.
+
+\begin{theorem}[Complete two-adjacent-product classification]
+\label{bi:classification}
+A nonzero rational certificate \eqref{bi:certificate} has the stated
+cancellation property if and only if
+\begin{equation}\label{bi:criterion}
+ t^2\alpha\beta=1,\qquad
+ \frac{P(z)}{Q(z)}=\rho h(z)h(z+1)
+\end{equation}
+for a nonzero constant $\rho$ and a nonzero rational function $h$.
+In that case all certificates for the chosen $t$ are scalar multiples
+of
+\begin{equation}\label{bi:AB}
+ A(z)=Q(z)h(z),\qquad B(z)=\kappa Q(z)h(z+1),\qquad
+ \kappa=-t\beta.
+\end{equation}
+Writing $C=A+B$, their exact difference is
+\begin{equation}\label{bi:difference}
+ T_n-T_{n-1}
+   =t^n\{C(n+1)-t^{-1}C(n)\}E_nF_n.
+\end{equation}
+Thus, when the rational factorization exists, there are exactly two
+outer-color choices $t$, and the certificate space for either choice
+is one-dimensional.
+\end{theorem}
+
+Here ``nonzero'' means that $(A,B)$ is not the zero pair. At a special
+parameter value the resulting weight can vanish identically, or the
+evaluated tails can make the certificate zero. Such degeneracies do not
+change the formal cancellation classification. An example is the
+equal-shift limit of the alternating kernel below, whose nontrivial
+diagonal identity is recovered by holomorphic continuation.
+
+\begin{proof}
+Direct expansion gives the quadratic coefficient
+$A(n+1)+B(n+1)-t^{-1}\{A(n)+B(n)\}$. The linear coefficients vanish
+exactly when
+\begin{equation}\label{bi:linear}
+ \beta\frac{A(z+1)}{Q(z+1)}+t^{-1}\frac{B(z)}{Q(z)}=0,
+ \qquad
+ \alpha\frac{B(z+1)}{P(z+1)}+t^{-1}\frac{A(z)}{P(z)}=0.
+\end{equation}
+If one of $A,B$ is zero, both are zero. Otherwise set
+$h=A/Q$ and $R=P/Q$. The first equation gives
+$B=-t\beta Qh(z+1)$; substitution into the second gives
+\begin{equation}\label{bi:twostep}
+ \frac{R(z+1)}{R(z)}
+       =t^2\alpha\beta\frac{h(z+2)}{h(z)}.
+\end{equation}
+A nonzero rational function $r$ satisfies $r(z+c)/r(z)\to1$ as
+$z\to\infty$ for every fixed $c$. Therefore
+$t^2\alpha\beta=1$. Equation \eqref{bi:twostep} now says that
+$R(z)/\{h(z)h(z+1)\}$ is a rational function with period one.
+A nonconstant rational periodic function would have infinitely many
+poles, or, if polynomial, could not have a nonzero period. It is
+therefore the constant $\rho$. This proves necessity.
+
+Conversely, \eqref{bi:criterion} and \eqref{bi:AB} verify
+\eqref{bi:linear} by substitution, proving the difference identity.
+If $h_1,h_2$ are two solutions, their quotient $r$ satisfies
+$r(z)r(z+1)=\text{constant}$ and hence $r(z+2)=r(z)$.
+It is constant by the same rational-periodicity argument. This proves
+the uniqueness assertion.
+\end{proof}
+
+\subsection{An effective criterion on the divisor of the rational function}
+
+The condition in \eqref{bi:criterion} does not require an infinite
+search for $h$. Reduce $R=P/Q$ first, and group its finite zeros and
+poles into equivalence classes modulo integer translation. For an orbit
+$\xi+\Z$, put
+\[
+ r_j=\ord_{z=\xi+j}R(z).
+\]
+Only finitely many $r_j$ are nonzero; poles have negative multiplicity.
+
+\begin{proposition}[Alternating divisor test]
+\label{bi:divisor}
+The factorization $R(z)=\rho h(z)h(z+1)$ with rational $h$ exists
+if and only if, for every such orbit,
+\begin{equation}\label{bi:divisorcondition}
+ \sum_{j\in\Z}(-1)^j r_j=0.
+\end{equation}
+When this holds, the multiplicity of $h$ at $\xi+j$ is
+\begin{equation}\label{bi:divisorconstruction}
+ h_j=\sum_{k\ge0}(-1)^k r_{j+k}.
+\end{equation}
+The constant $\rho$ then matches the leading coefficients at infinity.
+\end{proposition}
+
+\begin{proof}
+The multiplicities must satisfy $r_j=h_j+h_{j+1}$.
+The unique solution vanishing above the support of $r$ is
+\eqref{bi:divisorconstruction}. It also vanishes below that support
+exactly when \eqref{bi:divisorcondition} holds. This constructs a
+rational $h$ with the required finite divisor. The quotient
+$R/(hh(\cdot+1))$ has neither finite zeros nor poles, and its order
+at infinity is also zero, because $\sum r_j=2\sum h_j$.
+It is therefore a nonzero constant. Changing the orbit representative
+only multiplies \eqref{bi:divisorcondition} by a sign.
+\end{proof}
+
+This is a finite algebraic test on the reduced rational function. In
+particular, its degree at infinity must be even. Generic quadratic
+polynomials with four zeros in distinct integer-translation orbits
+fail the test. By contrast,
+\begin{equation}\label{bi:adjacent-ratio}
+ \frac{(z+a)(z+a+1)}{(z+b)(z+b+1)}
+       =\frac{z+a}{z+b}\frac{z+a+1}{z+b+1}
+\end{equation}
+passes for arbitrary independent $a,b$. This example gives the
+two-shift identities in the next section. The divisor argument is an
+elementary instance of rational difference-equation reasoning; the
+contribution here is its exact use to classify this bilinear tail
+certificate and all compatible colors.
+
+\subsection{The finite endpoint and the infinite identity}
+
+Assume now that $\deg P=d\ge2$, $\deg Q=e\ge2$, and neither polynomial
+vanishes at a positive integer. Let
+\[
+ 0<|\alpha|,|\beta|\le1,\qquad \alpha\ne1,\quad\beta\ne1,
+\]
+and define the ordinary tails
+\begin{equation}\label{bi:tails}
+ E_n=\sum_{k>n}\frac{\alpha^k}{P(k)},\qquad
+ F_n=\sum_{k>n}\frac{\beta^k}{Q(k)}.
+\end{equation}
+Suppose the equivalent conditions of Theorem~\ref{bi:classification}
+hold. A zero or pole of $h$ at a positive integer would force, by
+\eqref{bi:criterion}, alternating nonzero multiplicities at all later
+integers, which is impossible for a rational function. Consequently
+$h(1)$ is finite and nonzero. The rational functions $A,B$ are regular
+at nonnegative integers after removal of any removable singularities.
+
+\begin{theorem}[Bilinear summation with its exact upper endpoint]
+\label{bi:sum}
+Put $W(n)=C(n+1)-t^{-1}C(n)$ and
+\begin{equation}\label{bi:endpoint}
+ \mathcal E=
+ \beta h(1)E_0-\frac{t^{-1}}{\rho h(1)}F_0
+                  -t^{-1}C(0)E_0F_0.
+\end{equation}
+For every integer $N\ge0$,
+\begin{equation}\label{bi:finite}
+ \sum_{n=0}^N t^n W(n)E_nF_n=\mathcal E+T_N.
+\end{equation}
+Moreover,
+\begin{equation}\label{bi:infinite}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}t^n W(n)E_nF_n=\mathcal E,}
+\end{equation}
+and the series converges absolutely. For fixed $P,Q,h$, it converges
+locally normally in the admissible colors away from $1$, with either
+locally chosen branch of $t$.
+\end{theorem}
+
+\begin{proof}
+Sum \eqref{bi:difference} for $1\le n\le N$. Since
+$E_1=E_0-\alpha/P(1)$ and $F_1=F_0-\beta/Q(1)$,
+\[
+ T_0=C(1)E_0F_0-\beta h(1)E_0
+                         -\frac{\alpha\kappa}{\rho h(1)}F_0.
+\]
+Use $\alpha\kappa=-t^{-1}$ and restore the $n=0$ summand.
+This gives \eqref{bi:finite}, including the lower-endpoint term
+$C(0)E_0F_0$.
+
+Summation by parts, using bounded partial geometric sums, gives
+$E_n=O(|\alpha|^{n+1}n^{-d})$ and
+$F_n=O(|\beta|^{n+1}n^{-e})$. The bounds are locally uniform as
+stated. The factorization forces $\deg h=(d-e)/2$, so $A,B,C$
+are $O(n^{(d+e)/2})$. Since $|t|=|\alpha\beta|^{-1/2}$,
+the summand and $T_N$ are respectively bounded by a constant times
+\[
+ |\alpha\beta|^{n/2}n^{-(d+e)/2},\qquad
+ |\alpha\beta|^{N/2}N^{-(d+e)/2}.
+\]
+The first is summable and the second tends to zero. This proves the
+infinite identity and the local normal convergence assertion.
+\end{proof}
+
+The finite identity remains true outside these sufficient convergence
+hypotheses whenever the recurrences make sense. Any additional ordinary
+or regularized limit needs its own endpoint analysis.
+
+\subsection{A Hermitian polylogarithm-tail law}
+
+The two inner colors need not agree. Taking conjugate colors gives an
+Hermitian identity with explicit dependence on the color.  Its
+weights are positive for the power-polynomial specialization below.
+
+\begin{corollary}[Conjugate-color completion]
+\label{bi:hermitian}
+Let $P$ be a real polynomial of degree at least two with no positive
+integer zero. For $0<\theta<2\pi$, write
+\[
+ E_n(\theta)=\sum_{k>n}\frac{e^{ik\theta}}{P(k)}.
+\]
+Then
+\begin{equation}\label{bi:hermitian-formula}
+ \sum_{n\ge0}\{P(n+1)-P(n)\}|E_n(\theta)|^2
+ =\cot\frac\theta2\,\Im E_0(\theta)-\Re E_0(\theta)
+                         -P(0)|E_0(\theta)|^2.
+\end{equation}
+For every integer $d\ge2$, in particular,
+\begin{equation}\label{bi:polylog-hermitian}
+ \boxed{\begin{aligned}
+ &\sum_{n\ge0}\{(n+1)^d-n^d\}
+ \left|\Li_d(e^{i\theta})-\sum_{k=1}^n\frac{e^{ik\theta}}{k^d}\right|^2\\
+ &\hspace{18mm}=\cot\frac\theta2\,\Im\Li_d(e^{i\theta})
+                                  -\Re\Li_d(e^{i\theta}).
+ \end{aligned}}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+In Theorem~\ref{bi:sum}, take $Q=P$, $h=1$, $\rho=1$,
+$\alpha=e^{i\theta}$, $\beta=e^{-i\theta}$, and $t=1$.
+Then $C=(1-e^{-i\theta})P$ and $F_n=\overline{E_n}$.
+Divide by $1-e^{-i\theta}$ and use
+\[
+ \frac{e^{-i\theta}E-\overline E}{1-e^{-i\theta}}
+       =-\Re E+\cot(\theta/2)\Im E.
+\]
+\end{proof}
+
+At the Gaussian color and order two, this gives the explicit identity
+\begin{equation}\label{bi:gaussian-example}
+ \boxed{\displaystyle
+ \sum_{n\ge0}(2n+1)
+ \left|\Li_2(i)-\sum_{k=1}^n\frac{i^k}{k^2}\right|^2
+          =G+\frac{\pi^2}{48},}
+\end{equation}
+where $G=\sum_{k\ge0}(-1)^k/(2k+1)^2$ is Catalan's constant.
+Here $\Li_2(i)=-\pi^2/48+iG$, obtained by separating even and odd
+terms of the defining series. At $\theta=\pi$ the formula recovers
+the ordinary-outer alternating square law of \cite{tail-alternating}.
+For $d>2$, its limit as $\theta\to0$ is also an ordinary identity:
+\[
+ \sum_{n\ge0}\{(n+1)^d-n^d\}
+                 \{\zeta(d)-H_n^{(d)}\}^2
+            =2\zeta(d-1)-\zeta(d).
+\]
+Indeed the absolute tail is bounded by $O(n^{1-d})$, giving a
+summable majorant $O(n^{1-d})$ after multiplication by the weight.
+The right side follows by differentiating the color at zero, justified
+by $d>2$. This limit is not asserted at $d=2$, where the ordinary
+series diverges. The new classification supplies these formulas as
+corollaries; they are not separate claims of global literature priority.

@@ -1,0 +1,90 @@
+\section{Closed numerator polynomials and higher-order consequences}
+\label{sec:numerators}
+
+\subsection{The earlier all-order numerator question}
+
+The previous three-variable report obtains $r_{b,0}$ by recurrence and proves a fixed denominator and numerator degree \cite{RepoSector}. The finite sum \eqref{eq:rb-rational} supplies the requested closed formula uniformly in both $b$ and $k$.
+
+\begin{corollary}[Closed positive numerator]\label{cor:pb}
+For every $b\ge2$, put
+\[
+ Q_b(X)=\prod_{h=0}^b(X+2h+1).
+\]
+Then $r_{b,0}(k)=p_b(k)/Q_b(k)$ on even nonnegative $k$, where
+\begin{equation}\label{eq:pb}
+ p_b(X)=\frac1{b!24^{b-1}}
+ \sum_{j=0}^{b-2}\binom{b-2}{j}3^j
+ \frac{Q_b(X)}{(X+2j+1)(X+2j+3)(X+2j+5)}.
+\end{equation}
+This is a polynomial of degree exactly $b-2$. Every coefficient is strictly positive, and
+\begin{equation}\label{eq:pb-leading}
+ [X^{b-2}]p_b(X)=\frac1{4b!6^{b-1}}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+Each denominator in \eqref{eq:pb} consists of three distinct factors of $Q_b$, so the quotient is a polynomial of degree $b-2$. All its linear factors have positive constants; every coefficient is therefore positive. Summing leading coefficients gives
+$4^{b-2}/(b!24^{b-1})=1/(4b!6^{b-1})$. Equation~\eqref{eq:rb-rational} proves the claimed rational representation.
+\end{proof}
+
+For illustration,
+\[
+ p_2=\frac1{48},\qquad
+ p_3=\frac{2X+5}{1728},\qquad
+ p_4=\frac{X^2+7X+9}{20736}.
+\]
+The positive finite formula explains the numerator sign pattern directly, without using divisibility in a recursively generated rational function.
+
+\subsection{Uniform mixed denominators}
+
+For $b\ge0$, $c\ge2$, define
+\[
+ Q_{b,c}(X)=\prod_{h=0}^{b+c+1}(X+c-1+2h).
+\]
+Then \eqref{eq:rbc-rational} gives
+\begin{equation}\label{eq:Pbc}
+ P_{b,c}(X)=\frac{-12}{b!c!24^b48^c}
+ \sum_{j=0}^{b}\sum_{\ell=0}^{c-2}\binom bj3^j\binom{c-2}{\ell}
+ \frac{Q_{b,c}(X)}{\prod_{h=0}^{3}(X+c-1+2j+2\ell+2h)}.
+\end{equation}
+Every quotient is a polynomial because its four consecutive factors occur in $Q_{b,c}$. Hence
+\begin{equation}\label{eq:mixed-numerator}
+ r_{b,c}(k)=\frac{P_{b,c}(k)}{Q_{b,c}(k)},\qquad
+ \deg P_{b,c}=b+c-2,
+ \qquad
+ [X^{b+c-2}]P_{b,c}=-\frac3{6^b b!24^c c!}.
+\end{equation}
+All coefficients of $P_{b,c}$ are strictly negative. The leading coefficient follows by summing $4^b2^{c-2}$ in \eqref{eq:Pbc}. These are common denominators, not a claim that every displayed factor remains a pole after cancellation. For example \eqref{eq:r12} has already canceled one factor of the common denominator.
+
+\subsection{Pure squares at arbitrary highest order}
+
+For $d\ge2$, $a,k\ge0$, set $m=a+2k+2d+2$. The universal formula recovers
+\begin{equation}\label{eq:all-square}
+ [u_0^au_1^ku_d^2]\Nc_m
+ =\begin{cases}
+ \displaystyle\frac{(-1)^dm!}
+ {a!\,2^{k+d+1}k!(d+1)!\prod_{j=0}^d(k+2j+1)},& k\text{ even},\\[5pt]
+ 0,&k\text{ odd}.
+ \end{cases}
+\end{equation}
+This pure-square pattern is consistent with the earlier affine-polarization direction. Theorem~\ref{thm:universal} goes beyond it by allowing arbitrary powers of \emph{all} lower derivatives and arbitrary multiplicity at the highest index.
+
+For example, fix any $d\ge2$ and nonnegative integers $a_2,\ldots,a_d$ with $a_d\ge2$. After isolating arbitrary powers of $u_0$ and $u_1$, expand the fixed polynomial
+\[
+ C_d(v)^{a_d-2}\prod_{r=2}^{d-1}C_r(v)^{a_r}=
+ \sum_e b_e v^e.
+\]
+The entire remaining coefficient sequence in $k$ is a finite positive combination of reciprocals of consecutive step-two products
+\[
+ \prod_{j=0}^d(k+e+1+2j)^{-1},
+\]
+with the overall sign $(-1)^d$ and a single parity restriction. This supplies a direct all-order replacement for a growing system of mixed-sector recurrences.
+
+\subsection{Logarithmic beta moments}
+
+On the half-plane where the integral converges, differentiation in the free exponent gives, for $q\ge0$,
+\begin{equation}\label{eq:logbeta}
+ \frac{\mathrm d^q}{\mathrm dk^q}
+ \int_0^1v^{k+e}(1-v^2)^d\dd v
+ =\int_0^1v^{k+e}(1-v^2)^d\log^qv\dd v.
+\end{equation}
+The rational formula \eqref{eq:beta-elementary}, followed by ordinary differentiation, evaluates every such logarithmic integral. This is a meromorphic interpolation of a coefficient column, not differentiation of the parity-zero extension. At a pole, the differentiated expression has the prescribed meromorphic meaning; no convergent-integral interpretation is asserted there.

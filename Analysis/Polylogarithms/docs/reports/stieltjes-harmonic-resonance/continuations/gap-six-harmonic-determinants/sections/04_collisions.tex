@@ -1,0 +1,509 @@
+% Integration fragment; all labels use the urc: prefix.
+% Requires amsmath, amssymb, amsthm, hyperref. No custom global macros.
+% Bibliography: cite the existing DLMF and Lattice Contacts entries.
+
+\section{Unequal-rate Stieltjes boundary collisions}
+\label{urc:section}
+
+The independent-shift product generator in the incoming \emph{Lattice
+Contacts and Mixed Zeta Identities} treats positive shifts and proves
+compatibility with the coincident finite part along the common-shift
+diagonal. Its Question~Q9, repeated at the end of its independent-shift
+section \cite[Section~6 and Question~Q9]{LatticeIncoming}, leaves open the path
+\[
+ a=\lambda\epsilon,\qquad b=\mu\epsilon,\qquad
+ \lambda,\mu>0,\qquad \epsilon\downarrow0.
+\]
+We determine every divergent power and logarithm on this path and its
+remaining constant, for arbitrary Stieltjes indices and argument
+derivatives. The constant correction is considerably smaller than the
+full independent-shift product generator: it depends only on two Taylor
+coefficients at one and a finite polynomial in the shift ratio.
+
+These statements resolve the specified collision question relative to
+the inspected repository sources. The underlying local-subtraction
+method is classical; no claim of historical priority for general
+finite-part asymptotics is intended.
+
+\subsection{The coordinate and the finite contact polynomial}
+
+We use the convention
+\begin{equation}\label{urc:stieltjes}
+ Z(u,z)=\zeta(1+u,z)-\frac1u
+       =\sum_{m\ge0}\frac{(-1)^m}{m!}\gamma_m(z)u^m.
+\end{equation}
+In particular, $\gamma_0(z)=-\psi(z)$. Write
+\begin{equation}\label{urc:integral}
+ I_{m,n}^{r,t}(\epsilon;\lambda,\mu)
+ =\int_0^1\gamma_m^{(r)}(x+\lambda\epsilon)
+             \gamma_n^{(t)}(x+\mu\epsilon)\,dx,
+ \qquad m,n,r,t\in\mathbb Z_{\ge0}.
+\end{equation}
+Every integral in \eqref{urc:integral} is ordinary. Its asymptotic
+constant means the coefficient of $\epsilon^0(\log\epsilon)^0$.
+The inherited coincident finite part is
+\begin{equation}\label{urc:finitepart}
+ F_{m,n}^{r,t}
+ =\operatorname{CT}_{\delta\downarrow0}
+    \int_\delta^1\gamma_m^{(r)}(x)\gamma_n^{(t)}(x)\,dx.
+\end{equation}
+Thus the two constants use the displayed coordinates $\epsilon$ and
+$\delta$; no subtraction scale is left implicit.
+
+For $r\ge0$ define a holomorphic germ at $u=0$ by
+\begin{equation}\label{urc:contact-germ}
+ C_r(u;\lambda,\mu)=\frac{(-1)^r(1+u)_r}{r!}
+ \left\{\frac{\lambda^{-u}-1}{u}
+ +\lambda^{-u}\sum_{j=1}^r
+    \binom rj\frac{(\mu/\lambda-1)^j}{u+j}\right\},
+\end{equation}
+and put
+\begin{equation}\label{urc:kappa}
+ \kappa_{m,r}(\lambda,\mu)
+ =(-1)^m\left.\partial_u^m C_r(u;\lambda,\mu)\right|_{u=0}.
+\end{equation}
+The sum is empty if $r=0$. The quotient at $u=0$ is removable.
+Moreover, $(1+u)_r/(u+j)$ is a polynomial for $1\le j\le r$,
+so \eqref{urc:contact-germ} contains no hidden special-function limit.
+
+\begin{theorem}[Complete constant correction for unequal rates]
+\label{urc:constant-theorem}
+For all indices in \eqref{urc:integral},
+\begin{equation}\label{urc:constant-formula}
+ \boxed{\begin{aligned}
+ \operatorname{CT}_{\epsilon\downarrow0}
+       I_{m,n}^{r,t}(\epsilon;\lambda,\mu)
+ ={}&F_{m,n}^{r,t}
+    +\gamma_n^{(r+t)}(1)\kappa_{m,r}(\lambda,\mu)\\
+   &+\gamma_m^{(r+t)}(1)\kappa_{n,t}(\mu,\lambda).
+ \end{aligned}}
+\end{equation}
+In particular, with $R=\mu/\lambda$,
+\begin{equation}\label{urc:zeroth-contact}
+ \boxed{\displaystyle
+ \kappa_{0,r}(\lambda,\mu)
+ =(-1)^r\left\{-\log\lambda+
+                   \sum_{j=1}^r\frac{R^j-1}{j}\right\}.}
+\end{equation}
+For arbitrary Stieltjes indices without argument differentiation,
+\begin{equation}\label{urc:no-argument-derivatives}
+ \operatorname{CT}_{\epsilon\downarrow0}I_{m,n}^{0,0}
+ =F_{m,n}^{0,0}
+  -\frac{\gamma_n(1)}{m+1}(\log\lambda)^{m+1}
+  -\frac{\gamma_m(1)}{n+1}(\log\mu)^{n+1}.
+\end{equation}
+\end{theorem}
+
+Only the Taylor coefficient of degree $r$ in the analytic part of
+the second factor and the coefficient of degree $t$ in the analytic
+part of the first factor enter \eqref{urc:constant-formula}. In
+particular, the singular--singular product changes the divergent
+terms but contributes no path-dependent constant.
+
+\subsection{A finite formula for every contact coefficient}
+
+For a fully finite harmonic description, write
+\[
+ A_r(u)=\frac{(1+u)_r}{r!}
+       =\sum_{a=0}^r e_{r,a}u^a,
+ \qquad
+ Q_r(u;R)=\sum_{j=1}^r\binom rj(R-1)^j\frac{A_r(u)}{u+j}
+       =\sum_{a=0}^{r-1}q_{r,a}(R)u^a.
+\]
+The $Q_0$ sum is empty. The coefficients $e_{r,a}$ are elementary
+symmetric polynomials in $1,1/2,\ldots,1/r$, equivalently
+\begin{equation}\label{urc:harmonic-generator}
+ A_r(u)=\exp\left\{\sum_{h\ge1}
+        \frac{(-1)^{h+1}}h H_r^{(h)}u^h\right\}.
+\end{equation}
+With $L=\log\lambda$, coefficient extraction in
+\eqref{urc:contact-germ} gives
+\begin{equation}\label{urc:finite-coefficients}
+ \begin{aligned}
+ \kappa_{m,r}={}&(-1)^{m+r}m!
+ \sum_{a=0}^{\min(r,m)}e_{r,a}
+          \frac{(-L)^{m-a+1}}{(m-a+1)!}\\
+ &+(-1)^{m+r}m!
+ \sum_{a=0}^{\min(r-1,m)}q_{r,a}(R)
+          \frac{(-L)^{m-a}}{(m-a)!}.
+ \end{aligned}
+\end{equation}
+The second sum is interpreted as empty at $r=0$. For example,
+\begin{align*}
+ \kappa_{0,0}&=-L,&
+ \kappa_{1,0}&=-\frac{L^2}{2},\\
+ \kappa_{0,1}&=L+1-R,&
+ \kappa_{1,1}&=\frac{L^2}{2}-RL,\\
+ \kappa_{0,2}&=-L+R+\frac{R^2}{2}-\frac32.
+\end{align*}
+At $\lambda=1$ the contact is a polynomial of degree at most $r-1$
+in $u$. Consequently $\kappa_{m,r}(1,\mu)=0$ whenever $m\ge r$.
+At $\lambda=\mu=1$ all contacts vanish. These are exact truncations
+of the correction, not asymptotic statements about its size.
+
+\subsection{The complete singular power--logarithm expansion}
+
+The following evaluated germ specifies every divergent term as well
+as the constant. Put
+\begin{equation}\label{urc:local-decomposition}
+ P_r(u)=(-1)^r(1+u)_r,\qquad
+ Z_r(u,x)=\partial_x^r Z(u,x)
+         =P_r(u)x^{-r-1-u}+A_r^{\mathrm{reg}}(u,x),
+\end{equation}
+where $A_r^{\mathrm{reg}}(u,x)=\partial_x^r Z(u,1+x)$.
+The superscript distinguishes this analytic function from the finite
+polynomial $A_r$ above. Define
+\begin{equation}\label{urc:analytic-coefficients}
+ a_{t,k}(v)=\frac1{k!}\partial_z^{t+k}Z(v,z)\big|_{z=1}.
+\end{equation}
+These are holomorphic near $v=0$, and
+\[
+ (-1)^n\partial_v^n a_{t,k}(0)
+      =\frac{\gamma_n^{(t+k)}(1)}{k!}.
+\]
+
+The only nonpolynomial local kernel needed is the elementary beta
+integral
+\begin{align}
+ B_{r,t}(u,v;\lambda,\mu)
+ &=P_r(u)P_t(v)\int_0^\infty
+ \frac{dy}{(y+\lambda)^{r+1+u}(y+\mu)^{t+1+v}}\notag\\
+ &=\frac{P_r(u)P_t(v)\mu^{-r-t-1-u-v}}{r+t+1+u+v}\notag\\
+ &\quad\cdot{}_2F_1\left(
+ \begin{matrix}r+1+u,\ r+t+1+u+v\\r+t+2+u+v\end{matrix};
+                   1-\frac\lambda\mu\right).
+ \label{urc:beta-kernel}
+\end{align}
+The integral fixes its branch. It is holomorphic on a neighborhood
+of $(u,v)=(0,0)$, including $\lambda=\mu$.
+
+For $0\le k<r$, define the finite expression
+\begin{equation}\label{urc:mixed-kernel}
+ M_{r,k}(u;\lambda,\mu)
+ =P_r(u)\lambda^{k-r-u}
+  \sum_{j=0}^k\binom kj
+      \frac{(\mu/\lambda-1)^j}{r-k+j+u}.
+\end{equation}
+For the critical degree use the removable germ
+\begin{equation}\label{urc:critical-kernel}
+ N_r(u;\epsilon,\lambda,\mu)
+ =P_r(u)\left\{
+ \epsilon^{-u}\lambda^{-u}
+ \left(\frac1u+\sum_{j=1}^r\binom rj
+                  \frac{(\mu/\lambda-1)^j}{u+j}\right)
+ -\frac1u\right\}.
+\end{equation}
+At each fixed $\epsilon>0$ its apparent pole at $u=0$ cancels
+before any differentiation. Its constant in $\log\epsilon$ is
+$r!C_r(u;\lambda,\mu)$.
+
+Finally let $\mathcal F_{r,t}(u,v)$ denote the holomorphic germ whose
+coefficient dictionary is
+\begin{equation}\label{urc:fp-germ}
+ (-1)^{m+n}\partial_u^m\partial_v^n
+          \mathcal F_{r,t}(0,0)=F_{m,n}^{r,t}.
+\end{equation}
+To specify it independently of a meromorphic regularization, set
+\begin{align}
+ R_{r,t}(u,v;x)={}&Z_r(u,x)Z_t(v,x)
+ -P_r(u)P_t(v)x^{-r-t-2-u-v}\notag\\
+ &-P_r(u)\sum_{k=0}^r a_{t,k}(v)x^{k-r-1-u}
+ -P_t(v)\sum_{k=0}^t a_{r,k}(u)x^{k-t-1-v},
+ \label{urc:remainder}
+\end{align}
+and define
+\begin{align}
+ \mathcal F_{r,t}(u,v)={}&\int_0^1R_{r,t}(u,v;x)\,dx
+ -\frac{P_r(u)P_t(v)}{r+t+1+u+v}\notag\\
+ &-P_r(u)\sum_{k=0}^{r-1}\frac{a_{t,k}(v)}{r-k+u}
+ -P_t(v)\sum_{k=0}^{t-1}\frac{a_{r,k}(u)}{t-k+v}.
+ \label{urc:fp-germ-construction}
+\end{align}
+Empty sums are zero. The critical terms $k=r$ and $k=t$ have no
+added constant: every monomial $x^{-1}\log^h x$ has finite part
+zero on $(0,1)$ in the coordinate \eqref{urc:finitepart}. This is
+why retaining a whole meromorphic $1/u$ expression would give the
+wrong Stieltjes coefficient convention.
+
+\begin{theorem}[All singular terms in one joint germ]
+\label{urc:full-theorem}
+For fixed $r,t\ge0$ and $\lambda,\mu>0$, as $\epsilon\downarrow0$,
+\begin{align}
+ &\int_0^1Z_r(u,x+\lambda\epsilon)Z_t(v,x+\mu\epsilon)\,dx
+ =\mathcal F_{r,t}(u,v)
+   +\epsilon^{-r-t-1-u-v}B_{r,t}(u,v;\lambda,\mu)\notag\\
+ &\quad+\sum_{k=0}^{r-1}a_{t,k}(v)
+               \epsilon^{k-r-u}M_{r,k}(u;\lambda,\mu)
+       +\sum_{k=0}^{t-1}a_{r,k}(u)
+               \epsilon^{k-t-v}M_{t,k}(v;\mu,\lambda)\notag\\
+ &\quad+a_{t,r}(v)N_r(u;\epsilon,\lambda,\mu)
+       +a_{r,t}(u)N_t(v;\epsilon,\mu,\lambda)+o(1).
+ \label{urc:full-expansion}
+\end{align}
+The remainder tends to zero locally uniformly for $(u,v)$ in a
+complex neighborhood of zero. Every fixed mixed order derivative
+may therefore be taken in this asymptotic formula. Applying
+$(-1)^{m+n}\partial_u^m\partial_v^n$ and setting $u=v=0$ gives
+the complete negative-power and logarithmic expansion of
+\eqref{urc:integral}, through its constant.
+\end{theorem}
+
+The possible negative powers are especially sparse. They consist of
+$\epsilon^{-(r+t+1)}$, together with $\epsilon^{-r},\ldots,
+\epsilon^{-1}$ and $\epsilon^{-t},\ldots,\epsilon^{-1}$ when the
+corresponding derivative orders are positive. The first power has
+a logarithmic polynomial of degree at most $m+n$. The two finite
+mixed families have degrees at most $m$ and $n$. The critical
+terms give logarithmic polynomials of degrees at most $m+1$ and
+$n+1$. Formula \eqref{urc:full-expansion} includes cancellations
+between these polynomials automatically.
+
+\begin{proof}
+The Hurwitz recurrence gives \eqref{urc:local-decomposition} exactly.
+Its analytic part has the Taylor expansion
+\[
+ A_t^{\mathrm{reg}}(v,z)=\sum_{k=0}^r a_{t,k}(v)z^k
+                              +O(z^{r+1})
+\]
+uniformly for $v$ in a sufficiently small closed complex disk.
+Expand the product of its singular and analytic parts. For the
+singular--singular term, substitute $x=\epsilon y$ and complete
+the interval to $(0,\infty)$. Its omitted tail tends locally
+uniformly to $P_r(u)P_t(v)/(r+t+1+u+v)$, giving precisely the
+beta term in \eqref{urc:full-expansion} and the first rational
+constant in \eqref{urc:fp-germ-construction}.
+
+For a mixed Taylor monomial the finite identity is
+\begin{align}
+ &P_r(u)\int_0^1
+       (x+\lambda\epsilon)^{-r-1-u}(x+\mu\epsilon)^k\,dx
+ \notag\\
+ &\quad=P_r(u)\sum_{j=0}^k\binom kj
+       ((\mu-\lambda)\epsilon)^j
+ \frac{(\lambda\epsilon)^{k-j-r-u}
+                  -(1+\lambda\epsilon)^{k-j-r-u}}
+      {r-k+j+u}.
+ \label{urc:exact-mixed-primitive}
+\end{align}
+It follows by expanding $x+\mu\epsilon=(x+\lambda\epsilon)
++(\mu-\lambda)\epsilon$ and integrating each power. At $k<r$,
+the lower endpoint is $\epsilon^{k-r-u}M_{r,k}$, while the upper
+endpoint tends to $-P_r(u)/(r-k+u)$. At $k=r$ the combination of
+the lower endpoint and $-P_r(u)/u$ is exactly $N_r$.
+The remaining upper-endpoint error is holomorphic at $u=0$ and
+tends uniformly to zero; in particular,
+$\{1-(1+\lambda\epsilon)^{-u}\}/u=O(\epsilon)$ uniformly near
+zero. Exchange the two factors for the other mixed terms.
+
+It remains to justify passage to the limit in the Taylor remainders.
+For $|\Re u|,|\Re v|\le\eta<1/4$ and fixed positive rates, a
+singular factor times the Taylor remainder is bounded by
+$C(x+\epsilon)^{-\eta}$, hence by $Cx^{-\eta}$ on $(0,1)$.
+This integrable majorant is uniform on compact parameter disks.
+The product of analytic remainders is uniformly bounded. Dominated
+convergence therefore gives the integral in
+\eqref{urc:fp-germ-construction}, locally uniformly in $u,v$.
+Cauchy's formula on slightly larger parameter disks gives the
+same conclusion after every prescribed mixed order derivative.
+This proves \eqref{urc:full-expansion}, including its joint rather
+than merely raywise spectral meaning.
+
+Coefficient extraction in \eqref{urc:fp-germ-construction} gives
+\eqref{urc:fp-germ}: noncritical singular monomials have their
+ordinary finite primitives at one, whereas every critical
+$x^{-1}\log^h x$ contributes zero. Thus no exchange between an
+unsubtracted divergent integral and a spectral derivative is used.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{urc:constant-theorem}]
+In \eqref{urc:full-expansion}, the beta term and the noncritical
+mixed terms have strictly negative powers of $\epsilon$, also
+after spectral differentiation. They cannot contribute to the
+constant under discussion. In each critical term, retain the
+constant in $\log\epsilon$, namely $r!C_r$ or $t!C_t$.
+Equation \eqref{urc:analytic-coefficients} then gives
+\eqref{urc:constant-formula}. At $u=0$,
+\[
+ C_r(0;\lambda,\mu)=(-1)^r\left\{-\log\lambda+
+       \sum_{j=1}^r\binom rj\frac{(R-1)^j}{j}\right\}.
+\]
+The polynomial identity
+\[
+ \sum_{j=1}^r\binom rj\frac{(R-1)^j}{j}
+       =\sum_{j=1}^r\frac{R^j-1}{j}
+\]
+follows by differentiating both sides in $R$ and using their common
+value zero at $R=1$. This proves \eqref{urc:zeroth-contact}.
+At $r=0$, expanding $(\lambda^{-u}-1)/u$ gives
+\eqref{urc:no-argument-derivatives}.
+\end{proof}
+
+\subsection{Polylogarithmic coefficients of the divergent beta term}
+
+The hypergeometric notation in \eqref{urc:beta-kernel} does not add
+an unspecified family of constants. It is enough to differentiate
+the base kernel in the shifts:
+\[
+ B_{r,t}(u,v;\lambda,\mu)
+       =\partial_\lambda^r\partial_\mu^t
+                      B_{0,0}(u,v;\lambda,\mu).
+\]
+For $\lambda>\mu$, put $d=\lambda-\mu$ and $z=d/\lambda$.
+The substitution $y=d/(x+\lambda)$ gives
+\begin{equation}\label{urc:polylog-beta}
+ B_{0,0}(u,v;\lambda,\mu)
+  =d^{-1-u-v}\int_0^z
+       \frac{\exp\{(u+v)\log y-v\log(1-y)\}}{1-y}\,dy.
+\end{equation}
+Every coefficient of total spectral degree $N$ is a finite linear
+combination of harmonic polylogarithms on the alphabet $\{0,1\}$
+and logarithms, of weight at most $N+1$. This follows by shuffling
+the logarithmic factors and integrating once with $dy/(1-y)$.
+Shift differentiation preserves this finite function class. The
+case $\mu>\lambda$ follows by exchange; the coincident case is
+the elementary expression
+\[
+ B_{r,t}(u,v;\lambda,\lambda)
+ =\frac{P_r(u)P_t(v)\lambda^{-r-t-1-u-v}}{r+t+1+u+v}.
+\]
+Thus every coefficient in the full subtraction belongs to an
+explicit finite alphabet of harmonic numbers, logarithms,
+polylogarithms, and Hurwitz or Stieltjes derivatives at one.
+
+\subsection{Three completely explicit polygamma collision laws}
+
+Write
+\begin{equation}\label{urc:D}
+ D(\lambda,\mu)=\frac{\log(\lambda/\mu)}{\lambda-\mu},
+ \qquad D(\lambda,\lambda)=\frac1\lambda,
+\end{equation}
+and let $D_\lambda$ and $D_{\lambda\mu}$ be its indicated
+derivatives. Explicitly, away from the diagonal,
+\begin{align*}
+ D_\lambda&=\frac{(\lambda-\mu)/\lambda-\log(\lambda/\mu)}
+                  {(\lambda-\mu)^2},\\
+ D_{\lambda\mu}
+ &=\frac{(\lambda-\mu)(\lambda^{-1}+\mu^{-1})
+                       -2\log(\lambda/\mu)}{(\lambda-\mu)^3}.
+\end{align*}
+Their diagonal values are $-1/(2\lambda^2)$ and
+$1/(3\lambda^3)$. The inherited coincident evaluations \cite{LatticeIncoming} are
+\[
+ F_{0,0}^{0,0}=2\gamma_1-2\zeta(2),\qquad
+ F_{0,0}^{1,0}=\zeta(2),\qquad
+ F_{0,0}^{1,1}=2\zeta(3)+4\zeta'(3).
+\]
+Using these established values in the new collision formula gives
+\begin{align}
+ \int_0^1\psi(x+\lambda\epsilon)\psi(x+\mu\epsilon)\,dx
+ ={}&\frac{D(\lambda,\mu)}\epsilon-2\gamma\log\epsilon
+       +2\gamma_1-2\zeta(2)-\gamma\log(\lambda\mu)+o(1),
+ \label{urc:digamma-example}\\
+ \int_0^1\psi'(x+\lambda\epsilon)\psi(x+\mu\epsilon)\,dx
+ ={}&\frac{D_\lambda(\lambda,\mu)}{\epsilon^2}
+       -\frac{\gamma}{\lambda\epsilon}
+       +\boxed{\zeta(2)\left\{\frac\mu\lambda+
+                               \log\frac\mu\lambda\right\}}
+       +o(1),
+ \label{urc:ordered-example}\\
+ \int_0^1\psi'(x+\lambda\epsilon)\psi'(x+\mu\epsilon)\,dx
+ ={}&\frac{D_{\lambda\mu}(\lambda,\mu)}{\epsilon^3}
+       +\frac{\zeta(2)}\epsilon
+                       \left(\frac1\lambda+\frac1\mu\right)
+       +4\zeta(3)\log\epsilon\notag\\
+ &+4\zeta'(3)+2\zeta(3)
+       \left\{3+\log(\lambda\mu)-\frac\mu\lambda-
+                                      \frac\lambda\mu\right\}+o(1).
+ \label{urc:trigamma-example}
+\end{align}
+The ordered law \eqref{urc:ordered-example} is invariant under a
+common scaling of the two rates. Its exchange companion has
+constant $\zeta(2)\{\lambda/\mu+\log(\lambda/\mu)\}$. Their
+sum equals $\zeta(2)(\lambda/\mu+\mu/\lambda)$, in exact
+agreement with the endpoint derivative of the digamma product.
+This independently checks the logarithmic signs and the ratio
+terms; exchange symmetry alone would not determine either ordered
+constant separately.
+
+\subsection{A first Stieltjes collision with a dilogarithm}
+
+Let $\gamma_j=\gamma_j(1)$ and put
+\begin{equation}\label{urc:E}
+ E(\lambda,\mu)=
+ \frac{\log(\lambda/\mu)\log\lambda+
+               \operatorname{Li}_2(1-\mu/\lambda)}{\lambda-\mu},
+ \qquad E(\lambda,\lambda)=\frac{1+\log\lambda}{\lambda}.
+\end{equation}
+This is the ordinary convergent integral of
+$\log(y+\lambda)/\{(y+\lambda)(y+\mu)\}$ on $(0,\infty)$,
+as follows either from \eqref{urc:polylog-beta} or one integration
+by parts. The standard coincident product germ gives
+\begin{equation}\label{urc:F10}
+ F_{1,0}^{0,0}=\frac32\gamma_2+2\gamma\zeta(2)-\zeta(3).
+\end{equation}
+Consequently the complete first-index expansion is
+\begin{align}
+ \int_0^1\gamma_1(x+\lambda\epsilon)
+                    \gamma_0(x+\mu\epsilon)\,dx
+ ={}&\frac{D(\lambda,\mu)\log\epsilon+E(\lambda,\mu)}\epsilon
+       -\frac\gamma2(\log\epsilon)^2\notag\\
+ &-(\gamma\log\lambda+\gamma_1)\log\epsilon
+       +\frac32\gamma_2+2\gamma\zeta(2)-\zeta(3)\notag\\
+ &-\frac\gamma2(\log\lambda)^2-\gamma_1\log\mu+o(1).
+ \label{urc:first-Stieltjes-example}
+\end{align}
+All logarithms and the dilogarithm in this formula are real for
+positive rates, with the displayed continuous diagonal limit.
+
+For completeness, \eqref{urc:F10} can be extracted without a
+numerical relation search. Put $w=u+v$,
+$Q=\Gamma(1+w)/\{\Gamma(1+u)\Gamma(1+v)\}$ and
+$E_0(u)=\pi u/\sin\pi u$. The inherited coincident Hurwitz
+product formula gives the holomorphic finite-part germ
+\begin{align*}
+ \mathcal F_{0,0}(u,v)
+ ={}&\frac{w-Q\{uE_0(v)+vE_0(u)\}}{uvw}\\
+ &+\frac{Z(v,1)-QE_0(u)Z(w,1)}u
+  +\frac{Z(u,1)-QE_0(v)Z(w,1)}v.
+\end{align*}
+Each divided difference is removable. Its degree-zero term is
+$2\gamma_1-2\zeta(2)$ and its coefficient of $u$ is
+$\zeta(3)-3\gamma_2/2-2\gamma\zeta(2)$. Applying the sign
+convention \eqref{urc:stieltjes} proves \eqref{urc:F10}.
+
+\subsection{Verification, scope, and further questions}
+
+The accompanying verifier checks the finite mixed primitive,
+the rising-factorial cancellations, the compact ratio polynomial,
+and contact jets by two exact coefficient constructions. Separate
+high-precision ordinary quadratures check the three beta kernels
+and the three polygamma collisions at diagonal, unequal integral,
+and unequal rational rates. The numerical collision residuals are
+compared at decreasing positive $\epsilon$ after the complete
+displayed subtraction. They test the asymptotic constants and
+normalization; they are not certified error enclosures.
+
+The result concerns fixed positive rates. Paths with a vanishing or
+unbounded ratio require an additional asymptotic regime; inserting
+a rate that depends on $\epsilon$ into a fixed-compactness proof
+would not justify that regime. The following are concrete next
+questions.
+\begin{enumerate}
+\item Determine the complete transition for
+$a=\lambda\epsilon^\alpha$, $b=\mu\epsilon^\beta$ with
+$\alpha\ne\beta$, including the boundary between the two
+scales. The explicit finite ratio polynomial and the beta kernel
+make every potential extra power visible.
+\item Extend the locality theorem to three independently shifted
+Stieltjes factors. With more than two factors, products of two
+singular parts and one analytic Taylor coefficient can already
+affect the constant; the required kernel should be stated before
+any reduction to a smaller alphabet is claimed.
+\item Classify linear combinations of ordered derivative products
+whose collision constant depends only on the ratio $\mu/\lambda$,
+or is independent of the rates. Formula \eqref{urc:finite-coefficients}
+reduces this to an exact finite polynomial problem at each index.
+\item Continue the rates to a common complex sector and derive
+the jumps when the lower-endpoint logarithms cross their chosen
+cuts. The local beta integral supplies a natural branch convention.
+\end{enumerate}

@@ -1,0 +1,184 @@
+\section{Scope, results, and the source questions}
+\label{sec:scope}
+
+The source corpus is already extensive. It contains general harmonic
+interpolation, centered tail moments, Gamma and Stieltjes derivative
+ladders, finite spectral-subtraction algorithms, and a careful record
+of rejected or still-conjectural period relations. A continuation should
+therefore do more than rederive a familiar Euler sum or enlarge a
+numerical search. We select explicit unresolved questions, identify
+their inherited inputs, and supply complete new proof steps.
+
+The baseline is commit
+\texttt{da2792fc9cc8ef19c6a314be6c65e1437fbdc66b}, including the canonical
+manuscript \cite{RepoMain}, the harmonic-gap continuation
+\cite{gm:gaps-source}, and all five incoming archives dated 11 October
+2026. In particular the quartic reconstruction report \cite{RepoQuartic}
+already asks for fifth- and higher-power cancellation, the complementary
+resonant parity, and completion of the order-ten reconstruction family.
+The higher-defect report \cite{sd:HigherDefects} asks for explicit
+simplex-face subtractions and their odd-weight extension. These are
+concrete targets addressed here.
+
+\subsection{The main new statements}
+
+The first contribution is an all-power mechanism. If
+\[
+ A_n=\psi'(n+1)=\zeta(2)-H_n^{(2)},\qquad x_n=n+\tfrac12,
+\]
+the regular centered moments of $A_n^d$ have an anchored generating
+function satisfying one triangular recurrence for every $d$. Its finite
+boundary cancellation is the parity of
+\[
+ u^{2d}B_d\!\left(\tfrac12+\frac{E(u)}u\right),
+ \qquad E(u)=\sum_{j\ge0}B_{2j}u^{2j}.
+\]
+This polynomial identity explains the lower-power examples and proves
+the fixed finite-span conclusion without extrapolating from a finite
+table. The resulting fifth-power coordinate system has eight formal
+coordinates, and the sixth-power system has eleven. Exact rational
+determinants certify the full ranks of the displayed coefficient rows.
+An especially compact consequence is
+\begin{equation}\label{intro:quintic}
+\begin{split}
+&\sum_{n=0}^{\infty}\Bigl[
+ (195x_n+4056x_n^3+11568x_n^5+5376x_n^7)A_n^5
+                  -5376x_n^2-9328\Bigr]\\
+&\hspace{12mm}=-748\zeta(2)+7884\zeta(3)-5380\zeta(4)
+                                    +171\zeta(6)-748.
+\end{split}
+\end{equation}
+The entire bracket is one summand. Its series is ordinary and absolutely
+convergent; splitting off its divergent polynomial pieces would change
+the meaning. The proof is finite summation and elimination, not integer
+relation recognition.
+
+The same mechanism works for every repeated even-order Hurwitz tail
+\(\zeta(2q,n+1)^d\), with an explicit finite span of weights at most
+$2qd-1$ (Theorem~\ref{et:main}). A short consequence, with
+$T_n=\psi^{(3)}(n+1)/6$, is
+\[
+ \sum_{n\ge0}\bigl((4x_n^3+x_n)T_n^3-3T_n^2\bigr)
+                                      =-\frac94\zeta(8).
+\]
+The underlying cubic cutoff identity also gives a complex-order family
+for $\Re p>3/2$. At the critical real order $p=3/2$, the ordinary
+sum acquires the exact additional endpoint contribution $8$;
+see Corollary~\ref{et:complex-cubic}.
+
+The same spectral family has actual poles at $1-d-2r$. We give all their
+Laurent coefficients as ordinary logarithmic sums plus a finite Hurwitz
+and generalized-Stieltjes correction. Removing the pole gives a Taylor
+series of exact radius two. This answers the normalization part of the
+resonant question and supplies an analytic local generator, while leaving
+open a uniform arithmetic reduction as the resonance index increases.
+
+The second contribution completes a previously partial theorem. For
+each even larger order $2b>10$, the first $2b$ regular centered moments
+of $\zeta(10,n+1)\zeta(2b,n+1)$ have the optimal formal coordinate
+rank $2b$. Two existing reports cover complementary ranges: a congruence
+covers all but one residue class, and an eventual theorem covers
+$b\ge1920$. Their only uncovered index is $b=962$. A five-by-five
+matrix modulo $2^{20}$ proves nonvanishing there. We replay the inherited
+finite polynomial identities and give an explicit rigorous large-order
+comparison, so the completed family has no unchecked numerical case.
+The additional parameter pair relative to the union of the two reports
+is exactly $(10,1924)$.
+
+The third contribution treats several transverse marks in relative
+multiple-Hurwitz interpolation. Its first useful case is
+\begin{equation}\label{intro:gamma}
+\left.\partial_u\partial_v\mathcal H_{a,b}(s,u,v,t)\right|_{u=v=0}
+=\frac12\mathcal E_{a,b}^{s,t}\!\left[
+ (\log\Gamma(z+1)-\log\Gamma(y))^2
+                  -2\int_y^{z+1}\gamma_1(x)\,dx\right].
+\end{equation}
+Here $\mathcal H$ is the prescribed relative quotient and $\mathcal E$
+is an independently defined decorated double quotient; their full
+definitions and ordinary-series realizations appear in
+Section~\ref{gm:section}. The identity holds for arbitrary independent
+spectral arguments and endpoints in the right half-plane. Its extension
+uses a finite set-partition polynomial. Identical marked clusters give
+individual ordered identities; different marks give their complete
+permutation-symmetric sum. The analytic proof establishes decoration
+closure before using the partition identity.
+
+The fourth contribution resolves the face-subtraction problem for
+higher spectral defects. For a polynomial weight, any number of
+nonnegative masses, and every derivative order, we give an exact finite
+sum of ordinary integrals over simplex faces. A $k$-vertex face first
+appears at derivative order $k$, after the zero-jet part is separated.
+That zero-jet part is an explicit rational function. It is absent for
+even polynomial weights and, more generally, for every polynomial
+weight multiplied by a mean-zero periodic sequence. The highest faces
+at each derivative order require only the first one-mass derivative,
+which for constant weight is an ordinary log-Gamma expression.
+The subtraction also gives a closed identity at every face size:
+\begin{equation}\label{intro:face}
+ \int_{\Sigma_S}\mathcal H_S(B\mapsto B^2;t)
+                  \frac{dt}{\prod_{i\in S}t_i}
+ =(-1)^{|S|-1}(|S|-2)!
+                 \sum_{\{i,j\}\subseteq S}(B_i-B_j)^2.
+\end{equation}
+The simplex normalization and face operator are specified in
+Section~\ref{sd:sec:main}; the integral has no hidden finite part.
+
+\subsection{Claim boundaries and relation to earlier work}
+
+Several ingredients are classical and are used with attribution.
+Hoffman's ordering of the minimum index gives products of zeta tails
+as multiple zeta values \cite{HoffmanTails}. His symmetric-sum theorem
+supplies the partition coefficients \cite{gm:Hoffman1992,gm:Hoffman2018}.
+Ihara--Nakamura--Yamamoto supply the bare entire interpolation and its
+harmonic product \cite{gm:INY}. The scalar Dirichlet mixture is a
+classical Gamma-integral identity, already present in the source; the
+literature on logarithmic Dirichlet averages includes
+\cite{sd:Carlson1987,sd:Carlson1991}. These facts are inputs, not claimed
+discoveries of the present article.
+
+The new content is the all-power boundary mechanism and its concrete
+consequences; the missing exact reconstruction certificate and completed
+family; the local analytic realization of multiple decorations and
+marks; and the explicit face decomposition with its rational correction
+and all-order filtration. Novelty is assessed relative to the inspected
+repository and the cited primary literature. An exhaustive priority
+claim over the entire literature is not made.
+
+The manuscript's Gaussian $S_6$ and revised $S_8$ period identities
+remain open. The rejected historical $S_8$ vector is a different object
+and retains its rejected status. No determinant of a formal coordinate
+matrix proves arithmetic independence of evaluated periods. Likewise a
+representation by polylogarithms of bounded depth is an upper bound in
+that representation, not a proof of minimal depth. These distinctions
+are part of the theorem statements, not qualifications added only after
+the calculations.
+
+\subsection{Conventions and proof architecture}
+
+We use $H_n^{(r)}=\sum_{j=1}^n j^{-r}$, with $H_0^{(r)}=0$;
+Bernoulli numbers have $B_1=-1/2$; and multiple zeta values are ordered
+as
+\[
+ \zeta(s_1,\ldots,s_\ell)
+ =\sum_{n_1>\cdots>n_\ell\ge1}
+                         n_1^{-s_1}\cdots n_\ell^{-s_\ell}.
+\]
+The prime on a zeta function denotes differentiation in its spectral
+argument unless explicitly stated otherwise. The generalized Stieltjes
+constants satisfy
+\[
+ \zeta(1+\varepsilon,a)=\frac1\varepsilon+
+       \sum_{q\ge0}\frac{(-1)^q\gamma_q(a)}{q!}\varepsilon^q.
+\]
+Section-specific letters are reset explicitly: $F_d(s)$ denotes a tail
+spectrum, whereas $F_j(B)$ in the spectral-face section denotes a
+one-mass derivative. Every antiderivative has its endpoint fixed.
+
+The arguments use three distinct kinds of evidence. Finite identities
+are proved algebraically and supplied with rational or modular replay.
+Analytic statements include convergence domains, continuation from an
+open domain, and endpoint normalization. High-precision evaluations
+then check independent representations and signs. Numerical agreement
+is not used as a substitute for either of the first two steps.
+Section~\ref{sec:audit} records what was audited and what the artifact
+checks establish; Section~\ref{sec:research} lists exact next targets.

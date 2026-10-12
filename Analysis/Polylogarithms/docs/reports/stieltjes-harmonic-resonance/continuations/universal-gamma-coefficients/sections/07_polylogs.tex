@@ -1,0 +1,103 @@
+\section{Polylogarithmic lifts and their derivatives and primitives}
+\label{sec:polylogs}
+
+\subsection{The polynomial density of a mixed column}
+
+Fix $b\ge0$ and $c\ge2$. Define the polynomial
+\begin{equation}\label{eq:Kbc}
+ K_{b,c}(v)=
+ -\frac{v^{c-2}(1-v^2)^3(1+3v^2)^b(1+v^2)^{c-2}}
+ {4b!c!24^b48^c}
+ =\sum_{j=0}^{b+c+1}d_jv^{\alpha_j-1},
+ \qquad \alpha_j=c-1+2j.
+\end{equation}
+Some $d_j$ may vanish. On the allowed parity class,
+\begin{equation}\label{eq:rho}
+ r_{b,c}(k)=\int_0^1v^kK_{b,c}(v)\dd v
+          =\sum_j\frac{d_j}{k+\alpha_j}.
+\end{equation}
+Write $\rho_{b,c}(k)$ for the rational right side, without a parity restriction. The cubic zero at $v=1$ gives the exact moment cancellations
+\begin{equation}\label{eq:moment-cancel}
+ \sum_jd_j\alpha_j^\ell=0\qquad(\ell=0,1,2).
+\end{equation}
+To see this, differentiate \eqref{eq:Kbc} zero, one, and two times at $1$. The resulting falling-factorial relations are equivalent to \eqref{eq:moment-cancel}. In particular $\rho_{b,c}(k)=O(k^{-4})$ in positive real directions. This decay is used only to justify convergent identities, not as the main research output.
+
+\subsection{A finite polylogarithm formula}
+
+For a positive integer $a$ and an integer $s\ge0$, let
+\[
+ G_{s,a}(z)=\sum_{k\ge1}\frac{z^k}{k^s(k+a)},\qquad |z|<1.
+\]
+The convention $k^0=1$ is used when $s=0$.
+
+\begin{lemma}[Elementary polylogarithmic resolvent]\label{lem:G}
+For $s=0$,
+\begin{equation}\label{eq:G0}
+ G_{0,a}(z)=z^{-a}\left(\Li_1(z)-\sum_{\ell=1}^{a}\frac{z^\ell}{\ell}\right).
+\end{equation}
+For $s\ge1$,
+\begin{equation}\label{eq:Gs}
+ G_{s,a}(z)=\sum_{h=1}^{s}\frac{(-1)^{s-h}}{a^{s-h+1}}\Li_h(z)
+ +\frac{(-1)^s}{a^s}z^{-a}
+       \left(\Li_1(z)-\sum_{\ell=1}^{a}\frac{z^\ell}{\ell}\right).
+\end{equation}
+Each apparent singularity at $z=0$ is removable.
+\end{lemma}
+\begin{proof}
+Equation~\eqref{eq:G0} is the series for $\Li_1$ with its first $a$ terms removed and its index shifted. For $s\ge1$, use
+\[
+ \frac1{k^s(k+a)}=
+ \sum_{h=1}^{s}\frac{(-1)^{s-h}}{a^{s-h+1}k^h}
+ +\frac{(-1)^s}{a^s(k+a)}.
+\]
+The identity follows either by multiplication by $k^s(k+a)$ or by repeated use of $1/(k^s(k+a))=1/(ak^s)-1/(ak^{s-1}(k+a))$. Sum absolutely for $|z|<1$. The original series proves removability at zero.
+\end{proof}
+
+Let
+\begin{equation}\label{eq:Ps}
+ \mathcal P_{b,c;s}(z)=
+ \sum_{\substack{k\ge1\\k+c\ \mathrm{even}}}
+       \frac{r_{b,c}(k)}{k^s}z^k.
+\end{equation}
+The exact all-order lift is
+\begin{equation}\label{eq:polylog-lift}
+ \boxed{\displaystyle
+ \mathcal P_{b,c;s}(z)=\frac12\sum_jd_j
+     \bigl(G_{s,\alpha_j}(z)+(-1)^cG_{s,\alpha_j}(-z)\bigr).}
+\end{equation}
+This is a finite expression in ordinary polylogarithms of orders at most $s$, logarithms, and rational functions. Its derivation is simply the parity projector applied to \eqref{eq:rho} and Lemma~\ref{lem:G}. The representation initially holds in the disk; it then continues with the usual polylogarithm branches to any common simply connected domain avoiding the cuts at $[1,\infty)$ and $(-\infty,-1]$.
+
+The derivative and primitive ladder is exact:
+\begin{equation}\label{eq:polylog-ladder}
+ z\frac{\mathrm d}{\mathrm dz}\mathcal P_{b,c;s}(z)
+ =\mathcal P_{b,c;s-1}(z)\quad(s\ge1),\qquad
+ \int_0^z\frac{\mathcal P_{b,c;s}(t)}t\dd t
+ =\mathcal P_{b,c;s+1}(z).
+\end{equation}
+The anchoring at zero is valid because \eqref{eq:Ps} has no constant term. No additional branch constant is hidden in these formulas.
+
+\subsection{Boundary values}
+
+For $s\ge1$, cancellation of the logarithmic terms in \eqref{eq:Gs} gives
+\begin{equation}\label{eq:G1}
+ G_{s,a}(1)=
+ \sum_{h=2}^{s}\frac{(-1)^{s-h}}{a^{s-h+1}}\zeta(h)
+ +\frac{(-1)^{s+1}}{a^s}H_a.
+\end{equation}
+At $z=-1$, formula~\eqref{eq:Gs} is already finite. Use
+\[
+ \Li_1(-1)=-\log2,\qquad
+ \Li_h(-1)=-(1-2^{1-h})\zeta(h)\quad(h\ge2),
+\]
+and the finite alternating harmonic sum in \eqref{eq:G0}. Thus every value of \eqref{eq:polylog-lift} at $z=1$ and positive integer $s$ belongs to
+\[
+ \Q+\Q\log2+\sum_{h=2}^{s}\Q\zeta(h).
+\]
+The individual functions $G_{0,a}(1)$ diverge, so they must not be substituted separately in the $s=0$ formula. Their weighted sum has the cancellations \eqref{eq:moment-cancel} and a finite boundary value.
+
+An even stronger collapse occurs for the ordinary coefficient sum. Put $\delta\equiv c\pmod2$, with $\delta\in\{0,1\}$. Then
+\begin{equation}\label{eq:rational-collapse}
+ \sum_{\substack{k\ge0\\k+c\ \mathrm{even}}}r_{b,c}(k)
+ =\int_0^1\frac{v^\delta K_{b,c}(v)}{1-v^2}\dd v\in\Q.
+\end{equation}
+After cancellation, the integrand is a rational-coefficient polynomial with nonnegative integer exponents. Absolute convergence follows from the cubic endpoint zero. The identity includes $k=0$ only when $c$ is even; this is different from the convention in \eqref{eq:Ps}.

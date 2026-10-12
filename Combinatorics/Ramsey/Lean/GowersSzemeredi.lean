@@ -1130,6 +1130,19 @@ import GowersSzemeredi.Proofs18CoverSharper
 import GowersSzemeredi.Proofs18CoverSharperExplicit
 import GowersSzemeredi.Proofs18CoverTightBase
 import GowersSzemeredi.Proofs18CoverColorings
+import GowersSzemeredi.Proofs18CoverSharperComparisons
+import GowersSzemeredi.Proofs18CoverSharperLowDegrees
+import GowersSzemeredi.Proofs18CoverSharperAllDegrees
+import GowersSzemeredi.Proofs18CoverSharperShortLengths
+import GowersSzemeredi.Proofs18CoverThresholdsSharp
+import GowersSzemeredi.Proofs18CoverVanDerWaerden
+import GowersSzemeredi.Proofs18CoverHeadline
+import GowersSzemeredi.Proofs16PolynomialStructure
+import GowersSzemeredi.Proofs16PolynomialCorollary
+import GowersSzemeredi.Proofs15WalshGeneral
+import GowersSzemeredi.Proofs15DegenerateRange
+import GowersSzemeredi.Proofs15FejerSelection
+import GowersSzemeredi.Proofs15FejerProduct
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

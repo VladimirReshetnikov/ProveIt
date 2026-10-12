@@ -1,0 +1,62 @@
+\section{The research problem and the advance}
+\label{sec:scope}
+
+The normal-form question in this paper sits inside the repository's Gamma--polygamma and Stieltjes programme. The existing manuscript and its continuations already establish an integration-by-parts normal form, its Appell structure, a finite-jet variational principle, and a complete three-variable coefficient recurrence. Those inputs must not be presented again as new results. In the report \emph{Exact Harmonic-Tail Reconstruction and Variational Gamma Identities}, the further-research section asks for the complete projection onto $u_0,u_1,u_2,u_3$, including arbitrary lower powers accompanying $u_3^2$, and for a finite formula for the previously recurrent numerator polynomials \cite{RepoSector,RepoQuestions}.
+
+The answer here is stronger than either requested continuation. There is a closed coefficient formula at \emph{every} highest derivative order. The central objects are the polynomials
+\begin{equation}\label{eq:Cr}
+ C_r(v)=\frac{(v+1)^{r+1}-(v-1)^{r+1}}{2^{r+1}(r+1)!}
+       =\sum_{\substack{0\le j\le r\\j\equiv r\ (2)}}
+          \frac{v^j}{2^rj!(r+1-j)!}.
+\end{equation}
+In particular,
+\[
+ C_0=1,\qquad C_1=\frac v2,\qquad
+ C_2=\frac{1+3v^2}{24},\qquad C_3=\frac{v+v^3}{48}.
+\]
+Every displayed coefficient of $C_r$ is positive, and $C_r$ has parity $r$.
+
+Let $D u_r=u_{r+1}$ and let $\Nc$ denote the canonical normal projection modulo total derivatives, defined precisely in Section~\ref{sec:algebra}. Put
+\begin{equation}\label{eq:hierarchy-intro}
+ \Ac_0=1,\qquad \Ac_{m+1}=u_0\Ac_m-D\Ac_m,
+ \qquad \Nc_m=\Nc(\Ac_m).
+\end{equation}
+For a monomial $u_0^{a_0}\cdots u_d^{a_d}$ with $a_d\ge2$ and
+$m=\sum_{r=0}^d(r+1)a_r$, define
+\[
+ P_{\boldsymbol a}(v)=C_d(v)^{a_d-2}
+                    \prod_{r=1}^{d-1}C_r(v)^{a_r}.
+\]
+The main theorem gives, when $\sum r a_r$ is even,
+\begin{equation}\label{eq:main-intro}
+ \boxed{\displaystyle
+ [u_0^{a_0}\cdots u_d^{a_d}]\Nc_m
+ =\frac{(-1)^d m!}{4^d d!(d+1)!\prod_{r=0}^d a_r!}
+       \int_0^1(1-v^2)^dP_{\boldsymbol a}(v)\dd v.}
+\end{equation}
+For odd $\sum r a_r$, the coefficient is zero. A monomial with a unique highest positive derivative is absent by definition of the normal form. The coefficient of $u_0^m$ is one. Thus \eqref{eq:main-intro} specifies the entire polynomial, including every zero, without recursive integration by parts.
+
+The proof is not inferred from a table of computed coefficients. It follows from the exact identity
+\begin{equation}\label{eq:adjoint-intro}
+ \sum_{r=0}^d2^r\frac{\mathrm d^r}{\mathrm dv^r}
+       \bigl(C_r(v)W_d(v)\bigr)=1,
+ \qquad
+ W_d(v)=\frac{4(d+1)(v^2-1)^d}
+ {\bigl((v+1)^{d+1}-(v-1)^{d+1}\bigr)^2}.
+\end{equation}
+A telescoping calculation proves this at all $d$. The potentially singular kernel disappears from the final coefficient formula because the repeated highest derivative supplies two factors of $C_d$.
+
+\subsection{What the formula does and does not evaluate}
+
+Under $u_r=\psi^{(r)}(x)$, the hierarchy becomes
+\[
+ \Ac_m(x)=(-1)^m\Gamma(x)\frac{\mathrm d^m}{\mathrm dx^m}
+                         \frac1{\Gamma(x)}.
+\]
+Equation~\eqref{eq:main-intro} therefore describes exact polygamma coefficients in an inverse-Gamma differential identity. It is not a claim that every unweighted integral of an arbitrary polygamma product is elementary. The primitive formulas later in the paper retain the compensating total-derivative polynomial and its endpoint contribution.
+
+Similarly, the elementary reduction of the resulting rational harmonic sums uses classical polylogarithm and Hurwitz-zeta identities. The new contribution is the uniform coefficient family, its rational kernels, and the resulting explicitly specified identities; elementary partial fractions and the standard special-function definitions are not new. We use the conventions in the DLMF for Gamma, polygamma, Hurwitz zeta and polylogarithms \cite{DLMFGamma,DLMFHurwitz,DLMFPolylog}.
+
+\subsection{Organization}
+
+Sections~\ref{sec:algebra}--\ref{sec:universal} contain the algebraic and analytic proof of the universal theorem. Sections~\ref{sec:mixed}--\ref{sec:numerators} give the four-variable specialization, solving the two named repository questions in closed form. Sections~\ref{sec:polylogs}--\ref{sec:primitives} develop exact sums, transforms and primitives. The final section and appendix record the source-audit scope, unresolved questions, reproduction instructions, and the distinction between proofs and finite checks.

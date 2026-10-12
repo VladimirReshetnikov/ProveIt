@@ -1,0 +1,437 @@
+% Integration fragment. Requires amsmath, amssymb, amsthm and hyperref.
+% All labels and bibliography keys have the prefix mtp:.
+\section{A polarized Bernoulli calculus for arbitrary mixed even tails}
+\label{mtp:section}
+
+The all-power continuation in \emph{Bernoulli Tails and Spectral Faces}
+proves its recurrence for powers of one even-order Hurwitz tail and
+explicitly leaves products containing unequal orders among three or
+more factors outside its scope \cite[Section 2, after the even-order
+extension]{RepoBernoulli}. The earlier mixed-moment theorem treats
+two factors \cite[Section 4]{RepoMixed}. We now remove both
+restrictions: the tail orders may be arbitrary positive even integers,
+and the number of factors is unrestricted. The result is one finite
+triangular recurrence, an anchored analytic generating function, and a
+fixed finite arithmetic space for all regular centered moments.
+
+The unweighted sum of an arbitrary product of zeta tails, and its
+ordered-index interpretation in multiple zeta values, are classical
+\cite{Hoffman}. Those sums are used below as explicit anchors.
+The additional assertion concerns \emph{every} centered polynomial
+weight, including weights requiring polynomial subtraction. The proof
+keeps the cutoff finite until its boundary terms have cancelled.
+In particular, this is a continuation of a specified repository question;
+we do not claim that the classical tail-product anchors are new.
+
+\subsection{Definitions and ordinary realization of the regular moments}
+
+Let $I$ be a nonempty finite set of labels, let $d=|I|$, and assign an
+even integer $p_i\ge2$ to each $i\in I$. Equal assigned integers retain
+their different labels. Write
+\[
+ P_S=\sum_{i\in S}p_i,\qquad w_I=P_I-d,\qquad
+ T_p(n)=\zeta(p,n+1)=\zeta(p)-H_n^{(p)},
+ \qquad F_I(n)=\prod_{i\in I}T_{p_i}(n),
+\]
+and put $F_\varnothing(n)=1$, $x_n=n+1/2$. The polygamma normalization is
+$T_p(n)=\psi^{(p-1)}(n+1)/(p-1)!$ for even $p$.
+
+For $j\ge0$ define
+\begin{equation}\label{mtp:eta}
+ \eta_{p,0}=\frac1{p-1},\qquad
+ \eta_{p,j}=\frac{(p)_{2j-1}}{(2j)!}B_{2j}(1/2)\quad(j\ge1),
+ \qquad
+ h_{I,j}=\sum_{\substack{j_i\ge0\\\sum_i j_i=j}}
+                        \prod_{i\in I}\eta_{p_i,j_i}.
+\end{equation}
+The centered Hurwitz asymptotics \cite[Section 25.11]{DLMF} give
+\begin{equation}\label{mtp:asymptotic}
+                F_I(n)\sim\sum_{j\ge0}h_{I,j}x_n^{-w_I-2j}.
+\end{equation}
+Every $\eta_{p,j}$ has sign $(-1)^j$, including the positive $j=0$
+coefficient. Consequently $h_{I,j}$ is nonzero with the same sign.
+This is an asymptotic expansion, not a convergent Laurent series at a
+fixed finite $n$.
+
+\begin{proposition}[Regular moments as convergent sums]
+\label{mtp:ordinary}
+The Dirichlet series
+\[
+                 \mathcal F_I(s)=\sum_{n\ge0}F_I(n)x_n^{-s},
+                    \qquad \Re s>1-w_I,
+\]
+continues meromorphically to the plane. Its poles are precisely
+$1-w_I-2j$, with residue $h_{I,j}$, for $j\ge0$. For every integer
+$m\ge0$ satisfying $m\equiv d\pmod2$, its regular value
+$M_{I,m}=\mathcal F_I(-m)$ is the ordinary absolutely convergent sum
+\begin{equation}\label{mtp:ordinary-formula}
+ \boxed{M_{I,m}=\sum_{n=0}^{\infty}\left\{
+       x_n^mF_I(n)
+       -\sum_{0\le j\le(m-w_I)/2}h_{I,j}x_n^{m-w_I-2j}
+                                     \right\}.}
+\end{equation}
+A sum with a negative upper limit is empty.
+\end{proposition}
+
+\begin{proof}
+Subtract finitely many terms of \eqref{mtp:asymptotic} from the defining
+series and add back the corresponding Hurwitz functions
+$h_{I,j}\zeta(s+w_I+2j,1/2)$. Increasing the subtraction order produces
+normally convergent remainders in successively larger half-planes.
+The nonzero coefficients prove that all the listed poles are actual.
+Since $w_I\equiv d\pmod2$, none of these poles is $-m$ on the stated
+parity. Every subtracted term in \eqref{mtp:ordinary-formula} contributes
+$\zeta(-2r,1/2)=0$, $r\ge0$. After the subtraction the summand is
+$O(x_n^{-2})$, or decays faster when no subtraction is needed.
+This proves both the value and its ordinary convergence.
+\end{proof}
+
+For a full asymptotic expansion in the integer cutoff $N$, let
+$\operatorname{CT}_N$ mean the coefficient of $N^0(\log N)^0$.
+For any integer $k$ put
+\begin{equation}\label{mtp:C}
+ C_{I,k}=\operatorname{CT}_N\left\{
+     \sum_{n=1}^N n^k\bigl(F_I(n-1)-F_I(n)\bigr)+N^kF_I(N)\right\}.
+\end{equation}
+These coefficients exist by asymptotic subtraction: each tail has an
+expansion in integral inverse powers of $N$, and finite sums of such
+powers have power--logarithm expansions with a constant coefficient.
+The convention for this coefficient is fixed by \eqref{mtp:C}.
+
+The centered Faulhaber polynomial is
+\[
+ P_m(N)=\sum_{n=0}^{N-1}(n+1/2)^m
+       =\frac{B_{m+1}(N+1/2)-B_{m+1}(1/2)}{m+1}.
+\]
+Finite summation by parts gives
+\[
+ \sum_{n=0}^{N-1}x_n^mF_I(n)
+ =P_m(N)F_I(N)+\sum_{n=1}^NP_m(n)\bigl(F_I(n-1)-F_I(n)\bigr).
+\]
+All the removed even-power sums in \eqref{mtp:ordinary-formula} are odd
+polynomials in $N$, with zero constant coefficient. Therefore
+\begin{equation}\label{mtp:moment-transform}
+ M_{I,m}=\sum_{k=1}^{m+1}
+       \frac{\binom{m+1}{k}}{m+1}B_{m+1-k}(1/2)C_{I,k}.
+\end{equation}
+Only indices $k\equiv d+1\pmod2$ occur. Define initially as formal series
+\begin{equation}\label{mtp:GH}
+ G_I(t)=\sum_{\substack{m\ge0\\m\equiv d\ (2)}}M_{I,m}\frac{t^m}{m!},
+ \qquad H_I(t)=2\sinh(t/2)G_I(t),\qquad G_\varnothing=H_\varnothing=0.
+\end{equation}
+The Faulhaber generating function makes \eqref{mtp:moment-transform}
+equivalent to
+\begin{equation}\label{mtp:HC}
+ H_I(t)=\sum_{\substack{k\ge1\\k\equiv d+1\ (2)}}C_{I,k}\frac{t^k}{k!}.
+\end{equation}
+No interchange with a divergent infinite moment sum is used.
+
+\subsection{The finite polarized identity and the exact boundary parity}
+
+For a polynomial in independent variables $a_i$, write
+$\mathscr D=\sum_i h_i\partial_{a_i}$. On a multilinear polynomial this
+operator is nilpotent. The scalar Bernoulli identity
+\[
+ e^z-1=\frac z2(e^z+1)
+          -\sum_{r\ge1}\frac{B_{2r}}{(2r)!}z^{2r}(e^z-1)
+\]
+can therefore be applied to $\prod_{i\in I}a_i$ as a finite polynomial
+identity. It is equivalent to the usual generating function
+$(z/2)\coth(z/2)=1+\sum_{r\ge1}B_{2r}z^{2r}/(2r)!$.
+
+\begin{lemma}[Polarized Bernoulli difference]
+\label{mtp:polarized}
+If $\Delta F_J(n)=F_J(n-1)-F_J(n)$, then for every $n\ge1$
+\begin{equation}\label{mtp:polarized-formula}
+ \boxed{\begin{aligned}
+ \Delta F_I(n)={}&\frac12\sum_{i\in I}n^{-p_i}
+                         \bigl(F_{I\setminus\{i\}}(n-1)
+                              +F_{I\setminus\{i\}}(n)\bigr)\\
+ &-\sum_{\substack{S\subsetneq I\\|S|\ge2\text{ even}}}
+                   B_{|S|}n^{-P_S}\Delta F_{I\setminus S}(n).
+ \end{aligned}}
+\end{equation}
+Every product on the right contains fewer tail factors.
+\end{lemma}
+
+\begin{proof}
+Apply the displayed scalar identity with
+$a_i=T_{p_i}(n)$ and $h_i=n^{-p_i}$. Since
+$T_{p_i}(n-1)=T_{p_i}(n)+n^{-p_i}$, the exponential of $\mathscr D$
+implements the simultaneous shift. The identity
+\[
+ \frac{\mathscr D^r}{r!}\prod_{i\in I}a_i
+  =\sum_{\substack{S\subseteq I\\|S|=r}}
+                  \left(\prod_{i\in S}h_i\right)\prod_{i\notin S}a_i
+\]
+accounts for every coefficient. The term $S=I$ would be the difference
+of two constants and is zero. Labels, rather than distinct numerical
+orders, supply the multiplicities when some $p_i$ coincide.
+\end{proof}
+
+Let $\mathcal A_p(u)$ be the formal expansion of $T_p(N)$ at $u=N^{-1}$:
+\begin{equation}\label{mtp:unshifted}
+ \mathcal A_p(u)=\frac{u^{p-1}}{p-1}-\frac{u^p}{2}
+       +\sum_{r\ge1}\frac{B_{2r}(p)_{2r-1}}{(2r)!}u^{p+2r-1}.
+\end{equation}
+Put $b_I(k)=[u^k]\prod_{i\in I}\mathcal A_{p_i}(u)$, with
+$b_\varnothing(k)=\delta_{k,0}$, and define the odd formal series
+$E_i(u)=\mathcal A_{p_i}(u)+u^{p_i}/2$.
+
+\begin{lemma}[Boundary cancellation for unequal increments]
+\label{mtp:boundary}
+For $k\equiv d+1\pmod2$,
+\begin{equation}\label{mtp:boundary-coefficient}
+ b_I(k)+\frac12\sum_{i\in I}b_{I\setminus\{i\}}(k-p_i)
+ +\sum_{\substack{S\subseteq I\\|S|\ge2\text{ even}}}
+                    B_{|S|}b_{I\setminus S}(k-P_S)=0.
+\end{equation}
+More precisely, the entire generating expression on the left is
+\begin{equation}\label{mtp:boundary-polynomial}
+ \boxed{\sum_{\substack{S\subseteq I\\|S|\text{ even}}}
+             B_{|S|}(1/2)u^{P_S}\prod_{i\notin S}E_i(u).}
+\end{equation}
+It has parity $d$.
+\end{lemma}
+
+\begin{proof}
+Let $B_r^+=B_r(1)$, so $B_1^+=1/2$, $B_r^+=B_r$ for $r\ne1$,
+and odd indices above one vanish. Before taking a coefficient the
+left side of \eqref{mtp:boundary-coefficient} is
+\[
+                 \sum_{S\subseteq I}B_{|S|}^+u^{P_S}
+                              \prod_{i\notin S}\mathcal A_{p_i}(u).
+\]
+Substitute $\mathcal A_{p_i}=E_i-u^{p_i}/2$. For a fixed subset $R$,
+the coefficient of $u^{P_R}\prod_{i\notin R}E_i$ is
+\[
+ \sum_{S\subseteq R}B_{|S|}(1)(-1/2)^{|R|-|S|}
+      =B_{|R|}(1/2),
+\]
+by the Bernoulli translation identity \cite[24.4.12]{DLMF}.
+Odd $|R|$ vanish. Each $u^{P_R}$ is even and the remaining product
+has parity $d-|R|\equiv d$. This proves the identity and cancellation.
+\end{proof}
+
+This is the point where equal tail orders are unnecessary. Each tail
+has its own even increment $u^{p_i}$; Bernoulli translation cancels the
+entire mixed boundary polynomial at once. If $d$ is even, the full
+subset in \eqref{mtp:boundary-coefficient} has a possible term only at
+$k=P_I$, an even index outside the required odd parity. Thus its
+inclusion is harmless, although the corresponding difference in
+\eqref{mtp:polarized-formula} is omitted.
+
+\subsection{Every anchor is a specified convergent multiple zeta value}
+
+Our convention is
+\[
+ \zeta(s_1,\ldots,s_\ell)
+   =\sum_{n_1>\cdots>n_\ell\ge1}n_1^{-s_1}\cdots n_\ell^{-s_\ell}.
+\]
+An ordered set partition of $J$ is a sequence
+$\pi=(B_1,\ldots,B_\ell)$ of disjoint nonempty blocks whose union is
+$J$. For $r\ge1$ and nonempty $J$ define
+\begin{align}
+ \mathcal T_{J,r}
+   &=\sum_{\pi\models J}\zeta(P_{B_1},\ldots,P_{B_\ell},r),
+       &\mathcal T_{\varnothing,r}&=\zeta(r)\quad(r\ge2),
+       \label{mtp:Tanchor}\\
+ \mathcal S_{J,r}
+   &=2\mathcal T_{J,r}
+       +\sum_{\varnothing\ne U\subseteq J}\mathcal T_{J\setminus U,r+P_U}.
+       \label{mtp:Sanchor}
+\end{align}
+The only use of $J=\varnothing$ below has $r$ even and at least two.
+For nonempty $J$ and $h\le0$ put
+\begin{equation}\label{mtp:Zanchor}
+ \mathcal Z_{J,h}=\sum_{\pi\models J}
+       \zeta(P_{B_1},\ldots,P_{B_{\ell-1}},P_{B_\ell}-h),
+ \qquad Z_J=\prod_{i\in J}\zeta(p_i),\quad Z_\varnothing=1.
+\end{equation}
+All these MZVs are convergent and have positive integer entries with
+first entry at least two. In particular no isolated $\zeta(1)$ is
+introduced.
+
+Index ordering, or direct partition according to the indices equal to
+$n$, proves the ordinary identities
+\begin{align}
+ \mathcal T_{J,r}&=\sum_{n\ge1}n^{-r}F_J(n),\notag\\
+ \mathcal S_{J,r}&=\sum_{n\ge1}n^{-r}\bigl(F_J(n-1)+F_J(n)\bigr),
+       \label{mtp:anchor-series}\\
+ \mathcal Z_{J,h}&=\sum_{n\ge1}n^h\Delta F_J(n)=C_{J,h}\quad(h\le0).
+       \notag
+\end{align}
+The last equality uses $N^hF_J(N)\to0$. These are instances of the
+classical tail-index method \cite{Hoffman}; their explicit form
+makes every constant in the new recurrence independently computable.
+Their respective weights are $P_J+r$, $P_J+r$, and $P_J-h$.
+
+\subsection{The all-multiorder recurrence}
+
+For $m\ge0$ of the regular parity for a nonempty $J$, write
+\[
+ \mathcal V_J(m)=\sum_{\substack{0\le r\le m\\r\equiv m\ (2)}}
+                   \binom mr2^{r-m}M_{J,r}
+          =m![t^m]\bigl(\cosh(t/2)G_J(t)\bigr),
+ \qquad \mathcal V_\varnothing(m)=0.
+\]
+For a label $i\in I$, with $J=I\setminus\{i\}$, define
+\begin{equation}\label{mtp:W}
+ \mathcal W_i(k)=
+ \begin{cases}
+  \frac12\mathcal S_{J,p_i-k},&k<p_i,\\
+  \mathcal V_J(k-p_i)-\frac12\delta_{k,p_i}Z_J,&k\ge p_i.
+ \end{cases}
+\end{equation}
+
+\begin{theorem}[Triangular mixed-tail recurrence]
+\label{mtp:recurrence}
+For every $k\ge1$ with $k\equiv d+1\pmod2$,
+\begin{equation}\label{mtp:recurrence-formula}
+ \boxed{C_{I,k}=\sum_{i\in I}\mathcal W_i(k)
+    -\sum_{\substack{S\subsetneq I\\|S|\ge2\text{ even}}}
+                     B_{|S|}C_{I\setminus S,k-P_S}.}
+\end{equation}
+An index $k-P_S\le0$ means the explicit anchor
+$\mathcal Z_{I\setminus S,k-P_S}$. Together with
+\eqref{mtp:moment-transform}, this is a terminating exact algorithm
+for every regular moment, because every right-side tail product has
+strictly smaller cardinality.
+\end{theorem}
+
+\begin{proof}
+Multiply \eqref{mtp:polarized-formula} by $n^k$, sum through a finite
+$N$, and then take constant coefficients. When $m=k-p_i<0$, the
+symmetric sum is absolutely convergent and equals
+$\mathcal S_{J,-m}$. When $m\ge0$, changing the index in one of the
+two finite sums gives
+\begin{align*}
+ \sum_{n=1}^N n^m\bigl(F_J(n-1)+F_J(n)\bigr)
+ ={}&\sum_{n=0}^{N-1}\bigl((n+1)^m+n^m\bigr)F_J(n)\\
+    &-\delta_{m,0}Z_J+N^mF_J(N).
+\end{align*}
+The centered polynomial $(x+1/2)^m+(x-1/2)^m$ has the regular parity
+for $J$, so the constant coefficient of the first term is
+$2\mathcal V_J(m)$. This remains correct for $J=\varnothing$, where
+that coefficient is zero by finite power summation.
+The difference terms yield $C_{I\setminus S,k-P_S}$ minus their
+boundary coefficients. The complete leftover boundary is precisely
+\eqref{mtp:boundary-coefficient} and vanishes. What remains is
+\eqref{mtp:recurrence-formula}. In particular the exceptional endpoint
+term $-Z_J/2$ at $k=p_i$ has not been discarded.
+\end{proof}
+
+Let $I^q$ denote the anchored ordinary $q$-fold primitive
+\[
+ (I^qf)(t)=\frac1{(q-1)!}\int_0^t(t-u)^{q-1}f(u)\,du.
+\]
+Here the symbol $I^q$ is an integration operator, distinguished from
+the label set $I$ by its superscript. Define the finite polynomial
+\begin{align}
+ R_I(t)={}&\frac12\sum_{i\in I}
+       \sum_{\substack{1\le k<p_i\\k\equiv d+1\ (2)}}
+          \mathcal S_{I\setminus\{i\},p_i-k}\frac{t^k}{k!}
+       -\frac{\mathbf1_{d\ \mathrm{odd}}}{2}
+          \sum_{i\in I}Z_{I\setminus\{i\}}\frac{t^{p_i}}{p_i!}
+       \notag\\
+ &-\sum_{\substack{S\subsetneq I\\|S|\ge2\text{ even}}}B_{|S|}
+       \sum_{\substack{1\le k\le P_S\\k\equiv d+1\ (2)}}
+          \mathcal Z_{I\setminus S,k-P_S}\frac{t^k}{k!}.
+       \label{mtp:R}
+\end{align}
+
+\begin{theorem}[Anchored generators, finite arithmetic span, and polylogarithms]
+\label{mtp:generator}
+The series in \eqref{mtp:GH} converge for $|t|<2\pi$, and are given by
+\begin{equation}\label{mtp:generator-formula}
+ \boxed{\begin{aligned}
+ H_I(t)={}&R_I(t)
+       +\sum_{i\in I}I^{p_i}\bigl(\cosh(t/2)G_{I\setminus\{i\}}(t)\bigr)\\
+       &-\sum_{\substack{S\subsetneq I\\|S|\ge2\text{ even}}}
+                     B_{|S|}I^{P_S}H_{I\setminus S}(t),
+       \qquad G_I(t)=\frac{H_I(t)}{2\sinh(t/2)}.
+ \end{aligned}}
+\end{equation}
+For fixed $I$, every $M_{I,m}$ lies in the rational span of $1$ and
+convergent positive-index MZVs of weight at most
+\begin{equation}\label{mtp:weight-bound}
+                         P_I-1-\mathbf1_{d\ \mathrm{odd}}.
+\end{equation}
+The spanning list is finite and independent of $m$.
+Moreover $H_I$ has a finite representation by polynomials in $t$,
+MZV constants, and one-variable multiple polylogarithms at $e^{-t}$
+with functional depth at most $d-1$. This is a representation bound,
+not a claim about minimal depth or arithmetic independence.
+\end{theorem}
+
+\begin{proof}
+Summing \eqref{mtp:recurrence-formula} with $t^k/k!$ gives
+\eqref{mtp:generator-formula} formally. The ranges $k<p_i$, the
+endpoint $k=p_i$, and the shifted indices $k-P_S\le0$ give exactly
+\eqref{mtp:R}. The remaining positive shifted indices give the displayed
+anchored primitives.
+
+Induction on $d$ proves analyticity. All numerators are holomorphic in
+$|t|<2\pi$, have parity $d+1$, and vanish to order at least one at
+even $d$, or at least two at odd $d$. The denominator has a simple
+zero at zero and no other zero in this disk. Its singularity is
+therefore removable, and the formal moment series converges there.
+
+Every non-endpoint anchor in $R_I$ has weight $P_I-k$, and its least
+possible positive $k$ is one at even $d$ and two at odd $d$. An
+endpoint product has weight $P_I-p_i\le P_I-2$ and only occurs at
+odd $d$; expand it into MZVs by ordered set partitions. All other
+arithmetic constants already belong to generators on proper subsets.
+The remaining Taylor coefficients, integrations, and division by
+$2\sinh(t/2)$ have rational coefficients. This proves the sharper
+parity-sensitive bound \eqref{mtp:weight-bound}, as well as finiteness.
+The list can be redundant.
+
+For the functional statement, start at real $t>0$, put $z=e^{-t}$,
+and use
+\[
+ \cosh(t/2)G_J(t)=\left(\frac12+\frac z{1-z}\right)H_J(t).
+\]
+For $L_{\boldsymbol a}(t)=\operatorname{Li}_{a_1,\ldots,a_\ell}(e^{-t})$
+use the convention with $e^{-tn_1}$ on the largest summation index.
+Maintain the induction invariant $a_1\ge2$ for nonempty words.
+Ordinary integration raises that first index. An explicit unanchored
+$q$-fold primitive of $t^m zL_{\boldsymbol a}(t)/(1-z)$ is
+\begin{equation}\label{mtp:polylog-primitive}
+ (-1)^q\sum_{j=0}^m\binom{q+j-1}{j}\frac{m!}{(m-j)!}
+                         t^{m-j}L_{q+j,\boldsymbol a}(t).
+\end{equation}
+It follows by differentiation from
+$L_{1,\boldsymbol a}'=-zL_{\boldsymbol a}/(1-z)$ and
+$L_{r+1,\boldsymbol a}'=-L_{r,\boldsymbol a}$. Here $q=p_i\ge2$,
+so the new first index is at least two, and depth increases by at
+most one.
+
+Subtract the Taylor polynomial of degree $q-1$ at zero from the
+\emph{assembled} primitive. Endpoint values with first index at least
+two are convergent MZVs. The only possible logarithm comes from a
+single first index one. For admissible $\boldsymbol a$,
+\begin{align*}
+ \lim_{t\to0^+}\bigl(L_{1,\boldsymbol a}(t)
+                  -\zeta(\boldsymbol a)L_1(t)\bigr)
+ ={}&-\sum_{i=1}^{\ell}\zeta(a_1,\ldots,a_i,1,a_{i+1},\ldots,a_\ell)\\
+    &-\sum_{i=1}^{\ell}\zeta(a_1,\ldots,a_i+1,\ldots,a_\ell).
+\end{align*}
+This follows by subtracting $\zeta(\boldsymbol a)$ inside the outer
+series and ordering its missing tail; the difference is absolutely
+summable. For the empty word the difference is zero. The coefficient
+of $L_1(t)$ in the full endpoint expression is a multiple of $H_J(0)$,
+which is zero. Every integration constant is consequently an explicit
+convergent MZV. The singleton generator is a polynomial and has depth
+zero; induction gives the bound $d-1$. The combined formula is then
+continued by its proved holomorphic generator to the stated disk.
+\end{proof}
+
+\paragraph{What has been resolved.}
+The theorem handles every product of unequal positive even-order tails
+and every regular centered moment. It also sharpens the unrestricted
+weight bound by one at odd numbers of factors. It neither changes the
+summation convention nor assumes a conjecture about MZV independence.
+It does not prove the separate all-unequal-order \emph{bilinear optimal
+prefix} conjecture: that problem asks for the nonvanishing of different
+specified coefficient matrices.

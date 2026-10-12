@@ -1,0 +1,824 @@
+\section{Scalar spectral jets and ordinary resolvent integrals}
+\label{sp:section}
+
+Throughout this section $a>0$, $x_n=n+a$ for $n=0,1,\ldots$, and
+$\mu_1,\ldots,\mu_N$ are positive real numbers, with $N\geq1$.
+The logarithm $\Log$ is the principal logarithm on
+$\mathbb C\setminus(-\infty,0]$.  Powers of positive real numbers use
+their real logarithms.  We write $\zeta(s,a)$ for the Hurwitz zeta
+function, $\psi$ for the digamma function, and
+$\zeta^{(r)}(s,a)=\partial_s^r\zeta(s,a)$.
+The formulas below are specialized deductions for scalar factors and
+their connected logarithmic products.  They make no assertion of
+global priority for the general principle relating spectral finite
+parts and local asymptotic data.
+
+\subsection{The scalar master formula}
+\label{sp:scalar-subsection}
+
+For $\Re s>1/(2N)$ define
+\begin{equation}
+ Z_N(s;a,\boldsymbol\mu)
+ :=\sum_{n=0}^{\infty}\prod_{j=1}^{N}(x_n^2+\mu_j)^{-s}.
+ \label{sp:zeta-definition}
+\end{equation}
+For integers $r\geq1$, its $r$th spectral jet is
+$J_{N,r}(a;\boldsymbol\mu):=\partial_s^rZ_N(0;a,\boldsymbol\mu)$,
+once continuation to a neighborhood of zero has been established.
+
+\begin{lemma}[Continuation by a normally convergent difference]
+\label{sp:continuation}
+The function in \eqref{sp:zeta-definition} has the continuation
+\begin{equation}
+ Z_N(s;a,\boldsymbol\mu)
+ =\zeta(2Ns,a)+
+ \sum_{n=0}^{\infty}x_n^{-2Ns}
+ \left\{\exp\left[-s\sum_{j=1}^{N}
+             \log\left(1+\frac{\mu_j}{x_n^2}\right)\right]-1\right\},
+ \label{sp:normal-continuation}
+\end{equation}
+where the series is normally convergent on $\Re s>-1/(2N)$.
+In particular $Z_N$ is holomorphic near $s=0$, $Z_N(0)=\zeta(0,a)$,
+and
+\begin{equation}
+ J_{N,r}=(2N)^r\zeta^{(r)}(0,a)
+          +(-1)^r\sum_{n=0}^{\infty}F_{N,r}(x_n^2),
+ \qquad
+ F_{N,r}(z):=
+ \left(\sum_{j=1}^{N}\Log(z+\mu_j)\right)^r-N^r\Log^r z.
+ \label{sp:jet-ordinary-series}
+\end{equation}
+The series in \eqref{sp:jet-ordinary-series} is absolutely convergent.
+\end{lemma}
+
+\begin{proof}
+Put $L_n=\sum_j\log(1+\mu_j/x_n^2)$.  Then $L_n=O(x_n^{-2})$.
+For a compact subset $K$ of $\Re s>-1/(2N)$, the tail of the
+series in \eqref{sp:normal-continuation} is bounded, uniformly on $K$,
+by a constant times $x_n^{-2N\inf_K\Re s-2}$.  This is summable.
+The finitely many remaining summands are entire functions of $s$.
+The identity first holds in the defining half-plane by factoring
+out $x_n^{-2Ns}$, and hence gives the asserted continuation.
+The sole pole of $\zeta(2Ns,a)$ in this region is away from zero.
+Normal convergence permits differentiation at zero, giving
+\eqref{sp:jet-ordinary-series}.  Finally,
+\[
+ \sum_j\log(x_n^2+\mu_j)=N\log(x_n^2)+O(x_n^{-2}),
+ \qquad
+ F_{N,r}(x_n^2)=O\left(\frac{1+\log^{r-1}x_n}{x_n^2}\right)
+\]
+for large $n$, which also proves absolute convergence directly.
+\end{proof}
+
+For $t>0$ distinct from the masses, set
+\begin{equation}
+ A(t):=\sum_{j=1}^{N}\log|\mu_j-t|,
+ \qquad k(t):=\#\{j:\mu_j<t\},
+ \label{sp:cut-data}
+\end{equation}
+counting repeated masses with their multiplicity, and define the
+real, possibly signed density
+\begin{equation}
+ \rho_{N,r}(t):=-\frac{1}{\pi}\Im\left\{
+        [A(t)+i\pi k(t)]^r
+           -N^r[\log t+i\pi]^r\right\}.
+ \label{sp:scalar-density}
+\end{equation}
+Its values at the finitely many mass points may be assigned
+arbitrarily.  They do not change any integral below.
+
+\begin{theorem}[A single ordinary integral for every scalar jet]
+\label{sp:master}
+For every integer $N\geq1$, every integer $r\geq1$, every $a>0$,
+and all positive masses,
+\begin{equation}
+ \boxed{\displaystyle
+ J_{N,r}(a;\boldsymbol\mu)
+ =(2N)^r\zeta^{(r)}(0,a)
+       +(-1)^r\int_0^{\infty}\rho_{N,r}(t)Q_a(t)\,dt,}
+ \label{sp:master-formula}
+\end{equation}
+where
+\begin{equation}
+ Q_a(t):=\sum_{n=0}^{\infty}\frac{1}{x_n^2+t}
+ =\frac{\psi(a+i\sqrt t)-\psi(a-i\sqrt t)}{2i\sqrt t},
+ \qquad Q_a(0):=\psi'(a).
+ \label{sp:resolvent-kernel}
+\end{equation}
+The integral is absolutely convergent.  At the mass points it is
+understood as the sum of the ordinary improper integrals over the
+intervals separated by the distinct masses; no finite part or
+principal value is required.
+\end{theorem}
+
+\begin{proof}
+We first establish the Stieltjes representation
+\begin{equation}
+ F_{N,r}(z)=\int_0^{\infty}\frac{\rho_{N,r}(t)}{z+t}\,dt,
+ \qquad z\in\mathbb C\setminus(-\infty,0].
+ \label{sp:scalar-stieltjes}
+\end{equation}
+The function $F_{N,r}$ is holomorphic on this slit plane and
+satisfies Schwarz reflection.  On the upper bank of the cut,
+\[
+ \sum_j\Log(\mu_j-t+i0)=A(t)+i\pi k(t),
+ \qquad \Log(-t+i0)=\log t+i\pi.
+\]
+Consequently its upper boundary value has imaginary part
+$-\pi\rho_{N,r}(t)$.  Near zero,
+$F_{N,r}(z)=O(1+|\Log z|^r)$; at a nonzero endpoint $-\mu_j$
+it has at worst a power of a logarithm.  The integrals on circles
+of radius $\varepsilon$ around these endpoints therefore tend to
+zero, since $\varepsilon(1+|\log\varepsilon|^r)\to0$.
+At infinity, uniformly along a large keyhole contour,
+\[
+ \sum_j\Log(z+\mu_j)
+       =N\Log z+O(|z|^{-1}),
+ \qquad
+ F_{N,r}(z)=O\left(\frac{1+\log^{r-1}|z|}{|z|}\right).
+\]
+The outer circle in the Cauchy integral hence contributes zero
+in the limit.  Cauchy's formula, followed by collapsing the two
+banks of the cut, gives \eqref{sp:scalar-stieltjes} with the sign
+in \eqref{sp:scalar-density}.
+
+Here are explicit bounds that justify the resulting improper
+integral and its later interchange with a series.  Since the
+masses are positive, $k(t)=0$ for sufficiently small $t$ and
+$A(t)$ remains bounded there.  Thus
+\begin{equation}
+ \rho_{N,r}(t)=O(1+|\log t|^{r-1})\qquad(t\downarrow0).
+ \label{sp:density-zero-bound}
+\end{equation}
+At each mass point the density is bounded by a constant times
+$1+|\log|t-\mu_j||^{r-1}$, allowing for multiplicities; these
+singularities are locally integrable.  Beyond the largest mass,
+write
+\[
+ A(t)=N\log t+\delta(t),\qquad
+ \delta(t)=\sum_j\log(1-\mu_j/t)=O(t^{-1}),\qquad k(t)=N.
+\]
+In the difference
+$[N(\log t+i\pi)+\delta(t)]^r-[N(\log t+i\pi)]^r$,
+taking the imaginary part lowers the maximal logarithmic degree
+by one.  Hence, for $r\geq2$,
+\begin{equation}
+ \rho_{N,r}(t)=O\left(\frac{1+\log^{r-2}t}{t}\right)
+       \qquad(t\to\infty).
+ \label{sp:density-infinity-bound}
+\end{equation}
+For $r=1$ the density is zero beyond the largest mass.
+These estimates also directly give absolute convergence in
+\eqref{sp:scalar-stieltjes} at any fixed $z$ off the cut.
+
+The convergent digamma difference series gives
+\eqref{sp:resolvent-kernel}.  It also shows that $Q_a(t)>0$,
+that $Q_a$ is continuous at zero with value $\psi'(a)$, and that
+it is bounded on compact intervals of $t\geq0$.
+Comparison of its decreasing summand with an integral yields
+\[
+ Q_a(t)=\int_a^{\infty}\frac{dx}{x^2+t}+O(t^{-1})
+       =\frac{\pi}{2\sqrt t}+O(t^{-1})
+       \qquad(t\to\infty).
+\]
+It follows from the endpoint bounds that
+\[
+ \int_0^{\infty}|\rho_{N,r}(t)|Q_a(t)\,dt<\infty.
+\]
+Tonelli's theorem applied to the absolute values, followed by
+Fubini's theorem, now proves
+\[
+ \sum_{n=0}^{\infty}F_{N,r}(x_n^2)
+   =\int_0^{\infty}\rho_{N,r}(t)
+                     \sum_{n=0}^{\infty}\frac{dt}{x_n^2+t}
+   =\int_0^{\infty}\rho_{N,r}(t)Q_a(t)\,dt.
+\]
+Substitution in \eqref{sp:jet-ordinary-series} gives the result.
+\end{proof}
+
+\begin{remark}[Explicit densities and collisions]
+\label{sp:explicit-densities}
+Expanding only the odd binomial terms gives, at every order,
+\begin{equation}
+ \rho_{N,r}(t)=
+ \sum_{h=0}^{\lfloor(r-1)/2\rfloor}
+   (-1)^h\binom{r}{2h+1}\pi^{2h}
+   \left\{N^r(\log t)^{r-2h-1}
+                -k(t)^{2h+1}A(t)^{r-2h-1}\right\}.
+ \label{sp:binomial-density}
+\end{equation}
+In particular,
+\begin{align}
+ \rho_{N,1}(t)&=N-k(t),\label{sp:density-one}\\
+ \rho_{N,2}(t)&=2N^2\log t-2k(t)A(t),\label{sp:density-two}\\
+ \rho_{N,3}(t)&=3N^3\log^2t-3k(t)A(t)^2
+                    +\pi^2\{k(t)^3-N^3\}.
+ \label{sp:density-three}
+\end{align}
+The densities need not be nonnegative at higher orders.
+Repeated masses are included directly in these formulas: $k$
+jumps by their multiplicity, and $A$ contains the corresponding
+multiple of $\log|\mu-t|$.  The proof of
+Theorem~\ref{sp:master} applies without a distinctness assumption,
+so no limiting prescription is needed when masses coincide.
+\end{remark}
+
+\begin{corollary}[The first jet and its normalization]
+\label{sp:first-jet}
+Let $\log\Gamma$ denote the analytic branch on $\Re z>0$ that
+is real on the positive real axis.  Then
+\begin{equation}
+ J_{N,1}(a;\boldsymbol\mu)
+ =\sum_{j=1}^{N}\left\{
+       \log\Gamma(a+i\sqrt{\mu_j})
+       +\log\Gamma(a-i\sqrt{\mu_j})-\log(2\pi)\right\}.
+ \label{sp:first-jet-gamma}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Since $N-k(t)=\sum_j\boldsymbol1_{(0,\mu_j)}(t)$, the integral
+in \eqref{sp:master-formula} is a sum of $\int_0^{\mu_j}Q_a(t)\,dt$.
+Differentiation with respect to $t$ gives
+\[
+ \frac{d}{dt}\left\{
+   \log\Gamma(a+i\sqrt t)+\log\Gamma(a-i\sqrt t)\right\}
+ =-Q_a(t).
+\]
+The identity extends continuously to $t=0$.  Therefore
+\[
+ \int_0^\mu Q_a(t)\,dt
+ =2\log\Gamma(a)-\log\Gamma(a+i\sqrt\mu)
+                       -\log\Gamma(a-i\sqrt\mu).
+\]
+Combining this with
+$\zeta'(0,a)=\log\Gamma(a)-\tfrac12\log(2\pi)$ proves
+\eqref{sp:first-jet-gamma}.
+\end{proof}
+
+\subsection{Parameter calculus without regularized interchange}
+\label{sp:parameters}
+
+\begin{proposition}[Derivatives and an anchored primitive in $a$]
+\label{sp:a-calculus}
+For every nonnegative integer $m$,
+\begin{equation}
+ \partial_a^mJ_{N,r}
+ =(2N)^r\partial_a^m\zeta^{(r)}(0,a)
+   +(-1)^r\int_0^{\infty}\rho_{N,r}(t)Q_a^{[m]}(t)\,dt,
+ \label{sp:a-derivatives}
+\end{equation}
+where, with $\psi^{(0)}=\psi$,
+\begin{equation}
+ Q_a^{[m]}(t):=
+ \frac{\psi^{(m)}(a+i\sqrt t)-\psi^{(m)}(a-i\sqrt t)}
+      {2i\sqrt t},
+ \qquad Q_a^{[m]}(0)=\psi^{(m+1)}(a).
+ \label{sp:polygamma-kernel}
+\end{equation}
+All these integrals are absolutely convergent and locally uniform
+for $a>0$.
+
+For a fixed anchor $a_*>0$, define
+\begin{align}
+ K_a(t)&:=\frac{\log\Gamma(a+i\sqrt t)-\log\Gamma(a-i\sqrt t)}
+                      {2i\sqrt t},\qquad t>0,\notag\\
+ H_{a,a_*}(t)&:=K_a(t)-K_{a_*}(t),
+ \label{sp:gamma-kernel}\\
+ H_{a,a_*}(0)&:=\psi(a)-\psi(a_*),\notag\\
+ B_{N,r}(a)
+ &:=(2N)^r r!\sum_{j=0}^{r}\frac{\zeta^{(j)}(-1,a)}{j!}.
+ \label{sp:primitive-baseline}
+\end{align}
+The branch of $\log\Gamma$ is the one used in
+Corollary~\ref{sp:first-jet}.  Then the anchored primitive is
+\begin{equation}
+ \int_{a_*}^{a}J_{N,r}(u;\boldsymbol\mu)\,du
+ =B_{N,r}(a)-B_{N,r}(a_*)
+     +(-1)^r\int_0^{\infty}
+                      \rho_{N,r}(t)H_{a,a_*}(t)\,dt.
+ \label{sp:anchored-primitive}
+\end{equation}
+The final integral is again ordinary and absolutely convergent.
+\end{proposition}
+
+\begin{proof}
+Let $a$ range over a compact interval $I\subset(0,\infty)$.
+Choose a positive complex radius $\eta$ smaller than one half of
+$\inf I$.  For real $a\in I$, $t\geq0$, and $|w-a|\leq\eta$,
+each factor $n+w\pm i\sqrt t$ has modulus at least a fixed
+positive multiple of $\sqrt{(n+a)^2+t}$.  Cauchy's derivative
+estimate applied to $((n+w)^2+t)^{-1}$ therefore gives
+\[
+ \left|\partial_a^m\frac{1}{(n+a)^2+t}\right|
+ \leq\frac{C_{I,m}}{(n+a)^2+t}.
+\]
+Summing and using the bounds in the proof of
+Theorem~\ref{sp:master} produces a majorant for every derivative
+that is integrable against $|\rho_{N,r}(t)|\,dt$, uniformly for
+$a\in I$.  Differentiation under the integral is valid to every
+order.  Differentiating the digamma expression for $Q_a$ gives
+\eqref{sp:polygamma-kernel}; its value at zero follows by a Taylor
+expansion.  The same local uniform estimates justify derivatives
+of the normally convergent series in
+\eqref{sp:normal-continuation}.
+
+For the primitive, integration of $Q_u(t)$ in $u$ gives
+\[
+ H_{a,a_*}(t)=\int_{a_*}^{a}Q_u(t)\,du.
+\]
+This identity both fixes the branch normalization and proves the
+required integral bound, including the continuous value at $t=0$.
+For the Hurwitz term, the identity
+$\partial_a\zeta(v,a)=-v\zeta(v+1,a)$ gives
+\[
+ \partial_a\left\{-\frac{\zeta(2Ns-1,a)}{2Ns-1}\right\}
+ =\zeta(2Ns,a).
+\]
+Writing $u=2Ns$ and expanding at $u=0$,
+\[
+ -\frac{\zeta(2Ns-1,a)}{2Ns-1}
+ =\frac{\zeta(u-1,a)}{1-u},\qquad
+ \left.\partial_s^r
+    \frac{\zeta(2Ns-1,a)}{1-2Ns}\right|_{s=0}
+ =(2N)^r r!\sum_{j=0}^{r}\frac{\zeta^{(j)}(-1,a)}{j!}.
+\]
+Thus $B_{N,r}'(a)=(2N)^r\zeta^{(r)}(0,a)$.
+Integrating \eqref{sp:master-formula}, with the locally uniform
+absolute bounds just proved, gives
+\eqref{sp:anchored-primitive}.
+\end{proof}
+
+\begin{proposition}[Mixed mass derivatives and resolvents]
+\label{sp:mass-derivatives}
+Hold $N$ fixed.  Choose $q$ distinct labels
+$i_1,\ldots,i_q\in\{1,\ldots,N\}$ and put
+$S_n:=\sum_{j=1}^{N}\log(x_n^2+\mu_j)$.
+For $1\leq q\leq r$,
+\begin{equation}
+ \partial_{\mu_{i_1}}\cdots\partial_{\mu_{i_q}}J_{N,r}
+ =(-1)^r\frac{r!}{(r-q)!}
+   \sum_{n=0}^{\infty}
+     \frac{S_n^{r-q}}{\prod_{\ell=1}^{q}(x_n^2+\mu_{i_\ell})}.
+ \label{sp:mixed-mass-formula}
+\end{equation}
+For $q>r$ the mixed derivative vanishes.  Every series in
+\eqref{sp:mixed-mass-formula} is absolutely convergent, including
+when different labels carry equal masses.
+In particular, if $r\leq N$, then
+\begin{equation}
+ \partial_{\mu_{i_1}}\cdots\partial_{\mu_{i_r}}J_{N,r}
+ =(-1)^r r!\sum_{n=0}^{\infty}
+          \frac{1}{\prod_{\ell=1}^{r}(x_n^2+\mu_{i_\ell})}
+ =-r!\,Q_a[\mu_{i_1},\ldots,\mu_{i_r}],
+ \label{sp:rational-mass-resolvent}
+\end{equation}
+where brackets denote the ordinary divided difference of order
+$r-1$ with its confluent continuation.
+\end{proposition}
+
+\begin{proof}
+In a common domain of absolute convergence, differentiating the
+defining spectral summand in $q$ distinct mass labels gives
+\[
+ \partial_{\mu_{i_1}}\cdots\partial_{\mu_{i_q}}Z_N(s)
+ =(-s)^q\sum_{n=0}^{\infty}
+     \frac{e^{-sS_n}}{\prod_{\ell=1}^{q}(x_n^2+\mu_{i_\ell})}.
+\]
+For $q\geq1$ the series on the right is normally convergent in
+a neighborhood of $s=0$, uniformly for masses in compact subsets
+of the positive orthant.  It supplies the continuation of the
+mass derivative.  Taking its $r$th derivative at zero proves
+\eqref{sp:mixed-mass-formula} and the vanishing for $q>r$.
+The summands are bounded by a constant times
+$x_n^{-2q}(1+\log^{r-q}x_n)$ when $q\leq r$.
+Finally,
+\[
+ \left[t\longmapsto\frac{1}{x^2+t}\right]
+        [\nu_1,\ldots,\nu_r]
+ =\frac{(-1)^{r-1}}{\prod_{j=1}^{r}(x^2+\nu_j)}.
+\]
+Summing this identity proves the divided-difference formula.
+Normal convergence in the masses justifies confluence at equal
+arguments.
+\end{proof}
+
+\begin{remark}[Repeated differentiation of one mass]
+\label{sp:repeated-mass-derivatives}
+The qualification ``distinct labels'' in
+Proposition~\ref{sp:mass-derivatives} concerns the differentiation
+variables, not their numerical values.  A formula for an arbitrary
+nonzero multi-index $\boldsymbol\alpha=(\alpha_1,\ldots,\alpha_N)$
+is obtained without differentiating a moving branch-cut density.
+Let $d=\sum_j\alpha_j$, let $q=\#\{j:\alpha_j>0\}$, and write
+\[
+ \prod_{j=1}^{N}(s)_{\alpha_j}
+      =\sum_{\ell=q}^{d}c_{\boldsymbol\alpha,\ell}s^\ell,
+ \qquad (s)_m=s(s+1)\cdots(s+m-1),\quad (s)_0=1.
+\]
+Then
+\begin{equation}
+ \partial_{\boldsymbol\mu}^{\boldsymbol\alpha}J_{N,r}
+ =(-1)^d r!\sum_{\ell=q}^{\min(d,r)}
+       \frac{(-1)^{r-\ell}c_{\boldsymbol\alpha,\ell}}{(r-\ell)!}
+       \sum_{n=0}^{\infty}
+       \frac{S_n^{r-\ell}}
+            {\prod_{j=1}^{N}(x_n^2+\mu_j)^{\alpha_j}}.
+ \label{sp:all-mass-derivatives}
+\end{equation}
+An empty outer sum is zero.  Indeed, differentiating the spectral
+summand gives
+\[
+ (-1)^d\prod_j(s)_{\alpha_j}\,e^{-sS_n}
+                  \prod_j(x_n^2+\mu_j)^{-\alpha_j},
+\]
+whose series is normal near
+zero; coefficient extraction gives
+\eqref{sp:all-mass-derivatives}.  Each inner series is ordinary
+and absolutely convergent.
+\end{remark}
+
+\begin{corollary}[Integral shifts and the zero-mass boundary]
+\label{sp:integer-a}
+For an integer $M\geq1$ and $t>0$,
+\begin{equation}
+ Q_M(t)=\frac{\pi\sqrt t\,\coth(\pi\sqrt t)-1}{2t}
+           -\sum_{j=1}^{M-1}\frac{1}{j^2+t}.
+ \label{sp:integer-resolvent}
+\end{equation}
+For integers $p\geq1$ its confluent derivatives give
+\begin{equation}
+ \sum_{n=0}^{\infty}\frac{1}{((n+M)^2+t)^p}
+ =\frac{(-1)^{p-1}}{(p-1)!}\partial_t^{p-1}Q_M(t).
+ \label{sp:confluent-resolvent}
+\end{equation}
+These expressions extend continuously to $t=0$, where
+\begin{equation}
+ \sum_{n=0}^{\infty}(n+M)^{-2p}
+    =\zeta(2p)-H_{M-1}^{(2p)},
+ \qquad H_m^{(v)}:=\sum_{j=1}^{m}j^{-v},\quad H_0^{(v)}:=0.
+ \label{sp:harmonic-resolvent}
+\end{equation}
+Consequently, when $r\leq N$, the limit of
+\eqref{sp:rational-mass-resolvent} as its $r$ selected masses tend
+to zero is
+\begin{equation}
+ (-1)^r r!\{\zeta(2r)-H_{M-1}^{(2r)}\},\qquad a=M.
+ \label{sp:harmonic-mixed-jet}
+\end{equation}
+The remaining masses do not enter this mixed derivative.
+\end{corollary}
+
+\begin{proof}
+The partial-fraction expansion of the hyperbolic cotangent gives
+\[
+ \sum_{j=1}^{\infty}(j^2+t)^{-1}
+       =\frac{\pi\sqrt t\coth(\pi\sqrt t)-1}{2t}.
+\]
+Removing its first $M-1$ terms proves
+\eqref{sp:integer-resolvent}.  Normal convergence permits the
+$t$ derivatives in \eqref{sp:confluent-resolvent}.  At $t=0$ the
+series becomes a tail of the defining series for $\zeta(2p)$,
+which proves \eqref{sp:harmonic-resolvent}.  Dominated convergence
+in \eqref{sp:rational-mass-resolvent} gives the last assertion.
+\end{proof}
+
+\subsection{Compact densities for connected logarithmic products}
+\label{sp:connected-subsection}
+
+We now use $r$ for the number of logarithmic factors.  Fix an
+anchor $\beta\geq0$, let $\nu_1,\ldots,\nu_r>\beta$, and put
+$M=\max_j\nu_j$.  Define
+\begin{equation}
+ G_{\boldsymbol\nu,\beta}(z)
+ :=\prod_{j=1}^{r}
+       \log\frac{z+\nu_j}{z+\beta}.
+ \label{sp:connected-product}
+\end{equation}
+Each logarithm means the analytic continuation from positive
+real $z$ of $\Log(z+\nu_j)-\Log(z+\beta)$, with value tending
+to zero at infinity.  This gives a holomorphic function on
+$\mathbb C\setminus[-M,-\beta]$.
+For $\beta<t<M$ away from the masses, write
+\begin{equation}
+ \ell_j(t):=\log\left|\frac{\nu_j-t}{\beta-t}\right|,
+ \qquad \chi_j(t):=\boldsymbol1_{\{t<\nu_j\}},
+ \qquad
+ \rho_{\boldsymbol\nu,\beta}(t)
+ :=-\frac1\pi\Im\prod_{j=1}^{r}
+                     \{\ell_j(t)-i\pi\chi_j(t)\}.
+ \label{sp:connected-density}
+\end{equation}
+The density is taken to be zero outside $[\beta,M]$.
+
+\begin{theorem}[Compact representation and exact moments]
+\label{sp:compact-density}
+The density in \eqref{sp:connected-density} is integrable and
+satisfies
+\begin{equation}
+ G_{\boldsymbol\nu,\beta}(z)
+ =\int_\beta^M\frac{\rho_{\boldsymbol\nu,\beta}(t)}{z+t}\,dt,
+ \qquad z\in\mathbb C\setminus[-M,-\beta].
+ \label{sp:compact-stieltjes}
+\end{equation}
+For every integer $k\geq0$,
+\begin{equation}
+ \int_\beta^M t^k\rho_{\boldsymbol\nu,\beta}(t)\,dt
+ =(-1)^k[u^{k+1}]
+       \prod_{j=1}^{r}\log\frac{1+\nu_j u}{1+\beta u},
+ \label{sp:compact-moments}
+\end{equation}
+where $[u^m]$ extracts a Taylor coefficient at $u=0$.
+In particular, with $C:=\prod_{j=1}^{r}(\nu_j-\beta)$,
+\begin{align}
+ \int_\beta^M t^k\rho_{\boldsymbol\nu,\beta}(t)\,dt&=0,
+       &&0\leq k\leq r-2,\label{sp:vanishing-moments}\\
+ \int_\beta^M t^{r-1}\rho_{\boldsymbol\nu,\beta}(t)\,dt
+      &=(-1)^{r-1}C.
+ \label{sp:first-nonzero-moment}
+\end{align}
+The first range is empty if $r=1$.
+\end{theorem}
+
+\begin{proof}
+On the upper cut $z=-t+i0$, the denominator logarithm has
+imaginary part $\pi$ for $t>\beta$, while the numerator
+logarithm has imaginary part $\pi$ precisely for $t>\nu_j$.
+Their difference is therefore
+$\ell_j(t)-i\pi\chi_j(t)$.
+For $t>M$ all these differences have identical real boundary
+values on both banks of the cut, which explains the compact
+support.  At every endpoint the product has at worst a power of
+a logarithm.  Thus the density is integrable, even when several
+masses coincide, and every small endpoint circle contributes
+$O(\varepsilon(1+|\log\varepsilon|^r))$ to the Cauchy integral.
+At infinity,
+\begin{equation}
+ G_{\boldsymbol\nu,\beta}(z)=Cz^{-r}+O(z^{-r-1}).
+ \label{sp:connected-asymptotic}
+\end{equation}
+The outer contour therefore vanishes.  Collapsing the Cauchy
+contour onto the finite cut proves
+\eqref{sp:compact-stieltjes}, with its indicated sign.
+
+For $|z|>M$, expand $(z+t)^{-1}$ into its uniformly convergent
+geometric series on the support of the density.  The coefficient
+of $z^{-k-1}$ in the resulting integral is
+$(-1)^k\int t^k\rho_{\boldsymbol\nu,\beta}(t)\,dt$.
+On the other hand, the same coefficient on the left is
+$[u^{k+1}]\prod_j\log((1+\nu_j u)/(1+\beta u))$.
+This proves \eqref{sp:compact-moments}.  Each logarithmic factor
+starts with $(\nu_j-\beta)u$, so the product starts with $Cu^r$.
+The final two assertions follow.
+\end{proof}
+
+\begin{corollary}[Coincident masses]
+\label{sp:coincident-density}
+If $\nu_1=\cdots=\nu_r=\nu>\beta$, set
+$y=\log((\nu-t)/(t-\beta))$ for $\beta<t<\nu$.  Then
+\begin{equation}
+ \rho_{\nu,\beta}^{(r)}(t)=P_r(y),\qquad
+ P_r(y):=\sum_{h=0}^{\lfloor(r-1)/2\rfloor}
+       (-1)^h\binom{r}{2h+1}\pi^{2h}y^{r-2h-1}.
+ \label{sp:coincident-polynomial}
+\end{equation}
+For example,
+\begin{equation}
+ P_1(y)=1,\qquad P_2(y)=2y,\qquad
+ P_3(y)=3y^2-\pi^2,\qquad P_4(y)=4y^3-4\pi^2y.
+ \label{sp:coincident-examples}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+On this single interval every factor in
+\eqref{sp:connected-density} equals $y-i\pi$.
+Expanding $-\pi^{-1}\Im(y-i\pi)^r$ gives the formula.
+\end{proof}
+
+\begin{corollary}[An ordinary connected spectral sum]
+\label{sp:ordinary-connected}
+For $a>0$,
+\begin{equation}
+ \sum_{n=0}^{\infty}
+   \prod_{j=1}^{r}\log\frac{x_n^2+\nu_j}{x_n^2+\beta}
+ =\int_\beta^M\rho_{\boldsymbol\nu,\beta}(t)Q_a(t)\,dt.
+ \label{sp:connected-sum}
+\end{equation}
+Both sides are ordinary and absolutely convergent.
+\end{corollary}
+
+\begin{proof}
+The summand is $O(x_n^{-2r})$ by
+\eqref{sp:connected-asymptotic}.  Moreover, $Q_a$ is bounded on
+the compact interval $[\beta,M]$, including when $\beta=0$.
+Thus $\int|\rho_{\boldsymbol\nu,\beta}(t)|Q_a(t)\,dt$ is finite,
+and absolute Fubini applied to
+\eqref{sp:compact-stieltjes} proves the assertion.
+\end{proof}
+
+\begin{remark}[A fixed number of spectral factors]
+\label{sp:fixed-N-differences}
+Suppose $N\geq r$ is fixed, and choose $r$ labeled mass slots.
+In slot $j$, let $\Delta_j$ mean the value with mass $\nu_j$
+minus the value with mass $\beta$; the other slots are held
+fixed.  The normally convergent formula
+\eqref{sp:normal-continuation} also permits zero masses at this
+fixed positive $a$.  Consequently,
+\begin{equation}
+ \Delta_1\cdots\Delta_r J_{N,r}
+ =(-1)^r r!\int_\beta^M
+                    \rho_{\boldsymbol\nu,\beta}(t)Q_a(t)\,dt.
+ \label{sp:connected-finite-difference}
+\end{equation}
+Indeed, in \eqref{sp:jet-ordinary-series} the mass-independent
+baseline cancels, while the mixed difference of the $r$th power
+of a sum of logarithms is $r!$ times the product of their $r$
+increments.  This is a replacement operation at fixed $N$.
+Adding or deleting a spectral factor changes the scale $2N$ in
+the zeta term and is a different operation.
+\end{remark}
+
+\begin{theorem}[The critical odd weight as an ordinary sum]
+\label{sp:critical-weight}
+Under the assumptions of Theorem~\ref{sp:compact-density},
+\begin{equation}
+ \boxed{\begin{aligned}
+ &\sum_{n=0}^{\infty}\left\{
+        x_n^{2r-1}G_{\boldsymbol\nu,\beta}(x_n^2)-\frac{C}{x_n}
+                         \right\}\\
+ &\qquad=(-1)^r\int_\beta^M
+       \rho_{\boldsymbol\nu,\beta}(t)t^{r-1}
+       \{\Re\psi(a+i\sqrt t)-\psi(a)\}\,dt.
+ \end{aligned}}
+ \label{sp:critical-ordinary-sum}
+\end{equation}
+The summand on the left is $O(x_n^{-3})$.  The integral on the
+right is an ordinary absolutely convergent integral; the
+digamma difference has its continuous value zero at $t=0$.
+\end{theorem}
+
+\begin{proof}
+Polynomial division gives
+\[
+ \frac{x^{2r-1}}{x^2+t}
+ =\sum_{k=0}^{r-2}(-t)^k x^{2r-3-2k}
+          +(-t)^{r-1}\frac{x}{x^2+t},
+\]
+where the sum is empty for $r=1$.
+Upon integration against $\rho_{\boldsymbol\nu,\beta}$, every
+polynomial term vanishes by \eqref{sp:vanishing-moments}.
+Using \eqref{sp:first-nonzero-moment} for the subtraction gives
+the exact identity, for each $x>0$,
+\[
+ x^{2r-1}G_{\boldsymbol\nu,\beta}(x^2)-\frac{C}{x}
+ =(-1)^{r-1}\int_\beta^M
+       \rho_{\boldsymbol\nu,\beta}(t)t^{r-1}
+             \left\{\frac{x}{x^2+t}-\frac1x\right\}\,dt.
+\]
+The expression in braces equals $-t/[x(x^2+t)]$ and is bounded
+in absolute value by $M/x^3$ on the whole integration interval.
+Hence absolute Fubini is valid after this subtraction.
+The convergent digamma difference series yields
+\[
+ \sum_{n=0}^{\infty}
+       \left\{\frac{x_n}{x_n^2+t}-\frac1{x_n}\right\}
+       =\psi(a)-\Re\psi(a+i\sqrt t).
+\]
+Substitution proves \eqref{sp:critical-ordinary-sum}.
+The asserted $O(x_n^{-3})$ remainder also follows immediately
+from \eqref{sp:connected-asymptotic}.
+\end{proof}
+
+\subsection{Polynomial weights and the inherited local correction}
+\label{sp:weighted-bridge}
+
+Let $W(x)=\sum_{d=0}^{D}w_dx^d$ be a polynomial.  For functions
+with the relevant meromorphic continuation, use the fixed
+regulator
+\begin{equation}
+ \mathcal R_W[f]
+ :=\operatorname{FP}_{\varepsilon=0}
+     \sum_{n=0}^{\infty}W(x_n)x_n^{-2\varepsilon}f(x_n),
+ \qquad
+ Q_{W,a}(t):=\mathcal R_W\left[x\longmapsto\frac{1}{x^2+t}\right],
+ \label{sp:fixed-regulator}
+\end{equation}
+where $\operatorname{FP}$ means the constant Laurent coefficient.
+The weight is already included in $\mathcal R_W$.
+
+\begin{proposition}[The compact transform with a polynomial weight]
+\label{sp:weighted-compact}
+For the connected product in \eqref{sp:connected-product},
+\begin{equation}
+ \mathcal R_W[x\longmapsto G_{\boldsymbol\nu,\beta}(x^2)]
+ =\int_\beta^M\rho_{\boldsymbol\nu,\beta}(t)Q_{W,a}(t)\,dt.
+ \label{sp:weighted-compact-transform}
+\end{equation}
+The integral on the right is ordinary and absolutely convergent.
+The kernels for monomials have the explicit expressions, for
+integers $p\geq0$,
+\begin{align}
+ Q_{x^{2p},a}(t)
+ &=\sum_{j=0}^{p-1}(-t)^j\zeta(2j-2p+2,a)
+                        +(-t)^pQ_a(t),
+ \label{sp:even-weight-kernel}\\
+ Q_{x^{2p+1},a}(t)
+ &=\sum_{j=0}^{p-1}(-t)^j\zeta(2j-2p+1,a)
+                        -(-t)^p\Re\psi(a+i\sqrt t).
+ \label{sp:odd-weight-kernel}
+\end{align}
+Both sums are empty for $p=0$, and the kernels have their
+continuous values at $t=0$.
+\end{proposition}
+
+\begin{proof}
+For $\Re\varepsilon>(D-1)/2$, the compact representation
+\eqref{sp:compact-stieltjes} may be summed with the weight
+$W(x_n)x_n^{-2\varepsilon}$ by absolute Fubini.
+To continue this identity toward $\varepsilon=0$, choose $K$
+sufficiently large and use the exact finite expansion
+\[
+ \frac{1}{x^2+t}
+ =\sum_{j=0}^{K-1}(-t)^j x^{-2j-2}
+       +\frac{(-t)^K}{x^{2K}(x^2+t)}.
+\]
+After summation the finite sum consists of terms
+$w_d(-t)^j\zeta(2\varepsilon+2j+2-d,a)$.
+The remainder is normally convergent for $\varepsilon$ in a
+neighborhood of zero, uniformly on $\beta\leq t\leq M$.
+Indeed, its summands have size at most a constant times
+$x_n^{D-2\Re\varepsilon-2K-2}$ there.
+The possible polar coefficients are polynomials in $t$, and
+the holomorphic remainder has a uniform integrable majorant
+against $|\rho_{\boldsymbol\nu,\beta}(t)|\,dt$.
+Laurent coefficient extraction may therefore be interchanged
+with the compact integral, proving
+\eqref{sp:weighted-compact-transform}.  This argument uses
+meromorphic continuation with uniform control, rather than a
+pointwise limit of a divergent unregulated sum.
+
+Polynomial division proves \eqref{sp:even-weight-kernel} from
+$Q_{1,a}=Q_a$.  For the odd case, first observe that
+\[
+ \sum_{n=0}^{\infty}x_n^{-2\varepsilon}
+                \frac{x_n}{x_n^2+t}
+ =\zeta(1+2\varepsilon,a)
+  +\sum_{n=0}^{\infty}x_n^{-2\varepsilon}
+        \left\{\frac{x_n}{x_n^2+t}-\frac1{x_n}\right\}.
+\]
+The second series is normal near zero.  Since the constant
+Laurent coefficient of $\zeta(1+2\varepsilon,a)$ is $-\psi(a)$,
+the digamma difference used in
+Theorem~\ref{sp:critical-weight} gives
+$Q_{x,a}(t)=-\Re\psi(a+i\sqrt t)$.
+Polynomial division now proves \eqref{sp:odd-weight-kernel}.
+\end{proof}
+
+\begin{remark}[Scope and normalization of the local term]
+\label{sp:inherited-local-correction}
+The ordinary scalar formula \eqref{sp:master-formula} and the
+compact transform fit the local-correction calculation already
+present in the arithmetic spectral jets continuation
+\cite{ProveItArithmeticJets}.  We record its normalization here
+as inherited input.  Define
+\[
+ J_{W,N,r}:=\left.\partial_s^r
+       \sum_{n=0}^{\infty}W(x_n)
+                     \prod_{j=1}^{N}(x_n^2+\mu_j)^{-s}
+                    \right|_{s=0},\qquad
+ L(u):=\sum_{j=1}^{N}\log(1+\mu_j u),
+\]
+with the spectral sum continued before taking its derivative.
+For $r\geq1$, the existing correction formula is
+\begin{equation}
+ \begin{split}
+ J_{W,N,r}
+ &-\mathcal R_W\left[
+        x\longmapsto\left(-\sum_{j=1}^{N}\log(x^2+\mu_j)\right)^r
+                   \right]\\
+ &=\frac{(-1)^{r+1}}{2N(r+1)}
+     \sum_{k\geq r+1}w_{2k-1}[u^k]L(u)^{r+1}.
+ \end{split}
+ \label{sp:inherited-correction}
+\end{equation}
+The sum is finite because $W$ is a polynomial.  Its normalization
+can be read from the resonant factor
+$[u^k]e^{-sL(u)}\zeta(1+2Ns,a)$: the pole contributes
+$r![s^{r+1}u^k]e^{-sL(u)}/(2N)$ to the $r$th spectral jet.
+This equals the corresponding summand in
+\eqref{sp:inherited-correction}.  The fixed regulator has no
+such additional constant coefficient from its pole.
+
+For $W=1$ the correction vanishes, consistent with the direct
+normal-convergence proof of Theorem~\ref{sp:master}.
+More generally, it vanishes for every even polynomial weight.
+These are specializations of the inherited formula, not a new
+general regularized-trace principle; all-coefficient Laurent
+expansions of regularized traces belong to the established
+framework represented by Paycha--Scott \cite{PaychaScott}.
+Throughout such comparisons, interaction among masses means
+replacement of labeled masses at fixed $N$, as in
+Remark~\ref{sp:fixed-N-differences}.
+\end{remark}
+

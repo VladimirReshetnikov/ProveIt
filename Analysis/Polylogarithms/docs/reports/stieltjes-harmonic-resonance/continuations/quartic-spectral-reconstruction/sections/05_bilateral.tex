@@ -1,0 +1,589 @@
+% Article-ready fragment. Classical references and the source-report citation
+% should be wired into the parent bibliography when integrating this file.
+\section{Several quadratic factors beyond the first spectral derivative}
+\label{msj:sec:main}
+
+The incoming quadratic-spectrum report \cite{Quadratic} proves additivity of the first
+spectral derivative for any even polynomial weight and any finite list
+of masses. Its explicit next question asks for the second derivative,
+the logarithmic cross term, and the limit when two masses coincide.
+The following results answer that question with an ordinary convergent
+series and a one-dimensional integral of elementary functions. They also
+identify the finite corrections needed at every higher spectral order.
+The classical multiplicative-anomaly framework \cite{EVZ} concerns first derivatives
+of spectral zeta functions; the statements below concern the additional
+higher derivatives. No historical-priority claim is needed for this
+continuation of the inspected repository.
+
+Fix $0<a<1$, put $v_n=(n+a)^2$ for $n\in\mathbb Z$, and let
+\[
+ P(v)=\sum_{d=0}^{D}p_dv^d,\qquad B_j>0\quad(1\le j\le r),\qquad r\ge2.
+\]
+The parameter $B_j$ is the squared mass. Initially in their respective
+half-planes of absolute convergence, define
+\begin{align}
+ \mathcal E_P(s;a,B)&=\sum_{n\in\mathbb Z}P(v_n)(v_n+B)^{-s},
+ \label{msj:eq:E}\\
+ \mathcal Z_{P,\boldsymbol B}(s;a)
+ &=\sum_{n\in\mathbb Z}P(v_n)
+                  \prod_{j=1}^{r}(v_n+B_j)^{-s}.
+ \label{msj:eq:Z}
+\end{align}
+Their continuations are holomorphic at $s=0$. Indeed, a tail expansion
+uses integer powers of $v_n^{-1}$, and a possible pole at zero would
+require an odd power $(n+a)^{-1}$. The detailed subtraction proof below
+also supplies this continuation directly.
+
+Write
+\begin{equation}
+ \mathfrak D_k(P;a,\boldsymbol B)
+ =r^{k-1}\sum_{j=1}^{r}\mathcal E_P^{[k]}(0;a,B_j)
+       -\mathcal Z_{P,\boldsymbol B}^{[k]}(0;a),
+ \qquad k\ge1,
+ \label{msj:eq:defect}
+\end{equation}
+where square brackets indicate derivatives in the spectral parameter.
+The factors $r^{k-1}$ are part of the definition. They result from
+comparing the factors at the same spectral scale:
+\begin{equation}
+ \mathfrak D(s)=\frac1r\sum_j\mathcal E_P(rs;a,B_j)
+                           -\mathcal Z_{P,\boldsymbol B}(s;a),
+ \qquad \mathfrak D_k=\mathfrak D^{[k]}(0).
+ \label{msj:eq:common-scale}
+\end{equation}
+The already established first-derivative identity is $\mathfrak D_1=0$.
+
+\subsection{An exact second-derivative formula}
+
+For a function with a Laurent expansion at $v=\infty$, let
+$\operatorname{Pol}_{\infty}$ retain its nonnegative integer powers of
+$v$. Define
+\begin{align}
+ T_P(v;B,C)
+ &=\operatorname{Pol}_{\infty}
+       \left\{P(v)\log^2\frac{v+B}{v+C}\right\},
+ \label{msj:eq:T2}\\
+ S_P(a;B,C)
+ &=\sum_{n\in\mathbb Z}
+ \left\{P(v_n)\log^2\frac{v_n+B}{v_n+C}-T_P(v_n;B,C)\right\}.
+ \label{msj:eq:S2}
+\end{align}
+Every term in the subtraction is explicit. In fact,
+\begin{align}
+ q_k(B,C)&=(-1)^k\sum_{m=1}^{k-1}
+ \frac{(B^m-C^m)(B^{k-m}-C^{k-m})}{m(k-m)},\qquad k\ge2,
+ \label{msj:eq:qcoeff}\\
+ T_P(v;B,C)&=\sum_{d=2}^{D}p_d\sum_{k=2}^{d}q_k(B,C)v^{d-k}.
+ \label{msj:eq:T2-explicit}
+\end{align}
+Empty sums are zero. Thus the weights $P(v)=1$ and $P(v)=v$ need no
+subtraction. For $P(v)=v^2$ the only subtraction is $(B-C)^2$, while
+for $P(v)=v^3$ it is
+\[
+ (B-C)^2v-(B-C)^2(B+C).
+\]
+
+\begin{theorem}[Second spectral derivative for any number of masses]
+\label{msj:thm:second}
+The series \eqref{msj:eq:S2} is ordinary and absolutely convergent, and
+\begin{equation}
+ \boxed{\displaystyle
+ \mathfrak D_2(P;a,\boldsymbol B)
+     =\sum_{1\le i<j\le r}S_P(a;B_i,B_j).}
+ \label{msj:eq:second-pairwise}
+\end{equation}
+Consequently
+\begin{equation}
+ \mathcal Z_{P,\boldsymbol B}^{[2]}(0;a)
+ =r\sum_j\mathcal E_P^{[2]}(0;a,B_j)
+                       -\sum_{i<j}S_P(a;B_i,B_j).
+ \label{msj:eq:second-evaluation}
+\end{equation}
+For $\deg P\le1$, the pair correction is the unsubtracted convergent
+sum of logarithm squares. In particular, for $P=1$ it is nonzero whenever
+at least two masses are distinct. Thus first-derivative additivity does
+not extend unchanged to second derivatives.
+\end{theorem}
+
+\begin{proof}
+At a fixed $v>0$ write $L_j=\log(v+B_j)$. Twice differentiating the
+common-scale summand at zero gives
+\[
+ P(v)\left\{r\sum_jL_j^2-\left(\sum_jL_j\right)^2\right\}
+        =P(v)\sum_{i<j}(L_i-L_j)^2.
+\]
+The logarithm difference has the expansion
+\[
+ \log\frac{v+B}{v+C}
+   =\sum_{m\ge1}\frac{(-1)^{m+1}(B^m-C^m)}{m v^m}
+\]
+on a sufficiently large tail. Squaring proves
+\eqref{msj:eq:qcoeff} and \eqref{msj:eq:T2-explicit}; the subtracted
+summand is $O(v^{-1})$, uniformly for masses in a compact positive set.
+It therefore has an absolutely convergent bilateral sum.
+
+It remains to retain the exact value of the removed polynomial. Put
+\begin{equation}
+ \mathcal H_a(s)=\zeta(2s,a)+\zeta(2s,1-a).
+ \label{msj:eq:H}
+\end{equation}
+For every integer $m\ge0$,
+\begin{equation}
+ \mathcal H_a(-m)=0,
+ \label{msj:eq:trivial-zero}
+\end{equation}
+because $\zeta(-2m,x)=-B_{2m+1}(x)/(2m+1)$ and
+$B_{2m+1}(1-a)=-B_{2m+1}(a)$. Hence each removed $v^m$ has zero
+bilateral spectral value. The common-scale normal-convergence argument
+in Theorem~\ref{msj:thm:alljets} makes this differentiation and restoration
+precise and gives zero finite correction at order two. This proves
+\eqref{msj:eq:second-pairwise}. With an affine weight, the raw tail is
+$O(v^{-1})$ or better. With $P=1$ every pair summand is nonnegative and
+a distinct pair has strictly positive summands, giving the final claim.
+\end{proof}
+
+For two masses, the mixed logarithmic coordinate is equivalently
+\begin{equation}
+ \operatorname{Reg}\sum_{n\in\mathbb Z}
+  P(v_n)\log(v_n+B)\log(v_n+C)
+ =\frac{\mathcal E_P^{[2]}(0;a,B)+\mathcal E_P^{[2]}(0;a,C)
+                     -S_P(a;B,C)}2.
+ \label{msj:eq:cross-term}
+\end{equation}
+Here $\operatorname{Reg}$ denotes the analytic continuation determined
+by the common quadratic spectral coordinate. Formula
+\eqref{msj:eq:S2}, or the ordinary integral below, makes the new
+cross-term correction explicit; it does not subtract two unspecified
+divergent sums.
+
+\subsection{An elementary integral for the entire correction}
+
+The classical bilateral resolvent, from cotangent partial fractions \cite{DLMF}, is
+\begin{equation}
+ R_a(t)=\sum_{n\in\mathbb Z}\frac1{v_n+t}
+       =\frac{\pi}{\sqrt t}
+        \frac{\sinh(2\pi\sqrt t)}
+             {\cosh(2\pi\sqrt t)-\cos(2\pi a)},\qquad t>0.
+ \label{msj:eq:resolvent}
+\end{equation}
+It follows by pairing the cotangent partial fractions at
+$a+i\sqrt t$ and $a-i\sqrt t$. Set
+\[
+ f_P(t)=P(-t)R_a(t).
+\]
+
+\begin{theorem}[Ordinary logarithmic quadrature]
+\label{msj:thm:quadrature}
+For $B>C>0$,
+\begin{equation}
+ \boxed{\displaystyle
+ S_P(a;B,C)=2\int_C^B f_P(t)
+                     \log\frac{B-t}{t-C}\,\mathrm dt.}
+ \label{msj:eq:quadrature}
+\end{equation}
+The integral is ordinary and absolutely convergent; its only endpoint
+singularities are logarithmic. For arbitrary positive $B,C$, use
+$S_P(a;B,C)=S_P(a;C,B)$ and $S_P(a;B,B)=0$. A form with a continuous
+integrand on the square is
+\begin{equation}
+ S_P(a;B,C)=\int_C^B\int_C^B
+      \frac{f_P(t)-f_P(u)}{u-t}\,\mathrm du\,\mathrm dt,
+ \label{msj:eq:double-quadrature}
+\end{equation}
+where the diagonal value is $-f_P'(t)$.
+\end{theorem}
+
+\begin{proof}
+Polynomial division gives
+\[
+ P(v)/(v+t)=Q_t(v)+P(-t)/(v+t)
+\]
+with a polynomial $Q_t$. Therefore subtraction of the polynomial part
+and summation of the rational remainder give
+\begin{align*}
+ &\sum_{n\in\mathbb Z}(1-\operatorname{Pol}_{\infty})
+          \frac{P(v_n)}{(v_n+t)(v_n+u)}\\
+ &\hspace{35mm}=\frac{P(-t)R_a(t)-P(-u)R_a(u)}{u-t}.
+\end{align*}
+The statement at $u=t$ follows by continuity. For $(t,u)$ in a compact
+positive square, every subtracted summand is uniformly $O(v_n^{-1})$.
+Normal convergence permits integration of this identity over $[C,B]^2$.
+Since
+\[
+ \int_C^B\frac{\mathrm dt}{v+t}=\log\frac{v+B}{v+C},
+\]
+and finite polynomial extraction commutes with these integrals, the
+left side becomes \eqref{msj:eq:S2}. This proves
+\eqref{msj:eq:double-quadrature}.
+
+To reduce the square integral, omit temporarily the strip
+$|u-t|\le\varepsilon$, split the numerator, and interchange $u,t$ in
+its second term. The result tends to
+\[
+ 2\int_C^B f_P(t)\bigl(\log(B-t)-\log(t-C)\bigr)\,\mathrm dt.
+\]
+The omitted-strip contribution tends to zero because the divided
+difference extends continuously to the diagonal. The endpoint
+logarithms are integrable. Thus the temporary symmetric exclusion is
+only a proof device; the final integral needs no principal value or
+finite-part convention.
+\end{proof}
+
+For example, at $a=1/2$, $P=1$, $B=4$, $C=1$, the exact correction is
+\begin{equation}
+ \sum_{n\in\mathbb Z}
+ \log^2\frac{(n+1/2)^2+4}{(n+1/2)^2+1}
+ =2\pi\int_1^4\frac{\tanh(\pi\sqrt t)}{\sqrt t}
+                      \log\frac{4-t}{t-1}\,\mathrm dt.
+ \label{msj:eq:example-unweighted}
+\end{equation}
+At the quartic weight $P(v)=v^2$, the corresponding exact identity is
+\begin{equation}
+ \sum_{n\in\mathbb Z}\left[
+ (n+1/2)^4\log^2\frac{(n+1/2)^2+4}{(n+1/2)^2+1}-9\right]
+ =2\pi\int_1^4 t^{3/2}\tanh(\pi\sqrt t)
+                       \log\frac{4-t}{t-1}\,\mathrm dt.
+ \label{msj:eq:example-weighted}
+\end{equation}
+Both series and both integrals are ordinary convergent expressions.
+
+\subsection{Every confluent coefficient in finite resolvents}
+
+Let $H_m=\sum_{j=1}^m1/j$ and $H_0=0$, and put
+$\rho=\min(a,1-a)$. For $k\ge1$, define the rationally subtracted
+resolvent moment
+\begin{equation}
+ R_{P,k}(a;C)
+ =\sum_{n\in\mathbb Z}(1-\operatorname{Pol}_{\infty})
+                         \frac{P(v_n)}{(v_n+C)^k}.
+ \label{msj:eq:Rpk}
+\end{equation}
+As above, this is an absolutely convergent series after its explicit
+polynomial division.
+
+\begin{theorem}[Complete confluent expansion]
+\label{msj:thm:confluent}
+For $C>0$ and $|h|<C+\rho^2$,
+\begin{align}
+ S_P(a;C+h,C)
+ &=2\sum_{k=2}^{\infty}\frac{(-1)^kH_{k-1}}{k}
+                       h^k R_{P,k}(a;C),
+ \label{msj:eq:confluent-resolvent}\\
+ &=-2\sum_{k=2}^{\infty}\frac{H_{k-1}}{k!}
+                       f_P^{(k-1)}(C)h^k.
+ \label{msj:eq:confluent-elementary}
+\end{align}
+Here $S_P(a;C+h,C)$ denotes its principal-logarithm analytic
+continuation from positive masses to this disk.  Indeed every
+$v_n+C+h$ has positive real part on the disk, so the logarithms
+and the explicitly subtracted series define a single holomorphic
+function there.
+Each coefficient has the finite reduction
+\begin{equation}
+ R_{P,k}(a;C)
+ =\frac{(-1)^{k-1}}{(k-1)!}f_P^{(k-1)}(C)
+ =\sum_{\ell=0}^{\min(D,k-1)}
+       \frac{P^{(\ell)}(-C)}{\ell!}
+                          \mathcal E_1(k-\ell;a,C).
+ \label{msj:eq:Rpk-finite}
+\end{equation}
+The values $\mathcal E_1(N;a,C)$ at positive integers are obtained by
+differentiating the elementary function \eqref{msj:eq:resolvent}, or
+by the manuscript's finite polygamma partial fractions.
+\end{theorem}
+
+\begin{proof}
+The elementary Taylor identity
+\[
+ \log^2(1+x)=2\sum_{k=2}^{\infty}\frac{(-1)^kH_{k-1}}{k}x^k,
+ \qquad |x|<1,
+\]
+follows by differentiating both sides and using
+$\log(1+x)/(1+x)=\sum_{m\ge1}(-1)^{m+1}H_mx^m$.
+Apply it with $x=h/(v_n+C)$, extract the polynomial parts before
+summation, and use locally uniform convergence on the stated disk.
+This proves \eqref{msj:eq:confluent-resolvent}.
+
+Differentiating $f_P(C)$ under the subtracted resolvent sum proves the
+first equality in \eqref{msj:eq:Rpk-finite}. For the second, expand
+$P(v)$ at $v=-C$. Terms with $\ell\ge k$ are polynomials and disappear
+under $1-\operatorname{Pol}_{\infty}$; the other terms give the displayed
+finite sum. The derivative formula yields
+\eqref{msj:eq:confluent-elementary}. The function $f_P$ is meromorphic
+in $C$, with possible poles only at $C=-v_n$. The nearest possible pole
+is at distance $C+\rho^2$, which also proves the claimed disk of
+convergence. Zeros of $P$ can only remove poles and enlarge this disk.
+\end{proof}
+
+The first terms are
+\[
+ S_P(a;C+h,C)=h^2R_{P,2}(a;C)-h^3R_{P,3}(a;C)
+                   +\frac{11}{12}h^4R_{P,4}(a;C)+O(h^5).
+\]
+In particular, for $P=1$, $a=1/2$, and $C=1$,
+\begin{equation}
+ S_1(1/2;1+h,1)
+ =\frac12\left(\pi\tanh\pi-\pi^2\operatorname{sech}^2\pi\right)h^2
+                                                    +O(h^3).
+ \label{msj:eq:confluent-example}
+\end{equation}
+This explicitly evaluates the first nonzero coefficient when two
+quadratic factors merge.
+
+\subsection{A finite correction formula at every spectral order}
+
+The vanishing \eqref{msj:eq:trivial-zero} removes polynomial
+counterterms at the second derivative. Higher derivatives also produce
+polynomials times powers of $\log v$, whose spectral values need not
+vanish. The following formula retains every such contribution.
+
+Define
+\begin{align}
+ A(s,z)&=\frac1r\sum_{j=1}^r(1+B_jz)^{-rs}
+                         -\prod_{j=1}^r(1+B_jz)^{-s}
+          =\sum_{q\ge2}a_q(s)z^q,
+ \label{msj:eq:A}\\
+ a_q(s)&=(-1)^q\left\{
+  \frac1r\sum_{j=1}^r\frac{(rs)_qB_j^q}{q!}
+  -\sum_{q_1+\cdots+q_r=q}\prod_{j=1}^r
+                      \frac{(s)_{q_j}B_j^{q_j}}{q_j!}\right\}.
+ \label{msj:eq:aq}
+\end{align}
+The coefficient polynomials $a_q(s)$ are divisible by $s^2$; the
+coefficients $a_0,a_1$ vanish identically. Put
+\begin{equation}
+ T(s,v)=\sum_{d=2}^{D}p_d\sum_{q=2}^{d}a_q(s)v^{d-q}.
+ \label{msj:eq:T-spectral}
+\end{equation}
+
+\begin{theorem}[All-order ordinary remainder and finite Hurwitz jets]
+\label{msj:thm:alljets}
+For $s$ in a neighborhood of zero,
+\begin{align}
+ \mathfrak D(s)
+ &=\sum_{n\in\mathbb Z}v_n^{-rs}
+             \bigl(P(v_n)A(s,v_n^{-1})-T(s,v_n)\bigr)
+ \notag\\
+ &\quad+\sum_{d=2}^{D}p_d\sum_{q=2}^{d}
+                           a_q(s)\mathcal H_a(rs+q-d).
+ \label{msj:eq:regulator}
+\end{align}
+The first series is normally convergent near zero. For $k\ge2$, define
+\begin{align}
+ F_k(v)&=(-1)^kP(v)\left\{
+     r^{k-1}\sum_j\log^k(v+B_j)
+            -\left(\sum_j\log(v+B_j)\right)^k\right\},
+ \label{msj:eq:raw-k}\\
+ T_k(v)&=\sum_{d=2}^{D}p_d\sum_{q=2}^{d}
+       \sum_{j=2}^{k}\binom{k}{j}a_q^{[j]}(0)
+                (-r\log v)^{k-j}v^{d-q},
+ \label{msj:eq:Tk}\\
+ C_k&=\sum_{d=2}^{D}p_d\sum_{q=2}^{d}
+       \sum_{j=2}^{k-1}\binom{k}{j}a_q^{[j]}(0)
+                 r^{k-j}\mathcal H_a^{[k-j]}(q-d).
+ \label{msj:eq:Ck}
+\end{align}
+Then the exact $k$th spectral defect is
+\begin{equation}
+ \boxed{\displaystyle
+ \mathfrak D_k=\sum_{n\in\mathbb Z}\bigl(F_k(v_n)-T_k(v_n)\bigr)+C_k.}
+ \label{msj:eq:alljets}
+\end{equation}
+The remainder series is ordinary and absolutely convergent. Its
+summand is $O(v_n^{-1}(1+|\log v_n|^{k-2}))$. All correction terms are
+finite Hurwitz-zeta jets at nonpositive even integers. For affine $P$,
+both $T_k$ and $C_k$ vanish at every $k\ge2$.
+\end{theorem}
+
+\begin{proof}
+At $s=0$, the two terms in \eqref{msj:eq:A} both equal one, and their
+first $s$ derivatives both equal $-\sum_j\log(1+B_jz)$. Thus
+$a_q(s)=O(s^2)$. Expansion to first degree in $z$ shows that $a_1=0$.
+The Pochhammer expansion proves \eqref{msj:eq:aq} exactly.
+
+On a sufficiently large lattice tail, Taylor expansion in $z=v^{-1}$
+and the definition of $T$ give
+\[
+ P(v)A(s,v^{-1})-T(s,v)=O(v^{-1})
+\]
+uniformly for $s$ in a compact neighborhood of zero. Multiplication by
+$v^{-rs}$ leaves a normally convergent series, for example on
+$|\operatorname{Re}s|<1/(4r)$. Finitely many smaller $v_n$ cause no
+difficulty: the exact functions $A(s,v_n^{-1})$ are used there,
+without applying a possibly invalid small-$z$ expansion.
+
+Restoring the removed monomials by
+$\sum_n v_n^{d-q-rs}=\mathcal H_a(rs+q-d)$ gives
+\eqref{msj:eq:regulator}, first in a common half-plane after a finite
+head is separated and then by meromorphic continuation. Alternatively,
+the same head-tail construction is a direct definition of this
+continuation. None of the restored factors has a pole at zero:
+$q-d$ is an integer, whereas the only pole of $\mathcal H_a$ is at
+$1/2$. This proves the asserted holomorphy and normal convergence.
+
+Differentiate \eqref{msj:eq:regulator} $k$ times. The first raw
+derivative is \eqref{msj:eq:raw-k}, and the derivative of
+$v^{-rs}T(s,v)$ is \eqref{msj:eq:Tk}. In the restored finite sum,
+the terms with $j=0,1$ vanish because $a_q$ is divisible by $s^2$;
+the term $j=k$ vanishes by \eqref{msj:eq:trivial-zero}. The remaining
+terms are exactly \eqref{msj:eq:Ck}. Derivatives of the normal tail
+give the stated polynomial-logarithmic bound. For $D\le1$, all finite
+sums are empty.
+\end{proof}
+
+The second-derivative theorem follows immediately: at $k=2$ the
+finite sum $C_2$ is empty, the raw derivative is the pairwise square,
+and $T_2$ is precisely its polynomial part. At the third derivative
+the correction can already be nonzero. For two masses and $P(v)=v^2$,
+\begin{align}
+ F_3(v)&=-3v^2\log\bigl((v+B)(v+C)\bigr)
+                         \log^2\frac{v+B}{v+C},
+ \label{msj:eq:third-raw}\\
+ T_3(v)&=-6(B-C)^2\log v,
+ \label{msj:eq:third-subtraction}\\
+ C_3&=-12(B-C)^2\log(2\sin\pi a).
+ \label{msj:eq:third-contact}
+\end{align}
+Indeed $a_2(s)=\tfrac12(B-C)^2s^2$ in this case, while Lerch's
+identity and Gamma reflection give
+\[
+ \mathcal H_a'(0)=2\bigl(\zeta'(0,a)+\zeta'(0,1-a)\bigr)
+                 =-2\log(2\sin\pi a).
+\]
+Formula \eqref{msj:eq:third-contact} is therefore a concrete check on
+the sign and the scale factor in the general correction law. Discarding
+it would change the third spectral derivative.
+
+\subsection{Polylogarithmic coordinates for the finite corrections}
+
+Define the symmetric polylogarithm
+\[
+ \mathcal C_s(a)=\frac{\operatorname{Li}_s(e^{2\pi ia})
+                          +\operatorname{Li}_s(e^{-2\pi ia})}{2}.
+\]
+For real $s$ this is the real part of the first polylogarithm; the
+symmetric definition retains holomorphic dependence on complex $s$.
+The symmetric Hurwitz functional equation gives, for $m\ge0$ and
+$u$ near zero,
+\begin{equation}
+ \mathcal H_a(-m+u)
+ =4(-1)^m\frac{\Gamma(2m+1-2u)}{(2\pi)^{2m+1-2u}}
+                  \sin(\pi u)\mathcal C_{2m+1-2u}(a).
+ \label{msj:eq:H-polylog}
+\end{equation}
+Consequently $\mathcal H_a^{[h]}(-m)$ is a finite combination of
+polylogarithm order derivatives at $2m+1$, of order at most $h-1$,
+and Gamma derivatives at $2m+1$. The zero of $\sin(\pi u)$ is
+responsible for this reduction in order. For example,
+\begin{equation}
+ \mathcal H_a'(-m)=
+ \frac{2(-1)^m(2m)!}{(2\pi)^{2m}}\mathcal C_{2m+1}(a).
+ \label{msj:eq:Hprime-polylog}
+\end{equation}
+Thus the finite corrections in \eqref{msj:eq:Ck} use polylogarithm
+order derivatives only through order $k-3$. This is a finite reduction
+of the correction, not a claim that the ordinary remainder in
+\eqref{msj:eq:alljets} always reduces to finitely many polylogarithms.
+
+\subsection{A confluent law simultaneously at every spectral order}
+
+\begin{theorem}[All-order mass-coalescence law]
+\label{msj:thm:allconfluent}
+Let $B>0$ and fixed real numbers $c_1,\ldots,c_r$ be given, and set
+$B_j=B+\varepsilon c_j$. For every $k\ge2$,
+\begin{align}
+ \mathfrak D_k(P;a,\boldsymbol B)
+ &=\binom{k}{2}r^{k-2}\varepsilon^2
+       \left(r\sum_jc_j^2-\Bigl(\sum_jc_j\Bigr)^2\right)
+                    \mathcal E_P^{[k-2]}(2;a,B)
+       +O(\varepsilon^3).
+ \label{msj:eq:allconfluence}
+\end{align}
+The right side is well defined even when its defining raw series at
+$s=2$ diverges: $\mathcal E_P(s;a,B)$ has no pole at an integer.
+For $\deg P\le1$ it is an ordinary spectral derivative of a convergent
+resolvent series. If all $c_j$ are equal, the masses remain identical
+and every defect vanishes exactly.
+\end{theorem}
+
+\begin{proof}
+For a fixed $v$, expand the common-scale expression in
+\eqref{msj:eq:common-scale} through second order in $\varepsilon$.
+The constant and linear coefficients cancel. The quadratic term is
+\[
+ \frac{s^2\varepsilon^2}{2}
+ \left(r\sum_jc_j^2-\Bigl(\sum_jc_j\Bigr)^2\right)(v+B)^{-rs-2}.
+\]
+The same tail subtraction as above justifies this identity for the
+continued families, locally uniformly in $s$ near zero. Hence
+\[
+ \mathfrak D(s)=\frac{s^2\varepsilon^2}{2}
+ \left(r\sum_jc_j^2-\Bigl(\sum_jc_j\Bigr)^2\right)
+                 \mathcal E_P(rs+2;a,B)+O(\varepsilon^3).
+\]
+Taking its $k$th derivative gives \eqref{msj:eq:allconfluence}.
+The single-mass tail expansion has possible poles only at half-integers,
+which proves the assertion at $s=2$. When all masses are equal,
+$\mathcal Z_{P,\boldsymbol B}(s;a)=\mathcal E_P(rs;a,B)$, so
+\eqref{msj:eq:common-scale} is identically zero.
+\end{proof}
+
+\subsection{A global Hurwitz-jet evaluation of the individual terms}
+
+For completeness, the individual second derivatives in
+\eqref{msj:eq:second-evaluation} can be evaluated without leaving an
+unevaluated multivariate spectral zeta function. Choose an integer
+$N\ge0$ such that $B<(N+\rho)^2$, and define
+\[
+ \mathcal H_{a,N}(s)=\zeta(2s,N+a)+\zeta(2s,N+1-a).
+\]
+Separating the $2N$ lattice terms with positive coordinates
+$n+a$ and $n+1-a$, $0\le n<N$, gives the geometrically convergent
+formula
+\begin{align}
+ \mathcal E_P^{[2]}(0;a,B)
+ &=\sum_{n=0}^{N-1}\sum_{x\in\{n+a,n+1-a\}}
+                         P(x^2)\log^2(x^2+B)
+ \notag\\
+ &\quad+\sum_{d=0}^{D}p_d\Bigg\{
+    \mathcal H_{a,N}^{[2]}(-d)
+ \notag\\
+ &\hspace{20mm}+2\sum_{q=1}^{\infty}\frac{(-1)^qB^q}{q}
+       \left[H_{q-1}\mathcal H_{a,N}(q-d)
+                         +\mathcal H_{a,N}'(q-d)\right]\Bigg\}.
+ \label{msj:eq:individual-second}
+\end{align}
+Every spectral argument here is an integer in the $\mathcal H$ variable,
+so no pole is substituted separately. This identity follows directly
+from
+\[
+ (s)_q=(q-1)!s\bigl(1+H_{q-1}s+O(s^2)\bigr)
+\]
+and the binomial expansion of $(x^2+B)^{-s}$ on the chosen tail.
+The strict tail-radius condition justifies spectral differentiation
+term by term. Higher derivatives use the same finite Pochhammer
+coefficient calculus, or unsigned Stirling numbers of the first kind.
+Together with \eqref{msj:eq:quadrature}, this supplies a global exact
+evaluation of the several-mass second derivative in ordinary Hurwitz
+jets and an explicitly anchored elementary integral.
+
+\subsection{Verification and the remaining boundary}
+
+The accompanying Python program constructs the Pochhammer spectral
+coefficients and the direct logarithmic coefficients independently over
+the rational numbers. It compares the resulting ordinary remainders
+with independent finite-head Hurwitz continuations, evaluates the
+resolvent quadrature directly, checks the nonzero third-order correction,
+and compares the convergent confluent series with its integral.
+Numerical diagnostics are distinct from the all-order proofs above;
+they are not interval certificates.
+
+The answered repository question is the several-mass second derivative
+and its confluent limit, with the ordinary logarithmic cross term made
+explicit. The one-dimensional integral in \eqref{msj:eq:quadrature}
+is itself an exact evaluation coordinate. A finite reduction of that
+integral to a specified algebra of ordinary polylogarithms for arbitrary
+$a,B,C$ remains a separate question. For odd or noninteger spectral
+weights, resonant odd powers can occur and additional local Laurent
+terms must be retained; the parity-protected bilateral formula above
+does not silently assert their absence.

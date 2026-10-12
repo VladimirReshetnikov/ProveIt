@@ -1,3 +1,112 @@
+# Complete harmonic-tail prefixes and ordinary identity families
+
+October 12, 2026. Section 8.45 proves the analytic centered coefficient
+model, exact retained determinant normalization and constructive eventual
+nonvanishing theorem, then complete fixed smaller orders ten, twelve and
+fourteen. Orders ten/twelve retain report attribution. The new order-fourteen
+certificate covers every one of 80632 remaining integers; its exact threshold
+B7=80640 covers the infinite remainder. All 161281 Bernoulli coefficients
+and every determinant agree between independent algorithms. Integer
+convolution and accumulation bounds are explicit, and no floating-point
+nonzero test enters the proof. Formal rank does not assert arithmetic
+independence, and the unrestricted and Gaussian questions remain open.
+
+Five independent exact rational original/retained determinant comparisons
+pass, with wrong-sign controls rejected. The first order-fourteen pair
+(14,16) has all eight ordinary identity rows and finite counterterms
+explicitly compiled. The general inverse construction gives absolutely
+convergent polygamma-product identities for every pair in the three complete
+families. An independent exact Python and Wolfram replay confirms the
+exceptional order-ten matrix, both inverse products and its determinant.
+Written infinite proofs, finite exact certificates and numerical diagnostics
+retain separate roles.
+
+All eleven full mathematical suites in the seventeenth/eighteenth intake
+pass on isolated copies, including fresh native and independent Python
+complete order-twelve checks. Preserve 107 imported archives as 3956 tracked
+original members, with 42 ignored records recoverable in arrival history;
+1577 textual sources are covered by the inventory and ledger. Each imported
+ZIP was retired in its placement commit. Original delivery files and evidence
+remain unchanged. Later incoming reports retain a separate pending scope.
+
+The final four PDFs have 130/129/233/85 pages (577 total); the combined
+edition has 536 pages and 138 references. Authorship remains ProveIt
+Contributors. Every earlier theorem/equation number, thirteen figures and
+94 literature leads is retained. Three coupled rounds, three combined passes
+and three cold passes per volume converge. All static page checks and 40
+external destinations pass. Full-size review covers 15 changed volume
+bodies and 2 unmatched combined bodies; 562 volume and 523
+combined bodies retain their previous review by exact raster agreement, and
+11 changed combined bodies match the freshly reviewed volumes. Only
+centered footer numbers are excluded, with all other bounds audited.
+No current contact sheet was opened. A helper encoding error in inherited
+punctuation was caught by raster comparison, repaired from committed UTF-8
+source, and followed by full final rebuilding and repeated review.
+
+Historical checkpoints below retain their original dated scope.
+
+# Crossed twists, balanced jets and ordinary logarithmic moments
+
+October 11, 2026. The four independently compiling collective volumes have
+130/129/224/85 pages (568 total), with a 527-page combined edition and
+137 references. Authorship remains **ProveIt Contributors**; all earlier
+chapter, theorem and equation numbers, thirteen figures and 94 literature
+leads are preserved. Section 8.44 adds four proved theorems.
+
+The affine Dirichlet crossing theorem explicitly proves smoothness of the
+complex pushforward density near zero, holomorphic parameter dependence
+and the two principal boundary limits. Their average is the finite part;
+their difference supplies its delta derivative in the intermediate affine
+coordinate. Modewise comparison gives a finite Fourier correction for
+arbitrary real nonintegral twists at positive integer total order. The
+common-interval theorem is preserved. Balanced jets have a closed formula
+at every order and an exact chamberwise kernel of dimension d-c and rank
+c-1. Every centered logarithmic moment q >= r+s is an ordinary integral
+and reduces to a finite combination of even zeta values. Later logarithmic
+Mellin finite parts and Stieltjes primitives remain pending.
+
+The independent checker imports no delivered code. It verifies twelve
+symbolic affine density polynomials, 26 jet coefficients, 378 exact cut
+matrices and 128 binomial-multiplicity reductions. Two omitted-correction
+controls are rejected. Independent 90-digit diagnostics compare twelve
+real/complex affine finite parts at Taylor orders 80 and 90, 33 principal
+logarithm mode products, and nine ordinary Mellin integrals. They are
+numerical diagnostics, not interval certificates. Python optimization is
+zero in the audit environment, so assertions are enabled.
+
+Every volume completes three converged coupled rounds and three isolated
+cold passes. Every static page check and all 40 external destinations pass.
+Seventeen changed volume bodies and two unmatched combined contents pages
+are reviewed at full size. Exact scientific-body rasters retain review for
+551 volume and 516 combined bodies; nine changed combined bodies match the
+freshly reviewed volumes. Only centered footer page numbers are excluded,
+with all other bounds audited. No current contact sheet was opened. A
+stranded final contents entry in Volume III was fixed at the normal font
+size before final compilation and review.
+
+The S6 experiments complete all convergent length-split 2+5 and 3+4 inputs
+at weight seven, depth sum five and odd conjugation parity: 3604 each.
+Lossless compact files retain every input word and all 39634508 projected
+coefficient pairs. An independent letter-profile count and exact input-set
+comparison check completeness and reject omission; compact coordinate
+ordering, bounds and logical byte streams also pass. The full 16603-by-8786
+integer matrix retains every depth-five coordinate, at common denominator
+5760. Its finite-field search is a separate experiment, not rational target
+membership or a period certificate. Gaussian S6/revised S8 remain open.
+
+The completed native search has rank 4985 modulo 2147483647, adding 43
+dimensions to the preceding first-letter experiment. The target remains
+outside that modular span. This is not rational nonmembership or a period
+counterexample. Its reported residual count is partial, since elimination
+stops at the first missing pivot; no canonical residual is claimed.
+
+Accepted provenance remains at 96 archives, 3502 tracked originals,
+36 ignored recoverable bare manifests and 1408 textual provenance sources.
+No original delivery was edited or regenerated in place. Historical
+checkpoints below retain their original dated scope. Five new related ZIPs
+arrived in da2792fc9c during this audit; they are queued for the next intake
+and are not counted as imported or analytically accepted in this checkpoint.
+
 # Sixth/seventh moments and complete first-letter kernel validation
 
 October 11, 2026. The four collective volumes compile to 129/128/218/84

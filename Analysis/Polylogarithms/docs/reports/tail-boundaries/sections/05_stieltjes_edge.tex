@@ -1,0 +1,385 @@
+\section{Completion of the undifferentiated Stieltjes edge}
+\label{edge:sec}
+
+The positive-argument-derivative product theorem in the earlier
+\emph{Polygamma Tail Identities} report \cite{tail-polygamma} assumes that both ordinary
+derivative orders are positive.  Its research question 9 asks for the
+missing cases in which one factor is undifferentiated.  We resolve
+that edge.  The mechanism remains the classical Mikol\'as product
+integral; the additional result is the joint spectral-pole completion,
+its all-index finite algorithm, and its exact endpoint law.  No claim
+of historical priority for the classical product kernel is made.
+The five incoming packages at the pinned October 11 revision were
+also checked for duplication of this statement; their spectral
+Stieltjes defects concern different products.
+
+Use the convention
+\[
+ \zeta(1+u,x)=\frac1u+
+       \sum_{m\ge0}\frac{(-1)^m}{m!}\gamma_m(x)u^m,
+ \qquad \gamma_0(x)=-\psi(x).
+\]
+Every finite part below means the constant coefficient of the integral
+from $\epsilon$ to $1$ in the original coordinate $x$.  Terms
+$\epsilon^a\log^j\epsilon$ with $a<0$ and all positive powers of
+$\log\epsilon$ are deleted.  A change of cutoff coordinate is not
+part of this convention.
+
+\subsection{The completed first-order edge}
+
+For an integer $l\ge2$, put
+\begin{align}
+ P_l(u,v)&=\frac{\Gamma(l+u+v)}{\Gamma(1+u)\Gamma(l+v)}
+                              \zeta(l+u+v),\\
+ E(u)&=\frac{\pi u}{\sin\pi u},\\
+ H_l(u,v)&=-\frac{P_l(u,v)E(u)-P_l(0,v)}u
+       +(-1)^l\frac{P_l(u,v)E(v)-P_l(u,0)}v.
+ \label{edge:H}
+\end{align}
+Each divided difference in \eqref{edge:H} is holomorphic near
+$(0,0)$.  In particular $H_l$ is a genuine two-variable Taylor germ,
+not an iterated choice of Laurent constants.
+
+\begin{theorem}[Every undifferentiated-factor jet]
+\label{edge:theorem}
+For all integers $m,b\ge0$ and $l\ge2$,
+\begin{equation}
+ \left.\partial_u^m\partial_v^b H_l(u,v)\right|_{u=v=0}
+ =(-1)^m\operatorname{FP}\int_0^1
+    \gamma_m(x)\left.\partial_t^b\zeta(t,x)\right|_{t=l}\,dx.
+ \label{edge:alljets}
+\end{equation}
+Consequently every finite part
+\[
+ \operatorname{FP}\int_0^1\gamma_m(x)\gamma_n^{(r)}(x)\,dx,
+ \qquad m,n\ge0,\quad r\ge1,
+\]
+has a finite expression in ordinary zeta values and derivatives at
+positive integers.  The superscript $(r)$ is an argument derivative.
+\end{theorem}
+
+\begin{proof}
+Write $s=1+u$ and $t=l+v$.  The classical product integral continues as
+\begin{align}
+ F(s,t)&=\pi\frac{\Gamma(s+t-1)}{\Gamma(s)\Gamma(t)}
+              \zeta(s+t-1)\{\csc(\pi s)+\csc(\pi t)\}.
+ \label{edge:F}
+\end{align}
+Initially it equals $\int_0^1\zeta(s,x)\zeta(t,x)\,dx$ when
+$\Re s<1$, $\Re t<1$, and $\Re(s+t)<1$; see
+Shpot--Chaudhary--Paris, Remark 1 \cite{ShpotParis}, or prove it by integrating the
+absolutely convergent Hurwitz Fourier series first for
+$\Re s,\Re t<0$.  In that initial region the scalar identity
+$\int_0^1\zeta(t,x)\,dx=0$ implies
+\[
+ \int_0^1\left(\zeta(s,x)-\frac1{s-1}\right)\zeta(t,x)\,dx
+ =F(s,t).
+\]
+Both sides have the same meromorphic continuation.
+
+Set $R(s,x)=\zeta(s,x)-1/(s-1)$.  For $s$ near $1$, this function
+is holomorphic in $s$, and
+\[
+ R(s,x)=x^{-s}+A(s,x),\quad
+ A(s,x)=\zeta(s,1+x)-\frac1{s-1}.
+\]
+The function $A$ is jointly holomorphic near $s=1$, $x=0$.
+For the second factor use
+\[
+ \zeta(t,x)=x^{-t}+B(t,x),\quad B(t,x)=\zeta(t,1+x).
+\]
+In the product the two exponents crossing $-1$ at $(s,t)=(1,l)$ are
+precisely
+\[
+ \zeta(t)x^{-s},\qquad
+ c_{l-1}(s)x^{l-1-t},\quad
+ c_j(s)=\frac{(-1)^j(s)_j}{j!}\zeta(s+j).
+\]
+The subtraction of $1/(s-1)$ changes only the constant Taylor
+coefficient of $A$; since $l-1\ge1$, the second coefficient is still
+$c_{l-1}(s)$ and is holomorphic near $s=1$.
+After subtracting sufficiently many further Taylor monomials, the
+remainder and all prescribed parameter derivatives are dominated by
+$Cx^{-\delta}(1+|\log x|^N)$, with $\delta<1$.
+Their integrals therefore form a holomorphic germ.
+
+The analytic integrals of the two resonant monomials are
+$-\zeta(t)/(s-1)$ and $-c_{l-1}(s)/(t-l)$, whereas all their
+parameter derivatives at the resonance have coordinate finite part
+zero: they are multiples of $x^{-1}\log^j x$.
+Every nonresonant monomial commutes with parameter differentiation.
+Thus the required holomorphic completion is
+\[
+ F(s,t)+\frac{\zeta(t)}{s-1}+
+                         \frac{c_{l-1}(s)}{t-l}.
+\]
+Now $P_l(0,v)=\zeta(l+v)$ and
+$c_{l-1}(1+u)=-(-1)^lP_l(u,0)$.
+Substitution into \eqref{edge:F} gives exactly \eqref{edge:H}.
+Finally $\partial_u^mR(1+u,x)|_{u=0}=(-1)^m\gamma_m(x)$,
+proving \eqref{edge:alljets} with the stated finite-part convention.
+\end{proof}
+
+\subsection{A terminating coefficient algorithm}
+
+Define
+\[
+ p_{r,j}=\left.\frac{d^j}{du^j}(1+u)_r\right|_{u=0},
+ \qquad p_{r,j}=0\ \text{if }j>r.
+\]
+For $r\ge1$ the Hurwitz derivative law gives
+\begin{equation}
+ \gamma_n^{(r)}(x)=(-1)^{n+r}
+       \sum_{j=0}^{\min(n,r)}\binom nj p_{r,j}
+            \left.\partial_t^{n-j}\zeta(t,x)\right|_{t=r+1}.
+ \label{edge:conversion}
+\end{equation}
+Write $P_l(u,v)=\sum_{a,b\ge0}P^{(l)}_{ab}u^av^b$ and
+$E(u)=\sum_{j\ge0}e_{2j}u^{2j}$, where
+\[
+ e_0=1,\qquad e_{2j}=2(1-2^{1-2j})\zeta(2j)\quad(j\ge1).
+\]
+Then
+\begin{equation}
+ [u^av^b]H_l=
+ -\sum_{j=0}^{\lfloor(a+1)/2\rfloor}e_{2j}P^{(l)}_{a+1-2j,b}
+ +(-1)^l\sum_{j=0}^{\lfloor(b+1)/2\rfloor}
+                        e_{2j}P^{(l)}_{a,b+1-2j}.
+ \label{edge:finite}
+\end{equation}
+Combining \eqref{edge:conversion} and \eqref{edge:finite} evaluates
+any requested $m,n,r$ with coefficients of total degree at most
+$m+n+1$.  There are no spectral limits left in the algorithm.
+The coefficient source can itself be written as
+\begin{equation}
+ P_l(u,v)=\zeta(l+u+v)
+       \prod_{j=1}^{l-1}\left(1+\frac{u}{j+v}\right)
+       \exp\left\{
+       \sum_{k\ge2}\frac{(-1)^k\zeta(k)}k
+                    [(u+v)^k-u^k-v^k]\right\}.
+ \label{edge:coefficient-source}
+\end{equation}
+The product is finite, and only finitely many terms of the exponential
+can affect a prescribed coefficient.  This exhibits the claimed
+ordinary-zeta closure directly.
+In conjunction with the inherited positive-positive sector this proves
+a useful uniform statement: whenever the total ordinary derivative
+order is positive, every quadratic same-point Stieltjes finite part
+reduces to a finite expression involving ordinary positive-integer
+zeta values and their order derivatives.  No Stieltjes constant
+is needed in those final expressions.  The double-undifferentiated
+corner is different and is recorded below for comparison.
+
+For completeness the edge and inherited interior can be written in one
+finite dictionary. For $r,t\ge0$ with $r+t>0$, put
+$k=r+1$, $l=t+1$, $w=r+t+1$, and define
+\begin{align}
+ P_{kl}(u,v)&=\frac{\Gamma(w+u+v)}{\Gamma(k+u)\Gamma(l+v)}
+                         \zeta(w+u+v),\notag\\
+ H_{kl}(u,v)&=(-1)^k\frac{P_{kl}(u,v)E(u)-P_{kl}(0,v)}{u}
+       +(-1)^l\frac{P_{kl}(u,v)E(v)-P_{kl}(u,0)}{v}.
+       \label{edge:uniform-kernel}
+\end{align}
+Then the uniform coefficient formula is
+\begin{equation}\label{edge:uniform-dictionary}
+ \boxed{\displaystyle
+ \operatorname{FP}\int_0^1\gamma_m^{(r)}(x)\gamma_n^{(t)}(x)\,dx
+ =(-1)^{m+n+r+t}m!n![u^mv^n]
+             (1+u)_r(1+v)_tH_{kl}(u,v).}
+\end{equation}
+When $r=0$ this is the new edge theorem; when $t=0$ use symmetry.
+When both are positive it is the inherited positive-positive formula
+\cite[Theorem \texttt{hprod:stieltjes-products}]{tail-polygamma}.
+Multiplying its Hurwitz Taylor germ by the two rising factorials
+proves \eqref{edge:uniform-dictionary}. Only order derivatives at the
+single argument $w=r+t+1$ occur. Their coefficients involve rational
+numbers and ordinary zeta values from the Gamma expansion. Thus
+``single argument'' refers to the differentiated zeta factors, not
+to every undifferentiated zeta value in the coefficients.
+
+\subsection{Explicit first-index identities}
+
+Let $H=H_{l-1}$, $H_2=H_{l-1}^{(2)}$, and
+$\sigma=(-1)^l$.  The first coefficients are
+\begin{align}
+ H_l(0,0)&=-H\zeta(l)+(\sigma-1)\zeta'(l),\\
+ \partial_u H_l(0,0)
+ &=\left[(\sigma-1)\zeta(2)+\left(\frac12-\sigma\right)H_2
+                          -\frac12H^2\right]\zeta(l)
+       +(\sigma-1)H\zeta'(l)
+       +\left(\sigma-\frac12\right)\zeta''(l),
+       \label{edge:firstu}\\
+ \partial_v H_l(0,0)
+ &=\{(\sigma-1)\zeta(2)+H_2\}\zeta(l)
+       -H\zeta'(l)+\left(\frac\sigma2-1\right)\zeta''(l).
+       \label{edge:firstv}
+\end{align}
+For example the $l=2$ formulas give the pair
+\begin{align}
+ \boxed{\operatorname{FP}\int_0^1
+       \gamma_1(x)\gamma_0'(x)\,dx
+          =\frac12\zeta''(2)-\zeta(2),}
+       \label{edge:example10}\\
+ \boxed{\operatorname{FP}\int_0^1
+       \gamma_0(x)\gamma_1'(x)\,dx
+          =-\zeta'(2)-\frac12\zeta''(2).}
+       \label{edge:example01}
+\end{align}
+Neither individual identity follows merely by integrating the
+derivative of $\gamma_0\gamma_1$.  Their sum is the endpoint
+constant $-\zeta(2)-\zeta'(2)$.
+At one further argument derivative,
+\begin{equation}
+ \operatorname{FP}\int_0^1\gamma_1(x)\gamma_0''(x)\,dx
+  =\left(4\zeta(2)-\frac32\right)\zeta(3)
+          +6\zeta'(3)+3\zeta''(3).
+ \label{edge:example12}
+\end{equation}
+
+One higher Stieltjes index already produces a new derivative order:
+\begin{equation}
+ \operatorname{FP}\int_0^1\gamma_2(x)\gamma_0'(x)\,dx
+ =2\zeta'(2)-\zeta''(2)-\frac23\zeta'''(2)
+                         +2\zeta(2)\zeta(3).
+ \label{edge:example20}
+\end{equation}
+More generally, put $J_{0,1}^{m,n}=\operatorname{FP}\int_0^1
+\gamma_m(x)\gamma_n'(x)\,dx$.  In its finite formula the
+coefficient of the highest ordinary-zeta
+order derivative $\zeta^{(m+n+1)}(2)$ is exactly
+\begin{equation}
+ \frac{(-1)^{m+n+1}(m-n)}{(m+1)(n+1)}.
+ \label{edge:top}
+\end{equation}
+This is a coefficient statement for the displayed reduction and does
+not assert arithmetic independence of its evaluated constants.
+Indeed the highest derivative can only come from
+$-P^{(2)}_{m+1,n}+P^{(2)}_{m,n+1}$ with all Gamma and
+Pochhammer factors replaced by their constant terms.  Multiplication
+by $(-1)^{m+n+1}m!n!$ gives \eqref{edge:top}.
+
+For readers preferring an ordinary convergent integral, put
+$g(x)=\gamma_1(1+x)$ and $h(x)=\psi'(1+x)$.
+Equation \eqref{edge:example10} is equivalent to
+\begin{equation}
+ \begin{split}
+ \int_0^1\left\{
+   \frac{g(x)-\gamma_1-(\zeta(2)+\zeta'(2))x}{x^2}
+  +\frac{\log x}{x}\{h(x)-\zeta(2)\}+g(x)h(x)
+                  \right\}\,dx
+ =\zeta(2)-\frac12\zeta''(2)+\frac14+\gamma_1.
+ \end{split}
+ \label{edge:ordinary}
+\end{equation}
+The first apparent singularity is removable and the second is
+$O(\log x)$.  Indeed
+$\gamma_1(x)=\log x/x+g(x)$ and $\psi'(x)=x^{-2}+h(x)$;
+the removed singular monomials have finite-part integral
+$-1/4-\gamma_1$, since those proportional to $x^{-1}$ or
+$x^{-1}\log x$ have finite part zero.  This proves
+\eqref{edge:ordinary} without any numerical limiting prescription.
+
+\subsection{All endpoint constants and compatibility with integration by parts}
+
+For $r,t,m,n\ge0$ write
+\[
+ J_{r,t}^{m,n}=\operatorname{FP}\int_0^1
+                         \gamma_m^{(r)}(x)\gamma_n^{(t)}(x)\,dx.
+\]
+Set $p_{0,0}=1$ and $p_{0,j}=0$ for $j>0$, consistently with
+$(1+u)_0=1$.
+
+\begin{theorem}[Exact endpoint law]
+\label{edge:endpoint}
+For every $r,t,m,n\ge0$,
+\begin{equation}
+ \boxed{\begin{aligned}
+ J_{r+1,t}^{m,n}+J_{r,t+1}^{m,n}
+ ={}&-\frac{(-1)^{m+r}p_{r,m}}{(r+1)!}
+                       \gamma_n^{(r+t+1)}(1)\\
+    &-\frac{(-1)^{n+t}p_{t,n}}{(t+1)!}
+                       \gamma_m^{(r+t+1)}(1).
+ \end{aligned}}
+ \label{edge:ibp}
+\end{equation}
+All constants on the right reduce to positive-integer ordinary-zeta
+jets by \eqref{edge:conversion}.
+\end{theorem}
+
+\begin{proof}
+The shift identity gives
+$\gamma_m(x)=x^{-1}\log^m x+\gamma_m(1+x)$ exactly.
+Its $r$th derivative has singular part
+\[
+ S_{m,r}(x)=\frac{(-1)^r}{x^{r+1}}
+      \sum_{j=0}^{\min(m,r)}(-1)^j\binom mjp_{r,j}\log^{m-j}x.
+\]
+The coefficient of $x^{-r-1}\log^0x$ is
+$(-1)^{m+r}p_{r,m}$; it vanishes if $m>r$.
+The smooth factor is $\gamma_m^{(r)}(1+x)$.
+The constant term of the product at zero has three contributions:
+the product of its two smooth constant terms, and the two products
+of a singular logarithm-free coefficient with the matching smooth
+Taylor coefficient.  The singular--singular product has power
+$x^{-r-t-2}$ and contributes no constant.
+The first contribution cancels the endpoint value at $x=1$.
+The remaining two are exactly the negative of the right side of
+\eqref{edge:ibp}.  Apply the fundamental theorem of calculus on
+$[\epsilon,1]$ and take constant coefficients.
+\end{proof}
+
+This law provides a useful consistency check on the completed kernels.
+It also shows precisely why the first-derivative edge contains information
+beyond the old positive-positive sector: integration by parts determines
+$J_{0,1}^{m,n}+J_{1,0}^{m,n}$, but not its antisymmetric part.  Once
+the first edge has been established, higher edges can also be related
+to the positive-positive formulas while retaining the explicit endpoint
+terms.  In particular no formal ``integral of a derivative is zero''
+rule is appropriate here.
+
+\subsection{The double-undifferentiated corner}
+
+The corner $r=t=0$ is already treated in the manuscript's
+coincident-endpoint Stieltjes chapter.  For compatibility, a useful
+holomorphic presentation is as follows.  Define
+\begin{align}
+ A(u)&=u\zeta(1+u),\\
+ C(u,v)&=\frac{\Gamma(1+u+v)}{\Gamma(1+u)\Gamma(1+v)}
+   \frac{\pi uv\{\csc(\pi u)+\csc(\pi v)\}}{u+v}
+                                    A(u+v).
+\end{align}
+All apparent singularities in $C$ are removable near zero.  In
+particular $C(u,0)=A(u)$ and $C(0,v)=A(v)$.
+The completed corner is
+\begin{equation}
+ H_{11}(u,v)=\frac{A(u)+A(v)-1-C(u,v)}{uv}.
+ \label{edge:corner}
+\end{equation}
+Its Taylor coefficients satisfy
+$J_{0,0}^{m,n}=(-1)^{m+n}m!n![u^mv^n]H_{11}$.
+This expression follows from the same local subtraction, now applied
+to both factors $\zeta(1+u,x)-1/u$ and
+$\zeta(1+v,x)-1/v$: the integrated spectral product is
+$F(1+u,1+v)+1/(uv)$, and the local resonance corrections are
+$(\zeta(1+v)-1/v)/u$ and $(\zeta(1+u)-1/u)/v$.
+The two pole subtractions must be made jointly.
+Equation \eqref{edge:corner} records compatibility with the inherited
+corner rather than claiming it as another new result.
+
+
+\subsection{Independent verification}
+
+The supplied script constructs the local Gamma germ with exact
+rational arithmetic and formal ordinary-zeta derivatives.  It checks
+all 81 endpoint identities with $0\le m,n,r,t\le2$, compares the
+printed low-index identities, and exports their formulas.  This is
+an exact finite verification of the implementation, not a replacement
+for the analytic proof at all indices.
+The numerical suite computes the left sides by integrating their
+convergent local Laurent--logarithmic expansions up to a positive
+splitting point and then using ordinary quadrature to $1$.
+Thus it does not evaluate the product kernel to obtain both sides
+of a test.  Its precision, truncation order, actual residuals, and
+second splitting-point check are recorded in the JSON output.
+These arbitrary-precision comparisons are diagnostics rather than
+interval certificates.

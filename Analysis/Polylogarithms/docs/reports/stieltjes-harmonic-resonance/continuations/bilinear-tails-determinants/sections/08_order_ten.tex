@@ -1,0 +1,600 @@
+% Research fragment: all labels begin ten:. Standard amsmath/amsthm required.
+% Cite AlternatingIncoming, QuarticIncoming, and GeneralHankel as the inspected project sources.
+\section{Complete reconstruction for smaller tail order ten}
+\label{ten:section}
+
+The two latest incoming reconstruction reports leave a particularly
+small but genuine gap.  The alternating-tail report proves the order-ten
+prefix theorem outside $b\equiv962\pmod{2048}$, while the quartic
+reconstruction report proves it for every $b\ge1920$
+\cite{AlternatingIncoming,QuarticIncoming}.  We complete the family.  The new step is
+a coefficientwise congruence with one additional bit of precision:
+its only exceptional class is $b\equiv3010\pmod{4096}$, which lies
+entirely inside the range of the second report's real-variable argument.
+We reproduce that argument at order ten, with explicit constants, to
+make the resulting nonvanishing proof complete.  The small determinant
+normalization and its Pad\'e origin are credited to the source reports;
+the modulus-$2^{17}$ congruence and the completed family are the present
+contribution.  No claim of arithmetic independence of numerical special
+values is involved.
+
+\subsection{Statement and exact meaning of reconstruction}
+
+Let
+\[
+ A_s(n)=\zeta(s,n+1)=\zeta(s)-H_n^{(s)},\qquad x_n=n+\tfrac12,
+ \qquad
+ D_{10,2b}(w)=\sum_{n\ge0}A_{10}(n)A_{2b}(n)x_n^{-w}.
+\]
+The series initially converges for $\operatorname{Re}w>-2b-7$.
+Its centered Euler--Maclaurin continuation is regular at nonpositive
+even integers.  Write $D_r=D_{10,2b}(-2r)$ and use the source's
+triangular coordinates
+\begin{align}
+ C_j&=\sum_{r=0}^{j}\binom{2j+1}{2r}2^{-2(j-r)}D_r,
+ \label{ten:C}\\
+ D_r&=\sum_{j=0}^{r}\frac{\binom{2r}{2j}}{2j+1}
+             B_{2r-2j}(1/2)C_j.
+ \label{ten:D}
+\end{align}
+For $j\ge b$, each $C_j$ is a rational combination of
+$Z_k=\zeta(2k)$, $0\le k<b$, with $Z_0=-1/2$.  The words
+\emph{formal rank} refer to rational coefficient vectors in the
+formal basis
+\[
+ C_0,\ldots,C_{b-1},Z_0,\ldots,Z_{b-1};
+\]
+they do not refer to the linear independence of the values after
+evaluation.
+
+Put $\mu_j=B_{2j}/(2j)!$ for $j\ge0$, and $\mu_j=0$ for $j<0$.
+The late coordinate matrix is
+\begin{equation}\label{ten:M}
+ (M_{5,b})_{tk}=\mu_{t+k-4}
+ \left\{\frac{(2b+2t-9)!}{(2b-2k)!}
+ +\mathbf1_{k<5}\frac{(2t+1)!}{(10-2k)!}\right\},
+ \qquad 0\le t,k<b.
+\end{equation}
+In particular,
+$(C_b,\ldots,C_{2b-1})^{\mathsf T}
+=M_{5,b}(Z_0,\ldots,Z_{b-1})^{\mathsf T}$.
+Formula \eqref{ten:M} also defines the late coordinate row for
+every integer $t\ge0$.  Its binomial form, useful without factorial
+conventions, is
+\[
+ B_{2t+2k-8}\left\{
+ \frac{\binom{2t+2}{10-2k}}{2t+2}
+ +\frac{\binom{2b+2t-8}{2b-2k}}{2b+2t-8}\right\},
+\]
+where negative Bernoulli indices give zero and a summand is omitted
+unless its lower binomial index lies between $2$ and its upper index.
+These are the inherited finite Bernoulli moment formulas
+\cite{GeneralHankel}.  The full first-$2b$ coordinate determinant is
+$\det M_{5,b}/(4b-1)!!$.
+
+\begin{theorem}[Complete order-ten optimal prefix]\label{ten:main}
+For every integer $b\ge6$, $M_{5,b}$ is nonsingular.  Consequently,
+for every even $q>10$, the $q$ moments
+\[
+ D_{10,q}(0),D_{10,q}(-2),\ldots,D_{10,q}(-2(q-1))
+\]
+have full formal rank $q$.  Every subsequent centered even moment
+is an explicit rational linear combination of this prefix.
+\end{theorem}
+
+The conclusion now holds for every unequal even pair whose smaller
+order is at most ten, using the previously established smaller-order
+families.  It does not establish the unrestricted conjecture at
+smaller orders twelve and above, nor the full gap-six family.
+
+\subsection{A finite five-dimensional definition of the numerator}
+
+The following normalization is retained from \cite{AlternatingIncoming}.
+For $0\le i,\ell\le4$, define
+\[
+ n_i=b-5+i,\quad N_{i\ell}=2(n_i-\ell)+1,
+ \quad R_\ell=2b-8+2\ell,
+\]
+\[
+ F_{i\ell}=\frac1{(2\ell+1)!}
+       \prod_{r=0}^{2\ell-1}(2n_i-r)(2n_i+3+r),
+\]
+and define Newton coefficients $d_{ih}$ by the finite identity
+\begin{equation}\label{ten:Newton}
+ (2n_i+2-y)(4n_i+2-y)^{\underline{2i}}
+       =\sum_{h=0}^{2i+1}d_{ih}y^{\underline h}.
+\end{equation}
+Equivalently,
+\[
+ d_{ih}=\frac1{h!}\sum_{r=0}^{h}(-1)^{h-r}\binom hr
+       (2n_i+2-r)(4n_i+2-r)^{\underline{2i}}.
+\]
+For independent variables $U_1,\ldots,U_9$ put
+\begin{equation}\label{ten:calA}
+ \mathcal A_{i\ell}=2F_{i\ell}+
+ \frac{R_\ell!}{(2n_i+1)(2n_i+2)(2\ell+2)!N_{i\ell}!}
+ \sum_{k=0}^{i}d_{i,2k+1}N_{i\ell}^{\underline{2k+1}}
+                 U_{5-i+\ell+k}.
+\end{equation}
+All factorial ratios with $b$-dependent arguments have fixed index
+differences and therefore mean finite rational products in $b$.
+
+Set
+\begin{align*}
+ \Delta_{10}(b)={}&4096b^{12}-110592b^{11}+1236992b^{10}
+ -7303680b^9+23705088b^8\\
+ &-38140416b^7+14925056b^6+24490080b^5-4469984b^4\\
+ &-15838992b^3-2571948b^2+4244400b+1488375,
+\end{align*}
+and define the finite rational expression
+\begin{equation}\label{ten:Pdef}
+ P_{10}(b;U)=138240(2b-7)(2b-5)\Delta_{10}(b)
+                       \frac{\det\mathcal A}{\det F}.
+\end{equation}
+Exact coefficient arithmetic gives
+\begin{align}\label{ten:Fdet}
+ \det F={}&\frac{16384}{4465125}(b-3)(b-2)^2(b-1)
+     (2b-7)(2b-5)^2(2b-3)\notag\\
+ &\cdot(4b-15)(4b-13)(4b-11)^2(4b-9)^2(4b-7)^2
+          (4b-5)(4b-3)\Delta_{10}(b).
+\end{align}
+The expression $P_{10}$ belongs to $\mathbb Z[b,U_1,\ldots,U_9]$.
+It has $439$ monomials when grouped by the $U$ exponents, or
+$10403$ monomials after expanding also in $b$.  Its coefficients
+have degree at most $24$ in $b$.  Equations
+\eqref{ten:Newton}--\eqref{ten:Pdef} specify it completely, without
+interpolation or a dependence on an unspecified fitted expression.
+The accompanying exact verifier independently reconstructs
+\eqref{ten:Fdet}, clears the five row denominators of
+\eqref{ten:calA}, sums the $120$ signed permutation products, and
+compares every coefficient of \eqref{ten:Pdef} with the inherited
+integer certificate.  Thus the reused certificate is independently
+replayed as an algebraic identity.
+
+For $b\ge10$, with $H=(\mu_{t+k-4})_{0\le t,k<b}$, define
+\[
+ \rho_{5,b}=\frac{\det M_{5,b}}
+ {\displaystyle
+  \frac{\prod_{t=0}^{b-1}(2b+2t-9)!}
+       {\prod_{k=0}^{b-1}(2b-2k)!}\det H}.
+\]
+The source reduction is
+\begin{equation}\label{ten:rho}
+ \rho_{5,b}
+ =\left.\frac{\det\mathcal A}{\det F}\right|_{U_j=2B_{2b-2j}}
+ =\frac{P_{10}(b;2B_{2b-2},\ldots,2B_{2b-18})}
+ {138240(2b-7)(2b-5)\Delta_{10}(b)}.
+\end{equation}
+Here $H$ is nonsingular.  One direct proof conjugates $H$ by
+$\operatorname{diag}(1,-1,1,\ldots)$ and partitions after its first
+three rows and columns.  The resulting matrix has blocks
+\[
+ \begin{pmatrix}ee^{\mathsf T}&B\\B^{\mathsf T}&-P\end{pmatrix},
+ \qquad e=(0,0,1)^{\mathsf T},
+\]
+where $P$ is positive definite by the representation
+$2\sum_{m\ge1}(2\pi m)^{-2s}p((2\pi m)^{-2})^2>0$ for
+$s\ge1$ and a nonzero polynomial $p$.  The first two rows of $B$
+have a nonsingular antitriangular minor.  Consequently
+$ee^{\mathsf T}+BP^{-1}B^{\mathsf T}$ is positive definite.
+
+For completeness, the exact nonzero multiplier behind
+\eqref{ten:rho} can be obtained without assuming Pad\'e normality.
+The monic polynomials
+\[
+ \pi_n(x)=\sum_{t=0}^{n}
+ \frac{2(2n+2t+1)!(2n+1)!}
+ {(4n+2)!(2n-2t+1)!(2t)!}x^t
+\]
+satisfy, for $\mathcal N(x^r)=\mu_{r+1}$,
+\[
+ \mathcal N(x^j\pi_n)=0\ (j<n),\qquad
+ \mathcal N(x^n\pi_n)=h_n,
+ \quad h_n=\frac{((2n+1)!)^2}{(4n+2)!(4n+3)!}.
+\]
+These finite identities follow by coefficient comparison in the
+diagonal Pad\'e formula for $e^t$, as in \cite{QuarticIncoming}; they
+can also be checked directly using the Bernoulli generating function.
+The same coefficients give
+\[
+ \sum_{t=0}^{n}[x^t]\pi_n(x)\,\mu_{t-\ell}
+ =c_n f_\ell(n),\qquad
+ c_n=\frac{(2n+1)(2n+2)!}{(4n+2)!},
+\]
+where $f_\ell(n)=F_{i\ell}$ when $n=n_i$.
+Apply these monic row combinations to
+$H+U^{\mathrm{pert}}$, where
+\[
+ U^{\mathrm{pert}}_{tk}
+ =\mathbf1_{k<5}\mu_{t+k-4}
+ \frac{(2t+1)!(2b-2k)!}{(10-2k)!(2b+2t-9)!}.
+\]
+The last five transformed rows vanish in columns $k\ge5$.
+The complementary block is upper triangular with diagonal
+$h_0,\ldots,h_{b-6}$.  Reverse the retained five columns and
+divide row $i$ by $c_{n_i}$.  The unperturbed entries become $F$.
+For the perturbation use the elementary Bernoulli identity
+\[
+ \sum_{j=0}^{N}\binom Nj B_j(N-j)^{\underline h}
+       =N^{\underline h}B_{N-h}(1).
+\]
+Since $b\ge10$, all the retained indices $N-h$ are at least two;
+only odd $h$ survive.  Restoring the omitted $j=1$ term supplies
+one further copy of $F$, explaining the necessary factor $2F$
+in \eqref{ten:calA}.  This proves
+\begin{equation}\label{ten:multiplier}
+ \det M_{5,b}=(-1)^{5b-15}
+ \frac{\prod_{t=0}^{b-1}(2b+2t-9)!}
+      {\prod_{k=0}^{b-1}(2b-2k)!}
+ \left(\prod_{n=0}^{b-6}h_n\right)
+ \left(\prod_{i=0}^{4}c_{n_i}\right)\det\mathcal A.
+\end{equation}
+The same argument with the perturbation absent gives the identical
+multiplier for $\det H$ and $\det F$, proving \eqref{ten:rho}.
+
+\subsection{One additional bit removes the remaining finite obstruction}
+
+All congruences in this subsection are in $\mathbb Z_{(2)}$,
+the rationals with odd denominator.  We use the classical fact
+$v_2(B_{2m})=-1$ for $m\ge1$.
+
+\begin{lemma}[A doubled Bernoulli congruence]\label{ten:B17}
+For every integer $m\ge13$,
+\[
+ 2B_{2m}\equiv\mathcal B_{17}(m)\pmod{131072},
+\]
+where
+\begin{equation}\label{ten:Bpoly}
+ \mathcal B_{17}(x)=1+20068x-26384x^2+2816x^3+45824x^4
+             +4096x^5-24576x^6+65536x^8.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Faulhaber's identity, with $L=512$, gives
+\[
+ \sum_{a=0}^{L-1}a^{2m}
+ =LB_{2m}+\sum_{h=2}^{2m+1}
+      \binom{2m}{h-1}\frac{L^h}{h}B_{2m+1-h}.
+\]
+The $h=2$ term vanishes.  Every term with $h\ge3$ has valuation
+at least $9h-v_2(h)-1\ge26$.  Divide by $256$ and reduce modulo
+$2^{17}$.  The even $a$ terms vanish because $2m\ge26$.
+For odd $a$, expand
+$a^{2m}=(1+(a^2-1))^m$; since $8\mid a^2-1$, terms with
+binomial degree at least nine have valuation at least $27-8>17$
+after division.  Therefore
+\begin{equation}\label{ten:finite-average}
+ 2B_{2m}\equiv\frac1{256}
+ \sum_{a=1,3,\ldots,511}\sum_{j=0}^{8}
+          \binom mj(a^2-1)^j\pmod{2^{17}}.
+\end{equation}
+Expand the finite right side as a polynomial in $m$.  Its rational
+coefficients all have odd denominators, and their reductions modulo
+$2^{17}$, in increasing powers, are
+\[
+ (1,20068,-26384,2816,45824,4096,-24576,0,65536).
+\]
+This is an exact finite coefficient calculation, reproduced by the
+verifier from the $256$ odd support points and the nine displayed
+binomial terms.  It gives \eqref{ten:Bpoly} and proves the lemma.
+\end{proof}
+
+Define
+\begin{equation}\label{ten:Rpoly}
+ \begin{split}
+ \mathcal R(b)={}&1536b^8+128b^7-928b^6-816b^5+464b^4\\
+                 &-1696b^3-1930b^2-1831b+694.
+ \end{split}
+\end{equation}
+The new coefficientwise polynomial identity is
+\begin{equation}\label{ten:congruence}
+ P_{10}\bigl(b;\mathcal B_{17}(b-1),\ldots,
+                    \mathcal B_{17}(b-9)\bigr)
+       \equiv32\mathcal R(b)\pmod{131072}.
+\end{equation}
+This is verified in $\mathbb Z[b]$, not only at selected integer
+arguments.  A compact exact procedure is to group the numerator's
+$10403$ terms by their $439$ $U$-monomials, substitute the nine
+explicit polynomials, multiply modulo $131072$, and compare every
+coefficient with \eqref{ten:Rpoly}.  The provided script carries
+out precisely those finite ring operations, after independently
+rebuilding the numerator from \eqref{ten:calA}.  Thus
+\eqref{ten:congruence} is a finite algebraic certificate whose
+entire input is displayed or defined by finite products above.
+
+The linear coefficient of $\mathcal R$ is odd, and every coefficient
+of degree at least two is even.  Hence for distinct integers $x,y$,
+\begin{equation}\label{ten:isometry}
+ v_2(\mathcal R(x)-\mathcal R(y))=v_2(x-y).
+\end{equation}
+Indeed, the quotient by $x-y$ is the odd integer $-1831$ plus an
+even integer.  Direct substitution gives
+\[
+ \mathcal R(3010)\equiv0\pmod{4096},\qquad
+ \mathcal R(962)\equiv2048\pmod{4096}.
+\]
+Equation \eqref{ten:isometry} proves that $3010$ is the unique
+zero class modulo $4096$.
+
+\begin{proposition}[The new uniform congruence range]\label{ten:range}
+For $b\ge22$ and $b\not\equiv3010\pmod{4096}$,
+$M_{5,b}$ is nonsingular, and
+\begin{equation}\label{ten:valuation}
+ v_2(\rho_{5,b})=v_2(b-3010)-5.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Every $b-j$ in \eqref{ten:rho} is at least $13$.  Thus
+\eqref{ten:B17} and \eqref{ten:congruence} give
+\[
+ \frac{P_{10}(b;2B_{2b-2},\ldots,2B_{2b-18})}{32}
+          \equiv\mathcal R(b)\pmod{4096}.
+\]
+Outside the unique zero class, \eqref{ten:isometry} gives
+$v_2(\mathcal R(b))=v_2(b-3010)<12$.
+The numerator therefore has valuation $5+v_2(b-3010)$.
+The denominator in \eqref{ten:rho} has valuation $10$:
+$138240=2^{10}\cdot135$, and all three remaining factors are odd
+at integer $b$.  This proves the nonvanishing and
+\eqref{ten:valuation}.
+\end{proof}
+
+\subsection{A self-contained sufficient real-variable threshold}
+
+We specialize the general highest-degree argument of
+\cite{QuarticIncoming}; this subsection is a credited reproduction
+with the explicit order-ten constants independently recomputed.
+Let
+\[
+ J(b)=\prod_{i=0}^{4}(2n_i+1)(2n_i+2),\qquad
+ E(b)=\prod_{i,\ell=0}^{4}\prod_{r=1}^{\max\{0,2i-4\ell-1\}}
+                  (R_\ell+r),\qquad D(b)=10!J(b)E(b).
+\]
+Here $\deg E=20$ and $\deg D=30$.  Clearing the fixed factorial
+and row denominators in \eqref{ten:calA} gives
+\[
+ \widetilde{\mathcal A}=D\mathcal A
+     \in\mathbb Z[b,U_1,\ldots,U_9]^{5\times5},\qquad
+ \mathscr P=\det\widetilde{\mathcal A}.
+\]
+Every entry has $b$-degree at most $46$, so $\deg_b\mathscr P\le230$.
+If $\|f\|_1$ denotes the sum of absolute values of all coefficients,
+exact expansion of the $25$ entries gives
+\[
+ E^*:=\max_{i,\ell}\|\widetilde{\mathcal A}_{i\ell}\|_1
+ =602847821074996042728613866361551228764160.
+\]
+Consequently $\|\mathscr P\|_1\le K:=120(E^*)^5$.
+The number $E^*$ is independently recomputed from the entry formulas
+by the accompanying threshold script; it is not inferred from
+numerical samples.
+
+Put $F_0=(2b-18)!$ and
+\[
+ V_j=U_j\frac{F_0}{(2b-2j)!},\qquad
+ \kappa=\frac{120(10!)^5}{2!4!6!8!10!}
+         =14932726824960000000.
+\]
+The part of $\mathscr P$ homogeneous of total degree five in $U$
+has the exact form
+\begin{equation}\label{ten:leading}
+ \mathscr P_{[5]}=-\mathscr G(b)\det(V_{i+j+1})_{0\le i,j\le4},
+\end{equation}
+where
+\[
+ \mathscr G(b)=\kappa J(b)^4E(b)^5
+ \prod_{i=0}^{4}(4n_i+2)^{\underline{2i}}
+ \prod_{\ell=0}^{4}\prod_{r=1}^{10+2\ell}(2b-18+r).
+\]
+To see the structural factorization, write
+$T=\mathcal A-2F$ and use $U_j=(2b-2j)!V_j/F_0$ in
+\eqref{ten:calA}.  The identity
+$N_{i\ell}-(2k+1)=2b-2(5-i+\ell+k)$ cancels the factorials.
+The remaining matrix factors as
+\[
+ T=\operatorname{diag}\!\left(\frac1{(2n_i+1)(2n_i+2)}\right)
+       L\,(V_{5-i+\ell})_{0\le i,\ell\le4}
+       \operatorname{diag}\!\left(\frac{R_\ell!}{F_0(2\ell+2)!}\right),
+\]
+where $L_{i,i-k}=d_{i,2k+1}$ is lower triangular.  Its diagonal is
+$d_{i1}=-(i+1)(4n_i+2)^{\underline{2i}}$, which follows directly
+from the difference of \eqref{ten:Newton} at $y=1$ and $y=0$.
+Reverse the five middle rows and multiply all row factors and
+$D^5$.  This gives exactly \eqref{ten:leading}.
+
+At $U_j=2B_{2b-2j}$, Euler's Bernoulli formula yields
+\begin{equation}\label{ten:actualleading}
+ |\mathscr P_{[5]}|
+ =\frac{\mathscr G(b)(4F_0)^5}{(2\pi)^{10b-50}}
+       \det\bigl(\zeta(2b-18+2i+2j)\bigr)_{0\le i,j\le4}.
+\end{equation}
+The determinant is strictly positive.  Indeed, Cauchy--Binet for
+the discrete moments on $m^{-2}$ gives
+\[
+ \det\bigl(\zeta(2b-18+2i+2j)\bigr)
+ =\sum_{m_1<\cdots<m_5}(m_1\cdots m_5)^{-2b+18}
+                  \prod_{r<s}(m_r^{-2}-m_s^{-2})^2.
+\]
+Keeping $(m_1,\ldots,m_5)=(1,2,3,4,5)$ gives the lower bound
+\[
+ V\,120^{-2b+18},\qquad
+ V=\prod_{1\le r<s\le5}(r^{-2}-s^{-2})^2
+          =\frac{2401}{36864000000000000}.
+\]
+For $b\ge20$ every linear factor of $\mathscr G$ is at least $b$,
+and its degree is $230$, so $\mathscr G(b)\ge\kappa b^{230}$.
+For $b\ge30$,
+\[
+ |2B_{2b-2j}|\le
+ T_b:=\frac{8(2b)^{16}(2b-18)!}{(2\pi)^{2b-18}},
+ \qquad 1\le j\le9,
+\]
+using $\zeta(2b-2j)<2$.  Also $T_b\ge1$: since $2b-18\ge42$,
+the elementary comparison $26!>8^{26}$ and induction suffice.
+All lower-degree terms of $\mathscr P$ have total $U$-degree at
+most four.  Therefore
+\[
+ |\mathscr P_{[\le4]}|\le Kb^{230}T_b^4.
+\]
+Divide by \eqref{ten:actualleading}, cancel the powers of $2\pi$
+before using $2\pi<8$, and obtain
+\begin{equation}\label{ten:bound}
+ \frac{|\mathscr P_{[\le4]}|}{|\mathscr P_{[5]}|}
+ \le R(b):=C\frac{b^{64}960^{2b}}{(2b-18)!},\qquad
+ C=\frac{K8^{26}2^{64}}{\kappa4^5V120^{18}}.
+\end{equation}
+Every constant is explicit and rational.  Exact integer comparison
+after clearing denominators gives
+\[
+ R(1920)<2^{-546}<1.
+\]
+The verifier checks this stronger margin.  Moreover, for $b\ge1920$,
+\[
+ \frac{R(b+1)}{R(b)}=
+ \left(1+\frac1b\right)^{64}
+      \frac{960^2}{(2b-16)(2b-17)}<\frac34.
+\]
+For a simple uniform justification, $(1+1/b)^{64}<3$,
+both denominator factors exceed $b$, and $b\ge1920=2\cdot960$.
+Thus the highest-degree term cannot be cancelled for any $b\ge1920$.
+Since $D(b)>0$ and the multiplier \eqref{ten:multiplier} is nonzero,
+we have proved
+\begin{equation}\label{ten:eventual}
+             \det M_{5,b}\ne0\qquad(b\ge1920).
+\end{equation}
+
+\subsection{Completion, and an independent audit of the old exception}
+
+For $22\le b<1920$, one cannot have $b\equiv3010\pmod{4096}$.
+Proposition~\ref{ten:range} therefore proves nonvanishing throughout
+this interval.  Equation \eqref{ten:eventual} supplies all
+$b\ge1920$.  The remaining $6\le b\le21$ are checked directly
+from the rational source matrix \eqref{ten:M}; the machine-readable
+record contains every nonzero determinant.  Most of these base cases
+are already contained in \cite{AlternatingIncoming}; they are recomputed here.
+For example,
+\[
+ \det M_{5,6}=-\frac{7097067}{2867200},\qquad
+ \det M_{5,8}=\frac{537653622905129}{68669669376000}.
+\]
+This proves Theorem~\ref{ten:main}.
+
+The old exceptional index $b=962$ also has a short independent exact
+audit.  Its numerator satisfies
+\begin{equation}\label{ten:962}
+ P_{10}(962;2B_{1922},2B_{1920},\ldots,2B_{1906})
+       \equiv2386755584\pmod{2^{32}}.
+\end{equation}
+The residue has valuation $16$, giving $v_2(\rho_{5,962})=6$.
+Two independent calculations of the nine Bernoulli residues agree:
+the recurrence
+\[
+ (2m+1)(2B_{2m})=2m-1-
+        \sum_{j=1}^{m-1}\binom{2m+1}{2j}(2B_{2j}),
+\]
+with odd division modulo $2^{32}$, and the Faulhaber power sum over
+the $32768$ odd integers below $65536$, performed modulo $2^{47}$
+before dividing by $2^{15}$.  Finally, evaluating the rational
+five-dimensional determinant \eqref{ten:calA} directly, with
+these integer residues as inputs, gives the same residue
+\eqref{ten:962} as the sparse numerator.  This audit is not needed
+once the uniform congruence is proved, but it verifies the exact
+location where the two preceding reports failed to overlap.
+
+\subsection{An ordinary convergent family of polygamma identities}
+
+For every $b\ge6$ and $0\le k<b$, let
+\begin{equation}\label{ten:Q}
+ Q_{b,k}(x)=\sum_{t=0}^{b-1}(M_{5,b}^{-1})_{kt}
+       \bigl((x+\tfrac12)^{2b+2t+1}
+                    -(x-\tfrac12)^{2b+2t+1}\bigr).
+\end{equation}
+This form is shorter than an expansion of the even polynomial.
+The identity
+\[
+ (x+\tfrac12)^{2j+1}-(x-\tfrac12)^{2j+1}
+ =\sum_{r=0}^{j}\binom{2j+1}{2r}2^{-2(j-r)}x^{2r}
+\]
+shows that \eqref{ten:Q} is precisely the inverse coordinate
+combination dictated by \eqref{ten:C}.
+
+Define
+\[
+ \eta_{s,0}=\frac1{s-1},\qquad
+ \eta_{s,j}=\frac{(s)_{2j-1}B_{2j}(1/2)}{(2j)!}\quad(j\ge1),
+ \qquad c_{b,\ell}=\sum_{j=0}^{\ell}\eta_{10,j}\eta_{2b,\ell-j}.
+\]
+Let $S_{b,k}(x)$ be the polynomial consisting of the nonnegative
+powers in the formal expansion
+\[
+ Q_{b,k}(x)x^{-2b-8}\sum_{\ell\ge0}c_{b,\ell}x^{-2\ell}.
+\]
+It is an even polynomial of degree at most $2b-10$, with rational
+coefficients determined by finitely many terms.
+
+\begin{corollary}[All order-ten reconstruction identities]
+\label{ten:identity}
+For every integer $b\ge6$ and $0\le k<b$,
+\begin{equation}\label{ten:polygamma}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}\left\{
+ Q_{b,k}(x_n)
+ \frac{\psi^{(9)}(n+1)\psi^{(2b-1)}(n+1)}{9!\,(2b-1)!}
+             -S_{b,k}(x_n)\right\}=\zeta(2k).}
+\end{equation}
+The series is ordinary and absolutely convergent.
+\end{corollary}
+\begin{proof}
+For even $s$, $A_s(n)=\psi^{(s-1)}(n+1)/(s-1)!$.
+By \eqref{ten:C}, \eqref{ten:Q}, and the exact matrix inverse,
+the continued sum of $Q_{b,k}(x_n)A_{10}(n)A_{2b}(n)$ is
+$\zeta(2k)$.  The centered Euler--Maclaurin expansion of the product
+is exactly the formal product used to define $S_{b,k}$.
+Removing all nonnegative powers leaves $O(x_n^{-2})$.
+Every removed power is even and has centered continued sum
+$\zeta(-2r,1/2)=0$, $r\ge0$.  Therefore the continued sum agrees
+with the displayed absolutely convergent series.
+\end{proof}
+
+Here is a completely explicit member, included to make the
+reconstruction mechanism concrete.  Let
+\begin{align*}
+ P(x)={}&58535757x^{23}+145331415x^{21}-98765059x^{19}\\
+        &+92514527x^{17}-73310041x^{15}+28468113x^{13}.
+\end{align*}
+Then
+\begin{equation}\label{ten:explicitidentity}
+ \begin{split}
+ \sum_{n=0}^{\infty}\Bigg\{&
+    [P(n+1)-P(n)]
+        [\zeta(10)-H_n^{(10)}][\zeta(12)-H_n^{(12)}]\\
+   &-\frac{149591379(n+\tfrac12)^2+1835020425}{11}
+                          \Bigg\}
+       =-\frac{574862427}{8}.
+ \end{split}
+\end{equation}
+It follows from the $k=0$ row of $M_{5,6}^{-1}$:
+\[
+ \frac4{574862427}
+ (28468113,-73310041,92514527,-98765059,145331415,58535757).
+\]
+The numerical pair $(10,12)$ was already within the source's finite
+range; the explicit identity is an illustration of the now-uniform
+construction, not the new nonvanishing case.  All coefficients,
+counterterms, and the exact inverse-row check are included in the
+identity artifact.
+
+\paragraph{Further questions specific to this completion.}
+The unrestricted rank problem remains open in the inspected corpus
+for smaller order at least twelve.  A natural next question is whether
+one can prove a general overlap principle between the finite
+$2$-adic exceptional classes and the constructive real-variable
+threshold, without computing an increasingly large numerator.
+Another is whether a determinant representation makes the lower
+Bernoulli-degree terms sign-compatible, giving nonvanishing directly
+and avoiding a domination threshold.  The gap-six family, where the
+generic nearby-Bernoulli contraction falls outside its stable range,
+still calls for a separate argument.  Finally, one may seek compact
+closed forms for the inverse rows in \eqref{ten:Q}; the existence
+and rational computability proved here do not by themselves make
+those coefficients small.

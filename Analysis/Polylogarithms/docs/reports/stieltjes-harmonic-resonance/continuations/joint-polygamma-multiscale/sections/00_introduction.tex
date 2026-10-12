@@ -1,0 +1,145 @@
+\section{Scope, principal results, and conventions}
+\label{intro:section}
+
+The starting point is the ProveIt repository at revision
+\texttt{03112a7d3b91} (full revision in \cite{ProveIt}), inspected on
+12 October 2026. We read the polylogarithm manuscript and the text sources
+in the incoming reports available at that revision; the most immediate
+predecessors are the ordered-boundary, gap-six, and Gamma-normalization
+reports \cite{ProveIt,OrderedIncoming,GapSix,GammaIncoming}.
+This matters because several questions suggested by older manuscript
+passages have already been answered in newer incoming material.
+In particular, complete gap six, fixed-rate Stieltjes collisions, and
+the paired Gamma deformation are prior results, not new contributions
+of this article.
+
+Our aim is to obtain exact evaluations and structural formulas. Estimates
+are used where needed to prove identities or to turn eventual
+nonsingularity into a theorem valid for all indices. They are not the
+principal conclusions. Each of the three main directions gives a
+finite, explicit way to evaluate an infinite family.
+
+\subsection{Three advances and their exact scope}
+
+\paragraph{Joint polygamma moments.}
+For the positive $n$-variable Gamma density defined in
+\eqref{gc:density}, introduce
+$R_q=\sum_{j=1}^n\Re\psi^{(q)}(\sigma+ix_j/2)$.
+Theorem~\ref{gc:main} evaluates all joint cumulants satisfying
+$\sum_i(q_i+1)\le2n+2$. It gives means, covariances, and the particularly
+simple higher-cumulant formula
+\[
+ \kappa(R_{q_1},\ldots,R_{q_r})
+ =-2^{-r}\psi^{(r-1)}((2n+2)\sigma)
+          \prod_i\delta_{q_i0},\qquad r\ge3.
+\]
+Thus the positive-order sector has exact Gaussian moments in a finite
+weighted range, while the digamma sector retains a non-Gaussian
+correction. This answers the joint-separation question of the latest
+Gamma report in that range. The partition formula
+\eqref{gc:moment} evaluates the corresponding ordinary integrals without
+leaving parameter derivatives unevaluated. Proposition~\ref{gc:sharpness}
+also proves a specific obstruction to extending the source's
+single-trigamma matching degree universally.
+
+\paragraph{Gap-eight reconstruction and sums.}
+For $p=2b-2m$, $q=2b$, the harmonic-tail problem reduces to a rational
+matrix $M_{b,m}$. Theorem~\ref{eg:effective} gives a fully computable
+threshold $B(m)$ beyond which it is nonsingular, for every prescribed
+$m\ge1$. Theorem~\ref{eg:eight-main} completes $m=4$ at every $b\ge5$,
+settling the explicitly open gap-eight ray. Its finite step is an exact
+computation, not a numerical extrapolation. Corollary~\ref{eg:eight-identities}
+then gives rational polynomials $P_b,S_b$ such that
+\[
+ \sum_{n=0}^{\infty}\left[
+ P_b(n+\tfrac12)\zeta(2b-8,n+1)\zeta(2b,n+1)
+       -S_b(n+\tfrac12)\right]=-\frac12.
+\]
+The subtracted series is absolutely convergent. Matrix rank is taken on
+the indicated formal coordinates; it is not a claim that the evaluated
+zeta values are rationally or algebraically independent.
+
+\paragraph{Different-power Stieltjes collisions.}
+Theorem~\ref{mc:main} evaluates the change in every finite-part constant
+when the two arguments are shifted by
+$a=\lambda\epsilon^\alpha$, $b=\mu\epsilon^\beta$, with positive
+parameters and unequal exponents. The equal-exponent case is inherited.
+The answer consists of two explicit mixed contacts and at most one
+singular--singular contact. The latter can survive precisely when
+\[
+ j(\alpha-\beta)=\beta(r+t+1),\qquad j\in\mathbb Z_{\ge1},
+ \quad\alpha>\beta.
+\]
+The mixed contacts obey two further integer selection rules. This
+classification explains constants absent from the fixed-rate theorem,
+including the two renormalized limits $-1-\zeta(3)$ and $-1+\zeta(4)$
+in \eqref{mc:q2limit}--\eqref{mc:q3limit}.
+An especially short consequence is
+\[
+ \operatorname{CT}_{\epsilon}\int_0^1
+ \gamma_1(x+\epsilon^{j+1})\gamma_0(x+\epsilon^j)\,dx
+ =\frac32\gamma_2+2\gamma\zeta(2)-\zeta(3)+\psi'(j+1).
+\]
+Here the fixed finite part is inherited; the additional trigamma tail
+is the newly identified collision term.
+
+\subsection{Classical ingredients and the novelty boundary}
+
+The multidimensional Gamma integral is a classical Gustafson integral;
+we use the explicit symplectic normalization reproduced in
+\cite[Eq.~(2)]{DerkachovManashov}, together with the repository's
+determinant transformation. The new step is separation in independent
+power-sum coordinates through their exact injectivity range.
+The reconstruction proof builds on the repository's Bernoulli recurrence
+and Gamma basis. Its new steps are a uniform effective threshold,
+the complete gap-eight certificate, and the associated evaluated sums.
+
+Finite-part integration and generalized Stieltjes-transform asymptotics
+have an established literature \cite{TicaGalapon}; integrals of products
+of Hurwitz zeta functions also occur in \cite{ShpotParis}. The monomial
+collision theorem below uses elementary local subtraction, an incomplete
+beta expansion, and cancellation of two meromorphic branches. Its new
+content is the evaluated all-index contact law for the specified
+two-scale problem. The Barnes companion in Section~\ref{bim:section}
+is explicitly presented as a consequence of the classical first Barnes
+lemma \cite[5.13.3]{DLMF}. We do not claim that parameter differentiation,
+Bell polynomials, Barnes integration, or the resulting elementary
+Euler-sum generators are new methods.
+
+The comparison establishes advances over the inspected repository,
+not an exhaustive historical-priority determination. The claims are
+proved in the usual mathematical sense, with an explicitly isolated
+exact computational component for the finite gap-eight interval.
+The accompanying numerical calculations are independent diagnostics;
+they are not proofs by integer-relation recognition. No proof-assistant
+formalization is claimed.
+
+\subsection{Notation and finite-part convention}
+
+We use $\psi=\Gamma'/\Gamma$, $\psi^{(0)}=\psi$, and the standard
+Hurwitz zeta function $\zeta(s,x)$. A superscript in parentheses on
+$\gamma_m(x)$ denotes an argument derivative, whereas $m$ is its
+Stieltjes index. The convention for generalized Stieltjes constants is
+\[
+ \zeta(1+u,x)=\frac1u+
+       \sum_{m\ge0}\frac{(-1)^m}{m!}\gamma_m(x)u^m,
+ \qquad \gamma_m=\gamma_m(1),\quad\gamma_0=\gamma.
+\]
+Thus $\gamma_0(x)=-\psi(x)$. Rising factorials are $(a)_k$;
+falling factorials are explicitly underlined. We set
+\[
+ H_j^{(h)}=\sum_{k=1}^j k^{-h},\qquad H_j=H_j^{(1)},
+ \qquad H_0^{(h)}=0.
+\]
+Bernoulli numbers have generating function
+$t/(e^t-1)=\sum_{k\ge0}B_k t^k/k!$.
+All logarithms of positive arguments are real; analytic logarithms
+elsewhere are fixed locally at the stated base point.
+
+The operation $\operatorname{CT}_{\epsilon}$ extracts the coefficient
+of $\epsilon^0(\log\epsilon)^0$ from the specified power--logarithm
+expansion. It is a coordinate-dependent finite part, not an unspecified
+regularization and not necessarily a limit. We supply explicit ordinary
+subtractions when stating a renormalized limit. The monomial exponents
+are fixed while $\epsilon\downarrow0$; a jointly varying exponent ratio
+near a resonance is a separate problem.

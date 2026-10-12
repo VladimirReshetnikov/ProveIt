@@ -1,0 +1,77 @@
+\section{Certificate specification}
+\label{app:certificate}
+
+This appendix records the finite proof object independently of any
+particular programming language.
+
+\subsection{Input range and residue meaning}
+
+The fixed parameters are
+\[
+ a=5,
+ \qquad P=1{,}000{,}003,
+ \qquad 6\le b\le1919.
+\]
+For $b=6,7,8,9$, the proof residue is the determinant of the direct
+$b\times b$ matrix \eqref{eq:source-M}.  For $10\le b\le1919$, it is
+the determinant of the $5\times5$ matrix \eqref{eq:retained-A} after
+$U_j=2B_{2b-2j}$.  All operations are in $\F_P$.
+
+\subsection{Canonical generation algorithm}
+
+\begin{lstlisting}[language=Python,caption={Mathematical pseudocode for the residue vector.}]
+P = 1000003
+build factorials and inverse factorials modulo P through 3839
+B[0] = 1
+for m = 1,...,1919:
+    B[2m] = ((2m-1)/2
+              - sum_{j=1}^{m-1} binom(2m+1,2j) B[2j])/(2m+1)
+
+for b = 6,...,1919:
+    if b < 10:
+        R[b] = det(M_{5,b}) mod P
+    else:
+        substitute U_j = 2 B[2b-2j], j=1,...,9
+        R[b] = det(A^[5]) mod P
+    assert R[b] != 0
+
+serialize R[6],R[7],...,R[1919] as comma-separated decimal integers
+compute SHA256 of those bytes
+\end{lstlisting}
+
+The expected digest is \eqref{eq:residue-digest}.  The JSON file also
+contains the matrix ranges, maximum indices, count, full vector, and
+sentinel entries.  The certificate contains no random choices.
+
+\subsection{Two replay paths}
+
+The primary replay uses the even recurrence
+\eqref{eq:even-bernoulli-recurrence} and modular Gaussian elimination.
+The independent replay uses the full Bernoulli recurrence
+\[
+ B_n=-\frac1{n+1}\sum_{k=0}^{n-1}\binom{n+1}{k}B_k
+\]
+
+directly for $0\le n\le3838$, verifies the vanishing of odd Bernoulli
+residues beyond $B_1$, and computes determinants by subset expansion.
+The two paths share only the mathematical formulas in the article and
+the published JSON result.
+
+\subsection{Sentinel values}
+
+\begin{center}
+\begin{tabular}{rll}
+\toprule
+$b$&matrix used&residue modulo $P$\\
+\midrule
+6&direct $M_{5,6}$&484126\\
+8&direct $M_{5,8}$&572800\\
+10&retained $\A^{[5]}$&668726\\
+962&retained $\A^{[5]}$&989617\\
+1919&retained $\A^{[5]}$&667530\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These values are convenient smoke tests, but validation requires the
+entire vector and digest.
