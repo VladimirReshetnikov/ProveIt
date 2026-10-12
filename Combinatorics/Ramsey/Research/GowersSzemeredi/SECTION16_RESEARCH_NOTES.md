@@ -5588,6 +5588,22 @@ would need the base envelope `74 + 1 ≤ 64`. `L + 2` in every length misses at
 `L = 6, 7` by 26 and 51 units, which would need the base envelope
 `EnvBound 3 62` down to about 11.
 
+The base envelopes (L.16z addendum). `PolyEnvBound 3 74` comes from the cubic
+exponent `σ`. Of its four contributions (row exponent `2^69`, square factors
+`2^42` and `2^45`, local count `2^59`), the row exponent rests on the
+phase-partition constant `p ≤ 2^(2^64)` of `progressionPhasePartition_explicit`,
+which uses the old `explicit_family_constants_le 1`. The polynomial
+`explicit_family_constants_poly_le 1` gives `p ≤ 2^(2^20)`, and plausibly a
+base near 61, with `σ` then set by the local count (an estimate; this was not
+formalized). It would not move a threshold. The model gives the same Theorem 18.1
+thresholds for every base from 74 down to 40, because the envelope in
+dimensions 4–7 exceeds the `d + 3` budget by 111–282 units, and a smaller
+base lowers every dimension by the same amount. `EnvBound 3 62` (the
+Theorem 18.2 base) is set by the cubic inverse threshold
+(`exp exp X^(2^62)`), the gain (`2^60`) and the exponent (`exp X^(2^61)`).
+`L + 2` in every length would need about 11, far below these constants of
+the cubic inverse theorem.
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`
