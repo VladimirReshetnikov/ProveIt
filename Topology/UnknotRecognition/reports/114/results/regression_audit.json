@@ -1,0 +1,110 @@
+{
+  "schema": "signed-annulus-regression-audit-v1",
+  "source_revision": "e0b2f802f336fcb51e9ec5f29174cfe28dfb9d39",
+  "initial_full_run": {
+    "passed": 1730,
+    "failed": 11,
+    "subtests_passed": 1713,
+    "seconds": 546.22,
+    "log": "full_pytest.log",
+    "log_sha256": "c59c3ef8aec4bb12529741a88009f94ad78bc220c48a31e92c14965984f29e5f"
+  },
+  "failures": {
+    "disk_exhaustion": {
+      "tests": [
+        "tests/test_cyclic_garside_normalform.py::NormalFormTests::test_input_validation",
+        "tests/test_cyclic_garside_production.py::CyclicGarsideProductionTests::test_both_cli_parsers_and_invalid_allowance",
+        "tests/test_cyclic_garside_production.py::CyclicGarsideProductionTests::test_restart_preserves_backend_and_reduction_options",
+        "tests/test_disk_bundle_absorption.py::DiskBundleAbsorptionTests::test_forged_absorption_and_omitted_two_handles_are_rejected",
+        "tests/test_graded_transfer_integration.py::GradedTransferIntegrationTests::test_both_cli_parsers_and_supported_commands",
+        "tests/test_graded_transfer_integration.py::GradedTransferIntegrationTests::test_cli_rejects_unsafe_combinations",
+        "tests/test_integration.py::IntegrationTests::test_backends_preserve_verdicts_and_evidence_semantics",
+        "tests/test_interval_orbit_verify.py::TestIntervalOrbitVerifier::test_empty_and_static_universes"
+      ],
+      "resolution": "Parent reclaimed only reproducible unneeded paths from isolated sparse checkout; repeated tests passed."
+    },
+    "preexisting_stale_default_forest_expectations": {
+      "tests": [
+        "tests/test_core_primitive_annuli.py::CorePrimitiveAnnuliTests::test_binary_multiplicity_and_remaining_failures",
+        "tests/test_disk_bundle_absorption.py::DiskBundleAbsorptionTests::test_nondisk_annuli_and_stalled_augmented_cores_remain_unresolved"
+      ],
+      "resolution": "Loaded exact pinned original wrapper in independent module; default adaptive was already COMPLETE and explicit source forest INCONCLUSIVE for both cases. Historical-refusal tests now pass lower_forest=source. Production defaults unchanged.",
+      "evidence": "baseline_stale_expectation.json"
+    },
+    "missing_historical_git_commit": {
+      "tests": [
+        "tests/test_cut_products.py::CutProductTests::test_disabled_mode_preserves_frozen_results_and_legacy_replay"
+      ],
+      "resolution": "Fetched exact required commit 1aeabfa735c78a30b732405b101009d376d56f18 using git fetch --depth=1 --filter=blob:none origin <hash>. No source modification."
+    }
+  },
+  "failed_test_recheck": {
+    "command": "python -m pytest -q --lf",
+    "passed": 11,
+    "deselected": 1730,
+    "subtests_passed": 42,
+    "seconds": 6.22,
+    "log": "failed_tests_recheck.log",
+    "log_sha256": "296339ac3c133791aa4c4f2954cef368c503caef73fe9123d92783378c1018ae"
+  },
+  "clean_full_run": {
+    "status": "COMPLETED_WITH_FIXTURE_SETUP_ERRORS",
+    "command": "python -m pytest -q",
+    "passed": 1733,
+    "errors": 8,
+    "assertion_failures": 0,
+    "subtests_passed": 1750,
+    "seconds": 506.68,
+    "log": "full_pytest_clean.log",
+    "log_sha256": "ec11a90e8a6cef7e21347c0df7b35d71156b8915f94afe5d72fbaabd6b97695e",
+    "setup_errors": [
+      "tests/test_transport_annulus.py::TransportAnnulusTests::test_actual_nonempty_diagram_caps_a_verified_initial_annulus",
+      "tests/test_transport_annulus.py::TransportAnnulusTests::test_callback_exception_identity_and_legacy_coherent_mode",
+      "tests/test_transport_annulus.py::TransportAnnulusTests::test_explicit_recognizer_and_cli_option_require_epoch_mode",
+      "tests/test_transport_annulus.py::TransportAnnulusTests::test_independent_replay_disables_span_cochain_and_geometric_producers",
+      "tests/test_transport_annulus.py::TransportAnnulusTests::test_minimum_connectivity_and_primitive_source_arithmetic_are_not_assertions",
+      "tests/test_transport_annulus.py::TransportAnnulusTests::test_nonempty_geometric_and_gauge_chain_replays_the_exact_final_source",
+      "tests/test_transport_annulus.py::TransportAnnulusTests::test_valid_nonprimitive_minimum_span_is_not_an_annulus_cap_witness",
+      "tests/test_transport_annulus.py::TransportAnnulusTests::test_zero_work_is_not_a_cap_certificate_and_complete_fallback_remains"
+    ],
+    "setup_error_cause": "A transitive historical synthesis fixture was omitted while narrowing the isolated sparse checkout to reclaim disk space.",
+    "missing_fixture": "Topology/UnknotRecognition/synthesis/data/cocycle-reuse-audit.json"
+  },
+  "environment": {
+    "python": "3.12.14",
+    "pytest": "9.1.1",
+    "machine": "x86_64",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.39"
+  },
+  "fixture_restoration": {
+    "source_revision": "e0b2f802f336fcb51e9ec5f29174cfe28dfb9d39",
+    "path": "Topology/UnknotRecognition/synthesis/data/cocycle-reuse-audit.json",
+    "sha256": "abbcbbf02f3f14af206290016c5c6dc1cd15593e00bac79e322c92878efb4e2d",
+    "exact_pinned_bytes_verified": true,
+    "command": "git restore --worktree --ignore-skip-worktree-bits -- Topology/UnknotRecognition/synthesis/data/cocycle-reuse-audit.json",
+    "source_or_test_changes_needed": false
+  },
+  "fixture_test_recheck": {
+    "command": "python -m pytest -q --lf",
+    "passed": 8,
+    "deselected": 1733,
+    "subtests_reported": 0,
+    "seconds": 0.99,
+    "log": "fixture_tests_recheck.log",
+    "log_sha256": "9d7f0c0aca59e62e627957a089f5a128e750d44bd702cc1cc158a4e9273e88e1"
+  },
+  "final_coverage": {
+    "collected_tests": 1741,
+    "all_passed_across_full_run_and_targeted_rerun": true,
+    "full_run_passed": 1733,
+    "restored_fixture_rerun_passed": 8,
+    "full_run_subtests_passed": 1750,
+    "remaining_failures_or_errors": 0,
+    "single_clean_full_invocation_claimed": false
+  },
+  "portability_dependencies": {
+    "focused_new_tests": "Existing fast/marked_parallelity_research/corpus.json, included in fast/.",
+    "native_reproduction": "Embedded signed_annulus_research/corpus.json; report57 source-bank hash checked if present; Regina optional for --regina.",
+    "complete_upstream_suite": "Repository report/synthesis fixtures, including Topology/UnknotRecognition/synthesis/data/cocycle-reuse-audit.json, and commit 1aeabfa735c78a30b732405b101009d376d56f18 in Git history."
+  }
+}

@@ -123,6 +123,8 @@ modification times.
 | `110/` | `ProveIt_Ordered_Pivot_Interfaces_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | weighted ordered pivot interfaces and repeat-safe transfer optimality | placed only; tests not rerun and integration unapplied |
 | `111/` | `ProveIt_Euler_Group_Terminals_2026-10-12.zip` | complete delivered article, patch, source packets and evidence | no unrestricted quasi-polynomial recognizer | Euler-checked free-group whole-cut terminals | placed only; tests not rerun and patch unapplied |
 | `112/` | `ProveIt_Lazy_Replay_Chamber_Graphs_2026-10-12.zip` | complete delivered article, patch, runtime snapshot and evidence | no unrestricted quasi-polynomial recognizer | lazy weighted replay and source-authenticated chamber graphs | placed only; tests not rerun and patch unapplied |
+| `113/` | `ProveIt_Projective_Port_Atlases_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | projective common-port atlases and source-bound normal-surface discovery | placed only; tests not rerun and integration unapplied |
+| `114/` | `ProveIt_Signed_Primitive_Annuli_2026-10-12.zip` | complete delivered article, patch, runtime snapshot and evidence | no unrestricted quasi-polynomial recognizer | signed primitive annuli, compressed basis certificates and native source transport | placed only; tests not rerun and patch unapplied |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -981,3 +983,29 @@ rules and attributes apply without checksum or line-ending work. The ZIPs
 are retired and recoverable from their arrival commit; the drop-zone README
 is preserved. See the
 [placement record](../synthesis/data/incoming-111-112-placement.json).
+
+## Further arrivals of 12 October 2026: reports 113–114
+
+The two archives in `3cfc0ad4df13e07e6478b51ead54b4ea1e0c3c85` are
+numbered in archive-name order with their single wrappers removed. Their
+articles continue this programme's surface-discovery and terminal work,
+so both belong in the numbered unknot collection.
+
+- [113 article](113/article/article.tex), pinned to
+  `74de08949619863b002b5fcf01813a2faddde212`: objective-independent common-port
+  atlases, source compilation and support descent, with parameter regimes
+  and a bounded-degree obstruction to a naive small-master strategy.
+  All 39 delivered files are new to the Git blob history.
+- [114 article](114/article/signed_primitive_annuli.tex), pinned to
+  `e0b2f802f336fcb51e9ec5f29174cfe28dfb9d39`: signed passive transport and
+  common-basis primitive-annulus certificates for rank-at-most-two support
+  blocks. Of 803 delivered files, 733 match older blobs, predominantly
+  the attributed native Python dependency/test snapshot.
+
+Historical matches were confirmed in commit trees; neither manuscript was
+previously placed. This is placement only: no tests, patch application or
+soundness review. Numerical and mathematical claims remain delivered
+claims pending separate review. Existing attributes and ignore rules apply
+without checksum or line-ending work. Both ZIPs are retired and remain
+recoverable from their arrival commit; the incoming README is preserved.
+See the [placement record](../synthesis/data/incoming-113-114-placement.json).

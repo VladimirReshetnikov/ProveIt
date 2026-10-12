@@ -1,0 +1,78 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=24mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem,xurl}
+\usepackage{tocloft}
+\setlength{\cftbeforesecskip}{3pt}
+\usepackage{tikz}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Projective port atlases}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{3em}
+\setlist{nosep,leftmargin=*,topsep=4pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}\newcommand{\Q}{\mathbb Q}\newcommand{\Z}{\mathbb Z}
+\newcommand{\supp}{\operatorname{supp}}\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\cone}{\operatorname{cone}}\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\spanlin}{\operatorname{span}}\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\one}{\mathbf1}\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\pos}{\textsf{POSITIVE}}\newcommand{\nonpos}{\textsf{NO\_POSITIVE}}
+\newcommand{\pin}{\texttt{74de08949619863b002b5fcf01813a2faddde212}}
+\input{measured.tex}
+\hypersetup{pdftitle={Projective Port Atlases for Normal-Surface Discovery},pdfauthor={Research continuation for Vladimir Reshetnikov; developed with ChatGPT},pdfsubject={Higher-rank interfaces, exact compatible cone search, normal-surface witnesses}}
+\title{\textbf{Projective Port Atlases\\for Normal-Surface Discovery}\\[7pt]
+\large Objective-independent higher-rank interfaces,\\source-exact compilation, and connected witnesses}
+\author{Research continuation for Vladimir Reshetnikov's ProveIt project\\
+\small Mathematical development and implementation assisted by ChatGPT}
+\date{12 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop an exact discovery kernel for nonnegative matching equations with local coordinate incompatibilities. Several independently complicated pieces are required to share one $d$-coordinate port. Instead of enumerating the Cartesian product of their compatibility choices, we normalize the common port and construct a finite arrangement determined only by local admissible rays. After separating positive zero-port directions, every remaining objective and coordinate-zero restriction attains its nonzero-port optimum at a vertex of this same arrangement. With two ports, the atlas consists only of the distinct normalized local ray images: intersections of objective lines are unnecessary.
+
+The direct exact implementation has bit complexity $\poly(\Lambda)(R+d+1)^{d^2-d+1}$ after local ray enumeration, where $R$ is the total number of local admissible rays and $\Lambda$ measures the encoded input. If local blocks have at most $k$ variables, a complete support enumerator gives $\poly(\Lambda)\exp(O(d^2(k+\log(m+d+2))))$. Thus logarithmic block size and port dimension give a cubic-logarithm quasi-polynomial bound for this complete discovery problem. An alternative enumerator allows large blocks of bounded algebraic nullity. The synchronization hypothesis is essential; arbitrary width-two chains already encode exact cover.
+
+Two source compilers preserve all matching equations and conflicts. We also show why primitive assembled vectors cannot automatically be called source rays, and give a polynomial-bit support descent that produces primitive extreme witnesses. For authenticated standard normal coordinates, these witnesses are connected. The package includes 46 unit tests, 960 random-model queries, 104 queries on a repository normal fixture, independent checks, and 64 nonextreme-to-extreme recovery examples. Seven paired full source-query trials improve from \NormalBase\,ms to \NormalSplit\,ms against the delivered unsplit enumerator. These are local discovery results, not a general quasi-polynomial unknot recognizer or a native production benchmark.
+\end{abstract}
+\vspace{5pt}
+\noindent\textbf{Reference revision.} \pin.\quad
+\textbf{Delivery.} Editable proofs, exact standard-library Python, independent checks, raw measurements, and additive integration notes.
+\clearpage
+\begingroup\footnotesize\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\clearpage
+\input{position.tex}
+\input{theory.tex}
+\input{source_geometry.tex}
+\input{barriers.tex}
+\input{experiments.tex}
+\input{research.tex}
+\appendix
+\input{appendices.tex}
+\begin{thebibliography}{99}
+\bibitem{slides} M. Lackenby, \emph{A quasi-polynomial time algorithm for unknot recognition}, lecture slides, February 2021, especially slide 14 and the final flowchart.\newline
+\url{https://people.maths.ox.ac.uk/lackenby/quasipolynomial-talk.pdf}.
+\bibitem{lack2026} M. Lackenby, \emph{Incompressible surfaces, hierarchies and unknot recognition}, arXiv:2607.23350v1, 25 July 2026, especially Sections 9 and 14.\newline \url{https://arxiv.org/abs/2607.23350}.
+\bibitem{bo} B. A. Burton and M. Ozlen, \emph{A fast branching algorithm for unknot recognition with experimental polynomial-time behaviour}, arXiv:1211.1079.\newline \url{https://arxiv.org/abs/1211.1079}.
+\bibitem{bps} B. A. Burton, J. Paix\~ao and J. Spreer, \emph{Computational topology and normal surfaces: Theoretical and experimental complexity bounds}, ALENEX 2013, 78--87; full version arXiv:1211.3234.\newline \url{https://arxiv.org/abs/1211.3234}.
+\bibitem{parametric} I. Adler and R. D. C. Monteiro, \emph{A geometric view of parametric linear programming}, Algorithmica 8 (1992), 161--176.\newline \url{https://doi.org/10.1007/BF01758841}.
+\bibitem{karp} R. M. Karp, \emph{Reducibility among Combinatorial Problems}, in \emph{Complexity of Computer Computations}, 1972, 85--103.\newline \url{https://doi.org/10.1007/978-1-4684-2001-2_9}.
+\bibitem{repo} V. Reshetnikov, \emph{ProveIt}, \code{Topology/UnknotRecognition}, reference revision \pin; inspected README, report catalogue, and synthesis introduction.\newline \url{https://github.com/VladimirReshetnikov/ProveIt}.
+\bibitem{scalar} ProveIt report 96, \emph{Scalar-Separator Elimination for Normal-Surface Search}, 12 October 2026. Inspected \code{README.md}, \code{article/article.tex}, and \code{scalar_separators/fixtures.py}.\newline \url{https://github.com/VladimirReshetnikov/ProveIt/tree/74de08949619863b002b5fcf01813a2faddde212/Topology/UnknotRecognition/reports/96}.
+\end{thebibliography}
+\end{document}

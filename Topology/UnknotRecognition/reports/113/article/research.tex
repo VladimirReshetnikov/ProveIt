@@ -1,0 +1,72 @@
+\section{Integration path and end-to-end accounting}
+\label{sec:integration}
+
+\subsection{An additive, source-first integration}
+The proposed location is an unnumbered research directory until repository intake assigns its place. The package changes no native defaults and contains no patch that silently replaces a maintained solver. Its core API accepts rational source matrices, conflict pairs, a verified partition, objectives and zero restrictions. It returns exact matching data, never the string \textsf{UNKNOT}.
+
+A safe production adapter should obtain its matrix, coordinate labels and Euler or boundary objective from maintained authenticated source producers. It should compile the proposed partition, prepare the atlas with cancellation and resource budgets, and independently check every positive source witness. It should then hand that witness to the maintained geometric checks for topology, essential boundary and knot-exterior ancestry. A failed partition check or a resource exception should invoke the existing fallback or return inconclusive; it must not produce a negative topology decision.
+
+The delivered example adapter follows the algebraic part of this sequence. Its fixture builder does not implement the missing source authentication. The independent checker protects against incorrect arithmetic packets but is not a replacement for geometric provenance.
+
+\subsection{A cost model for choosing a backend}
+The simplest planner can compare candidate counts before doing expensive enumeration: $2^{n_i}-1$ for support enumeration, $\binom{n_i}{h_i-1}$ for the zero-set alternative, and the expected atlas intersection count once local port images are available. These are safe upper-bound ingredients, not reliable timing predictions. The tests show that constant costs matter on small models.
+
+For repeated Euler and anchored queries, the same atlas and all barycentric mixtures can be reused. Only the local ray rewards, anchor support filters and local maxima change. A practical cache key must include the exact source, port maps, coordinate labels and conflict sets; it must not be keyed merely by dimension or by projected ray slopes. The latter would identify models with different admissibility or witness reconstruction.
+
+Dense higher-dimensional arrangements may overwhelm memory even when their abstract bound is acceptable. A streaming variant can retain only the best source packet while regenerating local mixtures, trading repeated work for memory. Promotion should also measure bit operations or integer sizes, not just candidate counts, because normal coordinates can be numerically large while still having short binary descriptions.
+
+\subsection{What would complete a quasi-polynomial recognition bound}
+\begin{proposition}[A transparent composition criterion]
+\label{prop:accounting}
+Suppose an independently proved sound and complete recognition procedure on diagrams of size $N$ makes at most $Q(N)$ source-discovery calls of the form studied here. Suppose all source encodings have size at most $\Lambda(N)$; the maximum port dimension is $d(N)$; and either the local block-size bound is $k(N)$ or complete local ray preparation costs $T_{\rm ray}(N)$ and yields at most $R(N)$ rays. Let $D(N)$ cover source/decomposition production and let $G(N)$ cover all other geometric work. Then one valid total bound is
+\begin{align}
+ T(N)\le D(N)+G(N)+Q(N)\Bigl[&T_{\rm ray}(N)\\[-4pt]
+ &+\poly(\Lambda(N),d(N))(R(N)+d(N)+1)^{d(N)^2-d(N)+1}\Bigr].\nonumber
+ \label{eq:composition}
+\end{align}
+With support enumeration, Theorem~\ref{thm:cost} bounds the bracket. With bounded local nullity, Corollary~\ref{cor:nullity} supplies its alternative.
+\end{proposition}
+\begin{proof}
+Charge source and decomposition production to $D$, non-discovery geometry to $G$, and the complete preparation-plus-query cost to each of the at most $Q$ calls. Source witness extraction and independent source checks have polynomial cost by Theorem~\ref{thm:descent} and can be included in the displayed polynomial factor. Reuse can improve the estimate, but is not assumed.
+\end{proof}
+
+This criterion deliberately names the absent hypotheses. It does not infer them from the topology of the unknot. In a hierarchy organization with an independently justified iteration estimate $L(g+1)^L$, the logarithmic charge for the number of iterations is at most $O(\log(L+1)+L\log(g+1))$, as in Lackenby's Section 9 accounting \cite{lack2026}. To obtain a cubic-logarithm total, every source-size, discovery, restart and geometric term must fit that budget. A logarithmic hierarchy depth alone is not enough if branch costs or intermediate descriptions grow too quickly.
+
+\section{Further research questions and proposed program}
+\label{sec:future}
+The results suggest specific tasks with observable success criteria, rather than another unqualified small-width conjecture.
+
+\subsection{Source-authenticated large blocks with few degrees of freedom}
+The most direct next objective is a geometric family of arbitrarily large normal-cut or product-region blocks for which a complete local ray set is obtainable in polynomial time. A useful exporter must give exact maps to the original coordinates, preserve all quadrilateral conflicts and zero anchors, and prove completeness of the represented local feasible set. Corollary~\ref{cor:nullity} provides a target: bounded algebraic nullity in a source-equivalent description is enough, even when raw regions are long.
+
+A rigorous first milestone is a layered or parallelity-bundle family with an explicit inverse reconstruction and a uniform ray bound. It should be tested with both genuine positive and negative anchored objectives. Counting only the represented copies or observing one fast positive witness would not establish the required complete local preparation bound.
+
+\subsection{Discovering a common algebraic port}
+For a supplied partition, the compilers are exact. The harder question is when many pieces admit one low-dimensional shared parameterization after rational elimination. Can source-verified row and column transformations identify that structure without hiding cross-block incompatibilities? Can common port dimension be reduced to the dimension of the intersection of attainable linear spans without causing an uncontrolled increase in local ray complexity?
+
+An exporter based only on a raw tetrahedron master is limited by Proposition~\ref{prop:degree}. The intended target is therefore algebraic synchronization certified from geometry, not a generic small separator in the raw bounded-degree dual graph.
+
+\subsection{Arrangement size versus worst-case enumeration}
+The exponent $d^2-d+1$ is a complete direct bound, not an asserted optimum. Many hyperplanes do not meet the nonnegative simplex; many candidate intersections are infeasible for one or more blocks; many compatible simplexes lie in the same affine span. An output-sensitive algorithm should exploit these facts while retaining a checkable coverage argument.
+
+A particularly concrete problem is to characterize when all feasible atlas vertices are already intersections of a bounded number of original port supports, or when the common attainable cone is simplicial. Any reduction must retain Example~\ref{ex:centroid}'s lower-dimensional intersection and Example~\ref{ex:convex}'s disconnected mode information. Discarding those examples would produce speed by changing the decision problem.
+
+\subsection{Independent certificates for complete negative queries}
+Current positive packets are small and independently checkable, but negative answers still require complete search. One possible next layer is a cover of the atlas by locally infeasible cells and nonpositive affine bounds, using exact separating functionals. The difficulty is not certifying one LP but certifying that all compatibility domains and all lower strata are covered.
+
+A successful design would state its certificate-size bound in terms of actual arrangement complexity, have a replayer independent of the ray producer, and reject a missing boundary stratum. Such a replayer would make negative discovery substantially safer to integrate into a complete geometric hierarchy.
+
+\subsection{Recursive higher-rank interfaces with controlled algebra}
+Theorem~\ref{thm:chain} rules out a blanket polynomial conclusion from two-coordinate seams in the abstract model. Corollary~\ref{cor:gain-alphabet} points toward a structural alternative: a small multiplicative alphabet, or more generally a controlled commuting semigroup of source-authenticated transfers.
+
+Can uniform local geometric types force a bounded transfer alphabet after canonicalization? If transfer maps do not commute, can their action on the particular boundary query still have a small quotient? Any positive result must account for intermediate admissibility domains as well as terminal matrices. This is a plausible point of contact between the current atlas and the repository's compressed hierarchy and ordered-interface work.
+
+\subsection{Native comparison against the best maintained producer}
+The measured unsplit baseline is transparent but intentionally simple. A production experiment should compare against the maintained low-nullity sector and branching backends on the same authenticated source corpus, include failed partition attempts, preparation, all verification, cancellation and memory, and retain regressions. Repeated objective workloads should be reported separately from one-shot queries.
+
+The next acceptance gate should not be a single favorable time ratio. It should combine source-equivalence tests, producer-disabled positive replay, complete negative agreement on an independently checkable corpus, and resource-limit semantics. Only after that gate should a bounded adaptive dispatcher enable the atlas in the default recognition path.
+
+\subsection{A global geometric completeness theorem}
+Finally, a complete quasi-polynomial recognizer needs a theorem that every necessary stage of the chosen recognition procedure admits a source representation and useful discovery query within the claimed budgets, including cases where no positive surface of the requested type exists. It must control source sizes after cutting, choices of decomposing surfaces, possible restarts, peripheral data, and terminal geometric certification.
+
+The present contribution removes one precisely identified Cartesian-product search and supplies a connected-witness recovery step. It also proves why two tempting shortcuts---primitive assembly and naive logarithmic tetrahedron masters---are insufficient. Those restrictions make the next geometric theorem more sharply formulated; they do not diminish the exact local algorithms proved and checked here.
