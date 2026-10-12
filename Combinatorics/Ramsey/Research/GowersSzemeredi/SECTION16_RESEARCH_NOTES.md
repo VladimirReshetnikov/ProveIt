@@ -7026,6 +7026,47 @@ all-degree bounds, with only approved axioms. Its immutable report is
 `verification/2026-10-12-final-cover-budget-compatibility.json`. The complete
 facade is outside this focused check. The goal remains active.
 
+
+### L.58. Separate recurrence lattice facts from geometric sheets (2026-10-12)
+
+`OAI.Compat.NormalizedLatticeBasics` now contains the initial basic lattice
+sections of `NormalizedLatticeSheet`. `OAI.Compat.NormalizedLatticeGaussian`
+contains the covolume and Gaussian normalization sections of `LatticeSheetHaar`.
+The original modules re-export all moved declarations and retain the geometric
+sheet results. Four Fourier/recurrence consumers import the extracts directly.
+All declaration types, ported proof bodies, instances and simp attributes
+are unchanged.
+
+The provenance checker now verifies that the basics extract is identical to
+the pinned upstream sections, and the Gaussian extract differs only by the
+already documented `isClosed_of_discrete` compatibility rename. All 4,134
+pinned source hashes match; the selected upstream closure is unchanged, with
+19 local compatibility modules instead of 17. Apache-2.0 license text,
+modification notices and source attribution are retained.
+
+The initial basics-only change compiled its two direct consumers but exposed
+an indirect dependency in `LatticeSheetHaar`. Separating the Gaussian sections
+and importing `GramCovolume` directly resolves it. The interval dilation and
+common-denominator consumers also import their estimates directly. Both extracts, all four
+changed consumers and both full geometric modules now pass a 549-module native
+compilation check. `FinalAudit` now passes 659 native modules and
+`FinalProofSimplificationAudit` passes 829, with only `propext`,
+`Classical.choice` and `Quot.sound`. These preserve the original final
+theorems and stronger all-degree bounds. The source manifests and completed
+audit reports are `verification/2026-10-12-final-lattice-gaussian.json` and
+`verification/2026-10-12-final-lattice-gaussian-compatibility.json`.
+
+The measured final import closure is 658 modules / 142,691 lines, down by
+504 modules / 102,086 lines from L.57. Against the original aggregate entry,
+this is 631 fewer modules / 122,002 fewer lines. These are import-closure
+counts, not repository-wide deletions or proof-completion counts. The final
+statement and numerical bounds are unchanged.
+
+See `verification/2026-10-12-lattice-gaussian-clients.json` and
+`verification/2026-10-12-final-lattice-gaussian-dependencies.json`. The full
+OAI port audit remains historical; no fresh complete port or facade audit is
+claimed. The simplification goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

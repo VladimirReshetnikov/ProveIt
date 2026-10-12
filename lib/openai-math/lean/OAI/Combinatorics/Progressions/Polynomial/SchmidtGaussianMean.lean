@@ -1,4 +1,5 @@
-import OAI.Combinatorics.Progressions.Lattices.LatticeSheetHaar
+/- Modified for ProveIt: Import the extracted covolume and Gaussian normalization declarations directly; statements and proof bodies unchanged. -/
+import OAI.Compat.NormalizedLatticeGaussian
 
 namespace OAI
 

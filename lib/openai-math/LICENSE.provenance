@@ -54,6 +54,24 @@ They omit the reciprocal-sum branch, which the Gowers formalization does not
 use. Their original source hashes remain in the manifest; omission does not
 alter the license or copyright status of the retained material.
 
+NormalizedLatticeBasics.lean in lean/OAI/Compat/ extracts the initial basic
+lattice sections of the ported Lattices/NormalizedLatticeSheet.lean at the
+same pinned upstream revision. Declaration types and proof bodies are moved
+unchanged, including the existing toolchain adaptations. The original module
+re-exports these declarations. Fourier/MonomialCharacterMean.lean and
+Polynomial/SchmidtHyperplaneTransfer.lean import the extract directly to
+avoid the unrelated geometric sheet construction. The source files record
+these changes prominently; the extract remains under Apache-2.0.
+
+NormalizedLatticeGaussian.lean in lean/OAI/Compat/ similarly extracts the
+initial covolume and Gaussian sections of the ported Lattices/LatticeSheetHaar.
+The existing isClosed_of_discrete compatibility rename is retained. The full
+module re-exports the extract; Fourier/LatticeTorusFourierCoefficient and
+Polynomial/SchmidtGaussianMean import it directly. The provenance checker
+compares these sections with the pinned source after that one explicit rename.
+LatticeGaussianDilation and SchmidtShortDualVector import their interval
+dilation and common-denominator estimates directly; proof bodies are unchanged.
+
 README.md describes the verified subset and the quantitative port still in
 progress. quantitative-port-manifest.json records the pinned quantitative
 import closure and SHA-256 hashes of the original upstream files. Git
