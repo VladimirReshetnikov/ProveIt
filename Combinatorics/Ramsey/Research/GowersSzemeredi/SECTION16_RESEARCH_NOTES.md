@@ -5537,6 +5537,28 @@ spectrum exponent `Eb`, the remainder exponent `Er` and the slice exponent
 The model `models/model_two_track.py` reproduces `tDegM` in its one-track
 case. With the two tracks it predicts exactly this table.
 
+**L.16y: the dimension-two count, unrounded (2026-10-12).** After L.16x the
+Theorem 18.1 thresholds no longer move under per-step savings or under the
+exponent seed. The count seed now moves Theorem 18.2: `(11, 2^39)` gives
+`L + 0` from 13 (`model_two_track.py`). The count's parameter degree is
+about six times that of the face count `q_f`
+(`uniTwoFejerCount_le_split`: `2^24 + 2·SB + 2·PB`). The corpus bounds `q_f`
+by `u^(2^38)`, rounding twice: Lemma 16.3's exponent `10002` up to `2^14`
+(`section16BaseFamilyBound_le_dyadic_power`), and then
+`(2^23+1)·2^14 ≤ 2^38`. Unrounded, `q_f ≤ u^(10002·(2^23+1)) ≈ u^(2^36.29)`
+(`polyPieceFaceCountW_fejer_le_tight`), and the count is at most
+`(n+1)^11·W^(2^39)` (`uniTwoFejerCount_le_split_tight`; degree about
+`2^38.87`). No sharpening of Lemma 16.3 is needed. Modules:
+`Proofs16UniformCoverTwoTight` (`assemble_tight.py`, including the seed
+`splitUniformClass2_two_tight`); `Proofs16SplitTwoTrackClassesT3`
+(`assemble_t3.py`), the table `tDegT3`
+`…, 120, 186, 286, 450, 740, 1275, 2298, 4292, 8223, 16027, 31570`; the joint-slice
+chain `Proofs18Cover{Modulus,Density,Exponents}FejerJT3`; and
+`Proofs18CoverFejerHeadlineK3` (`assemble_k3.py`), the K envelope over
+`tDegT3`. In the bridge: Theorem 18.2 and Corollary 18.7 at `L + 0` from
+`L = 13`, `W(k, r) ≤ 2^2^r^2^2^k` and Theorem 1.3 with density exponent
+`2^(-2^k)` for `k ≥ 13`. Theorem 18.1 does not move.
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`
