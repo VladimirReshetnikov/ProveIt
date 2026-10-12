@@ -3789,19 +3789,45 @@ To complete the proof of the lemma, it would be necessary to check that $q(\sigm
 Proof of Theorem 16.2. Lemma 16.10 shows that if the result is true for $k$ and $\Gamma \subset \mathbb{Z}_{N}^{k+1} \times \mathbb{Z}_{N}$ has the product property with parameter $\gamma$, then $\Gamma$ has a $(\gamma, 1)$-multiply $(k+1)$-linear subset of cardinality at least $\theta_{2} N^{k+1} \geqslant N^{k+1} / s(\theta, \gamma, k)$, if its projection has size at least $\theta N^{k+1}$. Now apply this result repeatedly, removing such sets from $\Gamma$ until it no longer has a projection of size at least $\theta N^{k+1}$. Since $|\Gamma| \leqslant \gamma^{-2} N^{k+1}$, the num-\\
 ber of sets removed is at most $\gamma^{-2} s(\theta, \gamma, k)$. The result now follows from Lemma 16.8. \(\square\)
 
-% ed.: The final ``straightforward calculation'' has its comparison in the
-% wrong direction.  The common exponent actually supplied by the definitions
-% is recorded explicitly instead of the unsupported printed tower.
-Corollary 16.11. Let $k\geqslant1$, let $0<\alpha\leqslant1/2$, and let $N$ be a sufficiently large odd prime. If $f: \mathbb{Z}_{N} \rightarrow D$ fails to be $\alpha$-uniform of degree $k+1$, set
+% ed.: The original common exponent is recovered by polynomial integer covers.
+% The iteration-based proof alone gives a smaller exponent; that comparison
+% remains documented below and is not a counterexample to the corollary.
+Corollary 16.11. Let $k\geqslant1$, let $0<\alpha\leqslant1/2$, and let $N$ be prime. If $f: \mathbb{Z}_{N} \rightarrow D$ fails to be $\alpha$-uniform of degree $k+1$, set
+\[
+\varepsilon=(\alpha/2)^{2^{2^{k+9}}}.
+\]
+Then there is a box $P\subset\mathbb{Z}_{N}^{k}$ of width at least $N^{\varepsilon}$, with ascending integer representatives for all its axes and a common positive integer difference, and a multilinear function $\mu:P\rightarrow\mathbb{Z}_{N}$ such that, for at least $\varepsilon|P|$ values of $(y_1,\ldots,y_k)\in P$,
+\[
+\left|\Delta(f;y_1,\ldots,y_k)^{\wedge}\bigl(\mu(y_1,\ldots,y_k)\bigr)\right|
+\geqslant (\alpha/2)N.
+\]
 
-$$
+\noindent\textbf{Editorial note (formalized recovery and strengthening).}
+The original common exponent is now proved together with ordinary integer-box geometry. In fact $k+9$ may be replaced by $k+8$, and no additional lower bound on the prime modulus is needed, including at $N=2$. The exact-source Lean companion is \texttt{corollary\_16\_11\_printed\_integer}; the stronger one is \texttt{corollary\_16\_11\_integer\_shift\_eight}. The earlier iteration calculation yields only
+\[
 r=4\alpha^{-2}s(\alpha/4,\alpha/2,k),\qquad
-c_{*}=(\alpha/8)c(r^{-1}\alpha/8,\alpha/2,k)^{r}.
-$$
+c_*=(\alpha/8)c(r^{-1}\alpha/8,\alpha/2,k)^r,
+\]
+which is strictly smaller than the printed exponent. That failed comparison does not refute the statement. The proof below uses the sharper polynomial covers instead.
 
-Then there is a box $P \subset \mathbb{Z}_{N}^{k}$ of width at least $N^{c_{*}}$ and a multilinear function $\mu: P \rightarrow \mathbb{Z}_{N}$ such that, for at least $c_{*}|P|$ values of $\left(y_{1}, \ldots, y_{k}\right)$, we have $\left|\Delta\left(f ; y_{1}, \ldots, y_{k}\right)^{\wedge}\left(\mu\left(y_{1}, \ldots, y_{k}\right)\right)\right| \geqslant(\alpha / 2) N$.
+Proof (using polynomial integer covers). The large-frequency graph argument gives a set $B\subset\mathbb{Z}_N^k$ of size at least $(\alpha/2)N^k$ and a function $\phi:B\rightarrow\mathbb{Z}_N$ with the product property at parameter $\alpha/2$, such that the required Fourier inequality holds at every $(y,\phi(y))$. Apply the polynomial cover at parameters $\gamma=\alpha/2$, $\theta=\alpha/4$, and then $\rho=\alpha/8$. The split-degree induction, carried through with integer representatives, supplies a base $V\geqslant1$ and degree $D_0=2^{68\cdot2^k}$ with
+\[
+V\leqslant 2^{2^{2^{k+6}}},\qquad
+Q=(256V/\alpha^3)^{D_0}.
+\]
+After discarding at most $(\alpha/4)N^k$ points and averaging over the integer boxes and their multilinear graphs, there is an ascending integer box $P$ of width at least $N^{1/Q}$ on which one multilinear graph agrees with $\phi$ on at least $(\alpha/8Q)|P|$ points.
 
-Proof. Since $f$ is not $\alpha$-uniform of degree $k+1$, we find, using the implication of (ii) from (vi) in Lemma 3.1, that there is a set $B \subset \mathbb{Z}_{N}^{k}$ of size at least $(\alpha / 2) N^{k}$ and a function $\phi: B \rightarrow \mathbb{Z}_{N}$ such that $\left|\Delta\left(f ; a_{1}, \ldots, a_{k}\right)^{\wedge}\left(\phi\left(a_{1}, \ldots, a_{k}\right)\right)\right| \geqslant(\alpha / 2) N$ for every $\left(a_{1}, \ldots, a_{k}\right) \in B$. Lemma 14.2 then implies that $\phi$ has the product property with parameter $\alpha / 2$. Next, Theorem 16.2 implies that $B$ has a subset $C$ of size at least $(\alpha / 4) N^{k}$ such that the restriction of $\phi$ to $C$ is $(\alpha / 2, r)$-multiply $k$-linear, where $r=4 \alpha^{-2} s(\alpha / 4, \alpha / 2, k)$. Applying the definition of multiple multilinearity in the case where the box $P$ is the whole of $\mathbb{Z}_{N}^{k}$ and $\theta=\alpha / 8$, we find a set $H \subset \mathbb{Z}_{N}^{k}$ of size at least $(1-\alpha / 8) N^{k}$ and partition of $\mathbb{Z}_{N}^{k}$ into boxes $P_{1}, \ldots, P_{M}$ of width at least $N^{c(r^{-1}\alpha/8, \alpha / 2, k)^{r}}$ such that for every $j$ the restriction of $\phi$ to $C \cap P_{j} \cap H$ is contained in the graph of at most $q(r^{-1}\alpha/8, \alpha / 2, k)^{r}$ multilinear functions. By averaging, we can find a box $P_{j}$ such that $\left|C \cap P_{j} \cap H\right| \geqslant(\alpha / 8)\left|P_{j}\right|$. By further averaging, we can find a subset $D \subset P_{j}$ of size at least $\left(q(r^{-1}\alpha/8, \alpha / 2, k)^{r}\right)^{-1}(\alpha / 8)\left|P_{j}\right|$ such that the restriction of $\phi$ to $D$ is multilinear. By the definitions of $q$ and $c_{*}$, this is at least the asserted common lower exponent. \(\square\)
+For the numerical comparison put $X=2/\alpha\geqslant4$ and $B_0=2^{2^{k+6}}$. Then
+\[
+Q=(32VX^3)^{D_0}\leqslant X^{(B_0+8)D_0},\qquad
+(B_0+8)D_0+3\leqslant 2^{2^{k+8}}.
+\]
+Since $4X\leqslant X^3$, these inequalities imply
+\[
+(\alpha/2)^{2^{2^{k+8}}}
+\leqslant (4XQ)^{-1}=\frac{\alpha}{8Q}\leqslant Q^{-1}.
+\]
+Thus both required bounds hold with $k+8$, and hence with $k+9$. \(\square\)
 
 \section*{17 The Main Inductive Step}
 We are finally ready to generalize the argument of §8, to complete a proof of Szemerédi's theorem for progressions of arbitrary length. It turns out that there is a second reason for this being harder than for progressions of length four, but fortunately it is much less serious than the difficulties we have dealt with in the last two sections.

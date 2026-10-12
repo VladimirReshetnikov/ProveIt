@@ -6658,6 +6658,29 @@ build was yielded at a completed-module boundary for this source-fidelity
 proof and resumed with the new combined target using its retained cache.
 Its completion remains a separate verification result.
 
+### L.49. Restoring the original integer-box Corollary 16.11 (in verification, 2026-10-12)
+
+The new proof draft carries IntegerCover through the split uniform classes,
+including the dimension-two seed, successor step, and all-dimension induction.
+It then obtains integer polynomial covers at degree D=2^(68*2^k). The previous
+integer wrapper used the much larger classDeg bound, which did not recover
+the original common exponent when combined with integer geometry.
+
+The generic extraction keeps gamma=alpha/2, theta=alpha/4, rho=alpha/8,
+ascending integer boxes, width N^(1/Q), and frequency density alpha/(8Q).
+Here Q=(256V/alpha^3)^D and V<=2^(2^(2^(k+6))). Writing X=2/alpha and
+B=2^(2^(k+6)) gives Q<=X^((B+8)*D) and
+(B+8)*D+3<=2^(2^(k+8)). Thus the proposed common exponent uses k+8,
+which strengthens the paper's k+9. Both the exact-source companion and
+stronger companion cover every prime, without an extra size threshold.
+
+Verification is pending. IntegerOriginalCorollaryCoreAudit checks the exact
+new declarations and their transitive axioms. The serial worker is rebuilding
+dependencies affected by earlier foundational changes before reaching them.
+The source-fidelity ledger deliberately remains open until this audit passes;
+the revised paper is a draft pending that gate. The expanded downstream target
+is IntegerOriginalCorollaryFidelityAudit, followed separately by the facade.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

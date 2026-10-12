@@ -1263,6 +1263,7 @@ import GowersSzemeredi.Proofs18CoverModulusFejerJT
 import GowersSzemeredi.Proofs18CoverDensityFejerJT
 import GowersSzemeredi.Proofs18CoverExponentsFejerJT
 import GowersSzemeredi.Proofs18CoverFejerHeadlineJT
+import GowersSzemeredi.Proofs16IntegerOriginalCorollary
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
