@@ -1,0 +1,46 @@
+{
+  "part": "higher",
+  "source_folder": "stieltjes-harmonic-resonance/continuations/higher-identities",
+  "commands": [
+    {
+      "arguments": [
+        "reproduce.py",
+        "--exact",
+        "--numeric"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "code/normal_forms/check_compensator_signs.py"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "fresh_result_files": [
+    "checks/reproduction_exact_numeric.json",
+    "checks/three_cluster_replay.json",
+    "code/normal_forms/compensator_signs.json"
+  ],
+  "copy_only_repairs": [
+    {
+      "path": "reproduce.py",
+      "original_source_sha256": "a7aad6546bfdb043f3f6d6a514159b7c90c068a99caa4d0cf29b47550cd65ec2",
+      "copy_source_sha256": "a2cb8e585184f681d3ef79f4cfa52ad3ee07a9b2cef6b89cb23468892e24d257",
+      "change": "Compare every CSV field and mathematical JSON value exactly on the isolated copy. Retain the descriptive CSV byte identifiers separately instead of treating serialization as a mathematical value. No mathematical computation or certificate value changes; other comparisons retain exact bytes."
+    }
+  ],
+  "source_code_sha256": {
+    "reproduce.py": "a7aad6546bfdb043f3f6d6a514159b7c90c068a99caa4d0cf29b47550cd65ec2",
+    "code/collisions/check_polygamma_contacts.py": "b55507c044929820ecba42d3589fca6759115b96b8ad0fdeb2894d54c49a22aa",
+    "code/collisions/verify_exact_contacts.py": "56eb2f5ca18454b418fda03606a280cbe8799c6fabdc5767e28bf7007e2ec8c1",
+    "code/gap_ten/create_gap_ten_example.py": "ab9f8a727509066630b808ae2eb90ddc9d8f92383065a84d8484eecc61b7b5c0",
+    "code/gap_ten/verify_gap_ten.cpp": "731f74c56fc10b875e410acc695fee919d806ed088b242d993288e7f04fee0a1",
+    "code/gap_ten/verify_gap_ten_independent.py": "0ba852b894f8fd40f5f4ba3e8a36a993adc5f9e0ff0b1a31ea6b30804e6cc0b8",
+    "code/normal_forms/check_compensator_signs.py": "4c364e381b18c991699b5889fcfa699d8fc6cac94ff6eea540e5bf676592f211",
+    "code/normal_forms/normal_forms.py": "601a51e9d44d8ecd0ae41ce46301be9d68b2558288b3704830b28d86cc740aef",
+    "code/three_clusters/verify_three_clusters.py": "457f89b656613e35aad4a4f3e3ba2ee84b048250f8659fa0ccd76de938fd5e04"
+  },
+  "passed": true,
+  "scope": "Complete specified mathematical suites, freshly run on isolated copies with assertions and UTF-8 enabled. The higher-identities wrapper independently copies code, freshly compiles and reproduces every field of the full gap-ten CSV, and compares exact subsidiary JSON values. Any portable structured-record comparison is explicitly recorded as a copy-only harness change. Original deliveries are unchanged. Conjectural support/sign probes remain finite evidence; numerical outputs are not certified enclosures. No package-manifest verification or document rebuild is performed."
+}

@@ -1,3 +1,52 @@
+# Complete compensators and analytic primitive translations
+
+October 12, 2026. Section 8.46 continues the coefficient/normal-generator
+theorems with Theorems 8.141 and 8.142: every compensator is the finite
+Euler homotopy B K^{-1}(A_m-N_m), and its generating series converges on
+|x-x0|+2|t|<R for holomorphic input. The Gamma and Stieltjes translation
+identities and anchored integrals retain their endpoint compensators.
+Entire inputs give entire generators. A closed affine primitive and its
+all-degree coefficient formula include the required +t/2 normalization,
+which enforces H_1=0. Unrestricted full support/sign remains conjectural.
+
+Independent sparse reduction agrees with the closed homotopy and affine
+coefficients at all weights zero through eighteen, including the Appell
+identity and its weight-two constant anomaly. The written argument fixes
+constants in the polynomial ring before affine specialization. There are 139 additional
+generic Euler-boundary monomial checks. Two real/complex affine diagnostics
+pass at 80 digits; native Wolfram verifies the symbolic translation
+derivative, removable constant-input limit, all degrees two through eighteen
+and the required-constant control. These exact finite checks and numerical
+diagnostics are separate from the all-weight and analytic written proofs.
+The homotopy operator is credited to its classical sources; Higher Identities
+receives credit for its primitive extension and independent normal-generator
+proof. The cubic report's Conjecture 9.1 matches Theorem 8.139 exactly.
+
+All five twentieth-intake full mathematical suites pass on isolated copies.
+Preserve the unmodified Higher Identities wrapper failure and its later
+serialization-identifier guard failure. The final copy-only comparator
+compares every mathematical CSV field and JSON value exactly, recording
+descriptive byte identifiers separately; no source mathematical computation
+changes. Its fresh native gap-ten certificate has all 73722 records, and all
+independent exact, contact, normal-form and numerical suites pass. The full
+gap-ten infinite Gamma-basis proof is still a separate pending audit.
+
+Preservation covers 124 archives, 4550 tracked original members and 50 ignored
+recoverable records, with 1794 textual sources. The five new ZIPs were retired
+in placement 543e56fcf44a, published in 08e5a22eb971. Original deliveries are
+unchanged. Complete fixed smaller orders and fixed-gap rays remain distinct;
+general all-pair rank and Gaussian S6/revised S8 remain open.
+
+The four final PDFs have 130/129/240/85 pages (584 total); the combined edition
+has 543 pages and 140 references. Coupled three-round builds, three serial
+combined passes and three cold passes for each volume succeed without final
+log issues. All 40 external volume destinations pass. Review all nine changed
+volume bodies and both unmatched combined contents pages at full size; 575
+volume bodies and 536 combined bodies match the reviewed preceding edition,
+and five changed combined bodies match freshly reviewed volume pages.
+No current contact sheets are claimed as opened. Only centered footer page
+numbers are excluded from matching, with all scientific bounds checked.
+
 # Universal normal coefficients and analytic generators
 
 October 12, 2026. Section 8.46 reconciles both universal-normal-form

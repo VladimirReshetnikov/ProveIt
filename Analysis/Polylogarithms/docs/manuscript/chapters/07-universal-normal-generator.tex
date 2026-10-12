@@ -283,3 +283,217 @@ exponential, a quadratic and a simple pole. The finite checks diagnose
 the formulas; the all-order coefficient proof and the convergence
 argument establish the infinite statements. No interval or
 proof-assistant certification is asserted.
+
+\subsection{Every compensator and an analytic primitive generator}
+
+The higher-identities continuation \cite{ngp:reports} independently obtains
+the analytic normal generator above and supplies the missing compensating
+derivative. Its construction uses the classical one-dimensional Euler
+homotopy operator. The following proof spells out its specialization to
+this hierarchy, including the convergence needed for actual input jets.
+The cubic continuation's all-index Conjecture~9.1 is precisely
+Theorem~\ref{ung:coefficient}: its polynomial $q_j$ equals $C_j$, and
+its symmetric average equals the integral on $[0,1]$ for even parity.
+Its earlier conjectural status is retained only in the original report.
+
+Let $K$ multiply a monomial by its factor degree $\sum a_j$, and let
+$K^{-1}$ divide every positive-degree coefficient by that degree. Put
+\begin{equation}\label{ngp:operators}
+ E(P)=\sum_{j\ge0}(-\mathcal D)^j\partial_{u_j}P,\qquad
+ B(P)=\sum_{j\ge1}\sum_{k=0}^{j-1}
+             u_{j-1-k}(-\mathcal D)^k\partial_{u_j}P.
+\end{equation}
+All sums on differential polynomials are finite. Telescoping the product
+rule gives
+\[
+ u_jQ-u_0(-\mathcal D)^jQ
+ =\mathcal D\sum_{k=0}^{j-1}u_{j-1-k}(-\mathcal D)^kQ,
+ \qquad KP=u_0E(P)+\mathcal D B(P).
+\]
+The operators $\mathcal D,B$ preserve factor degree; $E$ lowers it by
+one. Thus $E(P)=0$ and $[1]P=0$ imply
+$\mathcal D BK^{-1}P=P$, by applying the identity at each factor degree.
+The zero-constant hypothesis matters: a nonzero constant is Euler-null
+but is not a polynomial total derivative.
+
+\begin{theorem}[Closed compensator at every weight]\label{ngp:closed}
+For $m\ge1$, the unique zero-constant compensator in
+$\mathsf A_m=\mathsf N_m+\mathcal D\mathsf H_m$ is
+\begin{equation}\label{ngp:homotopy}
+ \boxed{\mathsf H_m=BK^{-1}(\mathsf A_m-\mathsf N_m).}
+\end{equation}
+Write $p(\boldsymbol a)=[u^{\boldsymbol a}](\mathsf A_m-\mathsf N_m)$.
+The normal coefficient is Theorem~\ref{ung:coefficient}; the raw one is
+\[
+ [u^{\boldsymbol a}]\mathsf A_m
+ =\frac{(-1)^{m-|\boldsymbol a|}m!}
+ {\prod_j a_j!\,((j+1)!)^{a_j}}.
+\]
+Consequently the compensator has the nonrecursive finite expression
+\begin{equation}\label{ngp:finite}
+ \mathsf H_m=
+ \sum_{\sum(j+1)a_j=m}\frac{p(\boldsymbol a)}{|\boldsymbol a|}
+ \sum_{j\ge1}a_j\sum_{k=0}^{j-1}(-1)^k
+                u_{j-1-k}\mathcal D^k u^{\boldsymbol a-\boldsymbol e_j}.
+\end{equation}
+Powers of $\mathcal D$ can themselves be replaced by the finite
+multinomial Leibniz sum
+\begin{equation}\label{ngp:leibniz}
+ \mathcal D^k u^{\boldsymbol b}
+ =k!\sum_{\substack{\sum_r b_{i,r}=b_i\ (i\ge0)\\
+                     \sum_{i,r}r b_{i,r}=k}}
+  \prod_i\frac{b_i!}{\prod_r b_{i,r}!(r!)^{b_{i,r}}}
+  \prod_{i,r}u_{i+r}^{b_{i,r}}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The canonical decomposition makes $P=\mathsf A_m-\mathsf N_m$ a
+total derivative, with no constant term. The identity
+$\partial_{u_j}\mathcal D=\mathcal D\partial_{u_j}+
+\partial_{u_{j-1}}$, with the second term absent at $j=0$, gives
+$E(\mathcal DQ)=0$ by cancellation. The preceding factor-degree
+identity therefore differentiates \eqref{ngp:homotopy} to $P$.
+It has no constant term. Since the kernel of $\mathcal D$ on this
+ring consists of constants, uniqueness identifies it with the canonical
+compensator. Expanding $B,K^{-1}$ and the Leibniz rule proves the
+displayed finite formulas.
+\end{proof}
+
+For example $\mathsf N_6=u_0^6-15u_0^2u_1^2+u_2^2$ and
+\[
+ \mathsf H_6=-3u_0^5+20u_0^3u_1-15u_0^2u_2-15u_0u_1^2
+              +6u_0u_3+9u_1u_2-u_4.
+\]
+For a smooth input $U$ and $Y'=-UY$, every weight now has an explicit
+primitive, including the compensating term:
+\begin{equation}\label{ngp:weighted}
+ \int Y(\mathsf N_m(U)+U\mathsf H_m(U))\,dx
+       =-Y(\mathsf A_{m-1}(U)+\mathsf H_m(U))+C.
+\end{equation}
+Indeed $(Y\mathsf A_{m-1})'=-Y\mathsf A_m$ and
+$(Y\mathsf H_m)'=Y(\mathcal D\mathsf H_m-U\mathsf H_m)$.
+These identities also explain why specialization never permits one to
+discard the endpoint compensator.
+
+\begin{theorem}[Analytic compensator and translation]\label{ngp:analytic}
+If $U$ is holomorphic on $|x-x_0|<R$, then
+\begin{equation}\label{ngp:analytic-series}
+ \mathsf H_U(x,t)=\sum_{m\ge1}\mathsf H_m(U(x))\frac{t^m}{m!}
+\end{equation}
+converges locally normally on $|x-x_0|+2|t|<R$. It is holomorphic
+there and, for a local primitive $F'=U$, satisfies
+\begin{equation}\label{ngp:translation}
+ \boxed{e^{F(x)-F(x-t)}=\mathsf G_U(t,x)+\partial_x\mathsf H_U(x,t).}
+\end{equation}
+For entire $U$ both generators are entire in $(x,t)$.
+\end{theorem}
+\begin{proof}
+Write $P(t,u)=\sum(\mathsf A_m-\mathsf N_m)t^m/m!$.
+Scaling the jets gives
+$K^{-1}P=\int_0^1P(t,\lambda u)\,d\lambda/\lambda$ formally.
+Differentiating cancels the apparent $1/\lambda$ singularity, so the
+candidate analytic compensator is
+\begin{equation}\label{ngp:analytic-homotopy}
+ \int_0^1\sum_{j\ge1}\sum_{k=0}^{j-1}
+ U^{(j-1-k)}(x)(-\partial_x)^k
+ \left.(\partial_{u_j}P(t,u))\right|_{u_r=\lambda U^{(r)}(x)}d\lambda.
+\end{equation}
+Here $\partial_x$ acts on the evaluated factor following it, not on
+the outside $U^{(j-1-k)}$.
+
+On a compact subset choose local disks and one common $\rho$ with
+$\sup|t|<\rho$ and $2\rho<R-|x-x_0|$, uniformly on each smaller
+disk. Cauchy's estimates bound the jets by $Mr!\rho^{-r}$.
+The raw exponential gives
+$|\partial_{u_j}A|\le C|t|^{j+1}/(j+1)!$.
+The pole-free normal generator gives the same bound for
+$\partial_{u_j}N$, uniformly for $0\le\lambda\le1$ and for the
+spatial Cauchy circle. For sectors $r>j$, differentiation inserts
+$t^{j+1}C_j(v)$, bounded by $|t|^{j+1}/(j+1)!$; their remaining
+sum has the already proved normal majorant. Sector $r=j$ uses
+\[
+ \left|\frac{d}{dy}\{y^2E_2(cy)\}\right|
+ =\left|y\frac{e^{cy}-1}{cy}\right|\le |y|e^{|cy|},
+\]
+including its removable value. Its factorial prefactor and the jet
+estimate give an additional bounded factor
+$M|t|(|t|/(4\rho))^j$. Thus the constant $C$ is independent of $j$.
+Using a slightly smaller common Cauchy radius still exceeding
+$\sup|t|$, we obtain
+\[
+ |\partial_x^k(\partial_{u_j}P)(\lambda U)|
+ \le C\frac{k!|t|^{j+1}}{(j+1)!\rho^k},\qquad
+ |U^{(j-1-k)}(x)|\le M\frac{(j-1-k)!}{\rho^{j-1-k}}.
+\]
+Since $\sum_{k=0}^{j-1}k!(j-1-k)!/(j+1)!\le1/(j+1)$,
+the $j$th group of \eqref{ngp:analytic-homotopy} is bounded by
+$CM|t|^{j+1}\rho^{1-j}/(j+1)$. This is locally summable.
+There is no singular endpoint at $\lambda=0$.
+The resulting holomorphic function has the Taylor coefficients
+\eqref{ngp:homotopy}, because only finitely many $j,k$ contribute
+at each weight. Cauchy's theorem in $t$ then proves local normal
+convergence of \eqref{ngp:analytic-series}, including spatial
+derivatives on smaller domains.
+The convergent raw series is $\exp(\int_{x-t}^xU(s)ds)$.
+The coefficientwise decomposition proves \eqref{ngp:translation}
+as an analytic identity. Entire input permits arbitrarily large local
+disks, proving the last assertion.
+\end{proof}
+
+For $x>0$ and $|t|<x/2$, the Gamma and Stieltjes specializations are
+\begin{align}
+ \frac{\Gamma(x)}{\Gamma(x-t)}
+ &=\mathsf G_\psi(t,x)+\partial_x\mathsf H_\psi(x,t),
+ \label{ngp:gamma}\\
+ e^{F_q(x)-F_q(x-t)}
+ &=\mathsf G_{-\gamma_q}(t,x)+\partial_x\mathsf H_{-\gamma_q}(x,t),
+ \quad F_q(x)=\frac{(-1)^q}{q+1}\zeta^{(q+1)}(0,x).
+ \label{ngp:stieltjes}
+\end{align}
+Here the superscript is an order derivative. The Laurent convention and
+$\partial_x\zeta(s,x)=-s\zeta(s+1,x)$ give $F_q'=-\gamma_q$;
+at $q=0$, $F_0=\log\Gamma-\tfrac12\log(2\pi)$.
+On $[a,b]\subset(0,\infty)$ with $|t|<a/2$, integration term by
+term retains $\mathsf H_U(b,t)-\mathsf H_U(a,t)$.
+No maximal convergence radius is asserted.
+
+The affine case also has a closed entire compensator. With
+$U=a+bx$, $z=bt^2/2$ and
+$F_1(2z)=(\cosh z+\sinh z/z-z\operatorname{Shi}(z))/2$, it is
+\begin{equation}\label{ngp:affine}
+ \boxed{\mathsf H_U(x,t)=\frac t2+t e^{tU(x)}
+                 \frac{e^{-z}-F_1(2z)}{2z}.}
+\end{equation}
+The quotient has removable value $-1/2$ at $z=0$, including $b=0$.
+To fix constants that survive affine specialization, first use the
+polynomial ring. The raw and normal Appell identities, and commutation
+of $\partial_{u_0}$ with $\mathcal D$, make
+$\partial_{u_0}\mathsf H_m-m\mathsf H_{m-1}$ constant.
+Its weight is $m-2$, so it vanishes for $m\ge3$.
+The initial values are $\mathsf H_1=0$, $\mathsf H_2=-u_0$.
+Consequently the full formal compensator series obeys
+$\partial_{u_0}\sum\mathsf H_mt^m/m!
+=t\sum\mathsf H_mt^m/m!-t^2/2$.
+This identity and weight homogeneity force the affine factorization
+below, before any input substitution. The specialized differential
+operator then gives the finite-jet identity
+$X_1h_1=e^{-X_1/2}-F_1(X_1)$, where
+$\sigma_1\sum\mathsf H_mt^m/m!=t/2+t e^{u_0t}h_1(X_1)$.
+The added $t/2$ enforces $\mathsf H_1=0$ and the zero-constant
+normalization; it cannot be omitted from the canonical generator.
+Thus even constant specialization retains the canonical compensator
+$t(1-e^{tU})/2$, whose spatial derivative vanishes.
+More explicitly,
+\begin{equation}\label{ngp:affine-coefficients}
+ \mathsf H_m(U,b,0,\ldots)=m!\sum_{j=0}^{\lfloor(m-1)/2\rfloor}
+       \frac{h_j U^{m-2j-1}b^j}{(m-2j-1)!},\qquad
+ h_j=\frac{(-1)^{j+1}}{2^{j+1}(j+1)!}
+       \left(1+\frac{\mathbf1_{j\ \mathrm{odd}}}{j(j+2)}\right).
+\end{equation}
+This coefficient formula holds for $m\ge2$, with $\mathsf H_1=0$;
+the parenthesis is defined as one at $j=0$.
+Expanding the two entire functions proves this all-degree affine
+identity. Every permitted affine monomial is present with its predicted
+sign. The analogous full-support/sign statement for unrestricted
+compensators remains conjectural; the incoming probe through weight
+twenty-four is finite evidence rather than an all-weight proof.
