@@ -2775,3 +2775,13 @@ The concurrent Polylogarithms placement independently chose the same
 order-filter home. Its 23-member inventory and more detailed predecessor
 question mapping are retained in [INTAKE-PLACEMENT.md](Resonant_Polylogarithm_Transseries/continuations/order-jet-filters/INTAKE-PLACEMENT.md).
 The two placement commits are reconciled without copying the report twice.
+
+
+The [complete order-filter proof audit](Resonant_Polylogarithm_Transseries/continuations/order-jet-filters/INTAKE-PROOF-AUDIT.md)
+now accepts the classification, exact neutral curve and order-zero inverse
+arguments. Section 1.10 of the collective Polylogarithms manuscript integrates
+this material. Its new Theorem 1.41 resolves the continuation's fixed-filter
+neutral inverse-transport question with a convergent coefficient formula and
+an explicit physical displacement. Both isolated supplied-suite replays are
+preserved, together with separate exact and numerical checks of the new
+result. The joint-coefficient continuation's full analytic audit remains pending.

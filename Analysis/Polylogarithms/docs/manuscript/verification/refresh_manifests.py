@@ -80,5 +80,13 @@ for p in sorted((continuation_home/'intake-verification').rglob('*')):
         mode='raw' if p.suffix in {'.pdf','.png'} else 'lf-normalized'
         dependencies[name]={'sha256':digest(p,mode),'mode':mode}
 
+
+ojf_home=B.parents[2]/'Transseries/docs/series-and-transseries/Resonant_Polylogarithm_Transseries/continuations/order-jet-filters'
+for directory in ['intake-verification','intake-verification-local']:
+    for p in sorted((ojf_home/directory).rglob('*')):
+        if p.is_file() and '__pycache__' not in p.parts:
+            name='../../../Transseries/docs/series-and-transseries/Resonant_Polylogarithm_Transseries/continuations/order-jet-filters/'+directory+'/'+p.relative_to(ojf_home/directory).as_posix()
+            dependencies[name]={'sha256':digest(p,'lf-normalized'),'mode':'lf-normalized'}
+
 save(V/'dependency-sha256.json',dict(sorted(dependencies.items())))
 print('Pinned',len(sources),'canonical sources and',len(dependencies),'dependencies.')

@@ -1,0 +1,1294 @@
+\section{Order filters, neutral curves and the digamma inverse}
+\label{ojf:section}
+
+The preceding sections follow singularities through feedback and inversion.
+We now ask a complementary design question: which exponentially small data
+can an order derivative cancel before inversion is performed? For the
+Fermi family, exact completion turns this into interpolation at conjugate
+logarithmic nodes. The resulting filters lead to moving-order curves with
+zero lateral difference, whose physical inverses still have a nonzero
+exponential displacement. At order zero, the same completion gives a
+digamma core and a globally invertible positive integral.
+
+This develops the order-filter continuation \cite{ojf:report} of the
+resonant polylogarithm report \cite{qfb:reports}. Its Fermi limit
+$-e^x\to-\infty$ differs from the fixed-sheet Lerch limit toward one
+earlier in this chapter. The common tools are order differentiation,
+exact completion and controlled local inversion. The neutral inverse
+chart below resolves a further question left open in that continuation.
+
+A terminating or factorially divergent power--logarithmic expansion does
+not determine a unique analytic function. Here the distinction
+can be made exact. For $x>0$ set
+\begin{equation}\label{ojf:eq:defs}
+ F_s(x)=-\Li_s(-e^x),\qquad
+ T_s(x)=F_s(-x)=\sum_{n\ge1}\frac{(-1)^{n-1}e^{-nx}}{n^s}.
+\end{equation}
+The subscript is the \emph{polylogarithm order}; the usual normalized
+Fermi--Dirac index is $s-1$ \cite{rw:DLMFPolylog}.
+There are two distinguished lateral realizations $L_s^\pm$ of the
+Sommerfeld expansion, satisfying
+\begin{equation}\label{ojf:eq:intro-completion}
+ L_s^\pm=F_s+e^{\mp\iu\pi s}T_s.
+\end{equation}
+Consequently the jump $L_s^+-L_s^-$ and the physical correction
+$(L_s^++L_s^-)/2-F_s$ are different data. Neither should be silently
+substituted for the other. We use \emph{arithmetic average}, not
+``median,'' for $(L_s^++L_s^-)/2$.
+
+For a real polynomial $\Pi$, applying $\Pi(\partial_s)$ changes the
+coefficient of the $n$th exponential into the value of $\Pi$ at
+$-\log n\mp\iu\pi$. We ask how many initial actions can be removed by
+an order jet of prescribed degree, how this cancellation behaves under
+small order detuning, and what analytic inversion does to the remaining
+completion. Here an \emph{action $n$} simply means the exponential
+$e^{-nx}$; this terminology does not add a summability hypothesis.
+
+\subsection{The Fermi family and exact lateral completion}
+\label{ojf:sec:completion}
+
+\subsubsection{The analytic realization used throughout}
+We first state the existing completion in the exact normalization needed
+below, and give its derivation to fix signs and domains.
+
+\begin{proposition}[Classical completion in the repository normalization]
+\label{ojf:prop:completion}
+For $x>0$ and $\Real s>0$, the formal Sommerfeld series is
+\begin{equation}\label{ojf:eq:sommerfeld}
+ \widehat P_s(x)=\frac{x^s}{\Gamma(s+1)}+
+       2\sum_{k\ge1}\frac{\eta(2k)}{\Gamma(s-2k+1)}x^{s-2k},
+ \qquad \eta(z)=(1-2^{1-z})\zeta(z).
+\end{equation}
+In the Borel convention
+$\mathcal{B}(\sum_{j\ge1}a_jx^{-j})(\xi)=
+ \sum_{j\ge1}a_j\xi^{j-1}/(j-1)!$,
+the normalized minor is
+\begin{equation}\label{ojf:eq:lattice}
+ b_s(\xi)=s\sum_{n\ge1}\frac{(-1)^{n-1}}n
+ \left\{(1+\xi/n)^{s-1}-(1-\xi/n)^{s-1}\right\}.
+\end{equation}
+The upper and lower lateral realizations
+\begin{equation}\label{ojf:eq:lateral-borel}
+ L_s^\pm(x)=\frac{x^s}{\Gamma(s+1)}
+       \left(1+\int_{0}^{\infty e^{\pm\iu0}}
+                      e^{-x\xi}b_s(\xi)\dd\xi\right)
+\end{equation}
+satisfy \eqref{ojf:eq:intro-completion}. Equivalently, with
+$a_\pm=\frac12\pm\frac{\iu x}{2\pi}$,
+\begin{equation}\label{ojf:eq:hurwitz-completion}
+ L_s^\pm(x)=-\frac{(2\pi)^se^{\mp\iu\pi s/2}}{\Gamma(s)}
+                     \zeta(1-s,a_\pm).
+\end{equation}
+The last formula has a removable singularity at $s=0$ and is entire in
+$s$. It supplies the continuation of the lateral realization to every
+order. All finite order derivatives may be taken in the exact completion.
+\end{proposition}
+
+\begin{proof}
+For $\Real s>0$ the Fermi integral is
+\[
+ F_s(x)=\frac1{\Gamma(s)}\int_0^\infty
+                    \frac{t^{s-1}}{1+e^{t-x}}\dd t.
+\]
+Split at $t=x$ and put $u=|t-x|$. This gives
+\begin{equation}\label{ojf:eq:thermal-split}
+ F_s(x)=\frac{x^s}{\Gamma(s+1)}+
+ \frac1{\Gamma(s)}\int_0^\infty
+ \frac{(x+u)^{s-1}-{\bf1}_{u<x}(x-u)^{s-1}}{e^u+1}\dd u.
+\end{equation}
+The binomial expansion of \eqref{ojf:eq:lattice} at zero has coefficient
+$2\eta(2k)s^{\underline{2k}}/(2k-1)!$ at $\xi^{2k-1}$.
+This proves the formal Borel identity. The lattice sum converges normally
+on compact continued sheets away from $\pm1,\pm2,\ldots$: the bracket
+in its $n$th term is $O(n^{-1})$ and its prefactor contributes another
+$n^{-1}$. The same estimates, with logarithmic factors, hold for finitely
+many order derivatives on compact order sets.
+
+On a ray strictly above or below the positive axis the kernel has at most
+polynomial--logarithmic growth. One can verify this by splitting the sum
+at $n\asymp|\xi|$: the larger $n$ use the preceding difference estimate,
+and the finitely many smaller $n$ use the power growth of their binomials.
+Thus the tilted Laplace integrals converge. On the boundary their local
+powers are integrable when $\Real s>0$.
+
+In the $n$th integral substitute $\xi=nu/x$. Summing
+$\sum_{n\ge1}(-1)^{n-1}e^{-nu}=1/(e^u+1)$ turns the integral part
+of \eqref{ojf:eq:lateral-borel} into
+\[
+ \frac1{\Gamma(s)}\int_0^\infty
+ \frac{(x+u)^{s-1}-(x-u)_{\mp}^{s-1}}{e^u+1}\dd u.
+\]
+The upper path gives argument $-\pi$ to $x-u$ when $u>x$.
+Subtracting \eqref{ojf:eq:thermal-split} therefore gives
+\[
+ -\frac{e^{\mp\iu\pi(s-1)}}{\Gamma(s)}
+  \int_x^\infty\frac{(u-x)^{s-1}}{e^u+1}\dd u
+   =e^{\mp\iu\pi s}T_s(x).
+\]
+Endpoint domination by $v^{\epsilon-1}(1+|\log v|^r)$ on compact
+sets $\Real s\ge\epsilon>0$, and exponential domination at infinity,
+justify the differentiations and interchanges. Finite Taylor expansion
+of the Borel germ with a remainder gives the asymptotic interpretation
+of \eqref{ojf:eq:sommerfeld}; no infinite divergent sum was integrated
+term by term.
+
+Jonqui\`ere's identity \cite[Eq.~25.12.13]{rw:DLMFPolylog}, at $z=-e^x$,
+gives the lower formula in \eqref{ojf:eq:hurwitz-completion}; conjugating
+for real $s$ and then using analytic continuation gives the upper one.
+For $a_\pm$ in the right half-plane, $\zeta(1-s,a_\pm)$ has only its
+simple pole at $s=0$, cancelled by the simple zero of $1/\Gamma(s)$.
+The small-argument series $T_s$ is entire in $s$, normally on compact
+sets. Hence both the completion and the physical $F_s$ continue
+entirely in the order, and finite order derivatives remain valid.
+\end{proof}
+
+\begin{remark}[Continuation is not an unregularized boundary integral]
+For $\Real s\le0$, \eqref{ojf:eq:hurwitz-completion} is the definition of
+the continued lateral realization used here. We do not assert that the
+boundary powers in \eqref{ojf:eq:lateral-borel} become ordinary locally
+integrable functions there. In Subsection~\ref{ojf:sec:borelzero} we give a
+separate, ordinary meromorphic Borel representation for the first jet
+at zero. Differentiating the \emph{whole} normalized expression matters:
+$\log x$ is not treated as a constant coefficient in an unjustified
+ordinary Borel transform.
+\end{remark}
+
+\subsubsection{A polynomial dictionary for the exponential data}
+For real $\sigma$ and $\Pi\in\R[u]$, write
+\begin{align}
+ \mathcal{F}_{\sigma,\Pi}(x)&=
+       \left.\Pi(\partial_s)F_s(x)\right|_{s=\sigma},\label{ojf:eq:observable}\\
+ \mathcal{L}^\pm_{\sigma,\Pi}(x)&=
+       \left.\Pi(\partial_s)L_s^\pm(x)\right|_{s=\sigma},\notag\\
+ C_{\sigma,\Pi}&=\tfrac12(\mathcal{L}^+_{\sigma,\Pi}+
+                           \mathcal{L}^-_{\sigma,\Pi})-\mathcal{F}_{\sigma,\Pi},\notag\\
+ J_{\sigma,\Pi}&=\mathcal{L}^+_{\sigma,\Pi}-\mathcal{L}^-_{\sigma,\Pi}.\notag
+\end{align}
+Put $D=\mathrm d/\mathrm du$. The operators
+\begin{equation}\label{ojf:eq:operators}
+ R_\sigma=\cos(\pi\sigma+\pi D),\qquad
+ I_\sigma=\sin(\pi\sigma+\pi D)
+\end{equation}
+are their Taylor series in the nilpotent operator $D$ on any fixed-degree
+polynomial space; all sums terminate.
+
+\begin{theorem}[Exact order-filter dictionary]\label{ojf:thm:dictionary}
+Let $u_n=-\log n$ and $q=e^{-x}$. Then
+\begin{align}
+ \mathcal{L}^\pm_{\sigma,\Pi}-\mathcal{F}_{\sigma,\Pi}
+ &=e^{\mp\iu\pi\sigma}
+       \sum_{n\ge1}\frac{(-1)^{n-1}}{n^\sigma}
+                      \Pi(u_n\mp\iu\pi)q^n,\label{ojf:eq:filter-full}\\
+ C_{\sigma,\Pi}
+ &=\sum_{n\ge1}\frac{(-1)^{n-1}}{n^\sigma}(R_\sigma\Pi)(u_n)q^n,
+                                                        \label{ojf:eq:filter-C}\\
+ J_{\sigma,\Pi}
+ &=-2\iu\sum_{n\ge1}\frac{(-1)^{n-1}}{n^\sigma}(I_\sigma\Pi)(u_n)q^n.
+                                                        \label{ojf:eq:filter-J}
+\end{align}
+The series converge absolutely for $|q|<1$, normally on compact order
+sets. For real $u$,
+\begin{equation}\label{ojf:eq:rotation}
+ (R_\sigma\Pi)(u)+\iu(I_\sigma\Pi)(u)
+      =e^{\iu\pi\sigma}\Pi(u+\iu\pi).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Every derivative of
+$e^{\mp\iu\pi s}n^{-s}$ multiplies it by
+$-\log n\mp\iu\pi$. Apply the finite operator to
+\eqref{ojf:eq:intro-completion}. A polynomial in $\log n$ times
+$n^{-\sigma}$ has subexponential growth in $n$, which proves the stated
+normal convergence. Taylor's formula for a polynomial gives
+$\Pi(u+\iu\pi)=\exp(\iu\pi D)\Pi(u)$ and hence
+\eqref{ojf:eq:rotation}. Taking the arithmetic average and difference
+proves the two remaining formulas, with the sign in the jump fixed by
+upper minus lower.
+\end{proof}
+
+\subsection{Designing order filters: separate and joint cancellation}
+\label{ojf:sec:filters}
+
+\subsubsection{What a degree can and cannot remove}
+For a nonzero power series in $q$ with no constant term, let $\nu$ be its
+first nonzero exponent; let $\nu(0)=\infty$.
+
+\begin{theorem}[Sharp separate degree costs]\label{ojf:thm:cost}
+Fix $\Pi\ne0$ of degree $d$ and real $\sigma$.
+If $\sin\pi\sigma\ne0$, then $\nu(J_{\sigma,\Pi})\le d+1$;
+if $\sin\pi\sigma=0$ and $d\ge1$, then
+$\nu(J_{\sigma,\Pi})\le d$.
+Similarly, if $\cos\pi\sigma\ne0$, then
+$\nu(C_{\sigma,\Pi})\le d+1$;
+if $\cos\pi\sigma=0$ and $d\ge1$, then
+$\nu(C_{\sigma,\Pi})\le d$.
+Every displayed bound is attained by a polynomial of the indicated degree.
+The exceptional constant polynomials have zero jump at integer order,
+and zero arithmetic completion at half-integer order.
+\end{theorem}
+
+\begin{proof}
+The constant term of $I_\sigma$ as a polynomial in $D$ is
+$\sin\pi\sigma$. When this is nonzero, $I_\sigma$ is an invertible
+triangular operator on degree-at-most-$d$ polynomials and preserves the
+degree. When it is zero,
+\[
+ I_\sigma=(\pi\cos\pi\sigma)D+O(D^3),
+\]
+so it has kernel exactly the constants and reduces every positive degree
+by exactly one. The analogous assertions for $R_\sigma$ follow from
+its constant and linear terms, $\cos\pi\sigma$ and
+$-\pi\sin\pi\sigma$.
+
+A nonzero polynomial of degree $k$ cannot vanish at all of the $k+1$
+distinct real numbers $u_1,\ldots,u_{k+1}$. The coefficients multiplying
+these evaluations in \eqref{ojf:eq:filter-C}--\eqref{ojf:eq:filter-J}
+never vanish. This proves the upper bounds.
+
+To attain a bound for a degree-preserving operator, take its inverse
+image of $\prod_{n=1}^d(u+\log n)$. For a degree-lowering operator,
+its map from polynomials of degree at most $d$, modulo constants, to
+polynomials of degree at most $d-1$ is an isomorphism. Take the inverse
+image of $\prod_{n=1}^{d-1}(u+\log n)$. The next node is not a root,
+so the bound is attained exactly. The assertions for constants follow
+directly from \eqref{ojf:eq:operators}.
+\end{proof}
+
+Thus, for $d\ge1$, the optimal first surviving actions are
+\begin{center}
+\begin{tabular}{@{}lll@{}}\toprule
+Order center & Jump & Arithmetic completion\\\midrule
+$\sigma\in\mathbb Z$ & $d$ & $d+1$\\
+$\sigma\in\mathbb Z+\tfrac12$ & $d+1$ & $d$\\
+Neither of the above & $d+1$ & $d+1$\\\bottomrule
+\end{tabular}
+\end{center}
+The two columns are separately optimized; they need not be realized by
+the same polynomial. In particular, a degree statement about one datum
+cannot be reused for their simultaneous cancellation.
+
+For example, at integer order the operators are, up to $(-1)^\sigma$,
+$\cos(\pi D)$ and $\sin(\pi D)$. A polynomial that delays the completion
+to action $d+1$ is
+\begin{equation}\label{ojf:eq:cos-extremizer}
+ \Pi^{C}_d(u)=\sec(\pi D)\prod_{n=1}^d(u+\log n).
+\end{equation}
+The power series for $\sec$ terminates on the polynomial. A primitive
+followed by the finite operator $\pi D/\sin(\pi D)$ similarly constructs
+a jump extremizer. These formulas are exact algebra, not asymptotic
+infinite operator expansions.
+
+\subsubsection{Simultaneous cancellation is a principal ideal}
+
+\begin{theorem}[Joint cancellation ideal and optimal real jet degree]
+\label{ojf:thm:joint}
+Let $E$ be any finite set of positive integers. For every real order
+center $\sigma$, the real polynomials $\Pi$ for which both the jump and
+the arithmetic completion vanish at every action in $E$ form exactly
+\begin{equation}\label{ojf:eq:joint-ideal}
+ \left(\prod_{n\in E}\bigl((u+\log n)^2+\pi^2\bigr)\right)\R[u].
+\end{equation}
+Consequently, for $E=\{1,\ldots,N\}$ the minimum nonzero degree is $2N$,
+and the unique monic minimizer is
+\begin{equation}\label{ojf:eq:joint-extremizer}
+ Q_N^{\mathrm{joint}}(u)=
+       \prod_{n=1}^N\bigl((u+\log n)^2+\pi^2\bigr).
+\end{equation}
+At action $N+1$, at least one of its jump and completion coefficients
+is nonzero. More generally a degree-$d$ nonzero jet cannot make both
+data zero at all of the first $\lfloor d/2\rfloor+1$ actions.
+\end{theorem}
+
+\begin{proof}
+By \eqref{ojf:eq:rotation}, both real components at the node $u_n$
+vanish if and only if $\Pi(u_n+\iu\pi)=0$. Since $\Pi$ is real,
+this is equivalent to zeros at both $u_n+\iu\pi$ and $u_n-\iu\pi$,
+or to divisibility by $(u-u_n)^2+\pi^2$. These real quadratic factors
+are pairwise coprime: all their complex roots are distinct. Divisibility
+by each is therefore equivalent to divisibility by their product.
+This proves the ideal identity and the degree assertions.
+
+For the monic minimizer at the next node, putting
+$\ell_j=\log(j/(N+1))$ gives
+\begin{equation}\label{ojf:eq:next-joint}
+ Q_N^{\mathrm{joint}}(-\log(N+1)+\iu\pi)
+      =\prod_{j=1}^N\ell_j(\ell_j+2\iu\pi)\ne0.
+\end{equation}
+After rotation by $e^{\iu\pi\sigma}$ this still has at least one
+nonzero real component. This proves the final assertion. We do not
+claim that both components must separately be nonzero in this formula.
+\end{proof}
+
+\begin{corollary}[First-order detuning robustness]\label{ojf:cor:robustness}
+For a fixed real polynomial $\Pi$ and a finite action set $E$, the
+following requirements are equivalent: the jump coefficients at every
+$n\in E$ vanish together with their first order-center derivatives at
+one real center $\sigma_0$; both the jump and completion coefficients
+vanish there; and the full lateral completion coefficients vanish at
+those actions for \emph{every} order center. Their common solution ideal
+is \eqref{ojf:eq:joint-ideal}. In particular robustness through first
+order in detuning costs exactly $2N$ for the first $N$ actions.
+\end{corollary}
+\begin{proof}
+Up to a nonzero fixed scalar, the $n$th jump coefficient is
+$n^{-\sigma}(I_\sigma\Pi)(u_n)$. Its derivative is
+\[
+ n^{-\sigma}\{-\log n\,(I_\sigma\Pi)(u_n)
+                      +\pi(R_\sigma\Pi)(u_n)\}.
+\]
+When the jump coefficient is zero, its derivative is zero exactly when
+the completion coefficient is zero. The joint theorem then forces
+$\Pi(u_n\pm\iu\pi)=0$, independently of the order center. The converse
+is immediate from the exact dictionary.
+\end{proof}
+
+\begin{corollary}[Finite reconstruction from exponential data]
+\label{ojf:cor:reconstruction}
+Fix $N$ and real $\sigma$. A polynomial of degree less than $2N$ is
+uniquely determined by its jump and arithmetic-completion coefficients
+at the first $N$ actions. Every assignment of those $2N$ real normalized
+data is attained by exactly one such polynomial.
+\end{corollary}
+\begin{proof}
+Divide out the nonzero scalar coefficients in
+\eqref{ojf:eq:filter-C}--\eqref{ojf:eq:filter-J} and undo the rotation
+in \eqref{ojf:eq:rotation}. This specifies $\Pi$ at the $N$ upper nodes
+and, by conjugacy, at the $N$ lower nodes. Ordinary interpolation at
+$2N$ distinct complex points gives a unique degree-less-than-$2N$
+polynomial. Its conjugate-reflection polynomial has the same values,
+so uniqueness makes its coefficients real. Equivalently, injectivity
+follows from Theorem~\ref{ojf:thm:joint} and equal finite dimensions give
+surjectivity.
+\end{proof}
+
+\paragraph{The first joint filter.}
+For $N=1$, the operator is $\partial_s^2+\pi^2$. It removes the
+entire first action, not just its imaginary part. At integer $m$ the
+next completion coefficient is
+$(-1)^{m+1}(\log2)^2/2^m$ and the next jump coefficient is
+$-4\pi\iu(-1)^m\log2/2^m$. This is a simple exact test of the
+real-versus-imaginary distinction.
+
+\subsubsection{An explicit finite-tail estimate}
+For numerical evaluation the exact coefficient dictionary also supplies
+an elementary bound. Let $\Pi(u)=\sum_{j=0}^dp_ju^j$ and
+$K_\Pi=\sum_{j=0}^d|p_j|(1+\pi)^j$. For real $\sigma\ge0$,
+$0<q<1$, and integer $M\ge0$, each full lateral completion tail obeys
+\begin{equation}\label{ojf:eq:tailbound}
+ \left|\sum_{n>M}\frac{(-1)^{n-1}}{n^\sigma}
+                  \Pi(-\log n\pm\iu\pi)q^n\right|
+ \le K_\Pi(M+1)^{d-\sigma}q^{M+1}
+                  \frac{E_d(q)}{(1-q)^{d+1}},
+\end{equation}
+where $E_d$ is the polynomial defined by
+$\sum_{k\ge0}(k+1)^dq^k=E_d(q)/(1-q)^{d+1}$, with $E_0=1$.
+Indeed $|\Pi(-\log n\pm\iu\pi)|\le K_\Pi n^d$ for $n\ge1$,
+$n=M+1+k\le(M+1)(k+1)$, and $n^{-\sigma}\le(M+1)^{-\sigma}$.
+This proves the bound. The jump tail has at most twice the right side;
+the arithmetic-completion tail has at most the right side. This is a
+finite evaluation safeguard, not the basis of the cancellation theorem.
+
+\subsection{Arithmetic rigidity and moving-order cancellation}
+\label{ojf:sec:neutral}
+
+\subsubsection{A transcendence input rules out accidental zeros}
+
+\begin{lemma}\label{ojf:lem:log-transcendence}
+For every integer $n\ge2$, $\log n/\pi$ is transcendental.
+\end{lemma}
+\begin{proof}
+Use the classical Gelfond--Schneider theorem in its complex form: if
+$\alpha\ne0,1$ and $\beta\notin\Q$ are algebraic, every fixed value of
+$\alpha^\beta$ is transcendental \cite[Theorem 3.1]{ojf:GS}.
+If $a=\log n/\pi$ were algebraic, $\beta=-\iu a$ would be nonreal
+algebraic, hence irrational. With $\log(-1)=\iu\pi$,
+$(-1)^{-\iu a}=\exp(\pi a)=n$, a contradiction.
+\end{proof}
+
+\begin{theorem}[Parity and nonvanishing for every pure jet]
+\label{ojf:thm:parity}
+Fix an integer order $m$ and $r\ge1$, and take $\Pi(u)=u^r$.
+At every action $n\ge2$, both the jump coefficient and the
+arithmetic-completion coefficient are nonzero. Their first surviving
+actions are exactly
+\begin{equation}\label{ojf:eq:parity-table}
+ (\nu(J_{m,u^r}),\nu(C_{m,u^r}))=
+ \begin{cases}(1,2),&r\ \text{odd},\\(2,1),&r\ \text{even}.
+ \end{cases}
+\end{equation}
+For $r=0$, the jump is identically zero and the completion starts at
+one. At half-integer centers the two columns of
+\eqref{ojf:eq:parity-table} are exchanged.
+\end{theorem}
+\begin{proof}
+At $n=1$, the relevant complex value is $(\iu\pi)^r$; its real and
+imaginary parts alternate with the parity of $r$. At $n\ge2$, divide
+$(-\log n+\iu\pi)^r$ by $\pi^r$. Its real and imaginary parts are
+nonzero polynomials in $a=\log n/\pi$ with integer coefficients:
+the real polynomial has leading term $(-a)^r$, and the imaginary one
+has leading term $r(-a)^{r-1}$. Neither can vanish at the transcendental
+number in Lemma~\ref{ojf:lem:log-transcendence}. At integer order the rotation
+is just $(-1)^m$; at half-integer order it is $\pm\iu$, which exchanges
+the two components. The constant case follows from the completion formula.
+\end{proof}
+
+\begin{corollary}[Rigidity for algebraic normalized coefficients]
+\label{ojf:cor:algebraic-rigidity}
+The nonvanishing at every action $n\ge2$ extends from pure monomials to
+all nonconstant filters
+$\Pi(u)=c\,p(u/\pi)$, where $c\in\R\setminus\{0\}$ and $p$ has
+real algebraic coefficients. At integer or half-integer centers no such
+filter can cancel even one of the two data at action two. In particular
+arbitrarily high degree in this coefficient class cannot reproduce the
+deep logarithmic-node filters of Theorem~\ref{ojf:thm:cost}.
+\end{corollary}
+\begin{proof}
+The real and imaginary parts of $p(-a+\iu)$ are nonzero polynomials in
+$a$ with real algebraic coefficients: their degrees are respectively
+$\deg p$ and $\deg p-1$. A number transcendental over $\Q$ cannot be
+a root of a nonzero polynomial over the algebraic numbers. Apply
+Lemma~\ref{ojf:lem:log-transcendence} and then the integer or half-integer
+rotation. The common nonzero real scale $c$ does not affect vanishing.
+\end{proof}
+
+This use of Gelfond--Schneider proves an all-order nonvanishing statement;
+a finite table of numerical coefficients would not prove it. Conversely,
+the freely chosen real coefficients in Theorem~\ref{ojf:thm:joint} deliberately
+permit cancellation. There is no contradiction: a pure monomial in the
+order derivative is a much smaller class of filters.
+
+\subsubsection{A normalized sharp jump filter}
+For $N\ge1$ define
+\begin{equation}\label{ojf:eq:QN}
+ Q_N(u)=\prod_{j=1}^N(u+\log j).
+\end{equation}
+There is a unique real polynomial $\Pi_N$ with
+\begin{equation}\label{ojf:eq:PiN}
+ \sin(\pi D)\Pi_N=Q_N,\qquad
+      (\cos(\pi D)\Pi_N)(0)=1.
+\end{equation}
+It has degree $N+1$. Existence and uniqueness follow from the
+isomorphism modulo constants used in Theorem~\ref{ojf:thm:cost}; the second
+condition fixes that constant. One constructive formula is
+\[
+ \Pi_N=\frac1\pi\frac{\pi D}{\sin(\pi D)}
+               \int_0^u Q_N(v)\dd v+c_N,
+\]
+where $c_N$ enforces the normalization. All operators terminate.
+Writing $R_N=\cos(\pi D)\Pi_N$, the first two examples are
+\begin{align}
+ \Pi_1(u)&=\frac{u^2}{2\pi}+1+\frac\pi2,
+ &R_1(u)&=1+\frac{u^2}{2\pi},\label{ojf:eq:Pi1}\\
+ \Pi_2(u)&=\frac{u^3}{3\pi}+
+       \frac{\log2}{2\pi}u^2+\frac\pi3u+1+\frac{\pi\log2}{2},
+ &R_2(u)&=1+\frac{u^3}{3\pi}+
+       \frac{\log2}{2\pi}u^2-\frac{2\pi}{3}u.
+                                                        \label{ojf:eq:Pi2}
+\end{align}
+The normalization is intentionally about the \emph{completion}, not
+about $\Pi_N(0)$.
+
+\begin{theorem}[Convergent Stokes-neutral curve and its crossover]
+\label{ojf:thm:neutral}
+Fix an integer $m\ge0$ and $N\ge1$. For sufficiently small $q$, there
+is a unique holomorphic function $\epsilon_N(q)$ with
+$\epsilon_N(0)=0$ for which
+\begin{equation}\label{ojf:eq:neutral-identity}
+ J_{m+\epsilon_N(q),\Pi_N}(-\log q)=0
+\end{equation}
+when $q>0$. For complex $q$, this identity refers to the convergent
+$q$-series of the jump. The function has real Taylor coefficients and
+\begin{equation}\label{ojf:eq:neutral-leading}
+ \epsilon_N(q)=-\frac{\kappa_{m,N}}\pi q^N+O(q^{N+1}),\qquad
+ \kappa_{m,N}=\frac1{(N+1)^m}
+                 \prod_{j=1}^N\log\frac{N+1}{j}>0.
+\end{equation}
+The associated completion does \emph{not} disappear:
+\begin{equation}\label{ojf:eq:neutral-completion}
+ C_{m+\epsilon_N(q),\Pi_N}(-\log q)
+                  =(-1)^m q+O(q^2).
+\end{equation}
+More generally, with $\epsilon=\lambda q^N$,
+\begin{equation}\label{ojf:eq:crossover}
+ \frac{J_{m+\lambda q^N,\Pi_N}(-\log q)}
+                   {-2\iu(-1)^m q^{N+1}}
+       =\pi\lambda+\kappa_{m,N}+O(q),
+\end{equation}
+uniformly for $\lambda$ in any fixed compact subset of $\C$.
+At $m=0$ these are analytically continued lateral realizations; no
+unregularized order-zero boundary integral is assumed.
+\end{theorem}
+
+\begin{proof}
+Remove the factor $-2\iu(-1)^m q$ from the jump and define
+\begin{align}
+ \Psi(\epsilon,q)=\sum_{n\ge1}(-1)^{n-1}n^{-m-\epsilon}q^{n-1}
+ \{\sin(\pi\epsilon)R_N(u_n)+
+                  \cos(\pi\epsilon)Q_N(u_n)\}.\label{ojf:eq:Psi}
+\end{align}
+The series is holomorphic for $|q|<1$ and $\epsilon$ in a neighborhood
+of zero: on compact sets its coefficients have at most a fixed power of
+$n$ times a fixed power of $\log n$. Its $n=1$ term is precisely
+$\sin(\pi\epsilon)$, since $Q_N(0)=0$ and $R_N(0)=1$.
+Consequently
+\[
+ \Psi(0,0)=0,\qquad \partial_\epsilon\Psi(0,0)=\pi.
+\]
+The holomorphic implicit-function theorem gives the unique curve.
+Conjugation and uniqueness imply real Taylor coefficients.
+
+At $\epsilon=0$, the first $N$ coefficients vanish. At $n=N+1$,
+\[
+ (-1)^N(N+1)^{-m}Q_N(-\log(N+1))=\kappa_{m,N}.
+\]
+Thus $\Psi(0,q)=\kappa_{m,N}q^N+O(q^{N+1})$. Substitution in the
+implicit equation, whose $\epsilon$ derivative is $\pi+O(q)$, gives
+\eqref{ojf:eq:neutral-leading}. Taylor expansion with
+$\epsilon=\lambda q^N$ proves \eqref{ojf:eq:crossover}; higher sine
+terms and mixed terms are of sufficiently high order, and holomorphy
+gives uniformity on compact $\lambda$ sets.
+
+The corresponding completion has normalized coefficient
+\[
+ \cos(\pi\epsilon)R_N(u_n)-\sin(\pi\epsilon)Q_N(u_n).
+\]
+Its first term is $(-1)^m q\cos(\pi\epsilon)$. The rest is $O(q^2)$
+uniformly for small $\epsilon$, and the implicit curve tends to zero.
+This proves \eqref{ojf:eq:neutral-completion}.
+\end{proof}
+
+\begin{remark}[What the curve cancels]
+For a \emph{fixed} order, the sharp filters remove individual initial
+action coefficients. On the moving-order curve, coefficients at different
+actions compensate after $\epsilon$ is substituted as a function of $q$.
+The result is an exact identity of analytic functions, not a statement
+that every fixed-order Borel singularity has disappeared. It also gives
+a precise example in which zero total lateral jump does not identify the
+physical function with the common lateral realization.
+\end{remark}
+
+\subsection{Transport along the exact neutral curve}
+\label{ojf:sec:neutral-inverse}
+
+The neutral curve cancels the entire lateral difference by allowing the
+order to move with the exponential parameter. Inversion must retain this
+dependence. The following result answers the inverse-transport question
+in \cite{ojf:report} for every fixed filter size and nonnegative integer
+center; it also supplies an exact convergent coefficient formula.
+
+\begin{theorem}[A convergent neutral inverse chart and its physical displacement]
+\label{ojf:thm:neutral-inverse}
+Fix $N\ge1$ and $m\in\mathbb Z_{\ge0}$, and use the normalized filter
+$\Pi_N$ and analytic function $\varepsilon_N$ of
+Theorem~\ref{ojf:thm:neutral}, with this order center. Put
+\[
+ \sigma(x)=m+\varepsilon_N(e^{-x}),\qquad
+ P(x)=\left.\Pi_N(\partial_s)F_s(x)\right|_{s=\sigma(x)},\qquad
+ L^\pm(x)=\left.\Pi_N(\partial_s)L_s^\pm(x)\right|_{s=\sigma(x)}.
+\]
+For all sufficiently large real $x$, the two lateral functions coincide:
+$L^+(x)=L^-(x)=L(x)$. The functions $P$ and $L$ are real analytic,
+strictly increasing and unbounded on a sufficiently late half-line.
+Let $X$ denote the inverse of $P$ there. Write
+\[
+ C_w=L(w)-P(w),\qquad
+ H_w(t)=\begin{cases}(P(w+t)-P(w))/t,&t\ne0,\\P'(w),&t=0.\end{cases}
+\]
+For any fixed $0<\rho<1$, and all sufficiently large $w$, the series
+\begin{equation}\label{ojf:eq:neutral-inverse-chart}
+ X(P(w)+zC_w)-w
+   =\sum_{k\ge1}\frac{(zC_w)^k}{k}
+                 [t^{k-1}]H_w(t)^{-k}
+\end{equation}
+converges for $|z|<\rho P'(w)/(2|C_w|)$, where the left side denotes
+the local holomorphic inverse extending the real one. This disk contains
+$z=1$ for large $w$. In particular, the common lateral inverse at target
+$L(w)$ equals $w$, whereas the physical inverse satisfies
+\begin{equation}\label{ojf:eq:neutral-inverse-shift}
+ X(L(w))-w\sim\frac{(-1)^m e^{-w}}{P'(w)}
+ \sim
+ \begin{cases}
+ \displaystyle\frac{\pi w e^{-w}}{(\log w)^N},&m=0,\\[6pt]
+ \displaystyle\frac{(-1)^m\pi(N+1)(m-1)!\,w^{1-m}e^{-w}}
+                         {(\log w)^{N+1}},&m\ge1.
+ \end{cases}
+\end{equation}
+The first two exact terms of \eqref{ojf:eq:neutral-inverse-chart} are
+$zC_w/P'(w)-z^2P''(w)C_w^2/(2P'(w)^3)$.
+\end{theorem}
+
+\begin{proof}
+The neutral-curve identity proves equality of the laterals and gives
+\begin{equation}\label{ojf:eq:neutral-C-asymptotic}
+ C(x):=L(x)-P(x)=(-1)^m e^{-x}+O(e^{-2x}).
+\end{equation}
+The underlying normally convergent power series in $q$ and the analytic
+implicit function $\varepsilon_N(q)$ also give the differentiated
+estimate and its holomorphic version near the positive ray.
+
+Set $d=N+1$. The leading coefficient of $\Pi_N$ is $1/(\pi d)$,
+since $\sin(\pi D)$ lowers degree by one with leading multiplier
+$\pi d$ and its image is the monic $Q_N$. Uniformly for $s$ in a small
+fixed disk about $m$, the Hurwitz realization
+\eqref{ojf:eq:hurwitz-completion} gives the finite Sommerfeld estimate
+\[
+ F_s(x)=\frac{x^s}{\Gamma(s+1)}+O(|x|^{m+\eta-2}),
+ \qquad |s-m|\le\eta<\tfrac12,
+\]
+on a smaller sector about the positive ray. Here the exponential
+completion has been absorbed in the remainder. To obtain the estimate
+and any of its finitely many derivatives, take a slightly larger compact
+order disk in the sectorial Hurwitz expansion
+\cite[Eq.~25.11.43]{intdist:DLMFHurwitz}, then apply Cauchy's estimates
+in the order and in $x$. The odd $x^{s-1}$ term cancels after the shift
+$1/2$ in the Hurwitz argument; equivalently the first correction in
+\eqref{ojf:eq:sommerfeld} has power $x^{s-2}$. This finite estimate,
+not termwise differentiation of a divergent infinite series, suffices.
+
+At the fixed center $m$, applying $\Pi_N(\partial_s)$ to the leading
+term gives $x^m/m!$ times a polynomial in $\log x$ of degree $d$,
+with leading coefficient $1/(\pi d)$. The chain rule for the moving
+center is
+\begin{equation}\label{ojf:eq:moving-chain-rule}
+ P'(x)=\left.\Pi_N(\partial_s)\partial_xF_s(x)\right|_{s=\sigma(x)}
+       +\sigma'(x)\left.\Pi_N(\partial_s)\partial_sF_s(x)
+                                                       \right|_{s=\sigma(x)},
+ \qquad \sigma'(x)=-e^{-x}\varepsilon_N'(e^{-x}).
+\end{equation}
+Both $\sigma-m$ and $\sigma'$ are $O(e^{-Nx})$; compact-order
+Cauchy estimates bound the terms they introduce by an exponential
+times a fixed power of $x$. They are therefore negligible relative to
+the leading derivative. Thus
+\begin{equation}\label{ojf:eq:neutral-derivative}
+ P'(x)\sim
+ \begin{cases}
+ (\log x)^N/(\pi x),&m=0,\\
+ x^{m-1}(\log x)^{N+1}/\bigl(\pi(N+1)(m-1)!\bigr),&m\ge1.
+ \end{cases}
+\end{equation}
+The same sectorial estimates hold for derivatives and imply
+$P'(w+t)/P'(w)\to1$ uniformly on every fixed complex disk in $t$.
+The leading expression for $P$ tends to $+\infty$ also when $m=0$.
+Together with \eqref{ojf:eq:neutral-C-asymptotic}, this proves eventual
+monotonicity, unboundedness and existence of both real inverses.
+
+Uniformly for $|t|\le\rho$, integration of the derivative estimate
+gives $H_w(t)/P'(w)\to1$. For large $w$ its modulus is greater than
+$1/2$. On $|t|=\rho$ the perturbation $zC_w$ is therefore smaller
+than $P(w+t)-P(w)$ whenever $|z|<\rho P'(w)/(2|C_w|)$.
+Rouch\'e's theorem gives exactly one zero, counted with multiplicity,
+of $P(w+t)-P(w)-zC_w$ in the disk. It is simple and varies
+holomorphically with $z$. Lagrange inversion yields
+\eqref{ojf:eq:neutral-inverse-chart} throughout this disk.
+
+Finally $|C_w|/P'(w)\to0$, so its radius in $z$ tends to infinity.
+At $z=1$ the solution $t_w$ obeys
+$t_wH_w(t_w)=C_w$, hence
+$t_w\sim C_w/P'(w)$. Substitution of
+\eqref{ojf:eq:neutral-C-asymptotic} and
+\eqref{ojf:eq:neutral-derivative} proves the displayed displacement.
+Expanding $H_w(t)=P'(w)+P''(w)t/2+\cdots$ gives the second coefficient.
+\end{proof}
+
+Thus an exactly vanishing lateral difference can coexist with a nonzero
+first exponential action in the physical inverse. The sign of that
+displacement alternates with $m$. The theorem concerns fixed $m,N$ and
+an eventual inverse chart; it does not assert a growing-filter limit or
+an exact global complex inverse radius.
+
+
+\subsection{All order-zero jets in Stieltjes and integral coordinates}
+\label{ojf:sec:stieltjes}
+
+\subsubsection{A complete finite formula in generalized Stieltjes constants}
+For $\Real a>0$ use the Hurwitz--Stieltjes convention \cite{intdist:DLMFHurwitz}
+\begin{equation}\label{ojf:eq:stieltjes}
+ \zeta(1+z,a)=\frac1z+
+       \sum_{n\ge0}\frac{(-1)^n\gamma_n(a)}{n!}z^n.
+\end{equation}
+In particular $\gamma_0(a)=-\psi(a)$.
+Define the complete exponential Bell polynomials by
+\begin{equation}\label{ojf:eq:bell}
+ \exp\left(\sum_{j\ge1}b_j\frac{z^j}{j!}\right)
+       =\sum_{r\ge0}\mathcal{B}_r(b_1,\ldots,b_r)\frac{z^r}{r!},
+ \qquad\mathcal{B}_0=1.
+\end{equation}
+The following theorem specializes classical Jonqui\`ere inversion to a
+resonance excluded from the positive-integer Gamma-kernel statement of
+\cite{qfb:reports}.
+
+\begin{theorem}[Stieltjes coordinates for every zero-order lateral jet]
+\label{ojf:thm:stieltjes}
+Let $x>0$, $a_\pm=\frac12\pm\frac{\iu x}{2\pi}$, and
+\begin{align}
+ d_1^\pm&=\gamma+\log(2\pi)\mp\frac{\iu\pi}{2},\label{ojf:eq:dj}\\
+ d_j^\pm&=(-1)^{j+1}(j-1)!\zeta(j),\qquad j\ge2.\notag
+\end{align}
+For $r\ge1$ put
+\begin{equation}\label{ojf:eq:stieltjes-jet}
+ Z_r^\pm(x)=\mathcal{B}_r(d^\pm)
+       -r\sum_{n=0}^{r-1}\binom{r-1}{n}
+                    \gamma_n(a_\pm)\mathcal{B}_{r-1-n}(d^\pm),
+ \qquad Z_0^\pm=1.
+\end{equation}
+Then $Z_r^\pm=\partial_s^rL_s^\pm|_{s=0}$ and
+\begin{equation}\label{ojf:eq:physical-zero-jets}
+ \left.\partial_s^rF_s(x)\right|_{s=0}
+  =Z_r^\pm(x)-\sum_{n\ge1}(-1)^{n-1}
+                     (-\log n\mp\iu\pi)^re^{-nx}.
+\end{equation}
+The formulas hold for every finite $r$ and locally uniformly for $x>0$.
+\end{theorem}
+
+\begin{proof}
+The reciprocal-Gamma expansion \cite[\S5.7]{ojf:DLMFGamma} gives
+\[
+ \frac1{\Gamma(s)}=s\exp\left(\gamma s+
+           \sum_{j\ge2}\frac{(-1)^{j+1}\zeta(j)}j s^j\right),
+ \qquad |s|<1.
+\]
+In \eqref{ojf:eq:stieltjes} substitute $z=-s$. Combining it with
+\eqref{ojf:eq:hurwitz-completion} yields the exact local generating
+identity
+\begin{equation}\label{ojf:eq:stieltjes-generating}
+ L_s^\pm(x)=
+ \exp\left(\sum_{j\ge1}d_j^\pm\frac{s^j}{j!}\right)
+       \left(1-\sum_{n\ge0}\gamma_n(a_\pm)\frac{s^{n+1}}{n!}\right).
+\end{equation}
+In particular the removable value at zero is $1$, not zero. Multiplying
+Taylor series and taking $r!$ times the coefficient gives
+\eqref{ojf:eq:stieltjes-jet}. Applying the exact completion formula at
+zero gives \eqref{ojf:eq:physical-zero-jets}. The local Taylor identities
+and the normally convergent exponential series justify every finite
+coefficient extraction and the claimed local uniformity.
+\end{proof}
+
+For example,
+\[
+ Z_1^\pm=d_1^\pm-\gamma_0(a_\pm),\qquad
+ Z_2^\pm=(d_1^\pm)^2-\zeta(2)
+                   -2d_1^\pm\gamma_0(a_\pm)-2\gamma_1(a_\pm).
+\]
+The order-zero second physical derivative is therefore an explicit
+combination of $\gamma_1$ at a conjugate pair of points, digamma values,
+and a convergent log-weighted exponential series. There is no finite-part
+ambiguity in these identities: the regularization is fixed by the
+holomorphic product in \eqref{ojf:eq:hurwitz-completion}.
+
+\subsubsection{Independent endpoint-subtracted integral coordinates}
+A second exact representation is useful both for proof and for independent
+numerical evaluation. It avoids differentiating a numerically delicate
+polylogarithm continuation at an integer order.
+
+\begin{theorem}[Positive regularization and all zero-order moments]
+\label{ojf:thm:regularization}
+For any real $x$ let $q=e^{-x}$ and $f_0=(1+q)^{-1}$. Define
+\begin{equation}\label{ojf:eq:moments}
+ M_j(x)=\frac1{1+q}\int_0^\infty
+       \frac{(1-e^{-t})(\log t)^j}{t(1+e^{t-x})}\dd t,
+       \qquad j\ge0.
+\end{equation}
+All these integrals are absolutely convergent. With
+$g_1=\gamma$ and $g_j=(-1)^{j+1}(j-1)!\zeta(j)$ for $j\ge2$,
+\begin{equation}\label{ojf:eq:moment-jets}
+ F_0(x)=f_0,\qquad
+ \left.\partial_s^rF_s(x)\right|_{s=0}
+   =r\sum_{j=0}^{r-1}\binom{r-1}{j}\mathcal{B}_{r-1-j}(g)M_j(x)
+       \quad(r\ge1).
+\end{equation}
+In particular $H(x):=\partial_sF_s(x)|_{s=0}=M_0(x)>0$.
+\end{theorem}
+
+\begin{proof}
+Let $f_x(t)=(1+e^{t-x})^{-1}$. The subtraction has the exact
+positive form
+\begin{equation}\label{ojf:eq:positive-subtraction}
+ f_x(t)-f_0e^{-t}
+  =\frac{1-e^{-t}}{(1+e^{-x})(1+e^{t-x})}.
+\end{equation}
+For $\Real s>0$, subtract the elementary Gamma integral to get
+\begin{equation}\label{ojf:eq:regularized-F}
+ F_s(x)=f_0+\frac1{\Gamma(s)}\int_0^\infty
+                          t^{s-1}(f_x(t)-f_0e^{-t})\dd t.
+\end{equation}
+At zero the subtracted numerator is $O(t)$, so the remaining integral
+is holomorphic for $\Real s>-1$. At infinity it has exponential decay
+on compact real $x$ sets. Multiplication by $1/\Gamma(s)$ continues
+\eqref{ojf:eq:regularized-F} to a neighborhood of zero.
+Its $j$th integral derivative at zero is $M_j(x)$; the majorants
+$t^{-1+\epsilon}(1+|\log t|^j)$ after subtraction near zero, with
+$\epsilon>0$, and exponential majorants at infinity justify this.
+The reciprocal-Gamma Bell expansion used above now gives
+\eqref{ojf:eq:moment-jets}. Positivity of the integrand for $j=0$ proves
+the final assertion.
+\end{proof}
+
+\subsection{The order-zero digamma core and its exact Borel kernel}
+\label{ojf:sec:borelzero}
+
+\subsubsection{An exact physical identity}
+Put
+\begin{align}
+ A(x)&=\gamma+\log(2\pi)+
+              \Real\psi\left(\tfrac12+\frac{\iu x}{2\pi}\right),
+                   &&x>0,\label{ojf:eq:A-real}\\
+ B(z)&=\sum_{n\ge2}(-1)^n(\log n)z^n
+          =(\log2)z^2-(\log3)z^3+(\log4)z^4-\cdots,
+                   &&|z|<1.\label{ojf:eq:B}
+\end{align}
+The letter $B$ here denotes a convergent analytic function, not the
+Borel transform $\mathcal{B}$.
+
+\begin{proposition}[Digamma core and both lateral first jets]
+\label{ojf:prop:digamma}
+For $x>0$,
+\begin{align}
+ H(x)&=A(x)-B(e^{-x}),\label{ojf:eq:H-A}\\
+ Z_1^\pm(x)&=A(x)\mp\iu\pi\frac{e^{-x}}{1+e^{-x}}.
+                                                        \label{ojf:eq:Z1}
+\end{align}
+Thus the first zero-order jet has a jump beginning at action one,
+while its physical correction to the arithmetic average begins at
+action two.
+\end{proposition}
+\begin{proof}
+By Theorem~\ref{ojf:thm:stieltjes},
+$Z_1^+=\gamma+\log(2\pi)-\iu\pi/2+\psi(a_+)$.
+The digamma reflection formula \cite[\S5.5]{ojf:DLMFGamma} gives
+\[
+ \psi(1-z)-\psi(z)=\pi\cot(\pi z),\qquad
+ \Imag\psi\left(\tfrac12+\frac{\iu x}{2\pi}\right)
+                =\frac\pi2\tanh(x/2).
+\]
+Hence the imaginary part of $Z_1^+$ is $-\pi/(e^x+1)$, and
+its real part is $A$. The lower formula follows by conjugation.
+In \eqref{ojf:eq:physical-zero-jets} with $r=1$, the imaginary tail
+cancels exactly, while the real tail is $B(e^{-x})$.
+\end{proof}
+
+\begin{corollary}[Symmetry and the global positive core branch]
+\label{ojf:cor:core-global}
+The even function $A$ satisfies
+\[
+ H(x)+H(-x)=A(x),\qquad A(0)=\log(\pi/2),
+ \qquad H(0)=\tfrac12\log(\pi/2).
+\]
+It is strictly increasing for $x>0$ and maps that half-line onto
+$(\log(\pi/2),\infty)$.
+\end{corollary}
+\begin{proof}
+For $x>0$, $H(-x)=B(e^{-x})$, giving the symmetry from
+\eqref{ojf:eq:H-A}; continuity and evenness give the remaining real
+points. The classical value $\psi(1/2)=-\gamma-2\log2$ gives $A(0)$.
+For $v=x/(2\pi)>0$, the convergent trigamma series gives
+\[
+ A'(x)=-\frac1{2\pi}\Imag\sum_{k\ge0}\frac1{(k+1/2+\iu v)^2}>0,
+\]
+because each summand has strictly negative imaginary part. The range
+then follows from the logarithmic asymptotic proved below. This also
+shows that the exact positive core inverse used later is unique wherever
+its target exceeds $\log(\pi/2)$.
+\end{proof}
+
+The single meromorphic expression, holomorphic near large real points, is
+\begin{equation}\label{ojf:eq:A-holomorphic}
+ A(z)=\gamma+\log(2\pi)+\frac12
+    \left\{\psi\left(\tfrac12+\frac{\iu z}{2\pi}\right)
+          +\psi\left(\tfrac12-\frac{\iu z}{2\pi}\right)\right\}.
+\end{equation}
+It is meromorphic in $z$, with possible poles on the imaginary axis,
+and agrees with \eqref{ojf:eq:A-real} on the positive real axis. In
+particular it is holomorphic on every disk of a fixed radius around a
+sufficiently large positive real $w$. We use this expression, not the
+nonholomorphic operation $\Real$, in complex inverse equations.
+
+\subsubsection{A meromorphic minor at the previously excluded order}
+
+\begin{theorem}[Ordinary Borel reconstruction at order zero]
+\label{ojf:thm:borelzero}
+The formal algebraic tail of $A(x)-(\log x+\gamma)$ is
+\begin{equation}\label{ojf:eq:A-asymptotic}
+ A(x)\sim\log x+\gamma-
+          2\sum_{k\ge1}\eta(2k)(2k-1)!x^{-2k}.
+\end{equation}
+Its ordinary Borel minor is the meromorphic function
+\begin{equation}\label{ojf:eq:b0}
+ b_0^{\rm jet}(\xi)=\frac1\xi-\frac\pi{\sin\pi\xi},
+\end{equation}
+with a removable zero at the origin and residue $(-1)^{n-1}$ at
+$\xi=n\ge1$. For $x>0$,
+\begin{align}
+ \log x+\gamma+\int_\pm e^{-x\xi}b_0^{\rm jet}(\xi)\dd\xi
+     &=Z_1^\pm(x),\label{ojf:eq:b0-lateral}\\
+ A(x)&=\log x+\gamma+
+          \operatorname{PV}\int_0^\infty e^{-x\xi}b_0^{\rm jet}(\xi)\dd\xi.
+                                                        \label{ojf:eq:b0-PV}
+\end{align}
+The principal value is the arithmetic average of the lateral integrals,
+or the sum of symmetric local principal values at the positive integers.
+\end{theorem}
+
+\begin{proof}
+The classical generator
+$\pi\xi/\sin\pi\xi=1+2\sum_{k\ge1}\eta(2k)\xi^{2k}$
+shows that
+\[
+ b_0^{\rm jet}(\xi)=-2\sum_{k\ge1}\eta(2k)\xi^{2k-1}.
+\]
+The ordinary Borel convention gives exactly the coefficients in
+\eqref{ojf:eq:A-asymptotic}. The residue statement follows from
+$(\sin\pi\xi)'|_{\xi=n}=\pi(-1)^n$.
+
+For an independent proof of the exact reconstruction, initially take
+$\Real x>0$ and $\Imag x<0$. Rotate an upper tilted Laplace path to
+$\xi=\iu t$. There are no poles inside the rotation sector. On its
+large arcs, the cosecant has exponential decay away from the real
+axis and the $1/\xi$ term is suppressed by $e^{-x\xi}$; the negative
+imaginary part of $x$ ensures decay even at the final imaginary ray.
+The removable origin gives no small-circle contribution. Thus
+\begin{align*}
+ \int_+e^{-x\xi}b_0^{\rm jet}(\xi)\dd\xi
+ &=\int_0^\infty e^{-\iu xt}
+                   \left(\frac1t-\frac\pi{\sinh\pi t}\right)\dd t\\
+ &=\int_0^\infty
+       \left\{\frac{e^{-\iu xu/(2\pi)}}u
+          -\frac{e^{-(1/2+\iu x/(2\pi))u}}{1-e^{-u}}\right\}\dd u.
+\end{align*}
+The standard digamma integral, combined with the Frullani difference,
+is \cite[\S5.9]{ojf:DLMFDigamma}
+\[
+ \psi(a)=\int_0^\infty
+          \left(\frac{e^{-u}}u-\frac{e^{-au}}{1-e^{-u}}\right)\dd u,
+ \quad \Real a>0,
+\]
+where cancellation at zero is taken inside the integrand. Consequently
+the preceding integral is
+\begin{equation}\label{ojf:eq:b0-evaluation}
+ \psi\left(\tfrac12+\frac{\iu x}{2\pi}\right)
+                 -\log x+\log(2\pi)-\frac{\iu\pi}{2}.
+\end{equation}
+Both sides continue to a neighborhood of the positive real axis. A fixed
+upper ray of angle less than $\pi/2$ has an absolutely convergent
+Laplace integral there, so \eqref{ojf:eq:b0-evaluation} proves the upper
+formula for real positive $x$. Conjugation proves the lower formula.
+Its value is precisely \eqref{ojf:eq:Z1}.
+
+On the real boundary the only singularities are simple poles. Upper
+minus lower indentation contributes minus $2\pi\iu$ times their
+residues, and the weighted residue sum is absolutely convergent:
+\[
+ -2\pi\iu\sum_{n\ge1}(-1)^{n-1}e^{-nx}
+          =-2\pi\iu\frac{e^{-x}}{1+e^{-x}}.
+\]
+At infinity one may take boundaries midway between the integer poles;
+exponential decay controls the remaining contour and principal-value
+tails. Averaging proves \eqref{ojf:eq:b0-PV}.
+Finally, a finite Taylor expansion of the germ on a tilted ray, with a
+Laplace remainder, gives \eqref{ojf:eq:A-asymptotic} to each finite order.
+\end{proof}
+
+The kernel \eqref{ojf:eq:b0} is the natural $m=0$ extension of the
+subtracted Gamma kernel in \cite[label
+\texttt{thm:Gamma-kernel}]{qfb:reports}. The extension has been proved
+here with a separate contour calculation, rather than by asserting
+that all hypotheses of the $m\ge1$ theorem persist unchanged.
+
+\begin{corollary}[Derivative scales for the exact core]
+\label{ojf:cor:core-derivatives}
+As $w\to+\infty$,
+\begin{align}
+ A(w)&=\log w+\gamma-\frac{\pi^2}{6w^2}+O(w^{-4}),\label{ojf:eq:A-two}\\
+ A'(w)&=\frac1w+O(w^{-3}),\qquad
+ A''(w)=-\frac1{w^2}+O(w^{-4}).\label{ojf:eq:A-derivatives}
+\end{align}
+The estimates are holomorphically uniform in a fixed closed subsector
+about the positive real axis, away from the origin. In particular,
+$A'(w)>0$ for all sufficiently large real $w$.
+\end{corollary}
+\begin{proof}
+Use the first term of \eqref{ojf:eq:A-asymptotic}. Uniformity follows
+from the tilted Laplace proof, or the standard sectorial digamma
+expansion \cite[Eq.~5.11.2]{ojf:DLMFDigamma}, applied to the conjugate-pair
+formula \eqref{ojf:eq:A-holomorphic}. Cauchy estimates on disks of radius
+a fixed positive multiple of $w$, contained in such a subsector, justify
+differentiation of each finite asymptotic remainder and give
+\eqref{ojf:eq:A-derivatives}. This uses holomorphic remainder control,
+not mere differentiation of a real-axis big-$O$ statement.
+\end{proof}
+
+\subsection{A global inverse and convergent charts at both endpoints}
+\label{ojf:sec:inverse}
+
+\subsubsection{The real inverse exists globally}
+
+\begin{theorem}[Global order-zero inverse]\label{ojf:thm:global}
+The function $H(x)=\partial_sF_s(x)|_{s=0}$ is a real-analytic strictly
+increasing bijection from $\R$ to $(0,\infty)$. Its inverse $X(y)$ is
+real analytic on $(0,\infty)$. Its two endpoint scales are
+\begin{equation}\label{ojf:eq:H-endpoints}
+ H(x)\sim(\log2)e^{2x}\quad(x\to-\infty),\qquad
+ H(x)\sim\log x\quad(x\to+\infty).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Use the positive integral $H=M_0$ from
+Theorem~\ref{ojf:thm:regularization}. Both factors
+$(1+e^{-x})^{-1}$ and $(1+e^{t-x})^{-1}$ increase strictly with
+$x$ for every $t>0$. Differentiation on compact $x$ intervals is
+justified by the same endpoint and exponential majorants, and the
+integrand derivative is strictly positive. Hence $H'(x)>0$.
+Local holomorphic continuation of the integral in $x$ in a strip of
+sufficiently small width gives real analyticity.
+
+For $x<0$, the original small-argument polylogarithm series and normal
+order differentiation give $H(x)=B(e^x)$, so
+$H(x)\sim(\log2)e^{2x}\to0$. For large positive $x$,
+\eqref{ojf:eq:H-A} and \eqref{ojf:eq:A-two} give
+$H(x)=\log x+\gamma+O(x^{-2})\to\infty$.
+Continuity and strict increase prove the range assertion, and the
+analytic inverse-function theorem applies everywhere because $H'>0$.
+\end{proof}
+
+\subsubsection{The small-target logarithmic--square-root chart}
+Write $a=\log2$ and
+\begin{equation}\label{ojf:eq:small-b}
+ b(z)=\frac{B(z)}{az^2}
+       =1-\frac{\log3}{a}z+\frac{\log4}{a}z^2-\cdots,
+ \qquad b(0)=1.
+\end{equation}
+The square-root parameter for a small target is
+$t=(y/a)^{1/2}>0$.
+
+\begin{theorem}[All coefficients and an explicit convergent endpoint disk]
+\label{ojf:thm:small-inverse}
+For $0<t<\sqrt3/40$, the global inverse has the convergent expansion
+\begin{equation}\label{ojf:eq:small-inverse}
+ X(at^2)=\log t+\sum_{N\ge1}c_Nt^N,
+ \qquad c_N=\frac1N\coef{z}{N}b(z)^{-N/2}.
+\end{equation}
+The analytic correction $X(at^2)-\log t$ extends holomorphically to
+$|t|<\sqrt3/40$. In particular,
+\begin{equation}\label{ojf:eq:small-first}
+ X(y)=\frac12\log\frac ya+
+     \frac{\log3}{2a}\left(\frac ya\right)^{1/2}
+     +\left(\frac{(\log3)^2}{2a^2}-1\right)\frac ya
+     +O(y^{3/2}).
+\end{equation}
+The radius given here is a sufficient certificate, not an exact radius.
+\end{theorem}
+
+\begin{proof}
+Let $r=1/20$. Since $\log n\le n$ for $n\ge1$,
+\[
+ \sup_{|z|\le r}|b(z)-1|
+ \le\frac1a\sum_{n\ge3}n r^{n-2}
+ =\frac{r(3-2r)}{a(1-r)^2}
+ =\frac{58}{361a}<\frac14.
+\]
+For the strict last inequality, $\log2>2/3$ follows, for example, from
+$\log2=2\sum_{k\ge0}(1/3)^{2k+1}/(2k+1)$; then
+$58/(361a)<87/361<1/4$.
+There is a holomorphic square root of $b$ on the disk, equal to one
+at zero, and $|\sqrt{b(z)}|>\sqrt3/2$ there. The function
+$f(z)=z\sqrt{b(z)}$ has exactly the simple zero $0$, and on $|z|=r$
+its modulus exceeds $\sqrt3/40$.
+
+For $|t|<\sqrt3/40$, Rouch\'e's theorem gives exactly one root,
+counting multiplicity, of $f(z)-t$ inside $|z|<r$. That root is simple,
+so it defines a holomorphic function $z(t)$ with $z(0)=0$ and
+$z'(0)=1$. Uniqueness glues the local roots throughout the disk.
+The quotient $z(t)/t$ extends holomorphically and has no zeros;
+its logarithm with value zero at $t=0$ therefore exists on the disk.
+For positive small $t$, the root is real and positive and
+$H(\log z(t))=B(z(t))=at^2$. The global uniqueness theorem identifies
+$\log z(t)$ with $X(at^2)$.
+
+For the coefficient formula, set $\Phi(z)=b(z)^{-1/2}$. The equation
+is $z=t\Phi(z)$ and $\log(z/t)=\log\Phi(z)$.
+Lagrange--B\"urmann inversion gives, for $N\ge1$,
+\begin{align*}
+ \coef{t}{N}\log(z(t)/t)
+ &=\frac1N\coef{z}{N-1}(\log\Phi)'\Phi^N\\
+ &=\frac1{N^2}\coef{z}{N-1}(\Phi^N)'
+  =\frac1N\coef{z}{N}\Phi^N.
+\end{align*}
+This proves \eqref{ojf:eq:small-inverse}. Expanding the first two
+coefficients and using $\log4=2\log2$ proves
+\eqref{ojf:eq:small-first}.
+\end{proof}
+
+\subsubsection{The large-target exact-core chart}
+For large $w>0$, take the target $y=A(w)$, so $w$ is the exact
+inverse of the algebraic digamma core rather than an approximation to
+that inverse. Put
+\begin{equation}\label{ojf:eq:large-notations}
+ q=e^{-w},\qquad a_w=A'(w),\qquad b_w=A''(w),\qquad
+ c_+=-\iu\pi,\quad c_-=\iu\pi.
+\end{equation}
+Let $G_\pm(y)$ denote the inverse branches near $w$ of the lateral
+functions $Z_1^\pm(x)$ from \eqref{ojf:eq:Z1}.
+
+\begin{theorem}[Convergent inverse sectors and the exact second sector]
+\label{ojf:thm:large-inverse}
+There are constants $c>0$ and $w_0>0$ such that for each $w>w_0$ the
+three inverse displacements are holomorphic for $|q|<c/w$ when
+$q$ is treated as an independent variable. At the physical substitution
+$q=e^{-w}$, their convergent expansions give
+\begin{align}
+ X(A(w))&=w+\frac{\log2}{a_w}q^2+O(w^3q^3),
+                                            \label{ojf:eq:physical-inverse}\\
+ G_\pm(A(w))&=w-\frac{c_\pm}{a_w}q+
+ \left(-\frac{b_wc_\pm^2}{2a_w^3}
+       -\frac{c_\pm^2}{a_w^2}+\frac{c_\pm}{a_w}\right)q^2
+                   +O(w^3q^3).              \label{ojf:eq:lateral-inverse}
+\end{align}
+The remainder constants can be chosen independently of large $w$.
+The physical branch in \eqref{ojf:eq:physical-inverse} is the global
+inverse of Theorem~\ref{ojf:thm:global}.
+\end{theorem}
+
+\begin{proof}
+For independent $q$, the defining equations for the displacements are
+\begin{align}
+ A(w+\delta)-A(w)-B(qe^{-\delta})&=0,
+                                             \label{ojf:eq:inv-physical-eq}\\
+ A(w+\delta)-A(w)+c_\pm
+       \frac{qe^{-\delta}}{1+qe^{-\delta}}&=0.
+                                             \label{ojf:eq:inv-lateral-eq}
+\end{align}
+Fix a small radius $\rho>0$, for example $\rho=1/4$. The uniform
+estimates in Corollary~\ref{ojf:cor:core-derivatives} imply
+\[
+ A(w+\delta)-A(w)=\frac\delta w(1+O(w^{-1}))
+                    \qquad (|\delta|\le\rho).
+\]
+For sufficiently large $w$, the core difference has exactly one zero
+in the disk and has boundary modulus at least $\rho/(2w)$; this follows
+by comparison with $\delta/w$.
+
+On the same disk, the lateral perturbation is bounded by
+$\pi |q|e^\rho/(1-|q|e^\rho)$.
+Choose $c>0$ small enough that this is less than $\rho/(2w)$ whenever
+$|q|\le c/w$, for all sufficiently large $w$.
+The physical perturbation $B(qe^{-\delta})$ is $O(|q|^2)$ uniformly
+on the disk and satisfies the same strict inequality, after increasing
+$w_0$ if necessary. Rouch\'e gives exactly one simple zero in each case.
+The implicit-function theorem and uniqueness give holomorphic roots on
+the parameter disk, bounded by $\rho$.
+Cauchy's estimate bounds their degree-$n$ coefficients by
+$\rho(w/c)^n$. Hence on $|q|\le c/(2w)$ the remainder after degree two
+is at most
+\[
+ \rho\frac{(w|q|/c)^3}{1-w|q|/c}=O(w^3|q|^3).
+\]
+The physical value $q=e^{-w}$ lies in this region for all large $w$.
+This proves actual sector convergence and a uniform remainder; it is
+not only a formal reversion computation.
+
+For the coefficients, write $\delta=d_1q+d_2q^2+O(q^3)$ and use
+\[
+ A(w+\delta)-A(w)=a_w\delta+\tfrac12b_w\delta^2+O(\delta^3),
+ \qquad
+ \frac{qe^{-\delta}}{1+qe^{-\delta}}
+       =q-(d_1+1)q^2+O(q^3).
+\]
+The first coefficient in the lateral equation gives $d_1=-c/a_w$.
+The second gives
+$a_wd_2+\tfrac12b_wd_1^2-cd_1-c=0$, which is precisely
+\eqref{ojf:eq:lateral-inverse}. In the physical equation,
+$B(qe^{-\delta})=(\log2)q^2+O(q^3)$, so $d_1=0$ and
+$d_2=\log2/a_w$.
+For the physical real $q$, conjugation and uniqueness make the physical
+root real. Its defining equation is $H(w+\delta)=A(w)$, and the global
+monotonicity of $H$ identifies it with $X(A(w))$.
+\end{proof}
+
+\subsubsection{A larger inverse error than the physical completion}
+
+\begin{corollary}[Digamma-core arithmetic-averaging defect]
+\label{ojf:cor:defect}
+With the preceding exact-core normalization,
+\begin{align}
+ \frac{G_+(A(w))+G_-(A(w))}{2}-X(A(w))
+ &=\left(\frac{\pi^2}{a_w^2}
+       +\frac{\pi^2b_w}{2a_w^3}-\frac{\log2}{a_w}\right)e^{-2w}
+             +O(w^3e^{-3w})                         \label{ojf:eq:defect-exact}\\
+ &\sim\pi^2w^2e^{-2w}.                              \label{ojf:eq:defect-leading}
+\end{align}
+By contrast,
+\begin{equation}\label{ojf:eq:physical-leading}
+ X(A(w))-w\sim(\log2)we^{-2w},
+ \qquad
+ G_+(A(w))-G_-(A(w))\sim2\pi\iu we^{-w}.
+\end{equation}
+In particular the inverse-average error divided by the physical
+core-inverse correction tends to infinity, with equivalent
+$\pi^2w/\log2$.
+\end{corollary}
+\begin{proof}
+Average \eqref{ojf:eq:lateral-inverse}, using
+$c_++c_-=0$ and $c_\pm^2=-\pi^2$, then subtract
+\eqref{ojf:eq:physical-inverse}. This gives
+\eqref{ojf:eq:defect-exact}. Since
+$a_w=w^{-1}(1+O(w^{-2}))$ and
+$b_w=-w^{-2}(1+O(w^{-2}))$, the coefficient of $e^{-2w}$ in that
+formula is $\pi^2w^2+O(w)$.
+The uniform remainder is smaller by a factor $O(we^{-w})$.
+The same estimates give the first equivalent in
+\eqref{ojf:eq:physical-leading}. Subtracting the two lateral
+expansions gives its second equivalent. Division proves the ratio.
+\end{proof}
+
+This is a model-specific quantitative consequence of the general
+nonlinear averaging mechanism already proved in \cite{ojf:transport}
+and restated in \cite{qfb:reports}. What is added here is the explicit
+core, the exact second-sector coefficient, a uniform convergent chart,
+and the separation by an unbounded factor from the physical correction.
+It is \emph{not} a counterexample to a correctly formulated nonlinear
+median summation. Nor does it allege that either cited repository article
+confused arithmetic averaging with such a summation.
+
+\paragraph{In the target variable.}
+Let $v=e^{y-\gamma}$. Inverting \eqref{ojf:eq:A-two} gives
+$w=v+\pi^2/(6v)+O(v^{-3})$. Therefore the physical inverse correction
+and the inverse-average error have the respective equivalents
+\begin{equation}\label{ojf:eq:double-exponential}
+ (\log2)e^{y-\gamma}\exp(-2e^{y-\gamma}),\qquad
+ \pi^2e^{2(y-\gamma)}\exp(-2e^{y-\gamma}).
+\end{equation}
+These are doubly exponential scales in $y$. Using the exact $w$ for
+finite computations remains preferable: an algebraic approximation to
+the core must not be confused with its much smaller exponential
+correction.
+
+
+\subsection{Experimental guidance and remaining questions}
+
+The delivered filter verifier was replayed on an isolated copy with
+mpmath 1.3.0 and SymPy 1.14.0 at seventy decimal digits. Its 165 exact
+checks include finite operator inversions, conjugate-node interpolation
+and the first nonlinear inverse coefficients. All 46 numerical checks
+passed: regularized Stieltjes extraction against positive-integral jets,
+tilted Borel integrals, noninteger completion, six neutral roots and the
+small- and large-target inverse charts. A separate replay already filed
+by the parallel intake is retained as independent run evidence.
+
+For the new neutral inverse theorem, an independent implementation uses
+Cauchy extraction of order jets from the entire Hurwitz realization,
+with 64-to-96-point refinement, instead of tiny-step order
+differentiation. It solves the neutral equation and the physical inverse
+separately, retaining the moving-order term in
+\eqref{ojf:eq:moving-chain-rule}. For $N=1$, centers $m=0,1,2$ and
+$w=10,20$, the displacement agrees with $C_w/P'(w)$ at the predicted
+leading scale. At $m=0,w=20$, their ratio is approximately
+$1.00000000065748$. The logarithmic leading formula alone converges
+more slowly: the exact derivative retains the lower powers of $\log w$.
+These finite floating-point comparisons are diagnostics, not interval
+certificates or proofs of the infinite assertions. The analytic proof
+and exact coefficient identity are given above.
+
+The higher-zero-jet Borel germs, conditioning of logarithmic-node
+interpolation, growing filter size, and the exact complex radius of the
+small-target inverse remain open directions. The neutral inverse theorem
+settles fixed $m,N$ transport along the constructed curve, without
+extending it to those different uniform or global questions.
