@@ -124,8 +124,7 @@ class CorePrimitiveAnnuliTests(unittest.TestCase):
         self.assertEqual(a['status'], 'COMPLETE')
         p = json.loads(json.dumps(json_safe(a['certificate'])))
         self.assertTrue(verify_normal_cut_handlebodies(self.raw, json_safe(rows), p))
-        for name, reason in [('pilot/fibonacci_lst_06/0', 'raw_cancellation_stalled'),
-                             ('fibonacci_lst_09/mixed', 'annular_core_attachment')]:
+        for name, reason in [('pilot/fibonacci_lst_06/0', 'raw_cancellation_stalled')]:
             c = next(c for c in self.bank if c['id'] == name)
             a = normal_cut_handlebodies(c['triangulation'], c['coordinates'])
             self.assertEqual(a['status'], 'INCONCLUSIVE')

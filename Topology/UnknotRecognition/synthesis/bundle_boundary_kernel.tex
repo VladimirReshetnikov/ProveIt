@@ -1,0 +1,159 @@
+\subsection{A finite boundary kernel for simultaneous whole-cut cancellation}
+\label{marked-cut:boundary-kernel}
+
+The separate primitive-family tests can miss a sequence in which cancelling
+one annular gluing exposes a useful disk for another. We now put all original
+core two-handles and all annular gluing two-handles into one geometric
+cancellation problem. The bundle genus can be exponentially large, but only
+one column per named boundary circle needs to be retained. The construction
+below supplies the geometric justification missing from the earlier
+boundary-template diagnostic.
+
+\begin{proposition}[Bordered-bundle boundary disk system]
+\label{marked-cut:bundle-disk-system}
+Let $B$ be an orientable interval bundle over a connected compact surface
+$F$ with nonempty boundary, $b=|\partial F|$, and $G=1-\chi(F)$.
+Let $a\le b$ distinct vertical boundary annuli be named. There is a complete
+system of $G$ meridian disks with the following unsigned intersections with
+the annular midpoint curves.
+\begin{enumerate}
+\item If $a<b$, the first $a$ named curves each meet their own disk once;
+all other intersections of named curves with the system vanish.
+\item If $a=b$, choose the last named boundary as distinguished. Each of
+the first $a-1$ curves meets its own disk once. The distinguished curve
+meets each of those disks once and each of the other $G-(a-1)$ disks twice.
+All remaining intersections vanish.
+\end{enumerate}
+The disks can avoid every specified proper interval-attachment region.
+This includes nonorientable bases whose interval bundle has orientable total
+space; no product-bundle assumption is required.
+\end{proposition}
+\begin{proof}
+Choose a distinguished boundary $C_0$, unnamed when $a<b$. Cut $F$ along
+disjoint arcs from each of its other boundary components to $C_0$. The
+result is a one-boundary surface. A standard system of $2g$ further arcs
+for an orientable genus-$g$ surface, or $q$ further arcs for a nonorientable
+surface of genus $q$, cuts it to a disk. All endpoints of these latter arcs
+lie on $C_0$. Equivalently, take a disk with bands and $b-1$ boundary holes;
+the band cocores and arcs joining the holes to its outer boundary are such
+a system. This gives exactly $G$ proper arcs cutting $F$ to a disk.
+
+The interval preimage of each arc is a disk, even in the twisted bundle.
+Their complement is the interval bundle over a disk and hence a ball.
+An endpoint on a boundary circle contributes exactly one intersection with
+its vertical midpoint curve. When all boundaries are named, the $b-1$
+joining arcs have one endpoint on $C_0$, and each remaining arc has two.
+When $a<b$, choose $C_0$ unnamed and order the joining arcs with named
+boundaries first; unnamed-boundary and genus arcs have no endpoints on
+named circles. This gives the stated matrices geometrically, without using
+free reductions of surface-group words.
+
+Each boundary circle that is not fully attached has a genuine open gap.
+Move the finitely many required endpoints into such gaps. Their order can
+be chosen inside a gap, so all arcs stay disjoint and their vertical disks
+avoid proper attachment intervals. If every boundary is fully attached,
+there are no proper interval attachments on that base.
+\end{proof}
+
+\begin{proposition}[Source annulus gluing has a finite projected handle model]
+\label{marked-cut:projected-gluing}
+Assume the authenticated source core has no three-handles and all bundle
+bases have nonempty boundary. Contract a spanning forest of its zero/one
+handles. For every ported bundle add one zero-handle and the disk system
+of Proposition~\ref{marked-cut:bundle-disk-system}. For each proper disk or
+full annulus interface add a connecting one-handle; for each full annulus
+also add one two-handle. This is a handle decomposition of the actual cut.
+After a forest of connecting handles is contracted, the retained columns
+are the original surviving core one-handles and at most $P$ named bundle
+boundary columns. Every omitted column has initial entries only zero or two.
+\end{proposition}
+\begin{proof}
+The source theorem provides embedded, mutually disjoint interface disks and
+annuli, disjoint from the original two-handle attaching regions. A disk
+identification is the usual boundary connecting one-handle description.
+For an annulus, take a narrow spanning rectangle in each copy, attach the
+connecting handle there, and identify the remaining rectangles by one
+two-handle. Its attaching curve follows the two annular midpoint curves,
+with the small spanning rectangles removed, and crosses the connecting
+handle twice. The rectangles may be chosen between consecutive disk-system
+crossings. Thus its intersections with the old core disks are exactly the
+source midpoint crossings, and its intersections with bundle disks are
+exactly the preceding proposition's counts. The real core two-handles have
+zero intersections with bundle and connecting cocores. All these operations
+are simultaneous on disjoint source interfaces.
+
+A forest of connecting handles merges balls. Removing its cocores simply
+deletes those columns; no other geometric intersection count changes.
+Each remaining connecting column has a two in its own annular row, or is
+zero throughout for a proper disk interface. The omitted bundle columns
+are zero on all rows if $a<b$, and have a two only in the distinguished row
+if $a=b$. A bundle with no annuli contributes only omitted zero columns.
+Consequently, regardless of the binary size of $G$, the retained matrix
+has $O(T+P)$ rows and columns and is exactly the projection of a genuine
+geometric handle matrix for the supplied cut.
+\end{proof}
+
+\begin{proposition}[Safe omission and a handlebody census]
+\label{marked-cut:kernel-census}
+Apply only retained singleton pivots, with saturated update
+$n'_{ih}=\min(2,n_{ih}+n_{ig}n_{rh})$ after pivot $(r,g)$.
+Every such pivot lifts to a geometric cancellation in the complete handle
+model. If all two-handle rows disappear, every component of the cut is a
+handlebody. Its genus is the number of surviving retained columns plus its
+omitted bundle genus and its connecting-graph cycle rank.
+\end{proposition}
+\begin{proof}
+The geometric disk-slide lemma applies to the complete matrix. Projection
+onto retained columns commutes with its positive update: a retained entry
+uses only other retained entries and the retained pivot column. Thus a
+singleton seen by the finite replay is an actual unique belt intersection.
+Omitted entries remain in $\{0,2\}$ after saturation, since an update only
+adds nonnegative multiples of entries in that set. They never become
+singleton candidates. They may grow, and their disks may be slid, but they
+are never deleted. No exponentially long word or disk-slide list is needed
+to verify the retained incidence predicates.
+
+When all rows have cancelled there are no two- or three-handles. Forest
+contraction left one zero-handle per connected attachment-graph component.
+The remaining orientable zero/one-handle manifold is a handlebody. Counting
+its surviving handles gives the formula. Equivalently, for a connected
+graph piece with vertices $V$ and interfaces $E$,
+\[
+ g=\sum_{c}g_c^{(01)}+\sum_F(1-\chi(F))
+       +|E|-|V|+1-h_2-a,
+\]
+where $h_2$ counts the original core two-handles and $a$ its full annular
+interfaces. The two counts agree because every verified pivot removes one
+retained one-handle and one actual two-handle. Isolated bundles contribute
+binary multiplicities separately. The original source Euler identity gives
+an additional consistency check, not the proof of handlebody topology.
+\end{proof}
+
+\paragraph{Independent replay.}
+The whole-cut schema \path{normal-cut-handlebodies-v5} contains the two
+source certificates, a \path{bundle-boundary-kernel-v1} record, and the
+census. The kernel records both forests, every annular source crossing,
+the named boundary columns and omitted genus counts, and the pivot schedule.
+The producer uses sparse rows and tries projected leaf peeling before a
+greedy positive-fill schedule. A projected leaf can still meet omitted
+columns twice; the checker therefore always uses the general positive
+update, without assuming that the full row has only one crossing.
+
+The independent module \path{bundle_boundary_kernel_verify} reconstructs
+source midpoint paths, derives the canonical surface templates, builds its
+own forests, and replays a dense matrix. It imports no kernel producer,
+cancellation planner, or census helper. The producer counts surviving
+columns; the checker also counts initial handles minus all two-handles,
+component by component, and checks agreement. Existing successful v1--v4
+certificates remain preferred and unchanged; v5 is attempted when their
+core cancellation or complete private-family test fails.
+
+There are $O(T+P)$ retained handles, so at most $O(T+P)$ pivots need
+$O((T+P)^3)$ saturated-entry operations. The retained matrix is quadratic
+in size; source crossings and template records have polynomial size.
+Omitted genus and isolated multiplicity use exact binary arithmetic, never
+iteration over their values. These bounds are for a supplied normal cut.
+The greedy schedule is incomplete, three-handles are still unsupported,
+and no general bound on useful-surface discovery or hierarchy length follows.
+
+\input{boundary_kernel_results.tex}
