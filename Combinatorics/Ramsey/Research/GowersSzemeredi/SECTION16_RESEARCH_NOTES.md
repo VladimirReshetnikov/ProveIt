@@ -5118,6 +5118,49 @@ Axioms: `propext`, `Classical.choice`, `Quot.sound` only. Remaining limits:
 * `d + 3` would need a step of `< 16·2^k`, but the base budget `tightMu0`
   alone contributes `16·2^k` to `ρ`.
 
+**L.16k: the exact small-dimension class degrees, `d + 5` from degree 4 and
+`L + 3` from length 6 (2026-10-12).** The invariant bound `sDeg l` is loose
+in small dimensions, where the additive slack `3(l+4)² + 32` dominates. The
+true split degrees `splitPairWith 32 (2^48) l` are explicit numbers. Their
+log-degrees `⌈log₂(a_l + D_l + l + 1)⌉` are
+
+| l | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| true | 17 | 49 | 85 | 136 | 210 | 326 | 524 | 881 | 1550 | 2841 | 5371 | 10375 |
+| `sDeg` | 115 | 156 | 211 | 288 | 403 | 588 | 907 | 1488 | 2587 | 4716 | 8899 | 17184 |
+
+(the true class constant tends to about `2.4`). The kernel evaluates them
+(`decide +kernel`; `D₁₂ ≈ 2^10375`, the whole module builds in under a
+minute).
+
+`Proofs18TightClassesFejerT` (light) provides:
+* `tDeg`: the table up to `l = 12`, then `sDeg`;
+* `split_pair_small_le_uDegT`, `tDeg_mono`;
+* `polyCoverAt_classT`: the class covers at `uDegT l = 2^tDeg l`.
+
+The table entries for `l ≤ 5` are below `3(k+4)²`. So the η side condition
+now comes from the base budget: `sq_le_fixDegQ`, `3(k+4)² ≤ fixDegQ k + 64`.
+
+The chain is `Proofs18Cover{Modulus,Density,Exponents}FejerT` and
+`Proofs18CoverFejerHeadlineT`, generated from the S chain by `assemble_t.py`.
+Its envelope peaks at `124.4·2^k` (`k = 3`), below `128·2^k`, and `decide
++kernel` certifies it in dimensions `2, …, 12`. Beyond that the S closed forms
+carry the invariants from `k = 12`. This gives
+* **`theorem_18_1_d5_four_le_of_profiles_cover`: Theorem 18.1 at `d + 5` for
+  every `d ≥ 4`**;
+* `theorem_18_1_d4_eleven_le_of_profiles_cover`: `d + 4` for every `d ≥ 11`;
+* **`theorem_18_2_L3_six_le_of_profiles_cover`: `L + 3` for every `L ≥ 6`**,
+  with the corollary.
+
+The tightest margins are `28` (Theorem 18.1) and `13` (Theorem 18.2), both
+at `k = 3`.
+
+Name trap: the T-suffixed `polyGenMuT` / `polyEnvBound_allT` already exist
+(`Proofs18CoverTightBase`, where T means tight base). The exact-table
+envelope is therefore `polyGenMuE` / `polyEnvBound_allE`. The collision
+showed up only as `has already been declared` together with `decide`
+"proving" false statements, because `decide` evaluated the other definition.
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`

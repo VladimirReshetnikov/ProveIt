@@ -1,0 +1,22 @@
+import GowersSzemeredi.Proofs18CoverExponentsFejerT
+import GowersSzemeredi.Proofs18CoverFejerHeadlineS
+
+/-! **Theorem 18.1 at `d + 5` for every `d ≥ 4` and at `d + 4` for every
+`d ≥ 11`, and Theorem 18.2 / Corollary 18.7 at `L + 3` for every `L ≥ 6`,
+from the recurrence profiles** (Notes L.16k).
+
+The Section 18 envelope at `GenParamsT`. The class covers sit at the exact
+table `uDegT l = 2^tDeg l` (`polyCoverAt_classT`). The step lemmas and
+recursions are generated from `Proofs18CoverFejerHeadlineS`. The envelopes in
+dimensions `2, …, 12` are kernel-evaluated (`decide +kernel`). Beyond that
+`tDeg = sDeg`, and the closed forms of `Proofs18CoverFejerHeadlineS` carry the
+invariants `μ_k + 4k + 128 ≤ 64·2^k` (Theorem 18.1) and `≤ 128·2^k`
+(Theorem 18.2) from `k = 12` on. The envelope's maximum ratio to `2^k` is
+`124.4`, at `k = 3`. This yields
+* `theorem_18_1_d5_four_le_of_profiles_cover`: Theorem 18.1 with exponent
+  `α^(2^(2^(d+5)))` at every degree `d ≥ 4`;
+* `theorem_18_1_d4_eleven_le_of_profiles_cover`: `d + 4` at every degree
+  `d ≥ 11`;
+* `theorem_18_2_L3_six_le_of_profiles_cover`,
+  `corollary_18_7_L3_six_le_of_profiles_cover`: `L + 3` at every length
+  `L ≥ 6`. The tightest margin is `13`, at `L = 7`. -/
