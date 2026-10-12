@@ -1094,3 +1094,31 @@ Source-specific corrections proposed for Bailey-Borwein-Crandall,
 Krattenthaler-Rivoal, O'Sullivan and Vepstas remain pending primary-source
 verification here; preserve their arguments without changing current
 canonical statements on an unaudited claim.
+
+
+## Canonical resonant jets and repeated primitives
+
+Section 1.6 integrates the scoped fixed-complex-sector R1 theorem and the
+reciprocal-Gamma pure-logarithm normalization from the twenty-first intake.
+The two overlapping normalized-jet reports receive joint credit. The
+classical Lerch and Hermite formulas retain their DLMF attribution.
+The sector proof keeps the finite-integer-order centered coefficients and
+derives a common majorant before taking parameter derivatives. Growing
+jet order, general growing windows and unrestricted winding remain open.
+
+The collective continuation proves the exact order-lowering ladder,
+including its polynomial endpoint, and every anchored repeated primitive.
+For integration order q, the coefficient array is the complete homogeneous
+polynomial sequence in 1/(m+1), ..., 1/(m+q). A generating-family identity
+proves the result for all jet orders; a finite derivative cancellation
+fixes the endpoint polynomial. This extends the previous one-step audit.
+The m=0 logarithmic family is integrable and included explicitly.
+
+Independent checks comprise 3780 exact tail-coefficient basis cases,
+72 single-primitive and 252 repeated-primitive cancellations, 24 complex
+defining-sum diagnostics at 85 digits, and nine native Wolfram symbolic
+checks. These finite checks support the formulas; the all-index result
+rests on the written normal-convergence and Gamma-recurrence proof.
+No Lean formalization or priority claim is made. The exact inverse-fold,
+sharp-radius, global-coefficient and Borel-reconstruction branches remain
+pending distinct audits; their original evidence is unchanged.

@@ -47,6 +47,28 @@ for m in range(9):
   endpoint+=Q(factorial(r+1),(m+1)**(r+1))
   assert coefficients==[Q(int(j==r)) for j in range(r+1)] and endpoint==0
   primitive_cases+=1
+iterated_cases=0
+for m in range(6):
+ for q in range(1,7):
+  for r in range(7):
+   h=[Q(1)]+[Q(0)]*(r+1)
+   for i in range(1,q+1):
+    x=Q(1,m+i)
+    for j in range(1,r+2):h[j]+=x*h[j-1]
+   A=Q(factorial(m+q),factorial(m))
+   jets={r-j:Q(factorial(r+1),factorial(r-j+1))*h[j]/A for j in range(r+1)}
+   polynomial=Q(factorial(r+1))*h[r+1]/A
+   for k in range(m+q,m,-1):
+    nextjets={}
+    endpoint=k*polynomial
+    for j,c in jets.items():
+     nextjets[j]=nextjets.get(j,Q(0))+k*c
+     if j:nextjets[j-1]=nextjets.get(j-1,Q(0))-(j+1)*c
+     else:endpoint-=c
+    jets={j:c for j,c in nextjets.items() if c}
+    polynomial=endpoint
+   assert jets=={r:Q(1)} and polynomial==0,(m,q,r,jets,polynomial)
+   iterated_cases+=1
 def psi(s,t,a):
  return mp.fsum(mp.exp(-(n+a)*t)/(n+a)**s for n in range(850))
 def normal(m,e,t,a,derivative=False):
@@ -71,9 +93,10 @@ for m in range(1,5):
 assert all(controls.values())
 result=dict(status='PASS',imports_delivered_code=False,exact_basis_cases=exact,
             exact_antiderivative_cases=primitive_cases,
+            exact_iterated_primitive_cases=iterated_cases,
             maximum_m=9,maximum_tail_degree=15,maximum_jet_order=6,
             corruption_controls=controls,numerical_rows=rows,working_digits=85,
             defining_sum_terms=850,interval_certified=False,
             scope='Finite exact tail-coefficient basis checks and direct defining-sum diagnostics; all-index analytic proof recorded separately.')
 (V/'resonant-ladder-checks.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
-print('PASS',exact,'exact coefficient basis cases;',len(rows),'direct-sum diagnostics.')
+print('PASS',exact,'exact coefficient basis cases;',primitive_cases,'single and',iterated_cases,'iterated primitives;',len(rows),'direct-sum diagnostics.')

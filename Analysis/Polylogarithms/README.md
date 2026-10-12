@@ -2,10 +2,10 @@
 
 The canonical reading artifact is the collective four-volume manuscript,
 [Polylogarithms and their Arithmetic Bridges](docs/manuscript/README.md),
-authored by **ProveIt Contributors**. The volumes have **130, 129, 248 and
-85 pages**, each compiling independently; the retained
-[combined edition](docs/manuscript/polylogarithms.pdf) has **552 pages**.
-They share twelve chapters, thirteen figures and 141 references. The
+authored by **ProveIt Contributors**. The volumes have **135, 130, 249 and
+86 pages**, each compiling independently; the retained
+[combined edition](docs/manuscript/polylogarithms.pdf) has **557 pages**.
+They share twelve chapters, thirteen figures and 142 references. The
 [editorial ledger](docs/manuscript/EDITORIAL-LEDGER.md) separates accepted
 proofs from pending analytic claims, and the
 [validation record](docs/manuscript/VALIDATION.md) distinguishes proofs,
@@ -650,6 +650,8 @@ maps their overlap and pending claims. Three continue the
 the exact-core dilogarithm and weighted endpoint-inverse packages have one
 original copy in [Transseries](../Transseries/docs/series-and-transseries/README.md).
 The fixed-sector R1 proof is audited, and an exact order-lowering identity
-gives finite primitives for all normalized resonant jets. Canonical chapter
-integration and updated PDFs are the next synthesis stage. The four
-released volumes retain ProveIt Contributors authorship.
+gives finite primitives for all normalized resonant jets. Section 1.6
+integrates these results and extends them to every repeated primitive, with
+complete homogeneous polynomials in consecutive reciprocals. The four
+volumes retain ProveIt Contributors authorship. Inverse geometry, exact
+radius and Borel reconstruction retain separate pending audits.

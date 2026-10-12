@@ -1,0 +1,328 @@
+\section{Resonant order jets and exact primitives}\label{rj:section}
+
+The iterated-integral description organizes weight and depth. A different
+structure appears when the order varies near an integer while the argument
+approaches one: a Gamma pole cancels a zeta pole, leaving logarithms.
+Keeping this cancellation intact produces exact local identities and a
+finite calculus of order derivatives. The resonance continuations
+\cite{rj:reports} supply a uniform sector theorem and a reciprocal-Gamma
+normalization; the order-lowering and repeated-primitive formulas below
+develop that normalization further.
+
+\subsection{Pole pairing on a fixed logarithmic sheet}
+For $\Re a>0$ set
+\[
+ F(s,t,a)=e^{-at}\Phi(e^{-t},s,a)
+       =\sum_{n=0}^{\infty}\frac{e^{-(n+a)t}}{(n+a)^s}
+       \qquad(\Re t>0).
+\]
+Powers of $n+a$ use the logarithm in the right half-plane. On
+$0<|t|<2\pi$, $|\arg t|<\pi$, continue from positive $t$ using
+$t^{s-1}=\exp((s-1)\operatorname{Log}t)$. The classical Lerch expansion
+\cite{tw:DLMFLerch} is
+\begin{equation}\label{rj:lerch}
+ F(s,t,a)=\Gamma(1-s)t^{s-1}
+       +\sum_{j=0}^{\infty}\zeta(s-j,a)\frac{(-t)^j}{j!}.
+\end{equation}
+At integer $s$, the colliding terms must be combined before specializing.
+In particular, $F(s,t,1)=\Li_s(e^{-t})$.
+
+Write $H_k^{(j)}=\sum_{n=1}^k n^{-j}$, $H_k=H_k^{(1)}$, and
+\begin{align}
+ T&=-\operatorname{Log}t+H_k-\gamma,\notag\\
+ E_k(w)&=\exp\left(\sum_{j\ge2}
+       \frac{\zeta(j)+(-1)^jH_k^{(j)}}j w^j\right)
+       =\sum_{j\ge0}b_{k,j}w^j,\qquad b_{k,0}=1,\quad b_{k,1}=0.
+       \label{rj:center}
+\end{align}
+The Taylor-subtracted remainder is
+\[
+ \mathcal R_k(\epsilon,t,a)=\frac{k!}{(-t)^k}
+ \left(F(k+1+\epsilon,t,a)
+ -\sum_{j=0}^{k-1}\zeta(k+1+\epsilon-j,a)\frac{(-t)^j}{j!}\right).
+\]
+Empty sums apply at $k=0$. Gamma recurrence in \eqref{rj:lerch} gives
+\begin{align}
+ \mathcal R_k(\epsilon,t,a)
+ &=\frac{1-e^{-T\epsilon}E_k(\epsilon)}{\epsilon}
+       +G_a(\epsilon)+B_k(\epsilon,t,a),\label{rj:paired}\\
+ G_a(\epsilon)&=\zeta(1+\epsilon,a)-\epsilon^{-1}
+       =\sum_{r\ge0}\frac{(-1)^r\gamma_r(a)}{r!}\epsilon^r,\notag\\
+ B_k(\epsilon,t,a)&=\sum_{\ell\ge1}
+       \frac{k!(-t)^\ell}{(k+\ell)!}\zeta(1+\epsilon-\ell,a).\notag
+\end{align}
+All apparent singularities at $\epsilon=0$ are removable.
+
+\begin{theorem}[Uniform resonance on closed complex sectors]\label{rj:sector}
+Fix $0<t_0<2\pi$, $0<\delta<\pi$, compact sets
+$A\subset\{a:\Re a>0\}$ and $U\subset\mathbb C$, and nonnegative
+integers $M,J,D$. For $a\in A$, $u\in U$,
+$0<|t|\le t_0$, $|\arg t|\le\pi-\delta$, as $\Re T\to+\infty$,
+uniformly in every integer $k\ge0$,
+\begin{align}
+ \mathcal R_k(u/T,t,a)
+ ={}&T\frac{1-e^{-u}}u+\gamma_0(a)\notag\\
+ &+\sum_{r=1}^{M}\frac{u^r}{T^r}
+ \left(\frac{(-1)^r\gamma_r(a)}{r!}-e^{-u}b_{k,r+1}\right)
+ +O(|T|^{-M-1}).\label{rj:sector-expansion}
+\end{align}
+The quotient at $u=0$ is one. The same remainder order holds after
+at most $J$ derivatives in $u$ and $D$ derivatives in $a$.
+The separated analytic tail is $B_k(u/T,t,a)=O(|t|/(k+1))
+=O(e^{-\Re T})$, also with these fixed derivatives.
+\end{theorem}
+\begin{proof}
+Choose $0<\eta<1/2$ and $t_0<R<2\pi$. The inequality
+$|\zeta(j)+(-1)^jH_k^{(j)}|\le2\zeta(j)$ uniformly bounds $E_k$
+on $|w|\le\eta$, independently of $k$. The regular part $G_a$ is
+bounded on an enlarged compact set of shifts and a small order disk.
+
+For completeness, a common majorant for the tail follows from Hermite's
+Hurwitz formula \cite{intdist:DLMFHurwitz}:
+\[
+ \zeta(s,a)=\frac{a^{-s}}2+\frac{a^{1-s}}{s-1}
+ +i\int_0^\infty
+       \frac{(a+iy)^{-s}-(a-iy)^{-s}}{e^{2\pi y}-1}\,dy .
+\]
+For $s=1+\epsilon-\ell$ and $|\epsilon|\le\eta$, the elementary
+terms have factorially summable bounds on the enlarged shift compact.
+For $y\ge1$, summing bounds with weights $R^\ell/\ell!$ leaves a
+fixed polynomial times $e^{-(2\pi-R)y}$. For $0\le y\le1$, take the
+difference of powers before absolute values, or integrate its derivative
+along the segment from $a-iy$ to $a+iy$. The resulting factor $y$
+cancels the denominator's simple zero. Hence
+\[
+ \sup_{a,|\epsilon|\le\eta}
+ \sum_{\ell\ge1}\frac{t_0^{\ell-1}}{\ell!}
+                  |\zeta(1+\epsilon-\ell,a)|<\infty .
+\]
+Since $k!/(k+\ell)!\le1/((k+1)\ell!)$, this proves the tail bound.
+Moreover $H_k-\gamma\le\log(k+1)$, so
+$|t|/(k+1)\le e^{-\Re T}$.
+
+Substitute $\epsilon=u/T$ in \eqref{rj:paired}. The first term is
+$T(1-e^{-u})/u-e^{-u}\sum_{j\ge2}b_{k,j}(u/T)^{j-1}$.
+Uniform Taylor remainders for $E_k$ and $G_a$ give
+\eqref{rj:sector-expansion}. On the fixed sector $\Im T$ is bounded,
+so $|T|\sim\Re T$ and the analytic tail is smaller than every fixed
+inverse power. Prove the bounds on enlarged compact $u,a$ sets and
+apply Cauchy's formula to obtain the stated fixed derivatives.
+\end{proof}
+
+This proves the fixed-sector extension requested as R1 in the preserved
+resonance report. It retains the finite-$k$ coefficients $b_{k,j}$.
+It does not replace them by their large-$k$ limits. A logarithmic-cover
+version follows under $\Re T\ge c|T|\to\infty$ for fixed $c>0$;
+unrestricted winding, growing jet order and general growing transition
+windows require additional analysis.
+
+\subsection{A finite change to pure logarithmic jets}
+For integers $m\ge0$ and $|\epsilon|<\rho<1$ define
+\begin{align}
+ D_m(\epsilon)&=\frac{\prod_{j=1}^m(1+\epsilon/j)}
+                         {\Gamma(1-\epsilon)},&
+ C_{m,a}(\epsilon)&=D_m(\epsilon)\zeta(1+\epsilon,a)-\epsilon^{-1}.
+ \label{rj:normalizer}
+\end{align}
+The second expression is holomorphic at zero. Put
+\begin{align}
+ \mathcal F_{m,a}(\epsilon,t)
+ ={}&(-1)^m m!D_m(\epsilon)
+ \left(F(m+1+\epsilon,t,a)
+ -\sum_{j=0}^{m-1}\zeta(m+1+\epsilon-j,a)\frac{(-t)^j}{j!}\right)
+ \notag\\
+ &-t^m C_{m,a}(\epsilon).\label{rj:normalized-family}
+\end{align}
+Both the lower Taylor subtraction and the counterterm are part of this
+normalization.
+
+\begin{theorem}[Exact pure-logarithm normalization]\label{rj:pure}
+On the chosen slit disk,
+\begin{align}
+ \mathcal F_{m,a}(\epsilon,t)
+ &=t^m\left(\frac{1-t^\epsilon}{\epsilon}
+                  +\mathcal B_{m,a}(\epsilon,t)\right),\label{rj:normal-form}\\
+ \mathcal B_{m,a}(\epsilon,t)
+ &=\sum_{n\ge1}\frac{(-1)^n m!D_m(\epsilon)}{(m+n)!}
+                  \zeta(1+\epsilon-n,a)t^n.\label{rj:normal-tail}
+\end{align}
+The tail is jointly holomorphic for $|\epsilon|<1$, $|t|<2\pi$,
+$\Re a>0$, and vanishes at $t=0$. For $r\ge0$ let
+\[
+ J_{m,r,a}(t)=(-1)^r(r+1)
+       \left.\partial_\epsilon^r\mathcal F_{m,a}(\epsilon,t)
+       \right|_{\epsilon=0}.
+\]
+Then, with $L=-\operatorname{Log}t$,
+\begin{equation}\label{rj:jet-form}
+ J_{m,r,a}(t)=t^m\{L^{r+1}+B_{m,r,a}(t)\},\qquad
+ B_{m,r,a}(0)=0,
+\end{equation}
+where $B_{m,r,a}$ is holomorphic on $|t|<2\pi$.
+If $D_m(\epsilon)=\sum_{j\ge0}d_{m,j}\epsilon^j$, its tail coefficients are
+\begin{equation}\label{rj:jet-coefficients}
+ [t^n]B_{m,r,a}(t)
+ =\frac{(-1)^{n+r}(r+1)r!m!}{(m+n)!}
+   \sum_{j=0}^r\frac{d_{m,j}\zeta^{(r-j)}(1-n,a)}{(r-j)!}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Gamma recurrence gives
+$(-1)^m m!D_m(\epsilon)\Gamma(-m-\epsilon)=-1/\epsilon$.
+Thus the singular Gamma term becomes $-t^{m+\epsilon}/\epsilon$,
+and the zeta term minus the counterterm is $t^m/\epsilon$.
+The remaining terms are exactly \eqref{rj:normal-tail}.
+The preceding majorant, on arbitrary smaller compact disks, proves
+normal convergence and parameter differentiation. Finally,
+$(1-t^\epsilon)/\epsilon
+=\sum_{r\ge0}(-1)^rL^{r+1}\epsilon^r/(r+1)!$.
+Taking the specified derivative and applying Leibniz's rule proves
+\eqref{rj:jet-form}--\eqref{rj:jet-coefficients}.
+\end{proof}
+
+This is a finite triangular change of ordinary order derivatives, not an
+asymptotic replacement of them. Indeed
+\[
+ \log D_m(\epsilon)=(H_m-\gamma)\epsilon
+ +\sum_{j\ge2}\frac{(-1)^{j+1}H_m^{(j)}-\zeta(j)}j\epsilon^j.
+\]
+Only its first $r$ coefficients and finitely many Stieltjes coefficients
+are needed for the $r$th jet. The coefficient of the highest raw order
+derivative is nonzero, so the finite transformation is invertible.
+
+\begin{corollary}[Exact monodromy]\label{rj:monodromy}
+Let $\mathsf M$ be one counterclockwise continuation around zero.
+For $d=r+1$,
+\[
+ (\mathsf M-I)^{d+1}J_{m,r,a}=0,\qquad
+ (\mathsf M-I)^dJ_{m,r,a}=(-2\pi i)^d d!\,t^m\ne0 .
+\]
+\end{corollary}
+\begin{proof}
+The analytic tail is single-valued and $L$ changes to $L-2\pi i$.
+Apply the finite-difference formula to the monic polynomial $L^d$.
+\end{proof}
+The last nonzero term is holomorphic. Consequently the nilpotence index
+changes if one passes to germs modulo holomorphic functions. The result
+describes logarithmic monodromy of a convergent local expression.
+
+\subsection{An order-lowering ladder and all repeated primitives}
+\begin{theorem}[Exact lowering and one anchored primitive]\label{rj:lowering}
+For $m\ge1$,
+\begin{equation}\label{rj:family-lowering}
+ \partial_t\mathcal F_{m,a}(\epsilon,t)
+       =(m+\epsilon)\mathcal F_{m-1,a}(\epsilon,t)-t^{m-1}.
+\end{equation}
+With $J_{m,-1,a}=0$, this gives
+\begin{equation}\label{rj:jet-lowering}
+ \partial_tJ_{m,r,a}
+       =mJ_{m-1,r,a}-(r+1)J_{m-1,r-1,a}
+                     -\mathbf1_{\{r=0\}}t^{m-1}.
+\end{equation}
+For $m,r\ge0$ the anchored primitive is
+\begin{equation}\label{rj:one-primitive}
+ \int_0^tJ_{m,r,a}(u)\,du
+ =\sum_{j=0}^r\frac{(r+1)!}{(r-j+1)!(m+1)^{j+1}}
+                       J_{m+1,r-j,a}(t)
+  +\frac{(r+1)!\,t^{m+1}}{(m+1)^{r+2}}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Since $D_m=(1+\epsilon/m)D_{m-1}$, the tail coefficients give
+$(m+t\partial_t)\mathcal B_m=(m+\epsilon)\mathcal B_{m-1}$.
+For $K=(1-t^\epsilon)/\epsilon$,
+$(m+t\partial_t)K=(m+\epsilon)K-1$.
+Multiplying by $t^{m-1}$ proves \eqref{rj:family-lowering}.
+Order differentiation gives \eqref{rj:jet-lowering}.
+Differentiate the finite sum in \eqref{rj:one-primitive}; adjacent
+jets cancel, and the final polynomial cancels the remaining endpoint
+term. All terms vanish at zero, since $t^{m+1}\operatorname{Log}^q t\to0$.
+This fixes the constant, including for the integrable $m=0$ jets.
+\end{proof}
+
+The same mechanism gives every iterated primitive in one finite formula.
+For $q\ge1$ define
+\[
+ I^qf(t)=\frac1{(q-1)!}\int_0^t(t-u)^{q-1}f(u)\,du,\qquad
+ A_{m,q}=(m+1)_q,\qquad x_i=\frac1{m+i}\quad(1\le i\le q).
+\]
+Integrate along a fixed ray in the slit disk. Let $h_j=h_j(x_1,\ldots,x_q)$
+be the complete homogeneous polynomial, so
+$\prod_{i=1}^q(1-x_i z)^{-1}=\sum_{j\ge0}h_jz^j$ and $h_0=1$.
+
+\begin{theorem}[Finite repeated-primitive identity]\label{rj:repeated}
+For all integers $m,r\ge0$ and $q\ge1$,
+\begin{equation}\label{rj:repeated-jets}
+ \boxed{\displaystyle
+ I^qJ_{m,r,a}(t)=\frac1{A_{m,q}}
+ \left\{\sum_{j=0}^r\frac{(r+1)!}{(r-j+1)!}h_jJ_{m+q,r-j,a}(t)
+           +(r+1)!h_{r+1}t^{m+q}\right\}.}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Set $P_{m,q}(\epsilon)=(m+1+\epsilon)_q$. Termwise beta integration
+of the normally convergent tail and integration of the two core powers
+in \eqref{rj:normal-form} give
+\begin{equation}\label{rj:repeated-family}
+ I^q\mathcal F_{m,a}
+ =\frac{\mathcal F_{m+q,a}}{P_{m,q}(\epsilon)}
+ +\frac{t^{m+q}}{\epsilon}
+       \left(\frac1{A_{m,q}}-\frac1{P_{m,q}(\epsilon)}\right).
+\end{equation}
+For the tail, this follows explicitly from
+$D_{m+q}=P_{m,q}D_m/A_{m,q}$ and
+$I^q t^{m+n}=(m+n)!t^{m+n+q}/(m+n+q)!$.
+The fractional power uses
+$I^qt^{m+\epsilon}=t^{m+q+\epsilon}/P_{m,q}(\epsilon)$;
+$|\epsilon|<1$ ensures endpoint integrability. Finally,
+\[
+ \frac1{P_{m,q}(\epsilon)}
+ =\frac1{A_{m,q}}\sum_{j\ge0}(-1)^jh_j\epsilon^j .
+\]
+The correction in \eqref{rj:repeated-family} is removable at zero.
+Take $(-1)^r(r+1)\partial_\epsilon^r$ at zero and use Leibniz's
+rule. This gives \eqref{rj:repeated-jets} with its stated polynomial.
+\end{proof}
+
+For $q=1$, $h_j=(m+1)^{-j}$ and the formula reduces to
+\eqref{rj:one-primitive}. For general $q$ the first two coefficients are
+$h_1=\sum_{i=1}^q(m+i)^{-1}$ and
+$h_2=(h_1^2+\sum_{i=1}^q(m+i)^{-2})/2$.
+Thus finite harmonic intervals control the entire integration hierarchy.
+
+\subsection{Explicit endpoints and experimental checks}
+At $a=1$ the first zeroth-order jets are
+\begin{align*}
+ J_{0,0,1}(t)&=-\log(1-e^{-t}),\\
+ J_{1,0,1}(t)&=\zeta(2)-\Li_2(e^{-t})-t,\\
+ J_{2,0,1}(t)&=2\{\Li_3(e^{-t})-\zeta(3)+t\zeta(2)\}
+                         -\tfrac32t^2 .
+\end{align*}
+The repeated-primitive formula recovers the exact identity
+\[
+ \int_0^t(t-u)\{-\log(1-e^{-u})\}\,du
+       =\Li_3(e^{-t})-\zeta(3)+t\zeta(2),
+\]
+with both endpoint constants determined, rather than inferred numerically.
+The first nontrivial normalized order derivative is
+\begin{align}
+ J_{1,1,1}(t)
+ ={}&2\left\{\left.\partial_s\Li_s(e^{-t})\right|_{s=2}
+       -\zeta'(2)+(1-\gamma)(\Li_2(e^{-t})-\zeta(2))\right\}
+       \notag\\
+ &-t\{\gamma^2+\zeta(2)+2\gamma_1\}
+ =t\left\{L^2+\frac{\gamma-1-\log(2\pi)}2t+O(t^2)\right\}.
+ \label{rj:first-jet}
+\end{align}
+The lower logarithmic powers cancel exactly.
+
+The finite integration pattern was exposed by comparing the normalized
+coefficient arrays at successive integer orders. The ratio
+$D_m/D_{m-1}=1+\epsilon/m$ then gave the all-order proof.
+Independent exact basis checks and direct complex defining-series
+comparisons are recorded separately from this analytic argument.
+They test signs, coefficients and endpoint terms; no interval-certified
+digits or Lean formalization are claimed.
+The inverse-fold, sharp-radius and Borel-reconstruction branches of the
+incoming reports retain separate proof audits. Their shared use of order
+jets does not make those further conclusions consequences of this section.

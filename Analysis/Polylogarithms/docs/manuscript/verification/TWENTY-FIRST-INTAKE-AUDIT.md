@@ -187,3 +187,17 @@ O'Sullivan and Vepstas corrections are preserved as proposed source-specific
 findings. Their exact cited versions and scopes still require an independent
 primary-source audit here. The current collective text is not silently
 changed on the strength of those claims.
+
+
+## Subsequent canonical synthesis
+
+The audit above records the intake-stage status. The fixed-sector R1
+extension, pure-logarithm normalization, monodromy and exact primitives are
+now integrated in Section 1.6, with shared source attribution. The collective
+continuation additionally proves arbitrary repeated primitives: complete
+homogeneous polynomials in consecutive reciprocals supply all finite jet
+coefficients. Its proof is in chapters/01-resonant-jets.tex; the independent
+verifier now includes 252 repeated-primitive cancellations, and nine native
+Wolfram checks cover Gamma normalization and exact endpoint identities.
+The remaining inverse and Borel branches retain the separate pending status
+described above.

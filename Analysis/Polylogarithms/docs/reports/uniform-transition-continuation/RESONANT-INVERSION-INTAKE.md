@@ -13,5 +13,8 @@ Their overlap, full isolated replays and the derived order-lowering and
 finite-antiderivative identities are recorded in the
 [collective intake audit](../../manuscript/verification/TWENTY-FIRST-INTAKE-AUDIT.md).
 The scoped R1 complex-sector proof is audited; general growing jets and
-growing windows remain open. Canonical chapter integration is pending.
+growing windows remain open. Section 1.6 now integrates the sector theorem,
+normalization, monodromy and exact primitives, including a collective
+extension to arbitrary repeated integration. The inverse and Borel branches
+remain pending separate audits.
 Original PDFs and historical status statements are preserved unchanged.
