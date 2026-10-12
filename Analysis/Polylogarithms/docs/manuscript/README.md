@@ -20,11 +20,11 @@ copies of proofs. See [volume sources and build instructions](volumes/README.md)
 The [combined source](polylogarithms.tex) and its
 [552-page combined snapshot](polylogarithms.pdf) remain available.
 
-The [inventory](source-inventory.json) accounts for **1,794 textual source
+The [inventory](source-inventory.json) accounts for **1,810 textual source
 files**, including overlapping articles, fragments and correction registers.
 The [editorial ledger](EDITORIAL-LEDGER.md) maps accepted mathematical claims
-and pending research integration. The 124 imported archives preserve 4,550
-original tracked members; 50 ignored bare checksum records remain recoverable
+and pending research integration. The 129 imported archives preserve 4,665
+original tracked members; 53 ignored bare checksum records remain recoverable
 in arrival history. Each imported ZIP was retired in its placement commit.
 All eleven complete mathematical suites in the seventeenth and eighteenth
 intakes pass on isolated copies. Preservation and finite replay do not imply
@@ -406,3 +406,14 @@ denominators of degree at most two require only 1,L,L^2,Li2, with arbitrary
 polynomial part and integer pole separation. A shifted-double-pole example
 has an ordinary zeta endpoint. Sharpness and spectral refinements remain
 separate pending proofs; functional weight is not arithmetic independence.
+
+
+The twenty-first intake preserves five resonant-jet and inverse-transseries
+packages and records full isolated mathematical replay passes. Two packages
+have a single original home in the Transseries collection. The fixed-sector
+R1 extension and pure-logarithm normalization have conventional proof audits.
+A derived order-lowering identity gives finite antiderivatives of every
+normalized jet; its proof and independent checks are in the
+[intake audit](verification/TWENTY-FIRST-INTAKE-AUDIT.md). These results await
+the next canonical resonance synthesis and PDF release; current PDF page
+counts and scientific contents are unchanged.

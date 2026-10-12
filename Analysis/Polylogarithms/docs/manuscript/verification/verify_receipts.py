@@ -70,7 +70,7 @@ archives=sum((read(name) for name in ['incoming-archives.json',
     'research-incoming-archives.json','third-incoming-archives.json',
     'fourth-incoming-archives.json','fifth-incoming-archives.json',
     'sixth-incoming-archives.json','seventh-incoming-archives.json',
-    'eighth-incoming-archives.json','ninth-incoming-archives.json','tenth-incoming-archives.json','eleventh-incoming-archives.json','twelfth-incoming-archives.json','thirteenth-incoming-archives.json','fourteenth-incoming-archives.json','fifteenth-incoming-archives.json','sixteenth-incoming-archives.json','seventeenth-incoming-archives.json','eighteenth-incoming-archives.json','nineteenth-incoming-archives.json','twentieth-incoming-archives.json']), [])
+    'eighth-incoming-archives.json','ninth-incoming-archives.json','tenth-incoming-archives.json','eleventh-incoming-archives.json','twelfth-incoming-archives.json','thirteenth-incoming-archives.json','fourteenth-incoming-archives.json','fifteenth-incoming-archives.json','sixteenth-incoming-archives.json','seventeenth-incoming-archives.json','eighteenth-incoming-archives.json','nineteenth-incoming-archives.json','twentieth-incoming-archives.json','twenty-first-incoming-archives.json']), [])
 for archive in archives:
     p=B.parents[3]/archive['archive']
     blob=p.read_bytes() if p.is_file() else subprocess.check_output(['git','show',archive['archive_git_revision']+':'+archive['archive']],cwd=B.parents[3])
@@ -83,7 +83,7 @@ for archive in archives:
         p=B.parent/member['path']
         if not p.is_file() or digest(p,False)!=member['sha256']:
             archive_errors.append(member['path'])
-outcomes['incoming-archive-preservation']=len(archives)==124 and sum(len(a['files']) for a in archives)==4550 and not archive_errors
+outcomes['incoming-archive-preservation']=len(archives)==129 and sum(len(a['files']) for a in archives)==4665 and not archive_errors
 x=read('incoming-retirement.json')
 archive_by_path={a['archive']:a for a in archives}
 outcomes['imported-archive-retirement']=x['archive_count']==16 and x['preserved_members']==691 and len(x['archives'])==16 and sum(a['members'] for a in x['archives'])==691 and (B.parents[3]/'docs/incoming/README.md').is_file() and all(
@@ -730,6 +730,30 @@ x=read('hankel-alphabet-native.json')
 outcomes['hankel-alphabet-native-symbolic-shifted-generator-and-cancellation']=(x['all_pass'] and x['exact_symbolic_arithmetic'] and x['maximum_cutoff']==30 and x['Taylor_coefficient_checks']==31 and len(x['checks'])==11 and all(x['checks'].values()))
 
 
+x=read('twenty-first-incoming-retirement.json')
+outcomes['twenty-first-archive-retirement']=(x['archive_count']==5 and x['preserved_members']==115 and x['original_members']==118 and x['archive_only_members']==3 and len(x['archives'])==5 and all(a['retired'] and not (B.parents[3]/a['archive']).exists() and a['arrival_commit']==archive_by_path[a['archive']]['archive_git_revision'] and a['members']==len(archive_by_path[a['archive']]['files']) and (B.parents[3]/a['destination']).is_dir() for a in x['archives']))
+for part,count in [('normalized-resonant-jets',2),('resonant-inverse-folds',2),('sharp-dilog-reversion',2),('weighted-resonant-inversion',2),('order-jets-resonant-inversion',1)]:
+    x=read('twenty-first-replay/'+part+'/replay-summary.json')
+    outcomes['twenty-first-full-replay-'+part]=(x['passed'] and len(x['runs'])==count and all(r['exit_code']==0 for r in x['runs']))
+x=read('twenty-first-replay/normalized-resonant-jets/fresh/exact_results.json')
+y=read('twenty-first-replay/normalized-resonant-jets/fresh/extension_results.json')
+outcomes['twenty-first-normalized-jets-exact-and-tuning']=(x['assertions_passed']==568 and y['exact_assertions_passed']==8 and y['numerical_comparisons_passed']==30 and len(y['tuning_rows'])==9)
+x=read('twenty-first-replay/resonant-inverse-folds/fresh/exact_checks.json')
+y=read('twenty-first-replay/resonant-inverse-folds/fresh/numeric_checks.json')
+outcomes['twenty-first-inverse-fold-finite-checks']=(x['assertions']==150 and x['all_passed'] and all(r['passed'] for r in x['checks']) and y['all_passed'] and y['comparisons']==73 and y['precision_dps']==180 and all(r['passed'] for r in y['checks']))
+x=read('twenty-first-replay/sharp-dilog-reversion/fresh/verification.json')
+outcomes['twenty-first-sharp-dilog-full-pinned-diagnostics']=(x['status']=='passed' and x['numpy']=='2.3.5' and x['exact']['passed'] and x['exact']['assertions']==118 and len(x['borel_jets'])==3 and len(x['bell_jets'])==12 and len(x['periodic_kernels'])==6 and x['max_n']==256)
+x=read('twenty-first-replay/weighted-resonant-inversion/fresh/verification.json')
+outcomes['twenty-first-weighted-inverse-full-pinned-diagnostics']=(x['metadata']['versions']==x['metadata']['expected_versions'] and x['summary']['exact_resonance_cases']==16 and x['summary']['exact_generic_edge_families']==6 and len(x['numerical_jet_checks'])==24 and len(x['normal_form_checks'])==9 and len(x['critical_inverse_cases'])==27 and len(x['lambert_cases'])==4 and len(x['crossover_plot_grid'])==183 and Decimal(x['summary']['max_normalized_inverse_residual'])<Decimal('1e-60'))
+x=read('twenty-first-replay/weighted-resonant-inversion-missing-dependency/replay-summary.json')
+outcomes['twenty-first-original-dependency-failure-preserved']=(not x['passed'] and [r['exit_code'] for r in x['runs']]==[0,1] and 'ModuleNotFoundError' in (V/'twenty-first-replay/weighted-resonant-inversion-missing-dependency/2-verify.log').read_text(encoding='utf-8'))
+x=read('twenty-first-replay/order-jets-resonant-inversion/fresh/run_summary.json')
+y=read('twenty-first-replay/order-jets-resonant-inversion/fresh/borel_verification.json')
+z=read('twenty-first-replay/order-jets-resonant-inversion/fresh/principal_sheet_check.json')
+outcomes['twenty-first-order-jet-borel-and-principal-sheet-diagnostics']=(x['status']=='completed' and len(x['runs'])==4 and all(r['exit_code']==0 for r in x['runs']) and y['symbolic']['all_passed'] and y['numerical']['all_passed'] and len(y['numerical']['checks'])==4 and not y['numerical']['certified_interval_bounds'] and z['root']['Re_t_positive'] and Decimal(z['root']['modulus_z'])<1 and Decimal(z['integral_residual'])<Decimal('1e-75'))
+x=read('resonant-ladder-checks.json')
+outcomes['resonant-jet-ladder-and-finite-primitives']=(x['status']=='PASS' and not x['imports_delivered_code'] and x['exact_basis_cases']==3780 and x['exact_antiderivative_cases']==72 and len(x['numerical_rows'])==24 and x['working_digits']==85 and not x['interval_certified'] and all(Decimal(r['scaled_error'])<Decimal('1e-70') for r in x['numerical_rows']) and len(x['corruption_controls'])==3 and all(x['corruption_controls'].values()))
+
 r=read('hankel-alphabet-raster-comparison.json');c=read('hankel-alphabet-cross-edition-review.json')
 x=r['pdfs'][-1];matched={a['page'] for a in x['exact_matching_scientific_bodies']};fresh=set(x['changed_scientific_bodies']);reviewed={a['combined_page'] for a in c['exact_matching_reviewed_bodies']}
 outcomes['hankel-alphabet-combined-review-coverage']=(r['baseline_commit']=='a24094ebd7e575bf8f8f0a0dad806a82e61688ad' and x['pdf_sha256']==pdfhash==c['combined_pdf_sha256'] and x['previous_pdf_sha256']==visual_rational['pdf_sha256'] and x['page_count']==552 and r['crop_bottom_points']==c['crop_bottom_points']==57 and r['excluded_content_is_only_centered_footer_page_numbers'] and c['excluded_content_is_only_centered_footer_page_numbers'] and len(matched)==543 and not matched&fresh and matched|fresh==set(range(1,553)) and len(reviewed)==6 and not reviewed&set(visual['full_pages_reviewed']) and reviewed|set(visual['full_pages_reviewed'])==fresh and c['remaining_full_pages_to_review']==visual['full_pages_reviewed'])
@@ -741,6 +765,6 @@ result=dict(changed_sources=changed,changed_dependencies=changed_dependencies,pd
  pdf_static_checks=render['static_passed'],document_integrity=doc['passed'],recorded_outcomes=outcomes,
  asymptotic_diagnostic_records=diagnostic_records,incoming_archive_errors=archive_errors,
  scope='Recorded evidence integrity only; visual review and scientific replay are separate activities.')
-result['passed']=not changed and not changed_dependencies and all(outcomes.values()) and all(result[k] for k in ['pdf_matches_build','pdf_matches_render','converged_build','pdf_static_checks','document_integrity']) and result['page_count']==552 and result['source_documents']==1794 and render.get('pdf_author')=='ProveIt Contributors'
+result['passed']=not changed and not changed_dependencies and all(outcomes.values()) and all(result[k] for k in ['pdf_matches_build','pdf_matches_render','converged_build','pdf_static_checks','document_integrity']) and result['page_count']==552 and result['source_documents']==1810 and render.get('pdf_author')=='ProveIt Contributors'
 (V/'receipt-integrity.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
 print(json.dumps(result,indent=2));raise SystemExit(0 if result['passed'] else 1)

@@ -1053,3 +1053,44 @@ endpoint quadrature remain diagnostics, not interval certificates. The
 written proofs, rather than finite checks, establish arbitrary rank.
 The preserved four-suite replay remains valid on unchanged originals;
 unaccepted sharpness, Hahn, endpoint-jet and spectral claims stay pending.
+
+
+## Twenty-first intake: resonant jets and inverse transseries
+
+Five deliveries preserve 118 original members: 115 tracked and three ignored
+records recoverable in arrival history. All five ZIPs were retired in
+placement 594a660a540e, published through 1955407685af. Cumulative preservation
+is 129 archives, 4665 tracked originals and 53 ignored recoverable records.
+Three packages continue the uniform-transition spine in Polylogarithms; two
+have one authoritative original copy in Transseries.
+
+| Group | Qualified scope and reconciliation |
+|---|---|
+| normalized-resonant-jets | Continues the existing Lerch resonance and order calculus with reciprocal-Gamma normalization, minimal centered dilation filters, inverse support and exact half-shift order tuning. Source inspection is explicitly nonatomic and supplies file-level Git blobs, not a common commit pin. Its Bailey-Borwein-Crandall sign correction concerns an external version and awaits independent source-level audit. |
+| resonant-inverse-folds | Continues pole-paired resonance with a primary inverse chart, core Gamma-zeta critical locus, full-tail displacement and dilogarithmic two-sheet charts. The reported head qualifies moving reads; it is not an atomic checkout. Its historical bridge warning already appears in the collective ledger and is not a new canonical correction. |
+| sharp-dilog-reversion | Continues the Transseries nonlinear inverse-transport and quadratic-feedback programme: exact-core Fermi-Dirac reversion, positive Laurent sectors, a proposed exact radius and physical endpoint, with Gamma/periodic Borel jets. Keep its proposed Transseries home and crosslink from Polylogarithms. The final observed revision qualifies earlier moving reads and is not an atomic source pin. |
+| weighted-resonant-inversion | Continues Transseries endpoint inversion with weighted logarithmic deficits, Fuss-Catalan support coefficients, a uniform order-two chart and global coefficient asymptotics. Keep its proposed Transseries home and one authoritative original copy. The stated repository pin exists; claimed external Krattenthaler-Rivoal normalization corrections and the global contour argument require separate audit. |
+| order-jets-resonant-inversion | Continues the existing resonance report: fixed-sheet complex sectors, finite Gamma normalization, higher-logarithmic inverse charts, accumulating critical values and exact Borel reconstruction. Its sector theorem directly targets R1 in sections/07_questions.tex lines 10-16 of resonance-correlations-nonseparable-jets. Growing spectral jets and general growing windows remain open. The external zero-finiteness correction awaits independent verification; no source theorem is silently reclassified. |
+
+
+All five full mathematical replay suites pass on isolated copies. Preserve
+the initial weighted-package missing-matplotlib failure and the earlier
+sharp-dilog local-NumPy run; accepted replays of those two use the declared
+pinned dependencies. Delivered programs and original evidence are unchanged.
+Finite symbolic checks, high-precision diagnostics, conventional proof
+audits and Lean formalization remain different kinds of evidence.
+
+The [proof note](verification/TWENTY-FIRST-INTAKE-AUDIT.md) audits the scoped
+fixed-sector R1 extension and the pure-logarithm normalization. It derives
+an exact order-lowering ladder and finite primitives for every normalized
+resonant jet. Its independent verifier checks 3780 coefficient-basis cases,
+72 finite primitive cancellations and 24 defining-sum diagnostics. The
+all-order proof uses normal convergence and Gamma recurrence.
+
+The combined resonance synthesis and next four-volume PDF release remain
+pending. Current released PDFs contain the previously accepted material.
+Growing jet order R3 and unrestricted growing windows R4 remain open.
+Source-specific corrections proposed for Bailey-Borwein-Crandall,
+Krattenthaler-Rivoal, O'Sullivan and Vepstas remain pending primary-source
+verification here; preserve their arguments without changing current
+canonical statements on an unaudited claim.
