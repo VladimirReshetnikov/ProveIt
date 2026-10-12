@@ -1133,6 +1133,11 @@ import GowersSzemeredi.Proofs18CoverColorings
 import GowersSzemeredi.Proofs18CoverSharperComparisons
 import GowersSzemeredi.Proofs18CoverSharperLowDegrees
 import GowersSzemeredi.Proofs18CoverSharperAllDegrees
+import GowersSzemeredi.Proofs18CoverSharperShortLengths
+import GowersSzemeredi.Proofs18CoverThresholdsSharp
+import GowersSzemeredi.Proofs18CoverVanDerWaerden
+import GowersSzemeredi.Proofs18CoverHeadline
+import GowersSzemeredi.Proofs16PolynomialStructure
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

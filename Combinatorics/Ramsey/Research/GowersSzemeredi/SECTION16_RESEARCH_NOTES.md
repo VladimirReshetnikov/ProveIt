@@ -4188,6 +4188,9 @@ controls), and the standard `μ₀ = genMu0 k ≈ 64·2^k` comes from the loose
   `(μ + 2L + 14)/2^(L+5)` are `1.10` and `1.02`, and `0.98` at `L = 11`.
   *(Audit correction: an earlier version said the cubic term itself exceeds
   `2^(L+5)` for every `L ≤ 10`.)*
+  *(Superseded by L.15e: the cubic term is an artifact of bounding pure
+  constants at the `X`-power level; at the exponential level `L + 5` holds
+  in every length.)*
 Bridge additions in `Proofs18CoverSharperExplicit`:
 `theorem_18_1_d7_four_le`, `theorem_18_2_L5_eleven_le` (same stub axioms).
 `d + 6` and `L + 4` would need a step cost below `128·2^k`, i.e. both the
@@ -4207,7 +4210,97 @@ stub axioms: `commonDiffPartitionBoundAt_of`,
 `section16RecurrenceProfileWith_explicit` (the corpus theorems the production
 audit verified). These two modules postdate the production audit.
 
-A three-page mathematical write-up of L.12-L.15b is in
+**L.15d: Theorem 18.2 and Corollary 18.7 with `L + 6` in every length.**
+The corpus's short lengths have explicit thresholds far below the printed
+ones (Roth's `exp(exp(10¹²·δ⁻¹))` for `L ≤ 3`; towers with `2^21` and
+`2^73` on top for `L = 4, 5`), and they stay below the tower with `L + 6`
+on top (`Proofs18CoverSharperShortLengths`, light). With the joint-cover
+envelope for `L ≥ 6`, `Proofs18CoverSharperAllDegrees` proves
+`theorem_18_2_L6`, `corollary_18_7_L6` (every `L`) and the implications
+`theorem_18_2_L6_implies_printed : theorem_18_2`,
+`corollary_18_7_L6_implies_printed : corollary_18_7`; stub axiom:
+`section16RecurrenceProfileWith_explicit` only. The short-lengths module
+was checked against the existing oleans (`build_trust.py`): the concurrent
+`Section05` edit for Lemmas 5.12–5.13 made every module stale by
+timestamp, and the full rebuild belongs to the production audit.
+
+**L.15e: the phase-refinement threshold at the exponential level; `L + 5`
+in every length.** The cubic stopping term `40(k+2)³ + 1095` came from
+`inv_thr_le`, which bounds `phaseInverseConstant ≤ X^(2^Q)` and charges two
+pure constants at the `X`-power level: `section5LocalRefinementConstant d 1
+≤ 2^(2^(40d³+2))` and `boundaryRefinementConstant (1/16) ≤ 2^(2^1083)`. The
+threshold is only needed below `exp(exp(X^(2^μ)))`, and a constant tower
+`2^(2^m)` is at most `exp(X^(2^j))` once `m ≤ 2^j` (`two_tower_le_ex`,
+from `2^n ≤ e^n`). So `inv_thr_le_ex` has `k + 16` in place of the cubic,
+the length envelope loses that branch (`envStepCTx`), and at the tight base
+budget `genMuX k ≤ 500·2^k` (`k ≥ 4`; lengths 6, 7 by evaluation). With the
+short lengths at `c = 5` this gives **Theorem 18.2 and Corollary 18.7 with
+`L + 5` in every length** (`theorem_18_2_L5`, `corollary_18_7_L5`;
+`Proofs18CoverThresholdsSharp`, light; bridge in
+`Proofs18CoverSharperAllDegrees`, stub axiom
+`section16RecurrenceProfileWith_explicit` only).
+*(Audit correction: L.15a and the write-up attributed the `L ≤ 10` gap to
+the Section 5 Weyl threshold and called closing it research. It was a
+loose estimate.)*
+
+**L.15f: why `d + 6` and `L + 4` stay out of reach (analysis).** Both need a
+step cost below `128·2^k` (the envelope is about twice the step cost, and
+the budgets are `2^(k+8) = 256·2^k`). The present step costs `236·2^k`:
+- `68·2^k` for the vertex covers: the class degree `D_l = 2^(68·2^l)`
+  (L.10b), whose recursion pays Gowers's Section 16 exponent
+  `θ₁ = (θγ/2)^(2^(2^(k+5)))`, about `32·2^k`, once per dimension;
+- `μ₀ ≈ 32·2^k`, the same `θ₁` through `fixDeg k = 2^(k+5) + 7`;
+- `2·68·2^k` for the two slice applications `c(c(θ))`. These are nested
+  like the vertex providers before L.12; composed jointly they would cost
+  about `68·2^k`, which lowers the envelope from `472·2^k` to about
+  `336·2^k` but changes no headline constant.
+Even with joint slices and an idealized class degree near `34·2^k` (one
+`θ₁` per dimension), the step would cost about `34 + 32 + 68 = 134 > 128`
+(times `2^k`). Below that the printed `θ₁` itself has to change, which is a
+change to Gowers's Section 16 counting, not to the bookkeeping. Unlike the
+cubic stopping term of L.15a–L.15e, this limit is not a loose estimate.
+
+**L.15g: van der Waerden numbers with `r` colours.** Corollary 18.7 is
+the two-colour case. For `r ≥ 2` colours one class of `[1, N]` has at least
+`N/r` elements (`exists_color_class_ge`), so Theorem 18.2 at `δ = 1/r`
+gives a monochromatic `k`-term progression once
+`N ≥ szemerediThresholdAt c (1/r) k = 2^(2^(r^(2^(2^(k+c)))))`
+(`Theorem182AtSharp.van_der_waerden`, `Proofs18CoverVanDerWaerden`, light).
+Hence `W(k, r) ≤ 2^(2^(r^(2^(2^(k+5)))))` (`van_der_waerden_L5`), and
+Gowers's printed `W(k, r) ≤ 2^2^r^2^2^(k+9)` (`van_der_waerden_printed`);
+bridge `Proofs18CoverSharperAllDegrees`, stub axiom
+`section16RecurrenceProfileWith_explicit` only, and both are checked by
+`CompletionAudit.lean`.
+
+**L.15h: Theorem 1.3 with constant `2^(-2^(k+5))`.** Theorem 1.3 (density
+`(log log N)^(-2^(-2^(k+9)))` forces a `k`-term progression) follows from
+Theorem 18.2 by a real-power calculation in which the constant enters only
+through `2^(k+9)` (`theorem_1_3_holds_of_theorem_18_2`). Repeated with `k + c`
+(`Proofs18CoverHeadline`, light: `theorem_1_3_constantAt`, `Theorem13At c`
+with `theorem13At_nine_iff : Theorem13At 9 ↔ theorem_1_3` by `Iff.rfl`,
+`headline_density_thresholdAt`, `theorem13At_of_sharp`), Theorem 18.2 at
+`L + 5` gives **Theorem 1.3 with constant `2^(-2^(k+5))`** (`theorem_1_3_L5`,
+bridge `Proofs18CoverSharperAllDegrees`, stub axiom
+`section16RecurrenceProfileWith_explicit` only; in `CompletionAudit.lean`).
+
+**L.15i: Theorem 16.2 with polynomial controls.** The printed Theorem 16.2
+allows graph count `q(r⁻¹ρ, γ, k)^r` at precision `ρ`, with
+`r = γ⁻²·s(θ, γ, k)` and `s = (2/(θγ))^(2^(2^(k+6)))`. That is exponential in a
+polynomial of `1/θ`, which is why the anchor lift of Lemma 16.10 failed (L,
+"the printed defect"). The class covers of route (II) give a count
+**polynomial** in `1/(γθρ)`:
+`Q(γ, θ, ρ) = max(1, (4V/(γθρ))^(2^(68·2^k)))` with `V = 2^(2^(2^(k+4)+1))`
+(`uCount_eq_closed`, `classV_le_tight`), and width exponent `Q⁻¹`, in every
+dimension. This is the "polynomial graph counts" strengthening that route 1 of
+section F asked for. `Proofs16PolynomialStructure` (light):
+`theorem_16_2_polynomial_of_profiles`, and `theorem162At_of_polynomial`, which
+shows that the polynomial form implies the printed `Theorem162At k`. Bridge
+`Proofs18CoverSharperAllDegrees`: `theorem_16_2_polynomial` (every `k ≥ 1`)
+and `theorem_16_2_polynomial_implies_printed : theorem_16_2`; stub axiom
+`section16RecurrenceProfileWith_explicit` only; both are in
+`CompletionAudit.lean`.
+
+A three-page mathematical write-up of L.12-L.15i is in
 `joint-vertex-covers/joint-vertex-covers.tex` (PDF beside it).
 
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
@@ -4300,9 +4393,88 @@ partition of any finite residue set `S` has an integer-representative
 refinement with at most `4*sqrt(|S|*M)` cells. Empty cells and arbitrary
 initial modular parameterizations are allowed. Lemma 5.13 is its special
 case `S=univ`. The numbered catalogue now requires these stronger conclusions,
-and `Proofs05Progressions` uses their genuine proofs. A refreshed full native
-audit is running serially. No counterexample to the paper's
+and `Proofs05Progressions` uses their genuine proofs. The refreshed native
+audit passes over 1,444 modules, including all 120 exact companions, the
+nine stronger-bound and comparison results, and the 22 integer-representative
+theorems, using only the three approved axioms. No counterexample to the paper's
 Lemmas 5.12--5.13 is claimed; other fidelity obligations remain open.
+
+## L.19 Remaining geometry and modulus fidelity (2026-10-11)
+
+The new short-interval, integer-box, and refinement-bound modules pass the
+native `IntegerBoxesAudit`: all 25 public theorems use only the approved
+axioms, following the completed L.18 catalogue rebuild. These proofs
+track a common positive integer difference on box axes, permit a shared
+orientation reversal, and preserve carriers and widths in the index model.
+They also establish the exact square-root/factor-four refinement loss and
+monotonicity of discrepancy under refinement. The genuine Theorem 18.1
+proof uses the unused envelope slack to keep d+7 in every degree, with
+stronger offsets 1, 2 and 4 at degrees one, two and three. The linear
+function discrepancy bound works over every nonzero modulus, without
+requiring the function to be balanced. `IntegerFidelityAudit` verifies all
+20 new genuine-inverse and small-width results over 1,458 modules, using
+only the approved axioms. The genuine Theorem 18.1 now has an exact proved
+standalone statement at every degree; this closes its representation gap,
+while the remaining intermediate integer-box statements still need work.
+
+The printed Theorem 13.12 also has an outstanding modulus-range issue:
+`Sections12_13.theorem_13_12` adds `exists N0, forall N>=N0` before the
+prime-modulus hypotheses, while the displayed TeX headline lacks it.
+The existing near-one proof chooses N0=0; the away-from-one proof has an
+eventual threshold. The new small-width proof covers all prime moduli
+when the printed target side length is at most two, using a genuine
+two-by-two integer square through a large Fourier point. This is part of
+the required removal of the extra threshold, not a claim that removal or
+the full source-fidelity audit has finished. No counterexample to the
+printed Theorem 13.12 is claimed. In its Lean proof, linear arithmetic is
+restricted to the relevant inequalities: normalization of the unrelated
+printed tower expression otherwise tried to evaluate an infeasibly large
+natural power. No bound or mathematical hypothesis was changed to fix this.
+
+## L.20 Removal of Theorem 13.12's extra modulus restriction (2026-10-11)
+
+`Proofs13AllPrimeModuli` proves the printed size and density bounds over
+every prime modulus, without an eventual threshold. The strengthened
+statement `theorem_13_12_without_modulus_threshold` has an exact companion
+checked by `ModulusFidelityAudit`; the catalogue companion now chooses N0=0.
+
+For `alpha<=1023/1024`, Bernoulli's inequality gives
+`4*(2/alpha)^(2^54) <= (1/alpha)^(2^70)`. A generic logarithm/rpow estimate
+then shows that below `exp(exp((2/alpha)^(2^54)))` the printed target side
+length is at most two, so L.19's genuine two-by-two square applies. Above
+that threshold the existing explicit Fejer extraction applies with stronger
+size and density bounds. This exhausts the away-from-one modulus range.
+
+The endpoint argument is broadened to `alpha>333/334`: the printed density
+coefficient is at most `1/256`, below `1-332*(1-alpha)`, and the global
+bilinear frequency map works over every prime. Both parent progressions
+are the entire cyclic group with genuine integer interval representatives.
+
+The native audit checks all six new range results and the exact strengthened
+statement over 1,461 modules with only the approved axioms. This resolves
+the modulus-range gap identified in L.19. It does not by itself establish
+genuine integer progressions in the large-width Fejer branch, or finish
+the remaining intermediate integer-box statements. No counterexample to
+the printed Theorem 13.12 is claimed.
+
+## L.21 Genuine prescribed-step integer-box partitions (2026-10-11)
+
+`Proofs16IntegerResiduePartition` proves a canonical ascending-axis
+representation for every genuine integer box, preserving its full carrier
+and exact width. A prescribed positive natural multiplier is applied to
+the ordinary index progressions, then transported through the bounded
+integer parent axes. This gives genuine integer boxes with the original
+uniform lower width `v-1`, positive axis lengths `v-1` or `v`, and a shared
+common difference equal to the prescribed multiple up to one common sign.
+No points, width powers, or rounding guarantees are discarded, and the
+modulus need not be prime.
+
+The native `BoxPartitionFidelityAudit` checks all six new public results
+over a 1,463-module closure, with only the approved axioms. This supplies
+the genuine version of the prescribed-step residue primitive used in the
+multilinear height and Section 16 constructions. Their remaining geometric
+certificates still need to be propagated through those constructions; the
+primitive alone is not a claim that all intermediate paper boxes are done.
 
 ## F. Routes
 
