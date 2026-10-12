@@ -16,6 +16,7 @@ import GowersSzemeredi.Proofs18CoverFejerHeadlineW
 import GowersSzemeredi.Proofs18CoverFejerHeadlineX
 import GowersSzemeredi.Proofs16PolynomialFejerX
 import GowersSzemeredi.Proofs18CoverFejerHeadlineZ
+import GowersSzemeredi.Proofs18CoverFejerHeadlineY
 
 /-! **Theorem 18.1 at `d + 6` and Theorem 18.2 / Corollary 18.7 at `L + 4`
 in every degree and length** (Notes L.16d).
@@ -629,5 +630,40 @@ theorem van_der_waerden_L0_eighteen_le {k : Nat} (hk : 18 ≤ k) {r : Nat} (hr :
 /-- **Theorem 1.3 with constant `2^(-2^k)` for every `k ≥ 18`.** -/
 theorem theorem_1_3_L0_eighteen_le : Theorem13AtFrom 0 18 :=
   theorem13AtFrom_of_sharp fun _ hk => theorem_18_2_L0_eighteen_le hk
+
+/-! ### The partition constant charged at `2^(k+9)` (Notes L.16p) -/
+
+/-- **Theorem 18.1 at every degree `d ≥ 15` with `d + 2` in place of `d + 10`.** -/
+theorem theorem_18_1_d2_fifteen_le {d : Nat} (hd : 15 ≤ d) : Theorem181AtSharp 2 d := by
+  obtain ⟨K, p, hpp, hp, hK, hpB⟩ := progressionPhasePartition_explicit
+  exact theorem_18_1_d2_fifteen_le_of_profiles_poly
+    (fun k => ⌈multiaffinePartitionK (k + 1) (2 ^ (k + 1))⌉₊)
+    (fun k => (k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1)))
+    (fun k => two_le_ceil_multiaffinePartitionK (k + 1) (2 ^ (k + 1)))
+    (fun k => Nat.mul_pos (Nat.succ_pos k) (multiaffinePartitionP_pos _ _))
+    (fun k _ => section16RecurrenceProfileWith_explicit k)
+    (fun k => explicit_family_constants_poly_le k) hpp hp hK hpB hd
+
+/-- **Theorem 18.1 at every degree `d ≥ 10` with `d + 3` in place of `d + 10`.** -/
+theorem theorem_18_1_d3_ten_le {d : Nat} (hd : 10 ≤ d) : Theorem181AtSharp 3 d := by
+  obtain ⟨K, p, hpp, hp, hK, hpB⟩ := progressionPhasePartition_explicit
+  exact theorem_18_1_d3_ten_le_of_profiles_poly
+    (fun k => ⌈multiaffinePartitionK (k + 1) (2 ^ (k + 1))⌉₊)
+    (fun k => (k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1)))
+    (fun k => two_le_ceil_multiaffinePartitionK (k + 1) (2 ^ (k + 1)))
+    (fun k => Nat.mul_pos (Nat.succ_pos k) (multiaffinePartitionP_pos _ _))
+    (fun k _ => section16RecurrenceProfileWith_explicit k)
+    (fun k => explicit_family_constants_poly_le k) hpp hp hK hpB hd
+
+/-- **Theorem 18.1 at every degree `d ≥ 7` with `d + 4` in place of `d + 10`.** -/
+theorem theorem_18_1_d4_seven_le {d : Nat} (hd : 7 ≤ d) : Theorem181AtSharp 4 d := by
+  obtain ⟨K, p, hpp, hp, hK, hpB⟩ := progressionPhasePartition_explicit
+  exact theorem_18_1_d4_seven_le_of_profiles_poly
+    (fun k => ⌈multiaffinePartitionK (k + 1) (2 ^ (k + 1))⌉₊)
+    (fun k => (k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1)))
+    (fun k => two_le_ceil_multiaffinePartitionK (k + 1) (2 ^ (k + 1)))
+    (fun k => Nat.mul_pos (Nat.succ_pos k) (multiaffinePartitionP_pos _ _))
+    (fun k _ => section16RecurrenceProfileWith_explicit k)
+    (fun k => explicit_family_constants_poly_le k) hpp hp hK hpB hd
 
 end LeanProofs.GowersSzemeredi

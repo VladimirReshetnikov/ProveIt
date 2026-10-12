@@ -994,6 +994,18 @@ conclusion and the displayed cell counts, for every nonzero modulus.
 Moreover, the refinement bound in Lemma 5.13 holds for a partition of any
 finite set $S\subseteq\mathbb Z_N$, with $N$ replaced by $|S|$ in the bound.
 
+\emph{Editorial note on a shared integer difference (2026-10-12).}
+A product of separately integer-representable progressions needs one
+shared integer difference as well. Modulo $7$, the sets $\{0,3\}$ and
+$\{0,4\}$ both admit modular parametrizations with step $3$, but their
+ordinary increasing differences are $3$ and $4$. Lean verifies this
+counterexample to the weaker geometric implication. It is not a
+counterexample to the Fourier-square theorem: the checked strengthening
+of Theorem 13.12 now explicitly returns two natural-number progressions
+inside $[0,N)$ with one common positive integer step and all its printed
+bounds. The one-point density regime of Corollary 13.10 also has this
+explicit certificate, with integer step one.
+
 Lemma 5.12. Let $Q \subset \mathbb{Z}_{N}$ be a mod- $N$ arithmetic progression of size $m$. Then $Q$ can be partitioned into at most $4 m^{1 / 2}$ proper arithmetic progressions.
 
 Proof. Let $Q=\{a, a+d, \ldots, a+(m-1) d\}$. By the pigeonhole principle we can find distinct integers $l_{1}$ and $l_{2}$ lying in the interval $\left[0, m^{1 / 2}\right]$ such that $\left|l_{1} d-l_{2} d\right| \leqslant m^{-1 / 2} N$ and hence $l$ lying in the interval $\left(0, m^{1 / 2}\right)$ such that $|l d| \leqslant m^{-1 / 2} N$. We can partition $Q$ into $l$ mod- $N$ arithmetic progressions $R_{1}, \ldots, R_{l}$ each of which has common difference $l d$ and length at least $m^{1 / 2}$. Each $R_{i}$ can be partitioned into mod- $N$ arithmetic progressions $S_{j}$ of common difference $l d$ and length between $m^{1 / 2}$ and $m$. Of these there can be at most $2 m^{1 / 2}$. Finally, each $S_{j}$ can be split into at most two parts, each of which is a proper arithmetic progression. \(\square\)

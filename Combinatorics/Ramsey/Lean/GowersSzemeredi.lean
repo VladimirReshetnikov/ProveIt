@@ -1153,6 +1153,8 @@ import GowersSzemeredi.Proofs13IntegerSparseSquare
 import GowersSzemeredi.Proofs13PowerFiveEdgeModels
 import GowersSzemeredi.Proofs13PrintedWiderExtraction
 import GowersSzemeredi.Proofs13PrintedAllDensities
+import GowersSzemeredi.Proofs13NaturalSquareAxes
+import GowersSzemeredi.Proofs13SparseNaturalAxes
 import GowersSzemeredi.Proofs16PolyPieceTwoDataWith
 import GowersSzemeredi.Proofs16PolyCoverTwoFejer
 import GowersSzemeredi.Proofs18FejerSeedCounts
@@ -1216,6 +1218,7 @@ import GowersSzemeredi.Proofs18CoverModulusFejerZ
 import GowersSzemeredi.Proofs18CoverDensityFejerZ
 import GowersSzemeredi.Proofs18CoverExponentsFejerZ
 import GowersSzemeredi.Proofs18CoverFejerHeadlineZ
+import GowersSzemeredi.Proofs18CoverFejerHeadlineY
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
