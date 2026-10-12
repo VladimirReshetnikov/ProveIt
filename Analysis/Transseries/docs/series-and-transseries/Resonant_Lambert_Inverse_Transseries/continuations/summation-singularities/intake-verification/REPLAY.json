@@ -1,0 +1,76 @@
+{
+  "runs": [
+    {
+      "name": "angular",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "--python",
+        "3.13",
+        "--with",
+        "sympy==1.14.0",
+        "--with",
+        "mpmath==1.3.0",
+        "python",
+        "scripts/verify_angular.py"
+      ],
+      "exit_code": 0,
+      "isolated_copy": true
+    },
+    {
+      "name": "lambert",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "--python",
+        "3.13",
+        "--with",
+        "sympy==1.14.0",
+        "--with",
+        "mpmath==1.3.0",
+        "python",
+        "scripts/verify_lambert.py"
+      ],
+      "exit_code": 0,
+      "isolated_copy": true
+    },
+    {
+      "name": "endpoint",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "--python",
+        "3.13",
+        "--with",
+        "sympy==1.14.0",
+        "--with",
+        "mpmath==1.3.0",
+        "python",
+        "scripts/verify_endpoint.py"
+      ],
+      "exit_code": 0,
+      "isolated_copy": true
+    },
+    {
+      "name": "tables-and-figures",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "--python",
+        "3.13",
+        "--with",
+        "matplotlib>=3.8,<4",
+        "python",
+        "scripts/make_figures.py"
+      ],
+      "exit_code": 0,
+      "isolated_copy": true,
+      "input": "the three fresh replay JSON files"
+    }
+  ],
+  "scope": "Fresh execution of delivered mathematical verification and table/figure generation on isolated copies. Numerical diagnostics are not interval certificates; original evidence is unchanged."
+}

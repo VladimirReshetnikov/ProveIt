@@ -5361,6 +5361,48 @@ asymptotic ratio `24` is below `32` but above `16`, so `d + 2` and `L + 0`
 need a smaller class constant beyond the table, and the true one is about
 `2.4`, against the invariant's `4`.
 
+**L.16r: joint slices (landed, 2026-10-12).** The plan of L.16q, carried out.
+The lift changes in five generated modules:
+* `Proofs16JointSliceCell`: `single_piece_on_line_cell_of_joint_slices` covers
+  the anchor sections `φ(·, a)` and `φ(·, b)` jointly (`joint_cover_on` with
+  `E = {a, b}` at precision `θ₁/4`, then `JointCoverOn.piece`). Density
+  `jointSliceDensity Q θ q = θ₁·(θ₁ - θ₁/2)/Q(θ₁/4)²` and width
+  `jointSliceWidth E θ q L = ⌈L^(E(θ₁/4)²)⌉`;
+* `Proofs16JointSliceSpectrum`, `Proofs16JointSliceCore`,
+  `Proofs16JointSliceGlobal`: the affine-cell, spectrum-cover, core and
+  global-cover lifts with slice covers (`MultiplyLinearWith`) instead of
+  slice providers. The covers are translated with
+  `MultiplyLinearWith.translate_graph` and restricted with `congr_graph`. The
+  global lift is the `_with` (Fejér-parameter) variant,
+  `single_piece_lift_global_cover_with_joint`;
+* `Proofs18JointSliceInverseFejer`: the Fejér inverse step with the `…FJ`
+  density, width, scale and modulus conditions. The spectrum count
+  `singlePieceGlobalQmaxF` is unchanged.
+
+The density is one class degree cheaper than planned in the cost model. With
+`c(s) = s/2/Q(s/2)` one has `c(θ/2) = (θ/4)/Q(θ/4)`, so
+`θ·(θ/2)/Q(θ/4)² = 8·c(θ/2)²`: a single application of the class control,
+squared (`GenParams.joint_dens_step`, exponent `m + μ_b + 3` against
+`dens_step`'s `m + 2μ_b + 4`). The density degree is `ρ + tDeg + 11` (was
+`ρ + 2·tDeg + 13`), and both slice exponents are `E(θ_S/4)` of degree
+`ρ + tDeg + 9`. The side condition of `eta_step_small` becomes
+`3(k+4)² ≤ 2·tDegZ k + 6k + 35` (`sq_le_two_tDegZ`, tight at `k = 1`).
+
+The envelope chain `Proofs18Cover{Modulus,Density,Exponents}FejerJ` and
+`Proofs18CoverFejerHeadlineJ` is generated from the Z/Y chains
+(`assemble_j.py`, `assemble_jy.py`). Both envelopes are asymptotic to
+`10·2^k` (was `15·2^k`). Closed forms hold from `k = 15`, and
+`decide +kernel` evaluates dimensions `2..14`. Results, in the bridge
+`Proofs18CoverFejerAllDegrees`:
+* Theorem 18.1: `d + 4` in every degree (`theorem_18_1_d4`, degrees `0..3`
+  from `Proofs18CoverFejerLowDegrees4`), `d + 3` from `d = 9`, `d + 2` from
+  `d = 12`;
+* Theorem 18.2 and Corollary 18.7: `L + 0` from `L = 15`, `L + 1` from
+  `L = 12`, `L + 2` from `L = 9`, with the van der Waerden bound and
+  Theorem 1.3 at `k`, `k + 1`, `k + 2` from the same thresholds.
+
+`d + 1` and `L - 1` stay out of reach: they need an envelope ratio below `8`.
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`

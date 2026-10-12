@@ -48,3 +48,13 @@ The canonical integration should follow the completed Lambert forward
 identities and distinguish its divergent sector series from convergent
 core charts. No collective or Transseries PDF was rebuilt in this intake,
 and no Lean formalization is claimed.
+
+
+## Subsequent resolution, 12 October 2026
+
+The conventional proof review of [summation and singularities](continuations/summation-singularities/INTAKE-PROOF-AUDIT.md)
+resolves the cosh/sinh coefficient conjectures left open at the time of
+the review above. It supplies a uniform first correction and explicit
+logarithmic/dilogarithmic Borel boundary models. Global continuation is
+not inferred from those boundary models. The parent delivered article
+and its original conjectural wording are preserved as source evidence.

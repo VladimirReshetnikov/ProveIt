@@ -48,6 +48,10 @@ map").
 | `assemble_jspec.py`, `assemble_jcore.py` | `Proofs16JointSliceSpectrum`, `Proofs16JointSliceCore` | the affine-cell / spectrum-cover lemmas and `single_piece_lift_core_rem` with slice covers |
 | `assemble_jglob.py` | `Proofs16JointSliceGlobal` | `single_piece_lift_global_cover_with` with translated slice covers |
 | `assemble_jinv.py` | `Proofs18JointSliceInverseFejer` | `Proofs18SinglePieceCoverInverseFejer` with the `…FJ` density, width, scale and modulus conditions |
+| `assemble_j.py` | `Proofs18Cover{Modulus,Density,Exponents}FejerJ` | the Z chain over the joint-slice inverse step: `GenParamsJ`, `Eth = Ec = E(θ_S/4)`, `GenParams.joint_dens_step`, `densDegJ = ρ + tDeg + 11` |
+| `assemble_jy.py` | `Proofs18CoverFejerHeadlineJ` | the Y (Theorem 18.1) and Z (Theorem 18.2) envelopes over the J step, new closed forms and kernel fits |
+| `mk_low4.py` | `Proofs18CoverFejerLowDegrees4` | `Proofs18CoverFejerLowDegrees5` with `5 ↦ 4` |
+| `patch_bridge_j.py` | the joint-slice block of `Proofs18CoverFejerAllDegrees` and `CompletionAudit.lean` | — |
 | `mkstub_fejer18.py`, `mkstub_auditfejer.py` | stub checks of `Proofs18CoverFejerAllDegrees` and the Fejér block of `CompletionAudit.lean` | — |
 
 Hand-written modules (no generator): `Proofs15WalshGeneral`,
