@@ -1,0 +1,1142 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{mathrsfs}
+\usepackage{booktabs,longtable,array}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{fancyhdr}
+\hypersetup{pdftitle={Resonant Polylogarithmic Jets and Convergent Inverse Transseries},pdfauthor={Research draft prepared for Vladimir Reshetnikov},pdfsubject={Gamma normal forms, optimal dilation filters, arithmetic sector selection, and exact order tuning}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Resonant polylogarithms and inverse transseries}
+\fancyhead[R]{\small Research draft}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\calF}{\mathscr F}
+\newcommand{\calB}{\mathscr B}
+\newcommand{\Cat}{\operatorname{Cat}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\newcommand{\repo}{\texttt{ProveIt}}
+\DeclareMathOperator{\Repart}{Re}
+\DeclareMathOperator{\supp}{supp}
+\title{\textbf{Resonant Polylogarithmic Jets and\\Convergent Inverse Transseries}\\[7pt]
+\large Gamma normal forms, optimal dilation filters,\\arithmetic sector selection, and exact order tuning}
+\author{Research contribution prepared for Vladimir Reshetnikov\\
+\small For the Polylogarithms and Transseries areas of \repo}
+\date{11 October 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+At a positive integer order, the Gamma term in the local Lerch expansion collides with a Hurwitz-zeta pole. We give a simultaneous normalization of every order derivative that converts the resulting logarithmic polynomial into a single monomial: the normalized jet of order $r$ is exactly $t^m(( -\log t)^{r+1}+B(t))$, with $B$ holomorphic at the origin and with explicit coefficients in zeta derivatives and finite harmonic sums. We then prove a minimal-node theorem for dilation filters and construct a centered filter that reduces any such jet to a single-logarithm core. A two-variable holomorphic inverse chart over Lambert $W_{-1}$ gives a finite all-order coefficient formula, sharp generic pole orders, a support-selection theorem, and an actually convergent power--log--loglog expansion in the original variable. At the half shift, Bernoulli parity deletes whole inverse sectors; differentiation in the order restores them. A uniform chart also handles bounded order-resonance windows. In that family a unique analytic adjustment of the order cancels the analytic remainder exactly; its first two coefficients are computed, and the cancellation of Gamma-normalizer constants is explained to every order. Finally, a sign inconsistency in equation (52) of an author-hosted Bailey--Borwein--Crandall paper is corrected by an exact counterexample. Classical ingredients, proposed refinements, finite exact checks, and numerical diagnostics are distinguished throughout.
+\end{abstract}
+\vspace{3pt}
+\noindent\textbf{Status.} Conventional proofs, not proof-assistant formalization or independent peer review. The explicit constructions and their combination are proposed contributions; worldwide priority has not been established. No repository file was changed.
+\newpage
+\tableofcontents
+\newpage
+
+\section{Scope, antecedents, and the connection between the two projects}
+\label{rpt:sec:scope}
+
+The singular point $z=1$ of the polylogarithm becomes $t=0$ after $z=e^{-t}$. The natural small-variable functions are therefore not ordinary Taylor series: their first nonanalytic terms are powers of $t$ multiplied by polynomials in $\log t$. This is a direct meeting point of the polylogarithm order calculus and the exact-core inversion calculus.
+
+Two distinctions matter. First, differentiating in the \emph{order} of a polylogarithm is not the same operation as differentiating in its argument. Second, an asymptotic expansion and a convergent analytic chart are different assertions. The results below establish exact local identities and convergent charts; they do not infer Borel summability or global resurgence from formal manipulations.
+
+\subsection{What is classical, and what is proposed here}
+
+The Lerch expansion used below is classical; it is recorded in DLMF 25.14.3\_1 and in Erd\'elyi et al.~\cite{dlmflerch,erdelyi}. Integer-order pole cancellation is classical as well. Explicit raw order derivatives involving Gamma coefficients and Stieltjes constants already appear in Bailey, Borwein, and Crandall~\cite{bbc}, so we do not claim their discovery. Lambert $W$, its real branch $W_{-1}$, Lagrange inversion, Bernoulli reflection, finite differences, and implicit-function arguments are also established tools~\cite{dlmfw,corless,dlmfcomplex,dlmfhurwitz}.
+
+The proposed contribution is the following precise construction. A single Gamma multiplier puts all resonant order jets into pure-logarithm normal form. An optimal centered dilation filter lowers their logarithmic degree without leaving an unwanted constant. The resulting analytic tails admit a finite inverse coefficient calculus, with arithmetic support inherited by the inverse. The same normalization exposes a bounded resonance window and an exact order-tuning curve at the half shift. These statements are proved here together with all domain restrictions. The tuning curve, its two displayed coefficients, and the arithmetic sector-breaking mechanism are the most distinctive refinements of the construction.
+
+The abstract theory of transseries is much broader than the local class treated here; Edgar's introduction~\cite{edgar} supplies background. Fractional-polylogarithm resurgence has its own established literature, notably Costin and Garoufalidis~\cite{costingaroufalidis}. Our logarithmic monodromy calculation should not be mistaken for a replacement of those global results.
+
+\subsection{Repository crosswalk and audit boundary}
+
+The inspected \repo\ material includes the Polylogarithms manuscript overview, the original polylogarithm--polygamma bridge article, the Transseries group overview, the canonical inversion-volume overview, and the confluent-critical-transseries and $q\to1$-transition package descriptions~\cite{repoPoly,repoBridge,repoTrans,repoConfluent,repoQ}. The Polylogarithms side already distinguishes accepted proofs from pending analytic integration. The Transseries side already distinguishes coefficient-form Lagrange inversion from operator-form reversion, and lists exact versus partial Lean counterparts. Those distinctions are retained here.
+
+This was a targeted inspection, not a line-by-line audit of either entire corpus. In particular, the present work does not resolve the repository's unrelated period conjectures and does not claim that its theorems are already in Lean. The sign defect established in Section~\ref{rpt:sec:correction} is in a specified external author-hosted version; no new defect in a canonical repository theorem is asserted. The accompanying provenance notes record individual file blob identifiers because the repository's main branch changed during inspection.
+
+\subsection{Road map}
+
+Sections~\ref{rpt:sec:family}--\ref{rpt:sec:jets} establish the normal form and its arithmetic coefficients. Section~\ref{rpt:sec:filters} proves the optimal filtering result. Sections~\ref{rpt:sec:inverse}--\ref{rpt:sec:original} give the convergent inverse and its original-variable expansion. Section~\ref{rpt:sec:arithmetic} derives missing-sector and restored-sector laws. Section~\ref{rpt:sec:window} treats order confluence and exact tuning. The remaining sections document the source correction, verification, integration, and further questions.
+
+\section{A simultaneous Gamma-normalized resonant family}
+\label{rpt:sec:family}
+
+Throughout the main construction, $m\ge1$ is an integer and $a>0$. Write
+\begin{equation}
+\Psi_s(t,a)=\sum_{n=0}^{\infty}\frac{e^{-(n+a)t}}{(n+a)^s}
+=e^{-at}\Phi(e^{-t},s,a),\qquad \Repart t>0.
+\label{rpt:eq:Psi}
+\end{equation}
+For $a=1$ this is $\Li_s(e^{-t})$. An order derivative means $\partial_s^r$ with $t$ and $a$ fixed. We continue $t$ from the positive axis on the logarithmic cover of $0<|t|<2\pi$, and set
+\[
+L=-\log t.
+\]
+All positive-real inversions use the real logarithm. The notation $\zeta^{(r)}(s,a)$ always denotes the $r$th derivative with respect to $s$.
+
+\subsection{The classical expansion and its uniform use}
+
+The classical Lerch expansion is
+\begin{equation}
+\Psi_s(t,a)=\Gamma(1-s)t^{s-1}
+ +\sum_{k=0}^{\infty}\zeta(s-k,a)\frac{(-t)^k}{k!},
+\qquad 0<|t|<2\pi,
+\label{rpt:eq:lerch}
+\end{equation}
+initially for $s\notin\{1,2,\ldots\}$, with colliding terms combined at the excluded orders~\cite{dlmflerch,erdelyi}.
+
+\begin{lemma}[Normal convergence near one resonance]
+\label{rpt:lem:normal}
+Fix $0<\rho<1$ and $R<2\pi$. At $s=m+1+\eps$, the sum in \eqref{rpt:eq:lerch} with $k=m$ omitted is locally normally convergent for $|\eps|<\rho$, $|t|<R$. Its derivatives of every fixed order in $\eps$ may be taken term by term. The two omitted meromorphic terms have a removable singularity at $\eps=0$ after they are added.
+\end{lemma}
+\begin{proof}
+For $0<a\le1$, the Hurwitz functional formula bounds the large negative-order values in the series by a constant times a Gamma factor and $(2\pi)^{-k}$, locally uniformly in $s$; see the Hurwitz Fourier formulas in~\cite{dlmfhurwitz}. After division by $k!$, the remaining factor grows at most polynomially in $k$ on a compact $s$-set. Cauchy estimates on a slightly larger compact set give the same geometric majorant with a polynomial factor for each fixed order derivative. Consequently every $|t|\le R<2\pi$ admits a summable majorant. The finitely many low-index terms cause no difficulty once $k=m$ is omitted.
+
+For general $a>0$, repeatedly use
+\[
+\zeta(s,a+1)=\zeta(s,a)-a^{-s},\qquad
+\Psi_s(t,a+1)=\Psi_s(t,a)-a^{-s}e^{-at}.
+\]
+The subtracted terms are entire in $t$ and holomorphic in $s$, reducing the claim to $0<a\le1$. Finally, the residues of the $k=m$ zeta term and the Gamma term are opposite, either directly from \eqref{rpt:eq:gamma} below or from the standard residues. This proves removability.
+\end{proof}
+
+\subsection{The normalizer and Stieltjes counterterm}
+
+Define
+\begin{equation}
+A_m(\eps)=\frac{\Gamma(1-\eps)}{\prod_{j=1}^m(1+\eps/j)},
+\qquad
+D_m(\eps)=A_m(\eps)^{-1}=\sum_{j=0}^{\infty}d_{m,j}\eps^j.
+\label{rpt:eq:D}
+\end{equation}
+Gamma recurrence gives the exact identity
+\begin{equation}
+(-1)^m m!\,\Gamma(-m-\eps)=-\frac{A_m(\eps)}{\eps}.
+\label{rpt:eq:gamma}
+\end{equation}
+In particular, the pole has a \emph{minus} sign in this normalization.
+
+Our Stieltjes convention is
+\begin{equation}
+\zeta(1+\eps,a)=\frac1\eps+
+\sum_{j=0}^{\infty}\frac{(-1)^j\gamma_j(a)}{j!}\eps^j,
+\qquad \gamma_0(a)=-\psi(a).
+\label{rpt:eq:stieltjes}
+\end{equation}
+The analytic counterterm is
+\begin{equation}
+C_{m,a}(\eps)=D_m(\eps)\zeta(1+\eps,a)-\frac1\eps
+=\sum_{r=0}^{\infty}c_{m,r}(a)\eps^r.
+\label{rpt:eq:C}
+\end{equation}
+Its coefficients are finite:
+\begin{equation}
+c_{m,r}(a)=d_{m,r+1}+
+\sum_{j=0}^r d_{m,j}\frac{(-1)^{r-j}\gamma_{r-j}(a)}{(r-j)!}.
+\label{rpt:eq:cfinite}
+\end{equation}
+
+The reciprocal Gamma expansion and the finite product in \eqref{rpt:eq:D} give
+\begin{equation}
+\log D_m(\eps)=(H_m-\gamma)\eps
+-\sum_{k=2}^{\infty}\frac{\zeta(k)+(-1)^kH_m^{(k)}}{k}\eps^k.
+\label{rpt:eq:logD}
+\end{equation}
+Here $H_m^{(k)}=\sum_{j=1}^m j^{-k}$, $H_m=H_m^{(1)}$, and $\gamma$ is Euler's constant. If $\ell_k=\coef{\eps}{k}\log D_m$, then
+\begin{equation}
+d_{m,0}=1,\qquad
+n d_{m,n}=\sum_{k=1}^n k\ell_k d_{m,n-k}.
+\label{rpt:eq:Drec}
+\end{equation}
+Thus no infinite symbolic operation is needed to obtain a fixed jet. For example,
+\begin{align}
+d_{m,1}&=H_m-\gamma,\\
+d_{m,2}&=\tfrac12\bigl((H_m-\gamma)^2-\zeta(2)-H_m^{(2)}\bigr),\\
+c_{m,0}(a)&=H_m-\gamma-\psi(a).
+\end{align}
+Equivalently $d_{m,n}=Y_n(1!\ell_1,\ldots,n!\ell_n)/n!$, where $Y_n$ is the complete exponential Bell polynomial. This is the usual exponential-series coefficient identity, not a new Bell-polynomial theorem.
+
+\begin{definition}[Normalized resonant family]
+\label{rpt:def:F}
+Set
+\begin{align}
+\calF_{m,a}(\eps,t)
+={}&(-1)^m m!D_m(\eps)
+ \left(\Psi_{m+1+\eps}(t,a)
+ -\sum_{k=0}^{m-1}\zeta(m+1+\eps-k,a)\frac{(-t)^k}{k!}\right)
+\notag\\[-2pt]
+&\hspace{12mm}-t^m C_{m,a}(\eps).
+\label{rpt:eq:Fdef}
+\end{align}
+The subtraction is fixed as written; changing it changes the analytic inverse problem.
+\end{definition}
+
+\begin{theorem}[Exact generating normal form]
+\label{rpt:thm:family}
+The apparent singularity at $\eps=0$ is removable, and
+\begin{equation}
+\boxed{\quad
+\calF_{m,a}(\eps,t)=t^m\left(\frac{1-t^\eps}{\eps}
++\calB_{m,a}(\eps,t)\right),\quad}
+\label{rpt:eq:family}
+\end{equation}
+where the quotient at $\eps=0$ is $-\log t$, and
+\begin{equation}
+\calB_{m,a}(\eps,t)=\sum_{n=1}^{\infty}
+\frac{(-1)^n m!}{(m+n)!}
+D_m(\eps)\zeta(1+\eps-n,a)t^n.
+\label{rpt:eq:genB}
+\end{equation}
+The function $\calB$ is jointly holomorphic for $|\eps|<\rho<1$, $|t|<2\pi$, and $\calB(\eps,0)=0$.
+\end{theorem}
+\begin{proof}
+Subtract the terms $k<m$ from \eqref{rpt:eq:lerch}. Multiply by $(-1)^m m!D_m(\eps)$. By \eqref{rpt:eq:gamma}, the Gamma term becomes $-t^{m+\eps}/\eps$. The resonant zeta term becomes $t^mD_m(\eps)\zeta(1+\eps,a)$. Subtracting $t^mC_{m,a}(\eps)$ leaves exactly $t^m/\eps$. Reindex the remaining terms by $k=m+n$. Their signs are $(-1)^n$, giving \eqref{rpt:eq:genB}. Normal convergence follows from Lemma~\ref{rpt:lem:normal}. The entire function $(1-e^{\eps\log t})/\eps$ supplies the removable value and all parameter derivatives.
+\end{proof}
+
+\begin{remark}[A restricted, precise uniqueness statement]
+Among holomorphic multipliers $E(\eps)$ with $E(0)=1$, the requirement that the normalized Gamma contribution be exactly $-t^{m+\eps}/\eps$ forces $E(\eps)A_m(\eps)=1$ and hence $E=D_m$. Once the lower Taylor terms are removed, the condition that the residual tail vanish at $t=0$ then forces the counterterm \eqref{rpt:eq:C}. This is uniqueness within the stated normalization class, not uniqueness among arbitrary coordinate changes or arbitrary renormalization conventions.
+\end{remark}
+
+\section{Pure logarithmic jets, monodromy, and a beta kernel}
+\label{rpt:sec:jets}
+
+\begin{definition}[Pure-logarithm order jet]
+For $r\ge0$, define
+\begin{equation}
+J_{m,r,a}(t)=(-1)^r(r+1)
+\left.\partial_\eps^r\calF_{m,a}(\eps,t)\right|_{\eps=0}.
+\label{rpt:eq:Jdef}
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Pure-logarithm normal form at every jet order]
+\label{rpt:thm:jets}
+For every $m\ge1$, $r\ge0$, and $a>0$,
+\begin{equation}
+\boxed{\quad J_{m,r,a}(t)=t^m\bigl(L^{r+1}+B_{m,r,a}(t)\bigr),\quad}
+\label{rpt:eq:Jnormal}
+\end{equation}
+where $B_{m,r,a}(0)=0$ and $B_{m,r,a}$ is holomorphic on $|t|<2\pi$. Writing $B_{m,r,a}(t)=\sum_{n\ge1}b_n t^n$, its coefficients are
+\begin{align}
+b_n
+&=\frac{(-1)^{n+r}(r+1)m!}{(m+n)!}
+\left.\partial_\eps^r
+ \bigl(D_m(\eps)\zeta(1+\eps-n,a)\bigr)\right|_{\eps=0}
+\label{rpt:eq:bder}\\
+&=\frac{(-1)^{n+r}(r+1)r!m!}{(m+n)!}
+\sum_{j=0}^r\frac{d_{m,j}\zeta^{(r-j)}(1-n,a)}{(r-j)!}.
+\label{rpt:eq:bfinite}
+\end{align}
+\end{theorem}
+\begin{proof}
+With $L=-\log t$,
+\[
+\frac{1-t^\eps}{\eps}
+=\sum_{r=0}^{\infty}\frac{(-1)^rL^{r+1}}{(r+1)!}\eps^r.
+\]
+Its $r$th derivative at zero is $(-1)^rL^{r+1}/(r+1)$. The factor in \eqref{rpt:eq:Jdef} makes its coefficient exactly one. Differentiate the normally convergent tail in Theorem~\ref{rpt:thm:family}; Leibniz's rule gives both displayed coefficient formulas.
+\end{proof}
+
+This normal form is a finite triangular transformation of ordinary special-function derivatives, not a definition that presupposes knowledge of the tail. To make the transformation explicit, put
+\[
+Q_j(t)=\left.\partial_s^j\Psi_s(t,a)\right|_{s=m+1}
+ -\sum_{k=0}^{m-1}\zeta^{(j)}(m+1-k,a)\frac{(-t)^k}{k!}.
+\]
+Then
+\begin{equation}
+J_{m,r,a}(t)=(-1)^r(r+1)r!
+\left((-1)^m m!\sum_{j=0}^r\frac{d_{m,j}Q_{r-j}(t)}{(r-j)!}
+-t^m c_{m,r}(a)\right).
+\label{rpt:eq:triangular}
+\end{equation}
+The leading coefficient of the highest raw order derivative is nonzero. Consequently the transformation is invertible at every finite jet depth.
+
+\subsection{Two completely explicit dilogarithmic examples}
+
+For $m=1$, $r=0$, $a=1$, one obtains
+\begin{equation}
+\zeta(2)-\Li_2(e^{-t})-t
+=tL+\frac{t^2}{4}-\frac{t^3}{72}+\frac{t^5}{14400}+\cdots.
+\label{rpt:eq:dilog0}
+\end{equation}
+For the first order jet,
+\begin{align}
+J_{1,1,1}(t)
+={}&2\left(\left.\partial_s\Li_s(e^{-t})\right|_{s=2}-\zeta'(2)
+ +(1-\gamma)(\Li_2(e^{-t})-\zeta(2))\right)
+\notag\\
+&-t\bigl(\gamma^2+\zeta(2)+2\gamma_1\bigr)
+\label{rpt:eq:dilog1}\\
+={}&t\left(L^2+\frac{\gamma-1-\log(2\pi)}2\,t+O(t^2)\right).
+\notag
+\end{align}
+Here $\gamma_1=\gamma_1(1)$. The cancellation of the lower powers of $L$ in this example is exact; it is not a large-$L$ truncation.
+
+\subsection{Monodromy is finite-dimensional}
+
+\begin{corollary}[Exact logarithmic monodromy]
+\label{rpt:cor:mono}
+Let $d=r+1$ and let $T$ denote one counterclockwise continuation around $t=0$. Then
+\begin{equation}
+(T-I)^{d+1}J_{m,r,a}=0,
+\qquad
+(T-I)^dJ_{m,r,a}=(-2\pi i)^d d!\,t^m\ne0.
+\label{rpt:eq:mono}
+\end{equation}
+\end{corollary}
+\begin{proof}
+The analytic tail and $t^m$ are single-valued, while $L$ changes to $L-2\pi i$. A $d$th finite difference of a monic degree-$d$ polynomial is the constant $d!$ times the $d$th power of the step, and its next difference vanishes.
+\end{proof}
+
+The nilpotence index in \eqref{rpt:eq:mono} refers to actual germs. Modulo holomorphic germs the last displayed nonzero term is zero, so the quotient statement has a different index. This distinction prevents an off-by-one monodromy claim. There is no Stokes multiplier in this calculation: the tail is convergent, and the discontinuity is ordinary logarithmic monodromy.
+
+\subsection{An exact integral for the zeroth-jet tail}
+
+\begin{proposition}[Beta-kernel representation and reflection]
+\label{rpt:prop:beta}
+For $|t|<2\pi$,
+\begin{equation}
+B_{m,0,a}(t)=\int_0^1\frac{(1-u)^m}{u}
+\left(1-\frac{ut\,e^{(1-a)ut}}{e^{ut}-1}\right)\dd u.
+\label{rpt:eq:beta}
+\end{equation}
+The integrand has its removable value at $u=0$. For $0<a<1$,
+\begin{equation}
+B_{m,0,1-a}(-t)=B_{m,0,a}(t).
+\label{rpt:eq:reflect}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The classical values $\zeta(1-n,a)=-B_n(a)/n$ express the coefficients in terms of Bernoulli polynomials. Their generating series is
+\[
+\frac{x e^{(1-a)x}}{e^x-1}
+=\sum_{n=0}^{\infty}B_n(a)\frac{(-x)^n}{n!}.
+\]
+Uniform convergence for $x=ut$, $0\le u\le1$, on a smaller $t$-disc permits integration term by term. Since
+\[
+\int_0^1 u^{n-1}(1-u)^m\dd u=\frac{(n-1)!m!}{(m+n)!},
+\]
+the resulting coefficient is exactly \eqref{rpt:eq:bfinite} with $r=0$. Bernoulli reflection $B_n(1-a)=(-1)^nB_n(a)$ proves \eqref{rpt:eq:reflect}. These Bernoulli identities are classical~\cite{dlmfhurwitz}; the integral is their direct application to the normalized tail.
+\end{proof}
+
+At $a=1/2$ the kernel inside the parentheses is $ut/(2\sinh(ut/2))$, an even function. This will become a selection rule for the inverse, not just a symmetry of the forward expansion.
+
+\section{Optimal dilation filters for logarithmic singularities}
+\label{rpt:sec:filters}
+
+This section applies to any germ
+\begin{equation}
+F(t)=t^m\bigl(L^d+B(t)\bigr),\qquad d\ge1,
+\label{rpt:eq:model}
+\end{equation}
+where $B$ is holomorphic on $|t|<R$ and $B(0)=0$. It therefore applies to all the jets in Theorem~\ref{rpt:thm:jets}.
+
+For $\lambda>0$, define the weight-$m$ dilation
+\[
+(\mathcal D^{(m)}_\lambda F)(t)=\lambda^{-m}F(\lambda t).
+\]
+Its action is translation on $L$: the logarithmic core becomes $(L-\log\lambda)^d$.
+
+\begin{theorem}[Multiplicity classification and the minimum node count]
+\label{rpt:thm:filtermin}
+Let $\lambda_1,\ldots,\lambda_N>0$ be distinct and let $c_1,\ldots,c_N\in\C$ not all vanish. Put $x_j=\log\lambda_j$ and
+\[
+M_k=\sum_{j=1}^N c_jx_j^k.
+\]
+Let $h$ be the smallest $k$ with $M_k\ne0$. Then $h\le N-1$. The logarithmic part of $\sum_jc_j\mathcal D^{(m)}_{\lambda_j}F$ has degree $d-h$ when $h\le d$, and is zero when $h>d$. The filtered germ is holomorphic at zero precisely when $h\ge d$.
+
+Consequently, lowering the logarithmic degree to at most $\ell$, where $0\le\ell<d$, requires at least $d-\ell+1$ distinct nodes. In particular, a single-logarithm output requires at least $d$ nodes, and removing all logarithms requires at least $d+1$.
+\end{theorem}
+\begin{proof}
+Expand the translated polynomial:
+\begin{equation}
+\sum_jc_j(L-x_j)^d
+=\sum_{k=0}^d\binom dk(-1)^kM_k L^{d-k}.
+\label{rpt:eq:moments}
+\end{equation}
+The first nonzero moment gives the highest remaining logarithmic power. A nonconstant polynomial in $L$ times $t^m$ is not holomorphic at $t=0$, while a constant polynomial is holomorphic. The Vandermonde matrix $(x_j^k)_{0\le k<N,1\le j\le N}$ is invertible, so the first $N$ moments cannot all vanish. This proves the count and the classification. The analytic part remains analytic on $|t|<R/\max_j\lambda_j$ and cannot cancel a nonconstant logarithmic polynomial.
+\end{proof}
+
+\begin{theorem}[Centered optimal projection to a Lambert core]
+\label{rpt:thm:projection}
+Fix $\eta>0$ and put $h=d-1$, $\lambda_j=e^{(j-h/2)\eta}$ for $0\le j\le h$. Then
+\begin{align}
+\mathcal P_{d,\eta}F(t)
+&:=\frac{1}{d!\eta^{d-1}}
+\sum_{j=0}^{d-1}(-1)^j\binom{d-1}{j}
+\lambda_j^{-m}F(\lambda_jt)
+\notag\\
+&=t^m\bigl(L+\widetilde B(t)\bigr),
+\label{rpt:eq:projection}
+\end{align}
+where, if $B(t)=\sum_{n\ge1}b_nt^n$,
+\begin{equation}
+\widetilde B(t)=\sum_{n\ge1}
+\frac{(-2\sinh(n\eta/2))^{d-1}}{d!\eta^{d-1}}\,b_nt^n.
+\label{rpt:eq:filtertail}
+\end{equation}
+This series is holomorphic at least on $|t|<R e^{-(d-1)\eta/2}$. The node count $d$ is minimal.
+\end{theorem}
+\begin{proof}
+The first $h$ moments of the signed binomial weights vanish, and $M_h=(-1)^h h!\eta^h$. The coefficient of $L$ in \eqref{rpt:eq:moments} is therefore $d!\eta^h$. Reflection $j\mapsto h-j$ reverses $x_j$ and multiplies the weight by $(-1)^h$. Since $h+d$ is odd, $M_d=0$; thus the constant term vanishes as well. This proves the pure $L$ core after division by $d!\eta^h$.
+
+On a monomial $t^{m+n}$ the filter multiplier is
+\[
+\sum_{j=0}^{h}(-1)^j\binom hj e^{n(j-h/2)\eta}
+=(e^{-n\eta/2}-e^{n\eta/2})^h.
+\]
+This gives \eqref{rpt:eq:filtertail}. The largest dilation is $e^{h\eta/2}$, giving the stated guaranteed disc. Minimality is Theorem~\ref{rpt:thm:filtermin}.
+\end{proof}
+
+For $d=2$, the construction is especially simple:
+\[
+\frac{e^{m\eta/2}F(e^{-\eta/2}t)-e^{-m\eta/2}F(e^{\eta/2}t)}{2\eta}
+=t^m(L+\widetilde B(t)).
+\]
+Centering is essential for the absence of a constant core term. The uncentered filter lowers the degree too, but in general adds a constant to $L$.
+
+\begin{corollary}[Differential limit]
+\label{rpt:cor:difffilter}
+On every fixed smaller disc, as $\eta\to0$,
+\begin{equation}
+\mathcal P_{d,\eta}F\longrightarrow
+\frac{(-1)^{d-1}}{d!}(t\partial_t-m)^{d-1}F
+=t^m\left(L+\sum_{n\ge1}\frac{(-1)^{d-1}n^{d-1}}{d!}b_nt^n\right).
+\end{equation}
+After dividing out the fixed logarithmic term, the convergence is locally uniform and the error is $O(\eta^2)$.
+\end{corollary}
+\begin{proof}
+The finite dilation operator is
+$(-2\sinh(\eta(t\partial_t-m)/2))^{d-1}/(d!\eta^{d-1})$.
+Alternatively, apply \eqref{rpt:eq:filtertail} to each coefficient. On a smaller disc the polynomial powers of $n$ introduced by the Taylor remainder are dominated by the geometric convergence margin. The quotient of $\sinh(n\eta/2)$ by $\eta$ is even in $\eta$, giving the second-order error.
+\end{proof}
+
+\section{A convergent inverse chart and finite coefficient calculus}
+\label{rpt:sec:inverse}
+
+Let $F$ be \eqref{rpt:eq:model}. For positive-real inversion assume that $B$ has real Taylor coefficients. Since
+\begin{equation}
+F'(t)=t^{m-1}\bigl(mL^d-dL^{d-1}+mB(t)+tB'(t)\bigr),
+\label{rpt:eq:Fprime}
+\end{equation}
+$F$ is positive and strictly increasing on $(0,\delta)$ for sufficiently small $\delta>0$. It tends to zero there. Thus it has a unique small positive inverse $t=t(y)$.
+
+\subsection{The exact core and the two small coordinates}
+
+The core equation is $y=t_0^m(-\log t_0)^d$. Its small branch is
+\begin{equation}
+t_0=\exp\left(\frac dm W_{-1}\left(-\frac md y^{1/d}\right)\right),
+\qquad L=-\log t_0>\frac dm.
+\label{rpt:eq:Wcore}
+\end{equation}
+Indeed, taking the $d$th root reduces the equation to $(-mL/d)e^{-mL/d}=-(m/d)y^{1/d}$. The branch $W_0$ tends to zero and would give a core near $1$, not the small core. The branch convention follows the standard real Lambert theory~\cite{dlmfw,corless}.
+
+Put
+\[
+v=t_0,\qquad w=L^{-1},\qquad t=v(1+u).
+\]
+On the physical curve, $v=e^{-1/w}$; for the analytic construction we regard $v$ and $w$ as independent variables.
+
+\begin{theorem}[Holomorphic inverse over the exact core]
+\label{rpt:thm:inverse}
+There are $V,W>0$ and a unique small holomorphic function $U(v,w)$ for $|v|<V$, $|w|<W$ such that
+\begin{equation}
+(1+U)^m\left((1-w\log(1+U))^d+w^dB(v(1+U))\right)=1,
+\label{rpt:eq:implicit}
+\end{equation}
+with $U(0,0)=0$. It satisfies $U(0,w)=U(v,0)=0$ and is divisible by $vw^d$. If $\ord_0 B=\nu\ge1$, it is divisible by $v^\nu w^d$. The inverse is exactly
+\begin{equation}
+t(y)=v\bigl(1+U(v,w)\bigr),
+\label{rpt:eq:inverse}
+\end{equation}
+for sufficiently small positive $y$, with $(v,w)$ defined by \eqref{rpt:eq:Wcore}.
+
+The expansion
+\begin{equation}
+U(v,w)=\sum_{n=1}^{\infty}C_n(w)v^n
+\label{rpt:eq:Useries}
+\end{equation}
+converges normally on smaller bidiscs. In particular, suitable $V_0,W_0,M>0$ give, for $|v|<V_0$, $|w|\le W_0$,
+\begin{equation}
+\left|U(v,w)-\sum_{n=1}^{N}C_n(w)v^n\right|
+\le M|w|^d\frac{(|v|/V_0)^{N+1}}{1-|v|/V_0}.
+\label{rpt:eq:geometric}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The left side of \eqref{rpt:eq:implicit}, minus one, is holomorphic near $(v,w,u)=(0,0,0)$; choose the power-series branch of $\log(1+u)$. Its derivative in $u$ at the origin is $m\ne0$. The holomorphic implicit-function theorem gives a unique small $U$. At $v=0$, $u=0$ solves the equation for every small $w$, and at $w=0$ it reduces to $(1+u)^m=1$; local uniqueness gives the stated boundary values.
+
+For divisibility define
+\begin{equation}
+\Phi(u,w)=(1+u)^m(1-w\log(1+u))^d-1.
+\label{rpt:eq:Phi}
+\end{equation}
+Then $\Phi(u,w)=uK(u,w)$ with $K(0,0)=m$, so $K$ is a unit in the local holomorphic ring. The equation gives
+\[
+U=-\frac{w^d(1+U)^m B(v(1+U))}{K(U,w)}.
+\]
+This proves divisibility by $v^\nu w^d$ and includes $B\equiv0$, where $U=0$. Substitution $t=v(1+U)$ into $F(t)=y=v^mL^d$ gives exactly \eqref{rpt:eq:implicit}; uniqueness of the positive inverse proves \eqref{rpt:eq:inverse}.
+
+Finally, $U/w^d$ is holomorphic. Choose a closed bidisc strictly inside its domain, bound its absolute value there by $M$, and apply the Cauchy coefficient estimate in $v$. Summing the resulting geometric tail proves \eqref{rpt:eq:geometric}, after shrinking the radii if needed.
+\end{proof}
+
+The constants in \eqref{rpt:eq:geometric} exist by the analytic proof. We do not provide outward-rounded numerical values of these radii or constants. This is an all-order convergence theorem, not a claim of a numerically certified domain of optimal size.
+
+\subsection{Finite coefficients from Lagrange inversion}
+
+Let
+\begin{equation}
+\alpha(w)=m-dw,\qquad
+\beta(w)=\frac{m(m-1)}2+d\left(\frac12-m\right)w
+ +\frac{d(d-1)}2w^2.
+\label{rpt:eq:alphabeta}
+\end{equation}
+These are the coefficients of $u$ and $u^2$ in $\Phi(u,w)$.
+
+\begin{theorem}[Finite inverse coefficient formula]
+\label{rpt:thm:coeff}
+For every $n\ge1$, the coefficient in \eqref{rpt:eq:Useries} is
+\begin{equation}
+\boxed{\quad
+C_n(w)=\sum_{k=1}^{n}\frac{(-w^d)^k}{k}
+\coef{z}{n}B(z)^k\;
+\coef{u}{k-1}(1+u)^{mk+n}
+\left(\frac{u}{\Phi(u,w)}\right)^k.\quad}
+\label{rpt:eq:Lagrange}
+\end{equation}
+In particular $C_n$ is a rational function of $w$ over the field generated by $b_1,\ldots,b_n$, with no possible finite pole except $m-dw=0$. Its pole order there is at most $2n-1$, and $C_n$ vanishes to order at least $d$ at $w=0$.
+\end{theorem}
+\begin{proof}
+Introduce a bookkeeping parameter $\lambda$ multiplying the $B$ term. The equation becomes
+\[
+u=\lambda\left(-w^d(1+u)^mB(v(1+u))\frac{u}{\Phi(u,w)}\right).
+\]
+Classical coefficient-form Lagrange inversion~\cite{dlmfcomplex} gives
+\[
+u=\sum_{k\ge1}\frac{\lambda^k(-w^d)^k}{k}
+\coef{u}{k-1}(1+u)^{mk}B(v(1+u))^k
+\left(\frac{u}{\Phi(u,w)}\right)^k.
+\]
+Because $B(0)=0$, the $k$th summand begins with $v^k$. Thus the coefficient of $v^n$ uses only $k\le n$, and setting $\lambda=1$ is legitimate coefficientwise. Extracting $v^n$ from $B(v(1+u))^k$ supplies $(1+u)^n\coef{z}{n}B(z)^k$, proving \eqref{rpt:eq:Lagrange}. The holomorphic uniqueness theorem identifies this formal solution with the actual analytic germ.
+
+The coefficients of $\Phi$ are polynomials in $w$, and $\Phi/u=\alpha+\beta u+\cdots$. In the $k$th summand, at most $k-1$ additional inverse powers of $\alpha$ can arise when extracting $u^{k-1}$. Its denominator therefore has power at most $2k-1\le2n-1$. Each summand contains $w^{dk}$ and is regular at $w=0$, proving the final assertion.
+\end{proof}
+
+The first two coefficients, useful for independent checking, are
+\begin{align}
+C_1(w)&=-\frac{w^d b_1}{\alpha(w)},
+\label{rpt:eq:C1}\\
+C_2(w)&=-\frac{w^d b_2}{\alpha(w)}
++\frac{w^{2d}b_1^2\bigl((m+1)\alpha(w)-\beta(w)\bigr)}{\alpha(w)^3}.
+\label{rpt:eq:C2}
+\end{align}
+An independent coefficient recursion is obtained by substituting $U=\sum C_nv^n$ into \eqref{rpt:eq:implicit}. At stage $n$, the only new term is $\alpha(w)C_n(w)$; all other terms involve $C_1,\ldots,C_{n-1}$. The verification package implements this recursion separately from \eqref{rpt:eq:Lagrange}.
+
+\begin{proposition}[Sharp generic deepest-pole law]
+\label{rpt:prop:pole}
+If $b_1\ne0$, then every $C_n$ has a pole of exactly order $2n-1$ at $w_0=m/d$. More precisely,
+\begin{equation}
+\lim_{w\to w_0}(m-dw)^{2n-1}C_n(w)
+=-\Cat_{n-1}w_0^{dn}b_1^n\beta(w_0)^{n-1},
+\label{rpt:eq:deepest}
+\end{equation}
+where $\Cat_j=\binom{2j}{j}/(j+1)$ and $\beta(w_0)=-m^2/(2d)$.
+\end{proposition}
+\begin{proof}
+Only $k=n$ in \eqref{rpt:eq:Lagrange} can attain pole order $2n-1$. Its deepest term comes from taking $\beta u$ exactly $n-1$ times in $(\alpha+\beta u+\cdots)^{-n}$. It is
+\[
+\frac{(-w^d)^n}{n}b_1^n
+(-1)^{n-1}\binom{2n-2}{n-1}\frac{\beta^{n-1}}{\alpha^{2n-1}}.
+\]
+The signs multiply to minus and the binomial quotient is $\Cat_{n-1}$. Substitution into \eqref{rpt:eq:alphabeta} gives the nonzero value of $\beta(w_0)$, proving sharpness.
+\end{proof}
+
+The Catalan mechanism is the standard quadratic-fold mechanism and has counterparts in the repository's inversion work. Here it is computed explicitly for the normalized logarithmic family. The pole of an auxiliary coefficient at $w_0$ does not by itself locate a singularity of the globally continued inverse: the convergent chart was only proved near $w=0$.
+
+\subsection{Support selection survives nonlinear inversion}
+
+\begin{theorem}[Additive support and congruence selection]
+\label{rpt:thm:support}
+Let $S=\{n\ge1:b_n\ne0\}$ and let $\langle S\rangle$ be its additive monoid. Then $C_n=0$ for $n\notin\langle S\rangle$. In particular, if $B(z)=\widetilde B(z^g)$ for an integer $g\ge2$, then
+\begin{equation}
+U(v,w)=\widetilde U(v^g,w),\qquad
+ t=v+\sum_{k\ge1}C_{gk}(w)v^{gk+1}.
+\label{rpt:eq:sectorselect}
+\end{equation}
+If $\nu=\min S$, then
+\begin{equation}
+C_\nu(w)=-\frac{w^d b_\nu}{m-dw}.
+\label{rpt:eq:firstsector}
+\end{equation}
+\end{theorem}
+\begin{proof}
+In \eqref{rpt:eq:Lagrange}, the coefficient $\coef{z}{n}B(z)^k$ can be nonzero only if $n$ is a sum of $k$ elements of $S$. This proves the first assertion and the congruence consequence. Alternatively, in the latter case replace $v$ by a $g$th-root-of-unity multiple in \eqref{rpt:eq:implicit} and use uniqueness. For $n=\nu$, only $k=1$ contributes, yielding \eqref{rpt:eq:firstsector}.
+\end{proof}
+
+\section{A convergent power--log--loglog expansion in the original variable}
+\label{rpt:sec:original}
+
+A convergent chart in $(v,w)$ is useful, but the original variable $y$ should also have a precise expansion. Set
+\begin{equation}
+X=\log(1/y),\qquad
+Y=m^{d/m}y^{1/m}X^{-d/m},\qquad
+p=\frac{d\log(X/m)}{X},\qquad q=\frac dX.
+\label{rpt:eq:coordinates}
+\end{equation}
+All of $Y,p,q$ tend to zero as $y\downarrow0$.
+
+\begin{theorem}[Three-generator convergent inverse]
+\label{rpt:thm:three}
+There is a holomorphic germ $H(Y,p,q)$ at $(0,0,0)$, with $H(0,0,0)=1$, such that
+\begin{equation}
+t(y)=YH(Y,p,q)
+\label{rpt:eq:three}
+\end{equation}
+for sufficiently small positive $y$, using \eqref{rpt:eq:coordinates}. Consequently $t(y)$ has an absolutely convergent expansion obtained from a three-variable Taylor series. After collecting equal powers of $X^{-1}$ it has the form
+\begin{equation}
+t(y)=\sum_{n=0}^{\infty}\sum_{j=0}^{\infty}
+y^{(n+1)/m}X^{-d(n+1)/m-j}P_{n,j}(\log X),
+\label{rpt:eq:transseries}
+\end{equation}
+where $P_{n,j}$ is a polynomial of degree at most $j$. The grouping is convergent for sufficiently large real $X$. If $B$ has support in $g\N$, then $P_{n,j}=0$ unless $n\in g\N$ (including $n=0$).
+\end{theorem}
+\begin{proof}
+The core equation is $mL-d\log L=X$. Put $L=(X/m)(1+V)$. It becomes
+\begin{equation}
+V=p+q\log(1+V).
+\label{rpt:eq:V}
+\end{equation}
+The derivative in $V$ of its left side minus its right side is one at the origin, so there is a holomorphic solution $V=V(p,q)$ with $V(0,0)=0$. The exact core identities yield
+\[
+v=Y(1+V)^{-d/m},\qquad
+w=\frac{m}{d}\frac{q}{1+V}.
+\]
+Use the holomorphic branches of $(1+V)^{-d/m}$ and define
+\begin{align}
+H(Y,p,q)=(1+V)^{-d/m}
+\left[1+U\left(Y(1+V)^{-d/m},\frac{m q}{d(1+V)}\right)\right].
+\label{rpt:eq:H}
+\end{align}
+This proves \eqref{rpt:eq:three} by Theorem~\ref{rpt:thm:inverse}.
+
+Expand $H=\sum h_{n,a,b}Y^np^aq^b$ in a sufficiently small polydisc. Absolute convergence holds after substitution of the physical coordinates. A term $Y^{n+1}p^aq^b$ equals a constant times
+\[
+y^{(n+1)/m}X^{-d(n+1)/m-a-b}\bigl(\log X-\log m\bigr)^a.
+\]
+For $j=a+b$, there are only finitely many pairs $(a,b)$, producing $P_{n,j}$ with degree at most $j$. Absolute convergence permits this regrouping. The support statement follows from \eqref{rpt:eq:H} and Theorem~\ref{rpt:thm:support}.
+\end{proof}
+
+This is an ordinary convergent multivariate power series evaluated on a logarithmic curve. The word \emph{transseries} describes its ordered asymptotic monomials, not an unproved formal summation procedure. Ordering first by increasing $n$, then increasing $j$, and then by the finite logarithmic degrees produces a well-based small-monomial support. There is no arbitrary flat remainder: the selected analytic germ determines the function exactly.
+
+The first core correction follows from $V=p+O(pq)$:
+\begin{equation}
+t_0=Y\left(1-\frac{d^2}{mX}\log\frac Xm
++O\left(\frac{(\log X)^2}{X^2}\right)\right).
+\label{rpt:eq:corefirst}
+\end{equation}
+The $B$-dependent sectors are exponentially smaller in $X$ than every fixed inverse power of $X$. Keeping only finitely many logarithmic corrections to the core while attempting to resolve those sectors would therefore be inconsistent; either keep the exact Lambert core or control its logarithmic expansion to the required precision.
+
+\section{Arithmetic half-shift symmetry and its destruction by order jets}
+\label{rpt:sec:arithmetic}
+
+\subsection{Finite Fourier transport to ordinary polylogarithms}
+
+For integers $q\ge1$ and $1\le p\le q$, root-of-unity filtering gives
+\begin{equation}
+\Psi_s(t,p/q)=q^{s-1}\sum_{j=0}^{q-1}
+ e^{-2\pi i jp/q}\Li_s(e^{-t/q+2\pi i j/q}).
+\label{rpt:eq:DFT}
+\end{equation}
+Indeed, expansion of the polylogarithms selects exactly the positive integers congruent to $p$ modulo $q$. Absolute convergence for $\Repart t>0$ justifies the finite Fourier interchange, and continuation gives the local identity elsewhere. In particular,
+\begin{equation}
+\Psi_s(t,1/2)=2^s\Li_s(e^{-t/2})-\Li_s(e^{-t}).
+\label{rpt:eq:halfLi}
+\end{equation}
+This is the standard Fourier mechanism also used in the repository's polylogarithm--polygamma bridge~\cite{repoBridge}. Order derivatives of \eqref{rpt:eq:DFT} must differentiate $q^{s-1}$ as well; omitting its powers of $\log q$ changes the jets.
+
+\begin{theorem}[The unique even zeroth-jet tail]
+\label{rpt:thm:half}
+For fixed $m\ge1$, $B_{m,0,a}$ is even if and only if $a=1/2$. At that shift,
+\begin{equation}
+B_{m,0,1/2}(t)
+=\frac{t^2}{24(m+1)(m+2)}+O(t^4),
+\qquad b_{2j+1}=0\quad(j\ge0).
+\label{rpt:eq:halfB}
+\end{equation}
+By contrast,
+\begin{equation}
+b_1(B_{m,1,1/2})=-\frac{\log2}{m+1}\ne0.
+\label{rpt:eq:halfjet}
+\end{equation}
+Thus a single order differentiation after normalization destroys the even-tail selection rule.
+\end{theorem}
+\begin{proof}
+The first zeroth-jet coefficient is
+\[
+b_1=-\frac{\zeta(0,a)}{m+1}=\frac{a-1/2}{m+1}.
+\]
+Evenness therefore forces $a=1/2$. At that shift, the beta kernel in Proposition~\ref{rpt:prop:beta} is even, or equivalently $B_{2j+1}(1/2)=0$. The value $\zeta(-1,1/2)=1/24$ gives the coefficient in \eqref{rpt:eq:halfB}. For the first jet, \eqref{rpt:eq:bder} and $\zeta(0,1/2)=0$ give
+\[
+b_1=\frac{2}{m+1}\zeta'(0,1/2).
+\]
+Since $\zeta(s,1/2)=(2^s-1)\zeta(s)$ and $\zeta(0)=-1/2$, this equals $-\log2/(m+1)$.
+\end{proof}
+
+\subsection{Explicit consequences for inverse sectors}
+
+In each line below, $v$ is the exact core for that line, and $L=-\log v$. The jet order fixes $d=r+1$.
+
+\begin{corollary}[Three first-sector laws]
+\label{rpt:cor:firstlaws}
+As $y\downarrow0$,
+\begin{align}
+J_{m,0,1}^{-1}(y)
+&=v-\frac{v^2}{2(m+1)(mL-1)}+O(v^3/L),
+\label{rpt:eq:invordinary}\\
+J_{m,0,1/2}^{-1}(y)
+&=v-\frac{v^3}{24(m+1)(m+2)(mL-1)}+O(v^5/L),
+\label{rpt:eq:invhalf}\\
+J_{m,1,1/2}^{-1}(y)
+&=v+\frac{\log2\,v^2}{(m+1)L(mL-2)}+O(v^3/L^2).
+\label{rpt:eq:invhalfjet}
+\end{align}
+The inverse in \eqref{rpt:eq:invhalf} has only odd powers of $v$ to all orders, not merely through the displayed truncation.
+\end{corollary}
+\begin{proof}
+Apply \eqref{rpt:eq:firstsector} and the geometric analytic remainder. In the ordinary zeroth-jet case $b_1=1/(2(m+1))$. At the half shift $b_1=0$ and $b_2$ is \eqref{rpt:eq:halfB}; Theorem~\ref{rpt:thm:support} eliminates every odd index in $U$ and improves the next power to $v^5$. In the first-jet half-shift case $d=2$ and \eqref{rpt:eq:halfjet} gives the positive correction shown. Divisibility by $w^d$ supplies the indicated logarithmic factors in the remainders.
+\end{proof}
+
+For a concrete polylogarithm identity at the half shift,
+\begin{equation}
+J_{1,0,1/2}(t)
+=3\zeta(2)-4\Li_2(e^{-t/2})+\Li_2(e^{-t})
+-(1+2\log2)t.
+\label{rpt:eq:halfexample}
+\end{equation}
+It equals $t(L+t^2/144+O(t^4))$. Its inverse therefore has no $v^2$ or $v^4$ correction. The first normalized order jet of this same Fourier combination does have a $v^2$ correction. This is a concrete bridge from Hurwitz arithmetic to the support of a nonlinear inverse transseries.
+
+\section{Bounded resonance windows and exact cancellation by order tuning}
+\label{rpt:sec:window}
+
+The generating family \eqref{rpt:eq:family} retains more information than its individual jets. It treats the simultaneous regime in which $\eps\to0$, $t\to0$, while $\eps\log(1/t)$ stays bounded. Such a regime cannot be handled by truncating the Taylor series in $\eps$ at a fixed order without controlling that product.
+
+Define entire functions, with their removable values at zero,
+\begin{equation}
+R(z)=\frac{1-e^{-z}}{z},\qquad E(z)=\frac{e^z-1}{z},
+\qquad R(0)=E(0)=1.
+\label{rpt:eq:RE}
+\end{equation}
+For real $z$, $R(z)>0$. Let $h(z)=e^{-z}/R(z)=z/(e^z-1)$ wherever $R(z)\ne0$.
+
+\subsection{Uniform inversion while the order crosses resonance}
+
+For a real order offset $\eps$, choose a sufficiently small positive core $v=e^{-L}$ satisfying
+\begin{equation}
+y=v^m\frac{1-v^\eps}{\eps}=v^m L R(z),
+\qquad z=\eps L,\quad w=L^{-1}.
+\label{rpt:eq:deformedcore}
+\end{equation}
+The quotient is $L$ at $\eps=0$. This core is specified exactly even when its inverse is not written using a named special function.
+
+\begin{theorem}[Uniform bounded-resonance chart]
+\label{rpt:thm:window}
+Fix $K>0$. There exist $V,W>0$, a complex neighborhood $\Omega$ of $[-K,K]$, and a holomorphic function $U_*(v,w,z)$ for $|v|<V$, $|w|<W$, $z\in\Omega$, such that the small inverse of $\calF_{m,a}(\eps,t)=y$ is
+\[
+t=v(1+U_*(v,w,z)),\qquad \eps=zw,
+\]
+whenever the core \eqref{rpt:eq:deformedcore} has $L$ sufficiently large and $|z|\le K$. The chart is determined by
+\begin{align}
+(1+U_*)^m\biggl(&1-w h(z)\log(1+U_*)
+ E\bigl(zw\log(1+U_*)\bigr)
+\notag\\[-2pt]
+&\quad+\frac{w}{R(z)}\calB_{m,a}(zw,v(1+U_*))\biggr)=1.
+\label{rpt:eq:windowchart}
+\end{align}
+It is divisible by $vw$, has a normally convergent $v$-series uniformly for $z\in[-K,K]$ and sufficiently small $w$, and its first coefficient is
+\begin{equation}
+U_*(v,w,z)=
+-\frac{w\,\widehat b_1(zw)}{R(z)(m-wh(z))}\,v+O(v^2w),
+\label{rpt:eq:windowfirst}
+\end{equation}
+where
+\[
+\widehat b_n(\eps)=\frac{(-1)^n m!}{(m+n)!}D_m(\eps)\zeta(1+\eps-n,a).
+\]
+All remainders here are uniform on the stated compact parameter range after the bidisc is reduced.
+\end{theorem}
+\begin{proof}
+For $t=v(1+u)$, use $v^\eps=e^{-z}$ and $\eps=zw$. Division of \eqref{rpt:eq:family} by \eqref{rpt:eq:deformedcore} gives
+\[
+(1+u)^m\left(\frac{1-e^{-z}(1+u)^{zw}}{zR(z)}
+ +\frac{w\calB(zw,v(1+u))}{R(z)}\right).
+\]
+The first quotient equals
+\[
+1-w h(z)\log(1+u)E(zw\log(1+u)),
+\]
+including at $z=0$. This proves the exact chart equation.
+
+Choose $\Omega$ with $R\ne0$ near the real compact interval. At $v=w=u=0$, the derivative of the equation in $u$ is $m$, independently of $z$. The parameter-dependent implicit-function theorem, a finite cover of $[-K,K]$, and local uniqueness give a uniform bidisc and a single patched holomorphic chart. Shrink $W$ so that $|zw|<\rho<1$. The same unit-factor argument as in Theorem~\ref{rpt:thm:inverse} proves divisibility by $vw$ and Cauchy estimates give uniform geometric convergence.
+
+At $v=0$, the derivative in $u$ is $m-wh(z)$. The coefficient of $v$ from the analytic tail is $w\widehat b_1(zw)/R(z)$, proving \eqref{rpt:eq:windowfirst}. For the real inverse, the normalized derivative of the core is $m-wh(z)>0$ when $w$ is small, uniformly on the compact interval. The tail is a uniformly small analytic perturbation, so the local solution is the unique small positive inverse.
+\end{proof}
+
+At $z=0$ this reduces exactly to Theorem~\ref{rpt:thm:inverse} with $d=1$ and $B=B_{m,0,a}$. The theorem covers every rate and either sign of $\eps$ \emph{within the bounded-product regime} $|\eps L|\le K$. It does not assert uniformity when $|\eps L|\to\infty$.
+
+A finite all-order coefficient formula is obtained without a new inversion principle. In \eqref{rpt:eq:Lagrange}, replace $w^d$ by $w/R(z)$, $B(\xi)$ by $\calB(zw,\xi)$, and $\Phi$ by
+\[
+\Phi_z(u,w)=(1+u)^m\bigl(1-wh(z)\log(1+u)E(zw\log(1+u))\bigr)-1.
+\]
+The proof is the same finite coefficient extraction, and the coefficient of $u$ is now $m-wh(z)$.
+
+\subsection{The analytic order-tuning curve at the half shift}
+
+The parity point is not merely an isolated symmetry. It generates an exact cancellation curve in the order parameter.
+
+\begin{theorem}[Exact half-shift order tuning]
+\label{rpt:thm:tuning}
+For every integer $m\ge1$, there is a unique holomorphic germ $\eps_m(v)$ with $\eps_m(0)=0$ such that
+\begin{equation}
+\calB_{m,1/2}(\eps_m(v),v)=0.
+\label{rpt:eq:tuningzero}
+\end{equation}
+Uniqueness is among germs near $(\eps,v)=(0,0)$ after the automatic factor $v$ is removed. Its first two coefficients are
+\begin{align}
+\eps_m(v)={}&-\frac{v}{12(m+2)\log2}
+\notag\\[-2pt]
+&-\frac{\log(2\pi)+\tfrac32\log2+12\zeta'(-1)}
+ {144(m+2)^2(\log2)^2}\,v^2+O(v^3).
+\label{rpt:eq:tuningcoeff}
+\end{align}
+The function is real for small real $v$. Along this curve,
+\begin{equation}
+\boxed{\quad
+\calF_{m,1/2}(\eps_m(v),v)
+=v^m\frac{1-v^{\eps_m(v)}}{\eps_m(v)}.\quad}
+\label{rpt:eq:exacttune}
+\end{equation}
+Thus, at the corresponding $y$, the exact deformed core $v$ is the exact small positive inverse: its analytic correction vanishes, not merely its leading term.
+\end{theorem}
+\begin{proof}
+The zero equation can be divided by $vD_m(\eps)$, since the latter normalizer is a nonzero unit. Define the holomorphic function
+\begin{equation}
+S_m(\eps,v)=\sum_{n=1}^{\infty}
+\frac{(-1)^n m!}{(m+n)!}\zeta(1+\eps-n,1/2)v^{n-1}.
+\label{rpt:eq:S}
+\end{equation}
+Its constant-in-$v$ term is $-\zeta(\eps,1/2)/(m+1)$. Hence
+\[
+S_m(0,0)=0,\qquad
+\partial_\eps S_m(0,0)=\frac{\log2}{2(m+1)}\ne0.
+\]
+The implicit-function theorem gives the unique holomorphic $\eps_m(v)$. Complex conjugation and uniqueness give reality.
+
+For the coefficients, write $\ell=\log2$ and $Z=\zeta'(-1)$. The identity $\zeta(s,1/2)=(2^s-1)\zeta(s)$ implies
+\begin{align*}
+\zeta'(0,1/2)&=-\ell/2,\\
+\zeta''(0,1/2)&=-\ell\log(2\pi)-\ell^2/2,\\
+\zeta(-1,1/2)&=1/24,\\
+\zeta'(-1,1/2)&=-\ell/24-Z/2,\qquad \zeta(-2,1/2)=0.
+\end{align*}
+Using these values in \eqref{rpt:eq:S} gives, through total degree two,
+\begin{align}
+S_m(\eps,v)={}&\frac{\ell}{2(m+1)}\eps
++\frac{\ell\log(2\pi)+\ell^2/2}{2(m+1)}\eps^2
++\frac{v}{24(m+1)(m+2)}
+\notag\\
+&+\frac{-\ell/24-Z/2}{(m+1)(m+2)}\eps v
++O\bigl((|\eps|+|v|)^3\bigr).
+\label{rpt:eq:Sexp}
+\end{align}
+The $v^2$ coefficient at $\eps=0$ vanishes. Substitute $\eps=k_1v+k_2v^2+\cdots$ and solve the first two coefficient equations. The first gives $k_1=-1/(12(m+2)\ell)$. The second gives exactly the coefficient of $v^2$ in \eqref{rpt:eq:tuningcoeff}. Finally, \eqref{rpt:eq:tuningzero} in Theorem~\ref{rpt:thm:family} gives \eqref{rpt:eq:exacttune}. For small positive $v$, $\eps_m(v)=O(v)$ and $\eps_m(v)\log(1/v)\to0$; the positive inverse uniqueness in Theorem~\ref{rpt:thm:window} therefore applies.
+\end{proof}
+
+For orientation, the numerical roots at $m=1$ are shown below. The last column approaches a finite nonzero third coefficient; these decimals are diagnostics, not interval enclosures.
+\begin{center}
+\begin{tabular}{rrr}
+\toprule
+$v$ & $\eps_1(v)$ & $(\eps_1(v)-k_{1,1}v-k_{1,2}v^2)/v^3$\\
+\midrule
+$0.04$ & $-0.00160527918979431$ & $0.000137089068792$\\
+$0.02$ & $-0.000802069518886666$ & $0.000136807021208$\\
+$0.01$ & $-0.000400891827904606$ & $0.000136665681379$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{corollary}[Finite arithmetic recursion and absence of normalizer coefficients]
+\label{rpt:cor:tunerec}
+Write $\eps_m(v)=\sum_{n\ge1}k_{m,n}v^n$ and $c=\log2/(2(m+1))$. Then
+\begin{equation}
+k_{m,n}=-\frac1c\coef{v}{n}
+S_m\left(\sum_{j=1}^{n-1}k_{m,j}v^j,v\right).
+\label{rpt:eq:tunerec}
+\end{equation}
+At every fixed order this is a finite computation involving only rational factorial ratios and Hurwitz-zeta order derivatives at nonpositive integers, reducible through the half-shift identity to ordinary zeta derivatives and powers of $\log2$. No coefficient of the Gamma normalizer $D_m$ enters this recursion.
+\end{corollary}
+\begin{proof}
+At order $v^n$, the new coefficient appears only through $c k_{m,n}$. All other contributions are known from lower orders. Terms with $n+1$ or fewer in the index of \eqref{rpt:eq:S} suffice, and only finitely many order derivatives are needed. The complete removal of $D_m$ in \eqref{rpt:eq:S} proves the final assertion; it is structural and does not rely on a conjecture about algebraic independence of constants.
+\end{proof}
+
+The cancellation of $H_m-\gamma$ from the second coefficient in \eqref{rpt:eq:tuningcoeff} can also be seen by expanding the normalized coefficients directly. The division by $D_m$ explains why such cancellation persists at every order. This is an absence in the explicit recurrence, not an assertion that alternative identities could never reintroduce those constants.
+
+\begin{corollary}[The scale of sector-breaking cancellation]
+\label{rpt:cor:micro}
+Let the exact deformed core be $v=e^{-L}$ and let $\eps=\kappa v$ with $\kappa$ in a fixed bounded real interval. Then the corresponding inverse satisfies
+\begin{equation}
+t-v=-\frac{v^3}{mL-1}
+\left(\frac{\kappa\log2}{2(m+1)}
++\frac{1}{24(m+1)(m+2)}\right)+o(v^3/L),
+\label{rpt:eq:micro}
+\end{equation}
+uniformly in $\kappa$. The leading correction vanishes at
+$\kappa=-1/(12(m+2)\log2)$, the tangent of the exact curve \eqref{rpt:eq:tuningcoeff}.
+\end{corollary}
+\begin{proof}
+Taylor expansion of \eqref{rpt:eq:genB} gives
+\[
+\calB_{m,1/2}(\kappa v,v)
+=v^2\left(\frac{\kappa\log2}{2(m+1)}
++\frac{1}{24(m+1)(m+2)}\right)+O(v^3).
+\]
+Here $z=\eps L=\kappa vL\to0$, so $R(z)=1+o(1)$ and $h(z)=1+o(1)$. Linearization of the uniform chart, or its analytic coefficient formula retaining both the first and second $v$ contributions, gives \eqref{rpt:eq:micro}. Terms quadratic in the small correction and the analytic remainder are $o(v^3/L)$ uniformly on the bounded $\kappa$-interval.
+\end{proof}
+
+\section{A source-specific sign correction for raw order derivatives}
+\label{rpt:sec:correction}
+
+The author-hosted, 29-page version of Bailey--Borwein--Crandall~\cite{bbc} at
+\begin{center}\url{https://carmamaths.org/jon/MTW1.pdf}\end{center}
+was inspected at printed pages 12--13, including rendered page images. Equation (49) has a minus sign before its Gamma coefficient. Equation (52), presented as the differentiated consequence, instead has a plus sign. The special case (54) returns to the minus convention. The following computation resolves the inconsistency without relying on a numerical guess.
+
+To avoid confusing the source's notation with our tail coefficients, set
+\begin{equation}
+q_{m,j}(\ell)=\coef{\eps}{j}A_m(\eps)e^{\eps\ell}.
+\label{rpt:eq:qraw}
+\end{equation}
+These are the source's $b_{k,j}(\mathcal L)$ with $k=m$ and $\mathcal L=\ell$.
+
+\begin{proposition}[Correct raw resonant derivative formula]
+\label{rpt:prop:raw}
+For $r\ge0$, with consistent logarithmic branches,
+\begin{align}
+\left.\partial_s^r\Psi_s(t,a)\right|_{s=m+1}
+={}&\sum_{\substack{k\ge0\\k\ne m}}
+\zeta^{(r)}(m+1-k,a)\frac{(-t)^k}{k!}
+\notag\\
+&+\frac{(-t)^m}{m!}
+\left((-1)^r\gamma_r(a)-r!q_{m,r+1}(\log t)\right).
+\label{rpt:eq:rawcorrect}
+\end{align}
+In particular, the sign before $r!q_{m,r+1}$ is minus.
+\end{proposition}
+\begin{proof}
+Before multiplication by $D_m$, the resonant pair in \eqref{rpt:eq:lerch} is
+\[
+\frac{(-t)^m}{m!}
+\left(\zeta(1+\eps,a)-\frac{A_m(\eps)t^\eps}{\eps}\right).
+\]
+Expand using \eqref{rpt:eq:stieltjes} and \eqref{rpt:eq:qraw}. The coefficient of $\eps^r$ is
+$(-1)^r\gamma_r(a)/r!-q_{m,r+1}(\log t)$.
+Multiplication by $r!$ and differentiation of the normally convergent remaining sum prove \eqref{rpt:eq:rawcorrect}.
+\end{proof}
+
+\begin{corollary}[Exact counterexample to the printed plus sign]
+\label{rpt:cor:sign}
+In the source's equation (52), take order $k+1=2$, one order derivative, and $z=e^{-1}$. The expression with the printed plus sign minus the actual derivative is
+\begin{equation}
+-\bigl((\gamma-1)^2+\zeta(2)+1\bigr)\ne0.
+\label{rpt:eq:signcounter}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Here $m=1$, $t=1$, and $\ell=0$. From \eqref{rpt:eq:D} or Gamma expansion,
+\[
+q_{1,2}(0)=\tfrac12\bigl((\gamma-1)^2+\zeta(2)+1\bigr)>0.
+\]
+Changing minus to plus adds $2q_{1,2}(0)(-t)=-2q_{1,2}(0)$, yielding \eqref{rpt:eq:signcounter}.
+\end{proof}
+
+The numerical values recorded in the package are
+\begin{align*}
+\left.\partial_s\Li_s(e^{-1})\right|_{s=2}
+&\approx-0.0317252923633411871379779723663,\\
+\text{printed-plus expression}
+&\approx-2.85540595321622057671574509520.
+\end{align*}
+The corrected series agrees with the independent defining-series derivative at the working precision. The nonzero discrepancy is already proved by \eqref{rpt:eq:signcounter}; floating-point agreement is only a diagnostic.
+
+This correction is deliberately version-specific. We do not claim that every journal or author version contains the same sign, that the error affects unrelated results of the paper, or that this is the first time anyone has noticed it. The appropriate integration action is a citation-level correction note, not modification of preserved historical sources.
+
+\section{Verification, limitations, and integration}
+\label{rpt:sec:verification}
+
+\subsection{Separate proof and computation scopes}
+
+The proofs above establish all-order statements. The scripts independently test finite consequences; they are not substitutes for those proofs and do not turn the statements into Lean theorems.
+
+\begin{center}
+\begin{tabular}{p{0.27\textwidth}p{0.64\textwidth}}
+\toprule
+Artifact & Scope \\
+\midrule
+\path{verification/}\newline\path{verify.py} & Rational and symbolic coefficient tests; independent recurrence and Lagrange implementations; direct special-function and inverse diagnostics.\\[4pt]
+\path{verification/}\newline\path{verify_extensions.py} & Beta-kernel quadrature; the full bounded-resonance chart; exact finite identities for the tuning coefficients; tuning roots checked against direct polylogarithms.\\[4pt]
+\texttt{data/*.json} & Recorded inputs, precision, versions, residuals, and outcomes. These are replay records, not outward-rounded enclosures.\\[4pt]
+\texttt{integration/} & Proposed destination, label namespace, theorem-status crosswalk, and source-specific correction note. No automatic repository write.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The base suite records 568 finite exact assertions, 47 high-precision comparisons, and 12 inverse comparisons. Exact tests include logarithmic projection through degree 12, Vandermonde identities, Bernoulli parity, and two independent inverse coefficient constructions through degree 7 for a grid of $(m,d,w)$. The deepest-pole test checks the finite Catalan normalization; the all-order pole theorem rests on its proof, not on that binomial check.
+
+The extension suite records eight further exact coefficient identities and 30 further high-precision comparisons: nine beta-kernel checks, twelve bounded-resonance substitutions, and nine direct-polylogarithm checks of the cancellation curve. Thus the complete delivered run contains 576 finite exact assertions and 89 numerical comparisons, including the 12 inverse comparisons. All numerical computations use 80 working decimal digits, not certified 80-digit accuracy. The scripts raise an error on a failed comparison.
+
+\subsection{Reproduction}
+
+Use Python 3.10 or later with the pinned dependencies in \texttt{requirements.txt}. From the package root:
+\begin{verbatim}
+python verification/verify.py --part all --output-dir replay
+python verification/verify_extensions.py --output-dir replay
+sh build.sh
+\end{verbatim}
+The default output directory is \texttt{data}; the explicit \texttt{--output-dir} option preserves the delivered records. No network is used after dependency installation. The LaTeX source is self-contained, with an embedded bibliography; the PDF build does not require Python or external figures.
+
+The reference environment is Python 3.13.5, SymPy 1.14.0, and mpmath 1.3.0. Timings are recorded separately because they are machine-dependent. Arbitrary-precision root finding and quadrature are floating-point operations, even when the defining equations are exact.
+
+\subsection{What the theorems do not assert}
+
+The normalization applies at each fixed integer resonance and finite jet order; no uniform estimate as $m$ or $r$ tends to infinity has been proved. The inverse charts are local near $(v,w)=(0,0)$; their radii are existential, not optimized numerical constants. The order-window theorem assumes a bounded product $\eps L$ and does not cover all unbounded joint limits. The exact tuning curve is a local germ, not a global classification of its continuation or zeros.
+
+The finite Fourier identity does not establish arithmetic independence of periods. The missing inverse sectors are proved zeros from symmetry, while the nonzero first restored sector is certified by $\log2\ne0$; no failed integer-relation search is used. The log-polynomial monodromy does not amount to a global resurgent analysis, and the convergent tails do not justify claims of hidden factorial divergence.
+
+\subsection{Integration proposal}
+
+A suitable primary destination is
+\begin{center}\small
+\path{Analysis/Polylogarithms/docs/reports/resonant-polylog-transseries/}
+\end{center}
+with a cross-reference from the Transseries documentation. The all-order normal-form theorem belongs naturally beside the Hurwitz/order-jet calculus. The inverse-chart and support theorems belong beside the exact-core and coefficient-reversion framework. The centered-filter theorem connects to existing differential-block and Bell-coefficient interfaces, but a Lean implementation would first need a concrete analytic Lerch expansion and holomorphic-implicit-function bridge.
+
+All new theorem and equation labels use the prefix \texttt{rpt:}. Proposed theorem statuses and independent test scopes are supplied in a machine-readable ledger. The source correction should be attached to the reference entry for the inspected external version. Nothing here should silently overwrite an accepted chapter or an original provenance document.
+
+\section{Further research questions}
+\label{rpt:sec:questions}
+
+The following questions are not claimed as solved. They specify extensions whose proof obligations are distinct from those completed above.
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=2.8em,itemsep=8pt]
+\item \textbf{Uniformly growing jet order.} Determine simultaneous bounds in $r$, $m$, and $t$ for the pure-logarithm transformation. Can a useful analytic class accommodate an infinite order-jet generating function while retaining stable inversion radii?
+
+\item \textbf{Unbounded resonance products.} Extend Theorem~\ref{rpt:thm:window} to $|\eps L|\to\infty$ with a finite collection of exact cores. The positive and negative sides have different dominant powers, so bounded-window estimates alone do not suffice.
+
+\item \textbf{Global continuation of the tuning curve.} Locate the first obstruction to continuation of $\eps_m(v)$: a singularity of the Lerch tail, a zero of $\partial_\eps S_m$, or another mechanism. Determine whether the curve stays real and unique on a nontrivial positive interval.
+
+\item \textbf{All-order arithmetic of tuning coefficients.} Organize \eqref{rpt:eq:tunerec} into a closed Bell-polynomial or rooted-tree formula with a sharp bound on the required zeta derivative depth. Investigate whether the unusually simple dependence on $m+2$ in the first two coefficients persists in an appropriate renormalization.
+
+\item \textbf{Higher-order restored sectors.} Classify zeros of $b_1(B_{m,r,a})$ as $a$ varies for $r\ge2$. A proof must distinguish exact zeros from small numerically observed coefficients. Such zeros would produce new inverse-sector transitions.
+
+\item \textbf{Cyclotomic selection beyond parity.} Construct finite combinations of rational-shift families whose tails are supported on a prescribed congruence class or additive semigroup. Determine the minimum number of Fourier components needed and transport the support to the inverse.
+
+\item \textbf{Optimal filters with stability constraints.} The node-count problem is solved, but not a conditioning problem. Under a fixed allowed dilation range, which filter minimizes coefficient amplification or maximizes a provable analytic inversion radius?
+
+\item \textbf{Singularities of the auxiliary inverse coefficients.} The maximal pole order at $m-dw=0$ is explicit when $b_1\ne0$. Determine the exact replacement law when the first nonzero tail coefficient occurs at $\nu>1$, including the interaction between congruence support and higher-fold scaling.
+
+\item \textbf{Certified numerical radii.} Produce outward-rounded polydisc constants for Theorems~\ref{rpt:thm:inverse} and~\ref{rpt:thm:window}. This requires an analytic majorant and validated root exclusion, not merely high-precision residuals.
+
+\item \textbf{Multiple-polylogarithm normal forms.} For several interacting logarithmic residues, determine whether a matrix-valued Gamma normalization yields a triangular pure-logarithm basis. Mixed logarithmic monomials could lead to multivariate analogues of the dilation-filter theorem.
+
+\item \textbf{Formalization.} Formalize the finite moment/Vandermonde theorem and the coefficient recursion first. Then isolate the analytic theorem needed to connect the formal coefficients to the Lerch germ and the actual inverse, preserving the repository's distinction between algebraic certificates and analytic realization.
+
+\item \textbf{Continuation versus resurgence.} Analyze continuation of the convergent inverse germ across the nearest singularities of the forward tail. Identify which genuinely divergent expansions, if any, arise in new sectors; do not infer them from the local logarithmic monodromy alone.
+\end{enumerate}
+
+\section*{Conclusion}
+\addcontentsline{toc}{section}{Conclusion}
+
+Gamma normalization separates the arithmetic data of order derivatives from their logarithmic singularity. Once that separation is exact, finite dilation filters, holomorphic inversion, and support selection fit together without an uncontrolled asymptotic step. At the half shift the same framework explains both the disappearance and the restoration of inverse sectors, and it identifies a unique analytic order adjustment for which the analytic correction disappears altogether. The resulting local theory is narrower than a general theory of resurgent polylogarithms, but it supplies explicit identities, all-order convergent inverse formulas, a nontrivial arithmetic cancellation mechanism, and a reproducible correction to a source formula.
+
+\begin{thebibliography}{99}\raggedright
+\addcontentsline{toc}{section}{References}
+
+\bibitem{dlmflerch}
+NIST Digital Library of Mathematical Functions, \S25.14, Lerch's transcendent, in particular equations 25.14.3\_1 and 25.14.3\_2. Inspected October 2026. \url{https://dlmf.nist.gov/25.14}.
+
+\bibitem{erdelyi}
+A.~Erd\'elyi, W.~Magnus, F.~Oberhettinger, and F.~G.~Tricomi,
+\emph{Higher Transcendental Functions}, vol.~I, McGraw--Hill, 1953, \S1.11.
+
+\bibitem{bbc}
+D.~H.~Bailey, J.~M.~Borwein, and R.~E.~Crandall,
+\emph{Computation and theory of extended Mordell--Tornheim--Witten sums},
+Mathematics of Computation \textbf{83} (2014), 1795--1821.
+Inspected author-hosted 29-page version, printed pp.~12--13, equations (48)--(54):
+\url{https://carmamaths.org/jon/MTW1.pdf}.
+The correction in Section~\ref{rpt:sec:correction} is scoped to this version.
+
+\bibitem{dlmfhurwitz}
+NIST Digital Library of Mathematical Functions, \S25.11, Hurwitz zeta function; special values, Fourier representations, and derivatives. \url{https://dlmf.nist.gov/25.11}.
+
+\bibitem{dlmfw}
+NIST Digital Library of Mathematical Functions, \S4.13, Lambert $W$-function. \url{https://dlmf.nist.gov/4.13}.
+
+\bibitem{corless}
+R.~M.~Corless, G.~H.~Gonnet, D.~E.~G.~Hare, D.~J.~Jeffrey, and D.~E.~Knuth,
+\emph{On the Lambert W function}, Advances in Computational Mathematics \textbf{5} (1996), 329--359.
+
+\bibitem{dlmfcomplex}
+NIST Digital Library of Mathematical Functions, \S1.10, Functions of a complex variable, including Lagrange inversion and local analytic methods. \url{https://dlmf.nist.gov/1.10}.
+
+\bibitem{edgar}
+G.~A.~Edgar, \emph{Transseries for beginners}, arXiv:0801.4877. \url{https://arxiv.org/abs/0801.4877}.
+
+\bibitem{costingaroufalidis}
+O.~Costin and S.~Garoufalidis, \emph{Resurgence of the fractional polylogarithms}, arXiv:math/0701743. \url{https://arxiv.org/abs/math/0701743}.
+
+\bibitem{repoPoly}
+ProveIt Contributors, \emph{Polylogarithms and their Arithmetic Bridges}, manuscript overview and editorial scope, inspected October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/Polylogarithms/docs/manuscript/README.md}.
+
+\bibitem{repoBridge}
+V.~Reshetnikov, \emph{The Polylogarithm--Polygamma Bridge}, original article source preserved in \repo.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/Polylogarithms/docs/articles/polylog-polygamma-bridge.tex}.
+Used here for the finite Fourier bridge, not for historical experimental nonreduction claims.
+
+\bibitem{repoTrans}
+ProveIt Contributors, \emph{Series and transseries}, group overview and exact/partial formalization crosswalk.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/Transseries/docs/series-and-transseries/README.md}.
+
+\bibitem{repoConfluent}
+\repo, \emph{Confluent Critical Transseries Across the Exponent-Two Boundary}, package description and scope.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/Transseries/docs/series-and-transseries/Confluent_Critical_Transseries_Exponent_Two_Boundary/README.md}.
+
+\bibitem{repoQ}
+\repo, \emph{Certified Inversion Through the q-to-1 Transition}, package description and scope.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/Transseries/docs/series-and-transseries/Certified_Inversion_q_to_1_Transition/README.md}.
+
+\end{thebibliography}
+\end{document}
