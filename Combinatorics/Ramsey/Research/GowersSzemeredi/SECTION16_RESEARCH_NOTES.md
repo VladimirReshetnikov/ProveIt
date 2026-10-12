@@ -5334,6 +5334,51 @@ The interval `14/15<alpha<=1` remains open, as does ordinary integer
 geometry in the unrestricted contextual square corollary. No counterexample
 to either original assertion is claimed. The full goal remains active.
 
+### L.35 Original initial extraction at every density (2026-10-12)
+
+The original numerical Lemma13.6 is now proved for all `0<alpha<=1` and
+every prime modulus. `AllDensityExtractionFidelityAudit` passes over1,546
+native modules, including all120 catalogue companions, every prior fidelity
+audit, and the24 new results. Only the three approved axioms occur. The
+all-density companion has an exact checked type; no eventual-modulus or
+ambient-density restriction is added. The stronger10Q width survives.
+
+`Proofs13DenseFreimanExtension` constructs an affine additive extension of
+any partial order-two Freiman map whose finite abelian-group domain has more
+than two-thirds of the points. Difference maps are well-defined by two-domain
+intersections and additive by three-domain intersections. The cyclic affine
+corollary works over every nonzero modulus; primality is unnecessary here.
+
+At `alpha>14/15`, rows with more than4N/5 points have a height set of size
+more than2N/3. Four such domains share two columns whenN>=5. The vertical
+Freiman relations at these anchors make the coefficient pairs Freiman of
+order two; extending both coefficients gives one bilinear formula on the
+retained pieceB. It has at least `(6alpha-5)N^2` points, and every height-edge
+domain has at least `(12alpha-11)N^2>N^2/5` points. Its vertical phase
+differences have one global affine rule. All claimed masses follow without
+assuming the desired extraction as a premise.
+
+`Proofs13PrintedAllDensities` combines this dense branch with the prior
+range, the existing short-difference selection and tenQ integer budgets.
+The target width is at most one forN<=4, so the already verified singleton
+construction handles those moduli. Original printed Stage13.6 masses now
+supply the original contextual Lemmas13.7--13.9 and square density. No
+counterexample to those original numerical claims is asserted.
+
+The annotated TeX proof replaces its unsupported use of the three-power
+Theorem10.13 estimate. Its corrected theorem keeps the six-power statement
+while the displayed calculation proves the stronger five-power bound.
+The original alpha^3/1000 claim remains explicitly unproved and unrefuted.
+The row-coefficient uniqueness sentence and the preceding coefficient sign
+are also corrected. The rebuilt116-page annotated PDF was inspected at the
+new editorial argument; the original published PDF is preserved.
+
+These results retain modular carrier properness in the intermediate
+Section13 records. The remaining complete semantic/source-fidelity review
+must settle the precise ordinary-integer geometry required by each source
+statement. The full exported-facade build is also incomplete. The source
+inventory count alone does not settle either requirement; the goal stays active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
