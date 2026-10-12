@@ -5033,6 +5033,36 @@ every `k` it stays at `2^(−2^(k+4))`. The polynomial Theorem 16.2 and Corollar
    `2(2(k+3))^(k+3) ≤ 2^(2^(k+4)+1)`.
 4. The Cover modules again, at `(fixDegF, uDegQ)`, and the closed forms.
 
+**L.16j: the dimension-two family exponent, and `d + 4` (plan,
+2026-10-12).** The split recursion squares the family exponent,
+`a_{l+1} ≈ 2^(l+5)·a_l²`, so `log₂ a_l ≈ (log₂ a₂ / 4)·2^l`: the class
+constant is set by the *dimension-two family exponent* `a₂`. The proved
+seed has `a₂ = 2^46` only because `PowerUniformClass.toSplit` sets
+`a = D`. The dimension-two count itself is a fixed-degree polynomial in the
+number `M` of pieces:
+* the base controls are linear in `M`: `famTwoQr M q = 9(Mq + 1)`,
+  `famTwoPb M q r = 3(M·r·q + 1)`;
+* so the samples are `S ≈ 216·M²·q_f/ρ`, and the count
+  `M·max(P_b(S), C(S,2)·P_b(S)²)` is about `M^11·poly(1/(γθρ))`;
+* the width exponent is about `M^(−28)·poly`, from `cubicBaseExponent`
+  and `familyWidthDivisor`.
+
+So the true `a₂` is about `2^5`. With any `a₂ ≤ 2^8`, the invariant
+`2^(l+6)·a_l ≤ 2^(4·2^l)`, `D_l ≤ 2^(4·2^l + 3(l+4)² + 30)` holds (checked on
+the exact values from `(2^5, 2^46)`; `D₂ ≤ 2^154` suffices). The class
+degree is then `4·2^l + 3(l+4)² + 32`, and one step costs `28·2^k + O(k²)`.
+The exact envelope model gives
+* Theorem 18.1 at **`d + 5` for `d ≥ 9`** and **`d + 4` for `d ≥ 13`**;
+* Theorem 18.2 at **`L + 3` for `L ≥ 11`**.
+
+*Plan.*
+1. A dimension-two split class with `a₂ ≤ 2^8`: two-base bounds, in
+   `ν = n + 1` and `W = splitW V θ γ ρ`, for `uniTwoFejerCount` and
+   `uniTwoFejerExp`, in place of the single-base `w^(2^43)`, `w^(2^46)`.
+2. The split invariant with `c = 4` and its class covers.
+3. The Section 18 chain at the new class degree (the `GenParamsQ`
+   generator with `qDeg` replaced), and the closed forms.
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`
