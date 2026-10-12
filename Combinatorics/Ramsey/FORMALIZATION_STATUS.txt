@@ -42,8 +42,8 @@ Scope
   threshold, and the near-one range is broadened to alpha>333/334 with a
   genuine global integer square. ModulusFidelityAudit verifies all six new
   range results over 1,461 modules using only the approved axioms. The
-  large-width branch's genuine integer geometry remains open; no
-  counterexample to the printed Theorem 13.12 is claimed.
+  integer-square audit below now closes the large-width geometry as well;
+  no counterexample to the printed Theorem 13.12 is claimed.
 
   The genuine integer-box residue construction is also proved: canonical
   ascending axes retain the exact carrier and width, and prescribed-step
@@ -61,8 +61,8 @@ Scope
   refinement, and lift-and-slice recurrence. All original thresholds,
   width exponents, diameter constants and common-difference estimates are
   retained. The modulus need not be prime. Their representation gaps are
-  closed; the remaining Section 16 covers and large-width Theorem 13.12
-  rectangle still need genuine integer geometry.
+  closed; the remaining Section 16 cover and structure constructions
+  still need genuine integer geometry.
 
   RectangleFidelityAudit verifies eleven further results over 1,477
   modules, with only the approved axioms. Two proper modular progressions
@@ -71,8 +71,70 @@ Scope
   cells per axis. A subset of relative density delta in their product
   contains a genuine integer rectangle of relative density at least
   delta/4, with both side lengths at least delta*sqrt(m)/16. These results
-  hold over every nonzero modulus. Equal-side extraction and the printed
-  numerical bounds are still needed for the large-width Theorem 13.12.
+  hold over every nonzero modulus. The following audit completes the
+  equal-side extraction and the printed numerical comparisons.
+
+  IntegerSquareFidelityAudit verifies sixteen further results and the
+  exact genuine integer-representative statement of Theorem 13.12 over
+  1,482 modules. Clamped equal-length covers remain inside their parent
+  integer progressions and cover every point. Square extraction retains
+  density delta/16 and any positive side length at most delta*sqrt(m)/16.
+  The already verified Fourier modulus threshold absorbs the width loss,
+  rounding and density loss into the original printed bounds. The theorem
+  holds over every prime modulus, without an additional eventual-modulus
+  restriction. The catalogue companion now uses this genuine theorem.
+  The full native check again verifies all 120 exact catalogue companions,
+  all preceding fidelity audits and all sixteen new results, permitting
+  only propext, Classical.choice and Quot.sound. The source-representation
+  gap in Theorem 13.12 is closed. The remaining Section 16 constructions
+  and complete statement-by-statement source audit keep the goal active.
+
+  PolynomialIntegerFidelityAudit verifies eighteen further simultaneous
+  partition and recurrence results over 1,488 modules. Integer certificates
+  survive the common multiaffine height induction, multilinear conversion,
+  lifting, slicing and rounded root-width rescaling. The genuine profile
+  uses exactly the existing named Schmidt constants, thresholds, exponents
+  and factor-two error bound, in every dimension and over every nonzero
+  modulus. Input boxes may use either integer orientation; every output
+  has an ascending natural-axis certificate. The full native and axiom
+  checks pass, including the exact explicit profile type. These results
+  supply the genuine recurrence input for the remaining Section 16 cover
+  constructions; they do not yet close those constructions.
+
+  RetiledIntegerFidelityAudit verifies eleven further contained-step,
+  product-tiling and retiled-family results over 1,492 modules. Containment
+  of ordinary progressions gives an actual positive integer step ratio
+  and a span bound. Parallel final axes can be tiled at that step with
+  lengths v-1 or v. Integer certificates survive product assembly,
+  flattening and the shared family linearity construction, retaining the
+  same width and frequency-times-step estimates. The explicit genuine
+  recurrence profile supplies its recurrence input. All constructions
+  work over every nonzero modulus; unit steps and short-parent conditions
+  are unnecessary for this integer tiling. Only the approved axioms occur.
+  The following local-cover audit supplies the genuine short-parent
+  construction; the structural induction still needs its faithful
+  lower-dimensional relation-cover hypothesis.
+
+  LocalIntegerFidelityAudit verifies eleven further short-parent, factor
+  and abstract family Lemma 16.6 results, and a separate genuine-box
+  refutation of the uncapped loss quantifier, over 1,498 modules. The
+  factor-eight localization, graph-count bound, deleted mass and explicit
+  polynomial profile constants are retained. Input boxes may use either
+  shared integer orientation; every output has an ascending certificate.
+  The abstract family lemma works over every nonzero modulus. It assumes
+  the faithful lower-dimensional IntegerMultiplyLinearWith cover, as in
+  the structural induction; that global hypothesis is not yet proved.
+  Remaining work includes the genuine base relation cover, the remainder
+  family argument and the Section 16 structural induction.
+
+  The paper's literal unbounded loss quantifier is now visibly corrected
+  to 0<theta<=1. At theta=2, gamma=r=1, a width-two integer box in ZMod 2
+  would require a cell of width at least four, which is impossible. The
+  separate theorem multipleLinearity_uncapped_integer_loss_counterexample
+  checks this with genuine integer input and output boxes. The TeX and
+  annotated PDF document the correction; page 95 was visually inspected.
+  This refutation is separate from the positive catalogue proofs and the
+  accepted explicit-cover correction of Lemma 16.10.
 
   At the preceding completed catalogue checkpoint, all 120
   numbered statement definitions have exact companion proofs, with no
@@ -105,6 +167,16 @@ Scope
 
   Reproduce the production and axiom checks with:
     python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.CompletionAudit
+  Reproduce the latest full integer-fidelity checks with:
+    python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.IntegerSquareFidelityAudit
+  Its exact input hashes and verification results are recorded in:
+    Research/GowersSzemeredi/verification/2026-10-11-integer-square-fidelity.json
+  The polynomial recurrence extension is checked with:
+    python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.PolynomialIntegerFidelityAudit
+  The latest full check, including genuine retiled products, is:
+    python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.RetiledIntegerFidelityAudit
+  The extension through genuine short-parent and family covers is:
+    python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.LocalIntegerFidelityAudit
   The exact input hashes and verification results are recorded in
     Research/GowersSzemeredi/verification/2026-10-11-numbered-and-bounds.json
   The source ledger records every numbered definition, TeX heading lines,
@@ -209,6 +281,17 @@ Verification of the cover route (2026-10-11)
   (degenerate_count_within_le, (2m+1)^(2d*2^k) patterns). These are the
   inputs a single Fejer-kernel selection of order m needs. That selection
   would replace the 2^(2^(k+4)+k+3) of Lemma 15.5 by about (k+5)*2^(k+4).
+  Proofs15FejerSelection proves that selection: fejer_arrangement_restriction
+  is Lemma 15.5 with exponent fejerSelectionExponent k = 2^(k+4)*(k+6), in one
+  stage with a Fejer kernel of order m+1 = 2^(k+4)*ceil(6/(alpha*eta)), and
+  lemma_15_5_of_fejer_restriction recovers the printed Lemma 15.5.
+  Proofs15FejerProduct: fejer_product_restriction is Lemma 15.6 with density
+  (beta*gamma/2)^(fejerProductExponent k), fejerProductExponent k <=
+  2^(5k+14) (printed 2^(2^(k+5))); lemma_15_6_of_fejer_product recovers the
+  printed Lemma 15.6. Propagating this theta_1 through Section 16 (which
+  hardwires section16ThetaOne) is not done; fejer_scale_estimate and
+  fejer_product_of_density_lower (the exact interface Lemma 16.4 consumes)
+  are proved, and notes L.16 give the refactor plan for the full-build machine.
 
 Sharper exponents for Theorems 18.1 and 18.2 — 2026-10-11 (notes L.15)
   The joint-cover envelopes are a quarter of the printed budgets, so:

@@ -4402,6 +4402,141 @@ therefore the printed proof with a general Corollary 15.2 and
 
 Both are light modules, kernel-checked, and use only the standard axioms.
 
+*The Fejér Lemma 15.5, formalized* (`Proofs15FejerSelection`, light,
+standard axioms only). `fejer_arrangement_restriction :
+FejerArrangementRestriction` is the statement of Lemma 15.5 with
+`fejerSelectionExponent k = 2^(k+4)·(k+6)` in place of
+`2^(2^(k+4)+k+3)`, and `lemma_15_5_of_fejer_restriction` recovers the
+printed lemma.
+
+The proof follows the analysis above with one simplification: the bound for
+respected arrangements needs no nondegeneracy, because the multiples `j·ε`
+are valid for every respected arrangement with additive cross-sections. Its
+parts:
+* `fejerKernelWeight` with values in `[0, 1]`;
+* the phase average `fejer_oneStage_average`;
+* `fejerValidRelations_card_good` (`≥ ∑_{j<T}(m+1−j)^M`);
+* `fejerValidRelations_subset_diagonal` (non-respected and not
+  `m`-degenerate gives the diagonal only);
+* Bernoulli's inequality `fejer_ratio_sum_lower` (`≥ (T+1)/2`);
+* the score bound and the choice of phase and subset;
+* `fejer_loss_lower`: `(αη/4)^(M(k+6)) ≤ (M·⌈6/(αη)⌉)^(−M)`.
+
+The Bernoulli averaging, the hyperedge bookkeeping, the parity moment and the
+vertex injectivity are copied from `Proofs15Restriction`, where they are
+private.
+
+*Lemma 15.6 with the Fejér exponent* (`Proofs15FejerProduct`, light,
+standard axioms only). `fejer_product_restriction` is Lemma 15.6 with the
+arrangement density `(βγ/2)^(fejerProductExponent k)`, where
+`fejerProductExponent k = 2^(3k+7)·2^(k+4)·(k+6) ≤ 2^(5k+14)`
+(`fejerProductExponent_le`). The printed density is `(βγ/2)^(2^(2^(k+5)))`.
+`lemma_15_6_of_fejer_product` recovers the printed lemma. This is the
+single-exponential `θ₁` of the L.16 analysis, `log₂ E₁′ ≤ 5k + 14`, now
+proved. What remains is the propagation through Section 16, which hardwires
+the printed `section16ThetaOne`.
+
+*Density-uniform form* (`Proofs15FejerProduct`). The following are also
+formalized, with standard axioms only:
+* `fejer_scale_estimate`: the Fejér selection under
+  `general ≤ scale·N^(17k+15)` and `respected ≥ α·scale·N^(17k+15)`;
+* `fejer_product_of_density_lower`: Lemma 15.6 with only a density lower
+  bound `β·N^(k+1) ≤ |B|`, at exponent `fejerProductExponent k`. This is
+  exactly the form Lemma 16.4 consumes (`lemma_15_6_of_density_lower`).
+
+*Propagation plan (needs full builds; for the Codex machine).*
+1. Add `Section16StructuredPairWith E` to `Section16.lean` (lines 191–205):
+   `Section16StructuredPair` with `(θγ/4)^(2^(E k))`, or simply
+   `(θγ/4)^(E k)`, in place of `section16ThetaOne`. Keep the printed pair
+   as the case `E k = 2^(2^(k+5))`.
+2. In Lemma 16.4 (`Proofs16StructuredExtraction.lean`, lines 36–63), use
+   `fejer_product_of_density_lower` for `k ≥ 1`. Keep
+   `lemma_15_6_zero_of_density_lower` for `k = 0`, whose exponent is the
+   constant `2^19`. This yields `Section16StructuredPairWith
+   fejerProductExponent`.
+3. Thread `E` through the consumers of `section16ThetaOne` (88 modules,
+   483 lines). The degree bookkeeping depends on `E` only through:
+   * `stepP = 2^(2^(k+5)+6) = 64·E`;
+   * `fixDeg = 2^(k+5) + 7 = log₂ E + 7`;
+   * the Bohr exponent `stepT` and the exponent of `s`, composed across
+     dimensions (Caveat 1);
+   * the dimension-two seed `2^132`.
+
+   With `E′ = fejerProductExponent k ≤ 2^(5k+14)`, all of these become
+   `O(k)` or `O(k²)` in log-degree.
+4. Rerun `models/model_fejer.py` with the exact new inputs to fix the tight
+   class constant: about 26 under the conservative composed-`s` scaling.
+   The seed must stay at log-degree ≤ 120. Then re-derive the envelopes and
+   Theorems 18.1, 18.2 and 18.7 at `d + 6` / `L + 4`.
+
+Steps 1–3 make about 600 modules stale, so per the user's directive they
+run on the machine that does the full builds.
+
+**L.16b: the Bohr exponent `s` is not forced, and θ₁ alone is not enough
+(analysis, 2026-10-12).** Caveat 1 of L.16 guessed how `s` scales from the
+printed degrees. The corpus says exactly what Section 16 needs.
+
+*What `s` must satisfy.* Theorem 16.2's `s = multipleS θ γ k` enters the
+class route (route II) in two unrelated roles:
+1. **Bohr radius `ζ = 2^(−s)`** (`section16Zeta`). The only upper bound on
+   `ζ` is `ζ ≤ section10Zeta(θ₁/4)`, used for Lemma 16.5
+   (`section16_zeta_le_section10Zeta`). It follows from
+   `section16_radius_exponent_budget`:
+   `s ≥ 2^83/(θ₁/4)^11 = 2^105·(2b)^(11A) ≤ b^(22A+105)`, with
+   `b = 2/(θγ)` and `A` the θ₁ exponent. The other uses need only:
+   * `s ≥ 1` (`Proofs16ShortScale`, `Proofs16Lemma6Parameters`);
+   * `ζ ≤ 1/2` or `ζ ≤ 1/32`, that is `s ≥ 5` (`Proofs16AbstractFamily`,
+     `Proofs16LocalizationBudget`, `Proofs16LocalizedThreshold`);
+   * `s ≥ 2^(40(k+1)³+1)`, the Section 5 polynomial-partition threshold
+     (`section16_polynomial_threshold_radius_margin`). The tight choice
+     already gives `s ≥ 2^(22A+105)`, and `22A ≥ 2^(4k+15) > 40(k+1)³`;
+   * or a threshold, where a smaller `s` helps. The printed `s = b^(A²)` (`A² = 2^(2^(k+6))`) is
+   therefore generous by a square: `b^(22A+105)` suffices.
+2. **The relation count `R = (2^k−1)·γ^(−2)·s(2^(−k−2)θ, γ, k)`** of
+   Lemma 16.9 (`section16Lemma9R`). This is the count from the inductive
+   Theorem 16.2 in dimension `k`. On route II the face counts come from the
+   classes, so this `s` is not the Bohr exponent and can stay printed.
+
+How this was checked: 59 of the 491 ancestors of `Proofs16ClassStep` mention
+`section16Zeta`. They were searched for bounds on `multipleS` and for upper
+bounds on `ζ`, and nothing else turned up. A search is not a proof: the
+parameterized build (below) is what will confirm the list.
+
+*Model* (`models/model_tight_s.py`). Same exact mirror as L.16, with Bohr
+degree `stepT = 22A + 105` and the dimension-two seed
+`2^(log₂ stepT(1) + 4)`, Bohr-dominated as in L.16:
+
+| θ₁ | `s` | seed | class constant | envelope max | headline |
+|---|---|---|---|---|---|
+| printed | printed | `2^132` | 66.1 | `467·2^k` | `d+7` / `L+5` (formalized) |
+| printed | tight | `2^72` | 51.1 | `380·2^k` | `d+7` / `L+5` |
+| Fejér | tight | `2^26` | 11.1 | `125·2^k` | **`d+5` / `L+3`** |
+
+*Reading the table.*
+* **Both are needed.** A tight `s` alone gains nothing, and the Fejér θ₁
+  with the printed seed gains nothing either (L.16 sensitivity).
+* **Together they give one level more than L.16 predicted.** The
+  `d + 5` / `L + 3` margin is thin at `k = 3, 4, 5`: the envelope reaches
+  `0.979` of the `128·2^k` budget at `k = 4`. It is `0.77` asymptotically,
+  and the class constant used is the uniform supremum (11.06; the
+  per-dimension values fall to 7.8). Read `d + 5` / `L + 3` as likely,
+  pending exact Lean bounds. `d + 6` / `L + 4` has a margin of about 2.
+* Through L.15g–L.15h, `d + 5` / `L + 3` would give Theorem 1.3 with
+  `2^(−2^(k+3))` and `W(k, r) ≤ 2^2^r^2^2^(k+3)`.
+
+*Revised propagation plan.* Steps 1–3 of L.16 apply, and the Bohr radius
+must be decoupled too. Carry the class route with
+`ζ′ = 2^(−s′)`, `s′ = 2^83/(θ₁′/4)^11`, in place of `section16Zeta`,
+discharging Lemma 16.5's radius condition with the same comparison. Keep
+`section16Lemma9R` printed.
+
+The class route is light (it built locally), but parameterizing it touches
+about 59 + 47 modules. There are two ways to do it:
+* edit the originals to take `(θ₁, ζ)` as parameters, with the printed
+  values as an instance: clean, but a roughly 600-module cascade, so a job
+  for the full-build machine;
+* make parallel copies: local, but it duplicates about 20k lines.
+
 *Propagation (model).* `models/model_fejer.py` mirrors the split-class
 recursion of `Proofs16SplitStepBounds` exactly (`splitStepA`, `splitStepD`).
 Its θ₁-driven inputs are:
@@ -4680,6 +4815,161 @@ the rectangle must be converted to equal-length sides while preserving integer
 geometry, and the losses must be absorbed into the printed bounds. The final
 Szemeredi conclusions have unconditional checked proofs; this intermediate
 statement-fidelity work is not evidence that those conclusions are false.
+
+## L.24 Genuine Theorem 13.12 over every prime modulus (2026-10-11)
+
+`Proofs13IntegerEqualCover` covers a length-`L` integer progression by
+length-`m` progressions, for `0 < m <= L`, using index starts
+`min (j*m) (L-m)`. The final block stays inside the parent; no endpoint
+points are lost. The total capacity is at most `2*L`. The existing product
+cover averaging argument then retains one quarter of the density in an
+equal-length square. Together with L.23, `Proofs13IntegerSquareExtraction`
+retains density `delta/16` at any prescribed positive length at most
+`delta*sqrt(m)/16`. The axes have one positive integer step, lie in `[0,N)`,
+and remain subsets of the original modular axes. These constructions need
+only a nonzero modulus.
+
+`Proofs13IntegerSquareBounds` checks all losses against the original source
+constants. Put `A = (2/alpha)^(2^53)`, `e = (1/2)^A` and
+`delta = (alpha/2)^(2^42)`. Away from the near-one range, the printed
+exponent `epsilon` is at most `e/4`. The threshold ensuring
+`32 <= delta*N^(e/4)` is at most `exp(exp((2/alpha)^(2^54)))`, the same
+threshold already sufficient for the Fourier extraction. It follows that
+`ceil(N^epsilon) <= delta*sqrt(m)/16` for the raw square of length
+`m >= N^e`. The density loss is absorbed by
+`(alpha/2)^(2^76) <= delta/16`. Generic real inequalities keep the enormous
+printed powers out of polynomial tactic normalization.
+
+`Proofs13IntegerPrintedTheorem.theorem_13_12_integer_all_prime` combines
+this construction with the previously verified small-width and near-one
+integer squares. It proves the printed size, density, common nonzero step,
+global bilinear restriction and Fourier lower bound over every prime
+modulus, with genuine integer representatives for both axes. The exact
+proposition `theorem_13_12_integer_representatives` has a checked companion.
+The existing numbered catalogue companion now derives from that proof.
+No extra eventual-modulus condition and no weakened numerical bound remain.
+
+`IntegerSquareFidelityAudit` checks all sixteen new public theorems and
+their transitive axioms in a native 1,482-module closure. All 120 numbered
+companions and all preceding fidelity audits pass again; only `propext`,
+`Classical.choice` and `Quot.sound` occur. This closes Theorem 13.12's
+representation gap, not the remaining Section 16 geometry or the complete
+source-fidelity audit of every intermediate paper statement.
+
+## L.25 Genuine polynomial simultaneous recurrence profiles (2026-10-11)
+
+`Proofs05IntegerSimultaneousStep` and
+`Proofs05IntegerSimultaneousPartition` retain ascending natural-axis
+certificates throughout the shared monomial-height induction. The residue
+partition, common Schmidt multiplier and transported lower-height cells
+are unchanged numerically. Arbitrarily many phases, including an empty
+family, share a partition with the original polynomial dependence on
+family size, minimum width and image diameter.
+
+`Proofs16IntegerSimultaneousRecurrence` lifts all phases by a coordinate
+and slices with the same adjacent-point diameter estimate. It preserves
+the factor `2^(k+1)` and then absorbs it into the same exponent rescaling,
+retaining error `2*N/H`. `Proofs16IntegerPolynomialRecurrence` applies the
+existing rounded-power scale without additional loss.
+
+`Proofs16IntegerExplicitRecurrence` uses the existing named constants
+`multiaffinePartitionK` and `multiaffinePartitionP` in the same induction.
+The resulting `IntegerSection16RecurrenceProfileWith` has exactly the
+`familyRecThr` and `familyRecExp` used by the quantitative structural
+induction. Canonicalization handles genuine input boxes in either shared
+orientation and preserves the carrier and width; output cells are ascending
+integer boxes. No primality assumption is needed. No supplied partition or
+geometric conclusion is assumed in the explicit profile theorem.
+
+`PolynomialIntegerFidelityAudit` checks eighteen new public theorems and
+the exact explicit profile over 1,488 native modules. Only `propext`,
+`Classical.choice` and `Quot.sound` occur. The remaining Section 16 task
+is to retain these certificates through short-parent covers, final-axis
+tiling, family linearization and the structural cover induction. The
+polynomial profile alone does not prove those faithful cover statements.
+
+## L.26 Genuine contained-step tiling and retiled family linearity (2026-10-11)
+
+`Proofs16IntegerContainedSteps` proves that an ordinary progression `R`
+with at least two points, contained in an ordinary progression `B`, has
+step `p * B.step` for a positive natural `p`, with
+`p * (R.length-1) <= B.length-1`. The first two points give the step
+ratio, and the first and last points give the span bound. Natural steps
+in `[0,N)` are less than `N` when the progression has two points, so
+equality of modular steps recovers equality of these actual integer steps.
+Canonical reduction also reflects carrier containment.
+
+If `I` is an ordinary progression parallel to `B` and at least as long,
+the same span bound supplies the prescribed-step budget for tiling `I`
+into progressions of lengths `v-1` or `v`. The target partition covers all
+points and every cell has `R.step`. This is independent of the modulus.
+
+`Proofs16IntegerProductTiling` proves that casting a natural partition
+inside `[0,N)` preserves the exact partition. Appending each final-axis
+cell to an ascending integer base box retains an ascending certificate and
+minimum width `v-1`. Unlike the relative modular-step construction, this
+integer construction needs no prime modulus, unit step or short-parent
+condition; the natural containment and parallelism suffice.
+
+`Proofs16IntegerRetiledRecurrence` retains the recurrence estimate when
+the base partition is retiled along an ordinary final axis. The output
+boxes and their base projections have ascending integer certificates;
+their final axes have genuine representatives. Product assembly and
+flattening preserve the original width, support and frequency-times-step
+estimates. The common frequency graphs give one partition on which every
+family member is linear. `IntegerSection16RecurrenceProfileWith.retiled_family`
+connects this construction to the actual explicit profile of L.25.
+
+`RetiledIntegerFidelityAudit` checks eleven new public theorems over
+1,492 native modules, with only the three approved standard axioms. This
+closes the final-axis tiling and retiled-family certificate propagation
+for the displayed integer parents. The remaining Section 16 work must
+produce those parents in genuine short-parent relation covers and retain
+the certificates through the family and structural cover induction. The
+full statement-by-statement source-fidelity audit is also still pending.
+
+## L.27 Genuine short-parent covers and abstract family Lemma 16.6 (2026-10-11)
+
+`Proofs16IntegerShortParents` transports the existing bounded natural
+interval chunks through each ascending axis. Product assembly retains
+one positive integer difference, exact partitions, widths at least `r`
+and axis lengths in `[r,2r)`. Quarter-scale localization then preserves
+the original lower width `m/8`, half-modulus bound and final-axis length
+bound, without a square-scale assumption.
+
+`Proofs16IntegerLocalCover` defines `IntegerMultiplyLinearWith` on genuine
+integer input boxes, with ascending integer output cells. Combining its
+covers over a partition retains the original graph-count bound, good-set
+mass and width exponent. Its short-parent construction supplies actual
+integer parents and refined cells with the same factor-eight width budget.
+These are consequences of the lower-dimensional cover hypothesis, not a
+proof that every product relation already satisfies that hypothesis.
+
+`Proofs16IntegerBoxFactors` proves the singleton, projection and canonical
+factor certificates. `Proofs16IntegerFamilyLemma6` normalizes either input
+orientation, uses the genuine short-parent cover, recovers equality of
+natural parent and final-axis steps, and invokes the explicit genuine
+retiled family profile. Flattening retains the common partition, all
+family linearity conclusions and the same polynomial profile width.
+`integerAbstractFamilyLemma166At_explicit` uses the existing named Schmidt
+constants, with no supplied recurrence assumption. The lemma requires only
+a nonzero modulus. The faithful global base and structural cover induction
+remain to be proved, together with the family remainder construction.
+
+The source audit also found that the existing
+`multipleLinearity_uncapped_loss_counterexample` had not been reflected
+visibly in the TeX. `Proofs16IntegerLossRange` now separately proves the
+refutation with genuine integer input and output boxes: at `theta=2` and
+`gamma=r=1`, the width-two box in `ZMod 2` requires a cell of width at least
+four. The paper's definition and Theorem 16.2 now display the parameter
+ranges already used by Lean, with an editorial explanation. The annotated
+PDF was rebuilt twice and page 95 visually inspected; the original
+published PDF is preserved.
+
+`LocalIntegerFidelityAudit` checks eleven new positive theorems and the
+new genuine-box refutation over 1,498 native modules. It also checks the
+existing refutation separately. Only `propext`, `Classical.choice` and
+`Quot.sound` occur. No refutation is counted as a positive companion proof.
 
 ## F. Routes
 

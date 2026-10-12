@@ -1,5 +1,21 @@
 # fastunknot 0.3.0: braid and structural certificates with optional shared backends
 
+`normal_cut_cells.normal_cut_cell_complex(source, coordinates)` now retains
+the complete raw three-dimensional cut in binary CW families, including
+interior vertices, edge gaps, source-face regions, cut chambers and oriented
+attachments. Its immutable source charts make the packet reconstructible.
+Use `record_certificate=True` and
+`normal_cut_cells_verify.verify_normal_cut_cell_complex` for independent
+source replay. It starts no orbit discovery and uses only the standard library.
+All 1,599 maintained tests pass with Regina and no skips. The full audit
+matches 1,755 explicit cut homologies over F2/F3 and 110 saved proofs replay
+with producers disabled. The complete construction/serialization task has
+ratio 25.792x at 4,096 meridian copies against the measured labelled Regina
+cut representation; small-input regressions are retained. Theory, exact
+encoded-cost bounds and scope are in [`cut_cells.tex`](../synthesis/cut_cells.tex).
+Raw cut cells are available; parallelity removal, a bounded core and the
+general quasi-polynomial recognition proof remain open.
+
 `normal_cut_boundary.normal_cut_boundary(source, coordinates)` now returns
 the full cut boundary in binary polygon, edge and vertex families, with
 oriented attaching cycles and carriers into cut chambers. It computes every
