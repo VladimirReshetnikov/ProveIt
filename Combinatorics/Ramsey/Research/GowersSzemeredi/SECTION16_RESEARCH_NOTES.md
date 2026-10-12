@@ -4950,6 +4950,21 @@ the family piece cover to certify, per member, only that member's
 candidates. A proof would be a new form of
 `section16_family_piece_large_box_profile` with per-member counts.
 
+*Audit: (PR) does not propagate through this lift.* Suppose (PR) holds in
+dimension `k`. The family lift still splits its loss as `τ/|ι|` per member,
+so every member samples `S ∝ |ι| = M` slices. A member's slices are covered
+inside the joint slice relation of `n·S` members, and its per-relation count
+there grows with that family's size. So the per-member counts in dimension
+`k + 1` grow with `M`, and (PR) fails one level up. Weighting the loss by
+domain (bad mass `≤ 2τ′·|D_c|`) does not help: the `M = n·m` piece domains
+overlap with multiplicity of order `n`. The model's `--per-member` run is
+therefore an upper estimate for a lift that does not exist yet. Two things
+are needed at once:
+* a sampling scheme whose per-member sample size does not grow with the
+  number of members sharing the good set;
+* the per-relation count property for the slice cover.
+Until both are found, `d + 6` / `L + 4` stands as the limit.
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`
