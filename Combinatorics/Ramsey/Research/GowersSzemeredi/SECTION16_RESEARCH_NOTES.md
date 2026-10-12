@@ -6772,6 +6772,35 @@ The source-fidelity ledger deliberately remains open until this audit passes;
 the revised paper is a draft pending that gate. The expanded downstream target
 is IntegerOriginalCorollaryFidelityAudit, followed separately by the facade.
 
+### L.50. Comparing the numbered widths with integer polynomial covers (draft, 2026-10-12)
+
+The new Lemma 16.6 draft pads the natural graph budget to the floor of the
+source's real budget. This budget dominates both explicit recurrence-profile
+constants C and p. For q at least C,p and k>=1, the numerical comparison is
+
+    2 * (2*p*(q+1)^(2*2^(k+1))) * (2*C*(q+1)+1)
+      <= ((k+1)^2*2^(k+4))^(2^(k+1)*q).
+
+It converts the polynomial width to the numbered width at every input scale.
+The proof splits according to whether the numbered width is at most one;
+otherwise, its positive power of the input size absorbs the polynomial
+prefactor. Positive integer cell widths absorb the singleton case. Thus no
+new modulus-size threshold is needed for this comparison.
+
+The draft `lemma_16_6_integer_representatives` retains ascending integer
+output boxes and the annotated graph/width bounds. Its covering premise is
+`IntegerMultiplyLinear`, which explicitly uses boxes with integer
+representatives. It does not derive ordinary-box covers from a modular-only
+premise. The density and loss parameters remain in (0,1], and the proof uses
+no primality assumption. A second draft carries this result through the
+two-stage partition in Lemma 16.9, retaining separate spectrum and remainder
+graph counts and the annotated k+1 ambient dimension on the remainder side.
+
+These drafts are not yet counted as proved statements. The serial native
+Lemma 16.6 audit is queued behind the current-source Corollary 16.11 audit;
+the Lemma 16.9 draft will be checked after its new prerequisite passes.
+The source-fidelity ledger and paper are unchanged by these drafts.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
