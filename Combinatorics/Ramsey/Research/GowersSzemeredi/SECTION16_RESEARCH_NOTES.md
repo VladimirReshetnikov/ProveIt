@@ -6553,6 +6553,34 @@ reading with no largeness assumption. The source ledger keeps that distinction.
 The paper's replacement bookkeeping accounts for lost good degenerate
 arrangements as well as the additional bad ones.
 
+### L.46. Every-prime selection and the positive-real union obstruction (2026-10-12)
+
+`lemma_15_5_printed_threshold_all_primes` removes the separate oddness
+hypothesis. The density identity implies beta<=1, and the respected-count
+lower bound together with the arrangement upper bound implies alpha<=1.
+Consequently the threshold left side is at least3 while t*beta^15<=1,
+forcing N>=3. This argument requires no primality; primality is used only
+to infer oddness and apply the already proved selection theorem.
+
+`IsMultilinear.multiplyLinearFunction_diagonal` proves a global multilinear
+graph is (s,s)-multiply linear for every real s>0. The scaled base in its
+control functions is exactly theta, so the one-graph cover and original box
+satisfy both bounds. This permits an explicit native counterexample to
+`lemma_16_8_with_positive_iteration`: over ZMod2, take the constant zero and
+one graphs, dimension1, D=2^512, and gamma=s=1/(8D). At loss1/2, the union's
+graph budget is (4^D)^(2s)=4^(1/4)<2, but both values must be covered on the
+nonempty surviving subset of a singleton box. The unrestricted positive-real
+interpretation is false; the positive natural iteration-count interpretation
+and corrected real s>=1 theorem are unaffected.
+
+SelectionIterationCoreAudit passed123 native modules with only the standard
+axioms. The new audit also checks the corrected union theorem. The downstream
+selection-threshold audit was yielded at a completed-module boundary to check
+these scope obligations, then resumed with the new combined target and its
+compiled cache retained. Completion of that broader audit is recorded
+separately. The displayed15.5 threshold and positive-real16.8 refutation are
+now settled; original15.5 without a largeness hypothesis remains open.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

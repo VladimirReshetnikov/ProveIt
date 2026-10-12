@@ -2,7 +2,7 @@
   "date": "2026-10-12",
   "scope": "Incremental statement-level comparison of actual hypotheses, numerical bounds and geometric meaning. This is separate from the120-companion kernel audit and does not claim completion of unreviewed entries. Current annotated source and original stronger claims are distinguished.",
   "paper": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
-  "paper_sha256": "c308bd44994e20ef50d80e4dc93c85d21ef1e96fc803e61bdc828a90d3043b49",
+  "paper_sha256": "f7c469e1d0bf6ec8064b4450f5962e2f55834b727af7d877bffd50a67930e8a7",
   "reviewed_sections01_03_sha256": "d7926af871dbe1323494485a38310b78721b436601eef937dbe41b3dd3782589",
   "statement_count": 120,
   "reviewed_statement_count": 120,
@@ -2009,14 +2009,19 @@
           "name": "lemma_15_5_printed_threshold",
           "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15PrintedThreshold.lean",
           "line": 11
+        },
+        {
+          "name": "lemma_15_5_printed_threshold_all_primes",
+          "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15ThresholdAllPrimes.lean",
+          "line": 66
         }
       ],
       "status": "displayed_explicit_threshold_verified_original_no_largeness_scope_open",
-      "native_audited_companion": "lemma_15_5_printed_threshold",
-      "evidence": "The exact annotated threshold t*beta^15*N>=3^(2^(k+4))*k is now natively proved for k>=1 and odd prime N, including eta=1, by lemma_15_5_printed_threshold. The dyadic margin is at least three times t, absorbing both good and bad degenerate-arrangement losses. The generic scale threshold is max3(Cdeg/(t*scale)); a height-zero version holds over arbitrary cyclic groups with its separate exceptional constant. The original reading without any modulus-largeness condition remains open, without a counterexample claim.",
+      "native_audited_companion": "lemma_15_5_printed_threshold_all_primes",
+      "evidence": "The exact annotated threshold t*beta^15*N>=3^(2^(k+4))*k is natively proved for k>=1 and every prime N, including eta=1. selection_printed_threshold_three_le derives N>=3 from the other hypotheses, removing the separate oddness premise. The dyadic three-target margin absorbs both good and bad degenerate-arrangement losses. The generic scale threshold is max3(Cdeg/(t*scale)); a height-zero version holds over arbitrary cyclic groups with its separate exceptional constant. The original reading without any modulus-largeness condition remains open, without a counterexample claim.",
       "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
       "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
-      "additional_native_audit": "Combinatorics/Ramsey/Research/GowersSzemeredi/verification/2026-10-12-selection-threshold.json"
+      "additional_native_audit": "Combinatorics/Ramsey/Research/GowersSzemeredi/verification/2026-10-12-selection-iteration.json"
     },
     {
       "statement": "lemma_15_6",
@@ -2187,7 +2192,7 @@
     {
       "statement": "lemma_16_8",
       "source_heading_lines": [
-        3658
+        3661
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 575,
@@ -2196,18 +2201,24 @@
           "name": "lemma_16_8_holds",
           "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16Union.lean",
           "line": 157
+        },
+        {
+          "name": "lemma_16_8_positive_iteration_counterexample",
+          "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16PositiveIteration.lean",
+          "line": 144
         }
       ],
-      "status": "iteration_correction_verified_zero_refutation_verified",
+      "status": "corrected_iteration_count_verified_zero_and_positive_real_variants_refuted",
       "native_audited_companion": "lemma_16_8_holds",
-      "evidence": "The corrected companion requires real s>=1 and covers finite unions and sums, including empty families. Proofs16Union.lemma_16_8_zero_iteration_counterexample refutes the variant with no lower bound. The source prose also asserts failure at sufficiently small positive s, but the defined lemma_16_8_with_positive_iteration has no located theorem companion; that additional refutation remains to be kernel-checked. The iteration-count interpretation of s is distinct from unrestricted real s.",
+      "evidence": "The corrected companion requires real s>=1 and covers finite unions and sums, including empty families. Proofs16Union refutes the zero-parameter variant. Proofs16PositiveIteration now natively refutes lemma_16_8_with_positive_iteration using two constant graphs over ZMod2 in dimension1, gamma=s=1/(8*2^512), and loss1/2. Each graph satisfies the positive diagonal parameter; the union needs two graphs but its budget is4^(1/4)<2. This settles the previously unverified positive-real counterexample. It does not refute the natural positive iteration-count interpretation.",
       "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
-      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean"
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
+      "additional_native_audit": "Combinatorics/Ramsey/Research/GowersSzemeredi/verification/2026-10-12-selection-iteration.json"
     },
     {
       "statement": "lemma_16_9",
       "source_heading_lines": [
-        3670
+        3673
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 749,
@@ -2227,7 +2238,7 @@
     {
       "statement": "lemma_16_10",
       "source_heading_lines": [
-        3734
+        3737
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 912,
@@ -2247,7 +2258,7 @@
     {
       "statement": "corollary_16_11",
       "source_heading_lines": [
-        3775
+        3778
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 976,
@@ -2267,7 +2278,7 @@
     {
       "statement": "lemma_17_1",
       "source_heading_lines": [
-        3831
+        3834
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 38,
@@ -2288,7 +2299,7 @@
     {
       "statement": "proposition_17_2",
       "source_heading_lines": [
-        3856
+        3859
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 48,
@@ -2309,7 +2320,7 @@
     {
       "statement": "lemma_17_4",
       "source_heading_lines": [
-        3897
+        3900
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 91,
@@ -2329,7 +2340,7 @@
     {
       "statement": "corollary_17_5",
       "source_heading_lines": [
-        3901
+        3904
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 103,
@@ -2349,7 +2360,7 @@
     {
       "statement": "corollary_17_6",
       "source_heading_lines": [
-        3905
+        3908
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 117,
@@ -2369,7 +2380,7 @@
     {
       "statement": "proposition_17_7",
       "source_heading_lines": [
-        3940
+        3943
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 140,
@@ -2390,7 +2401,7 @@
     {
       "statement": "theorem_18_1",
       "source_heading_lines": [
-        4065
+        4068
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 171,
@@ -2420,7 +2431,7 @@
     {
       "statement": "theorem_18_2",
       "source_heading_lines": [
-        4117
+        4120
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 190,
@@ -2450,7 +2461,7 @@
     {
       "statement": "corollary_18_7",
       "source_heading_lines": [
-        4132
+        4135
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 203,
@@ -2507,5 +2518,6 @@
   "reviewed_sections17_18_sha256": "74027961cd05b94022c2e298ae96bc5ddd5b17425143725c2ba2fbc24c68922f",
   "review_complete_is_not_goal_complete": "All120 numbered entries have now been compared at statement level. Many original bounds, characteristic ranges, geometry-and-bound combinations and native counterexamples remain open as recorded per entry. goal_complete stays false.",
   "new_phase_scope_kernel_status": "PhaseDegreeCoreAudit passed16 native modules; the post-merge PhaseDegreeFidelityAudit passed1672, including incoming Fejer-JM bounds. Both Section17 refutations are certified. The exported facade is running separately.",
-  "new_selection_threshold_kernel_status": "SelectionThresholdCoreAudit passed12 native modules. The displayed15.5 threshold is certified; the expanded downstream fidelity audit is running separately."
+  "new_selection_threshold_kernel_status": "SelectionThresholdCoreAudit passed12 native modules. The displayed15.5 threshold is certified; the expanded downstream fidelity audit is running separately.",
+  "new_selection_iteration_kernel_status": "SelectionIterationCoreAudit passed123 native modules, including all-prime15.5 and the positive-real16.8 counterexample. SelectionIterationFidelityAudit resumes the downstream graph from its retained cache; the facade remains a separate pending check."
 }
