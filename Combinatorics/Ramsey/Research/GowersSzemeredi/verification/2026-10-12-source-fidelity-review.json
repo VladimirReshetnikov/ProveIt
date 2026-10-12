@@ -5,8 +5,8 @@
   "paper_sha256": "1fcd9b08223924626bfae7d0c73044ee8226b14f5978a9439c5908e96ec6799d",
   "reviewed_sections01_03_sha256": "d7926af871dbe1323494485a38310b78721b436601eef937dbe41b3dd3782589",
   "statement_count": 120,
-  "reviewed_statement_count": 100,
-  "unreviewed_statement_count": 20,
+  "reviewed_statement_count": 108,
+  "unreviewed_statement_count": 12,
   "goal_complete": false,
   "geometry_conventions": {
     "modAP_IsProper": "Carrier cardinality equals parameter length, recording injection only. The comment now accurately allows wrapping; ordinary integer representatives are tracked by the stronger geometric predicate.",
@@ -2047,8 +2047,11 @@
           "line": 109
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "lemma_16_1_holds"
+      "status": "integer_geometry_and_corrected_recurrence_verified",
+      "native_audited_companion": "lemma_16_1_holds",
+      "evidence": "The catalogue recurrence has K=(k+1)^2*2^(k+4), exponent K^(-2^(k+1)*q), and the corrected Weyl-derived width threshold. Proofs16IntegerLemma1.lemma_16_1_integer_representatives_holds supplies the same conclusions with positive-step integer representatives for every input and output box; modular injectivity alone is not used as evidence of integer geometry. The stronger original Weyl threshold remains a separate Section5 obligation.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean"
     },
     {
       "statement": "theorem_16_2",
@@ -2069,8 +2072,11 @@
           "line": 116
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "theorem_16_2_explicit"
+      "status": "printed_controls_with_integer_geometry_verified_all_primes",
+      "native_audited_companion": "theorem_16_2_explicit",
+      "evidence": "Proofs16IntegerPrintedStructure.theorem_16_2_integer_representatives_holds gives the printed multipleS/multipleQ/multipleC controls in every dimension, for every prime modulus with no N0 hypothesis. It uses IntegerMultiplyLinearWith and the source positive parameter range 0<gamma,theta<=1. The relation cardinality and product-property hypotheses match. Its proof uses the separate polynomial-cover route, not the refuted packaged Lemma16.10.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean"
     },
     {
       "statement": "lemma_16_3",
@@ -2086,8 +2092,11 @@
           "line": 26
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "lemma_16_3_holds"
+      "status": "integer_base_case_verified_all_primes",
+      "native_audited_companion": "lemma_16_3_holds",
+      "evidence": "Theorem162IntegerAt1 follows by specializing theorem_16_2_integer_representatives_holds. This includes ordinary integer box geometry and all prime moduli, with the same controls and positive capped parameter range as Theorem16.2.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean"
     },
     {
       "statement": "lemma_16_4",
@@ -2120,8 +2129,11 @@
           "line": 96
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "lemma_16_5_holds"
+      "status": "corrected_mass_verified_original_coefficient_recovery_pending",
+      "native_audited_companion": "lemma_16_5_holds",
+      "evidence": "The canonical coefficient is2^-27*theta1^6, whereas the published PDF prints2^-22*theta1^6. The weighted sidelength mass theta1/4*N^(17k+15), large-spectrum threshold2^-37*(theta1/4)^(11/2)*N^(k+1), and radius2^-s match the current annotated context. Proofs16PrintedSelectedMass prepares recovery of2^-22 using the already proved alpha^5/20000 version of Theorem10.13 and theta1<=1/9; it awaits native checking. This retains the corrected theta1=(theta*gamma/4)^E and does not resolve the original stronger Lemma16.4 density.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean"
     },
     {
       "statement": "lemma_16_6",
@@ -2222,8 +2234,11 @@
           "line": 97
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "corollary_16_11_explicit"
+      "status": "corrected_exponent_integer_geometry_verified_original_combination_open",
+      "native_audited_companion": "corollary_16_11_explicit",
+      "evidence": "The canonical section16CorollaryExponent is (alpha/8)*multipleC(r^-1*alpha/8,alpha/2,k)^r, not the published (alpha/2)^(2^(2^(k+9))). Proofs16IntegerPrintedCorollary proves that corrected exponent with integer representatives for all primes and all k>=1, without N0. Despite the filename Printed, this does not by itself prove the original numerical exponent with integer geometry. Separate polynomial-cover results give stronger modular-box bounds; combining the original numerical conclusion with the required integer geometry remains an explicit obligation until verified.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean"
     },
     {
       "statement": "lemma_17_1",
@@ -2351,8 +2366,11 @@
           "line": 43
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "theorem_18_1_explicit"
+      "status": "printed_exponent_and_integer_partition_verified",
+      "native_audited_companion": "theorem_18_1_explicit",
+      "evidence": "The source assumes a prime cyclic modulus from its standing context, 0<alpha<=1/2 and sufficiently large N. The balanced function, average cell size N^(alpha^(2^(2^(k+10)))) and total discrepancy alpha^(2^(2^(k+10)))*N match. Proofs18IntegerInverseLowDegrees.theorem_18_1_integer_representatives_holds supplies positive-step integer representatives in[0,N), resolving the distinction from the weaker canonical ModAP.IsProper. theorem_18_1_integer_d7 strengthens10 to7 in every degree. This is independent of unproved original intermediate estimates.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean"
     },
     {
       "statement": "theorem_18_2",
@@ -2378,8 +2396,11 @@
           "line": 58
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "theorem_18_2_explicit"
+      "status": "printed_final_statement_verified",
+      "native_audited_companion": "theorem_18_2_explicit",
+      "evidence": "Compared source quantifiers and right-associated exponent chain directly with Sections17_18.theorem_18_2: every0<delta<=1/2, positive k, integer N above2^(2^((delta^-1)^(2^(2^(k+9))))), and finite A contained in[1,N] with cardA>=delta*N. HasNatAP explicitly supplies natural a,d with d>0 and all k terms in A. theorem_18_2_explicit proves this exact proposition unconditionally; it has no unproved recurrence, structural or uniformity premise. The historical numbered-and-bounds native audit checks its exact type and only propext,Classical.choice,Quot.sound. The current broader audit refresh is still running.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean"
     },
     {
       "statement": "corollary_18_7",
@@ -2405,8 +2426,11 @@
           "line": 63
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "corollary_18_7_explicit"
+      "status": "printed_two_color_statement_verified",
+      "native_audited_companion": "corollary_18_7_explicit",
+      "evidence": "The source really labels this18.7. Its five powers of two ending in k+9 agree with twoColorThreshold. HasMonochromaticAP requires a positive natural difference, every term inside[1,N], and one fixed color. corollary_18_7_explicit proves the exact statement for every positive length and every two-coloring. The historical numbered-and-bounds audit certifies this companion; the broader current refresh is not yet complete.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean"
     }
   ],
   "reviewed_section05_sha256": "3f118fab3f573eac21345ffda1f57ab211273bc23861d700b228a8aed7bf18ac",
@@ -2433,5 +2457,7 @@
   "reviewed_section12_sha256": "fc21ac0e49cd99be4f4874c910f24404c5b511b8cb95505bb9c6f4d637cbb1cf",
   "reviewed_section13_sha256": "e74ee2328b9b0d68a3c6f007ac7cf921eac9271134a31ed9f681795e013a174b",
   "reviewed_sections14_15_sha256": "825a463ac702ac86cfbfd6c3198dc89129de4c92b6e028690ca4c54e5364a376",
-  "new_scope_proofs_kernel_status": "WalshScopeCoreAudit queued behind the confirmed-live full1652-module audit; no new all-prime/counterexample completion claim yet."
+  "new_scope_proofs_kernel_status": "WalshScopeCoreAudit is queued behind the confirmed-live full audit. Boolean, characteristic-two, endpoint and original16.5 coefficient drafts are not yet certified.",
+  "reviewed_section16_sha256": "a39792df29795e9903fded3cd460efbcd0e80d7e695d8958d741538deb73aba3",
+  "reviewed_sections17_18_sha256": "74027961cd05b94022c2e298ae96bc5ddd5b17425143725c2ba2fbc24c68922f"
 }
