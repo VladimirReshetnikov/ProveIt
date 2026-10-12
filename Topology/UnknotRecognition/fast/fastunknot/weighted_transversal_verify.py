@@ -4,7 +4,7 @@ from collections import defaultdict
 from math import gcd
 
 from .integer_codec import encoded_integer
-from .weighted_orbit_verify import (verify_weighted_orbit_certificate, _initial_weights, _canonical_pairings,
+from .weighted_orbit_verify import (_check_weighted_certificate,
     _contract_weights, _translation_fold, _reflection_fold, _move_interval, _InvalidWeightedProof)
 
 
@@ -75,7 +75,7 @@ def _reverse_tags(size, pairs, runs, trace, dimension, check):
             cuts = sorted({lo, hi, *(a for a in anchors if lo < a < hi)})
             for first, last in zip(cuts, cuts[1:]): lifted.append((restore(first), restore(last-1)+1, value))
         selected = _coalesce(lifted+emitted, check)
-    return selected
+    return selected, dict(histogram)
 
 
 def verify_weighted_orbit_transversal(size, pairings, weight_intervals, certificate, *, dimension=None, check=None):
@@ -84,8 +84,17 @@ def verify_weighted_orbit_transversal(size, pairings, weight_intervals, certific
     try:
         if type(certificate) is not dict or set(certificate) != {'schema', 'weighted_certificate', 'representative_runs'} or certificate['schema'] != 'weighted-orbit-transversal-v1': return False
         weighted = certificate['weighted_certificate']; source_pairs = list(pairings)
-        if not verify_weighted_orbit_certificate(size, source_pairs, weight_intervals, weighted, dimension=dimension, check=poll): return False
-        size = encoded_integer(size); dimension, runs = _initial_weights(size, weight_intervals, dimension, poll)
+        actual = []
+        def replay(size, pairs, runs, trace, dimension, check):
+            selected, histogram = _reverse_tags(size, pairs, runs, trace, dimension, check)
+            actual.extend(selected)
+            return histogram
+        # Even one orbit needs label replay: conservation determines its weight,
+        # but does not authenticate a proposed original representative.
+        if not _check_weighted_certificate(
+                size, source_pairs, weight_intervals, weighted, dimension=dimension, check=poll,
+                replay_weights=replay, single_orbit_shortcut=False): return False
+        size = encoded_integer(size); dimension = encoded_integer(weighted['dimension'])
         proposed = certificate['representative_runs']
         if type(proposed) is not list: return False
         decoded = []
@@ -99,6 +108,5 @@ def verify_weighted_orbit_transversal(size, pairings, weight_intervals, certific
             if not 0 <= lo < hi <= size: return False
             if decoded and (lo < decoded[-1][1] or lo == decoded[-1][1] and value == decoded[-1][2]): return False
             decoded.append((lo, hi, value))
-        actual = _reverse_tags(size, _canonical_pairings(size, source_pairs), runs, weighted['orbit_proof']['operations'], dimension, poll)
         return decoded == actual
     except _InvalidWeightedProof: return False
