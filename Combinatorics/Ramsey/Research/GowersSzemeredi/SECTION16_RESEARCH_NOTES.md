@@ -6885,8 +6885,9 @@ modules from its import closure.
 FinalProofSimplificationAudit has compiled the original quantitative final
 theorem, both headline consequences and the stronger coloring bounds through
 the simplified inputs, checking only propext, Classical.choice and Quot.sound.
-The serial invocation is finishing a separate compatibility check of the old
-length-six module. A complete facade check remains separate. The ongoing
+The serial native invocation passes all 1,404 modules, including the separate
+compatibility check of the old length-six module. A complete facade check
+remains separate. The ongoing
 objective is to shorten and simplify the final proof while preserving its
 statement and bounds; this first reduction does not close that objective.
 
