@@ -1248,6 +1248,7 @@ import GowersSzemeredi.Proofs17PrimeRange
 import GowersSzemeredi.Proofs17CharacteristicTwo
 import GowersSzemeredi.Proofs17PrintedDegreeCounterexample
 import GowersSzemeredi.Proofs17ZeroDensity
+import GowersSzemeredi.Proofs15PrintedThreshold
 
 import GowersSzemeredi.Proofs18TightClassesFejerM
 import GowersSzemeredi.Proofs18CoverModulusFejerJM
