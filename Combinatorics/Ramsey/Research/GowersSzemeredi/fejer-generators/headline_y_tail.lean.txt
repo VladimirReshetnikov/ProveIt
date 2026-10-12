@@ -1,0 +1,125 @@
+/-! ### Closed forms -/
+
+theorem envStepY_le_tight {k : Nat} (hk : 15 ≤ k) (μ : Nat) :
+    envStepY k (tightMu0Z k) (genMuKZ k) μ ≤
+      μ + 15 * 2 ^ (k - 1) + 9 * (k + 4) ^ 2 + 7 * k + 64 := by
+  unfold envStepY GenParamsZ.densDegZ GenParamsZ.expDegZ GenParamsZ.rhoDegZ tightMu0Z tightMuW
+    genMuKZ pDeg
+  rw [tDegZ_eq_of_ge hk]
+  have := Nat.lt_two_pow_self (n := k - 1)
+  generalize (k + 4) ^ 2 = s
+  generalize 2 ^ (k - 1) = y at *
+  omega
+
+theorem polyGenMuY_fifteen : polyGenMuY 15 + 4 * 15 + 128 ≤ 16 * 2 ^ 15 := by decide +kernel
+
+theorem polyGenMuY_le16 : ∀ k, 15 ≤ k → polyGenMuY k + 4 * k + 128 ≤ 16 * 2 ^ k := by
+  intro k hk
+  induction k, hk using Nat.le_induction with
+  | base => exact polyGenMuY_fifteen
+  | succ k hk ih =>
+    rw [polyGenMuY_succ (by omega)]
+    have h1 := envStepY_le_tight (k := k + 1) (by omega) (polyGenMuY k)
+    have h2 := thirtytwo_sq_le_two_pow_fourteen k (by omega)
+    have h4 : 7 * k + 80 ≤ (k + 5) ^ 2 := by nlinarith
+    rw [show k + 1 + 4 = k + 5 by ring, show k + 1 - 1 = k by omega] at h1
+    rw [pow_succ]
+    generalize (k + 5) ^ 2 = s5 at *
+    generalize 2 ^ k = x at *
+    omega
+
+/-! The envelopes in dimensions `5, …, 14`, kernel-evaluated. -/
+
+theorem polyGenMuY_small16 {k : Nat} (h1 : 13 ≤ k) (h2 : k ≤ 14) :
+    polyGenMuY k + 1 ≤ 16 * 2 ^ k := by
+  interval_cases k <;> decide +kernel
+
+theorem polyGenMuY_fit16 {k : Nat} (hk : 13 ≤ k) : polyGenMuY k + 1 ≤ 16 * 2 ^ k := by
+  rcases Nat.lt_or_ge k 15 with h | h
+  · exact polyGenMuY_small16 hk (by omega)
+  · have := polyGenMuY_le16 k h
+    have h16 : 16 * 2 ^ k ≤ 16 * 2 ^ k := Nat.mul_le_mul_right _ (by norm_num)
+    omega
+
+theorem polyGenMuY_small32 {k : Nat} (h1 : 8 ≤ k) (h2 : k ≤ 14) :
+    polyGenMuY k + 1 ≤ 32 * 2 ^ k := by
+  interval_cases k <;> decide +kernel
+
+theorem polyGenMuY_fit32 {k : Nat} (hk : 8 ≤ k) : polyGenMuY k + 1 ≤ 32 * 2 ^ k := by
+  rcases Nat.lt_or_ge k 15 with h | h
+  · exact polyGenMuY_small32 hk (by omega)
+  · have := polyGenMuY_le16 k h
+    have h16 : 16 * 2 ^ k ≤ 32 * 2 ^ k := Nat.mul_le_mul_right _ (by norm_num)
+    omega
+
+theorem polyGenMuY_small64 {k : Nat} (h1 : 5 ≤ k) (h2 : k ≤ 14) :
+    polyGenMuY k + 1 ≤ 64 * 2 ^ k := by
+  interval_cases k <;> decide +kernel
+
+theorem polyGenMuY_fit64 {k : Nat} (hk : 5 ≤ k) : polyGenMuY k + 1 ≤ 64 * 2 ^ k := by
+  rcases Nat.lt_or_ge k 15 with h | h
+  · exact polyGenMuY_small64 hk (by omega)
+  · have := polyGenMuY_le16 k h
+    have h16 : 16 * 2 ^ k ≤ 64 * 2 ^ k := Nat.mul_le_mul_right _ (by norm_num)
+    omega
+
+/-! ### The headline statements -/
+
+/-- **Theorem 18.1 at every degree `d ≥ 15` with `d + 2`**, from the profiles
+with polynomial family constants. -/
+theorem theorem_18_1_d2_fifteen_le_of_profiles_poly (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k)
+    (hp : ∀ k, 0 < pc k)
+    (hrec : ∀ k, 1 ≤ k →
+      Section16RecurrenceProfileWith k (familyRecThr k (Kc k) (pc k)) (familyRecExp k (pc k)))
+    (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ (4 * k + 16)))
+    {Kφ : Real} {pφ : Nat} (hpp : ProgressionPhasePartition Kφ pφ) (hpφ : 0 < pφ)
+    (hKφ : Kφ ≤ 2 ^ pφ) (hpφB : (pφ : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64))
+    {d : Nat} (hd : 15 ≤ d) : Theorem181AtSharp 2 d := by
+  have henv := polyEnvBound_allY Kc pc hK hp hrec hconst hpp hpφ hKφ hpφB (d - 2) (by omega)
+  rw [show d - 2 + 2 = d by omega] at henv
+  refine theorem181AtSharp_of_polyEnvBound henv ?_
+  have hle := polyGenMuY_fit16 (k := d - 2) (by omega)
+  have h2 : 2 ^ (d + 2) = 16 * 2 ^ (d - 2) := by
+    rw [show d + 2 = (d - 2) + 4 by omega, pow_add]; ring
+  rw [h2]
+  exact hle
+
+/-- **Theorem 18.1 at every degree `d ≥ 10` with `d + 3`**, from the profiles
+with polynomial family constants. -/
+theorem theorem_18_1_d3_ten_le_of_profiles_poly (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k)
+    (hp : ∀ k, 0 < pc k)
+    (hrec : ∀ k, 1 ≤ k →
+      Section16RecurrenceProfileWith k (familyRecThr k (Kc k) (pc k)) (familyRecExp k (pc k)))
+    (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ (4 * k + 16)))
+    {Kφ : Real} {pφ : Nat} (hpp : ProgressionPhasePartition Kφ pφ) (hpφ : 0 < pφ)
+    (hKφ : Kφ ≤ 2 ^ pφ) (hpφB : (pφ : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64))
+    {d : Nat} (hd : 10 ≤ d) : Theorem181AtSharp 3 d := by
+  have henv := polyEnvBound_allY Kc pc hK hp hrec hconst hpp hpφ hKφ hpφB (d - 2) (by omega)
+  rw [show d - 2 + 2 = d by omega] at henv
+  refine theorem181AtSharp_of_polyEnvBound henv ?_
+  have hle := polyGenMuY_fit32 (k := d - 2) (by omega)
+  have h2 : 2 ^ (d + 3) = 32 * 2 ^ (d - 2) := by
+    rw [show d + 3 = (d - 2) + 5 by omega, pow_add]; ring
+  rw [h2]
+  exact hle
+
+/-- **Theorem 18.1 at every degree `d ≥ 7` with `d + 4`**, from the profiles
+with polynomial family constants. -/
+theorem theorem_18_1_d4_seven_le_of_profiles_poly (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k)
+    (hp : ∀ k, 0 < pc k)
+    (hrec : ∀ k, 1 ≤ k →
+      Section16RecurrenceProfileWith k (familyRecThr k (Kc k) (pc k)) (familyRecExp k (pc k)))
+    (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ (4 * k + 16)))
+    {Kφ : Real} {pφ : Nat} (hpp : ProgressionPhasePartition Kφ pφ) (hpφ : 0 < pφ)
+    (hKφ : Kφ ≤ 2 ^ pφ) (hpφB : (pφ : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64))
+    {d : Nat} (hd : 7 ≤ d) : Theorem181AtSharp 4 d := by
+  have henv := polyEnvBound_allY Kc pc hK hp hrec hconst hpp hpφ hKφ hpφB (d - 2) (by omega)
+  rw [show d - 2 + 2 = d by omega] at henv
+  refine theorem181AtSharp_of_polyEnvBound henv ?_
+  have hle := polyGenMuY_fit64 (k := d - 2) (by omega)
+  have h2 : 2 ^ (d + 4) = 64 * 2 ^ (d - 2) := by
+    rw [show d + 4 = (d - 2) + 6 by omega, pow_add]; ring
+  rw [h2]
+  exact hle
+
+

@@ -1,3 +1,36 @@
+# Lambert moments and exact logarithmic coefficients
+
+October 12, 2026 (Pacific). Section 1.8 integrates the incoming marginal
+inverse chart and every fixed-order logarithmic coefficient correction.
+It proves a single Gamma-moment formula for each correction polynomial,
+a differential recurrence, and an explicit third centered correction.
+An exact Laplace representation for powers of the selected Lambert inverse
+gives a Gamma-density convolution identity. The rational chart coefficients
+have exact pole orders and Catalan principal parts. The classical Lambert
+convention and related probability literature are credited; no priority
+claim is made.
+
+Independent symbolic checks compare both correction formulas through order
+eight, verify eight derivative recurrences and five exact pole orders by
+implicit recursion at the rational diagnostic A=2. Quadrature at 60 and
+90 digits checks twelve Laplace and nine convolution cases per precision.
+Four corruption controls pass. Numerical quadrature is not interval
+certification; all-order status rests on the written analytic proofs.
+
+Final pages 144/130/249/86 (609 total), combined 566,
+147 references. All four volumes compile independently. Coupled volume and
+combined builds converge without final gate issues; 49 external PDF
+destinations resolve. Manual review opens 11 changed volume bodies and
+6 unmatched combined bodies. Exact raster comparison retains
+598 prior volume bodies and 553 prior combined bodies, with
+7 further combined bodies matched to freshly reviewed volume pages.
+Only centered footer numbers are excluded, with other content bounds
+audited. No current contact sheet was opened.
+
+All PDFs retain ProveIt Contributors authorship. Original report evidence
+is unchanged. Nonmarginal critical charts and joint crossover branches
+remain separate integration work. No Lean or remote-CI claim is made.
+
 # Quadratic feedback and finite Bessel coefficient identities
 
 October 12, 2026 (Pacific). Section 1.7 develops an exact finite

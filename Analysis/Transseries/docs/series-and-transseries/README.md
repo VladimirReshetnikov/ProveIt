@@ -2673,3 +2673,9 @@ retain separate canonical integration tasks. Section 1.7 of the collective
 Polylogarithms manuscript now incorporates the phase classification and
 physical threshold, and develops finite Bessel-polynomial coefficient and
 order-spectrum identities. The Transseries volumes have not been rebuilt.
+
+The collective Polylogarithms manuscript's Section 1.8 now also integrates
+the boundary-completion report's marginal Lambert chart and all logarithmic
+coefficient corrections. Its continuation gives exact Catalan principal
+parts and Gamma-moment formulas, plus a proved Laplace/convolution identity.
+Nonmarginal inverse charts and joint crossover branches remain separate work.

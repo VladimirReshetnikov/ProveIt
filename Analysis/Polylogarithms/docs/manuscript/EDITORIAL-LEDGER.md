@@ -1149,3 +1149,33 @@ all logarithmic corrections and joint crossover refinements retain
 subsequent integration scopes. Local complex folds still do not establish
 global accessibility from the Taylor germ. The manuscript author remains
 ProveIt Contributors; no publication-priority, Lean or interval claim is made.
+
+## Lambert moments and marginal inverse synthesis, October 12, 2026 (Pacific)
+
+Section 1.8 integrates the order-three Lambert inverse chart and the complete
+fixed-order logarithmic coefficient calculus from the twenty-second report.
+Its exact finite Lagrange extraction has rational coefficient functions; the
+collective continuation proves that every pole-order bound is attained and
+computes the Catalan principal part.
+
+A direct Bromwich calculation proves a Laplace identity for every positive
+power of the selected inverse of T-log(T), and Laplace uniqueness gives an
+exact Gamma-density convolution identity. The report's finite logarithmic
+transfer formula collapses to one Gamma moment for each correction polynomial.
+The manuscript gives the differential recurrence and the third centered
+polynomial explicitly, with classical Lambert conventions and related
+probability literature credited. No priority claim is made.
+
+Independent symbolic checks cover correction orders zero through eight,
+eight derivative recurrences and five exact poles via an implicit recursion
+at rational diagnostic A=2. Two precisions check twelve Laplace and nine
+convolution integrals apiece; four corruption controls pass. The all-order
+statements rest on the written proofs, and the numerical integrals are not
+interval enclosures.
+
+The marginal chart and core expansions converge. The transferred coefficient
+series is asserted only to each fixed asymptotic order. In particular, its
+small-parameter Watson integral is truncated: extending the transferred
+density to an integral over the whole positive axis would diverge.
+Nonmarginal critical charts and joint crossover branches remain pending.
+Original reports and their recorded evidence are unchanged.

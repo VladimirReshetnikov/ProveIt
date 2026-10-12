@@ -5308,6 +5308,54 @@ X) give `theorem_18_1_d2_sixteen_le_of_profiles_poly` (`d ≥ 16`) and
 (`model_z.py`) shows that more exact entries gain nothing: tables to `16`, `18`
 and `20` give the same thresholds.
 
+**L.16p: the partition constant charged at `2^(k+9)` (2026-10-12).** The step
+lemma charges `32·polynomialPartitionConstant (k+2) ≤ 2^(4(k+3)²+5)` at
+`X^(2^(4(k+3)²+4))`, which costs `4(k+3)²` per step in the doubly logarithmic
+scale. Since `4(k+3)² + 5 ≤ 2^(k+9)`, `X^(2^(k+9))` suffices, and a step costs
+`k + 19` there. `Proofs18CoverFejerHeadlineY` (light, `assemble_y.py`, built on
+the Z chain) gives:
+* `theorem_18_1_d2_fifteen_le_of_profiles_poly` (`d + 2`, `d ≥ 15`);
+* `theorem_18_1_d3_ten_le_of_profiles_poly` (`d + 3`, `d ≥ 10`);
+* `theorem_18_1_d4_seven_le_of_profiles_poly` (`d + 4`, `d ≥ 7`).
+
+The envelopes are kernel-evaluated for `k = 5..14`, and the invariant holds
+from `k = 15`.
+
+Theorem 18.2 does not gain. Its inverse-step threshold (`inv_thr_le_ex`)
+raises the refinement constant to the power `polynomialPartitionConstant`, so
+there `log₂ C` is a genuine cost. The model's first `L` predictions omitted
+that branch and were wrong. Even the sharper `log₂ C ≤ 2(d+1)²` changes no
+`L` threshold (`model_q2.py`).
+
+**L.16q: joint slices (plan, 2026-10-12).** With every parameter lever
+exhausted, each further sharpening is structural. The thresholds do not move
+under a sharper base budget (`3k + 10`), under a smaller dimension-two degree
+(`2^41`), or with the polynomial step terms removed (`model_s2.py`,
+`model_seed46.py`). A step pays three class degrees: one in `ρ₁` (the joint
+vertex covers) and two in the density `θ·c(c(θ))` (`dens_step`). The second
+pair arises because the single-piece lift applies the dimension-`k` slice
+provider to the anchor section `φ(·, a)`, and then to `φ(·, b)` *inside the
+first agreement set* (`single_piece_lift_core_rem`, step 3). The two slice
+covers (`hMLs a`, `hMLs b`) are available in `single_piece_lift_global_cover`,
+and `remainder_piece_of_vertex_covers` already composes several covers at one
+precision. Composing the two anchor slices jointly at `θ₁` costs
+`θ₁/(2·Q_a·Q_b)` with width `min(w_a, w_b)` in place of `c(c(θ₁))`, so it
+saves one class degree per step. Model (`model_joint.py`): envelope ratio
+15 → 10, which gives
+* Theorem 18.1: **`d + 4` in every degree** (from `d = 4`, with degrees
+  `0..3` at `c = 4`), `d + 3` from 9, `d + 2` from 12;
+* Theorem 18.2: `L + 0` from 15, `L + 1` from 12, `L + 2` from 9.
+
+`d + 1` stays out of reach, since the ratio 10 is above 8.
+
+Work plan:
+1. a joint-slice variant of the line-cell lemma taking the two slice covers;
+2. a core-lift variant;
+3. the global-cover lift and the inverse step;
+4. the envelope chain with density `θ·c_J(θ)` (one slice degree), generated
+   from the Y/Z chains;
+5. the bridge.
+
 The model (`models/model_w_chain.py`) puts the method's limits here. The
 asymptotic ratio `24` is below `32` but above `16`, so `d + 2` and `L + 0`
 need a smaller class constant beyond the table, and the true one is about
