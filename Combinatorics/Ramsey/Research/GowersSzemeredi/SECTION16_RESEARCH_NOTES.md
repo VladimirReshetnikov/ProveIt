@@ -6891,6 +6891,34 @@ remains separate. The ongoing
 objective is to shorten and simplify the final proof while preserving its
 statement and bounds; this first reduction does not close that objective.
 
+### L.54. Shared coloring argument and progression prefixes (in verification, 2026-10-12)
+
+The two-color case and the arbitrary finite-color case now share one
+application of Mathlib's real-valued finite pigeonhole principle. The full
+two-color consequence reuses the single-length consequence instead of
+repeating the progression extraction. The new color-class module passes
+its six-module native check; the changed consequences compile in the serial
+final audit, which is still checking the stronger bounds. The explicit
+Section 18 bridges now import only the recurrence inputs they use.
+
+A separate candidate removes the nontrivial short-length cases from the
+printed final theorem. For k>=2, apply the improved L+5 theorem at
+L=max(k,6). Since L+5<=k+9, the original threshold is sufficient, and a
+prefix of the resulting progression has length k. For k=1, positive density
+and the positive threshold give a point of the set. The candidate has exactly
+the original theorem_18_2 type and uses the general covering theorem only
+at lengths at least six. Its module is Proofs18CoverPaddedFinal, with a native
+check queued behind the coloring audit. It is not yet the canonical final
+proof and is not yet counted as verified. Its current import closure is
+1,206 local modules, compared with 1,214 for the already shortened printed
+final module; further separation of long- and short-length imports may
+remove additional unused results.
+
+Next: finish both native checks, audit the candidate's axioms, and use the
+verified shorter route as the final theorem's implementation if it remains
+simpler under the full dependency comparison. The simplification goal stays
+active; no weakening of the final statement or numerical bound is intended.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
