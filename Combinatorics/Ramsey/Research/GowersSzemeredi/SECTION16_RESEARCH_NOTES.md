@@ -4791,6 +4791,38 @@ companions and all preceding fidelity audits pass again; only `propext`,
 representation gap, not the remaining Section 16 geometry or the complete
 source-fidelity audit of every intermediate paper statement.
 
+## L.25 Genuine polynomial simultaneous recurrence profiles (2026-10-11)
+
+`Proofs05IntegerSimultaneousStep` and
+`Proofs05IntegerSimultaneousPartition` retain ascending natural-axis
+certificates throughout the shared monomial-height induction. The residue
+partition, common Schmidt multiplier and transported lower-height cells
+are unchanged numerically. Arbitrarily many phases, including an empty
+family, share a partition with the original polynomial dependence on
+family size, minimum width and image diameter.
+
+`Proofs16IntegerSimultaneousRecurrence` lifts all phases by a coordinate
+and slices with the same adjacent-point diameter estimate. It preserves
+the factor `2^(k+1)` and then absorbs it into the same exponent rescaling,
+retaining error `2*N/H`. `Proofs16IntegerPolynomialRecurrence` applies the
+existing rounded-power scale without additional loss.
+
+`Proofs16IntegerExplicitRecurrence` uses the existing named constants
+`multiaffinePartitionK` and `multiaffinePartitionP` in the same induction.
+The resulting `IntegerSection16RecurrenceProfileWith` has exactly the
+`familyRecThr` and `familyRecExp` used by the quantitative structural
+induction. Canonicalization handles genuine input boxes in either shared
+orientation and preserves the carrier and width; output cells are ascending
+integer boxes. No primality assumption is needed. No supplied partition or
+geometric conclusion is assumed in the explicit profile theorem.
+
+`PolynomialIntegerFidelityAudit` checks eighteen new public theorems and
+the exact explicit profile over 1,488 native modules. Only `propext`,
+`Classical.choice` and `Quot.sound` occur. The remaining Section 16 task
+is to retain these certificates through short-parent covers, final-axis
+tiling, family linearization and the structural cover induction. The
+polynomial profile alone does not prove those faithful cover statements.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
