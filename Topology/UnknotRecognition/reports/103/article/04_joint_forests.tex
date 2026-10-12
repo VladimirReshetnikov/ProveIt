@@ -1,0 +1,317 @@
+\section{Joint forest selection in the abstract occurrence model}
+\label{sec:joint}
+
+The top-handle theorem allows many possible deletion trees. The rows left
+behind can differ, so it is natural to ask whether a tree can be chosen to
+make the subsequent one/two-handle cancellation easy. This section solves
+an exact abstract version of that problem. The geometric constraint in the
+next section is indispensable when interpreting the answer.
+
+\subsection{Raw occurrences, saturation, and peeling}
+
+Fix the primal forest used to cancel the zero/one-handle forest. The
+remaining one-handles have labels $C$, and the original two-handles have
+labels $E$. Let
+\[
+ a_{ec}\in\mathbb Z_{\geq0}
+\]
+be the actual unsigned number of passages of the attaching curve of $e$
+through the cocore of $c$. These are geometric occurrences, not freely
+reduced words or signed exponent sums. For the native core they are obtained
+by counting the dimension-one flags of the source attaching cycles after
+omitting the primal forest columns.
+
+\begin{definition}[Unit-column peeling]
+For a live row set $R\subseteq E$, a pivot $(e,c)$ is a unit-column pivot
+if $e\in R$ and
+\[
+ \sum_{f\in R} a_{fc}=a_{ec}=1.
+\]
+Peeling this pivot deletes row $e$. The other rows remain unchanged, and
+column $c$ becomes zero. A row set is peelable if all its rows can be
+deleted this way.
+\end{definition}
+
+Put $b_{ec}=\min(2,a_{ec})$. Every unit-column predicate on every row
+subset is unchanged by this entrywise saturation: a nonnegative sum is one
+exactly when it consists of one unit contribution and otherwise zeros. We
+therefore use $b$ for peeling, retaining $a$ when integral or mod-two chain
+information is needed.
+
+A nonempty row set $Z$ is a \emph{stopping set} if each of its column sums
+is zero or at least two. Its first row can never be peeled, even with other
+rows present. Conversely, a stalled peeling process leaves a stopping set.
+Unions of stopping sets are stopping sets, so their largest union is the
+canonical residual. These statements and the equivalence with complete
+positive raw cancellation are prior results in the incoming
+\emph{Stopping Cores} report~\cite{incoming-stopping}. The present paper
+uses them within that exact positive model. Allowing geometric slides with
+intersection cancellation or changing the cocore system is a different
+problem.
+
+No arbitrary columns may be discarded. If private bundle columns are
+omitted, an independent geometric projection theorem must already justify
+the omission, as in the saturated-bundle work. The combinatorial theorems
+below can be used on any designated matrix, but a manifold interpretation
+requires an authenticated producer for precisely that matrix.
+
+\subsection{Short rows form a graph}
+
+Call $e$ short if $\sum_c b_{ec}\leq2$. Introduce an auxiliary ground
+vertex $\omega$, distinct from the cap-graph root $\rho$. The occurrence
+multigraph $H$ has vertices $C\cup\{\omega\}$ and one labelled edge for
+every short row:
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Nonzero entries of the short row & Its edge in $H$\\
+\midrule
+One unit at $c$ & $c\omega$\\
+Two units at distinct $c,d$ & $cd$\\
+One entry at least two at $c$ & A loop at $c$\\
+No entries & A loop at $\omega$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The last case is necessary: an empty two-handle row cannot be deleted by a
+one/two-handle pivot. Parallel edges and loops are genuine cycles.
+
+\begin{lemma}[Graphic peeling criterion]
+\label{lem:graphic}
+A set of short rows $R$ is completely peelable if and only if $H[R]$ is a
+forest.
+\end{lemma}
+
+\begin{proof}
+At a nonground vertex, the graph degree equals the saturated column sum,
+with a loop counted twice. A nonempty forest component has at least two
+leaves. At most one leaf is $\omega$, so there is a nonground degree-one
+vertex and therefore a legal unit-column pivot. Removing its edge preserves
+the forest, and induction peels every row.
+
+Conversely, the edges of any cycle form a stopping set. At every nonground
+vertex their degree is zero or at least two. This includes an interior
+loop, a loop at $\omega$, and a two-edge cycle of parallel edges. None of
+these edge sets can have a first peeled row.
+\end{proof}
+
+\subsection{The two-forest criterion}
+
+First suppose every row is short, and let $G$ be the connected cap graph on
+the same edge label set $E$. By \cref{lem:rooted}, a complete top schedule
+deletes a spanning tree $F$ of $G$. Its complement must be an $H$-forest if
+the residual rows are to peel.
+
+\begin{theorem}[Abstract joint forest criterion]
+\label{thm:joint}
+For connected $G$ and short-row graph $H$, the following are equivalent:
+\begin{enumerate}
+\item There is a spanning tree $F$ of $G$ such that $H[E\setminus F]$ is
+a forest.
+\item $E$ is a disjoint union of a $G$-forest and an $H$-forest.
+\item For every $Y\subseteq E$,
+\begin{equation}
+ |Y|\leq r_G(Y)+r_H(Y).
+ \label{eq:rank-test}
+\end{equation}
+\end{enumerate}
+A deterministic polynomial-time procedure finds the two schedules or a
+subset violating \eqref{eq:rank-test}.
+\end{theorem}
+
+\begin{proof}
+The first condition immediately gives the second. Given a partition into
+forests $I_G,I_H$, extend $I_G$ to a spanning tree by moving edges from
+$I_H$. If $I_G$ does not yet span, connectedness of $G$ supplies an edge of
+$I_H$ between different $I_G$ components. Adding it preserves the
+$G$-forest; removing it preserves the $H$-forest. Repeat. This proves the
+first condition and gives the two schedules by \cref{lem:rooted,lem:graphic}.
+
+Intersecting a forest partition with $Y$ proves necessity of
+\eqref{eq:rank-test}. Sufficiency is the two-matroid partition theorem of
+Edmonds--Fulkerson~\cite[Theorem 1c]{edmondsfulkerson}. For completeness,
+the explicit augmenting proof and its witness are given below.
+\end{proof}
+
+Now let
+\[
+ D=\{e:\textstyle\sum_c b_{ec}>2\},\qquad E_0=E\setminus D.
+\]
+Consider the restricted strategy that requires all rows of $D$ to be
+deleted by the top-handle forest. This is a restriction of the strategy,
+not a necessary condition for raw cancellation. The single row $(1,1,1)$
+is already peelable.
+
+\begin{corollary}[Forced long rows]
+\label{cor:forced}
+The restricted strategy is possible exactly when $G$ is connected,
+$G[D]$ is a forest, and for all $Y\subseteq E_0$,
+\begin{equation}
+ |Y|\leq r_G(Y\cup D)-|D|+r_H(Y).
+ \label{eq:forced-rank}
+\end{equation}
+Here $H$ is the short-row graph on $E_0$. When $D$ is independent, the first
+two terms on the right are $r_{G/D}(Y)$.
+\end{corollary}
+
+\begin{proof}
+A spanning tree can contain $D$ only when $D$ is a forest. Contracting this
+forest identifies spanning trees containing $D$ with spanning trees of
+$G/D$. Graphic matroid contraction has rank
+$r_{G/D}(Y)=r_G(Y\cup D)-r_G(D)$, and $r_G(D)=|D|$.
+Apply \cref{thm:joint}. Contraction can create loops and parallel edges;
+they remain in the instance.
+\end{proof}
+
+\subsection{A constructive proof with a failure certificate}
+\label{sec:augment}
+
+Write $G'=G/D$, with $D=\varnothing$ in the unforced case. Maintain
+disjoint sets $I_0,I_1\subseteq E_0$, independent in $G'$ and $H$,
+respectively. All other edges are unassigned. An edge $e\notin I_i$ is an
+$i$-sink if adding it to $I_i$ preserves a forest. Otherwise its endpoints
+are joined by the unique path in the forest $I_i$. Draw an exchange arc
+$e\to f$ for each path edge $f$. For a loop this path has no edges and
+there is no exchange arc.
+
+Run breadth-first search in this exchange digraph, starting at every
+unassigned edge. If a shortest source-to-sink path
+$e_0,e_1,\ldots,e_\ell$ is found, put its terminal edge into its sink
+forest. For every $j<\ell$, assign $e_j$ to the old forest of
+$e_{j+1}$. The number of assigned edges increases by one.
+
+Here is an explicit independence argument. Represent graph edges by their
+endpoint incidence vectors over $\F$. Forest edge vectors are independent.
+For an incoming edge $e_j$, its expansion in its target forest has
+coefficient one on $e_{j+1}$. It has coefficient zero on every later
+removed edge $e_{k+1}$ of that same forest, $k>j$: otherwise there would be
+an exchange arc skipping part of the shortest path. The matrix of these
+coefficients on the removed edges is triangular with diagonal one.
+Replacing the removed forest edges by the corresponding incoming edges
+therefore preserves the old span and independence. No earlier path vertex
+was a sink, since that would give a shorter path. The terminal edge lies
+outside the old span of its sink forest and increases its rank by one.
+This proves the augmentation rule.
+
+If no sink is reachable, let $Y$ be the reached edge set and $U$ the
+unassigned set. Then $U\subseteq Y$. Every fundamental path reached in
+either forest lies entirely in $Y$. Consequently
+\[
+ r_i(Y)=|I_i\cap Y|\quad(i=0,1),\qquad
+ |Y|-r_0(Y)-r_1(Y)=|U|.
+\]
+When $U\ne\varnothing$ this is a violated rank inequality. It also proves
+optimality of the current partial partition: any two-forest union has size
+at most
+\[
+ |E_0\setminus Y|+r_0(Y)+r_1(Y)=|E_0|-|U|,
+\]
+and the current partition attains this value. When $U=\varnothing$, all
+edges are assigned and the desired full partition has been found.
+
+For $m_0=|E_0|$ and $v=|V(G')|+|V(H)|$, the simple implementation has at
+most $m_0$ augmentations. Each search visits at most $m_0$ edge labels and
+uses ordinary forest-path traversals. Its conservative structural bound is
+\[
+ O\bigl(m_0^2(v+m_0)+m_0^3\log(m_0+2)\bigr).
+\]
+Integer parsing, label comparisons, and source authentication are additional
+polynomial bit costs. Large occurrence values are compared with two, never
+expanded into repeated crossings by this planner.
+
+\subsection{An exact residual-deficiency theorem}
+
+When the restricted strategy cannot finish, its failure need not be reported
+only as a boolean. Assume $G$ is connected and $D$ is a forest. Define
+\begin{equation}
+ d=\max_{Y\subseteq E_0}
+ \bigl(|Y|-r_{G/D}(Y)-r_H(Y)\bigr).
+ \label{eq:deficiency}
+\end{equation}
+The empty set makes $d\geq0$.
+
+\begin{theorem}[Optimal residual nullity]
+\label{thm:deficiency}
+The deficiency satisfies
+\begin{equation}
+ d=\min_{\substack{F\text{ spanning tree of }G\\D\subseteq F}}
+ \bigl(|E\setminus F|-r_H(E\setminus F)\bigr).
+ \label{eq:minmax}
+\end{equation}
+The exchange procedure produces an attaining tree, an occurrence forest in
+its residue, and a rank witness certifying the common optimum.
+\end{theorem}
+
+\begin{proof}
+The augmentation argument proves that the maximum two-forest union in
+$E_0$ has size $m_0-d$. For any tree $F\supseteq D$, let $J$ be a maximum
+$H$-forest in its residue $R=E\setminus F$. Then $F\setminus D$ and $J$
+are a two-forest union, so
+\[
+ |F\setminus D|+r_H(R)\leq m_0-d.
+\]
+Since $|F\setminus D|+|R|=m_0$, the residual nullity is at least $d$.
+
+For the reverse inequality, take a maximum partial partition $I_G,I_H$.
+Every unassigned edge has endpoints in one $I_G$ component; otherwise it
+could be assigned to that forest. Hence $I_G\cup I_H$ spans the connected
+graph $G/D$. Extend $I_G$ to a spanning tree $T$ using edges of $I_H$ only.
+The unused part $J\subseteq I_H$ remains an $H$-forest. Its complement in
+$E_0\setminus T$ consists of exactly the $d$ unassigned edges. Therefore
+\[
+ |E_0\setminus T|-r_H(E_0\setminus T)
+ \leq |E_0\setminus T|-|J|=d.
+\]
+Lift $T$ through the contracted forest $D$. This attains the lower bound.
+\end{proof}
+
+The number $d$ is the minimum number of \emph{additional arbitrary row
+deletions} that would make an optimized residue a forest. Such deletions are
+not licensed geometric cancellations and are never performed by the
+prototype. The certificate measures the exact abstract obstacle; it is not
+a proof that the manifold is not a handlebody.
+
+\subsection{Two instructive limitations}
+
+\begin{example}[An abstract exchange gain with no geometric realization]
+\label{ex:abstract}
+Take two interior cap vertices $u,v$ and three rows:
+\[
+\begin{array}{c|c|c}
+e&\text{cap edge in }G&\text{single-column occurrence row}\\\hline
+0&uv&(1)\\
+1&v\rho&(0)\\
+2&u\rho&(2).
+\end{array}
+\]
+Deleting edges $0,1$ leaves the unpeelable row $(2)$; deleting $1,2$
+leaves $(1)$ and succeeds. This is a genuine test of the abstract exchange
+algorithm. It is not an example of a three-manifold improvement. Over
+$\F$, its occurrence boundary and cap incidence have nonzero product:
+each interior vertex column sees the unit contribution from row $0$.
+It violates $\partial_2\partial_3=0$. \Cref{sec:chain} explains the
+consequence of imposing that identity.
+\end{example}
+
+\begin{proposition}[General peelability is not a matroid]
+\label{prop:not-matroid}
+The peelable row subsets of an arbitrary nonnegative occurrence matrix
+need not satisfy the matroid augmentation axiom.
+\end{proposition}
+
+\begin{proof}
+Use the four binary rows
+\[
+ a=(0,0,1),\quad b=(0,1,1),\quad
+ c=(1,1,0),\quad f=(1,1,1).
+\]
+Both $I=\{c,f\}$ and $J=\{a,b,c\}$ peel: in $I$ first use the third
+column of $f$; in $J$ first use the first column of $c$, then the second
+of $b$, then the third of $a$. Yet $|J|>|I|$ and neither $I\cup\{a\}$
+nor $I\cup\{b\}$ peels. Every nonzero column sum in either enlarged set
+is at least two. Thus augmentation fails.
+\end{proof}
+
+This counterexample does not prove hardness of the general geometric
+problem. It identifies the precise reason that the short-row matroid
+argument cannot simply be extended to arbitrary long rows.

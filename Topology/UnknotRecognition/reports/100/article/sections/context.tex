@@ -1,0 +1,142 @@
+\section{Research objective, source baseline, and quantitative target}
+\label{sec:context}
+
+The immediate objective is to turn compressed normal-surface data into more
+useful, independently checked geometric operations. The eventual objective
+is a deterministic unknot recognizer with a proved quasi-polynomial
+worst-case bound in the number of crossings of its input diagram. These
+objectives are connected, but they require different theorems. A fast orbit
+routine, a successful terminal handlebody test, or a polynomial-size positive
+certificate does not by itself control the total number of surfaces or
+hierarchy states an algorithm must inspect.
+
+This contribution supplies a new source-relative compiler step and a
+separate, exact certificate of a sufficient condition for hierarchy progress.
+The first is integrated into the existing cut-classification pipeline. The
+second is an algebraic research component whose future geometric interface
+is specified explicitly. Their proofs, implementation, negative examples,
+and experimental limits are part of one deliverable.
+
+\subsection{The pinned state of ProveIt}
+
+All baseline comparisons use repository revision
+\begin{center}
+\texttt{8cb7d9d25ac8cb64a9d147304e3441e98e94c7a4}.
+\end{center}
+The snapshot is from 12 October 2026. The 905 original runtime-directory
+blobs were authenticated against their Git
+blob identifiers. The delivered patch is relative to that revision, rather
+than an unpinned moving branch. The incoming research packages in the same
+snapshot were also inspected before choosing the present contribution
+\cite{repo,prior-genus,prior-stopping,prior-saturated,prior-hierarchy,prior-sparse}.
+
+The relevant existing pipeline starts from a compact, connected, orientable
+finite triangulation with one torus boundary and an admissible normal
+coordinate vector. It constructs the actual cut in compressed form:
+a bounded complementary handle core, interval-bundle families with binary
+multiplicities, and authenticated ordered interfaces. The terminal operator
+then certifies a census of handlebody components when its geometric
+cancellation and bundle-attachment criteria apply.
+
+The word \Complete\ in that operator means an exact classification of the
+\emph{supplied cut}: every component is certified to be a handlebody and its
+genus and multiplicity are computed. It is not a complete decision procedure
+for arbitrary handlebodies, and it is not a standalone knot verdict. A
+nontrivial knot exterior can have a cut consisting of handlebodies. The word
+\Inconclusive\ records the failure of this particular positive compiler,
+not a proof that a component is a non-handlebody or that a knot is nontrivial.
+
+The pinned terminal operator certifies 85 of the maintained 106 source cuts.
+Ten unresolved inputs are rejected immediately because the source core
+contains three-handles. The first theorem family below removes that entire
+\emph{structural refusal}: every source three-handle can be cancelled after
+the normal cut. Later positive cancellation still need not complete. On this
+corpus seven of the ten inputs become certified, giving 92 successes.
+
+\subsection{Prior results that this article uses}
+
+The following distinctions prevent repeated work from being presented as a
+new discovery.
+
+\begin{itemize}
+\item The incoming \emph{Genus Budgets and Native Interfaces} contribution
+already proves completeness of the ordinary source two/three queue before
+a normal cut and with the initial empty boundary pattern. Classical
+two/three cancellation is also prior work. The new result concerns the
+\emph{compressed complementary core after an arbitrary normal cut}, its
+endpoint-gap side table, preservation of bundle ports, and independent
+source replay.
+\item The unsigned stopping-set characterization of positive raw one/two
+cancellation, complete column peeling, and the associated unit-permanent
+minor criterion are already in the incoming stopping-core work. Our new
+use couples those obstructions to the set of allowable source dual forests
+and realizes a strict forest-choice advantage in an actual small manifold.
+\item Saturated bundle cancellation is already incorporated in the pinned
+baseline. Consequently, 78 successes is an obsolete comparison point for
+this patch. The appropriate baseline is 85.
+\item The chain-space separation theorem used for the second component is
+finite-dimensional rational linear algebra. The contribution is its exact
+certificate contract, independent integer replay without trusting a
+purported complete bundle-cycle basis, and its precise use with Lackenby's
+equality case. We do not claim a new general linear-algebra duality theorem.
+\end{itemize}
+
+These results extend the repository's current research programme. Assertions
+of priority beyond that programme would require a broader historical review;
+none is needed for the geometric and algorithmic claims proved here.
+
+\subsection{What exactly has Lackenby announced?}
+\label{subsec:announcements}
+
+The available primary sources contain two quantitative formulations. The
+February 2021 talk displays a bound of the form
+\[
+ n^{O(\log n)}=\exp\bigl(O((\log n)^2)\bigr),
+\]
+and discusses logarithmic hierarchy depth. The March 2021 Oxford handout
+instead displays
+\[
+ 2^{O((\log n)^3)}=n^{O((\log n)^2)},
+\]
+with a corresponding squared-logarithmic depth formulation. Here $n$ is the
+crossing number of the supplied diagram. Both bounds are quasi-polynomial,
+but they are quantitatively different; the February bound is the stronger
+target \cite{lackenby2021feb,lackenby2021mar}. The Oxford announcement also
+describes an $n^{c\log n}$ bound \cite{oxford2021}.
+
+The July 2026 preprint \emph{Incompressible surfaces, hierarchies and unknot
+recognition}, already included among the project's source material, develops
+the geometric hierarchy machinery \cite{lackenby2026}. Its Section 9
+explicitly leaves running-time estimates outside the precision of the stated
+algorithm. In particular, a quantitative iteration bound and a linear bound
+in quadratic handle complexity are not themselves either 2021 asymptotic
+claim. This article uses the preprint's stated theorems, while treating the
+global quasi-polynomial estimate as a research target requiring additional
+proofs.
+
+\subsection{Parameters and levels of certification}
+
+We distinguish four sizes throughout the article:
+\[
+\begin{aligned}
+ n&=\text{diagram crossings},&
+ t&=\text{source tetrahedra},\\
+ L&=\text{maximum coordinate bit length},&
+ W&=\sum_i x_i.
+\end{aligned}
+\]
+The source input has size $O(t\log(t+1)+tL)$ in a direct encoding. Normal
+weight $W$ may be exponential or larger relative to $t$; a compressed
+operation must charge arithmetic to $L$, not loop once per normal disc.
+Later chain-matrix results use their explicit ranks and entry bit lengths
+as separate input parameters. There is no established identification of all
+those ranks with a polynomial in $n$ along an arbitrary future hierarchy.
+
+Three logical levels must also remain distinct. A chart-level verifier
+authenticates geometric incidence from the triangulation and coordinates.
+A local certificate, such as a dual forest, proves a transformation of that
+authenticated geometry. A global recognition theorem must additionally
+establish that the algorithm finds an adequate sequence of such operations,
+terminates correctly on both answers, and spends the claimed total time.
+The delivered native patch implements the first two levels for a new useful
+transformation. The final sections specify the missing work at the third.

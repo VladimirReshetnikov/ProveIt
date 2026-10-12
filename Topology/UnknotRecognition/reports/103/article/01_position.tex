@@ -1,0 +1,134 @@
+\section{Position of the result}
+\label{sec:position}
+
+The immediate outcome is a certified extension of a supplied-normal-cut
+primitive. ProveIt's original compressed source construction already retained
+the exceptional handles, their attaching charts, and the parallelity
+interfaces. Its terminal handlebody consumer refused any core containing a
+three-handle. A diagnostic script demonstrated promising deletions, but did
+not provide independent source replay. We prove the relative geometric fact
+needed for those deletions, reconstruct the missing cap incidences from the
+source, and compose the resulting proof with the existing terminal
+certificates.
+
+This is consequential because a source interior vertex is an artefact of the
+triangulation, not evidence of difficult knot topology. A recognizer should
+not lose its compressed terminal operation merely because such a vertex was
+introduced. The universal source-tree theorem shows that this obstruction
+can be removed uniformly, without searching normal-coordinate supports or
+expanding repeated sheets.
+
+\subsection{The quasipolynomial objective and its present status}
+
+For an input knot diagram with $n$ crossings, the intended target is a
+deterministic bound of the form
+\[
+ \exp\bigl((\log(n+2))^{O(1)}\bigr),
+\]
+with $n^{O(\log n)}$ being the particularly strong form announced in 2021.
+The announcement and a proved, implemented end-to-end complexity theorem
+must be distinguished. Lackenby's July 2026 preprint presents an algorithm
+using incompressible surfaces, boundary patterns, and hierarchies. Its
+Section~9 explicitly withholds a running-time estimate for insufficiently
+specified steps. Proposition~9.1 bounds the number of steps by
+$L(g+1)^L$, in the paper's notation; Proposition~10.2 bounds a refined
+partial hierarchy length by $4c_q(\mathcal H)$. A linear hierarchy bound is
+not a logarithmic depth bound. Polynomial encoding and verification of an
+essential hierarchy in Theorem~14.1 do not give a polynomial procedure for
+discovering it~\cite{lackenby2026,oxford2021}.
+
+Our mathematical target is therefore a carefully delimited part of that
+programme. A bounded compressed core must support inexpensive geometric
+operations with enough source information to justify their use after a cut.
+The present top-handle operation meets that requirement for the native
+parallelity interfaces. It does not supply arbitrary inherited-pattern
+transport, a complete useful-surface search, or a global recurrence bounding
+all intermediate representations.
+
+\subsection{What is reused and what is contributed}
+
+Removing three-handles from a compact connected three-manifold with nonempty
+boundary is classical. Jackson gives the needed unmarked statement and a
+dual-path proof in Lemma~3.2 of~\cite{jackson2023}. The same paper explains
+why recovering parallelity-bundle topology is weaker than retaining its
+inclusion in the ambient manifold. Our contribution is the source-specific
+relative construction, its reusable specialization across all normal cuts,
+and its independently verified native implementation. We do not claim a new
+general existence theorem for three-handle elimination.
+
+The graph-matroid partition theorem is also classical~\cite{edmondsfulkerson}.
+Its application here gives a precise abstract optimization problem and
+certificates of optimal residual deficiency. The chain-complex constraint in
+\cref{sec:chain}, however, shows why abstract successes cannot automatically
+be interpreted as geometric performance gains. This limitation is part of
+the research result, not an omitted qualification.
+
+Within ProveIt, the source-parallelity construction, the initial uncut
+two/three-handle queue, the stopping-set characterization of positive raw
+cancellation, and the saturated-bundle projection are prior work. The ten
+incoming packages were audited for these overlaps. In particular,
+\emph{Stopping Cores} and \emph{Saturated Bundle Cancellation} already
+identify the ten three-handle exclusions and ask for a safe adapter.
+\emph{Genus Budgets and Native Interfaces} supplies an initial source
+reduction, but not the later normal-cut adapter with its attached
+interfaces~\cite{repo,incoming-stopping,incoming-saturated,incoming-genus}.
+\Cref{sec:source-audit} records the full targeted overlap audit.
+
+The contributions proved or implemented here are:
+\begin{enumerate}
+\item A cap-incidence formula for exceptional normal-cut two-handles and a
+relative top-handle elimination theorem in the authenticated source charts.
+\item A single source tree that specializes to valid traces for every
+admissible normal coordinate vector, with coordinate-independent trace size.
+\item An exact short-row forest criterion and deficiency formula for the
+abstract joint deletion problem, together with an independent prototype.
+\item A homological rigidity theorem showing that much of that apparent
+forest-choice freedom disappears on genuine geometric inputs.
+\item An exact exceptional-row quotient for a fixed forest, which retains
+arbitrary long rows and gives a finite pattern kernel.
+\item A native version-6 certificate adapter, reproducible coverage gains,
+and a controlled local scheduling benchmark with its common costs exposed.
+\end{enumerate}
+
+\subsection{Notation and input size}
+
+Let $\mathcal T$ be a finite triangulation of a connected compact orientable
+three-manifold $M$ with nonempty boundary. The mathematical source arguments
+allow several boundary components. The native validator in this release
+accepts the narrower class with exactly one torus boundary. It checks
+reciprocal face gluings, orientability, connectedness, sphere or disk vertex
+links, circle or interval edge links, and absence of edge reversal. It does
+not prove that $M$ came from a knot diagram.
+
+A normal vector $x$ has seven nonnegative integer coordinates in every
+tetrahedron, satisfies the matching equations, and uses at most one
+quadrilateral type per tetrahedron. Its normal surface is denoted $S_x$.
+Zero coordinates and the empty surface are allowed. The metric cut
+$M\mathbin{\backslash\!\backslash}S_x$ is the completion after splitting
+along the local sheets; this convention also handles one-sided components.
+No two-sidedness assumption on $S_x$ is needed for the local results.
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Symbol & Meaning\\
+\midrule
+$t$ & Number of source tetrahedra\\
+$b_x$ & $\sum_{i=1}^{7t}\lceil\log_2(x_i+2)\rceil$, total coordinate bits\\
+$K$ & Complementary exceptional handle core of the supplied cut\\
+$\ports$ & Complete labelled interface rectangles of the parallelity pieces\\
+$q,m$ & Numbers of core three-handles and two-handles\\
+$E,C$ & Two-handle row labels and surviving one-handle column labels\\
+$G$ & Cap graph, with a formal exterior root $\rho$\\
+$H$ & Occurrence graph for rows of capped length at most two\\
+$r_G(Y)$ & Graphic rank, $|V(G)|-\comp(G[Y])$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The source triangulation takes $O(t\log(t+2))$ bits. The full input size for
+the local operation is thus $O(t\log(t+2)+b_x)$, apart from already supplied
+source certificates. A word-operation estimate on dense source IDs will
+always be distinguished from a bit-complexity bound. In particular, an
+$O(t)$ trace is not a claim that reading arbitrarily large coordinates costs
+$O(t)$ bit operations.

@@ -1,0 +1,108 @@
+\subsection{A proposed alternating optimization of the two forests}
+\label{sec:paired-forests}
+
+The implemented weighted dual-tree choice optimizes the retained literal
+attaching-curve work after fixing the primal forest. There is a symmetric,
+currently unimplemented optimization of the primal forest. The following
+statement concerns two finite graphs and an incidence matrix; its proof
+requires no additional claim about transporting boundary markings.
+
+Let $G_{01}$ be a finite multigraph with edge set $\mathcal H$, and let
+$G_{23}$ be a connected finite multigraph with distinguished root and edge
+set $\mathcal R$. Loops are allowed in both graphs but cannot lie in a
+forest. Let $N=(n_{rh})_{r\in\mathcal R,h\in\mathcal H}$ have nonnegative
+integer entries. In the intended source application, $n_{rh}$ is the
+number of literal passages of source two-handle $r$ through source
+one-handle $h$. Let $T$ span every connected component of $G_{01}$ and let
+$D$ be a spanning tree of $G_{23}$. Define
+\[
+ C(T,D)=\sum_{r\notin D}\sum_{h\notin T}n_{rh},
+ \qquad M=\sum_{r,h}n_{rh}.
+\]
+Thus $C$ counts retained source passages after deleting the selected
+source two-handles and ignoring the primal-tree one-handles. It uses raw
+occurrences, without cancellation of inverse letters or any prediction of
+later handle slides.
+
+\begin{proposition}[Alternating exact forest responses]
+\label{prop:paired-forests}
+For fixed $T$, a maximum-weight spanning tree of $G_{23}$ with edge
+weights
+\[
+ w_T(r)=\sum_{h\notin T}n_{rh}
+\]
+minimizes $C(T,D)$. For fixed $D$, a maximum-weight spanning forest of
+$G_{01}$, spanning each of its components, with edge weights
+\[
+ v_D(h)=\sum_{r\notin D}n_{rh}
+\]
+minimizes $C(T,D)$ over $T$.
+
+Starting from any feasible pair, alternate these two exact responses,
+accepting a changed forest only when it strictly decreases $C$. Stop after
+a complete sweep in which neither response gives a strict decrease. There
+are at most $C(T_0,D_0)\le M$ accepted updates. At termination, changing
+either forest alone cannot lower $C$.
+
+Suppose the graphs have total combinatorial size $O(t)$ and the matrix is
+provided as literal occurrence lists of total length $M$. Then this
+procedure uses
+\[
+ O\bigl((M+1)(M+t\log(t+2))\bigr)
+\]
+word operations and $O(M+t)$ working storage. In particular, for source
+incidence of size $M=O(t)$, the bound is $O(t^2\log(t+2))$ after source
+construction and authentication.
+\end{proposition}
+
+\begin{proof}
+For fixed $T$,
+\[
+ C(T,D)=\sum_{r\in\mathcal R}w_T(r)-\sum_{r\in D}w_T(r).
+\]
+The first term is constant, proving the dual assertion. For fixed $D$,
+\[
+ C(T,D)=\sum_{h\in\mathcal H}v_D(h)-\sum_{h\in T}v_D(h),
+\]
+which proves the primal assertion component by component. These formulas
+include all loop weights in the constant terms; a loop is never silently
+treated as a cancellable forest edge.
+
+The objective is a nonnegative integer, so every accepted update lowers it
+by at least one. Every nonterminal full sweep contains an accepted update.
+There are consequently at most $M+1$ sweeps, including the final sweep.
+If an optimal response has the current objective value, retaining the
+current forest is essential to the specified stopping rule: zero-gain
+changes are not performed. Thus, in the final unchanged sweep, both
+current forests individually attain their conditional minimum.
+
+One pass through the occurrence lists computes the required weights.
+Sorting weighted graph edges and running the usual maximum-spanning-forest
+algorithm costs $O(t\log(t+2))$ word operations per response. There are at
+most two responses per sweep. All weights lie between zero and $M$, so
+$O(\log(M+t+2))$-bit words suffice for weights and identifiers. This proves
+the complexity and storage bounds.
+\end{proof}
+
+Conditional optimality can be strictly weaker than joint optimality even
+for two-edge graphs. Give each graph two vertices joined by two parallel
+edges and take
+\[
+ N=\begin{pmatrix}1&2\\2&0\end{pmatrix}.
+\]
+Deleting row two and column two leaves cost one. Changing either deletion
+alone raises the cost to two, so both responses retain this pair. Deleting
+row one and column one together instead leaves cost zero. This is an
+abstract incidence example, without a claimed geometric realization.
+
+This is a proposal for a producer heuristic, not a modification of the
+runtime delivered here. A final chosen dual tree would still require the
+independent source-side replay, and a chosen primal forest would still
+need to be recorded in the applicable downstream certificate. The graph
+objective does not establish transport of an arbitrary boundary pattern
+through primal contractions. Nor does conditional optimality prove global
+optimality over pairs, existence of a complete raw cancellation schedule,
+or completeness of the recognition algorithm. The strict-update bound is
+polynomial for the stated literal source representation; for an arbitrary
+matrix of huge binary-encoded multiplicities, a bound proportional to the
+numerical value $M$ would instead be pseudo-polynomial.

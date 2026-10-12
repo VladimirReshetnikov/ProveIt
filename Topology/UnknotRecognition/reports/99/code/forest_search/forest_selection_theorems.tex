@@ -1,0 +1,387 @@
+% Standalone section fragment.  Requires amsmath, amssymb, amsthm and
+% theorem/lemma/proposition/corollary/example environments in the parent.
+\section{Selecting the dual forest by its remaining stopping sets}
+\label{sec:forest-choice}
+
+Let $N=(n_{ih})$ be the nonnegative integral occurrence matrix of the
+two-handles against a fixed system of one-handle cocores.  Its row set is
+$R$.  A subset $E\subseteq R$ labels the edges of a finite undirected
+multigraph $D$ with distinguished root $0$.  Rows outside $E$ cannot be
+removed by the proposed top-handle cancellations.  Assume that $D$ is
+connected, and put $r=|V(D)|-1$.  A successful choice is a spanning tree
+$T\subseteq E$ for which the row restriction $N[R\setminus T]$ admits
+complete positive raw cancellation.  This section treats that finite
+graph--matrix problem; the geometric importer must separately justify the
+dual edges and the invariance of the retained source rows.
+
+A nonempty set $S\subseteq R$ is a stopping set if
+\[
+                 \sum_{i\in S}n_{ih}\ne1\qquad\hbox{for every }h.
+\]
+The incoming stopping-core theorem proves that complete positive raw
+cancellation is equivalent to absence of such a set, and that unit-column
+peeling computes the unique largest stopping set.  We use this result as
+prior work, including its extension from leaf pivots to all positive pivots.
+Replacing each entry by $\min(2,n_{ih})$ preserves the relevant predicates.
+
+\begin{theorem}[Exact forest--stopping transversal criterion]
+\label{thm:forest-stopping-transversal}
+A spanning tree $T$ is successful if and only if it meets every nonempty
+stopping set of the immutable source matrix $N$.  Equivalently, there is
+an independent set $F$ in the graphic matroid of $D$ such that
+$N[R\setminus F]$ peels completely.  Any such $F$ can be extended to an
+arbitrary spanning tree, and every resulting tree is successful.
+\end{theorem}
+\begin{proof}
+A stopping set of a row restriction is exactly a source stopping set
+contained in that restriction: its definition sums only its own rows.
+The first assertion therefore follows from the imported stopping theorem.
+Complete peelability is hereditary under taking row subsets.  Indeed,
+any stopping set in a smaller row set would also obstruct the larger
+one.  Every independent graph edge set extends to a spanning tree of a
+connected graph.  Thus extending $F$ deletes more rows and preserves
+peelability.  Conversely a successful tree itself is such an independent
+set.
+\end{proof}
+
+\subsection{Obstruction-guided branching and independently checkable failure}
+
+Maintain a selected forest $C$.  Contract its graph edges and delete its
+matrix rows.  If peeling has empty residual, extend $C$ to a tree and
+replay a complete immutable-source peeling schedule.  Otherwise choose
+any nonempty stopping set $S$ in the residual.  Every successful extension
+must contain an edge of $S$.  An eligible edge that becomes a loop after
+contracting $C$ cannot occur in such an extension.  Branch precisely over
+the remaining edges of $S$.
+
+\begin{theorem}[Complete constrained search]
+\label{thm:forest-branching}
+The preceding search is complete for successful dual-forest choices.
+Every branch increases $|C|$ by one, so its depth is at most $r$.  If each
+chosen witness has at most $w$ eligible nonloop candidates in the current
+contraction, the search visits at most
+\[
+                 1+w+\cdots+w^r
+\]
+nodes.  A node with no candidate is a proved failure of this restricted
+certificate class.  A node with one candidate forces that edge.
+
+For $m=|R|$ rows and $I$ nonzero incidences, an inclusion-minimal stopping
+witness can be found with at most $m$ additional sparse peeling calls.
+Consequently the complete search takes
+$(r+1)\max(1,w)^r\operatorname{poly}(m,I,\Lambda)$ bit operations,
+where $\Lambda$ is the full encoded input length.
+\end{theorem}
+\begin{proof}
+Suppose a successful spanning tree extends $C$.  By
+Theorem~\ref{thm:forest-stopping-transversal}, it meets $S$ in some edge
+$e$.  Since $S$ contains no deleted row, $e\notin C$.  Since a tree is
+acyclic, $e$ is a nonloop in $D/C$.  The branch adding $e$ therefore
+preserves this successful extension.  Induction establishes completeness.
+An empty residual and a verified tree extension give a positive certificate.
+If no eligible nonloop remains in $S$, no independent extension can meet
+$S$, which proves the negative leaf.  Rank increases at every recursive
+step, giving the depth and node bounds.
+
+To shrink a witness, inspect its row labels one at a time.  Remove the
+current label tentatively and compute the remaining stopping core.  If
+that core is nonempty, replace the witness by it; otherwise keep the
+label.  A label that was necessary remains necessary after later
+shrinking, since row restrictions cannot create a stopping set.  A label
+discarded by an earlier step needs no later visit.  The result is
+inclusion-minimal after at most $m$ calls.  This is not an algorithm for
+a minimum-cardinality witness, and no such optimality is claimed.
+\end{proof}
+
+For a completed negative search, the certificate is a finite proof tree.
+An internal node supplies its source stopping set and one child for every
+eligible nonloop edge in it; a leaf supplies a stopping set all of whose
+eligible edges are loops in the current contraction.  The checker verifies
+the stopping sums, the forest along the path, and exact branch coverage.
+It need not run the producer's queue, witness minimizer or search policy.
+An interrupted search yields no negative certificate.
+
+\begin{proposition}[Disjoint stopping-set rank obstruction]
+\label{prop:forest-rank-defect}
+At a selected forest $C$, let $S_1,\ldots,S_q$ be pairwise disjoint
+nonempty stopping sets in the remaining rows.  Write
+$A=E\cap\bigcup_jS_j$.  If
+\[
+ r_D(C\cup A)-|C|<q,
+\]
+then no successful tree extends $C$.
+\end{proposition}
+\begin{proof}
+A successful extension must meet each $S_j$.  Disjointness requires at
+least $q$ different selected edges of $A$, and they must be independent
+over $C$.  The displayed rank defect makes this impossible.
+\end{proof}
+
+The source stopping sets, their disjointness and a finite graph rank
+computation form a short negative certificate.  A particularly useful
+case is a family of mandatory singleton rows whose dual edges form a
+cycle.  An ineligible singleton or a loop is already an obstruction.
+
+\subsection{A polynomial regime: each active column meets at most two rows}
+
+Call a column \emph{inert} if none of its entries is one.  Such a column
+can never supply a positive raw unit pivot and may be ignored for this
+decision, while its one-handle is retained in the topological count.
+Assume that every non-inert column has at most two nonzero rows.
+
+Construct a directed graph $P$ on the row set $R$.  A singleton unit
+column marks its owner as an initial seed; let $Z$ be the seed set.  For
+a column supported on two distinct rows $u,v$, insert $v\to u$ when
+$n_{uh}=1$, and insert $u\to v$ when $n_{vh}=1$.  Thus a $(1,1)$ column
+gives both directions, a $(1,a)$ column with $a\ge2$ gives only the
+direction toward its unit row, and a column with no unit gives none.
+
+\begin{lemma}[Peeling is directed reachability]
+\label{lem:two-row-reachability}
+After an arbitrary row deletion set $F$, the rows eventually deleted by
+column peeling, together with $F$ itself, are exactly the vertices of $P$
+reachable from $Z\cup F$.
+\end{lemma}
+\begin{proof}
+A unit leaf comes either from a singleton unit source column, or from a
+two-row column whose other owner has already disappeared.  These are
+respectively a seed and an enabled directed arc.  Thus each new deletion
+is reachable from the stated initial set.
+
+Conversely, a seed can be peeled unless already deleted.  Once $v$ has
+disappeared, an arc $v\to u$ exposes a unit column at $u$ unless $u$ has
+already disappeared.  That column cannot have been used and removed
+while $u$ was still live, because at a leaf pivot it had no other live
+owner.  Induction on path length proves the reverse inclusion.
+\end{proof}
+
+Let $Q_1,\ldots,Q_p$ be the source strongly connected components of $P$
+that contain no seed.  These sets are pairwise disjoint.  Put
+$E_j=Q_j\cap E$; graphic loops may be retained in these sets, since they
+cannot contribute rank.
+
+\begin{theorem}[Source components are the complete deletion obligations]
+\label{thm:source-scc-obligations}
+Under the two-row active-column hypothesis, $N[R\setminus F]$ peels
+completely if and only if $F$ meets every $Q_j$.  Each $Q_j$ is itself a
+source stopping set.
+\end{theorem}
+\begin{proof}
+Contract the strongly connected components of $P$.  Its condensation is
+a finite acyclic graph.  Every vertex is reachable from a source vertex.
+Reachability from $Z\cup F$ therefore covers the whole graph exactly
+when each source component contains a seed or a member of $F$.
+Lemma~\ref{lem:two-row-reachability} gives the equivalence.
+
+To check the stopping claim directly, a singleton unit column cannot
+meet $Q_j$, since it would give a seed.  If a two-row column had sum one
+on $Q_j$, its unit owner would lie in $Q_j$ and its other owner outside.
+The resulting incoming arc contradicts the source-component property.
+Inert columns never have sum one.  Thus all stopping inequalities hold.
+\end{proof}
+
+\begin{theorem}[Polynomial dual-forest selection]
+\label{thm:polynomial-dual-forest}
+Under the two-row active-column hypothesis, the following are equivalent:
+\begin{enumerate}
+\item A successful dual spanning tree exists.
+\item The disjoint family $(E_j)_{j=1}^p$ has a transversal independent
+in the graphic matroid of $D$.
+\item For every $J\subseteq\{1,\ldots,p\}$,
+\[
+                  r_D\left(\bigcup_{j\in J}E_j\right)\ge |J|.
+\]
+\end{enumerate}
+A successful tree and complete raw peeling schedule, or a violated rank
+inequality with its pairwise disjoint source stopping sets, can be found
+in polynomial encoded time.
+\end{theorem}
+\begin{proof}
+A successful tree meets every $Q_j$.  Choosing one of its edges in each
+group gives an independent transversal.  Conversely an independent
+transversal extends to a spanning tree.  Theorem~\ref{thm:source-scc-obligations}
+and hereditary peelability prove its success.  The rank equivalence is
+Rado's classical independent-transversal theorem; an elementary proof is
+given below.  Polynomial construction is graphic/partition matroid
+intersection.  For completeness, the implemented specialized augmenting
+algorithm and its rank obstruction are described next.
+\end{proof}
+
+This theorem does not apply matroid intersection to the family of
+peelable row sets.  It applies it to graphic independence and the explicit
+partition into source-component obligations.  The distinction is necessary.
+
+\begin{example}[Peelable row sets need not be a matroid]
+Take rows
+\[
+ r_0=(0,0,1),\quad r_1=(0,1,1),\quad
+ r_2=(1,1,0),\quad r_3=(1,1,1).
+\]
+The sets $A=\{r_2,r_3\}$ and $B=\{r_0,r_1,r_2\}$ both peel completely.
+For $A$, first use the last column on $r_3$; for $B$, use the first column
+on $r_2$, then the middle column on $r_1$.  But $A\cup\{r_0\}$ has
+column sums $(2,2,2)$ and $A\cup\{r_1\}$ has sums $(2,3,2)$.  Each is
+a nonempty stopping set.  Thus $|A|<|B|$ while no member of $B\setminus A$
+can be added to $A$, violating matroid exchange.  The middle source
+column has three nonzero rows, outside the theorem's hypothesis.
+\end{example}
+
+\subsection{The specialized augmenting algorithm and its proof}
+
+Work on $G=\bigcup_j E_j$ and maintain a rainbow forest $F$, meaning a
+forest with at most one edge from each group.  Its exchange digraph has
+vertices $G$.  The sources are edges $e\notin F$ such that $F+e$ is a
+forest.  The targets are edges $e\notin F$ whose group is not represented
+in $F$.  For $f\in F$ and $e\notin F$, add
+\[
+ f\longrightarrow e\quad\hbox{if }F-f+e\hbox{ is a forest},
+ \qquad
+ e\longrightarrow f\quad\hbox{if }F-f+e\hbox{ is rainbow}.
+\]
+Choose a shortest source-to-target path and take the symmetric difference
+of $F$ with its vertices.  This is the classical matroid-intersection
+augmentation specialized to a graph and a partition, not a new general
+intersection algorithm.
+
+\begin{lemma}[Shortest augmentation is a larger rainbow forest]
+\label{lem:rainbow-augmentation}
+The indicated symmetric difference is a rainbow forest with $|F|+1$ edges.
+\end{lemma}
+\begin{proof}
+Write the path as
+$e_0,f_1,e_1,\ldots,f_\ell,e_\ell$, where the $e_i$ lie outside $F$.
+Before its last vertex no outside edge has an unused group, since it
+would already be a target.  Hence $e_{i-1}$ has the group of $f_i$ for
+$1\le i\le\ell$, and $e_\ell$ has a new group.  Distinct chosen edges
+have distinct groups, so the symmetric difference is rainbow.
+
+Represent graph edges by their vertex-incidence vectors over $\mathbb F_2$.
+The vectors of a forest are independent.  The edge $e_0$ is outside the
+span of $F$, since it is a source.  For $i\ge1$, the edge $e_i$ is not a
+source: otherwise the suffix beginning there would be shorter.  Thus it
+has a unique fundamental cycle with $F$, and its expansion in the basis
+$F$ has coefficient one at $f_i$.  This expansion has coefficient zero
+at $f_j$ for $j<i$, because otherwise $f_j\to e_i$ would shortcut the
+chosen path.  Modulo the span of $F\setminus\{f_1,\ldots,f_\ell\}$,
+the coefficient matrix of $e_1,\ldots,e_\ell$ on $f_1,\ldots,f_\ell$
+is triangular with unit diagonal.  These new edges are independent in
+that quotient.  Adding $e_0$, outside the original span, preserves
+independence and increases cardinality by one.
+\end{proof}
+
+If no target is reachable, let $W$ be the reachable edge set.  Every
+color appearing in $W$ is represented by an edge of $F\cap W$: an
+outside reachable edge in a new color would be a target, and an outside
+edge in an existing color has an exchange arc to that color's chosen
+edge.  Thus the number of colors in $W$ is $|F\cap W|$.
+
+Every outside edge $e\notin W$ is spanned by $F\setminus W$.  It is not
+a source, and none of the edges of its fundamental cycle can belong to
+$F\cap W$, since such an edge would have an exchange arc to $e$.
+Consequently
+\[
+                         r_D(G\setminus W)=|F\setminus W|.
+\]
+Let $J$ be the groups with no edge in $W$.  Then
+$\bigcup_{j\in J}E_j\subseteq G\setminus W$.  If $|F|<p$,
+\[
+ r_D\left(\bigcup_{j\in J}E_j\right)
+ \le |F\setminus W|
+ =|F|-|F\cap W|
+ <p-|F\cap W|=|J|.
+\]
+This is the promised short Rado obstruction.  Its independent verifier
+only checks the disjoint stopping sets and graph rank, not the exchange
+search or its maximality claim.
+
+There are at most $p$ augmentations.  Direct forest oracles, adjacency
+search and explicit exchange tests already give polynomial time.  The
+reference implementation uses no optimized dynamic-tree data structure:
+with $m$ rows and $I$ incidences, a conservative comparison bound is
+$O(I\log(I+2)+m(p+1)^3\log(m+2))$, with binary source-label costs added.
+This is a polynomial bound for the supplied finite problem.  It is not
+a logarithmic hierarchy bound or a diagram-wide complexity theorem.
+
+\subsection{An elementary proof of the rank criterion}
+
+We recall the classical independent-transversal argument to specify its
+use precisely.  Let $M$ be a finite matroid and let $E_1,\ldots,E_p$ be
+disjoint sets.  Suppose that $r_M(\bigcup_{j\in J}E_j)\ge |J|$ for all
+$J$.  Induct on $p$.  The case $p=1$ chooses a nonloop.
+
+If there is a nonempty proper tight set of labels $J$, with
+$r_M(\bigcup_{j\in J}E_j)=|J|$, induction chooses a transversal $B$
+for these labels.  It is a basis of their union.  In $M/B$, every union
+of remaining groups indexed by $K$ has rank
+\[
+ r_{M/B}\left(\bigcup_{k\in K}E_k\right)
+ =r_M\left(\bigcup_{j\in J\cup K}E_j\right)-|J|
+ \ge |K|.
+\]
+Induction supplies the rest of the transversal independently over $B$.
+If there is no nonempty proper tight set, choose a nonloop $e\in E_p$.
+Contracting $e$ reduces the rank of any union of the other groups by at
+most one.  Their original ranks are at least their number of groups
+plus one, so the required inequalities persist.  Induction in $M/e$
+finishes the proof.  Necessity follows by restricting any independent
+transversal to a subset of its labels.
+
+The rank criterion belongs to Rado (1942); the augmenting framework to
+Edmonds' matroid-intersection work.  The new application is the
+source-component characterization of the raw two/three-handle forest
+choice, with its immutable geometric incidence interface.
+
+\subsection{A geometric example where the forest matters}
+
+\begin{example}[Two topologically valid trees, different raw outcomes]
+\label{ex:geometric-forest-choice}
+Let $H$ be a solid torus with a fixed meridian cocore disc $D$.  Choose
+two disjoint parallel primitive curves $a,b$ on $\partial H$.  Arrange
+$a$ to meet $\partial D$ once.  In the annulus obtained by cutting along
+$a$, introduce a small finger in $b$ across the transverse arc of
+$\partial D$, and then back.  The finger is an isotopy supported away
+from $a$ and creates two extra transverse intersections of opposite
+sign.  Thus $b$ is still embedded, primitive, parallel to and disjoint
+from $a$, but the actual unsigned incidences are
+\[
+                              N=\begin{pmatrix}1\\3\end{pmatrix}.
+\]
+Attach two-handles along $a$ and $b$.  Compression of the torus along
+the two parallel primitive curves yields two sphere boundary components.
+Fill the sphere corresponding to the annulus between the curves with
+one three-handle.  The resulting manifold is a ball: after cancelling
+the primitive first two-handle, the second is attached trivially to a
+ball boundary and gives a spherical collar, whose selected sphere is
+then filled.
+
+The dual graph has one three-handle vertex, one unfilled boundary root,
+and two parallel edges $a,b$.  Both singleton edges are valid spanning
+trees.  Deleting the $b$ row leaves $(1)$ and gives full raw cancellation.
+Deleting the $a$ row leaves $(3)$, a singleton stopping set.  Both top
+cancellations preserve the ball, but only one exposes a certificate in
+the fixed raw one-handle system.  The even sphere-incidence parity is
+respected, since $1+3$ is even.  The corresponding capped matrix is
+$(1,2)^{\mathsf T}$.
+\end{example}
+
+This example is a topological existence construction, not a native
+triangulated fixture produced by the reference graph module.  The
+source-authenticated native tests must supply their own geometric data.
+
+\subsection{A controlled exact separation from tree enumeration}
+
+Take a chain of $k$ dual links, each replaced by two parallel edges
+$a_i,b_i$.  Give these two rows the sole nonzero incidences
+$n_{a_i,i}=1$ and $n_{b_i,i}=2$ (or actual count three for the second).
+The graph has exactly $2^k$ spanning trees, choosing one edge in every
+parallel pair.  Every $\{b_i\}$ is a mandatory singleton stopping set,
+so the sole successful tree is $\{b_1,\ldots,b_k\}$.
+
+An include-before-exclude tree enumeration with $a_i$ first tests exactly
+$2^k$ complete trees before this last success.  The stopping algorithm
+uses $k$ forced contractions; the polynomial algorithm has $k$ one-row
+source-component obligations.  This proves an exponential separation
+from that specified enumeration policy on supplied finite graph/matrix
+instances.  It is not a lower bound on arbitrary forest-selection
+algorithms, and it does not claim an exponential end-to-end recognition
+improvement on knot diagrams.

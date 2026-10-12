@@ -1,0 +1,187 @@
+\section{Further research questions and concrete next investigations}
+\label{sec:agenda}
+
+The following programme is ordered by the dependencies exposed by the
+proofs and experiments. Each item names a specific mathematical or software
+deliverable and the evidence that would justify moving to the next step.
+The questions are proposals, not claims already established by this article.
+
+\subsection{Immediate source-compiler research}
+
+\paragraph{1. Joint primal and dual forest selection.}
+The paired-forest objective gives exact coordinate optimizations of retained
+unsigned incidence. Implement it as an optional producer while keeping the
+existing independent forest and cancellation checker. Measure successful
+censuses, retained occurrences, total query time, and certificate size
+separately. Does alternating selection ever improve certified coverage over
+the current canonical-primal, maximum-dual choice on actual sources?
+If it does, find a small explicit face table and a stopping-set proof of
+strictness, as in the five-tetrahedron example. A mere reduction in the
+objective would not answer the coverage question.
+
+\paragraph{2. Obstruction-guided dual-tree search.}
+Given a failed residual, extract its maximal stopping core. Every successful
+tree must meet that core in an eligible source row. Branch only on such
+edges, reject forced cycles immediately, and use the graphic-rank
+obstruction to prune incompatible families. Prove that each pruning rule
+preserves all successful trees. The unrestricted worst-case bound remains
+$t^{O(v_3)}$; the useful question is whether source geometry bounds the
+number of relevant stopping cores or supplies a smaller structural
+parameter. A succinct failed-search proof would certify failure of this
+compiler family, not nontriviality of a knot.
+
+\paragraph{3. The eight surviving positive corpus obstructions.}
+The explicit-cut audit identifies these current targets:
+\begin{center}\small
+\begin{tabular}{ll}
+\texttt{pilot/fibonacci\_lst\_04/0} & \texttt{pilot/fibonacci\_lst\_06/0}\\
+\texttt{pilot/fibonacci\_lst\_08/0} & \texttt{pilot/fibonacci\_lst\_10/0}\\
+\texttt{pilot/lst\_4\_9/0} & \texttt{pilot/finite\_trefoil/0}\\
+\texttt{pilot/finite\_figureEight/0} & \texttt{pachner23\_5\_8\_2/mixed}.
+\end{tabular}
+\end{center}
+They were already beyond the source-three-handle refusal, so the present top
+reduction alone cannot resolve them. Determine whether another primal
+forest suffices; otherwise produce a geometrically authenticated
+intersection-reducing move, change of disk system, or boundary normalization
+that destroys the stopping core. The completeness of positive raw peeling
+means that merely searching more positive pivot orders on the same matrix
+cannot be the remedy. A successful next contribution should include the
+smallest actual source obstruction it changes and the new geometric replay
+rule it needs.
+
+\paragraph{4. Source-realizable exchange structure.}
+The abstract peelable-row system is not a matroid. Are there narrower
+families of endpoint-gap source matrices with a useful exchange or bounded
+obstruction property? Conversely, can the minimal three-by-two and Boolean
+four-by-three counterexamples be realized, with their full row systems,
+by authenticated finite normal cuts? Either result would sharpen the
+algorithm-design options. No inference about geometric realizability
+should be drawn from a presentation matrix alone.
+
+\paragraph{5. Avoiding repeated source preparation and proof duplication.}
+The graph trace is small, but the enclosing verifier currently reconstructs
+some source data in several layers, and the largest demonstrated full
+certificate exceeds five megabytes. Design an immutable authenticated
+source object with explicit consumer contracts. Prove which derived facts
+can be reused without trusting a producer, and measure complete replay
+time and bytes. For wire-format deduplication, reference shared integer or
+source blocks through checked identifiers and retain exact source binding.
+The target is reduced repeated work, not a weaker authenticity check.
+
+\subsection{Geometric realization of homological progress}
+
+\paragraph{6. Compile the actual relative bundle inclusion.}
+Construct compatible finite chain complexes for
+$(\mathcal B,\mathcal B\cap\partial M)$ and $(M,\partial M)$ from an
+authenticated admissible patterned handle structure. Produce and verify
+the actual matrices $d_2,d_3,\delta_2,j_1,j_2$, and prove polynomial bounds
+on their ranks, entries, and construction time in the maintained encoding.
+The key issue is the embedded inclusion, including signs, horizontal versus
+vertical boundary, twisted bundles, and any peripheral identifications.
+An abstract homology computation or an unsigned incidence matrix is
+insufficient. Validate the first compiler on small triangulations whose
+relative chain maps can also be built independently by subdivision.
+
+\paragraph{7. Authenticate the prescribed cohomology-class constructor.}
+Build the chain-level duality map and the normal representative of a chosen
+integral $H^1$ class, preserving that class through every normalization.
+Retain the no-three-handle and local-type hypotheses of the handle version
+of the construction. Can every intermediate operation be expressed using
+the project's compressed coordinates and verified pattern charts? A useful
+first theorem would give a polynomial bit bound for one complete prescribed
+class construction, including the resulting signed cycle certificate.
+
+\paragraph{8. Extract one component using a signed scalar witness.}
+The component lemma suggests a smaller interface than computing a full
+homology vector for every component. Given one annihilating row $Y$ and an
+oriented compressed surface with positive total evaluation, find a component
+with $Y$-evaluation positive and certify its actual oriented relative cycle.
+Develop the signed weighted-orbit semantics and a source-authenticated
+component selector. The selector must handle cancellation between positive
+and negative contributions and cannot rely on unsigned counts alone.
+Compare its representation size against a full vector-valued component
+calculation.
+
+\paragraph{9. Understand quotient-zero states.}
+When $H_2(M,\partial M;\mathbb Q)/V_{\mathcal B}=0$, the proposed predicate
+has no outside class to select. Characterize those states geometrically
+under the hierarchy's actual admissibility assumptions. Do they admit a
+bounded collection of bundle-supported moves, a certified product-region
+description, or a different decreasing invariant? The task is an
+alternative construction theorem; absence of an outside witness is not
+a terminal recognition criterion.
+
+\paragraph{10. Simultaneous cuts and changing bundle images.}
+For disjoint oriented surfaces $S_1,\ldots,S_k$, study the rank of their
+classes modulo the initial bundle image and its relation to the raw
+quadratic defect of the simultaneous cut. Is there a lower bound such as
+twice that rank under appropriate hypotheses, or a small genuine
+counterexample? The one-surface theorem does not prove such a statement:
+the actual interior parallelity bundle changes after a cut, so sequential
+quotients cannot silently be identified. A solution needs compatible
+relative maps and a theorem controlling their change.
+
+\subsection{The global quantitative problem}
+
+\paragraph{11. Construct balanced cuts or certified alternatives.}
+Proposition~\ref{prop:balanced-index} gives a concrete sufficient condition
+for multiplicative quadratic progress. Can one find a surface or a
+controlled batch that splits a constant fraction of the squared-index
+mass, or else identify a geometrically structured region with a different
+amortized simplification rule? In particular, analyze the obstruction from
+index-zero and index-one pieces instead of assuming balance continues
+indefinitely. The intended result must include a construction cost and
+compressed output-size bound, not only existence of a balanced surface.
+
+\paragraph{12. Transport a full boundary pattern through top cancellation.}
+The present theorem is relative to the actual bundle ports. A future
+hierarchy may carry marks across the exposed faces of selected endpoint
+gaps. Design an explicit map of those curves and arcs through the
+cancellation neighbourhood, including corner rounding, order, orientation,
+and component ownership. Prove bounds on the resulting compressed word
+size and geometric intersection complexity. Is there a forest objective
+that minimizes this transport cost as well as raw attaching incidence?
+Without such a theorem, using the native top reduction as an arbitrary
+patterned hierarchy move would exceed its proved interface.
+
+\paragraph{13. Count discarded histories and rebuilding work.}
+State the exact search algorithm and assign an amortized charge to every
+candidate, failed surface, restored pattern, and rebuilt source chart.
+Can a multisurface batch retain enough geometric and homological information
+to avoid reconstructing a long prefix after one branch fails? The desired
+bound must apply to all visited histories. A logarithmic bound on one
+retained successful chain and a polynomial-size certificate for that chain
+are not enough.
+
+\paragraph{14. Bound the complete maintained representation.}
+Prove polynomial bounds in the original crossing number for every live
+chart count, compressed word grammar, interval-family list, relative chain
+rank, matrix entry, and coordinate bit length. Then verify that every
+consumer is polynomial in that \emph{same} representation. Local type
+bounds alone do not limit the number of repeated local pieces, and binary
+encoding alone does not limit the number of distinct binary records.
+This accounting should be machine-readable enough that experiments can
+log every parameter appearing in the theorem.
+
+\paragraph{15. Formulate and prove the exact final asymptotic statement.}
+Choose whether the theorem targets $n^{O(\log n)}$ or the weaker
+$2^{O((\log n)^3)}$ formulation, and specify all hypotheses, input
+conversions, arithmetic conventions, and constants hidden by the notation.
+Establish completeness on arbitrary knot diagrams and correctness of both
+answers. Only then combine the encoded-state, branching, and explored-depth
+bounds using Proposition~\ref{prop:global-ledger}. The local results in this
+article provide useful components for that proof, but do not replace it.
+
+\subsection{Recommended order of work}
+
+The most direct engineering continuation is the joint-forest producer and
+the eight positive stopping obstructions, with the existing checker kept
+as the acceptance boundary. In parallel, the most consequential new
+geometric interface is the authenticated relative chain map, followed by
+the signed component selector. Those steps make the homological predicate
+available to real hierarchy states. Balanced construction, pattern
+transport, and a charge for discarded histories are then the central
+mathematical obstacles to the global bound. This order keeps empirical
+coverage gains connected to explicit lemmas and avoids treating a collection
+of fast local routines as an already complete recognition algorithm.

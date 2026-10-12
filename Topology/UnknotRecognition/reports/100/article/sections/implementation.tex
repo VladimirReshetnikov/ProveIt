@@ -1,0 +1,164 @@
+\section{Source-authenticated implementation and integration}
+\label{sec:implementation}
+
+\subsection{Placement in the existing terminal operator}
+
+The top reduction is placed immediately after the existing compressed
+parallelity decomposition and before disk-bundle absorption or construction
+of the relative boundary kernel. This order is mathematically significant:
+the eligible two-handles are exactly the source endpoint gaps. An additional
+two-handle introduced by a later bundle operation has no source edge-side
+authentication and must never be inserted into the dual graph.
+
+The producer is implemented in \code{core\_dual\_forest.py}.
+Its independent checker resides in \code{core\_dual\_forest\_verify.py}.
+The producer obtains a deterministic rooted tree. The checker independently
+reconstructs the oriented side table from the source and validates an ordered
+cancellation trace. It does not call the forest producer, its planner, or its
+side-extraction helper. Both routines rely on the established source-preparation
+contract; independent source authentication is an additional enclosing check.
+
+The public terminal query has the following additional argument:
+\begin{lstlisting}[language=Python]
+normal_cut_handlebodies(
+    triangulation, coordinates,
+    record_certificate=True,
+    dual_strategy="max_weight",  # default
+)
+\end{lstlisting}
+The alternatives are \code{"bfs"} and \code{"disabled"}. The latter preserves
+the old conservative three-handle refusal, and is useful for controlled
+comparisons. The default changes to maximum weight because it has an exact
+retained-incidence guarantee and a demonstrated strict coverage advantage.
+There is no assertion that it always finds a successful forest whenever one
+exists. The three modes take the same downstream code path when the source
+already has no three-handles.
+
+After a successful top reduction the producer creates a derived core with
+the original zero/one records, the surviving two-handle records with dense
+new identifiers, and an empty three-handle list. It updates the four core
+handle counts. The Euler characteristic is unchanged, so the original cut
+Euler identity remains valid. The parallelity bundle, its binary
+multiplicities, its ports, and the ordered boundary words keep their original
+source identity. The remaining cancellation and bundle census algorithms
+then operate on this derived core.
+
+\subsection{Two certificate layers}
+
+The added local certificate has this exact shape:
+\begin{lstlisting}
+{
+  "schema": "normal-core-dual-forest-v1",
+  "source_sides": [[-1, 0], ...],
+  "cancellations": [[three_handle_id, source_two_handle_id], ...],
+  "surviving_two_handles": [source_two_handle_id, ...]
+}
+\end{lstlisting}
+The integer $-1$ denotes exposed boundary. In \code{source\_sides}, order and
+multiplicity are significant. In particular, \code{[0,0]} is a loop with
+two incidences, rather than a cancellable singleton. The survivor list is
+the exact dense-new-to-original-source identifier map. A checker rejects
+missing, repeated, dead, out-of-range, or multiplicity-invalid choices and
+requires every three-handle to be eliminated. The existing exact hexadecimal
+integer codec is accepted; Booleans are rejected as integer identifiers.
+
+A complete terminal certificate that used top reduction has an enclosing
+version-six wrapper:
+\begin{lstlisting}
+{
+  "schema": "normal-cut-handlebodies-v6",
+  "dual": { ... local source-relative forest proof ... },
+  "downstream": { ... existing v1--v5-shaped proof ... }
+}
+\end{lstlisting}
+The downstream parallelity certificate authenticates the \emph{original}
+source geometry. Its geometric consumer proof is interpreted on the derived
+core only after the checker has authenticated that original geometry and
+replayed the top reduction. This is not a claim that the original source
+certificate directly asserts the reduced handle inventory.
+
+The verifier performs the following dependency-ordered operations:
+\begin{enumerate}
+\item Validate the exact wrapper fields and allow only one v6 wrapper.
+\item Independently replay the original parallelity and ordered-boundary
+source certificates against the supplied triangulation and coordinates.
+\item Reconstruct and replay the dual forest on that authenticated original
+core; derive the same dense survivor map and new handle counts.
+\item Replay the existing core and bundle certificates on the derived
+geometry, then independently recompute the census and Euler identity.
+\end{enumerate}
+Discarding the wrapper cannot silently discard the original three-handles:
+the downstream proof alone is checked against the unreduced source and
+fails. A fabricated source side table cannot be made authoritative by
+changing both the table and the proposed cancellation list, because the
+source geometry and every side owner are reconstructed first.
+
+The forest certificate deliberately does not certify optimality. Optimality
+is a property of the producer's chosen strategy and objective, while every
+valid rooted tree is geometrically safe. Accepting alternative valid trees
+allows later search heuristics or exact restricted search without changing
+the trusted checker. Exhaustive small-graph tests check the producer's
+maximum-weight property separately.
+
+\subsection{Operation budgets, arithmetic, and reuse}
+
+The six upstream orbit discoveries retain their existing shared cycle
+allowance. The verifier's \code{max\_operations} option retains its meaning
+as a cap on the existing orbit-proof operations. It is not a total wall-time
+or bit-operation cap. Cancellation callbacks cover the added finite source,
+graph, and replay work and propagate cancellation exceptions. A proof
+requiring no orbit operation can validly pass a zero orbit allowance even
+though finite geometric work remains; the integration tests distinguish
+that case from an input with positive orbit work.
+
+The new side table and tree use only $O(t)$ bounded identifiers. Large
+coordinates appear in the original source validation, not once per normal
+disc in the graph. The proof of Proposition~\ref{prop:cut-dual-cost} concerns
+the added work once source charts have been prepared. The implementation
+currently reconstructs source information in more than one certificate
+layer. Consequently, it would be inaccurate to advertise the entire
+terminal query as a single $O(t)$ routine.
+
+There are two defensible caching levels. First, a cache keyed by the
+triangulation and edge-zero support can reuse a graph tree while source
+authenticity is checked anew. Second, scalar multiples of a fixed valid
+coordinate vector preserve the bounded incidence combinatorics and thus
+the maximum-weight choice as well. More ambitious reuse between unrelated
+surfaces needs a key authenticating all the data used to compute costs.
+Reusing a valid tree and reusing an optimal tree are different promises.
+
+\subsection{The independent homology research component}
+
+The separate \code{research/quotient} directory contains a producer and
+checker for the integer chain-pair alternative. The producer solves the
+block linear system with exact rational elimination and row provenance.
+The checker imports no producer and uses strict integer validation, matrix
+products, and exact equalities. It checks the chain identities and binds
+the certificate to a canonical input digest. The digest is useful provenance
+metadata; the displayed algebraic identities establish soundness.
+
+This code is intentionally not wired to the native cut census. There is no
+source-to-relative-chain compiler in this contribution. Its random tests
+and small examples are algebraic instances, not authenticated knot
+exteriors or measured hierarchy speedups. Matrix ranks, including explicit
+generator counts, are part of the complexity parameter. A JSON object with
+a binary-encoded huge dimension and no entries is not treated as a compact
+representation permitting a huge output vector in sublinear time.
+
+The quotient command-line format uses decimal JSON integers. For trusted
+research inputs beyond Python's default decimal conversion limit, the
+documented invocation sets \code{PYTHONINTMAXSTRDIGITS=0}; a 16,384-bit
+round-trip test verifies that path. This is separate from the native normal
+coordinate codec, which already uses exact hexadecimal strings for large
+wire-format integers. Neither implementation substitutes floating-point
+rank computations for certificate replay.
+
+\subsection{What has and has not been formally verified}
+
+The article gives mathematical proofs and the code gives independently
+implemented executable verifiers. The native source geometry remains in
+the existing trusted Python verification stack. The new theorem proofs
+have not been translated into a proof assistant, and Python itself is not
+a small formally verified kernel. Independence here means that replay does
+not trust or call the search producer; it is a concrete software boundary,
+not a claim that the entire repository has been mechanically proved correct.

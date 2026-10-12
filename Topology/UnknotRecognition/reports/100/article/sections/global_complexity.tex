@@ -1,0 +1,217 @@
+\section{From local improvements to a global complexity theorem}
+\label{sec:global}
+
+\subsection{A complete cost ledger}
+
+The distinction between normal weight and its encoding is essential but
+insufficient. For a hierarchy state $H_i$, let $s_i$ be the full encoded
+state size: source charts, current pattern, bundle identifications,
+coordinate bits, and all live compressed-word or interval descriptions.
+Let $a_i$ count candidate transitions that are generated, including later
+discarded candidates. A useful global accounting identity has the form
+\[
+ T(n)\le T_{\rm input}(n)+
+ \sum_{i\in\mathcal V}
+ \left(T_{\rm state}(s_i)+
+       \sum_{j=1}^{a_i}T_{\rm transition}(s_i,j)\right),
+\]
+where $\mathcal V$ contains every visited search state, including failed
+branches. A polynomial bound on one summand does not control either
+$|\mathcal V|$ or the maximum $s_i$.
+
+The orbit-compression framework of Agol--Hass--Thurston supplies the right
+kind of primitive for avoiding expansion in multiplicity
+\cite{aht2006}. Lackenby's surface-curve algorithms likewise illustrate
+operations charged to triangulation size and logarithmic curve weights
+\cite{lackenby-curves}. The missing global work is to prove that the
+particular hierarchy's interfaces stay within those input-size regimes
+and that sufficiently few states and candidates are inspected. An
+exponential number of short compressed objects is still too many objects.
+
+\begin{proposition}[A sufficient search-tree accounting theorem]
+\label{prop:global-ledger}
+Suppose a deterministic recognition procedure on an $n$-crossing input
+satisfies all of the following for some constants $a,b,c$:
+\begin{enumerate}
+\item The input conversion takes polynomial time.
+\item Every visited state and every required transition certificate has
+encoded size at most $n^a$.
+\item At most $n^b$ children are generated at any state, and all local work
+per child and per state is at most $n^c$.
+\item Every root-to-leaf path in the actual explored tree has length at
+most $d(n)$.
+\item The branching rule is complete, the leaf predicates are sound, and
+their combination correctly decides both knot answers.
+\end{enumerate}
+Then the total running time is $n^{O(d(n)+1)}$. In particular,
+$d(n)=O(\log n)$ gives $n^{O(\log n)}$, while
+$d(n)=O((\log n)^2)$ gives $2^{O((\log n)^3)}$.
+\end{proposition}
+
+\begin{proof}
+The number of nodes is at most
+$1+n^b+\cdots+(n^b)^{d(n)}$. Multiplying by a polynomial upper bound on
+local work, including child generation and verification, gives the stated
+bound. The final assertions follow by substituting the two depth estimates
+and taking logarithms. The correctness hypothesis is listed separately
+because a fast incomplete search would not prove a recognition theorem.
+\end{proof}
+
+The proposition is an accounting tool, not a claim that the hypotheses
+already hold. In particular, it cannot be applied with the depth of one
+successful path when the algorithm may search much deeper failed paths.
+Memoization can improve this bound only after an authenticated equivalence
+relation on states and a bound on distinct reachable equivalence classes
+are proved.
+
+\subsection{Strict quadratic decrease is weaker than multiplicative decrease}
+
+Write $q=c_q(H)$ for Lackenby's quadratic complexity. The homological
+certificate gives a strict raw drop of at least two under its stated
+hypotheses. Along a retained forward chain whose other operations are
+independently $q$-nonincreasing, there can therefore be at most
+$\lfloor q_0/2\rfloor$ such strict cuts. This bound is useful: it excludes
+indefinite repetition of these progress steps. It is generally linear in
+the initial potential and gives neither logarithmic depth nor a bound on
+the number of discarded attempts.
+
+An attempted proof must also distinguish no progress from no available
+certificate. The homology quotient may vanish, or a candidate may lie
+inside the bundle image, while a geometric cut still lowers $q$. Conversely,
+a nonzero quotient does not itself produce an admissible, efficiently
+encoded connected normal surface. The quotient test supplies a sufficient
+progress predicate after geometry has been authenticated.
+
+There is a precise stronger target for a surface constructor. For a raw
+cut, write $I_H\ge0$ for each parent zero-handle's integral index and
+$i_{Ha}\ge0$ for the indices of all its children, so that
+$\sum_a i_{Ha}=I_H$. Then $q=\sum_H I_H^2$.
+
+\begin{proposition}[Balanced index splitting forces multiplicative progress]
+\label{prop:balanced-index}
+Suppose $q>0$. Let $0<\alpha\le1$ and $0<\delta<1$. Assume that a set
+$\mathcal U$ of parent zero-handles satisfies
+\[
+ \sum_{H\in\mathcal U}I_H^2\ge\alpha q,
+ \qquad
+ \max_a i_{Ha}\le(1-\delta)I_H
+ \quad(H\in\mathcal U).
+\]
+Then
+\[
+ q(H\cut S)\le(1-\alpha\delta)q(H).
+\]
+The same upper bound holds after any cleanup whose nonincrease of $q$
+has been separately established.
+\end{proposition}
+
+\begin{proof}
+For $H\in\mathcal U$, nonnegativity and index conservation give
+\[
+ \sum_a i_{Ha}^2\le (\max_a i_{Ha})\sum_a i_{Ha}
+ \le(1-\delta)I_H^2.
+\]
+For any other parent, the same argument without the balance assumption
+gives $\sum_a i_{Ha}^2\le I_H^2$. Summing proves a drop of at least
+$\delta\sum_{H\in\mathcal U}I_H^2\ge\alpha\delta q$. The cleanup
+assertion is immediate from its separately supplied nonincrease.
+\end{proof}
+
+For fixed positive $\alpha,\delta$, a forward nonincreasing chain can have
+only $O(\log(q_0+1))$ such balance stages while its potential remains
+positive. More precisely, after $k$ of them the potential is at most
+$(1-\alpha\delta)^kq_0$; integrality bounds $k$ until the potential
+vanishes or balance ceases to be available. This does not assert existence
+of a next balance stage. An index-one parent cannot be split into
+nonnegative integer children with maximum at most $(1-\delta)I_H$.
+The residual small-index situation requires a separate geometric treatment,
+and neutral stages and failed searches need their own bounds.
+
+The inequality identifies the missing construction theorem more sharply
+than the phrase ``find a useful surface.'' One would need to find a
+compressed surface or a controlled batch that separates a fixed fraction
+of the squared-index mass, or else returns a certified alternative region
+whose handling admits an equally strong amortized estimate. An
+outside-image witness guarantees some separation, but gives no uniform
+fraction of the mass.
+
+\subsection{A sharper raw-cut accounting potential}
+
+The same identity gives a useful local reformulation. Define
+\[
+ \ell(H)=\sum_H I_H,\qquad
+ P(H)=\sum_H\binom{I_H}{2}=\frac{q(H)-\ell(H)}{2}.
+\]
+Here $P$ counts unordered pairs of index units lying in the same parent.
+This interpretation is arithmetic and does not assume those units have
+canonical geometric representatives.
+
+\begin{proposition}[Pair-separation accounting]
+\label{prop:pair-potential}
+For a raw normal cut satisfying nonnegative integral child indices and
+per-parent index conservation,
+\[
+ \ell(H\cut S)=\ell(H),\qquad
+ P(H)-P(H\cut S)=\sum_H\sum_{a<b}i_{Ha}i_{Hb}.
+\]
+Thus an outside-image cut from the progress theorem lowers $P$ by at least
+one. Along a sequence consisting only of such raw cuts, the number of
+strict cuts is at most $P(H_0)$.
+\end{proposition}
+
+\begin{proof}
+Sum the conservation identities for the first equality. Subtract this
+equality from the quadratic defect identity and divide by two for the
+second. Each summand is a nonnegative integer. A positive quadratic defect
+therefore gives an integral drop of at least one, and the final assertion
+follows by telescoping the nonnegative potential.
+\end{proof}
+
+The qualification ``raw'' is necessary. Nonincrease of $q$ alone does not
+imply nonincrease of $P$ if a subsequent operation changes $\ell$. For
+example, as abstract index inventories, four indices equal to one and a
+single index equal to two both have $q=4$, but their values of $P$ are zero
+and one. This arithmetic example is not asserted to be an available
+geometric cleanup. It shows why a proof of a cleanup rule for $q$ cannot
+simply be relabelled as a proof for $P$.
+
+The terminal condition $P=0$ means that every remaining index is zero or
+one. It does not mean that the manifold is a ball, that its pattern is
+essential, or that a knot is unknotted. A useful future strategy could
+separate the problem of reducing index concentration from the classification
+of this small-index remainder, provided both stages preserve the required
+boundary data.
+
+There is an even sharper count for a raw-only sequence. Let $r(H)$ be the
+number of positive-index zero-handles. Every positive parent has at least
+one positive child, every zero parent has only zero children, and a strict
+raw cut has some parent with at least two positive children. Thus each
+strict cut increases $r$ by at least one. Since $r\le\ell$ and $\ell$ is
+conserved, the number of strict raw cuts is at most
+\[
+ \ell(H_0)-r(H_0)=\sum_H\max\{I_H-1,0\}\le P(H_0).
+\]
+The last inequality follows from $k-1\le\binom{k}{2}$ for every integer
+$k\ge1$. The pair potential supplies the exact weighted defect; the
+positive-child count supplies the sharper elementary number-of-cuts bound.
+Neither extends through arbitrary cleanup without additional conservation
+or monotonicity information.
+
+\subsection{What the dual-forest theorem contributes to this ledger}
+
+The top reduction resolves a specific local obstruction with polynomial
+encoded work and a coordinate-magnitude-independent additional trace. It
+does not add a large branching factor: the default uses one optimized tree.
+Its optional complete restricted search has cost
+$t^{O(v_3)}\operatorname{poly}(t,L)$ for $v_3$
+interior source vertices, and hence is quasi-polynomial in the full encoded
+source input when $v_3=O(\log t)$. This is a correct parameterized result for the stated
+compiler family. No argument in this article makes $v_3$ logarithmic along
+an arbitrary full recognition hierarchy or proves that that compiler family
+is topologically complete.
+
+Removing source three-handles also helps align a normal cut with interfaces
+that require none. However, it preserves the specified bundle ports, not
+an arbitrary hierarchy boundary pattern, and it does not automatically
+establish Lackenby-admissibility. These remaining conditions are precisely
+where a tempting informal composition would otherwise become invalid.

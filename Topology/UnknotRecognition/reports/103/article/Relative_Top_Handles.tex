@@ -1,0 +1,127 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx,tikz,float}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{Ink}{HTML}{173349}
+\definecolor{Accent}{HTML}{236B72}
+\hypersetup{colorlinks=true,linkcolor=Ink,citecolor=Accent,urlcolor=Accent,
+  pdftitle={Relative Top-Handle Elimination and the Limits of Forest Optimization},
+  pdfauthor={ProveIt research continuation},
+  pdfsubject={Compressed normal cuts, certified handle cancellation, and unknot recognition}}
+\urlstyle{same}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{Ink}ProveIt: compressed unknot recognition}
+\fancyhead[R]{\small 12 October 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F_2}
+\newcommand{\rk}{\operatorname{rank}}
+\newcommand{\nul}{\operatorname{null}}
+\newcommand{\comp}{\operatorname{comp}}
+\newcommand{\bits}{\operatorname{bits}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\Complete}{\textsf{COMPLETE}}
+\newcommand{\Inconclusive}{\textsf{INCONCLUSIVE}}
+\newcommand{\core}{K}
+\newcommand{\ports}{\mathcal P}
+\newcommand{\sourcecommit}{\texttt{8cb7d9d25ac8cb64a9d147304e3441e98e94c7a4}}
+\newcommand{\smallpath}[1]{{\small\path{#1}}}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0.10in}
+{\large\color{Accent}\sffamily PROVEIT RESEARCH CONTINUATION\par}
+\vspace{0.20in}
+{\fontsize{27}{31}\selectfont\bfseries\color{Ink}Relative Top-Handle Elimination\par}
+\vspace{0.08in}
+{\fontsize{21}{25}\selectfont\bfseries\color{Ink}and the Limits of Forest Optimization\par}
+\vspace{0.10in}
+{\Large in Compressed Unknot Recognition\par}
+\vspace{0.22in}
+{\normalsize Universal source trees, homological constraints,\par
+exceptional-row kernels, and independently replayed certificates\par}
+\vspace{0.24in}
+Prepared for Vladimir Reshetnikov and the ProveIt project\par
+12 October 2026\par
+\vspace{0.20in}
+\noindent\begin{minipage}{\textwidth}
+\small
+\textbf{Abstract.}
+We remove a concrete unsupported case from ProveIt's compressed normal-cut
+pipeline. Every three-handle inherited from an interior source vertex can be
+eliminated by source-authenticated two/three-handle cancellations, relative to
+the recorded parallelity interfaces. One boundary-rooted tree of the source
+one-skeleton specializes to a valid schedule for every admissible normal
+surface, including the empty surface and surfaces with arbitrarily large
+binary coordinates. The scheduling work is linear in the bounded core size;
+the additional trace has $O(t\log(t+2))$ bits.
+
+We then examine whether a better top-handle forest can make the remaining
+one/two-handle cancellations succeed. For abstract short occurrence rows this
+is a two-graphic-matroid partition problem with an exact rank-deficiency
+certificate. A further homological argument substantially narrows its
+geometric significance: the boundary-of-boundary identity makes the residual
+short-row nullity independent of the forest on the genuine geometric
+subclass. We also give an exact contraction kernel for a fixed forest with
+arbitrary exceptional rows, isolating the part that requires more than graphic
+matroid methods.
+
+The native integration increases independently certified whole-cut censuses
+from 85 to 92 on the retained 106-case corpus, preserving all earlier
+successes. On a family of genuine subdivided solid tori, the largest measured
+case gives a $28.8$-fold scheduling gain and a $1.94$-fold gain when common
+source-incidence reconstruction is included. Small cases regress. These are
+local advances: a complete quasipolynomial unknot-recognition bound is not
+established. The article gives detailed proofs, evidence, integration
+contracts, and a research programme aimed at the remaining geometric and
+global complexity obligations.
+\end{minipage}
+\vfill
+\noindent\small Based on repository commit \sourcecommit.\par
+\noindent\small All performance claims refer to the supplied reproducible
+experiments. Mathematical generality, native implementation scope, and
+unproved proposals are stated separately.
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\tableofcontents
+\newpage
+\input{01_position}
+\input{02_relative_geometry}
+\input{03_source_templates}
+\input{04_joint_forests}
+\input{05_chain_constraint}
+\input{06_exceptional_kernel}
+\input{07_implementation}
+\input{08_experiments}
+\input{09_research}
+\appendix
+\input{10_reproduction}
+\input{11_source_audit}
+\input{bibliography}
+\end{document}

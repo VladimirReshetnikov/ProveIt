@@ -1,0 +1,138 @@
+\section{Reproducibility, source provenance, and claim ledger}
+
+\subsection{What is in the archive}
+The archive contains this PDF and its complete LaTeX source, bibliography,
+figure-generation source and rendered figures, a native integration patch,
+the proposed native files, the standalone forest solvers and their separate
+verifier, focused tests, recorded audit and benchmark output, positive and
+negative source packets, and integration/reproduction instructions.
+\code{README.md} is the entry point; \code{REPRODUCE.md} gives exact
+commands.  \code{code_manifest.json} records the proposed code identities,
+and \code{SHA256SUMS.txt} records archive file digests.
+
+The native patch is relative to
+\begin{center}\small\basecommit.\end{center}
+It is not relative to whichever commit the remote branch later names
+\code{main}.  The package's patch validation reconstructs the pinned
+original files, applies the patch, and compares the result byte-for-byte
+with the supplied proposed files.  A fresh complete clone is preferable
+for the full regression suite because older tests import exact reference
+implementations and fixtures from historical \code{reports} directories.
+Those fixture identities are listed in \code{historical_fixtures.json}
+under \code{results/package_validation/}.
+
+The standalone finite tools require only Python's standard library.
+The native tests additionally require the pinned ProveIt source tree;
+Regina is needed for the comparison audit, not for the replay of the seven
+saved positive packets or three source-authenticated negative packets.
+Matplotlib is needed only to regenerate the figures.  The article uses
+standard pdfLaTeX packages and BibTeX.  Exact commands and recorded versions
+are included rather than an implicit environment assumption.
+
+\subsection{Evidence and theorem mapping}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.29\textwidth}>{\raggedright\arraybackslash}p{0.61\textwidth}}
+\caption{How each substantive claim is supported.}\label{tab:claims}\\
+\toprule
+Claim & Proof or independent evidence\\
+\midrule\endfirsthead
+\toprule Claim & Proof or independent evidence\\\midrule\endhead
+Native graph root reachability & Lemma~\ref{lem:rooted}: connected source
+one-skeleton with positive edges replaced by root stubs.\\
+Geometric reduction of all top handles & Lemma~\ref{lem:dual-cancel} and
+Theorem~\ref{thm:native}; actual belt occurrences, not signed coefficients.\\
+Retention of native exposed ports & Lemma~\ref{lem:ports}; a relative
+boundary-ball argument for authenticated exposed patches.\\
+Polynomial encoded graph stage & Bounds on native chart records and
+arithmetic in Section~\ref{sec:geometry}; no normal-piece expansion.\\
+Stopping characterization & Prior incoming stopping theorem, re-proved
+for the stated raw update in Section~\ref{sec:forests}.\\
+Complete constrained forest search & Theorem~\ref{thm:search}; independent
+branch-covering proof-tree replay.\\
+Polynomial sparse-column selection & Reachability and source-SCC lemmas,
+Rado's criterion, and a proved shortest-path augmentation.\\
+Native total-column bound and parity & Propositions~\ref{prop:three}
+and~\ref{prop:cycle}; triangular face regions and the handle-chain identity.\\
+85 to 92 complete native cuts & Pinned baseline/native audit, preserved
+censuses, 92 independent replays, seven Regina comparisons.\\
+Three interface kernels admit no tree & Saved authenticated negative
+packets and independent reconstruction of their nondeletable stopping rows.\\
+Finite algorithm agreement & 26,995 exhaustive and 7,000 seeded random
+oracle comparisons; separate positive and negative checkers.\\
+Finite enumeration speed comparison & Specified $2^k$-tree family,
+complete-query timings, raw paired rounds and structural counters.\\
+Native timing crossover & Six supplied-cut sizes and five randomized
+paired rounds per size; scope and regressions retained.\\
+General quasi-polynomial unknot recognition & Not proved here.  Discovery,
+global-size, pattern-transport, and terminal-completeness obligations remain.\\
+\bottomrule
+\end{longtable}
+
+\subsection{A small inspectable finite certificate}
+The following example is the finite form of the two-choice construction:
+\begin{verbatim}
+{
+  "vertices": 2,
+  "columns": 1,
+  "edges": [[0, 1], [0, 1]],
+  "rows": [[[0, 1]], [[0, 3]]]
+}
+\end{verbatim}
+The tree consists of row 1.  After deleting it, row 0 is removed on
+column 0.  A positive finite certificate therefore records the tree
+$[1]$ and the peel pair $[0,0]$.  Changing the selected tree to $[0]$
+without changing the source fails verification: the surviving count is
+three, not one.  If both counts are three, the two stopping singleton
+groups have union of graphic rank one, smaller than their group count
+two.  That rank defect certifies \code{NO_FOREST}; it does not certify
+that the associated manifold is not a ball.
+
+The delivered demonstration generates several such positive and negative
+certificates, replays them with the independent checker, and rejects
+mutated variants.  The full source packets are larger because they also
+authenticate the triangulation, coordinates, geometry, and interfaces.
+
+\subsection{Input validation versus geometric interpretation}
+A graph/matrix result can be correct as a finite result even when no
+three-manifold realizes the input.  Conversely, a source-authenticated
+topological result needs the entire geometric chain of implications.
+The manuscript separates these levels to make review practical:
+\begin{enumerate}
+\item The native source validator establishes the manifold and normal-vector
+  contract and authenticates the complementary charts.
+\item The geometric dual theorem identifies valid top cancellations and
+  the retained native port data.
+\item The finite matrix theorem decides exactly the stated raw
+  forest-completion problem on those authenticated occurrences.
+\item The boundary kernel certifies a genus census when its additional
+  attachment criteria succeed.
+\end{enumerate}
+The last level can remain inconclusive even when the first three succeed.
+The ten-core audit demonstrates this distinction directly.  A negative
+finite certificate must not cross these levels as a knot verdict.
+
+There is a second distinction between actual counts and saturated counts.
+Capping at two is exact for every raw pivot and stopping predicate in
+this paper.  It is not exact for parity: an actual count of three is odd
+but becomes two.  Proposition~\ref{prop:cycle} uses authenticated uncapped
+counts.  The source parity audit follows that convention separately from
+the finite solver's capped matrix representation.
+
+\subsection{Attribution and limits of the research claim}
+The topological cancellation principle is classical.  Rado's independent
+representatives theorem and Edmonds' matroid-intersection framework are
+classical.  Compressed normal-surface cutting is established in the
+Agol--Hass--Thurston and Lackenby literature.  The stopping-set criterion
+and its raw-cancellation extension already occur in the inspected incoming
+research.  The contribution claimed here is their specific connection to
+the native source geometry, the retained interface proof, the exact
+constrained tree-selection formulation and sparse-column solution, the
+native column constraints, and the tested certificate implementation.
+
+We did not perform an exhaustive historical priority search for every
+combinatorial lemma, and these results have not undergone external peer
+review or proof-assistant verification.  The claims are stated so that
+they can be checked or refuted independently.  The archive supplies the
+counterexamples, exact inputs, patch, raw timings, and negative evidence
+needed for that review.  Numerical experiments support implementation
+correctness and practical scope; they do not replace the proofs or imply
+the unresolved global asymptotic bound.

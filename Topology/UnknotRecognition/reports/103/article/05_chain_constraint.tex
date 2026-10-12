@@ -1,0 +1,265 @@
+\section{The chain constraint: when forest optimization disappears}
+\label{sec:chain}
+
+The two-graph model has an additional constraint on native geometric inputs.
+Its cap incidences and raw attaching counts are parts of the same cellular
+chain complex. This constraint makes a substantial part of the apparent
+forest-choice problem collapse to one tree extension. It also provides a
+necessary realizability check for proposed abstract examples.
+
+\subsection{Raw parity and complementary tree coordinates}
+
+Fix an authenticated core $K$ and a geometric forest contraction among its
+zero- and one-handles. Let $E$ index its $m$ two-handles, let $C$ index the
+remaining one-handles, and let $q$ be the number of three-handles. Write
+$a_{ec}$ for the \emph{uncapped} geometric occurrence count of one-handle
+$c$ in the attaching cycle of two-handle $e$. Define
+\[
+ A=(a_{ec}\bmod 2)\in\F^{E\times C},\qquad
+ B\in\F^{E\times\{1,\ldots,q\}},
+\]
+where $B_{ev}$ counts the cap occurrences of $e$ at three-handle $v$ modulo
+two. Both ends of a loop are counted. Orientations disappear over $\F$,
+but geometric occurrences must be counted before reduction modulo two.
+
+The handle chain complex gives
+\begin{equation}
+ \partial_2=A^{\mathsf T},\qquad
+ \partial_3=B,\qquad A^{\mathsf T}B=0.
+ \label{eq:boundary-boundary}
+\end{equation}
+The matrix $B^{\mathsf T}$ is the reduced incidence matrix of the cap graph
+$G$, with the formal exterior root omitted. By \cref{thm:top}, $G$ is
+connected in the native source setting. Hence $\rk B=q$, and
+\begin{equation}
+ \beta_2(K;\F):=\dim_{\F}H_2(K;\F)=m-\rk A-q.
+ \label{eq:chain-beta}
+\end{equation}
+Several core components cause no problem when each reaches an exterior
+end: the common graph root is formal and the three-handle columns remain
+independent. Closed components with nonzero $H_3$ require a different rank
+statement.
+
+Suppose first that every \emph{raw} row has length at most two. Construct
+the occurrence graph $H$ as in \cref{sec:joint}: singleton rows join their
+column to a ground vertex, two distinct occurrences join their columns,
+and double occurrences or empty rows are loops. Then $A^{\mathsf T}$ is
+exactly a reduced incidence representation of $H$. Write $r_H(S)$ for its
+graphic rank on edge set $S$, and $\nu_H(S)=|S|-r_H(S)$ for its cycle
+nullity.
+
+\begin{theorem}[Geometric short-row invariance]
+\label{thm:chain-invariance}
+If $\sum_c a_{ec}\leq2$ for every $e\in E$, then every spanning tree $F$ of
+the cap graph satisfies
+\begin{equation}
+ r_H(E\setminus F)=r_H(E),\qquad
+ \nu_H(E\setminus F)=\beta_2(K;\F).
+ \label{eq:tree-invariance}
+\end{equation}
+Consequently, one such residue admits complete unit-column peeling if and
+only if every such residue does. Changing the top-handle tree cannot
+improve its occurrence-graph nullity.
+\end{theorem}
+
+\begin{proof}
+Transposing \cref{eq:boundary-boundary} gives
+\[
+ \operatorname{col}(A)\subseteq\ker(B^{\mathsf T}),
+\]
+the cycle space of $G$. Projection onto the coordinates $E\setminus F$ is
+injective on this cycle space: a vector in its kernel would be a cycle
+supported entirely on a forest, and therefore zero. The same projection
+is injective on $\operatorname{col}(A)$, so $\rk A_{E\setminus F}=\rk A$.
+These ranks are respectively $r_H(E\setminus F)$ and $r_H(E)$.
+
+Every cap spanning tree has $q$ edges. Substitution in
+\cref{eq:chain-beta} proves the nullity identity. Finally, the short-row
+peeling criterion of \cref{sec:joint} identifies complete peeling with
+zero occurrence-graph nullity.
+\end{proof}
+
+This is a restriction on the optimization problem, rather than a defect
+in the abstract matroid theorem. In compatible geometric inputs, the row
+space representing $H$ lies in the cycle space of $G$. The two graphs
+cannot be varied independently.
+
+\subsection{Mandatory rows and the homological criterion}
+
+Capping counts at two preserves singleton predicates but can change
+parity. For example, a raw row $(3)$ has binary row $(1)$, whereas its
+capped row $(2)$ represents a loop and hence a zero incidence column.
+With no three-handles, this example has $m-\rk A-q=0$ but occurrence-graph
+nullity one. Thus \cref{thm:chain-invariance} cannot simply be applied to
+arbitrary capped short rows.
+
+There is an exact repair for the restricted strategy. Put
+\begin{align}
+ D_{\mathrm{long}}&=\bigl\{e:\sum_c\min(2,a_{ec})>2\bigr\},\notag\\
+ D_{\mathrm{loop}}&=\{e:a_e=0\text{ or }a_e=k\mathbf e_c
+                         \text{ for some }k\geq2\},\notag\\
+ \overline D&=D_{\mathrm{long}}\cup D_{\mathrm{loop}}.
+ \label{eq:mandatory-rows}
+\end{align}
+The first set is required to be removed by the restricted rule in
+\cref{sec:joint}. The second consists of all occurrence-graph loops, none
+of which can remain in a completely peelable residue. Thus every successful
+certificate in that strategy must place all of $\overline D$ in its cap
+tree. Every remaining row is genuinely one unit occurrence or two distinct
+unit occurrences; its raw and capped parities agree.
+
+\begin{theorem}[Mandatory-forest reduction]
+\label{thm:mandatory-chain}
+Assume $\overline D$ is a forest of $G$. Set $k=|\overline D|$,
+$E_1=E\setminus\overline D$, and let $H_1$ be the occurrence graph on $E_1$.
+For every cap spanning tree $F\supseteq\overline D$,
+\begin{equation}
+ \nu_{H_1}(E\setminus F)
+   =(m-k)-(q-k)-r_{H_1}(E_1)
+   =\beta_2(K;\F).
+ \label{eq:mandatory-beta}
+\end{equation}
+For the fixed primal forest and the restricted short-row rule, a complete
+top-deletion and raw-peeling certificate exists exactly when
+$\overline D$ is a cap forest and $\beta_2(K;\F)=0$.
+\end{theorem}
+
+\begin{proof}
+Let $Q$ have one column for each component of $G[\overline D]$ not
+containing the exterior root. Its entries are one on the three-handle
+vertices in that component and zero elsewhere. Thus
+\[
+ B_{\overline D}Q=0,\qquad B_1:=B_{E_1}Q
+\]
+is the transpose of the reduced incidence matrix of $G/\overline D$.
+Multiplying \cref{eq:boundary-boundary} by $Q$ gives
+\begin{equation}
+ A_{E_1}^{\mathsf T}B_1=0.
+ \label{eq:contracted-chain}
+\end{equation}
+Because $\overline D$ is a forest, the contracted connected graph has
+$q-k+1$ vertices. The projection argument in
+\cref{thm:chain-invariance} applies to $A_{E_1},B_1$. It shows that
+restriction away from the tree $F\setminus\overline D$ preserves
+$r_{H_1}(E_1)$, proving the first equality in \cref{eq:mandatory-beta}.
+
+To identify this value with the original core's homology, use that
+$B_{\overline D}$ has full row rank $k$. Choose a right inverse $R$ with
+$B_{\overline D}R=I_k$. The original chain identity implies
+\[
+ A_{\overline D}^{\mathsf T}
+     =A_{E_1}^{\mathsf T}B_{E_1}R.
+\]
+The deleted column maps of $\partial_2$ are therefore combinations of the
+surviving ones. Consequently
+\[
+ \rk A=\rk A_{E_1}=r_{H_1}(E_1).
+\]
+Equation~\eqref{eq:chain-beta} now proves the second equality.
+
+Every successful restricted certificate has a cap tree containing
+$\overline D$, so this set must be a forest. Its residue has nullity zero,
+forcing $\beta_2=0$. Conversely, if both conditions hold, extend
+$\overline D$ to any cap spanning tree. Its residue is an occurrence
+forest, and therefore peels completely. The rooted schedule of
+\cref{lem:rooted} and the authenticated geometric cancellation rules turn
+these graph steps into a core cancellation certificate.
+\end{proof}
+
+The contraction in this proof chooses an edge set; it does not assert that
+the mandatory edges alone form an initial legal cancellation sequence.
+After extension to $F$, the complete geometric trace is ordered from the
+exterior root as in \cref{lem:rooted}.
+
+\begin{corollary}[One extension suffices]
+\label{cor:single-extension}
+On supplied authenticated incidence data, the restricted strategy can be
+decided by testing whether $\overline D$ is a cap forest, extending it once
+to a spanning tree when possible, and testing or peeling the residual
+occurrence graph. No search over alternative extensions is required.
+\end{corollary}
+
+If the incidence lists are indexed and isolated occurrence vertices are
+suppressed, let $N$ be the number of nonzero raw incidence entries. Finding
+$\overline D$, traversing its components, building the quotient, choosing
+a spanning tree and peeling use $O(m+q+N+1)$ graph work and memory.
+Component traversals suffice; a general binary-matrix rank computation is
+unnecessary. Source authentication, index construction and the bit costs
+of reading or comparing binary counts are separate from this graph bound.
+The positive output remains an ordinary replayable cancellation trace.
+
+This is not a generic handlebody test based on homology. Sufficiency uses
+the authenticated handle charts, the fixed primal forest, the mandatory
+forest hypothesis and the particular short-row rule. A vanishing second
+Betti number without those hypotheses does not supply the cancellations.
+Moreover, failure of the restricted strategy can occur for a handlebody.
+The later one/two cancellations also need their own marking analysis if a
+consumer requires arbitrary boundary-pattern transport.
+
+\subsection{Consequences for abstract evidence and deficiency}
+
+The retained abstract exchange regression makes the distinction concrete.
+Its cap edges are
+$e_0=v_0v_1$, $e_1=v_1\rho$, $e_2=v_0\rho$, and its raw rows on one
+occurrence column are $(1),(0),(2)$. The cap tree $\{e_0,e_1\}$ leaves an
+occurrence loop, whereas $\{e_1,e_2\}$ leaves a peelable singleton.
+However, its binary matrices satisfy
+\[
+ B=\begin{pmatrix}1&1\\0&1\\1&0\end{pmatrix},\qquad
+ A=\begin{pmatrix}1\\0\\0\end{pmatrix},\qquad
+ A^{\mathsf T}B=(1,1)\ne0.
+\]
+Thus these exact data cannot be the incidences of an authenticated handle
+core. They remain a useful test of the abstract exchange algorithm, but
+provide no example of a native geometric speedup.
+
+\begin{example}[A geometric family with several top trees]
+\label{ex:geometric-cycle}
+Start with a standard solid torus $V$, presented by one zero-handle and one
+one-handle $c$. Attach $r\geq2$ two-handles along disjoint parallel primitive
+\emph{longitudes} of $V$, each crossing the cocore of $c$ once. These curves
+represent a generator of $\pi_1(V)$; they are not meridians of $V$.
+
+For an explicit embedding, use the standard genus-one splitting
+$S^3=V\cup W$, in which a meridian of the complementary solid torus $W$ is
+a longitude of $V$. Take the two-handles to be small neighbourhoods of $r$
+disjoint meridian disks in $W$. Their complement in $W$ consists of $r$
+balls. The resulting core is therefore $S^3$ with $r$ open balls removed,
+equivalently a ball with $r-1$ interior balls removed. Fill any $0\leq q\leq r-1$
+of its spherical boundary components with three-handles.
+
+The $r$ complementary chambers lie cyclically around $W$. Consequently
+the cap graph is the $r$-cycle with the unfilled chamber vertices
+identified with $\rho$; for $r=2$ the cycle has two parallel edges.
+The occurrence graph has $r$ parallel edges between $c$ and its ground,
+and rank one. Every cap tree deletes $q$ rows and hence leaves
+\[
+ |E\setminus F|=r-q,\qquad
+ \nu_H(E\setminus F)=r-q-1=\beta_2(K;\F).
+\]
+When $q=r-1$, there are $r$ different cap trees and every one succeeds;
+the filled core is a ball. When $r=3$ and $q=1$, there are two cap trees,
+and each leaves nullity one. Thus genuine geometric inputs can have
+several tree choices and positive invariant defect. The ports in this
+family are empty; the construction supplies geometric examples only,
+without a native triangulation benchmark claim.
+\end{example}
+
+The exact abstract deficiency of \cref{sec:joint} remains meaningful.
+For any cap spanning tree $F$, the rows $B_F$ form an invertible square
+matrix. Equation~\eqref{eq:boundary-boundary} then expresses $A_F^{\mathsf T}$
+in terms of $A_{E\setminus F}^{\mathsf T}$, so every such restriction retains
+the raw binary rank $\rk A$. When only $D_{\mathrm{long}}$ is forced,
+passing from the remaining raw short rows to their capped occurrence graph
+merely zeros the columns arising from odd single multiplicities at least
+three. It cannot increase rank. Every corresponding occurrence nullity is
+therefore at least $\beta_2(K;\F)$.
+
+If $\overline D$ is a forest, \cref{thm:mandatory-chain} supplies an extension
+attaining this lower bound. In that case the abstract minimum deficiency
+equals the second Betti number as well. If $\overline D$ is cyclic, a
+complete short-row certificate is impossible; optimizing a partial
+residue can still be a diagnostic. Further native progress must then use
+information outside this complete short-row forest strategy, such as the
+structure of retained longer rows, a different primal contraction, or
+authenticated geometric moves that change the occurrence data.

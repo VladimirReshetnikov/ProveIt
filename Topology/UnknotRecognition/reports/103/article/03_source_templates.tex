@@ -1,0 +1,148 @@
+\section{One source tree for every normal cut}
+\label{sec:templates}
+
+The cap graph changes when a source edge weight becomes positive. It would
+be wasteful to regard each zero/nonzero support as an unrelated scheduling
+problem. The source one-skeleton already supplies one schedule template for
+all of them.
+
+\begin{definition}[Boundary-rooted source forest]
+Choose a forest $T_0$ in the source vertex graph such that every interior
+vertex has a unique parent edge and every component has one source boundary
+vertex as its root. There is no parent edge for a boundary vertex. Record the
+interior vertices in a parent-before-child order. Such a forest is produced
+by a multi-source breadth-first search starting at all boundary vertices.
+\end{definition}
+
+The term forest refers to the actual source vertices. Contracting all
+boundary roots to one formal vertex makes its interior portion a rooted
+tree for the scheduling argument. This is still only graph bookkeeping.
+
+\begin{theorem}[Universal source-tree specialization]
+\label{thm:template}
+Fix $T_0$ independently of normal coordinates. For every admissible $x$,
+process its interior vertices in the recorded order. For a vertex $v$ with
+parent edge $e$, choose
+\begin{enumerate}
+\item the unique exceptional gap of $e$, when $w_e=0$;
+\item the extreme gap of $e$ adjacent to $v$, when $w_e>0$.
+\end{enumerate}
+Cancel that two-handle with the three-handle of $v$. This is a complete
+valid trace for the relative operation of \cref{thm:top}. The same source
+template works for all admissible coordinate supports and all scales.
+\end{theorem}
+
+\begin{proof}
+An edge incident to an interior vertex is not a boundary edge, so the
+required exceptional gap exists. If its weight is zero, its other endpoint
+is the parent, which is a boundary vertex or has already been removed. It
+therefore has exactly one live three-handle contact, namely $v$. If its
+weight is positive, the child-adjacent extreme gap has its other endpoint on
+the new cut boundary; it is immediately eligible, regardless of the
+parent's status.
+
+Distinct vertices use distinct parent edges of the source forest. Two
+different choices can consequently never request the same exceptional
+two-handle, including after a support change replaces one zero gap by two
+extreme gaps. A parent edge cannot be an interior loop. Every interior
+vertex is processed once, and \cref{lem:relative-move} applies at every
+step. The construction makes no assumption on coordinate size and includes
+$x=0$.
+\end{proof}
+
+\begin{corollary}[Support and scale invariance]
+\label{cor:support}
+The cap graph, considered with oriented extreme-gap labels, depends on $x$
+only through the predicates $w_e=0$. Positive scaling $x\mapsto kx$ leaves
+the source-tree choices and the corresponding dense two-handle IDs
+unchanged. A specialized trace has the same number of moves and source-ID
+bits at every positive scale.
+\end{corollary}
+
+\begin{proof}
+The cap formula only distinguishes zero from positive weight. In the latter
+case the numerical label $w_e$ changes but the order of the two extreme
+gaps does not. Source vertices, source edge order, and the parent forest
+are fixed. The trace records source handle IDs, while its input fingerprint
+has fixed encoded length.
+\end{proof}
+
+The corollary concerns the added top trace. The complete source certificate
+still contains exact coordinates and affine endpoints and can grow with
+$b_x$. It would be incorrect to infer constant total proof size from constant
+top-trace size.
+
+\subsection{A linear queue and an independent trace checker}
+
+The default implementation uses a queue rather than requiring the reusable
+template. Initialize every edge with one live endpoint. When a vertex is
+deleted, revisit its incident edges and enqueue newly eligible ones.
+Duplicate queue entries are harmless: a popped edge is checked against the
+current live sets before use. Each interior loop is stored once in the
+vertex adjacency list but retains both endpoint occurrences in the edge
+record.
+
+\begin{proposition}[Local cost and trace size]
+\label{prop:cost}
+Given an authenticated dense-ID cap packet with $m$ edges and $q$ interior
+vertices, a complete rooted schedule and the surviving edge list can be
+produced in $O(m+q)$ word operations and $O(m+q)$ space. The supplied trace
+can be checked in the same structural bound. For the source cores in
+\eqref{eq:core-bounds}, the additional proof takes
+$O(t\log(t+2))$ bits. Source validation, coordinate reading, rank address
+reconstruction, and fingerprinting remain polynomial in
+$t\log(t+2)+b_x$.
+\end{proposition}
+
+\begin{proof}
+The initialization and final dense-ID survivor scan visit each edge once.
+There are at most $2m$ vertex--edge incidences. Each is revisited only when
+its vertex is deleted. Each visit performs constant work on an edge's two
+endpoint occurrences and can enqueue it at most once. The initial queue
+also has at most $m$ entries. Thus all queue pops and endpoint checks have
+linear total count. A checker reads each of the $q$ pairs, rejects reuse,
+and tests its at most two live contacts. It finally compares the exact
+survivor list.
+
+All original handle IDs are $O(t)$, so the $q$ pairs and at most $m$
+survivors use $O(t\log(t+2))$ bits. The template also consists of $O(t)$
+vertex, parent, and source-edge labels of this length. Reconstructing the
+source data requires a polynomial number of combinatorial operations and
+arithmetic on the input integers. No loop ranges over the numerical normal
+weight, and the fingerprint uses hexadecimal coordinate encodings rather
+than decimal conversions with implementation-specific digit limits.
+\end{proof}
+
+The public template functions validate their source arguments rather than
+assuming a previously trusted cache. Thus their current complete-call cost
+includes source validation even when the combinatorial template is reused.
+A future authenticated session object could remove duplicate validation
+work while preserving the source binding. Such caching is a separate
+implementation improvement, not part of the linear queue claim.
+
+\subsection{How the source orientation is authenticated}
+
+A triangulation edge can appear in many local tetrahedra, and its two global
+endpoint vertices can coincide. The canonical orientation is determined by
+the signed source edge union, not by sorting vertex labels. The producer
+uses the union-find root's own oriented local representative. The verifier
+uses a different reconstruction: it scans \emph{every} local occurrence,
+reverses its endpoint pair according to the recorded orientation parity,
+and demands agreement.
+
+This matters in practice. The general source validator keeps a convenient
+last-seen endpoint pair that is sufficient for link counting but need not
+be in the canonical orientation. Using that pair to decide which extreme
+gap has rank zero can reverse the cap formula. The new proof checker does
+not trust that shortcut. It reconstructs the complete expected exceptional
+rank inventory before interpreting any move.
+
+\subsection{The exact scope of uniformity}
+
+The template is universal for one fixed source triangulation. A subsequent
+hierarchy state may have a different triangulation or a differently
+represented marked handle structure. The theorem does not identify those
+states, transport their patterns, or establish a bounded number of source
+rebuilds. Its useful implication is more local: within a fixed source,
+top-handle elimination introduces no branch over normal supports and no
+normal-weight-dependent number of moves.

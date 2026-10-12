@@ -1,0 +1,685 @@
+\section{Relative bundle quotients and certificates of strict progress}
+\label{sec:quotient-progress}
+
+Lackenby's equality criterion for quadratic handle complexity gives an
+algebraic way to certify that a proposed surface makes strict progress.
+The useful object is the part of relative second homology that is
+represented inside the interior parallelity bundle. A surface whose class
+survives after quotienting out that subspace cannot be one of the
+homologically bundle-supported surfaces allowed by the equality case.
+We make this observation quantitative and give a complete exact
+certificate system for its algebraic premise.
+
+The geometric implication below is a corollary of
+\cite[Proposition~5.9]{lackenby2026}. The linear alternative is an
+application of finite-dimensional duality. The contribution here is their
+explicit combination with a small, independently replayable certificate
+contract, including the conditions under which the algebraic result can
+be promoted to a statement about the geometric algorithm.
+
+\subsection{The pair map and the geometric hypotheses}
+
+Let $M$ be a compact connected oriented PL $3$-manifold with boundary
+pattern $P$, and let $\mathcal H$ be an admissible handle structure in the
+sense of \cite[Definition~5.3]{lackenby2026}. Let $\mathcal B$ be its
+\emph{actual interior parallelity bundle}, as defined in
+\cite[Definition~5.6]{lackenby2026}, with the embedding in $M$ inherited
+from those handles. Throughout this section use the conservative pair
+\[
+ A=\mathcal B\cap\partial M,\qquad
+ j:(\mathcal B,A)\longrightarrow(M,\partial M).
+\]
+This is an inclusion of pairs, so it induces a well-defined map on
+relative homology. Define
+\begin{equation}
+ \label{eq:quotient-bundle-image}
+ V_{\mathcal B}
+ =\operatorname{im}\!\left(
+ H_2(\mathcal B,A;\mathbb Q)
+ \xrightarrow{\,j_*\,} H_2(M,\partial M;\mathbb Q)
+ \right).
+\end{equation}
+All chain complexes used to compute this map must come from compatible
+cellular or simplicial models of the \emph{embedded} pair. An abstract
+isomorphism between homology groups does not specify this image.
+
+\begin{remark}[Horizontal boundary is an additional embedding assertion]
+\label{rem:quotient-horizontal}
+One can instead use $A_h=\partial_h\mathcal B$ if its actual inclusion in
+$\partial M$ has been established. For the interior parallelity handles,
+having no $3$-handles is a sufficient condition: the horizontal faces are
+disjoint from other $0$-, $1$-, and $2$-handles and hence lie in the
+manifold boundary. A general handle structure may have $3$-handles, and
+horizontal faces may meet them. Thus a map
+$H_2(\mathcal B,\partial_h\mathcal B)\to H_2(M,\partial M)$ must not be
+formed solely from an abstract description of the bundle.
+The choice $A=\mathcal B\cap\partial M$ always defines the pair map needed
+here. When $A_h\subseteq A$, its image contains the image obtained from
+$(\mathcal B,A_h)$, so it can make the obstruction weaker but does not
+invalidate the sufficient implication. Twisted $I$-bundles are allowed.
+\end{remark}
+
+For a $0$-handle $H$, write $I(H)$ for its integer index from
+\cite[Definition~5.1]{lackenby2026}. The quadratic complexity is
+\[
+ c_q(\mathcal H)=\sum_{H\in\mathcal H^0}
+                  \bigl(\max\{I(H),0\}\bigr)^2.
+\]
+The subscript $q$ denotes quadratic complexity. Later the certificate
+file also has a field named \texttt{q}; we denote that positive integer
+by $\nu$ in the mathematics to distinguish the two uses.
+
+\begin{theorem}[The quotient obstruction forces a positive even raw defect]
+\label{thm:quotient-strict-progress}
+Let $\mathcal H$, $M$, $P$, $\mathcal B$, and $A$ be as above. Let $S$ be
+a compact connected oriented surface properly embedded in $M$ and normal
+with respect to $\mathcal H$. Suppose
+\[
+ [S]\notin V_{\mathcal B}.
+\]
+Let $\mathcal H^{\mathrm{raw}}$ be the handle structure obtained by
+cutting along $S$, before any deletion, handle cancellation, merging,
+admissibility repair, or bundle replacement. For each original $0$-handle
+$H$, let
+$H_{H,1},\ldots,H_{H,r_H}$ be \emph{all} its raw child $0$-handles, and put
+$a_{H,i}=I(H_{H,i})$. Then
+\begin{equation}
+ \label{eq:quotient-exact-raw-defect}
+ c_q(\mathcal H)-c_q(\mathcal H^{\mathrm{raw}})
+ =2\sum_{H\in\mathcal H^0}\ \sum_{1\leq i<j\leq r_H}a_{H,i}a_{H,j}
+ \ \geq\ 2.
+\end{equation}
+If $\mathcal H^{\mathrm{clean}}$ is subsequently obtained by operations
+independently proved not to increase $c_q$, then
+\[
+ c_q(\mathcal H)-c_q(\mathcal H^{\mathrm{clean}})\geq 2
+\]
+as well. The exact identity in
+\eqref{eq:quotient-exact-raw-defect} concerns the raw cut.
+\end{theorem}
+
+\begin{proof}
+Since $0\in V_{\mathcal B}$, the hypothesis implies $[S]\neq0$ in
+$H_2(M,\partial M;\mathbb Q)$. Orientability of $M$ and $S$ makes $S$
+two-sided. If $S$ separated $M$, the closure of one side would give a
+relative $3$-chain whose boundary is $S$, up to orientation, together
+with a chain in $\partial M$. This would imply $[S]=0$. Consequently
+$S$ is nonseparating, and the hypotheses of
+\cite[Proposition~5.9]{lackenby2026} hold.
+
+Admissibility implies $I(H)\geq0$. Index conservation under a standard
+cut and nonnegativity after a normal cut of an admissible handle
+structure give
+\[
+ \sum_{i=1}^{r_H}a_{H,i}=I(H),\qquad a_{H,i}\geq0
+\]
+for every $H$; these are
+\cite[Lemmas~5.2 and~5.5]{lackenby2026}. Expanding the square gives
+\[
+ I(H)^2-\sum_i a_{H,i}^2
+ =\left(\sum_i a_{H,i}\right)^2-\sum_i a_{H,i}^2
+ =2\sum_{i<j}a_{H,i}a_{H,j}.
+\]
+Summing over all original $0$-handles proves the exact formula and shows
+that the raw defect is an even nonnegative integer.
+
+Suppose that the defect were zero. The equality conclusion of
+\cite[Proposition~5.9]{lackenby2026} would make $S$ homologous in
+$H_2(M,\partial M)$ to a vertical surface contained in $\mathcal B$.
+The proof of that proposition arranges the representative to be properly
+embedded in $\mathcal B$, disjoint from $\partial_v\mathcal B$, and with
+boundary in $\partial M$. In particular its boundary lies in
+$A=\mathcal B\cap\partial M$, so it defines a relative class in
+$H_2(\mathcal B,A;\mathbb Q)$ whose image is $[S]$.
+This contradicts $[S]\notin V_{\mathcal B}$. The even nonnegative defect
+is therefore at least two.
+
+For the last assertion, write the total defect as
+\[
+ \bigl(c_q(\mathcal H)-c_q(\mathcal H^{\mathrm{raw}})\bigr)
+ +\bigl(c_q(\mathcal H^{\mathrm{raw}})
+                  -c_q(\mathcal H^{\mathrm{clean}})\bigr).
+\]
+The first summand is at least two and the second is nonnegative by the
+separately established property of the cleanup.
+\end{proof}
+
+The formula must retain the complete raw child inventory. A parallelity
+$0$-handle with certified index zero contributes zero and may be omitted
+from a numerical sum after that fact is established. An already reduced
+inventory may also have lost positive-index pieces or changed the parent
+relation, so the conservation identity cannot simply be applied to it.
+There is no asserted parity for an additional cleanup defect.
+Irreducibility of $M$ and essentiality of $P$ are not hypotheses of
+Proposition~5.9 or of Theorem~\ref{thm:quotient-strict-progress}. They must
+still be supplied if a surrounding cleanup or hierarchy routine requires
+them. For disconnected $M$, apply the argument in the component
+containing $S$ and add the unchanged complexities of the other components.
+
+\begin{corollary}[A bound for a retained monotone sequence]
+\label{cor:quotient-retained-count}
+Consider a retained forward sequence of handle structures starting at
+$\mathcal H_0$. Suppose every intervening operation is
+$c_q$-nonincreasing and $N$ of the cuts satisfy
+Theorem~\ref{thm:quotient-strict-progress}. Then
+\[
+ N\leq
+ \left\lfloor\frac{c_q(\mathcal H_0)-c_q(\mathcal H_{\mathrm{last}})}2
+       \right\rfloor
+ \leq \left\lfloor\frac{c_q(\mathcal H_0)}2\right\rfloor .
+\]
+\end{corollary}
+
+\begin{proof}
+Each of the $N$ certified cuts contributes a drop of at least two.
+All other contributions are nonnegative, so the drops telescope.
+\end{proof}
+
+This corollary counts certified cuts on the retained monotone sequence.
+It does not count discarded attempts, restored states, or later
+reconstructions after backtracking. It gives additive progress and
+therefore does not establish logarithmic hierarchy depth. A proof
+controlling the complete search must also charge the work on histories
+that are subsequently discarded.
+
+\subsection{A complete finite-chain alternative}
+
+We now isolate an algebraic problem that can be checked without trusting
+a proposed basis of bundle cycles. Let the dimensions of $C_i$ and $E_i$
+be $c_i$ and $e_i$. The supplied rational matrices are
+\[
+ d_2:C_2\longrightarrow C_1,\quad
+ d_3:C_3\longrightarrow C_2,\quad
+ \delta_2:E_2\longrightarrow E_1,\quad
+ j_1:E_1\longrightarrow C_1,\quad
+ j_2:E_2\longrightarrow C_2.
+\]
+The input also includes $s\in C_2$ and must satisfy
+\begin{equation}
+ \label{eq:quotient-input-contract}
+ d_2d_3=0,\qquad d_2j_2=j_1\delta_2,\qquad d_2s=0.
+\end{equation}
+These equations suffice to define
+\[
+ H=\ker d_2/\operatorname{im}d_3,\qquad
+ V=\bigl(\operatorname{im}d_3+j_2\ker\delta_2\bigr)/
+       \operatorname{im}d_3\ \subseteq H.
+\]
+If the matrices arise from authenticated relative chain complexes and
+the actual inclusion of pairs, then $H=H_2(M,\partial M;\mathbb Q)$ and
+$V=V_{\mathcal B}$. Without that authentication, they define precisely
+the displayed algebraic quotient and no asserted manifold.
+
+\begin{theorem}[Primal support or dual obstruction]
+\label{thm:quotient-alternative}
+For data satisfying \eqref{eq:quotient-input-contract}, exactly one of
+the following systems has a rational solution:
+\begin{align}
+ \text{\rm(P)}\qquad&
+ s=d_3a+j_2b,\qquad \delta_2b=0,
+ &&a\in C_3,\quad b\in E_2; \label{eq:quotient-primal}\\
+ \text{\rm(D)}\qquad&
+ yd_3=0,\qquad yj_2=u\delta_2,\qquad ys=1,
+ &&y\in C_2^*,\quad u\in E_1^* . \label{eq:quotient-dual}
+\end{align}
+System {\rm(P)} holds exactly when $[s]\in V$; system {\rm(D)} holds
+exactly when $[s]\notin V$.
+\end{theorem}
+
+\begin{proof}
+By the definition of $V$, membership is equivalent to the existence of
+$b\in\ker\delta_2$ such that $s-j_2b\in\operatorname{im}d_3$.
+This is precisely (P). If (P) and (D) both held, then
+\[
+ 1=ys=yd_3a+yj_2b=u\delta_2b=0,
+\]
+which is impossible.
+
+To prove existence of (D) when (P) fails, take a matrix $Z$ whose columns
+are a basis of $\ker\delta_2$ and put $W=[\,d_3\mid j_2Z\,]$.
+Then $s\notin\operatorname{col}W$. Define a linear functional on
+$\operatorname{span}(\operatorname{col}W,s)$ to vanish on
+$\operatorname{col}W$ and to take value one on $s$, and extend it to
+$C_2$. Call its row vector $y$. It satisfies $yd_3=0$, $ys=1$, and
+$yj_2Z=0$.
+
+For completeness, a row $v$ annihilates $\ker\delta_2$ if and only if
+it is in the row space of $\delta_2$. One direction follows by
+multiplication. For the converse, the rule
+$\delta_2b\mapsto vb$ is well-defined on $\operatorname{im}\delta_2$
+when $v$ vanishes on its kernel; extending this functional to $E_1$
+gives a row $u$ with $v=u\delta_2$. Apply this fact to $v=yj_2$.
+It gives $yj_2=u\delta_2$, completing (D).
+\end{proof}
+
+The matrix $Z$ occurs only in this proof. The certificate does not accept
+a purported cycle basis as trusted input. A basis with missing vectors
+could make $yj_2Z=0$ hold while $y$ fails to annihilate the images of
+other bundle cycles. The identity $yj_2=u\delta_2$ checks annihilation
+of \emph{every} bundle cycle directly.
+
+Only the displayed chain fragment is needed for the algebraic
+calculation. If a full inclusion $j_*:E_*\to C_*$ is supplied, the
+boundaries in $E_2$ already map to boundaries in $C_2$ through
+$j_2\delta_3=d_3j_3$; enumerating $E_3$ is unnecessary for computing
+the image from all cycles of $E_2$. This observation does not dispense
+with authenticating the full geometric map when that interpretation is
+claimed.
+
+\begin{corollary}[Integer certificate form]
+\label{cor:quotient-integer-alternative}
+For integral input matrices and integral $s$, exactly one of the
+following types of integer certificate exists:
+\begin{align}
+ \text{\rm(P$_{\mathbb Z}$)}\quad&
+ \nu s=d_3a+j_2b,\quad \delta_2b=0,
+ &&\nu\in\mathbb Z_{>0}; \label{eq:quotient-integer-primal}\\
+ \text{\rm(D$_{\mathbb Z}$)}\quad&
+ Yd_3=0,\quad Yj_2=U\delta_2,\quad Ys=\nu,
+ &&\nu\in\mathbb Z_{>0}. \label{eq:quotient-integer-dual}
+\end{align}
+Here $a,b,Y,U$ have integral entries and the same dimensions as above.
+\end{corollary}
+
+\begin{proof}
+Clear common denominators in a rational certificate, including the
+coefficient one on the normalized right-hand side. Conversely divide an
+integer certificate by $\nu$. The resulting rational alternatives are
+exclusive by Theorem~\ref{thm:quotient-alternative}. Equivalently, if
+both integer certificates existed with multipliers $\nu_P,\nu_D>0$,
+pairing them would give $\nu_P\nu_D=0$.
+\end{proof}
+
+The positive multiplier is essential because the question is over
+$\mathbb Q$. For example, take $C_2=E_2=\mathbb Q$, let $j_2$ be
+multiplication by $2$, set $s=1$, and let all other relevant spaces be
+zero. The class is supported over $\mathbb Q$, with integer certificate
+$\nu=2$, $b=1$. Requiring an integer certificate with $\nu=1$ would
+confuse rational image membership with integral divisibility.
+
+The auxiliary row $U$ is also substantive. Take
+$C_2=E_1=E_2=\mathbb Q$, $\delta_2=[3]$, $j_2=[2]$, $s=1$, and
+$C_1=C_3=0$. Since $\ker\delta_2=0$, the class is outside the image.
+A certificate is
+\[
+ Y=[3],\qquad U=[2],\qquad \nu=3.
+\]
+Its restriction to $E_2$ is a coboundary rather than the zero row.
+
+\subsection{Witness size and exact production}
+
+The matrix system used by the reference producer is
+\begin{equation}
+ \label{eq:quotient-block-system}
+ \mathsf A x=\mathsf f,\qquad
+ \mathsf A=
+ \begin{pmatrix}d_3&j_2\\0&\delta_2\end{pmatrix},\qquad
+ \mathsf f=\begin{pmatrix}s\\0\end{pmatrix},\qquad
+ x=\begin{pmatrix}a\\b\end{pmatrix}.
+\end{equation}
+Let $R=c_2+e_1$, $K=c_3+e_2$, and $r=\operatorname{rank}\mathsf A$.
+Suppose the entries of $\mathsf A$ and $\mathsf f$ are integral and
+have absolute value at most $M\geq1$. Define
+\[
+ D_0=1,\qquad D_k=(\sqrt{k}\,M)^k\quad(k\geq1).
+\]
+
+\begin{theorem}[Polynomial-size integer witnesses]
+\label{thm:quotient-minor-bound}
+If \eqref{eq:quotient-block-system} is consistent, a certificate of type
+{\rm(P$_{\mathbb Z}$)} exists with
+\[
+ 1\leq\nu\leq D_r,\qquad
+ |a_i|,|b_i|\leq D_r.
+\]
+If the system is inconsistent, a certificate of type
+{\rm(D$_{\mathbb Z}$)} exists with
+\[
+ |Y_i|,|U_i|\leq D_r,\qquad
+ 1\leq\nu\leq D_{r+1}.
+\]
+Consequently every entry of either certificate can be encoded with
+$O((r+1)(\log(r+2)+\log M))$ bits, and the total certificate length is
+polynomial in the explicit chain ranks and input-entry bit lengths.
+\end{theorem}
+
+\begin{proof}
+In the consistent case, choose $r$ independent columns of $\mathsf A$
+and $r$ rows on which they form a nonsingular matrix $T$. A basic
+solution sets all other variables to zero. Cramer's rule expresses
+each remaining variable as the determinant of $T$ with one column
+replaced by the corresponding entries of $\mathsf f$, divided by
+$\det T$. Because the chosen columns span the column space and the
+system is consistent, this solution satisfies every row, not only
+the selected rows. Put $\nu=|\det T|$ and choose the numerator signs
+accordingly. Hadamard's inequality bounds every determinant just
+mentioned by $D_r$. If $r=0$, consistency forces $\mathsf f=0$, and
+one can take $\nu=1$ and all coefficients zero.
+
+In the inconsistent case,
+$\operatorname{rank}[\,\mathsf A\mid\mathsf f\,]=r+1$.
+Choose $r$ independent columns of $\mathsf A$ and $r+1$ rows on which
+those columns together with $\mathsf f$ form a nonsingular
+$(r+1)\times(r+1)$ matrix $T^+$. The cofactors of the last column
+define an integer row $\lambda$, supported on the selected rows.
+Laplace expansion gives
+\[
+ \lambda\mathsf f=\det T^+\neq0,
+ \qquad \lambda\mathsf A=0.
+\]
+For the second identity, the cofactors annihilate each selected
+column by the determinant with two equal columns; they then
+annihilate all columns because the selected ones span
+$\operatorname{col}\mathsf A$.
+Reverse the sign of $\lambda$ if necessary and put
+$\nu=\lambda\mathsf f>0$. Splitting the row according to the two
+row blocks as $\lambda=(Y,-U)$ gives
+\[
+ Yd_3=0,\qquad Yj_2-U\delta_2=0,\qquad Ys=\nu.
+\]
+Each cofactor is an $r\times r$ determinant, so its absolute value is
+at most $D_r$; the final determinant has absolute value at most
+$D_{r+1}$. This also covers $r=0$, using the determinant of the empty
+matrix equal to one. Taking binary lengths proves the last assertion.
+\end{proof}
+
+These bounds are existence bounds obtained from selected minors.
+They do not require total unimodularity, saturation of an integral
+lattice, or a unimodular basis change. Rational input can be reduced
+to integral input by clearing denominators; the resulting entry
+lengths remain polynomial in the total rational input length.
+
+\begin{proposition}[The row-provenance producer is complete]
+\label{prop:quotient-producer}
+Over exact rational arithmetic, Gaussian elimination applied to
+\eqref{eq:quotient-block-system}, while retaining every elementary row
+operation on an identity matrix, produces one of the integer
+certificates in Corollary~\ref{cor:quotient-integer-alternative}.
+It uses polynomially many arithmetic operations with polynomially
+bounded operand lengths.
+\end{proposition}
+
+\begin{proof}
+Start with the augmented matrix $[\mathsf A\mid\mathsf f]$ and a
+provenance matrix $T=I_R$. At every row swap, row rescaling, or row
+addition, perform the identical operation on $T$. The maintained
+invariant is
+\[
+ [\,\widetilde{\mathsf A}\mid\widetilde{\mathsf f}\,]
+       =T[\,\mathsf A\mid\mathsf f\,].
+\]
+The producer selects pivots only in coefficient columns and eliminates
+each pivot from all other rows.
+
+If a row has zero coefficients and nonzero right-hand side $\beta$,
+let $t$ be its row of $T$ and set $\lambda=t/\beta$.
+Then $\lambda\mathsf A=0$ and $\lambda\mathsf f=1$.
+Writing $\lambda=(y,-u)$ gives
+$(yd_3,yj_2-u\delta_2)=(0,0)$ and $ys=1$.
+Clearing the denominators of $y$, $u$, and the extra entry $1$
+produces integer $(Y,U,\nu)$ with $\nu>0$.
+The minus sign in the lower block is necessary and is the sign
+used by the reference implementation.
+
+If no inconsistent row occurs, assign zero to every nonpivot
+variable and the reduced right-hand-side entry to each pivot
+variable. Reduced echelon form then gives a solution $x=(a,b)$.
+Clear the denominators of its entries and the extra entry $1$.
+This gives $(a,b,\nu)$ satisfying
+\eqref{eq:quotient-integer-primal}, with $\nu>0$.
+Dividing all certificate entries by their common positive greatest
+common divisor preserves the equations. These arguments also apply
+when any of the spaces has dimension zero. If $R=0$, the zero vector
+of length $K$ with $\nu=1$ is a support certificate.
+
+There are polynomially many row operations on matrices of dimensions
+bounded by $R$ and $K+R+1$. With reduced rational arithmetic, the
+entries arising in elimination, including the provenance entries,
+are ratios of minors of matrices formed from the input and an
+identity block. Hadamard bounds their numerators and denominators
+by a polynomial number of bits. Products, sums, greatest common
+divisors, and common-denominator clearing consequently have
+polynomial bit complexity. This proves the claim for the exact
+algorithm implemented using \texttt{Fraction}.
+\end{proof}
+
+The size convention in the last two statements counts the declared
+chain ranks, in addition to matrix-entry bit lengths. It agrees with
+a cellular input that explicitly lists its generators. It is not a
+claim of polynomial complexity in bare JSON byte length for a
+succinct declaration of huge empty matrices: a file can declare
+$K$ unconstrained generators using $O(\log K)$ digits, whereas the
+current producer writes a vector of length $K$.
+
+\subsection{Independent replay and its exact scope}
+
+The implementation in \texttt{research/quotient} separates a rational
+producer from an integer verifier. The input schema records the five
+dimensions, all five matrices, and $s$ explicitly; the matrix called
+$\delta_2$ above is the JSON field \texttt{e2}. Dimensions are retained
+even for empty matrices. The verifier rejects booleans, floating-point
+values, strings used as integers, inconsistent shapes, unrecognized
+fields, and failures of \eqref{eq:quotient-input-contract}.
+
+\begin{proposition}[Soundness of independent integer replay]
+\label{prop:quotient-replay}
+For input satisfying \eqref{eq:quotient-input-contract}, the following
+replay rules are sound:
+\begin{enumerate}
+ \item accept a support certificate only after checking strict
+ integer types, dimensions, $\nu>0$, and all identities in
+ \eqref{eq:quotient-integer-primal};
+ \item accept an outside certificate only after checking strict
+ integer types, dimensions, $\nu>0$, and all identities in
+ \eqref{eq:quotient-integer-dual}.
+\end{enumerate}
+The first verdict proves $[s]\in V$. The second proves $[s]\notin V$.
+Replay uses only exact integer products, sums, and equality checks,
+and need not invoke the producer, Gaussian elimination, or a homology
+basis computation.
+\end{proposition}
+
+\begin{proof}
+Dividing the first certificate by $\nu$ gives (P), and hence
+membership. For the second, suppose $[s]\in V$. Then
+$s=d_3a+j_2b$ for rational $a,b$ with $\delta_2b=0$.
+The replayed identities would imply
+\[
+ \nu=Ys=Yd_3a+Yj_2b=U\delta_2b=0,
+\]
+contradicting $\nu>0$. The operations stated in the proposition
+are exactly those needed to evaluate the identities.
+\end{proof}
+
+The verdict strings are \texttt{INSIDE\_BUNDLE\_IMAGE} and
+\texttt{OUTSIDE\_BUNDLE\_IMAGE}. For arbitrary input matrices these
+refer to the algebraic subspace $V$ defined above. In particular,
+an inside verdict does not assert that a geometric cut is neutral:
+Lackenby's implication is that equality of complexity forces bundle
+support, not that every bundle-supported surface realizes equality.
+An outside verdict becomes a strict geometric progress certificate
+only after all hypotheses of
+Theorem~\ref{thm:quotient-strict-progress} have been authenticated.
+
+The certificate also records a SHA-256 digest of a canonical JSON
+serialization of the input. This is useful provenance metadata and
+rejects ordinary stale-input mistakes. Algebraic soundness does not
+rest on a collision-resistance assumption: the identities are
+evaluated against the supplied input itself.
+
+The exact algorithm and the default command-line integer codec must
+also be distinguished. This artifact uses JSON decimal integers.
+CPython's default limit on conversion to or from very long decimal
+strings can reject a mathematically valid large input or output.
+The documented launch setting
+\texttt{PYTHONINTMAXSTRDIGITS=0} is required for trusted research
+instances exceeding that limit. A subprocess test exercises a
+$16384$-bit input coefficient, the resulting $16384$-bit support
+multiplier, and separate producer and verifier commands under this
+setting. The quotient wire format does not use the hexadecimal
+codec of the separate raw-cut artifact.
+
+\subsection{The dual class and component selection}
+
+The outside row is not a surface-producing cohomology class of
+degree one. If the chain complexes come from the indicated pairs,
+$yd_3=0$ says that $y$ is a relative degree-two cocycle, and
+$yj_2=u\delta_2$ says that its restriction to the bundle pair is a
+coboundary. Thus its class belongs to
+\begin{equation}
+ \label{eq:quotient-cohomological-annihilator}
+ \ker\!\left(
+ H^2(M,\partial M;\mathbb Q)
+ \longrightarrow H^2(\mathcal B,A;\mathbb Q)
+ \right).
+\end{equation}
+Over $\mathbb Q$, universal coefficients and Poincare--Lefschetz
+duality give the identifications
+\[
+ H^2(M,\partial M;\mathbb Q)
+ \cong\operatorname{Hom}_{\mathbb Q}
+       \bigl(H_2(M,\partial M;\mathbb Q),\mathbb Q\bigr)
+ \cong H_1(M;\mathbb Q).
+\]
+Consequently the separating functional is represented by an
+\emph{absolute one-cycle} $z$, and its value on $[S]$ is the
+algebraic intersection of $z$ with $S$.
+
+By contrast, the \emph{surface class} $\sigma=[S]$ is the
+Poincare--Lefschetz dual of a class
+$\alpha\in H^1(M;\mathbb Q)$.
+With compatible sign conventions the relevant evaluation is
+$\alpha(z)=y(\sigma)$. It is $\alpha$, rather than $y$, that a
+cocycle-to-normal-surface construction should realize. There is
+no canonical identification sending the separating row itself
+to the required class of $H^1(M;\mathbb Q)$.
+
+For example, in a compatible triangulation with relative
+fundamental $3$-cycle $F$, fix a cap-product convention and send
+an absolute simplicial $1$-cocycle $c$ to the relative $2$-cycle
+$s=c\cap F$. Its class is the dual of $[c]$. This gives a
+chain-level route from an authenticated cocycle to the input
+of the quotient verifier without expanding an exponentially
+large normal surface. Authenticating $F$, the cap product, and
+the signed intersection convention remains necessary.
+
+\begin{lemma}[Reuse of a witness on a component]
+\label{lem:quotient-component}
+Suppose integer rows $Y,U$ satisfy
+$Yd_3=0$ and $Yj_2=U\delta_2$.
+Let $s_1,\ldots,s_m$ be integral relative cycles, and suppose
+\[
+ Y\left(\sum_{i=1}^m s_i\right)>0.
+\]
+Then some $i$ has $Ys_i>0$. For any such $i$, the same rows $Y,U$,
+with positive multiplier $\nu_i=Ys_i$, are a valid outside
+certificate for $s_i$.
+\end{lemma}
+
+\begin{proof}
+The displayed positive number is the sum of the integers $Ys_i$,
+so at least one summand is positive. The two annihilation identities
+do not depend on the candidate cycle. Substituting $s_i$ and
+$\nu_i=Ys_i>0$ therefore gives all of
+\eqref{eq:quotient-integer-dual}.
+\end{proof}
+
+Apply the lemma to the oriented components of a properly embedded
+normal representative. It shows that a future compressed component
+extractor need only find one component with positive evaluation
+under a fixed signed scalar functional; computing a complete
+homology vector for every component is unnecessary for this
+selection. A normal component with nonzero evaluation has class
+outside $V_{\mathcal B}$ and is therefore nonseparating.
+A serialized certificate for the selected component must also bind to that component's input digest and use its new positive multiplier; only the annihilating rows are reused. The statement requires the component cycles and their orientations
+to be authenticated. Unoriented normal coordinates or unsigned
+component weights do not establish the required evaluations.
+
+\subsection{What a polynomial geometric progress step would require}
+
+Suppose the quotient
+$H_2(M,\partial M;\mathbb Q)/V_{\mathcal B}$ is nonzero.
+At the level of existence, choose a class $\sigma$ surviving in
+this quotient, multiply it by a positive integer so that it is
+integral, and use its dual class in $H^1(M;\mathbb Z)$.
+The cocycle construction in
+\cite[Theorem~6.2 and its proof]{lackenby2026} gives a route to a
+properly embedded cooriented normal representative. On a
+triangulation, one normalizes a cocycle to vanish on a maximal
+tree, places signed intersection points on edges, and joins
+them by cooriented normal arcs and disks. The resulting total
+relative class is the prescribed dual class.
+For patterned handle structures, the cell construction and
+local normalization require the stated local type bounds;
+the theorem additionally assumes no $3$-handles when
+$\partial M\neq\varnothing$. This hypothesis must be retained
+when invoking that version of the construction.
+
+Class-preserving normalization may split the representative.
+Keeping all components preserves its total relative class;
+discarding only components with zero relative class is also
+safe. At least one component survives the quotient. More
+precisely, first obtain an outside witness for the total class
+and use Lemma~\ref{lem:quotient-component} to select a component
+with positive evaluation. Keeping an arbitrary component is
+not justified: it may lie in $V_{\mathcal B}$ even though the
+total class does not.
+
+\begin{proposition}[A conditional geometric implementation interface]
+\label{prop:quotient-interface}
+Assume the following operations are available with polynomial
+running time and polynomial output bit budgets in the maintained
+geometric representation:
+\begin{enumerate}
+ \item a compiler and verifier for the actual admissible
+ handle structure, its interior parallelity bundle, the
+ embedded pair $(\mathcal B,A)\subseteq(M,\partial M)$,
+ and the resulting chain maps;
+ \item a rational cohomology basis and an explicit
+ chain-level Poincare--Lefschetz duality map;
+ \item construction and normalization of a prescribed
+ integral cohomology class as a compressed cooriented normal
+ surface, preserving the total relative homology class
+ and satisfying the relevant handle hypotheses;
+ \item extraction of a connected oriented component with
+ positive evaluation under a supplied signed scalar
+ functional whenever the total evaluation is positive,
+ together with an authenticated relative cycle for that
+ component.
+\end{enumerate}
+If $H_2(M,\partial M;\mathbb Q)/V_{\mathcal B}$ is nonzero,
+these interfaces and the quotient producer and verifier give
+a polynomial-time construction of a connected oriented normal
+surface certified to have raw $c_q$-defect at least two.
+\end{proposition}
+
+\begin{proof}
+The duals of a rational basis of $H^1(M;\mathbb Q)$ span
+$H_2(M,\partial M;\mathbb Q)$, so at least one lies outside
+$V_{\mathcal B}$. Test the finitely many basis vectors by the
+exact alternative and choose an outside vector. Clear
+denominators with a positive multiplier, retaining the
+correspondingly rescaled positive evaluation.
+The third interface realizes the resulting integral class
+and preserves its total value under the dual witness.
+The fourth interface and Lemma~\ref{lem:quotient-component}
+select a connected normal component with positive evaluation.
+The independent verifier accepts the same annihilating rows
+with this new positive multiplier. The authenticated geometric
+data then permit Theorem~\ref{thm:quotient-strict-progress}.
+The number of basis vectors, the linear algebra, the certificate
+sizes, and the four assumed operations all have polynomial
+budgets, proving the conditional running-time statement.
+\end{proof}
+
+The present artifact implements the finite-chain producer and
+replay checker. It does not implement the source-to-chain
+compiler, the prescribed-class geometric normalizer, or the
+signed compressed component extractor in this proposition.
+Weighted orbit methods suggest a route to the last interface,
+but a method for unoriented component counting alone does not
+supply its authentication or signed evaluations.
+The quotient can also vanish; the proposition has no premise
+in that case. Resolving such states still requires the
+bundle-supported reductions and the other hierarchy mechanisms.
+

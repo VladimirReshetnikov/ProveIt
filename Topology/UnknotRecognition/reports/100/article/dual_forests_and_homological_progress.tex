@@ -1,0 +1,96 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,tabularx,array}
+\usepackage{graphicx,xcolor,enumitem,listings,fancyhdr}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=teal!60!black,citecolor=teal!60!black,urlcolor=teal!60!black]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{accent}{HTML}{167D8D}
+\definecolor{shade}{HTML}{F2F5F7}
+\hypersetup{pdftitle={Dual Forests and Homological Progress Certificates for Compressed Unknot Hierarchies},pdfauthor={Research contribution prepared for the ProveIt project},pdfsubject={Certified normal-cut simplification and quantitative hierarchy research}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}[theorem]{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\cut}{\mathbin{\backslash\!\backslash}}
+\newcommand{\Complete}{\texttt{COMPLETE}}
+\newcommand{\Inconclusive}{\texttt{INCONCLUSIVE}}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\setlist{itemsep=3pt,topsep=5pt}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!15},backgroundcolor=\color{shade},showstringspaces=false}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Compressed unknot recognition}
+\fancyhead[R]{\small Research contribution \textbar\ October 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setcounter{tocdepth}{1}
+\hypersetup{bookmarksdepth=2}
+\title{\color{ink}\LARGE\bfseries Dual Forests and Homological Progress Certificates\\[4pt]
+\Large for Compressed Unknot Hierarchies}
+\author{Research contribution prepared for the ProveIt project}
+\date{12 October 2026\\[5pt]\small Source baseline: \texttt{8cb7d9d25ac8cb64a9d147304e3441e98e94c7a4}}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop two concrete contributions toward a compressed implementation of
+Lackenby's unknot-recognition programme. First, for the authenticated bounded
+core of any normal cut in the current finite-source contract, we reconstruct
+the two sides of every source endpoint-gap two-handle and prove that their
+dual multigraph is connected to exposed boundary. Every rooted spanning tree
+therefore cancels all source three-handles, relative to the existing bundle
+ports, with a trace of size independent of normal-coordinate magnitudes.
+A maximum-weight tree minimizes retained additive attaching incidence. An
+explicit five-tetrahedron solid torus proves a strict advantage: one forest
+leaves a persistent stopping set, while the weighted forest permits a complete
+geometric certificate. We also characterize successful forests by stopping-set
+transversals, derive a graphic-rank obstruction, and refute a general matroid
+exchange hypothesis for raw-peelable rows.
+
+Second, we give an integer-certificate alternative for membership in the
+rational image of bundle homology. Under explicitly authenticated hierarchy
+hypotheses, an outside-image certificate forces a strict decrease of Lackenby's
+quadratic potential, with an exact raw-cut defect formula. The algebraic
+checker is implemented separately; its geometric compiler remains open.
+The integrated top reduction increases certified classifications from 85 to
+92 on the pinned 106-case cut corpus, preserves every prior success, and has
+independent replay and explicit-cut validation. These are proved local
+advances. We identify the missing global depth, branching, pattern-transport,
+and encoding estimates needed for either announced quasi-polynomial bound.
+\end{abstract}
+
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+\input{sections/context}
+\input{sections/dual_theory}
+\input{sections/paired_forests}
+\input{sections/quotient_theory}
+\input{sections/implementation}
+\input{sections/experiments}
+\input{sections/global_complexity}
+\input{sections/research_agenda}
+\appendix
+\input{sections/reproducibility}
+\input{sections/claim_ledger}
+\bibliographystyle{plain}
+{\raggedright\bibliography{references}}
+\end{document}

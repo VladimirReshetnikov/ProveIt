@@ -1,0 +1,109 @@
+\section{Artifact contents and reproduction}
+\label{app:reproduction}
+
+The accompanying archive contains the complete \LaTeX{} source, bibliography,
+vector and raster figures, compiled article, integration patch, source
+overlay, a compact frozen runtime, independent algebraic code, source
+fixtures, saved certificates, raw experimental records, and validation
+logs. The top-level \code{README.md} is the practical entry point.
+\code{SHA256SUMS} authenticates the packaged files against accidental
+changes; \code{provenance/source\_pin.json} records the baseline revision
+and workload identifiers.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{P{0.31\linewidth}P{0.62\linewidth}}
+\toprule
+Path & Purpose\\
+\midrule
+\code{article/} & Main TeX file, included sections, bibliography, figures,
+and the compiled PDF.\\
+\code{integration/} & Patch against the pinned ProveIt revision and an
+equivalent nine-file source overlay. Apply one method, not both.\\
+\code{runtime/fast/} & Frozen runtime and focused fixtures/tests for
+standalone reproduction of this contribution. It is not a replacement
+for the full repository and its historical regression data.\\
+\code{research/experiments/} & Corpus audit, explicit Regina oracle,
+paired timings, exact matrix witness, figure generation, and summary
+scripts.\\
+\code{research/data/} & Original 106-case workload; baseline, BFS,
+weighted, and explicit-cut JSON; paired timing samples; test logs and
+machine-readable summaries.\\
+\code{research/certificates/} & Saved source-bound census certificates,
+including all seven newly completed maintained cases under both trees.\\
+\code{research/quotient/} & Standalone exact chain-pair producer,
+independent verifier, examples, tests, and interface documentation.\\
+\code{provenance/} & Pinned tree manifests, source identifiers, artifact
+claim ledger, and integration validation.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Build and focused checks}
+
+From the extracted archive, the principal commands are:
+\begin{lstlisting}[language=bash]
+python reproduce.py --quick
+cd article
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+  dual_forests_and_homological_progress.tex
+\end{lstlisting}
+The quick command checks packaged hashes, runs the 18 focused native test
+methods and 27 algebraic test methods, and replays saved census packets.
+It uses Python's standard library for native production and verification;
+SymPy enables the additional independent algebraic rank comparison.
+Regina is required only for explicit-cut audits and the paired timing
+script. The figure script uses Matplotlib. Full command details and the
+recorded environment are in the README.
+
+The main corpus can be rerun using the frozen runtime with
+\code{PYTHONPATH=runtime/fast} and
+\code{research/experiments/audit\_native.py}; explicit comparisons use
+\code{audit\_regina.py}. The baseline audit was run on the untouched
+pinned implementation. It can be regenerated in a checkout of that
+revision, while the delivered \code{disabled} mode reproduces its
+three-handle refusal for diagnostic comparisons. The paired benchmark
+supplies every strategy explicitly and records its code hashes.
+
+\subsection{Repository integration}
+
+Apply \code{integration/dual\_forest.patch} in a complete ProveIt checkout
+at the pinned revision. It adds the two runtime modules,
+two focused test modules, three source/experiment helpers, and modifies
+the producer and independent verifier of the normal-cut handlebody census.
+The patch adds no third-party dependency to native recognition.
+
+The full regression command, run from
+\code{Topology/UnknotRecognition/fast}, is
+\begin{lstlisting}[language=bash]
+python -m unittest discover -s tests -v
+\end{lstlisting}
+Some existing tests require the repository's \code{reports/} and
+\code{synthesis/} data and an older Git source object. Those dependencies
+are part of the full project, rather than duplicated into this focused
+archive. The archived successful run used them. A reduced runtime-only
+extraction should use the quick focused checks instead of treating missing
+historical research files as algorithm failures.
+
+The integration validation checks that the patch applies to the exact
+baseline and produces the same changed files as the supplied overlay.
+The article and algebraic research component can be placed in the repository's
+preferred incoming or proposal directory independently of applying the
+runtime patch.
+
+\subsection{Independent review and reproducibility limits}
+
+The source-relative theorem, loop multiplicities, relative-port statement,
+native strict example, and v6 integration were reviewed separately from
+their producer implementation. The homology alternative, duality degrees,
+chain-map hypotheses, exact defect, and global accounting statements also
+received a separate mathematical review. These reviews motivated explicit
+limits in the final text, particularly the raw/cleanup distinction,
+arbitrary-pattern transport, and the difference between an additive
+potential drop and a global search bound.
+
+This is a research contribution supplied for further mathematical and code
+review. Its executable verifiers, exact examples, proofs, and logs make
+specific claims inspectable. They are not evidence that the unimplemented
+geometric interfaces already exist, and the selected timing family cannot
+establish a universal asymptotic complexity class.

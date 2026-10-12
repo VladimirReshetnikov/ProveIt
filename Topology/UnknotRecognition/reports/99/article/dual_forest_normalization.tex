@@ -1,0 +1,90 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{xcolor,graphicx,fancyhdr}
+\usepackage{tikz}
+\usepackage{xurl}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage[colorlinks=true,linkcolor=navy,citecolor=teal,urlcolor=teal]{hyperref}
+\definecolor{navy}{HTML}{18354A}
+\definecolor{teal}{HTML}{007B83}
+\definecolor{pale}{HTML}{EDF4F5}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Dual forest normalization}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\rootv}{\partial_*}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\rk}{\operatorname{rk}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\st}{\operatorname{stop}}
+\newcommand{\cl}{\operatorname{cl}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\basecommit}{\nolinkurl{8cb7d9d25ac8cb64a9d147304e3441e98e94c7a4}}
+\title{\color{navy}\bfseries Dual Forest Normalization and\newline Constrained Cancellation for\newline Compressed Unknot Hierarchies}
+\author{Research continuation for Vladimir Reshetnikov's ProveIt project}
+\date{12 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The source-certified normal-cut pipeline in ProveIt rejects its finite
+handlebody test whenever its complementary core contains a three-handle.
+We remove this restriction by compiling the actual endpoint occurrences of
+the core two-handles into a rooted dual graph.  A spanning tree specifies
+geometric two-/three-handle cancellations.  For the native finite
+torus-boundary source contract, the graph is always rooted, so all
+three-handles can be removed in polynomial encoded time, independently of
+normal-surface multiplicity.  The construction retains the exposed port
+data needed by the existing boundary kernel and has an independent checker.
+
+The choice of dual tree affects subsequent raw one-/two-handle cancellation.
+We characterize successful choices as spanning trees meeting every stopping
+set of an unsigned occurrence matrix.  This gives complete obstruction-guided
+search, with a bound parameterized by the number of three-handles and the
+sizes of the stopping witnesses encountered.  If each column containing
+a unit entry is supported on at most two rows, the problem is polynomial: directed
+reachability identifies mandatory strongly connected components, and a
+graphic--partition matroid intersection chooses an independent transversal.
+Negative certificates in this restricted problem are graphic rank defects.
+We also prove that each original native column has at most three total
+occurrences, with its odd entries forming a cycle in the dual graph.
+
+We provide proofs, an additive native implementation, independent
+certificate replay, finite search implementations, reproducible experiments,
+and integration instructions.  Classical handle cancellation, matroid
+intersection, and earlier stopping-set results are credited explicitly.
+These results improve a supplied-cut terminal operator; they do not establish
+a general quasi-polynomial unknot recognizer.
+\end{abstract}
+\tableofcontents
+\newpage
+\input{01_scope}
+\input{02_geometry}
+\input{03_forests}
+\input{04_sparse_columns}
+\input{05_implementation}
+\input{06_experiments}
+\input{07_research}
+\appendix
+\input{08_appendix}
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}

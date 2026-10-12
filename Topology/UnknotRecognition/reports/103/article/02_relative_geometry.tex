@@ -1,0 +1,250 @@
+\section{Relative elimination of source top handles}
+\label{sec:relative}
+
+\subsection{The source handle core}
+
+The source-parallelity decomposition divides the metric cut into repeated
+product pieces and a bounded exceptional core. Repeated normal disks, face
+strips, and edge caps are recorded as affine interval families. Exceptional
+tetrahedron chambers give zero-handles; exceptional paired-face regions give
+one-handles; extreme gaps of interior source edges give two-handles; and
+interior source vertices give three-handles. All attaching records retain
+source tetrahedron, face, edge, and rank flags.
+
+For the current constructor the verified inventory bounds are
+\begin{equation}
+ h_0\leq 6t,\qquad h_1\leq 8t,\qquad
+ m=h_2\leq 12t,\qquad q=h_3\leq 4t,\qquad
+ |\ports|\leq 66t.
+ \label{eq:core-bounds}
+\end{equation}
+These bounds concern explicit exceptional objects; the represented
+parallelity pieces can have much larger multiplicity and topology. Their
+complete interfaces, not merely their homeomorphism types, are part of the
+source packet~\cite{repo}.
+
+Choose the canonical orientation of each global source edge $e$. Its two
+oriented endpoint occurrences are $a_e,b_e$, even if they represent the same
+global vertex. Let $w_e=|S_x\cap e|$. The $w_e$ intersection points divide
+$e$ into gaps labelled $0,1,\ldots,w_e$. An interior source edge contributes
+one exceptional two-handle if $w_e=0$ and two if $w_e>0$. Interior gaps
+$1,\ldots,w_e-1$ belong to the selected product region.
+
+For a source vertex $v$, put $\iota(v)=v$ when $v$ is interior and
+$\iota(v)=\rho$ when it lies on the original boundary. The symbol $\rho$
+also denotes an end on the new normal-cut boundary.
+
+\begin{lemma}[Exact cap incidences]
+\label{lem:caps}
+For an interior source edge $e$, the two belt-disk end occurrences of its
+exceptional two-handles are
+\[
+\begin{array}{c|c|c}
+ \text{condition}&\text{gap rank}&\text{cap endpoints}\\\hline
+ w_e=0&0&(\iota(a_e),\iota(b_e))\\
+ w_e>0&0&(\iota(a_e),\rho)\\
+ w_e>0&w_e&(\rho,\iota(b_e)).
+\end{array}
+\]
+The two occurrences are retained with multiplicity. In particular, a
+zero-weight loop at an interior vertex has two contacts with its
+three-handle.
+\end{lemma}
+
+\begin{proof}
+Before taking any quotient of source flags, take a small product
+neighbourhood of each open edge gap. Transversely it is a disk; longitudinally
+it is the indicated subinterval of the oriented edge. The transverse disk
+times this interval is its dual two-handle. An endpoint at a source vertex
+meets the vertex neighbourhood, which is a three-handle exactly when the
+vertex link is a sphere. A boundary vertex has a disk link and contributes
+an exterior end instead.
+
+An endpoint at an intersection with a normal disk lies on a boundary sheet
+of the metric cut. Thus a zero-weight edge keeps both source-vertex ends,
+whereas each extreme gap of a positive-weight edge has one source-vertex end
+and one cut-boundary end. The intervening gaps have two normal-sheet ends
+and occur in the product families. The source edge-link and orientation
+checks ensure that this description descends through all face identifications.
+A global equality $a_e=b_e$ does not identify the two oriented end flags.
+The argument is local to the split sheets, so a one-sided global normal
+component causes no exception.
+\end{proof}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth,
+  vertex/.style={circle,draw=Ink,fill=white,inner sep=2.3pt},
+  root/.style={circle,draw=Accent,fill=Accent!12,inner sep=2.3pt}]
+ \node[vertex,label=below:$a$] (a) at (0,0) {};
+ \node[vertex,label=below:$b$] (b) at (3,0) {};
+ \draw[thick,Ink] (a)--node[above]{$h(e,0)$}(b);
+ \node at (1.5,0.75) {$w_e=0$};
+ \node[vertex,label=below:$a$] (c) at (6,0) {};
+ \node[root,label=below:$\rho$] (r) at (8.2,0) {};
+ \node[vertex,label=below:$b$] (d) at (10.4,0) {};
+ \draw[thick,Ink] (c)--node[above]{$h(e,0)$}(r);
+ \draw[thick,Ink] (r)--node[above]{$h(e,w_e)$}(d);
+ \node at (8.2,0.75) {$w_e>0$};
+\end{tikzpicture}
+\caption{The cap graph records the extreme gaps. The common drawing of
+ $\rho$ is a scheduling convention; distinct boundary pieces are never
+ identified in the manifold. Boundary source vertices also map to $\rho$.}
+\label{fig:caps}
+\end{figure}
+
+\subsection{The relative geometric hypothesis}
+
+A graph trace alone cannot justify a marked three-manifold operation. The
+entire protected interface must avoid the support of the cancellation.
+Even the assertion that ports lie on zero- and one-handles is insufficient:
+a three-handle attaching sphere can meet patches of those lower handles.
+The native argument uses the actual rank charts.
+
+\begin{lemma}[Separation in the source rank charts]
+\label{lem:separation}
+In the source-parallelity decomposition, the labelled interface rectangles
+$\ports$, with compatible corner collars, can be realized disjointly from
+the interiors and attaching regions of the exceptional two/three-handle
+cancellation supports. This realization respects all source identifications
+and the specified port charts.
+\end{lemma}
+
+\begin{proof}
+Work first in the split tetrahedra, with their source flags kept distinct.
+Choose mutually compatible small regular neighbourhoods of vertex sectors,
+edge-gap sectors, and paired-face sectors. The normal disks bound the split
+regions and separate their successive gap interiors. This is a finite PL
+construction for each supplied $x$; it is used to prove the interpretation
+of the compressed families, not to enumerate them.
+
+A prism family has ranks $1\leq r<n$ between successive parallel disks of
+one type. A face-strip family has ranks $1\leq r<a$ between successive
+parallel normal arcs at its corner. An edge-cap family has ranks
+$1\leq r<w_e$. These are strict interior ranks. The vertex sectors lie at
+the source ends of the ordered gaps. The exceptional two-handles occupy
+rank $0$, and also rank $w_e$ when $w_e>0$. Thus a selected product block
+does not occupy a source vertex sector or an exceptional end-gap sector.
+When an extreme gap and an interior product gap abut the same normal disk
+before cutting, their closures lie on different local boundary copies in
+the metric cut. This local separation also applies to a one-sided surface.
+
+The core-facing free sides of a face-strip or edge-cap block are the
+recorded port rectangles. Their source chamber and face flags are retained,
+including for self-paired tetrahedra. If closures meet a lower-dimensional
+corner during the initial subdivision, choose product collars on the two
+flagged sides and round inside their respective sectors. Strict interior
+rank places the port on the side separated from the end-gap/vertex
+neighbourhood; no passage through a normal disk is required. Since the
+paired rank maps agree along a source face, the collar choices can be made
+equivariantly under each pairing. Edge and vertex links being a circle,
+interval, sphere, or disk give precisely the local PL neighbourhoods needed
+for simultaneous rounding.
+
+After this compatible rounding the full port rectangles and their collars
+miss the vertex balls and the selected exceptional two-handles, including
+their lateral attaching annuli and their incident vertex-ball patches.
+The proof uses the full source product blocks. It would not follow from a
+list of port owner dimensions or a matrix of signed exponents.
+\end{proof}
+
+\begin{remark}
+The protected set in \cref{lem:separation} is the native parallelity
+interface. A future inherited boundary-pattern curve can cross a vertex
+patch or an extreme-gap support even when it is carried by a zero/one
+skeleton. Such a curve requires a separate avoidance or transport proof.
+This article does not silently enlarge $\ports$ to an arbitrary pattern.
+\end{remark}
+
+\subsection{One cancellation and a complete rooted schedule}
+
+\begin{lemma}[Relative single-contact cancellation]
+\label{lem:relative-move}
+Let $h$ be an exceptional two-handle with exactly one contact, counted with
+multiplicity, with the currently remaining three-handles. Let that contact
+be with $D$. Assume that the other cap of $h$ is on the current exterior
+boundary and that the marked interface misses the cancellation support.
+Removing $h$ and $D$ gives a homeomorphic manifold relative to that
+interface. Each surviving two-handle keeps its original attaching cycle to
+the zero/one-handle union. Its cap contacts with $D$ become exterior contacts.
+\end{lemma}
+
+\begin{proof}
+This is a two/three-handle cancellation with geometric incidence one. In
+the source handle charts, $h$ and $D$ are balls glued along their unique
+common cap disk. Their union is a ball. Its attachment to the remaining
+handles is a disk: the complementary disk in the attaching sphere of $D$
+is extended by the lateral attaching annulus of $h$. The other cap is
+exterior. Removing a ball attached along a boundary disk preserves the
+homeomorphism type by adjusting a collar of that disk.
+
+The collar can be chosen away from the protected interface. This gives a
+homeomorphism fixed on the interface and its specified charts. It does not
+assert that every point of every undeleted lower handle is fixed: the
+attaching-disk collar must move. The reduced presentation itself consists
+of the undeleted handles, whose mutual attaching records remain unchanged.
+In particular, the other two-handle attaching cycles are literally the
+same records. Only their upper cap status changes when $D$ is erased.
+\end{proof}
+
+Define the cap multigraph $G_x$ on the $q$ interior vertex three-handles and
+the formal root $\rho$. Each exceptional two-handle is an edge with the
+endpoint occurrences in \cref{lem:caps}. An exterior--exterior handle is a
+loop at $\rho$. A loop at an interior vertex is also retained as a loop,
+with two incidences.
+
+\begin{lemma}[Rooted deletion criterion]
+\label{lem:rooted}
+For any such cap graph, all three-handles can be deleted by single-contact
+steps if and only if every graph vertex reaches $\rho$. The edge sets of
+complete schedules are exactly the spanning trees of $G_x$.
+\end{lemma}
+
+\begin{proof}
+Given a spanning tree rooted at $\rho$, delete each vertex after its parent,
+using the edge to that parent. At that instant the edge has exactly one live
+endpoint. Conversely, orient each chosen edge from the vertex it deletes
+toward its other end. That end is $\rho$ or a previously deleted vertex.
+Following the chosen edges therefore reaches $\rho$ and never forms a
+cycle. Exactly $q$ edges are selected on $q+1$ vertices, so they form a
+spanning tree. A component not meeting $\rho$ cannot supply its first legal
+step. A loop never has exactly one live endpoint.
+\end{proof}
+
+\begin{theorem}[Source-relative top-handle elimination]
+\label{thm:top}
+For every admissible normal vector in the stated source setting, all $q$
+source three-handles can be removed by exactly $q$ exceptional two/three
+cancellations. The resulting core $K'$ has no three-handles and satisfies
+\[
+ (K,\ports)\cong(K',\ports).
+\]
+All labelled port rectangles and charts, all zero/one-handle IDs, and all
+surviving two-handle attaching cycles can be retained. Reattaching the same
+parallelity pieces along the same interfaces gives a homeomorphic whole
+cut.
+\end{theorem}
+
+\begin{proof}
+Consider a component $U$ of the graph of zero-weight source edges on the
+interior vertices. A positive-weight edge incident to $U$ gives an exterior
+contact by \cref{lem:caps}. A zero-weight edge from $U$ to a boundary vertex
+does the same. If neither occurred, every source edge incident to $U$ would
+have weight zero and both ends in $U$. This would isolate $U$ in the source
+one-skeleton, contrary to connectedness of that skeleton and nonemptiness
+of the source boundary. Hence every such component reaches an exterior
+contact, and $G_x$ is rooted-connected.
+
+Use \cref{lem:rooted} for the schedule, \cref{lem:separation} for its protected
+interface, and \cref{lem:relative-move} for each step. Induction gives the
+relative homeomorphism. Boundary components represented by the same formal
+root are never glued together: every actual cancellation has only one live
+three-handle end. Finally, a homeomorphism fixed on the entire gluing
+interface extends by the identity over every reattached parallelity piece.
+\end{proof}
+
+Deleting equal numbers of two- and three-handles preserves Euler
+characteristic. Surviving two-handle IDs may be densely renumbered for the
+old terminal consumer after source replay, but a certificate must record
+the original IDs used by the trace. This distinction prevents an accidental
+reassignment of attaching cycles when rows are removed.
