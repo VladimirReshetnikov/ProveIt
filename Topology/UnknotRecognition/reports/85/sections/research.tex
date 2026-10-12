@@ -1,0 +1,337 @@
+\section{The remaining complexity gap and a concrete research programme}
+\label{main:research}
+
+The proved results remove two local obstacles.  We can retain the ordered
+attachment information needed for disk gluing without expanding a normal
+surface, and we can avoid a global high-dimensional intersection iterator
+when the matching cone has small coordinate factors.  A complete recognition
+bound still needs a theorem connecting these operations to all knot inputs.
+This section specifies that missing theorem in measurable terms and proposes
+research tasks with clear success and failure conditions.
+
+\subsection{A ledger that prevents local and global bounds from being confused}
+
+There are at least four independent parameters in a hierarchy algorithm:
+the number of states visited, the encoding length of each state, the cost of
+finding a useful next surface, and the cost of verifying and updating its
+geometry.  A source core of $O(T)$ handles controls only part of the last
+quantity, relative to the \emph{current} source size $T$.
+
+For example, suppose the next source has at most $30T$ exceptional handles.
+Iterating this estimate through $h$ cuts permits $30^hT$ handles unless a
+separate contraction or amortization theorem intervenes.  The bound does not
+remain $30T$ relative to the initial triangulation.  Similarly, a sequence
+of polynomial-size individual normal coordinates need not be polynomially
+bounded in the original diagram if each size bound refers only to its immediate
+predecessor.
+
+The following elementary accounting proposition is useful as a design gate.
+It is not asserted as a new general hierarchy theorem.
+
+\begin{proposition}[Controlled-growth search ledger]
+\label{main:ledger}
+Consider a sound and complete deterministic recognition search represented
+by a rooted tree of height at most $H$.  At depth $i$, suppose every state
+has at most $S_i$ bits, every state offers at most $S_i^a$ successors, and
+the overhead at each state, including terminal tests and successor enumeration,
+is at most $S_i^b$.  In addition, the work per generated successor, including
+certificate handling, is at most $S_i^b$.  Here $a,b\geq0$ are fixed constants
+and $S_i\geq2$.  Then the total
+work is at most
+\[
+ 2(H+1)\exp\!\left(
+       a\sum_{i=0}^{H-1}\log S_i+b\max_{0\leq i\leq H}\log S_i
+                       \right)
+\]
+up to a polynomial initialization factor.  If $S_i\leq A^iS_0$ for a
+fixed $A\geq1$, this is
+\[
+ \exp\!\bigl(O((H+1)\log S_0+H^2\log A+\log(H+1))\bigr).
+\]
+In particular, $S_0=n^{O(1)}$ and $H=O(\log n)$ give
+$\exp(O((\log n)^2))=n^{O(\log n)}$.
+\end{proposition}
+\begin{proof}
+At depth $j$, the number of nodes is at most
+$\prod_{i<j}S_i^a$.  Each edge can be charged to its distinct child, so
+the numbers of nodes and edges are each bounded by
+$(H+1)\prod_{i<H}S_i^a$.  Every node and edge charge is at most
+$\max_i S_i^b$, which gives the first estimate.  Under the growth
+assumption, $\log S_i\leq\log S_0+i\log A$.  Summing this arithmetic
+progression proves the second estimate and the specialization.
+\end{proof}
+
+If every state remains polynomial in $n$ independently of depth, height
+$O((\log n)^2)$ instead gives $\exp(O((\log n)^3))$.  If only a fixed
+multiplicative state-growth bound is known at that height, the displayed
+ledger permits a fourth power of $\log n$.  This difference explains why an
+explicit state-encoding bound matters even after a hierarchy-length estimate
+has been obtained.  Bounds on expanded cell counts can be much worse; the
+present work shows how to avoid them for a particular terminal operation.
+
+For a fixed sector, the new candidate count
+$\sum_j\binom{h_j}{d_j-1}$ gives another useful parameter test.  If
+$h_j\leq n^c$ and $\max_jd_j\leq C\log n$, each block has
+$n^{O(\log n)}$ candidate intersections, regardless of the sum of the
+$d_j$.  That observation is a supplied-sector bound.  Enumerating exponentially
+many sectors would negate it, and searching a whole tree with quasi-polynomial
+branching can increase the final logarithmic exponent.  Candidate work and
+branching work must be charged separately.
+
+\subsection{Immediate geometric extension: absorb disk-base annuli}
+
+The annular absorption proposition in the geometry section is the most direct
+next implementation.  It identifies a restricted annular interface that already
+has a complete topological interpretation: a disk-base bundle attached along
+its entire vertical boundary is one additional two-handle.  Its raw co-core
+occurrences can be read from the authenticated core-one ports of its circular
+word.  Appending these rows before cancellation can remove some refusals of
+the current consumer without importing a general annulus-recognition oracle.
+
+The acceptance gate should require the whole component, not just a circle
+with a suggestive profile: connected disk base, one boundary component,
+product interval bundle, one full core circle, multiplicity one, and source
+verification of every crossing chart.  The circle's signed walk can be checked
+against the ends of the core one-handles.  For the source edge-cap face sector,
+the initial endpoint's tetrahedron and face flags determine which one-handle
+end is entered; both flags are needed for self-face gluings.  Taking absolute
+occurrences after this geometric check supplies the saturated matrix row.
+
+\begin{question}[Annular absorption coverage]
+After this extension, how many actual source cuts become certifiable, and
+which residual annuli remain?  Does absorption commute with the source leaf
+schedule in a useful canonical order, or does it create a genuinely larger
+positive-genus pivot search?
+\end{question}
+
+The first experiment should rerun the same 106 sources and report accepted
+cuts, independent replays, explicit-oracle agreements, and each remaining
+refusal category.  The existing sixty annular refusals are a denominator for
+that experiment, not a claim that sixty cases will succeed after absorption.
+After the existing cancellations, the added attaching rows may have no
+singleton pivot, or the augmented core may not be a handlebody.
+
+A separate source-profile diagnostic narrows the immediate target: in 38 of
+the sixty annular refusals, every full-circle attachment lies on a disk base;
+the other 22 have at least one nondisk-base circle.  Saved profiles resolve
+45 cases, and fifteen additional ordered queries, all independently replayed,
+resolve the rest.  These 38 cases satisfy the absorption eligibility condition.
+They have not been reclassified by an augmented cancellation implementation.
+
+\subsection{General annular attachments need relative topology}
+
+An orientable interval bundle over an annulus is a solid torus.  Gluing it
+to a core along one or more vertical annuli depends on how their core curves
+sit in the boundary of that core.  Base Euler characteristic and an incidence
+graph do not encode this information.  Even for a disk-base two-handle, the
+existence of a geometric singleton is stronger than an exponent sum condition.
+
+\begin{question}[A small relative attachment language]
+Can the source words be enriched by a polynomial-size representation of a
+meridian system and peripheral curves so that primitive annular attachments,
+products, and selected handle cancellations are independently recognizable?
+Can this be done while retaining exact source embeddings through every update?
+\end{question}
+
+For an absorbed disk-base two-handle, a certified unique intersection with
+a retained geometric meridian supplies the cancellation proved by the disk-slide
+lemma.  General annulus-base pieces still require relative gluing analysis.
+A wider class might admit a finite sequence
+of source-chart disk slides with compressed descriptions.  An arbitrary free-group
+normalization should not be promoted to a geometric move unless its effect on
+the boundary embedding and the remaining attaching curves is also justified.
+
+\subsection{Transport boundary patterns through successful cancellations}
+
+The present certificate proves that a suitable disk system exists after the
+slides.  It need not construct every disk or the induced boundary
+homeomorphism.  This suffices for a handlebody genus census because arbitrary
+embedded disks in a handlebody boundary are legitimate gluing disks.  It is
+insufficient for a next hierarchy step whose hypotheses refer to the exact
+position of a boundary pattern.
+
+\begin{question}[Compressed pattern transport]
+Is there a representation of curves and trivalent patterns on the core boundary
+that is closed under the meridian slides of the positive pivot lemma and has
+polynomial bit growth through a successful raw epoch?  Which relative isotopies
+must a checker record to preserve pattern incidence and essentiality?
+\end{question}
+
+A useful certificate should carry source flags for each pattern strand,
+ordered contacts on its receiving chart, and enough local crossing data to
+distinguish disjoint arcs from equal homology classes.  A directed acyclic
+description of transported strands is a candidate representation, but its
+size and the cost of intersection queries need proof.  The cap-two semiring
+alone loses exactly the information such a transport requires.
+
+\subsection{Handle cores with three-handles}
+
+Ten of the saved corpus attempts stop at a core containing three-handles.
+The current refusal is intentional.  An Euler calculation on the remaining
+handles does not decide how a three-handle closes a spherical boundary
+component, and simply deleting the corresponding row of a chain complex
+does not preserve the manifold.
+
+\begin{question}[Source-certified two/three simplification]
+Can an actual source two/three cancellation or a certified spherical-boundary
+reconstruction remove the three-handles while retaining the marked interfaces?
+Is there a geometric subfamily where its complete search has a polynomial
+certificate and producer bound?
+\end{question}
+
+A first implementation should authenticate the attaching sphere through its
+source vertex-link triangles and verify the geometric cancellation condition.
+One should separately investigate whether sphere components split off rather
+than cancel.  This task must not substitute a homology-ball test for a ball test.
+
+\subsection{Reduce proof volume without weakening the checker}
+
+The large binary tests expose a practical cost that an asymptotic polynomial
+statement can hide: repeated source charts and long endpoint integers occur
+in several orbit certificates.  The core proof is small, but the surrounding
+source and observer proofs can be tens of megabytes.
+
+\begin{question}[Shared source proofs and persistent query systems]
+Can the six certificates share a source packet, recurring interval maps, and
+unchanged trace fragments through a canonical directed acyclic representation,
+while independent replay still validates every query's distinct relation and
+weight transport?
+\end{question}
+
+The first target is serialization and repeated parsing, not a change in the
+mathematical result.  Binary integers should have one canonical exact encoding;
+the existing hexadecimal transport avoids decimal conversion limits but is
+not a compact binary container.  Any new schema should retain operation caps
+and reject source substitution, duplicate marks, unsupported trace events,
+and producer-supplied summaries without proof.  The alternative three-count
+partition certificate in the interface section provides a different route
+whose actual proof size can be compared with sparse weight masks.
+
+\subsection{Measure and explain coordinate-block width}
+
+The finest matching decomposition is exact, but its usefulness depends on the
+sizes of the resulting blocks.  The bipyramid family is deliberately transparent:
+it establishes a genuine asymptotic separation for the maintained iterator,
+but the separation theorem makes no claim that its positive-Euler witnesses
+are useful essential disks.  It does not
+show that hard unknot exteriors have useful low-width witnesses.
+
+\begin{question}[Geometric causes of small matching blocks]
+Which topological or combinatorial decompositions force small matching blocks
+after triangle elimination?  Which source moves preserve that property, and
+which make a single block absorb most quadrilateral coordinates?
+\end{question}
+
+The diagnostic should record maximum block nullity, total nullity, projected
+hyperplane counts, minimum-interaction cluster sizes, source vertex links,
+and the topology of the actual returned surfaces.  Comparing only total
+nullity hides the improvement.  Comparing only the smallest Q blocks hides
+the possible obstruction to full standard enumeration.
+
+\subsection{Treat Euler localization and useful-disk discovery separately}
+
+The Euler theorem remains exact even when triangle minima couple the Q
+blocks.  That is a useful asymmetry: coupling does not hurt the Euler sign
+test, but it can create additional standard rays.  The explicit two-ball
+counterexample proves that an implementation must keep these two APIs separate.
+
+\begin{question}[Useful witnesses after an Euler-positive answer]
+When can a block-local Euler witness be converted to a connected essential
+disk with a certified boundary slope or required relative pattern condition?
+When no such conversion succeeds, which further standard rays must be examined?
+\end{question}
+
+The correct experiment counts useful disks after all geometric predicates,
+not merely positive values of the Euler functional.  The existing source
+component and boundary-essentiality machinery is an appropriate checker for
+that experiment.  A negative canonical-Euler result, a positive but inessential
+disk, an incomplete search, and a verified essential disk should remain
+distinct outcomes.
+
+\subsection{The decisive missing search theorem: sector coverage}
+
+\begin{question}[A small complete family of candidate sectors]
+Can every knot exterior at the relevant stage be supplied, in quasi-polynomial
+time, with a quasi-polynomial-size family of compatible sectors containing
+one useful decomposing surface, with controlled local block or interaction
+dimensions?  If this is false, what obstruction family shows its failure?
+\end{question}
+
+This is stronger than theorems about checking a supplied vector.  A productive
+approach is to identify a progress property first and then formulate a
+structural existence theorem for surfaces satisfying it.  Support-sensitive
+search, matching-sign implications, linear-programming witnesses, and the new
+block localization can all be candidate generators.  None alone certifies
+that the family searched contains a useful surface on every input.
+
+Possible falsification experiments should enumerate small genuine source
+triangulations, certify their topology independently, and compare the proposed
+restricted family against complete standard-ray searches where feasible.
+Abstract matrices are valuable for algebraic obstructions but cannot establish
+or refute a source-realized geometric existence claim on their own.
+
+\subsection{Admissible patterned states and uniform source size}
+
+The inherited core is a convenient source handle structure, not automatically
+an admissible patterned hierarchy state.  The audited repository already
+contains an explicit empty-cut one-tetrahedron solid torus whose inherited
+characteristic-surface index violates the required admissibility condition.
+Thus bounded core size does not discharge that obligation, even on the simplest
+source fixture\cite{ProveIt2026}.
+
+\begin{question}[A verified conversion to the hierarchy state model]
+Can a source core, its ordered interfaces, and its transported boundary pattern
+be converted to an admissible structure of uniformly controlled type with a
+polynomial-size certificate?  What potential decreases under the resulting
+geometric operations, and how does that potential bound both depth and restarts?
+\end{question}
+
+The recurrence in Proposition~\ref{main:ledger} should be filled with explicit
+functions derived from this conversion.  It is insufficient to call every
+individual state ``compressed.''  One needs a bound on the number of charts,
+the length of each affine or word description, and the accumulated bit length
+of ranks and markings after the allowed moves.
+
+\subsection{Formalize the small geometric bridge}
+
+\begin{question}[A manageable formal verification target]
+Can the source chart-to-incidence lemma, the saturated positive pivot lemma,
+and the disk-gluing genus theorem be formalized as a small verified kernel,
+with machine-checkable hypotheses for an actual cut packet?
+\end{question}
+
+The finite arithmetic portions are especially suitable: exact integer codecs,
+spanning forests, source leaf orders, permanent-one implications used only in
+the meta-proof, and multigraph cycle ranks.  The topological interface is more
+substantial.  It must state that the source packet represents an embedded
+interval bundle and a genuine handle structure with the asserted intersection,
+not merely a cell complex having the same homology.  Isolating that interface
+would make both the mathematical proof and future code review more reliable.
+
+\subsection{Evaluation and integration priorities}
+
+The next measured comparison should keep three axes visible: source complexity,
+coordinate bit length, and useful geometric coverage.  A benchmark consisting
+only of enormous multiples of a known disk establishes compressed capacity but
+does not measure hard surface discovery.  Conversely, a bank of tiny primitive
+vectors conceals the asymptotic cost of explicit expansion.  Both are needed.
+
+The recommended integration order is:
+\begin{enumerate}
+\item Preserve this additive operator and its independent source-bound checker;
+keep the existing recognizer's decision contract intact.
+\item Implement and audit the proved disk-base annular absorption rule.
+\item Reduce repeated source/proof serialization and measure memory as well as
+producer and verifier time.
+\item Enable block decomposition in the matching query paths whose ray-set or
+Euler contract it preserves exactly, measuring preparation and replay costs.
+\item Build the relative pattern transport and useful-surface coverage theorems
+needed by an actual hierarchy consumer.
+\item Establish a global state and search ledger in the original diagram size
+before claiming a quasi-polynomial recognizer.
+\end{enumerate}
+
+The mathematical deliverable is useful even if the last step remains difficult:
+the new certificates identify precisely which topological information a
+compressed cut consumer can use, and the new counterexamples identify which
+apparently plausible shortcuts would lose necessary information.

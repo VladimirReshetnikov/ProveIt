@@ -1,0 +1,33 @@
+Research verification notes, 12 October 2026
+
+Mathematical and code review:
+- Exact primal/dual proofs, source provenance, coordinate coverage, numerical failure,
+  caps and cancellation were checked separately from certificate production.
+- Dual signs are required only on allowed quad columns; triangle coefficients cancel.
+- The sparse obstruction is relative to its specified row basis and is not asserted
+  to be an infinite geometric family.
+- Cyclic order is an invariant of the marked base or suitable patterned/bundle
+  category, not of a bare ball with disjoint boundary patches.
+- Extra inherited pattern marks incur extra complexity. Absolute annular twist is
+  not a bare homeomorphism invariant without an additional relative convention.
+- The singleton-star refinement, O(q log(q+1)) extraction, and conditional global
+  branching/dimension accounting were checked as explicit mathematical arguments.
+- The direct source LP certificate bound was checked using bounded row/column
+  incidence, a common basis denominator, and Hadamard/Cramer bounds. It is an
+  existence theorem and alternative formulation, not a tested solver claim.
+- Final numerical tables were compared directly with their archived JSON.
+
+Executable verification:
+- 59 tests passed in the recorded final combined regression command.
+- The patch applies in a clean directory and all 12 resulting files agree byte for
+  byte with the overlay.
+- The geometric audit independently replays its encoded source certificates and
+  checks finite words/gauges against literal boundary and adjacency traversal.
+
+PDF verification:
+- The final 32-page PDF was parsed successfully and rendered in full with Poppler.
+- All pages were inspected in contact sheets. The figure and benchmark pages were
+  also inspected at higher resolution.
+- Contents spacing, a long heading and port-label placement were adjusted during
+  visual review. Final LaTeX log: no overfull/underfull boxes or warnings.
+- The PDF inside the archive is identical to the standalone PDF.

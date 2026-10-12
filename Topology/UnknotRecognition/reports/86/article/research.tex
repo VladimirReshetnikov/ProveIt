@@ -1,0 +1,229 @@
+\section{A research programme toward quasi-polynomial recognition}
+\label{sec:research}
+
+The new parameter moves the main question from discovering all local
+quadrilateral choices to controlling the places where geometric and
+algebraic intersections disagree. This is useful because a cohomology
+generator is inexpensive to compute, and the disagreement is a directly
+testable geometric object. The next results should establish control of
+that object under certified changes of representation.
+
+\subsection{The structural theorem that would complete this route}
+
+The most direct objective is the following concrete question.
+
+\begin{quote}
+Is there an explicit procedure, taking $n^{O(\log n)}$ bit time, which
+produces certified polynomial-size exteriors of an $n$-crossing diagram,
+such that an unknot has a standard vertex meridian with
+$p+|F(D)|\le C\log(n+2)$ in at least one produced source, for an absolute
+known constant $C$?
+\end{quote}
+
+An affirmative answer combines with Corollary~\ref{cor:qp}; nothing else
+in that corollary requires expanding a normal surface. Several aspects
+of the wording are essential. The favourable source must be found within
+the bound, its relation to the original diagram must be certified, and
+vertex potentials count in $p$. A construction with many vertices cannot
+silently invoke the one-vertex cancellation theorem. A promising normal
+disc that is not a standard vertex disc does not yet meet the promise.
+
+This question is deliberately not elevated to a conjecture that all
+sources satisfy. The Whitehead construction rules out that broader
+statement. Even the restriction to all one-vertex triangulations remains
+an open problem in this investigation and may be false. Constructively
+choosing a family of representations is a more flexible target.
+
+\subsection{Geometric questions, in order of dependence}
+
+\begin{enumerate}[label=G\arabic*.]
+\item \textbf{Can low cancellation be transferred to a vertex disc?}
+Suppose some essential normal disc has cancellation on at most $k$
+edges. Is there a standard vertex meridian with at most $f(k)$ such
+edges, ideally $f(k)=O(k)$, after a controlled source modification?
+The ordinary vertex-disc theorem does not include this support control.
+Intersecting a sector with $W_F$ produces extreme rays of the intersection,
+which need not be extreme in the full sector. This is exactly the gap a
+proof must bridge. A useful first result would identify sufficient
+conditions on oriented normal sums under which no cancellation is created
+on an edge that was previously coherent.
+
+\item \textbf{Can the Whitehead obstruction persist with one vertex?}
+Construct a one-vertex family with $\kappaV=\Omega(t)$, or prove a
+quantitative obstruction to collapsing the many interior loop vertices
+in Theorem~\ref{thm:whitehead} without destroying the independent
+geometric-index barriers. Either result would substantially narrow the
+correct global claim. The geometric index of an individual embedded loop
+does not by itself control a whole collapsed graph, whose edges may share
+vertices and change their isotopy classes.
+
+\item \textbf{How does cancellation behave under certified moves?}
+For $2$--$3$, $3$--$2$, boundary layering and crushing operations, derive
+local inequalities for the best achievable cancellation support of an
+essential disc, while also controlling standard extremality. Boundary
+layering has the exact favourable theorem proved here. General Pachner
+moves can change the coherent baseline, so comparing only geometric
+weights before and after a move is insufficient. A useful move record
+should transport the cocycle, candidate disc, affected edge stars and
+source correspondence together.
+
+\item \textbf{Can repeated obstacles be removed in batches?}
+The Whitehead example has many parallel copies of a single geometric
+gadget. Develop a compressed quotient of repeated edge-star regions,
+with binary multiplicities and a proof that essential-disc discovery is
+preserved. A parameter counting independent gadget types might be small
+where literal cancellation support is linear. The hard part is retaining
+the ordered attachments and their fibre data; merely aggregating edge
+weights can change the embedding problem. The interface operator of
+Section~\ref{sec:parallelity-interface} supplies part of the data needed
+for a safe batch transformation.
+
+\item \textbf{Can a complexity potential force logarithmic depth?}
+Seek a certified simplification or hierarchy move that either exposes a
+meridian or decreases a nonnegative structural potential by a fixed
+factor. The potential should account for core size, boundary pattern,
+vertex-gauge dimension and independent cancellation regions. A decrease
+in coordinate weight alone is unsuitable: the layered family has huge
+weights but a constant discovery parameter. A decrease in tetrahedron
+count alone may fail during useful Pachner exploration. A potential
+theorem must bound branching as well as depth.
+\end{enumerate}
+
+\subsection{Algebraic and algorithmic questions}
+
+\begin{enumerate}[label=A\arabic*.]
+\item \textbf{Implement the general sparse-incidence theorem.}
+The highest-confidence next coding task is the row-first enumeration in
+Theorem~\ref{thm:incidence}, including its exceptional normalization case.
+Use partial injective row-to-edge matchings, incremental exact rank and
+canonical descriptions to avoid permutations of the same system.
+Completeness should first be compared with the elementary algorithm at
+$k=2,3$ on small sources. No heuristic pruning should be credited in the
+asymptotic bound without a certificate that it preserves every relevant
+invertible system.
+
+\item \textbf{Can the exponent depend on interaction rather than support?}
+The determining equations form a hypergraph with row size at most four.
+Study dynamic programming over certified decompositions of the affected
+edge-star interaction graph. A bag must retain compatible four-point
+sectors, rational boundary weight relations and enough global information
+to verify a primitive essential disc. Storing only possible total Euler
+characteristics would be unsound. The goal is an explicit bound in both
+the interaction width and the coefficient bit length, followed by a
+geometric theorem controlling that width on selected sources.
+
+\item \textbf{Can algebraic signatures reduce duplicate active systems?}
+The present global list has many repeated hyperplanes, and one ray may
+have many active descriptions. Investigate reverse search on active
+bases or rank certificates indexed by sparse minors. A useful target is
+polynomial delay per distinct candidate on a fixed $W_F$. The number of
+distinct candidates can still be exponential in the dimension, so such
+an output-sensitive result would improve implementation without alone
+settling the global complexity question.
+
+\item \textbf{Can the vertex gate replace more expensive positive checks?}
+The exact minor and boundary parity certificate is complete for standard
+vertex meridians. Measure its crossover with the existing exposed-unit
+ray gate and compressed component observer. A sensible schedule first
+uses cheap sufficient rank certificates, then the complete supported
+rank test when a theoretical vertex-only mode is requested, and reserves
+the richer observer for additional restricted rays. Source preparation
+and reuse of matrix factors must be included in comparisons.
+
+\item \textbf{How can multiple-vertex sign chambers be compressed?}
+The current extension pays $t^{O(p)}$ for the arrangement of cocycle
+hyperplanes. Examine whether a certified spanning-tree gauge, boundary
+collapses or a small set of relevant vertex potential differences can
+reduce $p$ without excluding the unknown disc. Fixing arbitrary vertex
+potentials is not harmless: signed intersections of the actual disc may
+use a different representative. A valid reduction must transport the
+geometric problem, rather than simply delete gauge variables algebraically.
+\end{enumerate}
+
+\subsection{Compressed geometry and hierarchy questions}
+
+\begin{enumerate}[label=H\arabic*.]
+\item \textbf{Construct the boundary homeomorphisms, not only handle plans.}
+For each full or partial disc-base attachment, output the actual collar
+maps and transported marked arcs. Prove that disjoint source interfaces
+remain disjoint and that the output records their induced order. The
+correct relative handle count is already known here; an executable
+topological replacement requires more data than that count.
+
+\item \textbf{Convert the result to admissible handles.}
+Show that the transported relative additions can be changed to the
+uniform-type handle structures required by the hierarchy theory, with
+polynomial encoded size. State precisely which boundary patterns are
+preserved and which tests establish admissibility. A bounded inherited
+core plus interval bundles does not automatically provide this step.
+
+\item \textbf{Extend fibre information beyond separate boundary circles.}
+The present signed double cover records transport around each marked
+boundary circle. Non-disc bases may require paths connecting distinct
+circles and coherent horizontal boundary markings. Identify a finite
+set of such paths, bound its size, and certify its relation to the source
+charts without expanding the base. Annular and M\"obius examples should
+remain explicit regression cases.
+
+\item \textbf{Close the orbit-engine complexity gap.}
+The interface theorem has a polynomial reduction to ordinary AHT
+counting; the implementation uses weighted traces. Either prove that
+these concrete traces and their arithmetic stay polynomial in encoded
+source size, or substitute a rigorously bounded counting implementation
+for the proof-critical mode. Fast behaviour on long binary multiplicities
+is valuable evidence, but does not control every possible interval system.
+\end{enumerate}
+
+\subsection{An experimental programme with useful failure criteria}
+
+The next corpus should combine several independently generated classes:
+small enumerated solid tori, diagram exteriors with verified provenance,
+Pachner walks, layered sources, and sources containing controlled
+geometric-index gadgets. For each, record $t$, vertex count, cocycle rank,
+the best certified vertex cancellation support found, sector nullity,
+maximum coordinate bit length and edge-star degree distribution.
+Keep a distinct field for a lower bound or exhaustive result; a heuristic
+failure to find a disc is not a lower bound on $\kappaV$.
+
+Compare equal workloads: the same supplied source, the same necessary
+preparation, the same certificate acceptance contract, and separately
+reported fresh replay. Relabel every source several times to measure
+early-return ordering effects. Record failures and cap exhaustion beside
+successes. In particular, the elementary all-subspace method's slower
+small-source performance should remain visible when evaluating the
+optimized replacement.
+
+Three falsifiable milestones would make the next iteration decisive:
+\begin{enumerate}
+\item General-$k$ row-first enumeration exactly matches elementary
+enumeration on a complete small corpus while reducing actual attempted
+systems and elapsed time.
+\item A certified move family has a proved inequality for cancellation
+support or gauge dimension and preserves source size within an explicit
+bound. A single verified counterfamily should trigger revision of the
+proposed structural claim.
+\item Partial disc-base replacements output independently checked
+boundary maps and an admissible next handle structure on both the
+full-circle and collar fixtures, before being used inside a hierarchy.
+\end{enumerate}
+
+\section{Conclusion}
+
+Sparse edge cancellation gives a complete way to discover standard vertex
+meridians without first supplying their quadrilateral sector. Its search
+spaces have dimension at most $k+1$ in the one-vertex rank-one case, and
+sparse equation support gives the sharper explicit enumeration bound.
+Exact rank, Euler characteristic and boundary parity suffice to verify
+every promised vertex disc in polynomial bit time. The new disc and its
+infinite layered extensions demonstrate that this parameter can remain
+constant in the presence of dense quadrilateral support, exponential
+normal weights and persistent failure of coherent-only discovery.
+
+The Whitehead construction shows why source selection is an essential
+part of the proposed global theorem. Ordered parallelity interfaces
+provide an additional geometric operation needed for controlled changes
+of source, but the admissible replacement and coverage arguments still
+require proofs. The precise remaining objective is therefore a
+constructive, certified source family with logarithmic $p+k$. Proving it,
+or finding the right replacement parameter when it fails, is the central
+research task exposed by this continuation.

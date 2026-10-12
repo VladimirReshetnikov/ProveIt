@@ -1,0 +1,1489 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=25mm,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Bounded-interface integral homology for compressed unknot hierarchies},pdfauthor={Research draft prepared for ProveIt with ChatGPT}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Bounded-interface integral homology}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=3pt,topsep=4pt,leftmargin=*}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,framerule=.3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\F}{\mathbb F_2}
+\newcommand{\coker}{\operatorname{coker}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\satO}{\mathcal O}
+\newcommand{\satN}{\mathcal N}
+\newcommand{\bits}{\operatorname{bits}}
+\title{Bounded-interface integral homology\\[5pt]
+{\large Binary surface condensation, twisted attachments, and\\
+provenance-aware terminals for compressed unknot hierarchies}}
+\author{Research draft prepared for the ProveIt project\\\small Prepared with ChatGPT}
+\date{12 October 2026}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The current ProveIt implementation already constructs a normal cut in binary
+cell families and extracts its all-dimensional source parallelity bundle,
+leaving a bounded inherited handle core. We develop the next algebraic layer:
+exact integral homology from that core and its bounded interface, without
+expanding the genera, boundary counts, or multiplicities of the attached
+surface bundles. The interacting part of $H_1$ is the cokernel of a matrix
+whose dimensions depend only on the core and the number of attached boundary
+circles. All other free ranks and repeated $2$-torsion are binary counters.
+A saturated nonorientable base contributes one generator and one relation
+$2h+s=0$, not one generator per crosscap. This yields a sharp mod-two torsion
+formula and a factor-two bound on torsion-exponent growth.
+
+We also give bounded marked-port reconstruction, a torsion bound in terms
+of actual interface incidence, and compact cohomology witnesses. For genuine
+cut descendants of a certified knot exterior in $S^3$, a classical duality
+argument bypasses interior homology entirely: boundary genera determine all
+integral homology groups. Combined with the condensation theorem, this gives
+primitive-lattice and mod-two independence conditions on the attachments.
+A single sphere boundary is a ball terminal only under the embedding
+provenance, not for a generic torus-boundary input.
+
+The accompanying standard-library implementation has independent algebraic
+replay, a checked small Smith kernel, and 4,800 seeded comparisons across six
+validation families. Paired complete homology-kernel measurements record
+both large-input gains and small-input regressions. These are interface-model
+measurements, not knot-recognition benchmarks. The source-geometric adapter,
+constructive cocycle lift, admissible patterned hierarchy, and global
+quasi-polynomial bound are not supplied by this contribution.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Research position and the concrete bottleneck}
+\label{sec:position}
+
+\subsection{The audited starting point}
+This continuation is based on ProveIt revision
+\begin{center}\small\code{ed166080d7db14dd7a91d07788996f02947dd92a}.\end{center}
+The revision was committed on 12 October 2026. The relevant implementation is
+\path{Topology/UnknotRecognition/fast/}; the maintained theoretical account is
+under \code{synthesis/}. The source audit in Appendix~\ref{app:audit} records
+specific paths and Git blob identifiers rather than treating the entire
+repository as a single reviewed object.
+
+Two prior achievements are essential. The raw-cut constructor preserves all
+cell dimensions and source attaching charts in affine binary families
+\cite{repo-cells}. More recently, \code{normal\_cut\_parallelity} extracts
+product handles in indices zero, one, and two, including cases where a base
+component has no selected zero- or one-handles. It retains base surface types,
+fibre twisting, and core-facing ports. Its inherited complementary core has
+at most $30T$ handles, with a conservative bound of $66T$ core ports, for $T$
+source tetrahedra \cite{repo-parallelity}. These results are existing work,
+not contributions of the present article.
+
+The inherited core is not yet an admissible patterned hierarchy structure.
+Likewise, a binary polygon description is not automatically a polynomial-time
+homology algorithm: an explicit chain matrix can have a number of rows
+proportional to the numerical normal weight. Our question is more specific:
+\emph{which part of integral homology actually needs an explicit matrix once
+the core--bundle interface has been supplied?}
+
+\subsection{Relation to the published hierarchy algorithms}
+Polynomial-time extraction of parallelity data is not an absent theorem.
+Lackenby's Theorem 9.3 in \emph{The efficient certification of knottedness and
+Thurston norm} computes the complementary core and the types and vertical
+attachments of parallelity components for an orientable normal surface, in
+time polynomial in the tetrahedron count and logarithmic normal weight
+\cite{lackenby-cert}. That theorem and the current repository's all-dimensional
+source implementation are the proper antecedents of this work.
+
+Lackenby's July 2026 manuscript gives an iteration bound $L(g+1)^L$, where
+$L$ bounds hierarchy length and $g$ bounds the relevant pattern complexity.
+It separately identifies the need to specify and bound the cost of individual
+operations \cite[Section 9]{lackenby-2026}. We address one such cost, not the
+entire search. The local algebra below cannot by itself bound the number of
+hierarchy corrections, the size of every later patterned core, or the cost
+of discovering the necessary surfaces.
+
+\subsection{What is new here, and what is classical}
+Mayer--Vietoris, the homology presentations of compact surfaces, Smith normal
+form, Alexander duality, and the Schoenflies theorem are classical
+\cite{hatcher,brown,kannan-bachem}. The mathematical contribution here is their
+explicit bounded-interface organization: a signed integral matrix, a complete
+binary bulk formula, one additional generator per saturated twisted base,
+and interface conditions that are directly checkable downstream of source
+replay. We prove the resulting statements in full and implement the algebraic
+contracts. We do not claim that these consequences are previously unknown in
+every formulation in the literature.
+
+The most immediately usable outcomes are the reduction in
+Theorem~\ref{thm:condensation}, the bounded-port extraction of
+Theorem~\ref{thm:ports}, the twisted-attachment theorem
+\ref{thm:twisting}, and the source-aware dispatch rule in
+Section~\ref{sec:s3}. The proofs remain useful even when a particular
+implementation chooses another normal-form backend.
+
+\section{The geometric and algebraic input contracts}
+\label{sec:contract}
+
+\subsection{A core with interval bundles}
+Let $X$ be a compact orientable three-manifold, possibly disconnected, with
+nonempty boundary on every component. Assume a decomposition
+\begin{equation}
+ X=K\cup\bigcup_i E_i,
+ \qquad E_i\longrightarrow B_i,
+ \qquad K\cap E_i=E_i|_{A_i},
+ \label{eq:decomp}
+\end{equation}
+where $K$ is a finite core, each $E_i$ is an interval bundle over a compact
+connected surface $B_i$, and $A_i$ is a compact one-dimensional submanifold
+of $\partial B_i$. Distinct bundle components are disjoint. Collars and
+corners are arranged so that these intersections give the usual
+Mayer--Vietoris sequence. In particular, there is no unrecorded triple
+intersection. A source certificate must justify this contract when the
+input comes from a normal cut.
+
+Each component of $A_i$ is either a closed interval or an entire boundary
+circle of $B_i$. Write $a_i$ and $c_i$ for their respective counts, and
+$b_i=|\pi_0(\partial B_i)|$. Adjacent core-facing arcs must first be merged
+through their actual quotient vertices. Counting raw port arcs as components
+of $A_i$ is generally wrong.
+
+For an orientable base let $g_i$ be its genus. For a nonorientable base let
+$k_i\geq1$ be its crosscap number. Thus
+\[
+ \chi(B_i)=2-2g_i-b_i\quad\hbox{or}\quad2-k_i-b_i.
+\]
+An orientable total interval bundle over a nonorientable base is twisted.
+The homology reduction uses the base's homotopy type; it does not infer
+bundle twisting from the slope of a singleton affine map.
+
+\begin{definition}
+A base with $b_i>0$ is \emph{saturated} if $c_i=b_i$: its entire boundary is
+attached through annuli. A saturated base has $a_i=0$. Write $\satO$ and
+$\satN$ for the saturated orientable and nonorientable bases, and put
+$o=|\satO|$, $t=|\satN|$.
+\end{definition}
+
+Unattached bundle components can be grouped in profiles with a binary
+multiplicity $m_i$. An attached component is individually identified and
+has $m_i=1$. In particular, a port cannot silently refer to several identical
+copies. No loop in the intended computation is indexed by $g_i$, $k_i$,
+$b_i$, or $m_i$.
+
+\subsection{The core presentation and signed circle maps}
+Take a finite CW model for $K$, with $v$ vertices, $e$ edges, $f$ two-cells,
+and $u$ three-cells. A spanning forest in its one-skeleton gives
+\[
+ H_1(K;\Z)=\Z^d/\im R,\qquad d=e-v+b_0(K),
+ \qquad R\in\Z^{d\times f}.
+\]
+Every core two-cell has a closed edge word. Its column in $R$ is the exponent
+sum on the nonforest edges. Collapsing the forest simply deletes tree-edge
+coordinates; it does not introduce long word substitutions.
+
+For the attached boundary circles of $B_i$, let
+\[
+ z_{i1},\ldots,z_{ic_i}\in\Z^d
+\]
+be their image cycles in this presentation. For an orientable base, orient
+all its boundary components using one orientation of the base. This
+\emph{relative} orientation information is indispensable. Local consistency
+around each individual circle does not establish consistency between different
+boundary circles of the same orientable base.
+
+For a nonorientable base, use the boundary convention in the presentation
+\begin{equation}
+ 2(x_1+\cdots+x_{k_i})+d_1+\cdots+d_{b_i}=0.
+ \label{eq:nonorientable}
+\end{equation}
+Changing one boundary direction changes the eventual sum by $2z$ and is
+absorbed by a change of the retained generator. For saturated bases define
+\begin{equation}
+ s_i=\sum_{j=1}^{b_i}z_{ij}.
+ \label{eq:boundary-sum}
+\end{equation}
+A source implementation must provide these cycles, not just their number,
+a port mask, or an Euler characteristic.
+
+\subsection{The attachment graph}
+Let $\Gamma$ have one vertex for every connected component of $K$ and every
+attached base. Each component of $A_i$ contributes one edge joining its base
+vertex to the component of $K$ containing its image. Parallel edges are
+retained. Then
+\begin{equation}
+ r_\Gamma=|E(\Gamma)|-|V(\Gamma)|+b_0(\Gamma).
+ \label{eq:graph}
+\end{equation}
+Unattached bundles are not vertices of $\Gamma$; they are counted separately.
+The empty graph has all three counts zero. This convention handles an empty
+core without a special topological argument.
+
+\subsection{What the delivered input validator establishes}
+The Python model checks the integer domains, closed and contiguous core edge
+words, attachment counts, multiplicities, and graph incidence. These checks
+make a valid algebraic graph-of-spaces input. They do \emph{not} establish
+that a native raw-cut packet realizes it, that $K$ has the claimed
+three-manifold attaching maps, or that $X$ embeds in $S^3$. Those are separate
+geometric premises. The homology formula for the graph of spaces is exact;
+its interpretation as the homology of a particular source cut requires
+source binding.
+
+\section{Exact integral condensation}
+\label{sec:condensation}
+
+\subsection{The small matrix and binary bulk ranks}
+List the columns $s_i$ for $i\in\satO$ and $i\in\satN$ as matrices $S_O$
+and $S_N$. Set
+\begin{equation}
+ C=\begin{pmatrix}
+ R&S_O&S_N\\
+ 0&0&2I_t
+ \end{pmatrix}\in\Z^{(d+t)\times(f+o+t)}.
+ \label{eq:matrix}
+\end{equation}
+The extra row for a saturated nonorientable base corresponds to a generator
+$h_i$, and its column asserts $s_i+2h_i=0$.
+
+Define the per-copy free contribution $\lambda_i$ by Table~\ref{tab:local}.
+The cases $b_i=0$ are necessarily unattached. The last column records only
+the isolated closed nonorientable contribution, not torsion that might be
+present in $\coker C$.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+Base and attachment condition & $\lambda_i$ & Extra $\Z/2$ per copy\\
+\midrule
+Orientable, $b_i>c_i$ & $2g_i+b_i-1-c_i$ & $0$\\
+Nonorientable, $b_i>c_i$ & $k_i+b_i-1-c_i$ & $0$\\
+Orientable, $b_i=c_i>0$ & $2g_i$ & $0$\\
+Nonorientable, $b_i=c_i>0$ & $k_i-1$ & $0$\\
+Orientable, $b_i=0$ & $2g_i$ & $0$\\
+Nonorientable, $b_i=0$ & $k_i-1$ & $1$\\
+\bottomrule
+\end{tabular}
+\caption{Local surface data retained as binary counters.}
+\label{tab:local}
+\end{table}
+
+Set
+\begin{equation}
+ \beta=r_\Gamma+\sum_i m_i\lambda_i,
+ \qquad
+ \mu=\sum_{\substack{i:\ b_i=0\\ B_i\text{ nonorientable}}}m_i.
+ \label{eq:bulk}
+\end{equation}
+The sum is over the supplied profiles; attached profiles have multiplicity
+one. These expressions involve ordinary integer arithmetic, not expanded
+lists of basis elements.
+
+\begin{theorem}[Bounded-interface integral homology]
+\label{thm:condensation}
+Under the contract of Section~\ref{sec:contract},
+\begin{align}
+ H_0(X;\Z)&\cong\Z^{b_0(\Gamma)+\sum_{A_i=\varnothing}m_i},
+ \label{eq:h0}\\
+ H_1(X;\Z)&\cong\coker C\ \oplus\ \Z^\beta\ \oplus\ (\Z/2)^\mu.
+ \label{eq:h1}
+\end{align}
+The inclusion of the core is represented by its original $d$ generators in
+$\coker C$. No matrix dimension in \eqref{eq:matrix} depends on a numerical
+base genus, crosscap number, boundary count, or unattached multiplicity.
+The direct-sum splitting in \eqref{eq:h1} is not asserted to be canonical.
+\end{theorem}
+
+\begin{proof}
+The interval-bundle projection is a homotopy equivalence $E_i\simeq B_i$,
+and its restriction is a homotopy equivalence $E_i|_{A_i}\simeq A_i$.
+Mayer--Vietoris therefore gives the exact sequence
+\begin{multline}
+ \bigoplus_i H_1(A_i)\longrightarrow
+ H_1(K)\oplus\bigoplus_i H_1(B_i)
+ \longrightarrow H_1(X)\\
+ \longrightarrow\bigoplus_i H_0(A_i)
+ \longrightarrow H_0(K)\oplus\bigoplus_i H_0(B_i).
+ \label{eq:mv}
+\end{multline}
+An interval contributes zero to $H_1(A_i)$; an attached circle identifies its
+boundary generator with $z_{ij}$. The kernel of the final map is the integral
+cycle group of $\Gamma$, a free group of rank $r_\Gamma$. Thus the middle
+cokernel extends by $\Z^{r_\Gamma}$. An extension with free quotient splits
+as an abelian group. The same incidence map gives \eqref{eq:h0}.
+
+It remains to compute the middle cokernel explicitly. An orientable genus
+$g$ base has the abelian presentation
+\[
+ \left\langle a_1,b_1,\ldots,a_g,b_g,d_1,\ldots,d_b
+ \ \middle|\ d_1+\cdots+d_b=0\right\rangle.
+\]
+When $b=0$, the displayed relation is empty and its group is $\Z^{2g}$.
+For a nonorientable base, use \eqref{eq:nonorientable}. These presentations
+follow by abelianizing the standard polygon presentations; the commutator
+terms disappear in the orientable case \cite{hatcher}.
+
+Suppose first that $c<b$. Reorder boundary components so that the attached
+ones are $d_1,\ldots,d_c$, and $d_b$ is unattached. Eliminate $d_b$ using the
+single surface relation. This is an integral elimination with coefficient
+one, including in the nonorientable case. Each attached relation then
+eliminates $d_j$ in favor of $z_{ij}$. Since there is still the eliminated
+unattached boundary generator available, no relation is imposed on the core.
+The remaining free counts are $2g+b-1-c$ and $k+b-1-c$.
+
+If $c=b>0$ and the base is orientable, substitute all $d_j=z_{ij}$.
+The only residual relation is $s_i=0$, while all $2g$ handle generators
+remain free. If the base is nonorientable, introduce
+\[
+ h=x_1+\cdots+x_k,\qquad y_j=x_j\quad(2\leq j\leq k).
+\]
+This is a unimodular change of basis, since
+$x_1=h-y_2-\cdots-y_k$. The residual relation is $2h+s_i=0$; the $k-1$
+generators $y_j$ remain free. This accounts for exactly one new row and one
+new column in \eqref{eq:matrix}, irrespective of $k$.
+
+Finally, a closed nonorientable base has
+$H_1\cong\Z^{k-1}\oplus\Z/2$, by the same change of basis. An unattached
+bundle is a separate component of $X$, so each such copy contributes one
+independent $\Z/2$. An unattached orientable closed base contributes only
+$\Z^{2g}$. Applying these eliminations component by component gives
+\eqref{eq:matrix}, Table~\ref{tab:local}, and \eqref{eq:h1}. All eliminations
+retain the original core generators, proving the inclusion assertion.
+\end{proof}
+
+\subsection{Recovering the remaining Betti numbers}
+The decomposition gives
+\begin{equation}
+ \chi(X)=v-e+f-u+\sum_i m_i\chi(B_i)-\sum_i a_i,
+ \label{eq:euler}
+\end{equation}
+since a circle has Euler characteristic zero and an interval has Euler
+characteristic one. If $r=\rank_\Q C$, then
+\begin{equation}
+ b_1(X)=d+t-r+\beta.
+ \label{eq:b1}
+\end{equation}
+
+\begin{corollary}
+\label{cor:h2}
+For an orientable three-manifold satisfying the nonempty-boundary hypothesis,
+\[
+ H_3(X;\Z)=0,\qquad
+ H_2(X;\Z)\cong\Z^{\chi(X)-b_0(X)+b_1(X)}.
+\]
+\end{corollary}
+\begin{proof}
+The top absolute homology vanishes on every component with boundary.
+Poincar\'e--Lefschetz duality identifies $H_2(X;\Z)$ with
+$H^1(X,\partial X;\Z)$. The latter is torsion-free: the possible universal
+coefficient term $\operatorname{Ext}(H_0(X,\partial X),\Z)$ vanishes, and
+$\operatorname{Hom}(H_1(X,\partial X),\Z)$ is free for this finite complex.
+Euler characteristic now gives the stated rank.
+\end{proof}
+
+This corollary must not be applied merely because an arbitrary algebraic
+model has an integer called \code{three\_cells}. The delivered software
+reports the Euler value but does not certify the manifold premise or claim
+an unconditional $H_2$ computation from that count alone.
+
+\subsection{Two small examples with different behavior}
+\begin{example}[A saturated annulus]
+Let $H_1(K)=\Z\langle z\rangle$. Attach both boundary circles of an annulus
+to the same core component. The attachment graph has two parallel edges and
+$r_\Gamma=1$. If the coherently oriented images are $z,-z$, then $C=(0)$
+and $H_1(X)=\Z^2$. If they are $z,z$, then $C=(2)$ and
+$H_1(X)=\Z\oplus\Z/2$. The scalar data $(\chi,b,c)$ are identical.
+\end{example}
+
+\begin{example}[A saturated M\"obius base]
+For a M\"obius band with attached boundary image $nz$,
+\[
+ H_1(X)=\langle z,h\mid nz+2h=0\rangle
+ \cong\Z\oplus\Z/\gcd(n,2).
+\]
+Only the parity of $n$ governs the torsion in this example. Replacing this
+base by a nonorientable base of $k$ crosscaps adds $k-1$ free generators,
+not a larger interacting matrix.
+\end{example}
+
+\section{Recovering the bounded attachment interface}
+\label{sec:ports}
+
+The repository already retains a bounded set of core-facing arcs, with
+source ranks and endpoint maps. The missing algebraic distinction is whether
+several such arcs form an interval or an entire boundary circle, and what
+that circle represents in the core. This section isolates a bounded
+postprocessing task rather than expanding all base polygons.
+
+\subsection{A single marked endpoint query}
+Suppose there are $p$ raw core-facing arcs. Give the two endpoint occurrences
+of arc $j$ distinct labels $2j$ and $2j+1$, even if their source corner points
+coincide. Assign endpoint occurrence $r$ the weight $2^r$. At a source point
+carrying several occurrences, add their weights. The quotient-vertex
+relation on the full base polygon system is already an interval-orbit
+problem in the existing geometry.
+
+\begin{lemma}[Endpoint masks do not alias]
+\label{lem:masks}
+In the weighted quotient-vertex histogram, the nonzero orbit weights are
+exactly the bit masks of the endpoint equivalence classes. Each nonzero
+weight occurs on exactly one orbit. There are at most $2p$ nonzero weights,
+and every weight has at most $2p$ bits.
+\end{lemma}
+\begin{proof}
+Each endpoint occurrence is marked once. An orbit weight is consequently a
+sum of distinct powers of two. Its binary expansion records exactly which
+endpoint labels belong to that orbit; no carry or multiplicity ambiguity is
+possible. Distinct marked orbits have disjoint nonempty sets of labels, so
+cannot have the same nonzero weight. Every marked orbit contains at least
+one of the $2p$ endpoints.
+\end{proof}
+
+The unmarked orbits can be numerous; their multiplicity is irrelevant here.
+The output bound concerns this particular endpoint query, not an arbitrary
+weighted histogram with unrelated weights. A replayed orbit calculation is
+still needed to prove that the displayed masks are the correct geometric
+ones. Disjoint, exhaustive masks by themselves are not such a proof.
+
+\subsection{The finite port graph}
+Identify endpoint occurrences according to Lemma~\ref{lem:masks}, and keep
+one edge for each raw core-facing arc. The resulting finite graph is exactly
+$A=\coprod_i A_i$. A loop contributes degree two at its vertex. Under the
+geometric contract, each vertex has degree one or two; every connected
+component is a path or a cycle. A path contributes one interval to $a_i$,
+whereas a cycle contributes one attached boundary circle to $c_i$.
+
+Supply, for each port, the oriented edge path followed by its central line
+in a core graph. Endpoint images must agree after quotienting. Traversing
+a cycle concatenates these paths, reversing and inverting a path when the
+port is traversed backward. The result is a closed core word. For an
+orientable base, the traversal must follow the boundary direction certified
+by a single orientation of that base.
+
+\begin{theorem}[Bounded marked-port extraction]
+\label{thm:ports}
+Given the correct quotient-vertex endpoint masks, coherent base-boundary
+orientations, and core paths of total word length $P$, the numbers $a_i,c_i$
+and all circle-image words can be constructed without visiting any unmarked
+base cell. The finite graph has at most $2p$ vertices and $p$ edges. Each port
+and each letter of its core path is traversed a bounded number of times.
+The resulting interface and its verification have polynomial bit cost in
+$p+P$ and the bit length of the supplied labels and profiles.
+\end{theorem}
+\begin{proof}
+Decode the masks to a partition of $2p$ occurrences. Build the graph and
+check ownership of vertices, degree one or two, and matching core images.
+A traversal of each component distinguishes its two degree-one endpoints
+from the degree-two cycle case. Record one interval anchor for a path.
+For a cycle, concatenate its core paths in traversal order. Agreement at
+quotient endpoints proves contiguity and closure. Each edge occurs once in
+its component traversal, so the total emitted word length is at most $P$.
+The bit masks have the bounds in Lemma~\ref{lem:masks}; sorting, graph
+traversal, and exact integer comparison are polynomial in the stated input
+size. No base genus or normal multiplicity is a traversal bound.
+\end{proof}
+
+\paragraph{The eight-port disc example.}
+The maintained parallelity article describes a disc base supplied by an
+index-two product handle, with eight core-facing arcs and no selected
+index-zero or index-one handles \cite{repo-parallelity}. Its attachment
+subset is a circle, so $a=0$, $c=b=1$, and $\chi(A)=0$. Treating it as eight
+intervals would both alter Euler characteristic and lose its circle relation.
+The delivered eight-port test exercises this combinatorics, but is not a
+replay of that native triangulated example.
+
+\paragraph{Exact scope of the implemented adapter.}
+\code{ports.py} implements the mask decoder and the finite port graph
+construction. It checks local directions along each attachment component.
+It does not invoke the native weighted-orbit engine, recover source core
+paths, or certify relative orientations of different boundary circles.
+Those are the remaining inputs to a source adapter, not consequences of a
+port histogram or a successful algebraic replay.
+
+\section{Twisted attachments: torsion is tightly controlled}
+\label{sec:twisting}
+
+First perform the saturated orientable quotients and write
+\begin{equation}
+ G=H_1(K;\Z)/\langle s_i:i\in\satO\rangle.
+ \label{eq:G}
+\end{equation}
+For the remaining saturated nonorientable bases, put
+\[
+ Q=(G\oplus\Z\langle h_1,\ldots,h_t\rangle)
+       /\langle s_j+2h_j:1\leq j\leq t\rangle.
+\]
+Thus $Q=\coker C$ in the notation of Section~\ref{sec:condensation}.
+
+\begin{theorem}[Twisted-attachment exact sequence]
+\label{thm:twisting}
+There is a natural short exact sequence
+\begin{equation}
+ 0\longrightarrow G\longrightarrow Q\longrightarrow(\Z/2)^t
+ \longrightarrow0.
+ \label{eq:extension}
+\end{equation}
+Consequently:
+\begin{enumerate}
+\item The odd-primary torsion subgroups of $G$ and $Q$ agree under inclusion.
+\item If $e$ is the exponent of $\Tor G$, with $e=1$ when $G$ is torsion-free,
+then the exponent of $\Tor Q$ divides $2e$.
+\item If $G\cong\Z^r$, and $\overline S$ has columns $s_j\bmod2$ in
+$G/2G$, then
+\begin{equation}
+ Q\cong\Z^r\oplus(\Z/2)^{\,t-\rank_{\F}\overline S}.
+ \label{eq:twist-rank}
+\end{equation}
+\end{enumerate}
+In particular, $t$ twisted attachments do not produce a factor $2^t$ in the
+\emph{torsion exponent} bound.
+\end{theorem}
+
+\begin{proof}
+An element of $G$ that vanishes in $Q$ is an integer combination of the
+relations $s_j+2h_j$. Comparing the independent $h_j$ coordinates in
+$G\oplus\Z^t$ shows that every coefficient in this combination is zero.
+Hence $G\to Q$ is injective. Modulo $G$, the generators $h_j$ have the
+independent relations $2h_j=0$, proving \eqref{eq:extension}.
+
+An element of odd prime-power order in $Q$ maps to zero in the elementary
+$2$-group quotient, hence lies in $G$. Conversely, odd-primary torsion of
+$G$ remains torsion of the same order by injectivity. This proves the first
+claim. For any torsion element $q\in Q$, the element $2q$ lies in $G$ and is
+torsion there. Thus $2eq=0$, proving the second claim.
+
+When $G$ is free, tensoring \eqref{eq:extension} with $\Q$ gives free rank
+$r$ for $Q$, and the second claim says its torsion is elementary $2$-torsion.
+The presentation has $r+t$ generators and $t$ relations. Modulo two its
+relation matrix has rank $\rank_{\F}\overline S$, because the lower block
+$2I_t$ vanishes. Therefore
+\[
+ \dim_{\F}(Q/2Q)=r+t-\rank_{\F}\overline S.
+\]
+Subtracting the contribution $r$ from its free part gives
+\eqref{eq:twist-rank}.
+\end{proof}
+
+\begin{example}[Large order is not large exponent]
+Take $G=\Z/3\langle z\rangle$ and $s_j=z$ for all $j$. Then
+\[
+ Q\cong\Z/6\oplus(\Z/2)^{t-1}\qquad(t\geq1).
+\]
+Its torsion order is $3\cdot2^t$, but its exponent is always $6$.
+The test suite checks the five-attachment instance and 700 random free-core
+instances of \eqref{eq:twist-rank}.
+\end{example}
+
+\subsection{Canonical torsion without expanding repeated factors}
+After a Smith computation on $C$, let its positive nonunit diagonal entries
+be $d_1\mid\cdots\mid d_r$. The full torsion also contains $\mu$ copies of
+$\Z/2$, where $\mu$ may be a very large binary integer. Returning a list of
+$\mu$ entries would undo the compression.
+
+\begin{proposition}[Run-length invariant factors]
+\label{prop:torsion-runs}
+The invariant factors of
+$\bigoplus_j\Z/d_j\oplus(\Z/2)^\mu$ can be represented by $O(r+1)$
+constant-value runs and computed in polynomial bit time in the input
+diagonal and $\bits(\mu)$. No integer factorization is required.
+\end{proposition}
+\begin{proof}
+Write $d_j=2^{a_j}u_j$ with $u_j$ odd. The $a_j$ are nondecreasing and the
+$u_j$ form a divisibility chain. Remove trivial odd factors. Merge $\mu$
+additional exponent-one terms into the ordered positive $a_j$, retaining
+multiplicities in binary. Align this exponent sequence and the odd-factor
+sequence on the right, padding the shorter on the left with zero exponents
+or odd factor one. Multiply aligned factors.
+
+For each prime, this is precisely the nondecreasing primary invariant-factor
+sequence padded on the left by trivial factors. Their termwise products
+are therefore the integral invariant factors. Only the $2$-adic valuations
+are explicitly extracted; the odd factors remain whole integers.
+The exponent sequence has at most $r+1$ runs and the odd sequence at most
+$r+1$. Merging run endpoints uses a linear number of run operations and
+binary arithmetic. No run is expanded according to its multiplicity.
+\end{proof}
+
+\section{Incidence bounds and normal-multiplicity safeguards}
+\label{sec:torsion-bound}
+
+A small number of handles alone does not bound the bit size of their
+attaching maps. This distinction matters both for complexity and for
+mathematical statements about torsion.
+
+\begin{proposition}[Torsion from actual matrix incidence]
+\label{prop:mass}
+For an integer matrix $C$, set $S=\sum_{ij}|C_{ij}|$. Then
+\[
+ |\Tor(\coker C)|\leq 3^{S/3}.
+\]
+For the full compressed group in Theorem~\ref{thm:condensation},
+\[
+ |\Tor H_1(X)|\leq 2^\mu3^{S/3}.
+\]
+The latter is a mathematical bound, not a request to materialize $2^\mu$.
+\end{proposition}
+\begin{proof}
+If the rank is zero, the first torsion group is trivial. Otherwise, let its
+rank be $r$. Smith theory identifies the torsion order with the greatest
+common divisor of the nonzero $r\times r$ minors. It is bounded above by
+any nonzero such minor. Hadamard's inequality bounds that determinant by
+the product of the Euclidean norms of its columns, and hence by their full
+column $\ell^1$ norms $q_1,\ldots,q_r$. Each $q_j$ is a positive integer,
+$\sum q_j\leq S$, and $q\leq3^{q/3}$ for every positive integer $q$.
+The last inequality is immediate for $q=1,2,3$ and follows from the decrease
+of $(\log x)/x$ for $x\geq3$. Multiplying proves the first bound. The isolated
+$\Z/2$ factors supply the second.
+\end{proof}
+
+\begin{corollary}[Linear-incidence interfaces]
+\label{cor:linear-incidence}
+Suppose a family of decompositions has total core two-cell word length and
+total attached-circle word length $O(T)$, and has $O(T)$ saturated twisted
+bases. Then the torsion order of every component meeting the core is
+$2^{O(T)}$, independently of all base genera and normal multiplicities.
+An unattached interval-bundle component has torsion order at most two.
+\end{corollary}
+\begin{proof}
+Forest collapse deletes edge coordinates. The total absolute mass of $R$
+and the boundary-sum columns is no larger than the total input word length.
+The lower block contributes $2t$. Thus $S=O(T)$. The matrix splits into
+blocks according to the connected components of $\Gamma$; an unattached
+bundle contributes no block and has the surface homology already computed.
+Apply Proposition~\ref{prop:mass} separately to each component.
+\end{proof}
+
+\paragraph{What this says about the native source charts.}
+The current repository supplies $O(T)$ core and port records, with bounded
+total source-sector incidence \cite{repo-parallelity}. To use
+Corollary~\ref{cor:linear-incidence} with that exact constant $T$, an adapter
+must verify that its core graph and port paths have \emph{linear total word
+length}, not merely that their number of records is linear. The present
+package does not authenticate that refinement. A record containing a binary
+power of a long winding cannot be charged as a single letter. With general
+coefficient bit length $B_C$ and $q$ matrix rows, the safe alternative is the
+usual determinant estimate $\log|\Tor\coker C|=O(q(B_C+\log(q+1)))$.
+
+\subsection{Closed one-sided components cannot proliferate arbitrarily}
+\begin{proposition}
+\label{prop:one-sided}
+If a compact orientable three-manifold $M$ contains $s$ pairwise disjoint
+closed connected nonorientable embedded surfaces, then
+$s\leq b_1(M;\F)$. Consequently, the counter $\mu$ in an actual cut of a
+fixed source $M$ is at most $b_1(M;\F)$.
+\end{proposition}
+\begin{proof}
+Each surface is one-sided. Choose an orientation-reversing loop on it.
+Push the loop slightly into its normal interval bundle: it starts on one
+local side and ends on the other. Closing it by a short fibre segment
+produces a loop that meets this surface once modulo two. The loop lies in
+that surface's bundle and is disjoint from all the other surfaces.
+
+Intersection parity with each closed surface defines a class in
+$H^1(M;\F)$. Evaluating these classes on the constructed loops yields the
+identity matrix. The classes are linearly independent, proving the bound.
+For the second assertion, take the central closed base surfaces of the
+unattached nonorientable bundles. A cut is realized as a submanifold of
+$M$, so these surfaces are also pairwise disjoint in $M$.
+\end{proof}
+
+For a triangulation with $T$ tetrahedra, the crude bound
+$b_1(M;\F)\leq6T$ follows from the number of source edges. Together with a
+verified linear-incidence adapter, this would bound the \emph{total}
+torsion order over all cut components by $2^{O(T)}$. The very large
+multiplicity tests in our abstract model therefore must not be portrayed as
+normal cuts of a fixed small triangulation; they test the encoded algebraic
+contract beyond that geometric restriction.
+
+\section{A stronger shortcut for certified descendants in \texorpdfstring{$S^3$}{S3}}
+\label{sec:s3}
+
+The generic API accepts a compact orientable triangulation with one torus
+boundary. This is a weaker promise than being the exterior of the input knot
+in $S^3$. The distinction permits a useful optimization only after source
+provenance is carried explicitly.
+
+\begin{theorem}[Boundary-determined integral homology in $S^3$]
+\label{thm:s3}
+Let $X\subset S^3$ be a connected compact locally flat PL codimension-zero
+submanifold with nonempty boundary. Let $b$ be the number of its boundary
+components and let $G_\partial$ be their total genus. Then
+\begin{equation}
+ (H_0,H_1,H_2,H_3)(X;\Z)
+ =\bigl(\Z,\Z^{G_\partial},\Z^{b-1},0\bigr).
+ \label{eq:s3-homology}
+\end{equation}
+In particular, all these integral homology groups are torsion-free.
+\end{theorem}
+
+\begin{proof}
+Let $\Sigma=\partial X$, a disjoint union of $b$ closed orientable surfaces.
+Alexander duality gives
+\[
+ \widetilde H_0(S^3-\Sigma;\Z)\cong H^2(\Sigma;\Z)\cong\Z^b.
+\]
+Thus $S^3-\Sigma$ has $b+1$ connected regions. The connected interior of $X$
+is exactly one region: it is open and closed in $S^3-\Sigma$ and has no
+additional boundary there. Hence $S^3-X$ has $b$ components.
+
+Let $Y$ be the closure of $S^3-X$. Its collar identifies $Y$ up to homotopy
+with $S^3-X$, and identifies $S^3-Y=\operatorname{int}X$ up to homotopy with
+$X$. Apply Alexander duality to the compact locally contractible space $Y$.
+This gives
+\[
+ H_2(X;\Z)\cong\widetilde H^0(S^3-X;\Z)\cong\Z^{b-1},
+ \qquad H_1(X;\Z)\cong H^1(S^3-X;\Z).
+\]
+The right-hand group in degree one is torsion-free by the universal
+coefficient theorem. It is finitely generated, since a collar makes the
+complement homotopy equivalent to a compact manifold. Finally, $H_3(X)=0$
+and doubling $X$ along its boundary gives
+$2\chi(X)=\chi(\partial X)=2b-2G_\partial$. If $r=b_1(X)$, the already
+computed groups give $\chi(X)=1-r+(b-1)=b-r$. Therefore $r=G_\partial$.
+These duality statements are standard; see \cite{hatcher} and the related
+embedding obstructions in \cite{tonkonog}.
+\end{proof}
+
+\begin{corollary}[A source-aware sphere terminal]
+\label{cor:ball}
+Under the hypotheses of Theorem~\ref{thm:s3}, $b=1$ and $G_\partial=0$
+imply that $X$ is a three-ball. More generally, if $G_\partial=0$, then $X$
+is homeomorphic to $S^3$ with the interiors of $b$ disjoint three-balls removed.
+\end{corollary}
+\begin{proof}
+Each boundary component is a locally flat two-sphere. The Schoenflies
+theorem says that the closures of both complementary domains of such a
+sphere are three-balls \cite[Theorem 5]{brown}. There are $b$ complementary
+components of $X$, and $b$ boundary components. Every complementary
+component meets at least one boundary component; thus each meets exactly
+one sphere and is a ball. Removing their interiors gives the assertion.
+For $b=1$, either complementary closure is a ball.
+\end{proof}
+
+\paragraph{Why homology alone is not the terminal.}
+The conclusion is a theorem about an embedded manifold, not an inference
+from a Betti vector. A punctured lens space has one sphere boundary and can
+have nontrivial torsion; a punctured integral homology sphere can have exactly
+the homology of a ball without being a ball. Neither is a counterexample to
+Corollary~\ref{cor:ball}, because neither can satisfy its $S^3$ embedding
+premise in the nontrivial case. The existing generic sphere-boundary nonball
+control should therefore be retained, not removed.
+
+\subsection{Primitive relations and a parity obstruction}
+\begin{corollary}[Necessary interface conditions in $S^3$]
+\label{cor:primitive}
+Assume the full decomposition \eqref{eq:decomp}, including a regularized
+core $K$, lies in $S^3$. Then:
+\begin{enumerate}
+\item $\mu=0$ and $H_1(K;\Z)$ is free;
+\item the subgroup generated by the saturated orientable sums $s_i$ is a
+primitive sublattice of $H_1(K;\Z)$;
+\item writing $G$ as in \eqref{eq:G}, the saturated nonorientable sums are
+linearly independent in $G/2G$. In particular $t\leq\rank G$.
+\end{enumerate}
+If $X$ is connected, then
+\begin{equation}
+ G_\partial=\rank G+\beta.
+ \label{eq:s3-rank}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Theorem~\ref{thm:s3} applies to every connected component of $X$ and $K$.
+Thus their first homologies are free. Formula~\eqref{eq:h1} forces $\mu=0$.
+Theorem~\ref{thm:twisting} injects $G$ into $Q$, and $Q$ is a direct summand
+of the torsion-free group $H_1(X)$. Therefore $G$ is torsion-free. A quotient
+of a free abelian group by a subgroup is torsion-free exactly when that
+subgroup is primitive, giving the second assertion.
+
+Now $G$ is free. Formula~\eqref{eq:twist-rank} and torsion-freeness of $Q$
+force $\rank_{\F}\overline S=t$. Rationally, $\rank Q=\rank G$; combine
+this with \eqref{eq:h1} and \eqref{eq:s3-homology} for the last identity.
+\end{proof}
+
+These are necessary conditions, not an embedding recognizer. Passing a
+primitivity or parity test does not establish that the interface came from
+$S^3$. Conversely, torsion discovered under a claimed $S^3$ ancestry signals
+a defective ancestry, geometric adapter, or algebraic computation. It is
+not, by itself, a knottedness obstruction: nontrivial knot exteriors also
+embed in $S^3$.
+
+\subsection{How provenance can be preserved}
+An implementation can retain an embedding-ancestry DAG rather than expand
+coordinates in $S^3$ at every stage. Its root must bind a certified
+construction of the input knot exterior to the original diagram. Cutting
+out an open regular neighborhood of a properly embedded surface preserves
+the embedding by inclusion, and selecting components preserves it as well.
+A verified homeomorphic change of representation also preserves the
+existence of an embedding, by composition with the inverse homeomorphism.
+
+An arbitrary quotient, filling, or gluing is not covered by these rules.
+Neither a hash nor a Boolean field named \code{certified} proves the root
+premise or a transition. This delivery includes no checker for such a DAG.
+The deliberately named \code{s3\_boundary\_consequences} computes only the
+consequent of Theorem~\ref{thm:s3}; its returned record explicitly says that
+the embedding hypothesis has not been verified by that function.
+
+Once the ancestry and the boundary profiles are independently replayed,
+\eqref{eq:s3-homology} costs only binary arithmetic per profile. It can
+replace an interior matrix computation for Betti numbers or the predicate
+$b_1=0$. It does not supply the actual nonseparating surface, a boundary
+pattern, or the essentiality test needed by the hierarchy.
+
+\section{Compact cohomology witnesses}
+\label{sec:cohomology}
+
+A hierarchy needs more than a nonzero Betti number. We can nevertheless
+separate finding an algebraic functional from lifting it to a geometric
+cutting surface.
+
+\begin{theorem}[A small functional in the condensed coordinates]
+\label{thm:functional}
+Given the interface data, if $H^1(X;\Z)\ne0$, then a nonzero integral
+functional on the presentation in Theorem~\ref{thm:condensation} has a
+description polynomial in the encoded input size. It can be found with a
+polynomial-time integer normal-form algorithm. The description uses at most
+one binary-indexed bulk generator or an ordinary vector on the $d+t$
+interacting generators. It need not enumerate a surface homology basis.
+\end{theorem}
+\begin{proof}
+If $\beta>0$, choose a nonzero coordinate functional on one of the free
+summands recorded in \eqref{eq:bulk}. A directory consisting of the
+$r_\Gamma$ graph generators followed by the surface-profile generators
+locates the chosen generator using a profile index, copy index, and local
+basis index, all in binary. If desired, choose the first nonempty family,
+which does not even require an index as large as the whole rank.
+
+Otherwise, $H^1(X;\Z)$ is the integer left kernel of $C$; finite torsion
+contributes no homomorphism to $\Z$. A polynomial-time integer normal-form
+algorithm gives a nonzero vector in this kernel whenever its rational
+nullity is positive \cite{kannan-bachem}. Its coefficient bit lengths are
+polynomially bounded. Dividing the vector by the greatest common divisor
+of its entries makes it primitive without changing its support.
+
+For completeness, the symbolic local coordinates can be interpreted in the
+standard surface presentations without expanding them. In an unsaturated
+base, eliminate one unattached boundary generator $d_b$ and assign its
+functional value using the single surface relation. If one crosscap
+coordinate is set to one, only $d_b$ needs the compensating value $-2$;
+if one free boundary generator is selected, only $d_b$ needs $-1$.
+In a saturated nonorientable base use
+$x_1=h-\sum_{j\geq2}y_j$, $x_j=y_j$. A single $y_j$ coordinate therefore
+requires only two nonzero original crosscap values. Orientable handle
+coordinates are already independent. A graph functional is represented on
+one nonforest edge of $\Gamma$. These are constant-support recipes with
+binary indices, or ordinary vectors of length $d+t$.
+\end{proof}
+
+\paragraph{The remaining geometric lift is real work.}
+Theorem~\ref{thm:functional} does not identify an explicit source simplicial
+cocycle, let alone a normal surface. A native lift must transport the
+canonical base coordinates through the actual affine polygon identifications
+and respect the core inclusion. This requires certified chain maps or an
+equivalent source-level evaluation mechanism. In particular, reporting
+``$b_1>0$'' and invoking a surface-construction theorem without supplying its
+required cochain is not an implementation.
+
+A useful next target is a \emph{port-preserving cocycle-lift theorem}: from a
+replayed affine base/core packet and one of the above functionals, construct
+a source-evaluable integral cocycle in polynomial encoded time. Its input
+and output must include the actual surface chart maps. This article isolates
+that question but does not claim its solution.
+
+\section{Bit complexity and its role in the quasi-polynomial goal}
+\label{sec:complexity}
+
+\subsection{The local bound}
+Let $N$ be the complete bit length of the supplied core, profile, and
+interface data, including all explicit attaching words. Let $h$ be the
+number of core cells and $p$ the number of raw ports. The interface has at
+most $p$ circle components and at most $p$ interval components. In
+particular $o+t\leq p$ and $d\leq h$.
+
+\begin{theorem}[Polynomial encoded homology]
+\label{thm:complexity}
+From a supplied verified interface, constructing \eqref{eq:matrix},
+\eqref{eq:bulk}, \eqref{eq:h0}, and \eqref{eq:euler} has polynomial bit cost
+in $N$. The matrix has $O(h+p)$ rows and columns. A polynomial-time integer
+Smith algorithm, followed by Proposition~\ref{prop:torsion-runs}, computes
+a complete run-length description of $H_1(X;\Z)$ in polynomial bit time.
+No dependence on the numerical genus or multiplicity is hidden in an
+output-length requirement.
+\end{theorem}
+\begin{proof}
+A spanning forest, core word checks, and attachment graph construction
+have polynomial cost. Every matrix coefficient is an exponent sum over
+supplied words, so its bit length is bounded by the word encoding size.
+There are at most $h+p$ generators and $h+p$ relations up to fixed constants.
+Dense assembly is therefore polynomial even without sparse optimization.
+The $q$ profile contributions require $O(q)$ arithmetic operations on binary
+integers of polynomially bounded bit length. Products such as $m_i\lambda_i$
+have bit length at most the sum of the factor bit lengths plus one.
+
+Kannan--Bachem provides a polynomial integer normal-form algorithm, including
+controlled transformation matrices \cite{kannan-bachem}. The small Smith
+output has polynomial size. The run-length merge in
+Proposition~\ref{prop:torsion-runs} retains binary multiplicities. Free
+summands are likewise represented by their rank. Hence the output is a
+compressed isomorphism type rather than an exponentially long basis.
+\end{proof}
+
+The theorem begins \emph{after} source interface extraction. The actual
+repository's weighted discovery and replay costs must be added with their
+stated trace/partition accounting \cite{repo-parallelity}. A polynomial
+postprocessor cannot retroactively prove a bound on a preceding discovery
+algorithm whose largest intermediate encoding has not been bounded.
+
+\subsection{The reference Smith kernel is not a Kannan--Bachem implementation}
+The delivered optional Smith kernel uses elementary Euclidean row and column
+operations, emitting a trace. It is exact and terminating. To see
+termination, at a pivot clear its column and row by division with remainder.
+Every nonzero remainder that becomes the new pivot has smaller absolute
+value. Once the pivot row and column are clear, an entry in the remaining
+block not divisible by the pivot is moved into the pivot row; another
+remainder again decreases the pivot. Eventually the pivot divides the
+remaining block and the algorithm advances to a smaller submatrix.
+Previously settled pivots remain isolated, and later integral operations
+preserve divisibility by them.
+
+This argument is not a bound on all intermediate coefficient sizes. We do
+not claim that this particular implementation has Kannan--Bachem's worst-case
+polynomial bit complexity. The proved polynomial \emph{algorithmic existence}
+result uses that published normal-form backend; the delivered prototype's
+normal-form cost is measured and replayed. The polynomial assembly stage
+can also be used independently of any Smith computation.
+
+\subsection{What would close the global accounting}
+\begin{proposition}[A sufficient accounting criterion]
+\label{prop:qp}
+Suppose a complete, correct hierarchy recognizer on an $n$-crossing diagram
+has at most $L(g+1)^L$ iterations, each iteration costs at most $P(N)$ bit
+operations, and all preprocessing is bounded by the same total scale.
+If $P$ is a fixed polynomial, $L=O(\log n)$, $g=n^{O(1)}$, and
+$\log N=O((\log n)^2)$, its total running time is
+$2^{O((\log n)^2)}$. More generally a sufficient bound for
+$2^{O((\log n)^3)}$ is
+\[
+ \log P(N)+\log(L+1)+L\log(g+1)=O((\log n)^3).
+\]
+\end{proposition}
+\begin{proof}
+Multiply the iteration bound by the largest per-iteration cost and take
+logarithms. Under the first hypotheses, both $\log P(N)$ and
+$L\log(g+1)$ are $O((\log n)^2)$; the extra logarithmic factor in $L$ is
+smaller. The second assertion is the same calculation without specialization.
+\end{proof}
+
+This is sufficient accounting, not a proof that the actual hierarchy has
+these bounds. The present contribution removes numerical base genus and
+multiplicity from one matrix dimension. It does not establish bounded
+patterned-core encodings throughout every correction, a logarithmic depth,
+or the completeness and cost of the constructive hierarchy operations.
+The current complete recognizer's fallback is not replaced.
+
+\section{Implementation and verification artifacts}
+\label{sec:implementation}
+
+\subsection{The module boundary}
+The package is an additive research component, intended for placement under
+\path{Topology/UnknotRecognition/research/interface_homology/}. No native
+recognition dispatch is modified. Its main modules are:
+\begin{description}[style=nextline]
+\item[\code{model.py} and \code{condense.py}]
+Strict integer validation, closed edge words, binary profiles, forest
+collapse, the attachment graph, the matrix $C$, and all bulk counters.
+\item[\code{ports.py} and \code{replay.py}]
+Marked endpoint decoding and finite port assembly; independent replay of the
+algebraic condensation using graph traversal rather than the producer's
+disjoint-set implementation.
+\item[\code{smith.py} and \code{boundary.py}]
+The small exact Smith kernel, elementary-operation replay, binary torsion
+run merging, a mod-two rank utility, and explicitly conditional boundary
+consequences for an $S^3$ descendant.
+\end{description}
+SymPy is a validation dependency only. The main package and benchmark kernel
+use the Python standard library. No third-party mathematical paper or font
+file is redistributed.
+
+\subsection{Certificate meanings}
+A condensation packet records the source-model SHA-256 fingerprint, chosen
+core forest, surviving edges, component labels, the matrix, saturated-base
+indices, graph counts, and bulk counters. Replay checks a spanning forest
+by independent component traversal, extracts exponent sums independently,
+and recomputes all formulas. The hash binds an algebraic model. It is not
+an assertion that the model came from the diagram.
+
+A Smith trace allows only row/column swaps, adding an integer multiple of
+one row or column to a \emph{different} row or column, and row negation.
+Every operation is unimodular. Replay applies the supplied operations and
+checks that the result is diagonal, has positive nonzero entries in a
+prefix, and satisfies successive divisibility. These checks prove equality
+of the presented abelian groups without relying on the pivot-selection code.
+
+Operation and bit caps produce \code{WorkLimit}; they do not produce a
+partial homology group or a topological verdict. The replay operation cap
+limits the supplied trace. For untrusted deployment, external input-size
+and elapsed-time limits are still appropriate; the research API is not
+advertised as a hardened network service.
+
+\subsection{Binary serialization}
+Python environments can limit conversion of enormous integers to decimal
+strings. The delivered wire codec encodes integers as signed canonical
+hexadecimal strings under an explicit tag. It rejects ambiguous forms such
+as negative zero, leading zeroes, or a prefixed hexadecimal spelling inside
+that tag. Booleans remain booleans and are rejected where an integer is
+required. The fingerprint uses this codec, so values such as $2^{16384}$ do
+not require changing a process-wide decimal-conversion limit.
+
+\subsection{What the tests do and do not certify}
+The independent expanded oracle writes down the standard abelian surface
+presentations \emph{before} the eliminations in Theorem~\ref{thm:condensation}.
+It uses its own breadth-first core forest. Small expanded matrices are
+compared using SymPy's Smith normal form \cite{sympy}. A second family
+checks the reference Smith kernel against all determinantal divisors of
+small matrices. These are independent finite algebraic checks, not proofs
+of a source triangulation's geometry.
+
+The current delivery has no Regina installation, does not execute the
+maintained repository suite, and does not replay the native cut-cell or
+parallelity certificates. It supplies neither a Lean formalization nor a
+full source-to-interface producer. These limitations are recorded in the
+machine-readable validation output as well as in the integration notes.
+
+\section{Completed experiments and reproducibility}
+\label{sec:experiments}
+
+\subsection{Validation families}
+The delivered run passes all 25 unittest methods, with no failures, errors,
+or skips. Within those methods, six seeded families contain 4,800 cases:
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Independent comparison or property & Cases\\
+\midrule
+Expanded surface presentation versus condensation & 1,200\\
+Reference Smith diagonal versus SymPy & 1,800\\
+All determinantal divisors of small matrices & 200\\
+Binary repeated-$2$ invariant-factor merging & 500\\
+Free-core twisted-attachment formula & 700\\
+Oriented marked-port cycles & 400\\
+\bottomrule
+\end{tabular}
+\end{center}
+The six random seeds are the integers from \code{2026101201} through
+\code{2026101206}. Deterministic tests additionally cover empty matrices and
+cores, disconnected cores, interval cycles, both signs of boundary maps,
+M\"obius attachments, closed surfaces, malformed models, forged packets,
+resource caps, and 16,385-bit parameters. The summary in
+\code{results/validation.json} records the environment and source hashes.
+These counts describe this delivery, not a rerun of any historical native
+checkpoint.
+
+\subsection{Paired complete homology-kernel measurements}
+Both timing arms start with the same abstract interface model and finish
+with a serialized $H_0/H_1$ answer. The condensed arm assembles and replays
+its packet, computes Smith form of the small matrix, replays that trace, and
+merges the binary factors. The expanded arm builds the literal standard
+surface presentation, runs the \emph{same} Smith kernel, replays its trace,
+and serializes the same invariant-factor answer. Thus the comparison
+isolates presentation compression rather than a change of normal-form
+library. The condensed arm includes its additional condensation replay.
+
+There are eleven cases, one warmup round, and nine measured paired rounds.
+A third arm repeats the condensed computation as an A/A control. The three
+arms are shuffled each round with seed \code{2026101211}; garbage collection
+is performed outside each timer. All 330 warmup and measured samples finish,
+and all answers agree. Of these, 297 are measured samples. Tables report the
+median of the \emph{paired} expanded/condensed ratios, not the ratio of two
+independently rounded medians. Values greater than one favor condensation.
+
+\input{results/benchmark_table.tex}
+
+The saturated-genus family attaches an orientable genus-$g$, two-boundary
+base to a one-loop core with boundary images $z,-z$. Its compressed matrix
+is always $1\times1$, while the expanded presentation has $2g+4$ rows and
+three columns; one row accounts for the attachment-graph cycle. The exact
+answer is $H_1=\Z^{2g+2}$.
+
+The unattached nonorientable family has $m$ copies of a closed three-crosscap
+base. Its exact first homology is $\Z^{2m}\oplus(\Z/2)^m$. It is a legitimate
+abstract bundle model but, by Proposition~\ref{prop:one-sided}, large $m$
+is not a cut of a fixed small source. The core-only controls have no bulk
+surface data and expose the extra packet/replay overhead.
+
+The observed speedups are local. In particular, the genus-4096 case is a
+homology-model measurement, not a 4096-crossing knot or a measured native
+normal cut. Tiny cases regress, and even an excellent matrix-stage ratio
+says nothing about a source extractor that dominates the total runtime.
+
+\subsection{Large binary parameters without an expanded baseline}
+For $N=2^e$, we also process $N$ unattached copies of a closed nonorientable
+base with $N+1$ crosscaps. The exact answer is
+\[
+ H_0=\Z^N,\qquad H_1=\Z^{N^2}\oplus(\Z/2)^N.
+\]
+The interacting matrix is empty. Source-model hashing, packet replay, the
+homology result, and its serialization are included. The first of ten runs
+is treated as warmup.
+
+\input{results/binary_table.tex}
+
+The expanded arm is deliberately not run at these sizes, and no timing
+ratio against it is asserted. The purpose is to test that construction,
+replay, and output serialization really use bit length rather than numerical
+multiplicity. This is not evidence that a fixed-size normal triangulation
+realizes those particular large profiles.
+
+\subsection{Reproduction commands}
+From the package root:
+\begin{lstlisting}
+python validate.py
+python benchmark.py
+python make_tables.py
+sh build.sh
+\end{lstlisting}
+The independent tests require SymPy; the implementation and benchmark
+kernel do not. The completed run used Python and SymPy versions recorded
+in the JSON files. Timing results are specific to this environment and
+should be regenerated under the project's normal native benchmark controls
+before selecting a production threshold.
+
+\section{Integration plan and corrections to the research interface}
+\label{sec:integration}
+
+\subsection{A narrow, testable native adapter}
+The proposed adapter should consume a successfully replayed
+\code{normal-cut-parallelity-v1} packet and produce four things: a core
+one-skeleton with two-cell words; the endpoint equivalence classes of all
+core ports; a central core path for each port; and relative boundary
+orientation data for orientable bases. Its source fingerprint must match
+the original triangulation and unscaled normal vector.
+
+The existing base profiles already supply the genus or crosscap count,
+boundary count, multiplicity, and port ownership. They do not by themselves
+supply the ordered boundary cycles or their signed maps. The finite adapter
+in \code{ports.py} starts precisely after those source-level inputs have
+been obtained. It should not be connected to a guessed geometric map or a
+profile-only approximation.
+
+Validation should proceed on small native cuts by comparing the resulting
+integral group with an independent expanded-cut homology calculation,
+including torsion, not just ranks over two finite fields. Relabelled source
+triangulations, one-sided multiples, high-degree edge links, and the
+index-two-only disc example should be included. Tests must also disable the
+producer while replaying saved source evidence, so that an algebraic
+agreement cannot mask identical geometry mistakes on both sides.
+
+\subsection{A separate provenance-aware boundary path}
+The $S^3$ optimization has a different adapter: a replayed diagram-to-exterior
+root, a cut/homeomorphism ancestry, and componentwise boundary profiles.
+Its conclusion is exact integral homology by Theorem~\ref{thm:s3}; a
+single-sphere component additionally has a ball conclusion by
+Corollary~\ref{cor:ball}. The generic triangulation path remains available
+and retains the sphere-boundary nonball counterexample.
+
+The algebraic path remains valuable even when the boundary shortcut applies:
+it can check necessary interface identities, retain core inclusion data,
+and prepare cohomology functionals. It is not necessary to compute Smith
+form merely to rediscover a torsion-free Betti vector already implied by
+verified $S^3$ provenance.
+
+\subsection{Documentary and specification corrections}
+The audited root README still uses the broad phrase ``bounded-core geometry''
+in its earlier boundary-constructor checkpoint. The newer
+\code{parallelity.tex} proves a bounded \emph{inherited} core. A precise
+status update should distinguish that achievement from the still-missing
+admissible patterned core; it should not continue to list all bounded-core
+construction as absent. Conversely, the statement that a bounded
+\emph{admissible} core remains open is not contradicted by the inherited
+core result.
+
+The generic raw-cut article correctly keeps interior homology separate from
+boundary data. That separation can be sharpened, not discarded: for inputs
+with certified $S^3$ ancestry, boundary data already determines all integral
+homology. For unrestricted torus-boundary triangulations, it does not.
+No existing nonball test should be reclassified as incorrect on the basis
+of the stronger, currently unverified source promise.
+
+Finally, a source wrapper should avoid the phrase ``polynomial homology
+implementation'' without specifying its Smith backend and the cost of its
+geometric extractor. The mathematical polynomial-time theorem, the tested
+Euclidean prototype, and the native weighted trace bounds are three
+different assertions.
+
+\section{Further research questions}
+\label{sec:future}
+
+\subsection{Source-bound port cycles and relative orientations}
+Can the existing affine source charts emit all core words and oriented
+attachment circles with a proved linear total incidence bound in $T$?
+The endpoint-mask theorem reduces the component-classification part to one
+marked vertex query and $O(p)$ finite graph data. The remaining issue is
+source-certified paths and the relative signs on all boundary circles of
+each orientable base. A useful first deliverable is an independently replayed
+adapter with mutation tests for whole-circle orientation reversals.
+
+\subsection{A verified \texorpdfstring{$S^3$}{S3} ancestry discipline}
+Which current hierarchy operations preserve an explicit embedded descendant,
+and which preserve only an abstract homeomorphism type? A small proof kernel
+for root construction, cutting, component selection, and verified
+homeomorphisms would make the boundary-only homology and sphere terminal
+available without solving a new embedding problem at every stage. Operations
+that fill or identify boundary pieces require separately proved rules.
+
+\subsection{Source-evaluable cohomology and connected cutting surfaces}
+Can the symbolic functionals of Theorem~\ref{thm:functional} be pulled back
+through the affine bundle charts in polynomial bit time, with no expansion
+of $g_i$ or $m_i$? The output should support evaluation on source edges and
+independent checking of the cocycle equation. A subsequent step must produce
+the primitive nonseparating surface required by the hierarchy, with its own
+coordinate and construction bounds. Neither step follows from a rank count.
+
+\subsection{Marked inclusion data beyond \texorpdfstring{$H_1$}{H1} as an abstract group}
+Can one retain, at bounded-interface cost, the maps from the individual
+boundary components into $H_1(X)$, intersection pairings, and the marked
+peripheral classes? These data are stronger than an isomorphism type and
+could guide a pattern-preserving simplification. The matrix $C$ already
+retains the core inclusion, but its bulk direct-sum decomposition is not a
+canonical boundary marking.
+
+\subsection{Admissible patterned cores and repeated corrections}
+The inherited $30T$-handle core is an important local bound. How can it be
+converted to a uniform-type admissible structure while transporting every
+boundary pattern, and how does that encoding behave after a weak reduction
+or a discarded hierarchy suffix? A satisfactory theorem must bound the
+largest intermediate bit length, not just the number of handles after one
+normal cut.
+
+\subsection{Logarithmic depth and constructive balancing}
+A balance theorem must control both the topology and its construction cost.
+Can a Cheeger-region or multisurface argument bound hierarchy depth by
+$O(\log n)$ while keeping all correction interfaces within the same encoded
+budget? Proposition~\ref{prop:qp} identifies the accounting target, but no
+balanced-region search or depth proof is established here.
+
+\subsection{Fast exact algebra with portable evidence}
+The reference Smith trace is easy to replay but can exhibit coefficient
+growth. A production backend could emit bounded-size unimodular certificates
+from a polynomial normal-form algorithm, or use modular methods followed by
+exact reconstruction and replay. When the source is in $S^3$, the primitivity
+and parity constraints of Corollary~\ref{cor:primitive} offer additional
+checks, but do not remove the need to authenticate the geometric source.
+
+\subsection{Native measurements rather than model extrapolation}
+The next benchmark should time the complete chain from a source
+triangulation and normal vector through geometric replay, interface
+construction, homology, and output. It should include the existing expanded
+cut oracle, repeated A/A controls, and cases where the direct boundary path
+is enabled only by certified ancestry. The small-input regressions in the
+present model measurements are a reason to measure dispatch policies, not
+to make condensation the unconditional default.
+
+\section{Conclusion}
+The interacting integral homology of a core with surface bundles is much
+smaller than the expanded surface homology suggests. Unsaturated bases
+contribute only free ranks; saturated orientable bases add one signed
+boundary-sum relation; saturated nonorientable bases add one relation
+$2h+s=0$ and one generator. This yields a complete compressed homology
+presentation with independent algebraic replay and precise bit-cost
+separation from the source extractor.
+
+For certified $S^3$ descendants, the stronger boundary-only route avoids even
+that matrix when only homology ranks or a sphere terminal are needed. Its
+premise must remain explicit. The primitive-lattice and parity consequences
+provide additional consistency checks, not a substitute embedding theorem.
+These local results advance the compressed hierarchy interface while leaving
+the construction, admissibility, depth, and global search bounds as explicit
+mathematical obligations.
+
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{repo-cells}
+ProveIt contributors, \emph{Full three-dimensional normal cuts in affine cell
+families}, \code{Topology/UnknotRecognition/synthesis/cut\_cells.tex}, audited
+revision listed in Appendix~\ref{app:audit}, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{repo-parallelity}
+ProveIt contributors, \emph{Source parallelity in all handle dimensions and a
+bounded inherited core}, \code{synthesis/parallelity.tex}, and the associated
+\code{fastunknot/normal\_parallelity.py}, audited revision, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{lackenby-cert}
+Marc Lackenby, \emph{The efficient certification of knottedness and Thurston
+norm}, arXiv:1604.00290v3, especially Section 9.4, Theorem 9.3.
+\url{https://arxiv.org/html/1604.00290v3}.
+
+\bibitem{lackenby-2026}
+Marc Lackenby, \emph{Incompressible surfaces, hierarchies and unknot
+recognition}, arXiv:2607.23350v1, 25 July 2026, especially Sections 6, 9,
+and 10. \url{https://arxiv.org/abs/2607.23350}.
+
+\bibitem{hatcher}
+Allen Hatcher, \emph{Algebraic Topology}, Cambridge University Press, 2002.
+Surface homology, Mayer--Vietoris, universal coefficients, and duality.
+\url{https://pi.math.cornell.edu/~hatcher/AT/ATpage.html}.
+
+\bibitem{brown}
+Morton Brown, \emph{A proof of the generalized Schoenflies theorem},
+Bulletin of the American Mathematical Society \textbf{66} (1960), 74--76,
+Theorem 5.
+\url{https://projecteuclid.org/journals/bulletin-of-the-american-mathematical-society/volume-66/issue-2/A-proof-of-the-generalized-Schoenflies-theorem/bams/1183523455.full}.
+
+\bibitem{kannan-bachem}
+Ravindran Kannan and Achim Bachem, \emph{Polynomial algorithms for computing
+the Smith and Hermite normal forms of an integer matrix}, SIAM Journal on
+Computing \textbf{8} (1979), 499--507.
+\url{https://doi.org/10.1137/0208040}.
+
+\bibitem{tonkonog}
+Dmitry Tonkonog, \emph{Embedding 3-manifolds with boundary into closed
+3-manifolds}, Topology and its Applications \textbf{158} (2011), 1157--1162.
+\url{https://arxiv.org/abs/1003.3029}.
+
+\bibitem{sympy}
+SymPy developers, \emph{Matrix normal forms}, version 1.14.0 documentation,
+accessed 12 October 2026.
+\url{https://docs.sympy.org/latest/modules/matrices/normalforms.html}.
+\end{thebibliography}
+
+\appendix
+\section{Source audit and proof-status inventory}
+\label{app:audit}
+
+\subsection{Repository source pins}
+The audited commit is
+\begin{center}\small\code{ed166080d7db14dd7a91d07788996f02947dd92a}.\end{center}
+The following paths are relative to \code{Topology/UnknotRecognition/}.
+These Git blob identifiers bind the inspected texts; they are not SHA-256
+hashes of the newly delivered files.
+\begin{description}[style=nextline]
+\item[\code{README.md}]
+\code{4fb929b5689d0bc20327e241cb775789660c8013}.
+\item[\code{synthesis/cut\_cells.tex}]
+\code{dc12b1a58aedaed78f00b63109b0aa5214832ca1}.
+\item[\code{synthesis/parallelity.tex}]
+\code{9e6698d589568dafc35d7a39df7ad6f74ee46ca0}.
+\item[\code{fast/fastunknot/normal\_parallelity.py}]
+\code{22cf15ffa11ca85e6a6c350f5d217f1649a01ea2}.
+\end{description}
+The initial part of \code{normal\_cut\_boundary.py} was also inspected, but
+its entire implementation was not audited. Code search for a Schoenflies
+reference returned no hit in the inspected repository; this is not an
+exhaustive novelty search. No claim is made to have read or rerun the many
+historical reports and archives.
+
+\subsection{Claim classes}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.31\textwidth}>{\raggedright\arraybackslash}p{.61\textwidth}@{}}
+\toprule
+Claim & Status in this delivery\\
+\midrule
+\endhead
+Integral condensation and graph rank & Proved for the stated interface
+contract; standard-library implementation and independent algebraic replay.\\
+Marked endpoint extraction & Proved and implemented downstream of the
+correct marked quotient and source paths; no native orbit invocation.\\
+Twisted exact sequence and parity formula & Proved; 700 random free-core
+checks plus deterministic torsion tests.\\
+Canonical binary torsion runs & Proved and implemented; 500 expanded
+comparisons and a 16,385-bit multiplicity case.\\
+Polynomial-time homology theorem & Proved using a polynomial integer
+normal-form algorithm; the delivered Euclidean Smith kernel is not claimed
+to have that bit bound.\\
+Boundary-only homology and sphere terminal & Classical consequences proved
+under certified $S^3$ embedding; the delivered helper does not verify the
+premise and is not a recognizer.\\
+Source geometry and diagram ancestry & Adapter contracts and proposed proof
+rules only; not implemented or authenticated in this package.\\
+Global quasi-polynomial recognition & Sufficient cost criterion and specific
+remaining questions; no complete algorithm or global bound claimed.\\
+\bottomrule
+\end{longtable}
+
+\section{Minimal executable example}
+\label{app:example}
+The following example is an algebraic saturated M\"obius attachment, not a
+knot input:
+\begin{lstlisting}[language=Python]
+from interface_homology import Core, Loop, Surface, Model
+from interface_homology import condense, verify_condensation
+from interface_homology.smith import smith, verify_smith, torsion_blocks
+
+core = Core(vertices=1, edges=((0, 0),))
+base = Surface(orientable=False, complexity=1, boundary=1,
+               circles=(Loop(anchor=0, word=(1, 1)),))
+model = Model(core, (base,))
+packet = condense(model)
+assert verify_condensation(model, packet)
+certificate = smith(packet.matrix, cols=packet.relation_count)
+assert verify_smith(packet.matrix, certificate,
+                    cols=packet.relation_count)
+free_rank = packet.rows - len(certificate.diagonal) + packet.free_bulk
+torsion = torsion_blocks(certificate.diagonal, packet.two_torsion_bulk)
+assert free_rank == 1
+assert torsion == ((2, 1),)  # Z plus one Z/2
+\end{lstlisting}
+
+The model-to-packet transition authenticates this algebraic input only.
+Changing the surrounding code comment to ``a cut of the input knot'' does
+not create the missing source evidence.
+
+\section{Counterexamples that the interface must retain}
+\label{app:counterexamples}
+
+\subsection{An identical profile can hide arbitrary circle degree}
+Let the core be a solid torus. Attach a disc bundle along its annular
+vertical boundary, using a primitive slope on the core boundary whose image
+in $H_1(K)=\Z$ is $p$ times a generator. This is the familiar solid-torus plus
+two-handle description of a punctured lens space when $p\geq2$. Its boundary
+is a sphere, but the condensation gives
+\[
+ C=(p),\qquad H_1=\Z/p.
+\]
+The base type, number of ports, and Euler characteristic do not determine
+$p$. The actual core word does. This example also shows why handle count
+alone is not a coefficient-size bound. It is not asserted to arise from
+normal cuts with one fixed small source triangulation.
+
+\subsection{Intervals can create homology with no attached circles}
+Take two contractible core components and a disc base attached by three
+intervals, two to the first component and one to the second. There are three
+graph edges, three graph vertices, and one connected component, so
+$r_\Gamma=1$. The base and core have no first homology, and $C$ is empty,
+but $H_1(X)=\Z$. Omitting the attachment graph would return zero.
+
+\subsection{Genus-zero boundary with several components is not a ball}
+The product $S^2\times I\subset S^3$ has two sphere boundary components.
+It has $H_1=0$ but $H_2=\Z$ and is not a ball. The boundary shortcut must
+retain the number of boundary components, not just their total genus.
+
+\subsection{A homology result is not a marked pattern}
+A solid torus and a nontrivial knot exterior both have boundary genus one
+and integral homology $(\Z,\Z,0,0)$. Thus the boundary shortcut does not
+recognize an unknot from its initial exterior. The further hierarchy and
+peripheral/pattern information remain necessary even when every homology
+query is cheap.
+
+\end{document}

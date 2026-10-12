@@ -1,0 +1,5561 @@
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/parallelity_port_words.py b/Topology/UnknotRecognition/fast/fastunknot/parallelity_port_words.py
+new file mode 100644
+index 0000000..ab593ec
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/parallelity_port_words.py
+@@ -0,0 +1,237 @@
++"""Cyclic attachment charts for compressed source parallelity bundles.
++
++The input surface and bundle geometry are constructed by normal_cut_parallelity.
++Two further interval-orbit queries recover boundary order, empty versus nonempty
++boundary gaps, and relative fibre orientations.  Disc products are replaced by
++small combinatorial product triangulations, preserving their attachment charts.
++This is a supplied-surface operation, not an admissible hierarchy or knot test.
++"""
++
++from .interval_orbits import IntervalPairing
++from .normal_parallelity import normal_cut_parallelity, _systems
++from .weighted_orbits import weighted_orbit_histogram
++
++
++def _port_queries(geometry, check):
++    vertex, _, _, _, _, cover, _ = _systems(geometry, check)
++    paths = list(vertex)
++    endpoints, fibres = [], []
++    polygons = geometry['polygons']
++    size = geometry['polygon_points']
++    seen = set()
++    for edge in geometry['free_edges']:
++        check()
++        polygon = polygons[edge['polygon']]
++        first, stop = edge['rank_start'], edge['rank_stop']
++        degree = len(polygon['edges'])
++        left = polygon['corner_starts'][edge['edge']] + first - 1
++        right = polygon['corner_starts'][(edge['edge'] + 1) % degree] + first - 1
++        if edge['original_boundary']:
++            paths.append(IntervalPairing(left, left + stop - first - 1,
++                                         right, right + stop - first - 1))
++            # One mark per free edge, not per endpoint.  Zero counts matter:
++            # they distinguish adjacent ports from separated attachments.
++            endpoints.append((left, left + stop - first, [0, 1]))
++        else:
++            port = edge['port']
++            if stop != first + 1 or port in seen:
++                raise ArithmeticError('a core port must be a unique singleton')
++            seen.add(port)
++            for end, point in enumerate((left, right)):
++                endpoints.append((point, point + 1, [1 << (2 * port + end), 0]))
++            point = polygon['start'] + first - 1
++            for sheet in (0, 1):
++                fibres.append((point + sheet * size, point + sheet * size + 1,
++                               [1 << (2 * port + sheet)]))
++    if seen != set(range(len(geometry['ports']))):
++        raise ArithmeticError('the source port list is incomplete')
++    return paths, endpoints, cover, fibres
++
++
++def _boundary_words(histogram, number, check):
++    matching, lengths = {}, {}
++    for row in histogram:
++        check()
++        mask, length = row['weight']
++        if not mask:
++            continue
++        if (mask < 0 or mask.bit_length() > 2 * number or mask.bit_count() != 2
++                or row['orbits'] != 1 or length < 0):
++            raise ArithmeticError('punctured boundary has an invalid endpoint profile')
++        first = (mask & -mask).bit_length() - 1
++        second = (mask ^ (1 << first)).bit_length() - 1
++        if first in matching or second in matching:
++            raise ArithmeticError('a boundary endpoint occurs in several paths')
++        matching[first], matching[second] = second, first
++        lengths[first] = lengths[second] = length
++    if set(matching) != set(range(2 * number)):
++        raise ArithmeticError('some boundary endpoints are missing')
++    words, unseen = [], set(range(number))
++    while unseen:
++        first = 2 * min(unseen)
++        endpoint, word = first, []
++        while True:
++            check()
++            port, end = divmod(endpoint, 2)
++            if port not in unseen:
++                raise ArithmeticError('the port boundary walk repeats a port')
++            unseen.remove(port)
++            word.append(dict(port=port, entry_endpoint=end,
++                             original_edges_after=lengths[endpoint ^ 1]))
++            endpoint = matching[endpoint ^ 1]
++            if endpoint == first:
++                break
++        words.append(word)
++    return words
++
++
++def _fibre_gauges(histogram, profiles, number, check):
++    masks = {}
++    for row in histogram:
++        check()
++        mask = row['weight'][0]
++        if not mask:
++            continue
++        if mask < 0 or mask.bit_length() > 2 * number or row['orbits'] != 1:
++            raise ArithmeticError('invalid marked fibre-cover component')
++        for token in range(2 * number):
++            if mask & (1 << token):
++                if token in masks:
++                    raise ArithmeticError('a fibre mark occurs in several components')
++                masks[token] = mask
++    if set(masks) != set(range(2 * number)):
++        raise ArithmeticError('some fibre marks are missing')
++    output = []
++    for profile in profiles:
++        check()
++        ports = profile['core_ports']
++        if not ports:
++            continue
++        anchor = min(ports)
++        whole = sum(3 << (2 * port) for port in ports)
++        zero, one = masks[2 * anchor], masks[2 * anchor + 1]
++        if profile['product']:
++            if zero & one or zero | one != whole:
++                raise ArithmeticError('product fibre cover has invalid sheet blocks')
++            gauges = []
++            for port in ports:
++                bits = (zero >> (2 * port)) & 3
++                if bits not in (1, 2):
++                    raise ArithmeticError('product chart has no unique fibre gauge')
++                gauges.append([port, bits - 1])
++        else:
++            if zero != whole or one != whole:
++                raise ArithmeticError('twisted fibre cover is not connected')
++            gauges = None
++        output.append(dict(core_ports=ports, product=profile['product'],
++                           anchor_port=anchor, gauges=gauges))
++    return output
++
++
++def _disc_templates(words, gauges, profiles, check):
++    """Produce a PL disc-times-interval model with exact port chart labels.
++
++    Original-boundary runs are coalesced.  Their source subdivisions are not
++    retained as marked data.  Product triangulation uses a global vertex order,
++    so adjacent triangular prisms have consistent triangulated square faces.
++    """
++    gauge_by_port = {}
++    for component in gauges:
++        if component['product']:
++            gauge_by_port.update(component['gauges'])
++    output = []
++    for profile in profiles:
++        check()
++        ports = profile['core_ports']
++        if not ports or not profile['product'] or profile['genus'] != 0:
++            continue
++        if profile['boundary_components'] != 1:
++            continue
++        relevant = [word for word in words if word[0]['port'] in ports]
++        if len(relevant) != 1 or {r['port'] for r in relevant[0]} != set(ports):
++            raise ArithmeticError('a disc product has more than one marked boundary')
++        sides = []
++        for record in relevant[0]:
++            sides.append(dict(kind='core_port', port=record['port'],
++                              entry_endpoint=record['entry_endpoint'],
++                              fibre_flip=gauge_by_port[record['port']]))
++            if record['original_edges_after']:
++                sides.append(dict(kind='original_boundary',
++                                  source_edge_count=record['original_edges_after']))
++        # At least three boundary vertices are needed for a simplicial disc.
++        # Splitting a labelled side preserves its original parameter chart.
++        pieces = max(1, 4 - len(sides))
++        first, rest = sides[0], sides[1:]
++        sides = [dict(first, parameter=[i, i + 1, pieces]) for i in range(pieces)]
++        sides.extend(dict(side, parameter=[0, 1, 1]) for side in rest)
++        boundary = len(sides)
++        triangles = [[boundary, i, (i + 1) % boundary] for i in range(boundary)]
++        vertices = boundary + 1
++        tetrahedra = []
++        for triangle in triangles:
++            a, b, c = sorted(triangle)
++            tetrahedra.extend([[a, b, c, c + vertices],
++                               [a, b, b + vertices, c + vertices],
++                               [a, a + vertices, b + vertices, c + vertices]])
++        pattern_edges = [[i + sheet * vertices,
++                          (i + 1) % boundary + sheet * vertices]
++                         for i, side in enumerate(sides)
++                         if side['kind'] == 'original_boundary' for sheet in (0, 1)]
++        output.append(dict(core_ports=ports, boundary_sides=sides,
++                           base_triangles=triangles, product_tetrahedra=tetrahedra,
++                           first_cut_pattern_edges=pattern_edges))
++    return output
++
++
++def normal_parallelity_port_words(triangulation, coordinates, *, max_cycles=None,
++                                 record_certificate=False, check=lambda: None):
++    """Recover marked boundary circles and small attached disc-product models.
++
++    The cycle cap is shared by all six source and attachment queries.  On
++    exhaustion no partial geometry, template or certificate is returned.
++    The first-cut pattern consists only of the original-boundary top/bottom
++    seams, as appropriate when the input boundary pattern was empty.
++    """
++    check()
++    source = normal_cut_parallelity(triangulation, coordinates, max_cycles=max_cycles,
++                                   record_certificate=record_certificate, check=check)
++    stats = dict(source=source['stats'])
++    result = dict(status='INCONCLUSIVE', stats=stats,
++                  trust='source-bound cyclic ports and disc-product templates; '
++                        'no admissibility, hierarchy, or knot verdict')
++    if source['status'] != 'COMPLETE':
++        return result
++    spent = sum(row['orbit_cycles'] for row in source['stats'].values())
++    remaining = None if max_cycles is None else max_cycles - spent
++    geometry = source['geometry']
++    paths, endpoint_weights, cover, fibre_weights = _port_queries(geometry, check)
++    boundary = weighted_orbit_histogram(
++        geometry['corner_points'], paths, endpoint_weights, dimension=2,
++        max_cycles=remaining, record_certificate=record_certificate, check=check)
++    stats['port_paths'] = boundary['stats']
++    if boundary['status'] != 'COMPLETE':
++        return result
++    if remaining is not None:
++        remaining -= boundary['stats']['orbit_cycles']
++    fibres = weighted_orbit_histogram(
++        2 * geometry['polygon_points'], cover, fibre_weights, dimension=1,
++        max_cycles=remaining, record_certificate=record_certificate, check=check)
++    stats['port_fibres'] = fibres['stats']
++    if fibres['status'] != 'COMPLETE':
++        return result
++    number = len(geometry['ports'])
++    profiles = source['summary']['base_profiles']
++    words = _boundary_words(boundary['histogram'], number, check)
++    gauges = _fibre_gauges(fibres['histogram'], profiles, number, check)
++    templates = _disc_templates(words, gauges, profiles, check)
++    result.update(geometry=geometry, summary=source['summary'], boundary_words=words,
++                  fibre_gauges=gauges, disc_templates=templates, status='COMPLETE')
++    if record_certificate:
++        result['certificate'] = dict(schema='parallelity-port-words-v1',
++                                     source=source['certificate'],
++                                     port_paths=boundary['certificate'],
++                                     port_fibres=fibres['certificate'],
++                                     boundary_words=words, fibre_gauges=gauges,
++                                     disc_templates=templates)
++    check()
++    return result
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/parallelity_port_words_verify.py b/Topology/UnknotRecognition/fast/fastunknot/parallelity_port_words_verify.py
+new file mode 100644
+index 0000000..6a475a9
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/parallelity_port_words_verify.py
+@@ -0,0 +1,245 @@
++"""Independent source reconstruction and replay for cyclic port certificates."""
++
++from .integer_codec import encoded_integer, certificate_equal
++from .interval_orbits import IntervalPairing
++from .normal_surface_geometry import _prepare, _coordinates
++from .normal_parallelity_reference import _reference_parallelity
++from .normal_parallelity_verify import (
++    verify_normal_cut_parallelity, _reference_queries, _reference_summary,
++)
++from .weighted_orbit_verify import verify_weighted_orbit_certificate
++
++
++def _proof_length(certificate):
++    if type(certificate) is not dict:
++        return None
++    proof = certificate.get('orbit_proof')
++    if type(proof) is not dict or type(proof.get('operations')) is not list:
++        return None
++    return len(proof['operations'])
++
++
++def _independent_queries(geometry, check):
++    vertices, _, _, _, _, fibres, _ = _reference_queries(geometry, check)
++    paths = vertices.copy()
++    path_weights, fibre_weights = [], []
++    polygons = geometry['polygons']
++    size = geometry['polygon_points']
++    for edge in geometry['free_edges']:
++        check()
++        polygon = polygons[edge['polygon']]
++        corners = polygon['corner_starts']
++        first, last = edge['rank_start'], edge['rank_stop'] - 1
++        start = corners[edge['edge']]
++        end = corners[(edge['edge'] + 1) % len(corners)]
++        if edge['original_boundary']:
++            paths.append(IntervalPairing(start + first - 1, start + last - 1,
++                                         end + first - 1, end + last - 1))
++            path_weights.append((start + first - 1, start + last, [0, 1]))
++        else:
++            port = edge['port']
++            for label, point in ((2 * port, start + first - 1),
++                                 (2 * port + 1, end + first - 1)):
++                path_weights.append((point, point + 1, [2 ** label, 0]))
++            point = polygon['start'] + first - 1
++            fibre_weights.append((point, point + 1, [2 ** (2 * port)]))
++            fibre_weights.append((point + size, point + size + 1,
++                                  [2 ** (2 * port + 1)]))
++    return paths, path_weights, fibres, fibre_weights
++
++
++def _independent_words(certificate, number, check):
++    neighbours = [None] * (2 * number)
++    distances = [None] * (2 * number)
++    for record in certificate['histogram']:
++        check()
++        mask, distance = map(encoded_integer, record['weight'])
++        if mask == 0:
++            continue
++        if mask < 0 or mask.bit_length() > 2 * number or distance < 0:
++            return None
++        labels = [i for i in range(2 * number) if (mask >> i) & 1]
++        if len(labels) != 2 or encoded_integer(record['orbits']) != 1:
++            return None
++        a, b = labels
++        if neighbours[a] is not None or neighbours[b] is not None:
++            return None
++        neighbours[a], neighbours[b] = b, a
++        distances[a] = distances[b] = distance
++    if any(value is None for value in neighbours):
++        return None
++    used, result = set(), []
++    for port in range(number):
++        if port in used:
++            continue
++        walk, point = [], 2 * port
++        while point // 2 not in used:
++            check()
++            used.add(point // 2)
++            other = point + 1 if point % 2 == 0 else point - 1
++            walk.append(dict(port=point // 2, entry_endpoint=point % 2,
++                             original_edges_after=distances[other]))
++            point = neighbours[other]
++        if point != 2 * port:
++            return None
++        result.append(walk)
++    return result
++
++
++def _independent_gauges(certificate, profiles, number, check):
++    blocks, owner = [], {}
++    for record in certificate['histogram']:
++        check()
++        mask = encoded_integer(record['weight'][0])
++        if mask == 0:
++            continue
++        if (mask < 0 or mask.bit_length() > 2 * number
++                or encoded_integer(record['orbits']) != 1):
++            return None
++        block = {i for i in range(2 * number) if (mask >> i) & 1}
++        if block & owner.keys():
++            return None
++        for token in block:
++            owner[token] = len(blocks)
++        blocks.append(block)
++    if set(owner) != set(range(2 * number)):
++        return None
++    result = []
++    for profile in profiles:
++        check()
++        ports = profile['core_ports']
++        if not ports:
++            continue
++        anchor = min(ports)
++        left, right = blocks[owner[2 * anchor]], blocks[owner[2 * anchor + 1]]
++        tokens = {2 * port + sheet for port in ports for sheet in (0, 1)}
++        if profile['product']:
++            if left & right or left | right != tokens:
++                return None
++            gauges = []
++            for port in ports:
++                candidates = [sheet for sheet in (0, 1) if 2 * port + sheet in left]
++                if len(candidates) != 1:
++                    return None
++                gauges.append([port, candidates[0]])
++        else:
++            if left != tokens or right != tokens:
++                return None
++            gauges = None
++        result.append(dict(core_ports=ports, product=profile['product'],
++                           anchor_port=anchor, gauges=gauges))
++    return result
++
++
++def _independent_templates(words, gauges, profiles, check):
++    orientation = {port: bit for group in gauges if group['product']
++                   for port, bit in group['gauges']}
++    result = []
++    for profile in profiles:
++        check()
++        ports = profile['core_ports']
++        if (not ports or not profile['product'] or profile['genus'] != 0
++                or profile['boundary_components'] != 1):
++            continue
++        selected = [word for word in words if any(r['port'] in ports for r in word)]
++        if len(selected) != 1 or sorted(r['port'] for r in selected[0]) != sorted(ports):
++            return None
++        labels = []
++        for record in selected[0]:
++            labels.append(dict(kind='core_port', port=record['port'],
++                               entry_endpoint=record['entry_endpoint'],
++                               fibre_flip=orientation[record['port']]))
++            if record['original_edges_after'] > 0:
++                labels.append(dict(kind='original_boundary',
++                                   source_edge_count=record['original_edges_after']))
++        sides = []
++        for index, label in enumerate(labels):
++            subdivisions = 4 - len(labels) if index == 0 and len(labels) < 3 else 1
++            for piece in range(subdivisions):
++                sides.append(dict(label, parameter=[piece, piece + 1, subdivisions]))
++        count = len(sides)
++        triangles = [[count, index, (index + 1) % count] for index in range(count)]
++        tetrahedra = []
++        for index in range(count):
++            a, b = sorted([index, (index + 1) % count])
++            # The fan centre count has the largest base vertex label.
++            tetrahedra.append([a, b, count, 2 * count + 1])
++            tetrahedra.append([a, b, b + count + 1, 2 * count + 1])
++            tetrahedra.append([a, a + count + 1, b + count + 1, 2 * count + 1])
++        pattern = []
++        for index, side in enumerate(sides):
++            if side['kind'] == 'original_boundary':
++                pattern.append([index, (index + 1) % count])
++                pattern.append([index + count + 1, (index + 1) % count + count + 1])
++        result.append(dict(core_ports=ports, boundary_sides=sides,
++                           base_triangles=triangles, product_tetrahedra=tetrahedra,
++                           first_cut_pattern_edges=pattern))
++    return result
++
++
++def verify_parallelity_port_words(triangulation, coordinates, certificate, *,
++                                  max_operations=None, check=lambda: None):
++    """Replay all six source-bound queries and independently reconstruct outputs.
++
++    Malformed/altered certificates return False.  Cancellation exceptions from
++    check propagate.  The operation cap covers all supplied orbit-proof traces;
++    it is not a bit-operation or elapsed-time budget.
++    """
++    check()
++    if max_operations is not None and (type(max_operations) is not int
++                                       or max_operations < 0):
++        raise ValueError('max_operations must be nonnegative or None')
++    fields = {'schema', 'source', 'port_paths', 'port_fibres', 'boundary_words',
++              'fibre_gauges', 'disc_templates'}
++    if (type(certificate) is not dict or set(certificate) != fields
++            or certificate['schema'] != 'parallelity-port-words-v1'):
++        return False
++    source = certificate['source']
++    if type(source) is not dict:
++        return False
++    lengths = []
++    for field in ('vertex_selector', 'boundary_selector', 'polygon_weights', 'fibre_cover'):
++        part = source.get(field)
++        if type(part) is not dict:
++            return False
++        if field.endswith('selector'):
++            part = part.get('weighted_certificate')
++        length = _proof_length(part)
++        if length is None:
++            return False
++        lengths.append(length)
++    for field in ('port_paths', 'port_fibres'):
++        length = _proof_length(certificate[field])
++        if length is None:
++            return False
++        lengths.append(length)
++    if max_operations is not None and sum(lengths) > max_operations:
++        return False
++    if not verify_normal_cut_parallelity(triangulation, coordinates, source, check=check):
++        return False
++    prepared = _prepare(triangulation, check)
++    analysed = _coordinates(prepared, coordinates, check)
++    geometry = _reference_parallelity(prepared, analysed, check)
++    summary = _reference_summary(
++        geometry, source['vertex_selector'], source['boundary_selector'],
++        source['polygon_weights'], source['fibre_cover'],
++        analysed['euler_characteristic'], check)
++    paths, endpoint_weights, cover, fibre_weights = _independent_queries(geometry, check)
++    if not verify_weighted_orbit_certificate(
++            geometry['corner_points'], paths, endpoint_weights,
++            certificate['port_paths'], dimension=2, check=check):
++        return False
++    if not verify_weighted_orbit_certificate(
++            2 * geometry['polygon_points'], cover, fibre_weights,
++            certificate['port_fibres'], dimension=1, check=check):
++        return False
++    number = len(geometry['ports'])
++    profiles = summary['base_profiles']
++    words = _independent_words(certificate['port_paths'], number, check)
++    if words is None or not certificate_equal(certificate['boundary_words'], words):
++        return False
++    gauges = _independent_gauges(certificate['port_fibres'], profiles, number, check)
++    if gauges is None or not certificate_equal(certificate['fibre_gauges'], gauges):
++        return False
++    templates = _independent_templates(words, gauges, profiles, check)
++    return templates is not None and certificate_equal(certificate['disc_templates'], templates)
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/sector_maximal_support.py b/Topology/UnknotRecognition/fast/fastunknot/sector_maximal_support.py
+new file mode 100644
+index 0000000..e408f34
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/sector_maximal_support.py
+@@ -0,0 +1,403 @@
++"""Opt-in maximal matching support from exact primal/dual certificates.
++
++The feasibility system Ax=0, y=A^T*lambda, x,y>=0, x+y>=1 always has a
++rational solution. Its supports partition all coordinates and identify the
++maximal support of the nonnegative matching cone. A polynomial-time rational
++LP oracle would make this a polynomial preprocessing theorem. The optional
++SciPy/HiGHS proposal and SymPy rational simplex used here do NOT establish a
++polynomial worst-case bound for this implementation. Numerical proposals are
++reconstructed in exact rational subspaces and independently checked; exact
++solver output is also checked. Solver failure returns INCONCLUSIVE.
++
++No existing default is changed. The opt-in discovery adapter falls back to
++the incumbent on unproved reduction, and preserves original-sector proofs.
++Our loops honor check. Third-party LP calls honor check immediately before
++and after a call, but cannot call it during their internal solve. No result
++or cache is published before the post-solver cancellation check.
++"""
++
++from copy import deepcopy
++from fractions import Fraction
++from hashlib import sha256
++import json
++from math import gcd, isfinite, lcm
++
++from .integer_codec import json_safe
++from .normal_sector import _nullspace, _rref, _source_hash
++from .sector_matching_support import _kernel_equations, _source_constraints
++from .sector_sparse import PreparedSectorSource
++from .sector_window_basis import canonical_matching_basis
++
++
++def _input_matrix(matrix, width):
++    if type(matrix) not in (list, tuple):
++        raise ValueError('matrix must be a sequence of rational rows')
++    if width is None:
++        width = len(matrix[0]) if matrix else 0
++    if type(width) is not int or width < 0:
++        raise ValueError('invalid matrix width')
++    rows = []
++    for row in matrix:
++        if (type(row) not in (list, tuple) or len(row) != width
++                or any(type(x) not in (int, Fraction) for x in row)):
++            raise ValueError('matrix must have fixed-width exact rational rows')
++        rows.append(tuple(Fraction(x) for x in row))
++    return tuple(rows), width
++
++
++def _matrix_hash(rows, width):
++    data = [width, [[[hex(x.numerator), hex(x.denominator)] for x in row]
++                    for row in rows]]
++    return sha256(json.dumps(data, separators=(',', ':')).encode()).hexdigest()
++
++
++def _encode(values):
++    return json_safe([[Fraction(x).numerator, Fraction(x).denominator] for x in values])
++
++
++def _basis(reduced, width):
++    pivots = [next(j for j, x in enumerate(row[:width]) if x) for row in reduced]
++    result = []
++    for j in range(width):
++        if j in pivots:
++            continue
++        vector = [Fraction(i == j) for i in range(width)]
++        for p, row in zip(pivots, reduced):
++            vector[p] = -row[j]
++        result.append(tuple(vector))
++    return tuple(result)
++
++
++def _valid(rows, x, y, multipliers, check):
++    if any(a < 0 or b < 0 or a+b < 1 or a*b for a, b in zip(x, y)):
++        return False
++    for row in rows:
++        check()
++        if sum(a*b for a, b in zip(row, x)):
++            return False
++    for j, value in enumerate(y):
++        check()
++        if value != sum(a*row[j] for a, row in zip(multipliers, rows)):
++            return False
++    return True
++
++
++def _integer_vector(values):
++    values = [Fraction(x) for x in values]
++    denominator = lcm(*(x.denominator for x in values)) if values else 1
++    integers = [int(x*denominator) for x in values]
++    divisor = gcd(*integers) if integers else 0
++    return [Fraction(x // divisor) for x in integers] if divisor else values
++
++
++def _restricted_reconstruction(basis, allowed, approximate, width, check):
++    """Produce a strictly positive vector in a prescribed coordinate face.
++
++    Zero coordinates are imposed exactly before rounding any parameters.
++    The floating proposal therefore cannot certify an almost-zero matching
++    constraint. Every resulting coordinate is an exact rational combination.
++    """
++    if not allowed:
++        return [Fraction(0)]*width
++    allowed = set(allowed)
++    conditions = [[row[j] for row in basis] for j in range(width) if j not in allowed]
++    parameters = _nullspace(conditions, len(basis), check)
++    restricted = [tuple(sum(z*row[j] for z, row in zip(parameter, basis))
++                        for j in range(width)) for parameter in parameters]
++    canonical = canonical_matching_basis(restricted, width, check)
++    if not canonical:
++        return None
++    free = [next(j for j in range(width-1, -1, -1) if row[j]) for row in canonical]
++    for denominator in (1, 1000, 1000000, 2**30, None):
++        check()
++        values = [Fraction(float(approximate[j])) for j in free]
++        if denominator is not None:
++            values = [x.limit_denominator(denominator) for x in values]
++        vector = [sum(z*row[j] for z, row in zip(values, canonical)) for j in range(width)]
++        if all((value > 0 if j in allowed else value == 0)
++               for j, value in enumerate(vector)):
++            return _integer_vector(vector)
++    return None
++
++
++def _lp_data(rows, width, check):
++    # Variables are x, lambda_plus, lambda_minus, all nonnegative. y is
++    # eliminated: y=A^T(lambda_plus-lambda_minus). There is no big-M bound.
++    rank = len(rows)
++    inequalities = []
++    rhs = []
++    for j in range(width):
++        check()
++        dual = [-row[j] for row in rows] + [row[j] for row in rows]
++        inequalities.append([0]*width + dual)
++        rhs.append(0)
++        inequalities.append([-int(i == j) for i in range(width)] + dual)
++        rhs.append(-1)
++    equalities = [list(row) + [0]*(2*rank) for row in rows]
++    return [0]*(width+2*rank), inequalities, rhs, equalities, [0]*rank
++
++
++def _scipy_solve(data):
++    from scipy.optimize import linprog
++    c, a, b, eq, rhs = data
++    result = linprog(c, A_ub=[[float(x) for x in row] for row in a], b_ub=b,
++                     A_eq=[[float(x) for x in row] for row in eq] if eq else None,
++                     b_eq=rhs if eq else None, bounds=(0, None), method='highs')
++    if not result.success or result.x is None:
++        return None
++    return list(result.x)
++
++
++def _sympy_solve(data):
++    from sympy import Rational
++    from sympy.solvers.simplex import linprog
++    c, a, b, eq, rhs = data
++    convert = lambda rows: [[Rational(Fraction(x).numerator, Fraction(x).denominator)
++                             for x in row] for row in rows]
++    _, answer = linprog(c, convert(a), b, convert(eq) if eq else None,
++                       rhs if eq else None)
++    return [Fraction(int(Rational(x).p), int(Rational(x).q)) for x in answer]
++
++
++def _partition(rows, basis, width, solver, check, stats):
++    if solver not in ('auto', 'scipy', 'sympy'):
++        raise ValueError('solver must be auto, scipy or sympy')
++    check()
++    stats.update(solver_attempts=[], numerical_reconstructions=0,
++                 polynomial_solver_guarantee=False)
++    pivots = [next(j for j, x in enumerate(row) if x) for row in rows]
++
++    def finish(x, y):
++        x, y = _integer_vector(x), _integer_vector(y)
++        multipliers = [y[j] for j in pivots]
++        if _valid(rows, x, y, multipliers, check):
++            return x, y, multipliers
++        return None
++
++    if not width:
++        stats['solver'] = 'empty'
++        return [], [], []
++    if not rows or all(sum(row) == 0 for row in rows):
++        stats['solver'] = 'positive-unit-vector'
++        return finish([1]*width, [0]*width)
++    if not basis:
++        stats['solver'] = 'zero-kernel'
++        return finish([0]*width, [1]*width)
++    if len(basis) == 1:
++        vector = basis[0]
++        if all(x >= 0 for x in vector):
++            result = finish(vector, [int(x == 0) for x in vector])
++        else:
++            positive = sum(x for x in vector if x > 0)
++            negative = -sum(x for x in vector if x < 0)
++            result = finish([0]*width,
++                            [negative if x > 0 else positive if x < 0 else 1
++                             for x in vector])
++        if result is not None:
++            stats['solver'] = 'one-dimensional'
++            return result
++    data = _lp_data(rows, width, check)
++    for method in (('scipy', 'sympy') if solver == 'auto' else (solver,)):
++        check()
++        # Dependency exceptions mean no proposed witness. Caller callbacks are
++        # outside this try block and are never converted into INCONCLUSIVE.
++        try:
++            proposal = (_scipy_solve if method == 'scipy' else _sympy_solve)(data)
++        except Exception as error:
++            proposal = None
++            reason = type(error).__name__
++        else:
++            reason = 'no feasible proposal' if proposal is None else 'proposed'
++        check()
++        attempt = dict(solver=method, outcome=reason)
++        stats['solver_attempts'].append(attempt)
++        if proposal is None or len(proposal) != width+2*len(rows):
++            continue
++        if method == 'sympy':
++            x = proposal[:width]
++            multipliers = [proposal[width+j]-proposal[width+len(rows)+j]
++                           for j in range(len(rows))]
++            y = [sum(a*row[j] for a, row in zip(multipliers, rows))
++                 for j in range(width)]
++            result = finish(x, y) if _valid(rows, x, y, multipliers, check) else None
++        else:
++            if not all(isfinite(float(x)) for x in proposal):
++                attempt['outcome'] = 'nonfinite proposal'
++                continue
++            x_guess = proposal[:width]
++            multipliers = [proposal[width+j]-proposal[width+len(rows)+j]
++                           for j in range(len(rows))]
++            y_guess = [sum(float(a)*float(row[j]) for a, row in zip(multipliers, rows))
++                       for j in range(width)]
++            if not all(isfinite(value) for value in y_guess):
++                attempt['outcome'] = 'nonfinite dual proposal'
++                continue
++            keep = [j for j in range(width) if x_guess[j] > y_guess[j]]
++            x = _restricted_reconstruction(basis, keep, x_guess, width, check)
++            y = _restricted_reconstruction(rows, [j for j in range(width) if j not in keep],
++                                           y_guess, width, check)
++            stats['numerical_reconstructions'] += 1
++            result = finish(x, y) if x is not None and y is not None else None
++        if result is not None:
++            attempt['outcome'] = 'exact witness accepted'
++            stats['solver'] = method
++            return result
++        attempt['outcome'] = 'exact witness rejected'
++    return None
++
++
++def certify_nonnegative_kernel_support(matrix, *, width=None, solver='auto',
++                                       check=lambda: None, stats=None):
++    """Certify the exact maximal support of a rational nonnegative kernel.
++
++    An empty row list accepts an explicit width. Booleans and floating-point
++    input coefficients are rejected. Third-party solver output is a proposal;
++    a returned COMPLETE record always passed the independent exact checker.
++    """
++    check()
++    rows, width = _input_matrix(matrix, width)
++    if stats is None:
++        stats = {}
++    else:
++        stats.clear()
++    augmented = [list(row) + [Fraction(i == j) for j in range(len(rows))]
++                 for i, row in enumerate(rows)]
++    reduced, pivots = _rref(augmented, width, check)
++    equations = [row[:width] for row in reduced]
++    basis = _basis(reduced, width)
++    stats.update(coordinates=width, matching_rank=len(pivots), raw_dimension=len(basis))
++    solution = _partition(equations, basis, width, solver, check, stats)
++    if solution is None:
++        return dict(status='INCONCLUSIVE', reason='no exact primal-dual witness', stats=stats)
++    x, y, multipliers = solution
++    original = [sum(a*row[width+j] for a, row in zip(multipliers, reduced))
++                for j in range(len(rows))]
++    retained = [j for j, value in enumerate(x) if value]
++    proof = dict(schema='rational-kernel-maximal-support-v1',
++                 input_sha256=_matrix_hash(rows, width), primal=_encode(x), dual=_encode(y),
++                 multipliers=_encode(original), retained_indices=retained)
++    from .sector_maximal_support_verify import verify_nonnegative_kernel_support_certificate
++    if not verify_nonnegative_kernel_support_certificate(rows, proof, width=width, check=check):
++        raise ArithmeticError('independent rational support replay rejected')
++    effective = len(_nullspace([[row[j] for j in retained] for row in equations],
++                              len(retained), check))
++    stats.update(retained_coordinates=len(retained), forced_coordinates=width-len(retained),
++                 effective_dimension=effective)
++    return dict(status='COMPLETE', retained_indices=retained, certificate=proof, stats=stats)
++
++
++def _certify_kernel(kernel, solver, check, stats):
++    width = len(kernel.support)
++    equations = _kernel_equations(kernel.basis, width, check)
++    stats.update(coordinates=width, raw_dimension=len(kernel.basis),
++                 matching_rank=len(equations))
++    solution = _partition(equations, kernel.basis, width, solver, check, stats)
++    if solution is None:
++        return dict(status='INCONCLUSIVE', reason='no exact primal-dual witness', stats=stats)
++    x, y, multipliers = solution
++    coordinates = kernel.lift([int(value) for value in x], check)
++    retained = [j for j, value in enumerate(x) if value]
++    combination = []
++    if any(y):
++        augmented = _source_constraints(kernel.prepared, kernel.support, check)
++        if [row[:width] for row in augmented] != equations:
++            raise ArithmeticError('source provenance disagrees with matching constraints')
++        for j in range(len(kernel.prepared['matching'])):
++            check()
++            value = sum(a*row[width+j] for a, row in zip(multipliers, augmented))
++            if value:
++                combination.append([j, value.numerator, value.denominator])
++    proof = json_safe(dict(schema='normal-sector-maximal-support-v1',
++        source_sha256=_source_hash(kernel.triangulation),
++        allowed_types=[list(x) for x in kernel.support],
++        primal_coordinates=coordinates, row_combination=combination,
++        retained_indices=retained))
++    from .sector_maximal_support_verify import verify_maximal_support_certificate
++    if not verify_maximal_support_certificate(kernel.triangulation, kernel.support,
++                                               proof, check=check):
++        raise ArithmeticError('independent source support replay rejected')
++    effective = len(_nullspace([[row[j] for j in retained] for row in equations],
++                              len(retained), check))
++    stats.update(retained_coordinates=len(retained), forced_coordinates=width-len(retained),
++                 effective_dimension=effective)
++    return dict(status='COMPLETE', retained_indices=retained, certificate=proof, stats=stats)
++
++
++def _source(triangulation, source, check):
++    check()
++    if source is None:
++        return PreparedSectorSource(triangulation, check=check)
++    if source.source_sha256 != _source_hash(triangulation):
++        raise ValueError('prepared source does not match triangulation')
++    return source
++
++
++def certify_maximal_support(triangulation, allowed_types, *, source=None, solver='auto',
++                            check=lambda: None, stats=None):
++    """Return maximal source support with an independent primal/dual proof."""
++    source = _source(triangulation, source, check)
++    kernel = source.build(allowed_types, check=check)
++    if stats is None:
++        stats = {}
++    else:
++        stats.clear()
++    return _certify_kernel(kernel, solver, check, stats)
++
++
++def discover_in_maximal_support_sector(triangulation, allowed_types, *, source=None,
++        solver='auto', phase='standard', method='auto', max_bases=None,
++        max_orbit_cycles=None, check=lambda: None):
++    """Opt-in discovery with complete support reduction and incumbent fallback.
++
++    A successful maximal-support certificate is separate from the discovery
++    proof. The latter retains the original allowed support and is accepted by
++    the existing independent witness/exhaustion verifiers. Solver failure is
++    a fallback, not a deletion. This source-sector API proves no diagram-wide
++    absence or new global recognition complexity bound.
++    """
++    if phase not in ('standard', 'quadrilateral'):
++        raise ValueError('unknown search phase')
++    if method not in ('auto', 'arrangement', 'supports', 'envelope', 'planar'):
++        raise ValueError('unknown ray method')
++    if phase == 'quadrilateral' and method in ('supports', 'envelope', 'planar'):
++        raise ValueError('this method requires the standard phase')
++    for value in (max_bases, max_orbit_cycles):
++        if value is not None and (type(value) is not int or value < 0):
++            raise ValueError('allowances must be nonnegative integers or None')
++    source = _source(triangulation, source, check)
++    kernel = source.build(allowed_types, check=check)
++    reduction = _certify_kernel(kernel, solver, check, {})
++    from .normal_sector import _discover_in_kernel
++    if reduction['status'] != 'COMPLETE':
++        answer = _discover_in_kernel(kernel, phase=phase, method=method, max_bases=max_bases,
++                                    max_orbit_cycles=max_orbit_cycles, check=check)
++        answer['stats']['maximal_support'] = reduction['stats']
++        return answer
++    retained = reduction['retained_indices']
++    reduced = (kernel if len(retained) == len(kernel.support) else
++               source.build([kernel.support[j] for j in retained], check=check))
++    answer = _discover_in_kernel(reduced, phase=phase, method=method, max_bases=max_bases,
++                                max_orbit_cycles=max_orbit_cycles, check=check,
++                                matching_first=False)
++    proof = answer.get('certificate')
++    if proof is not None and len(retained) != len(kernel.support):
++        proof['allowed_types'] = [list(x) for x in kernel.support]
++        if proof['schema'] == 'normal-sector-exhaustion-v1':
++            if 'q_support_certificate' in proof or 'matching_support_certificate' in proof:
++                raise ArithmeticError('maximal support unexpectedly admitted further zeros')
++            for entry in proof['rays']:
++                check()
++                full = [0]*len(kernel.support)
++                for j, value in zip(retained, entry['quadrilaterals']):
++                    full[j] = value
++                entry['quadrilaterals'] = full
++            forced = [j for j in range(len(kernel.support)) if j not in retained]
++            proof['matching_support_certificate'] = dict(
++                schema='normal-sector-matching-support-v1',
++                source_sha256=reduction['certificate']['source_sha256'],
++                allowed_types=deepcopy(proof['allowed_types']),
++                steps=[dict(row_combination=reduction['certificate']['row_combination'],
++                            forced_indices=forced)])
++    answer['maximal_support_certificate'] = reduction['certificate']
++    answer['stats']['maximal_support'] = reduction['stats']
++    return answer
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/sector_maximal_support_verify.py b/Topology/UnknotRecognition/fast/fastunknot/sector_maximal_support_verify.py
+new file mode 100644
+index 0000000..49ffbff
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/sector_maximal_support_verify.py
+@@ -0,0 +1,192 @@
++"""Independent exact replay of maximal nonnegative matching support.
++
++The checker uses source equations and supplied primal/dual witnesses only.
++It imports no sector builder, elimination helper, LP solver or producer.
++The deliberately shared geometry validator authenticates the supplied finite
++triangulation and the primal normal coordinates, not a knot-diagram source.
++"""
++
++from fractions import Fraction
++from hashlib import sha256
++import json
++from math import gcd
++
++from .integer_codec import encoded_integer
++from .normal_surface_geometry import _prepare, _coordinates, NormalOrbitError
++
++
++def _fraction(value):
++    if type(value) is not list or len(value) != 2:
++        raise ValueError('expected a rational numerator/denominator pair')
++    numerator, denominator = (encoded_integer(x) for x in value)
++    if denominator <= 0 or gcd(numerator, denominator) != 1:
++        raise ValueError('rational must be reduced with positive denominator')
++    return Fraction(numerator, denominator)
++
++
++def _matrix(matrix, width):
++    if type(matrix) not in (list, tuple):
++        raise ValueError('matrix must be a sequence of rational rows')
++    if width is None:
++        width = len(matrix[0]) if matrix else 0
++    if type(width) is not int or width < 0:
++        raise ValueError('invalid matrix width')
++    rows = []
++    for row in matrix:
++        if type(row) not in (list, tuple) or len(row) != width:
++            raise ValueError('matrix row width mismatch')
++        if any(type(x) not in (int, Fraction) for x in row):
++            raise ValueError('matrix coefficients must be integers or Fractions')
++        rows.append(tuple(Fraction(x) for x in row))
++    return tuple(rows), width
++
++
++def _matrix_digest(rows, width):
++    # Hexadecimal strings avoid the interpreter's decimal big-integer limit.
++    data = [width, [[[hex(x.numerator), hex(x.denominator)] for x in row]
++                    for row in rows]]
++    return sha256(json.dumps(data, separators=(',', ':')).encode()).hexdigest()
++
++
++def verify_nonnegative_kernel_support_certificate(matrix, certificate, *,
++                                                  width=None, check=lambda: None):
++    """Verify the complete support of {x >= 0: matrix*x = 0}.
++
++    The certificate checks Ax=0, y=A^T*lambda, x,y>=0 and x+y>=1.
++    Orthogonality then makes the two supports a partition of the coordinates.
++    Source row order is authenticated; a reordered matrix needs a new proof.
++    Callback exceptions propagate instead of being interpreted as rejection.
++    """
++    check()
++    try:
++        rows, width = _matrix(matrix, width)
++    except (ValueError, TypeError):
++        return False
++    if (type(certificate) is not dict
++            or certificate.get('schema') != 'rational-kernel-maximal-support-v1'
++            or certificate.get('input_sha256') != _matrix_digest(rows, width)):
++        return False
++    try:
++        primal = [_fraction(x) for x in certificate['primal']]
++        dual = [_fraction(x) for x in certificate['dual']]
++        multipliers = [_fraction(x) for x in certificate['multipliers']]
++        retained = certificate['retained_indices']
++    except (KeyError, TypeError, ValueError):
++        return False
++    if (len(primal) != width or len(dual) != width
++            or len(multipliers) != len(rows) or type(retained) is not list
++            or any(type(i) is not int for i in retained)):
++        return False
++    for row in rows:
++        check()
++        if sum(a*x for a, x in zip(row, primal)):
++            return False
++    for j, (x, y) in enumerate(zip(primal, dual)):
++        check()
++        if (x < 0 or y < 0 or x+y < 1 or x*y
++                or sum(a*row[j] for a, row in zip(multipliers, rows)) != y):
++            return False
++    return retained == [j for j, x in enumerate(primal) if x > 0]
++
++
++def _allowed(value, count, *, canonical):
++    if type(value) not in (list, tuple):
++        raise ValueError('allowed types must be a sequence')
++    result = []
++    for pair in value:
++        if (type(pair) not in (list, tuple) or len(pair) != 2
++                or any(type(x) is not int for x in pair)
++                or not 0 <= pair[0] < count or not 0 <= pair[1] < 3):
++            raise ValueError('invalid allowed type')
++        result.append(tuple(pair))
++    if len(set(t for t, _ in result)) != len(result):
++        raise ValueError('incompatible or repeated allowed types')
++    if canonical and result != sorted(result):
++        raise ValueError('certificate support must be sorted')
++    return sorted(result)
++
++
++def verify_maximal_support_certificate(triangulation, allowed_types, certificate, *,
++                                      check=lambda: None):
++    """Check a source-normal primal and one source-row dual consequence.
++
++    The primal is an actual integral normal vector. The dual combination must
++    cancel every triangle coefficient, be nonnegative on all allowed quad
++    types, and complement the primal quad vector with x+y>=1. Nonallowed quad
++    coefficients are unrestricted because those source coordinates are zero.
++    This licenses a maximal-support restriction, never an unknot verdict.
++    """
++    check()
++    if (type(certificate) is not dict
++            or certificate.get('schema') != 'normal-sector-maximal-support-v1'):
++        return False
++    digest = sha256(json.dumps(triangulation, sort_keys=True,
++                              separators=(',', ':')).encode()).hexdigest()
++    if certificate.get('source_sha256') != digest:
++        return False
++    callback_failed = False
++    def source_check():
++        nonlocal callback_failed
++        try:
++            check()
++        except BaseException:
++            callback_failed = True
++            raise
++    try:
++        prepared = _prepare(triangulation, source_check)
++    except NormalOrbitError:
++        if callback_failed:
++            raise
++        return False
++    try:
++        requested = _allowed(allowed_types, len(prepared['tetrahedra']), canonical=False)
++        support = _allowed(certificate['allowed_types'], len(prepared['tetrahedra']),
++                           canonical=True)
++    except (KeyError, ValueError, TypeError):
++        return False
++    if requested != support:
++        return False
++    try:
++        primal = _coordinates(prepared, certificate.get('primal_coordinates'), source_check)['rows']
++    except NormalOrbitError:
++        if callback_failed:
++            raise
++        return False
++    allowed = set(support)
++    for t, row in enumerate(primal):
++        check()
++        if any(row[4+q] and (t, q) not in allowed for q in range(3)):
++            return False
++    combination = certificate.get('row_combination')
++    retained = certificate.get('retained_indices')
++    if (type(combination) is not list or type(retained) is not list
++            or any(type(i) is not int for i in retained)):
++        return False
++    consequence = {}
++    previous = -1
++    for term in combination:
++        check()
++        if (type(term) is not list or len(term) != 3 or type(term[0]) is not int
++                or not previous < term[0] < len(prepared['matching'])):
++            return False
++        previous = term[0]
++        try:
++            weight = _fraction(term[1:])
++        except (ValueError, TypeError):
++            return False
++        if not weight:
++            return False
++        for column, value in prepared['matching'][term[0]].items():
++            consequence[column] = consequence.get(column, 0) + weight*value
++    if any(value for column, value in consequence.items() if column % 7 < 4):
++        return False
++    positive = []
++    for j, (t, q) in enumerate(support):
++        check()
++        x = primal[t][4+q]
++        y = consequence.get(7*t+4+q, 0)
++        if y < 0 or x+y < 1 or x*y:
++            return False
++        if x:
++            positive.append(j)
++    return retained == positive
+diff --git a/Topology/UnknotRecognition/fast/maximal_support_README.md b/Topology/UnknotRecognition/fast/maximal_support_README.md
+new file mode 100644
+index 0000000..a2dc4fd
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/maximal_support_README.md
+@@ -0,0 +1,209 @@
++# Exact maximal support before normal-sector enumeration
++
++This optional module identifies every quadrilateral coordinate that is zero
++throughout a supplied compatible matching cone. It returns a complete support
++certificate when successful. Existing default recognition and sector-discovery
++behavior is unchanged.
++
++## Mathematical contract
++
++For an exact rational matrix `A`, consider `C = {x >= 0 : A x = 0}`. The
++certificate consists of rational vectors `x`, `y`, and `lambda` satisfying
++
++\[
++Ax=0,\qquad y=A^T\lambda,\qquad x,y\ge0,\qquad x+y\ge\mathbf1.
++\]
++
++Because `x` and `y` are orthogonal, their supports partition the coordinates.
++Every feasible vector vanishes on the support of `y`, and the supplied `x`
++simultaneously witnesses every coordinate in the complementary support. Thus
++the retained support is maximal, not merely a sound subset of coordinate-zero
++implications.
++
++The feasibility system has no guessed coefficient bound or big-M constant.
++Splitting `lambda` into positive and negative parts makes it an ordinary LP.
++Existence follows from the coordinate alternatives for a rational subspace and
++its orthogonal complement. After restricting to retained coordinates, `x` is
++strictly positive, so the matching nullspace equals the span of the feasible
++cone. This is the dimension relevant to subsequent ray enumeration.
++
++## APIs
++
++From `Topology/UnknotRecognition/fast/`:
++
++```python
++from fastunknot.sector_maximal_support import (
++    certify_nonnegative_kernel_support,
++    certify_maximal_support,
++    discover_in_maximal_support_sector,
++)
++from fastunknot.sector_maximal_support_verify import (
++    verify_nonnegative_kernel_support_certificate,
++    verify_maximal_support_certificate,
++)
++
++result = certify_nonnegative_kernel_support([[1, 1, 0]])
++assert result["status"] == "COMPLETE"
++assert result["retained_indices"] == [2]
++assert verify_nonnegative_kernel_support_certificate(
++    [[1, 1, 0]], result["certificate"]
++)
++
++# `triangulation` and `allowed_types` use the existing source-sector formats.
++support = certify_maximal_support(triangulation, allowed_types)
++if support["status"] == "COMPLETE":
++    assert verify_maximal_support_certificate(
++        triangulation, allowed_types, support["certificate"]
++    )
++
++answer = discover_in_maximal_support_sector(
++    triangulation, allowed_types, phase="standard", max_bases=1000
++)
++```
++
++The generic input matrix accepts only integers and `fractions.Fraction`
++coefficients. For a matrix with no rows, use `width=k` to specify its width.
++Returned supports are indices in the original column order. Source supports
++are canonically sorted by tetrahedron/type, just as in the existing builder.
++
++`certify_maximal_support` accepts an optional reusable `PreparedSectorSource`
++through `source=`. Its existing read-only-source contract applies. The source
++hash must match the requested triangulation. The certificate producer still
++pays for independent source replay before returning success.
++
++## Solver behavior and complexity limits
++
++`solver="auto"` first asks optional SciPy/HiGHS for a floating-point proposal.
++It infers a possible support partition, imposes its zero coordinates in exact
++rational subspaces, reconstructs positive primal and dual vectors there, and
++checks all equations and signs exactly. A tolerance or solver success flag is
++never accepted as a proof.
++
++If that path does not yield an exact witness, the optional SymPy rational
++simplex is tried. Its output is independently checked as well. Set
++`solver="scipy"` or `solver="sympy"` to use only one backend. Elementary empty,
++zero-kernel, positive-unit-vector and one-dimensional cases need no LP backend.
++Dependencies are imported only when required.
++
++Missing dependencies, a rejected numerical proposal, or solver failure yields
++`INCONCLUSIVE` without a support certificate. The opt-in discovery wrapper
++then resumes the existing complete discovery path on the original sector. It
++never deletes a coordinate on the basis of a failed solve.
++
++**The implementation does not establish a polynomial worst-case bound for its
++LP backends.** The mathematical polynomial-preprocessing theorem requires a
++polynomial-time rational LP algorithm. HiGHS and SymPy's simplex are practical
++search backends here; exact verification guarantees correctness of accepted
++results, not a polynomial search bound. Neither this local theorem nor the
++implementation supplies a complete quasi-polynomial family of unknot sectors.
++
++The `check` callback runs throughout this module's own algebra, rebuilding,
++and replay, including callbacks with a false Boolean value. Third-party LP
++calls cannot invoke it internally: it is called immediately before and after
++each solve. A callback raised after a solve prevents publication of any result.
++There is no hard wall-time or simplex-iteration allowance in this interface.
++Applications requiring such an external deadline should isolate the entire
++query in a cancellable worker process. Existing `max_bases` and
++`max_orbit_cycles` in the discovery adapter retain their established meanings;
++they do not count LP arithmetic.
++
++## Independent certificates and original-sector scope
++
++`rational-kernel-maximal-support-v1` stores an input matrix digest, rational
++primal/dual vectors, original-row multipliers, and the retained index list.
++The checker performs only exact products, comparisons, and digest checks. It
++imports neither elimination nor a producer or solver. Reordering matrix rows
++requires reissued multiplier provenance and a new digest.
++
++`normal-sector-maximal-support-v1` stores a source triangulation digest, the
++original allowed support, an actual integral normal vector, one rational
++combination of source matching rows, and the retained indices. The checker
++validates the primal coordinates directly on the source. The dual combination
++must cancel every triangle coefficient and satisfy the complementary support
++conditions on all allowed quad types. Coefficients on nonallowed types are
++unrestricted because those coordinates are zero in the requested sector.
++The checker shares only the existing geometry validator and integer codec;
++it imports no sector contraction, potential builder, nullspace routine or LP.
++
++This proves maximal quadrilateral support. When the retained support is empty,
++the standard normal cone can still contain pure vertex links; the conclusion
++concerns non-link rays. No support certificate by itself asserts an essential
++disk, an authenticated diagram exterior, or unknotness.
++
++The discovery wrapper restores original coordinate widths in exhaustion
++proofs and compiles the dual consequence into the already-supported
++`normal-sector-matching-support-v1` annotation. Ordinary positive witnesses
++also retain the original allowed list. The existing independent
++`verify_sector_witness` and `verify_sector_exhaustion` accept these discovery
++proofs unchanged. The separate full support certificate appears as
++`answer["maximal_support_certificate"]`, including when later ray discovery is
++capped and returns `INCONCLUSIVE`.
++
++## Reproduction and evidence
++
++```bash
++python -m pytest tests/test_sector_maximal_support.py -q
++python maximal_support_research.py --output maximal_support_results.json --repeats 3
++python maximal_support_geometric_search.py \
++  --output maximal_support_geometric_search.json --seconds 180 --sectors 128
++python maximal_support_benchmark.py \
++  --output maximal_support_final_benchmark.json --repeats 9
++```
++
++The first research script uses the existing
++`../reports/57/results/discovery_corpus.json`. Its abstract family is
++
++\[
++p_i+z_i-z_{i+1\pmod m}=0\quad(0\le i<m),
++\]
++
++with optional extra free variables. A nonzero nonnegative row-space vector
++requires all `m` RREF rows, so every one-/two-row propagation rule misses its
++forced `p` coordinates for `m >= 3`. Maximal-support certification reduces raw
++dimension `m+s-1` to feasible dimension `s`. These are abstract rational cones;
++the script makes no claim that this entire family is realized by normal
++matching equations of knot exteriors.
++
++The maintained real-source corpus audit checks all 188 selected sectors with
++raw dimension above three against its archived complete standard vertices.
++The initial run agreed in every case and reduced dimension in 24 cases, but
++found no extra zeros beyond the incumbent two-row closure. Its five pilot
++complete-query timing comparisons were slower with the new opt-in stage.
++The three-repeat pilot is evidence about overhead, not a robust speed claim.
++
++The second script performs a separate bounded search in larger layered,
++capped, and Pachner-modified solid tori, preserving its seed, actual source
++pairings, sampled supports, and any discovered counterexample to pair closure.
++The initial fixed-row search found a genuine 36-tetrahedron fixture after
++2,187 sectors. One incumbent pass forced 22 coordinates; the complete support
++proof forces 23. However, both reduced kernels have matching dimension five,
++and rerunning pair closure after recompilation finds the remaining zero.
++The preserved fixture and its regression test explicitly check this limit.
++
++With `--iterate-incumbent`, the script repeats RREF and pair closure after
++each restriction before comparing against the complete LP. A second search
++completed all 4,864 scheduled sectors in 38 sources, including raw dimensions
++up to ten, and found no additional zero missed by that iterated procedure.
++This is a negative bounded experiment, not a completeness theorem for
++iterated pair closure on normal matching systems. The abstract cyclic
++obstruction remains a proof that such completeness fails for general rational
++matrices, even when the initial matrix is already in RREF and no first
++coordinate can be removed.
++
++The final isolated benchmark uses nine paired repetitions with shuffled arm
++order, both fresh and shared prepared sources, and an identical-incumbent
++control. On the preserved 36-tetrahedron example, the median paired new/old
++time ratios were **0.604** with fresh preparation and **0.573** with a shared
++prepared source; the identical-code control ratio was **1.002**. Both methods
++began 1,835 candidate bases and processed the same 31 combined Q/standard ray
++records. This is a measured reduction of complete query cost without a
++matching-dimension or enumeration-exponent improvement on that fixture.
++All five smaller maintained-source cases had paired ratios above one. Their
++millisecond timings also showed more variability in identical-code controls.
++
++The benchmark JSON retains every raw sample, paired ratio, ratio of medians,
++trial order and source identity. The median of paired ratios need not equal
++the quotient of the two timing medians. Extra independent full-exhaustion
++replay after the timed trials is explicitly excluded; verification performed
++inside each queried API remains included. These results support keeping the
++LP stage opt-in and do not recommend changing the default policy.
+diff --git a/Topology/UnknotRecognition/fast/maximal_support_benchmark.py b/Topology/UnknotRecognition/fast/maximal_support_benchmark.py
+new file mode 100644
+index 0000000..a122cb8
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/maximal_support_benchmark.py
+@@ -0,0 +1,110 @@
++"""Isolated paired complete-query timings with an identical-code control.
++
++Run only while other research workers are idle. Each case has fresh-source,
++shared-prepared-source, and identical-incumbent control arms. A fixed seed
++shuffles arm order within each paired repetition. Solver imports are warm.
++Independent exhaustion replay after the trials is outside their timed region;
++all verification performed by the actual queried APIs remains inside it.
++"""
++
++import argparse
++from importlib.metadata import version
++import json
++from pathlib import Path
++import platform
++import random
++from statistics import median
++from time import perf_counter
++
++from fastunknot.normal_sector import _discover_in_kernel, discover_in_sector
++from fastunknot.normal_sector_verify import verify_sector_exhaustion, verify_sector_witness
++from fastunknot.sector_maximal_support import discover_in_maximal_support_sector
++from fastunknot.sector_sparse import PreparedSectorSource
++
++
++def cases(bank, fixture):
++    by_id = {record['id']: record for record in bank['records']}
++    simple = [
++        ('cap_3_5_2', [(0, 0), (1, 1), (2, 2), (3, 0), (4, 1)]),
++        ('cap_3_5_3', [(0, 0), (1, 1), (2, 2), (3, 0), (4, 2), (5, 2)]),
++        ('cap_1_2_3', [(t, 0) for t in range(4)]),
++        ('fibonacci_lst_09', [(t, (0, 2, 1)[t % 3]) for t in range(9)]),
++        ('fibonacci_lst_09_meridian', [(t, 2) for t in range(9)]),
++    ]
++    for name, support in simple:
++        key = 'fibonacci_lst_09' if name.endswith('_meridian') else name
++        yield name, by_id[key]['triangulation'], support
++    yield 'pachner_36_fixed_row_miss', fixture['specification']['triangulation'], fixture['allowed_types']
++
++
++def run_case(name, raw, support, repeats, seed):
++    source = PreparedSectorSource(raw)
++    old_shared = lambda: _discover_in_kernel(source.build(support), phase='standard')
++    new_shared = lambda: discover_in_maximal_support_sector(raw, support, source=source)
++    modes = [
++        ('fresh-source', lambda: discover_in_sector(raw, support, phase='standard'),
++                         lambda: discover_in_maximal_support_sector(raw, support)),
++        ('prepared-source', old_shared, new_shared),
++        ('identical-incumbent-control', old_shared, old_shared),
++    ]
++    records = []
++    for mode, left, right in modes:
++        left(); right()
++        rng = random.Random(seed+':'+name+':'+mode)
++        operations = [left, right]
++        times = [[], []]
++        answers = [None, None]
++        orders = []
++        for repetition in range(repeats):
++            order = [0, 1]
++            rng.shuffle(order)
++            orders.append(order)
++            for arm in order:
++                started = perf_counter()
++                answers[arm] = operations[arm]()
++                times[arm].append(perf_counter()-started)
++        assert answers[0]['status'] == answers[1]['status']
++        for answer in answers:
++            verifier = verify_sector_witness if answer['status'] == 'DISC_FOUND' else verify_sector_exhaustion
++            assert verifier(raw, answer['certificate'])
++        if mode == 'identical-incumbent-control':
++            assert answers[0]['certificate'] == answers[1]['certificate']
++        paired = [b/a for a, b in zip(*times)]
++        records.append(dict(mode=mode, order=orders, left_seconds=times[0], right_seconds=times[1],
++            paired_ratios=paired, median_paired_ratio=median(paired),
++            ratio_of_medians=median(times[1])/median(times[0]),
++            left_median_seconds=median(times[0]), right_median_seconds=median(times[1]),
++            status=answers[1]['status'], left_stats=answers[0]['stats'], right_stats=answers[1]['stats']))
++        print(json.dumps(dict(case=name, mode=mode, ratio=records[-1]['median_paired_ratio'])), flush=True)
++    return dict(name=name, support=support, tetrahedra=len(raw['tetrahedra']),
++                source_sha256=source.source_sha256, measurements=records)
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--output', type=Path, required=True)
++    parser.add_argument('--repeats', type=int, default=9)
++    parser.add_argument('--seed', default='maximal-support-final-20261012')
++    parser.add_argument('--bank', type=Path,
++                        default=Path(__file__).resolve().parents[1]/'reports/57/results/discovery_corpus.json')
++    parser.add_argument('--fixture', type=Path,
++                        default=Path(__file__).resolve().parent/'tests/fixtures/maximal_support_pachner_36.json')
++    args = parser.parse_args()
++    if args.repeats < 7:
++        parser.error('final benchmark requires at least seven paired repetitions')
++    bank = json.loads(args.bank.read_text())
++    fixture = json.loads(args.fixture.read_text())
++    result = dict(schema='maximal-support-paired-benchmark-v1', repeats=args.repeats,
++        seed=args.seed, python=platform.python_version(), platform=platform.platform(),
++        dependencies={name: version(name) for name in ('scipy', 'sympy')},
++        timing_scope='warm imports; complete calls; external final exhaustion replay excluded',
++        source_scope='supplied sectors, not full knot-diagram recognition',
++        cases=[])
++    for name, raw, support in cases(bank, fixture):
++        result['cases'].append(run_case(name, raw, support, args.repeats, args.seed))
++    args.output.parent.mkdir(parents=True, exist_ok=True)
++    args.output.write_text(json.dumps(result, indent=2)+'\n')
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/Topology/UnknotRecognition/fast/maximal_support_geometric_search.py b/Topology/UnknotRecognition/fast/maximal_support_geometric_search.py
+new file mode 100644
+index 0000000..65b7e21
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/maximal_support_geometric_search.py
+@@ -0,0 +1,159 @@
++"""Bounded reproducible search for source zeros missed by two-row closure.
++
++Optional Regina generates larger genuine solid-torus triangulations. Every
++accepted example is independently checked from exported source matching data.
++The search records seeds, actual moves, source face pairings and tested type
++assignments. Absence within this bounded sample is only a negative experiment.
++"""
++
++import argparse
++from collections import Counter
++from copy import deepcopy
++import json
++from pathlib import Path
++import random
++from time import perf_counter
++
++from fastunknot.normal_sector import _nullspace
++from fastunknot.sector_matching_support import _combined_closure, _kernel_equations
++from fastunknot.sector_maximal_support import certify_nonnegative_kernel_support, certify_maximal_support
++from fastunknot.sector_sparse import PreparedSectorSource
++from normal_orbit_research.fixtures import (
++    boundary_cap, export_triangulation, layered_torus, regina_triangulation,
++)
++
++
++def source_family(rng):
++    import regina
++    for size in (12, 20, 32):
++        raw, coordinates = layered_torus(size)
++        yield dict(kind='fibonacci', size=size, triangulation=raw)
++        for _ in range(4):
++            raw, coordinates = boundary_cap(raw, coordinates)
++        yield dict(kind='fibonacci-plus-four-caps', size=size,
++                   triangulation=raw)
++    for chain in range(8):
++        raw, _ = layered_torus(2+chain % 3)
++        tri = regina_triangulation(raw)
++        moves = []
++        for target in (12, 20, 28, 36):
++            attempts = 0
++            while tri.size() < target:
++                if attempts > 20*target or rng.randrange(12) == 0:
++                    index = rng.randrange(tri.size())
++                    assert tri.pachner(tri.tetrahedron(index))
++                    moves.append(['14', index])
++                else:
++                    index = rng.randrange(tri.countTriangles())
++                    if tri.pachner(tri.triangle(index)):
++                        moves.append(['23', index])
++                attempts += 1
++            yield dict(kind='pachner-chain', chain=chain, initial_tetrahedra=2+chain % 3,
++                       target=target, moves=deepcopy(moves), isosig=tri.isoSig(),
++                       triangulation=export_triangulation(tri))
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--output', type=Path, required=True)
++    parser.add_argument('--seed', default='maximal-support-geometric-20261012')
++    parser.add_argument('--seconds', type=float, default=180)
++    parser.add_argument('--sectors', type=int, default=128)
++    parser.add_argument('--minimum-dimension', type=int, default=4)
++    parser.add_argument('--iterate-incumbent', action='store_true',
++                        help='also re-RREF and repeat pair closure after each coordinate restriction')
++    args = parser.parse_args()
++    if args.seconds <= 0 or args.sectors <= 0 or args.minimum_dimension < 1:
++        parser.error('budgets and minimum dimension must be positive')
++    import regina
++    rng = random.Random(args.seed)
++    start = perf_counter()
++    result = dict(schema='maximal-support-geometric-search-v1', seed=args.seed,
++        regina=regina.versionString(), seconds_limit=args.seconds,
++        sectors_per_source=args.sectors, minimum_dimension=args.minimum_dimension,
++        iterate_incumbent=args.iterate_incumbent,
++        sources=[], queries=[], found=None)
++    dimensions = Counter()
++    tested = easy = proposals = 0
++    stop = False
++    for specification in source_family(rng):
++        if perf_counter()-start >= args.seconds:
++            break
++        index = len(result['sources'])
++        result['sources'].append(specification)
++        raw = specification['triangulation']
++        source = PreparedSectorSource(raw)
++        count = len(raw['tetrahedra'])
++        for sample in range(args.sectors):
++            if perf_counter()-start >= args.seconds:
++                stop = True
++                break
++            signature = [rng.randrange(3) for _ in range(count)]
++            support = list(enumerate(signature))
++            kernel = source.build(support)
++            dimension = len(kernel.basis)
++            dimensions[dimension] += 1
++            tested += 1
++            if dimension < args.minimum_dimension:
++                continue
++            rows = _kernel_equations(kernel.basis, count, lambda: None)
++            forced, _ = _combined_closure(rows, lambda: None)
++            keep = [j for j in range(count) if j not in forced]
++            first_forced = len(forced)
++            rounds = 1
++            if args.iterate_incumbent:
++                while keep:
++                    restricted_rows = [[row[j] for j in keep] for row in rows]
++                    restricted_basis = _nullspace(restricted_rows, len(keep))
++                    new_rows = _kernel_equations(restricted_basis, len(keep), lambda: None)
++                    extra, _ = _combined_closure(new_rows, lambda: None)
++                    if not extra:
++                        break
++                    keep = [j for i, j in enumerate(keep) if i not in extra]
++                    rounds += 1
++                forced = set(range(count))-set(keep)
++            reduced = [[row[j] for j in keep] for row in rows]
++            basis = _nullspace(reduced, len(keep))
++            candidate = [sum(row[j] for row in basis) for j in range(len(keep))]
++            if not keep or all(x > 0 for x in candidate):
++                easy += 1
++                result['queries'].append(dict(source=index, sample=sample, signature=signature,
++                    raw_dimension=dimension, incumbent_forced=len(forced),
++                    incumbent_first_pass_forced=first_forced, incumbent_rounds=rounds,
++                    complete_by='empty or exact positive sum of restricted kernel basis'))
++                continue
++            proposals += 1
++            complete = certify_nonnegative_kernel_support(rows, width=count, solver='scipy')
++            query = dict(source=index, sample=sample, signature=signature,
++                         raw_dimension=dimension, incumbent_forced=len(forced),
++                         incumbent_first_pass_forced=first_forced, incumbent_rounds=rounds,
++                         exact_status=complete['status'])
++            if complete['status'] == 'COMPLETE':
++                exact = complete['retained_indices']
++                extra = sorted(set(keep)-set(exact))
++                query.update(exact_retained=exact, extra_forced=extra,
++                             effective_dimension=complete['stats']['effective_dimension'])
++                if extra:
++                    source_proof = certify_maximal_support(raw, support, source=source)
++                    assert source_proof['status'] == 'COMPLETE'
++                    assert source_proof['retained_indices'] == exact
++                    result['found'] = dict(query=query, specification=specification,
++                                          allowed_types=support, result=source_proof)
++                    stop = True
++            result['queries'].append(query)
++            if stop:
++                break
++        if stop:
++            break
++    result.update(elapsed_seconds=perf_counter()-start, sectors_tested=tested,
++                  easy_exact_supports=easy, LP_proposals=proposals,
++                  raw_dimension_histogram=dict(sorted(dimensions.items())))
++    args.output.parent.mkdir(parents=True, exist_ok=True)
++    args.output.write_text(json.dumps(result, indent=2)+'\n')
++    print(json.dumps({key: result[key] for key in ('elapsed_seconds', 'sectors_tested',
++            'easy_exact_supports', 'LP_proposals', 'raw_dimension_histogram')}))
++    print('FOUND' if result['found'] is not None else 'NO EXAMPLE IN THIS BOUNDED SAMPLE')
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/Topology/UnknotRecognition/fast/maximal_support_research.py b/Topology/UnknotRecognition/fast/maximal_support_research.py
+new file mode 100644
+index 0000000..d82990a
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/maximal_support_research.py
+@@ -0,0 +1,205 @@
++"""Reproduce maximal-support algebraic and actual-source audits.
++
++Run from fast/: python maximal_support_research.py --output RESULTS.json
++The cyclic family is an abstract rational cone, not a claimed realization
++as normal matching data. Actual-source audits use the maintained report-57
++complete vertex corpus. Timings include exact reconstruction and replay.
++Neither timing ratios nor the simplex backends prove polynomial worst-case
++running time. The old sufficient reducer has a weaker output contract.
++"""
++
++import argparse
++from itertools import combinations, product
++import json
++from math import comb
++from pathlib import Path
++import platform
++import random
++from statistics import median
++from time import perf_counter
++
++from fastunknot.normal_sector import build_sector_kernel, discover_in_sector
++from fastunknot.normal_sector_verify import verify_sector_exhaustion, verify_sector_witness
++from fastunknot.sector_matching_support import _combined_closure, matching_support
++from fastunknot.sector_maximal_support import (
++    certify_nonnegative_kernel_support, certify_maximal_support,
++    discover_in_maximal_support_sector,
++)
++from fastunknot.sector_maximal_support_verify import (
++    verify_nonnegative_kernel_support_certificate, verify_maximal_support_certificate,
++)
++from fastunknot.sector_sparse import PreparedSectorSource
++
++
++def cyclic_matrix(m, effective):
++    return [[int(i == j) for j in range(m)]
++            + [int(i == j)-int((i+1) % m == j) for j in range(m)]
++            + [0]*(effective-1) for i in range(m)]
++
++
++def samples(operation, repeats):
++    result = None
++    elapsed = []
++    for _ in range(repeats):
++        start = perf_counter()
++        result = operation()
++        elapsed.append(perf_counter()-start)
++    return result, elapsed
++
++
++def matrix_audit(sizes, repeats):
++    records = []
++    # Warm optional imports separately. Published per-query timing does not
++    # include Python/SciPy import startup; every exact query cost is included.
++    certify_nonnegative_kernel_support(cyclic_matrix(3, 1))
++    for m in sizes:
++        for effective in (1, 3):
++            matrix = cyclic_matrix(m, effective)
++            closure, old_times = samples(lambda: _combined_closure(matrix, lambda: None), repeats)
++            result, new_times = samples(lambda: certify_nonnegative_kernel_support(matrix), repeats)
++            assert closure == (set(), [])
++            assert result['status'] == 'COMPLETE'
++            assert result['retained_indices'] == list(range(m, 2*m+effective-1))
++            assert result['stats']['effective_dimension'] == effective
++            proof = result['certificate']
++            replay, replay_times = samples(
++                lambda: verify_nonnegative_kernel_support_certificate(matrix, proof), repeats)
++            assert replay
++            raw_dimension = m+effective-1
++            records.append(dict(m=m, coordinates=2*m+effective-1,
++                raw_dimension=raw_dimension, effective_dimension=effective,
++                pair_closure_forced=0, exact_forced=m,
++                raw_coordinate_arrangement_bases=str(comb(2*m+effective-1, raw_dimension-1)),
++                effective_distinct_Q_hyperplanes=effective, exact_Q_rays=effective,
++                pair_closure_seconds=old_times, certifier_seconds=new_times,
++                replay_seconds=replay_times, stats=result['stats'], certificate=proof))
++    return records
++
++
++def source_supports(record):
++    count = len(record['triangulation']['tetrahedra'])
++    supports = {()}
++    for field in ('standard_vertices', 'quad_vertices'):
++        supports.update(tuple((t, q) for t, row in enumerate(s['coordinates'])
++                              for q in range(3) if row[4+q]) for s in record[field])
++    if count <= 3:
++        supports.update(tuple((t, q) for t, q in enumerate(types) if q >= 0)
++                        for types in product((-1, 0, 1, 2), repeat=count))
++    else:
++        for size in (1, 2):
++            for indices in combinations(range(count), size):
++                supports.update(tuple(zip(indices, types))
++                                for types in product(range(3), repeat=size))
++        rng = random.Random('sector-envelope-v1:'+record['id'])
++        supports.update(tuple((t, rng.randrange(3)) for t in range(count)) for _ in range(64))
++    return sorted(supports)
++
++
++def source_audit(bank):
++    records = []
++    for record in bank['records']:
++        raw = record['triangulation']
++        source = PreparedSectorSource(raw)
++        for support in source_supports(record):
++            kernel = source.build(support)
++            if len(kernel.basis) <= 3:
++                continue
++            started = perf_counter()
++            incumbent_keep, _ = matching_support(kernel, lambda: None)
++            old_seconds = perf_counter()-started
++            started = perf_counter()
++            result = certify_maximal_support(raw, support, source=source)
++            elapsed = perf_counter()-started
++            assert result['status'] == 'COMPLETE', (record['id'], support, result)
++            assert verify_maximal_support_certificate(raw, support, result['certificate'])
++            admitted = [s['coordinates'] for s in record['standard_vertices']
++                        if all(not row[4+q] or (t, q) in support
++                               for t, row in enumerate(s['coordinates']) for q in range(3))]
++            expected = [j for j, (t, q) in enumerate(support)
++                        if any(rows[t][4+q] for rows in admitted)]
++            assert expected == result['retained_indices'], (record['id'], support, expected, result)
++            assert set(expected) <= set(incumbent_keep)
++            records.append(dict(source=record['id'], support=support,
++                raw_dimension=len(kernel.basis), effective_dimension=result['stats']['effective_dimension'],
++                exact_retained=expected, incumbent_retained=incumbent_keep,
++                extra_forced_by_complete_LP=sorted(set(incumbent_keep)-set(expected)),
++                certificate_seconds=elapsed, incumbent_reducer_seconds=old_seconds,
++                solver=result['stats']['solver']))
++    return records
++
++
++def discovery_timings(bank, repeats):
++    by_id = {record['id']: record for record in bank['records']}
++    cases = [
++        ('cap_3_5_2', [(0, 0), (1, 1), (2, 2), (3, 0), (4, 1)]),
++        ('cap_3_5_3', [(0, 0), (1, 1), (2, 2), (3, 0), (4, 2), (5, 2)]),
++        ('cap_1_2_3', [(t, 0) for t in range(4)]),
++        ('fibonacci_lst_09', [(t, (0, 2, 1)[t % 3]) for t in range(9)]),
++        ('fibonacci_lst_09', [(t, 2) for t in range(9)]),
++    ]
++    records = []
++    for source_id, support in cases:
++        raw = by_id[source_id]['triangulation']
++        # One warm-up in each arm, then alternating complete calls. These
++        # include source preparation, solver/reconstruction/replay, geometry
++        # and any disk observers reached by the configured standard query.
++        discover_in_sector(raw, support, phase='standard')
++        discover_in_maximal_support_sector(raw, support)
++        times = [[], []]
++        answers = [None, None]
++        operations = [lambda: discover_in_sector(raw, support, phase='standard'),
++                      lambda: discover_in_maximal_support_sector(raw, support)]
++        for repetition in range(repeats):
++            for arm in ((0, 1) if repetition % 2 == 0 else (1, 0)):
++                started = perf_counter(); answers[arm] = operations[arm]()
++                times[arm].append(perf_counter()-started)
++        assert answers[0]['status'] == answers[1]['status']
++        for answer in answers:
++            verifier = verify_sector_witness if answer['status'] == 'DISC_FOUND' else verify_sector_exhaustion
++            assert verifier(raw, answer['certificate'])
++        records.append(dict(source=source_id, support=support, status=answers[1]['status'],
++            incumbent_seconds=times[0], maximal_support_seconds=times[1],
++            median_ratio_new_over_old=median(times[1])/median(times[0]),
++            incumbent_stats=answers[0]['stats'], maximal_support_stats=answers[1]['stats'],
++            maximal_support_certificate=answers[1]['maximal_support_certificate']))
++    return records
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--output', type=Path, required=True)
++    parser.add_argument('--sizes', default='3,8,16,32,64')
++    parser.add_argument('--repeats', type=int, default=3)
++    parser.add_argument('--bank', type=Path,
++                        default=Path(__file__).resolve().parents[1]/'reports/57/results/discovery_corpus.json')
++    args = parser.parse_args()
++    if args.repeats < 1:
++        parser.error('repeats must be positive')
++    sizes = [int(x) for x in args.sizes.split(',')]
++    if any(x < 3 for x in sizes):
++        parser.error('cyclic obstruction requires m >= 3')
++    bank = json.loads(args.bank.read_text())
++    result = dict(schema='maximal-support-research-v1', python=platform.python_version(),
++                  platform=platform.platform(), repeats=args.repeats,
++                  abstract_scope='rational matching cones; no asserted triangulation realization',
++                  source_scope='supplied finite triangulations; no diagram-wide QP claim',
++                  timing_scope='warm imports; exact producer and independent replay included',
++                  polynomial_solver_guarantee=False)
++    result['abstract'] = matrix_audit(sizes, args.repeats)
++    result['sources'] = source_audit(bank)
++    result['discovery'] = discovery_timings(bank, args.repeats)
++    result['source_summary'] = dict(
++        audited=len(result['sources']),
++        reduced=sum(r['raw_dimension'] > r['effective_dimension'] for r in result['sources']),
++        stronger_than_pair_closure=sum(bool(r['extra_forced_by_complete_LP']) for r in result['sources']),
++        raw_dimensions=sorted({r['raw_dimension'] for r in result['sources']}),
++        effective_dimensions=sorted({r['effective_dimension'] for r in result['sources']}))
++    args.output.parent.mkdir(parents=True, exist_ok=True)
++    args.output.write_text(json.dumps(result, indent=2)+'\n')
++    print(json.dumps(result['source_summary']))
++    print(json.dumps([dict(source=r['source'], ratio=r['median_ratio_new_over_old'])
++                      for r in result['discovery']]))
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/Topology/UnknotRecognition/fast/parallelity_port_research.py b/Topology/UnknotRecognition/fast/parallelity_port_research.py
+new file mode 100644
+index 0000000..1d64e7d
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/parallelity_port_research.py
+@@ -0,0 +1,366 @@
++"""Finite topological oracle and reproducible audit for cyclic product ports."""
++
++from collections import defaultdict
++from contextlib import ExitStack
++from hashlib import sha256
++import json
++from pathlib import Path
++import random
++from statistics import median
++from time import perf_counter
++from unittest.mock import patch
++
++
++def literal_port_words(geometry, profiles, *, max_points=200000):
++    """Walk the actual boundary 1-manifold; no weighted/query helper is used.
++
++    Polygon corners are explicitly glued, every boundary edge is materialized,
++    and cyclic order is found by following the two incident boundary darts.
++    Fibre gauges are computed separately by ordinary graph propagation.
++    """
++    size = geometry['polygon_points']
++    corner_size = geometry['corner_points']
++    if size + corner_size > max_points:
++        raise ValueError('literal port oracle exceeds its expansion cap')
++    parent = list(range(corner_size))
++    graph = defaultdict(list)
++
++    def find(point):
++        while parent[point] != point:
++            parent[point] = parent[parent[point]]
++            point = parent[point]
++        return point
++
++    polygons = geometry['polygons']
++    for gluing in geometry['gluings']:
++        left, right = polygons[gluing['left']], polygons[gluing['right']]
++        for rank in range(gluing['rank_start'], gluing['rank_stop']):
++            a = gluing['left_map'][0] * rank + gluing['left_map'][1]
++            b = gluing['right_map'][0] * rank + gluing['right_map'][1]
++            graph[a].append((b, int(gluing['fibre_flip'])))
++            graph[b].append((a, int(gluing['fibre_flip'])))
++            for end in (0, 1):
++                i = (gluing['left_edge'] + end) % len(left['corner_starts'])
++                j = (gluing['right_edge'] + (end ^ gluing['ends_reverse']))
++                j %= len(right['corner_starts'])
++                x = left['corner_starts'][i] + a - left['start']
++                y = right['corner_starts'][j] + b - right['start']
++                parent[find(x)] = find(y)
++    incidence, edges, ports, port_polygons = defaultdict(list), [], {}, {}
++    for record in geometry['free_edges']:
++        polygon = polygons[record['polygon']]
++        corners = polygon['corner_starts']
++        for rank in range(record['rank_start'], record['rank_stop']):
++            a = find(corners[record['edge']] + rank - 1)
++            b = find(corners[(record['edge'] + 1) % len(corners)] + rank - 1)
++            number = len(edges)
++            label = None if record['original_boundary'] else record['port']
++            edges.append((a, b, label))
++            incidence[a].append((number, 0))
++            incidence[b].append((number, 1))
++            if label is not None:
++                assert label not in ports
++                ports[label] = number
++                port_polygons[label] = polygon['start'] + rank - 1
++    assert all(len(darts) == 2 for darts in incidence.values())
++    visited, words = set(), []
++    for port in sorted(ports):
++        if port in visited:
++            continue
++        start = (ports[port], 0)
++        current, word = start, []
++        while True:
++            edge, entry = current
++            label = edges[edge][2]
++            assert label not in visited
++            visited.add(label)
++            length = 0
++            while True:
++                endpoint = edges[edge][1 - entry]
++                incoming = (edge, 1 - entry)
++                candidates = [dart for dart in incidence[endpoint] if dart != incoming]
++                assert len(candidates) == 1
++                edge, entry = candidates[0]
++                if edges[edge][2] is not None:
++                    break
++                length += 1
++            word.append(dict(port=label, entry_endpoint=current[1],
++                             original_edges_after=length))
++            current = edge, entry
++            if current == start:
++                break
++        words.append(word)
++    colours, components, twisted = {}, {}, set()
++    for start in range(size):
++        if start in colours:
++            continue
++        pending = [start]
++        colours[start] = 0
++        components[start] = start
++        for point in pending:
++            for neighbour, flip in graph[point]:
++                expected = colours[point] ^ flip
++                if neighbour not in colours:
++                    colours[neighbour] = expected
++                    components[neighbour] = start
++                    pending.append(neighbour)
++                elif colours[neighbour] != expected:
++                    twisted.add(start)
++    gauges = []
++    for profile in profiles:
++        labels = profile['core_ports']
++        if not labels:
++            continue
++        anchor = min(labels)
++        point = port_polygons[anchor]
++        component = components[point]
++        assert all(components[port_polygons[label]] == component for label in labels)
++        product = component not in twisted
++        assert product == profile['product']
++        bits = [[label, colours[port_polygons[label]] ^ colours[point]] for label in labels]
++        gauges.append(dict(core_ports=labels, product=product, anchor_port=anchor,
++                           gauges=bits if product else None))
++    return dict(boundary_words=words, fibre_gauges=gauges,
++                expanded_polygons=size, expanded_corners=corner_size,
++                expanded_boundary_edges=len(edges))
++
++
++def _disabled_producer_replay(raw, rows, certificate):
++    from fastunknot.parallelity_port_words_verify import verify_parallelity_port_words
++    disabled = ('fastunknot.normal_parallelity.normal_cut_parallelity',
++                'fastunknot.normal_parallelity._parallelity_geometry',
++                'fastunknot.normal_parallelity._systems',
++                'fastunknot.parallelity_port_words.normal_parallelity_port_words',
++                'fastunknot.parallelity_port_words._port_queries',
++                'fastunknot.parallelity_port_words._boundary_words',
++                'fastunknot.parallelity_port_words._fibre_gauges',
++                'fastunknot.parallelity_port_words._disc_templates',
++                'fastunknot.interval_orbits.count_orbits')
++    with ExitStack() as stack:
++        for name in disabled:
++            stack.enter_context(patch(name, side_effect=AssertionError('producer used')))
++        assert verify_parallelity_port_words(raw, rows, certificate)
++
++
++def _wire(value):
++    from fastunknot.integer_codec import json_safe
++    return json.dumps(json_safe(value), sort_keys=True, separators=(',', ':')).encode()
++
++
++def validate_product_templates(templates):
++    """Authenticate actual emitted triangulations with Regina ball recognition.
++
++    This is a research audit, not a dependency of the production or replay
++    operators.  The relative topological theorem is their correctness basis.
++    """
++    from fractions import Fraction
++    import regina
++    by_size, checked_charts = {}, 0
++    for template in templates:
++        cells = template['product_tetrahedra']
++        sides = template['boundary_sides']
++        charts = defaultdict(list)
++        for side in sides:
++            if side['kind'] != 'core_port':
++                continue
++            a, b, denominator = side['parameter']
++            assert denominator > 0 and 0 <= a < b <= denominator
++            charts[side['port']].append((Fraction(a, denominator),
++                                         Fraction(b, denominator)))
++        assert sorted(charts) == sorted(template['core_ports'])
++        for intervals in charts.values():
++            intervals.sort()
++            assert intervals[0][0] == 0 and intervals[-1][1] == 1
++            assert all(a[1] == b[0] for a, b in zip(intervals, intervals[1:]))
++            checked_charts += 1
++        signature = tuple(tuple(tetrahedron) for tetrahedron in cells)
++        if signature in by_size:
++            continue
++        triangulation = regina.Triangulation3()
++        tetrahedra = [triangulation.newTetrahedron() for _ in cells]
++        faces = {}
++        for index, cell in enumerate(cells):
++            assert len(set(cell)) == 4
++            for opposite in range(4):
++                face = tuple(sorted(cell[j] for j in range(4) if j != opposite))
++                if face not in faces:
++                    faces[face] = (index, opposite)
++                else:
++                    other, target = faces.pop(face)
++                    image = [None] * 4
++                    image[opposite] = target
++                    for vertex in range(4):
++                        if vertex != opposite:
++                            image[vertex] = cells[other].index(cell[vertex])
++                    tetrahedra[index].join(opposite, tetrahedra[other], regina.Perm4(*image))
++        assert triangulation.isValid()
++        assert triangulation.isConnected()
++        assert triangulation.isOrientable()
++        assert triangulation.countBoundaryComponents() == 1
++        assert triangulation.isBall()
++        by_size[signature] = dict(tetrahedra=len(cells), base_boundary_vertices=len(sides),
++                                  valid=True, connected=True, orientable=True, is_ball=True,
++                                  iso_signature=triangulation.isoSig())
++    return dict(regina_version=regina.versionString(), templates_checked=len(templates),
++                port_charts_checked=checked_charts, distinct_complexes=len(by_size),
++                complexes=list(by_size.values()))
++
++
++def audit(output, *, benchmark_rounds=7):
++    from fastunknot.integer_codec import encoded_integer
++    from fastunknot.parallelity_port_words import normal_parallelity_port_words
++    from fastunknot.parallelity_port_words_verify import _independent_templates
++    from fastunknot.normal_parallelity import normal_cut_parallelity
++    from fastunknot.normal_parallelity_verify import verify_normal_cut_parallelity
++    from normal_orbit_research.fixtures import layered_torus
++    from tests.test_normal_surface_orbits import relabel
++    root = Path(__file__).resolve().parents[1]
++    bank = json.loads((root / 'synthesis/data/parallelity-audit.json').read_text())
++    cases = [(r['id'], r['triangulation'], r['coordinates']) for r in bank['source_proofs']]
++    rng = random.Random(26101231)
++    for t in (1, 2, 4):
++        raw, base = layered_torus(t)
++        for multiplier in (0, 1, 2, 5):
++            cases.append((f'analytic/{t}/{multiplier}', raw,
++                          [[multiplier * x for x in row] for row in base]))
++        for index in range(6):
++            changed, rows = relabel(raw, [[3 * x for x in row] for row in base], rng)
++            cases.append((f'relabel/{t}/{index}', changed, rows))
++    raw, base = layered_torus(2)
++    cases.append(('binary_attached/2/16384', raw,
++                  [[(1 << 16384) * x for x in row] for row in base]))
++    records, proofs, expanded, templates = [], [], 0, []
++    began = perf_counter()
++    seen_profiles = set()
++    for name, raw, rows in cases:
++        native = normal_parallelity_port_words(raw, rows, record_certificate=True)
++        assert native['status'] == 'COMPLETE'
++        proof = json.loads(_wire(native['certificate']))
++        _disabled_producer_replay(raw, rows, proof)
++        geometry = native['geometry']
++        finite = geometry['polygon_points'] + geometry['corner_points'] <= 300000
++        if finite:
++            literal = literal_port_words(geometry, native['summary']['base_profiles'],
++                                         max_points=300000)
++            assert native['boundary_words'] == literal['boundary_words'], name
++            assert native['fibre_gauges'] == literal['fibre_gauges'], name
++            expanded += literal['expanded_boundary_edges']
++        q = len(geometry['ports'])
++        tetrahedra = sum(len(t['product_tetrahedra']) for t in native['disc_templates'])
++        templates.extend(native['disc_templates'])
++        assert tetrahedra <= 9 * q
++        record = dict(id=name, tetrahedra=len(rows), core_ports=q,
++                      boundary_words=len(native['boundary_words']),
++                      attached_disc_products=len(native['disc_templates']),
++                      replacement_tetrahedra=tetrahedra, finite_reference=finite,
++                      zero_gaps=sum(r['original_edges_after'] == 0
++                                    for word in native['boundary_words'] for r in word),
++                      positive_gaps=sum(r['original_edges_after'] > 0
++                                        for word in native['boundary_words'] for r in word),
++                      reversed_port_traversals=sum(r['entry_endpoint'] == 1
++                                                  for word in native['boundary_words'] for r in word),
++                      nonzero_product_gauges=sum(bit == 1 for group in native['fibre_gauges']
++                                                if group['product'] for _, bit in group['gauges']),
++                      twisted_port_components=sum(not group['product']
++                                                   for group in native['fibre_gauges']),
++                      proof_sha256=sha256(_wire(proof)).hexdigest(),
++                      largest_input_bits=max((abs(encoded_integer(x)).bit_length()
++                                              for row in rows for x in row), default=0))
++        records.append(record)
++        profile = (q, len(native['disc_templates']),
++                   any(r['original_edges_after'] == 0
++                       for word in native['boundary_words'] for r in word),
++                   any(not g['product'] for g in native['fibre_gauges']))
++        if profile not in seen_profiles or not finite:
++            seen_profiles.add(profile)
++            proofs.append(dict(id=name, triangulation=raw, coordinates=rows, certificate=proof))
++    validation = validate_product_templates(templates)
++    # Both timing arms construct and replay the same source certificate.
++    # The compressed arm also replays its two additional interval proofs;
++    # the finite arm follows all literal boundary darts and fibre graph edges.
++    timing = []
++    for t, multiplier in ((2, 4), (2, 64), (2, 1024), (2, 4096), (4, 64)):
++        raw, base = layered_torus(t)
++        rows = [[multiplier * x for x in row] for row in base]
++
++        def compressed():
++            from fastunknot.parallelity_port_words_verify import verify_parallelity_port_words
++            result = normal_parallelity_port_words(raw, rows, record_certificate=True)
++            assert verify_parallelity_port_words(raw, rows, result['certificate'])
++            return _wire(dict(boundary_words=result['boundary_words'],
++                              fibre_gauges=result['fibre_gauges'],
++                              disc_templates=result['disc_templates']))
++
++        def literal():
++            result = normal_cut_parallelity(raw, rows, record_certificate=True)
++            assert verify_normal_cut_parallelity(raw, rows, result['certificate'])
++            reference = literal_port_words(result['geometry'], result['summary']['base_profiles'],
++                                           max_points=2000000)
++            templates = _independent_templates(reference['boundary_words'], reference['fibre_gauges'],
++                                               result['summary']['base_profiles'], lambda: None)
++            return _wire(dict(boundary_words=reference['boundary_words'],
++                              fibre_gauges=reference['fibre_gauges'], disc_templates=templates))
++
++        common_output = compressed()
++        assert common_output == literal()
++        pairs = []
++        for _ in range(benchmark_rounds):
++            functions = [('compressed', compressed), ('literal', literal)]
++            rng.shuffle(functions)
++            times = {}
++            for label, function in functions:
++                start = perf_counter()
++                function()
++                times[label] = perf_counter() - start
++            times['order'] = [name for name, _ in functions]
++            pairs.append(times)
++        timing.append(dict(tetrahedra=t, multiplier=multiplier, rounds=pairs,
++                           compressed_median_seconds=median(p['compressed'] for p in pairs),
++                           literal_median_seconds=median(p['literal'] for p in pairs),
++                           common_output_sha256=sha256(common_output).hexdigest(),
++                           common_output_bytes=len(common_output),
++                           median_literal_over_compressed=median(
++                               p['literal'] / p['compressed'] for p in pairs)))
++        # Same implementation, same task, same input: this is a timing-noise
++        # control, rather than a second algorithmic comparison.
++        if t == 2 and multiplier == 64:
++            controls = []
++            for _ in range(benchmark_rounds):
++                labels = ['first', 'second']
++                rng.shuffle(labels)
++                times = {}
++                for label in labels:
++                    start = perf_counter()
++                    assert compressed() == common_output
++                    times[label] = perf_counter() - start
++                times['order'] = labels
++                controls.append(times)
++            control = dict(tetrahedra=t, multiplier=multiplier, rounds=controls,
++                           median_second_over_first=median(
++                               p['second'] / p['first'] for p in controls))
++    pins = {}
++    for relative in ('fastunknot/parallelity_port_words.py',
++                     'fastunknot/parallelity_port_words_verify.py',
++                     'parallelity_port_research.py'):
++        pins[relative] = sha256((Path(__file__).parent / relative).read_bytes()).hexdigest()
++    report = dict(schema='parallelity-port-audit-v1', finite_cases=sum(r['finite_reference'] for r in records),
++                  binary_cases=sum(not r['finite_reference'] for r in records),
++                  literal_boundary_edges=expanded, records=records, source_proofs=proofs,
++                  template_validation=validation, timing=timing, identical_code_control=control,
++                  source_sha256=pins, seconds=perf_counter() - began,
++                  benchmark_scope='source construction and replay in both arms; extra weighted replay '
++                                  'versus finite boundary walks and fibre propagation; serialization '
++                                  'of byte-identical common output in both arms; one warmup per arm, '
++                                  'seeded shuffled paired rounds; no knot verdict')
++    Path(output).write_bytes(_wire(report) + b'\n')
++    print(json.dumps({k: report[k] for k in ('finite_cases', 'binary_cases',
++                                          'literal_boundary_edges', 'seconds')}))
++
++
++if __name__ == '__main__':
++    import argparse
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--output', required=True)
++    parser.add_argument('--benchmark-rounds', type=int, default=7)
++    arguments = parser.parse_args()
++    audit(arguments.output, benchmark_rounds=arguments.benchmark_rounds)
+diff --git a/Topology/UnknotRecognition/fast/tests/fixtures/maximal_support_pachner_36.json b/Topology/UnknotRecognition/fast/tests/fixtures/maximal_support_pachner_36.json
+new file mode 100644
+index 0000000..de85ff3
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/fixtures/maximal_support_pachner_36.json
+@@ -0,0 +1,2811 @@
++{
++  "query": {
++    "source": 17,
++    "sample": 10,
++    "signature": [
++      1,
++      1,
++      2,
++      2,
++      1,
++      2,
++      0,
++      2,
++      1,
++      2,
++      0,
++      2,
++      0,
++      1,
++      2,
++      2,
++      1,
++      0,
++      1,
++      2,
++      2,
++      2,
++      0,
++      1,
++      2,
++      2,
++      1,
++      2,
++      1,
++      1,
++      2,
++      0,
++      0,
++      2,
++      1,
++      0
++    ],
++    "raw_dimension": 8,
++    "incumbent_forced": 22,
++    "exact_status": "COMPLETE",
++    "exact_retained": [
++      5,
++      8,
++      15,
++      16,
++      17,
++      18,
++      20,
++      29,
++      30,
++      32,
++      33,
++      34,
++      35
++    ],
++    "extra_forced": [
++      0
++    ],
++    "effective_dimension": 5
++  },
++  "specification": {
++    "kind": "pachner-chain",
++    "chain": 2,
++    "initial_tetrahedra": 4,
++    "target": 36,
++    "moves": [
++      [
++        "23",
++        5
++      ],
++      [
++        "23",
++        3
++      ],
++      [
++        "23",
++        3
++      ],
++      [
++        "14",
++        5
++      ],
++      [
++        "23",
++        20
++      ],
++      [
++        "23",
++        9
++      ],
++      [
++        "23",
++        14
++      ],
++      [
++        "23",
++        15
++      ],
++      [
++        "23",
++        17
++      ],
++      [
++        "23",
++        17
++      ],
++      [
++        "23",
++        30
++      ],
++      [
++        "23",
++        9
++      ],
++      [
++        "23",
++        28
++      ],
++      [
++        "23",
++        28
++      ],
++      [
++        "23",
++        21
++      ],
++      [
++        "14",
++        9
++      ],
++      [
++        "23",
++        26
++      ],
++      [
++        "23",
++        24
++      ],
++      [
++        "23",
++        4
++      ],
++      [
++        "23",
++        4
++      ],
++      [
++        "23",
++        17
++      ],
++      [
++        "23",
++        4
++      ],
++      [
++        "23",
++        26
++      ],
++      [
++        "23",
++        25
++      ],
++      [
++        "14",
++        12
++      ],
++      [
++        "23",
++        30
++      ]
++    ],
++    "isosig": "KLLwvvPvvvvzMyQAPMAMMQkQQcacekhrnBwqxBqtAtCAvGGIBJzDJDCJGIFHIHjktkoqcmnosjfbwcjcodiaoacmipvjokbsjo",
++    "triangulation": {
++      "tetrahedra": [
++        [
++          {
++            "tetrahedron": 0,
++            "permutation": [
++              1,
++              2,
++              3,
++              0
++            ]
++          },
++          {
++            "tetrahedron": 0,
++            "permutation": [
++              3,
++              0,
++              1,
++              2
++            ]
++          },
++          {
++            "tetrahedron": 15,
++            "permutation": [
++              2,
++              1,
++              0,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 17,
++            "permutation": [
++              3,
++              1,
++              2,
++              0
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 30,
++            "permutation": [
++              2,
++              0,
++              3,
++              1
++            ]
++          },
++          {
++            "tetrahedron": 2,
++            "permutation": [
++              0,
++              2,
++              1,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 14,
++            "permutation": [
++              2,
++              1,
++              0,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 23,
++            "permutation": [
++              1,
++              2,
++              3,
++              0
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 22,
++            "permutation": [
++              1,
++              2,
++              3,
++              0
++            ]
++          },
++          {
++            "tetrahedron": 21,
++            "permutation": [
++              1,
++              2,
++              3,
++              0
++            ]
++          },
++          {
++            "tetrahedron": 1,
++            "permutation": [
++              0,
++              2,
++              1,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 7,
++            "permutation": [
++              0,
++              3,
++              2,
++              1
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 12,
++            "permutation": [
++              0,
++              1,
++              3,
++              2
++            ]
++          },
++          {
++            "tetrahedron": 10,
++            "permutation": [
++              1,
++              3,
++              0,
++              2
++            ]
++          },
++          {
++            "tetrahedron": 8,
++            "permutation": [
++              0,
++              1,
++              3,
++              2
++            ]
++          },
++          {
++            "tetrahedron": 13,
++            "permutation": [
++              3,
++              1,
++              2,
++              0
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 26,
++            "permutation": [
++              0,
++              1,
++              3,
++              2
++            ]
++          },
++          {
++            "tetrahedron": 5,
++            "permutation": [
++              0,
++              3,
++              2,
++              1
++            ]
++          },
++          {
++            "tetrahedron": 27,
++            "permutation": [
++              3,
++              1,
++              2,
++              0
++            ]
++          },
++          {
++            "tetrahedron": 16,
++            "permutation": [
++              3,
++              1,
++              2,
++              0
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 19,
++            "permutation": [
++              1,
++              0,
++              2,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 20,
++            "permutation": [
++              1,
++              3,
++              0,
++              2
++            ]
++          },
++          {
++            "tetrahedron": 20,
++            "permutation": [
++              1,
++              3,
++              0,
++              2
++            ]
++          },
++          {
++            "tetrahedron": 4,
++            "permutation": [
++              0,
++              3,
++              2,
++              1
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 6,
++            "permutation": [
++              3,
++              1,
++              2,
++              0
++            ]
++          },
++          {
++            "tetrahedron": 22,
++            "permutation": [
++              1,
++              0,
++              2,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 26,
++            "permutation": [
++              0,
++              1,
++              3,
++              2
++            ]
++          },
++          {
++            "tetrahedron": 6,
++            "permutation": [
++              3,
++              1,
++              2,
++              0
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 35,
++            "permutation": [
++              0,
++              2,
++              1,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 2,
++            "permutation": [
++              0,
++              3,
++              2,
++              1
++            ]
++          },
++          {
++            "tetrahedron": 24,
++            "permutation": [
++              1,
++              3,
++              0,
++              2
++            ]
++          },
++          {
++            "tetrahedron": 9,
++            "permutation": [
++              0,
++              1,
++              3,
++              2
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 33,
++            "permutation": [
++              3,
++              2,
++              0,
++              1
++            ]
++          },
++          {
++            "tetrahedron": 10,
++            "permutation": [
++              1,
++              0,
++              2,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 18,
++            "permutation": [
++              2,
++              1,
++              0,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 3,
++            "permutation": [
++              0,
++              1,
++              3,
++              2
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 18,
++            "permutation": [
++              3,
++              1,
++              2,
++              0
++            ]
++          },
++          {
++            "tetrahedron": 28,
++            "permutation": [
++              3,
++              0,
++              1,
++              2
++            ]
++          },
++          {
++            "tetrahedron": 7,
++            "permutation": [
++              0,
++              1,
++              3,
++              2
++            ]
++          },
++          {
++            "tetrahedron": 24,
++            "permutation": [
++              1,
++              3,
++              0,
++              2
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 8,
++            "permutation": [
++              1,
++              0,
++              2,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 11,
++            "permutation": [
++              0,
++              3,
++              2,
++              1
++            ]
++          },
++          {
++            "tetrahedron": 29,
++            "permutation": [
++              0,
++              1,
++              3,
++              2
++            ]
++          },
++          {
++            "tetrahedron": 3,
++            "permutation": [
++              2,
++              0,
++              3,
++              1
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 34,
++            "permutation": [
++              2,
++              1,
++              0,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 16,
++            "permutation": [
++              1,
++              2,
++              3,
++              0
++            ]
++          },
++          {
++            "tetrahedron": 31,
++            "permutation": [
++              0,
++              2,
++              1,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 10,
++            "permutation": [
++              0,
++              3,
++              2,
++              1
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 3,
++            "permutation": [
++              0,
++              1,
++              3,
++              2
++            ]
++          },
++          {
++            "tetrahedron": 14,
++            "permutation": [
++              0,
++              3,
++              2,
++              1
++            ]
++          },
++          {
++            "tetrahedron": 13,
++            "permutation": [
++              0,
++              1,
++              3,
++              2
++            ]
++          },
++          null
++        ],
++        [
++          {
++            "tetrahedron": 3,
++            "permutation": [
++              3,
++              1,
++              2,
++              0
++            ]
++          },
++          {
++            "tetrahedron": 14,
++            "permutation": [
++              0,
++              2,
++              1,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 25,
++            "permutation": [
++              2,
++              3,
++              1,
++              0
++            ]
++          },
++          {
++            "tetrahedron": 12,
++            "permutation": [
++              0,
++              1,
++              3,
++              2
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 1,
++            "permutation": [
++              2,
++              1,
++              0,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 17,
++            "permutation": [
++              2,
++              1,
++              0,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 13,
++            "permutation": [
++              0,
++              2,
++              1,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 12,
++            "permutation": [
++              0,
++              3,
++              2,
++              1
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 0,
++            "permutation": [
++              2,
++              1,
++              0,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 17,
++            "permutation": [
++              0,
++              3,
++              2,
++              1
++            ]
++          },
++          {
++            "tetrahedron": 16,
++            "permutation": [
++              0,
++              1,
++              3,
++              2
++            ]
++          },
++          {
++            "tetrahedron": 35,
++            "permutation": [
++              2,
++              0,
++              3,
++              1
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 4,
++            "permutation": [
++              3,
++              1,
++              2,
++              0
++            ]
++          },
++          {
++            "tetrahedron": 17,
++            "permutation": [
++              0,
++              2,
++              1,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 11,
++            "permutation": [
++              3,
++              0,
++              1,
++              2
++            ]
++          },
++          {
++            "tetrahedron": 15,
++            "permutation": [
++              0,
++              1,
++              3,
++              2
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 0,
++            "permutation": [
++              3,
++              1,
++              2,
++              0
++            ]
++          },
++          {
++            "tetrahedron": 14,
++            "permutation": [
++              2,
++              1,
++              0,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 16,
++            "permutation": [
++              0,
++              2,
++              1,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 15,
++            "permutation": [
++              0,
++              3,
++              2,
++              1
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 8,
++            "permutation": [
++              2,
++              1,
++              0,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 19,
++            "permutation": [
++              0,
++              3,
++              2,
++              1
++            ]
++          },
++          {
++            "tetrahedron": 33,
++            "permutation": [
++              3,
++              2,
++              0,
++              1
++            ]
++          },
++          {
++            "tetrahedron": 9,
++            "permutation": [
++              3,
++              1,
++              2,
++              0
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 32,
++            "permutation": [
++              0,
++              2,
++              1,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 5,
++            "permutation": [
++              1,
++              0,
++              2,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 34,
++            "permutation": [
++              2,
++              1,
++              0,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 18,
++            "permutation": [
++              0,
++              3,
++              2,
++              1
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 5,
++            "permutation": [
++              2,
++              0,
++              3,
++              1
++            ]
++          },
++          {
++            "tetrahedron": 22,
++            "permutation": [
++              0,
++              3,
++              2,
++              1
++            ]
++          },
++          {
++            "tetrahedron": 21,
++            "permutation": [
++              0,
++              1,
++              3,
++              2
++            ]
++          },
++          {
++            "tetrahedron": 5,
++            "permutation": [
++              2,
++              0,
++              3,
++              1
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 28,
++            "permutation": [
++              1,
++              3,
++              0,
++              2
++            ]
++          },
++          {
++            "tetrahedron": 22,
++            "permutation": [
++              0,
++              2,
++              1,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 2,
++            "permutation": [
++              3,
++              0,
++              1,
++              2
++            ]
++          },
++          {
++            "tetrahedron": 20,
++            "permutation": [
++              0,
++              1,
++              3,
++              2
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 6,
++            "permutation": [
++              1,
++              0,
++              2,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 2,
++            "permutation": [
++              3,
++              0,
++              1,
++              2
++            ]
++          },
++          {
++            "tetrahedron": 21,
++            "permutation": [
++              0,
++              2,
++              1,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 20,
++            "permutation": [
++              0,
++              3,
++              2,
++              1
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 1,
++            "permutation": [
++              3,
++              0,
++              1,
++              2
++            ]
++          },
++          {
++            "tetrahedron": 25,
++            "permutation": [
++              0,
++              3,
++              2,
++              1
++            ]
++          },
++          {
++            "tetrahedron": 24,
++            "permutation": [
++              0,
++              1,
++              3,
++              2
++            ]
++          },
++          {
++            "tetrahedron": 27,
++            "permutation": [
++              2,
++              3,
++              1,
++              0
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 7,
++            "permutation": [
++              2,
++              0,
++              3,
++              1
++            ]
++          },
++          {
++            "tetrahedron": 25,
++            "permutation": [
++              0,
++              2,
++              1,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 9,
++            "permutation": [
++              2,
++              0,
++              3,
++              1
++            ]
++          },
++          {
++            "tetrahedron": 23,
++            "permutation": [
++              0,
++              1,
++              3,
++              2
++            ]
++          }
++        ],
++        [
++          null,
++          {
++            "tetrahedron": 13,
++            "permutation": [
++              3,
++              2,
++              0,
++              1
++            ]
++          },
++          {
++            "tetrahedron": 24,
++            "permutation": [
++              0,
++              2,
++              1,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 23,
++            "permutation": [
++              0,
++              3,
++              2,
++              1
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 4,
++            "permutation": [
++              0,
++              1,
++              3,
++              2
++            ]
++          },
++          {
++            "tetrahedron": 28,
++            "permutation": [
++              0,
++              3,
++              2,
++              1
++            ]
++          },
++          {
++            "tetrahedron": 27,
++            "permutation": [
++              0,
++              1,
++              3,
++              2
++            ]
++          },
++          {
++            "tetrahedron": 6,
++            "permutation": [
++              0,
++              1,
++              3,
++              2
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 23,
++            "permutation": [
++              3,
++              2,
++              0,
++              1
++            ]
++          },
++          {
++            "tetrahedron": 28,
++            "permutation": [
++              0,
++              2,
++              1,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 4,
++            "permutation": [
++              3,
++              1,
++              2,
++              0
++            ]
++          },
++          {
++            "tetrahedron": 26,
++            "permutation": [
++              0,
++              1,
++              3,
++              2
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 9,
++            "permutation": [
++              1,
++              2,
++              3,
++              0
++            ]
++          },
++          {
++            "tetrahedron": 21,
++            "permutation": [
++              2,
++              0,
++              3,
++              1
++            ]
++          },
++          {
++            "tetrahedron": 27,
++            "permutation": [
++              0,
++              2,
++              1,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 26,
++            "permutation": [
++              0,
++              3,
++              2,
++              1
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 32,
++            "permutation": [
++              3,
++              1,
++              2,
++              0
++            ]
++          },
++          {
++            "tetrahedron": 31,
++            "permutation": [
++              0,
++              3,
++              2,
++              1
++            ]
++          },
++          {
++            "tetrahedron": 30,
++            "permutation": [
++              0,
++              1,
++              3,
++              2
++            ]
++          },
++          {
++            "tetrahedron": 10,
++            "permutation": [
++              0,
++              1,
++              3,
++              2
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 32,
++            "permutation": [
++              2,
++              1,
++              0,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 31,
++            "permutation": [
++              0,
++              2,
++              1,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 1,
++            "permutation": [
++              1,
++              3,
++              0,
++              2
++            ]
++          },
++          {
++            "tetrahedron": 29,
++            "permutation": [
++              0,
++              1,
++              3,
++              2
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 32,
++            "permutation": [
++              1,
++              0,
++              2,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 11,
++            "permutation": [
++              0,
++              2,
++              1,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 30,
++            "permutation": [
++              0,
++              2,
++              1,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 29,
++            "permutation": [
++              0,
++              3,
++              2,
++              1
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 19,
++            "permutation": [
++              0,
++              2,
++              1,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 31,
++            "permutation": [
++              1,
++              0,
++              2,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 30,
++            "permutation": [
++              2,
++              1,
++              0,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 29,
++            "permutation": [
++              3,
++              1,
++              2,
++              0
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 18,
++            "permutation": [
++              2,
++              3,
++              1,
++              0
++            ]
++          },
++          {
++            "tetrahedron": 35,
++            "permutation": [
++              0,
++              3,
++              2,
++              1
++            ]
++          },
++          {
++            "tetrahedron": 34,
++            "permutation": [
++              0,
++              1,
++              3,
++              2
++            ]
++          },
++          {
++            "tetrahedron": 8,
++            "permutation": [
++              2,
++              3,
++              1,
++              0
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 19,
++            "permutation": [
++              2,
++              1,
++              0,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 35,
++            "permutation": [
++              0,
++              2,
++              1,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 11,
++            "permutation": [
++              2,
++              1,
++              0,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 33,
++            "permutation": [
++              0,
++              1,
++              3,
++              2
++            ]
++          }
++        ],
++        [
++          {
++            "tetrahedron": 7,
++            "permutation": [
++              0,
++              2,
++              1,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 15,
++            "permutation": [
++              1,
++              3,
++              0,
++              2
++            ]
++          },
++          {
++            "tetrahedron": 34,
++            "permutation": [
++              0,
++              2,
++              1,
++              3
++            ]
++          },
++          {
++            "tetrahedron": 33,
++            "permutation": [
++              0,
++              3,
++              2,
++              1
++            ]
++          }
++        ]
++      ]
++    }
++  },
++  "allowed_types": [
++    [
++      0,
++      1
++    ],
++    [
++      1,
++      1
++    ],
++    [
++      2,
++      2
++    ],
++    [
++      3,
++      2
++    ],
++    [
++      4,
++      1
++    ],
++    [
++      5,
++      2
++    ],
++    [
++      6,
++      0
++    ],
++    [
++      7,
++      2
++    ],
++    [
++      8,
++      1
++    ],
++    [
++      9,
++      2
++    ],
++    [
++      10,
++      0
++    ],
++    [
++      11,
++      2
++    ],
++    [
++      12,
++      0
++    ],
++    [
++      13,
++      1
++    ],
++    [
++      14,
++      2
++    ],
++    [
++      15,
++      2
++    ],
++    [
++      16,
++      1
++    ],
++    [
++      17,
++      0
++    ],
++    [
++      18,
++      1
++    ],
++    [
++      19,
++      2
++    ],
++    [
++      20,
++      2
++    ],
++    [
++      21,
++      2
++    ],
++    [
++      22,
++      0
++    ],
++    [
++      23,
++      1
++    ],
++    [
++      24,
++      2
++    ],
++    [
++      25,
++      2
++    ],
++    [
++      26,
++      1
++    ],
++    [
++      27,
++      2
++    ],
++    [
++      28,
++      1
++    ],
++    [
++      29,
++      1
++    ],
++    [
++      30,
++      2
++    ],
++    [
++      31,
++      0
++    ],
++    [
++      32,
++      0
++    ],
++    [
++      33,
++      2
++    ],
++    [
++      34,
++      1
++    ],
++    [
++      35,
++      0
++    ]
++  ],
++  "result": {
++    "status": "COMPLETE",
++    "retained_indices": [
++      5,
++      8,
++      15,
++      16,
++      17,
++      18,
++      20,
++      29,
++      30,
++      32,
++      33,
++      34,
++      35
++    ],
++    "certificate": {
++      "schema": "normal-sector-maximal-support-v1",
++      "source_sha256": "f80b723b310f3689c0e3069575d28e89ef44a95d7fe74a73dc308a11777cc09f",
++      "allowed_types": [
++        [
++          0,
++          1
++        ],
++        [
++          1,
++          1
++        ],
++        [
++          2,
++          2
++        ],
++        [
++          3,
++          2
++        ],
++        [
++          4,
++          1
++        ],
++        [
++          5,
++          2
++        ],
++        [
++          6,
++          0
++        ],
++        [
++          7,
++          2
++        ],
++        [
++          8,
++          1
++        ],
++        [
++          9,
++          2
++        ],
++        [
++          10,
++          0
++        ],
++        [
++          11,
++          2
++        ],
++        [
++          12,
++          0
++        ],
++        [
++          13,
++          1
++        ],
++        [
++          14,
++          2
++        ],
++        [
++          15,
++          2
++        ],
++        [
++          16,
++          1
++        ],
++        [
++          17,
++          0
++        ],
++        [
++          18,
++          1
++        ],
++        [
++          19,
++          2
++        ],
++        [
++          20,
++          2
++        ],
++        [
++          21,
++          2
++        ],
++        [
++          22,
++          0
++        ],
++        [
++          23,
++          1
++        ],
++        [
++          24,
++          2
++        ],
++        [
++          25,
++          2
++        ],
++        [
++          26,
++          1
++        ],
++        [
++          27,
++          2
++        ],
++        [
++          28,
++          1
++        ],
++        [
++          29,
++          1
++        ],
++        [
++          30,
++          2
++        ],
++        [
++          31,
++          0
++        ],
++        [
++          32,
++          0
++        ],
++        [
++          33,
++          2
++        ],
++        [
++          34,
++          1
++        ],
++        [
++          35,
++          0
++        ]
++      ],
++      "primal_coordinates": [
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          0,
++          1,
++          1,
++          0,
++          0,
++          0,
++          1
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          0,
++          1,
++          0,
++          0,
++          1,
++          0
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          0,
++          1,
++          1,
++          0,
++          0,
++          0,
++          1
++        ],
++        [
++          0,
++          1,
++          0,
++          1,
++          0,
++          1,
++          0
++        ],
++        [
++          0,
++          0,
++          1,
++          1,
++          1,
++          0,
++          0
++        ],
++        [
++          1,
++          0,
++          1,
++          0,
++          0,
++          1,
++          0
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          0,
++          0,
++          1,
++          0,
++          0,
++          1
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          0,
++          1,
++          0,
++          0,
++          1,
++          0
++        ],
++        [
++          1,
++          0,
++          0,
++          1,
++          0,
++          0,
++          1
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          0,
++          0,
++          1,
++          1,
++          1,
++          0,
++          0
++        ],
++        [
++          0,
++          0,
++          0,
++          0,
++          0,
++          0,
++          2
++        ],
++        [
++          0,
++          1,
++          0,
++          1,
++          0,
++          1,
++          0
++        ],
++        [
++          0,
++          0,
++          1,
++          1,
++          1,
++          0,
++          0
++        ]
++      ],
++      "row_combination": [
++        [
++          0,
++          -2,
++          1
++        ],
++        [
++          1,
++          -2,
++          1
++        ],
++        [
++          2,
++          -2,
++          1
++        ],
++        [
++          4,
++          1,
++          1
++        ],
++        [
++          6,
++          -2,
++          1
++        ],
++        [
++          7,
++          1,
++          1
++        ],
++        [
++          9,
++          -11,
++          1
++        ],
++        [
++          12,
++          1,
++          1
++        ],
++        [
++          13,
++          2,
++          1
++        ],
++        [
++          14,
++          5,
++          1
++        ],
++        [
++          15,
++          -1,
++          1
++        ],
++        [
++          16,
++          10,
++          1
++        ],
++        [
++          17,
++          -5,
++          1
++        ],
++        [
++          19,
++          1,
++          1
++        ],
++        [
++          20,
++          -2,
++          1
++        ],
++        [
++          21,
++          4,
++          1
++        ],
++        [
++          22,
++          8,
++          1
++        ],
++        [
++          23,
++          3,
++          1
++        ],
++        [
++          24,
++          1,
++          1
++        ],
++        [
++          26,
++          2,
++          1
++        ],
++        [
++          28,
++          -2,
++          1
++        ],
++        [
++          29,
++          -8,
++          1
++        ],
++        [
++          30,
++          2,
++          1
++        ],
++        [
++          31,
++          -10,
++          1
++        ],
++        [
++          33,
++          3,
++          1
++        ],
++        [
++          34,
++          10,
++          1
++        ],
++        [
++          36,
++          5,
++          1
++        ],
++        [
++          37,
++          -1,
++          1
++        ],
++        [
++          39,
++          -8,
++          1
++        ],
++        [
++          40,
++          -1,
++          1
++        ],
++        [
++          43,
++          -7,
++          1
++        ],
++        [
++          44,
++          -11,
++          1
++        ],
++        [
++          45,
++          -1,
++          1
++        ],
++        [
++          46,
++          8,
++          1
++        ],
++        [
++          47,
++          8,
++          1
++        ],
++        [
++          50,
++          3,
++          1
++        ],
++        [
++          51,
++          1,
++          1
++        ],
++        [
++          53,
++          -1,
++          1
++        ],
++        [
++          54,
++          8,
++          1
++        ],
++        [
++          55,
++          13,
++          1
++        ],
++        [
++          56,
++          4,
++          1
++        ],
++        [
++          57,
++          -1,
++          1
++        ],
++        [
++          58,
++          -5,
++          1
++        ],
++        [
++          59,
++          -4,
++          1
++        ],
++        [
++          64,
++          10,
++          1
++        ],
++        [
++          65,
++          -3,
++          1
++        ],
++        [
++          68,
++          -8,
++          1
++        ],
++        [
++          69,
++          -3,
++          1
++        ],
++        [
++          71,
++          11,
++          1
++        ],
++        [
++          72,
++          9,
++          1
++        ],
++        [
++          73,
++          6,
++          1
++        ],
++        [
++          74,
++          -4,
++          1
++        ],
++        [
++          75,
++          2,
++          1
++        ],
++        [
++          76,
++          -1,
++          1
++        ],
++        [
++          77,
++          2,
++          1
++        ],
++        [
++          78,
++          -2,
++          1
++        ],
++        [
++          79,
++          -8,
++          1
++        ],
++        [
++          80,
++          -14,
++          1
++        ],
++        [
++          81,
++          -1,
++          1
++        ],
++        [
++          82,
++          -9,
++          1
++        ],
++        [
++          84,
++          -3,
++          1
++        ],
++        [
++          85,
++          9,
++          1
++        ],
++        [
++          87,
++          8,
++          1
++        ],
++        [
++          90,
++          -8,
++          1
++        ],
++        [
++          91,
++          -21,
++          1
++        ],
++        [
++          92,
++          -14,
++          1
++        ],
++        [
++          93,
++          -2,
++          1
++        ],
++        [
++          94,
++          7,
++          1
++        ],
++        [
++          98,
++          14,
++          1
++        ],
++        [
++          99,
++          -2,
++          1
++        ],
++        [
++          100,
++          9,
++          1
++        ],
++        [
++          102,
++          12,
++          1
++        ],
++        [
++          106,
++          9,
++          1
++        ],
++        [
++          107,
++          -1,
++          1
++        ],
++        [
++          108,
++          -1,
++          1
++        ],
++        [
++          110,
++          1,
++          1
++        ],
++        [
++          111,
++          -1,
++          1
++        ],
++        [
++          114,
++          3,
++          1
++        ],
++        [
++          116,
++          -10,
++          1
++        ],
++        [
++          117,
++          -3,
++          1
++        ],
++        [
++          118,
++          2,
++          1
++        ],
++        [
++          120,
++          -2,
++          1
++        ],
++        [
++          122,
++          6,
++          1
++        ],
++        [
++          123,
++          -1,
++          1
++        ],
++        [
++          124,
++          1,
++          1
++        ],
++        [
++          125,
++          -14,
++          1
++        ],
++        [
++          126,
++          1,
++          1
++        ],
++        [
++          127,
++          -1,
++          1
++        ],
++        [
++          128,
++          1,
++          1
++        ],
++        [
++          130,
++          -1,
++          1
++        ],
++        [
++          131,
++          -1,
++          1
++        ],
++        [
++          133,
++          1,
++          1
++        ],
++        [
++          134,
++          1,
++          1
++        ],
++        [
++          137,
++          1,
++          1
++        ],
++        [
++          138,
++          1,
++          1
++        ],
++        [
++          140,
++          1,
++          1
++        ],
++        [
++          141,
++          -14,
++          1
++        ],
++        [
++          142,
++          -13,
++          1
++        ],
++        [
++          145,
++          -8,
++          1
++        ],
++        [
++          150,
++          -6,
++          1
++        ],
++        [
++          152,
++          4,
++          1
++        ],
++        [
++          153,
++          -3,
++          1
++        ],
++        [
++          154,
++          -4,
++          1
++        ],
++        [
++          156,
++          -2,
++          1
++        ],
++        [
++          157,
++          -1,
++          1
++        ],
++        [
++          166,
++          1,
++          1
++        ],
++        [
++          169,
++          -2,
++          1
++        ],
++        [
++          170,
++          -2,
++          1
++        ],
++        [
++          172,
++          2,
++          1
++        ],
++        [
++          174,
++          14,
++          1
++        ],
++        [
++          176,
++          -1,
++          1
++        ],
++        [
++          179,
++          -7,
++          1
++        ],
++        [
++          180,
++          -3,
++          1
++        ],
++        [
++          185,
++          2,
++          1
++        ],
++        [
++          189,
++          12,
++          1
++        ],
++        [
++          198,
++          -11,
++          1
++        ],
++        [
++          205,
++          -9,
++          1
++        ],
++        [
++          207,
++          -9,
++          1
++        ],
++        [
++          211,
++          -6,
++          1
++        ],
++        [
++          212,
++          3,
++          1
++        ]
++      ],
++      "retained_indices": [
++        5,
++        8,
++        15,
++        16,
++        17,
++        18,
++        20,
++        29,
++        30,
++        32,
++        33,
++        34,
++        35
++      ]
++    },
++    "stats": {
++      "coordinates": 36,
++      "raw_dimension": 8,
++      "matching_rank": 28,
++      "solver_attempts": [
++        {
++          "solver": "scipy",
++          "outcome": "exact witness accepted"
++        }
++      ],
++      "numerical_reconstructions": 1,
++      "polynomial_solver_guarantee": false,
++      "solver": "scipy",
++      "retained_coordinates": 13,
++      "forced_coordinates": 23,
++      "effective_dimension": 5
++    }
++  },
++  "scope": "Genuine source counterexample to one fixed-row pair-closure pass; iterated closure recovers the final support; no matching-dimension advantage after first restriction.",
++  "incumbent_after_first_rebuild_dimension": 5
++}
+diff --git a/Topology/UnknotRecognition/fast/tests/test_parallelity_port_words.py b/Topology/UnknotRecognition/fast/tests/test_parallelity_port_words.py
+new file mode 100644
+index 0000000..1e15361
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_parallelity_port_words.py
+@@ -0,0 +1,242 @@
++"""Cyclic port order, relative fibre gauges, and source-bound replay."""
++
++from contextlib import ExitStack
++from copy import deepcopy
++from itertools import combinations
++import importlib.util
++import json
++from pathlib import Path
++import random
++import unittest
++from unittest.mock import patch
++
++from fastunknot.integer_codec import json_safe
++from fastunknot.parallelity_port_words import (
++    normal_parallelity_port_words, _port_queries, _boundary_words, _fibre_gauges,
++)
++from fastunknot.parallelity_port_words_verify import verify_parallelity_port_words
++from fastunknot.weighted_orbits import weighted_orbit_histogram
++from normal_orbit_research.fixtures import layered_torus
++from parallelity_port_research import (
++    literal_port_words, _disabled_producer_replay, validate_product_templates,
++)
++from tests.test_normal_surface_orbits import relabel
++
++
++ROOT = Path(__file__).resolve().parents[2]
++
++
++def trace_length(certificate):
++    total = 0
++    for field in ('vertex_selector', 'boundary_selector', 'polygon_weights', 'fibre_cover'):
++        part = certificate['source'][field]
++        if field.endswith('selector'):
++            part = part['weighted_certificate']
++        total += len(part['orbit_proof']['operations'])
++    for field in ('port_paths', 'port_fibres'):
++        total += len(certificate[field]['orbit_proof']['operations'])
++    return total
++
++
++def polygon_disc(marked, *, loop=False):
++    """Small genuine polygon quotients, including a one-edge boundary circle."""
++    degree = 3 if loop else len(marked)
++    polygon = dict(kind='prism', start=0, stop=1, edges=list(range(degree)),
++                   vertices=list(range(degree)), corner_starts=list(range(degree)))
++    gluings = []
++    free = []
++    if loop:
++        gluings.append(dict(left=0, right=0, left_edge=0, right_edge=1,
++                            left_map=[1, -1], right_map=[1, -1], rank_start=1,
++                            rank_stop=2, ends_reverse=True, fibre_flip=False))
++        free.append(dict(polygon=0, edge=2, rank_start=1, rank_stop=2,
++                         original_boundary=False, port=0))
++        q = 1
++    else:
++        q = 0
++        for edge, is_port in enumerate(marked):
++            record = dict(polygon=0, edge=edge, rank_start=1, rank_stop=2,
++                          original_boundary=not is_port)
++            if is_port:
++                record['port'] = q
++                q += 1
++            free.append(record)
++    return dict(polygons=[polygon], gluings=gluings, free_edges=free,
++                ports=[{} for _ in range(q)], polygon_points=1, corner_points=degree)
++
++
++class ParallelityPortTests(unittest.TestCase):
++    def checked(self, raw, rows):
++        result = normal_parallelity_port_words(raw, rows, record_certificate=True)
++        self.assertEqual(result['status'], 'COMPLETE')
++        self.assertTrue(verify_parallelity_port_words(raw, rows, result['certificate']))
++        reference = literal_port_words(result['geometry'], result['summary']['base_profiles'])
++        self.assertEqual(result['boundary_words'], reference['boundary_words'])
++        self.assertEqual(result['fibre_gauges'], reference['fibre_gauges'])
++        self.assertLessEqual(sum(len(t['product_tetrahedra']) for t in result['disc_templates']),
++                             9 * len(result['geometry']['ports']))
++        return result
++
++    def test_empty_single_port_adjacent_and_repeated_boundary_vertex(self):
++        for marked in ([False] * 3, [True, False, False], [True] * 4,
++                       [True, True, False, True, False, False]):
++            geometry = polygon_disc(marked)
++            self._check_disc_geometry(geometry)
++        result = self._check_disc_geometry(polygon_disc([], loop=True))
++        self.assertEqual(result, [[dict(port=0, entry_endpoint=0, original_edges_after=0)]])
++
++    def _check_disc_geometry(self, geometry):
++        paths, weights, cover, fibre_weights = _port_queries(geometry, lambda: None)
++        boundary = weighted_orbit_histogram(geometry['corner_points'], paths, weights, dimension=2)
++        number = len(geometry['ports'])
++        words = _boundary_words(boundary['histogram'], number, lambda: None)
++        profiles = [dict(core_ports=list(range(number)), product=True)]
++        fibre = weighted_orbit_histogram(2, cover, fibre_weights, dimension=1)
++        gauges = _fibre_gauges(fibre['histogram'], profiles, number, lambda: None)
++        reference = literal_port_words(geometry, profiles)
++        self.assertEqual(words, reference['boundary_words'])
++        self.assertEqual(gauges, reference['fibre_gauges'])
++        return words
++
++    def test_layered_meridians_and_relabelled_charts(self):
++        rng = random.Random(26101237)
++        for tetrahedra in (1, 2, 4):
++            raw, base = layered_torus(tetrahedra)
++            for multiplier in (0, 1, 2, 5):
++                rows = [[multiplier * x for x in row] for row in base]
++                self.checked(raw, rows)
++            for _ in range(3):
++                changed, rows = relabel(raw, [[3 * x for x in row] for row in base], rng)
++                self.checked(changed, rows)
++
++    def test_source_single_two_handle_disc_and_zero_gaps(self):
++        raw, _ = layered_torus(2)
++        rows = [[0, 0, 1, 1, 1, 0, 0], [1, 1, 1, 1, 0, 0, 0]]
++        result = self.checked(raw, rows)
++        self.assertEqual(len(result['boundary_words']), 1)
++        self.assertEqual(len(result['boundary_words'][0]), 8)
++        self.assertTrue(all(row['original_edges_after'] == 0
++                            for row in result['boundary_words'][0]))
++        self.assertEqual(len(result['disc_templates']), 1)
++        self.assertEqual(len(result['disc_templates'][0]['product_tetrahedra']), 24)
++
++    def test_one_sided_and_disconnected_fibre_data(self):
++        raw, _ = layered_torus(1)
++        for links in range(3):
++            for mobius in range(1, 7):
++                self.checked(raw, [[links] * 4 + [0, mobius, 0]])
++
++    def test_saved_source_topologies(self):
++        bank = json.loads((ROOT / 'synthesis/data/parallelity-audit.json').read_text())
++        tested = 0
++        for record in bank['source_proofs']:
++            if record['id'].startswith('binary/'):
++                continue
++            self.checked(record['triangulation'], record['coordinates'])
++            tested += 1
++            if tested >= 32:
++                break
++        self.assertGreaterEqual(tested, 32)
++
++    def test_product_triangulations_have_spherical_boundaries(self):
++        raw, rows = layered_torus(4)
++        result = self.checked(raw, [[3 * x for x in row] for row in rows])
++        for template in result['disc_templates']:
++            cells = template['product_tetrahedra']
++            vertices, edges, faces = set(), set(), {}
++            for tetrahedron in cells:
++                self.assertEqual(len(set(tetrahedron)), 4)
++                vertices.update(tetrahedron)
++                edges.update(tuple(sorted(e)) for e in combinations(tetrahedron, 2))
++                for face in combinations(tetrahedron, 3):
++                    key = tuple(sorted(face))
++                    faces[key] = faces.get(key, 0) + 1
++            self.assertTrue(all(count in (1, 2) for count in faces.values()))
++            self.assertEqual(len(vertices) - len(edges) + len(faces) - len(cells), 1)
++            boundary_faces = [face for face, count in faces.items() if count == 1]
++            boundary_edges = {tuple(sorted(edge)) for face in boundary_faces
++                              for edge in combinations(face, 2)}
++            boundary_vertices = {vertex for face in boundary_faces for vertex in face}
++            self.assertEqual(len(boundary_vertices) - len(boundary_edges) + len(boundary_faces), 2)
++        if importlib.util.find_spec('regina') is not None:
++            validation = validate_product_templates(result['disc_templates'])
++            self.assertEqual(validation['templates_checked'], len(result['disc_templates']))
++            self.assertTrue(all(c['is_ball'] for c in validation['complexes']))
++
++    def test_huge_binary_source_json_and_disabled_producer_replay(self):
++        raw, base = layered_torus(2)
++        rows = [[(1 << 16384) * x for x in row] for row in base]
++        result = normal_parallelity_port_words(raw, rows, record_certificate=True)
++        self.assertEqual(result['status'], 'COMPLETE')
++        self.assertEqual(len(result['geometry']['ports']), 2)
++        wire = json.loads(json.dumps(json_safe(result['certificate'])))
++        _disabled_producer_replay(raw, json_safe(rows), wire)
++        self.assertLess(len(json.dumps(json_safe(result['disc_templates']))), 20000)
++        with self.assertRaises(ValueError):
++            literal_port_words(result['geometry'], result['summary']['base_profiles'])
++
++    def test_forged_words_gaps_gauges_source_and_template_rejected(self):
++        raw, rows = layered_torus(2)
++        rows = [[3 * x for x in row] for row in rows]
++        proof = normal_parallelity_port_words(raw, rows, record_certificate=True)['certificate']
++        bad = []
++        for field in ('port', 'entry_endpoint', 'original_edges_after'):
++            changed = deepcopy(proof)
++            changed['boundary_words'][0][0][field] += 1
++            bad.append(changed)
++        changed = deepcopy(proof)
++        changed['fibre_gauges'][0]['gauges'][0][1] ^= 1
++        bad.append(changed)
++        changed = deepcopy(proof)
++        changed['disc_templates'][0]['product_tetrahedra'][0][0] += 1
++        bad.append(changed)
++        changed = deepcopy(proof)
++        changed['disc_templates'][0]['boundary_sides'][0]['parameter'] = [0, 2, 1]
++        bad.append(changed)
++        changed = deepcopy(proof)
++        changed['source']['geometry']['ports'][0]['core_handle'] += 1
++        bad.append(changed)
++        changed = deepcopy(proof)
++        changed['port_paths']['histogram'][0]['weight'][0] = True
++        bad.append(changed)
++        changed = deepcopy(proof)
++        changed['extra'] = 1
++        bad.append(changed)
++        for changed in bad:
++            self.assertFalse(verify_parallelity_port_words(raw, rows, changed))
++
++    def test_endpoint_bit_collisions_cannot_carry_into_valid_partition(self):
++        with self.assertRaises(ArithmeticError):
++            _boundary_words([dict(weight=[3, 0], orbits=1),
++                             dict(weight=[3, 1], orbits=1)], 2, lambda: None)
++        with self.assertRaises(ArithmeticError):
++            _boundary_words([dict(weight=[15, 0], orbits=1)], 2, lambda: None)
++
++    def test_shared_caps_and_cancellation(self):
++        raw, rows = layered_torus(2)
++        result = normal_parallelity_port_words(raw, rows, record_certificate=True)
++        cycles = sum(s['orbit_cycles'] for s in result['stats']['source'].values())
++        cycles += sum(result['stats'][name]['orbit_cycles'] for name in ('port_paths', 'port_fibres'))
++        for cap in (0, cycles - 1):
++            interrupted = normal_parallelity_port_words(raw, rows, max_cycles=cap,
++                                                        record_certificate=True)
++            self.assertEqual(interrupted['status'], 'INCONCLUSIVE')
++            for field in ('geometry', 'boundary_words', 'disc_templates', 'certificate'):
++                self.assertNotIn(field, interrupted)
++        self.assertEqual(normal_parallelity_port_words(raw, rows, max_cycles=cycles)['boundary_words'],
++                         result['boundary_words'])
++        operations = trace_length(result['certificate'])
++        self.assertFalse(verify_parallelity_port_words(raw, rows, result['certificate'],
++                                                       max_operations=operations - 1))
++        self.assertTrue(verify_parallelity_port_words(raw, rows, result['certificate'],
++                                                      max_operations=operations))
++        def cancel():
++            raise ValueError('cancelled')
++        with self.assertRaisesRegex(ValueError, 'cancelled'):
++            normal_parallelity_port_words(raw, rows, check=cancel)
++        with self.assertRaisesRegex(ValueError, 'cancelled'):
++            verify_parallelity_port_words(raw, rows, result['certificate'], check=cancel)
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_sector_maximal_support.py b/Topology/UnknotRecognition/fast/tests/test_sector_maximal_support.py
+new file mode 100644
+index 0000000..f851153
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_sector_maximal_support.py
+@@ -0,0 +1,310 @@
++"""Exact maximal support: algebraic obstructions and actual normal sources."""
++
++from contextlib import ExitStack
++from copy import deepcopy
++from fractions import Fraction
++from itertools import product
++import json
++from pathlib import Path
++import unittest
++from unittest.mock import patch
++
++from fastunknot.normal_sector import build_sector_kernel, sector_rays, discover_in_sector
++from fastunknot.normal_sector_verify import verify_sector_exhaustion, verify_sector_witness
++from fastunknot.sector_matching_support import _combined_closure, matching_support
++from fastunknot.normal_surface_geometry import NormalOrbitError
++from fastunknot.sector_maximal_support import (
++    certify_nonnegative_kernel_support, certify_maximal_support,
++    discover_in_maximal_support_sector,
++)
++from fastunknot.sector_maximal_support_verify import (
++    verify_nonnegative_kernel_support_certificate, verify_maximal_support_certificate,
++)
++from fastunknot.sector_sparse import PreparedSectorSource
++
++
++BANK = Path(__file__).resolve().parents[2]/'reports/57/results/discovery_corpus.json'
++
++
++def cycle_obstruction(m, effective=1):
++    """An abstract rational cone, not asserted to be a triangulation sector."""
++    return [[int(i == j) for j in range(m)]
++            + [int(i == j)-int((i+1) % m == j) for j in range(m)]
++            + [0]*(effective-1) for i in range(m)]
++
++
++def solid_torus():
++    return {'tetrahedra': [[
++        {'tetrahedron': 0, 'permutation': [1, 2, 3, 0]},
++        {'tetrahedron': 0, 'permutation': [3, 0, 1, 2]}, None, None]]}
++
++
++def capped_torus():
++    raw = solid_torus()
++    raw['tetrahedra'][0][2] = {'tetrahedron': 1, 'permutation': [0, 1, 3, 2]}
++    raw['tetrahedra'].append([None, None, None,
++        {'tetrahedron': 0, 'permutation': [0, 1, 3, 2]}])
++    return raw
++
++
++def bank_fixture():
++    raw = next(row['triangulation'] for row in json.loads(BANK.read_text())['records']
++               if row['id'] == 'cap_3_5_2')
++    return raw, [(0, 0), (1, 1), (2, 2), (3, 0), (4, 1)]
++
++
++class Cancel:
++    def __init__(self, after=1):
++        self.remaining = after
++
++    def __bool__(self):
++        return False
++
++    def __call__(self):
++        self.remaining -= 1
++        if self.remaining <= 0:
++            raise InterruptedError('maximal-support cancellation')
++
++
++class RationalSupportTests(unittest.TestCase):
++    def test_unbounded_row_span_obstruction_and_effective_dimension(self):
++        for m, effective in ((3, 1), (4, 3), (8, 2)):
++            a = cycle_obstruction(m, effective)
++            forced, steps = _combined_closure(a, lambda: None)
++            self.assertEqual((forced, steps), (set(), []))
++            result = certify_nonnegative_kernel_support(a)
++            self.assertEqual(result['status'], 'COMPLETE')
++            self.assertEqual(result['retained_indices'], list(range(m, 2*m+effective-1)))
++            self.assertEqual(result['stats']['raw_dimension'], m+effective-1)
++            self.assertEqual(result['stats']['effective_dimension'], effective)
++            self.assertTrue(verify_nonnegative_kernel_support_certificate(a, result['certificate']))
++
++    def test_exact_solver_fallback_is_actually_exercised(self):
++        a = cycle_obstruction(3)
++        with patch('fastunknot.sector_maximal_support._scipy_solve', return_value=None):
++            result = certify_nonnegative_kernel_support(a)
++        self.assertEqual(result['status'], 'COMPLETE')
++        self.assertEqual(result['stats']['solver'], 'sympy')
++        self.assertEqual(result['stats']['numerical_reconstructions'], 0)
++        self.assertFalse(result['stats']['polynomial_solver_guarantee'])
++
++    def test_false_numerical_proposal_cannot_remove_a_coordinate(self):
++        a = cycle_obstruction(3)
++        with patch('fastunknot.sector_maximal_support._scipy_solve', return_value=[0.0]*12):
++            failed = certify_nonnegative_kernel_support(a, solver='scipy')
++            recovered = certify_nonnegative_kernel_support(a, solver='auto')
++        self.assertEqual(failed['status'], 'INCONCLUSIVE')
++        self.assertNotIn('certificate', failed)
++        self.assertEqual(recovered['status'], 'COMPLETE')
++        self.assertEqual(recovered['stats']['solver'], 'sympy')
++
++    def test_zero_empty_positive_degenerate_and_big_rational_inputs(self):
++        cases = [([], 0, []), ([], 4, [0, 1, 2, 3]), ([[1, 0], [0, 1]], 2, []),
++                 ([[1, -1], [2, -2], [0, 0]], 2, [0, 1]),
++                 ([[1, 1, 0]], 3, [2]),
++                 ([[Fraction(1, 2**6000+1), -1, 0]], 3, [0, 1, 2])]
++        for matrix, width, retained in cases:
++            with self.subTest(width=width, retained=retained):
++                result = certify_nonnegative_kernel_support(matrix, width=width, solver='sympy')
++                self.assertEqual(result['status'], 'COMPLETE')
++                self.assertEqual(result['retained_indices'], retained)
++                encoded = json.loads(json.dumps(result['certificate']))
++                self.assertTrue(verify_nonnegative_kernel_support_certificate(matrix, encoded,
++                                                                              width=width))
++
++    def test_row_and_column_reordering_preserve_the_support_with_new_provenance(self):
++        matrix = cycle_obstruction(4, 2)
++        first = certify_nonnegative_kernel_support(matrix)['certificate']
++        row_order = [2, 0, 3, 1]
++        column_order = [8, 4, 0, 5, 1, 6, 2, 7, 3]
++        changed = [[matrix[i][j] for j in column_order] for i in row_order]
++        second = certify_nonnegative_kernel_support(changed)['certificate']
++        expected = [j for j, original in enumerate(column_order) if original >= 4]
++        self.assertEqual(second['retained_indices'], expected)
++        self.assertTrue(verify_nonnegative_kernel_support_certificate(changed, second))
++        self.assertFalse(verify_nonnegative_kernel_support_certificate(changed, first))
++
++    def test_matrix_checker_is_independent_and_rejects_mutations(self):
++        matrix = cycle_obstruction(3)
++        proof = certify_nonnegative_kernel_support(matrix)['certificate']
++        mutations = []
++        for field in ('primal', 'dual', 'multipliers'):
++            bad = deepcopy(proof); bad[field][0][0] += 1; mutations.append(bad)
++            bad = deepcopy(proof); bad[field][0][1] = 0; mutations.append(bad)
++            bad = deepcopy(proof); bad[field][0][0] = True; mutations.append(bad)
++            bad = deepcopy(proof); bad[field].pop(); mutations.append(bad)
++        bad = deepcopy(proof); bad['retained_indices'].append(0); mutations.append(bad)
++        bad = deepcopy(proof); bad['input_sha256'] = '0'*64; mutations.append(bad)
++        bad = deepcopy(proof); bad['primal'][3] = [1, 2]; mutations.append(bad)
++        disabled = ('fastunknot.sector_maximal_support._partition',
++                    'fastunknot.normal_sector._rref', 'fastunknot.normal_sector._nullspace')
++        with ExitStack() as stack:
++            for name in disabled:
++                stack.enter_context(patch(name, side_effect=AssertionError('producer called')))
++            self.assertTrue(verify_nonnegative_kernel_support_certificate(matrix, proof))
++            for bad in mutations:
++                self.assertFalse(verify_nonnegative_kernel_support_certificate(matrix, bad))
++
++    def test_cancellation_at_solver_boundary_prevents_publication(self):
++        state = {'returned': False}
++        def proposal(data):
++            state['returned'] = True
++            return [0.0]*len(data[0])
++        def check():
++            if state['returned']:
++                raise InterruptedError('solver-boundary cancellation')
++        with patch('fastunknot.sector_maximal_support._scipy_solve', side_effect=proposal):
++            with self.assertRaisesRegex(InterruptedError, 'solver-boundary'):
++                certify_nonnegative_kernel_support(cycle_obstruction(3), check=check)
++        for after in (1, 4, 15):
++            with self.assertRaises(InterruptedError):
++                certify_nonnegative_kernel_support(cycle_obstruction(3), check=Cancel(after))
++        proof = certify_nonnegative_kernel_support(cycle_obstruction(3))['certificate']
++        with self.assertRaises(InterruptedError):
++            verify_nonnegative_kernel_support_certificate(cycle_obstruction(3), proof,
++                                                           check=Cancel(2))
++
++    def test_reused_stats_are_reset_and_invalid_input_is_rejected(self):
++        stats = {}
++        certify_nonnegative_kernel_support(cycle_obstruction(3), stats=stats)
++        with patch('fastunknot.sector_maximal_support._scipy_solve', return_value=None):
++            answer = certify_nonnegative_kernel_support(cycle_obstruction(3), solver='scipy',
++                                                        stats=stats)
++        self.assertEqual(answer['status'], 'INCONCLUSIVE')
++        self.assertNotIn('solver', stats)
++        self.assertNotIn('effective_dimension', stats)
++        for matrix in ([[True]], [[1.0]], [[1], [1, 2]], None):
++            with self.assertRaises(ValueError):
++                certify_nonnegative_kernel_support(matrix)
++        with self.assertRaises(ValueError):
++            certify_nonnegative_kernel_support([], width=True)
++
++
++class SourceSupportTests(unittest.TestCase):
++    def test_genuine_fixed_row_miss_is_not_misstated_as_a_dimension_win(self):
++        path = Path(__file__).with_name('fixtures')/'maximal_support_pachner_36.json'
++        fixture = json.loads(path.read_text())
++        raw = fixture['specification']['triangulation']
++        support = fixture['allowed_types']
++        source = PreparedSectorSource(raw)
++        kernel = source.build(support)
++        keep, _ = matching_support(kernel, lambda: None)
++        maximal = certify_maximal_support(raw, support, source=source)
++        self.assertEqual(len(kernel.basis), 8)
++        self.assertEqual(sorted(set(keep)-set(maximal['retained_indices'])), [0])
++        self.assertEqual(len(keep), 14)
++        self.assertEqual(len(maximal['retained_indices']), 13)
++        first_rebuild = source.build([kernel.support[j] for j in keep])
++        exact_rebuild = source.build([kernel.support[j] for j in maximal['retained_indices']])
++        self.assertEqual((len(first_rebuild.basis), len(exact_rebuild.basis)), (5, 5))
++        second, _ = matching_support(first_rebuild, lambda: None)
++        self.assertEqual([keep[j] for j in second], maximal['retained_indices'])
++        self.assertTrue(verify_maximal_support_certificate(raw, support,
++                                                           maximal['certificate']))
++
++    def test_every_small_source_sector_matches_complete_raw_rays(self):
++        for raw in (solid_torus(), capped_torus()):
++            source = PreparedSectorSource(raw)
++            for signature in product((-1, 0, 1, 2), repeat=len(raw['tetrahedra'])):
++                support = [(i, q) for i, q in enumerate(signature) if q >= 0]
++                kernel = source.build(support)
++                rays = list(sector_rays(kernel))
++                expected = [j for j, (t, q) in enumerate(support)
++                            if any(row[t][4+q] for row in rays)]
++                result = certify_maximal_support(raw, support, source=source)
++                self.assertEqual(result['status'], 'COMPLETE')
++                self.assertEqual(result['retained_indices'], expected)
++                self.assertTrue(verify_maximal_support_certificate(raw, support,
++                                                                   result['certificate']))
++                reduced = source.build([support[j] for j in expected])
++                self.assertEqual({tuple(x for row in r for x in row) for r in rays},
++                                 {tuple(x for row in r for x in row) for r in sector_rays(reduced)})
++
++    def test_raw_dimension_four_enters_planar_enumeration_before_Q_scan(self):
++        raw, support = bank_fixture()
++        answer = discover_in_maximal_support_sector(raw, support, max_bases=5)
++        self.assertEqual(answer['status'], 'NO_VERTEX_DISC_IN_SECTOR')
++        info = answer['stats']['maximal_support']
++        self.assertEqual((info['raw_dimension'], info['effective_dimension']), (4, 3))
++        self.assertEqual(answer['stats']['bases_attempted'], 5)
++        self.assertEqual(answer['certificate']['allowed_types'], [list(x) for x in support])
++        self.assertTrue(verify_sector_exhaustion(raw, answer['certificate']))
++        self.assertTrue(verify_maximal_support_certificate(raw, support,
++                                            answer['maximal_support_certificate']))
++        limited = discover_in_maximal_support_sector(raw, support, max_bases=4)
++        self.assertEqual(limited['status'], 'INCONCLUSIVE')
++        self.assertNotIn('certificate', limited)
++        # The support proof alone is valid even when ray discovery is capped.
++        self.assertTrue(verify_maximal_support_certificate(raw, support,
++                                            limited['maximal_support_certificate']))
++
++    def test_existing_positive_witness_protocol_and_safe_solver_fallback(self):
++        raw = solid_torus()
++        answer = discover_in_maximal_support_sector(raw, [(0, 2)], max_orbit_cycles=0)
++        self.assertEqual(answer['status'], 'DISC_FOUND')
++        self.assertTrue(verify_sector_witness(raw, answer['certificate']))
++        raw, support = bank_fixture()
++        with patch('fastunknot.sector_maximal_support._scipy_solve', return_value=None):
++            failed = discover_in_maximal_support_sector(raw, support, solver='scipy')
++        incumbent = discover_in_sector(raw, support, phase='standard')
++        self.assertEqual(failed['status'], incumbent['status'])
++        self.assertEqual(failed['certificate'], incumbent['certificate'])
++        self.assertNotIn('maximal_support_certificate', failed)
++
++    def test_source_checker_uses_only_source_rows_and_rejects_proof_mutations(self):
++        raw, support = bank_fixture()
++        proof = certify_maximal_support(raw, support)['certificate']
++        mutations = []
++        bad = deepcopy(proof); bad['primal_coordinates'][0][0] += 1; mutations.append(bad)
++        bad = deepcopy(proof); bad['row_combination'].clear(); mutations.append(bad)
++        bad = deepcopy(proof); bad['row_combination'][0][1] += 1; mutations.append(bad)
++        bad = deepcopy(proof); bad['row_combination'][0][2] = 0; mutations.append(bad)
++        bad = deepcopy(proof); bad['row_combination'].append(bad['row_combination'][0]); mutations.append(bad)
++        bad = deepcopy(proof); bad['row_combination'][0][0] = True; mutations.append(bad)
++        bad = deepcopy(proof); bad['allowed_types'].reverse(); mutations.append(bad)
++        bad = deepcopy(proof); bad['retained_indices'].reverse(); mutations.append(bad)
++        bad = deepcopy(proof); bad['source_sha256'] = '0'*64; mutations.append(bad)
++        disabled = ('fastunknot.sector_sparse.PreparedSectorSource',
++                    'fastunknot.normal_sector.build_sector_kernel',
++                    'fastunknot.sector_maximal_support._partition',
++                    'fastunknot.sector_matching_support._source_constraints',
++                    'fastunknot.normal_sector._rref')
++        with ExitStack() as stack:
++            for name in disabled:
++                stack.enter_context(patch(name, side_effect=AssertionError('producer called')))
++            self.assertTrue(verify_maximal_support_certificate(raw, support, proof))
++            for bad in mutations:
++                self.assertFalse(verify_maximal_support_certificate(raw, support, bad))
++
++    def test_empty_nonzero_cone_support_order_and_source_identity(self):
++        raw, support = bank_fixture()
++        source = PreparedSectorSource(raw)
++        a = certify_maximal_support(raw, support, source=source)
++        b = certify_maximal_support(raw, list(reversed(support)), source=source)
++        self.assertEqual(a['certificate'], b['certificate'])
++        self.assertTrue(verify_maximal_support_certificate(raw, list(reversed(support)),
++                                                          b['certificate']))
++        empty = certify_maximal_support(raw, [], source=source)
++        self.assertEqual(empty['retained_indices'], [])
++        self.assertTrue(verify_maximal_support_certificate(raw, [], empty['certificate']))
++        with self.assertRaises(ValueError):
++            certify_maximal_support(solid_torus(), [], source=source)
++        before = deepcopy(raw)
++        with self.assertRaises(InterruptedError):
++            certify_maximal_support(raw, support, source=source, check=Cancel(5))
++        self.assertEqual(raw, before)
++        self.assertEqual(certify_maximal_support(raw, support, source=source)['status'], 'COMPLETE')
++        with self.assertRaises(InterruptedError):
++            verify_maximal_support_certificate(raw, support, a['certificate'], check=Cancel(3))
++        calls = [0]
++        def callback_with_geometry_exception():
++            calls[0] += 1
++            if calls[0] == 3:
++                raise NormalOrbitError('caller cancellation, not invalid geometry')
++        with self.assertRaisesRegex(NormalOrbitError, 'caller cancellation'):
++            verify_maximal_support_certificate(raw, support, a['certificate'],
++                                               check=callback_with_geometry_exception)
++
++
++if __name__ == '__main__':
++    unittest.main()

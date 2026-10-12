@@ -1,0 +1,354 @@
+\section{Raw singleton epochs are a source closure problem}
+\label{sec:raw-epoch-theorem}
+
+The previous local analysis bounds one acyclic singleton batch polynomially
+in its current grammar, and gives an exponential-in-depth bound for a succession
+of batches. There is a stronger algorithmic alternative for an entire epoch
+in which the only word transformations are raw singleton substitutions.
+Such an epoch can be discovered on its immutable source incidence data and
+compiled as one batch. The essential new statement is the equivalence with
+\emph{every possible sequential raw elimination order}. Computing the least
+closure of a family of implications is standard; matching acyclicity and
+unique perfect matchings are standard as well~\cite{kozen,golumbic,dowling}.
+
+\subsection{Precisely which epochs are covered}
+
+Let $X$ be a finite set of positive generator labels, and let
+$(R_1,\ldots,R_m)$ be a list of raw words in $X^{\pm1}$ represented by one
+shared straight-line grammar. Empty and repeated slots are retained. Fix a
+survivor set $S\subseteq X$, and put $E=X\setminus S$.
+
+A raw singleton step chooses a previously unconsumed original slot $d$
+whose current word is $U x^\epsilon V$, where $\epsilon\in\{1,-1\}$ and
+the absolute letter $x$ occurs exactly once. It sets
+\[
+ x\longmapsto (VU)^{-\epsilon},
+\]
+substitutes this word and its formal inverse into every remaining slot,
+and consumes slot $d$. Every substitution is performed on raw words:
+there is no free reduction, cyclic reduction, proper-power root extraction,
+Whitehead transformation, or relator multiplication between steps.
+An acyclic raw batch can be linearized in dependency order, so is included.
+The epoch succeeds for $S$ if it eliminates exactly $E$.
+
+The frozen source itself may be the result of an already verified prefix
+containing other moves. It is the transformations \emph{inside} the epoch
+that are restricted. In particular, this theorem can be applied afresh at
+each normalized presentation boundary. It does not combine the different
+boundaries into one bounded-cost search.
+
+For each source row $R_j$ and each generator $x$ occurring exactly once in
+its raw spelling, form the implication
+\[
+ \operatorname{supp}(R_j)\setminus\{x\}\ \Longrightarrow\ x,
+ \tag{H}\label{eq:raw-horn-rule}
+\]
+where support ignores signs but counts distinct labels. Let
+$\operatorname{cl}(S)$ be the least set containing $S$ and closed under
+these implications. Multiplicity one is essential: a zero exponent sum is
+not absence, and a nonzero exponent sum of magnitude one does not imply a
+unique raw occurrence.
+
+\begin{theorem}[Complete source criterion for raw singleton reduction]
+\label{thm:raw-closure-equivalence}
+The following are equivalent:
+\begin{enumerate}
+\item Some raw singleton epoch reduces the frozen source to the survivor
+      alphabet $S$.
+\item Some acyclic singleton batch formed directly from original source
+      slots eliminates $E$.
+\item $\operatorname{cl}(S)=X$.
+\end{enumerate}
+If an epoch uses a specified donor-slot set $D$, with $|D|=|E|$, then it can
+be flattened using exactly the same source slots $D$, after possibly
+reassigning their eliminated generators. The flattened batch and that
+epoch induce the same homomorphism $F(X)\to F(S)$ as free-group elements.
+Their unreduced output strings need not agree.
+\end{theorem}
+
+The last assertion requires the same donor set. A generic closure search
+over all source rows may select a different donor set from a previous
+producer. Its resulting presentation is still Tietze equivalent to the
+source, but its word images are not asserted equal to those of the previous
+producer in $F(S)$. No equality of tied witnesses, subsequent search paths,
+or finite-budget recognition outcomes is implied.
+
+\subsection{The positive pivot lemma}
+
+For a nonnegative integral square matrix $A$, write $\operatorname{per}(A)$
+for its permanent, with permanent one for the empty matrix. Equivalently,
+replace entry $a_{ij}$ by that many separately labelled parallel edges in a
+bipartite graph; the permanent counts its edge-labelled perfect matchings.
+The permanent is used only in the proof, not computed by the algorithm.
+
+\begin{lemma}[Reversing a successful unit pivot]
+\label{lem:positive-pivot}
+Suppose $a_{dc}=1$. Delete row $d$ and column $c$ and set
+\[
+ b_{ij}=a_{ij}+a_{ic}a_{dj}\qquad(i\ne d,\ j\ne c).
+\]
+If $\operatorname{per}(B)=1$, then $\operatorname{per}(A)=1$.
+\end{lemma}
+
+\begin{proof}
+Tag each edge counted by $b_{ij}$ either as an original direct edge from
+$i$ to $j$, or as an ordered pair of original edges from $i$ to $c$ and
+from $d$ to $j$. Consider the unique tagged perfect matching of $B$.
+It contains at most one pair-created edge. Indeed, if it contained
+pair-created edges $(i,j)$ and $(k,\ell)$, their source rows and destination
+columns would be distinct. Exchanging the destination factors would give
+pair-created edges $(i,\ell)$ and $(k,j)$ and a second tagged perfect
+matching, a contradiction.
+
+If it contains no pair-created edge, adjoin the unique edge $(d,c)$.
+If it contains one, replace that edge by its two original component edges.
+Either operation constructs a perfect matching of $A$.
+
+Conversely, each perfect matching of $A$ maps injectively to a tagged
+perfect matching of $B$. If it uses $(d,c)$, delete that edge. Otherwise
+there is a unique row $i$ matched to $c$ and a unique column $j$ matched
+from $d$; replace those two edges by the corresponding pair-created edge
+$(i,j)$. All remaining edges are tagged direct. The number of pair-created
+edges distinguishes the two cases, and their tags recover all original
+occurrence choices. Thus $A$ has at most as many perfect matchings as
+$B$. It has at least one by the preceding construction, proving the lemma.
+\end{proof}
+
+The converse of the lemma for an arbitrarily chosen pivot is false. For
+example
+\[
+ A=\begin{pmatrix}1&1&1\\1&0&1\\1&0&0\end{pmatrix}
+ \quad\hbox{has permanent }1,
+\]
+but pivoting its upper-left entry gives
+$\left(\begin{smallmatrix}1&2\\1&1\end{smallmatrix}\right)$, whose permanent
+is three. A poor raw elimination order can become stuck even when another
+order would finish. The source closure algorithm avoids this order dependence.
+
+\subsection{Flattening proof}
+
+For a completed epoch, let $D$ be its consumed original slots and $E$ its
+eliminated generators. Form the square source occurrence matrix
+\[
+ A_{jx}=\#\{\text{occurrences of }x\text{ or }x^{-1}\text{ in }R_j\},
+ \qquad j\in D,\quad x\in E.
+\]
+At any stage restrict to the still-unconsumed rows of $D$ and still-live
+columns of $E$. A raw singleton step has pivot one, and its new occurrence
+matrix is exactly the positive pivot in Lemma~\ref{lem:positive-pivot}.
+Deleting the unique pivot letter leaves $a_{dy}$ occurrences of every other
+letter $y$ in its defining image. Each of the $a_{ix}$ occurrences in
+another row contributes one such image. Inversion changes signs and order,
+but not absolute occurrence counts. No cancellation subtracts occurrences.
+
+The final matrix is empty. Applying the lemma backwards through every step
+gives $\operatorname{per}(A)=1$. Let its unique perfect matching assign
+source donor $R_{d(x)}$ to $x$. Every matched occurrence has multiplicity
+one. Direct an edge $x\to y$ when $y\ne x$, $y\in E$, and $y$ appears in
+$R_{d(x)}$. A directed cycle would allow cyclic exchange of the matched
+columns and create a second perfect matching. Hence this definition graph
+is acyclic. Solving the matched source equations in dependency order gives
+a single acyclic batch eliminating $E$.
+
+For the equality assertion, let $\phi:F(X)\to F(S)$ be the homomorphism
+computed by the original epoch. A consumed equation becomes the identity
+when it is eliminated, and stays the identity under subsequent
+homomorphisms. Therefore $\phi(R_j)=1$ for every $j\in D$, and $\phi$ fixes
+$S$. The acyclic matching gives a unique $F(S)$-valued solution to these
+same equations with the values on $S$ fixed: determine each generator in
+dependency order. Its homomorphism $\psi$ must consequently equal $\phi$.
+In particular, freely reduced residual source words agree. This uniqueness
+argument is in a free group, not in the monoid of unreduced signed strings.
+
+For a concrete difference in raw spelling, take the two donor equations
+\[
+ R_1=xayb,\qquad R_2=xc,
+\]
+with $a,b,c$ surviving. Eliminating $x$ first from $R_1$, then $y$ from
+the substituted $R_2$, sends $x$ to
+$b^{-1}bc^{-1}aa^{-1}$ as a raw word. The source matching assigns $R_2$ to
+$x$ and $R_1$ to $y$, and sends $x$ directly to $c^{-1}$. Both maps agree
+in $F(a,b,c)$.
+
+To finish Theorem~\ref{thm:raw-closure-equivalence}, an acyclic source
+definition order is a sequence of productive applications of
+\eqref{eq:raw-horn-rule}, so the closure contains every generator.
+Conversely, record one source row whenever closure first adds a generator.
+Its other support labels were already known, so the resulting definitions
+are acyclic. A row cannot be used twice: after its first productive firing,
+every member of its support is known. These distinct source rows therefore
+give a valid acyclic Tietze batch. This proves all directions.
+
+\subsection{Exact discovery without constructing intermediate words}
+
+The implementation uses the maintained word arena's immutable presence and
+repetition masks. At a concatenation $UV$ they satisfy
+\[
+ P_{UV}=P_U\cup P_V,\qquad
+ Q_{UV}=Q_U\cup Q_V\cup(P_U\cap P_V).
+\]
+Consequently $P_R\setminus Q_R$ is precisely the set of raw singleton
+generators. Two uses of the same child grammar still count twice. These
+summaries never infer cancellation from exponent sums or from equality of
+oppositely signed words.
+
+From the summaries, build a sparse generator-to-source-slot incidence
+index. For each row retain its number of currently unknown distinct
+generators and the xor of their dense local indices. When the number is
+one, the xor identifies the remaining generator. The row can fire exactly
+when that generator is in its original singleton set. A queue processes
+newly enabled rows. On learning a generator, decrement the unknown counts
+and update the xors in its incident rows. A row can pass from two unknown
+generators to one only once, so it enters the queue at most once; a queued
+row can become stale by falling to zero before it is visited.
+
+The invariant is that the counters and xors describe exactly the unknown
+members of every row. Every firing is permitted by the implication rule.
+When no row can fire, the known set is closed. By monotonicity it is the
+least closed superset of the seeds. No word image, substring, inverse, or
+new grammar node is created by this discovery pass.
+
+There is an exact early failure condition for all singleton seeds. If
+$r=|X|>1$ and no source row has support size at most two and at least one
+raw singleton generator, then no singleton seed admits a first productive
+firing. All singleton closures are trivial. This is a proof about this
+algebraic query; it is not a nontrivial-knot test.
+
+Let $I=\sum_j|\operatorname{supp}(R_j)|$. Once source metadata is available,
+one closure uses $O(r+m+I)$ structural operations and $O(r+m+I)$ working
+entries. The counters and local xors have $O(\log(r+1))$ bits. Trying all
+$r$ one-element seeds therefore takes
+\[
+ O\bigl(r(r+m+I)\bigr)
+\]
+such operations, plus source summarization. This is expected dictionary
+operation accounting for the Python implementation; label and identifier
+bit costs must be charged separately. Persistent arena masks may use the
+historical alphabet width rather than the current live rank. That existing
+memory cost is not hidden in the sparse source index bound.
+
+More generally, the fixed-$k$-survivor query can enumerate all
+$\binom rk$ seed sets, for $0\le k\le r$, with total closure cost
+\[
+ O\!\left(\binom rk(r+m+I)\right).
+\]
+This also decides reducibility to \emph{at most} $k$ survivors: a smaller
+successful seed set extends to size $k$, and closure is monotone. For
+$k\ge r$ the answer is immediate by the empty epoch; $k=0$ is the single
+empty-seed query. For $k<r$, absence of every source row with support at
+most $k+1$ and a raw singleton similarly proves that no size-$k$ seed set
+can make a first productive firing. Only the $k=1$ early guard is used in
+the delivered planner.
+
+On a freshly renumbered compact source of encoded length $n_0$, the
+parameters $r,m,M$ are $O(n_0)$ and $I\le mr=O(n_0^2)$. The one-seed
+enumeration thus uses $O(n_0^3)$ structural operations after preparation.
+Computing presence/repetition bit vectors, enumerating their set bits,
+and performing index arithmetic contribute polynomial bit costs. This
+establishes an actual polynomial decision algorithm for the stated raw
+query. It does not identify the current source size $n_0$ with the
+crossing count of a diagram before an unbounded transformation prefix.
+
+For polynomially encoded sources of size $n$ and $k=O(\log n)$, this is a
+quasipolynomial algorithm for \emph{raw singleton reducibility to at most
+$k$ survivors}. It supplies neither a general knot predicate on the
+remaining $k$ generators nor a bound on the transformations needed to enter
+this class. Only the one-seed producer is implemented in this delivery;
+the general enumeration is a direct algorithmic corollary.
+
+\subsection{Polynomial epoch compilation and exact endpoint handling}
+
+Once a successful closure is known, emit the original slot/generator pairs
+as one existing version-eight \texttt{elimination\_batch} move. The
+maintained producer and independently implemented checker reconstruct its
+word images and acyclic dependency graph from those source slots. The
+checker does not trust the closure index, xor counters, seed-search result,
+or permanent argument as certificate fields.
+
+Let $M$ be the number of reachable source grammar nodes, $H\le M$ its
+height, and $q\le r$ the number of eliminated generators. Two source
+substring cuts per donor, shared inversion, and one topological circuit
+compilation give the conservative grammar-node bound
+\[
+ O(M+qH+q)=O((r+1)(M+1)).
+\]
+The $m$ ordered root/slot handles and the encoded label and node-index
+bits are charged separately; the display is not a claim that empty or
+repeated source slots have no storage cost.
+All lengths have polynomial bit size because this is a binary terminal
+grammar of polynomial size. This conservative argument alone suffices for
+polynomial compilation independent of the number of raw phases in the
+original epoch. The previously proved disjoint-hole-path analysis can
+strengthen the single-batch allocation bound, but no linear-time claim is
+needed here. Donor occurrence scans and independent replay can revisit a
+source grammar once per donor; linear output size would not make them
+linear-time algorithms.
+
+For the same donor set as a given epoch, one further polynomial compressed
+free-reduction pass~\cite{schleimer} yields exactly the epoch's freely reduced semantic
+output. The theorem does not retroactively bound all allocations made by
+the old sequential implementation, and does not preserve its unreduced
+intermediate roots. It supplies a polynomial replacement using the frozen
+source and a single batch.
+
+At rank one, every residual relator is a power of the survivor. The
+existing endpoint evaluates all residual exponent sums and accepts only
+when every one is zero. Discarding unselected rows would be unsound for
+general presentations: for example $\langle a,b\mid ba^{-1},a^2\rangle$
+has a successful one-seed closure but presents a finite cyclic group.
+A knot verdict continues to require a source-bound presentation and the
+unchanged independent endpoint check.
+
+\subsection{Why the restriction is necessary}
+
+Normalization genuinely enlarges the move class. Consider
+\[
+ \langle z,x,y\mid xy,\ xy^2\rangle,
+ \qquad S=\{z\}.
+\]
+The two source words are freely reduced. Their eliminated-variable
+occurrence matrix is
+$\left(\begin{smallmatrix}1&1\\1&2\end{smallmatrix}\right)$, with
+permanent three, and the source closure of $\{z\}$ is unchanged.
+Eliminating $x$ from the first row nevertheless gives $x=y^{-1}$; the
+second row becomes the raw word $y^{-1}yy$. Free reduction turns this into
+$y$, enabling a second elimination. Thus an intervening cancellation
+invalidates the positive-pivot invariant. The theorem correctly excludes
+that step, even though the presentation is cyclic.
+
+On untouched Wirtinger presentations, seed propagation overlaps the
+established Wirtinger-number framework~\cite{wirtinger} and the repository's existing
+two-meridian stage. Applying general raw support rules after a verified
+presentation prefix is broader, but does not retain meridional provenance
+of arbitrary current generators automatically. Known unknot diagrams with
+large diagrammatic Wirtinger number~\cite{incompatibility} also rule out interpreting failure of
+a bounded-seed source query as evidence of knottedness.
+
+\subsection{Independent finite checks}
+
+The standalone matrix audit exhausts all $3^9=19{,}683$ ternary $3\times3$
+matrices and all $2^{16}=65{,}536$ binary $4\times4$ matrices, together with
+the smaller ternary cases. It compares three independently expressed
+conditions: permanent one by permutation enumeration, existence of a full
+raw unit-pivot sequence by recursive search, and source-row peeling.
+All agree. There are respectively 654 and 13,032 successful matrices in
+the two largest families.
+
+Two thousand random signed triangular source constructions yield 1,896
+completed randomly ordered raw epochs. For each, independent literal
+substitution and same-donor source flattening have identical freely reduced
+generator images and residual words. The original-to-source donor matching
+changes in 534 cases, and unreduced retained words differ in 419 cases.
+These differences directly exercise the distinction in the theorem.
+
+The maintained-arena module's ten focused tests compare 8,822 fixed-seed
+closures on 400 random signed presentations with a separate literal
+fixed-point oracle. On another 600 random presentations, exhaustive
+one-seed search agrees on the first successful seed; 351 successful plans
+pass both the maintained literal and compressed independent batch replayers,
+giving 702 replay checks. Further tests cover repeated and empty source
+slots, first-firing failure, cache source changes, strict field types,
+resource interruption, external cancellation, and a power with 4,097-bit
+expanded length while the expansion method is disabled. These are local
+algebraic tests, not hard-knot timing measurements or a proof of general
+quasipolynomial unknot recognition.

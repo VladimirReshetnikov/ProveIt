@@ -1,0 +1,275 @@
+\section{Implementation evidence and measured performance}
+\label{sec:experiments}
+
+The evidence is divided into exact mathematical checks, finite geometric
+oracles, and paired timing experiments. These answer different questions.
+An exact certificate establishes a statement about its supplied input;
+a finite audit checks an implementation on the audited cases; elapsed
+times describe this machine and protocol. None substitutes for a
+worst-case theorem.
+
+\subsection{Environment and timing conventions}
+
+The recorded environment is Python 3.12.14 on Linux, with SciPy 1.17.0,
+SymPy 1.14.0 and Regina 7.4 (distribution version 7.4.1). The experiments
+use the pinned repository checkpoint specified in
+Section~\ref{sec:context}. Exact source pairings, random seeds, selected
+supports, implementation hashes, all timing samples and retained
+certificates are included in the package. The two final timing campaigns
+ran separately, with the other research workers idle.
+
+The support campaign uses nine shuffled paired repetitions after one
+warmup per arm; the geometric campaign uses seven. Python's ordinary
+garbage collection and allocation remain enabled. Imports are warm.
+In the tables, individual time columns are medians, while a column
+labelled ``paired ratio'' is the median of the ratios within the paired
+trials. It need not equal the ratio of the displayed medians. This
+distinction is material in several noisy small cases. All samples,
+rather than only the summary statistics, are retained.
+
+\subsection{The maintained source-sector audit}
+
+The support audit starts from the maintained
+\path{reports/57/results/discovery_corpus.json}. It constructs sectors
+from archived standard and quadrilateral supports, small allowed sets,
+and reproducibly sampled full supports. Among the resulting sectors,
+188 have raw matching dimension greater than three. These are the cases
+tested by the higher-dimensional audit; they are not all sectors of
+all triangulations in the repository.
+
+For every one of these 188 cases, the exact support certificate agrees
+with the support union of all archived compatible standard vertices.
+The raw dimensions are four or five. In 24 cases, removing forced zeros
+lowers the dimension; the resulting effective dimensions are three,
+four or five. However, the incumbent two-row matching closure already
+finds the same forced coordinates in every audited case. Thus this
+corpus validates the new complete certificate, but supplies no example
+of a dimension advantage over that inexpensive incumbent reduction.
+
+The initial three-repeat complete-query pilot was slower with the
+new route on all five selected small sectors. It is retained as pilot
+evidence. The more carefully paired final measurements below supersede
+its timing estimates.
+
+\subsection{What the abstract obstruction tests establish}
+
+The cyclic family from the theorem was tested at
+\(m=3,8,16,32,64\), with effective dimensions one and three. All exact
+support proofs replay successfully. In every case, the incumbent
+one-/two-row closure makes no reduction, while the complete certificate
+removes every \(p\)-coordinate. The reduction in raw versus effective
+dimension is a proved property of the whole infinite family, not an
+extrapolation from these ten tests.
+
+\input{tables/abstract_family.tex}
+
+The last column is the combinatorial number
+\(\binom{2m}{m-1}\) of candidate coordinate-hyperplane bases in the raw
+dimension for the displayed \(s=1\) family. It is an operation-space
+comparison, not a measured elapsed time or a lower bound for every
+possible algorithm. The benchmark does not attempt to enumerate those
+enormous raw arrangements. After support restriction, the cone is one
+ray. The JSON also records the \(s=3\) cases and the exact certificates.
+
+This separation is relevant to asymptotic design, but the displayed
+matrices have not been realized as an infinite family of normal matching
+systems of knot exteriors. The separate geometric search addresses that
+gap experimentally without claiming to close it theoretically.
+
+\subsection{A genuine geometric example, and an important negative search}
+
+A deterministic bounded search examines larger layered, capped and
+Pachner-modified solid tori. The first run, seeded by
+\code{maximal-support-geometric-20261012}, stops after finding a
+counterexample to one fixed-row closure pass. It tests 2,187 sampled
+sectors in 18 sources; their raw dimensions range from one to ten.
+Among the 794 cases of raw dimension at least four, 683 complete
+support checks need no LP proposal and 111 use one.
+
+The discovered source has 36 tetrahedra and 36 allowed quadrilateral
+types. Its raw dimension is eight. One incumbent matching-support pass
+forces 22 coordinates to zero; the complete certificate forces 23,
+including allowed-coordinate index zero. The full source pairings,
+move history, support and certificate are supplied as a regression
+fixture.
+
+There is a crucial limitation: after the first 22 coordinates have
+been removed and the kernel rebuilt, its raw dimension is already
+five, equal to the complete certificate's effective dimension.
+A second incumbent pass on that rebuilt kernel finds the additional
+zero. Thus this is a genuine fixed-pass incompleteness example, but
+not an effective-dimension separation from iterated elimination and
+two-row closure.
+
+The second search explicitly repeats those inexpensive reductions
+after each rebuild. It completes the scheduled 4,864 sectors in 38
+sources, including 1,221 sectors of dimension at least four. Of those,
+993 obtain an exact complete-support confirmation without a new LP
+proposal and 228 use an LP proposal. It finds no additional forced zero
+beyond the iterated incumbent procedure. This is useful negative
+evidence for prioritizing inexpensive iteration. It is not a theorem
+that iterated two-row closure is complete on geometric matching
+systems. In particular, no finite search can establish the missing
+infinite-family realization or exclusion theorem.
+
+\subsection{Final supplied-sector timing results}
+
+Both timing arms perform a complete standard supplied-sector call and
+return the same status on every case. The new arm includes support
+production, exact reconstruction, its independent source replay,
+rebuilding when needed, and ordinary downstream discovery. The incumbent
+uses its existing discovery route. All checking performed internally by
+the queried APIs is included. A separate final replay by the unchanged
+witness or exhaustion checker is performed outside the measured calls.
+This external replay is not included in the timings for either arm.
+
+Two scopes are reported. ``Fresh source'' includes source preparation
+within each call. ``Prepared source'' gives both arms the same reusable
+\code{PreparedSectorSource}; it therefore tests the combined reduction
+and discovery routes after common source compilation. The latter
+comparison helps separate preparation cost from later work, but is
+still not an isolated LP microbenchmark.
+
+\input{tables/support_fresh.tex}
+\input{tables/support_prepared.tex}
+
+The 36-tetrahedron fixture improves in every one of its nine paired
+trials in both scopes. Fresh-source median time falls from
+\(0.890441\) seconds to \(0.537895\) seconds, with paired new/old
+ratios ranging from \(0.535\) to \(0.662\). With a shared prepared
+source, the medians are \(0.875823\) and \(0.513108\) seconds, and
+the paired ratios range from \(0.520\) to \(0.698\).
+The identical-incumbent control for this fixture has median paired
+ratio \(1.002\). These results support a substantial complete-query
+gain on this particular geometric fixture.
+
+The gain does not arise from a smaller final arrangement: both routes
+begin 1,835 bases and emit 31 rays across their quadrilateral and
+standard phases. Their final effective dimension is five. The result
+demonstrates reduced implementation cost for the combined support
+route, not an improved exponent or a proven dimension advantage.
+
+The five smaller cases remain unfavorable to the new route under the
+paired median statistic. Some effects close to one are comparable to
+measurement variability: the identical-code controls on these small
+cases have median paired ratios between \(0.922\) and \(0.981\).
+The complete sample arrays also show why one should not attach undue
+meaning to a few percent on a millisecond-scale call. The evidence
+supports retaining an explicit or adaptive invocation policy rather
+than adding a mandatory LP to every sector query.
+
+\subsection{Finite and binary geometric audits}
+
+The final port audit comprises 129 finite cases and eight binary cases.
+It includes the retained source proof bank, analytic layered sources,
+source relabellings, zero surfaces, and large multiplicities. The finite
+oracle explicitly glues polygon corners, constructs boundary darts,
+walks them, and propagates fibre signs on a separate adjacency graph.
+It therefore does not derive its answer from the new weighted
+histograms. All finite words and product fibre gauges agree.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}lr@{}}
+\toprule
+Audited quantity & Count\\
+\midrule
+Finite source cases & 129\\
+Binary source cases & 8\\
+Explicitly traversed boundary edges & 10,178\\
+Port occurrences & 4,048\\
+Zero gaps / positive gaps & 3,768 / 280\\
+Reversed port traversals & 1,408\\
+Nonzero product fibre gauges & 897\\
+Twisted port-bearing components & 20\\
+Emitted attached disc templates & 329\\
+Tetrahedra across these templates & 10,218\\
+Individually checked port subdivision charts & 3,067\\
+\bottomrule
+\end{tabular}
+\caption{Counts from the completed geometric audit. These are totals
+over cases, not a single simultaneous cut.}
+\end{table}
+
+There are 21 distinct emitted product complexes, with between nine
+and 330 tetrahedra. Every one passes Regina's validity, connectedness,
+orientability, one-boundary-component and \code{isBall()} checks.
+Thus the finite validation uses actual ball recognition, in addition
+to the product-construction proof; a homology calculation or sphere
+boundary test alone would not justify that conclusion. The audit also
+verifies that the rational port subintervals cover \([0,1]\) exactly,
+with the intended orientations and no overlapping interiors.
+
+Binary tests include source multiplicity \(2^{16384}\), both with no
+ports and in a two-tetrahedron source with two attached ports. These
+are exact encoded-input tests, not literal expansion experiments.
+The latter attached example returns two nine-tetrahedron disc
+templates. The archive retains 86 complete source certificates,
+selected across distinct audited profiles and all binary cases.
+
+Hostile-certificate tests include altered words, incorrect gauge bits,
+changed source data, malformed masks, and invalid template charts.
+The independent verifier is also tested with producer and query-building
+helpers disabled. Shared cycle caps, zero budgets and cancellation
+produce the specified incomplete outcomes rather than accepted partial
+geometry.
+
+\subsection{Paired compressed-versus-literal geometric timings}
+
+The comparison asks both arms to recover the same signed port words,
+relative fibre gauges and disc-product templates from the same supplied
+normal surface. Both construct and independently replay the source
+parallelity packet. The compressed arm additionally produces and
+replays the two new weighted-orbit proofs. The literal arm expands the
+boundary, walks its darts and propagates the fibre orientations, then
+constructs the same templates. Both serialize their common returned
+word, gauge and template data inside the measured call; the serialized
+outputs are byte-identical and their hashes are retained. This does
+not claim that the two different proof encodings are identical.
+
+\input{tables/geometry_timing.tex}
+
+On the two-tetrahedron family, increasing multiplicity from four to
+4,096 increases the represented boundary while the common output stays
+at 1,250 serialized bytes. At multiplicity 4,096 the compressed median
+is \(65.84\) ms, compared with \(885.90\) ms for the literal arm;
+the median paired literal/compressed ratio is \(13.455\).
+All seven pairs favor compression. Its time still increases with input
+bit length and realized trace work; the experiment does not assert
+constant running time.
+
+At small multiplicities the additional queries and proof replay cost
+more than the saved traversal. The four-tetrahedron case at multiplicity
+64 also favors the literal arm. The identical-compressed-code control
+has median paired ratio \(1.019\). The multiplicity-1,024 measurements
+show substantial allocation/host variability, which is visible in
+the raw samples and in the difference between paired ratios and ratios
+of medians. We report the observed crossover and large-case improvement,
+without treating this five-row table as a worst-case scaling proof.
+
+\subsection{Regression status and practical conclusions}
+
+The final combined regression command runs 59 tests successfully.
+It includes the 14 new support tests and ten new port tests, together
+with the relevant existing matching-support, sector-support, sparse
+kernel, normal-sector integration and source-parallelity suites. The
+exact command and output are saved in
+\path{validation/regression-tests.txt}. This is a focused regression
+run, not a claim to have executed every test in the repository.
+
+The implementation evidence suggests two immediate policies. First,
+retain cheap forced-zero closure and consider rebuilding and repeating
+it before paying for a full support LP; invoke the complete producer
+when dimension, repeated heuristic work or certificate reuse makes it
+plausibly worthwhile. The precise crossover needs broader complete-task
+measurement. Second, use the compressed port route for large represented
+geometry while retaining the possibility of direct traversal on genuinely
+small objects. Both decisions should be made from encoded size and
+observed work, with exact verification after either route.
+
+These policies can improve current performance while the structural
+questions remain open. The abstract separation explains a possible
+asymptotic benefit; the source experiments establish actual correctness
+and selected runtime gains; the global search-budget theorem specifies
+what still has to be bounded before either becomes a quasi-polynomial
+unknot-recognition theorem.

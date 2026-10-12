@@ -1,0 +1,143 @@
+\section{Weighted least representatives retain component identity}
+\label{sec:weighted-transversal}
+
+An orbit histogram records how many components have each additive weight.
+It does not identify where these components occur in the original interval.
+This distinction matters when a later geometric query must place one mark on
+each boundary component, while omitting isolated interior vertices. Selecting
+one point per orbit and separately computing a weight histogram loses the
+association needed to make that decision.
+
+The new \code{weighted\_orbit\_transversal} returns disjoint half-open runs
+$[a,b)$ of least original representatives, each tagged by the exact weight
+of its orbit. A run of length $b-a$ represents that many different orbits
+with the same weight. Signed additive weights and overlapping input intervals
+are supported. The run endpoints and weights are binary integers; neither
+large runs nor their orbits are expanded. Adjacent runs with equal tags are
+coalesced, but labels separated by a deleted interval remain separated.
+
+\subsection{Forward transport and its invariant}
+
+Discovery uses the monotone forward interval-orbit trace already described
+in the preceding sections. Its weight transport keeps a piecewise constant
+function on the current interval. Its label transport keeps the ordered
+intervals of original points that are still live. At every stage, the weight
+on a live point is the sum of the original weights already folded into it.
+The live labels are increasing, and folding removes a point in favour of a
+smaller point in the same original orbit.
+
+Deletion, trimming, periodic merging and transmission change the description
+of the equivalence relation without changing these labels or their weights.
+Translation and reflection truncation add the removed points' weights to
+their surviving images and retain the appropriate prefix of live labels.
+A static-gap contraction finishes one orbit per point of the gap. Intersecting
+the gap, weight runs and live-label intervals emits the corresponding original
+labels with their final orbit weights. An ordered three-way sweep performs
+this intersection without visiting individual points.
+
+\begin{proposition}
+For a complete accepted monotone trace, the emitted labels are exactly the
+least original representatives, and every emitted tag is the additive weight
+of the represented orbit.
+\end{proposition}
+\begin{proof}
+The label invariant is the one used by the unweighted least-representative
+operator. Weight transport preserves the sum on each equivalence class.
+At a static contraction, a current point has no remaining identification with
+another live point, so its weight is final. Its original label is least by
+monotonicity. The complete trace removes every live point, and therefore
+emits exactly one representative for each original orbit.
+\end{proof}
+
+The implementation additionally checks that the tag histogram equals the
+weighted histogram, that total weight is conserved, and that the emitted
+cardinality equals the ordinary orbit count. These checks supplement the
+transport invariant. Histogram equality alone would accept a permutation
+of tags among representatives and is therefore insufficient.
+
+\subsection{An independent backward verifier}
+
+The certificate contains the existing weighted interval-orbit certificate
+and the proposed representative runs. Replay first authenticates the source
+weight function and the ordinary trace. Its separate weighted construction records emissions in the current
+coordinates of each contraction and accumulates the histogram in the same
+pass. It then restores the contractions backwards by inserting their removed
+gaps.
+An interval crossing an insertion anchor is split before its labels are
+lifted. Truncations insert no selected points: the removed suffix contains no
+least representative. This verifier does not call the producer's forward
+live-label compiler.
+
+Only monotone forward traces are accepted. A trace using a global reversal
+may preserve the histogram while changing the least-label invariant. Capped
+discovery returns an inconclusive result without a selector or certificate;
+external cancellation propagates. JSON transport retains large integers
+through the existing exact hexadecimal encoding.
+
+\subsection{Removing the duplicated weighted pass}
+
+The first version called the complete weighted-certificate verifier before
+running the selector reconstruction. Both performed the same forward weight
+folds. Profiling the four-tetrahedron primitive example identified this
+redundancy in the independent replay path. The updated implementation factors
+the common certificate checks into a private checker that accepts one of two
+fixed internal replay routines. The public APIs retain their existing proof
+formats and validation requirements.
+
+Ordinary histogram verification uses its existing weighted replay. Tagged
+verification uses the forward part of the backward-label reconstruction,
+which now returns both the selected runs and the histogram already accumulated
+at its contractions. The common checker still binds the exact initial weight
+function, verifies the ordinary interval-orbit trace, compares the sorted
+histogram, checks the orbit cardinality, and checks signed weight conservation.
+The tagged caller also compares every proposed original representative and
+its weight with the independently reconstructed runs. No certificate field
+chooses which checks or replay routine are used.
+
+\begin{proposition}
+For complete monotone traces, the single weighted replay authenticates the
+same histogram and representative data as the former two-pass construction.
+\end{proposition}
+\begin{proof}
+When the former histogram verifier performs weighted transport, both passes
+start from the same authenticated canonical weights and pairings. At every trace operation they use the same independent translation,
+reflection and contraction rules. Induction therefore identifies their
+current weight functions. A contraction's contribution to the histogram is
+the sum of the lengths of its intersections with each weight run; those same
+intersections carry the weighted label emissions. The combined pass retains
+this histogram and exactly those emissions. Backward gap insertion is
+unchanged, as are all final histogram and representative comparisons. If the
+former histogram verifier instead uses its one-orbit shortcut, conservation
+uniquely determines the same weight that the label replay accumulates.
+\end{proof}
+
+The ordinary verifier retains the one-orbit conservation shortcut: after
+checking the ordinary trace, the total weight determines the unique orbit
+weight. Tagged verification deliberately does not take that shortcut.
+It must still authenticate the proposed original label, and hence performs
+its label reconstruction even for one orbit. Tests explicitly reject a
+correct weight attached to a wrong representative in this case.
+
+Writing $U$ for source and ordinary-trace authentication, $W$ for forward
+weighted transport, and $L$ for backward label insertion, the dominant tagged
+replay work for traces with more than one orbit changes from $U+2W+L$ to $U+W+L$. The second normalization of the
+source weights is also removed. This improves the cost of an existing encoded
+operation; it does not change the general hierarchy complexity class.
+
+\input{selector_replay_results.tex}
+
+\subsection{Cost and validation scope}
+
+Tag emission is linear in the ordered partitions traversed at that
+contraction. The reference replay deliberately uses simpler backward gap
+insertion, with polynomial work in the trace length, emitted-run count,
+gap count and integer bit lengths. These are bounds in terms of the encoded
+trace and realized weighted partitions; they do not assert a new worst-case
+bound on every weighted partition generated by the scheduler.
+
+The regression suite compares 750 seeded finite signed-pairing systems with
+an independent pointwise union model and directly checks the least label and
+weight of every orbit. It includes overlapping signed weights, empty systems,
+a forged exchange of tags that preserves the entire histogram, cancellation,
+cap exhaustion, and a $2^{16384}$-orbit example represented by one tagged run.
+Producer-disabled replay accepts the large example after exact JSON transport.

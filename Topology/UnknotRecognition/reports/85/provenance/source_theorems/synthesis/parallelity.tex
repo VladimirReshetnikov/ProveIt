@@ -1,0 +1,238 @@
+\section{Source parallelity in all handle dimensions and a bounded inherited core}
+\label{sec:parallelity-core}
+
+The full raw cut of Section~\ref{sec:cut-cells} retains the source geometry
+needed to distinguish product regions from the exceptional pieces of a cut.
+The new \code{normal\_cut\_parallelity} uses that structure to describe the
+parallelity bundle for the supplied normal surface in the triangulation's
+dual handle structure. It includes product handles of indices zero, one and
+two, their complete base surfaces, their fibre twisting, and their interfaces
+with an inherited complementary core. The number of complementary handles
+is at most $30T$, independently of normal multiplicity, where $T$ is the
+number of source tetrahedra.
+
+The input is still a validated finite connected compact orientable
+triangulation with one torus boundary and an admissible integral standard
+normal vector. Empty, disconnected and one-sided surfaces are supported.
+The output is an intermediate decomposition of the supplied cut. An
+admissible patterned hierarchy and its global running-time bound still
+require further work.
+
+\subsection{Selecting the product handles}
+
+Use the dual handle decomposition relative to the original boundary:
+tetrahedron chambers give zero-handles, regions of internal faces give
+one-handles, gaps on interior edges give two-handles, and interior original
+vertices give three-handles. Boundary faces and boundary edges do not supply
+one- or two-handles in this decomposition.
+
+In a tetrahedron, a stack of $m$ identical normal discs has $m-1$ product
+zero-handles between successive discs. Distinct disc types are separated by
+exceptional chambers. On a canonical internal face, the arm at corner $v$
+contains $A=t_v+q_{fv}$ parallel normal arcs. Its ranks $1,\ldots,A-1$ give
+product one-handles; rank zero and the face centre are exceptional. Finally,
+on an interior source edge of weight $w$, ranks $1,\ldots,w-1$ give product
+two-handles. End gaps are exceptional. No three-handle is selected.
+
+These selections are local and respect the source face permutations. At an
+intersection of selected handles the product fibres agree, with an explicit
+bit recording whether the local fibre parameter reverses. Their union is
+therefore the source parallelity $I$-bundle. The rank-map slope is retained
+separately from the fibre bit: an interval consisting of a single point
+cannot encode a fibre reversal by its point map alone.
+
+\subsection{Complete base polygons, including contacts with the core}
+
+Each selected zero-handle contributes a truncated normal polygon: a hexagon
+for a triangle and an octagon for a quadrilateral. Its sides alternate
+between contacts across faces and contacts around source edges. A selected
+one-handle contributes a rectangle, with two tetrahedron ends and two edge
+sides. A selected two-handle contributes its edge-link polygon, alternating
+tetrahedron sectors and internal-face sectors. The source edge link records
+every occurrence, including repeated tetrahedra and self-face pairings.
+
+All zero--one, zero--two and one--two contacts are glued along their actual
+base arcs. Each contact has an affine rank map, a permutation of its arc
+endpoints, and a fibre-reversal bit. Unglued arcs either lie on the original
+boundary or carry a source-labelled port to a complementary zero- or
+one-handle. A missing selected lower-index handle leaves a free boundary arc;
+it is not silently filled by a disc.
+
+This last point is essential. The discussion of boundary handles in the
+retained July manuscript~\cite{lackenby2026}, in the proof of its lemma on
+cutting along a vertical surface, explains why the naive list of selected
+zero-, one- and two-handles need not itself be a handle decomposition of the
+base. Higher-index handles can meet the complementary core. The polygon
+construction here retains those boundary contacts explicitly. It implements
+the source-cut parallelity geometry relevant to the cutting theorem, while
+the later interior parallelity bundle of an admissible patterned structure
+has different input hypotheses. The published algorithmic precedent is
+Lackenby's full parallelity construction~\cite{lackenby-parallelity}.
+
+A concrete case in the audit is the two-tetrahedron source labelled
+\code{fibonacci\_lst\_02}, with coordinate rows
+$(0,0,1,1,1,0,0)$ and $(1,1,1,1,0,0,0)$. Its parallelity bundle has one
+component whose base is a disc, supplied by a single selected two-handle.
+It has no selected zero- or one-handles and has eight core-facing arcs.
+A prism-only extraction would miss this component entirely. Its attachment
+subset is the whole base boundary, so $\chi(A)=0$, although all eight arcs
+and their cyclic endpoint identifications must still be retained.
+
+\subsection{The complementary handles and attachment charts}
+
+\begin{proposition}
+The unselected handles form an inherited complementary handle structure
+with at most $6T$ zero-handles, $8T$ one-handles, $12T$ two-handles and $4T$
+three-handles. Its attaching data and its interfaces with the bundle have
+$O(T)$ source records with binary ranks.
+\end{proposition}
+\begin{proof}
+Each tetrahedron has at most four triangle tips and two endpoints of an
+occupied quadrilateral chain. With no quadrilateral stack the single centre
+replaces those two endpoints. Hence there are at most six exceptional
+chambers. Each internal face has its centre and at most three nonempty arm
+tips, and there are at most $2T$ paired faces. Each interior edge has at most
+two end gaps; the total number of source edges is at most $6T$. There are at
+most $4T$ source vertices. Adding gives the stated $30T$ bound.
+
+A complementary face region has only complementary chamber ends. An end
+gap around an interior edge similarly meets only complementary chamber and
+face regions. The source vertex links provide the three-handle charts.
+Thus the lower attachments of complementary handles remain in the core.
+The total length of the edge-link sector lists is bounded by the number of
+local tetrahedron-edge flags; the vertex-link triangles are likewise bounded
+by local vertex flags. Retaining each flag with its source chart therefore
+uses linear combinatorial storage.
+\end{proof}
+
+The packet contains both ends of every core one-handle, the alternating
+zero/one attaching sectors of every core two-handle, and the source
+vertex-link triangles of every core three-handle. It also includes a copied
+source triangulation and the unscaled normal coordinates. This preserves
+topological attaching information beyond a cellular boundary matrix.
+
+Every core-facing base arc is at a type transition and has singleton rank.
+A rectangle end has at most one such transition per face corner and side.
+An edge-cap tetrahedron sector has at most two, and a face sector has at
+most one. These yield a linear port bound; the implementation conservatively
+checks $66T$. Adjacent free cap arcs can face different core handles, even
+when their integer ranks are consecutive. The constructor splits them at
+the source triangle/quad transitions before assigning owners.
+
+\subsection{Classifying the bases without expanding polygons}
+
+Four interval-orbit queries suffice. First identify polygon corners across
+glued arc endpoints. Next add the free-arc endpoint pairings: among these
+new orbits, those containing free arcs are the boundary loops. The weighted
+selectors of Section~\ref{sec:weighted-transversal} distinguish them from
+isolated interior-vertex orbits and place exactly one representative mark
+on each actual loop.
+
+For each connected polygon component accumulate the seven coordinates
+\[
+ (\chi,b,h_0,h_1,h_2,e_{\mathrm{old}},m).
+\]
+Here $b$ is the number of base boundary components, $h_i$ counts selected
+source handles of index $i$, $e_{\mathrm{old}}$ counts free arcs on the
+original boundary, and $m$ is the bit mask of core ports. A polygon of
+degree $d$ initially contributes $1-d$ to $\chi$. Each glued arc contributes
+one back, because it was counted twice, and one mark at each quotient vertex
+completes $V-E+F$. Boundary-loop marks contribute to $b$. Unique port $j$
+contributes $2^j$ to $m$, so its encoded bit length is $O(T)$.
+
+The fourth query is the fibre double cover of the polygon system. Let $C(w)$
+be the base-component histogram and $D(w)$ its doubled histogram. If $O(w)$
+and $N(w)$ count product and twisted components, respectively, then
+\[
+ C(w)=O(w)+N(w),\qquad D(w)=2O(w)+N(w/2),
+\]
+where the second term is zero when any coordinate of $w$ is odd. Process
+signatures in increasing positive $h_0+h_1+h_2$. This recovers both types
+without confusing an annulus signature with twice a M\"obius-band signature.
+Since the ambient manifold is orientable, the total interval bundle is a
+product exactly when its base is orientable. The genus or crosscap count
+then follows from $\chi=2-2g-b$ or $\chi=2-k-b$.
+
+\subsection{Checking the gluing to the core}
+
+Let $A\subseteq\partial B$ be the union of core-labelled arcs in all base
+surfaces, and let $K$ be the complementary core. The bundle meets the core
+in the interval bundle over $A$. The vertex selector also records whether a
+vertex is incident to a core port, giving
+\[
+ \chi(A)=\#\{\text{vertices incident to core ports}\}-\#\{\text{core ports}\}.
+\]
+The checked identities are
+\[
+ \chi(M\mathbin{\backslash}\operatorname{int}\nu(F))
+   =\chi(K)+\chi(B)-\chi(A),\qquad
+ \chi(B)-\chi(A)=h_0-h_1+h_2.
+\]
+The second identity explains why counting selected handles alone can give
+the wrong Euler characteristic of the base. Every port belongs to exactly
+one base component. A profile containing a port must have multiplicity one;
+only components with no core contacts can be grouped into repeated profiles.
+The source polygon packet retains their attachment locations even when
+profiles alone omit the cyclic order of free arcs.
+
+Independent verification reconstructs the source geometry from the raw
+cut-cell reference model. It derives contact maps by inverting
+edge-to-face-to-chamber incidences, rather than calling the producer's direct
+rank formulas. It independently assembles all four query systems, checks the
+two tagged selector proofs and the two weighted proofs, and recomputes the
+surface classification and gluing identities. A shared discovery-cycle cap
+covers all four queries; exhausted work has no geometric result. The
+verification operation cap counts the supplied traces, and cancellation
+propagates through both paths.
+
+\subsection{Encoded size, experiments and remaining obligations}
+
+There are at most $17T$ polygon families, $44T$ gluing families and $68T$
+polygon side slots. If $D$ is the total number of normal discs, the polygon
+and corner universes have sizes at most $9D$ and $32D$, respectively. These
+universes are represented by binary interval endpoints. Their storage does
+not scale with their numerical sizes. The source geometry and core have
+$O(T)$ records; the attached weights and traces are additional encoded data.
+As with the existing weighted engine, the implementation's replay accounting
+is polynomial in the realized trace and weighted partitions. The present
+work does not turn that conditional accounting into a complete hierarchy
+complexity theorem.
+
+The finite reference expands the polygons, checks each vertex link is a
+single interval or circle, checks fibre and base orientation independently,
+and counts connected components, boundary loops, ports and Euler
+characteristics. The accompanying audit records its source hashes and
+case-by-case proof hashes. The regression tests also cover one-sided
+multiples, interior three-handles, relabellings, forged fibre and endpoint
+maps, forged core owners, shared caps, cancellation, and exact JSON replay
+of $2^{16384}$ parallel meridians with a fixed four-zero/three-one core.
+
+\input{parallelity_results.tex}
+
+There is also a normality obligation at the interface to the hierarchy.
+The accepted standard coordinates satisfy triangulation matching and
+quadrilateral constraints. The patterned handle-normality definition in
+\cite{lackenby2026} imposes further local restrictions involving the
+characteristic surface and boundary pattern. The manuscript's nonnegative
+index lemma assumes that stronger normality and an admissible input handle
+structure. A standard coordinate vector and a bounded source core alone
+therefore do not authorize applying that lemma. The patterned construction
+must supply and check these hypotheses explicitly.
+
+The empty cut on the one-tetrahedron layered solid torus is already a
+concrete obstruction to assuming admissibility. Its independently replayed
+core has handle counts $(1,1,0,0)$. The characteristic surface has two
+zero-handles, the ends of the single manifold one-handle, and no one-handles,
+since there are no manifold two-handles. With empty pattern, each
+characteristic zero-handle has index $-4+2\cdot0+0=-4$. Thus this inherited
+core fails the first admissibility condition. The saved source certificate
+in \code{parallelity-admissibility-obstruction.json} makes the distinction
+checkable even before any large normal vector is introduced.
+
+This operator supplies the all-dimensional source parallelity extraction
+missing from the earlier prism-only construction. The next requirements are
+to carry boundary patterns through the core interfaces, construct and verify
+an admissible uniform-type structure, and implement the hierarchy operations
+with their reduction and search bounds. The complete recognizer's general
+exponential fallback remains. Quasi-polynomial unknot recognition has not
+yet been established by this implementation.
