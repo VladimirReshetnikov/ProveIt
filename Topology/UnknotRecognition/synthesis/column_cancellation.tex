@@ -1,0 +1,148 @@
+\subsection{Complete rectangular cancellation by sparse column peeling}
+\label{marked-cut:column-peeling}
+
+Reports 95 and 97 independently sharpen the square-only discussion above.
+Report 95 derives the full-row criterion from report 56's permanent-one
+argument; report 97 supplies a direct stopping-set persistence proof and a
+sparse native implementation. We integrate the latter queue and independent
+timestamp checker, extend them to the whole-cut boundary kernel, and retain
+the old paths for differential measurement and certificate compatibility.
+The stopping-set and iterative peeling framework is classical in coding
+theory; its maximal residual is described by Di et al.\cite{dptru2002}.
+The application here uses unsigned integral incidences and the geometric
+positive-pivot rule, not parity-check arithmetic.
+
+This corrects our earlier description of the capped planner as incomplete
+for rectangular full-row cancellation. It was already complete for that
+precise problem because it prioritizes zero-fill pivots. The improvement
+removes repeated matrix scans and makes the obstruction explicit. Neither
+algorithm is complete for recognition of all geometric handlebodies.
+
+\paragraph{Definition.}
+For a nonnegative integral matrix $N$, a nonempty row set $R$ is a
+\emph{stopping set} if every column total
+$S_h(R)=\sum_{i\in R}n_{ih}$ is zero or at least two.
+A \emph{unit column} has total one on all currently live rows.
+Its unique incident row has entry one; cancelling this pair creates no fill
+in the other rows.
+
+
+\begin{proposition}[Stopping-set persistence]
+\label{marked-cut:stopping-persistence}
+A nonempty stopping set prevents every full positive-pivot cancellation,
+including sequences that use nonzero fill.
+\end{proposition}
+\begin{proof}
+Pivot at $(r,g)$ with $n_{rg}=1$. If $r\notin R$, then for surviving $h$,
+\[
+ S'_h(R)=S_h(R)+S_g(R)n_{rh},
+\]
+which is zero or at least two. If $r\in R$, the stopping condition implies
+$S_g(R)\ge2$, so $R'=R\setminus\{r\}$ is nonempty. Then
+\[
+ S'_h(R')=S_h(R)+(S_g(R)-2)n_{rh}.
+\]
+If $S_h(R)=0$, also $n_{rh}=0$; otherwise the right side remains at least
+two. A nonempty stopping set therefore survives every pivot prefix and
+prevents deletion of all rows. Saturation at two preserves this argument's
+zero and singleton predicates.
+\end{proof}
+
+\begin{proposition}[Complete full-row decision]
+\label{marked-cut:rectangular-complete}
+For every finite rectangular nonnegative integral matrix, a full positive
+cancellation exists if and only if maximal unit-column peeling deletes all
+rows. If peeling stops, its residual rows form the unique largest source
+stopping set, independent of queue order.
+\end{proposition}
+\begin{proof}
+Every peel is a valid positive pivot with zero fill. If peeling stops with
+rows $R$, each remaining column has total zero or at least two on $R$.
+A deleted column had only its deleted row present, hence is zero on $R$.
+No fill occurred, so $R$ is a stopping set in the original source matrix.
+The preceding proposition excludes any other full positive schedule.
+
+The union of stopping sets is a stopping set: any column meeting the union
+already meets one constituent with total at least two. No unit-column peel
+can remove the first row of any original stopping set. Every such set lies
+in the final residual, which is itself a stopping set. This proves maximality
+and uniqueness.
+\end{proof}
+
+A zero row is an immediate obstruction. Conversely, the all-one $2\times2$
+matrix is obstructed although an arbitrary raw pivot removes one row and
+leaves the entry two. The canonical residual is therefore not a maximum
+partial-cancellation answer. Nor does a stopping set prove knottedness or
+non-handlebody topology: a changed forest, new disk system, two/three
+cancellation, or geometric intersection reduction changes the problem.
+
+\paragraph{Why the old producer was complete.}
+The retained capped planner minimizes
+$(\sum_hn_{rh}-1)(\sum_in_{ig}-1)$ over singleton pivots. A zero score means
+a unit row or unit column, and such a pivot has no fill. Whenever full
+completion is possible, the theorem supplies a unit column and thus a
+zero-score choice. A column peel preserves full cancellability because any
+stopping set in the remainder was already a source stopping set. For a unit
+row peel, a putative residual stopping set $R$ either has zero or at least
+two crossings at the deleted column, making $R$ a source obstruction, or
+has one crossing there, making $R\cup\{r\}$ a source obstruction. Thus
+neither zero-fill choice can destroy a possible full completion. Induction
+proves the old minimum-score producer's completeness. This does not assert
+that every arbitrary singleton choice has the same property.
+
+\paragraph{Sparse production and source timestamps.}
+The queue stores, for each appearing column, its number of incident live
+rows and the xor of their labels. Degree one and a unit entry identify an
+eligible pivot. Deleting its row visits that row's immutable source columns
+once. A column reaches degree one at most once; stale queue entries are
+ignored. No incidence matrix is updated. For $I$ source nonzeros and $m,n$
+rows and columns, the indexed algorithm needs $O(I+m+n)$ structural work
+and storage. Reading the input integers and their label bit lengths is
+charged separately; Python dictionaries are not an adversarial constant-time
+hashing theorem.
+
+The checker assigns a deletion time $\tau(r)$ to every scheduled row. For
+pivot $(r,g)$ at time $t$, it checks $n_{rg}=1$ and requires
+$\tau(i)<t$ for every other source row $i$ meeting $g$. Unlisted rows have
+infinite time. Distinct pivot rows and columns, these incidence inequalities,
+and coverage of all rows prove a complete no-fill schedule in one source
+scan. It imports no producer and does not simulate its queue. A separate
+checker accepts any nonempty stopping subset by verifying its capped source
+column totals; canonical discovery is not trusted by the obstruction checker.
+
+The native core keeps its earlier row-leaf shortcut, then uses column peeling.
+Successful fallback proofs use \path{normal-core-handlebody-v2}; v1 leaf and
+capped proofs remain replayable. The whole-cut v5 wrapper now emits
+\path{bundle-boundary-kernel-v2} with source-timestamp replay. Earlier kernel
+v1 proofs retain their dense positive-update replay. Omitted bundle and
+connecting columns still have only zero or at least two entries, so the
+projected full-row theorem applies without expanding them.
+
+These are linear bounds for the cancellation and timestamp steps. The
+retained row heap adds a logarithmic term, and the existing independent
+forest and component bookkeeping can still take quadratic work. Source
+orbit queries, binary arithmetic, source-path reconstruction and passive
+v4 curve transport retain their separate costs. We do not describe the
+entire normal-cut operator as linear.
+
+\paragraph{An early source-core obstruction.}
+Adding rows cannot remove a stopping subset of original rows. Adding columns
+that are zero on those original rows cannot remove it either. In every
+supported bundle presentation, the original core rows are unchanged after
+the same core forest contraction; their new bundle and connecting columns
+are zero. Hence a failed original-core full-row test permits an inconclusive
+return before ordered boundary discovery. The current wrapper enables this
+filter by default and reuses a successful core proof when disk absorption
+adds no rows. Setting \path{precheck_core=False} retains the full query path
+for differential checks. Three-handles are excluded before this argument.
+This is a refusal of the fixed raw method, not a topological negative verdict.
+
+\paragraph{A changed schedule can change passive witnesses.}
+Although complete core cancellation has the same success set, a new schedule
+can leave different cocore disks. A formerly private annulus may lose its
+private column in that disk system. The complete joint boundary kernel then
+provides another whole-cut certificate. The source audit must therefore compare
+whole-cut censuses and replay all old proofs, rather than demand unchanged
+certificate bytes or a fixed outer schema for every input.
+
+\input{column_cancellation_results.tex}

@@ -6,6 +6,7 @@ imports no producer code or group-presentation simplifier.
 """
 
 from .integer_codec import certificate_equal
+from .column_cancellation_verify import verify_column_cancellations
 
 
 def verify_core_handlebody_certificate(core, certificate, *, check=lambda: None):
@@ -14,9 +15,10 @@ def verify_core_handlebody_certificate(core, certificate, *, check=lambda: None)
     required = {'schema', 'method', 'forest', 'cancellations', 'components'}
     if type(certificate) is not dict or set(certificate) != required:
         return False
-    if certificate['schema'] != 'normal-core-handlebody-v1' or core['handles3']:
-        return False
-    if certificate['method'] not in ('leaf', 'capped'):
+    version, method = certificate['schema'], certificate['method']
+    supported = ((version == 'normal-core-handlebody-v1' and method in ('leaf', 'capped'))
+                 or (version == 'normal-core-handlebody-v2' and method == 'column_leaf'))
+    if not supported or core['handles3']:
         return False
     forest, moves = certificate['forest'], certificate['cancellations']
     if type(forest) is not list or type(moves) is not list:
@@ -80,7 +82,17 @@ def verify_core_handlebody_certificate(core, certificate, *, check=lambda: None)
         matrix.append(row)
     live_rows = set(range(len(discs)))
     live_columns = set(range(m)) - seen
-    if certificate['method'] == 'leaf':
+    if method == 'column_leaf':
+        if not verify_column_cancellations(dict(enumerate(matrix)), moves, check=check):
+            return False
+        for r, c in moves:
+            check()
+            if c not in live_columns:
+                return False
+            live_rows.remove(r)
+            live_columns.remove(c)
+        moves = []
+    elif method == 'leaf':
         # Independently check a triangular source pattern.  Earlier leaf
         # removals add no other crossings, so timestamps replace all updates.
         removed_at = {}

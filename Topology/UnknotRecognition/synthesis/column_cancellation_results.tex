@@ -1,0 +1,27 @@
+\paragraph{Source compatibility and independent oracle.}
+All 54 focused tests pass in 80.515 seconds. They include exhaustive comparison
+of column peeling with every legal saturated-pivot schedule on 31,096 small
+matrices, 350 seeded all-subset/minor checks, a 4,000-row incidence-work check,
+hostile records, all 106 source cores, source-only boundary-query suppression,
+legacy dense replay, and complete supplied-cut certificate replay.
+
+The fresh 106-case audit retains 85 complete supplied-cut certificates and
+21 inconclusive outcomes. All 85 replay independently; the 78 cases below
+the expansion cap agree with literal Regina cuts, and seven large-coordinate
+cases are excluded from literal expansion. The refusal split remains eight
+raw stalls, three square raw obstructions, and ten cases with core three-handles.
+
+The retained baseline is commit \texttt{5578c6e6629a5c63fc5b40ea14d1f49c9d5a8c8c}.
+A separate old/new/precheck-disabled audit reproduces all 85 historical
+certificate hashes, replays all 85 old certificates with both checkers, and
+preserves every outcome and census. The enabled and disabled precheck produce
+identical new positive certificates. Six failed source cores skip ordered
+boundary discovery, and their stopping subsets are independently checked.
+Only 44 positive certificates remain byte-identical: changed valid schedules
+are expected. The pilot Fibonacci 7 and 9 single-surface cases move from outer
+v4 to v5 while retaining their independently checked censuses.
+
+The full-suite result and isolated performance measurements are recorded
+below when complete. Reproducible drivers and raw evidence are retained as
+\path{data/column-peeling-*}; the six unmodified old modules and their loader
+are in \path{data/column-baseline/}.

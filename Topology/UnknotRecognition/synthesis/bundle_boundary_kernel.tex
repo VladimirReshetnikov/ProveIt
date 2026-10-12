@@ -134,8 +134,9 @@ The whole-cut schema \path{normal-cut-handlebodies-v5} contains the two
 source certificates, a \path{bundle-boundary-kernel-v1} record, and the
 census. The kernel records both forests, every annular source crossing,
 the named boundary columns and omitted genus counts, and the pivot schedule.
-The producer uses sparse rows and tries projected leaf peeling before a
-greedy positive-fill schedule. A projected leaf can still meet omitted
+The initial v5 producer used sparse rows and tried projected row-leaf
+peeling before a positive-fill schedule. Section~\ref{marked-cut:column-peeling}
+replaces that search with complete column peeling. A projected leaf can still meet omitted
 columns twice; the checker therefore always uses the general positive
 update, without assuming that the full row has only one crossing.
 
@@ -154,7 +155,8 @@ arithmetic for genus and multiplicity. The retained matrix is quadratic
 in size; source crossings and template records have polynomial size.
 Omitted genus and isolated multiplicity use exact binary arithmetic, never
 iteration over their values. These bounds are for a supplied normal cut.
-The greedy schedule is incomplete, three-handles are still unsupported,
+The raw full-row decision is now complete for the supplied matrix, but
+three-handles are still unsupported,
 and no general bound on useful-surface discovery or hierarchy length follows.
 
 \input{boundary_kernel_results.tex}
