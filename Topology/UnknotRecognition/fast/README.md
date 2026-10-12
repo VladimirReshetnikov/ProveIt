@@ -4243,16 +4243,21 @@ PYTHONPATH=. python -B -m normal_orbit_research.source_handles benchmark --outpu
 
 `fastunknot.normal_cut_handlebodies.normal_cut_handlebodies(source, coordinates,
 record_certificate=True)` now combines the full normal-cut parallelity geometry,
-ordered core-port interfaces, geometric core cancellations, and disk gluing.
+ordered core-port interfaces, disk-base annulus absorption, geometric core
+cancellations, and disk gluing.
 A successful result gives the exact binary histogram of handlebody genera for
 all cut components. Replay with
 `fastunknot.normal_cut_handlebodies_verify.verify_normal_cut_handlebodies`.
 This implements the interface/core portions of report 85; it is a supplied-cut
 API and does not change the recognizer's default search or return a knot verdict.
 
-Adjacent ports are amalgamated into their actual disk interfaces. Full-circle
-attachments, closed bundle bases, three-handles and stalled raw cancellation
-remain inconclusive. The low-level `core_handlebody_certificate` requires
+Adjacent ports are amalgamated into their actual disk interfaces. A full-circle
+attachment on a disk base is absorbed as a source-authenticated two-handle.
+Its signed endpoint charts distinguish self-paired faces, while cancellation
+counts every unsigned occurrence. An independent adapter reconstructs the
+augmented core and checks all added rows. Such proofs use schema v2; existing
+v1 proofs remain replayable. Nondisk annuli, closed bundle bases, three-handles
+and stalled raw cancellation remain inconclusive. The low-level `core_handlebody_certificate` requires
 source-authenticated geometric handle charts; its matrix is not a group
 presentation or a cellular boundary matrix. Its exact saturated singleton
 updates use actual unsigned occurrences and have a geometric disk-slide proof.
@@ -4275,3 +4280,7 @@ The second command compares complete supplied-cut classification, including
 native proof replay, with Regina's explicit cut and component recognition.
 It is not a complete knot-recognition benchmark. Run performance measurements
 on an otherwise idle host; literal expansion and oracle timeouts are explicit.
+
+The absorption audit certifies 63 of the 106 supplied cuts (previously 30),
+with 56 exact explicit-cut agreements and seven large-coordinate replays.
+The evidence is retained in `../synthesis/data/disk-absorption-audit.json`.

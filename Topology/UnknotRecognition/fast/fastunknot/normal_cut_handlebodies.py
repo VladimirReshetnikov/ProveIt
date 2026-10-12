@@ -1,21 +1,20 @@
-"""Source-certified handlebody census for disk-attached normal-cut pieces.
+"""Source-certified handlebody census with disk-bundle annulus absorption.
 
 This conservative terminal operator combines the complete source parallelity
 decomposition, ordered core attachments, and geometric core cancellations.
-It never infers a ball from homology or a sphere boundary alone.  Annular
+It never infers a ball from homology or a sphere boundary alone.  Nondisk annular
 attachments, closed bundle bases, or stalled core cancellations are unresolved.
 """
 
 from collections import Counter
 
 from .core_handlebody import core_handlebody_certificate
+from .disk_bundle_absorption import absorb_disk_bundles
 from .normal_parallelity import normal_cut_parallelity
 from .parallelity_boundary_words import normal_parallelity_boundary_words
 
 
-def _census(geometry, summary, skeleton, components, check):
-    if skeleton['circle_attachments']:
-        return None, 'annular_core_attachment'
+def _census(geometry, summary, skeleton, components, check, absorbed=frozenset()):
     profiles = summary['base_profiles']
     if any(p['boundary_components'] == 0 for p in profiles):
         return None, 'closed_bundle_base'
@@ -34,11 +33,11 @@ def _census(geometry, summary, skeleton, components, check):
             raise ArithmeticError('invalid core-facing port owner')
         port_core[port['id']] = owner[vertex]
     nodes = [('core', c['id']) for c in components]
-    nodes += [('base', i) for i, p in enumerate(profiles) if p['core_ports']]
+    nodes += [('base', i) for i, p in enumerate(profiles) if p['core_ports'] and i not in absorbed]
     parent = {v: v for v in nodes}
     genera = {('core', c['id']): c['genus'] for c in components}
     genera.update({('base', i): 1 - p['euler_characteristic']
-                   for i, p in enumerate(profiles) if p['core_ports']})
+                   for i, p in enumerate(profiles) if p['core_ports'] and i not in absorbed})
 
     def root(v):
         while parent[v] != v:
@@ -50,6 +49,8 @@ def _census(geometry, summary, skeleton, components, check):
     for i, attachment in enumerate(skeleton['attachment_components']):
         check()
         ports = [abs(p) - 1 for p in attachment['word']]
+        if attachment['kind'] == 'circle' and port_base[ports[0]] in absorbed:
+            continue
         bases = {port_base[p] for p in ports}
         cores = {port_core[p] for p in ports}
         if attachment['kind'] != 'interval' or len(bases) != 1 or len(cores) != 1:
@@ -122,10 +123,8 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
     if parallelity['status'] != 'COMPLETE':
         result['reason'] = 'parallelity_budget_exhausted'
         return result
-    core = core_handlebody_certificate(parallelity['geometry']['core'], check=check)
-    result['stats']['core'] = core.get('stats', {})
-    if core['status'] != 'COMPLETE':
-        result['reason'] = core['reason']
+    if parallelity['geometry']['core']['handles3']:
+        result['reason'] = 'core_has_three_handles'
         return result
     remaining = max_cycles
     if remaining is not None:
@@ -136,8 +135,19 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
     if boundary['status'] != 'COMPLETE':
         result['reason'] = 'boundary_budget_exhausted'
         return result
+    absorption = absorb_disk_bundles(parallelity['geometry'], parallelity['summary'],
+                                     boundary['skeleton'], check=check)
+    if absorption is None:
+        result['reason'] = 'annular_core_attachment'
+        return result
+    augmented, absorption_proof, absorbed = absorption
+    core = core_handlebody_certificate(augmented, check=check)
+    result['stats']['core'] = core.get('stats', {})
+    if core['status'] != 'COMPLETE':
+        result['reason'] = core['reason']
+        return result
     census, reason = _census(parallelity['geometry'], parallelity['summary'],
-                            boundary['skeleton'], core['components'], check)
+                            boundary['skeleton'], core['components'], check, absorbed)
     if census is None:
         result['reason'] = reason
         return result
@@ -146,5 +156,8 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
         result['certificate'] = dict(schema='normal-cut-handlebodies-v1',
             parallelity=parallelity['certificate'], boundary=boundary['certificate'],
             core=core['certificate'], census=census)
+        if absorbed:
+            result['certificate'].update(schema='normal-cut-handlebodies-v2',
+                                         absorption=absorption_proof)
     check()
     return result

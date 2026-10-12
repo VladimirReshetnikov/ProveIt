@@ -21,7 +21,7 @@ encoded strings directly. The native wrapper now handles signed/uppercase forms
 and rejects malformed encodings and booleans. Regression coverage exercises
 this boundary separately from the large-multiplicity tests.
 
-The 22 focused tests pass. The current 106-case audit certifies 30 cuts and
+The 22 focused tests pass. The initial 106-case audit certifies 30 cuts and
 independently replays every certificate. Regina's explicit cut/component oracle
 finishes 99 cases and agrees on all 23 native successes within its expansion
 limit; seven larger native successes have replay without literal expansion.
@@ -32,8 +32,9 @@ and ten cores with three-handles. Fresh records belong to
 Source hashes in the fresh audit bind the maintained Python implementation and
 corpus. Performance measurements and full-suite validation are recorded in the
 synthesis as they complete. No new default knot-recognition dispatch is enabled.
-Full-circle disk-base absorption, arbitrary annular gluing, pattern transport,
-useful-surface discovery and the global hierarchy complexity proof remain work.
+At that initial checkpoint, full-circle disk-base absorption, arbitrary
+annular gluing, pattern transport,
+useful-surface discovery and the global hierarchy complexity proof remained work.
 
 The subsequent complete Regina-enabled regression run passes all 1,648 tests
 with no skips (501.552 seconds on this host). An algebraic follow-up probe
@@ -50,3 +51,25 @@ production plus replay takes 12.652 seconds and the serialized certificate
 has 71,291,795 bytes. This is supplied-cut capacity, not complete recognition
 or constant-memory behavior. The synthesis retains every round, regression,
 identical-code control and runtime source pin.
+
+## Source-certified disk-base absorption
+
+The subsequent native extension implements the source-aware disk-base annulus
+absorption proposition in `sections/geometry.tex`. New modules
+`disk_bundle_absorption` and `disk_bundle_absorption_verify` construct and
+independently authenticate each actual attaching circle. Face flags distinguish
+self-pairings; signed chart crossings remain unsigned in cancellation counts.
+The augmented core includes every absorbed two-handle. Its successful proof
+uses whole-cut schema v2, while earlier v1 proofs remain replayable.
+
+The refreshed audit certifies 63/106 cuts, independently replays all 63, and
+agrees with all 56 literal Regina comparisons. Seven successes exceed the
+explicit expansion cap; there are no timeouts. The previous 30 successes are
+preserved. Remaining refusals are 26 nondisk annular interfaces, seven stalled
+augmented cancellations, and ten cores with three-handles. Four old core
+refusals are now categorized by earlier nondisk-annulus checks.
+
+See `../../synthesis/data/disk-absorption-audit.json` and the synthesis
+subsection “Certified absorption of disk-base annuli”. Delivered runtime files
+remain unchanged. Arbitrary annular gluing, useful-surface coverage, pattern
+transport and the general quasi-polynomial hierarchy bound remain open here.
