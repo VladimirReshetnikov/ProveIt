@@ -1,6 +1,16 @@
 Gowers Szemeredi formalization checkpoint — 2026-10-11
 
 Scope
+  Latest source-bound checkpoint: PrintedSection13BoundsAudit verifies 18
+  new results over 1,528 native modules using only the three approved axioms.
+  Lemmas 13.7--13.9 now have exact printed contextual numerical bounds under
+  the original preceding density data; their constructions retain the proved
+  integer step and span. Corollary 13.10 also retains its printed density with
+  modular properness. The stronger upstream Lemma 13.6 extraction and the
+  corollary's ordinary integer geometry remain unproved. No counterexample
+  to those original claims is asserted. The broad exported-library build is
+  incomplete; its compiled modules are cached for resumption.
+
   Active follow-up: the user requested the remaining source-fidelity work
   and further generalizations. The 120-companion audit below verifies the
   corrected catalogue, not completion of this broader follow-up. In
@@ -162,6 +172,36 @@ Scope
   induction must still supply them from the lower-dimensional hypothesis.
   All prior audits and the twelve new results use only the approved axioms.
 
+  StructureIntegerFidelityAudit verifies thirty-one new class, relation and
+  global structure results over 1,523 modules. Coordinate permutations,
+  cylinders, scaling and finite sums retain genuine integer cells. The
+  existing uniform-class membership and decomposition records now carry
+  integer cover certificates, from the actual dimension-two Freiman-data
+  bootstrap through every successor and the full dimension induction.
+  No spectrum, remainder or sampled-slice cover is assumed in the resulting
+  global theorem. Exact genuine versions of Theorem 16.2 and Corollary
+  16.11 retain the printed controls and exponents over every prime modulus.
+  The additional eventual-modulus and oddness restrictions are unnecessary;
+  the corollary retains the stronger intermediate width exponent as well.
+  All thirty-one new results and all preceding audits use only the three
+  approved axioms. These results close the main Section 16 representation
+  gap. The complete statement-by-statement audit, including intermediate
+  source statements and numerical bridges, remains a separate obligation.
+
+  The next source audit found concrete numerical mismatches in Lemmas
+  13.7--13.9 and Corollary 13.10. For example, Lemma 13.9 still prints
+  width exponent 2^(-182)*alpha^832 and relative density 2^(-84)*alpha^416;
+  IsStage139Data requires only 2^(-284)*alpha^1408 and
+  2^(-135)*alpha^704. The existing exact companion therefore does not
+  establish those original sharper contextual bounds. No counterexample
+  to these claims has been established. They must be proved at the source
+  constants or, if actually refuted, receive a justified documented repair.
+  The four obligations and exact expressions are recorded in
+    Research/GowersSzemeredi/verification/2026-10-11-source-bound-obligations.json
+  The final Theorem 13.12 remains proved with its printed bounds and
+  genuine integer representatives; that result does not close these
+  separate intermediate obligations.
+
   The paper's literal unbounded loss quantifier is now visibly corrected
   to 0<theta<=1. At theta=2, gamma=r=1, a width-two integer box in ZMod 2
   would require a cell of width at least four, which is impossible. The
@@ -216,6 +256,8 @@ Scope
     python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.RemainderIntegerFidelityAudit
   The extension through genuine sampled family lifting and piece covers is:
     python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.FamilyLiftIntegerFidelityAudit
+  The latest full check, including the genuine global structure theorems, is:
+    python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.StructureIntegerFidelityAudit
   The exact input hashes and verification results are recorded in
     Research/GowersSzemeredi/verification/2026-10-11-numbered-and-bounds.json
   The source ledger records every numbered definition, TeX heading lines,
