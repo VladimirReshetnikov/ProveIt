@@ -84,7 +84,7 @@ theorem corollary_16_11_polynomial_bounds {V alpha : Real} (hV : 1 ≤ V)
     dsimp [uniformBase, X]
     push_cast
     field_simp [ha.ne', hQ0.ne']
-    <;> ring
+    ring
   have hQbound : Q ≤ X ^ ((B + 8) * D) := by
     dsimp [Q]
     rw [uCount_eq hV D (by positivity) (by linarith) (by positivity) (by linarith)
@@ -103,13 +103,13 @@ theorem corollary_16_11_polynomial_bounds {V alpha : Real} (hV : 1 ≤ V)
   have hdensity : alpha / 8 / Q = (4 * X * Q)⁻¹ := by
     dsimp [X]
     field_simp [ha.ne', hQ0.ne']
-    <;> ring
+    ring
   have hsmall : (alpha / 2) ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 8))) ≤ alpha / 8 / Q := by
     rw [heq, inv_pow, hdensity]
     exact inv_anti₀ (by positivity) hden
   refine ⟨hsmall, hsmall.trans ?_⟩
   change alpha / 8 / Q ≤ Q⁻¹
-  rw [div_eq_mul]
+  rw [div_eq_mul_inv]
   exact mul_le_of_le_one_left (inv_nonneg.mpr hQ0.le) (by linarith)
 
 end LeanProofs.GowersSzemeredi

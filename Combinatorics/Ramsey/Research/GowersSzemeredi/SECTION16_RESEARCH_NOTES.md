@@ -6674,9 +6674,11 @@ B=2^(2^(k+6)) gives Q<=X^((B+8)*D) and
 which strengthens the paper's k+9. Both the exact-source companion and
 stronger companion cover every prime, without an extra size threshold.
 
-Verification is pending. IntegerOriginalCorollaryCoreAudit checks the exact
-new declarations and their transitive axioms. The serial worker is rebuilding
-dependencies affected by earlier foundational changes before reaching them.
+The development check against cached interfaces passes all five new proof
+modules and IntegerOriginalCorollaryCoreAudit, with only the standard axioms.
+It found one incorrect rewrite-lemma name, now fixed. The full source-based
+verification is pending: the serial worker is rebuilding dependencies affected
+by earlier foundational changes before checking the new declarations again.
 The source-fidelity ledger deliberately remains open until this audit passes;
 the revised paper is a draft pending that gate. The expanded downstream target
 is IntegerOriginalCorollaryFidelityAudit, followed separately by the facade.
