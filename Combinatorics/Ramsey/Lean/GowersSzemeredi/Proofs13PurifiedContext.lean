@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs13ContextExtraction
+import GowersSzemeredi.Proofs13PreparedFrequencyGraph
 
 /-! Recover the original 2^-73 arrangement error from Lemma 13.11, with a
 stronger density exponent. Purification permits every integral error exponent

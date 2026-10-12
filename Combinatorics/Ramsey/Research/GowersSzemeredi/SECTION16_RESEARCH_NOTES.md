@@ -7067,6 +7067,38 @@ See `verification/2026-10-12-lattice-gaussian-clients.json` and
 OAI port audit remains historical; no fresh complete port or facade audit is
 claimed. The simplification goal remains active.
 
+
+### L.59. Share the Section 13 inputs used by the final proof (2026-10-12)
+
+The final theorem uses the prepared frequency graph, its arrangement-count
+bound, two elementary spectral estimates and odd-length rounding. These were
+bundled with the older context/Fourier extraction route, importing the entire
+3,255-line `Proofs12Restriction` and its combination theorem.
+
+`Proofs13PreparedFrequencyGraph`, `Proofs13SpectralExponentBound` and
+`Proofs13OddSquareBounds` now supply the shared inputs directly. The original
+context, explicit-exponent and odd-square modules re-export the moved public
+declarations and retain their original theorem statements and proof bodies.
+The quadratic odd-progression and higher-dimensional box consumers import
+their power-budget and width lemmas directly. Fourier-box transport imports
+the required statements directly.
+
+The prepared frequency graph's two coefficient calculations are now one
+private inequality, instantiated at exponents 1 and 12,359. Its theorem is
+79 lines rather than 108; the statement and retained density exponent
+14,409,429 are unchanged. The new shared inputs compile. The final theorem
+and expanded compatibility audits are running separately; the latter includes
+the old context/Fourier/odd-square theorems and their affected consumers.
+
+The measured final import closure is 654 modules / 138,775 lines, down by
+four modules / 3,916 lines from L.58. Seven old modules are no longer imported
+and three shared modules replace them. The source-preservation comparisons
+and dependency snapshot are in
+`verification/2026-10-12-final-section13-inputs-dependencies.json`.
+These are import-closure counts, not repository-wide deletions. The final
+statements and numerical bounds are unchanged, but a completed final audit
+is not claimed yet. The simplification goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

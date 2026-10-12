@@ -1,6 +1,6 @@
 import GowersSzemeredi.Proofs13FejerArrangementSelection
 import GowersSzemeredi.Proofs13FejerNumerics
-import GowersSzemeredi.Proofs13ContextExtraction
+import GowersSzemeredi.Proofs13PreparedFrequencyGraph
 
 /-! Quantitative purification with an even kernel length. The two explicit
 scale inequalities pay for baseline survival and exceptional arrangements.

@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs13OddFourierSquare
+import GowersSzemeredi.Sections12_13
 import GowersSzemeredi.Proofs05BoxPartition
 
 /-! Transporting the two-dimensional Fourier square into the box conventions
