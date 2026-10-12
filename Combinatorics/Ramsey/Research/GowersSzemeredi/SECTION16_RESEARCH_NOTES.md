@@ -4911,6 +4911,45 @@ need either a remainder cover whose count does not grow with the number of
 pieces sharing the partition, or a lift that recovers the `h`-dependence of
 the candidate lines without covering `M·q` slice relations. Both are open.
 
+**L.16h: what a per-relation remainder count would buy (analysis,
+2026-10-12; the hypothesis is unproved).** L.16g located the square in the
+samples `r ∝ q·M/τ` with `q ≈ Q_r(M) = M^(a·2^k)`. Consider the
+hypothesis:
+
+> (PR) on the common partition of a class cover of `n` relations, each
+> relation individually uses at most `W^D` maps per cell, a number that
+> does not grow with `n` (the total is still `(n+1)^a·W^D`).
+
+The joint-cover lemma has the analogous property: each function uses at
+most its own count. Under (PR) the per-member candidate count is
+independent of `M`, so the samples scale linearly in `M`. The remainder's
+family exponents then vanish: `sQrN = sErN = 0` in the split degrees, and
+the family exponent grows by a factor of about `2^(k+2)` per step instead of
+squaring. `model_split_exact.py --per-member` runs the exact recursion under
+(PR), from the proved seed `2^46`:
+* `log₂ uDeg_l / 2^l = 12.0, 15.6, 13.3, 9.7, 6.6, 4.2, 2.6, 1.6, 1.0, 0.6,
+  0.3` (`l = 2, …, 12`): the class degree no longer grows like `c·2^l`.
+* The smallest offset `c` with `μ + 1 ≤ 2^(d+c)`, with the base budget from
+  `V` (`fixDeg` at the Fejér `5k + 22`):
+  - `c = 6` at `d = 5, 6`;
+  - `c = 5` at `d = 4` and `7 ≤ d ≤ 10`;
+  - `c = 4` for every `d ≥ 11`.
+
+  The envelope tends to about `33·2^k`, twice the `V`-budget
+  `16·2^k`, so `c = 4` is the floor of this architecture. With the
+  printed `fixDeg` the floor is `c = 5` (envelope tending to about
+  `65·2^k`).
+
+So (PR) together with the Fejér `fixDeg` would give Theorem 18.1 at `d + 4`
+for large degrees. Small degrees stay at `d + 6` through the seed's
+transient. Whether (PR) holds is the question. In the class construction the
+pieces of one relation are found greedily, and a relation's maps on a cell
+come from its own pieces' covers. But each piece's cover is the family
+cover of *all* pieces, whose count grows with the family. (PR) would need
+the family piece cover to certify, per member, only that member's
+candidates. A proof would be a new form of
+`section16_family_piece_large_box_profile` with per-member counts.
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`

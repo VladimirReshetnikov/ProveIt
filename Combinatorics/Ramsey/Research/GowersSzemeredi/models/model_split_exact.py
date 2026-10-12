@@ -85,7 +85,28 @@ def envelope(cdeg, fixDeg, kmax, low=74):
     return out
 
 
+def per_member_hypothesis():
+    """Notes L.16h (unproved): per-relation remainder counts do not grow with
+    the number of pieces sharing a partition, so the remainder's family
+    exponents vanish (sQrN = sErN = 0) and the samples scale linearly in M."""
+    global sQrN, sErN
+    sQrN = lambda k, a: 0
+    sErN = lambda k, a: 0
+
+
+def per_degree_offsets(cd, fixDeg, kmax):
+    env = envelope(cd, fixDeg, kmax)
+    return {k + 2: min(c for c in range(0, 16) if env[k] + 1 <= 2 ** (k + 2 + c)) for k in env}
+
+
 if __name__ == '__main__':
+    import sys
+    if '--per-member' in sys.argv:
+        per_member_hypothesis()
+        cd = cover_log_deg(2 ** 46, 2 ** 46, 16)
+        for name, fx in (('printed fixDeg', lambda k: 2 ** (k + 5) + 7), ('Fejer fixDeg', lambda k: 5 * k + 22)):
+            print(name, per_degree_offsets(cd, fx, 16))
+        raise SystemExit
     KMAX = 13
     fix_printed = lambda k: 2 ** (k + 5) + 7
     fix_fejer = lambda k: 5 * k + 22
