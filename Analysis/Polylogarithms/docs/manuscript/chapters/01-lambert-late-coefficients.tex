@@ -1,0 +1,348 @@
+\section{All late corrections of a factorial Lambert inverse}
+\label{llc:section}
+
+The preceding Lambert chart resolves a logarithmic marginal scale. A
+different Lambert structure arises when the forward tail itself has
+factorial growth. Here the small-index coefficients of that tail determine
+every inverse-index correction by a finite polynomial calculation.
+The leading hyperbolic amplitudes and their first correction were proved
+in the reversion continuation \cite{llc:reversion}, resolving the
+conjectures of \cite{llc:inverse}. We give a uniform extension to every
+fixed order, motivated by its all-order question. The experimental
+calculation of the second correction guides the finite formula; the
+factorial estimates below justify the full infinite asymptotic statement.
+
+\subsection{The inverse equation and finite coefficient extraction}
+
+Put $A=4\pi^2$ and let $d(n)$ count positive divisors. Mellin inversion
+of the double Lambert sum gives
+\[
+ \mathcal F(t)=\sum_{n\ge1}\frac{d(n)}n e^{-nt},\qquad
+ \Gamma(w)\zeta(1+w)^2t^{-w}
+\]
+as function and Mellin integrand. With the Stieltjes convention
+$\zeta(1+w)=w^{-1}+\sum_{j\ge0}(-1)^j\gamma_jw^j/j!$, its
+triple pole at zero contributes
+\[
+ \frac12\bigl(\log(1/t)+\gamma\bigr)^2+C_* ,\qquad
+ C_* =\frac{\zeta(2)}2-\gamma^2-2\gamma_1.
+\]
+The remaining residues define the formal tail
+\begin{equation}\label{llc:tail}
+ R(q)=\sum_{m\ge1}r_mq^m,\quad c=r_1=-\frac14,\quad
+ r_{2m}=\frac{4\Gamma(2m)\zeta(2m)^2}{2mA^{2m}},\quad
+ r_{2m+1}=0\quad(m\ge1).
+\end{equation}
+Equivalently $r_m=(-1)^m\zeta(1-m)^2/m!$, so all coefficients
+are rational; in particular $r_2=1/288$. The exact real completion
+is treated in \cite{llc:inverse}; the coefficient argument here uses
+only \eqref{llc:tail}.
+
+For a large target $Y$, set $X=\sqrt{2(Y-C_*)}$, $u=X^{-1}$,
+$q=e^{\gamma-X}$ and $t=qe^{-V}$. The corresponding formal equation is
+\begin{equation}\label{llc:inverse-equation}
+ V+\frac u2V^2+uR(qe^{-V})=0,\qquad
+ V(q,u)=\sum_{n\ge1}C_n(u)q^n.
+\end{equation}
+In the following theorem $q$ and $u$ are independent variables.
+Formal implicit inversion gives a unique solution over $\mathbb Q[u]$.
+Introduce the finite polynomial
+\begin{equation}\label{llc:H}
+ H(w,k,u)=\sum_{v=0}^{k-1}\binom{k-1}{v}(k)_v
+                       (u/2)^v w^v,\qquad k\in\mathbb Z_{>0},
+\end{equation}
+where $(k)_v$ is the rising factorial. Auxiliary-variable Lagrange
+inversion yields the exact identity
+\begin{equation}\label{llc:finite}
+ C_n(u)=-\sum_{k=1}^n\frac{u^k}{k!}n^{k-1}
+                     [q^n]R(q)^k H(1/n,k,u).
+\end{equation}
+Indeed, apply Lagrange inversion to
+$V=-z uR(qe^{-V})(1+uV/2)^{-1}$. The coefficient of $z^kq^n$
+is $(-u)^k[q^n]R^k/k$ times
+$[v^{k-1}]e^{-nv}(1+uv/2)^{-k}$, which is the displayed term.
+Only $k\le n$ occurs, so setting $z=1$ is a formal operation.
+
+\subsection{A finite polynomial for every correction}
+
+Let $S_r(L)$ be the Faulhaber polynomial equal to
+$\sum_{i=1}^L i^r$ for nonnegative integers $L$. Define the formal series
+\begin{equation}\label{llc:B}
+ B(w,L)=\exp\left(\sum_{r\ge1}\frac{L^r+S_r(L)}r w^r\right).
+\end{equation}
+For integer $L\ge0$ this is
+$(1-Lw)^{-1}\prod_{i=1}^L(1-iw)^{-1}$.
+When extracting a fixed power of $w$, we interpret \eqref{llc:H}
+polynomially in $k$, using falling factorials for $\binom{k-1}{v}$.
+Thus both expressions make sense as finite coefficient operations
+even before an integer value is substituted.
+
+Define the linear Poisson polynomial transform by
+\begin{equation}\label{llc:poisson}
+ \mathcal P_z(L^r)=e^{-z}\sum_{\ell\ge0}\frac{\ell^r z^\ell}{\ell!}
+                 =\sum_{a=0}^r {r\brace a}z^a.
+\end{equation}
+For $r=0$ its value is $1$, with $0^0=1$ in the sum.
+The Stirling-number formula makes the operation finite.
+
+Fix $j\ge0$. Range over nonnegative multiplicities
+$\mathbf a=(a_2,\ldots,a_{j+1})$ satisfying
+\[
+ h=\sum a_m,\qquad s=\sum m a_m,\qquad
+ d=s-h=\sum(m-1)a_m\le j.
+\]
+The empty tuple is allowed. For $\epsilon\in\{1,-1\}$ set
+$\theta=Au/4$ and $z_\epsilon=\epsilon Acu=-\epsilon\theta$.
+The correction polynomial is
+\begin{equation}\label{llc:T}
+ \begin{split}
+ T_j^\epsilon(u)={}&\sum_{\mathbf a:\ d\le j}
+ u^h(\epsilon A)^s\prod_{m=2}^{j+1}\frac{r_m^{a_m}}{a_m!}\,
+ \mathcal P_{z_\epsilon}\!\left(
+ [w^{j-d}]B(w,L+s)H(w,L+h+1,u)\right).
+ \end{split}
+\end{equation}
+The transform acts on $L$ only. Every sum and coefficient extraction
+in \eqref{llc:T} is finite; its only forward coefficients are
+$r_1,\ldots,r_{j+1}$. In particular $T_0^\epsilon=1$.
+
+\begin{theorem}[All fixed-order Lambert corrections]\label{llc:all-orders}
+For each integer $J\ge0$ and $U>0$, uniformly for complex $|u|\le U$,
+\begin{equation}\label{llc:expansion}
+ \begin{split}
+ C_n(u)={}&-\frac{2u\Gamma(n)}{nA^n}
+ \sum_{\epsilon=\pm1}\epsilon^n e^{-\epsilon\theta}
+                  \sum_{j=0}^J\frac{T_j^\epsilon(u)}{n^j}
+ +O_{J,U}\!\left(\frac{|u|\Gamma(n)}{A^n n^{J+2}}\right).
+ \end{split}
+\end{equation}
+This is an additive expansion, including parameter values where a
+parity amplitude vanishes. It asserts an asymptotic expansion at every
+fixed order, with no assertion of convergence as $J\to\infty$.
+\end{theorem}
+
+\subsection{Uniform control of the omitted configurations}
+
+We supply the estimates that allow the finite calculation to be summed
+over all factor counts in \eqref{llc:finite}.
+
+\begin{lemma}[Factorial vertices]\label{llc:vertices}
+For positive integers $N\ge p$,
+\begin{equation}\label{llc:convolution}
+ \sum_{\substack{\ell_1+\cdots+\ell_p=N\\\ell_i\ge1}}
+                 \prod_i(\ell_i-1)!\le3^{p-1}(N-p)!.
+\end{equation}
+Fix $J\ge0$. If the configurations with
+$N-\max_i\ell_i\le J$ are removed, then the remaining sum is at most
+$D_J^p(N-J-2)!$, for all sufficiently large $N$ depending only on $J$,
+with a constant $D_J\ge1$ independent of $p$ and $N$.
+\end{lemma}
+\begin{proof}
+The two-factor inequality
+$\sum_{a=0}^M a!(M-a)!\le3M!$ follows by dividing by $M!$:
+the endpoint terms sum to $2$ and each interior reciprocal binomial
+coefficient is at most $1/M$. The cases $M=0,1$ are immediate.
+Induction proves \eqref{llc:convolution}.
+
+If $p\ge J+2$, this bound already suffices since
+$(N-p)!\le(N-J-2)!$. If $p=1$ nothing remains.
+For $2\le p\le J+1$, choose a maximal coordinate and put
+$d=N-\max_i\ell_i$. The remainder is at most
+\[
+ p3^{p-2}\sum_{d=J+1}^{\lfloor N-N/p\rfloor}
+                    (d-p+1)!(N-d-1)!.
+\]
+Write $M=N-p$ and $b=J+2-p\ge1$. For sufficiently large $N$,
+both factorial indices in this sum lie between $b$ and $M-b$.
+For each fixed $b$,
+\begin{equation}\label{llc:factorial-tail}
+ \sum_{t=b}^{M-b}t!(M-t)!\le K_b(M-b)!.
+\end{equation}
+To verify this uniformly, in the lower outer third the ratio of
+successive terms is $(t+1)/(M-t)\le3/4$ for large $M$.
+Sum that geometric majorant starting at $b!(M-b)!$ and use symmetry
+for the upper third. The central terms are bounded by
+$b!(M-b)!(3/4)^{\lfloor M/3\rfloor-b}$, times a fixed factor;
+their number is at most $M+1$. This is uniformly bounded after division
+by $(M-b)!$. The finitely many small $M$ can be absorbed in $K_b$.
+Equation \eqref{llc:factorial-tail} now gives $(N-J-2)!$.
+Only finitely many $p\le J+1$ remain, so a common $D_J$ suffices.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{llc:all-orders}]
+Choose $K\ge1$ such that $A|r_1|\le K$ and
+$A^m|r_m|\le K(m-2)!$ for $m\ge2$. Such a $K$ exists by
+\eqref{llc:tail}. For a composition $m_1+\cdots+m_k=n$, put
+$\ell_i=m_i-1$ and $N=n-k$. Choosing the $p$ positive increments
+and applying \eqref{llc:convolution} gives, for $k<n$,
+\begin{equation}\label{llc:global-bound}
+ A^n\bigl|[q^n]R^k\bigr|\le(4K)^k\Gamma(n-k).
+\end{equation}
+Absolute values may also be placed inside the coefficient sum.
+Since $(k)_v\le(2k)^v$ for $v\le k-1$,
+$|H(1/n,k,u)|\le(1+U)^k$ for $k\le n$.
+After division by $\Gamma(n)/(nA^n)$, the terms with
+$k\le n/2$ are bounded by $D^k/k!$ for a constant $D=D_U$:
+indeed $n^k\Gamma(n-k)/\Gamma(n)\le2^k$.
+The sum over $n/2<k<n$ is at most
+\[
+ n\max(1,2eD)^n\frac{\Gamma(\lceil n/2\rceil)}{\Gamma(n)},
+\]
+using $n^k/k!\le(2e)^k$. It is smaller than every inverse power
+of $n$. The $k=n$ term, where all indices are $1$, has the same
+property directly from $n^n/(n!\Gamma(n))$. All these estimates
+retain an overall factor $|u|$, by bounding $|u|^k$ by
+$|u|\max(1,U)^{k-1}$.
+
+For $k\le n/2$, retain exactly the configurations with one large
+increment and total other increment at most $J$. Lemma~\ref{llc:vertices},
+including the choices of positive positions, bounds the omitted
+absolute coefficient sum by
+$A^{-n}D_{J}^k\Gamma(n-k-J-1)$, with an enlarged constant depending
+also on $K$. For sufficiently large $n$,
+\[
+ \frac{n^k\Gamma(n-k-J-1)}{\Gamma(n)}
+ \le n^{-J-1}3^{k+J+1}.
+\]
+Together with the $k!$ denominator and the bound on $H$, this proves
+that the total omitted contribution is
+$O_{J,U}(|u|\Gamma(n)/(A^n n^{J+2}))$.
+
+In a retained configuration let $\ell$ be the number of indices $1$,
+and let $a_m$ count the other small indices. Then
+$k=\ell+h+1$ and the large index is $m=n-\ell-s$.
+The large increment is unique once $n$ is sufficiently large, since
+$N>2J$. The contribution to $[q^n]R^k$ is exactly
+\[
+ \frac{k!}{\ell!\prod a_m!}\,
+ c^\ell\prod r_m^{a_m}\,r_{n-\ell-s}.
+\]
+Here $n-\ell-s\ge n/2+1-J$. Replacing $\zeta(n-\ell-s)^2$
+by $1$ in the large even coefficient has an exponentially small
+relative error, uniformly in these configurations. The odd large
+coefficients vanish exactly. Thus use
+\[
+ r_m=\frac{2\Gamma(m)}{mA^m}\sum_{\epsilon=\pm1}\epsilon^m
+\]
+at a total exponentially small cost under the same factorial majorant.
+The exact gamma factor is
+\begin{equation}\label{llc:gamma-product}
+ \frac{n^{L+1}\Gamma(n-L)}{(n-L)\Gamma(n)}=B(1/n,L),
+ \qquad L=\ell+s.
+\end{equation}
+Consequently, for each small multiset the normalized action contribution
+is the finite sum of
+\[
+ \frac{z_\epsilon^\ell}{\ell!}\,
+ u^h(\epsilon A)^s\prod\frac{r_m^{a_m}}{a_m!}\,
+ n^{-d}B(1/n,\ell+s)H(1/n,\ell+h+1,u).
+\]
+Its common prefactor is $-2u\epsilon^n\Gamma(n)/(nA^n)$.
+
+Expand the product $BH$ through degree $J-d$ in $1/n$.
+Here is a uniform remainder estimate for this step. We have
+$L\le n/2+J$, so $L/n\le3/4$ for large $n$.
+On $0\le w\le1/n$, the product defining $B$ is at most $4^{L+1}$.
+The derivatives of its logarithm of order $a\ge1$ are bounded by
+a constant times $(1+L)^{a+1}$, with constants depending on $a$.
+Its fixed-order Taylor remainder is therefore bounded by
+$n^{-b-1}$ times a polynomial in $L$ times $4^{L+1}$ when truncated
+at order $b$. For $H$, the terms beyond degree $b$ are bounded by
+\[
+ \sum_{v=b+1}^{k-1}\binom{k-1}{v}(kU/n)^v
+ \le (k/n)^{b+1}(1+U)^k.
+\]
+The fixed retained coefficients of $H$ are polynomials in $k,u$.
+These bounds give the same polynomial-times-exponential remainder
+for the product. It is summable against $|z_\epsilon|^\ell/\ell!$,
+uniformly on $|u|\le U$. Extending the resulting finite $\ell$ sums
+to infinity costs less than every inverse power of $n$, since only
+fixed-degree polynomials in $\ell$ remain. The coefficient of $n^{-j}$
+is now precisely the Poisson transform in \eqref{llc:T}, multiplied
+by $e^{z_\epsilon}$. This proves \eqref{llc:expansion}.
+\end{proof}
+
+\subsection{The explicit second correction}
+
+Let $b=uA^2/288$ and define
+\begin{align}
+ P_1&=\frac{1+u}{2}\theta^2+b,& D_1&=u+2,\label{llc:first}\\
+ P_2&=\frac{(1+u)^2}{8}\theta^4
+ +\frac{3u^2+11u+11+(u+1)b}{2}\theta^2
+ +(u+5)b+\frac{b^2}{2},\label{llc:second-P}\\
+ D_2&=\frac{6u^2+15u+10}{6}\theta^2+(2u+4)b+2u+3.
+ \label{llc:second-D}
+\end{align}
+Then $T_1^\epsilon=P_1-\epsilon\theta D_1$ and
+$T_2^\epsilon=P_2-\epsilon\theta D_2$.
+For $E_n(\theta)=\cosh\theta$ at even $n$ and
+$E_n(\theta)=-\sinh\theta$ at odd $n$, the expansion becomes
+\begin{equation}\label{llc:second}
+ \frac{nA^nC_n(u)}{4\Gamma(n)}
+ =-u\left[E_n+\frac{P_1E_n+D_1\theta E_n'}n
+              +\frac{P_2E_n+D_2\theta E_n'}{n^2}\right]
+       +O_U(|u|n^{-3}).
+\end{equation}
+The primes differentiate $E_n$ with respect to its argument.
+
+For an explicit check of the calculation, write
+\[
+ b_1=\frac{\ell(\ell+3)}2,\quad
+ b_2=\frac{\ell(2\ell^2+9\ell+1)}{12}+\frac{b_1^2}{2},\quad
+ h_1=\frac{u\ell(\ell+1)}2,\quad
+ h_2=\frac{u^2\ell(\ell-1)(\ell+1)(\ell+2)}8.
+\]
+The configurations with only linear small indices give
+$b_2+b_1h_1+h_2$ before the Poisson transform.
+One small index $2$ gives
+$b\{(\ell+2)(\ell+5)+u(\ell+2)(\ell+1)\}/2$;
+two such indices give $b^2/2$. There is no small-index-$3$
+term because $r_3=0$. Applying \eqref{llc:poisson} to these
+expressions gives \eqref{llc:second-P}--\eqref{llc:second-D}.
+
+\subsection{Higher polylogarithmic Borel boundary models}
+
+Use the shifted Borel convention
+$\widehat V_u(\xi)=\sum_{n\ge1}C_n(u)\xi^{n-1}/\Gamma(n)$.
+For each fixed $J\ge0$, Theorem~\ref{llc:all-orders} gives the exact
+decomposition in $|\xi|<A$
+\begin{equation}\label{llc:borel}
+ \widehat V_u(\xi)=-\frac{2u}{\xi}
+ \sum_{\epsilon=\pm1}e^{-\epsilon\theta}
+ \sum_{j=0}^J T_j^\epsilon(u)\Li_{j+1}(\epsilon\xi/A)
+ +K_{J,u}(\xi).
+\end{equation}
+The apparent division by zero is removable. The remainder and its
+first $J$ complex derivatives extend continuously to the closed disk,
+locally uniformly in $u$: the $J$th differentiated remainder series
+is bounded by a constant times $\sum n^{-2}$ there.
+Thus \eqref{llc:second} supplies an explicit trilogarithmic model with
+a twice continuously differentiable remainder. It extends the logarithmic
+and dilogarithmic models of \cite{llc:reversion} to arbitrary finite
+boundary regularity.
+
+Since $\Li_1(z)=-\log(1-z)$, the two logarithmic coefficients at
+$\xi=A$ and $\xi=-A$ are respectively
+$2u e^{-\theta}/A$ and $-2u e^\theta/A$.
+Both are nonzero for $u\ne0$. The continuous $J=0$ remainder therefore
+proves genuine singularities at both endpoints and exact Borel radius
+$A$; the ordinary series has radius zero. Finite-order boundary
+regularity alone gives no continuation through those points and does
+not determine the full local singularity on other sheets.
+
+\subsection{Exact checks and numerical guidance}
+
+The accompanying correction compiler constructs \eqref{llc:T} through
+$j=4$ using rational arithmetic and Stirling polynomials. Independent
+finite-product expansions check the Faulhaber coefficients at thirteen
+integer values of $L$, and exact simplification checks both explicit
+corrections. The comparison uses all forty fresh finite-sum coefficient
+values from \cite{llc:reversion}, through $n=201$, including complex
+coupling and a vanishing leading parity amplitude. For example, at
+$u=0.1,n=200$, the absolute error in $nA^nC_n/(4\Gamma(n))$ decreases
+from approximately $2.078\cdot10^{-3}$ at leading order to
+$5.799\cdot10^{-5}$, $1.720\cdot10^{-6}$,
+$5.779\cdot10^{-8}$ and $2.155\cdot10^{-9}$ through orders one to four.
+These finite computations helped identify and check the correction
+formula. They are numerical diagnostics, not interval certificates or
+the proof of the uniform theorem.

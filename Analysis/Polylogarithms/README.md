@@ -2,21 +2,29 @@
 
 The canonical reading artifact is the collective four-volume manuscript,
 [Polylogarithms and their Arithmetic Bridges](docs/manuscript/README.md),
-authored by **ProveIt Contributors**. The volumes have **144, 130, 253 and
+authored by **ProveIt Contributors**. The volumes have **149, 130, 253 and
 86 pages**, each compiling independently; the retained
-[combined edition](docs/manuscript/polylogarithms.pdf) has **570 pages**.
-They share twelve chapters, thirteen figures and 148 references. The
+[combined edition](docs/manuscript/polylogarithms.pdf) has **575 pages**.
+They share twelve chapters, thirteen figures and 150 references. The
 [editorial ledger](docs/manuscript/EDITORIAL-LEDGER.md) separates accepted
 proofs from pending analytic claims, and the
 [validation record](docs/manuscript/VALIDATION.md) distinguishes proofs,
 finite certificates, numerical diagnostics, PDF builds and visual review.
 
-The inventory covers **1810 textual provenance documents**. **130 incoming
-archives / 4704 original tracked members** are preserved; imported ZIPs are
+The inventory covers **1810 textual provenance documents**. **134 incoming
+archives / 4779 original tracked members** are preserved; imported ZIPs are
 retired in their placement commits and recoverable from arrival history.
 Delivered PDFs, sources, code and receipts retain their original evidence
 scopes. Intake notes use a separate filename, preserving delivered
 OVERVIEW files. Original articles and reports remain historical evidence.
+
+Volume I now proves a finite formula for every fixed-order late-coefficient
+correction of the resonant Lambert inverse, with an explicit second
+correction and higher-polylogarithm Borel boundary models. A uniform
+factorial-vertex argument proves the theorem; exact finite algebra and
+forty complete coefficient calculations provide separate implementation
+evidence. Global Borel continuation and the newly arrived reports remain
+separate review work.
 
 The crossed-twist extension now gives the exact finite Fourier correction
 at every positive integer total order, all balanced order jets and their

@@ -1203,3 +1203,25 @@ degree 27, verify twelve finite-dimensional kernels, recover the subtraction
 and endpoint independently, and reject four corruptions. At both 70 and 100
 digits, three ordinary partial sums agree with their finite telescopers.
 Endpoint numerical checks are diagnostics, not interval certification.
+
+
+## All late coefficients of the resonant Lambert inverse, October 12, 2026
+
+The preserved Resonant_Lambert_Inverse_Transseries report supplies the
+formal model and finite coefficient formula. Its summation-singularities
+continuation proves the leading hyperbolic amplitudes and first correction.
+The new Volume I section supplies a finite Faulhaber/Poisson formula at
+every fixed inverse-index order, a uniform factorial-vertex remainder
+proof, the explicit second correction and arbitrary finite polylogarithmic
+Borel boundary models. It resolves that continuation's all-order question.
+
+The theorem concerns additive expansions on compact complex coupling sets.
+It does not assert convergence in correction order, global continuation,
+or a full local alien calculus. The newly arrived Lambert late-coefficient
+report independently overlaps the first correction and asserts additional
+continuation; that separate closure-theorem claim remains under review.
+Angular and direct-endpoint material of summation-singularities is audited
+but not yet integrated into the canonical chapters. All original source
+and authored evidence are unchanged. The compiler checks through order four
+and compares forty independently computed finite coefficients; the written
+proof, not those diagnostics, establishes the infinite uniform assertion.
