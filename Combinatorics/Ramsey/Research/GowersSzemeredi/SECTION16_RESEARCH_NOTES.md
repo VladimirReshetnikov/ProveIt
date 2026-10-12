@@ -5259,6 +5259,37 @@ The bridge (stub-checked, pinned in CompletionAudit) proves:
 * `theorem_1_3_L1_thirteen_le` (`Theorem13AtFrom 1 13`) and
   `theorem_1_3_L2_ten_le`.
 
+**L.16n: class constant `5/2` and the polynomial Lemma 15.6 — `d + 2` and
+`L + 0` (2026-10-12).** Beyond dimension `12` the class degree
+`4·2^l + O(l²)` is the remaining cost, while the true constant is about `2.4`.
+The split step only doubles the exponent (`split_step_gen`: `2^(k+6)·a ≤ 2^e`,
+`D ≤ 2^(e+s)` ⟹ `2^(k+7)·a′ ≤ 2^(2e)`, `D′ ≤ 2^(2e+s+5k+22)`). So an
+invariant can start at any dimension from the exact values. At `l = 12`,
+`2^18·a₁₂ < 2^9885 ≤ 2^10240` and `D₁₂ < 2^10376 ≤ 2^11008`, both
+kernel-evaluated. Hence `split_pair_small_half` gives
+`2^(l+6)·a_l ≤ 2^(5·2^(l−1))` and `D_l ≤ 2^(5·2^(l−1) + 3(l+4)²)` for every
+`l ≥ 12` (`Proofs18TightClassesFejerX`, light). The class table `tDegX` is
+exact to `12` and `5·2^(l−1) + 3(l+4)² + 2` beyond.
+
+Also, `lemma156_gen_le_fejer` weakened the Lemma 15.6 threshold from
+`X^(2^(5k+21))` to `X^(2^(2^(k+4)+4k+13))`. With `lemma156_gen_le_fejer5`
+the Theorem 18.2 threshold branch is `5k + 33`.
+
+The chain `Proofs18Cover{Modulus,Density,Exponents}FejerX` and
+`Proofs18CoverFejerHeadlineX` is generated from the W chain by
+`assemble_x.py`. One step costs `15·2^(k−1) + O(k²)`, and both envelopes
+tend to `15·2^k < 16·2^k`. `decide +kernel` certifies the base at `k = 15`,
+and the invariant `μ_k + 4k + 128 ≤ 16·2^k` carries it from there.
+* **`theorem_18_1_d2_seventeen_le_of_profiles_poly`: Theorem 18.1 at `d + 2`
+  for every `d ≥ 17`**;
+* **`theorem_18_2_L0_nineteen_le_of_profiles_poly`: Theorem 18.2 with no
+  offset for every `L ≥ 19`**, with the corollary.
+
+The model (`models/model_x_chain.py`) shows that `d + 1` needs an envelope
+below `8·2^k`, against the `7.5·2^k` per step here. That would require the
+class constant below `4/3`, which is under the true `≈ 2.4`, so this method
+stops at `d + 2` / `L + 0`.
+
 The model (`models/model_w_chain.py`) puts the method's limits here. The
 asymptotic ratio `24` is below `32` but above `16`, so `d + 2` and `L + 0`
 need a smaller class constant beyond the table, and the true one is about

@@ -41,6 +41,7 @@ map").
 | `assemble_u.py` | `Proofs18CoverFejerHeadlineU` | `MReq_le_expT`/`Tloc_le_expT` (`Z = 5k+21`, `threshDegU`) and the Theorem 18.2 recursion of `Proofs18CoverFejerHeadlineT`; head/tail in `headline_u_{head,tail}.lean.txt` |
 | `assemble_basew.py` | `Proofs18FejerEnvelopeBaseW` | `slice_const_le`, `uCount_scale_le` (any degree `b ≥ 7`), `baseCFQ_recipPowerLB` (at `pDeg`); hand-written parts `basew_{head,fixed,tail}.lean.txt` |
 | `assemble_w.py` | `Proofs18Cover{Modulus,Density,Exponents}FejerW`, `Proofs18CoverFejerHeadlineW` | the T chain with `fixDegQ ↦ pDeg`, the U threshold, polynomial `hconst`; `headline_w_{hyp,head,tail}.lean.txt` |
+| `assemble_x.py` | `Proofs18Cover{Modulus,Density,Exponents}FejerX`, `Proofs18CoverFejerHeadlineX` | the W chain at `tDegX` with the polynomial Lemma 15.6 threshold; `headline_x_{head,tail}.lean.txt` |
 | `assemble_polys.py` | `Proofs16PolynomialFejerS` | `Proofs16PolynomialFejerQ` (reuses the renames of `assemble_s.py`) |
 | `assemble_polyf.py` | `Proofs16PolynomialFejer` | `Proofs16PolynomialStructure`, `…Corollary` |
 | `mkstub_fejer18.py`, `mkstub_auditfejer.py` | stub checks of `Proofs18CoverFejerAllDegrees` and the Fejér block of `CompletionAudit.lean` | — |
@@ -48,7 +49,7 @@ map").
 Hand-written modules (no generator): `Proofs15WalshGeneral`,
 `Proofs15DegenerateRange`, `Proofs16TightRadius`, `Proofs16SplitFejerDegrees`,
 `Proofs18FejerSeedCounts`, `Proofs16ClassStepBoundsFejer`,
-`Proofs18TightClassesFejer`, `Proofs18TightClassesFejerQ`, `Proofs18TightClassesFejerS`, `Proofs18TightClassesFejerT`,
+`Proofs18TightClassesFejer`, `Proofs18TightClassesFejerQ`, `Proofs18TightClassesFejerS`, `Proofs18TightClassesFejerT`, `Proofs18TightClassesFejerX`,
 `Proofs16UniformCoverTwoSplit`, `Proofs18FejerEnvelopeBase` and the bridge
 `Proofs18CoverFejerAllDegrees`.
 
