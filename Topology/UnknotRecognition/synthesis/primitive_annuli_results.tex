@@ -21,3 +21,57 @@ refusals, forged counts and indices, schema downgrades, disabled producers,
 hexadecimal transport, shared budget caps, multiplicity $2^{1024}$, and legacy
 v1/v2 replay. All low-level family arguments remain conditional on the source
 proofs; the whole-cut verifier checks those sources first.
+
+\paragraph{Full regression.}
+The complete Regina-enabled suite passes all 1,663 tests with no skips in
+515.218 seconds. It includes 13,846 expanded-sheet topology comparisons and
+196,712 independent marked-cover comparisons. The log is retained in
+\path{data/primitive-annuli-tests.txt}. Source pins remain identical to the
+106-cut audit after merging the concurrent repository changes.
+
+\paragraph{Paired timings and binary capacity.}
+Two newly supported v3 families were measured at four multiplicities each,
+using five shuffled paired rounds after warmup and after the full regression
+run completed. All native and explicit histograms agree. Native time includes
+production and independent source replay; the explicit path constructs the
+cut and recognizes every component. Input parsing and output serialization
+are excluded. The driver and all samples are retained in
+\path{data/primitive-annuli-benchmark.py} and its companion JSON; run the
+driver from the repository root with Regina available.
+
+\input{tables/primitive_annuli_timing.tex}
+
+Two of eight finite cases favor the native path in the measured paired
+medians; six favor the explicit path. At 1,024 copies the four-tetrahedron
+case has median native time 0.505 seconds, explicit time 2.113 seconds, and
+paired ratio 4.184. The five-tetrahedron case has corresponding times
+3.188 and 3.813 seconds and ratio 1.215. At eight copies that second family
+has a ratio of only 0.010: the full orbit proofs and replay are expensive
+relative to the small explicit cut.
+
+The casewise medians of identical-explicit A/A comparisons range from 0.756
+to 1.072. This observed variation limits interpretation of small timing
+differences; in particular the 1.215 ratio is a modest measured gain, not
+strong evidence of a stable speedup. All controls and raw rounds are retained. These are
+supplied-cut measurements and do not justify a new default recognition stage.
+
+Single-run capacity checks use coordinate multiplier $2^{16384}$. The
+four-tetrahedron cut takes 1.932 seconds for production plus replay and
+produces a 27,213,181-byte serialized certificate, with one primitive annulus.
+The five-tetrahedron cut takes 17.867 seconds and produces 72,911,111 bytes,
+with two primitive annuli and one absorbed disk-base component. Neither
+capacity check attempts literal expansion. The component multiplicities stay
+binary, while the present proof format still has a substantial serialization
+size cost.
+
+\paragraph{Diagnostic for the remaining core-side annuli.}
+All eleven remaining annular refusals have handlebody cuts according to the
+explicit oracle. A separate passive-incidence probe carries their midpoint
+crossing counts through the existing core-cancellation schedule. In five
+cases every pending annulus has a surviving cocore column with one crossing
+and zero crossings from the other pending annuli. Four cases have no successful
+core-cancellation schedule, and two have no complete set of such private
+columns. The data are retained in \path{data/core-annulus-probe.json}.
+This suggests a core-side primitive-family certificate, but the diagnostic
+has no independently authenticated passive transport and adds no accepted
+cuts. It must not be substituted for the required geometric proof.

@@ -1249,6 +1249,11 @@ import GowersSzemeredi.Proofs17CharacteristicTwo
 import GowersSzemeredi.Proofs17PrintedDegreeCounterexample
 import GowersSzemeredi.Proofs17ZeroDensity
 
+import GowersSzemeredi.Proofs18TightClassesFejerM
+import GowersSzemeredi.Proofs18CoverModulusFejerJM
+import GowersSzemeredi.Proofs18CoverDensityFejerJM
+import GowersSzemeredi.Proofs18CoverExponentsFejerJM
+import GowersSzemeredi.Proofs18CoverFejerHeadlineJM
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

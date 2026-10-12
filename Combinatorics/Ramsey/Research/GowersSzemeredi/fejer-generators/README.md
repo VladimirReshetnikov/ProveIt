@@ -56,6 +56,9 @@ map").
 | `patch_bridge_k.py` | the sharp-partition block of `Proofs18CoverFejerAllDegrees` and `CompletionAudit.lean` | — |
 | `assemble_polyj.py` | `Proofs16PolynomialFejerJ` | `Proofs16PolynomialFejerX` at `tDegZ` with the joint-slice frequency box (`expDegJ_tight_le`, `singlePieceEtaFJ_le_density`) |
 | `patch_bridge_polyj.py` | the 16.2 / 16.11 block of `Proofs18CoverFejerAllDegrees` and `CompletionAudit.lean` | — |
+| `assemble_m.py` | `Proofs18TightClassesFejerM` | the Fejér split step combined by `max` (`splitStepAMax`, `splitStepDMaxF`), its invariants, the exact table `tDegM` to 14 |
+| `assemble_jm.py` | `Proofs18Cover{Modulus,Density,Exponents}FejerJM`, `Proofs18CoverFejerHeadlineJM` | the J chain over `tDegM` (identifier-level renames), Theorem 18.1 at `d + 2` from 11 |
+| `patch_m.py` | the max-step block of `Proofs18CoverFejerAllDegrees`, `CompletionAudit.lean`, notes, status, TeX | — |
 | `mkstub_fejer18.py`, `mkstub_auditfejer.py` | stub checks of `Proofs18CoverFejerAllDegrees` and the Fejér block of `CompletionAudit.lean` | — |
 
 Hand-written modules (no generator): `Proofs15WalshGeneral`,
