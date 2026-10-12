@@ -11,6 +11,9 @@ conjectures of \cite{llc:inverse}. We give a uniform extension to every
 fixed order, motivated by its all-order question. The experimental
 calculation of the second correction guides the finite formula; the
 factorial estimates below justify the full infinite asymptotic statement.
+The continuation report \cite{llc:continuation} independently obtains the
+first correction and supplies the analytic input for continuing the inverse
+Borel transform beyond its initial disk. We combine these results below.
 
 \subsection{The inverse equation and finite coefficient extraction}
 
@@ -300,6 +303,28 @@ two such indices give $b^2/2$. There is no small-index-$3$
 term because $r_3=0$. Applying \eqref{llc:poisson} to these
 expressions gives \eqref{llc:second-P}--\eqref{llc:second-D}.
 
+\subsection{Uniformity at zero coupling}
+
+The extra vanishing of odd coefficients improves the remainder in
+Theorem~\ref{llc:all-orders}. For odd $n>1$, its error is in fact
+\[
+ O_{J,U}\!\left(\frac{|u|^2\Gamma(n)}{A^n n^{J+2}}\right),
+ \qquad |u|\le U.
+\]
+To see this, divide the coefficient formula and its finite asymptotic
+sum by $u$, using removable values at zero. Both are entire in $u$.
+The first vanishes at zero because $C_n(u)/u$ has constant term $-r_n=0$.
+In the second, $T_0^\epsilon(0)=1$ and $T_j^\epsilon(0)=0$ for $j>0$;
+the remaining signed sum vanishes for odd $n$. Apply the uniform
+remainder estimate on $|u|\le2U$ and Schwarz's lemma to their difference.
+
+Consequently every fixed-order expansion is relatively uniform on
+$0<u\le U$, with no lower cutoff on $u$: divide by the leading
+$\cosh(Au/4)$ for even $n$, and by $\sinh(Au/4)\ge Au/4$ for odd $n$.
+This extends the first-correction endpoint uniformity of
+\cite{llc:continuation} to all fixed orders. It does not assert uniformity
+for $u$ growing with $n$ or across zeros of complex hyperbolic amplitudes.
+
 \subsection{Higher polylogarithmic Borel boundary models}
 
 Use the shifted Borel convention
@@ -330,6 +355,106 @@ $A$; the ordinary series has radius zero. Finite-order boundary
 regularity alone gives no continuation through those points and does
 not determine the full local singularity on other sheets.
 
+\subsection{Continuation and sectorial inverse identities}
+
+The arithmetic forward tail provides more information than the boundary
+models alone. Its shifted Borel transform is
+\begin{equation}\label{llc:forward-borel}
+ \widehat R(\xi)=-\frac14-\frac2\xi
+       \sum_{m\ge1}d(m)\log\!\left(1-\frac{\xi^2}{A^2m^2}\right).
+\end{equation}
+Expanding the logarithms for $|\xi|<A$ and using
+$\sum d(m)m^{-s}=\zeta(s)^2$ proves this identity. Along any bounded
+path avoiding $A\mathbb Z$, all sufficiently large $m$ retain their
+Taylor branches and contribute $O(d(m)/m^2)$, uniformly on compact
+neighborhoods of the path. The remaining finitely many logarithms can
+be continued individually. Thus the sum continues normally on the path
+surface avoiding $A\mathbb Z$. Zero is regular on the initial sheet,
+but a loop around a branch point adds a multiple of $1/\xi$; later
+passage through zero is therefore excluded from the allowed paths.
+
+\begin{theorem}[Borel continuation and summed inverse equation]
+\label{llc:continuation-theorem}
+For every fixed $u\in\mathbb C$, $\widehat V_u$ continues along every
+path starting at zero and thereafter avoiding $A\mathbb Z$.
+The formal series $V(q,u)$ is $1$-summable in each direction
+$\vartheta\notin\pi\mathbb Z$. If $R_\vartheta$ and $V_\vartheta$
+denote the corresponding Borel--Laplace sums, then
+\begin{equation}\label{llc:summed-inverse}
+ V_\vartheta(q,u)+\frac u2 V_\vartheta(q,u)^2
+       +uR_\vartheta\bigl(qe^{-V_\vartheta(q,u)}\bigr)=0.
+\end{equation}
+On every smaller common sector and for sufficiently small $q$, this is
+the unique solution satisfying $V_\vartheta(q,u)=O(q)$.
+\end{theorem}
+
+\begin{proof}
+We give the reduction of \cite{llc:continuation}, making its external
+analytic input explicit. For $\Omega=A\mathbb Z$, let
+$\mathcal R_\Omega$ consist of constants plus formal series in $x^{-1}$
+whose shifted Borel transforms continue on the path surface just
+described. Sauzin's Theorems~3 and~5 \cite{llc:sauzin} imply two closure
+properties: a convergent power series may be evaluated at elements
+with zero constant term, and the maps $x+\mathcal R_\Omega$ form a
+group under composition. Their hypotheses hold because $\Omega$ is
+closed, discrete, contains zero, and is stable under addition.
+These statements also imply $f\circ G\in\mathcal R_\Omega$ whenever
+$f\in\mathcal R_\Omega$ and $G\in x+\mathcal R_\Omega$, by subtracting
+$G$ from $(x+f)\circ G$.
+
+For $u\ne0$, introduce the formal maps
+\begin{equation}\label{llc:continuation-parametrization}
+ h(t)=\frac{\sqrt{1-2u^2R(t)}-1}{u},\qquad
+ G(x)=x e^{-h(1/x)},\qquad T=G^{\langle-1\rangle}.
+\end{equation}
+The square root has constant term one, so analytic substitution gives
+$h(1/x)\in\mathcal R_\Omega$ and
+$h(t)+uh(t)^2/2+uR(t)=0$. Moreover $h(t)=ut/4+O(t^2)$.
+Multiplication by $x$ is legitimate here: if
+$f(x)=\sum_{n\ge1}f_nx^{-n}$, then
+$\mathcal B(xf-f_1)=\partial_\xi\widehat f$, which preserves continuation.
+Hence $G=x-u/4+O(x^{-1})$ belongs to the stated group, as does $T$.
+Closure under composition now gives
+\[
+ V(q,u)=h\!\left(\frac1{T(1/q)}\right)\in\mathcal R_\Omega.
+\]
+Indeed, $G(T(1/q))=1/q$ says $q=t e^{h(t)}$ with
+$t=1/T(1/q)$, so $t=qe^{-V}$ and the defining inverse equation holds.
+Formal uniqueness identifies this series with the earlier $V$.
+
+For summability, restrict $\arg\xi$ to a closed arc separated from
+the real directions. Write $\rho=|\xi|/A$ and split
+\eqref{llc:forward-borel} at $m=2\rho$. On that arc
+$|1-se^{2i\arg\xi}|\ge c(1+s)$ for $s\ge0$, for some $c>0$.
+For $m\le2\rho$ the logarithms are bounded by
+$C+2\log(1+\rho)$; the elementary divisor estimate
+$\sum_{m\le M}d(m)\le M(1+\log M)$ bounds this part after division by
+$|\xi|$. For $m>2\rho$, the logarithmic Taylor bound and partial
+summation give
+$\sum_{m>2\rho}d(m)m^{-2}=O(\log(2+\rho)/(1+\rho))$.
+Together with the regular germ near zero, these estimates give
+\[
+ \widehat R(\xi)=O\bigl(1+\log^2(2+|\xi|)\bigr),
+\]
+which is stronger than the exponential bound required for $1$-summability.
+Sauzin's summable closure Theorems~$3'$ and~$5'$ apply to the same
+substitutions and inverse maps. Borel differentiation preserves an
+exponential bound on a smaller arc by Cauchy's estimate. Summation
+commutes with these operations, proving \eqref{llc:summed-inverse}.
+Finally $R_\vartheta(t)=-t/4+O(t^2)$ and
+$R_\vartheta'(t)=-1/4+O(t)$ on smaller sectors. The map
+$w\mapsto-uw^2/2-uR_\vartheta(qe^{-w})$ is a contraction on
+$|w|\le M|q|$ for suitable $M$ and small $q$, proving the stated
+uniqueness. At $u=0$, $V=0$ gives all assertions directly.
+\end{proof}
+
+The theorem supplies continuation around the lattice points, without
+asserting regularity at them. The nearest two are genuine singularities
+for $u\ne0$, as already proved. Whether every other nonzero lattice
+point is singular, and the full singular germs on their various sheets,
+remain separate questions. The sectorial identity also does not identify
+arithmetic averaging of lateral inverses with nonlinear median summation.
+
 \subsection{Exact checks and numerical guidance}
 
 The accompanying correction compiler constructs \eqref{llc:T} through
@@ -346,3 +471,10 @@ $5.779\cdot10^{-8}$ and $2.155\cdot10^{-9}$ through orders one to four.
 These finite computations helped identify and check the correction
 formula. They are numerical diagnostics, not interval certificates or
 the proof of the uniform theorem.
+An isolated replay of \cite{llc:continuation} additionally passed 5890
+exact checks through $q^{12}$ and evaluated seventy complete finite
+Lagrange sums through $n=1025$. Its thirty-five independent 80-digit
+comparisons include fifteen comparisons with exact coefficient
+polynomials. The replay uses the required extended-range arithmetic;
+these finite checks support the formulas, while the continuation theorem
+depends on the analytic argument above.

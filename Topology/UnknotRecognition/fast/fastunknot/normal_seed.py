@@ -18,7 +18,7 @@ from .normal_cocycle_verify import inspect_cocycle_certificate
 from .normal_surface_geometry import NormalOrbitError, _coordinates
 
 
-def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, shellings=False, edge_span=False, sector_radius=0, max_work=2000000,
+def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, shellings=False, edge_span=False, sector_radius=0, handles=False, max_work=2000000,
                        max_cycles=None, tree_trials=4, face_roots=0, check=lambda: None):
     """Return UNKNOT with a source-bound disc or capping proof, or INCONCLUSIVE.
 
@@ -34,10 +34,15 @@ def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, sh
     It defaults to False and need not preserve the original candidate coverage.
     face_roots defaults to zero: optional face discovery adds coverage but
     was slower than the existing complete fallback on measured cases.
+    handles optionally tries geometric empty-pattern handle cancellations and
+    a source-bound cocore disc before solving a cocycle. Misses continue the
+    existing search, and all construction and replay share max_work.
     sector_radius optionally searches a complete radius-one/two compatible
     type window around the best tested Euler/span candidate after misses.
     It shares work and remaining orbit cycles; zero preserves the old path.
     """
+    if type(handles) is not bool:
+        raise ValueError('handles must be bool')
     if type(optimize) is not bool:
         raise ValueError('optimize must be bool')
     if type(annulus) is not bool:
@@ -65,6 +70,18 @@ def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, sh
         budget.tick()
         source = Diagram.from_pd(diagram.pd)
         raw = diagram_exterior(source, check=budget.tick)
+        if handles:
+            from .source_handle_reduction import reduce_source_handles
+            from .source_handle_disc import verify_handle_disc_certificate
+            reduced = reduce_source_handles(raw, record_certificate=True, check=budget.tick)
+            stats['handles'] = dict(reduced['stats'], **reduced['summary'])
+            if reduced['compressing_disc'] is not None:
+                proof = dict(schema='diagram-handle-disc-v1', input_pd=[list(row) for row in source.pd],
+                             triangulation=raw, handle_certificate=reduced['certificate'])
+                if not verify_handle_disc_certificate(source, proof, check=budget.tick):
+                    raise ArithmeticError('source-bound handle cocore replay failed')
+                return dict(status='UNKNOT', method='native-handle-cocore', certificate=proof,
+                            stats=stats, stages=[dict(stage='handles', status='COMPLETE', compressing_discs=1)], work=budget.work)
         if shellings:
             from .boundary_shellings import shell_boundary
             from .normal_shelling_verify import inspect_shelling_cocycle, inspect_shelling_planar

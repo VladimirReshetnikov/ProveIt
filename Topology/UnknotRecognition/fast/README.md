@@ -4201,3 +4201,40 @@ PYTHONPATH=. python -B -m normal_orbit_research.prism_interfaces benchmark --rou
 
 See [prism_interfaces.tex](../synthesis/prism_interfaces.tex) for geometric
 clipping, source ownership, the port bound and the missing topology.
+
+### Empty-pattern source handle reductions and cocore certificates
+
+`source_handle_reduction.reduce_source_handles(raw, record_certificate=True)`
+constructs the source dual handles, cancels eligible 2/3 pairs and then 1/2
+pairs, and returns the remaining source handle identifiers and characteristic
+indices. Geometric attaching occurrences retain multiplicities and signs.
+`source_handle_reduction_verify.verify_source_handle_reduction(raw, proof)`
+reconstructs them independently from the zero-coordinate raw cut cells.
+
+An exposed cocore becomes `compressing_disc` only after transporting its
+integral class back to the source and certifying a nonzero boundary period.
+The proof therefore checks essential boundary even on reducible sources.
+A source compressing disc alone is not a solid-torus or unknot verdict.
+The new `diagram-handle-disc-v1` wrapper also checks the canonical exterior
+against the original knot diagram; public `verify_normal_seed_certificate`
+accepts these source-bound proofs.
+
+Try this optional stage with `normal_seed_decide(diagram, handles=True)`,
+`recognize(diagram, use_normal_seed=True, normal_seed_handles=True)`, or
+`--normal-seed --normal-seed-handles`. A miss continues the existing cocycle
+search. Construction and positive replay share `normal_seed_max_work`.
+The stage remains disabled by default: its first complete-task measurements
+were slower than the existing cocycle path, and it adds no hits on the hard
+survivor corpus. It is an initial empty-pattern reduction; it does not claim
+to implement all admissibility moves or transport a nonempty boundary pattern.
+
+The audit covers 193 source cases and 57 diagram exteriors, including
+reducible controls, and retains 15 diagram-bound cocore certificates. All
+1,626 Regina-enabled tests pass. See [source_handles.tex](../synthesis/source_handles.tex)
+for the cancellation and boundary-period proofs, polynomial kernel bounds,
+measurements and remaining hierarchy obligations.
+
+```sh
+PYTHONPATH=. python -B -m normal_orbit_research.source_handles audit --output ../synthesis/data/source-handles-audit.json
+PYTHONPATH=. python -B -m normal_orbit_research.source_handles benchmark --output ../synthesis/data/source-handles-benchmark.json
+```

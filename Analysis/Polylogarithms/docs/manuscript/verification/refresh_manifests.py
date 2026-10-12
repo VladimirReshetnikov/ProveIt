@@ -23,7 +23,7 @@ archives=sum((read(V/name) for name in ['incoming-archives.json',
     'research-incoming-archives.json','third-incoming-archives.json',
     'fourth-incoming-archives.json','fifth-incoming-archives.json',
     'sixth-incoming-archives.json','seventh-incoming-archives.json',
-    'eighth-incoming-archives.json','ninth-incoming-archives.json','tenth-incoming-archives.json','eleventh-incoming-archives.json','twelfth-incoming-archives.json','thirteenth-incoming-archives.json','fourteenth-incoming-archives.json','fifteenth-incoming-archives.json','sixteenth-incoming-archives.json','seventeenth-incoming-archives.json','eighteenth-incoming-archives.json','nineteenth-incoming-archives.json','twentieth-incoming-archives.json','twenty-first-incoming-archives.json','twenty-second-incoming-archives.json','twenty-third-incoming-archives.json','twenty-fourth-incoming-archives.json']), [])
+    'eighth-incoming-archives.json','ninth-incoming-archives.json','tenth-incoming-archives.json','eleventh-incoming-archives.json','twelfth-incoming-archives.json','thirteenth-incoming-archives.json','fourteenth-incoming-archives.json','fifteenth-incoming-archives.json','sixteenth-incoming-archives.json','seventeenth-incoming-archives.json','eighteenth-incoming-archives.json','nineteenth-incoming-archives.json','twentieth-incoming-archives.json','twenty-first-incoming-archives.json','twenty-second-incoming-archives.json','twenty-third-incoming-archives.json','twenty-fourth-incoming-archives.json','twenty-fifth-incoming-archives.json']), [])
 for a in archives:
     archive=B.parents[3]/a['archive']
     blob=archive.read_bytes() if archive.is_file() else subprocess.check_output(['git','show',a['archive_git_revision']+':'+a['archive']],cwd=B.parents[3])
@@ -71,6 +71,14 @@ for p in sorted((feedback_report/'intake-verification').rglob('*')):
     if p.is_file() and '__pycache__' not in p.parts:
         name='../../../Transseries/docs/series-and-transseries/'+feedback_report.name+'/intake-verification/'+p.relative_to(feedback_report/'intake-verification').as_posix()
         dependencies[name]={'sha256':digest(p,'lf-normalized'),'mode':'lf-normalized'}
+
+
+continuation_home=B.parents[2]/'Transseries/docs/series-and-transseries/Resonant_Lambert_Inverse_Transseries/continuations/late-coefficients'
+for p in sorted((continuation_home/'intake-verification').rglob('*')):
+    if p.is_file() and '__pycache__' not in p.parts:
+        name='../../../Transseries/docs/series-and-transseries/Resonant_Lambert_Inverse_Transseries/continuations/late-coefficients/intake-verification/'+p.relative_to(continuation_home/'intake-verification').as_posix()
+        mode='raw' if p.suffix in {'.pdf','.png'} else 'lf-normalized'
+        dependencies[name]={'sha256':digest(p,mode),'mode':mode}
 
 save(V/'dependency-sha256.json',dict(sorted(dependencies.items())))
 print('Pinned',len(sources),'canonical sources and',len(dependencies),'dependencies.')
