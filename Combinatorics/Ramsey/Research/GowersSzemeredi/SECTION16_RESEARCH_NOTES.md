@@ -6465,9 +6465,9 @@ the distinction between the corrected Corollary 16.11 exponent and its
 original numerical exponent with ordinary integer geometry.
 
 The prior broad `PurifiedContextFidelityAudit` passed all 1,652 modules.
-After merging origin/main, the expanded combined audit and the exported
-facade are separate checks; the direct 56-module result does not certify
-either one. The annotated PDF was rebuilt twice; pages 86,93,101,109 were
+After merging origin/main, the expanded `WalshScopeFidelityAudit` also
+passes all 1,663 modules. The exported facade remains a separate running
+check; neither narrower checkpoint certifies its additional imports. The annotated PDF was rebuilt twice; pages 86,93,101,109 were
 visually inspected, and the original published PDF is untouched.
 
 ## F. Routes
