@@ -4517,7 +4517,7 @@ exponent and centered common-difference norm bound. These results hold
 over every nonzero modulus, including composite moduli.
 
 The native `MultilinearFidelityAudit` checks all 20 new public results and
-the exact three genuine statement types over 1,471 modules; only the
+the exact three genuine statement types over 1,472 modules; only the
 approved axioms occur. This closes the representation gaps in Lemma 5.10,
 Corollary 5.11 and Lemma 16.1. It does not finish the remaining Section 16
 cover predicates or the large-width genuine rectangle in Theorem 13.12.
