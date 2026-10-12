@@ -1,0 +1,113 @@
+\section{A beta-density solution of the quadratic background}
+\label{sec:quadratic}
+
+We use the dimensionless variables and polynomials
+\begin{equation}\label{eq:basic-variables}
+ y=\frac{u_1t^2}{2},\quad z=u_2t^3,\quad w=u_3t^4,\qquad
+ h(v)=\frac{1+3v^2}{24},\quad k(v)=\frac{v+v^3}{48},
+\end{equation}
+with $P_r(v)=(1-v^2)^r$. In particular $h'=v/4$ and $k'=h/2$.
+Write
+\[
+ \sum_{m\ge0}\sigma_2N_m\frac{t^m}{m!}
+ =e^{u_0t}F_0(y,z),\qquad F_0(y,z)=\sum_{b\ge0}z^bf_b(y).
+\]
+The previous continuation gives a differential equation and rational
+recurrence for these functions \cite{RepoQuadratic}. We solve that
+recurrence by a single nonrecursive beta density.
+
+\begin{theorem}[Pure-$u_2$ density]\label{thm:quadratic}
+Let
+\begin{equation}\label{eq:faff}
+ f_{\mathrm{aff}}(y)=\frac12\left(
+ \cosh y+\frac{\sinh y}{y}-y\Shi(y)\right),
+ \qquad \Shi(y)=\int_0^y\frac{\sinh v}{v}\dd v.
+\end{equation}
+All singularities displayed at zero are removable. Then $f_0=f_{\mathrm{aff}}$,
+$f_1=0$, and, for every $b\ge2$,
+\begin{equation}\label{eq:fb-density}
+ \boxed{\displaystyle f_b(y)=\frac1{192b!}
+  \avg{P_2(v)h(v)^{b-2}e^{yv}}.}
+\end{equation}
+Equivalently, with
+$\Erem(x)=(e^x-1-x)/x^2$ and $\Erem(0)=1/2$,
+\begin{equation}\label{eq:F0-compact}
+ F_0(y,z)=f_{\mathrm{aff}}(y)+\frac{z^2}{192}
+ \avg{P_2(v)e^{yv}\Erem(zh(v))}.
+\end{equation}
+This is entire jointly in $y,z$, and
+\begin{equation}\label{eq:F0zz}
+ \partial_z^2F_0(y,z)=\frac1{192}\avg{P_2(v)e^{yv+zh(v)}}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $A=2y+(z/2)\partial_y$. Lemma~\ref{lem:finitejet}, specialized to
+the quadratic background, gives
+\begin{equation}\label{eq:quadratic-PDE}
+ F_0-\frac12A\partial_yF_0+A^2\partial_zF_0
+ =\avg{e^{yv+zh(v)}}.
+\end{equation}
+To see the right-hand side, set $s=t(1+v)/2$ in
+\eqref{eq:Euler-A}; the exponent after specialization is
+$u_0t+yv+zh(v)$. The two sides of \eqref{eq:quadratic-PDE} are the
+Euler identity divided by $te^{u_0t}$.
+
+Since a single $u_2$ is not functional, $f_1=0$. Coefficient $z^0$
+in \eqref{eq:quadratic-PDE} yields
+$f_0-yf_0'=\sinh y/y$. The unique solution with $f_0(0)=1$ and no
+linear term is \eqref{eq:faff}. In particular,
+\begin{equation}\label{eq:faff-second}
+ f_{\mathrm{aff}}''(y)=-\frac12\avg{(1-v^2)e^{yv}}.
+\end{equation}
+For $n\ge1$, the remaining coefficients in the PDE give
+\begin{equation}\label{eq:quadratic-rec}
+\begin{split}
+ 4(n+1)y^2f_{n+1}
+ =\frac1{n!}\avg{h^ne^{yv}}
+ -(n+1)f_n-(2n-1)yf_n'
+ -\frac{n-2}{4}f_{n-1}''.
+\end{split}
+\end{equation}
+The case $n=1$, using \eqref{eq:faff-second}, gives
+$f_2=\avg{P_2e^{yv}}/384$. For instance, this follows immediately
+from $P_2''=4(3v^2-1)$ by integrating twice by parts. The endpoint
+values of $P_2$ and $P_2'$ are zero.
+
+For $n\ge2$ the elementary polynomial identity
+\begin{equation}\label{eq:pure-density-identity}
+\begin{split}
+ 4(P_2h^{n-1})''={}&192h^n-(n+1)P_2h^{n-2}
+ +(2n-1)(vP_2h^{n-2})'\\
+ &-\frac{n(n-2)}4v^2P_2h^{n-3}
+\end{split}
+\end{equation}
+proves that \eqref{eq:fb-density} satisfies \eqref{eq:quadratic-rec}.
+At $n=2$ the last term is understood as zero. For all $n\ge3$, divide
+by $h^{n-3}$, differentiate with $h'=v/4$, and substitute
+$24h=1+3v^2$; both sides become the same polynomial in $n$ and $v$.
+This is a direct all-index algebraic identity, not an inference from
+checking finitely many $n$.
+
+To pass from \eqref{eq:pure-density-identity} to
+\eqref{eq:quadratic-rec}, integrate against $e^{yv}$ and transfer
+one or two $v$ derivatives. Endpoint terms vanish because of $P_2$.
+The terms involving $v$ and $v^2$ give $f_n'$ and $f_{n-1}''$.
+After multiplication by $192n!$, the result is exactly the recurrence.
+Multiplication by $y^2$ is injective on formal power series, so the
+initial values determine the sequence uniquely. This proves the density
+formula. Summing $z^b$ gives \eqref{eq:F0-compact}, and differentiating
+twice gives \eqref{eq:F0zz}. Compact integration of entire functions
+proves joint entire convergence.
+\end{proof}
+
+For even $k$, extracting the coefficient of $y^k$ gives a particularly
+simple rational replacement for the source recurrence:
+\begin{equation}\label{eq:quadratic-beta}
+ k![y^k]f_b(y)=\frac1{24^{b-1}b!}
+ \sum_{j=0}^{b-2}
+ \frac{\binom{b-2}{j}3^j}{(k+2j+1)(k+2j+3)(k+2j+5)}.
+\end{equation}
+For odd $k$ it is zero. Formula~\eqref{eq:quadratic-beta} follows by
+expanding $(1+3v^2)^{b-2}$ and using
+$\int_0^1v^K(1-v^2)^2\dd v=8/((K+1)(K+3)(K+5))$.

@@ -1,0 +1,184 @@
+\clearpage
+\section{The complete cubic-background formula}
+\label{sec:cubic}
+
+We now determine the entire projection with highest retained derivative
+index three. The words ``cubic background'' refer to the fact that a
+formal shift of $u_0$ is a cubic polynomial when $u_r=0$ for $r>3$.
+They do not restrict the power of $u_3$ in the answer.
+
+\begin{theorem}[Complete cubic normal form]\label{thm:main}
+With the notation of \eqref{eq:basic-variables},
+\begin{equation}\label{eq:main-generating}
+ \sum_{m\ge0}\sigma_3N_m\frac{t^m}{m!}=e^{u_0t}F(y,z,w),
+\end{equation}
+where
+\begin{equation}\label{eq:main}
+\boxed{\begin{aligned}
+ F(y,z,w)={}&f_{\mathrm{aff}}(y)
+ +\frac{z^2}{192}\avg{P_2e^{yv}\Erem(zh)}\\
+ &-\frac{w^2}{9216}\avg{P_3e^{yv+zh}\Erem(wk)}.
+\end{aligned}}
+\end{equation}
+This function is entire jointly in $y,z,w$. Writing
+$F=\sum_{n\ge0}w^nF_n(y,z)$, its coefficients are $F_0$ from
+Theorem~\ref{thm:quadratic}, $F_1=0$, and
+\begin{equation}\label{eq:Fn-density}
+ F_n(y,z)=-\frac1{9216n!}
+ \avg{P_3(v)k(v)^{n-2}e^{yv+zh(v)}},\qquad n\ge2.
+\end{equation}
+\end{theorem}
+
+\subsection{The closed Euler equation}
+Set
+\[
+ A=2y+\frac z2\partial_y,\qquad B=\partial_z,\qquad
+ C=\frac12\partial_y,\qquad L=A+wB.
+\]
+On a function $e^{u_0t}G(y,z,w)$ the derivation $\delta_3$ acts as
+$e^{u_0t}t^{-1}LG$. Lemma~\ref{lem:finitejet} therefore gives
+\begin{equation}\label{eq:cubic-PDE}
+ F-\frac12L F_y+L^2F_z-L^3F_w
+ =\avg{e^{yv+zh(v)+wk(v)}}.
+\end{equation}
+In detail, after $s=t(1+v)/2$ in \eqref{eq:Euler-A}, the exponent of
+the shifted Bell exponential is
+\[
+ u_0t+\frac{u_1t^2v}{2}
+ +\frac{u_2t^3(1+3v^2)}{24}
+ +\frac{u_3t^4(v+v^3)}{48}.
+\]
+This establishes the right-hand side of \eqref{eq:cubic-PDE} with all
+normalizations fixed.
+
+The commutators $[B,A]=C$ and $[C,A]=1$ give
+\begin{align*}
+ L^2&=A^2+w(2AB+C)+w^2B^2,\\
+ L^3&=A^3+w(3A^2B+3AC+1)
+          +w^2(3AB^2+3CB)+w^3B^3.
+\end{align*}
+Put
+\[
+ R_n(y,z)=\frac1{n!}\avg{k(v)^ne^{yv+zh(v)}}.
+\]
+Comparison of $w^n$ in \eqref{eq:cubic-PDE} gives, for $n\ge1$,
+\begin{equation}\label{eq:cubic-rec}
+\begin{split}
+ (n+1)A^3F_{n+1}={}&(1-n)F_n-\frac{1+3n}{2}A\partial_yF_n
+ +(1-3n)A^2\partial_zF_n\\
+ &+(5-3n)A\partial_z^2F_{n-1}
+ +\frac{3(1-n)}2\partial_y\partial_zF_{n-1}\\
+ &+(3-n)\partial_z^3F_{n-2}-R_n.
+\end{split}
+\end{equation}
+Negative subscripts mean zero. The $w^0$ equation is exactly the
+quadratic equation because the normal basis excludes a single $u_3$.
+
+\begin{lemma}[Uniqueness of the cubic hierarchy]\label{lem:injective}
+The operator $A^3$ is injective on $\C[[y,z]]$. Consequently
+\eqref{eq:cubic-rec}, together with the specified $F_0$ and $F_1=0$,
+determines every $F_n$ uniquely.
+\end{lemma}
+\begin{proof}
+If $G$ is nonzero, let $j$ be its least nonzero $z$-degree and write that
+coefficient as $g(y)$. The coefficient of $z^j$ in $A^3G$ is
+$8y^3g(y)$, which is nonzero. Indeed every use of $(z/2)\partial_y$
+instead of $2y$ raises $z$-degree. This proves injectivity and then the
+successive uniqueness assertion.
+\end{proof}
+
+\subsection{Why the beta density solves every recurrence}
+Let $E(v)=e^{yv+zh(v)}$. The key transport relation is
+\begin{equation}\label{eq:transport}
+ A E(v)=2\partial_v E(v),\qquad
+ A^j\avg{Q(v)E(v)}=(-2)^j\avg{Q^{(j)}(v)E(v)}.
+\end{equation}
+The second equality holds when $Q,Q',\ldots,Q^{(j-1)}$ vanish at
+both endpoints. For $Q$ divisible by $P_3$, it applies for $j\le3$.
+The coefficients of $A$ are independent of $v$, so iteration of the
+first equality and ordinary integration by parts prove the second.
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+We verify that \eqref{eq:Fn-density} satisfies
+\eqref{eq:cubic-rec}. Uniqueness then identifies it with the actual
+normal projection, so no unproved assumption about a formal solution is
+needed.
+
+For $n=1$, the recurrence reduces to
+\[
+ 2A^3F_2=2A\partial_z^2F_0-R_1.
+\]
+Using \eqref{eq:F0zz} and \eqref{eq:transport}, this is the polynomial
+identity
+\begin{equation}\label{eq:cubic-base1}
+ \frac{P_3'''}{1152}=-\frac{P_2'}{48}-k.
+\end{equation}
+For $n=2$, the required identity is
+\begin{equation}\label{eq:cubic-base2}
+ -8(P_3k)'''=-P_3+7(vP_3)'-20(hP_3)''-96P_2h+9216k^2.
+\end{equation}
+Both follow by differentiating the displayed polynomials.
+
+For every $n\ge3$, substituting \eqref{eq:Fn-density} in the
+recurrence, multiplying by $-9216n!$, and using
+\eqref{eq:transport} reduces the assertion to
+\begin{equation}\label{eq:cubic-density-identity}
+\begin{split}
+ -8(P_3k^{n-1})'''={}&(1-n)P_3k^{n-2}
+ +(1+3n)(vP_3k^{n-2})'\\
+ &+4(1-3n)(hP_3k^{n-2})''
+ -2n(5-3n)(h^2P_3k^{n-3})'\\
+ &+\frac32n(1-n)vhP_3k^{n-3}
+ +n(n-1)(3-n)h^3P_3k^{n-4}\!\\
+ &+9216k^n.
+\end{split}
+\end{equation}
+At $n=3$ the term with factor $3-n$ is zero; no negative power is
+part of the asserted identity. For $n\ge4$ all terms are polynomials.
+
+Here is a finite algebraic way to verify \eqref{eq:cubic-density-identity}
+for an indeterminate $n$, making the all-index step explicit. Define
+\[
+ \mathcal G_{a,q}(U)=U'+a\frac{q'}qU.
+\]
+On the open set where $k\ne0$, divide \eqref{eq:cubic-density-identity}
+by $k^{n-4}$ and replace its left side by
+$-8\mathcal G_{n-4,k}^3(P_3k^3)$. The terms on its right become,
+in order,
+\begin{align*}
+ &(1-n)P_3k^2,
+ &&(1+3n)\mathcal G_{n-4,k}(vP_3k^2),\\
+ &4(1-3n)\mathcal G_{n-4,k}^2(hP_3k^2),
+ &&-2n(5-3n)\mathcal G_{n-4,k}(h^2P_3k),\\
+ &\tfrac32n(1-n)vhP_3k,
+ &&n(n-1)(3-n)h^3P_3,
+ \qquad 9216k^4.
+\end{align*}
+Substitute $P_3=(1-v^2)^3$, $24h=1+3v^2$, and $48k=v+v^3$.
+Expanding the derivatives and collecting powers of $n$ makes the
+difference identically zero in $\Q(v)[n]$. Only three derivatives are
+needed, independently of $n$. Clearing denominators proves the identity
+on the entire polynomial domain. The same calculation at $n=3$, or its
+polynomial continuation, proves that case with the stated zero-term
+convention. The supplied script records these exact symbolic operations.
+
+All integrations by parts in this verification have zero endpoint terms:
+the worst derivative transfer is of order three, and its density has the
+factor $P_3$. The exceptional terms involving $F_0$ occur only at
+$n=1,2$ and were handled separately. Thus the recurrence is verified at
+every index. Lemma~\ref{lem:injective} proves
+\eqref{eq:Fn-density}. Finally,
+$\sum_{n\ge2}w^nk^{n-2}/n!=w^2\Erem(wk)$ gives
+\eqref{eq:main}. The integrands are entire and uniformly bounded on
+compact parameter sets and the compact interval, proving joint entirety.
+\end{proof}
+
+\begin{remark}[Proof status of the algebraic step]
+The four identities \eqref{eq:pure-density-identity},
+\eqref{eq:cubic-base1}, \eqref{eq:cubic-base2}, and
+\eqref{eq:cubic-density-identity} are explicit finite polynomial or
+rational-function identities. Their symbolic verification treats $n$ as
+an indeterminate. The separate checks at weights at most 30 are useful
+regression tests but are not the reason that the theorem holds for every
+weight.
+\end{remark}

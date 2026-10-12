@@ -1,0 +1,231 @@
+PROPOSED INTEGRATION NOTES
+Higher Harmonic Reconstruction and Exact Collision Identities
+12 October 2026
+
+This is a proposed intake and mathematical-status update. No remote files
+were edited. Preserve the original reports and their historical questions.
+The new sections have prefixed labels to reduce collision risk when merged.
+
+SUGGESTED PLACEMENT
+
+Preserve this complete package in docs/incoming, or move it after review to
+an appropriately named continuation below
+Analysis/Polylogarithms/docs/reports/stieltjes-harmonic-resonance/continuations/.
+The modular sections permit separate analytic integration without copying
+the title page or bibliography into the canonical manuscript.
+
+NEW STATEMENTS TO INDEX
+
+sections/01_collisions.tex:
+  pc:kernel           Evaluated rational local kernel, including confluence.
+  pc:uniform          All-factor polygamma local correction, uniform for
+                      arbitrary relative positive shift rates.
+  pc:nonresonant      Complete nonresonant contact polynomial, with amplitudes.
+  pc:all-powers       Full all-N centered one-trigamma constants.
+  pc:triple-row       The zeta(3), 0, -zeta(3) row, also valid uncentered.
+  pc:integer-triple   Explicit resonant (epsilon^3,epsilon^2,epsilon) constant.
+
+  This answers the local-contact problem in the Stieltjes-index-zero sector
+  of Polygamma_Moments_and_Stieltjes_Resonances, section 5 questions 5-6.
+  It does not evaluate every general merged finite part, and it does not
+  prove the arbitrary-factor positive-Stieltjes-index extension.
+
+sections/02_three_clusters.tex:
+  tri:thm:mixed       Arbitrary labelled mixed derivatives as one classical
+                      polylogarithm divided difference.
+  tri:thm:three       Finite weight-(r+2), depth-at-most-three dictionary.
+  tri:cor:Gamma       Ordinary convergent Gamma spectral sum for B^r,C,D.
+  tri:eq:Gamma-mixed  Arbitrarily many displaced masses in the differentiated
+                      Gamma formula, including confluent values.
+
+  This completes the B^r,C,D target in
+  ProveIt_Gamma_Normalizations_and_Colored_Moments_2026-10-12.zip.
+  The two-cluster dictionary remains an inherited input. General
+  B^r,C^s,D^t, finite arithmetic collapse of the Gamma spectral sum,
+  and minimum depth remain open.
+
+sections/03_gap_ten.tex:
+  gt:main             Complete gap ten, with the optimal formal prefix.
+  gt:positive-tail    Analytic positivity for b>=73728.
+  gt:finite           Exact finite-field nonvanishing for 6<=b<=73727.
+  gt:inverse          Every inverse coefficient via an (m+1)-square
+                      bordered determinant at a fixed half-gap m.
+  gt:ordinary         Ordinary convergent polygamma-product sums.
+
+  See the appended detailed gap-ten note for exact source paths and labels.
+  Complete gap eight and the smaller-order-through-twelve results predate
+  this article. The bounded inverse determinant is a constructive partial
+  answer to the compact-row question. A short product expression and a
+  structural all-pairs proof without finite completion remain open.
+
+sections/04_gamma_primitives.tex:
+  hp:closed           Nonrecursive H_m using Euler homotopy and the inherited
+                      universal N_m coefficient formula.
+  hp:analyticN        Analytic infinite normal generator for holomorphic U.
+  hp:analyticH        Convergent primitive generator and translation identity.
+  hp:specialtranslations  Gamma and all-index Stieltjes specializations.
+
+  These answer questions 1 and 6 in sections/11_audit.tex of the expanded
+  ProveIt_Universal_Gamma_Normal_Forms_2026-10-11 (2).zip. Retain attribution
+  for the universal canonical coefficients and the classical homotopy.
+  The observed H_m support/sign pattern is a conjecture, checked only
+  through weight 24. The sufficient analytic domains are not asserted sharp.
+
+CORRECTIONS AND REVIEW CAVEATS TO KEEP WITH THE TEXT
+
+- Remove the second consecutive copy of the manuscript README paragraph
+  beginning "The complete 1,032-input first-letter X family". This is a
+  verified editorial duplication already noted by a previous incoming
+  report. Retain all rank, kernel and unresolved-target qualifications.
+- Current statements about pending canonical analytic integration are
+  integration-status records. They are not false merely because a later
+  incoming report proves a result. Update after analytic acceptance.
+- The modular gap-ten certificate proves nonzero rational determinants;
+  it does not prove their real signs. A blanket f_(b,5)>0 conjecture is
+  false, since f_(7,5)<0 (and so are the values through b=17).
+- Do not apply nonresonant CT formulas to arbitrary rational exponent
+  patterns. The explicit integer-scale triple demonstrates the difference.
+- Retain exact shifted regular coefficients in the arbitrary-path contact
+  theorem. Terms such as a_max*log(a_min) need not tend to zero.
+- Retain the finite-part coordinate, all compensating endpoint terms,
+  independently labelled derivative convention and confluent factorials.
+- Formal matrix rank does not prove arithmetic independence; a finite
+  colored dictionary does not by itself eliminate the Gamma spectral sum.
+- The Gaussian S6 and revised S8 period problems remain open.
+
+PROVENANCE
+
+All twelve current incoming archives were retrieved and extracted for a
+targeted topical audit; 92 manuscript chapter files were also retrieved.
+data/source_manifest.json and data/dependency_files.json identify the
+actual source bytes. The reported repository HEAD is not presented as
+an atomic pin for requests made against the moving main branch.
+
+The generated article attributes established tools and predecessor
+theorems, supplies complete proofs of its new statements, and separates
+exact certificates from numerical diagnostics. Worldwide historical
+priority has not been certified by the bounded literature search.
+
+DETAILED GAP-TEN SOURCE MAPPING FOLLOWS
+
+Proposed source-status and integration note: gap ten and bounded inverse rows
+
+NEW RESULTS TO INDEX
+
+1. sections/03_gap_ten.tex, Theorem gt:main: for every b >= 6, the original
+   late-coordinate matrix for (p,q)=(2b-10,2b) is nonsingular; the first
+   q=2b centered even moments have formal rank q. Proposition
+   gt:positive-tail proves f_(b,5)>0 for b>=73728; Proposition gt:finite
+   proves nonvanishing, not real signs, for 6<=b<=73727 by exact finite
+   field arithmetic. The unrestricted all-unequal-even-order conjecture
+   remains open. No claim about Gaussian S6 or revised S8 follows.
+
+2. Theorem gt:inverse: whenever the inherited fixed-gap boundary matrix
+   F_(b,m) is invertible, every coefficient of M_(b,m)^(-1) is an explicit
+   (m+1)-square bordered determinant divided by det F_(b,m). Its entries
+   are defined by the fundamental recurrence and its causal Green
+   columns. This is unconditional at m=5 by gt:main. It is a constructive
+   bounded-dimension formula, not a short product formula or a claim of
+   minimal determinant size.
+
+3. Corollary gt:ordinary and equation gt:ordinary-sum: for every gap-ten
+   pair there is an ordinary absolutely convergent polygamma-product
+   sum equal to -1/2, with P of exact degree 2q-2 and an explicit
+   subtraction polynomial of degree ten. Other inverse rows give
+   zeta(2k), 0<=k<b. Equation gt:leading gives the exact leading
+   coefficient. The worked (14,24) example is in
+   code/gap_ten/gap_ten_14_24_example.json and is independently checked against the
+   original Bernoulli matrix.
+
+EXACT CURRENT SOURCES AND THE APPROPRIATE STATUS UPDATES
+
+A. docs/incoming/ProveIt_Polygamma_Moments_and_Stieltjes_Resonances_2026-10-12.zip
+   Extracted wrapper:
+   ProveIt_Polygamma_Moments_and_Stieltjes_Resonances_2026-10-12/
+   sections/02_gap_reconstruction.tex:
+   - eg:effective gives B(m) for every fixed half-gap; its displayed
+     B(5)=635656 is a valid sufficient threshold, not an error.
+     gt:positive-tail supplies the sharper value 73728 for this ray.
+   - eg:eight-main already proves every gap-eight pair. Preserve its
+     attribution; do not present gap eight as a new result here.
+   - eg:eight-identities already supplies its ordinary convergent
+     polygamma family. gt:ordinary extends the completed rays to gap ten.
+   sections/05_source_status.tex, label status:section:
+   - Further-question item 3, "Find closed reconstruction rows and
+     identities in b", receives a constructive partial answer from
+     gt:inverse: the large inverse can be replaced by fixed-size
+     bordered determinants and causal recurrences. Short product formulas,
+     especially sparse rows, and minimal representations remain open.
+   - Further-question item 4 requests structural nonvanishing without
+     finite completion. It remains open: the new proof still has a
+     finite computational part.
+
+B. docs/incoming/ProveIt_Ordered_Boundary_Identities_2026-10-11.zip
+   Extracted wrapper: ProveIt_Ordered_Boundary_Identities_2026-10-11/
+   sections/08_gamma_basis.tex:
+   - gb:bridge / gb:bridge-formula: inherited exact complementary-minor
+     normalization; do not reassign as a new result.
+   - gb:basis, gb:normalization, gb:exact-Gamma-determinant: inherited
+     Gamma basis and initial determinant. They are the analytic input.
+   - gb:eventual proves eventual nonvanishing at fixed gap. Its historical
+     scope remark correctly described that report's contribution; later
+     completions belong in the current status index, not as silent edits
+     to the archived source.
+
+C. Analysis/Polylogarithms/docs/reports/stieltjes-harmonic-resonance/
+   continuations/bilinear-tails-determinants/
+   Bilinear_Tails_and_Harmonic_Determinants.tex
+   - Section labelled future:sec, subsection "Reconstruction beyond
+     order ten", question titled "Compact inverse rows": gt:inverse
+     answers the bounded-determinant version constructively. It does not
+     supply the requested short closed forms in their strongest sense.
+   - The same archival question list contains "The full gap-six family".
+     That historical question was already answered by the separate
+     gap-six incoming report and is not a new gap-ten accomplishment.
+   - Theorem ten:main is a complete smaller-tail-order-ten theorem,
+     distinct from the new fixed GAP ten theorem. Keep these two meanings
+     of "order ten" separate.
+
+D. Analysis/Polylogarithms/docs/reports/stieltjes-harmonic-resonance/
+   continuations/bernoulli-tornheim-digamma/
+   sections/03b_general_hankel.tex
+   - eq:general-source-entries and lem:general-even-factor specify the
+     original source matrix, including the omitted binomial index zero.
+   - thm:general-small-determinant is the earlier smaller-order-sized
+     reduction. The new gt:inverse gives individual inverse entries with
+     a size governed by the gap instead, on every nonzero boundary block.
+
+WHAT WAS ACTUALLY VERIFIED IN THE CURRENT MANUSCRIPT STATUS RECORDS
+
+Analysis/Polylogarithms/docs/manuscript/README.md says that unequal-tail
+ranks, determinants and related branches retain separate pending
+analytic integrations. That is an integration-status statement, not a
+false assertion that no source proves them. The retrieved
+EDITORIAL-LEDGER.md likewise labels the relevant earlier report
+continuations as pending canonical analytic integration. No newly false
+mathematical statement was identified in those current overview records.
+They should receive an additive intake/status entry for the results above
+once this proof is accepted; they should not be described as mathematically
+wrong merely because further results have arrived.
+
+The manuscript README's first-letter-X rank paragraph is repeated
+verbatim. This is a real editorial duplication in the inspected current
+file, but the latest incoming source-status report already identified it.
+It may be removed as previously documented editorial cleanup; it is not a
+newly discovered mathematical erratum.
+
+SUGGESTED CURRENT OVERVIEW ADDITION, AFTER ANALYTIC ACCEPTANCE
+
+"The fixed-gap harmonic-tail programme now includes the complete gap-ten
+ray: every pair (p,p+10) with positive even p has the optimal first-q
+formal moment prefix. A five-mode Gamma estimate proves the infinite
+tail, and an exact finite-field certificate covers the remaining 73,722
+indices. A causal Green-function construction gives every inverse row by
+bordered determinants whose size depends only on the gap, yielding
+ordinary convergent polygamma-product identities. The finite-field
+certificate proves nonvanishing rather than the real signs of all finite
+determinants. The unrestricted all-pairs conjecture, structural
+nonvanishing without finite completion, and short product expressions
+for inverse rows remain open."
+
+No repository files were modified by this research task.

@@ -1,0 +1,219 @@
+\section{Hurwitz endpoints and all Stieltjes orders}
+\label{sec:hurwitz}
+
+The new coefficient densities naturally supply the polynomial family
+\begin{equation}\label{eq:Wkernel}
+ W_{b,n}(v)=(1-v^2)^3(1+3v^2)^b(v+v^3)^{n-2},
+ \qquad b\ge0,\ n\ge2.
+\end{equation}
+Multiplication by $v^k$ gives all coefficient moments in
+\eqref{eq:coefficient-integral}. Every such polynomial and its first two
+derivatives vanish at $v=\pm1$. This creates a finite endpoint calculus
+starting with the third derivative, uniformly in $b,n,k$.
+
+\subsection{The polynomial endpoint identity}
+Let $P$ be any polynomial of degree $d$ and define
+\[
+ M_P(s;a)=\frac12\int_{-1}^1P(v)\zeta(s,a+v)\dd v,
+ \qquad \mu_P=\avg{P(v)}.
+\]
+Use $\fall{s-1}{j+1}=(s-1)(s-2)\cdots(s-j-1)$.
+
+\begin{proposition}[Finite Hurwitz endpoint formula]\label{prop:Hurwitz}
+For $\Re a>1$, as an identity of meromorphic functions of $s$,
+\begin{equation}\label{eq:Hurwitz-endpoint}
+ M_P(s;a)=-\frac12\sum_{j=0}^d
+ \frac{\eval{P^{(j)}(v)\zeta(s-j-1,a+v)}}{\fall{s-1}{j+1}}.
+\end{equation}
+Its only possible pole is at $s=1$, with residue $\mu_P$.
+All other apparent singularities of the right side are removable after
+summation. If $P,P',P''$ vanish at both endpoints, the sum starts at
+$j=3$.
+\end{proposition}
+\begin{proof}
+The classical argument derivative
+$\partial_a\zeta(s-1,a)=-(s-1)\zeta(s,a)$
+\cite{DLMF25} gives the first integration by parts. Repeat until
+$P^{(d+1)}=0$. Each endpoint term has the minus sign shown in
+\eqref{eq:Hurwitz-endpoint}. This proves the formula away from the
+exceptional integers. On the compact interval and locally uniformly for
+$\Re a>1$, the integrand is analytic in $s$ except for its simple
+pole at one. Its residue integrates to $\mu_P$. Meromorphic continuation
+therefore proves the endpoint identity and all stated cancellations.
+\end{proof}
+
+This proposition is the standard polynomial integration-by-parts
+mechanism. The specialization to $W_{b,n}$ is what connects the newly
+computed Gamma normal coefficients to spectral special functions.
+No endpoint regularization in the variable $v$ is needed: the integrals
+are ordinary compact-interval integrals. Laurent coefficients in $s$
+are a different operation.
+
+\subsection{Finite harmonic coefficients for every Stieltjes order}
+For $j\ge0$ define $\eta_{j,\ell}$ by
+\begin{equation}\label{eq:eta}
+ \prod_{r=1}^j(1-\epsilon/r)^{-1}
+ =\sum_{\ell\ge0}\eta_{j,\ell}\epsilon^\ell
+ =\exp\left(\sum_{r\ge1}\frac{H_j^{(r)}}r\epsilon^r\right).
+\end{equation}
+The empty product at $j=0$ is one. In particular,
+\[
+ \eta_{j,0}=1,\qquad \eta_{j,1}=H_j,\qquad
+ \eta_{j,2}=\frac{H_j^2+H_j^{(2)}}2.
+\]
+These are finite polynomials in generalized harmonic numbers at each
+fixed $\ell$.
+
+\begin{theorem}[All-order Stieltjes averages]\label{thm:Stieltjes}
+For $q\ge0$ and $\Re a>1$,
+\begin{equation}\label{eq:Stieltjes-endpoint}
+\begin{split}
+ \avg{P(v)\gamma_q(a+v)}
+ ={}&\frac{(-1)^{q+1}q!}{2}
+ \sum_{j=0}^d\frac{(-1)^j}{j!}\\[-2pt]
+ &\quad\times\eval{P^{(j)}(v)
+ \sum_{r=0}^{q+1}\eta_{j,q+1-r}
+       \frac{\zeta^{(r)}(-j,a+v)}{r!}}.
+\end{split}
+\end{equation}
+The formula is finite at every $q$ and applies in particular to every
+polynomial $v^kW_{b,n}$.
+\end{theorem}
+\begin{proof}
+At $s=1+\epsilon$,
+\begin{equation}\label{eq:falling-laurent}
+ \frac1{\fall{\epsilon}{j+1}}
+ =\frac{(-1)^j}{j!\epsilon}
+       \sum_{\ell\ge0}\eta_{j,\ell}\epsilon^\ell.
+\end{equation}
+Expand $\zeta(-j+\epsilon,a+v)$ in its order variable and insert
+\eqref{eq:falling-laurent} into \eqref{eq:Hurwitz-endpoint}. Coefficient
+$\epsilon^q$ is the right side of \eqref{eq:Stieltjes-endpoint}
+multiplied by $(-1)^q/q!$. On the integral side the same coefficient is
+$(-1)^q\avg{P\gamma_q}/q!$ by
+\eqref{eq:stieltjes-convention}. Uniformity on compact parameter sets
+justifies coefficient extraction under the integral. The coefficient of
+$\epsilon^{-1}$ is the separately retained residue $\mu_P$; it must not
+be discarded before multiplying the expansions.
+\end{proof}
+
+\begin{corollary}[Anchored primitives and argument derivatives]
+\label{cor:Stieltjes-calculus}
+For $a_0,a$ in the half-plane $\Re a>1$, with the integral taken along
+any path in that half-plane,
+\begin{equation}\label{eq:Stieltjes-primitive}
+ \int_{a_0}^a\avg{P(v)\gamma_q(c+v)}\dd c
+ =\left.\frac{(-1)^{q+1}}{q+1}\partial_s^{q+1}
+       \bigl(M_P(s;a)-M_P(s;a_0)\bigr)\right|_{s=0}.
+\end{equation}
+For $r\ge1$, let $e_j^{[r]}$ be the elementary symmetric polynomial of
+degree $j$ in $1,1/2,\ldots,1/r$. Then
+\begin{equation}\label{eq:Stieltjes-argument-derivative}
+\begin{split}
+ \partial_a^r\avg{P(v)\gamma_q(a+v)}
+ ={}&(-1)^{q+r}q!r!
+ \sum_{j=0}^{\min(q,r)}e_j^{[r]}
+ \frac{\left.\partial_s^{q-j}M_P(s;a)\right|_{s=r+1}}{(q-j)!}.
+\end{split}
+\end{equation}
+Here the derivative $\partial_s$ on $M_P(r+1;a)$ is evaluated in its
+first argument. Both formulas reduce to finite endpoint expressions by
+Proposition~\ref{prop:Hurwitz} and its removable limits.
+\end{corollary}
+\begin{proof}
+From $\partial_a\zeta(s,a)=-s\zeta(s+1,a)$ and the Laurent expansion,
+\[
+ \partial_a\zeta^{(q+1)}(0,a)
+ =(-1)^{q+1}(q+1)\gamma_q(a).
+\]
+Integrate in $a$ and average against $P$ to obtain
+\eqref{eq:Stieltjes-primitive}; the displayed subtraction fixes the
+anchor exactly. For the derivative formula, use
+\[
+ \partial_a^r\zeta(s,a)=(-1)^r(s)_r\zeta(s+r,a),\qquad
+ (1+\epsilon)_r=r!\sum_{j=0}^re_j^{[r]}\epsilon^j,
+\]
+and compare coefficients at $s=1+\epsilon$.
+\end{proof}
+
+For $q=0$, the primitive is the weighted log-Gamma difference because
+$\zeta'(0,a)=\log\Gamma(a)-\tfrac12\log(2\pi)$
+\cite{DLMF25}. Formula~\eqref{eq:Stieltjes-argument-derivative} at
+$q=0$ recovers the weighted polygamma integrals, using
+$\psi^{(r)}(a)=(-1)^{r+1}r!\zeta(r+1,a)$.
+
+\subsection{Explicit digamma and Stieltjes evaluations}
+\begin{corollary}[Four concrete evaluations]\label{cor:four-integrals}
+All integrals below are ordinary integrals over $[-1,1]$:
+\begin{align}
+ \int_{-1}^1P_3(v)\psi(2+v)\dd v
+ &=16\zeta'(-3)+12\zeta'(-5)+\frac27,
+ \label{eq:I-psi-base}\\
+ \int_{-1}^1P_3(v)(1+3v^2)\psi(2+v)\dd v
+ &=64\zeta'(-3)+240\zeta'(-5)+48\zeta'(-7)
+       +\frac{547}{1800},\label{eq:I-psi-mixed}\\
+ \int_{-1}^1P_3(v)(v+v^3)\psi(2+v)\dd v
+ &=\frac{32}{105}-\frac{84\zeta(5)}{\pi^4}
+   +\frac{1575\zeta(7)}{2\pi^6}-\frac{2835\zeta(9)}{2\pi^8},
+ \label{eq:I-psi-odd}\\
+ \int_{-1}^1P_3(v)\gamma_1(2+v)\dd v
+ &=8\zeta''(-3)+6\zeta''(-5)+\frac{88}{3}\zeta'(-3)
+   +\frac{137}{5}\zeta'(-5)\notag\\
+ &\hspace{1em}-\frac{16}{15}\log2+\frac{521}{900}.
+ \label{eq:I-stieltjes}
+\end{align}
+\end{corollary}
+\begin{proof}
+At $a=2$ the endpoint arguments are $1$ and $3$. Use the exact shift
+\begin{equation}\label{eq:zeta-three}
+ \zeta(s,3)=\zeta(s)-1-2^{-s}.
+\end{equation}
+For $q=0$, Theorem~\ref{thm:Stieltjes} and $\gamma_0=-\psi$ give
+\begin{equation}\label{eq:psi-endpoint}
+ \int_{-1}^1P(v)\psi(2+v)\dd v
+ =\sum_{j=0}^d\frac{(-1)^j}{j!}
+ \eval{P^{(j)}(v)\bigl(\zeta'(-j,2+v)+H_j\zeta(-j,2+v)\bigr)}.
+\end{equation}
+The nonzero derivatives at $v=1$ needed for the three polynomials are
+listed below; their derivatives at $-1$ follow from parity.
+\begin{center}\small
+\begin{tabular}{r|rrr}
+\toprule
+$j$ & $P_3^{(j)}(1)$ & $(P_3(1+3v^2))^{(j)}(1)$
+    & $(P_3(v+v^3))^{(j)}(1)$\\
+\midrule
+3 & $-48$ & $-192$ & $-96$\\
+4 & $-288$ & $-2304$ & $-1344$\\
+5 & $-720$ & $-14400$ & $-10080$\\
+6 & $-720$ & $-54720$ & $-50400$\\
+7 & $0$ & $-120960$ & $-171360$\\
+8 & $0$ & $-120960$ & $-362880$\\
+9 & $0$ & $0$ & $-362880$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Substituting these finite lists into \eqref{eq:psi-endpoint} and using
+\eqref{eq:zeta-three} proves \eqref{eq:I-psi-base} and
+\eqref{eq:I-psi-mixed}. The third polynomial first gives
+\[
+ -112\zeta'(-4)-140\zeta'(-6)-18\zeta'(-8)+\frac{32}{105}.
+\]
+The zeta functional equation implies
+$\zeta'(-2r)=(-1)^r(2r)!\zeta(2r+1)/(2(2\pi)^{2r})$;
+substitution gives \eqref{eq:I-psi-odd}.
+
+Finally use $q=1$ in \eqref{eq:Stieltjes-endpoint}. Its inner sum is
+\[
+ \tfrac12\zeta''(-j,2+v)+H_j\zeta'(-j,2+v)
+ +\tfrac12(H_j^2+H_j^{(2)})\zeta(-j,2+v).
+\]
+With the first derivative column and \eqref{eq:zeta-three}, collecting
+terms yields \eqref{eq:I-stieltjes}. These calculations require no
+numerical recognition of constants.
+\end{proof}
+
+The second and third integrals use precisely the first mixed square and
+nonlinear cubic coefficient kernels, apart from their fixed scaling
+constants. The theorem thus links the algebraic coefficients to explicit
+zeta and Stieltjes periods. It does not assert that these particular
+low-degree evaluations have no earlier appearance in the literature.

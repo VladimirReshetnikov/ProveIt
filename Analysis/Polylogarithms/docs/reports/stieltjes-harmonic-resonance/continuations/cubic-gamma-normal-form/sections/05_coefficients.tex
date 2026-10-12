@@ -1,0 +1,101 @@
+\section{Finite coefficient formulas and explicit mixed families}
+\label{sec:coefficients}
+
+\begin{corollary}[All mixed $u_3$ coefficients]\label{cor:coefficients}
+Let $a,k,b\ge0$, $n\ge2$, and $m=a+2k+3b+4n$. If $k+n$ is odd,
+then $[u_0^au_1^ku_2^bu_3^n]N_m=0$. If $k+n$ is even, then
+\begin{equation}\label{eq:coefficient-integral}
+\begin{split}
+ &[u_0^au_1^ku_2^bu_3^n]N_m\\
+ &=-\frac{m!}{9216\,a!2^kk!b!n!24^b48^{n-2}}
+ \int_0^1v^{k+n-2}(1-v^2)^3
+       (1+3v^2)^b(1+v^2)^{n-2}\dd v.
+\end{split}
+\end{equation}
+Equivalently, the finite rational formula \eqref{eq:preview} holds.
+Every coefficient not forced to vanish by parity is strictly negative.
+\end{corollary}
+\begin{proof}
+Expand $e^{u_0t}$, $e^{yv}$, $e^{zh(v)}$, and $\Erem(wk(v))$ in
+\eqref{eq:main}. The conversion from $y^k$ to $u_1^k$ contributes
+$2^{-k}$, and conversion to $N_m$ contributes $m!$. The remaining
+integrand is odd precisely when $k+n$ is odd; otherwise its average on
+$[-1,1]$ is its integral on $[0,1]$. This proves
+\eqref{eq:coefficient-integral}. Expand the two binomials and use
+\begin{equation}\label{eq:beta-four}
+ \int_0^1v^K(1-v^2)^3\dd v
+ =\frac{48}{(K+1)(K+3)(K+5)(K+7)},\qquad K>-1.
+\end{equation}
+Formula~\eqref{eq:beta-four} follows by $x=v^2$ and three elementary
+integrations of the beta integral, or by expanding $(1-v^2)^3$.
+Here $K=k+n-2+2j+2\ell\ge0$, so every denominator is positive.
+This proves the finite formula and the sign assertion.
+\end{proof}
+
+\subsection{The source square-sector question}
+For $n=2$ and even $k$, \eqref{eq:preview} becomes
+\begin{equation}\label{eq:square-answer}
+\boxed{\begin{aligned}
+ &[u_0^au_1^ku_2^bu_3^2]N_{a+2k+3b+8}\\
+ &=-\frac{(a+2k+3b+8)!}{384\,a!2^kk!b!24^b}
+ \sum_{j=0}^b
+ \frac{\binom bj3^j}
+ {(k+2j+1)(k+2j+3)(k+2j+5)(k+2j+7)}.
+\end{aligned}}
+\end{equation}
+It is zero for odd $k$. Thus every $b>0$ in the specific question
+\eqref{eq:source-question} is covered; no weight-dependent linear
+system remains to be solved.
+
+Define the normalized square coefficient for even $k$ by
+\[
+ g_b(k)=k![y^kz^bw^2]F(y,z,w).
+\]
+Then
+\begin{equation}\label{eq:gb-density}
+ g_b(k)=-\frac1{18432b!24^b}
+ \int_0^1v^k(1-v^2)^3(1+3v^2)^b\dd v.
+\end{equation}
+For example,
+\begin{align}
+ g_0(k)&=-\frac1{384(k+1)(k+3)(k+5)(k+7)},\label{eq:g0}\\
+ g_1(k)&=-\frac1{2304(k+1)(k+5)(k+7)(k+9)},\label{eq:g1}\\
+ g_2(k)&=-\frac{(k+2)(k+6)}{27648\prod_{j=0}^5(k+2j+1)},\label{eq:g2}\\
+ g_3(k)&=-\frac{k^3+15k^2+62k+63}{497664\prod_{j=0}^6(k+2j+1)}.
+ \label{eq:g3}
+\end{align}
+These rational functions are asserted as coefficient formulas at even
+nonnegative integers $k$. Their analytic continuation in $k$ is also
+provided by the beta integral for $\Re k>-1$, but the coefficient at an
+odd power of $y$ remains zero.
+
+\subsection{Nonlinear sectors beyond the square}
+The complete formula also gives genuinely coupled cubic and quartic
+sectors. A small sample, with no $u_0$ factor, is
+\begin{center}
+\begin{tabular}{rll}
+\toprule
+Weight & Functional monomial & Coefficient in $N_m$\\
+\midrule
+8 & $u_3^2$ & $-1$\\
+11 & $u_2u_3^2$ & $-55$\\
+12 & $u_1^2u_3^2$ & $-165$\\
+14 & $u_2^2u_3^2$ & $-3640$\\
+14 & $u_1u_3^3$ & $-3185/3$\\
+16 & $u_3^4$ & $-10325/3$\\
+17 & $u_1u_2u_3^3$ & $-1023400/3$\\
+19 & $u_2u_3^4$ & $-1639225$\\
+\bottomrule
+\end{tabular}
+\end{center}
+All coefficients with an additional power $u_0^a$ follow immediately
+from the Appell factorial ratio. The rational denominators in this
+basis need not be integral, even though the Bell polynomial before
+normal reduction has integral coefficients.
+
+The formulas also reveal a useful structural distinction. The pure
+highest-index-two sector has positive beta density, whereas the entire
+highest-index-three sector has negative beta density, subject to parity.
+This observation motivates the all-order conjecture in
+Section~\ref{sec:conjecture}; it does not by itself establish that
+conjecture.

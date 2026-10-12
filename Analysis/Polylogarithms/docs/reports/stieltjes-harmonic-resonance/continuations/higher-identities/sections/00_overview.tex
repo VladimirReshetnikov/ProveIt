@@ -1,0 +1,160 @@
+\section{Purpose, principal results and conventions}
+\label{intro:section}
+
+The aim is to add proved identities to the current research programme,
+while preserving the distinctions between an ordinary integral, a specified
+finite part, a formal reconstruction theorem and a numerical observation.
+The starting points are the manuscript and incoming directories named by
+the project maintainer \cite{RepoManuscript,RepoIncoming}. All twelve ZIP
+archives present in the retrieved incoming listing were downloaded and
+their mathematical source files inspected by topic. Ninety-two manuscript
+chapter files were also retrieved. This is a targeted proof and status
+audit of the directions used here, not a claim to have checked every line
+of every chapter. File hashes and the retrieval scope are supplied in
+\file{data/source_manifest.json}.
+
+The newest source matters. In particular, the report
+\emph{Polygamma Moments and Stieltjes Resonances} already completes gap
+eight, treats all positive monomial scales for two Stieltjes factors,
+and evaluates a substantial joint-polygamma range
+\cite{PolygammaResonances}. The expanded incoming version of
+\emph{Universal Gamma Normal Forms} already gives the coefficient of
+every canonical monomial \cite{UniversalIncoming}. Those results are
+inputs here. The new work starts with the next fixed gap, additional
+collision factors, a third mass cluster, and the still missing
+nonrecursive primitive and infinite-jet convergence statements.
+
+\subsection{A map of the contributions}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.21\textwidth}>{\raggedright\arraybackslash}p{0.38\textwidth}>{\raggedright\arraybackslash}p{0.34\textwidth}@{}}
+\toprule
+Direction & Result proved here & Precise remaining limit\\
+\midrule
+\endhead
+Polygamma collisions & A finite Hermite-divided-difference correction
+for any number of factors and arbitrary positive shifts;
+Theorem~\ref{pc:uniform}. & The general merged product is retained as a
+specified finite part. Positive Stieltjes indices require further work.\\[5pt]
+Evaluated constants & The complete one-trigamma, centered-digamma family,
+Theorem~\ref{pc:all-powers}; nonresonant and resonant triples. & The scale
+hypotheses determine which constant is selected.\\[5pt]
+Multiple mass clusters & A classical-polylogarithm divided difference
+for every labelled mixed derivative, and a depth-three primitive for
+$B^r,C,D$; Theorems~\ref{tri:thm:mixed} and~\ref{tri:thm:three}.
+& The Gamma result is an ordinary spectral sum; no general finite
+arithmetic closure is proved.\\[5pt]
+Harmonic reconstruction & Every unequal even pair with gap ten has the
+optimal formal prefix; Theorem~\ref{gt:main}. & The unrestricted
+unequal-even-pair conjecture remains open.\\[5pt]
+Inverse coefficients & An $(m+1)$-square bordered determinant at fixed
+half-gap $m$; Theorem~\ref{gt:inverse}. & Its entries still use a finite
+causal recurrence.\\[5pt]
+Gamma--Stieltjes primitives & A nonrecursive finite formula for every
+compensator $H_m$ and locally convergent normal and primitive series;
+Theorems~\ref{hp:closed}, \ref{hp:analyticN} and~\ref{hp:analyticH}.
+& Sharp convergence domains, coefficient signs and arithmetic
+denominators remain separate questions.\\
+\bottomrule
+\end{longtable}
+
+The contact and Gamma-primitive arguments are analytic or algebraic
+proofs at every order. The gap-ten theorem has a finite exact
+computational component, fully exposed below. Numerical checks of
+polylogarithms and shifted integrals are diagnostics of the displayed
+formulas; they are not substitutes for the proofs.
+
+\subsection{Two representative identities}
+
+The most compact collision identity can be stated before introducing
+the full local correction. Let $\alpha_1>\alpha_2>\alpha_3>0$ be
+linearly independent over $\mathbb Q$, and let $r\in\{1,2,3\}$.
+Then
+\begin{equation}\label{intro:triple}
+\boxed{\displaystyle
+\CT_{\epsilon\downarrow0}\int_0^1
+ \psi'(x+\epsilon^{\alpha_r})
+ \prod_{j\ne r}\psi(x+\epsilon^{\alpha_j})\,dx
+ =\begin{cases}
+  \zeta(3),&r=1,\\
+  0,&r=2,\\
+  -\zeta(3),&r=3.
+ \end{cases}}
+\end{equation}
+Here the smallest shift carries the largest exponent. Every integral
+is ordinary for $\epsilon>0$; the operation outside it is a specified
+asymptotic constant. The fully evaluated subtraction formula in
+Section~\ref{pc:section} also expresses these constants as ordinary
+renormalized limits. No fitting of divergent coefficients is needed.
+
+For the higher family put $\Psi=\psi+\gamma$ and
+$f(x)=x(\psi(1+x)+\gamma)=\sum_{k\ge2}(-1)^k\zeta(k)x^k$.
+With the analogous nonresonant ordering of $N$ scales, the complete
+constant with the derivative in position $r$ is
+\begin{equation}\label{intro:allN}
+\boxed{\displaystyle
+T_{N,r}=-[x^N]\left\{\frac{(f-1)^N}{N}
+                     +f^{N-r}(f-1)^{r-1}\right\}.}
+\end{equation}
+Thus a single coefficient formula yields a weight-$N$ zeta polynomial
+for every $N$ and every derivative position. Its adjacent differences
+and its zero row sum are identities, rather than patterns inferred from
+the first rows.
+
+The representative spectral identity has a different character. For
+the explicitly defined ordinary simplex face $I_k$ and Gamma field $G_a$
+of Section~\ref{tri:sec:main}, all $r,m\ge1$ satisfy
+\begin{equation}\label{intro:mixed}
+\partial_{C_1}\cdots\partial_{C_m}
+ I_{r+m}(G_a;B^r,C_1,\ldots,C_m)
+ =(-1)^r r!\,\mathfrak g_{r,a,B}[C_1,\ldots,C_m],
+\end{equation}
+where
+\[
+\mathfrak g_{r,a,B}(C)=\sum_{n\ge0}
+ \frac{\operatorname{Li}_r((C-B)/((n+a)^2+C))}{(n+a)^2+C}.
+\]
+The number of independent masses does not increase the depth of the
+polylogarithm in the differentiated formula. The finite three-cluster
+primitive reconstructs the information on the coordinate edges as well
+as the common mixed derivative.
+
+\subsection{Conventions used throughout}
+
+We write $\psi^{(r)}$ for the $r$th argument derivative of the digamma
+function, with $\psi^{(0)}=\psi$. The Hurwitz function is
+$\zeta(s,a)$, and a superscript on $\zeta$ denotes an order derivative
+unless an argument derivative is explicitly displayed. The Stieltjes
+normalization is
+\begin{equation}\label{intro:Stieltjes}
+\zeta(1+s,a)=\frac1s+
+    \sum_{q\ge0}\frac{(-1)^q}{q!}\gamma_q(a)s^q,
+\qquad \gamma_0(a)=-\psi(a).
+\end{equation}
+These conventions agree with the standard Gamma and Hurwitz-zeta
+identities \cite{DLMF,DLMFHurwitz}.
+Generalized harmonic numbers are
+$H_n^{(s)}=\sum_{j=1}^n j^{-s}$, with $H_0^{(s)}=0$.
+The Bernoulli convention is $B_1=-1/2$.
+
+For a locally finite power--logarithm expansion,
+$\CT_\epsilon$ selects the coefficient of
+$\epsilon^0(\log\epsilon)^0$. The merged finite part at the lower
+endpoint is always taken in the displayed coordinate $x$:
+$\CT_{\delta\downarrow0}\int_\delta^1$.
+It is not invariant under an arbitrary change of cutoff coordinate.
+All endpoint subtractions and all shifts are therefore kept explicit.
+
+For divided differences, one node gives evaluation and repeated nodes
+give derivatives divided by the corresponding factorial. Cumulative
+colors for multiple polylogarithms are defined in
+\eqref{tri:eq:cumulative}; this convention makes the relevant real
+branches and zero-color limits transparent. Mass derivatives are taken
+in independently labelled variables before imposing collisions.
+
+Finally, formal rank in the harmonic reconstruction problem means
+rational matrix rank on declared symbols. It does not imply arithmetic
+independence of the numerical zeta or moment values assigned to them.
+The new conclusions are established relative to the inspected project
+sources. Classical homotopy, divided-difference and finite-part methods
+are credited; a bounded literature search cannot certify worldwide
+priority for the assembled identities.

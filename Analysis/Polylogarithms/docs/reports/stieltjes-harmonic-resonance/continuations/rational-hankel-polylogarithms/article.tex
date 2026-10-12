@@ -1,0 +1,1564 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype,booktabs,longtable,array,enumitem,xcolor,xurl}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,urlcolor=blue!40!black]{hyperref}
+\usepackage{bookmark}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Finite polylogarithm alphabets for Hankel sums}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newcommand{\Q}{\mathbb Q}\newcommand{\C}{\mathbb C}\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}
+\newcommand{\dd}{\,\mathrm d}\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\wt}{\operatorname{wt}}\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\HH}{\mathcal H}\newcommand{\FP}{\operatorname{FP}}
+\newcommand{\tht}{\theta}\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\newcommand{\snapshot}{505c62fddea6b4a9eb61fee0c76e6c021e9c7128}
+\hypersetup{pdftitle={A Finite Polylogarithm Alphabet for Rational Hankel Sums},pdfauthor={Research prepared with ChatGPT for Vladimir Reshetnikov},pdfsubject={Confluent poles, harmonic determinants, Gamma coefficients, multiple polylogarithms, and Stieltjes spectral identities}}
+\title{\textbf{A Finite Polylogarithm Alphabet\\for Rational Hankel Sums}\\[0.45em]
+\large Confluent pole coefficients, Gamma-product normalizations,\\endpoint cancellation, and Stieltjes spectral identities}
+\author{Research prepared for Vladimir Reshetnikov\\\small Mathematical derivations and computational checks with ChatGPT}
+\date{11 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give an explicit finite multiple-polylogarithm reduction for every
+cutoff Hankel determinant of a rational weight whose poles are at
+nonpositive integers. The number of particles may be arbitrary. The
+controlling invariant is not determinant size or ordinary harmonic
+rank: a pole of multiplicity $s$ supplies the decreasing positive
+sequence $s,s-2,s-4,\ldots$. The sum of the $r$ largest available entries
+bounds the polylogarithmic weight for an $r$-particle determinant.
+A confluent Vandermonde factorization proves this statement; a
+Hermite-reduction argument turns it into a terminating identity compiler.
+For a single pole the formal bound is attained at every rank, and a
+specified extremal coefficient is an explicit product of Gamma factors.
+For several simple poles we derive a fixed-size Hahn determinant for
+the highest harmonic coefficient, a complete finite formula for each
+endpoint principal part, and an exact spectral description of one-residue
+exceptional parameters. A separate spectral determinant identity yields
+ordinary all-order relations involving generalized Stieltjes constants
+and derivatives of depth-two and higher zeta functions. All infinite
+identities are proved analytically; exact finite tests and numerical
+diagnostics are supplied separately. Historical priority beyond the
+inspected sources is not claimed.
+\end{abstract}
+\medskip
+\noindent\textbf{Main distinction.} ``Weight'' below is a grading of an
+explicit expression, not a claim of transcendence, algebraic independence,
+or minimal multiple-polylogarithm depth. The unrestricted harmonic-tail
+moment-prefix conjecture and the manuscript's Gaussian $S_6$ and revised
+$S_8$ identities are not resolved here.
+\clearpage
+\tableofcontents
+\newpage
+
+\section{Research scope and comparison with the repository}
+
+The natural starting point for this continuation is the several-pole
+question in the incoming gap-six report, rather than an older Gamma
+normal-form question that has already been answered. In the inspected
+\emph{Gap Six Harmonic Determinants} package, Section~3 gives an
+arbitrary-particle formula for two adjacent simple poles using only a
+dilogarithm and powers of $-\log(1-z)$. Section~5, Questions~Q7--Q9,
+asks for several-pole extensions, a classification of when classical
+polylogarithms suffice, and exact Euler primitives \cite{gap}.
+The same package already proves the complex rational-weight
+\emph{ordinary harmonic degree--rank} theorem. We do not claim that
+result again.
+
+The new contribution developed here is a different grading and its exact
+analytic realization. Repeated poles make ordinary harmonic degree
+insufficient: $H_M^{(1)}H_M^{(3)}-(H_M^{(2)})^2$ has harmonic degree two
+but weight four. Our confluent minor calculation gives a uniform finite
+alphabet, explicitly tracks the cutoff poles needed by the compiler,
+and supplies a nonzero extremal coefficient for the single-pole family.
+The several-simple-pole result gives more than a bare appeal to a
+Christoffel transformation: it specifies the compressed measure, the
+normalization, the principal-part cancellation equations, and a
+positive-matrix description of exceptional residue parameters.
+
+Several ingredients are classical. Finite Cauchy--Binet, confluent
+Vandermonde matrices, finite harmonic quasi-shuffles \cite{hoffman},
+Christoffel determinant transformations \cite{krattenthaler}, uniform
+Hahn polynomials \cite{dlmf-hahn}, and integration of hyperlogarithms
+against rational functions \cite{panzer} are used with their original
+status intact. Determinantal stability is also an established method
+\cite{borcea}. The contribution is their particular combination with
+the pole-multiplicity invariant, its sharp coefficient, and the
+resulting identity families. Neither the software architecture for
+hyperlogarithmic integration nor the classical weight-five Euler sums
+used in an example are claimed as new.
+
+\subsection{A fixed comparison point and a moving repository}
+
+During retrieval, \texttt{main} changed while older incoming archives
+were being placed in report directories. The final observation used here
+is the exact commit
+\begin{center}\small\texttt{\snapshot}.\end{center}
+The gap-six archive at that commit has Git blob
+\src{d7695b94c3117d7bdcb5e75fcf930c410e9c31b6}.
+Its sections on complex rank, adjacent-pole generators, and further
+questions were read directly from the archive. The universal Gamma
+normal-form and Gamma-normalization archives were also checked to avoid
+reopening their completed questions \cite{universal,normalizations}.
+The source audit accompanying this article identifies the scope of each
+inspection. It is not an assertion that every page in the repository
+or every incoming archive was reviewed. No repository file was modified.
+
+\section{Conventions and the exact object to be reduced}
+
+Let $r\ge1$ and $M\ge0$ be integers. We use the nodes $1,\ldots,M$ and
+write
+\begin{equation}\label{eq:R}
+ R(x)=P(x)+\sum_{a\in A}\sum_{\ell=1}^{s_a}
+                     \frac{c_{a,\ell}}{(x+a)^\ell},
+ \qquad A\subset\Z_{\ge0}\text{ finite}.
+\end{equation}
+Here $P$ is a polynomial, $c_{a,s_a}\ne0$, and coefficients may be
+complex. All denominators are therefore nonzero on the summation nodes.
+The field $K$ is generated over $\Q$ by the coefficients of $R$.
+Set
+\begin{align}
+ \mu_j(M)&=\sum_{n=1}^M n^j R(n),\notag\\
+ D_{r,M}(R)&=\det(\mu_{i+j}(M))_{0\le i,j<r},
+ &G_r(z;R)&=\sum_{M\ge1}D_{r,M}(R)z^M.
+ \label{eq:det}
+\end{align}
+The empty-node matrix gives $D_{r,0}=0$. In fact $D_{r,M}=0$ when
+$M<r$. Finite Cauchy--Binet gives the exact identity
+\begin{equation}\label{eq:ensemble}
+ D_{r,M}(R)=\sum_{1\le n_1<\cdots<n_r\le M}
+             \prod_{i<j}(n_j-n_i)^2\prod_{j=1}^r R(n_j).
+\end{equation}
+The source's zero-based nodes $0,\ldots,N$ translate to these conventions
+by $M=N+1$, $n_{\mathrm{source}}=n-1$, and
+$a_{\mathrm{source}}=a+1$. A monic affine change of polynomial basis has
+determinant one, so it preserves the Hankel determinant.
+There is no factor $r!$ in this ordered sum. Expansion of the two
+Vandermonde determinants proves \eqref{eq:ensemble} directly.
+The terms grow at most polynomially in $M$, so \eqref{eq:det} converges
+absolutely for $|z|<1$, locally uniformly there.
+
+The generalized harmonic sums are
+\begin{equation}\label{eq:h}
+ H_M^{(p)}=\sum_{n=1}^M n^{-p},\qquad
+ h_{a,p}(M)=\sum_{n=1}^M(n+a)^{-p}.
+\end{equation}
+A polynomial expression in formal symbols $h_{a,p}$ has
+\emph{weighted harmonic degree} obtained by assigning
+$\wt(h_{a,p})=p$ and weight zero to coefficients depending polynomially
+on $M$. This grading is first imposed before identifying the shifted
+harmonic symbols.
+For integral $a\ge0$, the exact shift rule is
+\begin{equation}\label{eq:shift}
+ h_{a,p}(M)=H_M^{(p)}+
+           \sum_{b=1}^a\frac1{(M+b)^p}-H_a^{(p)}.
+\end{equation}
+Thus an inverse cutoff factor of order $p$ inherits a cost of $p$.
+The constants $H_a^{(p)}$ are rational and have cost zero.
+
+We use the decreasing-index convention
+\begin{equation}\label{eq:mpl}
+ \Li_{p_1,\ldots,p_k}(z)=
+ \sum_{n_1>\cdots>n_k\ge1}
+       \frac{z^{n_1}}{n_1^{p_1}\cdots n_k^{p_k}},
+ \qquad p_i\in\Z_{>0}.
+\end{equation}
+Its weight is $p_1+\cdots+p_k$. Denote by $\mathscr L_W$ the span over
+$K(z)$ of $1$ and all these functions of weight at most $W$. Every
+rational prefactor constructed below has poles only at $0$ and $1$.
+No assertion that the displayed generators are a minimal basis is needed.
+
+\section{The confluent pole-multiplicity theorem}
+
+\subsection{A moment factorization by local derivative columns}
+
+For a fixed pole $-a$ of order $s=s_a$, define the $r\times s$ matrix
+\begin{equation}\label{eq:V}
+ V_a(i,p)=\begin{cases}\binom ip(-a)^{i-p},&p\le i,\\0,&p>i,
+                    \end{cases}
+ \qquad 0\le i<r,\quad0\le p<s.
+\end{equation}
+The value $0^0$ occurring here is one. Define a symmetric $s\times s$
+harmonic matrix by
+\begin{equation}\label{eq:C}
+ C_a(p,q)=\sum_{\ell=p+q+1}^{s}
+                   c_{a,\ell}h_{a,\ell-p-q}.
+\end{equation}
+An empty sum is zero. In particular
+$\wt C_a(p,q)\le s-p-q$ for a nonzero entry.
+
+\begin{lemma}[Confluent harmonic factorization]\label{thm:factor}
+There is a matrix $B_r(M)$ with entries in $K[M]$ such that the formal
+moment matrix is
+\begin{equation}\label{eq:factor}
+       \boldsymbol\mu_r(M)=B_r(M)+\sum_{a\in A}V_a C_a V_a^{\mathsf T}.
+\end{equation}
+The matrix $B_r$ is the finite sum of the polynomial parts of
+$x^{i+j}R(x)$. The transpose is ordinary transpose, not conjugate
+transpose.
+\end{lemma}
+\begin{proof}
+Expand $x^i$ and $x^j$ at $x=-a$:
+\[
+ x^i=\sum_p\binom ip(-a)^{i-p}(x+a)^p.
+\]
+After multiplying and dividing by $(x+a)^\ell$, terms with $p+q<\ell$
+sum to $h_{a,\ell-p-q}$ and are exactly \eqref{eq:C}--\eqref{eq:factor}.
+The other terms are nonnegative powers of $x+a$ and have polynomial
+Faulhaber sums in $M$. Equivalently, the partial-fraction coefficient
+uses
+$\binom{i+j}{t}=\sum_{p+q=t}\binom ip\binom jq$.
+This proves every matrix entry, including the polynomial part of $R$.
+\end{proof}
+
+\subsection{The invariant and its closed combinatorial form}
+
+For $r\ge0$, define
+\begin{equation}\label{eq:capacity}
+ W_r(\mathbf s)=
+ \max_{\substack{0\le k_a\le s_a\\\sum_a k_a\le r}}
+                 \sum_{a\in A}k_a(s_a-k_a+1).
+\end{equation}
+For no poles, $W_r=0$.
+
+\begin{theorem}[Weighted harmonic degree]\label{thm:weight}
+Every monomial in the formal determinant obtained from
+\eqref{eq:factor} has weighted harmonic degree at most
+$W_r(\mathbf s)$. Equivalently, form the multiset
+\begin{equation}\label{eq:marginals}
+ \bigsqcup_{a\in A}\{s_a,s_a-2,s_a-4,\ldots\}\cap\Z_{>0},
+\end{equation}
+retaining multiplicities. Then $W_r$ is the sum of the largest $r$
+entries, or all entries if there are fewer than $r$. In particular
+\begin{equation}\label{eq:saturation}
+ W_r\le W_\infty:=\sum_{a\in A}
+                           \left\lfloor\frac{(s_a+1)^2}{4}\right\rfloor.
+\end{equation}
+These are bounds on an exact expression grading, not inequalities
+between values of special functions.
+\end{theorem}
+\begin{proof}
+Concatenate the $V_a$ and make the $C_a$ into a block diagonal matrix
+$C$. In the expansion of $\det(B+VCV^{\mathsf T})$, choose $k$ columns
+from the second summand and the complementary columns from $B$.
+Apply Cauchy--Binet to the resulting $k\times k$ minors of
+$VCV^{\mathsf T}$. All dependence on harmonic symbols lies in minors
+$\det C[I,J]$ with $|I|=|J|=k\le r$.
+
+A nonzero minor of this block diagonal matrix selects the same number
+$k_a$ of row and column indices from every pole block. Let $I_a,J_a$
+be those local indices, each a subset of $\{0,\ldots,s_a-1\}$.
+Every term of its determinant has weight at most
+\[
+ k_a s_a-\sum_{p\in I_a}p-\sum_{q\in J_a}q
+ \le k_a s_a-k_a(k_a-1)=k_a(s_a-k_a+1).
+\]
+The second inequality uses the smallest possible sum of $k_a$ distinct
+nonnegative integers, $k_a(k_a-1)/2$, separately for rows and columns.
+The $V$ and $B$ minors have weight zero. Adding the block contributions
+and maximizing proves \eqref{eq:capacity}.
+
+The increase in $k(s-k+1)$ when $k$ is replaced by $k+1$ is $s-2k$.
+These marginal increases decrease within each pole block. Maximizing
+with at most $r$ choices therefore selects the largest positive
+marginals globally; their decreasing order automatically respects every
+block's prefix constraint. Zero marginals may be omitted and negative
+ones never help. Summing all positive marginals yields
+$\lfloor(s+1)^2/4\rfloor$ for each block. This proves
+\eqref{eq:marginals} and \eqref{eq:saturation}.
+\end{proof}
+
+For simple poles this specializes to $W_r=\min(r,|A|)$.
+For one pole of orders $1,2,3,4,5,6,7$, the stabilized weights are
+respectively $1,2,4,6,9,12,16$. The jump from order two to order three
+is real: pole multiplicity itself is not the correct weight budget.
+
+\begin{remark}[What cancellation can and cannot imply]
+The upper bound permits special residues to cancel its highest
+components. It does not assert weighted-degree equality for every
+multiple-pole complex weight. It also does not prove that a function
+of weight $W_r$ cannot be written using functions of smaller weight.
+A precise formal sharpness theorem for a single pole follows next.
+\end{remark}
+
+\section{A sharp single-pole coefficient with Gamma normalization}
+
+Put $R(x)=x^{-s}$ with $s\ge1$ integral. Polynomial division is trivial:
+\begin{equation}\label{eq:singlemom}
+ \mu_j(M)=\begin{cases}H_M^{(s-j)},&j<s,\\
+ S_{j-s}(M),&j\ge s,\end{cases}
+ \qquad S_t(M)=\sum_{n=1}^M n^t.
+\end{equation}
+Let $\mathcal P_{r,s}(M;H_1,\ldots,H_s)$ be this formal determinant.
+Write
+\begin{equation}\label{eq:uniformnorm}
+ \mathcal U_q(M)=\prod_{j=0}^{q-1}
+       \frac{\Gamma(M+j+1)}
+       {(2j+1)\Gamma(M-j)\binom{2j}{j}^{\!2}},
+ \qquad \mathcal U_0(M)=1.
+\end{equation}
+For $M\ge q$ all factors are finite and positive. They also have
+polynomial continuations because each Gamma quotient is
+$(M-j)_{2j+1}$.
+
+\begin{theorem}[An explicit nonzero extremal coefficient]\label{thm:sharp}
+Let
+\[
+ k=\min\bigl(r,\lceil s/2\rceil\bigr),\qquad q=r-k,
+ \qquad W=k(s-k+1)=W_r(s).
+\]
+The coefficient of $H_{s-k+1}^{\,k}$ in $\mathcal P_{r,s}$ is
+\begin{equation}\label{eq:sharp}
+ \boxed{\displaystyle
+ [H_{s-k+1}^{\,k}]\mathcal P_{r,s}=
+ (-1)^{k(k-1)/2}\mathcal U_q(M)
+ \begin{cases}
+  1,&q=0\text{ or }s\text{ even},\\[2pt]
+  \dfrac{(M+1)_q}{\binom{2q}{q}},&q>0\text{ and }s\text{ odd}.
+ \end{cases}}
+\end{equation}
+Consequently the formal weighted harmonic degree is exactly $W_r(s)$
+as a polynomial in $M$, and also at every integer $M\ge r$.
+\end{theorem}
+\begin{proof}
+A term contributing the displayed monomial must select $k$ harmonic
+entries. Its harmonic weight is $k(s-k+1)$. Equality in the minor bound
+in Theorem~\ref{thm:weight} forces the chosen row and column sets to be
+$\{0,\ldots,k-1\}$. Within that harmonic minor, the monomial with all
+indices $s-k+1$ requires $i+\sigma(i)=k-1$ at every row. The unique
+permutation is reversal and has sign $(-1)^{k(k-1)/2}$.
+
+The complementary minor has indices $i,j\ge k$. If it is nonempty,
+then $k=\lceil s/2\rceil$ and $2k-s=\varepsilon\in\{0,1\}$.
+It is the polynomial moment determinant
+\begin{equation}\label{eq:sharpgram}
+       \det\left(\sum_{n=1}^M n^{i+j+\varepsilon}\right)_{0\le i,j<q}.
+\end{equation}
+For $\varepsilon=0$, its value is the product of the monic uniform
+Hahn norms, namely $\mathcal U_q(M)$.
+For $\varepsilon=1$, the one-factor Christoffel formula gives
+$(-1)^q\mathcal U_q(M)p_q(0;M)$, where $p_q$ is monic and orthogonal
+on $1,\ldots,M$ with unit weights. Its endpoint value is
+\[
+       p_q(0;M)=(-1)^q\frac{(M+1)_q}{\binom{2q}{q}}.
+\]
+The finite Hahn formula and normalization are recalled in
+Section~\ref{sec:hahn}; they are classical. This proves
+\eqref{eq:sharp}. Positivity of \eqref{eq:sharpgram} when $M\ge q$
+proves nonvanishing in the stated range. The upper bound already proved
+then gives exact formal degree. When $s$ is even, an additional
+zero-marginal choice can have the same weight and a different harmonic
+degree; it cannot contribute the monomial of degree $k$ selected here.
+\end{proof}
+
+For example, the coefficients of $H_2^2$ for the triple pole are
+\begin{align}
+ [H_2^2]\mathcal P_{2,3}&=-1,\notag\\
+ [H_2^2]\mathcal P_{3,3}&=-\frac{M(M+1)}2,\notag\\
+ [H_2^2]\mathcal P_{4,3}&=
+ -\frac{M^2(M-1)(M+1)^2(M+2)}{72}.
+ \label{eq:sharpexamples}
+\end{align}
+All ranks nevertheless have the same maximal weight four. This is a
+coefficient identity with an explicit Gamma-product source, not an
+asymptotic observation.
+
+\section{From the pole grading to a finite polylogarithm identity}
+\label{sec:compiler}
+
+\subsection{Cost-preserving cutoff partial fractions}
+
+\begin{lemma}[Normal form after merging integer shifts]\label{thm:cutoffnormal}
+After applying \eqref{eq:shift}, $D_{r,M}(R)$ is a finite sum of terms
+of the following two types:
+\begin{equation}\label{eq:cutoffterms}
+       p(M)\prod_{j=1}^v H_M^{(b_j)},\qquad
+       \frac{c}{(M+h)^e}\prod_{j=1}^v H_M^{(b_j)},
+\end{equation}
+where $p\in K[M]$, $c\in K$, $h\in\{1,\ldots,\max A\}$,
+$e\ge1$, and
+\begin{equation}\label{eq:cost}
+ \sum_j b_j\le W_r\quad\text{in the first type},\qquad
+ e+\sum_jb_j\le W_r\quad\text{in the second type}.
+\end{equation}
+The empty harmonic product is one. If $A$ is empty or $A=\{0\}$,
+there are no cutoff-denominator terms.
+\end{lemma}
+\begin{proof}
+Before merging shifts, Theorem~\ref{thm:weight} supplies a polynomial
+in the $h_{a,p}$ with polynomial coefficients in $M$. Expanding each
+factor by \eqref{eq:shift}, choose either a harmonic factor of weight
+$p$, an endpoint denominator of order $p$, or a rational constant.
+The total of retained harmonic weight and all denominator orders cannot
+increase. A rational coefficient with total denominator order $E$ has
+only the listed poles, each of order at most $E$. Partial fractions
+and polynomial division give \eqref{eq:cutoffterms}; every resulting
+individual pole order is at most $E$. This proves \eqref{eq:cost}.
+No cancellation assumption is used.
+\end{proof}
+
+\subsection{Finite harmonic products and their generating functions}
+
+For a word $\mathbf b=(b_1,\ldots,b_v)$ of positive integers define
+\[
+ H_M(\mathbf b)=\sum_{M\ge n_1>\cdots>n_v\ge1}
+                        n_1^{-b_1}\cdots n_v^{-b_v}.
+\]
+The empty word has value one. Partitioning a product of finite sums by
+which indices coincide gives
+\begin{equation}\label{eq:stuffle}
+ H_M(a)H_M(b)=H_M(a,b)+H_M(b,a)+H_M(a+b),
+\end{equation}
+and the recursive rule
+\begin{equation}\label{eq:stufflerec}
+ (a,u)*(b,v)=(a,u*(b,v))+(b,(a,u)*v)+(a+b,u*v).
+\end{equation}
+The empty word is the identity and identical output words retain their
+integer multiplicities. This is the positive finite-sum quasi-shuffle,
+not the version with a negative merger sign used for some star-sum
+conventions \cite{hoffman}. The rule preserves total weight.
+Furthermore, for every nonempty word,
+\begin{equation}\label{eq:hgen}
+ \sum_{M\ge1}H_M(\mathbf b)z^M
+               =\frac{\Li_{\mathbf b}(z)}{1-z}.
+\end{equation}
+Indeed the largest summation index $n_1$ is contained in every cutoff
+$M\ge n_1$; summing its geometric tail proves the formula. For the empty
+word the corresponding generator is $z/(1-z)$, not $1/(1-z)$.
+Absolute convergence for $|z|<1$ justifies these rearrangements.
+
+\subsection{A closed rational integration step}
+
+Use hyperlogarithm words on the two letters $0,1$, with kernels
+$f_0(z)=1/z$ and $f_1(z)=1/(1-z)$. Let $I_\emptyset=1$ and, for a
+nonempty word ending in $1$, set
+\[
+ I_{a\omega}(z)=\int_0^z f_a(t)I_\omega(t)\dd t.
+\]
+These anchored integrals are equivalent to \eqref{eq:mpl}:
+\begin{equation}\label{eq:words}
+ \Li_{b_1,\ldots,b_v}(z)=
+ I_{0^{b_1-1}1\cdots0^{b_v-1}1}(z).
+\end{equation}
+Their weight is word length. Intermediate rational integrations can
+produce $\log z$; the following statement includes the necessary
+cancellation and anchoring convention.
+
+\begin{lemma}[Rational integration without a new letter]\label{thm:primitive}
+Let $F$ be a finite sum of rational multiples of words ending in $1$
+and of the empty word. Suppose every rational factor has poles only
+at $0,1$ and all word lengths are at most $w$. If $F$ is holomorphic
+at zero, its primitive vanishing at zero is a rational linear
+combination of words ending in $1$ of lengths at most $w+1$ and the
+empty word. It can be constructed with exact rational operations and
+finite differentiation. The same holds for $F(z)/z$ if $F(0)=0$.
+\end{lemma}
+\begin{proof}
+For a rational function with poles only at $0,1$, ordinary partial
+fractions give the exact Hermite decomposition
+\begin{equation}\label{eq:hermite}
+ R(z)=Q'(z)+\frac{\alpha}{z}+\frac{\beta}{1-z},
+ \qquad Q\in K(z),\quad\alpha,\beta\in K.
+\end{equation}
+Polynomial terms and poles of order at least two integrate into $Q$.
+For a nonempty word $\omega=a\nu$, integration by parts gives
+\begin{equation}\label{eq:intstep}
+ \int R I_\omega\dd z
+ =Q I_\omega+\alpha I_{0\omega}+\beta I_{1\omega}
+             -\int Q f_a I_\nu\dd z.
+\end{equation}
+The remaining integral has a strictly shorter word and a rational
+factor with the same possible poles. Repeated application terminates.
+The two prepended-letter terms have length at most $w+1$; every other
+term has no greater length. For the empty word the primitive is
+$Q+\alpha\log z-\beta\log(1-z)$.
+
+Combine equal words and simplify rational coefficients before taking
+an endpoint. The constructed primitive is a meromorphic germ plus a
+constant multiple of $\log z$, since all other retained words are
+analytic at zero. Its derivative is the assumed holomorphic $F$.
+Therefore its Laurent principal part and its $\log z$ coefficient
+vanish. The remaining constant is determined by finitely many Taylor
+coefficients: each rational factor has a finite pole order. Subtract
+that constant. This gives the unique anchored analytic primitive and
+proves the claim. The case $F/z$ follows because it is holomorphic
+under the additional hypothesis. This is the two-letter specialization
+of the standard hyperlogarithmic integration method \cite{panzer}.
+\end{proof}
+
+For $\theta=z\,d/dz$ and an integer $h\ge0$, define
+\begin{equation}\label{eq:inverse}
+ \mathcal J_hF(z)=z^{-h}\int_0^z t^{h-1}F(t)\dd t.
+\end{equation}
+If $h=0$, require $F(0)=0$. If $h>0$ and $F$ is analytic, the
+apparent singularity is removable. The coefficient identity is
+\begin{equation}\label{eq:inversecoeff}
+ \mathcal J_h\!\left(\sum_{M\ge1}a_Mz^M\right)
+              =\sum_{M\ge1}\frac{a_M}{M+h}z^M.
+\end{equation}
+Differentiation by $\theta$ does not increase word length; one
+application of $\mathcal J_h$ increases it by at most one. There is no
+unspecified integration constant in \eqref{eq:inverse}.
+
+\begin{theorem}[Uniform finite polylogarithm alphabet]\label{thm:compiler}
+For every rational weight \eqref{eq:R} and every $r\ge1$,
+\begin{equation}\label{eq:maincompiler}
+ \boxed{\displaystyle G_r(z;R)\in\mathscr L_{W_r(\mathbf s)},
+                                    \qquad |z|<1.}
+\end{equation}
+An explicit terminating construction is as follows. Expand the
+confluent determinant, merge shifts, put its coefficients in the
+partial-fraction form \eqref{eq:cutoffterms}, and quasi-shuffle each
+harmonic product. Replace it by \eqref{eq:hgen}. Replace multiplication
+by $p(M)$ by $p(\theta)$, and division by $(M+h)^e$ by
+$\mathcal J_h^e$. Apply \eqref{eq:hermite}--\eqref{eq:intstep} to remove
+all unevaluated integrals. The output has rational coefficients in
+$K(z)$ and no letters other than $0,1$.
+\end{theorem}
+\begin{proof}
+A harmonic product of weight $b$ gives a finite sum of polylogarithms
+of weight $b$ divided by $1-z$. The empty product has the rational
+generator already specified. Polynomial coefficient operators do not
+increase weight. Each inverse-cutoff factor raises it by at most its
+order, by Lemma~\ref{thm:primitive}. Lemma~\ref{thm:cutoffnormal}
+therefore proves the stated weight bound term by term. All operations
+are finite: the determinant has finite size, partial fractions are
+finite, the quasi-shuffle has finitely many words, and the integration
+recursion strictly decreases word length. Identities
+\eqref{eq:hgen} and \eqref{eq:inversecoeff} prove equality of all
+Taylor coefficients. Both sides are analytic in $|z|<1$, so the
+constructed expression equals the original generator throughout that
+disk, with removable values at zero taken collectively.
+\end{proof}
+
+\begin{corollary}[Every quadratic denominator uses only a dilogarithm]
+\label{thm:quadratic}
+Suppose the reduced denominator of $R$ has degree at most two and
+all its roots are nonpositive integers; the polynomial part is arbitrary.
+For every $r\ge1$ there are rational functions $A_r,B_r,C_r,E_r\in K(z)$
+with poles only at $0,1$ such that, with $L=-\log(1-z)$,
+\begin{equation}\label{eq:quadratic}
+       G_r(z;R)=A_r(z)+B_r(z)L+C_r(z)L^2+E_r(z)\Li_2(z).
+\end{equation}
+Thus the adjacent-two-pole dilogarithm phenomenon extends to arbitrarily
+separated integer poles, a repeated double pole, and any polynomial part.
+\end{corollary}
+\begin{proof}
+The possible nonempty pole profiles are $(1)$, $(1,1)$, and $(2)$.
+Their stabilized weights are at most two. The positive-index words of
+weight at most two are $\Li_1=L$, $\Li_2$, and
+$\Li_{1,1}=L^2/2$. Apply Theorem~\ref{thm:compiler}.
+\end{proof}
+
+\begin{corollary}[Euler primitives and a finite differential module]
+\label{thm:dmodule}
+For every integer $e\ge0$,
+\begin{equation}\label{eq:eulerprimitive}
+ \sum_{M\ge1}\frac{D_{r,M}(R)}{M^e}z^M
+             =\mathcal J_0^eG_r(z;R)\in\mathscr L_{W_r+e}.
+\end{equation}
+All generators $G_r$ for a fixed weight $R$ lie in a common differential
+module over $K(z)$ spanned by at most $2^{W_\infty}$ functions.
+Consequently each individual $G_r$ satisfies a nonzero scalar linear
+differential equation over $K(z)$ of order at most $2^{W_\infty}$.
+\end{corollary}
+\begin{proof}
+The first statement follows by anchored iteration. There are
+$2^{w-1}$ compositions of positive weight $w$, so the empty word and
+all words of weight at most $W_\infty$ give $2^{W_\infty}$ generators.
+Differentiation maps their span into itself by the word derivative
+rule and the product rule for rational factors. The first
+$2^{W_\infty}+1$ derivatives of an individual element are therefore
+linearly dependent over $K(z)$. This proves the scalar equation claim.
+It does \emph{not} assert that the same scalar equation annihilates
+all ranks; rational prefactors vary with $r$.
+\end{proof}
+
+\section{Several simple poles: fixed-size highest coefficients}
+\label{sec:hahn}
+
+For this section omit the polynomial part and write
+\begin{equation}\label{eq:simpleR}
+ R(x)=\sum_{j=1}^d\frac{c_j}{x+a_j}=\frac{P_*(x)}{L(x)},
+ \quad L(x)=\prod_{j=1}^d(x+a_j),\quad
+ P_*(x)=\sum_{j=1}^d c_j\frac{L(x)}{x+a_j},
+\end{equation}
+where $a_j$ are distinct nonnegative integers and $c_j\ne0$.
+After \eqref{eq:shift}, let $X$ stand for $H_M$. The formal determinant
+is a polynomial in $X$ with coefficients rational in $M$.
+
+\begin{theorem}[The top coefficient is a polynomial-weight determinant]
+\label{thm:compression}
+For $r\ge d$, put $q=r-d$ and
+$T_{r,M}=[X^d]D_{r,M}(R)$. Then
+\begin{equation}\label{eq:top}
+ \boxed{\displaystyle
+ T_{r,M}=\left(\prod_{j=1}^d c_j\right)
+          \prod_{i<j}(a_j-a_i)^2\,
+     \det\left(\sum_{n=1}^M n^{i+j}L(n)P_*(n)\right)_{0\le i,j<q}.}
+\end{equation}
+The determinant of size zero is one. In particular the highest
+harmonic coefficient has no rational cutoff poles.
+\end{theorem}
+\begin{proof}
+The coefficient of $X$ in the moment matrix is
+$\sum_j c_jv_jv_j^{\mathsf T}$, where
+$v_j=(1,-a_j,\ldots,(-a_j)^{r-1})^{\mathsf T}$.
+Use the monic polynomial basis
+\[
+       1,x,\ldots,x^{d-1},L(x),xL(x),\ldots,x^{q-1}L(x).
+\]
+Its triangular coefficient matrix has determinant one. Each of the
+last $q$ basis vectors vanishes at every $-a_j$, so the harmonic
+matrix has support only in the first $d$ rows and columns. Its
+$d\times d$ determinant is
+$\prod_j c_j\prod_{i<j}(a_j-a_i)^2$.
+The coefficient of $X^d$ must select this entire block. The complementary
+moment matrix sums $x^{i+j}L(x)^2R(x)=x^{i+j}L(x)P_*(x)$, a polynomial
+weight. This proves \eqref{eq:top}, including its normalization.
+\end{proof}
+
+For completeness, the monic uniform Hahn polynomial on $1,\ldots,M$
+can be written without hypergeometric denominators as
+\begin{equation}\label{eq:hahn}
+ p_j(x;M)=\binom{2j}{j}^{-1}
+ \sum_{\ell=0}^j(-1)^{j+\ell}\binom j\ell\binom{j+\ell}{\ell}
+       \fall{(M-1-\ell)}{j-\ell}\fall{(x-1)}\ell.
+\end{equation}
+For $j<M$ it is orthogonal with unit weights and has squared norm
+\begin{equation}\label{eq:hahnnorm}
+ h_j(M)=\frac{\Gamma(M+j+1)}
+                  {(2j+1)\Gamma(M-j)\binom{2j}{j}^{\!2}}.
+\end{equation}
+These are the uniform specialization of the classical finite Hahn
+formulas \cite{dlmf-hahn}. They imply
+$\det(\sum_{n=1}^M n^{i+j})_{i,j<q}=\prod_{j<q}h_j(M)$ by a monic
+triangular change of basis. The endpoint identity used in
+Theorem~\ref{thm:sharp} follows by putting $x=0$ in \eqref{eq:hahn}
+and applying the finite binomial Vandermonde identity.
+
+\begin{corollary}[At most $2d-1$ Hahn rows, at every particle count]
+\label{thm:fixedsize}
+Let $W(x)=L(x)P_*(x)=\lambda\prod_{i=1}^e(x-b_i)$ have its actual
+nonzero leading coefficient $\lambda$ and degree $e\le2d-1$.
+For distinct roots and $M\ge q+e$,
+\begin{equation}\label{eq:fixedsize}
+ \begin{split}
+ T_{r,M}={}&\left(\prod_jc_j\right)\prod_{i<j}(a_j-a_i)^2
+      \lambda^q(-1)^{eq}\mathcal U_q(M)\\
+ &\hspace{12mm}\times
+       \frac{\det(p_{q+j-1}(b_i;M))_{1\le i,j\le e}}
+                    {\prod_{i<j}(b_j-b_i)}.
+ \end{split}
+\end{equation}
+Repeated roots are handled by the confluent divided-difference limit.
+The compressed formula \eqref{eq:top} remains the definition at every
+smaller cutoff and whenever the leading coefficient changes degree.
+Thus the highest harmonic coefficient has a determinant of fixed size
+at most $2d-1$, independent of $r$.
+\end{corollary}
+\begin{proof}
+For a measure $\nu$ and its monic orthogonal polynomials, the
+Christoffel determinant identity is
+\[
+ D_q\!\left[\prod_{i=1}^e(x-b_i)\nu\right]
+ =(-1)^{eq}D_q[\nu]\,
+           \frac{\det(p_{q+j-1}(b_i))_{i,j=1}^e}{\prod_{i<j}(b_j-b_i)}.
+\]
+One proof appends the $e$ fixed nodes $b_i$ to the Vandermonde in the
+$q$ integration nodes. The cross factors are
+$\prod_{i,j}(b_i-x_j)$, giving the stated sign. Replace monomials by
+monic orthogonal polynomials and integrate the first $q$ rows against
+the companion Vandermonde. Orthogonality leaves the product of the
+first $q$ squared norms and the displayed $e$ rows. All steps are
+finite for the discrete measure here. This is the standard
+Christoffel transformation \cite{krattenthaler}. Applying it to
+\eqref{eq:top}, and extracting the constant factor $\lambda^q$,
+proves the result. Coalescing roots replaces evaluation rows by
+derivative rows divided by the corresponding factorials, because the
+Vandermonde quotient is a symmetric polynomial in the roots.
+\end{proof}
+
+\subsection{Exceptional residues as an exact matrix spectrum}
+
+Let $M\ge q$ and $q>0$. For real $a_j\ge0$ define positive definite
+$q\times q$ matrices
+\begin{equation}\label{eq:Bres}
+ B_j=\left(\sum_{n=1}^M
+             n^{u+v}\frac{L(n)^2}{n+a_j}\right)_{0\le u,v<q}.
+\end{equation}
+For a nonzero polynomial $f$ of degree below $q$, its quadratic form
+is a positive sum of $f(n)^2$ over at least $q$ distinct nodes. Hence
+$B_j$ is positive definite.
+
+\begin{theorem}[Residue hypersurface and real one-parameter slices]
+\label{thm:stability}
+Apart from the explicit factors $\prod_jc_j$ in \eqref{eq:top}, the
+highest-coefficient exceptional locus is exactly
+\begin{equation}\label{eq:exception}
+           \det\left(\sum_{j=1}^d c_jB_j\right)=0.
+\end{equation}
+The polynomial on the left is nonzero when every $\operatorname{Im}c_j>0$,
+and also when every $c_j>0$ is real. Fix positive real values for all
+residues except $c_i=\tau$, and set
+$A_i=\sum_{j\ne i}c_jB_j$. If $d\ge2$, then all exceptional values
+of $\tau$ in \eqref{eq:exception} are
+\begin{equation}\label{eq:roots}
+                  \tau=-\lambda_1,\ldots,-\lambda_q,
+\end{equation}
+where $\lambda_j>0$ are the eigenvalues of
+$B_i^{-1/2}A_iB_i^{-1/2}$, counted with multiplicity. No simplicity
+assertion is made without additional hypotheses.
+\end{theorem}
+\begin{proof}
+The compressed determinant in \eqref{eq:top} is exactly
+$\det\sum_jc_jB_j$. If the imaginary parts are positive and a nonzero
+complex vector $v$ were in its kernel, taking the imaginary part of
+$v^*(\sum_jc_jB_j)v$ would give
+$\sum_j\operatorname{Im}c_j\,v^*B_jv=0$, a contradiction. The positive
+real case is immediate. This is the standard positive-matrix proof
+of determinantal stability \cite{borcea}, specialized to the present
+compressed measure. Finally
+\[
+ \det(A_i+\tau B_i)=\det B_i\,
+                  \prod_{j=1}^q(\tau+\lambda_j),
+\]
+and $A_i$ is positive definite for $d\ge2$. This proves the exact
+spectral description. The extra zero $\tau=0$ of the full top
+coefficient changes the active pole set and is kept separate.
+\end{proof}
+
+\section{Exact endpoint cancellation equations}
+\label{sec:endpoints}
+
+The highest coefficient in \eqref{eq:top} is polynomial in $M$, but
+lower harmonic coefficients can have cutoff poles. They must be
+retained before forming a generating function. For the simple-pole
+weight \eqref{eq:simpleR}, polynomial division gives the entirely
+explicit moments
+\begin{equation}\label{eq:simplemoment}
+ \begin{split}
+ \mu_j(M,X)=\sum_{a\in A}c_a\bigg\{&
+  \sum_{v=0}^{j-1}(-a)^{j-1-v}S_v(M)\\
+ &+(-a)^j\left(X+\sum_{b=1}^a\frac1{M+b}-H_a\right)\bigg\}.
+ \end{split}
+\end{equation}
+The inner polynomial sum is empty if $j=0$.
+
+For $1\le h\le\max A$, put
+\[
+ A_h^+=\{a\in A:a\ge h\},\qquad d_h=|A_h^+|,
+ \qquad v_a=(1,-a,\ldots,(-a)^{r-1})^{\mathsf T}.
+\]
+Let $\boldsymbol\mu$ denote the formal moment matrix from
+\eqref{eq:simplemoment}, and define its regular part at $M=-h$ by
+\begin{equation}\label{eq:regularmatrix}
+ B_h(M,X)=\boldsymbol\mu(M,X)-\frac1{M+h}
+                         \sum_{a\in A_h^+}c_av_av_a^{\mathsf T}.
+\end{equation}
+Every entry is analytic in $M$ near $-h$ after its removable
+cancellations are simplified.
+
+\begin{theorem}[Every principal coefficient from a finite bordered jet]
+\label{thm:endpoints}
+The order of the formal cutoff pole at $M=-h$ is at most
+$\min(r,d_h)$. Write its principal part as
+$\sum_{\ell=1}^{\min(r,d_h)}P_{h,\ell}(X)/(M+h)^\ell$.
+For a subset $S\subset A_h^+$ of size $k$, let $V_S$ have columns
+$v_a$ for $a\in S$. Then
+\begin{equation}\label{eq:endpointjet}
+ \boxed{\displaystyle
+ P_{h,\ell}(X)=
+ \sum_{k=\ell}^{\min(r,d_h)}\ \sum_{\substack{S\subset A_h^+\\|S|=k}}
+ \frac{(-1)^k\prod_{a\in S}c_a}{(k-\ell)!}
+ \left.
+ \partial_M^{k-\ell}
+ \det\begin{pmatrix}B_h(M,X)&V_S\\V_S^{\mathsf T}&0\end{pmatrix}
+ \right|_{M=-h}.}
+\end{equation}
+Thus the pole cancels identically as a formal harmonic expression if
+and only if all of these polynomials in $X$ vanish. More generally,
+its exact order is the largest $\ell$ with $P_{h,\ell}\ne0$.
+Moreover
+\begin{equation}\label{eq:endpointdegree}
+              \deg_X P_{h,\ell}+\ell\le\min(r,d).
+\end{equation}
+\end{theorem}
+\begin{proof}
+For any square matrix $B$ and vectors $v_a$, the rank-one update
+expansion is
+\begin{equation}\label{eq:border}
+ \det\left(B+\sum_a t_av_av_a^{\mathsf T}\right)
+ =\sum_S(-1)^{|S|}\left(\prod_{a\in S}t_a\right)
+          \det\begin{pmatrix}B&V_S\\V_S^{\mathsf T}&0\end{pmatrix}.
+\end{equation}
+For the empty subset the bordered determinant is $\det B$.
+One can prove the identity first when $B$ is invertible by the
+Schur complement and the principal-minor expansion of
+$\det(I+\operatorname{diag}(t)V^{\mathsf T}B^{-1}V)$.
+Both sides are polynomials in the entries of $B$, so the identity holds
+without invertibility. Terms with $|S|>r$ vanish.
+
+Apply \eqref{eq:border} with $B=B_h$ and $t_a=c_a/(M+h)$.
+Taylor expansion of each analytic bordered determinant gives
+\eqref{eq:endpointjet}. It also proves the maximal pole order and the
+necessary-and-sufficient cancellation criterion. Finally, in the
+simple-pole case the determinant is multiaffine in the original
+$h_{a,1}$ and contains at most $\min(r,d)$ such factors. Selecting
+$\ell$ inverse-cutoff factors leaves at most $\min(r,d)-\ell$ harmonic
+factors. Equivalently use Lemma~\ref{thm:cutoffnormal} with all
+$s_a=1$. This proves \eqref{eq:endpointdegree}.
+\end{proof}
+
+This is an exact finite classification by explicit polynomial equations,
+not an intrinsic formula for the first particle count at which every
+endpoint disappears. Such a threshold, expressed only in pole locations
+and residues without constructing the jets, remains a further question.
+The theorem nevertheless gives every endpoint contribution required by
+the compiler, including cases in which a naive residue-rank estimate is
+strict.
+
+\subsection{A complete three-pole example}
+
+Take
+\begin{equation}\label{eq:threeR}
+          R(n)=\frac1n+\frac1{n+1}+\frac1{n+2},\qquad r=3.
+\end{equation}
+The exact formal determinant has the following compact
+polynomial-plus-principal-part representation:
+\begin{equation}\label{eq:threeformal}
+ \begin{split}
+ D_{3,M}(R)={}&4H_M^3+A_2(M)H_M^2+A_1(M)H_M+A_0(M)\\
+ &+\frac{8H_M^2-36H_M-19/2}{M+1}
+   +\frac{4H_M-18}{(M+1)^2}
+   +\frac{4H_M^2-26H_M+13}{M+2},
+ \end{split}
+\end{equation}
+where
+\begin{align}
+ A_2(M)={}&\tfrac92M^4+27M^3+\tfrac{111}2M^2+45M-10,\notag\\
+ A_1(M)={}&\tfrac38M^6+\tfrac{27}8M^5-\tfrac{45}4M^4
+       -\tfrac{753}8M^3-\tfrac{1199}8M^2-\tfrac{69}2M+45,\notag\\
+ A_0(M)={}&-\tfrac{23}{16}M^6-\tfrac{129}{16}M^5
+       +\tfrac{219}{16}M^4+\tfrac{1527}{16}M^3
+       +\tfrac{495}8M^2-\tfrac{169}4M+21.
+ \label{eq:threepolys}
+\end{align}
+These formulas follow by inserting \eqref{eq:threeR} in
+\eqref{eq:simplemoment} and expanding a $3\times3$ determinant;
+the accompanying exact checks also compare them to the original
+finite sums. The top coefficient is $4$, precisely
+$\prod_{i<j}(a_j-a_i)^2$ at $a_j=0,1,2$. The double cutoff pole at
+$M=-1$ shows why retaining only simple endpoint poles is incorrect for
+three simple summand poles. This is a counterexample to that possible
+extrapolation, not a claim that the adjacent-pole source made it.
+
+Let $F_j(z)=\sum_{M\ge1}H_M^jz^M$, with $F_0=z/(1-z)$.
+The finite product rules give
+\begin{align}
+ F_1&=\frac{\Li_1(z)}{1-z},\notag\\
+ F_2&=\frac{\Li_2(z)+2\Li_{1,1}(z)}{1-z},\notag\\
+ F_3&=\frac{\Li_3(z)+3\Li_{2,1}(z)+3\Li_{1,2}(z)
+                           +6\Li_{1,1,1}(z)}{1-z}.
+ \label{eq:F123}
+\end{align}
+An explicit identity for the three-pole generator is therefore
+\begin{equation}\label{eq:threegen}
+ \begin{split}
+ G_3(z;R)={}&4F_3+A_2(\theta)F_2+A_1(\theta)F_1+A_0(\theta)F_0\\
+ &+\mathcal J_1(8F_2-36F_1-\tfrac{19}2F_0)
+    +\mathcal J_1^2(4F_1-18F_0)\\
+ &+\mathcal J_2(4F_2-26F_1+13F_0).
+ \end{split}
+\end{equation}
+Here each $\mathcal J_h$ is the explicitly anchored integral
+\eqref{eq:inverse}. The supplied compiler removes them completely and
+returns eight rationally weighted words of length at most three. The
+fully expanded coefficients are recorded in
+\src{data/compiled_examples.json}; \eqref{eq:threegen} is the more
+readable exact expression. The derivative operators are of finite
+order and act on the entire functions immediately following them.
+
+\section{A small exact identity with a rank-independent extension}
+
+\subsection{The triple pole and its weight-four primitive}
+
+For the triple pole at the origin and two particles, put
+\begin{equation}\label{eq:KM}
+ K_M=H_M^{(1)}H_M^{(3)}-\bigl(H_M^{(2)}\bigr)^2.
+\end{equation}
+The diagonal terms in the two quasi-shuffles cancel. Consequently
+\begin{equation}\label{eq:Kgen}
+ \boxed{\displaystyle
+ \sum_{M\ge1}K_Mz^M=
+ \frac{\Li_{3,1}(z)+\Li_{1,3}(z)-2\Li_{2,2}(z)}{1-z}.}
+\end{equation}
+This concrete weight-four identity is also the first nontrivial member
+of the spectral family in the next section. An anchored primitive is
+\begin{equation}\label{eq:Kprimitive}
+ \int_0^z\frac{1-t}{t}\sum_{M\ge1}K_Mt^M\dd t
+           =\Li_{4,1}(z)+\Li_{2,3}(z)-2\Li_{3,2}(z).
+\end{equation}
+The right side is single-valued on the disk under the power-series
+branch convention. There is no additive constant because both sides
+vanish at zero.
+
+\begin{proposition}[An ordinary convergent zeta evaluation]
+\label{thm:Kendpoint}
+\begin{equation}\label{eq:Kendpoint}
+ \boxed{\displaystyle
+ \sum_{M=1}^{\infty}
+ \frac{H_M^{(1)}H_M^{(3)}-(H_M^{(2)})^2}{M(M+1)}
+           =\frac{35}{2}\zeta(5)-9\zeta(2)\zeta(3).}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The numerator is $O(1+\log M)$, so the sum is absolutely convergent.
+Alternatively \eqref{eq:ensemble} expresses it as
+$\sum_{n>m\ge1}(n-m)^2/(n^3m^3)$ up to the cutoff; all terms are
+nonnegative. At $z=1$, integrating \eqref{eq:Kgen} as in
+\eqref{eq:Kprimitive} therefore gives
+\begin{equation}\label{eq:Kzetas}
+                  \zeta(4,1)+\zeta(2,3)-2\zeta(3,2).
+\end{equation}
+Here $\zeta(a,b)=\sum_{n>m\ge1}n^{-a}m^{-b}$.
+
+For transparency, the classical weight-five reduction can be checked
+with three identities. Write $P=\zeta(2)\zeta(3)$ and $Z=\zeta(5)$.
+The height-one Gamma identity gives
+$\zeta(4,1)=2Z-P$. One way to see its exact coefficient is to use
+\begin{equation}\label{eq:heightone}
+ 1-\frac{\Gamma(1-x)\Gamma(1-y)}{\Gamma(1-x-y)}
+ =\sum_{m,n\ge1}\zeta(m+1,\{1\}^{n-1})x^my^n.
+\end{equation}
+For a direct normalization check, sum the height-one iterated-integral
+formula over $m,n$ to obtain
+\[
+ y\int_0^1(t^{-x}-1)(1-t)^{-y-1}\dd t
+   =y\{B(1-x,-y)-B(1,-y)\}
+   =1-\frac{\Gamma(1-x)\Gamma(1-y)}{\Gamma(1-x-y)}.
+\]
+The difference integral is analytic for small $x,y$; the separated beta
+terms may first be evaluated with $\operatorname{Re}y<0$ and then
+continued. This is consistent with the height-one Gamma convention in
+the repository \cite{harmonic}. Its logarithmic
+Gamma expansion gives coefficient $x^3y^2$ equal to
+$2\zeta(5)-\zeta(2)\zeta(3)$: the linear exponent contributes $2\zeta(5)$
+and the product of its weight-two and weight-three terms contributes
+$-\zeta(2)\zeta(3)$.
+
+The finite-sum stuffle, passed to the absolutely convergent limit, gives
+$P=\zeta(2,3)+\zeta(3,2)+Z$. The iterated-integral shuffle of words
+$01$ and $001$ gives
+$P=\zeta(2,3)+3\zeta(3,2)+6\zeta(4,1)$; the multiplicities follow by
+listing the ten order-preserving interleavings. Solving yields
+\[
+ \zeta(3,2)=3P-\tfrac{11}{2}Z,\qquad
+ \zeta(2,3)=\tfrac92Z-2P.
+\]
+Substitute in \eqref{eq:Kzetas}. This proves \eqref{eq:Kendpoint} by
+exact identities, without a numerical-relation search.
+\end{proof}
+
+The reduction of \eqref{eq:Kzetas} is classical Euler-sum algebra. The
+structural extension here is that every determinant
+$D_{r,M}(n^{-3})$, for arbitrary $r$, admits a generator in the same
+weight-four module, with the explicit nonzero coefficient
+\eqref{eq:sharp}. For example the next determinant is
+\begin{equation}\label{eq:triple-r3}
+ \begin{split}
+ D_{3,M}(n^{-3})={}&S_1(M)
+       \{H_M^{(1)}H_M^{(3)}-(H_M^{(2)})^2\}\\
+ &-M^2H_M^{(3)}+2M H_M^{(1)}H_M^{(2)}-(H_M^{(1)})^3.
+ \end{split}
+\end{equation}
+Its generator follows by quasi-shuffling just the displayed products
+and replacing $M$ by $\theta$. Higher rank changes the rational
+coefficients and differential operators, not the maximal word length.
+
+\subsection{A shifted double pole with an ordinary zeta endpoint}
+
+The repeated-pole case of Corollary~\ref{thm:quadratic} gives another
+small identity. Set
+\[
+ B_M=M\{H_{M+1}^{(2)}-1\}-(H_{M+1}-1)^2,
+ \qquad L=-\log(1-z).
+\]
+A monic change from the basis $1,n$ to $1,n+1$ shows that $B_M$ is
+$D_{2,M}((n+1)^{-2})$.
+
+\begin{proposition}[Shifted double-pole generator and Euler primitive]
+\label{thm:shifteddouble}
+For $|z|<1$,
+\begin{equation}\label{eq:doublegen}
+ \boxed{\displaystyle
+ \sum_{M\ge1}B_Mz^M=
+ \frac{(3z-2)\Li_2(z)+(1-z)(3L-L^2)-z}{z(1-z)^2}.}
+\end{equation}
+The value at zero is removable. Moreover
+\begin{equation}\label{eq:doubleendpoint}
+ \boxed{\displaystyle
+ \sum_{M\ge1}\frac{M\{H_{M+1}^{(2)}-1\}-(H_{M+1}-1)^2}
+                       {M(M+1)(M+2)}
+       =\frac52\zeta(3)-\frac32\zeta(2)-\frac12.}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Let $U=\sum_{M\ge1}(H_{M+1}^{(2)}-1)z^M$ and
+$V=\sum_{M\ge1}(H_{M+1}-1)^2z^M$. The elementary shift of
+\eqref{eq:hgen} and the quadratic quasi-shuffle give
+\[
+ U=\frac{\Li_2(z)}{z(1-z)}-\frac1{1-z},\qquad
+ V=\frac{\Li_2(z)+L^2-2L}{z(1-z)}+\frac1{1-z}.
+\]
+Their combination $\theta U-V$ is precisely \eqref{eq:doublegen}.
+
+The determinant is a nonnegative finite Vandermonde sum and is $O(M)$.
+Its endpoint series is therefore absolutely convergent. Since
+\[
+ \frac12\int_0^1z^{M-1}(1-z)^2\dd z=\frac1{M(M+1)(M+2)},
+\]
+it equals $\tfrac12\int_0^1N(z)/z^2\dd z$, where
+$N(z)=(3z-2)\Li_2(z)+(1-z)(3L-L^2)-z$.
+Here $N(z)/z\to0$ at zero and $N(1)=\zeta(2)-1$. Direct
+differentiation gives
+\[
+ N'(z)=3\Li_2(z)+L^2-2L+2-\frac{2L}{z}.
+\]
+Integrate by parts once. Use
+$\int_0^1\Li_2(z)\dd z/z=\zeta(3)$,
+$\int_0^1L\dd z/z=\zeta(2)$, and
+$\int_0^1L^2\dd z/z=2\zeta(2,1)=2\zeta(3)$.
+The last equality follows also from coefficient $xy^2$ in
+\eqref{eq:heightone}. The remaining terms must be kept together:
+\[
+ \int_0^1\left(\frac1z-\frac{L}{z^2}\right)\dd z
+       =\left[\frac Lz-L\right]_0^1=-1.
+\]
+Thus the integral is
+$\tfrac12\{-\zeta(2)+1+5\zeta(3)-2\zeta(2)-2\}$,
+which proves \eqref{eq:doubleendpoint}.
+\end{proof}
+
+\section{A spectral master identity at every rank}
+\label{sec:spectral}
+
+The integer-pole theorem has a useful analytic companion that should
+not be confused with differentiating its formal weight bound. Define,
+for arbitrary complex $s$,
+\begin{equation}\label{eq:spectraldet}
+ \mathcal K_{r,M}(s)=
+            \det\bigl(H_M^{(s-i-j)}\bigr)_{0\le i,j<r}.
+\end{equation}
+For a finite cutoff, each entry is an entire function of $s$, with
+$n^{-s}=\exp(-s\log n)$ using the real logarithm. In this section
+$\Li_{a_1,\ldots,a_r}(z)$ is also allowed to have arbitrary complex
+indices; its defining nested series is still entire in all indices
+when $|z|<1$.
+
+Let $\mathfrak S_r$ act on $\{0,\ldots,r-1\}$. For
+$\sigma,\tau\in\mathfrak S_r$, put
+\begin{equation}\label{eq:asig}
+             a_j(s;\sigma,\tau)=s-\sigma(j)-\tau(j),
+                     \qquad 0\le j<r.
+\end{equation}
+
+\begin{theorem}[All-rank spectral polylogarithm and zeta identities]
+\label{thm:spectral}
+For every $s\in\C$ and $|z|<1$,
+\begin{equation}\label{eq:spectralgen}
+ \boxed{\displaystyle
+ \sum_{M\ge1}\mathcal K_{r,M}(s)z^M
+ =\frac1{1-z}\sum_{\sigma,\tau\in\mathfrak S_r}
+       \operatorname{sgn}(\sigma)\operatorname{sgn}(\tau)
+       \Li_{a_0(s),\ldots,a_{r-1}(s)}(z).}
+\end{equation}
+Both sides are entire in $s$ and can be differentiated to every order
+on compact subsets. If $\operatorname{Re}s>2r-2$, then the ordinary
+endpoint sum is absolutely convergent and equals
+\begin{equation}\label{eq:spectralendpoint}
+ \boxed{\displaystyle
+ \sum_{M\ge1}\frac{\mathcal K_{r,M}(s)}{M(M+1)}
+ =\sum_{\sigma,\tau\in\mathfrak S_r}
+       \operatorname{sgn}(\sigma)\operatorname{sgn}(\tau)
+       \zeta(a_0(s)+1,a_1(s),\ldots,a_{r-1}(s)).}
+\end{equation}
+The endpoint identity is holomorphic in this half-plane and also
+admits all fixed-order spectral derivatives there.
+\end{theorem}
+\begin{proof}
+Apply \eqref{eq:ensemble} with $R(n)=n^{-s}$. Reverse the node order
+to $n_0>\cdots>n_{r-1}$, which does not change the square of the
+Vandermonde. Expand that square as two determinants:
+\[
+ \Delta(n_0,\ldots,n_{r-1})^2
+ =\sum_{\sigma,\tau}\operatorname{sgn}(\sigma)
+       \operatorname{sgn}(\tau)\prod_{j=0}^{r-1}
+                           n_j^{\sigma(j)+\tau(j)}.
+\]
+Sum the cutoff $M\ge n_0$ geometrically. This gives
+\eqref{eq:spectralgen}, including the absence of an $r!$ factor.
+For $s$ on a compact set, all finite harmonic moments and their fixed
+spectral derivatives have polynomial growth in $M$ times powers of
+$\log(2+M)$. The factor $z^M$ supplies a locally uniform summable
+majorant, proving entireness and every fixed-order differentiation.
+The same argument applies to each nested polylogarithm.
+
+For the endpoint, the cutoff tail is exactly
+\[
+             \sum_{M=n_0}^{\infty}\frac1{M(M+1)}=\frac1{n_0}.
+\]
+To justify all absolute rearrangements in the claimed half-plane,
+use the elementary rearrangement inequality on the decreasing nodes:
+for every permutation $\sigma$,
+$\prod_jn_j^{\sigma(j)}\le\prod_jn_j^{r-1-j}$.
+It follows by successively swapping any inverted pair of exponents.
+After both Vandermonde expansions and the extra factor $1/n_0$, every
+absolute summand is dominated by
+\[
+ n_0^{-\operatorname{Re}s+2r-3}
+             \prod_{j=1}^{r-1}n_j^{-\operatorname{Re}s+2r-2-2j}.
+\]
+When $\operatorname{Re}s>2r-2$, all the positive decay exponents in
+this expression exceed one. Dropping the ordering gives a product of
+convergent ordinary zeta series. A compact sub-half-plane permits
+additional fixed powers of logarithms by slightly decreasing those
+exponents. This proves convergence, \eqref{eq:spectralendpoint}, and
+all stated derivatives.
+\end{proof}
+
+At a positive integer $s$, \eqref{eq:spectralgen} can contain
+nonpositive indices if $r$ is large. Theorem~\ref{thm:compiler} removes
+them constructively and yields the uniform alphabet of maximal weight
+$\lfloor(s+1)^2/4\rfloor$, independent of $r$. The unreduced spectral
+formula is not itself a minimal-weight representation. At a general
+noninteger $s$, or after order differentiation, the finite integer-weight
+alphabet theorem is not being asserted.
+
+\section{Generalized Stieltjes constants and exact spectral jets}
+\label{sec:stieltjes}
+
+Use the Laurent convention
+\begin{equation}\label{eq:stieltjes}
+ \zeta(1+u,a)=\frac1u+
+          \sum_{q\ge0}\frac{(-1)^q}{q!}\gamma_q(a)u^q.
+\end{equation}
+For $p\in\C$, define the finite logarithmic harmonic sums
+\begin{equation}\label{eq:Lpq}
+ L_{q,p}(M)=\sum_{n=1}^M\frac{\log^q n}{n^p}
+                  =(-1)^q\partial_p^qH_M^{(p)}.
+\end{equation}
+The Hurwitz difference $H_M^{(p)}=\zeta(p)-\zeta(p,M+1)$ is entire
+in $p$ because its two residues at $p=1$ cancel. Comparing
+\eqref{eq:stieltjes} gives the ordinary finite identity
+\begin{equation}\label{eq:Jq}
+          J_q(M):=\gamma_q(1)-\gamma_q(M+1)=L_{q,1}(M).
+\end{equation}
+This is a difference of Stieltjes constants, not a value assigned to
+one of the separately singular terms $\zeta^{(q)}(1,a)$.
+For $p\ge2$ integral,
+\begin{equation}\label{eq:Lzeta}
+ L_{q,p}(M)=(-1)^q
+                  \{\zeta^{(q)}(p)-\zeta^{(q)}(p,M+1)\}.
+\end{equation}
+At $q=0$ the same harmonic variables are polygamma differences:
+\begin{equation}\label{eq:polyGamma}
+ H_M^{(p)}=\frac{(-1)^{p-1}}{(p-1)!}
+       \{\psi^{(p-1)}(M+1)-\psi^{(p-1)}(1)\},
+                   \qquad p\ge1.
+\end{equation}
+For $p=1$ this uses $\psi^{(0)}=\psi$ and is the usual digamma shift.
+These standard Hurwitz and polygamma identities are consistent with
+DLMF conventions \cite{dlmf-zeta}; the finite sums above also prove
+the needed cancellations directly.
+
+\subsection{A complete rank-two Stieltjes family}
+
+Define a holomorphic function for $\operatorname{Re}s>2$ by
+\begin{equation}\label{eq:Zmaster}
+ \mathcal Z(s)=\zeta(s+1,s-2)+\zeta(s-1,s)-2\zeta(s,s-1).
+\end{equation}
+The double-zeta series in this formula all converge absolutely on
+that half-plane.
+
+\begin{theorem}[All-order Stieltjes--harmonic endpoint identity]
+\label{thm:stieltjes}
+For every integer $q\ge0$,
+\begin{equation}\label{eq:allstieltjes}
+ \boxed{\displaystyle
+ \sum_{M=1}^{\infty}\frac1{M(M+1)}
+    \sum_{j=0}^q\binom qj
+       \bigl\{L_{j,3}(M)J_{q-j}(M)
+                   -L_{j,2}(M)L_{q-j,2}(M)\bigr\}
+                   =(-1)^q\mathcal Z^{(q)}(3).}
+\end{equation}
+Every series here is an ordinary absolutely convergent series. At
+$q=0$ it is \eqref{eq:Kendpoint}. For $|z|<1$ the corresponding
+cutoff generator is
+\begin{equation}\label{eq:stieltjesgen}
+ \begin{split}
+ &\sum_{M\ge1}z^M\sum_{j=0}^q\binom qj
+       \{L_{j,3}(M)J_{q-j}(M)-L_{j,2}(M)L_{q-j,2}(M)\}\\
+ &\qquad=
+ \frac{(-1)^q}{1-z}
+ \left.\partial_s^q
+  \{\Li_{s,s-2}(z)+\Li_{s-2,s}(z)-2\Li_{s-1,s-1}(z)\}
+                                                      \right|_{s=3}.
+ \end{split}
+\end{equation}
+\end{theorem}
+\begin{proof}
+For $r=2$, \eqref{eq:spectraldet} is
+$H_M^{(s)}H_M^{(s-2)}-(H_M^{(s-1)})^2$.
+Differentiate this finite expression $q$ times at $s=3$, multiply by
+$(-1)^q$, and use Leibniz's rule, \eqref{eq:Lpq}, and \eqref{eq:Jq}.
+The result is precisely the inner binomial sum. Apply the corresponding
+derivative to \eqref{eq:spectralendpoint} and
+\eqref{eq:spectralgen}. Theorem~\ref{thm:spectral} justifies both
+interchanges. Directly, $L_{j,2}$ and $L_{j,3}$ remain bounded in $M$
+for each fixed $j$, whereas $J_j(M)=O(1+\log^{j+1}(2+M))$. This also
+checks absolute convergence of the displayed endpoint series.
+\end{proof}
+
+For example, the first logarithmic identity is
+\begin{equation}\label{eq:qone}
+ \sum_{M\ge1}\frac{
+    L_{1,3}(M)H_M^{(1)}+H_M^{(3)}\{\gamma_1(1)-\gamma_1(M+1)\}
+          -2H_M^{(2)}L_{1,2}(M)}{M(M+1)}=-\mathcal Z'(3).
+\end{equation}
+This is an exact relation between generalized Stieltjes constants,
+Hurwitz-zeta derivatives, and depth-two zeta derivatives. It is not
+obtained by differentiating the isolated evaluation
+$\mathcal Z(3)=\tfrac{35}2\zeta(5)-9\zeta(2)\zeta(3)$.
+That evaluation holds at one value of $s$; it does not determine
+$\mathcal Z'(3)$ or higher derivatives. Promoting a special-value
+identity to a parameter identity without proof would give an invalid
+reduction of \eqref{eq:qone}.
+
+\subsection{The all-rank version at the Stieltjes boundary}
+
+Let $s_0=2r-1$ and $q\ge0$. All integer indices
+$s_0-i-\sigma(i)$ in the following formula are positive. Expanding the
+determinant and its derivative gives
+\begin{equation}\label{eq:rankjet}
+ \begin{split}
+ \mathcal T_{r,q}(M)=
+ \sum_{\sigma\in\mathfrak S_r}\operatorname{sgn}(\sigma)
+ \sum_{q_0+\cdots+q_{r-1}=q}
+       \frac{q!}{q_0!\cdots q_{r-1}!}
+       \prod_{i=0}^{r-1}L_{q_i,s_0-i-\sigma(i)}(M).
+ \end{split}
+\end{equation}
+With $a_j(s)=a_j(s;\sigma,\tau)$ as in \eqref{eq:asig},
+Theorem~\ref{thm:spectral} proves
+\begin{equation}\label{eq:rankstieltjes}
+ \begin{split}
+ \sum_{M\ge1}\frac{\mathcal T_{r,q}(M)}{M(M+1)}
+ ={}&(-1)^q\left.\partial_s^q\left\{
+ \sum_{\sigma,\tau\in\mathfrak S_r}
+       \operatorname{sgn}(\sigma)\operatorname{sgn}(\tau)\right.\right.\\
+ &\left.\left.\hspace{4mm}\times
+ \zeta(a_0(s)+1,a_1(s),\ldots,a_{r-1}(s))
+ \right\}\right|_{s=s_0}.
+ \end{split}
+\end{equation}
+Formula \eqref{eq:Jq} replaces every index-one factor by an actual
+Stieltjes difference. The other factors are \eqref{eq:Lzeta}; hence
+this is a finite all-rank, all-order specification of ordinary
+Stieltjes--zeta identities. There is at most one index-one factor in
+any product: it requires $i=\sigma(i)=r-1$. At $q=0$, the zeta terms
+on the right have total index weight $r^2+1$. Their possible further
+reduction to a chosen multiple-zeta basis is a distinct arithmetic
+problem, not needed for the identity.
+
+\subsection{Anchored spatial primitives and the Gamma endpoint}
+
+There is also a useful exact spatial primitive, stated here to fix its
+normalization rather than as a new special-function fact. For $a>-1$,
+let $J_q(M,a)=\gamma_q(a+1)-\gamma_q(M+a+1)$. For
+$-1<\alpha<\beta$,
+\begin{equation}\label{eq:spatialprimitive}
+ \begin{split}
+ \int_\alpha^\beta J_q(M,a)\dd a
+ &=\frac1{q+1}\sum_{n=1}^M
+            \{\log^{q+1}(n+\beta)-\log^{q+1}(n+\alpha)\}\\
+ &=\frac{(-1)^{q+1}}{q+1}\left[
+    \zeta^{(q+1)}(0,a+1)-\zeta^{(q+1)}(0,M+a+1)
+                         \right]_{a=\alpha}^{a=\beta}.
+ \end{split}
+\end{equation}
+The proof integrates each finite logarithmic summand and differentiates
+the entire finite Hurwitz difference at zero. At $q=0$ it reduces to
+\begin{equation}\label{eq:gammalogprimitive}
+ \int_\alpha^\beta\{\psi(M+a+1)-\psi(a+1)\}\dd a
+       =\left[\log\frac{\Gamma(M+a+1)}{\Gamma(a+1)}
+                                                 \right]_\alpha^\beta.
+\end{equation}
+Positive real arguments fix the logarithm branch. These formulas may
+also be continued to a simply connected complex domain avoiding all
+$-1,-2,\ldots,-M$, with one consistent logarithm branch.
+
+\section{Verification, claim status, and source corrections}
+\label{sec:verification}
+
+\subsection{Exact checks and numerical diagnostics have different roles}
+
+The all-rank proofs above do not depend on fitting coefficient tables.
+The included programs independently check finite instances and the
+translation from formal identities to code. Their output is retained
+in machine-readable JSON and ordinary run logs.
+
+\begin{center}
+\begin{tabular}{p{0.66\textwidth}r}
+\toprule
+Executed exact check & Count\\\midrule
+Direct determinant versus compiled Taylor coefficient comparisons & 99\\
+Single-pole weighted-degree checks, orders $1$--$7$, ranks $1$--$4$ & 28\\
+Extremal Gamma-product coefficient checks on the same grid & 28\\
+Several-simple-pole top-coefficient compression checks & 8\\
+Local confluent matrix factorizations using independent polynomial division & 12\\
+Endpoint bordered-jet principal coefficients & 7\\
+All-rank double-permutation spectral normalizations & 24\\
+Deliberately corrupted identities rejected & 2\\\bottomrule
+\end{tabular}
+\end{center}
+
+The compiler checks include separated simple poles, three simple poles,
+a shifted double pole, a mixture of double and simple poles, and a
+polynomial part. For each of nine examples, the constant coefficient
+and coefficients through $z^{10}$ are compared exactly with the
+original finite-sum determinant. The maximum output word length is
+checked against $W_r$. The local factorization tests use polynomial
+long division of the rational summand rather than the compiler's
+shifted-binomial formula. The endpoint tests compare the bordered-jet
+formula to a separately expanded Laurent series.
+
+The numerical suite uses 60 decimal digits and contains 28 diagnostics:
+original cutoff determinants against the compiled expressions;
+nonintegral and complex spectral parameters; Stieltjes differences
+through order three; four differentiated spectral generators; and
+independent Mellin integrals for the weight-five double-zeta reduction.
+The suite uses a stated scaled tolerance of $10^{-48}$. Recorded residuals,
+working precision, and truncation settings are in
+\src{data/numeric_checks.json}. These are floating-point diagnostics,
+not interval enclosures. A small residual alone is not used to prove
+any theorem, and no proof-assistant formalization is claimed.
+
+\subsection{What the package implements}
+
+\src{verification/compiler.py} implements the rational moment formula,
+finite quasi-shuffles, the two-letter integration recursion, and the
+anchored inverse operators. Its output is a dictionary of binary
+words and rational coefficients; an empty word means the rational
+term. The example file records this complete representation, not just
+numerical values. The finite algorithm works at arbitrary specified
+rank, but no polynomial-time complexity claim is made: symbolic
+expression size and partial-fraction expansion can grow substantially.
+
+A minimal call is
+\begin{verbatim}
+from verification.compiler import compile_hankel, encode
+result = compile_hankel(2, [(0, 3, 1)])
+print(encode(result))
+\end{verbatim}
+Each triple is \texttt{(nonnegative integer shift, pole order, residue)}.
+The output here is exactly \eqref{eq:Kgen} in binary-word notation.
+The program is intended for exact rational or symbolic coefficients;
+passing binary floating-point residues changes the nature of its
+arithmetic and is not part of the exact certificate claims.
+
+\subsection{Corrections and integration decisions}
+
+No false mathematical theorem was found in the particular inherited
+proof dependencies used here. The following are status corrections
+and precision safeguards, not accusations of errors in those theorems.
+
+The gap-six report's Question~Q4 still asks for the Gamma normalization
+constants $K_m$. The newer incoming Gamma-normalization package gives
+their explicit evaluation \cite{normalizations}; Q4 should point to
+that result instead of remaining an unspecialized open question.
+Similarly, the older mixed Gamma normal-form coefficient question is
+already settled by the universal Gamma archive \cite{universal} and
+should not be reopened on the strength of an older manuscript snapshot.
+
+For the several-pole program, Questions~Q7--Q9 can now reference the
+following specific advances: a fixed-size highest-coefficient formula
+for any finite simple pole set; exact finite endpoint cancellation
+jets; a uniform finite polylogarithm compiler including repeated
+integer poles; and the spectral Euler primitives proved here.
+A full intrinsic classification of all cutoff cancellations, or a
+necessary-and-sufficient criterion for \emph{minimal classical}
+polylogarithm depth, remains open. Those broader questions should not
+be marked completely solved merely because a finite compiler exists.
+
+Three conventions must survive integration. First, inverse-cutoff
+operators are anchored at zero, and principal parts are retained before
+summation. Second, all degree and weight statements concern formal
+harmonic coordinates; they do not assert independence of evaluated
+constants. Third, order derivatives of zeta functions are taken in
+actual parameter identities, not in an isolated special-value
+reduction. These distinctions are mathematically necessary.
+
+\section{Further research questions}
+\label{sec:questions}
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=*]
+\item \textbf{Determine minimal functional weight and depth.}
+Theorem~\ref{thm:sharp} proves formal sharpness, not transcendental
+minimality. Which pole profiles force genuinely depth-two or higher
+functions after all functional identities and argument changes are
+allowed? In particular, classify the all-rank weights whose generators
+use only classical $\Li_j$ and logarithms.
+
+\item \textbf{Find a generic multiple-pole sharpness theorem.}
+For a single pole the extremal coefficient is explicit. For several
+poles, characterize when the optimized confluent minors survive their
+compression and the merger of integer-shift harmonic variables.
+A coefficient formula indexed by the maximizing allocations $k_a$
+may distinguish generic sharpness from special residue cancellations.
+
+\item \textbf{Replace endpoint jets by intrinsic cutoff invariants.}
+Formula \eqref{eq:endpointjet} is a complete finite test, but it still
+uses matrices depending on $r$. Seek exact vanishing thresholds and
+factorizations directly from the integer dispersions of the poles,
+their residues, and the polynomial part. The three-pole double
+principal part in \eqref{eq:threeformal} is a first test case.
+
+\item \textbf{Study the exceptional residue hypersurface.}
+Equation \eqref{eq:exception} describes it exactly and gives its
+positive-matrix slices. Determine its irreducible components,
+singular loci, and conditions for simple roots on a one-residue slice.
+Multiplicity cannot be discarded from the present theorem without a
+further argument.
+
+\item \textbf{Extend the compiler to rational and nonintegral shifts.}
+For rational shifts, a roots-of-unity alphabet or a suitable cover is
+natural. Derive a precise analogue of $W_r$ that tracks both the
+confluent multiplicities and the required alphabet. Arbitrary complex
+shifts should instead lead to a Lerch-type iterated-sum calculus.
+
+\item \textbf{Reduce the Stieltjes spectral derivatives arithmetically.}
+The identities \eqref{eq:allstieltjes} and \eqref{eq:rankstieltjes}
+leave explicit derivatives of multiple zeta functions. Seek genuine
+parameter identities reducing some of them to ordinary zeta or
+Hurwitz-zeta derivatives. Differentiating the weight-five evaluation
+at a single point is not an admissible shortcut.
+
+\item \textbf{Make the differential module small and explicit.}
+The finite $2^{W_\infty}$ generating set need not be minimal. Construct
+cyclic equations, differential relations, or a reduced unipotent
+system adapted to a fixed rational weight, and compare its rank
+across residue specializations. The target is an exact common module,
+not a falsely claimed single scalar equation for every particle count.
+
+\item \textbf{Understand confluence at the level of identities.}
+Continuous merging of simple poles differentiates shift parameters
+and can introduce higher-weight harmonic variables. Explain precisely
+how the simple-pole identities pass to the repeated-pole capacities,
+including the passage from three simple poles to the weight-four
+triple-pole sector, while keeping the endpoint subtractions uniform.
+\end{enumerate}
+
+\section*{Conclusion}
+\addcontentsline{toc}{section}{Conclusion}
+A finite pole set supplies more than a finite harmonic rank. Its
+confluent derivative blocks determine an explicit weight allocation,
+and that allocation survives every rational cutoff correction needed
+for summation. This yields a finite, reproducible polylogarithm identity
+at every rank. The single-pole coefficient \eqref{eq:sharp} proves the
+formal invariant is attained and identifies its Gamma normalization.
+The fixed-size compression, endpoint jets, and spectral Stieltjes
+identities give complementary ways to extract exact consequences.
+They extend a concrete current repository question without confusing
+classical tools, newly proved combinations, finite evidence, and the
+larger arithmetic problems that remain.
+
+\begin{thebibliography}{99}
+\small
+\setlength{\itemsep}{3pt}
+
+\bibitem{repo}
+V. Reshetnikov, \emph{ProveIt}, polylogarithm manuscript and incoming
+research packages. Repository observation at commit
+\src{505c62fddea6b4a9eb61fee0c76e6c021e9c7128}, 11 October 2026 local time.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{gap}
+ProveIt incoming research report, \emph{Gap Six Harmonic Determinants},
+archive \src{docs/incoming/ProveIt_Gap_Six_Harmonic_Determinants_2026-10-12.zip}.
+In particular \src{sections/02_complex_rank.tex},
+\src{sections/03_hahn_and_polylogs.tex}, and
+\src{sections/05_audit_and_questions.tex}. Git blob
+\src{d7695b94c3117d7bdcb5e75fcf930c410e9c31b6} at the comparison commit.
+
+\bibitem{universal}
+ProveIt incoming research report, \emph{A Universal Beta Formula for
+Gamma Normal Forms}, archive
+\src{docs/incoming/ProveIt_Universal_Gamma_Normal_Forms_2026-10-11.zip}.
+README and result scope inspected. Git blob
+\src{b2a5e51a1b340683721bb803c20410fc3124d9de}.
+
+\bibitem{normalizations}
+ProveIt incoming research report, \emph{Gamma Determinants and Colored
+Stieltjes Moments}, archive
+\src{docs/incoming/ProveIt_Gamma_Normalizations_and_Colored_Moments_2026-10-12.zip}.
+Gamma determinant and normalization section inspected. Git blob
+\src{a7d997b5d80ab90623ca58864871eb3829089628}.
+
+\bibitem{harmonic}
+ProveIt, \emph{Stieltjes harmonic identities}, harmonic Gamma-ratio and
+height-one zeta development, source
+\src{Analysis/Polylogarithms/docs/reports/stieltjes-harmonic-resonance/continuations/stieltjes-harmonic-identities/sections/harmonic.tex}.
+Inspected Git blob \src{51108e8519d46af87dc3682956511fc525cecec3}.
+
+\bibitem{hoffman}
+M. E. Hoffman, \emph{Quasi-shuffle products}, Journal of Algebraic
+Combinatorics \textbf{11} (2000), 49--68.
+\url{https://arxiv.org/abs/math/9907173}.
+
+\bibitem{krattenthaler}
+C. Krattenthaler, \emph{Hankel determinants of linear combinations of
+moments of orthogonal polynomials, II}, The Ramanujan Journal
+\textbf{61} (2023), 597--627.
+\url{https://doi.org/10.1007/s11139-021-00514-8}.
+
+\bibitem{panzer}
+E. Panzer, \emph{Algorithms for the symbolic integration of
+hyperlogarithms with applications to Feynman integrals}, Computer
+Physics Communications \textbf{188} (2015), 148--166.
+\url{https://arxiv.org/abs/1403.3385}.
+
+\bibitem{borcea}
+J. Borcea and P. Br\"and\'en, \emph{The Lee--Yang and P\'olya--Schur
+programs. II. Theory of stable polynomials and applications}.
+\url{https://arxiv.org/abs/0809.3087}.
+The positive-matrix stability argument needed here is proved in the text.
+
+\bibitem{dlmf-hahn}
+NIST Digital Library of Mathematical Functions, Chapter~18,
+Sections~18.19--18.20, Hahn class and explicit representations.
+\url{https://dlmf.nist.gov/18.20}. Accessed 11 October 2026 local time.
+
+\bibitem{dlmf-zeta}
+NIST Digital Library of Mathematical Functions, Section~25.11,
+Hurwitz zeta function, shifts, derivatives, and Gamma relations.
+\url{https://dlmf.nist.gov/25.11}. Accessed 11 October 2026 local time.
+
+\end{thebibliography}
+\end{document}

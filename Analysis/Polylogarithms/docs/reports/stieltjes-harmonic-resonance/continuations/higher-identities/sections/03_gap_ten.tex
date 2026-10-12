@@ -1,0 +1,716 @@
+% Parent-ready proof fragment. All labels use gt:.
+% Bibliography keys used: OrderedBoundary, PolygammaResonances, BilinearTails, DLMF.
+% Current source paths and verification files are listed in README_gap_ten.txt.
+\section{The complete gap-ten reconstruction theorem}
+\label{gt:section}
+
+The latest incoming report \emph{Polygamma Moments and Stieltjes
+Resonances} proves the complete gap-eight family and gives a computable
+eventual threshold at every fixed gap \cite{PolygammaResonances}.
+Thus the next unresolved fixed-gap family in the inspected material is
+the gap of ten. We settle that entire family. The analytic improvement
+is to keep different error budgets for odd and even Gamma modes; only
+two of the five modes require the larger error. The finite proof uses
+exact fast polynomial arithmetic, so a substantially longer interval
+can be checked without quadratic propagation of the fundamental array.
+
+We also give a bounded-size formula for every inverse coefficient at
+an arbitrary fixed gap. At gap ten it uses determinants of order six,
+independently of the two tail orders. This supplies a constructive
+answer to one version of the earlier compact-inverse-row question
+\cite{BilinearTails}. It retains a finite causal recurrence and does
+not assert a short product evaluation of those coefficients.
+These advances are relative to the inspected project sources; no
+claim of historical priority is made.
+
+\subsection{The original harmonic-tail coordinates}
+
+Let $b\ge6$, $p=2b-10$, $q=2b$, and
+\[
+ A_v(n)=\zeta(v,n+1)=\zeta(v)-H_n^{(v)},\qquad x_n=n+\tfrac12.
+\]
+The series
+\[
+ D_{p,q}(s)=\sum_{n\ge0} A_p(n)A_q(n)x_n^{-s}
+\]
+converges absolutely for $\operatorname{Re}s>3-p-q$ and has a
+meromorphic continuation. Write $D_r=D_{p,q}(-2r)$.
+All these values are regular: the centered Hurwitz expansion
+\begin{equation}\label{gt:tail-expansion}
+ A_v(n)\sim\sum_{h\ge0}c_{v,h}x_n^{1-v-2h},\qquad
+ c_{v,0}=\frac1{v-1},\quad
+ c_{v,h}=\frac{B_{2h}(1/2)}{(2h)!}(v)_{2h-1}\quad(h\ge1)
+\end{equation}
+allows subtraction of successive terms, and the resulting possible
+poles of $D_{p,q}$ are the odd integers $3-p-q-2h$.
+The Bernoulli convention is $B_1=-1/2$, and $(v)_k$ is a rising factorial.
+
+The inherited block transform is
+\begin{align}
+ C_j&=\sum_{r=0}^{j}\binom{2j+1}{2r}2^{-2(j-r)}D_r,
+       \label{gt:C}\\
+ D_r&=\sum_{j=0}^{r}\frac{\binom{2r}{2j}}{2j+1}
+                      B_{2r-2j}(1/2)C_j.\label{gt:D}
+\end{align}
+For $j\ge b$ it has the finite late-coordinate form
+\begin{equation}\label{gt:late}
+ C_j=\sum_{k=0}^{b-1}a_{jk}Z_k,\qquad
+ Z_k=\zeta(2k),\qquad Z_0=-\tfrac12.
+\end{equation}
+For $d=2j+1$ and $e=d-p-q+2k+1$, put $a_{jk}=0$ if $e<0$;
+otherwise the exact coefficient is
+\begin{equation}\label{gt:source-entry}
+ a_{jk}=B_e\left\{
+ \frac{\binom{d-q+1}{p-2k}}{d-q+1}
+ +\frac{\binom{d-p+1}{q-2k}}{d-p+1}\right\}.
+\end{equation}
+Each summand is omitted unless its lower binomial index is between
+$2$ and its upper index. In particular, a zero lower index is omitted.
+This is the exact convention in the original source, and it will be
+retained throughout the proof.
+
+For context, the finite summation underlying these formulas follows
+from
+\[
+ A_p(n-1)A_q(n-1)-A_p(n)A_q(n)
+ =n^{-p}A_q(n)+n^{-q}A_p(n)+n^{-p-q}.
+\]
+Multiply by $n^{2j+1}$ and sum by parts. The constant term at
+$N\to\infty$ of
+\begin{align*}
+ &N^{2j+1}A_p(N)A_q(N)
+ +\sum_{n=1}^{N} n^{2j+1-q}A_p(n)\\
+ &\hspace{20mm}+\sum_{n=1}^{N}n^{2j+1-p}A_q(n)
+ +\sum_{n=1}^{N}n^{2j+1-p-q}
+\end{align*}
+is $C_j$. Expanding the centered difference
+$(x+1/2)^{2j+1}-(x-1/2)^{2j+1}$ gives \eqref{gt:C};
+the inverse generating factor is $z/(2\sinh(z/2))$, giving
+\eqref{gt:D}. Finite Faulhaber summation gives
+\eqref{gt:source-entry}. These coordinate identities and their
+constant-term interpretation are inherited from the ordered-boundary
+development \cite{OrderedBoundary}.
+
+Define the original $b$-square matrix
+\[
+ M_{b,5}=(a_{b+r,k})_{0\le r,k<b}.
+\]
+On the specified formal labels
+\begin{equation}\label{gt:formal-labels}
+ C_0,\ldots,C_{b-1},Z_0,\ldots,Z_{b-1},
+\end{equation}
+the first $2b$ block rows have coefficient matrix
+$\operatorname{diag}(I_b,M_{b,5})$.
+The diagonal of \eqref{gt:D} is $1/(2r+1)$, so the corresponding
+coefficient determinant of $D_0,\ldots,D_{2b-1}$ is
+\begin{equation}\label{gt:prefix-det}
+                       \frac{\det M_{b,5}}{(4b-1)!!}.
+\end{equation}
+Formal rank below always means rational matrix rank on
+\eqref{gt:formal-labels}. It does not assert independence after
+these labels are evaluated as numerical constants.
+
+\begin{theorem}[Every gap-ten pair has the optimal prefix]
+\label{gt:main}
+For every integer $b\ge6$, the matrix $M_{b,5}$ is nonsingular.
+Consequently, for every even $p\ge2$ and $q=p+10$, the first $q$
+centered moments
+\[
+ D_{p,q}(0),D_{p,q}(-2),\ldots,D_{p,q}(-2(q-1))
+\]
+have formal rank $q$ and generate all later centered even moments
+over $\mathbb Q$. The number $q$ is optimal for the $q$ specified
+formal coordinates. Their coefficient determinant is
+\eqref{gt:prefix-det}.
+\end{theorem}
+
+\subsection{A rational recurrence of fixed dimension}
+
+Put
+\begin{align*}
+ \beta_n&=\frac{2|B_{2n}|}{(2n)!}\quad(n\ge1),\\
+ a_u&=0\quad(1\le u\le5),\qquad
+ a_u=(2u)^{\underline{10}}\quad(u>5),\\
+ b_s&=(2s-1)^{\underline{10}},\qquad
+ d_s=2(a_s+b_s)\quad(s>5).
+\end{align*}
+The underline denotes a falling factorial; the symbols $b_s$ here
+are recurrence factors, not Bernoulli numbers. Every $d_s$ is positive.
+Define the rational array
+\begin{align}
+ R_{u,j}&=\delta_{uj}&&(1\le u,j\le5),\notag\\
+ R_{s,j}&=\frac1{d_s}\sum_{u=1}^{s-1}
+             \beta_{s-u}(b_s+a_u)R_{u,j}&&(s>5),
+ \label{gt:recurrence}
+\end{align}
+and let
+\[
+ F_{b,5}=(R_{b+i,j})_{1\le i,j\le5},\qquad f_{b,5}=\det F_{b,5}.
+\]
+The inherited complementary-minor identity is
+\begin{equation}\label{gt:bridge}
+ \det M_{b,5}=
+ \frac{(-1)^{b(b-1)/2}}{4^bb!}
+            \left(\prod_{s=6}^{b+5}d_s\right)f_{b,5}.
+\end{equation}
+Its normalization is important. For an even series
+$R(z)=\sum_{n\ge1}r_nz^{2n}$, the coefficient of $z^{2s-11}$ in
+\begin{equation}\label{gt:null}
+ \mathcal T_5R=(R^{(10)}-R^{(10)}(0))\cot(z/2)
+                               +(R\cot(z/2))^{(10)}
+\end{equation}
+is
+\[
+ d_sr_s-\sum_{u<s}\beta_{s-u}(b_s+a_u)r_u.
+\]
+The assignment $a_5=0$ records the subtracted derivative, equivalently
+the omitted lower binomial index zero in \eqref{gt:source-entry}.
+Truncate the five fundamental null series after degree $2b$ and
+apply the complementary-minor identity to this coefficient operator.
+Reversing the original $b$ columns and restoring their factorial
+scales gives exactly \eqref{gt:bridge}; a full normalization proof
+is in \cite[Gamma-basis section]{OrderedBoundary}.
+
+\subsection{The inherited Gamma basis, with the normalization made explicit}
+
+Let
+\[
+ W(x)=\left|\Gamma\!\left(\tfrac14+\tfrac{ix}{2}\right)\right|^{20},
+ \qquad
+ P_j(x)=\sinh(\pi(5-j)x)\ (1\le j<5),\qquad
+ P_5(x)=\tanh(\pi x).
+\]
+Write
+\begin{equation}\label{gt:t}
+ t_{n,j}=\frac4{(2n)!}\operatorname{Im}
+                  \int_0^\infty(x+i/2)^{2n}P_j(x)W(x)\,dx.
+\end{equation}
+These are absolutely convergent ordinary integrals. The Gamma-basis
+theorem \cite{OrderedBoundary} states that
+\[
+ G_j(z)=4\sin(z/2)\int_0^\infty\sinh(xz)P_j(x)W(x)\,dx
+\]
+is a null germ of \eqref{gt:null}, and that
+\begin{equation}\label{gt:gamma-bridge}
+ (t_{b+i,j})_{i,j=1}^{5}=F_{b,5}T_5,
+ \qquad T_5=(t_{n,j})_{n,j=1}^{5},\qquad \det T_5>0.
+\end{equation}
+
+Here is the analytic mechanism, to specify precisely what is inherited.
+For an allowed multiplier $P$, set
+\[
+ Q_P(t)=2\sinh(t/2)\int_{\mathbb R}e^{ixt}P(x)W(x)\,dx.
+\]
+The Fourier contours in the two terms obtained by differentiating
+$Q_P$ ten times can be shifted by $\pm i$. Gamma recurrence gives
+\[
+ (iy-\tfrac12)^{10}W(y+i)
+ =(iy+\tfrac12)^{10}W(y-i)
+ =2^{10}\left[
+    \Gamma(\tfrac34+iy/2)\Gamma(\tfrac34-iy/2)\right]^{10}.
+\]
+The nearest poles of the common Gamma factor are at $\pm3i/2$,
+outside the two shifted contours. Also $P(y+i)=P(y-i)$.
+The sinh modes therefore have no contact term. For tanh the two
+simple poles at $y=\pm i/2$, each with residue $1/\pi$, give
+$Q_P^{(10)}(0)=i2^{12}\pi^5$; the other four top derivatives vanish.
+The resulting identity is the hyperbolic version of
+\eqref{gt:null}. Rotation $G_j(z)=iQ_{P_j}(iz)$ gives the stated
+null equation. Stirling decay justifies all contour shifts and
+differentiations: on the vertical boundaries the decay is at least
+$e^{-\pi|\operatorname{Re}y|}$ times a fixed polynomial.
+
+For the sign, $\operatorname{Im}(x+i/2)^{2n}$ has leading term
+$nx^{2n-1}$. A triangular row operation and continuous Cauchy--Binet
+express $\det T_5$ as a positive constant times
+\[
+ \int_{(0,\infty)^5}
+ \Delta(x_1^2,\ldots,x_5^2)
+ \Delta(\cosh\pi x_1,\ldots,\cosh\pi x_5)
+ \prod_{r=1}^{5}x_rW(x_r)\tanh(\pi x_r)\,d\mathbf x.
+\]
+Indeed $\sinh(ku)/\tanh u=\cosh u\,U_{k-1}(\cosh u)$,
+so the multiplier alternant has column degrees $4,3,2,1,0$;
+their reversal has positive sign. Both Vandermondes change sign
+together under any interchange, and their product is strictly
+positive off the diagonals. This proves $\det T_5>0$.
+The coefficient identity in \eqref{gt:gamma-bridge} then follows
+from uniqueness in \eqref{gt:recurrence}.
+
+\subsection{An effective phase estimate at half-gap five}
+
+Put
+\[
+ \lambda_j=j\pi,\qquad A=2^5(2\pi)^{10},\qquad
+ a_j^*=A/2\ (j<5),\qquad a_5^*=A.
+\]
+
+\begin{lemma}[Specialization of the effective Gamma estimate]
+\label{gt:phase}
+For every integer $N\ge147456$ and $1\le j\le5$,
+\begin{align}
+ \left|\frac1{a_j^*}\int_0^\infty(x+i/2)^NP_j(x)W(x)\,dx
+ -e^{i\lambda_j/2}\left(
+ \frac{\Gamma(N-4)}{\lambda_j^{N-4}}
+ +\frac{5i}{2}\frac{\Gamma(N-5)}{\lambda_j^{N-5}}
+                         \right)\right|
+ <33\frac{\Gamma(N-6)}{\lambda_j^{N-6}}.\label{gt:phase-bound}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+This is the $m=5$ case of the effective phase lemma of
+\cite{PolygammaResonances}; a specialized proof follows.
+For $x\ge10$, complex Stirling with its remainder \cite[\S5.11(ii)]{DLMF}
+gives
+\begin{equation}\label{gt:density}
+ \frac{P_j(x)W(x)}{a_j^*}
+ =x^{-5}e^{-\lambda_jx}(1+\delta_j(x)),\qquad
+                      |\delta_j(x)|\le10x^{-2}.
+\end{equation}
+To check the constants, for $z=1/4+ix/2$ the remainder after
+$1/(12z)$ has magnitude at most $1/(90|z|^3)$. With $t=1/(2x)$,
+the logarithm of $W/(Ax^{-5}e^{-5\pi x})$ is
+\[
+ -\frac52\log(1+t^2)
+ +5\left(\frac{\arctan t}{t}-1\right)
+ +\frac{20}{3}\frac{t^2}{1+t^2}+20\operatorname{Re}\rho(z).
+\]
+Its absolute value is at most
+$65/(24x^2)+16/(9x^3)<15/(4x^2)$.
+Using $|e^u-1|\le2|u|$ in this range, and the bound
+$2e^{-2\pi x}\le1/(9x^2)$ for the normalized multiplier, proves
+\eqref{gt:density}. On $0\le x\le10$ one may use the generous
+bound $P_j(x)W(x)/a_j^*<2^{460}$, obtained from
+$\Gamma(1/4)<5$, $\pi<4$, and $e<4$.
+
+Write $S_2=\Gamma(N-6)/\lambda_j^{N-6}$.
+The density error on $x\ge\sqrt N$ is at most $20S_2$ because
+\[
+ |x+i/2|^N\le x^N\exp(N/(8x^2))<2x^N.
+\]
+On $10\le x\le\sqrt N$ its bound is
+$\sqrt N(N+1)^{N/2}$.
+For the model integral on $[10,\infty)$, put $y=x+i/2$ and
+shift the ray down to the positive real axis. No pole is crossed.
+The algebraic factor becomes $(1-i/(2y))^{-5}$, and Taylor's
+theorem, for $y\ge10$, gives
+\[
+ \left|(1-i/(2y))^{-5}-1-\frac{5i}{2y}\right|
+                         \le\frac{45}{4y^2}.
+\]
+For example the positive Taylor remainder is at most
+$15u^2(1-u)^{-7}<45u^2$ for $u=1/(2y)\le1/20$.
+Thus this part of the model error is at most $(45/4)S_2$.
+
+The original compact integral, the short vertical segment, and the
+two retained model integrals from $0$ to $10$ are together bounded
+by $2^{720}15^N$. To absorb the remaining terms, set $k=N-7$.
+Since $\lambda_j<20$ and $k!\ge(k/3)^k$,
+\[
+ S_2>\frac1{20}\left(\frac{k}{60}\right)^k.
+\]
+For $N\ge147456$, $k\ge3N/4$ and
+$\sqrt{N+1}\le(5/4)\sqrt N$, so
+\begin{align*}
+ \frac{\sqrt N(N+1)^{N/2}}{S_2}
+     &\le N^9(100/\sqrt N)^N<N^9 2^{-N}\le\tfrac14,\\
+ \frac{2^{720}15^N}{S_2}
+     &\le2^{720}N^8(1200/N)^N
+                  <2^{720}N^8 4^{-N}<\tfrac14.
+\end{align*}
+Here $N^9\le2^{N-2}$ holds at $147456$ and persists by induction.
+The total error is less than
+$(20+45/4+1/2)S_2<33S_2$, proving \eqref{gt:phase-bound}.
+\end{proof}
+
+\subsection{Different determinant budgets for odd and even modes}
+
+\begin{proposition}[A positive tail beginning at an explicit index]
+\label{gt:positive-tail}
+For every integer $b\ge73728$, one has $f_{b,5}>0$.
+\end{proposition}
+
+\begin{proof}
+Apply Lemma~\ref{gt:phase} at $N_i=2b+2i$, $1\le i\le5$.
+An odd column has leading imaginary phase $\pm1$ and relative
+error bounded by
+\[
+ \frac{33\lambda_j^2}{(N_i-5)(N_i-6)}
+                       <\frac{8448}{(N_i-6)^2},
+\]
+since $5\pi<16$. An even column has zero leading imaginary phase.
+Its first nonzero term is the second term in
+\eqref{gt:phase-bound}; its relative error is at most
+\[
+ \frac{66\lambda_j}{5(N_i-6)}
+                       <\frac{858}{5(N_i-6)},
+\]
+because the largest even mode is $4\pi<13$.
+
+Extract the positive row factors
+\[
+             \frac{4\Gamma(N_i-4)}{\Gamma(N_i+1)}\pi^{-2i}
+\]
+and positive column factors $a_j^*\lambda_j^{-2b+4}$.
+In an even column extract additionally
+$5\lambda_j/(2(2b-3))$. The five extracted signs are
+$(+,-,-,+,+)$, with positive product. The remaining matrix is
+$E_{ij}=j^{-2i}(1+\eta_{ij})$.
+For its three odd columns,
+\[
+ |\eta_{ij}|<\frac{8448}{(2b-4)^2}<2^{-20}.
+\]
+For the two even columns the additional row factor is
+$\rho_i=(2b-3)/(2b+2i-5)$; hence
+\[
+ |\eta_{ij}|
+ <\frac8{2b-3}+\frac{858}{5(2b-4)}
+ <\frac{898}{5(2b-4)}<2^{-9}.
+\]
+Both final inequalities hold already at $b=73728$ and improve
+monotonically thereafter.
+
+For $V=(j^{-2i})_{i,j=1}^{5}$, exact rational arithmetic gives
+\begin{equation}\label{gt:V}
+ \det V=\frac{49}{2764800000000},\qquad
+ \operatorname{perm}V=\frac{106852831033}{25798901760000000000},
+ \qquad
+ \frac{\det V}{\operatorname{perm}V}
+       =\frac{457228800}{106852831033}.
+\end{equation}
+Every permutation product uses exactly two even columns and three
+odd columns. Therefore
+\begin{align*}
+ |\det E-\det V|
+ &<\operatorname{perm}V
+       \left\{(1+2^{-9})^2(1+2^{-20})^3-1\right\}\\
+ &<\frac{\operatorname{perm}V}{240}<\det V.
+\end{align*}
+The two final inequalities are exact rational inequalities.
+In particular $\det E>0$. The extracted row and column factors,
+the product of the extracted signs, and $\det T_5$ are positive.
+Equation~\eqref{gt:gamma-bridge} proves $f_{b,5}>0$.
+\end{proof}
+
+The distinction between the two error budgets is substantive: using
+the worst entrywise error five times gives a weaker threshold.
+The general estimate in the predecessor was $B(5)=635656$;
+the preceding argument reduces the required finite interval to
+$b<73728$, while using the same inherited phase remainder.
+
+\subsection{An exact certificate for every remaining integer}
+
+The cotangent coefficients satisfy
+\begin{equation}\label{gt:beta-recurrence}
+ \beta_1=\frac16,\qquad
+ 2(2n+1)\beta_n=\sum_{k=1}^{n-1}\beta_k\beta_{n-k}
+                                      \quad(n\ge2).
+\end{equation}
+This follows from the Riccati equation for $(z/2)\cot(z/2)$.
+We use the prime
+\[
+                         \ell=998244353=119\cdot2^{23}+1.
+\]
+The supplied verifier proves primality by trial division. It also
+verifies that $3$ is a primitive root by checking the three prime
+divisors $2,7,17$ of $\ell-1$. Every polynomial transform used in
+the certificate has length at most $2^{18}$, so all required roots
+of unity exist in $\mathbb F_\ell$.
+
+For $6\le b\le73727$, the largest needed fundamental row is
+$73732$ and the largest needed cotangent index is $73731$.
+All recurrence denominators are invertible modulo $\ell$.
+This is immediate for $2(2n+1)$ in \eqref{gt:beta-recurrence};
+for the other diagonal use
+\begin{equation}\label{gt:d-factor}
+ d_s=2\frac{(2s)!}{(2s-10)!}\frac{2s-5}{s},\qquad s\ge6.
+\end{equation}
+Every displayed integer factor is positive and less than $\ell$.
+Induction therefore identifies the computed residues with the
+reductions of the exact rational coefficients.
+
+\begin{proposition}[Finite gap-ten certificate]
+\label{gt:finite}
+For every integer $6\le b\le73727$, the rational determinant
+$f_{b,5}$ has a nonzero reduction modulo $998244353$.
+\end{proposition}
+
+\begin{proof}[Exact computational proof]
+The program \texttt{verify\_gap\_ten.cpp} constructs the necessary
+cotangent coefficients and five fundamental columns using integer
+arithmetic only. It then evaluates all $73722$ five-by-five
+determinants by Gaussian elimination over $\mathbb F_\ell$.
+Every residue is nonzero. The full indexed list is
+\texttt{gap\_ten\_certificate.csv}.
+\begin{samepage}
+\noindent Its SHA-256 identifier is
+\begin{center}\small\ttfamily
+f3f749a4c4e02c27b32a58e1f65714bab568a08f3b0ebdb0fd8cb8d4bf74184d
+\end{center}
+\end{samepage}
+The recurrence and the nonzero residues are the certificate; its
+hash serves only to identify the supplied record.
+
+Every fundamental recurrence is independently checked after the
+causal computation by two full polynomial products per column.
+The cotangent coefficients are independently checked against
+\eqref{gt:beta-recurrence}, after their initial construction by
+formal division of cosine by normalized sine.
+The separate Python verifier, which does not call the NTT code,
+recomputes $506$ boundary determinants with the direct quadratic
+recurrence, checks $64$ cotangent coefficients against rational
+Bernoulli numbers, and compares the original Bernoulli matrix
+\eqref{gt:source-entry} and its full normalization
+\eqref{gt:bridge} for every $6\le b\le18$.
+All these checks pass; their exact values are supplied in
+\texttt{gap\_ten\_independent\_checks.json}.
+\end{proof}
+
+Propositions~\ref{gt:positive-tail} and \ref{gt:finite}, followed
+by \eqref{gt:bridge} and \eqref{gt:prefix-det}, prove
+Theorem~\ref{gt:main}. The finite-field part proves nonvanishing,
+not the real signs of the corresponding rational numbers.
+Indeed direct rational checks give $f_{6,5}>0$, $f_{7,5}<0$,
+and $f_{18,5}>0$. A blanket positivity claim at every admissible
+index would be false.
+
+\subsection{Why the finite recurrence can be verified efficiently}
+\label{gt:fast}
+
+The accelerated calculation has a short exact algebraic description.
+Define formal series
+\[
+ S(z)=\sum_{n\ge0}\frac{(-1)^n z^n}{4^n(2n+1)!},\qquad
+ C(z)=\sum_{n\ge0}\frac{(-1)^n z^n}{4^n(2n)!}.
+\]
+Since $S(0)=1$, its inverse exists over $\mathbb F_\ell$, and
+\[
+             1-\tfrac12\sum_{n\ge1}\beta_nz^n=C(z)/S(z).
+\]
+Newton iteration $U\mapsto U(2-SU)$ doubles the number of correct
+inverse coefficients. The number-theoretic transform computes each
+polynomial product exactly in the finite field; it introduces no
+roundoff error.
+
+For a fundamental column $r_u=R_{u,j}$, the recurrence is
+\[
+ d_sr_s=b_s\sum_{u<s}\beta_{s-u}r_u
+                  +\sum_{u<s}\beta_{s-u}a_ur_u.
+\]
+Both sums are causal convolutions. Divide an index interval into
+two equal halves, compute its left half, add both left-to-right
+convolutions, and then compute its right half. Induction on the
+interval length proves that every already determined coefficient
+contributes exactly once to every later equation. The transforms
+for a given interval length use the same cotangent kernel and can
+be reused across all five columns.
+
+In a cyclic transform of length $L$, the left input is supported
+in $[0,L/2)$ and the kernel in $[0,L)$. All wrapped terms land in
+$[0,L/2)$; none contaminates the right half being updated.
+This proves the validity of the shorter cyclic convolution used
+by the implementation. For a fixed half-gap $m$, the resulting
+cost is $O(mN\log^2N+Nm^3)$ field operations and $O(mN)$ stored
+field elements, using ordinary cubic elimination for the consecutive
+boundary determinants. The same method applies to any prescribed
+half-gap; it is not tied to five columns.
+
+\section{Inverse harmonic coordinates from bounded-size determinants}
+\label{gt:green-section}
+
+For this section let $m\ge1$ be arbitrary, $b>m$, and use the same
+definitions with $10$ replaced by $2m$ and $5$ by $m$.
+Thus $p=2b-2m$, $q=2b$, $F_{b,m}=(R_{b+i,j})_{i,j=1}^m$, and
+assume $f_{b,m}=\det F_{b,m}\ne0$. This assumption is now a theorem
+for every $b>5$ when $m=5$.
+
+For an integer forcing index $N>m$, define the causal Green column
+$\mathsf G_{s,N}$ by zero initial values for $1\le s\le m$ and
+\begin{equation}\label{gt:Green}
+ d_s\mathsf G_{s,N}
+ =\delta_{sN}+\sum_{u<s}\beta_{s-u}(b_s+a_u)\mathsf G_{u,N}
+                                  \qquad(s>m).
+\end{equation}
+In particular $\mathsf G_{s,N}=0$ for $s<N$ and
+$\mathsf G_{N,N}=1/d_N$. Put
+\[
+ \mathbf r_n=(R_{n,1},\ldots,R_{n,m}),\qquad
+ \mathbf g_N=(\mathsf G_{b+1,N},\ldots,
+                         \mathsf G_{b+m,N})^{\mathsf T}.
+\]
+
+\begin{theorem}[Every inverse coefficient in dimension $m+1$]
+\label{gt:inverse}
+For $0\le k,r<b$, set $n=b-k$ and $N=r+m+1$. Then
+\begin{equation}\label{gt:inverse-formula}
+ \boxed{\displaystyle
+ (M_{b,m}^{-1})_{k,r}
+ =\frac{2(-1)^{n+N}(2n)!}{(2r+1)!}\,
+ \frac{\det\begin{pmatrix}
+       F_{b,m}&\mathbf g_N\\
+       \mathbf r_n&\mathsf G_{n,N}
+                  \end{pmatrix}}{\det F_{b,m}}.}
+\end{equation}
+The determinant in the numerator has order $m+1$, independent of
+$b$. Every entry is rational and specified by a finite recurrence.
+\end{theorem}
+
+\begin{proof}
+Let $J_{m,b}$ be the coefficient matrix of the cotangent operator
+\eqref{gt:null}, with $10$ replaced by $2m$, acting on
+$\sum_{n=1}^b r_nz^{2n}$ and with output rows
+$N=m+1,\ldots,b+m$. Its equation with unit forcing at $N$ is
+the recurrence \eqref{gt:Green}, with the boundary conditions
+$r_{b+1}=\cdots=r_{b+m}=0$ imposed after truncation.
+The general full solution is
+\[
+          r_s=\mathbf r_s\mathbf c+\mathsf G_{s,N}.
+\]
+Its $m$ terminal conditions give
+$F_{b,m}\mathbf c=-\mathbf g_N$. Hence
+\[
+ (J_{m,b}^{-1})_{n-1,r}
+ =\mathsf G_{n,N}-\mathbf r_nF_{b,m}^{-1}\mathbf g_N
+ =\frac{\det\begin{pmatrix}F_{b,m}&\mathbf g_N\\
+                  \mathbf r_n&\mathsf G_{n,N}\end{pmatrix}}
+        {\det F_{b,m}}.
+\]
+
+To restore the original scales, let $K_{m,b}$ be the analogous
+hyperbolic-cotangent coefficient matrix. If $M^{\mathrm{rev}}$
+denotes column reversal, direct comparison with
+\eqref{gt:source-entry} gives
+\[
+ K_{m,b}=\operatorname{diag}_{0\le r<b}
+           \left(\frac2{(2r+1)!}\right)
+         M_{b,m}^{\mathrm{rev}}
+         \operatorname{diag}_{1\le n\le b}\bigl((2n)!\bigr).
+\]
+Since $2B_{2h}/(2h)!=(-1)^{h-1}\beta_h$ for $h\ge1$,
+its entries satisfy
+$(K_{m,b})_{r,n-1}=(-1)^{N+n}(J_{m,b})_{r,n-1}$.
+The same row and column signs therefore occur in the inverse.
+Finally the original row $k$ corresponds to the reversed index
+$n=b-k$. These factors give precisely \eqref{gt:inverse-formula}.
+\end{proof}
+
+This formula constructs each inverse row without expanding a
+$b$-square determinant. It does not remove the need to compute the
+finite Green column, and it makes no minimality claim about the
+determinant size. The independent verifier checks all $293$ entries
+of the resulting inverse matrices at $b=6,7,8,12$ directly against
+the original source matrices, and separately checks an actual
+six-by-six bordered determinant.
+
+\section{Ordinary polygamma identities at every gap of ten}
+\label{gt:identities}
+
+Let $b\ge6$, $p=2b-10$, $q=2b$, and let
+$\lambda_{b+r}=(M_{b,5}^{-1})_{0,r}$ for $0\le r<b$.
+Define
+\begin{align}
+ K_b(y)&=\sum_{j=b}^{2b-1}\lambda_jy^{2j+1},\notag\\
+ P_b(x)&=K_b(x+\tfrac12)-K_b(x-\tfrac12)
+                   =\sum_{r=0}^{q-1}w_rx^{2r}.\label{gt:P}
+\end{align}
+By Theorem~\ref{gt:inverse}, all its coefficients can be given by
+six-by-six determinants and the five-column recurrence.
+With $c_{v,h}$ from \eqref{gt:tail-expansion}, put
+\[
+ u_h=\sum_{e=0}^{h}c_{p,e}c_{q,h-e}\quad(0\le h\le5),
+ \qquad
+ S_b(x)=\sum_{h=0}^{5}
+       \left(\sum_{e=0}^{h}u_e w_{q-1-h+e}\right)x^{10-2h}.
+\]
+
+\begin{corollary}[An all-order rational family]
+\label{gt:ordinary}
+For every integer $b\ge6$,
+\begin{equation}\label{gt:ordinary-sum}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}\left\{
+ \frac{P_b(n+1/2)}{(p-1)!(q-1)!}
+   \psi^{(p-1)}(n+1)\psi^{(q-1)}(n+1)-S_b(n+1/2)
+                         \right\}=-\frac12.}
+\end{equation}
+The sum is absolutely convergent. The polynomial $P_b$ has exact
+degree $2q-2$; its leading coefficient is
+\begin{equation}\label{gt:leading}
+ [x^{2q-2}]P_b(x)=
+       \frac{4b(4b-1)f_{b-1,5}}{d_{b+5}f_{b,5}}\ne0,
+\end{equation}
+where at the initial index one uses the auxiliary recurrence value
+\begin{equation}\label{gt:auxiliary}
+ f_{5,5}=
+ \frac1{363698159177574318706747080134319581355520819200000000000}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The inverse row gives $\sum_{j=b}^{2b-1}\lambda_jC_j=Z_0=-1/2$.
+Expanding the centered difference in \eqref{gt:P} and using
+\eqref{gt:C} gives $\sum_rw_rD_r=-1/2$.
+By \eqref{gt:tail-expansion}, the nonnegative powers in
+$P_b(x_n)A_p(n)A_q(n)$ are exactly $S_b(x_n)$, and the remaining
+summand is $O(x_n^{-2})$. The continued sums of the subtraction
+monomials vanish because $\zeta(-2h,1/2)=0$ for every $h\ge0$.
+Equivalently, near spectral parameter zero, subtracting this finite
+polynomial gives a normally convergent Dirichlet series and leaves
+only those Hurwitz-zeta terms. Its value at zero is the ordinary
+sum of the subtracted terms. Finally
+$A_v(n)=\psi^{(v-1)}(n+1)/(v-1)!$ for positive even $v$.
+
+For $b\ge7$, delete the last row and first column of $M_{b,5}$.
+Reindexing the two orders down by two and the two source indices
+down by one identifies the minor exactly with $M_{b-1,5}$,
+including the omitted-binomial convention. Cramer's rule and
+\eqref{gt:bridge} give
+\[
+ \lambda_{2b-1}=(-1)^{b-1}\frac{\det M_{b-1,5}}{\det M_{b,5}}
+               =\frac{4b f_{b-1,5}}{d_{b+5}f_{b,5}}.
+\]
+The centered difference multiplies this highest coefficient by
+$4b-1$, proving \eqref{gt:leading}. At $b=6$ direct rational
+recurrence gives \eqref{gt:auxiliary}, and the original matrix
+gives $\lambda_{11}=132/127$, verifying the same formula without
+introducing a zero-order tail. Nonvanishing follows from
+Theorem~\ref{gt:main} and the explicit auxiliary value.
+\end{proof}
+
+\subsection[The newly covered pair (14,24)]{The newly covered pair $(14,24)$}
+
+Take $b=12$, so $p=14$ and $q=24$. Formula \eqref{gt:ordinary-sum}
+is then the explicit ordinary identity
+\[
+ \sum_{n\ge0}\left\{
+ \frac{P_{12}(n+1/2)}{13!\,23!}
+ \psi^{(13)}(n+1)\psi^{(23)}(n+1)-S_{12}(n+1/2)
+                         \right\}=-\frac12,
+\]
+with $\deg P_{12}=46$ and $\deg S_{12}=10$. Its leading coefficients are
+\begin{align*}
+ [x^{46}]P_{12}(x)
+ &=\frac{196667260793027525874874688960}
+          {14009065684434488629739697248281},\\
+ [x^{10}]S_{12}(x)
+ &=\frac{196667260793027525874874688960}
+          {4188710639645912100292169477236019}.
+\end{align*}
+The second denominator is $13\cdot23$ times the first.
+The file \texttt{gap\_ten\_14\_24\_example.json} contains all $24$
+even coefficients of $P_{12}$, all six coefficients of $S_{12}$,
+and the twelve coefficients of $K_{12}$ as exact rationals.
+The formula \eqref{gt:inverse-formula} is an alternative finite
+specification of the same coefficients. The generator checks the
+inverse against the original Bernoulli matrix and the entire
+subtraction polynomial symbolically. This pair lies beyond the
+previous smaller-order-through-twelve coverage.
+
+More generally, replace row zero by row $k$ of the inverse in
+\eqref{gt:P}. The identical construction, with the same degree
+bound and subtraction rule, gives the right-hand side
+$\zeta(2k)$ for every $0\le k<b$. Thus the completed reconstruction
+theorem gives a family of ordinary convergent polygamma-product
+representations for every even zeta coordinate in the source block.
+
