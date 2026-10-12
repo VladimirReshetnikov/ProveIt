@@ -3100,7 +3100,13 @@ This section and the next consist of relatively routine generalizations of the r
 
 We begin with a result which, in both its statement and its proof, is very similar to Proposition 12.1, but which seems to be hard to unify with that result. Recall that if $f: \mathbb{Z}_{N}^{2} \rightarrow \mathbb{C}$, then $f_{h}(y)$ is defined as $\sum_{x} f(x+$ $h, y) \overline{f(x, y)}$.
 
-Proposition 14.1. For each $h \in \mathbb{Z}_{N}$ let $\lambda_{h} \geqslant 0$. Let $f^{(1)}, \ldots, f^{(p)}$ be functions from $\mathbb{Z}_{N}^{2}$ to the closed unit disc $D$ and let $\sigma_{1}, \ldots, \sigma_{p}$ be functions from $\mathbb{Z}_{N}$ to $\mathbb{Z}_{N}$ such that
+\emph{Editorial note on the sign convention (2026-10-12).}
+The parameter $\alpha$ must be nonnegative. Without this convention,
+$N=2$, $p=1$, zero weights and zero functions, and $\alpha=-1$ satisfy
+the hypothesis but contradict the positive conclusion. Lean verifies this
+counterexample to the unrestricted-sign formulation.
+
+Proposition 14.1. Let $\alpha\geqslant0$. For each $h \in \mathbb{Z}_{N}$ let $\lambda_{h} \geqslant 0$. Let $f^{(1)}, \ldots, f^{(p)}$ be functions from $\mathbb{Z}_{N}^{2}$ to the closed unit disc $D$ and let $\sigma_{1}, \ldots, \sigma_{p}$ be functions from $\mathbb{Z}_{N}$ to $\mathbb{Z}_{N}$ such that
 
 $$
 \sum_{h} \lambda_{h} \prod_{i=1}^{p}\left|\hat{f}_{h}^{(i)}\left(\sigma_{i}(h)\right)\right|^{2} \geqslant \alpha N^{4 p+1}
@@ -3173,6 +3179,15 @@ f_{h}(y)=\sum_{x \in \mathbb{Z}_{N}^{k}} \prod_{\epsilon \in\{0,1\}^{k}} C^{|\ep
 $$
 
 where once again $C$ stands for complex conjugation and $|\epsilon|=\sum \epsilon_{i}$. For example when $k=1$ we have $f_{h}(y)=\sum_{x} f(x+h, y) \overline{f(x, y)}$, as before. (We have taken $C^{|\epsilon|+k}$ rather than the simpler $C^{|\epsilon|}$ in the definition merely to make it consistent with the earlier one.)
+
+\emph{Editorial note on the following proof (2026-10-12).}
+The identity that moves the sum of slices inside a quadratic correlation
+is invalid: for the constant-one function with $N=3$ and $k=2$, the
+summed slice is constant three, its correlation is $27$, and the required
+cube correlation is $9$. Lean verifies these values. The statement of
+Lemma 14.3 is proved by keeping the slices separate, averaging products
+of squared Fourier magnitudes, and then applying Cauchy--Schwarz and
+Proposition 14.1.
 
 Lemma 14.3. Let $f: \mathbb{Z}_{N}^{k+1} \rightarrow D$, let $B \subset \mathbb{Z}_{N}^{k}$ and let $\phi: B \rightarrow \mathbb{Z}_{N}$ be such that $\left|\hat{f}_{z}(\phi(z))\right| \geqslant \gamma N^{k+1}$ for every $z \in B$. Then $\phi$ has the product property with parameter $\gamma$.\\
 Proof. For any $y=\left(y_{1}, \ldots, y_{k-1}\right) \in \mathbb{Z}_{N}^{k-1}$ we can define a function $g_{y}$ : $\mathbb{Z}_{N}^{2} \rightarrow \mathbb{C}$ by the formula
@@ -3320,7 +3335,14 @@ Lemma 14.8. Let $k\geqslant1$, let $0<\beta,\gamma\leqslant1$, let $B \subset \m
 \section*{15 Increasing the Density of Respected Arrangements}
 We shall now use an argument similar to those of §9 and §12 to pass to a subset of $B$ where $\phi$ respects almost all 8-arrangements. (We shall actually prove our results for general $d$-arrangements and then take $d$ to be 8 later.) In order to do this, we shall need a brief discussion of a small number of degenerate cases where a later argument does not work. Just for the next lemma it will be convenient to consider sequences in $\{-1,1\}^{k}$ rather than $\{0,1\}^{k}$.
 
-Lemma 15.1. Let $h_{1}, \ldots, h_{k}$ be non-zero elements of $\mathbb{Z}_{N}$, and let $\eta$ : $\{-1,1\}^{k} \rightarrow\{-1,0,1\}$ be a function such that the sum
+\emph{Editorial note on characteristic two (2026-10-12).}
+The sign-pattern indexed formulation needs odd characteristic. For $N=2$
+and $k=2$, take $h_1=h_2=1$ and let $\eta(\epsilon)$ be one when the
+first sign label is $-1$ and zero otherwise. All signed moments vanish,
+but $\eta$ is not a modular multiple of the sign product, which is
+constant in characteristic two. Lean proves this counterexample.
+
+Lemma 15.1. Suppose that $N$ is odd. Let $h_{1}, \ldots, h_{k}$ be non-zero elements of $\mathbb{Z}_{N}$, and let $\eta$ : $\{-1,1\}^{k} \rightarrow\{-1,0,1\}$ be a function such that the sum
 
 $$
 \sum_{\epsilon \in\{-1,1\}^{k}} \eta(\epsilon) \prod_{i \in A}\left(y_{i}+\epsilon_{i} h_{i}\right)
@@ -3363,6 +3385,12 @@ where the last equality follows from the inductive hypothesis. Since the $h_{i}$
 
 If we now make the substitution $y_{i}^{\prime}=y_{i}-h_{i}$ and $h_{i}^{\prime}=2 h_{i}$, and then remove the dashes, we obtain the result for functions on $\{0,1\}^{k}$, which is what we actually want.
 
+\emph{Editorial note on the Boolean version (2026-10-12).}
+Corollary 15.2 holds over every prime, including two. A direct Lean proof
+requires only invariance of the full moment $A=\{1,\ldots,k\}$ and allows
+arbitrary integer coefficients $\eta$, with the conclusion interpreted
+modulo $N$. It does not require the odd-characteristic signed lemma.
+
 Corollary 15.2. Let $h_{1}, \ldots, h_{k}$ be non-zero elements of $\mathbb{Z}_{N}$, and let $\eta:\{0,1\}^{k} \rightarrow\{-1,0,1\}$ be a function such that the sum
 
 $$
@@ -3391,6 +3419,11 @@ If we can find two different elements $r, s$ of $\mathbb{Z}_{N}$ such that the $
 Otherwise, with the exception of at most one $r$, the function $\mu\left(y_{1}, \ldots, y_{k-1}, r\right)$ is not constant. This allows us to apply our inductive hypothesis to conclude that the number of solutions of $\mu\left(y_{1}, \ldots, y_{k}\right)=a$ is at most $N^{k-1}+(N-1)\left(N^{k-1}-(N-1)^{k-1}\right)=N^{k}-(N-1)^{k}$. \(\square\)
 
 The estimate above is sharp, since it gives the exact number of solutions of the equation $y_{1} \ldots y_{k}=0$.
+
+\emph{Editorial note on the prime range (2026-10-12).}
+For positive $k,d$, the following bound holds over every prime. At $N=2$
+the displayed bound already dominates the entire arrangement parameter
+space; Lean checks this case separately from the odd-prime proof.
 
 Lemma 15.4. The number of degenerate $d$-arrangements in $\mathbb{Z}_{N}^{k+1}$ is at most $3^{2 d \cdot 2^{k}} k N^{(2 d+1) k+2 d-2}$.
 
@@ -3566,9 +3599,14 @@ For any $h_{1}, \ldots, h_{k}, x$, let $X_{h_{1}, \ldots, h_{k}}(x)$ be the set 
 We shall write $\theta_{1}$ for the number $(\theta \gamma / 4)^{2^{2^{k+5}}}$ that appeared in the last lemma. Recall that the Bohr neighbourhood $B(K, \zeta)$ is defined to be the set of all $s \in \mathbb{Z}_{N}$ such that $|r s| \leqslant \zeta N$ for every $r \in K$. Given a function $\phi$\\
 defined on a domain $(Z, r)$ and a subset $B \subset \mathbb{Z}_{N}$ with $B=-B$, we shall say that $\phi$ is a $B$-homomorphism if there is a Freiman homomorphism $\psi: B \rightarrow$ $\mathbb{Z}_{N}$ such that $\phi(x)-\phi(y)=\psi(r(x)-r(y))$ whenever $r(x)-r(y) \in B$. (This generalizes to multifunctions the definition given just after Corollary 7.9.) Thus, the conclusion of Theorem 10.13 is that $\phi$ restricted to $Y$ is a $C$ -homomorphism.
 
-% ed.: Propagating the corrected $\alpha^6/20000$ conclusion of
-% Theorem 10.13 gives the safe bound $2^{-27}\theta_1^6|X_h|$.
-Lemma 16.5. Let $(B, \phi)$ be a pair satisfying conditions (i), (ii) and (iii) of Lemma 16.4 and let $f$ be the characteristic function of $B$. Then there exists a set $H \subset \mathbb{Z}_{N}^{k}$ such that $\sum_{h \in H} C(h) \geqslant\left(\theta_{1} / 4\right) N^{17 k+15}$ with the following property. For every $h \in H$ there is a set $Y_{h} \subset X_{h}$ of cardinality at least $2^{-27} \theta_{1}^{6}\left|X_{h}\right|$ such that the restriction of $\phi$ to $Y_{h}$ is a $B\left(K_{h}, \zeta\right)$ -homomorphism, where
+\emph{Editorial note on the restored coefficient (2026-10-12).}
+Lean recovers the printed coefficient $2^{-22}$ using the strengthened
+$\alpha^5/20000$ version of Theorem 10.13. Indeed, $\theta_1\leqslant1/9$
+and $(\theta_1/4)^5/20000\geqslant2^{-22}\theta_1^6$.
+This retains the corrected definition of $\theta_1$ from Lemma 16.4;
+it does not establish that lemma's stronger original arrangement count.
+
+Lemma 16.5. Let $(B, \phi)$ be a pair satisfying conditions (i), (ii) and (iii) of Lemma 16.4 and let $f$ be the characteristic function of $B$. Then there exists a set $H \subset \mathbb{Z}_{N}^{k}$ such that $\sum_{h \in H} C(h) \geqslant\left(\theta_{1} / 4\right) N^{17 k+15}$ with the following property. For every $h \in H$ there is a set $Y_{h} \subset X_{h}$ of cardinality at least $2^{-22} \theta_{1}^{6}\left|X_{h}\right|$ such that the restriction of $\phi$ to $Y_{h}$ is a $B\left(K_{h}, \zeta\right)$ -homomorphism, where
 
 $$
 K_{h}=\left\{r \in \mathbb{Z}_{N}:\left|\hat{f}_{h}(r)\right| \geqslant 2^{-37}\left(\theta_{1} / 4\right)^{11 / 2} N^{k+1}\right\}
@@ -3589,7 +3627,7 @@ $$
 
 Let $H$ be the set of all $h \in \mathbb{Z}_{N}^{k}$ such that $G(h) \geqslant(1-2 \eta) C(h)$ and $C(h) \geqslant$ $\left(\theta_{1} / 4\right) N^{16 k+15}$, and note that our estimate for $\sum_{h \in H} C(h)$ implies that $H$ has cardinality at least $\theta_{1} N^{k} / 4$.
 
-The statement that $G(h) \geqslant(1-2 \eta) C(h)$ is equivalent to the statement that the function induced by $\phi$ on $X_{h}$ is a $(1-2 \eta)$-homomorphism of order eight. We know that $X_{h}(y)$ has cardinality at most $N^{k}$ for each $y$, and it is not hard to show that if $C(h) \geqslant\left(\theta_{1} / 4\right) N^{16 k+15}$ then the cardinality of $X_{h}$ is at least $\theta_{1} N^{k+1} / 4$. Therefore, for every $h \in H$ we may apply Theorem 10.13 (with $\alpha=\theta_{1} / 4$ and $g=f_{h}$ ) and find a subset $Y_{h} \subset X_{h}$ of cardinality at least $2^{-27} \theta_{1}^{6}\left|X_{h}\right|$ such that the restriction of $\phi$ to $Y_{h}$ is a $B\left(K_{h}, \zeta\right)$ -homomorphism, where $\zeta$ is determined (as a function of $\theta$ ) by the equations $\theta_{1}=(\theta \gamma / 4)^{2^{2^{k+5}}}, \alpha=\theta_{1} / 4, k_{0}=2^{74} \alpha^{-10}$ and $\zeta=2^{-155 k_{0}} \alpha^{18 k_{0}} / k_{0}$. It can be checked that the resulting number $\zeta$ exceeds $2^{-s(\theta, \gamma, k)}$. \(\square\)
+The statement that $G(h) \geqslant(1-2 \eta) C(h)$ is equivalent to the statement that the function induced by $\phi$ on $X_{h}$ is a $(1-2 \eta)$-homomorphism of order eight. We know that $X_{h}(y)$ has cardinality at most $N^{k}$ for each $y$, and it is not hard to show that if $C(h) \geqslant\left(\theta_{1} / 4\right) N^{16 k+15}$ then the cardinality of $X_{h}$ is at least $\theta_{1} N^{k+1} / 4$. Therefore, for every $h \in H$ we may apply Theorem 10.13 (with $\alpha=\theta_{1} / 4$ and $g=f_{h}$ ) and find a subset $Y_{h} \subset X_{h}$ of cardinality at least $2^{-22} \theta_{1}^{6}\left|X_{h}\right|$ such that the restriction of $\phi$ to $Y_{h}$ is a $B\left(K_{h}, \zeta\right)$ -homomorphism, where $\zeta$ is determined (as a function of $\theta$ ) by the equations $\theta_{1}=(\theta \gamma / 4)^{2^{2^{k+5}}}, \alpha=\theta_{1} / 4, k_{0}=2^{74} \alpha^{-10}$ and $\zeta=2^{-155 k_{0}} \alpha^{18 k_{0}} / k_{0}$. It can be checked that the resulting number $\zeta$ exceeds $2^{-s(\theta, \gamma, k)}$. \(\square\)
 
 From the definition of a $B\left(K_{h}, \zeta\right)$-homomorphism, we know in particular that, for any $x \in \mathbb{Z}_{N}$ and any $h \in H$, the restriction of $\phi$ to $Y_{h}(x)$ is\\
 constant. Let us write $\phi^{\prime}(h, x)$ for this value, when it is defined. Corollary 10.14 tells us that if $d \in B\left(K_{h}, \zeta / l\right)$ then the restriction of $\phi^{\prime}(h,\mathord\cdot)$ to any arithmetic progression with common difference $d$ and length at most $l$ is linear. This fact will be used in the next lemma. We shall also adopt the convention that if a box in $\mathbb{Z}_{N}^{k+1}$ is written as a Cartesian product $A \times B$, then $A$ and $B$ are boxes in $\mathbb{Z}_{N}^{k}$ and $\mathbb{Z}_{N}$ respectively.
@@ -3784,6 +3822,15 @@ Of course, if we have only a small piece of bilinearity to work with, the argume
 
 % ed.: The left side was printed as the undefined $\phi$; the proof also
 % divides by $k!$, so (for prime $N$) it requires $k<N$.
+\emph{Editorial note on the characteristic restriction (2026-10-12).}
+The literal unrestricted prime-modulus formulation fails at $N=k=2$.
+The function $\sigma(x_1,x_2)=x_1x_2$ has mixed second difference one,
+whereas every proposed signed sum of one-variable functions has mixed
+second difference zero over $\mathbb F_2$. Lean proves this obstruction
+even without imposing a degree bound on those functions. For prime $N$
+and $k<N$, Lean also derives the invertibility of $k!$, so no separate
+factorial-invertibility assumption is needed in the corrected statement.
+
 Lemma 17.1. Suppose that $k<N$. Let $\sigma$ be any $k$-linear function (over $\mathbb{Z}_{N}$ ) in variables $x_{1}, \ldots, x_{k}$. Then there are polynomials $\phi_{\epsilon}\left(\epsilon \in\{0,1\}^{k}\right)$ of degree at most $k$ giving the identity
 
 $$

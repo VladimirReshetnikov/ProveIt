@@ -6425,6 +6425,51 @@ Fourier coefficients instead of asserting that false identity.
 The goal remains active. The full refresh and facade, the20 unreviewed
 statements and all original-bound/scope obligations remain outstanding.
 
+### L.43 All-prime moments, characteristic obstructions and restored mass (2026-10-12)
+
+The direct `WalshScopeCoreAudit` passes 56 native modules with only
+`propext`, `Classical.choice` and `Quot.sound`. Its seven positive theorems
+and five refutation theorems are recorded with exact input hashes in
+`verification/2026-10-12-walsh-scope.json`.
+
+The Boolean version of Corollary 15.2 holds over every prime, even two,
+for arbitrary integer coefficients; invariance of the full moment alone
+suffices. The sign-pattern version of Lemma 15.1 instead has a native
+characteristic-two counterexample. Lemma 15.4 extends to every prime:
+at two, its coefficient dominates the whole parameter space. Lemma 14.7
+extends to all real lower-bound parameters.
+
+The stronger alpha^5/20000 extraction recovers the original Lemma 16.5
+coefficient 2^-22 in place of 2^-27. This keeps the corrected theta1 from
+Lemma 16.4 and does not discharge the stronger original arrangement count.
+The paper now states this distinction beside the restored coefficient.
+
+Lemma 17.1 has a separate native obstruction at N=k=2: the monomial
+x0*x1 has mixed second difference one, whereas every proposed signed sum
+of one-variable phases has mixed second difference zero. The obstruction
+even allows arbitrary phase functions. In the corrected prime ranges,
+Lemma 17.1 and Proposition 17.2 now derive factorial invertibility rather
+than requiring it as an extra premise. Proposition 17.2's original degree
+bound remains open.
+
+Two further native examples clarify the source proof: negative alpha
+refutes the unrestricted sign reading of Proposition 14.1, and the
+summed-slice correlation step in Lemma 14.3 gives 27 rather than 9 for
+the constant-one example at N=3,k=2. The numbered Lemma 14.3 itself remains
+proved by the frozen-slice argument.
+
+All 120 numbered statements have now been compared with the source.
+This is an inspection milestone, not proof completion. The per-statement
+ledger retains original-bound, range and geometry obligations, including
+the distinction between the corrected Corollary 16.11 exponent and its
+original numerical exponent with ordinary integer geometry.
+
+The prior broad `PurifiedContextFidelityAudit` passed all 1,652 modules.
+After merging origin/main, the expanded combined audit and the exported
+facade are separate checks; the direct 56-module result does not certify
+either one. The annotated PDF was rebuilt twice; pages 86,93,101,109 were
+visually inspected, and the original published PDF is untouched.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

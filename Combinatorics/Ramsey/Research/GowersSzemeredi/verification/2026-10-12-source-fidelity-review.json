@@ -2,7 +2,7 @@
   "date": "2026-10-12",
   "scope": "Incremental statement-level comparison of actual hypotheses, numerical bounds and geometric meaning. This is separate from the120-companion kernel audit and does not claim completion of unreviewed entries. Current annotated source and original stronger claims are distinguished.",
   "paper": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
-  "paper_sha256": "1fcd9b08223924626bfae7d0c73044ee8226b14f5978a9439c5908e96ec6799d",
+  "paper_sha256": "7edba4e1ceb879d6ca4d9474fe4804529a5aaab092f8b772664aa2ebe4677083",
   "reviewed_sections01_03_sha256": "d7926af871dbe1323494485a38310b78721b436601eef937dbe41b3dd3782589",
   "statement_count": 120,
   "reviewed_statement_count": 120,
@@ -350,8 +350,7 @@
     {
       "statement": "lemma_3_8",
       "source_heading_lines": [
-        575,
-        619
+        575
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections01_03.lean",
       "encoded_line": 326,
@@ -468,8 +467,7 @@
     {
       "statement": "lemma_5_4",
       "source_heading_lines": [
-        802,
-        818
+        802
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section05.lean",
       "encoded_line": 175,
@@ -830,8 +828,7 @@
     {
       "statement": "corollary_7_6",
       "source_heading_lines": [
-        1392,
-        2786
+        1392
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections06_07.lean",
       "encoded_line": 197,
@@ -1009,8 +1006,7 @@
     {
       "statement": "lemma_9_1",
       "source_heading_lines": [
-        1703,
-        1745
+        1703
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections08_09.lean",
       "encoded_line": 61,
@@ -1193,8 +1189,7 @@
     {
       "statement": "lemma_10_6",
       "source_heading_lines": [
-        2080,
-        2140
+        2080
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section10.lean",
       "encoded_line": 294,
@@ -1214,8 +1209,7 @@
     {
       "statement": "lemma_10_7",
       "source_heading_lines": [
-        2134,
-        2259
+        2134
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section10.lean",
       "encoded_line": 310,
@@ -1437,8 +1431,7 @@
     {
       "statement": "lemma_12_4",
       "source_heading_lines": [
-        2592,
-        2614
+        2592
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean",
       "encoded_line": 158,
@@ -1520,8 +1513,7 @@
     {
       "statement": "corollary_13_2",
       "source_heading_lines": [
-        2762,
-        2784
+        2762
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean",
       "encoded_line": 274,
@@ -1751,7 +1743,8 @@
     {
       "statement": "proposition_14_1",
       "source_heading_lines": [
-        3103
+        3109,
+        3190
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 85,
@@ -1762,16 +1755,17 @@
           "line": 959
         }
       ],
-      "status": "matched_nonnegative_sign_scope",
+      "status": "nonnegative_sign_verified_unrestricted_sign_refuted",
       "native_audited_companion": "proposition_14_1_holds",
-      "evidence": "The first-coordinate correlations, weighted product of squared Fourier norms, alpha*N^(4*p+1) premise and alpha^4*N^3 simultaneous energy conclusion match. Lean includes alpha=0. The unrestricted negative sign reading has a prime-two zero-weight counterexample prepared for kernel checking.",
+      "evidence": "The source now explicitly requires alpha>=0. The canonical weighted energy implication matches this range. proposition_14_1_negative_alpha_counterexample refutes the unrestricted-sign reading at primeN=2 with zero weights/functions and alpha=-1.",
       "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
-      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean"
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
+      "additional_native_audit": "Combinatorics/Ramsey/Research/GowersSzemeredi/verification/2026-10-12-walsh-scope.json"
     },
     {
       "statement": "lemma_14_2",
       "source_heading_lines": [
-        3166
+        3172
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 100,
@@ -1791,7 +1785,7 @@
     {
       "statement": "lemma_14_3",
       "source_heading_lines": [
-        3177
+        3192
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 110,
@@ -1802,16 +1796,17 @@
           "line": 496
         }
       ],
-      "status": "matched_positive_parameter_statement_proof_identity_open",
+      "status": "statement_verified_source_proof_identity_refuted",
       "native_audited_companion": "lemma_14_3_holds",
-      "evidence": "The cube-correlation sum and conjugation parity match C^(|epsilon|+k), and the coefficient cutoff is gamma*N^(k+1). The native proof uses frozen slices and an average of squared coefficients. The source equation (g_y)_h=f_(y,h), with g_y a sum of slices, introduces cross terms and is false already for constant f=1,N=3,k=2 (27 versus9). A separate native counterexample to this proof step is awaiting its check; the numbered positive statement remains proved.",
+      "evidence": "The numbered product-property statement remains proved. summed_slice_correlation_counterexample verifies the failure of the source summed-slice identity: constant-one input atN=3,k=2 gives27 versus9. The visible editorial note distinguishes this proof-step refutation from the valid numbered statement and describes the frozen-slice averaging proof.",
       "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
-      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean"
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
+      "additional_native_audit": "Combinatorics/Ramsey/Research/GowersSzemeredi/verification/2026-10-12-walsh-scope.json"
     },
     {
       "statement": "lemma_14_4",
       "source_heading_lines": [
-        3220
+        3235
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 242,
@@ -1831,7 +1826,7 @@
     {
       "statement": "corollary_14_5",
       "source_heading_lines": [
-        3237
+        3252
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 253,
@@ -1851,7 +1846,7 @@
     {
       "statement": "corollary_14_6",
       "source_heading_lines": [
-        3265
+        3280
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 266,
@@ -1871,7 +1866,7 @@
     {
       "statement": "lemma_14_7",
       "source_heading_lines": [
-        3300
+        3315
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 279,
@@ -1882,16 +1877,17 @@
           "line": 712
         }
       ],
-      "status": "matched_positive_theta_companion_unrestricted_endpoint_pending",
+      "status": "all_real_lower_bound_parameters_verified",
       "native_audited_companion": "lemma_14_7_holds",
-      "evidence": "The respected two-arrangement premise theta*N^(5*k+3) yields theta^7*N^(17*k+15) eight-arrangements, with all common sides, endpoint containment, additive cross-sections and alternating image relations. The catalogue assumes theta>0. A prepared companion covers every real theta using the nonpositive conclusion for theta<=0; its kernel check is queued.",
+      "evidence": "lemma_14_7_all_real_parameters_holds proves the same theta^7*N^(17k+15) lower bound from the theta*N^(5k+3) hypothesis for all real theta. The theta<=0 branch follows from a nonpositive lower bound against a nonnegative count.",
       "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
-      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean"
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
+      "additional_native_audit": "Combinatorics/Ramsey/Research/GowersSzemeredi/verification/2026-10-12-walsh-scope.json"
     },
     {
       "statement": "lemma_14_8",
       "source_heading_lines": [
-        3318
+        3333
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 292,
@@ -1911,7 +1907,7 @@
     {
       "statement": "lemma_15_1",
       "source_heading_lines": [
-        3323
+        3345
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 372,
@@ -1922,16 +1918,17 @@
           "line": 18
         }
       ],
-      "status": "matched_odd_prime_correction_even_prime_refutation_pending",
+      "status": "odd_prime_statement_verified_characteristic_two_refuted",
       "native_audited_companion": "lemma_15_1_holds",
-      "evidence": "The signed Walsh moments, nonzero sides, ternary labels and modular scalar-multiple conclusion agree. Lean makes odd primality explicit. With separately indexed sign patterns at N=2,k=2,h_i=1, eta is1 on the two patterns whose first sign is negative and0 otherwise; all moments vanish but eta is not a constant, while the full Walsh character is constant modulo2. The prepared native refutation is awaiting its check.",
+      "evidence": "The signed-pattern theorem requires odd characteristic. lemma_15_1_even_prime_counterexample usesN=2,k=2,h_i=1 and eta determined by the first abstract sign label: all moments vanish but eta is not a modular multiple of the sign product. The paper now states the oddness condition and explains exactly the indexed formulation refuted.",
       "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
-      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean"
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
+      "additional_native_audit": "Combinatorics/Ramsey/Research/GowersSzemeredi/verification/2026-10-12-walsh-scope.json"
     },
     {
       "statement": "corollary_15_2",
       "source_heading_lines": [
-        3366
+        3394
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 382,
@@ -1947,16 +1944,17 @@
           "line": 314
         }
       ],
-      "status": "odd_prime_companion_all_prime_recovery_pending",
+      "status": "all_prime_full_moment_strengthening_verified",
       "native_audited_companion": "corollary_15_2_holds",
-      "evidence": "The Boolean moments and modular parity-multiple conclusion match, but the catalogue inherits oddness from its half-side proof. A direct proof is prepared over every prime, including2, using only the full moment and arbitrary integer coefficients. Its two-vertex isolation factors are plus or minus h_i rather than2*h_i, so division by2 is unnecessary. This generalization awaits its kernel check.",
+      "evidence": "corollary_15_2_all_primes_holds recovers every prime, including2. booleanWalsh_multiple_of_full_moment_all_primes strengthens the result to arbitrary integer coefficients and invariance of only A=univ, with nonzero side lengths and the modular parity-multiple conclusion.",
       "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
-      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean"
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
+      "additional_native_audit": "Combinatorics/Ramsey/Research/GowersSzemeredi/verification/2026-10-12-walsh-scope.json"
     },
     {
       "statement": "lemma_15_3",
       "source_heading_lines": [
-        3381
+        3409
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 392,
@@ -1976,7 +1974,7 @@
     {
       "statement": "lemma_15_4",
       "source_heading_lines": [
-        3395
+        3428
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 402,
@@ -1987,16 +1985,17 @@
           "line": 1131
         }
       ],
-      "status": "matched_odd_prime_companion_all_prime_recovery_pending",
+      "status": "all_prime_count_bound_verified",
       "native_audited_companion": "lemma_15_4_holds",
-      "evidence": "The ternary degeneracy definition tests every coordinate monomial against the distinguished arrangement parity relation. The odd-prime bound3^(2*d*2^k)*k*N^((2*d+1)*k+2*d-2) matches for positive k,d. A prepared all-prime extension handles N=2 by bounding the entire parameter space; the coefficient already dominates it. That extension awaits kernel checking.",
+      "evidence": "lemma_15_4_all_primes_holds gives the printed3^(2*d*2^k)*k*N^((2*d+1)*k+2*d-2) bound for all primes and positive k,d. AtN=2 the bound dominates the entire parameter space; odd primes use the existing degeneracy proof.",
       "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
-      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean"
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
+      "additional_native_audit": "Combinatorics/Ramsey/Research/GowersSzemeredi/verification/2026-10-12-walsh-scope.json"
     },
     {
       "statement": "lemma_15_5",
       "source_heading_lines": [
-        3420
+        3453
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 414,
@@ -2016,7 +2015,7 @@
     {
       "statement": "lemma_15_6",
       "source_heading_lines": [
-        3495
+        3528
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 435,
@@ -2036,7 +2035,7 @@
     {
       "statement": "lemma_16_1",
       "source_heading_lines": [
-        3506
+        3539
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 96,
@@ -2056,7 +2055,7 @@
     {
       "statement": "theorem_16_2",
       "source_heading_lines": [
-        3536
+        3569
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 142,
@@ -2081,7 +2080,7 @@
     {
       "statement": "lemma_16_3",
       "source_heading_lines": [
-        3540
+        3573
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 146,
@@ -2101,7 +2100,7 @@
     {
       "statement": "lemma_16_4",
       "source_heading_lines": [
-        3548
+        3581
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 304,
@@ -2121,7 +2120,7 @@
     {
       "statement": "lemma_16_5",
       "source_heading_lines": [
-        3571
+        3609
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 324,
@@ -2132,16 +2131,17 @@
           "line": 96
         }
       ],
-      "status": "corrected_mass_verified_original_coefficient_recovery_pending",
+      "status": "original_coefficient_verified_in_corrected_context",
       "native_audited_companion": "lemma_16_5_holds",
-      "evidence": "The canonical coefficient is2^-27*theta1^6, whereas the published PDF prints2^-22*theta1^6. The weighted sidelength mass theta1/4*N^(17k+15), large-spectrum threshold2^-37*(theta1/4)^(11/2)*N^(k+1), and radius2^-s match the current annotated context. Proofs16PrintedSelectedMass prepares recovery of2^-22 using the already proved alpha^5/20000 version of Theorem10.13 and theta1<=1/9; it awaits native checking. This retains the corrected theta1=(theta*gamma/4)^E and does not resolve the original stronger Lemma16.4 density.",
+      "evidence": "lemma_16_5_printed_mass_holds restores2^-22*theta1^6, replacing the previous safe2^-27 coefficient, via alpha^5/20000 extraction and theta1<=1/9. The spectrum, radius and weighted sidelength conclusions are retained. The paper restores the coefficient and explicitly retains corrected theta1=(theta*gamma/4)^E; the original stronger Lemma16.4 context remains unresolved.",
       "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
-      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean"
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
+      "additional_native_audit": "Combinatorics/Ramsey/Research/GowersSzemeredi/verification/2026-10-12-walsh-scope.json"
     },
     {
       "statement": "lemma_16_6",
       "source_heading_lines": [
-        3603
+        3641
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 443,
@@ -2161,7 +2161,7 @@
     {
       "statement": "lemma_16_7",
       "source_heading_lines": [
-        3611
+        3649
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 510,
@@ -2181,7 +2181,7 @@
     {
       "statement": "lemma_16_8",
       "source_heading_lines": [
-        3623
+        3661
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 575,
@@ -2201,7 +2201,7 @@
     {
       "statement": "lemma_16_9",
       "source_heading_lines": [
-        3635
+        3673
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 749,
@@ -2221,7 +2221,7 @@
     {
       "statement": "lemma_16_10",
       "source_heading_lines": [
-        3699
+        3737
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 912,
@@ -2241,7 +2241,7 @@
     {
       "statement": "corollary_16_11",
       "source_heading_lines": [
-        3740
+        3778
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 976,
@@ -2261,7 +2261,7 @@
     {
       "statement": "lemma_17_1",
       "source_heading_lines": [
-        3787
+        3834
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 38,
@@ -2272,16 +2272,17 @@
           "line": 374
         }
       ],
-      "status": "corrected_characteristic_range_verified_original_range_open",
+      "status": "corrected_prime_range_verified_unrestricted_range_refuted",
       "native_audited_companion": "lemma_17_1_holds",
-      "evidence": "The signed-cube representation and degree<=k match after correcting the undefined source left side to sigma. The annotated statement requires k<N; the companion also assumes factorial k is a unit, which follows for primes in this range but currently remains an explicit redundant input. The native proof only uses that unit input. The original unrestricted characteristic range is not established by the corrected theorem; no native counterexample was located in this review.",
+      "evidence": "lemma_17_1_prime_range derives factorial invertibility from primality and k<N. lemma_17_1_characteristic_two_counterexample refutes the literal formulation without the characteristic bound atN=k=2. The stronger obstruction excludes even arbitrary one-variable phase functions for sigma(x)=x0*x1. A visible note explains the mixed-second-difference contradiction.",
       "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
-      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean"
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
+      "additional_native_audit": "Combinatorics/Ramsey/Research/GowersSzemeredi/verification/2026-10-12-walsh-scope.json"
     },
     {
       "statement": "proposition_17_2",
       "source_heading_lines": [
-        3803
+        3850
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 48,
@@ -2292,16 +2293,17 @@
           "line": 373
         }
       ],
-      "status": "corrected_degree_and_characteristic_verified_original_degree_open",
+      "status": "corrected_prime_range_verified_original_degree_open",
       "native_audited_companion": "proposition_17_2_holds",
-      "evidence": "The original published PDF prints degree<=k. The annotated statement and exact companion give degree<=k+1, as required by polarization of x_(k+1)*sigma(x), and assume k+1<N plus factorial invertibility. The Fourier-energy and phase-twist conclusions otherwise agree. The stronger original degree claim and unrestricted characteristic scope are not proved or refuted by this companion.",
+      "evidence": "proposition_17_2_prime_range proves the corrected degree<=k+1 conclusion for primeN with k+1<N, deriving the factorial-unit premise. The original published degree<=k and unrestricted characteristic range remain unproved/refuted by this result; no complete-original claim is made.",
       "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
-      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean"
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
+      "additional_native_audit": "Combinatorics/Ramsey/Research/GowersSzemeredi/verification/2026-10-12-walsh-scope.json"
     },
     {
       "statement": "lemma_17_4",
       "source_heading_lines": [
-        3844
+        3891
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 91,
@@ -2321,7 +2323,7 @@
     {
       "statement": "corollary_17_5",
       "source_heading_lines": [
-        3848
+        3895
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 103,
@@ -2341,7 +2343,7 @@
     {
       "statement": "corollary_17_6",
       "source_heading_lines": [
-        3852
+        3899
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 117,
@@ -2361,7 +2363,7 @@
     {
       "statement": "proposition_17_7",
       "source_heading_lines": [
-        3882
+        3929
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 140,
@@ -2381,7 +2383,7 @@
     {
       "statement": "theorem_18_1",
       "source_heading_lines": [
-        4007
+        4054
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 171,
@@ -2411,7 +2413,7 @@
     {
       "statement": "theorem_18_2",
       "source_heading_lines": [
-        4059
+        4106
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 190,
@@ -2441,7 +2443,7 @@
     {
       "statement": "corollary_18_7",
       "source_heading_lines": [
-        4074
+        4121
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 203,
@@ -2493,7 +2495,7 @@
   "reviewed_section12_sha256": "fc21ac0e49cd99be4f4874c910f24404c5b511b8cb95505bb9c6f4d637cbb1cf",
   "reviewed_section13_sha256": "e74ee2328b9b0d68a3c6f007ac7cf921eac9271134a31ed9f681795e013a174b",
   "reviewed_sections14_15_sha256": "825a463ac702ac86cfbfd6c3198dc89129de4c92b6e028690ca4c54e5364a376",
-  "new_scope_proofs_kernel_status": "WalshScopeCoreAudit is queued behind the confirmed-live full audit. Boolean, characteristic-two, endpoint and original16.5 coefficient drafts are not yet certified.",
+  "new_scope_proofs_kernel_status": "WalshScopeCoreAudit passed56 native modules, seven positive theorems and five refutation theorems, with only the three approved axioms. Combined post-merge fidelity and facade checks remain separate.",
   "reviewed_section16_sha256": "a39792df29795e9903fded3cd460efbcd0e80d7e695d8958d741538deb73aba3",
   "reviewed_sections17_18_sha256": "74027961cd05b94022c2e298ae96bc5ddd5b17425143725c2ba2fbc24c68922f",
   "review_complete_is_not_goal_complete": "All120 numbered entries have now been compared at statement level. Many original bounds, characteristic ranges, geometry-and-bound combinations and native counterexamples remain open as recorded per entry. goal_complete stays false."
