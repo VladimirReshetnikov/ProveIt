@@ -6001,6 +6001,44 @@ The annotated paper records the counterexample and explicit stronger square
 certificate. Its116-page PDF was rebuilt twice and inspected at page30.
 The original published PDF is preserved. The goal remains active.
 
+### L.37 Literal finite scope and rounding, with statement-level review (2026-10-12)
+
+`OpeningScopeFidelityAudit` passes over1,625 native modules. It checks the
+corrected positive Theorem1.3 and Lemma2.3 types alongside two separate
+negations of their literal unqualified/unrounded readings. Only the three
+approved axioms occur. The counterexamples are not counted as proofs of the
+original invalid formulations or as additional positive catalogue companions.
+
+A full interval above `exp(exp(1))` meets the displayed quantitative density
+condition, since its logarithmic factor is at most one for every positive
+exponent. It cannot contain a positive-step progression of lengthN+1.
+`Proofs01HeadlineScale` formalizes that interval obstruction and refutes the
+unqualified finite reading of the explicit headline. The TeX now writes the
+intended eventual-N condition, already in the Lean definition, explicitly.
+
+`Proofs02RoundingCounterexample` instantiates the original denominator4
+bounds withN=r=s=5 and a constant affine map. Every proper cell must have
+exactly two points; the partition cardinality identity would give2m=5.
+The corrected denominator16 formulation retains its constructive proof.
+The annotated117-page PDF visibly records the refutations and was inspected
+at the headline and rounding notes, pages4 and9. The published PDF is intact.
+
+The new source-fidelity review compares actual source hypotheses, constants
+and geometric meanings rather than only catalogue names. It has inspected
+all19 numbered results in Sections1--3 and all15 in Section5. Section4 has
+examples and conjectures rather than theorem/lemma inventory entries.
+Ordinary progressions, modular injection and genuine shared-step boxes are
+kept distinct. The verified integer variants of5.10/5.11 and canonical
+integer5.12/5.13 resolve their explicit geometric requirements.
+
+Inspection is not completion:86 entries remain unreviewed, and the current
+review records follow-ups on degree/family conventions, plain progression
+geometry and proof-supported weaker corrections whose stronger originals
+have not been refuted. The misleading no-wrap wording in the definition
+comment ofModAP.IsProper is identified for a later documentation fix; its
+actual cardinality predicate is unchanged. The broad facade is incomplete.
+The full goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

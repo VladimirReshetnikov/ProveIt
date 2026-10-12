@@ -88,7 +88,16 @@ Fourth, there are certain important conjectures related to Szemerédi's theorem,
 
 In this paper, we show that Roth's argument can be generalized, and that this does indeed result in a significant improvement to the bounds, even for van der Waerden's theorem. Our main result (restated in equivalent form later as Theorem 18.2) is the following.
 
-Theorem 1.3. For every positive integer $k$ there is a constant $c=c(k)>$ 0 such that every subset of $\{1,2, \ldots, N\}$ of size at least $N(\log \log N)^{-c}$ contains an arithmetic progression of length $k$. Moreover, $c$ can be taken to be $2^{-2^{k+9}}$.
+Theorem 1.3. For every positive integer $k$ there is a constant $c=c(k)>$ 0 and an integer $N_0=N_0(k)$ such that, for every $N\geqslant N_0$, every subset of $\{1,2, \ldots, N\}$ of size at least $N(\log \log N)^{-c}$ contains an arithmetic progression of length $k$. Moreover, $c$ can be taken to be $2^{-2^{k+9}}$.
+
+\emph{Editorial note on the finite scale (2026-10-12).}
+The eventual-in-$N$ qualifier implicit in this quantitative headline is
+explicit above. Its unqualified finite reading is false: a full interval
+above the logarithm threshold meets the displayed density bound for every
+positive exponent, but an interval of length $N$ cannot contain a
+positive-step progression of length $N+1$. Lean verifies this obstruction
+and the negation of the unqualified formulation separately from the
+positive, eventual theorem.
 
 This immediately implies an estimate for $N(k, \delta)$ which is doubly exponential in $\delta^{-1}$ and quintuply exponential in $k$.
 
@@ -242,8 +251,30 @@ We remark that our definition of an $\alpha$-uniform set coincides with the defi
 % rounding: for $N=r=s=5$ and constant $\phi$ it would require a partition of
 % five points into cells all of size two.  The proof uniformly supplies the
 % following factor-four weaker lower bound once its ceilings are retained.
+\emph{Editorial note on integral rounding (2026-10-12).}
+Lean refutes the original denominator-$4$ lower bound using
+$N=r=s=5$ and a constant affine map. The two asserted length bounds would
+force every cell to have exactly two points, whereas five points cannot
+be partitioned into such cells. The denominator-$16$ corrected statement
+below has a constructive checked proof. The refutation is not counted
+as a proof of the original claim.
+
 Lemma 2.3. Let $r, s$ and $N$ be positive integers with $r, s \leqslant N$ and $r s \geqslant N$, and let $\phi:\{0,1, \ldots, r-1\} \rightarrow \mathbb{Z}_{N}$ be linear (i.e., of the form $\phi(x)=a x+b$ ). Then the set $\{0,1, \ldots, r-1\}$ can be partitioned into arithmetic progressions $P_{1}, \ldots, P_{M}$ such that for each $j$ the diameter of $\phi\left(P_{j}\right)$ is at most $s$ and the length of $P_{j}$ lies between $(r s / 16 N)^{1 / 2}$ and $(r s / N)^{1 / 2}$.\\
-Proof. Let $t=\left\lceil(r N / 4 s)^{1 / 2}\right\rceil$. Of the numbers $\phi(0), \phi(1), \ldots, \phi(t)$, at least two must be within $N / t$. Therefore, by the linearity of $\phi$, we can find a non-zero $u \leqslant t$ such that $|\phi(u)-\phi(0)| \leqslant N / t$. Split $\{0,1, \ldots, r-1\}$ into congruence classes $\bmod u$. Each congruence class is an arithmetic progression of cardinality either $\lfloor r / u\rfloor$ or $\lceil r / u\rceil$. If $P$ is any set of at most $s t / N$ consecutive elements of a congruence class, then $\operatorname{diam} \phi(P) \leqslant s$. It is easy to check first that $s t / N \leqslant r / 3 t \leqslant(1 / 2)\lfloor r / u\rfloor$, next that this implies that the congruence classes can be partitioned into sets $P_{j}$ of consecutive elements with every $P_{j}$ of cardinality between $\lceil s t / 2 N\rceil$ and $\lfloor s t / N\rfloor$, and finally that this proves the lemma. \(\square\)
+Proof. Put $q=(rs/N)^{1/2}$ and $x=(rN/s)^{1/2}$, so $qx=r$,
+$qN/x=s$ and $1\leqslant q\leqslant x$. If $q<4$, use singleton cells:
+their lengths lie between $q/4$ and $q$ and their image diameter is zero.
+
+Otherwise let $t=\lceil x\rceil$ and $L=\lfloor q/2\rfloor$. Dirichlet
+approximation gives a positive integer $u\leqslant t$ with
+$|au|\leqslant N/(t+1)$. We have $q/4\leqslant L\leqslant q/2$ and
+$Lu\leqslant(q/2)(x+1)\leqslant qx=r$. Consequently every residue class
+modulo $u$ in $\{0,\ldots,r-1\}$ has at least $L$ points. Partition each
+class into consecutive blocks of length $L$, merging its final remainder
+into the last block. Every block then has length between $L$ and $2L-1$,
+and hence between $q/4=(rs/(16N))^{1/2}$ and $q=(rs/N)^{1/2}$.
+Its image diameter is at most its length times $|au|$, which is bounded by
+$qN/(t+1)\leqslant qN/x=s$. This is the rounding-aware construction
+checked in Lean. \(\square\)
 
 % ed.: The summation variable is $x$, not the free symbol $s$.  For an exact
 % finite statement we make the proof's implicit assumptions $r\leqslant N$ and
