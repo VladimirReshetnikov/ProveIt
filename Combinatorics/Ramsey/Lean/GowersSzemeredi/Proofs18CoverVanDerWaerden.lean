@@ -1,3 +1,4 @@
+import GowersSzemeredi.Proofs18ColorClass
 import GowersSzemeredi.Proofs18CoverSharperShortLengths
 
 /-! **Van der Waerden numbers with `r` colours** (Notes L.15g).
@@ -16,25 +17,6 @@ set_option autoImplicit false
 noncomputable section
 open Finset
 namespace LeanProofs.GowersSzemeredi
-
-/-- Some colour class of `[1, N]` has at least `N/r` elements. -/
-theorem exists_color_class_ge {r : Nat} (hr : 0 < r) (N : Nat) (color : Nat → Fin r) :
-    ∃ c : Fin r, (N : Real) / r ≤ (((Finset.Icc 1 N).filter fun x => color x = c).card : Real) := by
-  classical
-  have hsum : ((Finset.Icc 1 N).card : Real) =
-      ∑ c : Fin r, (((Finset.Icc 1 N).filter fun x => color x = c).card : Real) := by
-    have h := Finset.card_eq_sum_card_fiberwise (s := Finset.Icc 1 N) (t := Finset.univ)
-      (f := color) (fun _ _ => Finset.mem_univ _)
-    exact_mod_cast h
-  have hN : ((Finset.Icc 1 N).card : Real) = N := by simp
-  have hrR : (0 : Real) < r := by exact_mod_cast hr
-  have hne : (Finset.univ : Finset (Fin r)).Nonempty := Finset.univ_nonempty_iff.mpr ⟨⟨0, hr⟩⟩
-  have hle : ∑ _c : Fin r, (N : Real) / r ≤
-      ∑ c : Fin r, (((Finset.Icc 1 N).filter fun x => color x = c).card : Real) := by
-    rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul,
-      mul_div_cancel₀ _ hrR.ne', ← hsum, hN]
-  obtain ⟨c, -, hc⟩ := Finset.exists_le_of_sum_le hne hle
-  exact ⟨c, hc⟩
 
 /-- **Theorem 18.2 gives van der Waerden numbers for `r` colours.** -/
 theorem Theorem182AtSharp.van_der_waerden {c k : Nat} (h : Theorem182AtSharp c k) {r : Nat}

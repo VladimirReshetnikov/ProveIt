@@ -1,6 +1,6 @@
 import GowersSzemeredi.Proofs18GenericLengths
 import GowersSzemeredi.Proofs18GradedLengths
-import GowersSzemeredi.Proofs16AllDimensionsExplicit
+import GowersSzemeredi.Proofs16ExplicitRecurrenceProfiles
 
 /-! **Theorem 18.2 and Corollary 18.7 at every length up to thirteen.**
 
