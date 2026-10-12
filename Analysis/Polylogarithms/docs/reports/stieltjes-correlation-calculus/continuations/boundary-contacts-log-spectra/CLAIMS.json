@@ -1,0 +1,312 @@
+{
+  "schema_version": 1,
+  "article": "Boundary Contacts and Logarithmic Spectral Integrals",
+  "research_date_utc": "2026-10-11",
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "pinned_commit": "e3d7ec5d3f9be259c1f91edaea4389f4e79b5b03",
+  "status_convention": "New or completed means relative to the inspected repository sources and the explicitly identified target. No global priority, external peer review, arithmetic independence, interval certification, or proof-assistant formalization is asserted.",
+  "label_source": "Boundary_Contacts_and_Logarithmic_Spectral_Integrals.tex",
+  "claims": [
+    {
+      "id": "independent_bilinear_contacts",
+      "status": "proved_completion_of_identified_target",
+      "section": 2,
+      "domain": "p,q are independent complex orders; Re(a)>0 and Re(b)>0; resonance p+q=-2m with integer m>=0; fixed or explicitly tracked cutoff coordinate.",
+      "result": "Finite ambient bivariate contact coefficients at every resonance, all mixed order derivatives, cutoff translations, sharp degree generators, and normally convergent ordinary subtractions.",
+      "labels": [
+        "ct:contacts",
+        "ct:logjets",
+        "ct:translate",
+        "ct:top",
+        "ct:normal",
+        "ct:resonantconvergence"
+      ],
+      "inherited": [
+        "Finite Gamma-normalized bilinear endpoint identity",
+        "First symmetric contact 1/2 at total order zero",
+        "Diagonal cutoff/contact theory"
+      ],
+      "source_target": {
+        "archive": "ProveIt_Bilinear_Tails_and_Determinants_2026-10-11.zip",
+        "member": "sections/10_research_questions.tex",
+        "heading": "Every bilinear contact hyperplane"
+      },
+      "limitations": [
+        "Does not add an independent outer order weight",
+        "Does not classify higher cyclotomic colors or three independent tails",
+        "Ambient differentiation must precede restriction to a resonance",
+        "Alternating parity finite parts are kept distinct"
+      ]
+    },
+    {
+      "id": "ordinary_boundary_evaluations",
+      "status": "proved_consequences",
+      "section": 2,
+      "result": "Explicit ordinary symmetric and alternating sums at p+q=-2, including two evaluations in pi, log 2, and rational numbers.",
+      "labels": [
+        "ct:exampleplus",
+        "ct:exampleminus"
+      ],
+      "domain": "The general resonant formula has Re(a),Re(b)>0. The displayed evaluated example uses p=1,q=-3,a=1,b=2.",
+      "dependencies": [
+        "independent_bilinear_contacts"
+      ]
+    },
+    {
+      "id": "stieltjes_boundary_dictionary",
+      "status": "proved_consequences",
+      "section": 3,
+      "result": "Finite Stieltjes/Hurwitz-order-derivative dictionary for every contact jet; an explicit ordinary first-Stieltjes series; argument derivatives and integer/half-integer harmonic reductions.",
+      "labels": [
+        "sj:generalT",
+        "sj:stieltjesT",
+        "sj:allboundary",
+        "sj:ordinary",
+        "sj:explicit",
+        "sj:Barg",
+        "sj:ellarg"
+      ],
+      "domain": "The T formulas use Re(z)>0 and the V formulas Re(z)>1. Boundary series have Re(a),Re(b)>0 and their stated finite subtraction. Polygamma harmonic formulas with zeta(j+1) require j>=1.",
+      "dependencies": [
+        "independent_bilinear_contacts"
+      ],
+      "inherited": [
+        "Classical Hurwitz Laurent coefficients and argument-differentiation identities",
+        "Classical Gamma, polygamma, and generalized harmonic conversions"
+      ]
+    },
+    {
+      "id": "full_scalar_zero_jets",
+      "status": "proved_representation_extending_sources",
+      "section": 4,
+      "result": "Every scalar spectral derivative at zero for any finite number of positive quadratic masses is a massless Hurwitz derivative plus one ordinary absolutely convergent digamma integral.",
+      "labels": [
+        "sp:master",
+        "sp:master-formula",
+        "sp:explicit-densities",
+        "sp:mass-derivatives",
+        "sp:repeated-mass-derivatives"
+      ],
+      "domain": "a>0, integer N>=1, all mu_j>0, integer derivative order r>=1; principal logarithms with the branch conventions in the article.",
+      "source_targets": [
+        {
+          "archive": "ProveIt_Higher_Quadratic_Jets_2026-10-11.zip",
+          "member": "sections/10-research.tex",
+          "item": 3
+        },
+        {
+          "archive": "ProveIt_Higher_Spectral_Defects_2026-10-11.zip",
+          "member": "article.tex",
+          "research_item": 3
+        }
+      ],
+      "limitations": [
+        "An exact one-variable integral is not a claim of finite reduction to a smaller special-value alphabet"
+      ]
+    },
+    {
+      "id": "compact_connected_densities",
+      "status": "proved_all_order_representation",
+      "section": 4,
+      "result": "Compact logarithmic cut densities for connected mass increments of every order, exact moment cancellation, coincident-mass limits, critical odd-weight ordinary sum, and fixed-regulator polynomial-weight transforms.",
+      "labels": [
+        "sp:compact-density",
+        "sp:compact-moments",
+        "sp:coincident-density",
+        "sp:ordinary-connected",
+        "sp:critical-weight",
+        "sp:weighted-compact"
+      ],
+      "domain": "a>0, anchor beta>=0, integer r>=1, all nu_j>beta; the weighted finite parts use the explicitly fixed regulator.",
+      "inherited": [
+        "Classical Cauchy jump representation and digamma resolvent",
+        "The local regularization hierarchy listed separately below"
+      ],
+      "limitations": [
+        "Replacing labeled masses at fixed N is distinct from deleting spectral factors"
+      ]
+    },
+    {
+      "id": "even_weighted_full_jets",
+      "status": "proved_extension",
+      "section": 5,
+      "result": "Finite polynomial-logarithmic subtraction gives a finite Hurwitz-derivative baseline and one ordinary digamma integral for every even polynomial weight and every spectral derivative order.",
+      "labels": [
+        "ng:finite-continuation",
+        "ng:asymptotic-subtraction",
+        "ng:finite-baseline",
+        "ng:ordinary-series",
+        "ng:master",
+        "ng:master-formula"
+      ],
+      "domain": "Real polynomial P in (n+a)^2; a>0; N>=1 integer; all masses positive; r>=1 integer.",
+      "dependencies": [
+        "full_scalar_zero_jets"
+      ],
+      "limitations": [
+        "This full ordinary integral theorem concerns even polynomial weights. The odd-weight full scalar analogue remains a research question."
+      ]
+    },
+    {
+      "id": "all_negative_integer_jets",
+      "status": "proved_extension",
+      "section": 5,
+      "result": "Every derivative at every nonpositive integer spectral point follows by taking P(z)=product_j(z+mu_j)^m. The baseline is explicit and finite; the residual digamma integral is ordinary.",
+      "labels": [
+        "ng:negative-integers",
+        "ng:negative-master",
+        "ng:negative-value",
+        "ng:cubic-negative-jet"
+      ],
+      "domain": "Integer m>=0 and r>=1; a>0 and all mu_j>0. The weight coefficients are held fixed under the spectral differentiation.",
+      "dependencies": [
+        "even_weighted_full_jets"
+      ],
+      "limitations": [
+        "Does not supply a terminating Bessel-order recurrence or a finite reduction of every integral to a smaller special-value alphabet"
+      ]
+    },
+    {
+      "id": "density_arithmetic_bridge",
+      "status": "proved_consequences_with_classical_inputs",
+      "section": 6,
+      "result": "Beta/Gamma generating function, Stirling moments, generalized harmonic mass-collision coefficients, transform to height-one multiple polylogarithms with all fixed order derivatives, and half-lattice/bilateral kernels and anchored primitives.",
+      "labels": [
+        "da:mellin",
+        "da:stirling",
+        "da:polylog",
+        "da:polylog-order-jets",
+        "da:zeta-integral",
+        "da:independent-collision",
+        "da:confluent-stirling",
+        "da:bilateral-kernel",
+        "da:bilateral-primitive"
+      ],
+      "domain": "Mellin formula Re(s)>0; polylogarithmic transform every complex s for |z|<1, with z=1 separately stated for integer s>=1; collisions in the stated strict polydisk; bilateral shifts in (0,1).",
+      "dependencies": [
+        "compact_connected_densities"
+      ],
+      "inherited": [
+        "Euler beta integral and Gamma expansions",
+        "Classical logarithm-power/Stirling identities",
+        "Height-one multiple-polylogarithm series and classical zeta(2,{1}^{r-1}) reduction"
+      ],
+      "limitations": [
+        "No priority claim for the classical inputs or the resulting familiar constants"
+      ]
+    },
+    {
+      "id": "local_spectral_hierarchy",
+      "status": "inherited_and_normalization_checked",
+      "section": 4,
+      "result": "The local principal-part correction for polynomially weighted jets is restated with matching fixed-N normalization.",
+      "labels": [
+        "sp:inherited-local-correction",
+        "sp:inherited-correction",
+        "sp:fixed-N-differences"
+      ],
+      "source": {
+        "path": "Analysis/Polylogarithms/docs/reports/stieltjes-harmonic-resonance/continuations/arithmetic-spectral-jets/sections/03-local.tex",
+        "labels": [
+          "asj:thm:polynomial",
+          "asj:thm:top",
+          "asj:thm:all-differences",
+          "asj:eq:scaling"
+        ]
+      },
+      "limitations": [
+        "Not a new general regularized-trace or interaction-degree theorem"
+      ]
+    },
+    {
+      "id": "reciprocal_gamma_transcription_correction",
+      "status": "verified_source_correction_proposed",
+      "section": 7,
+      "result": "Replace the final numerator term +24\\zeta\\alpha_5 by +24\\zeta_5 in the fifth reciprocal-Gamma coefficient.",
+      "source": {
+        "path": "Analysis/Polylogarithms/docs/manuscript/chapters/07-digamma-power-moments.tex",
+        "label": "dgp:eq:a5"
+      },
+      "patch": "integration/corrections.patch",
+      "validation": "data/correction_patch_validation.json",
+      "applied": false
+    },
+    {
+      "id": "tail_kernels_R7",
+      "status": "already_completed_in_predecessor",
+      "section": 7,
+      "result": "The diagonal continued alternating-square law at nonpositive orders, including every cutoff jet and translation, is inherited from Bilinear Tails and Determinants.",
+      "source": {
+        "archive": "ProveIt_Bilinear_Tails_and_Determinants_2026-10-11.zip",
+        "member": "sections/04_cutoff_jets.tex",
+        "labels": [
+          "cut:normal",
+          "cut:contacts",
+          "cut:translation"
+        ]
+      },
+      "limitations": [
+        "The new independent two-order theorem extends this result; it does not reattribute the diagonal result"
+      ]
+    },
+    {
+      "id": "tail_kernels_R9",
+      "status": "general_germ_already_completed_in_preserved_source",
+      "section": 7,
+      "result": "The all-index cubic Stieltjes finite-part germ and local counterterm admit the already-preserved finite Tornheim coefficient representation.",
+      "source": {
+        "path": "Analysis/Polylogarithms/docs/reports/stieltjes-correlation-calculus/continuations/coincident-directional-zeta/sections/02_cubic.tex",
+        "labels": [
+          "cub:general-completion",
+          "cub:all-moments",
+          "cub:global",
+          "cub:Lr"
+        ]
+      },
+      "limitations": [
+        "Further reduction to depth-one or another smaller arithmetic alphabet remains separate and open in this work"
+      ]
+    },
+    {
+      "id": "unrestricted_reconstruction_and_gap_six",
+      "status": "open_not_resolved_here",
+      "section": 8,
+      "result": "The unrestricted unequal-even-order reconstruction problem and the whole gap-six family remain open.",
+      "limitations": [
+        "This article proves no new determinant nonvanishing result and no arithmetic independence of evaluated zeta values"
+      ]
+    },
+    {
+      "id": "research_agenda",
+      "status": "proposed_further_work",
+      "section": 8,
+      "count": 12,
+      "labels": [
+        "rq:section"
+      ],
+      "topics": [
+        "Short recurrence for bivariate contacts",
+        "Exact contact factorization and zero loci",
+        "Independent outer spectral weight",
+        "Cyclotomic contact matrices",
+        "Three independent tails",
+        "Full scalar odd-weight integral",
+        "Finite reductions on explicit mass loci",
+        "Complex masses and branch jumps",
+        "Rational-shift projections",
+        "Arithmetic reduction of selected cubic Stieltjes coefficients",
+        "Full reconstruction and gap-six family",
+        "Formal proofs and validated evaluation"
+      ]
+    }
+  ],
+  "evidence": {
+    "analytic": "Complete proofs in the article; independent internal mathematical review of sensitive derivations.",
+    "exact": "123 symbolic assertions in the two exact-result files.",
+    "decimal": "32 contact/Stieltjes diagnostics; independent density, scalar, polylogarithmic, and negative-point programs; all selected checks passed.",
+    "source_identity": "data/source_manifest.json",
+    "runner": "verification/run_all.py",
+    "summary": "data/verification_summary.json",
+    "limits": "Finite checks do not prove universal claims. Decimal diagnostics are not interval certificates."
+  }
+}

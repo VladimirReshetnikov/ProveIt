@@ -1,0 +1,142 @@
+\section{The ordered two-particle boundary identity}
+\label{sec:ordered}
+
+Define
+\begin{equation}\label{eq:weight-two}
+ w_n(s,a)=\frac12\bigl((n+a)^{-s}-2(n+a+1)^{-s}
+                           +(n+a+2)^{-s}\bigr)
+\end{equation}
+and retain the ordering of its labels:
+\begin{equation}\label{eq:ordered-def}
+ \Ord(s,t;a,b)=\sum_{0\le m<n}(n-m)^2w_m(s,a)w_n(t,b).
+\end{equation}
+In particular, exchanging $(s,a)$ and $(t,b)$ generally changes the
+answer. Let
+\begin{equation}\label{eq:kernel-def}
+ \Kern(s,t;x,y)=\sum_{k=0}^{\infty}(k+x)^{-s}(k+y)^{-t},
+ \qquad \Rea(s+t)>1,
+\end{equation}
+and set
+\begin{equation}\label{eq:boundary-coefficient}
+ E_s(a)=\frac{a^{-s}-(a+1)^{-s}}2.
+\end{equation}
+
+\begin{theorem}[Ordered boundary reduction]\label{thm:ordered}
+For
+\begin{equation}\label{eq:ordered-domain}
+ \Rea a,\Rea b>0,\qquad \Rea t>1,\qquad \Rea(s+t)>0,
+\end{equation}
+the sum \eqref{eq:ordered-def} converges absolutely and locally
+normally, and
+\begin{equation}\label{eq:ordered-main}
+ \boxed{\Ord(s,t;a,b)=E_s(a)\zeta(t,b+1)
+ +\frac14\bigl\{\Kern(s,t;a+2,b+1)-\Kern(s,t;a,b+1)\bigr\}.}
+\end{equation}
+On the portion $0<\Rea(s+t)\le1$, the kernel difference means the
+single combined convergent series
+\begin{equation}\label{eq:kernel-difference}
+ \Def(s,t;a,b)=\sum_{k=0}^{\infty}(k+b+1)^{-t}
+                  \bigl\{(k+a+2)^{-s}-(k+a)^{-s}\bigr\}.
+\end{equation}
+All fixed finite derivatives in the four parameters can be taken
+termwise on compact subsets of \eqref{eq:ordered-domain}.
+\end{theorem}
+
+\subsection{Convergence on the asymmetric domain}
+
+Repeated integration of a second derivative gives
+\begin{equation}\label{eq:second-difference-integral}
+ w_n(s,a)=\frac{s(s+1)}2\int_0^1\int_0^1
+               (n+a+u+v)^{-s-2}\dd u\dd v.
+\end{equation}
+Consequently $w_n(s,a)=O((n+1)^{-\Rea s-2})$, uniformly on compact
+parameter sets, including neighborhoods of $s=0,-1$.
+For a fixed outer index $n$, bound $(n-m)^2$ by $n^2$.
+The inner sum of $(m+1)^{-\Rea s-2}$ is bounded when
+$\Rea s>-1$, grows logarithmically at $\Rea s=-1$, and is
+$O(n^{-\Rea s-1})$ when $\Rea s<-1$. Combining these bounds with
+the outer weight gives convergence under \eqref{eq:ordered-domain}.
+On compact sets one can decrease the real exponents slightly to
+obtain a single summable majorant, so the transition at $\Rea s=-1$
+causes no loss of normality. Cauchy estimates on slightly larger
+compact neighborhoods justify every fixed derivative.
+
+The first difference in \eqref{eq:kernel-difference} is
+$O((k+1)^{-\Rea s-1})$. Thus its combined series has precisely the
+sufficient domain $\Rea(s+t)>0$ used in the theorem. No separate
+summation of divergent kernel terms is involved.
+
+\subsection{A finite identity with both upper endpoints}
+
+The proof works for arbitrary finite sequences before any special
+function is introduced. Put $f_n=(n+a)^{-s}$ and $g_n=(n+b)^{-t}$,
+and define $A_{-1}=A_0=0$ and
+\begin{equation}\label{eq:A-n}
+ A_n=\sum_{m=0}^{n-1}(n-m)^2(f_m-2f_{m+1}+f_{m+2}).
+\end{equation}
+Collecting the coefficient of each $f_k$ gives, for $n\ge1$,
+\begin{equation}\label{eq:A-explicit}
+ A_n=n^2f_0+(-n^2-2n+1)f_1
+                  +2\sum_{k=2}^{n}f_k+f_{n+1}.
+\end{equation}
+Taking two backward differences yields
+\begin{equation}\label{eq:A-difference}
+ A_n-2A_{n-1}+A_{n-2}
+          =2(f_0-f_1)-f_{n-1}+f_{n+1}\qquad(n\ge1).
+\end{equation}
+At $n=1$ this is a direct check, using $A_{-1}=0$.
+
+Let $\Ord_N$ denote the restriction $n\le N$ in
+\eqref{eq:ordered-def}. Shifting the three finite sums in
+$4\Ord_N=\sum_{n=1}^N A_n(g_n-2g_{n+1}+g_{n+2})$ gives
+\begin{align}\label{eq:finite-ordered}
+ 4\Ord_N={}&\sum_{n=1}^{N}g_n
+              \{2(f_0-f_1)-f_{n-1}+f_{n+1}\}\notag\\
+ &+g_{N+1}(A_{N-1}-2A_N)+g_{N+2}A_N.
+\end{align}
+This is an exact finite identity. In particular, no endpoint term
+has been inferred from an asymptotic prescription.
+
+\begin{proof}[Proof of \cref{thm:ordered}]
+The upper boundary in \eqref{eq:finite-ordered} can be grouped as
+\[
+ A_N(g_{N+2}-g_{N+1})+g_{N+1}(A_{N-1}-A_N).
+\]
+Formula \eqref{eq:A-explicit} shows that $A_N$ is bounded by a sum
+of $O(N^2)$ and $O(N^{1-\Rea s})$, with a logarithmic enlargement
+at a borderline exponent. Its first backward difference is bounded
+by the corresponding $O(N)$ and $O(N^{-\Rea s})$ terms.
+Since $g_{N+2}-g_{N+1}=O(N^{-\Rea t-1})$, the grouped boundary
+tends to zero under \eqref{eq:ordered-domain}. The estimates are
+locally uniform with an arbitrarily small exponent margin.
+The remaining sum in \eqref{eq:finite-ordered} is
+$4E_s(a)\zeta(t,b+1)+\Def(s,t;a,b)$.
+Division by four proves the theorem.
+\end{proof}
+
+\subsection{What symmetrization removes}
+
+The existing polarized determinant evaluates
+$\tfrac12(\Ord(s,t;a,b)+\Ord(t,s;b,a))$.
+The two one-index kernel differences satisfy the finite shift identity
+\begin{equation}\label{eq:kernel-symmetry}
+ \Def(s,t;a,b)+\Def(t,s;b,a)
+ =-a^{-s}(b+1)^{-t}-(a+1)^{-s}b^{-t}.
+\end{equation}
+Indeed, shift the first positive kernel once, pair it with the
+opposite negative kernel, and retain its missing zeroth term;
+do the same with the other pair. This is first legitimate in an
+absolute-convergence domain and then holds by continuation.
+Combining \eqref{eq:kernel-symmetry} with \eqref{eq:ordered-main}
+recovers the existing polarized formula. It also identifies exactly
+which information the averaging has removed.
+
+At a common shift and common order,
+\begin{equation}\label{eq:diagonal-recovery}
+ \Ord(s,s;a,a)=E_s(a)\zeta(s,a)
+                  -\frac{a^{-2s}}2+
+                     \frac{[a(a+1)]^{-s}}4.
+\end{equation}
+This is the known two-particle specialization of the incoming
+single-zeta determinant \cite{repo:finite}. Thus the present theorem
+extends that formula while preserving its normalization.

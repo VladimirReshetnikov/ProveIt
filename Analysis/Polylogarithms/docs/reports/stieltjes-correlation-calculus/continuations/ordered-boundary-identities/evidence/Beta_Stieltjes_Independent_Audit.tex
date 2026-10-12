@@ -1,0 +1,114 @@
+% Independent audit of the root agent's beta--Stieltjes all-jet identity.
+\section*{Audit: beta--Stieltjes jets at the canceled total-order pole}
+
+The proposed identity is correct.  Assume $\Re a>0$, $\Re b>-1$ and
+$0<\Re\sigma<1$; the originally proposed $\Re b>0$ is a sufficient
+smaller domain.  Put $y=b+1$, $\delta=a-b$, and
+\[
+ A_\pm(u)=y+(\delta\pm1)u.
+\]
+For $m\ge0$, define the ordinary, locally normally convergent series
+\[
+ T_m=\sum_{k\ge0}\bigl\{(k+a+2)^{-\sigma}-(k+a)^{-\sigma}\bigr\}
+ (k+y)^{\sigma-1}\{-\log(k+y)\}^m.
+\]
+The canceled difference makes its summand
+$O(k^{-2}\log^m(k+1))$, uniformly on compact parameter sets.  In fact
+this series is entire in $\sigma$, while the unregularized beta integral
+below is asserted only on the stated strip.
+
+Set
+\[
+ \ell_1(u)=\log(1-u)+\psi(1)-\psi(1-\sigma),\qquad
+ \ell_j=\psi^{(j-1)}(1)-\psi^{(j-1)}(1-\sigma),\quad j\ge2,
+\]
+and let $\mathcal B_j$ denote the complete exponential Bell polynomial,
+with $\mathcal B_0=1$.  Then
+\[
+ T_m=\frac{\sin(\pi\sigma)}\pi
+ \int_0^1u^{\sigma-1}(1-u)^{-\sigma}
+ \sum_{j=0}^m\binom mj(-1)^j
+ \mathcal B_{m-j}(\ell_1,\ldots,\ell_{m-j})
+ \{\gamma_j(A_+(u))-\gamma_j(A_-(u))\}\,du.
+\]
+
+\paragraph{Proof and the required order of operations.}
+Start with $t=1-\sigma+v$, where $\Re v>0$ is sufficiently small, so
+both individual Feynman kernel integrals and series converge.  Their
+difference is
+\[
+ \frac{\Gamma(1+v)}{\Gamma(\sigma)\Gamma(1-\sigma+v)}
+ \int_0^1 u^{\sigma-1}(1-u)^{v-\sigma}
+ \{\zeta(1+v,A_+(u))-\zeta(1+v,A_-(u))\}\,du.
+\]
+The two Hurwitz poles must be subtracted before setting $v=0$ or
+differentiating.  Their residues are equal to one, so the difference
+is holomorphic at $v=0$.  The shift arguments remain on a compact
+subset of the right half-plane as $u$ ranges over $[0,1]$ and the
+parameters range over compact subsets of the domain.  Uniform
+holomorphy of the regularized Hurwitz germ, together with the integrable
+weights
+$u^{\Re\sigma-1}(1-u)^{-\Re\sigma}|\log(1-u)|^m$, proves local
+normality and differentiation under the integral.
+
+The logarithmic derivatives at $v=0$ of
+$\Gamma(1+v)(1-u)^v/\Gamma(1-\sigma+v)$ are exactly the displayed
+$\ell_j$.  The $j$th derivative of the regularized Hurwitz difference
+is $(-1)^j\{\gamma_j(A_+)-\gamma_j(A_-)\}$.  Leibniz's rule and
+Euler's reflection formula give the proposed identity, including all
+signs and binomial factors.
+
+\paragraph{Specialization and a useful extension.}
+At $a=b=1$, for every complex $\sigma$, the direct binomial expansion
+of the ordinary series gives the normally convergent formula
+\[
+ T_m=-2\sum_{h\ge0}\frac{(\sigma)_{2h+1}}{(2h+1)!}
+        \zeta^{(m)}(2h+2,2).
+\]
+Thus the displayed half-order expansion is correct and is the
+$\sigma=1/2$ instance of a formula valid for all $\sigma$.
+At $\sigma=1/2$ and any common shift $a=b$,
+\[
+ T_0=\sum_{k\ge0}\left\{
+ \frac1{\sqrt{(k+a+1)(k+a+2)}}
+ -\frac1{\sqrt{(k+a)(k+a+1)}}\right\}
+ =-\frac1{\sqrt{a(a+1)}}.
+\]
+Square roots use the consistent right-half-plane branch.  In particular
+$T_0=-1/\sqrt2$ at $a=1$.
+
+\paragraph{Numerical verification strategy.}
+The accompanying script checks Bell--Leibniz coefficients exactly
+through order four.  For $a=b=1$, it evaluates the Stieltjes differences
+inside the beta integral by uniformly convergent Taylor expansions in
+$u$.  These are independently spot-checked against direct
+\texttt{mpmath.stieltjes} calls.  The three differences needed for
+$m\le2$ have odd-power coefficients, for odd $r$, given by
+\begin{align*}
+ c_{0,r}&=-2\zeta(r+1,2),\\
+ c_{1,r}&=2\{H_r\zeta(r+1,2)+\zeta'(r+1,2)\},\\
+ c_{2,r}&=-2\{(H_r^2-H_r^{(2)})\zeta(r+1,2)
+              +2H_r\zeta'(r+1,2)+\zeta''(r+1,2)\}.
+\end{align*}
+Terms through $r=201$ are retained.  Elementary integral estimates for
+$\sum_{n\ge2}\log^j(n)n^{-r-1}$ bound the omitted second-jet tail by
+$\sum_{r\ge202}(3r^2+10r+15)2^{-r}$, less than $10^{-54}$ uniformly
+for $0\le u\le1$; lower jets have smaller bounds.  Numerical rounding
+is separately governed by the stated working precision.
+
+The integral is evaluated after the logistic substitution
+$u=e^z/(1+e^z)$, which removes the algebraic endpoint singularities.
+It is compared with the separately evaluated Hurwitz-series expression
+at $\sigma=0.3,0.5,0.7$, $m=0,1,2$.  The half-order zeroth jet is
+also checked against its exact telescoping value.  A further three
+integrals use independently shifted parameters
+$a=0.7$, $b=1.1$, $\sigma=0.4$, $m=0,1,2$.  Here the two
+Taylor displacements about $b+1=2.1$ are $0.6u$ and $-1.4u$;
+all powers through degree $351$ are retained.  The uniform omitted
+second-jet tail is bounded by
+$\sum_{r\ge352}(4r^2+10r+18)(2/3)^r<1.6\cdot10^{-56}$.
+These additional integrands are again spot-checked against direct
+Stieltjes evaluations.  Across all twelve numerical beta integrals,
+the largest discrepancy at $42$ decimal digits is less than
+$3.6\cdot10^{-42}$.  These are numerical diagnostics, not
+interval-certified proofs.  No domain or sign flaw was found.

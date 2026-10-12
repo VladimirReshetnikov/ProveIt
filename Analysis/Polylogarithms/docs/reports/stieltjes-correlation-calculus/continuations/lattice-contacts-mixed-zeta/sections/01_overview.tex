@@ -1,0 +1,200 @@
+\section{Research frontier, principal identities, and conventions}
+\label{sec:overview}
+
+This article develops exact identities at the meeting point of
+Hurwitz continuation, polynomially weighted harmonic tails, Gamma
+products, and polylogarithms. The source is the ProveIt repository
+at commit
+\texttt{36edefa8c531d9d6df8306ac51bcc317250f404c}.
+The manuscript and the ten incoming archives present at that snapshot
+were used to identify the current frontier
+\cite{RepoManuscript,RepoIncoming}. The proofs below are self-contained
+apart from standard special-function identities and explicitly
+credited predecessor formulas that are restated before use.
+
+Two short consequences convey the character of the results. Put
+\[
+ x_n=n+\tfrac12,\qquad
+ T_p(n)=\zeta(p,n+1)=\zeta(p)-H_n^{(p)}.
+\]
+Then
+\begin{equation}\label{eq:overview-cubic}
+ \boxed{\sum_{n=0}^{\infty}T_2(n)T_4(n)
+                  \bigl(1-x_nT_2(n)\bigr)=\frac5{16}\zeta(6),}
+\end{equation}
+and
+\begin{equation}\label{eq:overview-quartic}
+ \boxed{\begin{aligned}
+ &\sum_{n=0}^{\infty}T_2(n)^2T_4(n)
+       \left\{\left(x_n^2+\frac1{12}\right)T_2(n)-x_n\right\}\\
+ &\hspace{13mm}
+ =\frac{59}{12}\zeta(3)\zeta(4)
+       +\frac{23}{6}\zeta(2)\zeta(5)-\frac{203}{16}\zeta(7).
+ \end{aligned}}
+\end{equation}
+Both sums are ordinary and absolutely convergent. Their summands
+decay respectively as \(O(x_n^{-6})\) and \(O(x_n^{-8})\).
+They follow from the same finite recurrence that computes all
+regular centered moments of any product of positive even-order tails;
+see Corollaries~\ref{mtp:short-cubic} and \ref{mtp:short-quartic}.
+No finite-part convention is involved in these two formulas.
+
+\subsection{What is proved}
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=*]
+\item \textbf{Every minimal lattice contact.}
+At \(s=-N\), \(N\) even, the \(d\)-th order derivative of the
+minimally compensated Hurwitz lattice has a complete polynomial
+in \(\log(hK)\), where \(K\) is the integer cutoff. Its generating
+function is
+\[
+ \frac{\tau\beta_N}{2}\,
+ u\prod_{j=1}^{N}(1-u/j)
+ \frac{\sin(\pi u/2)}{\pi u/2}e^{-Xu},
+ \qquad
+ \tau=\frac{2\pi}{h},\quad
+ \beta_N=\frac{B_{N+2}}{(N+1)(N+2)}.
+\]
+The coefficient multiplied by \(d!\) is the contact of order \(d\).
+This answers the all-derivative and filter questions in the
+vertical-lattice report \cite{RepoVertical}.
+
+\item \textbf{Exact order-dependent modular transport.}
+The Lambert family \(\Lambda(s,\tau)\) in
+\eqref{eq:mod-lambda}
+has a holomorphic contour transformation near every
+nonpositive even order and near \(s=1\).
+An explicit trigonometric polynomial recurrence produces all
+derivative corrections. The zeroth-order eta and Ramanujan
+transformations are credited classical specializations;
+the higher derivatives retain specified convergent contour terms.
+
+\item \textbf{Arbitrarily many unequal even tails.}
+For a finite labeled collection of even integers \(p_i\ge2\),
+every regular centered moment of
+\(\prod_iT_{p_i}\) is computed by a finite recurrence on proper
+subsets. Its generating function is analytic for \(|t|<2\pi\).
+All moments lie in a fixed rational span of convergent multiple
+zeta values of weight at most
+\[
+ \sum_i p_i-1-\mathbf1_{\{|I|\ {\rm odd}\}}.
+\]
+The mixed products \(T_2^2T_4\) and \(T_2^3T_4\) have explicit
+generators and full rank on six and eight specified formal
+coordinates. Their first six odd and first eight even moments,
+respectively, reconstruct every later regular moment.
+
+\item \textbf{Independent nonperiodic Stieltjes shifts.}
+For \(\Ree a,\Ree b>0\), the integral
+\[
+ \int_0^1
+   \left(\zeta(1+u,a+x)-\frac1u\right)
+   \left(\zeta(1+v,b+x)-\frac1v\right)\dd x
+\]
+is evaluated by a finite incomplete-beta prefix, explicitly
+removable Gamma quotients, and two geometric Hurwitz series.
+The expression is jointly holomorphic in both orders.
+Every product of generalized Stieltjes constants and their
+argument derivatives follows by coefficient extraction.
+Ordinary polygamma products admit a stronger terminating
+reduction to two logarithmic Hurwitz sums.
+
+\item \textbf{All spectral-face coefficients and a depth-two collapse.}
+A finite formula in harmonic star sums gives
+\(I_k(B\mapsto B^m;b_1,\ldots,b_k)\) for every \(k,m\).
+With the exact face normalization of
+Section~\ref{sfj:sec:faces}, one has
+\[
+ \begin{aligned}
+ &I_k\bigl(G_a;\underbrace{B,\ldots,B}_{k-1},B+\delta\bigr)\\
+ &\quad=(-1)^{k-1}(k-1)!
+ \sum_{n=0}^{\infty}
+ \Li_{1,k-1}\left(\frac{\delta}{(n+a)^2+B+\delta}\right),
+ \end{aligned}
+\]
+where \(k\ge2\), \(a>0\), \(B,\delta\ge0\), and
+\(G_a(B)=\log\Gamma(a+\ii\sqrt B)+
+\log\Gamma(a-\ii\sqrt B)-\log(2\pi)\).
+Thus one displaced mass has functional depth two in every
+simplex dimension, with no small-displacement restriction.
+
+\item \textbf{The joint-order obstruction and its exact correction.}
+For polynomially weighted products of quadratic spectra, the only
+possible polar divisor through the origin is
+\(\sum_i\alpha_i=0\). Its numerator is an explicit finite
+polynomial. For unequal masses and no periodic multiplier, the joint germ is
+holomorphic exactly when the polynomial weight \(W(x)\) is even.
+A mean-zero periodic multiplier removes the obstruction for
+every polynomial. After the specified local subtraction, all
+mixed derivatives have convergent simplex formulas.
+\end{enumerate}
+
+\subsection{Relation to established work}
+
+The unweighted product sums of zeta tails already have finite
+multiple-zeta evaluations; Hoffman gives a general treatment
+\cite{Hoffman}. Later product-sum work includes Li and Chu
+\cite{LiChu}. Our new tail assertion concerns the complete
+centered polynomial-moment system for arbitrary unequal even
+orders, including its subtraction constants and anchored analytic
+generator. The displayed short identities are useful consequences
+of that larger system.
+
+The incomplete-beta method for products of Hurwitz zeta functions
+has a direct predecessor in Shpot and Paris
+\cite{ShpotParis}, and logarithmic digamma-square integrals
+were studied by Connon \cite{Connon}. The additional content
+here is the simultaneous treatment of two independent ordinary
+argument shifts, joint removal of both order poles, and an
+explicit derivative calculus with proved normal convergence.
+Likewise, Dirichlet averages and Gamma products are classical
+\cite{Carlson,DLMF}. They underlie the new
+collision coefficients and displaced-mass evaluation rather than
+constitute novelty claims.
+
+Vertical Gamma-product identities also predate this continuation,
+including recent work of Arabi Ardehali and Rosengren
+\cite{ArdehaliRosengren}. Generalized Stieltjes modular relations
+are established in the work of Dixit, Sathyanarayana, and Sharan
+\cite{DixitStieltjes}. The present lattice and modular sections
+specify the all-order boundary polynomials, their cutoff
+coordinates, and the exact contour corrections for this particular
+sampling family. The literature comparison is targeted. It
+supports a continuation of the inspected ProveIt questions, not
+an exhaustive assertion of historical priority.
+
+\subsection{Conventions and the logical status of certificates}
+
+We write \(\zeta^{(r)}(s,a)\) for differentiation in the order
+\(s\), and \(\psi^{(r)}(a)\) for differentiation in the argument.
+Argument derivatives of generalized Stieltjes constants are
+explicitly indicated. The convention is
+\[
+ \zeta(1+u,a)=\frac1u+
+       \sum_{m\ge0}\frac{(-1)^m}{m!}\gamma_m(a)u^m,
+ \qquad \gamma_0(a)=-\psi(a).
+\]
+We use \(B_1=-1/2\) and
+\(H_N^{(r)}=\sum_{j=1}^N j^{-r}\), with \(H_0^{(r)}=0\).
+Multiple zeta values have decreasing summation indices;
+\(\Li_{s_1,\ldots,s_\ell}(z)\) places \(z^{n_1}\) on the
+largest index. Powers and logarithms use the analytic branch
+specified on each domain.
+
+An ordinary sum, an analytic continuation value, and a constant
+term in a cutoff expansion are identified only after a proof
+relates them. Changing the cutoff coordinate can change a
+finite part. Similarly, a germ holomorphic along common rays
+need not be jointly holomorphic in independent variables.
+These distinctions explain the contact polynomials and the
+multivariate counterexamples below.
+
+Every theorem is proved analytically or by finite exact algebra.
+Rational determinant certificates establish rank on declared
+formal coordinates; they do not assert arithmetic independence
+of zeta values. High-precision calculations independently check
+the formulas, including complex shifts and degenerate limits,
+but are not interval certificates or substitutes for proof.
+The Gaussian \(S_6\) and revised \(S_8\) identities in the
+manuscript remain conjectural \cite{RepoManuscript}.
+

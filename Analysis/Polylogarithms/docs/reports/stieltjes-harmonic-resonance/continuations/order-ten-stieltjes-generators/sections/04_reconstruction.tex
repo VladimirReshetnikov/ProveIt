@@ -1,0 +1,143 @@
+\section{Ordinary convergent reconstruction and polygamma identities}
+\label{sec:ordinary-reconstruction}
+
+The rank theorem is more than a statement about a determinant.  It
+allows every late zeta coordinate to be extracted by a finite rational
+combination of centered moments.  The analytic continuation can then be
+converted into an ordinary absolutely convergent series by subtracting
+only the nonnegative powers in the centered asymptotic expansion.
+
+\subsection{Centered asymptotic coefficients}
+
+For an integer $s\ge2$ and $x=n+1/2$, the shifted Euler--Maclaurin
+expansion~\cite{DLMF} is
+\begin{equation}
+ A_s(n)\sim\sum_{m\ge0}\alpha_{s,m}x^{1-s-2m},
+ \label{eq:centered-tail-asymptotic}
+\end{equation}
+where
+\begin{equation}
+ \alpha_{s,0}=\frac1{s-1},
+ \qquad
+ \alpha_{s,m}=\frac{B_{2m}(1/2)}{(2m)!}(s)_{2m-1}
+ \quad(m\ge1).
+ \label{eq:alpha}
+\end{equation}
+Here $(s)_j=s(s+1)\cdots(s+j-1)$ and
+$B_{2m}(1/2)=(2^{1-2m}-1)B_{2m}$.  The half-integer center removes all
+odd corrections.  For the order-ten pair define
+\begin{equation}
+ \beta_{b,\ell}=\sum_{u=0}^{\ell}
+       \alpha_{10,u}\alpha_{2b,\ell-u}.
+ \label{eq:beta}
+\end{equation}
+Then
+\begin{equation}
+ A_{10}(n)A_{2b}(n)
+ \sim\sum_{\ell\ge0}\beta_{b,\ell}x_n^{-2b-8-2\ell}.
+ \label{eq:product-asymptotic}
+\end{equation}
+
+\subsection{The rational extraction rows}
+
+Let $N^{(b)}=M_{5,b}^{-1}$, which exists by
+\cref{thm:complete-order-ten}.  For $0\le k<b$ and
+$0\le r\le2b-1$, set
+\begin{equation}
+ w_{b,k,r}=\sum_{t=0}^{b-1}N^{(b)}_{kt}
+      \binom{2(b+t)+1}{2r}
+      2^{-2(b+t-r)},
+ \label{eq:reconstruction-weight}
+\end{equation}
+where the binomial coefficient is understood to be zero when
+$r>b+t$.  Define the even polynomial
+\begin{equation}
+ P_{b,k}(x)=\sum_{r=0}^{2b-1}w_{b,k,r}x^{2r}.
+ \label{eq:Pbk}
+\end{equation}
+Its nonnegative asymptotic part against the product of tails is
+\begin{equation}
+ Q_{b,k}(x)=
+ \sum_{r=0}^{2b-1}w_{b,k,r}
+ \sum_{\substack{\ell\ge0\\2r-2b-8-2\ell\ge0}}
+     \beta_{b,\ell}x^{2r-2b-8-2\ell}.
+ \label{eq:Qbk}
+\end{equation}
+Every sum is finite and rational.  In particular,
+\begin{equation}
+ \deg P_{b,k}\le4b-2,
+ \qquad
+ \deg Q_{b,k}\le2b-10.
+ \label{eq:PQ-degrees}
+\end{equation}
+
+\begin{theorem}[All-coordinate ordinary reconstruction]
+\label{thm:ordinary-reconstruction}
+For every $b\ge6$ and $0\le k<b$,
+\begin{equation}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}
+ \left\{
+ P_{b,k}(x_n)A_{10}(n)A_{2b}(n)-Q_{b,k}(x_n)
+ \right\}=\zeta(2k),}
+ \qquad x_n=n+\frac12,
+ \label{eq:ordinary-reconstruction}
+\end{equation}
+where $\zeta(0)=-1/2$.  The series is absolutely convergent, with
+summand $O(n^{-2})$.
+\end{theorem}
+
+\begin{proof}
+From \eqref{eq:late-coordinates},
+\[
+ Z_k=\sum_{t=0}^{b-1}N^{(b)}_{kt}C_{b+t}.
+\]
+Substitution of \eqref{eq:C-transform} gives
+\[
+ Z_k=\sum_{r=0}^{2b-1}w_{b,k,r}D_r.
+\]
+By definition, the right side is the centered regularized sum of
+$P_{b,k}(x_n)A_{10}(n)A_{2b}(n)$.  Equations
+\eqref{eq:product-asymptotic} and \eqref{eq:Qbk} show that subtraction
+of $Q_{b,k}$ removes every nonnegative power, leaving $O(x_n^{-2})$.
+Hence the subtracted series converges absolutely.
+
+It remains to compare the ordinary sum with the centered regularized
+one.  Every monomial in $Q_{b,k}$ has nonnegative even degree, and
+\[
+ \sum_{n\ge0}^{\mathrm{a.c.}}(n+\tfrac12)^{2j}
+   =\zeta(-2j,\tfrac12)=0\qquad(j\ge0).
+\]
+Thus the finite subtraction has zero centered zeta-regularized sum.
+The ordinary subtracted series therefore equals the inherited regular
+value $\sum_rw_{b,k,r}D_r=Z_k=\zeta(2k)$.
+\end{proof}
+
+\begin{corollary}[Product-polygamma form]
+\label{cor:polygamma-reconstruction}
+For every $b\ge6$ and $0\le k<b$,
+\begin{equation}
+ \sum_{n=0}^{\infty}
+ \left\{
+ \frac{P_{b,k}(x_n)}{9!(2b-1)!}
+ \psi^{(9)}(n+1)\psi^{(2b-1)}(n+1)
+ -Q_{b,k}(x_n)
+ \right\}=\zeta(2k).
+ \label{eq:polygamma-reconstruction}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+For even $s$, equation \eqref{eq:polygamma-tail} reads
+$A_s(n)=\psi^{(s-1)}(n+1)/(s-1)!$.  Substitute this into
+\eqref{eq:ordinary-reconstruction}.
+\end{proof}
+
+\begin{remark}[Effective, not merely existential]
+All coefficients in \eqref{eq:ordinary-reconstruction} are obtained by
+finite rational arithmetic: form \eqref{eq:source-M}, invert it, apply
+\eqref{eq:reconstruction-weight}, and truncate the explicit asymptotic
+convolution \eqref{eq:Qbk}.  The accompanying identity generator follows
+exactly this procedure.  No recognition of numerical constants or fit
+to a floating-point series is involved.
+\end{remark}

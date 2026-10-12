@@ -1,0 +1,99 @@
+\section{Problems addressed and mathematical status}
+\label{sec:scope}
+
+The current ProveIt manuscript develops polylogarithm identities
+together with harmonic-tail, Gamma, Hurwitz, and generalized Stieltjes
+calculi \cite{repo}. Recent incoming reports contain both explicit open
+questions and extensive proved developments. A continuation must therefore
+identify its exact starting point before claiming an advance.
+
+The principal target here is Question 2 in the research section of
+\emph{Ordered Boundary Identities and Gamma Kernels} \cite{repoordered}.
+That report constructs a Gamma integral basis for a fixed-gap harmonic
+recurrence and proves that its initial determinant equals
+$(-1)^{m(m-1)/2}K_m$, where $K_m$ is a positive integral. It asks for
+closed evaluations of $K_2,K_3,\ldots$. We give one formula for every
+$m$, rather than a table of separately evaluated integrals.
+
+The second target is Question 4 of \emph{Balanced Stieltjes Moments}
+\cite{repobalanced}: a colored or Lerch analogue of the homogeneous
+balancing and its polynomial moment reductions. The nontrivial color
+removes the order pole, so the correct generator has no separate
+$1/z$ subtraction. This changes the degree of the negative-order
+coordinate and makes the limit of color one singular. We prove the
+colored theorem on its full natural slit domain and give its exact
+connection with the uncolored normalization.
+
+The repeated-mass theorem answers a two-cluster part of the spectral
+face question in \cite{repolattice}. It reduces arbitrary multiplicities
+to finitely many multiple polylogarithms. The number of lattice terms
+remains infinite: the finite dictionary describes the types and depths
+of polylogarithms in each term, and does not give a finite evaluation
+of the complete lattice sum.
+
+\subsection{A concise result ledger}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.45\textwidth}>{\raggedright\arraybackslash}p{0.24\textwidth}@{}}
+\toprule
+Result & Exact advance & Status\\
+\midrule
+\endhead
+Gamma normalization &
+Closed $K_m$ for all $m$; explicit two-step recurrence &
+Incoming Question 2 resolved\\[3pt]
+Trigamma moments &
+After normalization, the first $n+1$ moments are exactly Gaussian
+for every positive shift &
+Proved consequence of a parameter identity\\[3pt]
+Colored balancing &
+Unique coefficients in a specified homogeneous ansatz; all integer
+moments and exceptional resonances &
+Colored counterpart resolved in that ansatz\\[3pt]
+Color-one limit &
+Explicit pole subtraction and a shift-dependent constant-term
+conversion &
+Proved normalization identity\\[3pt]
+Two mass groups &
+Finite multiple-polylogarithm formula at every pair of multiplicities &
+Two-cluster sector resolved\\[3pt]
+Depth-two parity &
+Exact double-shuffle and distribution certificate for one
+printed example &
+Classical parity made constructive\\[3pt]
+$S_6$, revised $S_8$ &
+No exact certificate supplied here &
+Remain conjectural\\[3pt]
+Unequal-tail prefix &
+Initial basis normalization is evaluated; later determinant
+nonvanishing is a separate issue &
+Unrestricted problem remains open\\
+\bottomrule
+\end{longtable}
+
+\subsection{Conventions and novelty}
+
+The Gamma function and its logarithmic derivative are denoted by
+$\Gamma$ and $\psi$; $\psi^{(j)}$ always means argument differentiation.
+An order derivative of Hurwitz zeta or Lerch's transcendent is written
+$\partial_s^j$. The generalized Stieltjes normalization is
+\begin{equation}\label{eq:stieltjes-convention}
+ \zeta(1+z,a)=\frac1z+
+  \sum_{j=0}^{\infty}\frac{(-1)^j\gamma_j(a)}{j!}z^j,
+ \qquad \gamma_0(a)=-\psi(a).
+\end{equation}
+All real-variable improper integrals asserted as ordinary integrals
+converge absolutely. A constant term is always taken in a specified
+parameter; no unspecified regularization is used.
+
+Gustafson's integral, the Gamma reflection formula, the Lerch integral
+representation, Bernoulli and Euler special values, and
+multiple-polylogarithm Landen transformations are classical
+\cite{gustafson1994,derkachov2017,dlmfgamma,dlmflerch,dlmfhurwitz,okudaueno}.
+Our normalization theorem is a new application to the specific
+incoming basis; the colored and clustered statements are explicit
+extensions of the inspected incoming formulas. The finite trigamma
+moment law is derived here from the complete parameter identity.
+A targeted literature search supports these comparisons but does not
+establish worldwide historical priority. No arithmetic independence,
+minimal period basis, or proof-assistant formalization is claimed.
+

@@ -1,0 +1,338 @@
+\section{An exact depth-two example with two Gaussian colors}
+\label{par:sec:two-colors}
+
+The Family 2 discussion in the manuscript \cite{repo} concerns
+the left-hand side below. We evaluate it in a smaller set of
+classical constants by an explicit exact certificate. Our strict convention is
+\begin{equation}\label{par:eq:convention}
+ \Li_{a,b}(u,v)=\sum_{n>m>0}\frac{u^n v^m}{n^a m^b}.
+\end{equation}
+In particular, both colors in $\Li_{a,b}(i,i)$ are attached to
+summation indices: its numerator is $i^{n+m}$.
+This is different from the one-variable value $\Li_{a,b}(i,1)$.
+Let $G=\sum_{k\ge0}(-1)^k/(2k+1)^2$ be Catalan's constant.
+
+\begin{theorem}[A weight-three two-color reduction]\label{par:thm:two-colors}
+In the convention~\eqref{par:eq:convention},
+\begin{equation}\label{par:eq:example}
+ \boxed{\displaystyle
+ \operatorname{Re}\!\left(\Li_{1,2}(i,i)-\Li_{2,1}(i,i)\right)
+ =\frac{9}{32}\zeta(3)-\frac{\pi G}{4}
+      +\frac{7\pi^2\log2}{96}.}
+\end{equation}
+The proof below is a finite rational certificate using double-shuffle
+and distribution identities. It does not use numerical recognition or
+an unproved inversion formula.
+\end{theorem}
+
+\subsection{Convergent relations, including the leading-one limit}
+
+All the series used below converge in their ordinary outer-index order.
+Indeed, every $\Li_{2,1}(u,v)$ with $|u|=|v|=1$ converges absolutely,
+since $\sum_{n\ge1}H_{n-1}/n^2<\infty$.
+For $u\ne1$, $|u|=|v|=1$, write
+\[
+ \sum_{m<n}\frac{v^m}{m^2}=\Li_2(v)+O(n^{-1}).
+\]
+Then $\Li_{1,2}(u,v)$ is the sum of
+$\Li_2(v)\sum_{n\ge1}u^n/n$ and an absolutely convergent remainder.
+The single leading-one values below also have colors different from one.
+
+For $x,y$ among the fourth roots of unity, define
+\begin{align}\label{par:eq:R}
+ \mathcal R(x,y)={}&
+ \Li_{1,2}(x,y/x)+\Li_{2,1}(x,y/x)
+       +\Li_{2,1}(y,x/y)\notag\\
+ &-\Li_{1,2}(x,y)-\Li_{2,1}(y,x)-\Li_3(xy).
+\end{align}
+When $x=1$, the two identical leading-one terms in this expression
+are canceled \emph{before} evaluation. Thus the definition is then
+\begin{equation}\label{par:eq:R-limit}
+ \mathcal R(1,y)=
+ \Li_{2,1}(1,y)+\Li_{2,1}(y,y^{-1})
+       -\Li_{2,1}(y,1)-\Li_3(y).
+\end{equation}
+
+\begin{lemma}\label{par:lem:R}
+Every value $\mathcal R(x,y)$ used here is zero, including $x=1$.
+\end{lemma}
+
+\begin{proof}
+For $x\ne1$, the strict stuffle product gives
+\begin{equation}\label{par:eq:stuffle}
+ \Li_1(x)\Li_2(y)
+ =\Li_{1,2}(x,y)+\Li_{2,1}(y,x)+\Li_3(xy).
+\end{equation}
+One may obtain it by multiplying finite sums with the same cutoff and
+partitioning the square into $n>m$, $n<m$, and $n=m$, then using the
+convergence just established.
+For the shuffle product, use $\omega_0=\dd t/t$ and
+$\omega_c=c\,\dd t/(1-ct)$ for $c\ne0$.
+Define the endpoint-one iterated integral with $c_1$ outermost by
+\[
+ J(c_1,\ldots,c_w)=
+ \int_{0<t_w<\cdots<t_1<1}\prod_{j=1}^w\omega_{c_j}(t_j).
+\]
+Expanding the kernels below endpoint one and then taking the convergent
+endpoint limit gives
+\[
+ \Li_{1,2}(u,v)=J(u,0,uv),\qquad
+ \Li_{2,1}(u,v)=J(0,u,uv).
+\]
+The three interleavings of $J(x)$ and $J(0,y)$ therefore give
+\begin{equation}\label{par:eq:shuffle}
+ \Li_1(x)\Li_2(y)
+ =\Li_{1,2}(x,y/x)+\Li_{2,1}(x,y/x)
+       +\Li_{2,1}(y,x/y).
+\end{equation}
+Subtracting~\eqref{par:eq:stuffle} proves the claim for $x\ne1$.
+
+Here is a direct justification of the limiting relation at $x=1$;
+no divergent series is assigned a value. Apply the two product formulas
+with $x=r\in(0,1)$ and keep $|y|=1$ fixed. The difference of their
+leading-one terms satisfies
+\begin{align*}
+ &\Li_{1,2}(r,y/r)-\Li_{1,2}(r,y)\\
+ &\quad=\sum_{m,k\ge1}
+       \frac{y^m r^k(1-r^m)}{(m+k)m^2},\\
+ &\left|\Li_{1,2}(r,y/r)-\Li_{1,2}(r,y)\right|
+ \le -\log(1-r)\bigl(\zeta(2)-\Li_2(r)\bigr)
+ =O\!\left((1-r)\log^2(1-r)\right).
+\end{align*}
+The bound tends to zero. For example,
+$\zeta(2)-\Li_2(r)=\int_r^1-\log(1-t)\,\dd t/t
+\le (1-r)(1-\log(1-r))/r$.
+Each remaining depth-two term is dominated by
+$\sum_{n>m}n^{-2}m^{-1}$, and the trilogarithm converges absolutely.
+Letting $r\uparrow1$ proves~\eqref{par:eq:R-limit}.
+In particular $\mathcal R(1,1)=0$ is Euler's identity
+$\Li_{2,1}(1,1)=\zeta(3)$, with its proof included in this limit argument.
+\end{proof}
+
+For $u,v\in\{1,-1\}$ choose $\sqrt1=1$ and $\sqrt{-1}=i$, and put
+\begin{align}
+ \mathcal D_s(u)
+ &:=\Li_s(u)-2^{s-1}
+       \bigl(\Li_s(\sqrt u)+\Li_s(-\sqrt u)\bigr),
+       \label{par:eq:Dsingle}\\
+ \mathcal D_{a,b}(u,v)
+ &:=\Li_{a,b}(u,v)-2^{a+b-2}
+       \sum_{\epsilon,\eta\in\{1,-1\}}
+          \Li_{a,b}(\epsilon\sqrt u,\eta\sqrt v).
+       \label{par:eq:Ddouble}
+\end{align}
+Only convergent instances occur in the table below: $s=3$ with $u=\pm1$,
+$s=2$ with $u=1$, $s=1$ with $u=-1$, $(a,b)=(2,1)$ with the listed
+colors, and $(a,b)=(1,2)$ with $u=-1$.
+All these $\mathcal D$ values are zero. To prove this directly, sum the
+signs in a finite outer-cutoff sum. They select the even summation indices;
+replacing each index by twice a new index gives the factor $2^{d-w}$
+at depth $d$ and weight $w$. The outer cutoff becomes its integer half.
+Pass to the limit using the preceding convergence checks.
+
+\subsection{The complete rational certificate}
+
+Write $\delta_s=\Li_s(i)-\Li_s(-i)$ for $s=1,2$ and define
+\begin{equation}\label{par:eq:target}
+ \mathcal T=
+ 96\bigl(\Li_{1,2}(i,i)-\Li_{2,1}(i,i)\bigr)
+ -27\Li_3(1)-24\delta_1\delta_2
+ +42\Li_2(1)\Li_1(-1).
+\end{equation}
+The following table specifies a finite formal identity:
+\begin{equation}\label{par:eq:certificate}
+ \operatorname{Re}\mathcal T
+   =\operatorname{Re}\sum_{j=1}^{15}c_j\mathcal E_j.
+\end{equation}
+\begin{center}
+\begin{tabular}{r r l}
+\hline
+$j$ & $c_j$ & $\mathcal E_j$ \\
+\hline
+1 & $-15$ & $\mathcal D_3(1)$ \\
+2 & $6$ & $\mathcal D_3(-1)$ \\
+3 & $-24$ & $\mathcal R(1,-1)$ \\
+4 & $60$ & $\mathcal D_{2,1}(-1,-1)$ \\
+5 & $96$ & $\mathcal R(i,1)$ \\
+6 & $192$ & $\mathcal R(i,-1)$ \\
+7 & $12$ & $\mathcal D_{2,1}(1,1)$ \\
+8 & $12$ & $\mathcal R(1,1)$ \\
+9 & $-168$ & $\Li_1(i)\mathcal D_2(1)$ \\
+10 & $90$ & $\mathcal D_{2,1}(1,-1)$ \\
+11 & $96$ & $\mathcal R(i,i)$ \\
+12 & $192$ & $\mathcal R(1,i)$ \\
+13 & $12$ & $\mathcal D_{1,2}(-1,-1)$ \\
+14 & $42$ & $\mathcal D_{1,2}(-1,1)$ \\
+15 & $-12$ & $\Li_2(-1)\mathcal D_1(-1)$ \\
+\hline
+\end{tabular}
+\end{center}
+
+For a completely explicit check of~\eqref{par:eq:certificate}, expand
+the definitions of $\mathcal R$ and $\mathcal D$, and expand the products
+by~\eqref{par:eq:stuffle}. Identify the real part of each coordinate with
+the real part of its complex conjugate. With
+\[
+ X_{a,b}^{p,q}=\operatorname{Re}\Li_{a,b}(i^p,i^q),
+ \qquad Z_p=\operatorname{Re}\Li_3(i^p),
+\]
+both sides of~\eqref{par:eq:certificate} become precisely
+\begin{equation}\label{par:eq:expanded-certificate}
+ 48X_{1,2}^{1,1}+48X_{1,2}^{1,3}+42X_{1,2}^{2,0}
+ +42X_{2,1}^{0,2}-144X_{2,1}^{1,1}+48X_{2,1}^{1,3}
+ +21Z_0-6Z_2.
+\end{equation}
+This is an identity in a finite rational vector space before evaluating
+any period. The companion script independently constructs the six-term
+shuffle residuals directly in strict index-and-color coordinates,
+expands every row, and checks equality with exact fractions.
+
+\begin{proof}[Proof of Theorem~\ref{par:thm:two-colors}]
+Every $\mathcal E_j$ is zero by Lemma~\ref{par:lem:R} or the finite-cutoff
+distribution identities, so~\eqref{par:eq:certificate} gives
+$\operatorname{Re}\mathcal T=0$.
+The elementary single-value evaluations needed to simplify it are
+\[
+ \Li_1(i)=-\frac{\log2}{2}+\frac{\pi i}{4},\qquad
+ \delta_1=\frac{\pi i}{2},\qquad
+ \delta_2=2iG,\qquad
+ \Li_2(1)=\frac{\pi^2}{6},\qquad
+ \Li_1(-1)=-\log2.
+\]
+Here the first identity follows from $\Li_1(z)=-\log(1-z)$ with the
+principal logarithm, and the formula for $\delta_2$ follows by taking the
+odd terms of the absolutely convergent dilogarithm series.
+Substitution into~\eqref{par:eq:target} yields
+\[
+ 0=96\operatorname{Re}\!\left(\Li_{1,2}(i,i)-\Li_{2,1}(i,i)\right)
+     -27\zeta(3)+24\pi G-7\pi^2\log2.
+\]
+Division by $96$ proves~\eqref{par:eq:example}.
+\end{proof}
+
+The ordinary stuffle product supplies, as a further consequence, the
+individual real values
+\begin{align}
+ \operatorname{Re}\Li_{2,1}(i,i)
+   &=\frac{15}{64}\zeta(3)-\frac{\pi^2\log2}{32},
+   \label{par:eq:individual-21}\\
+ \operatorname{Re}\Li_{1,2}(i,i)
+   &=\frac{33}{64}\zeta(3)-\frac{\pi G}{4}
+       +\frac{\pi^2\log2}{24}.
+   \label{par:eq:individual-12}
+\end{align}
+Indeed, $\Li_1(i)\Li_2(i)=\Li_{1,2}(i,i)+\Li_{2,1}(i,i)+\Li_3(-1)$,
+while $\operatorname{Re}\Li_2(i)=-\pi^2/48$ and
+$\Li_3(-1)=-3\zeta(3)/4$ by even--odd splitting.
+Together with~\eqref{par:eq:example}, these identities determine the sum
+and difference of the two real values.
+
+\subsection{Reconciliation with the printed Family 2 expression}
+\label{par:sec:family2-bridge}
+
+The manuscript's displayed Family 2 expression
+(\src{double:eq:fam2-example}) uses
+\[
+ L=\log2,\qquad r=\frac{1+i}{2},\qquad
+ \mu_2+i\lambda_2=\Li_2(r),\qquad
+ h_{a,b}=\operatorname{Re}\Li_{a,b}(i,1).
+\]
+To prove that its right side agrees with~\eqref{par:eq:example}, we first
+evaluate the required $h_{1,2}$ independently of the printed equality.
+
+\begin{lemma}\label{par:lem:h12}
+In the strict convention~\eqref{par:eq:convention},
+\begin{equation}\label{par:eq:h12}
+ h_{1,2}=-\frac{29}{32}\zeta(3)+\frac{\pi G}{4}
+                         +\frac{\pi^2L}{96}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Use the same $\delta_s$ and relation rows $\mathcal E_j$ as in
+the certificate~\eqref{par:eq:certificate}, and put
+\[
+ \mathcal T_h=96\Li_{1,2}(i,1)+87\Li_3(1)
+                +24\delta_1\delta_2+6\Li_2(1)\Li_1(-1).
+\]
+A second exact rational identity in those same coordinates is
+\begin{align}\label{par:eq:h12-certificate}
+ \operatorname{Re}\mathcal T_h
+ =\operatorname{Re}\bigl(&-9\mathcal E_1+18\mathcal E_2
+ -12\mathcal E_4-96\mathcal E_5-24\mathcal E_9
+ +6\mathcal E_{10}\notag\\
+ &-12\mathcal E_{13}+6\mathcal E_{14}+12\mathcal E_{15}\bigr)=0.
+\end{align}
+As before, this is checked just by expanding the displayed definitions,
+stuffle products, and conjugate pairs. Every row on the right vanishes
+by the already proved convergent identities; the only shuffle row
+needed here has first factor $\Li_1(i)$.
+Since $\delta_1\delta_2=-\pi G$ and
+$\Li_2(1)\Li_1(-1)=-\pi^2L/6$, the left side is
+$96h_{1,2}+87\zeta(3)-24\pi G-\pi^2L$.
+Solving proves~\eqref{par:eq:h12}. The companion bridge verifier
+reconstructs these nine rows and checks the exact residual separately
+from the two-color identity.
+\end{proof}
+
+The remaining depth-one and logarithmic quantities are
+\begin{equation}\label{par:eq:bridge-values}
+ \mu_2=\frac{5\pi^2}{96}-\frac{L^2}{8},\qquad
+ \lambda_2=G-\frac{\pi L}{8},\qquad
+ h_{1,1}=\frac{L^2}{8}-\frac{\pi^2}{32}.
+\end{equation}
+For completeness, the classical dilogarithm reflection and Landen
+identities \cite{okudaueno} give
+\[
+ 2\mu_2=\zeta(2)-\log r\log\bar r,
+ \qquad
+ \Li_2(i)+\Li_2(\bar r)=-\tfrac12\log^2(1-i).
+\]
+Use $\log r=-L/2+i\pi/4$ and $\log(1-i)=L/2-i\pi/4$
+to obtain the first two evaluations in~\eqref{par:eq:bridge-values}.
+These standard dilogarithm identities follow by differentiating and
+fixing the constant at zero, with continuation in the principal domains
+containing the displayed arguments. Finally,
+$\Li_{1,1}(i,1)=\tfrac12\log^2(1-i)$ follows from the shuffle of
+two identical one-letter integrals, and gives the third evaluation.
+
+\begin{corollary}[The printed Family 2 equality]\label{par:cor:family2-printed}
+The displayed depth-two identity in the manuscript is valid:
+\begin{equation}\label{par:eq:family2-printed}
+ \operatorname{Re}\!\left(\Li_{1,2}(i,i)-\Li_{2,1}(i,i)\right)
+ =3\zeta(3)-4L\mu_2-\pi\lambda_2-4h_{1,1}L+3h_{1,2}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+Substituting~\eqref{par:eq:h12} and~\eqref{par:eq:bridge-values} into the
+right side gives
+\begin{align*}
+ &\left(3-\frac{87}{32}\right)\zeta(3)
+ +\left(-1+\frac34\right)\pi G
+ +\left(-\frac{20}{96}+\frac{12}{96}
+          +\frac{12}{96}+\frac3{96}\right)\pi^2L
+ +\left(\frac12-\frac12\right)L^3\\
+ &\qquad=\frac9{32}\zeta(3)-\frac{\pi G}{4}
+                 +\frac{7\pi^2L}{96}.
+\end{align*}
+This equals the independently proved left side by
+Theorem~\ref{par:thm:two-colors}.
+\end{proof}
+
+\paragraph{Independent diagnostic.}
+For verification against the strict convention, direct differentiation
+and integration of~\eqref{par:eq:convention} give
+\[
+ \operatorname{Re}\Li_{1,2}(i,i)
+ =\operatorname{Re}\int_0^1\frac{i\Li_2(-t)}{1-it}\,\dd t,
+ \qquad
+ \operatorname{Re}\Li_{2,1}(i,i)
+ =-\int_0^1\frac{t\log t\log(1+t)}{1+t^2}\,\dd t.
+\]
+An optional $80$-digit quadrature in the companion script gives
+\[
+ \operatorname{Re}\!\left(\Li_{1,2}(i,i)-\Li_{2,1}(i,i)\right)
+ =0.11751017576784368621941000460386119840621435030463\ldots.
+\]
+This is a numerical diagnostic; the finite relation and analytic
+arguments above prove the identity. No conclusion about $S_6$ or the
+revised $S_8$ conjecture follows from this example.

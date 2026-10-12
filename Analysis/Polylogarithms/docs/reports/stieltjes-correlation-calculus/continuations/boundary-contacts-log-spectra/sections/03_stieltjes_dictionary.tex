@@ -1,0 +1,196 @@
+\section{Stieltjes, zeta-derivative, and polygamma forms of the contacts}
+\label{sj:section}
+
+The independent-order theorem becomes an explicit identity in the
+functions named in the research programme after a finite coefficient
+conversion. The positive-order Stieltjes conversion itself is inherited
+from \cite{ProveItBilinear}; its use with the completed negative-total-order
+subtractions is the additional consequence here.
+
+\subsection{A finite dictionary at every base order}
+
+For a base order \(\sigma\) and an integer \(r\ge0\), write
+\[
+ \mathcal T_{\sigma,r}(z)
+   =\left.\partial_s^r\tau_s(z)\right|_{s=\sigma},
+ \qquad
+ \mathcal V_{\sigma,r}(z)
+   =\left.\partial_s^rV_s(z)\right|_{s=\sigma}.
+\]
+The formulas for \(\mathcal T\) use \(\Re z>0\); those for
+\(\mathcal V\) use \(\Re z>1\).
+Set \(L(z)=\ell(z)-\log2\), only in this section. At \(\sigma\ne1\),
+\begin{equation}\label{sj:generalT}
+ \mathcal T_{\sigma,r}(z)
+ =\left(\frac{h(z)}2\right)^\sigma
+  \sum_{j=0}^r\binom rj L(z)^{r-j}
+  \left\{\zeta^{(j)}\!\left(\sigma,\frac z2\right)
+        -\zeta^{(j)}\!\left(\sigma,\frac{z+1}{2}\right)\right\}.
+\end{equation}
+At the removable order \(\sigma=1\), the correct finite expression is
+\begin{equation}\label{sj:stieltjesT}
+ \mathcal T_{1,r}(z)=\frac{h(z)}2
+  \sum_{j=0}^r\binom rj L(z)^{r-j}(-1)^j
+  \left\{\gamma_j\!\left(\frac z2\right)
+        -\gamma_j\!\left(\frac{z+1}{2}\right)\right\}.
+\end{equation}
+There is no pole or limiting quotient in this formula. At every \(\sigma\),
+\begin{align}
+ \mathcal V_{\sigma,r}(z)
+ =h(z)^{-2\sigma}\bigl\{
+ &z^\sigma(\log z-2\ell(z))^r \notag\\
+ &-(z-1)^\sigma(\log(z-1)-2\ell(z))^r\bigr\}.
+ \label{sj:Vjets}
+\end{align}
+Equations \eqref{sj:generalT}--\eqref{sj:Vjets} follow by differentiating
+the exponential factor in \eqref{ct:B}--\eqref{ct:V}, and, at one, by
+subtracting the two Stieltjes expansions before coefficient extraction.
+
+For nonnegative integers \(k\),
+\[
+ \mathcal B_{-k}(z)=\frac12E_k(z),
+ \qquad
+ \frac{2e^{zt}}{e^t+1}=\sum_{k\ge0}E_k(z)\frac{t^k}{k!}.
+\]
+This replaces a zero-order negative-integer tail by an Euler polynomial.
+An order derivative at \(-k\) is still given by
+\eqref{sj:generalT}; it cannot be obtained by differentiating a polynomial
+identity indexed only at integers.
+
+\begin{corollary}[An explicit ordinary identity for every mixed boundary jet]
+\label{sj:allboundary}
+Fix \(\Re a,\Re b>0\), \(\sigma+\omega=-2m\), \(m\ge0\), and a cutoff \(c\) with
+\(\Re c>1\). Let \(z_n=n+a+1\), \(w_n=n+b+1\), \(X_n=n+c\),
+and use the fixed-cutoff coefficients \(c_k\) in \eqref{ct:ck}.
+For \(r,s\ge0\) define
+\begin{align}
+ \mathcal G_{r,s}(z,w)
+ ={}&\sum_{i=0}^r\binom ri
+    \mathcal V_{\sigma,i}(z)
+    \mathcal T_{\sigma,r-i}(z)\mathcal T_{\omega,s}(w)\notag\\
+ &+\sum_{j=0}^s\binom sj
+    \mathcal T_{\sigma,r}(z)\mathcal V_{\omega,j}(w)
+    \mathcal T_{\omega,s-j}(w),\label{sj:G}\\
+ \mathcal P_{r,s}(X)
+ ={}&\sum_{k=0}^m X^{m-k}
+   \sum_{i=0}^r\sum_{j=0}^s
+       \binom ri\binom sj
+       \left.\partial_p^i\partial_q^jc_k\right|_{(\sigma,\omega)}
+       \left(-\frac{\log X}{2}\right)^{r+s-i-j}.
+       \label{sj:P}
+\end{align}
+Then
+\begin{align}
+ &\sum_{n\ge0}
+   \{\mathcal G_{r,s}(z_n,w_n)
+          -\mathcal P_{r,s}(X_n-1)+\mathcal P_{r,s}(X_n)\}
+       \notag\\
+ &\quad=
+ \mathcal T_{\sigma,r}(a)\mathcal T_{\omega,s}(b+1)
+ +\mathcal T_{\sigma,r}(a+1)\mathcal T_{\omega,s}(b)
+ -\mathcal P_{r,s}(c-1).
+ \label{sj:ordinary}
+\end{align}
+The series is absolutely convergent. Its summand is
+\(O(n^{-2}(1+\log^{r+s}n))\).
+\end{corollary}
+
+\begin{proof}
+Take \(\partial_p^r\partial_q^s\) in
+Theorem~\ref{ct:normal}, with \(K=m\), before specializing.
+The point \((\sigma,\omega)\) lies inside its absolute-normal domain.
+The product rule gives \eqref{sj:G}; differentiating the endpoint powers
+gives \eqref{sj:P}. The differentiated remainder estimate proves the stated
+decay and permits the interchange.
+\end{proof}
+
+Taking \(\sigma=1\), \(\omega=-2m-1\) in this corollary gives every
+independent product of a Stieltjes order at half-shifted arguments with
+negative-order Hurwitz derivatives. The correction to the cutoff
+\emph{constant} vanishes whenever \(r+s>m\), by
+Theorem~\ref{ct:contacts}. Polynomial and logarithmic subtraction terms may
+still remain; their existence is not contradicted by the vanishing of that
+single constant coefficient.
+
+\subsection{An ordinary first-Stieltjes identity at total order zero}
+
+The first independent derivative already gives a concrete formula whose
+summands involve \(\gamma_1\), while its value uses only familiar constants.
+For real \(z>1\), put
+\begin{align*}
+ T(z)&=\mathcal T_{1,1}(z),&
+ R(z)&=\frac{z-\frac12}{2h(z)},\\
+ A(z)&=h(z)^{-2}-\frac{h(z)^2}{z(z-1)},&
+ W(z)&=\frac{z\log z-(z-1)\log(z-1)-2\ell(z)}{h(z)^2}.
+\end{align*}
+Here \(T\) is explicitly the two-term Stieltjes expression
+\eqref{sj:stieltjesT}. Let
+\[
+ L=\log2,\qquad \lambda_1=\frac12\log\frac2\pi .
+\]
+Then
+\begin{align}
+ &\sum_{z=2}^{\infty}
+   \left\{
+      R(z)\bigl[W(z)\tau_1(z)+A(z)T(z)\bigr]
+          -\frac14\log\frac z{z-1}
+   \right\}\notag\\
+ &\quad=
+ \frac{3}{2\pi}\left\{L(\gamma+\lambda_1)-\frac{L^2}{2}\right\}
+ +\frac{\pi}{8}\left\{-\lambda_1(1-L)-\gamma L+\frac{L^2}{2}\right\}.
+ \label{sj:explicit}
+\end{align}
+This is an ordinary absolutely convergent series.
+
+To prove it, use \eqref{sj:ordinary} at
+\((\sigma,\omega,a,b,r,s)=(1,-1,1,1,1,0)\), with \(c=2\).
+Its only endpoint subtraction is
+\(\mathcal P_{1,0}(X)=-\frac14\log X\), giving precisely the logarithm
+in \eqref{sj:explicit}. Now
+\(\mathcal B_s(1)=\eta(s)=(1-2^{1-s})\zeta(s)\), and the removable
+expansion at one gives
+\[
+ \eta(1)=L,\qquad \eta'(1)=\gamma L-\frac{L^2}{2}.
+\]
+Together with \(h(1)^2=2/\pi\), \(h(2)=1/h(1)\),
+\(\mathcal B_s(2)=1-\eta(s)\), and
+\(\mathcal B_{-1}(z)=(z-\frac12)/2\), this evaluates
+\(T(1)R(2)+T(2)R(1)\) as the right side of \eqref{sj:explicit}.
+
+\subsection{Argument derivatives and generalized harmonic values}
+
+All argument derivatives of the dictionary reduce by the two laws
+\begin{align}
+ \partial_z^k\mathcal B_s(z)
+    &=(-1)^k(s)_k\mathcal B_{s+k}(z),\label{sj:Barg}\\
+ \ell^{(k)}(z)
+    &=2^{-k}\left\{
+       \psi^{(k-1)}\!\left(\frac{z+1}{2}\right)
+       -\psi^{(k-1)}\!\left(\frac z2\right)\right\},
+       \qquad k\ge1. \label{sj:ellarg}
+\end{align}
+The first follows by differentiating the Hurwitz series in its absolute
+domain and continuing; the second follows directly from the Gamma quotient.
+The product rule, or complete Bell polynomials for derivatives of an
+exponential, therefore gives a terminating expression at every fixed
+argument derivative order.
+
+At integer arguments the classical recurrence gives
+\[
+ \psi(n)=H_{n-1}-\gamma,\qquad
+ \psi^{(j)}(n)=(-1)^{j+1}j!
+       \{\zeta(j+1)-H_{n-1}^{(j+1)}\}\quad(j\ge1).
+\]
+At half-integers, for \(n\ge0\) and \(j\ge1\) in the polygamma line,
+\begin{align*}
+ \psi(n+\tfrac12)&=-\gamma-2\log2+2H_{2n}-H_n,\\
+ \psi^{(j)}(n+\tfrac12)
+ &=(-1)^{j+1}j!\left\{
+    (2^{j+1}-1)\zeta(j+1)-2^{j+1}H_{2n}^{(j+1)}
+                               +H_n^{(j+1)}\right\}.
+\end{align*}
+Thus fixed integer and half-integer shift derivatives have an explicit
+generalized harmonic alphabet. These elementary reductions are
+classical \cite{DLMF}; the new boundary identities remain governed by the
+ambient contact theorem, with the cutoff held fixed during shift
+differentiation as specified there.

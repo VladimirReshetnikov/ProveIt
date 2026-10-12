@@ -1,0 +1,141 @@
+\section{Corrections and reconciliation of the existing material}
+\label{au:section}
+
+The audit distinguishes a definite transcription error from research-status
+updates and from questions that remain unresolved. The supplied patch makes
+only the definite correction. The integration note proposes the status
+changes separately.
+
+\subsection{A reciprocal-Gamma coefficient contains a transcription error}
+
+In the canonical chapter
+\src{07-digamma-power-moments.tex}, equation
+\src{dgp:eq:a5}, the final term of the displayed numerator is
+\verb|+24\zeta\alpha_5|.
+It should be \(24\zeta_5\), where the chapter uses
+\(\zeta_j=\zeta(j)\). The corrected coefficient is
+\begin{equation}\label{au:alpha5}
+ \boxed{\displaystyle
+ \alpha_5=
+ \frac{\gamma^5-10\gamma^3\zeta(2)+20\gamma^2\zeta(3)
+       +15\gamma\zeta(2)^2-30\gamma\zeta(4)
+       -20\zeta(2)\zeta(3)+24\zeta(5)}{120}.}
+\end{equation}
+Indeed, the logarithm of the reciprocal Gamma function is
+\[
+ \log\frac1{\Gamma(1+u)}
+   =\gamma u-\frac{\zeta(2)}2u^2+\frac{\zeta(3)}3u^3
+          -\frac{\zeta(4)}4u^4+\frac{\zeta(5)}5u^5+O(u^6).
+\]
+Exponentiating and extracting \(u^5\) gives
+\eqref{au:alpha5}. All other terms in the source's numerator agree with
+this calculation. This is a transcription correction, not a new
+reciprocal-Gamma identity. The companion patch was checked against the
+pinned source with \src{git apply --check}; it was not applied to the
+repository.
+
+\subsection{The diagonal negative-order target was already completed}
+
+Research question R7 in \emph{Tail Kernels and Boundary Products}
+\cite{ProveItTailKernels} asks for the continued alternating-square law
+at nonpositive orders, every order derivative, and the distinction between
+ordinary summation and cutoff continuation. The incoming
+\emph{Bilinear Tails and Determinants} report already supplies precisely
+that diagonal result in
+\src{sections/04_cutoff_jets.tex}, including its finite endpoint,
+even-power expansion, contacts, translated cutoffs, and convergent
+subtractions \cite{ProveItBilinear}.
+
+The appropriate update is to cross-reference that proof and retain the
+genuinely broader independent-order question. The latter was explicitly
+left open in the same report and is completed by
+Theorem~\ref{ct:contacts} here. The diagonal result is also an exact
+computational compatibility check on the present bivariate coefficient
+algorithm.
+
+\subsection{The cubic Stieltjes target has a preserved general formula}
+
+R9 of \emph{Tail Kernels and Boundary Products} asks for an explicit
+holomorphic generating germ for cubic Stieltjes products with independent
+indices and positive total argument-derivative order. Its stated first
+target is
+\[
+ \FP\int_0^1\gamma_1(x)^2\gamma_0'(x)\dd x.
+\]
+The preserved \emph{Coincident Directional Zeta} continuation already
+contains a general local completion for any number of factors and a finite
+cubic Tornheim--zeta coordinate formula
+\cite{ProveItCubic}. Its relevant source labels are
+\src{cub:general-completion},
+\src{cub:all-moments}, and \src{cub:global}.
+Thus the existence of an explicit finite generating formula should be
+marked as source-proved, subject to the project's normal integration and
+review process. The further question of reducing selected retained
+Tornheim order derivatives to a smaller arithmetic alphabet remains
+meaningful. The supplied source does not prove general depth-one closure
+or arithmetic independence.
+
+The local mechanism was checked independently as follows. Write
+\[
+ H_{u,r}(x)=\partial_x^r\left(\zeta(1+u,x)-\frac1u\right).
+\]
+Its singular term is
+\[
+ (-1)^r(1+u)_r x^{-1-u-r},
+\]
+and its remainder is jointly holomorphic near \(u=x=0\). In a product
+of three factors, choosing the singular term in a nonempty proper subset
+\(S\) produces a resonance exactly at Taylor degree
+\begin{equation}\label{au:resonant-degree}
+  \sum_{i\in S}(1+r_i)-1
+\end{equation}
+of the remaining regular factors. The corresponding monomial is
+\(A_S(\boldsymbol u)x^{-1-\sum_{i\in S}u_i}\). Its analytically
+continued integral is
+\(-A_S(\boldsymbol u)/\sum_{i\in S}u_i\), while all its order derivatives
+at the resonance have fixed-coordinate finite part zero.
+
+For \((r_1,r_2,r_3)=(0,0,1)\), the three singleton Taylor degrees are
+\(0,0,1\); the three pair degrees are \(1,2,2\). These are all six
+proper nonempty subsets. The full triple has no remaining regular factor
+and has baseline exponent \(-4\), so it supplies no resonance through the
+parameter origin. This checks the number and degrees of the local terms
+required for the stated first target.
+
+The correction uses the \emph{full analytic numerator}
+\(A_S(\boldsymbol u)\) in each quotient. Replacing it by its restriction
+to \(\sum_{i\in S}u_i=0\) removes the pole but changes transverse finite
+coefficients. This is the same structural reason that the ambient contact
+polynomials in Section~\ref{ct:section} must be differentiated before
+restriction. The preserved cubic source retains these full numerators.
+Its global Tornheim coordinates belong to the classical multiple-zeta
+setting represented, for example, by Espinosa--Moll \cite{EspinosaMoll}.
+
+\subsection{Results deliberately retained with their existing attribution}
+
+The centered cubic trigamma family encountered during the audit is already
+present in \emph{Quartic Spectral Reconstruction}
+\cite{ProveItQuartic}, in the section containing
+\src{qtm:C1}, \src{qtm:Cj}, \src{qtm:Rj}, and \src{qtm:G3}.
+An independent finite summation reproduced the two exceptional
+low-index corrections there. That family is not claimed as a contribution
+of the present article.
+
+Likewise, the degree bound for normalized spectral jets, the top local
+polarization, and the all-difference formula already occur in
+\emph{Arithmetic Spectral Jets}
+\cite{ProveItArithmeticJets}, labels
+\src{asj:thm:polynomial},
+\src{asj:thm:top}, and
+\src{asj:thm:all-differences}.
+Equation~\eqref{sp:inherited-correction} is their specialized
+normalization in the quadratic setting. The new ordinary density
+representations should be integrated alongside this existing theorem,
+not used to replace its attribution.
+
+The unrestricted unequal-order reconstruction problem and the full
+fixed-gap-six family remain open at the scope inspected here. None of the
+contact or spectral identities in this article establishes their required
+uniform nonvanishing. No further false theorem was established by this
+targeted audit, and no claim is made that every proof in the complete
+manuscript has been rechecked.

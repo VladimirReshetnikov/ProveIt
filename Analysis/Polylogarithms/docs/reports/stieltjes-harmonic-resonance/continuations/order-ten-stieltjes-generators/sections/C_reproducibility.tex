@@ -1,0 +1,67 @@
+\section{Reproducibility and evidential roles}
+\label{app:reproducibility}
+
+All paths below are relative to the package root.
+
+\subsection{Exact proof checks}
+
+\begin{lstlisting}[language=bash]
+python3 verification/generate_order10_certificate.py
+python3 verification/verify_order10_certificate.py
+python3 verification/verify_order10_certificate_independent.py
+python3 verification/verify_normalization_spots.py
+python3 verification/generate_explicit_identity.py
+python3 verification/verify_explicit_identity.py
+\end{lstlisting}
+
+The first two commands generate and replay the published modular vector.
+The third is the independently written full replay.  The fourth checks
+the retained/source multiplier at five boundary values.  The last two
+regenerate the explicit $(10,16)$ identity from rational matrix
+inversion and centered asymptotics.
+
+\subsection{Numerical diagnostics}
+
+\begin{lstlisting}[language=bash]
+python3 verification/numerical_check_explicit_identity.py
+python3 verification/numerical_check_generators.py
+\end{lstlisting}
+
+These scripts use high-precision numerical arithmetic to detect
+transcription or branch errors.  They are not proof gates and are not
+interval-arithmetic certificates.
+
+\subsection{Complete replay and build}
+
+\begin{lstlisting}[language=bash]
+python3 verification/run_all.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+
+The package has no compiled Python extension and no network dependency.
+The exact scripts use only the Python standard library; the numerical
+scripts require \texttt{mpmath}.  The PDF build requires a conventional
+\TeX\ Live installation with \texttt{latexmk}.  The supplied
+\texttt{Makefile} exposes the targets \texttt{verify}, \texttt{pdf},
+and \texttt{all}.
+
+\subsection{Claim classification}
+
+\begin{center}
+\begin{tabular}{p{0.22\linewidth}p{0.67\linewidth}}
+\toprule
+Class&Role\\
+\midrule
+Inherited theorem&Shifted-Hankel reduction, exact determinant multiplier,
+and eventual threshold $B_5=1920$.\\
+New exact theorem&Finite modular completion, complete order-ten rank,
+ordinary reconstruction, two-tail generator, and Stieltjes kernel.\\
+Exact computation&Finite-field determinant vector and rational
+coefficient generation; both are replayable.\\
+Numerical diagnostic&High-precision evaluation of displayed identities;
+useful for error detection but not invoked in proofs.\\
+Open problem&Every item in \cref{sec:research}; none is represented as
+settled.\\
+\bottomrule
+\end{tabular}
+\end{center}

@@ -1,0 +1,253 @@
+\section{The harmonic degree is generically equal to the pencil rank}
+\label{deg:sec}
+
+The finite-difference determinant report proves an upper bound for the
+harmonic degree and asks when that bound is strict.  For real rational
+weights, the answer is particularly clean: it is never strict over the
+field of rational functions in the cutoff.  At a specified integer
+cutoff it can be strict, but only at finitely many cutoffs.  Positivity
+removes these exceptions once enough nodes have been included.
+
+\subsection{An affine symmetric-pencil lemma}
+
+Let $C_1,\ldots,C_t$ be real symmetric $r\times r$ matrices, write
+\[
+ C(X)=\sum_{j=1}^tX_jC_j,
+ \qquad \rho=\operatorname{rank}_{\mathbb R(X)} C(X),
+ \qquad q=r-\rho,
+\]
+and let $D$ be another real symmetric matrix.  The variables $X_j$ are
+formal independent variables.  Their introduction makes no assertion
+about algebraic independence of special functions.
+
+\begin{lemma}[Compression and the highest degree]
+\label{deg:compression}
+The polynomial $P(X)=\det(D+C(X))$ has total degree at most $\rho$.
+Choose any $v\in\mathbb R^t$ such that $C(v)$ has rank $\rho$, and let
+$K$ be a real $r\times q$ matrix whose columns form its kernel.
+Then
+\begin{equation}\label{deg:isotropic}
+ K^{\mathsf T}C_jK=0\qquad(1\le j\le t).
+\end{equation}
+If $K^{\mathsf T}DK$ is nonsingular, $P$ has total degree exactly $\rho$.
+For a generic maximal-rank direction, nonsingularity of this compression
+is also necessary.
+\end{lemma}
+\begin{proof}
+In each determinant term, selecting more than $\rho$ columns from
+$C(X)$ gives zero, which proves the upper bound.  Put $A=C(v)$ and
+choose an invertible real matrix $S=[U\ K]$ so that
+\[
+ S^{\mathsf T}AS=\begin{pmatrix} A_0&0\\0&0\end{pmatrix},
+ \qquad \det A_0\ne0.
+\]
+For every $j$, the rank of $A+zC_j$ is at most $\rho$ for every real
+$z$: every $(\rho+1)$-minor of the whole pencil is identically zero.
+For sufficiently small $z$, its upper-left $\rho\times\rho$ block
+remains invertible.  The Schur complement of this block must therefore
+vanish identically.  Its coefficient of $z$ is exactly
+$K^{\mathsf T}C_jK$, proving \eqref{deg:isotropic}.
+
+The coefficient of $z^\rho$ in $\det(D+zA)$ is
+\begin{equation}\label{deg:leading-direction}
+ \frac{\det A_0}{(\det S)^2}\det(K^{\mathsf T}DK).
+\end{equation}
+This follows by taking the $zA_0$ entry in each of the first $\rho$
+rows and columns after the congruence by $S$; the remaining block is
+$K^{\mathsf T}DK$.  Thus a nonzero compression proves degree $\rho$.
+Conversely, if the degree-$\rho$ homogeneous part is nonzero, it does
+not vanish at a generic real maximal-rank direction, and
+\eqref{deg:leading-direction} makes that compression nonsingular.
+The conventions for $q=0$ are that $K$ has no columns and its
+compressed determinant is one.
+\end{proof}
+
+There is a direct symbolic version that avoids expanding the full
+$r\times r$ determinant.  Choose a nonsingular principal
+$\rho\times\rho$ submatrix of $C(X)$ and, after a simultaneous
+permutation of rows and columns, write
+\[
+ C(X)=\begin{pmatrix} A&B\\B^{\mathsf T}&F\end{pmatrix}.
+\]
+Over $\mathbb R(X)$, the rank condition gives $F=B^{\mathsf T}A^{-1}B$.
+Set
+\begin{equation}\label{deg:generic-kernel}
+ K(X)=\begin{pmatrix}-A^{-1}B\\I_q\end{pmatrix}.
+\end{equation}
+Then the highest homogeneous part has the exact expression
+\begin{equation}\label{deg:highest}
+ [P]_{\rho}(X)=\det A\,
+                  \det\bigl(K(X)^{\mathsf T}DK(X)\bigr).
+\end{equation}
+Although the displayed factors are rational functions, their product is
+the indicated homogeneous polynomial.  The expression remains valid
+when it vanishes.  A symmetric matrix of rank $\rho$ over a field of
+characteristic zero has a nonsingular principal minor of size $\rho$;
+this follows, for example, by symmetric elimination with $1\times1$
+and $2\times2$ nonsingular pivots.
+
+\subsection{Sharpness for moment matrices, including signed weights}
+
+Let $w_n\in\mathbb R$ be a sequence and put
+\begin{equation}\label{deg:moment}
+ M_N=\sum_{n=0}^N w_n v(n)v(n)^{\mathsf T},
+ \qquad v(n)=(1,n,\ldots,n^{r-1})^{\mathsf T}.
+\end{equation}
+Suppose that a decomposition
+\begin{equation}\label{deg:decomp}
+ M_N=D_N+\sum_{j=1}^t h_j(N)C_j
+\end{equation}
+holds with real $h_j(N)$ and real symmetric matrices $D_N,C_j$,
+where the $C_j$ are independent of $N$.  Define
+$P_N(X)=\det(D_N+C(X))$ and let $\delta_N$ be its total degree,
+with degree $-\infty$ assigned to the zero polynomial.
+
+\begin{theorem}[Only finitely many deficient cutoffs]
+\label{deg:main}
+Assume there are an integer $N_*\ge0$ and $\epsilon\in\{1,-1\}$ such
+that $\epsilon w_n>0$ for every integer $n>N_*$.  Then
+\[
+ \delta_N\le\rho\quad\text{for all }N,
+\]
+and at most $r(r-\rho)$ integers $N\ge N_*$ satisfy
+$\delta_N<\rho$.
+If all nonzero $w_n$ have the same sign and at least $r$ distinct
+nodes of positive absolute weight have been included by cutoff $N$,
+then $\delta_N=\rho$ at that cutoff.
+
+If in addition $D_N$ has entries rational in $N$, then
+\begin{equation}\label{deg:generic-sharp}
+ \deg_X\det(D_N+C(X))=\rho
+ \qquad\text{over }\mathbb R(N).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Choose one real maximal-rank direction and its kernel matrix $K$ as in
+Lemma~\ref{deg:compression}.  Such a real direction exists because a
+nonzero maximal minor is a nonzero real polynomial.  Equation
+\eqref{deg:isotropic} and \eqref{deg:decomp} imply
+\begin{equation}\label{deg:gram}
+ G_N:=K^{\mathsf T}D_NK
+ =K^{\mathsf T}M_NK
+ =\sum_{n=0}^N w_n p(n)p(n)^{\mathsf T},
+ \qquad p(n)=K^{\mathsf T}v(n).
+\end{equation}
+The components of $p$ are linearly independent real polynomials of
+degree at most $r-1$.
+
+For $N\ge N_*$, the matrix
+\[
+ \epsilon(G_{N+r}-G_N)
+ =\sum_{n=N+1}^{N+r}\epsilon w_n p(n)p(n)^{\mathsf T}
+\]
+is positive definite.  Indeed, a nonzero linear combination of the
+components of $p$ is a nonzero polynomial of degree at most $r-1$;
+it cannot vanish at all $r$ displayed nodes.  Along any one of the
+$r$ residue classes of cutoffs modulo $r$, the ordered eigenvalues of
+$\epsilon G_N$ therefore increase strictly.  Each of the $q=r-\rho$
+eigenvalues can equal zero at most once.  Consequently at most $q$
+cutoffs in each residue class have singular $G_N$, and at most $rq$
+cutoffs in total do.  By Lemma~\ref{deg:compression}, degree deficiency
+can occur only at those cutoffs.  This also treats $q=0$, for which
+there are no exceptions.
+
+If the weights in the cutoff have one sign and at least $r$ distinct
+nonzero nodes, the same polynomial argument makes $G_N$ definite
+directly.  Finally, in the rational case $\det G_N$ is a rational
+function of $N$.  It is nonzero at some integer cutoff by the preceding
+argument, hence is not the zero rational function.  Formula
+\eqref{deg:leading-direction} proves \eqref{deg:generic-sharp}.
+\end{proof}
+
+\begin{corollary}[Resolution for real rational weights]
+\label{deg:rational}
+Let $R$ be a nonzero real rational function having no pole at a
+nonnegative integer.  Form its finite moment matrices and their
+harmonic decomposition as in the finite-difference determinant report.
+Then their formal harmonic degree over $\mathbb R(N)$ is exactly the
+generic harmonic-pencil rank.  At most finitely many nonnegative
+integer cutoffs have smaller degree.  For $R(n)>0$ at all
+nonnegative integers, every $N\ge r-1$ has the exact generic degree.
+\end{corollary}
+\begin{proof}
+A nonzero real rational function has constant nonzero sign for all
+sufficiently large positive arguments.  The residue construction gives
+the decomposition \eqref{deg:decomp} with rational $D_N$.  Apply
+Theorem~\ref{deg:main}.  When poles and residues are represented using
+nonreal conjugate pairs, replace each conjugate pair of formal harmonic
+coordinates by its formal real and imaginary parts.  This invertible
+linear change makes the coefficient matrices real and preserves both
+generic rank and total degree.
+\end{proof}
+
+The real hypothesis in this proof is substantive: it supplies definiteness
+of the sufficiently late increments.  No corresponding theorem for an
+arbitrary complex rational weight is asserted here.  Likewise, formal
+degree does not by itself prove a minimal multiple-polylogarithm depth
+under functional relations.
+
+\subsection{An exact test for exceptional cutoffs}
+
+In the generic kernel formula \eqref{deg:generic-kernel}, replace $K$ by
+the polynomial matrix
+\[
+ \widetilde K(X)=
+ \begin{pmatrix}-\operatorname{adj}(A)B\\(\det A)I_q\end{pmatrix}.
+\]
+After clearing denominators in $N$, compute the polynomial
+\begin{equation}\label{deg:exception-certificate}
+ Q(N,X)=\det\bigl(\widetilde K(X)^{\mathsf T}D_N
+                                      \widetilde K(X)\bigr).
+\end{equation}
+For an admissible cutoff $N_0$, degree is deficient if and only if
+$Q(N_0,X)$ is identically zero.  Equivalently, all its coefficients in
+$X$ vanish.  Over an exact coefficient field, their greatest common
+divisor as polynomials in $N$ gives precisely the exceptional cutoffs
+among its admissible nonnegative integer roots.  Denominator zeros must
+be excluded or checked from the original finite moment formula.  This
+uses a determinant of size $r-\rho$, not an expansion of the original
+determinant.  A single fixed maximal-rank direction gives a cheaper
+finite candidate list, which the generic test can then filter.
+
+\subsection{A positive example and a genuine signed exception}
+
+Take $r=3$ and first let
+\[
+ R(x)=\frac1{x+1}+\frac1{x+2}.
+\]
+There is one harmonic variable $X=H_N^{(1)}(1)$, and its coefficient is
+\[
+ C=\begin{pmatrix}2&-3&5\\-3&5&-9\\5&-9&17\end{pmatrix},
+ \qquad \operatorname{rank}C=2,
+ \qquad K=(2,3,1)^{\mathsf T}.
+\]
+Since $K^{\mathsf T}v(n)=(n+1)(n+2)$, the leading coefficient is
+\begin{equation}\label{deg:positive-example}
+ [P_N]_2=\frac{(N+1)(N+2)^2(N+3)}2 X^2.
+\end{equation}
+Here the top-left $2\times2$ minor of $C$ has determinant one.
+
+For the signed weight
+\begin{equation}\label{deg:signed-weight}
+ R(x)=\frac1{x+1}-\frac7{5(x+2)}
+     =\frac{3-2x}{5(x+1)(x+2)},
+\end{equation}
+the same kernel has compressed moment
+\[
+ K^{\mathsf T}D_NK
+ =-\frac{(N-2)(N+1)(N+2)(N+3)}{10}.
+\]
+The relevant principal minor of $C$ has determinant $-7/5$, so
+\begin{equation}\label{deg:signed-leading}
+ [P_N]_2=\frac{7(N-2)(N+1)(N+2)(N+3)}{50}X^2.
+\end{equation}
+The only exceptional nonnegative cutoff is $N=2$, where the entire
+formal polynomial is
+\begin{equation}\label{deg:signed-exception}
+ P_2(X)=\frac{620X-1137}{500}.
+\end{equation}
+Substituting the actual $X=H_2^{(1)}(1)=11/6$ gives $-1/1500$, also
+equal to the three-node Vandermonde square times
+$R(0)R(1)R(2)$.  Thus a fixed-cutoff exception is real, even when the
+finite moment determinant itself is nonzero.  It does not contradict
+generic sharpness over $\mathbb R(N)$.

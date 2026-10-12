@@ -1,0 +1,311 @@
+\section{Paired Gamma deformations and polygamma integrals}
+\label{gn:sec:paired}
+
+The parameter freedom in Theorem~\ref{gn:thm:determinant} is useful
+beyond the single quarter specialization.  For $n\ge1$, $\sigma>0$,
+and $m=n+1$, take
+\begin{equation}\label{gn:eq:paired-parameters}
+ a_{2r-1}=\sigma+u_r,\qquad a_{2r}=\sigma-u_r,
+ \qquad 1\le r\le m,\qquad |\Re u_r|<\sigma.
+\end{equation}
+Let $\mathcal D_{n,\sigma}(\mathbf u)$ denote the corresponding
+determinant.  Every pair has the same sum $2\sigma$, so the denominator
+in \eqref{gn:eq:determinant} remains fixed.
+
+\begin{theorem}[Complete paired deformation]
+\label{gn:thm:paired}
+On the domain \eqref{gn:eq:paired-parameters},
+\begin{equation}\label{gn:eq:paired-gamma}
+ \boxed{\displaystyle
+ \frac{\mathcal D_{n,\sigma}(\mathbf u)}
+      {\mathcal D_{n,\sigma}(\mathbf0)}
+ =\prod_{r<s}
+   \frac{\displaystyle\prod_{\varepsilon,\eta\in\{-1,1\}}
+          \Gamma(2\sigma+\varepsilon u_r+\eta u_s)}
+        {\Gamma(2\sigma)^4}.}
+\end{equation}
+At the quarter parameter this is elementary:
+\begin{equation}\label{gn:eq:paired-sec}
+ \boxed{\displaystyle
+ \frac{\mathcal D_{n,1/4}(\mathbf u)}
+      {\mathcal D_{n,1/4}(\mathbf0)}
+ =\prod_{r<s}\sec\bigl(\pi(u_r+u_s)\bigr)
+                 \sec\bigl(\pi(u_r-u_s)\bigr).}
+\end{equation}
+If only one pair is deformed, the two respective ratios are
+\begin{equation}\label{gn:eq:one-pair}
+ \left\{\frac{\Gamma(2\sigma+u)\Gamma(2\sigma-u)}
+                    {\Gamma(2\sigma)^2}\right\}^{2n},
+ \qquad \sec^{2n}(\pi u).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The $m$ within-pair Gamma factors are $\Gamma(2\sigma)$ and are
+unchanged.  Each pair of distinct labels contributes the four factors
+shown in \eqref{gn:eq:paired-gamma}; all remaining constants cancel.
+At $\sigma=1/4$, apply
+$\Gamma(1/2+z)\Gamma(1/2-z)=\pi/\cos(\pi z)$ first to
+$z=u_r+u_s$ and then to $z=u_r-u_s$.  The single-pair specialization
+has $n$ identical pair interactions and gives \eqref{gn:eq:one-pair}.
+\end{proof}
+
+\subsection{A positive density and its exact normalization}
+
+Define
+\begin{equation}\label{gn:eq:density}
+\begin{split}
+ \rho_{n,\sigma}(\mathbf x)
+ ={}&\Delta(x_1^2,\ldots,x_n^2)
+      \Delta(\cosh\pi x_1,\ldots,\cosh\pi x_n)\\
+ &\times\prod_{j=1}^n x_j\sinh(\pi x_j)
+              |\Gamma(\sigma+ix_j/2)|^{4(n+1)},
+ \qquad \mathbf x\in(0,\infty)^n.
+\end{split}
+\end{equation}
+The density is symmetric and nonnegative, and is positive off the
+collision hyperplanes.  Its normalizing integral is
+\begin{equation}\label{gn:eq:Z}
+ \mathcal Z_{n,\sigma}
+ =2^{n(3n+1)/2}\pi^{n(n+1)}n!
+       \frac{\Gamma(2\sigma)^{(n+1)(2n+1)}}
+            {\Gamma(2(n+1)\sigma)}.
+\end{equation}
+This follows from \eqref{gn:eq:I-evaluation}.  Write $\mathbb E_{n,\sigma}$
+for expectation with respect to $\rho_{n,\sigma}/\mathcal Z_{n,\sigma}$,
+and define the real linear statistics
+\begin{equation}\label{gn:eq:statistics}
+ S_q=\sum_{j=1}^n\Re\psi^{(q)}(\sigma+ix_j/2),
+                   \qquad q=1,3,5,\ldots.
+\end{equation}
+
+\begin{theorem}[All-order polygamma insertion identity]
+\label{gn:thm:polygamma-germ}
+As an identity of holomorphic germs at $\mathbf u=\mathbf0$,
+\begin{equation}\label{gn:eq:polygamma-germ}
+\begin{split}
+ &\mathbb E_{n,\sigma}
+  \exp\left(4\sum_{r=1}^{n+1}\sum_{k\ge1}
+                   \frac{u_r^{2k}}{(2k)!}S_{2k-1}\right)\\
+ &\hspace{12mm}=
+ \prod_{r<s}
+   \frac{\displaystyle\prod_{\varepsilon,\eta\in\{-1,1\}}
+         \Gamma(2\sigma+\varepsilon u_r+\eta u_s)}
+        {\Gamma(2\sigma)^4}.
+\end{split}
+\end{equation}
+In particular, every finite coefficient gives an ordinary absolutely
+convergent integral identity in polygamma functions.
+\end{theorem}
+
+\begin{proof}
+Apply continuous Cauchy--Binet to the deformed determinant and divide
+by its value at zero.  The interaction Vandermondes are unchanged, so
+the quotient is the expectation of the product of Gamma-factor ratios.
+For one pair and $z=\sigma+ix/2$, the logarithm of that ratio is
+\[
+\begin{aligned}
+ &\log\Gamma(z+u)+\log\Gamma(z-u)-2\log\Gamma(z)\\
+ &\quad+\log\Gamma(\overline z+u)+\log\Gamma(\overline z-u)
+                         -2\log\Gamma(\overline z)\\
+ &\hspace{18mm}=4\sum_{k\ge1}\frac{u^{2k}}{(2k)!}
+                                      \Re\psi^{(2k-1)}(z).
+\end{aligned}
+\]
+The logarithmic Gamma branches are holomorphic on the right half-plane.
+Their Taylor expansions converge uniformly for $|u|$ in a fixed
+sufficiently small disk, with the integral dominated as in
+Theorem~\ref{gn:thm:determinant}.  Alternatively every fixed coefficient
+can be obtained directly by differentiating the finite Gamma product
+under its normally convergent integral.  Multiplication over spatial
+variables and pair labels gives the left side of
+\eqref{gn:eq:polygamma-germ}; Theorem~\ref{gn:thm:paired} evaluates it.
+\end{proof}
+
+For instance, the single-pair coefficients at degrees two and four are
+\begin{align}
+ \mathbb E_{n,\sigma}S_1
+      &=n\psi'(2\sigma),\label{gn:eq:S1-mean}\\
+ \mathbb E_{n,\sigma}(S_3+12S_1^2)
+      &=n\psi'''(2\sigma)+12n^2\psi'(2\sigma)^2.
+          \label{gn:eq:fourth-insertion}
+\end{align}
+The complete paired deformation separates the two terms on the left
+of the second identity and yields a stronger moment law.
+
+\section{Exact finite Gaussian moments}
+\label{gn:sec:gaussian}
+
+\begin{theorem}[Gaussian moment matching through degree $n+1$]
+\label{gn:thm:gaussian}
+Let $n\ge1$, $\sigma>0$, and set
+\begin{equation}\label{gn:eq:mu-v}
+ \mu_\sigma=\psi'(2\sigma)>0,\qquad
+ v_\sigma=\psi'''(2\sigma)>0,
+ \qquad S=S_1.
+\end{equation}
+For every integer $0\le k\le n+1$,
+\begin{equation}\label{gn:eq:S-moments}
+ \boxed{\displaystyle
+ \mathbb E_{n,\sigma}S^k
+ =\sum_{j=0}^{\lfloor k/2\rfloor}
+       \frac{k!}{2^jj!(k-2j)!}
+       (n\mu_\sigma)^{k-2j}(v_\sigma/4)^j.}
+\end{equation}
+Equivalently, the statistic
+\begin{equation}\label{gn:eq:X}
+             X_{n,\sigma}
+       =\frac{2S-2n\mu_\sigma}{\sqrt{v_\sigma}}
+\end{equation}
+has exactly the standard Gaussian moments through degree $n+1$:
+\begin{equation}\label{gn:eq:Gaussian-moments}
+ \mathbb E_{n,\sigma}X_{n,\sigma}^{k}
+ =\begin{cases}
+    0,&k\text{ odd},\\[2pt]
+    (k-1)!!,&k\text{ even},
+   \end{cases}
+ \qquad 0\le k\le n+1,
+\end{equation}
+where the moment at degree zero is one.
+\end{theorem}
+
+\begin{proof}
+Choose $k$ distinct pair labels in \eqref{gn:eq:polygamma-germ} and
+extract the coefficient of $u_1^2\cdots u_k^2$.  Put $w_r=u_r^2$ and
+compute in the quotient in which $w_r^2=0$.  On the left, all terms
+with $u_r^4$ or higher disappear, so the required coefficient is
+$\mathbb E_{n,\sigma}(2S)^k$.
+
+For one pair interaction, Taylor expansion of its logarithm gives
+\begin{align*}
+ &\sum_{\varepsilon,\eta\in\{-1,1\}}
+      \log\Gamma(2\sigma+\varepsilon u_r+\eta u_s)
+                       -4\log\Gamma(2\sigma)\\
+ &\hspace{12mm}\equiv
+          2\mu_\sigma(w_r+w_s)+v_\sigma w_rw_s
+                              \pmod{w_r^2,w_s^2}.
+\end{align*}
+The sum is even in each pair variable.  Each of the $n+1$ labels has
+exactly $n$ partners, and no logarithmic summand depends on three
+distinct labels.  Thus the logarithm of the complete right side reduces
+to
+\[
+       2n\mu_\sigma\sum_{r=1}^kw_r
+                  +v_\sigma\sum_{r<s\le k}w_rw_s.
+\]
+To obtain $w_1\cdots w_k$ from its exponential, partition the $k$
+labels into singleton and pair blocks.  The number of partitions with
+$j$ pairs is $k!/(2^jj!(k-2j)!)$.  Such a partition contributes
+$(2n\mu_\sigma)^{k-2j}v_\sigma^j$.  Therefore
+\[
+ \mathbb E_{n,\sigma}(2S)^k
+ =\sum_{j=0}^{\lfloor k/2\rfloor}
+   \frac{k!}{2^jj!(k-2j)!}
+       (2n\mu_\sigma)^{k-2j}v_\sigma^j.
+\]
+Division by $2^k$ proves \eqref{gn:eq:S-moments}.  These are the
+moments of a Gaussian variable with mean $n\mu_\sigma$ and variance
+$v_\sigma/4$.  Centering and scaling proves
+\eqref{gn:eq:Gaussian-moments}.  The restriction $k\le n+1$ is exactly
+the number of distinct pair parameters available in the proof.
+\end{proof}
+
+\begin{corollary}[Separated low-order polygamma integrals]
+\label{gn:cor:variance}
+For all $n\ge1$ and $\sigma>0$,
+\begin{equation}\label{gn:eq:variance}
+ \operatorname{Var}_{n,\sigma}(S_1)=\frac14\psi'''(2\sigma),
+ \qquad
+ \mathbb E_{n,\sigma}S_3=(n-3)\psi'''(2\sigma).
+\end{equation}
+At the quarter parameter,
+\begin{equation}\label{gn:eq:quarter-statistics}
+ \mathbb E_{n,1/4}S_1=\frac{n\pi^2}{2},\qquad
+ \operatorname{Var}_{n,1/4}(S_1)=\frac{\pi^4}{4},\qquad
+ \mathbb E_{n,1/4}S_3=(n-3)\pi^4.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The degree-two instance of \eqref{gn:eq:S-moments} gives the variance.
+Insert the resulting second moment into
+\eqref{gn:eq:fourth-insertion} to obtain the expectation of $S_3$.
+Finally, $\psi'(1/2)=\pi^2/2$ and $\psi'''(1/2)=\pi^4$ give the
+quarter values \cite{dlmfpolygamma}.
+\end{proof}
+
+\subsection{Explicit one-dimensional identities}
+
+At $n=1$ and $\sigma=1/4$, the normalizer is $4\pi^5$.  To display
+several resulting evaluations compactly, write
+\[
+ \omega(x)=x\sinh(\pi x)|\Gamma(\tfrac14+ix/2)|^8,
+ \qquad z_x=\tfrac14+ix/2.
+\]
+Every integral below is an ordinary absolutely convergent integral:
+\begin{align}
+ \int_0^\infty\omega(x)\dd x&=4\pi^5,
+          \label{gn:eq:scalar-normalizer}\\
+ \int_0^\infty\omega(x)\Re\psi'(z_x)\dd x&=2\pi^7,
+          \label{gn:eq:scalar-trigamma}\\
+ \int_0^\infty\omega(x)[\Re\psi'(z_x)]^2\dd x&=2\pi^9,
+          \label{gn:eq:scalar-trigamma-square}\\
+ \int_0^\infty\omega(x)\Re\psi'''(z_x)\dd x&=-8\pi^9.
+          \label{gn:eq:scalar-third}
+\end{align}
+The negative sign in \eqref{gn:eq:scalar-third} is compatible with an
+ordinary real integral: the real part of the complex-argument
+polygamma function changes sign.
+
+Unpaired parameter derivatives supply digamma identities as well.
+Differentiating the $n=1$ version of
+\eqref{gn:eq:determinant} once in one parameter and twice in two
+distinct parameters, then setting all four parameters equal to $1/4$,
+gives
+\begin{align}
+ \int_0^\infty\omega(x)\Re\psi(z_x)\dd x
+    &=-4\pi^5(\gamma+3\log2),\label{gn:eq:scalar-psi}\\
+ \int_0^\infty\omega(x)[\Re\psi(z_x)]^2\dd x
+    &=4\pi^5\left((\gamma+3\log2)^2+\frac{\pi^2}{12}\right).
+       \label{gn:eq:scalar-psi-square}
+\end{align}
+For completeness, the first logarithmic parameter derivative of the
+Gamma quotient is $3\psi(1/2)-\psi(1)$, while the mixed logarithmic
+derivative in distinct labels is $\psi'(1/2)-\psi'(1)$.  The integral
+insertions are respectively $2\Re\psi(z_x)$ and
+$4[\Re\psi(z_x)]^2$.  These factors give exactly
+\eqref{gn:eq:scalar-psi}--\eqref{gn:eq:scalar-psi-square}.
+
+\subsection{A distributional consequence of the exact identities}
+
+The Gaussian matching is asserted only through the stated finite degree.
+For fixed $n$ and $\sigma$ the statistic is bounded, since
+\[
+ |\Re\psi'(\sigma+iy)|\le\sum_{r=0}^\infty\frac1{(r+\sigma)^2}
+                       =\psi'(\sigma).
+\]
+Thus it has a compactly supported distribution.  Its moment identities
+nevertheless imply a Gaussian limit as the dimension increases.
+
+\begin{corollary}[Gaussian limit for arbitrary positive parameter sequences]
+\label{gn:cor:CLT}
+For any sequence $\sigma_n>0$, the random variables
+$X_{n,\sigma_n}$ of \eqref{gn:eq:X} converge in distribution to a
+standard normal random variable as $n\to\infty$.
+\end{corollary}
+
+\begin{proof}
+For every fixed integer $k$, the $k$th moment is exactly the standard
+Gaussian moment once $n\ge k-1$, independently of $\sigma_n$.
+The second moment equals one for every $n\ge1$, giving tightness.
+For each fixed $k$, a higher even moment is uniformly bounded along
+the tail of the sequence, so the $k$th powers are uniformly integrable.
+Every subsequential weak limit therefore has all standard Gaussian
+moments.  The normal distribution is moment determinate; for example
+its even moments satisfy Carleman's condition.  Consequently every
+subsequential limit is standard normal, proving the assertion.
+\end{proof}
+
+This consequence uses exact moment identities at each sufficiently
+large finite dimension.  No uniform large-dimension estimate on Gamma
+functions or on the parameter sequence is required.

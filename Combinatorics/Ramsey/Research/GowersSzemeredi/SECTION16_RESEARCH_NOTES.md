@@ -4402,6 +4402,30 @@ therefore the printed proof with a general Corollary 15.2 and
 
 Both are light modules, kernel-checked, and use only the standard axioms.
 
+*The Fejér Lemma 15.5, formalized* (`Proofs15FejerSelection`, light,
+standard axioms only). `fejer_arrangement_restriction :
+FejerArrangementRestriction` is the statement of Lemma 15.5 with
+`fejerSelectionExponent k = 2^(k+4)·(k+6)` in place of
+`2^(2^(k+4)+k+3)`, and `lemma_15_5_of_fejer_restriction` recovers the
+printed lemma.
+
+The proof follows the analysis above with one simplification: the bound for
+respected arrangements needs no nondegeneracy, because the multiples `j·ε`
+are valid for every respected arrangement with additive cross-sections. Its
+parts:
+* `fejerKernelWeight` with values in `[0, 1]`;
+* the phase average `fejer_oneStage_average`;
+* `fejerValidRelations_card_good` (`≥ ∑_{j<T}(m+1−j)^M`);
+* `fejerValidRelations_subset_diagonal` (non-respected and not
+  `m`-degenerate gives the diagonal only);
+* Bernoulli's inequality `fejer_ratio_sum_lower` (`≥ (T+1)/2`);
+* the score bound and the choice of phase and subset;
+* `fejer_loss_lower`: `(αη/4)^(M(k+6)) ≤ (M·⌈6/(αη)⌉)^(−M)`.
+
+The Bernoulli averaging, the hyperedge bookkeeping, the parity moment and the
+vertex injectivity are copied from `Proofs15Restriction`, where they are
+private.
+
 *Propagation (model).* `models/model_fejer.py` mirrors the split-class
 recursion of `Proofs16SplitStepBounds` exactly (`splitStepA`, `splitStepD`).
 Its θ₁-driven inputs are:

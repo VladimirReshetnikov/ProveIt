@@ -1,0 +1,441 @@
+% Self-contained research fragment; no document preamble.
+% All labels use gap:.  Sources: Differential Polygamma/Lerch, Polygamma
+% Tail, and Bernoulli--Tornheim
+% incoming reports at ProveIt 446dca9bd65c20e409d1d2561d4ffad408103e2a.
+
+\section{The optimal moment prefix for every even-tail gap of four}
+\label{gap:section}
+
+The incoming \emph{Differential Polygamma and Lerch Identities} and
+\emph{Polygamma Tail Identities} reports prove the optimal consecutive
+moment prefix for adjacent even orders, $q-p=2$, and explicitly leave
+the next gap $q-p=4$ open. The incoming
+\emph{Bernoulli, Tornheim, and Digamma Identities} report proves all
+pairs with $p=2,4,6$ and gives a residual determinant of size $p/2$
+for arbitrary even pairs. We prove the entire gap-four family. The
+first case outside those already proved families is $(p,q)=(8,12)$
+\cite{DPL,PTI,BTD}.
+
+The Differential report already reduces a fixed gap to a residual
+determinant of size $(q-p)/2$, whose columns satisfy a positive
+recurrence. We rederive that reduction with its normalization visible,
+then prove the missing strict separation of column ratios. This shows
+that the two-column determinant cannot vanish. These are statements
+about rational coefficient matrices; no arithmetic independence of
+zeta values is asserted. The fixed-gap input is
+\cite[\texttt{ar:gap-det}, \texttt{ar:gap-factor}]{DPL}.
+
+\subsection{The inherited moment coordinates and their conventions}
+
+For even integers $p=2a$, $q=2b$, with $1\le a\le b$, write
+\[
+ A_p(n)=\zeta(p,n+1)=\zeta(p)-H_n^{(p)},\qquad x_n=n+\tfrac12,
+\]
+and let $D_r$ denote the continued value at $s=-2r$ of
+\[
+ D_{p,q}(s)=\sum_{n\ge0}A_p(n)A_q(n)x_n^{-s}.
+\]
+The source results prove regularity at these even arguments and the
+inverse Bernoulli transforms
+\begin{align}
+ D_r&=\sum_{j=0}^r\frac{\binom{2r}{2j}}{2j+1}
+ B_{2r-2j}(1/2)C_j,\label{gap:forward}\\
+ C_j&=\sum_{r=0}^j\binom{2j+1}{2r}2^{-2(j-r)}D_r.
+ \label{gap:inverse}
+\end{align}
+For $j\ge b$ their exact late coordinates are
+\begin{equation}\label{gap:late-coordinates}
+ C_j=\sum_{k=0}^{b-1}a_{jk}\zeta(2k),\qquad \zeta(0)=-\tfrac12.
+\end{equation}
+With $d=2j+1$ and $e=d-p-q+2k+1$, the inherited entries are zero
+for $e<0$, and otherwise
+\begin{equation}\label{gap:source-entry}
+ a_{jk}=B_e\left\{
+ \frac{\binom{d-q+1}{p-2k}}{d-q+1}
+ +\frac{\binom{d-p+1}{q-2k}}{d-p+1}\right\}.
+\end{equation}
+Each binomial summand is omitted unless its lower index lies between
+$2$ and its upper index. In particular, lower index zero is omitted.
+The Bernoulli convention is $B_1=-1/2$.
+
+Set
+\begin{equation}\label{gap:late-matrix}
+ M_{a,b}=(a_{b+r,k})_{0\le r,k<b}.
+\end{equation}
+In the formal coordinate order
+\[
+ C_0,\ldots,C_{b-1},\quad\zeta(0),\zeta(2),\ldots,\zeta(2b-2),
+\]
+the determinant of the complete first-$q$ moment matrix is
+\begin{equation}\label{gap:full-prefix-determinant}
+ \frac{\det M_{a,b}}{(4b-1)!!}.
+\end{equation}
+Indeed the first $b$ rows of the $C$ coordinate matrix form an
+identity block, the last $b$ rows have the block $M_{a,b}$, and
+the forward transform has diagonal $1/(2r+1)$. These facts and
+\eqref{gap:forward}--\eqref{gap:source-entry} are source inputs;
+the nonvanishing argument that follows is the new result.
+
+\subsection{A complementary determinant of size half the gap}
+
+Put $m=b-a\ge1$ and $h(t)=\coth(t/2)$. For an even polynomial
+$Q(t)=\sum_{n=1}^b q_nt^{2n}$ define
+\begin{equation}\label{gap:operator}
+ \mathcal L_mQ(t)
+ =\bigl(Q^{(2m)}(t)-Q^{(2m)}(0)\bigr)h(t)
+                      +(Q(t)h(t))^{(2m)}.
+\end{equation}
+This is an odd formal Taylor series: the subtraction cancels the
+possible pole in the first product, and $Qh$ is an odd Taylor series.
+Let $K_{m,b}$ map $(q_1,\ldots,q_b)$ to the coefficients of
+$t,t^3,\ldots,t^{2b-1}$ in \eqref{gap:operator}.
+
+\begin{lemma}[Exact operator conjugacy]\label{gap:conjugacy}
+If $M_{a,b}^{\mathrm{rev}}$ reverses the columns of $M_{a,b}$, then
+\begin{equation}\label{gap:conjugacy-equation}
+ K_{m,b}=
+ \operatorname{diag}_{0\le r<b}\!\left(\frac2{(2r+1)!}\right)
+ M_{a,b}^{\mathrm{rev}}
+ \operatorname{diag}_{1\le n\le b}\!\bigl((2n)!\bigr).
+\end{equation}
+Consequently
+\begin{equation}\label{gap:conjugacy-determinant}
+ \det K_{m,b}=(-1)^{b(b-1)/2}4^bb!\det M_{a,b}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Write
+\[
+ h(t)=\sum_{k\ge0}h_kt^{2k-1},\qquad
+ h_0=2,\quad h_k=\frac{2B_{2k}}{(2k)!}\quad(k\ge1).
+\]
+For use in all subsequent formulas define
+\begin{equation}\label{gap:AB}
+ A_r=\begin{cases}0,&1\le r\le m,\\
+ (2r)^{\underline{2m}},&r\ge m+1,
+ \end{cases}
+ \qquad B_N=(2N-1)^{\underline{2m}}.
+\end{equation}
+The underline denotes a falling factorial. Row $r$ of $K_{m,b}$
+corresponds to $N=r+m+1$. Its entry in column $n$ is
+\begin{equation}\label{gap:operator-entry}
+ h_{N-n}(A_n+B_N)\quad(n\le N),
+\end{equation}
+and is zero for $n>N$. The exceptional value $A_m=0$ comes from
+the subtraction $Q^{(2m)}(0)$.
+
+To compare this with the source, put $j=b+r$ and $k=b-n$ in
+\eqref{gap:source-entry}. The Bernoulli index becomes $2(N-n)$,
+while the two upper and lower binomial indices are
+\[
+ (2r+2,\,2n-2m),\qquad(2r+2m+2,\,2n).
+\]
+Multiplying by $2(2n)!/(2r+1)!$ gives exactly
+\eqref{gap:operator-entry}. The first summand is omitted for
+$n\le m$, precisely as required by \eqref{gap:AB}. This proves
+\eqref{gap:conjugacy-equation}. The product of its positive diagonal
+factors is
+\[
+ 2^b\prod_{n=1}^b\frac{(2n)!}{(2n-1)!}=4^bb!,
+\]
+and column reversal has sign $(-1)^{b(b-1)/2}$.
+\end{proof}
+
+Put
+\begin{equation}\label{gap:beta}
+ \beta_k=\frac{2|B_{2k}|}{(2k)!}
+        =\frac{4\zeta(2k)}{(2\pi)^{2k}}>0\quad(k\ge1),
+\end{equation}
+and, for $N\ge m+1$, put
+\begin{equation}\label{gap:d}
+ d_N=2\left\{(2N)^{\underline{2m}}+
+                    (2N-1)^{\underline{2m}}\right\}>0.
+\end{equation}
+Define an array of rational numbers $C_{N,j}^{[m]}$, with
+$N\ge1$ and $1\le j\le m$, by
+\begin{align}
+ C_{r,j}^{[m]}&=\delta_{rj}&& (1\le r\le m),
+ \label{gap:initial}\\
+ C_{N,j}^{[m]}&=\frac1{d_N}\sum_{r=1}^{N-1}
+ \beta_{N-r}(A_r+B_N)C_{r,j}^{[m]}
+ &&(N\ge m+1).
+ \label{gap:recurrence}
+\end{align}
+Every entry $C_{N,j}^{[m]}$ with $N\ge m+1$ is strictly positive.
+The superscript distinguishes this array from the inherited moment
+coordinates $C_j$.
+
+\begin{theorem}[Inherited fixed-gap boundary reduction]
+\label{gap:complementary}
+For $1\le a<b$ and $m=b-a$,
+\begin{equation}\label{gap:complementary-formula}
+ \det M_{a,b}
+ =\frac{(-1)^{b(b-1)/2}}{4^bb!}
+ \left(\prod_{N=m+1}^{b+m}d_N\right)
+ \det\bigl(C_{b+i,j}^{[m]}\bigr)_{1\le i,j\le m}.
+\end{equation}
+Thus the remaining determinant has size $m=(q-p)/2$, independently
+of the larger order $q$.
+\end{theorem}
+
+\begin{proof}
+The sign relation $h_k=(-1)^{k-1}\beta_k$ for $k\ge1$ shows that
+\begin{equation}\label{gap:formal-null-solutions}
+ Q_j(t)=\sum_{n\ge1}(-1)^{n-j}C_{n,j}^{[m]}t^{2n}
+ \qquad(1\le j\le m)
+\end{equation}
+formally satisfy $\mathcal L_mQ_j=0$. Conversely, the coefficient
+at $t^{2N-2m-1}$ determines the next unknown coefficient uniquely:
+its nonzero leading factor is $d_N$. Hence these are the unique
+formal null solutions with their specified first $m$ coefficients.
+This argument requires no convergence of the formal series.
+
+Replace the first $m$ columns of $K_{m,b}$ by the corresponding
+linear combinations specified by the truncations of
+\eqref{gap:formal-null-solutions} through $n=b$. The column
+transformation has determinant one, since those truncations have
+initial block equal to the identity. Their first $b-m$ rows vanish.
+Their bottom $m$ rows form the block $-TQ_{\mathrm{future}}$, where
+$T$ is lower triangular with diagonal $d_{b+1},\ldots,d_{b+m}$,
+and
+\[
+ (Q_{\mathrm{future}})_{ij}
+      =(-1)^{b+i-j}C_{b+i,j}^{[m]}.
+\]
+This follows by writing the omitted terms in each exact formal
+coefficient equation; row $b+i$ omits only coefficients
+$b+1,\ldots,b+i$.
+
+Move the first $m$ columns to the end. The other diagonal block is
+triangular with diagonal $d_{m+1},\ldots,d_b$. Therefore
+\[
+ \det K_{m,b}
+ =(-1)^{m(b-m)+m}\left(\prod_{N=m+1}^{b+m}d_N\right)
+                          \det Q_{\mathrm{future}}.
+\]
+Factoring the row and column signs in $Q_{\mathrm{future}}$
+gives $\det Q_{\mathrm{future}}=(-1)^{mb}
+\det(C_{b+i,j}^{[m]})$. The combined exponent
+$2mb-m(m-1)$ is even. Apply
+\eqref{gap:conjugacy-determinant} to obtain
+\eqref{gap:complementary-formula}.
+\end{proof}
+
+\subsection{Strict separation of the recurrence columns}
+
+The classical Bernoulli Fourier formula, DLMF~24.8.1 at zero,
+gives the second equality in \eqref{gap:beta} \cite{DLMF}. In particular, with
+$x_\ell=(2\pi\ell)^{-2}$,
+\[
+ \beta_k=4\sum_{\ell\ge1}x_\ell^k\qquad(k\ge1).
+\]
+Strict Cauchy--Schwarz implies
+\begin{equation}\label{gap:strict-log-convexity}
+ \beta_{k+1}^2<\beta_k\beta_{k+2}\qquad(k\ge1),
+\end{equation}
+since the positive support contains distinct points. Thus
+$\rho_k=\beta_{k+1}/\beta_k$ is strictly increasing. This familiar
+moment argument is used solely to certify nonzero exact determinants.
+
+\begin{lemma}[Ratio separation for every gap]\label{gap:ratio-lemma}
+Let $m\ge2$. For any two initial columns $1\le i<j\le m$, the sequence
+\begin{equation}\label{gap:ratio}
+ R_N=\frac{C_{N,i}^{[m]}}{C_{N,j}^{[m]}}
+       \qquad(N\ge m+1)
+\end{equation}
+is strictly increasing. Consequently every two-by-two minor of the
+positive part of this array, with both its row indices and its
+initial-column indices increasing, is strictly negative.
+\end{lemma}
+
+\begin{proof}
+All relevant entries are positive. Since $A_1=\cdots=A_m=0$,
+divide the recurrence by the second column's initial forcing
+$B_N\beta_{N-j}/d_N$. Set
+\begin{equation}\label{gap:normalized-weights}
+ f_N=\frac{\beta_{N-i}}{\beta_{N-j}},\qquad
+ w_{N,r}=\frac{\beta_{N-r}}{\beta_{N-j}}
+                    \left(1+\frac{A_r}{B_N}\right).
+\end{equation}
+The exact ratio equation is
+\begin{equation}\label{gap:ratio-equation}
+ R_N=
+ \frac{f_N+\displaystyle\sum_{r=m+1}^{N-1}
+                   w_{N,r}C_{r,j}^{[m]}R_r}
+      {1+\displaystyle\sum_{r=m+1}^{N-1}
+                   w_{N,r}C_{r,j}^{[m]}}.
+\end{equation}
+By \eqref{gap:strict-log-convexity}, $f_N$ strictly increases: it is
+a fixed-length product of consecutive $\rho_k$. For every fixed
+$r\ge m+1>j$, the quotient $\beta_{N-r}/\beta_{N-j}$ is the
+reciprocal of a fixed-length product of consecutive $\rho_k$,
+so it strictly decreases as $N$ increases from $r+1$. Moreover
+$A_r>0$ and $B_N$ strictly increases. Thus $w_{N,r}$ strictly
+decreases with $N$ for each such fixed $r$.
+
+At $N=m+1$ the sums are empty, giving $R_{m+1}=f_{m+1}$.
+For the induction step assume the ratios through $R_{N-1}$ are
+strictly increasing. Multiply \eqref{gap:ratio-equation} by its
+denominator, subtract $R_{N-1}$ times that denominator, and subtract
+the preceding row's corresponding zero identity. The term $r=N-1$
+vanishes. The result is
+\begin{align}
+ &\left(1+\sum_{r=m+1}^{N-1}w_{N,r}C_{r,j}^{[m]}\right)
+                 (R_N-R_{N-1})\notag\\
+ &\quad=f_N-f_{N-1}
+  +\sum_{r=m+1}^{N-2}(w_{N,r}-w_{N-1,r})C_{r,j}^{[m]}
+                              (R_r-R_{N-1})>0.
+ \label{gap:ratio-increment}
+\end{align}
+The first term is strictly positive. Each term in the sum is
+nonnegative, because both differences there are negative. This
+also handles the first induction step, when the sum is empty.
+The assertion about minors follows by factoring out the positive
+entries in their second column.
+\end{proof}
+
+\subsection{The gap-four determinant and the optimal prefix}
+
+Specialize to $m=2$. Write
+\[
+ u_N=C_{N,1}^{[2]},\qquad v_N=C_{N,2}^{[2]}.
+\]
+For explicit calculation their common recurrence is
+\begin{align}
+ &(u_1,u_2)=(1,0),\qquad(v_1,v_2)=(0,1),\notag\\
+ &y_N=\frac{\displaystyle\sum_{r=1}^{N-1}
+                   \beta_{N-r}(A_r+B_N)y_r}
+                {16(N-1)^2(2N-1)(2N-3)}\qquad(N\ge3),
+ \label{gap:four-recurrence}\\
+ &A_1=A_2=0,\qquad
+ A_r=(2r)(2r-1)(2r-2)(2r-3)\quad(r\ge3),\notag\\
+ &B_N=(2N-1)(2N-2)(2N-3)(2N-4).\notag
+\end{align}
+Define the strictly positive rational number
+\begin{equation}\label{gap:delta}
+ \Delta_b=u_{b+2}v_{b+1}-u_{b+1}v_{b+2}>0.
+\end{equation}
+Its sign follows immediately from Lemma~\ref{gap:ratio-lemma}.
+
+\begin{theorem}[Every pair $q=p+4$]\label{gap:main}
+For every integer $b\ge3$, let $p=2b-4$, $q=2b$. Then
+\begin{equation}\label{gap:four-determinant}
+ \det M_{b-2,b}
+ =(-1)^{b(b-1)/2+1}
+ \frac{4^b((b+1)!)^2(2b+3)!!(2b+1)!!}{3b!}\,\Delta_b\ne0.
+\end{equation}
+The moments $D_0,\ldots,D_{q-1}$ therefore have the full formal
+rank $q$. Every later centered moment is an explicit rational
+linear combination of these first $q$ moments. The determinant
+of their full coordinate matrix is
+\eqref{gap:four-determinant} divided by $(4b-1)!!$.
+\end{theorem}
+
+\begin{proof}
+In \eqref{gap:complementary-formula} the endpoint determinant is
+$-\Delta_b$. Here
+\[
+ d_N=16(N-1)^2(2N-1)(2N-3),
+\]
+so direct multiplication gives
+\[
+ \prod_{N=3}^{b+2}d_N
+ =\frac{16^b((b+1)!)^2(2b+3)!!(2b+1)!!}{3}.
+\]
+This proves \eqref{gap:four-determinant}. Its scalar factor is
+nonzero and $\Delta_b>0$, establishing nonvanishing. The full
+rank assertion follows from \eqref{gap:full-prefix-determinant}.
+To reconstruct a later moment, use \eqref{gap:inverse} to obtain
+$C_0,\ldots,C_{2b-1}$ from the first $2b$ moments, invert
+$M_{b-2,b}$ to recover all the even-zeta coordinates, and then use
+\eqref{gap:late-coordinates} and \eqref{gap:forward}. Every step is
+finite rational arithmetic.
+\end{proof}
+
+\subsection{A compact ordinary identity for the first new pair}
+
+For $(p,q)=(8,12)$ the determinant and first inverse row are
+\begin{align}\label{gap:812-data}
+ \det M_{4,6}&=\frac{263589503}{309657600},\notag\\
+ (M_{4,6}^{-1})_{0,*}
+ &=\frac8{790768509}
+ (469839,1269227,-11819495,56443363,83672540,12834702).
+\end{align}
+Thus the displayed integer row applied to $C_6,\ldots,C_{11}$
+has value $-790768509/16$.
+
+Define the odd polynomial
+\begin{equation}\label{gap:812-K}
+ \begin{split}
+ K(N)=N^{13}\bigl(&469839+1269227N^2-11819495N^4
+                   +56443363N^6\\
+                 &+83672540N^8+12834702N^{10}\bigr)
+ \end{split}
+\end{equation}
+and its centered difference
+\begin{equation}\label{gap:812-W}
+ W(x)=K(x+\tfrac12)-K(x-\tfrac12).
+\end{equation}
+The resulting ordinary, absolutely convergent identity is
+\begin{equation}\label{gap:812-ordinary}
+ \begin{split}
+ \sum_{n=0}^{\infty}\biggl\{&W(x_n)A_8(n)A_{12}(n)
+       -\frac{295198146}{77}x_n^4
+       -\frac{10254604347}{154}x_n^2
+       -\frac{59115956909}{385}\biggr\}
+ =-\frac{790768509}{16}.
+ \end{split}
+\end{equation}
+The summand is $O(x_n^{-2})$. To see this directly, the centered
+Hurwitz expansion gives the first three terms of $A_8(n)A_{12}(n)$;
+multiplication by the degree-$22$ polynomial $W$ gives precisely
+the three displayed nondecaying terms. The inverse Bernoulli
+transform identifies its continued sum with the integer combination
+in \eqref{gap:812-data}; the removed even powers have continued
+sum zero because $\zeta(-2r,1/2)=0$ for $r\ge0$. The accompanying
+finite rational telescoping certificate in Section~\ref{tel:812}
+supplies a second proof of this individual ordinary identity.
+
+In polygamma notation the tail product is
+\[
+ A_8(n)A_{12}(n)
+   =\frac{\psi^{(7)}(n+1)\psi^{(11)}(n+1)}{7!\,11!}.
+\]
+The compact difference definition \eqref{gap:812-W} avoids listing
+twelve large coefficients while specifying the weight exactly.
+
+\subsection{Verification, source update, and remaining limits}
+
+The supplied exact script independently constructs the source matrix
+from its binomial formula, constructs the operator matrix by symbolic
+differentiation on monomials, and constructs the two recurrence
+solutions. Its $323$ rational checks verify conjugacy for
+$3\le b\le12$, the determinant formula for $3\le b\le18$,
+formal null-series coefficients through $N=24$, and the finite sign
+relations used in the proof. These computations are diagnostics for
+finite formulas; the proof above establishes the infinite family.
+A second standalone replay checks $45$ complementary determinants
+for all $1\le a<b\le10$ and $140$ pairwise ratio minors at gaps
+$m=2,3,4,5$. Thus the two tail scripts contain $508$ exact checks
+in total; none extrapolates its finite range into a proof.
+
+The optimal-prefix source conjecture can now record $q-p=4$ as
+proved, alongside the inherited equal-order, adjacent-order, and
+$p=2,4,6$ families. The fixed-gap reduction
+\eqref{gap:complementary-formula} is the Differential report's
+Proposition~\texttt{ar:gap-det}, rederived here; it retains that
+attribution. The new input is Lemma~\ref{gap:ratio-lemma}, which
+settles its two-dimensional boundary determinant. No new false
+inherited theorem was established in this targeted audit.
+
+For $m\ge3$, pairwise ratio separation does not by itself imply
+nonvanishing of the $m$-square endpoint determinant. In fact its
+sign need not remain fixed as $b$ changes. The next precise target
+is the $m=3$ determinant, corresponding to $q-p=6$, with the
+already proved overlapping pairs retained. Further useful targets
+are a generating function for the two universal solutions in
+\eqref{gap:four-recurrence}, and an exact recurrence or arithmetic
+normalization for $\Delta_b$ itself. A general higher-minor sign
+claim would require an additional proof; it is not a consequence
+of the positivity used here.

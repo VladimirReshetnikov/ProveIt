@@ -1,0 +1,148 @@
+\begin{abstract}
+An ordered assignment of independently shifted finite-difference weights
+contains information that its determinantal symmetrization erases. We
+recover that information explicitly. For two particles, two finite
+summations by parts reduce the ordered double sum to a single two-shift
+zeta kernel. This gives its joint meromorphic continuation, every polar
+coefficient, all convergent positive-integer-order evaluations and their
+finite parts, a divided-difference
+digamma generating function, and a Gamma primitive. Oblique poles explain
+direction-dependent values at parameters where every pointwise weight
+vanishes. A cutoff generating function is then proved on an entire
+two-order parameter domain: its sole depth-two polylogarithm has the
+factor $(1-z)^2$, which explains the endpoint reduction. Beta
+parametrization yields ordinary convergent identities involving every
+generalized Stieltjes constant. At arbitrary particle number, transferring
+the stencils to the ordered Vandermonde square localizes the sum to
+collision blocks; an explicit finite algorithm uses at most
+$\lfloor(r+1)/2\rfloor$ free summation indices. A separate Gamma-integral
+basis solves the fixed-gap null equation for unequal even harmonic
+tails. Its exact normalization and nonzero determinant asymptotic prove
+eventual optimal reconstruction on every fixed-gap ray; the first
+relative correction is an explicit harmonic-number expression.
+All formulas retain their convergence domains, confluence conventions,
+and finite-part coordinates. Exact algebraic tests and numerical checks
+accompany the proofs.
+\end{abstract}
+
+\section{The source questions and the mathematical setting}
+\label{sec:scope}
+
+\subsection{A continuation of the current material}
+
+The source snapshot is the ProveIt revision \repo, obtained on
+11 October 2026. Both requested directories were inspected: the canonical
+manuscript and the seven then-present incoming archives. The manuscript's
+claim ledger remains the authority for accepted canonical results
+\cite{repo:manuscript,repo:ledger}; an incoming report's delivery status
+does not by itself amount to canonical proof acceptance.
+
+The most direct target is the incoming \emph{Finite-Difference
+Determinants} report \cite{repo:finite}. Its section entitled
+``Unsymmetrized mixed-order sums'' asks which additional coordinates are
+needed for an individual ordering of independent spectral labels.
+Its existing polarization theorem gives only the sum over assignments.
+It also asks for a finite description of noninteger-order cutoff
+generators and for extensions to other annihilating stencils. These
+questions are mathematically related: shifting the finite differences
+onto the ordered summation domain exposes the boundaries at which
+the extra coordinates live.
+
+The present two-particle result answers the individual-ordering question
+on an open complex domain, not only at isolated integer values.
+It shows that a one-index kernel is enough. That kernel has explicit
+Hurwitz expansions and, at positive integer orders, a finite polygamma
+evaluation. The all-particle result is different: it gives a finite
+localization formula and a bound on the number of free indices, rather
+than incorrectly extrapolating a universal single-zeta formula.
+
+A second target comes from the harmonic-tail Gamma continuation
+\cite{repo-gamma}. Its exact fixed-gap reduction leaves an
+$m$-dimensional null equation, where the two tail orders differ by
+$2m$. Section~\ref{gb:section} constructs a basis by ordinary integrals
+against $|\Gamma(\tfrac14+\tfrac{ix}{2})|^{4m}$. The distinct
+decay scales of these integrals produce a nonzero limiting Vandermonde
+determinant. This proves that, for every fixed $m$, the first $2b$
+moments form the optimal formal prefix for all sufficiently large
+$(p,q)=(2b-2m,2b)$. The theorem is complementary to the existing
+eventual result with the smaller order fixed \cite{repo:quartic}. Neither assertion alone
+settles every unequal pair.
+
+The current sources also make clear why old open labels cannot simply
+be reused. Several finite-order harmonic-tail reconstruction cases have
+already received proofs in recent reports. The short Gaussian $S_6$
+and revised $S_8$ evaluations, by contrast, remain conjectural in the
+current canonical manuscript \cite{repo:ledger,repo:gaussian}. None of
+the ordered identities below is represented as a proof of either
+Gaussian evaluation.
+
+\subsection{Classical ingredients and the scope of originality}
+
+Finite summation by parts, finite differences, partial fractions,
+Hurwitz continuation, and Gamma differentiation are classical.
+The general rational-summability role of discrete residues is treated
+by Chen--Singer and Arreche--Sitaula \cite{chen-singer,arreche-sitaula}.
+Multivariable zeta functions can have intersecting polar hyperplanes
+and direction-sensitive Laurent behavior; this phenomenon is not new
+in itself \cite{matsumoto-ono-wakabayashi}. Beta parametrization is also
+an established method for zeta products \cite{shpot-paris}.
+
+The contributions claimed here are the explicit ordered boundary
+identity, its complete consequences in this family, the finite cutoff
+polylogarithm formula and its endpoint cancellation, and the
+all-particle collision-block reduction. Their derivations were checked
+against the inspected sources. The literature search does not establish
+worldwide historical priority. In particular, finite polygamma
+reduction of a rational one-index summand is a classical step; it is
+the preceding reduction of the ordered ensemble that supplies the
+new application.
+
+The Gamma basis, its normalization, and its fixed-gap consequences form
+the second group of contributions. Classical Fourier transforms of
+Gamma products provide useful context \cite{ramanujan-transform};
+the result here concerns a specific higher-power weight, its
+sinh/tanh modes, and the repository's exact reconstruction determinant.
+
+\subsection{Notation and analytic conventions}
+
+For $\Rea a>0$ we use the principal logarithm in
+$(n+a)^{-s}=\exp(-s\log(n+a))$. Thus every shifted denominator in
+the original series stays in the right half-plane. Write
+\[
+ (s)_j=s(s+1)\cdots(s+j-1),\qquad (s)_0=1,
+ \qquad \psi(a)=\frac{\Gamma'(a)}{\Gamma(a)}.
+\]
+For positive integers $p$,
+\[
+ H_n^{(p)}=\sum_{k=1}^{n}k^{-p},\qquad H_0^{(p)}=0.
+\]
+The same finite sum defines $H_n^{(s)}$ for complex $s$.
+We use the Stieltjes convention
+\begin{equation}\label{eq:stieltjes-convention}
+ \zeta(1+u,a)=\frac1u+
+    \sum_{m=0}^{\infty}\frac{(-1)^m\gamma_m(a)}{m!}u^m,
+ \qquad \gamma_0(a)=-\psi(a).
+\end{equation}
+Derivatives of $\zeta$ without an argument qualifier differentiate its
+first variable. Standard relations used below include
+\begin{equation}\label{eq:classical-ladders}
+ \partial_a\zeta(s,a)=-s\zeta(s+1,a),\qquad
+ \zeta(p,a)=\frac{(-1)^p}{(p-1)!}\psi^{(p-1)}(a)\quad(p\ge2),
+\end{equation}
+and $\zeta'(0,a)=\log\Gamma(a)-\tfrac12\log(2\pi)$
+\cite{dlmf:hurwitz,dlmf:gamma}.
+
+An equality continued from a normally convergent domain is always an
+equality of those continuations. It need not equal the result of
+substituting exceptional parameters into every summand first.
+Likewise, a finite part is the constant in a declared Laurent
+coordinate; a hard cutoff is a different operation unless their
+agreement is proved.
+
+For $|z|<1$ our multiple-polylogarithm convention is
+\begin{equation}\label{eq:mpl-convention}
+ \Li_{t,s}(z,1)=\sum_{k>j\ge1}\frac{z^k}{k^t j^s}.
+\end{equation}
+The exponential factor makes this entire in the two order variables.
+This is independent of the convergence restrictions of its value at
+$z=1$.

@@ -1,0 +1,87 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!55!black]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Gap-Six Reconstruction, Complex Harmonic Determinants, and Stieltjes Boundary Collisions},
+ pdfauthor={Research continuation for the ProveIt project},
+ pdfsubject={Exact identities, proofs, and reproducible mathematical certificates}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\setlist{itemsep=4pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small ProveIt research continuation}
+\fancyhead[R]{\small 12 October 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\title{\LARGE\bfseries Gap-Six Reconstruction,\\[3pt]
+ Complex Harmonic Determinants,\\[3pt]
+ and Stieltjes Boundary Collisions\\[10pt]
+ \large Exact identities and reproducible proofs}
+\author{Research continuation for the ProveIt project}
+\date{12 October 2026\\[3pt]\small Repository snapshot: 11 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We resolve three questions left open in the inspected ProveIt
+contributions and develop explicit identities from the resulting
+structure. First, every unequal even harmonic-tail pair with gap
+six has the optimal consecutive moment prefix. The proof makes
+the existing Gamma-basis asymptotic effective above an explicit
+threshold and certifies the entire finite complement by exact
+modular arithmetic. Second, formal harmonic degree equals generic
+pencil rank for every nonzero complex rational weight. A short
+rational difference theorem for symmetric matrix primitives removes
+the real-positivity hypothesis and allows varying pencil kernels.
+Third, we determine the full power--logarithm expansion, including
+the constant, for arbitrary products of argument derivatives of
+generalized Stieltjes constants whose positive shifts approach zero
+at unequal fixed rates.
+
+The identity consequences include an all-order family of ordinary
+convergent rational polygamma-tail sums; a three-by-three Hahn
+formula for highest harmonic coefficients at arbitrary particle
+count; an exact classification of adjacent-pole residue exceptions;
+cutoff generators using only rational functions, logarithms, and
+one classical dilogarithm; and an explicit positive three-particle
+ensemble integral evaluated in ordinary zeta values. Proofs,
+finite exact certificates, and numerical diagnostics are distinguished
+throughout. The unrestricted all-pairs moment conjecture and the
+manuscript's short Gaussian $S_6$ and revised $S_8$ candidates
+remain open.
+\end{abstract}
+\clearpage
+\begingroup
+\small
+\tableofcontents
+\endgroup
+\clearpage
+\input{sections/00_scope}
+\input{sections/01_gap_six}
+\input{sections/02_complex_rank}
+\input{sections/03_hahn_and_polylogs}
+\input{sections/04_collisions}
+\input{sections/05_audit_and_questions}
+\appendix
+\input{sections/05a_gamma_appendix}
+\input{sections/06_worked_example}
+\input{sections/07_reproducibility}
+\input{references}
+\end{document}

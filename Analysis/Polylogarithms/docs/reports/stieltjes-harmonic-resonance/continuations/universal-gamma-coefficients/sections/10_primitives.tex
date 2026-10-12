@@ -1,0 +1,116 @@
+\section{Weighted Gamma and all-index Stieltjes primitives}
+\label{sec:primitives}
+
+\subsection{An exact primitive with the total derivative retained}
+
+Write
+\[
+ \Ac_m=\Nc_m+D\Hc_m,\qquad \Hc_m=\Hc(\Ac_m),
+ \qquad [1]\Hc_m=0.
+\]
+The universal formula specifies $\Nc_m$ directly, while Proposition~\ref{prop:normal} gives a terminating rational construction of $\Hc_m$. The accompanying data provide both, not just the projected coefficients.
+
+\begin{theorem}[Universal weighted primitive]\label{thm:primitive}
+Let $U$ be sufficiently differentiable on an interval and let $Y$ be a nonvanishing solution of $Y'=-UY$. Substitute $u_r=U^{(r)}$. For every $m\ge1$,
+\begin{equation}\label{eq:universal-primitive}
+ \boxed{\displaystyle
+ \int Y\bigl(\Nc_m(U)+U\Hc_m(U)\bigr)\dd x
+ =-Y\bigl(\Ac_{m-1}(U)+\Hc_m(U)\bigr)+C.}
+\end{equation}
+On a compact interval of smoothness this gives the corresponding ordinary definite integral by evaluating the displayed endpoint expression.
+\end{theorem}
+\begin{proof}
+From $\Ac_m=(u_0-D)\Ac_{m-1}$ and $Y'=-UY$,
+\[
+ \frac{\mathrm d}{\mathrm dx}\bigl(-Y\Ac_{m-1}(U)\bigr)=Y\Ac_m(U).
+\]
+Also
+\[
+ \frac{\mathrm d}{\mathrm dx}\bigl(-Y\Hc_m(U)\bigr)
+ =Y\bigl(U\Hc_m(U)-D\Hc_m(U)\bigr).
+\]
+Add the two equations and use $\Ac_m-D\Hc_m=\Nc_m$. This proves \eqref{eq:universal-primitive} without discarding an endpoint term.
+\end{proof}
+
+Under $U=\psi$ and $Y=1/\Gamma$, Theorem~\ref{thm:primitive} gives an infinite family of exact Gamma--polygamma primitives. The differentiation identity underlying it is elementary; its explicit arbitrary-order canonical coefficients are supplied by the main theorem.
+
+For example,
+\[
+ \Nc_4=u_0^4-u_1^2,\qquad
+ \Hc_4=-2u_0^3+4u_0u_1-u_2.
+\]
+Thus
+\begin{equation}\label{eq:gamma4-primitive}
+ \int\frac{-\psi^4+4\psi^2\psi'-\psi\psi''-(\psi')^2}{\Gamma}\dd x
+ =\frac{\psi^3-\psi\psi'}{\Gamma}+C,
+\end{equation}
+with every function evaluated at $x$. Differentiating the right side verifies the identity directly.
+
+At weight eleven, use the full polynomial \eqref{eq:N11} together with the $42$-monomial certificate $\Hc_{11}$ in the data file. This produces a higher mixed primitive containing $-55\psi''(\psi''')^2$ as part of the canonical term. The term $11\psi(\psi^{(4)})^2$ and the compensator $\psi\Hc_{11}$ remain necessary. A projection formula is not permission to remove them from the full analytic identity.
+
+\subsection{A primitive for each generalized Stieltjes function}
+
+For $q\ge0$ and $a>0$, set
+\begin{equation}\label{eq:Fq}
+ \mathcal F_q(a)=\frac{(-1)^q}{q+1}\zeta^{(q+1)}(0,a),
+ \qquad Y_q(a)=e^{-\mathcal F_q(a)},
+ \qquad U_q(a)=-\gamma_q(a).
+\end{equation}
+The superscript on $\zeta$ here always means differentiation in its first argument.
+
+\begin{lemma}[Exact Stieltjes primitive normalization]\label{lem:Fq}
+For every $q\ge0$,
+\begin{equation}\label{eq:Fqprime}
+ \mathcal F_q'(a)=-\gamma_q(a),\qquad
+ Y_q'(a)=-U_q(a)Y_q(a).
+\end{equation}
+At $q=0$,
+\[
+ \mathcal F_0(a)=\log\Gamma(a)-\tfrac12\log(2\pi),
+ \qquad Y_0(a)=\frac{\sqrt{2\pi}}{\Gamma(a)},\qquad U_0(a)=\psi(a).
+\]
+\end{lemma}
+\begin{proof}
+Use $\partial_a\zeta(s,a)=-s\zeta(s+1,a)$ and expand the right side at $s=0$ with \eqref{eq:stieltjes}. The result is
+\[
+ \partial_a\zeta(s,a)=-1-
+       \sum_{q\ge0}\frac{(-1)^q}{q!}\gamma_q(a)s^{q+1}.
+\]
+The coefficient of $s^{q+1}$ gives \eqref{eq:Fqprime}. The $q=0$ specialization is the standard value of $\zeta'(0,a)$ and $\gamma_0=-\psi$.
+\end{proof}
+
+Combining this with Theorem~\ref{thm:primitive} yields, for every pair of integers $q\ge0$ and $m\ge1$,
+\begin{equation}\label{eq:stieltjes-weighted}
+ \boxed{\displaystyle
+ \int Y_q(a)\bigl(\Nc_m(U_q)+U_q\Hc_m(U_q)\bigr)\dd a
+ =-Y_q(a)\bigl(\Ac_{m-1}(U_q)+\Hc_m(U_q)\bigr)+C.}
+\end{equation}
+All derivatives inside the differential polynomials are with respect to $a$. This is an all-index ordinary primitive on $a>0$. It is not an evaluation of an arbitrary raw Stieltjes product: the same precisely specified compensator occurs on the left.
+
+\subsection{Derivatives in explicit Hurwitz coordinates}
+
+The Stieltjes derivatives in \eqref{eq:stieltjes-weighted} can themselves be expressed by finite sums of Hurwitz-zeta order derivatives and generalized harmonic numbers. Let $\mathcal B_j$ be the complete exponential Bell polynomial, defined by
+\[
+ \exp\left(\sum_{\ell\ge1}b_\ell\frac{t^\ell}{\ell!}\right)
+ =\sum_{j\ge0}\mathcal B_j(b_1,\ldots,b_j)\frac{t^j}{j!},
+ \qquad \mathcal B_0=1.
+\]
+For $r\ge1$, define
+\[
+ b_\ell^{(r)}=(-1)^{\ell-1}(\ell-1)!H_r^{(\ell)}.
+\]
+Then for $q\ge0$,
+\begin{equation}\label{eq:gammaq-derivatives}
+ \frac{\mathrm d^r}{\mathrm da^r}\gamma_q(a)
+ =(-1)^{q+r}r!\sum_{j=0}^{\min(q,r)}\binom qj
+   \mathcal B_j\bigl(b_1^{(r)},\ldots,b_j^{(r)}\bigr)
+   \zeta^{(q-j)}(r+1,a).
+\end{equation}
+To prove this, differentiate the defining Hurwitz series in $a$ and continue:
+\[
+ \partial_a^r\zeta(s,a)=(-1)^r(s)_r\zeta(s+r,a).
+\]
+At $s=1$, the $j$th derivative of the rising factorial $(s)_r$ is
+$r!\mathcal B_j(b_1^{(r)},\ldots,b_j^{(r)})$. Derivatives above its degree $r$ vanish. Finally the Laurent coefficient convention \eqref{eq:stieltjes} contributes the factor $(-1)^q$ and the Leibniz rule gives \eqref{eq:gammaq-derivatives}.
+
+Equations~\eqref{eq:positive-beta}, \eqref{eq:stieltjes-weighted}, and \eqref{eq:gammaq-derivatives} form a finite, exact route from arbitrary normal-form indices to a specified Gamma or Stieltjes primitive. They require only polynomial arithmetic, generalized harmonic numbers, and ordinary derivatives of the Hurwitz zeta function at explicitly given points.

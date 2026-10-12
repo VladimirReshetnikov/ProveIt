@@ -1,0 +1,2490 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=26mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,array,longtable}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\definecolor{linkblue}{RGB}{24,63,105}
+\hypersetup{colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue,
+ pdftitle={Joint Polygamma Moments, Gap-Eight Reconstruction, and Multiscale Stieltjes Resonances},
+ pdfauthor={Research continuation for the ProveIt project},
+ pdfsubject={Exact special-function identities and rigorous research continuation}}
+\urlstyle{same}
+\Urlmuskip=0mu plus 2mu\relax
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\setlist[enumerate]{leftmargin=*,itemsep=5pt,topsep=5pt}
+\setlist[itemize]{leftmargin=*,itemsep=3pt,topsep=4pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small ProveIt: special-function research continuation}
+\fancyhead[R]{\small 12 October 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\title{\bfseries Joint Polygamma Moments,\\
+Gap-Eight Reconstruction, and\\
+Multiscale Stieltjes Resonances}
+\author{Research continuation for the ProveIt project}
+\date{12 October 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We advance three explicitly open directions in the current ProveIt
+polylogarithm and special-function reports. First, an unpaired deformation
+of a symplectic Gamma integral separates every joint polygamma cumulant
+whose total derivative weight is at most $2n+2$. Positive-order statistics
+obey an exact finite Wick rule, whereas the digamma sector has explicitly
+nonzero higher cumulants. A small-parameter limit proves that the Gaussian
+range cannot be extended universally. Second, we make fixed-gap harmonic
+tail reconstruction effective for every prescribed even gap and complete
+gap eight for all indices. The proof combines explicit Gamma-integral
+asymptotics with an exact finite-field certificate for the remaining
+$8187$ matrices; it also produces an all-order family of ordinary,
+absolutely convergent polygamma-product sums equal to $-1/2$.
+Third, we evaluate the constant term in collisions of arbitrary argument
+derivatives of generalized Stieltjes constants at two positive monomial
+scales. Three elementary resonance equations describe all new contacts.
+Their coefficients reduce to zeta derivatives, harmonic numbers, and
+Stieltjes constants at one. A first-index specialization realizes every
+integer trigamma tail as a collision contact, with a polylogarithmic
+generator and explicit primitive. Barnes-integral companion evaluations,
+source qualifications, reproducible verification programs, and a precise
+research agenda accompany the proofs. Novelty is asserted relative to
+the inspected repository baseline, with classical ingredients identified.
+\end{abstract}
+\tableofcontents
+\clearpage
+
+% BEGIN sections/00_introduction.tex
+\section{Scope, principal results, and conventions}
+\label{intro:section}
+
+The starting point is the ProveIt repository at revision
+\texttt{03112a7d3b91} (full revision in \cite{ProveIt}), inspected on
+12 October 2026. We read the polylogarithm manuscript and the text sources
+in the incoming reports available at that revision; the most immediate
+predecessors are the ordered-boundary, gap-six, and Gamma-normalization
+reports \cite{ProveIt,OrderedIncoming,GapSix,GammaIncoming}.
+This matters because several questions suggested by older manuscript
+passages have already been answered in newer incoming material.
+In particular, complete gap six, fixed-rate Stieltjes collisions, and
+the paired Gamma deformation are prior results, not new contributions
+of this article.
+
+Our aim is to obtain exact evaluations and structural formulas. Estimates
+are used where needed to prove identities or to turn eventual
+nonsingularity into a theorem valid for all indices. They are not the
+principal conclusions. Each of the three main directions gives a
+finite, explicit way to evaluate an infinite family.
+
+\subsection{Three advances and their exact scope}
+
+\paragraph{Joint polygamma moments.}
+For the positive $n$-variable Gamma density defined in
+\eqref{gc:density}, introduce
+$R_q=\sum_{j=1}^n\Re\psi^{(q)}(\sigma+ix_j/2)$.
+Theorem~\ref{gc:main} evaluates all joint cumulants satisfying
+$\sum_i(q_i+1)\le2n+2$. It gives means, covariances, and the particularly
+simple higher-cumulant formula
+\[
+ \kappa(R_{q_1},\ldots,R_{q_r})
+ =-2^{-r}\psi^{(r-1)}((2n+2)\sigma)
+          \prod_i\delta_{q_i0},\qquad r\ge3.
+\]
+Thus the positive-order sector has exact Gaussian moments in a finite
+weighted range, while the digamma sector retains a non-Gaussian
+correction. This answers the joint-separation question of the latest
+Gamma report in that range. The partition formula
+\eqref{gc:moment} evaluates the corresponding ordinary integrals without
+leaving parameter derivatives unevaluated. Proposition~\ref{gc:sharpness}
+also proves a specific obstruction to extending the source's
+single-trigamma matching degree universally.
+
+\paragraph{Gap-eight reconstruction and sums.}
+For $p=2b-2m$, $q=2b$, the harmonic-tail problem reduces to a rational
+matrix $M_{b,m}$. Theorem~\ref{eg:effective} gives a fully computable
+threshold $B(m)$ beyond which it is nonsingular, for every prescribed
+$m\ge1$. Theorem~\ref{eg:eight-main} completes $m=4$ at every $b\ge5$,
+settling the explicitly open gap-eight ray. Its finite step is an exact
+computation, not a numerical extrapolation. Corollary~\ref{eg:eight-identities}
+then gives rational polynomials $P_b,S_b$ such that
+\[
+ \sum_{n=0}^{\infty}\left[
+ P_b(n+\tfrac12)\zeta(2b-8,n+1)\zeta(2b,n+1)
+       -S_b(n+\tfrac12)\right]=-\frac12.
+\]
+The subtracted series is absolutely convergent. Matrix rank is taken on
+the indicated formal coordinates; it is not a claim that the evaluated
+zeta values are rationally or algebraically independent.
+
+\paragraph{Different-power Stieltjes collisions.}
+Theorem~\ref{mc:main} evaluates the change in every finite-part constant
+when the two arguments are shifted by
+$a=\lambda\epsilon^\alpha$, $b=\mu\epsilon^\beta$, with positive
+parameters and unequal exponents. The equal-exponent case is inherited.
+The answer consists of two explicit mixed contacts and at most one
+singular--singular contact. The latter can survive precisely when
+\[
+ j(\alpha-\beta)=\beta(r+t+1),\qquad j\in\mathbb Z_{\ge1},
+ \quad\alpha>\beta.
+\]
+The mixed contacts obey two further integer selection rules. This
+classification explains constants absent from the fixed-rate theorem,
+including the two renormalized limits $-1-\zeta(3)$ and $-1+\zeta(4)$
+in \eqref{mc:q2limit}--\eqref{mc:q3limit}.
+An especially short consequence is
+\[
+ \operatorname{CT}_{\epsilon}\int_0^1
+ \gamma_1(x+\epsilon^{j+1})\gamma_0(x+\epsilon^j)\,dx
+ =\frac32\gamma_2+2\gamma\zeta(2)-\zeta(3)+\psi'(j+1).
+\]
+Here the fixed finite part is inherited; the additional trigamma tail
+is the newly identified collision term.
+
+\subsection{Classical ingredients and the novelty boundary}
+
+The multidimensional Gamma integral is a classical Gustafson integral;
+we use the explicit symplectic normalization reproduced in
+\cite[Eq.~(2)]{DerkachovManashov}, together with the repository's
+determinant transformation. The new step is separation in independent
+power-sum coordinates through their exact injectivity range.
+The reconstruction proof builds on the repository's Bernoulli recurrence
+and Gamma basis. Its new steps are a uniform effective threshold,
+the complete gap-eight certificate, and the associated evaluated sums.
+
+Finite-part integration and generalized Stieltjes-transform asymptotics
+have an established literature \cite{TicaGalapon}; integrals of products
+of Hurwitz zeta functions also occur in \cite{ShpotParis}. The monomial
+collision theorem below uses elementary local subtraction, an incomplete
+beta expansion, and cancellation of two meromorphic branches. Its new
+content is the evaluated all-index contact law for the specified
+two-scale problem. The Barnes companion in Section~\ref{bim:section}
+is explicitly presented as a consequence of the classical first Barnes
+lemma \cite[5.13.3]{DLMF}. We do not claim that parameter differentiation,
+Bell polynomials, Barnes integration, or the resulting elementary
+Euler-sum generators are new methods.
+
+The comparison establishes advances over the inspected repository,
+not an exhaustive historical-priority determination. The claims are
+proved in the usual mathematical sense, with an explicitly isolated
+exact computational component for the finite gap-eight interval.
+The accompanying numerical calculations are independent diagnostics;
+they are not proofs by integer-relation recognition. No proof-assistant
+formalization is claimed.
+
+\subsection{Notation and finite-part convention}
+
+We use $\psi=\Gamma'/\Gamma$, $\psi^{(0)}=\psi$, and the standard
+Hurwitz zeta function $\zeta(s,x)$. A superscript in parentheses on
+$\gamma_m(x)$ denotes an argument derivative, whereas $m$ is its
+Stieltjes index. The convention for generalized Stieltjes constants is
+\[
+ \zeta(1+u,x)=\frac1u+
+       \sum_{m\ge0}\frac{(-1)^m}{m!}\gamma_m(x)u^m,
+ \qquad \gamma_m=\gamma_m(1),\quad\gamma_0=\gamma.
+\]
+Thus $\gamma_0(x)=-\psi(x)$. Rising factorials are $(a)_k$;
+falling factorials are explicitly underlined. We set
+\[
+ H_j^{(h)}=\sum_{k=1}^j k^{-h},\qquad H_j=H_j^{(1)},
+ \qquad H_0^{(h)}=0.
+\]
+Bernoulli numbers have generating function
+$t/(e^t-1)=\sum_{k\ge0}B_k t^k/k!$.
+All logarithms of positive arguments are real; analytic logarithms
+elsewhere are fixed locally at the stated base point.
+
+The operation $\operatorname{CT}_{\epsilon}$ extracts the coefficient
+of $\epsilon^0(\log\epsilon)^0$ from the specified power--logarithm
+expansion. It is a coordinate-dependent finite part, not an unspecified
+regularization and not necessarily a limit. We supply explicit ordinary
+subtractions when stating a renormalized limit. The monomial exponents
+are fixed while $\epsilon\downarrow0$; a jointly varying exponent ratio
+near a resonance is a separate problem.
+
+% END sections/00_introduction.tex
+
+% BEGIN sections/01_joint_polygamma.tex
+% Independent continuation, 12 October 2026.
+% Fragment uses amsmath, amssymb, amsthm; theorem/lemma/corollary environments.
+% Primary bibliography keys below are suggestions for the parent article.
+\section{Joint Gamma--polygamma cumulants}
+\label{gc:section}
+
+The latest incoming Gamma-normalization report \cite{GammaIncoming} evaluates the appropriate
+Gustafson determinant, establishes a paired parameter deformation, and
+proves Gaussian moments for a single trigamma statistic through degree
+$n+1$. Its research question Q2 asks for a precise classification of
+joint polygamma moments. The theorem below answers this question in a
+complete weighted range. It also includes the digamma statistic and all
+even polygamma orders, which require the unpaired deformation.
+The classical integral and the source's density are inherited; the
+explicit cumulant classification and its consequences are the present
+extension. No claim of priority over all literature is made.
+
+For $n\ge1$, $\sigma>0$, put $N=2n+2$ and consider the probability
+measure on $(0,\infty)^n$ with density proportional to
+\begin{equation}\label{gc:density}
+ \Delta(x_1^2,\ldots,x_n^2)
+ \Delta(\cosh\pi x_1,\ldots,\cosh\pi x_n)
+ \prod_{j=1}^n x_j\sinh(\pi x_j)
+       |\Gamma(\sigma+ix_j/2)|^{2N},
+\end{equation}
+where $\Delta(y)=\prod_{j<k}(y_k-y_j)$. Its normalizer is
+\begin{equation}\label{gc:normalizer}
+ Z_{n,\sigma}
+ =2^{n(3n+1)/2}\pi^{n(n+1)}n!
+       \frac{\Gamma(2\sigma)^{(n+1)(2n+1)}}{\Gamma(N\sigma)}.
+\end{equation}
+The Vandermondes have the same sign, so this is a positive measure.
+Write $\mathbb E=\mathbb E_{n,\sigma}$ and define, for $q\ge0$,
+\begin{equation}\label{gc:R}
+ R_q=\sum_{j=1}^n\Re\psi^{(q)}(\sigma+ix_j/2),
+ \qquad \psi^{(0)}=\psi.
+\end{equation}
+The \emph{weight} of $R_q$ is $q+1$. A joint cumulant means
+\[
+ \kappa(Y_1,\ldots,Y_r)
+ =\left.\partial_{t_1}\cdots\partial_{t_r}
+     \log\mathbb E e^{t_1Y_1+\cdots+t_rY_r}\right|_{\mathbf t=0}.
+\]
+All fixed moments exist. Indeed the positive-order polygammas are bounded
+on each vertical line $\Re z=\sigma$, the digamma grows at most
+logarithmically, and the Gamma weight has an exponential margin after
+multiplication by every fixed polynomial or logarithmic power.
+
+\begin{theorem}[Explicit joint cumulants in the complete weighted range]
+\label{gc:main}
+Let $q_1,\ldots,q_r\ge0$ and suppose
+\begin{equation}\label{gc:range}
+                   \sum_{i=1}^r(q_i+1)\le N=2n+2.
+\end{equation}
+The one-point and two-point cumulants are
+\begin{align}
+ \mathbb E R_q
+   &=\frac12\left[(N-2^q)\psi^{(q)}(2\sigma)
+               -\delta_{q0}\psi(N\sigma)\right],
+              \label{gc:mean}\\
+ \operatorname{Cov}(R_p,R_q)
+   &=\frac14\left[\psi^{(p+q+1)}(2\sigma)
+               -\delta_{p0}\delta_{q0}\psi'(N\sigma)\right].
+              \label{gc:cov}
+\end{align}
+For every $r\ge3$ in the same weighted range,
+\begin{equation}\label{gc:higher}
+ \boxed{\quad
+ \kappa(R_{q_1},\ldots,R_{q_r})
+ =-\frac{\psi^{(r-1)}(N\sigma)}{2^r}
+                    \prod_{i=1}^r\delta_{q_i0}.
+ \quad}
+\end{equation}
+Thus every mixed cumulant of order at least three that contains a
+positive-order polygamma statistic vanishes in this range.
+\end{theorem}
+
+\subsection{Proof by independent parameter shifts}
+
+For independent parameters $z_1,\ldots,z_N$ near zero, deform all Gamma
+parameters to $\sigma+z_\ell$. Gustafson's symplectic Barnes integral,
+in the normalization of Derkachov--Manashov \cite[Eq.~(2)]{DerkachovManashov}, and the
+source's determinant-to-density transformation give
+\begin{equation}\label{gc:unpaired}
+\begin{split}
+ &\mathbb E\prod_{j=1}^n\prod_{\ell=1}^N
+ \frac{\Gamma(\sigma+z_\ell+ix_j/2)
+       \Gamma(\sigma+z_\ell-ix_j/2)}
+      {\Gamma(\sigma+ix_j/2)\Gamma(\sigma-ix_j/2)}\\
+ &\qquad=
+ \frac{\Gamma(N\sigma)}{\Gamma(N\sigma+\sum_\ell z_\ell)}
+ \prod_{\ell<h}
+       \frac{\Gamma(2\sigma+z_\ell+z_h)}{\Gamma(2\sigma)}.
+\end{split}
+\end{equation}
+This is an identity of holomorphic germs. On a sufficiently small
+polydisc every shifted Gamma parameter remains in the right half-plane.
+Uniform Stirling bounds leave an integrable exponential majorant, even
+after any fixed mixed derivative; they justify coefficient extraction
+under the integral. Holomorphic log-Gamma is used on that half-plane,
+and the analytic logarithm of the expectation is fixed by its value
+zero at the origin.
+
+Put $p_k=\sum_{\ell=1}^N z_\ell^k$. Taylor expansion of the logarithm
+of the integrand in \eqref{gc:unpaired} gives
+\[
+ \log\left(\prod_{j,\ell}\frac{\Gamma(\sigma+z_\ell+ix_j/2)
+     \Gamma(\sigma+z_\ell-ix_j/2)}
+     {\Gamma(\sigma+ix_j/2)\Gamma(\sigma-ix_j/2)}\right)
+            =2\sum_{k\ge1}\frac{R_{k-1}}{k!}p_k.
+\]
+For every integer $k\ge1$ the elementary pair-sum identity is
+\begin{equation}\label{gc:pairsum}
+ \sum_{\ell<h}(z_\ell+z_h)^k
+ =(N-2^{k-1})p_k+\frac12\sum_{a=1}^{k-1}
+                              \binom ka p_a p_{k-a}.
+\end{equation}
+The coefficient of $p_k$ follows by excluding the diagonal from
+$\sum_{\ell,h}z_\ell^a z_h^{k-a}$; the two endpoint terms each
+contribute $(N-1)p_k$ before the factor $1/2$ is applied.
+Taking logarithms in \eqref{gc:unpaired} therefore gives
+\begin{equation}\label{gc:power-sum-log}
+\begin{split}
+ &\log\mathbb E\exp\left(2\sum_{k\ge1}\frac{R_{k-1}}{k!}p_k\right)\\
+ &\quad=\sum_{k\ge1}
+       \frac{(N-2^{k-1})\psi^{(k-1)}(2\sigma)}{k!}p_k
+       +\frac12\sum_{a,b\ge1}
+          \frac{\psi^{(a+b-1)}(2\sigma)}{a!b!}p_a p_b
+       -\sum_{r\ge1}\frac{\psi^{(r-1)}(N\sigma)}{r!}p_1^r.
+\end{split}
+\end{equation}
+
+The next finite algebra observation is the step that permits separation
+of the different statistics, rather than merely recording a generating
+identity.
+
+\begin{lemma}[Independent power-sum coordinates through degree $N$]
+\label{gc:psindependent}
+Assign weight $k$ to an indeterminate $P_k$. Substitution
+$P_k\mapsto p_k(z_1,\ldots,z_N)$ is injective on the space of
+polynomials of weighted degree at most $N$.
+\end{lemma}
+\begin{proof}
+Only $P_1,\ldots,P_N$ can occur in that degree range.
+Newton's identities give an invertible triangular change between
+$p_1,\ldots,p_N$ and the first $N$ elementary symmetric polynomials,
+which are algebraically independent. Alternatively the Jacobian of
+the power sums is
+\[
+ \det\left(\frac{\partial p_k}{\partial z_\ell}\right)_{k,\ell=1}^N
+              =N!\prod_{\ell<h}(z_h-z_\ell),
+\]
+which is not the zero polynomial. Either proof gives the claimed
+injectivity.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{gc:main}]
+The homogeneous component of degree $d\le N$ in
+\eqref{gc:power-sum-log} involves only $p_1,\ldots,p_d$.
+By Lemma~\ref{gc:psindependent}, compare its coefficients as polynomials
+in independent power-sum variables. Set $p_k=k!t_{k-1}/2$ in this
+finite-degree comparison. The logarithmic moment generating function
+then has, through weighted degree $N$, the form
+\begin{equation}\label{gc:cgf}
+\begin{split}
+ \log\mathbb E\exp\left(\sum_{q\ge0}t_qR_q\right)
+  ={}&\frac12\sum_{q\ge0}(N-2^q)\psi^{(q)}(2\sigma)t_q\\
+    &+\frac18\sum_{p,q\ge0}\psi^{(p+q+1)}(2\sigma)t_pt_q
+      -\sum_{r\ge1}\frac{\psi^{(r-1)}(N\sigma)}{2^r r!}t_0^r.
+\end{split}
+\end{equation}
+Here equality means coefficient equality only through that weighted
+degree, not an unrestricted identity of generating functions.
+The linear, quadratic and higher coefficients give
+\eqref{gc:mean}--\eqref{gc:higher}.
+\end{proof}
+
+\subsection{A finite formula for every retained ordinary moment}
+
+Let $\mathcal P_r$ be the set of partitions of $\{1,\ldots,r\}$.
+For a block $B$ define $c(B)$ by \eqref{gc:mean} when $|B|=1$,
+by \eqref{gc:cov} when $|B|=2$, and by
+\eqref{gc:higher} when $|B|\ge3$, using the orders attached to the
+labels in $B$. Since every block satisfies \eqref{gc:range} whenever
+the full list does, the ordinary moment is explicitly
+\begin{equation}\label{gc:moment}
+ \boxed{\qquad
+ \mathbb E\prod_{i=1}^rR_{q_i}
+             =\sum_{\pi\in\mathcal P_r}\prod_{B\in\pi}c(B),
+ \qquad \sum_i(q_i+1)\le N.
+ \qquad}
+\end{equation}
+This finite partition formula evaluates all the indicated integrals
+using only polygamma values at $2\sigma$ and $N\sigma$. It contains no
+unevaluated spectral derivative or auxiliary integral.
+
+For positive orders define the centered statistics
+\[
+ Y_q=R_q-\frac12(N-2^q)\psi^{(q)}(2\sigma),\qquad q\ge1.
+\]
+All blocks of size other than two disappear from their centered moments.
+Consequently
+\begin{corollary}[Weighted Wick rule]
+\label{gc:wick}
+For $q_i\ge1$ and $\sum_i(q_i+1)\le N$,
+\begin{equation}\label{gc:wickeq}
+ \mathbb E\prod_{i=1}^rY_{q_i}
+ =\begin{cases}
+ 0,&r\text{ odd},\\[2pt]
+ \displaystyle 4^{-r/2}\sum_{\text{pairings }\pi}
+         \prod_{\{i,j\}\in\pi}\psi^{(q_i+q_j+1)}(2\sigma),
+                                    &r\text{ even}.
+ \end{cases}
+\end{equation}
+\end{corollary}
+For example, for $n\ge5$ the genuinely mixed fourth moment is
+\begin{equation}\label{gc:example13}
+ \mathbb E(Y_1^2Y_3^2)
+ =\frac{\psi'''(2\sigma)\psi^{(7)}(2\sigma)}{16}
+                +\frac{\psi^{(5)}(2\sigma)^2}{8}.
+\end{equation}
+At $\sigma=1/4$ this is $33\pi^{12}/2$, using
+$\psi'''(1/2)=\pi^4$, $\psi^{(5)}(1/2)=8\pi^6$, and
+$\psi^{(7)}(1/2)=136\pi^8$.
+For $n\ge2$ another mixed evaluation is
+\begin{equation}\label{gc:example012}
+ \mathbb E\bigl[(R_0-\mathbb ER_0)(R_1-\mathbb ER_1)
+                                  (R_2-\mathbb ER_2)\bigr]=0,
+\end{equation}
+whose total weight is $1+2+3=6$.
+The odd-order restriction, $S_{2a-1}=R_{2a-1}$, reads
+\[
+ \mathbb ES_{2a-1}=(n+1-4^{a-1})\psi^{(2a-1)}(2\sigma),\qquad
+ \operatorname{Cov}(S_{2a-1},S_{2b-1})
+               =\tfrac14\psi^{(2a+2b-1)}(2\sigma)
+\]
+whenever, respectively, $a\le n+1$ and $a+b\le n+1$.
+Every higher cumulant vanishes when the sum of the corresponding
+$a$-indices is at most $n+1$. This is the requested separation of the
+joint odd-polygamma coordinates.
+
+\subsection{New scalar integral evaluations}
+
+Set $n=1$, $\sigma=1/4$ and
+\[
+ \omega(x)=x\sinh(\pi x)|\Gamma(1/4+ix/2)|^8,
+ \quad z_x=1/4+ix/2,
+\]
+\[
+ g(x)=\Re\psi(z_x)+\gamma+3\log2,\qquad
+ h(x)=\Re\psi'(z_x)-\pi^2/2.
+\]
+Here $\int_0^\infty\omega(x)\,dx=4\pi^5$.
+The theorem, whose weighted budget is $N=4$, gives the exact ordinary
+integrals, using the standard special values in \cite[\S5.15]{DLMF},
+\begin{align}
+ \int_0^\infty\omega(x)\Re\psi''(z_x)\,dx&=0,
+                                                    \label{gc:scalar1}\\
+ \int_0^\infty\omega(x)g(x)\Re\psi''(z_x)\,dx&=\pi^9,
+                                                    \label{gc:scalar2}\\
+ \int_0^\infty\omega(x)g(x)^2h(x)\,dx&=0,
+                                                    \label{gc:scalar3}\\
+ \int_0^\infty\omega(x)g(x)^3\,dx&=\pi^5\zeta(3),
+                                                    \label{gc:scalar4}\\
+ \int_0^\infty\omega(x)g(x)^4\,dx&=\frac{\pi^9}{15}.
+                                                    \label{gc:scalar5}
+\end{align}
+For the last two, the centered digamma cumulants are
+\[
+ \kappa_2(R_0)=\frac{\pi^2}{12},\quad
+ \kappa_3(R_0)=\frac{\zeta(3)}4,\quad
+ \kappa_4(R_0)=-\frac{\pi^4}{240}.
+\]
+Thus the fourth central moment is
+$3(\pi^2/12)^2-\pi^4/240=\pi^4/60$; multiplication by
+$4\pi^5$ gives \eqref{gc:scalar5}.
+The nonzero digamma cumulants explain why the Gaussian description
+belongs to the positive-order sector.
+
+\subsection{The finite range is essential}
+
+At degree $N+1$, Newton's relation $e_{N+1}=0$ in $N$ variables creates
+a nonzero kernel:
+\begin{equation}\label{gc:firstrelation}
+ \sum_{\lambda\vdash N+1}
+       \frac{(-1)^{N+1-\ell(\lambda)}}{z_\lambda}
+                 p_{\lambda_1}\cdots p_{\lambda_{\ell(\lambda)}}=0,
+ \qquad z_\lambda=\prod_{j\ge1}j^{m_j}m_j!.
+\end{equation}
+One therefore cannot compare all formal power-sum coefficients beyond
+the theorem's range. It is an algebraic failure of this extraction
+argument, not a proof that every first excluded cumulant is nonzero.
+The following limiting example supplies an actual obstruction to
+extending the source's single-trigamma Gaussian law universally.
+
+\begin{proposition}[A nonzero first excluded Gaussian moment]
+\label{gc:sharpness}
+For $n=1$ define the source-normalized statistic
+\[
+ X_{1,\sigma}=\frac{2R_1-2\psi'(2\sigma)}
+                         {\sqrt{\psi'''(2\sigma)}}.
+\]
+Then
+\begin{equation}\label{gc:skewlimit}
+        \lim_{\sigma\downarrow0}\mathbb E X_{1,\sigma}^3
+                       =\frac{2\sqrt6}{9}>0.
+\end{equation}
+In particular the Gaussian matching degree $n+1$ cannot be increased
+to $n+2$ uniformly over all $n\ge1$ and all $\sigma>0$.
+This proposition does not evaluate the general $(n+2)$nd defect.
+\end{proposition}
+\begin{proof}
+At $n=1$, \eqref{gc:normalizer} is
+$Z_{1,\sigma}=4\pi^2\Gamma(2\sigma)^6/\Gamma(4\sigma)$,
+and $\sigma^5 Z_{1,\sigma}\to\pi^2/4$.
+Set $x=2\sigma y$. Using $z\Gamma(z)\to1$ as $z\to0$, the
+normalized density in the $y$ variable tends pointwise to
+\[
+                q_0(y)=\frac{32}{\pi}\frac{y^2}{(1+y^2)^4},
+                \qquad y>0.
+\]
+Its integral is one by the beta integral. Since the approximating
+densities also integrate to one, Scheff\'e's lemma gives convergence
+in $L^1$. Also
+\[
+ \sigma^2\Re\psi'(\sigma(1+iy))
+       \longrightarrow\Re(1+iy)^{-2},\qquad
+ \sigma^2|\psi'(\sigma(1+iy))|
+       \le\sigma^2\psi'(\sigma),
+\]
+and the upper bound tends to one. The density convergence and this
+uniform bound give convergence of every fixed moment of the scaled
+statistic. If $t=y^2/(1+y^2)$ then $t$ has the
+$\operatorname{Beta}(3/2,5/2)$ law and
+\[
+ \Re(1+iy)^{-2}=f(t)=1-3t+2t^2.
+\]
+The beta moment formula
+$\mathbb Et^j=(3/2)_j/(4)_j$ gives
+\[
+ \mathbb Ef=\tfrac14,\qquad
+ \mathbb E(f-1/4)^2=\tfrac3{32},\qquad
+ \mathbb E(f-1/4)^3=\tfrac1{64}.
+\]
+Finally $\sigma^2\psi'(2\sigma)\to1/4$ and
+$\sigma^4\psi'''(2\sigma)\to3/8$. Thus the normalized variable
+converges in moments to $\sqrt{32/3}(f-1/4)$ and its third moment
+is $(32/3)^{3/2}/64=2\sqrt6/9$.
+\end{proof}
+
+\subsection{A joint Gaussian consequence}
+
+Although the main conclusions are exact integral evaluations, the
+finite moment law also has a useful joint limit. Fix distinct positive
+orders $q_1,\ldots,q_d$ and define
+\[
+ C(\sigma)_{ij}=\tfrac14\psi^{(q_i+q_j+1)}(2\sigma).
+\]
+This matrix is positive definite: the polygamma integral representation
+gives
+\[
+ v^TC(\sigma)v
+ =\frac14\int_0^\infty
+       \left(\sum_i(-1)^{q_i}v_i t^{q_i}\right)^2
+                    \frac{t e^{-2\sigma t}}{1-e^{-t}}\,dt>0
+\]
+for every nonzero real $v$. Distinct monomial degrees ensure strictness.
+For any positive sequence $\sigma_n$, let
+\[
+ \mathbf Z_n=C(\sigma_n)^{-1/2}
+       (R_{q_i}-\mathbb ER_{q_i})_{i=1}^d.
+\]
+Every mixed moment of total ordinary degree $k$ is exactly the
+corresponding standard $d$-variate Gaussian moment once
+$k(1+\max_iq_i)\le2n+2$. This follows by expanding the deterministic
+linear change of coordinates and applying the weighted Wick rule.
+In particular $\mathbf Z_n$ converges in distribution to $N(0,I_d)$.
+For a proof, every fixed linear projection has eventually the exact
+Gaussian moments of each prescribed order; the second moments give
+tightness and higher even moments give uniform integrability.
+Moment determinacy of the normal law and the Cram\'er--Wold theorem
+finish the argument. No estimate uniform in $\sigma_n$ is needed.
+
+\subsection{Independent verification}
+
+The accompanying program \texttt{verify\_gamma\_cumulants.py} performs
+122 exact assertions. These verify the pair-sum identity at twelve
+orders and eight numbers of variables, verify the ranks of the
+power-sum substitution through the first excluded degree for up to five
+variables, and independently evaluate the beta moments and displayed
+quarter-parameter arithmetic. In particular the rank drops by one at
+weighted degree $N+1$, as predicted by \eqref{gc:firstrelation}.
+
+The numerical side uses continuous Cauchy--Binet in the opposite
+direction: it integrates one-dimensional moment entries with inserted
+products of polygammas, constructs a determinant of their finite Taylor
+jets, and extracts moments and cumulants by finite polynomial
+arithmetic. It does not use the Gamma quotient for the expectation
+side. Seventeen checks include the zero mean of $R_2$, the third and
+fourth centered digamma cumulants, mixed vanishing cumulants, and
+$\operatorname{Var}(R_2)=\operatorname{Cov}(R_1,R_3)$ at $n=2$.
+The cases use quarter and non-quarter shifts. At 36 decimal digits,
+with 56 Gauss--Legendre nodes on each stated integration interval, the
+largest scaled residual is approximately $8.2\times10^{-34}$.
+A repeat at 46 decimal digits and 72 nodes per interval
+reduces the largest scaled residual to approximately $2.1\times10^{-43}$.
+A separate direct adaptive integral gives
+\[
+ \begin{aligned}
+ \mathbb EX_{1,0.02}^3
+ &=0.5443940332249657482536718308092\ldots,\\
+ \mathbb EX_{1,0.005}^3
+ &=0.5443321558595570316756456585706\ldots.
+ \end{aligned}
+\]
+consistent with the proved limit
+$2\sqrt6/9=0.5443310539518173551549520166013\ldots$.
+These floating point residuals are independent representation checks,
+not certified error intervals or replacements for the analytic proofs.
+
+% END sections/01_joint_polygamma.tex
+
+% BEGIN sections/02_gap_reconstruction.tex
+% Parent-ready research fragment. Labels use eg:; no preamble is included.
+% References to define in the final article: OrderedIncoming, GapSixIncoming,
+% DLMFStirling. Sources inspected: current ProveIt incoming archives dated
+% 2026-10-11 and 2026-10-12. The complete gap-six result is inherited.
+
+\section{Effective reconstruction at every fixed gap}
+\label{eg:section}
+
+The incoming ordered-boundary report \cite{OrderedIncoming} constructs a Gamma integral basis
+for the unequal-even-tail moment problem and proves eventual
+nonsingularity for each fixed gap.  The subsequent gap-six report \cite{GapSix}
+makes one of those eventual statements effective and completes that
+ray by finite-field arithmetic.  We now give a fully explicit threshold
+for \emph{every} fixed gap.  We then sharpen the estimates at gap eight
+and certify all remaining indices.  In particular, the complete
+gap-eight family, which the inspected gap-six report explicitly leaves
+open, is resolved below.
+
+The conclusions are statements about rational matrices on specified
+formal labels.  They do not imply algebraic or rational independence
+of the evaluated zeta values.  The contribution relative to the
+inspected sources is the explicit general threshold and the completed
+gap-eight ray; no historical-priority claim is made.
+
+\subsection{The inherited rational obstruction}
+
+Fix integers $m\ge1$ and $b>m$, and put
+\[
+ p=2b-2m,\qquad q=2b,\qquad x_n=n+\tfrac12,
+ \qquad A_v(n)=\zeta(v,n+1).
+\]
+The meromorphic continuation of
+\[
+ D_{p,q}(s)=\sum_{n=0}^{\infty}A_p(n)A_q(n)x_n^{-s}
+\]
+is regular at every nonpositive even argument.  Indeed, the centered
+Hurwitz expansion has only powers $x_n^{1-v-2h}$, so the possible
+poles of the continued product sum are at the odd integers
+$3-p-q-2h$.  Write $D_r=D_{p,q}(-2r)$.
+
+The block coordinates from \cite{OrderedIncoming,GapSix} satisfy
+\begin{align}
+ D_r&=\sum_{j=0}^r\frac{\binom{2r}{2j}}{2j+1}
+             B_{2r-2j}(1/2)C_j,\label{eg:forward}\\
+ C_j&=\sum_{r=0}^j\binom{2j+1}{2r}2^{-2(j-r)}D_r.
+ \label{eg:inverse}
+\end{align}
+For $j\ge b$ they have the late coordinates
+\[
+ C_j=\sum_{k=0}^{b-1}a_{jk}\zeta(2k),\qquad \zeta(0)=-\tfrac12.
+\]
+Put $d=2j+1$ and $e=d-p-q+2k+1$.  The coefficient is zero
+if $e<0$; otherwise it is
+\begin{equation}\label{eg:late-entry}
+ a_{jk}=B_e\left\{
+       \frac{\binom{d-q+1}{p-2k}}{d-q+1}
+      +\frac{\binom{d-p+1}{q-2k}}{d-p+1}\right\}.
+\end{equation}
+Each summand is omitted unless its lower binomial index is between
+$2$ and the upper index.  In particular the lower index zero is
+omitted.  Define
+\[
+ M_{b,m}=(a_{b+r,k})_{0\le r,k<b}.
+\]
+The first $2b$ moment rows are expressed on the formal labels
+\[
+ C_0,\ldots,C_{b-1},\quad\zeta(0),\ldots,\zeta(2b-2).
+\]
+Their exact coefficient determinant is $\det M_{b,m}/(4b-1)!!$.
+Thus nonsingularity of $M_{b,m}$ is exactly the optimal-prefix question.
+
+We recall the fixed-gap reduction in a notation which keeps the
+Bernoulli coefficients distinct from recurrence factors.  Set
+\begin{align*}
+ \beta_n&=\frac{2|B_{2n}|}{(2n)!},\qquad n\ge1,\\
+ a_u&=0\quad(1\le u\le m),\qquad
+ a_u=(2u)^{\underline{2m}}\quad(u>m),\\
+ b_s&=(2s-1)^{\underline{2m}},\qquad
+ d_s=2(a_s+b_s)\quad(s>m).
+\end{align*}
+Here the underline means falling factorial.  Define the rational
+fundamental array by
+\begin{align}
+ R_{u,j}&=\delta_{uj}&&(1\le u,j\le m),\notag\\
+ R_{s,j}&=\frac1{d_s}\sum_{u=1}^{s-1}
+      \beta_{s-u}(b_s+a_u)R_{u,j}\quad&&(s>m).
+ \label{eg:recurrence}
+\end{align}
+Finally let
+\[
+ F_{b,m}=(R_{b+i,j})_{1\le i,j\le m},\qquad f_{b,m}=\det F_{b,m}.
+\]
+The inherited complementary-minor identity is
+\begin{equation}\label{eg:rational-bridge}
+ \det M_{b,m}=
+ \frac{(-1)^{b(b-1)/2}}{4^bb!}
+       \left(\prod_{s=m+1}^{b+m}d_s\right) f_{b,m}.
+\end{equation}
+Every factor in the product is strictly positive.  Its normalization
+includes the omitted-index convention in \eqref{eg:late-entry}.
+This identity follows by coefficient comparison in the null equation
+\[
+ (R^{(2m)}-R^{(2m)}(0))\cot(z/2)
+                         +(R\cot(z/2))^{(2m)}=0
+\]
+and the complementary-minor identity for its lower-triangular
+coefficient operator; these inherited steps are reproduced in the
+ordered-boundary and gap-six sources.
+
+\subsection{Gamma realization and its signs}
+
+Put
+\begin{align*}
+ W_m(x)&=\left|\Gamma\!\left(\tfrac14+\tfrac{ix}{2}\right)\right|^{4m},\\
+ P_j(x)&=\sinh(\pi(m-j)x)\quad(1\le j<m),\qquad
+ P_m(x)=\tanh(\pi x),\\
+ \lambda_j&=j\pi,\qquad A_m=2^m(2\pi)^{2m},\qquad
+ a_j^*=\begin{cases}A_m/2,&j<m,\\ A_m,&j=m.
+                   \end{cases}
+\end{align*}
+The incoming Gamma-basis theorem \cite{OrderedIncoming} gives
+\begin{equation}\label{eg:gamma-coefficients}
+ t_{n,j}=\frac4{(2n)!}\operatorname{Im}
+       \int_0^\infty(x+i/2)^{2n}P_j(x)W_m(x)\,dx
+\end{equation}
+and
+\begin{equation}\label{eg:gamma-bridge}
+ (t_{b+i,j})_{i,j=1}^m=F_{b,m}T_m,\qquad
+ T_m=(t_{n,j})_{n,j=1}^m,\qquad
+ \operatorname{sgn}\det T_m=(-1)^{m(m-1)/2}.
+\end{equation}
+All integrals converge absolutely.  The null equation follows from
+the Gamma recurrence after two Fourier contours are shifted by
+$\pm i$; the sinh modes cross no poles, and the tanh mode supplies
+the two residues at $\pm i/2$ which give the subtracted derivative.
+The sign in \eqref{eg:gamma-bridge} follows from continuous
+Cauchy--Binet: its integrand is a positive weight times the product
+of a Vandermonde in $x_r^2$ and a reversed Vandermonde in
+$\cosh(\pi x_r)$.  These exact inputs, rather than numerical
+normalizations of the Gamma integrals, will be used below.
+
+\subsection{An explicit real-density estimate for arbitrary gaps}
+
+\begin{lemma}\label{eg:density}
+For $X=2m$, every $x\ge X$, and $1\le j\le m$,
+\begin{equation}\label{eg:density-bound}
+ \frac{P_j(x)W_m(x)}{a_j^*}
+   =x^{-m}e^{-\lambda_jx}(1+\delta_{m,j}(x)),
+ \qquad |\delta_{m,j}(x)|\le\frac{2m}{x^2}.
+\end{equation}
+On $0\le x\le X$ one has the elementary bound
+\begin{equation}\label{eg:compact-density}
+ 0\le P_j(x)W_m(x)/a_j^*<2^{16m^2+12m}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The complex Stirling remainder \cite[\S5.11(ii)]{DLMF}, after retaining $1/(12z)$, gives
+\[
+ \log\Gamma(z)=(z-\tfrac12)\log z-z+\tfrac12\log(2\pi)
+                        +\frac1{12z}+\rho(z),\qquad
+ |\rho(z)|\le\frac1{90|z|^3}
+\]
+for $z=1/4+ix/2$.  Indeed the first omitted term has magnitude
+$1/(360|z|^3)$ and the secant factor is at most four in this
+closed right-half-plane sector.  Let $t=1/(2x)$ and
+\[
+ L_m(x)=\log\frac{W_m(x)}{A_mx^{-m}e^{-m\pi x}}.
+\]
+Taking $4m$ times the real part gives exactly
+\[
+ L_m(x)=-\frac m2\log(1+t^2)
+      +m\left(\frac{\arctan t}{t}-1\right)
+      +\frac{4m}{3}\frac{t^2}{1+t^2}+4m\operatorname{Re}\rho(z).
+\]
+Using $\log(1+t^2)\le t^2$ and
+$0\le1-\arctan(t)/t\le t^2/3$, for $x\ge2$ we obtain
+\begin{equation}\label{eg:log-density}
+ |L_m(x)|\le\frac{13m}{24x^2}+\frac{16m}{45x^3}
+          \le\frac{259m}{360x^2}<\frac{3m}{4x^2}.
+\end{equation}
+For $x\ge2m$ this is at most $3/(16m)<1$.  The elementary
+inequality $|e^u-1|\le2|u|$ for real $|u|\le1$ now gives
+an error at most $3m/(2x^2)$ for the normalized Gamma density.
+The remaining normalized sinh or tanh multiplier lies in $[0,1]$
+and differs from one by at most $2e^{-2\pi x}\le1/(9x^2)$.
+Combining these estimates proves \eqref{eg:density-bound}.
+
+Euler's integral gives $|\Gamma(1/4+ix/2)|\le\Gamma(1/4)<5$.
+For $0\le x\le2m$, each multiplier is at most
+$e^{2\pi m(m-1)}$.  Since $a_j^*>1$, $\pi<4$, $e<4$,
+and $5<8$, the stated generous power-of-two bound follows.
+\end{proof}
+
+\subsection{An effective shifted Laplace lemma}
+
+For $N>m+1$ and $\lambda>0$ define
+\[
+ S_N^{(r)}(\lambda)=
+       \frac{\Gamma(N-m-r+1)}{\lambda^{N-m-r+1}},
+       \qquad r=0,1,2.
+\]
+Let
+\begin{equation}\label{eg:constants}
+ C_m=\left\lceil4m+\frac{3m(m+1)}8+1\right\rceil,
+ \qquad N_0(m)=4096(m+1)^2.
+\end{equation}
+
+\begin{lemma}\label{eg:laplace}
+For every integer $N\ge N_0(m)$ and $1\le j\le m$,
+\begin{equation}\label{eg:laplace-bound}
+ \left|\frac1{a_j^*}\int_0^\infty(x+i/2)^NP_j(x)W_m(x)\,dx
+   -e^{i\lambda_j/2}\left(S_N^{(0)}(\lambda_j)
+                 +\frac{im}{2}S_N^{(1)}(\lambda_j)\right)\right|
+       < C_m S_N^{(2)}(\lambda_j).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Write $X=2m$.  On $[X,\infty)$ replace the normalized density
+by $x^{-m}e^{-\lambda x}$.  Its absolute error is at most
+\[
+ 2m\int_X^\infty |x+i/2|^Nx^{-m-2}e^{-\lambda x}\,dx.
+\]
+On $x\ge\sqrt N$ one has
+$|x+i/2|^N\le x^N\exp(N/(8x^2))<2x^N$, so this part is
+at most $4mS_N^{(2)}$.  On $X\le x\le\sqrt N$, the factor
+$2mx^{-m-2}$ is at most one; hence the remaining part is at most
+$\sqrt N(N+1)^{N/2}$.
+
+For the model integral set $y=x+i/2$ and move the ray to
+$[X,\infty)$.  Its integrand, after extracting $e^{i\lambda/2}$,
+is $y^{N-m}(1-i/(2y))^{-m}e^{-\lambda y}$.  No pole is crossed.
+On real $y\ge2m$, Taylor's theorem applied to $(1-u)^{-m}$ gives
+\[
+ \left|(1-i/(2y))^{-m}-1-\frac{im}{2y}\right|
+       \le\frac{3m(m+1)}{8y^2}.
+\]
+For detail, $u=1/(2y)\le1/(4m)$, and the positive-coefficient
+Taylor remainder is bounded by
+$m(m+1)u^2(1-u)^{-m-2}/2$.  Also
+\[
+ (1-u)^{-m-2}\le
+  \exp\!\left(\frac{(m+2)u}{1-u}\right)
+  \le\exp\!\left(\frac{m+2}{4m-1}\right)<3.
+\]
+Thus the model remainder contributes at most
+$3m(m+1)S_N^{(2)}/8$.
+
+The short vertical segment at $X$, the two retained integrals
+between $0$ and $X$, and the original compact density integral
+are together bounded by $2^{20(m+1)^2}(3m)^N$.  Indeed the
+compact density bound contributes at most
+$X2^{16m^2+12m}(X+1)^N$; the other three terms are bounded
+by $(2+m/2)(X+1)^N$.  The displayed larger constant covers their
+sum for every $m\ge1$.
+
+It remains to dominate
+\[
+ R_N=2^{20(m+1)^2}(3m)^N+\sqrt N(N+1)^{N/2}
+\]
+by $S_N^{(2)}$.  Put $k=N-m-2$.  Since $\lambda_j<4m$ and
+$k!\ge(k/3)^k$,
+\[
+ S_N^{(2)}(\lambda_j)>
+             \frac1{4m}\left(\frac{k}{12m}\right)^k.
+\]
+For $N\ge N_0(m)$, one has $k\ge3N/4$ and
+$\sqrt{N+1}\le(5/4)\sqrt N$.  Consequently
+\begin{align*}
+ \frac{\sqrt N(N+1)^{N/2}}{S_N^{(2)}}
+  &\le N^{m+4}\left(\frac{20m}{\sqrt N}\right)^N
+    <N^{m+4}2^{-N},\\
+ \frac{2^{20(m+1)^2}(3m)^N}{S_N^{(2)}}
+  &\le2^{20(m+1)^2}N^{m+3}
+                \left(\frac{48m^2}{N}\right)^N
+    <2^{20(m+1)^2}N^{m+3}4^{-N}.
+\end{align*}
+The elementary inequality $N^{m+4}\le2^{N-2}$ holds throughout
+this range.  At $N_0(m)$ it follows from
+$\log_2N_0(m)\le12+2m$ and
+$(m+4)(12+2m)<N_0(m)-2$; it persists by induction because
+$N>2(m+4)$ implies $(1+1/N)^{m+4}<2$.
+The two ratios are therefore less than $1/4$ each, the second
+using also $N>20(m+1)^2$.  Thus $R_N<S_N^{(2)}/2$.
+Adding all errors proves \eqref{eg:laplace-bound}.
+\end{proof}
+
+\subsection{A closed, computable threshold for every fixed gap}
+
+Let $V_m=(j^{-2i})_{1\le i,j\le m}$ and define the positive rational
+number
+\begin{equation}\label{eg:delta}
+ \delta_m=\frac{|\det V_m|}{\operatorname{perm}V_m}.
+\end{equation}
+Here $\operatorname{perm}V_m$ is the sum of its $m!$ unsigned
+permutation products.  Thus $0<\delta_m\le1$, and its numerator
+is explicitly the absolute reciprocal-square Vandermonde product
+\[
+ |\det V_m|=
+ \left(\prod_{j=1}^m j^{-2}\right)
+             \prod_{j<k}(j^{-2}-k^{-2}).
+\]
+Set
+\begin{equation}\label{eg:B}
+ E_m=8C_m+2(m-1),\qquad
+ \boxed{\displaystyle
+ B(m)=\max\left\{2048(m+1)^2,
+       1+\left\lceil\frac{2mE_m}{\delta_m}\right\rceil\right\}.}
+\end{equation}
+
+\begin{theorem}[Effective reconstruction on every fixed-gap ray]
+\label{eg:effective}
+For every integer $m\ge1$ and every $b\ge B(m)$,
+\begin{equation}\label{eg:general-sign}
+ f_{b,m}\ne0,\qquad
+ \operatorname{sgn}f_{b,m}=(-1)^{\lfloor m^2/4\rfloor}.
+\end{equation}
+Consequently the first $q=2b$ moments for
+$(p,q)=(2b-2m,2b)$ form an optimal formal prefix, and
+\[
+ \operatorname{sgn}\det M_{b,m}
+       =(-1)^{b(b-1)/2+\lfloor m^2/4\rfloor}.
+\]
+For any prescribed $m$, all possible exceptions lie in the explicitly
+specified finite interval $m+1\le b<B(m)$.
+\end{theorem}
+
+\begin{proof}
+Let $N_i=2b+2i$ for $1\le i\le m$.  At odd $j$, the leading
+phase in \eqref{eg:laplace-bound} is $\pm i$, and at even $j$
+it is $\pm1$.  Thus the odd-mode leading term is
+\[
+ \sigma_j\frac{4a_j^*}{N_i!}S_{N_i}^{(0)}(\lambda_j),
+ \qquad \sigma_j=\sin(j\pi/2),
+\]
+with relative error bounded by
+\[
+ \frac{C_m\lambda_j^2}{(N_i-m)(N_i-m-1)}
+       <\frac{16C_mm^2}{(N_i-m-1)^2}.
+\]
+At even $j$ the first nonzero imaginary term is
+\[
+ \sigma_j\frac{2ma_j^*}{N_i!}S_{N_i}^{(1)}(\lambda_j),
+ \qquad \sigma_j=\cos(j\pi/2),
+\]
+with relative error less than $8C_m/(N_i-m-1)$.
+Retaining this second phase term is essential.
+
+Extract the positive row factors
+\[
+ \frac{4\Gamma(N_i-m+1)}{\Gamma(N_i+1)}\pi^{-2i}
+\]
+and the positive column factors $a_j^*\lambda_j^{-2b+m-1}$,
+multiplying each even column factor additionally by
+$m\lambda_j/(2(2b+2-m))$.  Also extract its sign $\sigma_j$.
+The remaining array $E=(E_{ij})$ has the form
+\[
+ E_{ij}=j^{-2i}(1+\eta_{ij}).
+\]
+For an even column the extra row factor is
+\[
+ \rho_i=\frac{2b+2-m}{2b+2i-m},\qquad
+ 1-\rho_i\le\frac{2(m-1)}{2b+2-m}.
+\]
+Since $b\ge B(m)>m$ and $b\ge2m^2$, the preceding estimates give
+\begin{equation}\label{eg:eta}
+ |\eta_{ij}|<\frac{E_m}{b}<\frac{\delta_m}{2m}.
+\end{equation}
+For the odd columns use
+$16C_mm^2/b^2\le8C_m/b$; for the even columns use
+$|\rho_i(1+\epsilon)-1|\le1-\rho_i+|\epsilon|$.
+
+Expanding the determinant into its signed permutation products,
+\[
+ |\det E-\det V_m|
+ <\operatorname{perm}V_m
+       \left\{\left(1+\frac{\delta_m}{2m}\right)^m-1\right\}
+ <\operatorname{perm}V_m\,\delta_m=|\det V_m|.
+\]
+The last strict inequality holds for $0<\delta_m\le1$: the binomial
+sum is bounded above by the corresponding infinite geometric sum
+$\delta_m/(2-\delta_m)\le\delta_m$, with a strictly positive
+omitted tail.  Hence $\det E$ has the sign of the reversed
+Vandermonde, namely $(-1)^{m(m-1)/2}$.
+The extracted column signs have product
+$\prod_j\sigma_j=(-1)^{\lfloor m^2/4\rfloor}$.
+Dividing by the initial determinant in \eqref{eg:gamma-bridge}
+cancels the reversed-Vandermonde sign and proves
+\eqref{eg:general-sign}.  Apply \eqref{eg:rational-bridge} to
+obtain the assertion about the original moment matrix.
+\end{proof}
+
+The formula is deliberately conservative and does not claim a least
+threshold.  Its first values are
+\[
+ \begin{array}{c|rrrrrr}
+ m&1&2&3&4&5&6\\ \hline
+ B(m)&8192&18432&32768&51200&635656&16146233.
+ \end{array}
+\]
+The earlier complete gap-two, gap-four, and gap-six theorems are
+stronger on their individual rays.  The advance here is an effective
+formula valid for arbitrary prescribed $m$.  It does not assert
+that every one of the finite remaining matrices is nonsingular;
+the unrestricted all-pairs conjecture remains open.
+
+\section{The complete gap-eight theorem}
+\label{eg:gap-eight}
+
+For $m=4$ sharper constants reduce the finite-completion threshold
+from $51200$ to $8192$.  The next two estimates supply that reduction.
+
+\begin{lemma}[Gap-eight density and phase estimates]
+\label{eg:eight-laplace}
+For $m=4$, $x\ge2$, and $1\le j\le4$,
+\[
+ \frac{P_j(x)W_4(x)}{a_j^*}
+    =x^{-4}e^{-\lambda_jx}(1+\delta_j(x)),\qquad
+ |\delta_j(x)|<\frac5{x^2}.
+\]
+For every integer $N\ge16384$,
+\begin{equation}\label{eg:eight-phase}
+ \left|\frac1{a_j^*}\int_0^\infty(x+i/2)^NP_j(x)W_4(x)\,dx
+ -e^{i\lambda_j/2}
+     \left(\frac{\Gamma(N-3)}{\lambda_j^{N-3}}
+            +2i\frac{\Gamma(N-4)}{\lambda_j^{N-4}}\right)\right|
+       <16\frac{\Gamma(N-5)}{\lambda_j^{N-5}}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Equation \eqref{eg:log-density} gives $|L_4(x)|<3/x^2\le3/4$.
+The elementary Taylor-series bound $e^{3/4}<17/8$ implies
+$|e^u-1|\le(3/2)|u|$ for real $|u|\le3/4$.  Adding the
+normalized multiplier error $1/(9x^2)$ gives
+\[
+ |\delta_j(x)|<\left(\frac92+\frac19\right)x^{-2}<5x^{-2}.
+\]
+On $0\le x\le2$ the normalized density is less than $2^{80}$,
+since $5^{16}<2^{38}$, $e^{6\pi}<3^{24}<2^{39}$, and $a_j^*>1$.
+
+Repeat the proof of Lemma~\ref{eg:laplace} with $X=2$.  The
+density error above $\sqrt N$ contributes less than
+$10\Gamma(N-5)/\lambda_j^{N-5}$.  The model Taylor remainder
+has the sharper bound
+\[
+ \left|(1-i/(2y))^{-4}-1-\frac{2i}{y}\right|<\frac5{y^2}
+       \qquad(y\ge2).
+\]
+Indeed the positive series remainder divided by $u^2$, where
+$u=1/(2y)\le1/4$, is increasing and equals $1504/81$ at $u=1/4$;
+its contribution is therefore $376/(81y^2)<5/y^2$.
+
+All compact and lower-range contributions are at most
+\[
+ R_N=2^{82}3^N+\sqrt N(N+1)^{N/2}.
+\]
+Now $\lambda_j\le4\pi<13$ and, with $k=N-6$,
+\[
+ \frac{\Gamma(N-5)}{\lambda_j^{N-5}}
+       >\frac1{13}\left(\frac{k}{39}\right)^k.
+\]
+For every $N\ge16384$,
+\[
+ \frac{39\sqrt{N+1}}{N-6}<\frac12,\qquad
+ \frac{117}{N-6}<\frac1{128},\qquad N^7\le2^{N-2}.
+\]
+The first inequality follows by squaring, checking the resulting
+quadratic at $16384$, and noting its positive derivative thereafter;
+the second is immediate; the third holds at $16384$ and persists
+by the same induction as in Lemma~\ref{eg:laplace}.  Therefore
+the two normalized parts of $R_N$ are bounded, respectively, by
+$2^{82}N^6 2^{-7N}<1/4$ and $N^7 2^{-N}\le1/4$.
+The total error is consequently less than $(10+5+1/2)$ times the
+displayed Gamma factor, proving \eqref{eg:eight-phase}.
+\end{proof}
+
+\begin{proposition}[Certified positive tail at gap eight]
+\label{eg:eight-positive}
+For every integer $b\ge8192$, $f_{b,4}>0$.
+\end{proposition}
+
+\begin{proof}
+In \eqref{eg:eight-phase}, an odd column has relative error less
+than $2704/(N-5)^2$, and an even column has relative error less
+than $104/(N-5)$; these use only $\lambda_j<13$.
+Perform the row and column normalizations in Theorem~\ref{eg:effective}.
+The even-column row factors are now
+$\rho_i=(2b-2)/(2b+2i-4)$, with
+$1-\rho_i\le6/(2b-2)$.
+Hence the normalized entries satisfy
+\[
+ E_{ij}=j^{-2i}(1+\eta_{ij}),\qquad
+ |\eta_{ij}|<\frac1{128}\qquad(b\ge8192).
+\]
+For the even columns use
+$6/(2b-2)+104/(2b-3)<110/(2b-3)<1/128$;
+the odd-column inequality is weaker still.
+
+The four-by-four limiting matrix has exact values
+\[
+ \det V_4=\frac{175}{127401984},\qquad
+ \operatorname{perm}V_4=\frac{157183}{4586471424},\qquad
+ \frac{\det V_4}{\operatorname{perm}V_4}=\frac{6300}{157183}.
+\]
+Moreover
+\[
+ \det V_4-\operatorname{perm}V_4
+        \left\{(129/128)^4-1\right\}
+       =\frac{357064449025}{1231171548132409344}>0.
+\]
+Thus $\det E>0$.  The extracted signs are $(+,-,-,+)$, whose
+product is positive, and $\det T_4>0$.  Equation
+\eqref{eg:gamma-bridge} proves $f_{b,4}>0$.
+\end{proof}
+
+\subsection{An exact finite-field completion}
+
+The cotangent coefficients admit the elementary recurrence
+\begin{equation}\label{eg:beta-recurrence}
+ \beta_1=\frac16,\qquad
+ \beta_n=\frac1{2(2n+1)}\sum_{k=1}^{n-1}\beta_k\beta_{n-k}
+                  \quad(n\ge2).
+\end{equation}
+It follows by substituting the Taylor expansion of
+$(z/2)\cot(z/2)$ into its Riccati equation.
+Equations \eqref{eg:beta-recurrence} and \eqref{eg:recurrence}
+can be computed exactly modulo the prime
+$\ell=2147483647=2^{31}-1$.
+
+For $m=4$ and $5\le b\le8191$ the largest fundamental row
+required is $8195$, so only $\beta_1,\ldots,\beta_{8194}$ are needed.
+Every denominator is invertible modulo $\ell$.  The denominators
+$2(2n+1)$ have their prime factors below $\ell$, and
+\begin{equation}\label{eg:diagonal-factorization}
+ d_s=2\frac{(2s)!}{(2s-8)!}\frac{2s-4}{s}\qquad(s\ge5)
+\end{equation}
+has the same property throughout the stated finite range.  Thus
+induction identifies every computed residue with the reduction of
+the exact rational entry.
+
+\begin{proposition}[Finite gap-eight certificate]
+\label{eg:eight-finite}
+For every integer $5\le b\le8191$, the rational determinant
+$f_{b,4}$ has a nonzero reduction modulo $2147483647$.
+\end{proposition}
+
+\begin{proof}[Exact computational proof]
+The accompanying \texttt{verify\_gap\_eight.cpp} uses integer
+arithmetic only.  It verifies primality by trial division through
+$\lfloor\sqrt\ell\rfloor$, generates \eqref{eg:beta-recurrence},
+generates the four fundamental columns from \eqref{eg:recurrence},
+and evaluates each four-by-four determinant by finite-field Gaussian
+elimination.  All $8187$ determinant residues are nonzero; the full
+indexed list is supplied in \texttt{gap\_eight\_certificate.json}.
+As an independent exact check of the cotangent normalization, the
+program verifies all $8194$ coefficients by multiplying
+$1-\tfrac12\sum_{n\ge1}\beta_nt^n$ by the directly generated
+series of $\sin(\sqrt t/2)/(\sqrt t/2)$ and comparing with the
+direct series of $\cos(\sqrt t/2)$.
+The separate SymPy verifier builds rational Bernoulli numbers from
+their standard definition and checks the original matrix
+\eqref{eg:late-entry}, the full bridge \eqref{eg:rational-bridge},
+and the finite-field residues independently for $5\le b\le16$.
+These latter checks guard against a sign, factorial, or omitted-index
+error in passing from the source matrix to the recurrence.
+\end{proof}
+
+\begin{theorem}[Every gap-eight pair has the optimal prefix]
+\label{eg:eight-main}
+For every integer $b\ge5$, the matrix $M_{b,4}$ is nonsingular.
+For $p=2b-8$ and $q=2b$, consequently,
+\begin{align*}
+ \operatorname{span}_{\mathbb Q}\{D_0,D_1,\ldots\}
+ &=\operatorname{span}_{\mathbb Q}\{D_0,\ldots,D_{q-1}\}\\
+ &=\operatorname{span}_{\mathbb Q}
+       \{C_0,\ldots,C_{b-1},\zeta(0),\ldots,\zeta(2b-2)\}.
+\end{align*}
+The first $q$ moment rows have formal rank $q$ and coefficient
+determinant $\det M_{b,4}/(4b-1)!!$.  This is optimal for those
+$q$ formal coordinates.
+\end{theorem}
+
+\begin{proof}
+Proposition~\ref{eg:eight-positive} covers $b\ge8192$, and
+Proposition~\ref{eg:eight-finite} covers $5\le b\le8191$.
+Equation \eqref{eg:rational-bridge} proves nonsingularity of the
+source matrix.  The triangular transforms
+\eqref{eg:forward}--\eqref{eg:inverse} give the stated generation
+and formal-rank conclusions.
+\end{proof}
+
+The certificate proves nonvanishing at the finite indices; it does
+not determine their real signs.  Direct rational checks give
+$f_{b,4}>0$ for $5\le b\le16$, and the analytic theorem gives
+positivity for $b\ge8192$.  We make no positivity assertion for
+the intervening finite interval on the basis of the residue test.
+
+\subsection{An all-order family of absolutely convergent identities}
+
+The completed ray produces ordinary convergent evaluations of
+polygamma-tail products at every even pair separated by eight.
+Let $(\lambda_b,\ldots,\lambda_{2b-1})$ be row zero of
+$M_{b,4}^{-1}$ and define
+\begin{align*}
+ K_b(y)&=\sum_{j=b}^{2b-1}\lambda_jy^{2j+1},\\
+ P_b(x)&=K_b(x+\tfrac12)-K_b(x-\tfrac12)
+             =\sum_{r=0}^{q-1}w_rx^{2r}.
+\end{align*}
+For $0\le h\le4$ put
+\[
+ c_{v,0}=\frac1{v-1},\qquad
+ c_{v,h}=\frac{B_{2h}(1/2)}{(2h)!}(v)_{2h-1}\quad(h\ge1),
+ \qquad u_h=\sum_{e=0}^h c_{p,e}c_{q,h-e},
+\]
+and set
+\[
+ S_b(x)=\sum_{h=0}^4
+       \left(\sum_{e=0}^h u_e w_{q-1-h+e}\right)x^{8-2h}.
+\]
+Every coefficient here is rational and specified by finite algebra.
+
+\begin{corollary}[Rational polygamma-product evaluations]
+\label{eg:eight-identities}
+For every $b\ge5$, $p=2b-8$, $q=2b$, and $x_n=n+1/2$,
+\begin{equation}\label{eg:eight-sum}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}\left\{
+ \frac{P_b(x_n)}{(p-1)!(q-1)!}
+       \psi^{(p-1)}(n+1)\psi^{(q-1)}(n+1)-S_b(x_n)
+                         \right\}=-\frac12.}
+\end{equation}
+The sum converges absolutely.  The polynomial $P_b$ has exact degree
+$2q-2$ and leading coefficient
+\begin{equation}\label{eg:leading}
+ w_{q-1}=\frac{4b(4b-1)f_{b-1,4}}{d_{b+4}f_{b,4}}\ne0,
+\end{equation}
+where at the initial index one uses
+\[
+ f_{4,4}=\frac1{13105577681191934125041254400000000}.
+\]
+\end{corollary}
+
+\begin{proof}
+By construction, $\sum_{j=b}^{2b-1}\lambda_j C_j=\zeta(0)=-1/2$.
+The centered difference defining $P_b$ has coefficients
+\[
+ w_r=\sum_{j=\max\{b,r\}}^{2b-1}
+       \lambda_j\binom{2j+1}{2r}2^{-2(j-r)}.
+\]
+Thus \eqref{eg:inverse} gives $\sum_rw_rD_r=-1/2$.
+The first five terms of the centered tail product are
+\[
+ A_p(n)A_q(n)=\sum_{h=0}^4u_hx_n^{2-p-q-2h}
+                      +O(x_n^{-p-q-8}).
+\]
+Multiplication by $P_b$ leaves precisely $S_b$ as its nonnegative
+powers, with the remainder $O(x_n^{-2})$.  The analytically
+continued sums of $1,x_n^2,\ldots,x_n^8$ vanish because
+$\zeta(-2h,1/2)=0$.  Therefore the ordinary absolutely convergent
+sum in \eqref{eg:eight-sum} equals that moment combination.
+Finally, for even $v$,
+$A_v(n)=\psi^{(v-1)}(n+1)/(v-1)!$.
+
+For $b\ge6$, deleting the last row and first column of $M_{b,4}$
+and reindexing $j,k,p,q$ downward by $1,1,2,2$, respectively,
+gives exactly $M_{b-1,4}$.  Cramer's rule and
+\eqref{eg:rational-bridge} give
+$\lambda_{2b-1}=4b f_{b-1,4}/(d_{b+4}f_{b,4})$.
+The centered difference multiplies the top coefficient by $4b-1$,
+proving \eqref{eg:leading}.  At $b=5$ the same relation is
+verified directly with the displayed rational auxiliary determinant.
+Theorem~\ref{eg:eight-main} proves all other required nonvanishing.
+\end{proof}
+
+
+\subsection{A concrete pair beyond the previous small-order coverage}
+
+For $(p,q)=(14,22)$, namely $b=11$, the construction gives an even
+polynomial $P_{11}$ of degree $42$ and a subtraction polynomial
+$S_{11}$ of degree $8$. The leading coefficient is
+\[
+ [x^{42}]P_{11}(x)=
+ \frac{452253373522332335630380}{10060146014319869101877031}.
+\]
+All $22$ coefficients of $P_{11}$ and all five coefficients of
+$S_{11}$ are supplied as exact rationals in
+\texttt{gap\_eight\_14\_22\_example.json}.
+The short generator \texttt{create\_gap\_eight\_example.py} checks
+the inverse row against the original Bernoulli matrix and verifies
+the entire subtraction polynomial symbolically. Thus the example
+specifies a directly usable ordinary sum, without printing several
+pages of large rational coefficients. The finite definitions above
+are the full exact formula for every other pair as well.
+
+% END sections/02_gap_reconstruction.tex
+
+% BEGIN sections/03_multiscale_collisions.tex
+\section{Stieltjes collisions at different powers of the small parameter}
+\label{mc:section}
+
+The unequal-rate collision theorem in the latest gap-six report
+\cite[Section~4 and research question~10]{GapSix} assumes
+$a=\lambda\epsilon$ and $b=\mu\epsilon$ with fixed positive rates.
+Its proof explicitly leaves different powers of $\epsilon$ open.
+Here we resolve that question for every pair of positive monomial
+scales and every fixed pair of Stieltjes indices and argument
+derivatives. The additional constants occur at explicitly classified
+rational ratios of the exponents. In particular, the product of the
+two singular parts can now contribute a constant.
+
+The local subtraction argument is a classical asymptotic method;
+related generalized Stieltjes-transform methods appear in
+\cite{TicaGalapon}. The contribution here is the complete resonance
+classification and its evaluated contact formula for this family,
+rather than a claim to invent finite-part asymptotics.
+
+\subsection{A compact identity before the general theorem}
+
+Write $\gamma$ for Euler's constant, and put
+\begin{equation}\label{mc:D}
+ D(a,b)=\frac{\log(b/a)}{b-a}
+       =\int_0^\infty\frac{dx}{(x+a)(x+b)},\qquad a,b>0.
+\end{equation}
+The value at $a=b$ is $1/a$. A derivative in the first argument is
+written $D_a$; explicitly,
+\begin{equation}\label{mc:Da}
+ D_a(a,b)=-\frac1{a(b-a)}+
+                    \frac{\log(b/a)}{(b-a)^2}.
+\end{equation}
+
+\begin{theorem}[A two-scale ordered digamma identity]\label{mc:ordered-limit}
+Fix $\lambda,\mu,\alpha,\beta>0$, and set
+$a=\lambda\epsilon^\alpha$, $b=\mu\epsilon^\beta$.
+Then, as $\epsilon\downarrow0$,
+\begin{equation}\label{mc:ordered-uniform}
+ \boxed{\displaystyle
+ \int_0^1\psi'(x+a)\psi(x+b)\,dx
+ =D_a(a,b)+\frac{\psi(1+b)}a
+                   +\zeta(2)\log\frac ba+o(1).}
+\end{equation}
+Every term on the left is an ordinary convergent integral. The
+subtraction on the right is exact to a remainder tending to zero
+along every indicated monomial path.
+\end{theorem}
+
+\begin{proof}
+Let $h(x)=\psi(1+x)$, so that $\psi(x)=-1/x+h(x)$.
+Expand the product and integrate the term
+$h(x+b)/(x+a)^2$ by parts. The difference between the two sides of
+\eqref{mc:ordered-uniform}, without $o(1)$, is
+\begin{align}\label{mc:ordered-remainder}
+ &-D_a(1+a,1+b)-\frac{h(1+b)}{1+a}
+     +\zeta(2)\log\frac{1+a}{1+b}\notag\\
+ &\quad+\int_0^1\left\{
+       \frac{h'(x+b)-\zeta(2)}{x+a}
+      -\frac{h'(x+a)-\zeta(2)}{x+b}\right\}dx
+      +\int_0^1h'(x+a)h(x+b)\,dx.
+\end{align}
+In the middle integral replace $h'(x+b)$ and $h'(x+a)$ by
+$h'(x)$. The two errors are
+$O(b(1+|\log a|)+a(1+|\log b|))$.
+Since $h'(x)-\zeta(2)=O(x)$, the remaining difference tends to
+zero by dominated convergence. The first, second, and last terms
+in \eqref{mc:ordered-remainder} tend respectively to
+\[
+ \frac12,\qquad \gamma-1,\qquad
+ \frac12\bigl(\psi(2)^2-\psi(1)^2\bigr)=\frac12-\gamma.
+\]
+They cancel. A positive power of $\epsilon$ times any fixed power
+of $|\log\epsilon|$ tends to zero, proving the statement.
+\end{proof}
+
+For a function with a power--logarithm expansion, let
+$\operatorname{CT}_{\epsilon}$ denote the coefficient of
+$\epsilon^0(\log\epsilon)^0$. It does not mean the ordinary limit
+of a divergent integral. Let $\mathbf1_{\mathcal E}$ denote the
+indicator of the stated condition.
+
+\begin{corollary}[An explicit resonance law]\label{mc:ordered-CT}
+Suppose $q=\alpha/\beta>1$, and set $j=2/(q-1)$.
+For $I(\epsilon)$ equal to the integral in
+\eqref{mc:ordered-uniform},
+\begin{align}\label{mc:ordered-constant}
+ \operatorname{CT}_{\epsilon}I
+ ={}&\zeta(2)\log\frac\mu\lambda
+  +\mathbf1_{q\in\mathbb Z_{\ge2}}
+       (-1)^{q+1}\frac{\mu^q}{\lambda}\zeta(q+1)\notag\\
+ &+\mathbf1_{j\in\mathbb Z_{\ge1}}
+       \frac{\lambda^j}{\mu^{j+2}}
+                  \left((j+1)\log\frac\mu\lambda-1\right).
+\end{align}
+A term whose indicator is zero is omitted, including its
+integer-indexed notation. In particular, at $\lambda=\mu=1$,
+\begin{equation}\label{mc:ordered-examples}
+ \operatorname{CT}_{\epsilon}I=
+ \begin{cases}
+  -1-\zeta(3),&q=2,\\
+  -1+\zeta(4),&q=3,\\
+  (-1)^{q+1}\zeta(q+1),&q\in\mathbb Z,\ q\ge4,\\
+  -1,&q=1+2/j,\ j\ge3,\\
+  0,&q\notin\mathbb Z_{\ge2}\ \text{and }2/(q-1)\notin\mathbb Z_{\ge1}.
+ \end{cases}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Use the convergent expansion
+$\psi(1+b)=-\gamma+\sum_{\ell\ge1}(-1)^{\ell+1}
+\zeta(\ell+1)b^\ell$ for $|b|<1$.
+In $\psi(1+b)/a$, exponent zero requires $\ell\beta=\alpha$.
+If $\rho=a/b$, the other singular term has the convergent expansion
+\begin{equation}\label{mc:Da-series}
+ D_a(a,b)=-\frac1{ab}
+ +\frac1{b^2}\sum_{k\ge0}\rho^k
+                   \left((k+1)\log\frac ba-1\right).
+\end{equation}
+Here exponent zero requires $k(\alpha-\beta)=2\beta$.
+Extracting the constant in $\log\epsilon$ proves the result.
+\end{proof}
+
+These are new exact values of specified asymptotic coefficients.
+They also give ordinary renormalized limits by subtracting the
+finitely many divergent powers and logarithms in
+\eqref{mc:Da-series} and the displayed digamma series. For example,
+if $L=\log\epsilon$, the first two cases are
+\begin{align}\label{mc:q2limit}
+ \lim_{\epsilon\downarrow0}\bigg[
+  \int_0^1\psi'(x+\epsilon^2)\psi(x+\epsilon)dx
+   +\epsilon^{-3}+(1+\gamma+L)\epsilon^{-2}\notag\\
+ \hspace{28mm}
+   +(1+2L-\zeta(2))\epsilon^{-1}
+   +(3+\zeta(2))L\bigg]
+ &=-1-\zeta(3),\\[3pt]
+ \lim_{\epsilon\downarrow0}\bigg[
+  \int_0^1\psi'(x+\epsilon^3)\psi(x+\epsilon)dx
+   +\epsilon^{-4}+\gamma\epsilon^{-3}
+   +(1+2L-\zeta(2))\epsilon^{-2}\notag\\
+ \hspace{28mm}
+   +\zeta(3)\epsilon^{-1}
+   +(4+2\zeta(2))L\bigg]
+ &=-1+\zeta(4).
+ \label{mc:q3limit}
+\end{align}
+The convergence is established analytically by the theorem;
+the numerical diagnostics in the package test the signs and
+the independent expansions.
+
+\subsection{Definitions for arbitrary Stieltjes indices}
+
+We fix the standard convention
+\begin{equation}\label{mc:stieltjes}
+ Z(u,x)=\zeta(1+u,x)-\frac1u
+     =\sum_{m\ge0}\frac{(-1)^m}{m!}\gamma_m(x)u^m,
+ \qquad \gamma_0(x)=-\psi(x).
+\end{equation}
+Argument derivatives are indicated by a parenthesized superscript.
+Put
+\begin{equation}\label{mc:notation}
+ \begin{gathered}
+ P_r(u)=(-1)^r(1+u)_r,\qquad
+ A_r(u)=\frac{(1+u)_r}{r!},\\
+ Z_r(u,x)=\partial_x^r Z(u,x),\qquad
+ g_h(u)=\left.\partial_x^h Z(u,x)\right|_{x=1}.
+ \end{gathered}
+\end{equation}
+These are holomorphic near $u=0$. The Hurwitz recurrence
+\cite[\S25.11]{DLMF} gives the exact splitting
+\begin{equation}\label{mc:split}
+       Z_r(u,x)=P_r(u)x^{-r-1-u}+Z_r(u,1+x).
+\end{equation}
+In particular $g_0(u)=\zeta(1+u)-1/u$ and, for $h\ge1$,
+\begin{equation}\label{mc:g-explicit}
+        g_h(u)=(-1)^h(1+u)_h\zeta(1+u+h).
+\end{equation}
+Thus every derivative of $g_h$ is a finite combination of
+ordinary zeta derivatives and generalized harmonic numbers;
+for $h=0$ its coefficients are the ordinary Stieltjes constants.
+
+The reference finite part is
+\begin{equation}\label{mc:FP}
+ F_{m,n}^{r,t}=\operatorname{CT}_{\delta\downarrow0}
+  \int_\delta^1\gamma_m^{(r)}(x)\gamma_n^{(t)}(x)\,dx.
+\end{equation}
+It uses the coordinate $\delta$ exactly as displayed. An explicit
+holomorphic germ $\mathcal F_{r,t}(u,v)$ for these coefficients
+can be defined entirely by an ordinary convergent integral.
+With $R=r+t+1$, set
+\begin{align}\label{mc:FP-remainder}
+ \mathcal R(u,v;x)={}&Z_r(u,x)Z_t(v,x)
+       -P_r(u)P_t(v)x^{-R-1-u-v}\notag\\
+ &-P_r(u)\sum_{k=0}^r\frac{g_{t+k}(v)}{k!}x^{k-r-1-u}
+  -P_t(v)\sum_{k=0}^t\frac{g_{r+k}(u)}{k!}x^{k-t-1-v},\\
+ \mathcal F_{r,t}(u,v)={}&\int_0^1\mathcal R(u,v;x)dx
+  -\frac{P_r(u)P_t(v)}{R+u+v}\notag\\
+ &-P_r(u)\sum_{k=0}^{r-1}\frac{g_{t+k}(v)}{k!(r-k+u)}
+  -P_t(v)\sum_{k=0}^{t-1}\frac{g_{r+k}(u)}{k!(t-k+v)}.
+ \label{mc:FP-germ}
+\end{align}
+Empty sums vanish. Then
+$F_{m,n}^{r,t}=(-1)^{m+n}\partial_u^m\partial_v^n
+\mathcal F_{r,t}(0,0)$.
+The critical powers $x^{-1}\log^h x$ contribute zero to the
+constant on $(0,1)$; this explains their omission from the two
+rational sums in \eqref{mc:FP-germ}. This construction agrees with
+the inherited convention \cite{GapSix,LatticeIncoming}.
+
+For example, those sources give
+\begin{equation}\label{mc:FP-values}
+ \begin{gathered}
+ F_{0,0}^{0,0}=2\gamma_1-2\zeta(2),\quad
+ F_{0,0}^{1,0}=\zeta(2),\quad
+ F_{0,0}^{1,1}=2\zeta(3)+4\zeta'(3),\\
+ F_{1,0}^{0,0}=\tfrac32\gamma_2+2\gamma\zeta(2)-\zeta(3).
+ \end{gathered}
+\end{equation}
+These baseline evaluations are credited to the previous work.
+The new result evaluates every change caused by the different scales.
+
+\subsection{The complete constant formula}
+
+Assume henceforth that $\alpha>\beta>0$ and define
+\begin{equation}\label{mc:scales}
+ a=\lambda\epsilon^\alpha,\quad b=\mu\epsilon^\beta,
+ \quad d=\alpha-\beta,\quad \tau=\lambda/\mu,
+ \quad R=r+t+1.
+\end{equation}
+The opposite ordering follows by exchanging the factors.
+Introduce the finite set
+\begin{equation}\label{mc:resonance-set}
+ \mathscr L_r(\alpha,\beta)
+ =\{(k,\ell):0\le k<r,\ \ell\in\mathbb Z_{\ge1},\
+                      \beta\ell=\alpha(r-k)\}.
+\end{equation}
+It has at most $r$ members, including at rational ratios with
+large numerator or denominator. Define the following removable germ:
+\begin{align}\label{mc:mixed-contact}
+ \mathcal C_{r,t}(u,v;\lambda,\mu;\alpha,\beta)
+ ={}&(-1)^r g_{r+t}(v)
+                  \frac{\lambda^{-u}-A_r(u)}u\notag\\
+ &+(-1)^r\sum_{(k,\ell)\in\mathscr L_r(\alpha,\beta)}
+   \frac{\mu^\ell\lambda^{k-r-u}}{\ell!}
+                 (1+u)_{r-k-1}\,g_{t+k+\ell}(v).
+\end{align}
+The first quotient is removable since $A_r(0)=1$.
+
+There is one possible singular--singular contact. If
+$j=\beta R/d$ is a positive integer, set
+\begin{align}\label{mc:singular-contact}
+ \mathcal H_j(u,v)={}&
+ \frac{(-1)^t\mu^{-R-v}\tau^j}{u\Gamma(1+v)}\notag\\
+ &\quad\times\left\{
+ \frac{\lambda^{-u}\Gamma(R+j+v)}{(1-u)_j}
+ -\frac{\mu^{-u}\Gamma(1-u)\Gamma(R+j+u+v)}{j!}
+                 \right\}.
+\end{align}
+The numerator vanishes identically at $u=0$, so this is a
+holomorphic two-variable germ. Define $\mathcal H_*=\mathcal H_j$
+when $\beta R/d=j\in\mathbb Z_{\ge1}$, and $\mathcal H_*=0$
+otherwise. The quotient must be removed before taking derivatives.
+
+\begin{theorem}[All-index monomial collision constants]\label{mc:main}
+For every $m,n,r,t\in\mathbb Z_{\ge0}$ and all positive parameters
+in \eqref{mc:scales}, the integral
+\[
+ I_{m,n}^{r,t}(\epsilon)
+   =\int_0^1\gamma_m^{(r)}(x+a)
+                   \gamma_n^{(t)}(x+b)\,dx
+\]
+has a power--logarithm asymptotic expansion through its constant.
+Its exact constant is
+\begin{align}\label{mc:main-constant}
+ \boxed{\begin{aligned}
+ \operatorname{CT}_{\epsilon}I_{m,n}^{r,t}
+  =F_{m,n}^{r,t}+(-1)^{m+n}\partial_u^m\partial_v^n
+    \big[&\mathcal C_{r,t}(u,v;\lambda,\mu;\alpha,\beta)\\
+       +&\mathcal C_{t,r}(v,u;\mu,\lambda;\beta,\alpha)
+         +\mathcal H_*(u,v)\big]_{u=v=0}.
+ \end{aligned}}
+\end{align}
+Every correction in this formula is a finite expression in
+logarithms, ordinary zeta values and derivatives, Stieltjes constants
+at one, and generalized harmonic numbers. There is no new
+unevaluated spectral constant in the correction.
+\end{theorem}
+
+There are precisely three possible mechanisms for extra constants:
+\begin{equation}\label{mc:three-mechanisms}
+ \beta\ell=\alpha(r-k),\qquad
+ \alpha\ell=\beta(t-k),\qquad
+ j(\alpha-\beta)=\beta(r+t+1).
+\end{equation}
+The two first equations have the finite ranges specified above;
+the last has at most one admissible integer $j$. If $\alpha/\beta$
+is irrational, all three resonance contributions vanish. Only the
+first, critical quotient in each $\mathcal C$ remains. These are
+selection rules for an asymptotic coefficient, not statements of
+discontinuity of the original positive-shift integral.
+
+\subsection{A two-shift expansion with analytic coefficients retained}
+
+We prove the theorem in two steps. Keeping the analytic coefficients
+at their actual small shifts is the useful replacement for a
+fixed-ratio Taylor truncation. Define
+\begin{equation}\label{mc:kernel}
+ \mathcal B_{r,t}(u,v;a,b)
+  =P_r(u)P_t(v)\int_0^\infty
+             (x+a)^{-r-1-u}(x+b)^{-t-1-v}\,dx.
+\end{equation}
+This is an ordinary absolutely convergent integral for $u,v$ near
+zero. It also has the elementary incomplete-beta representation
+used below.
+
+\begin{lemma}[Uniform germ along monomial paths]\label{mc:uniform-germ}
+For fixed exponents and rates as in \eqref{mc:scales}, locally
+uniformly on some complex neighborhood of $(u,v)=(0,0)$,
+\begin{align}\label{mc:uniform-expansion}
+ &\int_0^1 Z_r(u,x+a)Z_t(v,x+b)dx
+    =\mathcal F_{r,t}(u,v)+\mathcal B_{r,t}(u,v;a,b)\notag\\
+ &\quad+(-1)^r\sum_{k=0}^{r-1}
+     (1+u)_{r-k-1}a^{k-r-u}Z_{t+k}(v,1+b)
+   +(-1)^r g_{r+t}(v)\frac{a^{-u}-A_r(u)}u\notag\\
+ &\quad+(-1)^t\sum_{k=0}^{t-1}
+     (1+v)_{t-k-1}b^{k-t-v}Z_{r+k}(u,1+a)
+   +(-1)^t g_{r+t}(u)\frac{b^{-v}-A_t(v)}v+o(1).
+\end{align}
+All fixed spectral derivatives of the remainder tend to zero.
+\end{lemma}
+
+\begin{proof}
+Use \eqref{mc:split}. The singular--singular product on $(0,1)$
+equals \eqref{mc:kernel} minus its tail on $(1,\infty)$; the latter
+tends uniformly to $P_r(u)P_t(v)/(R+u+v)$.
+For the first mixed product, use Taylor's theorem in $x$ at the
+point $1+b$:
+\[
+ Z_t(v,1+b+x)=\sum_{k=0}^r
+          \frac{Z_{t+k}(v,1+b)}{k!}x^k+O(x^{r+1}).
+\]
+The remainder has a bound uniform for small $b$ and for $v$ in a
+fixed disk. After multiplication by the singular factor it is
+bounded by $Cx^{-\eta}$, with $\eta<1$, independent of the
+relative sizes of $a,b$. Dominated convergence therefore applies.
+For $k<r$ the beta integral gives
+\begin{align*}
+ P_r(u)\int_0^1x^k(x+a)^{-r-1-u}dx
+ ={}&(-1)^rk!(1+u)_{r-k-1}a^{k-r-u}\\
+ &-\frac{P_r(u)}{r-k+u}+o(1).
+\end{align*}
+For $k=r$ its removable version is
+\[
+ P_r(u)\int_0^1x^r(x+a)^{-r-1-u}dx
+   =(-1)^rr!\frac{a^{-u}-A_r(u)}u+o(1).
+\]
+One can first take $\Re u>0$, subtract the tail, and continue;
+the divided difference is uniformly holomorphic near zero.
+Replacing the coefficient of the critical term at $1+b$ by its
+value at one costs $O(b\,a^{-\eta}(1+|\log a|))$ on a small disk.
+Choose $\eta>0$ so small that $\beta-\alpha\eta>0$; the error
+then tends to zero. For the exchanged term also impose
+$\alpha-\beta\eta>0$. The upper endpoints and the remaining
+integrals give exactly \eqref{mc:FP-germ}. This proves local
+uniformity. Cauchy's integral formula on a slightly larger disk
+justifies every prescribed spectral derivative.
+\end{proof}
+
+The Taylor expansion
+\[
+ Z_{t+k}(v,1+b)=\sum_{\ell\ge0}
+                       g_{t+k+\ell}(v)\frac{b^\ell}{\ell!}
+\]
+now shows that a noncritical mixed term has base exponent
+$\alpha(k-r)+\beta\ell$. Taking it far enough to have a positive
+remainder exponent is always a finite task. Exponent zero gives
+$\mathscr L_r(\alpha,\beta)$; the critical quotient contributes
+its constant in $\log\epsilon$ by replacing $a^{-u}$ with
+$\lambda^{-u}$. This proves exactly the two $\mathcal C$ terms.
+
+\subsection{Pairing the singular branches before differentiation}
+
+Put $A=r+1+u$, $B=t+1+v$, $C=A+B-1=R+u+v$ and
+$\rho=a/b$. For $0<a<b$, the substitution
+$y=(x+a)/(x+b)$ gives
+\begin{equation}\label{mc:incomplete-beta}
+ \frac{\mathcal B_{r,t}}{P_r(u)P_t(v)}
+  =(b-a)^{-C}\left\{
+     \frac{\Gamma(1-A)\Gamma(C)}{\Gamma(B)}
+      -\int_0^\rho y^{-A}(1-y)^{C-1}\,dy\right\}.
+\end{equation}
+At generic nonintegral $A$ the last integral is understood by its
+analytic continuation; the original integral in
+\eqref{mc:kernel} fixes the branch and the removable values.
+Expansion of this incomplete beta function, or the usual
+hypergeometric connection formula \cite[\S15.8]{DLMF}, gives
+two normally convergent series for $0<\rho<1$:
+\begin{align}\label{mc:two-branches}
+ \frac{\mathcal B_{r,t}}{P_r(u)P_t(v)}
+ ={}&b^{-C}\frac{\Gamma(1-A)}{\Gamma(B)}
+             \sum_{j\ge0}\frac{\Gamma(C+j)}{j!}\rho^j\notag\\
+ &+a^{1-A}b^{-B}
+      \sum_{k\ge0}(-1)^k(B)_k
+                         \frac{\Gamma(A-1-k)}{\Gamma(A)}\rho^k.
+\end{align}
+The individual series have poles at $u=0$. Their sum is
+holomorphic, and the poles must be paired at equal base exponents.
+
+The $k<r$ terms of the second branch are holomorphic and have
+base exponents
+$-\alpha r-\beta(t+1)+k(\alpha-\beta)<0$.
+For each $j\ge0$, pair the first-branch term indexed by $j$ with
+the second-branch term indexed by $k=r+j$. Their common base
+exponent is
+\begin{equation}\label{mc:paired-exponent}
+                    E_j=-\beta R+j(\alpha-\beta).
+\end{equation}
+After the Gamma reflection and recurrence identities, the paired
+term is $\epsilon^{E_j}\mathcal H_j(u,v;L)$, where $L=\log\epsilon$
+and
+\begin{align}\label{mc:H-log}
+ \mathcal H_j(u,v;L)={}&
+ \frac{(-1)^t\mu^{-R-v}\tau^j\epsilon^{-\beta v}}
+                   {u\Gamma(1+v)}\notag\\
+ &\times\left\{
+ \frac{\lambda^{-u}\epsilon^{-\alpha u}\Gamma(R+j+v)}{(1-u)_j}
+ -\frac{\mu^{-u}\epsilon^{-\beta u}
+              \Gamma(1-u)\Gamma(R+j+u+v)}{j!}\right\}.
+\end{align}
+For each fixed $L$, this is holomorphic in $(u,v)$.
+Its constant in $L$ after any fixed spectral differentiation is
+obtained by setting $L=0$ before differentiating; the result is
+\eqref{mc:singular-contact}.
+
+Choose a finite integer $J$ with $(J+1)(\alpha-\beta)>\beta R$,
+then choose the spectral radius $\eta>0$ small enough that also
+$(J+1)(\alpha-\beta)-\beta R-(\alpha+\beta)\eta>0$.
+On this sufficiently small spectral disk the tail $j>J$ in the
+paired series tends uniformly to zero: the coefficient growth
+is at most polynomial in $j$, while $\rho^j$ is geometric.
+The divided difference in $u$ introduces only a fixed logarithmic
+factor, which can be absorbed by shrinking the spectral disk.
+Thus only $E_j=0$ can contribute a constant, and this is exactly
+the condition defining $\mathcal H_*$. Together with the preceding
+mixed-term analysis this proves Theorem~\ref{mc:main} and also
+provides all divergent terms through a finite truncation of
+\eqref{mc:uniform-expansion} and \eqref{mc:two-branches}.
+
+\subsection{Harmonic and zeta evaluations of the new contacts}
+
+At spectral degree zero, the singular contact is particularly
+simple. With $H_0=0$,
+\begin{equation}\label{mc:H00}
+ \boxed{\displaystyle
+ \mathcal H_j(0,0)=(-1)^t\frac{(R+j-1)!}{j!}
+       \frac{\lambda^j}{\mu^{R+j}}
+             \left(\log\frac\mu\lambda+H_j-H_{R+j-1}\right).}
+\end{equation}
+This follows by differentiating the numerator of
+\eqref{mc:singular-contact} once in $u$.
+The derivative of $\log(1-u)_j^{-1}$ is $H_j$ at zero;
+the derivative of
+$\log\Gamma(1-u)+\log\Gamma(R+j+u)$ is $H_{R+j-1}$.
+Formula \eqref{mc:H00} recovers the second resonance family in
+Corollary~\ref{mc:ordered-CT}.
+
+For arbitrary spectral degrees, the finite Taylor computations use
+\begin{align}\label{mc:harmonic-jets}
+ \log\frac{j!}{(1-u)_j}&=\sum_{h\ge1}\frac{H_j^{(h)}}h u^h,\notag\\
+ \log\Gamma(N+u)-\log\Gamma(N)
+ &=\psi(N)u+
+       \sum_{h\ge2}\frac{(-1)^h}{h}
+                 \bigl(\zeta(h)-H_{N-1}^{(h)}\bigr)u^h.
+\end{align}
+Truncate these convergent expansions at the required degree and
+exponentiate, equivalently using complete Bell polynomials.
+This proves the stated finite constant alphabet constructively.
+
+For completeness, the singular contact can be evaluated without
+leaving even a Gamma derivative in the answer. Put $M=R+j$ and
+$D=m+n+1$, and form two finite polynomials:
+\begin{align}\label{mc:finite-logarithms}
+ Q_D(u,v)={}&-u\log\lambda-v\log\mu
+       +\sum_{h=1}^D\frac{H_j^{(h)}}h u^h
+       +\sum_{h=1}^D\frac{(-1)^{h+1}H_{M-1}^{(h)}}h v^h,
+       \notag\\
+ T_D(u,v)={}&-(u+v)\log\mu
+       +\sum_{h=1}^D\frac{(-1)^{h+1}H_{M-1}^{(h)}}h(u+v)^h
+       \notag\\
+ &+\sum_{h=2}^D\frac{\zeta(h)}h
+          \left[u^h+(-1)^h\bigl((u+v)^h-v^h\bigr)\right].
+\end{align}
+Define the finite exponential polynomial
+$\mathcal E_D(X)=\sum_{k=0}^D X^k/k!$.
+Then the evaluated contact is
+\begin{equation}\label{mc:finite-jet}
+\begin{split}
+ &(-1)^{m+n}\partial_u^m\partial_v^n\mathcal H_j(0,0)\\
+ &\quad=
+ \frac{(-1)^{m+n+t}m!n!(M-1)!}{j!}
+     \frac{\lambda^j}{\mu^M}
+ [u^{m+1}v^n]\left\{\mathcal E_D(Q_D)-\mathcal E_D(T_D)\right\}.
+\end{split}
+\end{equation}
+The notation $[u^av^b]$ extracts a coefficient from an ordinary
+finite polynomial. To prove the formula, divide the two Gamma products
+in \eqref{mc:singular-contact} by their common constant $(M-1)!/j!$.
+Their logarithms, including the amplitude factors, have Taylor
+polynomials $Q_D$ and $T_D$. Euler's constant cancels in each.
+Both polynomials have zero constant term, so terms beyond the $D$th
+power of their exponential cannot affect the requested coefficient.
+Division by the removable $u$ is exactly extraction at $u^{m+1}$.
+This gives a finite expression in harmonic numbers and ordinary zeta
+values at every specified pair of Stieltjes indices. The two mixed
+contacts are obtained just as finitely by multiplying the polynomials
+$(1+u)_k$, the exponential of $-u\log\lambda$, and the zeta jets
+in \eqref{mc:g-explicit}.
+
+There is an especially transparent first-Stieltjes example. Take
+$r=t=0$, so $R=1$. A singular contact occurs exactly when
+$\alpha/\beta=1+1/j$, $j\ge1$. Direct expansion of
+\eqref{mc:singular-contact} yields
+\begin{align}\label{mc:H10}
+ -\partial_u\mathcal H_j(0,0)
+ =\frac{\lambda^j}{\mu^{j+1}}\bigg[&\zeta(2)-H_j^{(2)}\notag\\
+ &+\frac{(H_j-\log\mu)^2-(H_j-\log\lambda)^2}{2}\bigg].
+\end{align}
+Consequently, for $a=\epsilon^{j+1}$ and $b=\epsilon^j$,
+\begin{equation}\label{mc:stieltjes-tail-contact}
+ \boxed{\displaystyle
+ \operatorname{CT}_{\epsilon}\int_0^1
+          \gamma_1(x+\epsilon^{j+1})\gamma_0(x+\epsilon^j)dx
+   =\frac32\gamma_2+2\gamma\zeta(2)-\zeta(3)
+                         +\zeta(2)-H_j^{(2)}.}
+\end{equation}
+The new term is the ordinary trigamma tail
+$\zeta(2)-H_j^{(2)}=\psi'(j+1)$.
+Thus all positive integer trigamma tails appear as exact
+Stieltjes collision contacts.
+
+This family also has a classical polylogarithmic generator:
+for $|z|<1$,
+\begin{equation}\label{mc:polylog-generator}
+ \sum_{j\ge1}\bigl(\zeta(2)-H_j^{(2)}\bigr)z^j
+       =\frac{\zeta(2)z-\operatorname{Li}_2(z)}{1-z}.
+\end{equation}
+Its ordinary primitive can be normalized at zero using
+\begin{equation}\label{mc:polylog-primitive}
+ \int_0^z\frac1t
+       \sum_{j\ge1}\bigl(\zeta(2)-H_j^{(2)}\bigr)t^jdt
+   =2\operatorname{Li}_{2,1}(z)-\operatorname{Li}_3(z)
+      +(\operatorname{Li}_2(z)-\zeta(2))\log(1-z).
+\end{equation}
+Here $\operatorname{Li}_{2,1}(z)=
+\sum_{n>k\ge1}z^n/(n^2k)$, on its analytic branch at zero.
+The generating identity is an elementary interchange of absolutely
+convergent sums. The primitive identity is checked by differentiation
+using $\frac{d}{dz}\operatorname{Li}_{2,1}(z)
+=\operatorname{Li}_{1,1}(z)/z=\log^2(1-z)/(2z)$ together with
+the corresponding product derivatives; an independent quadrature check
+is recorded with the computational artifacts. In fact classical
+polylogarithms suffice: for $0<z<1$, the same primitive equals
+\begin{equation}\label{mc:classical-primitive}
+ 2\zeta(3)-\operatorname{Li}_3(z)-2\operatorname{Li}_3(1-z)
+                +\log(1-z)\operatorname{Li}_2(1-z).
+\end{equation}
+To verify this expression directly, differentiate and use Euler's
+dilogarithm reflection identity; its limit at zero is zero. At
+$z=1$ it gives the endpoint identity
+$\sum_{j\ge1}(\zeta(2)-H_j^{(2)})/j=\zeta(3)$.
+The elementary generating and primitive identities are classical
+Euler-sum consequences; their role here is to evaluate the newly
+identified contact family, not to claim those consequences as
+independently new polylogarithm identities.
+
+\subsection{What the different-scale theorem changes}
+
+The fixed-rate source remains correct with its stated hypotheses.
+It must not be extrapolated by substituting an
+$\epsilon$-dependent rate in a remainder proved only for fixed rates.
+Two changes are essential: high Taylor coefficients at one can
+survive when $b^\ell/a^{r-k}$ has exponent zero, and the two
+singular Frobenius branches can jointly have exponent zero.
+Both effects are present in \eqref{mc:ordered-examples}; the
+first-index law \eqref{mc:stieltjes-tail-contact} isolates the
+second effect without argument derivatives.
+
+The theorem does not assert uniformity as the exponent ratio
+approaches a resonance while $\epsilon$ also varies. In that
+transition, a factor $\epsilon^{E_j}$ must be retained rather than
+replaced by its constant coefficient. Formula \eqref{mc:H-log}
+provides the exact local term for such a further analysis.
+
+% END sections/03_multiscale_collisions.tex
+
+% BEGIN sections/04_barnes_companion.tex
+% Research notes for the parent report.  This is an input fragment.
+% Standard amsmath, amssymb, amsthm theorem/proof environments are assumed.
+
+\section{A Barnes-integral companion}
+\label{bim:section}
+
+This section records evaluated consequences of the classical first Barnes
+lemma.  The underlying integral is not new: it is NIST DLMF
+\href{https://dlmf.nist.gov/5.13.E3}{Equation 5.13.3} \cite{DLMF}.  The present
+contribution is the selection and complete differentiation of the
+centered fourth moment and the pure trigamma correlation.  No historical priority claim is made for these specializations.  These ordinary integrals are
+distinct from the higher-dimensional Gamma density used in the recent
+\emph{Gamma Normalizations and Colored Moments} report.
+
+For complex parameters of positive real part, put
+\begin{align}
+ W(a,b,c,d;x)&=\Gamma(a+ix)\Gamma(b+ix)
+                  \Gamma(c-ix)\Gamma(d-ix),\\
+ F(a,b,c,d)&=\frac{\Gamma(a+c)\Gamma(a+d)
+                       \Gamma(b+c)\Gamma(b+d)}
+                      {\Gamma(a+b+c+d)}.
+\end{align}
+Barnes' first lemma states
+\begin{equation}\label{bim:barnes}
+ \frac1{2\pi}\int_{-\infty}^{\infty}W(a,b,c,d;x)\,dx
+                              =F(a,b,c,d).
+\end{equation}
+Every finite parameter derivative can be passed under this integral.
+Indeed, on a compact parameter set inside the four right half-planes,
+Stirling's formula gives exponential decay $e^{-2\pi|x|}$ times a
+fixed polynomial in $1+|x|$; differentiating adds only a fixed power of
+$1+\log(2+|x|)$.  This also proves that all integrals below are ordinary
+absolutely convergent integrals.
+
+\subsection{Centered mixed moments}
+
+For $\sigma>0$ define
+\begin{equation}\label{bim:density}
+ p_\sigma(x)=\frac{\Gamma(4\sigma)}
+                   {2\pi\Gamma(2\sigma)^4}
+                        |\Gamma(\sigma+ix)|^4,
+ \qquad \int_{\mathbb R}p_\sigma(x)\,dx=1.
+\end{equation}
+Write $\mathbb E_\sigma$ for integration against this density, and put
+\begin{equation}\label{bim:center}
+ m_\sigma=2\psi(2\sigma)-\psi(4\sigma),\qquad
+ U_\sigma(x)=\psi(\sigma+ix)-m_\sigma.
+\end{equation}
+The following formulas involve only ordinary polygamma values:
+\begin{align}
+ \mathbb E_\sigma U_\sigma&=0,\label{bim:mean}\\
+ \mathbb E_\sigma U_\sigma^2&=-\psi'(4\sigma),
+                                               \label{bim:square}\\
+ \mathbb E_\sigma|U_\sigma|^2
+          &=\psi'(2\sigma)-\psi'(4\sigma),      \label{bim:abs-square}\\
+ \mathbb E_\sigma\bigl(U_\sigma|U_\sigma|^2\bigr)
+          &=-\psi''(4\sigma),                  \label{bim:cubic}\\
+ \mathbb E_\sigma|U_\sigma|^4
+          &=\psi'(4\sigma)^2
+             +2\bigl(\psi'(2\sigma)-\psi'(4\sigma)\bigr)^2
+             -\psi'''(4\sigma).                \label{bim:fourth}
+\end{align}
+The left side of \eqref{bim:cubic} is real by the change $x\mapsto-x$.
+
+\begin{proof}
+Set $L=\log F$.  At $a=b=c=d=\sigma$, all first logarithmic
+derivatives equal $m_\sigma$.  Subtract this linear term by replacing
+$F/F(\sigma,\sigma,\sigma,\sigma)$ with
+\[
+ \widetilde F(a,b,c,d)
+ =e^{-m_\sigma(a+b+c+d-4\sigma)}
+      \frac{F(a,b,c,d)}{F(\sigma,\sigma,\sigma,\sigma)}.
+\]
+Its single-slot integral insertions are $U_\sigma$ in the slots $a,b$
+and $\overline U_\sigma$ in $c,d$.  The first derivatives of
+$\log\widetilde F$ vanish.  For distinct slots the remaining derivatives
+needed here are
+\begin{align*}
+ L_{ab}=L_{cd}&=q=-\psi'(4\sigma),\\
+ L_{ac}=L_{ad}=L_{bc}=L_{bd}
+      &=p=\psi'(2\sigma)-\psi'(4\sigma),\\
+ L_{abc}=L_{abd}=L_{acd}=L_{bcd}&=-\psi''(4\sigma),\\
+ L_{abcd}&=-\psi'''(4\sigma).
+\end{align*}
+The derivatives of $\widetilde F=e^{\log\widetilde F}$ of orders two
+and three give the first four assertions.  Its $abcd$ derivative is
+$L_{ab}L_{cd}+L_{ac}L_{bd}+L_{ad}L_{bc}+L_{abcd}$, because every
+partition containing a singleton has zero contribution.  This is
+$q^2+2p^2-\psi'''(4\sigma)$ and proves \eqref{bim:fourth}.
+\end{proof}
+
+\subsection{Eliminating all digamma insertions from a trigamma correlation}
+
+\begin{theorem}\label{bim:trigamma}
+For $\sigma>0$ one has
+\begin{align}
+ \mathbb E_\sigma\psi'(\sigma+ix)&=2\psi'(2\sigma),
+                                                   \label{bim:trigamma-mean}\\
+ \mathbb E_\sigma\left|\psi'(\sigma+ix)\right|^2
+                  &=4\psi'(2\sigma)^2+\psi'''(2\sigma).
+                                                   \label{bim:trigamma-square}
+\end{align}
+More generally, if $\Re u,\Re v>0$ and $s=u+v$, then
+\begin{equation}\label{bim:unequal-trigamma}
+\begin{split}
+ &\int_{\mathbb R}\Gamma(u+ix)^2\Gamma(v-ix)^2
+                         \psi'(u+ix)\psi'(v-ix)\,dx\\
+ &\qquad=2\pi\frac{\Gamma(s)^4}{\Gamma(2s)}
+                           \bigl(4\psi'(s)^2+\psi'''(s)\bigr).
+\end{split}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Use the constant-coefficient operators
+\[
+ D_+=\partial_a^2-\partial_a\partial_b,
+ \qquad D_-=\partial_c^2-\partial_c\partial_d.
+\]
+After setting $a=b=u$ the first operator inserts exactly
+$\psi'(u+ix)$, since the two copies of $\psi(u+ix)^2$ cancel.  The
+second operator inserts $\psi'(v-ix)$ after $c=d=v$.
+
+For an explicit right-side calculation, center as above, now at
+$a=b=u,c=d=v$; the common first logarithmic derivative is
+$2\psi(s)-\psi(2s)$.  Put
+\[
+ \begin{gathered}
+ A=\psi'(s),\quad B=\psi'(2s),\quad
+ A_3=\psi'''(s),\quad B_3=\psi'''(2s),\\
+ d=2A-B,\quad q=-B,\quad p=A-B.
+ \end{gathered}
+\]
+Centering does not affect $D_+D_-\widetilde F$ at coalescence: the extra
+terms contain $\partial_a-\partial_b$ or
+$\partial_c-\partial_d$, which vanish by the respective symmetries.
+The required derivatives are
+\begin{align*}
+ \widetilde F_{aacc}&=d^2+2p^2+A_3-B_3,\\
+ \widetilde F_{aacd}=\widetilde F_{abcc}&=dq+2p^2-B_3,\\
+ \widetilde F_{abcd}&=q^2+2p^2-B_3.
+\end{align*}
+Consequently
+\[
+ D_+D_-\widetilde F=(d-q)^2+A_3=4A^2+A_3.
+\]
+Multiplying by $2\pi F(u,u,v,v)$ proves
+\eqref{bim:unequal-trigamma}; setting $u=v=\sigma$ proves
+\eqref{bim:trigamma-square}.  The second-order calculation
+$\widetilde F_{aa}-\widetilde F_{ab}=d-q=2A$ gives
+\eqref{bim:trigamma-mean}.
+\end{proof}
+
+The unequal-shift formula can equally be written using
+$\psi'(z)=\zeta(2,z)$ and $\psi'''(z)=6\zeta(4,z)$.  Thus it is a
+Gamma-weighted Hurwitz-zeta convolution with two independently chosen
+argument shifts.  The only shift invariant on the right is their sum.
+
+\subsection{Explicit half- and quarter-argument evaluations}
+
+At $\sigma=1/2$, the Gamma reflection formula makes
+$p_{1/2}(x)=(\pi/2)\operatorname{sech}^2(\pi x)$ and
+$U_{1/2}(x)=\psi(1/2+ix)+\gamma+1$.  Equations
+\eqref{bim:abs-square}, \eqref{bim:fourth}, and
+\eqref{bim:trigamma-square} become
+\begin{align}
+ \int_{\mathbb R}\frac{|\psi(1/2+ix)+\gamma+1|^2}
+                            {\cosh^2(\pi x)}\,dx
+                   &=\frac2\pi,\label{bim:half-square}\\
+ \int_{\mathbb R}\frac{|\psi(1/2+ix)+\gamma+1|^4}
+                            {\cosh^2(\pi x)}\,dx
+                   &=\frac2\pi\left(9-\frac{\pi^2}{3}
+                                          -\frac{7\pi^4}{180}\right),
+                                               \label{bim:half-fourth}\\
+ \int_{\mathbb R}\frac{|\psi'(1/2+ix)|^2}
+                            {\cosh^2(\pi x)}\,dx
+                   &=\frac{16\pi^3}{45}.\label{bim:half-trigamma}
+\end{align}
+Here the cancellation of Euler's constant is exact after centering.
+
+At $\sigma=1/4$, put $V(x)=\psi(1/4+ix)+\gamma+4\log2$.
+The normalization is $p_{1/4}(x)=|\Gamma(1/4+ix)|^4/(2\pi^3)$, and
+one obtains the equally short evaluations
+\begin{align}
+ \int_{\mathbb R}|\Gamma(1/4+ix)|^4|V(x)|^2\,dx&=\frac{2\pi^5}{3},
+                                                   \label{bim:quarter-square}\\
+ \int_{\mathbb R}|\Gamma(1/4+ix)|^4|V(x)|^4\,dx&=\frac{11\pi^7}{30},
+                                                   \label{bim:quarter-fourth}\\
+ \int_{\mathbb R}|\Gamma(1/4+ix)|^4|\psi'(1/4+ix)|^2\,dx&=4\pi^7.
+                                                   \label{bim:quarter-trigamma}
+\end{align}
+The special-value reductions use DLMF
+\href{https://dlmf.nist.gov/5.15.E2}{5.15.2} and
+\href{https://dlmf.nist.gov/5.15.E3}{5.15.3}.
+
+
+% END sections/04_barnes_companion.tex
+
+% BEGIN sections/05_source_status.tex
+% Parent-ready source/status fragment. No preamble.
+\section{Source audit, integration decisions, and further research}
+\label{status:section}
+
+The source anchor for this continuation is ProveIt revision
+\texttt{03112a7d3b91} \cite{ProveIt}.
+The audit concerns the incoming passages used in the proofs and the
+manuscript's relevant status records. It is not a certification of
+every result in the repository. The three main advances have the
+following precise relation to that source state.
+
+\subsection{What the present results change}
+
+\begin{enumerate}
+\item \textbf{Joint Gamma--polygamma moments.}
+The Gamma-normalization report's
+\path{sections/02_gaussian.tex} proves the paired deformation and
+the single-trigamma Gaussian moments through degree $n+1$;
+research question Q2 in
+\path{sections/06_audit_research.tex} asks for the joint
+polygamma moments \cite{GammaIncoming}.
+Theorem~\ref{gc:main} separates all joint cumulants through total
+weight $2n+2$, with weight $q+1$ assigned to $R_q$.
+It includes digamma and even polygamma orders. Formula
+\eqref{gc:moment} then evaluates every retained ordinary moment,
+and Corollary~\ref{gc:wick} gives the centered positive-order Wick
+rule. This answers the joint-separation question in the stated
+weighted range; the beyond-range classification remains open.
+The nonzero small-$\sigma$ skewness limit in
+Proposition~\ref{gc:sharpness} supplies an obstruction relevant to
+the same report's Q1, but does not evaluate the general first
+excluded trigamma moment.
+The underlying Gustafson integral remains classical
+\cite{DerkachovManashov}; its Gamma normalizer and the paired law
+retain their incoming attribution.
+
+\item \textbf{Effective reconstruction and the complete gap-eight ray.}
+Section~8 of the ordered-boundary report gives eventual
+nonsingularity at each fixed gap; Section~9, research question~1,
+asks for an effective threshold and finite completion
+\cite{OrderedIncoming}. Theorem~\ref{eg:effective} supplies an
+explicit computable $B(m)$ for every fixed half-gap $m$.
+The later gap-six report's
+\path{sections/05_audit_and_questions.tex}, question Q1,
+explicitly asks for complete gap-eight coverage \cite{GapSix}.
+Theorem~\ref{eg:eight-main} proves this for every
+$(p,q)=(2b-8,2b)$, $b\ge5$, using a proved analytic tail and an
+exact finite-field completion. Corollary~\ref{eg:eight-identities}
+turns that result into ordinary convergent polygamma-product
+identities. The unrestricted all-pairs prefix conjecture remains
+open. The finite certificate proves nonvanishing, and does not
+prove positivity at every intervening finite index.
+
+\item \textbf{Stieltjes collisions at different monomial scales.}
+The gap-six report's Section~4 treats fixed positive rates
+$a=\lambda\epsilon$, $b=\mu\epsilon$; its question Q10 asks for
+$a=\lambda\epsilon^\alpha$, $b=\mu\epsilon^\beta$ with
+$\alpha\ne\beta$ \cite{GapSix}.
+Theorem~\ref{mc:main} evaluates the constant for every positive
+monomial pair and every fixed pair of Stieltjes indices and
+argument derivatives. Its proof also specifies all divergent
+terms through that constant by finite truncation. The three
+resonance conditions in \eqref{mc:three-mechanisms} identify the
+additional contacts, including the singular--singular contact.
+The earlier lattice-contact report's Q9 asked only for fixed
+unequal rates \cite{LatticeIncoming}; that problem was already
+answered by the gap-six report and is not reclaimed here.
+General nonmonomial paths and three independently shifted factors
+remain outside the present theorem. The trigamma-tail contact
+family \eqref{mc:stieltjes-tail-contact} and its polylogarithmic
+generator and primitive are explicit evaluated consequences of
+the new scale classification.
+\end{enumerate}
+
+The Barnes-integral companion supplies additional ordinary integral
+evaluations obtained by explicitly differentiating a classical Barnes
+lemma \cite{DLMF}. It should be credited in that form. A bounded
+literature search and comparison with the inspected incoming material
+support the stated continuation choices; they do not establish global
+historical novelty.
+
+\subsection{Errors, status corrections, and essential qualifications}
+
+No newly false inherited mathematical theorem was found in the
+specific dependencies used for these results. The changes above are
+proved extensions and research-status updates. They should not be
+presented as corrections to formulas which the sources stated correctly.
+In particular, the incoming Gamma report already restricts its finite
+Gaussian law, and the gap-six report already distinguishes finite-field
+nonvanishing from a real-sign theorem.
+
+One source-list reconciliation is necessary. The gap-six report's Q4
+and the ordered-boundary report's question~2 ask for evaluations of
+$K_m$. The later Gamma-normalization report already supplies them
+\cite{GammaIncoming,GapSix,OrderedIncoming}. These questions should be
+marked answered by that predecessor, rather than counted among the
+present results. The repeated README paragraph about the 1,032-input
+first-letter-$X$ family, rank 1,008 and kernel dimension 24 remains
+present at the pinned revision. Earlier incoming reports already
+identified this editorial duplication. Removing its second occurrence
+would be an inherited editorial cleanup, not a new mathematical erratum.
+
+Three conventions are material to the proofs. The Gamma moment
+classification retains its total-weight restriction: beyond that range,
+Newton relations prevent unrestricted comparison of power-sum
+coefficients. The Bernoulli reconstruction matrix retains the omission
+of a lower binomial index zero; evaluating that entry as
+$\binom n0=1$ changes the problem. The Stieltjes constant is taken in
+the displayed small parameter, with the fixed-coordinate finite part
+kept distinct from the path-dependent constant. Spectral pole pairs
+must be combined before their removable values and derivatives are
+taken. These are integration requirements, not newly discovered
+mistakes in the cited sources.
+
+The manuscript's short $S_6$ and revised $S_8$ candidates remain open;
+the old rejected $S_8$ candidate remains rejected. None of the Gamma
+moment, reconstruction, or collision theorems implies those polylogarithmic
+period identities. Numerical proximity and rank in a specified formal
+relation space do not supply their missing exact equalities.
+The verification artifacts here likewise distinguish exact finite
+certificates from floating-point diagnostics. The analytic arguments
+justify convergence, continuation and coefficient extraction.
+
+\subsection{Further questions directed toward exact identities}
+
+\begin{enumerate}
+\item \textbf{Evaluate the first excluded polygamma cumulants.}
+At total weight $2n+3$ and above, determine the relations induced
+by $e_{2n+3},e_{2n+4},\ldots$ and identify additional integral
+identities that separate the remaining cumulants. The immediate
+scalar target is the exact $(n+2)$nd trigamma Gaussian defect at
+general $n,\sigma$. The proved $n=1$ small-shift limit is a
+normalization constraint on any proposed formula.
+
+\item \textbf{Develop joint moment formulas for unequal Gamma clusters.}
+Allow several distinct base shifts with specified multiplicities.
+Determine which mixed polygamma moments can be separated by
+independent deformations within each cluster, how their finite
+coordinate relations change when clusters merge, and which new
+ordinary integrals arise at the first unresolved degrees. A useful
+answer would give explicit polygamma or finite hypergeometric
+coefficients, rather than only a differentiated generating integral.
+
+\item \textbf{Find closed reconstruction rows and identities in $b$.}
+The gap-eight theorem specifies $P_b$ by a rational inverse matrix.
+Find finite-sum descriptions or recurrences for its coefficients and
+for the corresponding subtraction polynomial. Decide which inverse
+rows yield especially short zeta-valued identities. The exact
+leading coefficient and the ordinary sum in
+\eqref{eg:eight-sum} provide tests for every proposed recurrence.
+
+\item \textbf{Replace fixed-gap finite completion by structural algebra.}
+Find a recurrence invariant, factorization, or appropriate
+variation-diminishing statement that proves nonvanishing for an
+entire gap ray without checking every exceptional index separately.
+Such a theorem must respect the known early sign behavior.
+Connecting this structure with the fixed-smaller-order results is a
+concrete route toward the unrestricted unequal-even prefix problem.
+
+\item \textbf{Compute collision constants for nonmonomial paths.}
+Take $a=\lambda\epsilon^\alpha A(\epsilon)$ and
+$b=\mu\epsilon^\beta B(\epsilon)$, with prescribed analytic or
+power--logarithm expansions and nonzero leading coefficients.
+Determine the finite jets of $A,B$ that can affect a specified
+constant and derive its exact transformation law under a change of
+the small parameter. The monomial resonance rules identify the
+base exponents with which these additional coefficients interact.
+
+\item \textbf{Evaluate three-factor Stieltjes collision contacts.}
+For three independently shifted derivatives, classify contributions
+from every singular subset and pair all intersecting spectral poles
+before differentiating. Seek a finite evaluated contact formula in
+logarithms, generalized harmonic numbers and zeta derivatives, and
+identify precisely where multivariable polylogarithms or other new
+functions become necessary.
+
+\item \textbf{Generate and integrate the higher contact families.}
+For fixed Stieltjes and derivative orders, sum the integer-resonance
+contacts against $z^j$ and determine their polylogarithmic alphabet.
+The trigamma-tail generator and its anchored primitive are the first
+case. Compute further Euler primitives, ordinary or finite-part
+endpoint values, and character-weighted versions; determine which
+reduce to zeta products and which retain genuine multiple
+polylogarithms.
+
+\item \textbf{Construct an explicit functional route to $S_6$ or revised
+$S_8$.}
+If one of the new generators or integral deformations is to inform
+these period problems, first exhibit its exact map to the canonical
+residual, including all products and branch constants. A new
+functional or iterated-integral identity outside the tested relation
+spaces would constitute progress; an unrelated rank theorem or
+additional decimal agreement would not.
+\end{enumerate}
+
+% END sections/05_source_status.tex
+
+% BEGIN sections/06_reproducibility.tex
+\section{Reproducibility and the role of computation}
+\label{repro:section}
+
+The package contains the complete article as one standalone TeX file,
+the modular source, its compiled PDF, all verification programs, and
+the recorded results. The exact source revision and the inherited
+inputs are identified in the bibliography. No running service,
+unpublished data, or repository mutation is required to reproduce the
+calculations. The mathematical assertions are separated into three
+types of evidence.
+
+\paragraph{Analytic proofs.}
+The joint-cumulant theorem is proved by a classical Gamma integral and
+finite polynomial injectivity. The effective reconstruction tail is
+proved by an explicit two-term phase expansion and a rational
+determinant margin. The monomial collision theorem is proved by
+uniform local subtraction, finite selection of exponents, and
+holomorphic cancellation of paired singular branches. The ordinary
+Barnes evaluations follow by differentiated integral identities.
+The limit and sum convergence arguments are part of those proofs.
+
+\paragraph{Exact finite computation.}
+The C++ program \texttt{verify\_gap\_eight.cpp} uses only unsigned
+integer arithmetic and arithmetic in the prime field
+$\mathbb F_{2147483647}$. All $8187$ determinant residues for
+$5\le b\le8191$ are explicitly recorded. The verifier checks the
+prime and every needed denominator and independently checks all
+$8194$ cotangent coefficients against the sine and cosine series.
+An independent replay of the compiled program reproduced the complete
+certificate exactly. The SymPy bridge program separately checks the
+original Bernoulli matrices and their rational determinant reduction
+for $5\le b\le16$, and the concrete $(14,22)$ sum has its own exact
+generator. The finite-field certificate proves rational nonvanishing;
+it does not estimate a real determinant or deduce its sign.
+
+\paragraph{Independent symbolic and numerical diagnostics.}
+The Gamma program performs $122$ exact algebra assertions and $17$
+integral checks. The latter extract cumulants from determinants of
+independently integrated moment entries; they do not substitute the
+same Gamma quotient on both sides. The two precision runs and their
+residuals are described in Section~\ref{gc:section}.
+The Stieltjes compiler implements the finite contact rule using exact
+SymPy expressions. Its test program performs $72$ exact assertions,
+including comparisons with derivatives of the elementary logarithmic
+kernel, the first-index dilogarithmic contact, and the inherited
+fixed-rate law. Five nonreal spectral checks compare the paired branch
+series with the original convergent kernel integral; three further
+checks compare the classical primitive with direct integration.
+At $64$ digits the largest scaled spectral residual is below
+$8.2\times10^{-56}$.
+
+The separate \texttt{identity\_audit.py} evaluates ordered collision
+remainders and six Barnes moment formulas at $90$ decimal digits.
+The Barnes residuals are below $3\times10^{-91}$. The collision
+diagnostics deliberately include a nonresonant irrational exponent
+ratio, for which a small positive exponent makes convergence slow.
+That example is recorded with its vanishing-term acceleration rather
+than mislabeled as a rapidly convergent check. All floating-point
+residuals are diagnostics, not rigorous numerical error intervals.
+The exact theorem does not depend on their size.
+
+\paragraph{How to reproduce.}
+The \texttt{README.md} gives the precise build and verification
+commands. The minimal numerical dependencies are Python~3,
+SymPy, and mpmath; the certificate additionally needs a C++17
+compiler. The TeX uses standard mathematical packages and compiles
+with pdfLaTeX through \texttt{latexmk}. Internal analytical audit
+notes identify the delicate normalizations and remainder arguments.
+These are separate derivations within this research workflow and are
+not a claim of external peer review or proof-assistant certification.
+
+% END sections/06_reproducibility.tex
+
+% BEGIN references.tex
+\begin{thebibliography}{99}
+
+\bibitem{ProveIt}
+V.~Reshetnikov, \emph{ProveIt}, polylogarithm manuscript and incoming
+research reports, repository revision
+\texttt{03112a7d3b91efdd3c00b6e595cf0ffa4694d2dc},
+11 October 2026 (repository commit date), inspected 12 October 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/03112a7d3b91efdd3c00b6e595cf0ffa4694d2dc/Analysis/Polylogarithms/docs/manuscript}{Pinned manuscript};
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/03112a7d3b91efdd3c00b6e595cf0ffa4694d2dc/docs/incoming}{pinned incoming directory}.
+
+\bibitem{OrderedIncoming}
+ProveIt incoming report, \emph{Ordered Boundary Identities},
+11 October 2026, archive
+\path{ProveIt_Ordered_Boundary_Identities_2026-10-11.zip}
+in \cite{ProveIt}. The inherited fixed-gap recurrence, Gamma basis,
+complementary-minor bridge, and eventual nonsingularity theorem.
+
+\bibitem{GapSix}
+ProveIt incoming report, \emph{Gap-Six Harmonic Determinants},
+12 October 2026, archive
+\path{ProveIt_Gap_Six_Harmonic_Determinants_2026-10-12.zip}
+in \cite{ProveIt}. See \path{sections/01_gap_six.tex},
+\path{sections/04_collisions.tex}, and \path{sections/05_audit_and_questions.tex}.
+
+\bibitem{GammaIncoming}
+ProveIt incoming report, \emph{Gamma Normalizations and Colored Moments},
+12 October 2026, archive
+\path{ProveIt_Gamma_Normalizations_and_Colored_Moments_2026-10-12.zip}
+in \cite{ProveIt}. See \path{sections/02_gaussian.tex} and
+\path{sections/06_audit_research.tex}, especially research question~2.
+
+\bibitem{LatticeIncoming}
+ProveIt incoming report, \emph{Lattice Contacts and Mixed Zeta Identities},
+11 October 2026, archive
+\path{ProveIt_Lattice_Contacts_and_Mixed_Zeta_Identities_2026-10-11.zip}
+in \cite{ProveIt}.
+
+\bibitem{DerkachovManashov}
+S.~E. Derkachov and A.~N. Manashov,
+\emph{Spin Chains and Gustafson's Integrals},
+Journal of Physics A: Mathematical and Theoretical \textbf{50} (2017),
+294006. \href{https://doi.org/10.1088/1751-8121/aa749a}{doi:10.1088/1751-8121/aa749a};
+\href{https://arxiv.org/abs/1611.09593v2}{arXiv:1611.09593v2}.
+The symplectic Barnes integral used here is equation~(2).
+
+\bibitem{DLMF}
+F.~W.~J. Olver et al., eds.,
+\emph{NIST Digital Library of Mathematical Functions},
+\url{https://dlmf.nist.gov/}, accessed 12 October 2026.
+In particular \href{https://dlmf.nist.gov/5.11}{\S5.11}
+(Gamma asymptotics and remainders),
+\href{https://dlmf.nist.gov/5.13}{\S5.13}
+(Barnes integrals), \href{https://dlmf.nist.gov/5.15}{\S5.15}
+(polygamma functions), \href{https://dlmf.nist.gov/15.8}{\S15.8}
+(hypergeometric transformations), and
+\href{https://dlmf.nist.gov/25.11}{\S25.11}
+(Hurwitz zeta functions).
+
+\bibitem{TicaGalapon}
+C.~D. Tica and E.~A. Galapon,
+\emph{Finite-part integration of the generalized Stieltjes transform
+and its dominant asymptotic behavior for small values of the parameter.
+II. Non-integer orders}, Journal of Mathematical Physics
+\textbf{60} (2019), 013502.
+\href{https://doi.org/10.1063/1.5038900}{doi:10.1063/1.5038900}.
+
+\bibitem{ShpotParis}
+M.~A. Shpot and R.~B. Paris,
+\emph{Integrals of products of Hurwitz zeta functions via Feynman
+parametrization and two double sums of Riemann zeta functions},
+\href{https://arxiv.org/abs/1609.05658v2}{arXiv:1609.05658v2}
+(2016; revised 2020).
+
+\end{thebibliography}
+
+% END references.tex
+
+\end{document}

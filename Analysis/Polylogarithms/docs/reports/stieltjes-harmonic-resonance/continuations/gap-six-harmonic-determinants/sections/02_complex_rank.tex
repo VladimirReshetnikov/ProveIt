@@ -1,0 +1,347 @@
+% Self-contained research fragment.  Requires amsmath, amssymb, amsthm.
+% All labels use cr:.  References: BilinearIncoming, ChenSinger2012.
+\section{Complex rational weights: a complete degree--rank theorem}
+\label{cr:section}
+
+The recent \emph{Bilinear Tails and Harmonic Determinants} contribution
+proves that the formal harmonic degree of a moment determinant equals
+its generic harmonic-pencil rank for every nonzero real rational weight.
+It explicitly leaves the corresponding assertion for complex rational
+weights open \cite[Section~5, Corollary \texttt{deg:rational};
+Section~10, ``Complex weights and sharp cutoff exceptions'']{BilinearIncoming}.
+We prove the complex assertion.  The new argument uses rationality in
+the cutoff and the rigidity of symmetric rank-one updates.  It uses
+ordinary transposition throughout; no Hermitian positivity is assumed.
+The stronger numerical bound on the number of exceptions for eventually
+one-sign real weights remains a separate advantage of the source theorem.
+
+\subsection{A rational difference principle}
+
+All fields in the next statements have characteristic zero.  The
+indeterminate is $z$, and linear independence of functions means
+independence over the constant field, unless another field is displayed.
+
+\begin{lemma}[Equal ranks force equal images]\label{cr:rankone}
+Let $A$ be a symmetric $q\times q$ matrix over a field $F$, let
+$c\in F\setminus\{0\}$, and let $u\in F^q$.
+If $u\notin\operatorname{im}A$, then
+\[
+ \operatorname{rank}(A+cuu^{\mathsf T})=\operatorname{rank}A+1.
+\]
+Consequently, if $A$ and $A+cuu^{\mathsf T}$ have equal rank, then
+$u\in\operatorname{im}A$ and
+$\operatorname{im}(A+cuu^{\mathsf T})=\operatorname{im}A$.
+\end{lemma}
+\begin{proof}
+Put $d=\operatorname{rank}A$.  Symmetric elimination gives an
+invertible matrix $S$ for which
+\[
+ S^{\mathsf T}AS=\begin{pmatrix}A_0&0\\0&0\end{pmatrix},
+ \qquad \det A_0\ne0.
+\]
+Write $S^{\mathsf T}u=(v,w)^{\mathsf T}$.  If $u$ is outside
+the image, some coordinate $w_j$ is nonzero.  The principal minor
+on the $d$ coordinates of $A_0$ and this one further coordinate is
+\begin{equation}\label{cr:minor}
+ \det\begin{pmatrix}
+ A_0+cvv^{\mathsf T}&cvw_j\\
+ cw_jv^{\mathsf T}&cw_j^2
+ \end{pmatrix}=cw_j^2\det A_0\ne0.
+\end{equation}
+For instance, subtract $(v_i/w_j)$ times the last row from row $i$
+to verify the equality directly.  A rank-one update can increase
+rank by at most one, proving the first claim.  Equal ranks therefore
+force $u\in\operatorname{im}A$.  In that case the new image is
+contained in the old one and has the same dimension, proving equality.
+The proof remains valid when $w^{\mathsf T}w=0$; nonzero complex
+isotropic vectors cause no exception to the argument.
+\end{proof}
+
+\begin{theorem}[Nonsingularity of rational symmetric primitives]
+\label{cr:primitive}
+Let $G(z)\in\operatorname{Sym}_q(F(z))$, let $w(z)\in F(z)$ be
+nonzero, and let $p(z)\in F(z)^q$ have linearly independent
+components over $F$.  If
+\begin{equation}\label{cr:difference}
+ G(z)-G(z-1)=w(z)p(z)p(z)^{\mathsf T},
+\end{equation}
+then $\det G(z)$ is a nonzero rational function.  This conclusion
+holds for every symmetric rational solution, including after adding
+an arbitrary constant symmetric matrix.
+\end{theorem}
+\begin{proof}
+Suppose the generic rank were $d<q$.  A nonzero $d$-minor of $G$
+has finitely many zeros and poles, and every $(d+1)$-minor vanishes
+identically.  Hence there is an integer $N_0$ such that, at every
+integer $N\ge N_0$, the matrices $G(N)$ and $G(N-1)$ are defined
+and have rank $d$, while $w(N)\ne0$ and $p(N)$ is defined.
+Characteristic zero ensures that these are infinitely many distinct
+evaluation points.  Lemma~\ref{cr:rankone} applied to
+\eqref{cr:difference} shows that the images of all these matrices
+are one fixed $d$-dimensional subspace $W\subset F^q$, and that
+$p(N)\in W$ at every sufficiently large integer.
+
+Choose a nonzero linear functional $\lambda\in(F^q)^*$ vanishing
+on $W$.  Then the rational function $\lambda p(z)$ vanishes at
+infinitely many distinct points, so it is identically zero.  This
+contradicts independence of the components of $p$.  Thus $d=q$.
+Adding a constant symmetric matrix preserves \eqref{cr:difference},
+so the same proof applies to every such addition.
+\end{proof}
+
+The result also applies with any fixed nonzero translation $h$ in
+place of $1$, by changing variables.  Rationality is used to make
+the ranks constant outside a finite set and to turn infinitely many
+zeros into a function identity.  The statement is consequently stronger
+than a positivity argument, but it does not make a claim about arbitrary
+nonrational sequences of bilinear Gram matrices.
+
+\subsection{The complex harmonic-degree theorem}
+
+Let $C_1,\ldots,C_t\in\operatorname{Sym}_r(F)$ and put
+\[
+ C(X)=\sum_{j=1}^tX_jC_j,\qquad
+ \rho=\operatorname{rank}_{F(X)}C(X),\qquad q=r-\rho.
+\]
+Suppose $R\in F(z)$ is nonzero and that the finite moment matrices
+admit a decomposition
+\begin{equation}\label{cr:decomposition}
+ M_N=\sum_{n=0}^N R(n)v(n)v(n)^{\mathsf T}
+     =D(N)+\sum_{j=1}^t h_j(N)C_j,
+ \qquad v(n)=(1,n,\ldots,n^{r-1})^{\mathsf T},
+\end{equation}
+where $D(z)\in\operatorname{Sym}_r(F(z))$.  It suffices that the
+decomposition and all its terms be defined for every sufficiently
+large integer $N$.  The values $h_j(N)$ may lie in an extension of
+$F$.  The variables $X_j$ are formal and independent; no arithmetic
+independence of the actual harmonic values is asserted.
+
+\begin{theorem}[Complex rational degree--rank equality]
+\label{cr:degree}
+Under these hypotheses,
+\begin{equation}\label{cr:main}
+ \boxed{\deg_X\det(D(z)+C(X))=\rho\quad\text{over }F(z).}
+\end{equation}
+Only finitely many admissible integer cutoffs can have smaller
+degree.  In particular the conclusion holds for every nonzero complex
+rational weight with no poles at nonnegative integers and its usual
+finite harmonic decomposition.
+\end{theorem}
+\begin{proof}
+The determinant has degree at most $\rho$, since any term choosing
+more than $\rho$ columns from $C(X)$ is zero.  Since $F$ is infinite,
+choose $a\in F^t$ for which $A=C(a)$ has rank $\rho$.  Let $K$
+be an $r\times q$ constant matrix whose columns form its kernel.
+Choose a complement $U$ so that $S=[U\ K]$ is invertible and
+\[
+ S^{\mathsf T}AS=\begin{pmatrix}A_0&0\\0&0\end{pmatrix},
+ \qquad\det A_0\ne0.
+\]
+Every matrix $A+tC_j$ has rank at most $\rho$.  Over $F(t)$
+its upper-left block is invertible near $t=0$, so its Schur complement
+vanishes identically.  The coefficient of $t$ in that complement is
+$K^{\mathsf T}C_jK$.  Therefore
+\begin{equation}\label{cr:isotropy}
+ K^{\mathsf T}C_jK=0\qquad(1\le j\le t).
+\end{equation}
+This algebraic argument is the complex form of the source's
+compression lemma.
+
+Put $G(z)=K^{\mathsf T}D(z)K$ and $p(z)=K^{\mathsf T}v(z)$.
+The components of $p$ are independent polynomials, because $K$
+has column rank $q$.  Equations \eqref{cr:decomposition} and
+\eqref{cr:isotropy} show, at all sufficiently large integers, that
+\[
+ G(N)-G(N-1)=R(N)p(N)p(N)^{\mathsf T}.
+\]
+Both sides are rational functions in $N$, so this is the identity
+\eqref{cr:difference}.  Theorem~\ref{cr:primitive} gives
+$\det G(z)\ne0$.  Finally,
+\begin{equation}\label{cr:direction}
+ [t^\rho]\det(D(z)+tA)
+   =\frac{\det A_0}{(\det S)^2}\det G(z)\ne0,
+\end{equation}
+obtained by selecting $tA_0$ in its $\rho$ rows and columns after
+congruence by $S$.  This proves \eqref{cr:main}.  The same
+coefficient is nonzero at all but finitely many admissible integer
+cutoffs, proving the final assertion.  When $q=0$, its determinant
+is one and the conclusion is immediate.
+\end{proof}
+
+No common kernel of the entire pencil is assumed.  The kernel of
+one maximal-rank member is only totally isotropic for every $C_j$,
+which is exactly the compression property needed in the proof.
+The theorem answers the complex-weight question affirmatively rather
+than restricting it to pencils with a common kernel.
+
+\subsection{Finite certificates for every exceptional cutoff}
+
+The proof gives a cheap sufficient certificate using just one
+maximal-rank direction.  Choose a nonzero polynomial $d(z)$ clearing
+the denominators of $G(z)$ and set $H(z)=d(z)G(z)$.  Then
+\begin{equation}\label{cr:certificate}
+ 0\ne E(z):=\det H(z)\in F[z].
+\end{equation}
+Every degree-deficient cutoff at which $d(N)\ne0$ is a root of
+$E$.  If $e_{ij}=\deg H_{ij}$, with degree $-\infty$ for zero
+entries, then
+\begin{equation}\label{cr:degree-bound}
+ \deg E\le \max_{\pi\in S_q}\sum_{i=1}^q e_{i,\pi(i)}
+ \le q\max_{i,j}e_{ij}.
+\end{equation}
+Thus the right side bounds the number of distinct such exceptions.
+This is a bound computable from rational entries and does not depend
+on ordering the coefficient field.  Apparent poles introduced by
+denominator clearing must be removed or checked in the original
+decomposition.
+
+For an exact rather than sufficient certificate, write the highest
+homogeneous component after clearing a common denominator in $z$ as
+\[
+ [\det(D(z)+C(X))]_\rho
+       =\frac{1}{b(z)}\sum_{|\nu|=\rho}e_\nu(z)X^\nu.
+\]
+Theorem~\ref{cr:degree} guarantees that not all $e_\nu$ vanish.
+For an admissible $N$ with $b(N)\ne0$, degree is deficient exactly
+when $g(N)=0$, where
+\begin{equation}\label{cr:gcd}
+ g(z)=\gcd_{|\nu|=\rho}e_\nu(z).
+\end{equation}
+This is the complex-field extension
+of the source's coefficient-gcd test; it is not a new polynomial-gcd
+algorithm.  The cheaper polynomial $E$ supplies a finite candidate
+set, and the full highest component filters it exactly.
+
+\subsection{A residue interpretation of the rational compression}
+
+For clarity, the usual harmonic decomposition is available over
+$\mathbb C$ without a sign assumption.  Partial fractions of
+$z^mR(z)$ consist of a polynomial and finitely many terms
+$c/(z-\alpha)^j$.  Poles differing by integers belong to one shift
+orbit.  Summing those terms from $0$ to $N$ produces one generalized
+harmonic coordinate per orbit and pole order, together with rational
+endpoint corrections.  This is the form \eqref{cr:decomposition}.
+
+The discrete residue of a rational function at an orbit and pole
+order is the sum of the corresponding partial-fraction coefficients
+over that orbit.  The classical rational-summability criterion states
+that a rational function has a rational antidifference if and only if
+all these discrete residues vanish \cite[Proposition~2.5]{ChenSinger2012}.
+For a polynomial subspace $V$ with basis $p_1,\ldots,p_q$, the
+following statements are equivalent:
+\begin{enumerate}
+\item every $R(z)p_i(z)p_j(z)$ has a rational antidifference;
+\item every discrete-residue bilinear form
+$(f,g)\mapsto\operatorname{dres}_{\mathcal O,k}(Rfg)$ vanishes
+on $V\times V$;
+\item if $K$ is the coefficient matrix of this basis, then
+$K^{\mathsf T}C_jK=0$ for every harmonic coefficient matrix.
+\end{enumerate}
+The equivalence is the classical residue criterion applied entry by
+entry.  Theorem~\ref{cr:primitive} adds the following consequence:
+whenever these conditions hold and the $p_i$ are independent, every
+symmetric rational matrix primitive of the products $Rp_ip_j$ is
+nonsingular over $\mathbb C(z)$.  Thus a maximal-rank pencil kernel
+produces a rationally summable polynomial space whose accumulated
+bilinear form cannot be identically degenerate.
+
+\subsection{Exact nonreal examples}
+
+Let
+\[
+ R_\lambda(z)=\frac1{z+1}+\frac\lambda{z+2},\qquad\lambda\ne0,
+ \qquad X=\sum_{n=0}^N\frac1{n+1}.
+\]
+For an $r\times r$ moment matrix, $r\ge2$, the only harmonic
+coefficient matrix is
+\[
+ C=u_1u_1^{\mathsf T}+\lambda u_2u_2^{\mathsf T},\qquad
+ u_a=(1,-a,\ldots,(-a)^{r-1})^{\mathsf T},
+\]
+and has rank two.  Thus the harmonic degree is exactly two over
+$\mathbb C(N)$, for every nonzero complex $\lambda$.
+
+At $r=3$, the kernel polynomial is $(z+1)(z+2)$ and
+\begin{equation}\label{cr:three}
+ \boxed{
+ [X^2]\det(D(N)+XC)=
+ \frac{\lambda}{12}(N+1)(N+2)(N+3)
+       \{3(\lambda+1)N+4\lambda+8\}.}
+\end{equation}
+At $r=4$, use the two kernel polynomials
+$(z+1)(z+2)$ and $z(z+1)(z+2)$.  Then
+\begin{equation}\label{cr:four}
+ \begin{split}
+ [X^2]\det(D(N)+XC)
+ ={}&\frac{\lambda}{3600}N(N+1)^2(N+2)^2(N+3)^2(N+4)\\
+ &\quad\cdot\bigl\{6(\lambda+1)^2N^2
+ +(14\lambda^2+48\lambda+34)N
+ +10\lambda^2+45\lambda+50\bigr\}.
+ \end{split}
+\end{equation}
+Both identities follow from \eqref{cr:direction} and finite sums of
+polynomials.  In the four-dimensional case, the two-by-two compressed
+determinant is the expression after the initial factor $\lambda$.
+For $\lambda=i$, its final quadratic is
+$20N+40+i(12N^2+48N+45)$, so it cannot vanish at a nonnegative
+integer.  Consequently the four-dimensional harmonic degree is
+exactly two at every $N\ge1$, even though the actual evaluated
+moment determinant vanishes at $N=1,2$ because too few nodes are
+present.  Formal degree and numerical determinant value remain
+different notions.
+
+A nonreal rational weight can nevertheless have a genuine later
+degree exception.  Take $r=4$ and
+\begin{equation}\label{cr:exception-weight}
+ R(z)=\frac{39}{z+1}+\frac{78i}{z+2}
+                        -\frac{61+95i}{z+3}.
+\end{equation}
+Its one harmonic matrix has rank three.  The kernel polynomial is
+$p(z)=(z+1)(z+2)(z+3)$, and exact Faulhaber summation gives
+\begin{equation}\label{cr:exception-compression}
+ \begin{split}
+ \sum_{n=0}^N R(n)p(n)^2
+  =-\frac16&(N-3)(N+1)(N+2)(N+3)(N+4)\\
+           &\cdot\{(22+17i)N+56+22i\}.
+ \end{split}
+\end{equation}
+The top-left three-square minor of the harmonic matrix is
+$1155960-742248i\ne0$.  Hence the only degree-deficient
+nonnegative cutoff is $N=3$.  At that cutoff the formal determinant
+is exactly
+\begin{equation}\label{cr:exception-polynomial}
+ \begin{split}
+ P_3(X)={}&(-22046418576+2049048144i)X^2\\
+ &+\left(\frac{455872142232}{5}-7792299840i\right)X\\
+ &-\frac{2356478577592}{25}
+                         +\frac{183512850456}{25}i.
+ \end{split}
+\end{equation}
+Thus its degree drops from three to two, while substitution of the
+actual $X=25/12$ gives
+\[
+ P_3(25/12)=\frac{55033-146419i}{25}\ne0.
+\]
+Independently, this value is the four-node Vandermonde square times
+$R(0)R(1)R(2)R(3)$.  The exception is therefore a formal-degree
+phenomenon at a nonzero evaluated determinant, and not a lack of
+nodes or a vanishing weight.
+
+\subsection{Integration and further questions}
+
+The source's real-weight results are valid and need no retraction.
+Its open complex-weight question can be marked solved under the
+same rational-decomposition hypotheses, and Corollary
+\texttt{deg:rational} can be broadened to complex rational weights.
+The eventual-sign bound $r(r-\rho)$ should retain its original real
+hypotheses.  The present denominator-degree certificate is a
+different bound and is not asserted to equal that real bound.
+
+Two precise next questions remain.  First, determine sharp bounds
+for the exceptional-cutoff polynomial using only the pole orders and
+integer dispersions of $R$, without constructing the whole compressed
+primitive.  Second, classify polynomial subspaces totally isotropic
+for all discrete-residue forms of $Rfg$; the primitive theorem proves
+nonsingularity once such a subspace is given, but does not classify
+the subspaces or the rank-two pencils producing them.
+

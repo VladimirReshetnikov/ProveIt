@@ -1,0 +1,695 @@
+% Parent-ready research fragment. Labels use eg:; no preamble is included.
+% References to define in the final article: OrderedIncoming, GapSixIncoming,
+% DLMFStirling. Sources inspected: current ProveIt incoming archives dated
+% 2026-10-11 and 2026-10-12. The complete gap-six result is inherited.
+
+\section{Effective reconstruction at every fixed gap}
+\label{eg:section}
+
+The incoming ordered-boundary report \cite{OrderedIncoming} constructs a Gamma integral basis
+for the unequal-even-tail moment problem and proves eventual
+nonsingularity for each fixed gap.  The subsequent gap-six report \cite{GapSix}
+makes one of those eventual statements effective and completes that
+ray by finite-field arithmetic.  We now give a fully explicit threshold
+for \emph{every} fixed gap.  We then sharpen the estimates at gap eight
+and certify all remaining indices.  In particular, the complete
+gap-eight family, which the inspected gap-six report explicitly leaves
+open, is resolved below.
+
+The conclusions are statements about rational matrices on specified
+formal labels.  They do not imply algebraic or rational independence
+of the evaluated zeta values.  The contribution relative to the
+inspected sources is the explicit general threshold and the completed
+gap-eight ray; no historical-priority claim is made.
+
+\subsection{The inherited rational obstruction}
+
+Fix integers $m\ge1$ and $b>m$, and put
+\[
+ p=2b-2m,\qquad q=2b,\qquad x_n=n+\tfrac12,
+ \qquad A_v(n)=\zeta(v,n+1).
+\]
+The meromorphic continuation of
+\[
+ D_{p,q}(s)=\sum_{n=0}^{\infty}A_p(n)A_q(n)x_n^{-s}
+\]
+is regular at every nonpositive even argument.  Indeed, the centered
+Hurwitz expansion has only powers $x_n^{1-v-2h}$, so the possible
+poles of the continued product sum are at the odd integers
+$3-p-q-2h$.  Write $D_r=D_{p,q}(-2r)$.
+
+The block coordinates from \cite{OrderedIncoming,GapSix} satisfy
+\begin{align}
+ D_r&=\sum_{j=0}^r\frac{\binom{2r}{2j}}{2j+1}
+             B_{2r-2j}(1/2)C_j,\label{eg:forward}\\
+ C_j&=\sum_{r=0}^j\binom{2j+1}{2r}2^{-2(j-r)}D_r.
+ \label{eg:inverse}
+\end{align}
+For $j\ge b$ they have the late coordinates
+\[
+ C_j=\sum_{k=0}^{b-1}a_{jk}\zeta(2k),\qquad \zeta(0)=-\tfrac12.
+\]
+Put $d=2j+1$ and $e=d-p-q+2k+1$.  The coefficient is zero
+if $e<0$; otherwise it is
+\begin{equation}\label{eg:late-entry}
+ a_{jk}=B_e\left\{
+       \frac{\binom{d-q+1}{p-2k}}{d-q+1}
+      +\frac{\binom{d-p+1}{q-2k}}{d-p+1}\right\}.
+\end{equation}
+Each summand is omitted unless its lower binomial index is between
+$2$ and the upper index.  In particular the lower index zero is
+omitted.  Define
+\[
+ M_{b,m}=(a_{b+r,k})_{0\le r,k<b}.
+\]
+The first $2b$ moment rows are expressed on the formal labels
+\[
+ C_0,\ldots,C_{b-1},\quad\zeta(0),\ldots,\zeta(2b-2).
+\]
+Their exact coefficient determinant is $\det M_{b,m}/(4b-1)!!$.
+Thus nonsingularity of $M_{b,m}$ is exactly the optimal-prefix question.
+
+We recall the fixed-gap reduction in a notation which keeps the
+Bernoulli coefficients distinct from recurrence factors.  Set
+\begin{align*}
+ \beta_n&=\frac{2|B_{2n}|}{(2n)!},\qquad n\ge1,\\
+ a_u&=0\quad(1\le u\le m),\qquad
+ a_u=(2u)^{\underline{2m}}\quad(u>m),\\
+ b_s&=(2s-1)^{\underline{2m}},\qquad
+ d_s=2(a_s+b_s)\quad(s>m).
+\end{align*}
+Here the underline means falling factorial.  Define the rational
+fundamental array by
+\begin{align}
+ R_{u,j}&=\delta_{uj}&&(1\le u,j\le m),\notag\\
+ R_{s,j}&=\frac1{d_s}\sum_{u=1}^{s-1}
+      \beta_{s-u}(b_s+a_u)R_{u,j}\quad&&(s>m).
+ \label{eg:recurrence}
+\end{align}
+Finally let
+\[
+ F_{b,m}=(R_{b+i,j})_{1\le i,j\le m},\qquad f_{b,m}=\det F_{b,m}.
+\]
+The inherited complementary-minor identity is
+\begin{equation}\label{eg:rational-bridge}
+ \det M_{b,m}=
+ \frac{(-1)^{b(b-1)/2}}{4^bb!}
+       \left(\prod_{s=m+1}^{b+m}d_s\right) f_{b,m}.
+\end{equation}
+Every factor in the product is strictly positive.  Its normalization
+includes the omitted-index convention in \eqref{eg:late-entry}.
+This identity follows by coefficient comparison in the null equation
+\[
+ (R^{(2m)}-R^{(2m)}(0))\cot(z/2)
+                         +(R\cot(z/2))^{(2m)}=0
+\]
+and the complementary-minor identity for its lower-triangular
+coefficient operator; these inherited steps are reproduced in the
+ordered-boundary and gap-six sources.
+
+\subsection{Gamma realization and its signs}
+
+Put
+\begin{align*}
+ W_m(x)&=\left|\Gamma\!\left(\tfrac14+\tfrac{ix}{2}\right)\right|^{4m},\\
+ P_j(x)&=\sinh(\pi(m-j)x)\quad(1\le j<m),\qquad
+ P_m(x)=\tanh(\pi x),\\
+ \lambda_j&=j\pi,\qquad A_m=2^m(2\pi)^{2m},\qquad
+ a_j^*=\begin{cases}A_m/2,&j<m,\\ A_m,&j=m.
+                   \end{cases}
+\end{align*}
+The incoming Gamma-basis theorem \cite{OrderedIncoming} gives
+\begin{equation}\label{eg:gamma-coefficients}
+ t_{n,j}=\frac4{(2n)!}\operatorname{Im}
+       \int_0^\infty(x+i/2)^{2n}P_j(x)W_m(x)\,dx
+\end{equation}
+and
+\begin{equation}\label{eg:gamma-bridge}
+ (t_{b+i,j})_{i,j=1}^m=F_{b,m}T_m,\qquad
+ T_m=(t_{n,j})_{n,j=1}^m,\qquad
+ \operatorname{sgn}\det T_m=(-1)^{m(m-1)/2}.
+\end{equation}
+All integrals converge absolutely.  The null equation follows from
+the Gamma recurrence after two Fourier contours are shifted by
+$\pm i$; the sinh modes cross no poles, and the tanh mode supplies
+the two residues at $\pm i/2$ which give the subtracted derivative.
+The sign in \eqref{eg:gamma-bridge} follows from continuous
+Cauchy--Binet: its integrand is a positive weight times the product
+of a Vandermonde in $x_r^2$ and a reversed Vandermonde in
+$\cosh(\pi x_r)$.  These exact inputs, rather than numerical
+normalizations of the Gamma integrals, will be used below.
+
+\subsection{An explicit real-density estimate for arbitrary gaps}
+
+\begin{lemma}\label{eg:density}
+For $X=2m$, every $x\ge X$, and $1\le j\le m$,
+\begin{equation}\label{eg:density-bound}
+ \frac{P_j(x)W_m(x)}{a_j^*}
+   =x^{-m}e^{-\lambda_jx}(1+\delta_{m,j}(x)),
+ \qquad |\delta_{m,j}(x)|\le\frac{2m}{x^2}.
+\end{equation}
+On $0\le x\le X$ one has the elementary bound
+\begin{equation}\label{eg:compact-density}
+ 0\le P_j(x)W_m(x)/a_j^*<2^{16m^2+12m}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The complex Stirling remainder \cite[\S5.11(ii)]{DLMF}, after retaining $1/(12z)$, gives
+\[
+ \log\Gamma(z)=(z-\tfrac12)\log z-z+\tfrac12\log(2\pi)
+                        +\frac1{12z}+\rho(z),\qquad
+ |\rho(z)|\le\frac1{90|z|^3}
+\]
+for $z=1/4+ix/2$.  Indeed the first omitted term has magnitude
+$1/(360|z|^3)$ and the secant factor is at most four in this
+closed right-half-plane sector.  Let $t=1/(2x)$ and
+\[
+ L_m(x)=\log\frac{W_m(x)}{A_mx^{-m}e^{-m\pi x}}.
+\]
+Taking $4m$ times the real part gives exactly
+\[
+ L_m(x)=-\frac m2\log(1+t^2)
+      +m\left(\frac{\arctan t}{t}-1\right)
+      +\frac{4m}{3}\frac{t^2}{1+t^2}+4m\operatorname{Re}\rho(z).
+\]
+Using $\log(1+t^2)\le t^2$ and
+$0\le1-\arctan(t)/t\le t^2/3$, for $x\ge2$ we obtain
+\begin{equation}\label{eg:log-density}
+ |L_m(x)|\le\frac{13m}{24x^2}+\frac{16m}{45x^3}
+          \le\frac{259m}{360x^2}<\frac{3m}{4x^2}.
+\end{equation}
+For $x\ge2m$ this is at most $3/(16m)<1$.  The elementary
+inequality $|e^u-1|\le2|u|$ for real $|u|\le1$ now gives
+an error at most $3m/(2x^2)$ for the normalized Gamma density.
+The remaining normalized sinh or tanh multiplier lies in $[0,1]$
+and differs from one by at most $2e^{-2\pi x}\le1/(9x^2)$.
+Combining these estimates proves \eqref{eg:density-bound}.
+
+Euler's integral gives $|\Gamma(1/4+ix/2)|\le\Gamma(1/4)<5$.
+For $0\le x\le2m$, each multiplier is at most
+$e^{2\pi m(m-1)}$.  Since $a_j^*>1$, $\pi<4$, $e<4$,
+and $5<8$, the stated generous power-of-two bound follows.
+\end{proof}
+
+\subsection{An effective shifted Laplace lemma}
+
+For $N>m+1$ and $\lambda>0$ define
+\[
+ S_N^{(r)}(\lambda)=
+       \frac{\Gamma(N-m-r+1)}{\lambda^{N-m-r+1}},
+       \qquad r=0,1,2.
+\]
+Let
+\begin{equation}\label{eg:constants}
+ C_m=\left\lceil4m+\frac{3m(m+1)}8+1\right\rceil,
+ \qquad N_0(m)=4096(m+1)^2.
+\end{equation}
+
+\begin{lemma}\label{eg:laplace}
+For every integer $N\ge N_0(m)$ and $1\le j\le m$,
+\begin{equation}\label{eg:laplace-bound}
+ \left|\frac1{a_j^*}\int_0^\infty(x+i/2)^NP_j(x)W_m(x)\,dx
+   -e^{i\lambda_j/2}\left(S_N^{(0)}(\lambda_j)
+                 +\frac{im}{2}S_N^{(1)}(\lambda_j)\right)\right|
+       < C_m S_N^{(2)}(\lambda_j).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Write $X=2m$.  On $[X,\infty)$ replace the normalized density
+by $x^{-m}e^{-\lambda x}$.  Its absolute error is at most
+\[
+ 2m\int_X^\infty |x+i/2|^Nx^{-m-2}e^{-\lambda x}\,dx.
+\]
+On $x\ge\sqrt N$ one has
+$|x+i/2|^N\le x^N\exp(N/(8x^2))<2x^N$, so this part is
+at most $4mS_N^{(2)}$.  On $X\le x\le\sqrt N$, the factor
+$2mx^{-m-2}$ is at most one; hence the remaining part is at most
+$\sqrt N(N+1)^{N/2}$.
+
+For the model integral set $y=x+i/2$ and move the ray to
+$[X,\infty)$.  Its integrand, after extracting $e^{i\lambda/2}$,
+is $y^{N-m}(1-i/(2y))^{-m}e^{-\lambda y}$.  No pole is crossed.
+On real $y\ge2m$, Taylor's theorem applied to $(1-u)^{-m}$ gives
+\[
+ \left|(1-i/(2y))^{-m}-1-\frac{im}{2y}\right|
+       \le\frac{3m(m+1)}{8y^2}.
+\]
+For detail, $u=1/(2y)\le1/(4m)$, and the positive-coefficient
+Taylor remainder is bounded by
+$m(m+1)u^2(1-u)^{-m-2}/2$.  Also
+\[
+ (1-u)^{-m-2}\le
+  \exp\!\left(\frac{(m+2)u}{1-u}\right)
+  \le\exp\!\left(\frac{m+2}{4m-1}\right)<3.
+\]
+Thus the model remainder contributes at most
+$3m(m+1)S_N^{(2)}/8$.
+
+The short vertical segment at $X$, the two retained integrals
+between $0$ and $X$, and the original compact density integral
+are together bounded by $2^{20(m+1)^2}(3m)^N$.  Indeed the
+compact density bound contributes at most
+$X2^{16m^2+12m}(X+1)^N$; the other three terms are bounded
+by $(2+m/2)(X+1)^N$.  The displayed larger constant covers their
+sum for every $m\ge1$.
+
+It remains to dominate
+\[
+ R_N=2^{20(m+1)^2}(3m)^N+\sqrt N(N+1)^{N/2}
+\]
+by $S_N^{(2)}$.  Put $k=N-m-2$.  Since $\lambda_j<4m$ and
+$k!\ge(k/3)^k$,
+\[
+ S_N^{(2)}(\lambda_j)>
+             \frac1{4m}\left(\frac{k}{12m}\right)^k.
+\]
+For $N\ge N_0(m)$, one has $k\ge3N/4$ and
+$\sqrt{N+1}\le(5/4)\sqrt N$.  Consequently
+\begin{align*}
+ \frac{\sqrt N(N+1)^{N/2}}{S_N^{(2)}}
+  &\le N^{m+4}\left(\frac{20m}{\sqrt N}\right)^N
+    <N^{m+4}2^{-N},\\
+ \frac{2^{20(m+1)^2}(3m)^N}{S_N^{(2)}}
+  &\le2^{20(m+1)^2}N^{m+3}
+                \left(\frac{48m^2}{N}\right)^N
+    <2^{20(m+1)^2}N^{m+3}4^{-N}.
+\end{align*}
+The elementary inequality $N^{m+4}\le2^{N-2}$ holds throughout
+this range.  At $N_0(m)$ it follows from
+$\log_2N_0(m)\le12+2m$ and
+$(m+4)(12+2m)<N_0(m)-2$; it persists by induction because
+$N>2(m+4)$ implies $(1+1/N)^{m+4}<2$.
+The two ratios are therefore less than $1/4$ each, the second
+using also $N>20(m+1)^2$.  Thus $R_N<S_N^{(2)}/2$.
+Adding all errors proves \eqref{eg:laplace-bound}.
+\end{proof}
+
+\subsection{A closed, computable threshold for every fixed gap}
+
+Let $V_m=(j^{-2i})_{1\le i,j\le m}$ and define the positive rational
+number
+\begin{equation}\label{eg:delta}
+ \delta_m=\frac{|\det V_m|}{\operatorname{perm}V_m}.
+\end{equation}
+Here $\operatorname{perm}V_m$ is the sum of its $m!$ unsigned
+permutation products.  Thus $0<\delta_m\le1$, and its numerator
+is explicitly the absolute reciprocal-square Vandermonde product
+\[
+ |\det V_m|=
+ \left(\prod_{j=1}^m j^{-2}\right)
+             \prod_{j<k}(j^{-2}-k^{-2}).
+\]
+Set
+\begin{equation}\label{eg:B}
+ E_m=8C_m+2(m-1),\qquad
+ \boxed{\displaystyle
+ B(m)=\max\left\{2048(m+1)^2,
+       1+\left\lceil\frac{2mE_m}{\delta_m}\right\rceil\right\}.}
+\end{equation}
+
+\begin{theorem}[Effective reconstruction on every fixed-gap ray]
+\label{eg:effective}
+For every integer $m\ge1$ and every $b\ge B(m)$,
+\begin{equation}\label{eg:general-sign}
+ f_{b,m}\ne0,\qquad
+ \operatorname{sgn}f_{b,m}=(-1)^{\lfloor m^2/4\rfloor}.
+\end{equation}
+Consequently the first $q=2b$ moments for
+$(p,q)=(2b-2m,2b)$ form an optimal formal prefix, and
+\[
+ \operatorname{sgn}\det M_{b,m}
+       =(-1)^{b(b-1)/2+\lfloor m^2/4\rfloor}.
+\]
+For any prescribed $m$, all possible exceptions lie in the explicitly
+specified finite interval $m+1\le b<B(m)$.
+\end{theorem}
+
+\begin{proof}
+Let $N_i=2b+2i$ for $1\le i\le m$.  At odd $j$, the leading
+phase in \eqref{eg:laplace-bound} is $\pm i$, and at even $j$
+it is $\pm1$.  Thus the odd-mode leading term is
+\[
+ \sigma_j\frac{4a_j^*}{N_i!}S_{N_i}^{(0)}(\lambda_j),
+ \qquad \sigma_j=\sin(j\pi/2),
+\]
+with relative error bounded by
+\[
+ \frac{C_m\lambda_j^2}{(N_i-m)(N_i-m-1)}
+       <\frac{16C_mm^2}{(N_i-m-1)^2}.
+\]
+At even $j$ the first nonzero imaginary term is
+\[
+ \sigma_j\frac{2ma_j^*}{N_i!}S_{N_i}^{(1)}(\lambda_j),
+ \qquad \sigma_j=\cos(j\pi/2),
+\]
+with relative error less than $8C_m/(N_i-m-1)$.
+Retaining this second phase term is essential.
+
+Extract the positive row factors
+\[
+ \frac{4\Gamma(N_i-m+1)}{\Gamma(N_i+1)}\pi^{-2i}
+\]
+and the positive column factors $a_j^*\lambda_j^{-2b+m-1}$,
+multiplying each even column factor additionally by
+$m\lambda_j/(2(2b+2-m))$.  Also extract its sign $\sigma_j$.
+The remaining array $E=(E_{ij})$ has the form
+\[
+ E_{ij}=j^{-2i}(1+\eta_{ij}).
+\]
+For an even column the extra row factor is
+\[
+ \rho_i=\frac{2b+2-m}{2b+2i-m},\qquad
+ 1-\rho_i\le\frac{2(m-1)}{2b+2-m}.
+\]
+Since $b\ge B(m)>m$ and $b\ge2m^2$, the preceding estimates give
+\begin{equation}\label{eg:eta}
+ |\eta_{ij}|<\frac{E_m}{b}<\frac{\delta_m}{2m}.
+\end{equation}
+For the odd columns use
+$16C_mm^2/b^2\le8C_m/b$; for the even columns use
+$|\rho_i(1+\epsilon)-1|\le1-\rho_i+|\epsilon|$.
+
+Expanding the determinant into its signed permutation products,
+\[
+ |\det E-\det V_m|
+ <\operatorname{perm}V_m
+       \left\{\left(1+\frac{\delta_m}{2m}\right)^m-1\right\}
+ <\operatorname{perm}V_m\,\delta_m=|\det V_m|.
+\]
+The last strict inequality holds for $0<\delta_m\le1$: the binomial
+sum is bounded above by the corresponding infinite geometric sum
+$\delta_m/(2-\delta_m)\le\delta_m$, with a strictly positive
+omitted tail.  Hence $\det E$ has the sign of the reversed
+Vandermonde, namely $(-1)^{m(m-1)/2}$.
+The extracted column signs have product
+$\prod_j\sigma_j=(-1)^{\lfloor m^2/4\rfloor}$.
+Dividing by the initial determinant in \eqref{eg:gamma-bridge}
+cancels the reversed-Vandermonde sign and proves
+\eqref{eg:general-sign}.  Apply \eqref{eg:rational-bridge} to
+obtain the assertion about the original moment matrix.
+\end{proof}
+
+The formula is deliberately conservative and does not claim a least
+threshold.  Its first values are
+\[
+ \begin{array}{c|rrrrrr}
+ m&1&2&3&4&5&6\\ \hline
+ B(m)&8192&18432&32768&51200&635656&16146233.
+ \end{array}
+\]
+The earlier complete gap-two, gap-four, and gap-six theorems are
+stronger on their individual rays.  The advance here is an effective
+formula valid for arbitrary prescribed $m$.  It does not assert
+that every one of the finite remaining matrices is nonsingular;
+the unrestricted all-pairs conjecture remains open.
+
+\section{The complete gap-eight theorem}
+\label{eg:gap-eight}
+
+For $m=4$ sharper constants reduce the finite-completion threshold
+from $51200$ to $8192$.  The next two estimates supply that reduction.
+
+\begin{lemma}[Gap-eight density and phase estimates]
+\label{eg:eight-laplace}
+For $m=4$, $x\ge2$, and $1\le j\le4$,
+\[
+ \frac{P_j(x)W_4(x)}{a_j^*}
+    =x^{-4}e^{-\lambda_jx}(1+\delta_j(x)),\qquad
+ |\delta_j(x)|<\frac5{x^2}.
+\]
+For every integer $N\ge16384$,
+\begin{equation}\label{eg:eight-phase}
+ \left|\frac1{a_j^*}\int_0^\infty(x+i/2)^NP_j(x)W_4(x)\,dx
+ -e^{i\lambda_j/2}
+     \left(\frac{\Gamma(N-3)}{\lambda_j^{N-3}}
+            +2i\frac{\Gamma(N-4)}{\lambda_j^{N-4}}\right)\right|
+       <16\frac{\Gamma(N-5)}{\lambda_j^{N-5}}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Equation \eqref{eg:log-density} gives $|L_4(x)|<3/x^2\le3/4$.
+The elementary Taylor-series bound $e^{3/4}<17/8$ implies
+$|e^u-1|\le(3/2)|u|$ for real $|u|\le3/4$.  Adding the
+normalized multiplier error $1/(9x^2)$ gives
+\[
+ |\delta_j(x)|<\left(\frac92+\frac19\right)x^{-2}<5x^{-2}.
+\]
+On $0\le x\le2$ the normalized density is less than $2^{80}$,
+since $5^{16}<2^{38}$, $e^{6\pi}<3^{24}<2^{39}$, and $a_j^*>1$.
+
+Repeat the proof of Lemma~\ref{eg:laplace} with $X=2$.  The
+density error above $\sqrt N$ contributes less than
+$10\Gamma(N-5)/\lambda_j^{N-5}$.  The model Taylor remainder
+has the sharper bound
+\[
+ \left|(1-i/(2y))^{-4}-1-\frac{2i}{y}\right|<\frac5{y^2}
+       \qquad(y\ge2).
+\]
+Indeed the positive series remainder divided by $u^2$, where
+$u=1/(2y)\le1/4$, is increasing and equals $1504/81$ at $u=1/4$;
+its contribution is therefore $376/(81y^2)<5/y^2$.
+
+All compact and lower-range contributions are at most
+\[
+ R_N=2^{82}3^N+\sqrt N(N+1)^{N/2}.
+\]
+Now $\lambda_j\le4\pi<13$ and, with $k=N-6$,
+\[
+ \frac{\Gamma(N-5)}{\lambda_j^{N-5}}
+       >\frac1{13}\left(\frac{k}{39}\right)^k.
+\]
+For every $N\ge16384$,
+\[
+ \frac{39\sqrt{N+1}}{N-6}<\frac12,\qquad
+ \frac{117}{N-6}<\frac1{128},\qquad N^7\le2^{N-2}.
+\]
+The first inequality follows by squaring, checking the resulting
+quadratic at $16384$, and noting its positive derivative thereafter;
+the second is immediate; the third holds at $16384$ and persists
+by the same induction as in Lemma~\ref{eg:laplace}.  Therefore
+the two normalized parts of $R_N$ are bounded, respectively, by
+$2^{82}N^6 2^{-7N}<1/4$ and $N^7 2^{-N}\le1/4$.
+The total error is consequently less than $(10+5+1/2)$ times the
+displayed Gamma factor, proving \eqref{eg:eight-phase}.
+\end{proof}
+
+\begin{proposition}[Certified positive tail at gap eight]
+\label{eg:eight-positive}
+For every integer $b\ge8192$, $f_{b,4}>0$.
+\end{proposition}
+
+\begin{proof}
+In \eqref{eg:eight-phase}, an odd column has relative error less
+than $2704/(N-5)^2$, and an even column has relative error less
+than $104/(N-5)$; these use only $\lambda_j<13$.
+Perform the row and column normalizations in Theorem~\ref{eg:effective}.
+The even-column row factors are now
+$\rho_i=(2b-2)/(2b+2i-4)$, with
+$1-\rho_i\le6/(2b-2)$.
+Hence the normalized entries satisfy
+\[
+ E_{ij}=j^{-2i}(1+\eta_{ij}),\qquad
+ |\eta_{ij}|<\frac1{128}\qquad(b\ge8192).
+\]
+For the even columns use
+$6/(2b-2)+104/(2b-3)<110/(2b-3)<1/128$;
+the odd-column inequality is weaker still.
+
+The four-by-four limiting matrix has exact values
+\[
+ \det V_4=\frac{175}{127401984},\qquad
+ \operatorname{perm}V_4=\frac{157183}{4586471424},\qquad
+ \frac{\det V_4}{\operatorname{perm}V_4}=\frac{6300}{157183}.
+\]
+Moreover
+\[
+ \det V_4-\operatorname{perm}V_4
+        \left\{(129/128)^4-1\right\}
+       =\frac{357064449025}{1231171548132409344}>0.
+\]
+Thus $\det E>0$.  The extracted signs are $(+,-,-,+)$, whose
+product is positive, and $\det T_4>0$.  Equation
+\eqref{eg:gamma-bridge} proves $f_{b,4}>0$.
+\end{proof}
+
+\subsection{An exact finite-field completion}
+
+The cotangent coefficients admit the elementary recurrence
+\begin{equation}\label{eg:beta-recurrence}
+ \beta_1=\frac16,\qquad
+ \beta_n=\frac1{2(2n+1)}\sum_{k=1}^{n-1}\beta_k\beta_{n-k}
+                  \quad(n\ge2).
+\end{equation}
+It follows by substituting the Taylor expansion of
+$(z/2)\cot(z/2)$ into its Riccati equation.
+Equations \eqref{eg:beta-recurrence} and \eqref{eg:recurrence}
+can be computed exactly modulo the prime
+$\ell=2147483647=2^{31}-1$.
+
+For $m=4$ and $5\le b\le8191$ the largest fundamental row
+required is $8195$, so only $\beta_1,\ldots,\beta_{8194}$ are needed.
+Every denominator is invertible modulo $\ell$.  The denominators
+$2(2n+1)$ have their prime factors below $\ell$, and
+\begin{equation}\label{eg:diagonal-factorization}
+ d_s=2\frac{(2s)!}{(2s-8)!}\frac{2s-4}{s}\qquad(s\ge5)
+\end{equation}
+has the same property throughout the stated finite range.  Thus
+induction identifies every computed residue with the reduction of
+the exact rational entry.
+
+\begin{proposition}[Finite gap-eight certificate]
+\label{eg:eight-finite}
+For every integer $5\le b\le8191$, the rational determinant
+$f_{b,4}$ has a nonzero reduction modulo $2147483647$.
+\end{proposition}
+
+\begin{proof}[Exact computational proof]
+The accompanying \texttt{verify\_gap\_eight.cpp} uses integer
+arithmetic only.  It verifies primality by trial division through
+$\lfloor\sqrt\ell\rfloor$, generates \eqref{eg:beta-recurrence},
+generates the four fundamental columns from \eqref{eg:recurrence},
+and evaluates each four-by-four determinant by finite-field Gaussian
+elimination.  All $8187$ determinant residues are nonzero; the full
+indexed list is supplied in \texttt{gap\_eight\_certificate.json}.
+As an independent exact check of the cotangent normalization, the
+program verifies all $8194$ coefficients by multiplying
+$1-\tfrac12\sum_{n\ge1}\beta_nt^n$ by the directly generated
+series of $\sin(\sqrt t/2)/(\sqrt t/2)$ and comparing with the
+direct series of $\cos(\sqrt t/2)$.
+The separate SymPy verifier builds rational Bernoulli numbers from
+their standard definition and checks the original matrix
+\eqref{eg:late-entry}, the full bridge \eqref{eg:rational-bridge},
+and the finite-field residues independently for $5\le b\le16$.
+These latter checks guard against a sign, factorial, or omitted-index
+error in passing from the source matrix to the recurrence.
+\end{proof}
+
+\begin{theorem}[Every gap-eight pair has the optimal prefix]
+\label{eg:eight-main}
+For every integer $b\ge5$, the matrix $M_{b,4}$ is nonsingular.
+For $p=2b-8$ and $q=2b$, consequently,
+\begin{align*}
+ \operatorname{span}_{\mathbb Q}\{D_0,D_1,\ldots\}
+ &=\operatorname{span}_{\mathbb Q}\{D_0,\ldots,D_{q-1}\}\\
+ &=\operatorname{span}_{\mathbb Q}
+       \{C_0,\ldots,C_{b-1},\zeta(0),\ldots,\zeta(2b-2)\}.
+\end{align*}
+The first $q$ moment rows have formal rank $q$ and coefficient
+determinant $\det M_{b,4}/(4b-1)!!$.  This is optimal for those
+$q$ formal coordinates.
+\end{theorem}
+
+\begin{proof}
+Proposition~\ref{eg:eight-positive} covers $b\ge8192$, and
+Proposition~\ref{eg:eight-finite} covers $5\le b\le8191$.
+Equation \eqref{eg:rational-bridge} proves nonsingularity of the
+source matrix.  The triangular transforms
+\eqref{eg:forward}--\eqref{eg:inverse} give the stated generation
+and formal-rank conclusions.
+\end{proof}
+
+The certificate proves nonvanishing at the finite indices; it does
+not determine their real signs.  Direct rational checks give
+$f_{b,4}>0$ for $5\le b\le16$, and the analytic theorem gives
+positivity for $b\ge8192$.  We make no positivity assertion for
+the intervening finite interval on the basis of the residue test.
+
+\subsection{An all-order family of absolutely convergent identities}
+
+The completed ray produces ordinary convergent evaluations of
+polygamma-tail products at every even pair separated by eight.
+Let $(\lambda_b,\ldots,\lambda_{2b-1})$ be row zero of
+$M_{b,4}^{-1}$ and define
+\begin{align*}
+ K_b(y)&=\sum_{j=b}^{2b-1}\lambda_jy^{2j+1},\\
+ P_b(x)&=K_b(x+\tfrac12)-K_b(x-\tfrac12)
+             =\sum_{r=0}^{q-1}w_rx^{2r}.
+\end{align*}
+For $0\le h\le4$ put
+\[
+ c_{v,0}=\frac1{v-1},\qquad
+ c_{v,h}=\frac{B_{2h}(1/2)}{(2h)!}(v)_{2h-1}\quad(h\ge1),
+ \qquad u_h=\sum_{e=0}^h c_{p,e}c_{q,h-e},
+\]
+and set
+\[
+ S_b(x)=\sum_{h=0}^4
+       \left(\sum_{e=0}^h u_e w_{q-1-h+e}\right)x^{8-2h}.
+\]
+Every coefficient here is rational and specified by finite algebra.
+
+\begin{corollary}[Rational polygamma-product evaluations]
+\label{eg:eight-identities}
+For every $b\ge5$, $p=2b-8$, $q=2b$, and $x_n=n+1/2$,
+\begin{equation}\label{eg:eight-sum}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}\left\{
+ \frac{P_b(x_n)}{(p-1)!(q-1)!}
+       \psi^{(p-1)}(n+1)\psi^{(q-1)}(n+1)-S_b(x_n)
+                         \right\}=-\frac12.}
+\end{equation}
+The sum converges absolutely.  The polynomial $P_b$ has exact degree
+$2q-2$ and leading coefficient
+\begin{equation}\label{eg:leading}
+ w_{q-1}=\frac{4b(4b-1)f_{b-1,4}}{d_{b+4}f_{b,4}}\ne0,
+\end{equation}
+where at the initial index one uses
+\[
+ f_{4,4}=\frac1{13105577681191934125041254400000000}.
+\]
+\end{corollary}
+
+\begin{proof}
+By construction, $\sum_{j=b}^{2b-1}\lambda_j C_j=\zeta(0)=-1/2$.
+The centered difference defining $P_b$ has coefficients
+\[
+ w_r=\sum_{j=\max\{b,r\}}^{2b-1}
+       \lambda_j\binom{2j+1}{2r}2^{-2(j-r)}.
+\]
+Thus \eqref{eg:inverse} gives $\sum_rw_rD_r=-1/2$.
+The first five terms of the centered tail product are
+\[
+ A_p(n)A_q(n)=\sum_{h=0}^4u_hx_n^{2-p-q-2h}
+                      +O(x_n^{-p-q-8}).
+\]
+Multiplication by $P_b$ leaves precisely $S_b$ as its nonnegative
+powers, with the remainder $O(x_n^{-2})$.  The analytically
+continued sums of $1,x_n^2,\ldots,x_n^8$ vanish because
+$\zeta(-2h,1/2)=0$.  Therefore the ordinary absolutely convergent
+sum in \eqref{eg:eight-sum} equals that moment combination.
+Finally, for even $v$,
+$A_v(n)=\psi^{(v-1)}(n+1)/(v-1)!$.
+
+For $b\ge6$, deleting the last row and first column of $M_{b,4}$
+and reindexing $j,k,p,q$ downward by $1,1,2,2$, respectively,
+gives exactly $M_{b-1,4}$.  Cramer's rule and
+\eqref{eg:rational-bridge} give
+$\lambda_{2b-1}=4b f_{b-1,4}/(d_{b+4}f_{b,4})$.
+The centered difference multiplies the top coefficient by $4b-1$,
+proving \eqref{eg:leading}.  At $b=5$ the same relation is
+verified directly with the displayed rational auxiliary determinant.
+Theorem~\ref{eg:eight-main} proves all other required nonvanishing.
+\end{proof}
+
+
+\subsection{A concrete pair beyond the previous small-order coverage}
+
+For $(p,q)=(14,22)$, namely $b=11$, the construction gives an even
+polynomial $P_{11}$ of degree $42$ and a subtraction polynomial
+$S_{11}$ of degree $8$. The leading coefficient is
+\[
+ [x^{42}]P_{11}(x)=
+ \frac{452253373522332335630380}{10060146014319869101877031}.
+\]
+All $22$ coefficients of $P_{11}$ and all five coefficients of
+$S_{11}$ are supplied as exact rationals in
+\texttt{gap\_eight\_14\_22\_example.json}.
+The short generator \texttt{create\_gap\_eight\_example.py} checks
+the inverse row against the original Bernoulli matrix and verifies
+the entire subtraction polynomial symbolically. Thus the example
+specifies a directly usable ordinary sum, without printing several
+pages of large rational coefficients. The finite definitions above
+are the full exact formula for every other pair as well.

@@ -1,0 +1,289 @@
+\section{Audit, corrections, and integration status}
+\label{sec:audit}
+
+\subsection{What was actually checked}
+
+The source anchor is the repository revision \pin. All eleven archives
+in the supplied incoming directory at that revision were unpacked and
+indexed. The review concentrated on their theorem and question ledgers
+and on the passages used by the present arguments. The manuscript
+review concentrated on Gaussian depth reduction, the $S_6$ obstruction,
+the revised $S_8$ candidate, and the harmonic/Gamma interfaces.
+This targeted review is not a certification of all manuscript volumes
+or every theorem in the incoming reports.
+
+Three source questions have precise new outcomes:
+
+\begin{enumerate}
+\item \textbf{Ordered boundary report, research question 2.}
+The positive constants in \src{sections/08_gamma_basis.tex} are
+evaluated by Theorem~\ref{gn:thm:K}. Its proof uses the source's
+established top-row identities and a classical integral with an
+explicitly checked normalization. The matrix $T_m$ and all column
+orders are stated before use. The later-index determinant in
+\eqref{gn:eq:F-explicit} is a different object.
+
+\item \textbf{Balanced Stieltjes report, research question 4.}
+The homogeneous colored balancing, its natural Lerch coordinates,
+its ordinary Mellin moments, and its finite root-of-unity filter
+are supplied in Sections~\ref{sec:colored}--\ref{sec:color-limit}.
+Uniqueness is asserted for coefficients independent of the shift
+and for a decay condition across an open interval of shifts.
+This is the same kind of hypothesis needed in the predecessor's
+uncolored uniqueness theorem.
+
+\item \textbf{Lattice-contact report, end of the spectral-face section
+and research question Q4.}
+Theorem~\ref{tc:thm:Gamma} treats exactly two distinct mass values at
+every pair of positive multiplicities. It supplies a finite
+dictionary per spectral term. A problem involving two unequal
+displaced masses above a third base value has three clusters and
+remains outside this theorem.
+\end{enumerate}
+
+The companion source manifest records the archive names and their
+SHA-256 hashes. The integration notes list exact predecessor paths
+and theorem labels, so a later integration can reconcile the new
+results with a changed repository head.
+
+\subsection{Corrections and qualifications}
+
+No false mathematical theorem was identified in the particular
+incoming passages used for these three developments. It would be
+misleading to manufacture an erratum from an open question that
+the source already labels correctly. The following distinctions
+are nevertheless essential when integrating the continuation.
+
+\paragraph{The colored generator changes.}
+For a nontrivial color, $\Phi(\omega,s,a)$ has no pole at $s=1$.
+The appropriate balanced kernel is \eqref{col:kernel}. Copying
+the extra uncolored term $\log^{q+1}x/(q+1)$ would spoil its
+large-$x$ cancellation. This is a correction to that potential
+extension, not a claim that the incoming uncolored definition
+is erroneous.
+
+\paragraph{Fixed-shift uniqueness can fail.}
+The open-interval clause in Theorem~\ref{col:unique} cannot simply
+be deleted on the full color domain. The exceptional-color
+example following that theorem exhibits simultaneous vanishing
+of consecutive tail coordinates. At such a point, a logarithm
+times a lower balanced kernel can preserve the required decay.
+
+\paragraph{Constant terms depend on the chosen expression.}
+The raw $\lambda$-constant term of
+$M_{m,q}(\lambda,a)$ differs from that of
+$e^{-a\lambda}M_{m,q}(\lambda,a)$ by $L_{m,q}a^m/m$.
+Equations \eqref{col:renorm} and \eqref{col:raw-CT} retain that
+term explicitly. This avoids an incorrect identification of a
+color limit with an uncolored ordinary moment.
+
+\paragraph{Positivity does not settle every later determinant.}
+The positive density \eqref{gn:eq:density} evaluates the
+normalizing determinant. The source's later rows involve
+$\Im(x+i/2)^{2r}$ with oscillatory signs. One cannot infer all
+later signs by applying positivity of a Vandermonde product to
+a different matrix. In particular, no all-pairs nonvanishing
+claim follows from the closed formula for $K_m$ alone.
+
+\paragraph{Finite normal moments do not give a finite-dimensional
+normal distribution.}
+The statistic in Theorem~\ref{gn:thm:gaussian} is bounded at fixed
+$n,\sigma$. We prove equality of moments only through degree
+$n+1$, and we do not assert that this range is maximal.
+The distributional limit in Corollary~\ref{gn:cor:CLT} has a
+separate moment-method proof.
+
+\paragraph{Branch and color conventions remain explicit.}
+The two-cluster $\Li_{\boldsymbol a}(z)$ assigns its argument only
+to the largest summation index. Colored depth-two notation uses
+two independent color factors and is defined separately.
+When $C<B$, the cluster formula uses the continuation on
+$\C\setminus[1,\infty)$; substituting a divergent power series
+at a negative argument of modulus greater than one is not valid.
+Likewise, the ordinary $\omega$ series for the colored balanced
+kernel is used only inside its disk of convergence before
+continuation to the full slit domain.
+
+\paragraph{A small editorial correction.}
+At the pinned revision, the manuscript README repeats consecutively
+the paragraph describing the complete $1{,}032$-input first-letter
+$X$ family, its rank $1{,}008$, and its kernel dimension $24$.
+The optional patch in the integration directory removes one
+copy and leaves the mathematical statements unchanged.
+
+\subsection{Evidence and its limits}
+
+Analytic proofs establish the identities. The accompanying exact
+and numerical calculations provide independent checks on the
+algebra, normalization, and selected parameter values.
+
+The Gamma normalization suite evaluates the original coefficient
+matrices at $m=1,2,3$, the parameterized determinants at unequal
+real and complex shifts, and scalar digamma/polygamma insertions.
+It contains fourteen checks at $42$ decimal digits; the largest
+recorded relative residual is approximately $7.1\times10^{-43}$.
+The finite-Gaussian suite constructs exponential jets of ordinary
+one-dimensional moment integrals and takes their determinant by
+finite polynomial arithmetic. It does not use the paired Gamma
+product on the left side. Its fifteen checks include the fourth
+moment at $n=3$ and non-quarter shifts; the largest recorded
+absolute residual is approximately $4.9\times10^{-41}$.
+
+The cluster suite contains $448$ exact rational assertions,
+comparing two different coefficient constructions and checking
+cluster exchange. Four independent numerical comparisons at
+$90$ digits include a displacement outside the predecessor's
+local collision-series disk. The colored suite supplies $41$ exact assertions and eleven
+numerical checks at $50$ digits, covering finite tail and zeta
+coefficients, a simultaneous-tail-zero example, ordinary moments,
+root-of-unity specializations, and an anchored primitive. Its
+largest numerical residual is approximately $5.4\times10^{-37}$.
+Three further $55$-digit checks evaluate a negative cluster argument
+$q=-4$, its Landen transform, and the oriented anchored primitive.
+The separate depth-two certificate uses exact rational
+relations, with its conventions and limiting argument explained
+in the corresponding section. A second certificate, using nine
+of the same relation rows, evaluates the intermediate $h_{1,2}$
+and reconciles the actual printed Family 2 right side exactly.
+
+The JSON records specify the checks actually performed. Floating
+point residuals are diagnostics, not certified error intervals.
+An exact certificate verifies an algebraic reduction under its
+stated analytic identities; it is not by itself a formalization
+of convergence in a proof assistant. No decimal relation search
+is promoted to a proof of $S_6$ or $S_8$.
+
+\section{Further research questions}
+\label{sec:research}
+
+The results suggest several concrete next problems. The order below
+prioritizes exact identities and structural classification over
+estimates. Where a question is already in the supplied sources,
+the proposed next step is stated relative to the new formulas.
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=*]
+
+\item \textbf{Find the first non-Gaussian moment and its exact defect.}
+For the statistic $X_{n,\sigma}$, determine
+\[
+ \mathbb E X_{n,\sigma}^{\,n+2}
+       -\mathbb E Z^{\,n+2},\qquad Z\sim N(0,1),
+\]
+and decide whether $n+1$ is the exact universal matching degree.
+The distinct-parameter proof stops because there are only
+$n+1$ pair labels. Repeated powers of one label bring in
+$S_3,S_5,\ldots$; the complete generating identity
+\eqref{gn:eq:polygamma-germ} gives coupled equations for these
+new coordinates. This is an algebraic obstruction to isolate,
+not evidence that the next moment must be nonzero in every case.
+
+\item \textbf{Classify joint polygamma moments.}
+Give a finite combinatorial rule for the mixed cumulants of
+$S_1,S_3,S_5,\ldots$ obtainable from the paired deformation.
+The logarithm of the Gamma product involves interactions of at
+most two parameter labels, but repeated powers of a label carry
+higher polygamma statistics. A useful theorem would state
+precisely which joint moments can be separated at dimension $n$,
+and give their coefficients as polygamma values at $2\sigma$.
+At $\sigma=1/4$, reflection should yield especially short
+rational combinations of powers of $\pi$.
+
+\item \textbf{Extend the determinant evaluation to later source rows.}
+For the determinant in \eqref{gn:eq:F-explicit}, express a
+prescribed family of later row sets as the evaluated Gustafson
+normalizer times an explicit symmetric polynomial or a finite
+hypergeometric sum. Such an identity would preserve the
+oscillatory polynomial insertions exactly. It could address
+the source's fixed-gap sign changes without an unjustified
+total-positivity argument. The gap-six statement
+$\det F_{b,3}>0$ for $b\ge7$ remains a concrete open target
+\cite{repoordered}.
+
+\item \textbf{Classify simultaneous zeros of colored tails.}
+For
+$A_k(\omega,a)=(\omega\partial_\omega+a)^k(1-\omega)^{-1}$,
+classify all common zeros of consecutive $A_k$ at $a>0$ and
+$\omega\in\Omega$. The example in this article proves that
+consecutive zeros do occur. Determine the resulting dimension
+of the space of homogeneous combinations with enhanced decay,
+and the exact extra ordinary moments that each zero pattern
+permits. A classification on the unit circle may be simpler
+than one on the entire slit domain.
+
+\item \textbf{Give a character-theoretic exceptional-moment dictionary.}
+Apply finite combinations of root-of-unity colors to isolate
+Dirichlet characters. At a negative integer where the relevant
+$L$-function vanishes, determine the corresponding ordinary
+Stieltjes-difference integral and simplify it using the
+functional equation. The alternating beta family
+\eqref{col:beta-formula} is the first case. A complete statement
+should distinguish primitive and imprimitive characters and
+retain their conductor and parity factors.
+
+\item \textbf{Evaluate the first bilinear colored moment.}
+For positive shifts, determine a natural ordinary domain and an
+exact function class for
+\[
+ \int_0^\infty x^{u-1}
+                  C_p^\omega(x,a)C_q^\eta(x,b)\dd x.
+\]
+The scalar Mellin formula suggests a Mellin convolution, but
+the transform of a product is not the product of transforms.
+One target is a two-parameter beta/Feynman integral whose
+integer contacts reduce to a finite family of multiple-Lerch
+coordinates. Coincident shifts and inverse colors are plausible
+specializations to analyze first.
+
+\item \textbf{Resolve the three-cluster spectral face.}
+For $B^r,C,D$ with three distinct nonnegative masses, aggregate
+the independent regulators into three sums before extracting
+the squarefree coefficient. The two-cluster proof then suggests
+a two-simplex hypergeometric integral and a finite iterated
+integral dictionary. Determine the correct multivariable
+polylogarithm arguments and branch domain. The answer should
+explain what changes when $C=D$, where the depth-three formula
+\eqref{tc:eq:two-displaced} must be recovered.
+
+\item \textbf{Determine genuine depth reductions and lattice closures.}
+The bound $\min(r,s)+1$ is a supplied representation bound.
+Can the two-cluster combinations be reduced further as
+functions? Independently, characterize parameters for which
+the outer sum in \eqref{tc:eq:Gamma-dictionary} collapses to
+finitely many multiple Gamma, Hurwitz, or polylogarithm
+coordinates. These are two different problems: reducing
+depth termwise does not eliminate an infinite spectral sum.
+
+\item \textbf{Iterate anchored primitives with their constants intact.}
+The colored primitive \eqref{col:primitive} lowers the Lerch
+order by one; the cluster derivative deletes an initial index
+one in the polylogarithm word. Iterate both operations and
+identify a canonical Barnes-function normalization for the
+root-of-unity cases. At every stage, retain explicit anchors.
+Determine whether the normalized color-one limit commutes
+with these primitives and identify any additional polynomial
+terms when it does not.
+
+\item \textbf{Supply a new relation for $S_6$ and revised $S_8$.}
+The manuscript already distinguishes the conjectural period
+equalities from its exact bounded-span and shuffle-obstruction
+theorems. A proof must introduce a relation outside the
+already excluded span, or a new analytic integral identity,
+with all branch and endpoint terms included. The weight-three
+worked reduction in this article is a useful small exact
+certificate; it does not remove the higher-weight obstruction.
+An appropriate deliverable is a rational certificate whose
+primitive rows have independent analytic proofs, not only an
+enlarged numerical relation search.
+
+\item \textbf{Formalize the reusable analytic interfaces.}
+The most useful first targets are continuous Cauchy--Binet with
+dominated parameter differentiation, finite coefficient
+extraction from normally convergent Mellin germs, and the
+independent-regulator face identity
+\eqref{tc:eq:independent-regulators}. Formalizing these
+interfaces would allow many subsequent identities to be
+checked by finite algebra while retaining the convergence
+arguments that justify that algebra.
+
+\end{enumerate}
+
