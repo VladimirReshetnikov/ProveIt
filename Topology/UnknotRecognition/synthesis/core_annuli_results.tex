@@ -36,3 +36,53 @@ independent marked-cover comparisons also pass. The log is retained in
 \path{data/core-annuli-tests.txt}; the runtime source pins match the 106-case
 audit. These checks validate the supplied-cut implementation and its refusal
 contracts, not completeness of useful-surface discovery.
+
+\paragraph{Paired timings and capacity.}
+Eight finite cuts from two newly supported v4 families were measured in five
+shuffled paired rounds after warmup, after the regression suite and article
+build had finished. Both paths start with the same source face pairings and
+normal coordinates. Native time includes complete production and independent
+replay; the explicit path builds Regina's cut and recognizes every component.
+Input parsing and output serialization are excluded. All histograms agree.
+The driver, samples and runtime pins are retained in
+\path{data/core-annuli-benchmark.py} and its companion JSON; run the driver
+from the repository root with Regina available.
+
+\input{tables/core_annuli_timing.tex}
+
+At 1,024 copies, the four-tetrahedron family has median native time 0.536
+seconds, explicit time 2.214 seconds and paired ratio 4.138. The
+five-tetrahedron family has corresponding times 0.724 and 3.071 seconds and
+ratio 4.312. The other six cases favor explicit construction, with ratios
+between 0.031 and 0.265. Casewise identical-code A/A medians range from
+0.972 to 1.166, so the reported ratios remain measurements with observed
+variation rather than universal performance guarantees. All rounds and
+controls are retained, and the default knot-recognition search is unchanged.
+
+At multiplier $2^{16384}$, single-run production plus replay takes 3.413
+seconds for the four-tetrahedron source and 2.643 seconds for the
+five-tetrahedron source. Their serialized certificates contain 28,562,290
+and 32,216,552 bytes respectively. Each certifies one solid torus and
+$2^{16384}$ genus-two handlebodies. In each case the added passive proof
+contains one private annulus and two nonzero final incidence entries; most
+serialized data belong to the source-orbit certificates. No literal expansion
+is attempted for these capacity checks.
+
+\paragraph{A broader boundary-template diagnostic.}
+A separate experiment appends candidate standard bundle-boundary rows to
+all the real core rows, rather than first insisting that the core alone
+cancel completely. For a base with $a<b$ attached boundary circles, it assigns
+one dedicated boundary-generator column per circle. When all $b=a$ circles
+are attached, it uses $a-1$ such columns, and the last boundary row crosses
+each of them once. Other standard genus columns and bridge columns are
+omitted from the finite elimination experiment because their proposed
+entries are zero or at least two and cannot become singleton pivots under
+positive updates.
+
+The experiment tests the 13 unresolved cuts without three-handles. Both
+remaining annular cases have complete finite elimination schedules; the
+other eleven still stall. This is only an algebraic feasibility diagnostic,
+not two additional accepted cuts. A source-to-template geometric construction,
+correct treatment of the connecting handles and omitted columns, and an
+independent whole-cut replay are still required. The prototype and records
+are retained in \path{data/bundle-boundary-kernel-probe.py} and its JSON.

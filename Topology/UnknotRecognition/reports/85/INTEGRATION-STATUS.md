@@ -144,3 +144,16 @@ the runtime source pins match the independent source-cut audit. The detailed
 article includes the passive transport proof, simultaneous private-cocore
 criterion, polynomial saturated replay bound and the observed relabelling
 limitation of the greedy core producer.
+
+The eight finite v4 benchmarks use five shuffled paired rounds. At 1,024
+copies the two families have paired explicit/native ratios 4.138 and 4.312;
+all six smaller cases regress. A/A medians range from 0.972 to 1.166. At
+multiplier 2^16384, production plus replay takes 3.413 and 2.643 seconds, with
+28.6 MB and 32.2 MB serialized certificates. Exact data are retained in
+`../../synthesis/data/core-annuli-benchmark.json`.
+
+A broader algebraic boundary-template probe finds finite elimination
+schedules for the two remaining annular cases. It has no source-to-template
+geometric adapter or independent verifier and adds no accepted certificates.
+The eleven other unresolved cases without three-handles still stall in that
+probe. The synthesis records the outstanding geometric obligations explicitly.
