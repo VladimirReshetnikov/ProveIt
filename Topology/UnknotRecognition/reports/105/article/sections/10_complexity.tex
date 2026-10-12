@@ -1,0 +1,174 @@
+\section{What would actually imply quasi-polynomial recognition?}
+\label{sec:complexity}
+
+The new results remove a local combinatorial obstruction to efficient
+normalization.  They do not bound the number, size, or required geometry
+of the states visited by a complete knot algorithm.  This section makes
+the distinction quantitative, so that future work has a falsifiable
+complexity target rather than an analogy with a fast local benchmark.
+
+\subsection{A conditional composition theorem}
+
+\begin{proposition}[Explicit accounting for a complete implementation]
+\label{prop:composition}
+Suppose a correct total unknot-recognition implementation on diagrams of
+size $n$ makes at most $Q(n)$ calls to its geometric state-processing
+operator.  Suppose all state encodings have size at most $N_*(n)$, every
+exceptional interface has size at most $U(n)$, and all remaining work per
+state, including certificate generation, geometric transport, and replay,
+is bounded by a fixed polynomial in $N_*(n)+1$.  Allow at most
+$(N_*(n)+1)^{O(1)}$ selector invocations per state, each on an input of
+encoded size $(N_*(n)+1)^{O(1)}$.  Assume also that all work outside these
+state calls, including preprocessing and finalization, is polynomial in
+$n+N_*(n)+1$.  If it uses the exact finite selector of
+Theorem~\ref{thm:exceptional-selector}, then its total time is bounded by
+\begin{equation}
+ T(n)\le (Q(n)+1)\,(n+N_*(n)+1)^{O(1)}
+       2^{O(U(n)\log(U(n)+2))}.
+ \label{eq:composition}
+\end{equation}
+In particular, the three bounds
+\begin{align*}
+ \log(Q(n)+2)&=O((\log(n+2))^2),\\
+ \log(N_*(n)+2)&=O((\log(n+2))^2),\\
+ U(n)\log(U(n)+2)&=O((\log(n+2))^2)
+\end{align*}
+suffice for $T(n)=n^{O(\log n)}$ for $n\ge2$.
+\end{proposition}
+\begin{proof}
+Each finite selection costs at most a polynomial in its encoding times
+the Bell-number factor.  The input-size hypothesis and the bound on the
+number of invocations absorb all selector calls into the same fixed
+polynomial factor per state.  Sum this and the remaining per-state costs
+over at most $Q(n)$ calls, then absorb the outside work using $Q(n)+1$
+and the polynomial in $n+N_*(n)+1$.  Taking logarithms gives terms bounded
+by $\log(Q(n)+2)$, $O(\log(n+N_*(n)+1))$, and
+$O(U(n)\log(U(n)+2))$.  Each is $O((\log n)^2)$ under the stated
+hypotheses.  Exponentiating gives the conclusion.
+\end{proof}
+
+This is complexity accounting, not a new total-recognition theorem.
+The first sentence assumes correctness and termination of a complete
+implementation.  Our existing partial census procedure does not satisfy
+that premise merely because every emitted certificate is correct.
+
+A more convenient sufficient state-size condition is $N_*(n)=n^{O(1)}$.
+Under this stronger condition, $U=O(\log n)$ gives local cost
+\[
+ 2^{O(\log n\log\log n)}=n^{O(\log\log n)}.
+\]
+The weaker interface bound
+$U=O((\log n)^2/\log\log n)$ also suffices for the target local
+$n^{O(\log n)}$ estimate, away from small $n$.  Neither interface bound
+is proved for arbitrary native inputs or along the required hierarchies.
+The absence of a dependence exponential in the number of top handles
+does not itself control $U$.
+
+\subsection{Hierarchy depth, loop counts, and the displayed exponent}
+
+The loop estimate $L(g+1)^L$ from Proposition~9.1 of
+\cite{Lackenby2026} uses the maximum hierarchy length $L$ and the maximum
+\emph{pattern complexity} $g$ of its decomposing surfaces.  This complexity
+includes boundary-pattern intersections; a genus bound alone does not
+control it.  The estimate immediately shows why quantitative depth
+matters.  If $g\le n^a$ and $L\le b\log n$, then
+\[
+ \log\bigl(L(g+1)^L\bigr)
+ =\log L+L\log(g+1)=O((\log n)^2).
+\]
+If instead $L=O((\log n)^2)$ with the same pattern-complexity bound, this calculation
+gives $O((\log n)^3)$ in the exponential, namely
+$n^{O((\log n)^2)}$.  A bound merely linear in a handle-complexity
+parameter that can itself be polynomial in $n$ does not give either
+logarithmic-depth conclusion.
+
+The purpose of comparing the two 2021 slide estimates is therefore
+specific: an implementation and proof should state which exponent they
+establish.  Replacing a polynomial local factor by a faster polynomial
+does not repair an uncontrolled hierarchy depth.  Conversely, a
+quasi-polynomial number of states can still tolerate another
+quasi-polynomial local factor of the same logarithmic exponent, as
+Proposition~\ref{prop:composition} shows.
+
+\subsection{Encoding is part of the theorem}
+
+Let $t$ count the source tetrahedra, and let $b$ be the total bit length
+of the supplied normal coordinates.  A local source-to-certificate bound
+should be expressed in $t+b$ and in the encoded marked interfaces it
+creates.  It should not hide a scan through $W$ parallel sheets behind a
+phrase such as ``construct the cut.''  The distinction is familiar from
+the orbit-counting machinery of Agol--Hass--Thurston
+\cite{AgolHassThurston}; its algorithmic value is that large multiplicities
+can be processed through finite interval data.
+
+The deferred theorem never requires expanding those sheets: it operates
+on a supplied finite incidence matrix.  But this does not prove that
+every matrix needed later in a hierarchy will have small encoded size.
+Annular paths, port refinements, boundary patterns, and repeated chart
+substitutions can dominate the size even when scalar multiplicities
+remain in binary.  Every successor operator therefore needs an explicit
+bound on both the number of records and the bits in each record.
+
+Output size creates an independent barrier.  If a cut has exponentially
+many identical ball components, writing one certificate per component
+cannot take polynomial time in a binary multiplicity.  The existing
+census representation groups such components by genus and multiplicity.
+A full hierarchy certificate needs an equally explicit policy for
+sharing repeated local structures and for authenticating that sharing.
+
+\subsection{Outstanding geometric and algorithmic obligations}
+
+The known local hierarchy theorems cited in Section~\ref{sec:scope} are
+valuable starting points.  The following are the stronger or
+implementation-specific obligations still absent from this package.
+
+\begin{enumerate}
+\item \emph{Controlled progress.}  Produce the decomposing multisurfaces
+or other accelerated progress objects needed for a short global
+construction, and prove their depth and pattern-complexity bounds,
+including boundary-pattern intersections, in the actual source encoding.
+Finding an arbitrary nonseparating surface is not the open
+subproblem here.
+\item \emph{Source-authenticated successor transport.}  Implement the
+applicable compressed cutting and parallelity constructions with explicit
+marked boundary maps, preserving the hypotheses needed for the next
+state.  A census is less information than a successor handle structure.
+\item \emph{Repair and restart accounting.}  Bound all branches caused
+by unsuccessful local candidates, changes of charts, boundary-pattern
+repairs, or restarts.  Charging only successful cuts omits real work.
+\item \emph{A complete terminal procedure.}  The raw certificate class
+is not complete for all handlebodies in arbitrary charts.  A total
+algorithm must explain what happens after a universal raw obstruction,
+and bound the cost of its alternative.  It must also decide the relevant
+boundary-pattern condition, not just whether the underlying pieces are
+balls.
+\item \emph{Exceptional-interface control.}  Bound $u$, replace it by a
+more stable parameter, or find a polynomial selector for the actual
+geometric class.  The abstract triangle witness prevents one particularly
+simple invariance argument but does not settle that geometric question.
+\end{enumerate}
+
+These obligations interact.  A move that reduces $u$ while making marked
+paths exponentially long may lose overall.  A normalization that reduces
+the number of records but changes the admissible pattern may invalidate
+the next theorem.  The intended measure must charge both geometry and
+encoding, with a source verifier checking each claimed transition.
+
+\subsection{Algebraic simplification and geometric transport}
+
+Whitehead minimization has polynomial algorithms in the length of
+explicitly written free-group words \cite{RoigVenturaWeil}.  Such a bound
+is not automatically polynomial in the size of a compressed grammar for
+those words.  More fundamentally, an algebraic automorphism does not by
+itself give the marked meridian and port data expected by the native
+geometric kernel.  The recent thickenable-presentation work
+\cite{LackenbyStable2026} provides relevant structural context, but no
+bounded marked-slide implementation is supplied here.
+
+Section~\ref{sec:terminal-free-group} gives a legitimate alternative
+use: under authenticated irreducibility hypotheses, a verified free
+fundamental group proves an abstract terminal handlebody.  It can bypass
+the need to interpret each algebraic transformation as a slide when only
+that terminal conclusion is required.  It still needs a bound on the
+source presentation, the certificate, and its discovery.  It also cannot
+be substituted for marked transport when the algorithm must continue.

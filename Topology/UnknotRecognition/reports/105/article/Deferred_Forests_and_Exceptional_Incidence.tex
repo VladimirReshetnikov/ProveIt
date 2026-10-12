@@ -1,0 +1,102 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{mathpazo}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{microtype,booktabs,array,longtable,enumitem}
+\usepackage{placeins}
+\usepackage{xcolor,graphicx,tikz,fancyhdr,fancyvrb}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=navy,citecolor=navy,urlcolor=navy]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{navy}{HTML}{173D59}
+\definecolor{teal}{HTML}{167C80}
+\definecolor{muted}{HTML}{53616C}
+\hypersetup{pdftitle={Deferred Forests and Exceptional Incidence for Compressed Unknot Hierarchies},pdfauthor={ProveIt research continuation, prepared with ChatGPT Pro},pdfsubject={Exact primal-forest elimination, parameterized dual-forest selection, and authenticated native experiments}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\calR}{\mathcal R}
+\newcommand{\code}[1]{\texttt{#1}}
+\DeclareMathOperator{\Reach}{Reach}
+\DeclareMathOperator{\Bell}{Bell}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\cl}{cl}
+\setlist{topsep=4pt,itemsep=3pt,parsep=0pt}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}ProveIt research continuation}
+\fancyhead[R]{\small\color{muted}Deferred forests}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\DefineVerbatimEnvironment{Code}{Verbatim}{fontsize=\small,frame=single,rulecolor=\color{muted},framesep=7pt}
+\title{\color{navy}\bfseries Deferred Forests and Exceptional Incidence\\[5pt]
+\Large Exact local reductions for compressed unknot hierarchies}
+\author{Research continuation for Vladimir Reshetnikov's ProveIt project\\[3pt]
+\small Prepared with ChatGPT Pro; independent mathematical review invited}
+\date{12 October 2026\\[4pt]\small Repository baseline: \texttt{c6d0ec8aa0b6308310ab6c081ba29d8bc363ede5}}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We eliminate one exponential search variable in the repository's raw
+geometric handle-cancellation problem.  If two-handle rows are literal
+closed walks in the zero/one-handle graph, column-leaf peeling on the full
+incidence matrix preserves the original graph components when its graph
+pivots are deleted.
+A spanning forest can therefore be chosen \emph{after discovery}, avoiding
+every pivot, and contracted \emph{before replay}.  This is an exact test
+over all primal forests for complete raw positive-singleton cancellation;
+a stopping set provides a universal refusal witness for this restricted
+model.  The result also applies to the authenticated finite bundle-boundary
+matrix when all annular rows are assembled first.
+
+For the remaining dual-forest choice, we prove an exact finite selector
+with running time $2^{O(u\log(u+2))}\operatorname{poly}(N)$, where $u$ counts
+rows incident with active columns supported on more than two rows.  The
+proof compresses ordinary implications onto this exceptional interface and
+enumerates partial set partitions, using at most $\Bell(u+1)$ polynomial
+graphic/partition matroid-intersection calls.  For the original native
+core columns, the established three-occurrence bound implies $u\le3k$.
+
+An additive implementation increases historical whole-cut certificate
+coverage from $92/106$ to $99/106$, and additional-case coverage from
+$10/14$ to $12/14$, with all 213 old/new positive outputs independently
+replayed.  The standalone dual selector agrees with exhaustive oracles on
+50,658 finite instances.  We supply full proofs, a geometric all-size
+separation family, raw experiments, source-bound certificates, a patch,
+and a prioritized research programme.  These are local mathematical and
+implementation advances.  We do not claim a complete quasi-polynomial
+unknot recognizer or a global logarithmic exceptional-interface bound.
+\end{abstract}
+\clearpage
+\tableofcontents
+\clearpage
+\input{sections/01_scope}
+\input{sections/02_raw_cancellation}
+\input{sections/03_deferred_forests}
+\input{sections/04_family}
+\input{sections/05_exceptional_forests}
+\input{sections/06_combination}
+\input{sections/07_implementation}
+\input{sections/08_experiments}
+\input{sections/09_terminal_alternative}
+\input{sections/10_complexity}
+\input{sections/11_research}
+\appendix
+\input{sections/12_reproduction}
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}

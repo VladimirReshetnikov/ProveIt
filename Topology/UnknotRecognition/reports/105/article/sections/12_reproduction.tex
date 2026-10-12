@@ -1,0 +1,101 @@
+\section{Package contents and reproduction}
+\label{app:reproduction}
+
+The package is an integration bundle for the source snapshot
+\cite{RepoSnapshot}.  It contains the article's complete \TeX{} source,
+compiled PDF, bibliography, and figure source; an additive patch and
+six-file overlay; the independent finite research operator; source-bound
+positive packets; raw audit/timing data; and reproduction commands.
+The repository itself and third-party papers are not duplicated.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{p{0.28\textwidth}p{0.63\textwidth}}
+\toprule
+Directory or file & Purpose\\
+\midrule
+\code{article/} & Master \TeX, section files, bibliography, PDF, and figure.\\
+\code{patches/} & Patch against the pinned baseline.\\
+\code{overlay/} & The same six changed source/test files, with repository-relative paths.\\
+\code{baseline/} & Original versions of the four changed production modules.\\
+\code{finite\_selector/} & New exceptional solver, attributed prior backend, independent exhaustive checker, and triangle witness.\\
+\code{certificates/} & Nine whole-cut and eight core packets, retaining their source inputs.\\
+\code{tools/} & Audit, replay, benchmark, and plotting drivers.\\
+\code{results/} & Raw measurements, complete audit counts, regression recovery, and source validation records.\\
+\code{SOURCE\_AUDIT.json} & Baseline, hashes, environment, and change provenance.\\
+\code{CLAIMS.json} & Machine-readable result and limitation ledger.\\
+\code{SHA256SUMS} & Integrity hashes for the delivered files.\\
+\bottomrule
+\end{tabular}
+\caption{Integration bundle layout.}
+\end{table}
+
+\subsection{Build the article}
+
+From the package root:
+\begin{Code}
+cd article
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+  Deferred_Forests_and_Exceptional_Incidence.tex
+\end{Code}
+The supplied \code{build.sh} performs this command.  The figure PDF is
+already included.  Regenerating it with \code{tools/generate\_figures.py}
+requires Matplotlib; compiling the article does not require Python.
+
+\subsection{Apply and exercise the native change}
+
+Check out the pinned revision or inspect the patch carefully against a
+later tree.  From the repository root, using an absolute package path:
+\begin{Code}
+git apply --check /path/to/package/patches/deferred_forests.patch
+git apply /path/to/package/patches/deferred_forests.patch
+cd Topology/UnknotRecognition/fast
+python3 -m unittest tests.test_deferred_forest \
+  tests.test_deferred_boundary_kernel -v
+\end{Code}
+These tests require the source fixtures and Regina used by the native
+project.  Full discovery also needs the historical reference modules
+documented in the recovery log; a checkout containing only \code{fast}
+is not sufficient for that broader suite.
+
+An actual call uses the same source data as before:
+\begin{Code}
+result = normal_cut_handlebodies(
+    triangulation, coordinates,
+    record_certificate=True,
+    forest_strategy='deferred',
+)
+if result['status'] == 'COMPLETE':
+    assert verify_normal_cut_handlebodies(
+        triangulation, coordinates, result['certificate'])
+\end{Code}
+The import statements and a runnable packet-replay command appear in the
+package README.  Callers must retain the \code{INCONCLUSIVE} distinction.
+
+\subsection{Reproduce the finite theorem audit}
+
+No topology library is required for the standalone operator:
+\begin{Code}
+cd finite_selector
+python3 audit_exceptional.py --output audit_results_new.json
+python3 check_triangle_witness.py
+python3 exceptional_forest.py examples/triangle.json
+\end{Code}
+The complete audit seeds, instance classes, literal oracle, and budget
+checks are recorded in its source and README.  Native whole-cut replay
+and timings have explicit \code{--fast-root} arguments so they can be
+run against an isolated patched checkout.  The article's values are
+fixed measurements; a new run should write a new result file instead of
+silently replacing the delivered evidence.
+
+\subsection{Reproducibility limits}
+
+The test suite is extensive but not a formal proof of implementation
+correctness.  The mathematical proof is independent of the observed
+sample counts.  The standalone audits range over finite graph/matrix
+instances and do not establish native geometric realizability.  The
+literal oracle comparisons exclude inputs beyond their expansion cap.
+The source-bound packets and raw data allow each of these claims to be
+rechecked separately, with their original scope intact.
+
+\input{sections/13_triangle_data}

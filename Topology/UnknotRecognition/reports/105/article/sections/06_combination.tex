@@ -1,0 +1,137 @@
+\section{Combining the two forests, and a linear-algebra extension}
+\label{sec:combination}
+
+\subsection{An exact coupled finite problem}
+
+Suppose an authenticated handle model supplies a primal graph $G=(V,E)$,
+a connected rooted dual graph $D$, and an occurrence matrix
+$N\in\NN^{R\times(E\sqcup J)}$.  Each row restricts to a closed walk in
+$G$.  Eligible rows are in bijection with the dual edges; other rows may
+be ineligible for top-handle deletion.  Let $\mathcal L$ be the total bit
+length of the graphs, matrix, and row/edge correspondence.
+Assume every dual spanning tree is a legal specified
+two/three-handle reduction that deletes precisely its selected rows,
+leaves the retained occurrence data unchanged, and preserves the exposed
+ports required by the subsequent operation.  These are geometric
+hypotheses on the model, not automatic properties of a pair of graphs.
+Also assume that every chosen primal spanning forest has the authenticated
+forest-first contraction used in Section~\ref{sec:deferred-primal-forest}:
+it deletes those columns and preserves the retained attaching charts and
+required port interpretation.  This lower contraction contract is part
+of the coupled geometric application.
+
+\begin{corollary}[Coupled forests without primal enumeration]
+\label{cor:coupled-forests}
+Under these hypotheses, there exist a legal dual tree and a primal
+spanning forest permitting complete raw positive cancellation if and
+only if there exists a dual tree whose deleted-row complement is
+completely column-peelable on \emph{all} columns $E\sqcup J$.
+The latter problem is decidable in
+\[
+ 2^{O(u\log(u+2))}\operatorname{poly}(\mathcal L),
+\]
+where $u$ is the exceptional-interface size of the full pre-deletion
+matrix.  A successful decision constructs both trees and a complete
+raw cancellation sequence.
+\end{corollary}
+\begin{proof}
+Fix a legal dual tree $T_D$.  Every retained row still has its original
+closed-walk interpretation, so Theorem~\ref{thm:all-primal-forests} applies
+to the row restriction $R\setminus T_D$.  It gives the stated equivalence
+for this particular tree.  Quantifying over the dual trees proves the
+first assertion.  Apply Theorem~\ref{thm:exceptional-selector} to the full
+matrix and dual graph; after its successful tree is found, peel the
+retained rows and choose a primal forest avoiding the graph pivots.
+The extra finite work is polynomial and introduces no new search factor.
+\end{proof}
+
+For original native source-core columns only, the prior bound $u\le3k$ applies when
+$k$ counts exceptional columns in this full input.  It must not be
+estimated only after a favorable but unknown dual tree is chosen: that
+would assume the answer in the parameter bound.  A separate parameterized
+algorithm would be needed if the parameter were instead the minimum
+exceptional size over all dual choices.
+
+The delivered native patch uses the existing breadth-first dual policy
+and the new primal theorem.  The delivered exceptional solver is a
+separate finite operator.  Corollary~\ref{cor:coupled-forests} justifies a
+future source adapter under the stated contracts; it is not a claim that
+the current whole-cut wrapper already implements exhaustive coupled
+selection.  In particular, no extra native successes are attributed to
+the standalone dual solver in our result table.
+
+\subsection{Deferred bases in a represented binary matroid}
+
+The connectivity argument is a special case of a useful algebraic fact.
+It also identifies exactly what would be lost by replacing a forest with
+a basis of a represented binary matroid.
+
+\begin{theorem}[Deferred column basis]
+\label{thm:deferred-basis}
+Let $B$ be a matrix over $\mathbb F_2$ with columns indexed by $E$, and
+let $N\in\NN^{R\times(E\sqcup J)}$.  Assume that each uncapped row
+vector on $E$ lies modulo two in the kernel of $B$:
+\[
+ B\,(n_{re}\bmod2)_{e\in E}=0\qquad(r\in R).
+\]
+If a column-leaf sequence in $N$ uses $E$-indexed pivot set
+$P\subseteq E$, then
+\[
+ \operatorname{span}(B_{E\setminus P})=
+ \operatorname{span}(B_E).
+\]
+Consequently $E\setminus P$ contains a column basis $K$ of $B$.
+Moreover, full-matrix peeling succeeds if and only if some column basis
+$K$ can be discarded while leaving a matrix admitting complete raw
+positive singleton cancellation.
+\end{theorem}
+\begin{proof}
+Before a pivot $e\in E$ in row $r$, every earlier pivot column has
+coefficient zero in $r$.  Its coefficient at $e$ is one.  The kernel
+identity expresses $B_e$ as a sum of the other currently retained columns
+with coefficients $n_{rf}\bmod2$.  Deleting $e$ therefore preserves
+the span.  Auxiliary pivots change none of the columns of $B$.
+Induction proves the displayed equality, so a basis can be selected from
+the complement of all pivots.
+
+If full peeling succeeds, choose this basis $K$.  The recorded sequence
+uses no column of $K$ and remains valid after those columns are discarded.
+Conversely, complete raw positive elimination after a basis deletion
+implies complete peeling by Theorem~\ref{thm:raw-completeness}, and the
+same pivot-column sums make that peeling sequence valid with the deleted
+basis columns restored.  This proves the equivalence.
+\end{proof}
+
+Take $B$ to be the mod-two vertex/edge incidence matrix of a graph.  Its
+column bases are exactly spanning forests, and the theorem recovers the
+primal result.  More generally, a cellular boundary relation
+$\partial_k\partial_{k+1}=0$ can supply the kernel hypothesis for a
+represented matroid, provided that the raw incidences have the claimed
+mod-two interpretation.  This gives an algebraic normalization principle
+in other chain complexes.
+
+An arbitrary column basis in a higher boundary matrix need not be
+geometrically collapsible.  Therefore this generalization does not
+authorize higher-dimensional handle cancellation, replacement of a
+marked disk system, or compression of a manifold from homology alone.
+The special advantage of dimension one is that a graph basis is an
+forest with contractible components.  Proving a similarly useful geometric
+realization criterion in another setting is a research problem.
+
+\subsection{Stopping sets as reusable restricted certificates}
+
+The universal primal obstruction is unusually cheap to store: a nonempty
+list of source row identifiers suffices.  Source replay checks that every
+column total on those rows avoids one.  Such a witness can be reused
+across all primal forest policies on the same retained rows and charts.
+It invalidates neither a different dual deletion nor a different
+geometric presentation.  A cache must therefore bind the witness to the
+authenticated source, retained-row set, matrix version, and occurrence
+convention.  Using an obstruction from an earlier hierarchy state after
+changing those data would be unsound.
+
+The exceptional solver's exhaustive negative has a different status.
+Its search proves failure for every allowed dual tree in one finite
+instance, but the current implementation provides no compact
+independently replayable certificate of the entire exhaustion.  These
+two kinds of refusal should have separate names in an eventual API.

@@ -1,0 +1,152 @@
+{
+  "source_commit": "c6d0ec8aa0b6308310ab6c081ba29d8bc363ede5",
+  "claims": [
+    {
+      "id": "D1",
+      "claim": "Deferred primal forests exactly decide complete raw positive singleton cancellation over all primal forests for a fixed closed-walk occurrence matrix.",
+      "status": "PROVED_AND_NATIVE_IMPLEMENTED",
+      "scope": "Authenticated source-core or supported finite boundary matrix; closed-walk restrictions required; fixed retained rows and dual choice.",
+      "theorem": "3.3",
+      "evidence": [
+        "article/sections/03_deferred_forests.tex",
+        "overlay/Topology/UnknotRecognition/fast/fastunknot/core_handlebody.py",
+        "results/core_audit.json"
+      ]
+    },
+    {
+      "id": "D2",
+      "claim": "A nonempty full-matrix stopping set obstructs complete raw cancellation for every primal forest.",
+      "status": "PROVED_WITH_INDEPENDENT_FINITE_CHECKER",
+      "scope": "Restricted raw model only; not a nonhandlebody or nonunknot certificate. Partial residual optimality concerns column peeling only.",
+      "evidence": [
+        "tools/check_stopping_obstruction.py",
+        "results/core_audit.json"
+      ]
+    },
+    {
+      "id": "F1",
+      "claim": "Exceptional-interface dual selection takes at most Bell(u+1) polynomial matroid-intersection calls, hence 2^{O(u log(u+2))} poly(N) time.",
+      "status": "PROVED_AND_FINITE_IMPLEMENTED",
+      "scope": "Exact finite graph/matrix selector. No native extraction adapter in this package. Native u<=3k bound only for original source-core columns.",
+      "evidence": [
+        "article/sections/05_exceptional_forests.tex",
+        "finite_selector/exceptional_forest.py",
+        "finite_selector/PROOF.md",
+        "finite_selector/audit_results.json"
+      ]
+    },
+    {
+      "id": "F2",
+      "claim": "The finite dual selector agrees with an independent exhaustive tree/uncapped peeling oracle on 50658 inputs; all 5183 positive outputs replay.",
+      "status": "EXPERIMENTALLY_VERIFIED",
+      "scope": "Finite supplied instances, including disconnected input rejection and 4,000 seeded cases. No geometric realization assertion for random inputs.",
+      "evidence": [
+        "finite_selector/audit_exceptional.py",
+        "finite_selector/audit_results.json",
+        "results/selector_audit_reproduced.json"
+      ]
+    },
+    {
+      "id": "G1",
+      "claim": "The theta family has 3^h primal trees, exactly 2^h successful trees, canonical failure, and linear indexed deferred discovery. Its unsigned handle incidences admit a three-ball realization.",
+      "status": "PROVED",
+      "scope": "Geometric existence by an actual two-handle slide. No native triangulated-source exporter. Unpruned lexicographic trial count (3^h+1)/2 is not a lower bound for every algorithm.",
+      "evidence": [
+        "article/sections/04_family.tex",
+        "results/benchmark_core.json"
+      ]
+    },
+    {
+      "id": "G2",
+      "claim": "Triangle-column parity and three occurrences do not alone imply abstract dual-tree invariance.",
+      "status": "EXPLICIT_COUNTEREXAMPLE_VERIFIED",
+      "scope": "9 vertices,25 edge rows,17 triangle columns; one successful tree and one tree with a nine-row stopping residual. No native realization.",
+      "evidence": [
+        "article/sections/13_triangle_data.tex",
+        "finite_selector/triangle_tree_sensitivity.json",
+        "finite_selector/check_triangle_witness.py"
+      ]
+    },
+    {
+      "id": "M1",
+      "claim": "Deferred peeling preserves the span of a binary represented matrix whose kernel contains the uncapped occurrence rows, allowing a column basis to be selected afterward.",
+      "status": "PROVED",
+      "scope": "Finite linear algebra; arbitrary column bases do not imply geometric collapsibility or marked transport.",
+      "evidence": [
+        "article/sections/06_combination.tex"
+      ]
+    },
+    {
+      "id": "C1",
+      "claim": "Historical whole-cut coverage increases from 92/106 to 99/106; additional coverage from 10/14 to 12/14; all old positives retained.",
+      "status": "NATIVE_VERIFIED",
+      "scope": "Given fixed source corpora and baseline breadth-first dual reduction. All 213 paired positive outputs independently replayed. No knot-diagram success-rate inference.",
+      "evidence": [
+        "results/whole_audit.json",
+        "certificates/whole_cut",
+        "results/delivery_packet_replay.json"
+      ]
+    },
+    {
+      "id": "C2",
+      "claim": "Regina literal oracle agrees with 104 deferred positives among 113 completed sources; seven additional positives exceed the expansion cap.",
+      "status": "NATIVE_ORACLE_VERIFIED_WITH_CAP",
+      "scope": "4096-normal-disc cap,20-second timeout; no timeout or mismatch observed. Native certificates for all 111 successes replayed. Remaining nine refusals are not native negative verdicts.",
+      "evidence": [
+        "results/whole_audit.json"
+      ]
+    },
+    {
+      "id": "C3",
+      "claim": "Core coverage increases from 110/120 to 118/120, including 106/106 historical cores.",
+      "status": "NATIVE_VERIFIED",
+      "scope": "Core recognition alone does not settle the reconstructed whole cut.",
+      "evidence": [
+        "results/core_audit.json",
+        "results/core_audit_reproduced.json"
+      ]
+    },
+    {
+      "id": "T1",
+      "claim": "1707 distinct real tests pass across the main test run and targeted environmental recovery.",
+      "status": "REGRESSION_VERIFIED",
+      "scope": "Not a single clean full-suite invocation. Missing sparse-checkout dependencies and three recovery-harness cwd failures were corrected without production edits.",
+      "evidence": [
+        "results/full_regression.log",
+        "results/failed_module_recovery.json",
+        "results/failed_modules_rerun.log",
+        "results/failed_cli_tests_rerun.log",
+        "results/recovered_test_inventory.json"
+      ]
+    },
+    {
+      "id": "P1",
+      "claim": "On 110 common-success native cores, deferred producer median batch time is 1.3889043482 times canonical.",
+      "status": "MEASURED",
+      "scope": "9 alternating repetitions,25 corpus passes,2750 calls per batch; source preparation and replay excluded. Deferred is slower here; no uniform wall-clock speedup is claimed.",
+      "evidence": [
+        "results/benchmark_core.json",
+        "results/benchmark_whole.json"
+      ]
+    },
+    {
+      "id": "A1",
+      "claim": "Whole-cut group certificates can imply abstract handlebodies under connected orientable irreducible source and proper two-sided boundary-bearing cut assumptions.",
+      "status": "CLASSICAL_IMPLICATION_AND_PROPOSED_EXTENSION",
+      "scope": "Classical Loop-Theorem/free-group criterion. Not a new theorem of 3-manifold topology, not implemented coverage, no search/size bound or marked meridian transport.",
+      "evidence": [
+        "article/sections/09_terminal_alternative.tex"
+      ]
+    },
+    {
+      "id": "Q1",
+      "claim": "A complete n^{O(log n)} unknot recognizer is not established by this work.",
+      "status": "EXPLICIT_LIMITATION",
+      "scope": "Missing complete hierarchy engine, global depth/repair/encoding/interface bounds, and bounded complete terminal strategy.",
+      "evidence": [
+        "article/sections/10_complexity.tex",
+        "article/sections/11_research.tex"
+      ]
+    }
+  ]
+}
