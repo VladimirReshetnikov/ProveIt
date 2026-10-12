@@ -5610,6 +5610,22 @@ Theorem 18.2 base) is set by the cubic inverse threshold
 `L + 2` in every length would need about 11, far below these constants of
 the cubic inverse theorem.
 
+The route to `d + 1`, examined (L.16z addendum). The two class degrees per step
+compound because the slice cover runs at a precision `θ_S/4 ~ ρ₁³` set by the
+first cover's output, and a class count `Q(t)` carries the full class degree in
+its dependence on `t`. A three-base class, with count
+`(n+1)^a·(V·2/(γθ))^D·(1/ρ)^E`, would make the second cover cost only its
+precision exponent `E`. In the split step, however, the piece bound `Pb` is the
+lower count at family size `M·S` and precision `ρ/4`, and the samples
+`S ~ Qr·M/ρ` have `ρ`-exponent `E·2^k + 1`. So `Pb` has `ρ`-exponent
+`a(E·2^k + 1) + E`, and `E' ≈ 2a·E·2^k`: `log E` grows like `Σ log a_k ~ c·2^k`,
+the same growth as `log D`. Tracking the precision separately therefore does
+not remove the compounding. Covering the remainder and the slices jointly would
+need the anchor pair before the remainder (the anchors come from the
+spectrum cell), and covering all anchors jointly costs `Q^|J|` with `|J| ~ N`.
+Reordering the covers (slices first) compounds the same way, since the vertex
+covers are also `k`-dimensional (`nonTop_card_le_k` is exact).
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`
