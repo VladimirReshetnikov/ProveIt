@@ -1773,8 +1773,24 @@ private lemma fejer_loss_lower (k : Nat) (a : Real) (ha : 0 < a) (ha1 : a ≤ 1)
   exact pow_le_pow_left₀ (by positivity) hbase M
 
 set_option maxHeartbeats 1000000 in
-theorem fejer_arrangement_restriction : FejerArrangementRestriction := by
-  intro k alpha beta eta hk halpha hbeta heta heta_one
+/-- **The Fejér selection at an arbitrary scale**: if `B` carries at most
+`scale·N^(17k+15)` arrangements, of which at least `α·scale·N^(17k+15)` are
+respected, then some `B' ⊆ B` carries at least
+`(αη/4)^(2^(k+4)(k+6))·scale·N^(17k+15)` arrangements, of which a
+`1 − η` fraction is respected. -/
+theorem fejer_scale_estimate (k : Nat) (alpha scale eta : Real) (hk : 1 ≤ k)
+    (halpha : 0 < alpha) (hscale : 0 < scale) (heta : 0 < eta) (heta_one : eta ≤ 1) :
+    ∃ N0 : Nat, ∀ (N : Nat) [NeZero N], N0 ≤ N → Nat.Prime N → Odd N →
+      ∀ (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N),
+        (generalArrangementCount 8 B : Real) ≤ scale * (N : Real) ^ (17 * k + 15) →
+        alpha * scale * (N : Real) ^ (17 * k + 15) ≤
+            respectedGeneralArrangementCount 8 B phi →
+        ∃ B' : Finset (Point N (k + 1)), B' ⊆ B ∧
+          (alpha * eta / 4) ^ fejerSelectionExponent k * scale *
+              (N : Real) ^ (17 * k + 15) ≤
+            generalArrangementCount 8 B' ∧
+          (1 - eta) * generalArrangementCount 8 B' ≤
+            respectedGeneralArrangementCount 8 B' phi := by
   -- the order of the Fejér kernel
   set M : Nat := 2 ^ (k + 4) with hM
   have hM1 : 1 ≤ M := Nat.one_le_two_pow
@@ -1801,24 +1817,24 @@ theorem fejer_arrangement_restriction : FejerArrangementRestriction := by
   set t : Real := (((m : Real) + 1)⁻¹) ^ M with htdef
   have ht0 : 0 < t := by positivity
   set c0 : Real := (2 * (m : Real) + 1) ^ (2 * 8 * 2 ^ k) * k with hc0
-  refine ⟨max (m + 1) (max 3 ⌈2 * c0 / (beta ^ 15 * t)⌉₊), ?_⟩
-  intro N _ hN hprime hodd B phi hBcard hrespected
+  refine ⟨max (m + 1) (max 3 ⌈2 * c0 / (scale * t)⌉₊), ?_⟩
+  intro N _ hN hprime hodd B phi hu hrespected
   letI : Fact N.Prime := ⟨hprime⟩
-  have hmN : m < N := by have := le_max_left (m + 1) (max 3 ⌈2 * c0 / (beta ^ 15 * t)⌉₊); omega
+  have hmN : m < N := by have := le_max_left (m + 1) (max 3 ⌈2 * c0 / (scale * t)⌉₊); omega
   have hN3 : 3 ≤ N := by
-    have := le_max_left 3 ⌈2 * c0 / (beta ^ 15 * t)⌉₊
-    have := le_max_right (m + 1) (max 3 ⌈2 * c0 / (beta ^ 15 * t)⌉₊)
+    have := le_max_left 3 ⌈2 * c0 / (scale * t)⌉₊
+    have := le_max_right (m + 1) (max 3 ⌈2 * c0 / (scale * t)⌉₊)
     omega
-  have hNbig : 2 * c0 / (beta ^ 15 * t) ≤ (N : Real) := by
-    have h1 := le_max_right 3 ⌈2 * c0 / (beta ^ 15 * t)⌉₊
-    have h2 := le_max_right (m + 1) (max 3 ⌈2 * c0 / (beta ^ 15 * t)⌉₊)
+  have hNbig : 2 * c0 / (scale * t) ≤ (N : Real) := by
+    have h1 := le_max_right 3 ⌈2 * c0 / (scale * t)⌉₊
+    have h2 := le_max_right (m + 1) (max 3 ⌈2 * c0 / (scale * t)⌉₊)
     exact (Nat.le_ceil _).trans (by exact_mod_cast h1.trans (h2.trans hN))
   have hNpos : (0 : Real) < N := by exact_mod_cast (show 0 < N by omega)
-  set G : Real := beta ^ 15 * (N : Real) ^ (17 * k + 15) with hG
-  have hG0 : 0 < G := by positivity
+  set G : Real := scale * (N : Real) ^ (17 * k + 15) with hG
+  have hG0 : 0 < G := mul_pos hscale (by positivity)
   -- counts
   have hgeneral : (generalArrangementCount 8 B : Real) ≤ G :=
-    selection_arrangement_real_upper beta B hBcard
+    hu
   have hrespLe : (respectedGeneralArrangementCount 8 B phi : Real) ≤
       generalArrangementCount 8 B := by
     exact_mod_cast fejer_respected_le_arrangement B phi
@@ -1826,7 +1842,7 @@ theorem fejer_arrangement_restriction : FejerArrangementRestriction := by
     by_contra hlt
     push Not at hlt
     have : alpha * G ≤ G := by
-      calc alpha * G = alpha * beta ^ 15 * (N : Real) ^ (17 * k + 15) := by rw [hG]; ring
+      calc alpha * G = alpha * scale * (N : Real) ^ (17 * k + 15) := by rw [hG]; ring
         _ ≤ _ := hrespected
         _ ≤ _ := hrespLe
         _ ≤ G := hgeneral
@@ -1845,12 +1861,12 @@ theorem fejer_arrangement_restriction : FejerArrangementRestriction := by
       _ = c0 * (N : Real) ^ (17 * k + 14) := by rw [hc0]
   have hDsmall : 2 * D ≤ t * G := by
     have hc0' : 0 ≤ c0 := by positivity
-    have h1 : 2 * c0 ≤ beta ^ 15 * t * N := by
-      have := (div_le_iff₀ (by positivity : (0 : Real) < beta ^ 15 * t)).mp hNbig
+    have h1 : 2 * c0 ≤ scale * t * N := by
+      have := (div_le_iff₀ (by positivity : (0 : Real) < scale * t)).mp hNbig
       linarith
     calc 2 * D ≤ 2 * (c0 * (N : Real) ^ (17 * k + 14)) := by linarith
       _ = (2 * c0) * (N : Real) ^ (17 * k + 14) := by ring
-      _ ≤ (beta ^ 15 * t * N) * (N : Real) ^ (17 * k + 14) :=
+      _ ≤ (scale * t * N) * (N : Real) ^ (17 * k + 14) :=
           mul_le_mul_of_nonneg_right h1 (by positivity)
       _ = t * G := by rw [hG, show 17 * k + 15 = (17 * k + 14) + 1 by ring, pow_succ]; ring
   -- the ratio
@@ -1886,7 +1902,7 @@ theorem fejer_arrangement_restriction : FejerArrangementRestriction := by
         (fejerGoodNondegenerate m B phi).card + D := by
       rw [hD]; exact_mod_cast h
     have : alpha * G ≤ respectedGeneralArrangementCount 8 B phi := by
-      calc alpha * G = alpha * beta ^ 15 * (N : Real) ^ (17 * k + 15) := by rw [hG]; ring
+      calc alpha * G = alpha * scale * (N : Real) ^ (17 * k + 15) := by rw [hG]; ring
         _ ≤ _ := hrespected
     linarith
   have hbadCard : ((fejerBadNondegenerate m B phi).card : Real) ≤ G := by
@@ -2003,7 +2019,7 @@ theorem fejer_arrangement_restriction : FejerArrangementRestriction := by
     rw [hTeq, ← hM, ← hm1] at hloss
     have htEq : ((((m + 1 : Nat) : Real))⁻¹) ^ M = t := by rw [htdef]; push_cast; ring
     rw [htEq] at hloss
-    calc (alpha * eta / 4) ^ fejerSelectionExponent k * beta ^ 15 * (N : Real) ^ (17 * k + 15)
+    calc (alpha * eta / 4) ^ fejerSelectionExponent k * scale * (N : Real) ^ (17 * k + 15)
         = (alpha * eta / 4) ^ fejerSelectionExponent k * G := by rw [hG]; ring
       _ ≤ t * G := mul_le_mul_of_nonneg_right hloss hG0.le
       _ ≤ g := hgLower
@@ -2014,6 +2030,13 @@ theorem fejer_arrangement_restriction : FejerArrangementRestriction := by
     have hbg : b ≤ eta * g := by linarith
     have hetab : 0 ≤ eta * b := mul_nonneg heta.le hb0
     linarith
+
+theorem fejer_arrangement_restriction : FejerArrangementRestriction := by
+  intro k alpha beta eta hk halpha hbeta heta heta_one
+  obtain ⟨N0, hN0⟩ := fejer_scale_estimate k alpha (beta ^ 15) eta hk halpha
+    (pow_pos hbeta 15) heta heta_one
+  exact ⟨N0, fun N _ hN hp ho B phi hBcard hl =>
+    hN0 N hN hp ho B phi (selection_arrangement_real_upper beta B hBcard) hl⟩
 
 /-- **The Fejér restriction implies the printed Lemma 15.5**, whose
 exponent `2^(2^(k+4)+k+3)` is larger. -/
