@@ -4522,6 +4522,31 @@ approved axioms occur. This closes the representation gaps in Lemma 5.10,
 Corollary 5.11 and Lemma 16.1. It does not finish the remaining Section 16
 cover predicates or the large-width genuine rectangle in Theorem 13.12.
 
+## L.23 Shared-step integer refinement and dense rectangles (2026-10-11)
+
+`Proofs05CommonIntegerRuns` chooses the Dirichlet multiplier and integer
+orientation once for both axes. Proper modular progressions with equal length
+`m >= 4` and equal step have partitions into genuine natural progressions,
+all with one positive integer step, contained in `[0,N)`, and with at most
+`4 * Nat.sqrt m` cells per axis. The construction requires only `NeZero N`.
+
+`Proofs13RectanglePartitionMass` proves exact mass conservation through the
+product partition and its intersections with a subset. The abstract averaging
+argument in `Proofs13DenseRectangleSelection` pays for small cells explicitly:
+with threshold `delta * sqrt(m) / 16`, their capacity and a density cutoff of
+`delta / 4` cannot cover a set of mass at least `delta * m^2`.
+`Proofs13DenseIntegerRectangle` therefore extracts a rectangle with both
+lengths at least that threshold, density at least `delta / 4`, and a common
+positive integer difference. It retains an actual subset of the input relation.
+
+`RectangleFidelityAudit` checks all eleven new theorems and their transitive
+axioms over a 1,477-module native closure. Only `propext`, `Classical.choice`
+and `Quot.sound` occur. The large-width source Theorem 13.12 is still open:
+the rectangle must be converted to equal-length sides while preserving integer
+geometry, and the losses must be absorbed into the printed bounds. The final
+Szemeredi conclusions have unconditional checked proofs; this intermediate
+statement-fidelity work is not evidence that those conclusions are false.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
