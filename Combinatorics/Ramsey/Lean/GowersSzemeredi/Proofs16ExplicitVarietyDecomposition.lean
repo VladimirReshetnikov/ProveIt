@@ -1,3 +1,4 @@
+import GowersSzemeredi.Proofs05ExplicitPartitionBounds
 import GowersSzemeredi.Proofs16VarietyCeilingFreeDecomposition
 import GowersSzemeredi.Proofs05ExplicitSchmidtRecurrence
 
@@ -34,10 +35,6 @@ def explicitVarietyK : Nat := Nat.ceil (multiaffinePartitionK 2 (2 ^ 2))
 
 /-- The variety exponent constant. -/
 def explicitVarietyP : Nat := multiaffinePartitionP 2 (2 ^ 2)
-
-theorem two_le_ceil_multiaffinePartitionK (k h : Nat) :
-    2 ≤ Nat.ceil (multiaffinePartitionK k h) := by
-  exact_mod_cast (two_le_multiaffinePartitionK k h).trans (Nat.le_ceil _)
 
 theorem two_le_explicitLiftK : 2 ≤ explicitLiftK := two_le_ceil_multiaffinePartitionK _ _
 
