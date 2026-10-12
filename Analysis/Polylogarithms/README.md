@@ -2,10 +2,10 @@
 
 The canonical reading artifact is the collective four-volume manuscript,
 [Polylogarithms and their Arithmetic Bridges](docs/manuscript/README.md),
-authored by **ProveIt Contributors**. The volumes have **152, 131, 254 and
+authored by **ProveIt Contributors**. The volumes have **169, 131, 254 and
 87 pages**, each compiling independently; the retained
-[combined edition](docs/manuscript/polylogarithms.pdf) has **578 pages**.
-They share twelve chapters, thirteen figures and 152 references. The
+[combined edition](docs/manuscript/polylogarithms.pdf) has **595 pages**.
+They share twelve chapters, thirteen figures and 157 references. The
 [editorial ledger](docs/manuscript/EDITORIAL-LEDGER.md) separates accepted
 proofs from pending analytic claims, and the
 [validation record](docs/manuscript/VALIDATION.md) distinguishes proofs,
@@ -741,3 +741,12 @@ analytic review and incorporation into the collective manuscript remain
 pending. Numerical evidence is not interval certification. The local
 cut-modulus obstruction affects a proposed real-order extension, not the
 existing integer theorem or the unresolved global inverse-radius question.
+
+
+The collective manuscript's [Volume I](docs/manuscript/volumes/volume-1-polylogarithm-identities.pdf),
+Section 1.10, now integrates sharp order filters, exact Stokes-neutral curves,
+and the order-zero digamma inverse. New Theorem 1.41 proves a convergent
+neutral inverse chart and the nonzero physical displacement that survives
+when the two lateral inverses coincide. The [validation record](docs/manuscript/VALIDATION.md)
+separates the analytic proof, exact coefficient checks, numerical diagnostics,
+and final four-volume PDF review.
