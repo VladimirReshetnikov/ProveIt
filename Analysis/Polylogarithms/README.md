@@ -2,9 +2,9 @@
 
 The canonical reading artifact is the collective four-volume manuscript,
 [Polylogarithms and their Arithmetic Bridges](docs/manuscript/README.md),
-authored by **ProveIt Contributors**. The volumes have **130, 129, 240 and
+authored by **ProveIt Contributors**. The volumes have **130, 129, 242 and
 85 pages**, each compiling independently; the retained
-[combined edition](docs/manuscript/polylogarithms.pdf) has **543 pages**.
+[combined edition](docs/manuscript/polylogarithms.pdf) has **545 pages**.
 They share twelve chapters, thirteen figures and 140 references. The
 [editorial ledger](docs/manuscript/EDITORIAL-LEDGER.md) separates accepted
 proofs from pending analytic claims, and the
@@ -613,3 +613,14 @@ exact checks through weight eighteen and native Wolfram symbolic identities
 pass. All five twentieth-intake suites pass on isolated copies; the complete
 73722-case gap-ten finite certificate is reproduced with a disclosed portable
 structured comparator. Its infinite Gamma-basis proof remains pending audit.
+
+
+Theorems 8.143--8.144 prove every primitive coefficient by one ordinary
+polynomial integral, closing unrestricted full support/sign for m>=2 with
+the explicit H_1=0 exception. The entire E_1 finite projections also give
+convergence of the primitive generator on the full holomorphic input disk.
+Gamma/Stieltjes translations hold for |t|<x at positive x, with exact
+endpoints; a weighted generating antiderivative is included. Independent
+exact comparisons cover 23025 coefficients through weight thirty, and native
+symbolic defining identities cover every weight through sixteen. Finite
+evidence is separate from the written all-weight and analytic proofs.

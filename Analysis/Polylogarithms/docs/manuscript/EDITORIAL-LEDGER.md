@@ -940,7 +940,7 @@ delivery source, receipt, README, PDF or provenance is rewritten.
 | Group | Reconciliation and acceptance boundary |
 |---|---|
 | `cubic-gamma-normal-form` | Full exact, endpoint, exploratory and numerical suites pass. The earlier all-index Conjecture 9.1 has exactly the current C_j normalization and is proved by Theorem 8.139. Its local infinite-jet question is answered by Theorem 8.140. Preserve the original unproved status as history. Other specialized endpoint, spectral and Stieltjes applications await their separate analytic integration. |
-| `higher-identities` | Accept the complete Euler-homotopy compensator and analytic primitive series in Section 8.46. Its independently obtained analytic normal generator overlaps Theorem 8.140 and receives explicit credit. Fresh C++ compilation reproduces every field of all 73722 finite gap-ten records; the direct independent checks and all exact/numerical subsidiary programs pass. The unmodified wrapper's byte comparison fails, then a structured comparison fails only on a descriptive serialization identifier. Preserve both failures and qualify the final copy-only portable comparator: every mathematical CSV/JSON value agrees, identifiers are recorded separately, source computations are unchanged. Full gap-ten analytic completion and the Gamma null basis remain pending canonical proof review. All-compensator full support/sign remains conjectural despite the weight-24 probe. |
+| `higher-identities` | Accept the complete Euler-homotopy compensator and analytic primitive series in Section 8.46. Its independently obtained analytic normal generator overlaps Theorem 8.140 and receives explicit credit. Fresh C++ compilation reproduces every field of all 73722 finite gap-ten records; the direct independent checks and all exact/numerical subsidiary programs pass. The unmodified wrapper's byte comparison fails, then a structured comparison fails only on a descriptive serialization identifier. Preserve both failures and qualify the final copy-only portable comparator: every mathematical CSV/JSON value agrees, identifiers are recorded separately, source computations are unchanged. Full gap-ten analytic completion and the Gamma null basis remain pending canonical proof review. The original all-compensator full-support/sign conjecture is now proved by the collective single-integral theorem below; its weight-24 probe remains historical finite evidence. |
 | `mixed-tail-anchor-reductions` | The complete exact/numerical runner passes: 369 exact checks and three corruption controls, including J7/K8/K9 relations and the unequal odd-tail telescoper. Keep compiler bounds and ordinary-convergence conditions. These MZV anchors do not establish arithmetic independence or settle the unrestricted even-tail prefix theorem; canonical analytic integration remains pending. |
 | `rational-hankel-polylogarithms` | All four supplied compiler, structure, spectral and numerical suites pass. Keep rational-pole domains, endpoint anchors, confluent pole budgets and classical norm attribution. Formal sharpness differs from minimal period weight; complete analytic reconciliation remains pending. |
 | `universal-gamma-coefficients-replay` | Independent weight-28 coefficient and 80-digit diagnostic suites pass. The all-index theorem agrees with Theorem 8.139; its distinct source and proof are retained without double-counting closure. The delivered build report explicitly confirms a typeset PDF; it does not certify a new human visual review. |
@@ -952,5 +952,40 @@ collective affine specialization has an explicit entire compensator and
 all-degree coefficients. Its required +t/2 term enforces H_1=0; an independent
 exact control rejects its omission. An independent sparse recurrence and
 homotopy compare every weight through eighteen, with two real/complex affine
-diagnostics. General all-pair rank, Gaussian S6/revised S8 and unrestricted
-compensator support remain open.
+diagnostics. General all-pair rank and Gaussian S6/revised S8 remain open.
+
+
+## Primitive coefficient closure and the full analytic disk, October 11, 2026 (Pacific)
+
+The incoming Higher Identities support/sign conjecture is proved in
+Theorem 8.143, following its weight-24 probe and the collective coefficient
+experiment. Every H_m monomial of weight m-1 is present for m>=2, with sign
+(-1)^(m-factor-degree). One ordinary polynomial integral gives every
+coefficient, including a single highest derivative. H_1=0 is the sole
+weight-one constant exception. Pure u0 coefficients remain -m/2.
+
+The proof reuses the rational R_d kernel from the normal coefficient theorem.
+The normalization primitive of J_d-F_d has highest index at most d-1, so
+the coefficient containing u_d comes from the integrated kernel unchanged.
+The full polynomial Appell identity, with its constant anomaly, and
+injectivity of L_d identify the projected primitive before specialization.
+Reflection cancels one C_d factor in the denominator, leaving a positive
+polynomial integral. This is an all-weight argument, not extrapolation from
+the observed support. Original conjectural source statuses remain unchanged.
+
+The resulting E_1 ordinary projection proves Theorem 8.144: the primitive
+generator converges on the same |t|<R input disk as the normal generator.
+Thus Gamma/Stieltjes translations hold for real x>0 and |t|<x, and anchored
+integration on [a,b] is valid for |t|<a. The earlier homotopy theorem remains
+a correct independent proof on a smaller domain; maximal continuation is
+not claimed. New all-index linear and mixed coefficient identities illustrate
+the formula. General rank and Gaussian S6/revised S8 remain open.
+
+An independent rational reduction checks every weighted-partition monomial
+through weight thirty: 23025 coefficient comparisons and 23024 nonzero
+support/sign checks, through highest index 28. Twelve 75-digit ordinary
+projection/Taylor diagnostics pass; they are not interval certificates.
+Native Wolfram separately constructs both polynomial-integral coefficient
+families and verifies A_m=N_m+D H_m through weight sixteen, with linear/mixed
+families and an exact corruption control. These checks support implementation;
+the written highest-index and Cauchy arguments prove the infinite results.
