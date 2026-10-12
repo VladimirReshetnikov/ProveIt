@@ -1,0 +1,55 @@
+% Additive synopsis. Requires amsmath, amssymb, amsthm and theorem environment.
+% This synopsis does not replace the full proofs in the accompanying article.
+\section{Affine Gamma squares and Bernoulli selectors}
+\label{agint:section}
+Let $D u_j=u_{j+1}$ and let $\mathcal N$ be the canonical linear
+projection onto functional monomials: powers of $u_0$, or monomials
+whose largest positive index is repeated. Set
+$A_0=1$, $A_{m+1}=u_0A_m-DA_m$, and $N_m=\mathcal N(A_m)$.
+\begin{theorem}[All derivative squares]\label{agint:squares}
+For $r\ge2$, $a,k\ge0$, and $m=a+2k+2r+2$,
+\[
+ [u_0^au_1^ku_r^2]N_m=
+ \begin{cases}
+ \displaystyle\frac{(-1)^rm!}{a!2^{k+r+1}k!(r+1)!
+                      \prod_{j=0}^r(k+2j+1)},&k\text{ even},\\[5pt]
+ 0,&k\text{ odd}.
+ \end{cases}
+\]
+\end{theorem}
+The proof in \emph{Affine Polarization of Gamma Normal Forms},
+Sections 2--3, includes the Appell primitive lemma and constant-coefficient
+weighted quadratic symbol. The pure-square and $r=2$ cases are inherited.
+The corresponding even entire function is
+\[
+ g_r(y)=\frac{(-1)^r}{(r+1)!}
+       \left(\frac{\partial}{\partial(y^2)}\right)^{r+1}\cosh y
+ =\frac{(-1)^r}{2^{2r+1}r!(r+1)!}
+       \int_0^1(1-v^2)^r\cosh(yv)\,dv.
+\]
+It yields finite Hurwitz/Lerch endpoint formulas and anchored Stieltjes
+primitives; see the full article for domains and removable-pole rules.
+
+For $r\ge2$ set $P_r(v)=B_{2r}((v+1)/2)-B_{2r}$ and
+$d_{rj}=(2r)!B_{2r-j}(1)/(2^j(2r-j)!)$.
+\begin{theorem}[Single-zeta selectors]\label{agint:selectors}
+As meromorphic functions of $s$,
+\[
+ \int_1^3P_r(x-2)\zeta(s,x)\,dx
+ =-\frac{(2r)!\zeta(s-2r)}{2^{2r-1}(1-s)_{2r}}
+  -\sum_{j=2}^{2r}\frac{(-1)^jd_{rj}(1+2^{j+1-s})}{(1-s)_{j+1}}.
+\]
+For even $P$ of degree at most $2R$ with $P(1)=P'(1)=0$, a nonzero
+transform of this form with exactly one prescribed shifted zeta
+$\zeta(s-2r)$ and remainder in $\mathbb C(s)+2^{-s}\mathbb C(s)$
+occurs exactly when $P$ is a nonzero scalar multiple of $P_r$.
+\end{theorem}
+The proof and the explicit selector expansion are in Section 9 of the
+full article. The classification is functional over $\mathbb C(s)$;
+it does not assert independence of numerical special values.
+A particularly simple consequence is the ordinary convergent identity
+\[
+ \int_1^3(x-1)^2(3-x)^2\psi'(x)\,dx=\frac{6\zeta(3)}{\pi^2}.
+\]
+Neither theorem resolves the general unequal-tail optimal-prefix
+conjecture or the Gaussian $S_6$ and revised $S_8$ candidates.

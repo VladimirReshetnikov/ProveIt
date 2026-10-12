@@ -1,0 +1,295 @@
+% Integration-ready research section; labels bil:*; bibliography keys below.
+\section{A Gamma normalization for independently shifted Hurwitz tails}
+\label{bil:section}
+
+The diagonal square law in the preceding report leaves open what happens
+when both tail orders and both shifts vary independently. A normalization
+by an elementary Gamma quotient gives a finite endpoint formula in all
+four variables. The resulting weight is determined by the two orders;
+an arbitrary additional outer power is not being evaluated here.
+
+\subsection{The normalization and its difference equation}
+
+For $\Re z>0$ write
+\begin{align}
+ \mathcal B_s(z)
+ &=2^{-s}\left\{\zeta\left(s,\frac z2\right)
+                    -\zeta\left(s,\frac{z+1}{2}\right)\right\},
+                    \label{bil:alternating-hurwitz}\\
+ \ell(z)&=\frac12\log2+\log\Gamma\left(\frac{z+1}{2}\right)
+                     -\log\Gamma\left(\frac z2\right),\qquad
+ h(z)=e^{\ell(z)}.\label{bil:h}
+\end{align}
+The difference in \eqref{bil:alternating-hurwitz} has its removable
+value at $s=1$ and is entire in $s$. All logarithms of Gamma in
+\eqref{bil:h} are the holomorphic branches on the right half-plane that
+are real on the positive axis. Powers of $h$ mean $e^{s\ell}$.
+The elementary recurrences give
+\begin{equation}\label{bil:basic-recurrences}
+ \mathcal B_s(z)+\mathcal B_s(z+1)=z^{-s},\qquad
+ \ell(z)+\ell(z+1)=\log z,\qquad h(z)h(z+1)=z.
+\end{equation}
+The alternating Hurwitz recurrence and its order derivatives are
+classical; see Hu--Kim \cite{bil:HuKim}. The quotient $h$ is also
+classical: in the notation of Wang--Hu--Kim \cite{bil:WangHuKim},
+$h(z)=\sqrt{\pi/2}/\widetilde\Gamma(z)$.
+
+Set
+\begin{equation}\label{bil:tau-v}
+ \tau_s(z)=h(z)^s\mathcal B_s(z),\qquad
+ V_s(z)=\frac{z^s-(z-1)^s}{h(z)^{2s}}\quad(\Re z>1).
+\end{equation}
+Neither $h$ nor this rewriting of $\mathcal B_s$ is asserted to be a
+new special function. Their useful feature is the homogeneous equation
+\begin{equation}\label{bil:homogeneous}
+ \boxed{\tau_s(z-1)-\tau_s(z+1)=V_s(z)\tau_s(z).}
+\end{equation}
+Indeed, multiplication of the two adjacent recurrences for
+$\mathcal B_s$ by the appropriate powers of $h$ gives
+\[
+ \tau_s(z\pm1)=h(z)^{-s}
+                  -\left(\frac{h(z\pm1)}{h(z)}\right)^s\tau_s(z).
+\]
+Subtracting and using \eqref{bil:basic-recurrences} proves
+\eqref{bil:homogeneous}.
+
+\subsection{Two exact bilinear endpoint laws}
+
+\begin{theorem}[Independent orders and shifts]\label{bil:master}
+Let $\Re a,\Re b>0$. For $p,q\in\mathbb C$ put
+\[
+ u_n=\tau_p(n+a+1),\qquad v_n=\tau_q(n+b+1),\qquad
+ C_n=u_nv_{n+1}+u_{n+1}v_n,\quad
+ D_n=u_nv_{n+1}-u_{n+1}v_n.
+\]
+These definitions include $n=-1$. For every integer $N\ge0$,
+\begin{align}
+ &\sum_{n=0}^{N}
+ \{V_p(n+a+1)+V_q(n+b+1)\}u_nv_n
+       =C_{-1}-C_N,\label{bil:finite-plus}\\
+ &\sum_{n=0}^{N}(-1)^n
+ \{V_p(n+a+1)-V_q(n+b+1)\}u_nv_n
+       =D_{-1}+(-1)^ND_N.\label{bil:finite-minus}
+\end{align}
+If $\Re(p+q)>0$, both series converge absolutely and locally normally,
+and hence
+\begin{align}
+ &\sum_{n\ge0}\{V_p(n+a+1)+V_q(n+b+1)\}u_nv_n\notag\\
+ &\hspace{8mm}=\tau_p(a)\tau_q(b+1)+\tau_p(a+1)\tau_q(b),
+                                      \label{bil:plus}\\
+ &\sum_{n\ge0}(-1)^n\{V_p(n+a+1)-V_q(n+b+1)\}u_nv_n\notag\\
+ &\hspace{8mm}=\tau_p(a)\tau_q(b+1)-\tau_p(a+1)\tau_q(b).
+                                      \label{bil:minus}
+\end{align}
+All fixed mixed derivatives in $p,q,a,b$ may be taken term by term
+in this domain. The second equality also holds as an ordinary,
+possibly conditional, series on $\Re(p+q)>-2$.
+\end{theorem}
+
+\begin{proof}
+The homogeneous equation yields
+\[
+ C_{n-1}-C_n=\{V_p(n+a+1)+V_q(n+b+1)\}u_nv_n,
+\]
+and
+\[
+ D_{n-1}+D_n=\{V_p(n+a+1)-V_q(n+b+1)\}u_nv_n.
+\]
+The first identity telescopes. Multiplying the second by $(-1)^n$
+also telescopes, since consecutive signs are opposite. This proves
+both finite identities, including their lower signs.
+
+The standard Hurwitz expansion and the Gamma quotient expansion give,
+uniformly on compact sets of orders and shifts,
+\begin{align}
+ \mathcal B_s(z)&=\frac12z^{-s}
+                       \left(1+\frac{s}{2z}+O(z^{-2})\right),\notag\\
+ h(z)&=z^{1/2}\left(1-\frac1{4z}+O(z^{-2})\right),\notag\\
+ \tau_s(z)&=\frac12z^{-s/2}
+                       \left(1+\frac{s}{4z}+O(z^{-2})\right),
+                         \label{bil:asymptotics}\\
+ V_s(z)&=\frac{s}{z}+O(z^{-2}).\notag
+\end{align}
+These expansions hold for arbitrary bounded complex $s$, with
+sufficiently many terms in the Hurwitz expansion when needed. Thus
+the summands in \eqref{bil:plus} and \eqref{bil:minus} are
+$O(n^{-1-\Re(p+q)/2})$, locally uniformly, and
+$C_N=O(N^{-\Re(p+q)/2})$. The leading terms cancel in $D_N$, giving
+$D_N=O(N^{-1-\Re(p+q)/2})$. This proves absolute normal convergence
+and the endpoint limits when $\Re(p+q)>0$. Cauchy's formula gives
+the derivative assertion. Finally the finite identity
+\eqref{bil:finite-minus} itself proves ordinary convergence on
+$\Re(p+q)>-2$, since its remaining endpoint tends to zero there.
+\end{proof}
+
+The Hurwitz and Gamma expansions invoked here are classical
+\cite{bil:DLMF}; the contribution is the bilinear finite endpoint
+calculus built from them. On setting $p=q=s$ and $a=b$, division
+of \eqref{bil:plus} by two gives precisely
+\[
+ \sum_{n\ge0}\{(n+a+1)^s-(n+a)^s\}\mathcal B_s(n+a+1)^2
+ =\mathcal B_s(a+1)-a^s\mathcal B_s(a+1)^2.
+\]
+Thus the earlier square law is a diagonal specialization of this
+four-variable family.
+
+\begin{corollary}[The first boundary contact]\label{bil:contact}
+For $p+q=0$, the ordinary symmetric series in
+\eqref{bil:finite-plus} converges absolutely and satisfies
+\begin{align}
+ &\sum_{n\ge0}\{V_p(n+a+1)+V_{-p}(n+b+1)\}
+           \tau_p(n+a+1)\tau_{-p}(n+b+1)\notag\\
+ &=\tau_p(a)\tau_{-p}(b+1)
+        +\tau_p(a+1)\tau_{-p}(b)-\frac12.\label{bil:contact-half}
+\end{align}
+\end{corollary}
+\begin{proof}
+The $n^{-1}$ terms in the sum of the two $V$'s cancel, so the
+summand is $O(n^{-2})$. Equation \eqref{bil:asymptotics} gives
+$C_N\to1/2$. Now pass to the limit in \eqref{bil:finite-plus}.
+\end{proof}
+In particular the ordinary boundary value differs by $1/2$ from the
+analytic endpoint continuation from $\Re(p+q)>0$. On the diagonal,
+the division by two explains the earlier $1/4$ contact. The present
+statement does not confuse those two notions of value.
+
+\subsection{All independent Stieltjes orders}
+
+Use the convention
+\[
+ \zeta(1+t,z)=\frac1t+
+       \sum_{j\ge0}\frac{(-1)^j\gamma_j(z)}{j!}t^j.
+\]
+For $r\ge0$ define the following explicit finite expressions:
+\begin{align}
+ T_r(z)&=\frac{h(z)}2
+  \sum_{j=0}^{r}\binom rj
+  (\ell(z)-\log2)^{r-j}(-1)^j
+  \left\{\gamma_j\left(\frac z2\right)
+         -\gamma_j\left(\frac{z+1}{2}\right)\right\},
+                                        \label{bil:T-jet}\\
+ J_r(z)&=\frac1{h(z)^2}
+  \left\{z(\log z-2\ell(z))^r
+      -(z-1)(\log(z-1)-2\ell(z))^r\right\}.
+                                        \label{bil:J-jet}
+\end{align}
+Here $\Re z>0$ suffices in \eqref{bil:T-jet}, and $\Re z>1$ is
+used in \eqref{bil:J-jet}. Direct coefficient extraction gives
+\[
+ T_r(z)=\left.\partial_s^r\tau_s(z)\right|_{s=1},\qquad
+ J_r(z)=\left.\partial_s^r V_s(z)\right|_{s=1}.
+\]
+For example $T_0(z)=h(z)\mathcal B_1(z)$ and $J_0(z)=h(z)^{-2}$.
+
+\begin{theorem}[Every independent mixed Stieltjes jet]
+\label{bil:stieltjes-all}
+For $r,s\ge0$ and $\Re a,\Re b>0$, write $z_n=n+a+1$ and
+$w_n=n+b+1$. Put
+\begin{align*}
+ X_{r,s}(z,w)&=\sum_{j=0}^{r}\binom rj
+                         J_j(z)T_{r-j}(z)T_s(w),\\
+ Y_{r,s}(z,w)&=\sum_{k=0}^{s}\binom sk
+                         T_r(z)J_k(w)T_{s-k}(w).
+\end{align*}
+Then the following are ordinary absolutely convergent identities:
+\begin{align}
+ \sum_{n\ge0}\{X_{r,s}(z_n,w_n)+Y_{r,s}(z_n,w_n)\}
+ &=T_r(a)T_s(b+1)+T_r(a+1)T_s(b),\label{bil:jets-plus}\\
+ \sum_{n\ge0}(-1)^n\{X_{r,s}(z_n,w_n)-Y_{r,s}(z_n,w_n)\}
+ &=T_r(a)T_s(b+1)-T_r(a+1)T_s(b).\label{bil:jets-minus}
+\end{align}
+\end{theorem}
+\begin{proof}
+Apply $\partial_p^r\partial_q^s$ to \eqref{bil:plus} and
+\eqref{bil:minus} at $(p,q)=(1,1)$. The product rule gives the two
+finite binomial sums exactly. Each individual scalar summand in these
+sums is $O(n^{-2}\log^{r+s}(n+2))$, so no regularization or
+cancellation between divergent scalar series is implicit.
+\end{proof}
+
+For the first mixed jet, $r=s=1$, the symmetric summand is explicitly
+\[
+ \{J_0(z)+J_0(w)\}T_1(z)T_1(w)
+ +J_1(z)T_0(z)T_1(w)+J_1(w)T_1(z)T_0(w).
+\]
+Its sum is $T_1(a)T_1(b+1)+T_1(a+1)T_1(b)$. Thus independent
+first Stieltjes coefficients at different shifts already occur in
+an exact finite endpoint identity, and \eqref{bil:jets-plus}--
+\eqref{bil:jets-minus} give every higher pair without an inference
+from a single diagonal derivative.
+
+\subsection{Anchored primitives and a pure Gamma square identity}
+
+Differentiating \eqref{bil:h} shows
+\begin{equation}\label{bil:h-derivative}
+ \ell'(z)=\mathcal B_1(z),\qquad \tau_1(z)=h'(z).
+\end{equation}
+Hence the $(p,q)=(1,1)$ laws have elementary primitives in the Gamma
+quotient itself. Let $A=[a_0,a_1]$ and $B=[b_0,b_1]$ be oriented
+real intervals with positive endpoints, and define
+\[
+ U_A(t)=h(t+a_1)-h(t+a_0),\qquad
+ R_A(t)=\frac1{h(t+a_0)}-\frac1{h(t+a_1)},
+\]
+with analogous notation for $B$. Double integration of
+\eqref{bil:plus} and \eqref{bil:minus}, using
+$\int h'/h^2=-1/h$, gives
+\begin{align}
+ \sum_{n\ge1}\{R_A(n)U_B(n)+U_A(n)R_B(n)\}
+ &=U_A(0)U_B(1)+U_A(1)U_B(0),\label{bil:primitive-plus}\\
+ \sum_{n\ge1}(-1)^{n-1}\{R_A(n)U_B(n)-U_A(n)R_B(n)\}
+ &=U_A(0)U_B(1)-U_A(1)U_B(0).\label{bil:primitive-minus}
+\end{align}
+These anchored identities have no unspecified integration constants.
+Uniform convergence on the compact rectangles justifies integration;
+alternatively $U_A(n)=O(n^{-1/2})$ and $R_A(n)=O(n^{-3/2})$
+give absolute convergence directly.
+
+\begin{corollary}[A Gamma quotient increment square]\label{bil:gamma-square}
+For positive real $a,b$,
+\begin{equation}\label{bil:gamma-square-formula}
+ \boxed{\sum_{n=1}^{\infty}
+   \frac{\{h(n+b)-h(n+a)\}^{2}}{h(n+a)h(n+b)}
+   =\{h(b)-h(a)\}\{h(b+1)-h(a+1)\}.}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Take the same interval $A=B=[a,b]$ in
+\eqref{bil:primitive-plus} and divide by two.
+There is also a particularly short finite certificate. If
+$U_n=h(n+b)-h(n+a)$, the recurrence $h(z)h(z+1)=z$ gives
+\[
+ U_{n-1}U_n-U_nU_{n+1}
+       =\frac{U_n^2}{h(n+a)h(n+b)}.
+\]
+Thus the sum through $n=N$ equals $U_0U_1-U_NU_{N+1}$, and
+$U_NU_{N+1}=O(N^{-1})$ tends to zero.
+\end{proof}
+At $(a,b)=(1,2)$ the right side is
+\begin{equation}\label{bil:gamma-square-example}
+ 3-\frac\pi2-\frac4\pi.
+\end{equation}
+Indeed $h(1)=\sqrt{2/\pi}$, $h(2)=\sqrt{\pi/2}$, and
+$h(3)=2\sqrt{2/\pi}$. Equation \eqref{bil:gamma-square-formula}
+also extends holomorphically to $\Re a,\Re b>0$, with the algebraic
+square as written and no complex conjugation.
+
+\subsection{Scope and further targets}
+
+The classical ingredients are the alternating Hurwitz recurrence,
+Gamma shift formula, and a two-solution discrete Lagrange identity.
+Products of zeta tails already have a broad literature, including
+Hoffman's multiple-zeta treatment \cite{bil:Hoffman}. The claims here
+are the displayed independently parameterized endpoint laws, their
+explicit mixed Stieltjes coefficients, and the anchored Gamma
+consequences, as additions to the inspected project material. A
+literature search did not locate these particular forms; this is not
+a proof of priority. No numerical independence assertion is used.
+
+Two precise extensions remain. First, adjoining an independent outer
+power to \eqref{bil:plus} generally breaks the displayed telescoper;
+one should describe the additional coordinate and its moving polar
+hyperplanes. Second, at $p+q=-2m$ with $m>0$, the exact upper endpoint
+provides a systematic continuation scheme, but the complete
+independent-order contact algebra is not established by
+Corollary~\ref{bil:contact} alone.

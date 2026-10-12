@@ -1,0 +1,384 @@
+\section{A critical finite-difference hierarchy of every harmonic rank}
+\label{hier:sec}
+
+The original finite-difference construction uses a stencil of order
+$2r-2$ and confines its special-function dependence to one moment entry.
+Shorter stencils give an explicit hierarchy whose harmonic ranks run
+through every value from one to $r$, while the integer-order weights
+retain the same critical decay.  Its spectral continuation has a
+completely determined staircase of pole orders.  This is a spectral
+finite-difference family; the more general overlapping resonances of
+the earlier Gauss ensemble are a separate question.
+
+Fix integers
+\begin{equation}\label{hier:parameters}
+ r\ge2,\qquad 1\le\rho\le r,\qquad
+ d=2r-2,\qquad h=d-\rho+1=2r-\rho-1.
+\end{equation}
+For $\Re a>0$, use the right-half-plane logarithm to define
+\begin{equation}\label{hier:weight}
+ w_n^{[h]}(s,a)=\frac1{h!}\sum_{j=0}^h(-1)^j\binom hj
+                                      (n+a+j)^{-s}.
+\end{equation}
+The corresponding ordered ensemble is
+\begin{equation}\label{hier:ensemble}
+ Z_{r,\rho}(s,a)=
+ \sum_{0\le n_1<\cdots<n_r}
+ \Delta(n_1,\ldots,n_r)^2\prod_{i=1}^r w_{n_i}^{[h]}(s,a).
+\end{equation}
+There is no additional $1/r!$ because the indices are strictly ordered.
+
+\subsection{Finite moments and exact shifted-zeta closure}
+
+Define finite polynomials and endpoint functions by
+\begin{align}
+ b_k(a;h)&=\frac1{h!}\sum_{j=0}^h(-1)^j\binom hj(-a-j)^k,
+                                                        \label{hier:b}\\
+ E_k(s,a;h)&=-\frac1{h!}\sum_{j=1}^h(-1)^j\binom hj
+       \sum_{\ell=0}^{j-1}(\ell-j)^k(\ell+a)^{-s}.
+                                                        \label{hier:E}
+\end{align}
+The convention $0^0=1$ applies to zeroth moments.  Polynomial
+annihilation gives
+\begin{equation}\label{hier:annihilation}
+ b_0=\cdots=b_{h-1}=0,\qquad b_h=1.
+\end{equation}
+For $0\le\ell\le\rho-1$ let $C_\ell(a;h)$ be the symmetric Hankel
+matrix with entries
+\begin{equation}\label{hier:C}
+ (C_\ell)_{ij}=\binom{i+j}{\ell}b_{i+j-\ell}(a;h),
+ \qquad 0\le i,j<r,
+\end{equation}
+with a term set to zero if its lower index is negative or if
+$\ell>i+j$.  Also let $E(s,a;h)=(E_{i+j}(s,a;h))_{i,j<r}$.
+
+\begin{theorem}[A finite shifted-zeta determinant]
+\label{hier:closure}
+The ensemble \eqref{hier:ensemble} is absolutely and locally normally
+convergent for $\Re s>\rho$, $\Re a>0$, and there
+\begin{equation}\label{hier:closed}
+ \boxed{\displaystyle
+ Z_{r,\rho}(s,a)=\det\left(
+ E(s,a;h)+\sum_{\ell=0}^{\rho-1}
+                    \zeta(s-\ell,a)C_\ell(a;h)\right).}
+\end{equation}
+The right side gives its meromorphic continuation to all $s\in\mathbb C$.
+Its only possible poles are $1,2,\ldots,\rho$.
+\end{theorem}
+\begin{proof}
+For $\Re s>0$ the weight has the integral representation
+\begin{equation}\label{hier:laplace}
+ w_n^{[h]}(s,a)=\frac1{h!\Gamma(s)}
+ \int_0^\infty t^{s-1}e^{-(n+a)t}(1-e^{-t})^h\,dt.
+\end{equation}
+Repeated finite differences, or expansion of this kernel at zero,
+give locally uniformly
+\begin{equation}\label{hier:decay}
+ w_n^{[h]}(s,a)=\frac{(s)_h}{h!}(n+a)^{-s-h}
+                     +O((n+1)^{-\Re s-h-1}).
+\end{equation}
+For ordered indices, $|\Delta(\boldsymbol n)|^2\le
+\prod_i(n_i+1)^{2(i-1)}$.  The least decaying factor is summable
+when $\Re s+h-d>1$, precisely $\Re s>\rho$.
+
+For a moment of degree $k\le d$, initially take $\Re s>d+1$ so
+that all separately shifted sums converge.  Shift the index by $j$
+and expand
+\[
+ (n-j)^k=\sum_{\ell=0}^k\binom k\ell
+                      (-a-j)^{k-\ell}(n+a)^\ell.
+\]
+The lower endpoints give \eqref{hier:E}, and the infinite shifted
+sums give
+\begin{equation}\label{hier:moment}
+ \sum_{n\ge0}n^k w_n^{[h]}(s,a)
+ =E_k(s,a;h)+\sum_{\ell=0}^{k-h}
+     \binom k\ell b_{k-\ell}(a;h)\zeta(s-\ell,a).
+\end{equation}
+An empty sum is zero.  Both sides are holomorphic on their common
+normal-convergence half-plane, so the identity theorem extends this
+identity to $\Re s>\rho$.  Finite Cauchy--Binet and passage to the
+normal limit give \eqref{hier:closed}.  Each endpoint function is
+entire in $s$, and every Hurwitz factor has just its displayed pole.
+\end{proof}
+
+For later cutoff use, define
+$H_N^{(z)}(a)=\sum_{n=0}^N(n+a)^{-z}$ for every complex $z$ and
+\begin{equation}\label{hier:upper}
+ T_{k,N}(s,a;h)=\frac1{h!}\sum_{j=1}^h(-1)^j\binom hj
+       \sum_{\ell=N+1}^{N+j}(\ell-j)^k(\ell+a)^{-s}.
+\end{equation}
+The exact finite counterpart of \eqref{hier:moment} is
+\begin{equation}\label{hier:finite-moment}
+ \sum_{n=0}^N n^k w_n^{[h]}(s,a)
+ = E_k+T_{k,N}+
+   \sum_{\ell=0}^{k-h}\binom k\ell b_{k-\ell}
+                                     H_N^{(s-\ell)}(a).
+\end{equation}
+It holds for every $s$, including orders at which the infinite
+ensemble has a pole.  It follows from the finite index-shift identity;
+no divergent series is split in its proof.
+
+\subsection{Exact rank and the unique highest harmonic monomial}
+
+\begin{theorem}[Every rank at the same critical decay]
+\label{hier:rank}
+At $s=\rho$ and real $a>0$, the rational weight
+$R_{r,\rho,a}(n)=w_n^{[h]}(\rho,a)$ is positive and obeys
+\begin{equation}\label{hier:critical}
+ R_{r,\rho,a}(n)=\binom{2r-2}{\rho-1}n^{-(2r-1)}
+                                      +O(n^{-2r}).
+\end{equation}
+Its harmonic pencil has generic rank exactly $\rho$.
+
+Put $L=r-\rho$ and let
+\begin{equation}\label{hier:Vcutoff}
+ V_{L,N}(a)=\det\left(
+   \sum_{n=0}^N n^{i+j}R_{r,\rho,a}(n)\right)_{0\le i,j<L},
+ \qquad V_{0,N}=1.
+\end{equation}
+This is rational in $N$ (and rational in $a$).  The degree-$\rho$
+homogeneous part of the full $r$-particle cutoff determinant, with
+formal harmonic variables $X_q$ corresponding to $H_N^{(q)}(a)$, is
+exactly
+\begin{equation}\label{hier:top}
+ \boxed{\displaystyle
+ (-1)^{\rho(\rho-1)/2}V_{L,N}(a)X_\rho^\rho.}
+\end{equation}
+It is nonzero whenever $N\ge L-1$, with this cutoff condition vacuous
+when $L=0$.
+\end{theorem}
+\begin{proof}
+Positivity follows from \eqref{hier:laplace}.  In
+\eqref{hier:decay}, $h+\rho=2r-1$ and
+$(\rho)_h/h!=\binom{2r-2}{\rho-1}$.
+
+By \eqref{hier:annihilation}, $C_\ell$ is supported in its final
+$\rho-\ell$ rows and columns.  In its final
+$(\rho-\ell)\times(\rho-\ell)$ block, every entry below the first
+possible anti-diagonal in moment order vanishes, and the entries on
+that anti-diagonal all equal
+$\binom{h+\ell}{\ell}$.  In particular, all matrices lie in the
+same final $\rho\times\rho$ block.  Within that block $C_0$ has
+zeros for relative indices $i+j<\rho-1$ and ones when
+$i+j=\rho-1$; all other $C_\ell$ start strictly after that
+anti-diagonal.  Hence
+\begin{equation}\label{hier:block-det}
+ \det\left(\sum_{\ell=0}^{\rho-1}Y_\ell
+                  (C_\ell)_{\rm bottom}\right)
+     =(-1)^{\rho(\rho-1)/2}Y_0^\rho.
+\end{equation}
+Only the reversing permutation can contribute: its column-index sum
+already equals the minimum possible sum of nonzero entries in all
+rows.  Thus the pencil has rank $\rho$.
+
+At $s=\rho$, $Y_\ell$ is the formal variable $X_{\rho-\ell}$.
+To obtain degree $\rho$ in the full determinant one must take all
+these entries from the final block.  The complementary determinant
+is \eqref{hier:Vcutoff}, which proves \eqref{hier:top}.
+Its moments have degree at most $2L-2<h$, so
+\eqref{hier:finite-moment} expresses each using finite rational
+endpoints alone.  Positivity of the weight makes this $L\times L$
+Gram matrix positive definite once at least $L$ distinct nodes have
+been included.  This proves the last assertion, including the empty
+case $L=0$.
+\end{proof}
+
+For example, $r=3,\rho=2,h=3$ gives the positive critical weight
+\[
+ R(x)=\frac16\left\{\frac1{(x+a)^2}-\frac3{(x+a+1)^2}
+              +\frac3{(x+a+2)^2}-\frac1{(x+a+3)^2}\right\}.
+\]
+Its two coefficient matrices, indexed by harmonic orders, are
+\[
+ C^{(1)}=\begin{pmatrix}0&0&0\\0&0&0\\0&0&4\end{pmatrix},
+ \qquad
+ C^{(2)}=\begin{pmatrix}0&0&0\\0&0&1\\0&1&-4a-6\end{pmatrix}.
+\]
+The exact leading harmonic term is
+$-\bigl(\sum_{n=0}^N R(n)\bigr)X_2^2$, and its coefficient is
+nonzero for every $N\ge0$.
+
+\subsection{Exact pole orders and the leading Laurent coefficients}
+
+For an integer $m$ with $1\le m\le\rho$, put
+\begin{equation}\label{hier:pole-parameters}
+ \eta=\rho-m+1,\qquad L=r-\eta,
+ \qquad \beta_m=\binom{h+m-1}{m-1}.
+\end{equation}
+Define the convergent lower-particle normalization
+\begin{equation}\label{hier:lower-normalization}
+ G_{L,h}^{(m)}(a)=
+ \det\left(\sum_{n\ge0}n^{i+j}w_n^{[h]}(m,a)\right)_{0\le i,j<L},
+ \qquad G_{0,h}^{(m)}=1.
+\end{equation}
+
+\begin{theorem}[A staircase of exact spectral poles]
+\label{hier:poles}
+For real $a>0$, $Z_{r,\rho}(s,a)$ has a pole of exact order
+$\rho-m+1$ at every $m=1,\ldots,\rho$.  Its leading coefficient is
+\begin{equation}\label{hier:leading-Laurent}
+ \boxed{\displaystyle
+ \lim_{s\to m}(s-m)^{\eta}Z_{r,\rho}(s,a)
+ =(-1)^{\eta(\eta-1)/2}\beta_m^{\eta}G_{L,h}^{(m)}(a).}
+\end{equation}
+The lower normalization is strictly positive.  For complex $a$ with
+$\Re a>0$, the same identity holds holomorphically, but at special
+complex parameters the leading coefficient is not asserted nonzero.
+\end{theorem}
+\begin{proof}
+Only $\zeta(s-m+1,a)$ has a pole at $s=m$; its residue is one.
+Consequently the continued moment matrix has the local form
+\[
+ M(s)=\frac{C_{m-1}}{s-m}+A(s)
+\]
+with $A$ holomorphic.  The residue matrix is supported in its final
+$\eta\times\eta$ block.  This block has zeros before the
+anti-diagonal and constant anti-diagonal $\beta_m$, so its
+determinant is
+$(-1)^{\eta(\eta-1)/2}\beta_m^{\eta}$.
+
+In the full determinant, the coefficient of $(s-m)^{-\eta}$ is this
+residue determinant times the complementary top-left $L\times L$
+minor of $A(m)$.  These top-left entries have no pole and coincide
+with ordinary moments of $w_n^{[h]}(m,a)$.  Indeed, their largest
+degree is $2L-2$ and the weight decays as $n^{-m-h}$; the required
+strict inequality is
+\[
+ m+h-(2L-2)>1,
+\]
+which here has left side $\eta+2>1$.  The same inequality holds in
+a small complex neighborhood, so normal convergence identifies the
+analytic moment entries with their series there.  This proves
+\eqref{hier:leading-Laurent}.  At positive real $a$, the Laplace
+formula makes the weight strictly positive on infinitely many nodes,
+so the lower Gram determinant is strictly positive.  The pole order
+is therefore exact.
+\end{proof}
+
+\subsection{A Gamma product at the highest-order pole}
+
+At $m=1$, put $L=r-\rho$.  The normalization in the preceding theorem
+has the finite product
+\begin{equation}\label{hier:Gamma-product}
+ \boxed{\displaystyle
+ G_{L,h}^{(1)}(a)=
+ \prod_{j=0}^{L-1}
+ \frac{(j!)^2\Gamma(a+j)\Gamma(h-L+1-j)}
+      {\Gamma(h+1-j)\Gamma(a+h-j)}.}
+\end{equation}
+In particular, the leading Laurent coefficient at $s=1$ is
+$(-1)^{\rho(\rho-1)/2}$ times this product.  For $\rho=r$ it is
+the nonzero constant $(-1)^{r(r-1)/2}$.
+
+Here is a derivation that also fixes the normalization.  The beta
+partial-fraction identity gives
+\[
+ w_n^{[h]}(1,a)=\frac{\Gamma(n+a)}{\Gamma(n+a+h+1)}.
+\]
+Replace the two monomial bases of the $L$-particle moment determinant
+by the monic bases $n^{\underline i}$ and $(n+a)_j$.  The mixed
+moment is
+\begin{equation}\label{hier:mixed-moment}
+ M_{ij}=\frac{\Gamma(i+1)\Gamma(a+i+j)\Gamma(h-i-j)}
+                  {\Gamma(h+1-j)\Gamma(a+h)},
+ \qquad 0\le i,j<L.
+\end{equation}
+To see this, write $n=i+k$ and sum the resulting Gauss series with
+parameters $i+1,a+i+j,a+i+h+1$.  Its excess is $h-i-j>0$;
+in our parameters $h>2L-2$.  Thus the sum is justified by absolute
+convergence.
+
+After factoring rows and columns in \eqref{hier:mixed-moment}, the
+remaining determinant is
+\[
+ \det_{0\le i,j<L}\frac{(a+i)_j}{(1-h+i)_j}.
+\]
+The elementary factorial determinant
+\[
+ \det\frac{(x_i)_j}{(x_i+t)_j}
+ =\frac{\prod_{j=0}^{L-1}(t)_j\,
+             \prod_{i<k}(x_k-x_i)}
+            {\prod_{i=0}^{L-1}(x_i+t)_{L-1}}
+\]
+follows by multiplying each row by $(x_i+t)_{L-1}$ and comparing
+polynomial coefficients; evaluation at $x_i=-i$ computes the
+coefficient determinant.  Apply it with $x_i=a+i$ and $t=1-h-a$.
+Use
+\[
+ (1-h-a)_j=(-1)^j\frac{\Gamma(a+h)}{\Gamma(a+h-j)},\qquad
+ (1-h+i)_{L-1}=(-1)^{L-1}
+                    \frac{\Gamma(h-i)}{\Gamma(h-i-L+1)}.
+\]
+All signs cancel, and the remaining factors give
+\eqref{hier:Gamma-product}.  This is the same classical factorial
+determinant mechanism as the predecessor's residue product; the new
+point is its role as the coefficient of a pole of arbitrary order
+$\rho$ in the shorter-stencil spectral family.
+
+\subsection{A complete two-particle formula and its Stieltjes finite parts}
+
+For $r=\rho=2$ one has $h=1$.  Directly from the three moment
+identities,
+\begin{equation}\label{hier:r2}
+ \boxed{\displaystyle
+ Z_{2,2}(s,a)=2a^{-s}\zeta(s-1,a)
+        +(1-2a)a^{-s}\zeta(s,a)-\zeta(s,a)^2.}
+\end{equation}
+Thus, for every integer $m\ge3$, the ordinary convergent sum
+\begin{align}\label{hier:r2-sum}
+ &\sum_{0\le n<k}(k-n)^2
+ \bigl((n+a)^{-m}-(n+a+1)^{-m}\bigr)
+ \bigl((k+a)^{-m}-(k+a+1)^{-m}\bigr)\notag\\
+ &\hspace{12mm}=2a^{-m}\zeta(m-1,a)
+            +(1-2a)a^{-m}\zeta(m,a)-\zeta(m,a)^2.
+\end{align}
+For example, $a=1,m=3$ gives
+$2\zeta(2)-\zeta(3)-\zeta(3)^2$.
+
+Use the convention
+\[
+ \zeta(1+u,a)=\frac1u+
+    \sum_{k\ge0}\frac{(-1)^k\gamma_k(a)}{k!}u^k,
+ \qquad c=\frac1a-2.
+\]
+Expanding \eqref{hier:r2} at the double pole gives the full first
+three Laurent terms
+\begin{align}\label{hier:r2-s1}
+ Z_{2,2}(1+u,a)
+ ={}&-\frac1{u^2}+\frac{c-2\gamma_0(a)}u\notag\\
+ &+2\gamma_1(a)-\gamma_0(a)^2
+       +c\bigl(\gamma_0(a)-\log a+1\bigr)+O(u).
+\end{align}
+At the simple pole $s=2$,
+\begin{align}\label{hier:r2-s2}
+ \operatorname{FP}_{s=2}Z_{2,2}(s,a)
+ ={}&2a^{-2}\bigl(\gamma_0(a)-\log a\bigr)
+ +(1-2a)a^{-2}\zeta(2,a)-\zeta(2,a)^2.
+\end{align}
+These may be written entirely in generalized Stieltjes and polygamma
+coordinates using $\gamma_0(a)=-\psi(a)$ and $\zeta(2,a)=\psi'(a)$.
+They are spectral Laurent finite parts.  No equality with an
+unsubtracted endpoint sum or a hard-cutoff constant is implicit.
+
+There is a particularly simple check at order zero. Substitution of
+$\zeta(0,a)=1/2-a$ and
+$\zeta(-1,a)=-(a^2-a+1/6)/2$ into \eqref{hier:r2} gives
+\begin{equation}\label{hier:zero-contact}
+                  Z_{2,2}(0,a)=\frac1{12}
+\end{equation}
+for its spectral continuation. Yet at $s=0$ every weight
+$(n+a)^0-(n+a+1)^0$ is exactly zero, so the unmodified defining
+sum at that parameter has ordinary value zero. The discrepancy is
+an explicit example of noncommutation between continuation and
+specialization of the original infinite sum; \eqref{hier:zero-contact}
+does not assign $1/12$ to an ordinary sum of zero terms.
+
+All further Laurent coefficients of \eqref{hier:closed} are obtained
+by finite determinant arithmetic from the Hurwitz expansions at the
+relevant shifted orders.  In particular, at $s=m$ the coordinates are
+the generalized Stieltjes constants from the sole resonant Hurwitz
+factor, together with finitely many ordinary Hurwitz derivatives from
+the nonresonant factors and elementary endpoint logarithms.  This is
+an exact coefficient-generation procedure, without a claim that the
+resulting higher constants admit an additional classical reduction.

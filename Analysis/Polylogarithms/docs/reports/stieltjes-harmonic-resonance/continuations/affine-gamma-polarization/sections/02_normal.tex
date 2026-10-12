@@ -1,0 +1,131 @@
+\section{Canonical reduction, centering, and endpoint conventions}
+\label{ag:sec:normal}
+
+\subsection{The free differential algebra}
+Let $\mathscr R=\Q[u_0,u_1,u_2,\ldots]$, where every polynomial uses
+finitely many variables. The weight of $u_j$ is $j+1$; its factor degree
+is one. The derivation $\D$ increases weight by one and preserves factor
+degree. A monomial is \emph{functional} when it is a power of $u_0$,
+including $1$, or when its largest positive index occurs at least twice.
+Let $\mathscr F$ be the rational span of these monomials.
+
+The following is the normal-form input used in the repository
+\cite{Manuscript,HTG}. The terminology and the underlying complement
+also occur in the classical differential-algebra construction
+\cite[Section~4.4.1]{GRR}. We include a proof to make our coefficient
+conventions independent of a particular implementation.
+
+\begin{lemma}[The functional-monomial decomposition]\label{ag:lem:normal}
+Every $P\in\mathscr R$ has a unique decomposition
+\begin{equation}\label{ag:eq:normal-decomp}
+ P=\NF(P)+\D\Prim(P),\qquad \NF(P)\in\mathscr F,
+                  \qquad [1]\Prim(P)=0.
+\end{equation}
+Both maps are rational linear and preserve factor degree. On positive
+weight $w$, $\NF(P)$ has weight $w$ and $\Prim(P)$ has weight $w-1$.
+\end{lemma}
+\begin{proof}
+Suppose a monomial has its largest index $r\ge1$ exactly once. Write it
+as $u_r u_{r-1}^aV$, where $V$ uses indices below $r-1$. Then
+\begin{equation}\label{ag:eq:ibp-step}
+ u_r u_{r-1}^aV
+ =\D\left(\frac{u_{r-1}^{a+1}V}{a+1}\right)
+       -\frac{u_{r-1}^{a+1}\D V}{a+1}.
+\end{equation}
+Every monomial of the remainder has largest index below $r$. Repeating
+this replacement terminates and produces a functional remainder.
+Constants of primitives can be set to zero.
+
+For uniqueness, if a nonconstant polynomial $H$ has largest variable
+index $j$, the terms $u_{j+1}\partial H/\partial u_j$ in $\D H$ are
+nonzero and have largest index $j+1$ exactly once. All other terms have
+smaller largest index. They cannot be canceled by a functional
+polynomial. Thus $\D H\in\mathscr F$ forces $H$ constant, proving
+both directness and uniqueness after the stated normalization.
+\end{proof}
+
+This is a vector-space decomposition. For instance,
+$\NF(u_1)=0$ but $\NF(u_1^2)=u_1^2$; replacing $\NF(PQ)$ by
+$\NF(P)\NF(Q)$ is incorrect. Another useful check is
+$\NF(u_0u_4)=u_2^2$. Truncating away $u_4$ before reduction would
+lose that term. These are safeguards for the present derivation, not
+newly discovered errors in sources which already state the distinction.
+
+\subsection{The centered Gamma representative}
+The exponential generating function of \eqref{ag:eq:hierarchy-intro} is
+\begin{equation}\label{ag:eq:Bell}
+ \A(t)=\sum_{m\ge0}A_m\frac{t^m}{m!}
+ =\exp\left(\sum_{j\ge0}\frac{(-1)^j u_jt^{j+1}}{(j+1)!}\right).
+\end{equation}
+It follows either by the exponential Bell formula or by differentiating
+with respect to $t$ and using the defining recurrence. Under the digamma
+substitution it is $\Gamma(x)/\Gamma(x-t)$.
+
+Define
+\begin{equation}\label{ag:eq:centered}
+ \mathcal C(t)=e^{t\D/2}\A(t)
+ =\exp\left(\sum_{j\ge0}
+       \frac{u_{2j}t^{2j+1}}{2^{2j}(2j+1)!}\right).
+\end{equation}
+For any formal differential series $P(t)$,
+\[
+ (e^{t\D/2}-1)P(t)
+ =\D\left(\sum_{n\ge1}\frac{t^n\D^{n-1}P(t)}{2^n n!}\right).
+\]
+Therefore $\NF\mathcal C(t)=\NF\A(t)$. Analytically the centered
+representative is $\Gamma(x+t/2)/\Gamma(x-t/2)$, initially near $t=0$
+away from Gamma poles.
+
+Translation $u_0\mapsto u_0+c$ commutes with $\D$ and preserves the
+functional space. Uniqueness in Lemma~\ref{ag:lem:normal} implies that
+it commutes with $\NF$. Thus $\NF\A(t)$ has an Appell factor $e^{tu_0}$.
+The centered series also shows factor parity: each exponent term has
+odd weight and factor degree one, so every surviving monomial has
+factor degree congruent to its weight modulo two.
+
+\begin{lemma}[Appell covariance of the primitive]\label{ag:lem:appell-primitive}
+Suppose $P(t)$ and $\NF P(t)$ both satisfy
+$\partial_{u_0}P=tP$. If $P-\NF P=\D T$ with $[1]T=0$, then
+\[
+ \partial_{u_0}T-tT=c(t)
+\]
+for a scalar series $c(t)$. Consequently, modulo a scalar series,
+$T=e^{tu_0}B(t;u_1,u_2,\ldots)$, allowing a harmless Laurent power
+of $t$ if necessary.
+\end{lemma}
+\begin{proof}
+The operators $\partial_{u_0}$ and $\D$ commute. Apply
+$\partial_{u_0}-t$ to $\D T=P-\NF P$. Its result is zero, so the
+kernel statement in Lemma~\ref{ag:lem:normal} makes
+$\partial_{u_0}T-tT$ scalar. Solving this elementary equation in $u_0$
+gives $T=e^{tu_0}B-c(t)/t$.
+\end{proof}
+This small observation matters in the affine-symbol proof: after
+perturbation, the quadratic part of the primitive has the same
+exponential weight as the density and coefficients independent of the
+affine coordinate. We do not enlarge the quotient by arbitrary
+$x$-dependent primitives.
+
+\subsection{What an analytic substitution does and does not imply}
+For every fixed $m$, let $T_m=\Prim(A_m)$. On an interval
+$[\alpha,\beta]\subset(0,\infty)$,
+\begin{equation}\label{ag:eq:ordinary-gamma-integral}
+ \int_\alpha^\beta(-1)^m\Gamma(x)(\Gamma(x)^{-1})^{(m)}\dd x
+ =T_m(\psi(\beta),\ldots)-T_m(\psi(\alpha),\ldots)
+       +\int_\alpha^\beta N_m(\psi(x),\ldots)\dd x.
+\end{equation}
+If a fixed-coordinate finite part at zero is used instead, the endpoint
+is $T_m(\psi(1),\ldots)-[x^0]T_m(\psi(x),\ldots)$, not zero.
+This inherited endpoint convention \cite{Manuscript} is retained.
+
+At positive integral endpoints the entries are generalized harmonic
+numbers:
+\begin{equation}\label{ag:eq:harmonic-substitution}
+ \psi(N+1)=H_N-\gamma,\qquad
+ \psi^{(j)}(N+1)=(-1)^{j+1}j!\bigl(\zeta(j+1)-H_N^{(j+1)}\bigr)
+ \quad(j\ge1).
+\end{equation}
+These follow from the standard polygamma recurrence \cite{DLMFpsi}.
+Thus the exact normal-form certificates also give finite identities
+between Gamma derivatives and harmonic-tail polynomials. They do not
+by themselves evaluate every integral of a remaining normal monomial.

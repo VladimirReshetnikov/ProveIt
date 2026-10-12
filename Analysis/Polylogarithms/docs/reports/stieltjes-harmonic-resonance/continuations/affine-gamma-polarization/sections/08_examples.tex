@@ -1,0 +1,95 @@
+\section{Quartic weights: polygamma, Stieltjes, and hyperbolic integrals}
+\label{ag:sec:examples}
+
+Take $r=2,a=2,b=1$ and define $W(x)=(x-1)^2(3-x)^2$. Then
+\begin{equation}\label{ag:eq:r2-compact}
+ \HH_2(s;2,1)=\frac1{768}\int_1^3W(x)\zeta(s,x)\dd x.
+\end{equation}
+Integer translation of the Hurwitz zeta in
+\eqref{ag:eq:Hendpoints} gives
+\begin{align}
+ \HH_2(s;2,1)={}&-\frac{1+2^{3-s}}{96(1-s)_3}
+ -\frac{2\zeta(s-4)-1-2^{4-s}}{32(1-s)_4}
+ -\frac{1+2^{5-s}}{32(1-s)_5}.
+ \label{ag:eq:r2-Riemann}
+\end{align}
+This is a three-term meromorphic identity; the right side is not to be
+evaluated term by term at its apparent poles.
+
+\begin{proposition}[Six ordinary polygamma integrals]
+\label{ag:prop:six-integrals}
+The following identities hold:
+\begin{align}
+ \int_1^3W(x)\psi(x)\dd x
+   &=\frac{83}{180}-8\zeta'(-3),\label{ag:eq:Ipsi0}\\
+ \int_1^3W(x)\psi'(x)\dd x
+   &=\frac{6\zeta(3)}{\pi^2},\label{ag:eq:Ipsi1}\\
+ \int_1^3W(x)\psi''(x)\dd x
+   &=-48\zeta'(-1)+8\log2-14,\label{ag:eq:Ipsi2}\\
+ \int_1^3W(x)\psi^{(3)}(x)\dd x
+   &=24\log(4\pi)-60,\label{ag:eq:Ipsi3}\\
+ \int_1^3W(x)\psi^{(4)}(x)\dd x
+   &=48\gamma+24\log2-46,\label{ag:eq:Ipsi4}\\
+ \int_1^3W(x)\psi^{(5)}(x)\dd x
+   &=84-8\pi^2.\label{ag:eq:Ipsi5}
+\end{align}
+\end{proposition}
+\begin{proof}
+Take the Laurent coefficient at $s=1$ and the regular values at
+$s=2,3,4,5,6$ in \eqref{ag:eq:r2-Riemann}, respectively. Use
+$\gamma_0=-\psi$ and
+$\psi^{(m)}(x)=(-1)^{m+1}m!\zeta(m+1,x)$ for $m\ge1$
+\cite{DLMFpsi}. To make the cancellation reproducible, the required
+intermediate values are
+\begin{align*}
+ \HH_2(1+\varepsilon;2,1)
+ &=\frac1{720\varepsilon}+\frac{\zeta'(-3)}{96}
+                               -\frac{83}{138240}+O(\varepsilon),\\
+ 768\HH_2(2;2,1)&=-24\zeta'(-2),\\
+ 768\HH_2(3;2,1)&=24\zeta'(-1)-4\log2+7,\\
+ 768\HH_2(4;2,1)&=-8\zeta'(0)-10+4\log2,\\
+ 768\HH_2(5;2,1)&=-2\gamma-\log2+\frac{23}{12},\\
+ 768\HH_2(6;2,1)&=\frac7{10}-\frac{\pi^2}{15}.
+\end{align*}
+Finally, $\zeta'(0)=-\tfrac12\log(2\pi)$ and
+$\zeta'(-2)=-\zeta(3)/(4\pi^2)$ give the printed forms.
+The latter is the derivative of the zeta functional equation at its
+simple trivial zero; see also \cite{DLMFintegers}.
+\end{proof}
+
+The next Stieltjes coefficient is equally explicit:
+\begin{equation}\label{ag:eq:gamma1-example}
+ \boxed{
+ \int_1^3W(x)\gamma_1(x)\dd x
+ =\frac{367}{432}-\frac43\log2
+                 -\frac{44}{3}\zeta'(-3)-4\zeta''(-3).}
+\end{equation}
+To verify it algebraically, put
+$\zeta(-3+\varepsilon)=1/120+\zeta'(-3)\varepsilon+
+\zeta''(-3)\varepsilon^2/2+O(\varepsilon^3)$ and
+$2^{-\varepsilon}=1-\varepsilon\log2+
+\varepsilon^2(\log2)^2/2+O(\varepsilon^3)$ in
+\eqref{ag:eq:r2-Riemann}. The coefficient of $\varepsilon$ is minus
+$1/768$ times the left side of \eqref{ag:eq:gamma1-example}; the
+logarithm-square terms cancel. Theorem~\ref{ag:thm:Stieltjes} proves the
+corresponding finite identity at every higher order.
+
+\subsection{A convergent hyperbolic integral}
+At $s=2$, \eqref{ag:eq:Hmellin} and \eqref{ag:eq:g2} also give
+\begin{equation}\label{ag:eq:hyperbolic-integral}
+ \boxed{
+ \int_0^\infty
+ \frac{e^{-2t}\bigl((t^2+3)\sinh t-3t\cosh t\bigr)}
+      {t^4(1-e^{-t})}\dd t
+ =\frac{3\zeta(3)}{8\pi^2}.}
+\end{equation}
+The numerator in parentheses is $t^5/15+O(t^7)$ at zero, so the
+integrand has a finite limit. At infinity it decays exponentially
+with a rational power of $t$. There is no hidden finite part.
+Multiplying the value of $\HH_2(2;2,1)$ by $48$ proves the identity.
+
+These examples show two uses of the same kernel: its normal-form
+coefficients determine a Gamma differential sector, while its beta
+representation evaluates an independent family of ordinary integrals.
+They should not be conflated with a claim that all mixed Gamma moments
+have thereby been evaluated.

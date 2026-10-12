@@ -1,0 +1,105 @@
+\section{A finite-endpoint Mellin--Hurwitz transform}
+\label{ag:sec:hurwitz}
+
+Fix $r\ge2$ and initially take real $a>b>0$. Define
+\begin{equation}\label{ag:eq:Hmellin}
+ \HH_r(s;a,b)=\frac1{\Gamma(s)}\int_0^\infty
+       \frac{t^{s-1}e^{-at}g_r(bt)}{1-e^{-t}}\dd t,
+                  \qquad \Re s>1.
+\end{equation}
+At zero the integrand is $O(t^{\Re s-2})$, and at infinity the
+exponential decay is governed by $a-b>0$. These conditions justify
+ordinary integration and all fixed-order spectral derivatives in the
+stated half-plane.
+
+The Hurwitz zeta convention is
+$\zeta(s,x)=\sum_{n\ge0}(n+x)^{-s}$ for $\Re s>1$, continued
+meromorphically in $s$. Its standard Mellin representation and spatial
+derivative are recorded in \cite{DLMFzeta}. They also follow directly
+from the series in their common domain.
+
+\begin{theorem}[The beta average and its finite endpoints]
+\label{ag:thm:hurwitz}
+With $c_r$ as in \eqref{ag:eq:beta-kernel},
+\begin{equation}\label{ag:eq:Hcompact}
+ \HH_r(s;a,b)=\frac{c_r}{2}\int_{-1}^1
+                    (1-v^2)^r\zeta(s,a+bv)\dd v.
+\end{equation}
+This provides meromorphic continuation to every $s$, with the single
+possible pole $s=1$, whose residue is
+\begin{equation}\label{ag:eq:Hresidue}
+ g_r(0)=\frac{(-1)^r}{(2r+2)!}.
+\end{equation}
+Define
+\begin{equation}\label{ag:eq:weights}
+ w_{rj}(b)=\frac{(-1)^j j!\binom r{j-r}}
+ {2^{j+2}r!(r+1)!b^{j+1}},\qquad r\le j\le2r.
+\end{equation}
+Then, as an identity of meromorphic functions,
+\begin{equation}\label{ag:eq:Hendpoints}
+ \boxed{
+ \HH_r(s;a,b)=\sum_{j=r}^{2r}w_{rj}(b)
+ \frac{\zeta(s-j-1,a+b)-(-1)^j\zeta(s-j-1,a-b)}{(1-s)_{j+1}}.}
+\end{equation}
+At apparent poles of the separate summands, the entire sum is to be
+continued jointly. No pole other than $s=1$ survives.
+\end{theorem}
+\begin{proof}
+Insert \eqref{ag:eq:beta-kernel} into \eqref{ag:eq:Hmellin}.
+Absolute convergence permits interchanging the integrals. Combining
+the two exponentials in the hyperbolic cosine yields
+\eqref{ag:eq:Hcompact}. On every compact subset of $\Re x>0$,
+$\zeta(s,x)-1/(s-1)$ is holomorphic and locally bounded in $s$.
+Its compact $v$-integral is therefore entire, proving the continuation
+and the residue. The integral of the weight is the one already used
+in \eqref{ag:eq:kernel-coeff}.
+
+For the endpoint identity let $P(v)=(1-v^2)^r$. Repeated spatial
+antidifferentiation gives
+\[
+ \frac{\mathrm d^{j+1}}{\mathrm dv^{j+1}}
+ \frac{\zeta(s-j-1,a+bv)}{b^{j+1}(1-s)_{j+1}}
+ =\zeta(s,a+bv),
+\]
+initially for $s$ outside the finite exceptional set. Integrating by
+parts until the polynomial vanishes leaves
+\[
+ \sum_{j=0}^{2r}\frac{(-1)^j}{b^{j+1}(1-s)_{j+1}}
+       [P^{(j)}(v)\zeta(s-j-1,a+bv)]_{v=-1}^{v=1}.
+\]
+The derivatives with $j<r$ vanish at both endpoints, and for $r\le j\le2r$,
+\begin{equation}\label{ag:eq:weight-derivative}
+ P^{(j)}(1)=(-1)^r j!\binom r{j-r}2^{2r-j},\qquad
+ P^{(j)}(-1)=(-1)^jP^{(j)}(1).
+\end{equation}
+Multiplication by $c_r/2$ proves \eqref{ag:eq:Hendpoints}. Analytic
+continuation establishes it at every remaining regular point.
+\end{proof}
+
+The formulas extend holomorphically in $a,b$ when $\Re a>|b|$, using
+the right-half-plane Hurwitz branch. They are even in $b$. At $b=0$
+the compact formula gives the confluent value
+\begin{equation}\label{ag:eq:Hcollision}
+ \HH_r(s;a,0)=g_r(0)\zeta(s,a).
+\end{equation}
+The negative powers of $b$ in \eqref{ag:eq:Hendpoints} must cancel;
+one should not substitute $b=0$ separately in those terms.
+
+\subsection{All logarithmically weighted Mellin integrals}
+Let $\mathsf Y_m$ be the complete exponential Bell polynomial, defined
+by $\exp(\sum_{j\ge1}x_jz^j/j!)=\sum_{m\ge0}\mathsf Y_m(x_1,\ldots,x_m)z^m/m!$.
+Differentiating the normalized Mellin factor yields, for $\Re s>1$,
+\begin{align}
+ \partial_s^m\HH_r(s;a,b)
+ =\frac1{\Gamma(s)}\int_0^\infty&
+ \frac{t^{s-1}e^{-at}g_r(bt)}{1-e^{-t}}\notag\\[-2pt]
+ &\quad\times\mathsf Y_m\bigl(\log t-\psi(s),-\psi'(s),
+                      \ldots,-\psi^{(m-1)}(s)\bigr)\dd t.
+ \label{ag:eq:log-Mellin}
+\end{align}
+For $m=0$ the Bell factor is one. For $m=1,2$ the factors are
+$\log t-\psi(s)$ and $(\log t-\psi(s))^2-\psi'(s)$.
+This is an exact normalization, not the unnormalized rule of merely
+inserting $(\log t)^m$. Endpoint differentiation of
+\eqref{ag:eq:Hendpoints} therefore gives finite evaluations of all
+these convergent logarithmic integrals.

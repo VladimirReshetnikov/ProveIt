@@ -1,0 +1,262 @@
+% Research fragment. Source statements checked against the incoming files
+% Alternating_Tails_Spectral_Defects and Quartic_Spectral_Reconstruction.
+% Suggested bibliography keys: tail-alternating, tail-quartic.
+\section{Complete optimal reconstruction at smaller tail order ten}
+\label{t10:section}
+
+Two recent source theorems leave only one pair at smaller order ten.
+The order-ten theorem of \emph{Alternating Tails and Spectral Defects},
+Theorem~\texttt{rt:rank10}, proves the conjecture for every integer
+$b\ge6$ outside the progression $b\equiv962\pmod{2048}$.
+The effective theorem of \emph{Quartic Spectral Reconstruction},
+Theorem~\texttt{ert:main} and its exact threshold calculation,
+proves it for every $b\ge1920$. We certify the single remaining
+value $b=962$ by a five-square determinant over a finite field.
+This completes the whole smaller-order-ten family. The method does
+not assert that the unrestricted unequal-order conjecture is proved.
+
+\subsection{The formal coordinate problem}
+
+For even $p,q$ put
+\[
+ A_p(n)=\zeta(p,n+1)=\zeta(p)-H_n^{(p)},\qquad x_n=n+\tfrac12,
+\]
+and initially define
+\[
+ D_{p,q}(s)=\sum_{n\ge0}A_p(n)A_q(n)x_n^{-s},
+ \qquad \Re s>3-p-q.
+\]
+Let $D_r=D_{p,q}(-2r)$ denote its regular continued centered moments.
+The centered Hurwitz expansion has powers $x_n^{1-p-2j}$; hence
+the product has only even inverse powers. Its possible continuation
+poles lie at odd integers, so all the displayed $-2r$ values are regular.
+The inherited centered continuation and finite Bernoulli reduction
+supply inverse transforms
+\begin{align}
+ C_j&=\sum_{r=0}^j\binom{2j+1}{2r}2^{-2(j-r)}D_r,
+ \label{t10:inverse}\\
+ D_r&=\sum_{j=0}^r\frac{\binom{2r}{2j}}{2j+1}
+ B_{2r-2j}(1/2)C_j.\label{t10:forward}
+\end{align}
+Write $p=2a$, $q=2b$, $a<b$. To specify the algebraic claim completely,
+let $\mathcal V_{a,b}$ be the $2b$-dimensional rational vector space with
+\emph{formal basis}
+\[
+ C_0,\ldots,C_{b-1},Z_0,\ldots,Z_{b-1}.
+\]
+These are independent labels by definition. Under numerical evaluation,
+$Z_k$ is assigned $\zeta(2k)$, including $Z_0=-1/2$, and each early
+$C_j$ is assigned its continued value above. No injectivity of this
+evaluation map is asserted. For every $j\ge b$, the source reduction
+defines $C_j=\sum_{k=0}^{b-1}M_{j-b,k}Z_k$, using the formula below
+also for row indices greater than $b-1$. Thus every later $D_r$ is a
+specified vector of $\mathcal V_{a,b}$. The coordinate matrix of
+$C_0,\ldots,C_{2b-1}$ is $\operatorname{diag}(I_b,M_{a,b})$.
+It follows that the first $2b$ moment coordinates have full formal
+rank precisely when the matrix
+\begin{equation}\label{t10:M}
+ (M_{a,b})_{ik}=B_{2(i+k-a+1)}
+ \left\{\frac{\binom{2i+2}{2a-2k}}{2i+2}
+ +\frac{\binom{2b+2i-2a+2}{2b-2k}}{2b+2i-2a+2}\right\},
+ \qquad0\le i,k<b,
+\end{equation}
+is nonsingular. A negative Bernoulli index gives zero. A binomial
+summand is omitted unless its lower index is at least two and no
+greater than its upper index. Thus a lower index zero is omitted.
+The complete first-$2b$ coordinate determinant is
+$\det M_{a,b}/(4b-1)!!$. These are inherited identities, not new
+independence assertions about numerical zeta values.
+
+\begin{theorem}[Complete smaller-order-ten reconstruction]
+\label{t10:complete}
+For every integer $b\ge6$, $M_{5,b}$ is nonsingular. Consequently,
+for every even $q>10$, the moments
+\[
+ D_{10,q}(0),D_{10,q}(-2),\ldots,D_{10,q}(-2q+2)
+\]
+have formal coordinate rank $q$ in the inherited coordinate space.
+Every later centered moment is a finite rational linear combination
+of these first $q$ moments.
+\end{theorem}
+
+The only new nonvanishing certificate needed by the theorem is
+\begin{equation}\label{t10:main-certificate}
+ \boxed{\det M_{5,962}\equiv15578\pmod{65537}.}
+\end{equation}
+The rational determinant has denominator prime to $65537$;
+therefore this congruence proves exact nonvanishing.
+
+\subsection{The retained five-square matrix}
+
+We state the inherited contraction explicitly to make the finite
+certificate independently reproducible. For $b\ge2a$ and
+$0\le i,\ell<a$, define
+\[
+ n_i=b-a+i,\quad N_{i\ell}=2(n_i-\ell)+1,\quad
+ R_\ell=2b-2a+2+2\ell,
+\]
+\[
+ F_{i\ell}=\frac1{(2\ell+1)!}
+ \prod_{r=0}^{2\ell-1}(2n_i-r)(2n_i+3+r).
+\]
+Define the integer Newton coefficients $d_{ih}$ by
+\begin{equation}\label{t10:Newton}
+ (2n_i+2-y)(4n_i+2-y)^{\underline{2i}}
+       =\sum_{h=0}^{2i+1}d_{ih}y^{\underline h}.
+\end{equation}
+Here $z^{\underline h}=z(z-1)\cdots(z-h+1)$. Equivalently,
+if the polynomial on the left is $W_i(y)$, then
+\[
+ d_{ih}=\frac1{h!}\sum_{j=0}^h(-1)^{h-j}\binom hj W_i(j).
+\]
+The retained matrix is
+\begin{equation}\label{t10:A}
+ \mathcal A_{i\ell}=2F_{i\ell}
+ +\frac{R_\ell!}
+ {(2n_i+1)(2n_i+2)(2\ell+2)!N_{i\ell}!}
+ \sum_{k=0}^i d_{i,2k+1}N_{i\ell}^{\underline{2k+1}}
+                 2B_{2b-2(a-i+\ell+k)}.
+\end{equation}
+The omitted lower-index-zero convention in \eqref{t10:M} is
+already included in the $2F$ term and must not be altered.
+
+For completeness, the source multiplier is
+\begin{equation}\label{t10:multiplier}
+ \begin{aligned}
+ \det M_{a,b}={}&(-1)^{a(b-a)+a(a-1)/2}
+ \frac{\prod_{t=0}^{b-1}(2b+2t-2a+1)!}
+      {\prod_{k=0}^{b-1}(2b-2k)!}\\
+ &\quad\cdot\prod_{n=0}^{b-a-1}\frac{((2n+1)!)^2}{(4n+2)!(4n+3)!}
+ \prod_{i=0}^{a-1}\frac{(2n_i+1)(2n_i+2)!}{(4n_i+2)!}
+ \det\mathcal A.
+ \end{aligned}
+\end{equation}
+The exact derivation is the Pad\'e-row elimination in the source's
+Lemma~\texttt{ert:normalization}. It can also be replayed directly:
+the monic rows
+\[
+ p_{nt}=\frac{2(2n+2t+1)!(2n+1)!}
+ {(4n+2)!(2n-2t+1)!(2t)!},\qquad0\le t\le n,
+\]
+are applied to the factorial-normalized Bernoulli matrix. Their
+orthogonality eliminates the last $b-a$ columns from the final $a$
+rows. Reversing the retained columns, and dividing row $i$ by
+$c_{n_i}=(2n_i+1)(2n_i+2)!/(4n_i+2)!$, gives \eqref{t10:A}.
+The diagonal eliminated entries are
+$((2n+1)!)^2/((4n+2)!(4n+3)!)$, which gives
+\eqref{t10:multiplier}, including its sign.
+
+\subsection{The complete finite certificate}
+
+Set $a=5$, $b=962$, and $P=65537$. The prime $P$ exceeds every
+factorial argument in \eqref{t10:A} and \eqref{t10:multiplier}.
+The Bernoulli recurrence
+\begin{equation}\label{t10:Brec}
+ B_0=1,\qquad
+ B_n=-\frac1{n+1}\sum_{j=0}^{n-1}\binom{n+1}{j}B_j
+ \quad(n\ge1)
+\end{equation}
+shows that every $B_n$ used here has denominator prime to $P$:
+all indices are at most $1922<P-1$. Thus the entire calculation
+can be performed in $\mathbb F_P$ without an undefined division.
+Using $B_1=-1/2$ and $B_{2r+1}=0$ for $r\ge1$, the nine required
+residues, in descending-index order, are
+\begin{equation}\label{t10:Bvalues}
+\begin{array}{c|rrrrrrrrr}
+2r&1922&1920&1918&1916&1914&1912&1910&1908&1906\\\hline
+ B_{2r}\bmod P&31528&45962&26974&45003&39580&2844&23974&18828&26318.
+\end{array}
+\end{equation}
+Substitution into \eqref{t10:A} gives
+\begin{equation}\label{t10:Amatrix}
+\mathcal A\equiv
+\begin{pmatrix}
+25959&60986&10404&1273&2935\\
+16142&62424&8365&2781&39264\\
+13624&13203&159&63417&38163\\
+51637&50007&47664&40198&52007\\
+23028&22542&12445&19571&47569
+\end{pmatrix}\pmod{65537}.
+\end{equation}
+Gaussian elimination without row exchanges has diagonal pivots
+\[
+25959,\quad2542,\quad6997,\quad61613,\quad26239.
+\]
+Their product is $60407$ modulo $65537$. The complete multiplier
+in \eqref{t10:multiplier}, including its sign, is $49105$ modulo
+$65537$. Therefore
+\[
+\det M_{5,962}\equiv49105\cdot60407\equiv15578\not\equiv0
+     \pmod{65537},
+\]
+which proves \eqref{t10:main-certificate}.
+
+\begin{proof}[Proof of Theorem~\ref{t10:complete}]
+If $b\not\equiv962\pmod{2048}$, use the source order-ten theorem.
+If $b\ge1920$, use the source effective eventual theorem with
+$B_5=1920$. The only integer $b$ with
+$6\le b<1920$ and $b\equiv962\pmod{2048}$ is $962$;
+\eqref{t10:main-certificate} treats that value. These cases cover
+all integers $b\ge6$. The inherited triangular transforms and
+finite late-coordinate expansion then give the stated moment
+reconstruction.\end{proof}
+
+The supplied verifier \texttt{complete\_p10.py} implements
+\eqref{t10:Brec}, \eqref{t10:Newton}, \eqref{t10:A}, and modular
+Gaussian elimination, using only Python integer arithmetic. A
+second verifier reconstructs the same matrix from the uncontracted
+Pad\'e row sums and separately reduces exact rational Bernoulli
+numbers obtained from SymPy. These checks agree entry by entry.
+The prime is checked by trial division through its integer square
+root. No floating-point determinant is used anywhere in the proof.
+This is a finite arithmetic proof certificate, not a claim of
+proof-assistant formalization.
+
+\subsection{An ordinary convergent polygamma identity for every larger order}
+
+The nonvanishing theorem makes the inherited reconstruction an
+unconditional all-$q$ identity family at smaller order ten. Define,
+for $0\le k<b$,
+\begin{equation}\label{t10:weight}
+ P_{b,k}(x)=\sum_{t=0}^{b-1}(M_{5,b}^{-1})_{kt}
+ \left\{(x+\tfrac12)^{2b+2t+1}-(x-\tfrac12)^{2b+2t+1}\right\}
+ =\sum_{r=0}^{2b-1}w_{b,k,r}x^{2r}.
+\end{equation}
+All coefficients are rational. Put
+\[
+ s_{p,0}=\frac1{p-1},\qquad
+ s_{p,j}=\frac{B_{2j}(1/2)}{(2j)!}(p)_{2j-1}\quad(j\ge1),
+ \qquad
+ \alpha_j=\sum_{h=0}^js_{10,h}s_{2b,j-h},
+\]
+where $(p)_m$ is the rising factorial. Define the finite even polynomial
+\begin{equation}\label{t10:subtraction}
+ S_{b,k}(x)=\sum_{r=b+4}^{2b-1}w_{b,k,r}
+          \sum_{j=0}^{r-b-4}\alpha_jx^{2(r-b-4-j)}.
+\end{equation}
+Then
+\begin{equation}\label{t10:ordinary}
+ \boxed{\sum_{n=0}^{\infty}
+ \left\{P_{b,k}(x_n)\,
+ \frac{\psi^{(9)}(n+1)\psi^{(2b-1)}(n+1)}{9!\,(2b-1)!}
+                -S_{b,k}(x_n)\right\}=\zeta(2k).}
+\end{equation}
+Every sum in \eqref{t10:ordinary} converges absolutely. Indeed,
+the centered Hurwitz expansion is
+\[
+ A_p(n)\sim\sum_{j\ge0}s_{p,j}x_n^{1-p-2j}.
+\]
+Thus \eqref{t10:subtraction} removes exactly every nondecaying
+term of $P_{b,k}(x_n)A_{10}(n)A_{2b}(n)$ and leaves $O(x_n^{-2})$.
+The polynomial difference in \eqref{t10:weight} is exactly the
+inverse transform \eqref{t10:inverse}. Matrix inversion therefore
+makes its continued sum $\zeta(2k)$. All removed monomials have
+zero centered continued sum, since
+$\zeta(-2j,1/2)=0$ for integers $j\ge0$, proving the ordinary
+convergent identity. The polygamma substitution uses
+$\psi^{(p-1)}(n+1)=(p-1)!\zeta(p,n+1)$ for even $p$.
+
+The new contribution is the complete smaller-order-ten theorem,
+including its single missing exact certificate. The centered
+continuation, Pad\'e contraction, and conversion of reconstructed
+coordinates into convergent sums retain their source attribution.

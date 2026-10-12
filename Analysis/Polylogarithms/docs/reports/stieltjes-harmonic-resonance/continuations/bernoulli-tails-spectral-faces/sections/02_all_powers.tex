@@ -1,0 +1,909 @@
+\section{A Bernoulli cancellation law for every trigamma power}
+\label{tp:sec:allpowers}
+
+The quartic report asks for a cancellation mechanism at the fifth and
+higher powers, a fixed arithmetic coordinate space at each power, and a
+generator with its constants specified \cite[Research question R4]{RepoQuartic}.
+We give one recurrence for all powers.  It explains the earlier quadratic,
+cubic, and quartic cancellations and yields new fifth- and sixth-power
+formulas.  The essential ingredient is a Bernoulli polynomial, rather than
+a new summation theorem for each successive power.
+
+\subsection{Regular moments as ordinary convergent sums}
+
+Throughout this section let
+\begin{equation}\label{tp:eq:tails}
+ A_n=\psi'(n+1)=\zeta(2)-H_n^{(2)},\qquad x_n=n+\tfrac12,
+ \qquad n\geq0.
+\end{equation}
+Bernoulli numbers have the convention $B_1=-1/2$.  For $d\geq1$ define
+\begin{equation}\label{tp:eq:h}
+ h_{d,j}=\sum_{j_1+\cdots+j_d=j}\prod_{\nu=1}^d B_{2j_\nu}(1/2),
+ \qquad j_\nu\geq0.
+\end{equation}
+In particular $h_{d,0}=1$ and $h_{d,1}=-d/12$.  The centered
+Hurwitz expansion \cite[\S25.11]{DLMF} gives
+\begin{equation}\label{tp:eq:centeredasy}
+ A_n^d\sim\sum_{j\geq0}h_{d,j}x_n^{-d-2j}.
+\end{equation}
+This is an asymptotic expansion; it is not a convergent Laurent series
+at a fixed finite $n$.
+
+\begin{proposition}[Ordinary realization of the regular parity]
+\label{tp:prop:ordinary}
+The function
+\[
+ F_d(s)=\sum_{n\geq0}A_n^d x_n^{-s},\qquad \Re s>1-d,
+\]
+has a meromorphic continuation to $\mathbb C$.  Its poles are exactly
+$1-d-2j$, $j\geq0$, and their residues are $h_{d,j}$.  For every
+$m\geq0$ with $m\equiv d\pmod2$, the value $M_{d,m}=F_d(-m)$ is regular
+and is the absolutely convergent sum
+\begin{equation}\label{tp:eq:ordinary}
+ M_{d,m}=\sum_{n\geq0}\left(
+ x_n^m A_n^d-
+ \sum_{0\leq j\leq(m-d)/2}h_{d,j}x_n^{m-d-2j}\right).
+\end{equation}
+An inner sum with negative upper limit is empty.
+\end{proposition}
+
+\begin{proof}
+Subtract a finite number of terms of \eqref{tp:eq:centeredasy} and add
+the corresponding functions $h_{d,j}\zeta(s+d+2j,1/2)$.  Increasing
+the subtraction order gives normally convergent remainders in
+successively larger half-planes.  The meromorphic continuations agree
+on overlaps, since they agree with the defining series in its initial
+half-plane.  The signs of $B_{2j}(1/2)$ are $(-1)^j$, including $j=0$.
+Every summand in \eqref{tp:eq:h} therefore has sign $(-1)^j$; hence
+$h_{d,j}\ne0$ and the listed poles are actual.
+
+At $s=-m$ the terms subtracted in \eqref{tp:eq:ordinary} contribute
+$h_{d,j}\zeta(d+2j-m,1/2)=0$.  Indeed their Hurwitz arguments are
+nonpositive even integers, and $\zeta(-2q,1/2)=0$ for $q\geq0$.
+The next summand is $O(x_n^{-2})$, or decays faster when no subtraction
+is needed.  This proves both the ordinary convergence and the equality.
+\end{proof}
+
+Thus the word ``moment'' below always refers to the explicit convergent
+expression \eqref{tp:eq:ordinary}.  The meromorphic family is a proof
+and differentiation tool; no assignment of a value to an unspecified
+divergent sum is required.
+
+\subsection{Finite-cutoff coordinates}
+
+For a finite-cutoff asymptotic expansion, let $\CT_N$ denote the coefficient
+of $N^0(\log N)^0$.  Put
+\begin{equation}\label{tp:eq:TC}
+ \begin{split}
+ T_{e,q}&=\CT_N\sum_{n=1}^N n^q A_n^e,\qquad
+ b_e(k)=[u^k]\mathcal A(u)^e,\\
+ \mathcal A(u)&=\sum_{a\geq1}B_{a-1}u^a,\\
+ C_{d,k}&=b_d(k)+\sum_{j=1}^d\binom dj T_{d-j,k-2j}.
+ \end{split}
+\end{equation}
+Here $b_0(k)=\delta_{k,0}$, and a coefficient with negative index is
+zero.  The series $\mathcal A$ is formal.  These constant coefficients
+exist: repeated finite summation by parts reduces their existence to
+ordinary power sums, harmonic numbers, and convergent multiple zeta
+values.  A constructive reduction is given below.
+
+The exact recurrence
+$A_{n-1}=A_n+n^{-2}$ shows that $C_{d,k}$ is the constant coefficient
+of
+\[
+ \sum_{n=1}^N n^k(A_{n-1}^d-A_n^d)+N^kA_N^d.
+\]
+Define the centered Faulhaber polynomial
+\begin{equation}\label{tp:eq:Faulhaber}
+ P_m(N)=\sum_{n=0}^{N-1}(n+1/2)^m
+ =\frac{B_{m+1}(N+1/2)-B_{m+1}(1/2)}{m+1}.
+\end{equation}
+Finite summation by parts gives
+\begin{equation}\label{tp:eq:finiteSBP}
+ \sum_{n=0}^{N-1}x_n^m A_n^d
+ =P_m(N)A_N^d+
+   \sum_{n=1}^N P_m(n)(A_{n-1}^d-A_n^d).
+\end{equation}
+Every subtracted even-power sum in \eqref{tp:eq:ordinary} is an odd
+polynomial in $N$, so it has zero constant coefficient.  Consequently,
+if $P_m(N)=\sum_{k\geq1}p_{m,k}N^k$, then
+\begin{equation}\label{tp:eq:momentC}
+ M_{d,m}=\sum_{k\geq1}p_{m,k}C_{d,k}.
+\end{equation}
+
+The parity in \eqref{tp:eq:Faulhaber} is useful.  For even $m$ the
+polynomial is odd; for odd $m$ it is even with zero constant term.
+Formally define
+\begin{equation}\label{tp:eq:GH}
+ G_d(t)=\sum_{\substack{m\geq0\\m\equiv d\ (2)}}M_{d,m}\frac{t^m}{m!},
+ \qquad H_d(t)=2\sinh(t/2)G_d(t).
+\end{equation}
+The finite polynomial identity \eqref{tp:eq:momentC} is equivalent to
+\begin{equation}\label{tp:eq:HC}
+ H_d(t)=\sum_{\substack{k\geq1\\k\equiv d+1\ (2)}}C_{d,k}\frac{t^k}{k!}.
+\end{equation}
+For example, summing \eqref{tp:eq:Faulhaber} over even $m$ gives
+$\sinh(Nt)/(2\sinh(t/2))$; summing over odd $m$ gives
+$(\cosh(Nt)-1)/(2\sinh(t/2))$.  These two identities prove
+\eqref{tp:eq:HC} coefficient by coefficient without assuming convergence
+of a moment generating series in advance.
+
+\subsection{The universal boundary cancellation}
+
+\begin{lemma}[A finite Bernoulli difference identity]
+\label{tp:lem:EM}
+For every integer $d\geq1$ and indeterminates $a,h$,
+\begin{equation}\label{tp:eq:EM}
+ \begin{split}
+ (a+h)^d-a^d={}&\frac{dh}{2}\bigl((a+h)^{d-1}+a^{d-1}\bigr)\\
+ &-\sum_{j=1}^{\lfloor(d-1)/2\rfloor}
+      \binom d{2j}B_{2j}h^{2j}
+      \bigl((a+h)^{d-2j}-a^{d-2j}\bigr).
+ \end{split}
+\end{equation}
+Moreover, whenever $k\equiv d+1\pmod2$,
+\begin{equation}\label{tp:eq:boundary}
+ b_d(k)+\frac d2 b_{d-1}(k-2)
+ +\sum_{j=1}^{\lfloor d/2\rfloor}
+      \binom d{2j}B_{2j}b_{d-2j}(k-4j)=0.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The first identity is the terminating Euler--Maclaurin identity for a
+polynomial on one interval.  It also follows by comparing coefficients
+in the Bernoulli generating function, so its use here is purely finite
+algebra.  A term with $d-2j=0$ would be a difference of constants and is
+omitted.
+
+For the second identity write
+\[
+ E(u)=\sum_{j\geq0}B_{2j}u^{2j},\qquad
+ \mathcal A(u)=uE(u)-u^2/2.
+\]
+The expression on the left of \eqref{tp:eq:boundary} is the coefficient
+of $u^k$ in
+\begin{equation}\label{tp:eq:BernoulliMechanism}
+ \begin{split}
+ &\mathcal A(u)^d+\frac d2u^2\mathcal A(u)^{d-1}
+ +\sum_{j\geq1}\binom d{2j}B_{2j}u^{4j}\mathcal A(u)^{d-2j}\\
+ &\hspace{32mm}=u^{2d}B_d\left(\frac12+\frac{E(u)}u\right).
+ \end{split}
+\end{equation}
+The Bernoulli reflection law $B_d(1-z)=(-1)^dB_d(z)$ implies that
+the right side has parity $d$ as a formal series in $u$.  Its
+coefficient at the opposite parity is zero.  Although the argument of
+$B_d$ contains $u^{-1}$, the displayed product has no negative powers:
+the polynomial has degree $d$.  This establishes the cancellation.
+\end{proof}
+
+Identity \eqref{tp:eq:BernoulliMechanism} supplies a single reason for
+all the boundary terms to cancel.  The separate quartic cancellation
+is one low-degree consequence.
+
+\begin{theorem}[All-power triangular recurrence]
+\label{tp:thm:recurrence}
+Set $G_0=0$.  For $d\geq1$ and $k\geq2$ with
+$k\equiv d+1\pmod2$,
+\begin{equation}\label{tp:eq:recurrence}
+ \boxed{\begin{aligned}
+ C_{d,k}={}&d(k-2)![t^{k-2}]\bigl(\cosh(t/2)G_{d-1}(t)\bigr)
+       -\frac d2\delta_{k,2}\zeta(2)^{d-1}\\
+ &-\sum_{j=1}^{\lfloor(d-1)/2\rfloor}
+       \binom d{2j}B_{2j}C_{d-2j,k-4j}.
+ \end{aligned}}
+\end{equation}
+Every coordinate on the right has smaller tail power.
+\end{theorem}
+
+\begin{proof}
+Apply \eqref{tp:eq:EM} with $a=A_n$ and $h=n^{-2}$, multiply by
+$n^k$, and sum only up to a finite $N$.  For $m=k-2\geq0$, changing
+the index in one of the two symmetric sums gives the exact relation
+\begin{align*}
+ &\sum_{n=1}^N n^m(A_{n-1}^{d-1}+A_n^{d-1})\\
+ &\quad=\sum_{n=0}^{N-1}\bigl((n+1)^m+n^m\bigr)A_n^{d-1}
+       -\delta_{m,0}\zeta(2)^{d-1}+N^mA_N^{d-1}.
+\end{align*}
+The polynomial $(x+1/2)^m+(x-1/2)^m$ contains only powers of
+parity $m\equiv d-1\pmod2$.  Taking its constant coefficient therefore
+uses exactly the regular moments of power $d-1$.  Its contribution is
+$2m![t^m](\cosh(t/2)G_{d-1})$.  For $d=1$, these polynomial sums have
+zero constant coefficient, which is the convention $G_0=0$.
+
+The differences of the lower powers in \eqref{tp:eq:EM} give
+$C_{d-2j,k-4j}-b_{d-2j}(k-4j)$.  The remaining boundary terms are
+precisely \eqref{tp:eq:boundary}; their sum is zero.  Taking constant
+coefficients after these finite identities have been combined proves
+\eqref{tp:eq:recurrence}.  In particular the exceptional $k=2$ term
+comes from the missing $n=0$ endpoint and cannot be discarded.
+\end{proof}
+
+\subsection{Explicit anchors and a convergent polylogarithm generator}
+
+Write $\boldsymbol a\vDash e$ for a composition of $e$.  For $e\geq1$
+and $h\leq1$, excluding $(e,h)=(1,1)$, define the finite MZV combination
+\begin{equation}\label{tp:eq:anchor}
+ \mathcal Z_{e,h}=
+ \sum_{(a_1,\ldots,a_\ell)\vDash e}
+ \frac{e!}{a_1!\cdots a_\ell!}
+ \zeta(2a_1,\ldots,2a_{\ell-1},2a_\ell-h).
+\end{equation}
+All the displayed multiple zeta values converge.  Ordering the indices
+by their minimum, as in Hoffman's tail-product method \cite{HoffmanTails},
+gives
+\begin{equation}\label{tp:eq:anchorseries}
+ C_{e,h}=\mathcal Z_{e,h}
+ =\sum_{n\geq1}n^h(A_{n-1}^e-A_n^e),\qquad h\leq1.
+\end{equation}
+The exceptional pair is divergent and is never needed.  For $h=0$,
+telescoping yields $\mathcal Z_{e,0}=\zeta(2)^e$.  Formula
+\eqref{tp:eq:anchor} is classical index ordering, not a new claim about
+unweighted tail products.
+
+Let $I^q$ denote an anchored $q$-fold primitive:
+\begin{equation}\label{tp:eq:primitive}
+ (I^qf)(t)=\frac1{(q-1)!}\int_0^t(t-u)^{q-1}f(u)\,du,
+ \qquad q\geq1.
+\end{equation}
+For $d\geq1$ put $c_{d,j}=\binom d{2j}B_{2j}$ and let
+\begin{equation}\label{tp:eq:anchorpoly}
+ \begin{split}
+ R_d(t)={}&\mathbf1_{2\mid d}\,\mathcal Z_{d,1}t
+       -\mathbf1_{2\nmid d}\,\frac d4\zeta(2)^{d-1}t^2\\
+ &-\sum_{j=1}^{\lfloor(d-1)/2\rfloor}c_{d,j}
+       \sum_{\substack{2\leq k\leq4j\\k\equiv d+1\ (2)}}
+         \mathcal Z_{d-2j,k-4j}\frac{t^k}{k!}.
+ \end{split}
+\end{equation}
+For $d=1$ the first term is absent; it is not an invocation of the
+undefined anchor $\mathcal Z_{1,1}$.
+
+\begin{theorem}[An anchored generator at every power]
+\label{tp:thm:generator}
+The series in \eqref{tp:eq:GH} converge for $|t|<2\pi$.  They are
+determined recursively by $G_0=H_0=0$ and
+\begin{equation}\label{tp:eq:generator}
+ \boxed{\begin{aligned}
+ H_d(t)={}&R_d(t)+dI^2\bigl(\cosh(t/2)G_{d-1}(t)\bigr)\\
+ &-\sum_{j=1}^{\lfloor(d-1)/2\rfloor}c_{d,j}I^{4j}H_{d-2j}(t),
+ \qquad G_d(t)=\frac{H_d(t)}{2\sinh(t/2)}.
+ \end{aligned}}
+\end{equation}
+The apparent singularity at zero is removable.  At each fixed $d$,
+all moments $M_{d,m}$ lie in one explicitly specified finite rational
+span of convergent MZVs and $1$, independent of $m$.
+One uniform, possibly redundant choice is the span of $1$ and all
+positive-index MZVs of weight at most $2d-1$ with first index at least two.
+
+Moreover $H_d$ has a finite expression in polynomials in $t$, multiple
+zeta constants, and one-variable multiple polylogarithms at $e^{-t}$
+of functional depth at most $d-1$.  This is an upper bound in a
+specified representation, not a minimal-depth or period-independence claim.
+\end{theorem}
+
+\begin{proof}
+Sum \eqref{tp:eq:recurrence} with the factors $t^k/k!$.  The positive
+lower indices give $I^{4j}H_{d-2j}$.  The nonpositive lower indices
+give exactly the finite polynomial in \eqref{tp:eq:anchorpoly}, and
+the $k=1$ coefficient at even $d$ is \eqref{tp:eq:anchorseries}.  Thus
+\eqref{tp:eq:generator} holds first as a formal power-series identity.
+
+Inductively the numerator is holomorphic for $|t|<2\pi$ and has
+parity $d+1$.  It is $O(t)$ at even $d$ and $O(t^2)$ at odd $d$.
+The denominator has only a simple zero at zero inside this disk.
+Division therefore preserves holomorphy and gives parity $d$.
+This proves convergence of the formal moment series and the asserted
+value of its coefficients.  At fixed $d$ only finitely many anchors
+from powers at most $d$ have been introduced; their weights are at
+most $2d-1$.  Taylor coefficients of all remaining elementary factors
+and integrations are rational.  This proves the finite-span assertion.
+
+For the functional representation start with real $t>0$ and put
+$z=e^{-t}$. The assembled expression will then denote the analytic
+continuation supplied by the anchored generator on $|t|<2\pi$;
+separated terms need not be holomorphic at zero. The factor that
+enters the new integration step is
+\[
+ \cosh(t/2)G_{d-1}(t)
+ =\left(\frac12+\frac z{1-z}\right)H_{d-1}(t).
+\]
+Use the convention
+\[
+ L_{a_1,\ldots,a_\ell}(t)
+ =\sum_{n_1>\cdots>n_\ell\geq1}
+       \frac{e^{-tn_1}}{n_1^{a_1}\cdots n_\ell^{a_\ell}}.
+\]
+The empty word represents $1$. We maintain the stronger induction
+invariant that each nonempty polylogarithm in $H_d$ has first index at
+least two. Ordinary integrations raise that first index. For the new
+operation, an explicit double primitive of
+$t^m zL_{\boldsymbol a}(t)/(1-z)$ is
+\[
+ P_{m,\boldsymbol a}(t)=\sum_{j=0}^m(j+1)\frac{m!}{(m-j)!}
+                t^{m-j}L_{j+2,\boldsymbol a}(t).
+\]
+Indeed $L_{1,\boldsymbol a}'=-zL_{\boldsymbol a}/(1-z)$ and
+$L_{a+1,\boldsymbol b}'=-L_{a,\boldsymbol b}$. This raises depth by
+at most one and preserves the leading-index invariant. Its value at
+zero is a convergent MZV, and its first derivative is
+\[
+ P_{m,\boldsymbol a}'(t)=-\sum_{j=0}^m\frac{m!}{(m-j)!}
+                t^{m-j}L_{j+1,\boldsymbol a}(t).
+\]
+For $m>0$ the endpoint is $-m!\zeta(m+1,\boldsymbol a)$. For $m=0$
+the only potential divergence has exactly one leading index one.
+
+For an admissible word $\boldsymbol a=(a_1,\ldots,a_\ell)$ define
+\begin{align*}
+ K(\boldsymbol a)={}&-\sum_{i=1}^{\ell}
+ \zeta(a_1,\ldots,a_i,1,a_{i+1},\ldots,a_\ell)\\
+ &-\sum_{i=1}^{\ell}
+ \zeta(a_1,\ldots,a_i+1,\ldots,a_\ell),
+ \qquad K(\varnothing)=0.
+\end{align*}
+All these values converge, and
+\[
+ L_{1,\boldsymbol a}(t)
+       =\zeta(\boldsymbol a)L_1(t)+K(\boldsymbol a)+o(1).
+\]
+To prove this, subtract $\zeta(\boldsymbol a)L_1(t)$ termwise.
+The remaining series is
+$\sum_{n\ge1}e^{-tn}(H_{n-1}(\boldsymbol a)-\zeta(\boldsymbol a))/n$,
+where $H_{n-1}(\boldsymbol a)$ is the finite multiple harmonic sum.
+It is absolutely convergent at $t=0$ because $a_1\ge2$. Ordering its
+extra index among the zeta indices gives exactly the two sums defining
+$K$. Dominated convergence proves the displayed endpoint formula.
+
+In the complete double primitive the coefficient of the potentially
+divergent $L_1(t)$ is $-H_{d-1}(0)=0$. Every remaining endpoint is
+therefore an explicit convergent MZV. Subtracting the value and first
+derivative at zero anchors the primitive. The other integrations in
+\eqref{tp:eq:generator} do not increase depth. This proves the bound
+$d-1$ and fixes every integration constant without assigning values
+to individual divergent multiple zeta series.
+\end{proof}
+
+For completeness, if $F_j'=-F_{j-1}$, an unanchored $q$-fold primitive
+of $t^mF_0(t)$ is
+\begin{equation}\label{tp:eq:finiteprimitive}
+ (-1)^q\sum_{j=0}^m\binom{q+j-1}{j}
+       \frac{m!}{(m-j)!}t^{m-j}F_{q+j}(t).
+\end{equation}
+Subtracting its Taylor polynomial of degree $q-1$ at zero supplies
+the anchor, with grouped limits when necessary.  Thus
+\eqref{tp:eq:generator} is also a finite algorithm for antiderivatives
+and multiple-polylogarithm formulas, rather than a recurrence with
+unspecified constants.
+
+\subsection{A finite-cutoff implementation independent of the new recurrence}
+
+The supplied verification program does not use \eqref{tp:eq:generator}
+to construct the comparison moments.  If
+$F_q(N)=\sum_{n=1}^N n^q=\sum_a f_aN^a$, ordinary finite summation
+by parts instead gives
+\begin{equation}\label{tp:eq:independentT}
+ T_{e,q}=\sum_a f_ab_e(a)+
+ \sum_{j=1}^e\binom ej
+ \left(\sum_a f_aT_{e-j,a-2j}-T_{e-j,q-2j}\right),\qquad q\geq0.
+\end{equation}
+For $q<0$, products of strictly greater tail indices give
+\[
+ T_{e,q}=\sum_{\boldsymbol a\vDash e}
+       \frac{e!}{a_1!\cdots a_\ell!}
+       \zeta(2a_1,\ldots,2a_\ell,-q),\qquad e\geq1.
+\]
+The remaining base cases are $T_{0,q}=0$ for $q\geq0$,
+$T_{0,-1}=\gamma$, and $T_{0,-p}=\zeta(p)$ for $p\geq2$.
+The power $e$ decreases at every recursive step.  This proves existence
+of the constant coefficients used above and supplies a terminating
+independent exact verification route.
+
+\subsection{The same cancellation for every even Hurwitz order}
+\label{et:section}
+
+Fix $q\geq1$ and put $p=2q$. In this subsection the symbols
+$M,C,G,H$ refer to the fixed tail
+$T_n=\zeta(p,n+1)=\psi^{(p-1)}(n+1)/(p-1)!$, with
+$x_n=n+1/2$. Thus $T_{n-1}=T_n+n^{-p}$. Define
+\[
+ \eta_0=\frac1{p-1},\qquad
+ \eta_j=\frac{(p)_{2j-1}}{(2j)!}B_{2j}(1/2)\quad(j\geq1),
+ \qquad h_{d,j}=\sum_{j_1+\cdots+j_d=j}\prod_{\nu=1}^d\eta_{j_\nu}.
+\]
+The centered Hurwitz asymptotics give
+$T_n^d\sim\sum_{j\geq0}h_{d,j}x_n^{-(p-1)d-2j}$.
+For $m\geq0$, $m\equiv d\pmod2$, the regular continued moment is
+the ordinary absolutely convergent sum
+\begin{equation}\label{et:ordinary}
+ M_{d,m}=\sum_{n\geq0}\left\{x_n^mT_n^d-
+ \sum_{0\leq j\leq(m-(p-1)d)/2}
+              h_{d,j}x_n^{m-(p-1)d-2j}\right\}.
+\end{equation}
+Indeed the next term is $O(x_n^{-2})$, while every removed term
+has continued sum $\zeta(-2r,1/2)=0$. The meromorphic family
+$\sum T_n^dx_n^{-s}$ has its poles at $1-(p-1)d-2j$;
+the same-sign convolution of the $\eta_j$ shows that their residues
+$h_{d,j}$ are nonzero.
+
+For every integer $k$ put
+\[
+ C_{d,k}=\CT_N\left\{\sum_{n=1}^N n^k(T_{n-1}^d-T_n^d)
+                                  +N^kT_N^d\right\},\qquad
+ G_d(t)=\sum_{m\equiv d\ (2)}M_{d,m}\frac{t^m}{m!}.
+\]
+Subtracting finitely many asymptotic terms proves existence of each
+cutoff constant. The latter sum has $m\geq0$.
+Set $H_d=2\sinh(t/2)G_d$ and
+$G_0=H_0=0$. The centered Faulhaber identity used above gives
+\begin{equation}\label{et:HC}
+ H_d(t)=\sum_{\substack{k\geq1\\k\equiv d+1\ (2)}}C_{d,k}\frac{t^k}{k!}.
+\end{equation}
+For $e\geq1$ and $h<p$, except $(e,h)=(1,p-1)$, the needed anchors are
+\begin{equation}\label{et:anchors}
+ \mathcal Z^{(q)}_{e,h}=
+ \sum_{(a_1,\ldots,a_\ell)\vDash e}
+ \frac{e!}{a_1!\cdots a_\ell!}
+ \zeta(pa_1,\ldots,pa_{\ell-1},pa_\ell-h)=C_{e,h}.
+\end{equation}
+Here $\vDash$ denotes a composition. Ordering the $e$ tail indices
+by their minimum proves this formula: the summand is
+$n^h(T_{n-1}^e-T_n^e)=O(n^{h-(p-1)e-1})$ and the boundary term
+tends to zero. The excluded pair never has the required parity.
+
+Write $c_{d,j}=\binom d{2j}B_{2j}$ and define the finite polynomial
+\begin{align}\label{et:R}
+ R_d(t)={}&\sum_{\substack{1\leq k<p\\k\equiv d+1\ (2)}}
+       \mathcal Z^{(q)}_{d,k}\frac{t^k}{k!}
+ -\mathbf1_{2\nmid d}\frac d2\zeta(p)^{d-1}\frac{t^p}{p!}\notag\\
+ &-\sum_{j=1}^{\lfloor(d-1)/2\rfloor}c_{d,j}
+   \sum_{\substack{p\leq k\leq2pj\\k\equiv d+1\ (2)}}
+       \mathcal Z^{(q)}_{d-2j,k-2pj}\frac{t^k}{k!}.
+\end{align}
+
+\begin{theorem}[Every power of every even-order tail]\label{et:main}
+For $k\geq p$ with $k\equiv d+1\pmod2$,
+\begin{equation}\label{et:recurrence}
+ \begin{split}
+ C_{d,k}={}&d(k-p)![t^{k-p}]\bigl(\cosh(t/2)G_{d-1}(t)\bigr)
+       -\frac d2\delta_{k,p}\zeta(p)^{d-1}\\
+ &-\sum_{j=1}^{\lfloor(d-1)/2\rfloor}c_{d,j}C_{d-2j,k-2pj}.
+ \end{split}
+\end{equation}
+With the anchored primitives of \eqref{tp:eq:primitive}, its generator is
+\begin{equation}\label{et:generator}
+ H_d=R_d+dI^p\bigl(\cosh(t/2)G_{d-1}\bigr)
+        -\sum_{j=1}^{\lfloor(d-1)/2\rfloor}c_{d,j}I^{2pj}H_{d-2j},
+ \qquad G_d=\frac{H_d}{2\sinh(t/2)}.
+\end{equation}
+Both functions are holomorphic for $|t|<2\pi$. At fixed $(q,d)$,
+all the moments belong to a fixed finite rational span of $1$ and
+convergent MZVs of weights at most $2qd-1$. The generator $H_d$ admits
+a finite multiple-polylogarithm representation of functional depth at
+most $d-1$, with all constants fixed by the anchored primitives.
+\end{theorem}
+
+\begin{proof}
+The uncentered formal asymptotic series is
+\[
+ \mathcal A_q(u)=u^{p-1}E_q(u)-\tfrac12u^p,
+ \qquad E_q(u)=\frac1{p-1}
+    +\sum_{j\geq1}\frac{(p)_{2j-1}B_{2j}}{(2j)!}u^{2j}.
+\]
+Its boundary combination satisfies the exact formal identity
+\begin{equation}\label{et:boundary}
+ \mathcal A_q^d+\frac d2u^p\mathcal A_q^{d-1}
+ +\sum_{j=1}^{\lfloor d/2\rfloor}c_{d,j}u^{2pj}\mathcal A_q^{d-2j}
+ =u^{pd}B_d\left(\frac12+\frac{E_q(u)}u\right).
+\end{equation}
+Since $E_q$ is even, Bernoulli reflection makes the right side have
+parity $d$. Thus the required opposite-parity coefficients vanish.
+Apply the finite polynomial identity \eqref{tp:eq:EM} with
+$a=T_n$, $h=n^{-p}$ before taking constant coefficients. For
+$r=k-p\geq0$, the symmetric term has the exact cutoff shift
+\[
+ \sum_{n=1}^N n^r(T_{n-1}^{d-1}+T_n^{d-1})
+ =\sum_{n=0}^{N-1}\bigl((n+1)^r+n^r\bigr)T_n^{d-1}
+   +N^rT_N^{d-1}-\delta_{r,0}\zeta(p)^{d-1}.
+\]
+The centered bracket has regular parity and gives
+$2r![t^r](\cosh(t/2)G_{d-1})$. Equation~\eqref{et:boundary}
+cancels the remaining boundaries, proving \eqref{et:recurrence}.
+For $d=1$ the polynomial sums have zero constant coefficient, in
+agreement with $G_0=0$.
+
+Summing the recurrence gives \eqref{et:generator}: the low positive
+indices give the first term of $R_d$, and the nonpositive lower
+indices give its last term. Induction gives holomorphy on the stated
+disk; $H_d$ has parity $d+1$ and vanishes at zero, so the division is
+removable. Each low anchor has weight $pe-h\leq pd-1$; each last-term
+anchor has weight $p(d-2j)-(k-2pj)=pd-k\leq pd-p$.
+All other Taylor operations are rational. Finally
+$\cosh(t/2)G_{d-1}=(1/2+z/(1-z))H_{d-1}$, $z=e^{-t}$;
+the same primitive construction as in Theorem~\ref{tp:thm:generator}
+raises functional depth by at most one. Increasing the number of
+anchored integrations from $2$ to $p$ adds no depth.
+\end{proof}
+
+This extends the inspected two-tail and trigamma-power results to every
+repeated even order. It does not yet address unequal orders among
+three or more factors. No priority claim beyond the inspected source
+corpus is intended.
+
+\begin{corollary}[An ordinary cubic identity at every even order]
+\label{et:cubic}
+For every $q\geq1$, with $T_n=\zeta(2q,n+1)$,
+\begin{equation}\label{et:cubic-formula}
+ \boxed{\sum_{n\geq0}\left\{
+       \bigl((n+1)^{2q}-n^{2q}\bigr)T_n^3-3T_n^2\right\}
+       =-\frac{3\zeta(2q)^2+\zeta(4q)}2.}
+\end{equation}
+In particular, for $x_n=n+1/2$ and $T_n=\psi^{(3)}(n+1)/6$,
+\begin{equation}\label{et:psi3}
+ \boxed{\sum_{n\geq0}
+       \bigl((4x_n^3+x_n)T_n^3-3T_n^2\bigr)
+                      =-\frac94\zeta(8).}
+\end{equation}
+Both identities are absolutely convergent without subtraction.
+\end{corollary}
+
+\begin{proof}
+Put $p=2q$. The cubic case of \eqref{tp:eq:EM}, followed by finite
+summation by parts, gives the exact cutoff identity
+\begin{align*}
+ &\sum_{n=0}^{N-1}\left\{
+       \bigl((n+1)^p-n^p\bigr)T_n^3-3T_n^2\right\}\\
+ &\qquad=N^pT_N^3+\frac32T_N^2
+       -\frac32\zeta(p)^2-\frac12H_N^{(2p)}.
+\end{align*}
+Here the cubic difference is
+$n^p(T_{n-1}^3-T_n^3)
+ =\tfrac32(T_{n-1}^2+T_n^2)-\tfrac12n^{-2p}$.
+Since $T_n=O((n+1)^{1-p})$, the two boundary terms tend to zero
+and each series on the left converges absolutely for $p\geq2$.
+Letting $N\to\infty$ proves \eqref{et:cubic-formula}.
+For $p=4$, use $(n+1)^4-n^4=4x_n^3+x_n$ and
+$\zeta(4)^2=7\zeta(8)/6$ to obtain \eqref{et:psi3}.
+\end{proof}
+
+\begin{corollary}[Complex orders and a critical cubic value]
+\label{et:complex-cubic}
+Put $T_n(p)=\zeta(p,n+1)$, using the real logarithm of positive
+integers in all powers and setting $0^p=0$ in the domain below.
+For every complex $p$ with $\Re p>3/2$,
+\begin{equation}\label{et:complex-cubic-formula}
+ \sum_{n\geq0}\left\{
+    \bigl((n+1)^p-n^p\bigr)T_n(p)^3-3T_n(p)^2\right\}
+       =-\frac{3\zeta(p)^2+\zeta(2p)}2.
+\end{equation}
+At the real critical order $p=3/2$, the combined series also converges
+absolutely, but its value has an additional boundary term:
+\begin{equation}\label{et:critical-cubic}
+ \boxed{\begin{aligned}
+ &\sum_{n\geq0}\left\{
+    \bigl((n+1)^{3/2}-n^{3/2}\bigr)T_n(3/2)^3-3T_n(3/2)^2\right\}
+ \\[-1mm]
+ &\qquad=8-\frac{3\zeta(3/2)^2+\zeta(3)}2.
+ \end{aligned}}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The preceding cutoff identity remains exact for $\Re p>1$.
+For fixed $p$ in this half-plane,
+$T_N(p)=N^{1-p}/(p-1)+O(N^{-\Re p})$.
+If $\Re p>3/2$, each series on its left converges absolutely and
+$N^pT_N(p)^3=O(N^{3-2\Re p})\to0$, proving
+\eqref{et:complex-cubic-formula}.
+
+At $p=3/2$, put $x=n+1/2$. The centered expansions are
+\[
+ T_n(3/2)=2x^{-1/2}-\frac1{16}x^{-5/2}+O(x^{-9/2}),\qquad
+ (n+1)^{3/2}-n^{3/2}
+       =\frac32x^{1/2}-\frac1{64}x^{-3/2}+O(x^{-7/2}).
+\]
+Consequently the combined summand in \eqref{et:critical-cubic} is
+$-\tfrac12x^{-3}+O(x^{-5})$, proving absolute convergence.
+In the exact cutoff formula,
+$N^{3/2}T_N(3/2)^3\to8$, $T_N(3/2)^2\to0$, and
+$H_N^{(3)}\to\zeta(3)$. These limits give the stated critical value.
+\end{proof}
+
+
+\section{Fifth and sixth powers: finite coordinate spaces and explicit identities}
+\label{tp:sec:examples}
+
+We now make the all-power theorem concrete.  Retain the classical
+constants
+\begin{align}
+ Q_5&=4\zeta(2)\zeta(3)-10\zeta(5),\label{tp:eq:Q5}\\
+ Q_7&=51\zeta(3)\zeta(4)+10\zeta(2)\zeta(5)
+                       -\frac{301}{4}\zeta(7).\label{tp:eq:Q7}
+\end{align}
+The latter is $\sum_{n\geq0}A_n^4$, by Hoffman's quartic evaluation
+with the $n=0$ term included \cite{HoffmanTails,RepoQuartic}.
+
+\subsection{The lower-power inputs}
+
+The universal recurrence starts with
+\begin{align}
+ H_1(t)&=-\frac{t^2}{4},\label{tp:eq:H1}\\
+ H_2(t)&=3\zeta(3)t+2I^2(\cosh(t/2)G_1(t)),\label{tp:eq:H2}\\
+ H_3(t)&=3I^2(\cosh(t/2)G_2(t))
+      -\frac{17}{8}\zeta(4)t^2-\frac{\zeta(2)}{48}t^4
+      +\frac{t^6}{2880},\label{tp:eq:H3}\\
+ H_4(t)&=Q_7t+\frac{Q_5t^3}{6}
+      +4I^2(\cosh(t/2)G_3(t))-I^4H_2(t).\label{tp:eq:H4}
+\end{align}
+These reproduce the existing quadratic, cubic, and quartic generators.
+For example $\mathcal Z_{2,-1}=2\zeta(2,3)+\zeta(5)=-Q_5$ and
+$\mathcal Z_{e,0}=\zeta(2)^e$ account for their exceptional terms.
+
+\subsection{The quintic generator and its eight coordinates}
+
+Define the one new weight-eight combination
+\begin{equation}\label{tp:eq:K8}
+ K_8=\frac56\mathcal Z_{3,-2}+\frac{289}{32}\zeta(8),
+ \quad
+ \mathcal Z_{3,-2}=
+ 6\zeta(2,2,4)+3\zeta(2,6)+3\zeta(4,4)+\zeta(8).
+\end{equation}
+This is a specified convergent MZV coordinate, not a claim of a new
+transcendental constant or of its irreducibility.
+
+\begin{theorem}[Every regular quintic moment]
+\label{tp:thm:five}
+For $|t|<2\pi$,
+\begin{equation}\label{tp:eq:H5}
+ \boxed{\begin{aligned}
+ H_5(t)={}&5I^2(\cosh(t/2)G_4(t))
+            -\frac53I^4H_3(t)-K_8t^2
+            -\frac{19}{64}\zeta(6)t^4\\
+          &+\frac{\zeta(4)}{4320}t^6
+            +\frac{\zeta(2)}{241920}t^8
+            -\frac{t^{10}}{43545600}.
+ \end{aligned}}
+\end{equation}
+All the moments $M_{5,2r+1}$ lie in
+\begin{equation}\label{tp:eq:space5}
+ \operatorname{span}_{\mathbb Q}
+ \{K_8,\zeta(6),Q_7,Q_5,\zeta(2),\zeta(3),\zeta(4),1\}.
+\end{equation}
+The coefficient matrix of the first eight moments in this ordered
+list has determinant
+\begin{equation}\label{tp:eq:rank5}
+ \frac{672072587373661}{748313054183581286400}\ne0.
+\end{equation}
+Thus eight is the exact rank of these specified rational coefficient
+rows.  No arithmetic independence of the eight evaluated constants
+is asserted.
+\end{theorem}
+
+\begin{proof}
+At $d=5$, the two Bernoulli coefficients in \eqref{tp:eq:generator}
+are $5/3$ and $-1/6$.  Insert the anchors
+$\mathcal Z_{3,-2}$, $\mathcal Z_{3,0}=\zeta(2)^3$, and
+$\mathcal Z_{1,-2j}=\zeta(2j+2)$.  Euler's even-zeta evaluations
+give $\zeta(2)^3=35\zeta(6)/8$ and
+$\zeta(2)^4=175\zeta(8)/24$.  Finally insert
+$I^8H_1=-t^{10}/7257600$.  Collecting these finite terms gives
+\eqref{tp:eq:H5}.  The span follows from the lower-power generators.
+Exact rational coefficient extraction gives \eqref{tp:eq:rank5};
+the complete matrix and an executable determinant calculation accompany
+the article.
+\end{proof}
+
+The first three formulas, useful independently of the generator, are
+\begin{align}
+ M_{5,1}={}&-K_8+\frac52Q_7,\label{tp:eq:M51}\\
+ M_{5,3}={}&\frac14K_8+\frac5{12}Q_5-\frac5{12}Q_7
+           +\frac{15}{2}\zeta(3)-\frac{85}{24}\zeta(4)
+           -\frac{57}{32}\zeta(6),\label{tp:eq:M53}\\
+ M_{5,5}={}&-\frac7{48}K_8-\frac5{72}Q_5+\frac{47}{288}Q_7
+           -\frac1{12}\zeta(2)-\frac52\zeta(3)
+           +\frac{157}{144}\zeta(4)\notag\\
+          &+\frac{95}{64}\zeta(6)-\frac1{12}.
+          \label{tp:eq:M55}
+\end{align}
+The first two are unsubtracted sums.  The third is
+$\sum_{n\geq0}(x_n^5A_n^5-1)$.
+
+\begin{corollary}[Two ordinary quintic evaluations]
+\label{tp:cor:explicit}
+With $x=x_n$ and $A=A_n$, both series below converge absolutely:
+\begin{align}
+ &\sum_{n\geq0}\bigl((23x+232x^3+240x^5)A^5-240\bigr)\notag\\
+ &\qquad=80Q_5-20\zeta(2)+1140\zeta(3)-560\zeta(4)
+                         -57\zeta(6)-20,\label{tp:eq:short5}\\[3pt]
+ &\boxed{\begin{aligned}
+ &\sum_{n\geq0}\left[
+ (195x+4056x^3+11568x^5+5376x^7)A^5
+                  -5376x^2-9328\right]\\
+ &\hspace{12mm}=-748\zeta(2)+7884\zeta(3)-5380\zeta(4)
+                  +171\zeta(6)-748.
+ \end{aligned}}\label{tp:eq:main5}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+The first identity is $23M_{5,1}+232M_{5,3}+240M_{5,5}$.
+Its $K_8$ and $Q_7$ coefficients cancel.  The second is
+$195M_{5,1}+4056M_{5,3}+11568M_{5,5}+5376M_{5,7}$.
+The three coefficients of $K_8,Q_7,Q_5$ cancel.  Its subtraction
+polynomial is $5376(x^2-5/12)+11568=5376x^2+9328$.
+
+There is a particularly small independent MZV check of the second
+formula.  The finite-cutoff recursion \eqref{tp:eq:independentT}
+reduces its left side to
+\begin{align*}
+ &-748\zeta(2)+5256\zeta(2,1)-3840\zeta(2,2)
+   +240\zeta(2,2,2)\\
+ &\quad+120\bigl(\zeta(2,4)+\zeta(4,2)\bigr)
+   +2628\zeta(3)-2500\zeta(4)+36\zeta(6)-748.
+\end{align*}
+Use $\zeta(2,1)=\zeta(3)$,
+$\zeta(2,2)=3\zeta(4)/4$,
+$\zeta(2,2,2)=3\zeta(6)/16$, and
+$\zeta(2,4)+\zeta(4,2)=3\zeta(6)/4$.
+These are Euler, all-twos, and elementary stuffle identities.
+The displayed result follows.  Absolute convergence follows directly
+from \eqref{tp:eq:centeredasy}.
+\end{proof}
+
+The values of \eqref{tp:eq:short5} and \eqref{tp:eq:main5} begin,
+respectively,
+\[
+ 456.5518108340607851715385608386\ldots,
+ \qquad1849.672608741185304145251799308\ldots.
+\]
+These decimals are diagnostic illustrations, not inputs to the proof.
+
+\subsection{The sextic generator and eleven coordinates}
+
+Define
+\begin{equation}\label{tp:eq:new6}
+ R_{11}=\mathcal Z_{6,1},\qquad
+ K_9=\mathcal Z_{2,-5}-5\mathcal Z_{4,-1},\qquad
+ J_7=\mathcal Z_{2,-3}=2\zeta(2,5)+\zeta(7).
+\end{equation}
+Formula \eqref{tp:eq:anchor} specifies every term of these finite
+convergent MZV combinations.
+
+\begin{theorem}[Every regular sextic moment]
+\label{tp:thm:six}
+For $|t|<2\pi$,
+\begin{equation}\label{tp:eq:H6}
+ \boxed{\begin{aligned}
+ H_6(t)={}&R_{11}t+6I^2(\cosh(t/2)G_5(t))
+          -\frac52I^4H_4(t)+\frac12I^8H_2(t)\\
+         &+\frac{K_9}{12}t^3+\frac{J_7}{240}t^5
+          -\frac{Q_5}{10080}t^7.
+ \end{aligned}}
+\end{equation}
+All $M_{6,2r}$ belong to the rational span of the ordered list
+\begin{equation}\label{tp:eq:space6}
+ (R_{11},K_9,J_7,K_8,\zeta(6),Q_7,Q_5,
+                       \zeta(2),\zeta(3),\zeta(4),1).
+\end{equation}
+The first eleven coefficient rows have determinant
+\begin{equation}\label{tp:eq:rank6}
+ -\frac{557325343494359097538722307}
+         {135927478735611867783198720000000}\ne0.
+\end{equation}
+This is again a formal coefficient-rank statement.
+\end{theorem}
+
+\begin{proof}
+The nonzero coefficients at $d=6$ in \eqref{tp:eq:generator} are
+$5/2$ and $-1/2$.  The $k=1$ anchor is $R_{11}$; the remaining
+negative-index anchors combine to $K_9,J_7$, and
+$\mathcal Z_{2,-1}=-Q_5$.  This gives \eqref{tp:eq:H6} directly.
+The span and determinant follow by rational coefficient extraction.
+\end{proof}
+
+For example,
+\begin{align}
+ M_{6,0}&=R_{11},\notag\\
+ M_{6,2}&=-2K_8+\frac16K_9+5Q_7-\frac1{12}R_{11},\notag\\
+ M_{6,4}&=\frac1{10}J_7+\frac25K_8-\frac1{12}K_9
+       +\frac12Q_5-\frac54Q_7+\frac7{240}R_{11}\notag\\
+       &\quad+9\zeta(3)-\frac{17}{4}\zeta(4)
+                       -\frac{171}{80}\zeta(6).
+                       \label{tp:eq:M6examples}
+\end{align}
+One further elimination gives an ordinary sixth-power identity:
+\begin{equation}\label{tp:eq:main6}
+ \begin{split}
+ &\sum_{n\geq0}\left[
+ (35+3360x^2+29792x^4+50176x^6+16128x^8)A^6
+                    -16128x^2-42112\right]\\
+ &\quad=9184Q_5-64Q_7-2928\zeta(2)+111216\zeta(3)
+          -55368\zeta(4)-9576\zeta(6)-2928.
+ \end{split}
+\end{equation}
+It is seven times the combination with coefficients
+$(5,480,4256,7168,2304)$ of $M_{6,0},\ldots,M_{6,8}$.
+Its value is $33200.31747342681779918605867754\ldots$.
+
+\section{The resonant parity and all Laurent coefficients}
+\label{tp:sec:resonance}
+
+The regular moments do not determine spectral derivatives at the
+interlaced poles.  The same explicit subtractions nevertheless give
+the complete Laurent family, including all Stieltjes terms.  This
+addresses the normalization part of the quartic report's Research
+question R5 and applies to every power.
+
+Use the convention
+\begin{equation}\label{tp:eq:Stieltjes}
+ \zeta(1+\varepsilon,a)=\frac1\varepsilon+
+   \sum_{q\geq0}\frac{(-1)^q\gamma_q(a)}{q!}\varepsilon^q.
+\end{equation}
+For $d\geq1$, $r\geq0$, put $s_0=1-d-2r$ and
+\[
+ F_d(s_0+\varepsilon)=\frac{h_{d,r}}\varepsilon+
+                 \sum_{q\geq0}\Lambda_{d,r,q}\frac{\varepsilon^q}{q!}.
+\]
+
+\begin{theorem}[Exact logarithmic sums at every resonance]
+\label{tp:thm:Laurent}
+For every $q\geq0$,
+\begin{equation}\label{tp:eq:Laurent}
+ \boxed{\begin{aligned}
+ \Lambda_{d,r,q}={}&(-1)^q\sum_{n\geq0}(\log x_n)^q
+ \left[x_n^{d+2r-1}A_n^d-
+       \sum_{j=0}^{r}h_{d,j}x_n^{2r-1-2j}\right]\\
+ &+\sum_{j=0}^{r-1}h_{d,j}
+        \zeta^{(q)}(1+2j-2r,1/2)
+       +(-1)^qh_{d,r}\gamma_q(1/2).
+ \end{aligned}}
+\end{equation}
+The series is ordinary and absolutely convergent.  The Taylor series
+of $F_d(s_0+\varepsilon)-h_{d,r}/\varepsilon$ has exact radius $2$.
+\end{theorem}
+
+\begin{proof}
+The square bracket is $O(x_n^{-3})$. On a compact subset $K$ of
+$\Re\varepsilon>-2$, its product with $x_n^{-\varepsilon}$ has
+$q$th derivative bounded by
+\[
+ O_{K,q}\!\left(x_n^{-3-\min_{\varepsilon\in K}\Re\varepsilon}
+                         (1+|\log x_n|)^q\right).
+\]
+This bound is summable, so the remainder and all fixed derivatives
+converge normally there. Add
+\[
+ \sum_{j=0}^{r-1}h_{d,j}\zeta(1+2j-2r+\varepsilon,1/2)
+ +h_{d,r}\bigl(\zeta(1+\varepsilon,1/2)-1/\varepsilon\bigr).
+\]
+This is the required pole-subtracted meromorphic family on a common
+half-plane, hence by continuation near zero.  Differentiating there
+gives \eqref{tp:eq:Laurent}, including the sign and normalization of
+the Stieltjes term.  There are no poles in $|\varepsilon|<2$, while
+$\varepsilon=-2$ is an actual pole with nonzero residue $h_{d,r+1}$.
+This proves the radius assertion.
+\end{proof}
+
+At the first resonance the formula is especially short:
+\begin{equation}\label{tp:eq:firstresonance}
+ \Lambda_{d,0,q}=(-1)^q\left[
+ \sum_{n\geq0}(\log x_n)^q
+           \left(x_n^{d-1}A_n^d-x_n^{-1}\right)
+          +\gamma_q(1/2)\right].
+\end{equation}
+All half-shift Stieltjes constants can be converted to the ordinary
+constants $\gamma_q=\gamma_q(1)$ by
+\begin{equation}\label{tp:eq:halfStieltjes}
+ \gamma_q(1/2)=
+ \frac{2(-1)^q(\log2)^{q+1}}{q+1}
+ +2\sum_{j=0}^q\binom qj(-\log2)^{q-j}\gamma_j-\gamma_q.
+\end{equation}
+This follows by expanding
+$\zeta(s,1/2)=(2^s-1)\zeta(s)$ at $s=1$.
+
+The theorem gives a locally analytic, explicitly anchored generator in
+the spectral displacement $\varepsilon$.  It does not identify a
+finite arithmetic span as $r$ or the logarithmic order $q$ varies;
+that is a further reduction problem.  In particular one must not
+differentiate the discrete coefficient formulas for $M_{d,m}$ as
+though they were identities at arbitrary complex $m$.

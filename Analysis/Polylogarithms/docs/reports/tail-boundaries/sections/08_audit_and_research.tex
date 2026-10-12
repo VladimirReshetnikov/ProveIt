@@ -1,0 +1,291 @@
+\section{Source reconciliation, verification, and further research}
+\label{audit:section}
+
+\subsection{Precise changes to the research status}
+
+The targeted audit has not established an additional false theorem in
+the inspected source dependencies. The proposed corrections concern
+the scope and status of research questions, the distinction between
+inherited and new results, and the conventions needed when combining
+formulas. This distinction matters in a rapidly developing collection:
+the date on an archive does not by itself determine which other results
+its research list has incorporated.
+
+\paragraph{The reconstruction questions.}
+Question R1 in the latest \emph{Quartic Spectral Reconstruction}
+report asks for the complete smaller-order-ten family and then the
+smaller-order-twelve family \cite{tail-quartic}. Those two specified
+tasks are now resolved by Theorems~\ref{t10:complete}
+and~\ref{t12:complete}. In particular, the older excluded progression
+for order ten is no longer an unresolved family: the inherited
+eventual theorem and congruence theorem reduce the remaining task
+to the single case $b=962$, which is certified here. For order twelve,
+the complete finite range and the proved eventual range cover every
+$b\ge7$. The unrestricted assertion for every $a<b$, requested in
+R2 of the quartic report, remains open. So does the full fixed-gap-six
+family $b=a+3$. The newly included cases $(p,q)=(10,16)$ and $(12,18)$
+do not settle that family. Every rank statement is in the specified
+formal coordinate space; no arithmetic independence of zeta values
+follows from it.
+
+\paragraph{The alternating-tail question.}
+The question headed ``Bilinear adjacent-tail certificates'' in the
+latest alternating-tail report \cite{tail-alternating} is answered
+within exactly its two-product rational ansatz. Theorem~\ref{bi:classification}
+gives necessity and sufficiency, and Theorem~\ref{bi:sum} supplies the
+finite and infinite endpoint identities. The independently shifted
+quadratic test case is therefore completely evaluated, including
+confluence, mixed argument derivatives, and anchored rectangular
+primitives. The divisor obstruction is an impossibility result for
+this certificate class. It is not an impossibility theorem for all
+summation identities involving an incompatible pair of denominators.
+Larger support, different auxiliary terms, and independently variable
+Hurwitz orders remain separate problems.
+
+\paragraph{The Stieltjes question.}
+Question 9 of the earlier \emph{Polygamma Tail Identities} report
+excluded zero argument-derivative orders from its positive-order
+product generator \cite{tail-polygamma}. Theorem~\ref{edge:theorem}
+fills the edge with exactly one zero derivative order. Together with
+the inherited positive-positive formula, the uniform dictionary
+\eqref{edge:uniform-dictionary} covers every same-point quadratic
+product with positive total argument-derivative order. All spectral
+derivatives in that dictionary are evaluated at the single integer
+$w=r+t+1$; ordinary zeta values at other positive integers occur in
+the coefficients. The double-undifferentiated germ $H_{1,1}$ and the
+nonzero periodic-translation formulas were already available in the
+unified manuscript \cite{manuscript}. Equation~\eqref{edge:corner}
+checks compatibility with the former. The translated products and
+their contact corrections retain their original attribution.
+
+The already incorporated Stieltjes source corrections, general
+digamma-power identities, Gamma normal forms, and convolution towers
+are not relabelled as new discoveries. The Gaussian $S_6$ and revised
+$S_8$ conjectures are also unaffected. Evaluating another conductor-four
+tail does not evaluate either of those separately defined periods.
+
+\subsection{Normalization and endpoint requirements for integration}
+
+Three conventions are essential when moving these results into the
+unified manuscript. First, the finite summation identities retain their
+upper endpoint until its limit is justified. In particular,
+\eqref{bi:finite} and \eqref{sh:primitive-finite} record information
+that can survive analytic continuation beyond the ordinary convergence
+region. A continued expression is not thereby the sum of the
+pointwise-specialized summands.
+
+Second, meromorphic expressions must be combined before taking a
+removable value or an order derivative. The Mellin factors involving
+$s\zeta(s+1)$ are entire combinations, including at $s=0$.
+At the Stieltjes edge, both resonant local terms are subtracted
+jointly. Substituting a parameter equal to one into a formula proved
+only for larger integer orders does not prove the extension.
+Likewise, merging two separated singular points changes the local
+subtraction problem. It requires a collision theorem, rather than
+literal substitution into a translated finite-part formula.
+
+Third, the finite part uses the original coordinate $x$ and the
+constant term of the cutoff integral. Integration by parts therefore
+has the explicit endpoint law \eqref{edge:ibp}. For example,
+\[
+ \FP\int_0^1\bigl\{
+   \gamma_1(x)\gamma_0'(x)+\gamma_0(x)\gamma_1'(x)
+   \bigr\}\,dx=-\zeta(2)-\zeta'(2),
+\]
+which is not zero. The Stieltjes convention
+\eqref{eq:stieltjes-convention} fixes every sign in this statement.
+Similarly, differentiating the weighted kernel $K(z,w)$ requires
+differentiating its factor $2n+z+w$ as well as both tails. The
+additional terms in \eqref{sh:mixed-formula} are part of the identity.
+These are requirements for correct reuse, not assertions that the
+source theorems violated them.
+
+\subsection{What the verification actually establishes}
+
+The order-ten certificate proves a nonzero retained determinant
+$60407$ modulo $65537$, and an independent reconstruction gives
+$15578$ for the corresponding original determinant modulo the same
+prime. The order-twelve certificate covers all $11513$ integers
+$7\le b\le11519$; its two independent implementations agree on every
+residue. The infinite remaining range is handled by the written
+threshold proof. These are exact arithmetic certificates. The
+bilinear/kernel checks include $144$ rational cutoff identities,
+$72$ rational kernel cutoff identities, and $3125$ finite divisor
+strings, in addition to the symbolic cancellation and determinant
+checks. Its $21$ numerical diagnostics at $50$-digit precision have
+maximum absolute discrepancy below $5.4\cdot10^{-51}$.
+The Mellin verifier records $2002$ exact rational or algebraic
+checks and $11$ direct integer-order or scaled quadratures. The
+Stieltjes verifier records $81$ exact endpoint identities, four
+printed-formula checks, and five direct finite-part quadratures,
+with one repeated at a second splitting point. Its largest recorded
+absolute discrepancy is less than $1.3\cdot10^{-46}$ at $55$-digit
+working precision. The quadratures are numerical diagnostics, not
+interval certificates, and do not replace the holomorphy arguments
+for arbitrary complex orders or all-index derivatives. The supplied
+logs distinguish these two kinds of evidence. The combined
+\texttt{verify\_all.py} run completed successfully.
+
+\subsection{Twelve concrete questions beyond the completed results}
+
+The following questions supplement the Mellin-specific programme
+already given above. They ask for structural identities, finite
+reductions, or complete nonvanishing arguments. No claim of global
+novelty or of arithmetic independence is built into their formulation.
+
+\begin{enumerate}[leftmargin=*,label=\textbf{R\arabic*.}]
+
+\item \textbf{A uniform reconstruction mechanism.}
+Find a determinant identity or a recurrence proving
+$\det M_{a,b}\ne0$ for every $1\le a<b$, or determine an exact
+exceptional set if one exists. The completed families through smaller
+order twelve constrain any proposed formula. At present the highest
+Bernoulli-degree determinant explains eventual nonvanishing for fixed
+$a$, but does not exclude cancellation by the lower degrees uniformly
+in both parameters. A mechanism preserving those lower-degree terms
+would resolve R2 of the quartic report, rather than merely enlarging
+the range of computations.
+
+\item \textbf{The moving boundary in the gap-six family.}
+Derive a bordered-Hankel or comparable exact formula for $M_{a,a+3}$
+that retains all lower-index terms and the omitted-binomial
+conventions at the boundary. The fixed-order contraction used in the
+source does not justify omitting this information for arbitrarily
+large $a$ at the fixed separation. A recurrence in $a$
+with explicit nonzero initial data would be particularly useful.
+This is a sharply defined intermediate problem between the existing
+gap-four theorem and unrestricted unequal orders.
+
+\item \textbf{Closed reconstruction coefficients at orders ten and twelve.}
+For $a=5,6$, replace an unevaluated matrix inverse in the reconstruction
+of a prescribed zeta coordinate by a uniform coefficient formula.
+The target is a fixed-size kernel or product expression for the
+polynomial weight, including the ordinary-integral subtraction
+constants. Such a formula would turn the existence theorem for each
+larger order into an immediately usable family of polygamma
+integrals. Producing another determinant ratio is only useful if its
+minors themselves admit a proved finite reduction.
+
+\item \textbf{Minimal support beyond the adjacent bilinear class.}
+Allow a finite collection of products $E_{n+i}F_{n+j}$ with rational
+coefficients and require the difference of the certificate to contain
+only a prescribed nonzero bilinear term. Determine the smallest
+support needed, modulo identities already implied by the tail
+recurrences. Does the divisor obstruction of
+Proposition~\ref{bi:divisor} persist, or can an incompatible pair such
+as generic separately shifted pure powers be accommodated?
+A necessary-and-sufficient criterion would distinguish a genuine new
+summation mechanism from a rewriting of the two-product certificate.
+
+\item \textbf{Finite ranks for longer adjacent denominator ladders.}
+For
+\[
+ L_d(z)=\sum_{j\ge0}\frac{(-1)^j}{(j+z)_d},\qquad
+ \Re z>0,\quad d\ge2,
+\]
+determine the minimal separated rank of the weighted two-shift kernels
+obtained from admissible certificates. Even $d$ admits a pairing of
+adjacent linear factors; odd $d$ encounters the divisor obstruction
+at generic independent shifts. The rank-two formula for $d=2$
+suggests an exact finite determinant hierarchy. The objective is a
+minimal rank theorem and explicit confluent determinants for every
+admissible $d$, not just a separable expansion whose length has not
+been proved optimal.
+
+\item \textbf{Three independently colored tails.}
+Classify finite certificates built from neighboring products of three
+tails with independent denominator polynomials and colors. State
+which quadratic and linear residual tails must survive and give the
+complete finite endpoint. The previously developed powers of a single
+tail do not settle this independent-data problem. A first substantive
+target is a three-shift quadratic family, with a specified reduction
+to depth-two sums and one-factor functions; unrestricted depth-one
+closure should not be assumed.
+
+\item \textbf{The continued alternating-square law at negative orders.}
+Starting from its exact finite endpoint, construct a jointly
+holomorphic subtraction formula at each nonpositive tail order and
+derive every order derivative there. The already documented
+continued value $1/4$ at order zero, despite vanishing pointwise
+summands, is the compulsory normalization test
+\cite{tail-alternating}. The desired identities should identify the
+finite Euler-polynomial contributions and the spectral logarithmic
+terms separately. This would give exact negative-order identities
+without confusing continuation with an ordinary series.
+
+\item \textbf{Independent nonperiodic Stieltjes shifts.}
+Construct an order-generating formula for the ordinary integrals
+\[
+ \int_0^1\gamma_m^{(r)}(x+a)\gamma_n^{(t)}(x+b)\,dx,
+ \qquad \Re a,\Re b>0,
+\]
+with $a$ and $b$ independent. These are not the inherited periodic
+translations $\{x+a\}$. Begin with the antisymmetric first-derivative
+combination, since its symmetric companion is an endpoint derivative.
+Specify a finite function class or a genuinely new two-parameter
+master, and prove how its diagonal and boundary limits recover the
+appropriate coincident finite parts. The independent shift difference
+is the missing variable in the classical coincident product kernel.
+
+\item \textbf{Cubic Stieltjes products with independent indices.}
+Determine an explicit holomorphic germ for
+$\FP\int_0^1\gamma_m^{(r)}\gamma_n^{(t)}\gamma_j^{(v)}\,dx$
+when $r+t+v>0$. A first nontrivial target is
+$\FP\int_0^1\gamma_1(x)^2\gamma_0'(x)\,dx$.
+The all-index digamma-power results concern a different restriction
+of this problem. Fourier or Mellin analysis suggests that genuine
+multiple-zeta order derivatives may be needed. A successful theorem
+should identify that alphabet and all local counterterms before
+claiming a finite reduction; the single-spectral-argument quadratic
+closure does not imply its cubic analogue.
+
+\item \textbf{Universal relations among the quadratic finite parts.}
+For fixed total Stieltjes index and fixed positive total argument
+derivative, classify all relations implied by the exact coefficient
+dictionary. Determine whether exchange symmetry and the endpoint
+identity generate all of them, or whether further relations remain.
+The cancellation of the highest zeta derivative in
+\eqref{edge:top} gives a concrete first test. Seek a uniform generating
+basis and dimension in a declared formal coefficient alphabet. This
+would explain cancellations systematically while avoiding an
+unproved claim about independence of evaluated constants.
+
+\item \textbf{Simultaneous and iterated triple collisions.}
+For three periodically translated Stieltjes factors, compare the
+constant term obtained by a simultaneous fixed-coordinate collision
+with the two possible successive pairwise collisions. Compute any
+difference as an explicit local distribution and test whether a
+canonical correction makes the resulting composition associative.
+The existing quadratic contact and dilation laws
+\cite{manuscript} are mandatory compatibility conditions, not a proof
+of this three-factor assertion. The question is meaningful only
+after the two-variable cutoff path and the retained finite term are
+specified; those choices are part of the proposed theorem.
+
+\item \textbf{A finite evaluation of the logarithmic Gamma correction.}
+The inherited function
+$S(a,b)=\sum_{n\ge0}\arctan^2(b/(n+a))$ already has an ordinary
+Gamma-integral representation and exact shift and distribution laws
+\cite{tail-alternating}. Find a proved finite evaluation at a
+nonzero mass, for example on a rational-shift locus with
+$e^{-2\pi b}$ algebraic, in an explicitly stated collection of
+polylogarithm values, order derivatives, and Gamma values. The
+existing small-mass series and integral remain valid answers at
+generic parameters. A finite special-value reduction would be an
+additional identity and would clarify which extra functions the
+higher spectral defects actually require.
+
+\end{enumerate}
+
+\subsection{Proposed repository integration}
+
+The accompanying integration note proposes separate inserts for the
+certificate classification, the shifted kernels and primitives, the
+Mellin resonances, the Stieltjes edge, and the two reconstruction
+families. It records their exact source dependencies and the status
+sentences that should change. The current manuscript should retain
+its established collision, convolution, and Gamma-normal-form
+chapters, with cross-references to the added edge theorem. The
+complete verification records should travel with the relevant
+inserts, including the finite-field residue list and its independent
+replay. No repository files are modified by this delivery.

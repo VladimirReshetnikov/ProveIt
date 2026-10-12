@@ -1,0 +1,131 @@
+\section{Verification, source corrections, and integration}
+\label{verification:sec}
+
+\subsection{Proofs and exact computational certificates}
+
+The bilinear, rational-certificate, cutoff-contact, harmonic-degree,
+and spectral-hierarchy theorems have proofs in the article. Their
+finite formulas also admit independent symbolic and numerical
+replays. The order-ten completion additionally uses an exact finite
+computer-assisted certificate: a polynomial defined by a $5\times5$
+Newton/factorial determinant is reconstructed coefficientwise, then
+substituted into an explicit congruence in $\Z[b]/(2^{17})$.
+All of the inputs, finite algorithms, and integer comparisons are
+included. The proof does not depend on floating-point nonzero tests.
+
+The complete polynomial reconstruction sums all $120$ signed
+permutation products and matches $10\,403$ expanded coefficients,
+stored in $439$ groups. The old exceptional integer $b=962$ is
+checked separately by two Bernoulli computations and by direct
+evaluation of the $5\times5$ determinant. The sufficient threshold
+$b=1920$ is regenerated from the source entry formulas and compared
+using exact integers. Finite source matrices handle $6\le b\le21$.
+
+\subsection{Reproducible diagnostics}
+
+The included programs use Python, SymPy, and mpmath; the observed
+versions were Python 3.12, SymPy 1.14.0, and mpmath 1.3.0. They need
+no network access. The package README supplies commands and file
+locations. The separate result records preserve the precision and
+test method rather than presenting all checks as equivalent evidence.
+
+\begingroup\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.24\textwidth}>{\raggedright\arraybackslash}p{.42\textwidth}>{\raggedright\arraybackslash}p{.28\textwidth}@{}}
+\toprule
+Component & Exact checks or independent route & Role \\
+\midrule\endfirsthead
+\toprule Component & Exact checks or independent route & Role \\
+\midrule\endhead
+Bilinear tails & Five symbolic cancellations; 28 numerical checks,
+including independent Laplace integrals for Stieltjes jets. &
+Recurrence-sign, normalization, domain, and example diagnostics. \\
+\addlinespace
+Cutoff jets and cyclotomic audit & 74 exact Euler-polynomial and
+translated-coefficient checks through order twelve; 12 numerical
+checks, including independent quadrature. & Contact signs, sharp
+threshold, differentiated finite sums, and the inherited trilogarithm
+coefficient. \\
+\addlinespace
+Degree and spectral hierarchy & 45 exact checks, including all
+ranks for $r=2,\ldots,6$; 19 numerical checks through independent
+Mellin moments and Laurent limits. & Non-common-kernel example,
+signed cutoff exception, pole normalization, Gamma products, and
+Stieltjes finite parts. \\
+\addlinespace
+Polylogarithm generator & 122 exact cutoff and Taylor-coefficient
+checks; independent endpoint evaluation from direct moments and
+harmonic tail expansions. & Generator, anchored primitive, and
+ordinary-zeta endpoint; 65-digit numerical diagnostics. \\
+\addlinespace
+Order-ten completion & Full coefficient reconstruction, uniform
+congruence, exact base matrices and threshold; two independent
+Bernoulli residue calculations. & Exact finite certificates supporting
+the uniform nonvanishing theorem. \\
+\addlinespace
+Explicit $(10,12)$ identity & Exact inverse-row and counterterm
+arithmetic; independent numerical cutoff/tail diagnostics. & An
+ordinary convergent illustration of the uniform family. \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+The 45-digit bilinear checks have residuals below $3.1\cdot10^{-45}$.
+Independent Mellin comparisons for the determinant formulas agree
+at roughly $10^{-79}$ relative error at 80-digit precision;
+the finite-step Laurent extrapolations have residuals of order
+$10^{-24}$. The polylogarithm endpoint checks have errors below
+$2\cdot10^{-41}$ and $4\cdot10^{-48}$ with two truncation orders.
+The displayed $(10,12)$ identity has numerical residuals
+below $4\cdot10^{-68}$. These are numerical diagnostics, not certified
+interval bounds. They neither prove global identities nor establish
+independence of constants. The written arguments and exact algebraic
+certificates have that separate role.
+
+Independent mathematical audits checked the bilinear endpoint
+normalization, the rational factor $cS(0)$, translated cutoff jets,
+the pencil compression argument, the finite-difference residue
+blocks, and the Gamma-product normalization. No unresolved
+discrepancy was found in those checks. This records the verification
+performed; it does not describe the article as externally refereed
+or formally verified in a proof assistant.
+
+\subsection{Corrections and status updates proposed for ProveIt}
+
+The concrete correction is to the first coefficient in the incoming
+complementary-sector question. Add the formula in
+Proposition~\ref{audit:coefficient} and cross-reference the existing
+inverse-color and height-one manuscript reductions. Retain the full
+generator question. The correction concerns an overlooked implication,
+not an incorrect proved identity.
+
+The order-ten progression should now be marked proved by
+Theorem~\ref{ten:main}; its prior congruence remains valid on its
+original range. The new result does not invalidate that earlier proof.
+The degree--rank question should be split into the proved real-rational
+generic theorem, the explicit finite-cutoff exception test, and the
+remaining complex/depth questions. The ordinary-square continuation
+question is resolved with its cutoff coordinate included in the
+statement.
+
+Two presentation precautions are mathematically necessary. First,
+``odd negative orders have no contact'' is true for $X=N+a+1$;
+it is false for an arbitrary translated cutoff. Second, all-coordinate
+formal rank is not arithmetic independence of zeta values. These
+qualifications should travel with the imported statements.
+
+No new error in the already proved core manuscript is asserted by
+this audit, and this work is not an exhaustive audit of the whole
+repository. The Gaussian $S_6$ and revised $S_8$ statements are not
+proved here. The unrestricted even-order prefix theorem, complete
+gap-six family, ordinary independent-order outer-weight problem,
+and full complementary generator remain explicitly open.
+
+\subsection{Integration boundary}
+
+The package supplies a modular \path{article.tex}, section sources,
+a flattened standalone TeX file, the rendered PDF, exact verification
+programs and records, and source/status notes. Section labels have
+disjoint prefixes so individual results can be imported. The supplied
+source pin and question map identify what was inspected. The work
+does not modify the repository, supersede all earlier reports, or
+bundle their generated build files.

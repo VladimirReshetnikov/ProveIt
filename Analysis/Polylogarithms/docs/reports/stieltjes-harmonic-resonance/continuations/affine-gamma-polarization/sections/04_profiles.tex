@@ -1,0 +1,88 @@
+\section{Symmetric profiles and mixed Gamma ratios}
+\label{ag:sec:profiles}
+
+The affine argument does not depend on the particular uniform interval
+average in the Gamma ratio. Let $K(z)\in\C[[z^2]]$ be even, with
+$K(0)=1$, and form
+\begin{equation}\label{ag:eq:profile-density}
+ \mathcal C_K(t)=\exp\bigl(tK(t\D)u_0\bigr).
+\end{equation}
+Its coefficients are differential polynomials, and its normal form again
+has an Appell factor. Denote the coefficient of $u_r^2t^{2r+2}$ after
+removing that factor by $g_{K,r}(y)$, with $y=u_1t^2/2$.
+
+\begin{theorem}[The symmetric-profile coefficient theorem]
+\label{ag:thm:profile}
+For every $r\ge2$,
+\begin{equation}\label{ag:eq:profile-symbol}
+ \boxed{
+ g_{K,r}(y)=[w^r]\frac12
+ K\left(\sqrt{y^2-w}-y\right)
+ K\left(\sqrt{y^2-w}+y\right).}
+\end{equation}
+The product is even in the square-root variable, so its interpretation
+as a formal series in $y,w$ is unambiguous. Formula
+\eqref{ag:eq:profile-symbol} determines all coefficients of
+$u_0^a u_1^k u_r^2$ in $\NF\mathcal C_K$.
+\end{theorem}
+\begin{proof}
+Under \eqref{ag:eq:affine}, the quadratic term is
+$t^2W(K(t\D)v)^2/2$. Its symbol is
+$t^2K(h-y)K(h+y)/2$, where $h^2=y^2-t^2\eta$.
+The primitive has Appell covariance by
+Lemma~\ref{ag:lem:appell-primitive}, and normal support excludes any
+other contribution to $\eta^r$ for $r\ge2$. Comparing coefficients
+of $t^{2r+2}\eta^r$ proves the formula. Evenness of $K$ makes the
+product invariant under $h\mapsto-h$, justifying its formal meaning.
+\end{proof}
+
+\subsection{A finite collection of Gamma scales}
+For nonzero scales $\rho_1,\ldots,\rho_d$ and constants $c_i$ with
+$\sum c_i=1$, put
+\[
+ K(z)=\sum_{i=1}^dc_iK_{\rho_i}(z),\qquad
+ K_\rho(z)=\frac{2\sinh(\rho z/2)}{\rho z}.
+\]
+Under the digamma substitution, \eqref{ag:eq:profile-density} becomes
+\begin{equation}\label{ag:eq:mixed-Gamma}
+ \prod_{i=1}^d
+ \left(\frac{\Gamma(x+\rho_it/2)}{\Gamma(x-\rho_it/2)}\right)^{c_i/\rho_i}.
+\end{equation}
+The powers are defined by the analytic logarithm which vanishes at
+$t=0$. For positive real scales, real $x>0$, and sufficiently small
+real $t$, this is the usual positive real power.
+
+For compactness write
+$D_n=\partial_{y^2}^{\,n}$,
+$A_{ij}(y)=\cosh((\rho_i-\rho_j)y/2)$, and
+$B_{ij}(y)=\cosh((\rho_i+\rho_j)y/2)$.
+Theorem~\ref{ag:thm:profile} gives the explicit mixed-scale formula
+\begin{align}
+ g_{K,r}(y)
+ =\frac{(-1)^r}{(r+1)!}\bigg\{&
+ \sum_i\frac{c_i^2}{\rho_i^2}D_{r+1}\cosh(\rho_i y)\notag\\
+ &+2\sum_{i<j}\frac{c_ic_j}{\rho_i\rho_j}
+ \bigl(A_{ij}D_{r+1}B_{ij}-B_{ij}D_{r+1}A_{ij}\bigr)\bigg\}.
+ \label{ag:eq:mixed-square}
+\end{align}
+Indeed, expand the product in \eqref{ag:eq:profile-symbol} and use the
+hyperbolic product-to-sum identities before Taylor expanding in $w$.
+Coincident scales have a regular limit; no division by
+$\rho_i-\rho_j$ appears.
+
+As one concrete check, take $c_1=c_2=1/2$, $\rho_1=1$, and $\rho_2=2$.
+The coefficient of $u_2^2$ in the weight-six exponential coefficient,
+normalized by $6!$, is
+\begin{equation}\label{ag:eq:mixed-example}
+ [u_2^2]\,6![t^6]\NF\mathcal C_K(t)=\frac{227}{32}.
+\end{equation}
+It can also be verified without the symbol: the exponent is
+$tu_0+(5/48)t^3u_2+(17/3840)t^5u_4+\cdots$, and
+$\NF(u_0u_4)=u_2^2$. The two contributions are $51/16$ and $125/32$.
+
+The general theorem is useful even when $K$ is a polynomial rather
+than a Gamma profile. Its proof does not use analytic convergence of
+$K$. For convergent profiles the resulting kernels may have additional
+analytic representations; the remainder of this article treats the
+uniform Gamma profile, whose beta weight gives particularly short
+endpoint formulas.

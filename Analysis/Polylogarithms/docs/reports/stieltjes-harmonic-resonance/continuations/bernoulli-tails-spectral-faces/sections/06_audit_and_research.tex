@@ -1,0 +1,301 @@
+\section{Source audit, exact verification, and integration decisions}
+\label{sec:audit}
+
+\subsection{What changes in the source status}
+
+The article supplies advances at specific research interfaces. It does
+not replace the source's definitions or silently promote other open
+claims. The following status changes are proposed for integration.
+
+\begingroup
+\small
+\begin{longtable}{@{}p{0.27\textwidth}p{0.65\textwidth}@{}}
+\toprule
+Source target & Proposed status after review of this article\\
+\midrule
+\endhead
+Quartic report, R4: fifth- and higher-power cancellation &
+The universal recurrence and anchored generator are proved in
+Theorems~\ref{tp:thm:recurrence} and \ref{tp:thm:generator}. Exact
+eight- and eleven-coordinate rows are supplied for powers five and six.
+Theorem~\ref{et:main} treats every repeated even order. The minimal
+general coordinate count remains a separate question.\\[5pt]
+Quartic report, R5: resonant parity &
+The complete Laurent normalization and all coefficients are proved in
+Theorem~\ref{tp:thm:Laurent}. The local spectral Taylor series has exact
+radius two. A uniform finite arithmetic reduction as the resonance
+index varies is not proved.\\[5pt]
+Quartic report, R1: smaller order ten &
+The complete all-$b$ statement for $b\ge6$ is proved in
+Theorem~\ref{mt10:main}; the new missing certificate is $b=962$.
+The smaller-order-twelve and unrestricted unequal-order questions remain
+open here.\\[5pt]
+Harmonic-gap continuation, Q4 and Q5 &
+The first two-marker target and all identical marked clusters are
+proved by \eqref{gm:gamma-square} and \eqref{gm:identical}.
+Corollary~\ref{gm:marked} treats the fully symmetric unequal-marker
+component. General individual ordered unequal-marker reductions remain
+open.\\[5pt]
+Higher-defect report, face and odd-weight questions &
+Theorems~\ref{sd:thm:master}--\ref{sd:thm:allorders} give the ordinary
+face decomposition and its full rational zero-jet term. The periodic
+extension is Corollary~\ref{sd:cor:periodic}. Special-function evaluation
+of general higher face integrals remains open.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+The general all-power generator is not the already known finite-span
+theorem for powers of the ordinary harmonic number $H_n$. Here the
+objects are powers of the decaying polygamma tail $\zeta(2,n+1)$.
+Likewise the face theorem is not a new claim that a Dirichlet mixture
+exists: it is the explicit decomposition and integrability of its
+boundary-subtracted pieces. The relative Hurwitz interpolation itself
+is inherited from published work. These separations prevent duplicate
+claims during integration.
+
+\subsection{Corrections and normalization details}
+
+No new false theorem was found in the targeted rank and harmonic-gap
+material reviewed for this continuation. In particular, the source's
+single-marker theorem correctly left the several-marker extension open.
+The lower-index-zero binomial omission in the reconstruction matrices
+was already explicit in the canonical fifth-order report and in the
+incoming extensions. It must be retained as an existing convention,
+not reported as a newly discovered erratum.
+
+The following details are essential when the new results are inserted.
+They are precise safeguards for the supplied proof chain.
+
+\begin{enumerate}
+\item In the centered finite-cutoff argument use $n=0,\ldots,N-1$.
+The even-power subtraction sums then have zero constant coefficient.
+Changing to a cutoff ending at $N$ requires its endpoint polynomial.
+The missing $n=0$ endpoint also produces the exceptional
+$-d\delta_{k,2}\zeta(2)^{d-1}/2$ in
+\eqref{tp:eq:recurrence}.
+
+\item The tail expansions are asymptotic. Only a finite subtraction,
+with a normally convergent remainder, is used at any specified
+spectral point. A fixed infinite asymptotic series is not summed as
+an ordinary power series in $1/n$.
+
+\item The words ``eight coordinates,'' ``eleven coordinates,'' and
+``rank $2b$'' concern the indicated rational coefficient maps. They do
+not assert that the corresponding real or complex constants are
+linearly independent over $\mathbb Q$. The source's existing formal
+rank convention is preserved.
+
+\item In the multiple-mark formula differentiate independent parameters
+before specialization. A total derivative along the diagonal is a
+different expression. For unequal marks, division of the symmetric
+sum by $k!$ is not valid. For identical marked pairs it is valid.
+
+\item The Gamma expressions use differences of analytic log-Gamma
+branches on the right half-plane. An independently chosen logarithm
+of a quotient need not have the same branch. The Stieltjes primitive
+vanishes at its stated lower endpoint.
+
+\item In the spectral decomposition the zero-jet correction
+$\mathcal L_W$ is only the contribution of $F_0(B)$. Lower derivatives
+$F_1,F_2,\ldots$ can still contain the Stieltjes and residue terms
+present in the existing one-mass formulas. Removing $\mathcal L_W$
+does not remove all such terms. The pair term $\zeta(2)$ in
+\eqref{sd:eq:fourth} is required by the Gamma-ratio normalization.
+
+\item A simplex face term is not an irreducible connected cumulant.
+It can be nonzero when only two of several masses coincide. Formula
+\eqref{sd:eq:quadraticface} gives its precise quadratic behavior and
+prevents an incorrect stronger collision claim.
+\end{enumerate}
+
+An independent audit strengthened the proof of the polylogarithm
+generator by replacing generic endpoint-regularization language with
+an explicit convergent-MZV formula for the sole leading-one endpoint.
+The Laurent derivative estimate was also written with its required
+logarithmic factor. These are corrections made to the present draft
+during review, not errors attributed to the baseline.
+
+\subsection{What the reproducible checks establish}
+
+The package separates proof certificates from numerical diagnostics.
+The essential exact checks are as follows.
+
+\begin{itemize}
+\item A finite Faulhaber calculation, independent of the new Bernoulli
+recurrence, agrees with it in 220 rational checks across powers one
+through eight, including nonpositive anchors and boundary parity.
+It retains MZVs as formal words. A separate finite-cutoff replay proves
+the reduction of \eqref{tp:eq:main5} using only four classical MZV
+relations. Rational coefficient extraction reproduces the full
+eight-by-eight and eleven-by-eleven determinants and elimination rows.
+For the repeated even-order extension, an independent standard-library
+program checks 16 cubic cutoff polynomial identities and 192 finite
+tail-difference versus strict-composition anchor identities.
+
+\item The order-ten replay reconstructs the inherited determinant
+polynomial from 120 signed permutation products. It checks all
+$10{,}403$ integer monomials, the Bernoulli modular substitution,
+and the small base matrices. A separate program computes all 25
+coefficient norms used in the eventual argument and verifies the
+integer factorial comparison. The new exceptional certificate uses
+the displayed five-by-five matrix and independently computed Bernoulli
+residues. No numerical determinant decides nonvanishing.
+
+\item The marked-gap replay checks the formal insertion and partition
+algebra through five independent labels. At five labels there are 52
+set partitions and 120 surviving permutations; all unwanted endpoint
+factors and shorter words cancel. The analytic insertion theorem is
+proved in the text; the program checks its finite combinatorial
+consequences.
+\end{itemize}
+
+Independent numerical representations then test the conclusions.
+Three ordinary fifth- and sixth-power identities agree to more than
+90 decimal digits using finite direct sums and centered Hurwitz tail
+acceleration at two different cutoffs. The noninteger-endpoint marked
+gap and its actual zero-marker derivative are reconstructed from
+ordinary nested sums and compared with the decorated formulas; the
+latter residual at cutoff 160 is approximately $3.73\times10^{-31}$.
+Finite-interval Gamma and Stieltjes specializations agree to the stated
+working precision. For the three-mass spectral third derivative, a
+direct spectral evaluation agrees with independent Gamma face
+quadrature to approximately $8.2\times10^{-32}$ at the highest
+reported quadrature order.
+
+These errors are observed cross-representation residuals. They are not
+interval enclosures, and common truncation errors can survive a
+comparison. The theorems rest on the analytic proofs and finite exact
+identities. The package records the working precision, cutoff, method,
+and exact-versus-numerical status of the checks. Its scripts use local
+files only and need no repository checkout or network access to run.
+
+The archive includes a standalone \LaTeX{} source, the compiled PDF,
+modular section sources, Python verification programs, successful output
+records, a claim-status ledger, source hashes, integration notes, and a
+manifest verifier. The standalone source is generated from the modular
+article, so the readable PDF and reusable section fragments share the
+same mathematics. The source repository is left unchanged.
+
+\section{Further research questions and exact next targets}
+\label{sec:research}
+
+The most useful next questions ask for identities, finite reductions,
+or proofs of specified families. The following targets arise directly
+from the present theorems.
+
+\begin{enumerate}[label=\textbf{R\arabic*.}]
+\item \textbf{Determine the smallest formal coordinate system at every
+tail power.}
+The universal generator supplies a finite span and exact ranks eight
+and eleven for the chosen fifth- and sixth-power systems. Construct
+canonical reduced coordinates at power $d$, state the admitted MZV
+relations, and prove the rank of the resulting moment coefficient map.
+One should distinguish the rank of that formal map from the unknown
+arithmetic dimension after evaluating its coordinates.
+
+\item \textbf{Classify compact polynomial annihilators.}
+Equations \eqref{tp:eq:main5} and \eqref{tp:eq:main6} cancel all new
+high-weight anchors in selected moment combinations. Find a structural
+description of the polynomial weights producing a prescribed lower
+coordinate span. A useful theorem would give the least degree and a
+closed basis of such weights, with their exact asymptotic subtraction
+polynomials. This could explain why the relatively small coefficients
+in \eqref{intro:quintic} exist.
+
+\item \textbf{Reduce the new anchored generators to explicit
+polylogarithmic forms.}
+The generator theorem is a finite algorithm with a depth upper bound.
+Write a compact explicit expression for $H_5$ or $H_6$, then determine
+which identities among allowed arguments and products reduce it.
+Theorem statements should specify the function class and branches.
+A proof of minimal depth would require an appropriate functional
+invariant and is not supplied by the finite coordinate determinants.
+
+\item \textbf{Find arithmetic recurrences for the resonant Laurent
+family.}
+Theorem~\ref{tp:thm:Laurent} fixes every coefficient and its spectral
+germ. Determine whether the dependence on $r$ can be described by an
+anchored recurrence with a controlled set of new logarithmic constants.
+The first concrete case is the quartic constant term
+$\Lambda_{4,r,0}$. Any proposed recurrence must reproduce the
+$h_{4,r}\gamma_0(1/2)$ contribution exactly.
+
+\item \textbf{Complete smaller order twelve, then remove the fixed-order
+restriction.}
+The order-ten proof shows how a modular certificate and a proved
+eventual range can complement each other. Carry out the six-dimensional
+contraction for smaller order twelve, account for every exceptional
+residue below a sufficient threshold, and provide finite exact
+certificates. A uniform determinant identity preventing cancellation
+for all unequal even orders would settle the broader optimal-prefix
+conjecture. The full gap-six family is still an intermediate target.
+
+\item \textbf{Find closed reconstruction rows.}
+The ordinary identities \eqref{mt10:ordinary} are explicit finite
+rational algorithms involving an inverse matrix. Seek a fixed-size
+kernel or product formula for its rows, including all endpoint
+constants. This is a stronger goal than nonsingularity and may yield
+short identities at large orders without constructing a large inverse.
+
+\item \textbf{Resolve the antisymmetric two-marker component.}
+For unequal marked pairs, the partition theorem gives the symmetric
+combination. Determine an independent expression for
+$\mathcal H(s,u,v,t)-\mathcal H(s,v,u,t)$ and its mixed derivatives.
+A proposed reduction should retain the given relative quotient at
+noninteger endpoints and prove an ordinary convergence domain before
+continuation. This is the precise part of the several-marker question
+not supplied by a classical symmetric-sum law.
+
+\item \textbf{Combine marked clusters with nonpositive deletions.}
+Unmarked deletions can shift distinct marked centers differently.
+Classify exactly when such operations preserve the identical-cluster
+or symmetric span, and identify the additional ordered coordinates
+when they do not. The natural first test is one nonpositive integer
+letter adjacent to a two-marker cluster. Independent differentiation
+must precede every diagonal specialization.
+
+\item \textbf{Evaluate special Gamma face integrals.}
+For rational shifts and selected algebraic masses, seek identities
+expressing $I_S(F_1)$ in a specified polylogarithmic, multiple-Gamma,
+or zeta-derivative class. The quadratic identity
+\eqref{sd:eq:quadraticface} gives a normalization check for every face
+size. A finite exact integral is already available at arbitrary masses;
+a special-function reduction would be an additional theorem.
+
+\item \textbf{Give higher collision coefficients face by face.}
+The quadratic coefficient in \eqref{sd:eq:collisionleading} is known
+for every $k$. Derive closed symmetric-polynomial expressions for
+$I_S(B^h)$ for general $h$, and for the logarithmically weighted
+integrals in the higher derivative formula. Determine a generating
+function that remains regular when any subset of masses coalesces.
+This asks for explicit identities rather than only estimates.
+
+\item \textbf{Allow independent spectral orders and arithmetic twists.}
+Replace the common $s$ by independent $s_i$ in the product spectrum.
+Derive the face decomposition for the resulting nonsymmetric Dirichlet
+parameters, then compute prescribed transverse derivatives at their
+joint origin. For periodic weights, project the resulting Gamma and
+Stieltjes formulas onto Dirichlet characters while retaining the full
+logarithmic normalization in the period. The mean-zero cancellation
+provides an exact test at every polynomial weight.
+
+\item \textbf{Return to the Gaussian period targets through an explicit
+map.}
+The new higher-depth polylogarithmic generators may supply functional
+identities outside previously explored relation spaces. Before claiming
+progress on $S_6$ or revised $S_8$, construct a precise map from one
+such identity to the canonical residual, including its lower-weight
+products and branch constants. A formal obstruction in a chosen
+relation space and a high-precision small residual answer different
+questions; neither alone proves or disproves the period identity.
+
+\item \textbf{Formalize the finite-to-analytic interfaces.}
+The Bernoulli boundary polynomial, finite summation identities,
+modular determinant certificate, set-partition inversion, and face
+M\"obius inversion are suitable finite formalization targets.
+Separately formalize normal convergence of the subtracted spectral
+families and agreement on their defining half-planes. Validated
+interval quadrature would strengthen the computational diagnostics,
+but remains distinct from formal proof of the exact identities.
+\end{enumerate}
