@@ -5308,6 +5308,25 @@ X) give `theorem_18_1_d2_sixteen_le_of_profiles_poly` (`d ≥ 16`) and
 (`model_z.py`) shows that more exact entries gain nothing: tables to `16`, `18`
 and `20` give the same thresholds.
 
+**L.16p: the partition constant charged at `2^(k+9)` (2026-10-12).** The step
+lemma charges `32·polynomialPartitionConstant (k+2) ≤ 2^(4(k+3)²+5)` at
+`X^(2^(4(k+3)²+4))`, which costs `4(k+3)²` per step in the doubly logarithmic
+scale. Since `4(k+3)² + 5 ≤ 2^(k+9)`, `X^(2^(k+9))` suffices, and a step costs
+`k + 19` there. `Proofs18CoverFejerHeadlineY` (light, `assemble_y.py`, built on
+the Z chain) gives:
+* `theorem_18_1_d2_fifteen_le_of_profiles_poly` (`d + 2`, `d ≥ 15`);
+* `theorem_18_1_d3_ten_le_of_profiles_poly` (`d + 3`, `d ≥ 10`);
+* `theorem_18_1_d4_seven_le_of_profiles_poly` (`d + 4`, `d ≥ 7`).
+
+The envelopes are kernel-evaluated for `k = 5..14`, and the invariant holds
+from `k = 15`.
+
+Theorem 18.2 does not gain. Its inverse-step threshold (`inv_thr_le_ex`)
+raises the refinement constant to the power `polynomialPartitionConstant`, so
+there `log₂ C` is a genuine cost. The model's first `L` predictions omitted
+that branch and were wrong. Even the sharper `log₂ C ≤ 2(d+1)²` changes no
+`L` threshold (`model_q2.py`).
+
 The model (`models/model_w_chain.py`) puts the method's limits here. The
 asymptotic ratio `24` is below `32` but above `16`, so `d + 2` and `L + 0`
 need a smaller class constant beyond the table, and the true one is about
