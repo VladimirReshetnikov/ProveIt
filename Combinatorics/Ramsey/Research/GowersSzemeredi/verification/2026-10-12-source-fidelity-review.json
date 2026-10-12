@@ -5,8 +5,8 @@
   "paper_sha256": "1fcd9b08223924626bfae7d0c73044ee8226b14f5978a9439c5908e96ec6799d",
   "reviewed_sections01_03_sha256": "d7926af871dbe1323494485a38310b78721b436601eef937dbe41b3dd3782589",
   "statement_count": 120,
-  "reviewed_statement_count": 108,
-  "unreviewed_statement_count": 12,
+  "reviewed_statement_count": 120,
+  "unreviewed_statement_count": 0,
   "goal_complete": false,
   "geometry_conventions": {
     "modAP_IsProper": "Carrier cardinality equals parameter length, recording injection only. The comment now accurately allows wrapping; ordinary integer representatives are tracked by the stronger geometric predicate.",
@@ -2112,8 +2112,11 @@
           "line": 64
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "lemma_16_4_holds"
+      "status": "corrected_extraction_verified_original_density_open",
+      "native_audited_companion": "lemma_16_4_holds",
+      "evidence": "Published condition(ii) is(theta*gamma)^E, E=2^(2^(k+5)); its proof later uses/2, while the current annotated version and companion use/4. Canonical hypotheses explicitly include every positive induction dimension<=k and an eventual odd-prime threshold. Proper cross-section controls and respected fraction1-2^-44 match the annotated version. Neither the stronger original count nor its unrestricted modulus scope is discharged by the corrected companion.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean"
     },
     {
       "statement": "lemma_16_5",
@@ -2149,8 +2152,11 @@
           "line": 122
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "lemma_16_6_holds"
+      "status": "modular_corrected_companion_verified_integer_bound_comparison_open",
+      "native_audited_companion": "lemma_16_6_holds",
+      "evidence": "The canonical statement makes the spectral relation, induced selection, graph count q<=multipleQ(sigma/t)^t, and nested recurrence denominator explicit. It certifies injective modular boxes. IntegerAbstractFamilyLemma166At has a checked ordinary-integer family analogue with section16PowerWidth controls, but a comparison recovering the literal numbered width under source assumptions has not been inspected/proved here. Do not identify the two widths based on analogous names.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean"
     },
     {
       "statement": "lemma_16_7",
@@ -2166,8 +2172,11 @@
           "line": 232
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "lemma_16_7_holds"
+      "status": "corrected_common_base_verified_original_density_open",
+      "native_audited_companion": "lemma_16_7_holds",
+      "evidence": "The published theta2 is2^-21*theta1^5. The canonical and annotated version prove2^-32*theta1^8 from the corrected selected-cube mass, with the same alternating cube identity and one common base. This is a genuine numerical weakening; the stronger original density is not established and no counterexample is claimed.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean"
     },
     {
       "statement": "lemma_16_8",
@@ -2183,8 +2192,11 @@
           "line": 157
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "lemma_16_8_holds"
+      "status": "iteration_correction_verified_zero_refutation_verified",
+      "native_audited_companion": "lemma_16_8_holds",
+      "evidence": "The corrected companion requires real s>=1 and covers finite unions and sums, including empty families. Proofs16Union.lemma_16_8_zero_iteration_counterexample refutes the variant with no lower bound. The source prose also asserts failure at sufficiently small positive s, but the defined lemma_16_8_with_positive_iteration has no located theorem companion; that additional refutation remains to be kernel-checked. The iteration-count interpretation of s is distinct from unrestricted real s.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean"
     },
     {
       "statement": "lemma_16_9",
@@ -2200,8 +2212,11 @@
           "line": 158
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "lemma_16_9_holds"
+      "status": "corrected_two_count_modular_cover_verified_integer_comparison_open",
+      "native_audited_companion": "lemma_16_9_holds",
+      "evidence": "The canonical result separates natural qGamma from qDelta, uses dimension k+1 for the remainder, and preserves the factor(-1)^k in the induced-value identity. Its output is a modular Section16LineCover with the corrected recurrence width. IntegerAbstractFamilyLemma169At supplies a checked family analogue with ordinary integer boxes, but the exact source numerical width/graph comparison remains an explicit obligation. No counterexample to the complete contextual original is claimed.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean"
     },
     {
       "statement": "lemma_16_10",
@@ -2217,8 +2232,11 @@
           "line": 12
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "lemma_16_10_holds"
+      "status": "accepted_explicit_cover_correction_verified_packaged_claim_refuted",
+      "native_audited_companion": "lemma_16_10_holds",
+      "evidence": "The user accepted the documented explicit-cover correction. lemma_16_10_holds proves the corrected rho-dependent graph count and width. lemma_16_10_packaged_premises_counterexample refutes precisely lemma_16_10_printed_unit_encoding, whose two packaged assumptions omit other preceding contextual data. This does not refute every interpretation of the original contextual lemma. The paper visibly explains this scope and the separate joint-cover route to the final theorems.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean"
     },
     {
       "statement": "corollary_16_11",
@@ -2254,8 +2272,11 @@
           "line": 374
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "lemma_17_1_holds"
+      "status": "corrected_characteristic_range_verified_original_range_open",
+      "native_audited_companion": "lemma_17_1_holds",
+      "evidence": "The signed-cube representation and degree<=k match after correcting the undefined source left side to sigma. The annotated statement requires k<N; the companion also assumes factorial k is a unit, which follows for primes in this range but currently remains an explicit redundant input. The native proof only uses that unit input. The original unrestricted characteristic range is not established by the corrected theorem; no native counterexample was located in this review.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean"
     },
     {
       "statement": "proposition_17_2",
@@ -2271,8 +2292,11 @@
           "line": 373
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "proposition_17_2_holds"
+      "status": "corrected_degree_and_characteristic_verified_original_degree_open",
+      "native_audited_companion": "proposition_17_2_holds",
+      "evidence": "The original published PDF prints degree<=k. The annotated statement and exact companion give degree<=k+1, as required by polarization of x_(k+1)*sigma(x), and assume k+1<N plus factorial invertibility. The Fourier-energy and phase-twist conclusions otherwise agree. The stronger original degree claim and unrestricted characteristic scope are not proved or refuted by this companion.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean"
     },
     {
       "statement": "lemma_17_4",
@@ -2288,8 +2312,11 @@
           "line": 691
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "lemma_17_4_holds"
+      "status": "region_count_and_general_position_equality_matched",
+      "native_audited_companion": "lemma_17_4_holds",
+      "evidence": "hyperplaneRegionCount counts realized strict sign patterns. Each nonempty sign-pattern cell is convex and hence corresponds to one complement region. The canonical bound sum(j=0..k)choose(m,j) and equality under independent normals/no(k+1)-fold intersection match the source, including dimension0 and empty families. Proofs17Regions proves both inequalities and the equality companion.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean"
     },
     {
       "statement": "corollary_17_5",
@@ -2305,8 +2332,11 @@
           "line": 396
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "corollary_17_5_holds"
+      "status": "finite_pattern_bound_matched_nonnegative_integer_radius",
+      "native_audited_companion": "corollary_17_5_holds",
+      "evidence": "The finite family covers exactly floor(sum_i epsilon_i*alpha_i) for alpha_i in(-r,r), with cardinal<=2^(2*r*k^3). Lean r is Nat; the stated integer r is naturally positive and r=0 is separately handled in the companion (empty interval when k>0, singleton pattern when k=0). A literal negative-integer radius wrapper is not asserted by the Nat-typed proposition.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean"
     },
     {
       "statement": "corollary_17_6",
@@ -2322,8 +2352,11 @@
           "line": 501
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "corollary_17_6_holds"
+      "status": "affine_pattern_bound_matched_positive_modulus",
+      "native_audited_companion": "corollary_17_6_holds",
+      "evidence": "The arbitrary real affine offset, reduction modulo positive M, and cardinal bound M*2^(2*r*(k+1)^3) agree. The proof explicitly handles radius0 and dimension0. As in17.5, r is a natural radius; no negative-integer-radius wrapper is claimed.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean"
     },
     {
       "statement": "proposition_17_7",
@@ -2339,8 +2372,11 @@
           "line": 2941
         }
       ],
-      "status": "not_yet_semantically_reviewed",
-      "native_audited_companion": "proposition_17_7_holds"
+      "status": "corrected_positive_density_localization_matched",
+      "native_audited_companion": "proposition_17_7_holds",
+      "evidence": "The companion uses alpha>0, positive dimension, odd side length m, common nonzero difference, all axes length m and m<=sqrt N. Its polynomial degree k+1, partition into proper modular progressions of lengths l or l+1 with l>=m/(3k), and failure of relative uniformity at2^(-2*(k+1)^3)*alpha match the corrected source. Source explicitly asks for mod-N output progressions here, so integer output geometry is not required. The alpha=0 zero-function obstruction is explained in the paper but has no separately located native counterexample in this review. The input multilinear function is encoded by a global multiaffine extension; a source function specified only on P is understood through its polynomial representation.",
+      "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean"
     },
     {
       "statement": "theorem_18_1",
@@ -2459,5 +2495,6 @@
   "reviewed_sections14_15_sha256": "825a463ac702ac86cfbfd6c3198dc89129de4c92b6e028690ca4c54e5364a376",
   "new_scope_proofs_kernel_status": "WalshScopeCoreAudit is queued behind the confirmed-live full audit. Boolean, characteristic-two, endpoint and original16.5 coefficient drafts are not yet certified.",
   "reviewed_section16_sha256": "a39792df29795e9903fded3cd460efbcd0e80d7e695d8958d741538deb73aba3",
-  "reviewed_sections17_18_sha256": "74027961cd05b94022c2e298ae96bc5ddd5b17425143725c2ba2fbc24c68922f"
+  "reviewed_sections17_18_sha256": "74027961cd05b94022c2e298ae96bc5ddd5b17425143725c2ba2fbc24c68922f",
+  "review_complete_is_not_goal_complete": "All120 numbered entries have now been compared at statement level. Many original bounds, characteristic ranges, geometry-and-bound combinations and native counterexamples remain open as recorded per entry. goal_complete stays false."
 }
