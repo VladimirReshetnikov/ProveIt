@@ -6891,6 +6891,46 @@ remains separate. The ongoing
 objective is to shorten and simplify the final proof while preserving its
 statement and bounds; this first reduction does not close that objective.
 
+### L.54. Shared coloring argument and progression prefixes (verified, 2026-10-12)
+
+The two-color case and the arbitrary finite-color case share one application
+of Mathlib's real-valued finite pigeonhole principle. The full two-color
+consequence reuses the single-length consequence. The coloring simplification
+passed its 1,328-module native audit, including the original final statements
+and strengthened Fejer bounds, with only the three approved axioms.
+
+The canonical final proof now removes the nontrivial short-length case split.
+For k>=2, apply the improved L+5 theorem at L=max(k,6). Since L+5<=k+9,
+the original threshold suffices, and a prefix of the resulting progression
+has length k. For k=1, positive density and the positive threshold give a
+point of the set. `theorem_18_2_of_long_progressions` proves this reduction;
+`theorem_18_2_padded` supplies the explicit recurrence profiles.
+
+Import `GowersSzemeredi.Final` for the original final theorem and its
+consequences. It defines the existing names `theorem_18_2_explicit`,
+`corollary_18_7_explicit`, `theorem_1_2_explicit` and `theorem_1_3_explicit`
+with their original types. `Proofs18CoverExplicit` re-exports these and derives
+its single-length API from the final proof, handling length zero vacuously.
+It retains the separate Theorem 18.1 construction and historical helpers.
+
+`FinalAudit` passes 1,209 native modules and checks all six new/canonical
+proofs for approved axioms. `FinalProofSimplificationAudit` then passes
+1,330 modules with the migrated public names and stronger bounds together.
+The minimal final entry point has 1,208 local modules / 253,637 source lines;
+the pre-simplification aggregate had 1,289 / 264,693. Thus this entry point
+avoids 81 modules and 11,056 lines from the old import closure. The aggregate
+still imports 1,221 modules because it additionally exposes Theorem 18.1 and
+legacy helper results; the comparison is not a repository-wide deletion count.
+The stronger-bound bridge now has 1,329 modules / 290,955 source lines.
+
+Verification reports: `2026-10-12-final-coloring-simplification`,
+`2026-10-12-final-prefix-proof` and `2026-10-12-final-prefix-compatibility`,
+with immutable source manifests. Further simplification should remove
+incidental short-length and polynomial-envelope imports from the uniform
+long-length route. The goal remains active; final statements and bounds
+are unchanged, and this audit does not settle open original intermediate
+statements or replace a full facade check.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

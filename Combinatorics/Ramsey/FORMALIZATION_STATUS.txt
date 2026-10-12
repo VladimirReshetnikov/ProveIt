@@ -9,14 +9,20 @@ Scope
   bounds, characteristic ranges and some geometry/bound combinations remain
   open in verification/2026-10-12-source-fidelity-review.json.
 
-  Final-proof simplification checkpoint: the original final quantitative
-  theorem and strengthened bounds now use explicit recurrence inputs without
-  importing the legacy length-six and variety route through those inputs.
-  The printed final theorem's local import closure is 1,214 modules rather
-  than 1,289, with 9,705 fewer source lines in that closure. The strengthened
-  Fejer bridge has the same reduction. Original statements and bounds remain
-  unchanged. The final axiom audit and legacy length-six compatibility check
-  pass a combined 1,404 native modules. The simplification goal remains active.
+  Final-proof simplification checkpoint: import GowersSzemeredi.Final for
+  the original Theorems 18.2, 1.2, 1.3 and Corollary 18.7. The canonical
+  proof takes a prefix of a max(k,6)-term progression, using the stronger
+  L+5 bound; k=1 follows from positive density. This replaces the separate
+  nontrivial short-length cases in the final proof. Its independent native
+  audit passes 1,209 modules with only approved axioms. The compatibility
+  and stronger-bound audit passes 1,330 modules after the migration.
+  The minimal final entry point imports 1,208 local modules / 253,637 source
+  lines, versus 1,289 / 264,693 in the pre-simplification aggregate. These
+  are import-closure measurements, not repository-wide deletions. The old
+  aggregate also retains Theorem 18.1 and historical helper APIs, so it has
+  a larger closure. Original final statements and bounds are unchanged.
+  The shared coloring proof separately passed its 1,328-module audit before
+  the prefix migration. The simplification goal remains active.
 
   Expanded integer-fidelity checkpoint: IntegerOriginalCorollaryFidelityAudit
   passes all 1,712 current-source native modules, including CompletionAudit
