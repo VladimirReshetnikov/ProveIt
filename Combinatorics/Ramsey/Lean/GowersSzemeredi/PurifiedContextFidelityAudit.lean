@@ -1,0 +1,5 @@
+import GowersSzemeredi.ComponentTradeoffFidelityAudit
+import GowersSzemeredi.PurifiedContextCoreAudit
+
+example : LeanProofs.GowersSzemeredi.lemma_13_11_original_error :=
+  LeanProofs.GowersSzemeredi.lemma_13_11_original_error_holds

@@ -32,12 +32,12 @@ def proposition_12_1_nonnegative_alpha : Prop :=
     alpha ^ 4 * (N : Real) ^ 3 ≤
       simultaneouslyAdditiveWeight lambda phi
 
-/-- At N=1, p=1, zero weights and alpha=-1, the premise holds but
-its claimed weighted quadruple count would be at least one. -/
+/-- At the prime N=2, p=1, zero weights and alpha=-1, the premise holds but
+its claimed weighted quadruple count would be at least eight. -/
 theorem proposition_12_1_negative_alpha_counterexample :
     ¬ proposition_12_1_unrestricted_alpha := by
   intro h
-  have hbad := h 1 1 (fun _ => 0) (fun _ _ => 0)
+  have hbad := h 2 1 (fun _ => 0) (fun _ _ => 0)
     (fun _ _ => 0) (-1) (by intro k; norm_num)
     (by intro i; simp [DiscValued]) (by simp)
   norm_num [simultaneouslyAdditiveWeight] at hbad

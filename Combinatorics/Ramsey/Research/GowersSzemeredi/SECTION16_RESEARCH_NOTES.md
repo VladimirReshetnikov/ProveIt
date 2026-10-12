@@ -6250,6 +6250,56 @@ and sign note inspected on pages57 and68. The published PDF is unchanged.
 The goal remains active; remaining original claims are not reclassified as
 false merely because a weaker proof-supported variant is available.
 
+### L.41 Original purification error and the Section13 comparison (2026-10-12)
+
+`PurifiedContextCoreAudit` passes over43 native modules with only the three
+approved axioms. `Proofs13PurifiedContext` recovers the original2^-73 error
+of Lemma13.11 and improves its density exponent from2^66 to2^64. More
+strongly, it allows any integral error exponent0<=b<=2^30. The initial two
+fibre restrictions retain densitya^(2^24), wherea=alpha/2. The Riesz-product
+arrangement lower bound has coefficient at leasta^(14*2^64), since
+2^37+2^67+2^45+b*2^36<=14*2^64. If|A|<a^(2^64)*N^2, its universal
+arrangement upper bound|A|^15*N^2 is strictly smaller than that lower bound.
+Both separately Freiman-eight coordinates and all Fourier cutoffs survive.
+Forb=73, monotonicity recovers the printed2^66 density as well. The inherited
+N0 depends only onalpha,b; no unqualified all-moduli claim is made.
+
+The source restores the original1-2^-73 proportion, explains the improved
+coefficient calculation and makes the inherited large-N qualifier explicit.
+The old1-2^-44 statement remains a valid sufficient consequence for the
+later context. Its use did not refute the original stronger error clause.
+The proof deliberately restricts `linarith` to the relevant scalar fact,
+preventing expansion of huge powers from unrelated cardinality hypotheses.
+
+`Proofs13SourceScope` proves the alpha=0 endpoints of Lemma13.1 and
+Corollary13.2. Their unrestricted negative-sign readings are separately
+refuted with empty domains atprimeN=2. The earlier Proposition12.1 sign
+refutation is also strengthened fromN=1 toprimeN=2. The annotated paper
+records these actual obstructions and the valid nonnegative sign convention.
+
+All twelve numbered Section13 results have now been compared. The original
+13.6--13.10 numeric companions are distinguished from the legacy weaker
+catalogue types, and the final13.12 has actual shared-step natural axes at
+all primes. Review now covers86/120;34 statements remain unread. Important
+open details include the source13.4 floor computed from its fixed real
+q-bound versus Lean's positive actual integer graph count, the interpretation
+of unqualified intermediate modular axes, and the literal13.11 reading
+without any eventual-N qualifier. None is classified as false without a
+proved counterexample. The still stronger original10.13 estimate remains
+open and is not used to pretend these distinctions are solved.
+
+The expected expanded fidelity closure is rebuilding, followed automatically
+by the full exported facade. The43-module direct audit proves its stated
+scope only. The annotated118-page PDF was rebuilt twice and inspected at
+the sign note and original error on pages75 and84; the published PDF is intact. The last complete1,634-module checkpoint is the historical
+f407e0115 snapshot. The user goal stays active.
+
+Post-merge checkpoint for L.41: incoming main at623fb2007 adds the Fejer-J
+and low-degree final bounds. All43 direct audit input hashes still match
+the verifiedd2f0c80cf snapshot. The merged expected fidelity closure is
+1,652 modules and its fresh native build is running, followed by the facade.
+No claim about that broad gate follows from the unchanged direct inputs.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
