@@ -4600,7 +4600,9 @@ producers. The class route and the uniform dimension-two cover
 lemma directly. So the remaining parameterization stays light.
 
 *Remaining for the dimension-two seed:*
-1. An explicit threshold for the Fejér Lemmas 15.5/15.6. The corpus
+1. *(Done.)* An explicit threshold for the Fejér Lemmas 15.5/15.6:
+   `fejerExplicitThreshold`, `fejer_scale_estimate_explicit`,
+   `fejerProductThreshold`, `fejer_product_of_density_lower_explicit`. The corpus
    decomposition uses `lemma_15_6_of_density_lower_explicit` because the
    headline tracks threshold sizes. `fejer_scale_estimate` builds its `N₀`
    explicitly (`max(m+1, 3, ⌈2c₀/(scale·t)⌉)`) but states only `∃ N₀`.

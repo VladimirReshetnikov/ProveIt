@@ -1772,15 +1772,36 @@ private lemma fejer_loss_lower (k : Nat) (a : Real) (ha : 0 < a) (ha1 : a ≤ 1)
   rw [← hM, mul_comm, pow_mul]
   exact pow_le_pow_left₀ (by positivity) hbase M
 
+/-- The order `m` of the Fejér kernel: `m + 1 = 2^(k+4)·⌈6/(min(α,1)·η)⌉`. -/
+def fejerOrder (k : Nat) (alpha eta : Real) : Nat :=
+  2 ^ (k + 4) * ⌈6 / (min alpha 1 * eta)⌉₊ - 1
+
+/-- The density loss `(m+1)^(−2^(k+4))` of one Fejér stage. -/
+def fejerLoss (k : Nat) (alpha eta : Real) : Real :=
+  (((fejerOrder k alpha eta : Nat) : Real) + 1)⁻¹ ^ (2 ^ (k + 4))
+
+/-- The constant of the `m`-range degenerate count:
+`(2m+1)^(2·8·2^k)·k`. -/
+def fejerDegenerateConst (k : Nat) (alpha eta : Real) : Real :=
+  (2 * ((fejerOrder k alpha eta : Nat) : Real) + 1) ^ (2 * 8 * 2 ^ k) * k
+
+/-- **The explicit modulus threshold of the Fejér selection**:
+`max(m + 1, 3, 2·c₀/(scale·t))`. -/
+def fejerExplicitThreshold (k : Nat) (alpha scale eta : Real) : Real :=
+  max (((fejerOrder k alpha eta : Nat) : Real) + 1)
+    (max 3 (2 * fejerDegenerateConst k alpha eta / (scale * fejerLoss k alpha eta)))
+
 set_option maxHeartbeats 1000000 in
-/-- **The Fejér selection at an arbitrary scale**: if `B` carries at most
+/-- **The Fejér selection at an arbitrary scale**, above the explicit
+threshold `fejerExplicitThreshold`: if `B` carries at most
 `scale·N^(17k+15)` arrangements, of which at least `α·scale·N^(17k+15)` are
 respected, then some `B' ⊆ B` carries at least
 `(αη/4)^(2^(k+4)(k+6))·scale·N^(17k+15)` arrangements, of which a
 `1 − η` fraction is respected. -/
-theorem fejer_scale_estimate (k : Nat) (alpha scale eta : Real) (hk : 1 ≤ k)
+theorem fejer_scale_estimate_explicit (k : Nat) (alpha scale eta : Real) (hk : 1 ≤ k)
     (halpha : 0 < alpha) (hscale : 0 < scale) (heta : 0 < eta) (heta_one : eta ≤ 1) :
-    ∃ N0 : Nat, ∀ (N : Nat) [NeZero N], N0 ≤ N → Nat.Prime N → Odd N →
+    ∀ (N : Nat) [NeZero N], fejerExplicitThreshold k alpha scale eta ≤ (N : Real) →
+      Nat.Prime N → Odd N →
       ∀ (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N),
         (generalArrangementCount 8 B : Real) ≤ scale * (N : Real) ^ (17 * k + 15) →
         alpha * scale * (N : Real) ^ (17 * k + 15) ≤
@@ -1817,18 +1838,20 @@ theorem fejer_scale_estimate (k : Nat) (alpha scale eta : Real) (hk : 1 ≤ k)
   set t : Real := (((m : Real) + 1)⁻¹) ^ M with htdef
   have ht0 : 0 < t := by positivity
   set c0 : Real := (2 * (m : Real) + 1) ^ (2 * 8 * 2 ^ k) * k with hc0
-  refine ⟨max (m + 1) (max 3 ⌈2 * c0 / (scale * t)⌉₊), ?_⟩
   intro N _ hN hprime hodd B phi hu hrespected
   letI : Fact N.Prime := ⟨hprime⟩
-  have hmN : m < N := by have := le_max_left (m + 1) (max 3 ⌈2 * c0 / (scale * t)⌉₊); omega
+  have hthr : fejerExplicitThreshold k alpha scale eta =
+      max ((m : Real) + 1) (max 3 (2 * c0 / (scale * t))) := rfl
+  rw [hthr] at hN
+  have hmN : m < N := by
+    have h : (m : Real) + 1 ≤ N := (le_max_left _ _).trans hN
+    have h' : (m : Real) < N := by linarith
+    exact_mod_cast h'
   have hN3 : 3 ≤ N := by
-    have := le_max_left 3 ⌈2 * c0 / (scale * t)⌉₊
-    have := le_max_right (m + 1) (max 3 ⌈2 * c0 / (scale * t)⌉₊)
-    omega
-  have hNbig : 2 * c0 / (scale * t) ≤ (N : Real) := by
-    have h1 := le_max_right 3 ⌈2 * c0 / (scale * t)⌉₊
-    have h2 := le_max_right (m + 1) (max 3 ⌈2 * c0 / (scale * t)⌉₊)
-    exact (Nat.le_ceil _).trans (by exact_mod_cast h1.trans (h2.trans hN))
+    have h : (3 : Real) ≤ N := (le_max_left _ _).trans ((le_max_right _ _).trans hN)
+    exact_mod_cast h
+  have hNbig : 2 * c0 / (scale * t) ≤ (N : Real) :=
+    (le_max_right _ _).trans ((le_max_right _ _).trans hN)
   have hNpos : (0 : Real) < N := by exact_mod_cast (show 0 < N by omega)
   set G : Real := scale * (N : Real) ^ (17 * k + 15) with hG
   have hG0 : 0 < G := mul_pos hscale (by positivity)
@@ -2030,6 +2053,24 @@ theorem fejer_scale_estimate (k : Nat) (alpha scale eta : Real) (hk : 1 ≤ k)
     have hbg : b ≤ eta * g := by linarith
     have hetab : 0 ≤ eta * b := mul_nonneg heta.le hb0
     linarith
+
+/-- The Fejér selection with an existential threshold. -/
+theorem fejer_scale_estimate (k : Nat) (alpha scale eta : Real) (hk : 1 ≤ k)
+    (halpha : 0 < alpha) (hscale : 0 < scale) (heta : 0 < eta) (heta_one : eta ≤ 1) :
+    ∃ N0 : Nat, ∀ (N : Nat) [NeZero N], N0 ≤ N → Nat.Prime N → Odd N →
+      ∀ (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N),
+        (generalArrangementCount 8 B : Real) ≤ scale * (N : Real) ^ (17 * k + 15) →
+        alpha * scale * (N : Real) ^ (17 * k + 15) ≤
+            respectedGeneralArrangementCount 8 B phi →
+        ∃ B' : Finset (Point N (k + 1)), B' ⊆ B ∧
+          (alpha * eta / 4) ^ fejerSelectionExponent k * scale *
+              (N : Real) ^ (17 * k + 15) ≤
+            generalArrangementCount 8 B' ∧
+          (1 - eta) * generalArrangementCount 8 B' ≤
+            respectedGeneralArrangementCount 8 B' phi :=
+  ⟨⌈fejerExplicitThreshold k alpha scale eta⌉₊, fun N _ hN =>
+    fejer_scale_estimate_explicit k alpha scale eta hk halpha hscale heta heta_one N
+      ((Nat.le_ceil _).trans (by exact_mod_cast hN))⟩
 
 theorem fejer_arrangement_restriction : FejerArrangementRestriction := by
   intro k alpha beta eta hk halpha hbeta heta heta_one
