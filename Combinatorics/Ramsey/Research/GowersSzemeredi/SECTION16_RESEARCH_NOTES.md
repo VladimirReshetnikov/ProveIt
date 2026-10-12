@@ -4612,7 +4612,14 @@ lemma directly. So the remaining parameterization stays light.
    (`section16_poly_piece_two_of_subrelation`,
    `section16_poly_cover_two_large`) with the Fejér Lemma 15.6 at `k = 1`
    and `section16_poly_piece_two_data_with` at the tight radius.
-3. The counts and exponents (`Proofs18LengthSixCounts`/`Exponents`) with
+3. *(Done: `Proofs18FejerSeedCounts`, `Proofs18FejerSeedExponents`. The
+   count is at most `w^(2^44)` (printed `2^90`) and the inverse width exponent
+   at most `w^(2^46)` (printed `2^132`). The Bohr term no longer dominates; the
+   piece counts (`2^38`) do. So the seed is about `2^46`, inside the `2^48` of
+   `split_pair_with_bounds_fourteen`. What is left at dimension two: the
+   uniform-class form of the cover (`Proofs16UniformCoverTwo`) and its
+   wiring as the split-class seed.)* The counts and exponents
+   (`Proofs18LengthSixCounts`/`Exponents`) with
    the `W` definitions, giving the seed degrees. The expectation is about
    `2^35`–`2^40` (L.16c).
 
