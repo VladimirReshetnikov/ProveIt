@@ -35,5 +35,8 @@ Old certificate formats and the inverse representative map are unchanged.
 The detailed proof and evolving validation record are in
 `synthesis/gap_prefix_replay.tex` and `synthesis/data/gap-prefix-*`.
 Four retained baseline modules support separate-interpreter paired complete
-queries and corpus certificate comparisons. Full validation is in progress.
+queries and corpus certificate comparisons. The complete 120-source audit preserves all 111 positive certificates and
+nine inconclusive outcomes. Eleven paired complete-query measurements are
+recorded, including tiny-input regressions; the full maintained suite is
+still running at this checkpoint.
 The original delivered package files remain unchanged.

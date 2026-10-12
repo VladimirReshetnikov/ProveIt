@@ -4496,3 +4496,13 @@ These results concern a local sufficient certificate class, not a complete
 quasi-polynomial recognizer. See
 [the implementation article](../synthesis/deferred_forests_native.tex) and
 [evidence](../synthesis/data/deferred-forest-audit.json).
+
+Static-gap contraction in the unweighted, weighted-histogram and weighted
+least-representative checkers uses authenticated gap prefix sums. Mapping
+P pairing rows across G gaps costs O(G + P log(G+2)) arithmetic operations,
+without expanding represented points. All gap lists are authenticated
+before mapping, and certificate formats are unchanged. A fresh 120-source
+comparison preserves all 111 positive cut certificates and all nine
+inconclusive outcomes. Eleven paired complete-query measurements, including
+small regressions, are retained in `../synthesis/data/gap-prefix-*`; the
+local mapping bound does not establish general recognition complexity.
