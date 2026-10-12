@@ -1,0 +1,250 @@
+% Integration-ready research section; labels rat:*.
+\section{Exactly when a rational adjacent-tail certificate exists}
+\label{rat:section}
+
+The previous incoming report explicitly asks which pairs of polynomial
+denominators admit a rational certificate made from both adjacent
+tail products. The answer is a factorization criterion. It explains
+why generic shifted powers require a larger coefficient class, while
+also producing a simple two-variable polygamma kernel.
+
+\subsection{The complete rational coefficient criterion}
+
+Let $P,Q\in\mathbb C[x]\setminus\{0\}$ and write formally
+\[
+ E_{n-1}=E_n+\frac{(-1)^n}{P(n)},\qquad
+ F_{n-1}=F_n+\frac{(-1)^n}{Q(n)}.
+\]
+The actual tails will later be $E_n=\sum_{k>n}(-1)^k/P(k)$ and
+$F_n=\sum_{k>n}(-1)^k/Q(k)$. For a fixed nonzero number $t$ consider
+\begin{equation}\label{rat:ansatz}
+ K_n=t^n\{A(n)E_nF_{n+1}+B(n)E_{n+1}F_n\},\qquad
+ A,B\in\mathbb C(x).
+\end{equation}
+By cancellation of linear-tail terms we mean cancellation of their
+formal coefficients after applying the two recurrences, with $E_n,F_n$
+treated as independent indeterminates. This is the precise certificate
+class being classified; possible identities exploiting additional
+relations between specific tails are not excluded.
+
+\begin{theorem}[Rational certificate classification]\label{rat:classification}
+A nonzero rational coefficient pair $(A,B)$ in \eqref{rat:ansatz}
+eliminates both linear-tail terms if and only if
+\begin{equation}\label{rat:factorization}
+ t\in\{1,-1\},\qquad
+ \frac{P(x)}{Q(x)}=cS(x)S(x-1)
+\end{equation}
+for a nonzero rational function $S$ and a nonzero constant $c$.
+For a fixed admissible $t$, all coefficient pairs are proportional to
+\begin{equation}\label{rat:coefficients}
+ A(x)=Q(x+1)S(x),\qquad B(x)=tQ(x+1)S(x+1).
+\end{equation}
+If $P/Q$ is constant, the $t=-1$ certificate gives the trivial zero
+identity for proportional actual tails.
+\end{theorem}
+
+\begin{proof}
+Put $H=A+B$. Direct substitution into $K_n-K_{n-1}$ shows that
+linear-tail cancellation is equivalent to
+\begin{equation}\label{rat:coefficient-equations}
+ \frac{A(x)}{Q(x+1)}=t^{-1}\frac{B(x-1)}{Q(x)},\qquad
+ \frac{B(x)}{P(x+1)}=t^{-1}\frac{A(x-1)}{P(x)}.
+\end{equation}
+Neither coefficient can vanish unless both do. Eliminating $B$ yields
+\[
+ \frac{A(x)}{A(x-2)}=
+ t^{-2}\frac{Q(x+1)P(x)}{Q(x)P(x-1)}.
+\]
+Both rational ratios apart from $t^{-2}$ tend to one at infinity,
+so $t^2=1$. Put $R=P/Q$ and $S(x)=A(x)/Q(x+1)$. The remaining
+equation is
+\[
+ \frac{S(x)}{S(x-2)}=\frac{R(x)}{R(x-1)}.
+\]
+Consequently $R(x)/(S(x)S(x-1))$ is a rational function of period
+one. A periodic rational function is constant: a pole would generate
+infinitely many poles, and a nonconstant polynomial cannot be
+periodic. This proves the necessity of \eqref{rat:factorization}.
+Conversely that factorization and \eqref{rat:coefficients} satisfy
+\eqref{rat:coefficient-equations} by substitution. The quotient of
+two solutions for $A$ is rational and of period two, so it is
+constant, proving uniqueness up to scalar.
+\end{proof}
+
+This elementary argument is a specialized rational difference-equation
+calculation, within the classical subject of rational summation and
+recurrence solutions \cite{rat:Abramov}. It does not claim a new general
+algorithm for rational recurrences.
+
+\begin{corollary}[Root-orbit criterion]\label{rat:root-orbits}
+On each orbit $\alpha+\mathbb Z$ let $m_j$ be the multiplicity of
+$x=\alpha+j$ as a zero of $P/Q$, with negative multiplicities for
+poles. A rational $S$ in \eqref{rat:factorization} exists if and only if
+\begin{equation}\label{rat:root-balance}
+ \sum_{j\in\mathbb Z}(-1)^jm_j=0
+ \quad\hbox{on every such orbit}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+If $s_j$ are the multiplicities for $S$, factorization is equivalent
+to $m_j=s_j+s_{j-1}$. Starting below the finite support of $(m_j)$,
+the unique solution is
+$s_j=\sum_{k\le j}(-1)^{j-k}m_k$. It has finite support exactly
+under \eqref{rat:root-balance}. The remaining nonzero multiplicative
+constant is absorbed into $c$.
+\end{proof}
+
+For example, for positive integer orders $p,q$ and shifted powers
+$P(x)=(x+a)^p$, $Q(x)=(x+b)^q$, the criterion holds exactly when
+\begin{equation}\label{rat:powers-obstruction}
+ p=q\quad\hbox{and}\quad a-b\in2\mathbb Z.
+\end{equation}
+If $a-b$ is not an integer the two roots occupy separate orbits.
+If it is an integer $d$, the condition is $p=(-1)^dq$, yielding
+\eqref{rat:powers-obstruction}. This is an obstruction only to
+\eqref{rat:ansatz}, not to special-function endpoint evaluations in
+larger coefficient classes. The Gamma normalization in
+Section~\ref{bil:section} supplies just such a larger class.
+
+\subsection{Convergence and the finite endpoint}
+
+Assume $\deg P,\deg Q\ge1$, no positive integer zeros, and an
+admissible factorization. Put
+\[
+ H_t(x)=Q(x+1)\{S(x)+tS(x+1)\},\qquad
+ W_t(n)=t^n\{H_t(n)-tH_t(n-1)\}.
+\]
+The certificate calculation gives exactly
+\begin{equation}\label{rat:finite-difference}
+ K_n-K_{n-1}=W_t(n)E_nF_n.
+\end{equation}
+Suppose also that the displayed coefficient values are finite on the
+summation lattice and at the lower endpoint; removable values may be
+taken. To state the endpoint without alternating signs in the tails,
+write
+\[
+ e_n=\sum_{j\ge0}\frac{(-1)^j}{P(n+1+j)},\qquad
+ f_n=\sum_{j\ge0}\frac{(-1)^j}{Q(n+1+j)}.
+\]
+Then, whenever $S(0)$ is finite and nonzero,
+\begin{align}
+ \sum_{n\ge0}W_t(n)e_nf_n
+ &=S(0)e_0+\frac{t}{cS(0)}f_0
+       -tH_t(-1)e_0f_0.\label{rat:endpoint}
+\end{align}
+The finite version subtracts
+\[
+ t^N\{A(N)e_Nf_{N+1}+B(N)e_{N+1}f_N\}
+\]
+from the right side of \eqref{rat:endpoint}. This also gives a
+safe lower-cutoff version if one of the coefficient functions has a
+pole at one of the first lattice points.
+
+For completeness, write $p=\deg P$, $q=\deg Q$. Factorization forces
+$d=(p+q)/2$ to be an integer at least one. Alternating summation
+gives $e_n=O(n^{-p})$, $f_n=O(n^{-q})$, while $A,B=O(n^d)$.
+For $t=1$, the difference of $H_1$ is $O(n^{d-1})$. For $t=-1$,
+$S(n)-S(n+1)$ lowers the degree by at least one, so $H_{-1}$ and
+its adjacent sum are $O(n^{d-1})$. Thus every series in
+\eqref{rat:endpoint} is absolutely convergent, and its upper endpoint
+is $O(N^{-d})$. For positive-order rational tails all endpoints
+reduce by partial fractions to finite polygamma values at half-shifts.
+
+\subsection{Two independently shifted adjacent quadratic tails}
+
+Define, for positive integer $p$,
+\begin{equation}\label{rat:D-definition}
+ D_p(z)=\mathcal B_p(z)-\mathcal B_p(z+1),\qquad
+ D(z)=D_1(z)=2\mathcal B_1(z)-\frac1z.
+\end{equation}
+In particular
+\[
+ D(n+x)=\sum_{j\ge0}\frac{(-1)^j}
+                          {(n+x+j)(n+x+j+1)}.
+\]
+The denominators $P(k)=(k+x-1)(k+x)$ and
+$Q(k)=(k+y-1)(k+y)$ satisfy \eqref{rat:factorization} with
+$S(k)=(k+x)/(k+y)$ and $c=1$. This works for independent $x,y$;
+the roots within each quadratic are adjacent.
+
+\begin{theorem}[Finite two-variable polygamma kernels]\label{rat:kernels}
+For $\Re x,\Re y>0$, both series below converge absolutely and
+locally normally:
+\begin{align}
+ \sum_{n\ge0}(2n+x+y)D(n+x)D(n+y)
+ &=\frac12\left\{\frac{x}{y}D(x)+\frac{y}{x}D(y)
+                -(2xy-x-y)D(x)D(y)\right\},\label{rat:ordinary}\\
+ \sum_{n\ge0}(-1)^nD(n+x)D(n+y)
+ &=\frac12D(x)D(y)
+    +\frac{x^2D(x)-y^2D(y)}{2xy(x-y)}.\label{rat:alternating}
+\end{align}
+The quotient at $x=y$ is interpreted by continuity. In particular,
+\begin{equation}\label{rat:diagonal}
+ \sum_{n\ge0}(-1)^nD(n+x)^2
+     =\frac12D(x)^2+\frac{D(x)}x+\frac12D'(x).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For the stated $P,Q,S$, the two rational coefficients are
+\[
+ A(n)=(n+x)(n+y+1),\qquad
+ B(n)=t(n+y)(n+x+1).
+\]
+For $t=1$, $H_1(n)-H_1(n-1)=2(2n+x+y)$ and
+$H_1(-1)=2xy-x-y$. Substitution in \eqref{rat:endpoint} and
+division by two proves \eqref{rat:ordinary}. For $t=-1$,
+$H_{-1}(n)=x-y$ and $W_{-1}(n)=2(x-y)(-1)^n$.
+The resulting endpoint is
+\[
+ \frac{x}{y}D(x)-\frac{y}{x}D(y)+(x-y)D(x)D(y),
+\]
+which proves \eqref{rat:alternating} for $x\ne y$.
+The locally normal series has a limit on the diagonal. Taking that
+limit on the right gives \eqref{rat:diagonal}. The estimates
+$D(n+x)=O(n^{-2})$ prove all claimed convergence statements.
+\end{proof}
+
+For example, with $L=\log2$,
+\begin{align}
+ \sum_{n\ge0}(-1)^nD(n+1)^2&=2L^2-\frac{\pi^2}{12},\label{rat:example1}\\
+ \sum_{n\ge0}(-1)^nD(n+1)D(n+2)&=1-2L^2,\label{rat:example2}\\
+ \sum_{n\ge0}(2n+3)D(n+1)D(n+2)&=2(1-L)^2.\label{rat:example3}
+\end{align}
+These follow from $D(1)=2L-1$, $D(2)=3/2-2L$, and
+$D'(1)=1-\pi^2/6$.
+
+\subsection{Every mixed integer order at independent shifts}
+
+Let $K(x,y)$ and $M(x,y)$ denote the right sides of
+\eqref{rat:alternating} and \eqref{rat:ordinary}, respectively.
+For $p,q\ge1$ set
+\[
+ \mathfrak D_{p,q}=
+ \frac{(-1)^{p+q-2}}{(p-1)!(q-1)!}
+       \partial_x^{p-1}\partial_y^{q-1}.
+\]
+The shift derivative formula gives
+$D^{(r)}(z)=(-1)^rr!D_{r+1}(z)$. Therefore
+\begin{equation}\label{rat:all-orders}
+ \boxed{\sum_{n\ge0}(-1)^nD_p(n+x)D_q(n+y)
+                    =\mathfrak D_{p,q}K(x,y).}
+\end{equation}
+The right side is a finite expression in polygamma values and a
+confluent divided difference; it contains no tail sum. Likewise
+\begin{align}
+ &\sum_{n\ge0}\bigl\{(2n+x+y)D_p(n+x)D_q(n+y)\notag\\
+ &\qquad-\boldsymbol1_{p\ge2}D_{p-1}(n+x)D_q(n+y)
+          -\boldsymbol1_{q\ge2}D_p(n+x)D_{q-1}(n+y)\bigr\}
+            =\mathfrak D_{p,q}M(x,y).\label{rat:all-orders-ordinary}
+\end{align}
+When an indicator is zero its corresponding term is absent. The
+formula follows by differentiating the linear weight as well as both
+tails, so no lower-order correction has been omitted.
+
+The identities hold meromorphically away from the nonpositive-integer
+coordinate poles, with the diagonal $x=y$ removable. Their proof uses
+only rational cancellation and differentiation of normally convergent
+series. The obstruction \eqref{rat:powers-obstruction} and the positive
+kernel family \eqref{rat:all-orders} concern different denominator
+classes and are fully compatible.

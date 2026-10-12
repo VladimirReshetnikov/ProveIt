@@ -1,0 +1,568 @@
+% Self-contained section fragment; requires amsmath, amssymb, amsthm.
+% The parent document supplies theorem, lemma, proposition, corollary, remark.
+% Labels and bibliography keys in this contribution have the prefix sd:.
+\section{Higher spectral derivatives through the faces of a simplex}
+\label{sd:sec:main}
+
+The incoming beta-polarization report asks for explicit higher-order
+subtractions on a Dirichlet simplex and for their extension to odd
+polynomial weights \cite[Further research, items 3--4]{sd:HigherDefects}.
+The incoming quartic report already gives a finite-subtraction compiler
+at every spectral order \cite[Section 5]{RepoQuartic}.  We give a different
+answer: a finite representation by ordinary simplex integrals of
+\emph{lower} one-mass derivatives.  Its useful structural feature is that
+an interaction involving a face with $k$ vertices cannot appear before
+the $k$th spectral derivative, after an explicitly computable zero-jet
+polynomial has been separated.
+
+The scalar Dirichlet parameter identity is classical.  It is already
+used for mixed twists in the canonical manuscript
+\cite[\texttt{07-mixed-twist-identities.tex}]{RepoMain}; logarithmic
+Dirichlet averages have a substantial classical theory
+\cite{sd:Carlson1987,sd:Carlson1991}.  The contribution here is the explicit
+face subtraction, its absolute-convergence proof, the resulting
+all-order formula, and the rational zero-jet term.  This is a claim of
+new content relative to the inspected repository, not an assertion of
+exhaustive literature priority.
+
+\subsection{Spectral normalization and the zero-jet polynomial}
+\label{sd:subsec:setup}
+
+Fix $a>0$, $r\ge2$, real masses $B_1,\ldots,B_r\ge0$, and a polynomial
+$W(x)=\sum_{d=0}^{D}w_dx^d$.  Write $x_n=n+a$ and initially define
+\begin{align}
+ E_W(s;B)&=\sum_{n\ge0}W(x_n)(x_n^2+B)^{-s},
+       \label{sd:eq:one}\\
+ Z_{W,\boldsymbol B}(s)&=\sum_{n\ge0}W(x_n)
+                    \prod_{i=1}^r(x_n^2+B_i)^{-s},\label{sd:eq:many}\\
+ \mathcal D_W(s)&=\frac1r\sum_{i=1}^rE_W(rs;B_i)
+                          -Z_{W,\boldsymbol B}(s),\qquad
+ \Delta_m(W)=\mathcal D_W^{(m)}(0).
+       \label{sd:eq:defect}
+\end{align}
+The sums start in their half-planes of absolute convergence and are then
+continued meromorphically.  All logarithms of the positive quadratic
+factors are real.  Let
+\begin{equation}\label{sd:eq:jets}
+ F_j(B)=\left.\partial_s^j E_W(s;B)\right|_{s=0}.
+\end{equation}
+
+\begin{lemma}[The polynomial at spectral order zero]
+\label{sd:lem:zero}
+The spectral functions in \eqref{sd:eq:one}--\eqref{sd:eq:many} are
+holomorphic at zero.  The one-mass zero jet is
+\begin{equation}\label{sd:eq:zero}
+ F_0(B)=\sum_{d=0}^{D}w_d\zeta(-d,a)
+           +\sum_{h\ge1}p_h B^h,\qquad
+ p_h=\frac{(-1)^h}{2h}\,w_{2h-1},
+\end{equation}
+where missing polynomial coefficients are zero.  In particular $F_0$
+is mass-independent for even $W$.
+\end{lemma}
+\begin{proof}
+For sufficiently large $x$, expand the quadratic factor with a finite
+remainder:
+\[
+ (x^2+B)^{-s}=x^{-2s}\sum_{h=0}^{K}
+                 \frac{(-1)^h(s)_h}{h!}B^h x^{-2h}
+                  +\text{remainder}.
+\]
+After multiplication by $x^d$, the removed terms sum to
+$(-1)^h(s)_hB^h\zeta(2s+2h-d,a)/h!$.  Choose $K$ large enough
+that the remainder and its required derivatives converge normally near
+zero.  A finite head is retained exactly, so no restriction such as
+$B<a^2$ is needed.  For $h\ge1$, the coefficient vanishes at zero
+unless $2h-d=1$.  In that case
+\[
+ \frac{(s)_h}{h!}=\frac{s}{h}+O(s^2),\qquad
+ \zeta(1+2s,a)=\frac1{2s}+O(1),
+\]
+which gives the term $(-1)^h B^h/(2h)$ in \eqref{sd:eq:zero}.
+The same subtraction for the product of quadratic factors has positive
+Taylor-degree coefficients vanishing at $s=0$; they cancel its possible
+simple Hurwitz poles.  This also proves holomorphy of the product
+spectrum.  The argument is locally uniform in the masses and in $a>0$.
+\end{proof}
+
+\subsection{An explicit subtraction on every face}
+\label{sd:subsec:faces}
+
+For a nonempty set $S\subseteq\{1,\ldots,r\}$, let
+\[
+ \Sigma_S=\{(t_i)_{i\in S}:t_i\ge0,\ \sum_{i\in S}t_i=1\}.
+\]
+The measure is ordinary $(|S|-1)$-dimensional coordinate measure:
+$dt_1\cdots dt_{k-1}$ after the final coordinate has been eliminated.
+Thus the simplex has volume $1/(k-1)!$, where $k=|S|$.
+For a nonempty $T\subseteq S$ put
+\[
+ t_T=\sum_{i\in T}t_i,\qquad
+ B_T=\frac{\sum_{i\in T}t_i B_i}{t_T},\qquad
+ G_T(F;t)=t_TF(B_T).
+\]
+Set $G_T=0$ when $t_T=0$.  Define the face subtraction
+\begin{equation}\label{sd:eq:H}
+ \boxed{\displaystyle
+ \mathcal H_S(F;t)=
+  \sum_{\varnothing\ne T\subseteq S}
+       (-1)^{|S|-|T|}\,t_TF(B_T).}
+\end{equation}
+For a pair this is the difference from the affine chord:
+\begin{equation}\label{sd:eq:Hpair}
+ \mathcal H_{ij}(F;u)
+   =F(uB_i+(1-u)B_j)-uF(B_i)-(1-u)F(B_j).
+\end{equation}
+For three vertices it is
+\begin{align}\label{sd:eq:Htriple}
+ \mathcal H_{ijk}(F;t)={}&F(t_iB_i+t_jB_j+t_kB_k)
+                  +\sum_{\ell\in\{i,j,k\}}t_\ell F(B_\ell)\notag\\
+ &-\sum_{\{\ell,m\}\subseteq\{i,j,k\}}
+   (t_\ell+t_m)F\!\left(
+            \frac{t_\ell B_\ell+t_mB_m}{t_\ell+t_m}\right).
+\end{align}
+These formulas remain regular when masses coincide.  They use neither
+division by a mass difference nor an unspecified finite part.
+
+\begin{lemma}[Boundary cancellation and ordinary integrability]
+\label{sd:lem:boundary}
+If $F\in C^1([\min B_i,\max B_i])$, then $\mathcal H_S$ vanishes
+on every proper coordinate face and
+\begin{equation}\label{sd:eq:bound}
+ |\mathcal H_S(F;t)|\le C\min_{i\in S}t_i.
+\end{equation}
+For $k=|S|\ge2$, the integral
+\begin{equation}\label{sd:eq:integralhol}
+ \int_{\Sigma_S}\mathcal H_S(F;t)
+                            \prod_{i\in S}t_i^{s-1}\,dt
+\end{equation}
+is absolutely convergent for $\operatorname{Re}s>-1/(k-1)$.
+It is holomorphic there, with locally normally convergent fixed
+logarithmic derivatives.  The same conclusions hold for a holomorphic
+family of $F$ whose $C^1$ norms are locally bounded.
+\end{lemma}
+\begin{proof}
+The perspective $G_T=t_TF(B_T)$ is Lipschitz on the nonnegative
+coordinate cone.  Away from $t_T=0$,
+\[
+ \partial_{t_i}G_T=F(B_T)+F'(B_T)(B_i-B_T)\quad(i\in T),
+\]
+so its coordinate derivatives have a uniform bound.  Continuity at the
+origin extends the Lipschitz bound there.  If $t_i=0$, the terms indexed
+by $T$ and $T\cup\{i\}$ cancel in \eqref{sd:eq:H}.  Changing that
+coordinate from zero to $t_i$ therefore gives a bound $Ct_i$ for
+every $i$, proving \eqref{sd:eq:bound}.
+
+Cover the simplex by the $k$ regions where a specified coordinate is
+at least $1/k$.  On such a region,
+\[
+ \min_i t_i\le
+        \left(\prod_{i\ne i_{\max}}t_i\right)^{1/(k-1)}.
+\]
+The remaining coordinate factors are dominated by a product of
+integrable powers whenever $\operatorname{Re}s+1/(k-1)>0$.
+Any fixed power of $\sum_i|\log t_i|$ remains integrable on smaller
+closed half-planes.  Dominated holomorphic parameter integration proves
+all assertions.  In particular, every integral below with the weight
+$\prod_i t_i^{-1}$ is an ordinary absolutely convergent integral.
+\end{proof}
+
+\begin{theorem}[Exact decomposition by simplex faces]
+\label{sd:thm:master}
+Put
+\begin{equation}\label{sd:eq:Q}
+ Q_k(s)=\frac{\Gamma(1+ks)}{\Gamma(1+s)^k}.
+\end{equation}
+The following identity holds meromorphically for
+$\operatorname{Re}s>-1/(r-1)$, with ordinary face integrals away
+from spectral poles, and in particular as a holomorphic germ at zero:
+\begin{equation}\label{sd:eq:master}
+ \boxed{\displaystyle
+ \mathcal D_W(s)=-\frac1r\sum_{k=2}^{r}s^{k-1}Q_k(s)
+   \sum_{|S|=k}\int_{\Sigma_S}
+     \mathcal H_S(E_W(rs;\cdot);t)
+                         \prod_{i\in S}t_i^{s-1}\,dt.}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The product of Gamma integrals, with variables changed to a radial
+coordinate and simplex proportions, gives
+\[
+ \prod_{i=1}^r y_i^{-s}
+ =\frac{\Gamma(rs)}{\Gamma(s)^r}
+   \int_{\Sigma_{\{1,\ldots,r\}}}
+        \left(\sum_i t_i y_i\right)^{-rs}
+                            \prod_i t_i^{s-1}\,dt
+\]
+for $y_i>0$ and $\operatorname{Re}s>0$.  Apply this to
+$y_i=x_n^2+B_i$ and sum where the spectra converge absolutely.
+Finite subset inversion gives
+\[
+ F\!\left(\sum_i t_iB_i\right)
+       =\sum_{\varnothing\ne S\subseteq\{1,\ldots,r\}}
+                    \mathcal H_S(F;t).
+\]
+On the full simplex, each $\mathcal H_S$ is homogeneous of degree one
+in the coordinates belonging to $S$.  Under the normalized symmetric
+Dirichlet weight, $q=t_S$ has mean $|S|/r$ and is independent of the
+normalized proportions $t_i/q$, $i\in S$.  Equivalently, this follows
+by integrating first in $q$ and the complementary proportions using
+the ordinary beta integral.  Therefore, for $k=|S|$,
+\[
+ \mathbb E_{r,s}\mathcal H_S(F;t)
+ =\frac{k}{r}\frac{\Gamma(ks)}{\Gamma(s)^k}
+       \int_{\Sigma_S}\mathcal H_S(F;t)
+                                 \prod_{i\in S}t_i^{s-1}\,dt.
+\]
+The singleton terms are $r^{-1}\sum_iF(B_i)$.  Subtracting them and
+using
+$\frac{k}{r}\Gamma(ks)/\Gamma(s)^k=s^{k-1}Q_k(s)/r$
+proves \eqref{sd:eq:master} in the initial half-plane.
+The spectral finite subtractions in Lemma~\ref{sd:lem:zero}, together
+with Lemma~\ref{sd:lem:boundary}, give meromorphic continuation of the
+integrals and the asserted holomorphic germs.  The equality follows
+there by continuation from the common convergence domain.
+\end{proof}
+
+\subsection{The entire zero-jet contribution is a finite rational function}
+\label{sd:subsec:local}
+
+Separate $E_W(rs;B)=F_0(B)+(E_W(rs;B)-F_0(B))$ in
+\eqref{sd:eq:master}.  Only the mass polynomial in
+\eqref{sd:eq:zero} contributes to the first part.
+
+\begin{theorem}[Rational zero-jet contribution]
+\label{sd:thm:local}
+The part of $\mathcal D_W(s)$ arising from $F_0$ is
+\begin{equation}\label{sd:eq:local}
+ \boxed{\displaystyle
+ \mathcal L_W(s)=\sum_{h\ge1}p_h\left\{
+ \frac1r\sum_{i=1}^r B_i^h-
+ \frac{h!}{(rs)_h}
+       \sum_{h_1+\cdots+h_r=h}
+            \prod_{i=1}^r\frac{(s)_{h_i}B_i^{h_i}}{h_i!}
+                                      \right\}.}
+\end{equation}
+All apparent singularities at $s=0$ are removable, and
+$\mathcal L_W(0)=0$.  The term $h=1$ vanishes identically.  For
+$m\ge1$, set
+\begin{equation}\label{sd:eq:Ccoeff}
+ C_{h,j}=[z^h]\prod_{i=1}^r(1-B_i z)^{j/r},
+             \qquad 1\le j\le h-1.
+\end{equation}
+Then
+\begin{equation}\label{sd:eq:localderivative}
+ \boxed{\displaystyle
+ \mathcal L_W^{(m)}(0)=
+ \sum_{h\ge2}p_h(-1)^{m+1}m!r^m h!
+  \sum_{j=1}^{h-1}
+    \frac{(-1)^jC_{h,j}}{j!(h-1-j)!\,j^{m+1}}.}
+\end{equation}
+The coefficient extraction in \eqref{sd:eq:Ccoeff} is finite and
+algebraic; it makes no branch choice beyond the formal series with
+constant coefficient one.
+\end{theorem}
+\begin{proof}
+Dirichlet moments give
+\[
+ \mathbb E_{r,s}\left(\sum_i t_iB_i\right)^h
+  =\frac{h!}{(rs)_h}
+       \sum_{h_1+\cdots+h_r=h}
+                    \prod_i\frac{(s)_{h_i}B_i^{h_i}}{h_i!}.
+\]
+This proves \eqref{sd:eq:local}.  At $s=0$ its continuation is the
+average of the vertex values: only compositions supported on a single
+index survive after the common factor $s$ has been cancelled.
+
+For the derivative formula put $v=rs$.  The $h$th moment becomes
+\[
+ M_h(v)=\frac{h!}{(v)_h}
+                   [z^h]\prod_i(1-B_i z)^{-v/r}.
+\]
+After cancellation at zero, it is a rational function of numerator and
+denominator degree at most $h-1$.  Its polynomial part is constant.
+Its possible poles are simple and lie at $v=-j$, $1\le j<h$, with
+residues
+\[
+ \operatorname{Res}_{v=-j}M_h(v)
+   =\frac{(-1)^j h!C_{h,j}}{j!(h-1-j)!}.
+\]
+Differentiate the partial fractions $m$ times at $v=rs=0$ and subtract
+from the vertex average.  This is exactly
+\eqref{sd:eq:localderivative}.
+\end{proof}
+
+For example, let $V(\boldsymbol B)=\sum_{i<j}(B_i-B_j)^2$.  For the
+first nontrivial odd weight,
+\begin{equation}\label{sd:eq:cubiclocal}
+ \mathcal L_{x^3}(s)=\frac{sV(\boldsymbol B)}{4r(1+rs)},\qquad
+ \mathcal L_{x^3}^{(m)}(0)
+       =\frac{m!(-r)^{m-1}}{4r}V(\boldsymbol B).
+\end{equation}
+More generally, after division by $m!$, the sequence in
+\eqref{sd:eq:localderivative} is a finite linear combination of powers
+$(-r/j)^m$.  It therefore satisfies an explicit finite recurrence in
+$m$.  This rational contribution is the part supplied by the zero
+one-mass jet.  It should not be read as saying that Stieltjes or residue
+terms inside the lower jets $F_1,F_2,\ldots$ disappear.
+
+\subsection{Every derivative uses only finitely many lower jets}
+\label{sd:subsec:allorders}
+
+For $k\ge2$ and $q\ge0$ define
+\begin{equation}\label{sd:eq:P}
+ P_{k,q}(L)=[z^q]\exp\left(
+ Lz+\sum_{n\ge2}\frac{(-1)^n\zeta(n)}n(k^n-k)z^n\right).
+\end{equation}
+Only finitely many terms of the exponential are required at any fixed
+$q$.  In particular,
+\[
+ P_{k,0}=1,\qquad P_{k,1}=L,\qquad
+ P_{k,2}=\frac{L^2}{2}+\frac{k^2-k}{2}\zeta(2).
+\]
+Put $\ell_S(t)=\sum_{i\in S}\log t_i$.
+
+\begin{theorem}[All-order formula and face-size restriction]
+\label{sd:thm:allorders}
+For every integer $m\ge1$,
+\begin{equation}\label{sd:eq:allorders}
+ \boxed{\begin{aligned}
+ \Delta_m(W)={}&\mathcal L_W^{(m)}(0)\\
+ &-\frac{m!}{r}
+  \sum_{k=2}^{\min(r,m)}\ \sum_{|S|=k}
+  \sum_{j=1}^{m-k+1}\frac{r^j}{j!}
+   \int_{\Sigma_S}\mathcal H_S(F_j;t)
+       P_{k,m-k+1-j}(\ell_S(t))
+                     \frac{dt}{\prod_{i\in S}t_i}.
+ \end{aligned}}
+\end{equation}
+Every displayed simplex integral is absolutely convergent.  After the
+explicit zero-jet term is removed, a $k$-vertex face starts at order
+$s^k$ and uses one-mass derivatives of order at most $m-k+1$ in the
+$m$th derivative.
+\end{theorem}
+\begin{proof}
+The classical Taylor series of $\log\Gamma(1+z)$ gives
+\[
+ Q_k(s)=\exp\left(
+       \sum_{n\ge2}\frac{(-1)^n\zeta(n)}n(k^n-k)s^n\right);
+\]
+the Euler-constant terms cancel.  Once $F_0$ has been removed, the
+inner function in \eqref{sd:eq:master} is
+$\sum_{j\ge1}r^js^jF_j/j!$.  Multiplication by $s^{k-1}$ proves
+that this face starts at degree $k$.  Extract the coefficient of $s^m$
+from \eqref{sd:eq:master}; the remaining exponential is precisely
+\eqref{sd:eq:P}.  Lemma~\ref{sd:lem:boundary} justifies extraction under
+each integral.  Multiplication by $m!$ gives the theorem.
+\end{proof}
+
+For a compact statement of the first instances write
+\[
+ I_S(F)=\int_{\Sigma_S}\mathcal H_S(F;t)
+                       \frac{dt}{\prod_i t_i},\qquad
+ J_S(F)=\int_{\Sigma_S}\mathcal H_S(F;t)\ell_S(t)
+                       \frac{dt}{\prod_i t_i},
+ \qquad L_m=\mathcal L_W^{(m)}(0).
+\]
+All subset sums below use distinct labels.  The complete second and
+third derivatives are
+\begin{align}
+ \Delta_2(W)&=L_2-2\sum_{|S|=2}I_S(F_1),
+                    \label{sd:eq:second}\\
+ \Delta_3(W)&=L_3-3r\sum_{|S|=2}I_S(F_2)
+                  -6\sum_{|S|=2}J_S(F_1)
+                  -6\sum_{|S|=3}I_S(F_1).
+                    \label{sd:eq:third}
+\end{align}
+The fourth derivative is
+\begin{align}\label{sd:eq:fourth}
+ \Delta_4(W)={}&L_4-4r^2\sum_{|S|=2}I_S(F_3)
+                    -12r\sum_{|S|=2}J_S(F_2)\notag\\
+ &-24\sum_{|S|=2}\int_{\Sigma_S}\mathcal H_S(F_1;t)
+             \left(\frac{\ell_S(t)^2}{2}+\zeta(2)\right)
+                                  \frac{dt}{\prod_i t_i}\notag\\
+ &-12r\sum_{|S|=3}I_S(F_2)-24\sum_{|S|=3}J_S(F_1)
+                              -24\sum_{|S|=4}I_S(F_1).
+\end{align}
+A subset sum is empty when its size exceeds $r$.  The term $\zeta(2)$
+in the pair integral of \eqref{sd:eq:fourth} comes from $Q_2$ and is
+part of the normalization.  In particular the third derivative needs
+only pair integrals of the second one-mass jet and pair and triple
+integrals of the first jet.
+
+\subsection{Explicit Gamma integrands and a nonzero face family}
+\label{sd:subsec:gamma}
+
+For $W=1$, first-derivative factorization gives the classical expression
+\begin{equation}\label{sd:eq:gamma}
+ F_1(B)=\log\Gamma(a+i\sqrt B)+\log\Gamma(a-i\sqrt B)
+                                      -\log(2\pi),
+\end{equation}
+using the analytic logarithm of Gamma in the right half-plane.
+The corresponding even-weight expression, inherited from
+first-derivative factorization, is
+\begin{equation}\label{sd:eq:evenhurwitz}
+ F_1(B)=\sum_{\varepsilon=\pm1}\sum_{j=0}^{2d}
+   \binom{2d}{j}(-\varepsilon i\sqrt B)^{2d-j}
+               \zeta'(-j,a+\varepsilon i\sqrt B),
+             \qquad W=x^{2d}.
+\end{equation}
+Thus the largest face size $k=m$ in \eqref{sd:eq:allorders} requires
+only ordinary Gamma at $W=1$, and a finite Hurwitz-derivative expression
+for every even polynomial weight.  Its coefficients and integration
+kernels are fully explicit.
+
+The following identity shows that the higher faces are substantive
+terms of this particular representation.
+
+\begin{proposition}[A factorial identity for every face size]
+\label{sd:prop:quadraticface}
+For $k=|S|\ge2$,
+\begin{equation}\label{sd:eq:quadraticface}
+ \boxed{\displaystyle
+ I_S(B\mapsto B^2)=(-1)^{k-1}(k-2)!
+                             \sum_{\{i,j\}\subseteq S}(B_i-B_j)^2.}
+\end{equation}
+Consequently, if $B_i=B+\epsilon\beta_i$ and $F$ is $C^3$ near $B$,
+\begin{equation}\label{sd:eq:collisionleading}
+ I_S(F)=\frac{\epsilon^2F''(B)}2(-1)^{k-1}(k-2)!
+           \sum_{\{i,j\}\subseteq S}(\beta_i-\beta_j)^2
+                         +O(\epsilon^3).
+\end{equation}
+\end{proposition}
+\begin{proof}
+On the nonnegative coordinate cone the quadratic perspective has the
+variance decomposition
+\[
+ t_T B_T^2=\sum_{i\in T}t_iB_i^2
+       -\sum_{\{i,j\}\subseteq T}
+                 \frac{t_it_j}{t_T}(B_i-B_j)^2.
+\]
+The first sum is annihilated by the face subtraction.  Writing
+$t_T^{-1}=\int_0^\infty e^{-vt_T}\,dv$ in the second gives
+\begin{align*}
+ \mathcal H_S(B^2;t)
+  ={}&(-1)^{k-1}\sum_{\{i,j\}\subseteq S}(B_i-B_j)^2t_it_j\\
+ &\qquad\times\int_0^\infty e^{-v(t_i+t_j)}
+                 \prod_{\ell\in S\setminus\{i,j\}}
+                         (1-e^{-vt_\ell})\,dv.
+\end{align*}
+Since $\mathcal H_S$ is homogeneous of degree one, radial integration
+shows that $I_S$ equals the integral of
+$e^{-\sum_i t_i}\mathcal H_S(t)/\prod_i t_i$ on the positive
+orthant.  The radial factor is $\int_0^\infty e^{-\rho}\,d\rho=1$.
+After the displayed sign is removed, every term is nonnegative, so
+Tonelli's theorem applies.  The two distinguished coordinates give
+$(1+v)^{-2}$, and each other coordinate gives
+\[
+ \int_0^\infty e^{-t}\frac{1-e^{-vt}}{t}\,dt=\log(1+v).
+\]
+The remaining integral is
+\[
+ \int_0^\infty\frac{\log^{k-2}(1+v)}{(1+v)^2}\,dv=(k-2)!.
+\]
+This proves \eqref{sd:eq:quadraticface}.  Taylor-expand $F(B+\epsilon
+\beta)$ through degree two.  The constant and affine parts are
+annihilated; Lemma~\ref{sd:lem:boundary} controls the integrated
+remainder uniformly, proving \eqref{sd:eq:collisionleading}.
+\end{proof}
+
+For \eqref{sd:eq:gamma},
+\[
+ F_1''(B)=\sum_{n\ge0}\frac1{(x_n^2+B)^2}>0.
+\]
+Hence every face size has a nonzero quadratic collision coefficient
+when the perturbations are not all equal.  This does not prove
+irreducibility into any other chosen function class.  In particular,
+$\mathcal H_S$ need not vanish merely because two of several masses
+coincide; ``face contribution'' is the precise description used here.
+
+\subsection{Periodic weights and cancellation of the mean}
+\label{sd:subsec:periodic}
+
+\begin{corollary}[Mean-zero periodic weights remove the zero-jet term]
+\label{sd:cor:periodic}
+Let $c_n$ be $q$-periodic, and insert $c_n$ in every spectral sum.
+Theorems~\ref{sd:thm:master} and \ref{sd:thm:allorders} still hold.
+The rational zero-jet contribution is
+\begin{equation}\label{sd:eq:periodiclocal}
+ \mathcal L_{c,W}(s)=\overline c\,\mathcal L_W(s),\qquad
+                  \overline c=\frac1q\sum_{v=0}^{q-1}c_v.
+\end{equation}
+Thus $\overline c=0$ removes this term for \emph{every} polynomial
+weight, including odd weights.
+\end{corollary}
+\begin{proof}
+The auxiliary Dirichlet series is
+\[
+ \sum_{n\ge0}c_n(n+a)^{-z}
+   =q^{-z}\sum_{v=0}^{q-1}c_v
+                           \zeta\!\left(z,\frac{a+v}{q}\right).
+\]
+Its residue at $z=1$ is $\overline c$.  Repeat the proof of
+Lemma~\ref{sd:lem:zero}; the zero jet becomes
+\[
+ F_{c,0}(B)=\sum_d w_dq^d
+       \sum_v c_v\zeta\!\left(-d,\frac{a+v}{q}\right)
+                    +\overline c\sum_{h\ge1}p_hB^h.
+\]
+The mass-independent part is annihilated by every face subtraction.
+All other steps use linearity and normal convergence; periodic weights
+are bounded and cause no additional convergence issue.
+\end{proof}
+
+For $W=1$ the first jet has the explicit finite dictionary
+\begin{align}\label{sd:eq:periodicgamma}
+ F_{c,1}(B)=\sum_{v=0}^{q-1}c_v\bigg\{&
+ \log\Gamma\!\left(\frac{a+v+i\sqrt B}{q}\right)
+ +\log\Gamma\!\left(\frac{a+v-i\sqrt B}{q}\right)\notag\\
+ &-\log(2\pi)-2\log q
+                         \left(\frac12-\frac{a+v}{q}\right)\bigg\}.
+\end{align}
+This follows by scaling each residue class to
+$q^{-2s}E_1(s;B/q^2)$ with shift $(a+v)/q$, where the subscript
+$1$ here denotes the polynomial weight.  Formula
+\eqref{sd:eq:periodicgamma} therefore supplies ordinary Gamma
+integrands for alternating weights and character projections.  The
+mass-independent constants can be omitted inside $\mathcal H_S$,
+but are retained in the full first-jet identity.
+
+\subsection{Independent evaluation and research consequences}
+\label{sd:subsec:validation}
+
+For $a=2$, $W=1$, $r=3$, and masses
+$(B_1,B_2,B_3)=(0.2,0.7,1.3)$, the directly evaluated spectral derivative is
+\begin{equation}\label{sd:eq:numeric}
+ \Delta_3=-1.8999673234892670916122436912924709222747240234\ldots.
+\end{equation}
+One calculation used a finite ordinary spectral sum and an independently
+summed binomial--Hurwitz tail.  Changing the head length and tail degree
+from $(55,13)$ to $(85,17)$ changed the result by $3.04\times10^{-46}$.
+A second calculation evaluated \eqref{sd:eq:third}: the pair terms used
+convergent one-mass expansions, while the triple integral used Gamma
+values from \eqref{sd:eq:gamma}.  The errors in the full face formula
+at Gauss--Legendre orders $16$, $24$, and $32$, with $45$-digit
+arithmetic, were respectively
+$1.62\times10^{-18}$, $2.54\times10^{-27}$, and
+$8.20\times10^{-32}$.  The last error is limited by the retained
+one-mass expansion.  The triple integral was
+\[
+ I_{\{1,2,3\}}(F_1)
+    =0.0564600947235384049461537670929012515\ldots.
+\]
+For stable numerical integration the simplex was divided into its six
+coordinate orderings.  On each, use
+$t=(1,u,uv)/(1+u+uv)$; the weighted measure becomes
+$dt/(t_1t_2t_3)=du\,dv/(uv)$, and the face cancellation removes the
+corner singularity.  The code and precision-dependent outputs are
+included with the article.  These are numerical diagnostics, not
+interval enclosures or replacements for the proofs.
+
+The results close the explicit face-subtraction problem and supply a
+complete odd-weight zero-jet correction in this lower-jet framework.
+Further concrete questions are to evaluate special Gamma face integrals
+in a fixed polylogarithmic function class; to obtain comparable
+multivariable formulas when the spectral orders of the factors vary
+independently; and to derive closed all-order collision coefficients for
+the individual face integrals beyond \eqref{sd:eq:collisionleading}.
+The theorem itself does not require such reductions and makes no claim
+that the unresolved Gaussian period conjectures are settled.

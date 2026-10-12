@@ -203,7 +203,7 @@ threshold is only needed below $\exp(\exp(X^{2^\mu}))$, and
 $2^{2^m}\le\exp(X^{2^j})$ as soon as $m\le2^j$. At that level the
 constants cost only $k+16$, and $L+5$ holds in every length.
 
-\section{Theorem 16.2 with polynomial controls}
+\section{Theorem 16.2 and Corollary 16.11 with polynomial controls}
 
 The printed Theorem~16.2 restricts a relation with the product property to a
 set of density $1-\theta$ on which it is multiply linear, with graph count
@@ -218,6 +218,16 @@ dimension induction give a count that is \emph{polynomial} in $1/(\gamma\theta\r
 with width exponent $Q^{-1}$, in every dimension $k\ge1$
 (\lean{theorem\_16\_2\_polynomial}). This form implies the printed one
 (\lean{theorem\_16\_2\_polynomial\_implies\_printed}).
+
+The same holds for Corollary~16.11. For a function that is not uniform of
+degree $k+2$, the single-piece step with the joint-cover remainder gives a
+box of dimension $k+1$, of width $N^e$, on which a multilinear frequency is
+large on an $e$ fraction, with
+\[
+  e^{-1}\le(2/\alpha)^{2^{236\cdot2^k+k+24}}
+\]
+for every $k\ge2$ (\lean{corollary\_16\_11\_polynomial}). The printed exponent
+is a tower in $1/\alpha$.
 
 \section{Further questions}
 
@@ -264,6 +274,7 @@ sharper constants & \lean{Proofs18CoverSharper}, \lean{Proofs18CoverTightBase},\
 & \lean{Proofs18CoverHeadline},\\
 & \lean{Proofs18CoverSharperAllDegrees}\\
 polynomial Theorem 16.2 & \lean{Proofs16PolynomialStructure}, \lean{theorem\_16\_2\_polynomial}\\
+polynomial Cor.~16.11 & \lean{Proofs16PolynomialCorollary}, \lean{corollary\_16\_11\_polynomial}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -277,7 +288,7 @@ all 120 numbered catalogue statements and of the improved-bound theorems,
 and found only the axioms \lean{propext}, \lean{Classical.choice} and
 \lean{Quot.sound}. The extensions to every degree ($c=7$) and to every
 length ($c=6$ and $c=5$), the van der Waerden and Theorem~1.3 rows, and the
-polynomial Theorem~16.2 postdate that audit. They are so far checked against
+polynomial Theorem~16.2 and Corollary~16.11 postdate that audit. They are so far checked against
 faithful stubs, and \lean{CompletionAudit.lean} now includes them. The
 audit's record is
 \begin{center}\small
@@ -285,6 +296,6 @@ audit's record is
 \lean{2026-10-11-numbered-and-bounds.json}.
 \end{center}
 The research notes
-(\lean{SECTION16\_RESEARCH\_NOTES.md}, \S\S L.11--L.15i) record the development.
+(\lean{SECTION16\_RESEARCH\_NOTES.md}, \S\S L.11--L.15j) record the development.
 
 \end{document}

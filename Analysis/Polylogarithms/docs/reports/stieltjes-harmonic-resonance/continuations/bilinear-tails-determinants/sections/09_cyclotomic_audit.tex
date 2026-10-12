@@ -1,0 +1,89 @@
+\section{A cyclotomic test case already determined by the manuscript}
+\label{audit:cyclo}
+
+The incoming alternating-tail report asks, as the first test in its
+complementary-sector Question 7, for
+$\Imag Z(2,1;i,-i)$, where
+\[
+ Z(2,1;i,-i)=\sum_{k>m\ge1}\frac{i^k(-i)^m}{k^2m}.
+\]
+The full two-resolvent complementary-sector generator remains open.
+However, this particular coefficient is already an exact consequence of
+two results in the pinned unified manuscript. Recording that implication
+is an integration correction, not a newly discovered period evaluation.
+
+\begin{proposition}[Explicit complementary coefficient]\label{audit:coefficient}
+Put $\lambda_3=\Imag\Li_3((1+i)/2)$. Then
+\begin{equation}\label{audit:coefficient-value}
+ \boxed{\displaystyle
+ \Imag Z(2,1;i,-i)
+   =\lambda_3-\frac{\pi\log^2 2}{32}-\frac{\pi^3}{128}.}
+\end{equation}
+Equivalently,
+\begin{equation}\label{audit:coefficient-integral}
+ \int_0^1\frac{\log t\log(1-t)}{1+t^2}\dd t
+ =\lambda_3-\frac{\pi\log^2 2}{32}-\frac{\pi^3}{128}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Use the one-direction convention
+$\Li_{a,b}(z)=\sum_{k>m\ge1}z^k/(k^a m^b)$.
+The inverse-color theorem in
+\path{chapters/04-depth.tex}, equation
+\texttt{inverse:eq:mixedb1}, gives
+\[
+ Z(2,1;z,z^{-1})
+ =2\Li_3(z)+\Li_{2,1}(z)+\Li_{1,2}(z)-\zeta(2)\Li_1(z).
+\]
+The iterated-integral shuffle identity is
+$\Li_1(z)\Li_2(z)=\Li_{1,2}(z)+2\Li_{2,1}(z)$.
+Hence
+\begin{equation}\label{audit:coefficient-reduction}
+ Z(2,1;z,z^{-1})
+ =2\Li_3(z)+\Li_1(z)\Li_2(z)-\Li_{2,1}(z)-\zeta(2)\Li_1(z).
+\end{equation}
+At $z=i$, put $L=\log2$ and $G=\beta(2)$. The standard values are
+\[
+ \Li_1(i)=-L/2+i\pi/4,\quad
+ \Li_2(i)=-\pi^2/48+iG,\quad
+ \Imag\Li_3(i)=\pi^3/32.
+\]
+The proved height-one specialization in
+\path{chapters/04-shuffle-parity.tex} is
+\[
+ \Imag\Li_{2,1}(i)
+ =-GL/2+\pi L^2/32-\lambda_3+3\pi^3/128.
+\]
+Substituting these identities into
+\eqref{audit:coefficient-reduction} cancels the Catalan terms and yields
+\eqref{audit:coefficient-value}. Both inherited reductions are proved in
+the source, not inferred from a numerical fit \cite{ProveItPin}.
+
+For the integral form, use the same manuscript's inverse-color integral
+representation, or insert the elementary Mellin formula for $k^{-2}$
+directly in the absolutely convergent double sum. It gives
+\[
+ Z(2,1;i,-i)
+ =i\int_0^1\frac{\log t\log(1-t)}{1-it}\dd t.
+\]
+Taking the imaginary part proves \eqref{audit:coefficient-integral}.
+The endpoint logarithms are integrable and $1-it$ does not vanish on the
+integration interval, so no limiting branch choice is hidden here.
+\end{proof}
+
+The numerical value is
+\[
+ 0.2806725061826611243960680536045272754284\ldots.
+\]
+This is a finite reduction into the explicitly stated classical
+trilogarithm collection. It does not reduce $\lambda_3$ further and does
+not prove its independence from any smaller set of constants. Nor does
+it settle the full complementary generator or the distinct Gaussian
+$S_6$ and revised $S_8$ conjectures.
+
+The proposed status update is therefore precise: retain Question 7 for
+the full complementary family, mark its displayed first coefficient as
+already determined by the manuscript, and include
+\eqref{audit:coefficient-value} as the missing cross-reference. The source
+proofs of inverse-color transport and height-one reduction deserve the
+credit.

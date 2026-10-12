@@ -1,0 +1,106 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage[margin=0.94in,headheight=15pt]{geometry}
+\usepackage{microtype,booktabs,longtable,array,enumitem,fancyhdr,xcolor,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!42!black,citecolor=blue!42!black,urlcolor=blue!42!black]{hyperref}
+\usepackage{bookmark}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newcommand{\Q}{\mathbb Q}\newcommand{\C}{\mathbb C}\newcommand{\N}{\mathbb N}
+\newcommand{\D}{\mathcal D}\newcommand{\NF}{\mathcal N}\newcommand{\Prim}{\mathcal T}
+\newcommand{\A}{\mathcal A}\newcommand{\HH}{\mathcal H}\newcommand{\BB}{\mathcal B}
+\newcommand{\dd}{\,\mathrm d}\newcommand{\ii}{\mathrm i}
+\newcommand{\piy}{\partial_{y^2}}
+\DeclareMathOperator{\Li}{Li}\DeclareMathOperator{\Shi}{Shi}
+\DeclareMathOperator{\FP}{FP}\DeclareMathOperator{\Res}{Res}\DeclareMathOperator{\CT}{CT}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\newcommand{\pin}{92ee3aaf3087c0e0c29b9ed952e777de5d6accd0}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{3pt}
+\setlist{itemsep=5pt,topsep=5pt}
+\allowdisplaybreaks[2]
+\setcounter{tocdepth}{2}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Affine Gamma polarization}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\hypersetup{pdftitle={Affine Polarization of Gamma Normal Forms},pdfauthor={Research draft prepared for Vladimir Reshetnikov with OpenAI assistance},pdfsubject={Exact Gamma coefficients, Hurwitz and Stieltjes averages, polylogarithmic kernels}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{0.7cm}
+{\large\sffamily PROVEIT / ANALYSIS / POLYLOGARITHMS\par}
+\vspace{1.1cm}
+{\Huge\bfseries Affine Polarization\\[0.15em] of Gamma Normal Forms\par}
+\vspace{0.7cm}
+{\Large All derivative-square coefficients,\\[0.2em]
+polylogarithmic kernels, and Stieltjes averages\par}
+\vspace{0.8cm}
+{\large Research continuation prepared for Vladimir Reshetnikov\par}
+\vspace{0.25cm}
+{Mathematical derivations and computational checks with OpenAI assistance\par}
+\vspace{0.25cm}
+{11 October 2026\par}
+\vspace{0.7cm}
+\begin{minipage}{0.93\textwidth}
+\small
+\textbf{Abstract.}
+The canonical integration-by-parts normal form of
+$(-1)^m\Gamma(x)(\Gamma(x)^{-1})^{(m)}$ contains a tractable infinite
+sector that is not apparent from its Bell-polynomial expansion.
+We determine every coefficient of $u_0^a u_1^k u_r^2$, simultaneously
+for all $r\ge2$ and all $a,k\ge0$. An affine perturbation turns the
+quadratic reduction into one symmetric symbol. Its coefficients are
+entire hypergeometric functions, with an elementary beta-integral
+representation and a two-variable generating function. A general
+symmetric-profile theorem extends the construction to products of
+centered Gamma ratios.
+
+The same kernel gives a normalized Mellin--Hurwitz transform with only
+$r+1$ endpoint pairs. Its Laurent expansion yields finite formulas for
+every beta-weighted generalized Stieltjes constant, with explicit
+complete-harmonic coefficients and anchored primitives of every order.
+A Lerch deformation gives finite polylogarithmic endpoint formulas.
+We evaluate six quartic-weight polygamma integrals and prove a
+Bernoulli selector basis characterized by single-zeta closure over rational
+functions of the complex order. Its trigamma specialization contains one
+odd zeta value plus an explicit rational number. All displayed integrals in these analytic
+applications are ordinary convergent integrals.
+
+The normal-form decomposition, the pure-square coefficients, and the
+$r=2$ family are credited to prior work. The new coefficient theorem
+answers a defined subcase of the predecessor's next-Gamma-projection
+question; it does not solve its full mixed $u_2,u_3$ sector or the general
+harmonic-tail rank conjecture. Proofs, 2,187 exact assertions, 56 numerical
+diagnostics, and additive integration instructions accompany the article.
+Historical priority beyond the inspected sources is not asserted.
+\end{minipage}
+\vfill
+{\small Repository metadata anchor: \texttt{\pin}\par}
+{\small Source identity and inspection limits are recorded in Section~\ref{ag:sec:audit}.\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage\pagenumbering{arabic}
+\input{sections/01_problem}
+\input{sections/02_normal}
+\input{sections/03_polarization}
+\input{sections/04_profiles}
+\input{sections/05_hurwitz}
+\input{sections/06_stieltjes}
+\input{sections/07_polylogs}
+\input{sections/08_examples}
+\input{sections/09_bernoulli}
+\input{sections/10_audit}
+\input{sections/11_questions}
+\input{references}
+\end{document}

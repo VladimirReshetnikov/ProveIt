@@ -1,0 +1,1327 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage[table]{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,
+ urlcolor=blue!45!black,pdftitle={When Dougall Tails Terminate},
+ pdfauthor={AI-assisted research continuation prepared for Vladimir Reshetnikov}}
+\usepackage{bookmark}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\arctanh}{arctanh}
+\DeclareMathOperator{\Res}{Res}
+\newcommand{\C}{\mathbb C}\newcommand{\Q}{\mathbb Q}\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}\newcommand{\N}{\mathbb N}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Gcal}{\mathcal G}\newcommand{\Rcal}{\mathcal R}
+\newcommand{\Bcal}{\mathcal B}\newcommand{\Lcal}{\mathfrak L}
+\newcommand{\Repart}{\operatorname{Re}}
+\newcommand{\pin}{\texttt{da2792fc9cc8ef19c6a314be6c65e1437fbdc66b}}
+\newcommand{\coef}[1]{\left[#1\right]}
+\allowdisplaybreaks[2]
+\emergencystretch=2em
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small When Dougall tails terminate}
+\fancyhead[R]{\small ProveIt continuation}
+\fancyfoot[C]{\thepage}
+\begin{document}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{17mm}
+{\Large\sffamily PROVEIT / EXACT SPECIAL-FUNCTION IDENTITIES\par}
+\vspace{13mm}
+{\huge\bfseries When Dougall Tails Terminate\par}
+\vspace{6mm}
+{\Large A rationality classification, Stieltjes cancellation,\par
+and an all-depth harmonic--polylogarithmic sum formula\par}
+\vspace{13mm}
+{\large Research continuation prepared for Vladimir Reshetnikov\par}
+\vspace{2mm}
+{\large AI-assisted mathematical draft\par}
+\vspace{2mm}
+{11 October 2026\par}
+\vspace{12mm}
+\begin{abstract}
+We classify all rational and all finitely terminating centered Gamma
+quotients at the integral resonances of the positive-parameter
+Rogers--Dougall family. Rationality occurs precisely when one of three
+symmetric parameters is integral. Finite termination occurs precisely on
+the evident short-integer polynomial loci or on one exceptional symmetric
+Laurent-polynomial locus. A rational difference-equation argument shows
+why termination of the formal asymptotic series is an exact identity,
+not merely an asymptotic assertion. In contrast, analytic curves of
+nonrational summands can have identically zero summed remainder.
+
+A two-parameter resolvent specialization then separates the Stieltjes
+boundary term from the convergent higher moments. Subtracting two
+resolvents cancels every Stieltjes coefficient and yields a Gamma
+expression for all fixed-order polygamma moments. At the half-center,
+a normalized Gamma quotient evaluates an infinite family of weighted
+composition sums in ordinary generalized harmonic numbers. The resulting
+all-depth level-two polylogarithmic sum formula has values in the algebra
+of ordinary zeta values and $\log 2$. Explicit cubic and quartic sums,
+a dilogarithmic integral, Euler primitives, and zero-safe derivative
+formulas are given with proofs and reproducible diagnostics.
+
+The classical summation and the repository's prior all-resonance
+continuation are credited separately. Global literature priority is not
+established, and no proof-assistant formalization is claimed.
+\end{abstract}
+\vfill
+{\small Repository snapshot: \pin\par}
+{\small This package is additive. No remote repository files were modified.\par}
+\end{titlepage}
+\tableofcontents
+\newpage
+
+\section{Scope, antecedents, and the precise additions}
+\label{sec:scope}
+The ProveIt manuscript organizes polylogarithms, harmonic sums, Gamma
+products, and Hurwitz-zeta derivatives by exact transformations rather
+than by numerical recognition alone. Its canonical mixed-Dougall section
+proves a first-resonance identity, fixed mixed derivatives, and a weighted
+trigamma square \cite{repo-mixed}. A preserved continuation already proves
+the centered all-resonance subtraction, its collapsed digamma value, and
+all spectral jets \cite{repo-centered}. Those results are inputs and
+antecedents here, not newly solved conjectures.
+
+The present work begins with a different question: \emph{when is the
+subtracted tail actually zero term by term?} Several sufficient polynomial
+loci appear in the preserved report. We prove a complete classification
+within its positive-parameter domain. We then show that a vanishing
+\emph{sum} of the tail is a substantially weaker condition: there are
+analytic families of nonrational Gamma quotients whose remainders sum
+to zero. This gives a concrete distinction between an exact finite
+summand identity and an exact infinite cancellation.
+
+The second addition is a resolvent construction. A symmetric perturbation
+of the Gamma parameters produces the denominator
+$x_n(x_n^2-v^2)$. Its Gamma evaluation is an ordinary convergent
+identity. In a companion boundary identity, every generalized Stieltjes
+constant can be displayed explicitly. Taking a resolvent difference
+removes all those constants at once. After half-center normalization,
+this yields a compact generating theorem for nonlinear harmonic sums,
+together with exact signed sums of multiple polylogarithms of arbitrary
+depth.
+
+The Rogers--Dougall summation is classical \cite{dlmf16}, as are Gamma
+recurrences, Stirling expansions, and Hurwitz-zeta identities
+\cite{dlmf5,dlmf25}. Parameter differentiation of hypergeometric sums
+is an established source of harmonic and zeta identities. The Euler-sum
+literature includes extensive linear and quadratic evaluations and
+colored multiple-zeta representations; Xu and Wang provide one relevant
+modern reference \cite{xu-wang}. Consequently, the statements below are
+proved mathematical results, but ``proved here'' does not mean
+``first in the literature.'' The rationality/termination classification,
+the nonterminating zero-remainder curves, and the specific unified
+resolvent/composition organization are the principal additions relative
+to the inspected repository text.
+
+\paragraph{Audit limits.}
+The source inspection covered the pinned canonical text and the specific
+preserved continuation listed in the source-audit file. The five ZIP
+archives present in \texttt{docs/incoming} were inventoried by name and
+metadata but could not be unpacked through the available binary-access
+route. Their contents were not checked for overlap. The external
+antecedent check used DLMF and the Xu--Wang publisher page, not an
+exhaustive literature review. The Gaussian $S_6$ conjecture is not
+resolved by this package. The manuscript's rejected frozen $S_8$ vector
+is not revived. These limitations do not weaken the proofs below, but
+they do limit priority and coverage claims.
+
+\section{Centered Dougall subtraction: the established starting point}
+\label{sec:starting}
+Throughout the classification sections, fix
+\begin{equation}
+ \kappa,b,c>0,\qquad d_0=1+2\kappa-b-c>0,\qquad x_n=n+\kappa.
+ \label{eq:positive-domain}
+\end{equation}
+All denominator Gamma factors mean entire reciprocal-Gamma functions.
+In particular, a zero reciprocal-Gamma value must not be replaced by a
+zero germ before differentiation. Define
+\begin{align}
+ W_n(u)={}&x_n\frac{\Gamma(n+2\kappa)\Gamma(n+b)\Gamma(n+c)
+                         \Gamma(n+d_0-u)}
+ {\Gamma(n+1)\Gamma(n+1+2\kappa-b)\Gamma(n+1+2\kappa-c)
+                         \Gamma(n+b+c+u)},\label{eq:W}\\
+ P(u)={}&\frac{\Gamma(b)\Gamma(c)\Gamma(d_0-u)}
+ {\Gamma(d_0)\Gamma(b+u)\Gamma(c+u)}.\label{eq:P}
+\end{align}
+The classical Rogers--Dougall identity in this normalization is
+\begin{equation}
+ \sum_{n\ge0}W_n(u)=\frac12\Gamma(u)P(u),
+ \qquad 0<\Repart u<d_0.
+ \label{eq:dougall}
+\end{equation}
+The hypergeometric excess is $2u$. The factor $1/2$ is essential: the
+usual very-well-poised factor is $(n+\kappa)/\kappa$, whereas
+\eqref{eq:W} uses $x_n$ and unnormalized Gamma factors.
+
+Put
+\begin{equation}
+ \alpha(u)=(\kappa,b-\kappa,c-\kappa,1+\kappa-b-c-u).
+ \label{eq:alpha}
+\end{equation}
+The denominator shifts relative to $x_n$ are $1-\alpha_i(u)$.
+Let $B_j(x)$ denote Bernoulli polynomials and define
+\begin{align}
+ \ell_j(u)&=-\frac{\sum_{i=1}^4B_{2j+1}(\alpha_i(u))}{j(2j+1)},
+ \qquad j\ge1,\label{eq:ell}\\
+ A_0(u)&=1,\qquad
+ A_j(u)=\frac1j\sum_{h=1}^j h\ell_h(u)A_{j-h}(u).\label{eq:A}
+\end{align}
+Shifted Stirling expansion and Bernoulli reflection give
+\begin{equation}
+ W_n(u)=x_n^{-1-2u}
+ \left(\sum_{j=0}^{K-1}A_j(u)x_n^{-2j}+O(x_n^{-2K})\right).
+ \label{eq:centered-expansion}
+\end{equation}
+For fixed $K$, the remainder is locally uniform in pole-free compact
+parameter sets. Every fixed parameter derivative is controlled on a
+slightly larger compact set by Cauchy's formula. Only even inverse powers
+occur in the correction series.
+
+\begin{proposition}[Prior centered subtraction and collapse]
+\label{prop:prior}
+For $K\ge1$ and $-K<\Repart u<d_0$,
+\begin{align}
+ \Rcal_K(u)&=\sum_{n\ge0}\left[
+ W_n(u)-\sum_{j=0}^{K-1}A_j(u)x_n^{-1-2u-2j}\right]\notag\\
+ &=\frac12\Gamma(u)P(u)-\sum_{j=0}^{K-1}
+                   A_j(u)\zeta(1+2u+2j,\kappa).
+ \label{eq:subtraction}
+\end{align}
+The bracketed series and all its fixed derivatives converge locally
+normally. If $N\ge0$, then
+\begin{align}
+ A_N(-N)=\rho_N
+ &=\frac{(-1)^N}{N!}(d_0)_N(1-b)_N(1-c)_N,\label{eq:rho}\\
+ \Rcal_{N+1}(-N)
+ &=\frac{\rho_N}{2}\bigl[\psi(N+1)-\psi(d_0+N)
+              -\psi(b)-\psi(c)+2\psi(\kappa)\bigr].\label{eq:collapse}
+\end{align}
+Here $(a)_N$ is the rising factorial. These formulas include $\rho_N=0$.
+\end{proposition}
+\begin{proof}[Proof, recalled to specify the input]
+The compact-uniform remainder in \eqref{eq:centered-expansion} is
+summable on the stated strip. On $\Repart u>0$, the sum follows by
+\eqref{eq:dougall}; analytic continuation gives
+\eqref{eq:subtraction}. Its holomorphic left side proves removal of
+all apparent poles on the right.
+
+At $u=-N$, compare residues. The Gamma term has residue $\rho_N/2$;
+the only polar zeta term is $j=N$, with residue $A_N(-N)/2$.
+This proves \eqref{eq:rho}, first for generic parameters and then
+polynomially. The cancellation of the finite parts is encoded by
+\begin{equation}
+ (\partial_u-D)A_N(u)=\sum_{h=1}^N\frac{B_{2h}(\kappa)}h A_{N-h}(u),
+ \qquad D=\partial_\kappa+\partial_b+\partial_c.
+ \label{eq:coefficient-law}
+\end{equation}
+Indeed $Dd_0=0$, and $\partial_u-D$ acts on the four entries of
+\eqref{eq:alpha} by $(-1,0,0,0)$. Apply this operator to
+$\exp(\sum_{j\ge1}\ell_j y^j)=\sum_{j\ge0}A_jy^j$.
+The Bernoulli derivative identity gives \eqref{eq:coefficient-law}.
+
+The constant term of the Gamma expression is
+\[
+ \frac{\rho_N}{2}
+ [\psi(N+1)-\psi(d_0+N)-\psi(b-N)-\psi(c-N)].
+\]
+The polar zeta counterterm contributes
+$A'_N(-N)/2-\rho_N\psi(\kappa)$. The lower zeta values are
+Bernoulli polynomials; \eqref{eq:coefficient-law} cancels them and
+replaces the coefficient derivative by $D\rho_N$. Finally,
+\[
+ D\rho_N=\rho_N\sum_{h=1}^N
+              \left(\frac1{b-h}+\frac1{c-h}\right),
+\]
+and the digamma recurrence produces \eqref{eq:collapse}.
+Continuity proves the exceptional cases. This is the centered
+continuation's proof mechanism \cite{repo-centered}.
+\end{proof}
+
+\section{A complete rationality and finite-termination classification}
+\label{sec:classification}
+At a fixed integral resonance, put
+\begin{equation}
+ d=d_0+N,\qquad
+ \alpha=(\kappa,b-\kappa,c-\kappa,d-\kappa),\qquad
+ b+c+d=1+2\kappa+N.
+ \label{eq:resonance-parameters}
+\end{equation}
+The meromorphic function whose sampled values are $W_n(-N)$ is
+\begin{equation}
+ F_N(x)=x\prod_{i=1}^4
+                  \frac{\Gamma(x+\alpha_i)}{\Gamma(x+1-\alpha_i)}.
+ \label{eq:F}
+\end{equation}
+Here ``rational'' means belonging to $\mathbb R(x)$; it does not
+require rational coefficients or rational values at integer arguments.
+The three parameters $b,c,d$ are symmetric in this expression, although
+$d_0>0$ singles out one of them in the original convergence domain.
+
+\subsection{Two general lemmas}
+\begin{lemma}[Rational Gamma quotients]
+\label{lem:gamma-rational}
+For real shifts $a_1,\ldots,a_r$ and $e_1,\ldots,e_r$, the quotient
+$\prod_i\Gamma(x+a_i)/\Gamma(x+e_i)$ is rational in $x$ if and only
+if the two multisets of shifts agree modulo $\Z$.
+\end{lemma}
+\begin{proof}
+If the multisets agree, pair equal residue classes and use
+$\Gamma(z+h)/\Gamma(z)=(z)_h$ for integral $h$, interpreting negative
+$h$ by the reciprocal product. This gives a rational function.
+Conversely, in each residue class of shifts modulo $\Z$, numerator
+Gamma factors contribute one pole at every sufficiently far negative
+point of that arithmetic progression. Denominator Gamma factors
+contribute the corresponding zeros. Unless the multiplicities agree,
+the quotient has infinitely many zeros or poles in that progression.
+A nonzero rational function cannot do so. Finite initial cancellations
+cannot change this conclusion.
+\end{proof}
+
+\begin{lemma}[Formal termination is exact]
+\label{lem:formal-exact}
+Suppose a meromorphic function $F$ has a nonzero finite Laurent
+asymptotic expansion $P$ to all algebraic orders on the positive real
+axis, and $F(x+1)=R(x)F(x)$ for a rational function $R$. Then $F=P$,
+provided $F(x)/P(x)\to1$ as $x\to+\infty$.
+\end{lemma}
+\begin{proof}
+For every prescribed power $M$, the difference $F(x)-P(x)$ is
+$O(x^{-M})$. Substitution into the difference equation implies that
+$P(x+1)-R(x)P(x)$ decays faster than every power. This is a rational
+function; therefore it vanishes identically. Away from the finite
+exceptional sets, $F/P$ is consequently $1$-periodic. For each
+sufficiently large real $x$,
+\[
+ \frac{F(x)}{P(x)}=\frac{F(x+j)}{P(x+j)}\longrightarrow1
+ \qquad(j\to\infty).
+\]
+Thus the quotient equals one on an interval, and meromorphic
+continuation proves the identity. This argument is what rules out
+an unexamined beyond-all-orders correction.
+\end{proof}
+
+For \eqref{eq:F}, the required rational difference equation is
+\begin{equation}
+ \frac{F_N(x+1)}{F_N(x)}
+ =\frac{x+1}{x}\prod_{i=1}^4\frac{x+\alpha_i}{x+1-\alpha_i}.
+ \label{eq:difference}
+\end{equation}
+Its leading asymptotic power is $x^{2N-1}$.
+
+\subsection{The classification theorem}
+\begin{theorem}[Rationality and termination]
+\label{thm:classification}
+Assume \eqref{eq:positive-domain} and $N\ge0$.
+
+\textup{(i)} The function $F_N(x)$ is rational if and only if at least
+one of $b,c,d$ is an integer.
+
+\textup{(ii)} Its formal centered inverse-power expansion terminates
+if and only if $F_N$ is a Laurent polynomial. This occurs precisely
+in either of the following cases:
+\begin{equation}
+ \text{some member of }\{b,c,d\}\text{ lies in }\{1,\ldots,N\};
+ \label{eq:short-integer}
+\end{equation}
+or, up to permutation,
+\begin{equation}
+ (b,c,d)=(N+1,\kappa,\kappa).
+ \label{eq:exceptional}
+\end{equation}
+In the first case $F_N$ is a polynomial. In the second case,
+\begin{equation}
+ F_N(x)=\frac1x\prod_{j=1}^{N}\bigl(x^2-(\kappa-j)^2\bigr).
+ \label{eq:exceptional-product}
+\end{equation}
+The empty product at $N=0$ is one. Overlap of the two cases is allowed.
+\end{theorem}
+\begin{proof}
+Since $\sum_i\alpha_i=N+1$, Lemma~\ref{lem:gamma-rational} says that
+rationality is equivalent to invariance of the four-element multiset
+$\{\alpha_i\bmod\Z\}$ under negation. Such an invariant multiset,
+with integral total sum, has a partner for $\alpha_1$ among the
+other three elements, with integral pair sum. To see the only delicate
+case, suppose $\alpha_1$ is a fixed class under negation, hence $0$
+or $1/2$. If no second copy of that fixed class occurs, the other
+nonfixed classes pair off, leaving an odd number of the other fixed
+class. The total sum is then half-integral, a contradiction.
+The possible partner sums are exactly $b,c,d$.
+
+Conversely, if one of those three pair sums is integral, the
+complementary pair sum is integral as well, because their total is
+$N+1$. Pairing proves negation invariance and hence rationality.
+This establishes (i).
+
+If the formal expansion terminates, it is a finite Laurent polynomial
+with leading coefficient one. Equation~\eqref{eq:difference} and
+Lemma~\ref{lem:formal-exact} identify it exactly with $F_N$.
+The converse is immediate from uniqueness of the asymptotic expansion.
+It remains to classify the rational functions which are Laurent
+polynomials.
+
+Choose an integer member $m$ of $\{b,c,d\}$ and rename the other two
+$c_*,d_*$. Positivity implies $m\ge1$. If $m\le N$, Gamma recurrence
+gives
+\begin{equation}
+ F_N(x)=x\prod_{j=1}^{m-1}\bigl(x^2-(\kappa-j)^2\bigr)
+          \prod_{r=1}^{N-m}\bigl(x^2-(\kappa-c_*+r)^2\bigr).
+ \label{eq:polynomial-product}
+\end{equation}
+This is the short-integer polynomial locus.
+
+Suppose no integer member is at most $N$, and choose $m$ to be the
+\emph{smallest integer member}. Put $L=m-N\ge1$. The same recurrence
+now gives the rational expression
+\begin{equation}
+ F_N(x)=x\,
+ \frac{\displaystyle\prod_{j=1}^{m-1}(x^2-(\kappa-j)^2)}
+ {\displaystyle\prod_{r=0}^{L-1}(x^2-(\kappa-c_*-r)^2)}.
+ \label{eq:rational-product}
+\end{equation}
+A numerator and denominator factor can cancel only if
+\[
+ c_*+r=j\quad\text{or}\quad d_*+L-1-r=j,
+ \qquad 1\le j\le m-1,
+\]
+where the second equality uses $c_*+d_*=1+2\kappa-L$.
+If the parameter on the left is nonintegral, neither equality is
+possible. If integral, it is at least $m$ by minimality of $m$,
+so neither equality is possible again. Thus no quadratic factors
+cancel.
+
+A Laurent polynomial can have no pole away from $x=0$. Consequently,
+every denominator root in \eqref{eq:rational-product} must be zero.
+The consecutive numbers $\kappa-c_*-r$, $0\le r<L$, can all vanish
+only when $L=1$ and $c_*=\kappa$. The parameter sum then forces
+$d_*=\kappa$ and $m=N+1$. Formula~\eqref{eq:exceptional-product}
+follows. This proves necessity and sufficiency, including multiple
+roots and zero factors by meromorphic continuation.
+\end{proof}
+
+\begin{remark}[Exact scope of the symmetric description]
+Under $d_0>0$, one has $d>N$. Thus the short-integer alternative is
+actually attained by $b$ or $c$ in the original parameter chart.
+The exceptional locus $d=N+1$, $b=c=\kappa$, $d_0=1$ is admissible
+for every $\kappa>0$. The permutations with $b=N+1$ or $c=N+1$
+require $\kappa>N$. The symmetric theorem is useful, but the
+positivity domain must still be enforced after a permutation.
+\end{remark}
+
+\subsection{Consequences and examples}
+A terminating centered expression need not be a polynomial: the generic
+exceptional expression has a simple $x^{-1}$ term. Its residue coefficient
+is
+\begin{equation}
+ \rho_N=(-1)^N\prod_{j=1}^N(\kappa-j)^2
+ \quad\text{on }(b,c,d)=(\kappa,\kappa,N+1).
+ \label{eq:rho-exceptional}
+\end{equation}
+This agrees with \eqref{eq:rho}. On all terminating loci,
+\begin{equation}
+ W_n(-N)=\sum_{j=0}^N A_j(-N)x_n^{2N-1-2j},\qquad
+ \Rcal_{N+1}(-N)=0,
+ \label{eq:termwise-zero}
+\end{equation}
+with any unused final coefficients zero.
+
+For example, $N=2$, $\kappa=b=c=1/2$, $d_0=1$ gives
+\[
+ F_2(x)=\frac{(x^2-1/4)(x^2-9/4)}x
+       =x^3-\frac52x+\frac9{16x}.
+\]
+By contrast, $N=1$, $\kappa=2$, $b=3$, $c=3/4$, $d_0=5/4$
+is rational but does not terminate:
+\[
+ F_1(x)=\frac{x^3(x^2-1)}{(x^2-25/16)(x^2-1/16)}.
+\]
+Both statements are identities of meromorphic functions; evaluating only
+at large integer indices is not needed for the classification.
+
+\section{Zero summed tails without rational summands}
+\label{sec:zero-curves}
+The implication from termwise termination to a zero sum has no converse.
+The collapsed expression in Proposition~\ref{prop:prior} permits a precise
+local construction rather than a numerical search for examples.
+
+\begin{theorem}[Nonrational zero-remainder curves]
+\label{thm:zero-curves}
+For every $N\ge0$ and $0<\kappa<1$, there is a real analytic even
+function $s(v)$ near $v=0$, with $s(0)=0$, such that the parameters
+\begin{equation}
+ b=\kappa+s(v)+v,\quad c=\kappa+s(v)-v,\quad
+ d_0=1-2s(v)
+ \label{eq:zero-curve}
+\end{equation}
+satisfy
+\begin{equation}
+ \Rcal_{N+1}(-N)=0.
+ \label{eq:zero-curve-value}
+\end{equation}
+For all sufficiently small real $v\ne0$, the corresponding $F_N$ is
+not rational and its centered expansion does not terminate. Moreover,
+\begin{equation}
+ s''(0)=\frac{\psi''(\kappa)}{\psi'(N+1)-\psi'(\kappa)}>0.
+ \label{eq:zero-curve-curvature}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Consider the real analytic function
+\begin{align*}
+ B(s,v)={}&\psi(N+1)-\psi(N+1-2s)\\
+          &-\psi(\kappa+s+v)-\psi(\kappa+s-v)+2\psi(\kappa).
+\end{align*}
+At the origin, $B=0$,
+\[
+ B_s=2[\psi'(N+1)-\psi'(\kappa)]\ne0,
+ \qquad B_v=0,\qquad B_{vv}=-2\psi''(\kappa).
+\]
+The trigamma is strictly decreasing on the positive axis, since
+$\psi''(x)=-2\sum_{n\ge0}(n+x)^{-3}<0$. The analytic implicit
+function theorem gives a unique analytic $s(v)$ solving $B(s(v),v)=0$.
+Evenness follows from uniqueness and $B(s,-v)=B(s,v)$.
+Differentiating twice gives \eqref{eq:zero-curve-curvature}; in
+particular $s(v)>0$ for small nonzero real $v$.
+
+All parameters remain positive. Shrink the neighborhood so that
+$b,c\in(0,1)$ and $N<d=N+1-2s(v)<N+1$ for $v\ne0$.
+No member of $\{b,c,d\}$ is then integral, and $\rho_N\ne0$.
+Equation~\eqref{eq:collapse} proves \eqref{eq:zero-curve-value},
+while Theorem~\ref{thm:classification} proves nonrationality and
+nontermination. The argument uses an exact implicit family, not the
+accuracy of a numerical zero.
+\end{proof}
+
+This theorem is not a correction to an asserted converse in the inspected
+report: no such converse was found. It is a new separation result and an
+audit guard. A small or zero total residual cannot be used to infer
+summand-level collapse.
+
+\section{A symmetric resolvent and its Stieltjes boundary}
+\label{sec:resolvent}
+We now use $a>0$ for the center and set $\kappa=a$, $b=a+v$,
+$c=a-v$, $d_0=1$. Let $|v|<a$ and define
+\begin{align}
+ T_n(u;a)&=\frac{\Gamma(n+2a)\Gamma(n+1-u)}
+                    {\Gamma(n+1)\Gamma(n+2a+u)},\label{eq:Tn}\\
+ Q_a(u,v)&=\frac{\pi u}{\sin\pi u}
+ \frac{\Gamma(a+v)\Gamma(a-v)}
+      {\Gamma(a+v+u)\Gamma(a-v+u)}.\label{eq:Qa}
+\end{align}
+Then $W_n(u)=x_nT_n(u;a)/(x_n^2-v^2)$, where $x_n=n+a$.
+The symmetry makes the resolvent denominator appear without any
+approximation.
+
+\begin{theorem}[Ordinary convergent resolvent identity]
+\label{thm:resolvent}
+For $a>0$, $|v|<a$, and $-1<\Repart u<1$,
+\begin{equation}
+ \sum_{n\ge0}\frac{v^2T_n(u;a)}{x_n(x_n^2-v^2)}
+       =\frac{Q_a(u,v)-Q_a(u,0)}{2u}.
+ \label{eq:resolvent}
+\end{equation}
+The right side is interpreted removably at $u=0$. The series and
+all fixed $u$- and $v$-derivatives converge locally normally.
+\end{theorem}
+\begin{proof}
+In $0<\Repart u<1$, subtract two instances of
+\eqref{eq:dougall}, one with $v$ and one with zero. The elementary
+identity
+\[
+ \frac{x}{x^2-v^2}-\frac1x=\frac{v^2}{x(x^2-v^2)}
+\]
+and $\Gamma(1+u)\Gamma(1-u)=\pi u/\sin\pi u$ give
+\eqref{eq:resolvent}.
+
+The centered expansion gives
+$T_n(u;a)=x_n^{-2u}(1+O(x_n^{-2}))$ locally uniformly.
+Thus the summand is $O(n^{-3-2\Repart u})$ on compact sets of the
+stated domain. Cauchy's formula on slightly larger compact sets gives
+normal convergence of each fixed derivative. The factors
+$1/\Gamma(n+2a+u)$ are entire and introduce no poles; the numerator
+Gamma factors are pole-free for $\Repart u<1$. Both sides therefore
+continue to the full strip. Since $Q_a(0,v)=1$, the apparent pole
+at zero is removable.
+\end{proof}
+
+The subtraction suppresses the only divergent moment. To see exactly
+what is removed, retain that moment and use
+\begin{equation}
+ \zeta(1+s,a)=\frac1s+\sum_{m\ge0}\frac{(-1)^m\gamma_m(a)}{m!}s^m.
+ \label{eq:stieltjes-convention}
+\end{equation}
+
+\begin{theorem}[All Stieltjes boundary jets]
+\label{thm:boundary}
+On the same domain as Theorem~\ref{thm:resolvent},
+\begin{align}
+ \Bcal_a(u,v)&=\sum_{n\ge0}
+ \left[\frac{x_nT_n(u;a)}{x_n^2-v^2}-x_n^{-1-2u}\right]\notag\\
+ &=\frac{Q_a(u,v)}{2u}-\zeta(1+2u,a).
+ \label{eq:boundary}
+\end{align}
+The bracketed series is locally normally convergent, and for every
+integer $m\ge0$,
+\begin{equation}
+ \partial_u^m\Bcal_a(0,v)
+ =\frac{\partial_u^{m+1}Q_a(0,v)}{2(m+1)}-(-2)^m\gamma_m(a).
+ \label{eq:boundary-jets}
+\end{equation}
+Subtracting the $v=0$ identity cancels $\gamma_m(a)$ at every order.
+\end{theorem}
+\begin{proof}
+The leading centered term of the bracket is canceled, leaving the same
+summable order as in Theorem~\ref{thm:resolvent}. The identity follows
+first in the convergent strip and then by continuation. Expand both
+terms on the right at zero. The common coefficient $1/(2u)$ cancels;
+the coefficient of $u^m$, multiplied by $m!$, is
+\eqref{eq:boundary-jets}. Termwise differentiation was established
+before the expansion.
+\end{proof}
+
+Write $\psi_\pm=\psi(a\pm v)$ and
+$\psi'_\pm=\psi'(a\pm v)$. The first two boundary values are
+\begin{align}
+ \Bcal_a(0,v)&=\psi(a)-\frac{\psi_++\psi_-}{2},\label{eq:boundary0}\\
+ \partial_u\Bcal_a(0,v)&=
+ \frac{(\psi_++\psi_-)^2-\psi'_+-\psi'_-+2\zeta(2)}4
+                  +2\gamma_1(a).\label{eq:boundary1}
+\end{align}
+At $v=0$, the second formula becomes the ordinary convergent identity
+\begin{equation}
+ \sum_{n\ge0}\frac{2\log(n+a)-\psi(n+1)-\psi(n+2a)}{n+a}
+ =\psi(a)^2-\frac12\psi'(a)+\frac12\zeta(2)+2\gamma_1(a).
+ \label{eq:stieltjes-linear}
+\end{equation}
+For complex $a$ in a pole-free continuation, the square is algebraic,
+not an absolute square. The numerical implementation in this package
+uses positive real $a$ for Stieltjes constants.
+
+\section{Finite polygamma formulas for every higher resolvent moment}
+\label{sec:polygamma}
+For $k\ge1$, expansion of \eqref{eq:resolvent} in $v$ gives
+\begin{equation}
+ \sum_{n\ge0}\frac{T_n(u;a)}{(n+a)^{2k+1}}
+ =\frac{[v^{2k}]Q_a(u,v)}{2u}.
+ \label{eq:moment-generator}
+\end{equation}
+This is already a finite Gamma-derivative expression. An explicit
+coefficient algebra makes its all-orders content transparent. Put
+\begin{equation}
+ D_j(u)=\frac{2}{(2j)!}
+             [\psi^{(2j-1)}(a)-\psi^{(2j-1)}(a+u)].
+ \label{eq:Dj}
+\end{equation}
+Taylor expansion in $v$ yields
+\begin{equation}
+ \frac{[v^{2k}]Q_a(u,v)}{2u}
+ =\frac{Q_a(u,0)}{2u}[z^k]
+       \exp\left(\sum_{j\ge1}D_j(u)z^j\right).
+ \label{eq:finite-bell}
+\end{equation}
+Only $j\le k$ are needed. The numerator vanishes at $u=0$ before
+division, because every $D_j(0)$ is zero.
+
+Let $Y_m$ be the complete exponential Bell polynomial, defined by
+\[
+ \exp\left(\sum_{r\ge1}g_r\frac{u^r}{r!}\right)
+       =\sum_{m\ge0}Y_m(g_1,\ldots,g_m)\frac{u^m}{m!}.
+\]
+For the left side of \eqref{eq:moment-generator}, the Bell data are
+\begin{equation}
+ g_{n,r}=(-1)^r\psi^{(r-1)}(n+1)-\psi^{(r-1)}(n+2a).
+ \label{eq:gnr}
+\end{equation}
+Consequently every sum
+\begin{equation}
+ \sum_{n\ge0}\frac{Y_m(g_{n,1},\ldots,g_{n,m})}{(n+a)^{2k+1}},
+ \qquad m\ge0,\ k\ge1,
+ \label{eq:bell-moment}
+\end{equation}
+is given by the $m$th derivative of the finite expression
+\eqref{eq:finite-bell}. All its constants are polygamma values at $a$
+and ordinary even zeta values. This does not assert a reduction of
+arbitrary unrelated polygamma products; it evaluates this particular
+Bell family.
+
+\begin{corollary}[An all-weight linear identity]
+\label{cor:linear}
+For $a>0$ and every integer $k\ge1$,
+\begin{align}
+ &\sum_{n\ge0}\frac{\psi(n+1)+\psi(n+2a)}{(n+a)^{2k+1}}
+ \notag\\
+ &\quad=\frac{2k+1}{2}\zeta(2k+2,a)
+        +2\psi(a)\zeta(2k+1,a)
+        -\sum_{j=1}^{k-1}\zeta(2j+1,a)\zeta(2k-2j+1,a).
+ \label{eq:linear-general}
+\end{align}
+\end{corollary}
+\begin{proof}
+The required sum is the negative first $u$-derivative of
+\eqref{eq:moment-generator}, since
+$\partial_uT_n(0;a)=-\psi(n+1)-\psi(n+2a)$.
+In \eqref{eq:finite-bell}, retain terms through degree two in $u$:
+\[
+ D_j(u)=-\frac{2\psi^{(2j)}(a)}{(2j)!}u
+       -\frac{\psi^{(2j+1)}(a)}{(2j)!}u^2+O(u^3),
+ \quad Q_a(u,0)=1-2\psi(a)u+O(u^2).
+\]
+The exponential contributes a linear term and the quadratic convolution
+of two $D_j$'s. Insert
+$\psi^{(r)}(a)=(-1)^{r+1}r!\zeta(r+1,a)$ for $r\ge1$.
+Coefficient extraction gives \eqref{eq:linear-general}.
+\end{proof}
+
+\begin{corollary}[A quadratic identity at every positive center]
+\label{cor:quadratic}
+For $a>0$,
+\begin{align}
+ &\sum_{n\ge0}\frac{[\psi(n+1)+\psi(n+2a)]^2
+                    +\psi'(n+1)-\psi'(n+2a)}{(n+a)^3}\notag\\
+ &\quad=-\frac16\psi^{(4)}(a)+\psi(a)\psi^{(3)}(a)
+       -[2\psi(a)^2+\zeta(2)-\psi'(a)]\psi''(a).
+ \label{eq:quadratic-general}
+\end{align}
+\end{corollary}
+\begin{proof}
+For $k=1$, the right side of \eqref{eq:finite-bell} is
+$Q_a(u,0)[\psi'(a)-\psi'(a+u)]/(2u)$. Its second derivative at
+zero is the displayed expression, using
+\[
+ Q_a(u,0)=1-2\psi(a)u+
+ [2\psi(a)^2+\zeta(2)-\psi'(a)]u^2+O(u^3).
+\]
+The second derivative of $T_n$ is exactly the numerator in the
+summand. Normal convergence justifies the operation.
+\end{proof}
+
+\section{A Gamma generator for nonlinear harmonic sums}
+\label{sec:harmonic}
+The half-center $a=1/2$ removes the shifted polygamma arguments after
+one normalization. Define
+\begin{equation}
+ P_n(u)=\frac{(1-u)_n}{(1+u)_n}
+       =\prod_{j=1}^n\frac{j-u}{j+u},\qquad P_0(u)=1,
+ \label{eq:Pn}
+\end{equation}
+and
+\begin{equation}
+ \Gcal(u,t)=\frac{\Gamma(1+u)^2
+                   \Gamma((1+t)/2)\Gamma((1-t)/2)}
+ {\Gamma((1+t)/2+u)\Gamma((1-t)/2+u)}.
+ \label{eq:G}
+\end{equation}
+
+\begin{theorem}[Normalized half-center generator]
+\label{thm:half-generator}
+For $|t|<1$ and $\Repart u>-1$,
+\begin{equation}
+ \sum_{n\ge0}\frac{t^2P_n(u)}{(2n+1)((2n+1)^2-t^2)}
+       =\frac{\Gcal(u,t)-\Gcal(u,0)}{4u}.
+ \label{eq:half-resolvent}
+\end{equation}
+The singularity at $u=0$ is removable. In particular, for every $k\ge1$,
+\begin{equation}
+ \sum_{n\ge0}\frac{P_n(u)}{(2n+1)^{2k+1}}
+       =\frac{[t^{2k}]\Gcal(u,t)}{4u}.
+ \label{eq:half-moments}
+\end{equation}
+Every fixed Taylor coefficient at $u=0$ can be summed termwise.
+\end{theorem}
+\begin{proof}
+Set $a=1/2$ and $v=t/2$ in \eqref{eq:resolvent}, and multiply by
+$\Gamma(1+u)/\Gamma(1-u)$. Then $T_n$ becomes $P_n$ and $Q_a$
+becomes $\Gcal$. The rational summand acquires a factor two when
+$x_n=(2n+1)/2$ is substituted; this is the source of $4u$ rather
+than $2u$ on the right of \eqref{eq:half-resolvent}.
+
+Initially the calculation applies on $-1<\Repart u<1$ away from
+removable factors. The finite product \eqref{eq:Pn} is holomorphic
+for $\Repart u>-1$. On compact subsets, the Gamma-ratio form gives
+$P_n(u)=O(n^{-2\Repart u})$, uniformly also across positive integral
+$u$ by using the entire reciprocal-Gamma factor. The sum in
+\eqref{eq:half-resolvent} is therefore locally normally convergent
+on the larger half-plane. The Gamma expression is holomorphic there
+apart from its removable $u=0$ singularity. Analytic continuation
+extends the identity. Expansion in $t$ and Cauchy's formula prove
+\eqref{eq:half-moments} and its coefficient assertions.
+\end{proof}
+
+\subsection{Weighted compositions of generalized harmonic numbers}
+For a composition $\mathbf r=(r_1,\ldots,r_d)$, define
+\begin{equation}
+ H_n(\mathbf r)=\sum_{n\ge j_1>\cdots>j_d\ge1}
+                   \frac1{j_1^{r_1}\cdots j_d^{r_d}},
+ \qquad H_n(\varnothing)=1.
+ \label{eq:strict-H}
+\end{equation}
+The notation $\mathbf r\vDash m$ means that all $r_i\ge1$ and
+$\sum_i r_i=m$. For $m=0$ there is the single empty composition.
+Put
+\begin{equation}
+ C_m(n)=\sum_{\mathbf r\vDash m}2^{\ell(\mathbf r)}H_n(\mathbf r).
+ \label{eq:Cm}
+\end{equation}
+
+\begin{lemma}[Finite composition identity]
+\label{lem:composition}
+For every $n\ge0$,
+\begin{equation}
+ P_n(u)=\sum_{m\ge0}(-1)^m C_m(n)u^m
+ \label{eq:P-composition}
+\end{equation}
+as a Taylor series near zero.
+\end{lemma}
+\begin{proof}
+Each finite factor is
+$(1-u/j)/(1+u/j)=1+2\sum_{r\ge1}(-1)^r(u/j)^r$.
+Choose the nonconstant terms at a strictly decreasing collection of
+indices and sum their positive exponents. The resulting coefficient
+is exactly \eqref{eq:Cm}. There is no infinite summation over $n$
+in this finite identity.
+\end{proof}
+
+For $H_n=H_n^{(1)}$ and $H_n^{(r)}=\sum_{j=1}^n j^{-r}$,
+\begin{align}
+ C_0(n)&=1,& C_1(n)&=2H_n,& C_2(n)&=2H_n^2,\notag\\
+ C_3(n)&=\frac{4H_n^3+2H_n^{(3)}}3,&
+ C_4(n)&=\frac{2H_n^4+4H_nH_n^{(3)}}3.
+ \label{eq:low-C}
+\end{align}
+These also follow from
+\begin{equation}
+ \log P_n(u)=-2\sum_{j\ge0}\frac{H_n^{(2j+1)}}{2j+1}u^{2j+1}.
+ \label{eq:log-Pn}
+\end{equation}
+Thus only odd-index harmonic numbers enter the logarithm, although
+the equivalent composition expression runs over all compositions.
+
+\begin{theorem}[All-weight harmonic composition sum formula]
+\label{thm:harmonic}
+For every $m\ge0$ and $k\ge1$,
+\begin{equation}
+ \boxed{\displaystyle
+ \sum_{n\ge0}\frac{C_m(n)}{(2n+1)^{2k+1}}
+       =\frac{(-1)^m}{4}[u^{m+1}t^{2k}]\Gcal(u,t).}
+ \label{eq:all-harmonic}
+\end{equation}
+Every value belongs to $\Q[\log2,\zeta(2),\zeta(3),\ldots]$.
+An explicit finite expression is obtained by exponentiating
+\begin{align}
+ \log\Gcal(u,t)={}&4u\log2
+ +\sum_{r\ge2}\frac{2(-1)^r(2-2^r)}r\zeta(r)u^r\notag\\
+ &+\sum_{\substack{r\ge1\\j\ge1}}
+ \frac{2(-1)^{r+1}}r\binom{r+2j-1}{2j}
+ (2^r-2^{-2j})\zeta(r+2j)u^rt^{2j}.
+ \label{eq:log-G}
+\end{align}
+Only terms of $u$-degree at most $m+1$ and $t$-degree at most $2k$
+are required. The resulting expression is homogeneous of weight
+$m+2k+1$ when $\log2$ has weight one and $\zeta(r)$ has weight $r$.
+\end{theorem}
+\begin{proof}
+Combine \eqref{eq:half-moments} and Lemma~\ref{lem:composition};
+normal convergence permits coefficient extraction. Equivalently,
+$C_m(n)$ is bounded by a constant times $(1+\log n)^m$ for fixed
+$m$, so the displayed ordinary sum converges absolutely.
+
+For completeness, expand the logarithm of \eqref{eq:G} in $u$.
+Its coefficient of $u^r$ is
+\[
+ \frac{2\psi^{(r-1)}(1)
+   -\psi^{(r-1)}((1+t)/2)-\psi^{(r-1)}((1-t)/2)}{r!}.
+\]
+The $r=1$, $t=0$ coefficient is $4\log2$. At $t=0$ and $r\ge2$,
+use
+$\psi^{(r-1)}(1)=(-1)^r(r-1)!\zeta(r)$ and
+$\psi^{(r-1)}(1/2)=(-1)^r(r-1)!(2^r-1)\zeta(r)$.
+For the coefficient of $t^{2j}$, expand the symmetric pair and use
+the same half-argument formula at order $r+2j-1$. Simplification gives
+\eqref{eq:log-G}.
+
+Every monomial in the logarithm has constant weight equal to its
+$u$-degree plus its $t$-degree. Exponentiation preserves this grading.
+The coefficient in \eqref{eq:all-harmonic} therefore has the asserted
+weight. These are formal grading statements; they do not assert
+arithmetic independence of the constants.
+\end{proof}
+
+\subsection{Explicit linear, quadratic, cubic, and quartic identities}
+Write $L=\log2$. The first four nontrivial rows of
+\eqref{eq:all-harmonic}, at $k=1$, simplify to
+\begin{align}
+ \sum_{n\ge0}\frac{H_n}{(2n+1)^3}
+ &=\frac{45}{32}\zeta(4)-\frac74L\zeta(3),\label{eq:example1}\\
+ \sum_{n\ge0}\frac{H_n^2}{(2n+1)^3}
+ &=\frac{31}{8}\zeta(5)-\frac{45}{8}L\zeta(4)
+   +\frac72L^2\zeta(3)-\frac78\zeta(2)\zeta(3),\label{eq:example2}\\
+ \sum_{n\ge0}\frac{2H_n^3+H_n^{(3)}}{(2n+1)^3}
+ &=-14L^3\zeta(3)+\frac{21}{2}L\zeta(2)\zeta(3)
+      -\frac{21}{4}\zeta(3)^2\notag\\
+ &\quad+\frac{135}{4}L^2\zeta(4)-\frac{93}{2}L\zeta(5)
+      +\frac{945}{64}\zeta(6),\label{eq:example3}\\
+ \sum_{n\ge0}\frac{H_n^4+2H_nH_n^{(3)}}{(2n+1)^3}
+ &=14L^4\zeta(3)-21L^2\zeta(2)\zeta(3)+21L\zeta(3)^2\notag\\
+ &\quad-45L^3\zeta(4)+93L^2\zeta(5)-\frac{945}{16}L\zeta(6)\notag\\
+ &\quad-\frac{39}{2}\zeta(3)\zeta(4)-\frac{93}{4}\zeta(2)\zeta(5)
+      +\frac{1143}{16}\zeta(7).\label{eq:example4}
+\end{align}
+The proof of each is finite coefficient extraction from a proved
+analytic identity. The exact script performs that extraction in a
+polynomial algebra and checks these simplified presentations using only
+the even-zeta relations. The displayed combinations, not $H_n^3$ and
+$H_n^4$ separately, are what the theorem evaluates. Nor are these sums
+the manuscript's alternating Gaussian sums $S_p$.
+
+\section{All-depth polylogarithms, integrals, and primitives}
+\label{sec:polylog}
+We use decreasing-index multiple polylogarithms
+\begin{equation}
+ \Li_{r_1,\ldots,r_d}(z_1,\ldots,z_d)
+ =\sum_{j_1>\cdots>j_d\ge1}
+ \frac{z_1^{j_1}\cdots z_d^{j_d}}{j_1^{r_1}\cdots j_d^{r_d}}.
+ \label{eq:MPL}
+\end{equation}
+The single-variable abbreviation
+$\Li_{\mathbf r}(z)=\Li_{\mathbf r}(z,1,\ldots,1)$ is used below.
+For $m\ge1$, set
+\begin{equation}
+ \Lcal_m(z)=\sum_{\mathbf r\vDash m}2^{\ell(\mathbf r)}\Li_{\mathbf r}(z),
+ \qquad \Lcal_0(z)=1.
+ \label{eq:Lm}
+\end{equation}
+The finite-harmonic generating function is
+\begin{equation}
+ \sum_{n\ge0}C_m(n)z^n=\frac{\Lcal_m(z)}{1-z},\qquad |z|<1.
+ \label{eq:H-generating}
+\end{equation}
+Indeed, for each fixed decreasing tuple, the allowed upper bound $n$
+runs from its largest member to infinity.
+
+\begin{theorem}[Integral and colored-polylogarithm forms]
+\label{thm:polylog}
+For integers $m\ge0$, $p\ge1$, and $0<z<1$, put
+\begin{equation}
+ F_{m,p}(z)=\sum_{n\ge0}\frac{C_m(n)z^{2n+1}}{(2n+1)^p}.
+ \label{eq:Fmp}
+\end{equation}
+Then
+\begin{align}
+ F_{m,p}(z)&=\frac1{(p-1)!}\int_0^z
+        \log^{p-1}(z/t)\frac{\Lcal_m(t^2)}{1-t^2}\dd t,
+        \label{eq:integral-master}\\
+ F_{m,p}(z)&=2^{m-1}\sum_{\mathbf r\vDash m}
+       \sum_{\epsilon_0,\ldots,\epsilon_d\in\{\pm1\}}
+       \epsilon_0\Li_{p,r_1,\ldots,r_d}
+                  (\epsilon_0z,\epsilon_1,\ldots,\epsilon_d),
+        \label{eq:colored-master}
+\end{align}
+where $d=\ell(\mathbf r)$. Formula~\eqref{eq:colored-master} extends
+to $|z|<1$ by analyticity. For $p\ge2$, both formulas extend to $z=1$
+by ordinary absolute convergence. In particular, for $p=2k+1$, $k\ge1$,
+Theorem~\ref{thm:harmonic} evaluates their endpoints in ordinary zeta
+values and $\log2$ at every depth.
+\end{theorem}
+\begin{proof}
+For each $n$,
+\[
+ \frac1{(p-1)!}\int_0^z t^{2n}\log^{p-1}(z/t)\dd t
+       =\frac{z^{2n+1}}{(2n+1)^p}.
+\]
+Insert \eqref{eq:H-generating}. Positivity for real $z$, or absolute
+convergence inside the unit disk, permits the interchange.
+
+For the colored expression, fix a composition of length $d$. Replace
+the inner harmonic indices $j_i$ by even integers $h_i=2j_i$ and
+the outer denominator $2n+1$ by $h_0$. This contributes the factor
+$2^m$ from the denominators. The inequalities become
+$h_0>h_1>\cdots>h_d\ge1$, with $h_0$ odd and the others even.
+The parity filters are
+\[
+ \mathbf1_{h_0\text{ odd}}=\frac12\sum_{\epsilon_0=\pm1}
+                       \epsilon_0\epsilon_0^{h_0},\qquad
+ \mathbf1_{h_i\text{ even}}=\frac12\sum_{\epsilon_i=\pm1}
+                       \epsilon_i^{h_i}.
+\]
+Multiplication by the composition weight $2^d$ leaves
+$2^m2^d/2^{d+1}=2^{m-1}$, proving \eqref{eq:colored-master}.
+At $m=0$, the convention gives the familiar
+$(\Li_p(z)-\Li_p(-z))/2$.
+
+For fixed $m$, the coefficients grow at most logarithmically to
+power $m$. Thus $p\ge2$ makes the endpoint sum absolutely convergent.
+The corresponding multiple sums have first index at least two,
+so every colored term is also absolutely convergent. This permits
+separate endpoint limits; no regularization is being hidden here.
+\end{proof}
+
+\begin{corollary}[An exact dilogarithmic integral]
+\label{cor:dilog-integral}
+One has
+\begin{align}
+ &\frac12\int_0^1\frac{\log^2x}{1-x^2}
+          [\Li_2(x^2)+\log^2(1-x^2)]\dd x\notag\\
+ &\qquad=\frac{31}{8}\zeta(5)-\frac{45}{8}\log2\,\zeta(4)
+       +\frac72\log^22\,\zeta(3)-\frac78\zeta(2)\zeta(3).
+ \label{eq:dilog-integral}
+\end{align}
+\end{corollary}
+\begin{proof}
+The identity
+\[
+ \sum_{n\ge0}H_n^2z^n=
+ \frac{\Li_2(z)+\log^2(1-z)}{1-z}
+\]
+follows by splitting the double harmonic sum into its diagonal and
+two strict triangles (equivalently, $\Li_{1,1}(z)=\tfrac12\log^2(1-z)$).
+Use the integral in \eqref{eq:integral-master} at $p=3$, then
+\eqref{eq:example2}. The endpoint logarithms are integrable; the
+preceding positive-sum argument also proves convergence directly.
+\end{proof}
+
+\subsection{Euler primitives and a Gamma primitive}
+Set
+\begin{equation}
+ F_{m,0}(z)=\frac{z\Lcal_m(z^2)}{1-z^2}.
+ \label{eq:Fm0}
+\end{equation}
+Termwise differentiation inside the disk gives the complete Euler
+primitive ladder
+\begin{equation}
+ z\frac{\mathrm d}{\mathrm dz}F_{m,p}(z)=F_{m,p-1}(z),\qquad
+ F_{m,p}(z)=\int_0^z\frac{F_{m,p-1}(t)}t\dd t.
+ \label{eq:Euler-ladder}
+\end{equation}
+The basepoint zero fixes the integration constants. Formula
+\eqref{eq:colored-master} supplies explicit primitives in multiple
+polylogarithms, and the odd-denominator endpoint values for $p\ge3$
+are supplied by \eqref{eq:all-harmonic}. The endpoint $p=1$ must not
+be assigned a finite value by this argument.
+
+At $u=0$, the general resolvent also has an elementary Gamma primitive:
+\begin{equation}
+ \sum_{n\ge0}\left[\arctanh\frac{v}{n+a}-\frac{v}{n+a}\right]
+ =v\psi(a)-\frac12\log\frac{\Gamma(a+v)}{\Gamma(a-v)},
+ \qquad |v|<a.
+ \label{eq:gamma-primitive}
+\end{equation}
+Both sides vanish at zero. Their derivatives are the two sides of
+\eqref{eq:resolvent} at $u=0$, by \eqref{eq:boundary0}.
+The logarithm is the analytic branch normalized at $v=0$;
+for real $|v|<a$ it is the real logarithm. Normal convergence follows
+from the cubic cancellation in the summand.
+
+\subsection{Stieltjes primitives with a fixed convention}
+Hurwitz spectral derivatives provide a compatible primitive for each
+boundary constant. Differentiating
+$\partial_a\zeta(s,a)=-s\zeta(s+1,a)$ at $s=0$ using
+\eqref{eq:stieltjes-convention} yields
+\begin{equation}
+ \partial_a\zeta^{(m+1)}(0,a)=(-1)^{m+1}(m+1)\gamma_m(a).
+ \label{eq:stieltjes-derivative}
+\end{equation}
+Consequently, for $a,a_0>0$,
+\begin{equation}
+ \int_{a_0}^a\gamma_m(t)\dd t
+ =\frac{(-1)^{m+1}}{m+1}
+       [\zeta^{(m+1)}(0,a)-\zeta^{(m+1)}(0,a_0)].
+ \label{eq:stieltjes-primitive}
+\end{equation}
+The superscript on $\zeta$ differentiates the spectral variable.
+At $m=0$, Lerch's identity gives the expected
+$-\log\Gamma(a)+\log\Gamma(a_0)$. These primitive identities are
+classical consequences of Hurwitz-zeta calculus, included to tie the
+boundary jets to the manuscript's integration conventions, not as a
+claim of new priority.
+
+\section{Zero-safe differentiation at terminating parameter values}
+\label{sec:revival}
+A family may terminate at a parameter value while its derivative has an
+infinite tail. The normalized half-center makes this explicit without
+special-function ambiguities.
+
+\begin{proposition}[Revived derivatives of a terminating product]
+\label{prop:revival}
+For integers $M\ge1$ and $n\ge M$,
+\begin{equation}
+ P_n(M)=0,\qquad
+ P_n'(M)=(-1)^M\frac{M!(M-1)!(n-M)!}{(n+M)!}.
+ \label{eq:revival}
+\end{equation}
+For $0\le n<M$,
+\begin{align}
+ P_n(M)&=(-1)^n\frac{(M-1)!M!}{(M-1-n)!(M+n)!},\notag\\
+ P_n'(M)&=P_n(M)[H_{M-1}-H_{M-1-n}-H_{M+n}+H_M].
+ \label{eq:head-derivative}
+\end{align}
+\end{proposition}
+\begin{proof}
+For $n\ge M$, differentiate the unique zero factor $(M-u)/(M+u)$
+in the finite product \eqref{eq:Pn}; all other factors can then be
+evaluated at $M$. Their factorial products give \eqref{eq:revival}.
+For $n<M$, no factor vanishes. Logarithmic differentiation of the
+finite nonzero product gives \eqref{eq:head-derivative}.
+No logarithm of a zero factor is taken.
+\end{proof}
+
+For $M=1$, all $n\ge1$ have $P_n'(1)=-1/(n(n+1))$.
+One exact family appearing in the differentiated generator is
+\begin{equation}
+ \sum_{n\ge1}\frac1{n(n+1)(2n+1)^{2k+1}}
+ =4k+3-4\log2
+       -4\sum_{j=1}^k(1-2^{-2j-1})\zeta(2j+1),\quad k\ge1.
+ \label{eq:revival-sum}
+\end{equation}
+It also has an independent elementary proof. With $x=2n+1$, repeatedly
+use
+\[
+ \frac1{n(n+1)x^{2k+1}}
+ =\frac1{n(n+1)x^{2k-1}}-\frac4{x^{2k+1}}.
+\]
+The initial sum at $k=0$ is $3-4\log2$, obtained from
+$1/[n(n+1)(2n+1)]=1/n+1/(n+1)-4/(2n+1)$ by partial sums.
+This proves \eqref{eq:revival-sum}.
+
+The general warning about reciprocal-Gamma zeros was already explicit
+in the centered continuation \cite{repo-centered}. The present formulas
+are a concrete finite-product realization, not a claim that the warning
+itself is new.
+
+\section{Verification, audit conclusions, and integration}
+\label{sec:verification}
+\subsection{What the executable checks establish}
+The package contains a finite exact coefficient engine and separate
+high-precision diagnostics. The exact tests use rational residue classes
+of Gamma shifts to construct divisors independently of the theorem's
+parameter classification. They compare rationality and Laurent
+termination on a grid of 10,356 valid parameter choices. The grid
+uses $0\le N\le5$, quarter-integer positive centers through $3$, and
+quarter-integer positive $b,c$ subject to $d_0>0$.
+
+The full exact run executes 21,009 assertions: 10,356 rationality checks,
+10,356 termination checks, 204 monomial-weight checks, four printed
+harmonic-identity checks, 56 finite composition checks, 30 revived-zero
+derivative checks, and three unweighted odd-denominator checks.
+These finite calculations are regression tests of formulas and
+implementations. They do not replace the all-parameter proofs.
+
+The numerical checks compare independently summed series against Gamma,
+polygamma, zeta, and Stieltjes expressions. They include an independent
+quadrature of \eqref{eq:dilog-integral}. Series are evaluated by a finite
+head plus an Euler--Maclaurin tail at 40 decimal digits. The assertion
+threshold is a scaled residual of $10^{-28}$; it is not a rigorous error
+bound. All 28 diagnostics passed; the largest observed scaled residual was
+$5.511\times10^{-40}$. Full parameters, values, observed residuals,
+software versions, and methods appear in the result files. No interval certification or
+proof-assistant verification is claimed.
+
+\subsection{Corrections and guards}
+No false theorem was identified in the selected source ranges. The
+following distinctions are necessary for correct integration.
+
+\begin{enumerate}[leftmargin=*,itemsep=3pt]
+\item The canonical first-resonance proof and the preserved all-resonance
+proof have different editorial status. The present package does not
+relabel the already proved all-resonance formula as a newly settled
+conjecture.
+\item A zero summed remainder is not finite termination.
+Theorem~\ref{thm:zero-curves} proves this within the same family.
+\item Formal termination needs an argument ruling out a flat remainder.
+Lemma~\ref{lem:formal-exact} supplies that argument, rather than assuming
+that a truncated asymptotic expansion equals the function.
+\item Reciprocal-Gamma zeros are zeros of values, not automatically of
+jets. Keep the entire factors or use finite products before differentiating.
+\item The normalization constants are $\Gamma(u)P(u)/2$,
+$[v^{2k}]Q_a(u,v)/(2u)$, and $[t^{2k}]\Gcal(u,t)/(4u)$.
+The Stieltjes expansion uses $2u$, not $u$.
+\item The all-depth theorem evaluates a weighted sum over compositions
+and colors. It asserts neither a reduction of every individual colored
+multiple zeta value nor a minimality or independence theorem.
+\end{enumerate}
+
+The suggested placement is an additive continuation of the centered
+Dougall report, with the classification linked from the canonical
+mixed-Dougall section. The harmonic/polylogarithmic sections can also be
+cross-referenced from the depth and integration chapters. The supplied
+integration note gives a compact insertion with distinct labels. Existing
+source files should not be silently replaced by this draft.
+
+\section{Further research questions}
+\label{sec:further}
+\paragraph{1. Interlaced resonances.}
+Classify rationality and finite termination at $u=-N-1/2$ in the same
+positive-parameter family. The shift multiset then has half-integral
+total sum, so the fixed-class argument in
+Theorem~\ref{thm:classification} changes. A full analysis should preserve
+initial reciprocal-Gamma zeros and distinguish polynomial from Laurent
+termination.
+
+\paragraph{2. Larger Gamma quotients.}
+For $x\prod_{i=1}^{2r}\Gamma(x+\alpha_i)/\Gamma(x+1-\alpha_i)$,
+can rationality and Laurent termination be described by an effective
+matching theorem and a finite arrangement of parameter loci? Modulo-integer
+matching decides rationality, but a comparably short cancellation-free
+classification may need additional structure beyond four factors.
+
+\paragraph{3. Global geometry of exact zero remainders.}
+The implicit curves in Theorem~\ref{thm:zero-curves} are local. Determine
+the connected components and possible singularities of the zero set of
+the collapsed digamma bracket inside the positive domain. Which components
+meet the terminating locus, and which contain no rational points in the
+Gamma-quotient sense?
+
+\paragraph{4. Independent harmonic coordinates outside the Bell family.}
+At each weight, which individual sums such as
+$\sum H_n^3/(2n+1)^3$ or $\sum H_n^{(3)}/(2n+1)^3$ reduce to the
+single-zeta/logarithm algebra? The present theorem evaluates a specific
+combination and does not separate its components. A precise comparison
+algebra is needed before a reduction or obstruction can be claimed.
+
+\paragraph{5. General rational centers.}
+For rational $a$, the finite formula \eqref{eq:finite-bell} lies in a
+polygamma algebra at $a$. Transport this formula to a conductor-explicit
+Dirichlet-$L$ and cyclotomic-polylogarithm basis, with zero-safe treatment
+of principal-character poles. This is a reduction problem, not an
+assertion of independence of the resulting coordinates.
+
+\paragraph{6. Twisted and alternating resolvents.}
+Determine which numerator twists $\omega^n$ admit a comparably short
+Gamma evaluation, or a finite combination of such evaluations.
+An alternating analogue would bear more directly on the manuscript's
+Gaussian sums, but the nonalternating identities here do not imply it.
+
+\paragraph{7. Relations to known multiple-zeta sum formulas.}
+Give a complete comparison of \eqref{eq:colored-master} at $z=1$ with
+published height, depth, and level-two sum formulas, including the
+hypergeometric harmonic-differentiation literature. This is an important
+priority and structural-comparison task left open by the limited source
+review, not evidence that such antecedents are absent.
+
+\paragraph{8. Beyond the first Euler endpoint.}
+Can additional parameter symmetries evaluate the even-$p$ endpoints of
+$F_{m,p}(1)$ in a comparably explicit algebra? The integral and colored
+forms exist for every $p\ge2$, but the Gamma generator here singles out
+odd $p\ge3$.
+
+\paragraph{9. Formal verification of the finite interfaces.}
+Formalize Gamma-shift divisor matching, the four-class parity argument,
+the cancellation-free product classification, and the finite composition
+identity. These finite interfaces are natural preliminary targets before
+formalizing normal convergence and the Rogers--Dougall continuation.
+
+\appendix
+\section{A finite coefficient algorithm}
+\label{app:algorithm}
+Let $T=t^2$ and write
+$\log\Gcal(u,t)=\sum_{r\ge1}L_r(T)u^r$.
+For a requested $[u^{m+1}T^k]$ coefficient, discard powers of $T$ above
+$k$ from every $L_r$, and retain only $r\le m+1$. Define
+\begin{equation}
+ G_0(T)=1,\qquad
+ G_n(T)=\frac1n\sum_{r=1}^n rL_r(T)G_{n-r}(T)
+                         \pmod{T^{k+1}}.
+ \label{eq:coefficient-algorithm}
+\end{equation}
+Then $G_n(T)=[u^n]\Gcal(u,t)\pmod{T^{k+1}}$. The recurrence follows
+by differentiating an exponential formal series and comparing coefficients.
+It uses only finitely many rational operations. In particular,
+\eqref{eq:all-harmonic} is $(-1)^m[T^k]G_{m+1}(T)/4$.
+
+The executable implementation uses the formal symbols \texttt{L} for
+$\log2$, \texttt{Zr} for $\zeta(r)$, and \texttt{T} for $t^2$.
+The delivered coefficient table covers $0\le m\le5$, $1\le k\le3$.
+Even zeta values are simplified only when explicitly requested, using
+\begin{equation}
+ \zeta(2j)=\frac{(-1)^{j+1}B_{2j}\,2^{2j}6^j}{2(2j)!}\zeta(2)^j.
+ \label{eq:even-zeta}
+\end{equation}
+No integer-relation algorithm or floating-point fitting is used.
+
+\section{Domains and conventions at a glance}
+\begin{longtable}{@{}p{.29\linewidth}p{.65\linewidth}@{}}
+\toprule
+Identity or object & Domain and convention \\\midrule\endhead
+Classification & $N\ge0$, $\kappa,b,c,d_0>0$, $d_0=1+2\kappa-b-c$.
+Gamma denominators are entire reciprocal-Gamma factors.\\[4pt]
+General resolvent & $a>0$, $|v|<a$, $-1<\Repart u<1$;
+$u=0$ is removable.\\[4pt]
+Half-center generator & $|t|<1$, $\Repart u>-1$;
+Taylor coefficients are ordinary coefficients, not derivatives.\\[4pt]
+Harmonic sum formula & Integers $m\ge0$, $k\ge1$; all sums are ordinary
+and absolutely convergent.\\[4pt]
+Polylogarithm endpoint & $p\ge2$; strictly decreasing nested indices.
+The $p=1$ endpoint is not evaluated by this theorem.\\[4pt]
+Stieltjes constants & $\zeta(1+s,a)=s^{-1}+\sum(-1)^m\gamma_m(a)s^m/m!$;
+$\gamma_0(a)=-\psi(a)$.\\[4pt]
+Gamma primitive & $|v|<a$, normalized analytic logarithm at $v=0$.\\[4pt]
+Numerical evidence & 40-digit floating-point diagnostics; no certified
+error intervals and no formal proof-assistant claim.\\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{99}
+\bibitem{dlmf16}
+NIST Digital Library of Mathematical Functions, \S16.4,
+\emph{Argument Unity}, especially Eq.~16.4.9, Rogers--Dougall summation.
+\url{https://dlmf.nist.gov/16.4}. Accessed 11 October 2026.
+
+\bibitem{dlmf5}
+NIST Digital Library of Mathematical Functions, \S5.5,
+\emph{Functional Relations}, and \S5.11, \emph{Asymptotic Expansions}.
+\url{https://dlmf.nist.gov/5.5}; \url{https://dlmf.nist.gov/5.11}.
+Accessed 11 October 2026.
+
+\bibitem{dlmf25}
+NIST Digital Library of Mathematical Functions, \S25.11,
+\emph{Hurwitz Zeta Function}, and \S25.12, \emph{Polylogarithms}.
+\url{https://dlmf.nist.gov/25.11}; \url{https://dlmf.nist.gov/25.12}.
+Accessed 11 October 2026.
+
+\bibitem{xu-wang}
+Ce Xu and Weiping Wang, \emph{Dirichlet type extensions of Euler sums},
+Comptes Rendus Math\'ematique \textbf{361} (2023), 979--1010.
+DOI: \href{https://doi.org/10.5802/crmath.453}{10.5802/crmath.453}.
+The publisher abstract and bibliographic information were inspected;
+a full-paper priority comparison was not completed.
+
+\bibitem{repo-main}
+Vladimir Reshetnikov, \emph{ProveIt: Polylogarithms manuscript},
+repository snapshot \pin.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+Inspected files include \texttt{polylogarithms.tex} and selected chapters
+under \texttt{Analysis/Polylogarithms/docs/manuscript/}.
+
+\bibitem{repo-mixed}
+ProveIt, \emph{Mixed Gamma derivatives and exact harmonic tail identities},
+canonical manuscript file
+\texttt{chapters/07-mixed-dougall-identities.tex}, lines 1--240,
+at the snapshot in \cite{repo-main}.
+The first-resonance and mixed-derivative results are antecedents here.
+
+\bibitem{repo-centered}
+ProveIt, \emph{Centered Dougall Resonance: Exact Stieltjes Jets,
+Harmonic Identities, Polylogarithmic Subtraction, and Zeta Antiderivatives},
+10 October 2026. Preserved continuation under
+\texttt{Analysis/Polylogarithms/docs/reports/}\allowbreak
+\texttt{stieltjes-harmonic-resonance/continuations/}\allowbreak
+\texttt{centered-dougall-resonance/}.
+Inspected: README; complete
+\texttt{integration/centered-dougall-resonance.tex};
+\texttt{article.tex}, lines 650--880, at the snapshot in \cite{repo-main}.
+The all-resonance subtraction and collapse are attributed to this source.
+\end{thebibliography}
+\end{document}

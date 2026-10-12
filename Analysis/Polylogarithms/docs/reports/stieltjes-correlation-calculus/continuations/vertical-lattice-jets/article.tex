@@ -1,0 +1,1336 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,longtable,array,microtype,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{xcolor,fancyhdr,bookmark}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Discrete vertical Hurwitz calculus}
+\fancyhead[R]{\small ProveIt continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{3pt}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Log}{Log}
+\DeclareMathOperator{\Ree}{Re}
+\DeclareMathOperator{\CT}{CT}
+\DeclareMathOperator{\Sym}{Sym}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Rcal}{\mathcal R}
+\newcommand{\Bcal}{\mathcal B}
+\newcommand{\Lcal}{\mathcal L}
+\newcommand{\Qcal}{\mathcal Q}
+\newcommand{\Scal}{\mathcal S}
+\newcommand{\Ecal}{\mathcal E}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\hypersetup{pdftitle={Discrete Vertical Hurwitz Calculus: Stieltjes Jets, Polylogarithmic Sampling, and Resonant Contact Terms},pdfauthor={Research continuation for the ProveIt project}}
+\title{\textbf{Discrete Vertical Hurwitz Calculus}\\[7pt]
+\large Stieltjes jets, polylogarithmic sampling,\\and resonant contact terms}
+\author{Research continuation prepared for\\Vladimir Reshetnikov's ProveIt project}
+\date{11 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop an exact calculus for sums over a vertical lattice in the
+Hurwitz argument. Euler--Maclaurin compensation and an elementary
+periodization argument give a normally convergent spectral identity
+whose right-hand side is a Lambert series of polylogarithms. Its complete
+Taylor expansion at order one evaluates every compensated generalized
+Stieltjes lattice sum, with finite Bell-polynomial coefficients. Horizontal
+unit differences eliminate the Lambert series and leave finitely many
+polylogarithms and their order derivatives. Anchored antiderivatives are
+obtained by raising the polylogarithm order.
+
+At nonpositive integer orders we prove a parity-sensitive contact law.
+First spectral derivatives have absolutely convergent lattice sums at
+negative odd orders; at negative even orders the symmetric sum differs
+from the spectral continuation by an explicit Bernoulli constant. The
+Gamma case is an already published specialization of Arabi Ardehali and
+Rosengren, not a novelty claim. All higher, sufficiently compensated
+spectral jets are expressed by a finite compiler involving generalized
+harmonic numbers and zeta values. Mean-zero periodic lattice weights
+annihilate every first-jet contact.
+
+A second theorem evaluates lattice products of arbitrary positive-order
+polygammas as a single Hurwitz term plus exponentially convergent image
+sums, each image being a finite Hurwitz--Lerch combination. We also give
+an all-index Stieltjes-difference pairing and an explicit four-shift
+digamma formula. Proofs distinguish ordinary absolute sums, symmetric
+limits, and analytic continuation. The package includes 268 exact
+algebraic assertions, 38 independent or cross-route numerical comparisons,
+two corruption controls, and a scoped source audit. The numerical tests
+are not interval certificates. No claim is made to settle the manuscript's
+$S_6$, revised $S_8$, or general unequal-tail prefix conjectures.
+\end{abstract}
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Scope, source frontier, and contribution}
+
+The ProveIt manuscript has developed several complementary calculi:
+periodic Hurwitz correlations, spectral derivatives, finite parts,
+Gamma products, and harmonic-tail reconstruction. In particular, the
+inspected vertical-pairing report concerns ordinary integrals in the
+imaginary part of the Hurwitz argument, rather than discrete sampling
+\cite{RepoVertical}. The present article replaces that continuous
+vertical geometry by the lattice
+\[
+ a+\ii h\Z,\qquad h>0,\qquad \Ree a>0.
+\]
+This change produces nonzero sampling images as well as an explicit
+boundary contact. It therefore requires its own convergence statements
+and cannot be obtained by simply replacing an integral sign by a sum.
+
+The principal exact results are the compensated sampling theorem
+(Theorem~\ref{thm:sampling}), the complete Stieltjes coefficient identity
+(Theorem~\ref{thm:stieltjes}), the negative-integer contact law
+(Theorem~\ref{thm:negative}), the harmonic-number jet compiler
+(Theorem~\ref{thm:negative-jets}), the finite-image polygamma pairing
+(Theorem~\ref{thm:bilinear}), and the four-shift formula
+(Theorem~\ref{thm:fourshift}). The proofs are independent of the pending
+harmonic-rank conjectures.
+
+\paragraph{What is inherited.}
+The Hurwitz continuation, Euler--Maclaurin expansion, Gamma special
+values, and polylogarithm/Lerch definitions are classical
+\cite{DLMF25,DLMF5,DLMFPoly,DLMFLerch}. Periodization is a standard
+form of Poisson summation \cite{DLMFFourier}. Stieltjes summation and
+parameter differentiation also have substantial antecedents; Coffey's
+summation relations are one relevant example \cite{Coffey}. Most
+importantly, the Gamma product obtained below is equivalent to the
+published product formula of Arabi Ardehali and Rosengren
+\cite[Eq.~(13)]{ArdehaliRosengren}. That specialization, including its
+constant, is explicitly credited.
+
+\paragraph{What is proposed for integration.}
+The contribution is the unified discrete spectral calculus, its
+all-index convergent Stieltjes and higher-resonance consequences, and the
+explicit image formulas for products. These are proved here as exact
+identities. They are proposed continuations relative to the inspected
+repository sources, not assertions of exhaustive historical priority.
+The distinction matters: a preliminary reconstruction calculation in
+this investigation reproduced the already proved smaller-tail-order-two
+family in a later repository report \cite{RepoBernoulli}. It is not
+included as a new result.
+
+\paragraph{Audit limits.}
+The main branch changed during inspection. Accordingly, the audit
+records individual source paths and blob identifiers rather than
+claiming a single immutable snapshot for all reads. The incoming
+directory was listed and its intake instructions were read, but the
+interiors of its five then-listed ZIP archives were not available for
+inspection in this run. No complete audit of those archives, of all
+manuscript volumes, or of the literature is claimed. No repository file
+was modified. Section~\ref{sec:audit} records the concrete correction
+and the distinction between that correction and a mathematical warning.
+
+\section{Conventions and the compensated Mellin family}
+\label{sec:conventions}
+
+Fix $h>0$ and write
+\begin{equation}\label{eq:scale}
+ \tau=\frac{2\pi}{h},\qquad q=e^{-\tau},\qquad z=e^{-\tau a},
+ \qquad w_n=a+\ii hn\quad(n\in\Z).
+\end{equation}
+Initially $\Ree a>0$; hence $|z|<1$. Every power of $w$ uses the analytic
+logarithm $\Log w$ in the right half-plane. The analytic branch of
+$\log\Gamma(w)$ is real on the positive real axis. It is not the
+principal logarithm of a numerically computed complex Gamma value.
+
+We use the Laurent convention
+\begin{equation}\label{eq:stieltjes-convention}
+ \zeta(1+\eps,w)=\frac1\eps+
+ \sum_{m=0}^{\infty}\frac{(-1)^m}{m!}\gamma_m(w)\eps^m,
+ \qquad \gamma_0(w)=-\psi(w).
+\end{equation}
+Here $\psi=\Gamma'/\Gamma$, $(s)_k=s(s+1)\cdots(s+k-1)$,
+$B_{2j}$ are Bernoulli numbers, and
+\[
+ H_N^{(r)}=\sum_{k=1}^N k^{-r},\qquad H_N=H_N^{(1)},\qquad H_0^{(r)}=0.
+\]
+The Bernoulli convention is $B_1=-1/2$; no formula below depends on a
+software package's alternative value for $B_1$.
+
+\begin{definition}[Compensation]\label{def:compensation}
+For an integer $M\ge0$, put
+\begin{align}
+ C_M(t)&=\frac1{1-e^{-t}}-\frac1t-\frac12
+       -\sum_{j=1}^M\frac{B_{2j}}{(2j)!}t^{2j-1},\label{eq:kernel}\\
+ \Rcal_M(s,w)&=\zeta(s,w)-\frac{w^{1-s}}{s-1}-\frac12w^{-s}
+       -\sum_{j=1}^M\frac{B_{2j}}{(2j)!}(s)_{2j-1}w^{1-s-2j}.
+ \label{eq:remainder}
+\end{align}
+The singularity at $s=1$ in the combined expression is filled by its
+removable limit. Thus $\Rcal_M$ is entire in $s$ for each $\Ree w>0$.
+\end{definition}
+
+The subtractions are fixed, explicit functions. No unspecified
+regularization or finite-part convention is hidden in
+\eqref{eq:remainder}. Near zero,
+\begin{equation}\label{eq:kernel-origin}
+ C_M(t)=\frac{B_{2M+2}}{(2M+2)!}t^{2M+1}+O(t^{2M+3}).
+\end{equation}
+For $\Ree s>-2M-1$, the Mellin identity is
+\begin{equation}\label{eq:mellin}
+ \Rcal_M(s,w)=\frac1{\Gamma(s)}
+       \int_0^\infty t^{s-1}e^{-wt}C_M(t)\dd t.
+\end{equation}
+It follows initially from the ordinary Hurwitz integral in a common
+convergence domain, by integrating the finitely many subtractions.
+Both sides are holomorphic on the indicated half-plane after removable
+values are filled, so the identity continues there. The factor
+$1/\Gamma(s)$ is entire; at its zeros the convergent integral is
+multiplied by zero.
+
+\begin{lemma}[Uniform vertical remainder]\label{lem:vertical}
+For $s$ in a compact set and $w$ in a fixed sector
+$|\arg w|\le\pi-\delta$, the Euler--Maclaurin expansion gives, for
+sufficiently large $J$,
+\begin{equation}\label{eq:em-asymptotic}
+ \Rcal_M(s,w)=
+ \sum_{j=M+1}^{J}\frac{B_{2j}}{(2j)!}(s)_{2j-1}w^{1-s-2j}
+ +O\bigl(|w|^{-\Ree s-2J-1}\bigr).
+\end{equation}
+In particular, on compact subsets of
+$\{\Ree s>-2M,\ \Ree a>0\}$ the series
+\[
+ \sum_{n\in\Z}\partial_s^d\Rcal_M(s,a+\ii hn)
+\]
+converges normally for each fixed $d\ge0$.
+\end{lemma}
+\begin{proof}
+Apply Euler--Maclaurin with additional terms to the defining Hurwitz
+sum; its remainder is an integral of a bounded periodic Bernoulli
+function times a power of $w+x$. In a closed sector avoiding the
+negative axis, this gives the stated uniform expansion. Equivalently,
+this is the standard sectorial Hurwitz expansion
+\cite[\S25.11(xii)]{DLMF25}, with the first $M$ terms removed.
+On a vertical line the first remaining term has size
+$O(|n|^{-\Ree s-2M-1})$. Spectral derivatives add only fixed powers
+of $\log(2+|n|)$, by Cauchy estimates on a slightly larger compact
+set. The exponent exceeds one uniformly on the indicated compacts.
+The finitely many small $n$ terms are holomorphic and bounded there.
+\end{proof}
+
+Define the entire-in-order Lambert--polylogarithm family
+\begin{equation}\label{eq:Lambert}
+ \Lcal_\nu(q,z)=\sum_{r=0}^{\infty}\Li_\nu(zq^r)
+              =\sum_{k=1}^{\infty}\frac{z^k}{k^\nu(1-q^k)}.
+\end{equation}
+Both expressions converge normally for $|z|<1$ and $\nu$ in compact
+subsets of $\C$. Every order derivative is obtained by inserting
+$(-\log k)^d$ in the second series. We will use
+\begin{align}
+ \Bcal_M(s;a,\tau)={}&\Lcal_{1-s}(q,z)-\frac12\Li_{1-s}(z)
+          -\frac1\tau\Li_{2-s}(z)\notag\\
+ &-\sum_{j=1}^M\frac{B_{2j}\tau^{2j-1}}{(2j)!}\Li_{2-s-2j}(z).
+ \label{eq:bracket}
+\end{align}
+It is entire in $s$. All $\tau$-dependence, including $q$ and $z$,
+is understood as in \eqref{eq:scale}.
+
+\section{An exact vertical sampling theorem}
+
+\begin{lemma}[Periodization with absolutely summable coefficients]
+\label{lem:periodization}
+Let $f\in L^1(\mathbb R)$ be continuous and suppose
+$P(x)=\sum_{k\in\Z}f(x+\tau k)$ converges locally uniformly to a
+continuous $\tau$-periodic function. If
+$\sum_n|\widehat f(hn)|<\infty$, with
+\[
+ \widehat f(y)=\int_{\mathbb R}f(t)e^{-\ii yt}\dd t,
+ \qquad h\tau=2\pi,
+\]
+then
+\begin{equation}\label{eq:periodization}
+ \sum_{n\in\Z}\widehat f(hn)=\tau\sum_{k\in\Z}f(\tau k).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The $n$th Fourier coefficient of $P$ is $\widehat f(hn)/\tau$,
+by integration over one period and absolute integrability. Their
+absolute summability gives a uniformly convergent Fourier series.
+It represents $P$: the difference is a continuous periodic function
+with every Fourier coefficient zero, hence is zero, for example by
+Fej\'er approximation. Evaluate that Fourier series at $x=0$.
+\end{proof}
+
+\begin{theorem}[Compensated vertical-lattice sampling]
+\label{thm:sampling}
+Let $M\ge0$, $h>0$, $\Ree a>0$, and $\Ree s>-2M$. Then
+\begin{equation}\label{eq:master}
+ \boxed{\displaystyle
+ \Scal_M(s;a,h):=\sum_{n\in\Z}\Rcal_M(s,a+\ii hn)
+       =\frac{\tau^s}{\Gamma(s)}\Bcal_M(s;a,\tau).}
+\end{equation}
+The lattice sum is absolutely and normally convergent on this domain,
+including every fixed spectral derivative. The right side gives an
+entire continuation in $s$ of this summed function.
+\end{theorem}
+\begin{proof}
+Extend
+\[
+ f(t)=\frac{t^{s-1}e^{-at}C_M(t)}{\Gamma(s)}\quad(t>0)
+\]
+by zero for $t\le0$. At zero it is continuous and vanishes, because
+its leading power is $t^{s+2M}$ and $\Ree(s+2M)>0$.
+At positive infinity it decays exponentially times a fixed power,
+so its periodization is continuous and locally uniformly convergent.
+Its Fourier transform is $\Rcal_M(s,a+\ii y)$ by
+\eqref{eq:mellin}, and the Fourier coefficients are absolutely
+summable by Lemma~\ref{lem:vertical}. Thus
+\[
+ \Scal_M(s;a,h)=\frac{\tau^s}{\Gamma(s)}
+       \sum_{k=1}^\infty k^{s-1}z^k C_M(\tau k).
+\]
+Insert \eqref{eq:kernel} and identify each of the absolutely
+convergent series. This gives \eqref{eq:bracket} and
+\eqref{eq:master}. The normal convergence statement is
+Lemma~\ref{lem:vertical}; the continuation follows from the
+entire order dependence on the right.
+\end{proof}
+
+\begin{remark}[Why the strict boundary matters]\label{rem:boundary}
+At $\Ree s=-2M$, the density in the proof need not vanish at zero.
+The original lattice sum need not be absolutely convergent in a
+neighborhood of that order. Consequently, differentiating the entire
+right side there does not automatically differentiate an ordinary
+lattice sum. Section~\ref{sec:negative} computes the resulting contact
+exactly. This is a failure of interchange, not a failure of analytic
+continuation.
+\end{remark}
+
+The theorem also covers an offset lattice $a+\ii h(n+\theta)$:
+replace $a$ by $a+\ii h\theta$, so every polylogarithm argument is
+multiplied by $e^{-2\pi\ii\theta}$. No new convergence issue arises.
+
+\section{Every generalized Stieltjes lattice sum}
+\label{sec:stieltjes}
+
+Set
+\begin{equation}\label{eq:K}
+ K_m(w)=\gamma_m(w)+\frac{\Log^{m+1}w}{m+1}
+                     -\frac{\Log^m w}{2w}.
+\end{equation}
+The exact Laurent cancellation gives
+\begin{equation}\label{eq:K-generator}
+ \Rcal_0(1+\eps,w)=\sum_{m=0}^\infty\frac{(-1)^m}{m!}K_m(w)\eps^m.
+\end{equation}
+In particular, each $K_m(a+\ii hn)$ is
+$O(\log^m(2+|n|)/(1+|n|)^2)$.
+
+For a variable $Y$, define finite Bell polynomials $\Ecal_j(Y)$ by
+\begin{equation}\label{eq:E}
+ \exp\left(Yu+\sum_{r=2}^\infty
+             \frac{(-1)^{r+1}\zeta(r)}r u^r\right)
+      =\sum_{j=0}^\infty\Ecal_j(Y)\frac{u^j}{j!}.
+\end{equation}
+Only $r\le j$ contributes to $\Ecal_j$. Their first values are
+\begin{align*}
+ \Ecal_0(Y)&=1,& \Ecal_1(Y)&=Y,\\
+ \Ecal_2(Y)&=Y^2-\zeta(2),&
+ \Ecal_3(Y)&=Y^3-3Y\zeta(2)+2\zeta(3),\\
+ \Ecal_4(Y)&=Y^4-6Y^2\zeta(2)+8Y\zeta(3)
+             +3\zeta(2)^2-6\zeta(4).
+\end{align*}
+Write
+\begin{equation}\label{eq:Q}
+ \Qcal_\nu(a)=\Lcal_\nu(q,z)-\frac12\Li_\nu(z)-\frac1\tau\Li_{\nu+1}(z),
+ \qquad L=\log\tau+\gamma.
+\end{equation}
+Here $\gamma$ is Euler's constant, and $\tau$ is held fixed in every
+$a$- or order derivative.
+
+\begin{theorem}[All-index Stieltjes identity]\label{thm:stieltjes}
+For $m\ge0$ and $\Ree a>0$,
+\begin{equation}\label{eq:stieltjes-main}
+ \boxed{\displaystyle
+ \sum_{n\in\Z}K_m(a+\ii hn)
+ =\tau\sum_{j=0}^m\binom mj(-1)^j\Ecal_j(L)
+        \left.\partial_\nu^{\,m-j}\Qcal_\nu(a)\right|_{\nu=0}.}
+\end{equation}
+The sum is ordinary and absolutely convergent. There is no principal
+value and no finite part.
+\end{theorem}
+\begin{proof}
+In \eqref{eq:master}, put $M=0$ and $s=1+\eps$.
+The reciprocal-Gamma expansion gives
+\[
+ \frac{\tau^{1+\eps}}{\Gamma(1+\eps)}
+   =\tau\sum_{j\ge0}\Ecal_j(L)\frac{\eps^j}{j!},
+ \qquad \Bcal_0(1+\eps;a,\tau)=\Qcal_{-\eps}(a).
+\]
+The normally convergent lattice series permits coefficient extraction
+using \eqref{eq:K-generator}. The Leibniz coefficient is
+$(-1)^m(-1)^{m-j}=(-1)^j$, giving the stated sign. All order
+extractions on the right are permitted by \eqref{eq:Lambert}.
+\end{proof}
+
+\subsection{The first three identities}
+With $\Qcal_0^{[r]}=\left.\partial_\nu^r\Qcal_\nu\right|_{\nu=0}$,
+\begin{align}
+ \sum_n\left(\Log w_n-\psi(w_n)-\frac1{2w_n}\right)
+   &=\tau\Qcal_0,\label{eq:K0}\\
+ \sum_n\left(\gamma_1(w_n)+\frac{\Log^2w_n}{2}
+                         -\frac{\Log w_n}{2w_n}\right)
+   &=\tau(\Qcal_0^{[1]}-L\Qcal_0),\label{eq:K1}\\
+ \sum_n\left(\gamma_2(w_n)+\frac{\Log^3w_n}{3}
+                         -\frac{\Log^2w_n}{2w_n}\right)
+   &=\tau\bigl(\Qcal_0^{[2]}-2L\Qcal_0^{[1]}
+                     +(L^2-\zeta(2))\Qcal_0\bigr).
+ \label{eq:K2}
+\end{align}
+For real $a$, opposite lattice terms are conjugate; the left sides
+are real. The right sides are real as well, since $0<z,q<1$.
+For example, at $a=0.8$ and $h=2.1$, \eqref{eq:K0} is approximately
+$0.0690653783784057$. This displayed decimal is a diagnostic value,
+not an interval enclosure.
+
+\subsection{Finite horizontal differences remove the Lambert series}
+For an integer $J\ge1$, geometric cancellation gives
+\begin{equation}\label{eq:Q-finite}
+ \begin{split}
+ \Qcal_\nu(a)-\Qcal_\nu(a+J)
+ ={}&\sum_{r=0}^{J-1}\Li_\nu(zq^r)
+       -\frac12\bigl(\Li_\nu(z)-\Li_\nu(zq^J)\bigr)\\
+    &-\frac1\tau\bigl(\Li_{\nu+1}(z)-\Li_{\nu+1}(zq^J)\bigr).
+ \end{split}
+\end{equation}
+Thus the difference of the two Stieltjes lattice sums in
+\eqref{eq:stieltjes-main} has a \emph{finite} polylogarithmic
+expression, with all order derivatives and Bell coefficients explicit.
+In particular, for $J=1$ the bracket is
+\begin{equation}\label{eq:Q-unit}
+ \frac12\bigl(\Li_\nu(z)+\Li_\nu(zq)\bigr)
+ -\frac1\tau\bigl(\Li_{\nu+1}(z)-\Li_{\nu+1}(zq)\bigr).
+\end{equation}
+Equations \eqref{eq:stieltjes-main} and \eqref{eq:Q-unit} constitute
+an infinite family of bilateral generalized-Stieltjes identities with
+only finitely many polylogarithms on the right. Their derivation uses
+only absolute sums. They do not make an arithmetic independence claim
+about the order derivatives that occur.
+
+\section{Differentiation and normalized antiderivatives}
+\label{sec:calculus}
+
+The Mellin normalization makes horizontal calculus transparent:
+\begin{equation}\label{eq:horizontal-derivative}
+ \partial_w^r\Rcal_M(s,w)=(-1)^r(s)_r\Rcal_M(s+r,w).
+\end{equation}
+This follows by differentiation of \eqref{eq:mellin} in a common
+convergence domain and then analytic continuation. Accordingly,
+whenever the original lattice sum lies in its normal domain,
+\begin{equation}\label{eq:lattice-derivative}
+ \partial_a^r\Scal_M(s;a,h)=(-1)^r(s)_r\Scal_M(s+r;a,h).
+\end{equation}
+Subsequent spectral differentiation is legitimate on every compact
+subset of that domain. The derivative of the rising factorial is
+part of the formula and must not be omitted.
+
+There is an equally simple integral form. Since
+\begin{equation}\label{eq:Q-derivative}
+ \partial_a\Qcal_\nu(a)=-\tau\Qcal_{\nu-1}(a),
+\end{equation}
+raising the order supplies an anchored primitive.
+
+\begin{theorem}[All-index anchored primitives]\label{thm:primitives}
+Let $a_0,a$ lie in the right half-plane and integrate along any path
+there. Then
+\begin{equation}\label{eq:primitive-stieltjes}
+ \begin{split}
+ \int_{a_0}^a\sum_{n\in\Z}K_m(u+\ii hn)\dd u
+ ={}&-\sum_{j=0}^m\binom mj(-1)^j\Ecal_j(L)\\
+ &\quad\cdot\left.
+ \partial_\nu^{m-j}\bigl(\Qcal_\nu(a)-\Qcal_\nu(a_0)\bigr)
+ \right|_{\nu=1}.
+ \end{split}
+\end{equation}
+In particular, the primitive vanishes at $a=a_0$. More generally,
+\begin{equation}\label{eq:primitive-spectral}
+ \int_{a_0}^a\Scal_M(s;u,h)\dd u
+ =-\frac{\tau^{s-1}}{\Gamma(s)}
+       \bigl(\Bcal_M(s-1;a,\tau)-\Bcal_M(s-1;a_0,\tau)\bigr)
+\end{equation}
+on the normal domain $\Ree s>-2M$.
+\end{theorem}
+\begin{proof}
+Differentiate the right sides using
+$\partial_a\Li_\nu(e^{-\tau a})=-\tau\Li_{\nu-1}(e^{-\tau a})$
+and its normally convergent Lambert counterpart. This gives the
+integrands by Theorems~\ref{thm:sampling} and \ref{thm:stieltjes}.
+The expressions vanish at $a_0$, and the right half-plane is simply
+connected. Normal convergence justifies the integral of the lattice
+sum along a compact path. This proof avoids an unjustified attempt
+to integrate each nonconvergent primitive separately.
+\end{proof}
+
+When $\Ree(s-1)>-2M$ and $s\ne1$, \eqref{eq:primitive-spectral}
+may equivalently be written
+\[
+ \frac{\Scal_M(s-1;a_0,h)-\Scal_M(s-1;a,h)}{s-1}.
+\]
+Outside that smaller domain, this last notation refers to the
+continued summed function, not necessarily an ordinary series of
+primitives. Formula~\eqref{eq:primitive-spectral} itself remains
+unambiguous on the larger stated domain.
+
+\section{The Gamma specialization and its known product identity}
+\label{sec:gamma}
+
+Define the normalized Stirling remainder
+\begin{equation}\label{eq:G}
+ G(w)=\log\Gamma(w)-(w-\tfrac12)\Log w+w-\tfrac12\log(2\pi).
+\end{equation}
+The Hurwitz special value $\zeta'(0,w)=\log\Gamma(w)-\tfrac12\log(2\pi)$
+implies
+\begin{equation}\label{eq:Gamma-jet}
+ \partial_s\Rcal_1(0,w)=G(w)-\frac1{12w}.
+\end{equation}
+This is inside the normal domain of $\Scal_1$. Differentiating
+\eqref{eq:master} there gives the absolutely convergent identity
+\begin{equation}\label{eq:Gamma-absolute}
+ \sum_{n\in\Z}\left(G(w_n)-\frac1{12w_n}\right)
+ =\Lcal_1(q,z)-\frac12\Li_1(z)-\frac1\tau\Li_2(z)
+                         -\frac\tau{12}\Li_0(z).
+\end{equation}
+
+For a function with reciprocal decay we specify
+\[
+ \Sym\sum_{n\in\Z}F(w_n):=\lim_{N\to\infty}\sum_{n=-N}^{N}F(w_n).
+\]
+The elementary partial-fraction identity is
+\begin{equation}\label{eq:reciprocal-sym}
+ \Sym\sum_{n\in\Z}\frac1{a+\ii hn}
+     =\frac\tau2\coth\frac{\tau a}{2}
+     =\tau\left(\Li_0(z)+\frac12\right).
+\end{equation}
+For completeness, pair $n$ and $-n$ to obtain
+$1/a+\sum_{n\ge1}2a/(a^2+h^2n^2)$; the standard partial fractions
+of $\coth$ give \eqref{eq:reciprocal-sym}. They follow as well by
+logarithmically differentiating the canonical product for $\sinh$.
+
+\begin{corollary}[Known Gamma-product specialization]
+\label{cor:Gamma}
+For $h>0$ and $\Ree a>0$,
+\begin{equation}\label{eq:Gamma-symmetric}
+ \boxed{\displaystyle
+ \Sym\sum_{n\in\Z}G(a+\ii hn)
+  =-\log(z;q)_\infty+\frac12\log(1-z)
+       -\frac1\tau\Li_2(z)+\frac\tau{24}.}
+\end{equation}
+Here $\log(z;q)_\infty=\sum_{r\ge0}\log(1-zq^r)$, with the
+analytic logarithm supplied by its convergent series.
+\end{corollary}
+\begin{proof}
+Add one twelfth of \eqref{eq:reciprocal-sym} to
+\eqref{eq:Gamma-absolute}, use
+$\Lcal_1=-\log(z;q)_\infty$ and $\Li_1(z)=-\log(1-z)$.
+The $\Li_0$ terms cancel, leaving $\tau/24$.
+\end{proof}
+
+Equation~\eqref{eq:Gamma-symmetric}, after exponentiation and the
+substitution $y=\tau a$, $\beta=\tau$, is precisely the Gamma-product
+specialization credited to Arabi Ardehali and Rosengren
+\cite[Eq.~(13)]{ArdehaliRosengren}. Its absolute version corresponds
+to their subtracted remainder. We rederive it only to fix the
+normalization of the subsequent general contact law; neither the
+Gamma product nor its constant is claimed as new.
+
+There is a useful interchange diagnostic. Differentiating the entire
+continuation of $\Scal_0(s)$ at $s=0$ gives
+$\Bcal_0(0)$, whereas symmetrically summing
+$\partial_s\Rcal_0(0,w_n)=G(w_n)$ gives
+$\Bcal_0(0)+\tau/24$. The discrepancy is exactly $\tau/24$, not a
+numerical error. At $a=0.8$, $h=2.1$, the correct symmetric value is
+approximately $0.14613043538142660274$.
+
+\section{Negative integer jets: a parity-sensitive contact law}
+\label{sec:negative}
+
+For $N\ge0$, put
+\begin{equation}\label{eq:T-definition}
+ M_N=\left\lceil\frac N2\right\rceil,
+ \qquad T_N(w)=\left.\partial_s\Rcal_{M_N}(s,w)\right|_{s=-N}.
+\end{equation}
+The chosen compensation is minimal for the parity statement below.
+Every $\Rcal_{M_N}(-N,w)$ is zero. This follows from
+\eqref{eq:mellin}, whose integral is convergent there, or directly
+from the Bernoulli-polynomial formula for $\zeta(-N,w)$.
+
+\begin{proposition}[Explicit harmonic-number form]\label{prop:T-explicit}
+For $N\ge0$ and $\Ree w>0$,
+\begin{equation}\label{eq:T-explicit}
+ \begin{split}
+ T_N(w)={}&\zeta'(-N,w)-\frac{w^{N+1}\Log w}{N+1}
+                   +\frac{w^{N+1}}{(N+1)^2}
+                   +\frac12w^N\Log w\\
+ &-\sum_{j=1}^{M_N}\frac{B_{2j}}{(2j)!}
+    \frac{N!}{(N-2j+1)!}\,w^{N-2j+1}
+    \bigl(\Log w+H_N-H_{N-2j+1}\bigr).
+ \end{split}
+\end{equation}
+The sum is empty when $N=0$.
+\end{proposition}
+\begin{proof}
+For $k=2j-1\le N$,
+\[
+ (-N)_k=-\frac{N!}{(N-k)!},\qquad
+ \left.\frac{\partial_s(s)_k}{(s)_k}\right|_{s=-N}
+       =-H_N+H_{N-k}.
+\]
+Differentiate each term of \eqref{eq:remainder}. The two minus signs
+in the derivative of $(s)_k w^{1-s-2j}$ give the displayed
+harmonic factor. Differentiating the polar subtraction contributes
+$-w^{N+1}\Log w/(N+1)+w^{N+1}/(N+1)^2$.
+\end{proof}
+
+\begin{lemma}[The first nonzero reciprocal coefficient]\label{lem:beta}
+If $N$ is even, then
+\begin{equation}\label{eq:T-even-asymptotic}
+ T_N(w)=\frac{\beta_N}{w}+O(w^{-3}),\qquad
+ \beta_N=\frac{B_{N+2}}{(N+1)(N+2)}.
+\end{equation}
+If $N$ is odd, then $T_N(w)=O(w^{-2})$.
+These estimates are uniform on closed sectors avoiding the negative axis.
+\end{lemma}
+\begin{proof}
+For $k\ge N+1$, the product $(s)_k$ has exactly one zero factor at
+$s=-N$, and
+\begin{equation}\label{eq:rf-zero-derivative}
+ \left.\partial_s(s)_k\right|_{s=-N}
+       =(-1)^N N!(k-N-1)!.
+\end{equation}
+Differentiate the asymptotic expansion
+\eqref{eq:em-asymptotic}. No logarithm remains in its terms because
+$(s)_k$ itself vanishes at $-N$. The first remaining exponent is
+$-1$ for even $N$ and $-2$ for odd $N$. In the even case its
+coefficient is \eqref{eq:T-even-asymptotic}; successive exponents
+differ by two.
+\end{proof}
+
+\begin{theorem}[All nonpositive integer first jets]\label{thm:negative}
+For $N\ge0$, $h>0$, and $\Ree a>0$,
+\begin{equation}\label{eq:negative-main}
+ \boxed{\displaystyle
+ \Sym\sum_{n\in\Z}T_N(a+\ii hn)
+ =(-1)^N N!\tau^{-N}\Bcal_{M_N}(-N;a,\tau)
+ +\mathbf1_{2\mid N}\frac{\tau B_{N+2}}{2(N+1)(N+2)}.}
+\end{equation}
+For odd $N$, the sum is absolutely convergent and $\Sym$ may be
+omitted. For even $N$, the displayed symmetric prescription exists;
+the contact is independent of $a$.
+\end{theorem}
+\begin{proof}
+When $N$ is odd, $-N>-2M_N$. Normal convergence in
+Theorem~\ref{thm:sampling} permits differentiation at $s=-N$.
+Since $(1/\Gamma)'(-N)=(-1)^N N!$, this gives the first term on
+the right and no contact.
+
+Let $N=2M$ be even. Oversubtract once, using $\Rcal_{M+1}$.
+The order $-N$ is now strictly inside the normal convergence domain.
+The difference of the two first jets is exactly $\beta_N/w$, by
+\eqref{eq:rf-zero-derivative}. Thus
+\[
+ \Sym\sum_n T_N(w_n)
+ =N!\tau^{-N}\Bcal_{M+1}(-N;a,\tau)
+        +\beta_N\frac\tau2\coth\frac{\tau a}{2}.
+\]
+By the definition of $\Bcal_M$,
+\[
+ N!\tau^{-N}\Bcal_{M+1}(-N)
+ =N!\tau^{-N}\Bcal_M(-N)-\beta_N\tau\Li_0(z).
+\]
+Use $\coth(\tau a/2)=1+2\Li_0(z)$. The image terms cancel and
+leave $\beta_N\tau/2$. Existence of the symmetric sum follows
+from Lemma~\ref{lem:beta} and \eqref{eq:reciprocal-sym}.
+\end{proof}
+
+\subsection{Two explicit higher identities}
+The first negative odd order has
+\begin{align}
+ T_1(w)={}&\zeta'(-1,w)-\tfrac12w^2\Log w+\tfrac14w^2
+                 +\tfrac12w\Log w-\tfrac1{12}(\Log w+1),\label{eq:T1}\\
+ \sum_{n\in\Z}T_1(w_n)
+   ={}&-\frac{\Lcal_2(q,z)}\tau+\frac{\Li_2(z)}{2\tau}
+                    +\frac{\Li_3(z)}{\tau^2}+\frac{\Li_1(z)}{12}.
+ \label{eq:T1-sum}
+\end{align}
+This is an ordinary absolutely convergent identity. The next order is
+\begin{align}
+ T_2(w)={}&\zeta'(-2,w)-\tfrac13w^3\Log w+\tfrac19w^3
+               +\tfrac12w^2\Log w-\tfrac16w\Log w-\tfrac1{12}w,
+ \label{eq:T2}\\
+ \Sym\sum_{n\in\Z}T_2(w_n)
+   ={}&\frac{2}{\tau^2}\Lcal_3(q,z)-\frac{\Li_3(z)}{\tau^2}
+             -\frac{2\Li_4(z)}{\tau^3}-\frac{\Li_2(z)}{6\tau}
+             -\frac\tau{720}.
+ \label{eq:T2-sum}
+\end{align}
+The final $-\tau/720$ is required. These examples display explicitly
+how negative-order Hurwitz derivatives connect to polylogarithms of
+successive positive integer orders. Formula~\eqref{eq:T-explicit}
+provides the corresponding harmonic-number expression at every order.
+
+\subsection{Periodic filters annihilate the mean contact}
+\begin{corollary}[Mean-zero periodic weights]\label{cor:filters}
+Let $c_n$ be periodic of period $d\ge1$. Put
+$\tau_d=\tau/d$ and $a_r=a+\ii hr$ for $0\le r<d$. Then
+\begin{equation}\label{eq:filtered}
+ \begin{split}
+ \Sym\sum_{n\in\Z}c_n T_N(a+\ii hn)
+ ={}&(-1)^N N!\tau_d^{-N}
+       \sum_{r=0}^{d-1}c_r\Bcal_{M_N}(-N;a_r,\tau_d)\\
+ &+\mathbf1_{2\mid N}\frac{\tau_d B_{N+2}}{2(N+1)(N+2)}
+                  \sum_{r=0}^{d-1}c_r.
+ \end{split}
+\end{equation}
+Consequently every first-jet contact vanishes for a mean-zero filter.
+\end{corollary}
+\begin{proof}
+Split the lattice into residue classes modulo $d$ and apply
+Theorem~\ref{thm:negative} to each class with spacing $dh$.
+For even $N$, shifting the endpoints of a symmetric cutoff by a
+bounded number of terms changes its limit by zero, because
+$T_N(w_n)=O(1/|n|)$. For odd $N$ regrouping is absolute.
+The contact in each class is the same constant. Summing yields
+\eqref{eq:filtered}.
+\end{proof}
+
+For example, the alternating Gamma specialization is
+\begin{equation}\label{eq:alternating-Gamma}
+ \Sym\sum_{n\in\Z}(-1)^nG(a+\ii hn)
+      =2\Bcal_0(0;a,\tau/2)-\Bcal_0(0;a,\tau).
+\end{equation}
+Indeed the even-index lattice has spacing $2h$, and the two contacts
+cancel. Formula~\eqref{eq:filtered} identifies the obstruction as a
+single mean mode, not an arbitrary choice of regularization.
+
+\section{A harmonic-number compiler for every higher spectral jet}
+\label{sec:all-jets}
+
+At a negative integer, reciprocal Gamma has the exact local factorization
+\begin{equation}\label{eq:rgamma-factor}
+ \frac{\tau^{-N+\eps}}{\Gamma(-N+\eps)}
+ =(-1)^N N!\tau^{-N}\eps\,
+   \frac{\tau^\eps}{\Gamma(1+\eps)}
+   \prod_{k=1}^N\left(1-\frac\eps k\right).
+\end{equation}
+Define $\Ecal_j^{(N)}$ by
+\begin{equation}\label{eq:EN}
+ \begin{split}
+ &\exp\left((\log\tau+\gamma-H_N)u
+   +\sum_{r=2}^\infty
+     \frac{(-1)^{r+1}\zeta(r)-H_N^{(r)}}r u^r\right)\\
+ &\hspace{30mm}=\sum_{j=0}^\infty\Ecal_j^{(N)}\frac{u^j}{j!}.
+ \end{split}
+\end{equation}
+For $L_N=\log\tau+\gamma-H_N$,
+\begin{align*}
+ \Ecal_0^{(N)}&=1,\qquad \Ecal_1^{(N)}=L_N,\\
+ \Ecal_2^{(N)}&=L_N^2-\zeta(2)-H_N^{(2)},\\
+ \Ecal_3^{(N)}&=L_N^3-3L_N(\zeta(2)+H_N^{(2)})
+                         +2\zeta(3)-2H_N^{(3)}.
+\end{align*}
+These formulas keep the generalized harmonic correction separate from
+the alternating sign of the zeta contribution.
+
+\begin{theorem}[Every compensated negative-integer jet]
+\label{thm:negative-jets}
+Let $N\ge0$, $L$ be an integer with $L>N/2$, and $d\ge1$.
+Then the following lattice sum is absolutely convergent:
+\begin{equation}\label{eq:negative-jets}
+ \begin{split}
+ &\sum_{n\in\Z}
+       \left.\partial_s^d\Rcal_L(s,a+\ii hn)\right|_{s=-N}\\
+ &\quad=(-1)^N N!\tau^{-N}d
+       \sum_{j=0}^{d-1}\binom{d-1}{j}\Ecal_j^{(N)}
+           \left.\partial_s^{d-1-j}\Bcal_L(s;a,\tau)\right|_{s=-N}.
+ \end{split}
+\end{equation}
+Every derivative on the right is an explicit polylogarithm order
+derivative or a Lambert sum of such derivatives.
+\end{theorem}
+\begin{proof}
+The strict inequality $L>N/2$ places $-N$ inside the normal
+convergence domain of Theorem~\ref{thm:sampling}. Expand its right
+side using \eqref{eq:rgamma-factor}. Taking the logarithm of the
+finite product gives $-\sum_{r\ge1}H_N^{(r)}\eps^r/r$, which,
+together with the reciprocal-Gamma series, yields \eqref{eq:EN}.
+The coefficient of $\eps^d$ in $\eps\Ecal^{(N)}(\eps)
+\Bcal_L(-N+\eps)$ is a Leibniz coefficient of degree $d-1$.
+Multiplication by $d!$ gives exactly the factor
+$d\binom{d-1}{j}$ in \eqref{eq:negative-jets}.
+\end{proof}
+
+This theorem is a finite symbolic procedure at every prescribed
+$(N,d,L)$. It involves no numerical guessing of coefficients.
+For the minimally compensated even-order first jet one may instead
+use Theorem~\ref{thm:negative}; for higher minimal jets, logarithmic
+reciprocal tails generally appear. No ordinary-sum interpretation of
+those insufficiently compensated higher jets is asserted here.
+
+\section{Products of polygammas: finite Hurwitz--Lerch images}
+\label{sec:bilinear}
+
+In this section $a,b>0$ are real. Let $r,t\ge2$ be integers, set
+$A=a+b$, and define
+\begin{equation}\label{eq:D}
+ D_\ell(Q,A)=\frac{\zeta(\ell,A)-Q\Phi(Q,\ell,A)}{1-Q},
+ \qquad 0<Q<1,\quad \ell\ge2,
+\end{equation}
+where
+\[
+ \Phi(Q,\ell,A)=\sum_{m=0}^\infty\frac{Q^m}{(m+A)^\ell}.
+\]
+The elementary partial fractions
+\begin{equation}\label{eq:denominator-pf}
+ \frac1{(1-x)(1-Qx)}
+   =\frac1{1-Q}\left(\frac1{1-x}-\frac{Q}{1-Qx}\right)
+\end{equation}
+give the convergent integral
+\begin{equation}\label{eq:D-integral}
+ \int_0^\infty\frac{u^{\ell-1}e^{-Au}}
+               {(1-e^{-u})(1-Qe^{-u})}\dd u
+        =\Gamma(\ell)D_\ell(Q,A).
+\end{equation}
+
+\begin{theorem}[Finite-image product identity]\label{thm:bilinear}
+For $a,b,h>0$ and integers $r,t\ge2$,
+\begin{equation}\label{eq:bilinear-main}
+ \sum_{n\in\Z}\zeta(r,a+\ii hn)\zeta(t,b-\ii hn)
+       =V_{r,t}(A)+\sum_{k=1}^\infty
+             \bigl(I_{r,t;k}(a,b)+I_{t,r;k}(b,a)\bigr),
+\end{equation}
+where
+\begin{align}
+ V_{r,t}(A)
+  &=\frac{\tau\Gamma(r+t-1)}{\Gamma(r)\Gamma(t)}
+       \bigl(\zeta(r+t-2,A)-(A-1)\zeta(r+t-1,A)\bigr),
+       \label{eq:V}\\
+ I_{r,t;k}(a,b)
+  &=\frac{\tau q^{ak}}{\Gamma(r)\Gamma(t)}
+       \sum_{j=0}^{r-1}\binom{r-1}{j}(\tau k)^{r-1-j}
+                      \Gamma(j+t)D_{j+t}(q^k,A).
+       \label{eq:I}
+\end{align}
+The lattice sum is absolutely convergent. The image series converges
+exponentially, and each individual image is a finite combination of
+Hurwitz zeta and Lerch values.
+\end{theorem}
+\begin{proof}
+Extend the two functions
+\[
+ f(u)=\frac{u^{r-1}e^{-au}}{\Gamma(r)(1-e^{-u})},\qquad
+ g(u)=\frac{u^{t-1}e^{-bu}}{\Gamma(t)(1-e^{-u})}
+\]
+by zero on the negative axis. They are in $L^1\cap L^2$.
+Their Fourier transforms are $\zeta(r,a+\ii y)$ and
+$\zeta(t,b+\ii y)$. The correlation
+\[
+ P(x)=\int_{\mathbb R}f(v+x)g(v)\dd v
+\]
+is continuous by continuity of translations in $L^2$, decays
+exponentially up to polynomial factors in both directions, and has
+Fourier transform
+$\widehat f(y)\widehat g(-y)$. The sampled transform is absolutely
+summable since the product is $O(|n|^{2-r-t})$.
+Apply Lemma~\ref{lem:periodization} to $P$.
+
+At $x=0$ expand $(1-e^{-u})^{-2}=\sum_{m\ge0}(m+1)e^{-mu}$.
+Integration gives \eqref{eq:V}, since
+$m+1=(m+A)-(A-1)$. For $x=\tau k>0$ expand
+$(v+\tau k)^{r-1}$ by the binomial theorem and apply
+\eqref{eq:D-integral}. This gives \eqref{eq:I}. Negative $x$
+swaps $(r,a)$ and $(t,b)$. Exponential decay of the images follows
+also directly from the integral, with factors $q^{ak}$ or $q^{bk}$
+and a fixed polynomial in $k$.
+\end{proof}
+
+The usual relation
+\begin{equation}\label{eq:polygamma}
+ \zeta(r,w)=\frac{(-1)^r}{(r-1)!}\psi^{(r-1)}(w)
+\end{equation}
+converts the theorem into a formula for every product of two positive
+polygamma derivatives. It also permits a finite harmonic-number
+interpretation after horizontal integer differences are taken.
+
+\subsection{An explicit trigamma square}
+For $a>0$, $r=t=2$ and $b=a$ give
+\begin{equation}\label{eq:trigamma-square}
+ \begin{split}
+ \sum_{n\in\Z}|\psi'(a+\ii hn)|^2
+ ={}&2\tau\bigl(\zeta(2,2a)-(2a-1)\zeta(3,2a)\bigr)\\
+ &+2\tau\sum_{k=1}^\infty q^{ak}
+       \bigl(\tau kD_2(q^k,2a)+2D_3(q^k,2a)\bigr).
+ \end{split}
+\end{equation}
+The $k=0$ term is the continuous vertical pairing at the sampling
+normalization. Every $k\ge1$ term is a discrete image correction.
+Keeping only the continuous term is therefore not an exact lattice
+identity.
+
+\subsection{Finite generalized-harmonic differences}
+The shift formula
+\[
+ \zeta(r,w)-\zeta(r,w+J)=\sum_{j=0}^{J-1}(w+j)^{-r}
+\]
+turns four horizontal evaluations of \eqref{eq:bilinear-main} into
+an exact pairing of finite generalized-harmonic sums. All finite sums
+may be interchanged with the lattice series because its terms decay
+at least quadratically. Thus the same identity system covers both
+infinite polygamma tails and finite harmonic windows; no separate
+regularization is needed.
+
+\section{All-index Stieltjes differences and four-shift closure}
+\label{sec:differences}
+
+Let $a,c,b,d>0$ and write
+\begin{align}
+ \Delta_{a,c}(s;n)&=\zeta(s,a+\ii hn)-\zeta(s,c+\ii hn),
+ \label{eq:Delta}\\
+ \delta_m^{a,c}(n)&=\gamma_m(a+\ii hn)-\gamma_m(c+\ii hn).
+ \label{eq:delta}
+\end{align}
+The pole at $s=1$ cancels in $\Delta$, and
+\[
+ \Delta_{a,c}(1+\eps;n)
+    =\sum_{m\ge0}\frac{(-1)^m}{m!}\delta_m^{a,c}(n)\eps^m.
+\]
+For each fixed $m$, $\delta_m^{a,c}(n)=O(\log^m(2+|n|)/(1+|n|))$.
+Its product with a second such difference is absolutely summable.
+
+For $\Ree s>0$ set
+\begin{equation}\label{eq:diff-density}
+ f_s^{a,c}(u)=\frac{u^{s-1}}{\Gamma(s)}
+                 \frac{e^{-au}-e^{-cu}}{1-e^{-u}},\qquad u>0,
+\end{equation}
+extended by zero to $u<0$. It belongs to $L^1$; when $\Ree s>1/2$
+it also belongs to $L^2$. Its Fourier transform is
+$\Delta_{a,c}(s;y/h)$ in the evident continuous-variable notation.
+
+\begin{theorem}[Difference pairing and all its Stieltjes coefficients]
+\label{thm:diff-jets}
+For $\Ree s,\Ree t>1/2$,
+\begin{equation}\label{eq:diff-pair}
+ \begin{split}
+ &\sum_{n\in\Z}\Delta_{a,c}(s;n)\Delta_{b,d}(t;-n)\\
+ &=\tau\int_0^\infty f_s^{a,c}(u)f_t^{b,d}(u)\dd u\\
+ &\quad+\tau\sum_{k=1}^\infty\int_0^\infty
+   \bigl(f_s^{a,c}(u+\tau k)f_t^{b,d}(u)
+        +f_s^{a,c}(u)f_t^{b,d}(u+\tau k)\bigr)\dd u.
+ \end{split}
+\end{equation}
+All series, integrals, and fixed spectral derivatives converge
+normally near $(s,t)=(1,1)$. Define
+\begin{equation}\label{eq:Stieltjes-density}
+ F_m^{a,c}(u)=(-1)^m\Ecal_m(\log u+\gamma)
+                        \frac{e^{-au}-e^{-cu}}{1-e^{-u}}.
+\end{equation}
+Then, for every $m,\ell\ge0$,
+\begin{equation}\label{eq:all-diff-jets}
+ \begin{split}
+ \sum_{n\in\Z}\delta_m^{a,c}(n)\delta_\ell^{b,d}(-n)
+ ={}&\tau\int_0^\infty F_m^{a,c}(u)F_\ell^{b,d}(u)\dd u\\
+ &+\tau\sum_{k\ge1}\int_0^\infty
+   \bigl(F_m^{a,c}(u+\tau k)F_\ell^{b,d}(u)\\
+ &\hspace{36mm}+F_m^{a,c}(u)F_\ell^{b,d}(u+\tau k)\bigr)\dd u.
+ \end{split}
+\end{equation}
+These are ordinary absolutely convergent identities.
+\end{theorem}
+\begin{proof}
+Use the correlation and periodization argument of
+Theorem~\ref{thm:bilinear}, now for the $L^1\cap L^2$ densities
+\eqref{eq:diff-density}. The shift difference improves the vertical
+Hurwitz decay to $O(|n|^{-\Ree s})$, so the sampled product is
+absolutely summable in the stated domain. At zero, the densities
+behave as a constant times $u^{s-1}$; at infinity they decay
+exponentially. These facts give the required normal convergence,
+including logarithmic factors from spectral derivatives.
+
+The coefficient identity
+$(-1)^m\partial_s^m f_s^{a,c}|_{s=1}=F_m^{a,c}$ follows from
+\eqref{eq:E}. Extract the two coefficients in \eqref{eq:diff-pair}.
+The signs and factorials then match \eqref{eq:all-diff-jets}.
+\end{proof}
+
+\subsection{The central image has finite Hurwitz--Stieltjes coordinates}
+Let $a_1=a$, $a_2=c$, $b_1=b$, $b_2=d$, and
+$\epsilon_1=1$, $\epsilon_2=-1$. Put
+\begin{equation}\label{eq:Hcentral}
+ \mathcal H(v)=\sum_{i,j=1}^2\epsilon_i\epsilon_j
+       \bigl(\zeta(v-1,a_i+b_j)
+                  -(a_i+b_j-1)\zeta(v,a_i+b_j)\bigr).
+\end{equation}
+The potential poles at $v=2$ and $v=1$ cancel because
+\[
+ \sum_{i,j}\epsilon_i\epsilon_j=0,
+ \qquad \sum_{i,j}\epsilon_i\epsilon_j(a_i+b_j-1)=0.
+\]
+Hence $\mathcal H$ is entire. The central term of
+\eqref{eq:diff-pair} is
+\begin{equation}\label{eq:central-spectral}
+ \tau\frac{\Gamma(s+t-1)}{\Gamma(s)\Gamma(t)}\mathcal H(s+t-1).
+\end{equation}
+To prove it, expand the squared geometric denominator in a common
+absolute-convergence domain and integrate termwise, then continue
+the grouped expression to $\Ree s,\Ree t>1/2$.
+
+In particular,
+\begin{equation}\label{eq:central-jets}
+ \mathcal H^{(k)}(1)=\sum_{i,j}\epsilon_i\epsilon_j
+ \left(\zeta^{(k)}(0,a_i+b_j)
+       -(-1)^k(a_i+b_j-1)\gamma_k(a_i+b_j)\right).
+\end{equation}
+Every central Stieltjes coefficient is therefore a finite
+combination of these values and reciprocal-Gamma Bell coefficients.
+Explicitly, the central contribution to \eqref{eq:all-diff-jets} is
+\begin{equation}\label{eq:central-coeff}
+ \tau(-1)^{m+\ell}m!\ell!
+ [u^m v^\ell]
+ \frac{\Gamma(1+u+v)}{\Gamma(1+u)\Gamma(1+v)}
+                          \mathcal H(1+u+v).
+\end{equation}
+The nonzero images in \eqref{eq:all-diff-jets} remain explicit
+one-dimensional logarithmic integrals. We do not claim a finite
+single-Hurwitz closure for arbitrary spectral derivatives of those
+images.
+
+\subsection{A fully explicit four-shift digamma identity}
+\begin{theorem}[Four-shift closure]\label{thm:fourshift}
+With the preceding positive real parameters and
+$A_{ij}=a_i+b_j$, define
+\[
+ \mathcal P=\sum_{n\in\Z}
+   \bigl(\psi(c+\ii hn)-\psi(a+\ii hn)\bigr)
+   \bigl(\psi(d-\ii hn)-\psi(b-\ii hn)\bigr).
+\]
+Then
+\begin{equation}\label{eq:four-shift}
+ \begin{split}
+ \mathcal P={}&\tau\sum_{i,j}\epsilon_i\epsilon_j
+                             (A_{ij}-1)\psi(A_{ij})\\
+ &-\tau\sum_{k=1}^\infty\frac1{1-q^k}
+     \sum_{i,j}\epsilon_i\epsilon_j
+       \bigl(q^{a_i k}+q^{b_j k}\bigr)\\
+ &\hspace{34mm}\cdot
+        \bigl(\psi(A_{ij})+q^k\Phi(q^k,1,A_{ij})\bigr).
+ \end{split}
+\end{equation}
+The original lattice series is absolutely convergent and the image
+series converges exponentially.
+\end{theorem}
+\begin{proof}
+Put $s=t=1$ in \eqref{eq:diff-pair}. The central image is
+$\tau\mathcal H(1)$; the $\zeta(0,A)$ terms in
+\eqref{eq:central-jets} cancel, giving the first line of
+\eqref{eq:four-shift}. For a positive image, use
+\eqref{eq:denominator-pf}. Its would-be Hurwitz order-one pole is
+independent of $A_{ij}$, and its total coefficient is
+\[
+ \sum_{i,j}\epsilon_i\epsilon_j q^{a_i k}=0.
+\]
+Thus the finite part of the grouped expression uses
+$\zeta(1+\eta,A)=\eta^{-1}-\psi(A)+O(\eta)$ and gives
+\[
+ -\frac{\tau}{1-q^k}\sum_{i,j}\epsilon_i\epsilon_j q^{a_i k}
+            \bigl(\psi(A_{ij})+q^k\Phi(q^k,1,A_{ij})\bigr).
+\]
+This is an ordinary convergent grouped integral; the Laurent
+calculation only evaluates it. The negative image has $q^{b_jk}$
+instead. Adding them proves \eqref{eq:four-shift}.
+\end{proof}
+
+\begin{example}[A normalization check that reduces to elementary functions]
+If $c=a+1$ and $d=b+1$, the two digamma differences are reciprocals.
+Consequently \eqref{eq:four-shift} must reduce to
+\begin{equation}\label{eq:fourshift-control}
+ \sum_{n\in\Z}\frac1{(a+\ii hn)(b-\ii hn)}
+ =\frac\tau{2(a+b)}
+       \left(\coth\frac{\tau a}{2}+\coth\frac{\tau b}{2}\right).
+\end{equation}
+This follows independently by partial fractions and
+\eqref{eq:reciprocal-sym}. The paired product is itself absolutely
+convergent. Longer integer shift windows reduce to finite sums of
+\eqref{eq:fourshift-control}, giving further independent checks of
+all signs and scale factors in the four-shift image formula.
+\end{example}
+
+\section{Verification, corrections, and integration status}
+\label{sec:audit}
+
+\subsection{What was checked}
+The distributed \src{verification/run_checks.py} executes 268 exact
+algebraic assertions and 38 floating-point comparisons at 65 working
+decimal digits. All passed in the recorded run. The largest recorded
+scaled residual was approximately $3.55\times10^{-43}$; tolerances
+were $10^{-32}$ or $10^{-30}$, depending on the test. These residuals
+are diagnostics, not rigorous error bounds.
+
+The exact assertions verify Bernoulli-polynomial cancellation at
+negative integer orders, the zero-factor derivative
+\eqref{eq:rf-zero-derivative}, the first contact coefficient,
+harmonic-number factors in \eqref{eq:T-explicit}, and the rational
+partial fractions used by the image formulas. They test finitely
+many instances of the uniform proofs; they are not presented as a
+substitute for those proofs.
+
+The numerical routes are deliberately separated. The lattice side
+uses direct Hurwitz evaluations for a finite central range, then a
+sectorial Euler--Maclaurin tail summed through Hurwitz zeta values.
+The Lambert side uses rapidly convergent real-exponential series.
+Stieltjes coefficients are obtained from a pole-cancelled,
+complex-safe Euler--Maclaurin expression rather than a call to
+\src{mpmath.stieltjes} at nonreal arguments. Integer product
+pairings use independently convolved large-lattice asymptotic
+coefficients. Four-shift tests include finite reciprocal reductions
+and direct integral checks of noninteger-shift images.
+
+Some checks compare two symbolic consequences of the same master
+identity, notably the higher-jet Bell compiler and primitive
+transport; these are labeled as cross-route checks, not as fully
+independent validations of the master theorem. Two corruption
+controls reject a changed zero-factor derivative and omission of
+the Gamma contact. Complete numerical values, tolerances, versions,
+and classifications are recorded in \src{results/verification.json}.
+
+\subsection{A concrete editorial correction}
+The inspected manuscript README contains the same paragraph beginning
+``The complete 1,032-input first-letter X family'' twice in immediate
+succession \cite{RepoMain}. The proposed correction is to retain one
+copy and delete the duplicate, without changing any mathematical
+status statement. This is an editorial correction, not evidence of
+a false theorem. The package contains a guarded script that removes
+the second occurrence only when the exact duplicated paragraph is
+present in a supplied local README copy. It does not contact or
+modify GitHub.
+
+\subsection{A mathematical warning, not an attributed repository error}
+The tempting identity
+\[
+ \Sym\sum_n G(w_n)\stackrel{\mathrm{wrong}}=
+     \left.\frac{\partial}{\partial s}
+          \frac{\tau^s\Bcal_0(s)}{\Gamma(s)}\right|_{s=0}
+\]
+omits $\tau/24$. More generally, the omitted term at even negative
+order $-N$ is the contact in \eqref{eq:negative-main}. We provide
+this as an explicit correction to that invalid interchange. The
+audit did \emph{not} establish that an inspected canonical theorem
+made this mistake, and it should not be recorded as an error in a
+particular existing manuscript without an actual source occurrence.
+
+\subsection{Placement and proof status}
+A natural placement is a new continuation under the existing
+vertical-pairing report. The core depends only on the standard
+Hurwitz/Mellin identities and the elementary periodization lemma.
+It does not require accepting any pending continuum or arithmetic
+claim in an incoming archive. A proposed integration order is:
+compensation and sampling; Stieltjes jets and primitives;
+negative-integer contacts; higher jets; integer pairings;
+Stieltjes differences and four-shift closure.
+
+All theorem statements in this article are supplied with analytic
+proofs. No proof-assistant formalization is claimed. The basic Gamma
+specialization is known and credited. The general harmonic-prefix
+conjecture, $S_6$, and revised $S_8$ remain outside the proved scope
+of this package. Formal coefficient calculations made during the
+source search do not settle those period identities. The original
+incoming archives and manuscript files are left unchanged.
+
+\section{Further research questions}
+\label{sec:questions}
+
+\paragraph{1. Minimal compensation for higher resonant jets.}
+The first-jet contact is a single Bernoulli constant. For
+$\partial_s^d\Rcal_{N/2}(-N,w)$ with even $N$ and $d\ge2$,
+logarithmic reciprocal tails appear. Determine a fixed symmetric
+cutoff subtraction that evaluates these minimal jets, and derive
+the complete contact polynomial in $\log\tau$ and the cutoff
+normalization. Theorem~\ref{thm:negative-jets} supplies an ordinary
+oversubtracted reference against which every proposed subtraction
+can be tested.
+
+\paragraph{2. Rationally related vertical scales.}
+Replace $\zeta(r,a+\ii hn)\zeta(t,b-\ii hn)$ by
+$\zeta(r,a+\ii h_1n)\zeta(t,b-\ii h_2n)$ with $h_1/h_2\in\mathbb Q$.
+The correlation constraint is then oblique. Can each sampling image
+still be reduced to a finite Hurwitz--Lerch grid, uniformly in both
+integer orders? The continuous rational-scale results in
+\cite{RepoVertical} suggest a precise comparison, but do not supply
+the discrete image terms automatically.
+
+\paragraph{3. Bilinear critical-order contacts.}
+The difference-pairing proof uses $\Ree s,\Ree t>1/2$.
+Study continuation to $s+t=1$ with the pole cancellation and the
+lattice cutoff fixed. Determine whether a finite local functional
+at the Mellin origin controls the discrepancy, as in
+Theorem~\ref{thm:negative}, and identify its complete mixed jet.
+
+\paragraph{4. Higher products and image geometry.}
+For three or more vertical factors, Poisson sampling constrains a
+sum of Mellin variables to an integer multiple of $\tau$.
+Determine finite formulas for integer orders on each resulting
+simplex, and identify when the result closes in multiple Lerch
+functions or ordinary multiple polylogarithms. A useful first case
+is a product of two trigammas against one reflected trigamma.
+
+\paragraph{5. Order derivatives of nonzero images.}
+Equation~\eqref{eq:all-diff-jets} is explicit but retains logarithmic
+integrals. Determine which combinations of mixed spectral jets
+reduce to finitely many Lerch order derivatives, and which naturally
+require a genuinely larger function class. A failure of a numerical
+basis search would not prove nonreducibility.
+
+\paragraph{6. Periodic filters beyond the mean mode.}
+The first resonant contact is killed exactly by a zero-mean periodic
+filter. For higher minimal jets, determine which additional discrete
+moments of the filter kill the logarithmic contacts. Relate those
+conditions to root-of-unity polylogarithm coordinates without
+asserting arithmetic independence of the resulting values.
+
+\paragraph{7. Modular transport of the Stieltjes jet family.}
+The $a=1$ Gamma specialization is related to the eta transformation
+in \cite{ArdehaliRosengren}. Investigate whether selected spectral
+order derivatives of \eqref{eq:master} admit a useful exact
+$\tau\leftrightarrow4\pi^2/\tau$ transport, including every
+nonmodular correction. This should begin with a functional identity,
+not a guessed numerical relation among special values.
+
+\paragraph{8. Formal verification of the analytic interchange.}
+A proof-assistant development could isolate the periodization lemma,
+normal convergence of compensated Hurwitz jets, and the
+one-extra-subtraction contact argument. These analytic dependencies
+are more consequential than a large list of special-value checks.
+The elementary Bell compiler is a separate, comparatively small
+formal algebra problem.
+
+\section{Conclusion}
+
+The discrete vertical problem admits a single organizing mechanism:
+remove the finitely many Mellin-origin terms that obstruct ordinary
+summation, periodize the remaining density, and extract spectral
+coefficients only on a normal convergence domain. This yields exact
+Stieltjes sums, finite polylogarithmic differences, and normalized
+primitives. At the first negative-even boundary jet, restoring one
+removed reciprocal term produces an explicit Bernoulli contact.
+The same periodization argument applied to correlations gives the
+finite-image polygamma and four-shift formulas.
+
+The separation between absolute sums, symmetric limits, and
+continued spectral expressions is part of each identity, not an
+optional interpretive convention. It is also what makes the
+formulas usable as independently testable additions to the ProveIt
+manuscript rather than numerical conjectures.
+
+\appendix
+\section{Reproduction and source map}
+
+The package is self-contained. Compile the article with
+\begin{verbatim}
+python build.py
+\end{verbatim}
+and replay the mathematics with
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python verification/run_checks.py
+\end{verbatim}
+The build script runs three LaTeX passes and checks for undefined
+references and overfull boxes. The delivered PDF additionally
+received a rendered layout review. A rebuild may differ in binary
+metadata; its bytes are not covered by the original checksum.
+
+The machine-readable source audit records the individual paths and
+blob identifiers returned during inspection. In particular, the
+continuous vertical report was read at commit
+\src{da2792fc9cc8ef19c6a314be6c65e1437fbdc66b}; other reads used
+\src{main} and returned their own blob identifiers. The paper's
+source map must not be interpreted as a complete checkout or an
+audit of unseen ZIP members.
+
+\begin{thebibliography}{99}
+\bibitem{DLMF25}
+NIST Digital Library of Mathematical Functions, \S25.11,
+\emph{Hurwitz Zeta Function}. Definitions, Euler--Maclaurin formulas,
+special values, and sectorial asymptotics.
+\url{https://dlmf.nist.gov/25.11}. Accessed 11 October 2026.
+
+\bibitem{DLMF5}
+NIST Digital Library of Mathematical Functions, \S\S5.9 and 5.11,
+\emph{Gamma Function: Integral Representations and Asymptotic Expansions}.
+\url{https://dlmf.nist.gov/5.9}; \url{https://dlmf.nist.gov/5.11}.
+Accessed 11 October 2026.
+
+\bibitem{DLMFPoly}
+NIST Digital Library of Mathematical Functions, \S25.12,
+\emph{Polylogarithms}. \url{https://dlmf.nist.gov/25.12}.
+Accessed 11 October 2026.
+
+\bibitem{DLMFLerch}
+NIST Digital Library of Mathematical Functions, \S25.14,
+\emph{Lerch's Transcendent}. \url{https://dlmf.nist.gov/25.14}.
+Accessed 11 October 2026.
+
+\bibitem{DLMFFourier}
+NIST Digital Library of Mathematical Functions, \S1.8,
+\emph{Fourier Series}. \url{https://dlmf.nist.gov/1.8}.
+Accessed 11 October 2026.
+
+\bibitem{Coffey}
+M. W. Coffey, \emph{Parameterized summation relations for the Stieltjes
+constants}, arXiv:1002.4684, 2010.
+\url{https://arxiv.org/abs/1002.4684}.
+
+\bibitem{ArdehaliRosengren}
+A. Arabi Ardehali and H. Rosengren,
+\emph{A New Product Formula for $(z;q)_\infty$, with Applications to
+Asymptotics}, Constructive Approximation, published 19 September 2026.
+DOI: 10.1007/s00365-026-09783-2.
+\url{https://doi.org/10.1007/s00365-026-09783-2}.
+In particular, Eqs.~(9), (13), and the discussion of symmetric products.
+
+\bibitem{RepoMain}
+ProveIt Contributors, \emph{Polylogarithms and their Arithmetic Bridges},
+collective manuscript README, repository
+\src{VladimirReshetnikov/ProveIt}, path
+\src{Analysis/Polylogarithms/docs/manuscript/README.md}.
+Inspected blob \src{078716656e8d73e98415b927cca1a1bfea059134}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/Polylogarithms/docs/manuscript}.
+
+\bibitem{RepoVertical}
+ProveIt research report, \emph{Vertical-Line Hurwitz Pairings and Exact
+Stieltjes--Gamma Calculus}, 10 October 2026, README and stated scope.
+Path under \src{Analysis/Polylogarithms/docs/reports/}:
+\src{stieltjes-correlation-calculus/continuations/vertical-stieltjes-pairings/README.md}.
+Read at commit \src{da2792fc9cc8ef19c6a314be6c65e1437fbdc66b};
+blob \src{022b7ad4b25e28fd36322dd8ad36edfcf0d36285}.
+
+\bibitem{RepoBernoulli}
+ProveIt research report, \emph{Bernoulli Determinants, Cubic Tornheim Jets,
+and Canonical Digamma Integrals}, 11 October 2026, README and
+\src{sections/03b_general_hankel.tex}.
+Path under \src{Analysis/Polylogarithms/docs/reports/}:
+\src{stieltjes-harmonic-resonance/continuations/bernoulli-tornheim-digamma/}.
+Inspected README blob \src{395bdbb9469f09109b3dad1d1a86822fe2339ac7}.
+The already proved smaller-order-two reconstruction is not claimed here.
+\end{thebibliography}
+\end{document}

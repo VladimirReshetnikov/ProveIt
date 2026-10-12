@@ -1,0 +1,154 @@
+\section{Affine polarization and the complete square sector}
+\label{ag:sec:polarization}
+
+\subsection{A constant-coefficient quadratic symbol}
+Let $p,q,t$ be formal parameters and make the differential substitution
+\begin{equation}\label{ag:eq:affine}
+ u_0=q+px+\varepsilon v(x),\qquad
+ u_1=p+\varepsilon v'(x),\qquad
+ u_j=\varepsilon v^{(j)}(x)\quad(j\ge2).
+\end{equation}
+Put $W=e^{t(q+px)}$ and $\kappa=tp$, so $W'=\kappa W$.
+For a quadratic differential polynomial in $v$ with constant
+coefficients, polarization introduces two derivative variables
+$\xi_1,\xi_2$. Modulo a total derivative with weight $W$, the relation is
+\[
+ \xi_1+\xi_2+\kappa=0.
+\]
+Set $\xi_1=\xi$, $\xi_2=-\xi-\kappa$, and
+\begin{equation}\label{ag:eq:eta}
+ \eta=-\xi(\xi+\kappa).
+\end{equation}
+The symbol of $(v^{(r)})^2$ is $\eta^r$, while the symbol of $vv'$ is
+$-\kappa/2$. A weighted derivative is annihilated because its symbol is
+multiplied by $\xi_1+\xi_2+\kappa$.
+
+\begin{lemma}[Uniqueness of the square symbol]\label{ag:lem:symbol}
+If a finite sum $W\sum_{r=0}^M c_r(v^{(r)})^2$ is a weighted total
+derivative of a constant-coefficient quadratic differential expression,
+then every $c_r$ is zero. The same conclusion holds coefficientwise for
+formal series in $t$.
+\end{lemma}
+\begin{proof}
+Its symbol is $\sum c_r\eta^r=0$. Since $\eta$ is a polynomial of
+degree two in $\xi$, distinct powers have different degrees and are
+linearly independent. The formal statement follows at every finite
+coefficient of $t$. Conversely, the symmetric symbols invariant under
+$\xi\mapsto-\xi-\kappa$ form the polynomial ring in $\eta$, so this
+symbol also supplies the usual diagonal reduction of quadratic forms.
+\end{proof}
+
+Lemma~\ref{ag:lem:appell-primitive} ensures that this is exactly the
+quotient needed after \eqref{ag:eq:affine}: the quadratic part of the
+primitive of $\mathcal C-\NF\mathcal C$ is $W$ times an expression
+whose coefficients do not depend on $x$. An arbitrary $x$-dependent
+antiderivative, which would invalidate the symbol argument, is not
+being allowed.
+
+\subsection{The symbol of the centered Gamma exponential}
+Define the even differential series
+\[
+ K_t(z)=\frac{2\sinh(tz/2)}{z},\qquad K_t(0)=t.
+\]
+The exponent in \eqref{ag:eq:centered} is $K_t(\D)u_0$. Its affine
+part is $t(q+px)$, so the quadratic perturbation of $\mathcal C$ is
+\begin{equation}\label{ag:eq:quadratic-density}
+ [\varepsilon^2]\mathcal C=\frac{W}{2}\bigl(K_t(\D)v\bigr)^2.
+\end{equation}
+Now set $y=t^2p/2$ and $h=t(\xi+\kappa/2)$; then
+$h^2=y^2-t^2\eta$. The product-to-sum identity for hyperbolic sines
+gives the exact symbol
+\begin{align}
+ \frac12K_t(-\xi-\kappa)K_t(\xi)
+ &=\frac{\cosh y-\cosh\sqrt{y^2-t^2\eta}}{\eta}\notag\\
+ &=\sum_{r\ge0}\frac{(-1)^rt^{2r+2}}{(r+1)!}
+           \piy^{\,r+1}\cosh y\,\eta^r.
+ \label{ag:eq:master-symbol}
+\end{align}
+The square root introduces no branch: $\cosh\sqrt z$ means its entire
+series $\sum_{n\ge0}z^n/(2n)!$. The numerator is divisible by $\eta$.
+
+On the other hand, normal support and the Appell factor imply
+\eqref{ag:eq:normal-sector}, initially with unknown $f_0,g_r$.
+No normal monomial has exactly one factor of index at least two.
+If it has exactly two, their indices must coincide. All other such
+monomials contribute only at order $\varepsilon^3$ or higher.
+The quadratic perturbation of its low-index part is
+\[
+ W\left\{\frac{t^2f_0}{2}v^2+\frac{t^3f_0'}{2}vv'
+                         +\frac{t^4f_0''}{8}(v')^2\right\}.
+\]
+After replacing the mixed term by its symbol, the coefficients of
+$\eta^0$ and $\eta^1$ are
+\[
+ \frac{t^2}{2}(f_0-yf_0'),\qquad \frac{t^4}{8}f_0''.
+\]
+For $r\ge2$ the coefficient of $\eta^r$ is simply
+$t^{2r+2}g_r(y)$. Lemma~\ref{ag:lem:symbol} and
+\eqref{ag:eq:master-symbol} therefore prove the derivative formula
+for $g_r$ in Theorem~\ref{ag:thm:main}.
+
+The coefficient of $\eta^0$ gives
+\begin{equation}\label{ag:eq:f0-ode}
+ f_0-yf_0'=\frac{\sinh y}{y}.
+\end{equation}
+The normal form excludes a term linear in $u_1$, hence a term linear
+in $y$. With $f_0(0)=1$, the unique solution is
+\eqref{ag:eq:f0-intro}. The $\eta^1$ equation agrees with its second
+derivative and supplies an independent normalization check.
+
+\subsection{The beta representation and explicit coefficients}
+\begin{proposition}[Entire kernels and their recurrences]\label{ag:prop:kernel}
+For every $r\ge0$ define
+$g_r(y)=(-1)^r\piy^{r+1}\cosh y/(r+1)!$. Then
+\begin{equation}\label{ag:eq:beta-kernel}
+ g_r(y)=c_r\int_0^1(1-v^2)^r\cosh(yv)\dd v,
+ \qquad c_r=\frac{(-1)^r}{2^{2r+1}r!(r+1)!}.
+\end{equation}
+They are even entire functions and satisfy
+\begin{align}
+ \sum_{r\ge0}g_r(y)w^r
+   &=\frac{\cosh y-\cosh\sqrt{y^2-w}}{w},
+       \label{ag:eq:bivariate}\\
+ g_{r+1}(y)&=-\frac1{r+2}\piy g_r(y),
+       \label{ag:eq:kernel-rec}\\
+ yg_r''+(2r+2)g_r'-yg_r&=0,
+ \qquad g_r(0)=\frac{(-1)^r}{(2r+2)!}.
+       \label{ag:eq:kernel-ode}
+\end{align}
+In \eqref{ag:eq:bivariate}, the terms $r=0,1$ are symbol coefficients;
+they are not $f_0$ and a nonexistent normal $u_1$ term.
+\end{proposition}
+\begin{proof}
+Expanding the hyperbolic cosine in \eqref{ag:eq:beta-kernel} is uniformly
+convergent on compact sets. For every even $k\ge0$,
+\[
+ \int_0^1v^k(1-v^2)^r\dd v
+ =\frac12 B\left(\frac{k+1}{2},r+1\right)
+ =\frac{2^r r!}{\prod_{j=0}^r(k+2j+1)}.
+\]
+Thus
+\begin{equation}\label{ag:eq:kernel-coeff}
+ k![y^k]g_r(y)=
+ \frac{(-1)^r}{2^{r+1}(r+1)!\prod_{j=0}^r(k+2j+1)}
+ \quad(k\text{ even}),
+\end{equation}
+and odd coefficients vanish. Comparing with the differentiated cosine
+series proves the beta identity and the ${}_0F_1$ expression.
+Taylor expansion in $w$ proves \eqref{ag:eq:bivariate}; differentiation
+proves \eqref{ag:eq:kernel-rec}. Substituting the coefficients proves
+\eqref{ag:eq:kernel-ode}. Finally, expand $e^{tu_0}$ and set
+$y=u_1t^2/2$ to obtain \eqref{ag:eq:coefficient}.
+\end{proof}
+
+The first two high-index kernels are elementary:
+\begin{align}
+ g_2(y)&=\frac{(y^2+3)\sinh y-3y\cosh y}{48y^5},
+       \label{ag:eq:g2}\\
+ g_3(y)&=-\frac{(y^3+15y)\cosh y-(6y^2+15)\sinh y}{384y^7}.
+       \label{ag:eq:g3}
+\end{align}
+At the origin these formulas should be evaluated by their even Taylor
+series or by ${}_0F_1$, rather than by subtracting nearly equal floating
+numbers. The recurrence generates every higher elementary hyperbolic
+expression, while the beta form is preferable for the analytic bridge.

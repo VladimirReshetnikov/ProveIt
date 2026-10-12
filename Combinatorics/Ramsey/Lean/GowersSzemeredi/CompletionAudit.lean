@@ -61,6 +61,17 @@ example : ∀ k : Nat, 1 ≤ k → LeanProofs.GowersSzemeredi.PolyCoverAt k
   fun _ hk => LeanProofs.GowersSzemeredi.theorem_16_2_polynomial hk
 example : LeanProofs.GowersSzemeredi.theorem_16_2 :=
   LeanProofs.GowersSzemeredi.theorem_16_2_polynomial_implies_printed
+example : ∀ k : Nat, 2 ≤ k → ∀ alpha : Real, 0 < alpha → alpha ≤ 1 / 2 →
+    ∃ e : Real, 0 < e ∧ e⁻¹ ≤ (2 / alpha) ^ (2 ^ (236 * 2 ^ k + k + 24)) ∧
+      ∃ N0 : Nat, ∀ (N : Nat) [NeZero N] [Fact N.Prime], N0 ≤ N →
+        ∀ f : ZMod N → Complex, LeanProofs.GowersSzemeredi.DiscValued f →
+          ¬ LeanProofs.GowersSzemeredi.UniformOfDegree f alpha (k + 2) →
+          ∃ P : LeanProofs.GowersSzemeredi.Box N (k + 1),
+            ∃ mu : LeanProofs.GowersSzemeredi.Point N (k + 1) → ZMod N,
+              LeanProofs.GowersSzemeredi.IsMultilinear mu ∧ (N : Real) ^ e ≤ P.width ∧
+              e * P.carrier.card ≤
+                LeanProofs.GowersSzemeredi.section16LargeMultilinearFrequencyCount f P mu alpha :=
+  fun _ hk => LeanProofs.GowersSzemeredi.corollary_16_11_polynomial hk
 
 open Lean Elab Command in
 run_cmd do
@@ -78,7 +89,8 @@ run_cmd do
     ``LeanProofs.GowersSzemeredi.van_der_waerden_printed,
     ``LeanProofs.GowersSzemeredi.theorem_1_3_L5,
     ``LeanProofs.GowersSzemeredi.theorem_16_2_polynomial,
-    ``LeanProofs.GowersSzemeredi.theorem_16_2_polynomial_implies_printed
+    ``LeanProofs.GowersSzemeredi.theorem_16_2_polynomial_implies_printed,
+    ``LeanProofs.GowersSzemeredi.corollary_16_11_polynomial
   ]
   for name in everyIndex do
     let info ← getConstInfo name
@@ -87,7 +99,7 @@ run_cmd do
     for axiomName in (← collectAxioms name) do
       unless allowed.contains axiomName do
         throwError "{name} depends on unapproved axiom {axiomName}"
-  logInfo "Checked the eight every-degree and every-length strengthenings, the two van der Waerden bounds, the sharper Theorem 1.3 and the polynomial Theorem 16.2; only approved axioms."
+  logInfo "Checked the eight every-degree and every-length strengthenings, the two van der Waerden bounds, the sharper Theorem 1.3 and the polynomial Theorem 16.2 and Corollary 16.11; only approved axioms."
 
 -- The refutation is checked separately; it is never counted as a proof
 -- of the original printed encoding or hidden among the 120 companions.

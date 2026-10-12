@@ -4300,7 +4300,20 @@ and `theorem_16_2_polynomial_implies_printed : theorem_16_2`; stub axiom
 `section16RecurrenceProfileWith_explicit` only; both are in
 `CompletionAudit.lean`.
 
-A three-page mathematical write-up of L.12-L.15i is in
+**L.15j: Corollary 16.11 with polynomial exponents.** The printed Corollary
+16.11 gives width `N^e` and frequency density `e` with
+`e = section16CorollaryExponent α k`, a tower in `1/α`. The single-piece step
+with the joint-cover remainder gives the same conclusion with
+`e = min(Eloc, box density)` and `e⁻¹ ≤ (2/α)^(2^(236·2^k + k + 24))`,
+polynomial in `1/α` (`Proofs16PolynomialCorollary`, light:
+`singlePieceEtaC_le_density`, `expDegC_tight_le`,
+`corollary_16_11_polynomial_of_profiles`; bridge
+`corollary_16_11_polynomial` in `Proofs18CoverSharperAllDegrees`, dimensions
+`k + 1 ≥ 3`, stub axiom `section16RecurrenceProfileWith_explicit` only; in
+`CompletionAudit.lean`). Oddness of `N` is not assumed: the modulus
+threshold supplies it.
+
+A three-page mathematical write-up of L.12-L.15j is in
 `joint-vertex-covers/joint-vertex-covers.tex` (PDF beside it).
 
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the

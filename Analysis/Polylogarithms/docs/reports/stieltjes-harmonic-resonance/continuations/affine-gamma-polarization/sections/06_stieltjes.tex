@@ -1,0 +1,166 @@
+\section{Every Stieltjes order and anchored parameter primitives}
+\label{ag:sec:stieltjes}
+
+We use the Laurent convention
+\begin{equation}\label{ag:eq:Stieltjes-convention}
+ \zeta(1+\varepsilon,x)=\frac1\varepsilon+
+       \sum_{m\ge0}\frac{(-1)^m}{m!}\gamma_m(x)\varepsilon^m,
+                 \qquad \gamma_0(x)=-\psi(x).
+\end{equation}
+Define the ordinary weighted averages
+\begin{equation}\label{ag:eq:Bdefinition}
+ \BB_{r,m}(a,b)=\frac{c_r}{2}\int_{-1}^1
+                      (1-v^2)^r\gamma_m(a+bv)\dd v.
+\end{equation}
+Consequently
+\[
+ \HH_r(1+\varepsilon;a,b)=\frac{g_r(0)}\varepsilon+
+              \sum_{m\ge0}\frac{(-1)^m}{m!}\BB_{r,m}(a,b)\varepsilon^m.
+\]
+This expansion is locally uniform for the spatial parameters under the
+conditions of Theorem~\ref{ag:thm:hurwitz}.
+
+\subsection{Finite complete-harmonic coefficients}
+For $j\ge1$, let
+\begin{equation}\label{ag:eq:homogeneous}
+ E_j(\varepsilon)=\prod_{n=1}^j(1-\varepsilon/n)^{-1}
+               =\sum_{\ell\ge0}h_\ell^{(j)}\varepsilon^\ell.
+\end{equation}
+These are complete homogeneous polynomials in $1,1/2,\ldots,1/j$.
+They can be calculated from generalized harmonic numbers without
+expanding a product:
+\begin{equation}\label{ag:eq:hrecurrence}
+ h_0^{(j)}=1,\qquad
+ \ell h_\ell^{(j)}=\sum_{d=1}^\ell H_j^{(d)}h_{\ell-d}^{(j)}.
+\end{equation}
+For example, $h_1^{(j)}=H_j$ and
+$h_2^{(j)}=((H_j)^2+H_j^{(2)})/2$.
+
+\begin{theorem}[All-order Stieltjes endpoint formula]
+\label{ag:thm:Stieltjes}
+Let $D_{rj}=w_{rj}(b)/j!$, and use $\zeta^{(k)}$ for a derivative
+in the spectral variable. For every $m\ge0$,
+\begin{align}
+ \boxed{\displaystyle
+ \BB_{r,m}(a,b)=(-1)^{m+1}m!
+ \sum_{j=r}^{2r}D_{rj}\sum_{k=0}^{m+1}
+ \frac{h_{m+1-k}^{(j)}}{k!}
+ \left\{\zeta^{(k)}(-j,a+b)-(-1)^j\zeta^{(k)}(-j,a-b)\right\}.}
+ \label{ag:eq:Stieltjes-all}
+\end{align}
+There are only $r+1$ endpoint pairs, and the largest spectral derivative
+order is $m+1$.
+\end{theorem}
+\begin{proof}
+At $s=1+\varepsilon$,
+\[
+ (1-s)_{j+1}=-j!\varepsilon\prod_{n=1}^j(1-\varepsilon/n).
+\]
+Set
+$F_j(\varepsilon)=\zeta(-j+\varepsilon,a+b)
+ -(-1)^j\zeta(-j+\varepsilon,a-b)$.
+Theorem~\ref{ag:thm:hurwitz} becomes
+\begin{equation}\label{ag:eq:H-Laurent-master}
+ \HH_r(1+\varepsilon;a,b)
+ =-\frac1\varepsilon\sum_{j=r}^{2r}D_{rj}
+                          E_j(\varepsilon)F_j(\varepsilon).
+\end{equation}
+The constant coefficient of the numerator is $-g_r(0)$.
+The coefficient of $\varepsilon^{m+1}$ is a finite convolution of
+\eqref{ag:eq:homogeneous} with the Taylor series of $F_j$.
+Comparison with \eqref{ag:eq:Stieltjes-convention} proves
+\eqref{ag:eq:Stieltjes-all}. Taking a logarithmic derivative of
+\eqref{ag:eq:homogeneous} proves \eqref{ag:eq:hrecurrence}.
+\end{proof}
+
+At $m=0$ the inner expression is $F_j'(0)+H_jF_j(0)$.
+At $m=1$ it is
+$F_j''(0)/2+H_jF_j'(0)+((H_j)^2+H_j^{(2)})F_j(0)/2$.
+Thus the harmonic counterterms are required even though every spatial
+integral in \eqref{ag:eq:Bdefinition} is nonsingular. They arise from
+the finite endpoint denominators, not from an arbitrary regularization.
+
+\subsection{Spatial derivatives}
+Differentiation of the compact formula gives, for $L\ge0$,
+\begin{equation}\label{ag:eq:H-spatial}
+ \partial_a^L\HH_r(s;a,b)=(-1)^L(s)_L\HH_r(s+L;a,b).
+\end{equation}
+For $L\ge1$, comparison at $s=1+\varepsilon$ yields
+\begin{equation}\label{ag:eq:B-spatial}
+ \partial_a^L\BB_{r,m}(a,b)
+ =(-1)^{m+L}m![\varepsilon^m]
+       (1+\varepsilon)_L\HH_r(1+L+\varepsilon;a,b).
+\end{equation}
+In particular,
+\[
+ \partial_a\BB_{r,m}=(-1)^{m+1}
+  \left\{\partial_s^m\HH_r(2;a,b)
+                   +m\partial_s^{m-1}\HH_r(2;a,b)\right\},
+\]
+where the second term is omitted for $m=0$. The finite product
+$(1+\varepsilon)_L$ gives another explicit generalized-harmonic
+coefficient expansion when desired.
+
+\subsection{First primitives and the Gamma endpoint}
+\begin{corollary}[An anchored first primitive]\label{ag:cor:primitive}
+For $a,a_0>b>0$ and $m\ge0$,
+\begin{equation}\label{ag:eq:first-primitive}
+ \int_{a_0}^a\BB_{r,m}(\alpha,b)\dd\alpha
+ =\frac{(-1)^{m+1}}{m+1}
+  \left.\partial_s^{m+1}\bigl(\HH_r(s;a,b)-\HH_r(s;a_0,b)\bigr)\right|_{s=0}.
+\end{equation}
+For $m=0$ this is the ordinary log-Gamma identity
+\begin{equation}\label{ag:eq:logGamma-primitive}
+ \int_{a_0}^a\BB_{r,0}(\alpha,b)\dd\alpha
+ =-\frac{c_r}{2}\int_{-1}^1(1-v^2)^r
+       \log\frac{\Gamma(a+bv)}{\Gamma(a_0+bv)}\dd v.
+\end{equation}
+\end{corollary}
+\begin{proof}
+Equation \eqref{ag:eq:H-spatial} with $L=1$ gives
+$\partial_a\HH_r(s)=-s\HH_r(1+s)$. Its coefficient of $s^{m+1}$ is
+$(-1)^{m+1}\BB_{r,m}/m!$, proving
+\eqref{ag:eq:first-primitive} after differentiation and anchoring.
+Use $\zeta'(0,x)=\log\Gamma(x)-\tfrac12\log(2\pi)$
+\cite{DLMFzeta} in \eqref{ag:eq:Hcompact}; the constant cancels between
+the two endpoints, giving \eqref{ag:eq:logGamma-primitive}.
+\end{proof}
+
+\subsection{An explicit primitive of every depth}
+The same argument can be made completely normalized at arbitrary
+integration depth, without introducing unspecified constants.
+For $L\ge1$ set
+\[
+ U_L(s;a,b)=\frac{\HH_r(s-L;a,b)}{(1-s)_L}.
+\]
+Define
+\begin{align}
+ V_L(s;a,a_0,b)={}&U_L(s;a,b)
+ -\sum_{j=0}^{L-1}\frac{(a-a_0)^j}{j!}\partial_a^jU_L(s;a_0,b)\notag\\
+ &-\frac{g_r(0)(a-a_0)^L}{L!(s-1)}.
+ \label{ag:eq:anchored-L}
+\end{align}
+\begin{theorem}[All anchored Stieltjes primitives]\label{ag:thm:all-primitives}
+The function $V_L$ is holomorphic near $s=1$, and
+\begin{equation}\label{ag:eq:all-primitives}
+ J_{L,m}(a;a_0,b)=(-1)^m m![\varepsilon^m]
+                          V_L(1+\varepsilon;a,a_0,b)
+\end{equation}
+satisfies
+$\partial_a^LJ_{L,m}=\BB_{r,m}(a,b)$ and
+$\partial_a^jJ_{L,m}(a_0;a_0,b)=0$ for $0\le j<L$.
+It is the unique $L$-fold primitive with those anchor conditions.
+\end{theorem}
+\begin{proof}
+The identity $\partial_a^LU_L=\HH_r(s;a,b)$ follows from
+\eqref{ag:eq:H-spatial}. The residue of $U_L$ at $s=1$ is a polynomial
+of degree at most $L$ in $a$, because
+$\zeta(1-L,a+bv)=-B_L(a+bv)/L$. Its $L$th derivative is $g_r(0)$.
+Taylor subtraction through degree $L-1$ therefore leaves exactly the
+last pole written in \eqref{ag:eq:anchored-L}; removing it proves
+holomorphy. Differentiating $L$ times leaves
+$\HH_r(s;a,b)-g_r(0)/(s-1)$. Coefficient comparison proves the
+claimed derivative. All lower anchor derivatives vanish by construction.
+The difference of any two such primitives is a polynomial of degree
+below $L$ with all its anchor derivatives zero, hence vanishes.
+\end{proof}
