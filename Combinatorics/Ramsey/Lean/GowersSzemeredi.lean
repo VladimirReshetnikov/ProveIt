@@ -1143,6 +1143,7 @@ import GowersSzemeredi.Proofs15WalshGeneral
 import GowersSzemeredi.Proofs15DegenerateRange
 import GowersSzemeredi.Proofs15FejerSelection
 import GowersSzemeredi.Proofs15FejerProduct
+import GowersSzemeredi.Proofs16TightRadius
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
