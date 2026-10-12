@@ -6,8 +6,8 @@ finite exceptional-row algorithms are not validated by this record.
 
 The patch applies cleanly to an isolated copy of its pinned baseline,
 `c6d0ec8aa0b6308310ab6c081ba29d8bc363ede5`. All six delivered gap-prefix tests
-pass in 0.106 seconds. The four target runtime modules currently match that
-baseline byte for byte. The maintained runtime has not yet been changed.
+pass in 0.106 seconds. At that review checkpoint the four target runtime modules matched that
+baseline byte for byte. Native integration followed in a separate change.
 
 The proposed verifier helper replaces repeated sums over every static gap
 at each pairing endpoint with one prefix table and binary searches. It
@@ -24,3 +24,16 @@ and weighted-transversal behavior, and measure complete queries and replay.
 The isolated test result is not a whole-native-suite or performance claim.
 See `synthesis/data/deferred-forest-report106-gap-*` for this review's
 source pins and test log. The originals remain unchanged.
+
+## Native gap-prefix integration
+
+The maintained four runtime modules now use the gap patch. Eight focused
+tests pass, including two added native tests for hostile nested weighted
+proofs and weighted original-label replay with 16,384-bit endpoints. The
+independent checker helper is used only after exact gap authentication.
+Old certificate formats and the inverse representative map are unchanged.
+The detailed proof and evolving validation record are in
+`synthesis/gap_prefix_replay.tex` and `synthesis/data/gap-prefix-*`.
+Four retained baseline modules support separate-interpreter paired complete
+queries and corpus certificate comparisons. Full validation is in progress.
+The original delivered package files remain unchanged.

@@ -4,6 +4,7 @@ from collections import defaultdict
 from math import gcd
 
 from .integer_codec import encoded_integer
+from .interval_orbit_verify import _contract_pairings
 from .weighted_orbit_verify import (_check_weighted_certificate,
     _contract_weights, _translation_fold, _reflection_fold, _move_interval, _InvalidWeightedProof)
 
@@ -48,8 +49,7 @@ def _reverse_tags(size, pairs, runs, trace, dimension, check):
                     end = min(stop, runs[ri][1]); emitted.append((point, end, runs[ri][2])); point = end
             history.append((gaps, emitted))
             runs, size = _contract_weights(runs, size, gaps, histogram, check)
-            def shift(point): return point-sum(hi-lo+1 for lo, hi in gaps if hi < point)
-            pairs = [[shift(a), shift(b), shift(c), shift(d), s] for a, b, c, d, s in pairs]
+            pairs, _ = _contract_pairings(pairs, gaps, check)
         elif kind == 'truncate':
             i, cut = encoded_integer(event['index']), encoded_integer(event['new_size']); a, b, c, d, sign = pairs[i]
             runs = (_translation_fold(runs, size, cut, c-a, dimension, check) if sign == 1 else

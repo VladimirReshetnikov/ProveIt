@@ -1827,3 +1827,9 @@ coupled-forest source probe replays 114 positive core reductions and gives
 two independent stopping-set packing obstructions; four bounded searches
 are inconclusive on cases the incumbent already solves. Full evidence and
 paired timings are under `data/deferred-forest-*`.
+
+`gap_prefix_replay.tex` proves the authenticated static-gap prefix mapping
+bound O(G + P log(G+2)), replacing repeated endpoint scans in three orbit
+checkers. Report 106's corresponding producer scan is also integrated.
+The source-pinned validation and paired complete-query experiment are in
+`data/gap-prefix-*`; this local bound does not bound native trace length.

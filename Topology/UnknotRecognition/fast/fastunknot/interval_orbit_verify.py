@@ -10,6 +10,7 @@ version 2 permits the exact Fine--Wilf threshold. Neither version asserts
 anything about a knot or the provenance of a normal-surface triangulation.
 """
 
+from bisect import bisect_left
 from math import gcd
 import re
 
@@ -91,6 +92,30 @@ def _gaps(size, pairs):
         result.append([first_free, size - 1])
     return result
 
+
+
+def _contract_pairings(rows, gaps, check=lambda: None):
+    """Remap pairing endpoints using authenticated static-gap prefix sums.
+
+    Precondition: gaps are increasing, disjoint inclusive intervals, and no
+    row endpoint lies in a gap. The unweighted checker establishes this before
+    calling; weighted checker continuations first authenticate the full trace.
+    This helper imports no producer code and stores no cross-call state.
+    Its arithmetic cost is O(g + k log(g+2)) for g gaps and k rows.
+    """
+    ends, prefix = [], [0]
+    for lo, hi in gaps:
+        check()
+        ends.append(hi)
+        prefix.append(prefix[-1] + hi - lo + 1)
+    mapped = []
+    for a, b, c, d, sign in rows:
+        check()
+        mapped.append([a - prefix[bisect_left(ends, a)],
+                       b - prefix[bisect_left(ends, b)],
+                       c - prefix[bisect_left(ends, c)],
+                       d - prefix[bisect_left(ends, d)], sign])
+    return mapped, prefix[-1]
 
 def _inverse_image(interval, pairing, power):
     """Certify a power of one partial inverse and return its affine map.
@@ -218,12 +243,8 @@ def _verify(size, pairings, certificate, check):
                 raise _InvalidCertificate("Contraction gaps are not static")
             actual = decoded_gaps
 
-            def shifted(point):
-                return point - sum(hi - lo + 1 for lo, hi in actual if hi < point)
-
-            decrease = sum(hi - lo + 1 for lo, hi in actual)
-            current = [[shifted(a), shifted(b), shifted(c), shifted(d), sign]
-                       for a, b, c, d, sign in current]
+            current, decrease = _contract_pairings(
+                current, actual, check if check is not None else lambda: None)
             size -= decrease
             removed_orbits += decrease
 
