@@ -6,6 +6,7 @@ from .bundle_boundary_kernel_verify import replay_bundle_boundary_kernel
 from .bundle_primitive_annuli_verify import replay_primitive_bundle_annuli
 from .core_primitive_annuli_verify import replay_core_primitive_annuli
 from .core_handlebody_verify import verify_core_handlebody_certificate
+from .core_three_handle_reduction_verify import replay_core_three_handles
 from .disk_bundle_absorption_verify import replay_disk_bundle_absorption
 from .integer_codec import encoded_integer, certificate_equal
 from .normal_parallelity_verify import verify_normal_cut_parallelity
@@ -117,9 +118,11 @@ def verify_normal_cut_handlebodies(triangulation, coordinates, certificate, *,
     if type(certificate) is not dict:
         return False
     version = certificate.get('schema')
-    if version == 'normal-cut-handlebodies-v5':
+    if version in ('normal-cut-handlebodies-v5', 'normal-cut-handlebodies-v6'):
         fields.remove('core')
         fields.add('kernel')
+        if version == 'normal-cut-handlebodies-v6':
+            fields.add('core_reduction')
     elif version == 'normal-cut-handlebodies-v4':
         fields.update(('absorption', 'core_annuli'))
     elif version == 'normal-cut-handlebodies-v3':
@@ -155,7 +158,11 @@ def verify_normal_cut_handlebodies(triangulation, coordinates, certificate, *,
     # Large source integers may use the established exact hexadecimal codec.
     geometry, summary = _decode(p['geometry']), _decode(p['summary'])
     skeleton = _decode(b['skeleton'])
-    if version == 'normal-cut-handlebodies-v5':
+    if version == 'normal-cut-handlebodies-v6':
+        geometry = replay_core_three_handles(geometry, certificate['core_reduction'], check=check)
+        if geometry is None:
+            return False
+    if version in ('normal-cut-handlebodies-v5', 'normal-cut-handlebodies-v6'):
         census = replay_bundle_boundary_kernel(geometry, summary, skeleton, certificate['kernel'], check=check)
         return census is not None and certificate_equal(certificate['census'], census)
     try:

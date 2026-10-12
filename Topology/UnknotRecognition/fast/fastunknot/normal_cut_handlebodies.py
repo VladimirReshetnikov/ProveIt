@@ -12,6 +12,7 @@ from .bundle_boundary_kernel import bundle_boundary_kernel
 from .bundle_primitive_annuli import primitive_bundle_annuli
 from .core_primitive_annuli import core_primitive_annuli
 from .core_handlebody import core_handlebody_certificate
+from .core_three_handle_reduction import reduce_core_three_handles
 from .disk_bundle_absorption import absorb_disk_bundles
 from .normal_parallelity import normal_cut_parallelity
 from .parallelity_boundary_words import normal_parallelity_boundary_words
@@ -111,8 +112,10 @@ def _census(geometry, summary, skeleton, components, check, absorbed=frozenset()
                 joined_components=joined, isolated_bundles=isolated, attachments=edges), None
 
 
-def _kernel_fallback(result, parallelity, boundary, record_certificate, check):
-    kernel = bundle_boundary_kernel(parallelity['geometry'], parallelity['summary'],
+def _kernel_fallback(result, parallelity, boundary, record_certificate, check, *,
+                     geometry=None, reduction=None):
+    geometry = parallelity['geometry'] if geometry is None else geometry
+    kernel = bundle_boundary_kernel(geometry, parallelity['summary'],
                                     boundary['skeleton'], check=check)
     if kernel is None:
         return result
@@ -124,6 +127,8 @@ def _kernel_fallback(result, parallelity, boundary, record_certificate, check):
         result['certificate'] = dict(schema='normal-cut-handlebodies-v5',
             parallelity=parallelity['certificate'], boundary=boundary['certificate'],
             kernel=proof, census=census)
+        if reduction is not None:
+            result['certificate'].update(schema='normal-cut-handlebodies-v6', core_reduction=reduction)
     return result
 
 
@@ -154,12 +159,17 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
     if parallelity['status'] != 'COMPLETE':
         result['reason'] = 'parallelity_budget_exhausted'
         return result
-    if parallelity['geometry']['core']['handles3']:
-        result['reason'] = 'core_has_three_handles'
-        return result
+    geometry, reduction = parallelity['geometry'], None
+    if geometry['core']['handles3']:
+        reduced = reduce_core_three_handles(geometry, check=check)
+        if reduced is None:
+            result['reason'] = 'core_three_handle_reduction_stalled'
+            return result
+        geometry, reduction = reduced
+        result['stats']['core_reduction'] = dict(cancelled_23=len(reduction['cancellations']))
     prepared_core = None
     if precheck_core:
-        prepared_core = core_handlebody_certificate(parallelity['geometry']['core'], check=check)
+        prepared_core = core_handlebody_certificate(geometry['core'], check=check)
         result['stats']['core_precheck'] = prepared_core.get('stats', {})
         if prepared_core['status'] != 'COMPLETE':
             # Added bundle columns vanish on the original core rows. A source
@@ -176,6 +186,10 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
     if boundary['status'] != 'COMPLETE':
         result['reason'] = 'boundary_budget_exhausted'
         return result
+    if reduction is not None:
+        result['reason'] = 'boundary_kernel_cancellation_stalled'
+        return _kernel_fallback(result, parallelity, boundary, record_certificate, check,
+                                geometry=geometry, reduction=reduction)
     family = primitive_bundle_annuli(parallelity['summary'], boundary['skeleton'], check=check)
     core_side = family is None
     if core_side:

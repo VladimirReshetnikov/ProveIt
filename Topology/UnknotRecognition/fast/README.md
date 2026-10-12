@@ -4355,3 +4355,31 @@ improves about 1.17x and 1.08x. Successful whole supplied-cut queries are
 essentially unchanged, while the two measured early-refusal queries improve
 2.53x and 2.06x. Raw samples, A/A controls and source pins are retained in
 `../synthesis/data/column-peeling-benchmark.json`.
+
+
+### Source core three-handle reduction
+
+The supplied-cut operator now removes source core three-handles by an
+independently checked dual boundary forest before testing the raw core.
+A zero-weight source edge has its two original vertex endpoints. A positive
+weight edge contributes two extreme gaps, each running from its original
+vertex to the cut boundary. Original boundary vertices also count as boundary
+endpoints. Endpoint occurrences retain multiplicity: an interior loop has
+two contacts and cannot be an initial cancellation pivot.
+
+A queue removes a two/three pair only when exactly one interior endpoint
+remains. Every interior vertex reaches the boundary in this dual graph, so
+this phase removes all core three-handles under the validated source contract.
+The source zero/one handles, port charts, and core Euler characteristic are
+preserved. Independent replay derives owners from authenticated vertex-link
+triangles and computes edge weights directly from local normal coordinates.
+
+New whole-cut proofs use `normal-cut-handlebodies-v6`, containing the original
+source proofs, `core-three-handle-reduction-v1`, and the current boundary
+kernel proof. Earlier v1-v5 proofs remain supported and sources without
+three-handles retain their earlier routes. The stopping-set precheck runs
+**after** two/three cancellation: deleting source rows can remove an original
+stopping set. Three-handle elimination is complete, but subsequent raw
+cancellation can still miss genuine handlebodies. The proof, genuine loop and
+nested-vertex controls, and independent audits are in
+[core_three_handles.tex](../synthesis/core_three_handles.tex).
