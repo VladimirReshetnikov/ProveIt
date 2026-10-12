@@ -1148,6 +1148,7 @@ import GowersSzemeredi.Proofs16SplitFejerDegrees
 import GowersSzemeredi.Proofs16Lemma5With
 import GowersSzemeredi.Proofs16DenseSelectionWith
 import GowersSzemeredi.Proofs16PolyPieceTwoDataWith
+import GowersSzemeredi.Proofs16PolyCoverTwoFejer
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

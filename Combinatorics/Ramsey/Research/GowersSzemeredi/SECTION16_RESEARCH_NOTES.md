@@ -4606,7 +4606,9 @@ lemma directly. So the remaining parameterization stays light.
    decomposition uses `lemma_15_6_of_density_lower_explicit` because the
    headline tracks threshold sizes. `fejer_scale_estimate` builds its `N₀`
    explicitly (`max(m+1, 3, ⌈2c₀/(scale·t)⌉)`) but states only `∃ N₀`.
-2. `Proofs16PolyCoverTwoWith`: the greedy decomposition
+2. *(Done: `Proofs16PolyCoverTwoFejer`, `polyCoverAt_two_fejer_of_family_lemma6 :
+   PolyCoverAt 2 polyTwoFejerQb (polyTwoFejerEb A Bq)`, the Fejér instance
+   rather than a parameterized copy.)* The greedy decomposition
    (`section16_poly_piece_two_of_subrelation`,
    `section16_poly_cover_two_large`) with the Fejér Lemma 15.6 at `k = 1`
    and `section16_poly_piece_two_data_with` at the tight radius.
