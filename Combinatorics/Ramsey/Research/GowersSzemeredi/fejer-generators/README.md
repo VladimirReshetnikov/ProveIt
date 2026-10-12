@@ -30,13 +30,16 @@ map").
 | `assemble_headf.py` | `Proofs18CoverFejerHeadline` | `Proofs18CoverDegrees`, `…TightBase`, `…ThresholdsSharp` (+ hand-written closed forms) |
 | `mk_fejer_low_short.py` | `Proofs18CoverFejerLowDegrees`, `…ShortLengths` | `Proofs18CoverSharperLowDegrees`, `Proofs18CoverThresholdsSharp` |
 | `assemble_l163sharp.py` | `Proofs16BaseCaseRestrictionSharp` | `Proofs16BaseCaseRestriction` |
+| `assemble_febq.py` | `Proofs18FejerEnvelopeBaseQ` | `Proofs18GenericEnvelopeBase` (atom `2^(k+5)` ↦ `5k+14`) |
+| `assemble_coverq.py` | `Proofs18Cover{Modulus,Density,Exponents}FejerQ` | the `…Fejer` modules (`uDegQ`, `fixDegQ`) |
+| `assemble_headq.py` | `Proofs18CoverFejerHeadlineQ` | `Proofs18CoverFejerHeadline` (+ hand-written closed forms) |
 | `assemble_polyf.py` | `Proofs16PolynomialFejer` | `Proofs16PolynomialStructure`, `…Corollary` |
 | `mkstub_fejer18.py`, `mkstub_auditfejer.py` | stub checks of `Proofs18CoverFejerAllDegrees` and the Fejér block of `CompletionAudit.lean` | — |
 
 Hand-written modules (no generator): `Proofs15WalshGeneral`,
 `Proofs15DegenerateRange`, `Proofs16TightRadius`, `Proofs16SplitFejerDegrees`,
 `Proofs18FejerSeedCounts`, `Proofs16ClassStepBoundsFejer`,
-`Proofs18TightClassesFejer`, `Proofs18FejerEnvelopeBase` and the bridge
+`Proofs18TightClassesFejer`, `Proofs18TightClassesFejerQ`, `Proofs18FejerEnvelopeBase` and the bridge
 `Proofs18CoverFejerAllDegrees`.
 
 Caveats:
