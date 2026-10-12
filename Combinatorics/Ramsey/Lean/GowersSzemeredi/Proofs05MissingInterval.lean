@@ -215,9 +215,16 @@ private lemma fourier_energy_relation {N L : Nat} [NeZero N]
   congr 1
   rw [Complex.star_def, Complex.mul_conj', ← Complex.ofReal_pow]
 
-/-- **Lemma 5.2.** If `A` misses a centered interval, the Fejér-kernel
-identity forces a large nonzero Fourier coefficient at low frequency. -/
-theorem lemma_5_2_holds : lemma_5_2 := by
+/-- **Lemma 5.2, with the original printed factor one half.** Removing
+frequency zero from the low-frequency energy leaves enough margin for the
+integer rounding in the reciprocal-square tail estimate. -/
+theorem lemma_5_2_printed_half :
+    ∀ (N M t : Nat) [NeZero N] (A : Finset (ZMod N)),
+      1 < N → 0 < M → Even M → 2 * M ≤ N → A.card = t →
+      Disjoint A (centeredInterval N M) →
+        ∃ r : ZMod N, r != 0 ∧
+          (centeredAbs r : Real) ≤ (N : Real) ^ 2 / (M : Real) ^ 2 ∧
+          (t : Real) * M / (2 * N) ≤ ‖fourier (indicator A) r‖ := by
   intro N M t _ A hN hM hEven hMN hcard hdisj
   obtain ⟨L, rfl⟩ := hEven
   have hL : 0 < L := by omega
@@ -241,15 +248,6 @@ theorem lemma_5_2_holds : lemma_5_2 := by
     exact Nat.div_mul_le_self _ _
   have hfloor : N ^ 2 < (K + 1) * (L + L) ^ 2 := by
     exact (Nat.div_lt_iff_lt_mul hden).mp (Nat.lt_succ_self K)
-  have hthree : 3 * N ^ 2 ≤ 4 * K * (L + L) ^ 2 := by
-    have hcoef : 3 * (K + 1) ≤ 4 * K := by omega
-    calc
-      3 * N ^ 2 ≤ 3 * ((K + 1) * (L + L) ^ 2) :=
-        Nat.mul_le_mul_left 3 (Nat.le_of_lt hfloor)
-      _ = (3 * (K + 1)) * (L + L) ^ 2 := by ring
-      _ ≤ (4 * K) * (L + L) ^ 2 :=
-        Nat.mul_le_mul_right ((L + L) ^ 2) hcoef
-      _ = 4 * K * (L + L) ^ 2 := by ring
   have hKratio : (K : Real) ≤
       (N : Real) ^ 2 / ((L + L : Nat) : Real) ^ 2 := by
     apply (le_div_iff₀ (show 0 < (((L + L : Nat) : Real) ^ 2) by positivity)).2
@@ -303,7 +301,7 @@ theorem lemma_5_2_holds : lemma_5_2 := by
   have hlow_coeff {r : ZMod N} (hr0 : r ≠ 0)
       (hrK : centeredAbs r ≤ K) :
       ‖fourier (indicator A) r‖ <
-        (t : Real) * (L + L : Nat) / (4 * N) := by
+        (t : Real) * (L + L : Nat) / (2 * N) := by
     by_contra hlarge
     apply hnot
     refine ⟨r, bne_iff_ne.mpr hr0, ?_, le_of_not_gt hlarge⟩
@@ -316,7 +314,7 @@ theorem lemma_5_2_holds : lemma_5_2 := by
       simp [centeredAbs, ZMod.valMinAbs_def_pos, ZMod.val_one N, hhalf]
     have hbad := hlow_coeff (r := (1 : ZMod N)) one_ne_zero
       (by rw [habs_one]; omega)
-    have hzero : (t : Real) * (L + L : Nat) / (4 * N) = 0 := by
+    have hzero : (t : Real) * (L + L : Nat) / (2 * N) = 0 := by
       rw [ht]
       norm_num
     rw [hzero] at hbad
@@ -350,14 +348,25 @@ theorem lemma_5_2_holds : lemma_5_2 := by
         (∑ r ∈ low, energyTerm r) + ∑ r ∈ high, energyTerm r := by
     rw [← Finset.sum_union hdisj_low_high, hunion]
   have hthreshold_nonneg :
-      0 ≤ (t : Real) * (L + L : Nat) / (4 * N) := by positivity
+      0 ≤ (t : Real) * (L + L : Nat) / (2 * N) := by positivity
+  have henergy_erase :
+      (∑ r ∈ (Finset.univ.erase (0 : ZMod N)),
+        ‖fourier (indicator (centeredInterval N L)) r‖ ^ 2) =
+      (N : Real) * (L + L : Nat) - (L + L : Nat) ^ 2 := by
+    have hsplit := Finset.sum_erase_add Finset.univ
+      (fun r : ZMod N => ‖fourier (indicator (centeredInterval N L)) r‖ ^ 2)
+      (Finset.mem_univ (0 : ZMod N))
+    rw [fourier_indicator_energy, hIcard, fourier_indicator_zero,
+      hIcard, Complex.norm_natCast] at hsplit
+    linarith only [hsplit]
   have hlow_energy :
       (∑ r ∈ low, energyTerm r) ≤
-        (t : Real) * (L + L : Nat) ^ 2 / 4 := by
+        (t : Real) * (L + L : Nat) ^ 2 / 2 -
+          (t : Real) * (L + L : Nat) ^ 3 / (2 * N) := by
     calc
       (∑ r ∈ low, energyTerm r) ≤
           ∑ r ∈ low,
-            ((t : Real) * (L + L : Nat) / (4 * N)) *
+            ((t : Real) * (L + L : Nat) / (2 * N)) *
               ‖fourier (indicator (centeredInterval N L)) r‖ ^ 2 := by
         apply Finset.sum_le_sum
         intro r hr
@@ -365,17 +374,18 @@ theorem lemma_5_2_holds : lemma_5_2 := by
         have hr0 : r ≠ 0 := (Finset.mem_erase.mp hrbase).1
         have hcoeff := hlow_coeff hr0 hrK
         exact mul_le_mul_of_nonneg_right hcoeff.le (sq_nonneg _)
-      _ = ((t : Real) * (L + L : Nat) / (4 * N)) *
+      _ = ((t : Real) * (L + L : Nat) / (2 * N)) *
           ∑ r ∈ low,
             ‖fourier (indicator (centeredInterval N L)) r‖ ^ 2 := by
         rw [Finset.mul_sum]
-      _ ≤ ((t : Real) * (L + L : Nat) / (4 * N)) *
-          ∑ r : ZMod N,
+      _ ≤ ((t : Real) * (L + L : Nat) / (2 * N)) *
+          ∑ r ∈ (Finset.univ.erase (0 : ZMod N)),
             ‖fourier (indicator (centeredInterval N L)) r‖ ^ 2 := by
         apply mul_le_mul_of_nonneg_left _ hthreshold_nonneg
-        exact Finset.sum_le_sum_of_subset_of_nonneg (by simp) (fun _ _ _ => sq_nonneg _)
-      _ = (t : Real) * (L + L : Nat) ^ 2 / 4 := by
-        rw [fourier_indicator_energy, hIcard]
+        exact Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _) (fun _ _ _ => sq_nonneg _)
+      _ = (t : Real) * (L + L : Nat) ^ 2 / 2 -
+          (t : Real) * (L + L : Nat) ^ 3 / (2 * N) := by
+        rw [henergy_erase]
         field_simp [NeZero.ne N]
   have hhigh_eq :
       high = Finset.univ.filter (fun r : ZMod N => K < centeredAbs r) := by
@@ -419,17 +429,31 @@ theorem lemma_5_2_holds : lemma_5_2 := by
         field_simp [ne_of_gt habs]
         ring
   have hscaled_tail :
-      (N : Real) ^ 2 / (2 * K) ≤
-        (2 / 3 : Real) * (L + L : Nat) ^ 2 := by
-    have hthreeReal :
-        (3 : Real) * (N : Real) ^ 2 ≤
-          4 * (K : Real) * (L + L : Nat) ^ 2 := by
-      exact_mod_cast hthree
-    apply (div_le_iff₀ (show (0 : Real) < 2 * K by positivity)).2
-    nlinarith
+      (N : Real) ^ 2 / (2 * K) <
+        (L + L : Nat) ^ 2 / 2 + (L + L : Nat) ^ 3 / (2 * N) := by
+    have hNpos : (0 : Real) < N := by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)
+    have hfloorReal : (N : Real) ^ 2 <
+        ((K : Real) + 1) * (L + L : Nat) ^ 2 := by exact_mod_cast hfloor
+    have hKReal : (4 : Real) ≤ K := by exact_mod_cast hK4
+    have hKK : (K : Real) + 1 ≤ (K : Real) ^ 2 := by nlinarith
+    have hN2 : (N : Real) ^ 2 < ((K : Real) * (L + L : Nat)) ^ 2 := by
+      have h := mul_le_mul_of_nonneg_right hKK (sq_nonneg ((L + L : Nat) : Real))
+      nlinarith only [hfloorReal, h]
+    have hNK : (N : Real) ≤ (K : Real) * (L + L : Nat) :=
+      ((sq_lt_sq₀ hNpos.le (by positivity)).mp hN2).le
+    have hfloorMul := mul_lt_mul_of_pos_right hfloorReal hNpos
+    have hNKscaled := mul_le_mul_of_nonneg_left hNK
+      (sq_nonneg ((L + L : Nat) : Real))
+    have hrhs : (L + L : Nat) ^ 2 / (2 : Real) + (L + L : Nat) ^ 3 / (2 * N) =
+        (((L + L : Nat) : Real) ^ 2 * N + (L + L : Nat) ^ 3) / (2 * N) := by
+      field_simp
+    rw [hrhs]
+    apply (div_lt_div_iff₀ (by positivity : (0 : Real) < 2 * K)
+      (by positivity : (0 : Real) < 2 * N)).mpr
+    nlinarith only [hfloorMul, hNKscaled]
   have hhigh_energy :
-      (∑ r ∈ high, energyTerm r) ≤
-        (2 / 3 : Real) * (t : Real) * (L + L : Nat) ^ 2 := by
+      (∑ r ∈ high, energyTerm r) <
+        (t : Real) * ((L + L : Nat) ^ 2 / 2 + (L + L : Nat) ^ 3 / (2 * N)) := by
     calc
       (∑ r ∈ high, energyTerm r) ≤
           ∑ r ∈ high,
@@ -446,24 +470,28 @@ theorem lemma_5_2_holds : lemma_5_2 := by
       _ = (t : Real) * ((N : Real) ^ 2 / (2 * K)) := by
         field_simp [show (K : Real) ≠ 0 by positivity]
         ring
-      _ ≤ (t : Real) * ((2 / 3 : Real) * (L + L : Nat) ^ 2) :=
-        mul_le_mul_of_nonneg_left hscaled_tail htpos.le
-      _ = (2 / 3 : Real) * (t : Real) * (L + L : Nat) ^ 2 := by ring
+      _ < (t : Real) * ((L + L : Nat) ^ 2 / 2 + (L + L : Nat) ^ 3 / (2 * N)) :=
+        mul_lt_mul_of_pos_left hscaled_tail htpos
   have hupper :
-      (∑ r ∈ (Finset.univ.erase (0 : ZMod N)), energyTerm r) ≤
-        (11 / 12 : Real) * (t : Real) * (L + L : Nat) ^ 2 := by
+      (∑ r ∈ (Finset.univ.erase (0 : ZMod N)), energyTerm r) <
+        (t : Real) * (L + L : Nat) ^ 2 := by
     rw [hsplit]
     calc
-      (∑ r ∈ low, energyTerm r) + ∑ r ∈ high, energyTerm r ≤
-          (t : Real) * (L + L : Nat) ^ 2 / 4 +
-            (2 / 3 : Real) * (t : Real) * (L + L : Nat) ^ 2 :=
-        add_le_add hlow_energy hhigh_energy
-      _ = (11 / 12 : Real) * (t : Real) * (L + L : Nat) ^ 2 := by ring
-  have hlower' :
-      (t : Real) * (L + L : Nat) ^ 2 ≤
-        ∑ r ∈ (Finset.univ.erase (0 : ZMod N)), energyTerm r := by
-    exact hlower
-  have hmass : (0 : Real) < (t : Real) * (L + L : Nat) ^ 2 := by positivity
-  nlinarith [hlower'.trans hupper]
+      _ < ((t : Real) * (L + L : Nat) ^ 2 / 2 -
+          (t : Real) * (L + L : Nat) ^ 3 / (2 * N)) +
+          (t : Real) * ((L + L : Nat) ^ 2 / 2 + (L + L : Nat) ^ 3 / (2 * N)) :=
+        add_lt_add_of_le_of_lt hlow_energy hhigh_energy
+      _ = (t : Real) * (L + L : Nat) ^ 2 := by ring
+  exact (not_lt_of_ge hlower) hupper
+
+/-- The previously formalized quarter-bound remains a consequence of the
+original, stronger printed statement. -/
+theorem lemma_5_2_holds : lemma_5_2 := by
+  intro N M t _ A hN hM hEven hMN hcard hdisj
+  obtain ⟨r, hr0, hrbound, hrlarge⟩ :=
+    lemma_5_2_printed_half N M t A hN hM hEven hMN hcard hdisj
+  refine ⟨r, hr0, hrbound, le_trans ?_ hrlarge⟩
+  apply div_le_div_of_nonneg_left (by positivity) (by positivity)
+  nlinarith [show (0 : Real) ≤ N from Nat.cast_nonneg N]
 
 end LeanProofs.GowersSzemeredi

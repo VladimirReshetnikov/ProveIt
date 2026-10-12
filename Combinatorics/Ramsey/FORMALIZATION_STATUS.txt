@@ -9,6 +9,23 @@ Scope
   bounds, characteristic ranges and some geometry/bound combinations remain
   open in verification/2026-10-12-source-fidelity-review.json.
 
+  Latest missing-interval checkpoint: MissingIntervalHalfCoreAudit passes
+  8 native modules. Lemma 5.2's original t*M/(2*N) bound is now proved under
+  the existing positive-even interval hypotheses. Excluding frequency zero
+  from the energy estimate recovers the factor1/2; the legacy quarter-bound
+  theorem is retained as a consequence. The paper restores the original
+  constant and removes the unsupported claim that it was erroneous.
+  The broader audit was yielded at a completed-module boundary and resumes
+  with the new foundational proof included; its completion is separate.
+
+  Latest selection/iteration checkpoint: SelectionIterationCoreAudit passes
+  123 native modules. The exact Lemma 15.5 threshold now holds for every
+  prime; its other hypotheses imply N>=3. Lemma 16.8 with merely positive
+  real s is refuted by two constant graphs at N=2, gamma=s=1/(8*2^512).
+  Their union needs two graphs but its budget is 4^(1/4)<2. The corrected
+  s>=1 theorem remains proved. The expanded downstream audit is running
+  from retained cache; the full facade remains a separate pending check.
+
   Latest selection-threshold checkpoint: SelectionThresholdCoreAudit passes
   12 native modules. Lemma 15.5 now has exactly the annotated threshold
   t*beta^15*N >= 3^(2^(k+4))*k for k>=1 and odd primes, including eta=1.
@@ -673,6 +690,9 @@ Verification of the cover route (2026-10-11)
   Split step combined by max (notes L.16w, Proofs18TightClassesFejerM,
   Proofs18Cover*FejerJM, Proofs18CoverFejerHeadlineJM): theorem_18_1_d2_eleven_le
   (d+2, d >= 11). Stub-checked and pinned.
+  Two-track split classes (notes L.16x, Proofs16SplitTwoTrack,
+  Proofs16SplitTwoTrackClasses, Proofs18Cover*FejerJT, Proofs18CoverFejerHeadlineJT):
+  theorem_18_1_d3_eight_le (d+3, d >= 8). Stub-checked and pinned.
 
 Sharper exponents for Theorems 18.1 and 18.2 — 2026-10-11 (notes L.15)
   The joint-cover envelopes are a quarter of the printed budgets, so:

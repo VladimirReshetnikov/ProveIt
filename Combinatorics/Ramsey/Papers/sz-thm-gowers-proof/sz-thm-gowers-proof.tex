@@ -746,9 +746,10 @@ as was wanted. \(\square\)
 
 Given an integer $r \in \mathbb{Z}_{N}$, we shall use the notation $|r|$ to stand for the modulus of the unique representative of $r$ that lies in the interval $[-N / 2, N / 2)$ (i.e., the distance from $r$ to zero).
 
-% ed.: The printed statement has the factor $1/2$, but the proof derives
-% $1/4$, and later arguments require only this weaker, justified form.
-Lemma 5.2. Let $A$ be a subset of $\mathbb{Z}_{N}$ of cardinality $t$, let $M$ be a positive even integer with $2M\leqslant N$, and suppose that $A \cap[-M, M)=\emptyset$. Then there exists $r$ with $0<|r| \leqslant N^{2} M^{-2}$ such that $|\hat{A}(r)| \geqslant t M / 4 N$.
+\textit{Editorial note (original constant restored).}
+The printed factor $1/2$ is valid under the interval hypotheses below. The earlier factor $1/4$ resulted from a coarser proof estimate, not a counterexample to the statement. The following Lean-verified refinement removes frequency zero from the low-frequency energy and keeps the integer cutoff explicit.
+
+Lemma 5.2. Let $A$ be a subset of $\mathbb{Z}_{N}$ of cardinality $t$, let $M$ be a positive even integer with $2M\leqslant N$, and suppose that $A \cap[-M, M)=\emptyset$. Then there exists $r$ with $0<|r| \leqslant N^{2} M^{-2}$ such that $|\hat{A}(r)| \geqslant t M / 2 N$.
 
 Proof. Let $I=[-M / 2, M / 2)$. Then $A \cap(I-I)=\emptyset$. It follows that $\langle A, I * I\rangle=0$, which is the same as saying that $\sum_{s} A(s) I * I(s)=0$.
 
@@ -758,17 +759,30 @@ $$
 \sum_{r \neq 0}|\hat{A}(r)|\,|\hat{I}(r)|^{2} \geqslant t M^{2}
 $$
 
-By Lemma 5.1, we know, for each $r$, that $|\hat{I}(r)| \leqslant \min \{M, N / 2|r|\}$. It follows that
-
-$$
+If $t=0$, the conclusion follows by taking $r=1$. Assume $t>0$, and put $K=\lfloor N^2/M^2\rfloor\geqslant4$. By Lemma 5.1,
+$|\hat I(r)|\leqslant\min\{M,N/(2|r|)\}$. The reciprocal-square tail satisfies
+\[
+\sum_{|r|>K}|r|^{-2}\leqslant\frac2K.
+\]
+Moreover, $N^2<(K+1)M^2$ and $K+1\leqslant K^2$ imply $N\leqslant KM$, and hence
+\[
+\frac{N^2}{2K}<\frac{M^2}{2}+\frac{M^3}{2N}.
+\]
+The nonzero-frequency energy is exactly
+\[
+\sum_{r\ne0}|\hat I(r)|^2=MN-M^2.
+\]
+If all coefficients with $0<|r|\leqslant K$ were smaller than $tM/(2N)$, then splitting into low and high frequencies would give
+\[
 \begin{aligned}
-\sum_{r \neq 0}|\hat{A}(r)||\hat{I}(r)|^{2} & \leqslant \max _{0<|r| \leqslant N^{2} M^{-2}}|\hat{A}(r)| \sum_{r}|\hat{I}(r)|^{2}+t \sum_{|r| \geqslant N^{2} M^{-2}} N^{2} / 4|r|^{2} \\
-& \leqslant M N \max _{0<|r| \leqslant N^{2} M^{-2}}|\hat{A}(r)|+(3 / 4) t N^{2}\left(N^{2} M^{-2}\right)^{-1} \\
-& =M N \max _{0<|r| \leqslant N^{2} M^{-2}}|\hat{A}(r)|+(3 / 4) t M^{2}
+\sum_{r\ne0}|\hat A(r)|\,|\hat I(r)|^2
+&\leqslant \frac{tM}{2N}(MN-M^2)+\frac{tN^2}{2K}\\
+&<\frac{tM^2}{2}-\frac{tM^3}{2N}
+  +t\left(\frac{M^2}{2}+\frac{M^3}{2N}\right)
+=tM^2,
 \end{aligned}
-$$
-
-Therefore, there exists $r$ with $|r| \leqslant N^{2} M^{-2}$ and $|\hat{A}(r)| \geqslant M^{2} t / 4 M N=$ $t M / 4 N$, which proves the lemma. \(\square\)
+\]
+contradicting the preceding lower bound. Thus the original factor $1/2$ follows, with $0<|r|\leqslant K\leqslant N^2/M^2$. \(\square\)
 
 Remark. A more obvious approach to proving the above result would be to use $I$ instead of $I * I$. That is, one would consider the sum $\sum_{r} \hat{A}(r) \hat{I}(r)$. It turns out, however, that the estimates that one obtains are not strong enough. The trick of using $I * I$ instead is basically the familiar device of replacing the Dirichlet kernel by the Féjer kernel.
 
@@ -3518,7 +3532,7 @@ because $2^{-V}A\leqslant1$. Passing to all arrangements can decrease this score
 \[
 \eta X'-Y'\geqslant3tM-(1+\eta)Z\geqslant tM.
 \]
-Consequently $X'\geqslant tM$ and $Y'\leqslant\eta X'$. The respected proportion is at least $1/(1+\eta)\geqslant1-\eta$, as required. This proves the displayed threshold for $k\geqslant1$ under the standing odd-prime convention. The height-zero case has a separate verified exceptional-set constant. \(\square\)
+Consequently $X'\geqslant tM$ and $Y'\leqslant\eta X'$. The respected proportion is at least $1/(1+\eta)\geqslant1-\eta$, as required. This proves the displayed threshold for $k\geqslant1$ over every prime. Indeed, the density and respected-count hypotheses imply $\beta,\alpha\leqslant1$, so $t\beta^{15}\leqslant1$. Since $3^{2^{k+4}}k\geqslant3$, the displayed threshold itself forces $N\geqslant3$ and excludes the even prime. The height-zero case has a separate verified exceptional-set constant. \(\square\)
 
 The final lemma of this section is a combination of the previous one with Lemma 14.8 in the case $\eta=2^{-44}$, which is the value that will be used in applications.
 
@@ -3651,10 +3665,13 @@ $$
 
 Proof. The expression given for $\phi^{\prime}(h, x)$ is valid whenever $Y_{h}(x)$ contains the cube $\left[x_{1}, \ldots, x_{k} ; h_{1}, \ldots, h_{k}\right]$. Since $\left|H_{1}\right| \geqslant\left(\theta_{1} / 8\right) N^{k}$ and $\left|X_{h}\right| \geqslant$ $\left(\theta_{1} / 4\right) N^{k+1}$ for every $h \in H_{1}$, we find that $\sum_{h \in H_{1}}\left|Y_{h}\right| \geqslant 2^{-32} \theta_{1}^{8} N^{2 k+1}=$ $\theta_{2} N^{2 k+1}$ (by the estimate for the sizes of the sets $Y_{h}$ in Lemma 16.5). Therefore, if we choose the $x_{j}$ randomly, the expected number of choices of $\left(h_{1}, \ldots, h_{k}, x\right)$ with $h \in H_{1}$ for which the equality holds is at least $\theta_{2} N^{k+1}$. The lemma follows. \(\square\)
 
-% ed.: Here $s$ is an iteration count, so the faithful real-valued condition
-% is $s\geqslant1$.  At $s=0$ two constant graphs give an immediate
-% counterexample; sufficiently small positive real $s$ also fails because the
-% displayed graph-count bound for their union is strictly less than two.
+\textit{Editorial note (verified scope of the iteration parameter).}
+The corrected statement below uses $s\geqslant1$, as appropriate for a positive integer iteration count. Replacing this by merely $s>0$ in the unrestricted real-valued formulation is insufficient. A Lean-verified counterexample already occurs for one-coordinate relations over $\mathbb Z_2$: put $D=2^{2^9}$ and $\gamma=s=(8D)^{-1}$, and take the two full constant graphs with values zero and one. Each graph is $(s,s)$-multiply linear. At loss $\theta=1/2$, their union would have graph budget
+\[
+q((2s)^{-1}/2,s,1)^{2s}=(4^D)^{2s}=4^{1/4}<2.
+\]
+On a singleton box, the surviving set must be nonempty, and both values must be covered at its point. This requires two graphs and contradicts the budget. Thus the positive-real variant fails as well as the previously noted zero-parameter variant; the corrected $s\geqslant1$ union and sum statements are proved.
+
 Lemma 16.8. Suppose that $s\geqslant1$ and that $\Gamma_{1}, \ldots, \Gamma_{r}$ are $(\gamma, s)$-multiply $(k+1)$-linear subsets of $\mathbb{Z}_{N}^{k+1} \times \mathbb{Z}_{N}$. Then $\Gamma_{1} \cup \cdots \cup \Gamma_{r}$ is $(\gamma, r s)$-multiply $(k+1)$-linear. If $\phi_{1}, \ldots, \phi_{r}$ are $(\gamma, s)$-multiply $(k+1)$-linear functions defined on a subset $B \subset \mathbb{Z}_{N}^{k+1}$, then $\phi_{1}+\cdots+\phi_{r}$ is $(\gamma, r s)$-multiply $(k+1)$-linear.\\
 Proof. Let $P$ be a box. We can find a subset $H_{1} \subset P$ of size at least $(1-\theta / r)|P|$ and a partition of $P$ into boxes $Q$ of width at least $m^{c\left((r s)^{-1} \theta, \gamma, k+1\right)^{s}}$ such that $\Gamma_{1}$ restricted to any $Q \cap H_{1}$ is contained in the union of the graphs of $q\left((r s)^{-1} \theta, \gamma, k+1\right)^{s}$ multilinear functions. Now repeat this argument inside each $Q$ for the set $\Gamma_{2}$ and so on. At each of the $r$ stages of this process, the width of the boxes is raised to the power\\
 $c\left((r s)^{-1} \theta, \gamma, k+1\right)^{s}$, the number of new multilinear functions introduced inside each box is at most $q\left((r s)^{-1} \theta, \gamma, k+1\right)^{s}$ and $\theta|P| / r$ points are thrown away. Therefore, at the end of the process we have a width of at least $m^{c\left((r s)^{-1} \theta, \gamma, k+1\right)^{r s}}$ and $r q\left((r s)^{-1} \theta, \gamma, k+1\right)^{s}$ multilinear functions for each set $\Gamma_{i}$. The result about unions follows (and in fact we have overestimated the number of multilinear functions needed). The result for sums of functions also follows, once we notice that there are $q\left((r s)^{-1} \theta, \gamma, k+1\right)^{r s}$ functions of the form $\mu_{1}+\cdots+\mu_{r}$, with each $\mu_{i}$ one of the multilinear functions chosen at the $i^{\text {th }}$ stage. \(\square\)

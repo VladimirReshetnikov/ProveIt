@@ -1,0 +1,21 @@
+/-! ### The headline statement -/
+
+/-- **Theorem 18.1 at every degree `d ≥ 8` with `d + 3`**, from the profiles
+with polynomial family constants (joint slices, two-track classes). -/
+theorem theorem_18_1_d3_eight_le_of_profiles_poly (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k)
+    (hp : ∀ k, 0 < pc k)
+    (hrec : ∀ k, 1 ≤ k →
+      Section16RecurrenceProfileWith k (familyRecThr k (Kc k) (pc k)) (familyRecExp k (pc k)))
+    (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ (4 * k + 16)))
+    {Kφ : Real} {pφ : Nat} (hpp : ProgressionPhasePartition Kφ pφ) (hpφ : 0 < pφ)
+    (hKφ : Kφ ≤ 2 ^ pφ) (hpφB : (pφ : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64))
+    {d : Nat} (hd : 8 ≤ d) : Theorem181AtSharp 3 d := by
+  have henv := polyEnvBound_allJT Kc pc hK hp hrec hconst hpp hpφ hKφ hpφB (d - 2) (by omega)
+  rw [show d - 2 + 2 = d by omega] at henv
+  refine theorem181AtSharp_of_polyEnvBound henv ?_
+  have hle := polyGenMuJT_fit32 (k := d - 2) (by omega)
+  have h2 : 2 ^ (d + 3) = 32 * 2 ^ (d - 2) := by
+    rw [show d + 3 = (d - 2) + 5 by omega, pow_add]; ring
+  rw [h2]
+  exact hle
+
