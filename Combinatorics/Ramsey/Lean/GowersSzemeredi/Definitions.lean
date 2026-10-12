@@ -89,7 +89,9 @@ noncomputable def ModAP.carrier {N : Nat} (P : ModAP N) : Finset (ZMod N) := by
   classical
   exact Finset.univ.image (fun i : Fin P.length => P.start + (i : Nat) * P.step)
 
-/-- A modular progression is proper when it does not wrap or repeat. -/
+/-- A modular progression is proper when its parametrization is injective.
+It can still wrap in the canonical integer representatives; the stronger
+integer-representative predicate records the ordinary progression geometry. -/
 def ModAP.IsProper {N : Nat} (P : ModAP N) : Prop :=
   P.carrier.card = P.length
 

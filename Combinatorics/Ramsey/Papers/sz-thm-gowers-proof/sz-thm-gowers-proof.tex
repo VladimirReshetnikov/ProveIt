@@ -2001,20 +2001,25 @@ as stated. \(\square\)
 
 For the next lemma, we use the notation $W+d$ to stand for all elements $x \in X$ such that there exists $w \in W$ with $r(x)=r(w)+d$.
 
-\emph{Editorial note on the regular-component clause (2026-10-12).}
-Item (iii) below uses the fifth-power trade-off needed in Lemma 10.6.
-The original square-root trade-off is a separate verification obligation;
-it is not refuted by the use of this variant. The smallness conditions on
-$\rho$ and $\sigma$, used explicitly in the proof, are now stated.
+\emph{Editorial note on the recovered regular-component clause (2026-10-12).}
+The original square-root clause (iii) is valid and is restored below.
+In fact, the same selected component satisfies, for every real $t$, the
+stronger family of trade-offs: at least $(1-5\eta^t)|W|$ points have
+$\epsilon(y)\leqslant300\eta^{1-t}$. The weighted-error budget is at most
+$1440\eta L|W|$, whereas the exceptional proportion times the threshold
+contributes $1500\eta L|W|$. Taking $t=1/2$ proves (iii), and taking
+$t=1/5$ supplies the variant used in Lemma 10.6. Thus the earlier change
+of exponents was a choice of trade-off, not a refutation of the original
+clause. The smallness conditions on $\rho$ and $\sigma$ are explicit.
 
 Lemma 10.5. Let $0<\rho\leqslant\min\{\alpha/192,\alpha^2/32\}$ and assume that $\sigma\leqslant\eta\rho^4\alpha/384$. With the anchor chosen in Lemma 10.3, there exists a subset $W \subset X$ with the following properties.
 
 \begin{itemize}
   \item[(i)] $W$ is a union of sets of the form $X_{r}$.
   \item[(ii)] The function $q$ varies by a factor of at most two on $W$.
-  % ed.: The proof, and the first paragraph of Lemma 10.6, require the
-  % exceptional proportion $5\eta^{1/5}$ and the threshold $300\eta^{4/5}$.
-  \item[(iii)] For at least $\left(1-5 \eta^{1 / 5}\right)|W|$ of the points $y \in W$ we have $\epsilon(y) \leqslant 300 \eta^{4 / 5}$.
+  % ed.: The original square-root form and the fifth-power form needed
+  % by Lemma 10.6 are simultaneous consequences of the same construction.
+  \item[(iii)] For at least $\left(1-5 \eta^{1 / 2}\right)|W|$ of the points $y \in W$ we have $\epsilon(y) \leqslant 300 \eta^{1 / 2}$.
   \item[(iv)] $W$ has cardinality at least $\rho^{2} \alpha^{2} M N / 16$.
   \item[(v)] The function $R$ varies by a factor of at most two on $W$, and is always at least $\alpha^{2} M / 16$.
 \end{itemize}
@@ -2078,7 +2083,7 @@ $$
 \left(\left(1-10 \eta^{1 / 5}\right) \text { a.e. } w \in W\right)\left(\left(1-10 \eta^{1 / 5}\right) \text { a.e. } z \in X_{r(w)+d}\right) \quad \phi(z)-\phi(w)=\psi(d) .
 $$
 
-Proof. Let us define $W^{\prime}$ to be the set of all $w \in W \cap(W-d)$ such that $\epsilon(w) \leqslant 300 \eta^{4 / 5}$ We know from Lemma 10.5 (iii) and (vi) (and the fact that $B=-B$ ) that $W^{\prime}$ has cardinality at least $\left(1-6 \eta^{1 / 5}\right)|W|$.
+Proof. Let us define $W^{\prime}$ to be the set of all $w \in W \cap(W-d)$ such that $\epsilon(w) \leqslant 300 \eta^{4 / 5}$ We know from the $t=1/5$ trade-off supplied by the construction in Lemma 10.5 and property (vi) (and the fact that $B=-B$ ) that $W^{\prime}$ has cardinality at least $\left(1-6 \eta^{1 / 5}\right)|W|$.
 
 Given $d \in B$ and $w \in W^{\prime}$, let us say that $d$ is good for $w$ if for $\left(1-35 \eta^{2 / 5}\right)$-almost every pair $(y, z) \in X_{r(x)+d} \times X_{r(w)+d}$ we have $\phi(y)-\phi(x)$\\
 $=\phi(z)-\phi(w)$. Notice that $\left|X_{r(x)+d}\right| \geqslant\left|X_{r(x)}\right| / 2$ by Lemma 10.3 and $(B, \sigma M)$-invariance, and $\left|X_{r(w)+d}\right| \geqslant\left|X_{r(w)}\right| / 2$ by Lemma 10.5 (iv). Therefore, the number of $d \in B$ that fail to be good for $(x, w)$ is at most $35 \eta^{2 / 5}|B|$, because otherwise we would have
@@ -2418,9 +2423,15 @@ Ideally, we would like to find, given suitable conditions on $\phi$, a large set
 
 Our first main task will be to find many pairs $P_{1}, P_{2}$ of vertical parallelograms of the same width and height, such that $\phi\left(P_{1}\right)=\phi\left(P_{2}\right)$. For this, we shall need a slight generalization of Proposition 6.1, proved in exactly the same way.
 
-% ed.: The conclusion is false for negative alpha (take every lambda_k=0),
-% so the positivity hypothesis implicit in the proof is made explicit.
-Proposition 12.1. Let $\alpha>0$. For each $k \in \mathbb{Z}_{N}$, let $\lambda_{k} \geqslant 0$. Let $f_{1}, \ldots, f_{p}$ be functions from $\mathbb{Z}_{N}$ to $D$ and let $\phi_{1}, \ldots, \phi_{p}$ be functions from $\mathbb{Z}_{N}$ to $\mathbb{Z}_{N}$ such that
+\emph{Editorial note on the sign condition (2026-10-12).}
+The conclusion requires $\alpha\geqslant0$. With $N=1$, $p=1$, zero weights,
+zero functions and $\alpha=-1$, the Fourier premise holds but the claimed
+weighted quadruple sum would have to be at least one, whereas it is zero.
+This is a verified counterexample to the unrestricted sign reading.
+The endpoint $\alpha=0$ is valid because all quadruple weights are
+nonnegative; the positive case is the original Fourier argument.
+
+Proposition 12.1. Let $\alpha\geqslant0$. For each $k \in \mathbb{Z}_{N}$, let $\lambda_{k} \geqslant 0$. Let $f_{1}, \ldots, f_{p}$ be functions from $\mathbb{Z}_{N}$ to $D$ and let $\phi_{1}, \ldots, \phi_{p}$ be functions from $\mathbb{Z}_{N}$ to $\mathbb{Z}_{N}$ such that
 
 $$
 \sum_{k} \lambda_{k} \prod_{i=1}^{p}\left|\Delta\left(f_{i} ; k\right)^{\wedge}\left(\phi_{i}(k)\right)\right|^{2} \geqslant \alpha N^{2 p+1}

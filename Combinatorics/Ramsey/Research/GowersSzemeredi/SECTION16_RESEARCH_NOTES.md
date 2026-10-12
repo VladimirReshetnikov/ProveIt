@@ -6166,6 +6166,48 @@ comment. The fifth-power variant used downstream is already verified.
 The exported facade has progressed through further native OAI modules but
 has not yet passed. Its cache is retained. The goal remains active.
 
+### L.40 Original component clause and weighted sign endpoint (2026-10-12)
+
+The direct `ComponentTradeoffCoreAudit` passes over 15 native modules with
+only the three approved axioms. The original square-root clause of Lemma
+10.5 is valid with the same inherited setup and explicit parameter bounds.
+`ComponentTradeoff` records all six conclusions at an arbitrary real error
+exponent t. The construction in `Proofs10Regular` selects one W that works
+for every t simultaneously: the two powers multiply to eta, so its original
+weighted Markov calculation applies without changing any geometric bound.
+Taking t=1/2 gives the original clause; taking t=1/5 preserves the existing
+canonical companion and every downstream fifth-power construction.
+
+The source restores the original item(iii), documents the simultaneous
+trade-offs and identifies the fifth-power variant used in10.6. The published
+PDF was checked to confirm that its original two exponents are indeed1/2.
+Earlier wording that called the square-root clause inconsistent was
+unjustified and is now corrected in the current Lean source and paper.
+
+`Proofs12SourceScope` proves the alpha=0 endpoint of weighted simultaneous
+additivity and separately refutes its unrestricted sign reading. At N=1,
+p=1, alpha=-1 and all weights/functions zero, its Fourier premise holds but
+its weighted quadruple conclusion demands at least one rather than zero.
+The annotated paper states alpha>=0 and visibly records the obstruction.
+All six numbered Section12 results were compared against their actual
+Fourier normalization, endpoint membership, arrangement counts, eventual-N
+quantifiers and uniform-density threshold. The review now covers74/120;
+46 statements and additional inspected scope/bound obligations remain open.
+
+Three current documentation errors in foundational definitions are fixed:
+modular properness means injection and permits wrapping; the original7.7
+threshold is valid by the sharp Bohr proof; the original10.5 clause is valid
+by the simultaneous trade-off proof. These comment edits require a fresh
+native dependency build. The full fidelity gate is running over the expected
+expanded closure, followed automatically by the exported facade build.
+The 15-module direct checkpoint does not certify either broad gate. The last
+full 1,634-module checkpoint remains its historicalf407e0115 snapshot.
+
+The annotated118-page PDF was built twice and its restored component clause
+and sign note inspected on pages57 and68. The published PDF is unchanged.
+The goal remains active; remaining original claims are not reclassified as
+false merely because a weaker proof-supported variant is available.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

@@ -227,10 +227,11 @@ noncomputable def symmetricMultiples {N : Nat} (d : ZMod N) (m : Nat) :
 /-- **Lemma 7.7 (Bohr-neighborhood size).** The paper's intended parameter
 range `0 < delta <= 1` is made explicit: without an upper bound the displayed
 cardinality estimate is false.  The nonzero conclusion also needs `2 <= N`,
-and `K.Nonempty` makes the exponent `-1 / |K|` meaningful.  Finally, the
-printed threshold `(N / 2)^(-1 / |K|)` is corrected to
-`2 * N^(-1 / |K|)`, which is exactly what makes the preceding lower bound
-strictly greater than one. -/
+and `K.Nonempty` makes the exponent `-1 / |K|` meaningful.  The threshold
+`2 * N^(-1 / |K|)` below is sufficient from the coarse grid estimate.
+The original `(N / 2)^(-1 / |K|)` threshold is also valid, and follows from
+the sharper translated-box bound: see `lemma_7_7_original_radius_holds` in
+Proofs07SharpBohr. The original threshold has not been refuted. -/
 def lemma_7_7 : Prop :=
   forall (N : Nat) [NeZero N] (K : Finset (ZMod N)) (delta : Real),
     2 <= N -> 0 < delta -> delta <= 1 ->
