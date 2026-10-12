@@ -1,4 +1,5 @@
-import GowersSzemeredi.Proofs18CoverTightBase
+import GowersSzemeredi.Proofs18CoverBudget
+import GowersSzemeredi.Proofs18ThresholdAt
 
 /-! The uniform `L+5` threshold for lengths at least six.
 
