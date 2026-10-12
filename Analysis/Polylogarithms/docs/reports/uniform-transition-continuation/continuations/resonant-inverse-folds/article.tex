@@ -1,0 +1,1344 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=26mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,longtable,array,enumitem,needspace}
+\usepackage{xcolor,xurl}
+\definecolor{inkblue}{RGB}{25,54,85}
+\usepackage[colorlinks=true,linkcolor=inkblue,citecolor=inkblue,urlcolor=inkblue]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Resonant polylogarithm inversion}
+\fancyhead[R]{\small ProveIt research contribution}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}\setlength{\parindent}{1.1em}
+\setlist{itemsep=3pt,topsep=5pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\Log}{Log}
+\DeclareMathOperator{\Rea}{Re}
+\newcommand{\C}{\mathbb C}\newcommand{\R}{\mathbb R}\newcommand{\N}{\mathbb N}
+\newcommand{\dd}{\,\mathrm d}\newcommand{\eps}{\varepsilon}
+\newcommand{\F}{\mathcal F}\newcommand{\B}{\mathcal B}
+\newcommand{\A}{\mathcal A}\newcommand{\E}{\mathcal E}
+\newcommand{\HH}{\mathcal H}
+\newcommand{\coef}[2]{[#1]#2}
+\newcommand{\Ot}{O_{\mathrm{tot}}}
+\hypersetup{pdftitle={Resonant Polylogarithm Inversion: Uniform Order Crossover, Gamma-Zeta Fold Loci, and Convergent Exponential Sectors},pdfauthor={Research contribution prepared for Vladimir Reshetnikov with OpenAI assistance}}
+\begin{document}
+\begin{center}
+{\small\scshape Analysis / polylogarithms / transseries}\par\vspace{10pt}
+{\LARGE\bfseries Resonant Polylogarithm Inversion}\par\vspace{7pt}
+{\Large Uniform Order Crossover, Gamma--Zeta Fold Loci,\par and Convergent Exponential Sectors}\par\vspace{14pt}
+{\normalsize Prepared for Vladimir Reshetnikov with OpenAI assistance}\par
+{\small 11 October 2026}\par
+\end{center}
+\begin{abstract}
+The familiar expansion of a polylogarithm at its unit argument is not a
+uniform inverse expansion when its order approaches an integer. We retain
+the cancelling Gamma and zeta poles as one holomorphic block, derive every
+integer-order logarithmic jet, and construct a convergent inverse chart in
+three small variables. The chart's crossover function is
+$\A(\lambda)=(1-e^{-\lambda})/\lambda$; its nonzero complex zeros require a
+different scaling.
+
+At these zeros we obtain an exact Gamma--zeta formula for the critical locus
+of the singular core at every integer order, and compute the first
+analytic-tail deformation of that locus. The dilogarithm is exceptional:
+its undetuned secondary resonance is already a fold. If
+$y=e^{-X}$, $\lambda_k=2\pi i k\ne0$, and $\eps=\lambda_k/X$, the equation
+$\zeta(2+\eps)-\Li_{2+\eps}(e^{-t})=y$ has two roots near $t=y$, with
+$t/y=1\pm\sqrt{-2K\lambda_k/X}+O(X^{-1})$. Here
+$K=\gamma_1+((\gamma-1)^2+\zeta(2)+1)/2>0$.
+We give the next coefficients, a convergent two-generator transseries,
+the leading coefficient of every exponential sector, and a moving-fold
+normal form with local branch interchange. Finite residue formulas determine
+all chart coefficients from finite Taylor data. Proofs, executable exact
+checks, independent floating-point comparisons, an audit of the inspected
+repository material, and further research questions are included.
+\end{abstract}
+\noindent\textbf{Status.} The theorems are proved in this manuscript, but this is
+an unrefereed research contribution, not a Lean formalization. Classical
+continuation, Gamma expansions, implicit-function arguments, and analytic
+fold mechanisms are credited rather than claimed as new. The model-specific
+resonance classification, explicit critical-locus identities, and sector
+formulas are the principal candidate contributions; publication priority has
+not been established by an exhaustive literature search.
+\clearpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{Problem, contribution, and relation to the repository}
+\label{sec:intro}
+The two selected repository areas provide complementary ingredients. The
+polylogarithm project organizes exact identities, parameter derivatives,
+Gamma and polygamma relations, and Stieltjes constants. The transseries
+project develops support-controlled inversion, analytic realizations,
+critical charts, and exponential sectors. Its critical-Hahn article already
+uses polylogarithms with a fixed nonintegral order to build a convergent
+multivariable inverse \cite{repo-poly,repo-trans,repo-hahn}. We do not claim
+that polylogarithmic inversion or the analytic implicit-function method is
+absent from the repository.
+
+The question addressed here is narrower and different: what happens when
+\emph{the order itself approaches an integer at the same time as the
+argument approaches one}? Two effects must be kept separate. At an integer,
+a Gamma pole cancels one zeta-series pole and produces logarithms. At certain
+complex values of the scaled order, the leading logarithmic coefficient
+cancels again. That second cancellation changes the inverse scale and, for
+the dilogarithm, creates a two-sheet chart.
+
+\subsection{A representative result}
+Let $\gamma_1$ use the standard Laurent convention
+\begin{equation}\label{eq:stieltjes}
+ \zeta(1+z)=\frac1z+\sum_{r\ge0}\frac{(-1)^r\gamma_r}{r!}z^r,
+ \qquad \gamma_0=\gamma.
+\end{equation}
+Fix $k\in\mathbb Z\setminus\{0\}$ and put $\lambda_k=2\pi i k$. Define
+\begin{equation}\label{eq:Kintro}
+ K=\gamma_1+\frac{(\gamma-1)^2+\zeta(2)+1}{2},\qquad
+ b=1-\gamma-\frac{4K}{3}.
+\end{equation}
+For large positive $X$, the two roots described above satisfy
+\begin{equation}\label{eq:headline}
+ t_\pm=e^{-X}\left\{1\pm\sqrt{\frac{-2K\lambda_k}{X}}
+       +\frac{b\lambda_k}{X}+O_k(X^{-3/2})\right\}.
+\end{equation}
+Both roots use the branch of $\Log t$ near the positive real axis; the two
+signs do not come from assigning different logarithm branches to the same
+input. They are two distinct solutions of one locally specified analytic
+equation. At exactly integer order the small positive inverse instead has
+size $e^{-X}/X$. Thus even the leading inverse scale is not uniform in a
+complex neighborhood of the order.
+
+The conclusions of this paper concern genuine convergent multivariable
+Taylor or square-root charts. They do not assert Borel summability,
+resurgence, or Stokes constants. Local branch interchange at a fold and
+monodromy around $t=0$ are explicitly distinguished.
+
+\subsection{What is inherited and what is developed}
+Jonqui\`ere's continuation formula is the starting identity
+\cite[Eq.~25.12.12]{dlmf-poly}. The Gamma Taylor series and the zeta Laurent
+convention are classical \cite{dlmf-gamma,dlmf-zeta}. The mechanism by which a
+simple critical point gives a square root is classical, and is already
+used extensively in the transseries collection. The contribution here is
+not a new version of the implicit-function theorem. It is the explicit
+choice of a pole-cancelled family, the two complementary order scalings,
+the Gamma--zeta critical-locus formulas, the exceptional integer-order
+classification, and the arithmetic coefficients of the resulting inverse
+sectors.
+
+The reading and search scope is recorded in Section~\ref{sec:audit} and
+\path{provenance/SOURCE_AUDIT.md}. In particular, the supplied proofs do not
+assume the correctness of unreviewed repository arrivals.
+
+\section{A pole-cancelled polylogarithm family}
+\label{sec:normal}
+For $n\ge1$ define
+\begin{equation}\label{eq:Fdef}
+ \F_{n,\eps}(t)=(-1)^n n!\left\{
+ \Li_{n+1+\eps}(e^{-t})-
+ \sum_{j=0}^{n-1}\zeta(n+1+\eps-j)\frac{(-t)^j}{j!}\right\}.
+\end{equation}
+We work initially on $0<|t|<2\pi$, $|\arg t|<\pi$, with the branch continued
+from positive real $t$. Write $L=-\Log t$, and set
+\begin{align}
+ g_n(z)&=\Gamma(1-z)\prod_{j=1}^n(1+z/j)^{-1},\label{eq:gdef}\\
+ Z(z)&=\zeta(1+z)-z^{-1},\qquad Z(0)=\gamma,\label{eq:Zdef}\\
+ R_n(t,z)&=n!\sum_{j\ge0}
+    \frac{(-1)^{j+1}\zeta(z-j)}{(n+j+1)!}t^j.\label{eq:Rdef}
+\end{align}
+Let $H_n^{(r)}=\sum_{j=1}^n j^{-r}$ and $H_n=H_n^{(1)}$.
+When $n=0$ is used in a ladder formula, set $H_0^{(r)}=0$,
+$g_0(z)=\Gamma(1-z)$, and interpret empty sums and products in the
+usual way. The same normal-form and jet formulas then apply to
+$\F_{0,\eps}(t)=\Li_{1+\eps}(e^{-t})$.
+
+\begin{theorem}[Exact holomorphic cancellation]\label{thm:normal}
+For $|\eps|<1$ and the stated $t$-branch,
+\begin{align}
+ \F_{n,\eps}(t)&=t^n\B_n(\eps,L)+t^{n+1}R_n(t,\eps),\label{eq:normal}\\
+ \B_n(\eps,L)&=\frac{1-g_n(\eps)e^{-\eps L}}{\eps}+Z(\eps).
+ \label{eq:block}
+\end{align}
+The quotient in \eqref{eq:block} is removable at $\eps=0$, and
+\begin{equation}\label{eq:blockzero}
+ \B_n(0,L)=L+H_n,\qquad R_n(0,\eps)=-\frac{\zeta(\eps)}{n+1},\qquad
+ R_n(0,0)=\frac1{2(n+1)}.
+\end{equation}
+The series for $R_n$ converges normally on compact subsets of
+$\{|t|<2\pi,\ |\eps|<1\}$. All fixed order derivatives in $\eps$ may be
+taken term by term there.
+\end{theorem}
+\begin{proof}
+For noninteger $s$, the classical continuation formula gives
+\[
+ \Li_s(e^{-t})=\Gamma(1-s)t^{s-1}
+       +\sum_{j\ge0}\zeta(s-j)\frac{(-t)^j}{j!}.
+\]
+At $s=n+1+\eps$, the Gamma functional equation yields
+\[
+ (-1)^n n!\,\Gamma(-n-\eps)=-\frac{g_n(\eps)}{\eps}.
+\]
+After subtracting the first $n$ Taylor terms, the term with $j=n$ is
+$t^n\zeta(1+\eps)$. Combining it with the Gamma term gives
+\eqref{eq:block}; reindexing the remaining series gives \eqref{eq:Rdef}.
+Since $g_n(0)=1$, its numerator vanishes at $\eps=0$. Also
+$g_n'(0)=\gamma-H_n$, so its limiting value is
+$L-(\gamma-H_n)+\gamma=L+H_n$.
+
+For completeness, normal convergence does not follow merely from a
+pointwise cancellation. On a compact set $|\eps|\le r<1$, the zeta
+functional equation \cite{dlmf-functional} and the uniform Gamma-ratio
+estimate give, for $j\ge2$,
+\[
+ \left|\frac{\zeta(\eps-j)}{(n+j+1)!}\right|
+ \le C_r(2\pi)^{-j}j^{-n-1+r}.
+\]
+The two initial terms are holomorphic in the parameter disk. This bound
+proves normal convergence when $|t|\le\rho<2\pi$. Cauchy's formula in a
+slightly larger parameter disk then justifies all fixed parameter
+derivatives. The equality at $\eps=0$ follows by removable continuation.
+\end{proof}
+
+\begin{proposition}[Differential ladder and positive integral]\label{prop:ladder}
+With $\F_{0,\eps}(t)=\Li_{1+\eps}(e^{-t})$,
+\begin{equation}\label{eq:ladder}
+ \frac{\dd}{\dd t}\F_{n,\eps}(t)=n\F_{n-1,\eps}(t),\qquad
+ \F_{n,\eps}(t)=n\int_0^t(t-u)^{n-1}\Li_{1+\eps}(e^{-u})\dd u.
+\end{equation}
+The integral holds for positive $t$ and $|\eps|<1$. For real $\eps$ in
+this range, $\F_{n,\eps}$ is positive and strictly increasing on $t>0$.
+Consequently every sufficiently small positive target has a unique
+positive inverse.
+\end{proposition}
+\begin{proof}
+Differentiate \eqref{eq:Fdef}, using
+$\dd\Li_s(e^{-t})/\dd t=-\Li_{s-1}(e^{-t})$, and cancel the differentiated
+Taylor polynomial. The constants at $t=0$ vanish for $n\ge1$ by
+\eqref{eq:normal}, since $\Re\eps>-1$. Repeated integration gives the
+second identity. Local integrability of the integrand follows from its
+$u^{\eps}$ or logarithmic singularity. For real $\eps$, the defining
+series of $\Li_{1+\eps}(e^{-u})$ consists of strictly positive terms.
+The integral and the differential ladder give positivity and strict
+monotonicity, including $n=1$.
+\end{proof}
+
+The subtraction in \eqref{eq:Fdef} is essential. For $n\ge2$, inversion of
+the raw quantity $\zeta(n+1)-\Li_{n+1}(e^{-t})$ is ordinarily governed by a
+nonzero linear term, not by $t^n\Log(1/t)$. This paper concerns a normalized
+Taylor remainder, not an incorrectly assigned singular leading term for
+the unsubtracted polylogarithm.
+
+\section{All integer-order jets and their exact monodromy}
+\label{sec:jets}
+The Gamma expansion gives
+\begin{equation}\label{eq:logg}
+ \log g_n(z)=(\gamma-H_n)z+
+ \sum_{j\ge2}\frac{\zeta(j)+(-1)^jH_n^{(j)}}j z^j,
+ \qquad |z|<1.
+\end{equation}
+Define $a_n=\gamma-H_n$ and $b_{n,j}=\zeta(j)+(-1)^jH_n^{(j)}$.
+
+\begin{theorem}[Complete logarithmic jet]\label{thm:jets}
+For every $r\ge0$,
+\begin{align}
+ \left.\partial_\eps^r\F_{n,\eps}(t)\right|_{\eps=0}
+ &=t^nP_{n,r}(L)+t^{n+1}R_{n,r}(t),\label{eq:jets}\\
+ P_{n,r}(L)&=(-1)^r\gamma_r-r!\,[z^{r+1}]
+ \exp\left((a_n-L)z+\sum_{j\ge2}\frac{b_{n,j}}jz^j\right),\label{eq:P}\\
+ R_{n,r}(t)&=n!\sum_{j\ge0}
+       \frac{(-1)^{j+1}\zeta^{(r)}(-j)}{(n+j+1)!}t^j.
+ \label{eq:Rjet}
+\end{align}
+In particular $\deg_LP_{n,r}=r+1$, with leading coefficient
+$(-1)^r/(r+1)$. Every coefficient in \eqref{eq:P} is a finite polynomial
+in harmonic numbers, ordinary zeta values, Euler's constant, and one
+Stieltjes constant.
+\end{theorem}
+\begin{proof}
+Expand the removable quotient \eqref{eq:block}. Its coefficient of
+$\eps^r$ is minus the coefficient of $z^{r+1}$ in $g_n(z)e^{-zL}$,
+plus $(-1)^r\gamma_r/r!$. Equation~\eqref{eq:logg} yields \eqref{eq:P};
+normal convergence proves \eqref{eq:Rjet}. The highest power of $L$ can
+come only from $e^{-zL}$ and is
+$-r!(-L)^{r+1}/(r+1)!=(-1)^rL^{r+1}/(r+1)$.
+\end{proof}
+The first three polynomials are
+\begin{align}
+ P_{n,0}(L)&=L+H_n,\label{eq:jetexamples0}\\
+ P_{n,1}(L)&=-\gamma_1-\frac{(L-a_n)^2+b_{n,2}}2,\label{eq:jetexamples1}\\
+ P_{n,2}(L)&=\gamma_2+\frac{(L-a_n)^3}{3}
+          +b_{n,2}(L-a_n)-\frac{2b_{n,3}}3.\label{eq:jetexamples2}
+\end{align}
+The ladder also gives the exact finite-polynomial relation
+\begin{equation}\label{eq:Pladder}
+ nP_{n,r}(L)-P_{n,r}'(L)=nP_{n-1,r}(L).
+\end{equation}
+This can be proved either by differentiation of \eqref{eq:jets}, or from
+$g_{n-1}(z)=(1+z/n)g_n(z)$. Its analytic tails satisfy the corresponding
+coefficient identity.
+
+\begin{proposition}[Sharp unipotent monodromy of every jet]\label{prop:monodromy}
+Let $M$ be counterclockwise continuation once around $t=0$ within the
+logarithmic covering of $0<|t|<2\pi$, and set $\Delta=M-1$. Then
+\begin{equation}\label{eq:monodromyfull}
+ (M-1)\F_{n,\eps}(t)
+ =-t^{n+\eps}g_n(\eps)\frac{e^{2\pi i\eps}-1}{\eps}.
+\end{equation}
+If $J_{n,r}(t)=\left.\partial_\eps^r\F_{n,\eps}(t)\right|_0$, then
+\begin{equation}\label{eq:monodromyjet}
+ \Delta^{r+2}J_{n,r}=0,\qquad
+ \Delta^{r+1}J_{n,r}=-r!(2\pi i)^{r+1}t^n\ne0.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Only $t^{\eps}$ changes in \eqref{eq:normal}; this proves
+\eqref{eq:monodromyfull}. For the jet, continuation sends
+$L$ to $L-2\pi i$ and leaves the analytic tail unchanged. A finite
+difference lowers the degree of a polynomial by one. The $(r+1)$st
+difference of its leading term is
+$(-1)^rr!(-2\pi i)^{r+1}=-r!(2\pi i)^{r+1}$.
+\end{proof}
+This is a direct consequence of classical continuation, not a claim of a
+new polylogarithm monodromy theorem. Its useful feature here is that the
+nilpotence index and top finite difference are exact, independent of $n$,
+and compatible with every order derivative and normalized remainder.
+
+\section{The primary, uniform inverse chart}
+\label{sec:primary}
+Let
+\begin{equation}\label{eq:A}
+ \A(\lambda)=\frac{1-e^{-\lambda}}{\lambda},\quad\A(0)=1,
+ \qquad \lambda_k=2\pi i k\quad(k\in\mathbb Z\setminus\{0\}).
+\end{equation}
+The zeros of $\A$ are exactly the $\lambda_k$, and each is simple. On the
+real line $\A(\lambda)=\int_0^1 e^{-u\lambda}\dd u>0$.
+For a positive target $y$ put
+\begin{equation}\label{eq:primaryscale}
+ X=\frac1n\log(1/y),\quad v=X^{-1},\quad h=X^{-1}\log X,
+ \quad\eps=\lambda/X,\quad
+ \tau=e^{-X}\{X\A(\lambda)\}^{-1/n}.
+\end{equation}
+For complex $\lambda$ choose $\log\A$ on a simply connected domain avoiding
+its zeros; the root in \eqref{eq:primaryscale} uses that choice. The
+logarithmic sheet is specified by
+$\Log t=-X-(\log X+\log\A(\lambda))/n+\log U$.
+The theorem below is on this sheet; it is on the initial branch whenever
+its imaginary part lies in $(-\pi,\pi)$. If the parameter domain contains zero, normalize $\log\A(0)=0$.
+On real parameter intervals we take the real logarithm of the positive
+function $\A$.
+
+\begin{theorem}[Convergent order-crossover inversion]\label{thm:primary}
+Fix $n\ge1$ and a compact subset $\mathscr K$ of such a parameter domain.
+There is a holomorphic function $U_n(v,h,\tau;\lambda)$ in a common
+polydisk around $(0,0,0)$, locally holomorphic in $\lambda$, such that
+$U_n(0,0,0;\lambda)=1$ and
+\begin{equation}\label{eq:primaryinverse}
+ t=\tau U_n(v,h,\tau;\lambda)
+\end{equation}
+solves $\F_{n,\lambda/X}(t)=y$ after the substitutions
+\eqref{eq:primaryscale}. It is the unique solution with $t/\tau$ sufficiently
+close to $1$, uniformly for $\lambda\in\mathscr K$.
+Its Taylor series is absolutely convergent after substitution and can be
+grouped as
+\begin{equation}\label{eq:primarysectors}
+ U_n=\sum_{c\ge0}\tau^c\sum_{N\ge0}X^{-N}
+           P_{N,c}(\log X;\lambda),\qquad \deg P_{N,c}\le N.
+\end{equation}
+The coefficients are holomorphic in $\lambda$, and $P_{0,c}=0$ for $c\ge1$.
+For real $\lambda$ in a compact interval this is the unique small positive
+inverse.
+\end{theorem}
+\begin{proof}
+With $t=\tau U$ we have
+\[
+ L=X+\frac{\log X+\log\A(\lambda)}n-\log U.
+\]
+Define the holomorphic function
+\begin{align}
+ \Phi_n(U;v,h,\lambda)
+ &=\frac{1-e^{-\lambda}g_n(\lambda v)
+       \exp\{-\lambda h/n-\lambda v\log\A(\lambda)/n
+                          +\lambda v\log U\}}{\lambda}
+       +vZ(\lambda v),\label{eq:Phi}\\
+ \E_n(U;v,h,\tau,\lambda)
+ &=U^n\{\Phi_n(U;v,h,\lambda)
+               +v\tau U R_n(\tau U,\lambda v)\}-\A(\lambda).
+ \label{eq:E}
+\end{align}
+At $\lambda=0$ the quotient is removable as a function of \emph{all}
+variables: its numerator vanishes identically when $\lambda=0$. The
+limiting formula, which is sometimes computationally preferable, is
+\begin{equation}\label{eq:Phi0}
+ \Phi_n(U;v,h,0)=1+h/n+v(H_n-\log U).
+\end{equation}
+At $(v,h,\tau)=(0,0,0)$,
+\[
+ \E_n(U;0,0,0,\lambda)=\A(\lambda)(U^n-1),\qquad
+ \partial_U\E_n(1;0,0,0,\lambda)=n\A(\lambda)\ne0.
+\]
+The analytic implicit-function theorem gives the stated root. Uniqueness
+glues the local parameter charts. Compactness supplies common smaller
+radii and a common bound. Substituting the physical values into
+\eqref{eq:E} is exactly \eqref{eq:normal} divided by $y$; hence this is an
+actual inverse, not only a formal solution.
+
+Write its Taylor series as $\sum u_{abc}(\lambda)v^ah^b\tau^c$.
+After substitution its individual monomials become
+\[u_{abc}X^{-a-b}(\log X)^b\tau^c.\]
+This proves the degree assertion and absolute regroupability. When $v=0$, equation \eqref{eq:E} is independent
+of $\tau$, so $U_n(0,h,\tau;\lambda)$ is as well. In particular
+$u_{00c}=0$ for $c>0$. For real parameters, conjugation and uniqueness make
+the root real and close to one; positivity and the uniqueness assertion in
+Proposition~\ref{prop:ladder} identify it with the positive inverse.
+\end{proof}
+
+\begin{corollary}[First crossover coefficient]\label{cor:primaryfirst}
+Uniformly on the parameter compacts of Theorem~\ref{thm:primary},
+\begin{equation}\label{eq:primaryfirst}
+ \frac{t}{\tau}=1-
+ \frac{e^{-\lambda}\{(\log X+\log\A(\lambda))/n-a_n\}+\gamma}
+      {n\A(\lambda)X}
+ +O\left(\frac{(\log X)^2}{X^2}+\frac{|\tau|}{X}\right).
+\end{equation}
+\end{corollary}
+\begin{proof}
+The terms of first degree in $v,h$ in \eqref{eq:Phi} are
+$e^{-\lambda}h/n+
+ v\{e^{-\lambda}(\log\A/n-a_n)+\gamma\}$.
+Linearizing $U^n$ at one gives \eqref{eq:primaryfirst}. Holomorphy bounds
+the remaining slow terms quadratically. The difference between the full
+root and its value at $\tau=0$ is divisible by $v\tau$ and is therefore
+$O(|\tau|/X)$ after substitution.
+\end{proof}
+
+\subsection{Remainders and exponential resolution}
+If $U_n$ is bounded by $M$ on a closed polydisk of equal radius $\rho$,
+Cauchy's estimate gives an entirely explicit form of the truncation control.
+For $s=|v|+|h|+|\tau|<\rho$, truncation by total degree at most $N$ obeys
+\begin{equation}\label{eq:cauchyrem}
+ |U_n-U_{n,\le N}|\le M\frac{(s/\rho)^{N+1}}{1-s/\rho}.
+\end{equation}
+Indeed, the sum of absolute monomials of degree $d$ is at most $s^d$.
+The radii are existential here; no interval-certified numerical radius is
+claimed. Normal convergence is stronger than a bare Poincar\'e expansion.
+
+A finite slow expansion has an algebraic error much larger than the first
+exponential sector. Therefore a claim about that sector must refer to the
+analytic coefficient of $\tau$, or to subtraction of the entire convergent
+slow block, not to subtraction of a few powers of $1/X$. This distinction
+will also be crucial at the fold.
+
+\subsection{Comparison with the exact integer Lambert core}
+At $\eps=0$, ignoring only the analytic tail, the equation is
+$y=t^n(H_n-\log t)$. Its small positive core inverse is
+\begin{equation}\label{eq:Lambertcore}
+ t_{\rm core}=\left\{
+ \frac{-ny}{W_{-1}(-ny e^{-nH_n})}\right\}^{1/n}.
+\end{equation}
+To verify this, put $w=n(H_n-\log t)$. Then
+$we^{-w}=ny e^{-nH_n}$, so $-w=W_{-1}(-ny e^{-nH_n})$.
+The negative branch gives $w\to+\infty$ and hence $t\to0$.
+This is a classical Lambert reduction \cite{dlmf-w}, not a new special
+function identity. The primary chart recovers its logarithmic expansion,
+while retaining both order variation and the full analytic tail.
+
+\section{Secondary resonances and an exact Gamma--zeta critical locus}
+\label{sec:secondary}
+Fix $\lambda_k=2\pi i k\ne0$. Near this value it is no longer appropriate
+to divide the inverse scale by $\A(\lambda)$. Instead put
+\begin{equation}\label{eq:secondaryscale}
+ y=e^{-nX},\qquad \eta=e^{-X},\qquad t=\eta U,\qquad
+ \lambda=\eps X,\qquad \kappa=\frac{\lambda-\lambda_k}{\eps}.
+\end{equation}
+The last identity is used when $\eps\ne0$; the resulting local equation
+extends holomorphically to $\eps=0$. Since $e^{-\lambda}=e^{-\eps\kappa}$,
+\eqref{eq:normal} becomes exactly
+\begin{align}
+ \HH_n(U;\eps,\kappa,\eta)
+ &=U^n\left\{\frac{1-g_n(\eps)e^{\eps(\log U-\kappa)}}{\eps}
+                     +Z(\eps)\right\}
+       +\eta U^{n+1}R_n(\eta U,\eps)-1=0.\label{eq:H}\\
+ \HH_n(U;0,\kappa,\eta)
+ &=U^n(H_n+\kappa-\log U)
+       +\eta U^{n+1}R_n(\eta U,0)-1.\label{eq:H0all}
+\end{align}
+Here $\log U$ is the local logarithm near a specified positive value of
+$U$. The variables $(\eps,\kappa,\eta)$ are first independent analytic
+coordinates. The original problem is recovered by \eqref{eq:secondaryscale}.
+Keeping this distinction is essential: $\eta=0$ defines the analytic
+\emph{singular core}, not a literal substitution into $e^{-X}$ at finite $X$.
+
+\subsection{Critical points of the singular core at every order}
+\begin{theorem}[Exact core critical locus]\label{thm:corecritical}
+For each integer $n\ge1$, the singular core
+$\HH_n(U;\eps,\kappa,0)$ has a unique nearby critical solution
+$(U,\kappa)=(u_n(\eps),k_n(\eps))$ at which both the value and its $U$
+derivative vanish, where
+\begin{align}
+ u_n(\eps)&=\left\{\frac{n+\eps}{\eps\zeta(1+\eps)}\right\}^{1/n},
+       \label{eq:ucore}\\
+ k_n(\eps)&=\frac{\log g_n(\eps)-\log n
+                        +(n+\eps)\log u_n(\eps)}{\eps}.
+       \label{eq:kcore}
+\end{align}
+The root and logarithms are chosen analytically near
+$u_n(0)=n^{1/n}$. All displayed singularities at $\eps=0$ are removable,
+and
+\begin{align}
+ k_n(0)&=\kappa_n^*:=\frac{1+\log n}{n}-H_n,\label{eq:kstar}\\
+ k_n(\eps)&=\kappa_n^*+K_n\eps+O(\eps^2),\label{eq:kexpand}\\
+ K_n&=\gamma_1+\frac{(\gamma-1/n)^2}{2}
+                     +\frac{\zeta(2)+H_n^{(2)}}2>0.\label{eq:Kn}
+\end{align}
+At the core critical point, the following exact derivative identities hold:
+\begin{equation}\label{eq:corederivatives}
+ \partial_\kappa\HH_n=n,\qquad
+ \partial_U^2\HH_n=-\frac{n(n+\eps)}{u_n^2},\qquad
+ \partial_U\partial_\kappa\HH_n=\frac{n(n+\eps)}{u_n}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+For $\eps\ne0$, let $Q=g_n(\eps)e^{-\eps\kappa}$. The core equation
+and its derivative are
+\[
+ U^n\zeta(1+\eps)-\frac{Q}{\eps}U^{n+\eps}=1,\qquad
+ nU^{n-1}\zeta(1+\eps)-\frac{n+\eps}{\eps}QU^{n+\eps-1}=0.
+\]
+Eliminating $Q$ gives $U^n=(n+\eps)/(\eps\zeta(1+\eps))$.
+The same equations give $QU^{n+\eps}=n$, whose logarithm gives
+\eqref{eq:kcore}. Conversely these two identities imply both equations,
+so there is no lost condition. The analytic function
+$\eps\zeta(1+\eps)$ equals $1$ at zero. This fixes the analytic root
+and logarithms in a sufficiently small disk. The numerator of
+\eqref{eq:kcore} vanishes at zero, which proves removability.
+
+To obtain its first coefficients, use \eqref{eq:logg} and
+\[
+ \log u_n(\eps)=\frac{\log n}{n}
+ +\left(\frac1{n^2}-\frac\gamma n\right)\eps
+ +\left(-\frac1{2n^3}+\frac{\gamma_1}{n}
+                            +\frac{\gamma^2}{2n}\right)\eps^2
+ +O(\eps^3).
+\]
+Substitution gives \eqref{eq:kstar}--\eqref{eq:Kn}.
+Direct differentiation, followed by
+$u_n^n\zeta(1+\eps)=(n+\eps)/\eps$ and $Qu_n^{n+\eps}=n$,
+gives \eqref{eq:corederivatives}. The Jacobian of
+$(\HH_n,\partial_U\HH_n)$ with respect to $(\kappa,U)$ has determinant
+$-n^2(n+\eps)/u_n^2\ne0$. The implicit-function theorem therefore proves
+local uniqueness, including at $\eps=0$.
+
+We give a nonnumerical proof of the positivity in \eqref{eq:Kn}.
+Euler partial summation gives, first for $\Re s>1$,
+\[
+ \zeta(s)=\frac{s}{s-1}-s\int_1^\infty\{x\}x^{-s-1}\dd x.
+\]
+The integral is holomorphic for $\Re s>0$, and comparison at $s=1$ gives
+\[
+ \gamma_1=\int_1^\infty \{x\}(1-\log x)x^{-2}\dd x
+ >-\int_{\mathrm e}^\infty(\log x-1)x^{-2}\dd x=-\mathrm e^{-1}.
+\]
+The strict inequality follows, for example, from the positive integral
+on $(1,\mathrm e)$ and $0\le\{x\}<1$. Since $\zeta(2)>1$ and
+$H_n^{(2)}\ge1$, we obtain $K_n>1-\mathrm e^{-1}>0$.
+\end{proof}
+
+\begin{theorem}[First deformation by the full analytic tail]
+\label{thm:tailcritical}
+There are unique holomorphic critical functions
+$u_{n,c}(\eps,\eta)$ and $\kappa_{n,c}(\eps,\eta)$ near the core
+locus, satisfying $\HH_n=\partial_U\HH_n=0$. Their expansions in $\eta$
+are
+\begin{align}
+ \kappa_{n,c}(\eps,\eta)
+ &=k_n(\eps)+\eta\frac{\zeta(\eps)u_n(\eps)^{n+1}}{n(n+1)}
+                                      +O(\eta^2),\label{eq:kctail}\\
+ u_{n,c}(\eps,\eta)
+ &=u_n(\eps)-\eta\frac{(1-\eps)\zeta(\eps)u_n(\eps)^{n+2}}
+                         {n(n+1)(n+\eps)}+O(\eta^2).
+                                      \label{eq:uctail}
+\end{align}
+These remainders are uniform on smaller compact $\eps$-disks.
+\end{theorem}
+\begin{proof}
+The nonzero Jacobian just computed applies unchanged at $\eta=0$, so the
+holomorphic implicit-function theorem gives both functions. Write
+$u_{n,c}=u_n+\eta u_1+O(\eta^2)$ and
+$\kappa_{n,c}=k_n+\eta k_1+O(\eta^2)$, and put
+$c=R_n(0,\eps)=-\zeta(\eps)/(n+1)$. The terms of first degree in
+$\eta$ in the value and derivative equations are
+\[
+ nk_1+cu_n^{n+1}=0,
+\qquad
+ -\frac{n(n+\eps)}{u_n^2}u_1
+ +\frac{n(n+\eps)}{u_n}k_1+(n+1)cu_n^n=0.
+\]
+Solving this triangular system gives \eqref{eq:kctail} and
+\eqref{eq:uctail}. Holomorphy proves the uniform remainder assertion.
+\end{proof}
+
+\subsection{Why only the dilogarithm is an undetuned fold}
+\begin{corollary}[Exceptional-order classification]\label{cor:exceptional}
+Among $n\ge1$, the limiting secondary equation at $\kappa=0$ has a
+positive double root precisely for $n=1$, when that root is $U=1$.
+For every $n\ge2$ it has exactly two positive roots, both simple. Each
+of those two simple roots extends to a holomorphic solution of the full
+secondary equation near $(\eps,\kappa,\eta)=(0,0,0)$.
+\end{corollary}
+\begin{proof}
+For positive $U$, the function $f(U)=U^n(H_n-\log U)$ increases up to
+$U_*=e^{H_n-1/n}$ and decreases thereafter. It vanishes at the limiting
+left endpoint and at $U=e^{H_n}$, and its maximum is
+$e^{nH_n-1}/n$. This maximum equals $1$ at $n=1$.
+For $n\ge2$, $nH_n>1+\log n$, so the maximum is strictly greater than
+one. To see the strict inequality directly, $H_n\ge1$ and
+$n>1+\log n$ for $n>1$ already suffice. This proves the root count and
+simplicity. The last claim is the implicit-function theorem at each root.
+Equivalently, the critical detuning \eqref{eq:kstar} is zero only at
+$n=1$, and is negative for all larger $n$.
+\end{proof}
+
+The limiting roots also have a useful classical Lambert description. For
+real $\kappa>\kappa_n^*$ they are
+\begin{equation}\label{eq:secondaryLambert}
+ U_j(\kappa)=\left\{
+ \frac{-n}{W_j(-n e^{-n(H_n+\kappa)})}\right\}^{1/n},
+ \qquad j\in\{0,-1\}.
+\end{equation}
+Indeed, substituting $w=n(H_n+\kappa-\log U)$ reduces the equation to
+$we^{-w}=ne^{-n(H_n+\kappa)}$. At $\kappa=\kappa_n^*$ the Lambert
+argument equals $-1/\mathrm e$ and the two branches meet. As real
+$\kappa\to+\infty$, the $W_{-1}$ root satisfies $U\sim\kappa^{-1/n}$,
+whereas the $W_0$ root satisfies $U\sim e^{H_n+\kappa}$.
+These are identities for the limiting secondary core, not a proof of a
+global connection between every finite-$X$ primary and secondary branch.
+
+\section{The dilogarithm: exact critical curve and a two-sheet chart}
+\label{sec:fold}
+From now on $n=1$, unless indicated otherwise. Set
+\begin{equation}\label{eq:abK}
+ a=\gamma-1,\qquad
+ K=\gamma_1+\frac{a^2+\zeta(2)+1}{2},\qquad
+ b=-a-\frac{4K}{3}.
+\end{equation}
+We suppress $n=1$ in $\HH$, $u_c$ and $\kappa_c$.
+
+\subsection{A closed Gamma--zeta expression}
+Theorem~\ref{thm:corecritical} specializes to
+\begin{align}
+ u_1(\eps)&=\frac{1+\eps}{\eps\zeta(1+\eps)},\label{eq:udilog}\\
+ k_1(\eps)&=\log(1+\eps)+
+ \frac{\log\Gamma(1-\eps)
+                  -(1+\eps)\log(\eps\zeta(1+\eps))}{\eps}.
+                                                        \label{eq:kdilog}
+\end{align}
+The logarithms in \eqref{eq:kdilog} vanish at zero. Expanding gives
+\begin{align}
+ u_1(\eps)&=1-a\eps+O(\eps^2),\label{eq:udilogfirst}\\
+ k_1(\eps)&=K\eps+J\eps^2+O(\eps^3),\label{eq:kdilogsecond}\\
+ J&=-\frac12+\frac{\zeta(3)}3+(1-\gamma)\gamma_1
+          +\frac{\gamma^2}{2}-\frac{\gamma^3}{3}-\frac{\gamma_2}{2}.
+                                                        \label{eq:J}
+\end{align}
+For example,
+$\log(\eps\zeta(1+\eps))=
+ \gamma\eps-(\gamma_1+\gamma^2/2)\eps^2+
+ (\gamma_2/2+\gamma\gamma_1+\gamma^3/3)\eps^3+O(\eps^4)$,
+which verifies every sign in \eqref{eq:J} directly.
+The full critical curve satisfies
+\begin{equation}\label{eq:dilogcriticalfirst}
+ \kappa_c(\eps,\eta)=K\eps-\eta/4+\Ot(2),\qquad
+ u_c(\eps,\eta)=1-a\eps+\eta/4+\Ot(2).
+\end{equation}
+Here $\Ot(d)$ denotes a convergent analytic series whose monomials have
+total degree at least $d$ in the displayed small parameters.
+
+\subsection{Exact roots from analytic root moments}
+\begin{theorem}[Convergent two-sheet normal form]\label{thm:twosheet}
+There are holomorphic functions $C(\eps,\kappa,\eta)$ and
+$D(\eps,\kappa,\eta)$ near zero such that the full equation
+$\HH(U;\eps,\kappa,\eta)=0$ has exactly two roots in a fixed sufficiently
+small disk about $U=1$, counted with multiplicity, and they are exactly
+\begin{equation}\label{eq:CD}
+ U_\pm=C(\eps,\kappa,\eta)\pm\sqrt{D(\eps,\kappa,\eta)}.
+\end{equation}
+Their first analytic jets are
+\begin{align}
+ C&=1+\frac43\kappa+b\eps+\frac7{12}\eta+\Ot(2),\label{eq:Cjet}\\
+ D&=2\kappa-2K\eps+\eta/2+\Ot(2).\label{eq:Djet}
+\end{align}
+Moreover
+\begin{equation}\label{eq:Dfactor}
+ D=(\kappa-\kappa_c(\eps,\eta))d(\eps,\kappa,\eta),
+ \qquad d(0,0,0)=2,
+\end{equation}
+where $d$ is holomorphic and nonvanishing after shrinking the neighborhood.
+Thus a small loop in $\kappa$ around its critical value, with the other
+parameters fixed, interchanges the two roots.
+\end{theorem}
+\begin{proof}
+At zero parameters,
+\[
+ H_0(U):=\HH(U;0,0,0)=U(1-\log U)-1
+       =-\frac{(U-1)^2}{2}+O((U-1)^3).
+\]
+Choose a circle $\Gamma$ about $1$ so small that this is its only zero in
+the closed disk. The function is nonzero on $\Gamma$. Holomorphy and
+Rouch\'e's theorem show that the full equation has exactly two zeros
+inside, counted with multiplicity, for all sufficiently small parameters.
+Define
+\[
+ S_j=\frac1{2\pi i}\int_\Gamma U^j
+               \frac{\partial_U\HH}{\HH}\dd U\quad(j=1,2),\qquad
+ C=S_1/2,\qquad D=S_2/2-C^2.
+\]
+The contour is fixed and its denominator stays nonzero, so the moments
+are holomorphic even when the roots coalesce. If the two roots are
+$u_+,u_-$, the argument principle gives
+$S_j=u_+^j+u_-^j$. Hence $C=(u_++u_-)/2$ and
+$D=(u_+-u_-)^2/4$, proving \eqref{eq:CD} without a prior choice of labels.
+
+For the first jets put $\delta=U-1$. Then
+\[
+ \frac1{H_0}=-2\delta^{-2}-\frac23\delta^{-1}+O(1).
+\]
+The first parameter-degree part $\Delta_1$ of $\HH-H_0$ is
+\[
+ \Delta_1=\kappa U-\eps U
+       \{K+a\log U+(\log U)^2/2\}+\eta U^2/4.
+\]
+Write $\Delta_1=q_0+q_1\delta+O(\delta^2)$, where
+$q_0=\kappa-K\eps+\eta/4$ and
+$q_1=\kappa-(K+a)\eps+\eta/2$.
+Expanding the logarithmic derivative and integrating by parts shows that
+the first variations are
+\[
+ S_1-2=2q_1+\frac23q_0,\qquad
+ S_2-2=4q_1+\frac{16}3q_0.
+\]
+Consequently $C-1=q_1+q_0/3$ and $D=2q_0$ to first degree. These are
+\eqref{eq:Cjet}--\eqref{eq:Djet}. In particular $\partial_\kappa D(0)=2$.
+A zero of $D$ is precisely a double root, and its locus is the unique
+critical curve in Theorem~\ref{thm:tailcritical}. Division by
+$\kappa-\kappa_c$ therefore gives \eqref{eq:Dfactor}; for example the
+quotient is the integral of $\partial_\kappa D$ along the segment from
+$\kappa_c$ to $\kappa$. The nonzero analytic factor has a local analytic
+square root. The remaining square root changes sign on one loop, which
+proves branch interchange.
+\end{proof}
+
+This local interchange is ordinary ramification of an analytic inverse.
+It is not a Stokes jump. Separately, Proposition~\ref{prop:monodromy}
+concerns continuation of the forward family around $t=0$. Conflating these
+two operations would give incorrect branch bookkeeping.
+
+\subsection{A moving fold in the actual order parameter}
+\begin{theorem}[Moving physical critical order]\label{thm:movingfold}
+Fix $k\ne0$ and write $v=X^{-1}$. There is a holomorphic function
+$\lambda_c(v,\eta)$ near $(0,0)$ with $\lambda_c(0,0)=\lambda_k$,
+characterized by
+\begin{equation}\label{eq:lambdacimplicit}
+ \lambda_c-\lambda_k
+       =\lambda_cv\,\kappa_c(\lambda_cv,\eta).
+\end{equation}
+Its expansion is
+\begin{equation}\label{eq:lambdac}
+ \lambda_c=\lambda_k+K\lambda_k^2v^2
+       -\frac{\lambda_k}{4}v\eta
+       +O(v^3+v^2\eta+v\eta^2).
+\end{equation}
+On the physical specialization $\eta=e^{-X}$, set
+$\eps_c=\lambda_c/X$ and
+$t_c=\eta u_c(\eps_c,\eta)$. Then
+\begin{equation}\label{eq:physicalfold}
+ \zeta(2+\eps_c)-\Li_{2+\eps_c}(e^{-t_c})=e^{-X},
+ \qquad \Li_{1+\eps_c}(e^{-t_c})=0,
+\end{equation}
+and this is a nondegenerate critical point of the inverse problem. In
+particular,
+\begin{align}
+ \eps_c&=\frac{\lambda_k}{X}+\frac{K\lambda_k^2}{X^3}
+                      +O_k(X^{-4}+e^{-X}X^{-2}),\label{eq:epsc}\\
+ t_c&=e^{-X}\{1+(1-\gamma)\lambda_k/X
+                               +O_k(X^{-2}+e^{-X})\}.\label{eq:tc}
+\end{align}
+\end{theorem}
+\begin{proof}
+The left side of \eqref{eq:lambdacimplicit} minus its right side is
+holomorphic in $(\lambda,v,\eta)$, vanishes at $(\lambda_k,0,0)$, and
+has $\lambda$ derivative one there. The implicit-function theorem proves
+existence and uniqueness. Insert \eqref{eq:dilogcriticalfirst} and use
+$\lambda_c=\lambda_k+O(v^2+v\eta)$ to obtain \eqref{eq:lambdac}.
+For physical parameters, \eqref{eq:secondaryscale} makes the critical
+secondary equation identical to the original normalized equation. Its
+$U$ derivative is the $t$ derivative of $\F_{1,\eps}(t)$, which equals
+$\Li_{1+\eps}(e^{-t})$. Its second $U$ derivative remains close to $-1$
+and is nonzero. This proves \eqref{eq:physicalfold} and nondegeneracy.
+Finally substitute \eqref{eq:lambdac} into \eqref{eq:dilogcriticalfirst}
+and divide by $X$ where appropriate.
+\end{proof}
+
+The vanishing $X^{-1}$ displacement in \eqref{eq:lambdac} is another
+expression of the exceptional-order classification. For general $n$, the
+same argument at the tuned critical detuning gives instead
+$\lambda_{n,c}=\lambda_k+\lambda_k\kappa_n^*v+O(v^2+v\eta)$.
+This follows directly from \eqref{eq:kstar}; no analogous cancellation
+occurs for $n\ge2$.
+
+\section{Convergent secondary transseries and every exponential sector}
+\label{sec:sectors}
+Fix the undetuned resonance $\lambda=\lambda_k$ and hence $\kappa=0$.
+The small variables that preserve the fold splitting are
+\begin{equation}\label{eq:wr}
+ v=X^{-1},\qquad w=\sqrt v,\qquad
+ \eta=e^{-X},\qquad r=\eta/v=Xe^{-X},\qquad A_k=-2K\lambda_k\ne0.
+\end{equation}
+The letter $A_k$ here is a nonzero constant, not the function $\A$.
+
+\begin{theorem}[Two-generator convergent inverse transseries]
+\label{thm:secondarytransseries}
+There are holomorphic functions $C_k(v,r)$ and $B_k(v,r)$ in a polydisk
+about zero such that, for all sufficiently large real $X$, the two roots
+near $t=e^{-X}$ are exactly
+\begin{equation}\label{eq:secondarytransseries}
+ t_\pm=e^{-X}\{C_k(X^{-1},Xe^{-X})
+               \pm X^{-1/2}B_k(X^{-1},Xe^{-X})\}.
+\end{equation}
+One may select either square root of $A_k$, after which
+\begin{equation}\label{eq:CBboundary}
+ C_k(0,r)=1,\qquad B_k(0,r)=\sqrt{A_k+r/2}.
+\end{equation}
+Consequently \eqref{eq:secondarytransseries} is an absolutely convergent
+transseries on the finite positive monomial grid generated by
+$X^{-1/2}$ and $Xe^{-X}$, with the prefactor $e^{-X}$. Both roots use the
+same original logarithm branch, and they are distinct for large $X$.
+\end{theorem}
+\begin{proof}
+Substitute $(\eps,\kappa,\eta)=(\lambda_kv,0,vr)$ into
+Theorem~\ref{thm:twosheet}. Define
+\[
+ C_k(v,r)=C(\lambda_kv,0,vr),\qquad
+ T_k(v,r)=\frac{D(\lambda_kv,0,vr)}v.
+\]
+Every monomial in the numerator of the latter expression is divisible by
+$v$, because $D(0,0,0)=0$. Thus $T_k$ is holomorphic, not just bounded
+on a punctured set. Equation~\eqref{eq:Djet} gives
+$T_k(0,r)=A_k+r/2$. Since $A_k\ne0$, shrink the polydisk and take its
+analytic square root $B_k$. This proves \eqref{eq:CBboundary} and the
+exact formula. The functions $C_k(w^2,r)\pm wB_k(w^2,r)$ are holomorphic
+in $(w,r)$, so their Taylor series converge absolutely on a smaller
+polydisk. Both generators tend to zero after \eqref{eq:wr}; this proves
+convergence on the physical path. For each exponential action the powers
+of $X^{-1/2}$ have a lower bound, giving a well-based monomial support.
+Since $T_k\to A_k\ne0$, the roots stay distinct. Finally $U_\pm\to1$,
+so $t_\pm$ remain in a narrow sector about the positive real axis and
+share the logarithm specified at the start of the paper.
+\end{proof}
+
+A two-variable version of \eqref{eq:cauchyrem} gives a geometric error
+bound in $|w|+|r|$. More precisely, if the analytic root expression is
+bounded by $M$ on a closed polydisk of radius $\rho$, then its
+Taylor polynomial of total degree at most $N$ has error at most
+$M\theta^{N+1}/(1-\theta)$, where
+$\theta=(|w|+|r|)/\rho<1$. Multiplication by $e^{-X}$ gives the error for
+$t$. The statement is local; the paper does not supply a maximal numerical
+polydisk or claim uniformity when $k$ grows with $X$.
+
+\subsection{The first three algebraic corrections}
+Put
+\begin{align}
+ J_0&=\frac{\gamma_2}{2}-\frac{a^3}{6}
+            -\frac{a(\zeta(2)+1)}2-\frac{\zeta(3)-1}{3},\label{eq:J0}\\
+ M_0&=\frac{a^2}{2}+(3a+1)K+\frac{13K^2}{9}+J_0.\label{eq:M0}
+\end{align}
+(The subscript distinguishes $M_0$ from a Cauchy bound.)
+\begin{corollary}[Explicit Puiseux coefficients]\label{cor:puiseux}
+At fixed $k\ne0$ and with a fixed choice of $\sqrt{A_k}$,
+\begin{equation}\label{eq:threecorrections}
+ \frac{t_\pm}{e^{-X}}=
+ 1\pm\frac{\sqrt{A_k}}{X^{1/2}}+\frac{b\lambda_k}{X}
+ \pm\frac{M_0\lambda_k^2}{\sqrt{A_k}\,X^{3/2}}
+ +O_k(X^{-2}).
+\end{equation}
+\end{corollary}
+\begin{proof}
+First set $\eta=0$ and write $\delta=U-1$. Give $\delta$ weight one
+and $\eps$ weight two. Expansion of \eqref{eq:H} gives, through weight
+four,
+\begin{align*}
+ \HH(1+\delta;\eps,0,0)
+ ={}&-\delta^2/2+\delta^3/6-\delta^4/12\\
+ &-\eps\{K+(K+a)\delta+(a+1)\delta^2/2\}
+       +\eps^2J_0+O_{\mathrm{wt}}(5).
+\end{align*}
+Here the omitted analytic series has weight at least five. Substitute
+$\eps=h^2$ and $\delta=ch+bh^2+dh^3+O(h^4)$.
+The coefficients of $h^2,h^3,h^4$ give successively
+$c^2=-2K$, $b=-a-4K/3$, and $cd=M_0$. This is the displayed formula
+with $\eps=\lambda_k/X$. Convergence and the $O(h^4)$ error follow
+from Theorem~\ref{thm:secondarytransseries} at $r=0$, rather than from
+formal coefficient matching alone.
+For the full equation, analyticity in $r$ shows that the additional
+change in $U$ is $O(\sqrt v\,r+v r)$, hence
+$O(e^{-X}\sqrt X)$ on the physical path. This is smaller than $X^{-2}$
+and proves \eqref{eq:threecorrections} for the actual roots.
+\end{proof}
+
+\subsection{The leading coefficient of every exponential action}
+The coefficients of the exponentially small sectors are most cleanly
+specified before substitution. Write
+\begin{equation}\label{eq:sectorfunctions}
+ C_k(v,r)\pm\sqrt v\,B_k(v,r)
+          =\sum_{m\ge0}r^m U_{\pm,m}(v).
+\end{equation}
+Each $U_{\pm,m}(w^2)$ is holomorphic in $w$. This independent-variable
+definition removes the ambiguity inherent in trying to read an exponential
+term beneath an unremoved algebraic error.
+
+\begin{theorem}[All-action leading law]\label{thm:allsectors}
+For every fixed integer $m\ge1$,
+\begin{equation}\label{eq:Umleading}
+ U_{\pm,m}(v)=
+ \pm\binom{1/2}{m}2^{-m}A_k^{1/2-m}\sqrt v+O_{k,m}(v).
+\end{equation}
+Thus the sector of $t_\pm$ of exponential action $m+1$, as defined by
+\eqref{eq:sectorfunctions}, has leading term
+\begin{equation}\label{eq:allsectors}
+ t_\pm^{[m]}=
+ \pm\binom{1/2}{m}2^{-m}A_k^{1/2-m}
+ e^{-(m+1)X}X^{m-1/2}\{1+O_{k,m}(X^{-1/2})\}.
+\end{equation}
+Every one of these coefficients is nonzero. In particular, the first two
+additional sectors begin with
+\begin{equation}\label{eq:firstactions}
+ t_\pm^{[1]}\sim\pm\frac{e^{-2X}X^{1/2}}{4\sqrt{A_k}},\qquad
+ t_\pm^{[2]}\sim\mp\frac{e^{-3X}X^{3/2}}{32A_k^{3/2}}.
+\end{equation}
+The full sector sum is absolutely convergent for all sufficiently large
+$X$; \eqref{eq:allsectors} itself is an asymptotic statement at fixed $m$.
+\end{theorem}
+\begin{proof}
+At $v=0$, $C_k$ is independent of $r$, so
+$[r^m]C_k(v,r)=O(v)$ for $m\ge1$. Equation~\eqref{eq:CBboundary} and
+Cauchy's formula in $r$ give
+\[
+ [r^m]B_k(v,r)=
+ \binom{1/2}{m}2^{-m}A_k^{1/2-m}+O(v).
+\]
+This proves \eqref{eq:Umleading}. Now multiply by $e^{-X}r^m$ and
+use $r=Xe^{-X}$ to obtain \eqref{eq:allsectors}. A half-integer binomial
+coefficient $\binom{1/2}{m}$ never vanishes, and $A_k\ne0$; this proves
+nonvanishing. The binomial coefficients at $m=1,2$ give
+\eqref{eq:firstactions}. Absolute convergence is the two-variable Taylor
+convergence already proved, with regrouping justified by absolute values.
+\end{proof}
+
+\begin{corollary}[Analytic-tail universality of the leading actions]
+\label{cor:tailuniversality}
+Replace $R_1(t,\eps)$ by any holomorphic function $\widetilde R(t,\eps)$
+with $\widetilde R(0,0)=c$, while leaving the singular block unchanged.
+All the local convergence statements remain valid. When $c\ne0$,
+replace $2^{-m}$ by $(2c)^m$ in
+\eqref{eq:Umleading}--\eqref{eq:allsectors}; all additional leading
+sectors remain nonzero. When $c=0$, only the corresponding leading
+coefficient in \eqref{eq:Umleading} vanishes: the relative asymptotic
+formula \eqref{eq:allsectors} is not asserted, and a finer tail scaling
+may be needed.
+\end{corollary}
+\begin{proof}
+In the first-jet calculation the tail perturbation becomes
+$\eta cU^2$, so $D_\eta(0)=2c$. Consequently
+$T_k(0,r)=A_k+2cr$. The same analytic square root and coefficient argument
+apply without any other change. This proves the claim, including its
+qualification when $c=0$.
+\end{proof}
+
+\section{Finite residue formulas for every chart coefficient}
+\label{sec:coefficients}
+The convergent existence theorems admit a finite coefficient algorithm.
+Although residue inversion is classical, the following formulas make the
+present three-variable charts directly computable and avoid an unbounded
+formal recursion for any fixed request.
+
+\begin{theorem}[Finite coefficient extraction for the simple chart]
+\label{thm:residuesimple}
+Fix $n,\lambda$ in the setting of Theorem~\ref{thm:primary}. Write
+$p=(v,h,\tau)$,
+$E_0(U)=\A(\lambda)(U^n-1)$, and
+$Q(U,p)=(\E_n(U,p,\lambda)-E_0(U))/E_0(U)$.
+For every nonzero multi-index $\alpha$ of total degree $N$,
+\begin{equation}\label{eq:residuesimple}
+ [p^\alpha]U_n(p;\lambda)=
+ \sum_{j=1}^{N}\frac{(-1)^j}{j}
+       \Res_{U=1}[p^\alpha]Q(U,p)^j.
+\end{equation}
+Each residue requires only finitely many Taylor coefficients of the
+explicit functions in \eqref{eq:E}.
+\end{theorem}
+\begin{proof}
+Choose a small circle about $U=1$ containing no other zero of $E_0$.
+For small $p$, $|Q|<1$ on the circle, and the simple root inside is
+\[
+ U_n(p)=\frac1{2\pi i}\int U\frac{\partial_U\E_n}{\E_n}\dd U
+ =1-\frac1{2\pi i}\int\log(1+Q)\dd U.
+\]
+For the last equality, integrate the derivative of $U\log(1+Q)$ along
+the closed circle; this logarithm is single valued there by its convergent
+power series. Expanding the logarithm gives \eqref{eq:residuesimple}.
+Since $Q$ has positive parameter degree, only $j\le N$ can contribute.
+The pole order in the $j$th term is at most $j$, so a finite $U$-jet of
+its analytic numerator determines the residue. All expansions and
+integrals are uniformly convergent on the fixed contour for sufficiently
+small $p$, justifying coefficient extraction.
+\end{proof}
+
+\begin{theorem}[Finite coefficient extraction at the double root]
+\label{thm:residuedouble}
+For the dilogarithm let $p=(\eps,\kappa,\eta)$,
+$H_0(U)=U(1-\log U)-1$, and
+$Q=(\HH-H_0)/H_0$. The root moments in
+Theorem~\ref{thm:twosheet} satisfy, for $\alpha\ne0$ and
+$N=|\alpha|$,
+\begin{equation}\label{eq:residuedouble}
+ [p^\alpha]S_\ell=
+ \ell\sum_{j=1}^{N}\frac{(-1)^j}{j}
+       \Res_{U=1}U^{\ell-1}[p^\alpha]Q(U,p)^j,
+ \qquad \ell=1,2.
+\end{equation}
+Together with $C=S_1/2$ and $D=S_2/2-C^2$, this determines every
+coefficient of the double-root chart from finite Taylor data. Substitution,
+analytic square-root extraction, and ordinary convolution then determine
+every coefficient in Theorem~\ref{thm:secondarytransseries}.
+\end{theorem}
+\begin{proof}
+Use the same contour and logarithmic expansion as above, but start from
+$S_\ell=(2\pi i)^{-1}\int U^\ell\HH_U/\HH\dd U$.
+Its base value is $2$, because the base root at one has multiplicity two.
+Integration by parts introduces $-\ell U^{\ell-1}$, giving the stated
+formula. Only $j\le N$ contributes. The pole order is now at most $2j$,
+which is still finite. Finally the analytic square root has nonzero
+constant term $\sqrt{A_k}$, so its coefficient recurrence divides only by
+$2\sqrt{A_k}$, never by a vanishing quantity.
+\end{proof}
+
+For the forward jets one can avoid even residues. If
+$g_n(z)=\sum_{m\ge0}g_{n,m}z^m$ and
+$\log g_n(z)=\sum_{j\ge1}\ell_{n,j}z^j$, then
+\begin{equation}\label{eq:grecurrence}
+ g_{n,0}=1,\qquad
+ m g_{n,m}=\sum_{j=1}^{m}j\ell_{n,j}g_{n,m-j},
+\end{equation}
+where $\ell_{n,1}=a_n$ and $j\ell_{n,j}=b_{n,j}$ for $j\ge2$.
+Multiplication by the finite jet of $e^{-Lz}$ gives
+\eqref{eq:P}. This recurrence is obtained by differentiating $g_n=e^{\log
+g_n}$ and comparing coefficients, so it is exact over a symbolic
+coefficient ring. The verification program uses this recurrence rather
+than numerical fitting of constants.
+
+\section{Reproducible exact checks and numerical diagnostics}
+\label{sec:verification}
+The accompanying computations have deliberately different evidentiary
+roles. The proofs above establish the analytic identities, convergence,
+and root counts. Exact symbolic computations check a finite set of
+coefficient identities. Floating-point evaluations test formulas and
+branch selections at specified sample points; they do not certify the
+last displayed digit, convergence radii, or publication novelty.
+
+\subsection{Exact algebra}
+The program \path{code/verify_exact.py}, using SymPy 1.14.0, completed
+\textbf{150 exact assertions}. Its scopes are: the leading logarithmic
+coefficient and exact monodromy degree for $0\le n,r\le4$; the differential
+jet ladder; the Gamma recurrence through degree six; the first root-moment
+coefficients of $C,D$; the Puiseux equation through fourth degree in
+$\sqrt\eps$; the algebraic elimination and first-tail displacement at a
+general core critical point; the constants $K,J$; and the all-sector
+binomial convolution through degree eighteen.
+
+Euler's constant, zeta values, and Stieltjes constants are independent
+symbols in these polynomial checks. No conjectured numerical relation
+between them is used. This exact algebra is neither a proof assistant
+formalization nor an independent verification of complex-analytic
+existence theorems. The complete receipt is
+\path{results/exact_checks.json}; the symbolic output is
+\path{results/symbolic_coefficients.json}.
+
+\subsection{Floating-point comparisons}
+The program \path{code/verify_numeric.py}, using mpmath 1.3.0 at
+\textbf{180 decimal digits}, completed \textbf{73 diagnostics}.
+It compares the pole-cancelled normal form with direct polylogarithm
+calls, including integer and complex orders; checks first order jets by
+a complex Cauchy coefficient calculation; solves primary inverses;
+checks the closed core critical formulas and their full-tail deformation;
+and checks both secondary roots and moving physical critical points
+against direct polylogarithms. Several comparisons share the same numerical
+library, so ``independent'' here means different evaluation routes, not
+independent software implementations or interval arithmetic.
+
+Direct subtraction of two $O(1)$ values to recover a quantity of size
+$e^{-X}$ costs approximately $X/\log 10$ decimal digits. The program
+therefore uses a large working precision and explicitly relaxes the
+direct residual threshold in its most ill-conditioned sample, $X=320$.
+It records every tolerance and measured residual in
+\path{results/numeric_checks.json}. Finite tail truncations used in
+these numerical comparisons are diagnostics, not interval bounds for the
+omitted tail.
+
+For the plus branch at $k=1$, let $U^{(2)}$ retain the square-root and
+$X^{-1}$ corrections in \eqref{eq:threecorrections}, and let $U^{(3)}$
+also retain the $X^{-3/2}$ correction. The observed errors are
+\begin{center}
+\input{results/numeric_table.tex}
+\end{center}
+These values are rounded diagnostics, not rigorously enclosed decimals.
+The constants used were approximately
+\[
+ K=1.3390244849427629699282971855433,\qquad
+ b=-1.3625816448252168205109083374735.
+\]
+Their positivity or nonvanishing assertions in the theorems rely on exact
+arguments, not these decimal values.
+
+\subsection{How to replay}
+Run the following commands from the package directory:
+\begin{verbatim}
+python code/verify_exact.py
+python code/verify_numeric.py --dps 180
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The scripts need only the pinned Python dependencies in
+\path{requirements.txt} and no network access after installation. The PDF
+build uses the included numerical table; replaying the numerical script
+regenerates it. The supplied \path{Makefile} separates mathematical replay
+from PDF compilation. No repository mutation is performed by these files.
+
+\section{Repository audit, corrections, and the novelty boundary}
+\label{sec:audit}
+This is a targeted research audit, not a review of every statement in
+either large repository area. The observed \texttt{main} reference during
+the session was
+\begin{center}\small
+\texttt{9ec0f0406afe7a5475b03ff65ed91f7e283979b8}.
+\end{center}
+Some initial index reads used the moving branch; later source and ledger
+reads were explicitly pinned to that commit. The source manifest records
+those distinctions and the returned blob identifiers rather than
+pretending that all reads formed one atomic checkout.
+
+\subsection{Overlap that must be credited}
+The critical-Hahn article \cite{repo-hahn} already constructs an actual
+convergent chart $x=T V(T,T^{2-\alpha})$ for a fixed exponent
+$1<\alpha<2$, with finite positive support generators, coefficient
+formulas, and a Cauchy remainder estimate. The inspected proof passage
+uses the analytic implicit-function theorem correctly for that fixed
+parameter regime. The present work does not supersede it and does not
+identify a defect in it. Our varying-order resonance scale and the exact
+Gamma--zeta critical locus are different statements. Uniformity through
+an integer endpoint cannot be inferred from a fixed-parameter radius;
+it requires the separate cancellation and scaling used here.
+
+The transseries index also records existing moving-fold and inverse
+branch-gluing work. Accordingly, a square-root chart, root moments,
+Rouch\'e's theorem, finite residue inversion, and local branch interchange
+are methods, not independent novelty claims of this paper. The specific
+resonance lattice, critical-detuning classification, closed critical locus,
+and the resulting sector coefficients are the candidate additions.
+
+\subsection{A historical overstatement already corrected in the ledger}
+The historical \emph{Polylogarithm--Polygamma Bridge} abstract
+\cite{repo-bridge} uses stronger language about exact denominator
+classification and independent new constants than finite numerical
+searches establish. The source itself also distinguishes numerical
+independence evidence from proof. Crucially, the canonical editorial
+ledger \cite{repo-ledger} already directs replacement of the
+``exactly crystallographic'' and independent-new-atom conclusions by
+exact reductions and bounded searches. This is therefore \emph{not a
+newly discovered uncorrected theorem error}.
+
+The integration proposal is to preserve that existing correction and,
+where standalone historical files are distributed, add an explicit
+supersession pointer to the canonical ledger. No numerical
+non-reduction should be promoted to a theorem of independence. This
+paper neither needs nor supplies any such independence theorem.
+
+\subsection{Preventive qualifications for the present contribution}
+Several tempting but incorrect simplifications are ruled out by the
+proofs. One must differentiate the pole-cancelled block, not two
+individually singular terms evaluated at the integer. The primary inverse
+must exclude the nonzero zeros of $\A$ or use a secondary chart.
+An analytic-core critical identity must not be labeled exact for the full
+polylogarithm without the tail deformation. Exponential coefficients must
+be extracted from analytic sector functions, not fitted below a fixed
+algebraic remainder. The two kinds of monodromy discussed above must
+remain separate. Finally, the positivity and small-real-inverse statements
+apply to the specified real family and do not exclude additional complex
+roots outside the local disks.
+
+No new false mathematical assertion in the inspected \emph{current
+canonical} material was established in this audit. Its limited scope
+would not justify claiming that the remaining corpus is error-free.
+The paper supplies self-contained proofs for the new results so that
+their validity does not depend on accepting unaudited sources.
+
+\subsection{Publication-priority limitations}
+A bounded web search for varying-order polylogarithm inversion,
+Gamma--zeta resonance, Stieltjes/fold combinations, and polylogarithm
+critical loci did not establish an exact antecedent for the combined
+formulas here. Most relevant verified public background was classical
+continuation and Lambert inversion in the DLMF. This limited search is
+not a bibliographic proof of originality. In particular, local fold
+methods are widespread, and equivalent formulas may occur in different
+notation. Independent mathematical review and a broader literature
+comparison are required before making a publication-priority claim.
+
+\section{Further research questions and concrete next steps}
+\label{sec:future}
+\subsection{Matching the primary and secondary charts}
+A local primary chart excludes $\lambda_k$, while the secondary chart
+keeps $\kappa=(\lambda-\lambda_k)/\eps$ bounded. Construct an overlapping
+atlas when $1\ll|\kappa|\ll X$, with a uniform remainder and an explicit
+identification of which secondary root continues the small primary
+inverse along a specified path. Formula~\eqref{eq:secondaryLambert}
+suggests the matching law but does not prove the finite-$X$ analytic
+continuation. The path dependence and possible encounters with the moving
+fold should be part of the statement, not hidden in a branch convention.
+
+\subsection{A growing resonance index}
+All secondary theorems here fix $k$. Determine the largest regime
+$k=k(X)$ for which a common rescaling and quantitative error remain valid.
+The constraint $|\eps|=2\pi|k|/X<1$ is necessary for the present parameter
+disk, but it is not by itself a uniform root-separation or convergence
+estimate. A useful target is a theorem uniform when $|k|=o(X)$ with
+explicit dependence on $K\lambda_k$ and the nearest singularities in the
+order variable.
+
+\subsection{Higher criticality by controlled Taylor subtraction}
+The natural family yields a nondegenerate fold at its tuned critical
+point, since \eqref{eq:corederivatives} never vanishes near zero.
+Add finitely many adjustable analytic counterterms to force the first
+several $U$ derivatives to vanish. Can one construct an equally explicit
+Gamma--zeta parametrization of a cubic or higher critical locus, together
+with a convergent multi-sheet chart and all-action leading coefficients?
+The nondegeneracy and parameter-rank conditions must be proved before
+assigning a formal multiplicity.
+
+\subsection{Lerch and arithmetic twists}
+Replace the Riemann polylogarithm by a Lerch-type series with a rational
+shift or periodic weights. The local singular amplitude and regular
+Laurent coefficients then involve Hurwitz zeta and generalized Stieltjes
+constants. Determine precisely which periodic components preserve the
+resonance lattice and which cancel its leading residue. An attractive
+goal is a finite Fourier criterion for the appearance, disappearance,
+or splitting of the secondary fold. No blanket extension is asserted
+without checking the new local singular block.
+
+\subsection{Vanishing analytic tails and delayed actions}
+Corollary~\ref{cor:tailuniversality} shows why the leading law changes
+when $c=0$. If the first nonzero tail coefficient has higher order,
+classify the correct replacement for $Xe^{-X}$, locate the first new
+action, and compute the sector coefficients. The center term and the
+square-root discriminant may then compete on different grids; a complete
+classification should retain both, rather than only the square root.
+
+\subsection{Global zeros and inverse continuation}
+Equation~\eqref{eq:physicalfold} constructs local zeros of a polylogarithm
+whose order tends to one, together with a prescribed adjacent-order
+value. Investigate whether these local critical points lie on distinct
+global critical curves, how those curves meet the usual argument cuts,
+and whether their inverse monodromies generate additional relations.
+The local two-root count in this paper says nothing about all other roots
+of the equation.
+
+\subsection{Certified radii and formalization}
+Produce interval-certified contour bounds for $\HH$ and $\E_n$ on
+explicit disks, yielding numerical convergence radii and root enclosures
+rather than floating residuals. A sensible formalization order is: the
+finite coefficient algebra; the cancellation identity from a formalized
+continuation formula; normal convergence and order differentiation; the
+analytic root-count lemma; and the final substitutions. The supplied
+manifest separates these dependencies. Existing transseries Lean modules
+provide related support and inversion foundations, but this package
+contains no Lean declarations and claims no new formal coverage.
+
+\section{Conclusion}
+Integer-order pole cancellation is a natural interface between the exact
+polylogarithm calculus and convergent transseries inversion. Keeping that
+cancellation intact reveals a second, complex resonance lattice invisible
+to a fixed-order expansion. The singular core has a closed critical locus
+in Gamma and zeta functions at every order. The first full-tail correction
+is explicit, and the dilogarithm is exactly the order at which the
+undetuned secondary scaling already has a double inverse root. Its
+convergent square-root chart produces a complete leading law for every
+exponential sector. These results are local and model-specific, but their
+proofs, coefficient formulas, branch conventions, and replay artifacts
+make them suitable for statement-level review and integration.
+
+\begin{thebibliography}{99}
+\bibitem{dlmf-poly}
+NIST Digital Library of Mathematical Functions,
+\S25.12, \emph{Polylogarithms}, especially Eq.~25.12.12.
+\url{https://dlmf.nist.gov/25.12}. Accessed 11 October 2026.
+\bibitem{dlmf-gamma}
+NIST Digital Library of Mathematical Functions,
+\S5.7, \emph{Series Expansions of the Gamma Function}, especially
+Eq.~5.7.3. \url{https://dlmf.nist.gov/5.7}.
+Accessed 11 October 2026.
+\bibitem{dlmf-zeta}
+NIST Digital Library of Mathematical Functions,
+\S25.2, \emph{Definition and Expansions of the Riemann Zeta Function},
+especially Eq.~25.2.4. \url{https://dlmf.nist.gov/25.2}.
+Accessed 11 October 2026.
+\bibitem{dlmf-functional}
+NIST Digital Library of Mathematical Functions,
+\S25.4, \emph{Reflection Formulas}, especially Eq.~25.4.2.
+\url{https://dlmf.nist.gov/25.4}. Accessed 11 October 2026.
+\bibitem{dlmf-w}
+NIST Digital Library of Mathematical Functions,
+\S4.13, \emph{Lambert $W$-Function}.
+\url{https://dlmf.nist.gov/4.13}. Accessed 11 October 2026.
+\bibitem{repo-poly}
+ProveIt Contributors, \emph{Polylogarithms}, project index and manuscript
+status. \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/Polylogarithms}.
+Inspected 11 October 2026; read scope and returned blob identifier in the
+accompanying source audit.
+\bibitem{repo-trans}
+ProveIt Contributors, \emph{Series and Transseries}, canonical-volume,
+companion, and incoming-research registry.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/Transseries/docs/series-and-transseries}.
+Inspected 11 October 2026, selected portions.
+\bibitem{repo-hahn}
+\emph{Beyond Finite-Action Folds: Critical Hahn Transseries, Stable Sector
+Asymptotics, and Sharp Action Budgets}, research contribution for ProveIt,
+29 September 2026. In
+\path{Analysis/Transseries/docs/series-and-transseries/Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/article.tex}.
+The coefficient and convergence passage was inspected at commit
+\texttt{9ec0f0406afe7a5475b03ff65ed91f7e283979b8}, lines 300--425.
+\bibitem{repo-ledger}
+ProveIt Contributors, \emph{Source Reconciliation and Mathematical
+Corrections}, canonical editorial ledger, in
+\path{Analysis/Polylogarithms/docs/manuscript/EDITORIAL-LEDGER.md}.
+Initial reconciliation section inspected at the same pinned commit.
+\bibitem{repo-bridge}
+Vladimir Reshetnikov, \emph{The Polylogarithm--Polygamma Bridge: An Exact
+Finite Fourier Transform, Clausen-Type Laws at Rational Arguments, and
+the Layers Below the Digamma}, historical research article, 11 June 2026.
+In \path{Analysis/Polylogarithms/docs/articles/polylog-polygamma-bridge.tex}.
+Lines 1--160 inspected at the same pinned commit; unsupported historical
+claims are superseded by the canonical ledger, not adopted here.
+\end{thebibliography}
+\end{document}
