@@ -1,0 +1,88 @@
+\section{Further research questions and proposed next steps}
+\label{sec:future}
+
+\begin{enumerate}[leftmargin=*,label=\textbf{\arabic*.}]
+\item \textbf{Obtain single-exponential dependence on nonlinear columns.}
+The distinguished-block theorem removes factorial event-order enumeration,
+but unrestricted Bell partitions still give $2^{O(k\log k)}$. Bounded
+rank deficit gives a single-exponential special case. Can representative
+families, algebraic matroid methods, or a smaller exact state space reduce
+this to $2^{O(k)}$? The required theorem must preserve shared predecessor
+witnesses and external forest independence. Ordinary subset dynamic
+programming that records only activated outputs can lose this information.
+
+\item \textbf{Exploit the native rank layer before enumerating output assignments.}
+The Stirling-layer theorem constrains the number of witness blocks. Can
+the graphic rank and unary condensation force some output choices or
+prerequisite support requirements in polynomial time? A certificate should make
+each forced choice replayable and avoid assuming that a greedy surviving
+row order is optimal.
+
+\item \textbf{Use an interaction parameter.}
+Several nonlinear columns may lie in disjoint regions of the unary
+condensation. Can they be decomposed by separators or matroid sums while
+retaining their shared forest constraint? The target is a cost exponential
+in the largest interacting region, instead of the total number of
+nonlinear columns.
+
+\item \textbf{Choose the lower and upper forests together.}
+The current theorem fixes the lower $0/1$ forest. Varying it changes the
+matrix and its nonlinear parameter. Is there a source-relative operation
+that reduces $k$ without creating a larger description or losing boundary
+markings? The relevant goal is a certified joint optimization, not an
+unverified algebraic simplification of attaching words.
+
+\item \textbf{Implement weighted successful-forest optimization.}
+The weighted theorem optimizes a linear cost over successful trees. A
+production version could use retained raw passages or a proved upper
+bound on later transport work as the objective. It should compare against
+the existing unconstrained maximum-weight tree, and measure cases where
+the latter leaves a stopping set.
+
+\item \textbf{Recognize a certified matroidal activation regime.}
+If the closure is itself a matroid closure, an additional intersection
+gives a polynomial algorithm with no bound on $k$. Can native occurrence
+data supply a compact certificate of that property? Chordal auxiliary
+graphs give a concrete sufficient class; arbitrary circular Horn systems
+do not satisfy the exchange axiom automatically.
+
+\item \textbf{Transport the complete boundary pattern.}
+The matrix certificate retains counts and source labels, while a hierarchy
+also needs cyclic order, orientations, and marked peripheral data.
+Construct a compiler that turns every selected tree and peel trace into
+the required marked homeomorphism with a bound on the accumulated encoding.
+The currently authenticated port charts are a starting point.
+
+\item \textbf{Extend the available cancellation moves.}
+A complete negative forest certificate isolates a genuine limitation of
+the fixed raw model. Investigate source-authenticated handle slides,
+disk-bundle absorption, or controlled retriangulations on those residuals.
+The progress measure should charge the representation growth as well as
+the reduction in the number of handles.
+
+\item \textbf{Develop smaller negative certificates.}
+Exhaustive scenario/partition coverage is fixed-parameter sized but can
+be much larger than a positive trace. Can several Rado deficiencies share
+one succinct implication or rank certificate? A proposed compression must
+prove that every omitted scenario is covered, rather than merely retain
+a log of explored branches.
+
+\item \textbf{Prove geometric bounds on the residual parameter.}
+Does a well-chosen admissible hierarchy admit $k=O(\log n)$, or a
+polylogarithmic total nonlinear premise budget after each free closure?
+Counterexamples should distinguish poor labelled triangulations from an
+unavoidable obstruction across all allowed normalizations.
+
+\item \textbf{Account for the entire search history.}
+Combine the local primitive with constructive versions of surface
+discovery, hierarchy repair, and the quantitative multi-surface steps in
+the announced algorithm. A complete bound must include failed branches,
+restarts, certificate replay, and all input bits created along the way.
+
+\item \textbf{Formalize the finite core first.}
+The closure, scenario, separated-demand, and partition lemmas have finite
+combinatorial statements and modest dependencies. They are suitable first
+targets for Lean formalization. The geometric interpretation should be
+formalized separately, so that verification of the finite search is not
+mistaken for a formal proof of the manifold compiler.
+\end{enumerate}

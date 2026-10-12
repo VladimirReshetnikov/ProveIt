@@ -116,6 +116,10 @@ modification times.
 | `103/` | `ProveIt_Relative_Top_Handles_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | relative top-handle elimination, universal source trees, homological short-row rigidity and exceptional-row kernels | placed only; delivered tests not rerun and patches unapplied |
 | `104/` | `ProveIt_Private_Cocore_Transport_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | owner-state private-cocore transport, source-unit normalization and bounded-exception atlases | placed only; delivered tests not rerun and overlay unapplied |
 | `105/` | `ProveIt_Deferred_Forests_2026-10-12.zip` | complete delivered article, overlay, finite selector and evidence | no unrestricted quasi-polynomial recognizer | deferred primal forests and exceptional-interface dual selection | placed only; delivered tests not rerun and patch unapplied |
+| `106/` | `ProveIt_Exceptional_Rows_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | exceptional-row closure, order ideals, lower triple-count optimization and certificate replay | placed only; tests not rerun and integration unapplied |
+| `107/` | `ProveIt_Matroidal_Dual_Forests_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | matroidal dual selection, exact deletion deficit and abstract support-three hardness | placed only; tests not rerun and integration unapplied |
+| `108/` | `ProveIt_Nonlinear_Activation_Forests_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | nonlinear activation columns, witness partitions and parameterized forest selection | placed only; tests not rerun and integration unapplied |
+| `109/` | `ProveIt_Ordered_Interface_Kernels_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | ordered incidence interfaces, optimal deferred kernels and width-parameterized dynamic programming | placed only; tests not rerun and integration unapplied |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -900,3 +904,30 @@ native checkers, and a fresh 50,658-input finite-selector audit. A native
 research probe certifies 118 bare cores. The delivered whole-cut packet for
 `pachner23_5_8_2/mixed` is a current producer miss and a concrete integration
 target; it is not included in the maintained 110-source success count.
+
+
+## Further arrival of 12 October 2026: reports 106–109
+
+The four archives in `e0b2f802f` are numbered in archive-name order and
+preserved with their single wrappers removed. All are continuations of
+the unknot-recognition programme, pinned to
+`c6d0ec8aa0b6308310ab6c081ba29d8bc363ede5`, so they belong in this numbered
+collection. Their mathematical topics were identified from their articles,
+not just archive names.
+
+- [106 article](106/article/exceptional_rows_and_certificate_replay.tex): exceptional-row closure, order ideals, lower triple-count optimization and certificate replay. 83 delivered files; 3 match older blobs.
+- [107 article](107/article/article.tex): matroidal dual selection, exact deletion deficit and abstract support-three hardness. 51 delivered files; 0 match older blobs.
+- [108 article](108/article/nonlinear_activation_forests.tex): nonlinear activation columns, witness partitions and parameterized forest selection. 76 delivered files; 3 match older blobs.
+- [109 article](109/article.tex): ordered incidence interfaces, optimal deferred kernels and width-parameterized dynamic programming. 47 delivered files; 6 match older blobs.
+
+The reused files are attributed predecessor modules and licences, not a
+prior placement of any of the four manuscripts. Every match was confirmed
+in the corresponding commit tree. PDFs, source, proposed integrations and
+authors' evidence remain delivered material. No tests, patch application
+or soundness review were performed during this intake. Numerical and
+complexity claims remain the authors' claims pending separate review.
+
+The committed ZIPs are retired and recoverable from their arrival commit.
+Existing ignore rules apply without checksum or line-ending work. The
+[placement record](../synthesis/data/incoming-106-109-placement.json) records
+provenance, file counts and historical matches.

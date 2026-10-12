@@ -1,0 +1,83 @@
+\subsection{An exact counting alternative when few source groups remain}
+\label{sec:kirchhoff-sieve}
+
+The common-basis sieve detects a mixed-sign polynomial by randomized
+evaluation; distinct copy variables prevent formal cancellation between
+different encodings.  When the number $q$ of fixed
+mandatory source groups is small, these requirements can instead be
+included directly by inclusion--exclusion.  The spanning-tree polynomial
+then has positive coefficients, permitting deterministic exact counting.
+
+\begin{theorem}[Kirchhoff counting sieve]\label{thm:kirchhoff-sieve}
+Let $q$ be the number of fixed mandatory source SCC groups and $J$ the
+number of ideals of the nonfree special-SCC implication poset.  The number
+of spanning trees that leave a completely peelable matrix can be computed
+exactly and deterministically in
+\[
+                       2^q J\operatorname{poly}(N)
+\]
+bit operations.  If this number is positive, a spanning tree and verified
+peel order can be extracted within the same asymptotic bound.  In particular,
+when $q=0$ the $J\operatorname{poly}(N)$ discovery bound is deterministic.
+\end{theorem}
+\begin{proof}
+Use the original graph edges, with one variable $x_e$ per edge and no
+representative/filler copies.  Let $G$ be the reduced oriented incidence
+matrix of the graph.  For an ideal $A$ and a subset
+$B\subseteq\{1,\ldots,q\}$, ban every edge whose special color mask meets
+$A$, and every edge belonging to a mandatory group $S_i$ with $i\in B$.
+Let $X_{A,B}(x)$ be the diagonal matrix that retains $x_e$ on the remaining
+edges and has zero entries on banned edges.  Put
+\[
+    R(x)=\sum_{A\in\mathcal I(\mathcal P)}c(A)
+             \sum_{B\subseteq[q]}(-1)^{|B|}
+                        \det\bigl(GX_{A,B}(x)G^{\mathsf T}\bigr).
+\]
+Cauchy--Binet gives the spanning-tree form of the matrix--tree theorem
+\cite{Chaiken1982}:
+\[
+        \det\bigl(GXG^{\mathsf T}\bigr)
+           =\sum_{T\text{ a spanning tree}}\prod_{e\in T}x_e,
+\]
+with the sum restricted to retained edges.  A tree minor has determinant
+$\pm1$, so the product of its two identical minors is one.  Thus every
+original spanning tree occurs with coefficient one, without competing
+signed representative encodings.
+
+Inclusion--exclusion over $B$ removes precisely the trees missing a
+mandatory group.  The ideal-lattice inversion over $A$ multiplies every
+remaining tree coefficient by $f(H(T))$, exactly as in
+Theorem~\ref{thm:ideal-sieve}.  Consequently
+\[
+               R(x)=\sum_{T\text{ successful}}\prod_{e\in T}x_e.
+\]
+Its value at $x_e=1$ for every edge is the exact nonnegative integer
+number of successful trees.
+
+All computations have polynomial bit lengths.  Each unweighted graph
+minor counts at most $\binom{m}{r}\leq(m+1)^r$ trees, and
+$|c(A)|\leq2^{|\max(A)|}\leq2^d$.  Hence every partial sum in the displayed
+formula has bit length at most
+\[
+             O\bigl(r\log(m+1)+q+\log J+d+1\bigr),
+\]
+which is polynomial in the explicit input length.  Integer determinants
+can be evaluated by fraction-free elimination in polynomial bit time
+\cite{Bareiss1968}.
+There are at most $2^qJ$ such determinants per counting query.
+
+For witness extraction, scan the graph edges and remove $e$ whenever the
+count on the remaining graph stays positive.  If removal fails, every
+successful tree in the current graph contains $e$; later removals cannot
+invalidate that necessity.  One pass therefore suffices.  At its end the
+remaining graph contains a successful tree, and every remaining edge
+belongs to every such tree.  Its edge set is thus itself one successful
+spanning tree.  There are at most $m$ additional count queries.  Replay
+unit-column peeling in the original matrix to produce the final certificate.
+\end{proof}
+
+This is an additional exact algorithm for a particular parameter regime,
+using classical matrix--tree positivity.  It does not remove the factor
+$2^q$ when many independent mandatory source groups remain.  In that
+regime, the common-basis construction handles the groups in polynomial
+cost, or the deterministic width algorithm may be preferable.

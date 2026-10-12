@@ -1,0 +1,212 @@
+\section{Eliminating the activation-order search}
+\label{sec:factorial-free}
+
+The ordered algorithm makes causality explicit, but enumerating all $k!$
+orders is unnecessary. A single distinguished block can encode the
+prerequisites for which no initial-seed witness is requested. Forward
+chaining then determines whether the chosen outputs can justify the other
+activations. This yields the strongest bound proved in this article.
+
+\begin{theorem}[Output choices and one distinguished partition block]
+\label{thm:factorial-free}
+The triple-unit forest problem is decidable, with a successful tree and
+peeling certificate when one exists, in
+\[
+                 3^k B_{2k+1}\operatorname{poly}(N)
+                 =2^{O(k\log(k+2))}\operatorname{poly}(N)
+\]
+bit operations. For arbitrary active exceptional supports $H_i$, with
+unit-owner sets $U_i$ and $Q=\sum_i(|H_i|-1)$, the bound is
+\[
+                 \left(\prod_i |U_i|\right)B_{Q+1}
+                 \operatorname{poly}(N).
+\]
+Both statements hold with an arbitrary polynomial-oracle matroid in place
+of the forest independence constraint.
+\end{theorem}
+
+\subsection{The reduced search space}
+
+Fix one unit output $o_i\in H_i$ for each exceptional column. No event
+order is selected. Retain only its implication
+$H_i\setminus\{o_i\}\to o_i$ in the nonlinear part of this branch.
+Write $\mathcal C_o$ for closure under these chosen implications and the
+ordinary digraph $P$.
+
+As before, let $Q_1,\ldots,Q_p$ be the source SCCs of $P$ containing
+neither a free seed nor any chosen output. Set
+\[
+ A_j=Q_j\cap E,\qquad U=Z\cup\bigcup_j Q_j,
+ \qquad
+ X=\left(\bigcup_i(H_i\setminus\{o_i\})\right)
+                         \setminus\Reach_P(U).
+\]
+Repeated occurrences of the same prerequisite row now need only one
+index. Let $q=|X|\le Q$, and for $x\in X$ put
+\[
+                         D_x=\{e\in E:x\in\Reach_P(\{e\})\}.
+\]
+Every $D_x$ is disjoint from every $A_j$, by exactly the separation
+argument used in Lemma~\ref{lem:fpt-demand-separation}.
+
+Introduce a new symbol $\star\notin R$ and enumerate set partitions
+$\pi$ of $X\cup\{\star\}$. Denote by $B_\star$ the unique block
+containing $\star$, and define
+\[
+                         S_\pi=X\setminus B_\star.
+\]
+The rows of $S_\pi$ are required to be reached from initial forest
+witnesses. Rows in $B_\star\setminus\{\star\}$ are \emph{undemanded}:
+they are allowed to activate in any legal way, even initially. The
+construction never requires them to remain inactive.
+
+For this partition, first perform the purely logical test
+\begin{equation}
+                       \mathcal C_o(U\cup S_\pi)=R.
+                       \label{eq:output-closure-test}
+\end{equation}
+If it fails, discard the partition. If it succeeds, seek independent
+distinct representatives for the groups
+\begin{equation}
+ A_1,\ldots,A_p,\qquad
+ K_B=\bigcap_{x\in B}D_x
+       \quad(B\in\pi,\ B\ne B_\star).
+ \label{eq:output-groups}
+\end{equation}
+The same cloned graphic/partition intersection solves this subproblem.
+Empty intersections are immediate obstructions.
+
+\begin{proof}[Proof of Theorem~\ref{thm:factorial-free}]
+For soundness, an independent representative set $F$ activates every
+mandatory source SCC, and therefore all of $U$. Its representative for
+$K_B$ reaches every row of $B$, so all of $S_\pi$ is active. The closure
+test then supplies a legal activation sequence for every row. Extending
+$F$ to a spanning tree preserves success. A literal matrix peeling replay
+produces the positive certificate.
+
+For completeness, take a successful independent seed $F$ and an actual
+complete activation schedule. For every exceptional column used to
+activate a new row, choose that row as its output $o_i$. Choose any unit
+output for every unused column. Each chosen mandatory source SCC contains
+an element of $F$, since it has no incoming ordinary arc, free seed, or
+chosen nonlinear output.
+
+Let $D=\Reach_P(Z\cup F)$ and $S=X\cap D$. We claim that
+$\mathcal C_o(U\cup S)=R$. Replay the useful exceptional events of
+the actual schedule. Each prerequisite of such an event either belongs
+to $D$ or is ordinarily reachable from an earlier useful output. In the
+first case it lies in $\Reach_P(U)$ or in $S$, by the definition of $X$;
+in the second it is available by induction. Every useful chosen output
+is consequently justified in the restricted system.
+
+After all useful events, every prerequisite of an unused exceptional
+column is available as well. Indeed, completion of the original schedule
+places that prerequisite in $D$ or in ordinary reach from a useful
+output, and the same argument applies. Thus the arbitrary chosen outputs
+of unused columns can now be added. Every source SCC of $P$ contains a
+free seed, a mandatory seed, or one of these chosen outputs. All rows
+are therefore reached, proving the claim. This argument includes chosen
+outputs that were already in the initial seed; it does not presume that
+every selected output was a useful event in the original schedule.
+
+For each $x\in S$, choose $f_x\in F\cap D_x$. Such a witness exists
+because $x\in D$ and $x\notin\Reach_P(U)$, with $Z\subseteq U$.
+Group the elements of $S$ by equality of their chosen witnesses, and put
+$\{\star\}\cup(X\setminus S)$ in the distinguished block. Choose a
+representative from $F\cap A_j$ for each mandatory group. The demand
+separation ensures that all these group representatives are distinct;
+they form an independent subset of $F$. The constructed partition passes
+both the closure test and the independent-transversal test.
+
+There are $\prod_i|U_i|$ output assignments. For each, at most $Q$
+distinct prerequisites remain, so there are at most $B_{Q+1}$ partitions.
+Everything inside one branch is polynomial in the input length. This
+proves both bounds and their matroid extension.
+\end{proof}
+
+Equivalently, first choose $S\subseteq X$, then partition its demands.
+The exact count
+\[
+                    \sum_{s=0}^{q}\binom qs B_s=B_{q+1}
+\]
+explains why the distinguished block absorbs both choices. In particular,
+there is no additional factor $2^q$ multiplying $B_q$. The two exact
+strategies give the combined theoretical bound
+\[
+  3^k\min\{k!B_{2k},B_{2k+1}\}\operatorname{poly}(N).
+\]
+This improves the explicit parameter factor but leaves its
+$2^{O(k\log k)}$ asymptotic class unchanged. It is not a single-exponential
+algorithm in $k$.
+
+\subsection{Rank, weights, and independent negative replay}
+
+Under the full raw parity hypothesis, a partition passing the closure
+test can have independent representatives only if
+\[
+                          p+|\pi|-1=r.
+\]
+The representative set itself is successful, so
+Theorem~\ref{thm:fpt-parity-rank} forces it to be a basis. Therefore, for
+one output assignment the number of partitions that need consideration is
+\[
+                 \left\{\begin{matrix}q+1\\r-p+1\end{matrix}\right\}.
+\]
+A partition in this Stirling layer still has to pass the nonlinear closure
+test and the graphic independence test. The distinguished block is counted
+in the partition but contributes no representative and no graphic rank.
+
+\begin{corollary}[A bounded deficit gives single-exponential dependence]
+\label{cor:bounded-deficit}
+Assume full raw parity. For each output assignment not rejected by the
+cardinality test, write $\delta_o=r-p_o$. If all these deficits satisfy
+$0\le\delta_o\le\Delta$, then the triple-unit algorithm has running time
+\[
+                       3^k(\Delta+1)^{2k}\operatorname{poly}(N).
+\]
+For fixed $\Delta$, this is $2^{O(k)}\operatorname{poly}(N)$.
+The hypothesis concerns every non-rejected output assignment, not merely
+one successful assignment. If all assignments are rejected, take $\Delta=0$.
+\end{corollary}
+\begin{proof}
+A partition of $q+1$ objects into $\delta+1$ blocks can be encoded by
+labeling its distinguished block zero and labeling its other blocks
+canonically with $1,\ldots,\delta$. Giving labels to the $q$ ordinary
+objects gives the bound
+\[
+              \left\{\begin{matrix}q+1\\\delta+1\end{matrix}\right\}
+                              \le(\delta+1)^q.
+\]
+There are at most $3^k$ output assignments and $q\le2k$ prerequisites.
+The polynomial work on rejected assignments is absorbed by the same
+bound. The proof also gives
+$(\prod_i|U_i|)(\Delta+1)^Q\operatorname{poly}(N)$ for general supports.
+\end{proof}
+
+This corollary is already reflected in the implemented Stirling-layer
+search; it requires no additional algorithm. In particular, for
+polynomial-size inputs and uniformly bounded deficit, $k=O(\log n)$
+gives polynomial local time, while $k=O((\log n)^2)$ gives
+$n^{O(\log n)}$ local time. Proving such a uniform deficit bound is a
+separate geometric problem.
+
+The weighted dummy-completion construction in
+Theorem~\ref{thm:fpt-minimum-weight-tree} applies without change to
+\eqref{eq:output-groups}. Thus the stronger output-only bound also applies
+to exact minimum-weight successful-tree optimization. The supplied code
+implements the two unweighted strategies; this weighted extension is
+proved but not implemented.
+
+An exact negative certificate covers every output assignment and every
+required distinguished partition. A failed partition has either a failed
+restricted-closure test, which the checker recomputes, or a Rado rank
+defect for \eqref{eq:output-groups}. Canonical restricted-growth encodings
+identify partitions without ambiguity. A checker verifies uniqueness and
+the exact Bell or Stirling count, independently reconstructs each branch,
+and authenticates raw parity before permitting the rank restriction.
+Reproducing an optimizer or trusting a producer's branch log is unnecessary.
+
+The logical closure test provides a second protection against circular
+justification. Chosen outputs do not become initial seeds merely because
+they are listed in the assignment. They must be derived from $U\cup S_\pi$
+by the actual restricted rules.

@@ -1,0 +1,301 @@
+% Standalone section fragment: compatible with amsmath/amsthm, existing theorem styles.
+% Developed against incoming ProveIt_Dual_Forest_Normalization_2026-10-12.
+\section{A parameterized extension through the triple-unit barrier}
+\label{sec:exceptional-triples}
+
+The two-row theorem in the preceding incoming report leaves exactly one
+native column type unresolved: three distinct rows, each of multiplicity
+one.  The following result makes the number of these exceptional columns,
+rather than the number of three-handles, the parameter of an exact search.
+It applies to the finite forest-compatible raw-completion problem.  It
+neither asserts that all native interfaces satisfy its hypotheses nor
+changes the underlying geometric certificate class.
+
+Let $D$ be a connected rooted multigraph, with a row set $R$ indexing its
+edges, and let $A\in\mathbb N^{R\times C}$ be the unsigned occurrence
+matrix.  Ineligible top-cancellation rows are loops at the root.  A column
+is inert when it has no entry equal to one.  Suppose that every non-inert
+column either has support of size at most two or belongs to a distinguished
+set $E$ of $k$ columns of type $(1,1,1)$.  We call all columns outside $E$
+ordinary.  Counts exceeding one can be saturated at two for the finite
+peeling decision, although not for source-parity checks.
+
+Write $m=|R|$ and $r=|V(D)|-1$.  Let $N$ denote the total explicit encoded
+input length, including integer bit lengths.  The assertions below concern
+this input length; translating them into a bound in the original diagram
+size requires a separate bound on $N$ and $k$.
+
+\subsection{Separating ordinary reachability from exceptional activations}
+
+Construct the directed ordinary implication graph $P$ on $R$.  An ordinary
+singleton unit column makes its row a seed, and the set of all such seeds
+is $Z$.  An ordinary two-row column supported on $\{u,v\}$ contributes
+$v\to u$ when its entry on $u$ is one and $u\to v$ when its entry on $v$
+is one.  Inert columns contribute nothing.  Let $\operatorname{Reach}(X)$
+be reachability from $X$ in $P$, including paths of length zero.  For a row
+$x$, put
+\[
+       \operatorname{Anc}(x)=\{y\in R:x\in\operatorname{Reach}(\{y\})\}.
+\]
+Ordinary peeling from a set of already removed rows $Q$ removes exactly
+$\operatorname{Reach}(Z\cup Q)$.  This is the incoming reachability lemma;
+it applies unchanged when exceptional columns are simply not used.
+
+An \emph{exceptional schedule} consists of distinct columns
+$c_1,\ldots,c_\ell\in E$, where $0\leq\ell\leq k$, and a designated
+head $h_i\in\operatorname{supp}(c_i)$ for each $i$.  Define
+\[
+       U_i=\operatorname{supp}(c_i)\setminus\{h_i\},\qquad
+       H_i=\{h_1,\ldots,h_i\},\qquad H_0=\varnothing.
+\]
+Thus $|U_i|=2$.  The schedule is intended to use $c_i$ only after both rows
+in $U_i$ have gone.  If $h_i$ has already gone, its scheduled activation
+can be skipped; retaining such redundant schedules simplifies enumeration
+without making the criterion unsound.
+
+For every $x\in U_i$ that is not in
+$\operatorname{Reach}(Z\cup H_{i-1})$, introduce the requirement
+\begin{equation}\label{eq:triple-prerequisite}
+                  T\cap\operatorname{Anc}(x)\ne\varnothing.
+\end{equation}
+List these requirements, retaining or merging duplicates, as
+$T\cap W_j\ne\varnothing$ for $1\leq j\leq p$.  There are at most
+$p\leq2\ell\leq2k$ of them.  Let $S_1,\ldots,S_q$ be the source strongly
+connected components of $P$ that contain no row of $Z\cup H_\ell$.
+These groups are pairwise disjoint.
+
+\begin{theorem}[Exact schedule reduction]\label{thm:exact-schedule}
+There is a forest-compatible raw completion if and only if some exceptional
+schedule admits a spanning tree $T$ of $D$ satisfying
+\begin{equation}\label{eq:schedule-cover}
+        T\cap S_a\ne\varnothing\quad(1\leq a\leq q),\qquad
+        T\cap W_j\ne\varnothing\quad(1\leq j\leq p).
+\end{equation}
+The source components and predecessor sets are computed in the fixed
+ordinary implication graph; no two-premise rule is replaced by an
+individual directed arc.
+\end{theorem}
+\begin{proof}
+Suppose first that $T$ leaves a completely peelable row restriction.
+Choose a complete unit-column peel order, which exists by the incoming
+raw-pivot completeness theorem.  Record, in that order, precisely the
+exceptional columns actually used as pivots, and record each pivot's row
+as its head.  A column is used at most once.  Before the $i$th recorded
+pivot, every removed row belongs to
+$\operatorname{Reach}(Z\cup T\cup H_{i-1})$: this follows by induction
+from the exact ordinary reachability model.  Consequently both prerequisites
+in $U_i$ belong to that set.  Since reachability distributes over unions,
+a prerequisite not reachable from $Z\cup H_{i-1}$ must be reachable from
+some member of $T$, which is exactly \eqref{eq:triple-prerequisite}.
+At the end every row lies in
+$\operatorname{Reach}(Z\cup T\cup H_\ell)$.  A source component can only
+be reached from a vertex already in that component.  Therefore every source
+component disjoint from $Z\cup H_\ell$ meets $T$, as required.
+
+Conversely, assume \eqref{eq:schedule-cover}.  Delete the rows of $T$.
+Close under ordinary peeling.  At step $i$, the induction hypothesis says
+that every row of $\operatorname{Reach}(Z\cup T\cup H_{i-1})$ has been
+removed.  Each prerequisite in $U_i$ is either reachable from
+$Z\cup H_{i-1}$ or is reachable from a tree row by the associated
+requirement $T\cap W_j\ne\varnothing$.  It has therefore been removed.
+If $h_i$ remains, the exceptional column $c_i$ has total one on the live
+rows and can peel $h_i$.  It has not previously been used because the
+scheduled columns are distinct and ordinary closure does not use them.
+If $h_i$ is already absent, skip the pivot.  Close under ordinary peeling
+again.  This establishes the induction for the next step.
+
+Every component of the condensation DAG of $P$ is reachable from a source
+component.  Each source component contains a row of $Z\cup H_\ell$ or,
+by hypothesis, a row of $T$.  Hence the final ordinary closure is all of
+$R$.  The constructed sequence completely peels $R\setminus T$.
+\end{proof}
+
+A head not in a source component does not seed that source component.
+In particular the test for $S_a$ must use actual membership in the source
+SCC, not merely downstream reachability from it.  Similarly, $H_{i-1}$,
+not the final head set, is used for the $i$th prerequisite.
+
+\subsection{A deterministic algorithm with no dual-rank exponent}
+
+\begin{theorem}[Deterministic exceptional-column algorithm]
+\label{thm:triple-xp}
+Under the stated hypotheses, forest-compatible raw completion is decidable
+in
+\[
+            3^k k!\,(m+1)^{2k}\operatorname{poly}(N)
+\]
+time and polynomial space apart from the current schedule and certificate.
+A positive output is a spanning tree and a unit-column peel order.  The exponent hidden in the polynomial factor is independent of $k$ and $r$.
+\end{theorem}
+\begin{proof}
+Enumerate every exceptional schedule.  Their number is
+\[
+    \sum_{\ell=0}^{k}\frac{k!}{(k-\ell)!}3^\ell
+       =3^k k!\sum_{t=0}^k\frac{1}{3^t t!}
+       <e^{1/3}3^k k!.
+\]
+For a fixed schedule, enumerate a representative $e_j\in W_j$ for each
+of its $p\leq2k$ arbitrary requirements.  Repetitions are permitted; let
+$Q=\{e_1,\ldots,e_p\}$.  Reject the choice if $Q$ is not a graphic
+forest, including when it contains an ineligible row or a loop.
+For every source group already met by $Q$, discard the group.  Contract
+$Q$ in the graphic matroid.  The remaining source groups are still
+pairwise disjoint.  Use graphic--partition matroid intersection to choose
+one representative of each remaining group, independent after this
+contraction.  The incoming Rado/augmenting-path solver supplies precisely
+this operation.  If it succeeds, the representatives together with $Q$
+form a forest that meets all required sets.  Extend it to a spanning tree;
+adding edges cannot destroy a hitting condition.
+
+Conversely, if a tree satisfying \eqref{eq:schedule-cover} exists, choose
+$e_j$ from its intersection with $W_j$.  The resulting $Q$ is a forest.
+Choosing one tree edge from every source group not already hit gives an
+independent representative set after contraction, so matroid intersection
+succeeds on this enumerated choice.  Thus no feasible schedule is missed.
+There are at most $(m+1)^{2k}$ representative choices.  All graph, closure,
+contraction, and matroid-intersection operations have polynomial cost.
+Finally recompute and independently verify the peel order on the actual
+completed tree; a schedule alone is not the final geometric certificate.
+\end{proof}
+
+The time bound is an XP bound in $k$, rather than a fixed-parameter bound.
+It is nevertheless independent of an exponential dependence on the number
+$r$ of dual-tree edges.  If $N=n^{O(1)}$ and $k=O(\log n)$, it gives the
+local bound $\exp(O((\log n)^2))$.  This is not an end-to-end unknot
+recognition bound.
+
+\subsection{A determinant sieve for the few overlapping requirements}
+
+We give a self-contained algebraic lemma because it cleanly removes the
+factor $m^{2k}$ with one-sided randomization.  Its ingredients are Cauchy--Binet,
+inclusion--exclusion, and polynomial identity testing, all standard in
+algebraic matroid algorithms; compare Harvey's algebraic matroid-intersection
+work and Eiben--Koana--Wahlstr\"om's treatment of enumerating polynomials.
+The application and schedule reduction above are the contribution here.
+
+\begin{lemma}[A spanning tree with partition and covering requirements]
+\label{lem:tree-cover-sieve}
+Fix $0<\varepsilon<1$.  Let $D$ be a connected graph of rank $r$, let
+$S_1,\ldots,S_q$ be pairwise
+disjoint edge groups, and let $W_1,\ldots,W_p$ be arbitrary edge sets.
+There is a randomized algorithm, with time
+$2^p\operatorname{poly}(N,\log(1/\varepsilon))$, that returns a checked
+spanning tree meeting all groups and sets whenever it finds one.
+It never returns an incorrect tree.  If a feasible tree exists, it returns
+one with probability at least $1-\varepsilon$.  If no feasible tree exists,
+it never reports success.  It uses polynomial space.
+\end{lemma}
+\begin{proof}
+If $q>r$, feasibility is impossible.  Otherwise make one filler copy $e^0$
+of every edge $e$ and, for $e\in S_a$, one representative copy $e^a$.
+Because the groups are disjoint there are at most $M\leq2m$ copies.
+Choose a prime field $\mathbb F_P$ with
+\[
+             P>\max\{M,2r\}.
+\]
+Choose distinct field elements $\lambda_e$ for the filler copies.  Let
+$A$ be the reduced oriented incidence matrix of $D$, of size $r\times M$,
+repeated on the copies.  A set of $r$ copies is a basis of $A$ exactly
+when its underlying edges form a spanning tree, with no edge repeated.
+
+Construct an $r\times M$ matrix $B$ with a top block of $q$ rows and a
+bottom block of $r-q$ rows.  The representative copy $e^a$ has column
+$(\mathbf e_a,0)$; the filler copy $e^0$ has column
+\[
+           (0,1,\lambda_e,\ldots,\lambda_e^{r-q-1})^{\mathsf T}.
+\]
+When $r=q$, this filler column is the zero column.  A set of $r$ columns
+is a basis of $B$ exactly when it contains one representative of each
+$S_a$ and $r-q$ distinct fillers.  This follows from the block structure
+and the nonzero Vandermonde determinant for distinct $\lambda_e$.
+Consequently common bases of $A$ and $B$ encode exactly the spanning trees
+meeting all the disjoint groups, together with a chosen representative
+edge in each group.  Different encodings are harmless and receive distinct
+variables below.
+
+Assign an independent variable $z_f$ to each copy $f$.  For
+$J\subseteq\{1,\ldots,p\}$, retain only copies whose underlying edge
+belongs to none of the sets $W_j$ with $j\in J$, and let $D_J(z)$ be the
+diagonal matrix with entry $z_f$ on retained copies and zero elsewhere.
+Define
+\begin{equation}\label{eq:coverage-polynomial}
+    \Phi(z)=\sum_{J\subseteq[p]}(-1)^{|J|}
+                    \det\bigl(A D_J(z)B^{\mathsf T}\bigr).
+\end{equation}
+Cauchy--Binet expands each determinant into
+\[
+       \sum_{F:\,|F|=r}\det(A_F)\det(B_F)\prod_{f\in F}z_f.
+\]
+For a common basis $F$, its coefficient in \eqref{eq:coverage-polynomial}
+is multiplied by
+$\sum_{J\subseteq\{j:F\cap W_j=\varnothing\}}(-1)^{|J|}$.
+This multiplier is one exactly when every $W_j$ is met, and zero otherwise.
+Here $F\cap W_j$ means that some copy in $F$ has its underlying edge in
+$W_j$.  The remaining coefficients are nonzero: graphic basis determinants
+are $\pm1$, and the required Vandermonde determinants are nonzero.
+Every distinct set $F$ has a distinct monomial because variables belong to
+copies, not merely to original edges.  Thus cancellation between different
+encodings cannot make $\Phi$ identically zero.  We have proved
+\[
+            \Phi\not\equiv0\quad\Longleftrightarrow\quad
+            \text{a feasible spanning tree exists}.
+\]
+
+The polynomial $\Phi$ is multilinear and homogeneous of degree $r$.
+Sample the $z_f$ independently and uniformly in $\mathbb F_P$.
+The Schwartz--Zippel bound \cite{Schwartz1980,Zippel1979} gives
+$\Pr[\Phi(z)=0\mid\Phi\not\equiv0]\leq r/P<1/2$.
+Repeat independently $b=\lceil\log_2(1/\varepsilon)\rceil$ times
+(or use one trial when $b=0$); the probability that all trials miss is at
+most $\varepsilon$.  A nonzero evaluation is conclusive evidence that a
+feasible basis exists.  Each evaluation requires $2^p$ determinants of order $r$ and polynomial
+additional work.  Bertrand's postulate supplies such a prime below twice a polynomial
+threshold in $M+r$, and deterministic trial division suffices to find it
+in polynomial time.  Arithmetic has bit cost polynomial in $\log N$,
+and repetition contributes a factor $O(1+\log(1/\varepsilon))$.
+
+For completeness, a positive evaluation yields a witness without any
+additional probabilistic decisions.  Keep the sampled values fixed.
+Repeatedly scan the current set $U$ of copies, deleting $f$ whenever the
+restricted value $\Phi_{U\setminus\{f\}}(z)$ remains nonzero.  Stop after
+an entire scan deletes nothing.  At most $M$ scans that delete something
+occur, so at most $O(M^2)$ evaluations are needed.  The final restricted
+polynomial has value $a\ne0$, and deleting any one of its variables gives
+zero.  Multilinearity therefore gives
+\[
+                   z_f\frac{\partial\Phi_U}{\partial z_f}(z)=a
+                            \qquad(f\in U).
+\]
+Euler's identity for a homogeneous polynomial of degree $r$ gives
+\[
+             |U|a=\sum_{f\in U}z_f
+                  \frac{\partial\Phi_U}{\partial z_f}(z)=ra.
+\]
+Since $P>M\geq|U|$ and $r\leq M$, and $a\ne0$, this forces $|U|=r$.
+Its only possible degree-$r$ squarefree monomial is the product of all
+remaining variables.  Its nonzero value proves that $U$ is a common basis
+meeting all the requirements.  Decode the underlying tree and check its
+connectivity and every hitting condition directly over the integers.
+This extraction uses no fresh random oracle, hence incurs no additional
+failure probability.
+
+All restrictions and determinants can be processed sequentially, so the
+space is polynomial.  If the initial value is zero the algorithm reports
+that no witness was found; it does not manufacture a negative certificate.
+\end{proof}
+
+\paragraph{Prime selection and an optional simpler error convention.}
+For fixed error, choose a deterministic prime $P$ larger than
+$\max(M,2r)$; repeating independent trials $b$ times makes the miss
+probability at most $2^{-b}$.  A prime in a polynomial interval can be found
+by deterministic trial division, already sufficient for the stated
+polynomial input-size bound.  This avoids assuming a particular fast
+prime-generation implementation.  The extraction scan needs a full final
+pass with no deletion; a single pass need not be inclusion-minimal because
+later deletions can change earlier cancellation in the field.
+
+
+Composing this covering lemma with schedule enumeration gives the valid
+but weaker randomized factor $O(12^k k!)$ in polynomial space.  The
+reference implementation retains this route for comparison.  The next two
+sections remove the factorial schedule enumeration entirely.
