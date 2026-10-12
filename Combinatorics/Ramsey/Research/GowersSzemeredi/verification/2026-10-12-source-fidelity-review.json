@@ -2,7 +2,7 @@
   "date": "2026-10-12",
   "scope": "Incremental statement-level comparison of actual hypotheses, numerical bounds and geometric meaning. This is separate from the120-companion kernel audit and does not claim completion of unreviewed entries. Current annotated source and original stronger claims are distinguished.",
   "paper": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
-  "paper_sha256": "04b4a46469bf3bddc908d0747ec70ad2dc9f6e359edbb040d07ba2f4c22e8586",
+  "paper_sha256": "9641d085b8f40798d38c3f623e015af178ef4b6ded4de4812e7cb6eea9d74a90",
   "reviewed_sections01_03_sha256": "d7926af871dbe1323494485a38310b78721b436601eef937dbe41b3dd3782589",
   "statement_count": 120,
   "reviewed_statement_count": 120,
@@ -2281,21 +2281,26 @@
       "encoded_line": 976,
       "exact_companions": [
         {
-          "name": "corollary_16_11_explicit",
-          "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensionsExplicit.lean",
-          "line": 97
+          "name": "corollary_16_11_printed_integer",
+          "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16IntegerOriginalCorollary.lean",
+          "line": 55
+        },
+        {
+          "name": "corollary_16_11_integer_shift_eight",
+          "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16IntegerOriginalCorollary.lean",
+          "line": 13
         }
       ],
-      "status": "corrected_exponent_integer_geometry_verified_original_combination_open",
-      "native_audited_companion": "corollary_16_11_explicit",
-      "evidence": "The canonical section16CorollaryExponent is (alpha/8)*multipleC(r^-1*alpha/8,alpha/2,k)^r, not the published (alpha/2)^(2^(2^(k+9))). Proofs16IntegerPrintedCorollary proves that corrected exponent with integer representatives for all primes and all k>=1, without N0. Despite the filename Printed, this does not by itself prove the original numerical exponent with integer geometry. Separate polynomial-cover results give stronger modular-box bounds; combining the original numerical conclusion with the required integer geometry remains an explicit obligation until verified.",
+      "status": "original_exponent_integer_geometry_verified_and_strengthened_all_primes",
+      "native_audited_companion": "corollary_16_11_printed_integer",
+      "evidence": "Native proof combines the original common exponent (alpha/2)^(2^(2^(k+9))) with ascending integer boxes, a common positive integer difference, and the original alpha*N/2 Fourier threshold. The stronger companion replaces k+9 by k+8. Both hold for all k>=1, 0<alpha<=1/2 and every prime, including2, without an additional size threshold. Split-degree uniform classes now carry integer-cover certificates; their degree2^(68*2^k) permits the original numerical comparison. The old iteration-exponent gap remains true but no longer leaves the corollary open.",
       "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
       "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean"
     },
     {
       "statement": "lemma_17_1",
       "source_heading_lines": [
-        3851
+        3877
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 38,
@@ -2316,7 +2321,7 @@
     {
       "statement": "proposition_17_2",
       "source_heading_lines": [
-        3876
+        3902
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 48,
@@ -2337,7 +2342,7 @@
     {
       "statement": "lemma_17_4",
       "source_heading_lines": [
-        3917
+        3943
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 91,
@@ -2357,7 +2362,7 @@
     {
       "statement": "corollary_17_5",
       "source_heading_lines": [
-        3921
+        3947
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 103,
@@ -2377,7 +2382,7 @@
     {
       "statement": "corollary_17_6",
       "source_heading_lines": [
-        3925
+        3951
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 117,
@@ -2397,7 +2402,7 @@
     {
       "statement": "proposition_17_7",
       "source_heading_lines": [
-        3960
+        3986
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 140,
@@ -2418,7 +2423,7 @@
     {
       "statement": "theorem_18_1",
       "source_heading_lines": [
-        4085
+        4111
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 171,
@@ -2448,7 +2453,7 @@
     {
       "statement": "theorem_18_2",
       "source_heading_lines": [
-        4137
+        4163
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 190,
@@ -2478,7 +2483,7 @@
     {
       "statement": "corollary_18_7",
       "source_heading_lines": [
-        4152
+        4178
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 203,
@@ -2538,5 +2543,6 @@
   "new_selection_threshold_kernel_status": "SelectionThresholdCoreAudit passed12 native modules. The displayed15.5 threshold is certified; the expanded downstream fidelity audit is running separately.",
   "new_selection_iteration_kernel_status": "SelectionIterationCoreAudit passed123 native modules, including all-prime15.5 and the positive-real16.8 counterexample. SelectionIterationFidelityAudit resumes the downstream graph from its retained cache; the facade remains a separate pending check.",
   "new_missing_interval_kernel_status": "MissingIntervalHalfCoreAudit passed8 native modules and only the approved axioms. The original half bound is proved. MissingIntervalHalfFidelityAudit is the expanded downstream target; its result is separate from this core check.",
-  "new_fixed_graph_budget_kernel_status": "FixedGraphBudgetCoreAudit passed21 native modules with only approved axioms. The fixed-real-floor13.4 obligation is closed. FixedGraphBudgetFidelityAudit is running separately from retained cache."
+  "new_fixed_graph_budget_kernel_status": "FixedGraphBudgetCoreAudit passed21 native modules with only approved axioms. The fixed-real-floor13.4 obligation is closed. FixedGraphBudgetFidelityAudit is running separately from retained cache.",
+  "new_integer_original_corollary_kernel_status": "IntegerOriginalCorollaryCoreAudit passed1272 native modules with only approved axioms. The original16.11 exponent and integer geometry now hold together, with a stronger k+8 companion over every prime. IntegerOriginalCorollaryFidelityAudit and the facade remain separate checks."
 }

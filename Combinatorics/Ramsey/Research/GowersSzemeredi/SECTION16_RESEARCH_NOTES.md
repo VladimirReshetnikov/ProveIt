@@ -6767,9 +6767,9 @@ build was yielded at a completed-module boundary for this source-fidelity
 proof and resumed with the new combined target using its retained cache.
 Its completion remains a separate verification result.
 
-### L.49. Restoring the original integer-box Corollary 16.11 (in verification, 2026-10-12)
+### L.49. Restoring the original integer-box Corollary 16.11 (verified, 2026-10-12)
 
-The new proof draft carries IntegerCover through the split uniform classes,
+The new proof carries IntegerCover through the split uniform classes,
 including the dimension-two seed, successor step, and all-dimension induction.
 It then obtains integer polynomial covers at degree D=2^(68*2^k). The previous
 integer wrapper used the much larger classDeg bound, which did not recover
@@ -6779,18 +6779,20 @@ The generic extraction keeps gamma=alpha/2, theta=alpha/4, rho=alpha/8,
 ascending integer boxes, width N^(1/Q), and frequency density alpha/(8Q).
 Here Q=(256V/alpha^3)^D and V<=2^(2^(2^(k+6))). Writing X=2/alpha and
 B=2^(2^(k+6)) gives Q<=X^((B+8)*D) and
-(B+8)*D+3<=2^(2^(k+8)). Thus the proposed common exponent uses k+8,
+(B+8)*D+3<=2^(2^(k+8)). Thus the proved common exponent uses k+8,
 which strengthens the paper's k+9. Both the exact-source companion and
 stronger companion cover every prime, without an extra size threshold.
 
-The development check against cached interfaces passes all five new proof
-modules and IntegerOriginalCorollaryCoreAudit, with only the standard axioms.
-It found one incorrect rewrite-lemma name, now fixed. The full source-based
-verification is pending: the serial worker is rebuilding dependencies affected
-by earlier foundational changes before checking the new declarations again.
-The source-fidelity ledger deliberately remains open until this audit passes;
-the revised paper is a draft pending that gate. The expanded downstream target
-is IntegerOriginalCorollaryFidelityAudit, followed separately by the facade.
+The full current-source IntegerOriginalCorollaryCoreAudit passes all1,272
+native modules and checks the new declarations against only propext,
+Classical.choice and Quot.sound. Its input manifest covers every local proof
+dependency, the toolchain, package manifest and checker, with all compiled
+artifacts checked newer than their current inputs. The source-fidelity ledger
+now records the original exponent and integer geometry together as verified.
+The annotated paper restores the original common exponent and explains the
+stronger k+8 comparison; the published original PDF remains unchanged.
+The expanded downstream target is IntegerOriginalCorollaryFidelityAudit,
+followed separately by the facade. These broader checks remain pending.
 
 ### L.50. Comparing the numbered widths with integer polynomial covers (draft, 2026-10-12)
 
