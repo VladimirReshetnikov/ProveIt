@@ -4616,9 +4616,21 @@ lemma directly. So the remaining parameterization stays light.
    count is at most `w^(2^44)` (printed `2^90`) and the inverse width exponent
    at most `w^(2^46)` (printed `2^132`). The Bohr term no longer dominates; the
    piece counts (`2^38`) do. So the seed is about `2^46`, inside the `2^48` of
-   `split_pair_with_bounds_fourteen`. What is left at dimension two: the
-   uniform-class form of the cover (`Proofs16UniformCoverTwo`) and its
-   wiring as the split-class seed.)* The counts and exponents
+   `split_pair_with_bounds_fourteen`.)*
+4. *(Done: `Proofs16UniformCoverTwoFejer`.)* The uniform class and the seed:
+   `powerUniformClass_two_fejer : PowerUniformClass 2 V (2^43) (2^46) (2^15)`
+   (printed `(2^89, 2^130, 2^45)`) and `splitUniformClass_two_fejer`, a split
+   class at `a = D = 2^46` (printed `2^130`, used as `splitSeed = 2^132`).
+   **The dimension-two seed is proved**, and it lies inside the `2^48` of
+   `split_pair_with_bounds_fourteen`.
+
+*Next: the class step in dimensions `k ≥ 2`.* `class_piece_of_subrelation`
+(`Proofs16ClassStep`) uses `lemma_15_6_of_density_lower_explicit` and the
+printed θ₁ and ζ. Its Fejér copy, together with the class-step degree
+bounds (`Proofs16ClassStepBounds`/`Degrees`, where `stepP` and `stepT`
+become `fejerStepP` and `fejerStepT`), feeds `splitStepDWith` and
+`split_pair_with_bounds`. After that come the envelope and
+Theorems 18.1, 18.2 and 18.7. The counts and exponents
    (`Proofs18LengthSixCounts`/`Exponents`) with
    the `W` definitions, giving the seed degrees. The expectation is about
    `2^35`–`2^40` (L.16c).

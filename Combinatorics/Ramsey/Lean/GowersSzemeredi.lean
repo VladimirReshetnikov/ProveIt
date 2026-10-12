@@ -1151,6 +1151,7 @@ import GowersSzemeredi.Proofs16PolyPieceTwoDataWith
 import GowersSzemeredi.Proofs16PolyCoverTwoFejer
 import GowersSzemeredi.Proofs18FejerSeedCounts
 import GowersSzemeredi.Proofs18FejerSeedExponents
+import GowersSzemeredi.Proofs16UniformCoverTwoFejer
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
