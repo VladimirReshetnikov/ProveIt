@@ -5559,6 +5559,27 @@ chain `Proofs18Cover{Modulus,Density,Exponents}FejerJT3`; and
 `L = 13`, `W(k, r) ≤ 2^2^r^2^2^k` and Theorem 1.3 with density exponent
 `2^(-2^k)` for `k ≥ 13`. Theorem 18.1 does not move.
 
+**L.16z: where the thresholds stand, measured (2026-10-12).** The results are
+Theorem 18.1 at `d + 4` in every degree, `d + 3` from 8 and `d + 2` from 11;
+Theorem 18.2, Corollary 18.7, `W(k, r)` and Theorem 1.3 at `+3` in every
+length, `+2` from 8, `+1` from 11 and `+0` from 13. On the T3 baseline the
+exact envelope model (`models/model_two_track.py` with the J and K
+envelopes) puts each remaining input below the size that would move a
+threshold:
+* dimension-two seeds: no change for any count seed `(a_c, D_c)` down to
+  `(6, 2^37)` or `(11, 2^30)`, nor for any exponent seed down to `(16, 2^36)`;
+* per-step savings in the envelope: none up to 24 units (Theorem 18.1) or
+  89 units (Theorem 18.2);
+* the base envelopes `PolyEnvBound 3 74` and `EnvBound 3 62`: none, even at 0;
+* the partition constant: the exact `log₂` gives nothing beyond `partDeg`;
+* the class-step constants `P(k) = 64·F(k)` and `T(k) = 22·F(k) + 105`: dividing
+  `T` by 64, or `P` by up to `2^10`, changes nothing. Only `P/2^20` would give
+  `d + 2` from 10, `d + 3` from 7 and `L + 1` from 10. `P` is a product of
+  structural powers of two (`2^(3k+7)·2^(k+4)·(k+6)`), not a rounding.
+So the remaining thresholds are set by the structure of the step: two class
+degrees per step (L.16t) and the doubling of the split recursion
+(`a_{k+1} ≈ 3a_k²·2^k`). `d + 1` still needs a class constant below 2.
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`
