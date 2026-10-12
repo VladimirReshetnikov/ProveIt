@@ -6891,33 +6891,45 @@ remains separate. The ongoing
 objective is to shorten and simplify the final proof while preserving its
 statement and bounds; this first reduction does not close that objective.
 
-### L.54. Shared coloring argument and progression prefixes (in verification, 2026-10-12)
+### L.54. Shared coloring argument and progression prefixes (verified, 2026-10-12)
 
-The two-color case and the arbitrary finite-color case now share one
-application of Mathlib's real-valued finite pigeonhole principle. The full
-two-color consequence reuses the single-length consequence instead of
-repeating the progression extraction. The new color-class module passes
-its six-module native check; the changed consequences compile in the serial
-final audit, which is still checking the stronger bounds. The explicit
-Section 18 bridges now import only the recurrence inputs they use.
+The two-color case and the arbitrary finite-color case share one application
+of Mathlib's real-valued finite pigeonhole principle. The full two-color
+consequence reuses the single-length consequence. The coloring simplification
+passed its 1,328-module native audit, including the original final statements
+and strengthened Fejer bounds, with only the three approved axioms.
 
-A separate candidate removes the nontrivial short-length cases from the
-printed final theorem. For k>=2, apply the improved L+5 theorem at
-L=max(k,6). Since L+5<=k+9, the original threshold is sufficient, and a
-prefix of the resulting progression has length k. For k=1, positive density
-and the positive threshold give a point of the set. The candidate has exactly
-the original theorem_18_2 type and uses the general covering theorem only
-at lengths at least six. Its module is Proofs18CoverPaddedFinal, with a native
-check queued behind the coloring audit. It is not yet the canonical final
-proof and is not yet counted as verified. Its current import closure is
-1,206 local modules, compared with 1,214 for the already shortened printed
-final module; further separation of long- and short-length imports may
-remove additional unused results.
+The canonical final proof now removes the nontrivial short-length case split.
+For k>=2, apply the improved L+5 theorem at L=max(k,6). Since L+5<=k+9,
+the original threshold suffices, and a prefix of the resulting progression
+has length k. For k=1, positive density and the positive threshold give a
+point of the set. `theorem_18_2_of_long_progressions` proves this reduction;
+`theorem_18_2_padded` supplies the explicit recurrence profiles.
 
-Next: finish both native checks, audit the candidate's axioms, and use the
-verified shorter route as the final theorem's implementation if it remains
-simpler under the full dependency comparison. The simplification goal stays
-active; no weakening of the final statement or numerical bound is intended.
+Import `GowersSzemeredi.Final` for the original final theorem and its
+consequences. It defines the existing names `theorem_18_2_explicit`,
+`corollary_18_7_explicit`, `theorem_1_2_explicit` and `theorem_1_3_explicit`
+with their original types. `Proofs18CoverExplicit` re-exports these and derives
+its single-length API from the final proof, handling length zero vacuously.
+It retains the separate Theorem 18.1 construction and historical helpers.
+
+`FinalAudit` passes 1,209 native modules and checks all six new/canonical
+proofs for approved axioms. `FinalProofSimplificationAudit` then passes
+1,330 modules with the migrated public names and stronger bounds together.
+The minimal final entry point has 1,208 local modules / 253,637 source lines;
+the pre-simplification aggregate had 1,289 / 264,693. Thus this entry point
+avoids 81 modules and 11,056 lines from the old import closure. The aggregate
+still imports 1,221 modules because it additionally exposes Theorem 18.1 and
+legacy helper results; the comparison is not a repository-wide deletion count.
+The stronger-bound bridge now has 1,329 modules / 290,955 source lines.
+
+Verification reports: `2026-10-12-final-coloring-simplification`,
+`2026-10-12-final-prefix-proof` and `2026-10-12-final-prefix-compatibility`,
+with immutable source manifests. Further simplification should remove
+incidental short-length and polynomial-envelope imports from the uniform
+long-length route. The goal remains active; final statements and bounds
+are unchanged, and this audit does not settle open original intermediate
+statements or replace a full facade check.
 
 ## F. Routes
 
