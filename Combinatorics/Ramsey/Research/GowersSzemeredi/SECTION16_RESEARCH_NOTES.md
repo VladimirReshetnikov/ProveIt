@@ -4830,6 +4830,41 @@ each script to its module and original).
   dimension-two seed (its piece counts carry the Lemma 16.3 exponent
   `10^4`) or a different class construction; bookkeeping will not do.
 
+**L.16f: the exact class recursion, and why `d + 5` is out of reach
+(analysis, 2026-10-12).** `models/model_split_exact.py` runs the split-class
+recursion exactly, with integer arithmetic: `splitStepA`, `splitStepDWith`
+at `(fejerStepP, fejerStepT)`, and the seed of `splitUniformClass_two_fejer`.
+It then feeds the actual cover degrees `log₂(a_l + D_l + l + 1)` into the
+envelope of `model_fejer_envelope_exact.py`.
+* *The proved constant 22 is loose.* At seed `2^46` the actual
+  `log₂ uDeg_l / 2^l` is `12.0, 15.6, 16.1, 15.5, 14.7, 14.0, …, 12.8`
+  (`l = 2, …, 12`). It peaks at `l = 4`, because
+  `a_{l+1} ≈ 2^(l+5)·a_l²` and `D_{l+1} ≈ a_l(a_l + D_l)·P` overshoot before
+  the doubling settles, and tends to about `log₂ a₂ / 4 + 1`. With these
+  degrees the `d + 6` envelope is about `177·2^k`, not the proved `230·2^k`.
+* *`d + 5` needs every input at once.* It needs envelope `< 128·2^k`.
+  Even with the base budget from `V` (`fixDeg` at the Fejér `5k + 22`), the
+  envelope is
+  - `147.5·2^k` at the proved seed `2^46`;
+  - `143.6·2^k` at seed `2^43`, the seed if Lemma 16.3's density used the
+    proof's actual `θ^1165` in place of the rounded `θ^10000`;
+  - `134.4·2^k` at an idealized seed `2^36`.
+
+  Shrinking θ₁′'s exponent `F` helps little:
+  `F/2^12` with seed `2^36` is the first combination that fits (`127.6`).
+* So `d + 5` / `L + 3` is not a matter of sharper inputs to this route. The
+  step pays the class degree three times (vertex covers and two slices), and
+  the class degree has a transient peak near `13`–`16` set by the seed's
+  squaring. A different class construction would be needed, for example
+  one whose dimension-`l` degree is linear in the previous one rather than
+  quadratic. This joins the further questions.
+
+The Lemma 16.3 rounding remark stands on its own. The density
+`2^(−2000)(γθ)^10000` is a common lower bound for
+`2^(−1882)·γ^9312·θ^1165` (`section16_product_restriction`). In the
+dimension-two counts θ is the piece budget, so the actual exponent would
+lower the seed from about `2^46` to `2^43`. No headline constant changes.
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`
