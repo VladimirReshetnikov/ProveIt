@@ -26,8 +26,9 @@ With a local checkout of the pinned upstream revision, run
 `python3 Combinatorics/Ramsey/scripts/check_gowers_port_provenance.py /path/to/math`
 from the workspace root to check original-source hashes, modification notices,
 the unchanged upstream license, retained copyright notices, and the two
-Freiman extracts' statements and proof bodies against the pinned originals. This command
-does not verify Lean proofs or the separately recorded Mathlib source hashes.
+Freiman extracts and lattice-basics extract against their pinned statements
+and proof bodies. This command does not verify Lean proofs or the separately
+recorded Mathlib source hashes.
 
 ## Verified subset and quantitative backport
 
@@ -67,8 +68,8 @@ wrapper to be removed entirely.
 
 The selected module import closure contains 4,134 upstream modules,
 including 128 previously present (4,006 additional modules). **The complete
-selected density backport now compiles and passes its axiom audit.** Every upstream
-module is reachable from the density-only conclusion. This is an import-level
+selected density backport passed its recorded full axiom audit on 2026-10-08.**
+Every upstream module is reachable from the density-only conclusion. This is an import-level
 check, not a claim that every declaration bundled in a shared module is
 needed. Further extracts should remove avoidable unrelated branches as they
 are identified; standalone upstream results without a Gowers consumer are
@@ -80,15 +81,30 @@ hashes and compatibility adaptations. Run
 `python3 Combinatorics/Ramsey/scripts/check_gowers_port_scope.py` to check the
 closure; pass a module name to show an import path explaining its inclusion.
 
-All 4,134 manifest entries compile in a 4,151-module closure, including
-17 compatibility modules. `OAI.QuantitativePortAudit` checks 63,855 public
-OAI theorems and the listed compatibility declarations in a 4,152-module
+At that historical checkpoint, all 4,134 manifest entries compiled in a
+4,151-module closure, including 17 compatibility modules.
+`OAI.QuantitativePortAudit` checked 63,855 public OAI theorems and the listed compatibility declarations in a 4,152-module
 closure. Only `propext`, `Classical.choice`, and `Quot.sound` occur. The
 selected quantitative density theorem and the exact Gowers Theorem 1.3
 companion also pass their own transitive axiom checks. The combined Gowers
 audit checks 9,985 public Gowers theorems in a 5,627-module closure with
 the same axiom boundary. The asymptotic constants
 do not supply Theorem 18.2's prescribed numerical threshold.
+
+On 2026-10-12, `OAI.Compat.NormalizedLatticeBasics` extracts the initial
+basic lattice sections of `Lattices.NormalizedLatticeSheet` verbatim.
+`OAI.Compat.NormalizedLatticeGaussian` extracts the covolume and Gaussian
+normalization sections of `Lattices.LatticeSheetHaar`, retaining the existing
+compatibility rename. Both original modules re-export the moved declarations.
+Four recurrence/Fourier consumers import these extracts directly, avoiding
+the geometric sheet branch in the final Gowers theorem's imports.
+The provenance checker compares both extracts with the pinned upstream text
+and the single documented compatibility rename. The extracts, four changed
+consumers and both original geometric modules compile in a 549-module native
+check. The final theorem and stronger-bound audits are running separately.
+The full-port audit above is historical, not a claim of a fresh full-port
+audit after this extraction. The selected upstream closure is unchanged;
+there are now 19 local compatibility modules.
 
 The already audited `PolynomialCoordinatePartition` module also supplies
 `simultaneous_monomial_recurrence`. The Gowers consumer

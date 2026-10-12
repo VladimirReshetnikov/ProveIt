@@ -1,6 +1,7 @@
-/- Modified for ProveIt: import Lean 4.32 compatibility declarations.
+/- Modified for ProveIt: import Lean 4.32 compatibility declarations and the common-denominator estimates directly.
 Statements and proofs are unchanged from the pinned upstream source. -/
 import OAI.Compat.Core
+import OAI.Combinatorics.Progressions.Estimates.CommonDenominatorMultiples
 import OAI.Combinatorics.Progressions.Estimates.GaussianTailRadius
 import OAI.Combinatorics.Progressions.Fourier.AffineTorusDensityIncrement
 import OAI.Combinatorics.Progressions.Lattices.IntegerIntervalReindex

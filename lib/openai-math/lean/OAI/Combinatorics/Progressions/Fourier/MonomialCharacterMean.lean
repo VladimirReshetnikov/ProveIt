@@ -1,4 +1,5 @@
-import OAI.Combinatorics.Progressions.Lattices.NormalizedLatticeSheet
+/- Modified for ProveIt: Import the extracted lattice basics directly; statements and proof bodies unchanged. -/
+import OAI.Compat.NormalizedLatticeBasics
 
 namespace OAI
 
