@@ -1,0 +1,152 @@
+\section{Gamma-weighted harmonic identities and differential ladders}
+\label{sec:gamma}
+
+\subsection{The complete-harmonic weight at every integer order}
+For $q\ge1$ define the local harmonic increment
+\begin{equation}\label{eq:local-harmonic}
+ h_q(n,a)=\sum_{j=0}^d\frac1{(n+a+j)^q}.
+\end{equation}
+The complete exponential Bell polynomials are normalized by
+\begin{equation}\label{eq:bell}
+ \exp\left(\sum_{j\ge1}x_j\frac{u^j}{j!}\right)
+ =\sum_{k\ge0}\Bell_k(x_1,\ldots,x_k)\frac{u^k}{k!},
+ \qquad \Bell_0=1.
+\end{equation}
+
+\begin{theorem}[All-particle Gamma--harmonic evaluation]\label{thm:gamma}
+For every integer $m\ge1$,
+\begin{equation}\label{eq:harmonic-weight}
+ w_n(m,a)=\frac{\Gamma(n+a)}{\Gamma(n+a+d+1)}
+ \frac{\Bell_{m-1}(h_1,1!h_2,\ldots,(m-2)!h_{m-1})}{(m-1)!}.
+\end{equation}
+For $m=1$ the Bell factor is interpreted as one. For $m\ge2$, the
+ordered $r$-particle sum of the products of these weights satisfies
+\begin{align}
+ &\sum_{0\le n_1<\cdots<n_r}\Delta(\bm n)^2
+ \prod_{i=1}^r
+ \left\{\frac{\Gamma(n_i+a)}{\Gamma(n_i+a+d+1)}
+ \frac{\Bell_{m-1}(h_1(n_i,a),\ldots,(m-2)!h_{m-1}(n_i,a))}
+ {(m-1)!}\right\}\notag\\
+ &\hspace{22mm}=U_r(m,a)+
+        \frac{(-1)^m}{(m-1)!}V_r(m,a)\psi^{(m-1)}(a).
+ \label{eq:gamma-evaluation}
+\end{align}
+At positive integral $a$, all the $h_q$ are differences of ordinary
+generalized harmonic numbers. At rational $a$, they are rational-grid
+harmonic increments.
+\end{theorem}
+\begin{proof}
+The elementary beta partial-fraction identity gives
+\[
+ w_n(1,a)=\frac1{(n+a)_{d+1}}
+        =\frac{\Gamma(n+a)}{\Gamma(n+a+d+1)}.
+\]
+One can also obtain it by integrating
+$t^{n+a-1}(1-t)^d/d!$ on $(0,1)$.
+Differentiate \eqref{eq:weight} $m-1$ times in $a$:
+\begin{equation}\label{eq:weight-derivative-integer}
+ w_n(m,a)=\frac{(-1)^{m-1}}{(m-1)!}
+          \partial_a^{m-1}w_n(1,a).
+\end{equation}
+The logarithmic derivatives of the reciprocal rising factorial are
+\[
+ \partial_a^q\log w_n(1,a)
+     =(-1)^q(q-1)!h_q(n,a).
+\]
+The Bell formula for an exponential derivative, together with its weighted
+homogeneity, proves \eqref{eq:harmonic-weight}. Theorem~\ref{thm:single}
+and the classical relation
+$\zeta(m,a)=(-1)^m\psi^{(m-1)}(a)/(m-1)!$ prove
+\eqref{eq:gamma-evaluation} \cite{dlmf:hurwitz}.
+\end{proof}
+
+The first weights are particularly transparent:
+\begin{align*}
+ w_n(2,a)&=\frac{h_1(n,a)}{(n+a)_{d+1}},\\
+ w_n(3,a)&=\frac{h_1(n,a)^2+h_2(n,a)}{2(n+a)_{d+1}},\\
+ w_n(4,a)&=\frac{h_1(n,a)^3+3h_1(n,a)h_2(n,a)+2h_3(n,a)}
+                  {6(n+a)_{d+1}}.
+\end{align*}
+Thus the theorem evaluates nonlinear harmonic expressions, not only
+partial-fraction weights written in an unfamiliar notation.
+
+For $r=2$, set
+\[
+ L_n=\frac1{n+1}+\frac1{n+2}+\frac1{n+3},\qquad
+ P_n=(n+1)(n+2)(n+3).
+\]
+A concrete identity is
+\begin{equation}\label{eq:concrete-harmonic}
+ \boxed{\displaystyle
+ \sum_{0\le n<k}\frac{(k-n)^2L_nL_k}{P_nP_k}
+       =\frac{\pi^2-7}{16}.}
+\end{equation}
+Replacing each $L_n$ by
+$\bigl(L_n^2+(n+1)^{-2}+(n+2)^{-2}+(n+3)^{-2}\bigr)/2$
+gives $(14\zeta(3)-15)/32$. At three particles, the local interval
+has five terms and the same construction gives
+\eqref{eq:r3m2}--\eqref{eq:r3m3}.
+
+\subsection{Spatial derivatives as exact insertion identities}
+For complex $s$ and every integer $q\ge0$,
+\begin{equation}\label{eq:shift-weight}
+ \partial_a^q w_n(s,a)=(-1)^q(s)_q w_n(s+q,a).
+\end{equation}
+Consequently, on the original convergence domain,
+\begin{align}
+ \partial_a^q\Z_r(s,a)
+ ={}&(-1)^q\sum_{k_1+\cdots+k_r=q}
+    \frac{q!}{k_1!\cdots k_r!}\prod_{i=1}^r(s)_{k_i}\notag\\
+ &\qquad\times\sum_{n_1<\cdots<n_r}\Delta(\bm n)^2
+       \prod_i w_{n_i}(s+k_i,a).
+ \label{eq:insertion-ladder}
+\end{align}
+All the coefficients and sums are explicit. The right side of
+\eqref{eq:single} differentiates to
+\begin{equation}\label{eq:spatial-zeta}
+ \partial_a^q\Z_r(s,a)=\partial_a^q U_r(s,a)
+ +\sum_{j=0}^q\binom qj\partial_a^{q-j}V_r(s,a)
+          (-1)^j(s)_j\zeta(s+j,a).
+\end{equation}
+This uses the standard Hurwitz parameter-derivative law, so again only
+single zeta coordinates occur.
+
+For example, let
+\[
+ \mathcal I_r(s,a)=\sum_{n_1<\cdots<n_r}\Delta(\bm n)^2
+        \sum_{i=1}^r w_{n_i}(s+1,a)\prod_{j\ne i}w_{n_j}(s,a).
+\]
+Then
+\begin{equation}\label{eq:first-insertion}
+ \mathcal I_r(s,a)=V_r(s,a)\zeta(s+1,a)
+   -\frac{\partial_aU_r(s,a)+\partial_aV_r(s,a)\zeta(s,a)}s.
+\end{equation}
+For $\Rea s>1$, an anchored primitive is therefore
+\begin{equation}\label{eq:insertion-primitive}
+ \int_{a_0}^{a}\mathcal I_r(s,x)\dd x
+       =-\frac{\Z_r(s,a)-\Z_r(s,a_0)}s,
+ \qquad \Rea a_0,\Rea a>0,
+\end{equation}
+with the path lying in the right half-plane. The integral is path
+independent because the integrand is holomorphic there. Higher insertion
+combinations in \eqref{eq:insertion-ladder} have the analogous anchored
+primitives obtained by reducing one derivative order. Thus the harmonic
+identities come with differential and antiderivative relations, not just
+isolated evaluations.
+
+\subsection{Rational shifts and arithmetic coordinates}
+For integer $m$, $U_r(m,a)$ and $V_r(m,a)$ are rational functions of $a$.
+At $a\in\Q_{>0}$, the all-particle value therefore lies in the
+$\Q$-linear span of $1$ and $\zeta(m,a)$.
+For instance, the half-shift identity
+$\zeta(s,\tfrac12)=(2^s-1)\zeta(s)$ gives ordinary-zeta reductions
+of \eqref{eq:single} at $a=1/2$. General rational shifts may instead
+be written with residue-class Dirichlet series or finite root filters.
+No claim of arithmetic independence of those coordinates is implied.
+
+For noninteger $s$, the finite exponential factors in $U_r,V_r$ remain
+well defined. Their continuation should not be confused with a statement
+that the corresponding \emph{cutoff generating function} is always a
+finite combination of classical polylogarithms. The latter assertion is
+proved below only for rational weights, in particular at integer spectral
+orders.

@@ -1,0 +1,244 @@
+\section{A normal subtraction and all generalized Stieltjes jets}
+\label{sec:stieltjes}
+
+\subsection{The correct escape amplitude}
+Write
+\[
+ \Z_{r,N}(s,a)=\sum_{0\le n_1<\cdots<n_r\le N}
+       \Delta(\bm n)^2\prod_iw_{n_i}(s,a),\qquad \Z_{r,-1}=0,
+\]
+and define the largest-index block
+\begin{equation}\label{eq:block}
+ B_N(s,a)=\Z_{r,N}(s,a)-\Z_{r,N-1}(s,a).
+\end{equation}
+It vanishes for $N<r-1$. For $N\ge1$, finite Cauchy--Binet on the
+remaining particles gives
+\begin{equation}\label{eq:block-det}
+ B_N(s,a)=w_N(s,a)
+ \det\left(\sum_{n=0}^{N-1}n^{i+j}(N-n)^2w_n(s,a)\right)_{0\le i,j<r-1}.
+\end{equation}
+The amplitude that must be subtracted is
+\begin{equation}\label{eq:amplitude}
+ A_r(s,a)=c_d(s)V_r(s,a),\qquad c_d(s)=\frac{(s)_d}{d!},
+\end{equation}
+not just $V_r(s,a)$ away from $s=1$.
+
+\begin{lemma}[Uniform block remainder]\label{lem:block}
+Locally uniformly for $\Rea s>0$, $\Rea a>0$,
+\begin{equation}\label{eq:block-asymptotic}
+ B_N(s,a)=A_r(s,a)(N+a)^{-s}
+       +O\bigl((N+1)^{-\Rea s-1}\bigr).
+\end{equation}
+In particular the difference and all its fixed parameter derivatives
+are locally normally summable in that domain.
+\end{lemma}
+\begin{proof}
+The $(r-1)$-particle ensemble with the same weight has total mass $V_r(s,a)$
+for $\Rea s>-1$: its largest required moment has degree $d-2$, and
+\eqref{eq:moment} without the zeta term extends to that domain by the
+identity theorem. For the present proof it suffices to work on a compact
+set with $\Rea s\ge\sigma>0$.
+
+The absolute ensemble with one insertion of $\sum_i n_i$ is uniformly
+summable. Indeed, bounding its Vandermonde as in Lemma~\ref{lem:decay},
+the largest exponent after the insertion is at most $-\sigma-1$.
+For $0\le n_i<N$,
+\[
+ 0\le1-\prod_{i=1}^{r-1}(1-n_i/N)^2
+       \le\frac2N\sum_{i=1}^{r-1}n_i.
+\]
+The sum of the absolute ensemble weights with some $n_i\ge N$ is also
+at most $N^{-1}$ times the same first-moment majorant. Therefore
+\begin{equation}\label{eq:lower-normalization}
+ N^{-d}\frac{B_N(s,a)}{w_N(s,a)}=V_r(s,a)+O(N^{-1}),
+\end{equation}
+where the quotient notation means the lower-particle polynomial sum,
+so no division by a zero weight is needed. This proof uses absolute
+majorants and is valid for complex $s,a$ as well.
+
+Combine \eqref{eq:lower-normalization} with
+\eqref{eq:weight-asymp} and
+$N^d(N+a)^{-d}=1+O(N^{-1})$ to obtain
+\eqref{eq:block-asymptotic}. Every bracket is holomorphic. Cauchy
+estimates on a slightly larger compact neighborhood give summable
+majorants for each fixed derivative; equivalently one can retain the
+resulting powers of $\log(N+1)$ in the estimate.
+\end{proof}
+
+\begin{theorem}[Ordinary pole-cancelled series]\label{thm:subtraction}
+The bracketed series
+\begin{equation}\label{eq:T}
+ T_r(s,a)=\sum_{N\ge0}\left\{B_N(s,a)-A_r(s,a)(N+a)^{-s}\right\}
+\end{equation}
+is locally normally convergent for $\Rea s>0$, $\Rea a>0$, and
+\begin{equation}\label{eq:Tclosed}
+ \boxed{\displaystyle
+ T_r(s,a)=U_r(s,a)+(1-c_d(s))V_r(s,a)\zeta(s,a).}
+\end{equation}
+The apparent pole at $s=1$ is removable. The right side gives an entire
+continuation in $s$; the assertion that the series itself is ordinary
+and normally convergent is limited to the stated half-plane.
+\end{theorem}
+\begin{proof}
+Normal convergence is Lemma~\ref{lem:block}. For $\Rea s>1$, both
+unsubtracted series converge, so Theorem~\ref{thm:single} gives
+\eqref{eq:Tclosed} by subtraction. The identity theorem then gives the
+whole half-plane $\Rea s>0$. Since $c_d(1)=1$, the unique pole of
+Hurwitz zeta cancels. The functions $U_r,V_r,c_d$ are entire in $s$.
+\end{proof}
+
+\subsection{An explicit triangular system for every Stieltjes constant}
+Let
+\begin{equation}\label{eq:jetdefs}
+ U_k=\partial_s^kU_r(1,a),\quad
+ A_k=\partial_s^kA_r(1,a),\quad
+ b_k=\left.\partial_s^k\{(1-c_d(s))V_r(s,a)\}\right|_{s=1}.
+\end{equation}
+Thus $b_0=0$. Also write $T_k=\partial_s^kT_r(1,a)$.
+
+\begin{theorem}[All-order Stieltjes identities]\label{thm:jets}
+For every integer $k\ge0$,
+\begin{align}
+ T_k
+ ={}&\sum_{N\ge0}\left\{\partial_s^kB_N(1,a)
+   -\frac1{N+a}\sum_{j=0}^k\binom kj A_j
+                   [-\log(N+a)]^{k-j}\right\}\label{eq:Tjets-series}\\
+ ={}&U_k+\frac{b_{k+1}}{k+1}
+   +\sum_{j=1}^k\binom kj b_j(-1)^{k-j}\gamma_{k-j}(a).
+ \label{eq:Tjets-closed}
+\end{align}
+The series is an ordinary locally normally convergent bracketed series.
+For $\Rea a>0$, it can be solved recursively for every $\gamma_m(a)$ because
+\begin{equation}\label{eq:b1}
+ b_1=-H_dV_r(1,a)\ne0.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Differentiate \eqref{eq:T} under its normally convergent sum; Leibniz's
+rule yields \eqref{eq:Tjets-series}. Set $s=1+u$ in
+\eqref{eq:Tclosed}. Multiply
+\[
+ \sum_{j\ge1}\frac{b_j}{j!}u^j
+ \quad\hbox{by}\quad
+ \frac1u+\sum_{m\ge0}\frac{(-1)^m\gamma_m(a)}{m!}u^m.
+\]
+The pole contributes $b_{k+1}/(k+1)$ to the $k$th derivative. The
+remaining product contributes the finite convolution in
+\eqref{eq:Tjets-closed}. Since
+$c_d'(1)=\sum_{j=1}^d1/j=H_d$, equation~\eqref{eq:b1} follows from
+Theorem~\ref{thm:single}.
+\end{proof}
+
+In explicit recursive form, putting $k=m+1$ gives
+\begin{align}
+ \gamma_m(a)=\frac{(-1)^m}{(m+1)b_1}
+ \left\{T_{m+1}-U_{m+1}-\frac{b_{m+2}}{m+2}\right.\qquad\notag\\
+ \left.{}-\sum_{j=2}^{m+1}\binom{m+1}{j}
+       b_j(-1)^{m+1-j}\gamma_{m+1-j}(a)\right\}.
+ \label{eq:gamma-invert}
+\end{align}
+The empty sum at $m=0$ is zero. Every coefficient in this triangular
+system is a finite combination of powers and logarithms at $a,a+1,\ldots,a+d-1$
+and of ordinary harmonic numbers of length $d$.
+
+The amplitude derivatives have a compact all-order description:
+\begin{equation}\label{eq:cd-bell}
+ \log c_d(1+u)=\sum_{q\ge1}\frac{(-1)^{q-1}}qH_d^{(q)}u^q,
+ \qquad |u|<1.
+\end{equation}
+Consequently
+\[
+ c_d^{(k)}(1)=\Bell_k\bigl(H_d,-H_d^{(2)},2!H_d^{(3)},\ldots,
+                  (-1)^{k-1}(k-1)!H_d^{(k)}\bigr).
+\]
+Leibniz's rule with the finite determinants $U_r,V_r$ now generates
+all the rows without a new infinite summation problem.
+
+\subsection{Concrete low-order identities}
+For $r=2$, $a=1$, put $L=\log2$. The finite coefficient functions are
+\[
+ U(s)=-\frac12+\frac{2^{-s}}4,\qquad
+ V(s)=\frac{1-2^{-s}}2,\qquad c_2(s)=\frac{s(s+1)}2.
+\]
+Equations~\eqref{eq:Tjets-series}--\eqref{eq:Tjets-closed} give
+\begin{align}
+ T_0&=-\frac34,\label{eq:T0example}\\
+ T_1&=-\frac18-\frac12L-\frac38\gamma,\label{eq:T1example}\\
+ T_2&=\frac12L^2-\frac14L-\frac{1+3L}{4}\gamma
+          +\frac34\gamma_1.\label{eq:T2example}
+\end{align}
+For example, $A_0=1/4$ and $A_1=3/8+L/4$, so the second line means
+precisely
+\begin{equation}\label{eq:T1seriesexample}
+ \sum_{N\ge0}\left\{B_N'(1,1)
+ -\frac{3/8+L/4-\tfrac14\log(N+1)}{N+1}\right\}
+       =-\frac18-\frac12L-\frac38\gamma.
+\end{equation}
+Here $B_N'$ is computed by differentiating the finite two-particle block,
+using \eqref{eq:order-weight}. The cancellation belongs to each displayed
+bracket; the two component series must not be split at $s=1$.
+
+\subsection{Hard cutoffs are not spectral finite parts}
+\begin{corollary}[The cutoff constant and the amplitude derivative]
+\label{cor:cutoff}
+For $a>0$, put $U_0=U_r(1,a)$ and $V_0=V_r(1,a)$. Then
+\begin{equation}\label{eq:hardcutoff}
+ \lim_{N\to\infty}\left\{\Z_{r,N}(1,a)-V_0\log(N+a)\right\}
+       =U_0+V_0\{\gamma_0(a)-H_d\}.
+\end{equation}
+The spectral Laurent constant is
+\begin{equation}\label{eq:spectralFP}
+ \FP_{s=1}\Z_r(s,a)=U_0+\partial_sV_r(1,a)+V_0\gamma_0(a).
+\end{equation}
+The spectral constant minus the hard-cutoff constant equals
+\begin{equation}\label{eq:FPdifference}
+ \partial_sV_r(1,a)+H_dV_0=\partial_sA_r(1,a).
+\end{equation}
+\end{corollary}
+\begin{proof}
+The finite sum of the brackets in \eqref{eq:T} at $s=1$ is
+\[
+ \Z_{r,N}(1,a)-V_0\sum_{n=0}^N(n+a)^{-1}.
+\]
+It tends to $T_0=U_0-H_dV_0$. The digamma shift identity gives
+\[
+ \sum_{n=0}^N(n+a)^{-1}=\psi(N+a+1)-\psi(a),
+\]
+and $\psi(N+a+1)-\log(N+a)\to0$. This proves
+\eqref{eq:hardcutoff}. Expanding \eqref{eq:single} at $s=1$ gives
+\eqref{eq:spectralFP}, and subtraction proves \eqref{eq:FPdifference}.
+\end{proof}
+
+For $r=2,a=1$, the constants are respectively
+\begin{equation}\label{eq:cutoff-example}
+ \frac\gamma4-\frac34,
+ \qquad
+ \frac\gamma4-\frac38+\frac{\log2}{4}.
+\end{equation}
+Their difference is $3/8+\log2/4$. The earlier determinantal report
+already warns that residue-amplitude derivatives affect this comparison
+\cite{repo:dhr}; the present calculation implements that warning for the
+new finite-difference spectral deformation. It is not a claim of an error
+in that source.
+
+\subsection{Stieltjes primitives with fixed normalization}
+For any $m\ge0$ and $\Rea a,\Rea a_0>0$,
+\begin{equation}\label{eq:stieltjes-primitive}
+ \int_{a_0}^a\gamma_m(x)\dd x
+ =\frac{(-1)^{m+1}}{m+1}
+    \left\{\zeta^{(m+1)}(0,a)-\zeta^{(m+1)}(0,a_0)\right\}.
+\end{equation}
+Indeed, comparing coefficients at $s=0$ in
+$\partial_a\zeta(s,a)=-s\zeta(s+1,a)$ proves the derivative of
+\eqref{eq:stieltjes-primitive}; the anchor fixes its constant. This
+classical Hurwitz-jet primitive is consistent with the canonical
+manuscript's conventions \cite{repo:integration,dlmf:hurwitz}.
+For $m=0$, Lerch's identity reduces it to
+\[
+ \int_{a_0}^a\gamma_0(x)\dd x=-\log\Gamma(a)+\log\Gamma(a_0).
+\]
+Substituting \eqref{eq:gamma-invert} supplies ordinary determinant-series
+representatives for the integrands of these primitives. Local normal
+convergence permits termwise integration along every compact path in
+the right half-plane. Thus the Stieltjes series, Gamma primitive, and
+spectral derivative descriptions have one consistent normalization.

@@ -1,0 +1,87 @@
+\section{Finite algorithms and replayable certificates}
+\label{app:algorithms}
+
+\subsection{Computing the single-zeta answer}
+For given $r$, order $s$, and shift $a$, compute the $2r-1$ finite
+endpoint expressions \eqref{eq:E}. Form their $r\times r$ Hankel matrix
+and its upper-left $(r-1)\times(r-1)$ minor. Their determinants are
+$U_r,V_r$. The result is then \eqref{eq:single}.
+At integer $s=m$, all entries are rational functions of $a$; at rational
+$a$, exact rational arithmetic suffices to produce the two coefficients.
+The program \texttt{verification/core.py} implements this construction
+without evaluating any zeta function.
+
+For a finite cutoff $N$, add the finite harmonic term and the upper
+boundary \eqref{eq:upper-boundary} before taking the determinant.
+This produces an exact formula whose number of endpoint terms depends
+on $r$, not on $N$. The large numerical cutoffs in the verification
+record were handled by this formula, not by enumerating $10^{20}$
+summands.
+
+\subsection{Classifying a rational weight}
+A complete certificate consists of its partial-fraction residues, the
+matrices \eqref{eq:Centries}, and one of the following outputs:
+zero pencil; corner pencil; geometric pencil with the exact parameter
+$\tau$; or a nonzero minor of a linear combination disproving rank one.
+At critical decay, the residue-polynomial quotients
+\[
+ Q_{\nu,q}(z)=d!\,P_{\nu,q}(z)/(z-1)^d
+\]
+are particularly compact positive certificates. Their coefficients
+reconstruct the unique proper rational seed $F$.
+
+The implementation checks rank-one support exactly; it does not replace
+formal harmonic variables by numerical evaluations. Its deliberately
+altered examples add a single pole of order $d+2$. This preserves the
+nonzero critical coefficient while breaking the divisibility condition,
+and the altered pencil is rejected in every recorded case.
+
+\subsection{Generating the Stieltjes rows}
+To obtain row $k$, only finite derivatives of $U_r,V_r,c_d$ through
+orders $k$, $k+1$ are needed. Use \eqref{eq:cd-bell} for $c_d$,
+ordinary finite differentiation for the endpoint powers, and the
+coefficient rule \eqref{eq:Tjets-closed}. The next coefficient $b_{k+1}$
+is compulsory because it multiplies the pole $u^{-1}$.
+
+The exact suite tests this rule with independent formal symbols for the
+Stieltjes constants. This verifies the coefficient extraction separately
+from special-function numerics. Its analytic realization as an ordinary
+series is the distinct content of Lemma~\ref{lem:block} and
+Theorem~\ref{thm:subtraction}.
+
+\subsection{Numerical representations used for independent checks}
+For $0\le k\le d$, the moment integral is
+\begin{equation}\label{eq:mellin-check}
+ \mu_k(s,a)=\frac1{d!\Gamma(s)}\int_0^\infty
+       t^{s-1}e^{-at}(1-e^{-t})^d
+       \left(\sum_{n\ge0}n^k e^{-nt}\right)\dd t.
+\end{equation}
+For $k=0$, the series in parentheses is $(1-e^{-t})^{-1}$;
+for $k>0$, it is a rational function obtained by repeated application
+of $q\partial_q$ to $(1-q)^{-1}$ at $q=e^{-t}$. Thus this evaluator
+uses only an elementary Mellin kernel and Gamma normalization, not the
+finite endpoint formula being tested.
+
+The numerical program computes the determinant of these integral moments
+and compares it with $U_r+V_r\zeta$. Near $t=0$, it evaluates
+$1-e^{-t}$ through an exponential-minus-one routine to avoid cancellation.
+The hard-cutoff diagnostics instead use the finite endpoint formula with
+increased precision. Their errors include actual finite-cutoff remainders,
+so their reported accuracy is intentionally different from that of the
+Mellin comparisons.
+
+\subsection{Rebuilding and verifying the delivery}
+From the package directory, run
+\begin{verbatim}
+python verify_manifest.py
+python verification/verify_exact.py
+python verification/verify_numeric.py
+python build.py
+\end{verbatim}
+The two mathematical verification commands regenerate their JSON result records. The build
+script regenerates the standalone TeX and runs the LaTeX compiler. The
+checksum verifier checks the delivered files before modification; after
+regenerating timestamped result records or a PDF, expected byte hashes
+can differ. No network access is needed for either verification suite.
+The exact dependency versions and the TeX package requirements are
+recorded in the accompanying files.

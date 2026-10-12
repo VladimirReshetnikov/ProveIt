@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "source_commit": "73f18ef013d5b74eafc883efb2c15210642df12a",
+  "article_is_research_draft": true,
+  "claims": [
+    {
+      "id": "RANK8_COMPLETE",
+      "status": "proved_with_exact_finite_certificate",
+      "section": "2",
+      "statement": "For every integer b>=5, the original M_(4,b) is nonsingular, hence every (p,q)=(8,2b) has an optimal prefix of q centered even moments.",
+      "source_target": "Reconstruction report Q1",
+      "proof": "Source-to-small determinant normalization; structural highest-degree zeta moment factorization; domination for all b>=512; inherited mod-64 reduction; exhaustive 31 residual indices with rational and modular arithmetic.",
+      "artifacts": [
+        "verification/order8/order8_completion_checks.json",
+        "verification/order8/verify_order8_completion.py"
+      ],
+      "not_claimed": [
+        "Arithmetic independence of evaluated coordinates",
+        "Unrestricted all-a, all-b conjecture"
+      ]
+    },
+    {
+      "id": "FIXED_ORDER_EVENTUAL",
+      "status": "proved",
+      "section": "3",
+      "statement": "For each fixed integer a>=1, a terminating exact construction gives B_a such that M_(a,b) is nonsingular for all b>=B_a.",
+      "source_target": "Reconstruction report Q2, partial general solution",
+      "proof": "Explicit Pade normalization, general highest-degree determinant factorization, exact coefficient norm and factorial termination.",
+      "artifacts": [
+        "verification/eventual/eventual_threshold.py",
+        "verification/eventual/verify_general_normalization.py"
+      ],
+      "not_claimed": [
+        "All residual finite pairs are verified",
+        "Thresholds are minimal"
+      ]
+    },
+    {
+      "id": "ORDER10_INFINITE_FAMILY",
+      "status": "proved_with_exact_threshold_calculation",
+      "section": "3",
+      "statement": "For p=10, every even q>=3840 has the stated optimal-prefix reconstruction.",
+      "proof": "General theorem with a=5 and exact sufficient B_5=1920.",
+      "artifacts": [
+        "verification/eventual/eventual_threshold_checks.json"
+      ],
+      "remaining": "6<=b<1920, excluding already proved adjacent b=6 and gap-four b=7, is not swept in this work."
+    },
+    {
+      "id": "ORDER8_34_ORDINARY_IDENTITY",
+      "status": "proved_with_exact_coefficients",
+      "section": "2 and appendix A",
+      "statement": "The distributed integer polynomials specify an ordinary convergent rational polygamma identity for (8,34), equal to -50080663395181527103610784368919.",
+      "artifacts": [
+        "verification/order8/order8_identity_b17_k0.json",
+        "verification/order8/reconstruct_order8.py"
+      ]
+    },
+    {
+      "id": "QUARTIC_REGULAR_MOMENTS",
+      "status": "proved",
+      "section": "4",
+      "statement": "Every regular centered quartic trigamma moment has the displayed ordinary polynomial-subtracted evaluation in six fixed formal coordinates.",
+      "source_target": "Reconstruction report Q5",
+      "proof": "Finite summation by parts, exact odd-part boundary cancellation, inherited cubic coordinates, inverse Bernoulli transform.",
+      "artifacts": [
+        "verification/quartic/quartic_moments.json",
+        "verification/quartic/verify_quartic.py"
+      ],
+      "not_claimed": [
+        "Independence of the six real constants",
+        "Fifth and higher powers",
+        "Resonant Laurent constants"
+      ]
+    },
+    {
+      "id": "QUARTIC_GENERATOR",
+      "status": "proved",
+      "section": "4",
+      "statement": "The anchored generator is holomorphic and even on |t|<2pi and admits the stated finite multiple-polylogarithm construction of depth at most three.",
+      "not_claimed": [
+        "Minimal functional depth",
+        "Arithmetic irreducibility"
+      ]
+    },
+    {
+      "id": "BILATERAL_SECOND_DEFECT",
+      "status": "proved",
+      "section": "5",
+      "statement": "The common-scale second spectral defect for any number of quadratic masses is the sum of pairwise ordinary subtracted logarithmic squares, with explicit resolvent quadrature and complete confluence coefficients.",
+      "source_target": "Quadratic-spectrum report Q7",
+      "artifacts": [
+        "verification/bilateral/verify_spectral_defects.py"
+      ],
+      "not_claimed": [
+        "Finite classical-polylogarithm reduction at arbitrary masses"
+      ]
+    },
+    {
+      "id": "BILATERAL_ALL_JETS",
+      "status": "proved",
+      "section": "5",
+      "statement": "Every higher defect has the displayed ordinary logarithmic remainder and finite symmetric Hurwitz-jet correction; the correction is not generally zero beyond order two."
+    },
+    {
+      "id": "ONE_SIDED_ALL_JETS",
+      "status": "proved",
+      "section": "6",
+      "statement": "Every spectral derivative has a finite explicit correction in Hurwitz derivatives and generalized Stieltjes constants, including the one-degree-higher local pole term.",
+      "artifacts": [
+        "verification/one_sided/verify_stieltjes_jets.py"
+      ]
+    },
+    {
+      "id": "CONJUGATE_LINEAR_ALL_JETS",
+      "status": "proved",
+      "section": "6",
+      "statement": "The conjugate-linear factorization defect is given at all orders with spectral scale two, coefficient eta_k, and the full Stieltjes correction.",
+      "source_target": "Quadratic-spectrum report Q2"
+    },
+    {
+      "id": "ANCHORED_LI2_GAMMA_PRIMITIVE",
+      "status": "proved",
+      "section": "6",
+      "statement": "The cubic-weight quadratic second defect admits the explicit anchored dilogarithmic summand primitive plus a Gamma ratio; the primitive summand is normalized to decay at infinity."
+    },
+    {
+      "id": "CONNECTED_INTERPOLANT_ATTRIBUTION",
+      "status": "editorial_correction_proved_by_exact_identification",
+      "section": "7",
+      "statement": "C_(A,B)(q)=H_(q,1)(A,B)=Psi(A,B;q-1); the entire connected family and higher-depth divided-difference kernel are already established by Ihara-Nakamura-Yamamoto and prior repository continuations.",
+      "source_target": "Same-direction attribution paragraph and Q2",
+      "not_claimed": [
+        "The Barnes and beta-Newton representation theorems are invalid"
+      ]
+    },
+    {
+      "id": "CLASSICAL_QUARTIC_BASELINE",
+      "status": "inherited_classical_result",
+      "section": "4",
+      "statement": "V_0=51 zeta(3) zeta(4)+10 zeta(2) zeta(5)-301 zeta(7)/4.",
+      "attribution": "Hoffman (2016), immediately after Corollary 4.4."
+    },
+    {
+      "id": "CUBIC_AND_SQUARE_INPUTS",
+      "status": "inherited_source_results_reproduced",
+      "section": "4",
+      "statement": "The square and cubic moment formulas and their generators are inherited inputs, reproduced with normalization."
+    },
+    {
+      "id": "FIRST_DERIVATIVE_ANOMALY",
+      "status": "classical_framework_specialized",
+      "section": "5 and 6",
+      "statement": "The first-derivative multiplicative-anomaly framework is classical; new scope here is the specified higher-derivative calculus and explicit normalizations."
+    },
+    {
+      "id": "UNRESTRICTED_RECONSTRUCTION",
+      "status": "open",
+      "statement": "The original optimal-prefix conjecture for every pair of unequal even orders is not fully resolved."
+    },
+    {
+      "id": "GAUSSIAN_S6",
+      "status": "unchanged_conjectural",
+      "statement": "No proof supplied."
+    },
+    {
+      "id": "GAUSSIAN_REVISED_S8",
+      "status": "unchanged_conjectural",
+      "statement": "No proof supplied; the older rejected S8 vector remains distinct and rejected."
+    },
+    {
+      "id": "NUMERICAL_DIAGNOSTICS",
+      "status": "passed_noninterval_diagnostics",
+      "statement": "Independent high-precision comparisons check implementation, not theorem validity by themselves.",
+      "artifacts": [
+        "verification/replay_receipt.json"
+      ],
+      "not_claimed": [
+        "Validated interval certification",
+        "Proof-assistant formalization"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,378 @@
+% Research component; no standalone preamble.  Prepared for the parent article.
+% Sources: latest Shifts/Twists incoming report, section 05_twisted.tex;
+% background: Hoffman, arXiv:1602.03399; DLMF 5.5 and 25.11;
+% Berg--Koumandos--Pedersen, arXiv:1905.04131 (Nielsen beta notation).
+
+\section{A complementary square law from one finite difference}
+\label{ats:section}
+
+The incoming alternating-outer resolvent theorem \cite{HTST} evaluates
+$\sum_{n\ge0}(-1)^n(2n+1)E_n^\alpha(x)E_n^\beta(y)$ through
+alternating double-zeta parity.  There is a complementary ordinary-outer
+square law, with a direct finite certificate.  Its continuous-order
+extension yields ordinary convergent identities involving generalized
+Stieltjes constants.  The finite-difference mechanism is elementary;
+the results below are additions relative to the inspected project
+sources, not claims of literature priority.  Products of zeta tails are
+a classical subject; see Hoffman's multiple-zeta treatment \cite{Hoffman}.
+
+\subsection{The exact finite certificate and its compatible color}
+
+Let $P$ be a polynomial of degree $d\ge2$ with $P(k)\ne0$ for every
+positive integer $k$. Let $0<|\lambda|\le1$, $\lambda\ne1$, and define
+\[
+ E_n=\sum_{k>n}\frac{\lambda^k}{P(k)},\qquad
+ t=-\lambda^{-1},\qquad
+ Q_n=t^nP(n+1)E_nE_{n+1}\quad(n\ge0).
+\]
+The value $P(0)=0$ is allowed. All squares and products are algebraic;
+complex conjugation is not inserted.
+
+\begin{theorem}[A square identity for rational tails]
+\label{ats:thm:polynomial}
+The following series is absolutely convergent:
+\begin{equation}\label{ats:eq:polynomial}
+ \sum_{n\ge0}t^n\{P(n+1)+\lambda P(n)\}E_n^2
+ =\lambda E_0\{1+P(0)E_0\}.
+\end{equation}
+More precisely, for every integer $N\ge0$,
+\begin{equation}\label{ats:eq:finite}
+ \sum_{n=0}^{N}t^n\{P(n+1)+\lambda P(n)\}E_n^2
+ =\lambda E_0\{1+P(0)E_0\}+Q_N.
+\end{equation}
+It holds locally normally in the coefficients of $P$ on sets of fixed
+degree avoiding the positive-integer poles, for each fixed admissible
+$\lambda$.
+\end{theorem}
+
+\begin{proof}
+For $n\ge1$, substitute
+$E_{n-1}=E_n+\lambda^n/P(n)$ and
+$E_{n+1}=E_n-\lambda^{n+1}/P(n+1)$ into the difference of two
+successive $Q$'s. Since $t^{-1}=-\lambda$, the linear-tail terms cancel:
+\[
+ Q_n-Q_{n-1}
+ =t^n\{P(n+1)+\lambda P(n)\}E_n^2.
+\]
+At the lower endpoint,
+$Q_0=P(1)E_0^2-\lambda E_0$, whereas the $n=0$ summand is
+$\{P(1)+\lambda P(0)\}E_0^2$. Their difference is exactly the
+right side of \eqref{ats:eq:polynomial}. This proves the finite identity
+without evaluating $1/P(0)$.
+
+When $|\lambda|<1$, $E_n=O(|\lambda|^{n+1}n^{-d})$; the factor
+$|t|^n$ therefore leaves geometric decay. On the unit circle with
+$\lambda\ne1$, summation by parts and the bounded partial sums of
+$\lambda^k$ give $E_n=O(n^{-d})$: use
+$P(k)^{-1}=O(k^{-d})$ and
+$P(k+1)^{-1}-P(k)^{-1}=O(k^{-d-1})$.
+Thus the summands are $O(n^{-d})$, and $Q_N=O(N^{-d})\to0$.
+These estimates are uniform on compact coefficient sets as stated.
+\end{proof}
+
+The color constraint is forced within this short certificate class.
+If the same ansatz for $Q_n$ is made with arbitrary $t\ne0$, its
+difference is
+\[
+ t^n\left[\{P(n+1)-t^{-1}P(n)\}E_n^2
+      -\lambda^n(\lambda+t^{-1})E_n\right].
+\]
+Hence cancellation of the linear-tail term as an identity requires
+$t=-\lambda^{-1}$. This is a classification of the displayed ansatz,
+not an obstruction to other telescopers.
+
+In particular, taking $P(k)=k^d$ gives an analytic polylogarithmic
+identity for every integer $d\ge2$:
+\begin{align}\label{ats:eq:polylog-tail}
+ &\sum_{n\ge0}(-\lambda^{-1})^n\{(n+1)^d+\lambda n^d\}
+   \left\{\operatorname{Li}_d(\lambda)
+               -\sum_{k=1}^{n}\frac{\lambda^k}{k^d}\right\}^{\!2}
+ =\lambda\operatorname{Li}_d(\lambda).
+\end{align}
+At $\lambda=0$ both sides have a removable value zero; the tails
+contain $\lambda^{n+1}$, so no negative power survives in a summand.
+For example, $d=2$ and $\lambda=i$ give the Gaussian identity
+\[
+ \sum_{n\ge0}i^n\{(n+1)^2+in^2\}
+ \left\{\operatorname{Li}_2(i)-\sum_{k=1}^{n}\frac{i^k}{k^2}\right\}^{\!2}
+ =-G-\frac{i\pi^2}{48},
+\]
+where $G=\beta(2)$ is Catalan's constant. This follows from
+$\operatorname{Li}_2(i)=-\pi^2/48+iG$.
+
+For $\lambda=-1$, $t=1$ and the weight is $P(n+1)-P(n)$, whose
+degree is at most $d-1$. The same proof in this case permits $d=1$;
+the summands are then $O(n^{-2})$.
+
+At a root of unity of order $N$, the endpoint $E_0$ has a finite
+polygamma reduction. Indeed, partial fractions reduce $1/P(k)$ to
+terms $(k+z)^{-j}$, and residue classes give
+\[
+ \sum_{k=1}^{\infty}\frac{\lambda^k}{(k+z)^j}
+ =N^{-j}\sum_{r=1}^{N}\lambda^r
+                   \zeta\!\left(j,\frac{r+z}{N}\right)
+ \qquad(j\ge2).
+\]
+For $j=1$ the correct pole-cancelled interpretation is
+\[
+ -\frac1N\sum_{r=1}^{N}\lambda^r
+                         \psi\!\left(\frac{r+z}{N}\right),
+\]
+because $\sum_{r=1}^{N}\lambda^r=0$. These formulas follow first
+for shifts in the right half-plane and then meromorphically. They
+show that \eqref{ats:eq:polynomial} gives finite rational-color
+Gamma/polygamma identities without appealing to numerical period
+independence.
+
+\subsection{The resolvent square and a two-shift extension}
+
+\begin{corollary}[A sine-square evaluation]
+\label{ats:cor:resolvent}
+For $x\notin\mathbb Z\setminus\{0\}$,
+\begin{equation}\label{ats:eq:resolvent}
+ \boxed{\displaystyle
+ \sum_{n\ge0}(2n+1)
+   \left(\sum_{k>n}\frac{(-1)^k}{k^2-x^2}\right)^2
+ =\frac{\pi^2}{4\sin^2(\pi x)}-\frac1{4x^2}.}
+\end{equation}
+The apparent singularity at zero is removable, with value
+$\zeta(2)/2$.
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{ats:thm:polynomial} to $P(k)=k^2-x^2$ and
+$\lambda=-1$. The cotangent/cosecant partial fractions give
+\[
+ E_0=\frac1{2x^2}-\frac{\pi}{2x\sin(\pi x)}.
+\]
+The endpoint is $x^2E_0^2-E_0$, which is the displayed expression.
+The proof also establishes meromorphic continuation and local normal
+convergence away from the stated coordinate poles.
+\end{proof}
+
+For example, at $x=1/2,1/3,1/4$ the values are, respectively,
+\[
+ \frac{\pi^2}{4}-1,\qquad
+ \frac{\pi^2}{3}-\frac94,\qquad
+ \frac{\pi^2}{2}-4.
+\]
+For real $y\ne0$, substituting $x=iy$ instead gives
+\[
+ \sum_{n\ge0}(2n+1)
+   \left(\sum_{k>n}\frac{(-1)^k}{k^2+y^2}\right)^2
+ =\frac1{4y^2}-\frac{\pi^2}{4\sinh^2(\pi y)}.
+\]
+
+If $T_s^-(n)=\sum_{k>n}(-1)^k k^{-s}$, coefficient extraction in
+\eqref{ats:eq:resolvent} gives, for every integer $m\ge2$,
+\begin{equation}\label{ats:eq:convolution}
+ \sum_{a=1}^{m-1}\sum_{n\ge0}(2n+1)
+            T_{2a}^-(n)T_{2m-2a}^-(n)
+ =\frac{2m-3}{2}\zeta(2m-2).
+\end{equation}
+To check the coefficient, differentiate
+$\pi\cot(\pi x)=x^{-1}-2\sum_{r\ge1}\zeta(2r)x^{2r-1}$.
+The resolvent series is normally convergent for $|x|<1$, including
+after any fixed coefficient extraction.
+
+Write
+\[
+ \mathcal B(z)=\frac12\left\{\psi\left(\frac{z+1}{2}\right)
+                              -\psi\left(\frac z2\right)\right\},
+ \quad
+ M_n(a,b)=\frac{\mathcal B(n+a+1)-\mathcal B(n+b+1)}{b-a}.
+\]
+The quotient has its derivative meaning at $a=b$.
+Partial fractions and the alternating digamma series identify it with
+$\sum_{j\ge0}(-1)^j/((j+n+a+1)(j+n+b+1))$.
+Taking $P(k)=(k+a)(k+b)$ gives the all-shift identity
+\begin{equation}\label{ats:eq:two-shift}
+ \sum_{n\ge0}(2n+a+b+1)M_n(a,b)^2
+ =M_0(a,b)-abM_0(a,b)^2.
+\end{equation}
+It is meromorphic in $a,b$, with the positive-lattice denominator
+poles excluded. In particular, $a=0,b=1$ yields
+\[
+ \sum_{n\ge0}(2n+2)
+  \left(\sum_{k>n}\frac{(-1)^k}{k(k+1)}\right)^2
+ =2\log2-1.
+\]
+
+\subsection{Continuous order: an ordinary Hurwitz identity}
+
+Define the alternating Hurwitz family
+\begin{equation}\label{ats:eq:beta-s}
+ \mathcal B_s(z)=\sum_{j\ge0}\frac{(-1)^j}{(j+z)^s}
+ =2^{-s}\left\{\zeta\left(s,\frac z2\right)
+              -\zeta\left(s,\frac{z+1}{2}\right)\right\}.
+\end{equation}
+The Hurwitz difference is entire in $s$, since its residues at one
+cancel. On $\Re s>0,\Re z>0$ the ordinary alternating series and
+\[
+ \mathcal B_s(z)=\frac1{\Gamma(s)}
+       \int_0^{\infty}\frac{u^{s-1}e^{-zu}}{1+e^{-u}}\,du
+\]
+agree. At $s=1$, this is the classical Nielsen beta function \cite{NielsenBeta}
+$\mathcal B$; it is not Euler's two-variable beta function.
+
+\begin{theorem}[Continuous-order square law]
+\label{ats:thm:continuous}
+For $\Re s>0$, $\Re a>0$, using the principal powers,
+\begin{align}\label{ats:eq:continuous}
+ &\sum_{n\ge0}\{(n+a+1)^s-(n+a)^s\}
+                      \mathcal B_s(n+a+1)^2\notag\\
+ &\hspace{18mm}=\mathcal B_s(a+1)-a^s\mathcal B_s(a+1)^2.
+\end{align}
+The series is absolutely and locally normally convergent in $(s,a)$.
+The formula also holds at real $a=0$, with $0^s=0$ in this half-plane.
+In that case the right side is the Dirichlet eta function
+$\eta(s)=(1-2^{1-s})\zeta(s)$, with its removable value at one.
+\end{theorem}
+
+\begin{proof}
+The recurrence
+$\mathcal B_s(z)+\mathcal B_s(z+1)=z^{-s}$ implies, for
+$F_s(z)=z^s\mathcal B_s(z)\mathcal B_s(z+1)$,
+\[
+ F_s(z-1)-F_s(z)=\{z^s-(z-1)^s\}\mathcal B_s(z)^2.
+\]
+Summing this finite identity gives the stronger statement
+\begin{align}\label{ats:eq:continuous-finite}
+ &\sum_{n=0}^{N}\{(n+a+1)^s-(n+a)^s\}
+                          \mathcal B_s(n+a+1)^2\notag\\
+ &=\mathcal B_s(a+1)-a^s\mathcal B_s(a+1)^2
+ -(N+a+1)^s\mathcal B_s(N+a+1)\mathcal B_s(N+a+2).
+\end{align}
+The lower endpoint form follows from the same recurrence and does
+not require evaluating $\mathcal B_s(0)$ at $a=0$.
+
+The Laplace representation, or paired summation by parts, gives
+$\mathcal B_s(n+a+1)=O(n^{-\Re s})$ locally uniformly. The weight
+difference is $O(n^{\Re s-1})$, since it equals
+$s\int_0^1(n+a+v)^{s-1}\,dv$ for large $n$.
+The summands are therefore $O(n^{-\Re s-1})$, while the remaining
+endpoint in \eqref{ats:eq:continuous-finite} is $O(N^{-\Re s})$.
+This proves the asserted convergence and permits every fixed
+spectral and shift derivative by Cauchy's formula.
+\end{proof}
+
+The integer specializations give
+\[
+ \sum_{n\ge0}\{(n+1)^d-n^d\}\mathcal B_d(n+1)^2=\eta(d)
+ \qquad(d=1,2,\ldots).
+\]
+More generally, for $d\ge2$, the integrands and summands in
+\eqref{ats:eq:continuous} are finite polygamma expressions because
+\[
+ \mathcal B_d(z)=
+ \frac{(-1)^d}{2^d(d-1)!}
+ \left\{\psi^{(d-1)}\left(\frac z2\right)
+       -\psi^{(d-1)}\left(\frac{z+1}{2}\right)\right\}.
+\]
+
+\subsection{All Stieltjes orders with no finite-part prescription}
+
+Use the Laurent convention
+$\zeta(1+u,z)=u^{-1}+\sum_{j\ge0}(-1)^j\gamma_j(z)u^j/j!$.
+Put $L=\log2$ and define
+\begin{align*}
+ C_r(n)&=\sum_{j=0}^{r}\binom rj L^{r-j}
+ \left\{\gamma_j\left(\frac{n+1}{2}\right)
+       -\gamma_j\left(\frac{n+2}{2}\right)\right\},\\
+ W_k(n)&=(n+1)\log^k(n+1)-n\log^k n.
+\end{align*}
+At $n=0$, take $n\log^k n=0$ and $\log^0(n+1)=1$;
+thus $W_0(n)=1$ for every $n$. Equation~\eqref{ats:eq:beta-s}
+immediately gives
+\[
+ \left.\partial_s^r\mathcal B_s(n+1)\right|_{s=1}
+       =\frac{(-1)^r}{2}C_r(n).
+\]
+
+\begin{corollary}[An all-index Stieltjes square identity]
+\label{ats:cor:stieltjes}
+For each integer $r\ge0$,
+\begin{align}\label{ats:eq:stieltjes}
+ &\frac14\sum_{n\ge0}
+  \sum_{k+\ell+m=r}\frac{r!}{k!\ell!m!}
+                 (-1)^k W_k(n)C_\ell(n)C_m(n)\notag\\
+ &=\frac{L^{r+1}}{r+1}
+          -\sum_{j=1}^{r}\binom rj L^j\gamma_{r-j}.
+\end{align}
+Every fixed summand family is absolutely convergent. The empty
+right-hand sum at $r=0$ is zero.
+\end{corollary}
+
+\begin{proof}
+Differentiate \eqref{ats:eq:continuous} $r$ times in $s$ at $a=0,s=1$.
+Normal convergence has been proved on a larger compact neighborhood
+of that point in the spectral half-plane. Leibniz's rule gives the
+left side, after multiplication by $(-1)^r$.
+Expanding $(1-e^{-Lu})\zeta(1+u)$ gives
+\[
+ \eta^{(r)}(1)=(-1)^r\left\{
+  \frac{L^{r+1}}{r+1}
+   -\sum_{j=1}^{r}\binom rj L^j\gamma_{r-j}\right\}.
+\]
+This is the required right side. More explicitly,
+$C_j(n)=O(n^{-1}\log^j(n+1))$ and
+$W_k(n)=O(\log^k(n+1))$, so all the displayed scalar series
+converge absolutely. These estimates also follow by differentiating
+the paired alternating series, keeping its cancellation.
+\end{proof}
+
+For instance $\sum_{n\ge0}C_0(n)^2=4\log2$, and the first
+logarithmic identity is
+\[
+ \frac14\sum_{n\ge0}
+  \{W_1(n)C_0(n)^2-2C_0(n)C_1(n)\}
+ =\gamma\log2-\frac12\log^2 2.
+\]
+At second order the corresponding right side is
+$\tfrac13\log^3 2-\gamma\log^2 2-2\gamma_1\log2$.
+These are ordinary convergent identities on the half-lattice, not
+distributional contact terms or finite parts.
+
+\subsection{An anchored Gamma primitive and shift derivatives}
+
+At $s=1$, \eqref{ats:eq:continuous} becomes
+\begin{equation}\label{ats:eq:nielsen-square}
+ \sum_{n\ge0}\mathcal B(n+a+1)^2
+       =\mathcal B(a+1)-a\mathcal B(a+1)^2.
+\end{equation}
+For real $u\ge0$, its compensated primitive is
+\begin{align}\label{ats:eq:gamma-primitive}
+ &\int_0^u\left\{\sum_{n\ge0}\mathcal B(n+a+1)^2
+                   +a\mathcal B(a+1)^2\right\}\,da\notag\\
+ &=\log\frac{\sqrt\pi\,\Gamma(1+u/2)}{\Gamma((1+u)/2)}.
+\end{align}
+Every exchange follows from local normal convergence, and the
+constant is fixed by $u=0$. The same identity holds holomorphically
+on a simply connected pole-free neighborhood with the logarithm
+anchored at zero. At $u=1$, the value is $\log(\pi/2)$.
+
+Finally, because $\partial_a^j\mathcal B(n+a+1)=
+(-1)^j j!\mathcal B_{j+1}(n+a+1)$, every shift derivative of
+\eqref{ats:eq:nielsen-square} gives an explicit mixed-order identity.
+Writing $z=a+1$ and
+$U_r(z)=\sum_{j=0}^{r}\mathcal B_{j+1}(z)\mathcal B_{r-j+1}(z)$,
+$U_{-1}=0$, one obtains for $r\ge0$
+\begin{equation}\label{ats:eq:shift-convolution}
+ \sum_{n\ge0}U_r(n+z)
+ =\mathcal B_{r+1}(z)+U_{r-1}(z)-(z-1)U_r(z).
+\end{equation}
+At positive integer orders the right side is a finite product of
+ordinary polygamma values at half-shifts.  This is a convolution
+identity; it does not claim to isolate every individual mixed product.
+
+\paragraph{Focused next questions.}
+The diagonal finite certificate suggests a precise bilinear question:
+for distinct polynomial denominators $P,Q$, classify rational-coefficient
+certificates involving the two adjacent-tail products. A second target
+is meromorphic continuation of the continuous-order square law past
+$\Re s=0$, with the explicit upper endpoint in
+\eqref{ats:eq:continuous-finite} retained at each resonance. A third is
+to combine these matched-color identities with the independent
+two-parameter conjugation generator, determining which mixed resolvent
+coefficients are eliminated by their joint relation system. None of
+these questions is a numerical-independence claim.

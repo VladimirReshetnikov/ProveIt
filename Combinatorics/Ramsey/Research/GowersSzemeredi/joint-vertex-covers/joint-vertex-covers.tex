@@ -173,21 +173,52 @@ envelopes grow like $472\cdot2^k<512\cdot2^k$.
 \toprule
 & printed & standard base & tight base\\
 \midrule
-Theorem 18.1, exponent $\alpha^{2^{2^{d+c}}}$ & $c=10$ & $c=8$ ($d\ge4$) & $c=7$ ($d\ge4$)\\
-Theorem 18.2, threshold with $L+c$ & $c=9$ & $c=6$ ($L\ge6$) & $c=5$ ($L\ge11$)\\
-Corollary 18.7, threshold with $L+c$ & $c=9$ & $c=6$ ($L\ge6$) & $c=5$ ($L\ge11$)\\
+Theorem 18.1, exponent $\alpha^{2^{2^{d+c}}}$ & $c=10$ & $c=8$ ($d\ge4$) & $c=7$ (every $d$)\\
+Theorem 18.2, threshold with $L+c$ & $c=9$ & $c=6$ (every $L$) & $c=5$ (every $L$)\\
+Corollary 18.7, threshold with $L+c$ & $c=9$ & $c=6$ (every $L$) & $c=5$ (every $L$)\\
+$W(k,r)\le2^{2^{r^{2^{2^{k+c}}}}}$, $r\ge2$ & $c=9$ & --- & $c=5$\\
 \bottomrule
 \end{tabular}
 \end{center}
 
+The last row is Theorem~18.2 at density $\delta=1/r$: in an $r$-colouring of
+$[1,N]$ one colour class has at least $N/r$ elements. This gives Gowers's
+van der Waerden bound, sharpened from $k+9$ to $k+5$.
+
 The method stops at these constants. The envelope recursion grows like
 $472\cdot2^k$, and $c=6$ for Theorem~18.1 (or $c=4$ for Theorem~18.2) would
 need a step cost below $128\cdot2^k$, while the vertex covers and the two slice
-controls alone cost $204\cdot2^k$. For $L\le10$ the bound $L+5$ is blocked by
-the stopping term $40(k+2)^3+1095$, which comes from the catalogue's Weyl
-threshold $2^{2^{40k^3}}$ in Section~5. For $L\le8$ this term alone exceeds
-$2^{L+5}$; at $L=9,10$ the excess it leaves in the envelope at the first steps
-persists.
+controls alone cost $204\cdot2^k$.
+
+For Theorem~18.2 at $c=5$ one more point matters. The modulus threshold of
+the inverse step contains two pure constants, the Section~5 refinement
+constant $\le2^{2^{40d^3+2}}$ and a boundary constant $\le2^{2^{1083}}$. A
+cruder bound charges them at the level of powers of $X$, which puts a cubic
+term $40(k+2)^3$ into the envelope and blocks $L+5$ for $L\le10$. The
+threshold is only needed below $\exp(\exp(X^{2^\mu}))$, and
+$2^{2^m}\le\exp(X^{2^j})$ as soon as $m\le2^j$. At that level the
+constants cost only $k+16$, and $L+5$ holds in every length.
+
+\section{Further questions}
+
+\begin{enumerate}
+\item \emph{Joint slices.} The single-piece step applies its slice control
+  twice in succession, $\theta\,c(c(\theta))$, and so pays $2\cdot68\cdot2^k$
+  in the step cost. Composing the two slice covers jointly, as in
+  Lemma~\ref{lem:joint}, should cost about $68\cdot2^k$. The envelope would
+  drop from about $472\cdot2^k$ to about $336\cdot2^k$. This changes none of
+  the constants in the table.
+\item \emph{The class degree.} The face covers have degree
+  $D_l=2^{68\cdot2^l}$, the fixed point of a class recursion that pays the
+  Section~16 exponent $\theta_1=(\theta\gamma/2)^{2^{2^{k+5}}}$ (about
+  $32\cdot2^k$ in the log-degree) once per dimension. Is there a class
+  construction with log-degree near one $\theta_1$ per dimension?
+\item \emph{The printed $\theta_1$.} Even with joint slices and such a class
+  degree, a step would cost about $134\cdot2^k$, above the $128\cdot2^k$ that
+  $c=6$ for Theorem~18.1 or $c=4$ for Theorem~18.2 would need. Can the
+  double-exponential exponent $2^{2^{k+5}}$ of $\theta_1$ in Lemmas 16.5 and
+  16.7 be lowered? Only that would move these constants further.
+\end{enumerate}
 
 \section{Formalization}\label{sec:lean}
 
@@ -207,7 +238,10 @@ envelopes & \lean{polyGenMuC\_le}, \lean{genMuC\_le}, \lean{genMuC\_le\_sharp}\\
 Theorems 18.1, 18.2, Cor.~18.7 & \lean{theorem\_18\_1\_explicit}, \lean{theorem\_18\_2\_explicit},\\
 & \lean{corollary\_18\_7\_explicit} (\lean{Proofs18CoverExplicit})\\
 sharper constants & \lean{Proofs18CoverSharper}, \lean{Proofs18CoverTightBase},\\
-& \lean{Proofs18CoverColorings}, \lean{Proofs18CoverSharperExplicit}\\
+& \lean{Proofs18CoverColorings}, \lean{Proofs18CoverSharperExplicit},\\
+& \lean{Proofs18CoverSharperLowDegrees}, \lean{Proofs18CoverSharperShortLengths},\\
+& \lean{Proofs18CoverThresholdsSharp}, \lean{Proofs18CoverVanDerWaerden},\\
+& \lean{Proofs18CoverSharperAllDegrees}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -219,12 +253,15 @@ Every result above is kernel-checked. The production audit of 2026-10-11,
 built 1,440 modules from source with Lean~4.32.0, checked the exact types of
 all 120 numbered catalogue statements and of the improved-bound theorems,
 and found only the axioms \lean{propext}, \lean{Classical.choice} and
-\lean{Quot.sound}. Its record is
+\lean{Quot.sound}. The extensions to every degree ($c=7$) and to every
+length ($c=6$ and $c=5$) postdate that audit and are so far checked against faithful
+stubs. The
+audit's record is
 \begin{center}\small
 \lean{Research/GowersSzemeredi/verification/}\\
 \lean{2026-10-11-numbered-and-bounds.json}.
 \end{center}
 The research notes
-(\lean{SECTION16\_RESEARCH\_NOTES.md}, \S\S L.11--L.15b) record the development.
+(\lean{SECTION16\_RESEARCH\_NOTES.md}, \S\S L.11--L.15g) record the development.
 
 \end{document}

@@ -116,6 +116,35 @@ Verification of the cover route (2026-10-11)
   started here (about 18 hours on this host) was stopped as redundant.
   scripts/gowers_bridge_axioms.lean is a quick standalone #print axioms
   check of the 13 bridge theorems for any later rebuild.
+  Audit coverage after the audit: of the 1,444 recorded input hashes, two
+  no longer match. Proofs18CoverTightBase.lean changed only in its module
+  comment (/-! ... -/, the L.15a audit correction); no declaration changed.
+  The paper .tex was edited afterwards by the integer-representatives work.
+  Added after the audit (notes L.15c): Proofs18CoverSharperLowDegrees
+  (light, kernel-checked) and Proofs18CoverSharperAllDegrees (bridge,
+  faithful stub mkstub_all18.py): theorem_18_1_d7, Theorem 18.1 with
+  exponent alpha^(2^(2^(d+7))) in every degree d (not only d >= 4), and
+  theorem_18_1_d7_implies_printed : theorem_18_1. Also (notes L.15d,
+  Proofs18CoverSharperShortLengths): theorem_18_2_L6 and corollary_18_7_L6,
+  Theorem 18.2 and Corollary 18.7 with L+6 in every length L, and their
+  implications to theorem_18_2 and corollary_18_7 (stub axiom
+  section16RecurrenceProfileWith_explicit only). With the phase-refinement
+  threshold bounded at the exponential level (Proofs18CoverThresholdsSharp,
+  notes L.15e) the cubic stopping term disappears: theorem_18_2_L5 and
+  corollary_18_7_L5 give L+5 in every length (same single stub axiom).
+  The short-lengths module
+  was compiled against the existing oleans while the concurrent Section05
+  edit made the tree stale. CompletionAudit.lean now imports
+  Proofs18CoverSharperAllDegrees, pins the exact statements of the eight
+  every-degree and every-length theorems (theorem_18_1_d7, theorem_18_2_L5,
+  corollary_18_7_L5, theorem_18_2_L6, corollary_18_7_L6 and the three
+  implications to the printed statements) and checks their transitive
+  axioms, so the next production run covers them. The block was validated
+  locally in the faithful-stub environment.
+  Van der Waerden numbers (notes L.15g, Proofs18CoverVanDerWaerden):
+  van_der_waerden_L5, W(k,r) <= 2^(2^(r^(2^(2^(k+5))))) for r >= 2 colours,
+  and Gowers's printed W(k,r) <= 2^2^r^2^2^(k+9) (van_der_waerden_printed);
+  also checked by CompletionAudit.lean.
 
 Sharper exponents for Theorems 18.1 and 18.2 — 2026-10-11 (notes L.15)
   The joint-cover envelopes are a quarter of the printed budgets, so:

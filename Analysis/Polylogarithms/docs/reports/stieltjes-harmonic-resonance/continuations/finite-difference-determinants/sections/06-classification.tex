@@ -1,0 +1,273 @@
+\section{Classification of rank-one harmonic matrix pencils}
+\label{sec:classification}
+
+\subsection{The rational-weight model, including several lattices}
+Let $K\subseteq\C$ be a characteristic-zero field containing the
+parameters below. Consider a proper rational function
+\begin{equation}\label{eq:rational-weight}
+ R(x)=\sum_{\nu=1}^{L}\sum_{j=0}^{J_\nu}
+             \sum_{h=1}^{m_\nu}\frac{c_{\nu,j,h}}{(x+a_\nu+j)^h},
+ \qquad \Rea a_\nu>0.
+\end{equation}
+Representatives from distinct lattices are chosen inequivalent modulo
+$\mathbb Z$, so that the associated harmonic families are not artificially
+duplicated. Zero coefficients and gaps in a lattice are allowed.
+For $q\ge1$ put
+\begin{equation}\label{eq:shifted-harmonic}
+ H_N^{(q)}(a_\nu)=\sum_{n=0}^N(n+a_\nu)^{-q}.
+\end{equation}
+The finite moment matrix is
+\begin{equation}\label{eq:rational-moment-matrix}
+ M_N=\left(\sum_{n=0}^Nn^{i+j}R(n)\right)_{0\le i,j<r}.
+\end{equation}
+
+\begin{proposition}[Explicit harmonic coefficient matrices]\label{prop:pencil}
+There is a matrix $D_N$ with entries rational in $N$ over $K$ such that
+\begin{equation}\label{eq:pencil-decomposition}
+ M_N=D_N+\sum_{\nu=1}^L\sum_{q=1}^{m_\nu}
+                H_N^{(q)}(a_\nu)\,C_{\nu,q}.
+\end{equation}
+Each $C_{\nu,q}$ is a fixed symmetric Hankel matrix. Writing
+$(C_{\nu,q})_{ij}=c_{\nu,q}[i+j]$, its entries are
+\begin{equation}\label{eq:Centries}
+ c_{\nu,q}[k]=\sum_{h=q}^{m_\nu}\binom{k}{h-q}
+       \sum_{j=0}^{J_\nu}c_{\nu,j,h}(-a_\nu-j)^{k-h+q},
+       \quad 0\le k\le d.
+\end{equation}
+A summand is omitted unless $0\le h-q\le k$.
+\end{proposition}
+\begin{proof}
+Expand $x^k=((x+a_\nu+j)-(a_\nu+j))^k$. The coefficient of
+$(x+a_\nu+j)^{-q}$ in $x^kR(x)$ is exactly the corresponding summand
+in \eqref{eq:Centries}. Summing over $n=0,\ldots,N$ and shifting the
+finite harmonic sum changes it by
+\[
+ -\sum_{\ell=0}^{j-1}(\ell+a_\nu)^{-q}
+ +\sum_{\ell=N+1}^{N+j}(\ell+a_\nu)^{-q},
+\]
+which is rational in $N$ over $K$. The polynomial part of $x^kR(x)$
+sums to a polynomial in $N$, for instance by the finite Bernoulli-polynomial
+summation formula. All remaining terms therefore belong to $D_N$.
+\end{proof}
+
+\begin{definition}
+The \emph{harmonic matrix pencil} associated with $R$ and $r$ is
+\begin{equation}\label{eq:harmonic-pencil}
+ \mathscr C(\bm X)=\sum_{\nu,q}X_{\nu,q}C_{\nu,q},
+\end{equation}
+where the variables $X_{\nu,q}$ are algebraically independent. Its rank
+is the generic matrix rank over $K(\bm X)$.
+\end{definition}
+This definition is intrinsic after the distinct shift-orbits have been
+fixed. It does not posit algebraic independence of the actual functions
+$H_N^{(q)}(a_\nu)$ or of their limits.
+
+\subsection{The complete rank-one test}
+For $\tau\in K$, write
+\[
+ v(\tau)=(1,\tau,\ldots,\tau^{r-1})^{\mathsf T},\qquad
+ \ee=(0,\ldots,0,1)^{\mathsf T}.
+\]
+
+\begin{theorem}[All rank-one harmonic pencils]\label{thm:classification}
+The nonzero pencil \eqref{eq:harmonic-pencil} has rank one if and only
+if exactly one of the following forms is possible:
+\begin{align}
+ C_{\nu,q}&=\lambda_{\nu,q}v(\tau)v(\tau)^{\mathsf T}
+       &&\text{for a common finite }\tau,\label{eq:geometric-branch}\\
+ C_{\nu,q}&=\lambda_{\nu,q}\ee\ee^{\mathsf T}
+       &&\text{for all }\nu,q.\label{eq:corner-branch}
+\end{align}
+In either case some $\lambda_{\nu,q}$ is nonzero. Equivalently, the
+finite residue sums \eqref{eq:Centries} obey either
+\[
+ c_{\nu,q}[k]=\lambda_{\nu,q}\tau^k\quad(0\le k\le d)
+\]
+with one common $\tau$, or
+\[
+ c_{\nu,q}[k]=\lambda_{\nu,q}\mathbf1_{k=d}\quad(0\le k\le d).
+\]
+These are necessary and sufficient algebraic tests for the original
+rational weight, including repeated poles and multiple lattices.
+\end{theorem}
+\begin{proof}
+If a symmetric pencil has rank at most one, every coefficient matrix
+has rank at most one. Two nonzero symmetric rank-one matrices can be
+written $\alpha uu^{\mathsf T}$ and $\beta vv^{\mathsf T}$ over a
+field extension. If $u,v$ are not proportional, some pair of coordinates
+has $u_iv_j-u_jv_i\ne0$. The corresponding principal minor of
+$\alpha uu^{\mathsf T}+t\beta vv^{\mathsf T}$ is
+\[
+ t\alpha\beta(u_iv_j-u_jv_i)^2\ne0.
+\]
+This contradicts rank at most one. All coefficient matrices consequently
+have one common rank-one direction.
+
+It remains to classify a nonzero rank-one symmetric Hankel matrix.
+Write it as $\lambda uu^{\mathsf T}$. If $u_0\ne0$, normalize
+$u_0=1$. Equality of the entries $(0,j+1)$ and $(1,j)$ gives
+$u_{j+1}=u_1u_j$, hence $u_j=\tau^j$. If $u_0=0$, let $k$ be
+the first nonzero index. Were $k<r-1$, the Hankel entries $(k,k)$
+and $(k-1,k+1)$ would respectively be nonzero and zero. Thus
+$k=r-1$, giving the corner direction. The finite parameter $\tau$
+belongs to $K$: it is the ratio of entries $(0,1)$ and $(0,0)$ of
+any coefficient matrix whose $(0,0)$ entry is nonzero. The converse
+is immediate from either displayed form.
+\end{proof}
+
+The test is constructive. If some $C_{\nu,q}(0,0)\ne0$, compute
+$\tau=C_{\nu,q}(0,1)/C_{\nu,q}(0,0)$ and verify
+\eqref{eq:geometric-branch} in all entries. If no such coefficient
+exists, only \eqref{eq:corner-branch} can hold. A zero pencil is
+reported separately, not mislabeled as rank one.
+
+\subsection{The critical-decay theorem: repeated finite differences}
+Let the residue polynomial for pole order $q$ on lattice $\nu$ be
+\begin{equation}\label{eq:Pq}
+ P_{\nu,q}(z)=\sum_{j=0}^{J_\nu}c_{\nu,j,q}z^j.
+\end{equation}
+
+\begin{lemma}[Corner support and finite-difference divisibility]
+\label{lem:corner-divisibility}
+The following statements are equivalent, with no critical-decay assumption:
+\begin{enumerate}
+\item Every $C_{\nu,q}$ is supported in its bottom-right entry.
+\item For every $\nu,q$ and $0\le k<d$,
+      $\sum_jc_{\nu,j,q}(-a_\nu-j)^k=0$.
+\item Every $P_{\nu,q}(z)$ is divisible by $(z-1)^d$ in $K[z]$.
+\item There exists a unique proper rational function $F$ on the same
+      finite collection of translated lattices such that
+      $R=\Delta^dF/d!$.
+\end{enumerate}
+The harmonic pencil is zero exactly when every $P_{\nu,q}$ is
+divisible by $(z-1)^{d+1}$, equivalently when $R$ is a
+$(d+1)$st finite difference of a proper rational function.
+\end{lemma}
+\begin{proof}
+Assume corner support. At the highest pole order $q=m_\nu$,
+\eqref{eq:Centries} states directly that the moments of the residues
+of order $q$ vanish through degree $d-1$. Descend in $q$.
+Every already treated term with $h>q$ involves a residue moment of
+degree $k-h+q<k<d$ and hence vanishes. The remaining term is exactly
+the required order-$q$ moment. This proves the implication from the
+first to the second statement. Substitution in \eqref{eq:Centries}
+proves the converse.
+
+Shifting by $a_\nu$ does not change the span of polynomials of degree
+less than $d$. Ordinary powers of $j$ and the falling factorials
+$\fall{j}{k}$ span that same space. Thus the moment conditions are
+equivalent to $P_{\nu,q}^{(k)}(1)=0$ for $k<d$, which is precisely
+the asserted divisibility.
+
+For a proper rational function $F$ with residue polynomials
+$Q_{\nu,q}$, replacing $x$ by $x+1$ multiplies each residue polynomial
+by $z$. Therefore $\Delta^dF/d!$ has residue polynomials
+$(z-1)^dQ_{\nu,q}/d!$. Dividing $P_{\nu,q}$ explicitly constructs
+$F$ and proves the fourth statement. Multiplication by $(z-1)^d$
+is injective on polynomial residue data, so this proper rational $F$
+is unique. A polynomial kernel is excluded by properness.
+
+For a zero pencil repeat the same descending argument through degree
+$d$, rather than $d-1$. This gives divisibility by $(z-1)^{d+1}$
+and its stated finite-difference interpretation.
+\end{proof}
+
+\begin{theorem}[Critical rational weights: an exact if-and-only-if]
+\label{thm:critical}
+Suppose $R$ has the form \eqref{eq:rational-weight} and
+\begin{equation}\label{eq:critical-decay}
+ R(x)=\kappa x^{-(d+1)}+O(x^{-(d+2)}),\qquad\kappa\ne0,
+ \qquad d=2r-2.
+\end{equation}
+Then its harmonic pencil has rank one if and only if
+\begin{equation}\label{eq:critical-difference}
+ \boxed{\displaystyle R(x)=\frac1{(2r-2)!}\Delta^{2r-2}F(x)}
+\end{equation}
+for a proper rational function $F$ on the same translated lattices.
+Equivalently, every residue polynomial \eqref{eq:Pq} is divisible
+by $(z-1)^{2r-2}$. In that event every harmonic coefficient lies in
+the single bottom-right entry of the moment matrix.
+\end{theorem}
+\begin{proof}
+The coefficient of $x^{-1}$ in the expansion of $x^kR(x)$ at infinity
+is the sum of the coefficients of all its simple partial-fraction
+terms. By \eqref{eq:critical-decay}, it is zero for $k<d$ and
+$\kappa$ for $k=d$. Proposition~\ref{prop:pencil} therefore gives
+\begin{equation}\label{eq:sumC1}
+ \sum_{\nu=1}^L C_{\nu,1}=\kappa\ee\ee^{\mathsf T}.
+\end{equation}
+If the harmonic pencil has rank one, the common-image argument in
+Theorem~\ref{thm:classification} forces all its coefficient matrices
+to be multiples of this nonzero corner matrix. Apply
+Lemma~\ref{lem:corner-divisibility}. Conversely, the finite-difference
+condition gives corner support. Equation~\eqref{eq:sumC1} guarantees
+that the pencil is nonzero, hence has rank exactly one.
+\end{proof}
+
+This answers the source's repeated-pole rank-one question at its
+critical decay and supplies a complete finite residue test even away
+from that decay. The extension to several residue classes does not
+require a new determinant argument: equation~\eqref{eq:sumC1} sums
+over those classes, while the finite-difference divisibility is checked
+separately on each shift-orbit.
+
+If
+\[
+ F(x)=\sum_{\nu,j,q}\frac{b_{\nu,j,q}}{(x+a_\nu+j)^q},
+ \qquad R=\Delta^dF/d!,
+\]
+then the corner coefficient is especially simple:
+\begin{equation}\label{eq:lambda-seed}
+ (C_{\nu,q})_{r-1,r-1}=\sum_j b_{\nu,j,q}.
+\end{equation}
+Indeed, the $d$th residue moment of a normalized $d$th difference
+returns the leading coefficient of that polynomial moment; terms
+of higher pole order involve lower residue moments and vanish.
+For $F(x)=(x+a)^{-m}$ this coefficient is one at order $m$ and zero
+at every other order. This recovers exactly the moment cancellation
+of Section~\ref{sec:spectral} at integer spectral orders.
+
+\subsection{Why the nonzero critical coefficient matters}
+\label{sec:counterexample}
+For $r=2$, consider
+\begin{align}
+ R(x)&=\frac{2}{(x+1)^2(x+2)(x+3)}\label{eq:counterexample}\\
+ &=\frac1{(x+1)^2}-\frac{3}{2(x+1)}
+       +\frac2{x+2}-\frac1{2(x+3)}.\notag
+\end{align}
+It decays as $2x^{-4}$, faster than the critical $x^{-3}$.
+Its harmonic coefficient matrices are
+\[
+ C_1=0,\qquad
+ C_2=\begin{pmatrix}1&-1\\-1&1\end{pmatrix}
+       =v(-1)v(-1)^{\mathsf T}.
+\]
+The harmonic pencil has rank one, but $P_2(z)=1$ is not divisible
+by $(z-1)^2$. Thus $R$ is not a second difference of a proper
+rational function. This is the geometric branch in
+Theorem~\ref{thm:classification}, not a counterexample to
+Theorem~\ref{thm:critical}.
+
+The example is supplied to prevent an overextension of the present
+result. It is not attributed to a false theorem in the inspected
+repository. In particular, one must not replace
+\eqref{eq:critical-decay} by an unspecified ``at least critical decay''
+in the if-and-only-if statement.
+
+\subsection{An exponential-jet version of the test}
+The residue tests can be compressed into finite exponential jets:
+\begin{equation}\label{eq:jet-pencil}
+ \mathcal M_{\nu,q}(t)=e^{-a_\nu t}
+     \sum_{h=q}^{m_\nu}\frac{t^{h-q}}{(h-q)!}
+             P_{\nu,h}(e^{-t})\pmod{t^{d+1}}.
+\end{equation}
+Expanding the right side shows that
+\[
+ \mathcal M_{\nu,q}(t)=\sum_{k=0}^d c_{\nu,q}[k]\frac{t^k}{k!}.
+\]
+Thus rank one means either
+$\mathcal M_{\nu,q}(t)=\lambda_{\nu,q}e^{\tau t}\pmod{t^{d+1}}$
+for one common $\tau$, or
+$\mathcal M_{\nu,q}(t)=\lambda_{\nu,q}t^d/d!\pmod{t^{d+1}}$.
+This formulation gives a short certificate representation without
+constructing every matrix entry separately.

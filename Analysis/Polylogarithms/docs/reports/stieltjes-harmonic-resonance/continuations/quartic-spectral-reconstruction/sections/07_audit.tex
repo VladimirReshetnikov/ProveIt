@@ -1,0 +1,162 @@
+\section{Source audit and proposed corrections}
+\label{sec:audit}
+
+The inspected sources support the preceding developments, but the
+research-status map needs an additional cross-reference.  The correction
+below concerns attribution and an already answered construction problem.
+It does not invalidate the same-direction spectral representations.
+No counterexample to the inspected source reconstruction or quadratic
+factorization theorems was found.
+
+\subsection{The connected double family is an established interpolant}
+
+For $\Re q>0$ write
+\[
+ Z_q(s_1,\ldots,s_d)=
+  \sum_{n_1>\cdots>n_d\ge0}\prod_{j=1}^d(n_j+q)^{-s_j},
+ \qquad Z_q(\varnothing)=1,
+\]
+initially in an absolute-convergence domain.  The same-direction report
+defines
+\begin{equation}\label{audit:connected}
+ \mathcal C_{A,B}(q)=\zeta(A,B)-Z_q(A,B)
+                      +\zeta(A,q)\{\zeta(B,q)-\zeta(B)\}.
+\end{equation}
+The earlier independent-orders report defines the relative interpolant
+by ordered convolution \cite{IndependentOrders}:
+\begin{equation}\label{audit:relative}
+ Z_b(w)=\sum_{w=uv}Z_a(u)\mathcal H_{a,b}(v),
+ \qquad \mathcal H_{a,b}(\varnothing)=1.
+\end{equation}
+The sum is over prefix--suffix decompositions of the word.  At depth two,
+\begin{align*}
+ \mathcal H_{q,1}(A,B)
+ &=\zeta(A,B)-Z_q(A,B)
+                  -\zeta(A,q)\{\zeta(B)-\zeta(B,q)\}.
+\end{align*}
+Thus there is an exact identity of the full functions,
+\begin{equation}\label{audit:identification}
+ \boxed{\mathcal C_{A,B}(q)=\mathcal H_{q,1}(A,B)
+                              =\Psi(A,B;q-1).}
+\end{equation}
+The final member is the Ihara--Nakamura--Yamamoto interpolant
+\cite[Proposition 2.1 and Corollary 4.2]{INY}.  Their theorem already
+gives entire dependence on all independent indices at arbitrary depth.
+The relative report explicitly cites that result and develops its
+two-endpoint form.  This identification is algebraic on an open
+convergence domain, so it does not rely on uniqueness from values at
+integer $q$.
+
+For clarity, the established general finite expression is
+\begin{equation}\label{audit:star}
+ \mathcal H_{q,1}(s_1,\ldots,s_d)=
+  \sum_{j=0}^d(-1)^j
+   Z_q^\star(s_j,\ldots,s_1)\,
+                         \zeta(s_{j+1},\ldots,s_d).
+\end{equation}
+The empty prefix and suffix have value one, and $Z_q^\star$ uses weak
+inequalities.  This is the convolution inverse of the strict ordered
+series.  It preserves the published entire normalization, rather than
+choosing separate finite parts for its meromorphic constituents.
+
+The corresponding divided-difference kernel is also already available
+\cite{INY,HarmonicGaps}.  If $X_0=0$, $X_j=v_1+\cdots+v_j$, then an
+equivalent convenient form is
+\begin{equation}\label{audit:kernel}
+ K_q^{(d)}(v_1,\ldots,v_d)
+   =(-1)^d[e^{X_0},e^{X_1},\ldots,e^{X_d}]
+                         (y\mapsto y^{d-q}).
+\end{equation}
+Here the brackets are the divided difference in $y$, extended
+confluently when nodes coincide.  Its normalized Mellin transform is
+$\mathcal H_{q,1}$, initially when every $\Re s_j>0$.
+At $d=2$ it is precisely the kernel of the same-direction report.
+To compare with the earlier formula using nodes $e^{-X_j}$, invert
+each node in its finite barycentric sum: the product of all nodes
+cancels the exponential prefactor, leaving the sign $(-1)^d$ and
+the power $d-q$ in \eqref{audit:kernel}.
+
+The shift law and the depth-two stuffle law in this normalization are
+\begin{align}
+ \mathcal H_{q+1,1}(s_1,\ldots,s_d)
+ &=\mathcal H_{q,1}(s_1,\ldots,s_d)
+                   +q^{-s_1}\mathcal H_{q,1}(s_2,\ldots,s_d),
+                   \label{audit:shift}\\
+ h_q(s)h_q(t)
+ &=\mathcal H_{q,1}(s,t)+\mathcal H_{q,1}(t,s)+h_q(s+t),
+ \quad h_q(s)=\zeta(s)-\zeta(s,q).
+ \label{audit:stuffle}
+\end{align}
+They are inherited identities for entire functions.  Sign conventions
+can be checked immediately: the same-direction report uses the
+depth-one difference $\zeta(s,q)-\zeta(s)=-h_q(s)$, which accounts
+for the apparent change of sign in its displayed laws.
+
+\paragraph{Proposed source edit.}
+The attribution paragraph of \cite{SameDirection} should identify its
+entire connected double family as the depth-two specialization of
+\cite{INY,IndependentOrders}.  Its second further-research question
+should no longer ask for existence, entireness, shift/stuffle laws, or
+the basic higher divided-difference kernel.  Those constructions are
+already available.  A useful replacement asks for explicit minimal
+coordinate reductions on specified mixed nonpositive-index loci,
+or for comparisons between genuinely different normalizations.
+The Barnes and beta--Newton same-direction representations remain
+separate results and are not affected by this correction.
+
+\subsection{Updates justified by the new proofs}
+
+The order-eight statement in \cite{Reconstruction} correctly retained
+the congruence qualification $b\not\equiv1\pmod{16}$.  It was not a
+false theorem.  After the present proof and certificate are accepted,
+the collective statement may be strengthened to every $b\ge5$ and its
+Q1 closed.  The original congruence proof remains useful as the finite
+range reduction.  Its previously rejected simple valuation extrapolation
+should remain rejected; the new proof does not restore that formula.
+
+The same report's Q5 is now answered for the fourth power and its
+regular even moments.  The statement should refer to the six displayed
+formal coordinates and the all-index Bernoulli transform.  It should
+not assert independence of the evaluated constants or promote fifth
+and higher powers to the same status.  The starting value $V_0=Q_7$
+must retain Hoffman's attribution.
+
+For \cite{Quadratic}, Q7 is answered by the pairwise logarithmic
+correction and the confluent resolvent formulas, while Q2 is answered
+by Corollary~\ref{cor:linear-jets}.  The latter uses the source's
+linear factors and spectral scale two.  A product of two quadratic
+factors has scale four; confusing them changes every higher correction.
+The explicit primitive in Theorem~\ref{thm:primitive} is progress on
+the mixed primitive direction, not a classification of all shift--mass
+integrals.
+
+\subsection{Corrections that must accompany higher-order reuse}
+
+Three points are essential when extending the existing formulas.
+First, the identity $\mathcal H_a(-m)=0$ does not imply
+$\mathcal H_a'(-m)=0$.  At bilateral third order the omitted term
+would be exactly $-12(B-C)^2\log(2\sin\pi a)$ for $P(v)=v^2$.
+Second, multiplication by a Hurwitz pole uses one more coefficient
+of the vanishing factor than multiplication by its regular part.
+The term $A_{k,m+1}/(2r(m+1))$ in
+\eqref{one:resonantC} is therefore required.  Its first additional
+second-order example is $-\delta^2(B+C)/4$ in
+\eqref{one:x5second}.  Third, an antiderivative of a summand is not
+automatically summable: the constant in $\Phi_{B,C}$ is fixed so
+that it decays to zero.  Without it, the separate series of primitives
+would diverge.
+
+These are requirements of the new extensions, not errors falsely
+attributed to source theorems that only treated first derivatives.
+The article and integration notes retain this distinction.
+
+\subsection{Unchanged arithmetic conjectures}
+
+The canonical Gaussian $S_6$ identity and the revised $S_8$ candidate
+remain conjectural in this continuation \cite{Manuscript}.  The rejected
+older $S_8$ vector remains different from the revised candidate.  No
+failed relation search, small residual, or finite formal rank calculation
+is converted here into an arithmetic proof or a nonreduction assertion.
+Likewise, no new claim is made about the transcendence or numerical
+independence of the six quartic coordinates.  These boundaries should
+remain visible when the results are integrated into the collective text.

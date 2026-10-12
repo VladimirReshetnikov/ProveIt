@@ -1,0 +1,458 @@
+% Research fragment for the parent article. All labels use r8c:.
+% Source revision: 73f18ef013d5b74eafc883efb2c15210642df12a.
+% New contribution: complete p=8 nonvanishing, leading Hankel factorization.
+\section{The complete order-eight reconstruction theorem}
+\label{r8c:section}
+
+The incoming reconstruction report \cite[Section 5]{Reconstruction} proves
+optimal-prefix reconstruction for $(p,q)=(8,2b)$ when
+$b\not\equiv1\pmod {16}$, while explicitly leaving the remaining
+residue class open. We prove nonvanishing for that class as well.
+The proof identifies the highest Bernoulli-degree part of the exact
+four-dimensional determinant as a positive zeta moment determinant.
+A uniform comparison handles all $b\ge512$; exact finite arithmetic
+then closes the $31$ outstanding smaller cases. The conclusion is an
+exact reconstruction theorem and yields ordinary convergent identities
+for products of higher polygammas. No arithmetic independence of
+special values is used or claimed.
+
+\subsection{Source coordinates and the matrix whose rank is at issue}
+
+Put
+\[
+ A_s(n)=\zeta(s,n+1)=\zeta(s)-H_n^{(s)},\qquad x_n=n+\tfrac12,
+ \qquad D_{b,r}=D_{8,2b}(-2r),
+\]
+where
+\[
+ D_{8,2b}(s)=\sum_{n\ge0}A_8(n)A_{2b}(n)x_n^{-s}
+\]
+is initially defined for $\operatorname{Re}s>-2b-5$ and is continued
+by its centered asymptotic expansion. Its nonpositive even arguments
+are regular. The inherited inverse Bernoulli coordinates are
+\begin{align}
+ C_j&=\sum_{r=0}^j\binom{2j+1}{2r}2^{-2(j-r)}D_{b,r},
+ \label{r8c:C}\\
+ D_{b,r}&=\sum_{j=0}^r\frac{\binom{2r}{2j}}{2j+1}
+ B_{2r-2j}(1/2)C_j.
+ \label{r8c:D}
+\end{align}
+For $j\ge b$ these reduce to a rational linear combination of
+$Z_k=\zeta(2k)$, $0\le k<b$, where $Z_0=-1/2$.
+The exact late block $M_b=(M_{ik})_{0\le i,k<b}$ is
+\begin{equation}\label{r8c:M}
+ M_{ik}=B_{2i+2k-6}
+ \left\{\frac{\binom{2i+2}{8-2k}}{2i+2}
+ +\frac{\binom{2b+2i-6}{2b-2k}}{2b+2i-6}\right\}.
+\end{equation}
+An entry with negative Bernoulli index is zero. A binomial summand is
+omitted unless its lower index is at least $2$ and at most its upper
+index. This exclusion includes lower index zero. Thus
+\[
+ (C_b,\ldots,C_{2b-1})^{\mathsf T}
+       =M_b(Z_0,\ldots,Z_{b-1})^{\mathsf T}.
+\]
+More generally, use the same entry formula for every $i\ge0$ and
+$0\le k<b$.  The finite Bernoulli-binomial moment formula from
+\cite{GeneralHankel} is
+\[
+ C_j=\sum_{k=0}^{b-1}M_{j-b,k}Z_k\qquad(j\ge b).
+\]
+Thus these coefficients also specify every later coordinate,
+not only the square block used for the rank proof.
+The determinant of the first $2b$ moments in the formal coordinate
+list $C_0,\ldots,C_{b-1},Z_0,\ldots,Z_{b-1}$ is
+$\det M_b/(4b-1)!!$. This is a statement about rational coefficient
+rank, before evaluating the coordinates as complex numbers.
+
+\begin{theorem}[All unequal pairs with smaller order eight]
+\label{r8c:main}
+For every integer $b\ge5$, $\det M_b\ne0$. Consequently, for every
+even $q>8$, the moments
+\[
+ D_{8,q}(0),D_{8,q}(-2),\ldots,D_{8,q}(-2(q-1))
+\]
+have full formal rank $q$, and every later centered even moment is
+an explicit rational linear combination of this prefix.
+\end{theorem}
+
+\subsection{An explicitly defined four-dimensional determinant}
+
+We retain the source normalization, to make the comparison of claims
+and certificates unambiguous. For $0\le i,\ell\le3$ set
+\[
+ n_i=b-4+i,\quad N_{i\ell}=2(n_i-\ell)+1,\quad
+ R_\ell=2b-6+2\ell,
+\]
+\[
+ F_{i\ell}=\frac1{(2\ell+1)!}
+       \prod_{r=0}^{2\ell-1}(2n_i-r)(2n_i+3+r).
+\]
+An empty product is one. For
+\[
+ W_{i\ell}(z)=(z+2\ell+1)
+                 (2n_i+2\ell+z+1)^{\underline{2i}},
+\]
+define the Newton coefficients
+\begin{equation}\label{r8c:d}
+ d_{i\ell h}=\frac1{h!}\sum_{j=0}^{h}
+ (-1)^{h-j}\binom hj W_{i\ell}(N_{i\ell}-j).
+\end{equation}
+The underline means a falling factorial. With independent variables
+$U_1,\ldots,U_7$, put
+\begin{equation}\label{r8c:smallA}
+ \mathcal A_{i\ell}=2F_{i\ell}+
+ \frac{R_\ell!}
+ {(2n_i+1)(2n_i+2)(2\ell+2)!N_{i\ell}!}
+ \sum_{\substack{1\le h\le2i+1\\ h\ \mathrm{odd}}}
+ d_{i\ell h}N_{i\ell}^{\underline h}
+ U_{4-i+\ell+(h-1)/2}.
+\end{equation}
+Ratios of factorials with fixed index difference mean their finite
+rational products in $b$.
+
+Set
+\begin{align}
+ D_8(b)={}&256b^8-3584b^7+18496b^6-40544b^5+25984b^4
+ \notag\\
+ &+18424b^3-5856b^2-8316b-2025,
+ \label{r8c:D8}\\
+ P(b;U)&=576(2b-5)D_8(b)\frac{\det\mathcal A(b;U)}{\det F(b)}.
+ \label{r8c:Pdef}
+\end{align}
+The source's finite polynomial certificate proves
+$P\in\mathbb Z[b,U_1,\ldots,U_7]$, of degree at most four in
+$U$, and gives
+\begin{align}
+ \det F={}&\frac{256}{4725}(b-2)(b-1)(2b-5)(2b-3)
+ (4b-11)(4b-9)\notag\\
+ &\hspace{8mm}\cdot(4b-7)^2(4b-5)(4b-3)D_8(b).
+ \label{r8c:Fdet}
+\end{align}
+The integer $D_8(b)$ is odd at every integer $b$, so these denominators
+are nonzero in the stated range.
+
+Here is its exact connection to the source matrix. Let
+\[
+ \mu_r=\begin{cases}B_{2r}/(2r)!,&r\ge0,\\0,&r<0,\end{cases}
+ \qquad H_b=(\mu_{i+j-3})_{0\le i,j<b},
+\]
+\[
+ R_b=\operatorname{diag}_{0\le i<b}(2b+2i-7)!,\qquad
+ E_b=\operatorname{diag}_{0\le k<b}\frac1{(2b-2k)!}.
+\]
+For every integer $b\ge8$ the inherited reduction is
+\begin{equation}\label{r8c:ratio}
+ \frac{\det M_b}{\det R_b\det E_b\det H_b}
+ =\frac{P(b;2B_{2b-2},\ldots,2B_{2b-14})}
+ {576(2b-5)D_8(b)}.
+\end{equation}
+The matrix $H_b$ is nonsingular. One short proof conjugates it by
+$\operatorname{diag}(1,-1,1,-1,\ldots)$ and partitions after the
+first two indices. The lower-right block is a positive definite
+moment matrix on the points $(2\pi m)^{-2}$, $m\ge1$. The
+upper-left block is zero, and the rectangular off-diagonal block
+has row rank two: its first two columns form a nonsingular
+antitriangular matrix. Its Schur complement is negative definite.
+Hence $H_b$ has exactly two negative eigenvalues and is nonsingular.
+Thus nonvanishing of the numerator of \eqref{r8c:ratio} proves the
+rank assertion.
+
+All formulas in this subsection are inherited definitions or
+reductions. The proof below supplies the previously missing global
+nonvanishing. In particular, the symbolic certificate is used as a
+finite algebraic identity, not as an extrapolation from values of $b$.
+
+\subsection{The highest-degree part is a zeta moment determinant}
+
+Write $P=P_4+P_{\le3}$ according to total degree in $U_1,\ldots,U_7$.
+For an integer $b\ge8$, set
+\[
+ F_0=(2b-14)!,\qquad
+ \alpha_j=\frac{(2b-2j)!}{F_0},\qquad V_j=\frac{U_j}{\alpha_j}
+       \quad(1\le j\le7),
+\]
+and define
+\begin{align}
+ G(b)={}&12288(b-6)^4(b-5)^4(b-4)^4(b-3)^3(b-2)^2(b-1)
+ \notag\\
+ &\cdot(2b-13)^4(2b-11)^4(2b-9)^4(2b-7)^3
+ (2b-5)^3(2b-3)^2(2b-1).
+ \label{r8c:G}
+\end{align}
+
+\begin{lemma}[Highest-degree Hankel factorization]\label{r8c:hankel}
+The exact identity is
+\begin{equation}\label{r8c:P4}
+ P_4(b;U)=G(b)\det(V_{i+j+1})_{0\le i,j\le3}.
+\end{equation}
+At the actual doubled Bernoulli values, this becomes
+\begin{equation}\label{r8c:P4zeta}
+ P_4(b;2B_{2b-2},\ldots,2B_{2b-14})
+ =\frac{256G(b)F_0^4}{(2\pi)^{8b-32}}
+       \det\bigl(\zeta(2b-14+2i+2j)\bigr)_{0\le i,j\le3}>0.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+This factorization has a direct structural proof. In
+\eqref{r8c:d}, substitute $z=N_{i\ell}-y$. Then
+\[
+ W_{i\ell}(N_{i\ell}-y)
+    =(2n_i+2-y)(4n_i+2-y)^{\underline{2i}},
+\]
+which is independent of $\ell$. Write its Newton coefficients as
+$d_{ih}$. In particular,
+\begin{equation}\label{r8c:d1}
+ d_{i1}=-(i+1)(4n_i+2)^{\underline{2i}}.
+\end{equation}
+Indeed the coefficient is the value at $y=1$ minus the value at
+$y=0$; using
+$(x-1)^{\underline{2i}}=x^{\underline{2i}}(x-2i)/x$
+and $4n_i+2=2(2n_i+1)$ gives \eqref{r8c:d1}.
+
+Let $T=\mathcal A-2F$. In a term with $h=2k+1$, the Bernoulli
+variable index is $j=4-i+\ell+k$ and
+$N_{i\ell}-h=2b-2j$. Thus substitution of $U_j=\alpha_jV_j$
+cancels the factorials in \eqref{r8c:smallA}. Define
+\[
+ \rho_i=\frac1{(2n_i+1)(2n_i+2)},\qquad
+ \sigma_\ell=\frac{R_\ell!}{F_0(2\ell+2)!},
+\]
+and the lower triangular matrix $L$ by
+$L_{i,i-k}=d_{i,2k+1}$ for $0\le k\le i$.
+Then the exact matrix identity is
+\[
+ T=\operatorname{diag}(\rho_i)\,L\,
+       (V_{4-i+\ell})_{0\le i,\ell\le3}
+       \operatorname{diag}(\sigma_\ell).
+\]
+Reversing its four middle rows has sign $(-1)^6=1$ and gives
+the Hankel matrix in \eqref{r8c:P4}. The diagonal entries of $L$
+are \eqref{r8c:d1}. Taking determinants, multiplying by
+$576(2b-5)D_8(b)/\det F(b)$, and cancelling the finite products
+in \eqref{r8c:Fdet} gives exactly \eqref{r8c:G}.
+Since the highest-degree part of $\det(2F+T)$ is $\det T$,
+this proves \eqref{r8c:P4}. An independent coefficient check in the
+accompanying script verifies all sixteen Hankel monomials.
+
+Euler's Bernoulli formula \cite[Eq. 24.8.1]{DLMF} gives
+\[
+ V_j=(-1)^{b-j+1}\frac{4F_0}{(2\pi)^{2b-2j}}
+                     \zeta(2b-2j).
+\]
+Factoring the row and column signs and powers of $2\pi$ in the
+determinant, and then reversing both its rows and its columns,
+gives \eqref{r8c:P4zeta}. All signs cancel. Its positivity follows
+from the strictly positive moment representation proved next.
+\end{proof}
+
+\begin{lemma}[An explicit positive contribution]\label{r8c:positive}
+For every real $n>1/2$,
+\begin{equation}\label{r8c:zeta-lower}
+ \det\bigl(\zeta(2n+2i+2j)\bigr)_{0\le i,j\le3}
+ \ge \frac{30625}{48922361856}\,24^{-2n}>0.
+\end{equation}
+\end{lemma}
+\begin{proof}
+With $x_m=m^{-2}$, the entries are the moments
+$\sum_{m\ge1}x_m^{n+i+j}$. Cauchy--Binet for a finite truncation,
+followed by convergence of each entry, yields
+\[
+ \det\bigl(\zeta(2n+2i+2j)\bigr)
+ =\sum_{m_1<m_2<m_3<m_4}
+   (m_1m_2m_3m_4)^{-2n}
+   \prod_{i<j}(m_i^{-2}-m_j^{-2})^2.
+\]
+Every summand is positive. Keeping the term $(1,2,3,4)$ proves
+\eqref{r8c:zeta-lower}, since
+\[
+ \prod_{1\le i<j\le4}(i^{-2}-j^{-2})^2
+       =\frac{30625}{48922361856}=:V.
+\]
+No limiting determinant sign is inferred numerically.
+\end{proof}
+
+\subsection{Uniform domination of every lower-degree term}
+
+The integer polynomial defined by \eqref{r8c:Pdef} has $94$
+monomials when grouped by the seven $U$ variables. Every coefficient
+of $P_{\le3}$ has degree at most $15$ in $b$, and its full integer
+coefficient norm is exactly
+\begin{equation}\label{r8c:K}
+ K:=\sum_{\substack{\text{monomials }c b^rU^\nu\text{ of }P\\
+                         |\nu|\le3}}|c|
+       =1465775272343372.
+\end{equation}
+This finite integer is obtained by exact coefficient extraction,
+independently replayed from the source polynomial certificate.
+It is an upper bound on the whole lower-degree contribution, with
+no cancellation assumed.
+
+For $b\ge512$, let
+\[
+ T_b=\frac{8(2b)^{12}(2b-14)!}{(2\pi)^{2b-14}}.
+\]
+Every actual variable satisfies $|2B_{2b-2j}|\le T_b$:
+use $\zeta(2b-2j)<2$, bound the factorial ratio by $(2b)^{12}$,
+and use $2\pi>1$ for the remaining nonnegative exponent.
+Also $T_b\ge1$. For example $20!>8^{20}$, the ratio for subsequent
+even factorials is greater than $8^2$, and $2\pi<8$.
+Consequently
+\begin{equation}\label{r8c:small-bound}
+ |P_{\le3}(b;2B_{2b-2},\ldots,2B_{2b-14})|
+ \le Kb^{15}T_b^3.
+\end{equation}
+For $b\ge14$, every $b-j$ factor in \eqref{r8c:G} is at least
+$b/2$, and every $2b-j$ factor is at least $b$. There are $18$
+factors of the first kind and $21$ of the second, with multiplicity.
+Thus
+\[
+ G(b)\ge\frac{3}{64}b^{39}.
+\]
+Combining this with \eqref{r8c:P4zeta} and
+\eqref{r8c:zeta-lower} gives
+\[
+ P_4\ge
+ \frac{12Vb^{39}((2b-14)!)^4}{(2\pi)^{8b-32}}\,24^{-2b+14}.
+\]
+Dividing \eqref{r8c:small-bound} by this expression, first cancelling
+the common powers of $2\pi$ and then using $2\pi<8$, proves
+\begin{equation}\label{r8c:ratio-bound}
+ \frac{|P_{\le3}|}{P_4}
+ \le R_b:=C\,\frac{b^{12}192^{2b}}{(2b-14)!},\qquad
+ C=\frac{K2^{73}}{3V24^{14}}
+   =\frac{211240479050703917773579966480384}{602791875}.
+\end{equation}
+The cancellation before replacing $2\pi$ is useful: it avoids
+artificially weakening the exponential factor.
+
+All that remains here is elementary exact integer arithmetic:
+\begin{equation}\label{r8c:base-bound}
+ R_{512}<2^{-675}<1,
+ \qquad
+ \frac{R_{b+1}}{R_b}
+ =\left(1+\frac1b\right)^{12}
+   \frac{192^2}{(2b-12)(2b-13)}<1\quad(b\ge512).
+\end{equation}
+The first inequality means the exact integer comparison
+\[
+ 2^{675}\,211240479050703917773579966480384\,
+       512^{12}192^{1024}
+       <602791875\cdot1010!,
+\]
+which is verified in the accompanying script. For the second,
+$(513/512)^{12}<2$ and $2\cdot192^2<1011\cdot1012$ suffice.
+It follows that $P=P_4+P_{\le3}>0$ for every $b\ge512$.
+The threshold is chosen for a transparent uniform proof; no minimal
+threshold is asserted.
+
+\subsection{Finite completion of the omitted residue class}
+
+For completeness, the inherited congruence proof gives, for $b\ge11$,
+\[
+ P(b;2B_{2b-2},\ldots,2B_{2b-14})
+       \equiv4(b-1)(4b+15)\pmod {64}
+       \quad\text{in }\mathbb Z_{(2)}.
+\]
+It uses $2B_{2m}\equiv1+4m+16m^2\pmod {64}$ for $m\ge4$,
+together with its symbolic determinant certificate. Thus $P\ne0$
+when $b\not\equiv1\pmod {16}$. The source checks $5\le b\le10$
+directly. Its congruence assertion does not supply the omitted
+residue class, and no extrapolation of its valuation formula is
+used here.
+
+Below $512$ the only remaining indices are $b=16k+1$,
+$1\le k\le31$. The following table records the exact valuation
+of $P$ at every such index.
+\begin{center}
+\begin{tabular}{r r@{\qquad}r r@{\qquad}r r@{\qquad}r r}
+\hline
+$b$&$v_2(P)$&$b$&$v_2(P)$&$b$&$v_2(P)$&$b$&$v_2(P)$\\
+\hline
+17&6&33&7&49&6&65&10\\
+81&6&97&7&113&6&129&8\\
+145&6&161&7&177&6&193&9\\
+209&6&225&7&241&6&257&8\\
+273&6&289&7&305&6&321&11\\
+337&6&353&7&369&6&385&8\\
+401&6&417&7&433&6&449&9\\
+465&6&481&7&497&6&&\\
+\hline
+\end{tabular}
+\end{center}
+Every entry is certified by a nonzero residue modulo $2^{32}$;
+all $31$ residues are included in the machine-readable record.
+They can be obtained either from exact rational Bernoulli numbers
+or entirely in modular arithmetic using
+\[
+ (2m+1)\,(2B_{2m})
+ =2m-1-\sum_{j=1}^{m-1}\binom{2m+1}{2j}\,(2B_{2j}).
+\]
+The divisor $2m+1$ is odd, so the recurrence is valid modulo
+$2^{32}$. Two independent implementations agree on every residue.
+In particular no finite numerical approximation is treated as a
+nonvanishing certificate. As an explicit first new value,
+\[
+ \frac{\det M_{17}}{\det R_{17}\det E_{17}\det H_{17}}
+   =-\frac{5564518155020169678178976040991}{8937041637533625}.
+\]
+This settles the previously omitted pair $(p,q)=(8,34)$.
+The inherited cases, this finite table, and
+\eqref{r8c:base-bound} cover every $b\ge5$, proving
+Theorem~\ref{r8c:main}.
+
+\subsection{An all-order family of ordinary polygamma identities}
+
+The rank theorem supplies explicit identities as well as a decision
+about a matrix. For $b\ge5$ and $0\le k<b$, define
+\begin{align}
+ w_{k,r}^{(b)}&=
+ \sum_{t=0}^{b-1}(M_b^{-1})_{kt}
+ \binom{2(b+t)+1}{2r}2^{-2(b+t-r)},
+ \label{r8c:w}\\
+ Q_{b,k}(x)&=\sum_{r=0}^{2b-1}w_{k,r}^{(b)}x^{2r},
+ \label{r8c:Q}
+\end{align}
+where the summand is zero for $r>b+t$. These are finite rational
+formulas for every coefficient. Put
+\[
+ \eta_{s,0}=\frac1{s-1},\qquad
+ \eta_{s,j}=\frac{(s)_{2j-1}B_{2j}(1/2)}{(2j)!}\quad(j\ge1),
+ \qquad
+ c_{b,\ell}=\sum_{j=0}^{\ell}\eta_{8,j}\eta_{2b,\ell-j}.
+\]
+Let $S_{b,k}(x)$ be the polynomial formed by retaining the
+nonnegative powers in the formal product
+\[
+ Q_{b,k}(x)x^{-2b-6}\sum_{\ell\ge0}c_{b,\ell}x^{-2\ell}.
+\]
+Only finitely many terms enter this polynomial, and its degree is
+at most $2b-8$. Then
+\begin{equation}\label{r8c:ordinary}
+ \boxed{\sum_{n=0}^{\infty}
+ \left\{Q_{b,k}(x_n)
+ \frac{\psi^{(7)}(n+1)\psi^{(2b-1)}(n+1)}{7!\,(2b-1)!}
+       -S_{b,k}(x_n)\right\}=\zeta(2k).}
+\end{equation}
+This is an ordinary absolutely convergent series. Indeed
+\eqref{r8c:w} and \eqref{r8c:C} identify its continued moment
+with the $k$th row of $M_b^{-1}M_b$, giving $\zeta(2k)$.
+The centered Hurwitz expansion is
+\[
+ A_8(n)A_{2b}(n)\sim x_n^{-2b-6}
+                      \sum_{\ell\ge0}c_{b,\ell}x_n^{-2\ell}.
+\]
+The polynomial $S_{b,k}$ removes every nondecaying term, leaving
+$O(x_n^{-2})$. Each removed nonnegative even power has centered
+continued sum $\zeta(-2j,1/2)=0$, so the ordinary convergent sum
+has precisely the same value. Thus no unspecified summation of a
+divergent series remains in \eqref{r8c:ordinary}.
+
+To reconstruct a later moment, first use \eqref{r8c:C} on the
+initial prefix, invert $M_b$, form every later $C_j$ from the
+source Bernoulli-binomial formula, and finally use \eqref{r8c:D}.
+Every operation is finite rational arithmetic. This completes the
+order-eight family. The still-uncovered pairs have smaller even order
+at least ten and order gap at least six; their optimal-prefix
+conjecture remains separate.

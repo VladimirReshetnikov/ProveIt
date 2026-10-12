@@ -1,0 +1,111 @@
+\section{Independent spectral orders and independent shifts}
+\label{sec:polarization}
+
+\subsection{A mixed determinant with no mixed zeta products}
+Let $(s_\nu,a_\nu)$, $1\le\nu\le r$, be independent pairs with
+$\Rea s_\nu>1$ and $\Rea a_\nu>0$. The finite-difference order is
+still $d=2r-2$ for every weight. Define the averaged symmetrization
+\begin{equation}\label{eq:sympartition}
+ \Z_r^{\sym}(\bm s,\bm a)
+ =\frac1{r!}\sum_{\sigma\in S_r}
+   \sum_{0\le n_1<\cdots<n_r}\Delta(\bm n)^2
+      \prod_{i=1}^r w_{n_i}(s_{\sigma(i)},a_{\sigma(i)}).
+\end{equation}
+When all pairs coincide, this is exactly $\Z_r(s,a)$, not $r!\Z_r(s,a)$.
+
+For independent formal variables $t_1,\ldots,t_r$, write
+\[
+ E(\bm t)=\sum_{\nu=1}^r t_\nu E(s_\nu,a_\nu),\qquad
+ C(\bm t)=\det E(\bm t)_{0\le i,j<r-1}.
+\]
+The latter is a homogeneous polynomial of degree $r-1$.
+
+\begin{theorem}[Polarized single-zeta closure]\label{thm:polarized}
+The series \eqref{eq:sympartition} is absolutely and locally normally
+convergent in the stated domain, and
+\begin{align}
+ \Z_r^{\sym}(\bm s,\bm a)
+ ={}&\frac1{r!}[t_1\cdots t_r]\det E(\bm t)\notag\\
+ &+\frac1{r!}\sum_{\nu=1}^r\zeta(s_\nu,a_\nu)
+       \left[\prod_{\kappa\ne\nu}t_\kappa\right]C(\bm t).
+       \label{eq:polarized}
+\end{align}
+The coefficient expressions are finite and entire in all spectral
+variables. Thus the joint continuation contains only a linear combination
+of single Hurwitz zeta functions. It has no products of zeta functions
+and no product poles at intersections of $s_\nu=1$.
+\end{theorem}
+\begin{proof}
+Each term in the finite symmetrization satisfies the product majorant from
+Lemma~\ref{lem:decay}, using $\min_\nu\Rea s_\nu>1$ on compact subsets.
+Apply Cauchy--Binet to the combined weight
+$\sum_\nu t_\nu w_n(s_\nu,a_\nu)$. Its moment matrix is
+\[
+ E(\bm t)+\left(\sum_\nu t_\nu\zeta(s_\nu,a_\nu)\right)
+       \ee\ee^{\mathsf T}.
+\]
+Its determinant is
+\[
+ \det E(\bm t)+
+ \left(\sum_\nu t_\nu\zeta(s_\nu,a_\nu)\right)C(\bm t).
+\]
+On the series side, the coefficient of $t_1\cdots t_r$ sums all $r!$
+assignments of the labeled weights to the ordered particles. Divide by
+$r!$. This proves the formula and its precise normalization. The
+meromorphic conclusion follows because the displayed finite coefficients
+are entire in the independent spectral variables.
+\end{proof}
+
+\begin{remark}[Why independent shifts do not increase the rank]
+Each separate shift creates its own Hurwitz zeta coordinate, but every
+coordinate enters the same bottom-right moment entry. The number of
+special-function coordinates and the rank of the matrix subspace carrying
+them are different quantities. This is the mechanism behind the
+multiple-residue-class extension in Section~\ref{sec:classification}.
+\end{remark}
+
+For $r=2$ and a common shift $a$, set
+$A_s=a^{-s}$ and $B_s=(a+1)^{-s}$. Equation~\eqref{eq:polarized} reads
+\begin{align}
+ \Z_2^{\sym}(s,t;a)
+ ={}&\frac{A_s-B_s}{4}\zeta(t,a)
+     +\frac{A_t-B_t}{4}\zeta(s,a)\notag\\
+ &-\frac{A_sA_t}{2}
+     +\frac{A_sB_t+A_tB_s}{8}.
+ \label{eq:polarized-r2}
+\end{align}
+In particular,
+\begin{equation}\label{eq:mixed23}
+ \Z_2^{\sym}(2,3;1)
+   =\frac7{32}\zeta(2)+\frac3{16}\zeta(3)-\frac{29}{64}.
+\end{equation}
+The unaveraged two-term symmetrization is twice this value.
+
+\subsection{All mixed order derivatives}
+For every integer $q\ge0$,
+\begin{equation}\label{eq:order-weight}
+ \partial_s^q w_n(s,a)
+ =\frac{(-1)^q}{d!}\sum_{j=0}^d(-1)^j\binom dj
+       \frac{\log^q(n+a+j)}{(n+a+j)^s}.
+\end{equation}
+Differentiating \eqref{eq:polarized} in any fixed collection of the
+independent $s_\nu$ therefore evaluates symmetrized sums with independent
+finite-difference logarithmic weights. Their right sides contain only
+finite coefficients times single derivatives
+$\zeta^{(j)}(s_\nu,a_\nu)$.
+
+This is not a formal differentiation of integer-weight identities.
+The independent-variable identity is first established on a complex
+product domain with normal convergence. Subsequent integer specializations
+of its derivatives are consequently justified. Differentiating in the
+shifts as well produces mixed logarithmic and polygamma identities
+without changing that analytic foundation.
+
+\subsection{A useful distinction from general determinant sums}
+A generic determinant of zeta-valued moments contains products of zeta
+functions. Here their absence has an exact reason: the coefficient
+matrices of all the zeta coordinates share a one-dimensional image.
+No arithmetic cancellation conjecture is being used. Conversely, the
+formula does not say that an arbitrary unsymmetrized assignment of distinct
+orders has the same reduction. The symmetrization is essential to this
+particular determinant argument.

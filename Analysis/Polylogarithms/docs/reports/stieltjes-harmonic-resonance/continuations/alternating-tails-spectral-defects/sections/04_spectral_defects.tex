@@ -1,0 +1,296 @@
+\section{Every spectral derivative of the conjugate-factor defect}
+\label{sd:section}
+
+The quadratic-spectrum report \cite{QSpec} proves a first-derivative
+factorization law and asks, in its second further-research question, for
+the higher-derivative correction.  The answer below consists of an
+ordinary convergent logarithmic sum and finitely many explicitly stated
+Hurwitz or Stieltjes terms.  It works for every polynomial weight and
+every positive mass.  The finite term arising from one extra power of
+the spectral variable is essential.
+
+\subsection{Conventions and the classical first derivative}
+
+Let $a,b>0$, put $x_n=n+a$ and $Q_b(x)=x^2+b^2$, and let
+$W(x)=\sum_{d=0}^{D}w_dx^d\in\mathbb C[x]$.  Initially in their
+half-planes of absolute convergence, define
+\begin{align}
+ F_{W,\pm}(s)&=\sum_{n\ge0}W(x_n)(x_n\pm ib)^{-s},
+ &Z_W(s)&=\sum_{n\ge0}W(x_n)Q_b(x_n)^{-s}.
+ \label{sd:def:spectra}
+\end{align}
+The powers use principal logarithms.  Since $x_n>0$,
+$\log(x_n+ib)+\log(x_n-ib)=\log Q_b(x_n)$ without a branch correction.
+All evaluations at zero refer to meromorphic continuation.  We use the
+normalization requested in \cite{QSpec}:
+\begin{align}
+ \mathscr D_W(s)&=\frac{F_{W,+}(2s)+F_{W,-}(2s)}2-Z_W(s),
+ \label{sd:def:difference}\\
+ \Delta_r(W;a,b)&=\mathscr D_W^{(r)}(0)
+ =2^{r-1}\{F_{W,+}^{(r)}(0)+F_{W,-}^{(r)}(0)\}-Z_W^{(r)}(0).
+ \label{sd:def:defect}
+\end{align}
+Primes and parenthesized derivatives on these spectra always
+differentiate their order, not their shift or mass.
+
+For reference, the established local anomaly is
+\begin{align}
+ \Delta_1(W;a,b)
+ &=\frac14[x^{-1}]W(x)
+       \left\{\log(1+ib/x)-\log(1-ib/x)\right\}^{2}
+       \label{sd:eq:first-residue}\\
+ &=\sum_{k\ge1}w_{2k-1}\frac{(-1)^kb^{2k}}{k}
+       \left(H_{2k}-\frac12H_k\right).
+       \label{sd:eq:first-harmonic}
+\end{align}
+Only finitely many terms occur.  Its independence of $a$ and its
+vanishing for every $b$ precisely when $W$ is even are inherited
+results, not new claims of this article.  The general local-anomaly
+framework is classical; see Dowker \cite{Dowker}.  We recover the formula
+below to fix the normalization and expose the additional terms at
+higher orders.
+
+\subsection{Finite harmonic coefficients and global subtraction}
+
+For $k\ge1$ define the polynomial
+\begin{equation}\label{sd:eq:Ck}
+ C_k(s;b)=(-1)^kb^{2k}
+ \left\{\frac{(2s)_{2k}}{(2k)!}-\frac{(s)_k}{k!}\right\}
+ =\sum_{m=2}^{2k}\alpha_{k,m}(b)s^m.
+\end{equation}
+Here $(s)_k=s(s+1)\cdots(s+k-1)$.  For a finite list $v$,
+$e_j(v)$ denotes its elementary symmetric polynomial, with $e_0=1$
+and $e_j=0$ beyond the length of the list.  Set
+\begin{equation}\label{sd:eq:elementary}
+ E_j(N)=e_j(1,1/2,\ldots,1/N),\qquad E_j(0)=\begin{cases}1&j=0,\\0&j>0.\end{cases}
+\end{equation}
+These are polynomials in the generalized harmonic numbers:
+\[
+ \sum_{j\ge0}E_j(N)t^j
+ =\exp\left(\sum_{\ell\ge1}
+       \frac{(-1)^{\ell-1}}{\ell}H_N^{(\ell)}t^\ell\right).
+\]
+
+\begin{lemma}[All local coefficients]\label{sd:lem:coefficients}
+For $m\ge2$,
+\begin{equation}\label{sd:eq:alpha}
+ \alpha_{k,m}(b)=\frac{(-1)^kb^{2k}}{k}
+       \{2^{m-1}E_{m-1}(2k-1)-E_{m-1}(k-1)\}.
+\end{equation}
+Set $\alpha_{k,m}=0$ for $m<2$ or $m>2k$.  In particular,
+\[
+ C_1(s;b)=-2b^2s^2,\qquad
+ \alpha_{k,2}=\frac{(-1)^kb^{2k}}k
+                    (2H_{2k-1}-H_{k-1}).
+\]
+\end{lemma}
+\begin{proof}
+Use
+\[
+ \frac{(s)_k}{k!}=\frac{s}{k}
+                    \prod_{j=1}^{k-1}(1+s/j),\qquad
+ \frac{(2s)_{2k}}{(2k)!}=\frac{s}{k}
+                    \prod_{j=1}^{2k-1}(1+2s/j).
+\]
+Their linear terms agree.  Comparing every subsequent coefficient
+proves the assertion, including the stated finite support.
+\end{proof}
+
+Put
+\begin{equation}\label{sd:eq:h}
+ h(s,x)=\frac{(x+ib)^{-2s}+(x-ib)^{-2s}}2-Q_b(x)^{-s},
+ \qquad K=\left\lfloor\frac{D+1}{2}\right\rfloor.
+\end{equation}
+For $D=0$ the integer $K$ is zero and all sums from $1$ to $K$ are empty.
+
+\begin{lemma}[A globally valid analytic subtraction]
+\label{sd:lem:subtraction}
+In a complex neighborhood of $s=0$,
+\begin{align}
+ \mathscr D_W(s)
+ &=\sum_{n\ge0}W(x_n)
+ \left\{h(s,x_n)-x_n^{-2s}
+                  \sum_{k=1}^{K}C_k(s;b)x_n^{-2k}\right\}
+ \notag\\
+ &\quad+\sum_{d=0}^{D}\sum_{k=1}^{K}
+         w_dC_k(s;b)\zeta(2s+2k-d,a).
+ \label{sd:eq:global-subtraction}
+\end{align}
+The infinite sum converges locally normally.  All the apparent
+singularities at zero in the finite sum are removable.  The original
+three spectra in \eqref{sd:def:spectra} are holomorphic at zero.
+\end{lemma}
+\begin{proof}
+For $x>b$, the ordinary binomial expansions give
+\[
+ h(s,x)=x^{-2s}\sum_{k\ge1}C_k(s;b)x^{-2k}.
+\]
+On compact mass sets, its remainder after $K$ terms is uniformly
+$O(x^{-2\Re s-2K-2})$ on a small closed $s$-disk.  After multiplication
+by $W$, this is $O(x^{-2+2\varepsilon})$ when $D$ is even and
+$O(x^{-3+2\varepsilon})$ when $D$ is odd, for $|s|\le\varepsilon<1/4$.
+This proves normal convergence.  The finitely many $x\le b$ use the
+exact expression $h$, so no assumption $b<a$ is needed.
+
+In a common right half-plane every term being subtracted is separately
+summable; adding it back as a Hurwitz zeta proves
+\eqref{sd:eq:global-subtraction} there and hence by continuation.
+The only possible singular terms near zero have $2k-d=1$.
+The simple pole of $\zeta(1+2s,a)$ is multiplied by $C_k=O(s^2)$,
+so they are removable.  Finally, expansion of the polynomial weight
+about $x\pm ib$ expresses each $F_{W,\pm}$ as a finite sum of
+$\zeta(s-j,a\pm ib)$ with $j\ge0$.  They are holomorphic at zero,
+and the same follows for $Z_W$ from \eqref{sd:def:difference}.
+\end{proof}
+
+\subsection{The complete higher-derivative formula}
+
+Define the elementary logarithmic polynomial
+\begin{align}
+ H_r(x;b)
+ &=(-1)^r\left[2^{r-1}
+       \{\log^r(x+ib)+\log^r(x-ib)\}-\log^r Q_b(x)\right]
+       \label{sd:eq:H-log}\\
+ &=\sum_{j=1}^{\lfloor r/2\rfloor}
+       (-1)^{r+j}4^j\binom r{2j}
+       \log^{r-2j}Q_b(x)\arctan^{2j}(b/x),
+       \label{sd:eq:H-real}
+\end{align}
+so $H_1=0$, $H_2=-4\arctan^2(b/x)$, and
+$H_3=12\log Q_b(x)\arctan^2(b/x)$.  Also put
+\begin{equation}\label{sd:eq:Pr}
+ P_{k,r}(L)=r!\sum_{m=2}^{\min(r,2k)}
+          \alpha_{k,m}(b)\frac{(-2L)^{r-m}}{(r-m)!}.
+\end{equation}
+
+\begin{theorem}[Every order, every polynomial weight, every positive mass]
+\label{sd:thm:all-orders}
+For every integer $r\ge1$,
+\begin{align}
+ \Delta_r(W;a,b)
+ &=\sum_{n\ge0}W(x_n)
+       \left\{H_r(x_n;b)-\sum_{k=1}^{K}
+                    \frac{P_{k,r}(\log x_n)}{x_n^{2k}}\right\}
+       \notag\\
+ &\quad+\sum_{d=0}^{D}\sum_{k=1}^{K}w_d\mathcal J_{k,r}(2k-d;a,b),
+       \label{sd:eq:all-orders}
+\end{align}
+where, if $\nu\ne1$,
+\begin{equation}\label{sd:eq:nonresonant}
+ \mathcal J_{k,r}(\nu;a,b)=r!\sum_{m=2}^{\min(r,2k)}
+   \alpha_{k,m}(b)\frac{2^{r-m}}{(r-m)!}
+                       \zeta^{(r-m)}(\nu,a),
+\end{equation}
+and at the resonant value $\nu=1$,
+\begin{equation}\label{sd:eq:resonant}
+ \boxed{\displaystyle
+ \mathcal J_{k,r}(1;a,b)=r!\left\{
+   \frac{\alpha_{k,r+1}(b)}2+
+   \sum_{m=2}^{\min(r,2k)}\alpha_{k,m}(b)
+          \frac{(-2)^{r-m}}{(r-m)!}\gamma_{r-m}(a)\right\}.}
+\end{equation}
+The infinite sum in \eqref{sd:eq:all-orders} is ordinary and absolutely
+convergent.  It and every fixed parameter derivative converge locally
+normally on positive parameter sets.
+\end{theorem}
+\begin{proof}
+Differentiate the normally convergent expression
+\eqref{sd:eq:global-subtraction}.  The derivative of its exact pointwise
+term is $H_r$; writing
+$\log(x\pm ib)=\frac12\log Q_b(x)\pm i\arctan(b/x)$ proves
+\eqref{sd:eq:H-real}.  Differentiation of $x^{-2s}C_k(s;b)$ gives
+\eqref{sd:eq:Pr}.  If $\nu\ne1$, Taylor multiplication gives
+\eqref{sd:eq:nonresonant}.
+
+At the pole, use the stipulated Laurent convention:
+\[
+ \zeta(1+2s,a)=\frac1{2s}
+       +\sum_{j\ge0}\frac{(-2)^j}{j!}\gamma_j(a)s^j.
+\]
+The coefficient of $s^r$ in $C_k(s;b)\zeta(1+2s,a)$ contains
+$\alpha_{k,r+1}/2$ from the pole and the displayed finite convolution
+from its regular part.  Multiplication by $r!$ proves
+\eqref{sd:eq:resonant}.  The uniform estimates in the lemma allow
+the differentiations; logarithmic factors from spectral derivatives
+do not affect summability.  The same estimates on small complex
+neighborhoods of positive $(a,b)$ justify parameter derivatives.
+\end{proof}
+
+At $r=1$ the ordinary sum and every nonresonant term vanish.  The
+remaining term is $\alpha_{k,2}/2$, which recovers
+\eqref{sd:eq:first-harmonic}.  At $r\ge2$, deleting the ordinary sum
+is generally incorrect.  Deleting $\alpha_{k,r+1}/2$ is also
+incorrect when this coefficient is present: differentiating a regular
+part alone loses the contribution of the pole.
+
+\subsection{A single monomial isolates every Stieltjes index}
+
+The simplest odd weight makes the correction especially transparent.
+For $r\ge2$ set
+\[
+ c_r=(-1)^{r-1}2^{r-1}r(r-1).
+\]
+Since $C_1=-2b^2s^2$, the general theorem gives
+\begin{equation}\label{sd:eq:linear-weight}
+ \boxed{\displaystyle
+ \Delta_r(x;a,b)=
+ \sum_{n\ge0}\left\{x_nH_r(x_n;b)
+       -c_rb^2\frac{\log^{r-2}x_n}{x_n}\right\}
+       +c_rb^2\gamma_{r-2}(a).}
+\end{equation}
+Its residual summands are
+$O(x_n^{-3}(1+\log^{r-2}x_n))$.  Thus this is an ordinary convergent
+identity for each generalized Stieltjes constant, coupled to precisely
+specified spectral derivatives.  For example,
+\begin{align}
+ \Delta_2(x;a,b)
+ &=-4\sum_{n\ge0}
+       \left\{x_n\arctan^2(b/x_n)-\frac{b^2}{x_n}\right\}
+       +4b^2\psi(a),\label{sd:eq:linear-second}\\
+ \Delta_3(x;a,b)
+ &=12\sum_{n\ge0}
+       \left\{x_n\log Q_b(x_n)\arctan^2(b/x_n)
+                      -\frac{2b^2\log x_n}{x_n}\right\}
+       +24b^2\gamma_1(a).\label{sd:eq:linear-third}
+\end{align}
+At first order, $\Delta_1(x;a,b)=-b^2$ even though each ordinary
+pointwise first-derivative difference is zero.  This is a useful exact
+check on the chosen continuation, not a license to omit higher-order
+ordinary terms.
+
+\subsection{The first-derivative parity criterion fails completely at order two}
+
+\begin{theorem}[Universal second-defect vanishing]
+\label{sd:thm:vanishing}
+Fix $a>0$.  For a polynomial $W\in\mathbb C[x]$,
+\[
+ \Delta_2(W;a,b)=0\ \text{for every }b>0
+ \quad\Longleftrightarrow\quad W=0.
+\]
+Thus no nonzero even polynomial retains the universal vanishing
+property of the first derivative.
+\end{theorem}
+\begin{proof}
+For $0<b<a$, the full binomial expansion converges normally.  If
+$k>(D+1)/2$, all the Hurwitz values $\zeta(2k-d,a)$ in its
+$b^{2k}$ coefficient are ordinary convergent sums.  That coefficient
+in $\Delta_2$ is
+\begin{equation}\label{sd:eq:high-mass-coeff}
+ \frac{2(-1)^k}{k}(2H_{2k-1}-H_{k-1})
+             \sum_{n\ge0}\frac{W(n+a)}{(n+a)^{2k}}.
+\end{equation}
+The scalar is nonzero.  If the defect vanishes identically, all these
+moments vanish.  If $W\ne0$, let $n_0$ be the least nonnegative integer
+with $W(n_0+a)\ne0$.  Multiplying the vanishing moment by
+$(n_0+a)^{2k}$ and letting $k\to\infty$ gives
+$W(n_0+a)=0$, a contradiction.  Dominated convergence is valid after
+fixing any sufficiently large $k_0$: polynomial growth of $W$ makes
+$\sum_{n>n_0}|W(n+a)|((n_0+a)/(n+a))^{2k_0}$ finite.
+The reverse implication is immediate.
+\end{proof}
+
+This is a statement about identity in the mass at a fixed shift.
+It does not exclude accidental zeros at a prescribed mass for signed
+polynomial weights.  No inequality or numerical independence assertion
+is needed for the proof.
+

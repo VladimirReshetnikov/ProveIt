@@ -1,0 +1,315 @@
+\section{Two quadratic masses: the exact second derivative and collision calculus}
+\label{hqj:sec:collision}
+
+Let $P(y)=\sum_{d=0}^Dp_dy^d\in\C[y]$ and $u,v>0$. Define
+\begin{align}
+\mathcal Z_P(s;a;u,v)
+&=\sum_{n\in\Z}P((n+a)^2)
+\bigl(((n+a)^2+u)((n+a)^2+v)\bigr)^{-s},
+\label{hqj:eq:product-spectrum}\\
+E_{P,u}(s;a)
+&=\sum_{n\in\Z}P((n+a)^2)((n+a)^2+u)^{-s}.
+\label{hqj:eq:weighted-E}
+\end{align}
+Their initial absolute-convergence conditions are
+$\Rea s>(2D+1)/4$ and $\Rea s>D+1/2$, respectively. We use their
+meromorphic continuations below. The finite polynomial identity
+\begin{equation}\label{hqj:eq:polynomial-translate}
+E_{P,u}(s;a)=\sum_{\ell=0}^D
+\frac{P^{(\ell)}(-u)}{\ell!}E(s-\ell;a,\sqrt u)
+\end{equation}
+will reduce the individual weighted jets to the already evaluated family.
+
+\subsection{The complete subtraction, not a formal divergent logarithm sum}
+For $r\ge2$, put
+\begin{equation}\label{hqj:eq:Tr}
+T_r(u,v)=(-1)^r\sum_{k=1}^{r-1}
+\frac{(u^k-v^k)(u^{r-k}-v^{r-k})}{k(r-k)}.
+\end{equation}
+These are the coefficients of $y^{-r}$ in
+$\log^2((y+u)/(y+v))$ at infinity. The first three are
+\begin{align}
+T_2&=(u-v)^2,\notag\\
+T_3&=-(u-v)^2(u+v),\label{hqj:eq:Tlow}\\
+T_4&=(u-v)^2\left\{\tfrac23(u^2+uv+v^2)+\tfrac14(u+v)^2\right\}.
+\notag
+\end{align}
+The full polynomial part of the weighted logarithmic square is
+\begin{equation}\label{hqj:eq:PiP}
+\Pi_P(y;u,v)=\sum_{d=2}^Dp_d\sum_{r=2}^dT_r(u,v)y^{d-r}.
+\end{equation}
+Define the ordinary sum
+\begin{equation}\label{hqj:eq:KP}
+\mathcal K_P(a;u,v)=\sum_{n\in\Z}\left\{
+P(x^2)\log^2\frac{x^2+u}{x^2+v}-\Pi_P(x^2;u,v)\right\},
+\qquad x=n+a.
+\end{equation}
+Its summand is $O(x^{-2})$, locally uniformly in positive $u,v$.
+For degree at most one no subtraction is needed. At larger degree the
+subtraction is generally nonzero and must not be discarded.
+
+\begin{theorem}[Second derivative of a two-mass spectrum]
+\label{hqj:thm:product}
+Both spectra in \eqref{hqj:eq:product-spectrum}--\eqref{hqj:eq:weighted-E}
+are holomorphic at $s=0$. For every polynomial $P$,
+\begin{align}
+\mathcal Z_P''(0;a;u,v)
+={}&2\sum_{\ell=0}^D\frac1{\ell!}
+\bigl\{P^{(\ell)}(-u)M_\ell(a,\sqrt u)
++P^{(\ell)}(-v)M_\ell(a,\sqrt v)\bigr\}
+\notag\\
+&-\mathcal K_P(a;u,v).
+\label{hqj:eq:product-second}
+\end{align}
+When $u=v$, the correction vanishes and the formula reduces to
+$\mathcal Z_P''(0;a;u,u)=4E_{P,u}''(0;a)$, as required by
+$\mathcal Z_P(s;a;u,u)=E_{P,u}(2s;a)$.
+\end{theorem}
+\begin{proof}
+On either positive lattice tail, all mass expansions and the weight
+$P(x^2)$ contain only even powers of $x$. A pole of the associated
+Hurwitz factor at $s=0$ would require a power $x^{-1}$, which is
+impossible. Finite-head subtractions therefore prove holomorphy at
+zero exactly as in Section~\ref{hqj:sec:local}, without any residue
+term.
+
+Compare $\mathcal Z_P(s)$ with
+$\tfrac12(E_{P,u}(2s)+E_{P,v}(2s))$. After taking out $x^{-4s}$,
+the pointwise difference has zero constant and linear coefficients,
+and its quadratic coefficient is
+\[
+\tfrac12P(x^2)\log^2\frac{x^2+u}{x^2+v}.
+\]
+There is no $x^{-1}$ residue to lower the spectral order. Thus its
+second derivative is the continued value of the logarithmic-square
+sum at the fixed lattice coordinate.
+
+The only nonsummable terms of that sum are the polynomial
+\eqref{hqj:eq:PiP}. Their bilateral regularized sums vanish exactly:
+for every $k\ge0$,
+\begin{equation}\label{hqj:eq:even-polynomial-zero}
+\zeta(-2k,a)+\zeta(-2k,1-a)=0.
+\end{equation}
+For example, this follows from
+$\zeta(-2k,a)=-B_{2k+1}(a)/(2k+1)$ and
+$B_{2k+1}(1-a)=-B_{2k+1}(a)$, including $k=0$.
+Consequently the regularized value is exactly the ordinary remainder
+\eqref{hqj:eq:KP}, not that remainder plus an unknown constant.
+Taking the second derivative of the comparison and using
+\eqref{hqj:eq:polynomial-translate} proves
+\eqref{hqj:eq:product-second}.
+\end{proof}
+
+For example, at $P(y)=y^2$ the full correction is
+\[
+\mathcal K_{y^2}(a;u,v)=\sum_{n\in\Z}
+\left\{x^4\log^2\frac{x^2+u}{x^2+v}-(u-v)^2\right\}.
+\]
+At $P(y)=y^3$ it is
+\[
+\sum_{n\in\Z}\left\{x^6\log^2\frac{x^2+u}{x^2+v}
+-(u-v)^2x^2+(u-v)^2(u+v)\right\}.
+\]
+These illustrate why positivity of an unsubtracted logarithmic square
+does not imply positivity of every polynomially regularized correction.
+
+\subsection{An ordinary one-dimensional polylogarithmic reduction}
+The positive first resolvent has the elementary formula
+\begin{equation}\label{hqj:eq:E1}
+E(1;a,\sqrt t)
+=\frac\pi{\sqrt t}
+\frac{\sinh(2\pi\sqrt t)}{\cosh(2\pi\sqrt t)-\cos(2\pi a)}.
+\end{equation}
+One proof takes the difference of the cotangent partial fractions at
+$a\pm i\sqrt t$; another differentiates the known $L_0$ in the squared
+mass. Put
+\begin{equation}\label{hqj:eq:RP}
+\mathcal R_P(t)=P(-t)E(1;a,\sqrt t).
+\end{equation}
+
+\begin{theorem}[The two-mass integral and mixed derivative]
+\label{hqj:thm:Kintegral}
+For $u>v>0$,
+\begin{equation}\label{hqj:eq:Kintegral}
+\boxed{\mathcal K_P(a;u,v)=2\int_v^u
+\mathcal R_P(t)\log\frac{u-t}{t-v}\dd t.}
+\end{equation}
+The endpoint singularities are integrable logarithms. The mixed
+parameter derivative is
+\begin{equation}\label{hqj:eq:Kmixed}
+\partial_u\partial_v\mathcal K_P(a;u,v)
+=-2\frac{\mathcal R_P(u)-\mathcal R_P(v)}{v-u},
+\end{equation}
+with the continuous coincident value $2\mathcal R_P'(u)$.
+Writing $u=b^2$, $v=c^2$, $b>c>0$, the integral is equivalently
+\begin{align}
+\mathcal K_P(a;b^2,c^2)=4\pi\int_c^b P(-y^2)
+&\left\{1+2\Rea\Li_0(e^{-2\pi y+2\pi ia})\right\}
+\notag\\[-2pt]
+&\times\log\frac{b^2-y^2}{y^2-c^2}\dd y.
+\label{hqj:eq:Kpolylog}
+\end{align}
+For $u<v$ use symmetry; for $u=v$ the correction is zero.
+\end{theorem}
+\begin{proof}
+Polynomial division and \eqref{hqj:eq:even-polynomial-zero} show that
+the regularized weighted resolvent is
+\[
+\Reg\sum_{n\in\Z}\frac{P(x^2)}{x^2+t}
+=P(-t)E(1;a,\sqrt t)=\mathcal R_P(t).
+\]
+The convention here is precisely polynomial subtraction in $x^2$.
+Partial fractions therefore give
+\begin{equation}\label{hqj:eq:double-resolvent}
+\Reg\sum_{n\in\Z}\frac{P(x^2)}{(x^2+t)(x^2+w)}
+=\frac{\mathcal R_P(t)-\mathcal R_P(w)}{w-t}.
+\end{equation}
+Its diagonal is removable. Differentiating
+\eqref{hqj:eq:KP} with respect to $u,v$ is valid after subtracting the
+corresponding polynomial coefficients; the remainder and its
+parameter derivatives remain $O(x^{-2})$ on compact sets. Since the
+mixed derivative of the logarithmic square is
+$-2/((x^2+u)(x^2+v))$, this proves \eqref{hqj:eq:Kmixed}.
+
+Alternatively write the logarithm as
+$\int_v^u(x^2+t)^{-1}\dd t$ and square it. Polynomial subtraction
+commutes with these integrals coefficient by coefficient; the remaining
+uniformly convergent sum may be integrated by ordinary Fubini. Thus
+$\mathcal K_P$ is the double integral of
+\eqref{hqj:eq:double-resolvent} over $[v,u]^2$.
+The same symmetric divided-difference calculation used in
+Theorem~\ref{hqj:thm:gamma-square}, with its sign reversed, gives
+\eqref{hqj:eq:Kintegral}.
+
+Finally substitute $t=y^2$ and use the absolutely convergent Poisson
+kernel identity
+\[
+\frac{\sinh(2\pi y)}{\cosh(2\pi y)-\cos(2\pi a)}
+=1+2\Rea\frac{e^{-2\pi y+2\pi ia}}{1-e^{-2\pi y+2\pi ia}}
+=1+2\Rea\Li_0(e^{-2\pi y+2\pi ia}).
+\]
+This proves \eqref{hqj:eq:Kpolylog} and its convergence.
+\end{proof}
+The formulas give the full second product derivative in terms of
+finite negative-integer second jets and a displayed ordinary integral.
+There is no implicit subtraction of two divergent logarithmic sums.
+
+\subsection{Every collision coefficient is a finite polygamma expression}
+\begin{theorem}[Convergent collision expansion]\label{hqj:thm:collision}
+Let $g=\operatorname{dist}(a,\Z)=\min(a,1-a)$. For $u>0$ and
+$|h|<u+g^2$, the correction has the convergent Taylor expansion
+\begin{align}
+\mathcal K_P(a;u+h,u)
+={}&2\sum_{r\ge2}\frac{(-1)^rH_{r-1}}r h^r
+\sum_{\ell=0}^{\min(D,r-1)}
+\frac{P^{(\ell)}(-u)}{\ell!}
+E(r-\ell;a,\sqrt u).
+\label{hqj:eq:collision-series}
+\end{align}
+It defines the analytic branch continued from $h=0$ in that disk.
+In particular,
+\begin{equation}\label{hqj:eq:confluent}
+\lim_{h\to0}\frac{\mathcal K_P(a;u+h,u)}{h^2}
+=P(-u)E(2;a,\sqrt u)+P'(-u)E(1;a,\sqrt u)
+=-\mathcal R_P'(u).
+\end{equation}
+All resolvents on the right of \eqref{hqj:eq:collision-series} have
+positive integer order and admit finite polygamma expressions.
+\end{theorem}
+\begin{proof}
+The elementary identity
+\[
+\log^2(1+z)=2\sum_{r\ge2}\frac{(-1)^rH_{r-1}}r z^r,
+\qquad |z|<1,
+\]
+follows either by multiplying the logarithm series or by differentiating
+both sides. Put $z=h/(x^2+u)$. Its modulus is uniformly less than one
+on every compact subdisk $|h|<u+g^2$. The polynomial subtraction in
+\eqref{hqj:eq:KP} depends holomorphically on $h$, and its remainder is
+normally summable on such compact sets. Taylor coefficients may
+therefore be extracted after summation and subtraction.
+
+At order $r$, polynomial expansion around $-u$ gives
+\[
+\frac{P(x^2)}{(x^2+u)^r}
+=\sum_{\ell=0}^D\frac{P^{(\ell)}(-u)}{\ell!}(x^2+u)^{\ell-r}.
+\]
+For $\ell\ge r$ the terms are polynomials in $x^2$ and have zero
+bilateral regularized sum. For $\ell<r$ they are ordinarily summable
+positive-order resolvents. This gives exactly
+\eqref{hqj:eq:collision-series}. The $r=2$ coefficient yields the
+first equality in \eqref{hqj:eq:confluent}; differentiating
+\eqref{hqj:eq:RP} and using $\partial_uE(1)=-E(2)$ gives the second.
+\end{proof}
+
+For clarity, a finite polygamma formula can be written without a
+recursive mass derivative. For $N\ge1$, define
+\begin{align}
+A_{N,r}(b)&=(-1)^{N-r}\binom{2N-r-1}{N-r}(-2ib)^{-(2N-r)},
+\quad 1\le r\le N,\notag\\
+\Xi_1(z)&=-\psi(z),\qquad
+\Xi_r(z)=\frac{(-1)^r}{(r-1)!}\psi^{(r-1)}(z)\quad(r\ge2).
+\end{align}
+Then the elementary partial fractions at the conjugate roots give
+\begin{equation}\label{hqj:eq:finite-polygamma}
+E(N;a,b)=2\Rea\sum_{r=1}^N A_{N,r}(b)
+\bigl\{\Xi_r(a+ib)+\Xi_r(1-a+ib)\bigr\}.
+\end{equation}
+For $r=1$ the two conjugate harmonic tails cancel before the digamma
+values are taken. The formula can also be checked from
+\begin{equation}\label{hqj:eq:resolvent-derivative}
+E(N;a,\sqrt u)=\frac{(-1)^{N-1}}{(N-1)!}
+\partial_u^{N-1}E(1;a,\sqrt u).
+\end{equation}
+Thus no noninteger-order or unevaluated infinite spectral sum is
+required in any collision coefficient.
+
+For $P=1$, the expansion begins
+\begin{align}
+\mathcal K_1(a;u+h,u)
+={}&h^2E(2)-h^3E(3)+\tfrac{11}{12}h^4E(4)
+-\tfrac56h^5E(5)+\cdots,
+\label{hqj:eq:collision-low}
+\end{align}
+all at $(a,\sqrt u)$. For higher-degree $P$, the extra translated
+polynomial derivatives in \eqref{hqj:eq:collision-series} are essential;
+keeping only $P(-u)E(r)$ would be incorrect.
+
+\subsection{An exact averaged logarithmic-square identity}
+An explicit elementary consequence provides both an independent check
+and a useful integral evaluation.
+\begin{corollary}[Average over the lattice shift]\label{hqj:cor:mean}
+For $b,c>0$,
+\begin{align}
+\int_0^1\mathcal K_1(a;b^2,c^2)\dd a
+&=\int_{-\infty}^{\infty}
+\log^2\frac{x^2+b^2}{x^2+c^2}\dd x\notag\\
+&=8\pi\bigl\{b\log(2b)+c\log(2c)
+-(b+c)\log(b+c)\bigr\}.
+\label{hqj:eq:mean-K}
+\end{align}
+Consequently
+\begin{align}
+\int_0^1\mathcal Z_1''(0;a;b^2,c^2)\dd a
+=8\pi\bigl\{&b\log(2b)+c\log(2c)
++(b+c)\log(b+c)\notag\\
+&-2(b+c)\bigr\}.
+\label{hqj:eq:mean-product}
+\end{align}
+\end{corollary}
+\begin{proof}
+Absolute convergence unfolds the shift average of the sum into the
+real-line integral. Alternatively the mean of $E(1;a,\sqrt t)$ is
+$\pi/\sqrt t$. Averaging \eqref{hqj:eq:Kintegral} and substituting
+$t=y^2$ gives, for $b>c$,
+\[
+4\pi\int_c^b\log\frac{b^2-y^2}{y^2-c^2}\dd y.
+\]
+Split the logarithm into its four linear factors. The integrals of
+$\log(b-y)$ and $-\log(y-c)$ cancel. Integrating the remaining
+$\log(b+y)-\log(y+c)$ gives twice the braces in
+\eqref{hqj:eq:mean-K}. Symmetry covers $c>b$ and continuity covers
+$b=c$. The mean of \eqref{hqj:eq:M0} is its zero Fourier mode
+$8\pi b(\log(2b)-1)$, so \eqref{hqj:eq:product-second} proves
+\eqref{hqj:eq:mean-product}.
+\end{proof}

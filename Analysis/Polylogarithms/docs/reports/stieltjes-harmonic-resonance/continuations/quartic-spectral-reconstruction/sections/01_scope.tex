@@ -1,0 +1,164 @@
+\section{Scope, exact targets, and conventions}
+\label{sec:scope}
+
+The useful unit of progress in this programme is a proved identity or a
+precisely delimited structural theorem.  Several nearby special-value
+problems already have substantial proofs, and several plausible-looking
+new directions are already present in earlier reports.  Accordingly,
+the results below are attached to specific source questions before their
+proofs are developed.  Bounds appear only inside the reconstruction and
+convergence proofs; they are not independent objectives of the article.
+
+The principal new conclusions are the complete order-eight theorem,
+the effective fixed-order theorem, the all-moment quartic evaluation,
+and the higher spectral factorization calculus.  These conclusions have
+different logical content.  A nonzero rational determinant proves a
+coefficient-rank statement; it does not prove independence of the real
+constants later substituted into the coordinates.  A normally convergent
+subtracted sum is an ordinary identity; the divergent raw sum preceding
+that subtraction is not assigned an unspecified value.
+
+\subsection{The concrete questions being continued}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.29\textwidth}>{\raggedright\arraybackslash}p{0.35\textwidth}>{\raggedright\arraybackslash}p{0.30\textwidth}@{}}
+\toprule
+Source target & Result here & Boundary retained\\
+\midrule
+\endhead
+Reconstruction report, Q1: the omitted class
+$b\equiv1\pmod{16}$ for $(8,2b)$ \cite{Reconstruction}
+& Theorem~\ref{r8c:main} covers every $b\ge5$.
+& The unrelated Gaussian period conjectures are unaffected.\\[5pt]
+Reconstruction report, Q2: general unequal even orders
+& Theorem~\ref{ert:main} gives a terminating threshold algorithm for
+each fixed smaller order.
+& The remaining finite set is not checked for every smaller order.\\[5pt]
+Reconstruction report, Q5: a quartic formula, fixed space, and generator
+& Theorems~\ref{qtm:main} and \ref{qtm:generator} give the complete
+regular parity family and six formal coordinates.
+& Fifth and higher powers require additional analysis.\\[5pt]
+Quadratic-spectrum report, Q7: several factors beyond the first derivative
+\cite{Quadratic}
+& Theorems~\ref{msj:thm:second}, \ref{msj:thm:quadrature}, and
+\ref{msj:thm:confluent} give the cross term and its full confluent series.
+& A finite classical-polylogarithm reduction of the integral at arbitrary
+parameters is not asserted.\\[5pt]
+Quadratic-spectrum report, Q2: higher conjugate-linear defects
+& Corollary~\ref{cor:linear-jets} gives every spectral order, with the
+correct scale and all Stieltjes terms.
+& The first-derivative parity criterion does not eliminate higher
+nonlocal terms.\\[5pt]
+Same-direction report, Q2: entire higher-depth connected interpolation
+\cite{SameDirection}
+& Section~\ref{sec:audit} identifies the existing all-depth interpolant
+and geometric kernel exactly.
+& This is an attribution and research-status correction, not a new
+entire-family theorem.\\
+\bottomrule
+\end{longtable}
+
+Two additional constructions go beyond those literal questions.
+Theorem~\ref{thm:alljets} isolates the Hurwitz-pole contribution at every
+derivative order for arbitrary polynomial weights and several quadratic
+factors.  Theorem~\ref{thm:primitive} integrates a nonlinear second-jet
+identity explicitly in the shift, using dilogarithms and a Gamma ratio.
+Both have their normalization fixed in the statement.
+
+\subsection{Source pin and attribution}
+
+The repository was inspected at commit \sourcepin, including the
+canonical manuscript status files and the relevant harmonic, Gaussian,
+Hurwitz, and spectral branches.  All six archives currently in
+\src{docs/incoming} at that pin were extracted and triaged.  The detailed
+proof development uses the reconstruction, quadratic-spectrum, and
+same-direction reports; the Beta-crossing, Gamma-continuation, and
+shift-and-twist reports were also considered when selecting targets.
+The exact source paths and SHA-256 digests are recorded in
+\src{provenance.json}.  This is not an assertion that every theorem in
+the four-volume manuscript has been audited.
+
+Classical ingredients include Bernoulli--Hurwitz asymptotics, Euler's
+Bernoulli formula, polygamma partial fractions, Gamma reflection, and
+normalized Mellin continuation \cite{DLMF}.  Hoffman's quartic tail
+sum \cite{Hoffman}, the Ihara--Nakamura--Yamamoto interpolant
+\cite{INY}, and the first-derivative multiplicative-anomaly framework
+\cite{EVZ,PolynomialAnomaly} are attributed where used.  Inherited
+determinant reductions and cubic formulas are identified explicitly.
+No claim of exhaustive historical priority is inferred from absence in
+the inspected repository.
+
+\subsection{Common conventions}
+
+We use
+\[
+ H_n^{(s)}=\sum_{k=1}^n k^{-s},\qquad H_0^{(s)}=0,\qquad
+ A_s(n)=\zeta(s,n+1),\qquad x_n=n+\tfrac12
+\]
+in the centered harmonic sections.  For an integer $s\ge2$,
+$A_s(n)=\zeta(s)-H_n^{(s)}$.  The polygamma convention is
+\[
+ \psi^{(m)}(z)=(-1)^{m+1}m!\,\zeta(m+1,z),\qquad m\ge1.
+\]
+In particular $A_2(n)=\psi'(n+1)$ and
+$A_{2k}(n)=\psi^{(2k-1)}(n+1)/(2k-1)!$.
+
+Bernoulli polynomials are normalized by
+\[
+ \frac{te^{xt}}{e^t-1}=\sum_{m\ge0}B_m(x)\frac{t^m}{m!},
+ \qquad B_m=B_m(0),\qquad B_1=-\tfrac12.
+\]
+The crucial centered zero is
+\[
+ \zeta(-2j,1/2)=0\qquad(j\ge0).
+\]
+It makes the specified polynomial subtractions have zero continued
+sum.  A shifted analogue must restore its nonzero Hurwitz values;
+this midpoint normalization is not silently transported to other shifts.
+
+Superscripts on $\zeta$ and on spectral families denote derivatives
+in their first, spectral variable unless stated otherwise.  We use
+\[
+ \zeta(1+u,a)=\frac1u+
+       \sum_{m\ge0}\frac{(-1)^m}{m!}\gamma_m(a)u^m,
+ \qquad \gamma_0(a)=-\psi(a).
+\]
+Thus the order derivative of $\zeta$ and the parameter derivative of a
+Stieltjes constant are different operations.  All exchanges of spectral
+differentiation and infinite sums below follow a locally uniform
+subtraction argument, rather than formal differentiation at a pole.
+
+The one-variable multiple polylogarithm uses the outer-index argument:
+\[
+ \Li_{s_1,\ldots,s_d}(z)=
+ \sum_{n_1>\cdots>n_d\ge1}
+       \frac{z^{n_1}}{n_1^{s_1}\cdots n_d^{s_d}}.
+\]
+At $z=1$ with admissible positive integer indices this is the
+descending-index multiple zeta value.  In the finite generator formulas
+we first take $z=e^{-t}$ with real $t>0$; the anchored integral formulas
+specify the holomorphic continuation through the cancellations at $t=0$.
+
+\subsection{Why the proofs use subtractions and leading determinants}
+
+The harmonic and spectral problems share a finite algebraic step but have
+different analytic mechanisms.  For reconstruction, the source matrix is
+indefinite.  Its highest degree in a fixed number of Bernoulli variables
+nevertheless factors into a positive discrete moment determinant.  The
+factorial size of the Bernoulli variables makes that highest-degree part
+dominate eventually.  The exact exceptional arithmetic remains visible
+and is handled separately for order eight.
+
+For quartic moments, summation by parts reduces the problem from the
+fourth tail power to the inherited cubic coordinates.  A specific
+boundary cancellation removes the remaining cubic Bernoulli convolution.
+The surviving lower-power terms explain all exceptional low indices;
+they cannot be discarded by parity alone.
+
+For spectral derivatives, the common-scale difference vanishes to order
+two in the spectral parameter before summation.  A resonant Hurwitz
+pole can lower that order by one.  Its residue, regular Stieltjes
+coefficients, and higher coefficient of the vanishing factor all matter.
+The finite subtraction formulas retain those contributions while leaving
+an ordinary summable remainder.  This is the source of the extra local
+term in \eqref{one:x5second} and of the higher bilateral correction in
+\eqref{msj:eq:third-contact}.

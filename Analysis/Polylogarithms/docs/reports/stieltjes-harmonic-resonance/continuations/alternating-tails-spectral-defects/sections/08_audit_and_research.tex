@@ -1,0 +1,252 @@
+\section{Source reconciliation and further research}
+\label{audit:section}
+
+\subsection{Corrections, qualifications, and status changes}
+
+\paragraph{Current source status.}
+The targeted audit did not establish an additional false theorem in the
+current source dependencies. The useful corrections are therefore
+precise integration and scope corrections, not a claim to have found
+a new error merely because a stronger statement is unavailable.
+The two Stieltjes corrections already incorporated in the unified
+manuscript must be retained. Its chapter
+\path{11-stieltjes-source-corrections.tex} explicitly repairs an
+initial-index discrepancy in the inspected version of a harmonic-zeta
+paper and a literal-coefficient sign description in a height-one
+multiple-zeta paper \cite{ProveIt}. Neither is a new discovery of this
+delivery.
+
+The exact conventions can be checked without a numerical fit. From
+\eqref{intro:stieltjes} and the Hurwitz recurrence,
+\[
+ \gamma_r(a+1)=\gamma_r(a)-\frac{\log^r a}{a}.
+\]
+Consequently a Stieltjes limit whose sum begins at $n=1$ instead of
+$n=0$ has lost $\log^r(a)/a$. For $r=0,a=1$ the lost quantity is
+one. Likewise the literal coefficient of $u$ in
+$\zeta(1+u,a)$ is $-\gamma_1(a)$, rather than $\gamma_1(a)$.
+These facts explain both inherited corrections and fix the sign
+convention needed for \eqref{ats:eq:stieltjes} and
+\eqref{sd:eq:resonant}.
+
+\paragraph{Higher-order pole terms.}
+For a product $C_k(s)\zeta(1+2s,a)$, the coefficient of $s^r$
+uses the coefficient of $s^{r+1}$ in $C_k$. Formula
+\eqref{sd:eq:resonant} retains this term as
+$r!\alpha_{k,r+1}/2$. A proposed extension obtained by differentiating
+only the regular Laurent part would be incorrect. The present article
+supplies the complete replacement, without suggesting that the
+source's proved first-derivative theorem was wrong.
+
+\paragraph{Ordinary sums and continued values.}
+The continuous-order square law is an ordinary identity only on its
+stated half-plane. At $s=0$ and a fixed positive $a$, continuation gives
+$\mathcal B_0(z)=1/2$. The continued lower-end expression in
+\eqref{ats:eq:continuous} is then $1/4$, although every pointwise
+summand of its left side at $s=0$ is zero. In the finite identity
+\eqref{ats:eq:continuous-finite}, the upper endpoint is exactly $1/4$
+and cancels it. This is a concrete obstruction to silently extending
+the ordinary summation prescription across that boundary. Similarly,
+the finitely many low-order coefficients in
+\eqref{mm:eq:confluence} are continued spectral values when the
+unmodified weighted series diverges. The article states that distinction
+explicitly.
+
+\paragraph{Moment reconstruction.}
+The gap-four theorem is already proved in \cite{HTGC,HTST}. An older
+research-status paragraph that still lists it as wholly open should
+be updated by citing those reports. For order eight, the inherited
+theorem outside $b\equiv1\pmod{16}$ is strengthened here; it is not
+relabelled as an original result. The new statements are the smaller
+exceptional class in Theorem~\ref{rt:rank8} and the order-ten family in
+Theorem~\ref{rt:rank10}.
+
+Experimental valuation laws must be replaced by their proved
+finite-precision versions. For example, the new order-eight formula
+gives valuations $4$ at $b=65$ and $2$ at $b=129$, while the
+order-ten formula gives valuation $2$ at $b=66$.
+These follow from $b-8001$ and $b-962$, respectively. They do not
+justify a global law centered at an ordinary integer: the excluded
+progressions remain outside the theorem. Moreover, formal full rank
+refers to the specified moment/zeta coordinate module. It must not
+be converted into arithmetic independence of its numerical evaluations.
+
+\paragraph{Cyclotomic parity.}
+The finite coefficient identity in Section~\ref{cyc:sec} is a form
+of the classical colored depth-two parity theorem \cite{PanzerParity}.
+The addition is its explicit rational-tail resummation with arbitrary
+outer character, its cutoff proof, and the specialized evaluations.
+The complementary conjugation sector is not reduced. Conditional
+bilateral intermediate sums are locally uniformly convergent; the
+projected double sums used in the final generator are absolutely
+normally convergent. Replacing the first statement by absolute normal
+convergence would be an unjustified strengthening.
+
+\paragraph{Gaussian conjectures and formal obstructions.}
+The source's Gaussian weight-six and revised weight-eight conjectures
+remain unresolved here. A non-membership result in a specified
+shuffle, parity, or Cayley relation space is a limitation of that
+relation system. It is not a disproof of an equality between actual
+periods. The newly evaluated Gaussian rational tails have their own
+definitions and cannot be substituted for those older conjectural
+quantities. No integration note should mark the older problems solved
+on the strength of the present conductor-four examples.
+
+\subsection{A proposed research programme with concrete endpoints}
+
+Each question below asks for an identity, a complete structural
+description, or an exact nonvanishing certificate. The order reflects
+dependence on the proved results, not a claim about difficulty.
+
+\begin{question}[The two remaining moment progressions]
+Can one prove nonvanishing in the excluded classes
+$b\equiv8001\pmod{16384}$ for order eight and
+$b\equiv962\pmod{2048}$ for order ten?
+Lemma~\ref{rt:general-B} makes higher congruence precision effective.
+A useful next result would either control the exceptional classes
+uniformly at every precision or give an independent exact argument on
+them. Certifying any fixed number of additional binary digits still
+leaves an infinite progression. One must also distinguish a compatible
+$2$-adic root from an ordinary positive integer at which the rational
+determinant actually vanishes.
+\end{question}
+
+\begin{question}[The full gap-six family]
+For every even $p=2a$ and $q=2a+6$, does the first-$q$ prefix have
+full formal rank? The finite example $(p,q)=(10,16)$ is included here,
+but a proof uniform in $a$ is still missing. The fixed-order contraction
+has the threshold $b\ge2a$, whereas here $b=a+3$. For $a>3$ its
+omitted $B_0$ and $B_1$ contributions cannot be discarded. An exact
+bordered-Hankel formula that retains those moving endpoint terms is
+a concrete next target.
+\end{question}
+
+\begin{question}[All unequal even orders]
+Find a uniform nonvanishing theorem for $M_{a,b}$, $1\le a<b$,
+or identify and prove the exact exceptional set if one exists.
+A useful intermediate result would characterize the small determinant
+after the Pad\'e transformation in terms of explicit orthogonal
+polynomial evaluations and their finite differences. The endpoint
+should be an exact identity or sign/nonzero certificate, rather than
+an extrapolation from a large table of ranks.
+\end{question}
+
+\begin{question}[Bilinear adjacent-tail certificates]
+Replace $E_n^2$ in Theorem~\ref{ats:thm:polynomial} by a product of
+tails with distinct polynomial denominators $P,Q$. Allow both products
+of adjacent tails in the certificate. Which rational coefficient
+functions eliminate every linear-tail term, and which pairs $P,Q$
+admit a finite endpoint evaluation? The compatibility calculation
+in Section~\ref{ats:section} classifies only the displayed one-product
+ansatz. The first nontrivial test is two distinct quadratic
+resolvents with independent shifts.
+\end{question}
+
+\begin{question}[Continuation of the ordinary square law]
+Continue \eqref{ats:eq:continuous} across $\Re s=0$ with a fully
+specified subtraction of its exact upper endpoint. Determine the
+contact term and all order derivatives at each nonpositive integer.
+The $s=0$ discrepancy of $1/4$ described above is a mandatory first
+test. An all-index formula would connect negative-order alternating
+Hurwitz values, Euler polynomials, and Laurent coefficients without
+confusing ordinary sums with continued values.
+\end{question}
+
+\begin{question}[Independent shifts and independent order jets]
+The two factors of $P(k)=(k+a)(k+b)$ in
+\eqref{ats:eq:two-shift} belong to one tail. They do not answer the
+source question about
+$\zeta(p,n+v)\zeta(q,n+w)$ with independently shifted tails.
+Derive a finite-cutoff identity for those products, then differentiate
+independently in $p,q$, and the outer weight order. The desired formula
+must state all moving polar hyperplanes and their residues. This would
+extend the matched continuous-order diagonal treated here and resolve
+the corresponding independent-shift question in \cite{HTST}.
+\end{question}
+
+\begin{question}[The complementary cyclotomic sector]
+Construct the two-resolvent generator for
+\[
+ \frac{R_{a,b;c}(x,y)-R_{a^{-1},b^{-1};c^{-1}}(x,y)}{2i}
+\]
+in the odd-weight setting. A first conductor-four coefficient is
+$\Im Z(2,1;i,-i)$. Specify a candidate collection of classical or
+cyclotomic polylogarithms and an exact reduction into it, or retain a
+precisely defined additional coordinate. The parity generator alone
+does not determine this sector. Failure of a finite numerical search
+would not prove independence from the proposed collection.
+\end{question}
+
+\begin{question}[Shifted and degree-generating cyclotomic normal forms]
+Introduce independent rational shifts into the bilateral lattice proof
+and compute its finite boundary terms. Then introduce a third generating
+variable that sums the outer polynomial degree $h$ in
+\eqref{cyc:allweights}. Having a formula for every individual $h$ does
+not yet produce that analytic generating function. A compact answer
+would organize all resolvent and weight derivatives by a finite
+Bell-polynomial rule, with its convergence region stated.
+\end{question}
+
+\begin{question}[Three-tail products]
+Develop a three-tail analogue of the finite outer-cutoff decomposition.
+The natural target is an explicit depth-two remainder plus finite
+single-polylogarithm terms and endpoints. Determine the exact parity
+sector in which this reduction occurs. The product of three tails
+has a new ordered region structure, so unrestricted depth-one closure
+would be an unsupported extrapolation from Section~\ref{cyc:sec}.
+\end{question}
+
+\begin{question}[A finite description of the logarithmic Gamma correction]
+At which rational shifts and nonzero masses can $S(a,b)$ in
+\eqref{gp:eq:S} be expressed in a stated finite collection of
+polylogarithm values and order derivatives? The elementary-kernel
+forms \eqref{gp:eq:integer}--\eqref{gp:eq:half} and the exact
+shift/distribution rules provide starting equations. A rigorous
+finite evaluation at a single nontrivial mass would be progress.
+For generic parameters, the Gamma integral remains a complete exact
+representation; no minimality theorem for that representation has
+been established.
+\end{question}
+
+\begin{question}[Several masses at every spectral order]
+Extend Theorem~\ref{mm:thm:second} to $r\ge3$. Pointwise, the variance
+identity is replaced by a higher symmetric polynomial in the logarithms
+$L_j$. Determine the finite-subtracted kernels, their confluent
+coefficients, and their mixed mass primitives. With even weights
+there is no pole at zero; with odd weights, compute the additional
+Stieltjes and one-higher-coefficient residue terms rather than assuming
+the even-weight prescription still applies.
+\end{question}
+
+\begin{question}[Shift, mass, and order derivatives in one formula]
+Combine the primitive tower $J_m$ with the divided-difference kernel
+$R_{P,a}$. Can every rectangular mixed shift--mass primitive of the
+second defect be written using a finite, explicitly anchored collection
+of Hurwitz derivatives and ordinary integrals? The mixed derivatives
+must commute on a stated domain, and constants must be fixed at all
+base faces. This is a stronger target than the separate one-variable
+and double-mass primitives proved here.
+\end{question}
+
+\begin{question}[Joint tail identities and spectral identities]
+The square certificate, the cyclotomic parity generator, and the
+quadratic resolvent all produce polygamma expressions. At a fixed
+conductor and weight, form their joint exact relation system and
+determine which mixed harmonic-tail coefficients it isolates. A
+particularly concrete endpoint is a new closed formula for a single
+mixed tail product, rather than only the convolution in
+\eqref{ats:eq:convolution}. Keep the formal relation quotient distinct
+from the space of numerical periods.
+\end{question}
+
+\begin{question}[Small trusted certificates and formalization]
+Which of the finite proofs can be reduced to short rational identities
+that a proof assistant can check directly? The adjacent-tail recurrence,
+the harmonic coefficient formula, the resonant Laurent multiplication,
+and the two modular substitution certificates are natural first
+targets. The analytic continuation lemmas then need explicit locally
+uniform majorants and an agreed special-function library. A formal
+check of the finite data alone would not formalize the associated
+infinite-dimensional theorem.
+\end{question}
+

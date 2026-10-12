@@ -1,0 +1,134 @@
+\section{Source audit, corrections, and verification status}
+\label{sec:audit}
+
+\subsection{The source anchor and the inspection actually performed}
+The repository was anchored at commit
+\begin{center}\pin,\end{center}
+whose timestamp is 11 October 2026 at 18:22:01 UTC. Both directories in
+the research request were inspected at that pin. The source record in
+\texttt{provenance/sources.json} lists the relevant paths and the level of
+inspection, rather than implying a full audit of the repository.
+
+The targeted reading included the canonical main file and preface, the
+research-status chapter, the opening 280 lines of the integration chapter,
+and the adjacent-tail and research-question sections of the differential
+polygamma continuation. The determinantal harmonic-resonance report was
+read for its defining ensemble, Gauss product, first-resonance context,
+stated simple-pole harmonic-rank result, and further research questions.
+Its requested repeated-pole classification and rational-grid extension
+are the direct targets of Section~\ref{sec:classification}.
+
+The incoming directory contained six archives at the anchor. The member
+list and selected status/readme material of
+\emph{Polygamma Reconstruction and Resonance} and the readme of
+\emph{Harmonic Tails, Shifts and Twists} were inspected. A combined retrieval
+also exposed readme material from \emph{Harmonic Tail Gamma Continuation},
+but it was not treated as a full interior audit. The Beta Crossing,
+Quadratic Spectrum, and Same-Direction Complex Orders packages were not
+read in full in this continuation. No error or absence of a theorem is
+attributed to their unread contents. This targeted comparison is enough
+to identify the specific source question being answered, but not to prove
+an exhaustive novelty claim.
+
+\subsection{Proposed status updates}
+The source question about rank-one harmonic pencils should now be split
+into a proved classification and remaining arithmetic-depth questions.
+Theorem~\ref{thm:classification} supplies the full residue test in the
+specified rational-weight model. Theorem~\ref{thm:critical} gives the
+particularly short critical-decay characterization, allowing repeated
+poles and multiple rational residue classes. The source's simple-pole
+construction is thereby extended, not invalidated.
+
+The source question about harmonic rank controlling depth receives the
+constructive upper bound in Theorem~\ref{thm:depth}. It should not be
+rewritten as a theorem about \emph{minimal} depth. The possible strict
+inequality between harmonic rank, determinant degree, and arithmetic depth
+remains an important separate issue.
+
+The next-two-particle-resonance question in the older report should be
+cross-linked to the current incoming reconstruction/resonance package,
+subject to the repository's usual integration review. The present
+finite-difference deformation should be listed separately: its simple
+pole and its coefficient $c_d(s)$ are not the spectral excess and pole
+structure of every higher Gauss resonance.
+
+\subsection{Corrections and safeguards established here}
+No newly false analytic theorem was found in the portions of the existing
+material inspected for this article. The following are precise
+integration safeguards, with explicit examples rather than allegations
+about unread sources.
+
+First, the critical-decay characterization requires a \emph{nonzero}
+coefficient $\kappa$ in \eqref{eq:critical-decay}. The faster-decaying
+weight \eqref{eq:counterexample} has a rank-one geometric pencil and is
+not a $d$th finite difference. Replacing exact critical decay by merely
+a big-$O$ condition would make the new theorem false.
+
+Second, the escape amplitude is $A_r=c_dV_r$. A counterterm using $V_r$
+for all $s$ gives the wrong derivative rows. In particular, the pole-times-
+next-coefficient term $b_{k+1}/(k+1)$ in
+\eqref{eq:Tjets-closed} must be retained.
+
+Third, the hard-cutoff constant and the spectral Laurent constant differ
+by $\partial_sA_r(1,a)$. Equation~\eqref{eq:cutoff-example} gives a
+nonzero elementary discrepancy. The earlier source already recognizes
+this distinction; our formulas make it explicit for this family.
+
+Fourth, meromorphic continuation does not commute with an isolated
+pointwise specialization of a nonnormally convergent family. At $s=0$
+the weights vanish, but the continued value is $-1/4$ for two particles.
+This also limits the interpretation of identities at nonpositive orders.
+
+Finally, finite harmonic rank and polylogarithmic representation depth
+are not arithmetic independence. An explicit $\Li_{2,2}$ term is not
+proof that depth two is necessary. Conversely, the simple-pole report's
+special ordinary-zeta endpoint closure should not be extrapolated to
+all repeated-pole cases without a separate reduction argument.
+
+\subsection{What the supplied verification proves}
+The exact suite \texttt{verification/verify\_exact.py} performs
+\textbf{1,037 assertions} in rational or symbolic arithmetic. The
+machine-readable record is \texttt{results/exact\_checks.json}.
+It includes 576 finite endpoint moment identities, 18 direct ordered-sum
+Cauchy--Binet comparisons, 18 residue-product checks, 12 single-zeta
+matrix identities, independent-order/shift polarization tests, 144
+Gamma--harmonic Bell identities, finite-difference residue inversions,
+zero-pencil checks, the geometric counterexample, and 20 deliberately
+perturbed weights rejected by the rank-one test. It also checks the
+explicit cutoff formula, 44 generating-function coefficients, and the
+Stieltjes/Bell coefficient rules.
+
+The independent numerical suite records \textbf{29 diagnostics} in
+\texttt{results/numerical\_checks.json}. Nine compare determinants of
+Mellin-integral moments with the finite-endpoint/zeta expression, including
+noninteger and complex orders and shifts. Two test mixed-order/shift
+Mellin identities. Four compare direct finite sums with finite boundary
+formulas. Four test hard-cutoff constants through finite formulas at
+$N=10^{20}$; six test differentiated Stieltjes brackets at $N=10^{18}$.
+Three test the explicit polylogarithmic generator, and one tests the
+anchored Gamma primitive.
+
+The standard working precision was 60 decimal digits, with increased
+precision for cutoff cancellations. The Mellin-determinant relative
+residuals in the recorded run are below $6.1\times10^{-57}$.
+The largest relative discrepancy across \emph{all} diagnostics is about
+$8.83\times10^{-13}$, occurring in a high derivative of a finite-cutoff
+approximation. It would therefore be incorrect to describe the whole
+suite as agreement to 60 digits. Each row records its actual discrepancy,
+tolerance, and cutoff where applicable. These are floating-point
+diagnostics, not certified interval enclosures.
+
+The infinite-family conclusions rest on the proofs in this article.
+Finite exact checks test implementation and normalization; they do not
+replace the general algebraic or analytic arguments. A successful PDF
+build likewise verifies document compilation, not mathematical truth.
+
+\subsection{Integration boundary}
+The package is self-contained and includes standalone and modular TeX,
+the compiled PDF, verification programs and result records, a build
+script, a source-scope record, an explicit claim-status file, and checksum
+verification. The suggested repository destination is recorded in
+\path{integration/INTEGRATION.md}. No repository files were changed,
+no archive was retired, and no commit or pull request was created.
+The manuscript's Gaussian $S_6$ and revised $S_8$ proof statuses are
+unchanged \cite{repo:discovery}.

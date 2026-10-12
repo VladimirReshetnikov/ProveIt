@@ -1,0 +1,159 @@
+\section{A harmonic--Stieltjes coefficient formula at every derivative order}
+\label{hqj:sec:harmonic}
+
+The local/nonlocal theorem is global and coordinate-explicit. A second
+form turns every derivative into a normally convergent Hurwitz series
+with finite rational harmonic coefficients. It is often more convenient
+for symbolic work and high-precision evaluation.
+
+For $j\ge1$ define
+\begin{equation}\label{hqj:eq:Cj}
+C_j(s)=\frac{(2s)_{2j}}{(2j)!}-\frac{(s)_j}{j!}
+=\sum_{k=2}^{2j}c_{j,k}s^k.
+\end{equation}
+The two linear terms cancel. In product form,
+\begin{equation}\label{hqj:eq:C-product}
+C_j(s)=\frac{s}{j}\left\{
+\prod_{h=1}^{2j-1}\left(1+\frac{2s}{h}\right)
+-\prod_{h=1}^{j-1}\left(1+\frac{s}{h}\right)\right\}.
+\end{equation}
+Consequently every $c_{j,k}$ is rational. Extend it by zero outside
+$2\le k\le2j$. The first examples are
+\begin{align}
+C_1(s)&=2s^2,\notag\\
+C_2(s)&=\tfrac23s^2(s+1)(s+2),\notag\\
+C_3(s)&=\tfrac1{45}s^2(s+1)(s+2)(4s^2+18s+23),\label{hqj:eq:C-examples}\\
+C_4(s)&=\tfrac1{315}s^2(s+1)(s+2)(s+3)(s+4)(2s^2+8s+11).\notag
+\end{align}
+The quadratic coefficient is particularly simple:
+\begin{equation}\label{hqj:eq:c2}
+c_{j,2}=\frac{2H_{2j-1}-H_{j-1}}j
+=\frac2j\left(H_{2j}-\tfrac12H_j\right).
+\end{equation}
+
+To express all coefficients in generalized harmonic numbers, put
+\[
+\kappa_\ell^{(N,\alpha)}
+=(-1)^{\ell-1}(\ell-1)!\alpha^\ell H_N^{(\ell)}.
+\]
+Expanding the logarithm of each product in \eqref{hqj:eq:C-product} gives
+\begin{equation}\label{hqj:eq:c-Bell}
+c_{j,k}=\frac{
+Y_{k-1}(\bm\kappa^{(2j-1,2)})-
+Y_{k-1}(\bm\kappa^{(j-1,1)})}{j(k-1)!},\qquad k\ge2.
+\end{equation}
+Only the first $k-1$ entries of each vector are used. Formula
+\eqref{hqj:eq:c-Bell} is an all-order finite compiler, not a recursive
+instruction to differentiate a large hypergeometric expression.
+
+\begin{theorem}[All-order harmonic--Hurwitz--Stieltjes identity]
+\label{hqj:thm:compiler}
+Suppose first that $0<b<a$. Then, normally for $s$ near zero after its
+removable pole cancellations,
+\begin{equation}\label{hqj:eq:master-C}
+\mathcal D_W(s)=\sum_{d=0}^D w_d\sum_{j\ge1}
+(-1)^j b^{2j}C_j(s)\zeta(2s+2j-d,a).
+\end{equation}
+For every $r\ge1$,
+\begin{equation}\label{hqj:eq:compiler}
+\boxed{\Delta_r(W;a,b)
+=r!\sum_{d=0}^D w_d\sum_{j\ge1}(-1)^j b^{2j}
+\mathcal T_{j,d,r}(a),}
+\end{equation}
+where, with $q=2j-d$,
+\begin{equation}\label{hqj:eq:Tnonres}
+\mathcal T_{j,d,r}(a)=
+\sum_{k=2}^r\frac{2^{r-k}c_{j,k}}{(r-k)!}
+\zeta^{(r-k)}(q,a),\qquad q\ne1,
+\end{equation}
+and
+\begin{equation}\label{hqj:eq:Tres}
+\mathcal T_{j,d,r}(a)=\frac{c_{j,r+1}}2+
+\sum_{k=2}^r\frac{(-2)^{r-k}c_{j,k}}{(r-k)!}
+\gamma_{r-k}(a),\qquad q=1.
+\end{equation}
+Empty sums are zero. For arbitrary $b>0$, choose $N\ge0$ with $A=a+N>b$.
+Replace $a$ by $A$ in the double series and add the finite head
+\begin{align}
+\sum_{n=0}^{N-1}W(x_n)\bigl\{
+&2^{r-1}\bigl((-\log(x_n+ib))^r+(-\log(x_n-ib))^r\bigr)
+\notag\\[-2pt]
+&-(-\log(x_n^2+b^2))^r\bigr\}.
+\label{hqj:eq:head}
+\end{align}
+This is a globally valid normally convergent representation; no
+small-mass restriction remains after the head is restored.
+\end{theorem}
+\begin{proof}
+The binomial series for the average of $(1+ib/x)^{-2s}$ and
+$(1-ib/x)^{-2s}$ retains exactly the even inverse powers. Their
+coefficient at $x^{-2j}$ is
+$(-1)^jb^{2j}(2s)_{2j}/(2j)!$. The quadratic factor has coefficient
+$(-1)^jb^{2j}(s)_j/j!$. Subtract and sum the resulting powers of $x$ in
+an initial half-plane to obtain \eqref{hqj:eq:master-C}.
+
+On a compact set of $s$, the Pochhammer ratios grow at most polynomially
+in $j$; their derivatives acquire only polynomial and logarithmic
+factors. For sufficiently large $j$, the Hurwitz sum and its fixed
+order derivatives are bounded by a polynomial in $j$ times
+$a^{-2j}$, with constants depending on the compact set and the fixed
+parameters. Hence $(b/a)^{2j}$ gives normal convergence. The finitely
+many exceptional Hurwitz factors are continued separately. Their only
+possible pole at $s=0$ occurs at $q=1$, and $C_j(s)=O(s^2)$ cancels it.
+
+For $q\ne1$, Taylor multiplication directly gives
+\eqref{hqj:eq:Tnonres}. At $q=1$, multiply $C_j(s)$ by
+\[
+\zeta(1+2s,a)=\frac1{2s}
++\sum_{m\ge0}\frac{(-2)^m\gamma_m(a)}{m!}s^m.
+\]
+The pole raises the required coefficient index from $r$ to $r+1$,
+producing \eqref{hqj:eq:Tres}. This proves the derivative formula.
+
+When $b\ge a$, perform exactly the same argument on the tail beginning
+at $A=a+N$. Its polynomial weight is still $W(x)$ in the same coordinate
+$x=n+A$. The omitted ordinary finite sum is entire in $s$; taking its
+$r$th derivative gives \eqref{hqj:eq:head}. Thus the global formula is
+an equality of continuations, not an extrapolation of a divergent
+binomial series.
+\end{proof}
+
+\subsection{Concrete consequences}
+Combining \eqref{hqj:eq:atan-square}, \eqref{hqj:eq:c2}, and
+\eqref{hqj:eq:compiler} gives the exact harmonic identity
+\begin{equation}\label{hqj:eq:atan-harmonic}
+\sum_{n\ge0}\arctan^2\!\left(\frac b{n+a}\right)
+=\sum_{j\ge1}\frac{(-1)^{j+1}b^{2j}}j
+\left(H_{2j}-\tfrac12H_j\right)\zeta(2j,a),\quad b<a.
+\end{equation}
+For $a=1$, its first terms are
+\[
+b^2\zeta(2)-\tfrac23b^4\zeta(4)+\tfrac{23}{45}b^6\zeta(6)
+-\tfrac{44}{105}b^8\zeta(8)+\cdots.
+\]
+The finite-head version remains valid at every positive $b$.
+
+For an odd weight, the Stieltjes term is visible already at the second
+jet. For instance,
+\begin{equation}\label{hqj:eq:xsecond}
+\Delta_2(x;a,b)=4b^2\psi(a)+
+4\sum_{j\ge2}\frac{(-1)^jb^{2j}}j
+\left(H_{2j}-\tfrac12H_j\right)\zeta(2j-1,a),\quad b<a.
+\end{equation}
+At the third jet the same resonant term is
+$24b^2\gamma_1(a)$; at higher orders the compiler produces
+$\gamma_2(a),\gamma_3(a),\ldots$ with no additional analytic argument.
+For $W=x^3$ and $r=2$, the $j=2$ term is
+\[
+b^4\left(2+\tfrac83\gamma_0(a)\right).
+\]
+The rational $2b^4$ comes from $c_{2,3}/2$ before multiplication by $2!$.
+Dropping this residue contribution would give an incorrect identity.
+
+The connection to polygamma is explicit: for integers $q\ge2$,
+\begin{equation}\label{hqj:eq:polygamma-zeta}
+\zeta(q,a)=\frac{(-1)^q}{(q-1)!}\psi^{(q-1)}(a).
+\end{equation}
+Higher spectral derivatives in \eqref{hqj:eq:Tnonres} remain ordinary
+Hurwitz order derivatives. The formula does not pretend they are all
+ordinary argument derivatives of polygamma.
