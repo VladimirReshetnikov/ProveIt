@@ -4392,7 +4392,15 @@ Invariance in `y` at `A = [k]` forces `Σ_e c_e ∏_{i∈B} e_i = 0` for every
 form a basis of the functions on `{0,1}^k`, so the annihilator of the proper
 ones is spanned by the parity function. The `m`-range Lemma 15.4 is
 therefore the printed proof with a general Corollary 15.2 and
-`(2m+1)^(2d·2^k)` patterns.
+`(2m+1)^(2d·2^k)` patterns. **Formalized**:
+* `Proofs15WalshGeneral` provides `signedWalsh_multiple_of_invariant` and
+  `booleanWalsh_multiple_of_invariant` (Lemma 15.1 and Corollary 15.2 for any
+  integer coefficients), and `corollary_15_2_of_general`.
+* `Proofs15DegenerateRange` provides `IsDegenerateWithin m`,
+  `isDegenerateWithin_one_iff` and `degenerate_count_within_le`:
+  `#{m-degenerate} ≤ (2m+1)^(2d·2^k)·k·N^((2d+1)k+2d−2)`.
+
+Both are light modules, kernel-checked, and use only the standard axioms.
 
 *Propagation (model).* `models/model_fejer.py` mirrors the split-class
 recursion of `Proofs16SplitStepBounds` exactly (`splitStepA`, `splitStepD`).
