@@ -2,10 +2,10 @@
 
 The canonical reading artifact is the collective four-volume manuscript,
 [Polylogarithms and their Arithmetic Bridges](docs/manuscript/README.md),
-authored by **ProveIt Contributors**. The volumes have **130, 129, 237 and
+authored by **ProveIt Contributors**. The volumes have **130, 129, 240 and
 85 pages**, each compiling independently; the retained
-[combined edition](docs/manuscript/polylogarithms.pdf) has **540 pages**.
-They share twelve chapters, thirteen figures and 139 references. The
+[combined edition](docs/manuscript/polylogarithms.pdf) has **543 pages**.
+They share twelve chapters, thirteen figures and 140 references. The
 [editorial ledger](docs/manuscript/EDITORIAL-LEDGER.md) separates accepted
 proofs from pending analytic claims, and the
 [validation record](docs/manuscript/VALIDATION.md) distinguishes proofs,
@@ -602,3 +602,14 @@ manuscript README paragraph is removed. The nineteenth intake preserves
 twelve packages and completes all supplied mathematical replays; its lattice
 runner needs one output-Path parenthesis repair on the isolated copy, with
 the unmodified failure preserved. Other analytic branches remain pending.
+
+
+Section 8.46 now also supplies every zero-constant compensator by the finite
+Euler homotopy formula and proves the locally analytic primitive series.
+Gamma and Stieltjes translations retain their exact endpoint terms. The
+collective affine primitive has a closed entire expression and all-degree
+coefficients, including the required +t/2 normalization. Independent sparse
+exact checks through weight eighteen and native Wolfram symbolic identities
+pass. All five twentieth-intake suites pass on isolated copies; the complete
+73722-case gap-ten finite certificate is reproduced with a disclosed portable
+structured comparator. Its infinite Gamma-basis proof remains pending audit.

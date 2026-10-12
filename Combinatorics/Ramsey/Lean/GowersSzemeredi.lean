@@ -1162,6 +1162,13 @@ import GowersSzemeredi.Proofs16ClassStepFejer
 import GowersSzemeredi.Proofs16ClassStepBoundsFejer
 import GowersSzemeredi.Proofs16ClassStepDegreesFejer
 import GowersSzemeredi.Proofs16SplitStepFejer
+import GowersSzemeredi.Proofs16SinglePieceCoverGlobalWith
+import GowersSzemeredi.Proofs18SinglePieceCoverInverseFejer
+import GowersSzemeredi.Proofs18TightClassesFejer
+import GowersSzemeredi.Proofs18FejerEnvelopeBase
+import GowersSzemeredi.Proofs18CoverModulusFejer
+import GowersSzemeredi.Proofs18CoverDensityFejer
+import GowersSzemeredi.Proofs18CoverExponentsFejer
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

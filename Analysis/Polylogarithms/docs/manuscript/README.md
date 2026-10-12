@@ -7,24 +7,24 @@ organized as four volumes. Each has its own source and compiled PDF.
 |---|---|---|---:|
 | I | Polylogarithm identities, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 130 |
 | II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 129 |
-| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 237 |
+| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 240 |
 | IV | Gamma grids, CM lattice periods, class products and Herglotz arithmetic | [Gamma Grids, CM Periods and Herglotz Arithmetic](volumes/volume-4-cm-and-herglotz.pdf) | 85 |
 
 The volumes partition all twelve chapters and the literature appendix.
 Chapter, theorem and equation numbering is retained so research-report
 citations stay stable. Cross-volume references link to their exact PDF
 destinations; keep the four PDFs together. Each volume has its own contents
-and the shared bibliography of 139 references. The scientific text is shared
+and the shared bibliography of 140 references. The scientific text is shared
 through chapter files and [preamble.tex](preamble.tex), avoiding duplicate
 copies of proofs. See [volume sources and build instructions](volumes/README.md).
 The [combined source](polylogarithms.tex) and its
-[540-page combined snapshot](polylogarithms.pdf) remain available.
+[543-page combined snapshot](polylogarithms.pdf) remain available.
 
-The [inventory](source-inventory.json) accounts for **1,742 textual source
+The [inventory](source-inventory.json) accounts for **1,794 textual source
 files**, including overlapping articles, fragments and correction registers.
 The [editorial ledger](EDITORIAL-LEDGER.md) maps accepted mathematical claims
-and pending research integration. The 119 imported archives preserve 4,385
-original tracked members; 46 ignored bare checksum records remain recoverable
+and pending research integration. The 124 imported archives preserve 4,550
+original tracked members; 50 ignored bare checksum records remain recoverable
 in arrival history. Each imported ZIP was retired in its placement commit.
 All eleven complete mathematical suites in the seventeenth and eighteenth
 intakes pass on isolated copies. Preservation and finite replay do not imply
@@ -359,3 +359,20 @@ mathematical replay passes, with an explicitly recorded copy-only output-Path
 repair for the lattice suite and its original failure preserved. The actual
 alpha5 printed typo is corrected to +24*zeta(5); the duplicate README passage
 is removed. Other incoming analytic branches remain tracked in the ledger.
+
+
+Section 8.46 now also gives every compensating derivative by a finite Euler
+homotopy formula and proves a locally convergent primitive generator. The
+Gamma and Stieltjes translation identities retain their exact endpoint
+terms. The affine primitive generator has an explicit entire evaluation;
+its +t/2 correction enforces the canonical zero-constant normalization.
+The cubic report's all-index conjecture is already covered by Theorem 8.139.
+Higher Identities independently proves the normal generator and receives
+credit for that overlap and for the primitive extension.
+
+The twentieth intake has five full isolated replay passes. Its complete
+gap-ten finite certificate is freshly compiled and reproduced by exact
+structured values; two original/serialization-guard failures are preserved,
+and the final copy-only comparator change is disclosed. The Gamma-basis and
+infinite gap-ten proof remain separate pending acceptance work. Original
+deliveries and their historical status statements remain unchanged.

@@ -1,0 +1,479 @@
+import GowersSzemeredi.Proofs16SinglePieceCoverGlobal
+import GowersSzemeredi.Proofs16DenseSelectionWith
+import GowersSzemeredi.Proofs16PolyPieceTwoDataWith
+
+/-! **The joint-cover single-piece lift with `(θ₁, ζ)` as parameters**
+(Notes L.16d).
+
+`single_piece_lift_global_cover` (`Proofs16SinglePieceCoverGlobal`) is the
+single-piece lift of the Section 18 inverse step. It fixes the printed
+`θ₁ = section16ThetaOne θ γ k` and `ζ = section16Zeta θ γ k` through
+Lemmas 16.5 and 16.7 and through the budgets
+`globalBudget = θ₂(θ₁)/(2(2^k+1))` and `globalTheta2 = θ₂(θ₁)/2`. Here:
+* `globalBudgetW t1 k`, `globalTheta2W t1`, `coverPrecW`, `coverCountW`,
+  `coverRho1W`, `coverExpW`, `coverRemWidthW`: the same quantities at density
+  `t1`; at the printed `t1` they are the corpus's by `rfl` (`…_printed`);
+* `single_piece_lift_global_cover_with`: the lift with `(t1, zeta)`, under
+  `0 < t1/4 ≤ 1/36`, `ζ ≤ section10Zeta α` for `t1/4 ≤ α ≤ 1/6`, and
+  `0 < ζ ≤ 1/2`. It uses `section16_dense_induced_selection_with` and
+  `lemma_16_7_with`, and is generated from the corpus proof by a script
+  with a guard that no printed parameter survives. -/
+set_option autoImplicit false
+noncomputable section
+namespace LeanProofs.GowersSzemeredi
+open Classical
+
+/-- The deletion budget of each good set at density `t1`: `θ₂(t1)/(2(2^k+1))`. -/
+def globalBudgetW (t1 : Real) (k : Nat) : Real := section16ThetaTwo t1 / (2 * (2 ^ k + 1))
+
+/-- The density of the retained good domain at density `t1`: `θ₂(t1)/2`. -/
+def globalTheta2W (t1 : Real) : Real := section16ThetaTwo t1 / 2
+
+/-- The common precision of the vertex covers, `θ₂(t1)/2^(k+1)`. -/
+def coverPrecW (t1 : Real) (k : Nat) : Real := globalTheta2W t1 / 2 ^ (k + 1)
+
+/-- The product of the vertex cover counts at density `t1`. -/
+def coverCountW (Qb : Nat → Real → Real → Real → Real) (t1 gamma : Real) (k : Nat) : Real :=
+  ∏ e ∈ Finset.univ.filter (fun e : Fin k → Bool => e ≠ fun _ => true),
+    max (Qb (section16VertexDirections e).card gamma (globalBudgetW t1 k)
+      (coverPrecW t1 k)) ((3 ^ (k + 1) : Nat) : Real)
+
+/-- The remainder density from joint vertex covers at density `t1`. -/
+def coverRho1W (Qb : Nat → Real → Real → Real → Real) (t1 gamma : Real) (k : Nat) : Real :=
+  globalTheta2W t1 / 2 / coverCountW Qb t1 gamma k
+
+/-- The exponent of the remainder width at density `t1`. -/
+def coverExpW (Eb : Nat → Real → Real → Real → Real) (t1 gamma : Real) (k : Nat) : Real :=
+  ∏ e ∈ Finset.univ.filter (fun e : Fin k → Bool => e ≠ fun _ => true),
+    Eb (section16VertexDirections e).card gamma (globalBudgetW t1 k)
+      (coverPrecW t1 k) / 16 ^ (k + 1 - (section16VertexDirections e).card)
+
+/-- The remainder width at density `t1`. -/
+def coverRemWidthW (Eb : Nat → Real → Real → Real → Real) (t1 gamma : Real) (k N : Nat) : Nat :=
+  ⌈(N : Real) ^ coverExpW Eb t1 gamma k⌉₊
+
+theorem globalBudgetW_printed (theta gamma : Real) (k : Nat) :
+    globalBudgetW (section16ThetaOne theta gamma k) k = globalBudget theta gamma k := rfl
+
+theorem globalTheta2W_printed (theta gamma : Real) (k : Nat) :
+    globalTheta2W (section16ThetaOne theta gamma k) = globalTheta2 theta gamma k := rfl
+
+theorem coverRho1W_printed (Qb : Nat → Real → Real → Real → Real) (theta gamma : Real) (k : Nat) :
+    coverRho1W Qb (section16ThetaOne theta gamma k) gamma k = coverRho1 Qb theta gamma k := rfl
+
+theorem coverRemWidthW_printed (Eb : Nat → Real → Real → Real → Real) (theta gamma : Real) (k N : Nat) :
+    coverRemWidthW Eb (section16ThetaOne theta gamma k) gamma k N = coverRemWidth Eb theta gamma k N := rfl
+
+theorem globalTheta2W_pos_le {t1 : Real} (ha0 : 0 < t1 / 4) (haS : t1 / 4 ≤ 1 / 36) :
+    0 < globalTheta2W t1 ∧ globalTheta2W t1 ≤ 1 := by
+  obtain ⟨h0, h1⟩ := section16ThetaTwo_pos_le_with ha0 haS
+  exact ⟨by rw [globalTheta2W]; positivity, by rw [globalTheta2W]; linarith⟩
+
+theorem coverPrecW_pos_le (t1 : Real) (k : Nat) (ha0 : 0 < t1 / 4) (haS : t1 / 4 ≤ 1 / 36) :
+    0 < coverPrecW t1 k ∧ coverPrecW t1 k ≤ 1 := by
+  obtain ⟨h0, h1⟩ := globalTheta2W_pos_le ha0 haS
+  have h2 : (1 : Real) ≤ 2 ^ (k + 1) := one_le_pow₀ (by norm_num)
+  refine ⟨by unfold coverPrecW; positivity, ?_⟩
+  unfold coverPrecW
+  rw [div_le_one (by positivity)]
+  linarith
+
+/-- The precisions of the `2^k - 1` vertices add up to at most `θ₂(t1)/2`. -/
+theorem nonTop_coverPrecW_sum_le (t1 : Real) (k : Nat) (ha0 : 0 < t1 / 4) (haS : t1 / 4 ≤ 1 / 36) :
+    ((2 : Real) ^ k - 1) * coverPrecW t1 k ≤ globalTheta2W t1 / 2 := by
+  obtain ⟨h0, -⟩ := globalTheta2W_pos_le ha0 haS
+  unfold coverPrecW
+  have h2 : (0 : Real) < 2 ^ (k + 1) := by positivity
+  rw [mul_div_assoc', div_le_div_iff₀ h2 (by norm_num), pow_succ]
+  nlinarith
+
+theorem coverCountW_pos (Qb : Nat → Real → Real → Real → Real)
+    (_hQb : ∀ l g t s, 0 < s → s ≤ 1 → 1 ≤ Qb l g t s)
+    (t1 gamma : Real) (k : Nat) : 0 < coverCountW Qb t1 gamma k := by
+  unfold coverCountW
+  refine Finset.prod_pos fun e _ => lt_of_lt_of_le ?_ (le_max_right _ _)
+  positivity
+
+theorem one_le_coverCountW (Qb : Nat → Real → Real → Real → Real)
+    (t1 gamma : Real) (k : Nat) : 1 ≤ coverCountW Qb t1 gamma k := by
+  unfold coverCountW
+  calc (1 : Real) = ∏ _e ∈ Finset.univ.filter (fun e : Fin k → Bool => e ≠ fun _ => true),
+        (1 : Real) := by simp
+    _ ≤ _ := Finset.prod_le_prod (fun _ _ => zero_le_one) fun e _ => le_trans
+        (by exact_mod_cast Nat.one_le_pow _ _ (by norm_num)) (le_max_right _ _)
+
+theorem coverRho1W_pos_le (Qb : Nat → Real → Real → Real → Real)
+    (hQb : ∀ l g t s, 0 < s → s ≤ 1 → 1 ≤ Qb l g t s)
+    (t1 gamma : Real) (k : Nat) (ha0 : 0 < t1 / 4) (haS : t1 / 4 ≤ 1 / 36) :
+    0 < coverRho1W Qb t1 gamma k ∧ coverRho1W Qb t1 gamma k ≤ 1 := by
+  obtain ⟨h0, h1⟩ := globalTheta2W_pos_le ha0 haS
+  have hc := one_le_coverCountW Qb t1 gamma k
+  have hc0 := coverCountW_pos Qb hQb t1 gamma k
+  unfold coverRho1W
+  refine ⟨by positivity, ?_⟩
+  rw [div_le_one hc0]
+  linarith
+
+/-- **The single-piece lift from global-to-local covers, with the remainder
+from the jointly composed vertex covers.** -/
+theorem single_piece_lift_global_cover_with {k : Nat} (hk : 1 ≤ k) {t1 zeta gamma : Real}
+    (ha0 : 0 < t1 / 4) (haS : t1 / 4 ≤ 1 / 36)
+    (hzeta : ∀ alpha : Real, t1 / 4 ≤ alpha → alpha ≤ 1 / 6 → zeta ≤ section10Zeta alpha)
+    (hz0 : 0 < zeta) (hz2 : zeta ≤ 1 / 2) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
+    {Qb Eb : Nat → Real → Real → Real → Real}
+    (hcov : ∀ l, 1 ≤ l → l ≤ k → PolyCoverAt l (Qb l) (Eb l))
+    (hQb : ∀ l g t s, 0 < s → s ≤ 1 → 1 ≤ Qb l g t s)
+    (hEb : ∀ l g t s, 0 < s → s ≤ 1 → 0 < Eb l g t s)
+    (hEb1 : ∀ l g t s, 0 < s → s ≤ 1 → Eb l g t s ≤ 1)
+    (eps : Nat → Real) (thr : Nat → Nat)
+    (hretile : ∀ q, Section16RetiledLinearityBound k q (eps q) (thr q))
+    {N : Nat} [NeZero N] [Fact N.Prime]
+    (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N)
+    (hB : t1 * (N : Real) ^ (17 * k + 15) ≤
+        generalArrangementCount 8 B ∧
+      (1 - (2 : Real) ^ (-(44 : Real))) * generalArrangementCount 8 B ≤
+        respectedGeneralArrangementCount 8 B phi)
+    (hprodB : HasProductProperty B phi gamma)
+    (hL4 : 4 ≤ coverRemWidthW Eb t1 gamma k N)
+    (m : Nat) (hm1 : 1 ≤ m)
+    (hm : m ≤ coverWidth (Eb k (section16Delta (t1))
+        (globalBudgetW t1 k))
+      (coverRho1W Qb t1 gamma k / 2)
+      ⌈(coverRemWidthW Eb t1 gamma k N : Real) / 8⌉₊)
+    (hpar : ∀ q : Nat, (q : Real) ≤ Qb k (section16Delta (t1))
+        (globalBudgetW t1 k)
+        (coverRho1W Qb t1 gamma k / 2 / 2) →
+      thr q ≤ m ∧ 4 ≤ spectrumCellWidth (zeta) m (eps q) ∧
+      2 ≤ spectrumPieceRho (fun t => t / 2)
+          (coverRho1W Qb t1 gamma k) ^ 3 *
+        spectrumCellWidth (zeta) m (eps q) ∧
+      2 ≤ coverWidth (Eb k gamma (globalBudgetW t1 k))
+          ((fun s => s / 2 / Qb k gamma (globalBudgetW t1 k) (s / 2))
+            (singlePieceTheta (spectrumPieceRho (fun t => t / 2)
+              (coverRho1W Qb t1 gamma k)) 1))
+        (coverWidth (Eb k gamma (globalBudgetW t1 k))
+          (singlePieceTheta (spectrumPieceRho (fun t => t / 2)
+            (coverRho1W Qb t1 gamma k)) 1)
+          ⌈spectrumCellWidth (zeta) m (eps q) / 8⌉₊)) :
+    ∃ q : Nat, (q : Real) ≤ Qb k (section16Delta (t1))
+        (globalBudgetW t1 k)
+        (coverRho1W Qb t1 gamma k / 2 / 2) ∧
+      ∃ (S : Box N (k + 1)) (mu : Point N (k + 1) → ZMod N),
+        S.IsProper ∧ IsMultilinear mu ∧
+        Nat.sqrt (coverWidth (Eb k gamma (globalBudgetW t1 k))
+          ((fun s => s / 2 / Qb k gamma (globalBudgetW t1 k) (s / 2))
+            (singlePieceTheta (spectrumPieceRho (fun t => t / 2)
+              (coverRho1W Qb t1 gamma k)) 1))
+          (coverWidth (Eb k gamma (globalBudgetW t1 k))
+            (singlePieceTheta (spectrumPieceRho (fun t => t / 2)
+              (coverRho1W Qb t1 gamma k)) 1)
+            ⌈spectrumCellWidth (zeta) m (eps q) / 8⌉₊) - 1) - 1 ≤
+          S.width ∧
+        singlePieceDensity (fun s => s / 2 / Qb k gamma (globalBudgetW t1 k) (s / 2))
+            (spectrumPieceRho (fun t => t / 2)
+              (coverRho1W Qb t1 gamma k)) 1 *
+            S.carrier.card ≤
+          (B.filter fun z => z ∈ S.carrier ∧ phi z = mu z).card := by
+  have hk0 : 0 < k := hk
+  obtain ⟨hθ₁pos, hθ₁le, hδpos, hδle⟩ := section16_theta_delta_bounds_with ha0 haS
+  obtain ⟨hθ₂pos, hθ₂le⟩ := section16ThetaTwo_pos_le_with ha0 haS
+  set θ₂ := section16ThetaTwo (t1) with hθ₂def
+  set θ' := globalBudgetW t1 k with hθ'def
+  have hθ'pos : 0 < θ' := by rw [hθ'def, globalBudgetW]; positivity
+  have hθ'le : θ' ≤ 1 := by
+    rw [hθ'def, globalBudgetW, div_le_one (by positivity)]
+    have : (1 : Real) ≤ 2 ^ k := one_le_pow₀ (by norm_num)
+    nlinarith
+  set δ := section16Delta (t1) with hδdef
+  -- 1. Lemmas 16.5 (without condition (i)) and 16.7
+  obtain ⟨H, Y, phiPrime, hH, hcube, hselected, hselection⟩ :=
+    section16_dense_induced_selection_with (k := k) (Fact.out : N.Prime) t1 zeta B phi
+      ha0 haS hzeta hz0 hB
+  have hmass : t1 / 8 * (N : Real) ^ k ≤ H.card := by
+    refine le_trans ?_ hH
+    have : (0 : Real) ≤ (N : Real) ^ k := by positivity
+    nlinarith
+  obtain ⟨x0, hgood, hidentity⟩ := lemma_16_7_with t1 zeta hθ₁pos.le B phi H Y phiPrime
+    hmass hcube hselected hselection
+  have hid : Section16PhiOneIdentity (section16GoodDomain B H Y x0) phi x0 phiPrime :=
+    section16_phi_one_identity_of_common_base B phi H Y x0 phiPrime hidentity
+  set B1 := section16GoodDomain B H Y x0 with hB1def
+  have hB1card : θ₂ * (N : Real) ^ (k + 1) ≤ B1.card := by
+    rw [hB1def, section16GoodDomain_card]; exact hgood
+  set t := appendCoordinate x0 0 with htdef
+  -- 2. the spectrum cover
+  obtain ⟨JΔ, hJΔ, hMLΔ⟩ := hcov k hk le_rfl N δ θ' hδpos hδle hθ'pos hθ'le
+    (section16SpectrumRelation B δ) (section16_spectrum_relation_card B hδpos)
+    (section16_spectrum_relation_product B hδpos)
+  have hcovG := hMLΔ.localRelationCoverFor (hEb k δ θ')
+  -- 3. the vertex covers
+  have hvex : ∀ e : Fin k → Bool, ∃ J : Finset (Point N (section16VertexDirections e).card),
+      e ≠ (fun _ => true) →
+        (1 - θ') * (N : Real) ^ (section16VertexDirections e).card ≤ J.card ∧
+        MultiplyLinearWith (Qb (section16VertexDirections e).card gamma θ')
+          (Eb (section16VertexDirections e).card gamma θ')
+          (restrictRelation (partialGraph
+            ((coordinateSubsetFace (section16VertexDirections e) t).domain B)
+            ((coordinateSubsetFace (section16VertexDirections e) t).pullback phi)) J) := by
+    intro e
+    by_cases he : e = fun _ => true
+    · exact ⟨∅, fun h => absurd he h⟩
+    · have hl1 : 1 ≤ (section16VertexDirections e).card :=
+        Finset.card_pos.mpr ⟨_, section16VertexDirections_last e⟩
+      have hlk : (section16VertexDirections e).card ≤ k := by
+        have := section16VertexDirections_card_lt he
+        omega
+      obtain ⟨J, hJ, hML⟩ := (hcov _ hl1 hlk).face_cover hg hg1 hθ'pos hθ'le hprodB
+        (coordinateSubsetFace (section16VertexDirections e) t)
+      exact ⟨J, fun _ => ⟨hJ, hML⟩⟩
+  choose Jv hJv using hvex
+  set DomV : (Fin k → Bool) → Finset (Point N (k + 1)) := fun e =>
+    Finset.univ.filter fun z => selectedCoordinates
+      (coordinateSubsetFace (section16VertexDirections e) t).free (z + t) ∈
+        (coordinateSubsetFace (section16VertexDirections e) t).domain B ∩ Jv e with hDomVdef
+  have hvert : ∀ e : Fin k → Bool, e ≠ (fun _ => true) →
+      MultiplyLinearWith
+        (fun s => max (Qb (section16VertexDirections e).card gamma θ' s) ((3 ^ (k + 1) : Nat) : Real))
+        (fun s => Eb (section16VertexDirections e).card gamma θ' s /
+          16 ^ (k + 1 - (section16VertexDirections e).card))
+        (partialGraph (DomV e) (section16TranslatedVertex phi x0 e)) := by
+    intro e he
+    obtain ⟨-, hML⟩ := hJv e he
+    rw [restrictRelation_partialGraph] at hML
+    exact vertex_multiplyLinearWith_of_face e
+      (fun s hs hs1 => ⟨hEb _ gamma θ' s hs hs1, hEb1 _ gamma θ' s hs hs1⟩) x0 hML
+  -- 4. the slice covers
+  have hsex : ∀ x : ZMod N, ∃ J : Finset (Point N k),
+      (1 - θ') * (N : Real) ^ k ≤ J.card ∧
+      MultiplyLinearWith (Qb k gamma θ') (Eb k gamma θ')
+        (restrictRelation (partialGraph ((lastSliceFace k x).domain B)
+          ((lastSliceFace k x).pullback phi)) J) := fun x =>
+    (hcov k hk le_rfl).face_cover hg hg1 hθ'pos hθ'le hprodB (lastSliceFace k x)
+  choose Js hJs hMLs using hsex
+  set DomS : ZMod N → Finset (Point N k) := fun x =>
+    Finset.univ.filter fun h => h + x0 ∈ (lastSliceFace k x).domain B ∩ Js x with hDomSdef
+  have hsl : ∀ x, LocalPieceFor (fun s => s / 2 / Qb k gamma θ' (s / 2))
+      (coverWidth (Eb k gamma θ')) (DomS x) (fun h => phi (appendCoordinate (h + x0) x)) :=
+    fun x => ((hMLs x).localPieceFor (hQb k gamma θ') (hEb k gamma θ')).translate x0
+  -- 5. the retained good domain
+  set E := Finset.univ.filter fun e : Fin k → Bool => e ≠ fun _ => true with hEdef
+  set B1' := B1.filter fun z => section16Init z ∈ JΔ ∧
+      (∀ e ∈ E, selectedCoordinates
+        (coordinateSubsetFace (section16VertexDirections e) t).free (z + t) ∈ Jv e) ∧
+      section16Init z + x0 ∈ Js (section16Last z) with hB1'def
+  -- the three bad sets are sparse
+  have hbadΔ : ((Finset.univ.filter fun z : Point N (k + 1) =>
+      section16Init z ∉ JΔ).card : Real) ≤ θ' * (N : Real) ^ (k + 1) := by
+    have h := card_filter_selected_not_mem_le (n := k + 1) (l := k)
+      ⟨Fin.castSucc, Fin.castSucc_injective k⟩ 0 JΔ hJΔ (by omega)
+    have hfun : ∀ z : Point N (k + 1),
+        (fun i => z ((⟨Fin.castSucc, Fin.castSucc_injective k⟩ : Fin k ↪ Fin (k + 1)) i) +
+          (0 : Point N k) i) = section16Init z := fun z => by
+      funext i; simp [section16Init]
+    simp only [hfun] at h
+    exact h
+  have hbadV : ∀ e ∈ E, ((Finset.univ.filter fun z : Point N (k + 1) => selectedCoordinates
+      (coordinateSubsetFace (section16VertexDirections e) t).free (z + t) ∉ Jv e).card : Real) ≤
+      θ' * (N : Real) ^ (k + 1) := by
+    intro e he
+    have hne : e ≠ fun _ => true := (Finset.mem_filter.mp he).2
+    have hlk : (section16VertexDirections e).card ≤ k + 1 := by
+      have := section16VertexDirections_card_lt hne
+      omega
+    exact card_filter_selected_not_mem_le
+      (coordinateSubsetFace (section16VertexDirections e) t).free
+      (fun i => t ((coordinateSubsetFace (section16VertexDirections e) t).free i))
+      (Jv e) (hJv e hne).1 hlk
+  have hbadS : ((Finset.univ.filter fun z : Point N (k + 1) =>
+      section16Init z + x0 ∉ Js (section16Last z)).card : Real) ≤
+      θ' * (N : Real) ^ (k + 1) := by
+    rw [Finset.card_eq_sum_card_fiberwise (f := section16Last) (t := Finset.univ)
+      (fun _ _ => Finset.mem_univ _)]
+    push_cast
+    have hfib : ∀ x : ZMod N, (((Finset.univ.filter fun z : Point N (k + 1) =>
+        section16Init z + x0 ∉ Js (section16Last z)).filter fun z => section16Last z = x).card :
+          Real) ≤ θ' * (N : Real) ^ k := by
+      intro x
+      have h1 : ((Finset.univ.filter fun z : Point N (k + 1) =>
+          section16Init z + x0 ∉ Js (section16Last z)).filter fun z =>
+            section16Last z = x).card ≤
+          (Finset.univ.filter fun h : Point N k => h + x0 ∉ Js x).card := by
+        refine Finset.card_le_card_of_injOn section16Init (fun z hz => ?_) ?_
+        · obtain ⟨hz1, hz2⟩ := Finset.mem_filter.mp hz
+          have hz1' := (Finset.mem_filter.mp hz1).2
+          rw [hz2] at hz1'
+          exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hz1'⟩
+        · intro z hz z' hz' hzz
+          apply initLast_injective
+          simp only [Prod.mk.injEq]
+          exact ⟨hzz, ((Finset.mem_filter.mp hz).2).trans ((Finset.mem_filter.mp hz').2).symm⟩
+      have h2 := card_filter_selected_not_mem_le (n := k) (l := k)
+        (Function.Embedding.refl (Fin k)) x0 (Js x) (hJs x) le_rfl
+      simp only [Function.Embedding.refl_apply, pow_zero] at h2
+      have h1' : (((Finset.univ.filter fun z : Point N (k + 1) =>
+          section16Init z + x0 ∉ Js (section16Last z)).filter fun z =>
+            section16Last z = x).card : Real) ≤
+          ((Finset.univ.filter fun h : Point N k => h + x0 ∉ Js x).card : Real) := by
+        exact_mod_cast h1
+      exact h1'.trans h2
+    calc ∑ x : ZMod N, (((Finset.univ.filter fun z : Point N (k + 1) =>
+          section16Init z + x0 ∉ Js (section16Last z)).filter fun z =>
+            section16Last z = x).card : Real)
+        ≤ ∑ _x : ZMod N, θ' * (N : Real) ^ k := Finset.sum_le_sum fun x _ => hfib x
+      _ = θ' * (N : Real) ^ (k + 1) := by
+          rw [Finset.sum_const, Finset.card_univ, ZMod.card, nsmul_eq_mul, pow_succ]; ring
+  -- the retained domain is dense
+  have hE : (E.card : Real) = 2 ^ k - 1 := by
+    rw [hEdef, nonTopVertices_card]
+    have : 1 ≤ 2 ^ k := Nat.one_le_two_pow
+    push_cast [this]
+    ring
+  have hcover : B1 ⊆ B1' ∪ (Finset.univ.filter fun z : Point N (k + 1) =>
+      section16Init z ∉ JΔ) ∪ (E.biUnion fun e => Finset.univ.filter fun z : Point N (k + 1) =>
+        selectedCoordinates (coordinateSubsetFace (section16VertexDirections e) t).free (z + t) ∉
+          Jv e) ∪ (Finset.univ.filter fun z : Point N (k + 1) =>
+        section16Init z + x0 ∉ Js (section16Last z)) := by
+    intro z hz
+    by_cases h1 : section16Init z ∈ JΔ
+    · by_cases h2 : ∀ e ∈ E, selectedCoordinates
+          (coordinateSubsetFace (section16VertexDirections e) t).free (z + t) ∈ Jv e
+      · by_cases h3 : section16Init z + x0 ∈ Js (section16Last z)
+        · exact Finset.mem_union_left _ (Finset.mem_union_left _ (Finset.mem_union_left _
+            (Finset.mem_filter.mpr ⟨hz, h1, h2, h3⟩)))
+        · exact Finset.mem_union_right _ (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h3⟩)
+      · push_neg at h2
+        obtain ⟨e, he, hbad⟩ := h2
+        exact Finset.mem_union_left _ (Finset.mem_union_right _
+          (Finset.mem_biUnion.mpr ⟨e, he, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hbad⟩⟩))
+    · exact Finset.mem_union_left _ (Finset.mem_union_left _ (Finset.mem_union_right _
+        (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h1⟩)))
+  have hB1'card : globalTheta2W t1 * (N : Real) ^ (k + 1) ≤ B1'.card := by
+    set X1 := Finset.univ.filter fun z : Point N (k + 1) => section16Init z ∉ JΔ with hX1
+    set X2 := E.biUnion fun e => Finset.univ.filter fun z : Point N (k + 1) =>
+        selectedCoordinates (coordinateSubsetFace (section16VertexDirections e) t).free (z + t) ∉
+          Jv e with hX2
+    set X3 := Finset.univ.filter fun z : Point N (k + 1) =>
+        section16Init z + x0 ∉ Js (section16Last z) with hX3
+    have hc := Finset.card_le_card hcover
+    have hu1 := Finset.card_union_le (B1' ∪ X1 ∪ X2) X3
+    have hu2 := Finset.card_union_le (B1' ∪ X1) X2
+    have hu3 := Finset.card_union_le B1' X1
+    have hb := Finset.card_biUnion_le (s := E) (t := fun e => Finset.univ.filter
+      fun z : Point N (k + 1) => selectedCoordinates
+        (coordinateSubsetFace (section16VertexDirections e) t).free (z + t) ∉ Jv e)
+    have hbR : (X2.card : Real) ≤ E.card * (θ' * (N : Real) ^ (k + 1)) := by
+      have hb' : (X2.card : Real) ≤ ∑ e ∈ E, ((Finset.univ.filter fun z : Point N (k + 1) =>
+          selectedCoordinates (coordinateSubsetFace (section16VertexDirections e) t).free
+            (z + t) ∉ Jv e).card : Real) := by
+        exact_mod_cast hb
+      refine hb'.trans ?_
+      calc ∑ e ∈ E, ((Finset.univ.filter fun z : Point N (k + 1) => selectedCoordinates
+            (coordinateSubsetFace (section16VertexDirections e) t).free (z + t) ∉
+              Jv e).card : Real)
+          ≤ ∑ _e ∈ E, θ' * (N : Real) ^ (k + 1) := Finset.sum_le_sum hbadV
+        _ = _ := by rw [Finset.sum_const, nsmul_eq_mul]
+    have h' : (B1.card : Real) ≤ (B1'.card : Real) + (X1.card : Real) + (X2.card : Real) +
+        (X3.card : Real) := by
+      have h := (hc.trans hu1).trans (Nat.add_le_add_right (hu2.trans
+        (Nat.add_le_add_right hu3 _)) _)
+      exact_mod_cast h
+    rw [hE] at hbR
+    have hθ'eq : θ' * (2 ^ k + 1) = θ₂ / 2 := by
+      rw [hθ'def, globalBudgetW, ← hθ₂def]
+      field_simp
+    have hNk1 : (0 : Real) ≤ (N : Real) ^ (k + 1) := by positivity
+    rw [globalTheta2W, ← hθ₂def]
+    nlinarith
+  -- memberships
+  have hB1'B1 : B1' ⊆ section16GoodDomain B H Y x0 := Finset.filter_subset _ _
+  have hB1V : ∀ e : Fin k → Bool, e ≠ (fun _ => true) → B1' ⊆ DomV e := by
+    intro e he z hz
+    obtain ⟨hzB1, -, hzV, -⟩ := Finset.mem_filter.mp hz
+    have heq : (coordinateSubsetFace (section16VertexDirections e) t).map
+        (selectedCoordinates (coordinateSubsetFace (section16VertexDirections e) t).free
+          (z + t)) =
+        appendCoordinate (fun i => x0 i + if e i then section16Init z i else 0)
+          (section16Last z) := by
+      rw [← section16_vertex_coordinate_mask x0 e z]
+      funext j
+      exact coordinateSubsetFace_retraction _ t (z + t) j
+    simp only [hDomVdef, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_inter,
+      CoordinateFace.mem_domain]
+    refine ⟨?_, hzV e (Finset.mem_filter.mpr ⟨Finset.mem_univ _, he⟩)⟩
+    rw [heq]
+    exact section16GoodDomain_vertex_mem B H Y x0 hzB1 e
+  have hB1G : ∀ z ∈ B1', section16Init z ∈ JΔ := fun z hz => (Finset.mem_filter.mp hz).2.1
+  have hB1S : ∀ z ∈ B1', section16Init z ∈ DomS (section16Last z) := by
+    intro z hz
+    obtain ⟨hzB1, -, -, hzS⟩ := Finset.mem_filter.mp hz
+    simp only [hDomSdef, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_inter,
+      CoordinateFace.mem_domain]
+    refine ⟨?_, hzS⟩
+    have h := section16GoodDomain_vertex_mem B H Y x0 hzB1 (fun _ => true)
+    simp only [if_true] at h
+    have hcomm : (fun i => x0 i + section16Init z i) = section16Init z + x0 := by
+      funext i; simp [add_comm]
+    rw [hcomm] at h
+    exact h
+  have hcR : ∀ s : Real, 0 < s → s ≤ 1 → 0 < s / 2 ∧ s / 2 ≤ 1 := fun s hs hs1 =>
+    ⟨by positivity, by linarith⟩
+  have hc : ∀ s : Real, 0 < s → s ≤ 1 → 0 < s / 2 / Qb k gamma θ' (s / 2) ∧
+      s / 2 / Qb k gamma θ' (s / 2) ≤ 1 := by
+    intro s hs hs1
+    have hq := hQb k gamma θ' (s / 2) (by positivity) (by linarith)
+    refine ⟨by positivity, ?_⟩
+    rw [div_le_one (by linarith)]
+    linarith
+  obtain ⟨hθ₂'pos, hθ₂'le⟩ : 0 < globalTheta2W t1 ∧ globalTheta2W t1 ≤ 1 :=
+    ⟨by rw [globalTheta2W]; positivity, by rw [globalTheta2W]; linarith⟩
+  -- 6. the remainder piece from the joint cover, on the full box
+  set P0 := fullSpaceBox N (k + 1) with hP0def
+  have hP0 : P0.IsProper := fullSpaceBox_isProper N (k + 1)
+  have hP0carrier : P0.carrier = Finset.univ := fullSpaceBox_carrier N (k + 1)
+  have hP0width : P0.width = N := fullSpaceBox_width N (k + 1) (Nat.succ_pos k)
+  have hP0card : (P0.carrier.card : Real) = (N : Real) ^ (k + 1) := by
+    rw [hP0carrier, Finset.card_univ]
+    simp [Point, ZMod.card]
+  have hP0ne : P0.carrier.Nonempty := by rw [hP0carrier]; exact Finset.univ_nonempty
+  obtain ⟨hpr0, hpr1⟩ := coverPrecW_pos_le t1 k ha0 haS
+  have hsum : ∑ e ∈ E, coverPrecW t1 k ≤ globalTheta2W t1 / 2 := by
+    rw [Finset.sum_const, nsmul_eq_mul, hE]
+    exact nonTop_coverPrecW_sum_le t1 k ha0 haS
+  obtain ⟨R1, Mrem, hR1, -, hR1w, hMrem, hR1c⟩ := remainder_piece_of_vertex_covers DomV
+    (fun e s => max (Qb (section16VertexDirections e).card gamma θ' s) ((3 ^ (k + 1) : Nat) : Real))
+    (fun e s => Eb (section16VertexDirections e).card gamma θ' s /
+      16 ^ (k + 1 - (section16VertexDirections e).card))
+    (fun _ => coverPrecW t1 k) hvert (fun _ => ⟨hpr0, hpr1⟩)
+    (fun e => (zero_le_one.trans (hQb _ gamma θ' _ hpr0 hpr1)).trans (le_max_left _ _))
+    (fun e => div_nonneg (hEb _ gamma θ' _ hpr0 hpr1).le (by positivity))
+    (theta := globalTheta2W t1) (lt_of_le_of_lt hsum (half_lt_self hθ₂'pos)) P0 B1' hP0
+    (by rw [hP0carrier]; exact Finset.subset_univ _) hB1V (by rw [hP0card]; exact hB1'card) hP0ne
+  rw [hP0width] at hR1w
+  beta_reduce at hR1c hR1w
+  rw [← hEdef] at hR1c hR1w
+  have hcc : coverCountW Qb t1 gamma k = ∏ e ∈ E,
+      max (Qb (section16VertexDirections e).card gamma θ' (coverPrecW t1 k))
+        ((3 ^ (k + 1) : Nat) : Real) := by
+    rw [hEdef, hθ'def]; rfl
+  have hce : coverExpW Eb t1 gamma k = ∏ e ∈ E,
+      Eb (section16VertexDirections e).card gamma θ' (coverPrecW t1 k) /
+        16 ^ (k + 1 - (section16VertexDirections e).card) := by
+    rw [hEdef, hθ'def]; rfl
+  have hcc0 := coverCountW_pos Qb hQb t1 gamma k
+  rw [hcc] at hcc0
+  have hrem : ∃ (R1 : Box N (k + 1)) (Mrem : Point N (k + 1) → ZMod N),
+      R1.IsProper ∧ coverRemWidthW Eb t1 gamma k N ≤ R1.width ∧ IsMultilinear Mrem ∧
+      coverRho1W Qb t1 gamma k * R1.carrier.card ≤
+        (B1'.filter fun x => x ∈ R1.carrier ∧ section16PhiRemainder phi x0 x = Mrem x).card := by
+    refine ⟨R1, Mrem, hR1, Nat.ceil_le.mpr ?_, hMrem, le_trans ?_ hR1c⟩
+    · rw [hce]; exact hR1w
+    · refine mul_le_mul_of_nonneg_right ?_ (Nat.cast_nonneg _)
+      rw [coverRho1W, hcc]
+      exact div_le_div_of_nonneg_right (by linarith) hcc0.le
+  exact single_piece_lift_core_rem hk hz0 hz2 (cR := fun s => s / 2)
+    (Qc := fun s => Qb k δ θ' (s / 2)) (wR := coverWidth (Eb k δ θ')) hcR (coverWidth_mono _)
+    hc (coverWidth_mono _) eps thr hretile B phi H Y phiPrime x0 hselection hid B1'
+    hB1'B1 hθ₂'pos hθ₂'le hB1'card _ (coverRho1W_pos_le Qb hQb t1 gamma k ha0 haS) _
+    hrem JΔ hcovG hB1G DomS hsl hB1S hL4 m hm1 hm hpar
+
+end LeanProofs.GowersSzemeredi
