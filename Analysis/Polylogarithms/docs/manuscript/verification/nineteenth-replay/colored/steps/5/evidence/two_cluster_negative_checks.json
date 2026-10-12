@@ -1,0 +1,43 @@
+{
+  "script": "verify_two_cluster_negative.py",
+  "mpmath_version": "1.3.0",
+  "working_decimal_digits": 55,
+  "parameters": {
+    "r": 1,
+    "s": 2,
+    "x": 1,
+    "B": 4,
+    "C": 0,
+    "q": "-4",
+    "swapped_q": "0.8"
+  },
+  "face": "I_3(U -> -log(1+U); 4,0,0)",
+  "interpretation": "Ordinary convergent quadrature on real branches, including q=-4 outside the defining power-series disk. Floating-point diagnostics, not certified interval enclosures or formal proof.",
+  "checks": [
+    {
+      "name": "ordinary_beta_face_vs_negative_argument_dictionary",
+      "left": "1.98710262329353737460368081969524371473116389078092248",
+      "right": "1.987102623293537374603680819695243714731163890780922442",
+      "absolute_residual": "3.81730311378e-53",
+      "absolute_tolerance": "1.0e-48",
+      "passed": true
+    },
+    {
+      "name": "landen_transform_negative_to_positive_argument",
+      "left": "0.9935513116467686873018404098476218573655819453904612208",
+      "right": "0.9935513116467686873018404098476218573655819453904612208",
+      "absolute_residual": "2.03915764625e-56",
+      "absolute_tolerance": "1.0e-48",
+      "passed": true
+    },
+    {
+      "name": "anchored_mass_primitive_vs_ordinary_beta_face",
+      "left": "1.987102623293537374603680819695243714731163890780922442",
+      "right": "1.98710262329353737460368081969524371473116389078092248",
+      "absolute_residual": "3.81934227143e-53",
+      "absolute_tolerance": "1.0e-48",
+      "passed": true
+    }
+  ],
+  "all_passed": true
+}

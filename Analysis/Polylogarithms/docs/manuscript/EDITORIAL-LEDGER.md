@@ -886,3 +886,43 @@ certificates. The order-fourteen extension independently certifies all
 identities at every larger even order. Formal coefficient rank is not
 arithmetic independence. General higher fixed orders, Gaussian S6/revised
 S8 and all separately queued analytic families remain open.
+
+
+## Nineteenth intake: fixed gaps, universal coefficients and connected identities
+
+Preserve twelve packages with 433 original members, 429 tracked and four
+ignored bare records recoverable in arrival history. Retire their ZIPs in
+placement 83d796004821, published in cc569dca8622. The two similarly named
+Universal Gamma packages contain different manuscripts and retain separate
+destinations. All twelve specified full mathematical suites pass on isolated
+copies, with one qualified output-writer repair described below. Cumulative
+preservation is 119 archives and 4385 tracked originals, with 46 ignored
+recoverable records. No delivered source, evidence or note is rewritten.
+
+| Group | Reconciliation and acceptance boundary |
+|---|---|
+| `balanced-stieltjes-moments` | Ordinary Mellin moments in the positive translation of conventional Stieltjes constants, balanced tail cancellation and Bernoulli-root/filter families. Preserve failed preliminary polylogarithm derivative diagnostics separately from corrected full replays. This does not solve harmonic Stieltjes R_r,k or the twist convolution problem. Canonical analytic integration pending. |
+| `boundary-contacts-log-spectra` | Confirm and correct the actual fifth reciprocal-Gamma print error, with independent exact Taylor and native Wolfram audits. Independent bilinear contact hyperplanes, negative jets and full logarithmic spectral finite parts have complete supplied replays; their analytic integration remains pending. |
+| `connected-spectral-gamma` | Keep independent regulators and the polar hyperplane before diagonal restriction. Connected all-factor spectral derivatives, collision constants and primitives remain a distinct pending branch. Provenance deliberately records per-file moving reads rather than one atomic source pin. |
+| `gamma-normalizations-colored-moments` | Complete seven-program replay includes the optional depth-two integral diagnostic and exact printed-RHS bridge. Preserve Gustafson attribution, weighted Gamma-statistic range and colored/cluster conventions. These are distinct from Gaussian S6/S8 and fixed-order prefix rank; analytic integration pending. |
+| `gap-six-harmonic-determinants` | Full eight-program replay passes, including all 2044 finite cases. The Gamma integral basis and effective infinite nonvanishing proof are still separate canonical audit work. An independent all-half-gap algebraic bridge audit is recorded in verification/FIXED-GAP-BRIDGE-AUDIT.md. Modular nonzero residues do not prove signs or arithmetic independence. |
+| `lattice-contacts-mixed-zeta` | The unmodified runner fails after successful mixed-tail numerical comparisons because write_text is applied to a filename string. Preserve the failed run and two fresh partial receipts. A full new isolated replay passes with a parenthesis-only output-Path repair, recorded and reproduced by the harness; no mathematical expression changes. Lattice, modular, independent-shift and spectral-face analytic integration remains pending. |
+| `lerch-selectors` | Full exact/numerical/coefficient suites pass. The Library predecessor now has an exact 74172-byte match to the preserved affine report; keep the older provenance qualification and add later evidence separately. Retain C(s), integer-length and finite-remainder scopes; external-paper corrections await primary-source review. |
+| `order-ten-stieltjes-generators` | The full independent 1914-case completion and generator suites pass. Order ten is already canonical through another proof, so retain this alternative and its explicit identities without double-counting closure. Polylogarithmic/Stieltjes generator integration pending. |
+| `ordered-boundary-identities` | Full ordinary and optional asymptotic suites pass. Ordered boundary localization, asymmetric convergence and fixed-gap Gamma basis remain distinct pending scopes. The new independent algebraic bridge confirms every row/column factor for the original matrix, without asserting the analytic null basis from finite examples. |
+| `joint-polygamma-multiscale` | Freshly compile and reproduce the entire 8187-case gap-eight certificate; replay both cumulant precisions, all contact checks and independent identity audits. Infinite Gamma-basis completion, weighted-range cumulants, multiscale contacts and Barnes identities retain their separate analytic acceptance scopes. General all-pair rank remains open. |
+| `universal-gamma-coefficients` | Accept Section 8.46's all-index coefficient formula, support/sign theorem and ordinary finite projections, with a self-contained rational telescoping and variational uniqueness proof. The collective analytic-jet extension proves local convergence of the infinite normal generator and gives an explicit entire affine/Hermite specialization. Other application and primitive families remain separate branches. |
+| `universal-beta-normal-forms` | Same all-index formula through an independent highest-variation proof; preserve both original routes and complete full replays. The exact Library predecessor match supplements the original source audit. Canonical acceptance is the common coefficient core and the collective analytic resummation; no convergence for arbitrary formal jet sequences is asserted. |
+
+The corrected printed alpha5 coefficient has terminal +24*zeta(5), in
+agreement with the defining reciprocal-Gamma series. The duplicate README
+paragraph is removed after an exact context check. Original proposed patches
+and duplicate-removal notes remain preserved as source evidence.
+
+The analytic normal generator is proved for holomorphic input jets on their
+disk of analyticity, and is entire in t for entire inputs. Gamma specialization
+has the stated disk avoiding its poles. Independent exact sparse IBP checks
+all 1596 coefficients through weight eighteen; ordinary finite projections,
+the truncation majorant and a closed affine generator have separate numerical
+diagnostics. Finite checks do not establish the infinite theorem, whose proof
+uses the coefficient formula and an explicit uniform Cauchy majorant.

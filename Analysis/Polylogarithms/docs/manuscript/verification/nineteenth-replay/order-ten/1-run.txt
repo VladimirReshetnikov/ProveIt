@@ -1,0 +1,81 @@
+
+===== generate_order10_certificate.py =====
+{
+  "count": 1914,
+  "prime": 1000003,
+  "residue_sha256": "3977e54f5b43db43e8f080c32f2e5b22beac54412cca32ff5d03d84975111836",
+  "sentinels": {
+    "b=6": 484126,
+    "b=8": 572800,
+    "b=10": 668726,
+    "b=962": 989617,
+    "b=1919": 667530
+  }
+}
+
+===== verify_order10_certificate.py =====
+PASS: exact one-prime certificate
+  modulus: 1000003
+  cases:   1914 (6 <= b <= 1919)
+  zeros:   0
+  sha256:  3977e54f5b43db43e8f080c32f2e5b22beac54412cca32ff5d03d84975111836
+  sentinels: {'b=6': 484126, 'b=8': 572800, 'b=10': 668726, 'b=962': 989617, 'b=1919': 667530}
+
+===== verify_order10_certificate_independent.py =====
+PASS: independent full replay
+  cases: 1914
+  prime: 1000003
+  sha256: 3977e54f5b43db43e8f080c32f2e5b22beac54412cca32ff5d03d84975111836
+
+===== verify_normalization_spots.py =====
+PASS b=10: det(M)=398752, multiplier*det(A)=398752
+PASS b=11: det(M)=93416, multiplier*det(A)=93416
+PASS b=12: det(M)=26567, multiplier*det(A)=26567
+PASS b=13: det(M)=733164, multiplier*det(A)=733164
+PASS b=14: det(M)=569113, multiplier*det(A)=569113
+
+===== generate_explicit_identity.py =====
+{
+  "p": 10,
+  "q": 16,
+  "zeta_value": "zeta(2)",
+  "polynomial_denominator": 108243971575942760890368,
+  "subtraction": {
+    "0": {
+      "numerator": -23127748662582496,
+      "denominator": 217749717276577245
+    },
+    "2": {
+      "numerator": -1238984692719613,
+      "denominator": 8064804343576935
+    },
+    "4": {
+      "numerator": -168349079333176,
+      "denominator": 14516647818438483
+    },
+    "6": {
+      "numerator": -14443832747344,
+      "denominator": 72583239092192415
+    }
+  }
+}
+
+===== verify_explicit_identity.py =====
+PASS: exact (10,16) -> zeta(2) reconstruction identity
+  P denominator: 108243971575942760890368
+  degree P: 30
+  degree Q: 6
+
+===== numerical_check_explicit_identity.py =====
+diagnostic value: 1.64493406684822643647241516664602518921894990120679843773556
+zeta(2):          1.64493406684822643647241516664602518921894990120679843773556
+absolute error:   0.0
+
+===== numerical_check_generators.py =====
+two-tail generator: 9.9096661e-79
+parameter Stieltjes kernel: 1.2650638e-79
+digamma-square generator: 8.254541e-79
+anchored half-value: 4.1483549e-78
+PASS: all analytic generator diagnostics
+
+PASS: complete package replay
