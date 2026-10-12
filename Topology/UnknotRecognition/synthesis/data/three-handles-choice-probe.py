@@ -10,6 +10,7 @@ from pathlib import Path
 import sys
 ROOT=Path(__file__).resolve().parents[2];sys.path.insert(0,str(ROOT/'fast'))
 from fastunknot.core_three_handle_reduction import reduce_core_three_handles
+from fastunknot.core_handlebody import _forest, _occurrences
 from fastunknot.core_three_handle_reduction_verify import replay_core_three_handles
 from fastunknot.bundle_boundary_kernel import bundle_boundary_kernel
 from fastunknot.normal_parallelity import normal_cut_parallelity
@@ -42,7 +43,12 @@ for c in bank:
             trial.update(histogram=kernel[1]['histogram'],certificate_sha256=hashlib.sha256(
                 json.dumps(certificate,sort_keys=True).encode()).hexdigest())
         trials.append(trial)
-    records.append(dict(id=c['id'],native_first_pair=initial['cancellations'][0],trials=trials))
+    forest,_=_forest(g['core'],lambda:None)
+    counts=_occurrences(g['core'],forest,lambda:None)
+    columns=sorted({h for row in counts.values() for h in row})
+    records.append(dict(id=c['id'],native_first_pair=initial['cancellations'][0],trials=trials,
+                        source_forest=forest,source_columns=columns,
+                        source_matrix=[[row.get(h,0) for h in columns] for row in counts.values()]))
 assert pins==sources()
 report=dict(scope='Alternative forest experiment; native selection unchanged',native_source_sha256=pins,
             fixture_sha256=hashlib.sha256(fixture.read_bytes()).hexdigest(),cases=records)
