@@ -1,0 +1,415 @@
+\section{Sharp late coefficients of a resonant Lambert inverse}
+\label{lm:sec:main}
+
+The newest incoming Lambert manuscript leaves a precise question about the
+large-order coefficients of its inverse, under the heading ``Sharp
+large-order constants of the inverse sectors'' \cite{RepoLambert}.
+We prove its proposed even and odd constants, obtain a further relative
+correction, and identify the corresponding logarithm and dilogarithm terms
+inside the initial Borel disk.  The proof also explains which changes to
+the analytic core or to the finite forward prefix can affect those terms.
+General algebras of factorially divergent series provide a broader setting
+for such questions \cite{Borinsky}; the argument below supplies direct
+estimates for the specific coefficient extraction and its full sum over
+the number of factors.  Lagrange inversion is used in its usual formal
+coefficient sense \cite{Gessel}.
+
+\subsection{The source equation and its normalization}
+\label{lm:subsec:normalization}
+
+Set $A=4\pi^2$ and consider the double Lambert sum
+\[
+ \mathcal F(t)=\sum_{a,b\geq1}\frac{e^{-abt}}{ab}
+              =\sum_{n\geq1}\frac{d(n)}{n}e^{-nt},\qquad t>0.
+\]
+Here $d(n)$ counts the positive divisors of $n$. We use the Stieltjes
+convention $\zeta(1+w)=w^{-1}+\sum_{j\ge0}(-1)^j\gamma_jw^j/j!$.
+Its Mellin integrand is $\Gamma(w)\zeta(1+w)^2t^{-w}$.  The triple pole
+at zero gives the core
+\[
+ \frac12\bigl(\log(1/t)+\gamma\bigr)^2+C_* ,
+ \qquad C_* =\frac{\zeta(2)}2-\gamma^2-2\gamma_1.
+\]
+The negative integer residues give the formal tail
+\begin{equation}\label{lm:eq:forward}
+ R(q)=\sum_{n\geq1}r_nq^n,\qquad
+ r_1=-\frac14,\qquad
+ r_{2m}=\frac{4\Gamma(2m)}{(2m)A^{2m}}\zeta(2m)^2,
+ \qquad r_{2m+1}=0\quad(m\geq1).
+\end{equation}
+In particular $r_2=1/288$.  The real completion of this expansion is
+treated in the predecessor \cite{RepoLambert}.  Here we need only the
+explicit formal coefficients in \eqref{lm:eq:forward}.
+
+For $Y$ large, the exact-core variables of that manuscript are
+$X=\sqrt{2(Y-C_*)}$, $u=X^{-1}$, $q=e^{\gamma-X}$, and $t=qe^{-V}$.
+Their formal inverse equation is
+\begin{equation}\label{lm:eq:inverse}
+ V+\frac u2V^2+uR(qe^{-V})=0,
+ \qquad V(q,u)=\sum_{n\geq1}C_n(u)q^n.
+\end{equation}
+Throughout the coefficient analysis, $q$ and $u$ are independent; the
+physical specialization is a later operation.  The formal implicit
+function theorem gives a unique solution.  The predecessor proves that
+each $C_n$ is a polynomial and obtains
+\begin{equation}\label{lm:eq:finite}
+ C_n(u)=-\sum_{k=1}^n\frac{u^k}{k!}[q^n]R(q)^k
+ \sum_{j=0}^{k-1}\binom{k-1}{j}n^{k-1-j}(k)_j\left(\frac u2\right)^j.
+\end{equation}
+Its conjecture is that the dominant configurations contain one large
+even index and $k-1$ linear indices.  The issue left open there is the
+uniform justification of summing that approximation over $k$.
+
+\begin{theorem}[Sharp Lambert inverse amplitudes]\label{lm:thm:sharp}
+For every $U>0$, uniformly for $|u|\leq U$,
+\begin{equation}\label{lm:eq:sharp}
+ C_n(u)=-\frac{2u\Gamma(n)}{nA^n}
+ \left(e^{-Au/4}+(-1)^ne^{Au/4}\right)
+ +O_U\!\left(\frac{\Gamma(n)}{n^2A^n}\right).
+\end{equation}
+Consequently, for every fixed real $u>0$,
+\begin{align}
+ C_{2m}(u)&\sim-\frac{4u\Gamma(2m)}{(2m)A^{2m}}
+                         \cosh(Au/4),\label{lm:eq:even}\\
+ C_{2m+1}(u)&\sim\frac{4u\Gamma(2m+1)}{(2m+1)A^{2m+1}}
+                         \sinh(Au/4).\label{lm:eq:odd}
+\end{align}
+These are the two conjectured constants of the incoming manuscript.
+\end{theorem}
+
+The additive formulation \eqref{lm:eq:sharp} also covers complex values
+at which one of the displayed hyperbolic functions vanishes.  It is
+stronger than a separate positive-real ratio asymptotic.
+
+\subsection{Analytic-core universality}
+\label{lm:subsec:universality}
+
+\begin{theorem}[Universality of the leading action amplitudes]
+\label{lm:thm:universal}
+Let $A>0$, $r_1=c$, and suppose
+\begin{equation}\label{lm:eq:tail-assumption}
+ r_n=\frac{\Gamma(n)}{nA^n}
+       \bigl(\sigma_++(-1)^n\sigma_-\bigr)
+       +O\!\left(\frac{\Gamma(n)}{n^2A^n}\right),\qquad n\geq2.
+\end{equation}
+Let $\Psi(v,u)$ be analytic near $v=0$ and $u$ in an open parameter
+domain, with $\Psi(0,u)=0$ and $\partial_v\Psi(0,u)=1$; assume a
+common neighborhood of $v=0$ on each compact parameter set.  The unique
+formal solution
+\[
+ \Psi(V,u)+uR(qe^{-V})=0,
+ \qquad V(q,u)=\sum_{n\geq1}C_n(u)q^n,
+\]
+satisfies, locally uniformly in $u$,
+\begin{equation}\label{lm:eq:universal}
+ C_n(u)=-\frac{u\Gamma(n)}{nA^n}
+ \left(\sigma_+e^{Acu}+(-1)^n\sigma_-e^{-Acu}\right)
+ +O\!\left(\frac{\Gamma(n)}{n^2A^n}\right).
+\end{equation}
+Thus nonlinear changes to the analytic core and finite changes to
+$r_2,r_3,\ldots$ preserve the leading amplitudes.  Changing $r_1=c$
+multiplies the two amplitudes by the corresponding exponential factors.
+\end{theorem}
+
+\begin{lemma}[Factorial convolutions]\label{lm:lem:factorials}
+For integers $N\geq j\geq1$,
+\begin{equation}\label{lm:eq:factorial-convolution}
+ \sum_{\substack{\ell_1+\cdots+\ell_j=N\\\ell_i\geq1}}
+       \prod_{i=1}^j(\ell_i-1)!
+ \leq 3^{j-1}(N-j)!.
+\end{equation}
+Suppose $A|r_1|\leq K$ and $A^m|r_m|\leq K(m-2)!$ for $m\geq2$.
+For $1\leq k<n$, with $N=n-k$,
+\begin{equation}\label{lm:eq:all-configurations}
+ A^n|[q^n]R(q)^k|\leq(4K)^k\Gamma(N).
+\end{equation}
+Moreover
+\begin{equation}\label{lm:eq:one-large}
+ [q^n]R(q)^k=kc^{k-1}r_{n-k+1}+E_{n,k},
+ \qquad A^n|E_{n,k}|\leq(4K)^k\Gamma(N-1)\quad(N\geq2).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The elementary inequality
+\[
+ \sum_{p=0}^M p!(M-p)!\leq3M!
+\]
+holds because the two endpoint reciprocal binomial coefficients sum to
+$2$, while each interior one is at most $1/M$; the cases $M=0,1$ are
+immediate.  Induction gives \eqref{lm:eq:factorial-convolution}.
+
+In a composition $m_1+\cdots+m_k=n$ put $\ell_i=m_i-1$ and let $j$
+be the number of positive $\ell_i$.  The absolute sum is at most
+\[
+ K^k\sum_{j=1}^{\min(k,N)}\binom{k}{j}3^{j-1}(N-j)!.
+\]
+Bounding each factorial by $(N-1)!$ proves
+\eqref{lm:eq:all-configurations}.  The terms with $j=1$ give exactly
+$kc^{k-1}r_{n-k+1}$; for the remaining $j\geq2$ one may instead bound
+by $(N-2)!$, proving \eqref{lm:eq:one-large}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{lm:thm:universal}]
+Write $G(v,u)=v/\Psi(v,u)$, analytically continued at $v=0$, so that
+$G(0,u)=1$.  Lagrange inversion in an auxiliary multiplier gives
+\begin{equation}\label{lm:eq:general-finite}
+ C_n(u)=-\sum_{k=1}^n\frac{u^k}{k!}n^{k-1}[q^n]R^k H_{n,k}(u),
+\end{equation}
+where
+\begin{align}
+ H_{n,k}(u)&=(-n)^{1-k}
+  \left.\partial_v^{k-1}\{e^{-nv}G(v,u)^k\}\right|_{v=0}\notag\\
+ &=\sum_{j=0}^{k-1}\binom{k-1}{j}(-n)^{-j}
+              \left.\partial_v^jG(v,u)^k\right|_{v=0}.
+ \label{lm:eq:H}
+\end{align}
+Only $k\leq n$ can contribute, so the auxiliary multiplier may be set
+to one formally.  This also proves the coefficient formula without
+assuming convergence of $R$.
+
+Fix a compact parameter set.  Choose $\rho>0$ and $M\geq1$ such that
+$|G(v,u)|\leq M$ on $|v|\leq\rho$.  Cauchy's estimate yields
+$|\partial_v^jG^k(0,u)|\leq j!M^k\rho^{-j}$.  Since
+$j!\leq n^j$ for $j\leq n$, there is a constant $B$ with
+$|H_{n,k}|\leq B^k$.  The sharper inequality
+$j!\leq jn^{j-1}$ for $j\geq1$ gives
+\begin{equation}\label{lm:eq:H-error}
+ |H_{n,k}-1|\leq
+ \frac{M^k(k-1)\rho^{-1}(1+\rho^{-1})^{k-2}}n
+ \leq \frac{kB_1^k}{n}.
+\end{equation}
+Here and below constants may depend on the compact parameter set.
+
+Assumption \eqref{lm:eq:tail-assumption} supplies the constant $K$ of
+Lemma~\ref{lm:lem:factorials}.  After division by
+$\Gamma(n)/(nA^n)$, the absolute $k$th summand of
+\eqref{lm:eq:general-finite}, for $k<n$, is bounded by
+\begin{equation}\label{lm:eq:k-majorant}
+ \frac{D^k}{k!}\frac{n^k\Gamma(n-k)}{\Gamma(n)}.
+\end{equation}
+For $k\leq n/2$ the last ratio is at most $2^k$, since it is the
+product of $n/(n-j)$ for $1\leq j\leq k$.  This produces the
+summable majorant $(2D)^k/k!$.
+
+For $n/2<k<n$, use $\Gamma(n-k)\leq\Gamma(\lceil n/2\rceil)$ and
+$n^k/k!\leq(en/k)^k\leq(2e)^k$.  The entire contribution of this
+range is bounded by
+\begin{equation}\label{lm:eq:large-k}
+ n\max(1,2eD)^n\frac{\Gamma(\lceil n/2\rceil)}{\Gamma(n)},
+\end{equation}
+which is smaller than every inverse power of $n$.  For $k=n$ one
+uses $[q^n]R^n=c^n$ directly; the normalized bound is a constant to
+the $n$th power divided by $\Gamma(n)$ and has the same property.
+
+It remains to sharpen the range $k\leq n/2$.  By
+\eqref{lm:eq:one-large}, the normalized total contribution of all
+$E_{n,k}$ is $O(1/n)$: indeed its $k$th bound differs from
+\eqref{lm:eq:k-majorant} by the extra factor
+$(n-k-1)^{-1}=O(1/n)$.  For the remaining term put $m=n-k+1$.
+The gamma ratio needed in its evaluation is
+\begin{equation}\label{lm:eq:gamma-ratio}
+ B_{n,k}:=\frac{n^k\Gamma(n-k+1)}{(n-k+1)\Gamma(n)}
+ =\frac n{n-k+1}\prod_{j=1}^{k-1}\frac n{n-j}.
+\end{equation}
+For $k\leq n/2$ it is at most $2^k$, and
+$|B_{n,k}-1|\leq Ck^2 2^k/n$.  To see the latter, take the logarithm
+of the finite product, use $-\log(1-x)\leq2x$ for $0\leq x\leq1/2$,
+and then $e^y-1\leq ye^y$.
+
+The error in \eqref{lm:eq:tail-assumption}, with $m\geq n/2$, is
+also $O(1/n)$ after this normalization.  Combining it with
+\eqref{lm:eq:H-error} and \eqref{lm:eq:gamma-ratio} shows that the
+$k$th term may be replaced, with a total summable error $O(1/n)$, by
+\[
+ -\frac{u(Acu)^{k-1}}{(k-1)!}
+       \bigl(\sigma_++(-1)^{n-k+1}\sigma_-\bigr).
+\]
+All error bounds have a polynomial in $k$ times a constant to the
+$k$th power divided by $(k-1)!$.  Summing the two exponential series
+proves \eqref{lm:eq:universal}, uniformly on the compact parameter set.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{lm:thm:sharp}]
+In \eqref{lm:eq:forward}, $\zeta(n)^2=1+O(2^{-n})$ for $n\geq2$.
+Thus \eqref{lm:eq:tail-assumption} holds with $c=-1/4$ and
+$\sigma_+=\sigma_-=2$.  Apply Theorem~\ref{lm:thm:universal} to
+$\Psi(v,u)=v+uv^2/2$.  The identities for $\cosh$ and $\sinh$ give
+\eqref{lm:eq:even}--\eqref{lm:eq:odd}.
+\end{proof}
+
+\subsection{The first correction and the analytic data it detects}
+\label{lm:subsec:first}
+
+\begin{theorem}[First relative correction]\label{lm:thm:first}
+For the Lambert inverse \eqref{lm:eq:inverse}, put
+\begin{equation}\label{lm:eq:theta-H}
+ \theta=Au/4,\qquad
+ P(u)=\frac{1+u}{2}\theta^2+\frac{uA^2}{288},\qquad
+ D_n(u)=\frac{nA^nC_n(u)}{4\Gamma(n)}.
+\end{equation}
+Let $E_n(\theta)=\cosh\theta$ for even $n$ and
+$E_n(\theta)=-\sinh\theta$ for odd $n$.  Uniformly for $|u|\leq U$,
+\begin{equation}\label{lm:eq:first}
+ D_n(u)=-uE_n(\theta)
+ -\frac un\left(P(u)E_n(\theta)+(u+2)\theta E_n'(\theta)\right)
+ +O_U(n^{-2}).
+\end{equation}
+The correction detects the quadratic core and $r_2=1/288$, although
+neither affects the leading amplitudes.
+\end{theorem}
+
+\begin{proof}
+We retain one more order in the preceding proof.  Uniformly for
+$n\geq8$ and $k\leq n/2$, with $\ell=k-1$, expansion of the logarithm of
+\eqref{lm:eq:gamma-ratio} gives
+\begin{equation}\label{lm:eq:gamma-first}
+ B_{n,k}=1+\frac{\ell(\ell+3)}{2n}
+             +O\!\left(\frac{k^4B_2^k}{n^2}\right).
+\end{equation}
+For example, the sum of the first-order logarithmic terms is
+$\ell(\ell+3)/(2n)$; the sum of their squared arguments is
+$O(k^3/n^2)$, and the exponential remainder is bounded by
+$O(k^4B_2^k/n^2)$.
+
+For the quadratic core, \eqref{lm:eq:H} similarly gives
+\begin{equation}\label{lm:eq:H-first}
+ H_{n,k}=1+\frac{uk(k-1)}{2n}
+              +O_U\!\left(\frac{k^4B_3^k}{n^2}\right).
+\end{equation}
+This is a uniform estimate, not just a fixed-$k$ expansion.  In the
+Cauchy argument, the terms $j\geq2$ are bounded using
+$j!\leq j(j-1)n^{j-2}$; their binomial sum is bounded by a polynomial
+in $k$ times a constant to the $k$th power, divided by $n^2$.
+For a general core $\Psi(v,u)=v+b(u)v^2+O(v^3)$, the first correction
+in \eqref{lm:eq:H-first} is $b(u)k(k-1)/n$.
+
+The one-large-index configurations therefore contribute the operator
+\[
+ \frac12\left((1+u)(\theta\partial_\theta)^2
+                    +(3+u)\theta\partial_\theta\right)
+\]
+applied to the parity exponential sum.  Since $E_n''=E_n$, its value is
+\begin{equation}\label{lm:eq:operator-first}
+ \frac{1+u}{2}\theta^2E_n+(u+2)\theta E_n'.
+\end{equation}
+
+There is one further contribution of normalized order $1/n$: exactly
+two indices are at least two, one equals $2$, and the other equals
+$n-k$.  For $k\leq n/2$ and sufficiently large $n$, its coefficient
+is exactly
+\[
+ k(k-1)c^{k-2}r_2r_{n-k}.
+\]
+Using its leading gamma ratio and summing over $k$ gives
+$-A^2r_2u^2E_n/n$.  Together with \eqref{lm:eq:operator-first}, this
+is precisely the correction in \eqref{lm:eq:first}.
+
+For completeness, the configurations omitted in this refinement have
+a uniform $O(n^{-2})$ bound after normalization.  Those with $j\geq3$
+indices at least two satisfy the strengthened bound
+$(4K)^k\Gamma(n-k-2)$ in Lemma~\ref{lm:lem:factorials}.  With
+$k\leq n/2$ the two additional inverse factors are $O(n^{-2})$.
+For $j=2$, remove the two endpoint configurations just used.  If
+$N=n-k$, both remaining increments are at least two, and
+\begin{equation}\label{lm:eq:two-interior}
+ \sum_{\ell=2}^{N-2}(\ell-1)!(N-\ell-1)!
+       \leq4(N-3)!.
+\end{equation}
+Indeed, put $M=N-2$, divide by $M!$, and use
+$\sum_{i=1}^{M-1}\binom Mi^{-1}\leq4/M$: the two endpoints
+contribute $2/M$, while the remaining binomial coefficients are at
+least $M(M-1)/2$.  Again two inverse powers of $n$ result.  The
+gamma and derivative remainders in the retained configurations have
+the same bound after summing their factorial majorants.  The range
+$k>n/2$ is smaller than every inverse power by
+\eqref{lm:eq:large-k}.  This proves the stated uniform remainder.
+\end{proof}
+
+\subsection{Exact logarithm--dilogarithm decomposition in the Borel disk}
+\label{lm:subsec:borel}
+
+The coefficient asymptotics have a direct polylogarithmic interpretation.
+It only requires summing absolutely convergent series in the initial
+disk and consequently does not require a continuation theorem for the
+inverse Borel transform.
+
+\begin{corollary}[The two nearest Borel singularities]
+\label{lm:cor:logs}
+For
+\[
+ \widehat V_u(\xi)=\sum_{n\geq1}\frac{C_n(u)}{\Gamma(n)}\xi^{n-1}
+\]
+there is, on $|\xi|<A$, the exact decomposition
+\begin{equation}\label{lm:eq:log-decomposition}
+ \widehat V_u(\xi)=\frac{2u}{\xi}
+       \left(e^{-\theta}\log(1-\xi/A)
+                     +e^{\theta}\log(1+\xi/A)\right)+J_u(\xi),
+\end{equation}
+where $J_u$ is holomorphic in the disk and continuous on its closure,
+locally uniformly in $u$.  The factor $1/\xi$ has a removable
+singularity at zero in the displayed combination.  For every complex
+$u\ne0$, both endpoints $+A$ and $-A$ are logarithmically singular,
+with radial logarithmic coefficients respectively
+\begin{equation}\label{lm:eq:radial-amplitudes}
+ \frac{2u}{A}e^{-\theta},\qquad -\frac{2u}{A}e^{\theta}.
+\end{equation}
+The corresponding radially regularized limits exist.  The Borel radius
+is exactly $A$, and the ordinary $q$-series has radius zero.  At $u=0$
+the formal solution is identically zero.
+\end{corollary}
+
+\begin{proof}
+Divide \eqref{lm:eq:sharp} by $\Gamma(n)$ and sum using
+$\sum_{n\geq1}z^n/n=-\log(1-z)$.  The error series is absolutely
+and uniformly convergent on $|\xi|\leq A$, because its coefficients
+are bounded by a constant times $A^{-n}/n^2$.  This proves
+\eqref{lm:eq:log-decomposition}.  The coefficients in
+\eqref{lm:eq:radial-amplitudes} never vanish for $u\ne0$, proving
+both endpoint singularities and the exact Borel radius.  At least one
+of $\cosh\theta$ and $\sinh\theta$ is nonzero, so
+\eqref{lm:eq:sharp} on that parity subsequence also proves that the
+ordinary radius is zero.  For $u=0$, formal uniqueness gives $V=0$.
+\end{proof}
+
+\begin{corollary}[An explicit dilogarithmic correction]
+\label{lm:cor:dilog}
+With $P$ from \eqref{lm:eq:theta-H}, set
+\begin{equation}\label{lm:eq:Q}
+ Q_+(u)=P(u)-(u+2)\theta,\qquad
+ Q_-(u)=P(u)+(u+2)\theta.
+\end{equation}
+The following identity holds throughout $|\xi|<A$:
+\begin{align}
+ \widehat V_u(\xi)={}&\frac{2u}{\xi}
+       \left(e^{-\theta}\log(1-\xi/A)
+                         +e^{\theta}\log(1+\xi/A)\right)\notag\\
+ &-\frac{2u}{\xi}
+       \left(e^{-\theta}Q_+(u)\Li_2(\xi/A)
+                         +e^{\theta}Q_-(u)\Li_2(-\xi/A)\right)
+       +K_u(\xi).\label{lm:eq:dilog-decomposition}
+\end{align}
+Both $K_u$ and $\partial_\xi K_u$ extend continuously to the closed
+disk, locally uniformly in $u$.
+\end{corollary}
+
+\begin{proof}
+Theorem~\ref{lm:thm:first} is equivalent to
+\begin{align*}
+ \frac{C_n(u)}{\Gamma(n)}
+ ={}&-\frac{2u}{nA^n}\bigl(e^{-\theta}+(-1)^ne^{\theta}\bigr)\\
+ &-\frac{2u}{n^2A^n}
+       \bigl(e^{-\theta}Q_+(u)+(-1)^ne^{\theta}Q_-(u)\bigr)
+       +O_U(A^{-n}n^{-3}).
+\end{align*}
+Sum this identity with $\Li_2(z)=\sum_{n\geq1}z^n/n^2$.
+The remainder and its once-differentiated series converge absolutely
+and uniformly on $|\xi|\leq A$, proving the assertion.
+\end{proof}
+
+These are statements from inside the initial Borel disk.  They neither
+assert analytic continuation through that circle nor identify all
+subsequent singularities.  They do distinguish the two leading endpoint
+amplitudes, improve the predecessor's radius-only result to every
+nonzero complex $u$, and express the first correction by explicit
+classical polylogarithms.

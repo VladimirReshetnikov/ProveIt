@@ -64,6 +64,41 @@ class WeightedTransversalTests(unittest.TestCase):
         with patch('fastunknot.weighted_transversal._tagged_replay',side_effect=AssertionError('producer used')):
             self.assertTrue(verify_weighted_orbit_transversal(2*n,pairs,weights,proof,dimension=2))
 
+    def test_nested_weighted_certificate_binding_remains_strict(self):
+        pairs=[IntervalPairing(0,3,4,7,True)];weights=[(0,4,[2,-1]),(4,8,[3,7])]
+        proof=self.checked(8,pairs,weights)['certificate'];mutations=[]
+        for key,value in (('schema','wrong'),('size',9),('dimension',True),('weights',[]),
+                          ('histogram',[dict(weight=[5,6],orbits=3)])):
+            bad=copy.deepcopy(proof);bad['weighted_certificate'][key]=value;mutations.append(bad)
+        bad=copy.deepcopy(proof);bad['weighted_certificate']['orbit_proof']['orbit_count']+=1;mutations.append(bad)
+        bad=copy.deepcopy(proof);bad['weighted_certificate']['orbit_proof']['operations'].pop();mutations.append(bad)
+        bad=copy.deepcopy(proof);bad['representative_runs'][0]['weight'][0]=True;mutations.append(bad)
+        for bad in mutations:
+            self.assertFalse(verify_weighted_orbit_transversal(8,pairs,weights,bad,dimension=2))
+        self.assertFalse(verify_weighted_orbit_transversal(8,pairs,[(0,8,[0,0])],proof,dimension=2))
+
+    def test_single_orbit_still_checks_original_representative(self):
+        pairs=[IntervalPairing(0,10,1,11)];weights=[(0,12,[1,-2]),(3,8,[-3,1])]
+        proof=self.checked(12,pairs,weights)['certificate']
+        self.assertEqual(proof['representative_runs'],[dict(start=0,stop=1,weight=[-3,-19])])
+        bad=copy.deepcopy(proof);bad['representative_runs'][0].update(start=1,stop=2)
+        self.assertFalse(verify_weighted_orbit_transversal(12,pairs,weights,bad,dimension=2))
+        bad=copy.deepcopy(proof);bad['weighted_certificate']['histogram'][0]['weight'][0]+=1
+        self.assertFalse(verify_weighted_orbit_transversal(12,pairs,weights,bad,dimension=2))
+
+    def test_cancellation_inside_checked_trace_propagates(self):
+        pairs=[IntervalPairing(0,79,20,99),IntervalPairing(0,89,10,99,True)]
+        weights=[(0,50,[2,-3]),(40,100,[-1,5])]
+        proof=weighted_orbit_transversal(100,pairs,weights,dimension=2,record_certificate=True)['certificate']
+        for limit in (5,20,50):
+            calls=0
+            def cancel():
+                nonlocal calls
+                calls+=1
+                if calls==limit:raise ValueError('deep cancellation')
+            with self.assertRaisesRegex(ValueError,'deep cancellation'):
+                verify_weighted_orbit_transversal(100,pairs,weights,proof,dimension=2,check=cancel)
+
     def test_incomplete_and_callback_contract(self):
         pairs=[IntervalPairing(0,9,10,19)]
         result=weighted_orbit_transversal(20,pairs,[],dimension=2,max_cycles=0,record_certificate=True)

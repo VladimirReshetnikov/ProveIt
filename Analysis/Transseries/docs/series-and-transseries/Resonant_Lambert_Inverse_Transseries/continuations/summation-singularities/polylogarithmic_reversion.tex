@@ -1,0 +1,205 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,graphicx,booktabs,longtable,array,tabularx}
+\usepackage{enumitem,xcolor,xurl,fancyhdr}
+\definecolor{ink}{HTML}{18374C}
+\definecolor{accent}{HTML}{087F8C}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+ pdftitle={Summation and Singularities under Polylogarithmic Reversion},
+ pdfauthor={Research manuscript prepared for the ProveIt project}]{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\ord}{ord}
+\newcommand{\repo}{\textsf{ProveIt}}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\itshape Polylogarithmic reversion}
+\fancyhead[R]{\small Summation and singularities}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\title{\color{ink}\bfseries Summation and Singularities under\\
+Polylogarithmic Reversion\\[6pt]
+\large\mdseries Convergent angular reconstruction, sharp Lambert late terms,\\
+and removable inverse endpoints}
+\author{Research manuscript prepared for the \repo\ project}
+\date{12 October 2026\\[3pt]\small Repository baseline:
+\texttt{8f5afd4d7565df808359f6a0c22f87f79a119bb9}}
+\begin{document}
+\maketitle
+\begin{abstract}
+We investigate three ways in which inversion changes a polylogarithmic
+expansion. First, the harmonic depth-two angular-zero transseries is known
+to diverge even after equal exponential bases are collected. We construct
+a specified summation of its original multiset coefficient family:
+sum each nonlinear degree at subunit radius, take its radial Abel limit,
+and then sum the degree blocks. For every real $a\ge6$, $b>0$, and
+$0<\rho\le1$, this last series converges absolutely to the actual angular
+displacement, with a uniform explicit geometric error bound. At integer orders
+all its coefficients belong to one fixed finitely generated algebra of
+polylogarithm values. A finite frequency-and-degree truncation attains
+$\exp(-\lambda a^2+O_\lambda(a))$ error for every
+$0<\lambda<\log(3/2)$.
+
+Second, we prove the precise even/odd late-coefficient conjecture in the
+new resonant Lambert inverse report. Uniform factorial convolution
+estimates control the previously unjustified summation over the number
+of factors. We obtain a first correction, a universal leading-amplitude
+law for analytic inverse cores, and an exact initial-disk Borel
+decomposition into two logarithms and two dilogarithms with a continuously
+differentiable remainder. Both nearest Borel endpoints are singular for
+every nonzero complex coupling.
+
+Third, we classify the minimal endpoint ramification of the direct
+inverse of $\Li_s$ for every real $s>1$. Its endpoint is holomorphic
+exactly at $s=1+1/q$, $q\ge2$ integral. We give its convergent Taylor
+charts and disprove a proposed all-real-order extension of an
+integer-order cut-modulus inequality. Classical ingredients and previous
+repository results are attributed; proofs, finite exact checks, and
+ordinary numerical diagnostics retain distinct scopes.
+\end{abstract}
+\noindent\textbf{Keywords.} Polylogarithm; harmonic sums; transseries;
+Lagrange inversion; Abel summation; factorial asymptotics; Borel transform;
+ramification; Lambert series.
+\newpage
+\begingroup\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\newpage
+
+\section{Questions, conclusions, and provenance}
+\label{sec:scope}
+
+An inverse expansion has several distinct mathematical meanings. A
+formal coefficient formula can be valid without its sum converging.
+A convergent analytic representation can require a different grouping
+from the original asymptotic scale. The nearest singularities of a
+Borel transform depend on exact late coefficients, while a branch point
+of the forward function can disappear from its inverse. This article
+addresses these distinctions in concrete problems drawn from the
+intersection of \repo's Polylogarithms and Transseries projects.
+
+The source baseline is the commit displayed on the title page, inspected
+on 12 October 2026. In particular, the three then-current incoming
+archives were read before selecting the research targets. The article
+does not treat earlier unanswered questions as unanswered without
+checking those arrivals. The accompanying provenance file records exact
+repository paths and archive members, so that the contribution remains
+reviewable after the reports are moved into their canonical locations.
+
+\subsection{The three research targets}
+
+The angular-zero report~\cite{RepoAngular} supplies an explicit
+multiset-indexed expansion with an error after every fixed finite
+exponential cutoff. Its continuation~\cite{RepoFormal} proves that the
+complete expansion diverges at every fixed integer outer order, even
+after equal rational bases are combined. Research question 14 of that
+continuation asks for a justified summation method. We answer it for
+all real $a\ge6$ by an Abel limit within each fixed nonlinear degree,
+followed by an ordinary convergent sum over degrees
+(Theorem~\ref{ang:thm:sum}). The estimate comes from an actual
+holomorphic norm on a fixed complex disk, not from differentiation of
+a boundary Fourier series beyond its convergence range.
+
+Question 13 of the same continuation asks for optimal moving
+truncation. We give a rigorously controlled finite approximation with
+an error that is Gaussian in the large outer order
+(Theorem~\ref{ang:thm:gaussian}). This is a constructive upper bound
+for a specified double cutoff. We do not identify the sharp optimum
+for truncation in the original exponential-base ordering.
+
+The incoming resonant Lambert inverse report~\cite{RepoLambert}
+proves the exact inverse coefficient formula and its sharp Borel
+radius for positive real coupling. Equations
+\texttt{eq:conj-even} and \texttt{eq:conj-odd} there explicitly
+conjecture the leading hyperbolic amplitudes. Section~\ref{lm:sec:main}
+proves them with a locally uniform complex-parameter remainder and
+one further term. The estimates are uniform in the number of
+Lagrange factors, closing the exact gap identified by that report.
+
+Finally, the convergent noninteger charts in
+\cite[\texttt{prop:noninteger}]{RepoInverse} permit a sharper local
+question: what is the \emph{smallest} branched cover required by the
+inverse at $w=\zeta(s)$? Theorem~\ref{ep:thm:classification} answers
+it for every real $s>1$. The exceptional holomorphic family also
+clarifies why the real-order endpoint geometry cannot be inferred
+from the integer-order theorem.
+
+\subsection{Relation to established theory}
+
+Lagrange inversion, including the auxiliary-parameter version used
+here, is classical; Gessel's survey~\cite{Gessel} gives its formal
+versions and proofs. Our use of Rouch\'e's theorem supplies the
+additional analytic domain and quantitative bounds needed for the
+angular summation. The positive depth-two kernel and global
+angular-zero uniqueness are already repository results
+\cite{RepoThreshold}; we rederive the kernel moments because their
+uniform estimates are central to the new argument.
+
+The general theory of factorially divergent series is also established.
+Borinsky~\cite{Borinsky}, building on earlier work including Bender,
+develops product, composition, and inverse rules for such series.
+Our elementary convolution proof is consistent with that framework.
+Its role is to prove the specific two-action Lambert conjecture, retain
+uniformity in the complex coupling, and make the first correction and
+initial-disk Borel regularity explicit. Neither factorial reversion
+itself nor the general existence of resurgent Lambert expansions is
+claimed as new. For the latter, see Dorigoni--Kleinschmidt~\cite{DK}.
+
+The direct inverse classification uses the classical convergent
+Jonqui\`ere expansion~\cite{DLMF}. It sharpens the repository's
+existing two-variable charts; the general mechanism of Puiseux
+uniformization is classical. The newest quadratic-feedback
+arrival~\cite{RepoQuadratic} contains related minimal-ramification
+calculations for a different implicit function. We credit this
+nearby precedent and distinguish the direct inverse studied here.
+
+Accordingly, the novelty claim is specific: these are proved answers
+and refinements relative to the inspected corpus, supported by a
+targeted primary-source search. No exhaustive worldwide priority
+claim is made for every corollary or special-case identity.
+
+\subsection{Conventions and evidence}
+
+All logarithms are continued from their explicitly specified real
+branches. The shifted Borel transform is
+\[
+ \mathcal B\left(\sum_{n\ge1}c_nq^n\right)(\xi)
+   =\sum_{n\ge1}\frac{c_n}{\Gamma(n)}\xi^{n-1}.
+\]
+An estimate locally uniform in $u$ means uniform on every compact
+subset of the stated parameter domain. Statements about a holomorphic
+function inside a disk and continuous boundary values do not imply
+analytic continuation across the boundary.
+
+Every theorem below has a conventional proof. The supplied programs
+check finite algebraic identities and evaluate independent numerical
+diagnostics. The decimals are not interval enclosures, and the
+programs are not proof-assistant formalizations. This manuscript was
+prepared with AI assistance; it is intended for mathematical review
+before incorporation into a collective manuscript.
+
+\input{sections/angular}
+\input{sections/lambert}
+\input{sections/endpoint}
+\input{sections/verification_research}
+\input{sections/references}
+\end{document}

@@ -58,10 +58,11 @@ of tags among representatives and is therefore insufficient.
 \subsection{An independent backward verifier}
 
 The certificate contains the existing weighted interval-orbit certificate
-and the proposed representative runs. Replay first authenticates the ordinary
-trace and its additive weight transport. It then uses a separate construction:
-record weighted emissions in the current coordinates of each contraction,
-and restore the contractions backwards by inserting their removed gaps.
+and the proposed representative runs. Replay first authenticates the source
+weight function and the ordinary trace. Its separate weighted construction records emissions in the current
+coordinates of each contraction and accumulates the histogram in the same
+pass. It then restores the contractions backwards by inserting their removed
+gaps.
 An interval crossing an insertion anchor is split before its labels are
 lifted. Truncations insert no selected points: the removed suffix contains no
 least representative. This verifier does not call the producer's forward
@@ -72,6 +73,58 @@ may preserve the histogram while changing the least-label invariant. Capped
 discovery returns an inconclusive result without a selector or certificate;
 external cancellation propagates. JSON transport retains large integers
 through the existing exact hexadecimal encoding.
+
+\subsection{Removing the duplicated weighted pass}
+
+The first version called the complete weighted-certificate verifier before
+running the selector reconstruction. Both performed the same forward weight
+folds. Profiling the four-tetrahedron primitive example identified this
+redundancy in the independent replay path. The updated implementation factors
+the common certificate checks into a private checker that accepts one of two
+fixed internal replay routines. The public APIs retain their existing proof
+formats and validation requirements.
+
+Ordinary histogram verification uses its existing weighted replay. Tagged
+verification uses the forward part of the backward-label reconstruction,
+which now returns both the selected runs and the histogram already accumulated
+at its contractions. The common checker still binds the exact initial weight
+function, verifies the ordinary interval-orbit trace, compares the sorted
+histogram, checks the orbit cardinality, and checks signed weight conservation.
+The tagged caller also compares every proposed original representative and
+its weight with the independently reconstructed runs. No certificate field
+chooses which checks or replay routine are used.
+
+\begin{proposition}
+For complete monotone traces, the single weighted replay authenticates the
+same histogram and representative data as the former two-pass construction.
+\end{proposition}
+\begin{proof}
+When the former histogram verifier performs weighted transport, both passes
+start from the same authenticated canonical weights and pairings. At every trace operation they use the same independent translation,
+reflection and contraction rules. Induction therefore identifies their
+current weight functions. A contraction's contribution to the histogram is
+the sum of the lengths of its intersections with each weight run; those same
+intersections carry the weighted label emissions. The combined pass retains
+this histogram and exactly those emissions. Backward gap insertion is
+unchanged, as are all final histogram and representative comparisons. If the
+former histogram verifier instead uses its one-orbit shortcut, conservation
+uniquely determines the same weight that the label replay accumulates.
+\end{proof}
+
+The ordinary verifier retains the one-orbit conservation shortcut: after
+checking the ordinary trace, the total weight determines the unique orbit
+weight. Tagged verification deliberately does not take that shortcut.
+It must still authenticate the proposed original label, and hence performs
+its label reconstruction even for one orbit. Tests explicitly reject a
+correct weight attached to a wrong representative in this case.
+
+Writing $U$ for source and ordinary-trace authentication, $W$ for forward
+weighted transport, and $L$ for backward label insertion, the dominant tagged
+replay work for traces with more than one orbit changes from $U+2W+L$ to $U+W+L$. The second normalization of the
+source weights is also removed. This improves the cost of an existing encoded
+operation; it does not change the general hierarchy complexity class.
+
+\input{selector_replay_results.tex}
 
 \subsection{Cost and validation scope}
 

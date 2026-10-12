@@ -289,16 +289,9 @@ def _replay(size, pairs, runs, trace, dimension, poll):
     return dict(histogram)
 
 
-def verify_weighted_orbit_certificate(size, pairings, weight_intervals, certificate,
-                                      *, dimension=None, check=None):
-    """Verify exact component-weight sums without calling a weighted producer.
-
-    Initial weights are additive half-open intervals (lo,hi,integer-vector).
-    The supplied certificate must bind the same canonical weight function and
-    the same pairing list. Invalid proofs return False. Cooperative callback
-    exceptions propagate. Work depends polynomially on the explicit source,
-    trace and endpoint bit lengths, never on the number of represented points.
-    """
+def _check_weighted_certificate(size, pairings, weight_intervals, certificate,
+                                *, dimension, check, replay_weights, single_orbit_shortcut):
+    """Shared source, trace, histogram and conservation checks for trusted replayers."""
     poll = check if check is not None else lambda: None
     try:
         poll()
@@ -334,11 +327,11 @@ def verify_weighted_orbit_certificate(size, pairings, weight_intervals, certific
         for lo, hi, value in runs:
             poll()
             original_mass = _add(original_mass, _scale(value, hi-lo))
-        if _integer(proof["orbit_count"]) == 1:
+        if single_orbit_shortcut and _integer(proof["orbit_count"]) == 1:
             actual = {original_mass: 1}
         else:
             pairs = _canonical_pairings(size, pairings)
-            actual = _replay(size, pairs, runs, proof["operations"], dimension, poll)
+            actual = replay_weights(size, pairs, runs, proof["operations"], dimension, poll)
         supplied = certificate["histogram"]
         if not isinstance(supplied, list):
             return False
@@ -362,3 +355,18 @@ def verify_weighted_orbit_certificate(size, pairings, weight_intervals, certific
         return original_mass == final_mass
     except _InvalidWeightedProof:
         return False
+
+
+def verify_weighted_orbit_certificate(size, pairings, weight_intervals, certificate,
+                                      *, dimension=None, check=None):
+    """Verify exact component-weight sums without calling a weighted producer.
+
+    Initial weights are additive half-open intervals (lo,hi,integer-vector).
+    The supplied certificate must bind the same canonical weight function and
+    the same pairing list. Invalid proofs return False. Cooperative callback
+    exceptions propagate. Work depends polynomially on the explicit source,
+    trace and endpoint bit lengths, never on the number of represented points.
+    """
+    return _check_weighted_certificate(
+        size, pairings, weight_intervals, certificate, dimension=dimension, check=check,
+        replay_weights=_replay, single_orbit_shortcut=True)
