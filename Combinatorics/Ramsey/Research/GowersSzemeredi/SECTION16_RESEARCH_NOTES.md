@@ -5290,6 +5290,13 @@ below `8·2^k`, against the `7.5·2^k` per step here. That would require the
 class constant below `4/3`, which is under the true `≈ 2.4`, so this method
 stops at `d + 2` / `L + 0`.
 
+The bridge (stub-checked, pinned in CompletionAudit) proves:
+* **`theorem_18_1_d2_seventeen_le`**;
+* **`theorem_18_2_L0_nineteen_le`** and `corollary_18_7_L0_nineteen_le`;
+* `van_der_waerden_L0`: `W(k, r) ≤ 2^2^r^2^2^k` for `k ≥ 19`;
+* `theorem_1_3_L0_nineteen_le`: `Theorem13AtFrom 0 19`, the density constant
+  `2^(-2^k)`.
+
 The model (`models/model_w_chain.py`) puts the method's limits here. The
 asymptotic ratio `24` is below `32` but above `16`, so `d + 2` and `L + 0`
 need a smaller class constant beyond the table, and the true one is about

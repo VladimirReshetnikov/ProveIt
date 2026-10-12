@@ -13,6 +13,7 @@ import GowersSzemeredi.Proofs18CoverFejerLowDegrees5
 import GowersSzemeredi.Proofs18CoverFejerShortLengths3
 import GowersSzemeredi.Proofs18CoverFejerHeadlineU
 import GowersSzemeredi.Proofs18CoverFejerHeadlineW
+import GowersSzemeredi.Proofs18CoverFejerHeadlineX
 
 /-! **Theorem 18.1 at `d + 6` and Theorem 18.2 / Corollary 18.7 at `L + 4`
 in every degree and length** (Notes L.16d).
@@ -54,7 +55,12 @@ For large degrees and lengths it gives:
   (`theorem_18_1_d3_eleven_le`), `d + 4` for `d ≥ 8`, **`L + 1` for every
   `L ≥ 13`** (`theorem_18_2_L1_thirteen_le`), `L + 2` for `L ≥ 10`, with van
   der Waerden and Theorem 1.3 at `k + 1` from `k = 13` and at `k + 2` from
-  `k = 10`. -/
+  `k = 10`;
+* class constant `5/2` beyond dimension `12` and the polynomial Lemma 15.6
+  threshold (Notes L.16n): **`d + 2` for every `d ≥ 17`**
+  (`theorem_18_1_d2_seventeen_le`) and **no offset at all, `L + 0`, for every
+  `L ≥ 19`** (`theorem_18_2_L0_nineteen_le`), with `W(k, r) ≤ 2^2^r^2^2^k` and
+  Theorem 1.3 at `2^(-2^k)` from `k = 19`. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -508,5 +514,45 @@ theorem theorem_1_3_L1_thirteen_le : Theorem13AtFrom 1 13 :=
 /-- **Theorem 1.3 with constant `2^(-2^(k+2))` for every `k ≥ 10`.** -/
 theorem theorem_1_3_L2_ten_le : Theorem13AtFrom 2 10 :=
   theorem13AtFrom_of_sharp fun _ hk => theorem_18_2_L2_ten_le hk
+
+/-! ### Class constant `5/2` and the polynomial Lemma 15.6: `d + 2`, `L + 0` (Notes L.16n) -/
+
+/-- **Theorem 18.1 at every degree `d ≥ 17` with `d + 2` in place of `d + 10`.** -/
+theorem theorem_18_1_d2_seventeen_le {d : Nat} (hd : 17 ≤ d) : Theorem181AtSharp 2 d := by
+  obtain ⟨K, p, hpp, hp, hK, hpB⟩ := progressionPhasePartition_explicit
+  exact theorem_18_1_d2_seventeen_le_of_profiles_poly
+    (fun k => ⌈multiaffinePartitionK (k + 1) (2 ^ (k + 1))⌉₊)
+    (fun k => (k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1)))
+    (fun k => two_le_ceil_multiaffinePartitionK (k + 1) (2 ^ (k + 1)))
+    (fun k => Nat.mul_pos (Nat.succ_pos k) (multiaffinePartitionP_pos _ _))
+    (fun k _ => section16RecurrenceProfileWith_explicit k)
+    (fun k => explicit_family_constants_poly_le k) hpp hp hK hpB hd
+
+/-- **Theorem 18.2 at every length `L ≥ 19` with no offset** (`L + 0` in place
+of `L + 9`). -/
+theorem theorem_18_2_L0_nineteen_le {L : Nat} (hL : 19 ≤ L) : Theorem182AtSharp 0 L :=
+  theorem_18_2_L0_nineteen_le_of_profiles_poly
+    (fun k => ⌈multiaffinePartitionK (k + 1) (2 ^ (k + 1))⌉₊)
+    (fun k => (k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1)))
+    (fun k => two_le_ceil_multiaffinePartitionK (k + 1) (2 ^ (k + 1)))
+    (fun k => Nat.mul_pos (Nat.succ_pos k) (multiaffinePartitionP_pos _ _))
+    (fun k _ => section16RecurrenceProfileWith_explicit k)
+    (fun k => explicit_family_constants_poly_le k) hL
+
+/-- **Corollary 18.7 at every length `L ≥ 19` with no offset.** -/
+theorem corollary_18_7_L0_nineteen_le {L : Nat} (hL : 19 ≤ L) : Corollary187AtSharp 0 L :=
+  (theorem_18_2_L0_nineteen_le hL).corollary_18_7
+
+/-- **Van der Waerden numbers for long progressions**: for `k ≥ 19` and
+`r ≥ 2`, `W(k, r) ≤ 2^2^r^2^2^k`. -/
+theorem van_der_waerden_L0 {k : Nat} (hk : 19 ≤ k) {r : Nat} (hr : 2 ≤ r) (N : Nat)
+    (hN : szemerediThresholdAt 0 (1 / (r : Real)) k ≤ N) (color : Nat → Fin r) :
+    HasMonochromaticAP N r color k :=
+  (theorem_18_2_L0_nineteen_le hk).van_der_waerden hr N hN color
+
+/-- **Theorem 1.3 with constant `2^(-2^k)` for every `k ≥ 19`** (printed:
+`2^(-2^(k+9))`). -/
+theorem theorem_1_3_L0_nineteen_le : Theorem13AtFrom 0 19 :=
+  theorem13AtFrom_of_sharp fun _ hk => theorem_18_2_L0_nineteen_le hk
 
 end LeanProofs.GowersSzemeredi

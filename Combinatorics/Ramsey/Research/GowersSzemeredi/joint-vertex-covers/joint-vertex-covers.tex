@@ -375,6 +375,27 @@ $W(k,r)\le2^{2^{r^{2^{2^{k+1}}}}}$ and Theorem~1.3 holds with density exponent
 $2^{-2^{k+1}}$ for $k\ge13$.
 \end{theorem}
 
+\emph{The class constant.} The split step only doubles the exponent: from
+$2^{k+6}a\le2^e$ and $D\le2^{e+s}$ it gives $2^{k+7}a'\le2^{2e}$ and
+$D'\le2^{2e+s+5k+22}$. So the invariant may start at any dimension from the
+exact values. At $l=12$ they fit the constant $5/2$, and the class degree is
+then $\tfrac52\,2^l+O(l^2)$ in every dimension beyond. Lemma~15.6's
+threshold, too, is polynomial under the Fej\'er $\theta_1$
+($X^{2^{5k+21}}$). Hence one step costs $7.5\cdot2^k+O(k^2)$, and both
+envelopes tend to $15\cdot2^k<16\cdot2^k$.
+
+\begin{theorem}\label{thm:fejer2d}
+Theorem~18.1 holds with exponent $\alpha^{2^{2^{d+2}}}$ at every degree
+$d\ge17$. Theorem~18.2 and Corollary~18.7 hold with no offset, that is with $L$
+in place of $L+9$ at the top of the threshold, at every length $L\ge19$. In
+particular $W(k,r)\le2^{2^{r^{2^{2^{k}}}}}$ and Theorem~1.3 holds with density
+exponent $2^{-2^{k}}$ for $k\ge19$.
+\end{theorem}
+
+This is the limit of the method: $d+1$ would need an envelope below
+$8\cdot2^k$, hence a class constant below $4/3$, while the true constant is
+about $2.4$.
+
 \section{Theorem 16.2 and Corollary 16.11 with polynomial controls}
 
 The printed Theorem~16.2 restricts a relation with the product property to a
@@ -429,14 +450,12 @@ shrink further:
   Lemma~\ref{lem:joint}, should cost about $68\cdot2^k$. The envelope would
   drop from about $472\cdot2^k$ to about $336\cdot2^k$. This changes none of
   the constants in the table.
-\item \emph{Smaller offsets.} With the polynomial base budget
-  (Theorem~\ref{thm:fejer3}) the envelopes tend to $24\cdot2^k$. That is
-  below $32\cdot2^k$ (so $d+3$, $L+1$) but above $16\cdot2^k$. The
-  remaining cost is the class degree beyond dimension $12$: there
-  $4\cdot2^l$ is used, while the true constant is about $2.4$. A sharper
-  split invariant ($\approx2.4\cdot2^l$) would give $7.2\cdot2^k$ per step and
-  an envelope $14.4\cdot2^k<16\cdot2^k$, hence $d+2$ and $L+0$ for large $d$
-  and $L$. Below the thresholds $11$ and $13$ the small dimensions dominate.
+\item \emph{Smaller offsets and thresholds.} Theorem~\ref{thm:fejer2d}
+  reaches $d+2$ and $L+0$, from degree $17$ and length $19$. Each step pays
+  three class degrees, so a further offset needs a different step, for
+  instance one that uses fewer vertex covers at full degree. The thresholds
+  $17$ and $19$ come from dimensions $3$ to $14$. There the class table,
+  $85$ to $10375$ in log-degree, and the polynomial terms $O(k^2)$ dominate.
 \item \emph{Fixed-precision slices with the Fej\'er classes.} Composing the
   two slice controls jointly would lower the step cost from $101\cdot2^k$ to
   about $78\cdot2^k$. That is still above $64\cdot2^k$, so it changes no
@@ -490,6 +509,10 @@ Theorem~\ref{thm:fejer3} & \lean{theorem\_18\_1\_d3\_eleven\_le}, \lean{theorem\
 & \lean{theorem\_18\_1\_d4\_eight\_le}, \lean{theorem\_18\_2\_L2\_ten\_le},\\
 & \lean{explicit\_family\_constants\_poly\_le}, \lean{Proofs18FejerEnvelopeBaseW},\\
 & \lean{Proofs18CoverFejerHeadlineW}\\
+Theorem~\ref{thm:fejer2d} & \lean{theorem\_18\_1\_d2\_seventeen\_le}, \lean{theorem\_18\_2\_L0\_nineteen\_le},\\
+& \lean{corollary\_18\_7\_L0\_nineteen\_le}, \lean{van\_der\_waerden\_L0},\\
+& \lean{theorem\_1\_3\_L0\_nineteen\_le}, \lean{Proofs18TightClassesFejerX},\\
+& \lean{Proofs18CoverFejerHeadlineX}\\
 Fej\'er polynomial 16.2, 16.11 & \lean{Proofs16PolynomialFejer}, \lean{theorem\_16\_2\_polynomial\_fejer},\\
 & \lean{corollary\_16\_11\_polynomial\_fejer}\\
 polynomial Theorem 16.2 & \lean{Proofs16PolynomialStructure}, \lean{theorem\_16\_2\_polynomial}\\
