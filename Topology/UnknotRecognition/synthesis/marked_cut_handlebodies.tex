@@ -166,7 +166,9 @@ source incidence lists and a heap of eligible row labels, costing
 $O(I+T\log(T+1))$ structural operations for $I$ source incidences. The checker
 uses deletion times and scans immutable rows. In the rectangular case the
 producer first tries this leaf order, then a deterministic saturated pivot
-schedule. Failure is inconclusive. Even square completeness is only for this
+schedule. Section~\ref{marked-cut:column-peeling} strengthens this to an exact
+rectangular full-row test and replaces the repeated scans. Failure remains
+topologically inconclusive. Even square completeness is only for this
 raw cancellation model on the selected forest, not recognition of all balls.
 
 \subsection{Assembling the entire cut}
@@ -253,3 +255,5 @@ unchanged; this API does not dispatch a new knot-recognition verdict.
 \input{core_primitive_annuli.tex}
 
 \input{bundle_boundary_kernel.tex}
+
+\input{column_cancellation.tex}

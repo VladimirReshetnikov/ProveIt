@@ -5626,6 +5626,26 @@ spectrum cell), and covering all anchors jointly costs `Q^|J|` with `|J| ~ N`.
 Reordering the covers (slices first) compounds the same way, since the vertex
 covers are also `k`-dimensional (`nonTop_card_le_k` is exact).
 
+**Van der Waerden numbers: our bounds and the literature (2026-10-12).** Gowers
+proves `W(k, r) ≤ 2^2^r^2^2^(k+9)`; this is the form Wikipedia cites. The Lean
+results here keep that shape with a smaller top constant:
+`van_der_waerden_L3_all` (`k + 3`, every `k`), `van_der_waerden_L2_eight_le`
+(`k + 2`, `k ≥ 8`), `van_der_waerden_L1_eleven_le` (`k + 1`, `k ≥ 11`) and
+`van_der_waerden_L0_thirteen_le` (`W(k, r) ≤ 2^2^r^2^2^k`, `k ≥ 13`). They are
+locally verified: per-module builds and the stub-checked bridge, with the
+production run pending. They tighten Gowers's own argument; they are not new
+mathematics. Published bounds of a different shape are much stronger in `r`
+for fixed `k`:
+* `k = 3`: Kelley–Meka (2023), sharpened by Bloom–Sisask,
+  `r_3(N) ≤ N·exp(−c(log N)^β)` (`β = 1/12`, then `1/9`), so
+  `W(3, r) ≤ exp(C(log r)^{1/β})`;
+* `k = 4`: Green–Tao, `r_4(N) ≤ N(log N)^{−c}`, so `W(4, r) ≤ exp(r^C)`;
+* `k ≥ 5`: Leng–Sah–Sawhney (2024), `r_k(N) ≤ N·exp(−(log log N)^{c_k})`, so
+  `W(k, r) ≤ exp(exp((log r)^{C_k}))`, with constants depending on `k` and not
+  in Gowers's explicit tower form.
+The results here therefore improve the explicit constant in Gowers's formula,
+not the best known general bound.
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`

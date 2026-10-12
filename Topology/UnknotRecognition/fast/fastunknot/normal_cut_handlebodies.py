@@ -128,16 +128,20 @@ def _kernel_fallback(result, parallelity, boundary, record_certificate, check):
 
 
 def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
-                           record_certificate=False, check=lambda: None):
+                           record_certificate=False, precheck_core=True, check=lambda: None):
     """Classify the whole supplied cut when the disk-gluing criterion succeeds.
 
     A COMPLETE result is an exact binary multiplicity census of handlebodies.
     An INCONCLUSIVE result is neither a knottedness nor a non-handlebody proof.
     Source validity is the established compact orientable one-torus contract.
     The six orbit discoveries share the cycle allowance; cancellation callbacks
-    also cover the polynomial core and finite interface computations.
+    also cover the polynomial core and finite interface computations. The
+    optional core precheck defaults on: a raw obstruction skips boundary
+    discovery, without claiming any negative topological conclusion.
     """
     check()
+    if type(precheck_core) is not bool:
+        raise ValueError('precheck_core must be bool')
     if type(record_certificate) is not bool:
         raise ValueError('record_certificate must be bool')
     if max_cycles is not None and (type(max_cycles) is not int or max_cycles < 0):
@@ -153,6 +157,16 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
     if parallelity['geometry']['core']['handles3']:
         result['reason'] = 'core_has_three_handles'
         return result
+    prepared_core = None
+    if precheck_core:
+        prepared_core = core_handlebody_certificate(parallelity['geometry']['core'], check=check)
+        result['stats']['core_precheck'] = prepared_core.get('stats', {})
+        if prepared_core['status'] != 'COMPLETE':
+            # Added bundle columns vanish on the original core rows. A source
+            # stopping set therefore persists in every supported whole-cut
+            # presentation with this forest. This is only a method refusal.
+            result['reason'] = prepared_core['reason']
+            return result
     remaining = max_cycles
     if remaining is not None:
         remaining -= sum(s['orbit_cycles'] for s in parallelity['stats'].values())
@@ -177,7 +191,9 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
         result['reason'] = 'annular_core_attachment'
         return result
     augmented, absorption_proof, absorbed = absorption
-    core = core_handlebody_certificate(augmented, check=check)
+    core = (prepared_core if prepared_core is not None and
+            len(augmented['handles2']) == len(parallelity['geometry']['core']['handles2'])
+            else core_handlebody_certificate(augmented, check=check))
     result['stats']['core'] = core.get('stats', {})
     if core['status'] != 'COMPLETE':
         result['reason'] = core['reason']

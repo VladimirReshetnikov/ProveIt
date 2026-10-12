@@ -4305,8 +4305,9 @@ census deducts the core genera. All v1-v3 certificates remain replayable.
 The audit now certifies 83/106 cuts: all 83 replay, 76 agree with literal
 Regina cuts, and seven exceed the expansion cap. All previous 78 canonical
 certificates are byte-for-byte unchanged. Evidence is in
-`../synthesis/data/core-annuli-audit.json`. The greedy core schedule remains
-label-dependent, and a failed schedule is only inconclusive.
+`../synthesis/data/core-annuli-audit.json`. The surviving cocore system remains label-dependent. Full cancellation of
+the fixed raw matrix is now decided completely by column peeling; failure
+is still only a refusal of this geometric method.
 
 The v5 whole-cut fallback now combines original core two-handles with all
 annular gluing two-handles in one source-derived boundary kernel. Standard
@@ -4314,10 +4315,43 @@ cut arcs in each bordered base provide at most one retained column per named
 boundary circle. Remaining genus columns and connecting columns start with
 zero or two intersections and are never used as pivots; their counts remain
 implicit even when the genus is a large binary integer. Sparse production
-and an independent dense replay use positive geometric counts throughout.
+and independent replay use positive geometric counts throughout. New kernel
+v2 proofs use source timestamps; kernel v1 retains dense replay.
 The article proves the source-to-template construction, safe projection,
 and resulting genus census. This handles the two mixed Fibonacci annular
 cases missed by the separate bundle/core primitive-family criteria. Earlier
-v1--v4 successes remain preferred. Three-handles, failed greedy schedules,
+v1--v4 successes remain preferred when the chosen cocore system supports them.
+Three-handles, obstructed raw matrices,
 and general hierarchy discovery remain unresolved; no knot verdict or
 general quasi-polynomial complexity claim is added.
+
+
+Reports 95 and 97 establish a complete full-row cancellation test for every
+rectangular nonnegative incidence matrix: repeatedly remove a column whose
+live total is one and its incident row. A stalled residual is the unique
+largest stopping set, which survives every positive-pivot schedule. The
+new `column_cancellation_plan` scans each source incidence once; the independent
+`verify_column_cancellations` checks deletion timestamps without reproducing
+the queue. Core fallback proofs use `normal-core-handlebody-v2`; existing
+v1 leaf and capped proofs remain supported. The whole-cut v5 wrapper emits
+nested `bundle-boundary-kernel-v2` proofs and accepts earlier kernel v1.
+
+The default `precheck_core=True` rejects a source-core stopping set before
+ordered boundary discovery. Adding annular rows and bundle columns cannot
+remove that obstruction. Setting it to `False` enables differential checks.
+A successful precheck is reused when disk absorption adds no rows. All refusal
+results remain `INCONCLUSIVE`. These linear bounds concern cancellation and
+its timestamp check; forest bookkeeping, orbit queries, source reconstruction,
+and passive curve transport have separate costs. See
+[column_cancellation.tex](../synthesis/column_cancellation.tex) for the proof,
+compatibility audit, and measured performance.
+
+
+The updated 106-case audit retains all 85 certified cuts, and every old proof
+replays under the new checker. All 1,688 Regina-enabled tests pass. Five paired
+measurements show 522x faster production on the 2,048-row sparse chain and
+476x faster conditional replay at 256 rows; the genuine prepared-core cohort
+improves about 1.17x and 1.08x. Successful whole supplied-cut queries are
+essentially unchanged, while the two measured early-refusal queries improve
+2.53x and 2.06x. Raw samples, A/A controls and source pins are retained in
+`../synthesis/data/column-peeling-benchmark.json`.

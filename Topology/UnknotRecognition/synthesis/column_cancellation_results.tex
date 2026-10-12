@@ -1,0 +1,85 @@
+\paragraph{Source compatibility and independent oracle.}
+All 54 focused tests pass in 80.515 seconds. They include exhaustive comparison
+of column peeling with every legal saturated-pivot schedule on 31,096 small
+matrices, 350 seeded all-subset/minor checks, a 4,000-row incidence-work check,
+hostile records, all 106 source cores, source-only boundary-query suppression,
+legacy dense replay, and complete supplied-cut certificate replay.
+
+The fresh 106-case audit retains 85 complete supplied-cut certificates and
+21 inconclusive outcomes. All 85 replay independently; the 78 cases below
+the expansion cap agree with literal Regina cuts, and seven large-coordinate
+cases are excluded from literal expansion. The refusal split remains eight
+raw stalls, three square raw obstructions, and ten cases with core three-handles.
+
+The retained baseline is commit \texttt{5578c6e6629a5c63fc5b40ea14d1f49c9d5a8c8c}.
+A separate old/new/precheck-disabled audit reproduces all 85 historical
+certificate hashes, replays all 85 old certificates with both checkers, and
+preserves every outcome and census. The enabled and disabled precheck produce
+identical new positive certificates. Six failed source cores skip ordered
+boundary discovery, and their stopping subsets are independently checked.
+Only 44 positive certificates remain byte-identical: changed valid schedules
+are expected. The pilot Fibonacci 7 and 9 single-surface cases move from outer
+v4 to v5 while retaining their independently checked censuses.
+
+All 1,688 Regina-enabled tests pass in 610.563 seconds, including 13,846
+expanded-sheet topology comparisons and 196,712 marked-cover comparisons.
+The paired measurements follow below. Evidence and drivers have prefix
+\path{data/column-peeling-*}. The six unmodified baseline modules and their
+loader are in \path{data/column-baseline/}.
+
+
+\paragraph{Paired measurements and their scope.}
+The retained old modules and the current native path run in one process with
+five seeded, randomly ordered old/new pairs per case. Three further identical
+old/old pairs provide A/A controls. Validation jobs finish before timing.
+The table gives median times in milliseconds and the median of paired
+old/new ratios, so a ratio above one favors the new path; the paired ratio
+need not equal the ratio of the two separate medians. Every sample, source
+pin, driver hash and baseline-module hash is retained.
+
+The matrix family has $m$ rows with entries one in columns $r,r+1$.
+It has no initial row leaf, but its column leaves give a complete schedule.
+The legacy scan reads $2m(m+1)$ entries over all rounds; the new queue
+visits precisely $2m$ incidences during deletion, with zero entry updates.
+At $m=2048$ these counts are 8,392,704 and 4,096, and the measured production
+gain is $522.294$ times. The replay family realizes the same incidence
+pattern in one zero-handle with $m+1$ loop one-handles and $m$ attaching
+cycles. These are conditional handle-chart tests, not triangulated-knot
+benchmarks. At $m=256$ immutable-source replay improves by $475.579$ times.
+
+The prepared-core cohort uses all 106 authenticated source cores with source
+geometry constructed outside the timed region. Both producers complete on
+90 cores; production improves by $1.168$ times and replay of those 90 by
+$1.078$ times. This modest effect on small genuine cores distinguishes the
+asymptotic kernel improvement from its present end-to-end impact.
+
+\input{tables/column_peeling_timing.tex}
+
+Complete-query rows include native parallelity construction, ordered-boundary
+queries when needed, production, and independent replay on success. A refusal
+row ends with an inconclusive method result and has no negative certificate.
+The two route-changing pilots are included expressly to detect the cost of
+replacing a private-cocore witness by a joint boundary-kernel witness. The
+smallest and largest early-refusal sources were selected by tetrahedron
+count, before timing, rather than by observed speedup. These are supplied-cut
+measurements; neither useful-surface discovery nor full knot recognition is
+included.
+
+
+The four successful complete queries have paired ratios between $0.996$
+and $1.002$, essentially unchanged at the observed control variation. The
+two early-refusal queries improve by $2.529$ and $2.061$ times, respectively;
+their original-boundary query work is avoided altogether. The pilot route
+changes show no measured penalty here, but do not establish a universal
+performance guarantee for a changed cocore system. A/A medians range from
+$0.951$ to $1.037$ across these measurements. The prepared-core and small
+whole-query numbers should be interpreted at that noise scale.
+
+\paragraph{Remaining asymptotic obligations.}
+The stopping-set theorem removes raw pivot branching as an obstruction for a
+fixed core or boundary-kernel matrix. It does not select useful cutting
+surfaces, find a favorable geometric presentation, transport arbitrary
+boundary patterns through a hierarchy, or bound the hierarchy's length and
+restarts. Source three-handle reduction is still diagnostic, not a certified
+production route. Those obligations remain necessary for an unrestricted
+quasi-polynomial recognition bound, which has not been achieved.
