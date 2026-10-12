@@ -6961,11 +6961,38 @@ statements and bounds are unchanged.
 
 The combined compatibility audit, including the strengthened Fejer bounds
 and `Proofs18LengthSixExplicit`, passes 1,409 native modules. Every direct
-Gowers module client of the changed modules lies in this audited closure.
+client in the GowersSzemeredi directory lies in this audited closure;
+the top-level GowersSzemeredi facade is excluded from that client count.
 The final theorem and strengthened-bound checks use only approved axioms.
 Immutable reports are `verification/2026-10-12-final-uniform-imports.json`
 and `verification/2026-10-12-final-uniform-compatibility.json`, with source
 manifests. The full facade remains separate. The goal stays active.
+
+### L.56. Shorter exact log-log conversion (2026-10-12)
+
+`Proofs01QuantitativeHeadline` is reduced from 154 to 111 lines. The private
+inner-exponent wrapper is inlined; two unused positivity lemmas and three
+redundant wrappers are removed. The reciprocal-exponent identity is shared
+in both multiplication orders. The natural cutoff is its explicit ceiling,
+so its comparison with N uses `Nat.le_ceil` directly. The elementary bound
+`2^x <= exp(x)` uses only its one required numerical hypothesis, avoiding
+unrelated local inequalities in the arithmetic tactic.
+
+The signatures of `headline_density_threshold` and
+`theorem_1_3_holds_of_theorem_18_2` are unchanged. The same displayed density
+constant `2^(-2^(k+9))`, concrete cutoff and positive-step natural
+progressions are retained. The independent final-entry and stronger-bound
+audits pass 1,332 native modules together with only approved axioms; see
+`verification/2026-10-12-final-headline-simplification.json` and its immutable
+source manifest. The minimal entry point now has 1,196 local modules /
+249,609 lines. This line count is an import-closure measurement; the headline
+module itself has 43 fewer source lines.
+
+The L.55 direct-client coverage refers to modules inside the
+GowersSzemeredi directory. It excludes the top-level facade, as the original
+compatibility report's limits already indicate. The full facade and open
+original intermediate statements remain separate. The simplification goal
+stays active.
 
 ## F. Routes
 
