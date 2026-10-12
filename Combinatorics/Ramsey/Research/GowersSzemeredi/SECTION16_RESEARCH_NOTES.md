@@ -6581,6 +6581,30 @@ compiled cache retained. Completion of that broader audit is recorded
 separately. The displayed15.5 threshold and positive-real16.8 refutation are
 now settled; original15.5 without a largeness hypothesis remains open.
 
+### L.47. Recovering the original half bound in Lemma 5.2 (2026-10-12)
+
+`lemma_5_2_printed_half` proves t*M/(2*N), with the same positive-even M,
+2*M<=N, missing centered interval, and frequency cutoff as the earlier
+quarter-bound theorem. The stronger original bound was not false; the
+previous energy estimate discarded useful information.
+
+With K=floor(N^2/M^2)>=4, the zero-frequency interval energy is M^2, so the
+nonzero energy is N*M-M^2. The cutoff inequalities give N^2<(K+1)*M^2 and
+N<=K*M. Multiplication by N therefore gives
+N^2/(2*K)<M^2/2+M^3/(2*N). If all low coefficients are below t*M/(2*N),
+the low contribution is at most t*M^2/2-t*M^3/(2*N), while the high tail
+is strictly below t*M^2/2+t*M^3/(2*N). Their sum contradicts the exact
+lower bound t*M^2. The t=0 case is handled separately.
+
+The existing `lemma_5_2_holds` is now a compatibility consequence of this
+stronger result. The Section05 comments no longer call the original bound
+erroneous; the annotated statement and proof restore its half constant.
+MissingIntervalHalfCoreAudit passed8 native modules with only the standard
+axioms. The expanded downstream audit was yielded at a completed-module
+boundary for this foundational proof change, retaining its compiled cache;
+its resumed combined check is recorded separately. Other original Weyl and
+intermediate bounds remain open.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

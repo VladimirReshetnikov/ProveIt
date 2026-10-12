@@ -746,9 +746,10 @@ as was wanted. \(\square\)
 
 Given an integer $r \in \mathbb{Z}_{N}$, we shall use the notation $|r|$ to stand for the modulus of the unique representative of $r$ that lies in the interval $[-N / 2, N / 2)$ (i.e., the distance from $r$ to zero).
 
-% ed.: The printed statement has the factor $1/2$, but the proof derives
-% $1/4$, and later arguments require only this weaker, justified form.
-Lemma 5.2. Let $A$ be a subset of $\mathbb{Z}_{N}$ of cardinality $t$, let $M$ be a positive even integer with $2M\leqslant N$, and suppose that $A \cap[-M, M)=\emptyset$. Then there exists $r$ with $0<|r| \leqslant N^{2} M^{-2}$ such that $|\hat{A}(r)| \geqslant t M / 4 N$.
+\textit{Editorial note (original constant restored).}
+The printed factor $1/2$ is valid under the interval hypotheses below. The earlier factor $1/4$ resulted from a coarser proof estimate, not a counterexample to the statement. The following Lean-verified refinement removes frequency zero from the low-frequency energy and keeps the integer cutoff explicit.
+
+Lemma 5.2. Let $A$ be a subset of $\mathbb{Z}_{N}$ of cardinality $t$, let $M$ be a positive even integer with $2M\leqslant N$, and suppose that $A \cap[-M, M)=\emptyset$. Then there exists $r$ with $0<|r| \leqslant N^{2} M^{-2}$ such that $|\hat{A}(r)| \geqslant t M / 2 N$.
 
 Proof. Let $I=[-M / 2, M / 2)$. Then $A \cap(I-I)=\emptyset$. It follows that $\langle A, I * I\rangle=0$, which is the same as saying that $\sum_{s} A(s) I * I(s)=0$.
 
@@ -758,17 +759,30 @@ $$
 \sum_{r \neq 0}|\hat{A}(r)|\,|\hat{I}(r)|^{2} \geqslant t M^{2}
 $$
 
-By Lemma 5.1, we know, for each $r$, that $|\hat{I}(r)| \leqslant \min \{M, N / 2|r|\}$. It follows that
-
-$$
+If $t=0$, the conclusion follows by taking $r=1$. Assume $t>0$, and put $K=\lfloor N^2/M^2\rfloor\geqslant4$. By Lemma 5.1,
+$|\hat I(r)|\leqslant\min\{M,N/(2|r|)\}$. The reciprocal-square tail satisfies
+\[
+\sum_{|r|>K}|r|^{-2}\leqslant\frac2K.
+\]
+Moreover, $N^2<(K+1)M^2$ and $K+1\leqslant K^2$ imply $N\leqslant KM$, and hence
+\[
+\frac{N^2}{2K}<\frac{M^2}{2}+\frac{M^3}{2N}.
+\]
+The nonzero-frequency energy is exactly
+\[
+\sum_{r\ne0}|\hat I(r)|^2=MN-M^2.
+\]
+If all coefficients with $0<|r|\leqslant K$ were smaller than $tM/(2N)$, then splitting into low and high frequencies would give
+\[
 \begin{aligned}
-\sum_{r \neq 0}|\hat{A}(r)||\hat{I}(r)|^{2} & \leqslant \max _{0<|r| \leqslant N^{2} M^{-2}}|\hat{A}(r)| \sum_{r}|\hat{I}(r)|^{2}+t \sum_{|r| \geqslant N^{2} M^{-2}} N^{2} / 4|r|^{2} \\
-& \leqslant M N \max _{0<|r| \leqslant N^{2} M^{-2}}|\hat{A}(r)|+(3 / 4) t N^{2}\left(N^{2} M^{-2}\right)^{-1} \\
-& =M N \max _{0<|r| \leqslant N^{2} M^{-2}}|\hat{A}(r)|+(3 / 4) t M^{2}
+\sum_{r\ne0}|\hat A(r)|\,|\hat I(r)|^2
+&\leqslant \frac{tM}{2N}(MN-M^2)+\frac{tN^2}{2K}\\
+&<\frac{tM^2}{2}-\frac{tM^3}{2N}
+  +t\left(\frac{M^2}{2}+\frac{M^3}{2N}\right)
+=tM^2,
 \end{aligned}
-$$
-
-Therefore, there exists $r$ with $|r| \leqslant N^{2} M^{-2}$ and $|\hat{A}(r)| \geqslant M^{2} t / 4 M N=$ $t M / 4 N$, which proves the lemma. \(\square\)
+\]
+contradicting the preceding lower bound. Thus the original factor $1/2$ follows, with $0<|r|\leqslant K\leqslant N^2/M^2$. \(\square\)
 
 Remark. A more obvious approach to proving the above result would be to use $I$ instead of $I * I$. That is, one would consider the sum $\sum_{r} \hat{A}(r) \hat{I}(r)$. It turns out, however, that the estimates that one obtains are not strong enough. The trick of using $I * I$ instead is basically the familiar device of replacing the Dirichlet kernel by the Féjer kernel.
 
