@@ -1,0 +1,369 @@
+\section{A growing positive window and its Lambert transition}
+\label{sec:positive-wing}
+
+The absolute error in Theorem~\ref{thm:all-orders} is uniform in the
+lattice location.  Its usefulness is therefore not confined to bounded
+standardized displacements.  We now use its explicit kernels to obtain
+a relative approximation in growing positive windows.
+
+Throughout this section, put $L=\log n$ and retain the scale $B$, the
+parameters $q,\eps$, and the centered coordinate
+$\xi=(m-nA/b)/B$ of Theorem~\ref{thm:all-orders}.  Write
+\[
+ \mathcal P_n(\xi)=B\mathbb P(X_n=m),\qquad
+ g(\xi)=\normal(\xi)=\frac{\exp(-\xi^2/2)}{\sqrt{2\pi}}.
+\]
+Only lattice coordinates are meant when $\mathcal P_n$ occurs.  The
+uniform parameter hypotheses of that theorem give
+\begin{equation}\label{wing:small-parameters}
+ \frac{c}{L}\le q\le\frac{C}{L},\qquad
+ |\eps|\le\frac{C}{L},
+\end{equation}
+with positive constants independent of the parameters.  In particular,
+the constants in the statements below are uniform for the scaled order
+in a fixed compact real set and for $b$ in a compact subinterval of
+$(0,\infty)$.
+
+\subsection{Right tails of the explicit kernels}
+
+We use the notation
+\[
+ \mathcal H_{2k}^{[j]}(x)
+ =\left.\frac{\partial^j}{\partial\alpha^j}
+             \mathcal H_\alpha(x)\right|_{\alpha=2k},\qquad
+ \mathcal H_\alpha(x)=\frac1{2\pi}
+       \int_{\mathbb R}e^{-iyx-y^2/2}(-iy)^\alpha\,dy,
+\]
+where $\operatorname{Re}\alpha>-1$ and the principal powers are used.
+
+\begin{samepage}
+\begin{lemma}[Kernel tails and order derivatives]\label{lem:kernel-wing}
+For fixed integers $k\ge1$ and $j\ge1$, as $x\to+\infty$,
+\begin{equation}\label{wing:derivative-bound}
+ \mathcal H_{2k}^{[j]}(x)
+ =O\bigl(x^{-2k-1}(1+\log x)^{j-1}\bigr).
+\end{equation}
+More precisely, if $a(\alpha)=1/\Gamma(-\alpha)$, then
+\begin{equation}\label{wing:leading-polynomial}
+ \mathcal H_{2k}^{[j]}(x)
+ =x^{-2k-1}\sum_{r=1}^j\binom jr
+        a^{(r)}(2k)(-\log x)^{j-r}
+       +O\bigl(x^{-2k-11/4}\bigr).
+\end{equation}
+In particular,
+\begin{equation}\label{wing:first-kernel-tail}
+ \mathcal H_2^{[1]}(x)
+ =-2x^{-3}\left\{1+6x^{-2}+O(x^{-4})\right\}.
+\end{equation}
+The constants can depend on $k$ and $j$, which are fixed here.
+\end{lemma}
+\end{samepage}
+
+\begin{proof}
+We give a convolution proof so that differentiation with respect to
+the order does not rest on an unstated uniformity of a special-function
+asymptotic formula.  Fix $k$, set $d=2k+1$, and let
+$|\alpha-2k|\le1/4$.  Then
+\begin{equation}\label{wing:convolution}
+ \mathcal H_\alpha(x)
+ =\frac1{\Gamma(d-\alpha)}\int_0^\infty
+               t^{d-\alpha-1}g^{(d)}(x-t)\,dt.
+\end{equation}
+To verify the identity, first insert $e^{-\eta t}$ with $\eta>0$
+in the integral before differentiating $d$ times in $x$.  The Fourier
+multiplier of the resulting convolution is
+$(\eta-iy)^{\alpha-d}$.  Differentiation multiplies it by
+$(-iy)^d$.  As $\eta\downarrow0$, this tends to $(-iy)^\alpha$.
+It is dominated, up to a constant uniform on the indicated order
+disc, by $|y|^{\operatorname{Re}\alpha}e^{-y^2/2}$: here
+$\operatorname{Re}(\alpha-d)<0$ and $|\eta-iy|\ge|y|$.
+This is integrable.  Dominated convergence on the physical side is
+also valid, because the power at $t=0$ has real part greater than
+$-1$ and every derivative of $g$ has Gaussian decay at infinity.
+This proves \eqref{wing:convolution}, jointly holomorphically in
+$\alpha$ on a neighborhood of the closed disc.
+
+Put $p=d-\alpha-1$ and change variables to $u=t-x$.  On
+$|u|\le x/2$, expand $(x+u)^p$ in powers of $u/x$ through degree
+$d+2M+1$, for any fixed $M\ge0$.  The Taylor remainder is bounded by
+\[
+ C_{k,M}x^{\operatorname{Re}p-d-2M-2}|u|^{d+2M+2}
+\]
+uniformly on the order disc.  Integration against
+$|g^{(d)}(-u)|$ is harmless.  Replacing the central integrals by
+integrals over the whole real line changes the answer by a quantity
+bounded by $e^{-x^2/16}$ times a fixed power of $x$.
+The part of the original integral where $|u|>x/2$ has the same
+type of bound.  For the left part, the integrable factor
+$(x+u)^{\operatorname{Re}p}$ near $u=-x$ causes no difficulty;
+for the right part, polynomial growth is dominated by the Gaussian.
+
+Integration by parts gives
+\[
+ \int_{\mathbb R}u^r g^{(d)}(-u)\,du=0
+ \quad(r<d\text{ or }r-d\text{ odd}),
+\]
+and, for $r=d+2\ell$,
+\[
+ \int_{\mathbb R}u^{d+2\ell}g^{(d)}(-u)\,du
+ =\frac{(d+2\ell)!}{2^\ell\ell!}.
+\]
+It follows that, uniformly on the order disc,
+\begin{equation}\label{wing:uniform-tail-expansion}
+ \mathcal H_\alpha(x)
+ =\sum_{\ell=0}^{M}
+       \frac{x^{-\alpha-2\ell-1}}
+            {2^\ell\ell!\,\Gamma(-\alpha-2\ell)}
+       +O\bigl(x^{-\operatorname{Re}\alpha-2M-3}\bigr).
+\end{equation}
+The exponentially small terms just described can be retained
+separately; they are already absorbed by this remainder.
+
+The remainder in \eqref{wing:uniform-tail-expansion} is
+holomorphic in $\alpha$.  Cauchy's formula on the circle of radius
+$1/4$ about $2k$ bounds any fixed order derivative of that remainder
+by $O(x^{-2k-2M-11/4})$.  With $M=0$, differentiating the leading
+term gives \eqref{wing:leading-polynomial}: the $r=0$ term vanishes
+because $a(2k)=0$.  This proves \eqref{wing:derivative-bound}.
+For \eqref{wing:first-kernel-tail}, use $M=2$ and $k=j=1$.
+The reciprocal Gamma function has a simple zero at each
+nonpositive integer, and
+\[
+ \left.\frac{d}{d\alpha}\frac1{\Gamma(-\alpha-2\ell)}
+                         \right|_{\alpha=2}
+ =-(2+2\ell)!.
+\]
+The first two terms are therefore $-2x^{-3}$ and $-12x^{-5}$;
+the remaining displayed term and the differentiated remainder are
+$O(x^{-7})$, as asserted.
+\end{proof}
+
+The same tail structure follows from the classical connection formula
+for parabolic cylinder functions and their large-variable expansions \cite{dlmf-cylinder}:
+$\mathcal H_\alpha(x)=e^{-x^2/4}D_\alpha(-x)/\sqrt{2\pi}$,
+\[
+ D_\alpha(-x)=\cos(\pi\alpha)D_\alpha(x)
+       +\frac{\pi}{\Gamma(-\alpha)}V(-\alpha-1/2,x).
+\]
+Here the first term contributes Gaussian decay and the second
+contributes the power tail.  The convolution proof above supplies
+the parameter uniformity and the order derivatives directly.
+
+\subsection{A relative Gaussian and power-tail approximation}
+
+\begin{theorem}[Positive windows of polynomial size in $\log n$]
+\label{thm:positive-windows}
+Fix $M>0$, and let $r_L\to\infty$ with $r_L\le L^M$.
+Uniformly over lattice points and admissible parameters for which
+$r_L\le\xi\le L^M$,
+\begin{equation}\label{wing:relative-mixture}
+ \mathcal P_n(\xi)
+ =\left\{g(\xi)+q\xi^{-3}\right\}\{1+o(1)\}.
+\end{equation}
+Consequently, for each fixed $\delta\in(0,2)$, whenever the stated
+intervals are nonempty,
+\begin{align}
+ \mathcal P_n(\xi)&\sim g(\xi),
+ &r_L\le\xi\le\sqrt{(2-\delta)\log L},
+                       \label{wing:gaussian-window}\\
+ \mathcal P_n(\xi)&\sim q\xi^{-3},
+ &\sqrt{(2+\delta)\log L}\le\xi\le L^M.
+                       \label{wing:power-window}
+\end{align}
+No relative conclusion about negative growing displacements is
+included in this theorem.
+\end{theorem}
+
+\begin{proof}
+Choose an integer $N>3M$ in Theorem~\ref{thm:all-orders}.
+Its term of total degree one is
+$-q\mathcal H_2^{[1]}(\xi)/2$.  By
+\eqref{wing:first-kernel-tail}, this equals
+$q\xi^{-3}\{1+O(\xi^{-2})\}$.
+For every term with total degree $j\ge2$, divide its absolute
+value by $q\xi^{-3}$.  Equations
+\eqref{wing:small-parameters} and \eqref{wing:derivative-bound}
+bound the quotient by a constant times
+\[
+ q^{k-1}|\eps|^{j-k}
+       \xi^{-2k+2}(1+\log\xi)^{j-1}
+ \le C_N\left(\frac{1+\log\xi}{L}\right)^{j-1}.
+\]
+Only finitely many terms occur.  Their sum is $o(1)$ uniformly
+because $\log\xi\le M\log L$.
+The absolute remainder divided by $q\xi^{-3}$ is
+\[
+ O\bigl(\xi^3L^{-N}\bigr)=O\bigl(L^{3M-N}\bigr)=o(1).
+\]
+Finally $\xi^{-2}\le r_L^{-2}\to0$.
+We have thus proved the stronger additive statement
+$\mathcal P_n(\xi)=g(\xi)+q\xi^{-3}\{1+o(1)\}$,
+which implies \eqref{wing:relative-mixture} since both main terms
+are positive.
+
+For \eqref{wing:gaussian-window}, the ratio of the power term to
+the Gaussian is at most a constant times
+$L^{-\delta/2}r_L^{-3}$.  For \eqref{wing:power-window}, the
+ratio of the Gaussian to the power term is at most a constant
+times $L^{-\delta/2}(\log L)^{3/2}$: the function
+$x^3e^{-x^2/2}$ decreases for $x>\sqrt3$.
+Both bounds tend to zero, proving the two consequences.
+\end{proof}
+
+In the coefficient specialization of Theorem~\ref{thm:all-orders},
+$m=n$, and hence the same conclusions apply directly to
+$nBR_b^n a_n$.  Coordinates $\xi\le L^M$ force $b\to A$
+because $1-A/b=\xi B/n=O(L^{M+1/2}/\sqrt n)$.
+Thus these are growing positive windows adjacent to the feedback
+threshold.  They are distinct from a fixed supercritical parameter
+regime, whose standardized displacement is much larger.
+
+\begin{corollary}[Relative matching with the supercritical coefficient law]
+\label{cor:supercritical-matching}
+In the diagonal specialization, uniformly for each fixed $M>0$ and
+$\delta>0$ in the nonempty range
+\[
+ \sqrt{(2+\delta)\log L}\le\xi\le L^M,
+\]
+one has
+\begin{equation}\label{eq:supercritical-matching}
+ R_b^n a_n\sim
+ \frac1{b\{n(1-A/b)\}^{3+\eps}}
+ =\frac{b^{s-1}}{(b-A)^s}\,n^{-s}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+On this window $E_2(\eps)\to1$ and
+$\xi^{-\eps}\to1$ uniformly, since
+$|\eps\log\xi|=O(\log L/L)$. Thus the power term in
+\eqref{wing:power-window} is relatively equivalent to
+$q\xi^{-3-\eps}/E_2(\eps)$. The exact identities
+\[
+ \frac{q}{E_2(\eps)}=\frac{n}{bB^{2+\eps}},\qquad
+ B\xi=n(1-A/b)
+\]
+give \eqref{eq:supercritical-matching} after division by $nB$.
+\end{proof}
+
+There is an exact explanation for the amplitude cancellation.
+The first divided-difference correction is
+$-q(\HH_{2+\eps}-\HH_2)/(2\eps)$.
+Its leading algebraic tail is
+$q\xi^{-3-\eps}/E_2(\eps)$ because
+$1/\Gamma(-2-\eps)=-2\eps/E_2(\eps)$.
+The polynomial-log window makes this term relatively equivalent to
+the simpler $q\xi^{-3}$ while preserving the original coefficient
+amplitude in \eqref{eq:supercritical-matching}.
+
+\subsection{An exact Lambert location and a two-term profile}
+
+\begin{theorem}[Lambert location of the Gaussian--power transition]
+\label{thm:wing-lambert}
+For sufficiently small $q>0$, let $x_*(q)>\sqrt3$ be the larger
+positive solution of $g(x_*)=q x_*^{-3}$.  It has the exact formula
+\begin{equation}\label{wing:lambert-center}
+ x_*(q)^2
+ =-3W_{-1}\left(-\frac{(2\pi)^{1/3}}3q^{2/3}\right).
+\end{equation}
+If $Q=\log(1/q)$, then
+\begin{equation}\label{wing:expanded-center}
+ x_*(q)^2
+ =2Q+3\log(2Q)-\log(2\pi)
+       +O\left(\frac{\log Q}{Q}\right).
+\end{equation}
+For the parameters in \eqref{wing:small-parameters}, uniformly
+for $\tau$ in compact real intervals and positive lattice coordinates
+$\xi_n>0$ satisfying
+\begin{equation}\label{wing:transition-coordinate}
+ \xi_n^2=x_*(q)^2+2\tau+o(1),
+\end{equation}
+where the final error is uniform, one has
+\begin{equation}\label{wing:transition-profile}
+ \frac{\mathcal P_n(\xi_n)}{qx_*(q)^{-3}}
+       \longrightarrow 1+e^{-\tau}.
+\end{equation}
+In particular $x_*(q)\sim\sqrt{2\log\log n}$.
+\end{theorem}
+
+\begin{proof}
+The function $x^3g(x)$ increases up to $\sqrt3$ and decreases
+thereafter, so the stated larger root exists and is unique for
+small $q$.  The defining equation is equivalent to
+\[
+ x_*^2e^{-x_*^2/3}=(2\pi)^{1/3}q^{2/3},
+\]
+which gives \eqref{wing:lambert-center} with the branch $W_{-1}$ \cite{dlmf-lambert}.
+Alternatively, taking logarithms gives the exact scalar equation
+\begin{equation}\label{wing:center-equation}
+ y=2Q+3\log y-\log(2\pi),\qquad y=x_*^2.
+\end{equation}
+It first implies $y\sim2Q$.  Substituting
+$y_0=2Q+3\log(2Q)-\log(2\pi)$ into its two sides leaves a
+residual $O((\log Q)/Q)$, while the derivative of
+$y-3\log y$ is $1-3/y$, bounded away from zero at the larger
+root.  The mean value theorem proves
+\eqref{wing:expanded-center}.
+
+By \eqref{wing:small-parameters}, $Q=\log L+O(1)$.
+Therefore \eqref{wing:transition-coordinate} lies in the
+window of Theorem~\ref{thm:positive-windows} for any fixed $M>0$
+and a suitable $r_L\to\infty$.  Moreover,
+\[
+ \frac{g(\xi_n)}{qx_*(q)^{-3}}
+ =\frac{g(\xi_n)}{g(x_*(q))}
+ =e^{-\tau+o(1)},\qquad
+ \frac{q\xi_n^{-3}}{qx_*(q)^{-3}}
+ =\left(\frac{x_*(q)}{\xi_n}\right)^3\longrightarrow1.
+\]
+The relative mixture theorem now gives
+\eqref{wing:transition-profile}.
+\end{proof}
+
+The lattice restriction is immaterial to the transition coordinate:
+rounding $nA/b+B\sqrt{x_*(q)^2+2\tau}$ to the nearest
+integer changes $\xi_n^2$ by $O(x_*(q)/B)=o(1)$.
+For diagonal coefficients, the feedback parameter can instead be
+varied on the locally unique branch near $b=A$, choosing the compact
+feedback interval to contain $\zeta(2)$ in its interior.  Here is an explicit
+verification of the latter assertion.  Hold $n,s$ fixed, put
+$V=bB^2/n$, and differentiate the defining scale equation.  It gives
+\[
+ \beta:=\partial_b\log B
+ =-\frac{b^{-1}+2A^2/(b^3V)}{2-q}=O(1),\qquad
+ \partial_b\log q=-b^{-1}-(2+\varepsilon)\beta=O(1).
+\]
+For $\xi(b)=n(1-A/b)/B$, consequently,
+\[
+ \xi'(b)=\frac{nA}{b^2B}-\xi(b)\beta
+                  \asymp\sqrt{n/L}>0
+\]
+through any window $\xi=O(L^M)$ near $b=A$.  The derivative of
+$x_*(q(b))$ is only $O(1/x_*)$, by
+\eqref{wing:center-equation}.  Starting from $\xi(A)=0$,
+continuity and these derivative bounds yield a unique local
+feedback choice for each bounded $\tau$ in
+\eqref{wing:transition-coordinate}.
+
+\subsection{Relation to established probability results}
+
+The Gaussian and power-tail competition is an established phenomenon.
+Lam, Blanchet, Burch, and Bazant obtain nonclassical corrections to
+Gaussian limits for regularly varying densities, express corrections
+using Dawson and parabolic cylinder functions, and explain their
+connection with heavy-tail large deviations~\cite{lam}.
+Berger, Birkner, and Yuan treat large and local large deviations,
+including the infinite-variance normal domain with tail index $-2$,
+and identify the transition between collective Gaussian behavior and
+a single exceptionally large summand~\cite{berger}.
+
+Accordingly, neither the existence of such a competition nor the use
+of parabolic cylinder functions is claimed as new here.  The result
+established for the present model is the uniform extension through the
+varying order $s_n=3+O(1/\log n)$ and varying nonlinear feedback,
+with the explicit paired normalization and the finite all-order
+Stirling formulas of Theorem~\ref{thm:all-orders}.  The growing windows
+above follow from its uniform absolute remainder, and the exact
+Lambert coordinate \eqref{wing:lambert-center} describes their
+Gaussian--power transition in that normalization.  The fixed-law
+results just cited do not, without additional uniform estimates,
+supply this triangular-parameter assertion.
