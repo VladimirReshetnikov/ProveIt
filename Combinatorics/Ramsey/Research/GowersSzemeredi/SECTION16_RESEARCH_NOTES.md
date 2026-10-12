@@ -4492,6 +4492,39 @@ multilinear height and Section 16 constructions. Their remaining geometric
 certificates still need to be propagated through those constructions; the
 primitive alone is not a claim that all intermediate paper boxes are done.
 
+## L.22 Genuine multilinear partitions and Lemma 16.1 (2026-10-11)
+
+The new `Box.IsAscendingInteger` certificate describes the stored axes as
+casts of positive-step ordinary progressions entirely in `[0,N)`, with one
+common positive difference. It is stronger than merely recognizing a
+carrier as an integer box: a shifted whole-group modular parameterization
+can have the latter property while wrapping in its stored index order.
+The new affine transport theorem composes the ascending certificates for
+a nonempty child in the parent's index model, preserving every point and
+the exact width. The prescribed-step residue construction now exposes
+ascending certificates as well as its previous compatibility statement.
+
+`Proofs05IntegerMultilinearStep` and `Proofs05IntegerMultilinearInduction`
+carry these certificates through the entire monomial-height induction,
+using the existing recurrence and rounding budgets without changes.
+`Proofs05IntegerMultilinearPartition` proves the genuine Lemma 5.10;
+`Proofs05IntegerMultilinearIteration` proves the genuine Corollary 5.11 and
+also permits an empty function family. Canonicalizing an arbitrary genuine
+parent does not change its carrier, width, function values or hypotheses.
+
+`Proofs16IntegerSlicing` preserves ascending axes under adding one parent
+axis and taking a coordinate tail. `Proofs16IntegerLemma1` applies the
+simultaneous theorem to the lifted functions and takes the original slice,
+giving the genuine Lemma 16.1 with its exact threshold, minimum-width
+exponent and centered common-difference norm bound. These results hold
+over every nonzero modulus, including composite moduli.
+
+The native `MultilinearFidelityAudit` checks all 20 new public results and
+the exact three genuine statement types over 1,472 modules; only the
+approved axioms occur. This closes the representation gaps in Lemma 5.10,
+Corollary 5.11 and Lemma 16.1. It does not finish the remaining Section 16
+cover predicates or the large-width genuine rectangle in Theorem 13.12.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
