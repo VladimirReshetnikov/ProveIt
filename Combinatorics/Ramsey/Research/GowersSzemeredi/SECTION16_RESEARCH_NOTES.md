@@ -6528,6 +6528,31 @@ import header. The much larger5,917-module facade build was deliberately
 yielded only after its active module finished, to check these obligations,
 and then resumed from the preserved cache. Its final gate is still open.
 
+### L.45. Exact displayed Lemma 15.5 threshold (2026-10-12)
+
+The formerly open annotated threshold is now proved for positive dimension
+and odd prime modulus, including eta = 1. Write a = alpha*eta, E for the
+selection exponent, and t = (a/4)^E. The dyadic choice a/4 <= q < a/2 and
+amplification b with q*b >= 1 give q^E*(a*b-1) >= 3*t. The key quadratic
+identity is q*(a-q)-3*(a/4)^2 = (q-a/4)*(3*a/4-q) >= 0; multiplying by
+q^(E-2) proves the general inequality. This retains the dependence between
+the two factors that was lost in the previous stage-margin estimate.
+
+`selection_dyadic_margin` proves this elementary inequality.
+`selection_scale_estimate_sharp_explicit` then needs only
+max(3, Cdeg/(t*scale)), instead of max(3, 2*Cdeg/((1-eta)*t*scale)).
+`lemma_15_5_printed_threshold` specializes to scale=beta^15 and proves the
+exact displayed condition t*beta^15*N >= 3^(2^(k+4))*k. A height-zero theorem
+uses its separate exceptional constant; the old public threshold API remains
+proved. SelectionThresholdCoreAudit passed 12 native modules with only the
+standard axioms. The expanded downstream audit was started separately after
+yielding the facade driver at a completed-module boundary with cache retained.
+
+This closes the sharper annotated-threshold obligation, not the original
+reading with no largeness assumption. The source ledger keeps that distinction.
+The paper's replacement bookkeeping accounts for lost good degenerate
+arrangements as well as the additional bad ones.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
