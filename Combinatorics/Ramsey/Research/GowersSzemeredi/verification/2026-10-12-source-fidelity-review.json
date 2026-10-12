@@ -2,7 +2,7 @@
   "date": "2026-10-12",
   "scope": "Incremental statement-level comparison of actual hypotheses, numerical bounds and geometric meaning. This is separate from the120-companion kernel audit and does not claim completion of unreviewed entries. Current annotated source and original stronger claims are distinguished.",
   "paper": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
-  "paper_sha256": "7edba4e1ceb879d6ca4d9474fe4804529a5aaab092f8b772664aa2ebe4677083",
+  "paper_sha256": "ab88eb15cdcb948ad10f79640c46ef37a0f9e1102ba68559435c2f9ef949a3f1",
   "reviewed_sections01_03_sha256": "d7926af871dbe1323494485a38310b78721b436601eef937dbe41b3dd3782589",
   "statement_count": 120,
   "reviewed_statement_count": 120,
@@ -2282,7 +2282,7 @@
     {
       "statement": "proposition_17_2",
       "source_heading_lines": [
-        3850
+        3859
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 48,
@@ -2293,17 +2293,17 @@
           "line": 373
         }
       ],
-      "status": "corrected_prime_range_verified_original_degree_open",
+      "status": "printed_degree_refuted_corrected_prime_range_verified",
       "native_audited_companion": "proposition_17_2_holds",
-      "evidence": "proposition_17_2_prime_range proves the corrected degree<=k+1 conclusion for primeN with k+1<N, deriving the factorial-unit premise. The original published degree<=k and unrestricted characteristic range remain unproved/refuted by this result; no complete-original claim is made.",
+      "evidence": "proposition_17_2_printed_degree_counterexample refutes degree<=k even for positive k,0<alpha<=1/2 and k+1<N. The witness is N=3,k=1,alpha=1/2,f(s)=exponential(s^2),sigma(x)=2*x: hypothesis energy27, every degree-one twist energy9<27/2. The documented degree<=k+1 correction is proved by proposition_17_2_prime_range. The paper now includes the counterexample rather than merely citing the larger degree used by its proof.",
       "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
       "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
-      "additional_native_audit": "Combinatorics/Ramsey/Research/GowersSzemeredi/verification/2026-10-12-walsh-scope.json"
+      "additional_native_audit": "Combinatorics/Ramsey/Research/GowersSzemeredi/verification/2026-10-12-phase-degree.json"
     },
     {
       "statement": "lemma_17_4",
       "source_heading_lines": [
-        3891
+        3900
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 91,
@@ -2323,7 +2323,7 @@
     {
       "statement": "corollary_17_5",
       "source_heading_lines": [
-        3895
+        3904
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 103,
@@ -2343,7 +2343,7 @@
     {
       "statement": "corollary_17_6",
       "source_heading_lines": [
-        3899
+        3908
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 117,
@@ -2363,7 +2363,7 @@
     {
       "statement": "proposition_17_7",
       "source_heading_lines": [
-        3929
+        3943
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 140,
@@ -2374,16 +2374,17 @@
           "line": 2941
         }
       ],
-      "status": "corrected_positive_density_localization_matched",
+      "status": "corrected_positive_density_localization_verified_zero_endpoint_refuted",
       "native_audited_companion": "proposition_17_7_holds",
-      "evidence": "The companion uses alpha>0, positive dimension, odd side length m, common nonzero difference, all axes length m and m<=sqrt N. Its polynomial degree k+1, partition into proper modular progressions of lengths l or l+1 with l>=m/(3k), and failure of relative uniformity at2^(-2*(k+1)^3)*alpha match the corrected source. Source explicitly asks for mod-N output progressions here, so integer output geometry is not required. The alpha=0 zero-function obstruction is explained in the paper but has no separately located native counterexample in this review. The input multilinear function is encoded by a global multiaffine extension; a source function specified only on P is understood through its polynomial representation.",
+      "evidence": "The corrected companion retains positive alpha, positive dimension, odd equal side length m, common nonzero difference, m<=sqrtN, polynomial degree k+1, and modular cells of lengths l/l+1 with l>=m/(3k). proposition_17_7_zero_parameter_counterexample now separately refutes the nonnegative-alpha variant atN=3,k=m=1,f=sigma=0. The zero twist is zero-uniform on every partition. Source explicitly permits modular output progressions here.",
       "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
-      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean"
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
+      "additional_native_audit": "Combinatorics/Ramsey/Research/GowersSzemeredi/verification/2026-10-12-phase-degree.json"
     },
     {
       "statement": "theorem_18_1",
       "source_heading_lines": [
-        4054
+        4068
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 171,
@@ -2413,7 +2414,7 @@
     {
       "statement": "theorem_18_2",
       "source_heading_lines": [
-        4106
+        4120
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 190,
@@ -2443,7 +2444,7 @@
     {
       "statement": "corollary_18_7",
       "source_heading_lines": [
-        4121
+        4135
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 203,
@@ -2498,5 +2499,6 @@
   "new_scope_proofs_kernel_status": "WalshScopeCoreAudit passed56 native modules with only the approved axioms; the combined post-merge WalshScopeFidelityAudit also passed1663 modules. The exported facade is a separate running check.",
   "reviewed_section16_sha256": "a39792df29795e9903fded3cd460efbcd0e80d7e695d8958d741538deb73aba3",
   "reviewed_sections17_18_sha256": "74027961cd05b94022c2e298ae96bc5ddd5b17425143725c2ba2fbc24c68922f",
-  "review_complete_is_not_goal_complete": "All120 numbered entries have now been compared at statement level. Many original bounds, characteristic ranges, geometry-and-bound combinations and native counterexamples remain open as recorded per entry. goal_complete stays false."
+  "review_complete_is_not_goal_complete": "All120 numbered entries have now been compared at statement level. Many original bounds, characteristic ranges, geometry-and-bound combinations and native counterexamples remain open as recorded per entry. goal_complete stays false.",
+  "new_phase_scope_kernel_status": "PhaseDegreeCoreAudit passed16 native modules; PhaseDegreeFidelityAudit passed1667. The original Proposition17.2 degree claim and Proposition17.7 zero endpoint now have explicit kernel-checked refutations. The facade has resumed and remains pending."
 }
