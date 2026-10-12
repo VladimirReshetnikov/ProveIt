@@ -5488,6 +5488,26 @@ Both are in the bridge, pinned and stub-checked.
 * The base envelope `EnvBound 3 62` of Theorem 18.2. The thresholds do not
   move even at base 0.
 
+**L.16w: the split step combined by `max` (2026-10-12).** A split class
+carries one family exponent `a` and one parameter degree `D` for its count,
+its width exponent and its threshold. The step bounds the three separately,
+then combined them by a sum: `splitStepA = sCountN + sExpN` and
+`splitStepDFejer = countW + expW + thrDeg`. Every control of a split class
+is monotone in `(a, D)`, so the `max` suffices
+(`splitUniformClass_succ_fejer_max`; the step lemma is unchanged except for
+its monotonicity targets). Since `max ≤ sum` (`splitStepAMax_le_sum`,
+`splitStepDMaxWith_le_sum`), the invariants at class constants `4` and `5/2`
+carry over unchanged. Only the exact table moves: `tDegM` is
+`…, 134, 205, 317, 505, 842, 1472, 2684, 5057, 9746, 19064, 37637`
+(dimensions 4–14) against `…, 136, 210, 326, 524, 881, 1550, 2841, 5371,
+10375, 20323, 40154` for the sum, about 4–6% lower
+(`Proofs18TightClassesFejerM`, `assemble_m.py`). Over these classes the
+joint-slice chain (`Proofs18Cover{Modulus,Density,Exponents}FejerJM`,
+`Proofs18CoverFejerHeadlineJM`, `assemble_jm.py`) gives Theorem 18.1 at
+`d + 2` from `d = 11` (`theorem_18_1_d2_eleven_le`). The other thresholds do
+not move. A split invariant with separate count and exponent exponents
+(dimension-two count `(11, 2^41)`) would also give `d + 3` from 8.
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`
