@@ -1173,6 +1173,7 @@ import GowersSzemeredi.Proofs18CoverFejerHeadline
 import GowersSzemeredi.Proofs18CoverFejerLowDegrees
 import GowersSzemeredi.Proofs18CoverFejerShortLengths
 import GowersSzemeredi.Proofs18CoverFejerAllDegrees
+import GowersSzemeredi.Proofs16PolynomialFejer
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

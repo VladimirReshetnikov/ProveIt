@@ -4771,10 +4771,40 @@ printed parameter survives (no `section16ThetaOne`, `section16Zeta`,
   - `van_der_waerden_L4`: `W(k, r) ≤ 2^2^r^2^2^(k+4)`;
   - `theorem_1_3_L4`: Theorem 1.3 with constant `2^(−2^(k+4))`.
 
+  - `theorem_16_2_polynomial_fejer`: Theorem 16.2 with graph count
+    `max(1, (4V/(γθρ))^(2^(23·2^k)))` (L.15i had `2^(68·2^k)`), from
+    `Proofs16PolynomialFejer`; `theorem162At_of_polynomial_fejer` gives the
+    printed form;
+  - `corollary_16_11_polynomial_fejer`: Corollary 16.11 with
+    `e⁻¹ ≤ (2/α)^(2^(101·2^k+k+24))` (L.15j had `236·2^k`).
+
+  `CompletionAudit.lean` pins all of these (exact statements plus the axiom
+  whitelist); the block was validated in the stub environment, with the
+  whitelist widened by the stub axioms.
+
   Stub axioms are exactly those of the `d + 7` / `L + 5` bridge:
   `commonDiffPartitionBoundAt_of`, `multilinearPartitionBoundAt_explicit` and
   `section16RecurrenceProfileWith_explicit` for 18.1, and the last alone for
   18.2 and its consequences.
+
+*Refactor map for the full-build machine.* Each duplicate has an original.
+Folding it means giving the original the parameter and deleting the copy:
+
+| duplicate | original | parameter | `rfl` hook |
+|---|---|---|---|
+| `Proofs16Lemma5With` | `Proofs16Lemma5` | `(t1, ζ)` | `lemma_16_5_with_printed_hyps` |
+| `Proofs16DenseSelectionWith` | `Proofs16DenseSelection`, `…InducedSelection` | `(t1, ζ)` | — |
+| `Proofs16PolyPieceTwoDataWith` | `Proofs16PolyPieceTwoData` | `t1` | `polyPieceBudgetW_printed` etc. |
+| `Proofs16ClassPiecesWith` | `Proofs16ClassPieces` | `(t1, ζ)` | `classBudgetW_printed`, `classPieceThrW_printed` |
+| `Proofs16SinglePieceCoverGlobalWith` | `Proofs16SinglePieceCoverGlobal` | `(t1, ζ)` | `globalBudgetW_printed`, `coverRho1W_printed`, … |
+| `Proofs16PolyCoverTwoFejer`, `Proofs16UniformCoverTwoFejer`, `Proofs18FejerSeed*` | `Proofs16PolyCoverTwo`, `Proofs16UniformCoverTwo(Bounds)`, `Proofs18LengthSix*` | Fejér instance | — |
+| `Proofs16ClassStepFejer`, `…BoundsFejer`, `…DegreesFejer` | `Proofs16ClassStep`, `…Bounds`, `…Degrees` | `(stepP, stepT) ↦ (fejerStepP, fejerStepT)` | `splitStepDWith_stepP` |
+| `Proofs16SplitStepFejer` | `Proofs16SplitStepBounds`, `…AllDimensions` | `(P, T)`, seed | `splitStepDFejer_eq` |
+| `Proofs18SinglePieceCoverInverseFejer`, `Proofs18Cover{Modulus,Density,Exponents}Fejer`, `Proofs18CoverFejerHeadline` | the `…C` modules | class degree, θ₁ | — |
+
+The generator scripts, which record exactly which substitutions were made,
+are in `Research/GowersSzemeredi/fejer-generators/` (with a README mapping
+each script to its module and original).
 
 *What is left.*
 * The full build of the bridge belongs to the Codex machine.
@@ -4786,7 +4816,19 @@ printed parameter survives (no `section16ThetaOne`, `section16Zeta`,
   `μ₀ = 32·2^k` (`fixDeg`, kept printed here by the monotone transfer;
   the Fejér θ₁ alone would allow `16·2^k`, set by `V`) plus three class
   terms `≥ 3·22·2^k` already exceed that. So `d + 5` would need a smaller
-  class constant as well as the `μ₀` from `V`.
+  class constant as well as the `μ₀` from `V`. The exact envelope model
+  (`model_fejer_envelope_exact.py`, with `fixDeg` replaced by the Fejér
+  budget's `5k + 22`) quantifies this. `d + 5` holds in every degree `d ≥ 4`
+  for a class constant `≤ 10` (maximum envelope ratio `119·2^k`), and fails
+  from `12` up (`130·2^k`). With the printed `fixDeg` it fails even at class
+  constant `8` (`138·2^k`). The split recursion cannot give `≤ 10` from the
+  proved seed. Its invariant is `log₂ D_l ≤ (c+8)·2^l`, which at `l = 2`
+  needs `D₂ ≤ 2^(4(c+8))` and `2^8·a₂ ≤ 2^(4c)`. The seed `D₂ = 2^46` alone
+  forces `c + 8 ≥ 12`, and `a₂ = 2^46` forces `c ≥ 14`. Class constant `10`
+  would need `D₂ ≤ 2^40` and `a₂ ≤ 1` at once. The `+8` comes from
+  `fejerStepP`, `fejerStepT ≤ 2^(5k+20)`. So `d + 5` needs a much smaller
+  dimension-two seed (its piece counts carry the Lemma 16.3 exponent
+  `10^4`) or a different class construction; bookkeeping will not do.
 
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
