@@ -6516,6 +6516,11 @@ alpha=0. Every phase twist remains zero-uniform on every partition,
 contradicting the asserted failure of uniformity. The positive-alpha
 corrected statement remains checked by the numbered fidelity audit.
 
+After integrating the incoming Fejer-JM improvements and resolving the
+facade import conflict by retaining both export sets, the expanded
+`PhaseDegreeFidelityAudit` also passes all1,672 modules. Its separate
+post-merge report records the exact source snapshot.
+
 The paper has visible notes for both examples. Its annotated119-page PDF
 was rebuilt twice; pages109,111,112 were visually inspected. The original
 published PDF is unchanged. Public exports were placed in the facade's
