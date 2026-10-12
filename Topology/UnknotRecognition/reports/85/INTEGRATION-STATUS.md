@@ -86,3 +86,21 @@ multiplicity 2^16384 takes 0.605 seconds with a 15,069,104-byte certificate.
 Four additional finite timings are explicitly labelled as an existing v1
 control, not gains due to absorption. Raw measurements and five shuffled
 paired rounds are in `../../synthesis/data/disk-absorption-benchmark.json`.
+
+## Further native primitive-annulus rule
+
+A subsequent native extension implements a simultaneous primitive-family
+criterion for nondisk bases with a spare boundary component. Disjoint arcs to
+that boundary lift to dual disks avoiding the proper interval interfaces.
+The whole-cut v3 certificate independently reconstructs each family and its
+genus deduction before running the disk-absorption and core checkers. The
+detailed synthesis supplies the gluing/cancellation proof and its limitations.
+This is additional native theory and implementation; the delivered report and
+runtime copies remain unchanged.
+
+The audit now certifies 78/106 cuts, preserving the prior 63 and accepting all
+15 candidates in the profile diagnostic. All 78 replay, and all 71 literal
+Regina comparisons agree, with seven large-coordinate replays and no timeouts.
+Remaining refusals are 11 annular cases, seven failed core cancellations and
+ten cores with three-handles. Fresh evidence is in
+`../../synthesis/data/primitive-annuli-audit.json`.

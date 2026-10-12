@@ -5,8 +5,8 @@ boundary checkers. No group-word reduction or homological test is used.
 """
 
 
-def absorb_disk_bundles(geometry, summary, skeleton, *, check=lambda: None):
-    """Return augmented charts and a replay record, or refuse a nondisk circle."""
+def absorb_disk_bundles(geometry, summary, skeleton, *, primitive_bases=frozenset(), check=lambda: None):
+    """Absorb disks; primitive_bases must be separately source-certified."""
     check()
     profiles = summary['base_profiles']
     by_port = {port: i for i, p in enumerate(profiles) for port in p['core_ports']}
@@ -21,6 +21,8 @@ def absorb_disk_bundles(geometry, summary, skeleton, *, check=lambda: None):
         if len(bases) != 1:
             raise ArithmeticError('circle crosses base components')
         base = bases.pop()
+        if base in primitive_bases:
+            continue
         p = profiles[base]
         if (p['euler_characteristic'] != 1 or p['boundary_components'] != 1 or
                 not p['orientable'] or not p['product'] or p['multiplicity'] != 1):

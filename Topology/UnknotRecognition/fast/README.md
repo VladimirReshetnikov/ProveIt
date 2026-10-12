@@ -4244,7 +4244,7 @@ PYTHONPATH=. python -B -m normal_orbit_research.source_handles benchmark --outpu
 `fastunknot.normal_cut_handlebodies.normal_cut_handlebodies(source, coordinates,
 record_certificate=True)` now combines the full normal-cut parallelity geometry,
 ordered core-port interfaces, disk-base annulus absorption, geometric core
-cancellations, and disk gluing.
+cancellations, and gluing along disks and certified primitive annuli.
 A successful result gives the exact binary histogram of handlebody genera for
 all cut components. Replay with
 `fastunknot.normal_cut_handlebodies_verify.verify_normal_cut_handlebodies`.
@@ -4256,8 +4256,12 @@ attachment on a disk base is absorbed as a source-authenticated two-handle.
 Its signed endpoint charts distinguish self-paired faces, while cancellation
 counts every unsigned occurrence. An independent adapter reconstructs the
 augmented core and checks all added rows. Such proofs use schema v2; existing
-v1 proofs remain replayable. Nondisk annuli, closed bundle bases, three-handles
-and stalled raw cancellation remain inconclusive. The low-level `core_handlebody_certificate` requires
+v1 proofs remain replayable. Nondisk annuli with a spare base boundary form
+a simultaneous primitive family: disjoint base arcs lift to dual disks avoiding
+all other attaching intervals. Independently checked v3 proofs subtract one
+from the bundle genus per such annulus and retain it as a graph edge. V1 and
+v2 proofs remain replayable. Unsupported annuli, closed bundle bases,
+three-handles and stalled raw cancellation remain inconclusive. The low-level `core_handlebody_certificate` requires
 source-authenticated geometric handle charts; its matrix is not a group
 presentation or a cellular boundary matrix. Its exact saturated singleton
 updates use actual unsigned occurrences and have a geometric disk-slide proof.
@@ -4284,3 +4288,10 @@ on an otherwise idle host; literal expansion and oracle timeouts are explicit.
 The absorption audit certifies 63 of the 106 supplied cuts (previously 30),
 with 56 exact explicit-cut agreements and seven large-coordinate replays.
 The evidence is retained in `../synthesis/data/disk-absorption-audit.json`.
+
+The subsequent primitive-annulus audit certifies 78/106 cuts, preserving all
+63 absorption successes. All 78 proofs replay; 71 match explicit Regina cuts
+and seven exceed the literal expansion cap. New evidence is in
+`../synthesis/data/primitive-annuli-audit.json`. This topological gluing rule
+uses existence of a simultaneous disk system, without expanding that system
+or transporting an arbitrary boundary pattern to a later hierarchy stage.

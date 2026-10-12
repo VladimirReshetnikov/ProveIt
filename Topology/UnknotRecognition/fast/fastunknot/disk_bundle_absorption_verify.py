@@ -8,7 +8,8 @@ ordered interface. This module imports no absorption or cancellation producer.
 from .integer_codec import certificate_equal
 
 
-def replay_disk_bundle_absorption(g, summary, skeleton, certificate, *, check=lambda: None):
+def replay_disk_bundle_absorption(g, summary, skeleton, certificate, *, primitive_bases=frozenset(), check=lambda: None):
+    # The enclosing checker must independently certify primitive_bases first.
     check()
     profiles = summary['base_profiles']
     owners = {port: i for i, p in enumerate(profiles) for port in p['core_ports']}
@@ -21,6 +22,8 @@ def replay_disk_bundle_absorption(g, summary, skeleton, certificate, *, check=la
             return None
         ports = [abs(x) - 1 for x in attachment['word']]
         base = owners[ports[0]]
+        if base in primitive_bases:
+            continue
         p = profiles[base]
         if (base in taken or any(owners[i] != base for i in ports) or
                 sorted(ports) != sorted(p['core_ports']) or
