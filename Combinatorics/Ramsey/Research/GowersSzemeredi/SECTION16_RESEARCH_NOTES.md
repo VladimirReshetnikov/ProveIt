@@ -4890,14 +4890,22 @@ Natural repairs fail:
 * *Fewer samples.* `r ∝ q/τ′` is what hitting every heavy candidate twice
   costs.
 
-One avenue remains open. The `q` candidates are restrictions of the
-`Q_r` multilinear maps of the remainder cover, and those are already
-multilinear. If the slice cover could be organized per remainder map, so
-that a slice is compared with a known multilinear map rather than covered
-afresh, the next count might become *additive* in `a` instead of
-multiplicative. That would need a new form of Lemma 16.10's lift, not a
-change of parameters. Until then `d + 6` / `L + 4` is the limit of this
-route.
+* *Organizing by remainder map.* The candidates are indexed by the `Q_r`
+  remainder maps μ_i, with `φ₁(h, x) = ℓ(h, i, x)` linear in `x`. But the
+  dependence of `ℓ(h, i, ·)` on `h` is not given by μ_i. Recovering it is
+  exactly the job of the slice cover, and per remainder map it is still
+  `M·q` relations.
+* *Per-member candidate counts.* One member's remainder needs only
+  `Q_r` at one piece, which does not depend on `n`. But the members share
+  one partition, and on a shared cell a member may use all `q` joint
+  candidates. Separate per-member covers composed by the joint-cover lemma
+  (L.12) multiply the width exponents over the `M` members, which is worse.
+
+So the square is a feature of covering many structured pieces with one
+partition, and the route stops at `d + 6` / `L + 4`. Getting past it would
+need either a remainder cover whose count does not grow with the number of
+pieces sharing the partition, or a lift that recovers the `h`-dependence of
+the candidate lines without covering `M·q` slice relations. Both are open.
 
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
