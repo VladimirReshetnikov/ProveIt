@@ -4436,6 +4436,42 @@ single-exponential `θ₁` of the L.16 analysis, `log₂ E₁′ ≤ 5k + 14`, n
 proved. What remains is the propagation through Section 16, which hardwires
 the printed `section16ThetaOne`.
 
+*Density-uniform form* (`Proofs15FejerProduct`). The following are also
+formalized, with standard axioms only:
+* `fejer_scale_estimate`: the Fejér selection under
+  `general ≤ scale·N^(17k+15)` and `respected ≥ α·scale·N^(17k+15)`;
+* `fejer_product_of_density_lower`: Lemma 15.6 with only a density lower
+  bound `β·N^(k+1) ≤ |B|`, at exponent `fejerProductExponent k`. This is
+  exactly the form Lemma 16.4 consumes (`lemma_15_6_of_density_lower`).
+
+*Propagation plan (needs full builds; for the Codex machine).*
+1. Add `Section16StructuredPairWith E` to `Section16.lean` (lines 191–205):
+   `Section16StructuredPair` with `(θγ/4)^(2^(E k))`, or simply
+   `(θγ/4)^(E k)`, in place of `section16ThetaOne`. Keep the printed pair
+   as the case `E k = 2^(2^(k+5))`.
+2. In Lemma 16.4 (`Proofs16StructuredExtraction.lean`, lines 36–63), use
+   `fejer_product_of_density_lower` for `k ≥ 1`. Keep
+   `lemma_15_6_zero_of_density_lower` for `k = 0`, whose exponent is the
+   constant `2^19`. This yields `Section16StructuredPairWith
+   fejerProductExponent`.
+3. Thread `E` through the consumers of `section16ThetaOne` (88 modules,
+   483 lines). The degree bookkeeping depends on `E` only through:
+   * `stepP = 2^(2^(k+5)+6) = 64·E`;
+   * `fixDeg = 2^(k+5) + 7 = log₂ E + 7`;
+   * the Bohr exponent `stepT` and the exponent of `s`, composed across
+     dimensions (Caveat 1);
+   * the dimension-two seed `2^132`.
+
+   With `E′ = fejerProductExponent k ≤ 2^(5k+14)`, all of these become
+   `O(k)` or `O(k²)` in log-degree.
+4. Rerun `models/model_fejer.py` with the exact new inputs to fix the tight
+   class constant: about 26 under the conservative composed-`s` scaling.
+   The seed must stay at log-degree ≤ 120. Then re-derive the envelopes and
+   Theorems 18.1, 18.2 and 18.7 at `d + 6` / `L + 4`.
+
+Steps 1–3 make about 600 modules stale, so per the user's directive they
+run on the machine that does the full builds.
+
 *Propagation (model).* `models/model_fejer.py` mirrors the split-class
 recursion of `Proofs16SplitStepBounds` exactly (`splitStepA`, `splitStepD`).
 Its θ₁-driven inputs are:
