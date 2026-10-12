@@ -32,8 +32,13 @@ certificate. The seven newly certified cuts are the three interior layered
 torus pilots, the interior trefoil pilot, the mixed interior $(1,2)$ and
 $(3,5)$ tori, and the mixed interior figure-eight exterior.
 
-The historical compatibility comparison, full regression suite and paired
-performance measurements are recorded below when complete.
+The old/new comparison reproduces all 85 historical certificate hashes and
+replays every old certificate with both checkers. Every previous positive
+certificate remains byte-identical; only the seven formerly unsupported
+cases add a new route. Disabling the reduced-core precheck produces the same
+new positive proofs. All 1,696 Regina-enabled tests pass in 595.083 seconds,
+including 13,846 expanded-sheet topology comparisons and 196,712
+marked-cover comparisons. Paired performance measurements follow below.
 
 
 \paragraph{Dependence on the selected dual forest.}
@@ -48,3 +53,67 @@ Choosing a useful forest in general needs a separate selection algorithm
 and complexity argument; merely enumerating all spanning forests can be
 exponential. The current queue's completeness concerns elimination of
 three-handles, irrespective of the later raw cancellation outcome.
+
+
+For the empty loop source, after the retained zero/one forest contraction,
+the five source rows on columns $(3,5,6,7,8)$ are
+\[
+ N=\begin{pmatrix}
+ 0&0&1&0&0\\
+ 1&1&0&0&0\\
+ 0&1&0&1&1\\
+ 1&0&1&1&1\\
+ 0&1&1&1&0
+ \end{pmatrix}.
+\]
+Rows $0,1,2,3$ each have one interior dual endpoint; row $4$ is the
+interior loop with two equal endpoints. Deleting row $0$ by the default
+two/three cancellation leaves column totals $(2,3,2,3,2)$, a stopping set.
+Deleting row $1$ instead permits the column-pivot sequence
+\[
+ (r,h)=(3,3),(2,8),(4,7),(0,6),
+\]
+leaving genus one.
+These are original source row labels; the certificate renumbers survivors.
+This explicit example also demonstrates why a stopping set of the
+unreduced core cannot justify rejecting the enlarged method.
+
+
+\paragraph{Complete-query timings and binary capacity.}
+Nine finite cases compare full native production plus independent replay
+against Regina's explicit cut and recognition of every component. Each uses
+five randomly ordered pairs and three identical explicit/explicit controls,
+with all samples, source pins and driver hashes retained. The old native
+three-handle refusal is not an equivalent completed query and is not used
+as a timing baseline. Median times below are milliseconds; ``Ratio'' is the
+median paired explicit/native ratio, so values above one favor native.
+
+\input{tables/three_handles_timing.tex}
+
+The interior trefoil pilot is $8.664$ times faster natively: $12.888$ ms
+versus $113.896$ ms for the explicit method. The other eight comparisons
+favor Regina. In particular, the mixed interior figure-eight case takes
+$9.196$ s natively versus $0.214$ s explicitly at one copy, and $21.199$ s
+versus $4.019$ s at 64 copies. Timing variation is material: its native
+samples range from $6.250$ to $11.431$ s and from $19.788$ to $28.526$ s,
+respectively. The explicit samples range from $0.130$ to $0.217$ s and from
+$2.590$ to $4.299$ s. A/A medians across the nine cases range from $0.978$
+to $1.018$. The table records finite measurements rather than a uniform
+speed claim or a new asymptotic recognition bound.
+
+For the mixed interior $(1,2)$ source at multiplicity $2^{16384}$, the native
+query certifies exactly $2^{16385}$ balls. Production and independent replay
+take $2.379$ s together. A separate replay after exact hexadecimal JSON
+transport takes $1.311$ s. Literal expansion is not attempted. The serialized
+certificate has 29,660,388 bytes: avoiding explicit sheets does not make the
+present proof representation small in practice. This single capacity test
+is evidence about binary input handling, not a proof of the running-time
+bound for every possible orbit trace.
+
+The retained data and drivers have prefix \path{data/three-handles-*}.
+The earlier whole-cut wrappers are preserved in
+\path{data/three-handle-baseline/}. The two missing loop-source certificates
+remain a concrete target for a better polynomial forest selector. Useful
+surface discovery, pattern transport and the global hierarchy and restart
+bounds remain unresolved; general quasi-polynomial unknot recognition has
+not been achieved.

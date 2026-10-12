@@ -4261,7 +4261,8 @@ a simultaneous primitive family: disjoint base arcs lift to dual disks avoiding
 all other attaching intervals. Independently checked v3 proofs subtract one
 from the bundle genus per such annulus and retain it as a graph edge. V1 and
 v2 proofs remain replayable. Unsupported annuli, closed bundle bases,
-three-handles and stalled raw cancellation remain inconclusive. The low-level `core_handlebody_certificate` requires
+and stalled raw cancellation remain inconclusive. Source three-handles now
+use the v6 reduction described below. The low-level `core_handlebody_certificate` requires
 source-authenticated geometric handle charts; its matrix is not a group
 presentation or a cellular boundary matrix. Its exact saturated singleton
 updates use actual unsigned occurrences and have a geometric disk-slide proof.
@@ -4321,7 +4322,7 @@ The article proves the source-to-template construction, safe projection,
 and resulting genus census. This handles the two mixed Fibonacci annular
 cases missed by the separate bundle/core primitive-family criteria. Earlier
 v1--v4 successes remain preferred when the chosen cocore system supports them.
-Three-handles, obstructed raw matrices,
+The v6 reduction below handles source three-handles. Obstructed raw matrices
 and general hierarchy discovery remain unresolved; no knot verdict or
 general quasi-polynomial complexity claim is added.
 
@@ -4347,7 +4348,7 @@ and passive curve transport have separate costs. See
 compatibility audit, and measured performance.
 
 
-The updated 106-case audit retains all 85 certified cuts, and every old proof
+The column-peeling 106-case audit retains all 85 certified cuts, and every old proof
 replays under the new checker. All 1,688 Regina-enabled tests pass. Five paired
 measurements show 522x faster production on the 2,048-row sparse chain and
 476x faster conditional replay at 256 rows; the genuine prepared-core cohort
@@ -4383,3 +4384,23 @@ stopping set. Three-handle elimination is complete, but subsequent raw
 cancellation can still miss genuine handlebodies. The proof, genuine loop and
 nested-vertex controls, and independent audits are in
 [core_three_handles.tex](../synthesis/core_three_handles.tex).
+
+The three-handle audit now certifies 92/106 supplied cuts, including seven
+previously unsupported cases. All 92 replay, 85 agree with literal Regina
+cuts, and seven exceed the expansion cap. All 85 earlier certificates are
+byte-identical. All 1,696 Regina-enabled tests pass. Fourteen additional
+Pachner-generated fixtures validate nested boundary-forest chains and
+repeated endpoints; ten produce certified whole-cut censuses. Two genuine
+handlebody misses are caused by the selected dual forest, as demonstrated
+by six independently replayed alternative certificates in the retained
+`three-handles-choice-probe` experiment. The production selector currently
+uses one deterministic forest.
+
+
+Complete-query measurements compare native production plus replay with
+Regina's explicit cut and component recognition. The interior-trefoil pilot
+improves 8.66x; Regina wins the other eight measured cases. On the mixed
+interior (1,2) source, multiplicity `2**16384` gives a certificate for
+`2**16385` balls in 2.38 seconds including replay, with a 29.7 MB serialized
+proof. The article reports all samples, variation, A/A controls and the
+limitations of this finite capacity test.
