@@ -2,17 +2,17 @@
 
 The canonical reading artifact is the collective four-volume manuscript,
 [Polylogarithms and their Arithmetic Bridges](docs/manuscript/README.md),
-authored by **ProveIt Contributors**. The volumes have **144, 130, 249 and
+authored by **ProveIt Contributors**. The volumes have **144, 130, 253 and
 86 pages**, each compiling independently; the retained
-[combined edition](docs/manuscript/polylogarithms.pdf) has **566 pages**.
-They share twelve chapters, thirteen figures and 147 references. The
+[combined edition](docs/manuscript/polylogarithms.pdf) has **570 pages**.
+They share twelve chapters, thirteen figures and 148 references. The
 [editorial ledger](docs/manuscript/EDITORIAL-LEDGER.md) separates accepted
 proofs from pending analytic claims, and the
 [validation record](docs/manuscript/VALIDATION.md) distinguishes proofs,
 finite certificates, numerical diagnostics, PDF builds and visual review.
 
-The inventory covers **1810 textual provenance documents**. **129 incoming
-archives / 4665 original tracked members** are preserved; imported ZIPs are
+The inventory covers **1810 textual provenance documents**. **130 incoming
+archives / 4704 original tracked members** are preserved; imported ZIPs are
 retired in their placement commits and recoverable from arrival history.
 Delivered PDFs, sources, code and receipts retain their original evidence
 scopes. Intake notes use a separate filename, preserving delivered

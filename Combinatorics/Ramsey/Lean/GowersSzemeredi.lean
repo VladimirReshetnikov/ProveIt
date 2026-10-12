@@ -1223,6 +1223,11 @@ import GowersSzemeredi.Proofs18CoverDensityFejerZ
 import GowersSzemeredi.Proofs18CoverExponentsFejerZ
 import GowersSzemeredi.Proofs18CoverFejerHeadlineZ
 import GowersSzemeredi.Proofs18CoverFejerHeadlineY
+import GowersSzemeredi.Proofs16JointSliceCell
+import GowersSzemeredi.Proofs16JointSliceSpectrum
+import GowersSzemeredi.Proofs16JointSliceCore
+import GowersSzemeredi.Proofs16JointSliceGlobal
+import GowersSzemeredi.Proofs18JointSliceInverseFejer
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
