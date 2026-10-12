@@ -4408,19 +4408,28 @@ track a common positive integer difference on box axes, permit a shared
 orientation reversal, and preserve carriers and widths in the index model.
 They also establish the exact square-root/factor-four refinement loss and
 monotonicity of discrepancy under refinement. The genuine Theorem 18.1
-draft uses the unused envelope slack to keep d+7 for d>=4, with stronger
-lower-degree bases. These follow-up drafts are not yet reported as verified.
+proof uses the unused envelope slack to keep d+7 in every degree, with
+stronger offsets 1, 2 and 4 at degrees one, two and three. The linear
+function discrepancy bound works over every nonzero modulus, without
+requiring the function to be balanced. `IntegerFidelityAudit` verifies all
+20 new genuine-inverse and small-width results over 1,458 modules, using
+only the approved axioms. The genuine Theorem 18.1 now has an exact proved
+standalone statement at every degree; this closes its representation gap,
+while the remaining intermediate integer-box statements still need work.
 
 The printed Theorem 13.12 also has an outstanding modulus-range issue:
 `Sections12_13.theorem_13_12` adds `exists N0, forall N>=N0` before the
 prime-modulus hypotheses, while the displayed TeX headline lacks it.
 The existing near-one proof chooses N0=0; the away-from-one proof has an
-eventual threshold. The new small-width draft covers all prime moduli
+eventual threshold. The new small-width proof covers all prime moduli
 when the printed target side length is at most two, using a genuine
 two-by-two integer square through a large Fourier point. This is part of
 the required removal of the extra threshold, not a claim that removal or
 the full source-fidelity audit has finished. No counterexample to the
-printed Theorem 13.12 is claimed.
+printed Theorem 13.12 is claimed. In its Lean proof, linear arithmetic is
+restricted to the relevant inequalities: normalization of the unrelated
+printed tower expression otherwise tried to evaluate an infeasibly large
+natural power. No bound or mathematical hypothesis was changed to fix this.
 
 ## F. Routes
 
