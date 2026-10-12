@@ -4,6 +4,7 @@ import GowersSzemeredi.Proofs18CoverSharperShortLengths
 import GowersSzemeredi.Proofs18CoverThresholdsSharp
 import GowersSzemeredi.Proofs18CoverVanDerWaerden
 import GowersSzemeredi.Proofs18CoverHeadline
+import GowersSzemeredi.Proofs16PolynomialStructure
 
 /-! **Theorem 18.1 in every degree with exponent `α^(2^(2^(d+7)))`** (Notes L.15c).
 
@@ -95,5 +96,25 @@ theorem van_der_waerden_printed (k : Nat) {r : Nat} (hr : 2 ≤ r) (N : Nat)
 /-- **Theorem 1.3 with constant `2^(-2^(k+5))`** (printed: `2^(-2^(k+9))`). -/
 theorem theorem_1_3_L5 : Theorem13At 5 :=
   theorem13At_of_sharp theorem_18_2_L5
+
+/-- **Theorem 16.2 with polynomial controls in every dimension `k ≥ 1`**: graph
+count `max(1, (4V/(γθρ))^(2^(68·2^k)))` with `V = 2^(2^(2^(k+4)+1))`, and width
+exponent its inverse. -/
+theorem theorem_16_2_polynomial {k : Nat} (hk : 1 ≤ k) :
+    PolyCoverAt k (uCount (2 ^ (2 ^ tightMuV k)) (uDeg68 k))
+      (uExp (2 ^ (2 ^ tightMuV k)) (uDeg68 k)) :=
+  theorem_16_2_polynomial_of_profiles
+    (fun k => ⌈multiaffinePartitionK (k + 1) (2 ^ (k + 1))⌉₊)
+    (fun k => (k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1)))
+    (fun k => two_le_ceil_multiaffinePartitionK (k + 1) (2 ^ (k + 1)))
+    (fun k => Nat.mul_pos (Nat.succ_pos k) (multiaffinePartitionP_pos _ _))
+    (fun k _ => section16RecurrenceProfileWith_explicit k)
+    (fun k => explicit_family_constants_le k) hk
+
+/-- The polynomial form implies the catalogue's Theorem 16.2. -/
+theorem theorem_16_2_polynomial_implies_printed : theorem_16_2 := fun k =>
+  match k with
+  | 0 => theorem_16_2_zero
+  | k + 1 => theorem162At_of_polynomial (theorem_16_2_polynomial (by omega))
 
 end LeanProofs.GowersSzemeredi

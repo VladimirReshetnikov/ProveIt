@@ -1137,6 +1137,7 @@ import GowersSzemeredi.Proofs18CoverSharperShortLengths
 import GowersSzemeredi.Proofs18CoverThresholdsSharp
 import GowersSzemeredi.Proofs18CoverVanDerWaerden
 import GowersSzemeredi.Proofs18CoverHeadline
+import GowersSzemeredi.Proofs16PolynomialStructure
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

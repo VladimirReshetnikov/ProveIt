@@ -53,6 +53,14 @@ example : ∀ (k r : Nat), 2 ≤ r → ∀ N : Nat,
   fun k _ hr N hN color => LeanProofs.GowersSzemeredi.van_der_waerden_L5 k hr N hN color
 example : LeanProofs.GowersSzemeredi.Theorem13At 5 :=
   LeanProofs.GowersSzemeredi.theorem_1_3_L5
+example : ∀ k : Nat, 1 ≤ k → LeanProofs.GowersSzemeredi.PolyCoverAt k
+    (LeanProofs.GowersSzemeredi.uCount (2 ^ (2 ^ LeanProofs.GowersSzemeredi.tightMuV k))
+      (LeanProofs.GowersSzemeredi.uDeg68 k))
+    (LeanProofs.GowersSzemeredi.uExp (2 ^ (2 ^ LeanProofs.GowersSzemeredi.tightMuV k))
+      (LeanProofs.GowersSzemeredi.uDeg68 k)) :=
+  fun _ hk => LeanProofs.GowersSzemeredi.theorem_16_2_polynomial hk
+example : LeanProofs.GowersSzemeredi.theorem_16_2 :=
+  LeanProofs.GowersSzemeredi.theorem_16_2_polynomial_implies_printed
 
 open Lean Elab Command in
 run_cmd do
@@ -68,7 +76,9 @@ run_cmd do
     ``LeanProofs.GowersSzemeredi.corollary_18_7_L6_implies_printed,
     ``LeanProofs.GowersSzemeredi.van_der_waerden_L5,
     ``LeanProofs.GowersSzemeredi.van_der_waerden_printed,
-    ``LeanProofs.GowersSzemeredi.theorem_1_3_L5
+    ``LeanProofs.GowersSzemeredi.theorem_1_3_L5,
+    ``LeanProofs.GowersSzemeredi.theorem_16_2_polynomial,
+    ``LeanProofs.GowersSzemeredi.theorem_16_2_polynomial_implies_printed
   ]
   for name in everyIndex do
     let info ← getConstInfo name
@@ -77,7 +87,7 @@ run_cmd do
     for axiomName in (← collectAxioms name) do
       unless allowed.contains axiomName do
         throwError "{name} depends on unapproved axiom {axiomName}"
-  logInfo "Checked the eight every-degree and every-length strengthenings, the two van der Waerden bounds and the sharper Theorem 1.3; only approved axioms."
+  logInfo "Checked the eight every-degree and every-length strengthenings, the two van der Waerden bounds, the sharper Theorem 1.3 and the polynomial Theorem 16.2; only approved axioms."
 
 -- The refutation is checked separately; it is never counted as a proof
 -- of the original printed encoding or hidden among the 120 companions.
