@@ -4288,9 +4288,34 @@ partition of any finite residue set `S` has an integer-representative
 refinement with at most `4*sqrt(|S|*M)` cells. Empty cells and arbitrary
 initial modular parameterizations are allowed. Lemma 5.13 is its special
 case `S=univ`. The numbered catalogue now requires these stronger conclusions,
-and `Proofs05Progressions` uses their genuine proofs. A refreshed full native
-audit is running serially. No counterexample to the paper's
+and `Proofs05Progressions` uses their genuine proofs. The refreshed native
+audit passes over 1,444 modules, including all 120 exact companions, the
+nine stronger-bound and comparison results, and the 22 integer-representative
+theorems, using only the three approved axioms. No counterexample to the paper's
 Lemmas 5.12--5.13 is claimed; other fidelity obligations remain open.
+
+## L.19 Remaining geometry and modulus fidelity (2026-10-11)
+
+The new short-interval, integer-box, and refinement-bound modules pass the
+native `IntegerBoxesAudit`: all 25 public theorems use only the approved
+axioms, following the completed L.18 catalogue rebuild. These proofs
+track a common positive integer difference on box axes, permit a shared
+orientation reversal, and preserve carriers and widths in the index model.
+They also establish the exact square-root/factor-four refinement loss and
+monotonicity of discrepancy under refinement. The genuine Theorem 18.1
+draft uses the unused envelope slack to keep d+7 for d>=4, with stronger
+lower-degree bases. These follow-up drafts are not yet reported as verified.
+
+The printed Theorem 13.12 also has an outstanding modulus-range issue:
+`Sections12_13.theorem_13_12` adds `exists N0, forall N>=N0` before the
+prime-modulus hypotheses, while the displayed TeX headline lacks it.
+The existing near-one proof chooses N0=0; the away-from-one proof has an
+eventual threshold. The new small-width draft covers all prime moduli
+when the printed target side length is at most two, using a genuine
+two-by-two integer square through a large Fourier point. This is part of
+the required removal of the extra threshold, not a claim that removal or
+the full source-fidelity audit has finished. No counterexample to the
+printed Theorem 13.12 is claimed.
 
 ## F. Routes
 
