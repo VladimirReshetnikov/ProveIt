@@ -1145,6 +1145,7 @@ import GowersSzemeredi.Proofs15FejerSelection
 import GowersSzemeredi.Proofs15FejerProduct
 import GowersSzemeredi.Proofs16TightRadius
 import GowersSzemeredi.Proofs16SplitFejerDegrees
+import GowersSzemeredi.Proofs16Lemma5With
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

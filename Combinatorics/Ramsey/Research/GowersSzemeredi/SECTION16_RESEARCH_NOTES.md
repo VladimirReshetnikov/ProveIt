@@ -4554,6 +4554,32 @@ Constant class constants up to 25 also give `d + 6` / `L + 4`. So
 **`d + 5` / `L + 3` is withdrawn**: it would need the Lemma 16.3 exponent
 10000 to shrink as well. **`d + 6` / `L + 4` stands**, with a wide margin.
 
+**L.16d: the propagation, started as parameterized modules (2026-10-12).**
+Decision: carry `(θ₁, ζ)` as parameters in new modules (suffix `With`)
+rather than copying with the Fejér values baked in. Their printed instance
+reproduces the corpus statements, so a later refactor on the full-build
+machine can re-derive the originals from them and delete the duplicates.
+
+The first module is `Proofs16Lemma5With` (light, standard axioms only).
+Lemma 16.5 uses θ₁ and ζ only through `0 < θ₁/4 ≤ 1/36` and
+`ζ ≤ section10Zeta α` for `θ₁/4 ≤ α ≤ 1/6`. Its two proof steps are the
+corpus proofs with `section16ThetaOne θ γ k ↦ t1` and
+`section16Zeta θ γ k ↦ zeta`, under those hypotheses:
+* `section16_good_sidelengths_with`;
+* `section16_selected_side_model_with`;
+* `lemma_16_5_with`, which assembles them.
+
+`lemma_16_5_with_printed_hyps` checks the printed pair against the
+hypotheses, and `tightZeta_condition` checks the tight radius.
+
+Next in the dimension-two chain:
+* `section16_dense_induced_selection_of_arrangements` and
+  `lemma_16_7_holds` (`Proofs16DenseSelection`, `Proofs16InducedSelection`);
+* then `section16_poly_piece_two` (`Proofs16PolyPieceTwo`), which already
+  takes θ₁ only as the hypothesis value `hBarr`;
+* then the counts and exponents of `Proofs18LengthSix*`, to prove the
+  dimension-two seed.
+
 How this was checked: 59 of the 491 ancestors of `Proofs16ClassStep` mention
 `section16Zeta`. They were searched for bounds on `multipleS` and for upper
 bounds on `ζ`, and nothing else turned up. A search is not a proof: the
