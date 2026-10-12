@@ -5190,6 +5190,38 @@ occur. The main global Section 16 representation gap is closed. This does
 not complete the full source-fidelity audit of every intermediate statement
 and numerical bridge in the paper.
 
+### L.32 Printed contextual Section 13 bounds (2026-10-11)
+
+`PrintedSection13BoundsAudit` checks 18 new theorems over 1,528 native
+modules, including four exact contextual companion types and all previous
+fidelity audits. Only `propext`, `Classical.choice` and `Quot.sound` occur.
+
+`Proofs13PrintedRowBounds` constructs Lemma 13.7 with exponent
+`2^(-66)*alpha^256` and both original row densities from the complete
+printed Stage 13.6 data. `Proofs13PrintedCoefficientBounds` proves the
+original `2^84*alpha^(-416)` input threshold and `2^(-84)*alpha^416`
+output mass through the actual common-row selection: the two preceding
+densities satisfy `delta^2*beta = 2*K`, exactly as required.
+
+`Proofs13PrintedBilinearBounds` constructs the original
+`2^(-182)*alpha^832` width exponent and `2^(-84)*alpha^416` density
+at every column scale. Small columns yield at most three heights; other
+columns retain a positive integer step ratio and the required span.
+The support, properness and nonemptiness in the geometric certificate are
+proved outputs, not additional conclusions assumed as premises.
+
+`Proofs13PrintedSquareBounds` establishes the corollary's original
+`2^(-86)*alpha^416` density and square-root side bound. Its conclusion
+currently requires modular carrier properness. Ordinary integer geometry
+for this contextual statement remains to be established.
+
+These conditional results do not establish the stronger original Lemma
+13.6 extraction from the initial Stage 13.4--13.5 data. The existing
+Theorem 10.13 route proves weaker densities; no counterexample to the
+stronger extraction has been found. The updated source-obligation ledger
+therefore keeps that precise upstream obligation open. The full goal is
+not complete.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
