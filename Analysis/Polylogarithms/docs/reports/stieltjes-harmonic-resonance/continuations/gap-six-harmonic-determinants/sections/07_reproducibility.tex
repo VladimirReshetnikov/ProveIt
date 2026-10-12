@@ -1,0 +1,123 @@
+\section{Reproducibility, proof dependencies, and verification}
+\label{repro:section}
+
+\subsection{What is supplied}
+
+The package contains the modular article source, an assembled
+single-file \TeX{} source, the compiled PDF, the exact
+finite-field certificate, an explicit $(14,20)$ polynomial
+identity with its finite telescoper, and portable verification
+programs. A claim ledger separates proved results, inherited
+inputs, numerical diagnostics, and remaining conjectures.
+The source manifest pins every archived dependency to the
+repository revision and a SHA-256 hash.
+
+The main analytic dependency for gap six is the three-dimensional
+Gamma basis and its complementary-minor normalization in the
+ordered-boundary contribution \cite{OrderedIncoming}.
+The recurrence and normalization are restated in the main proof;
+Appendix~\ref{ga:appendix} proves the specialized Gamma contour
+and initial-determinant assertions. The unchanged inherited source
+is included for inspection under
+\texttt{provenance/inherited/ordered\_gamma\_basis.tex}.
+The earlier complementary-minor source
+\cite{GapFourSource} and the two source sections posing the
+complex-weight and independent-shift questions are also preserved.
+They are provenance artifacts, and are not silently incorporated
+as new authorship.
+
+The new algebraic primitive theorem and its degree consequence
+are proved directly in Section~\ref{cr:section}. The Hahn
+transformation and Euler reductions are derived at the needed
+normalization in Section~\ref{hp:section}. The entire unequal-rate
+asymptotic is obtained by finite local subtraction in
+Section~\ref{urc:section}; its coincident constants are attributed
+to the inherited product formula and independently checked.
+
+\subsection{Exact computations and their roles}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.31\textwidth}
+ >{\raggedright\arraybackslash}p{0.61\textwidth}@{}}
+\toprule
+Program & What it establishes or checks\\
+\midrule
+\endfirsthead
+\toprule
+Program & What it establishes or checks\\
+\midrule
+\endhead
+\texttt{verify\_gap\_six.py} &
+The finite part of the proof: 2,044 nonzero determinants modulo
+$2^{31}-1$, with trial-division primality and invertible
+denominators. Also 2,049 independent cotangent coefficients
+and 17 exact original-matrix normalization checks.\\[7pt]
+{\small\texttt{create\_gap\_six\_example.py}} &
+Generates the integer coefficient row, sextic subtraction,
+and complete finite telescoper for $(p,q)=(14,20)$.
+Checks exact rational differences and the limiting constant.\\[7pt]
+\texttt{verify\_complex\_rank.py} &
+66 exact assertions: rank-one minors, complex isotropic
+updates, rational harmonic decompositions, exceptional cutoff
+identities, and a varying-kernel pencil.\\[7pt]
+\texttt{verify\_hahn\_polylogs.py} &
+149 exact assertions: monic Hahn orthogonality and norms,
+highest coefficients, compressed determinants, ensemble sums,
+pole residues, and generator coefficients. Separate
+75-digit quadratures test the generator and zeta endpoint.\\[7pt]
+\texttt{derive\_euler\_endpoint.py} &
+21 exact coefficient assertions derived from the height-one
+gamma quotient and convergent shuffle/stuffle relations.
+No numerical relation search is used.\\[7pt]
+\texttt{verify\_collisions.py} &
+119 exact assertions about primitives and contact coefficients.
+Separate 65-digit beta and polygamma quadratures check the
+complete collision subtraction at several rates.\\[7pt]
+Two independent audit scripts &
+Reconstruct original Bernoulli matrices, check the cofactor
+normalization and exact threshold constants, and derive the
+sensitive Stieltjes and trigamma finite parts independently.\\
+\bottomrule
+\end{longtable}
+
+The modular certificate is finite and exhaustive on the stated
+interval, because the analytic proof has already reduced the
+unresolved indices to that interval. It would not prove an
+unbounded conjecture without that analytic step. Conversely,
+the high-precision integrations are not used to assert that an
+unproved residual vanishes.
+
+The independent audits rederived the complex rank-one minor,
+all high-risk constants in the gap-six argument, the leading
+inverse-row cofactor sign, and the locally uniform Stieltjes
+remainder. In particular they recovered
+$F_{1,0}^{0,0}=3\gamma_2/2+2\gamma\zeta(2)-\zeta(3)$ and
+$F_{0,0}^{1,1}=2\zeta(3)+4\zeta'(3)$ separately from the
+collision derivation. Audit notes and their exact output are
+included. This is independent internal checking, not external
+peer review or a formal proof-assistant certificate.
+
+\subsection{Rebuild instructions}
+
+The build is local and requires no network calls. In the package
+directory run
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python verification/run_all.py
+python build.py
+\end{verbatim}
+The verification dependencies are Python, SymPy, and mpmath.
+The PDF build uses a standard \texttt{pdflatex} installation with
+the packages listed in \texttt{article.tex}. The build program
+assembles the standalone \TeX{} file and runs three passes for
+the table of contents and references. It does not execute shell
+escape.
+
+The verification runner records each exit status and elapsed
+time and stops on a failure. The result JSON files record their
+scope and arithmetic mode. Numerical values can vary in their
+last diagnostic digits with library versions; the exact
+finite-field residue list is identified by its canonical hash.
+The package manifest checks artifact integrity, while the
+recurrences and the supplied programs make the mathematical
+certificate independently reproducible.
+

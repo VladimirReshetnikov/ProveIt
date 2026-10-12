@@ -1,0 +1,138 @@
+\section{Proof checks, numerical evidence, and reproducibility}
+\label{vf:section}
+
+The universal statements in this article are proved analytically:
+finite telescoping identities, finite polynomial coefficient extraction,
+uniform asymptotic remainders, normally convergent spectral subtractions,
+and Cauchy representations with absolute-Fubini estimates. The verification
+programs check finite algebra and independent numerical consequences.
+They do not replace the arguments for arbitrary derivative order, contact
+index, mass count, or polynomial degree.
+
+\subsection{Exact algebra}
+
+The contact program verifies the centered \(t_1,t_2\) coefficients, the
+ambient and restricted contact tables through \(m=3\), cutoff transport
+through \(m=4\), and parity, degree, and highest-homogeneous identities
+through \(m=6\). It also compares the independent formula with the
+predecessor's diagonal Euler-polynomial law through \(m=6\).
+Together with the first-Stieltjes example program, this gives
+\textbf{123 passed exact symbolic assertions}. The assertions are listed
+individually in the two exact-result JSON files.
+
+These checks operate over rational polynomial rings wherever appropriate.
+An equality of expanded symbolic polynomials is exact. Substitution of a
+large integer or a high-precision numerical value is not used as a
+replacement for such equality. The general degree and translation theorems
+are proved in Section~\ref{ct:section}, beyond the finite range checked.
+
+\subsection{Independent decimal diagnostics}
+
+Separate implementations check endpoints, ordinary sums, cut densities,
+and arithmetic transforms. The recorded outputs include the working
+precision, parameters, method, and residual, so that a small residual
+is not detached from its numerical context.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.23\textwidth}}
+\toprule
+Check & Independent comparison & Recorded residual scale\\
+\midrule
+Two \(\pi,\log2\) boundary sums &
+257 direct terms plus an endpoint expansion, versus exact constants &
+Below \(2.1\times10^{-27}\)\\
+First-Stieltjes boundary sum &
+257 direct terms plus a degree-ten endpoint expansion &
+\(1.77\times10^{-28}\)\\
+Stieltjes expression for \(T(z)\) &
+Generalized-Stieltjes difference versus a differentiated Laplace integral &
+About \(10^{-81}\) at four shifts\\
+Compact cubic density, distinct and equal masses &
+Direct logarithmic sums and subtracted Hurwitz tails versus digamma integrals &
+Below \(1.4\times10^{-60}\)\\
+Full scalar second and third jets &
+Finite head plus Hurwitz-derivative tail versus the full cut integral &
+\(1.64\times10^{-55}\), \(5.03\times10^{-47}\)\\
+Polylogarithmic density transform &
+Strict harmonic series versus quadrature at two interior points &
+Below \(7\times10^{-66}\)\\
+The integral \eqref{da:pi-four} &
+Direct endpoint quadrature versus \(\pi^4/15\) &
+\(1.71\times10^{-63}\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The contact suite records 24 numerical diagnostics at 85 working digits;
+the first-Stieltjes suite records another eight at 80 digits. The compact
+density tests use 60 digits, the full scalar tests 55, and the
+polylogarithm tests 65. Generic endpoint-jet asymptotic checks have residuals
+of the size of their first omitted terms, rather than of the nominal
+working precision. The exact analytic endpoint law is tested separately.
+
+The weighted compact tests illustrate a practical issue. Direct numerical
+acceleration of a summand formed by subtracting two nearly equal large
+terms initially lost several digits. The final implementation replaces that
+tail with its independently convergent Hurwitz series. Its recorded
+analytic bounds for the omitted power tail are below \(3\times10^{-79}\)
+in the supplied cases. Those tail estimates do not enclose all rounding
+and quadrature errors: the complete computation is still a diagnostic,
+not an interval certificate.
+
+The all-negative-integer extension is checked separately by comparing
+its finite-subtraction continuation, an independent binomial Hurwitz
+continuation, and stable quadrature of the ordinary cut integral.
+At \(a=0.7\), the one-mass third derivative at \(-1\), with
+\(\mu=0.8\), agrees within \(6.81\times10^{-55}\); the two-mass
+second derivative at \(-1\), with \(\boldsymbol\mu=(0.8,1.4)\),
+agrees within \(3.17\times10^{-52}\), at 60 working digits.
+The corresponding result file records these comparisons without
+conflating the analytic remainder estimate with a rigorous enclosure
+of the entire floating-point computation.
+
+\subsection{Independent analytic review}
+
+The following sensitive steps were recomputed independently of the first
+derivation: the contact translation sign; differentiation of ambient
+binomial coefficients; the highest-degree hyperbolic generating functions;
+the ordinary alternating subtraction; both elementary boundary constants;
+the full and compact cut-density signs; the spectral scale \(2N\); the
+critical odd-weight subtraction; and the Gamma normalization of the first
+jet. The polynomial-weight continuation and the negative-integer cubic
+example were then checked against a second derivation.
+
+This is an internal mathematical cross-check, not a claim of external peer
+review or formal certification. The finite source correction was separately
+verified from the reciprocal-Gamma exponential and checked as an applicable
+patch against the pinned repository.
+
+\subsection{Using the accompanying package}
+
+The package contains a self-contained \LaTeX{} file and its PDF, together
+with modular section sources for integration. The \src{build.py} script
+recreates the self-contained source and compiles it with standard
+\src{pdflatex} packages. Python verification uses SymPy and mpmath; the
+versions used for the recorded run appear in the result files and
+\src{requirements.txt}.
+
+Run the mathematical checks with
+\begin{quote}\ttfamily
+ python3 verification/run\_all.py
+\end{quote}
+and rebuild the article with
+\begin{quote}\ttfamily
+ python3 build.py
+\end{quote}
+The check runner writes its own machine-readable summary and preserves
+separate exact and decimal records. The distributed-file manifest verifies
+the byte identities of the packaged files; rebuilding a PDF may change
+its metadata and hence its hash without changing the mathematical content.
+
+The integration directory contains the single-line correction patch and
+proposed status changes. The source manifest records the seven incoming
+archives and the directly inspected manuscript and preserved-continuation
+files. No new numerical relation is promoted to a theorem merely because
+it appears in one of the diagnostic files. The unresolved questions are
+listed in Section~\ref{rq:section}.

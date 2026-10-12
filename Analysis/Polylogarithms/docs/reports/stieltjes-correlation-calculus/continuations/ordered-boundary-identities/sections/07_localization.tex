@@ -1,0 +1,503 @@
+\section{All-rank localization of ordered finite-difference sums}
+\label{sec:localization}
+
+The incoming finite-difference report proves determinant identities for
+symmetrized assignments of orders and shifts, and explicitly asks which
+coordinates are needed for an individual ordered assignment
+\cite[Sections 3 and 9]{repo:finite}.  We give a finite construction for
+arbitrary rank.  Its central fact is a support cancellation: after the
+differences are transferred to the ordered Vandermonde polynomial, two
+isolated free labels annihilate the coefficient.  The construction retains
+the individual assignment of every order and shift.
+
+\subsection{The ordered sum and its exact transported coefficient}
+
+Fix an integer $r\ge2$ and put $d=2r-2$.  For
+$\mathbf s=(s_1,\ldots,s_r)\in\C^r$ and
+$\Rea a_i>0$, define
+\begin{align}
+ w_i(n)&=\frac1{d!}\sum_{j=0}^{d}(-1)^j\binom dj
+                       (n+a_i+j)^{-s_i},
+                       \label{loc:weights}\\
+ \mathcal Z_r(\mathbf s;\mathbf a)
+   &=\sum_{0\le n_1<\cdots<n_r}
+          \Delta(\mathbf n)^2\prod_{i=1}^r w_i(n_i),
+                       \label{loc:ordered-sum}
+\end{align}
+where $\Delta(\mathbf x)=\prod_{i<v}(x_v-x_i)$.
+All powers use the principal logarithm in the right half-plane.  We shall
+distinguish two domains:
+\[
+ \Omega=\{\Rea s_i>1,\ \Rea a_i>0\text{ for every }i\},
+ \qquad
+ \Omega_0=\{\Rea s_i>d+1,\ \Rea a_i>0\text{ for every }i\}.
+\]
+
+\begin{theorem}[Finite ordered reduction in every rank]
+\label{loc:main}
+The series \eqref{loc:ordered-sum} converges absolutely and locally normally
+on $\Omega$.  On $\Omega_0$ it is an explicit finite sum of expressions
+\begin{equation}
+ \sum_{0\le N_1<\cdots<N_q}
+    Q(N_1,\ldots,N_q)
+    \prod_{\ell=1}^q\prod_{i\in B_\ell}
+                      (N_\ell+A_i)^{-s_i},
+ \qquad \Rea A_i>0,
+ \label{loc:reduced-form}
+\end{equation}
+multiplied, where necessary, by finite products of shifted powers.
+Here $Q$ is a polynomial, the label sets $B_\ell$ are consecutive blocks,
+and
+\[
+ q\le\left\lfloor\frac{r+1}{2}\right\rfloor.
+\]
+The contribution anchored at the lower boundary has at most
+$\lfloor r/2\rfloor$ free indices.  Equations
+\eqref{loc:sector-polynomial}, \eqref{loc:free-sector}, and
+\eqref{loc:anchored-sector} below give all coefficients and shifts by
+finite sums.  Every expression in this construction converges absolutely
+on $\Omega_0$.  Their collective sum has a holomorphic continuation to
+$\Omega$, equal there to \eqref{loc:ordered-sum}.
+\end{theorem}
+
+The number $q$ counts summation variables in the displayed representation.
+The theorem makes no assertion that this number is minimal, or that any
+special values obtained from different sectors are arithmetically
+independent.
+
+For the convergence statement, the finite-difference integral is
+\begin{equation}
+ w_i(n)=\frac{(s_i)_d}{d!}
+       \int_{[0,1]^d}
+       (n+a_i+u_1+\cdots+u_d)^{-s_i-d}\dd\mathbf u.
+ \label{loc:difference-integral}
+\end{equation}
+The sign is positive because $d$ is even.  On compact subsets of the
+parameter domain this gives
+$|w_i(n)|\le C(1+n)^{-\Rea s_i-d}$.  For nonnegative integer nodes,
+\begin{equation}
+ |\Delta(\mathbf n)|^2\le\prod_{i=1}^r(1+n_i)^d.
+ \label{loc:vandermonde-bound}
+\end{equation}
+The resulting product majorant proves normal convergence on $\Omega$.
+If the differences in \eqref{loc:weights} are expanded before summation,
+each factor is only bounded by $C(1+n_i)^{-\Rea s_i}$; the same argument
+then proves absolute convergence on $\Omega_0$.  This is the initial
+domain for the coefficient transport.
+
+On integer tuples define the chamber polynomial
+\begin{equation}
+ P(\mathbf x)=\ind_{\{0\le x_1<\cdots<x_r\}}
+                                      \Delta(\mathbf x)^2
+ \label{loc:chamber}
+\end{equation}
+and the finite stencil
+\begin{equation}
+ C_r(\mathbf k)=
+ \sum_{\mathbf j\in\{0,\ldots,d\}^r}
+       (-1)^{j_1+\cdots+j_r}\prod_{i=1}^r\binom d{j_i}
+       P(\mathbf k-\mathbf j).
+ \label{loc:transport-coefficient}
+\end{equation}
+Expanding \eqref{loc:weights}, setting $k_i=n_i+j_i$, and collecting the
+common shifted powers gives the exact identity
+\begin{equation}
+ \mathcal Z_r(\mathbf s;\mathbf a)
+ =\frac1{(d!)^r}\sum_{k_1,\ldots,k_r\ge0}
+               C_r(\mathbf k)\prod_{i=1}^r(k_i+a_i)^{-s_i}
+ \qquad\text{on }\Omega_0.
+ \label{loc:transport}
+\end{equation}
+Expanded absolute convergence justifies every regrouping.  There is no
+unaccounted upper endpoint: the regrouping is performed on the full
+absolutely convergent series.  Also, $C_r(\mathbf k)=0$ if any $k_i<0$,
+since every nonzero term in \eqref{loc:transport-coefficient} has
+$k_i=x_i+j_i\ge0$.
+
+\subsection{Collision blocks and the two-singleton cancellation}
+
+The shifted tuple $\mathbf k$ need not be increasing.  If
+$C_r(\mathbf k)\ne0$, however, some stencil term has a strictly increasing
+tuple $\mathbf k-\mathbf j$.  Necessarily
+\begin{equation}
+ k_{i+1}-k_i\ge1-d\qquad(1\le i<r).
+ \label{loc:gap-lower}
+\end{equation}
+Partition the labels $1,\ldots,r$ into maximal consecutive blocks by
+placing a cut precisely when
+\begin{equation}
+ k_{i+1}-k_i>d.
+ \label{loc:cut}
+\end{equation}
+The internal adjacent gaps therefore belong to the finite set
+$\{1-d,\ldots,d\}$.  Across a cut, every stencil assignment remains
+strictly ordered, because
+$k_{i+1}-j_{i+1}-k_i+j_i\ge d+1-d=1$.
+
+The first block is called \emph{anchored} when $k_1<d$; every other block
+is free.  If $k_1\ge d$, all blocks are free.  Only the first block can
+be anchored.  Indeed, the chamber condition in \eqref{loc:chamber}
+requires just $x_1\ge0$ together with strict order, which already implies
+nonnegativity of the later coordinates.
+
+\begin{lemma}[Two free singleton blocks give zero]
+\label{loc:singleton}
+If the block decomposition of $\mathbf k$ contains two free blocks of
+size one, then $C_r(\mathbf k)=0$.
+\end{lemma}
+
+\begin{proof}
+Let $i$ be one free singleton, and fix every stencil variable except
+$j_i$.  All chamber indicators are independent of $j_i$: its neighboring
+cuts remain ordered for every shift, and it cannot change the lower
+boundary condition.  As a polynomial in $x_i=k_i-j_i$, the Vandermonde
+square has degree $d=2r-2$, with leading coefficient
+\[
+ \Delta(\mathbf x_{\widehat i})^2
+       =\prod_{\substack{p<v\\p,v\ne i}}(x_v-x_p)^2.
+\]
+Consequently
+\[
+ \sum_{j_i=0}^d(-1)^{j_i}\binom d{j_i}\Delta(\mathbf x)^2
+       =d!\,\Delta(\mathbf x_{\widehat i})^2.
+\]
+Let $v$ be the second free singleton.  Its indicators are still
+independent of $j_v$, but the remaining polynomial has degree
+$2(r-2)=d-2$ in $x_v$.  Its $d$th backward difference is zero.  Summing
+over the other stencil variables preserves this cancellation.
+\end{proof}
+
+At most one surviving free block can therefore be a singleton.  If
+there are $q$ free blocks and no anchor, they use at least $2q-1$ labels;
+hence $q\le\lfloor(r+1)/2\rfloor$.  If an anchor is present, it uses at
+least one additional label, giving $r\ge2q$ and
+$q\le\lfloor r/2\rfloor$.  This proves the support part of
+Theorem~\ref{loc:main}.  We now turn it into a finite formula without
+leaving any block-coordinate choices implicit.
+
+\subsection{An explicit finite construction of every sector}
+
+Choose a consecutive block composition
+$\mathcal B=(B_1,\ldots,B_p)$ of $\{1,\ldots,r\}$, and write
+$b_\ell=|B_\ell|$ and $\ell(i)$ for the block containing $i$.  In each
+block choose integer offsets $u_i$ with first offset zero and
+\begin{equation}
+ u_{i+1}-u_i\in\{1-d,\ldots,d\}
+                    \quad(i,i+1\in B_\ell).
+ \label{loc:offsets}
+\end{equation}
+There are finitely many choices.  Put
+\[
+ k_i=t_{\ell(i)}+u_i,
+ \qquad c_\ell=d+u_{\max B_\ell},
+\]
+and introduce the finite internal indicator
+\[
+ \varepsilon_{\mathcal B,\mathbf u}(\mathbf j)
+ =\prod_{\ell=1}^p\prod_{\substack{i,i+1\in B_\ell}}
+       \ind_{\{u_{i+1}-u_i+j_i-j_{i+1}\ge1\}}.
+\]
+Discard a pattern if this indicator is zero for every stencil tuple.
+For every retained pattern, an admissible tuple gives
+\begin{equation}
+ u_i\ge i-\min B_\ell-d\quad(i\in B_\ell),
+ \qquad c_\ell\ge b_\ell-1\ge0.
+ \label{loc:offset-feasibility}
+\end{equation}
+To see the first inequality, sum the internal strict inequalities from
+the first label of the block to $i$, then use $j_i-j_{\min B_\ell}\ge-d$.
+The second is its instance at the last label.
+
+Define the following polynomial in the block bases:
+\begin{align}
+ \mathcal C_{\mathcal B,\mathbf u}(\mathbf t)
+ ={}&\sum_{\mathbf j\in\{0,\ldots,d\}^r}
+       (-1)^{|\mathbf j|}\prod_{i=1}^r\binom d{j_i}
+       \varepsilon_{\mathcal B,\mathbf u}(\mathbf j)
+       \prod_{i<v}
+       \bigl(t_{\ell(v)}-t_{\ell(i)}+u_v-u_i-j_v+j_i\bigr)^2.
+ \label{loc:sector-polynomial}
+\end{align}
+It has integer coefficients and satisfies
+\begin{equation}
+ \deg_{t_\ell}\mathcal C_{\mathcal B,\mathbf u}
+                         \le 2b_\ell(r-b_\ell).
+ \label{loc:sector-degree}
+\end{equation}
+Pairs of labels in the same block do not depend on its base; each of
+the $b_\ell(r-b_\ell)$ cross-block pairs contributes at most degree two.
+
+For an unanchored sector the base conditions are exactly
+\[
+ t_1\ge d,\qquad t_{\ell+1}>t_\ell+c_\ell.
+\]
+Set
+\begin{equation}
+ e_1=d,\qquad e_\ell=d+\sum_{v<\ell}c_v,
+ \qquad t_\ell=N_\ell+e_\ell.
+ \label{loc:free-bases}
+\end{equation}
+The conditions become $0\le N_1<\cdots<N_p$.  Moreover,
+$e_\ell+u_i\ge0$ by \eqref{loc:offset-feasibility}, so every shifted
+argument stays in the right half-plane.  This sector contributes exactly
+\begin{equation}
+ \frac1{(d!)^r}
+ \sum_{0\le N_1<\cdots<N_p}
+       \mathcal C_{\mathcal B,\mathbf u}(\mathbf N+\mathbf e)
+       \prod_{\ell=1}^p\prod_{i\in B_\ell}
+                    (N_\ell+e_\ell+u_i+a_i)^{-s_i}.
+ \label{loc:free-sector}
+\end{equation}
+The stencil polynomial is exactly $C_r(\mathbf k)$ on this sector:
+cross-block order and the lower-bound condition are automatic, leaving
+precisely the indicators in \eqref{loc:sector-polynomial}.
+
+For an anchored sector choose the finite integer
+$h=k_1\in\{0,\ldots,d-1\}$ and set $t_1=h$.  Let
+$\mathcal C_{\mathcal B,\mathbf u;h}(t_2,\ldots,t_p)$ be
+\eqref{loc:sector-polynomial} with $t_1=h$ and the additional indicator
+$\ind_{\{j_1\le h\}}$ inserted in the summand.  Discard patterns with
+no admissible stencil tuple under this extra constraint.  If $p\ge2$,
+set
+\begin{equation}
+ e_2=h+c_1+1,\qquad
+ e_\ell=e_2+\sum_{v=2}^{\ell-1}c_v\quad(\ell\ge3),
+ \qquad t_\ell=N_\ell+e_\ell.
+ \label{loc:anchored-bases}
+\end{equation}
+The free variables satisfy $0\le N_2<\cdots<N_p$.  Feasibility of the
+anchored block gives $h+u_i\ge0$ for its labels, and in particular
+$e_2=d+h+u_{\max B_1}+1\ge d+1$.  Together with
+\eqref{loc:offset-feasibility}, this also ensures positive real parts for
+all the free shifted arguments.  The anchored sector is
+\begin{align}
+ &\frac1{(d!)^r}
+   \prod_{i\in B_1}(h+u_i+a_i)^{-s_i}
+   \sum_{0\le N_2<\cdots<N_p}
+     \mathcal C_{\mathcal B,\mathbf u;h}
+                      (N_2+e_2,\ldots,N_p+e_p)
+ \notag\\[-2pt]
+ &\hspace{44mm}\times
+       \prod_{\ell=2}^p\prod_{i\in B_\ell}
+                   (N_\ell+e_\ell+u_i+a_i)^{-s_i}.
+ \label{loc:anchored-sector}
+\end{align}
+For $p=1$, the sum and the free product are absent, so the contribution
+is a finite scalar expression.
+
+Every possible nonzero coefficient in \eqref{loc:transport} belongs to
+exactly one of these sectors: its cuts determine the composition, the
+first coordinate in each block determines the base, and subtraction
+determines the offsets.  Conversely, the indicated inequalities give
+exactly those cuts and internal gaps.  There are finitely many
+compositions, offsets, and anchored values $h$.  Summing
+\eqref{loc:free-sector} and \eqref{loc:anchored-sector} over them, and
+discarding the zero sectors of Lemma~\ref{loc:singleton}, is therefore
+the promised finite construction.
+
+For completeness, each separated sector converges absolutely on
+$\Omega_0$.  If a free block has $b$ labels, its polynomial degree in
+the associated variable is at most $2b(r-b)$, while the sum of the real
+parts of its denominator exponents is greater than $b(d+1)$.  Their
+difference satisfies
+\[
+ b(d+1)-2b(r-b)=b(2b-1)\ge1,
+\]
+with strict improvement supplied by $\Rea s_i>d+1$.  A product
+majorant over unrestricted nonnegative free variables is summable.
+The same bounds apply locally uniformly to the parameters.  This proves
+the convergence assertions and completes the proof of
+Theorem~\ref{loc:main}.
+
+If a representation without polynomial numerators is preferred, choose
+one denominator $(N+A)^{-s}$ in each free block.  Expanding
+$N^k=((N+A)-A)^k$ removes any monomial numerator by finitely many integer
+decrements of that exponent.  The preceding degree estimate proves
+absolute convergence of these terms on $\Omega_0$ as well, and no new
+summation variable is introduced.
+
+\begin{remark}[Collective continuation and separated convergence]
+\label{loc:continuation-caution}
+The original series is holomorphic on $\Omega$.  Since the finite
+localized expression agrees with it on the nonempty subdomain
+$\Omega_0$, the former gives a holomorphic continuation of the latter
+collectively.  The degree estimate above does not prove that each
+separated sector, or each individual exponent-shifted term, converges
+on all of $\Omega$.  Finite cancellation between offset patterns may be
+needed there.  This distinction is part of the theorem's domain
+statement, not an appeal to formal rearrangement outside convergence.
+\end{remark}
+
+\subsection{Rank three: the complete two-index contact part}
+
+For $r=3$, $d=4$, write $f_i(k)=(k+a_i)^{-s_i}$.  The unanchored
+composition $(1,2)\mid(3)$ is described by
+\[
+ k_1\ge4,\qquad h=k_2-k_1\in\{-3,\ldots,4\},
+ \qquad k_3-k_2>4.
+\]
+Summing the isolated third stencil first, exactly as in
+Lemma~\ref{loc:singleton}, gives
+\begin{align}
+ C_3(k_1,k_2,k_3)&=24A(h),\label{loc:rank3-contact}\\
+ A(h)&=\sum_{j,k=0}^4(-1)^{j+k}\binom4j\binom4k
+                  (h+j-k)^2\ind_{\{h+j-k>0\}}.
+                  \label{loc:rank3-A}
+\end{align}
+This entire integer contact table has a short generating expression:
+\begin{equation}
+ \sum_{h\in\Z}A(h)z^h
+   =(1-z^{-1})^4(1-z)^4\frac{z(1+z)}{(1-z)^3}
+   =z^{-3}(1+z)(1-z)^5.
+ \label{loc:rank3-generating}
+\end{equation}
+Indeed, $z(1+z)/(1-z)^3=\sum_{h\ge1}h^2z^h$, and the two finite
+stencils multiply this series by the displayed Laurent factors.
+One may first work in $0<|z|<1$, where every intermediate series
+converges.  The final Laurent polynomial proves
+\[
+\begin{array}{c|rrrrrrr}
+ h&-3&-2&-1&0&1&2&3\\\hline
+ A(h)&1&-4&5&0&-5&4&-1
+\end{array}
+\qquad A(h)=0\quad(|h|\ge4).
+\]
+
+The resulting two-index contribution of $(1,2)\mid(3)$ is
+\begin{equation}
+ \mathcal T_{12\mid3}
+  =\frac1{24^2}\sum_{h=-3}^3 A(h)
+       \sum_{0\le n<m}
+       f_1(n+4)f_2(n+4+h)f_3(m+8+h).
+ \label{loc:rank3-first}
+\end{equation}
+The other unanchored two-block composition, $(1)\mid(2,3)$, gives
+\begin{equation}
+ \mathcal T_{1\mid23}
+  =\frac1{24^2}\sum_{h=-3}^3 A(h)
+       \sum_{0\le n<m}
+       f_1(n+4)f_2(m+8)f_3(m+8+h).
+ \label{loc:rank3-second}
+\end{equation}
+Every remaining surviving sector has at most one free index.  Thus
+\begin{equation}
+ \mathcal Z_3=\mathcal T_{12\mid3}+\mathcal T_{1\mid23}
+                         +\mathcal E_3,
+ \label{loc:rank3-decomposition}
+\end{equation}
+where $\mathcal E_3$ is exactly the finite sum prescribed by
+\eqref{loc:free-sector}--\eqref{loc:anchored-sector} over the remaining
+compositions and anchor choices.  More explicitly, it consists of the
+unanchored one-block sectors, all anchored one-block sectors, and the
+anchored two-block sectors; anchored three-block sectors and
+unanchored three-block sectors vanish by Lemma~\ref{loc:singleton}.
+This is a finite formula for its one-index correction, with no
+undetermined coefficient.
+
+The contact contribution is not vacuous: the admissible tuple
+$(5,6,20)$ has $h=1$ and
+\begin{equation}
+ C_3(5,6,20)=24A(1)=-120.
+ \label{loc:rank3-nonzero}
+\end{equation}
+This proves the existence of two-index support in the construction.
+Further identities can still simplify the complete sum for special
+choices of the orders or shifts; \eqref{loc:rank3-nonzero} is not a
+minimal-depth assertion.
+
+\subsection{General integer stencils and stronger annihilation}
+
+The support mechanism depends on polynomial moments of the stencil,
+rather than on consecutive binomial coefficients.  The next result
+retains $d=2r-2$, even when the stencil has a larger support.
+
+\begin{corollary}[Finite integer stencils]
+\label{loc:general-stencil}
+Let $L\ge d$ be an integer and, for each label $i$, choose coefficients
+$\alpha_{i,\lambda}\in\C$ supported on $0\le\lambda\le L$ such that
+\begin{equation}
+ \sum_{\lambda=0}^L\alpha_{i,\lambda}\lambda^k=0
+                      \qquad(0\le k<d).
+ \label{loc:stencil-moments}
+\end{equation}
+Replace \eqref{loc:weights} by
+\[
+ w_{i,\alpha}(n)=\sum_{\lambda=0}^L
+                     \alpha_{i,\lambda}(n+a_i+\lambda)^{-s_i}.
+\]
+The corresponding ordered sum has the conclusions of
+Theorem~\ref{loc:main}, with the same bounds
+$\lfloor(r+1)/2\rfloor$ and $\lfloor r/2\rfloor$ on its free indices.
+If every stencil also annihilates degree $d$, the bounds improve to
+$\lfloor r/2\rfloor$ for the unanchored part and
+$\lfloor(r-1)/2\rfloor$ for the anchored part.
+\end{corollary}
+
+\begin{proof}
+The exact transported coefficient is now
+\begin{equation}
+ C_\alpha(\mathbf k)=
+   \sum_{\boldsymbol\lambda\in\{0,\ldots,L\}^r}
+          \left(\prod_i\alpha_{i,\lambda_i}\right)
+          P(\mathbf k-\boldsymbol\lambda).
+ \label{loc:general-coefficient}
+\end{equation}
+The factor $(d!)^{-r}$ is absent unless it was included in the chosen
+coefficients.  Expanded absolute convergence on $\Omega_0$ justifies
+the same transport.  A nonzero coefficient has adjacent gaps at least
+$1-L$.  Make a cut at gaps greater than $L$, and anchor the first
+block when $k_1<L$.
+
+At a free singleton $i$, a degree-$d$ polynomial is reduced to its
+leading coefficient times
+\[
+ \mu_i=\sum_{\lambda=0}^L
+                 \alpha_{i,\lambda}(-\lambda)^d.
+\]
+This follows by expanding each power of $k_i-\lambda$ and using
+\eqref{loc:stencil-moments}.  A second free singleton then occurs in
+a polynomial of degree $d-2$, so its stencil annihilates the term.
+The previous counting argument gives the original bounds.  If each
+$\mu_i=0$, even the first free singleton annihilates the coefficient.
+Every free block then uses at least two labels; with or without an
+anchor this gives exactly the two improved bounds.
+
+The full finite sector construction is unchanged after replacing the
+geometric thresholds $d$ by $L$, the shift range by $\{0,\ldots,L\}$,
+and the binomial stencil product by $\prod_i\alpha_{i,\lambda_i}$.
+In particular internal offset increments belong to
+$\{1-L,\ldots,L\}$, $c_\ell=L+u_{\max B_\ell}\ge b_\ell-1$, and
+the unanchored first base is $L$.  The anchored first base has finitely
+many choices $0\le h<L$, with the condition $\lambda_1\le h$.
+Feasibility gives $u_i\ge i-\min B_\ell-L$, so the same base
+substitutions keep all shifted arguments in the right half-plane.
+The polynomial degree bound \eqref{loc:sector-degree} does not change.
+Consequently $\Omega_0$, with $d=2r-2$, still suffices for convergence
+of every separated sector, independently of $L$.
+
+Finally Taylor's formula with a uniform remainder, applied to
+$(n+a_i+\lambda)^{-s_i}$ through degree $d-1$ in $\lambda$, gives
+\[
+ w_{i,\alpha}(n)=O\bigl((1+n)^{-\Rea s_i-d}\bigr)
+\]
+locally uniformly in the parameters.  The polynomial terms vanish by
+\eqref{loc:stencil-moments}; the finite support bounds the remainders.
+Equation~\eqref{loc:vandermonde-bound} proves original normal
+convergence on $\Omega$, and the collective continuation follows as
+before.
+\end{proof}
+
+Every consecutive finite difference of order strictly greater than
+$2r-2$ satisfies the stronger hypothesis.  For nonintegral rational
+stencils, transport onto one integer lattice would instead require
+separate residue classes; global moment cancellation alone does not
+justify the integer-sector argument above.
+
+The transport itself is discrete summation by parts.  Discrete residues
+provide a classical framework for rational summability
+\cite{chen-singer}.  Here the specific additional ingredient is the
+support of the ordered chamber coefficient and the loss of two
+Vandermonde degrees after a singleton is removed.  That mechanism works
+with arbitrary complex orders and unequal shifts on the stated genuine
+convergence domains, and resolves the finite-coordinate representation
+question for this family in \cite{repo:finite}.

@@ -1,0 +1,106 @@
+\section{Scope, provenance, and statement of contributions}
+\label{sec:scope}
+
+This report continues the harmonic-tail reconstruction branch of the
+\Repo\ polylogarithm manuscript.  The base repository was inspected at
+commit~\cite{Repo}
+\[
+ \texttt{04bf92d507588a26abadbaee1beb1e7350c8bffb}
+ \qquad (11\text{ October }2026).
+\]
+Three earlier continuations are the direct mathematical inputs.
+The Bernoulli--Tornheim--digamma report established the shifted-Hankel
+factorization and the reduction of each fixed smaller order $p=2a$ to
+an $a\times a$ determinant.  The quartic spectral reconstruction
+report proved effective eventual nonsingularity for every fixed $a$ and
+computed the sufficient threshold $B_5=1920$.  The alternating-tail
+report developed a five-square order-ten contraction and proved
+nonsingularity outside one $2$-adic progression, but explicitly left
+that progression and unrestricted order ten open.  The quartic report
+then listed completion of $6\le b<1920$ as its first concrete research
+target~\cite{BTD,QSR,ATSD}.
+
+The present report resolves exactly that target.  It also records two
+analytic consequences which are useful independently of the determinant
+problem.  The first is a multiple-polylogarithm generating function for
+two harmonic tails and its weighted-moment operator calculus.  The
+second is a regularized depth-two multiple-polylogarithm generator for
+integer-shift Stieltjes correlations.  These formulas were not found in
+the inspected manuscript or continuation packages.  No claim of
+priority over all external literature is made; the novelty claim in this
+report is deliberately local: the formulas and proofs are new relative
+to the audited \Repo\ corpus, and the exact order-ten completion answers
+an open problem stated there.
+
+\subsection{Main results}
+
+The principal statements are the following.
+
+\begin{enumerate}[label=\textbf{M\arabic*.}]
+\item \textbf{Complete order-ten reconstruction.}
+For every integer $b\ge6$, the rational coefficient matrix $M_{5,b}$
+is nonsingular.  Hence the first $q=2b$ centered moments attached to
+$(p,q)=(10,2b)$ have full formal rank $q$.
+
+\item \textbf{One-prime finite certificate.}
+For the finite range $6\le b\le1919$, reduction modulo
+\[
+ P=1{,}000{,}003
+\]
+certifies every determinant at once.  The $1914$ residues are all
+nonzero.  Their canonical comma-separated encoding has digest
+\[
+ \texttt{3977e54f5b43db43e8f080c32f2e5b22beac54412cca32ff5d03d84975111836}.
+\]
+The certificate is independently regenerated from the Bernoulli
+recurrence and exact modular Gaussian elimination.
+
+\item \textbf{Ordinary reconstruction identities.}
+For each $b\ge6$ and $0\le k<b$, explicit rational polynomials
+$P_{b,k}$ and $Q_{b,k}$ satisfy
+\[
+ \sum_{n=0}^{\infty}
+ \left(P_{b,k}(n+\tfrac12)
+       [\zeta(10)-H_n^{(10)}][\zeta(2b)-H_n^{(2b)}]
+       -Q_{b,k}(n+\tfrac12)\right)=\zeta(2k),
+\]
+where $\zeta(0)=-1/2$.  The same identity is a product-polygamma
+formula after replacing each tail by a polygamma derivative.
+
+\item \textbf{Two-tail polylogarithmic generator.}
+For $p,q>1$ and $|z|<1$, the ordinary generating function of
+$\zeta(p,n+1)\zeta(q,n+1)$ is a divided difference of depth-two
+multiple polylogarithms.  Polynomially weighted centered moments are
+obtained by the single Euler operator $z\,d/dz+1/2$.
+
+\item \textbf{Stieltjes correlation generator.}
+A bivariate pole-subtracted depth-two polylogarithm kernel is holomorphic
+at $(\alpha,\beta)=(0,0)$, and its Taylor coefficients generate all
+products $\gamma_r(n+1)\gamma_s(n+1)$.  The theorem includes explicit
+anchored primitives and special values.
+\end{enumerate}
+
+\subsection{Proof-status conventions}
+
+A statement marked \emph{inherited} is quoted from an existing \Repo\
+report and used as an input.  A statement marked \emph{new} is proved
+here.  A numerical check is never used as a proof gate.  The finite
+certificate operates in an exact prime field; the high-precision check
+of the explicit $(10,16)$ identity is only a diagnostic.  Formal rank
+means rank in the rational coordinate space specified by the source
+construction.  It does not assert arithmetic independence of the
+numbers $\zeta(2k)$ or of any periods obtained after numerical
+evaluation.
+
+\subsection{Why a finite certificate is a proof here}
+
+The eventual theorem converts the order-ten conjecture into a finite
+problem before any computation begins.  The retained determinant has
+fixed size five, every entry is an explicitly displayed rational
+function of $b$ and finitely many Bernoulli numbers, and all denominators
+are controlled.  Reduction modulo a prime which divides none of those
+denominators is an exact ring homomorphism.  A nonzero modular
+determinant therefore proves that the original rational determinant is
+nonzero.  The certificate is not evidence extrapolated from samples;
+it is an exhaustive exact verification of the complete finite set left
+by the analytic theorem.

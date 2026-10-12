@@ -1,0 +1,82 @@
+{
+  "schema": "proveit.research-claim-ledger.v1",
+  "package": "Order-Ten Harmonic-Tail Reconstruction and Polylogarithmic Stieltjes Generators",
+  "repository_snapshot": "04bf92d507588a26abadbaee1beb1e7350c8bffb",
+  "claims": [
+    {
+      "id": "OT10-FINITE",
+      "status": "proved-exact-computation",
+      "statement": "For every integer 6 <= b <= 1919, det(M_{5,b}) is nonzero.",
+      "proof": "One-prime modular certificate, direct source matrices for b=6..9 and exact retained 5x5 matrices for b=10..1919, with denominator safety and two full replays.",
+      "artifacts": [
+        "verification/order10_modular_certificate.json",
+        "verification/generate_order10_certificate.py",
+        "verification/verify_order10_certificate.py",
+        "verification/verify_order10_certificate_independent.py",
+        "verification/verify_normalization_spots.py"
+      ]
+    },
+    {
+      "id": "OT10-COMPLETE",
+      "status": "proved",
+      "statement": "For every integer b >= 6, det(M_{5,b}) is nonzero; hence the smaller-order-ten optimal-prefix family has full formal rank.",
+      "dependencies": [
+        "OT10-FINITE",
+        "inherited effective eventual rank for b >= 1920"
+      ],
+      "article_location": "Theorem 3.3"
+    },
+    {
+      "id": "OT10-ORDINARY",
+      "status": "proved",
+      "statement": "For every b >= 6 and 0 <= k < b, an explicit rationally computable ordinary O(n^-2) series reconstructs zeta(2k) from A_10(n) A_{2b}(n), equivalently from a product of polygamma functions.",
+      "dependencies": [
+        "OT10-COMPLETE",
+        "inherited centered regularization"
+      ],
+      "article_location": "Theorem 4.1"
+    },
+    {
+      "id": "TAIL-MPL-GENERATOR",
+      "status": "proved",
+      "statement": "The generating function of A_p(n)A_q(n) is a divided expression in depth-two multiple polylogarithms and has a Gamma-normalized double Mellin representation.",
+      "article_location": "Theorem 5.1",
+      "proof": "Absolute min-index decomposition and Mellin summation."
+    },
+    {
+      "id": "STIELTJES-KERNEL",
+      "status": "proved",
+      "statement": "A holomorphic pole-subtracted bivariate depth-two multiple-polylogarithm kernel generates all products gamma_r(n+1)gamma_s(n+1).",
+      "article_location": "Theorem 6.3",
+      "proof": "Singular-order regularization of the two-tail generator plus local normal convergence."
+    },
+    {
+      "id": "DIGAMMA-PRIMITIVE",
+      "status": "proved",
+      "statement": "The digamma-square generating function has the displayed anchored primitive and explicit value at z=1/2.",
+      "article_location": "Corollary 6.4 and Theorem 6.5"
+    },
+    {
+      "id": "EXPLICIT-1016",
+      "status": "proved-exact-computation",
+      "statement": "The displayed degree-30 (10,16) identity reconstructs zeta(2).",
+      "artifacts": [
+        "verification/explicit_10_16_zeta2.json",
+        "verification/explicit_identity_core.py",
+        "verification/generate_explicit_identity.py",
+        "verification/verify_explicit_identity.py"
+      ],
+      "diagnostic": "verification/numerical_check_explicit_identity.py"
+    },
+    {
+      "id": "UNRESTRICTED-RANK",
+      "status": "open",
+      "statement": "The optimal-prefix conjecture for every unequal even pair 2a < 2b remains open uniformly in a."
+    },
+    {
+      "id": "GLOBAL-PRIORITY",
+      "status": "not-claimed",
+      "statement": "No claim of global literature priority is made for the analytic generator formulas."
+    }
+  ]
+}

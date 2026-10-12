@@ -1,0 +1,95 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,longtable,array,microtype,xcolor,xurl}
+\usepackage{enumitem,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{bookmark}
+\definecolor{ink}{RGB}{27,46,65}
+\definecolor{accent}{RGB}{35,78,109}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily Universal Gamma normal forms}
+\fancyhead[R]{\small\sffamily ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newcommand{\Q}{\mathbb Q}\newcommand{\C}{\mathbb C}\newcommand{\N}{\mathbb N}
+\newcommand{\Rcal}{\mathscr R}\newcommand{\Fcal}{\mathscr F}
+\newcommand{\Ac}{\mathcal A}\newcommand{\Nc}{\mathcal N}\newcommand{\Hc}{\mathcal H}
+\newcommand{\Ec}{\mathscr E}\newcommand{\dd}{\,\mathrm d}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\DeclareMathOperator{\Li}{Li}\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\CT}{CT}\DeclareMathOperator{\wt}{wt}
+\DeclareMathOperator{\Shi}{Shi}\DeclareMathOperator{\RePart}{Re}
+\newcommand{\sourcecommit}{af91e74dfa841331c51e867542345a3643ee0bf0}
+\hypersetup{pdftitle={Universal Gamma Normal Forms: Rational Kernels, Harmonic Sums, and Stieltjes Primitives},pdfauthor={Research continuation prepared with ChatGPT for Vladimir Reshetnikov},pdfsubject={All-order inverse-Gamma normal forms; exact coefficient formulas; polylogarithms and harmonic sums}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{0.7cm}
+{\sffamily\color{accent}\Large PROVEIT RESEARCH CONTINUATION\par}
+\vspace{1.0cm}
+{\color{ink}\LARGE\bfseries Universal Gamma Normal Forms\par}
+\vspace{0.4cm}
+{\color{ink}\Large Rational Kernels, Harmonic Sums,\par and Stieltjes Primitives\par}
+\vspace{0.9cm}
+{\large Prepared with ChatGPT for Vladimir Reshetnikov\par}
+\vspace{0.3cm}
+{11 October 2026\par}
+\vspace{1.0cm}
+\begin{minipage}{0.92\textwidth}
+\small
+\textbf{Main result.} Every coefficient of every canonical inverse-Gamma differential polynomial is given by one elementary polynomial integral. A single rational-kernel identity proves the formula at arbitrary derivative order. It determines the complete support and the sign of every nonzero coefficient.
+
+\medskip
+\textbf{Research targets resolved.} The formula answers the earlier report's requests for the complete next Gamma projection and closed all-order sector numerators, and extends both to unrestricted highest derivative order. The associated harmonic and polylogarithmic identities are derived explicitly.
+
+\medskip
+\textbf{Source and status.} The comparison uses selected textual sources at ProveIt revision \texttt{\sourcecommit}. Incoming archive metadata was inspected, but the archive members were not retrieved. The paper does not assert exhaustive historical novelty, a complete repository audit, or proof-assistant formalization. Full proofs, independent exact replays, and numerical diagnostics are distinguished throughout.
+\end{minipage}
+\vfill
+{\small\sffamily All-order proofs \enspace / \enspace 28,629 exact coefficient comparisons\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\begin{abstract}
+We give a uniform closed formula for the canonical integration-by-parts normal form of the inverse-Gamma Bell hierarchy. If the highest positive derivative index is $d$ and occurs at least twice, its coefficient is an elementary beta moment with sign $(-1)^d$; it vanishes exactly when the factor-degree parity is wrong. The proof uses the rational kernel
+\[
+ W_d(v)=\frac{4(d+1)(v^2-1)^d}{\bigl((v+1)^{d+1}-(v-1)^{d+1}\bigr)^2}
+\]
+and a telescoping identity for its variational adjoint. This gives an ordinary, entire integral generator for every finite derivative projection, not merely a recurrence or a finite-weight extrapolation. The complete mixed $\psi',\psi'',\psi'''$ sector follows in particularly simple rational form, including explicit numerator polynomials and exact sign rules. We then derive polylogarithmic generating functions, all-order harmonic-number transforms, rational and arithmetic-step evaluations, Gamma-product primitives, and balanced Hurwitz--Stieltjes identities. A universal weighted primitive transports the same differential polynomials to every generalized Stieltjes function. The accompanying independent rational normalizer checks all Bell monomials through weight thirty, including predicted zeros. The unresolved Gaussian period conjectures and the general unequal-tail prefix conjecture are not claimed as consequences.
+\end{abstract}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+\input{sections/01_scope}
+\input{sections/02_algebra}
+\input{sections/03_kernels}
+\input{sections/04_universal}
+\input{sections/05_mixed}
+\input{sections/06_numerators}
+\input{sections/07_polylogs}
+\input{sections/08_harmonic}
+\input{sections/09_hurwitz}
+\input{sections/10_primitives}
+\input{sections/11_audit}
+\appendix
+\input{sections/12_replay}
+\input{references}
+\end{document}

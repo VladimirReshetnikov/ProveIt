@@ -1,0 +1,201 @@
+% Specialized proof of the inherited analytic input for the gap-six theorem.
+% All labels use ga:. This is an attribution-preserving specialization, not a new claim.
+\section{The Gamma basis used in the gap-six proof}
+\label{ga:appendix}
+
+This appendix reproduces the case $m=3$ of the Gamma-basis theorem
+in the incoming \emph{Ordered Boundary Identities and Gamma Kernels}
+report~\cite[Section~8]{OrderedIncoming}.  Its purpose is to make the
+analytic input to Theorem~\ref{gs:main} independently reproducible
+within this article.  The contour construction and the initial
+determinant argument are inherited results; the effective estimates
+and complete gap-six conclusion are established in Section~\ref{gs:section}.
+
+Put
+\[
+ W(x)=\left|\Gamma\!\left(\tfrac14+\tfrac{ix}{2}\right)\right|^{12},
+ \quad P_1(x)=\sinh(2\pi x),\quad P_2(x)=\sinh(\pi x),
+ \quad P_3(x)=\tanh(\pi x).
+\]
+For $1\le j\le3$, define
+\begin{equation}\label{ga:G}
+ G_j(z)=4\sin(z/2)\int_0^\infty\sinh(xz)P_j(x)W(x)\,dx,
+ \qquad t_{n,j}=[z^{2n}]G_j(z).
+\end{equation}
+The density estimate of Lemma~\ref{gs:density}, or the ordinary
+Gamma modulus asymptotic~\cite[Equation~5.11.9]{DLMF}, proves
+locally uniform convergence in $|\operatorname{Re}z|<j\pi$.
+These functions are even and vanish at zero.
+
+\begin{proposition}[Specialized Gamma basis]\label{ga:basis}
+The three germs in \eqref{ga:G} satisfy
+\begin{equation}\label{ga:null}
+ \bigl(G_j^{(6)}-G_j^{(6)}(0)\bigr)\cot(z/2)
+                    +(G_j\cot(z/2))^{(6)}=0.
+\end{equation}
+Their sixth derivatives at zero are
+\begin{equation}\label{ga:top}
+ G_1^{(6)}(0)=G_2^{(6)}(0)=0,
+ \qquad G_3^{(6)}(0)=256\pi^3.
+\end{equation}
+The matrix $T=(t_{n,j})_{1\le n,j\le3}$ has negative determinant.
+Thus these germs form a basis of the formal null space of
+\eqref{ga:null}, and their later coefficient rows satisfy
+\[
+                     (t_{b+i,j})_{i,j=1}^3=F_bT
+\]
+with the rational fundamental matrix of Section~\ref{gs:section}.
+\end{proposition}
+
+\subsection{The Fourier shift and its two residues}
+
+For one of the three odd multipliers $P$, set
+\[
+ \mathcal F_P(t)=\int_{\mathbb R}e^{ixt}P(x)W(x)\,dx,
+ \qquad \mathcal Q_P(t)=2\sinh(t/2)\mathcal F_P(t),
+ \qquad D=\frac{d}{dt}.
+\]
+The integrals and all derivatives converge absolutely for real $t$
+and define analytic germs.  The oddness of $P$ makes $\mathcal F_P$
+odd, so $\mathcal Q_P$ is even and vanishes at zero.  Define
+\[
+ \mathcal E_P(t)=e^t(D+\tfrac12)^6\mathcal F_P(t)
+                        -e^{-t}(D-\tfrac12)^6\mathcal F_P(t).
+\]
+Since
+\[
+ \mathcal Q_P=(e^{t/2}-e^{-t/2})\mathcal F_P,
+ \qquad \mathcal Q_P\coth(t/2)
+              =(e^{t/2}+e^{-t/2})\mathcal F_P,
+\]
+ordinary differentiation gives the exact identity
+\begin{equation}\label{ga:operator}
+ \coth(t/2)\mathcal Q_P^{(6)}(t)
+       +(\mathcal Q_P(t)\coth(t/2))^{(6)}
+                  =\frac{\mathcal E_P(t)}{\sinh(t/2)}.
+\end{equation}
+
+For complex arguments, use the single-valued meromorphic continuations
+\begin{align*}
+ W(y)&=\left[\Gamma(\tfrac14+iy/2)
+                       \Gamma(\tfrac14-iy/2)\right]^6,\\
+ V(y)&=\left[\Gamma(\tfrac34+iy/2)
+                       \Gamma(\tfrac34-iy/2)\right]^6.
+\end{align*}
+The absolute-value notation for $W$ is used only on the real axis.
+Gamma recurrence gives
+\begin{equation}\label{ga:recurrence}
+ (iy-\tfrac12)^6W(y+i)
+   =(iy+\tfrac12)^6W(y-i)=64V(y).
+\end{equation}
+In the first Fourier integral defining $\mathcal E_P$, substitute
+$y=x-i$, so its contour is $\mathbb R-i$; in the second substitute
+$y=x+i$, so its contour is $\mathbb R+i$.  These substitutions
+remove the respective $e^{\pm t}$ factors.  Moreover
+$P(y+i)=P(y-i)$ for every allowed $P$.  Thus bottom minus top
+is the integral of the same meromorphic function
+\begin{equation}\label{ga:common-integrand}
+                  64e^{iyt}V(y)P(y+i)
+\end{equation}
+on the two horizontal sides of a positively oriented rectangle.
+
+The nearest poles of $V$ are $\pm3i/2$, outside the closed strip
+$|\operatorname{Im}y|\le1$.  The apparent closer Gamma poles in
+the shifted $W$ expressions have already been canceled exactly
+by \eqref{ga:recurrence}.  For a sinh multiplier, $P(y+i)$ is
+an entire function: it equals $\sinh(2\pi y)$ for $P_1$ and
+$-\sinh(\pi y)$ for $P_2$.  For $P_3$ it equals
+$\tanh(\pi y)$, with precisely two poles in the strip,
+$y=\pm i/2$.
+Uniform Stirling estimates on the closed strip bound the integrand
+by a polynomial times $e^{-(3-k)\pi|\operatorname{Re}y|}$ in
+the sinh case, where $k=2$ or $1$, and by a polynomial times
+$e^{-3\pi|\operatorname{Re}y|}$ in the tanh case.
+For fixed real $t$, the factor $e^{iyt}$ is bounded there.
+The vertical sides therefore vanish as their real parts tend to
+infinity.  All contour shifts are consequently justified.
+
+There are no enclosed poles for $P_1,P_2$, so
+$\mathcal E_{P_1}=\mathcal E_{P_2}=0$.
+At each tanh pole the residue is $1/\pi$, and
+\[
+                         V(i/2)=V(-i/2)=\pi^3.
+\]
+The residues of \eqref{ga:common-integrand} are therefore
+$64\pi^2e^{-t/2}$ and $64\pi^2e^{t/2}$.  Bottom minus top is
+$2\pi i$ times their sum, giving
+\begin{equation}\label{ga:residue}
+                \mathcal E_{P_3}(t)=256i\pi^3\cosh(t/2).
+\end{equation}
+
+The second term on the left of \eqref{ga:operator} is holomorphic
+at zero, since $\mathcal Q_P(t)=O(t^2)$.  The first has Laurent
+coefficient $2\mathcal Q_P^{(6)}(0)$ at $t^{-1}$.
+Comparing \eqref{ga:operator} with \eqref{ga:residue} yields
+\[
+ \mathcal Q_{P_1}^{(6)}(0)=\mathcal Q_{P_2}^{(6)}(0)=0,
+ \qquad\mathcal Q_{P_3}^{(6)}(0)=256i\pi^3.
+\]
+The exact identities also show that
+\[
+ (\mathcal Q_P^{(6)}-\mathcal Q_P^{(6)}(0))\coth(t/2)
+                   +(\mathcal Q_P\coth(t/2))^{(6)}=0.
+\]
+Pairing positive and negative $x$ gives
+$G_j(z)=i\mathcal Q_{P_j}(iz)$.  Rotation uses
+$\coth(iz/2)=-i\cot(z/2)$, proving \eqref{ga:null}.
+Since $i\cdot i^6=-i$, it also gives \eqref{ga:top}.
+
+\subsection{The initial determinant has an exact positive integral}
+
+Write $\phi_n(x)=\operatorname{Im}(x+i/2)^{2n}$.  The elementary
+identity
+\[
+ \sin(z/2)\sinh(xz)=\sum_{n\ge1}\frac{\phi_n(x)}{(2n)!}z^{2n}
+\]
+and local uniform domination imply
+\[
+               t_{n,j}=\frac4{(2n)!}
+                   \int_0^\infty\phi_n(x)P_j(x)W(x)\,dx.
+\]
+The polynomial $\phi_n$ has leading term $nx^{2n-1}$ and only
+lower odd powers.  A triangular row transformation consequently gives
+\[
+ \det T=\left(\prod_{n=1}^3\frac{4n}{(2n)!}\right)
+   \det\left(\int_0^\infty x^{2n-1}P_j(x)W(x)\,dx\right)_{n,j=1}^3,
+ \qquad\prod_{n=1}^3\frac{4n}{(2n)!}=\frac1{90}.
+\]
+For $\Delta(y_1,y_2,y_3)=\prod_{i<j}(y_j-y_i)$,
+continuous Cauchy--Binet gives the following exact normalization:
+\begin{equation}\label{ga:initial-determinant}
+ \boxed{\begin{aligned}
+ \det T={}&-\frac1{270}\int_{(0,\infty)^3}
+       \Delta(x_1^2,x_2^2,x_3^2)\\
+ &\qquad\cdot\Delta(\cosh\pi x_1,\cosh\pi x_2,\cosh\pi x_3)
+       \prod_{r=1}^3x_rW(x_r)\tanh(\pi x_r)\,d\boldsymbol{x}<0.
+ \end{aligned}}
+\end{equation}
+Indeed $\det(x_r^{2n-1})=(\prod_rx_r)\Delta(x_1^2,x_2^2,x_3^2)$.
+After dividing row $r$ of $\det(P_j(x_r))$ by
+$\tanh(\pi x_r)$ and putting $v_r=\cosh(\pi x_r)$, its
+columns are $2v_r^2,v_r,1$.  Its determinant is
+$-2\Delta(v_1,v_2,v_3)$; together with the Cauchy--Binet factor
+$1/3!$ and $1/90$ this gives $-1/270$.
+The integral converges absolutely by exponential decay.  Both
+Vandermondes have the same sign whenever the $x_r$ are distinct,
+since $x\mapsto x^2$ and $x\mapsto\cosh(\pi x)$ are strictly
+increasing on $(0,\infty)$.  Its integrand is therefore positive
+off the collision planes, proving strict negativity.
+
+The coefficient recurrence of Section~\ref{gs:section} gives a
+three-dimensional formal null space with arbitrary first three
+coefficients.  Equation \eqref{ga:initial-determinant} proves that
+our three germs span it, and coefficient comparison proves
+$(t_{b+i,j})=F_bT$, completing Proposition~\ref{ga:basis}.
+As a normalization check, \eqref{ga:top} also gives the inherited
+ordinary Gamma moments
+\[
+ \int_0^\infty\left(3x^5-\frac52x^3+\frac3{16}x\right)
+                 P_j(x)W(x)\,dx
+ =\begin{cases}0,&j=1,2,\\64\pi^3,&j=3.\end{cases}
+\]

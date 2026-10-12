@@ -1,0 +1,119 @@
+\section{The complete mixed trigamma--tetragamma--pentagamma sector}
+\label{sec:mixed}
+
+\subsection{Normalization and the four-variable equation}
+
+The requested next projection is especially transparent if
+\begin{equation}\label{eq:xyz}
+ y=\frac{u_1t^2}{2},\qquad z=u_2t^3,\qquad w=u_3t^4,
+ \qquad F(y,z,w)=F_3(2y,z,w).
+\end{equation}
+Thus
+\[
+ \sigma_3\Nc\Ac(t)=e^{u_0t}F(y,z,w).
+\]
+Write $\alpha(v)=C_2(v)=(1+3v^2)/24$ and
+$\beta(v)=C_3(v)=v(1+v^2)/48$. The operator \eqref{eq:Ld} becomes
+\[
+ L=2y+\frac z2\partial_y+w\partial_z.
+\]
+The complete coefficient equation is
+\begin{equation}\label{eq:fourPDE}
+ \boxed{\displaystyle
+ F-\frac12LF_y+L^2F_z-L^3F_w
+ =\frac12\int_{-1}^1e^{yv+z\alpha(v)+w\beta(v)}\dd v.}
+\end{equation}
+The support restrictions are absence of a single $w$, absence of a single $z$ in the $w^0$ coefficient, and absence of a single $y$ in the $z^0w^0$ coefficient. Lemma~\ref{lem:unique} proves that these conditions determine the solution; no finite-weight data are needed to fix extra constants.
+
+Define
+\begin{equation}\label{eq:rdef}
+ r_{b,c}(k)=k![y^kz^bw^c]F(y,z,w).
+\end{equation}
+For nonnegative integers $a,k,b,c$, with $m=a+2k+3b+4c$, the conversion back to the full normal polynomial is
+\begin{equation}\label{eq:r-to-coeff}
+ [u_0^au_1^ku_2^bu_3^c]\Nc_m
+ =\frac{m!}{a!2^kk!}\,r_{b,c}(k).
+\end{equation}
+These are coefficients in the full $\Nc_m$, not in a hierarchy truncated before normalization.
+
+\subsection{Closed mixed formulas}
+
+\begin{theorem}[All mixed coefficients]\label{thm:mixed}
+The coefficient $r_{b,c}(k)$ is zero if $k+c$ is odd, if $c=1$, or if $(b,c)=(1,0)$. For the remaining indices:
+\begin{align}
+ r_{0,0}(k)&=-\frac1{(k-1)(k+1)}, &&k\text{ even},\label{eq:r00}\\
+ r_{b,0}(k)&=\frac3{b!24^b}\int_0^1
+      v^k(1-v^2)^2(1+3v^2)^{b-2}\dd v,
+      &&b\ge2,\ k\text{ even},\label{eq:rb0}\\
+ r_{b,c}(k)&=-\frac1{4b!c!24^b48^c}\int_0^1
+      v^{k+c-2}(1-v^2)^3(1+3v^2)^b(1+v^2)^{c-2}\dd v,
+      &&c\ge2,\ k+c\text{ even}.\label{eq:rbc}
+\end{align}
+The value of \eqref{eq:r00} at $k=0$ is $1$. In particular every permitted coefficient in \eqref{eq:rb0} is positive and every permitted coefficient in \eqref{eq:rbc} is negative.
+\end{theorem}
+\begin{proof}
+Use Theorem~\ref{thm:universal}, with the factor $2^{-k}$ from $C_1(v)^k$ absorbed into the scaling of $y$. For highest index two, $W_2\alpha^b=3(1-v^2)^2(1+3v^2)^{b-2}/24^b$. For highest index three,
+\[
+ W_3\alpha^b\beta^c
+ =-\frac{v^{c-2}(1-v^2)^3(1+3v^2)^b(1+v^2)^{c-2}}
+          {4\,24^b48^c}.
+\]
+These identities prove \eqref{eq:rb0} and \eqref{eq:rbc}. The highest-index-one formula gives \eqref{eq:r00} for even $k\ge2$, and the constant term is one. The zero conditions are exactly canonical support and parity.
+\end{proof}
+
+Expanding only the positive polynomial factors and using \eqref{eq:beta-elementary} gives the finite rational forms
+\begin{align}
+ r_{b,0}(k)&=\frac{24}{b!24^b}
+ \sum_{j=0}^{b-2}\binom{b-2}{j}
+ \frac{3^j}{(k+2j+1)(k+2j+3)(k+2j+5)},\label{eq:rb-rational}\\
+ r_{b,c}(k)&=-\frac{12}{b!c!24^b48^c}
+ \sum_{j=0}^{b}\sum_{\ell=0}^{c-2}
+ \binom bj3^j\binom{c-2}{\ell}
+ \frac1{\prod_{h=0}^3(k+c-1+2j+2\ell+2h)}.\label{eq:rbc-rational}
+\end{align}
+Equation~\eqref{eq:rbc-rational} holds on the permitted parity class. Its rational right side also defines a useful meromorphic interpolation in a complex variable $k$, but that interpolation is not the zero-extended coefficient sequence on the opposite parity class.
+
+\subsection{The explicit entire generator}
+
+Let $\Shi(y)=\int_0^y\sinh t\dd t/t$. The highest-index-one part is
+\begin{equation}\label{eq:f0}
+ f_0(y)=\frac12\left(\cosh y+\frac{\sinh y}{y}-y\Shi(y)\right).
+\end{equation}
+All apparent singularities at $y=0$ are removable. In the scaling \eqref{eq:xyz}, Theorem~\ref{thm:entire} becomes
+\begin{align}
+ F(y,z,w)={}&f_0(y)
+ +\int_0^1W_2(v)\cosh(yv)
+       \bigl(e^{z\alpha(v)}-1-z\alpha(v)\bigr)\dd v\notag\\
+ &+\int_0^1W_3(v)e^{z\alpha(v)}
+ \bigl(\cosh(yv+w\beta(v))-\cosh(yv)
+                 -w\beta(v)\sinh(yv)\bigr)\dd v.\label{eq:four-entire}
+\end{align}
+The last bracket is $O(v^2)$ at zero, canceling the double pole of $W_3$. This formula is an ordinary entire integral identity in three independent complex variables.
+
+\subsection{Concrete polygamma coefficients}
+
+Some low mixed families are
+\begin{align}
+ r_{0,2}(k)&=-\frac1{384(k+1)(k+3)(k+5)(k+7)},\label{eq:r02}\\
+ r_{1,2}(k)&=-\frac1{2304(k+1)(k+5)(k+7)(k+9)},\label{eq:r12}\\
+ r_{2,2}(k)&=-\frac{(k+2)(k+6)}
+ {27648(k+1)(k+3)(k+5)(k+7)(k+9)(k+11)},\label{eq:r22}\\
+ r_{0,3}(k)&=-\frac1{27648(k+2)(k+4)(k+8)(k+10)},\label{eq:r03}\\
+ r_{1,3}(k)&=-\frac{k^2+12k+30}
+ {165888\prod_{j=0}^{5}(k+2+2j)}.\label{eq:r13}
+\end{align}
+The first three lines use even $k$; the last two use odd $k$. Formula~\eqref{eq:r02} lies in the earlier pure-square family and is recovered here as a consistency check, not counted as a new isolated evaluation. The arbitrary lower mixed powers and higher top multiplicities are covered together by the universal theorem.
+
+For example, the full weight-eleven polynomial is
+\begin{align}
+ \Nc_{11}={}&u_0^{11}-330u_0^7u_1^2+462u_0^5u_2^2
+             -1155u_0^3u_1^4-165u_0^3u_3^2\notag\\
+ &+550u_0^2u_2^3+990u_0u_1^2u_2^2
+             +11u_0u_4^2-55u_2u_3^2.\label{eq:N11}
+\end{align}
+The term $11u_0u_4^2$ must be retained when \eqref{eq:N11} is used as a full Gamma identity. It is removed only when the projection $\sigma_3$ is explicitly intended. Two further mixed coefficients at weight fourteen are
+\[
+ [u_1u_3^3]\Nc_{14}=-\frac{3185}{3},\qquad
+ [u_2^2u_3^2]\Nc_{14}=-3640.
+\]
+The full polynomials and their exact total-derivative certificates through weight eighteen are supplied in the accompanying data file.

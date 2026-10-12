@@ -1,0 +1,142 @@
+\section{Joint continuation, oblique poles, and directional values}
+\label{sec:continuation}
+
+\subsection{A convergent expansion in single Hurwitz zeta functions}
+
+Set $\delta=a-b$ and $y=b+1$. For a sufficiently large integer $M$,
+expand each shifted factor about $k+y$ on the tail $k\ge M$.
+This gives
+\begin{align}\label{eq:hurwitz-expansion}
+ \Def(s,t;a,b)={}&
+ \sum_{k=0}^{M-1}(k+y)^{-t}
+       \bigl\{(k+a+2)^{-s}-(k+a)^{-s}\bigr\}\notag\\
+ &+\sum_{j=1}^{\infty}\frac{(-1)^j(s)_j}{j!}
+      \bigl\{(\delta+1)^j-(\delta-1)^j\bigr\}
+           \zeta(s+t+j,M+y).
+\end{align}
+Choose $M$ so that both $|\delta+1|$ and $|\delta-1|$ are
+strictly smaller than $|M+y|$; on any compact set a uniform strict
+inequality is available. The factor $(s)_j/j!$ grows at most
+polynomially in $j$ on compact $s$-sets, whereas the large-order
+Hurwitz series supplies geometric decay after multiplication by
+the displayed shift powers. The finitely many possible small-order
+zeta poles are handled separately. Hence the tail is locally normally
+convergent away from those poles, together with every fixed derivative.
+This proves joint meromorphic continuation to all $(s,t)\in\C^2$.
+
+\begin{theorem}[Complete polar data]\label{thm:poles}
+The possible polar divisors of $\Ord$ are
+\begin{equation}\label{eq:polar-divisors}
+ t=1,\qquad s+t=1-j\quad(j=1,2,\ldots).
+\end{equation}
+Away from intersections, their residues in the indicated linear
+coordinates are
+\begin{align}\label{eq:polar-coefficients}
+ \Res_{t=1}\Ord&=E_s(a),\notag\\
+ \Res_{s+t=1-j}\Ord&=
+ C_j(s;\delta):=\frac{(-1)^j(s)_j}{4j!}
+              \bigl\{(\delta+1)^j-(\delta-1)^j\bigr\}.
+\end{align}
+These coefficient formulas continue across intersections. Every local
+expression is a sum of terms with single linear denominators and a
+holomorphic remainder; no product denominator is required. A listed
+divisor can disappear on a special shift or order locus. The divisor
+$s+t=1$ is absent identically.
+\end{theorem}
+
+\begin{proof}
+In \eqref{eq:hurwitz-expansion} a pole occurs only when
+$s+t+j=1$, with residue equal to its explicit coefficient, since
+Hurwitz zeta has residue one. The $j=0$ binomial coefficient is zero
+in the difference, so its would-be divisor cancels before
+continuation. The other term in \eqref{eq:ordered-main} has only
+$t=1$ as a possible pole. Local normal convergence of the remaining
+tail proves the stated local decomposition.
+\end{proof}
+
+\begin{corollary}[Cancellation in the averaged sum]\label{cor:pole-cancellation}
+Every oblique polar divisor cancels between $\Ord(s,t;a,b)$ and
+$\Ord(t,s;b,a)$.
+\end{corollary}
+\begin{proof}
+Equation \eqref{eq:kernel-symmetry} is entire in both orders. One
+can also check residues directly: on $s+t=1-j$,
+$(t)_j=(-1)^j(s)_j$, and replacing $\delta$ by $-\delta$
+reverses the required coefficient. Thus the cancellation is an exact
+functional identity, not a numerical relation between periods.
+\end{proof}
+
+\subsection{Four intersections at which every weight vanishes}
+
+Both $w_n(0,a)$ and $w_n(-1,a)$ vanish for every $n$. The continued
+ordered sum nevertheless has directional values at pairs of these
+parameters. The origin gives the simplest explanation.
+
+\begin{theorem}[Universal origin behavior]\label{thm:origin}
+Near $(s,t)=(0,0)$,
+\begin{equation}\label{eq:origin-germ}
+ \Ord(s,t;a,b)=-\frac{s}{2(s+t)}+H(s,t;a,b),
+ \qquad H\text{ holomorphic},\qquad H(0,0;a,b)=0.
+\end{equation}
+Consequently, if $\alpha+\beta\ne0$,
+\begin{equation}\label{eq:origin-ray}
+ \lim_{\varepsilon\to0}
+ \Ord(\alpha\varepsilon,\beta\varepsilon;a,b)
+        =-\frac{\alpha}{2(\alpha+\beta)}.
+\end{equation}
+The limit is independent of both spatial shifts.
+\end{theorem}
+
+\begin{proof}
+The $j=1$ coefficient in \eqref{eq:polar-coefficients} is exactly
+$-s/2$. All other divisors miss a sufficiently small neighborhood
+of the origin. After subtracting this polar term, the remainder
+is holomorphic. On the punctured slice $s=0$ the explicit
+formula \eqref{eq:ordered-main} vanishes identically, so the
+holomorphic remainder vanishes at the origin. Substitution of a
+non-tangent line proves \eqref{eq:origin-ray}.
+\end{proof}
+
+The diagonal value $-1/4$ recovers the specialization anomaly already
+recorded in \cite{repo:finite}. Formula \eqref{eq:origin-ray} is more
+informative: the slice $s=0$ has limit zero, the slice $t=0$ has limit
+$-1/2$, and general slopes interpolate rationally. These are limits
+of the same meromorphic continuation, not different summation rules
+chosen for the pointwise zero series.
+
+\begin{theorem}[The complete $2\times2$ zero-weight table]\label{thm:zero-table}
+Let $m,n\in\{0,1\}$ and $\alpha+\beta\ne0$. Along
+$s=-m+\alpha\varepsilon$, $t=-n+\beta\varepsilon$,
+\begin{equation}\label{eq:zero-ray}
+ \lim_{\varepsilon\to0}\Ord(s,t;a,b)
+       =\frac{\alpha}{\alpha+\beta}\,c_{m,n}(\delta),
+\end{equation}
+where
+\begin{equation}\label{eq:zero-table}
+ \begin{array}{c|cc}
+ c_{m,n}(\delta)&n=0&n=1\\\hline
+ m=0&-\tfrac12&\tfrac{\delta}{2}\\[2pt]
+ m=1&-\tfrac{\delta}{2}&\tfrac{3\delta^2+1}{12}
+ \end{array}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Only $j=m+n+1$ supplies a divisor through the given point.
+Its coefficient $C_j(s;\delta)$ vanishes at $s=-m$ and has
+derivative $c_{m,n}(\delta)$ there. The first three polynomials are
+\[
+ C_1=-\frac s2,\qquad
+ C_2=\frac{\delta s(s+1)}2,\qquad
+ C_3=-\frac{(3\delta^2+1)s(s+1)(s+2)}{12}.
+\]
+The restrictions $\Ord(0,t;a,b)$ and $\Ord(-1,t;a,b)$ are
+identically zero meromorphic functions of $t$, directly from
+\eqref{eq:ordered-main}. Thus the holomorphic remainder at the
+chosen point vanishes. Expanding the one polar quotient proves
+the table and the directional limit.
+\end{proof}
+
+No limit is asserted for directions with $\alpha+\beta=0$.
+They lie on the polar hyperplane itself, where cancellation of a
+numerator at one point does not define a restriction of the
+meromorphic function to the whole line.

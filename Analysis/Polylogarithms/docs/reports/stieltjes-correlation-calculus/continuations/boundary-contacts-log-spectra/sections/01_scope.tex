@@ -1,0 +1,151 @@
+\section{Scope, main advances, and source status}
+\label{bc:scope}
+
+This article is a continuation of the ProveIt material at the immutable
+repository checkpoint
+\[
+ \pin .
+\]
+The requested manuscript directory, the seven archives in
+\src{docs/incoming}, and the directly relevant preserved continuations were
+inspected together. This matters: an open question in one report may have
+been solved in another report that has not yet been integrated into the
+canonical manuscript. The accompanying provenance file records the
+identities and hashes of the sources used here. The source tree itself was
+not modified.
+
+\subsection{The questions answered}
+
+The first precise target is the question headed \emph{Every bilinear contact
+hyperplane} in \emph{Bilinear Tails and Determinants}
+\cite{ProveItBilinear}. Its finite two-order endpoint identity is already
+proved. The missing data are the bivariate contact polynomials on
+\(p+q=-2m\), all independent order derivatives, and the changes under
+translation of the cutoff. A diagonal restriction cannot recover
+derivatives transverse to that restriction. Section~\ref{ct:section}
+supplies these data for every \(m\ge0\), including explicit ordinary
+convergent representatives. The finite endpoint law and its first
+\(1/2\) contact remain attributed to the predecessor.
+
+The second target is the higher-order, many-mass question in
+\emph{Higher Quadratic Jets}, item 3, and \emph{Beta Polarization of Higher
+Spectral Defects}, item 3
+\cite{ProveItHigherQuadratic,ProveItHigherDefects}. The latter already gives
+a complete pairwise formula for second jets. Its research question asks
+for higher connected logarithmic terms and correctly normalized
+coincident-mass limits. Section~\ref{sp:section} gives a single real
+resolvent integral for every scalar jet and a compact integral for every
+connected logarithmic product. The number of real integration variables
+stays one as both the number of masses and the derivative order increase.
+Section~\ref{ng:section} further extends the full-jet formula to every
+even polynomial weight and to every nonpositive integer spectral point.
+This settles the scalar representation and connected-product parts of the
+question, and supplies an alternative explicit representation for the
+higher negative-point jets. It does not assert that all those integrals reduce to finitely
+many special values of a smaller function class.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.22\textwidth}>{\raggedright\arraybackslash}p{0.31\textwidth}>{\raggedright\arraybackslash}p{0.38\textwidth}}
+\toprule
+Topic & Result in this article & Status relative to inspected sources\\
+\midrule
+Two-order tail contacts &
+Finite coefficients at every resonance; all mixed jets and translations &
+Completes the explicitly open bivariate contact question.\\
+Ordinary boundary sums &
+Polynomial and logarithmic subtractions, with exact examples &
+Consequences of the completed contact algebra.\\
+Full scalar spectral jets &
+One digamma integral for every \(N,r\) &
+Explicit all-order representation beyond the supplied second-jet formulas.\\
+Even weights and negative points &
+Every polynomial degree and every derivative at each nonpositive integer &
+A finite Hurwitz baseline and the same single ordinary integral.\\
+Connected logarithmic products &
+Compact density, moments, critical odd weight, collisions &
+All-order realization of the higher connected-term target.\\
+Local spectral correction &
+Finite residue polynomial at fixed \(N\) &
+Inherited mechanism, restated with matching normalization.\\
+Harmonic and polylogarithmic forms &
+Beta moments, confluent expansions, height-one transform &
+Derived bridge to classical coefficient and function alphabets.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Two organizing mechanisms}
+
+The tail calculation is controlled by an \emph{upper endpoint}. Its
+asymptotic coefficient at a resonant exponent gives the discrepancy between
+an analytic continuation and a specified cutoff finite part. The necessary
+operation is to expand in independent parameters before restricting to the
+resonance. A finite-degree theorem then makes all sufficiently high
+independent contact derivatives vanish. The same asymptotic coefficients
+specify actual convergent subtractions, so the finite-part formulas have
+ordinary-series counterparts.
+
+The spectral calculation is controlled by a \emph{logarithmic jump across
+a cut}. Subtracting the mass-zero logarithm removes the obstruction at
+infinity. Cauchy's formula converts the remaining logarithmic expression
+into a resolvent integral, and the lattice resolvent sums exactly to a
+digamma difference. For a product of logarithmic mass increments the cut
+is compact and the decay at infinity forces its first moments to vanish.
+Those moment cancellations supply the polynomial subtractions for weighted
+sums.
+
+These are different mechanisms. The cutoff degree theorem is a statement
+about asymptotic coefficients in the orders \(p,q\). The many-mass
+interaction hierarchy is a statement about finite differences of spectral
+jets with a fixed total number of factors. Neither follows by replacing
+one meaning of degree with the other.
+
+\subsection{Classical inputs and the priority boundary}
+
+The Gamma quotient expansion, the alternating Hurwitz expansion and its
+parameter derivatives, the digamma resolvent identity, and Euler's beta
+integral are classical
+\cite{DLMF,HuKim,WangHuKim}. Products of zeta tails have an established
+multiple-zeta literature; Hoffman's paper is a relevant example
+\cite{Hoffman}. The broad relation between regularized traces and local
+asymptotic coefficients is likewise established
+\cite{PaychaScott}. The normalized exponent-local degree theorem is already
+present in the project's \emph{Arithmetic Spectral Jets} continuation
+\cite{ProveItArithmeticJets}. We use it for comparison and give a direct
+normalization check where it enters.
+
+The contribution claimed here is the stated collection of precise
+deductions and completed research targets relative to the inspected
+project material. The article gives proofs of those statements. A targeted
+search did not establish an earlier occurrence of every displayed form,
+but that is not a comprehensive historical-priority result. In particular,
+we do not relabel a classical beta integral, Stirling-number identity, or
+height-one multiple-zeta reduction as a newly discovered constant.
+
+\subsection{Conventions}
+
+\(\zeta^{(r)}(s,a)\) always means an \emph{order} derivative
+\(\partial_s^r\zeta(s,a)\). Superscripts on \(\psi\) mean argument
+derivatives. The generalized Stieltjes convention is
+\[
+ \zeta(1+u,a)=\frac1u+
+   \sum_{j\ge0}\frac{(-1)^j}{j!}\gamma_j(a)u^j,
+ \qquad \gamma_0(a)=-\psi(a).
+\]
+The generalized harmonic numbers are
+\[
+ H_n^{(j)}=\sum_{k=1}^{n}k^{-j},\qquad H_0^{(j)}=0,
+ \qquad H_n=H_n^{(1)}.
+\]
+A jet of order \(r\) is the actual derivative, with its factorial included;
+\([u^r]\) instead denotes an ordinary Taylor coefficient.
+
+Every finite part is tied to its stated coordinate or independent
+regulator. For the tail problem, the coordinate is \(X=N+c\) and the
+retained term is \(X^0(\log X)^0\). For the alternating endpoint a parity
+subsequence is also specified. All integrals labeled ordinary are
+absolutely convergent improper integrals unless conditional convergence is
+explicitly stated. Signed logarithmic densities are allowed; positivity
+is not assumed or required.

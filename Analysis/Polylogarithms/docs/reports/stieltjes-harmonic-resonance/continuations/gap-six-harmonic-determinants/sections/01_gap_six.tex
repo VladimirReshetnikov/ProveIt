@@ -1,0 +1,565 @@
+% Parent-ready proof fragment. All local labels use gs:.
+% Mathematical inputs inspected at c4036d60715916ae72dd18983782fdb182840b86:
+% Ordered_Boundary_Identities..., sections/08_gamma_basis.tex;
+% harmonic-tail-gamma, sections/02_gap_four.tex.
+% The all-gap-six theorem and explicit threshold below are the new step.
+\section{The complete gap-six harmonic-tail reconstruction theorem}
+\label{gs:section}
+
+The fixed-gap Gamma basis of the incoming \emph{Ordered Boundary
+Identities and Gamma Kernels} report~\cite{OrderedIncoming} proves eventual reconstruction
+on every fixed-gap ray but does not specify a threshold.  We make its
+argument effective when the gap is six and complete the remaining
+finite interval by exact modular arithmetic.  This proves the entire
+previously unresolved gap-six family.  The finite part is a
+computation-assisted proof: every determinant is certified by a
+nonzero residue in a finite field, with a short independently runnable
+certificate.  No floating-point approximation enters that certificate.
+
+\subsection{Statement and the exact rational obstruction}
+
+Let $b\ge4$ be an integer, $p=2b-6$, $q=2b$, and
+\[
+ A_p(n)=\zeta(p)-H_n^{(p)}=\zeta(p,n+1),\qquad x_n=n+\tfrac12.
+\]
+Let $D_r=D_{p,q}(-2r)$, where
+\[
+ D_{p,q}(s)=\sum_{n\ge0}A_p(n)A_q(n)x_n^{-s}
+\]
+is initially defined in its convergence half-plane and subsequently
+continued meromorphically.  The centered Hurwitz expansion shows that
+its possible poles occur at odd integers, so all displayed $D_r$ are
+regular.  The inherited moment blocks satisfy the inverse transforms
+of~\cite[Section~8]{OrderedIncoming}:
+\begin{align}
+ D_r&=\sum_{j=0}^r\frac{\binom{2r}{2j}}{2j+1}
+           B_{2r-2j}(1/2)C_j,\label{gs:forward}\\
+ C_j&=\sum_{r=0}^j\binom{2j+1}{2r}2^{-2(j-r)}D_r.
+ \label{gs:backward}
+\end{align}
+For $j\ge b$, write
+\begin{equation}\label{gs:late}
+ C_j=\sum_{k=0}^{b-1}a_{jk}Z_k,
+ \qquad Z_k=\zeta(2k),\qquad Z_0=-\tfrac12.
+\end{equation}
+With $d=2j+1$ and $e=d-p-q+2k+1$, these rational entries are zero
+when $e<0$, and otherwise the exact late-coordinate formula of
+\cite[Section~8]{OrderedIncoming} is
+\begin{equation}\label{gs:entry}
+ a_{jk}=B_e\left\{
+  \frac{\binom{d-q+1}{p-2k}}{d-q+1}
+ +\frac{\binom{d-p+1}{q-2k}}{d-p+1}\right\}.
+\end{equation}
+Every binomial summand whose lower index is not between $2$ and its
+upper index is omitted.  In particular a lower index of zero is
+omitted.  Put
+\[
+ M_b=(a_{b+r,k})_{0\le r,k<b}.
+\]
+All ranks below are ranks of rational coefficient matrices on the
+specified formal labels.  They do not assert arithmetic independence
+of the actual zeta values.
+
+\begin{theorem}[Every gap-six pair has the optimal prefix]
+\label{gs:main}
+For every integer $b\ge4$, the matrix $M_b$ is nonsingular.  Therefore
+\begin{align}\label{gs:span}
+ \operatorname{span}_{\mathbb Q}\{D_0,D_1,\ldots\}
+ &=\operatorname{span}_{\mathbb Q}\{D_0,\ldots,D_{2b-1}\}\\
+ &=\operatorname{span}_{\mathbb Q}
+ \{C_0,\ldots,C_{b-1},Z_0,\ldots,Z_{b-1}\}.\notag
+\end{align}
+The first $q=2b$ moments have formal rank $q$, and their coefficient
+determinant in the displayed coordinate order is
+$\det M_b/(4b-1)!!$.  This number of consecutive moments is optimal
+for rank $q$ on those $q$ formal labels.
+\end{theorem}
+
+Define, for $n\ge1$,
+\[
+ \alpha_n=\frac{2|B_{2n}|}{(2n)!},\qquad
+ A_u=\begin{cases}0,&1\le u\le3,\\
+                   (2u)^{\underline6},&u\ge4,
+       \end{cases}
+\]
+and, for $s\ge4$,
+\[
+ B_s=(2s-1)^{\underline6},\qquad d_s=2(A_s+B_s)>0.
+\]
+Here the underline denotes a falling factorial.  The $B_s$ in this
+line are recurrence factors, distinguished from the Bernoulli numbers
+by the displayed definition.  Define a rational array by
+\begin{align}
+ R_{s,j}&=\delta_{sj}&&(1\le s,j\le3),\notag\\
+ R_{s,j}&=\frac1{d_s}\sum_{u=1}^{s-1}
+             \alpha_{s-u}(B_s+A_u)R_{u,j}
+           &&(s\ge4,\ 1\le j\le3),\label{gs:recurrence}
+\end{align}
+and set
+\[
+ F_b=(R_{b+i,j})_{1\le i,j\le3},\qquad f_b=\det F_b.
+\]
+The inherited complementary-minor identity
+\cite[Section~8, fixed-gap boundary reduction]{OrderedIncoming} is
+\begin{equation}\label{gs:bridge}
+ \det M_b=\frac{(-1)^{b(b-1)/2}}{4^bb!}
+        \left(\prod_{s=4}^{b+3}d_s\right)f_b.
+\end{equation}
+Thus the theorem reduces exactly to $f_b\ne0$ for every $b\ge4$.
+
+For clarity, the finite differential mechanism behind this reduction
+is the operator
+\[
+ \mathcal T R=(R^{(6)}-R^{(6)}(0))\cot(z/2)
+                       +(R\cot(z/2))^{(6)}.
+\]
+The coefficient of $z^{2s-7}$ in $\mathcal T R$, for
+$R(z)=\sum_{u\ge1}r_uz^{2u}$, is
+\[
+ d_sr_s-\sum_{u<s}\alpha_{s-u}(B_s+A_u)r_u.
+\]
+The first three $r_u$ are free and every later one is determined.
+Truncating these three null solutions at degree $2b$ and applying
+Jacobi's complementary-minor identity gives \eqref{gs:bridge}; the
+row and reversed-column factorial scales contribute $4^bb!$ and
+$(-1)^{b(b-1)/2}$, respectively.  This is the same normalization as
+\eqref{gs:entry}, including its omitted zero lower index.
+
+\subsection{The Gamma representation needed for an effective estimate}
+
+Put
+\begin{align*}
+ W(x)&=\left|\Gamma\!\left(\tfrac14+\tfrac{ix}{2}\right)\right|^{12},\\
+ P_1(x)&=\sinh(2\pi x),\qquad
+ P_2(x)=\sinh(\pi x),\qquad
+ P_3(x)=\tanh(\pi x),
+\end{align*}
+and define
+\begin{equation}\label{gs:t}
+ t_{n,j}=\frac4{(2n)!}\operatorname{Im}
+           \int_0^\infty(x+i/2)^{2n}P_j(x)W(x)\,dx.
+\end{equation}
+All these integrals converge absolutely.  The inherited Gamma-basis
+result~\cite[Section~8, Gamma basis and positive normalization]{OrderedIncoming}
+says that the functions
+\[
+ G_j(z)=4\sin(z/2)\int_0^\infty\sinh(xz)P_j(x)W(x)\,dx
+\]
+satisfy $\mathcal T G_j=0$, and their first three coefficient rows
+form a matrix $T=(t_{n,j})_{1\le n,j\le3}$ with $\det T<0$.
+Consequently
+\begin{equation}\label{gs:Gamma-bridge}
+ (t_{b+i,j})_{i,j=1}^3=F_bT,\qquad
+ f_b=\frac{\det(t_{b+i,j})_{i,j=1}^3}{\det T}.
+\end{equation}
+
+These inputs have short verification mechanisms.  The null equation
+follows from the Gamma recurrence after shifting two Fourier-integral
+contours by $\pm i$.  The shifted common Gamma factor has its nearest
+poles at $\pm3i/2$; only the tanh multiplier contributes the two
+simple poles at $\pm i/2$.  Their residue terms provide exactly the
+subtracted $G_3^{(6)}(0)$, while the sinh multipliers contribute zero.
+For the initial determinant, $\operatorname{Im}(x+i/2)^{2n}$ has
+leading term $nx^{2n-1}$.  Continuous Cauchy--Binet therefore reduces
+its sign to the product of the two alternants
+\[
+ \det(x_r^{2n-1})_{n,r=1}^3,
+ \qquad \det(P_j(x_r))_{r,j=1}^3.
+\]
+After extracting $\prod_r x_r\tanh(\pi x_r)$, the first is a
+Vandermonde in $x_r^2$ and the second is minus twice a Vandermonde
+in $\cosh(\pi x_r)$.  Both variable maps are strictly increasing
+on $(0,\infty)$; integration against $\prod_rW(x_r)$ is therefore
+strictly negative.  This proves $\det T<0$ without a numerical
+normalization constant.
+
+\subsection{An explicit density bound}
+
+Let
+\begin{equation}\label{gs:scales}
+ \lambda_j=j\pi,\qquad A=8(2\pi)^6,
+ \qquad a_1=a_2=A/2,\quad a_3=A.
+\end{equation}
+
+\begin{lemma}[Uniform Gamma density estimate]\label{gs:density}
+For every $x\ge2$ and $1\le j\le3$,
+\begin{equation}\label{gs:density-bound}
+ P_j(x)W(x)=a_jx^{-3}e^{-\lambda_jx}(1+\delta_j(x)),
+ \qquad |\delta_j(x)|\le\frac6{x^2}.
+\end{equation}
+Moreover $a_j>1$, and on $0\le x\le2$,
+\begin{equation}\label{gs:small-density}
+                  0\le P_j(x)W(x)/a_j<2^{54}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+We use the classical complex Stirling remainder in DLMF
+\S5.11(ii).  For $z=1/4+ix/2$, $|\arg z|<\pi/2$, so retaining
+$1/(12z)$ in Stirling's logarithmic expansion gives
+\[
+ \log\Gamma(z)=(z-\tfrac12)\log z-z+\tfrac12\log(2\pi)
+                         +\frac1{12z}+\rho(z),
+ \qquad |\rho(z)|\le\frac1{90|z|^3}.
+\]
+Indeed the first omitted term has magnitude $1/(360|z|^3)$,
+and the secant factor is at most $4$.
+Set $t=1/(2x)$ and
+\[
+ L(x)=\log\frac{W(x)}{Ax^{-3}e^{-3\pi x}}.
+\]
+Taking twelve times the real part and simplifying the elementary
+logarithm yields
+\[
+ L(x)=-\frac32\log(1+t^2)
+       +3\left(\frac{\arctan t}{t}-1\right)
+       +\frac{4t^2}{1+t^2}+12\operatorname{Re}\rho(z).
+\]
+The inequalities $\log(1+t^2)\le t^2$ and
+$0\le1-\arctan(t)/t\le t^2/3$ give
+\[
+ |L(x)|\le\frac{13}{8x^2}+\frac{16}{15x^3}
+        \le\frac{259}{120x^2}<\frac9{4x^2}\qquad(x\ge2).
+\]
+Since $e^{9/16}<2$,
+\[
+ \left|\frac{W(x)}{Ax^{-3}e^{-3\pi x}}-1\right|
+        \le\frac9{2x^2}.
+\]
+The elementary multipliers differ from their leading exponentials by
+at most $2e^{-2\pi x}$.  More precisely their normalized factors are
+$1-e^{-4\pi x}$, $1-e^{-2\pi x}$, and
+$(1-e^{-2\pi x})/(1+e^{-2\pi x})$, respectively, and each lies
+between zero and one.  Since $\pi>3$ and
+$e^{6x}\ge(6x)^2/2$,
+\[
+                    2e^{-2\pi x}\le\frac1{9x^2}.
+\]
+Combining the two errors proves \eqref{gs:density-bound}, with
+room to spare.
+
+Euler's Gamma integral gives
+$|\Gamma(1/4+ix/2)|\le\Gamma(1/4)<5$, because the contributions
+from $(0,1)$ and $(1,\infty)$ are less than $4$ and $1$.
+For $0\le x\le2$ all three multipliers are less than $e^{16}$.
+Using $e<3$, $5^{12}<2^{28}$, $3^{16}<2^{26}$, and $a_j>1$
+proves \eqref{gs:small-density}.
+\end{proof}
+
+\subsection{A completely explicit shifted Laplace estimate}
+
+For an even integer $N\ge4096$ and $\lambda\in\{\pi,2\pi,3\pi\}$,
+write
+\[
+ S_N(\lambda)=\frac{\Gamma(N-2)}{\lambda^{N-2}},\quad
+ S_N^{(1)}(\lambda)=\frac{\Gamma(N-3)}{\lambda^{N-3}},\quad
+ S_N^{(2)}(\lambda)=\frac{\Gamma(N-4)}{\lambda^{N-4}}.
+\]
+
+\begin{lemma}[Effective two-term phase estimate]\label{gs:Laplace}
+For $1\le j\le3$ and every even $N\ge4096$,
+\begin{equation}\label{gs:Laplace-bound}
+ \left|\frac1{a_j}\int_0^\infty(x+i/2)^NP_j(x)W(x)\,dx
+ -e^{i\lambda_j/2}
+     \left(S_N(\lambda_j)+\frac{3i}{2}S_N^{(1)}(\lambda_j)\right)
+ \right|\le16S_N^{(2)}(\lambda_j).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The contribution of $[0,2]$ is at most $2^{55}3^N$ by
+\eqref{gs:small-density}.  On $[2,\infty)$ substitute the model
+$x^{-3}e^{-\lambda x}$ and use \eqref{gs:density-bound}.
+The density error is at most
+\[
+ 6\int_2^\infty|x+i/2|^Nx^{-5}e^{-\lambda x}\,dx.
+\]
+On $x\ge\sqrt N$,
+\[
+ |x+i/2|^N\le x^N\exp\left(\frac{N}{8x^2}\right)<2x^N,
+\]
+so this part is at most $12S_N^{(2)}(\lambda)$.  On
+$2\le x\le\sqrt N$, its bound is
+\[
+                       \sqrt N(N+1)^{N/2}.
+\]
+Here we used $6x^{-5}\le6/32<1$ and the length at most $\sqrt N$.
+
+For the model integral set $y=x+i/2$ and shift the ray to the
+positive real axis beginning at $2$.  The integrand
+\[
+       e^{i\lambda/2}y^N(y-i/2)^{-3}e^{-\lambda y}
+\]
+has no pole in this strip.  The short vertical segment at $2$
+is bounded by $3^N/16$, and the segment at infinity vanishes.
+For real $y\ge2$, the binomial series gives
+\[
+ \left|(1-i/(2y))^{-3}-1-\frac{3i}{2y}\right|
+                  \le\frac5{2y^2}.
+\]
+To check the constant, write $u=1/(2y)\le1/4$; then
+$\sum_{k\ge2}\binom{k+2}{2}u^k\le10u^2$ since its quotient
+by $u^2$ is increasing and is less than $10$ at $u=1/4$.
+Thus this model error is at most $(5/2)S_N^{(2)}(\lambda)$.
+Extending the first two retained integrals from $[2,\infty)$
+to $(0,\infty)$ contributes less than $2^N$.
+
+It remains to absorb the compact and lower-range contributions.
+Their sum is bounded by
+\[
+ R_N=2^{56}3^N+\sqrt N(N+1)^{N/2}.
+\]
+Since $\lambda<10$ and $(N-5)!\ge((N-5)/3)^{N-5}$,
+\[
+ S_N^{(2)}(\lambda)
+ \ge\frac{(N-5)^{N-5}}{3^{N-5}10^{N-4}}.
+\]
+For every $N\ge4096$,
+\[
+ \frac{30\sqrt{N+1}}{N-5}\le\frac12,
+ \qquad \frac{90}{N-5}\le\frac1{32},
+ \qquad N^6\le2^{N-2}.
+\]
+The first follows by squaring and expanding a quadratic; the second
+is immediate; the third holds at $N=4096$ and persists by induction
+because $(1+1/N)^6<2$.  Therefore
+\[
+ \frac{\sqrt N(N+1)^{N/2}}{S_N^{(2)}}
+       \le N^6 2^{-N}\le\frac14,
+ \qquad
+ \frac{2^{56}3^N}{S_N^{(2)}}
+       \le2^{56}N^5 2^{-5N}<\frac14.
+\]
+Consequently $R_N<S_N^{(2)}$.  Adding the bounds gives
+$12+5/2+1<16$, proving \eqref{gs:Laplace-bound}.
+\end{proof}
+
+The retained second term is essential.  At $j=2$ the leading
+phase $e^{i\lambda_j/2}=-1$ has zero imaginary part, so discarding
+that second term would give no nonzero leading coefficient for the
+middle column.
+
+\subsection{A determinant comparison valid for every large index}
+
+Taking imaginary parts of \eqref{gs:Laplace-bound} gives, with
+$N=2n\ge4096$,
+\begin{align}
+ t_{n,1}&=\frac{4a_1}{N!}S_N(\lambda_1)(1+\epsilon_{n,1}),\notag\\
+ t_{n,3}&=-\frac{4a_3}{N!}S_N(\lambda_3)(1+\epsilon_{n,3}),
+ &|\epsilon_{n,j}|&\le\frac{1600}{(N-4)^2}\quad(j=1,3),
+ \label{gs:odd-errors}\\
+ t_{n,2}&=-\frac{6a_2}{N!}S_N^{(1)}(\lambda_2)(1+\epsilon_{n,2}),
+ &|\epsilon_{n,2}|&\le\frac{320}{3(N-4)}.
+ \label{gs:even-error}
+\end{align}
+The estimates use only $\lambda_j<10$ and the exact Gamma ratios.
+
+Let $b\ge2048$ and $n=b+i$ for $1\le i\le3$.
+After extracting positive row and column factors and the column
+signs $(+,-,-)$, the coefficient determinant is the determinant of
+an array $E=(E_{ij})$ satisfying
+\begin{equation}\label{gs:relative-matrix}
+ E_{ij}=j^{-2i}(1+\eta_{ij}),\qquad |\eta_{ij}|<\frac1{25}.
+\end{equation}
+For precision, extract the positive row factors
+$4\Gamma(2b+2i-2)\pi^{-2i}/\Gamma(2b+2i+1)$ and positive column
+factors $a_j\lambda_j^{-2b+2}$ for $j=1,3$.
+For $j=2$, multiply this column factor additionally by
+$3\lambda_2/(2(2b-1))$.
+The middle-column row correction is
+\[
+ \rho_i=\frac{2b-1}{2b+2i-3},\qquad
+ 0<\rho_i\le1,\qquad1-\rho_i\le\frac4{2b-1}.
+\]
+Thus its relative error is bounded by
+\[
+ \frac4{2b-1}+\frac{320}{3(2b-2)}<\frac1{25}\qquad(b\ge2048),
+\]
+while the outer-column bound follows at once from
+\eqref{gs:odd-errors}.  The product of the three extracted signs is
+positive.
+
+For the exact limiting array $V_{ij}=j^{-2i}$ one computes
+\begin{equation}\label{gs:V}
+ \det V=-\frac5{1944},\qquad
+ \operatorname{perm}V=\frac{289}{23328}.
+\end{equation}
+The permanent here is the sum of the six unsigned permutation
+products.  By expanding both determinants,
+\[
+ |\det E-\det V|
+ \le\operatorname{perm}V\left\{(26/25)^3-1\right\}
+ =\frac{289}{23328}\frac{1951}{15625}<\frac5{1944}.
+\]
+The exact positive margin is $373661/364500000$.
+Therefore $\det E<0$, and hence
+\begin{equation}\label{gs:large-positive}
+                         f_b>0\qquad(b\ge2048)
+\end{equation}
+by \eqref{gs:Gamma-bridge} and $\det T<0$.
+This is an effective all-index conclusion, rather than a numerical
+comparison at finitely many large indices.
+
+\subsection{Exact finite completion}
+
+The remaining range is $4\le b\le2047$.
+The following two elementary recurrences give a finite certificate
+without computing huge rational Bernoulli numbers.  From
+\[
+ \frac{x}{2}\cot\frac{x}{2}=1-\frac12\sum_{n\ge1}\alpha_nx^{2n}
+\]
+and the differential equation of the cotangent, one obtains
+\begin{equation}\label{gs:alpha-recurrence}
+ \alpha_1=\frac16,\qquad
+ \alpha_n=\frac1{2(2n+1)}
+       \sum_{k=1}^{n-1}\alpha_k\alpha_{n-k}\quad(n\ge2).
+\end{equation}
+Combine this recurrence with \eqref{gs:recurrence} modulo
+\[
+                         \ell=2147483647=2^{31}-1.
+\]
+The supplied script proves primality by trial division through
+$\lfloor\sqrt\ell\rfloor$.  Every denominator is invertible in
+this field: for the needed indices $n\le2049$ the factors
+$2(2n+1)$ are smaller than $\ell$, and
+\[
+ d_s=2\frac{(2s)!}{(2s-6)!}\frac{2s-3}{s}
+\]
+for $4\le s\le2050$ has no factor divisible by $\ell$.
+Induction therefore identifies every computed residue with the
+reduction of its exact rational coefficient.
+
+\begin{proposition}[Finite rational nonvanishing certificate]
+\label{gs:finite}
+For each integer $4\le b\le2047$, the determinant $f_b$ has a
+nonzero reduction modulo $2147483647$.  Hence $f_b\ne0$ over
+$\mathbb Q$ throughout this finite interval.
+\end{proposition}
+
+\begin{proof}[Exact computational proof]
+Run \texttt{verify\_gap\_six.py}.  It constructs all needed
+$\alpha_n$ by \eqref{gs:alpha-recurrence}, constructs the three
+fundamental columns by \eqref{gs:recurrence}, and expands each
+three-by-three determinant by its six signed products.  All 2,044
+residues are nonzero; the complete indexed list is in
+\texttt{gap\_six\_certificate.json}.  Its canonical compact JSON
+residue list has SHA-256
+\begin{center}\small\ttfamily
+90ec1b66f919cd00404dd92f7d1f9483ceb9\\
+d53bfa5893735db62c797113fea6
+\end{center}
+The hash identifies the record, while the recurrences and the nonzero
+residues constitute the mathematical certificate.
+
+As independent normalization checks, all 2,049 cotangent coefficients
+agree with formal division of cosine by the normalized sine series,
+and the bridge \eqref{gs:bridge} agrees with direct exact determinants
+of the original Bernoulli matrices for $4\le b\le20$.  The latter
+comparisons check the omitted-index convention and every row/column
+factor against \eqref{gs:entry}.  They are additional checks; the
+finite-field recurrence itself proves the entire finite interval.
+\end{proof}
+
+Combining \eqref{gs:large-positive}, Proposition~\ref{gs:finite}, and
+\eqref{gs:bridge} proves Theorem~\ref{gs:main}.  The general
+unrestricted unequal-even-order conjecture remains open beyond the
+families now covered.  In particular, proving all gaps of six does
+not by itself prove the gap-eight family.
+
+\subsection{An all-order family of rational polygamma-tail evaluations}
+
+The rank theorem turns the source block calculus into an exact
+ordinary convergent identity for every gap-six pair.  Let
+$(\lambda_b,\ldots,\lambda_{2b-1})$ be the first row of $M_b^{-1}$,
+and put
+\begin{align}
+ K_b(y)&=\sum_{j=b}^{2b-1}\lambda_jy^{2j+1},\notag\\
+ P_b(x)&=K_b(x+\tfrac12)-K_b(x-\tfrac12)
+                  =\sum_{r=0}^{q-1}w_rx^{2r}.\label{gs:polynomial}
+\end{align}
+All coefficients are explicitly specified rational numbers; the
+inverse exists for every $b\ge4$ by Theorem~\ref{gs:main}.
+For $h=0,1,2,3$ define
+\[
+ c_{v,0}=\frac1{v-1},\qquad
+ c_{v,h}=\frac{B_{2h}(1/2)}{(2h)!}(v)_{2h-1}\quad(h\ge1),
+ \qquad u_h=\sum_{e=0}^hc_{p,e}c_{q,h-e}.
+\]
+Here $(v)_r$ denotes the rising factorial.  Define the even sextic
+subtraction polynomial
+\begin{equation}\label{gs:subtraction}
+ S_b(x)=\sum_{h=0}^3\left(\sum_{e=0}^hu_e\,w_{q-1-h+e}\right)
+                                      x^{6-2h}.
+\end{equation}
+
+\begin{corollary}[Rational evaluations for every even gap of six]
+\label{gs:ordinary}
+For $b\ge4$, $p=2b-6$, $q=2b$, and $x_n=n+1/2$,
+\begin{equation}\label{gs:ordinary-identity}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}\left\{
+ \frac{P_b(x_n)}{(p-1)!(q-1)!}
+       \psi^{(p-1)}(n+1)\psi^{(q-1)}(n+1)-S_b(x_n)
+                 \right\}=-\frac12.}
+\end{equation}
+This sum converges absolutely.  Its polynomial $P_b$ has exact degree
+$2q-2$, with leading coefficient
+\begin{equation}\label{gs:leading-coefficient}
+ w_{q-1}=\frac{4b(4b-1)f_{b-1}}{d_{b+3}f_b}\ne0,
+\end{equation}
+where the auxiliary initial determinant is
+$f_3=-1/638788869734400000$.
+\end{corollary}
+
+\begin{proof}
+The first inverse row gives
+$\sum_{j=b}^{2b-1}\lambda_jC_j=Z_0=-1/2$.
+The coefficients of the centered difference in
+\eqref{gs:polynomial} are exactly
+\[
+ w_r=\sum_{j=\max\{b,r\}}^{2b-1}
+       \lambda_j\binom{2j+1}{2r}2^{-2(j-r)},
+\]
+so \eqref{gs:backward} gives $\sum_rw_rD_r=-1/2$.
+The centered tail expansion gives
+\[
+ A_p(n)A_q(n)=\sum_{h=0}^3u_hx_n^{2-p-q-2h}
+                       +O(x_n^{-p-q-6}).
+\]
+Since $\deg P_b\le2q-2$ and $q-p=6$, its nonnegative powers
+are exactly \eqref{gs:subtraction}; the remaining summand is
+$O(x_n^{-2})$.  The continued sums of $1,x_n^2,x_n^4,x_n^6$
+are zero because $\zeta(-2h,1/2)=0$.  Thus the ordinary
+absolutely convergent sum equals the displayed moment combination.
+Finally $A_p(n)=\psi^{(p-1)}(n+1)/(p-1)!$ for even $p$.
+
+For \eqref{gs:leading-coefficient}, suppose first that $b\ge5$.
+The cofactor defining $(M_b^{-1})_{0,b-1}$ deletes the final row
+and the first column of $M_b$.  Reindexing $j'=j-1$, $k'=k-1$,
+$p'=p-2$, and $q'=q-2$ in \eqref{gs:entry} shows that this
+minor is exactly $M_{b-1}$: both binomial pairs, the Bernoulli
+index, and the omitted-index convention are unchanged.  Hence
+\[
+ \lambda_{2b-1}=(-1)^{b-1}\frac{\det M_{b-1}}{\det M_b}
+              =\frac{4bf_{b-1}}{d_{b+3}f_b}
+\]
+by \eqref{gs:bridge}.  The centered difference multiplies its
+highest coefficient by $4b-1$, proving the formula and
+nonvanishing for $b\ge5$.  At $b=4$ a direct exact calculation
+gives $\lambda_7=84/83$, $d_7=6795360$,
+$f_4=-83/22789201752651350016000000$, and the stated value of
+$f_3$; these verify the same formula without invoking a
+zero-order tail.  This completes the proof.
+\end{proof}
+
+\paragraph{Further research.}
+The same Gamma basis supplies $m$ distinct exponential scales for
+any fixed half-gap $m$.  Making all of its phase estimates effective
+would give a numerical finite-completion threshold for each fixed
+gap.  The next concrete target is $m=4$, where the two even modes
+require their first nonzero phase corrections and the determinant
+comparison involves a four-by-four reciprocal-square Vandermonde.
+A different question is whether a direct recurrence invariant can
+prove gap-six nonvanishing without the finite completion; the initial
+sign transition shows why a fixed-sign assertion from the first
+admissible index is false.

@@ -1,0 +1,468 @@
+\section{Adjacent poles, Hahn determinants, and classical polylogarithms}
+\label{hp:section}
+
+The complex degree theorem explains why a rational weight may have
+surprisingly small harmonic complexity even in a large determinant.
+We now make that statement explicit for two adjacent simple poles.
+The general Christoffel determinant transformation used below is
+classical; its particularly compact form and its harmonic consequences
+are the specialization developed here. We use the formulation in
+\cite{Krattenthaler2023} and give the short determinant proof needed
+for our normalization. The finite orthogonal polynomials are the
+uniform Hahn, or discrete Chebyshev, polynomials
+\cite[Sections 18.19--18.20]{DLMF}.
+
+\subsection{A three-by-three formula for every particle count}
+
+For $r\ge2$ and an admissible shift $a$, set
+\begin{align}
+ R_\eta(n;a)&=\frac1{n+a}+\frac{\eta}{n+a+1},\notag\\
+ Z_{r,N}(a,\eta)
+ &=\det_{0\le i,j<r}
+       \left(\sum_{n=0}^N n^{i+j}R_\eta(n;a)\right).
+ \label{hp:ensemble}
+\end{align}
+Admissible means that no displayed denominator vanishes. For
+$N\ge r-1$, finite Cauchy--Binet gives the equivalent ensemble
+\begin{equation}\label{hp:vandermonde}
+ Z_{r,N}(a,\eta)=
+ \sum_{0\le n_1<\cdots<n_r\le N}
+       \prod_{i<j}(n_j-n_i)^2\prod_{\ell=1}^rR_\eta(n_\ell;a).
+\end{equation}
+An empty sum is zero. Resolve the shifted harmonic coordinate by
+\[
+ X=H_N^{(1)}(a):=\sum_{n=0}^N\frac1{n+a},
+ \qquad
+ \sum_{n=0}^N\frac1{n+a+1}
+ =X+\frac1{N+a+1}-\frac1a.
+\]
+The determinant becomes a formal polynomial
+$\mathcal P_{r,N}(X;a,\eta)$ with rational coefficients in the
+cutoff and parameters. For $\eta\ne0$ its harmonic pencil has rank
+two, so its generic degree in $X$ is exactly two. Write
+$T_{r,N}(a,\eta)=[X^2]\mathcal P_{r,N}$.
+
+\begin{proposition}[A polynomially weighted compression]
+\label{hp:compression}
+Put $q=r-2$ and $L_a(n)=(n+a)(n+a+1)$. Then
+\begin{equation}\label{hp:top-compressed}
+ \boxed{\displaystyle
+ T_{r,N}(a,\eta)=\eta
+ \det_{0\le i,j<q}\left(
+ \sum_{n=0}^N n^{i+j}L_a(n)
+                   \{(1+\eta)(n+a)+1\}\right).}
+\end{equation}
+The determinant of size zero is one.
+\end{proposition}
+\begin{proof}
+The harmonic pencil is $C=uu^{\mathsf T}+\eta vv^{\mathsf T}$,
+where $u_i=(-a)^i$ and $v_i=(-a-1)^i$. Its common kernel consists
+of coefficient vectors of polynomials divisible by $L_a$. Use the
+basis
+\[
+ 1,\ n,\ L_a(n),\ nL_a(n),\ldots,n^{q-1}L_a(n).
+\]
+Its monic triangular change of basis has determinant one. The
+upper-left two-by-two minor of $C$ has determinant $\eta$, while
+the lower-right compression is a sum of polynomial weights:
+\[
+ R_\eta(n;a)L_a(n)^2
+   =L_a(n)\{(1+\eta)(n+a)+1\}.
+\]
+Selecting the two harmonic entries in the transformed determinant
+proves \eqref{hp:top-compressed}.
+\end{proof}
+
+Define the monic uniform Hahn polynomial by the finite expression
+\begin{equation}\label{hp:hahn}
+ p_k(x;N)=\binom{2k}{k}^{-1}
+ \sum_{j=0}^k(-1)^{k+j}\binom kj\binom{k+j}{j}
+                  (N-j)^{\underline{k-j}}x^{\underline j}.
+\end{equation}
+For $0\le k\le N$ it is orthogonal on $\{0,\ldots,N\}$ with
+unit weights. Its squared norm is
+\begin{equation}\label{hp:norm}
+ h_k(N)=\sum_{n=0}^Np_k(n;N)^2
+   =\frac{(N+k+1)!}{(2k+1)(N-k)!\binom{2k}{k}^2},
+ \qquad \mathcal H_q(N)=\prod_{k=0}^{q-1}h_k(N).
+\end{equation}
+The finite formula also avoids apparent singularities in the
+usual terminating hypergeometric notation
+\[
+ p_k(x;N)=
+ \frac{(-1)^kN^{\underline k}}{\binom{2k}{k}}
+ {}_3F_2\!\left(\begin{matrix}-k,k+1,-x\\1,-N\end{matrix};1\right).
+\]
+
+\begin{theorem}[A fixed-size Hahn formula]\label{hp:hahn-top}
+Let $r\ge2$, $N\ge r$, $\eta\ne-1$, and put $t=1+\eta$ and
+\[
+ c_1=-a,\qquad c_2=-a-1,\qquad c_3=-a-\frac1t,\qquad q=r-2.
+\]
+Then
+\begin{equation}\label{hp:hahn-top-formula}
+ \boxed{\displaystyle
+ T_{r,N}(a,\eta)
+   =(-1)^q t^r\mathcal H_q(N)
+           \det_{1\le i\le3,\ 0\le j\le2}
+                         p_{q+j}(c_i;N).}
+\end{equation}
+The expression has a removable limit at $\eta=-1$ and a zero at
+$\eta=0$. The compressed formula \eqref{hp:top-compressed}
+specifies those cases without a limit. Thus a determinant of
+arbitrary size has a highest harmonic coefficient represented by
+one determinant of size three.
+\end{theorem}
+\begin{proof}
+For monic orthogonal polynomials $p_k$ of a measure $\nu$, let
+$D_q[\nu]$ be its moment determinant. For distinct $c_1,\ldots,c_d$,
+the Christoffel transformation is
+\begin{equation}\label{hp:christoffel}
+ D_q\!\left[\prod_{\ell=1}^d(x-c_\ell)\nu\right]
+ =(-1)^{dq}D_q[\nu]\,
+       \frac{\det(p_{q+j-1}(c_i))_{i,j=1}^d}
+            {\prod_{i<j}(c_j-c_i)}.
+\end{equation}
+One way to verify the sign and normalization is to append the
+$d$ fixed nodes $c_i$ to the $q$ integration nodes in the
+Vandermonde determinant, replace its monomial columns by the
+monic orthogonal columns, and integrate the first $q$ rows
+against their companion Vandermonde. Orthogonality leaves the
+product of the first $q$ squared norms; the remaining $d$ rows
+give the displayed determinant. The cross factors are
+$\prod_{\ell,j}(c_\ell-x_j)$, producing $(-1)^{dq}$.
+This also proves \eqref{hp:christoffel} for a finite discrete
+measure by finite Cauchy--Binet.
+
+In \eqref{hp:top-compressed}, the weight is
+$t\prod_{\ell=1}^3(n-c_\ell)$. Moreover
+\[
+ \prod_{i<j}(c_j-c_i)=\frac{\eta}{t^2}.
+\]
+Substitution in \eqref{hp:christoffel}, followed by multiplication
+by the exterior $\eta$, gives
+$(-1)^{3q}t^{q+2}\mathcal H_q\det p$, which is
+\eqref{hp:hahn-top-formula}. The proof initially assumes
+$\eta\ne0,-1$; the extension follows from the polynomial
+identity \eqref{hp:top-compressed}.
+\end{proof}
+
+\subsection{Every exceptional residue parameter is an orthogonal zero}
+
+The complex degree theorem allows a finite exceptional set of
+cutoffs for a fixed weight. Here one can solve the dual question:
+for a fixed cutoff, which pole residues cause degree loss?
+
+\begin{corollary}[Exact exceptional parameters]\label{hp:roots}
+Let $a>0$, $q=r-2\ge1$, and $N\ge q$. Let $\pi_q$ be the monic
+orthogonal polynomial of degree $q$ for the positive discrete
+measure with weights $L_a(n)$ on $\{0,\ldots,N\}$, and let
+$\xi_1,\ldots,\xi_q$ be its zeros. These zeros are distinct and
+belong to $(0,N)$. Put
+\[
+ \mathcal H_q[L_a]=
+ \det_{0\le i,j<q}\left(\sum_{n=0}^N n^{i+j}L_a(n)\right)>0.
+\]
+Then
+\begin{equation}\label{hp:root-factorization}
+ T_{r,N}(a,\eta)
+  =\eta\,\mathcal H_q[L_a]\,
+         \prod_{j=1}^q\{(1+\eta)(a+\xi_j)+1\}.
+\end{equation}
+Apart from $\eta=0$, where the pencil rank changes, all
+degree-deficient parameters are exactly
+\begin{equation}\label{hp:exceptional}
+             \eta_j=-1-\frac1{a+\xi_j}\quad(1\le j\le q).
+\end{equation}
+They are simple, real, and less than $-1$. In particular no
+nonreal residue parameter causes degree loss at these cutoffs.
+\end{corollary}
+\begin{proof}
+The one-factor case of \eqref{hp:christoffel}, with
+$c=-a-1/(1+\eta)$, gives
+$D_q[((1+\eta)(n+a)+1)L_a]
+=\mathcal H_q[L_a]\prod_j\{(1+\eta)(a+\xi_j)+1\}$.
+The standard zero theorem for a positive orthogonal measure
+gives simplicity and the location \cite[Section 18.2(vi)]{DLMF}.
+Equation \eqref{hp:top-compressed} finishes the proof.
+\end{proof}
+
+These statements concern formal harmonic degree. They do not
+assert that the evaluated determinant has a zero, and they do
+not specify how far its degree drops beyond the vanishing of
+the quadratic term. The nonreal example in
+Section~\ref{cr:section} shows why this distinction matters.
+
+\subsection{A uniform classical-polylogarithm formula}
+
+Now specialize to $a=1$ and use $M=N+1$. Passing from monomials
+in $n$ to monomials in $k=n+1$ preserves the determinant. Write
+$S_j(M)=\sum_{k=1}^M k^j$, regarded as its Faulhaber polynomial,
+and let $X$ be the formal replacement for $H_M$. The moment of
+degree $j\ge0$ is
+\begin{equation}\label{hp:compiler}
+ \mu_j(M,X;\eta)=
+ \delta_{j0}X+\mathbf1_{j\ge1}S_{j-1}(M)
+ +\eta\left\{
+   \sum_{\ell=0}^{j-1}(-1)^{j-1-\ell}S_\ell(M)
+   +(-1)^j\left(X+\frac1{M+1}-1\right)\right\}.
+\end{equation}
+The sum is empty at $j=0$. This is simply polynomial division
+of $k^j/(k+1)$. Consequently
+\[
+ \mathcal P_r(M,X;\eta)=\det(\mu_{i+j})_{0\le i,j<r}
+\]
+is an explicit finite construction of every cutoff formula.
+
+\begin{theorem}[Only a dilogarithm is needed for every $r$]
+\label{hp:all-r-generator}
+For $r\ge2$ there are polynomials $A_{rj}(M;\eta)$,
+$0\le j\le2$, such that
+\begin{equation}\label{hp:polynomial-plus-residue}
+ \mathcal P_r(M,X;\eta)=\sum_{j=0}^2A_{rj}(M;\eta)X^j
+                        +\frac{B_r(X;\eta)}{M+1},
+\end{equation}
+where the entire endpoint residue is
+\begin{equation}\label{hp:residue}
+ B_2=\eta(X-\eta-2),\qquad B_3=-\eta,\qquad B_r=0\ (r\ge4).
+\end{equation}
+Let $\theta=x\,d/dx$, $L=-\log(1-x)$, and
+\[
+ F_0(x)=\frac{x}{1-x},\qquad F_1(x)=\frac{L}{1-x},
+ \qquad F_2(x)=\frac{\operatorname{Li}_2(x)+L^2}{1-x}.
+\]
+For $|x|<1$ the cutoff generating function is
+\begin{equation}\label{hp:generator-general}
+ \boxed{\displaystyle
+ \sum_{M\ge1}Z_{r,M-1}(1,\eta)x^M
+       =\sum_{j=0}^2A_{rj}(\theta;\eta)F_j(x)+\mathcal R_r(x;\eta),}
+\end{equation}
+with
+\begin{align}
+ \mathcal R_2&=\eta\left\{\frac{L^2}{2x}
+                   -(\eta+2)\left(\frac Lx-1\right)\right\},\notag\\
+ \mathcal R_3&=-\eta\left(\frac Lx-1\right),\qquad
+ \mathcal R_r=0\quad(r\ge4).
+ \label{hp:generator-residue}
+\end{align}
+All apparent singularities at $x=0$ are removable.
+For every particle count the result therefore belongs to the
+space over $\mathbb C(x)$ generated by
+$1,L,L^2,\operatorname{Li}_2(x)$.
+\end{theorem}
+\begin{proof}
+In the $k$ basis put $e_0=(1,0,\ldots)^{\mathsf T}$,
+$e_1=(0,1,0,\ldots)^{\mathsf T}$, and
+$v_i=(-1)^i$. The matrix in \eqref{hp:compiler} has the form
+\[
+ A(M)+X(e_0e_0^{\mathsf T}+\eta vv^{\mathsf T})
+                       +\frac{\eta vv^{\mathsf T}}{M+1},
+\]
+where $A$ is polynomial in $M$. The harmonic part has rank at
+most two, and the pole has rank one. The determinant thus has
+degree at most two in $X$ and at most a simple pole at $M=-1$.
+
+The polynomial identities $S_0(-1)=-1$ and $S_j(-1)=0$ for
+$j\ge1$ show that the regular matrix at that point is
+\[
+ X(e_0e_0^{\mathsf T}+\eta vv^{\mathsf T})
+              -\eta e_0e_0^{\mathsf T}
+              -(e_0e_1^{\mathsf T}+e_1e_0^{\mathsf T}).
+\]
+Its residue after the rank-one update is directly
+$\eta(X-\eta-2)$ at $r=2$ and $-\eta$ at $r=3$.
+For $r\ge4$, the matrix even after adding an arbitrary multiple
+of $vv^{\mathsf T}$ has image contained in
+$\operatorname{span}(e_0,e_1,v)$, of dimension at most three.
+Its determinant is identically zero, so the pole residue
+vanishes. Polynomial division proves
+\eqref{hp:polynomial-plus-residue}.
+
+The elementary harmonic generating identities are
+\[
+ \sum_{M\ge1}H_Mx^M=F_1(x),\qquad
+ \sum_{M\ge1}H_M^2x^M=F_2(x).
+\]
+For the second, split $H_M^2$ into its diagonal terms and twice
+its strict off-diagonal terms, then sum the outer cutoff.
+Multiplication by a polynomial in $M$ becomes its substitution
+at $\theta$. Finally
+\[
+ \sum_{M\ge1}\frac{x^M}{M+1}=\frac Lx-1,\qquad
+ \sum_{M\ge1}\frac{H_Mx^M}{M+1}=\frac{L^2}{2x};
+\]
+the latter follows by integrating $F_1$. These facts prove the
+formula and convergence. Differentiation by $\theta$ preserves
+the displayed four-function space, since
+$d\operatorname{Li}_2(x)/dx=L/x$.
+\end{proof}
+
+This is a closed finite recipe, with polynomial coefficient
+construction \eqref{hp:compiler}. It does not claim that the
+four functions are always a minimal basis. Special parameters
+can produce further cancellations. Nor does formal harmonic
+degree in a general problem automatically equal minimal
+multiple-polylogarithm depth; the conclusion here uses the
+specific pole cancellation proved above.
+
+\subsection{A positive three-particle harmonic identity}
+
+The choice $\eta=-1$ makes the weight positive and especially
+simple:
+\[
+ R_{-1}(n;1)=\frac1{(n+1)(n+2)}.
+\]
+Let
+\[
+ \mathcal Z_N=
+ \sum_{0\le n_1<n_2<n_3\le N}
+   \frac{\prod_{i<j}(n_j-n_i)^2}
+        {\prod_{i=1}^3(n_i+1)(n_i+2)}.
+\]
+The first two values vanish. Direct evaluation of the three-by-three
+moment determinant in \eqref{hp:compiler} gives the following identity
+for every integer $M\ge1$:
+\begin{equation}\label{hp:triple}
+ \boxed{\displaystyle
+ \mathcal Z_{M-1}
+ =-\frac{M(M+1)(M+2)}3H_M^2
+   +\frac{4M^2(M+2)}3H_M
+   +\frac{M^3(M^2-18M-31)}{12(M+1)}.}
+\end{equation}
+For example $\mathcal Z_2=1/36$ and $\mathcal Z_3=23/90$.
+Equation \eqref{hp:triple} is also an exact digamma formula
+after $H_M=\psi(M+1)+\gamma$.
+
+Its entire cutoff generator has a short classical expression.
+With $B=\operatorname{Li}_2(x)+L^2$,
+\begin{equation}\label{hp:triple-generator}
+ \boxed{\begin{aligned}
+ G(x):=\sum_{M\ge1}\mathcal Z_{M-1}x^M
+ ={}&-\frac{2xB}{(1-x)^4}
+  +\frac{(3-14x+15x^2-2x^3)L}{3x(1-x)^4}\\
+ &+\frac{18x^3-31x^2+31x-6}{6(1-x)^5}.
+ \end{aligned}}
+\end{equation}
+The right side starts $x^3/36+23x^4/90+\cdots$ despite its
+apparent low-order terms. One proof is to apply
+Theorem~\ref{hp:all-r-generator} to \eqref{hp:triple}; it reduces
+the statement to differentiating $F_0,F_1,F_2$ a finite number
+of times. Thus both the sum and the displayed closed form
+are established without a numerical relation search.
+
+\subsection{A convergent zeta-valued endpoint}
+
+The determinant is $O(M^4+M^3\log^2 M)$, so its sixth Euler
+primitive has an ordinary finite value at one.
+
+\begin{corollary}[An explicit ensemble integral]\label{hp:endpoint}
+\begin{align}
+ \mathcal E
+ &:=\sum_{M\ge1}\frac{\mathcal Z_{M-1}}{M^6}
+   =\frac1{120}\int_0^1\frac{(-\log x)^5}{x}G(x)\,dx
+       \notag\\
+ &=-1+\frac{13}{12}\zeta(2)-\frac{31}{12}\zeta(3)
+       +\frac53\zeta(4)+\frac{41}{6}\zeta(5)
+       -\frac{97}{24}\zeta(6)-4\zeta(7)\notag\\
+ &\hspace{1em}-\frac73\zeta(2)\zeta(3)+2\zeta(3)^2
+       +\frac23\zeta(2)\zeta(5)+\frac53\zeta(3)\zeta(4).
+ \label{hp:endpoint-value}
+\end{align}
+Numerically $\mathcal E=0.0027314671316270802642692390978\ldots$.
+\end{corollary}
+\begin{proof}
+The elementary integral
+$\int_0^1x^{M-1}(-\log x)^5\,dx=5!/M^6$ and positivity
+justify interchange by Tonelli. Set
+$T_s=\sum_{M\ge1}H_M/M^s$ and
+$S_s=\sum_{M\ge1}H_M^2/M^s$. Equation \eqref{hp:triple}
+and the partial fraction
+\[
+ \frac{M^2-18M-31}{12M^3(M+1)}
+ =\frac1{M+1}-\frac1M+\frac{13}{12M^2}-\frac{31}{12M^3}
+\]
+give
+\begin{equation}\label{hp:euler-reduction}
+ \mathcal E=-\frac{S_3+3S_4+2S_5}{3}
+         +\frac43(T_3+2T_4)
+         -1+\frac{13}{12}\zeta(2)-\frac{31}{12}\zeta(3).
+\end{equation}
+The classical Euler-sum reductions required here are
+\begin{align}
+ T_3&=\tfrac54\zeta(4),&
+ T_4&=3\zeta(5)-\zeta(2)\zeta(3),\notag\\
+ S_3&=\tfrac72\zeta(5)-\zeta(2)\zeta(3),&
+ S_4&=\tfrac{97}{24}\zeta(6)-2\zeta(3)^2,\notag\\
+ S_5&=6\zeta(7)-\zeta(2)\zeta(5)
+                         -\tfrac52\zeta(3)\zeta(4).
+ \label{hp:euler-values}
+\end{align}
+Substitution proves the result. For completeness, the next
+paragraph derives these classical inputs, so the endpoint
+evaluation does not depend on a table of numerical relations.
+\end{proof}
+
+Write
+$\zeta(s_1,\ldots,s_d)=\sum_{k_1>\cdots>k_d\ge1}
+k_1^{-s_1}\cdots k_d^{-s_d}$. Directly sorting the harmonic
+indices gives
+\begin{align}
+ T_s&=\zeta(s,1)+\zeta(s+1),\notag\\
+ S_s&=2\zeta(s,1,1)+\zeta(s,2)
+                       +2\zeta(s+1,1)+\zeta(s+2).
+ \label{hp:sorting}
+\end{align}
+These are particular cases of the established Euler-sum/MZV
+calculus \cite{Xu2017,XuWang2019}. The height-one generating
+identity, also classical, is
+\begin{equation}\label{hp:height-one}
+\begin{aligned}
+ \sum_{n\ge2,\ m\ge0}\zeta(n,\{1\}^m)X^{n-1}Y^{m+1}
+ &=1-\frac{\Gamma(1-X)\Gamma(1-Y)}{\Gamma(1-X-Y)}\\
+ &=1-\exp\!\sum_{k\ge2}\frac{\zeta(k)}k
+                   \{X^k+Y^k-(X+Y)^k\}.
+\end{aligned}
+\end{equation}
+A self-contained proof starts from
+$\sum_mH_{N-1}(\{1\}^m)Y^m=\prod_{j<N}(1+Y/j)$.
+Sum first over $n$ and then $N$, to obtain
+\[
+ Y\int_0^1(t^{-X}-1)(1-t)^{-1-Y}\,dt
+ =Y\{B(1-X,-Y)-B(1,-Y)\}.
+\]
+Initially take $\Re Y<0$ and $X,Y$ small; the beta integral
+gives the gamma quotient and analytic continuation gives the
+identity at zero. Its coefficients yield Euler's formula
+\[
+ \zeta(n,1)=\frac n2\zeta(n+1)
+        -\frac12\sum_{j=1}^{n-2}\zeta(j+1)\zeta(n-j)
+\]
+and, at the orders needed in \eqref{hp:sorting},
+\begin{align*}
+ \zeta(3,1,1)&=2\zeta(5)-\zeta(2)\zeta(3),\\
+ \zeta(4,1,1)&=\tfrac{23}{16}\zeta(6)-\zeta(3)^2,\\
+ \zeta(5,1,1)&=5\zeta(7)-2\zeta(2)\zeta(5)
+                                     -\tfrac54\zeta(3)\zeta(4).
+\end{align*}
+The remaining double zeta values follow from the convergent
+stuffle identity
+$\zeta(a)\zeta(b)=\zeta(a,b)+\zeta(b,a)+\zeta(a+b)$
+and the iterated-integral shuffle identity
+\[
+ \zeta(a)\zeta(b)=
+ \sum_{j=0}^{a-1}\binom{b-1+j}{j}\zeta(b+j,a-j)
+ +\sum_{j=0}^{b-1}\binom{a-1+j}{j}\zeta(a+j,b-j).
+\]
+Use $(a,b)=(2,3),(3,3),(2,5),(3,4)$ and the height-one
+values just obtained. The resulting finite linear systems give
+\begin{align*}
+ \zeta(3,2)&=3\zeta(2)\zeta(3)-\tfrac{11}{2}\zeta(5),\\
+ \zeta(4,2)&=\zeta(3)^2-\tfrac43\zeta(6),\\
+ \zeta(5,2)&=5\zeta(2)\zeta(5)+2\zeta(3)\zeta(4)-11\zeta(7).
+\end{align*}
+Together with the elementary even-zeta products these prove
+\eqref{hp:euler-values}. We claim the ensemble specialization
+and its resulting integral as the additional identities here;
+the Euler-sum values and the gamma generating identity themselves
+are established background.
+

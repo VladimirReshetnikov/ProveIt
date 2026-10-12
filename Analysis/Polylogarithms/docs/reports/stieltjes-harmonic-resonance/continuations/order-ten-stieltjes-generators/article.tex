@@ -1,0 +1,72 @@
+\documentclass[11pt]{article}
+\input{preamble}
+
+\title{\textbf{Order-Ten Harmonic-Tail Reconstruction\\
+and Polylogarithmic Stieltjes Generators}\\[0.4em]
+\large A one-prime completion theorem, ordinary polygamma identities,\\
+and bivariate generating functions for integer-shift Stieltjes correlations}
+\author{Research continuation prepared for Vladimir Reshetnikov}
+\date{11 October 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We complete the fixed smaller-order-ten case of the optimal-prefix
+harmonic-tail reconstruction problem in the \Repo\ polylogarithm
+program.  For every integer $b\ge6$, the exact rational coefficient
+matrix $M_{5,b}$ attached to the pair $(p,q)=(10,2b)$ is nonsingular.
+The existing eventual theorem already covers $b\ge1920$.  The new
+input is a single-prime certificate for all remaining $1914$ indices:
+reduction modulo $P=1{,}000{,}003$ gives a nonzero determinant for
+every $6\le b\le1919$.  For $6\le b<10$ the source matrix is used
+directly; for $10\le b\le1919$ a Pad\'e--Bernoulli reduction replaces
+it by an exact $5\times5$ determinant.  Bernoulli residues are generated
+from their defining recurrence, no floating-point arithmetic enters,
+and the complete residue vector is supplied with a SHA-256 digest and
+an independent verifier.
+
+The rank theorem yields an infinite family of ordinary convergent
+identities reconstructing every even zeta coordinate from products of
+generalized harmonic tails, equivalently products of high polygamma
+functions.  We give an explicit degree-$30$ identity for
+$\zeta(2)$ from the pair $(10,16)$.  A separate analytic theorem
+expresses the generating function of two Hurwitz tails through depth-two
+multiple polylogarithms and a Gamma-normalized double Mellin integral;
+the reconstruction identities become boundary values of explicit
+polylogarithmic differential operators.
+
+Finally, we develop a bivariate regularized multiple-polylogarithm
+kernel whose Taylor coefficients generate all products
+$\gamma_r(n+1)\gamma_s(n+1)$ of generalized Stieltjes constants at
+integer shifts.  It contains as a low-order specialization the exact
+identity
+\[
+ \sum_{n\ge0}(\gamma-H_n)^2z^n
+ =\frac{(\gamma+\log(1-z))^2+\Li_2(z)}{1-z},
+ \qquad |z|<1,
+\]
+and an anchored antiderivative evaluated explicitly at $z=1/2$.
+Every new finite claim is separated from inherited input, and all
+computational claims have exact reproducibility artifacts.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\input{sections/01_scope}
+\input{sections/02_framework}
+\input{sections/03_order_ten}
+\input{sections/04_reconstruction}
+\input{sections/05_polylog_generators}
+\input{sections/06_stieltjes_generators}
+\input{sections/07_explicit_identity}
+\input{sections/08_audit}
+\input{sections/09_research}
+\appendix
+\input{sections/A_certificate}
+\input{sections/B_coefficients}
+\input{sections/C_reproducibility}
+\input{references}
+
+\end{document}

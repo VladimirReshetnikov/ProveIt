@@ -1,0 +1,3 @@
+# Suggested status update for the unified manuscript
+
+> **Completed fixed-order family (11 October 2026).** The smaller-order-ten optimal-prefix problem is now proved for every larger even order. In the notation `p=10`, `q=2b`, the matrix `M_{5,b}` is nonsingular for all `b>=6`. The effective theorem covers `b>=1920`; an exact denominator-safe one-prime certificate covers all `6<=b<=1919`, with direct source determinants below the generic retained threshold and retained `5 x 5` determinants thereafter. The previous exceptional class `b congruent 962 mod 2048` was an artifact of finite congruence precision and contains no unresolved index. The unrestricted conjecture for arbitrary `a<b` remains open; the next fixed-order target is `p=12`.

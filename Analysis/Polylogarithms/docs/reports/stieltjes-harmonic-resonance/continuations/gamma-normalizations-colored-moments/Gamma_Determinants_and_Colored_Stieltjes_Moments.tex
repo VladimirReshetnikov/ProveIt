@@ -1,0 +1,2446 @@
+\documentclass[11pt,a4paper]{article}
+% BEGIN INCLUDED SOURCE: preamble
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=MidnightBlue,breaklinks=true]{hyperref}
+\usepackage{bookmark}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small Gamma determinants and colored moments}
+\rhead{\small ProveIt research continuation}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\CT}{CT}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\NF}{NF}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\newcommand{\pin}{\src{c4036d60715916ae72dd18983782fdb182840b86}}
+\setlist{itemsep=4pt,topsep=6pt,leftmargin=*}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\hypersetup{
+ pdftitle={Gamma Determinants and Colored Stieltjes Moments},
+ pdfauthor={Research continuation prepared for Vladimir Reshetnikov with OpenAI assistance},
+ pdfsubject={Exact Gamma normalizations, finite Gaussian trigamma moments, colored Lerch moments, and clustered polylogarithms}
+}
+
+% END INCLUDED SOURCE: preamble
+
+\title{\textbf{Gamma Determinants and\\Colored Stieltjes Moments}\\[7pt]
+ \large Closed normalization constants, finite Gaussian moment laws,\\
+ and clustered polylogarithm identities}
+\author{Research continuation prepared for Vladimir Reshetnikov's ProveIt programme\\
+ \small Mathematical derivations and independent computational checks with OpenAI assistance}
+\date{12 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We resolve the incoming Gamma-basis normalization question at every
+dimension by reducing its coefficient determinant to Gustafson's
+classical multivariable Barnes integral. The resulting constants are
+explicit rational multiples of powers of $\pi$, with a two-step
+recurrence. A parameter deformation yields a further exact phenomenon:
+under an explicit positive $n$-variable Gamma measure, a normalized sum
+of trigamma values has precisely the first $n+1$ moments of a standard
+Gaussian. This holds at every positive Gamma shift and implies a
+Gaussian limit even when that shift varies with the dimension.
+
+In a separate translation geometry, we solve the colored analogue of
+the incoming balanced Stieltjes-moment problem. A unique homogeneous
+combination of Lerch order derivatives cancels its first inverse-power
+tails. In the general convergence range, each positive-integer moment reduces to one
+negative-order Lerch value times a finite ordinary-zeta combination.
+Root-of-unity colors give explicit generalized Stieltjes identities;
+exceptional alternating moments evaluate to Dirichlet beta values.
+The color tending to one has an exact, normalization-dependent
+constant term, which we compute.
+
+We also give a finite multiple-polylogarithm dictionary for Gamma
+spectral faces with two groups of repeated masses, and an explicit
+depth-two reduction for a printed Gaussian-color example.
+Classical input identities, new consequences relative to the inspected
+reports, numerical diagnostics, and remaining conjectures are kept
+distinct. In particular, the Gaussian $S_6$ and revised $S_8$ conjectures
+and the unrestricted unequal-tail prefix problem are not settled.
+\end{abstract}
+\vfill
+{\noindent\small\textbf{Repository anchor.} The manuscript and all eleven
+archives present in the supplied incoming directory were obtained from
+\pin. Relevant mathematical passages were reviewed; this is not a
+claim of a complete audit of the entire repository.\par}
+\clearpage
+{\small\tableofcontents}
+\clearpage
+% BEGIN INCLUDED SOURCE: sections/00_scope
+\section{Problems addressed and mathematical status}
+\label{sec:scope}
+
+The current ProveIt manuscript develops polylogarithm identities
+together with harmonic-tail, Gamma, Hurwitz, and generalized Stieltjes
+calculi \cite{repo}. Recent incoming reports contain both explicit open
+questions and extensive proved developments. A continuation must therefore
+identify its exact starting point before claiming an advance.
+
+The principal target here is Question 2 in the research section of
+\emph{Ordered Boundary Identities and Gamma Kernels} \cite{repoordered}.
+That report constructs a Gamma integral basis for a fixed-gap harmonic
+recurrence and proves that its initial determinant equals
+$(-1)^{m(m-1)/2}K_m$, where $K_m$ is a positive integral. It asks for
+closed evaluations of $K_2,K_3,\ldots$. We give one formula for every
+$m$, rather than a table of separately evaluated integrals.
+
+The second target is Question 4 of \emph{Balanced Stieltjes Moments}
+\cite{repobalanced}: a colored or Lerch analogue of the homogeneous
+balancing and its polynomial moment reductions. The nontrivial color
+removes the order pole, so the correct generator has no separate
+$1/z$ subtraction. This changes the degree of the negative-order
+coordinate and makes the limit of color one singular. We prove the
+colored theorem on its full natural slit domain and give its exact
+connection with the uncolored normalization.
+
+The repeated-mass theorem answers a two-cluster part of the spectral
+face question in \cite{repolattice}. It reduces arbitrary multiplicities
+to finitely many multiple polylogarithms. The number of lattice terms
+remains infinite: the finite dictionary describes the types and depths
+of polylogarithms in each term, and does not give a finite evaluation
+of the complete lattice sum.
+
+\subsection{A concise result ledger}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.45\textwidth}>{\raggedright\arraybackslash}p{0.24\textwidth}@{}}
+\toprule
+Result & Exact advance & Status\\
+\midrule
+\endhead
+Gamma normalization &
+Closed $K_m$ for all $m$; explicit two-step recurrence &
+Incoming Question 2 resolved\\[3pt]
+Trigamma moments &
+After normalization, the first $n+1$ moments are exactly Gaussian
+for every positive shift &
+Proved consequence of a parameter identity\\[3pt]
+Colored balancing &
+Unique coefficients in a specified homogeneous ansatz; all integer
+moments and exceptional resonances &
+Colored counterpart resolved in that ansatz\\[3pt]
+Color-one limit &
+Explicit pole subtraction and a shift-dependent constant-term
+conversion &
+Proved normalization identity\\[3pt]
+Two mass groups &
+Finite multiple-polylogarithm formula at every pair of multiplicities &
+Two-cluster sector resolved\\[3pt]
+Depth-two parity &
+Exact double-shuffle and distribution certificate for one
+printed example &
+Classical parity made constructive\\[3pt]
+$S_6$, revised $S_8$ &
+No exact certificate supplied here &
+Remain conjectural\\[3pt]
+Unequal-tail prefix &
+Initial basis normalization is evaluated; later determinant
+nonvanishing is a separate issue &
+Unrestricted problem remains open\\
+\bottomrule
+\end{longtable}
+
+\subsection{Conventions and novelty}
+
+The Gamma function and its logarithmic derivative are denoted by
+$\Gamma$ and $\psi$; $\psi^{(j)}$ always means argument differentiation.
+An order derivative of Hurwitz zeta or Lerch's transcendent is written
+$\partial_s^j$. The generalized Stieltjes normalization is
+\begin{equation}\label{eq:stieltjes-convention}
+ \zeta(1+z,a)=\frac1z+
+  \sum_{j=0}^{\infty}\frac{(-1)^j\gamma_j(a)}{j!}z^j,
+ \qquad \gamma_0(a)=-\psi(a).
+\end{equation}
+All real-variable improper integrals asserted as ordinary integrals
+converge absolutely. A constant term is always taken in a specified
+parameter; no unspecified regularization is used.
+
+Gustafson's integral, the Gamma reflection formula, the Lerch integral
+representation, Bernoulli and Euler special values, and
+multiple-polylogarithm Landen transformations are classical
+\cite{gustafson1994,derkachov2017,dlmfgamma,dlmflerch,dlmfhurwitz,okudaueno}.
+Our normalization theorem is a new application to the specific
+incoming basis; the colored and clustered statements are explicit
+extensions of the inspected incoming formulas. The finite trigamma
+moment law is derived here from the complete parameter identity.
+A targeted literature search supports these comparisons but does not
+establish worldwide historical priority. No arithmetic independence,
+minimal period basis, or proof-assistant formalization is claimed.
+
+
+% END INCLUDED SOURCE: sections/00_scope
+
+% BEGIN INCLUDED SOURCE: sections/01_gamma
+\section{An exact Gamma moment determinant}
+\label{gn:sec:determinant}
+
+The incoming ordered-boundary report asks for closed evaluations of the
+positive constants $K_m$ that normalize its Gamma integral basis
+\cite[Section~8 and Section~9, question~2]{repoordered}.  All of these
+constants can be evaluated.  The decisive step is to remove the source's
+last moment by its already proved orthogonality relation and recognize
+the remaining determinant as Gustafson's symplectic Barnes integral.
+We first state the parameterized determinant with its full normalization.
+This is a reformulation of a classical integral, and it is credited as
+such; its application to the particular source constants and the moment
+identities developed below are the results of the present continuation.
+
+For $n\ge1$ and $\mathbf a=(a_1,\ldots,a_{2n+2})$ satisfying
+$\Re a_\ell>0$, put
+\begin{equation}\label{gn:eq:weight}
+ W_{\mathbf a}(x)=\prod_{\ell=1}^{2n+2}
+       \Gamma(a_\ell+ix/2)\Gamma(a_\ell-ix/2),
+ \qquad A=\sum_{\ell=1}^{2n+2}a_\ell.
+\end{equation}
+Define the matrix and its determinant by
+\begin{equation}\label{gn:eq:matrix}
+ \mathsf B_n(\mathbf a)_{r,k}
+ =\int_0^\infty x^{2r-1}\sinh(k\pi x)W_{\mathbf a}(x)\dd x,
+ \qquad
+ \mathcal D_n(\mathbf a)=\det\mathsf B_n(\mathbf a),
+ \quad 1\le r,k\le n.
+\end{equation}
+The sinh columns are in increasing order.  This convention is relevant
+when the result is applied to a source matrix with its columns reversed.
+
+\begin{theorem}[Parameterized Gamma moment determinant]
+\label{gn:thm:determinant}
+For $\Re a_\ell>0$,
+\begin{equation}\label{gn:eq:determinant}
+ \boxed{\displaystyle
+ \mathcal D_n(\mathbf a)
+ =2^{2n^2}\pi^{n(n+1)}
+       \frac{\prod_{\ell<j}\Gamma(a_\ell+a_j)}{\Gamma(A)}.}
+\end{equation}
+Every entry is an absolutely convergent ordinary integral.  The entries,
+their determinant, and every fixed mixed parameter derivative are
+holomorphic on this domain and may be differentiated under the integral.
+The determinant is nonzero throughout the domain and is positive when
+all parameters are positive real numbers.
+\end{theorem}
+
+\begin{proof}
+Stirling's formula uniformly on compact parameter sets gives
+$W_{\mathbf a}(x)=O(x^C e^{-(n+1)\pi x})$ for some finite $C$.
+The largest sinh factor grows as $e^{n\pi x}$.  A fixed parameter
+derivative adds at most powers of $\log(2+x)$ and preserves an integrable
+exponential majorant.  At zero all Gamma arguments remain in a compact
+subset of the right half-plane.  These observations prove the asserted
+convergence and permit the uses of Fubini and parameter differentiation.
+
+Write
+\[
+ \Delta(y_1,\ldots,y_n)=\prod_{j<k}(y_k-y_j)
+\]
+and introduce the integral
+\begin{equation}\label{gn:eq:I}
+\begin{split}
+ \mathcal I_n(\mathbf a)
+ ={}&\int_{(0,\infty)^n}
+    \Delta(x_1^2,\ldots,x_n^2)
+    \Delta(\cosh\pi x_1,\ldots,\cosh\pi x_n)\\
+ &\hspace{12mm}\times
+       \prod_{j=1}^n x_j\sinh(\pi x_j)W_{\mathbf a}(x_j)
+          \dd x_1\cdots\dd x_n.
+\end{split}
+\end{equation}
+Expanding the two determinants in the continuous Cauchy--Binet identity
+and using Fubini gives
+\begin{equation}\label{gn:eq:andreief}
+ \mathcal D_n(\mathbf a)
+      =\frac{2^{n(n-1)/2}}{n!}\mathcal I_n(\mathbf a).
+\end{equation}
+Indeed, the polynomial alternant is
+$\det(x_j^{2r-1})=\prod_jx_j\,\Delta(x_1^2,\ldots,x_n^2)$,
+while
+\[
+ \det(\sinh(k\pi x_j))_{j,k=1}^n
+  =2^{n(n-1)/2}\prod_j\sinh(\pi x_j)
+                   \Delta(\cosh\pi x_1,\ldots,\cosh\pi x_n).
+\]
+The second identity follows from
+$\sinh(ku)=\sinh(u)U_{k-1}(\cosh u)$ and the leading coefficient
+$2^{k-1}$ of the Chebyshev polynomial $U_{k-1}$.
+
+For precision, the classical integral used next is Gustafson's
+symplectic Barnes integral \cite{gustafson1994}, in the normalization
+reproduced in \cite[equation~(2)]{derkachov2017}:
+\begin{equation}\label{gn:eq:gustafson}
+\begin{split}
+ &\int_{\mathbb R^n}
+ \frac{\displaystyle\prod_{j=1}^n\prod_{\ell=1}^{2n+2}
+                 \Gamma(a_\ell+iu_j)\Gamma(a_\ell-iu_j)}
+ {\displaystyle\prod_j\Gamma(2iu_j)\Gamma(-2iu_j)
+       \prod_{j<k}\Gamma(iu_j+iu_k)\Gamma(iu_j-iu_k)
+                    \Gamma(-iu_j+iu_k)\Gamma(-iu_j-iu_k)}
+                  \dd\mathbf u\\
+ &\hspace{22mm}=(2\pi)^n2^nn!
+       \frac{\prod_{\ell<j}\Gamma(a_\ell+a_j)}{\Gamma(A)}.
+\end{split}
+\end{equation}
+The right-half-plane hypotheses place all numerator poles on the
+appropriate sides of the imaginary integration axes in its Barnes
+form.  The integrand is even in each $u_j$, so the positive-orthant
+integral equals $(2\pi)^nn!$ times the Gamma quotient.
+
+Set $x_j=2u_j$.  Reflection yields the single-variable factor
+\begin{equation}\label{gn:eq:single-reflection}
+ \frac1{\Gamma(ix_j)\Gamma(-ix_j)}
+          =\frac{x_j\sinh(\pi x_j)}\pi,
+\end{equation}
+and each four-factor interaction contributes
+\begin{equation}\label{gn:eq:pair-reflection}
+\begin{split}
+ &\left\{
+ \Gamma\left(\tfrac i2(x_j+x_k)\right)
+ \Gamma\left(-\tfrac i2(x_j+x_k)\right)
+ \Gamma\left(\tfrac i2(x_k-x_j)\right)
+ \Gamma\left(-\tfrac i2(x_k-x_j)\right)
+ \right\}^{-1}\\
+ &\hspace{14mm}=
+ \frac{(x_k^2-x_j^2)(\cosh\pi x_k-\cosh\pi x_j)}{8\pi^2}.
+\end{split}
+\end{equation}
+The factor $2^{-n}$ from $\dd\mathbf u$ must also be retained.
+Consequently \eqref{gn:eq:gustafson} gives
+\begin{equation}\label{gn:eq:I-evaluation}
+ \mathcal I_n(\mathbf a)
+ =2^{2n+3n(n-1)/2}\pi^{n(n+1)}n!
+       \frac{\prod_{\ell<j}\Gamma(a_\ell+a_j)}{\Gamma(A)}.
+\end{equation}
+Combining this with \eqref{gn:eq:andreief} proves
+\eqref{gn:eq:determinant}, since the two powers of $2$ add to $2n^2$.
+The Gamma quotient is nonzero in the stated domain.  For positive
+parameters the two Vandermonde factors in \eqref{gn:eq:I} have the same
+sign, and the integrand is strictly positive away from collisions.
+This proves the positivity assertion as well.
+\end{proof}
+
+The case $n=0$ may be included with the empty determinant and empty
+integral both equal to one.  Its Gamma quotient is then
+$\Gamma(a_1+a_2)/\Gamma(a_1+a_2)=1$.
+
+\section{Closed evaluation of every Gamma-basis normalization}
+\label{gn:sec:normalization}
+
+We recall exactly the source data needed for the application.  For an
+integer $m\ge1$, set
+\begin{align}
+ W_m(x)&=|\Gamma(\tfrac14+ix/2)|^{4m},
+       &\phi_r(x)&=\Im(x+i/2)^{2r},\label{gn:eq:source-weight}\\
+ P_j(x)&=\sinh(\pi(m-j)x)\quad(1\le j<m),
+       &P_m(x)&=\tanh(\pi x),\label{gn:eq:source-multipliers}\\
+ t_{r,j}&=\frac4{(2r)!}\int_0^\infty
+                 \phi_r(x)P_j(x)W_m(x)\dd x,
+       &T_m&=(t_{r,j})_{r,j=1}^m.\label{gn:eq:source-matrix}
+\end{align}
+The incoming report proves the exact top moments
+\begin{equation}\label{gn:eq:source-top}
+ t_{m,j}=0\quad(j<m),\qquad
+ t_{m,m}=(-1)^{m+1}\frac{2^{2m+2}\pi^m}{(2m)!},
+\end{equation}
+by Gamma recurrence and a contour shift crossing precisely two tanh
+poles.  It also proves
+\begin{equation}\label{gn:eq:source-normalization}
+ \det T_m=(-1)^{m(m-1)/2}K_m,\qquad K_m>0.
+\end{equation}
+Equations \eqref{gn:eq:source-top} and
+\eqref{gn:eq:source-normalization} are inherited results, specifically
+the source theorem \texttt{gb:basis}, corollary
+\texttt{gb:moment-identities}, and proposition
+\texttt{gb:normalization} \cite{repoordered}.  The following evaluation
+answers the open question about the remaining positive constant.
+
+\begin{theorem}[All Gamma normalization constants]
+\label{gn:thm:K}
+For every integer $m\ge1$,
+\begin{equation}\label{gn:eq:K}
+ \boxed{\displaystyle
+ K_m=\frac{2^{2m^2+2}(m-1)!\,\pi^{m(4m-1)/2}}
+              {\Gamma(m/2)\prod_{r=1}^m(2r)!}.}
+\end{equation}
+In particular,
+\begin{equation}\label{gn:eq:K-values}
+ K_1=8\pi,\qquad
+ K_2=\frac{64}{3}\pi^7,\qquad
+ K_3=\frac{16384}{135}\pi^{16}.
+\end{equation}
+The constants satisfy the two-step recurrence
+\begin{equation}\label{gn:eq:K-recurrence}
+ \boxed{\displaystyle
+ \frac{K_{m+2}}{K_m}
+   =\frac{2^{8m+9}(m+1)\pi^{8m+7}}
+              {(2m+2)!(2m+4)!}.}
+\end{equation}
+Each $K_m$ is a positive rational multiple of
+$\pi^{2m^2-\lceil m/2\rceil}$.
+\end{theorem}
+
+\begin{proof}
+Expand $\det T_m$ along the last row, using
+\eqref{gn:eq:source-top}.  Since
+$\phi_r(x)=rx^{2r-1}$ plus lower odd powers, triangular row elimination
+in the remaining $(m-1)\times(m-1)$ minor extracts
+\[
+                  \prod_{r=1}^{m-1}\frac{4r}{(2r)!}.
+\]
+Reversing the source sinh-column order $m-1,\ldots,1$ to the increasing
+order $1,\ldots,m-1$ contributes the sign
+$(-1)^{(m-1)(m-2)/2}$.  The remaining determinant is exactly
+$\mathcal D_{m-1}(1/4,\ldots,1/4)$, so
+\begin{equation}\label{gn:eq:detT-factorization}
+\begin{split}
+ \det T_m={}&(-1)^{m+1+(m-1)(m-2)/2}
+ \frac{2^{2m+2}\pi^m}{(2m)!}
+   \left(\prod_{r=1}^{m-1}\frac{4r}{(2r)!}\right)\\
+ &\hspace{24mm}\times\mathcal D_{m-1}(1/4,\ldots,1/4).
+\end{split}
+\end{equation}
+The sign equals $(-1)^{m(m-1)/2}$: the exponents differ by two.
+Theorem~\ref{gn:thm:determinant}, with $2m$ quarter parameters, gives
+\begin{equation}\label{gn:eq:quarter-minor}
+ \mathcal D_{m-1}(1/4,\ldots,1/4)
+ =2^{2(m-1)^2}\pi^{m(m-1)}
+       \frac{\Gamma(1/2)^{m(2m-1)}}{\Gamma(m/2)}.
+\end{equation}
+Substitute $\Gamma(1/2)=\sqrt\pi$, compare with
+\eqref{gn:eq:source-normalization}, and collect the factorials and
+powers.  This yields \eqref{gn:eq:K}.  At $m=1$ the minor is empty,
+so the same computation remains valid.  Taking the quotient of the
+formulas at $m+2$ and $m$, and using
+$\Gamma(m/2+1)=(m/2)\Gamma(m/2)$, proves
+\eqref{gn:eq:K-recurrence}.  The final assertion follows from the
+integer and half-integer Gamma evaluations.
+\end{proof}
+
+The result makes the inherited exact Gamma determinant representation
+fully explicit.  For example, if $F_{b,m}$ is the rational fundamental
+matrix of the source recurrence, its already proved identity becomes
+\begin{equation}\label{gn:eq:F-explicit}
+ \det F_{b,m}
+ =(-1)^{m(m-1)/2}
+   \frac{\Gamma(m/2)\prod_{r=1}^m(2r)!}
+        {2^{2m^2+2}(m-1)!\pi^{m(4m-1)/2}}
+       \det(t_{b+i,j})_{i,j=1}^m.
+\end{equation}
+This evaluates a previously unspecified normalization.  It preserves
+the source's distinction between its eventual fixed-gap nonvanishing
+theorem and its still open all-pairs reconstruction conjecture.
+
+
+% END INCLUDED SOURCE: sections/01_gamma
+
+% BEGIN INCLUDED SOURCE: sections/02_gaussian
+\section{Paired Gamma deformations and polygamma integrals}
+\label{gn:sec:paired}
+
+The parameter freedom in Theorem~\ref{gn:thm:determinant} is useful
+beyond the single quarter specialization.  For $n\ge1$, $\sigma>0$,
+and $m=n+1$, take
+\begin{equation}\label{gn:eq:paired-parameters}
+ a_{2r-1}=\sigma+u_r,\qquad a_{2r}=\sigma-u_r,
+ \qquad 1\le r\le m,\qquad |\Re u_r|<\sigma.
+\end{equation}
+Let $\mathcal D_{n,\sigma}(\mathbf u)$ denote the corresponding
+determinant.  Every pair has the same sum $2\sigma$, so the denominator
+in \eqref{gn:eq:determinant} remains fixed.
+
+\begin{theorem}[Complete paired deformation]
+\label{gn:thm:paired}
+On the domain \eqref{gn:eq:paired-parameters},
+\begin{equation}\label{gn:eq:paired-gamma}
+ \boxed{\displaystyle
+ \frac{\mathcal D_{n,\sigma}(\mathbf u)}
+      {\mathcal D_{n,\sigma}(\mathbf0)}
+ =\prod_{r<s}
+   \frac{\displaystyle\prod_{\varepsilon,\eta\in\{-1,1\}}
+          \Gamma(2\sigma+\varepsilon u_r+\eta u_s)}
+        {\Gamma(2\sigma)^4}.}
+\end{equation}
+At the quarter parameter this is elementary:
+\begin{equation}\label{gn:eq:paired-sec}
+ \boxed{\displaystyle
+ \frac{\mathcal D_{n,1/4}(\mathbf u)}
+      {\mathcal D_{n,1/4}(\mathbf0)}
+ =\prod_{r<s}\sec\bigl(\pi(u_r+u_s)\bigr)
+                 \sec\bigl(\pi(u_r-u_s)\bigr).}
+\end{equation}
+If only one pair is deformed, the two respective ratios are
+\begin{equation}\label{gn:eq:one-pair}
+ \left\{\frac{\Gamma(2\sigma+u)\Gamma(2\sigma-u)}
+                    {\Gamma(2\sigma)^2}\right\}^{2n},
+ \qquad \sec^{2n}(\pi u).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The $m$ within-pair Gamma factors are $\Gamma(2\sigma)$ and are
+unchanged.  Each pair of distinct labels contributes the four factors
+shown in \eqref{gn:eq:paired-gamma}; all remaining constants cancel.
+At $\sigma=1/4$, apply
+$\Gamma(1/2+z)\Gamma(1/2-z)=\pi/\cos(\pi z)$ first to
+$z=u_r+u_s$ and then to $z=u_r-u_s$.  The single-pair specialization
+has $n$ identical pair interactions and gives \eqref{gn:eq:one-pair}.
+\end{proof}
+
+\subsection{A positive density and its exact normalization}
+
+Define
+\begin{equation}\label{gn:eq:density}
+\begin{split}
+ \rho_{n,\sigma}(\mathbf x)
+ ={}&\Delta(x_1^2,\ldots,x_n^2)
+      \Delta(\cosh\pi x_1,\ldots,\cosh\pi x_n)\\
+ &\times\prod_{j=1}^n x_j\sinh(\pi x_j)
+              |\Gamma(\sigma+ix_j/2)|^{4(n+1)},
+ \qquad \mathbf x\in(0,\infty)^n.
+\end{split}
+\end{equation}
+The density is symmetric and nonnegative, and is positive off the
+collision hyperplanes.  Its normalizing integral is
+\begin{equation}\label{gn:eq:Z}
+ \mathcal Z_{n,\sigma}
+ =2^{n(3n+1)/2}\pi^{n(n+1)}n!
+       \frac{\Gamma(2\sigma)^{(n+1)(2n+1)}}
+            {\Gamma(2(n+1)\sigma)}.
+\end{equation}
+This follows from \eqref{gn:eq:I-evaluation}.  Write $\mathbb E_{n,\sigma}$
+for expectation with respect to $\rho_{n,\sigma}/\mathcal Z_{n,\sigma}$,
+and define the real linear statistics
+\begin{equation}\label{gn:eq:statistics}
+ S_q=\sum_{j=1}^n\Re\psi^{(q)}(\sigma+ix_j/2),
+                   \qquad q=1,3,5,\ldots.
+\end{equation}
+
+\begin{theorem}[All-order polygamma insertion identity]
+\label{gn:thm:polygamma-germ}
+As an identity of holomorphic germs at $\mathbf u=\mathbf0$,
+\begin{equation}\label{gn:eq:polygamma-germ}
+\begin{split}
+ &\mathbb E_{n,\sigma}
+  \exp\left(4\sum_{r=1}^{n+1}\sum_{k\ge1}
+                   \frac{u_r^{2k}}{(2k)!}S_{2k-1}\right)\\
+ &\hspace{12mm}=
+ \prod_{r<s}
+   \frac{\displaystyle\prod_{\varepsilon,\eta\in\{-1,1\}}
+         \Gamma(2\sigma+\varepsilon u_r+\eta u_s)}
+        {\Gamma(2\sigma)^4}.
+\end{split}
+\end{equation}
+In particular, every finite coefficient gives an ordinary absolutely
+convergent integral identity in polygamma functions.
+\end{theorem}
+
+\begin{proof}
+Apply continuous Cauchy--Binet to the deformed determinant and divide
+by its value at zero.  The interaction Vandermondes are unchanged, so
+the quotient is the expectation of the product of Gamma-factor ratios.
+For one pair and $z=\sigma+ix/2$, the logarithm of that ratio is
+\[
+\begin{aligned}
+ &\log\Gamma(z+u)+\log\Gamma(z-u)-2\log\Gamma(z)\\
+ &\quad+\log\Gamma(\overline z+u)+\log\Gamma(\overline z-u)
+                         -2\log\Gamma(\overline z)\\
+ &\hspace{18mm}=4\sum_{k\ge1}\frac{u^{2k}}{(2k)!}
+                                      \Re\psi^{(2k-1)}(z).
+\end{aligned}
+\]
+The logarithmic Gamma branches are holomorphic on the right half-plane.
+Their Taylor expansions converge uniformly for $|u|$ in a fixed
+sufficiently small disk, with the integral dominated as in
+Theorem~\ref{gn:thm:determinant}.  Alternatively every fixed coefficient
+can be obtained directly by differentiating the finite Gamma product
+under its normally convergent integral.  Multiplication over spatial
+variables and pair labels gives the left side of
+\eqref{gn:eq:polygamma-germ}; Theorem~\ref{gn:thm:paired} evaluates it.
+\end{proof}
+
+For instance, the single-pair coefficients at degrees two and four are
+\begin{align}
+ \mathbb E_{n,\sigma}S_1
+      &=n\psi'(2\sigma),\label{gn:eq:S1-mean}\\
+ \mathbb E_{n,\sigma}(S_3+12S_1^2)
+      &=n\psi'''(2\sigma)+12n^2\psi'(2\sigma)^2.
+          \label{gn:eq:fourth-insertion}
+\end{align}
+The complete paired deformation separates the two terms on the left
+of the second identity and yields a stronger moment law.
+
+\section{Exact finite Gaussian moments}
+\label{gn:sec:gaussian}
+
+\begin{theorem}[Gaussian moment matching through degree $n+1$]
+\label{gn:thm:gaussian}
+Let $n\ge1$, $\sigma>0$, and set
+\begin{equation}\label{gn:eq:mu-v}
+ \mu_\sigma=\psi'(2\sigma)>0,\qquad
+ v_\sigma=\psi'''(2\sigma)>0,
+ \qquad S=S_1.
+\end{equation}
+For every integer $0\le k\le n+1$,
+\begin{equation}\label{gn:eq:S-moments}
+ \boxed{\displaystyle
+ \mathbb E_{n,\sigma}S^k
+ =\sum_{j=0}^{\lfloor k/2\rfloor}
+       \frac{k!}{2^jj!(k-2j)!}
+       (n\mu_\sigma)^{k-2j}(v_\sigma/4)^j.}
+\end{equation}
+Equivalently, the statistic
+\begin{equation}\label{gn:eq:X}
+             X_{n,\sigma}
+       =\frac{2S-2n\mu_\sigma}{\sqrt{v_\sigma}}
+\end{equation}
+has exactly the standard Gaussian moments through degree $n+1$:
+\begin{equation}\label{gn:eq:Gaussian-moments}
+ \mathbb E_{n,\sigma}X_{n,\sigma}^{k}
+ =\begin{cases}
+    0,&k\text{ odd},\\[2pt]
+    (k-1)!!,&k\text{ even},
+   \end{cases}
+ \qquad 0\le k\le n+1,
+\end{equation}
+where the moment at degree zero is one.
+\end{theorem}
+
+\begin{proof}
+Choose $k$ distinct pair labels in \eqref{gn:eq:polygamma-germ} and
+extract the coefficient of $u_1^2\cdots u_k^2$.  Put $w_r=u_r^2$ and
+compute in the quotient in which $w_r^2=0$.  On the left, all terms
+with $u_r^4$ or higher disappear, so the required coefficient is
+$\mathbb E_{n,\sigma}(2S)^k$.
+
+For one pair interaction, Taylor expansion of its logarithm gives
+\begin{align*}
+ &\sum_{\varepsilon,\eta\in\{-1,1\}}
+      \log\Gamma(2\sigma+\varepsilon u_r+\eta u_s)
+                       -4\log\Gamma(2\sigma)\\
+ &\hspace{12mm}\equiv
+          2\mu_\sigma(w_r+w_s)+v_\sigma w_rw_s
+                              \pmod{w_r^2,w_s^2}.
+\end{align*}
+The sum is even in each pair variable.  Each of the $n+1$ labels has
+exactly $n$ partners, and no logarithmic summand depends on three
+distinct labels.  Thus the logarithm of the complete right side reduces
+to
+\[
+       2n\mu_\sigma\sum_{r=1}^kw_r
+                  +v_\sigma\sum_{r<s\le k}w_rw_s.
+\]
+To obtain $w_1\cdots w_k$ from its exponential, partition the $k$
+labels into singleton and pair blocks.  The number of partitions with
+$j$ pairs is $k!/(2^jj!(k-2j)!)$.  Such a partition contributes
+$(2n\mu_\sigma)^{k-2j}v_\sigma^j$.  Therefore
+\[
+ \mathbb E_{n,\sigma}(2S)^k
+ =\sum_{j=0}^{\lfloor k/2\rfloor}
+   \frac{k!}{2^jj!(k-2j)!}
+       (2n\mu_\sigma)^{k-2j}v_\sigma^j.
+\]
+Division by $2^k$ proves \eqref{gn:eq:S-moments}.  These are the
+moments of a Gaussian variable with mean $n\mu_\sigma$ and variance
+$v_\sigma/4$.  Centering and scaling proves
+\eqref{gn:eq:Gaussian-moments}.  The restriction $k\le n+1$ is exactly
+the number of distinct pair parameters available in the proof.
+\end{proof}
+
+\begin{corollary}[Separated low-order polygamma integrals]
+\label{gn:cor:variance}
+For all $n\ge1$ and $\sigma>0$,
+\begin{equation}\label{gn:eq:variance}
+ \operatorname{Var}_{n,\sigma}(S_1)=\frac14\psi'''(2\sigma),
+ \qquad
+ \mathbb E_{n,\sigma}S_3=(n-3)\psi'''(2\sigma).
+\end{equation}
+At the quarter parameter,
+\begin{equation}\label{gn:eq:quarter-statistics}
+ \mathbb E_{n,1/4}S_1=\frac{n\pi^2}{2},\qquad
+ \operatorname{Var}_{n,1/4}(S_1)=\frac{\pi^4}{4},\qquad
+ \mathbb E_{n,1/4}S_3=(n-3)\pi^4.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The degree-two instance of \eqref{gn:eq:S-moments} gives the variance.
+Insert the resulting second moment into
+\eqref{gn:eq:fourth-insertion} to obtain the expectation of $S_3$.
+Finally, $\psi'(1/2)=\pi^2/2$ and $\psi'''(1/2)=\pi^4$ give the
+quarter values \cite{dlmfpolygamma}.
+\end{proof}
+
+\subsection{Explicit one-dimensional identities}
+
+At $n=1$ and $\sigma=1/4$, the normalizer is $4\pi^5$.  To display
+several resulting evaluations compactly, write
+\[
+ \omega(x)=x\sinh(\pi x)|\Gamma(\tfrac14+ix/2)|^8,
+ \qquad z_x=\tfrac14+ix/2.
+\]
+Every integral below is an ordinary absolutely convergent integral:
+\begin{align}
+ \int_0^\infty\omega(x)\dd x&=4\pi^5,
+          \label{gn:eq:scalar-normalizer}\\
+ \int_0^\infty\omega(x)\Re\psi'(z_x)\dd x&=2\pi^7,
+          \label{gn:eq:scalar-trigamma}\\
+ \int_0^\infty\omega(x)[\Re\psi'(z_x)]^2\dd x&=2\pi^9,
+          \label{gn:eq:scalar-trigamma-square}\\
+ \int_0^\infty\omega(x)\Re\psi'''(z_x)\dd x&=-8\pi^9.
+          \label{gn:eq:scalar-third}
+\end{align}
+The negative sign in \eqref{gn:eq:scalar-third} is compatible with an
+ordinary real integral: the real part of the complex-argument
+polygamma function changes sign.
+
+Unpaired parameter derivatives supply digamma identities as well.
+Differentiating the $n=1$ version of
+\eqref{gn:eq:determinant} once in one parameter and twice in two
+distinct parameters, then setting all four parameters equal to $1/4$,
+gives
+\begin{align}
+ \int_0^\infty\omega(x)\Re\psi(z_x)\dd x
+    &=-4\pi^5(\gamma+3\log2),\label{gn:eq:scalar-psi}\\
+ \int_0^\infty\omega(x)[\Re\psi(z_x)]^2\dd x
+    &=4\pi^5\left((\gamma+3\log2)^2+\frac{\pi^2}{12}\right).
+       \label{gn:eq:scalar-psi-square}
+\end{align}
+For completeness, the first logarithmic parameter derivative of the
+Gamma quotient is $3\psi(1/2)-\psi(1)$, while the mixed logarithmic
+derivative in distinct labels is $\psi'(1/2)-\psi'(1)$.  The integral
+insertions are respectively $2\Re\psi(z_x)$ and
+$4[\Re\psi(z_x)]^2$.  These factors give exactly
+\eqref{gn:eq:scalar-psi}--\eqref{gn:eq:scalar-psi-square}.
+
+\subsection{A distributional consequence of the exact identities}
+
+The Gaussian matching is asserted only through the stated finite degree.
+For fixed $n$ and $\sigma$ the statistic is bounded, since
+\[
+ |\Re\psi'(\sigma+iy)|\le\sum_{r=0}^\infty\frac1{(r+\sigma)^2}
+                       =\psi'(\sigma).
+\]
+Thus it has a compactly supported distribution.  Its moment identities
+nevertheless imply a Gaussian limit as the dimension increases.
+
+\begin{corollary}[Gaussian limit for arbitrary positive parameter sequences]
+\label{gn:cor:CLT}
+For any sequence $\sigma_n>0$, the random variables
+$X_{n,\sigma_n}$ of \eqref{gn:eq:X} converge in distribution to a
+standard normal random variable as $n\to\infty$.
+\end{corollary}
+
+\begin{proof}
+For every fixed integer $k$, the $k$th moment is exactly the standard
+Gaussian moment once $n\ge k-1$, independently of $\sigma_n$.
+The second moment equals one for every $n\ge1$, giving tightness.
+For each fixed $k$, a higher even moment is uniformly bounded along
+the tail of the sequence, so the $k$th powers are uniformly integrable.
+Every subsequential weak limit therefore has all standard Gaussian
+moments.  The normal distribution is moment determinate; for example
+its even moments satisfy Carleman's condition.  Consequently every
+subsequential limit is standard normal, proving the assertion.
+\end{proof}
+
+This consequence uses exact moment identities at each sufficiently
+large finite dimension.  No uniform large-dimension estimate on Gamma
+functions or on the parameter sequence is required.
+
+% END INCLUDED SOURCE: sections/02_gaussian
+
+% BEGIN INCLUDED SOURCE: sections/03_colored
+\section{Colored balanced kernels and their Mellin transform}
+\label{sec:colored}
+
+Let
+\[
+ \Omega=\C\setminus[1,\infty),\qquad a>0,\qquad x>0,\qquad \omega\in\Omega.
+\]
+The branch of $\Phi(\omega,s,a)$ is determined by its defining series
+for $|\omega|<1$ and continuation to $\Omega$. Equivalently, for
+$\Re s>0$ it is given by the classical absolutely convergent integral
+\cite[25.14.5]{dlmflerch}
+\begin{equation}\label{col:lerch-integral}
+ \Phi(\omega,s,a)=\frac1{\Gamma(s)}
+  \int_0^\infty\frac{t^{s-1}e^{-at}}{1-\omega e^{-t}}\dd t.
+\end{equation}
+Subtracting Taylor coefficients of its smooth density at zero extends
+it to an entire function of $s$ for each $\omega\in\Omega$.
+
+\begin{definition}[Colored balanced derivative]\label{col:def}
+For an integer $q\ge0$, put
+\begin{align}
+ F_\omega(z;x,a)&=x^z\Phi(\omega,1+z,x+a),\label{col:generator}\\
+ C_q^\omega(x,a)&=\left.\partial_z^qF_\omega(z;x,a)\right|_{z=0}\notag\\
+ &=\sum_{j=0}^q\binom qj\log^{q-j}x\,
+       \partial_s^j\Phi(\omega,1,x+a).\label{col:kernel}
+\end{align}
+Order derivatives are evaluated after analytic continuation in $\omega$.
+\end{definition}
+
+There is no order pole at $s=1$ when $\omega\ne1$ in this domain.
+Thus adding the uncolored term $\log^{q+1}x/(q+1)$ to
+\eqref{col:kernel} would destroy decay rather than improve it.
+
+\subsection{Tail cancellation and uniqueness}
+
+Write
+\begin{equation}\label{col:A}
+ A_k(\omega,a)=\Phi(\omega,-k,a)
+       =(\omega\partial_\omega+a)^k\frac1{1-\omega}.
+\end{equation}
+These are rational functions of $\omega$ and polynomials of degree $k$
+in $a$. Their leading coefficient in $a$ is $1/(1-\omega)$.
+
+\begin{lemma}[Uniform colored expansion]\label{col:tail}
+On compact subsets of $\Omega\times(0,\infty)$, and locally uniformly
+for $z$ near zero,
+\begin{equation}\label{col:F-tail}
+ F_\omega(z;x,a)=
+  \sum_{k=0}^{K}\frac{(-1)^k A_k(\omega,a)}{k!}
+           (1+z)_k x^{-k-1}+O(x^{-K-2}).
+\end{equation}
+Consequently
+\begin{equation}\label{col:C-tail}
+ C_q^\omega(x,a)=
+  \sum_{k=q}^{K}\frac{(-1)^k A_k(\omega,a)}{k!}
+   \left.\partial_z^q(1+z)_k\right|_{z=0}x^{-k-1}
+       +O(x^{-K-2}),
+\end{equation}
+and the leading coefficient is
+$(-1)^q A_q(\omega,a)x^{-q-1}$.
+At zero, $C_q^\omega(x,a)=O(1+|\log x|^q)$.
+\end{lemma}
+
+\begin{proof}
+The density $e^{-at}/(1-\omega e^{-t})$ is analytic at $t=0$,
+with Taylor coefficients $(-1)^k A_k(\omega,a)/k!$.
+Taylor's formula on a small fixed interval and exponential decay
+outside that interval give a Laplace expansion in
+\eqref{col:lerch-integral}. The $k$th term integrates to
+$\Gamma(1+z+k)x^{-1-z-k}$; division by $\Gamma(1+z)$
+and multiplication by $x^z$ give \eqref{col:F-tail}.
+On the stated compact sets, the denominator stays uniformly away
+from zero along $t\ge0$, so the remainders are locally uniform.
+Cauchy differentiation in a slightly larger $z$ disc preserves
+the inverse-power order of the remainder. Since $(1+z)_k$ has
+degree $k$, derivatives of order $q>k$ vanish, and its leading
+coefficient gives $\partial_z^q(1+z)_q=q!$.
+The assertion at zero follows directly from \eqref{col:kernel}.
+\end{proof}
+
+\begin{theorem}[Unique homogeneous balancing]\label{col:unique}
+Fix $\omega\in\Omega$ and $q\ge0$. Among combinations
+\[
+ D(x,a)=\sum_{j=0}^q d_j\log^{q-j}x\,
+                  \partial_s^j\Phi(\omega,1,x+a),\qquad d_0=1,
+\]
+with coefficients independent of $x,a$, the condition
+$D(x,a)=O(x^{-q-1})$ for every $a$ in a nonempty open interval contained in $(0,\infty)$
+forces $d_j=\binom qj$. These coefficients do satisfy that condition.
+\end{theorem}
+
+\begin{proof}
+Put $d(t)=\sum_{j=0}^q d_jt^j$ and $L=\log x$.
+The coefficient arising from the $k$th density term is a polynomial
+in $L$. Its component with $L^{q-r}$ contains
+$d^{(r)}(-1)$ times a nonzero scalar and
+$\partial_s^r(s)_k|_{s=1}$. For $k=r<q$, the latter derivative
+is $r!$. The polynomial $A_r(\omega,a)$ cannot vanish on the
+whole prescribed interval. Successively removing $x^{-1},\ldots,x^{-q}$
+therefore gives $d^{(r)}(-1)=0$ for $r=0,\ldots,q-1$.
+Since $\deg d\le q$ and $d(0)=1$, $d(t)=(1+t)^q$.
+The converse is Lemma~\ref{col:tail}. This proves uniqueness only
+in the displayed ansatz, not among arbitrary $x$-dependent combinations.
+\end{proof}
+
+% Optional insertion after Theorem col:unique. Uses root's notation.
+\begin{remark}[The interval in the shift is essential]
+\label{col:pointwise-counterexample}
+The uniqueness statement can fail if imposed only at one shift.
+Set
+\[
+ a_* = \frac{1+\sqrt2}{2},\qquad
+ \omega_*=-3-2\sqrt2\in\Omega.
+\]
+The rational second moment factors as
+\[
+ A_2(\omega,a_*)
+  =\frac{(3-2\sqrt2)(\omega+3+2\sqrt2)^2}
+          {4(1-\omega)^3}.
+\]
+Consequently $A_2(\omega_*,a_*)=0$ and, by
+$A_3=(\omega\partial_\omega+a_*)A_2$,
+$A_3(\omega_*,a_*)=0$ as well.
+The uniform tail formula therefore gives
+\[
+ C_2^{\omega_*}(x,a_*)=O(x^{-5}),\qquad
+ C_3^{\omega_*}(x,a_*)=O(x^{-5}).
+\]
+Hence the different homogeneous combination
+\[
+ D(x)=2C_3^{\omega_*}(x,a_*)
+                  -\log x\,C_2^{\omega_*}(x,a_*)
+\]
+also satisfies $D(x)=O(x^{-4})$.  In the displayed uniqueness
+ansatz its coefficient vector is
+$\boldsymbol d=(1,4,5,2)$ rather than $(1,3,3,1)$, so it has
+the same normalization $d_0=1$.  The fourth moment is nonzero,
+$A_4(\omega_*,a_*)=(2-\sqrt2)/64$, and the modified kernel is
+not identically the canonical one.  Requiring decay for a
+nonempty open interval of positive shifts excludes this
+pointwise degeneracy exactly as the proof of the theorem requires.
+\end{remark}
+
+\subsection{The exact Mellin identity}
+
+Define the generalized harmonic polynomial $Q_q(u)$ by
+\begin{equation}\label{col:Q}
+ \frac{\Gamma(u+z)}{\Gamma(u)\Gamma(1+z)}
+     =\sum_{q=0}^\infty Q_q(u)\frac{z^q}{q!}.
+\end{equation}
+With
+$H_{u-1}^{(1)}=\psi(u)+\gamma$ and
+$H_{u-1}^{(r)}=\zeta(r)-\zeta(r,u)$ for $r\ge2$, this is
+\[
+ \exp\!\left(\sum_{r=1}^\infty
+          \frac{(-1)^{r-1}}r H_{u-1}^{(r)}z^r\right).
+\]
+In particular,
+$Q_0=1$, $Q_1=H^{(1)}$, and
+$Q_2=(H^{(1)})^2-H^{(2)}$.
+
+\begin{theorem}[Colored balanced Mellin formula]\label{col:mellin}
+For $q\ge0$ and $0<\Re u<q+1$,
+\begin{equation}\label{col:mellin-formula}
+ \boxed{\displaystyle
+ \int_0^\infty x^{u-1}C_q^\omega(x,a)\dd x
+  =\frac{\pi}{\sin\pi u}\,Q_q(u)\Phi(\omega,1-u,a).}
+\end{equation}
+Every apparent singularity at an interior integer is removable.
+The integral is absolutely convergent and locally uniform in
+$u,\omega,a$ on the stated domains.
+\end{theorem}
+
+\begin{proof}
+Initially take $0<\Re u<1$ and $z$ sufficiently close to zero.
+Insert \eqref{col:lerch-integral} into \eqref{col:generator}.
+Absolute Fubini and the Gamma integral give
+\begin{align*}
+ \int_0^\infty x^{u-1}F_\omega(z;x,a)\dd x
+ &=\frac{\Gamma(u+z)}{\Gamma(1+z)}
+       \int_0^\infty\frac{t^{-u}e^{-at}}{1-\omega e^{-t}}\dd t\\
+ &=\frac{\Gamma(u+z)\Gamma(1-u)}{\Gamma(1+z)}
+                  \Phi(\omega,1-u,a).
+\end{align*}
+The behavior at zero and infinity in Lemma~\ref{col:tail}
+justifies locally normal differentiation in $z$.
+Euler reflection then proves \eqref{col:mellin-formula}
+on the initial strip. The differentiated kernel decays as
+$x^{-q-1}$, so its integral is holomorphic on the larger
+strip $0<\Re u<q+1$. Analytic continuation establishes the
+formula there and makes the interior integer poles removable.
+This does not differentiate a divergent integral at an integer.
+\end{proof}
+
+\section{Integer colored moments, Stieltjes differences, and primitives}
+\label{sec:colored-integer}
+
+For $q\ge m\ge1$, let
+\begin{align}
+ L_{m,q}
+ &:=(-1)^q q!\sum_{\ell=m}^\infty
+              \frac{\binom{\ell-1}{m-1}}{\ell^{q+1}}
+ \label{col:L-positive}\\
+ &=(-1)^{m+q+1}q!
+       \sum_{j=0}^{m-1}(-1)^j e_j(1,\tfrac12,\ldots,\tfrac1{m-1})
+                         \zeta(q+1-j).\label{col:L-finite}
+\end{align}
+The first representation is convergent and gives its sign.
+The second is a finite zeta expression, with the empty-list convention
+$e_0=1$.
+
+\begin{theorem}[All ordinary positive-integer moments]\label{col:integer}
+For $q\ge m\ge1$,
+\begin{equation}\label{col:integer-formula}
+ \boxed{\displaystyle
+ \int_0^\infty x^{m-1}C_q^\omega(x,a)\dd x
+             =L_{m,q}\Phi(\omega,1-m,a).}
+\end{equation}
+Thus the complete shift dependence is a polynomial of degree
+$m-1$, with rational functions of the color as coefficients.
+\end{theorem}
+
+\begin{proof}
+At $u=m$, the Gamma quotient in \eqref{col:Q} is
+$\prod_{j=1}^{m-1}(1+z/j)$, hence $Q_q(m)=0$ for $q\ge m$.
+The limit in \eqref{col:mellin-formula} is
+$(-1)^m Q_q'(m)\Phi(\omega,1-m,a)$.
+Differentiating the quotient in $u$ gives
+\[
+ Q_q'(m)=q![z^q]\prod_{j=1}^{m-1}(1+z/j)
+                      \bigl(\psi(m+z)-\psi(m)\bigr).
+\]
+The rational terms in the digamma recurrence become polynomials
+of degree at most $m-1$ after multiplication by the finite product.
+They do not contribute at degree $q$. Expanding
+$\psi(1+z)-\psi(1)=\sum_{r\ge1}(-1)^{r+1}\zeta(r+1)z^r$
+proves $(-1)^mQ_q'(m)=L_{m,q}$ in the finite form.
+Expanding the zeta values and using
+\[
+ \prod_{j=1}^{m-1}(1-\ell/j)
+       =(-1)^{m-1}\binom{\ell-1}{m-1}
+\]
+gives \eqref{col:L-positive}.
+\end{proof}
+
+There is an independent elementary proof for $|\omega|<1$.
+In that disk,
+\begin{equation}\label{col:elementary-series}
+ C_q^\omega(x,a)=\sum_{\ell=0}^\infty
+  \frac{\omega^\ell}{x+\ell+a}
+           \log^q\!\frac{x}{x+\ell+a}.
+\end{equation}
+For $c>0$, the substitution $t=x/(x+c)$ gives
+\begin{equation}\label{col:elementary-moment}
+ \int_0^\infty\frac{x^{m-1}}{x+c}
+                  \log^q\!\frac{x}{x+c}\dd x
+ =c^{m-1}\int_0^1\frac{t^{m-1}\log^q t}{(1-t)^m}\dd t
+ =c^{m-1}L_{m,q}.
+\end{equation}
+Absolute summation proves the theorem in the disk, and locally normal
+continuation in $\omega$ gives the rest of $\Omega$. At $\omega=-1$,
+one must not replace that continuation by the divergent series
+$\sum(-1)^\ell(\ell+a)^{m-1}$.
+
+\subsection{Low-order examples and logarithmic insertions}
+
+For every $q\ge1$ the unweighted moment is independent of the shift:
+\begin{equation}\label{col:unweighted}
+ \boxed{\displaystyle
+ \int_0^\infty C_q^\omega(x,a)\dd x
+       =\frac{(-1)^q q!\zeta(q+1)}{1-\omega}.}
+\end{equation}
+For example,
+\begin{align}
+ \int_0^\infty C_1^\omega(x,a)\dd x
+      &=-\frac{\zeta(2)}{1-\omega},\label{col:first}\\
+ \int_0^\infty xC_2^\omega(x,a)\dd x
+      &=2\bigl(\zeta(2)-\zeta(3)\bigr)
+         \left(\frac{a}{1-\omega}
+                    +\frac{\omega}{(1-\omega)^2}\right).
+ \label{col:second}
+\end{align}
+All fixed logarithmic insertions are equally explicit. For $q\ge m$
+and $r\ge0$,
+\begin{equation}\label{col:log-moments}
+\begin{split}
+ &\int_0^\infty x^{m-1}\log^r x\,C_q^\omega(x,a)\dd x\\
+ &\quad=(-1)^m r![t^r]\left\{
+   \frac{\pi t}{\sin\pi t}\,
+   \frac{Q_q(m+t)}t\,\Phi(\omega,1-m-t,a)\right\}.
+\end{split}
+\end{equation}
+The quotient $Q_q(m+t)/t$ is holomorphic. This is a finite coefficient
+formula in Lerch order derivatives, Gamma derivatives, and generalized
+harmonic polynomials. It follows by differentiating the normally
+convergent Mellin integral, not by termwise integration of its
+individual divergent logarithmic summands.
+
+\subsection{A precise generalized Stieltjes dictionary}
+
+Let $\omega^d=1$ with $\omega\ne1$. Introduce the incoming uncolored
+kernel \cite{repobalanced}
+\begin{equation}\label{col:uncolored}
+ C_q(x,a)=\frac{\log^{q+1}x}{q+1}
+       +\sum_{j=0}^q(-1)^j\binom qj
+                  \gamma_j(x+a)\log^{q-j}x.
+\end{equation}
+The finite residue-class identity for Lerch's function gives
+\begin{equation}\label{col:stieltjes-dictionary}
+ \boxed{\displaystyle
+ C_q^\omega(x,a)=\frac1d\sum_{r=0}^{d-1}
+       \omega^r C_q\!\left(\frac xd,\frac{a+r}{d}\right).}
+\end{equation}
+Indeed
+$\Phi(\omega,s,x+a)=d^{-s}\sum_r\omega^r
+\zeta(s,(x+a+r)/d)$; the $1/z$ poles and the
+$\log^{q+1}(x/d)$ terms cancel because $\sum_r\omega^r=0$.
+This identity translates every preceding colored formula into an
+ordinary integral of a finite combination of generalized Stieltjes
+constants. It also verifies the normalization against the incoming
+finite-filter calculus.
+
+For the alternating color, define
+\[
+ a_-=\frac{x+a}{2},\qquad a_+=\frac{x+a+1}{2}.
+\]
+Then, explicitly,
+\begin{equation}\label{col:alternating-C1}
+ C_1^{-1}(x,a)=\frac12\left[
+    \bigl(\psi(a_+)-\psi(a_-)\bigr)\log\frac x2
+                 +\gamma_1(a_+)-\gamma_1(a_-)\right].
+\end{equation}
+Its ordinary integral is $-\pi^2/12$ for every $a>0$.
+
+\subsection{Exceptional moments and Dirichlet beta values}
+
+\begin{theorem}[A zero of the leading colored tail]\label{col:exceptional}
+If $m\ge1$ and $\Phi(\omega,1-m,a)=0$, then
+\begin{equation}\label{col:exceptional-formula}
+ \boxed{\displaystyle
+ \int_0^\infty x^{m-1}C_{m-1}^\omega(x,a)\dd x
+       =(-1)^{m+1}\partial_s\Phi(\omega,1-m,a).}
+\end{equation}
+The integral is ordinary and absolutely convergent.
+\end{theorem}
+
+\begin{proof}
+The zero hypothesis removes the leading $x^{-m}$ kernel term in
+Lemma~\ref{col:tail}, so the Mellin integral extends
+holomorphically across $u=m$. At $u=m$, $Q_{m-1}(m)=1$ and
+$\Phi(\omega,1-u,a)=-(u-m)\partial_s\Phi(\omega,1-m,a)
+ +O((u-m)^2)$. The removable limit in
+Theorem~\ref{col:mellin} is \eqref{col:exceptional-formula}.
+\end{proof}
+
+Let $\beta(s)=\sum_{n\ge0}(-1)^n(2n+1)^{-s}$ denote Dirichlet's beta
+function, continued in its order. Since
+$\Phi(-1,s,1/2)=2^s\beta(s)$, its negative odd zeros give the following
+family:
+\begin{corollary}[Alternating centered exceptional moments]\label{col:beta}
+For every integer $r\ge1$,
+\begin{equation}\label{col:beta-formula}
+ \boxed{\displaystyle
+ \int_0^\infty x^{2r-1}C_{2r-1}^{-1}(x,\tfrac12)\dd x
+   =\frac{(-1)^r(2r-1)!}{\pi^{2r-1}}\beta(2r).}
+\end{equation}
+In particular, writing $G=\beta(2)$ for Catalan's constant,
+\begin{equation}\label{col:catalan}
+ \int_0^\infty xC_1^{-1}(x,\tfrac12)\dd x=-\frac G\pi.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The completed beta function
+$(4/\pi)^{(s+1)/2}\Gamma((s+1)/2)\beta(s)$ is invariant under
+$s\mapsto1-s$ \cite{dlmfdirichlet}. Comparing its finite values at
+$s=1-2r$ and $s=2r$ yields
+\[
+ \beta'(1-2r)=
+ (-1)^{r-1}2^{2r-1}(2r-1)!\pi^{1-2r}\beta(2r).
+\]
+Substitute this into Theorem~\ref{col:exceptional}.
+The classical functional equation is the input; the ordinary
+Stieltjes-difference integral is its consequence in the new kernel.
+\end{proof}
+
+\subsection{Anchored shift primitives}
+
+For $a,a_0>0$ the quotient below is regular at $z=0$, because
+$\Phi(\omega,0,A)=1/(1-\omega)$ does not depend on $A$:
+\begin{equation}\label{col:primitive}
+\begin{split}
+ \int_{a_0}^a C_q^\omega(x,v)\dd v
+  =-q![z^q]\,\frac{x^z}{z}
+       \left(\Phi(\omega,z,x+a)-\Phi(\omega,z,x+a_0)\right).
+\end{split}
+\end{equation}
+This follows from
+$\partial_A\Phi(\omega,z,A)=-z\Phi(\omega,z+1,A)$.
+It gives every integration constant through the explicit anchor.
+At order zero and a root of unity, the Hurwitz identity
+$\zeta'(0,A)=\log\Gamma(A)-\tfrac12\log(2\pi)$ gives the finite
+Gamma expression
+\begin{equation}\label{col:gamma-primitive}
+ \int_{a_0}^a C_0^\omega(x,v)\dd v
+  =-\sum_{r=0}^{d-1}\omega^r
+       \log\frac{\Gamma((x+a+r)/d)}
+                    {\Gamma((x+a_0+r)/d)}.
+\end{equation}
+All Gamma arguments are positive, and their logarithms are real
+before multiplication by the complex coefficients.
+
+\section{The color-one limit and its exact constant term}
+\label{sec:color-limit}
+
+The formulas above are not uniform at $\omega=1$. The precise
+normalization can nevertheless be determined, and it reconciles the
+colored moment with its uncolored Stieltjes counterpart.
+Fix $q\ge m\ge1$, let $\omega=e^{-\lambda}$ with $\lambda>0$, and set
+\[
+ M_{m,q}(\lambda,a)=\int_0^\infty
+                   x^{m-1}C_q^{e^{-\lambda}}(x,a)\dd x.
+\]
+
+\begin{theorem}[Complete local color expansion]\label{col:coalescence}
+For $0<\lambda<2\pi$,
+\begin{equation}\label{col:coalescence-formula}
+ \boxed{\displaystyle
+ e^{-a\lambda}M_{m,q}(\lambda,a)
+ =L_{m,q}\left\{\frac{\Gamma(m)}{\lambda^m}
+       +\sum_{k=0}^\infty
+             \frac{(-\lambda)^k}{k!}\zeta(1-m-k,a)\right\}.}
+\end{equation}
+The series is convergent. In the cutoff coordinate $\lambda$,
+\begin{align}
+ \lim_{\lambda\downarrow0}
+ \left(e^{-a\lambda}M_{m,q}
+              -L_{m,q}\Gamma(m)\lambda^{-m}\right)
+      &=-\frac{L_{m,q}}m B_m(a),\label{col:renorm}\\
+ \CT_{\lambda=0}M_{m,q}(\lambda,a)
+      &=\frac{L_{m,q}}m\bigl(a^m-B_m(a)\bigr).\label{col:raw-CT}
+\end{align}
+The first line is exactly the uncolored ordinary moment
+$\int_0^\infty x^{m-1}C_q(x,a)\dd x$ from \cite{repobalanced}.
+\end{theorem}
+
+\begin{proof}
+The classical convergent Lerch expansion \cite[25.14.3\_1]{dlmflerch}
+is
+\[
+ e^{-a\lambda}\Phi(e^{-\lambda},s,a)
+    =\Gamma(1-s)\lambda^{s-1}
+       +\sum_{k=0}^\infty\zeta(s-k,a)\frac{(-\lambda)^k}{k!}.
+\]
+Set $s=1-m$ and use Theorem~\ref{col:integer}.
+Its constant term is $L_{m,q}\zeta(1-m,a)
+=-L_{m,q}B_m(a)/m$.
+Multiplying by $e^{a\lambda}$ adds the constant contribution
+$L_{m,q}\Gamma(m)a^m/m!=L_{m,q}a^m/m$ from the pole.
+This proves both normalizations.
+The incoming uncolored coefficient is
+$\kappa_{m,q}=-L_{m,q}/m$, so its moment is the first limit.
+\end{proof}
+
+For example, $M_{1,1}=-\zeta(2)/(1-e^{-\lambda})$ is independent of
+$a$, and its raw constant term is $-\zeta(2)/2$.
+The normalized limit in \eqref{col:renorm}, however, is
+$\zeta(2)(a-\tfrac12)$. Both formulas are correct in their stated
+normalizations. They cannot be identified by discarding the
+$e^{-a\lambda}$ factor.
+
+All logarithmic moment versions follow by differentiating the local
+Mellin expression in $u$ before putting $u=m$. Derivatives of
+$\lambda^{-u}$ produce explicit powers of $\log\lambda$.
+Thus the scalar expansion already specifies the complete mechanism
+for those contacts. It does not assert that the pointwise limit of
+the colored kernels can be integrated across the entire half-line.
+
+
+% END INCLUDED SOURCE: sections/03_colored
+
+% BEGIN INCLUDED SOURCE: sections/04_clusters
+% Requires amsmath, amssymb, amsthm and standard theorem environments.
+% References to add: repolattice, okudaueno, dlmfbeta,
+% dlmfgamma.  Bibitems and precise source coverage are in
+% two_cluster_source_status.txt.  Every label has the prefix tc:.
+
+\section{An explicit polylogarithm dictionary for two mass clusters}
+\label{tc:sec:clusters}
+
+The incoming \emph{Lattice Contacts and Mixed Zeta Identities} report
+evaluates a Gamma face when all but one mass agree.  Its spectral-face
+section then asks for a finite dictionary for two distinct mass
+clusters; its research question~Q4 asks more broadly about displaced
+masses and the dependence of depth on the number of clusters
+\cite{repolattice}.  We evaluate the entire two-cluster sector,
+with arbitrary positive cluster multiplicities.  The result is a
+finite combination of ordinary one-variable multiple polylogarithms
+inside an absolutely convergent spectral sum.  In particular, two
+equal displaced masses require depth at most three, independently
+of the total number of factors.
+
+The argument uses classical beta integration, aggregation of Dirichlet
+parameters, the Gamma product, and coefficient extraction.  The
+transformation under exchange of clusters is a specialization of
+classical multiple-polylogarithm Landen formulas
+\cite{okudaueno}; it is not asserted to be a new general
+transformation law.  The contribution relative to the inspected
+incoming source is the explicit all-multiplicity dictionary and its
+convergence and depth statement.  Minimality of the resulting depth
+and a bound depending only on the number of distinct clusters remain
+unproved.
+
+\subsection{The ordinary face and its independent regulators}
+
+Let $k\ge2$, $b_1,\ldots,b_k\in\mathbb R$, and
+\[
+ \Sigma_k=\{(t_1,\ldots,t_k):t_i\ge0,\ \sum_i t_i=1\}.
+\]
+The measure $dt$ means $dt_1\cdots dt_{k-1}$ after eliminating
+$t_k$; it has no additional Euclidean surface factor.  For nonempty
+$T\subseteq\{1,\ldots,k\}$ set
+\[
+ t_T=\sum_{i\in T}t_i,\qquad
+ b_T=\frac{\sum_{i\in T}t_i b_i}{t_T},
+\]
+and give $t_TF(b_T)$ the value zero when $t_T=0$.  Define
+\begin{align}
+ \mathcal H_k(F;t)
+  &=\sum_{\varnothing\ne T\subseteq\{1,\ldots,k\}}
+       (-1)^{k-|T|}t_TF(b_T),\label{tc:eq:face-integrand}\\
+ I_k(F;b_1,\ldots,b_k)
+  &=\int_{\Sigma_k}\mathcal H_k(F;t)
+                    \frac{dt}{t_1\cdots t_k}.
+                    \label{tc:eq:ordinary-face}
+\end{align}
+Constants and affine functions are annihilated.
+
+These are ordinary integrals.  To see convergence for $F\in C^1$
+on the mass interval, each perspective is Lipschitz because
+\[
+ \partial_{t_i}\{t_TF(b_T)\}
+    =F(b_T)+F'(b_T)(b_i-b_T),\qquad i\in T.
+\]
+The alternating sum vanishes on every coordinate face, so
+$|\mathcal H_k(F;t)|\le C\min_i t_i$.
+On the region where $t_j$ is maximal, $t_j\ge1/k$ and
+\[
+ \min_i t_i\le\left(\prod_{i\ne j}t_i\right)^{1/(k-1)}.
+\]
+Consequently the integral is absolutely convergent.  The same argument
+allows sufficiently small independent complex powers $t_i^{\alpha_i}$
+and any fixed powers of their logarithms.
+
+For $\alpha_i>0$, $A=\sum_i\alpha_i$, let
+\[
+ D_F(\boldsymbol\alpha;\boldsymbol b)
+   =\frac{\Gamma(A)}{\prod_i\Gamma(\alpha_i)}
+      \int_{\Sigma_k}F\!\left(\sum_i t_i b_i\right)
+                            \prod_i t_i^{\alpha_i-1}\,dt.
+\]
+If $A_T=\sum_{i\in T}\alpha_i$, the classical beta integral
+\cite{dlmfbeta} gives
+\begin{equation}\label{tc:eq:independent-regulators}
+ \frac{\Gamma(1+A)}{\prod_i\Gamma(1+\alpha_i)}
+ \int_{\Sigma_k}\mathcal H_k(F;t)
+                     \prod_i t_i^{\alpha_i-1}\,dt
+ =\frac{1}{\prod_i\alpha_i}
+   \sum_{\varnothing\ne T}(-1)^{k-|T|}
+                  A_TD_F(\boldsymbol\alpha_T;\boldsymbol b_T).
+\end{equation}
+Here the notation on the right denotes the Dirichlet mean formed
+only from the labels in $T$, not the random barycenter on the left.
+The identity follows from
+$\mathbb E[t_TF(b_T)]=(A_T/A)D_F(\boldsymbol\alpha_T;\boldsymbol b_T)$.
+It is important that the $\alpha_i$ are independent until the
+squarefree coefficient is taken.  The left side is holomorphic near
+zero and has value $I_k(F;\boldsymbol b)$ there.
+
+\subsection{One scalar beta integral for arbitrary multiplicities}
+
+Let $r,s\ge1$, $k=r+s$, and write $B^r,C^s$ for $r$ copies of
+$B$ followed by $s$ copies of $C$.  Put $\delta=C-B$ and
+\begin{align}
+ E_F(t)&=F(B+\delta t)-(1-t)F(B)-tF(C),\label{tc:eq:chord}\\
+ Q(X,Y)&=\frac{\Gamma(1+X+Y)}{\Gamma(1+X)\Gamma(1+Y)}.
+                                                     \label{tc:eq:Q}
+\end{align}
+
+\begin{theorem}[Scalar beta representation for two clusters]
+\label{tc:thm:beta}
+For $F\in C^2$ on the interval with endpoints $B,C$,
+\begin{equation}\label{tc:eq:beta-representation}
+ \boxed{\displaystyle
+ I_{r+s}(F;B^r,C^s)
+   =r!s!\,[X^{r-1}Y^{s-1}]\,
+      Q(X,Y)\int_0^1
+      \frac{E_F(t)}{t(1-t)}(1-t)^X t^Y\,dt.}
+\end{equation}
+The integral on the right is holomorphic, for example for
+$\Re X,\Re Y>-1$, and the coefficient may be taken under the integral.
+\end{theorem}
+
+\begin{proof}
+Aggregate the independent regulators belonging to the $B$ cluster
+into $X$ and those belonging to the $C$ cluster into $Y$.  The
+proportion of the $C$ cluster has beta density
+$t^{Y-1}(1-t)^{X-1}/\mathrm B(Y,X)$.  Thus the full-set term
+$AD_F$ from \eqref{tc:eq:independent-regulators} becomes
+\begin{align}
+ \mathcal M_F(X,Y)
+ &=\frac{\Gamma(1+X+Y)}{\Gamma(X)\Gamma(Y)}
+     \int_0^1 F(B+\delta t)t^{Y-1}(1-t)^{X-1}\,dt\notag\\
+ &=XF(B)+YF(C)
+   +XYQ(X,Y)\int_0^1
+          \frac{E_F(t)}{t(1-t)}(1-t)^Xt^Y\,dt.
+                                                     \label{tc:eq:M}
+\end{align}
+The second line follows by subtracting the endpoint chord and
+integrating it exactly.  Since $E_F(t)=O(t(1-t))$, it proves
+holomorphy of the full-set term near $(0,0)$ without leaving
+unremoved beta poles.
+
+In the alternating sum in \eqref{tc:eq:independent-regulators},
+each proper-subset term is holomorphic by the same chord
+subtraction, or is linear when it contains only one cluster.
+Every proper subset omits at least one regulator.  Its coefficient
+of $\alpha_1\cdots\alpha_k$ is therefore zero.  In the full-set term,
+the corresponding coefficient is
+$r!s![X^rY^s]\mathcal M_F(X,Y)$: the squarefree coefficient in the
+$r$th power of a sum of $r$ independent variables is $r!$.
+The chord term in \eqref{tc:eq:M} is linear and contributes nothing.
+Taking the removable value of
+\eqref{tc:eq:independent-regulators} proves
+\eqref{tc:eq:beta-representation}.  Integrable powers at the two
+endpoints justify every fixed coefficient extraction.
+\end{proof}
+
+All kernels in this formula are explicit finite polynomials.  Indeed,
+\begin{equation}\label{tc:eq:logQ}
+ \log Q(X,Y)=\sum_{n=2}^{\infty}
+  \frac{(-1)^n\zeta(n)}n
+      \bigl((X+Y)^n-X^n-Y^n\bigr).
+\end{equation}
+For instance, with $L=\log(1-t)$ and $M=\log t$,
+\begin{align}
+ [XY]Qe^{XL+YM}&=LM+\zeta(2),\label{tc:eq:kernel22}\\
+ [X^2Y]Qe^{XL+YM}&=\tfrac12L^2M+\zeta(2)L-\zeta(3),\\
+ [X^2Y^2]Qe^{XL+YM}
+  &=\tfrac14L^2M^2+\zeta(2)LM-\zeta(3)(L+M)
+      +\tfrac32\zeta(4)+\tfrac12\zeta(2)^2.
+\end{align}
+These provide ordinary log-Gamma integral identities without any
+endpoint finite-part prescription.
+
+\subsection{The finite composition sum}
+
+Our one-variable multiple polylogarithm convention is
+\begin{equation}\label{tc:eq:MPL}
+ \operatorname{Li}_{a_0,a_1,\ldots,a_d}(z)
+  =\sum_{n_0>n_1>\cdots>n_d\ge1}
+      \frac{z^{n_0}}{n_0^{a_0}n_1^{a_1}\cdots n_d^{a_d}},
+ \qquad |z|<1.
+\end{equation}
+Only the outer index receives $z$.  Its branch on
+$\mathbb C\setminus[1,\infty)$ is continued from zero by the
+usual iterated integrals; there is no branch singularity at zero.
+For $r,s\ge1$, $k=r+s$, define the finite combination
+\begin{equation}\label{tc:eq:P}
+ \boxed{\displaystyle
+ P_{r,s}(z)=\sum_{d=1}^{s}\binom{k-d-1}{r-1}
+      \sum_{\substack{p_1+\cdots+p_d=k-1\\p_i\ge1}}
+                \operatorname{Li}_{1,p_1,\ldots,p_d}(z).}
+\end{equation}
+Every term has weight $k$ and depth at most $s+1$.
+
+\begin{lemma}[Exact logarithmic face]
+\label{tc:lem:logarithm}
+If $x>0$ and $B,C\ge0$, set
+$q=(C-B)/(x^2+C)$.  Then
+\begin{equation}\label{tc:eq:logarithmic-face}
+ I_{r+s}\bigl(U\mapsto-\log(x^2+U);B^r,C^s\bigr)
+     =(-1)^{r+s-1}r!s!P_{r,s}(q).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+First suppose $C\ge B$, so $0\le q<1$.  The logarithm is
+\[
+ -\log(x^2+C)-\log\bigl(1-q(1-t)\bigr).
+\]
+The constant contributes only a linear term to
+$\mathcal M_F(X,Y)$.  Applying the beta moment to the convergent
+logarithmic series gives
+\begin{equation}\label{tc:eq:log-generating-function}
+ \mathcal M_F(X,Y)+(X+Y)\log(x^2+C)
+   =X\sum_{m=1}^{\infty}\frac{q^m}{m}
+            \prod_{j=1}^{m-1}\frac{1+X/j}{1+(X+Y)/j}.
+\end{equation}
+This series and its parameter derivatives converge normally for
+$|q|<1$ and $X,Y$ in a sufficiently small fixed neighborhood of
+zero.  One may use the Gamma-ratio expression for the product to
+obtain a polynomial bound in $m$, uniformly on compact parameter
+sets; the geometric factor $q^m$ then dominates every derivative.
+
+For a finite product,
+\[
+ \prod_{j=1}^{m-1}\frac{1+X/j}{1+(X+Y)/j}
+   =\prod_{j=1}^{m-1}\left(1-\frac{Y}{j+X+Y}\right).
+\]
+Choose $d$ nonconstant factors and expand their denominators.
+The coefficient of $X^{r-1}Y^s$ is
+\begin{align}
+ &(-1)^{k-1}\sum_{d=1}^{s}\binom{k-d-1}{r-1}
+  \sum_{\substack{p_1+\cdots+p_d=k-1\\p_i\ge1}}
+  \sum_{m>j_1>\cdots>j_d\ge1}
+                \frac{1}{j_1^{p_1}\cdots j_d^{p_d}}.
+                                                     \label{tc:eq:coefficient}
+\end{align}
+For clarity, the $d$ selected factors supply $(-Y)^d$.
+Their denominator expansions supply a total power
+$(X+Y)^{k-d-1}$ and sign $(-1)^{k-d-1}$.
+The remaining coefficient is precisely
+$\binom{k-d-1}{r-1}$.  This proves the sign and every binomial
+coefficient in \eqref{tc:eq:coefficient}; no relation among zeta
+values has been used.  Summing in $m$ identifies exactly
+\eqref{tc:eq:P}.  The coefficient identity from
+Theorem~\ref{tc:thm:beta} proves
+\eqref{tc:eq:logarithmic-face} for $0\le q<1$.
+
+Both sides are holomorphic in $q$ on
+$\mathbb C\setminus[1,\infty)$.  On the integral side this follows
+by subtracting the endpoint chord of $-\log(1-q(1-t))$;
+on each compact subset the subtracted numerator is uniformly
+$O(t(1-t))$.  The identity theorem therefore includes $q<0$,
+which is the case $C<B$.  In particular, the analytic continuation
+uses real logarithms and real multiple polylogarithms on the whole
+real interval $q<1$.
+\end{proof}
+
+\subsection{Gamma faces, convergence, and depth}
+
+For $a>0$ and $U\ge0$ define
+\begin{equation}\label{tc:eq:G}
+ G_a(U)=\log\Gamma(a+i\sqrt U)+\log\Gamma(a-i\sqrt U)
+                      -\log(2\pi),
+\end{equation}
+where the two logarithms are continued from positive real arguments.
+Their sum is real.  The classical Gamma product
+\cite{dlmfgamma} gives
+\begin{equation}\label{tc:eq:Gamma-product}
+ G_a(U)=2\log\Gamma(a)-\log(2\pi)
+          -\sum_{n=0}^{\infty}
+                    \log\left(1+\frac{U}{(n+a)^2}\right).
+\end{equation}
+
+\begin{theorem}[Every two-cluster Gamma face]
+\label{tc:thm:Gamma}
+For $a>0$, $B,C\ge0$ and $r,s\ge1$,
+\begin{equation}\label{tc:eq:Gamma-dictionary}
+ \boxed{\displaystyle
+ I_{r+s}(G_a;B^r,C^s)
+   =(-1)^{r+s-1}r!s!
+      \sum_{n=0}^{\infty}
+       P_{r,s}\!\left(\frac{C-B}{(n+a)^2+C}\right).}
+\end{equation}
+The spectral sum is ordinary and absolutely convergent, locally
+normally in the stated real parameters.  The same identity has a
+dictionary of depth at most $\min(r,s)+1$, obtained if necessary by
+exchanging the two clusters and using the continued branch on
+the negative real axis.  This is an upper bound on a supplied
+representation, not a claim of minimal functional depth.
+\end{theorem}
+
+\begin{proof}
+Apply the ordinary face functional termwise to
+\eqref{tc:eq:Gamma-product}.  This is justified directly in the
+scalar beta formula: the endpoint-chord remainder of the $n$th
+logarithm is bounded in $C^0$ by a constant times
+$t(1-t)(C-B)^2(n+a)^{-4}$ on each compact parameter set.
+The fixed logarithmic beta kernels are integrable.  Alternatively,
+the second derivatives of the log terms converge normally and the
+face is continuous in the $C^2$ norm.  Constants disappear, and
+Lemma~\ref{tc:lem:logarithm} gives the displayed result.
+
+Each $P_{r,s}(z)$ is $O(z^2)$ at zero, since its first index is one
+and its depth is at least two.  The arguments in the tail are
+$O(n^{-2})$.  Hence the spectral summands are $O(n^{-4})$,
+uniformly on compact subsets.  A finite number of initial arguments
+may lie to the left of $-1$ if $C<B$; their analytically continued
+values are regular.  This proves absolute and local normal
+convergence without a small-displacement hypothesis.
+
+The first expression has depth at most $s+1$.
+The same face with the two clusters exchanged has depth at most
+$r+1$.  Taking the smaller establishes the asserted bound.
+\end{proof}
+
+The symmetry just used gives the precise transformation
+\begin{equation}\label{tc:eq:Landen}
+ P_{r,s}(z)=P_{s,r}\!\left(\frac{z}{z-1}\right),
+       \qquad z\in\mathbb C\setminus[1,\infty).
+\end{equation}
+It also follows from the classical composition form of the
+multiple-polylogarithm Landen connection formula
+\cite{okudaueno}.  Here it provides a check on branch conventions
+and a useful way to choose the smaller-depth expression.
+
+The first collision coefficient checks all factorial normalizations:
+\begin{equation}\label{tc:eq:collision-check}
+ I_{r+s}(G_a;B^r,(B+\delta)^s)
+  =\frac{(-1)^{r+s-1}}2rs(r+s-2)!\,
+     \delta^2\sum_{n=0}^{\infty}
+                     \bigl((n+a)^2+B\bigr)^{-2}
+       +O(\delta^3).
+\end{equation}
+This agrees with the predecessor's factorial-variance monomial
+formula.  The full dictionary is global for $B,C\ge0$, whereas
+that local collision expansion need not converge at the desired
+displacement.
+
+\subsection{Two equal displaced masses and a worked ordinary integral}
+
+For $s=1$, \eqref{tc:eq:P} becomes
+$P_{r,1}=\operatorname{Li}_{1,r}$ and recovers precisely the
+incoming one-displaced theorem.  For $s=2$ it gives the new
+all-multiplicity specialization
+\begin{equation}\label{tc:eq:two-displaced}
+ \boxed{\displaystyle
+ P_{r,2}(z)=r\operatorname{Li}_{1,r+1}(z)
+     +\sum_{j=1}^{r}\operatorname{Li}_{1,j,r+1-j}(z).}
+\end{equation}
+Thus $r$ equal base masses and two equal displaced masses have
+depth at most three for every $r$.  No increase in the base
+multiplicity increases this bound.
+
+For example, set
+$E_a(t)=G_a(B+(C-B)t)-(1-t)G_a(B)-tG_a(C)$ and
+$q_n=(C-B)/((n+a)^2+C)$.  The case $r=s=2$ gives the completely
+ordinary identity
+\begin{align}
+ &\int_0^1\frac{E_a(t)}{t(1-t)}
+                 \bigl(\log t\log(1-t)+\zeta(2)\bigr)\,dt
+       \notag\\
+ &\qquad=-\sum_{n=0}^{\infty}
+   \left(2\operatorname{Li}_{1,3}(q_n)
+         +\operatorname{Li}_{1,1,2}(q_n)
+         +\operatorname{Li}_{1,2,1}(q_n)\right).
+                                                     \label{tc:eq:worked-integral}
+\end{align}
+At $a=2.3$, $B=0.2$, $C=0.9$, the associated face
+$I_4(G_a;B,B,C,C)$ is
+\[
+ -0.0836254300916287651503714290194933682217772138996833\ldots.
+\]
+This decimal is an independently checked diagnostic; the identity
+is proved above for the full parameter domain.
+
+\subsection{Mass derivatives and anchored polylogarithmic primitives}
+
+Delete the first index one in \eqref{tc:eq:P} and put
+\begin{equation}\label{tc:eq:Rpolylog}
+ R_{r,s}(z)=\sum_{d=1}^{s}\binom{r+s-d-1}{r-1}
+   \sum_{\substack{p_1+\cdots+p_d=r+s-1\\p_i\ge1}}
+                       \operatorname{Li}_{p_1,\ldots,p_d}(z).
+\end{equation}
+The defining strict series gives
+$P'_{r,s}(z)=R_{r,s}(z)/(1-z)$.  It follows that
+\begin{align}
+ \partial_C I_{r+s}(G_a;B^r,C^s)
+   &=(-1)^{r+s-1}r!s!
+       \sum_{n=0}^{\infty}
+           \frac{R_{r,s}(q_n)}{(n+a)^2+C},\label{tc:eq:Cderivative}\\
+ \partial_B I_{r+s}(G_a;B^r,C^s)
+   &=-(-1)^{r+s-1}r!s!
+       \sum_{n=0}^{\infty}
+           \frac{R_{r,s}(q_n)}{(n+a)^2+B}.
+                                                     \label{tc:eq:Bderivative}
+\end{align}
+These are total derivatives of the repeated cluster parameters:
+$\partial_C$ moves all $s$ copies of $C$ together.  They should not
+be confused with a derivative in just one independently labelled mass.
+The displayed expressions have depth at most $s$; exchanging clusters
+gives a representation with depth at most $\min(r,s)$.
+
+Termwise differentiation is legitimate.  For the tail, the arguments
+lie in one fixed small disk, where $P(z)=O(z^2)$ and $R(z)=O(z)$;
+local holomorphic extensions and Cauchy estimates give normal
+convergence of every fixed parameter derivative.  The finitely many
+initial summands stay off their cuts.  Consequently these equations
+also give higher polygamma identities after further differentiation.
+Since $I_{r+s}(G_a;B^{r+s})=0$, integration of
+\eqref{tc:eq:Cderivative} from $C=B$ to the desired endpoint is an
+anchored antiderivative with no undetermined constant.
+
+\subsection{Verification and the exact scope of the resolved question}
+
+The supplied script compares two independently organized exact
+coefficient calculations: the incoming monomial-face formula at
+$0^r,1^s$, and \eqref{tc:eq:P} after the substitution
+$z=u/(1+u)$.  It checks $r,s\in\{1,2,3,4\}$ and monomial degrees
+$2$ through $15$, together with the corresponding Landen
+coefficients, for a total of $448$ exact rational assertions.
+Four numerical comparisons at $90$ decimal digits use the ordinary
+beta integral on one side and strict harmonic sums with a
+Hurwitz-zeta spectral tail on the other.  Their absolute residuals
+range from $9.8\times10^{-77}$ to $3.3\times10^{-75}$.
+One case has $C-B>a^2+B$, outside the predecessor's local
+collision-series disk.  These are floating-point diagnostics,
+not certified interval enclosures or proof-assistant proofs.
+
+The result resolves the request at the end of the incoming
+spectral-face section for an explicit dictionary when the mass set
+has exactly two distinct values, allowing every multiplicity.  It
+partially advances Q4 of that report.  It does not evaluate two
+\emph{unequal} displaced masses above a third base mass, does not
+prove that every two-cluster expression reduces to depth two, and
+does not establish a minimal depth theorem.  A precise next target
+is the three-cluster case $B^r,C,D$ with $C\ne D$, where an
+aggregation into three independent regulator sums should retain
+the same ordinary face normalization.
+
+% END INCLUDED SOURCE: sections/04_clusters
+
+% BEGIN INCLUDED SOURCE: sections/05_parity
+\section{An exact depth-two example with two Gaussian colors}
+\label{par:sec:two-colors}
+
+The Family 2 discussion in the manuscript \cite{repo} concerns
+the left-hand side below. We evaluate it in a smaller set of
+classical constants by an explicit exact certificate. Our strict convention is
+\begin{equation}\label{par:eq:convention}
+ \Li_{a,b}(u,v)=\sum_{n>m>0}\frac{u^n v^m}{n^a m^b}.
+\end{equation}
+In particular, both colors in $\Li_{a,b}(i,i)$ are attached to
+summation indices: its numerator is $i^{n+m}$.
+This is different from the one-variable value $\Li_{a,b}(i,1)$.
+Let $G=\sum_{k\ge0}(-1)^k/(2k+1)^2$ be Catalan's constant.
+
+\begin{theorem}[A weight-three two-color reduction]\label{par:thm:two-colors}
+In the convention~\eqref{par:eq:convention},
+\begin{equation}\label{par:eq:example}
+ \boxed{\displaystyle
+ \operatorname{Re}\!\left(\Li_{1,2}(i,i)-\Li_{2,1}(i,i)\right)
+ =\frac{9}{32}\zeta(3)-\frac{\pi G}{4}
+      +\frac{7\pi^2\log2}{96}.}
+\end{equation}
+The proof below is a finite rational certificate using double-shuffle
+and distribution identities. It does not use numerical recognition or
+an unproved inversion formula.
+\end{theorem}
+
+\subsection{Convergent relations, including the leading-one limit}
+
+All the series used below converge in their ordinary outer-index order.
+Indeed, every $\Li_{2,1}(u,v)$ with $|u|=|v|=1$ converges absolutely,
+since $\sum_{n\ge1}H_{n-1}/n^2<\infty$.
+For $u\ne1$, $|u|=|v|=1$, write
+\[
+ \sum_{m<n}\frac{v^m}{m^2}=\Li_2(v)+O(n^{-1}).
+\]
+Then $\Li_{1,2}(u,v)$ is the sum of
+$\Li_2(v)\sum_{n\ge1}u^n/n$ and an absolutely convergent remainder.
+The single leading-one values below also have colors different from one.
+
+For $x,y$ among the fourth roots of unity, define
+\begin{align}\label{par:eq:R}
+ \mathcal R(x,y)={}&
+ \Li_{1,2}(x,y/x)+\Li_{2,1}(x,y/x)
+       +\Li_{2,1}(y,x/y)\notag\\
+ &-\Li_{1,2}(x,y)-\Li_{2,1}(y,x)-\Li_3(xy).
+\end{align}
+When $x=1$, the two identical leading-one terms in this expression
+are canceled \emph{before} evaluation. Thus the definition is then
+\begin{equation}\label{par:eq:R-limit}
+ \mathcal R(1,y)=
+ \Li_{2,1}(1,y)+\Li_{2,1}(y,y^{-1})
+       -\Li_{2,1}(y,1)-\Li_3(y).
+\end{equation}
+
+\begin{lemma}\label{par:lem:R}
+Every value $\mathcal R(x,y)$ used here is zero, including $x=1$.
+\end{lemma}
+
+\begin{proof}
+For $x\ne1$, the strict stuffle product gives
+\begin{equation}\label{par:eq:stuffle}
+ \Li_1(x)\Li_2(y)
+ =\Li_{1,2}(x,y)+\Li_{2,1}(y,x)+\Li_3(xy).
+\end{equation}
+One may obtain it by multiplying finite sums with the same cutoff and
+partitioning the square into $n>m$, $n<m$, and $n=m$, then using the
+convergence just established.
+For the shuffle product, use $\omega_0=\dd t/t$ and
+$\omega_c=c\,\dd t/(1-ct)$ for $c\ne0$.
+Define the endpoint-one iterated integral with $c_1$ outermost by
+\[
+ J(c_1,\ldots,c_w)=
+ \int_{0<t_w<\cdots<t_1<1}\prod_{j=1}^w\omega_{c_j}(t_j).
+\]
+Expanding the kernels below endpoint one and then taking the convergent
+endpoint limit gives
+\[
+ \Li_{1,2}(u,v)=J(u,0,uv),\qquad
+ \Li_{2,1}(u,v)=J(0,u,uv).
+\]
+The three interleavings of $J(x)$ and $J(0,y)$ therefore give
+\begin{equation}\label{par:eq:shuffle}
+ \Li_1(x)\Li_2(y)
+ =\Li_{1,2}(x,y/x)+\Li_{2,1}(x,y/x)
+       +\Li_{2,1}(y,x/y).
+\end{equation}
+Subtracting~\eqref{par:eq:stuffle} proves the claim for $x\ne1$.
+
+Here is a direct justification of the limiting relation at $x=1$;
+no divergent series is assigned a value. Apply the two product formulas
+with $x=r\in(0,1)$ and keep $|y|=1$ fixed. The difference of their
+leading-one terms satisfies
+\begin{align*}
+ &\Li_{1,2}(r,y/r)-\Li_{1,2}(r,y)\\
+ &\quad=\sum_{m,k\ge1}
+       \frac{y^m r^k(1-r^m)}{(m+k)m^2},\\
+ &\left|\Li_{1,2}(r,y/r)-\Li_{1,2}(r,y)\right|
+ \le -\log(1-r)\bigl(\zeta(2)-\Li_2(r)\bigr)
+ =O\!\left((1-r)\log^2(1-r)\right).
+\end{align*}
+The bound tends to zero. For example,
+$\zeta(2)-\Li_2(r)=\int_r^1-\log(1-t)\,\dd t/t
+\le (1-r)(1-\log(1-r))/r$.
+Each remaining depth-two term is dominated by
+$\sum_{n>m}n^{-2}m^{-1}$, and the trilogarithm converges absolutely.
+Letting $r\uparrow1$ proves~\eqref{par:eq:R-limit}.
+In particular $\mathcal R(1,1)=0$ is Euler's identity
+$\Li_{2,1}(1,1)=\zeta(3)$, with its proof included in this limit argument.
+\end{proof}
+
+For $u,v\in\{1,-1\}$ choose $\sqrt1=1$ and $\sqrt{-1}=i$, and put
+\begin{align}
+ \mathcal D_s(u)
+ &:=\Li_s(u)-2^{s-1}
+       \bigl(\Li_s(\sqrt u)+\Li_s(-\sqrt u)\bigr),
+       \label{par:eq:Dsingle}\\
+ \mathcal D_{a,b}(u,v)
+ &:=\Li_{a,b}(u,v)-2^{a+b-2}
+       \sum_{\epsilon,\eta\in\{1,-1\}}
+          \Li_{a,b}(\epsilon\sqrt u,\eta\sqrt v).
+       \label{par:eq:Ddouble}
+\end{align}
+Only convergent instances occur in the table below: $s=3$ with $u=\pm1$,
+$s=2$ with $u=1$, $s=1$ with $u=-1$, $(a,b)=(2,1)$ with the listed
+colors, and $(a,b)=(1,2)$ with $u=-1$.
+All these $\mathcal D$ values are zero. To prove this directly, sum the
+signs in a finite outer-cutoff sum. They select the even summation indices;
+replacing each index by twice a new index gives the factor $2^{d-w}$
+at depth $d$ and weight $w$. The outer cutoff becomes its integer half.
+Pass to the limit using the preceding convergence checks.
+
+\subsection{The complete rational certificate}
+
+Write $\delta_s=\Li_s(i)-\Li_s(-i)$ for $s=1,2$ and define
+\begin{equation}\label{par:eq:target}
+ \mathcal T=
+ 96\bigl(\Li_{1,2}(i,i)-\Li_{2,1}(i,i)\bigr)
+ -27\Li_3(1)-24\delta_1\delta_2
+ +42\Li_2(1)\Li_1(-1).
+\end{equation}
+The following table specifies a finite formal identity:
+\begin{equation}\label{par:eq:certificate}
+ \operatorname{Re}\mathcal T
+   =\operatorname{Re}\sum_{j=1}^{15}c_j\mathcal E_j.
+\end{equation}
+\begin{center}
+\begin{tabular}{r r l}
+\hline
+$j$ & $c_j$ & $\mathcal E_j$ \\
+\hline
+1 & $-15$ & $\mathcal D_3(1)$ \\
+2 & $6$ & $\mathcal D_3(-1)$ \\
+3 & $-24$ & $\mathcal R(1,-1)$ \\
+4 & $60$ & $\mathcal D_{2,1}(-1,-1)$ \\
+5 & $96$ & $\mathcal R(i,1)$ \\
+6 & $192$ & $\mathcal R(i,-1)$ \\
+7 & $12$ & $\mathcal D_{2,1}(1,1)$ \\
+8 & $12$ & $\mathcal R(1,1)$ \\
+9 & $-168$ & $\Li_1(i)\mathcal D_2(1)$ \\
+10 & $90$ & $\mathcal D_{2,1}(1,-1)$ \\
+11 & $96$ & $\mathcal R(i,i)$ \\
+12 & $192$ & $\mathcal R(1,i)$ \\
+13 & $12$ & $\mathcal D_{1,2}(-1,-1)$ \\
+14 & $42$ & $\mathcal D_{1,2}(-1,1)$ \\
+15 & $-12$ & $\Li_2(-1)\mathcal D_1(-1)$ \\
+\hline
+\end{tabular}
+\end{center}
+
+For a completely explicit check of~\eqref{par:eq:certificate}, expand
+the definitions of $\mathcal R$ and $\mathcal D$, and expand the products
+by~\eqref{par:eq:stuffle}. Identify the real part of each coordinate with
+the real part of its complex conjugate. With
+\[
+ X_{a,b}^{p,q}=\operatorname{Re}\Li_{a,b}(i^p,i^q),
+ \qquad Z_p=\operatorname{Re}\Li_3(i^p),
+\]
+both sides of~\eqref{par:eq:certificate} become precisely
+\begin{equation}\label{par:eq:expanded-certificate}
+ 48X_{1,2}^{1,1}+48X_{1,2}^{1,3}+42X_{1,2}^{2,0}
+ +42X_{2,1}^{0,2}-144X_{2,1}^{1,1}+48X_{2,1}^{1,3}
+ +21Z_0-6Z_2.
+\end{equation}
+This is an identity in a finite rational vector space before evaluating
+any period. The companion script independently constructs the six-term
+shuffle residuals directly in strict index-and-color coordinates,
+expands every row, and checks equality with exact fractions.
+
+\begin{proof}[Proof of Theorem~\ref{par:thm:two-colors}]
+Every $\mathcal E_j$ is zero by Lemma~\ref{par:lem:R} or the finite-cutoff
+distribution identities, so~\eqref{par:eq:certificate} gives
+$\operatorname{Re}\mathcal T=0$.
+The elementary single-value evaluations needed to simplify it are
+\[
+ \Li_1(i)=-\frac{\log2}{2}+\frac{\pi i}{4},\qquad
+ \delta_1=\frac{\pi i}{2},\qquad
+ \delta_2=2iG,\qquad
+ \Li_2(1)=\frac{\pi^2}{6},\qquad
+ \Li_1(-1)=-\log2.
+\]
+Here the first identity follows from $\Li_1(z)=-\log(1-z)$ with the
+principal logarithm, and the formula for $\delta_2$ follows by taking the
+odd terms of the absolutely convergent dilogarithm series.
+Substitution into~\eqref{par:eq:target} yields
+\[
+ 0=96\operatorname{Re}\!\left(\Li_{1,2}(i,i)-\Li_{2,1}(i,i)\right)
+     -27\zeta(3)+24\pi G-7\pi^2\log2.
+\]
+Division by $96$ proves~\eqref{par:eq:example}.
+\end{proof}
+
+The ordinary stuffle product supplies, as a further consequence, the
+individual real values
+\begin{align}
+ \operatorname{Re}\Li_{2,1}(i,i)
+   &=\frac{15}{64}\zeta(3)-\frac{\pi^2\log2}{32},
+   \label{par:eq:individual-21}\\
+ \operatorname{Re}\Li_{1,2}(i,i)
+   &=\frac{33}{64}\zeta(3)-\frac{\pi G}{4}
+       +\frac{\pi^2\log2}{24}.
+   \label{par:eq:individual-12}
+\end{align}
+Indeed, $\Li_1(i)\Li_2(i)=\Li_{1,2}(i,i)+\Li_{2,1}(i,i)+\Li_3(-1)$,
+while $\operatorname{Re}\Li_2(i)=-\pi^2/48$ and
+$\Li_3(-1)=-3\zeta(3)/4$ by even--odd splitting.
+Together with~\eqref{par:eq:example}, these identities determine the sum
+and difference of the two real values.
+
+\subsection{Reconciliation with the printed Family 2 expression}
+\label{par:sec:family2-bridge}
+
+The manuscript's displayed Family 2 expression
+(\src{double:eq:fam2-example}) uses
+\[
+ L=\log2,\qquad r=\frac{1+i}{2},\qquad
+ \mu_2+i\lambda_2=\Li_2(r),\qquad
+ h_{a,b}=\operatorname{Re}\Li_{a,b}(i,1).
+\]
+To prove that its right side agrees with~\eqref{par:eq:example}, we first
+evaluate the required $h_{1,2}$ independently of the printed equality.
+
+\begin{lemma}\label{par:lem:h12}
+In the strict convention~\eqref{par:eq:convention},
+\begin{equation}\label{par:eq:h12}
+ h_{1,2}=-\frac{29}{32}\zeta(3)+\frac{\pi G}{4}
+                         +\frac{\pi^2L}{96}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Use the same $\delta_s$ and relation rows $\mathcal E_j$ as in
+the certificate~\eqref{par:eq:certificate}, and put
+\[
+ \mathcal T_h=96\Li_{1,2}(i,1)+87\Li_3(1)
+                +24\delta_1\delta_2+6\Li_2(1)\Li_1(-1).
+\]
+A second exact rational identity in those same coordinates is
+\begin{align}\label{par:eq:h12-certificate}
+ \operatorname{Re}\mathcal T_h
+ =\operatorname{Re}\bigl(&-9\mathcal E_1+18\mathcal E_2
+ -12\mathcal E_4-96\mathcal E_5-24\mathcal E_9
+ +6\mathcal E_{10}\notag\\
+ &-12\mathcal E_{13}+6\mathcal E_{14}+12\mathcal E_{15}\bigr)=0.
+\end{align}
+As before, this is checked just by expanding the displayed definitions,
+stuffle products, and conjugate pairs. Every row on the right vanishes
+by the already proved convergent identities; the only shuffle row
+needed here has first factor $\Li_1(i)$.
+Since $\delta_1\delta_2=-\pi G$ and
+$\Li_2(1)\Li_1(-1)=-\pi^2L/6$, the left side is
+$96h_{1,2}+87\zeta(3)-24\pi G-\pi^2L$.
+Solving proves~\eqref{par:eq:h12}. The companion bridge verifier
+reconstructs these nine rows and checks the exact residual separately
+from the two-color identity.
+\end{proof}
+
+The remaining depth-one and logarithmic quantities are
+\begin{equation}\label{par:eq:bridge-values}
+ \mu_2=\frac{5\pi^2}{96}-\frac{L^2}{8},\qquad
+ \lambda_2=G-\frac{\pi L}{8},\qquad
+ h_{1,1}=\frac{L^2}{8}-\frac{\pi^2}{32}.
+\end{equation}
+For completeness, the classical dilogarithm reflection and Landen
+identities \cite{okudaueno} give
+\[
+ 2\mu_2=\zeta(2)-\log r\log\bar r,
+ \qquad
+ \Li_2(i)+\Li_2(\bar r)=-\tfrac12\log^2(1-i).
+\]
+Use $\log r=-L/2+i\pi/4$ and $\log(1-i)=L/2-i\pi/4$
+to obtain the first two evaluations in~\eqref{par:eq:bridge-values}.
+These standard dilogarithm identities follow by differentiating and
+fixing the constant at zero, with continuation in the principal domains
+containing the displayed arguments. Finally,
+$\Li_{1,1}(i,1)=\tfrac12\log^2(1-i)$ follows from the shuffle of
+two identical one-letter integrals, and gives the third evaluation.
+
+\begin{corollary}[The printed Family 2 equality]\label{par:cor:family2-printed}
+The displayed depth-two identity in the manuscript is valid:
+\begin{equation}\label{par:eq:family2-printed}
+ \operatorname{Re}\!\left(\Li_{1,2}(i,i)-\Li_{2,1}(i,i)\right)
+ =3\zeta(3)-4L\mu_2-\pi\lambda_2-4h_{1,1}L+3h_{1,2}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+Substituting~\eqref{par:eq:h12} and~\eqref{par:eq:bridge-values} into the
+right side gives
+\begin{align*}
+ &\left(3-\frac{87}{32}\right)\zeta(3)
+ +\left(-1+\frac34\right)\pi G
+ +\left(-\frac{20}{96}+\frac{12}{96}
+          +\frac{12}{96}+\frac3{96}\right)\pi^2L
+ +\left(\frac12-\frac12\right)L^3\\
+ &\qquad=\frac9{32}\zeta(3)-\frac{\pi G}{4}
+                 +\frac{7\pi^2L}{96}.
+\end{align*}
+This equals the independently proved left side by
+Theorem~\ref{par:thm:two-colors}.
+\end{proof}
+
+\paragraph{Independent diagnostic.}
+For verification against the strict convention, direct differentiation
+and integration of~\eqref{par:eq:convention} give
+\[
+ \operatorname{Re}\Li_{1,2}(i,i)
+ =\operatorname{Re}\int_0^1\frac{i\Li_2(-t)}{1-it}\,\dd t,
+ \qquad
+ \operatorname{Re}\Li_{2,1}(i,i)
+ =-\int_0^1\frac{t\log t\log(1+t)}{1+t^2}\,\dd t.
+\]
+An optional $80$-digit quadrature in the companion script gives
+\[
+ \operatorname{Re}\!\left(\Li_{1,2}(i,i)-\Li_{2,1}(i,i)\right)
+ =0.11751017576784368621941000460386119840621435030463\ldots.
+\]
+This is a numerical diagnostic; the finite relation and analytic
+arguments above prove the identity. No conclusion about $S_6$ or the
+revised $S_8$ conjecture follows from this example.
+
+% END INCLUDED SOURCE: sections/05_parity
+
+% BEGIN INCLUDED SOURCE: sections/06_audit_research
+\section{Audit, corrections, and integration status}
+\label{sec:audit}
+
+\subsection{What was actually checked}
+
+The source anchor is the repository revision \pin. All eleven archives
+in the supplied incoming directory at that revision were unpacked and
+indexed. The review concentrated on their theorem and question ledgers
+and on the passages used by the present arguments. The manuscript
+review concentrated on Gaussian depth reduction, the $S_6$ obstruction,
+the revised $S_8$ candidate, and the harmonic/Gamma interfaces.
+This targeted review is not a certification of all manuscript volumes
+or every theorem in the incoming reports.
+
+Three source questions have precise new outcomes:
+
+\begin{enumerate}
+\item \textbf{Ordered boundary report, research question 2.}
+The positive constants in \src{sections/08_gamma_basis.tex} are
+evaluated by Theorem~\ref{gn:thm:K}. Its proof uses the source's
+established top-row identities and a classical integral with an
+explicitly checked normalization. The matrix $T_m$ and all column
+orders are stated before use. The later-index determinant in
+\eqref{gn:eq:F-explicit} is a different object.
+
+\item \textbf{Balanced Stieltjes report, research question 4.}
+The homogeneous colored balancing, its natural Lerch coordinates,
+its ordinary Mellin moments, and its finite root-of-unity filter
+are supplied in Sections~\ref{sec:colored}--\ref{sec:color-limit}.
+Uniqueness is asserted for coefficients independent of the shift
+and for a decay condition across an open interval of shifts.
+This is the same kind of hypothesis needed in the predecessor's
+uncolored uniqueness theorem.
+
+\item \textbf{Lattice-contact report, end of the spectral-face section
+and research question Q4.}
+Theorem~\ref{tc:thm:Gamma} treats exactly two distinct mass values at
+every pair of positive multiplicities. It supplies a finite
+dictionary per spectral term. A problem involving two unequal
+displaced masses above a third base value has three clusters and
+remains outside this theorem.
+\end{enumerate}
+
+The companion source manifest records the archive names and their
+SHA-256 hashes. The integration notes list exact predecessor paths
+and theorem labels, so a later integration can reconcile the new
+results with a changed repository head.
+
+\subsection{Corrections and qualifications}
+
+No false mathematical theorem was identified in the particular
+incoming passages used for these three developments. It would be
+misleading to manufacture an erratum from an open question that
+the source already labels correctly. The following distinctions
+are nevertheless essential when integrating the continuation.
+
+\paragraph{The colored generator changes.}
+For a nontrivial color, $\Phi(\omega,s,a)$ has no pole at $s=1$.
+The appropriate balanced kernel is \eqref{col:kernel}. Copying
+the extra uncolored term $\log^{q+1}x/(q+1)$ would spoil its
+large-$x$ cancellation. This is a correction to that potential
+extension, not a claim that the incoming uncolored definition
+is erroneous.
+
+\paragraph{Fixed-shift uniqueness can fail.}
+The open-interval clause in Theorem~\ref{col:unique} cannot simply
+be deleted on the full color domain. The exceptional-color
+example following that theorem exhibits simultaneous vanishing
+of consecutive tail coordinates. At such a point, a logarithm
+times a lower balanced kernel can preserve the required decay.
+
+\paragraph{Constant terms depend on the chosen expression.}
+The raw $\lambda$-constant term of
+$M_{m,q}(\lambda,a)$ differs from that of
+$e^{-a\lambda}M_{m,q}(\lambda,a)$ by $L_{m,q}a^m/m$.
+Equations \eqref{col:renorm} and \eqref{col:raw-CT} retain that
+term explicitly. This avoids an incorrect identification of a
+color limit with an uncolored ordinary moment.
+
+\paragraph{Positivity does not settle every later determinant.}
+The positive density \eqref{gn:eq:density} evaluates the
+normalizing determinant. The source's later rows involve
+$\Im(x+i/2)^{2r}$ with oscillatory signs. One cannot infer all
+later signs by applying positivity of a Vandermonde product to
+a different matrix. In particular, no all-pairs nonvanishing
+claim follows from the closed formula for $K_m$ alone.
+
+\paragraph{Finite normal moments do not give a finite-dimensional
+normal distribution.}
+The statistic in Theorem~\ref{gn:thm:gaussian} is bounded at fixed
+$n,\sigma$. We prove equality of moments only through degree
+$n+1$, and we do not assert that this range is maximal.
+The distributional limit in Corollary~\ref{gn:cor:CLT} has a
+separate moment-method proof.
+
+\paragraph{Branch and color conventions remain explicit.}
+The two-cluster $\Li_{\boldsymbol a}(z)$ assigns its argument only
+to the largest summation index. Colored depth-two notation uses
+two independent color factors and is defined separately.
+When $C<B$, the cluster formula uses the continuation on
+$\C\setminus[1,\infty)$; substituting a divergent power series
+at a negative argument of modulus greater than one is not valid.
+Likewise, the ordinary $\omega$ series for the colored balanced
+kernel is used only inside its disk of convergence before
+continuation to the full slit domain.
+
+\paragraph{A small editorial correction.}
+At the pinned revision, the manuscript README repeats consecutively
+the paragraph describing the complete $1{,}032$-input first-letter
+$X$ family, its rank $1{,}008$, and its kernel dimension $24$.
+The optional patch in the integration directory removes one
+copy and leaves the mathematical statements unchanged.
+
+\subsection{Evidence and its limits}
+
+Analytic proofs establish the identities. The accompanying exact
+and numerical calculations provide independent checks on the
+algebra, normalization, and selected parameter values.
+
+The Gamma normalization suite evaluates the original coefficient
+matrices at $m=1,2,3$, the parameterized determinants at unequal
+real and complex shifts, and scalar digamma/polygamma insertions.
+It contains fourteen checks at $42$ decimal digits; the largest
+recorded relative residual is approximately $7.1\times10^{-43}$.
+The finite-Gaussian suite constructs exponential jets of ordinary
+one-dimensional moment integrals and takes their determinant by
+finite polynomial arithmetic. It does not use the paired Gamma
+product on the left side. Its fifteen checks include the fourth
+moment at $n=3$ and non-quarter shifts; the largest recorded
+absolute residual is approximately $4.9\times10^{-41}$.
+
+The cluster suite contains $448$ exact rational assertions,
+comparing two different coefficient constructions and checking
+cluster exchange. Four independent numerical comparisons at
+$90$ digits include a displacement outside the predecessor's
+local collision-series disk. The colored suite supplies $41$ exact assertions and eleven
+numerical checks at $50$ digits, covering finite tail and zeta
+coefficients, a simultaneous-tail-zero example, ordinary moments,
+root-of-unity specializations, and an anchored primitive. Its
+largest numerical residual is approximately $5.4\times10^{-37}$.
+Three further $55$-digit checks evaluate a negative cluster argument
+$q=-4$, its Landen transform, and the oriented anchored primitive.
+The separate depth-two certificate uses exact rational
+relations, with its conventions and limiting argument explained
+in the corresponding section. A second certificate, using nine
+of the same relation rows, evaluates the intermediate $h_{1,2}$
+and reconciles the actual printed Family 2 right side exactly.
+
+The JSON records specify the checks actually performed. Floating
+point residuals are diagnostics, not certified error intervals.
+An exact certificate verifies an algebraic reduction under its
+stated analytic identities; it is not by itself a formalization
+of convergence in a proof assistant. No decimal relation search
+is promoted to a proof of $S_6$ or $S_8$.
+
+\section{Further research questions}
+\label{sec:research}
+
+The results suggest several concrete next problems. The order below
+prioritizes exact identities and structural classification over
+estimates. Where a question is already in the supplied sources,
+the proposed next step is stated relative to the new formulas.
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=*]
+
+\item \textbf{Find the first non-Gaussian moment and its exact defect.}
+For the statistic $X_{n,\sigma}$, determine
+\[
+ \mathbb E X_{n,\sigma}^{\,n+2}
+       -\mathbb E Z^{\,n+2},\qquad Z\sim N(0,1),
+\]
+and decide whether $n+1$ is the exact universal matching degree.
+The distinct-parameter proof stops because there are only
+$n+1$ pair labels. Repeated powers of one label bring in
+$S_3,S_5,\ldots$; the complete generating identity
+\eqref{gn:eq:polygamma-germ} gives coupled equations for these
+new coordinates. This is an algebraic obstruction to isolate,
+not evidence that the next moment must be nonzero in every case.
+
+\item \textbf{Classify joint polygamma moments.}
+Give a finite combinatorial rule for the mixed cumulants of
+$S_1,S_3,S_5,\ldots$ obtainable from the paired deformation.
+The logarithm of the Gamma product involves interactions of at
+most two parameter labels, but repeated powers of a label carry
+higher polygamma statistics. A useful theorem would state
+precisely which joint moments can be separated at dimension $n$,
+and give their coefficients as polygamma values at $2\sigma$.
+At $\sigma=1/4$, reflection should yield especially short
+rational combinations of powers of $\pi$.
+
+\item \textbf{Extend the determinant evaluation to later source rows.}
+For the determinant in \eqref{gn:eq:F-explicit}, express a
+prescribed family of later row sets as the evaluated Gustafson
+normalizer times an explicit symmetric polynomial or a finite
+hypergeometric sum. Such an identity would preserve the
+oscillatory polynomial insertions exactly. It could address
+the source's fixed-gap sign changes without an unjustified
+total-positivity argument. The gap-six statement
+$\det F_{b,3}>0$ for $b\ge7$ remains a concrete open target
+\cite{repoordered}.
+
+\item \textbf{Classify simultaneous zeros of colored tails.}
+For
+$A_k(\omega,a)=(\omega\partial_\omega+a)^k(1-\omega)^{-1}$,
+classify all common zeros of consecutive $A_k$ at $a>0$ and
+$\omega\in\Omega$. The example in this article proves that
+consecutive zeros do occur. Determine the resulting dimension
+of the space of homogeneous combinations with enhanced decay,
+and the exact extra ordinary moments that each zero pattern
+permits. A classification on the unit circle may be simpler
+than one on the entire slit domain.
+
+\item \textbf{Give a character-theoretic exceptional-moment dictionary.}
+Apply finite combinations of root-of-unity colors to isolate
+Dirichlet characters. At a negative integer where the relevant
+$L$-function vanishes, determine the corresponding ordinary
+Stieltjes-difference integral and simplify it using the
+functional equation. The alternating beta family
+\eqref{col:beta-formula} is the first case. A complete statement
+should distinguish primitive and imprimitive characters and
+retain their conductor and parity factors.
+
+\item \textbf{Evaluate the first bilinear colored moment.}
+For positive shifts, determine a natural ordinary domain and an
+exact function class for
+\[
+ \int_0^\infty x^{u-1}
+                  C_p^\omega(x,a)C_q^\eta(x,b)\dd x.
+\]
+The scalar Mellin formula suggests a Mellin convolution, but
+the transform of a product is not the product of transforms.
+One target is a two-parameter beta/Feynman integral whose
+integer contacts reduce to a finite family of multiple-Lerch
+coordinates. Coincident shifts and inverse colors are plausible
+specializations to analyze first.
+
+\item \textbf{Resolve the three-cluster spectral face.}
+For $B^r,C,D$ with three distinct nonnegative masses, aggregate
+the independent regulators into three sums before extracting
+the squarefree coefficient. The two-cluster proof then suggests
+a two-simplex hypergeometric integral and a finite iterated
+integral dictionary. Determine the correct multivariable
+polylogarithm arguments and branch domain. The answer should
+explain what changes when $C=D$, where the depth-three formula
+\eqref{tc:eq:two-displaced} must be recovered.
+
+\item \textbf{Determine genuine depth reductions and lattice closures.}
+The bound $\min(r,s)+1$ is a supplied representation bound.
+Can the two-cluster combinations be reduced further as
+functions? Independently, characterize parameters for which
+the outer sum in \eqref{tc:eq:Gamma-dictionary} collapses to
+finitely many multiple Gamma, Hurwitz, or polylogarithm
+coordinates. These are two different problems: reducing
+depth termwise does not eliminate an infinite spectral sum.
+
+\item \textbf{Iterate anchored primitives with their constants intact.}
+The colored primitive \eqref{col:primitive} lowers the Lerch
+order by one; the cluster derivative deletes an initial index
+one in the polylogarithm word. Iterate both operations and
+identify a canonical Barnes-function normalization for the
+root-of-unity cases. At every stage, retain explicit anchors.
+Determine whether the normalized color-one limit commutes
+with these primitives and identify any additional polynomial
+terms when it does not.
+
+\item \textbf{Supply a new relation for $S_6$ and revised $S_8$.}
+The manuscript already distinguishes the conjectural period
+equalities from its exact bounded-span and shuffle-obstruction
+theorems. A proof must introduce a relation outside the
+already excluded span, or a new analytic integral identity,
+with all branch and endpoint terms included. The weight-three
+worked reduction in this article is a useful small exact
+certificate; it does not remove the higher-weight obstruction.
+An appropriate deliverable is a rational certificate whose
+primitive rows have independent analytic proofs, not only an
+enlarged numerical relation search.
+
+\item \textbf{Formalize the reusable analytic interfaces.}
+The most useful first targets are continuous Cauchy--Binet with
+dominated parameter differentiation, finite coefficient
+extraction from normally convergent Mellin germs, and the
+independent-regulator face identity
+\eqref{tc:eq:independent-regulators}. Formalizing these
+interfaces would allow many subsequent identities to be
+checked by finite algebra while retaining the convergence
+arguments that justify that algebra.
+
+\end{enumerate}
+
+
+% END INCLUDED SOURCE: sections/06_audit_research
+
+% BEGIN INCLUDED SOURCE: references
+\clearpage
+\begin{thebibliography}{99}
+\small\raggedright
+\addcontentsline{toc}{section}{References}
+
+\bibitem{repo}
+V.~Reshetnikov, \emph{ProveIt: Analysis/Polylogarithms manuscript},
+repository revision \pin, especially the Gaussian depth-reduction
+and harmonic/Gamma chapters.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/c4036d60715916ae72dd18983782fdb182840b86/Analysis/Polylogarithms/docs/manuscript}.
+
+\bibitem{repoordered}
+ProveIt incoming report,
+\emph{Ordered Boundary Identities and Gamma Kernels},
+11 October 2026,
+archive \src{ProveIt_Ordered_Boundary_Identities_2026-10-11.zip},
+inner \src{sections/08_gamma_basis.tex}
+(\src{gb:basis}, \src{gb:moment-identities}, \src{gb:normalization})
+and \src{sections/09_audit_research.tex}, question 2,
+at revision \pin.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/c4036d60715916ae72dd18983782fdb182840b86/docs/incoming}.
+
+\bibitem{repobalanced}
+ProveIt incoming report,
+\emph{Balanced Stieltjes Moments: Bernoulli Closure, Harmonic Filters,
+and Polylogarithmic Resonances},
+11 October 2026,
+archive \src{ProveIt_Balanced_Stieltjes_Moments_2026-10-11.zip},
+inner \src{article/Balanced_Stieltjes_Moments.tex},
+especially \src{bsm:thm:unique}, \src{bsm:thm:master},
+\src{bsm:thm:integer}, and research question 4,
+at revision \pin.
+Available in the incoming directory cited above.
+
+\bibitem{repolattice}
+ProveIt incoming report,
+\emph{Lattice Contacts and Mixed Zeta Identities},
+11 October 2026,
+archive
+\src{ProveIt_Lattice_Contacts_and_Mixed_Zeta_Identities_2026-10-11.zip},
+inner \src{sections/07_spectral_faces.tex}
+(\src{sfj:thm:monomial}, \src{sfj:thm:gamma-polylog})
+and \src{sections/08_audit_and_research.tex}, Q4,
+at revision \pin.
+Available in the incoming directory cited above.
+
+\bibitem{gustafson1994}
+R.~A. Gustafson,
+\emph{Some $q$-beta and Mellin--Barnes integrals on compact Lie groups
+and Lie algebras},
+Transactions of the American Mathematical Society \textbf{341}
+(1994), 69--119.
+\url{https://doi.org/10.1090/S0002-9947-1994-1139492-3}.
+The normalization used here was checked in the primary reproduction
+\cite[equation (2)]{derkachov2017}; no uninspected original theorem
+number is asserted.
+
+\bibitem{derkachov2017}
+S.~\'E. Derkachov and A.~N. Manashov,
+\emph{Spin Chains and Gustafson's Integrals},
+Journal of Physics A: Mathematical and Theoretical \textbf{50}
+(2017), 294006; arXiv:1611.09593v2, equation (2).
+\url{https://doi.org/10.1088/1751-8121/aa749a}.
+\url{https://arxiv.org/html/1611.09593v2}.
+
+\bibitem{okudaueno}
+J.-I. Okuda and K. Ueno,
+\emph{The Sum Formula of Multiple Zeta Values and Connection Problem
+of the Formal Knizhnik--Zamolodchikov Equation},
+arXiv:math/0310259v2 (2004), especially equation (2).
+\url{https://arxiv.org/abs/math/0310259}.
+
+\bibitem{dlmfgamma}
+NIST Digital Library of Mathematical Functions,
+\S5.8, \emph{Infinite Products}, especially 5.8.3.
+\url{https://dlmf.nist.gov/5.8}.
+
+\bibitem{dlmfbeta}
+NIST Digital Library of Mathematical Functions,
+\S5.12, \emph{Beta Function}, especially Euler's beta integral.
+\url{https://dlmf.nist.gov/5.12}.
+
+\bibitem{dlmfpolygamma}
+NIST Digital Library of Mathematical Functions,
+\S5.15, \emph{Polygamma Functions}.
+\url{https://dlmf.nist.gov/5.15}.
+
+\bibitem{dlmfhurwitz}
+NIST Digital Library of Mathematical Functions,
+\S25.11, \emph{Hurwitz Zeta Function}.
+\url{https://dlmf.nist.gov/25.11}.
+
+\bibitem{dlmflerch}
+NIST Digital Library of Mathematical Functions,
+\S25.14, \emph{Lerch's Transcendent},
+especially 25.14.5 and 25.14.3\_1.
+\url{https://dlmf.nist.gov/25.14}.
+
+\bibitem{dlmfdirichlet}
+NIST Digital Library of Mathematical Functions,
+\S25.15, \emph{Dirichlet $L$-Functions}, functional equation
+for primitive characters and trivial zeros.
+\url{https://dlmf.nist.gov/25.15}.
+
+\end{thebibliography}
+
+% END INCLUDED SOURCE: references
+
+\end{document}

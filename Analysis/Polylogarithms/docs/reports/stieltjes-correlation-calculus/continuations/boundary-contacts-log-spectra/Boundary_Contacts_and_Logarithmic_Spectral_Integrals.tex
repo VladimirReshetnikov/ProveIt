@@ -1,0 +1,3238 @@
+
+% BEGIN preamble.tex
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[sc]{mathpazo}
+\usepackage[margin=0.93in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=green!35!black,
+ urlcolor=blue!50!black,
+ pdftitle={Boundary Contacts and Logarithmic Spectral Integrals},
+ pdfauthor={Research continuation prepared for Vladimir Reshetnikov with OpenAI assistance},
+ pdfsubject={Independent Hurwitz-order contacts, all-mass spectral jets, Gamma, polygamma, harmonic and polylogarithmic identities}}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}[theorem]{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Log}{Log}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\FP}{FP}
+\newcommand{\dd}{\,d}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\newcommand{\pin}{\texttt{e3d7ec5d3f9be259c1f91edaea4389f4e79b5b03}}
+\newcommand{\stir}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
+\newcommand{\one}[1]{\{1\}^{#1}}
+\allowdisplaybreaks[2]
+\setlist{topsep=4pt,itemsep=4pt,leftmargin=*}
+\setlength{\emergencystretch}{1.5em}
+\setlength{\parskip}{3pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Boundary Contacts and Logarithmic Spectral Integrals}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setcounter{tocdepth}{2}
+\title{\textbf{Boundary Contacts and\\Logarithmic Spectral Integrals}\\[7pt]
+ \large Independent Hurwitz-order jets, all-mass resolvent formulas,\\
+ and harmonic--polylogarithmic consequences}
+\author{Research continuation prepared for Vladimir Reshetnikov\\
+ \small ProveIt / Analysis / Polylogarithms\\
+ \small Mathematical derivations and computational checks with OpenAI assistance}
+\date{11 October 2026}
+
+% END preamble.tex
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We continue two explicit lines of research in the ProveIt manuscript and
+its incoming reports. First, we complete the contact algebra for the
+Gamma-normalized product of two independently ordered and independently
+shifted alternating Hurwitz tails. At every hyperplane \(p+q=-2m\), the
+symmetric cutoff contact and the alternating parity contact are finite
+rational polynomials of total spectral degree at most \(m\). We give a
+terminating coefficient algorithm, every independent mixed order
+derivative, exact cutoff translation, a sharp highest-degree generating
+function, and ordinary convergent polynomial or logarithmic subtractions.
+Two concrete series on the first negative-total-order hyperplane evaluate
+in \(\pi\), \(\log 2\), and rational numbers.
+
+Second, every derivative at zero of a scalar spectral zeta function with
+any number of quadratic masses is expressed by one absolutely convergent
+real integral. Its density is an explicit polynomial in real logarithms
+and \(\pi\), and its kernel is a digamma difference. Finite asymptotic subtraction
+extends the theorem to every even polynomial weight and, consequently,
+to every spectral derivative at every nonpositive integer. Products of logarithmic
+mass increments have a compactly supported density with exact vanishing
+moments. This gives all connected interactions, regular coincident-mass
+limits, a critical odd-weight subtraction, polygamma derivatives, and
+anchored log-Gamma primitives. The repeated-mass density has a beta
+generating function; its moments are Stirling and generalized harmonic
+polynomials, and its polylogarithmic transform is a height-one multiple
+polylogarithm.
+
+The proofs specify branches, continuation, cutoff coordinates, and every
+interchange. We retain the attribution of the existing local spectral
+correction theorem and of classical Gamma, Hurwitz, and multiple-zeta
+identities. A source audit supplies a definite reciprocal-Gamma
+transcription correction and reconciles two stale research targets with
+already-preserved proofs. Exact symbolic checks and separate high-precision
+diagnostics accompany the article. Historical priority, arithmetic
+independence, interval certification, and proof-assistant formalization are
+not inferred from those checks.
+\end{abstract}
+\noindent\textbf{Keywords.}
+Alternating Hurwitz zeta; cutoff finite part; spectral zeta derivative;
+Gamma and polygamma; generalized Stieltjes constants; generalized harmonic
+numbers; logarithmic density; multiple polylogarithm.
+\clearpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+
+% BEGIN sections/01_scope.tex
+\section{Scope, main advances, and source status}
+\label{bc:scope}
+
+This article is a continuation of the ProveIt material at the immutable
+repository checkpoint
+\[
+ \pin .
+\]
+The requested manuscript directory, the seven archives in
+\src{docs/incoming}, and the directly relevant preserved continuations were
+inspected together. This matters: an open question in one report may have
+been solved in another report that has not yet been integrated into the
+canonical manuscript. The accompanying provenance file records the
+identities and hashes of the sources used here. The source tree itself was
+not modified.
+
+\subsection{The questions answered}
+
+The first precise target is the question headed \emph{Every bilinear contact
+hyperplane} in \emph{Bilinear Tails and Determinants}
+\cite{ProveItBilinear}. Its finite two-order endpoint identity is already
+proved. The missing data are the bivariate contact polynomials on
+\(p+q=-2m\), all independent order derivatives, and the changes under
+translation of the cutoff. A diagonal restriction cannot recover
+derivatives transverse to that restriction. Section~\ref{ct:section}
+supplies these data for every \(m\ge0\), including explicit ordinary
+convergent representatives. The finite endpoint law and its first
+\(1/2\) contact remain attributed to the predecessor.
+
+The second target is the higher-order, many-mass question in
+\emph{Higher Quadratic Jets}, item 3, and \emph{Beta Polarization of Higher
+Spectral Defects}, item 3
+\cite{ProveItHigherQuadratic,ProveItHigherDefects}. The latter already gives
+a complete pairwise formula for second jets. Its research question asks
+for higher connected logarithmic terms and correctly normalized
+coincident-mass limits. Section~\ref{sp:section} gives a single real
+resolvent integral for every scalar jet and a compact integral for every
+connected logarithmic product. The number of real integration variables
+stays one as both the number of masses and the derivative order increase.
+Section~\ref{ng:section} further extends the full-jet formula to every
+even polynomial weight and to every nonpositive integer spectral point.
+This settles the scalar representation and connected-product parts of the
+question, and supplies an alternative explicit representation for the
+higher negative-point jets. It does not assert that all those integrals reduce to finitely
+many special values of a smaller function class.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.22\textwidth}>{\raggedright\arraybackslash}p{0.31\textwidth}>{\raggedright\arraybackslash}p{0.38\textwidth}}
+\toprule
+Topic & Result in this article & Status relative to inspected sources\\
+\midrule
+Two-order tail contacts &
+Finite coefficients at every resonance; all mixed jets and translations &
+Completes the explicitly open bivariate contact question.\\
+Ordinary boundary sums &
+Polynomial and logarithmic subtractions, with exact examples &
+Consequences of the completed contact algebra.\\
+Full scalar spectral jets &
+One digamma integral for every \(N,r\) &
+Explicit all-order representation beyond the supplied second-jet formulas.\\
+Even weights and negative points &
+Every polynomial degree and every derivative at each nonpositive integer &
+A finite Hurwitz baseline and the same single ordinary integral.\\
+Connected logarithmic products &
+Compact density, moments, critical odd weight, collisions &
+All-order realization of the higher connected-term target.\\
+Local spectral correction &
+Finite residue polynomial at fixed \(N\) &
+Inherited mechanism, restated with matching normalization.\\
+Harmonic and polylogarithmic forms &
+Beta moments, confluent expansions, height-one transform &
+Derived bridge to classical coefficient and function alphabets.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Two organizing mechanisms}
+
+The tail calculation is controlled by an \emph{upper endpoint}. Its
+asymptotic coefficient at a resonant exponent gives the discrepancy between
+an analytic continuation and a specified cutoff finite part. The necessary
+operation is to expand in independent parameters before restricting to the
+resonance. A finite-degree theorem then makes all sufficiently high
+independent contact derivatives vanish. The same asymptotic coefficients
+specify actual convergent subtractions, so the finite-part formulas have
+ordinary-series counterparts.
+
+The spectral calculation is controlled by a \emph{logarithmic jump across
+a cut}. Subtracting the mass-zero logarithm removes the obstruction at
+infinity. Cauchy's formula converts the remaining logarithmic expression
+into a resolvent integral, and the lattice resolvent sums exactly to a
+digamma difference. For a product of logarithmic mass increments the cut
+is compact and the decay at infinity forces its first moments to vanish.
+Those moment cancellations supply the polynomial subtractions for weighted
+sums.
+
+These are different mechanisms. The cutoff degree theorem is a statement
+about asymptotic coefficients in the orders \(p,q\). The many-mass
+interaction hierarchy is a statement about finite differences of spectral
+jets with a fixed total number of factors. Neither follows by replacing
+one meaning of degree with the other.
+
+\subsection{Classical inputs and the priority boundary}
+
+The Gamma quotient expansion, the alternating Hurwitz expansion and its
+parameter derivatives, the digamma resolvent identity, and Euler's beta
+integral are classical
+\cite{DLMF,HuKim,WangHuKim}. Products of zeta tails have an established
+multiple-zeta literature; Hoffman's paper is a relevant example
+\cite{Hoffman}. The broad relation between regularized traces and local
+asymptotic coefficients is likewise established
+\cite{PaychaScott}. The normalized exponent-local degree theorem is already
+present in the project's \emph{Arithmetic Spectral Jets} continuation
+\cite{ProveItArithmeticJets}. We use it for comparison and give a direct
+normalization check where it enters.
+
+The contribution claimed here is the stated collection of precise
+deductions and completed research targets relative to the inspected
+project material. The article gives proofs of those statements. A targeted
+search did not establish an earlier occurrence of every displayed form,
+but that is not a comprehensive historical-priority result. In particular,
+we do not relabel a classical beta integral, Stirling-number identity, or
+height-one multiple-zeta reduction as a newly discovered constant.
+
+\subsection{Conventions}
+
+\(\zeta^{(r)}(s,a)\) always means an \emph{order} derivative
+\(\partial_s^r\zeta(s,a)\). Superscripts on \(\psi\) mean argument
+derivatives. The generalized Stieltjes convention is
+\[
+ \zeta(1+u,a)=\frac1u+
+   \sum_{j\ge0}\frac{(-1)^j}{j!}\gamma_j(a)u^j,
+ \qquad \gamma_0(a)=-\psi(a).
+\]
+The generalized harmonic numbers are
+\[
+ H_n^{(j)}=\sum_{k=1}^{n}k^{-j},\qquad H_0^{(j)}=0,
+ \qquad H_n=H_n^{(1)}.
+\]
+A jet of order \(r\) is the actual derivative, with its factorial included;
+\([u^r]\) instead denotes an ordinary Taylor coefficient.
+
+Every finite part is tied to its stated coordinate or independent
+regulator. For the tail problem, the coordinate is \(X=N+c\) and the
+retained term is \(X^0(\log X)^0\). For the alternating endpoint a parity
+subsequence is also specified. All integrals labeled ordinary are
+absolutely convergent improper integrals unless conditional convergence is
+explicitly stated. Signed logarithmic densities are allowed; positivity
+is not assumed or required.
+
+% END sections/01_scope.tex
+
+
+% BEGIN sections/02_contacts.tex
+\section{Independent orders, independent shifts, and every bilinear contact}
+\label{ct:section}
+
+The incoming \emph{Bilinear Tails and Determinants} report establishes
+bilinear identities for two independently shifted alternating Hurwitz tails\cite{ProveItBilinear},
+but leaves their higher contact hyperplanes explicitly open. Its diagonal
+calculation does not determine mixed derivatives transverse to the diagonal.
+We resolve that question by a finite polynomial calculus. In addition to
+all cutoff finite parts, the calculation produces ordinary convergent
+identities on every negative-total-order hyperplane. The first such family
+has the particularly simple correction $1/2$ in every summand.
+
+The finite bilinear identities recalled below are inherited. The new
+statements are the centered coefficient algebra, the independent contact
+and translation formulas, their sharp spectral degree, and the ordinary
+identities extracted from them. The classical analytic inputs are the
+Gamma quotient expansion and the alternating Hurwitz Euler expansion;
+no assertion of global priority for these ingredients is intended.
+
+\subsection{The inherited endpoint law and its normalization}
+
+On $\Re z>0$ put
+\begin{align}
+ \mathcal B_s(z)&=2^{-s}\left\{\zeta\left(s,\frac z2\right)
+              -\zeta\left(s,\frac{z+1}{2}\right)\right\},
+                   \label{ct:B}\\
+ h(z)&=\sqrt2\,\frac{\Gamma((z+1)/2)}{\Gamma(z/2)},
+ \qquad \ell(z)=\log h(z),\qquad
+ \tau_s(z)=e^{s\ell(z)}\mathcal B_s(z),\label{ct:tau}\\
+ V_s(z)&=\frac{z^s-(z-1)^s}{h(z)^{2s}},\qquad \Re z>1.
+                   \label{ct:V}
+\end{align}
+All powers use the holomorphic logarithms real on the positive axis.
+The common Hurwitz pole in \eqref{ct:B} cancels, so this expression is
+entire in $s$. The classical recurrences give
+\begin{equation}\label{ct:recurrences}
+ h(z)h(z+1)=z,\qquad
+ \mathcal B_s(z)+\mathcal B_s(z+1)=z^{-s},\qquad
+ \tau_s(z-1)-\tau_s(z+1)=V_s(z)\tau_s(z).
+\end{equation}
+The last identity follows by multiplying the two adjacent Hurwitz
+recurrences by the appropriate Gamma powers and subtracting.
+
+Let $\Re a,\Re b>0$ and let $p,q$ be independent complex orders. Define,
+for $n\ge-1$,
+\begin{align}
+ u_n&=\tau_p(n+a+1),&v_n&=\tau_q(n+b+1),\notag\\
+ C_n&=u_nv_{n+1}+u_{n+1}v_n,&
+ D_n&=u_nv_{n+1}-u_{n+1}v_n,\label{ct:CD}\\
+ E_+&=C_{-1},&E_-&=D_{-1}.\notag
+\end{align}
+For later convenience, the signs are kept outside the definitions
+\[
+ g_n^+=\{V_p(n+a+1)+V_q(n+b+1)\}u_nv_n,
+ \qquad
+ g_n^-=\{V_p(n+a+1)-V_q(n+b+1)\}u_nv_n.
+\]
+The source's exact finite identities are
+\begin{equation}\label{ct:finite}
+ S_N^+:=\sum_{n=0}^N g_n^+=E_+-C_N,
+ \qquad
+ S_N^-:=\sum_{n=0}^N(-1)^ng_n^-=E_-+(-1)^ND_N.
+\end{equation}
+Indeed, \eqref{ct:recurrences} gives
+$g_n^+=C_{n-1}-C_n$ and $g_n^-=D_{n-1}+D_n$.
+These identities hold at every complex order before taking a limit.
+For $\Re(p+q)>0$ both infinite sums converge absolutely to $E_+$ and
+$E_-$ respectively. The entire functions $E_\pm$ are their endpoint
+continuations. A cutoff finite part need not equal that continuation.
+
+\subsection{A centered finite coefficient algebra}
+
+Use Bernoulli polynomials with $B_1(x)=x-1/2$ and Euler numbers normalized by
+\[
+ \operatorname{sech}t=\sum_{j\ge0}E_{2j}\frac{t^{2j}}{(2j)!}.
+\]
+Thus $E_0=1$, $E_2=-1$, and $E_4=5$. Put
+\begin{equation}\label{ct:Lj}
+ L_j=\frac{2^{2j}B_{2j+1}(1/4)}{j(2j+1)}\quad(j\ge1),
+ \qquad L_1=\frac1{16},\quad L_2=-\frac5{128},\quad L_3=\frac{61}{768}.
+\end{equation}
+Define the formal series
+\begin{equation}\label{ct:Tformal}
+ T_s(v)=\exp\left(s\sum_{j\ge1}L_jv^j\right)
+       \sum_{j\ge0}\frac{E_{2j}(s)_{2j}}{2^{2j}(2j)!}v^j
+       =\sum_{j\ge0}t_j(s)v^j.
+\end{equation}
+Each coefficient is a finite rational polynomial; the infinite formal
+series is not asserted to converge. An explicit terminating recursion is
+\begin{align}
+ e_0(s)&=1,&
+ e_n(s)&=\frac{s}{n}\sum_{j=1}^n jL_je_{n-j}(s),\label{ct:recursion}\\
+ t_n(s)&=\sum_{j=0}^ne_j(s)
+       \frac{E_{2n-2j}(s)_{2n-2j}}{2^{2n-2j}(2n-2j)!}.\notag
+\end{align}
+In particular,
+\begin{equation}\label{ct:first-t}
+ t_0=1,\qquad t_1(s)=-\frac{s(2s+1)}{16},\qquad
+ t_2(s)=\frac{s(20s^3+108s^2+211s+60)}{1536}.
+\end{equation}
+
+\begin{lemma}[Centered Gamma--Hurwitz expansion]\label{ct:centered}
+For each $K\ge0$,
+\begin{equation}\label{ct:tauexpansion}
+ \tau_s(x+\tfrac12)=\frac12x^{-s/2}
+       \sum_{j=0}^Kt_j(s)x^{-2j}
+       +O\bigl(x^{-\Re s/2-2K-2}\bigr).
+\end{equation}
+The expansion is locally uniform in the order and in bounded complex
+shifts of $x$ as $x$ tends to positive infinity. Fixed spectral derivatives
+have the differentiated expansion, with finite powers of $\log x$;
+fixed argument derivatives improve the decay by their order.
+Furthermore $\deg_s t_j\le2j$.
+\end{lemma}
+\begin{proof}
+The classical Gamma quotient expansion \cite{DLMF}, together with the alternating Hurwitz expansion \cite{HuKim}, gives
+\[
+ \log h(x+\tfrac12)=\tfrac12\log x+
+                 \sum_{j=1}^K L_jx^{-2j}+O(x^{-2K-2}).
+\]
+Only even inverse powers remain because
+$B_{n+1}(3/4)-B_{n+1}(1/4)=0$ for odd $n$; the surviving coefficient
+is precisely \eqref{ct:Lj}. For $\Re s>0$ the alternating Hurwitz
+integral is
+\[
+ \mathcal B_s(x+\tfrac12)=\frac1{2\Gamma(s)}
+  \int_0^\infty t^{s-1}e^{-xt}\operatorname{sech}(t/2)\,dt.
+\]
+Expanding the smooth factor at zero gives
+\[
+ \mathcal B_s(x+\tfrac12)\sim\frac12x^{-s}
+        \sum_{j\ge0}\frac{E_{2j}(s)_{2j}}{2^{2j}(2j)!}x^{-2j}.
+\]
+For an arbitrary compact order set the same finite expansion, with a
+uniform remainder, follows by taking sufficiently many terms in the
+ordinary Hurwitz Euler--Maclaurin expansions of \eqref{ct:B}. This avoids
+using the displayed integral outside its convergence domain. Multiplying
+finite expansions with their remainders proves \eqref{ct:tauexpansion}.
+Cauchy estimates on slightly larger compact sets justify spectral
+ derivatives; the differentiated Hurwitz and Gamma expansions justify
+argument derivatives. Finally $\deg e_j\le j$, while
+$\deg(s)_{2n-2j}=2n-2j$, proving the asserted degree bound.
+\end{proof}
+
+For an integer $k\ge0$ and a shift $v$ define
+\begin{equation}\label{ct:bk}
+ b_k(s,v)=\sum_{j=0}^{\lfloor k/2\rfloor}
+ t_j(s)\binom{-s/2-2j}{k-2j}v^{k-2j}.
+\end{equation}
+Throughout, generalized binomial coefficients in such formulas mean their
+polynomial expressions. They must not be computed by separately
+specializing Gamma quotients at poles. We have
+\begin{equation}\label{ct:b-properties}
+ \deg_s b_k\le k,\qquad b_k(s,-v)=(-1)^kb_k(s,v).
+\end{equation}
+
+Choose a \emph{fixed} cutoff parameter $c$, initially independent of
+$p,q,a,b$, and write
+\begin{equation}\label{ct:fixed-cutoff}
+ X=N+c,\quad \lambda=\frac{p+q}{2},\quad
+ A=a+\tfrac12-c,\quad B=b+\tfrac12-c.
+\end{equation}
+The complete ambient coefficient polynomials are
+\begin{align}
+ c_k(p,q;a,b;c)
+ &=\frac14\sum_{j=0}^k\bigl\{
+ b_j(p,A)b_{k-j}(q,B+1)+b_j(p,A+1)b_{k-j}(q,B)\bigr\},
+                         \label{ct:ck}\\
+ d_k(p,q;a,b;c)
+ &=\frac14\sum_{j=0}^k\bigl\{
+ b_j(p,A)b_{k-j}(q,B+1)-b_j(p,A+1)b_{k-j}(q,B)\bigr\}.
+                         \label{ct:dk}
+\end{align}
+Thus $c_0=1/2$, $d_0=0$, and both polynomials have total degree at most
+$k$ in the independent orders $p,q$. Lemma~\ref{ct:centered} implies
+\begin{align}
+ C_N&=X^{-\lambda}\sum_{k=0}^Kc_kX^{-k}
+          +O(X^{-\Re\lambda-K-1}),\label{ct:Cexp}\\
+ D_N&=X^{-\lambda}\sum_{k=0}^Kd_kX^{-k}
+          +O(X^{-\Re\lambda-K-1}).\label{ct:Dexp}
+\end{align}
+These expansions inherit the same uniformity and derivative properties.
+
+\subsection{Every independent contact and every mixed order derivative}
+
+Fix $p_0+q_0=-2m$, where $m\ge0$ is an integer. Differentiate at independent
+ambient $p,q$ first, then specialize to $(p_0,q_0)$. The symbol
+$\operatorname{FP}_X$ below denotes the coefficient of
+$X^0(\log X)^0$ in the resulting asymptotic expansion.
+
+\begin{theorem}[Complete independent contact calculus]\label{ct:contacts}
+For every $r,s\ge0$,
+\begin{align}
+ \operatorname{FP}_X
+ \left.\partial_p^r\partial_q^sS_N^+\right|_{(p_0,q_0)}
+ &=\left.\partial_p^r\partial_q^sE_+\right|_{(p_0,q_0)}
+    -\left.\partial_p^r\partial_q^sc_m\right|_{(p_0,q_0)}.
+                                          \label{ct:pluscontact}
+\end{align}
+For the alternating law there are two parity finite parts. On the
+subsequence $N\equiv\epsilon\pmod2$, using the same coordinate $X=N+c$,
+\begin{align}
+ \operatorname{FP}_{X,\epsilon}
+ \left.\partial_p^r\partial_q^sS_N^-\right|_{(p_0,q_0)}
+ &=\left.\partial_p^r\partial_q^sE_-\right|_{(p_0,q_0)}
+   +(-1)^\epsilon\left.\partial_p^r\partial_q^sd_m\right|_{(p_0,q_0)}.
+                                          \label{ct:minuscontact}
+\end{align}
+Every contact derivative of total order $r+s>m$ vanishes. The same formulas
+hold after fixed argument derivatives if $c$ is held independent while
+these derivatives are taken.
+\end{theorem}
+\begin{proof}
+For any coefficient polynomial $a_k(p,q)$,
+\begin{align}
+ \partial_p^r\partial_q^s\{a_kX^{-\lambda-k}\}
+ =X^{-\lambda-k}\sum_{i=0}^r\sum_{j=0}^s
+ \binom ri\binom sj(\partial_p^i\partial_q^ja_k)
+             \left(-\tfrac12\log X\right)^{r+s-i-j}.
+ \label{ct:logjets}
+\end{align}
+After specialization, only $k=m$ has zero exponent in $X$, and only
+$i=r,j=s$ has logarithmic degree zero. Choose $K$ large enough that the
+remainder and all fixed derivatives tend to zero. Equations
+\eqref{ct:finite}, \eqref{ct:Cexp}, and \eqref{ct:Dexp} prove both formulas.
+The degree bound in \eqref{ct:ck}--\eqref{ct:dk} proves the last assertion
+about spectral derivatives. Fixed-cutoff argument derivatives follow from
+the same uniform expansions.
+\end{proof}
+
+The arithmetic mean of the two alternating parity finite parts is the
+endpoint continuation, including all its mixed jets. A full-sequence
+ordinary cutoff constant is not supplied when the two constants differ.
+Re-expanding in the parity index $(N-\epsilon)/2$ would be a different
+coordinate convention. Similarly, imposing $q=-2m-p$ before differentiating
+would calculate only tangent derivatives; it would lose the independent
+transverse derivatives required by Theorem~\ref{ct:contacts}.
+
+\subsection{Balanced coordinates, low-order contacts, and exact parity}
+
+The most symmetric cutoff is
+\begin{equation}\label{ct:balanced}
+ X=N+\mu,\qquad \mu=\frac{a+b}{2}+1,\qquad
+ \delta=\frac{a-b}{2}.
+\end{equation}
+The four centered arguments in the two endpoint products are then
+$X+\delta-1/2$, $X-\delta+1/2$, $X+\delta+1/2$, and
+$X-\delta-1/2$. Abbreviate the corresponding polynomials to $c_k,d_k$,
+and put $S=p+q$, $D=p-q$. The first ambient coefficients are
+\begin{align}
+ c_0&=\tfrac12,&d_0&=0,\notag\\
+ c_1&=-\frac{\delta D}{4},&d_1&=\frac D8,\label{ct:lowambient}\\
+ c_2&=\frac{4\delta^2(D^2+2S)-D^2-2S^2}{64},&
+ d_2&=-\frac{\delta(D^2+2S)}{16}.\notag
+\end{align}
+The third coefficients, useful for independent jets at the next resonance,
+are
+\begin{align}
+ c_3&=-\frac{\delta D}{384}
+ \{4\delta^2(D^2+6S+8)-3D^2-6S^2-36S\},\label{ct:thirdambient}\\
+ d_3&=\frac D{768}
+ \{12\delta^2(D^2+6S+8)-5D^2-6S^2-48S-16\}.\notag
+\end{align}
+For zero-order contacts only, their restrictions to $S=-2m$ give the
+following compact table. Here $d=a-b=2\delta$ and $D=p-q$.
+\begin{center}
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{c|c|c}
+$m$&symmetric contact $c_m$&alternating amplitude $d_m$\\\hline
+$0$&$1/2$&$0$\\
+$1$&$-dD/8$&$D/8$\\
+$2$&$\displaystyle\frac{(D^2-8)d^2-D^2-32}{64}$
+   &$\displaystyle-\frac{d(D^2-8)}{32}$\\
+$3$&$\displaystyle-\frac{dD\{(D^2-28)d^2-3D^2\}}{768}$
+   &$\displaystyle\frac{D\{3d^2(D^2-28)-5D^2+56\}}{768}$
+\end{tabular}
+\end{center}
+The table must not replace the ambient polynomials when calculating
+independent spectral derivatives.
+
+\begin{proposition}[Balanced parity]\label{ct:parity}
+At the balanced cutoff,
+\begin{align}
+ c_k(p,q;-\delta)&=(-1)^kc_k(p,q;\delta),&
+ d_k(p,q;-\delta)&=(-1)^{k+1}d_k(p,q;\delta),\label{ct:reflection}\\
+ c_k(q,p;\delta)&=(-1)^kc_k(p,q;\delta),&
+ d_k(q,p;\delta)&=(-1)^kd_k(p,q;\delta).\notag
+\end{align}
+Every odd symmetric contact is divisible by $(a-b)(p-q)$.
+Every even alternating contact vanishes at equal shifts, and every odd
+alternating contact vanishes at equal orders.
+\end{proposition}
+\begin{proof}
+Use $b_k(s,-v)=(-1)^kb_k(s,v)$ in the two endpoint products. Reflecting
+$\delta$ exchanges these products; interchanging the independent orders
+then gives the second line. Polynomial divisibility follows from the
+resulting sign changes.
+\end{proof}
+
+The first off-diagonal symmetric contact is therefore
+$(q-p)(a-b)/8$ on $p+q=-2$, and it vanishes on either diagonal separately.
+For example,
+\[
+ p=\tfrac13,\quad q=-\tfrac73,\quad a=\tfrac23,\quad b=\tfrac75
+ \quad\Longrightarrow\quad c_1=\frac{11}{45},\quad d_1=\frac13.
+\]
+At $p=q=s$, $a=b$, one has the exact reduction
+\[
+ C_N=2(N+a+1)^s\mathcal B_s(N+a+1)\mathcal B_s(N+a+2),
+ \qquad D_N=0.
+\]
+Consequently the present coefficients specialize to twice the source's
+diagonal endpoint coefficients. This checks all its even-order contacts,
+all vanishing odd contacts, and every diagonal spectral derivative.
+
+\subsection{Translation, the sharp derivative threshold, and moving shifts}
+
+If $Y=X-h$, coefficient transport is finite:
+\begin{equation}\label{ct:translate}
+ c_m^{[h]}(p,q)=\sum_{k=0}^m c_k(p,q)
+      \binom{-\lambda-k}{m-k}h^{m-k},
+ \qquad
+ d_m^{[h]}(p,q)=\sum_{k=0}^m d_k(p,q)
+      \binom{-\lambda-k}{m-k}h^{m-k}.
+\end{equation}
+These are ambient polynomial identities, obtained by expanding
+$X^{-\lambda-k}=Y^{-\lambda-k}(1+h/Y)^{-\lambda-k}$.
+They retain total spectral degree at most $m$. At zero derivative order
+and on $\lambda=-m$, each binomial factor is one. For higher independent
+jets it must first be differentiated as a polynomial. Translating a cutoff
+therefore changes transverse contact derivatives even when the restricted
+zero-order formula appears elementary.
+
+There is also a closed expression for every highest mixed derivative.
+For a polynomial $P(p,q)$ write $[P]_m$ for its homogeneous component of
+total spectral degree $m$.
+
+\begin{theorem}[Highest mixed contacts and sharpness]\label{ct:top}
+For the balanced cutoff translated by $h$, the formal generating identities
+are
+\begin{align}
+ \sum_{m\ge0}[c_m^{[h]}]_m t^m
+ &=\frac12\exp\left(-\frac{(p-q)\delta+(p+q)h}{2}t\right)
+ \frac{\cosh((p-q)t/4)}{\cosh(pt/2)\cosh(qt/2)},\label{ct:topplus}\\
+ \sum_{m\ge0}[d_m^{[h]}]_m t^m
+ &=\frac12\exp\left(-\frac{(p-q)\delta+(p+q)h}{2}t\right)
+ \frac{\sinh((p-q)t/4)}{\cosh(pt/2)\cosh(qt/2)}.\label{ct:topminus}
+\end{align}
+The total spectral degree is generically exactly $m$ for $c_m$, and
+exactly $m$ for $d_m$ when $m\ge1$. Hence the threshold $r+s>m$ in
+Theorem~\ref{ct:contacts} is sharp.
+\end{theorem}
+\begin{proof}
+In \eqref{ct:Tformal}, the highest spectral coefficient of $t_j(s)$ is
+$E_{2j}s^{2j}/(2^{2j}(2j)!)$: every nonconstant contribution from the
+Gamma exponential has strictly smaller degree. The highest-degree
+series for a shifted $\tau_s$ is therefore
+$\tfrac12 e^{-svt/2}\operatorname{sech}(st/2)$. Multiplying the
+appropriate two factors in \eqref{ct:ck}--\eqref{ct:dk}, and taking
+their sum or difference, proves \eqref{ct:topplus}--\eqref{ct:topminus}.
+For $h=q=0$, the coefficient of $\delta^mp^m$ in the symmetric
+expression is $(-1)^m/(2^{m+1}m!)$. For $m\ge1$, the coefficient
+of $\delta^{m-1}p^m$ in the alternating expression is
+$(-1)^{m-1}/(2^{m+2}(m-1)!)$. Both are nonzero.
+\end{proof}
+
+The balanced coordinate depends on $a,b$. To differentiate the original
+finite sums in these shifts, use \eqref{ct:ck}--\eqref{ct:dk} with fixed
+$c$, differentiate, and only then set $c=\mu$. Holding the balanced $X$
+artificially fixed while differentiating the original $N$-cutoff would
+omit its coordinate derivative. This restriction does not affect
+independent order derivatives, because $\mu$ is independent of $p,q$.
+
+\subsection{Ordinary polynomial and logarithmic subtractions}
+
+The coefficient algebra gives convergent sums representing every contact
+and every jet. It does not require assigning ordinary values to divergent
+unmodified sums. For $\Re c>1$ and $K\ge0$ define
+\begin{equation}\label{ct:PK}
+ P_K^+(p,q;X)=\sum_{k=0}^Kc_kX^{-\lambda-k},\qquad
+ P_K^-(p,q;X)=\sum_{k=0}^Kd_kX^{-\lambda-k},\qquad X_n=n+c.
+\end{equation}
+
+\begin{theorem}[Normally convergent continuation]\label{ct:normal}
+For $\Re\lambda>-K-1$,
+\begin{equation}\label{ct:normalplus}
+ \sum_{n\ge0}\{g_n^+-P_K^+(X_n-1)+P_K^+(X_n)\}
+             =E_+-P_K^+(c-1)
+\end{equation}
+converges absolutely and locally normally. For $\Re\lambda>-K$,
+\begin{equation}\label{ct:normalminus}
+ \sum_{n\ge0}(-1)^n\{g_n^--P_K^-(X_n-1)-P_K^-(X_n)\}
+             =E_--P_K^-(c-1)
+\end{equation}
+also converges absolutely and locally normally. The latter is an ordinary
+convergent series, normally convergent after pairing consecutive terms,
+on the larger domain $\Re\lambda>-K-1$.
+All fixed mixed parameter derivatives may be taken under the sum in the
+stated absolute-normal domains. Formula~\eqref{ct:logjets} specifies
+every polynomial and logarithmic counterterm explicitly.
+\end{theorem}
+\begin{proof}
+Subtract the finite telescoping identities for $P_K^\pm$ from
+\eqref{ct:finite}. The remaining endpoints are
+$C_N-P_K^+(X_N)$ and $D_N-P_K^-(X_N)$, both
+$O(X_N^{-\Re\lambda-K-1})$. They vanish on the larger asserted domain.
+For the symmetric series, the summand is a unit difference of its endpoint
+remainder, so its size is $O(n^{-\Re\lambda-K-2})$. For the alternating
+series the sum of two adjacent remainders is
+$O(n^{-\Re\lambda-K-1})$, giving its absolute domain. Pairing successive
+alternating terms turns this sum into a difference over two steps and
+restores the extra inverse power. The uniform differentiated expansions
+and Cauchy estimates justify all fixed derivatives in the stated domains.
+The condition $\Re c>1$ keeps the lower power $c-1$ on the fixed branch.
+\end{proof}
+
+At $\lambda=-m$, the symmetric subtraction with $K=m$ is a polynomial.
+Writing
+\begin{equation}\label{ct:resonantP}
+ \Pi_m^+(X)=\sum_{k=0}^mc_kX^{m-k},\qquad
+ \Pi_m^-(X)=\sum_{k=0}^md_kX^{m-k},
+\end{equation}
+we obtain the ordinary absolutely convergent identity
+\begin{equation}\label{ct:polynomialplus}
+ \sum_{n\ge0}\{g_n^+-\Pi_m^+(n+\mu-1)+\Pi_m^+(n+\mu)\}
+              =E_+-\Pi_m^+(\mu-1).
+\end{equation}
+Its summand is $O(n^{-2})$. The polynomial alternating subtraction is
+ordinary convergent, generally conditionally, with value
+$E_--\Pi_m^-(\mu-1)$. Including the additional term
+$d_{m+1}X^{-1}$ makes it absolutely convergent. Independent mixed jets
+at the resonance use $K=m$ in the symmetric formula and $K=m+1$ in
+the alternating formula, with the logarithmic counterterms
+\eqref{ct:logjets}. Thus the complete contact theorem has ordinary
+convergent-series representatives at every derivative order.
+
+\subsection{The first off-diagonal resonance and exact Gamma examples}
+
+\begin{corollary}[A short identity on $p+q=-2$]\label{ct:firstresonance}
+For $p+q=-2$ and $\Re a,\Re b>0$,
+\begin{equation}\label{ct:firstplus}
+ \boxed{\displaystyle
+ \sum_{n\ge0}\left\{
+  [V_p(n+a+1)+V_q(n+b+1)]u_nv_n+\frac12\right\}
+ =\tau_p(a)\tau_q(b+1)+\tau_p(a+1)\tau_q(b)+\frac{pa+qb}{4}.}
+\end{equation}
+The series is absolutely and locally normally convergent on this
+hyperplane. There is also the absolutely convergent alternating identity
+\begin{align}
+ &\sum_{n\ge0}(-1)^n\left\{
+ [V_p(n+a+1)-V_q(n+b+1)]u_nv_n-\frac{p-q}{4}\right.\notag\\
+ &\hspace{18mm}\left.
+ -\frac{pq(a-b)}8\left[\frac1{n+(a+b)/2}
+                      +\frac1{n+(a+b)/2+1}\right]\right\}\notag\\
+ &\qquad=\tau_p(a)\tau_q(b+1)-\tau_p(a+1)\tau_q(b)
+            -\frac{p-q}{8}-\frac{pq(a-b)}{4(a+b)}.
+                                                    \label{ct:firstminus}
+\end{align}
+\end{corollary}
+\begin{proof}
+Here $\Pi_1^+(X)=X/2+(q-p)(a-b)/8$ and
+\[
+ \Pi_1^+(\mu-1)=-\frac{pa+qb}{4},
+\]
+where the relation $p+q=-2$ is used only after coefficient extraction.
+Equation~\eqref{ct:polynomialplus} proves \eqref{ct:firstplus}.
+For the alternating formula, \eqref{ct:lowambient} gives
+$d_1=(p-q)/8$ and $d_2=pq(a-b)/8$ at this resonance. Apply
+\eqref{ct:normalminus} with $P_2^-(X)=d_1+d_2/X$.
+\end{proof}
+
+In particular take $p=1$, $q=-3$, $a=1$, $b=2$, and set
+\[
+ u_n=\tau_1(n+2),\qquad v_n=\tau_{-3}(n+3).
+\]
+The two exact evaluations are
+\begin{align}
+ \sum_{n\ge0}\{[V_1(n+2)+V_{-3}(n+3)]u_nv_n+\tfrac12\}
+ &=\frac{55\pi\log2}{128}
+      +\frac{9(1-\log2)}{4\pi}-\frac54,\label{ct:exampleplus}\\
+ \sum_{n\ge0}(-1)^n\left\{
+ [V_1(n+2)-V_{-3}(n+3)]u_nv_n-1\right.&\notag\\[-3pt]
+ \left.\hspace{6mm}-\frac38\left(\frac1{n+3/2}+\frac1{n+5/2}\right)
+ \right\}
+ &=\frac{55\pi\log2}{128}
+      -\frac{9(1-\log2)}{4\pi}-\frac34.\label{ct:exampleminus}
+\end{align}
+Both sums are ordinary and absolutely convergent. Their summands use only
+Gamma quotients, digamma functions, rational functions, and an Euler
+polynomial: $\mathcal B_1(z)=\tfrac12\{\psi((z+1)/2)-\psi(z/2)\}$ and
+\[
+ \mathcal B_{-3}(z)=\frac12E_3(z),\qquad
+ E_3(z)=z^3-\frac32z^2+\frac14.
+\]
+For a direct evaluation of the endpoints, put $r=\sqrt{2/\pi}$. Then
+$h(1)=r$, $h(2)=1/r$, $h(3)=2r$,
+$\mathcal B_1(1)=\log2$, and $\mathcal B_1(2)=1-\log2$. Consequently
+\[
+ \tau_1(1)\tau_{-3}(3)=\frac{55\pi\log2}{128},\qquad
+ \tau_1(2)\tau_{-3}(2)=\frac{9(1-\log2)}{4\pi},
+\]
+which proves both displayed constants.
+
+\subsection{Which resonant unmodified sums actually converge?}
+
+The contact polynomials also resolve this ordinary-convergence question,
+which is stronger than asking whether one constant coefficient vanishes.
+
+\begin{proposition}[Ordinary convergence at negative-total-order resonances]
+\label{ct:resonantconvergence}
+On $p+q=-2m$ with $m>0$, the unmodified symmetric series does not converge.
+At $m=0$ it converges absolutely and has the inherited contact $1/2$.
+The alternating series at $m=0$ always converges; its convergence is
+conditional unless $p=q=0$, when every summand is zero.
+For the unmodified alternating series at $m\ge1$ the following are exact:
+\begin{enumerate}
+ \item If $p\ne q$, it does not converge.
+ \item If $p=q=-m$ and $a\ne b$, it converges when $m=1$ and does
+       not converge when $m\ge2$.
+ \item If $p=q$ and $a=b$, every alternating summand is zero.
+\end{enumerate}
+In item 2 at $m=1$ the convergence is generally conditional.
+\end{proposition}
+\begin{proof}
+The symmetric endpoint has leading term $X^m/2$, which cannot tend to a
+finite limit for $m>0$. At $m=0$ it tends to $1/2$, and its difference
+is $O(n^{-2})$. At $m=0$, the alternating endpoint tends to zero;
+its summand has leading amplitude $(p-q)/(4n)$ unless $p=q=0$.
+In that exceptional case $V_0=0$ and the summands vanish.
+If $m\ge1$ and $p\ne q$, the alternating endpoint has leading term
+$(p-q)X^{m-1}/8$, so $(-1)^ND_N$ has no limit. If $p=q=-m$, parity
+and \eqref{ct:lowambient} instead give
+\[
+ D_N=\frac{m(a-b)}8X^{m-2}+O(X^{m-4}).
+\]
+For distinct shifts this tends to zero exactly when $m=1$; for $m=2$
+it yields two different parity limits, and for larger $m$ it grows.
+The exact finite identity \eqref{ct:finite} proves convergence or its
+failure in each case. At $m=1$ the alternating summand generally has
+nonzero $1/n$ amplitude, establishing the final qualification. Equal
+orders and shifts give $u_n=v_n$, hence $D_n=0$ identically.
+\end{proof}
+
+The theorem answers the source's contact question at all its specified
+hyperplanes. Independent extra outer powers and longer products remain
+separate summation problems. The present finite coefficients offer a
+precise starting point for those extensions: they identify which endpoint
+terms must be retained before any additional spectral differentiation.
+
+% END sections/02_contacts.tex
+
+
+% BEGIN sections/03_stieltjes_dictionary.tex
+\section{Stieltjes, zeta-derivative, and polygamma forms of the contacts}
+\label{sj:section}
+
+The independent-order theorem becomes an explicit identity in the
+functions named in the research programme after a finite coefficient
+conversion. The positive-order Stieltjes conversion itself is inherited
+from \cite{ProveItBilinear}; its use with the completed negative-total-order
+subtractions is the additional consequence here.
+
+\subsection{A finite dictionary at every base order}
+
+For a base order \(\sigma\) and an integer \(r\ge0\), write
+\[
+ \mathcal T_{\sigma,r}(z)
+   =\left.\partial_s^r\tau_s(z)\right|_{s=\sigma},
+ \qquad
+ \mathcal V_{\sigma,r}(z)
+   =\left.\partial_s^rV_s(z)\right|_{s=\sigma}.
+\]
+The formulas for \(\mathcal T\) use \(\Re z>0\); those for
+\(\mathcal V\) use \(\Re z>1\).
+Set \(L(z)=\ell(z)-\log2\), only in this section. At \(\sigma\ne1\),
+\begin{equation}\label{sj:generalT}
+ \mathcal T_{\sigma,r}(z)
+ =\left(\frac{h(z)}2\right)^\sigma
+  \sum_{j=0}^r\binom rj L(z)^{r-j}
+  \left\{\zeta^{(j)}\!\left(\sigma,\frac z2\right)
+        -\zeta^{(j)}\!\left(\sigma,\frac{z+1}{2}\right)\right\}.
+\end{equation}
+At the removable order \(\sigma=1\), the correct finite expression is
+\begin{equation}\label{sj:stieltjesT}
+ \mathcal T_{1,r}(z)=\frac{h(z)}2
+  \sum_{j=0}^r\binom rj L(z)^{r-j}(-1)^j
+  \left\{\gamma_j\!\left(\frac z2\right)
+        -\gamma_j\!\left(\frac{z+1}{2}\right)\right\}.
+\end{equation}
+There is no pole or limiting quotient in this formula. At every \(\sigma\),
+\begin{align}
+ \mathcal V_{\sigma,r}(z)
+ =h(z)^{-2\sigma}\bigl\{
+ &z^\sigma(\log z-2\ell(z))^r \notag\\
+ &-(z-1)^\sigma(\log(z-1)-2\ell(z))^r\bigr\}.
+ \label{sj:Vjets}
+\end{align}
+Equations \eqref{sj:generalT}--\eqref{sj:Vjets} follow by differentiating
+the exponential factor in \eqref{ct:B}--\eqref{ct:V}, and, at one, by
+subtracting the two Stieltjes expansions before coefficient extraction.
+
+For nonnegative integers \(k\),
+\[
+ \mathcal B_{-k}(z)=\frac12E_k(z),
+ \qquad
+ \frac{2e^{zt}}{e^t+1}=\sum_{k\ge0}E_k(z)\frac{t^k}{k!}.
+\]
+This replaces a zero-order negative-integer tail by an Euler polynomial.
+An order derivative at \(-k\) is still given by
+\eqref{sj:generalT}; it cannot be obtained by differentiating a polynomial
+identity indexed only at integers.
+
+\begin{corollary}[An explicit ordinary identity for every mixed boundary jet]
+\label{sj:allboundary}
+Fix \(\Re a,\Re b>0\), \(\sigma+\omega=-2m\), \(m\ge0\), and a cutoff \(c\) with
+\(\Re c>1\). Let \(z_n=n+a+1\), \(w_n=n+b+1\), \(X_n=n+c\),
+and use the fixed-cutoff coefficients \(c_k\) in \eqref{ct:ck}.
+For \(r,s\ge0\) define
+\begin{align}
+ \mathcal G_{r,s}(z,w)
+ ={}&\sum_{i=0}^r\binom ri
+    \mathcal V_{\sigma,i}(z)
+    \mathcal T_{\sigma,r-i}(z)\mathcal T_{\omega,s}(w)\notag\\
+ &+\sum_{j=0}^s\binom sj
+    \mathcal T_{\sigma,r}(z)\mathcal V_{\omega,j}(w)
+    \mathcal T_{\omega,s-j}(w),\label{sj:G}\\
+ \mathcal P_{r,s}(X)
+ ={}&\sum_{k=0}^m X^{m-k}
+   \sum_{i=0}^r\sum_{j=0}^s
+       \binom ri\binom sj
+       \left.\partial_p^i\partial_q^jc_k\right|_{(\sigma,\omega)}
+       \left(-\frac{\log X}{2}\right)^{r+s-i-j}.
+       \label{sj:P}
+\end{align}
+Then
+\begin{align}
+ &\sum_{n\ge0}
+   \{\mathcal G_{r,s}(z_n,w_n)
+          -\mathcal P_{r,s}(X_n-1)+\mathcal P_{r,s}(X_n)\}
+       \notag\\
+ &\quad=
+ \mathcal T_{\sigma,r}(a)\mathcal T_{\omega,s}(b+1)
+ +\mathcal T_{\sigma,r}(a+1)\mathcal T_{\omega,s}(b)
+ -\mathcal P_{r,s}(c-1).
+ \label{sj:ordinary}
+\end{align}
+The series is absolutely convergent. Its summand is
+\(O(n^{-2}(1+\log^{r+s}n))\).
+\end{corollary}
+
+\begin{proof}
+Take \(\partial_p^r\partial_q^s\) in
+Theorem~\ref{ct:normal}, with \(K=m\), before specializing.
+The point \((\sigma,\omega)\) lies inside its absolute-normal domain.
+The product rule gives \eqref{sj:G}; differentiating the endpoint powers
+gives \eqref{sj:P}. The differentiated remainder estimate proves the stated
+decay and permits the interchange.
+\end{proof}
+
+Taking \(\sigma=1\), \(\omega=-2m-1\) in this corollary gives every
+independent product of a Stieltjes order at half-shifted arguments with
+negative-order Hurwitz derivatives. The correction to the cutoff
+\emph{constant} vanishes whenever \(r+s>m\), by
+Theorem~\ref{ct:contacts}. Polynomial and logarithmic subtraction terms may
+still remain; their existence is not contradicted by the vanishing of that
+single constant coefficient.
+
+\subsection{An ordinary first-Stieltjes identity at total order zero}
+
+The first independent derivative already gives a concrete formula whose
+summands involve \(\gamma_1\), while its value uses only familiar constants.
+For real \(z>1\), put
+\begin{align*}
+ T(z)&=\mathcal T_{1,1}(z),&
+ R(z)&=\frac{z-\frac12}{2h(z)},\\
+ A(z)&=h(z)^{-2}-\frac{h(z)^2}{z(z-1)},&
+ W(z)&=\frac{z\log z-(z-1)\log(z-1)-2\ell(z)}{h(z)^2}.
+\end{align*}
+Here \(T\) is explicitly the two-term Stieltjes expression
+\eqref{sj:stieltjesT}. Let
+\[
+ L=\log2,\qquad \lambda_1=\frac12\log\frac2\pi .
+\]
+Then
+\begin{align}
+ &\sum_{z=2}^{\infty}
+   \left\{
+      R(z)\bigl[W(z)\tau_1(z)+A(z)T(z)\bigr]
+          -\frac14\log\frac z{z-1}
+   \right\}\notag\\
+ &\quad=
+ \frac{3}{2\pi}\left\{L(\gamma+\lambda_1)-\frac{L^2}{2}\right\}
+ +\frac{\pi}{8}\left\{-\lambda_1(1-L)-\gamma L+\frac{L^2}{2}\right\}.
+ \label{sj:explicit}
+\end{align}
+This is an ordinary absolutely convergent series.
+
+To prove it, use \eqref{sj:ordinary} at
+\((\sigma,\omega,a,b,r,s)=(1,-1,1,1,1,0)\), with \(c=2\).
+Its only endpoint subtraction is
+\(\mathcal P_{1,0}(X)=-\frac14\log X\), giving precisely the logarithm
+in \eqref{sj:explicit}. Now
+\(\mathcal B_s(1)=\eta(s)=(1-2^{1-s})\zeta(s)\), and the removable
+expansion at one gives
+\[
+ \eta(1)=L,\qquad \eta'(1)=\gamma L-\frac{L^2}{2}.
+\]
+Together with \(h(1)^2=2/\pi\), \(h(2)=1/h(1)\),
+\(\mathcal B_s(2)=1-\eta(s)\), and
+\(\mathcal B_{-1}(z)=(z-\frac12)/2\), this evaluates
+\(T(1)R(2)+T(2)R(1)\) as the right side of \eqref{sj:explicit}.
+
+\subsection{Argument derivatives and generalized harmonic values}
+
+All argument derivatives of the dictionary reduce by the two laws
+\begin{align}
+ \partial_z^k\mathcal B_s(z)
+    &=(-1)^k(s)_k\mathcal B_{s+k}(z),\label{sj:Barg}\\
+ \ell^{(k)}(z)
+    &=2^{-k}\left\{
+       \psi^{(k-1)}\!\left(\frac{z+1}{2}\right)
+       -\psi^{(k-1)}\!\left(\frac z2\right)\right\},
+       \qquad k\ge1. \label{sj:ellarg}
+\end{align}
+The first follows by differentiating the Hurwitz series in its absolute
+domain and continuing; the second follows directly from the Gamma quotient.
+The product rule, or complete Bell polynomials for derivatives of an
+exponential, therefore gives a terminating expression at every fixed
+argument derivative order.
+
+At integer arguments the classical recurrence gives
+\[
+ \psi(n)=H_{n-1}-\gamma,\qquad
+ \psi^{(j)}(n)=(-1)^{j+1}j!
+       \{\zeta(j+1)-H_{n-1}^{(j+1)}\}\quad(j\ge1).
+\]
+At half-integers, for \(n\ge0\) and \(j\ge1\) in the polygamma line,
+\begin{align*}
+ \psi(n+\tfrac12)&=-\gamma-2\log2+2H_{2n}-H_n,\\
+ \psi^{(j)}(n+\tfrac12)
+ &=(-1)^{j+1}j!\left\{
+    (2^{j+1}-1)\zeta(j+1)-2^{j+1}H_{2n}^{(j+1)}
+                               +H_n^{(j+1)}\right\}.
+\end{align*}
+Thus fixed integer and half-integer shift derivatives have an explicit
+generalized harmonic alphabet. These elementary reductions are
+classical \cite{DLMF}; the new boundary identities remain governed by the
+ambient contact theorem, with the cutoff held fixed during shift
+differentiation as specified there.
+
+% END sections/03_stieltjes_dictionary.tex
+
+
+% BEGIN sections/04_spectral.tex
+\section{Scalar spectral jets and ordinary resolvent integrals}
+\label{sp:section}
+
+Throughout this section $a>0$, $x_n=n+a$ for $n=0,1,\ldots$, and
+$\mu_1,\ldots,\mu_N$ are positive real numbers, with $N\geq1$.
+The logarithm $\Log$ is the principal logarithm on
+$\mathbb C\setminus(-\infty,0]$.  Powers of positive real numbers use
+their real logarithms.  We write $\zeta(s,a)$ for the Hurwitz zeta
+function, $\psi$ for the digamma function, and
+$\zeta^{(r)}(s,a)=\partial_s^r\zeta(s,a)$.
+The formulas below are specialized deductions for scalar factors and
+their connected logarithmic products.  They make no assertion of
+global priority for the general principle relating spectral finite
+parts and local asymptotic data.
+
+\subsection{The scalar master formula}
+\label{sp:scalar-subsection}
+
+For $\Re s>1/(2N)$ define
+\begin{equation}
+ Z_N(s;a,\boldsymbol\mu)
+ :=\sum_{n=0}^{\infty}\prod_{j=1}^{N}(x_n^2+\mu_j)^{-s}.
+ \label{sp:zeta-definition}
+\end{equation}
+For integers $r\geq1$, its $r$th spectral jet is
+$J_{N,r}(a;\boldsymbol\mu):=\partial_s^rZ_N(0;a,\boldsymbol\mu)$,
+once continuation to a neighborhood of zero has been established.
+
+\begin{lemma}[Continuation by a normally convergent difference]
+\label{sp:continuation}
+The function in \eqref{sp:zeta-definition} has the continuation
+\begin{equation}
+ Z_N(s;a,\boldsymbol\mu)
+ =\zeta(2Ns,a)+
+ \sum_{n=0}^{\infty}x_n^{-2Ns}
+ \left\{\exp\left[-s\sum_{j=1}^{N}
+             \log\left(1+\frac{\mu_j}{x_n^2}\right)\right]-1\right\},
+ \label{sp:normal-continuation}
+\end{equation}
+where the series is normally convergent on $\Re s>-1/(2N)$.
+In particular $Z_N$ is holomorphic near $s=0$, $Z_N(0)=\zeta(0,a)$,
+and
+\begin{equation}
+ J_{N,r}=(2N)^r\zeta^{(r)}(0,a)
+          +(-1)^r\sum_{n=0}^{\infty}F_{N,r}(x_n^2),
+ \qquad
+ F_{N,r}(z):=
+ \left(\sum_{j=1}^{N}\Log(z+\mu_j)\right)^r-N^r\Log^r z.
+ \label{sp:jet-ordinary-series}
+\end{equation}
+The series in \eqref{sp:jet-ordinary-series} is absolutely convergent.
+\end{lemma}
+
+\begin{proof}
+Put $L_n=\sum_j\log(1+\mu_j/x_n^2)$.  Then $L_n=O(x_n^{-2})$.
+For a compact subset $K$ of $\Re s>-1/(2N)$, the tail of the
+series in \eqref{sp:normal-continuation} is bounded, uniformly on $K$,
+by a constant times $x_n^{-2N\inf_K\Re s-2}$.  This is summable.
+The finitely many remaining summands are entire functions of $s$.
+The identity first holds in the defining half-plane by factoring
+out $x_n^{-2Ns}$, and hence gives the asserted continuation.
+The sole pole of $\zeta(2Ns,a)$ in this region is away from zero.
+Normal convergence permits differentiation at zero, giving
+\eqref{sp:jet-ordinary-series}.  Finally,
+\[
+ \sum_j\log(x_n^2+\mu_j)=N\log(x_n^2)+O(x_n^{-2}),
+ \qquad
+ F_{N,r}(x_n^2)=O\left(\frac{1+\log^{r-1}x_n}{x_n^2}\right)
+\]
+for large $n$, which also proves absolute convergence directly.
+\end{proof}
+
+For $t>0$ distinct from the masses, set
+\begin{equation}
+ A(t):=\sum_{j=1}^{N}\log|\mu_j-t|,
+ \qquad k(t):=\#\{j:\mu_j<t\},
+ \label{sp:cut-data}
+\end{equation}
+counting repeated masses with their multiplicity, and define the
+real, possibly signed density
+\begin{equation}
+ \rho_{N,r}(t):=-\frac{1}{\pi}\Im\left\{
+        [A(t)+i\pi k(t)]^r
+           -N^r[\log t+i\pi]^r\right\}.
+ \label{sp:scalar-density}
+\end{equation}
+Its values at the finitely many mass points may be assigned
+arbitrarily.  They do not change any integral below.
+
+\begin{theorem}[A single ordinary integral for every scalar jet]
+\label{sp:master}
+For every integer $N\geq1$, every integer $r\geq1$, every $a>0$,
+and all positive masses,
+\begin{equation}
+ \boxed{\displaystyle
+ J_{N,r}(a;\boldsymbol\mu)
+ =(2N)^r\zeta^{(r)}(0,a)
+       +(-1)^r\int_0^{\infty}\rho_{N,r}(t)Q_a(t)\,dt,}
+ \label{sp:master-formula}
+\end{equation}
+where
+\begin{equation}
+ Q_a(t):=\sum_{n=0}^{\infty}\frac{1}{x_n^2+t}
+ =\frac{\psi(a+i\sqrt t)-\psi(a-i\sqrt t)}{2i\sqrt t},
+ \qquad Q_a(0):=\psi'(a).
+ \label{sp:resolvent-kernel}
+\end{equation}
+The integral is absolutely convergent.  At the mass points it is
+understood as the sum of the ordinary improper integrals over the
+intervals separated by the distinct masses; no finite part or
+principal value is required.
+\end{theorem}
+
+\begin{proof}
+We first establish the Stieltjes representation
+\begin{equation}
+ F_{N,r}(z)=\int_0^{\infty}\frac{\rho_{N,r}(t)}{z+t}\,dt,
+ \qquad z\in\mathbb C\setminus(-\infty,0].
+ \label{sp:scalar-stieltjes}
+\end{equation}
+The function $F_{N,r}$ is holomorphic on this slit plane and
+satisfies Schwarz reflection.  On the upper bank of the cut,
+\[
+ \sum_j\Log(\mu_j-t+i0)=A(t)+i\pi k(t),
+ \qquad \Log(-t+i0)=\log t+i\pi.
+\]
+Consequently its upper boundary value has imaginary part
+$-\pi\rho_{N,r}(t)$.  Near zero,
+$F_{N,r}(z)=O(1+|\Log z|^r)$; at a nonzero endpoint $-\mu_j$
+it has at worst a power of a logarithm.  The integrals on circles
+of radius $\varepsilon$ around these endpoints therefore tend to
+zero, since $\varepsilon(1+|\log\varepsilon|^r)\to0$.
+At infinity, uniformly along a large keyhole contour,
+\[
+ \sum_j\Log(z+\mu_j)
+       =N\Log z+O(|z|^{-1}),
+ \qquad
+ F_{N,r}(z)=O\left(\frac{1+\log^{r-1}|z|}{|z|}\right).
+\]
+The outer circle in the Cauchy integral hence contributes zero
+in the limit.  Cauchy's formula, followed by collapsing the two
+banks of the cut, gives \eqref{sp:scalar-stieltjes} with the sign
+in \eqref{sp:scalar-density}.
+
+Here are explicit bounds that justify the resulting improper
+integral and its later interchange with a series.  Since the
+masses are positive, $k(t)=0$ for sufficiently small $t$ and
+$A(t)$ remains bounded there.  Thus
+\begin{equation}
+ \rho_{N,r}(t)=O(1+|\log t|^{r-1})\qquad(t\downarrow0).
+ \label{sp:density-zero-bound}
+\end{equation}
+At each mass point the density is bounded by a constant times
+$1+|\log|t-\mu_j||^{r-1}$, allowing for multiplicities; these
+singularities are locally integrable.  Beyond the largest mass,
+write
+\[
+ A(t)=N\log t+\delta(t),\qquad
+ \delta(t)=\sum_j\log(1-\mu_j/t)=O(t^{-1}),\qquad k(t)=N.
+\]
+In the difference
+$[N(\log t+i\pi)+\delta(t)]^r-[N(\log t+i\pi)]^r$,
+taking the imaginary part lowers the maximal logarithmic degree
+by one.  Hence, for $r\geq2$,
+\begin{equation}
+ \rho_{N,r}(t)=O\left(\frac{1+\log^{r-2}t}{t}\right)
+       \qquad(t\to\infty).
+ \label{sp:density-infinity-bound}
+\end{equation}
+For $r=1$ the density is zero beyond the largest mass.
+These estimates also directly give absolute convergence in
+\eqref{sp:scalar-stieltjes} at any fixed $z$ off the cut.
+
+The convergent digamma difference series gives
+\eqref{sp:resolvent-kernel}.  It also shows that $Q_a(t)>0$,
+that $Q_a$ is continuous at zero with value $\psi'(a)$, and that
+it is bounded on compact intervals of $t\geq0$.
+Comparison of its decreasing summand with an integral yields
+\[
+ Q_a(t)=\int_a^{\infty}\frac{dx}{x^2+t}+O(t^{-1})
+       =\frac{\pi}{2\sqrt t}+O(t^{-1})
+       \qquad(t\to\infty).
+\]
+It follows from the endpoint bounds that
+\[
+ \int_0^{\infty}|\rho_{N,r}(t)|Q_a(t)\,dt<\infty.
+\]
+Tonelli's theorem applied to the absolute values, followed by
+Fubini's theorem, now proves
+\[
+ \sum_{n=0}^{\infty}F_{N,r}(x_n^2)
+   =\int_0^{\infty}\rho_{N,r}(t)
+                     \sum_{n=0}^{\infty}\frac{dt}{x_n^2+t}
+   =\int_0^{\infty}\rho_{N,r}(t)Q_a(t)\,dt.
+\]
+Substitution in \eqref{sp:jet-ordinary-series} gives the result.
+\end{proof}
+
+\begin{remark}[Explicit densities and collisions]
+\label{sp:explicit-densities}
+Expanding only the odd binomial terms gives, at every order,
+\begin{equation}
+ \rho_{N,r}(t)=
+ \sum_{h=0}^{\lfloor(r-1)/2\rfloor}
+   (-1)^h\binom{r}{2h+1}\pi^{2h}
+   \left\{N^r(\log t)^{r-2h-1}
+                -k(t)^{2h+1}A(t)^{r-2h-1}\right\}.
+ \label{sp:binomial-density}
+\end{equation}
+In particular,
+\begin{align}
+ \rho_{N,1}(t)&=N-k(t),\label{sp:density-one}\\
+ \rho_{N,2}(t)&=2N^2\log t-2k(t)A(t),\label{sp:density-two}\\
+ \rho_{N,3}(t)&=3N^3\log^2t-3k(t)A(t)^2
+                    +\pi^2\{k(t)^3-N^3\}.
+ \label{sp:density-three}
+\end{align}
+The densities need not be nonnegative at higher orders.
+Repeated masses are included directly in these formulas: $k$
+jumps by their multiplicity, and $A$ contains the corresponding
+multiple of $\log|\mu-t|$.  The proof of
+Theorem~\ref{sp:master} applies without a distinctness assumption,
+so no limiting prescription is needed when masses coincide.
+\end{remark}
+
+\begin{corollary}[The first jet and its normalization]
+\label{sp:first-jet}
+Let $\log\Gamma$ denote the analytic branch on $\Re z>0$ that
+is real on the positive real axis.  Then
+\begin{equation}
+ J_{N,1}(a;\boldsymbol\mu)
+ =\sum_{j=1}^{N}\left\{
+       \log\Gamma(a+i\sqrt{\mu_j})
+       +\log\Gamma(a-i\sqrt{\mu_j})-\log(2\pi)\right\}.
+ \label{sp:first-jet-gamma}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Since $N-k(t)=\sum_j\boldsymbol1_{(0,\mu_j)}(t)$, the integral
+in \eqref{sp:master-formula} is a sum of $\int_0^{\mu_j}Q_a(t)\,dt$.
+Differentiation with respect to $t$ gives
+\[
+ \frac{d}{dt}\left\{
+   \log\Gamma(a+i\sqrt t)+\log\Gamma(a-i\sqrt t)\right\}
+ =-Q_a(t).
+\]
+The identity extends continuously to $t=0$.  Therefore
+\[
+ \int_0^\mu Q_a(t)\,dt
+ =2\log\Gamma(a)-\log\Gamma(a+i\sqrt\mu)
+                       -\log\Gamma(a-i\sqrt\mu).
+\]
+Combining this with
+$\zeta'(0,a)=\log\Gamma(a)-\tfrac12\log(2\pi)$ proves
+\eqref{sp:first-jet-gamma}.
+\end{proof}
+
+\subsection{Parameter calculus without regularized interchange}
+\label{sp:parameters}
+
+\begin{proposition}[Derivatives and an anchored primitive in $a$]
+\label{sp:a-calculus}
+For every nonnegative integer $m$,
+\begin{equation}
+ \partial_a^mJ_{N,r}
+ =(2N)^r\partial_a^m\zeta^{(r)}(0,a)
+   +(-1)^r\int_0^{\infty}\rho_{N,r}(t)Q_a^{[m]}(t)\,dt,
+ \label{sp:a-derivatives}
+\end{equation}
+where, with $\psi^{(0)}=\psi$,
+\begin{equation}
+ Q_a^{[m]}(t):=
+ \frac{\psi^{(m)}(a+i\sqrt t)-\psi^{(m)}(a-i\sqrt t)}
+      {2i\sqrt t},
+ \qquad Q_a^{[m]}(0)=\psi^{(m+1)}(a).
+ \label{sp:polygamma-kernel}
+\end{equation}
+All these integrals are absolutely convergent and locally uniform
+for $a>0$.
+
+For a fixed anchor $a_*>0$, define
+\begin{align}
+ K_a(t)&:=\frac{\log\Gamma(a+i\sqrt t)-\log\Gamma(a-i\sqrt t)}
+                      {2i\sqrt t},\qquad t>0,\notag\\
+ H_{a,a_*}(t)&:=K_a(t)-K_{a_*}(t),
+ \label{sp:gamma-kernel}\\
+ H_{a,a_*}(0)&:=\psi(a)-\psi(a_*),\notag\\
+ B_{N,r}(a)
+ &:=(2N)^r r!\sum_{j=0}^{r}\frac{\zeta^{(j)}(-1,a)}{j!}.
+ \label{sp:primitive-baseline}
+\end{align}
+The branch of $\log\Gamma$ is the one used in
+Corollary~\ref{sp:first-jet}.  Then the anchored primitive is
+\begin{equation}
+ \int_{a_*}^{a}J_{N,r}(u;\boldsymbol\mu)\,du
+ =B_{N,r}(a)-B_{N,r}(a_*)
+     +(-1)^r\int_0^{\infty}
+                      \rho_{N,r}(t)H_{a,a_*}(t)\,dt.
+ \label{sp:anchored-primitive}
+\end{equation}
+The final integral is again ordinary and absolutely convergent.
+\end{proposition}
+
+\begin{proof}
+Let $a$ range over a compact interval $I\subset(0,\infty)$.
+Choose a positive complex radius $\eta$ smaller than one half of
+$\inf I$.  For real $a\in I$, $t\geq0$, and $|w-a|\leq\eta$,
+each factor $n+w\pm i\sqrt t$ has modulus at least a fixed
+positive multiple of $\sqrt{(n+a)^2+t}$.  Cauchy's derivative
+estimate applied to $((n+w)^2+t)^{-1}$ therefore gives
+\[
+ \left|\partial_a^m\frac{1}{(n+a)^2+t}\right|
+ \leq\frac{C_{I,m}}{(n+a)^2+t}.
+\]
+Summing and using the bounds in the proof of
+Theorem~\ref{sp:master} produces a majorant for every derivative
+that is integrable against $|\rho_{N,r}(t)|\,dt$, uniformly for
+$a\in I$.  Differentiation under the integral is valid to every
+order.  Differentiating the digamma expression for $Q_a$ gives
+\eqref{sp:polygamma-kernel}; its value at zero follows by a Taylor
+expansion.  The same local uniform estimates justify derivatives
+of the normally convergent series in
+\eqref{sp:normal-continuation}.
+
+For the primitive, integration of $Q_u(t)$ in $u$ gives
+\[
+ H_{a,a_*}(t)=\int_{a_*}^{a}Q_u(t)\,du.
+\]
+This identity both fixes the branch normalization and proves the
+required integral bound, including the continuous value at $t=0$.
+For the Hurwitz term, the identity
+$\partial_a\zeta(v,a)=-v\zeta(v+1,a)$ gives
+\[
+ \partial_a\left\{-\frac{\zeta(2Ns-1,a)}{2Ns-1}\right\}
+ =\zeta(2Ns,a).
+\]
+Writing $u=2Ns$ and expanding at $u=0$,
+\[
+ -\frac{\zeta(2Ns-1,a)}{2Ns-1}
+ =\frac{\zeta(u-1,a)}{1-u},\qquad
+ \left.\partial_s^r
+    \frac{\zeta(2Ns-1,a)}{1-2Ns}\right|_{s=0}
+ =(2N)^r r!\sum_{j=0}^{r}\frac{\zeta^{(j)}(-1,a)}{j!}.
+\]
+Thus $B_{N,r}'(a)=(2N)^r\zeta^{(r)}(0,a)$.
+Integrating \eqref{sp:master-formula}, with the locally uniform
+absolute bounds just proved, gives
+\eqref{sp:anchored-primitive}.
+\end{proof}
+
+\begin{proposition}[Mixed mass derivatives and resolvents]
+\label{sp:mass-derivatives}
+Hold $N$ fixed.  Choose $q$ distinct labels
+$i_1,\ldots,i_q\in\{1,\ldots,N\}$ and put
+$S_n:=\sum_{j=1}^{N}\log(x_n^2+\mu_j)$.
+For $1\leq q\leq r$,
+\begin{equation}
+ \partial_{\mu_{i_1}}\cdots\partial_{\mu_{i_q}}J_{N,r}
+ =(-1)^r\frac{r!}{(r-q)!}
+   \sum_{n=0}^{\infty}
+     \frac{S_n^{r-q}}{\prod_{\ell=1}^{q}(x_n^2+\mu_{i_\ell})}.
+ \label{sp:mixed-mass-formula}
+\end{equation}
+For $q>r$ the mixed derivative vanishes.  Every series in
+\eqref{sp:mixed-mass-formula} is absolutely convergent, including
+when different labels carry equal masses.
+In particular, if $r\leq N$, then
+\begin{equation}
+ \partial_{\mu_{i_1}}\cdots\partial_{\mu_{i_r}}J_{N,r}
+ =(-1)^r r!\sum_{n=0}^{\infty}
+          \frac{1}{\prod_{\ell=1}^{r}(x_n^2+\mu_{i_\ell})}
+ =-r!\,Q_a[\mu_{i_1},\ldots,\mu_{i_r}],
+ \label{sp:rational-mass-resolvent}
+\end{equation}
+where brackets denote the ordinary divided difference of order
+$r-1$ with its confluent continuation.
+\end{proposition}
+
+\begin{proof}
+In a common domain of absolute convergence, differentiating the
+defining spectral summand in $q$ distinct mass labels gives
+\[
+ \partial_{\mu_{i_1}}\cdots\partial_{\mu_{i_q}}Z_N(s)
+ =(-s)^q\sum_{n=0}^{\infty}
+     \frac{e^{-sS_n}}{\prod_{\ell=1}^{q}(x_n^2+\mu_{i_\ell})}.
+\]
+For $q\geq1$ the series on the right is normally convergent in
+a neighborhood of $s=0$, uniformly for masses in compact subsets
+of the positive orthant.  It supplies the continuation of the
+mass derivative.  Taking its $r$th derivative at zero proves
+\eqref{sp:mixed-mass-formula} and the vanishing for $q>r$.
+The summands are bounded by a constant times
+$x_n^{-2q}(1+\log^{r-q}x_n)$ when $q\leq r$.
+Finally,
+\[
+ \left[t\longmapsto\frac{1}{x^2+t}\right]
+        [\nu_1,\ldots,\nu_r]
+ =\frac{(-1)^{r-1}}{\prod_{j=1}^{r}(x^2+\nu_j)}.
+\]
+Summing this identity proves the divided-difference formula.
+Normal convergence in the masses justifies confluence at equal
+arguments.
+\end{proof}
+
+\begin{remark}[Repeated differentiation of one mass]
+\label{sp:repeated-mass-derivatives}
+The qualification ``distinct labels'' in
+Proposition~\ref{sp:mass-derivatives} concerns the differentiation
+variables, not their numerical values.  A formula for an arbitrary
+nonzero multi-index $\boldsymbol\alpha=(\alpha_1,\ldots,\alpha_N)$
+is obtained without differentiating a moving branch-cut density.
+Let $d=\sum_j\alpha_j$, let $q=\#\{j:\alpha_j>0\}$, and write
+\[
+ \prod_{j=1}^{N}(s)_{\alpha_j}
+      =\sum_{\ell=q}^{d}c_{\boldsymbol\alpha,\ell}s^\ell,
+ \qquad (s)_m=s(s+1)\cdots(s+m-1),\quad (s)_0=1.
+\]
+Then
+\begin{equation}
+ \partial_{\boldsymbol\mu}^{\boldsymbol\alpha}J_{N,r}
+ =(-1)^d r!\sum_{\ell=q}^{\min(d,r)}
+       \frac{(-1)^{r-\ell}c_{\boldsymbol\alpha,\ell}}{(r-\ell)!}
+       \sum_{n=0}^{\infty}
+       \frac{S_n^{r-\ell}}
+            {\prod_{j=1}^{N}(x_n^2+\mu_j)^{\alpha_j}}.
+ \label{sp:all-mass-derivatives}
+\end{equation}
+An empty outer sum is zero.  Indeed, differentiating the spectral
+summand gives
+\[
+ (-1)^d\prod_j(s)_{\alpha_j}\,e^{-sS_n}
+                  \prod_j(x_n^2+\mu_j)^{-\alpha_j},
+\]
+whose series is normal near
+zero; coefficient extraction gives
+\eqref{sp:all-mass-derivatives}.  Each inner series is ordinary
+and absolutely convergent.
+\end{remark}
+
+\begin{corollary}[Integral shifts and the zero-mass boundary]
+\label{sp:integer-a}
+For an integer $M\geq1$ and $t>0$,
+\begin{equation}
+ Q_M(t)=\frac{\pi\sqrt t\,\coth(\pi\sqrt t)-1}{2t}
+           -\sum_{j=1}^{M-1}\frac{1}{j^2+t}.
+ \label{sp:integer-resolvent}
+\end{equation}
+For integers $p\geq1$ its confluent derivatives give
+\begin{equation}
+ \sum_{n=0}^{\infty}\frac{1}{((n+M)^2+t)^p}
+ =\frac{(-1)^{p-1}}{(p-1)!}\partial_t^{p-1}Q_M(t).
+ \label{sp:confluent-resolvent}
+\end{equation}
+These expressions extend continuously to $t=0$, where
+\begin{equation}
+ \sum_{n=0}^{\infty}(n+M)^{-2p}
+    =\zeta(2p)-H_{M-1}^{(2p)},
+ \qquad H_m^{(v)}:=\sum_{j=1}^{m}j^{-v},\quad H_0^{(v)}:=0.
+ \label{sp:harmonic-resolvent}
+\end{equation}
+Consequently, when $r\leq N$, the limit of
+\eqref{sp:rational-mass-resolvent} as its $r$ selected masses tend
+to zero is
+\begin{equation}
+ (-1)^r r!\{\zeta(2r)-H_{M-1}^{(2r)}\},\qquad a=M.
+ \label{sp:harmonic-mixed-jet}
+\end{equation}
+The remaining masses do not enter this mixed derivative.
+\end{corollary}
+
+\begin{proof}
+The partial-fraction expansion of the hyperbolic cotangent gives
+\[
+ \sum_{j=1}^{\infty}(j^2+t)^{-1}
+       =\frac{\pi\sqrt t\coth(\pi\sqrt t)-1}{2t}.
+\]
+Removing its first $M-1$ terms proves
+\eqref{sp:integer-resolvent}.  Normal convergence permits the
+$t$ derivatives in \eqref{sp:confluent-resolvent}.  At $t=0$ the
+series becomes a tail of the defining series for $\zeta(2p)$,
+which proves \eqref{sp:harmonic-resolvent}.  Dominated convergence
+in \eqref{sp:rational-mass-resolvent} gives the last assertion.
+\end{proof}
+
+\subsection{Compact densities for connected logarithmic products}
+\label{sp:connected-subsection}
+
+We now use $r$ for the number of logarithmic factors.  Fix an
+anchor $\beta\geq0$, let $\nu_1,\ldots,\nu_r>\beta$, and put
+$M=\max_j\nu_j$.  Define
+\begin{equation}
+ G_{\boldsymbol\nu,\beta}(z)
+ :=\prod_{j=1}^{r}
+       \log\frac{z+\nu_j}{z+\beta}.
+ \label{sp:connected-product}
+\end{equation}
+Each logarithm means the analytic continuation from positive
+real $z$ of $\Log(z+\nu_j)-\Log(z+\beta)$, with value tending
+to zero at infinity.  This gives a holomorphic function on
+$\mathbb C\setminus[-M,-\beta]$.
+For $\beta<t<M$ away from the masses, write
+\begin{equation}
+ \ell_j(t):=\log\left|\frac{\nu_j-t}{\beta-t}\right|,
+ \qquad \chi_j(t):=\boldsymbol1_{\{t<\nu_j\}},
+ \qquad
+ \rho_{\boldsymbol\nu,\beta}(t)
+ :=-\frac1\pi\Im\prod_{j=1}^{r}
+                     \{\ell_j(t)-i\pi\chi_j(t)\}.
+ \label{sp:connected-density}
+\end{equation}
+The density is taken to be zero outside $[\beta,M]$.
+
+\begin{theorem}[Compact representation and exact moments]
+\label{sp:compact-density}
+The density in \eqref{sp:connected-density} is integrable and
+satisfies
+\begin{equation}
+ G_{\boldsymbol\nu,\beta}(z)
+ =\int_\beta^M\frac{\rho_{\boldsymbol\nu,\beta}(t)}{z+t}\,dt,
+ \qquad z\in\mathbb C\setminus[-M,-\beta].
+ \label{sp:compact-stieltjes}
+\end{equation}
+For every integer $k\geq0$,
+\begin{equation}
+ \int_\beta^M t^k\rho_{\boldsymbol\nu,\beta}(t)\,dt
+ =(-1)^k[u^{k+1}]
+       \prod_{j=1}^{r}\log\frac{1+\nu_j u}{1+\beta u},
+ \label{sp:compact-moments}
+\end{equation}
+where $[u^m]$ extracts a Taylor coefficient at $u=0$.
+In particular, with $C:=\prod_{j=1}^{r}(\nu_j-\beta)$,
+\begin{align}
+ \int_\beta^M t^k\rho_{\boldsymbol\nu,\beta}(t)\,dt&=0,
+       &&0\leq k\leq r-2,\label{sp:vanishing-moments}\\
+ \int_\beta^M t^{r-1}\rho_{\boldsymbol\nu,\beta}(t)\,dt
+      &=(-1)^{r-1}C.
+ \label{sp:first-nonzero-moment}
+\end{align}
+The first range is empty if $r=1$.
+\end{theorem}
+
+\begin{proof}
+On the upper cut $z=-t+i0$, the denominator logarithm has
+imaginary part $\pi$ for $t>\beta$, while the numerator
+logarithm has imaginary part $\pi$ precisely for $t>\nu_j$.
+Their difference is therefore
+$\ell_j(t)-i\pi\chi_j(t)$.
+For $t>M$ all these differences have identical real boundary
+values on both banks of the cut, which explains the compact
+support.  At every endpoint the product has at worst a power of
+a logarithm.  Thus the density is integrable, even when several
+masses coincide, and every small endpoint circle contributes
+$O(\varepsilon(1+|\log\varepsilon|^r))$ to the Cauchy integral.
+At infinity,
+\begin{equation}
+ G_{\boldsymbol\nu,\beta}(z)=Cz^{-r}+O(z^{-r-1}).
+ \label{sp:connected-asymptotic}
+\end{equation}
+The outer contour therefore vanishes.  Collapsing the Cauchy
+contour onto the finite cut proves
+\eqref{sp:compact-stieltjes}, with its indicated sign.
+
+For $|z|>M$, expand $(z+t)^{-1}$ into its uniformly convergent
+geometric series on the support of the density.  The coefficient
+of $z^{-k-1}$ in the resulting integral is
+$(-1)^k\int t^k\rho_{\boldsymbol\nu,\beta}(t)\,dt$.
+On the other hand, the same coefficient on the left is
+$[u^{k+1}]\prod_j\log((1+\nu_j u)/(1+\beta u))$.
+This proves \eqref{sp:compact-moments}.  Each logarithmic factor
+starts with $(\nu_j-\beta)u$, so the product starts with $Cu^r$.
+The final two assertions follow.
+\end{proof}
+
+\begin{corollary}[Coincident masses]
+\label{sp:coincident-density}
+If $\nu_1=\cdots=\nu_r=\nu>\beta$, set
+$y=\log((\nu-t)/(t-\beta))$ for $\beta<t<\nu$.  Then
+\begin{equation}
+ \rho_{\nu,\beta}^{(r)}(t)=P_r(y),\qquad
+ P_r(y):=\sum_{h=0}^{\lfloor(r-1)/2\rfloor}
+       (-1)^h\binom{r}{2h+1}\pi^{2h}y^{r-2h-1}.
+ \label{sp:coincident-polynomial}
+\end{equation}
+For example,
+\begin{equation}
+ P_1(y)=1,\qquad P_2(y)=2y,\qquad
+ P_3(y)=3y^2-\pi^2,\qquad P_4(y)=4y^3-4\pi^2y.
+ \label{sp:coincident-examples}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+On this single interval every factor in
+\eqref{sp:connected-density} equals $y-i\pi$.
+Expanding $-\pi^{-1}\Im(y-i\pi)^r$ gives the formula.
+\end{proof}
+
+\begin{corollary}[An ordinary connected spectral sum]
+\label{sp:ordinary-connected}
+For $a>0$,
+\begin{equation}
+ \sum_{n=0}^{\infty}
+   \prod_{j=1}^{r}\log\frac{x_n^2+\nu_j}{x_n^2+\beta}
+ =\int_\beta^M\rho_{\boldsymbol\nu,\beta}(t)Q_a(t)\,dt.
+ \label{sp:connected-sum}
+\end{equation}
+Both sides are ordinary and absolutely convergent.
+\end{corollary}
+
+\begin{proof}
+The summand is $O(x_n^{-2r})$ by
+\eqref{sp:connected-asymptotic}.  Moreover, $Q_a$ is bounded on
+the compact interval $[\beta,M]$, including when $\beta=0$.
+Thus $\int|\rho_{\boldsymbol\nu,\beta}(t)|Q_a(t)\,dt$ is finite,
+and absolute Fubini applied to
+\eqref{sp:compact-stieltjes} proves the assertion.
+\end{proof}
+
+\begin{remark}[A fixed number of spectral factors]
+\label{sp:fixed-N-differences}
+Suppose $N\geq r$ is fixed, and choose $r$ labeled mass slots.
+In slot $j$, let $\Delta_j$ mean the value with mass $\nu_j$
+minus the value with mass $\beta$; the other slots are held
+fixed.  The normally convergent formula
+\eqref{sp:normal-continuation} also permits zero masses at this
+fixed positive $a$.  Consequently,
+\begin{equation}
+ \Delta_1\cdots\Delta_r J_{N,r}
+ =(-1)^r r!\int_\beta^M
+                    \rho_{\boldsymbol\nu,\beta}(t)Q_a(t)\,dt.
+ \label{sp:connected-finite-difference}
+\end{equation}
+Indeed, in \eqref{sp:jet-ordinary-series} the mass-independent
+baseline cancels, while the mixed difference of the $r$th power
+of a sum of logarithms is $r!$ times the product of their $r$
+increments.  This is a replacement operation at fixed $N$.
+Adding or deleting a spectral factor changes the scale $2N$ in
+the zeta term and is a different operation.
+\end{remark}
+
+\begin{theorem}[The critical odd weight as an ordinary sum]
+\label{sp:critical-weight}
+Under the assumptions of Theorem~\ref{sp:compact-density},
+\begin{equation}
+ \boxed{\begin{aligned}
+ &\sum_{n=0}^{\infty}\left\{
+        x_n^{2r-1}G_{\boldsymbol\nu,\beta}(x_n^2)-\frac{C}{x_n}
+                         \right\}\\
+ &\qquad=(-1)^r\int_\beta^M
+       \rho_{\boldsymbol\nu,\beta}(t)t^{r-1}
+       \{\Re\psi(a+i\sqrt t)-\psi(a)\}\,dt.
+ \end{aligned}}
+ \label{sp:critical-ordinary-sum}
+\end{equation}
+The summand on the left is $O(x_n^{-3})$.  The integral on the
+right is an ordinary absolutely convergent integral; the
+digamma difference has its continuous value zero at $t=0$.
+\end{theorem}
+
+\begin{proof}
+Polynomial division gives
+\[
+ \frac{x^{2r-1}}{x^2+t}
+ =\sum_{k=0}^{r-2}(-t)^k x^{2r-3-2k}
+          +(-t)^{r-1}\frac{x}{x^2+t},
+\]
+where the sum is empty for $r=1$.
+Upon integration against $\rho_{\boldsymbol\nu,\beta}$, every
+polynomial term vanishes by \eqref{sp:vanishing-moments}.
+Using \eqref{sp:first-nonzero-moment} for the subtraction gives
+the exact identity, for each $x>0$,
+\[
+ x^{2r-1}G_{\boldsymbol\nu,\beta}(x^2)-\frac{C}{x}
+ =(-1)^{r-1}\int_\beta^M
+       \rho_{\boldsymbol\nu,\beta}(t)t^{r-1}
+             \left\{\frac{x}{x^2+t}-\frac1x\right\}\,dt.
+\]
+The expression in braces equals $-t/[x(x^2+t)]$ and is bounded
+in absolute value by $M/x^3$ on the whole integration interval.
+Hence absolute Fubini is valid after this subtraction.
+The convergent digamma difference series yields
+\[
+ \sum_{n=0}^{\infty}
+       \left\{\frac{x_n}{x_n^2+t}-\frac1{x_n}\right\}
+       =\psi(a)-\Re\psi(a+i\sqrt t).
+\]
+Substitution proves \eqref{sp:critical-ordinary-sum}.
+The asserted $O(x_n^{-3})$ remainder also follows immediately
+from \eqref{sp:connected-asymptotic}.
+\end{proof}
+
+\subsection{Polynomial weights and the inherited local correction}
+\label{sp:weighted-bridge}
+
+Let $W(x)=\sum_{d=0}^{D}w_dx^d$ be a polynomial.  For functions
+with the relevant meromorphic continuation, use the fixed
+regulator
+\begin{equation}
+ \mathcal R_W[f]
+ :=\operatorname{FP}_{\varepsilon=0}
+     \sum_{n=0}^{\infty}W(x_n)x_n^{-2\varepsilon}f(x_n),
+ \qquad
+ Q_{W,a}(t):=\mathcal R_W\left[x\longmapsto\frac{1}{x^2+t}\right],
+ \label{sp:fixed-regulator}
+\end{equation}
+where $\operatorname{FP}$ means the constant Laurent coefficient.
+The weight is already included in $\mathcal R_W$.
+
+\begin{proposition}[The compact transform with a polynomial weight]
+\label{sp:weighted-compact}
+For the connected product in \eqref{sp:connected-product},
+\begin{equation}
+ \mathcal R_W[x\longmapsto G_{\boldsymbol\nu,\beta}(x^2)]
+ =\int_\beta^M\rho_{\boldsymbol\nu,\beta}(t)Q_{W,a}(t)\,dt.
+ \label{sp:weighted-compact-transform}
+\end{equation}
+The integral on the right is ordinary and absolutely convergent.
+The kernels for monomials have the explicit expressions, for
+integers $p\geq0$,
+\begin{align}
+ Q_{x^{2p},a}(t)
+ &=\sum_{j=0}^{p-1}(-t)^j\zeta(2j-2p+2,a)
+                        +(-t)^pQ_a(t),
+ \label{sp:even-weight-kernel}\\
+ Q_{x^{2p+1},a}(t)
+ &=\sum_{j=0}^{p-1}(-t)^j\zeta(2j-2p+1,a)
+                        -(-t)^p\Re\psi(a+i\sqrt t).
+ \label{sp:odd-weight-kernel}
+\end{align}
+Both sums are empty for $p=0$, and the kernels have their
+continuous values at $t=0$.
+\end{proposition}
+
+\begin{proof}
+For $\Re\varepsilon>(D-1)/2$, the compact representation
+\eqref{sp:compact-stieltjes} may be summed with the weight
+$W(x_n)x_n^{-2\varepsilon}$ by absolute Fubini.
+To continue this identity toward $\varepsilon=0$, choose $K$
+sufficiently large and use the exact finite expansion
+\[
+ \frac{1}{x^2+t}
+ =\sum_{j=0}^{K-1}(-t)^j x^{-2j-2}
+       +\frac{(-t)^K}{x^{2K}(x^2+t)}.
+\]
+After summation the finite sum consists of terms
+$w_d(-t)^j\zeta(2\varepsilon+2j+2-d,a)$.
+The remainder is normally convergent for $\varepsilon$ in a
+neighborhood of zero, uniformly on $\beta\leq t\leq M$.
+Indeed, its summands have size at most a constant times
+$x_n^{D-2\Re\varepsilon-2K-2}$ there.
+The possible polar coefficients are polynomials in $t$, and
+the holomorphic remainder has a uniform integrable majorant
+against $|\rho_{\boldsymbol\nu,\beta}(t)|\,dt$.
+Laurent coefficient extraction may therefore be interchanged
+with the compact integral, proving
+\eqref{sp:weighted-compact-transform}.  This argument uses
+meromorphic continuation with uniform control, rather than a
+pointwise limit of a divergent unregulated sum.
+
+Polynomial division proves \eqref{sp:even-weight-kernel} from
+$Q_{1,a}=Q_a$.  For the odd case, first observe that
+\[
+ \sum_{n=0}^{\infty}x_n^{-2\varepsilon}
+                \frac{x_n}{x_n^2+t}
+ =\zeta(1+2\varepsilon,a)
+  +\sum_{n=0}^{\infty}x_n^{-2\varepsilon}
+        \left\{\frac{x_n}{x_n^2+t}-\frac1{x_n}\right\}.
+\]
+The second series is normal near zero.  Since the constant
+Laurent coefficient of $\zeta(1+2\varepsilon,a)$ is $-\psi(a)$,
+the digamma difference used in
+Theorem~\ref{sp:critical-weight} gives
+$Q_{x,a}(t)=-\Re\psi(a+i\sqrt t)$.
+Polynomial division now proves \eqref{sp:odd-weight-kernel}.
+\end{proof}
+
+\begin{remark}[Scope and normalization of the local term]
+\label{sp:inherited-local-correction}
+The ordinary scalar formula \eqref{sp:master-formula} and the
+compact transform fit the local-correction calculation already
+present in the arithmetic spectral jets continuation
+\cite{ProveItArithmeticJets}.  We record its normalization here
+as inherited input.  Define
+\[
+ J_{W,N,r}:=\left.\partial_s^r
+       \sum_{n=0}^{\infty}W(x_n)
+                     \prod_{j=1}^{N}(x_n^2+\mu_j)^{-s}
+                    \right|_{s=0},\qquad
+ L(u):=\sum_{j=1}^{N}\log(1+\mu_j u),
+\]
+with the spectral sum continued before taking its derivative.
+For $r\geq1$, the existing correction formula is
+\begin{equation}
+ \begin{split}
+ J_{W,N,r}
+ &-\mathcal R_W\left[
+        x\longmapsto\left(-\sum_{j=1}^{N}\log(x^2+\mu_j)\right)^r
+                   \right]\\
+ &=\frac{(-1)^{r+1}}{2N(r+1)}
+     \sum_{k\geq r+1}w_{2k-1}[u^k]L(u)^{r+1}.
+ \end{split}
+ \label{sp:inherited-correction}
+\end{equation}
+The sum is finite because $W$ is a polynomial.  Its normalization
+can be read from the resonant factor
+$[u^k]e^{-sL(u)}\zeta(1+2Ns,a)$: the pole contributes
+$r![s^{r+1}u^k]e^{-sL(u)}/(2N)$ to the $r$th spectral jet.
+This equals the corresponding summand in
+\eqref{sp:inherited-correction}.  The fixed regulator has no
+such additional constant coefficient from its pole.
+
+For $W=1$ the correction vanishes, consistent with the direct
+normal-convergence proof of Theorem~\ref{sp:master}.
+More generally, it vanishes for every even polynomial weight.
+These are specializations of the inherited formula, not a new
+general regularized-trace principle; all-coefficient Laurent
+expansions of regularized traces belong to the established
+framework represented by Paycha--Scott \cite{PaychaScott}.
+Throughout such comparisons, interaction among masses means
+replacement of labeled masses at fixed $N$, as in
+Remark~\ref{sp:fixed-N-differences}.
+\end{remark}
+
+
+% END sections/04_spectral.tex
+
+
+% BEGIN sections/04b_negative_jets.tex
+\section{Even polynomial weights and jets at negative integers}
+\label{ng:section}
+
+The scalar resolvent construction extends to every polynomial in
+$x_n^2$, after subtracting a finite asymptotic expansion before
+forming the cut density.  Consequently, derivatives at every
+negative integer spectral point admit one ordinary digamma
+integral.  This is an integral representation in a specified
+function class; it does not assert a finite evaluation in
+Hurwitz zeta constants or a recurrence eliminating integral
+kernels.
+
+Fix $a>0$, $x_n=n+a$, an integer $N\geq1$, and positive masses
+$\mu_1,\ldots,\mu_N$.  Let
+\[
+ P(z)=\sum_{d=0}^{D}p_dz^d\in\mathbb R[z],\qquad
+ L(u)=\sum_{j=1}^{N}\log(1+\mu_j u),\qquad
+ b_{k,j}:=[u^k]L(u)^j.
+\]
+Here $L$ is its analytic germ at zero, so
+$b_{k,0}=\boldsymbol1_{\{k=0\}}$ and $b_{k,j}=0$ for $k<j$.
+We also use
+\[
+ c_k(s):=[u^k]e^{-sL(u)}
+   =\sum_{j=0}^{k}\frac{(-s)^j}{j!}b_{k,j}.
+\]
+Thus each $c_k$ is a polynomial in $s$, with $c_0=1$ and
+$c_k(0)=0$ for $k>0$.  The logarithm $\Log$ below is principal
+on $\mathbb C\setminus(-\infty,0]$, and
+$\zeta^{(q)}(v,a)=\partial_v^q\zeta(v,a)$.
+
+
+\subsection{Finite subtraction and holomorphy at zero}
+\label{ng:continuation-subsection}
+
+Initially, for $\Re s>(2D+1)/(2N)$, define
+\begin{equation}
+ Z_{P,N}(s;a,\boldsymbol\mu)
+ :=\sum_{n=0}^{\infty}P(x_n^2)
+                 \prod_{j=1}^{N}(x_n^2+\mu_j)^{-s}.
+ \label{ng:weighted-definition}
+\end{equation}
+If $P=0$, all statements below are immediate; otherwise $D$
+is its degree.
+
+\begin{lemma}[A finite normally convergent continuation]
+\label{ng:finite-continuation}
+The weighted spectral function has the meromorphic continuation
+\begin{align}
+ Z_{P,N}(s)
+ &=\sum_{d=0}^{D}p_d\sum_{k=0}^{d}
+       c_k(s)\zeta(2Ns+2k-2d,a)+R_{P,N}(s),
+ \label{ng:continuation}\\
+ R_{P,N}(s)
+ &:=\sum_{n=0}^{\infty}\sum_{d=0}^{D}p_d x_n^{2d-2Ns}
+       \left\{e^{-sL(x_n^{-2})}
+                 -\sum_{k=0}^{d}c_k(s)x_n^{-2k}\right\}.
+ \label{ng:normal-remainder}
+\end{align}
+For positive $x_n^{-2}$, the expression $L(x_n^{-2})$ in this
+formula means $\sum_j\log(1+\mu_j/x_n^2)$, whether or not it
+lies inside the Taylor disk at zero.
+The remainder series is normally convergent on
+$\Re s>-1/(2N)$.  Every finite zeta term is holomorphic near
+zero, so $Z_{P,N}$ is holomorphic there.  In particular,
+\begin{equation}
+ Z_{P,N}(0)=\sum_{d=0}^{D}p_d\zeta(-2d,a).
+ \label{ng:zeroth-jet}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For a fixed $d$, Taylor's theorem for the analytic function
+$e^{-sL(u)}$ gives
+\[
+ e^{-sL(u)}-\sum_{k=0}^{d}c_k(s)u^k=O_K(u^{d+1})
+ \qquad(u\to0),
+\]
+uniformly for $s$ in any compact set $K$.
+After multiplication by $x_n^{2d-2Ns}$ and substitution
+$u=x_n^{-2}$, this is bounded in absolute value by a constant
+times $x_n^{-2N\inf_K\Re s-2}$.
+This tail is summable if $K\subset\{\Re s>-1/(2N)\}$.
+The finitely many small $n$ contribute entire functions of $s$.
+Thus \eqref{ng:normal-remainder} is normally convergent in the
+asserted half-plane.  Adding and subtracting the indicated
+finite powers proves \eqref{ng:continuation} in the initial
+half-plane and hence supplies the continuation.
+The finite zeta terms can have a pole only when
+$2Ns+2k-2d=1$, or
+$s=(2(d-k)+1)/(2N)>0$; none has a pole at zero.
+Finally $c_k(0)=\boldsymbol1_{\{k=0\}}$ makes the entire
+remainder vanish at zero and proves \eqref{ng:zeroth-jet}.
+\end{proof}
+
+For integers $r\geq1$, write
+$J_{P,N,r}:=\partial_s^rZ_{P,N}(0)$ and define the finite
+subtraction
+\begin{equation}
+ \mathcal A_{P,N,r}(z)
+ :=\sum_{d=0}^{D}p_d\sum_{k=0}^{d}\sum_{j=0}^{r}
+       \binom{r}{j}N^{r-j}b_{k,j}
+                     z^{d-k}(\Log z)^{r-j}.
+ \label{ng:asymptotic-subtraction}
+\end{equation}
+Let
+\begin{equation}
+ F_{P,N,r}(z)
+ :=P(z)\left\{\sum_{j=1}^{N}\Log(z+\mu_j)\right\}^{r}
+                  -\mathcal A_{P,N,r}(z),
+ \label{ng:subtracted-function}
+\end{equation}
+and set
+\begin{equation}
+ B_{P,N,r}
+ :=\sum_{d=0}^{D}p_d\sum_{k=0}^{d}\sum_{j=0}^{r}
+       (-1)^j\binom{r}{j}(2N)^{r-j}b_{k,j}
+                    \zeta^{(r-j)}(-2(d-k),a).
+ \label{ng:finite-baseline}
+\end{equation}
+Terms with $j>k$ vanish automatically.
+
+\begin{proposition}[An ordinary remainder series for every even weight]
+\label{ng:ordinary-series}
+For every integer $r\geq1$,
+\begin{equation}
+ J_{P,N,r}
+ =B_{P,N,r}+(-1)^r\sum_{n=0}^{\infty}F_{P,N,r}(x_n^2).
+ \label{ng:jet-series}
+\end{equation}
+The series is absolutely convergent.  More precisely, uniformly
+at infinity on the slit plane,
+\begin{equation}
+ F_{P,N,r}(z)
+ =O\left(\frac{1+\log^{r-1}|z|}{|z|}\right).
+ \label{ng:large-z-bound}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Normal convergence in Lemma~\ref{ng:finite-continuation}
+permits differentiation at zero.  Since
+$c_k^{(j)}(0)=(-1)^j b_{k,j}$, the derivative of its finite
+zeta sum is exactly \eqref{ng:finite-baseline}.
+In the remainder, the derivative of the original summand is
+\[
+ (-1)^r x_n^{2d}
+       \left\{\sum_{j=1}^{N}\log(x_n^2+\mu_j)\right\}^{r},
+\]
+while the derivative of
+$x_n^{2d-2k-2Ns}c_k(s)$ is
+\[
+ (-1)^r x_n^{2d-2k}\sum_{j=0}^{r}
+             \binom{r}{j}N^{r-j}b_{k,j}(\log x_n^2)^{r-j}.
+\]
+This proves \eqref{ng:jet-series}, including its signs and
+powers of $2N$.
+
+For the precise decay, take $|z|$ larger than the largest mass.
+Then, with branches continued from the positive real axis,
+\[
+ \sum_j\Log(z+\mu_j)=N\Log z+L(1/z).
+\]
+For $j\geq1$, introduce the Taylor remainder
+\[
+ T_{d,j}(u):=L(u)^j-\sum_{k=0}^{d}b_{k,j}u^k
+                    =O(u^{d+1}).
+\]
+The $j=0$ contribution is removed exactly by
+\eqref{ng:asymptotic-subtraction}, leaving the exact identity
+\begin{equation}
+ F_{P,N,r}(z)
+ =\sum_{d=0}^{D}p_d\sum_{j=1}^{r}
+       \binom{r}{j}N^{r-j}z^d(\Log z)^{r-j}T_{d,j}(1/z)
+ \label{ng:tail-decomposition}
+\end{equation}
+in this exterior domain.  Each term is
+$O(|z|^{-1}(1+\log^{r-1}|z|))$.
+This proves \eqref{ng:large-z-bound}, and hence the ordinary
+series is dominated by a constant times
+$x_n^{-2}(1+\log^{r-1}x_n)$ for large $n$.
+\end{proof}
+
+
+\subsection{The one-integral theorem for every even weight}
+\label{ng:integral-subsection}
+
+For $t>0$ away from the masses, put
+\begin{equation}
+ A(t):=\sum_{j=1}^{N}\log|\mu_j-t|,\qquad
+ k(t):=\#\{j:\mu_j<t\}.
+ \label{ng:cut-data}
+\end{equation}
+Repeated masses are counted with their multiplicity.
+The upper-cut value of the finite subtraction is explicitly
+\begin{equation}
+ \mathcal A_{P,N,r}^{+}(t)
+ :=\sum_{d=0}^{D}p_d\sum_{k=0}^{d}\sum_{j=0}^{r}
+       \binom{r}{j}N^{r-j}b_{k,j}
+                 (-t)^{d-k}(\log t+i\pi)^{r-j}.
+ \label{ng:upper-subtraction}
+\end{equation}
+All powers $(-t)^{d-k}$ in this expression are real integer
+powers.  Define
+\begin{equation}
+ \rho_{P,N,r}(t)
+ :=-\frac1\pi\Im\left\{
+       P(-t)[A(t)+i\pi k(t)]^r
+                    -\mathcal A_{P,N,r}^{+}(t)\right\}.
+ \label{ng:density}
+\end{equation}
+The values of the density at the mass points are immaterial.
+
+\begin{theorem}[Even polynomial weights in one ordinary integral]
+\label{ng:master}
+For every $P\in\mathbb R[z]$, every $N\geq1$, every $r\geq1$,
+$a>0$, and positive masses,
+\begin{equation}
+ \boxed{\displaystyle
+ J_{P,N,r}=B_{P,N,r}
+          +(-1)^r\int_0^{\infty}\rho_{P,N,r}(t)Q_a(t)\,dt,}
+ \label{ng:master-formula}
+\end{equation}
+where the finite baseline is \eqref{ng:finite-baseline} and
+\begin{equation}
+ Q_a(t)=\sum_{n=0}^{\infty}\frac1{(n+a)^2+t}
+       =\frac{\psi(a+i\sqrt t)-\psi(a-i\sqrt t)}{2i\sqrt t},
+ \qquad Q_a(0)=\psi'(a).
+ \label{ng:digamma-kernel}
+\end{equation}
+The integral is absolutely convergent.  Splitting it at the
+distinct masses produces ordinary improper integrals, with no
+finite-part or principal-value prescription.
+
+In addition, the subtracted function itself satisfies
+\begin{equation}
+ F_{P,N,r}(z)=\int_0^{\infty}
+                         \frac{\rho_{P,N,r}(t)}{z+t}\,dt,
+ \qquad z\in\mathbb C\setminus(-\infty,0].
+ \label{ng:stieltjes-representation}
+\end{equation}
+For $r=1$, the density simplifies to the compactly supported
+expression
+\begin{equation}
+ \rho_{P,N,1}(t)=P(-t)\{N-k(t)\}
+       =P(-t)\sum_{j=1}^{N}\boldsymbol1_{(0,\mu_j)}(t).
+ \label{ng:first-density}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The function in \eqref{ng:subtracted-function} is holomorphic
+on the slit plane.  All coefficients and masses are real, so
+it satisfies Schwarz reflection.  On the upper cut,
+\[
+ \sum_j\Log(\mu_j-t+i0)=A(t)+i\pi k(t),\qquad
+ \Log(-t+i0)=\log t+i\pi.
+\]
+Thus its upper boundary value has imaginary part
+$-\pi\rho_{P,N,r}(t)$, with exactly the sign in
+\eqref{ng:density}.
+
+At zero the masses are positive and the first term in
+\eqref{ng:subtracted-function} stays bounded.  The finite
+subtraction contains only nonnegative powers of $z$, and hence
+\[
+ F_{P,N,r}(z)=O(1+|\Log z|^r)\qquad(z\to0).
+\]
+At a nonzero cut endpoint $-\mu_j$, the singularity is at worst
+a power of a logarithm.  Therefore the Cauchy integrals over
+small endpoint circles vanish, since
+$\varepsilon(1+|\log\varepsilon|^r)\to0$.
+The large-circle contribution vanishes by
+\eqref{ng:large-z-bound}.  Collapsing a Cauchy contour onto the
+two banks of the cut gives \eqref{ng:stieltjes-representation}.
+
+For completeness, the following bounds establish absolute
+convergence and justify summing that representation.  Near zero,
+$k(t)=0$, so the first expression inside the imaginary part in
+\eqref{ng:density} is real.  Taking the imaginary part of the
+finite subtraction lowers each positive logarithmic degree
+by one.  Consequently,
+\begin{equation}
+ \rho_{P,N,r}(t)=O(1+|\log t|^{r-1})\qquad(t\downarrow0).
+ \label{ng:zero-bound}
+\end{equation}
+At any mass point it has at worst an integrable logarithmic
+singularity; in particular a local bound is a constant times
+$1+|\log|t-\mu_j||^{r-1}$.
+To control infinity without estimating separately the large
+terms of \eqref{ng:density}, use the exact tail expression
+\eqref{ng:tail-decomposition}.
+For $t>\max_j\mu_j$, all numbers $T_{d,j}(-1/t)$ are real.
+Its only imaginary parts come from
+$(\log t+i\pi)^{r-j}$.  The term with $r-j=0$ is real; the
+remaining terms have imaginary parts of logarithmic degree at
+most $r-j-1\leq r-2$.  Therefore, for $r\geq2$,
+\begin{equation}
+ \rho_{P,N,r}(t)
+       =O\left(\frac{1+\log^{r-2}t}{t}\right)
+                          \qquad(t\to\infty).
+ \label{ng:infinity-bound}
+\end{equation}
+For $r=1$ every exterior tail term is real, so the density
+vanishes beyond the largest mass.  More explicitly,
+\eqref{ng:asymptotic-subtraction} at $r=1$ is
+$NP(z)\Log z$ plus a polynomial with real coefficients.
+Its upper-cut imaginary part is $\pi NP(-t)$; comparison with
+the first term in \eqref{ng:density} proves
+\eqref{ng:first-density} on every interval of the cut.
+
+The convergent digamma difference series proves
+\eqref{ng:digamma-kernel}.  Its series expression shows that
+$Q_a$ is positive and bounded near zero.  Integral comparison
+gives $Q_a(t)=\pi/(2\sqrt t)+O(t^{-1})$ at infinity.
+Combining these facts with
+\eqref{ng:zero-bound}--\eqref{ng:infinity-bound}, or with compact
+support for $r=1$, yields
+\[
+ \int_0^{\infty}|\rho_{P,N,r}(t)|Q_a(t)\,dt<\infty.
+\]
+Hence absolute Fubini gives
+\[
+ \sum_{n=0}^{\infty}F_{P,N,r}(x_n^2)
+  =\int_0^{\infty}\rho_{P,N,r}(t)
+                        \sum_{n=0}^{\infty}\frac{dt}{x_n^2+t}
+  =\int_0^{\infty}\rho_{P,N,r}(t)Q_a(t)\,dt.
+\]
+Together with \eqref{ng:jet-series}, this is
+\eqref{ng:master-formula}.
+\end{proof}
+
+\begin{remark}[Collisions and the role of real coefficients]
+\label{ng:collisions}
+No distinctness assumption is used: coincident masses simply
+increase the multiplicities in $A(t)$ and $k(t)$, while the
+endpoint singularities remain integrable.  The coefficients
+$p_d$ need not be positive; the density can be signed.
+Their reality is used in Schwarz reflection and in the improved
+imaginary-part estimate at infinity.  The theorem is stated for
+real polynomial weights with precisely these properties.
+For $P=1$ it reduces to the scalar master, since
+$\mathcal A_{1,N,r}=N^r\Log^r z$ and
+$B_{1,N,r}=(2N)^r\zeta^{(r)}(0,a)$.
+\end{remark}
+
+
+\subsection{All negative integer spectral points}
+\label{ng:negative-subsection}
+
+\begin{corollary}[Jets at every negative integer]
+\label{ng:negative-integers}
+For an integer $m\geq0$, define the real polynomial
+\begin{equation}
+ P_m(z):=\prod_{j=1}^{N}(z+\mu_j)^m.
+ \label{ng:negative-weight}
+\end{equation}
+Its coefficients are held fixed when differentiating in the
+spectral variable.  The scalar function
+\[
+ Z_N(v;a,\boldsymbol\mu)
+   =\sum_{n=0}^{\infty}\prod_{j=1}^{N}(x_n^2+\mu_j)^{-v}
+\]
+is holomorphic at $v=-m$, and for every integer $r\geq1$,
+\begin{equation}
+ \boxed{\displaystyle
+ Z_N^{(r)}(-m;a,\boldsymbol\mu)
+ =B_{P_m,N,r}
+       +(-1)^r\int_0^{\infty}\rho_{P_m,N,r}(t)Q_a(t)\,dt.}
+ \label{ng:negative-master}
+\end{equation}
+The baseline and density are the explicit finite formulas
+\eqref{ng:finite-baseline} and \eqref{ng:density}, with
+$P=P_m$ and degree $mN$.  The integral is ordinary and absolutely
+convergent, including at coincident masses.
+Writing $P_m(z)=\sum_{d=0}^{mN}p_{m,d}z^d$, the value itself is
+\begin{equation}
+ Z_N(-m;a,\boldsymbol\mu)
+       =\sum_{d=0}^{mN}p_{m,d}\zeta(-2d,a).
+ \label{ng:negative-value}
+\end{equation}
+More generally, if a fixed even weight is $E(x_n^2)$ with
+$E\in\mathbb R[z]$, the same formulas give every derivative at
+$-m$ after replacing $P_m$ by $E P_m$.
+\end{corollary}
+
+\begin{proof}
+In the common half-plane of absolute convergence,
+\[
+ Z_{P_m,N}(s)
+ =\sum_{n=0}^{\infty}\prod_{j=1}^{N}
+                      (x_n^2+\mu_j)^{m-s}
+ =Z_N(s-m).
+\]
+Lemma~\ref{ng:finite-continuation} continues the left side to
+$\Re s>-1/(2N)$ and proves that it is holomorphic at zero.
+After shifting the spectral variable, this gives a continuation
+of $Z_N(v)$ through $v=-m$.  Continuations constructed with
+different $m$ agree on their overlaps by uniqueness.
+Taking the $r$th derivative at $s=0$ and applying
+Theorem~\ref{ng:master} proves \eqref{ng:negative-master}.
+The value formula follows from \eqref{ng:zeroth-jet}.
+With an additional fixed weight, the identical calculation is
+$Z_{E P_m,N}(s)=Z_{E,N}(s-m)$, which proves the final assertion.
+\end{proof}
+
+\subsection{An explicit cubic jet at the first negative point}
+\label{ng:cubic-example-subsection}
+
+Take $N=1$, a single mass $\mu>0$, $m=1$, and $r=3$.
+Then $P_1(z)=z+\mu$ and $L(u)=\log(1+\mu u)$.
+The only coefficient with $1\leq k\leq1$ needed here is
+$b_{1,1}=\mu$.  Directly from
+\eqref{ng:asymptotic-subtraction}--\eqref{ng:finite-baseline},
+\begin{align}
+ \mathcal A_{z+\mu,1,3}(z)
+   &=(z+\mu)\Log^3z+3\mu\Log^2z,
+ \label{ng:cubic-subtraction}\\
+ F_{z+\mu,1,3}(z)
+   &=(z+\mu)\Log^3(z+\mu)
+          -(z+\mu)\Log^3z-3\mu\Log^2z,
+ \label{ng:cubic-remainder}\\
+ B_{z+\mu,1,3}
+   &=8\zeta^{(3)}(-2,a)+8\mu\zeta^{(3)}(0,a)
+                       -12\mu\zeta^{(2)}(0,a).
+ \label{ng:cubic-baseline}
+\end{align}
+The density is the following elementary piecewise expression:
+\begin{equation}
+ \rho_\mu(t)=
+ \begin{cases}
+  (\mu-t)(3\log^2t-\pi^2)+6\mu\log t,
+        &0<t<\mu,\\[3pt]
+  3(\mu-t)\{\log^2t-\log^2(t-\mu)\}+6\mu\log t,
+        &t>\mu.
+ \end{cases}
+ \label{ng:cubic-density}
+\end{equation}
+It has the common limiting value $6\mu\log\mu$ at $t=\mu$.
+Thus the complete ordinary-integral formula is
+\begin{equation}
+ \begin{split}
+ Z_1^{(3)}(-1;a,\mu)
+   ={}&8\zeta^{(3)}(-2,a)+8\mu\zeta^{(3)}(0,a)
+                          -12\mu\zeta^{(2)}(0,a)\\
+      &-\int_0^{\infty}\rho_\mu(t)Q_a(t)\,dt.
+ \end{split}
+ \label{ng:cubic-negative-jet}
+\end{equation}
+
+\begin{proof}
+The displayed finite subtraction and baseline follow by
+retaining $d=0,1$ and $k\leq d$ in the general formulas.
+For $0<t<\mu$, the value $\Log(\mu-t+i0)$ is real, so only
+the subtracted terms contribute to the density.  The identities
+\[
+ \frac1\pi\Im(\log t+i\pi)^3=3\log^2t-\pi^2,
+ \qquad
+ \frac1\pi\Im(\log t+i\pi)^2=2\log t
+\]
+give its first branch.  For $t>\mu$, the original logarithm
+is $\log(t-\mu)+i\pi$.  Its cubic imaginary part supplies the
+second logarithmic square, and the two $\pi^2$ terms cancel.
+This gives the second branch of \eqref{ng:cubic-density}.
+The limit at $t=\mu$ uses
+$(t-\mu)\log^2|t-\mu|\to0$.
+Finally $(-1)^3=-1$ in \eqref{ng:negative-master}, which gives
+the minus sign before the integral in
+\eqref{ng:cubic-negative-jet}.
+\end{proof}
+
+\begin{remark}[A tail check and the scope of the extension]
+\label{ng:scope}
+For fixed $\mu>0$, expansion of the second branch yields
+\begin{equation}
+ \rho_\mu(t)=\frac{3\mu^2(\log t+1)}{t}
+                  +O\left(\frac{1+\log t}{t^2}\right)
+                       \qquad(t\to\infty),
+ \label{ng:cubic-tail}
+\end{equation}
+which also checks the cancellation of all apparent growing
+terms in \eqref{ng:cubic-density}.
+For example, putting $\delta=\log(1-\mu/t)$ rewrites that
+branch exactly as
+\[
+ 6\log t\{\mu+(t-\mu)\delta\}+3(t-\mu)\delta^2;
+\]
+Taylor expansion then gives \eqref{ng:cubic-tail}.
+
+The general construction supplies, at every negative integer,
+a finite Hurwitz-derivative baseline and one ordinary integral
+against the same digamma resolvent.  The new density is explicit
+in finite Taylor coefficients and logarithmic boundary values.
+For orders $r\geq2$ it generally has an infinite tail, controlled
+by \eqref{ng:infinity-bound}; at order one it has compact support.
+This resolves the representation question within the ordinary
+digamma-integral function class.  Finite evaluation in a smaller
+set of constants, or the separate recurrence for half-integer Bessel-order
+derivatives, requires additional identities.
+\end{remark}
+
+% END sections/04b_negative_jets.tex
+
+
+% BEGIN sections/05_density_arithmetic.tex
+\section{Mellin moments, harmonic collisions, and polylogarithmic transforms}
+\label{da:section}
+
+The compact density has a useful arithmetic structure. This section
+identifies it explicitly and shows how the same polynomials connect the
+spectral formulas to Gamma ratios, polygamma differences, generalized
+harmonic numbers, and multiple polylogarithms. The coefficient identities
+and height-one reductions used in this bridge are classical. Their role
+here is to give computable consequences of the logarithmic density, not
+to assert a new historical origin for those identities.
+
+\subsection{The beta generating function of the density}
+
+Retain the polynomials \(P_r\) of \eqref{sp:coincident-polynomial} and put
+\[
+ y(t)=\log\frac{1-t}{t},\qquad 0<t<1.
+\]
+Since \(P_r(y)=-\pi^{-1}\Im(y-i\pi)^r\) for real \(y\), coefficient
+expansion gives the entire generating identity
+\begin{equation}\label{da:Pgen}
+ \sum_{r\ge1}P_r(y)\frac{w^r}{r!}
+       =e^{wy}\frac{\sin\pi w}{\pi}.
+\end{equation}
+For complex \(w\), the right side is the analytic continuation of this
+polynomial coefficient identity; no imaginary-part operation is applied
+to a complex parameter \(w\).
+
+\begin{theorem}[Every Mellin moment of the logarithmic density]
+\label{da:mellin}
+For \(\Re s>0\), define the ordinary integral
+\[
+ M_r(s)=\int_0^1 t^{s-1}P_r(y(t))\dd t,\qquad r\ge1.
+\]
+For \(w\) in a neighborhood of zero,
+\begin{equation}\label{da:mellin-gen}
+ \boxed{\displaystyle
+  \sum_{r\ge1}M_r(s)\frac{w^r}{r!}
+     =\frac{w\Gamma(s-w)}{\Gamma(s+1)\Gamma(1-w)}.}
+\end{equation}
+More generally, the underlying integral of \eqref{da:Pgen} equals this
+Gamma ratio whenever \(\Re(s-w)>0\) and \(\Re(1+w)>0\).
+\end{theorem}
+
+\begin{proof}
+On a sufficiently small closed disk about \(w=0\), the integrand and all
+fixed \(w\)-derivatives are bounded by
+\[
+ C\,t^{\Re s-1-\eta}(1-t)^{-\eta}
+       (1+|\log t|^j+|\log(1-t)|^j),
+\]
+with \(0<\eta<\min(1,\Re s)\). This is integrable. Thus
+coefficient extraction may be interchanged with the integral.
+Euler's beta integral and the Gamma reflection relation then give
+\begin{align*}
+ \int_0^1t^{s-1}e^{wy(t)}\frac{\sin\pi w}{\pi}\dd t
+ &=\frac{\sin\pi w}{\pi}
+      \frac{\Gamma(s-w)\Gamma(1+w)}{\Gamma(s+1)}\\
+ &=\frac{w\Gamma(s-w)}{\Gamma(s+1)\Gamma(1-w)}.
+\end{align*}
+This proves both the generating identity and its stated domain.
+\end{proof}
+
+Let \(Y_n\) denote the complete exponential Bell polynomials, normalized by
+\[
+ \exp\left(\sum_{j\ge1}a_j\frac{w^j}{j!}\right)
+      =\sum_{n\ge0}Y_n(a_1,\ldots,a_n)\frac{w^n}{n!},
+ \qquad Y_0=1.
+\]
+Taking the logarithm of the Gamma ratio in \eqref{da:mellin-gen} gives
+the finite polygamma formula
+\begin{equation}\label{da:polygamma-moment}
+ M_r(s)=\frac r{s}Y_{r-1}(a_1(s),\ldots,a_{r-1}(s)),
+ \quad
+ a_j(s)=(-1)^j\{\psi^{(j-1)}(s)-\psi^{(j-1)}(1)\}.
+\end{equation}
+In particular,
+\begin{align*}
+ M_1(s)&=\frac1s,\\
+ M_2(s)&=\frac2s\{\psi(1)-\psi(s)\},\\
+ M_3(s)&=\frac3s\bigl\{(\psi(s)-\psi(1))^2+
+                                   \psi'(s)-\psi'(1)\bigr\}.
+\end{align*}
+All \(s\)-derivatives of these identities are ordinary logarithmic Mellin
+moments, justified by the same endpoint majorants.
+
+\begin{corollary}[Stirling moments and exact orthogonality]
+\label{da:stirling}
+Let \(\stir nr\) be the unsigned Stirling number of the first kind, with
+\(\stir nr=0\) when \(n<r\). For every \(k\ge0\), \(r\ge1\),
+\begin{equation}\label{da:stirling-moment}
+ \boxed{\displaystyle
+  \int_0^1 t^kP_r\!\left(\log\frac{1-t}{t}\right)\dd t
+    =(-1)^{r-1}\frac{r!}{(k+1)!}\stir{k+1}{r}.}
+\end{equation}
+Thus \(P_r(y(t))\) is orthogonal to every polynomial in \(t\) of degree
+less than \(r-1\), with respect to ordinary Lebesgue integration.
+\end{corollary}
+
+\begin{proof}
+At \(s=k+1\), the right side of \eqref{da:mellin-gen} is
+\[
+ \frac{w(1-w)_k}{(k+1)!}.
+\]
+Expanding this finite polynomial using
+\(u(u+1)\cdots(u+k)=\sum_r\stir{k+1}{r}u^r\)
+gives \eqref{da:stirling-moment} with its sign. The asserted
+orthogonality follows from the vanishing Stirling numbers.
+\end{proof}
+
+This moment formula also makes the harmonic content explicit:
+\[
+ \frac{\stir{k+1}{r}}{k!}
+ =e_{r-1}\left(1,\frac12,\ldots,\frac1k\right),
+\]
+where \(e_j\) is the elementary symmetric polynomial, and \(e_0=1\).
+Equivalently, \eqref{da:polygamma-moment} at \(s=k+1\) has
+\(a_j=-(j-1)!H_k^{(j)}\). These finite formulas make exact moment
+calculation possible without numerical quadrature.
+
+\subsection{A transform from ordinary to height-one multiple polylogarithms}
+
+For \(|z|<1\) and \(s\in\mathbb C\), use
+\[
+ \Li_s(z)=\sum_{n\ge1}\frac{z^n}{n^s}.
+\]
+The height-one multiple polylogarithm needed here can be defined directly
+by the locally normally convergent series
+\begin{equation}\label{da:heightone-definition}
+ \Li_{s+1,\one{r-1}}(z)
+   =\sum_{n\ge1}\frac{z^n}{n^{s+1}}H_{n-1}(\one{r-1}),
+\end{equation}
+where
+\[
+ H_m(\one d)=
+   \sum_{m\ge n_1>\cdots>n_d\ge1}\frac1{n_1\cdots n_d},
+ \qquad H_m(\one0)=1.
+\]
+Thus the nesting convention is specified rather than inferred from
+notation.
+
+\begin{theorem}[The logarithmic-density polylogarithm transform]
+\label{da:polylog}
+For every \(r\ge1\), every \(s\in\mathbb C\), and \(|z|<1\),
+\begin{equation}\label{da:polylog-transform}
+ \boxed{\displaystyle
+ \int_0^1 P_r\!\left(\log\frac{1-t}{t}\right)
+                \frac{\Li_s(zt)}t\dd t
+   =(-1)^{r-1}r!\,\Li_{s+1,\one{r-1}}(z).}
+\end{equation}
+The integral and series are locally normal in \(s\). Consequently every
+order derivative satisfies
+\begin{equation}\label{da:polylog-order-jets}
+ \int_0^1P_r(y(t))\frac{\partial_s^j\Li_s(zt)}t\dd t
+  =(-1)^{r-1}r!\,
+       \partial_s^j\Li_{s+1,\one{r-1}}(z),\qquad j\ge0.
+\end{equation}
+For integer \(s\ge1\), the ordinary endpoint value at \(z=1\) is
+\begin{equation}\label{da:mzv-transform}
+ \int_0^1P_r(y(t))\frac{\Li_s(t)}t\dd t
+   =(-1)^{r-1}r!\,\zeta(s+1,\one{r-1}).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For \(|z|\le R<1\) and \(s\) in a compact set, the polylogarithm
+series and any fixed order derivative are dominated by
+\(\sum_n R^n n^A(1+\log^j n)\). Near zero,
+\(\Li_s(zt)/t\) remains bounded uniformly on these sets; near one
+the only additional factor is an integrable polynomial in
+\(\log(1-t)\). Absolute termwise integration and
+\eqref{da:stirling-moment} give
+\[
+ (-1)^{r-1}r!\sum_{n\ge1}
+       \frac{z^n}{n^s n!}\stir nr.
+\]
+The finite identity
+\(\stir nr/(n-1)!=H_{n-1}(\one{r-1})\) turns this into
+\eqref{da:heightone-definition}. The same domination justifies the
+order derivatives.
+
+For real \(0\le z<1\) and integer \(s\ge1\),
+\(|\Li_s(zt)|\le\Li_s(t)\). At \(s=1\) this grows at most as
+\(|\log(1-t)|\), and at \(s>1\) it is bounded near one.
+Dominated convergence gives the endpoint integral. The positive series
+in \eqref{da:heightone-definition} converges at one because its first
+index is at least two, proving \eqref{da:mzv-transform}.
+\end{proof}
+
+\begin{corollary}[An all-order ordinary zeta integral]
+\label{da:zeta-integral}
+For every integer \(r\ge1\),
+\begin{equation}\label{da:zeta-integral-formula}
+ \int_0^1P_r\!\left(\log\frac{1-t}{t}\right)
+       \frac{-\log(1-t)}t\dd t
+     =(-1)^{r-1}r!\,\zeta(r+1).
+\end{equation}
+For example,
+\begin{equation}\label{da:pi-four}
+ \boxed{\displaystyle
+ \int_0^1\left(3\log^2\frac{1-t}{t}-\pi^2\right)
+             \frac{-\log(1-t)}t\dd t=\frac{\pi^4}{15}.}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The all-one iterated integral is
+\(\Li_{\one r}(z)=(-\log(1-z))^r/r!\), by induction using its
+derivative and its zero value at \(z=0\). Integration once against
+\(dz/z\), followed by \(u=-\log(1-z)\), gives
+\[
+ \zeta(2,\one{r-1})
+  =\frac1{r!}\int_0^1\frac{(-\log(1-z))^r}{z}\dd z
+  =\frac1{r!}\int_0^\infty\frac{u^r}{e^u-1}\dd u
+  =\zeta(r+1).
+\]
+The last equality follows by expanding \(1/(e^u-1)\) into its
+positive exponential series and integrating. Apply
+\eqref{da:mzv-transform} at \(s=1\). The case \(r=3\), together with
+\(\zeta(4)=\pi^4/90\), gives \eqref{da:pi-four}.
+\end{proof}
+
+\subsection{Every confluent logarithmic coefficient}
+
+For \(a>0\), \(\beta\ge0\), define the convergent resolvents
+\[
+ R_k(a;\beta)=\sum_{n\ge0}\frac1{((n+a)^2+\beta)^k}
+   =\frac{(-1)^{k-1}}{(k-1)!}\partial_\beta^{\,k-1}Q_a(\beta),
+ \qquad k\ge1.
+\]
+For \(r\) independent displacements satisfying
+\(|\delta_j|<a^2+\beta\), the ordinary product sum has the convergent
+collision expansion
+\begin{align}
+ &\sum_{n\ge0}\prod_{j=1}^r
+     \log\left(1+\frac{\delta_j}{(n+a)^2+\beta}\right)\notag\\
+ &\quad=
+ \sum_{k_1,\ldots,k_r\ge1}
+   \frac{(-1)^{k_1+\cdots+k_r-r}
+             \delta_1^{k_1}\cdots\delta_r^{k_r}}
+        {k_1\cdots k_r}\,
+       R_{k_1+\cdots+k_r}(a;\beta).
+ \label{da:independent-collision}
+\end{align}
+All branches are the ones obtained from the convergent logarithm series
+at zero. On smaller closed polydisks, the series is absolutely and normally
+convergent: the absolute logarithm series is bounded by a constant times
+\(((n+a)^2+\beta)^{-1}\) in each factor, and the product is summable.
+This proves the interchange and permits every fixed parameter derivative.
+
+When all displacements equal \(\delta\), the classical logarithm-power
+coefficients give a particularly short all-order formula:
+\begin{equation}\label{da:confluent-stirling}
+ \boxed{\displaystyle
+ \sum_{n\ge0}\log^r\left(1+\frac{\delta}{(n+a)^2+\beta}\right)
+   =r!\sum_{k\ge r}\frac{(-1)^{k-r}}{k!}\stir kr
+                          \delta^kR_k(a;\beta).}
+\end{equation}
+For \(r=2\), this recovers the harmonic coefficient in the inherited
+second-jet collision expansion \cite{ProveItHigherDefects}. For \(r=3\),
+\begin{align}
+ &\sum_{n\ge0}\log^3\left(1+\frac{\delta}{(n+a)^2+\beta}\right)\notag\\
+ &\qquad=
+ 3\sum_{k\ge3}\frac{(-1)^{k-3}\delta^k}{k}
+       \{H_{k-1}^2-H_{k-1}^{(2)}\}R_k(a;\beta).
+ \label{da:cubic-harmonic}
+\end{align}
+At \(\beta=0\), \(R_k(a;0)=\zeta(2k,a)\); at an integer shift
+\(a=M\), it is \(\zeta(2k)-H_{M-1}^{(2k)}\).
+Thus the compact density, the convergent mass expansion, and the
+polygamma expression for \(R_k\) are three independently useful
+representations of the same all-order logarithmic sum.
+
+\subsection{Half-lattices and bilateral polylogarithmic kernels}
+
+Digamma reflection gives the particularly simple half-lattice kernel
+\begin{equation}\label{da:half-lattice}
+ Q_{1/2}(t)=\frac{\pi}{2\sqrt t}\tanh(\pi\sqrt t),
+ \qquad Q_{1/2}(0)=\frac{\pi^2}{2}.
+\end{equation}
+For example the cubic repeated-mass identity becomes
+\begin{align}
+ &\sum_{n\ge0}\log^3
+    \frac{(n+\frac12)^2+\nu}{(n+\frac12)^2+\beta}\notag\\
+ &\quad=\frac{\pi}{2}\int_\beta^\nu
+    \left\{3\log^2\frac{\nu-t}{t-\beta}-\pi^2\right\}
+                  \frac{\tanh(\pi\sqrt t)}{\sqrt t}\dd t,
+       \qquad \nu>\beta\ge0 .
+ \label{da:half-cubic}
+\end{align}
+The apparent endpoint at \(t=0\) is removable in the hyperbolic kernel,
+so this remains an ordinary integral when \(\beta=0\).
+
+For \(0<a<1\), define the bilateral resolvent
+\[
+ Q_a^{\mathrm{bil}}(t)=Q_a(t)+Q_{1-a}(t).
+\]
+Reflection and the convergent geometric Fourier series give
+\begin{align}
+ Q_a^{\mathrm{bil}}(t)
+ &=\frac{\pi}{\sqrt t}
+     \frac{\sinh(2\pi\sqrt t)}
+          {\cosh(2\pi\sqrt t)-\cos(2\pi a)}\notag\\
+ &=\frac{\pi}{\sqrt t}
+       \left\{1+2\Re\Li_0(e^{-2\pi\sqrt t+2\pi ia})\right\},
+             \qquad t>0. \label{da:bilateral-kernel}
+\end{align}
+Here \(\Li_0(z)=z/(1-z)\), so the kernel is elementary.
+The bilateral full spectral jet
+\(J_{N,r}^{\mathrm{bil}}(a)=J_{N,r}(a)+J_{N,r}(1-a)\) therefore is
+\begin{align}
+ J_{N,r}^{\mathrm{bil}}(a;\boldsymbol\mu)
+ ={}&(2N)^r\{\zeta^{(r)}(0,a)+\zeta^{(r)}(0,1-a)\}\notag\\
+ &+(-1)^r\int_0^\infty
+          \rho_{N,r}(t)Q_a^{\mathrm{bil}}(t)\dd t.
+ \label{da:bilateral-jet}
+\end{align}
+This is a finite polylogarithmic-integrand description at every order,
+while retaining the displayed mass-zero Hurwitz derivatives. It does not
+assert a finite evaluation of the remaining mass integral.
+
+There is also an explicit anchored shift primitive of the bilateral
+kernel. For \(0<a,a_*<1\), put \(q_a(t)=e^{-2\pi\sqrt t+2\pi ia}\). Then
+\begin{equation}\label{da:bilateral-primitive}
+ \int_{a_*}^{a}Q_u^{\mathrm{bil}}(t)\dd u
+   =\frac{\pi(a-a_*)+
+          \Im\{\Li_1(q_a(t))-\Li_1(q_{a_*}(t))\}}{\sqrt t}.
+\end{equation}
+Indeed \(\partial_a\Li_1(q_a)=2\pi i\Li_0(q_a)\).
+The continuous value at \(t=0\) is
+\(\pi\{\cot(\pi a_*)-\cot(\pi a)\}\).
+Integration of \eqref{da:bilateral-jet} or of its compact connected
+version against the shift therefore gives anchored ordinary
+polylogarithmic integrals. The required interchanges follow from the
+locally uniform bounds already proved for \(Q_a\) and its reflected
+partner.
+
+% END sections/05_density_arithmetic.tex
+
+
+% BEGIN sections/06_audit.tex
+\section{Corrections and reconciliation of the existing material}
+\label{au:section}
+
+The audit distinguishes a definite transcription error from research-status
+updates and from questions that remain unresolved. The supplied patch makes
+only the definite correction. The integration note proposes the status
+changes separately.
+
+\subsection{A reciprocal-Gamma coefficient contains a transcription error}
+
+In the canonical chapter
+\src{07-digamma-power-moments.tex}, equation
+\src{dgp:eq:a5}, the final term of the displayed numerator is
+\verb|+24\zeta\alpha_5|.
+It should be \(24\zeta_5\), where the chapter uses
+\(\zeta_j=\zeta(j)\). The corrected coefficient is
+\begin{equation}\label{au:alpha5}
+ \boxed{\displaystyle
+ \alpha_5=
+ \frac{\gamma^5-10\gamma^3\zeta(2)+20\gamma^2\zeta(3)
+       +15\gamma\zeta(2)^2-30\gamma\zeta(4)
+       -20\zeta(2)\zeta(3)+24\zeta(5)}{120}.}
+\end{equation}
+Indeed, the logarithm of the reciprocal Gamma function is
+\[
+ \log\frac1{\Gamma(1+u)}
+   =\gamma u-\frac{\zeta(2)}2u^2+\frac{\zeta(3)}3u^3
+          -\frac{\zeta(4)}4u^4+\frac{\zeta(5)}5u^5+O(u^6).
+\]
+Exponentiating and extracting \(u^5\) gives
+\eqref{au:alpha5}. All other terms in the source's numerator agree with
+this calculation. This is a transcription correction, not a new
+reciprocal-Gamma identity. The companion patch was checked against the
+pinned source with \src{git apply --check}; it was not applied to the
+repository.
+
+\subsection{The diagonal negative-order target was already completed}
+
+Research question R7 in \emph{Tail Kernels and Boundary Products}
+\cite{ProveItTailKernels} asks for the continued alternating-square law
+at nonpositive orders, every order derivative, and the distinction between
+ordinary summation and cutoff continuation. The incoming
+\emph{Bilinear Tails and Determinants} report already supplies precisely
+that diagonal result in
+\src{sections/04_cutoff_jets.tex}, including its finite endpoint,
+even-power expansion, contacts, translated cutoffs, and convergent
+subtractions \cite{ProveItBilinear}.
+
+The appropriate update is to cross-reference that proof and retain the
+genuinely broader independent-order question. The latter was explicitly
+left open in the same report and is completed by
+Theorem~\ref{ct:contacts} here. The diagonal result is also an exact
+computational compatibility check on the present bivariate coefficient
+algorithm.
+
+\subsection{The cubic Stieltjes target has a preserved general formula}
+
+R9 of \emph{Tail Kernels and Boundary Products} asks for an explicit
+holomorphic generating germ for cubic Stieltjes products with independent
+indices and positive total argument-derivative order. Its stated first
+target is
+\[
+ \FP\int_0^1\gamma_1(x)^2\gamma_0'(x)\dd x.
+\]
+The preserved \emph{Coincident Directional Zeta} continuation already
+contains a general local completion for any number of factors and a finite
+cubic Tornheim--zeta coordinate formula
+\cite{ProveItCubic}. Its relevant source labels are
+\src{cub:general-completion},
+\src{cub:all-moments}, and \src{cub:global}.
+Thus the existence of an explicit finite generating formula should be
+marked as source-proved, subject to the project's normal integration and
+review process. The further question of reducing selected retained
+Tornheim order derivatives to a smaller arithmetic alphabet remains
+meaningful. The supplied source does not prove general depth-one closure
+or arithmetic independence.
+
+The local mechanism was checked independently as follows. Write
+\[
+ H_{u,r}(x)=\partial_x^r\left(\zeta(1+u,x)-\frac1u\right).
+\]
+Its singular term is
+\[
+ (-1)^r(1+u)_r x^{-1-u-r},
+\]
+and its remainder is jointly holomorphic near \(u=x=0\). In a product
+of three factors, choosing the singular term in a nonempty proper subset
+\(S\) produces a resonance exactly at Taylor degree
+\begin{equation}\label{au:resonant-degree}
+  \sum_{i\in S}(1+r_i)-1
+\end{equation}
+of the remaining regular factors. The corresponding monomial is
+\(A_S(\boldsymbol u)x^{-1-\sum_{i\in S}u_i}\). Its analytically
+continued integral is
+\(-A_S(\boldsymbol u)/\sum_{i\in S}u_i\), while all its order derivatives
+at the resonance have fixed-coordinate finite part zero.
+
+For \((r_1,r_2,r_3)=(0,0,1)\), the three singleton Taylor degrees are
+\(0,0,1\); the three pair degrees are \(1,2,2\). These are all six
+proper nonempty subsets. The full triple has no remaining regular factor
+and has baseline exponent \(-4\), so it supplies no resonance through the
+parameter origin. This checks the number and degrees of the local terms
+required for the stated first target.
+
+The correction uses the \emph{full analytic numerator}
+\(A_S(\boldsymbol u)\) in each quotient. Replacing it by its restriction
+to \(\sum_{i\in S}u_i=0\) removes the pole but changes transverse finite
+coefficients. This is the same structural reason that the ambient contact
+polynomials in Section~\ref{ct:section} must be differentiated before
+restriction. The preserved cubic source retains these full numerators.
+Its global Tornheim coordinates belong to the classical multiple-zeta
+setting represented, for example, by Espinosa--Moll \cite{EspinosaMoll}.
+
+\subsection{Results deliberately retained with their existing attribution}
+
+The centered cubic trigamma family encountered during the audit is already
+present in \emph{Quartic Spectral Reconstruction}
+\cite{ProveItQuartic}, in the section containing
+\src{qtm:C1}, \src{qtm:Cj}, \src{qtm:Rj}, and \src{qtm:G3}.
+An independent finite summation reproduced the two exceptional
+low-index corrections there. That family is not claimed as a contribution
+of the present article.
+
+Likewise, the degree bound for normalized spectral jets, the top local
+polarization, and the all-difference formula already occur in
+\emph{Arithmetic Spectral Jets}
+\cite{ProveItArithmeticJets}, labels
+\src{asj:thm:polynomial},
+\src{asj:thm:top}, and
+\src{asj:thm:all-differences}.
+Equation~\eqref{sp:inherited-correction} is their specialized
+normalization in the quadratic setting. The new ordinary density
+representations should be integrated alongside this existing theorem,
+not used to replace its attribution.
+
+The unrestricted unequal-order reconstruction problem and the full
+fixed-gap-six family remain open at the scope inspected here. None of the
+contact or spectral identities in this article establishes their required
+uniform nonvanishing. No further false theorem was established by this
+targeted audit, and no claim is made that every proof in the complete
+manuscript has been rechecked.
+
+% END sections/06_audit.tex
+
+
+% BEGIN sections/07_research.tex
+\section{Further research questions and proposed next investigations}
+\label{rq:section}
+
+The following questions begin beyond the proved statements. They seek exact
+identities, structural classifications, and finite evaluations. In
+particular, a failure to recognize a numerical value in a short constant
+basis is not a result about nonreducibility.
+
+\begin{enumerate}[label=\textbf{Q\arabic*.}]
+\item \textbf{A short recurrence for the full bivariate contact sequence.}
+The coefficient algorithm \eqref{ct:recursion}--\eqref{ct:dk} computes every
+contact, and \eqref{ct:topplus}--\eqref{ct:topminus} evaluate their highest
+spectral degrees. Find a recurrence in the contact index \(m\), with
+polynomial coefficients in \(p,q,a-b\), that preserves every lower-degree
+Gamma correction. A satisfactory recurrence should recover the diagonal
+Euler-polynomial law and exact cutoff translation without expanding all
+intermediate shifted factors.
+
+\item \textbf{Exact factorization and zero loci of the contact polynomials.}
+Parity explains some factors of \(c_m,d_m\), but it does not classify all
+special parameter values where a contact vanishes. Determine the complete
+factorization pattern on \(p+q=-2m\), separating factors forced by exchange
+symmetry from additional algebraic factors. The first target is a uniform
+description of the residual factors for \(m=4,5,6\), proved from the
+coefficient generator rather than inferred from numerical roots.
+
+\item \textbf{An independent outer spectral weight.}
+Adjoin \((n+c)^{-w}\) to a product of independently ordered ordinary or
+alternating Hurwitz tails. Determine the moving polar hyperplanes and give
+a finite-cutoff identity with a precisely specified remainder coordinate.
+The present Gamma normalization chooses its outer weight through the
+orders \(p,q\); it does not solve the additional independent variable
+\(w\). Mellin integration of the completed endpoint law is a natural
+starting point, but its boundary terms must be retained.
+
+\item \textbf{Cyclotomic contact matrices.}
+For a primitive \(d\)th-root twist with \(d>2\), replace the two-step
+alternating recurrence by its \(d\)-component system. Seek a Gamma-product
+normalization and an exact matrix-valued bilinear endpoint law. Determine
+the resulting resonance lattice, every independent-order contact, and the
+effect of shifting the cutoff by one lattice step. The case \(d=3\) is a
+concrete first target; the alternating case supplies the normalization test.
+
+\item \textbf{Three genuinely independent tails.}
+For three shifts, three orders, and independent colors, classify the
+smallest adjacent-product certificate whose difference removes all
+unwanted residual terms. If depth-two sums are unavoidable within the
+chosen certificate class, give their exact coefficients and endpoint
+terms. The aim is a specified finite identity, with the size of its
+function alphabet proved within that class; powers of one tail are not
+sufficient evidence for the independent-data case.
+
+\item \textbf{One ordinary full-jet integral for odd polynomial weights.}
+The compact connected transform already handles arbitrary polynomial
+weights, and the full even-weight jets admit the ordinary master derived
+here. For an odd weight, produce a comparably economical full-jet formula
+that retains all resonant Stieltjes coefficients and the inherited local
+correction. A first target is \(W(x)=x\), two masses, and the third jet.
+The subtraction must state its independent regulator and agree with
+\eqref{sp:inherited-correction}; the known local degree theorem itself is
+not the missing result.
+
+\item \textbf{Finite special-value reductions on explicit mass loci.}
+At \(a=1/2\), investigate the cubic compact integral
+\eqref{da:half-cubic} and the scalar third jet at a mass satisfying
+\(e^{-2\pi\sqrt\mu}=1/2\). Seek a proved reduction in a declared alphabet
+of classical or multiple polylogarithms, their order derivatives, and
+Gamma or zeta derivatives. Keep a finite evaluation separate from the
+ordinary integral representation already established. If an obstruction
+is proposed, formulate and prove it in a precise function or
+difference-equation class.
+
+\item \textbf{Complex masses and controlled branch crossings.}
+Continue the density formulas to nonreal masses with explicitly chosen
+contours, including conjugate pairs. Determine exact jump formulas when a
+mass crosses a negative lattice value \(- (n+a)^2\). The expected jump
+should be expressible through the affected finite spectral terms, but
+the contour deformation and spectral normalization must be proved
+compatible. This would extend the real-mass results to a useful complex
+parameter geometry.
+
+\item \textbf{Independent rational-shift projections.}
+Apply finite residue-class or character projections to the all-order
+digamma kernels, and compare the resulting Dirichlet-\(L\) derivatives
+with the polylogarithmic density transform. Produce a complete dictionary
+at conductors three and four, including the shift primitives and
+coincident-mass coefficients. Specify both parity components; a
+reflection identity for their sum does not determine them separately.
+
+\item \textbf{Arithmetic reduction of selected cubic Stieltjes coefficients.}
+Starting from the already-proved finite Tornheim germ, compute an explicit
+small-index table containing
+\(\FP\int_0^1\gamma_1^2\gamma_0'\) and its first independent
+argument-derivative companions. Determine all relations obtainable from
+shuffle, stuffle, symmetry, and differentiation in a declared formal
+alphabet. The unresolved target is a further arithmetic reduction or an
+exact formal dimension statement, not existence of the generating germ.
+
+\item \textbf{The full reconstruction and gap-six problems.}
+Retain the manuscript's unrestricted unequal-even-order reconstruction
+question as a separate structural problem. A useful intermediate result
+would be a bordered-Hankel identity for the entire gap-six family,
+including the moving \(B_0,B_1\) terms and omitted-binomial conventions.
+The known eventual nonvanishing mechanism and finite-order completions
+must both be recovered. Another finite table would not resolve the
+uniform question.
+
+\item \textbf{Formal proofs and validated evaluation of the new masters.}
+Formalize first the finite endpoint telescope, the terminating contact
+coefficient algebra, and the polynomial subtraction identities.
+Then formalize the uniform asymptotic remainder and the two Cauchy
+representations with their absolute-Fubini arguments. Separately build
+interval evaluators that split every logarithmic endpoint and use
+analytically controlled tails. Exact polynomial checks, floating-point
+diagnostics, and analytic proof have different roles and should remain
+separate in the repository.
+\end{enumerate}
+
+The most direct continuation of the present work is Q6: it asks for the
+remaining parity sector of an already explicit full-jet representation.
+Q1 and Q4 develop the completed contact algebra structurally. Q7 and Q10
+instead aim at finite arithmetic reductions, where the existing exact
+integral and coefficient formulas provide reliable starting values and
+normalization constraints.
+
+% END sections/07_research.tex
+
+
+% BEGIN sections/08_verification.tex
+\section{Proof checks, numerical evidence, and reproducibility}
+\label{vf:section}
+
+The universal statements in this article are proved analytically:
+finite telescoping identities, finite polynomial coefficient extraction,
+uniform asymptotic remainders, normally convergent spectral subtractions,
+and Cauchy representations with absolute-Fubini estimates. The verification
+programs check finite algebra and independent numerical consequences.
+They do not replace the arguments for arbitrary derivative order, contact
+index, mass count, or polynomial degree.
+
+\subsection{Exact algebra}
+
+The contact program verifies the centered \(t_1,t_2\) coefficients, the
+ambient and restricted contact tables through \(m=3\), cutoff transport
+through \(m=4\), and parity, degree, and highest-homogeneous identities
+through \(m=6\). It also compares the independent formula with the
+predecessor's diagonal Euler-polynomial law through \(m=6\).
+Together with the first-Stieltjes example program, this gives
+\textbf{123 passed exact symbolic assertions}. The assertions are listed
+individually in the two exact-result JSON files.
+
+These checks operate over rational polynomial rings wherever appropriate.
+An equality of expanded symbolic polynomials is exact. Substitution of a
+large integer or a high-precision numerical value is not used as a
+replacement for such equality. The general degree and translation theorems
+are proved in Section~\ref{ct:section}, beyond the finite range checked.
+
+\subsection{Independent decimal diagnostics}
+
+Separate implementations check endpoints, ordinary sums, cut densities,
+and arithmetic transforms. The recorded outputs include the working
+precision, parameters, method, and residual, so that a small residual
+is not detached from its numerical context.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.23\textwidth}}
+\toprule
+Check & Independent comparison & Recorded residual scale\\
+\midrule
+Two \(\pi,\log2\) boundary sums &
+257 direct terms plus an endpoint expansion, versus exact constants &
+Below \(2.1\times10^{-27}\)\\
+First-Stieltjes boundary sum &
+257 direct terms plus a degree-ten endpoint expansion &
+\(1.77\times10^{-28}\)\\
+Stieltjes expression for \(T(z)\) &
+Generalized-Stieltjes difference versus a differentiated Laplace integral &
+About \(10^{-81}\) at four shifts\\
+Compact cubic density, distinct and equal masses &
+Direct logarithmic sums and subtracted Hurwitz tails versus digamma integrals &
+Below \(1.4\times10^{-60}\)\\
+Full scalar second and third jets &
+Finite head plus Hurwitz-derivative tail versus the full cut integral &
+\(1.64\times10^{-55}\), \(5.03\times10^{-47}\)\\
+Polylogarithmic density transform &
+Strict harmonic series versus quadrature at two interior points &
+Below \(7\times10^{-66}\)\\
+The integral \eqref{da:pi-four} &
+Direct endpoint quadrature versus \(\pi^4/15\) &
+\(1.71\times10^{-63}\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The contact suite records 24 numerical diagnostics at 85 working digits;
+the first-Stieltjes suite records another eight at 80 digits. The compact
+density tests use 60 digits, the full scalar tests 55, and the
+polylogarithm tests 65. Generic endpoint-jet asymptotic checks have residuals
+of the size of their first omitted terms, rather than of the nominal
+working precision. The exact analytic endpoint law is tested separately.
+
+The weighted compact tests illustrate a practical issue. Direct numerical
+acceleration of a summand formed by subtracting two nearly equal large
+terms initially lost several digits. The final implementation replaces that
+tail with its independently convergent Hurwitz series. Its recorded
+analytic bounds for the omitted power tail are below \(3\times10^{-79}\)
+in the supplied cases. Those tail estimates do not enclose all rounding
+and quadrature errors: the complete computation is still a diagnostic,
+not an interval certificate.
+
+The all-negative-integer extension is checked separately by comparing
+its finite-subtraction continuation, an independent binomial Hurwitz
+continuation, and stable quadrature of the ordinary cut integral.
+At \(a=0.7\), the one-mass third derivative at \(-1\), with
+\(\mu=0.8\), agrees within \(6.81\times10^{-55}\); the two-mass
+second derivative at \(-1\), with \(\boldsymbol\mu=(0.8,1.4)\),
+agrees within \(3.17\times10^{-52}\), at 60 working digits.
+The corresponding result file records these comparisons without
+conflating the analytic remainder estimate with a rigorous enclosure
+of the entire floating-point computation.
+
+\subsection{Independent analytic review}
+
+The following sensitive steps were recomputed independently of the first
+derivation: the contact translation sign; differentiation of ambient
+binomial coefficients; the highest-degree hyperbolic generating functions;
+the ordinary alternating subtraction; both elementary boundary constants;
+the full and compact cut-density signs; the spectral scale \(2N\); the
+critical odd-weight subtraction; and the Gamma normalization of the first
+jet. The polynomial-weight continuation and the negative-integer cubic
+example were then checked against a second derivation.
+
+This is an internal mathematical cross-check, not a claim of external peer
+review or formal certification. The finite source correction was separately
+verified from the reciprocal-Gamma exponential and checked as an applicable
+patch against the pinned repository.
+
+\subsection{Using the accompanying package}
+
+The package contains a self-contained \LaTeX{} file and its PDF, together
+with modular section sources for integration. The \src{build.py} script
+recreates the self-contained source and compiles it with standard
+\src{pdflatex} packages. Python verification uses SymPy and mpmath; the
+versions used for the recorded run appear in the result files and
+\src{requirements.txt}.
+
+Run the mathematical checks with
+\begin{quote}\ttfamily
+ python3 verification/run\_all.py
+\end{quote}
+and rebuild the article with
+\begin{quote}\ttfamily
+ python3 build.py
+\end{quote}
+The check runner writes its own machine-readable summary and preserves
+separate exact and decimal records. The distributed-file manifest verifies
+the byte identities of the packaged files; rebuilding a PDF may change
+its metadata and hence its hash without changing the mathematical content.
+
+The integration directory contains the single-line correction patch and
+proposed status changes. The source manifest records the seven incoming
+archives and the directly inspected manuscript and preserved-continuation
+files. No new numerical relation is promoted to a theorem merely because
+it appears in one of the diagnostic files. The unresolved questions are
+listed in Section~\ref{rq:section}.
+
+% END sections/08_verification.tex
+
+
+% BEGIN references.tex
+\begin{thebibliography}{99}
+\raggedright
+
+\bibitem{ProveIt}
+V. Reshetnikov, \emph{ProveIt}, polylogarithm manuscript and research
+continuations. Repository snapshot \pin, inspected 11 October 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/e3d7ec5d3f9be259c1f91edaea4389f4e79b5b03/Analysis/Polylogarithms/docs/manuscript}{Pinned manuscript directory}.
+Exact source hashes and the scope of inspection are in
+\src{data/source_manifest.json}.
+
+\bibitem{ProveItBilinear}
+\emph{Bilinear Alternating Tails and Harmonic Determinants:
+Rational certificates, Gamma identities, cutoff jets, and complete
+order-ten reconstruction}, ProveIt research continuation, 11 October 2026.
+Archive \src{ProveIt_Bilinear_Tails_and_Determinants_2026-10-11.zip}.
+Especially \src{sections/02_bilinear_gamma.tex},
+\src{sections/04_cutoff_jets.tex}, and the question
+\emph{Every bilinear contact hyperplane} in
+\src{sections/10_research_questions.tex}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e3d7ec5d3f9be259c1f91edaea4389f4e79b5b03/docs/incoming/ProveIt_Bilinear_Tails_and_Determinants_2026-10-11.zip}{Pinned archive}.
+
+\bibitem{ProveItTailKernels}
+\emph{Bilinear Tail Identities, Polylogarithmic Resonances, and Stieltjes
+Boundary Products: Complete moment reconstruction at orders ten and twelve},
+ProveIt research continuation, 11 October 2026.
+Archive \src{ProveIt_Tail_Kernels_and_Boundary_Products_2026-10-11.zip}.
+Especially research questions R7 and R9 in
+\src{sections/08_audit_and_research.tex}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e3d7ec5d3f9be259c1f91edaea4389f4e79b5b03/docs/incoming/ProveIt_Tail_Kernels_and_Boundary_Products_2026-10-11.zip}{Pinned archive}.
+
+\bibitem{ProveItHigherQuadratic}
+\emph{Higher Quadratic Spectral Jets: Harmonic--Stieltjes factorization
+defects, polylogarithmic second derivatives, and exact mass collisions},
+ProveIt research continuation, 11 October 2026.
+Archive \src{ProveIt_Higher_Quadratic_Jets_2026-10-11.zip}.
+Especially \src{sections/10-research.tex}, items 1, 3, and 7.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e3d7ec5d3f9be259c1f91edaea4389f4e79b5b03/docs/incoming/ProveIt_Higher_Quadratic_Jets_2026-10-11.zip}{Pinned archive}.
+
+\bibitem{ProveItHigherDefects}
+\emph{Beta Polarization of Higher Spectral Defects: All-order Stieltjes
+counterterms, Gamma integrals, polylogarithmic second jets, and confluent
+quadratic masses}, ProveIt research continuation, 11 October 2026.
+Archive \src{ProveIt_Higher_Spectral_Defects_2026-10-11.zip}.
+Especially the second-jet many-mass formulas, the confluent expansion, and
+further research questions 2--4.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e3d7ec5d3f9be259c1f91edaea4389f4e79b5b03/docs/incoming/ProveIt_Higher_Spectral_Defects_2026-10-11.zip}{Pinned archive}.
+
+\bibitem{ProveItQuartic}
+\emph{Harmonic-Tail Reconstruction, Quartic Trigamma Moments, and Spectral
+Stieltjes Calculus}, ProveIt research continuation, 11 October 2026.
+Archive \src{ProveIt_Quartic_Spectral_Reconstruction_2026-10-11.zip}.
+Especially \src{sections/04_quartic.tex} for the retained cubic family.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e3d7ec5d3f9be259c1f91edaea4389f4e79b5b03/docs/incoming/ProveIt_Quartic_Spectral_Reconstruction_2026-10-11.zip}{Pinned archive}.
+
+\bibitem{ProveItArithmeticJets}
+\emph{Arithmetic Spectral Jets: Stieltjes residues, Gamma reciprocity,
+and polylogarithmic untwisting}, preserved ProveIt continuation.
+\src{stieltjes-harmonic-resonance/continuations/arithmetic-spectral-jets}.
+Especially \src{sections/03-local.tex}, theorems
+\src{asj:thm:polynomial}, \src{asj:thm:top}, and
+\src{asj:thm:all-differences}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e3d7ec5d3f9be259c1f91edaea4389f4e79b5b03/Analysis/Polylogarithms/docs/reports/stieltjes-harmonic-resonance/continuations/arithmetic-spectral-jets/sections/03-local.tex}{Pinned source}.
+
+\bibitem{ProveItCubic}
+\emph{Coincident Stieltjes Products and Directional Zeta Identities},
+preserved ProveIt continuation.
+\src{stieltjes-correlation-calculus/continuations/coincident-directional-zeta}.
+Especially \src{sections/02_cubic.tex}, labels
+\src{cub:general-completion}, \src{cub:all-moments}, and \src{cub:global}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e3d7ec5d3f9be259c1f91edaea4389f4e79b5b03/Analysis/Polylogarithms/docs/reports/stieltjes-correlation-calculus/continuations/coincident-directional-zeta/sections/02_cubic.tex}{Pinned source}.
+
+\bibitem{DLMF}
+NIST Digital Library of Mathematical Functions.
+\S5.11, \emph{Asymptotic expansions};
+\S5.15, \emph{Polygamma functions};
+\S25.11, \emph{Hurwitz zeta function};
+\S25.12, \emph{Polylogarithms}.
+\url{https://dlmf.nist.gov/5.11},
+\url{https://dlmf.nist.gov/5.15},
+\url{https://dlmf.nist.gov/25.11},
+\url{https://dlmf.nist.gov/25.12}.
+Consulted 11 October 2026.
+
+\bibitem{HuKim}
+S. Hu and M.-S. Kim,
+\emph{Asymptotic expansions for the alternating Hurwitz zeta function
+and its derivatives}, arXiv:2103.15528.
+\url{https://arxiv.org/abs/2103.15528}.
+Used for the classical expansion and derivative setting, not as a source
+of the independent contact polynomials established here.
+
+\bibitem{WangHuKim}
+W. Wang, S. Hu, and M.-S. Kim,
+\emph{On gamma functions with respect to the alternating Hurwitz zeta
+functions}, arXiv:2405.02854.
+\url{https://arxiv.org/abs/2405.02854}.
+The modified Gamma quotient is classical background for \(h(z)\).
+
+\bibitem{Hoffman}
+M. E. Hoffman,
+\emph{Sums of products of Riemann zeta tails},
+Mediterranean Journal of Mathematics \textbf{13} (2016), 2771--2781.
+arXiv:1602.03399.
+\url{https://arxiv.org/abs/1602.03399}.
+
+\bibitem{PaychaScott}
+S. Paycha and S. Scott,
+\emph{A Laurent expansion for regularised integrals of holomorphic symbols},
+Geometric and Functional Analysis \textbf{17} (2007), 491--536.
+arXiv:math/0506211.
+\url{https://arxiv.org/abs/math/0506211}.
+General background for local terms in regularized traces.
+
+\bibitem{EspinosaMoll}
+O. Espinosa and V. H. Moll,
+\emph{The evaluation of Tornheim double sums. Part 1},
+Journal of Number Theory \textbf{116} (2006), 200--229.
+arXiv:math/0505647.
+\url{https://arxiv.org/abs/math/0505647}.
+\end{thebibliography}
+
+% END references.tex
+
+\end{document}

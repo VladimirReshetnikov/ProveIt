@@ -1,0 +1,87 @@
+% Additive fragment. Requires amsmath, amssymb, amsthm and an existing theorem environment.
+% It deliberately does not redefine the host's normal-form macros or bibliography.
+\section{A universal Gamma coefficient formula}
+\label{ubg:integration:section}
+
+Let $\mathcal D u_j=u_{j+1}$ and
+$A_0=1$, $A_{m+1}=u_0A_m-\mathcal D A_m$.
+Let $N_m$ be the projection of $A_m$ along total derivatives onto the
+functional monomials: pure powers of $u_0$, and monomials whose largest
+positive index occurs at least twice. Reduction precedes any truncation
+of derivative variables. Define
+\[
+ \Theta_j(v)=\frac{(v+1)^{j+1}-(v-1)^{j+1}}
+                  {2^{j+1}(j+1)!}\quad(j\ge1).
+\]
+
+\begin{theorem}[Universal Gamma coefficient formula]
+\label{ubg:integration:theorem}
+Let $M=u_0^a\prod_{j=1}^d u_j^{e_j}$, where $d\ge1$ and $e_d\ge2$, and
+$m=a+\sum_{j=1}^d(j+1)e_j$. Then
+\[
+ [M]N_m=\frac{(-1)^dm!}
+ {2^{2d+1}d!(d+1)!\,a!\prod_{j=1}^d e_j!}
+ \int_{-1}^1(1-v^2)^d\Theta_d(v)^{e_d-2}
+                       \prod_{j<d}\Theta_j(v)^{e_j}\,\mathrm dv.
+\]
+The coefficient is zero exactly when $\sum_jje_j$ is odd; otherwise
+its sign is $(-1)^d$. The coefficient of $u_0^m$ is $1$, and nonfunctional
+monomials have coefficient zero.
+\end{theorem}
+
+\begin{proof}[Proof structure]
+The centered representative of the inverse-Gamma hierarchy is
+\[
+ \mathcal C(t)=\exp\left(\sum_{j\ge0}
+       \frac{u_{2j}t^{2j+1}}{2^{2j}(2j+1)!}\right).
+\]
+It has the same normal form as $\sum_m A_mt^m/m!$.
+On a polynomial background $b(x)$, its quadratic variation in an
+arbitrary perturbation $h(x)$ is one half of
+$e^{P_t(x)}(K_t(\partial_x)h)^2$, where
+$P_t(x)=\int_{-t/2}^{t/2}b(x+s)\,\mathrm ds$ and
+$K_t(\xi)=2\sinh(t\xi/2)/\xi$.
+
+The affine weighted square identity has coefficient
+\[
+ \frac{t^{2r+2}c_r}{2}\int_{-1}^1(1-v^2)^re^{\kappa tv/2}\,\mathrm dv,
+ \qquad c_r=\frac{(-1)^r}{2^{2r+1}r!(r+1)!}.
+\]
+Apply $e^{P_t(\partial_\kappa)}$ to the full local identity and then
+set $\kappa=0$. The operation commutes with $\partial_x$ and changes
+$e^{\kappa(x+tv/2)}$ into $e^{P_t(x+tv/2)}$.
+Since
+\[
+ P_t(x+tv/2)=tb(x)+\sum_{j\ge1}b^{(j)}(x)t^{j+1}\Theta_j(v),
+\]
+this transports the affine kernel to all polynomial backgrounds.
+
+Write the post-reduction restriction through $u_d$ as
+$e^{tu_0}F_d(z_1,\ldots,z_d)$, $z_j=u_jt^{j+1}$.
+Uniqueness of diagonal local quadratic forms shows that the coefficient
+of $(h^{(d)})^2$ is one half of
+$e^{tu_0}t^{2d+2}\partial_{z_d}^2F_d$.
+Normal monomials with higher largest index contribute only higher
+squares at quadratic order, and cross terms from indices at most $d$
+reduce to squares below $d$. Thus
+\[
+ \partial_{z_d}^2F_d=c_d\int_{-1}^1(1-v^2)^d
+            \exp\left(\sum_{j=1}^d z_j\Theta_j(v)\right)\,\mathrm dv.
+\]
+Extracting coefficients and multiplying by $m!/a!$ proves the formula.
+Its integrand is odd in the forbidden parity case, and positive on
+$(0,1)$ in every allowed case. The complete locality, transport, and
+normal-form proofs appear in Sections 2--4 of the accompanying article.
+\end{proof}
+
+For example,
+\[
+ [u_2u_3^2]N_{11}=-55,\qquad
+ [u_2^2u_3^2]N_{14}=-3640,\qquad
+ [u_1u_3^3]N_{14}=-\frac{3185}{3}.
+\]
+The result settles the predecessor's mixed-square and higher-multiplicity
+coefficient questions for this hierarchy. It does not settle the
+Gaussian $S_6$, revised $S_8$, or general unequal harmonic-tail rank
+questions, and does not evaluate every individual surviving polygamma
+integral. The accompanying exact primitive compiler retains endpoints.

@@ -1,0 +1,62 @@
+INDEPENDENT AUDIT: TWO-CLUSTER SPECTRAL FACES
+
+Audited draft: sections/04_clusters.tex (draft before the optional exposition refinement).
+Audit scope: ordinary face normalization, finite polylogarithm coefficients,
+continuation for either ordering of nonnegative B,C, mass derivatives, and
+the anchored primitive. No source edits were made.
+
+Conclusion: no substantive mathematical error or required correction found.
+
+1. The simplex measure is the coordinate measure dt_1...dt_{k-1}, with no
+surface-area factor. The independent Dirichlet regulator identity has the
+correct Gamma normalization. Aggregation of the B and C regulators and
+squarefree extraction give exactly r!s!, followed by the coefficient
+[X^(r-1)Y^(s-1)] of the chord-subtracted beta integral.
+
+2. In the finite product, choosing d nonconstant factors supplies (-Y)^d.
+The denominator expansions have total degree r+s-d-1, so the overall sign
+is (-1)^(r+s-1) and the binomial coefficient is
+binomial(r+s-d-1,r-1). The positive compositions have weight r+s-1.
+This confirms every coefficient in P_{r,s}, the stated depth bound, the
+collision coefficient, and the r=s=2 worked-integral normalization.
+
+3. The chord-subtracted logarithmic integral and the stated outer-color
+multiple polylogarithms are holomorphic on C minus [1,infinity). Thus the
+identity continues to every negative q, including q<-1. For x>0 and
+B,C>=0, q=(C-B)/(x^2+C)<1. Exchanging clusters yields the stated Landen
+transformation q -> q/(q-1) on the same branch domain. Each P summand is
+O(q^2) at zero, giving the claimed O(n^-4) spectral tail. No missing
+small-displacement restriction was found.
+
+4. P'_{r,s}(q)=R_{r,s}(q)/(1-q). The chain rule gives the denominator
+(n+a)^2+C for the C derivative and (n+a)^2+B for the B derivative, with
+exactly the displayed signs. These derivatives move the full repeated
+cluster. The primitive is anchored correctly because q=0 at C=B and
+P_{r,s}(0)=0. The oriented integral remains correct when C<B.
+
+Optional exposition refinement only: explicitly say that every proper-subset
+Dirichlet term has a holomorphic extension by the same chord subtraction,
+or is linear when it contains only one cluster. This is already implicit
+in the proof and does not require a change to any theorem.
+
+REPRODUCIBLE NEGATIVE-ARGUMENT DIAGNOSTIC
+
+The accompanying verify_two_cluster_negative.py reproduces the fresh audit
+check at 55 decimal digits for r=1,s=2,x=1,B=4,C=0, hence q=-4. It uses an
+ordinary beta integral, Li_{1,2} obtained by integrating Li_2/(1-z), the
+elementary Li_{1,1,1}, the Landen argument 0.8, and the anchored integral
+of the stated mass derivative. These are independently organized numerical
+evaluations of the identities, not certified interval bounds.
+
+The direct beta face is
+1.9871026232935373746036808196952437147311638907809...
+
+Absolute residuals in the original audit calculation:
+- Negative-argument polylogarithm dictionary: 3.82e-53.
+- Landen transformation to q=0.8:             2.04e-56.
+- Anchored mass primitive from C=4 to C=0:    3.82e-53.
+
+The accompanying two_cluster_negative_checks.json records the reproducible
+run, all parameters, both values in each comparison, the working precision,
+the residuals, and the acceptance threshold. No Gamma calculations or
+additional test families were rerun for this audit artifact.

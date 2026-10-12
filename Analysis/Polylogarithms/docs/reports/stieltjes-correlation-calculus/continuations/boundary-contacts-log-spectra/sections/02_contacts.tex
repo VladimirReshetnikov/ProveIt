@@ -1,0 +1,548 @@
+\section{Independent orders, independent shifts, and every bilinear contact}
+\label{ct:section}
+
+The incoming \emph{Bilinear Tails and Determinants} report establishes
+bilinear identities for two independently shifted alternating Hurwitz tails\cite{ProveItBilinear},
+but leaves their higher contact hyperplanes explicitly open. Its diagonal
+calculation does not determine mixed derivatives transverse to the diagonal.
+We resolve that question by a finite polynomial calculus. In addition to
+all cutoff finite parts, the calculation produces ordinary convergent
+identities on every negative-total-order hyperplane. The first such family
+has the particularly simple correction $1/2$ in every summand.
+
+The finite bilinear identities recalled below are inherited. The new
+statements are the centered coefficient algebra, the independent contact
+and translation formulas, their sharp spectral degree, and the ordinary
+identities extracted from them. The classical analytic inputs are the
+Gamma quotient expansion and the alternating Hurwitz Euler expansion;
+no assertion of global priority for these ingredients is intended.
+
+\subsection{The inherited endpoint law and its normalization}
+
+On $\Re z>0$ put
+\begin{align}
+ \mathcal B_s(z)&=2^{-s}\left\{\zeta\left(s,\frac z2\right)
+              -\zeta\left(s,\frac{z+1}{2}\right)\right\},
+                   \label{ct:B}\\
+ h(z)&=\sqrt2\,\frac{\Gamma((z+1)/2)}{\Gamma(z/2)},
+ \qquad \ell(z)=\log h(z),\qquad
+ \tau_s(z)=e^{s\ell(z)}\mathcal B_s(z),\label{ct:tau}\\
+ V_s(z)&=\frac{z^s-(z-1)^s}{h(z)^{2s}},\qquad \Re z>1.
+                   \label{ct:V}
+\end{align}
+All powers use the holomorphic logarithms real on the positive axis.
+The common Hurwitz pole in \eqref{ct:B} cancels, so this expression is
+entire in $s$. The classical recurrences give
+\begin{equation}\label{ct:recurrences}
+ h(z)h(z+1)=z,\qquad
+ \mathcal B_s(z)+\mathcal B_s(z+1)=z^{-s},\qquad
+ \tau_s(z-1)-\tau_s(z+1)=V_s(z)\tau_s(z).
+\end{equation}
+The last identity follows by multiplying the two adjacent Hurwitz
+recurrences by the appropriate Gamma powers and subtracting.
+
+Let $\Re a,\Re b>0$ and let $p,q$ be independent complex orders. Define,
+for $n\ge-1$,
+\begin{align}
+ u_n&=\tau_p(n+a+1),&v_n&=\tau_q(n+b+1),\notag\\
+ C_n&=u_nv_{n+1}+u_{n+1}v_n,&
+ D_n&=u_nv_{n+1}-u_{n+1}v_n,\label{ct:CD}\\
+ E_+&=C_{-1},&E_-&=D_{-1}.\notag
+\end{align}
+For later convenience, the signs are kept outside the definitions
+\[
+ g_n^+=\{V_p(n+a+1)+V_q(n+b+1)\}u_nv_n,
+ \qquad
+ g_n^-=\{V_p(n+a+1)-V_q(n+b+1)\}u_nv_n.
+\]
+The source's exact finite identities are
+\begin{equation}\label{ct:finite}
+ S_N^+:=\sum_{n=0}^N g_n^+=E_+-C_N,
+ \qquad
+ S_N^-:=\sum_{n=0}^N(-1)^ng_n^-=E_-+(-1)^ND_N.
+\end{equation}
+Indeed, \eqref{ct:recurrences} gives
+$g_n^+=C_{n-1}-C_n$ and $g_n^-=D_{n-1}+D_n$.
+These identities hold at every complex order before taking a limit.
+For $\Re(p+q)>0$ both infinite sums converge absolutely to $E_+$ and
+$E_-$ respectively. The entire functions $E_\pm$ are their endpoint
+continuations. A cutoff finite part need not equal that continuation.
+
+\subsection{A centered finite coefficient algebra}
+
+Use Bernoulli polynomials with $B_1(x)=x-1/2$ and Euler numbers normalized by
+\[
+ \operatorname{sech}t=\sum_{j\ge0}E_{2j}\frac{t^{2j}}{(2j)!}.
+\]
+Thus $E_0=1$, $E_2=-1$, and $E_4=5$. Put
+\begin{equation}\label{ct:Lj}
+ L_j=\frac{2^{2j}B_{2j+1}(1/4)}{j(2j+1)}\quad(j\ge1),
+ \qquad L_1=\frac1{16},\quad L_2=-\frac5{128},\quad L_3=\frac{61}{768}.
+\end{equation}
+Define the formal series
+\begin{equation}\label{ct:Tformal}
+ T_s(v)=\exp\left(s\sum_{j\ge1}L_jv^j\right)
+       \sum_{j\ge0}\frac{E_{2j}(s)_{2j}}{2^{2j}(2j)!}v^j
+       =\sum_{j\ge0}t_j(s)v^j.
+\end{equation}
+Each coefficient is a finite rational polynomial; the infinite formal
+series is not asserted to converge. An explicit terminating recursion is
+\begin{align}
+ e_0(s)&=1,&
+ e_n(s)&=\frac{s}{n}\sum_{j=1}^n jL_je_{n-j}(s),\label{ct:recursion}\\
+ t_n(s)&=\sum_{j=0}^ne_j(s)
+       \frac{E_{2n-2j}(s)_{2n-2j}}{2^{2n-2j}(2n-2j)!}.\notag
+\end{align}
+In particular,
+\begin{equation}\label{ct:first-t}
+ t_0=1,\qquad t_1(s)=-\frac{s(2s+1)}{16},\qquad
+ t_2(s)=\frac{s(20s^3+108s^2+211s+60)}{1536}.
+\end{equation}
+
+\begin{lemma}[Centered Gamma--Hurwitz expansion]\label{ct:centered}
+For each $K\ge0$,
+\begin{equation}\label{ct:tauexpansion}
+ \tau_s(x+\tfrac12)=\frac12x^{-s/2}
+       \sum_{j=0}^Kt_j(s)x^{-2j}
+       +O\bigl(x^{-\Re s/2-2K-2}\bigr).
+\end{equation}
+The expansion is locally uniform in the order and in bounded complex
+shifts of $x$ as $x$ tends to positive infinity. Fixed spectral derivatives
+have the differentiated expansion, with finite powers of $\log x$;
+fixed argument derivatives improve the decay by their order.
+Furthermore $\deg_s t_j\le2j$.
+\end{lemma}
+\begin{proof}
+The classical Gamma quotient expansion \cite{DLMF}, together with the alternating Hurwitz expansion \cite{HuKim}, gives
+\[
+ \log h(x+\tfrac12)=\tfrac12\log x+
+                 \sum_{j=1}^K L_jx^{-2j}+O(x^{-2K-2}).
+\]
+Only even inverse powers remain because
+$B_{n+1}(3/4)-B_{n+1}(1/4)=0$ for odd $n$; the surviving coefficient
+is precisely \eqref{ct:Lj}. For $\Re s>0$ the alternating Hurwitz
+integral is
+\[
+ \mathcal B_s(x+\tfrac12)=\frac1{2\Gamma(s)}
+  \int_0^\infty t^{s-1}e^{-xt}\operatorname{sech}(t/2)\,dt.
+\]
+Expanding the smooth factor at zero gives
+\[
+ \mathcal B_s(x+\tfrac12)\sim\frac12x^{-s}
+        \sum_{j\ge0}\frac{E_{2j}(s)_{2j}}{2^{2j}(2j)!}x^{-2j}.
+\]
+For an arbitrary compact order set the same finite expansion, with a
+uniform remainder, follows by taking sufficiently many terms in the
+ordinary Hurwitz Euler--Maclaurin expansions of \eqref{ct:B}. This avoids
+using the displayed integral outside its convergence domain. Multiplying
+finite expansions with their remainders proves \eqref{ct:tauexpansion}.
+Cauchy estimates on slightly larger compact sets justify spectral
+ derivatives; the differentiated Hurwitz and Gamma expansions justify
+argument derivatives. Finally $\deg e_j\le j$, while
+$\deg(s)_{2n-2j}=2n-2j$, proving the asserted degree bound.
+\end{proof}
+
+For an integer $k\ge0$ and a shift $v$ define
+\begin{equation}\label{ct:bk}
+ b_k(s,v)=\sum_{j=0}^{\lfloor k/2\rfloor}
+ t_j(s)\binom{-s/2-2j}{k-2j}v^{k-2j}.
+\end{equation}
+Throughout, generalized binomial coefficients in such formulas mean their
+polynomial expressions. They must not be computed by separately
+specializing Gamma quotients at poles. We have
+\begin{equation}\label{ct:b-properties}
+ \deg_s b_k\le k,\qquad b_k(s,-v)=(-1)^kb_k(s,v).
+\end{equation}
+
+Choose a \emph{fixed} cutoff parameter $c$, initially independent of
+$p,q,a,b$, and write
+\begin{equation}\label{ct:fixed-cutoff}
+ X=N+c,\quad \lambda=\frac{p+q}{2},\quad
+ A=a+\tfrac12-c,\quad B=b+\tfrac12-c.
+\end{equation}
+The complete ambient coefficient polynomials are
+\begin{align}
+ c_k(p,q;a,b;c)
+ &=\frac14\sum_{j=0}^k\bigl\{
+ b_j(p,A)b_{k-j}(q,B+1)+b_j(p,A+1)b_{k-j}(q,B)\bigr\},
+                         \label{ct:ck}\\
+ d_k(p,q;a,b;c)
+ &=\frac14\sum_{j=0}^k\bigl\{
+ b_j(p,A)b_{k-j}(q,B+1)-b_j(p,A+1)b_{k-j}(q,B)\bigr\}.
+                         \label{ct:dk}
+\end{align}
+Thus $c_0=1/2$, $d_0=0$, and both polynomials have total degree at most
+$k$ in the independent orders $p,q$. Lemma~\ref{ct:centered} implies
+\begin{align}
+ C_N&=X^{-\lambda}\sum_{k=0}^Kc_kX^{-k}
+          +O(X^{-\Re\lambda-K-1}),\label{ct:Cexp}\\
+ D_N&=X^{-\lambda}\sum_{k=0}^Kd_kX^{-k}
+          +O(X^{-\Re\lambda-K-1}).\label{ct:Dexp}
+\end{align}
+These expansions inherit the same uniformity and derivative properties.
+
+\subsection{Every independent contact and every mixed order derivative}
+
+Fix $p_0+q_0=-2m$, where $m\ge0$ is an integer. Differentiate at independent
+ambient $p,q$ first, then specialize to $(p_0,q_0)$. The symbol
+$\operatorname{FP}_X$ below denotes the coefficient of
+$X^0(\log X)^0$ in the resulting asymptotic expansion.
+
+\begin{theorem}[Complete independent contact calculus]\label{ct:contacts}
+For every $r,s\ge0$,
+\begin{align}
+ \operatorname{FP}_X
+ \left.\partial_p^r\partial_q^sS_N^+\right|_{(p_0,q_0)}
+ &=\left.\partial_p^r\partial_q^sE_+\right|_{(p_0,q_0)}
+    -\left.\partial_p^r\partial_q^sc_m\right|_{(p_0,q_0)}.
+                                          \label{ct:pluscontact}
+\end{align}
+For the alternating law there are two parity finite parts. On the
+subsequence $N\equiv\epsilon\pmod2$, using the same coordinate $X=N+c$,
+\begin{align}
+ \operatorname{FP}_{X,\epsilon}
+ \left.\partial_p^r\partial_q^sS_N^-\right|_{(p_0,q_0)}
+ &=\left.\partial_p^r\partial_q^sE_-\right|_{(p_0,q_0)}
+   +(-1)^\epsilon\left.\partial_p^r\partial_q^sd_m\right|_{(p_0,q_0)}.
+                                          \label{ct:minuscontact}
+\end{align}
+Every contact derivative of total order $r+s>m$ vanishes. The same formulas
+hold after fixed argument derivatives if $c$ is held independent while
+these derivatives are taken.
+\end{theorem}
+\begin{proof}
+For any coefficient polynomial $a_k(p,q)$,
+\begin{align}
+ \partial_p^r\partial_q^s\{a_kX^{-\lambda-k}\}
+ =X^{-\lambda-k}\sum_{i=0}^r\sum_{j=0}^s
+ \binom ri\binom sj(\partial_p^i\partial_q^ja_k)
+             \left(-\tfrac12\log X\right)^{r+s-i-j}.
+ \label{ct:logjets}
+\end{align}
+After specialization, only $k=m$ has zero exponent in $X$, and only
+$i=r,j=s$ has logarithmic degree zero. Choose $K$ large enough that the
+remainder and all fixed derivatives tend to zero. Equations
+\eqref{ct:finite}, \eqref{ct:Cexp}, and \eqref{ct:Dexp} prove both formulas.
+The degree bound in \eqref{ct:ck}--\eqref{ct:dk} proves the last assertion
+about spectral derivatives. Fixed-cutoff argument derivatives follow from
+the same uniform expansions.
+\end{proof}
+
+The arithmetic mean of the two alternating parity finite parts is the
+endpoint continuation, including all its mixed jets. A full-sequence
+ordinary cutoff constant is not supplied when the two constants differ.
+Re-expanding in the parity index $(N-\epsilon)/2$ would be a different
+coordinate convention. Similarly, imposing $q=-2m-p$ before differentiating
+would calculate only tangent derivatives; it would lose the independent
+transverse derivatives required by Theorem~\ref{ct:contacts}.
+
+\subsection{Balanced coordinates, low-order contacts, and exact parity}
+
+The most symmetric cutoff is
+\begin{equation}\label{ct:balanced}
+ X=N+\mu,\qquad \mu=\frac{a+b}{2}+1,\qquad
+ \delta=\frac{a-b}{2}.
+\end{equation}
+The four centered arguments in the two endpoint products are then
+$X+\delta-1/2$, $X-\delta+1/2$, $X+\delta+1/2$, and
+$X-\delta-1/2$. Abbreviate the corresponding polynomials to $c_k,d_k$,
+and put $S=p+q$, $D=p-q$. The first ambient coefficients are
+\begin{align}
+ c_0&=\tfrac12,&d_0&=0,\notag\\
+ c_1&=-\frac{\delta D}{4},&d_1&=\frac D8,\label{ct:lowambient}\\
+ c_2&=\frac{4\delta^2(D^2+2S)-D^2-2S^2}{64},&
+ d_2&=-\frac{\delta(D^2+2S)}{16}.\notag
+\end{align}
+The third coefficients, useful for independent jets at the next resonance,
+are
+\begin{align}
+ c_3&=-\frac{\delta D}{384}
+ \{4\delta^2(D^2+6S+8)-3D^2-6S^2-36S\},\label{ct:thirdambient}\\
+ d_3&=\frac D{768}
+ \{12\delta^2(D^2+6S+8)-5D^2-6S^2-48S-16\}.\notag
+\end{align}
+For zero-order contacts only, their restrictions to $S=-2m$ give the
+following compact table. Here $d=a-b=2\delta$ and $D=p-q$.
+\begin{center}
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{c|c|c}
+$m$&symmetric contact $c_m$&alternating amplitude $d_m$\\\hline
+$0$&$1/2$&$0$\\
+$1$&$-dD/8$&$D/8$\\
+$2$&$\displaystyle\frac{(D^2-8)d^2-D^2-32}{64}$
+   &$\displaystyle-\frac{d(D^2-8)}{32}$\\
+$3$&$\displaystyle-\frac{dD\{(D^2-28)d^2-3D^2\}}{768}$
+   &$\displaystyle\frac{D\{3d^2(D^2-28)-5D^2+56\}}{768}$
+\end{tabular}
+\end{center}
+The table must not replace the ambient polynomials when calculating
+independent spectral derivatives.
+
+\begin{proposition}[Balanced parity]\label{ct:parity}
+At the balanced cutoff,
+\begin{align}
+ c_k(p,q;-\delta)&=(-1)^kc_k(p,q;\delta),&
+ d_k(p,q;-\delta)&=(-1)^{k+1}d_k(p,q;\delta),\label{ct:reflection}\\
+ c_k(q,p;\delta)&=(-1)^kc_k(p,q;\delta),&
+ d_k(q,p;\delta)&=(-1)^kd_k(p,q;\delta).\notag
+\end{align}
+Every odd symmetric contact is divisible by $(a-b)(p-q)$.
+Every even alternating contact vanishes at equal shifts, and every odd
+alternating contact vanishes at equal orders.
+\end{proposition}
+\begin{proof}
+Use $b_k(s,-v)=(-1)^kb_k(s,v)$ in the two endpoint products. Reflecting
+$\delta$ exchanges these products; interchanging the independent orders
+then gives the second line. Polynomial divisibility follows from the
+resulting sign changes.
+\end{proof}
+
+The first off-diagonal symmetric contact is therefore
+$(q-p)(a-b)/8$ on $p+q=-2$, and it vanishes on either diagonal separately.
+For example,
+\[
+ p=\tfrac13,\quad q=-\tfrac73,\quad a=\tfrac23,\quad b=\tfrac75
+ \quad\Longrightarrow\quad c_1=\frac{11}{45},\quad d_1=\frac13.
+\]
+At $p=q=s$, $a=b$, one has the exact reduction
+\[
+ C_N=2(N+a+1)^s\mathcal B_s(N+a+1)\mathcal B_s(N+a+2),
+ \qquad D_N=0.
+\]
+Consequently the present coefficients specialize to twice the source's
+diagonal endpoint coefficients. This checks all its even-order contacts,
+all vanishing odd contacts, and every diagonal spectral derivative.
+
+\subsection{Translation, the sharp derivative threshold, and moving shifts}
+
+If $Y=X-h$, coefficient transport is finite:
+\begin{equation}\label{ct:translate}
+ c_m^{[h]}(p,q)=\sum_{k=0}^m c_k(p,q)
+      \binom{-\lambda-k}{m-k}h^{m-k},
+ \qquad
+ d_m^{[h]}(p,q)=\sum_{k=0}^m d_k(p,q)
+      \binom{-\lambda-k}{m-k}h^{m-k}.
+\end{equation}
+These are ambient polynomial identities, obtained by expanding
+$X^{-\lambda-k}=Y^{-\lambda-k}(1+h/Y)^{-\lambda-k}$.
+They retain total spectral degree at most $m$. At zero derivative order
+and on $\lambda=-m$, each binomial factor is one. For higher independent
+jets it must first be differentiated as a polynomial. Translating a cutoff
+therefore changes transverse contact derivatives even when the restricted
+zero-order formula appears elementary.
+
+There is also a closed expression for every highest mixed derivative.
+For a polynomial $P(p,q)$ write $[P]_m$ for its homogeneous component of
+total spectral degree $m$.
+
+\begin{theorem}[Highest mixed contacts and sharpness]\label{ct:top}
+For the balanced cutoff translated by $h$, the formal generating identities
+are
+\begin{align}
+ \sum_{m\ge0}[c_m^{[h]}]_m t^m
+ &=\frac12\exp\left(-\frac{(p-q)\delta+(p+q)h}{2}t\right)
+ \frac{\cosh((p-q)t/4)}{\cosh(pt/2)\cosh(qt/2)},\label{ct:topplus}\\
+ \sum_{m\ge0}[d_m^{[h]}]_m t^m
+ &=\frac12\exp\left(-\frac{(p-q)\delta+(p+q)h}{2}t\right)
+ \frac{\sinh((p-q)t/4)}{\cosh(pt/2)\cosh(qt/2)}.\label{ct:topminus}
+\end{align}
+The total spectral degree is generically exactly $m$ for $c_m$, and
+exactly $m$ for $d_m$ when $m\ge1$. Hence the threshold $r+s>m$ in
+Theorem~\ref{ct:contacts} is sharp.
+\end{theorem}
+\begin{proof}
+In \eqref{ct:Tformal}, the highest spectral coefficient of $t_j(s)$ is
+$E_{2j}s^{2j}/(2^{2j}(2j)!)$: every nonconstant contribution from the
+Gamma exponential has strictly smaller degree. The highest-degree
+series for a shifted $\tau_s$ is therefore
+$\tfrac12 e^{-svt/2}\operatorname{sech}(st/2)$. Multiplying the
+appropriate two factors in \eqref{ct:ck}--\eqref{ct:dk}, and taking
+their sum or difference, proves \eqref{ct:topplus}--\eqref{ct:topminus}.
+For $h=q=0$, the coefficient of $\delta^mp^m$ in the symmetric
+expression is $(-1)^m/(2^{m+1}m!)$. For $m\ge1$, the coefficient
+of $\delta^{m-1}p^m$ in the alternating expression is
+$(-1)^{m-1}/(2^{m+2}(m-1)!)$. Both are nonzero.
+\end{proof}
+
+The balanced coordinate depends on $a,b$. To differentiate the original
+finite sums in these shifts, use \eqref{ct:ck}--\eqref{ct:dk} with fixed
+$c$, differentiate, and only then set $c=\mu$. Holding the balanced $X$
+artificially fixed while differentiating the original $N$-cutoff would
+omit its coordinate derivative. This restriction does not affect
+independent order derivatives, because $\mu$ is independent of $p,q$.
+
+\subsection{Ordinary polynomial and logarithmic subtractions}
+
+The coefficient algebra gives convergent sums representing every contact
+and every jet. It does not require assigning ordinary values to divergent
+unmodified sums. For $\Re c>1$ and $K\ge0$ define
+\begin{equation}\label{ct:PK}
+ P_K^+(p,q;X)=\sum_{k=0}^Kc_kX^{-\lambda-k},\qquad
+ P_K^-(p,q;X)=\sum_{k=0}^Kd_kX^{-\lambda-k},\qquad X_n=n+c.
+\end{equation}
+
+\begin{theorem}[Normally convergent continuation]\label{ct:normal}
+For $\Re\lambda>-K-1$,
+\begin{equation}\label{ct:normalplus}
+ \sum_{n\ge0}\{g_n^+-P_K^+(X_n-1)+P_K^+(X_n)\}
+             =E_+-P_K^+(c-1)
+\end{equation}
+converges absolutely and locally normally. For $\Re\lambda>-K$,
+\begin{equation}\label{ct:normalminus}
+ \sum_{n\ge0}(-1)^n\{g_n^--P_K^-(X_n-1)-P_K^-(X_n)\}
+             =E_--P_K^-(c-1)
+\end{equation}
+also converges absolutely and locally normally. The latter is an ordinary
+convergent series, normally convergent after pairing consecutive terms,
+on the larger domain $\Re\lambda>-K-1$.
+All fixed mixed parameter derivatives may be taken under the sum in the
+stated absolute-normal domains. Formula~\eqref{ct:logjets} specifies
+every polynomial and logarithmic counterterm explicitly.
+\end{theorem}
+\begin{proof}
+Subtract the finite telescoping identities for $P_K^\pm$ from
+\eqref{ct:finite}. The remaining endpoints are
+$C_N-P_K^+(X_N)$ and $D_N-P_K^-(X_N)$, both
+$O(X_N^{-\Re\lambda-K-1})$. They vanish on the larger asserted domain.
+For the symmetric series, the summand is a unit difference of its endpoint
+remainder, so its size is $O(n^{-\Re\lambda-K-2})$. For the alternating
+series the sum of two adjacent remainders is
+$O(n^{-\Re\lambda-K-1})$, giving its absolute domain. Pairing successive
+alternating terms turns this sum into a difference over two steps and
+restores the extra inverse power. The uniform differentiated expansions
+and Cauchy estimates justify all fixed derivatives in the stated domains.
+The condition $\Re c>1$ keeps the lower power $c-1$ on the fixed branch.
+\end{proof}
+
+At $\lambda=-m$, the symmetric subtraction with $K=m$ is a polynomial.
+Writing
+\begin{equation}\label{ct:resonantP}
+ \Pi_m^+(X)=\sum_{k=0}^mc_kX^{m-k},\qquad
+ \Pi_m^-(X)=\sum_{k=0}^md_kX^{m-k},
+\end{equation}
+we obtain the ordinary absolutely convergent identity
+\begin{equation}\label{ct:polynomialplus}
+ \sum_{n\ge0}\{g_n^+-\Pi_m^+(n+\mu-1)+\Pi_m^+(n+\mu)\}
+              =E_+-\Pi_m^+(\mu-1).
+\end{equation}
+Its summand is $O(n^{-2})$. The polynomial alternating subtraction is
+ordinary convergent, generally conditionally, with value
+$E_--\Pi_m^-(\mu-1)$. Including the additional term
+$d_{m+1}X^{-1}$ makes it absolutely convergent. Independent mixed jets
+at the resonance use $K=m$ in the symmetric formula and $K=m+1$ in
+the alternating formula, with the logarithmic counterterms
+\eqref{ct:logjets}. Thus the complete contact theorem has ordinary
+convergent-series representatives at every derivative order.
+
+\subsection{The first off-diagonal resonance and exact Gamma examples}
+
+\begin{corollary}[A short identity on $p+q=-2$]\label{ct:firstresonance}
+For $p+q=-2$ and $\Re a,\Re b>0$,
+\begin{equation}\label{ct:firstplus}
+ \boxed{\displaystyle
+ \sum_{n\ge0}\left\{
+  [V_p(n+a+1)+V_q(n+b+1)]u_nv_n+\frac12\right\}
+ =\tau_p(a)\tau_q(b+1)+\tau_p(a+1)\tau_q(b)+\frac{pa+qb}{4}.}
+\end{equation}
+The series is absolutely and locally normally convergent on this
+hyperplane. There is also the absolutely convergent alternating identity
+\begin{align}
+ &\sum_{n\ge0}(-1)^n\left\{
+ [V_p(n+a+1)-V_q(n+b+1)]u_nv_n-\frac{p-q}{4}\right.\notag\\
+ &\hspace{18mm}\left.
+ -\frac{pq(a-b)}8\left[\frac1{n+(a+b)/2}
+                      +\frac1{n+(a+b)/2+1}\right]\right\}\notag\\
+ &\qquad=\tau_p(a)\tau_q(b+1)-\tau_p(a+1)\tau_q(b)
+            -\frac{p-q}{8}-\frac{pq(a-b)}{4(a+b)}.
+                                                    \label{ct:firstminus}
+\end{align}
+\end{corollary}
+\begin{proof}
+Here $\Pi_1^+(X)=X/2+(q-p)(a-b)/8$ and
+\[
+ \Pi_1^+(\mu-1)=-\frac{pa+qb}{4},
+\]
+where the relation $p+q=-2$ is used only after coefficient extraction.
+Equation~\eqref{ct:polynomialplus} proves \eqref{ct:firstplus}.
+For the alternating formula, \eqref{ct:lowambient} gives
+$d_1=(p-q)/8$ and $d_2=pq(a-b)/8$ at this resonance. Apply
+\eqref{ct:normalminus} with $P_2^-(X)=d_1+d_2/X$.
+\end{proof}
+
+In particular take $p=1$, $q=-3$, $a=1$, $b=2$, and set
+\[
+ u_n=\tau_1(n+2),\qquad v_n=\tau_{-3}(n+3).
+\]
+The two exact evaluations are
+\begin{align}
+ \sum_{n\ge0}\{[V_1(n+2)+V_{-3}(n+3)]u_nv_n+\tfrac12\}
+ &=\frac{55\pi\log2}{128}
+      +\frac{9(1-\log2)}{4\pi}-\frac54,\label{ct:exampleplus}\\
+ \sum_{n\ge0}(-1)^n\left\{
+ [V_1(n+2)-V_{-3}(n+3)]u_nv_n-1\right.&\notag\\[-3pt]
+ \left.\hspace{6mm}-\frac38\left(\frac1{n+3/2}+\frac1{n+5/2}\right)
+ \right\}
+ &=\frac{55\pi\log2}{128}
+      -\frac{9(1-\log2)}{4\pi}-\frac34.\label{ct:exampleminus}
+\end{align}
+Both sums are ordinary and absolutely convergent. Their summands use only
+Gamma quotients, digamma functions, rational functions, and an Euler
+polynomial: $\mathcal B_1(z)=\tfrac12\{\psi((z+1)/2)-\psi(z/2)\}$ and
+\[
+ \mathcal B_{-3}(z)=\frac12E_3(z),\qquad
+ E_3(z)=z^3-\frac32z^2+\frac14.
+\]
+For a direct evaluation of the endpoints, put $r=\sqrt{2/\pi}$. Then
+$h(1)=r$, $h(2)=1/r$, $h(3)=2r$,
+$\mathcal B_1(1)=\log2$, and $\mathcal B_1(2)=1-\log2$. Consequently
+\[
+ \tau_1(1)\tau_{-3}(3)=\frac{55\pi\log2}{128},\qquad
+ \tau_1(2)\tau_{-3}(2)=\frac{9(1-\log2)}{4\pi},
+\]
+which proves both displayed constants.
+
+\subsection{Which resonant unmodified sums actually converge?}
+
+The contact polynomials also resolve this ordinary-convergence question,
+which is stronger than asking whether one constant coefficient vanishes.
+
+\begin{proposition}[Ordinary convergence at negative-total-order resonances]
+\label{ct:resonantconvergence}
+On $p+q=-2m$ with $m>0$, the unmodified symmetric series does not converge.
+At $m=0$ it converges absolutely and has the inherited contact $1/2$.
+The alternating series at $m=0$ always converges; its convergence is
+conditional unless $p=q=0$, when every summand is zero.
+For the unmodified alternating series at $m\ge1$ the following are exact:
+\begin{enumerate}
+ \item If $p\ne q$, it does not converge.
+ \item If $p=q=-m$ and $a\ne b$, it converges when $m=1$ and does
+       not converge when $m\ge2$.
+ \item If $p=q$ and $a=b$, every alternating summand is zero.
+\end{enumerate}
+In item 2 at $m=1$ the convergence is generally conditional.
+\end{proposition}
+\begin{proof}
+The symmetric endpoint has leading term $X^m/2$, which cannot tend to a
+finite limit for $m>0$. At $m=0$ it tends to $1/2$, and its difference
+is $O(n^{-2})$. At $m=0$, the alternating endpoint tends to zero;
+its summand has leading amplitude $(p-q)/(4n)$ unless $p=q=0$.
+In that exceptional case $V_0=0$ and the summands vanish.
+If $m\ge1$ and $p\ne q$, the alternating endpoint has leading term
+$(p-q)X^{m-1}/8$, so $(-1)^ND_N$ has no limit. If $p=q=-m$, parity
+and \eqref{ct:lowambient} instead give
+\[
+ D_N=\frac{m(a-b)}8X^{m-2}+O(X^{m-4}).
+\]
+For distinct shifts this tends to zero exactly when $m=1$; for $m=2$
+it yields two different parity limits, and for larger $m$ it grows.
+The exact finite identity \eqref{ct:finite} proves convergence or its
+failure in each case. At $m=1$ the alternating summand generally has
+nonzero $1/n$ amplitude, establishing the final qualification. Equal
+orders and shifts give $u_n=v_n$, hence $D_n=0$ identically.
+\end{proof}
+
+The theorem answers the source's contact question at all its specified
+hyperplanes. Independent extra outer powers and longer products remain
+separate summation problems. The present finite coefficients offer a
+precise starting point for those extensions: they identify which endpoint
+terms must be retained before any additional spectral differentiation.

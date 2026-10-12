@@ -1,0 +1,419 @@
+% Independent continuation, 12 October 2026.
+% Fragment uses amsmath, amssymb, amsthm; theorem/lemma/corollary environments.
+% Primary bibliography keys below are suggestions for the parent article.
+\section{Joint Gamma--polygamma cumulants}
+\label{gc:section}
+
+The latest incoming Gamma-normalization report \cite{GammaIncoming} evaluates the appropriate
+Gustafson determinant, establishes a paired parameter deformation, and
+proves Gaussian moments for a single trigamma statistic through degree
+$n+1$. Its research question Q2 asks for a precise classification of
+joint polygamma moments. The theorem below answers this question in a
+complete weighted range. It also includes the digamma statistic and all
+even polygamma orders, which require the unpaired deformation.
+The classical integral and the source's density are inherited; the
+explicit cumulant classification and its consequences are the present
+extension. No claim of priority over all literature is made.
+
+For $n\ge1$, $\sigma>0$, put $N=2n+2$ and consider the probability
+measure on $(0,\infty)^n$ with density proportional to
+\begin{equation}\label{gc:density}
+ \Delta(x_1^2,\ldots,x_n^2)
+ \Delta(\cosh\pi x_1,\ldots,\cosh\pi x_n)
+ \prod_{j=1}^n x_j\sinh(\pi x_j)
+       |\Gamma(\sigma+ix_j/2)|^{2N},
+\end{equation}
+where $\Delta(y)=\prod_{j<k}(y_k-y_j)$. Its normalizer is
+\begin{equation}\label{gc:normalizer}
+ Z_{n,\sigma}
+ =2^{n(3n+1)/2}\pi^{n(n+1)}n!
+       \frac{\Gamma(2\sigma)^{(n+1)(2n+1)}}{\Gamma(N\sigma)}.
+\end{equation}
+The Vandermondes have the same sign, so this is a positive measure.
+Write $\mathbb E=\mathbb E_{n,\sigma}$ and define, for $q\ge0$,
+\begin{equation}\label{gc:R}
+ R_q=\sum_{j=1}^n\Re\psi^{(q)}(\sigma+ix_j/2),
+ \qquad \psi^{(0)}=\psi.
+\end{equation}
+The \emph{weight} of $R_q$ is $q+1$. A joint cumulant means
+\[
+ \kappa(Y_1,\ldots,Y_r)
+ =\left.\partial_{t_1}\cdots\partial_{t_r}
+     \log\mathbb E e^{t_1Y_1+\cdots+t_rY_r}\right|_{\mathbf t=0}.
+\]
+All fixed moments exist. Indeed the positive-order polygammas are bounded
+on each vertical line $\Re z=\sigma$, the digamma grows at most
+logarithmically, and the Gamma weight has an exponential margin after
+multiplication by every fixed polynomial or logarithmic power.
+
+\begin{theorem}[Explicit joint cumulants in the complete weighted range]
+\label{gc:main}
+Let $q_1,\ldots,q_r\ge0$ and suppose
+\begin{equation}\label{gc:range}
+                   \sum_{i=1}^r(q_i+1)\le N=2n+2.
+\end{equation}
+The one-point and two-point cumulants are
+\begin{align}
+ \mathbb E R_q
+   &=\frac12\left[(N-2^q)\psi^{(q)}(2\sigma)
+               -\delta_{q0}\psi(N\sigma)\right],
+              \label{gc:mean}\\
+ \operatorname{Cov}(R_p,R_q)
+   &=\frac14\left[\psi^{(p+q+1)}(2\sigma)
+               -\delta_{p0}\delta_{q0}\psi'(N\sigma)\right].
+              \label{gc:cov}
+\end{align}
+For every $r\ge3$ in the same weighted range,
+\begin{equation}\label{gc:higher}
+ \boxed{\quad
+ \kappa(R_{q_1},\ldots,R_{q_r})
+ =-\frac{\psi^{(r-1)}(N\sigma)}{2^r}
+                    \prod_{i=1}^r\delta_{q_i0}.
+ \quad}
+\end{equation}
+Thus every mixed cumulant of order at least three that contains a
+positive-order polygamma statistic vanishes in this range.
+\end{theorem}
+
+\subsection{Proof by independent parameter shifts}
+
+For independent parameters $z_1,\ldots,z_N$ near zero, deform all Gamma
+parameters to $\sigma+z_\ell$. Gustafson's symplectic Barnes integral,
+in the normalization of Derkachov--Manashov \cite[Eq.~(2)]{DerkachovManashov}, and the
+source's determinant-to-density transformation give
+\begin{equation}\label{gc:unpaired}
+\begin{split}
+ &\mathbb E\prod_{j=1}^n\prod_{\ell=1}^N
+ \frac{\Gamma(\sigma+z_\ell+ix_j/2)
+       \Gamma(\sigma+z_\ell-ix_j/2)}
+      {\Gamma(\sigma+ix_j/2)\Gamma(\sigma-ix_j/2)}\\
+ &\qquad=
+ \frac{\Gamma(N\sigma)}{\Gamma(N\sigma+\sum_\ell z_\ell)}
+ \prod_{\ell<h}
+       \frac{\Gamma(2\sigma+z_\ell+z_h)}{\Gamma(2\sigma)}.
+\end{split}
+\end{equation}
+This is an identity of holomorphic germs. On a sufficiently small
+polydisc every shifted Gamma parameter remains in the right half-plane.
+Uniform Stirling bounds leave an integrable exponential majorant, even
+after any fixed mixed derivative; they justify coefficient extraction
+under the integral. Holomorphic log-Gamma is used on that half-plane,
+and the analytic logarithm of the expectation is fixed by its value
+zero at the origin.
+
+Put $p_k=\sum_{\ell=1}^N z_\ell^k$. Taylor expansion of the logarithm
+of the integrand in \eqref{gc:unpaired} gives
+\[
+ \log\left(\prod_{j,\ell}\frac{\Gamma(\sigma+z_\ell+ix_j/2)
+     \Gamma(\sigma+z_\ell-ix_j/2)}
+     {\Gamma(\sigma+ix_j/2)\Gamma(\sigma-ix_j/2)}\right)
+            =2\sum_{k\ge1}\frac{R_{k-1}}{k!}p_k.
+\]
+For every integer $k\ge1$ the elementary pair-sum identity is
+\begin{equation}\label{gc:pairsum}
+ \sum_{\ell<h}(z_\ell+z_h)^k
+ =(N-2^{k-1})p_k+\frac12\sum_{a=1}^{k-1}
+                              \binom ka p_a p_{k-a}.
+\end{equation}
+The coefficient of $p_k$ follows by excluding the diagonal from
+$\sum_{\ell,h}z_\ell^a z_h^{k-a}$; the two endpoint terms each
+contribute $(N-1)p_k$ before the factor $1/2$ is applied.
+Taking logarithms in \eqref{gc:unpaired} therefore gives
+\begin{equation}\label{gc:power-sum-log}
+\begin{split}
+ &\log\mathbb E\exp\left(2\sum_{k\ge1}\frac{R_{k-1}}{k!}p_k\right)\\
+ &\quad=\sum_{k\ge1}
+       \frac{(N-2^{k-1})\psi^{(k-1)}(2\sigma)}{k!}p_k
+       +\frac12\sum_{a,b\ge1}
+          \frac{\psi^{(a+b-1)}(2\sigma)}{a!b!}p_a p_b
+       -\sum_{r\ge1}\frac{\psi^{(r-1)}(N\sigma)}{r!}p_1^r.
+\end{split}
+\end{equation}
+
+The next finite algebra observation is the step that permits separation
+of the different statistics, rather than merely recording a generating
+identity.
+
+\begin{lemma}[Independent power-sum coordinates through degree $N$]
+\label{gc:psindependent}
+Assign weight $k$ to an indeterminate $P_k$. Substitution
+$P_k\mapsto p_k(z_1,\ldots,z_N)$ is injective on the space of
+polynomials of weighted degree at most $N$.
+\end{lemma}
+\begin{proof}
+Only $P_1,\ldots,P_N$ can occur in that degree range.
+Newton's identities give an invertible triangular change between
+$p_1,\ldots,p_N$ and the first $N$ elementary symmetric polynomials,
+which are algebraically independent. Alternatively the Jacobian of
+the power sums is
+\[
+ \det\left(\frac{\partial p_k}{\partial z_\ell}\right)_{k,\ell=1}^N
+              =N!\prod_{\ell<h}(z_h-z_\ell),
+\]
+which is not the zero polynomial. Either proof gives the claimed
+injectivity.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{gc:main}]
+The homogeneous component of degree $d\le N$ in
+\eqref{gc:power-sum-log} involves only $p_1,\ldots,p_d$.
+By Lemma~\ref{gc:psindependent}, compare its coefficients as polynomials
+in independent power-sum variables. Set $p_k=k!t_{k-1}/2$ in this
+finite-degree comparison. The logarithmic moment generating function
+then has, through weighted degree $N$, the form
+\begin{equation}\label{gc:cgf}
+\begin{split}
+ \log\mathbb E\exp\left(\sum_{q\ge0}t_qR_q\right)
+  ={}&\frac12\sum_{q\ge0}(N-2^q)\psi^{(q)}(2\sigma)t_q\\
+    &+\frac18\sum_{p,q\ge0}\psi^{(p+q+1)}(2\sigma)t_pt_q
+      -\sum_{r\ge1}\frac{\psi^{(r-1)}(N\sigma)}{2^r r!}t_0^r.
+\end{split}
+\end{equation}
+Here equality means coefficient equality only through that weighted
+degree, not an unrestricted identity of generating functions.
+The linear, quadratic and higher coefficients give
+\eqref{gc:mean}--\eqref{gc:higher}.
+\end{proof}
+
+\subsection{A finite formula for every retained ordinary moment}
+
+Let $\mathcal P_r$ be the set of partitions of $\{1,\ldots,r\}$.
+For a block $B$ define $c(B)$ by \eqref{gc:mean} when $|B|=1$,
+by \eqref{gc:cov} when $|B|=2$, and by
+\eqref{gc:higher} when $|B|\ge3$, using the orders attached to the
+labels in $B$. Since every block satisfies \eqref{gc:range} whenever
+the full list does, the ordinary moment is explicitly
+\begin{equation}\label{gc:moment}
+ \boxed{\qquad
+ \mathbb E\prod_{i=1}^rR_{q_i}
+             =\sum_{\pi\in\mathcal P_r}\prod_{B\in\pi}c(B),
+ \qquad \sum_i(q_i+1)\le N.
+ \qquad}
+\end{equation}
+This finite partition formula evaluates all the indicated integrals
+using only polygamma values at $2\sigma$ and $N\sigma$. It contains no
+unevaluated spectral derivative or auxiliary integral.
+
+For positive orders define the centered statistics
+\[
+ Y_q=R_q-\frac12(N-2^q)\psi^{(q)}(2\sigma),\qquad q\ge1.
+\]
+All blocks of size other than two disappear from their centered moments.
+Consequently
+\begin{corollary}[Weighted Wick rule]
+\label{gc:wick}
+For $q_i\ge1$ and $\sum_i(q_i+1)\le N$,
+\begin{equation}\label{gc:wickeq}
+ \mathbb E\prod_{i=1}^rY_{q_i}
+ =\begin{cases}
+ 0,&r\text{ odd},\\[2pt]
+ \displaystyle 4^{-r/2}\sum_{\text{pairings }\pi}
+         \prod_{\{i,j\}\in\pi}\psi^{(q_i+q_j+1)}(2\sigma),
+                                    &r\text{ even}.
+ \end{cases}
+\end{equation}
+\end{corollary}
+For example, for $n\ge5$ the genuinely mixed fourth moment is
+\begin{equation}\label{gc:example13}
+ \mathbb E(Y_1^2Y_3^2)
+ =\frac{\psi'''(2\sigma)\psi^{(7)}(2\sigma)}{16}
+                +\frac{\psi^{(5)}(2\sigma)^2}{8}.
+\end{equation}
+At $\sigma=1/4$ this is $33\pi^{12}/2$, using
+$\psi'''(1/2)=\pi^4$, $\psi^{(5)}(1/2)=8\pi^6$, and
+$\psi^{(7)}(1/2)=136\pi^8$.
+For $n\ge2$ another mixed evaluation is
+\begin{equation}\label{gc:example012}
+ \mathbb E\bigl[(R_0-\mathbb ER_0)(R_1-\mathbb ER_1)
+                                  (R_2-\mathbb ER_2)\bigr]=0,
+\end{equation}
+whose total weight is $1+2+3=6$.
+The odd-order restriction, $S_{2a-1}=R_{2a-1}$, reads
+\[
+ \mathbb ES_{2a-1}=(n+1-4^{a-1})\psi^{(2a-1)}(2\sigma),\qquad
+ \operatorname{Cov}(S_{2a-1},S_{2b-1})
+               =\tfrac14\psi^{(2a+2b-1)}(2\sigma)
+\]
+whenever, respectively, $a\le n+1$ and $a+b\le n+1$.
+Every higher cumulant vanishes when the sum of the corresponding
+$a$-indices is at most $n+1$. This is the requested separation of the
+joint odd-polygamma coordinates.
+
+\subsection{New scalar integral evaluations}
+
+Set $n=1$, $\sigma=1/4$ and
+\[
+ \omega(x)=x\sinh(\pi x)|\Gamma(1/4+ix/2)|^8,
+ \quad z_x=1/4+ix/2,
+\]
+\[
+ g(x)=\Re\psi(z_x)+\gamma+3\log2,\qquad
+ h(x)=\Re\psi'(z_x)-\pi^2/2.
+\]
+Here $\int_0^\infty\omega(x)\,dx=4\pi^5$.
+The theorem, whose weighted budget is $N=4$, gives the exact ordinary
+integrals, using the standard special values in \cite[\S5.15]{DLMF},
+\begin{align}
+ \int_0^\infty\omega(x)\Re\psi''(z_x)\,dx&=0,
+                                                    \label{gc:scalar1}\\
+ \int_0^\infty\omega(x)g(x)\Re\psi''(z_x)\,dx&=\pi^9,
+                                                    \label{gc:scalar2}\\
+ \int_0^\infty\omega(x)g(x)^2h(x)\,dx&=0,
+                                                    \label{gc:scalar3}\\
+ \int_0^\infty\omega(x)g(x)^3\,dx&=\pi^5\zeta(3),
+                                                    \label{gc:scalar4}\\
+ \int_0^\infty\omega(x)g(x)^4\,dx&=\frac{\pi^9}{15}.
+                                                    \label{gc:scalar5}
+\end{align}
+For the last two, the centered digamma cumulants are
+\[
+ \kappa_2(R_0)=\frac{\pi^2}{12},\quad
+ \kappa_3(R_0)=\frac{\zeta(3)}4,\quad
+ \kappa_4(R_0)=-\frac{\pi^4}{240}.
+\]
+Thus the fourth central moment is
+$3(\pi^2/12)^2-\pi^4/240=\pi^4/60$; multiplication by
+$4\pi^5$ gives \eqref{gc:scalar5}.
+The nonzero digamma cumulants explain why the Gaussian description
+belongs to the positive-order sector.
+
+\subsection{The finite range is essential}
+
+At degree $N+1$, Newton's relation $e_{N+1}=0$ in $N$ variables creates
+a nonzero kernel:
+\begin{equation}\label{gc:firstrelation}
+ \sum_{\lambda\vdash N+1}
+       \frac{(-1)^{N+1-\ell(\lambda)}}{z_\lambda}
+                 p_{\lambda_1}\cdots p_{\lambda_{\ell(\lambda)}}=0,
+ \qquad z_\lambda=\prod_{j\ge1}j^{m_j}m_j!.
+\end{equation}
+One therefore cannot compare all formal power-sum coefficients beyond
+the theorem's range. It is an algebraic failure of this extraction
+argument, not a proof that every first excluded cumulant is nonzero.
+The following limiting example supplies an actual obstruction to
+extending the source's single-trigamma Gaussian law universally.
+
+\begin{proposition}[A nonzero first excluded Gaussian moment]
+\label{gc:sharpness}
+For $n=1$ define the source-normalized statistic
+\[
+ X_{1,\sigma}=\frac{2R_1-2\psi'(2\sigma)}
+                         {\sqrt{\psi'''(2\sigma)}}.
+\]
+Then
+\begin{equation}\label{gc:skewlimit}
+        \lim_{\sigma\downarrow0}\mathbb E X_{1,\sigma}^3
+                       =\frac{2\sqrt6}{9}>0.
+\end{equation}
+In particular the Gaussian matching degree $n+1$ cannot be increased
+to $n+2$ uniformly over all $n\ge1$ and all $\sigma>0$.
+This proposition does not evaluate the general $(n+2)$nd defect.
+\end{proposition}
+\begin{proof}
+At $n=1$, \eqref{gc:normalizer} is
+$Z_{1,\sigma}=4\pi^2\Gamma(2\sigma)^6/\Gamma(4\sigma)$,
+and $\sigma^5 Z_{1,\sigma}\to\pi^2/4$.
+Set $x=2\sigma y$. Using $z\Gamma(z)\to1$ as $z\to0$, the
+normalized density in the $y$ variable tends pointwise to
+\[
+                q_0(y)=\frac{32}{\pi}\frac{y^2}{(1+y^2)^4},
+                \qquad y>0.
+\]
+Its integral is one by the beta integral. Since the approximating
+densities also integrate to one, Scheff\'e's lemma gives convergence
+in $L^1$. Also
+\[
+ \sigma^2\Re\psi'(\sigma(1+iy))
+       \longrightarrow\Re(1+iy)^{-2},\qquad
+ \sigma^2|\psi'(\sigma(1+iy))|
+       \le\sigma^2\psi'(\sigma),
+\]
+and the upper bound tends to one. The density convergence and this
+uniform bound give convergence of every fixed moment of the scaled
+statistic. If $t=y^2/(1+y^2)$ then $t$ has the
+$\operatorname{Beta}(3/2,5/2)$ law and
+\[
+ \Re(1+iy)^{-2}=f(t)=1-3t+2t^2.
+\]
+The beta moment formula
+$\mathbb Et^j=(3/2)_j/(4)_j$ gives
+\[
+ \mathbb Ef=\tfrac14,\qquad
+ \mathbb E(f-1/4)^2=\tfrac3{32},\qquad
+ \mathbb E(f-1/4)^3=\tfrac1{64}.
+\]
+Finally $\sigma^2\psi'(2\sigma)\to1/4$ and
+$\sigma^4\psi'''(2\sigma)\to3/8$. Thus the normalized variable
+converges in moments to $\sqrt{32/3}(f-1/4)$ and its third moment
+is $(32/3)^{3/2}/64=2\sqrt6/9$.
+\end{proof}
+
+\subsection{A joint Gaussian consequence}
+
+Although the main conclusions are exact integral evaluations, the
+finite moment law also has a useful joint limit. Fix distinct positive
+orders $q_1,\ldots,q_d$ and define
+\[
+ C(\sigma)_{ij}=\tfrac14\psi^{(q_i+q_j+1)}(2\sigma).
+\]
+This matrix is positive definite: the polygamma integral representation
+gives
+\[
+ v^TC(\sigma)v
+ =\frac14\int_0^\infty
+       \left(\sum_i(-1)^{q_i}v_i t^{q_i}\right)^2
+                    \frac{t e^{-2\sigma t}}{1-e^{-t}}\,dt>0
+\]
+for every nonzero real $v$. Distinct monomial degrees ensure strictness.
+For any positive sequence $\sigma_n$, let
+\[
+ \mathbf Z_n=C(\sigma_n)^{-1/2}
+       (R_{q_i}-\mathbb ER_{q_i})_{i=1}^d.
+\]
+Every mixed moment of total ordinary degree $k$ is exactly the
+corresponding standard $d$-variate Gaussian moment once
+$k(1+\max_iq_i)\le2n+2$. This follows by expanding the deterministic
+linear change of coordinates and applying the weighted Wick rule.
+In particular $\mathbf Z_n$ converges in distribution to $N(0,I_d)$.
+For a proof, every fixed linear projection has eventually the exact
+Gaussian moments of each prescribed order; the second moments give
+tightness and higher even moments give uniform integrability.
+Moment determinacy of the normal law and the Cram\'er--Wold theorem
+finish the argument. No estimate uniform in $\sigma_n$ is needed.
+
+\subsection{Independent verification}
+
+The accompanying program \texttt{verify\_gamma\_cumulants.py} performs
+122 exact assertions. These verify the pair-sum identity at twelve
+orders and eight numbers of variables, verify the ranks of the
+power-sum substitution through the first excluded degree for up to five
+variables, and independently evaluate the beta moments and displayed
+quarter-parameter arithmetic. In particular the rank drops by one at
+weighted degree $N+1$, as predicted by \eqref{gc:firstrelation}.
+
+The numerical side uses continuous Cauchy--Binet in the opposite
+direction: it integrates one-dimensional moment entries with inserted
+products of polygammas, constructs a determinant of their finite Taylor
+jets, and extracts moments and cumulants by finite polynomial
+arithmetic. It does not use the Gamma quotient for the expectation
+side. Seventeen checks include the zero mean of $R_2$, the third and
+fourth centered digamma cumulants, mixed vanishing cumulants, and
+$\operatorname{Var}(R_2)=\operatorname{Cov}(R_1,R_3)$ at $n=2$.
+The cases use quarter and non-quarter shifts. At 36 decimal digits,
+with 56 Gauss--Legendre nodes on each stated integration interval, the
+largest scaled residual is approximately $8.2\times10^{-34}$.
+A repeat at 46 decimal digits and 72 nodes per interval
+reduces the largest scaled residual to approximately $2.1\times10^{-43}$.
+A separate direct adaptive integral gives
+\[
+ \begin{aligned}
+ \mathbb EX_{1,0.02}^3
+ &=0.5443940332249657482536718308092\ldots,\\
+ \mathbb EX_{1,0.005}^3
+ &=0.5443321558595570316756456585706\ldots.
+ \end{aligned}
+\]
+consistent with the proved limit
+$2\sqrt6/9=0.5443310539518173551549520166013\ldots$.
+These floating point residuals are independent representation checks,
+not certified error intervals or replacements for the analytic proofs.

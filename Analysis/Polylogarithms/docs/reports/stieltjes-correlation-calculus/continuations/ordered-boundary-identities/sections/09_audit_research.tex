@@ -1,0 +1,266 @@
+\section{Research status, verification, and next questions}
+\label{sec:audit}
+
+\subsection{What has been established}
+
+The proof-bearing deliverable is the article itself. The programs
+check finite algebra and independent numerical instances; they are
+not substituted for its convergence, continuation, contour, or
+asymptotic arguments. The principal advances can be mapped precisely
+to the source questions.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.45\textwidth}>{\raggedright\arraybackslash}p{0.25\textwidth}@{}}
+\toprule
+Source question & Result supplied here & Remaining scope\\
+\midrule
+\endfirsthead
+\toprule
+Source question & Result supplied here & Remaining scope\\
+\midrule
+\endhead
+Individual ordered mixed labels &
+Theorem~\ref{thm:ordered} gives the exact two-particle identity on an
+open complex domain. Theorems~\ref{thm:poles} and
+\ref{thm:digamma-master} give its continuation and all positive-order
+values. &
+Higher rank is handled by finite localization, not a universal
+single-zeta assertion.\\[5pt]
+Noninteger cutoff generators &
+Theorem~\ref{thm:cutoff} and \eqref{eq:b-beta-lerch} give a finite
+polylogarithm and beta--Lerch transform, entire in both orders on
+the disk. &
+The endpoint requires its own convergence domain and collective
+cancellations.\\[5pt]
+Other annihilating stencils &
+Section~\ref{sec:localization} proves a finite block formula for
+critical integer stencils and a stronger reduction under one further
+annihilation condition. &
+This is a sufficient family, not a classification of arbitrary
+noninteger grids.\\[5pt]
+All unequal even harmonic-tail prefixes &
+Section~\ref{gb:section} proves eventual optimality on every fixed-gap
+ray, with exact Gamma normalization and a nonzero signed asymptotic. &
+No effective threshold is provided. The full all-pairs conjecture,
+including complete gap-six coverage, remains open here.\\[5pt]
+Stieltjes derivatives and primitives &
+Theorems~\ref{thm:subtracted-jets} and \ref{thm:beta-stieltjes}
+provide ordinary all-order identities. Equations
+\eqref{eq:gamma-primitive} and \eqref{eq:arcsine-primitive}
+give compatible primitives. &
+Elementary symmetric arcsine cases are recurrence consequences;
+they are not independent priority claims.\\[5pt]
+Short Gaussian $S_6$ and revised $S_8$ &
+Their present source status has been checked and preserved. &
+Neither identity is proved or refuted by this article.\\
+\bottomrule
+\end{longtable}
+
+The incoming bilinear and tail-kernel reports already supply complete
+smaller-order-ten and smaller-order-twelve reconstruction
+theorems \cite{repo:bilinear,repo:tail-kernels}. They should
+retain their existing attribution and audit status. Reproving or
+relabeling an already supplied finite case would not constitute a
+new research advance; the fixed-gap theorem instead changes which
+infinite direction is controlled.
+
+\subsection{Audit findings and a proposed correction}
+
+No newly false inherited mathematical theorem was identified in the
+material used for this article. There is a concrete editorial defect:
+the manuscript README repeats consecutively the complete paragraph
+describing the 1,032-input first-letter-$X$ family, its rank 1,008,
+and its kernel dimension 24 \cite{repo:manuscript}. The package includes
+a narrowly scoped patch removing the second copy. This is a proposed
+README correction, not a modification of a mathematical statement.
+
+Several distinctions matter when the new results are integrated.
+The source already records that the old $S_8$ candidate was rejected
+and the revised candidate is still conjectural. The small residual
+enclosures for $S_6$ and revised $S_8$ establish proximity, not zero.
+Likewise, the canonical modular relation searches do not assert
+rational nonmembership or a counterexample to a period equality
+\cite{repo:ledger,repo:gaussian}. These are inherited status safeguards,
+not newly discovered errors.
+
+For the present contribution, the analogous precise statements are:
+the zero-weight limits in Section~\ref{sec:continuation} concern a
+meromorphic continuation; the constant in \eqref{eq:hard-cutoff} is
+not the fixed-coordinate Laurent constant; block formulas outside
+their separated convergence domain are interpreted collectively;
+and full rank of a formal moment matrix does not prove arithmetic
+independence of the evaluated constants. The Gamma argument also
+shows why positivity of the scalar recurrence does not imply
+positivity of every minor: even modes lose their leading Laplace
+phase, and the determinant has the parity-dependent sign derived
+in Section~\ref{gb:section}.
+
+\subsection{Reproducibility and the independent checks}
+
+The package contains modular TeX, a self-contained assembled TeX
+file, the compiled PDF, a build command, a claim-status file, exact
+source locations, and portable verification programs. Source
+repository material was inspected at the pinned revision and kept
+unchanged. The generated correction patch is separate.
+
+The ordered-boundary suite checks the finite summation-by-parts
+identity on 240 arbitrary rational sequence/cutoff cases, the rational
+partial-fraction identity on 36 order pairs, 570 parity coefficients,
+420 coefficients of the cutoff generator, and all four entries of
+the zero-weight directional table. Four explicit infinite-sum values
+are also compared with directly accumulated original ordered sums,
+using both positive tail envelopes and separately labelled accelerated
+diagnostics.
+
+The corollary suite checks 13 exact master-function derivatives and
+special values and nine exact formal Stieltjes coefficients. It
+compares the geometric master with the original resolvent-weighted
+ordered sum, tests two subtracted harmonic sums, follows six
+unaccelerated hard-cutoff limits, and evaluates nine arcsine integrals.
+The beta--Stieltjes suite checks five Bell--Leibniz coefficients,
+independent Stieltjes-value samples, and twelve numerical beta
+integrals through jet order two, including independently varied
+shifts. Its expansion and endpoint truncations are recorded
+separately from floating-point roundoff.
+
+The localization suite supplies 147 exact checks, including
+finite-support transport, the full contact table, both rank-three
+two-index sectors, singleton cancellation through rank five, and a
+deliberately corrupted control. The Gamma suite compares directly
+integrated basis coefficients with the rational recurrence for
+$m=1,2,3$, checks the exact inhomogeneous moment, and records
+finite-index ratios to the determinant asymptotic. A separate exact
+suite checks the Bernoulli matrix against its complementary-minor
+normalization and the harmonic correction. The independent proof
+audit rederives the contour shifts, both residues, the initial
+determinant, the parity-sensitive asymptotics, and the source bridge.
+This is internal independent checking, not external peer review or
+proof-assistant verification.
+
+All numerical comparisons are diagnostics at their stated working
+precisions. The proof of eventual nonvanishing is the nonzero
+limiting Vandermonde determinant, not an extrapolation of the
+displayed finite data. In particular, a finite gap-six sign table
+does not provide the missing effective cutoff.
+
+\subsection{Further research questions}
+
+The following questions are arranged by how directly the present
+proofs supply a route forward. They concern exact identities and
+structural classification; estimates enter only where needed to
+turn an eventual identity theorem into a finite decision.
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=*]
+\item \textbf{Complete the fixed-gap prefix conjectures.}
+For each fixed $m$, turn the nonzero asymptotic into an explicit
+computable threshold $B(m)$ and combine it with exact rational
+determinants below that threshold. The specific next case is gap
+six. The exact values at $b=4,5,6$ are negative, and the checked
+values $7\le b\le40$ are positive. The strengthened conjecture
+\[
+ \det F_{b,3}>0\qquad(b\ge7)
+\]
+is consistent with both the finite data and the proved eventual
+sign, but is not proved here. A successful completion must justify
+the transition from a finite table to all indices.
+
+\item \textbf{Evaluate the Gamma normalization constants.}
+The positive integral $K_m$ is exact, and $K_1=8\pi$.
+Find closed Gamma, hypergeometric, or modular descriptions of
+$K_2,K_3,\ldots$. The multiple-orthogonality interpretation suggests
+studying the associated moment determinant rather than integrating
+each entry separately. A recurrence in $m$, if it exists, would be
+particularly useful.
+
+\item \textbf{Connect the two eventual regimes.}
+The new theorem fixes the gap while the earlier theorem fixes the
+smaller order. Can one obtain a two-parameter determinant expansion
+that covers the region between those rays? The limiting nodes
+$(j\pi)^{-2}$ become less separated as $m$ grows, so a proof must
+control the full determinant, not merely reuse fixed-$m$ error
+constants. This is a possible route toward the all-pairs conjecture.
+
+\item \textbf{Classify the finite sign changes.}
+The exact Gamma representation is valid at every $b>m$, while its
+sign is presently asymptotic. Determine the number and locations of
+the finite sign transitions for each $m$. A variation-diminishing
+statement adapted to the polynomials
+$\operatorname{Im}(x+i/2)^{2n}$ could replace a false appeal to
+unqualified total positivity.
+
+\item \textbf{Deform the Gamma basis.}
+Replace the quarter shift by a parameter and seek the corresponding
+shift equation, residue forcing, and reconstruction matrix. Identify
+which deformations preserve a finite set of sinh/tanh modes and
+which create additional residue terms. Differentiating a valid
+deformation would give new exact polygamma-weighted orthogonality
+identities; the deformation itself must be proved before its
+derivatives are used.
+
+\item \textbf{Determine the actual higher-rank period coordinates.}
+The block theorem gives at most
+$\lfloor(r+1)/2\rfloor$ free ordered indices. At rank three the
+two-index contact sector is nonzero, but this does not prove
+arithmetical depth two. Determine which integer orders, shift
+collisions, or label symmetries reduce these sectors to single
+Hurwitz values, and which require genuine nested periods.
+The explicit contact polynomial provides a finite starting point.
+
+\item \textbf{Compute all-rank polar geometry from the blocks.}
+The two-particle oblique residues are explicit polynomials.
+At higher rank, the finite sector formula should organize polar
+hyperplanes by free blocks and their mergers. Prove a complete
+local Laurent description, including its behavior when the original
+finite-difference weights vanish. This would extend the directional
+table without confusing a pointwise specialization with a limit.
+
+\item \textbf{Classify stencils by ordered boundary support.}
+The annihilation conditions proved here are sufficient. Seek
+necessary conditions for a prescribed maximum number of free
+blocks, first for finite integer stencils. A discrete-residue
+criterion might recognize additional cancellations invisible to
+degree counting. Nonuniform or noninteger grids require a separate
+analysis because there is no common integer transport lattice.
+
+\item \textbf{Find new exact beta--Stieltjes evaluations.}
+For rational $\sigma$, special shifts may combine the beta weight
+with multiplication or reflection formulas. Determine when
+\eqref{eq:beta-stieltjes-all} reduces to a finite expression in
+zeta derivatives, log-Gamma values, and lower Stieltjes constants,
+rather than the generally infinite but geometric expansion
+\eqref{eq:beta-jet-zeta}. Confluent shift derivatives offer a
+systematic way to introduce polygamma factors.
+
+\item \textbf{Construct higher-rank cutoff formulas.}
+Insert a common outer cutoff before transporting the stencils.
+Track the factors of $1-z$ attached to free collision blocks and
+determine whether the endpoint depth reduction can be read directly
+from them. Section~\ref{sec:polylog} proves this mechanism at rank
+two. A higher-rank formula should retain all finite endpoint terms
+before any limiting operation.
+
+\item \textbf{Return to Gaussian periods with a new functional route.}
+The short $S_6$ and revised $S_8$ questions remain worthwhile, but
+the inspected finite relation spaces have already been analyzed
+carefully. New work should supply a functional identity, a genuinely
+larger motivic or iterated-integral relation, or a rigorously changed
+candidate. Further decimal agreement alone cannot settle either
+equality. The ordered kernels here may suggest new generating
+relations, but no such implication is presently proved.
+\end{enumerate}
+
+\subsection{Suggested integration}
+
+The ordered identity and its cutoff generator naturally continue
+the finite-difference report. The beta--Stieltjes identities belong
+with the Hurwitz and Stieltjes calculus, with their ordinary
+convergence hypotheses retained. The all-rank transport theorem
+can be kept as a separate structural continuation. The Gamma basis
+should follow the exact fixed-gap determinant reduction in the
+harmonic-tail Gamma branch, with its inherited coordinate convention
+printed explicitly.
+
+The accompanying integration note lists these destinations, theorem
+dependencies, a proposed status update, and the README patch.
+Canonical acceptance should record the proved fixed-gap eventual
+statement at its actual scope; it should not silently promote the
+remaining full reconstruction or Gaussian conjectures.

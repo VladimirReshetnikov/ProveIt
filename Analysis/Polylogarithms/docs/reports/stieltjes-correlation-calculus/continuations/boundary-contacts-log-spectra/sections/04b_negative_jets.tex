@@ -1,0 +1,500 @@
+\section{Even polynomial weights and jets at negative integers}
+\label{ng:section}
+
+The scalar resolvent construction extends to every polynomial in
+$x_n^2$, after subtracting a finite asymptotic expansion before
+forming the cut density.  Consequently, derivatives at every
+negative integer spectral point admit one ordinary digamma
+integral.  This is an integral representation in a specified
+function class; it does not assert a finite evaluation in
+Hurwitz zeta constants or a recurrence eliminating integral
+kernels.
+
+Fix $a>0$, $x_n=n+a$, an integer $N\geq1$, and positive masses
+$\mu_1,\ldots,\mu_N$.  Let
+\[
+ P(z)=\sum_{d=0}^{D}p_dz^d\in\mathbb R[z],\qquad
+ L(u)=\sum_{j=1}^{N}\log(1+\mu_j u),\qquad
+ b_{k,j}:=[u^k]L(u)^j.
+\]
+Here $L$ is its analytic germ at zero, so
+$b_{k,0}=\boldsymbol1_{\{k=0\}}$ and $b_{k,j}=0$ for $k<j$.
+We also use
+\[
+ c_k(s):=[u^k]e^{-sL(u)}
+   =\sum_{j=0}^{k}\frac{(-s)^j}{j!}b_{k,j}.
+\]
+Thus each $c_k$ is a polynomial in $s$, with $c_0=1$ and
+$c_k(0)=0$ for $k>0$.  The logarithm $\Log$ below is principal
+on $\mathbb C\setminus(-\infty,0]$, and
+$\zeta^{(q)}(v,a)=\partial_v^q\zeta(v,a)$.
+
+
+\subsection{Finite subtraction and holomorphy at zero}
+\label{ng:continuation-subsection}
+
+Initially, for $\Re s>(2D+1)/(2N)$, define
+\begin{equation}
+ Z_{P,N}(s;a,\boldsymbol\mu)
+ :=\sum_{n=0}^{\infty}P(x_n^2)
+                 \prod_{j=1}^{N}(x_n^2+\mu_j)^{-s}.
+ \label{ng:weighted-definition}
+\end{equation}
+If $P=0$, all statements below are immediate; otherwise $D$
+is its degree.
+
+\begin{lemma}[A finite normally convergent continuation]
+\label{ng:finite-continuation}
+The weighted spectral function has the meromorphic continuation
+\begin{align}
+ Z_{P,N}(s)
+ &=\sum_{d=0}^{D}p_d\sum_{k=0}^{d}
+       c_k(s)\zeta(2Ns+2k-2d,a)+R_{P,N}(s),
+ \label{ng:continuation}\\
+ R_{P,N}(s)
+ &:=\sum_{n=0}^{\infty}\sum_{d=0}^{D}p_d x_n^{2d-2Ns}
+       \left\{e^{-sL(x_n^{-2})}
+                 -\sum_{k=0}^{d}c_k(s)x_n^{-2k}\right\}.
+ \label{ng:normal-remainder}
+\end{align}
+For positive $x_n^{-2}$, the expression $L(x_n^{-2})$ in this
+formula means $\sum_j\log(1+\mu_j/x_n^2)$, whether or not it
+lies inside the Taylor disk at zero.
+The remainder series is normally convergent on
+$\Re s>-1/(2N)$.  Every finite zeta term is holomorphic near
+zero, so $Z_{P,N}$ is holomorphic there.  In particular,
+\begin{equation}
+ Z_{P,N}(0)=\sum_{d=0}^{D}p_d\zeta(-2d,a).
+ \label{ng:zeroth-jet}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For a fixed $d$, Taylor's theorem for the analytic function
+$e^{-sL(u)}$ gives
+\[
+ e^{-sL(u)}-\sum_{k=0}^{d}c_k(s)u^k=O_K(u^{d+1})
+ \qquad(u\to0),
+\]
+uniformly for $s$ in any compact set $K$.
+After multiplication by $x_n^{2d-2Ns}$ and substitution
+$u=x_n^{-2}$, this is bounded in absolute value by a constant
+times $x_n^{-2N\inf_K\Re s-2}$.
+This tail is summable if $K\subset\{\Re s>-1/(2N)\}$.
+The finitely many small $n$ contribute entire functions of $s$.
+Thus \eqref{ng:normal-remainder} is normally convergent in the
+asserted half-plane.  Adding and subtracting the indicated
+finite powers proves \eqref{ng:continuation} in the initial
+half-plane and hence supplies the continuation.
+The finite zeta terms can have a pole only when
+$2Ns+2k-2d=1$, or
+$s=(2(d-k)+1)/(2N)>0$; none has a pole at zero.
+Finally $c_k(0)=\boldsymbol1_{\{k=0\}}$ makes the entire
+remainder vanish at zero and proves \eqref{ng:zeroth-jet}.
+\end{proof}
+
+For integers $r\geq1$, write
+$J_{P,N,r}:=\partial_s^rZ_{P,N}(0)$ and define the finite
+subtraction
+\begin{equation}
+ \mathcal A_{P,N,r}(z)
+ :=\sum_{d=0}^{D}p_d\sum_{k=0}^{d}\sum_{j=0}^{r}
+       \binom{r}{j}N^{r-j}b_{k,j}
+                     z^{d-k}(\Log z)^{r-j}.
+ \label{ng:asymptotic-subtraction}
+\end{equation}
+Let
+\begin{equation}
+ F_{P,N,r}(z)
+ :=P(z)\left\{\sum_{j=1}^{N}\Log(z+\mu_j)\right\}^{r}
+                  -\mathcal A_{P,N,r}(z),
+ \label{ng:subtracted-function}
+\end{equation}
+and set
+\begin{equation}
+ B_{P,N,r}
+ :=\sum_{d=0}^{D}p_d\sum_{k=0}^{d}\sum_{j=0}^{r}
+       (-1)^j\binom{r}{j}(2N)^{r-j}b_{k,j}
+                    \zeta^{(r-j)}(-2(d-k),a).
+ \label{ng:finite-baseline}
+\end{equation}
+Terms with $j>k$ vanish automatically.
+
+\begin{proposition}[An ordinary remainder series for every even weight]
+\label{ng:ordinary-series}
+For every integer $r\geq1$,
+\begin{equation}
+ J_{P,N,r}
+ =B_{P,N,r}+(-1)^r\sum_{n=0}^{\infty}F_{P,N,r}(x_n^2).
+ \label{ng:jet-series}
+\end{equation}
+The series is absolutely convergent.  More precisely, uniformly
+at infinity on the slit plane,
+\begin{equation}
+ F_{P,N,r}(z)
+ =O\left(\frac{1+\log^{r-1}|z|}{|z|}\right).
+ \label{ng:large-z-bound}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Normal convergence in Lemma~\ref{ng:finite-continuation}
+permits differentiation at zero.  Since
+$c_k^{(j)}(0)=(-1)^j b_{k,j}$, the derivative of its finite
+zeta sum is exactly \eqref{ng:finite-baseline}.
+In the remainder, the derivative of the original summand is
+\[
+ (-1)^r x_n^{2d}
+       \left\{\sum_{j=1}^{N}\log(x_n^2+\mu_j)\right\}^{r},
+\]
+while the derivative of
+$x_n^{2d-2k-2Ns}c_k(s)$ is
+\[
+ (-1)^r x_n^{2d-2k}\sum_{j=0}^{r}
+             \binom{r}{j}N^{r-j}b_{k,j}(\log x_n^2)^{r-j}.
+\]
+This proves \eqref{ng:jet-series}, including its signs and
+powers of $2N$.
+
+For the precise decay, take $|z|$ larger than the largest mass.
+Then, with branches continued from the positive real axis,
+\[
+ \sum_j\Log(z+\mu_j)=N\Log z+L(1/z).
+\]
+For $j\geq1$, introduce the Taylor remainder
+\[
+ T_{d,j}(u):=L(u)^j-\sum_{k=0}^{d}b_{k,j}u^k
+                    =O(u^{d+1}).
+\]
+The $j=0$ contribution is removed exactly by
+\eqref{ng:asymptotic-subtraction}, leaving the exact identity
+\begin{equation}
+ F_{P,N,r}(z)
+ =\sum_{d=0}^{D}p_d\sum_{j=1}^{r}
+       \binom{r}{j}N^{r-j}z^d(\Log z)^{r-j}T_{d,j}(1/z)
+ \label{ng:tail-decomposition}
+\end{equation}
+in this exterior domain.  Each term is
+$O(|z|^{-1}(1+\log^{r-1}|z|))$.
+This proves \eqref{ng:large-z-bound}, and hence the ordinary
+series is dominated by a constant times
+$x_n^{-2}(1+\log^{r-1}x_n)$ for large $n$.
+\end{proof}
+
+
+\subsection{The one-integral theorem for every even weight}
+\label{ng:integral-subsection}
+
+For $t>0$ away from the masses, put
+\begin{equation}
+ A(t):=\sum_{j=1}^{N}\log|\mu_j-t|,\qquad
+ k(t):=\#\{j:\mu_j<t\}.
+ \label{ng:cut-data}
+\end{equation}
+Repeated masses are counted with their multiplicity.
+The upper-cut value of the finite subtraction is explicitly
+\begin{equation}
+ \mathcal A_{P,N,r}^{+}(t)
+ :=\sum_{d=0}^{D}p_d\sum_{k=0}^{d}\sum_{j=0}^{r}
+       \binom{r}{j}N^{r-j}b_{k,j}
+                 (-t)^{d-k}(\log t+i\pi)^{r-j}.
+ \label{ng:upper-subtraction}
+\end{equation}
+All powers $(-t)^{d-k}$ in this expression are real integer
+powers.  Define
+\begin{equation}
+ \rho_{P,N,r}(t)
+ :=-\frac1\pi\Im\left\{
+       P(-t)[A(t)+i\pi k(t)]^r
+                    -\mathcal A_{P,N,r}^{+}(t)\right\}.
+ \label{ng:density}
+\end{equation}
+The values of the density at the mass points are immaterial.
+
+\begin{theorem}[Even polynomial weights in one ordinary integral]
+\label{ng:master}
+For every $P\in\mathbb R[z]$, every $N\geq1$, every $r\geq1$,
+$a>0$, and positive masses,
+\begin{equation}
+ \boxed{\displaystyle
+ J_{P,N,r}=B_{P,N,r}
+          +(-1)^r\int_0^{\infty}\rho_{P,N,r}(t)Q_a(t)\,dt,}
+ \label{ng:master-formula}
+\end{equation}
+where the finite baseline is \eqref{ng:finite-baseline} and
+\begin{equation}
+ Q_a(t)=\sum_{n=0}^{\infty}\frac1{(n+a)^2+t}
+       =\frac{\psi(a+i\sqrt t)-\psi(a-i\sqrt t)}{2i\sqrt t},
+ \qquad Q_a(0)=\psi'(a).
+ \label{ng:digamma-kernel}
+\end{equation}
+The integral is absolutely convergent.  Splitting it at the
+distinct masses produces ordinary improper integrals, with no
+finite-part or principal-value prescription.
+
+In addition, the subtracted function itself satisfies
+\begin{equation}
+ F_{P,N,r}(z)=\int_0^{\infty}
+                         \frac{\rho_{P,N,r}(t)}{z+t}\,dt,
+ \qquad z\in\mathbb C\setminus(-\infty,0].
+ \label{ng:stieltjes-representation}
+\end{equation}
+For $r=1$, the density simplifies to the compactly supported
+expression
+\begin{equation}
+ \rho_{P,N,1}(t)=P(-t)\{N-k(t)\}
+       =P(-t)\sum_{j=1}^{N}\boldsymbol1_{(0,\mu_j)}(t).
+ \label{ng:first-density}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The function in \eqref{ng:subtracted-function} is holomorphic
+on the slit plane.  All coefficients and masses are real, so
+it satisfies Schwarz reflection.  On the upper cut,
+\[
+ \sum_j\Log(\mu_j-t+i0)=A(t)+i\pi k(t),\qquad
+ \Log(-t+i0)=\log t+i\pi.
+\]
+Thus its upper boundary value has imaginary part
+$-\pi\rho_{P,N,r}(t)$, with exactly the sign in
+\eqref{ng:density}.
+
+At zero the masses are positive and the first term in
+\eqref{ng:subtracted-function} stays bounded.  The finite
+subtraction contains only nonnegative powers of $z$, and hence
+\[
+ F_{P,N,r}(z)=O(1+|\Log z|^r)\qquad(z\to0).
+\]
+At a nonzero cut endpoint $-\mu_j$, the singularity is at worst
+a power of a logarithm.  Therefore the Cauchy integrals over
+small endpoint circles vanish, since
+$\varepsilon(1+|\log\varepsilon|^r)\to0$.
+The large-circle contribution vanishes by
+\eqref{ng:large-z-bound}.  Collapsing a Cauchy contour onto the
+two banks of the cut gives \eqref{ng:stieltjes-representation}.
+
+For completeness, the following bounds establish absolute
+convergence and justify summing that representation.  Near zero,
+$k(t)=0$, so the first expression inside the imaginary part in
+\eqref{ng:density} is real.  Taking the imaginary part of the
+finite subtraction lowers each positive logarithmic degree
+by one.  Consequently,
+\begin{equation}
+ \rho_{P,N,r}(t)=O(1+|\log t|^{r-1})\qquad(t\downarrow0).
+ \label{ng:zero-bound}
+\end{equation}
+At any mass point it has at worst an integrable logarithmic
+singularity; in particular a local bound is a constant times
+$1+|\log|t-\mu_j||^{r-1}$.
+To control infinity without estimating separately the large
+terms of \eqref{ng:density}, use the exact tail expression
+\eqref{ng:tail-decomposition}.
+For $t>\max_j\mu_j$, all numbers $T_{d,j}(-1/t)$ are real.
+Its only imaginary parts come from
+$(\log t+i\pi)^{r-j}$.  The term with $r-j=0$ is real; the
+remaining terms have imaginary parts of logarithmic degree at
+most $r-j-1\leq r-2$.  Therefore, for $r\geq2$,
+\begin{equation}
+ \rho_{P,N,r}(t)
+       =O\left(\frac{1+\log^{r-2}t}{t}\right)
+                          \qquad(t\to\infty).
+ \label{ng:infinity-bound}
+\end{equation}
+For $r=1$ every exterior tail term is real, so the density
+vanishes beyond the largest mass.  More explicitly,
+\eqref{ng:asymptotic-subtraction} at $r=1$ is
+$NP(z)\Log z$ plus a polynomial with real coefficients.
+Its upper-cut imaginary part is $\pi NP(-t)$; comparison with
+the first term in \eqref{ng:density} proves
+\eqref{ng:first-density} on every interval of the cut.
+
+The convergent digamma difference series proves
+\eqref{ng:digamma-kernel}.  Its series expression shows that
+$Q_a$ is positive and bounded near zero.  Integral comparison
+gives $Q_a(t)=\pi/(2\sqrt t)+O(t^{-1})$ at infinity.
+Combining these facts with
+\eqref{ng:zero-bound}--\eqref{ng:infinity-bound}, or with compact
+support for $r=1$, yields
+\[
+ \int_0^{\infty}|\rho_{P,N,r}(t)|Q_a(t)\,dt<\infty.
+\]
+Hence absolute Fubini gives
+\[
+ \sum_{n=0}^{\infty}F_{P,N,r}(x_n^2)
+  =\int_0^{\infty}\rho_{P,N,r}(t)
+                        \sum_{n=0}^{\infty}\frac{dt}{x_n^2+t}
+  =\int_0^{\infty}\rho_{P,N,r}(t)Q_a(t)\,dt.
+\]
+Together with \eqref{ng:jet-series}, this is
+\eqref{ng:master-formula}.
+\end{proof}
+
+\begin{remark}[Collisions and the role of real coefficients]
+\label{ng:collisions}
+No distinctness assumption is used: coincident masses simply
+increase the multiplicities in $A(t)$ and $k(t)$, while the
+endpoint singularities remain integrable.  The coefficients
+$p_d$ need not be positive; the density can be signed.
+Their reality is used in Schwarz reflection and in the improved
+imaginary-part estimate at infinity.  The theorem is stated for
+real polynomial weights with precisely these properties.
+For $P=1$ it reduces to the scalar master, since
+$\mathcal A_{1,N,r}=N^r\Log^r z$ and
+$B_{1,N,r}=(2N)^r\zeta^{(r)}(0,a)$.
+\end{remark}
+
+
+\subsection{All negative integer spectral points}
+\label{ng:negative-subsection}
+
+\begin{corollary}[Jets at every negative integer]
+\label{ng:negative-integers}
+For an integer $m\geq0$, define the real polynomial
+\begin{equation}
+ P_m(z):=\prod_{j=1}^{N}(z+\mu_j)^m.
+ \label{ng:negative-weight}
+\end{equation}
+Its coefficients are held fixed when differentiating in the
+spectral variable.  The scalar function
+\[
+ Z_N(v;a,\boldsymbol\mu)
+   =\sum_{n=0}^{\infty}\prod_{j=1}^{N}(x_n^2+\mu_j)^{-v}
+\]
+is holomorphic at $v=-m$, and for every integer $r\geq1$,
+\begin{equation}
+ \boxed{\displaystyle
+ Z_N^{(r)}(-m;a,\boldsymbol\mu)
+ =B_{P_m,N,r}
+       +(-1)^r\int_0^{\infty}\rho_{P_m,N,r}(t)Q_a(t)\,dt.}
+ \label{ng:negative-master}
+\end{equation}
+The baseline and density are the explicit finite formulas
+\eqref{ng:finite-baseline} and \eqref{ng:density}, with
+$P=P_m$ and degree $mN$.  The integral is ordinary and absolutely
+convergent, including at coincident masses.
+Writing $P_m(z)=\sum_{d=0}^{mN}p_{m,d}z^d$, the value itself is
+\begin{equation}
+ Z_N(-m;a,\boldsymbol\mu)
+       =\sum_{d=0}^{mN}p_{m,d}\zeta(-2d,a).
+ \label{ng:negative-value}
+\end{equation}
+More generally, if a fixed even weight is $E(x_n^2)$ with
+$E\in\mathbb R[z]$, the same formulas give every derivative at
+$-m$ after replacing $P_m$ by $E P_m$.
+\end{corollary}
+
+\begin{proof}
+In the common half-plane of absolute convergence,
+\[
+ Z_{P_m,N}(s)
+ =\sum_{n=0}^{\infty}\prod_{j=1}^{N}
+                      (x_n^2+\mu_j)^{m-s}
+ =Z_N(s-m).
+\]
+Lemma~\ref{ng:finite-continuation} continues the left side to
+$\Re s>-1/(2N)$ and proves that it is holomorphic at zero.
+After shifting the spectral variable, this gives a continuation
+of $Z_N(v)$ through $v=-m$.  Continuations constructed with
+different $m$ agree on their overlaps by uniqueness.
+Taking the $r$th derivative at $s=0$ and applying
+Theorem~\ref{ng:master} proves \eqref{ng:negative-master}.
+The value formula follows from \eqref{ng:zeroth-jet}.
+With an additional fixed weight, the identical calculation is
+$Z_{E P_m,N}(s)=Z_{E,N}(s-m)$, which proves the final assertion.
+\end{proof}
+
+\subsection{An explicit cubic jet at the first negative point}
+\label{ng:cubic-example-subsection}
+
+Take $N=1$, a single mass $\mu>0$, $m=1$, and $r=3$.
+Then $P_1(z)=z+\mu$ and $L(u)=\log(1+\mu u)$.
+The only coefficient with $1\leq k\leq1$ needed here is
+$b_{1,1}=\mu$.  Directly from
+\eqref{ng:asymptotic-subtraction}--\eqref{ng:finite-baseline},
+\begin{align}
+ \mathcal A_{z+\mu,1,3}(z)
+   &=(z+\mu)\Log^3z+3\mu\Log^2z,
+ \label{ng:cubic-subtraction}\\
+ F_{z+\mu,1,3}(z)
+   &=(z+\mu)\Log^3(z+\mu)
+          -(z+\mu)\Log^3z-3\mu\Log^2z,
+ \label{ng:cubic-remainder}\\
+ B_{z+\mu,1,3}
+   &=8\zeta^{(3)}(-2,a)+8\mu\zeta^{(3)}(0,a)
+                       -12\mu\zeta^{(2)}(0,a).
+ \label{ng:cubic-baseline}
+\end{align}
+The density is the following elementary piecewise expression:
+\begin{equation}
+ \rho_\mu(t)=
+ \begin{cases}
+  (\mu-t)(3\log^2t-\pi^2)+6\mu\log t,
+        &0<t<\mu,\\[3pt]
+  3(\mu-t)\{\log^2t-\log^2(t-\mu)\}+6\mu\log t,
+        &t>\mu.
+ \end{cases}
+ \label{ng:cubic-density}
+\end{equation}
+It has the common limiting value $6\mu\log\mu$ at $t=\mu$.
+Thus the complete ordinary-integral formula is
+\begin{equation}
+ \begin{split}
+ Z_1^{(3)}(-1;a,\mu)
+   ={}&8\zeta^{(3)}(-2,a)+8\mu\zeta^{(3)}(0,a)
+                          -12\mu\zeta^{(2)}(0,a)\\
+      &-\int_0^{\infty}\rho_\mu(t)Q_a(t)\,dt.
+ \end{split}
+ \label{ng:cubic-negative-jet}
+\end{equation}
+
+\begin{proof}
+The displayed finite subtraction and baseline follow by
+retaining $d=0,1$ and $k\leq d$ in the general formulas.
+For $0<t<\mu$, the value $\Log(\mu-t+i0)$ is real, so only
+the subtracted terms contribute to the density.  The identities
+\[
+ \frac1\pi\Im(\log t+i\pi)^3=3\log^2t-\pi^2,
+ \qquad
+ \frac1\pi\Im(\log t+i\pi)^2=2\log t
+\]
+give its first branch.  For $t>\mu$, the original logarithm
+is $\log(t-\mu)+i\pi$.  Its cubic imaginary part supplies the
+second logarithmic square, and the two $\pi^2$ terms cancel.
+This gives the second branch of \eqref{ng:cubic-density}.
+The limit at $t=\mu$ uses
+$(t-\mu)\log^2|t-\mu|\to0$.
+Finally $(-1)^3=-1$ in \eqref{ng:negative-master}, which gives
+the minus sign before the integral in
+\eqref{ng:cubic-negative-jet}.
+\end{proof}
+
+\begin{remark}[A tail check and the scope of the extension]
+\label{ng:scope}
+For fixed $\mu>0$, expansion of the second branch yields
+\begin{equation}
+ \rho_\mu(t)=\frac{3\mu^2(\log t+1)}{t}
+                  +O\left(\frac{1+\log t}{t^2}\right)
+                       \qquad(t\to\infty),
+ \label{ng:cubic-tail}
+\end{equation}
+which also checks the cancellation of all apparent growing
+terms in \eqref{ng:cubic-density}.
+For example, putting $\delta=\log(1-\mu/t)$ rewrites that
+branch exactly as
+\[
+ 6\log t\{\mu+(t-\mu)\delta\}+3(t-\mu)\delta^2;
+\]
+Taylor expansion then gives \eqref{ng:cubic-tail}.
+
+The general construction supplies, at every negative integer,
+a finite Hurwitz-derivative baseline and one ordinary integral
+against the same digamma resolvent.  The new density is explicit
+in finite Taylor coefficients and logarithmic boundary values.
+For orders $r\geq2$ it generally has an infinite tail, controlled
+by \eqref{ng:infinity-bound}; at order one it has compact support.
+This resolves the representation question within the ordinary
+digamma-integral function class.  Finite evaluation in a smaller
+set of constants, or the separate recurrence for half-integer Bessel-order
+derivatives, requires additional identities.
+\end{remark}

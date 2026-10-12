@@ -1,0 +1,1683 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,longtable,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{setspace}
+\usepackage{bm}
+\usepackage{url}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  citecolor=green!35!black,
+  urlcolor=blue!55!black,
+  pdftitle={Order-Ten Harmonic-Tail Reconstruction and Polylogarithmic Stieltjes Generators},
+  pdfauthor={Research continuation prepared for Vladimir Reshetnikov},
+  pdfsubject={Polylogarithms, harmonic tails, Bernoulli determinants, polygamma functions, and Stieltjes constants},
+  pdfkeywords={polylogarithm, Hurwitz zeta, Stieltjes constants, harmonic numbers, Bernoulli numbers, polygamma, Hankel determinant}
+}
+
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Order-Ten Harmonic-Tail Reconstruction}
+\fancyhead[R]{\thepage\ of \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\FP}{\operatorname{FP}}
+\newcommand{\CT}{\operatorname{CT}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\Eop}{\mathcal{E}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\calS}{\mathcal{S}}
+\newcommand{\calQ}{\mathcal{Q}}
+\newcommand{\Repo}{\textsc{ProveIt}}
+
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.35em}
+\setlist[enumerate]{leftmargin=2.2em,itemsep=0.35em,topsep=0.35em}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{0.15em}
+\allowdisplaybreaks
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  frame=single,
+  breaklines=true,
+  showstringspaces=false,
+  keywordstyle=\bfseries,
+  commentstyle=\itshape
+}
+ 
+\title{\textbf{Order-Ten Harmonic-Tail Reconstruction\\
+and Polylogarithmic Stieltjes Generators}\\[0.4em]
+\large A one-prime completion theorem, ordinary polygamma identities,\\
+and bivariate generating functions for integer-shift Stieltjes correlations}
+\author{Research continuation prepared for Vladimir Reshetnikov}
+\date{11 October 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We complete the fixed smaller-order-ten case of the optimal-prefix
+harmonic-tail reconstruction problem in the \Repo\ polylogarithm
+program.  For every integer $b\ge6$, the exact rational coefficient
+matrix $M_{5,b}$ attached to the pair $(p,q)=(10,2b)$ is nonsingular.
+The existing eventual theorem already covers $b\ge1920$.  The new
+input is a single-prime certificate for all remaining $1914$ indices:
+reduction modulo $P=1{,}000{,}003$ gives a nonzero determinant for
+every $6\le b\le1919$.  For $6\le b<10$ the source matrix is used
+directly; for $10\le b\le1919$ a Pad\'e--Bernoulli reduction replaces
+it by an exact $5\times5$ determinant.  Bernoulli residues are generated
+from their defining recurrence, no floating-point arithmetic enters,
+and the complete residue vector is supplied with a SHA-256 digest and
+an independent verifier.
+
+The rank theorem yields an infinite family of ordinary convergent
+identities reconstructing every even zeta coordinate from products of
+generalized harmonic tails, equivalently products of high polygamma
+functions.  We give an explicit degree-$30$ identity for
+$\zeta(2)$ from the pair $(10,16)$.  A separate analytic theorem
+expresses the generating function of two Hurwitz tails through depth-two
+multiple polylogarithms and a Gamma-normalized double Mellin integral;
+the reconstruction identities become boundary values of explicit
+polylogarithmic differential operators.
+
+Finally, we develop a bivariate regularized multiple-polylogarithm
+kernel whose Taylor coefficients generate all products
+$\gamma_r(n+1)\gamma_s(n+1)$ of generalized Stieltjes constants at
+integer shifts.  It contains as a low-order specialization the exact
+identity
+\[
+ \sum_{n\ge0}(\gamma-H_n)^2z^n
+ =\frac{(\gamma+\log(1-z))^2+\Li_2(z)}{1-z},
+ \qquad |z|<1,
+\]
+and an anchored antiderivative evaluated explicitly at $z=1/2$.
+Every new finite claim is separated from inherited input, and all
+computational claims have exact reproducibility artifacts.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Scope, provenance, and statement of contributions}
+\label{sec:scope}
+
+This report continues the harmonic-tail reconstruction branch of the
+\Repo\ polylogarithm manuscript.  The base repository was inspected at
+commit~\cite{Repo}
+\[
+ \texttt{04bf92d507588a26abadbaee1beb1e7350c8bffb}
+ \qquad (11\text{ October }2026).
+\]
+Three earlier continuations are the direct mathematical inputs.
+The Bernoulli--Tornheim--digamma report established the shifted-Hankel
+factorization and the reduction of each fixed smaller order $p=2a$ to
+an $a\times a$ determinant.  The quartic spectral reconstruction
+report proved effective eventual nonsingularity for every fixed $a$ and
+computed the sufficient threshold $B_5=1920$.  The alternating-tail
+report developed a five-square order-ten contraction and proved
+nonsingularity outside one $2$-adic progression, but explicitly left
+that progression and unrestricted order ten open.  The quartic report
+then listed completion of $6\le b<1920$ as its first concrete research
+target~\cite{BTD,QSR,ATSD}.
+
+The present report resolves exactly that target.  It also records two
+analytic consequences which are useful independently of the determinant
+problem.  The first is a multiple-polylogarithm generating function for
+two harmonic tails and its weighted-moment operator calculus.  The
+second is a regularized depth-two multiple-polylogarithm generator for
+integer-shift Stieltjes correlations.  These formulas were not found in
+the inspected manuscript or continuation packages.  No claim of
+priority over all external literature is made; the novelty claim in this
+report is deliberately local: the formulas and proofs are new relative
+to the audited \Repo\ corpus, and the exact order-ten completion answers
+an open problem stated there.
+
+\subsection{Main results}
+
+The principal statements are the following.
+
+\begin{enumerate}[label=\textbf{M\arabic*.}]
+\item \textbf{Complete order-ten reconstruction.}
+For every integer $b\ge6$, the rational coefficient matrix $M_{5,b}$
+is nonsingular.  Hence the first $q=2b$ centered moments attached to
+$(p,q)=(10,2b)$ have full formal rank $q$.
+
+\item \textbf{One-prime finite certificate.}
+For the finite range $6\le b\le1919$, reduction modulo
+\[
+ P=1{,}000{,}003
+\]
+certifies every determinant at once.  The $1914$ residues are all
+nonzero.  Their canonical comma-separated encoding has digest
+\[
+ \texttt{3977e54f5b43db43e8f080c32f2e5b22beac54412cca32ff5d03d84975111836}.
+\]
+The certificate is independently regenerated from the Bernoulli
+recurrence and exact modular Gaussian elimination.
+
+\item \textbf{Ordinary reconstruction identities.}
+For each $b\ge6$ and $0\le k<b$, explicit rational polynomials
+$P_{b,k}$ and $Q_{b,k}$ satisfy
+\[
+ \sum_{n=0}^{\infty}
+ \left(P_{b,k}(n+\tfrac12)
+       [\zeta(10)-H_n^{(10)}][\zeta(2b)-H_n^{(2b)}]
+       -Q_{b,k}(n+\tfrac12)\right)=\zeta(2k),
+\]
+where $\zeta(0)=-1/2$.  The same identity is a product-polygamma
+formula after replacing each tail by a polygamma derivative.
+
+\item \textbf{Two-tail polylogarithmic generator.}
+For $p,q>1$ and $|z|<1$, the ordinary generating function of
+$\zeta(p,n+1)\zeta(q,n+1)$ is a divided difference of depth-two
+multiple polylogarithms.  Polynomially weighted centered moments are
+obtained by the single Euler operator $z\,d/dz+1/2$.
+
+\item \textbf{Stieltjes correlation generator.}
+A bivariate pole-subtracted depth-two polylogarithm kernel is holomorphic
+at $(\alpha,\beta)=(0,0)$, and its Taylor coefficients generate all
+products $\gamma_r(n+1)\gamma_s(n+1)$.  The theorem includes explicit
+anchored primitives and special values.
+\end{enumerate}
+
+\subsection{Proof-status conventions}
+
+A statement marked \emph{inherited} is quoted from an existing \Repo\
+report and used as an input.  A statement marked \emph{new} is proved
+here.  A numerical check is never used as a proof gate.  The finite
+certificate operates in an exact prime field; the high-precision check
+of the explicit $(10,16)$ identity is only a diagnostic.  Formal rank
+means rank in the rational coordinate space specified by the source
+construction.  It does not assert arithmetic independence of the
+numbers $\zeta(2k)$ or of any periods obtained after numerical
+evaluation.
+
+\subsection{Why a finite certificate is a proof here}
+
+The eventual theorem converts the order-ten conjecture into a finite
+problem before any computation begins.  The retained determinant has
+fixed size five, every entry is an explicitly displayed rational
+function of $b$ and finitely many Bernoulli numbers, and all denominators
+are controlled.  Reduction modulo a prime which divides none of those
+denominators is an exact ring homomorphism.  A nonzero modular
+determinant therefore proves that the original rational determinant is
+nonzero.  The certificate is not evidence extrapolated from samples;
+it is an exhaustive exact verification of the complete finite set left
+by the analytic theorem.
+ \section{Harmonic tails, centered moments, and the source matrix}
+\label{sec:framework}
+
+For an integer $s\ge2$, write
+\begin{equation}
+ A_s(n)=\zeta(s)-H_n^{(s)}=\zeta(s,n+1),
+ \qquad
+ H_n^{(s)}=\sum_{m=1}^n\frac1{m^s},
+ \qquad x_n=n+\frac12.
+ \label{eq:tail}
+\end{equation}
+Thus $A_s(n)$ is simultaneously a generalized harmonic tail, a
+Hurwitz-zeta value, and a normalized polygamma value~\cite{DLMF}:
+\begin{equation}
+ A_s(n)=\frac{(-1)^s}{(s-1)!}\psi^{(s-1)}(n+1).
+ \label{eq:polygamma-tail}
+\end{equation}
+For even $s$, the sign in \eqref{eq:polygamma-tail} is positive.
+
+For even $p,q\ge2$, the source family is
+\begin{equation}
+ D_{p,q}(w)=\sum_{n=0}^{\infty}A_p(n)A_q(n)x_n^{-w},
+ \qquad \Re w>3-p-q.
+ \label{eq:dirichlet-family}
+\end{equation}
+The previous reports continue this function meromorphically and prove
+that it is regular at the even nonpositive arguments needed below.  We
+write
+\[
+ D_r=D_{p,q}(-2r),\qquad r\ge0.
+\]
+The centered Bernoulli transform is
+\begin{equation}
+ C_j=\sum_{r=0}^j
+       \binom{2j+1}{2r}2^{-2(j-r)}D_r,
+ \qquad j\ge0.
+ \label{eq:C-transform}
+\end{equation}
+Its inverse is
+\begin{equation}
+ D_r=\sum_{j=0}^r\frac{\binom{2r}{2j}}{2j+1}
+ B_{2r-2j}\!\left(\frac12\right)C_j.
+ \label{eq:C-inverse}
+\end{equation}
+Both transforms are triangular with nonzero diagonal.
+
+\subsection{Late coordinates}
+
+Put $p=2a$, $q=2b$, with $1\le a<b$, and introduce formal labels
+\[
+ Z_0=\zeta(0)=-\frac12,
+ \qquad Z_k=\zeta(2k)\quad(1\le k<b).
+\]
+The source calculation proves that the late centered moments have the
+rational coordinate expansion
+\begin{equation}
+ C_{b+t}=\sum_{k=0}^{b-1}(M_{a,b})_{tk}Z_k,
+ \qquad 0\le t<b.
+ \label{eq:late-coordinates}
+\end{equation}
+Set
+\[
+ \mu_j=
+ \begin{cases}
+ B_{2j}/(2j)!,&j\ge0,\\
+ 0,&j<0.
+ \end{cases}
+\]
+Then the exact matrix in the normalization used by the current
+continuations is
+\begin{equation}
+ (M_{a,b})_{tk}=\mu_{t+k-a+1}
+ \left\{
+ \frac{(2b+2t-2a+1)!}{(2b-2k)!}
+ +\mathbf1_{k<a}\frac{(2t+1)!}{(2a-2k)!}
+ \right\},
+ \quad 0\le t,k<b.
+ \label{eq:source-M}
+\end{equation}
+Every factorial argument in \eqref{eq:source-M} is nonnegative in the
+range where its term is present.  Negative Bernoulli indices are zero
+by convention.
+
+The first $b$ coordinates $C_0,\ldots,C_{b-1}$ are free formal labels,
+while \eqref{eq:late-coordinates} describes the next $b$.  Hence the
+coordinate matrix of $C_0,\ldots,C_{2b-1}$ is block diagonal with
+blocks $I_b$ and $M_{a,b}$.  Since the transform
+\eqref{eq:C-transform} is triangular, we obtain the fundamental
+criterion.
+
+\begin{proposition}[Source rank criterion; inherited]
+\label{prop:rank-criterion}
+The first $q=2b$ centered moments $D_0,\ldots,D_{2b-1}$ have full
+formal rank $2b$ if and only if
+\[
+ \det M_{a,b}\ne0.
+\]
+The statement is entirely rational and makes no claim of numerical
+linear independence among the values assigned to the coordinate
+labels.
+\end{proposition}
+
+\subsection{The shifted-Hankel reduction}
+
+The Bernoulli core of \eqref{eq:source-M} is the shifted Hankel matrix
+\begin{equation}
+ H_{a,b}=(\mu_{t+k-a+1})_{0\le t,k<b}.
+ \label{eq:H}
+\end{equation}
+The source factorization has the form
+\[
+ M_{a,b}=R(H_{a,b}+U)E,
+\]
+where $R$ and $E$ are nonsingular diagonal matrices and $U$ has rank at
+most $a$.  Orthogonal-polynomial row operations based on the Pad\'e
+approximants to
+\[
+ \frac{\sqrt z}{2}\coth\frac{\sqrt z}{2}
+   =\sum_{j\ge0}\mu_jz^j
+\]
+annihilate the last $b-a$ columns in the final $a$ transformed rows.
+Consequently, the full determinant reduces to a retained determinant of
+size $a$.  The reduction also proves that the unperturbed matrix
+$H_{a,b}$ is nonsingular and gives its inertia~\cite{BTD,QSR,DilcherJiu2022,DilcherJiu2023}.
+
+For use in the order-ten proof, we state the retained matrix explicitly.
+Assume $b\ge2a$.  For $0\le i,\ell<a$, set
+\begin{align}
+ n_i&=b-a+i,&
+ N_{i\ell}&=2(n_i-\ell)+1,&
+ R_\ell&=2b-2a+2+2\ell,\label{eq:retained-indices}\\
+ F_{i\ell}&=\frac1{(2\ell+1)!}
+ \prod_{r=0}^{2\ell-1}(2n_i-r)(2n_i+3+r),
+ \label{eq:F-entry}
+\end{align}
+with the empty product equal to one.  Define
+\begin{equation}
+ W_{i\ell}(z)=(z+2\ell+1)
+              \fall{(2n_i+2\ell+z+1)}{2i},
+ \qquad
+ d_{i\ell h}=\frac1{h!}\sum_{j=0}^h
+ (-1)^{h-j}\binom hjW_{i\ell}(N_{i\ell}-j).
+ \label{eq:d-finite-difference}
+\end{equation}
+The $d_{i\ell h}$ are integers because they are Newton coefficients of
+an integer-valued polynomial.  With independent symbols
+$U_1,\ldots,U_{2a-1}$, put
+\begin{equation}
+ \A^{[a]}_{i\ell}
+ =2F_{i\ell}
+ +\frac{R_\ell!}
+ {(2n_i+1)(2n_i+2)(2\ell+2)!N_{i\ell}!}
+ \sum_{\substack{1\le h\le2i+1\\h\ {\rm odd}}}
+ d_{i\ell h}\fall{N_{i\ell}}h
+ U_{a-i+\ell+(h-1)/2}.
+ \label{eq:retained-A}
+\end{equation}
+At the Bernoulli specialization
+\begin{equation}
+ U_j=2B_{2b-2j},\qquad 1\le j\le2a-1,
+ \label{eq:U-specialization}
+\end{equation}
+the retained determinant controls the original source matrix.
+
+\begin{lemma}[Exact determinant multiplier; inherited]
+\label{lem:multiplier}
+Let
+\[
+ h_n=\frac{((2n+1)!)^2}{(4n+2)!(4n+3)!},
+ \qquad
+ c_n=\frac{(2n+1)(2n+2)!}{(4n+2)!},
+ \qquad
+ \epsilon_{a,b}=a(b-a)+\frac{a(a-1)}2.
+\]
+For $b\ge2a$,
+\begin{align}
+ \det M_{a,b}
+ ={}&(-1)^{\epsilon_{a,b}}
+ \frac{\prod_{t=0}^{b-1}(2b+2t-2a+1)!}
+      {\prod_{k=0}^{b-1}(2b-2k)!}
+ \left(\prod_{n=0}^{b-a-1}h_n\right)
+ \left(\prod_{i=0}^{a-1}c_{b-a+i}\right)
+ \det\A^{[a]}.
+ \label{eq:exact-multiplier}
+\end{align}
+Every factor outside $\det\A^{[a]}$ is nonzero.  Therefore
+\[
+ \det M_{a,b}\ne0
+ \quad\Longleftrightarrow\quad
+ \det\A^{[a]}\ne0.
+\]
+\end{lemma}
+
+The delivered verifier checks \eqref{eq:exact-multiplier} modulo the
+certificate prime at $b=10,11,12,13,14$, comparing the direct source
+determinant with the retained determinant times the full multiplier.
+These spot checks are not needed once \cref{lem:multiplier} is accepted,
+but they guard against normalization errors in the implementation.
+
+\subsection{Eventual nonsingularity}
+
+The retained determinant is a polynomial of total Bernoulli degree at
+most $a$ after clearing explicit denominators.  Its top homogeneous
+part is a positive Hankel moment determinant after Euler's formula for
+$B_{2m}$ is substituted.  The lower Bernoulli degrees are bounded by an
+explicit coefficient norm.  Comparing the two produces a terminating
+threshold algorithm for each fixed $a$.
+
+\begin{theorem}[Effective eventual rank; inherited]
+\label{thm:eventual}
+For every fixed $a\ge1$, there is a constructible $B_a$ such that
+$\det M_{a,b}\ne0$ for all $b\ge B_a$.  The exact source computation
+gives
+\[
+ B_1=16,
+ \quad B_2=45,
+ \quad B_3=142,
+ \quad B_4=467,
+ \quad B_5=1920.
+\]
+In particular,
+\begin{equation}
+ \det M_{5,b}\ne0\qquad(b\ge1920).
+ \label{eq:eventual-order-ten}
+\end{equation}
+\end{theorem}
+
+The role of the present paper is therefore finite but decisive: prove
+nonsingularity for every $6\le b<1920$ without leaving exceptional
+progressions.
+ \section{Complete optimal-prefix reconstruction at smaller order ten}
+\label{sec:order-ten}
+
+We now close the finite range left by \cref{thm:eventual}.  The argument
+is an exact certificate over one prime field.  Its force comes from the
+analytic reduction already proved in the source: computation is used
+only after the problem has become a finite list of explicitly specified
+rational determinants.
+
+\subsection{A good prime and exact Bernoulli reduction}
+
+Fix
+\begin{equation}
+ P=1{,}000{,}003.
+ \label{eq:certificate-prime}
+\end{equation}
+Trial division by the odd integers through $1000$ proves that $P$ is
+prime; this finite check is included in both verifiers.  The Bernoulli
+numbers are reduced modulo $P$ from their defining recurrence, not from
+a table.  With $B_1=-1/2$ and $m\ge1$,
+\begin{equation}
+ B_{2m}=\frac{\dfrac{2m-1}{2}
+       -\displaystyle\sum_{j=1}^{m-1}\binom{2m+1}{2j}B_{2j}}
+       {2m+1}.
+ \label{eq:even-bernoulli-recurrence}
+\end{equation}
+This follows immediately from
+$\sum_{j=0}^{2m}\binom{2m+1}{j}B_j=0$ and the vanishing of odd
+Bernoulli numbers beyond $B_1$.
+
+For the retained matrices in the range $10\le b\le1919$, the largest
+factorial argument occurring in a matrix entry is $3838$, the largest
+denominator appearing in the Bernoulli recurrence is $3839$, and the
+largest Bernoulli number used by an entry is $B_{3836}$.  The scalar
+multiplier in \eqref{eq:exact-multiplier} contains factorials only up to
+$7674$.  All these integers are strictly below $P$.  It follows
+inductively from \eqref{eq:even-bernoulli-recurrence} that every rational
+Bernoulli number occurring in the certificate has denominator prime to
+$P$.  Every factorial and every remaining explicit linear denominator
+is likewise a unit in $\F_P$.  Thus all source formulas admit an
+unambiguous reduction modulo $P$.
+
+\begin{lemma}[Denominator-safe reduction]
+\label{lem:denominator-safe}
+For $6\le b\le9$, reduction of the source matrix $M_{5,b}$ modulo $P$
+is defined entrywise.  For $10\le b\le1919$, reduction of the retained
+matrix $\A^{[5]}$ and of the multiplier in
+\eqref{eq:exact-multiplier} is defined, and the multiplier is nonzero in
+$\F_P$.  Consequently,
+\[
+ \det\A^{[5]}\not\equiv0\pmod P
+ \quad\Longrightarrow\quad
+ \det M_{5,b}\ne0\quad\text{in }\Q.
+\]
+The analogous implication with the direct determinant holds for
+$6\le b\le9$.
+\end{lemma}
+
+\begin{proof}
+For the four direct cases the largest factorial argument is $25$.  In
+the retained range, inspection of \eqref{eq:retained-indices}--
+\eqref{eq:retained-A} gives the bounds stated above.  Every factor in
+\eqref{eq:exact-multiplier} is a product or quotient of nonzero
+integers less than $P$, so it is nonzero in $\F_P$.  Reduction modulo
+$P$ is therefore a ring homomorphism on the localization of $\Z$
+generated by all denominators in question.  A zero rational determinant
+would reduce to zero; the contrapositive proves the claim.
+\end{proof}
+
+\subsection{The exhaustive residue vector}
+
+Define the proof residue $r_b\in\F_P$ by
+\begin{equation}
+ r_b=
+ \begin{cases}
+  \det M_{5,b}\pmod P,&6\le b\le9,\\[2mm]
+  \det\A^{[5]}(b;2B_{2b-2},\ldots,2B_{2b-18})\pmod P,
+      &10\le b\le1919.
+ \end{cases}
+ \label{eq:proof-residue}
+\end{equation}
+The split at $b=10=2a$ is important: below it, the generic retained
+formula has endpoint terms not covered by its derivation, so the source
+matrix is used directly.
+
+\begin{theorem}[One-prime finite completion]
+\label{thm:finite-order-ten}
+For every integer $b$ with $6\le b\le1919$,
+\begin{equation}
+ r_b\ne0\quad\text{in }\F_{1{,}000{,}003}.
+ \label{eq:all-residues-nonzero}
+\end{equation}
+Hence $\det M_{5,b}\ne0$ for every such $b$.
+\end{theorem}
+
+\begin{proof}
+The exact program \texttt{generate\_order10\_certificate.py} performs
+the following finite calculation.
+
+\begin{enumerate}
+\item It constructs factorials and inverse factorials through $3839$
+in $\F_P$ and generates all required Bernoulli residues from
+\eqref{eq:even-bernoulli-recurrence}.
+\item For $6\le b\le9$ it builds \eqref{eq:source-M}; for
+$10\le b\le1919$ it builds the five-square matrix
+\eqref{eq:retained-A} at \eqref{eq:U-specialization}.
+\item It computes each determinant by exact Gaussian elimination in
+$\F_P$ and records all $1914$ residues.
+\end{enumerate}
+
+Every recorded residue lies in $\{1,\ldots,P-1\}$.  The complete vector
+is contained in \nolinkurl{verification/order10_modular_certificate.json}.  Its
+canonical comma-separated encoding has SHA-256 digest
+\begin{equation}
+\begin{split}
+&\texttt{3977e54f5b43db43e8f080c32f2e5b22}\\[-1mm]
+&\hspace{21mm}\texttt{beac54412cca32ff5d03d84975111836}.
+\end{split}
+\label{eq:residue-digest}
+\end{equation}
+For orientation, five entries are
+\begin{center}
+\begin{tabular}{crrrrr}
+\toprule
+$b$&6&8&10&962&1919\\
+\midrule
+$r_b$&484126&572800&668726&989617&667530\\
+\bottomrule
+\end{tabular}
+\end{center}
+The value at $b=962$ lies in the exceptional $2$-adic progression left
+open by the preceding order-ten report; it is nonzero here.
+
+A second verifier replays the entire calculation without importing the
+first implementation.  It uses the full recurrence
+$\sum_{k=0}^n\binom{n+1}{k}B_k=0$ for every Bernoulli number and a
+row-by-row subset expansion for determinants, rather than the even-only
+recurrence and Gaussian elimination.  It reproduces all $1914$ residues
+and the digest \eqref{eq:residue-digest}.  The digest is an integrity
+check, not a substitute for the supplied vector and replay programs.
+Finally, \cref{lem:denominator-safe} converts each modular nonvanishing
+statement into rational nonvanishing.
+\end{proof}
+
+The implementation also checks the complete multiplier
+\eqref{eq:exact-multiplier} at $b=10,11,12,13,14$ by comparing the
+direct determinant with the retained determinant times every scalar
+factor.  These checks defend against an implementation normalization
+error; the mathematical justification for all $b\ge10$ is the inherited
+exact multiplier lemma.
+
+\subsection{The completed fixed-order theorem}
+
+\begin{theorem}[Complete smaller-order-ten reconstruction]
+\label{thm:complete-order-ten}
+For every integer $b\ge6$,
+\begin{equation}
+ \boxed{\det M_{5,b}\ne0.}
+ \label{eq:complete-order-ten}
+\end{equation}
+Equivalently, for every even $q>10$, the first $q$ centered moments for
+the harmonic-tail pair $(p,q)=(10,q)$ have full formal rank $q$ on the
+specified coordinate list
+\[
+ C_0,\ldots,C_{q/2-1},\quad
+ \zeta(0),\zeta(2),\ldots,\zeta(q-2).
+\]
+\end{theorem}
+
+\begin{proof}
+The finite interval $6\le b\le1919$ is
+\cref{thm:finite-order-ten}.  The half-line $b\ge1920$ is
+\eqref{eq:eventual-order-ten}.  The rank conclusion follows from
+\cref{prop:rank-criterion}.
+\end{proof}
+
+\begin{remark}[What the theorem does and does not say]
+The result completes one infinite fixed-order family and resolves the
+first explicit task in the research agenda of the quartic reconstruction
+report.  It does not prove the unrestricted conjecture for every
+$a<b$, and it does not assert arithmetic independence of even zeta
+values.  The proof is conventional exact mathematics with a finite
+computer-verified lemma; it has not been formalized in a proof assistant
+or independently refereed.
+\end{remark}
+ \section{Ordinary convergent reconstruction and polygamma identities}
+\label{sec:ordinary-reconstruction}
+
+The rank theorem is more than a statement about a determinant.  It
+allows every late zeta coordinate to be extracted by a finite rational
+combination of centered moments.  The analytic continuation can then be
+converted into an ordinary absolutely convergent series by subtracting
+only the nonnegative powers in the centered asymptotic expansion.
+
+\subsection{Centered asymptotic coefficients}
+
+For an integer $s\ge2$ and $x=n+1/2$, the shifted Euler--Maclaurin
+expansion~\cite{DLMF} is
+\begin{equation}
+ A_s(n)\sim\sum_{m\ge0}\alpha_{s,m}x^{1-s-2m},
+ \label{eq:centered-tail-asymptotic}
+\end{equation}
+where
+\begin{equation}
+ \alpha_{s,0}=\frac1{s-1},
+ \qquad
+ \alpha_{s,m}=\frac{B_{2m}(1/2)}{(2m)!}(s)_{2m-1}
+ \quad(m\ge1).
+ \label{eq:alpha}
+\end{equation}
+Here $(s)_j=s(s+1)\cdots(s+j-1)$ and
+$B_{2m}(1/2)=(2^{1-2m}-1)B_{2m}$.  The half-integer center removes all
+odd corrections.  For the order-ten pair define
+\begin{equation}
+ \beta_{b,\ell}=\sum_{u=0}^{\ell}
+       \alpha_{10,u}\alpha_{2b,\ell-u}.
+ \label{eq:beta}
+\end{equation}
+Then
+\begin{equation}
+ A_{10}(n)A_{2b}(n)
+ \sim\sum_{\ell\ge0}\beta_{b,\ell}x_n^{-2b-8-2\ell}.
+ \label{eq:product-asymptotic}
+\end{equation}
+
+\subsection{The rational extraction rows}
+
+Let $N^{(b)}=M_{5,b}^{-1}$, which exists by
+\cref{thm:complete-order-ten}.  For $0\le k<b$ and
+$0\le r\le2b-1$, set
+\begin{equation}
+ w_{b,k,r}=\sum_{t=0}^{b-1}N^{(b)}_{kt}
+      \binom{2(b+t)+1}{2r}
+      2^{-2(b+t-r)},
+ \label{eq:reconstruction-weight}
+\end{equation}
+where the binomial coefficient is understood to be zero when
+$r>b+t$.  Define the even polynomial
+\begin{equation}
+ P_{b,k}(x)=\sum_{r=0}^{2b-1}w_{b,k,r}x^{2r}.
+ \label{eq:Pbk}
+\end{equation}
+Its nonnegative asymptotic part against the product of tails is
+\begin{equation}
+ Q_{b,k}(x)=
+ \sum_{r=0}^{2b-1}w_{b,k,r}
+ \sum_{\substack{\ell\ge0\\2r-2b-8-2\ell\ge0}}
+     \beta_{b,\ell}x^{2r-2b-8-2\ell}.
+ \label{eq:Qbk}
+\end{equation}
+Every sum is finite and rational.  In particular,
+\begin{equation}
+ \deg P_{b,k}\le4b-2,
+ \qquad
+ \deg Q_{b,k}\le2b-10.
+ \label{eq:PQ-degrees}
+\end{equation}
+
+\begin{theorem}[All-coordinate ordinary reconstruction]
+\label{thm:ordinary-reconstruction}
+For every $b\ge6$ and $0\le k<b$,
+\begin{equation}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}
+ \left\{
+ P_{b,k}(x_n)A_{10}(n)A_{2b}(n)-Q_{b,k}(x_n)
+ \right\}=\zeta(2k),}
+ \qquad x_n=n+\frac12,
+ \label{eq:ordinary-reconstruction}
+\end{equation}
+where $\zeta(0)=-1/2$.  The series is absolutely convergent, with
+summand $O(n^{-2})$.
+\end{theorem}
+
+\begin{proof}
+From \eqref{eq:late-coordinates},
+\[
+ Z_k=\sum_{t=0}^{b-1}N^{(b)}_{kt}C_{b+t}.
+\]
+Substitution of \eqref{eq:C-transform} gives
+\[
+ Z_k=\sum_{r=0}^{2b-1}w_{b,k,r}D_r.
+\]
+By definition, the right side is the centered regularized sum of
+$P_{b,k}(x_n)A_{10}(n)A_{2b}(n)$.  Equations
+\eqref{eq:product-asymptotic} and \eqref{eq:Qbk} show that subtraction
+of $Q_{b,k}$ removes every nonnegative power, leaving $O(x_n^{-2})$.
+Hence the subtracted series converges absolutely.
+
+It remains to compare the ordinary sum with the centered regularized
+one.  Every monomial in $Q_{b,k}$ has nonnegative even degree, and
+\[
+ \sum_{n\ge0}^{\mathrm{a.c.}}(n+\tfrac12)^{2j}
+   =\zeta(-2j,\tfrac12)=0\qquad(j\ge0).
+\]
+Thus the finite subtraction has zero centered zeta-regularized sum.
+The ordinary subtracted series therefore equals the inherited regular
+value $\sum_rw_{b,k,r}D_r=Z_k=\zeta(2k)$.
+\end{proof}
+
+\begin{corollary}[Product-polygamma form]
+\label{cor:polygamma-reconstruction}
+For every $b\ge6$ and $0\le k<b$,
+\begin{equation}
+ \sum_{n=0}^{\infty}
+ \left\{
+ \frac{P_{b,k}(x_n)}{9!(2b-1)!}
+ \psi^{(9)}(n+1)\psi^{(2b-1)}(n+1)
+ -Q_{b,k}(x_n)
+ \right\}=\zeta(2k).
+ \label{eq:polygamma-reconstruction}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+For even $s$, equation \eqref{eq:polygamma-tail} reads
+$A_s(n)=\psi^{(s-1)}(n+1)/(s-1)!$.  Substitute this into
+\eqref{eq:ordinary-reconstruction}.
+\end{proof}
+
+\begin{remark}[Effective, not merely existential]
+All coefficients in \eqref{eq:ordinary-reconstruction} are obtained by
+finite rational arithmetic: form \eqref{eq:source-M}, invert it, apply
+\eqref{eq:reconstruction-weight}, and truncate the explicit asymptotic
+convolution \eqref{eq:Qbk}.  The accompanying identity generator follows
+exactly this procedure.  No recognition of numerical constants or fit
+to a floating-point series is involved.
+\end{remark}
+ \section{A multiple-polylogarithm generator for two harmonic tails}
+\label{sec:polylog-generator}
+
+The moment reconstruction has a natural analytic generating function.
+We use the nested-sum convention
+\begin{equation}
+ \Li_{r,s}(x,y)=
+ \sum_{m>n\ge1}\frac{x^m y^n}{m^r n^s},
+ \label{eq:two-variable-mpl}
+\end{equation}
+initially in its domain of absolute convergence.  This is a depth-two
+multiple polylogarithm in two arguments; the notation is chosen to make
+the larger and smaller summation indices visible~\cite{Goncharov,BorweinMPL}.
+
+\begin{theorem}[Two-tail polylogarithmic generator]
+\label{thm:two-tail-generator}
+Let $p,q>1$ be integers and $|z|<1$.  Then
+\begin{equation}
+ \boxed{\displaystyle
+ \calF_{p,q}(z):=\sum_{n=0}^{\infty}A_p(n)A_q(n)z^n
+ =\frac{\zeta(p)\zeta(q)
+ -\Li_{p,q}(1,z)-\Li_{q,p}(1,z)-\Li_{p+q}(z)}{1-z}.}
+ \label{eq:two-tail-generator}
+\end{equation}
+The same function has the Gamma-normalized double Mellin integral
+\begin{equation}
+ \calF_{p,q}(z)=
+ \frac1{\Gamma(p)\Gamma(q)}
+ \int_0^\infty\!\int_0^\infty
+ \frac{t^{p-1}u^{q-1}e^{-t-u}}
+ {(1-e^{-t})(1-e^{-u})(1-ze^{-t-u})}
+ \dd t\dd u.
+ \label{eq:two-tail-mellin}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Expand the two tails and interchange absolutely convergent sums:
+\begin{align*}
+ \calF_{p,q}(z)
+ &=\sum_{m,k\ge1}\frac1{m^pk^q}
+   \sum_{0\le n<\min(m,k)}z^n\\
+ &=\frac1{1-z}\sum_{m,k\ge1}
+   \frac{1-z^{\min(m,k)}}{m^pk^q}.
+\end{align*}
+The part without $z^{\min(m,k)}$ is $\zeta(p)\zeta(q)$.  Splitting the
+remaining double sum into $m>k$, $k>m$, and $m=k$ gives respectively
+$\Li_{p,q}(1,z)$, $\Li_{q,p}(1,z)$, and $\Li_{p+q}(z)$, proving
+\eqref{eq:two-tail-generator}.
+
+For \eqref{eq:two-tail-mellin}, use
+\[
+ A_p(n)=\frac1{\Gamma(p)}\int_0^\infty
+ \frac{t^{p-1}e^{-(n+1)t}}{1-e^{-t}}\dd t
+\]
+and the analogous formula for $A_q(n)$.  Summing the resulting geometric
+series in $ze^{-t-u}$ gives the stated integral.  Positivity for real
+$z\in[0,1)$ and absolute convergence for $|z|<1$ justify the
+interchanges; the complex identity then follows by holomorphy.
+\end{proof}
+
+\subsection{Centered weights as one differential operator}
+
+Let
+\begin{equation}
+ \Eop=z\frac{\dd}{\dd z}+\frac12.
+ \label{eq:centered-Euler}
+\end{equation}
+Because $\Eop z^n=(n+1/2)z^n$, every polynomial weight is encoded by
+functional calculus in this single operator:
+\begin{equation}
+ P(\Eop)\calF_{p,q}(z)
+ =\sum_{n=0}^{\infty}P(n+\tfrac12)A_p(n)A_q(n)z^n.
+ \label{eq:operator-tail}
+\end{equation}
+Likewise,
+\begin{equation}
+ Q(\Eop)\frac1{1-z}
+ =\sum_{n=0}^{\infty}Q(n+\tfrac12)z^n.
+ \label{eq:operator-polynomial}
+\end{equation}
+This gives a compact polylogarithmic normal form for every identity in
+\cref{thm:ordinary-reconstruction}.
+
+\begin{corollary}[Polylogarithmic boundary reconstruction]
+\label{cor:polylog-boundary}
+For $b\ge6$ and $0\le k<b$,
+\begin{equation}
+ \boxed{\displaystyle
+ \lim_{z\uparrow1}
+ \left\{
+ P_{b,k}(\Eop)\calF_{10,2b}(z)
+ -Q_{b,k}(\Eop)\frac1{1-z}
+ \right\}=\zeta(2k),}
+ \label{eq:polylog-boundary}
+\end{equation}
+where $\calF_{10,2b}$ is given explicitly by
+\eqref{eq:two-tail-generator}.  The limit may be taken radially in the
+unit disk.
+\end{corollary}
+
+\begin{proof}
+Equations \eqref{eq:operator-tail} and
+\eqref{eq:operator-polynomial} show that the expression in braces has
+Taylor coefficients equal to the summand of
+\eqref{eq:ordinary-reconstruction}.  That coefficient series is
+absolutely summable, so Abel's theorem identifies the radial limit with
+its sum.
+\end{proof}
+
+Repeated argument differentiation introduces no new function class:
+for every integer $j\ge0$,
+\begin{equation}
+ \left(z\frac{\dd}{\dd z}\right)^j\Li_{r,s}(1,z)
+   =\Li_{r,s-j}(1,z),
+ \qquad
+ \left(z\frac{\dd}{\dd z}\right)^j\Li_r(z)=\Li_{r-j}(z).
+ \label{eq:order-lowering}
+\end{equation}
+Thus \eqref{eq:polylog-boundary} is a finite identity among ordinary
+polylogarithms, depth-two multiple polylogarithms with shifted orders,
+and rational functions.  Formula \eqref{eq:two-tail-mellin} supplies a
+parallel Gamma-integral representation of the same boundary values.
+
+\begin{remark}[Why the numerator is a divided tail]
+The factor $(1-z)^{-1}$ in \eqref{eq:two-tail-generator} is not an
+artifact of summation.  It records the finite geometric prefix
+$1+z+\cdots+z^{\min(m,k)-1}$.  The numerator therefore measures exactly
+the difference between the unrestricted product $\zeta(p)\zeta(q)$ and
+the three regions in which the smaller index has already crossed the
+prefix boundary.
+\end{remark}
+ \section{Integer-shift Stieltjes correlations from a regularized depth-two kernel}
+\label{sec:stieltjes-generator}
+
+The tail generator admits a useful singular-order limit.  Write the
+Laurent expansion of the Hurwitz zeta function at one as
+\begin{equation}
+ \zeta(1+\alpha,a)=\frac1\alpha+
+ \sum_{r=0}^{\infty}\frac{(-1)^r}{r!}\gamma_r(a)\alpha^r,
+ \label{eq:stieltjes-laurent}
+\end{equation}
+where $\gamma_r(1)=\gamma_r$ and $\gamma_0=\gamma$; see, for example,
+\cite{DLMF,Coffey}.  At integer shifts,
+\begin{equation}
+ \gamma_r(n+1)=\gamma_r-
+ \sum_{m=1}^n\frac{\log^r m}{m}.
+ \label{eq:stieltjes-shift}
+\end{equation}
+This follows by comparing \eqref{eq:stieltjes-laurent} in
+$\zeta(1+\alpha,n+1)=\zeta(1+\alpha)-\sum_{m=1}^nm^{-1-\alpha}$.
+
+\subsection{Single-index order derivatives}
+
+\begin{proposition}[Integer-shift Stieltjes generator]
+\label{prop:single-stieltjes-generator}
+For every $r\ge0$ and $|z|<1$,
+\begin{equation}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}\gamma_r(n+1)z^n
+ =\frac{\gamma_r-(-1)^r
+ \left.\partial_s^r\Li_s(z)\right|_{s=1}}{1-z}.}
+ \label{eq:single-stieltjes-generator}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Sum \eqref{eq:stieltjes-shift} over $n$ and interchange the absolutely
+convergent sums.  The logarithmic Dirichlet series is
+\[
+ \sum_{m\ge1}\frac{z^m\log^r m}{m}
+ =(-1)^r\left.\partial_s^r\Li_s(z)\right|_{s=1}.
+\]
+\end{proof}
+
+The point of the next theorem is that products do not require an
+uncontrolled double convolution of the shifted constants.  A single
+pole-subtracted depth-two kernel generates all of them.
+
+\subsection{The bivariate regularized kernel}
+
+For $|z|<1$, define
+\begin{align}
+ \K(\alpha,\beta;z)={}&
+ \Li_{1+\alpha,1+\beta}(1,z)
+       -\frac{\Li_{1+\beta}(z)}{\alpha}
+ \notag\\
+ &+\Li_{1+\beta,1+\alpha}(1,z)
+       -\frac{\Li_{1+\alpha}(z)}{\beta}
+ +\Li_{2+\alpha+\beta}(z).
+ \label{eq:K-kernel}
+\end{align}
+Although the displayed terms have poles, their specified differences
+are regular.
+
+\begin{lemma}[Holomorphy of the pole subtraction]
+\label{lem:K-holomorphic}
+For every fixed $|z|<1$, $\K(\alpha,\beta;z)$ extends holomorphically
+to a neighborhood of $(0,0)$.
+\end{lemma}
+
+\begin{proof}
+For $\Re\alpha>0$,
+\begin{align*}
+ \Li_{1+\alpha,1+\beta}(1,z)
+ &=\sum_{n\ge1}\frac{z^n}{n^{1+\beta}}
+   \zeta(1+\alpha,n+1),\\
+ \Li_{1+\alpha,1+\beta}(1,z)
+ -\frac{\Li_{1+\beta}(z)}{\alpha}
+ &=\sum_{n\ge1}\frac{z^n}{n^{1+\beta}}
+ \left(\zeta(1+\alpha,n+1)-\frac1\alpha\right).
+\end{align*}
+The parenthesis is holomorphic at $\alpha=0$.  On compact subsets of a
+small bidisk it grows at most polynomially in $\log(n+1)$, whereas
+$|z|^n$ decays exponentially.  The series is therefore locally
+normally convergent and holomorphic in both variables.  The second
+pole-subtracted term is symmetric, and the ordinary polylogarithm in
+\eqref{eq:K-kernel} is already holomorphic in its order near two.
+\end{proof}
+
+Put
+\begin{equation}
+ G(\alpha)=\zeta(1+\alpha)-\frac1\alpha
+ =\sum_{r\ge0}\frac{(-1)^r\gamma_r}{r!}\alpha^r.
+ \label{eq:G-alpha}
+\end{equation}
+
+\begin{theorem}[All-index Stieltjes correlation generator]
+\label{thm:stieltjes-correlation-generator}
+For $|z|<1$ and $(\alpha,\beta)$ near $(0,0)$,
+\begin{equation}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}
+ \left(\zeta(1+\alpha,n+1)-\frac1\alpha\right)
+ \left(\zeta(1+\beta,n+1)-\frac1\beta\right)z^n
+ =\frac{G(\alpha)G(\beta)-\K(\alpha,\beta;z)}{1-z}.}
+ \label{eq:parameter-correlation}
+\end{equation}
+Consequently, for all $r,s\ge0$,
+\begin{equation}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}\gamma_r(n+1)\gamma_s(n+1)z^n
+ =\frac{\gamma_r\gamma_s
+ -(-1)^{r+s}r!s!\,[\alpha^r\beta^s]
+       \K(\alpha,\beta;z)}{1-z}.}
+ \label{eq:stieltjes-correlation}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply \cref{thm:two-tail-generator} formally first in the half-plane
+$\Re\alpha,\Re\beta>0$, with $p=1+\alpha$ and $q=1+\beta$.  Also use
+the one-tail identity
+\[
+ \sum_{n\ge0}\zeta(1+\alpha,n+1)z^n
+ =\frac{\zeta(1+\alpha)-\Li_{1+\alpha}(z)}{1-z}.
+\]
+Subtract $1/\alpha$ from the first factor and $1/\beta$ from the
+second.  The zeta terms combine into $G(\alpha)G(\beta)$, while the
+remaining polylogarithmic terms combine into $-\K$.  This proves
+\eqref{eq:parameter-correlation} in a nonempty domain.  The holomorphic
+extensions from \cref{lem:K-holomorphic} continue it to a neighborhood
+of the origin.  Coefficient extraction using
+\eqref{eq:stieltjes-laurent} gives
+\eqref{eq:stieltjes-correlation}.
+\end{proof}
+
+\subsection{Digamma square and an anchored antiderivative}
+
+Since $\gamma_0(n+1)=\gamma-H_n=-\psi(n+1)$, the lowest coefficient of
+\cref{thm:stieltjes-correlation-generator} simplifies completely.
+
+\begin{corollary}[Digamma-square generating function]
+\label{cor:digamma-square}
+For $|z|<1$,
+\begin{equation}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}(\gamma-H_n)^2z^n
+ =\sum_{n=0}^{\infty}\psi(n+1)^2z^n
+ =\frac{(\gamma+\log(1-z))^2+\Li_2(z)}{1-z}.}
+ \label{eq:digamma-square}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The elementary generating functions
+\[
+ \sum_{n\ge0}H_nz^n=-\frac{\log(1-z)}{1-z},
+ \qquad
+ \sum_{n\ge0}H_n^2z^n
+ =\frac{\Li_2(z)+\log^2(1-z)}{1-z}
+\]
+follow by summing the defining single and double harmonic sums.  Expand
+$(\gamma-H_n)^2$ and combine them.
+\end{proof}
+
+Termwise integration provides the anchored primitive requested by the
+factor $1/(n+1)$.
+
+\begin{theorem}[Anchored digamma-square primitive]
+\label{thm:digamma-square-primitive}
+For $0\le z<1$,
+\begin{align}
+ \sum_{n=0}^{\infty}\frac{(\gamma-H_n)^2}{n+1}z^{n+1}
+ ={}&\frac{\gamma^3-(\gamma+\log(1-z))^3}{3}
+ -\Li_2(z)\log(1-z)-I(z),
+ \label{eq:digamma-primitive}\\
+ I(z):={}&\int_0^z\frac{\log^2(1-t)}t\dd t
+ \notag\\
+ ={}&2\zeta(3)+\log^2(1-z)\log z
+ +2\log(1-z)\Li_2(1-z)-2\Li_3(1-z).
+ \label{eq:I-closed}
+\end{align}
+In particular,
+\begin{equation}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}
+ \frac{(\gamma-H_n)^2}{(n+1)2^{n+1}}
+ =\frac{\gamma^3-(\gamma-\log2)^3}{3}
+ +\frac{\pi^2\log2}{12}-\frac{\log^32}{6}-\frac{\zeta(3)}4.}
+ \label{eq:half-digamma-primitive}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Integrate \eqref{eq:digamma-square} from $0$ to $z$.  The square term
+is integrated by the substitution $u=\gamma+\log(1-t)$.  Integration
+by parts gives
+\[
+ \int_0^z\frac{\Li_2(t)}{1-t}\dd t
+ =-\Li_2(z)\log(1-z)-I(z).
+\]
+Differentiating the right side of \eqref{eq:I-closed} and checking its
+zero value at $z=0$ proves the closed form.  At $z=1/2$, substitute the
+classical evaluations
+\[
+ \Li_2(\tfrac12)=\frac{\pi^2}{12}-\frac{\log^22}{2},
+ \qquad
+ \Li_3(\tfrac12)=\frac78\zeta(3)-\frac{\pi^2\log2}{12}
+                  +\frac{\log^32}{6}
+\]
+and simplify.
+\end{proof}
+
+More generally, integrating \eqref{eq:stieltjes-correlation} gives an
+anchored antiderivative for every pair of indices:
+\begin{equation}
+ \sum_{n=0}^{\infty}
+ \frac{\gamma_r(n+1)\gamma_s(n+1)}{n+1}z^{n+1}
+ =\int_0^z
+ \frac{\gamma_r\gamma_s-(-1)^{r+s}r!s!
+ [\alpha^r\beta^s]\K(\alpha,\beta;t)}{1-t}\dd t.
+ \label{eq:all-index-primitive}
+\end{equation}
+The point is not merely the integral notation: the integrand is a
+finite coefficient of the explicitly specified depth-two kernel
+\eqref{eq:K-kernel}, so order derivatives and anchored primitives are
+controlled by one common analytic object.
+ \section{An explicit \texorpdfstring{$(10,16)$}{(10,16)} reconstruction of \texorpdfstring{$\zeta(2)$}{zeta(2)}}
+\label{sec:explicit-identity}
+
+We record one fully expanded member of
+\cref{thm:ordinary-reconstruction}.  The pair $(10,16)$ is the first
+gap-six instance beyond the adjacent and gap-four order-ten cases.  Let
+\begin{equation}
+ L=14{,}612{,}936{,}162{,}752{,}272{,}720{,}199{,}680
+ \label{eq:explicit-L}
+\end{equation}
+and define
+\begin{equation}
+ \mathscr P(x)=\sum_{r=0}^{15}c_rx^{2r},
+ \label{eq:explicit-P}
+\end{equation}
+where the integer coefficients $c_r$ are listed in
+\cref{tab:explicit-coefficients}.  Also put
+\begin{align}
+ \mathscr R(x)={}&
+ 1{,}552{,}076{,}939{,}623{,}430{,}612{,}844{,}544
+ \notag\\
+ &+2{,}244{,}965{,}091{,}528{,}662{,}071{,}640{,}064\,x^2
+ \notag\\
+ &+169{,}465{,}732{,}042{,}429{,}783{,}080{,}960\,x^4
+ \notag\\
+ &+2{,}907{,}927{,}622{,}440{,}764{,}571{,}648\,x^6.
+ \label{eq:explicit-R}
+\end{align}
+
+\begin{theorem}[Explicit ordinary identity]
+\label{thm:explicit-1016}
+With $x_n=n+1/2$,
+\begin{equation}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}
+ \left\{
+ 135\,\mathscr P(x_n)
+ [\zeta(10)-H_n^{(10)}][\zeta(16)-H_n^{(16)}]
+ +\mathscr R(x_n)
+ \right\}=L\zeta(2).}
+ \label{eq:explicit-1016}
+\end{equation}
+The summand is $O(n^{-2})$.  Equivalently,
+\begin{equation}
+ \sum_{n=0}^{\infty}
+ \left\{
+ \frac{135\,\mathscr P(x_n)}{9!15!}
+ \psi^{(9)}(n+1)\psi^{(15)}(n+1)
+ +\mathscr R(x_n)
+ \right\}=L\zeta(2).
+ \label{eq:explicit-1016-polygamma}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Take $b=8$ and $k=1$ in
+\cref{thm:ordinary-reconstruction}.  Exact inversion of the rational
+matrix $M_{5,8}$ gives
+\[
+ P_{8,1}(x)=\frac{\mathscr P(x)}
+ {108{,}243{,}971{,}575{,}942{,}760{,}890{,}368}.
+\]
+The nonnegative asymptotic part \eqref{eq:Qbk} is
+\begin{align*}
+ Q_{8,1}(x)={}&-\frac{23127748662582496}{217749717276577245}
+ -\frac{1238984692719613}{8064804343576935}x^2\\
+ &-\frac{168349079333176}{14516647818438483}x^4
+ -\frac{14443832747344}{72583239092192415}x^6.
+\end{align*}
+Multiplying
+$\sum_n(P_{8,1}A_{10}A_{16}-Q_{8,1})=\zeta(2)$ by $L$, noting that
+$L$ is $135$ times the denominator of $P_{8,1}$, gives
+\eqref{eq:explicit-1016}.  Equation
+\eqref{eq:explicit-1016-polygamma} follows from
+\eqref{eq:polygamma-tail}.  The exact generator and verifier reconstruct
+all displayed integers from \eqref{eq:source-M}, rather than checking a
+pre-entered formula.
+\end{proof}
+
+The high-precision script evaluates the ordinary series directly and
+agrees with $\zeta(2)$ after normalization to more than forty decimal
+places.  This is recorded only as a diagnostic; the proof is the exact
+matrix inversion and asymptotic subtraction above.
+ \section{Audit findings, corrections, and integration consequences}
+\label{sec:audit}
+
+The source formulas used in the proof were rederived at the interfaces
+where normalization mistakes are most likely: the omitted-binomial
+convention in $M_{a,b}$, the factor two in the Bernoulli coordinates
+$U_j=2B_{2b-2j}$, the retained-column reversal, and the scalar
+multiplier in \eqref{eq:exact-multiplier}.  No mathematical
+contradiction was found in those inherited formulas.  The following
+status and presentation corrections should nevertheless be made when
+this package is integrated.
+
+\subsection{Research-status updates}
+
+\begin{enumerate}[label=\textbf{A\arabic*.}]
+\item The statement that the smaller-order-ten family remains open is
+now obsolete.  It should be replaced by
+\cref{thm:complete-order-ten}: every $M_{5,b}$ with $b\ge6$ is
+nonsingular.
+
+\item The exceptional congruence class
+$b\equiv962\pmod{2048}$ in the preceding $2$-adic theorem was a
+limitation of that congruence, not a candidate zero set.  The new finite
+certificate includes every member of this class below $1920$, beginning
+with $b=962$, and the inherited eventual theorem covers all members at
+or above $1920$.
+
+\item The broad unequal-order conjecture is still open.  Completion of
+$p=10$ must not be described as a proof for all $p<q$.  The next fixed
+smaller order is $p=12$, and the all-order problem requires control
+uniform in $a$.
+\end{enumerate}
+
+\subsection{Certificate wording}
+
+The residue vector is deliberately mixed: for $b<10$ it contains the
+direct source determinant, while for $b\ge10$ it contains the normalized
+five-square determinant.  Calling every entry ``the residue of
+$\det M_{5,b}$'' would be inaccurate.  The exact definition is
+\eqref{eq:proof-residue}; equivalence to source nonvanishing follows
+from the nonzero multiplier.  The JSON metadata and integration notes
+preserve this distinction.
+
+A checksum alone is not a certificate.  The proof objects are the full
+residue vector, the formulas generating each matrix, the denominator
+argument, and the replay programs.  The SHA-256 value only detects
+accidental or silent modification of that data.
+
+\subsection{Analytic normalization}
+
+The ordinary identities require the centered coordinate
+$x_n=n+1/2$.  At this center the subtraction polynomial contains only
+even powers and every such monomial has zero Hurwitz-zeta regularized
+sum because $\zeta(-2j,1/2)=0$.  Replacing $x_n$ by $n+1$ without
+recomputing the asymptotic polynomial would introduce nonzero Bernoulli
+counterterms and invalidate \eqref{eq:ordinary-reconstruction}.
+Likewise, omitting the constant term of $Q_{b,k}$ is not harmless:
+$\zeta(0,1/2)=0$ is exactly what permits that constant to be subtracted
+without changing the regularized value.
+
+\subsection{Novelty and literature scope}
+
+The inspected project already contains extensive work on harmonic-tail
+reconstruction, Stieltjes correlations, and multiple polylogarithms.
+This report claims the following relative contributions only:
+
+\begin{itemize}
+\item the exact completion of the $p=10$ fixed-order family;
+\item the explicit all-coordinate ordinary identities that follow from
+that completion;
+\item the two-tail generator \eqref{eq:two-tail-generator} in the
+normalization used here; and
+\item the pole-subtracted kernel \eqref{eq:K-kernel} and its coefficient
+formula for integer-shift Stieltjes products.
+\end{itemize}
+
+A targeted literature search found the standard multiple-polylogarithm,
+Hurwitz-zeta, Bernoulli, and Stieltjes ingredients, but not these exact
+combined formulas in this normalization.  This is not a comprehensive
+priority search, and no global first-discovery claim is made.  The
+article remains an unrefereed research draft.
+
+\subsection{Recommended manuscript placement}
+
+The determinant theorem belongs immediately after the current
+fixed-order and eventual-rank material.  The ordinary reconstruction
+and polylogarithmic generator can follow the harmonic-tail chapter as a
+new all-coordinate consequence.  The Stieltjes kernel is logically
+independent of the order-ten certificate and may instead be placed in
+the shifted-Stieltjes chapter, with a cross-reference to the tail
+generator from which it is obtained by singular-order regularization.
+The supplied integration fragment and claim ledger use namespaced labels
+to avoid collisions during that editorial split.
+ \section{Further research questions and exact next targets}
+\label{sec:research}
+
+The results above suggest several concrete projects.  Each target is
+phrased so that a successful answer has a checkable mathematical
+endpoint rather than a larger table of experiments.
+
+\begin{enumerate}[label=\textbf{R\arabic*.},leftmargin=*]
+\item \textbf{Complete smaller order twelve.}
+Apply the fixed-size reduction with $a=6$.  First compute a rigorous
+eventual threshold and then certify the remaining finite interval with
+one or several denominator-safe primes.  A stronger result would replace
+the finite scan by a structural congruence or a sign argument for the
+six-square determinant.
+
+\item \textbf{Remove computation from the order-ten theorem.}
+Find a recurrence, total-positivity statement, or arithmetic invariant
+showing $\det\A^{[5]}\ne0$ for every $b\ge10$.  The modular vector in
+this package is useful training data, but the desired endpoint is a
+uniform proof explaining why cancellation cannot occur.
+
+\item \textbf{Prove the unrestricted unequal-order conjecture.}
+The eventual theorem controls $b$ for fixed $a$, but its threshold grows
+with $a$.  Seek a bound on the lower Bernoulli-degree terms that is
+uniform in the separation $b-a$, or a determinant factorization whose
+nonvanishing is manifest for all $1\le a<b$.
+
+\item \textbf{Closed inverse rows.}
+The polynomials $P_{b,k}$ are explicit through matrix inversion but lack
+a product formula.  Derive closed coefficient rows, perhaps through the
+Pad\'e orthogonal polynomials and Christoffel--Darboux kernels.  A useful
+answer should specify every coefficient and denominator directly, not
+refer to an unevaluated inverse matrix.
+
+\item \textbf{Minimal subtraction and accelerated identities.}
+The present $Q_{b,k}$ leaves an $O(n^{-2})$ summand.  Subtract additional
+negative asymptotic powers and compensate them by the known values
+$\zeta(2j,1/2)$ to obtain arbitrarily rapid convergence.  Determine a
+canonical acceleration with small rational coefficients and quantify
+its arithmetic denominator growth.
+
+\item \textbf{Boundary values of the two-tail generator.}
+Continue \eqref{eq:two-tail-generator} through $z=1$ after the complete
+Euler-operator subtraction.  Express the finite boundary values in a
+minimal basis of multiple zeta values and order derivatives.  The
+operator formula makes every candidate finite, but functional reduction
+at high shifted order remains nontrivial.
+
+\item \textbf{Rationally shifted and character-twisted tails.}
+Replace $A_p(n)$ by $\zeta(p,n+a)$ with rational $a$, or by a Dirichlet
+character tail.  Determine the analogue of the three-region numerator
+in \eqref{eq:two-tail-generator}, the correct centered subtraction, and
+the resulting coordinate space of Dirichlet $L$-values.
+
+\item \textbf{Higher products.}
+For three or more tails, partition the summation region by the minimum
+index and derive depth-$d$ multiple-polylogarithm generators.  Then ask
+for finite-rank reconstruction theorems and ordinary convergent
+polygamma-product identities.  The main challenge is to organize the
+ordered set partitions without hiding endpoint terms.
+
+\item \textbf{Boundary Stieltjes correlations.}
+Study the Abelian and finite-part limits of
+\eqref{eq:stieltjes-correlation} as $z\to1$.  Identify exactly which
+combinations of Stieltjes constants, multiple-zeta derivatives, and
+powers of $\log(1-z)$ survive.  The pole-subtracted kernel should be
+continued jointly in $(\alpha,\beta,z)$ rather than coefficient by
+coefficient.
+
+\item \textbf{Functional equations for the kernel.}
+Investigate transformations $z\mapsto1-z$, $z\mapsto z/(z-1)$, and
+roots of unity for $\K(\alpha,\beta;z)$.  A complete formula must retain
+the order-derivative terms created by the pole subtractions.  Special
+values could yield new exact sums of
+$\gamma_r(n+1)\gamma_s(n+1)$ with algebraic weights.
+
+\item \textbf{Higher anchored primitives and multiple Gamma functions.}
+Integrate the all-index kernel repeatedly and determine when the result
+reduces to classical polylogarithms, Barnes multiple Gamma functions,
+or genuinely new depth.  The $r=s=0$ formula
+\eqref{eq:digamma-primitive} is the first case of this hierarchy.
+
+\item \textbf{Formal verification.}
+Formalize the finite determinant reduction, the denominator-safe modular
+certificate, and the min-index proof of
+\eqref{eq:two-tail-generator}.  The finite-field portion is well suited
+to reflection.  A later layer can formalize the analytic continuation
+and centered regularization used in
+\cref{thm:ordinary-reconstruction}.
+
+\item \textbf{Independent literature and priority audit.}
+Search multiple-zeta, Euler-sum, and Stieltjes-constant literature for
+forms equivalent to \eqref{eq:K-kernel} under stuffle or iterated-integral
+transformations.  Record equivalence maps explicitly.  This should be
+completed before any publication-level novelty claim is made.
+\end{enumerate}
+ \appendix
+\section{Certificate specification}
+\label{app:certificate}
+
+This appendix records the finite proof object independently of any
+particular programming language.
+
+\subsection{Input range and residue meaning}
+
+The fixed parameters are
+\[
+ a=5,
+ \qquad P=1{,}000{,}003,
+ \qquad 6\le b\le1919.
+\]
+For $b=6,7,8,9$, the proof residue is the determinant of the direct
+$b\times b$ matrix \eqref{eq:source-M}.  For $10\le b\le1919$, it is
+the determinant of the $5\times5$ matrix \eqref{eq:retained-A} after
+$U_j=2B_{2b-2j}$.  All operations are in $\F_P$.
+
+\subsection{Canonical generation algorithm}
+
+\begin{lstlisting}[language=Python,caption={Mathematical pseudocode for the residue vector.}]
+P = 1000003
+build factorials and inverse factorials modulo P through 3839
+B[0] = 1
+for m = 1,...,1919:
+    B[2m] = ((2m-1)/2
+              - sum_{j=1}^{m-1} binom(2m+1,2j) B[2j])/(2m+1)
+
+for b = 6,...,1919:
+    if b < 10:
+        R[b] = det(M_{5,b}) mod P
+    else:
+        substitute U_j = 2 B[2b-2j], j=1,...,9
+        R[b] = det(A^[5]) mod P
+    assert R[b] != 0
+
+serialize R[6],R[7],...,R[1919] as comma-separated decimal integers
+compute SHA256 of those bytes
+\end{lstlisting}
+
+The expected digest is \eqref{eq:residue-digest}.  The JSON file also
+contains the matrix ranges, maximum indices, count, full vector, and
+sentinel entries.  The certificate contains no random choices.
+
+\subsection{Two replay paths}
+
+The primary replay uses the even recurrence
+\eqref{eq:even-bernoulli-recurrence} and modular Gaussian elimination.
+The independent replay uses the full Bernoulli recurrence
+\[
+ B_n=-\frac1{n+1}\sum_{k=0}^{n-1}\binom{n+1}{k}B_k
+\]
+
+directly for $0\le n\le3838$, verifies the vanishing of odd Bernoulli
+residues beyond $B_1$, and computes determinants by subset expansion.
+The two paths share only the mathematical formulas in the article and
+the published JSON result.
+
+\subsection{Sentinel values}
+
+\begin{center}
+\begin{tabular}{rll}
+\toprule
+$b$&matrix used&residue modulo $P$\\
+\midrule
+6&direct $M_{5,6}$&484126\\
+8&direct $M_{5,8}$&572800\\
+10&retained $\A^{[5]}$&668726\\
+962&retained $\A^{[5]}$&989617\\
+1919&retained $\A^{[5]}$&667530\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These values are convenient smoke tests, but validation requires the
+entire vector and digest.
+ \section{Coefficient table for the explicit identity}
+\label{app:coefficients}
+
+The coefficients in \eqref{eq:explicit-P} are as follows.  They are generated exactly by \nolinkurl{verification/generate_explicit_identity.py}.
+
+\begin{longtable}{r@{\qquad}r}
+\caption{Integer coefficients $c_r$ in $\mathscr P(x)=\sum_{r=0}^{15}c_rx^{2r}$.\label{tab:explicit-coefficients}}\\
+\toprule
+$r$&$c_r$\\
+\midrule
+\endfirsthead
+\toprule
+$r$&$c_r$\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+0&22571931032959635\\
+1&18694493678772529244\\
+2&2408312382491948637488\\
+3&111814818905053409281472\\
+4&2361587601371307705179904\\
+5&24757907369483659839458304\\
+6&132829188131082664630743040\\
+7&360605317517714764997902336\\
+8&453247434535286514780798976\\
+9&156976179448593567429427200\\
+10&-151937057583031755486527488\\
+11&-142696273664989191655653376\\
+12&-40996749143564725151334400\\
+13&-4714335942036423192870912\\
+14&-209449736850990295941120\\
+15&-2907927622440764571648\\
+\end{longtable}
+
+For a machine-readable record, \texttt{explicit\_10\_16\_zeta2.json} stores the denominator of $P_{8,1}$, all sixteen numerators, and the four rational coefficients of $Q_{8,1}$.
+ \section{Reproducibility and evidential roles}
+\label{app:reproducibility}
+
+All paths below are relative to the package root.
+
+\subsection{Exact proof checks}
+
+\begin{lstlisting}[language=bash]
+python3 verification/generate_order10_certificate.py
+python3 verification/verify_order10_certificate.py
+python3 verification/verify_order10_certificate_independent.py
+python3 verification/verify_normalization_spots.py
+python3 verification/generate_explicit_identity.py
+python3 verification/verify_explicit_identity.py
+\end{lstlisting}
+
+The first two commands generate and replay the published modular vector.
+The third is the independently written full replay.  The fourth checks
+the retained/source multiplier at five boundary values.  The last two
+regenerate the explicit $(10,16)$ identity from rational matrix
+inversion and centered asymptotics.
+
+\subsection{Numerical diagnostics}
+
+\begin{lstlisting}[language=bash]
+python3 verification/numerical_check_explicit_identity.py
+python3 verification/numerical_check_generators.py
+\end{lstlisting}
+
+These scripts use high-precision numerical arithmetic to detect
+transcription or branch errors.  They are not proof gates and are not
+interval-arithmetic certificates.
+
+\subsection{Complete replay and build}
+
+\begin{lstlisting}[language=bash]
+python3 verification/run_all.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+
+The package has no compiled Python extension and no network dependency.
+The exact scripts use only the Python standard library; the numerical
+scripts require \texttt{mpmath}.  The PDF build requires a conventional
+\TeX\ Live installation with \texttt{latexmk}.  The supplied
+\texttt{Makefile} exposes the targets \texttt{verify}, \texttt{pdf},
+and \texttt{all}.
+
+\subsection{Claim classification}
+
+\begin{center}
+\begin{tabular}{p{0.22\linewidth}p{0.67\linewidth}}
+\toprule
+Class&Role\\
+\midrule
+Inherited theorem&Shifted-Hankel reduction, exact determinant multiplier,
+and eventual threshold $B_5=1920$.\\
+New exact theorem&Finite modular completion, complete order-ten rank,
+ordinary reconstruction, two-tail generator, and Stieltjes kernel.\\
+Exact computation&Finite-field determinant vector and rational
+coefficient generation; both are replayable.\\
+Numerical diagnostic&High-precision evaluation of displayed identities;
+useful for error detection but not invoked in proofs.\\
+Open problem&Every item in \cref{sec:research}; none is represented as
+settled.\\
+\bottomrule
+\end{tabular}
+\end{center}
+ \begin{thebibliography}{99}
+
+\bibitem{Repo}
+V.~Reshetnikov and contributors,
+\emph{ProveIt: Polylogarithms and their Arithmetic Bridges},
+collective manuscript and incoming research, inspected at commit
+\texttt{04bf92d507588a26abadbaee1beb1e7350c8bffb} (11 October 2026).
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/04bf92d507588a26abadbaee1beb1e7350c8bffb/Analysis/Polylogarithms/docs/manuscript}.
+
+\bibitem{BTD}
+ProveIt research continuation,
+\emph{Bernoulli Determinants, Cubic Tornheim Jets, and Canonical Digamma Integrals},
+11 October 2026, at the repository snapshot in \cite{Repo}; especially
+the shifted-Hankel and general small-determinant sections.
+
+\bibitem{QSR}
+ProveIt research continuation,
+\emph{Harmonic-Tail Reconstruction, Quartic Trigamma Moments, and
+Spectral Stieltjes Calculus}, 11 October 2026, at the repository snapshot
+in \cite{Repo}; especially the complete order-eight theorem and the
+effective eventual-rank theorem.
+
+\bibitem{ATSD}
+ProveIt research continuation,
+\emph{Alternating Tails and Higher Spectral Defects}, 11 October 2026,
+at the repository snapshot in \cite{Repo}; especially the five-square
+order-ten contraction and the higher-precision Bernoulli congruence.
+
+\bibitem{DLMF}
+NIST Digital Library of Mathematical Functions,
+Chapters 5, 24, and 25: Gamma, Bernoulli polynomials, Hurwitz zeta, and
+polylogarithms.  Version 1.2.8, 15 September 2026.
+\url{https://dlmf.nist.gov/}.
+
+\bibitem{DilcherJiu2023}
+K.~Dilcher and L.~Jiu,
+\emph{Hankel determinants of shifted sequences of Bernoulli and Euler numbers},
+Contributions to Discrete Mathematics \textbf{18} (2023), no.~2.
+\url{https://doi.org/10.55016/ojs/cdm.v18i2.73995}.
+Preprint: \url{https://arxiv.org/abs/2105.01880}.
+
+\bibitem{DilcherJiu2022}
+K.~Dilcher and L.~Jiu,
+\emph{Hankel determinants of sequences related to Bernoulli and Euler polynomials},
+International Journal of Number Theory \textbf{18} (2022).
+\url{https://doi.org/10.1142/S179304212250021X}.
+Preprint: \url{https://arxiv.org/abs/2007.09821}.
+
+\bibitem{Goncharov}
+A.~B.~Goncharov,
+\emph{Multiple polylogarithms and mixed Tate motives},
+preprint, 2001, arXiv:math/0103059.
+\url{https://arxiv.org/abs/math/0103059}.
+
+\bibitem{BorweinMPL}
+J.~M.~Borwein, D.~M.~Bradley, D.~J.~Broadhurst, and P.~Lison\v{e}k,
+\emph{Special values of multiple polylogarithms},
+Transactions of the American Mathematical Society \textbf{353} (2001),
+907--941.
+\url{https://doi.org/10.1090/S0002-9947-00-02616-7}.
+
+\bibitem{Coffey}
+M.~W.~Coffey,
+\emph{Series representations for the Stieltjes constants},
+Rocky Mountain Journal of Mathematics \textbf{44} (2014), 443--477.
+\url{https://doi.org/10.1216/RMJ-2014-44-2-443}.
+Preprint: \url{https://arxiv.org/abs/0905.1111}.
+
+\end{thebibliography}
+ 
+\end{document}
