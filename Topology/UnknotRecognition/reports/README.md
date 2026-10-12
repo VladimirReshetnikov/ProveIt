@@ -892,3 +892,11 @@ No test, patch application or soundness review was performed during intake.
 The ZIP is retired after placement and remains recoverable at its arrival
 commit. Existing ignore rules apply without checksum or line-ending work.
 See the [placement record](../synthesis/data/incoming-105-placement.json).
+
+The later, separate [review of report 105](105/INTEGRATION-STATUS.md) records
+the deferred-forest proof with its source cycle hypothesis, 11 isolated
+delivered tests, replay of all 17 supplied positive packets by current
+native checkers, and a fresh 50,658-input finite-selector audit. A native
+research probe certifies 118 bare cores. The delivered whole-cut packet for
+`pachner23_5_8_2/mixed` is a current producer miss and a concrete integration
+target; it is not included in the maintained 110-source success count.

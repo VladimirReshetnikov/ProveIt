@@ -128,7 +128,7 @@ class CorePrimitiveAnnuliTests(unittest.TestCase):
         self.assertTrue(verify_normal_cut_handlebodies(self.raw, json_safe(rows), p))
         for name, reason in [('pilot/fibonacci_lst_06/0', 'raw_cancellation_stalled')]:
             c = next(c for c in self.bank if c['id'] == name)
-            a = normal_cut_handlebodies(c['triangulation'], c['coordinates'])
+            a = normal_cut_handlebodies(c['triangulation'], c['coordinates'], lower_forest='source')
             self.assertEqual(a['status'], 'INCONCLUSIVE')
             self.assertEqual(a['reason'], reason)
 
