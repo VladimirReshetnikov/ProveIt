@@ -1015,3 +1015,34 @@ audited. No current contact sheet was opened.
 All PDFs retain ProveIt Contributors authorship. Original report evidence
 is unchanged. Nonmarginal critical charts and joint crossover branches
 remain separate integration work. No Lean or remote-CI claim is made.
+
+## Mixed cubic tail certificates, October 12, 2026 (Pacific)
+
+October 12, 2026 (Pacific). The section on rational identities for a mixed
+cubic Hurwitz tail develops the (2,2,3) case proposed in the preserved
+mixed-tail-anchor-reductions report. Three linear conditions characterize
+the specified polynomial certificate class in every degree. They give an
+infinite family of absolutely convergent rational sums and an explicit
+degree-ten weighted identity with value -4037/108.
+
+Independent verification checks nine exact finite-difference certificates
+through antiderivative degree 27, twelve finite coefficient-space dimensions,
+the centered subtraction and uncentered endpoint, and four corruption
+controls. Ordinary partial sums at three cutoffs agree with the finite
+certificate at both 70 and 100 digits. Numerical endpoint checks are
+diagnostics, not interval certification. The all-degree statements and
+absolute convergence are established by the written proofs.
+
+Final pages 144/130/253/86 (613 total), combined 570,
+148 references. All four volumes compile independently. Coupled volume and
+combined builds converge without final gate issues; 52 external PDF
+destinations resolve. Manual review opens 10 changed volume bodies and
+4 unmatched combined bodies. Exact raster comparison retains
+603 prior volume bodies and 562 prior combined bodies, with
+4 further combined bodies matched to freshly reviewed volume pages.
+Only centered footer numbers are excluded, with other content bounds
+audited. No current contact sheet was opened.
+
+All PDFs retain ProveIt Contributors authorship. Original report evidence
+is unchanged. The (2,3,4) case and the arithmetic classification outside
+this certificate class remain open. No Lean or remote-CI claim is made.
