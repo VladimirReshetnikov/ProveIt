@@ -8,7 +8,11 @@ The printed s = b^(A^2) (A^2 = 2^(2^(k+6))) is far larger.
 Scenarios (all inputs are degrees in the base b, as in model_fejer.py):
   stepP = 64 A           (theta_1 inside the class budget)
   stepT = s-degree       (Bohr exponent)
-  seed  = 2^(log2 stepT(1) + 4)   (dimension-two base, Bohr-dominated)
+  seed  = 2^(log2 stepT(1) + 4)   (dimension-two base, Bohr only)
+CORRECTION (Notes L.16c): the dimension-two base also carries the piece counts
+section16BaseFamilyBound(., polyPieceBudget), whose Lemma 16.3 exponent 10000
+puts the Fejer seed near 2^35..2^40, not 2^26. With those seeds the model gives
+d+6/L+4, and the d+5/L+3 row printed below for the Bohr-only seed is withdrawn.
   fixDeg = log2 A + 7
 """
 import math
