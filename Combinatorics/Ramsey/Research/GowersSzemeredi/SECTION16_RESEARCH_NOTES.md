@@ -5508,6 +5508,35 @@ joint-slice chain (`Proofs18Cover{Modulus,Density,Exponents}FejerJM`,
 not move. A split invariant with separate count and exponent exponents
 (dimension-two count `(11, 2^41)`) would also give `d + 3` from 8.
 
+**L.16x: two-track split classes (2026-10-12).** The width exponent of a split
+class was the reciprocal of its count (`splitExp = splitCnt⁻¹`), so dimension
+two had to take `(32, 2^48)` for both, while its count is `(n+1)^11·W^(2^41)`
+and its exponent `((n+1)^29·W^(2^46))⁻¹`. In the step, the next class's
+count uses only the lower count: the remainder count `Qr`, the samples `S`
+and the piece bound `Pb`. Its width exponent uses the lower count for the
+divisor, the width scale and `S`, and the lower exponent only for the
+spectrum exponent `Eb`, the remainder exponent `Er` and the slice exponent
+`Es`. `SplitUniformClass2 k V ac Dc ae De` keeps the two tracks apart.
+* `Proofs16SplitTwoTrack`: `split_exp_inv_le_fejer2`, the width exponent of the
+  next class from a two-track class (family exponent
+  `sExpN2 = 1 + (sBqN ac + (sErN ae + ae)) + ae·(sSN ac + 1)`, parameter
+  degree `fsExpW2`), the corpus proof with `Eb`, `Er`, `Es` on the exponent
+  track and an inline slice bound at `(ae, De)`.
+* `Proofs16SplitTwoTrackClasses`: `SplitUniformClass2`, `.toSplit` (to a split
+  class at `(max ac ae, max Dc De)`), `splitUniformClass2_succ_fejer` (count
+  `(sCountN ac, max (fsCountW ac Dc) (fejerStepThrDeg Dc))`),
+  `splitUniformClass2_two` (dimension two at `(11, 2^41)` and `(29, 2^46)`),
+  `splitQuad` with `split_quad_le_max`, a `gcongr` comparison showing the
+  quadruple stays below the `max` pairs from `(32, 2^48)`, so the invariant
+  at class constant `5/2` carries over. Also `splitUniformClass2_all` and the
+  exact table `tDegT2`: `…, 122, 188, 288, 452, 742, 1277, 2300, 4294, 8225,
+  16029, 31572` (dimensions 4–14), 6–16% below `tDegM`.
+* `Proofs18Cover{Modulus,Density,Exponents}FejerJT`, `Proofs18CoverFejerHeadlineJT`
+  (`assemble_jt.py`): the joint-slice chain over `tDegT2`. Theorem 18.1 at
+  `d + 3` from `d = 8` (`theorem_18_1_d3_eight_le`).
+The model `models/model_two_track.py` reproduces `tDegM` in its one-track
+case. With the two tracks it predicts exactly this table.
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`

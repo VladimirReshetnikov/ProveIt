@@ -59,6 +59,8 @@ map").
 | `assemble_m.py` | `Proofs18TightClassesFejerM` | the Fejér split step combined by `max` (`splitStepAMax`, `splitStepDMaxF`), its invariants, the exact table `tDegM` to 14 |
 | `assemble_jm.py` | `Proofs18Cover{Modulus,Density,Exponents}FejerJM`, `Proofs18CoverFejerHeadlineJM` | the J chain over `tDegM` (identifier-level renames), Theorem 18.1 at `d + 2` from 11 |
 | `patch_m.py` | the max-step block of `Proofs18CoverFejerAllDegrees`, `CompletionAudit.lean`, notes, status, TeX | — |
+| `assemble_jt.py`, `jt_head.lean.txt`, `jt_thm.lean.txt` | `Proofs18Cover{Modulus,Density,Exponents}FejerJT`, `Proofs18CoverFejerHeadlineJT` | the J chain over the two-track classes `tDegT2`, Theorem 18.1 at `d + 3` from 8 (`Proofs16SplitTwoTrack*` are hand-written) |
+| `patch_t2.py` | the two-track block of `Proofs18CoverFejerAllDegrees`, `CompletionAudit.lean`, notes, status, TeX | — |
 | `mkstub_fejer18.py`, `mkstub_auditfejer.py` | stub checks of `Proofs18CoverFejerAllDegrees` and the Fejér block of `CompletionAudit.lean` | — |
 
 Hand-written modules (no generator): `Proofs15WalshGeneral`,
