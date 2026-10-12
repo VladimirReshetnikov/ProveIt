@@ -1183,6 +1183,7 @@ import GowersSzemeredi.Proofs18CoverExponentsFejerQ
 import GowersSzemeredi.Proofs18CoverFejerHeadlineQ
 import GowersSzemeredi.Proofs18CoverHeadlineFrom
 import GowersSzemeredi.Proofs16PolynomialFejerQ
+import GowersSzemeredi.Proofs16UniformCoverTwoSplit
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

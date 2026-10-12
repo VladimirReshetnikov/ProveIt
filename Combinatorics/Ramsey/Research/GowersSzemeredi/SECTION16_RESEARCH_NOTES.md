@@ -5063,6 +5063,18 @@ The exact envelope model gives
 3. The Section 18 chain at the new class degree (the `GenParamsQ`
    generator with `qDeg` replaced), and the closed forms.
 
+*Step 1 (done).* `Proofs16UniformCoverTwoSplit` (light) proves
+`uniTwoFejerCount_le_split` (count `≤ ν^11·W^(2^41)`),
+`uniTwoFejerExp_inv_le_split` (inverse width exponent `≤ ν^29·W^(2^46)`)
+and **`splitUniformClass_two_small : SplitUniformClass 2 V 32 (2^48)`**.
+So `a₂ = 32` is proved, against `2^46` through `toSplit`. The parameter
+degree `2^48` costs nothing: the invariant only needs `D₂ ≤ 2^154`.
+Proof-engineering trap: `linarith` must never see a hypothesis containing
+`W ^ 2 ^ 40`. Its polynomial parser computes `c ^ (2^40)`, and Lean's
+runtime `Nat.pow` panics on exponents above `2^24` ("Nat.pow exponent is too
+big", with no source position). Hence `linarith only [...]` throughout, and
+`add_le_add` terms near the huge powers.
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`
