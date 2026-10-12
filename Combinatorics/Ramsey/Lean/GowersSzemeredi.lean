@@ -1198,6 +1198,7 @@ import GowersSzemeredi.Proofs18CoverExponentsFejerT
 import GowersSzemeredi.Proofs18CoverFejerHeadlineT
 import GowersSzemeredi.Proofs18CoverFejerLowDegrees5
 import GowersSzemeredi.Proofs18CoverFejerShortLengths3
+import GowersSzemeredi.Proofs18CoverFejerHeadlineU
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

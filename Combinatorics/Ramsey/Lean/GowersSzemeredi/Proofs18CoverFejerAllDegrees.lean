@@ -11,6 +11,7 @@ import GowersSzemeredi.Proofs16PolynomialFejerS
 import GowersSzemeredi.Proofs18CoverFejerHeadlineT
 import GowersSzemeredi.Proofs18CoverFejerLowDegrees5
 import GowersSzemeredi.Proofs18CoverFejerShortLengths3
+import GowersSzemeredi.Proofs18CoverFejerHeadlineU
 
 /-! **Theorem 18.1 at `d + 6` and Theorem 18.2 / Corollary 18.7 at `L + 4`
 in every degree and length** (Notes L.16d).
@@ -44,7 +45,10 @@ For large degrees and lengths it gives:
   (`theorem_18_1_d5`), `d + 4` for every `d ≥ 11`, and **`L + 3` in every
   length** (`theorem_18_2_L3`, `corollary_18_7_L3`), with
   `W(k, r) ≤ 2^2^r^2^2^(k+3)` and Theorem 1.3 at `2^(-2^(k+3))` for every
-  `k`. -/
+  `k`;
+* the polynomial Bohr radius (Notes L.16l): **`L + 2` for every `L ≥ 13`**
+  (`theorem_18_2_L2_thirteen_le`), with van der Waerden and Theorem 1.3 at
+  `k + 2` from `k = 13`. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -376,5 +380,33 @@ theorem van_der_waerden_L3_all (k : Nat) {r : Nat} (hr : 2 ≤ r) (N : Nat)
 `2^(-2^(k+9))`). -/
 theorem theorem_1_3_L3 : Theorem13At 3 :=
   theorem13At_of_sharp theorem_18_2_L3
+
+/-! ### The polynomial Bohr radius: `L + 2` (Notes L.16l) -/
+
+/-- **Theorem 18.2 at every length `L ≥ 13` with `L + 2` in place of `L + 9`.** -/
+theorem theorem_18_2_L2_thirteen_le {L : Nat} (hL : 13 ≤ L) : Theorem182AtSharp 2 L :=
+  theorem_18_2_L2_thirteen_le_of_profiles_cover
+    (fun k => ⌈multiaffinePartitionK (k + 1) (2 ^ (k + 1))⌉₊)
+    (fun k => (k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1)))
+    (fun k => two_le_ceil_multiaffinePartitionK (k + 1) (2 ^ (k + 1)))
+    (fun k => Nat.mul_pos (Nat.succ_pos k) (multiaffinePartitionP_pos _ _))
+    (fun k _ => section16RecurrenceProfileWith_explicit k)
+    (fun k => explicit_family_constants_le k) hL
+
+/-- **Corollary 18.7 at every length `L ≥ 13` with `L + 2`.** -/
+theorem corollary_18_7_L2_thirteen_le {L : Nat} (hL : 13 ≤ L) : Corollary187AtSharp 2 L :=
+  (theorem_18_2_L2_thirteen_le hL).corollary_18_7
+
+/-- **Van der Waerden numbers for long progressions**: for `k ≥ 13` and
+`r ≥ 2`, `W(k, r) ≤ 2^2^r^2^2^(k+2)`. -/
+theorem van_der_waerden_L2 {k : Nat} (hk : 13 ≤ k) {r : Nat} (hr : 2 ≤ r) (N : Nat)
+    (hN : szemerediThresholdAt 2 (1 / (r : Real)) k ≤ N) (color : Nat → Fin r) :
+    HasMonochromaticAP N r color k :=
+  (theorem_18_2_L2_thirteen_le hk).van_der_waerden hr N hN color
+
+/-- **Theorem 1.3 with constant `2^(-2^(k+2))` for every `k ≥ 13`** (printed:
+`2^(-2^(k+9))`; every `k`: `2^(-2^(k+3))`, `theorem_1_3_L3`). -/
+theorem theorem_1_3_L2_thirteen_le : Theorem13AtFrom 2 13 :=
+  theorem13AtFrom_of_sharp fun _ hk => theorem_18_2_L2_thirteen_le hk
 
 end LeanProofs.GowersSzemeredi

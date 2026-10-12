@@ -1,0 +1,94 @@
+
+/-! ### Closed forms -/
+
+/-- Beyond the table one Theorem 18.2 step costs `28·2^k` plus a polynomial,
+or at most `32·2^k + 9`. -/
+theorem envStepUTx_le_tight {k : Nat} (hk : 13 ≤ k) (μ : Nat) :
+    envStepUTx k (tightMu0T k) (genMuK k) μ ≤
+      max (μ + 28 * 2 ^ k + 9 * (k + 4) ^ 2 + 4 * (k + 3) ^ 2 + k + 135) (32 * 2 ^ k + 9) := by
+  unfold envStepUTx GenParamsT.densDegT GenParamsT.threshDegU GenParamsT.expDegT
+    GenParamsT.rhoDegT tightMu0T tightMuV genMuK
+  rw [tDeg_eq_of_ge hk, fixDegQ_eq (by omega), two_pow_five_mul, two_pow_four_mul]
+  have := Nat.lt_two_pow_self (n := k)
+  generalize 4 * (k + 3) ^ 2 = q
+  generalize (k + 4) ^ 2 = s
+  generalize 2 ^ k = x at *
+  omega
+
+/-- Every Theorem 18.2 step is at least `32·2^k + 9`. -/
+theorem envStepUTx_ge (k μ0 μ : Nat) : 32 * 2 ^ k + 9 ≤ envStepUTx k μ0 (genMuK k) μ := by
+  unfold envStepUTx GenParamsT.threshDegU GenParamsT.expDegT genMuK
+  rw [two_pow_five_mul]
+  omega
+
+/-- The kernel-evaluated envelope in dimensions `9, …, 12`. -/
+theorem genMuXU_small64 {k : Nat} (h9 : 9 ≤ k) (h12 : k ≤ 12) :
+    genMuXU k + 2 * (k + 4) + 14 ≤ 64 * 2 ^ k := by
+  interval_cases k <;> decide +kernel
+
+theorem genMuXU_twelve : genMuXU 12 + 4 * 12 + 128 ≤ 64 * 2 ^ 12 := by decide +kernel
+
+/-- **The Theorem 18.2 envelope beyond the table**: `μ_k + 4k + 128 ≤ 64·2^k`
+for `k ≥ 12`. -/
+theorem genMuXU_le64 : ∀ k, 12 ≤ k → genMuXU k + 4 * k + 128 ≤ 64 * 2 ^ k := by
+  intro k hk
+  induction k, hk using Nat.le_induction with
+  | base => exact genMuXU_twelve
+  | succ k hk ih =>
+    rw [genMuXU_succ (by omega)]
+    have h1 := envStepUTx_le_tight (k := k + 1) (by omega) (genMuXU k)
+    have h2 := four_sq_le_two_pow_ten k (by omega)
+    have h3 : (k + 4) ^ 2 ≤ (k + 5) ^ 2 := Nat.pow_le_pow_left (by omega) 2
+    have h4 : k + 140 ≤ 2 ^ k := le_trans (by nlinarith) h2
+    rw [show k + 1 + 4 = k + 5 by ring, show k + 1 + 3 = k + 4 by ring] at h1
+    rw [pow_succ] at h1 ⊢
+    generalize (k + 5) ^ 2 = s5 at *
+    generalize (k + 4) ^ 2 = s4 at *
+    generalize 2 ^ k = x at *
+    omega
+
+/-- **The Theorem 18.2 envelope fits `64·2^k` in every dimension `k ≥ 9`.** -/
+theorem genMuXU_fit64 {k : Nat} (hk : 9 ≤ k) : genMuXU k + 2 * (k + 4) + 14 ≤ 64 * 2 ^ k := by
+  rcases Nat.lt_or_ge k 13 with h | h
+  · exact genMuXU_small64 hk (by omega)
+  · have := genMuXU_le64 k (by omega); omega
+
+theorem genMuXU_ge {k : Nat} (hk : 2 ≤ k) : 32 * 2 ^ k + 9 ≤ genMuXU k := by
+  obtain ⟨j, rfl⟩ : ∃ j, k = j + 1 := ⟨k - 1, by omega⟩
+  rw [genMuXU_succ (by omega)]
+  exact envStepUTx_ge _ _ _
+
+/-! ### The headline statements -/
+
+/-- **Theorem 18.2 at every length `L ≥ 13` with `L + 2` in the threshold**,
+from the recurrence profiles. -/
+theorem theorem_18_2_L2_thirteen_le_of_profiles_cover (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k)
+    (hp : ∀ k, 0 < pc k)
+    (hrec : ∀ k, 1 ≤ k →
+      Section16RecurrenceProfileWith k (familyRecThr k (Kc k) (pc k)) (familyRecExp k (pc k)))
+    (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 5))))
+    {L : Nat} (hL : 13 ≤ L) : Theorem182AtSharp 2 L := by
+  have henv := envBound_allXU Kc pc hK hp hrec hconst (L - 4) (by omega)
+  rw [show L - 4 + 2 = L - 2 by omega] at henv
+  have hge := genMuXU_ge (k := L - 4) (by omega)
+  have hfit := genMuXU_fit64 (k := L - 4) (by omega)
+  have hk := Nat.lt_two_pow_self (n := L - 4)
+  have h42 : 42 ≤ genMuXU (L - 4) := by omega
+  have hLμ : 4 * L + 20 ≤ 2 ^ genMuXU (L - 4) := by
+    have := Nat.lt_two_pow_self (n := genMuXU (L - 4))
+    omega
+  refine theorem182AtSharp_of_envBound (by omega) henv h42 hLμ ?_
+  have h2 : 2 ^ (L + 2) = 64 * 2 ^ (L - 4) := by
+    rw [show L + 2 = (L - 4) + 6 by omega, pow_add]; ring
+  rw [h2]
+  omega
+
+/-- **Corollary 18.7 at every length `L ≥ 13` with `L + 2`**, from the profiles. -/
+theorem corollary_18_7_L2_thirteen_le_of_profiles_cover (Kc pc : Nat → Nat)
+    (hK : ∀ k, 2 ≤ Kc k) (hp : ∀ k, 0 < pc k)
+    (hrec : ∀ k, 1 ≤ k →
+      Section16RecurrenceProfileWith k (familyRecThr k (Kc k) (pc k)) (familyRecExp k (pc k)))
+    (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 5))))
+    {L : Nat} (hL : 13 ≤ L) : Corollary187AtSharp 2 L :=
+  (theorem_18_2_L2_thirteen_le_of_profiles_cover Kc pc hK hp hrec hconst hL).corollary_18_7
+
