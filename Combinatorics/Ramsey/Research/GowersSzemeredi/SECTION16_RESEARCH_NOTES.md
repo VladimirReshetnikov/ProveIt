@@ -4394,7 +4394,7 @@ ones is spanned by the parity function. The `m`-range Lemma 15.4 is
 therefore the printed proof with a general Corollary 15.2 and
 `(2m+1)^(2d·2^k)` patterns.
 
-*Propagation (model).* Scratchpad `model_fejer.py` mirrors the split-class
+*Propagation (model).* `models/model_fejer.py` mirrors the split-class
 recursion of `Proofs16SplitStepBounds` exactly (`splitStepA`, `splitStepD`).
 Its θ₁-driven inputs are:
 * `stepP = 2^(2^(k+5)+6) = 64·E₁`;
@@ -4417,8 +4417,19 @@ This would give Theorem 18.1 at `d + 6` and Theorems 18.2 and 18.7 at
 and `W(k, r) ≤ 2^2^r^2^2^(k+4)`.
 
 *Caveats.*
-1. The scalings of `stepT` and the seed assume that `s` and the base Bohr
-   exponent stay the squares of θ₁'s exponent, as printed.
+1. *Sensitivity* (`models/model_fejer_sens.py`,
+   `models/model_seed_threshold.py`). The gain hinges on the dimension-two
+   seed, not on the Bohr exponent `stepT`:
+   * Fejér θ₁ with the printed seed `2^132` stays at `d + 7` / `L + 5`;
+   * Fejér θ₁ with the printed `stepT` still reaches `d + 6` / `L + 4`;
+   * the threshold is a seed log-degree of at most `120`.
+
+   The printed `s` is composed across dimensions:
+   `log₂ deg s(k) = 2^(k+6) = 64 + Σ_{j≤k} 2^(j+5)`, the sum of the
+   θ₁ log-degrees. Recomputing it with the Fejér θ₁ (keeping the printed
+   base 64) gives `log₂ deg s(1) = 82`, hence seed `2^86`, class constant
+   `26`, envelope `≤ 205·2^k`, and still `d + 6` / `L + 4`. That `s` is
+   driven only by θ₁ is read off the printed degrees, not proved.
 2. The model is the envelope model, not a proof.
 3. Formalizing needs a θ₁-parametric Section 16: `section16ThetaOne` is
    hardwired in 88 modules (483 lines), `multipleS` in 72.
