@@ -1,0 +1,35 @@
+The completed audit covers 1,755 finite cases: 1,635 pilot surfaces,
+48 compatible mixed surfaces, 36 analytic multiples and 36 relabellings.
+It checks 32,437 literal base polygons and 119,490 vertex links. All native
+profiles agree with the finite expansion, and all source certificates replay
+with producer entry points disabled. The artifact retains 106 complete
+source proofs and hashes every tested finite proof. Seven binary cases
+include multipliers $2^{128}$ and $2^{500}$ on one, four and sixteen tetrahedra and
+$2^{16384}$ copies on one tetrahedron. Their core sizes are respectively
+7, 43 and 187 handles, independent of scaling; the corresponding polygon
+family counts are 5, 29 and 125. The audit completed in 209.58 seconds on
+this machine. These measurements validate the tested cases and the binary
+representation; they are not a worst-case recognition theorem.
+
+The full Regina-enabled regression suite passes all 1,611 tests with no
+skips, including twelve new selector and parallelity tests.
+
+The complete supplied-surface task was timed in five shuffled paired rounds
+after warmup. Both arms validate the source, construct bundle and core charts,
+classify the base surfaces and serialize the result. The native arm also
+performs independent source and orbit-certificate replay; the literal arm
+reconstructs geometry from raw-cell incidences and explicitly checks all
+polygon vertex links. Their representations and proof obligations differ.
+Input preparation outside these tasks and garbage collection are excluded.
+The table gives medians, with the last column the median of paired ratios.
+
+\input{tables/parallelity_timing.tex}
+
+Binary compression wins for large multiplicity: the measured ratio at
+4,096 copies is 57.22. The one-tetrahedron native times from 16 to 4,096
+copies remain near 11 milliseconds. Small examples pay substantial orbit
+and proof overhead: the four-tetrahedron primitive case is about 16.7 times
+slower than expansion, and the sixteen-tetrahedron primitive case about
+4.95 times slower. Identical literal-control ratios range from 0.983 to
+1.020. These are supplied-surface operator measurements; they establish
+neither an end-to-end recognizer speedup nor the desired general bound.
