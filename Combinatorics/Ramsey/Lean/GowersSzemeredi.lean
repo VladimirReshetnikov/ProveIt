@@ -1154,6 +1154,7 @@ import GowersSzemeredi.Proofs18FejerSeedExponents
 import GowersSzemeredi.Proofs16UniformCoverTwoFejer
 import GowersSzemeredi.Proofs16ClassPiecesWith
 import GowersSzemeredi.Proofs16ClassStepFejer
+import GowersSzemeredi.Proofs16ClassStepBoundsFejer
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
