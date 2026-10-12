@@ -1,0 +1,137 @@
+diff --git a/article.tex b/article.tex
+--- a/article.tex
++++ b/article.tex
+@@ -1382,31 +1382,90 @@
+ The following problems are concrete continuations, not premises used
+ in the preceding proofs.
+ 
+-\subsection{Sharp large-order constants of the inverse sectors}
+-Theorem~\ref{thm:inverse-gevrey} fixes the exponential Borel scale but
+-not the full large-order coefficient law. A natural conjecture, for
+-fixed $u>0$, is
++\subsection{Sharp large-order constants of the inverse sectors: resolved}
++The two amplitude formulas conjectured in the original version of this
++article are proved in the companion report \cite{latecoeff2026}.
++For every $U>0$, uniformly for real $0<u\le U$ as $m\to\infty$,
+ \begin{align}
+- C_{2m}(u)&\sim-\frac{4u\Gamma(2m)}{2mA^{2m}}
+-                         \cosh(Au/4),\label{eq:conj-even}\\
+- C_{2m+1}(u)&\sim\frac{4u\Gamma(2m+1)}{(2m+1)A^{2m+1}}
+-                         \sinh(Au/4).\label{eq:conj-odd}
++ C_{2m}(u)
++ &=-\frac{4u\Gamma(2m)}{2mA^{2m}}\cosh(Au/4)
++                  \{1+O_U(m^{-1})\},\label{eq:conj-even}\\
++ C_{2m+1}(u)
++ &=\frac{4u\Gamma(2m+1)}{(2m+1)A^{2m+1}}\sinh(Au/4)
++                  \{1+O_U(m^{-1})\}.\label{eq:conj-odd}
+ \end{align}
+-These are \emph{unproved in this article}. For each fixed number of
+-factors in \eqref{eq:C-formula}, the contribution of one large even
+-index and the remaining linear indices leads to the displayed
+-hyperbolic series. A proof must control the sum over the number of
+-factors uniformly with $m$; the current $e^{K\sqrt n}$ upper bound
+-is not sufficient for that interchange. The conjecture would distinguish
+-the amplitudes at $+A$ and $-A$ and sharpen the reversion calculus.
+-
+-\subsection{Full inverse Borel continuation}
+-Does $\widehat V_u$ continue along every path avoiding an explicit
+-additive arithmetic action set? Can one describe its positive-axis
+-singularity directly from \eqref{eq:C-formula}, rather than from
+-analytic inversion of the forward lateral functions? The answer would
+-turn the present exact transport identities into a more complete
+-resurgent classification of the formal inverse itself.
++There is no positive lower bound on $u$. The proof bounds all numbers
++of factors in \eqref{eq:C-formula} by one summable factorial majorant;
++it therefore justifies the endpoint summation that produces the
++hyperbolic amplitudes. The coarser upper bound in
++Theorem~\ref{thm:inverse-gevrey} remains valid.
++
++The companion report also proves a first correction. Put
++$b_n=\Gamma(n)/n$, $z=Au/4$, $\Phi_0(z)=\cosh z$, and
++$\Phi_1(z)=\sinh z$. Uniformly on every fixed complex disk $|u|\le U$,
++\begin{equation}\label{eq:resolved-two-term}
++ \frac{(-1)^{n+1}A^n C_n(u)}{4u b_n}
++ =\Phi_{n\bmod2}(z)+\frac{K_{n\bmod2}(u)}n+O_U(n^{-2}),
++\end{equation}
++where a prime means differentiation with respect to $z$ and
++\[
++ K_\epsilon(u)
++ =\left\{\frac{A^2u}{288}+\frac{1+u}{2}z^2\right\}\Phi_\epsilon(z)
++       +(2+u)z\Phi_\epsilon'(z).
++\]
++The quotient at $u=0$ is removable. For odd $n$, the remainder on the
++right of \eqref{eq:resolved-two-term} is $O_U(|u|n^{-2})$.
++Consequently the relative conclusions remain valid when $u$ tends to
++zero at an arbitrary rate as the coefficient index increases.
++These statements concern late coefficients; they do not evaluate the
++divergent infinite sector series at the physical specialization.
++
++The remaining asymptotic questions include all inverse-index orders,
++uniformity for a growing slow parameter, and a sharp remainder theorem
++for optimal truncation of the actual inverse.
++
++\subsection{Inverse Borel continuation: resolved part and open classification}
++For every fixed $u\in\mathbb C$, the germ $\widehat V_u$ continues
++analytically along every path starting at the origin and thereafter
++avoiding $A\mathbb Z$. The formal series $V(q,u)$ is $1$-summable in
++each direction outside $\pi\mathbb Z$. These assertions are proved in \cite{latecoeff2026}
++by checking the hypotheses of Sauzin's nonlinear resurgence and
++summability theorems \cite{Sauzin2015}.
++The model-specific reduction is
++\[
++ h(t)=\frac{\sqrt{1-2u^2R(t)}-1}{u},\qquad
++ G(x)=x\exp\{-h(1/x)\},\qquad
++ V(q,u)=h\!\left(\frac1{G^{-1}(1/q)}\right),
++\]
++with the square root tending to one and the case $u=0$ filled in by
++continuity; $G^{-1}$ is the compositional inverse near infinity.
++The closed discrete set $A\mathbb Z$ contains zero and
++is stable under addition, as required by the closure theorem.
++The resulting sectorial sums satisfy the exact summed form of
++\eqref{eq:formal-inverse} on sufficiently small common sectors.
++
++The positive-axis question also has a direct coefficient answer.
++With $z=Au/4$,
++\[
++ \widehat V_u(\xi)
++ =\frac{2u}{\xi}
++   \left\{e^{-z}\log(1-\xi/A)+e^z\log(1+\xi/A)\right\}
++   +\mathcal H_u(\xi),
++\]
++where the logarithms are their Taylor branches at zero and
++$\mathcal H_u$ is holomorphic in $|\xi|<A$ and continuous on the
++closed disk. Both $A$ and $-A$ are genuine singularities whenever
++$u\ne0$, so the Borel radius is exactly $A$. The first coefficient
++correction gives an explicit dilogarithmic refinement with a
++continuously differentiable remainder \cite{latecoeff2026}.
++
++The set $A\mathbb Z$ is an allowed singularity set, not a statement
++that every lattice point is active on every sheet. In particular, the
++origin may become singular on another sheet even though the initial
++germ is regular there. Determining the active higher lattice points,
++their path-dependent local singularity germs, and the complete Stokes
++or alien calculus remains open. Continuous boundary control alone
++does not establish that stronger analytic classification.
+ 
+ \subsection{Uniform Stokes transport away from exact resonance}
+ The hypergeometric kernel \eqref{eq:general-borel} is jointly analytic
+@@ -1537,5 +1596,19 @@
+ prepared for V. Reshetnikov, 11 October 2026. Library source
+ \texttt{article(20261012-044824).tex}; abstract and selected convergence
+ statements inspected.
++\bibitem{latecoeff2026}
++\emph{Sharp Late Coefficients and Borel Continuation of Resonant Lambert
++Inverses}, research contribution prepared for Vladimir Reshetnikov and
++the ProveIt project, 12 October 2026. Companion report, especially the
++theorems ``Sharp uniform late coefficients,'' ``Boundary models with
++controlled remainders,'' and ``Continuation of the quadratic inverse.''
++
++\bibitem{Sauzin2015}
++D. Sauzin, \emph{Nonlinear analysis with resurgent functions},
++Annales scientifiques de l'\'Ecole Normale Sup\'erieure, S\'erie 4,
++\textbf{48}(3) (2015), 667--702, Theorems 3, 5, $3'$, and $5'$.
++\url{https://doi.org/10.24033/asens.2255};
++\url{https://arxiv.org/abs/1212.4477}.
++
+ \end{thebibliography}
+ \end{document}

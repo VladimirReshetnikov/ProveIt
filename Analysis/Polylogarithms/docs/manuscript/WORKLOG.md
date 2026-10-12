@@ -1046,3 +1046,80 @@ audited. No current contact sheet was opened.
 All PDFs retain ProveIt Contributors authorship. Original report evidence
 is unchanged. The (2,3,4) case and the arithmetic classification outside
 this certificate class remain open. No Lean or remote-CI claim is made.
+
+## All late Lambert coefficients, October 12, 2026 (Pacific)
+
+October 12, 2026 (Pacific). Volume I now gives a finite Faulhaber/Poisson
+formula for every fixed inverse-index correction, a uniform factorial-vertex
+proof, and the explicit second correction. It resolves the all-order question
+in the preserved summation-and-singularities continuation. The resulting
+Borel models use polylogarithms of successively higher order, with the stated
+finite differentiability of the remainder on the closed initial disk.
+
+Independent rational computation checks 65 finite product coefficients and
+the first two explicit correction formulas. Forty complete finite coefficient
+values, recomputed from the delivered verifier on an isolated copy, support
+the first five asymptotic orders through n=201, including complex coupling
+and a vanishing leading parity amplitude. Numerical comparisons are
+diagnostics, not interval certificates; the written proof establishes the
+uniform infinite statement. No convergence in correction order, global
+Borel continuation, or full local alien calculus is inferred.
+
+Final pages 149/130/253/86 (618 total),
+combined 575, 150 references. All four volumes compile independently.
+Coupled volume and combined builds converge without final gate issues;
+58 external PDF destinations resolve. Manual review opens 12
+changed volume bodies and 7 unmatched combined bodies. Exact
+raster comparison retains 606 prior volume bodies and 561
+prior combined bodies, with 7 additional combined bodies matched to
+freshly reviewed volume pages. Only centered footer numbers are excluded,
+with other content bounds audited. No current contact sheet was opened.
+
+The archive record now covers 134 retired archives and 4779 tracked original
+members. Four recent packages are registered without changing their original
+evidence. Three newer incoming packages remain pending. The separate audit
+accepts the angular and endpoint conclusions of summation-and-singularities;
+their canonical synthesis remains outstanding. All PDFs retain ProveIt
+Contributors authorship. No Lean or remote-CI claim is made.
+
+## Lambert continuation and zero coupling, October 12, 2026 (Pacific)
+
+October 12, 2026 (Pacific). Volume I, Section 1.9 now proves continuation
+of the inverse Borel transform along paths avoiding 4*pi^2*Z after leaving
+the origin, and 1-summability off real directions. Its sums satisfy the
+exact inverse equation. The arithmetic logarithmic kernel supplies normal
+continuation and angular growth; an explicit transformation reduces
+reversion to Sauzin's substitution and compositional-inversion theorems.
+The hypotheses were checked against the primary source. Finite initial-disk
+boundary models are kept distinct from this stronger analytic conclusion.
+
+The all-order coefficient theorem also gains an extra coupling factor in
+the odd remainder, by Schwarz's lemma on a larger parameter disk. This
+extends the report's first-correction relative uniformity down to zero
+positive coupling to every fixed inverse-index order. No growing-coupling
+limit, all-lattice singularity classification or full alien calculus is claimed.
+
+The complete unmodified incoming verifier passed on a separate copy on the
+configured Linux worker, with its pinned dependencies and required 64-bit
+significand/16384-exponent long double. All 5890 exact checks through q^12
+passed; 70 main coefficient cases include every finite k<=n through n=1025.
+Thirty-five independent 80-digit comparisons include fifteen comparisons
+with exact polynomials. These are finite diagnostics, not interval proofs
+of continuation or summability. Original source and delivered evidence
+remain unchanged, and the imported ZIP is retired in its placement commit.
+
+Final pages 152/131/254/87 (624 total),
+combined 578, 152 references. All four volumes compile independently.
+Coupled volume and combined builds converge without final gate issues;
+64 external PDF destinations resolve. Manual review opens 15
+changed volume bodies and 8 unmatched combined bodies. Exact
+raster comparison retains 609 prior volume bodies and 564
+prior combined bodies, with 6 additional combined bodies matched to
+freshly reviewed volume pages. Only centered footer numbers are excluded,
+with other content bounds audited. No current contact sheet was opened.
+
+The archive register covers 135 retired archives and 4806 tracked original
+members, with 56 bare checksum records recoverable in arrival history.
+Two incoming reports remain pending: order-jet filters and joint coefficient
+transseries. Their claims are not accepted by this milestone. All PDFs retain
+ProveIt Contributors authorship. No Lean or remote-CI claim is made.

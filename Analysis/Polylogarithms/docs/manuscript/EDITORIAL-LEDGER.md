@@ -1203,3 +1203,54 @@ degree 27, verify twelve finite-dimensional kernels, recover the subtraction
 and endpoint independently, and reject four corruptions. At both 70 and 100
 digits, three ordinary partial sums agree with their finite telescopers.
 Endpoint numerical checks are diagnostics, not interval certification.
+
+
+## All late coefficients of the resonant Lambert inverse, October 12, 2026
+
+The preserved Resonant_Lambert_Inverse_Transseries report supplies the
+formal model and finite coefficient formula. Its summation-singularities
+continuation proves the leading hyperbolic amplitudes and first correction.
+The new Volume I section supplies a finite Faulhaber/Poisson formula at
+every fixed inverse-index order, a uniform factorial-vertex remainder
+proof, the explicit second correction and arbitrary finite polylogarithmic
+Borel boundary models. It resolves that continuation's all-order question.
+
+The theorem concerns additive expansions on compact complex coupling sets.
+It does not assert convergence in correction order, global continuation,
+or a full local alien calculus. The newly arrived Lambert late-coefficient
+report independently overlaps the first correction and asserts additional
+continuation; that separate closure-theorem claim is accepted in the audit below.
+Angular and direct-endpoint material of summation-singularities is audited
+but not yet integrated into the canonical chapters. All original source
+and authored evidence are unchanged. The compiler checks through order four
+and compares forty independently computed finite coefficients; the written
+proof, not those diagnostics, establishes the infinite uniform assertion.
+
+
+## Lambert continuation and zero coupling, October 12, 2026
+
+The late-coefficients continuation of Resonant_Lambert_Inverse_Transseries
+independently confirms the leading and first-correction amplitudes. Its
+all-order research question is already resolved by Theorem 1.26. Its new
+continuation proof supplies a normally continued divisor-logarithm Borel
+kernel and an explicit tangent-to-identity inverse construction. The
+hypotheses of Sauzin's analytic and summable closure theorems were checked
+against the primary source. Section 1.9 now integrates this argument and
+the exact equation for the sectorial inverse sums. Zero remains in the
+excluded lattice because monodromy can create a pole there on other sheets.
+
+The canonical all-order theorem also extends the report's first-correction
+uniformity at zero positive coupling: normalized odd errors vanish at zero,
+and Schwarz's lemma gives an additional coupling factor at every fixed
+order. This yields relative positive-coupling uniformity without a lower
+cutoff. No assertion is made across complex leading-amplitude zeros or at
+growing coupling. The finite-phase law and exact-completion Stokes transport
+are accepted in the separate intake audit but await canonical synthesis.
+
+The unchanged complete verifier passed on the configured Linux worker with
+its pinned dependencies and required extended-range arithmetic: 5890 exact
+checks, 70 complete finite coefficient cases through n=1025, and 35
+independent 80-digit comparisons. Finite checks remain distinct from the
+analytic proof. The delivered package and PDF are unchanged; only its
+imported ZIP is retired. Order-jet filters and joint coefficient transseries
+remain in incoming pending their own claim review and reconciliation.

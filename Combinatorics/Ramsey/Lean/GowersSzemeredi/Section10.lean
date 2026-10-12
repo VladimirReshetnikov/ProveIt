@@ -260,9 +260,10 @@ def lemma_10_4 : Prop :=
 /-- **Lemma 10.5.** A regular component `W`.  The printed statement leaves
 `rho` unbound; the proof requires `0 < rho`, `rho <= alpha/192`,
 `rho <= alpha^2/32`, and `sigma <= eta rho^4 alpha/384`, all made explicit.
-Also, item (iii) is corrected from its internally inconsistent square-root
-form to the proof-supported `(1-5 eta^(1/5))`, `300 eta^(4/5)` form used in
-Lemma 10.6. -/
+Item (iii) uses the `(1-5 eta^(1/5))`, `300 eta^(4/5)` variant needed in
+Lemma 10.6. The original square-root clause is also valid: see
+`lemma_10_5_original_sqrt_holds` and the simultaneous trade-off theorem in
+Proofs10Regular. -/
 def lemma_10_5 : Prop :=
   forall (N : Nat) [NeZero N] (X : Type*) [Fintype X] [DecidableEq X]
       (D : MultifunctionDomain N X) (phi : X -> ZMod N)

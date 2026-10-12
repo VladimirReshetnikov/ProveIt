@@ -17,6 +17,9 @@ import GowersSzemeredi.Proofs18CoverFejerHeadlineX
 import GowersSzemeredi.Proofs16PolynomialFejerX
 import GowersSzemeredi.Proofs18CoverFejerHeadlineZ
 import GowersSzemeredi.Proofs18CoverFejerHeadlineY
+import GowersSzemeredi.Proofs18CoverFejerHeadlineJ
+import GowersSzemeredi.Proofs18CoverFejerLowDegrees4
+import GowersSzemeredi.Proofs18CoverFejerHeadlineK
 
 /-! **Theorem 18.1 at `d + 6` and Theorem 18.2 / Corollary 18.7 at `L + 4`
 in every degree and length** (Notes L.16d).
@@ -665,5 +668,203 @@ theorem theorem_18_1_d4_seven_le {d : Nat} (hd : 7 ≤ d) : Theorem181AtSharp 4 
     (fun k => Nat.mul_pos (Nat.succ_pos k) (multiaffinePartitionP_pos _ _))
     (fun k _ => section16RecurrenceProfileWith_explicit k)
     (fun k => explicit_family_constants_poly_le k) hpp hp hK hpB hd
+
+/-! ### Joint slices (Notes L.16q) -/
+
+/-- **Theorem 18.1 at every degree `d ≥ 12` with `d + 2` in place of `d + 10`.** -/
+theorem theorem_18_1_d2_twelve_le {d : Nat} (hd : 12 ≤ d) : Theorem181AtSharp 2 d := by
+  obtain ⟨K, p, hpp, hp, hK, hpB⟩ := progressionPhasePartition_explicit
+  exact theorem_18_1_d2_twelve_le_of_profiles_poly
+    (fun k => ⌈multiaffinePartitionK (k + 1) (2 ^ (k + 1))⌉₊)
+    (fun k => (k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1)))
+    (fun k => two_le_ceil_multiaffinePartitionK (k + 1) (2 ^ (k + 1)))
+    (fun k => Nat.mul_pos (Nat.succ_pos k) (multiaffinePartitionP_pos _ _))
+    (fun k _ => section16RecurrenceProfileWith_explicit k)
+    (fun k => explicit_family_constants_poly_le k) hpp hp hK hpB hd
+
+/-- **Theorem 18.1 at every degree `d ≥ 9` with `d + 3` in place of `d + 10`.** -/
+theorem theorem_18_1_d3_nine_le {d : Nat} (hd : 9 ≤ d) : Theorem181AtSharp 3 d := by
+  obtain ⟨K, p, hpp, hp, hK, hpB⟩ := progressionPhasePartition_explicit
+  exact theorem_18_1_d3_nine_le_of_profiles_poly
+    (fun k => ⌈multiaffinePartitionK (k + 1) (2 ^ (k + 1))⌉₊)
+    (fun k => (k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1)))
+    (fun k => two_le_ceil_multiaffinePartitionK (k + 1) (2 ^ (k + 1)))
+    (fun k => Nat.mul_pos (Nat.succ_pos k) (multiaffinePartitionP_pos _ _))
+    (fun k _ => section16RecurrenceProfileWith_explicit k)
+    (fun k => explicit_family_constants_poly_le k) hpp hp hK hpB hd
+
+/-- **Theorem 18.1 at every degree `d ≥ 4` with `d + 4` in place of `d + 10`.** -/
+theorem theorem_18_1_d4_four_le {d : Nat} (hd : 4 ≤ d) : Theorem181AtSharp 4 d := by
+  obtain ⟨K, p, hpp, hp, hK, hpB⟩ := progressionPhasePartition_explicit
+  exact theorem_18_1_d4_four_le_of_profiles_poly
+    (fun k => ⌈multiaffinePartitionK (k + 1) (2 ^ (k + 1))⌉₊)
+    (fun k => (k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1)))
+    (fun k => two_le_ceil_multiaffinePartitionK (k + 1) (2 ^ (k + 1)))
+    (fun k => Nat.mul_pos (Nat.succ_pos k) (multiaffinePartitionP_pos _ _))
+    (fun k _ => section16RecurrenceProfileWith_explicit k)
+    (fun k => explicit_family_constants_poly_le k) hpp hp hK hpB hd
+
+/-- **Theorem 18.1 at every degree with `d + 4` in place of `d + 10`.** -/
+theorem theorem_18_1_d4 (d : Nat) : Theorem181AtSharp 4 d := by
+  match d with
+  | 0 => exact theorem_18_1_d4_degree_zero
+  | 1 => exact theorem_18_1_d4_degree_one
+  | 2 => exact theorem_18_1_d4_degree_two
+  | 3 =>
+    obtain ⟨K, p, hpp, hp, hK, hpB⟩ := progressionPhasePartition_explicit
+    exact theorem_18_1_d4_three_of_phase_partition hpp hp hK hpB
+  | d + 4 => exact theorem_18_1_d4_four_le (by omega)
+
+/-- **Theorem 18.2 at every length `L ≥ 15` with `L + 0` in place of `L + 9`.** -/
+theorem theorem_18_2_L0_fifteen_le {L : Nat} (hL : 15 ≤ L) : Theorem182AtSharp 0 L :=
+  theorem_18_2_L0_fifteen_le_of_profiles_poly
+    (fun k => ⌈multiaffinePartitionK (k + 1) (2 ^ (k + 1))⌉₊)
+    (fun k => (k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1)))
+    (fun k => two_le_ceil_multiaffinePartitionK (k + 1) (2 ^ (k + 1)))
+    (fun k => Nat.mul_pos (Nat.succ_pos k) (multiaffinePartitionP_pos _ _))
+    (fun k _ => section16RecurrenceProfileWith_explicit k)
+    (fun k => explicit_family_constants_poly_le k) hL
+
+/-- **Corollary 18.7 at every length `L ≥ 15` with `L + 0`.** -/
+theorem corollary_18_7_L0_fifteen_le {L : Nat} (hL : 15 ≤ L) : Corollary187AtSharp 0 L :=
+  (theorem_18_2_L0_fifteen_le hL).corollary_18_7
+
+/-- **Van der Waerden numbers**: for `k ≥ 15` and `r ≥ 2`, the bound of
+Theorem 1.3 with `k + 0`. -/
+theorem van_der_waerden_L0_fifteen_le {k : Nat} (hk : 15 ≤ k) {r : Nat} (hr : 2 ≤ r) (N : Nat)
+    (hN : szemerediThresholdAt 0 (1 / (r : Real)) k ≤ N) (color : Nat → Fin r) :
+    HasMonochromaticAP N r color k :=
+  (theorem_18_2_L0_fifteen_le hk).van_der_waerden hr N hN color
+
+/-- **Theorem 1.3 with `k + 0` for every `k ≥ 15`.** -/
+theorem theorem_1_3_L0_fifteen_le : Theorem13AtFrom 0 15 :=
+  theorem13AtFrom_of_sharp fun _ hk => theorem_18_2_L0_fifteen_le hk
+
+/-- **Theorem 18.2 at every length `L ≥ 12` with `L + 1` in place of `L + 9`.** -/
+theorem theorem_18_2_L1_twelve_le {L : Nat} (hL : 12 ≤ L) : Theorem182AtSharp 1 L :=
+  theorem_18_2_L1_twelve_le_of_profiles_poly
+    (fun k => ⌈multiaffinePartitionK (k + 1) (2 ^ (k + 1))⌉₊)
+    (fun k => (k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1)))
+    (fun k => two_le_ceil_multiaffinePartitionK (k + 1) (2 ^ (k + 1)))
+    (fun k => Nat.mul_pos (Nat.succ_pos k) (multiaffinePartitionP_pos _ _))
+    (fun k _ => section16RecurrenceProfileWith_explicit k)
+    (fun k => explicit_family_constants_poly_le k) hL
+
+/-- **Corollary 18.7 at every length `L ≥ 12` with `L + 1`.** -/
+theorem corollary_18_7_L1_twelve_le {L : Nat} (hL : 12 ≤ L) : Corollary187AtSharp 1 L :=
+  (theorem_18_2_L1_twelve_le hL).corollary_18_7
+
+/-- **Van der Waerden numbers**: for `k ≥ 12` and `r ≥ 2`, the bound of
+Theorem 1.3 with `k + 1`. -/
+theorem van_der_waerden_L1_twelve_le {k : Nat} (hk : 12 ≤ k) {r : Nat} (hr : 2 ≤ r) (N : Nat)
+    (hN : szemerediThresholdAt 1 (1 / (r : Real)) k ≤ N) (color : Nat → Fin r) :
+    HasMonochromaticAP N r color k :=
+  (theorem_18_2_L1_twelve_le hk).van_der_waerden hr N hN color
+
+/-- **Theorem 1.3 with `k + 1` for every `k ≥ 12`.** -/
+theorem theorem_1_3_L1_twelve_le : Theorem13AtFrom 1 12 :=
+  theorem13AtFrom_of_sharp fun _ hk => theorem_18_2_L1_twelve_le hk
+
+/-- **Theorem 18.2 at every length `L ≥ 9` with `L + 2` in place of `L + 9`.** -/
+theorem theorem_18_2_L2_nine_le {L : Nat} (hL : 9 ≤ L) : Theorem182AtSharp 2 L :=
+  theorem_18_2_L2_nine_le_of_profiles_poly
+    (fun k => ⌈multiaffinePartitionK (k + 1) (2 ^ (k + 1))⌉₊)
+    (fun k => (k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1)))
+    (fun k => two_le_ceil_multiaffinePartitionK (k + 1) (2 ^ (k + 1)))
+    (fun k => Nat.mul_pos (Nat.succ_pos k) (multiaffinePartitionP_pos _ _))
+    (fun k _ => section16RecurrenceProfileWith_explicit k)
+    (fun k => explicit_family_constants_poly_le k) hL
+
+/-- **Corollary 18.7 at every length `L ≥ 9` with `L + 2`.** -/
+theorem corollary_18_7_L2_nine_le {L : Nat} (hL : 9 ≤ L) : Corollary187AtSharp 2 L :=
+  (theorem_18_2_L2_nine_le hL).corollary_18_7
+
+/-- **Van der Waerden numbers**: for `k ≥ 9` and `r ≥ 2`, the bound of
+Theorem 1.3 with `k + 2`. -/
+theorem van_der_waerden_L2_nine_le {k : Nat} (hk : 9 ≤ k) {r : Nat} (hr : 2 ≤ r) (N : Nat)
+    (hN : szemerediThresholdAt 2 (1 / (r : Real)) k ≤ N) (color : Nat → Fin r) :
+    HasMonochromaticAP N r color k :=
+  (theorem_18_2_L2_nine_le hk).van_der_waerden hr N hN color
+
+/-- **Theorem 1.3 with `k + 2` for every `k ≥ 9`.** -/
+theorem theorem_1_3_L2_nine_le : Theorem13AtFrom 2 9 :=
+  theorem13AtFrom_of_sharp fun _ hk => theorem_18_2_L2_nine_le hk
+
+/-! ### The partition constant, sharply (Notes L.16s) -/
+
+/-- **Theorem 18.2 at every length `L ≥ 14` with `L + 0` in place of `L + 9`.** -/
+theorem theorem_18_2_L0_fourteen_le {L : Nat} (hL : 14 ≤ L) : Theorem182AtSharp 0 L :=
+  theorem_18_2_L0_fourteen_le_of_profiles_poly
+    (fun k => ⌈multiaffinePartitionK (k + 1) (2 ^ (k + 1))⌉₊)
+    (fun k => (k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1)))
+    (fun k => two_le_ceil_multiaffinePartitionK (k + 1) (2 ^ (k + 1)))
+    (fun k => Nat.mul_pos (Nat.succ_pos k) (multiaffinePartitionP_pos _ _))
+    (fun k _ => section16RecurrenceProfileWith_explicit k)
+    (fun k => explicit_family_constants_poly_le k) hL
+
+/-- **Corollary 18.7 at every length `L ≥ 14` with `L + 0`.** -/
+theorem corollary_18_7_L0_fourteen_le {L : Nat} (hL : 14 ≤ L) : Corollary187AtSharp 0 L :=
+  (theorem_18_2_L0_fourteen_le hL).corollary_18_7
+
+/-- **Van der Waerden numbers**: for `k ≥ 14` and `r ≥ 2`, the bound of
+Theorem 1.3 with `k + 0`. -/
+theorem van_der_waerden_L0_fourteen_le {k : Nat} (hk : 14 ≤ k) {r : Nat} (hr : 2 ≤ r) (N : Nat)
+    (hN : szemerediThresholdAt 0 (1 / (r : Real)) k ≤ N) (color : Nat → Fin r) :
+    HasMonochromaticAP N r color k :=
+  (theorem_18_2_L0_fourteen_le hk).van_der_waerden hr N hN color
+
+/-- **Theorem 1.3 with `k + 0` for every `k ≥ 14`.** -/
+theorem theorem_1_3_L0_fourteen_le : Theorem13AtFrom 0 14 :=
+  theorem13AtFrom_of_sharp fun _ hk => theorem_18_2_L0_fourteen_le hk
+
+/-- **Theorem 18.2 at every length `L ≥ 11` with `L + 1` in place of `L + 9`.** -/
+theorem theorem_18_2_L1_eleven_le {L : Nat} (hL : 11 ≤ L) : Theorem182AtSharp 1 L :=
+  theorem_18_2_L1_eleven_le_of_profiles_poly
+    (fun k => ⌈multiaffinePartitionK (k + 1) (2 ^ (k + 1))⌉₊)
+    (fun k => (k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1)))
+    (fun k => two_le_ceil_multiaffinePartitionK (k + 1) (2 ^ (k + 1)))
+    (fun k => Nat.mul_pos (Nat.succ_pos k) (multiaffinePartitionP_pos _ _))
+    (fun k _ => section16RecurrenceProfileWith_explicit k)
+    (fun k => explicit_family_constants_poly_le k) hL
+
+/-- **Corollary 18.7 at every length `L ≥ 11` with `L + 1`.** -/
+theorem corollary_18_7_L1_eleven_le {L : Nat} (hL : 11 ≤ L) : Corollary187AtSharp 1 L :=
+  (theorem_18_2_L1_eleven_le hL).corollary_18_7
+
+/-- **Van der Waerden numbers**: for `k ≥ 11` and `r ≥ 2`, the bound of
+Theorem 1.3 with `k + 1`. -/
+theorem van_der_waerden_L1_eleven_le {k : Nat} (hk : 11 ≤ k) {r : Nat} (hr : 2 ≤ r) (N : Nat)
+    (hN : szemerediThresholdAt 1 (1 / (r : Real)) k ≤ N) (color : Nat → Fin r) :
+    HasMonochromaticAP N r color k :=
+  (theorem_18_2_L1_eleven_le hk).van_der_waerden hr N hN color
+
+/-- **Theorem 1.3 with `k + 1` for every `k ≥ 11`.** -/
+theorem theorem_1_3_L1_eleven_le : Theorem13AtFrom 1 11 :=
+  theorem13AtFrom_of_sharp fun _ hk => theorem_18_2_L1_eleven_le hk
+
+/-- **Theorem 18.2 at every length `L ≥ 8` with `L + 2` in place of `L + 9`.** -/
+theorem theorem_18_2_L2_eight_le {L : Nat} (hL : 8 ≤ L) : Theorem182AtSharp 2 L :=
+  theorem_18_2_L2_eight_le_of_profiles_poly
+    (fun k => ⌈multiaffinePartitionK (k + 1) (2 ^ (k + 1))⌉₊)
+    (fun k => (k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1)))
+    (fun k => two_le_ceil_multiaffinePartitionK (k + 1) (2 ^ (k + 1)))
+    (fun k => Nat.mul_pos (Nat.succ_pos k) (multiaffinePartitionP_pos _ _))
+    (fun k _ => section16RecurrenceProfileWith_explicit k)
+    (fun k => explicit_family_constants_poly_le k) hL
+
+/-- **Corollary 18.7 at every length `L ≥ 8` with `L + 2`.** -/
+theorem corollary_18_7_L2_eight_le {L : Nat} (hL : 8 ≤ L) : Corollary187AtSharp 2 L :=
+  (theorem_18_2_L2_eight_le hL).corollary_18_7
+
+/-- **Van der Waerden numbers**: for `k ≥ 8` and `r ≥ 2`, the bound of
+Theorem 1.3 with `k + 2`. -/
+theorem van_der_waerden_L2_eight_le {k : Nat} (hk : 8 ≤ k) {r : Nat} (hr : 2 ≤ r) (N : Nat)
+    (hN : szemerediThresholdAt 2 (1 / (r : Real)) k ≤ N) (color : Nat → Fin r) :
+    HasMonochromaticAP N r color k :=
+  (theorem_18_2_L2_eight_le hk).van_der_waerden hr N hN color
+
+/-- **Theorem 1.3 with `k + 2` for every `k ≥ 8`.** -/
+theorem theorem_1_3_L2_eight_le : Theorem13AtFrom 2 8 :=
+  theorem13AtFrom_of_sharp fun _ hk => theorem_18_2_L2_eight_le hk
 
 end LeanProofs.GowersSzemeredi

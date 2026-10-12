@@ -188,13 +188,16 @@ import GowersSzemeredi.Proofs10Selection
 import GowersSzemeredi.Proofs10Regular
 import GowersSzemeredi.Proofs10Shift
 import GowersSzemeredi.Proofs12
+import GowersSzemeredi.Proofs12SourceScope
 import GowersSzemeredi.Proofs12Parallelograms
 import GowersSzemeredi.Proofs12HigherArrangements
 import GowersSzemeredi.Proofs12Amplification
 import GowersSzemeredi.Proofs12Restriction
 import GowersSzemeredi.Proofs12Combination
 import GowersSzemeredi.Proofs13Basic
+import GowersSzemeredi.Proofs13SourceScope
 import GowersSzemeredi.Proofs13ContextExtraction
+import GowersSzemeredi.Proofs13PurifiedContext
 import GowersSzemeredi.Proofs13InitialProgression
 import GowersSzemeredi.Proofs13LargeSpectrumCover
 import GowersSzemeredi.Proofs13QuadraticRecurrence
@@ -1229,6 +1232,12 @@ import GowersSzemeredi.Proofs16JointSliceSpectrum
 import GowersSzemeredi.Proofs16JointSliceCore
 import GowersSzemeredi.Proofs16JointSliceGlobal
 import GowersSzemeredi.Proofs18JointSliceInverseFejer
+import GowersSzemeredi.Proofs18CoverModulusFejerJ
+import GowersSzemeredi.Proofs18CoverDensityFejerJ
+import GowersSzemeredi.Proofs18CoverExponentsFejerJ
+import GowersSzemeredi.Proofs18CoverFejerHeadlineJ
+import GowersSzemeredi.Proofs18CoverFejerLowDegrees4
+import GowersSzemeredi.Proofs18CoverFejerHeadlineK
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

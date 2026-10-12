@@ -48,3 +48,25 @@ The canonical integration should follow the completed Lambert forward
 identities and distinguish its divergent sector series from convergent
 core charts. No collective or Transseries PDF was rebuilt in this intake,
 and no Lean formalization is claimed.
+
+
+## Subsequent resolution, 12 October 2026
+
+The conventional proof review of [summation and singularities](continuations/summation-singularities/INTAKE-PROOF-AUDIT.md)
+resolves the cosh/sinh coefficient conjectures left open at the time of
+the review above. It supplies a uniform first correction and explicit
+logarithmic/dilogarithmic Borel boundary models. Global continuation is
+not inferred from those boundary models. The parent delivered article
+and its original conjectural wording are preserved as source evidence.
+
+
+## Further resolution: inverse Borel continuation, 12 October 2026
+
+The [late-coefficient continuation audit](continuations/late-coefficients/INTAKE-PROOF-AUDIT.md)
+checks the global continuation argument against Sauzin's closure hypotheses
+and accepts summability away from the real directions. Thus the inverse
+continuation question stated as open above is now resolved for the fixed
+coupling formal series. This is independent of the initial-disk boundary
+models. All-order inverse-index coefficients are proved in the collective
+manuscript's Section 1.9. Full singular germs, activity at every other lattice
+point and full complex-fold classification remain separate questions.

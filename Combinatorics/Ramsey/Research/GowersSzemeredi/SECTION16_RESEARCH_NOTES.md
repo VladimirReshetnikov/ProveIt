@@ -5361,6 +5361,68 @@ asymptotic ratio `24` is below `32` but above `16`, so `d + 2` and `L + 0`
 need a smaller class constant beyond the table, and the true one is about
 `2.4`, against the invariant's `4`.
 
+**L.16r: joint slices (landed, 2026-10-12).** The plan of L.16q, carried out.
+The lift changes in five generated modules:
+* `Proofs16JointSliceCell`: `single_piece_on_line_cell_of_joint_slices` covers
+  the anchor sections `φ(·, a)` and `φ(·, b)` jointly (`joint_cover_on` with
+  `E = {a, b}` at precision `θ₁/4`, then `JointCoverOn.piece`). Density
+  `jointSliceDensity Q θ q = θ₁·(θ₁ - θ₁/2)/Q(θ₁/4)²` and width
+  `jointSliceWidth E θ q L = ⌈L^(E(θ₁/4)²)⌉`;
+* `Proofs16JointSliceSpectrum`, `Proofs16JointSliceCore`,
+  `Proofs16JointSliceGlobal`: the affine-cell, spectrum-cover, core and
+  global-cover lifts with slice covers (`MultiplyLinearWith`) instead of
+  slice providers. The covers are translated with
+  `MultiplyLinearWith.translate_graph` and restricted with `congr_graph`. The
+  global lift is the `_with` (Fejér-parameter) variant,
+  `single_piece_lift_global_cover_with_joint`;
+* `Proofs18JointSliceInverseFejer`: the Fejér inverse step with the `…FJ`
+  density, width, scale and modulus conditions. The spectrum count
+  `singlePieceGlobalQmaxF` is unchanged.
+
+The density is one class degree cheaper than planned in the cost model. With
+`c(s) = s/2/Q(s/2)` one has `c(θ/2) = (θ/4)/Q(θ/4)`, so
+`θ·(θ/2)/Q(θ/4)² = 8·c(θ/2)²`: a single application of the class control,
+squared (`GenParams.joint_dens_step`, exponent `m + μ_b + 3` against
+`dens_step`'s `m + 2μ_b + 4`). The density degree is `ρ + tDeg + 11` (was
+`ρ + 2·tDeg + 13`), and both slice exponents are `E(θ_S/4)` of degree
+`ρ + tDeg + 9`. The side condition of `eta_step_small` becomes
+`3(k+4)² ≤ 2·tDegZ k + 6k + 35` (`sq_le_two_tDegZ`, tight at `k = 1`).
+
+The envelope chain `Proofs18Cover{Modulus,Density,Exponents}FejerJ` and
+`Proofs18CoverFejerHeadlineJ` is generated from the Z/Y chains
+(`assemble_j.py`, `assemble_jy.py`). Both envelopes are asymptotic to
+`10·2^k` (was `15·2^k`). Closed forms hold from `k = 15`, and
+`decide +kernel` evaluates dimensions `2..14`. Results, in the bridge
+`Proofs18CoverFejerAllDegrees`:
+* Theorem 18.1: `d + 4` in every degree (`theorem_18_1_d4`, degrees `0..3`
+  from `Proofs18CoverFejerLowDegrees4`), `d + 3` from `d = 9`, `d + 2` from
+  `d = 12`;
+* Theorem 18.2 and Corollary 18.7: `L + 0` from `L = 15`, `L + 1` from
+  `L = 12`, `L + 2` from `L = 9`, with the van der Waerden bound and
+  Theorem 1.3 at `k`, `k + 1`, `k + 2` from the same thresholds.
+
+`d + 1` and `L - 1` stay out of reach: they need an envelope ratio below `8`.
+
+**L.16s: the partition constant, sharply (2026-10-12).** Under joint slices the
+Theorem 18.1 thresholds move only with the class table (`model_jsens.py`).
+A per-step saving of 12 doubly-logarithmic units would give `d + 3` from 8,
+and 21 would give `d + 2` from 11. The dimension-two seed would have to drop
+from `2^48` to `2^42`. The Theorem 18.2 envelope has a different dominant
+term, the partition constant: `inv_thr_le_ex` raises the refinement constant
+to the power `polynomialPartitionConstant (k+2) = ((k+2)!)²·2^((k+3)²)`.
+`polyPartConst_le` charges `4(k+3)²` for its logarithm through `d! ≤ 2^(d²)`.
+Since `(d!)²·2^d ≤ 2^(d²)` (`factorial_sq_mul_two_pow_le`, by induction from
+`(n+1)² ≤ 4^n`), `partDeg k = (k+3)² + (k+2)(k+1)` suffices
+(`polyPartConst_le_sharp`), about half the old charge (301 against 676 at
+`k = 10`). `Proofs18CoverFejerHeadlineK` (`assemble_k.py`) contains
+`inv_thr_le_ex_sharp` and the J step and envelope of Theorem 18.2 with that
+charge (`envStepKTx`, `genMuXK`). In the bridge: Theorem 18.2 and
+Corollary 18.7 at `L + 0` from `L = 14`, `L + 1` from `L = 11`, `L + 2` from
+`L = 8`, with the van der Waerden bound and Theorem 1.3 at the same
+thresholds. The exact logarithm `⌈log₂ 32·PPC⌉` gives the same thresholds
+(`model_jppc.py`). In Theorem 18.1 the constant is charged at `2^(k+9)` and
+the sharp bound saves only 4 units per step, so nothing changes there.
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`
@@ -6165,6 +6227,98 @@ comment. The fifth-power variant used downstream is already verified.
 
 The exported facade has progressed through further native OAI modules but
 has not yet passed. Its cache is retained. The goal remains active.
+
+### L.40 Original component clause and weighted sign endpoint (2026-10-12)
+
+The direct `ComponentTradeoffCoreAudit` passes over 15 native modules with
+only the three approved axioms. The original square-root clause of Lemma
+10.5 is valid with the same inherited setup and explicit parameter bounds.
+`ComponentTradeoff` records all six conclusions at an arbitrary real error
+exponent t. The construction in `Proofs10Regular` selects one W that works
+for every t simultaneously: the two powers multiply to eta, so its original
+weighted Markov calculation applies without changing any geometric bound.
+Taking t=1/2 gives the original clause; taking t=1/5 preserves the existing
+canonical companion and every downstream fifth-power construction.
+
+The source restores the original item(iii), documents the simultaneous
+trade-offs and identifies the fifth-power variant used in10.6. The published
+PDF was checked to confirm that its original two exponents are indeed1/2.
+Earlier wording that called the square-root clause inconsistent was
+unjustified and is now corrected in the current Lean source and paper.
+
+`Proofs12SourceScope` proves the alpha=0 endpoint of weighted simultaneous
+additivity and separately refutes its unrestricted sign reading. At N=1,
+p=1, alpha=-1 and all weights/functions zero, its Fourier premise holds but
+its weighted quadruple conclusion demands at least one rather than zero.
+The annotated paper states alpha>=0 and visibly records the obstruction.
+All six numbered Section12 results were compared against their actual
+Fourier normalization, endpoint membership, arrangement counts, eventual-N
+quantifiers and uniform-density threshold. The review now covers74/120;
+46 statements and additional inspected scope/bound obligations remain open.
+
+Three current documentation errors in foundational definitions are fixed:
+modular properness means injection and permits wrapping; the original7.7
+threshold is valid by the sharp Bohr proof; the original10.5 clause is valid
+by the simultaneous trade-off proof. These comment edits require a fresh
+native dependency build. The full fidelity gate is running over the expected
+expanded closure, followed automatically by the exported facade build.
+The 15-module direct checkpoint does not certify either broad gate. The last
+full 1,634-module checkpoint remains its historicalf407e0115 snapshot.
+
+The annotated118-page PDF was built twice and its restored component clause
+and sign note inspected on pages57 and68. The published PDF is unchanged.
+The goal remains active; remaining original claims are not reclassified as
+false merely because a weaker proof-supported variant is available.
+
+### L.41 Original purification error and the Section13 comparison (2026-10-12)
+
+`PurifiedContextCoreAudit` passes over43 native modules with only the three
+approved axioms. `Proofs13PurifiedContext` recovers the original2^-73 error
+of Lemma13.11 and improves its density exponent from2^66 to2^64. More
+strongly, it allows any integral error exponent0<=b<=2^30. The initial two
+fibre restrictions retain densitya^(2^24), wherea=alpha/2. The Riesz-product
+arrangement lower bound has coefficient at leasta^(14*2^64), since
+2^37+2^67+2^45+b*2^36<=14*2^64. If|A|<a^(2^64)*N^2, its universal
+arrangement upper bound|A|^15*N^2 is strictly smaller than that lower bound.
+Both separately Freiman-eight coordinates and all Fourier cutoffs survive.
+Forb=73, monotonicity recovers the printed2^66 density as well. The inherited
+N0 depends only onalpha,b; no unqualified all-moduli claim is made.
+
+The source restores the original1-2^-73 proportion, explains the improved
+coefficient calculation and makes the inherited large-N qualifier explicit.
+The old1-2^-44 statement remains a valid sufficient consequence for the
+later context. Its use did not refute the original stronger error clause.
+The proof deliberately restricts `linarith` to the relevant scalar fact,
+preventing expansion of huge powers from unrelated cardinality hypotheses.
+
+`Proofs13SourceScope` proves the alpha=0 endpoints of Lemma13.1 and
+Corollary13.2. Their unrestricted negative-sign readings are separately
+refuted with empty domains atprimeN=2. The earlier Proposition12.1 sign
+refutation is also strengthened fromN=1 toprimeN=2. The annotated paper
+records these actual obstructions and the valid nonnegative sign convention.
+
+All twelve numbered Section13 results have now been compared. The original
+13.6--13.10 numeric companions are distinguished from the legacy weaker
+catalogue types, and the final13.12 has actual shared-step natural axes at
+all primes. Review now covers86/120;34 statements remain unread. Important
+open details include the source13.4 floor computed from its fixed real
+q-bound versus Lean's positive actual integer graph count, the interpretation
+of unqualified intermediate modular axes, and the literal13.11 reading
+without any eventual-N qualifier. None is classified as false without a
+proved counterexample. The still stronger original10.13 estimate remains
+open and is not used to pretend these distinctions are solved.
+
+The expected expanded fidelity closure is rebuilding, followed automatically
+by the full exported facade. The43-module direct audit proves its stated
+scope only. The annotated118-page PDF was rebuilt twice and inspected at
+the sign note and original error on pages75 and84; the published PDF is intact. The last complete1,634-module checkpoint is the historical
+f407e0115 snapshot. The user goal stays active.
+
+Post-merge checkpoint for L.41: incoming main at623fb2007 adds the Fejer-J
+and low-degree final bounds. All43 direct audit input hashes still match
+the verifiedd2f0c80cf snapshot. The merged expected fidelity closure is
+1,652 modules and its fresh native build is running, followed by the facade.
+No claim about that broad gate follows from the unchanged direct inputs.
 
 ## F. Routes
 

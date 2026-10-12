@@ -2711,3 +2711,36 @@ intake audits now record the conventional proof review, complete isolated
 replays, exact overlap and pending canonical synthesis. The proposed external
 equation-number correction is qualified: HTML 60a/b and PDF 3.36a/b are both
 valid locators of the same Conjecture 5. The delivery notes are preserved.
+
+
+## Summation and singularities under polylogarithmic reversion, October 12, 2026
+
+[The complete continuation package](Resonant_Lambert_Inverse_Transseries/continuations/summation-singularities/INTAKE-PLACEMENT.md)
+is filed under the resonant Lambert inverse report. It addresses that report's
+explicit large-order conjecture, the angular multiset summation question, and
+the direct polylogarithm inverse's endpoint ramification. It continues
+*Transseries_And_Inversion* on factorial-series reversion and inverse
+singularities. Its original modular TeX, PDF, figures and evidence are kept
+together. Proof review and synthesis into the volumes are separate steps.
+
+
+## Sharp Lambert inverse coefficients and continuation, October 12, 2026
+
+[The complete late-coefficient continuation](Resonant_Lambert_Inverse_Transseries/continuations/late-coefficients/INTAKE-PLACEMENT.md)
+is an addition to the resonant Lambert inverse report, continuing
+*Transseries_And_Inversion* on factorial reversion and nonlinear Borel
+continuation. Its first correction overlaps the summation-singularities
+continuation; the collective Polylogarithms manuscript now supplies every
+fixed inverse-index order. The new continuation and summability claims are
+audited separately. The original article, PDF, verification evidence and
+proposed patch remain unchanged. Its imported ZIP is retired in this
+placement; the two other incoming reports remain pending.
+
+
+The [late-coefficient proof audit](Resonant_Lambert_Inverse_Transseries/continuations/late-coefficients/INTAKE-PROOF-AUDIT.md)
+now accepts the continuation and off-real summability argument after checking
+its external closure hypotheses. The complete unchanged verifier passed on
+an isolated Linux copy, with all 5890 exact checks and 70 full coefficient
+cases through n=1025. Volume I of the collective Polylogarithms manuscript
+integrates the continuation theorem and strengthens endpoint uniformity to
+all fixed inverse-index orders. Original evidence remains unchanged.

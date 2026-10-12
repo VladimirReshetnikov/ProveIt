@@ -5,10 +5,10 @@ organized as four volumes. Each has its own source and compiled PDF.
 
 | Volume | Material | PDF | Pages |
 |---|---|---|---:|
-| I | Polylogarithm identities, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 144 |
-| II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 130 |
-| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 253 |
-| IV | Gamma grids, CM lattice periods, class products and Herglotz arithmetic | [Gamma Grids, CM Periods and Herglotz Arithmetic](volumes/volume-4-cm-and-herglotz.pdf) | 86 |
+| I | Polylogarithm identities, inverse expansions, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 152 |
+| II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 131 |
+| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 254 |
+| IV | Gamma grids, CM lattice periods, class products and Herglotz arithmetic | [Gamma Grids, CM Periods and Herglotz Arithmetic](volumes/volume-4-cm-and-herglotz.pdf) | 87 |
 
 A mixed cubic Hurwitz-tail family now has explicit polynomial telescoping
 certificates. Three linear conditions give rational ordinary sums in every
@@ -18,21 +18,36 @@ Hurwitz tail” in Volume III. This resolves the proposed (2,2,3) construction
 within the stated certificate class; broader arithmetic classification
 remains open.
 
+Volume I now derives every fixed-order late-coefficient correction of the
+resonant Lambert inverse. A finite Faulhaber/Poisson formula, justified by
+a uniform factorial-vertex argument, extends the previously conjectured
+hyperbolic amplitudes and gives an explicit second correction. The resulting
+Borel boundary models use polylogarithms of successively higher order.
+The theorem is uniform for bounded complex coupling; it does not assert
+convergence as the correction order tends to infinity.
+The same section now proves global Borel continuation along paths avoiding
+the singular lattice and the exact sectorial inverse equation, using the
+arithmetic forward kernel and checked nonlinear closure theorems. Its odd
+remainder has an extra coupling factor, making each fixed-order expansion
+relatively uniform for positive coupling down to zero. Full singular germs
+and activity at every other lattice point remain open.
+
+
 The volumes partition all twelve chapters and the literature appendix.
 Chapter, theorem and equation numbering is retained so research-report
 citations stay stable. Cross-volume references link to their exact PDF
 destinations; keep the four PDFs together. Each volume has its own contents
-and the shared bibliography of 148 references. The scientific text is shared
+and the shared bibliography of 152 references. The scientific text is shared
 through chapter files and [preamble.tex](preamble.tex), avoiding duplicate
 copies of proofs. See [volume sources and build instructions](volumes/README.md).
 The [combined source](polylogarithms.tex) and its
-[570-page combined snapshot](polylogarithms.pdf) remain available.
+[578-page combined snapshot](polylogarithms.pdf) remain available.
 
 The [inventory](source-inventory.json) accounts for **1,810 textual source
 files**, including overlapping articles, fragments and correction registers.
 The [editorial ledger](EDITORIAL-LEDGER.md) maps accepted mathematical claims
-and pending research integration. The 130 imported archives preserve 4,704
-original tracked members; 54 ignored bare checksum records remain recoverable
+and pending research integration. The 135 imported archives preserve 4,806
+original tracked members; 56 ignored bare checksum records remain recoverable
 in arrival history. Each imported ZIP was retired in its placement commit.
 All eleven complete mathematical suites in the seventeenth and eighteenth
 intakes pass on isolated copies. Preservation and finite replay do not imply

@@ -1,0 +1,300 @@
+\section{The first inverse-index correction}\label{sec:correction}
+
+The leading amplitude only sees one large forward index and the linear
+indices accompanying it. At the next order, a single quadratic forward
+index also contributes. We retain that contribution uniformly in the number
+of factors, then compute the corrections from the gamma ratios and from
+$T_{n,k}$. This proves the full statement of Theorem~\ref{thm:main}.
+
+\subsection{Two endpoint terms with a uniform remainder}
+
+Recall the scaled coefficients and convolution coefficients from
+Section~\ref{sec:leading}:
+\[
+ a_m=A^m(-1)^m r_m,\qquad
+ S_{n,k}=[x^n]\left(\sum_{m\ge1}a_mx^m\right)^k.
+\]
+In particular $a_1=c$, $a_2=d$, and every $a_m$ is nonnegative. It is
+convenient to shift the index once:
+\begin{equation}\label{eq:alpha-shift}
+ \alpha_j=a_{j+1},\qquad
+ \alpha(x)=\sum_{j\ge0}\alpha_jx^j,\qquad
+ S_{n,k}=[x^{n-k}]\alpha(x)^k.
+\end{equation}
+Thus $\alpha_0=c$, $\alpha_1=d$, and there is a constant $B$ such that
+\begin{equation}\label{eq:alpha-bound}
+ 0\le\alpha_j\le B\Gamma(j)\qquad(j\ge1).
+\end{equation}
+Indeed $a_{j+1}=4\Gamma(j+1)\zeta(j+1)^2/(j+1)$ when $j+1$ is even,
+and it is zero otherwise. The ratio $j/(j+1)$ is at most one, and
+$\zeta(j+1)\le\zeta(2)$.
+
+\begin{lemma}[The second endpoint contribution]\label{lem:second-endpoint}
+There is a constant $B_*>0$ such that, whenever $n\ge12$ and
+$1\le k\le n/2$,
+\begin{equation}\label{eq:two-endpoints}
+ \begin{split}
+ S_{n,k}={}&kc^{k-1}a_{n-k+1}
+       +k(k-1)c^{k-2}d\,a_{n-k}\\
+       &\quad+O\bigl(B_*^k\Gamma(n-k-2)\bigr).
+ \end{split}
+\end{equation}
+The second term is understood to be zero for $k=1$, and the implied
+constant is independent of both $n$ and $k$.
+\end{lemma}
+\begin{proof}
+We first record two elementary estimates. The sequence $F_j=j!$ satisfies
+$F*F\le3F$ coefficientwise. For $M\ge1$, division of its $M$th convolution
+coefficient by $M!$ gives
+\[
+ \sum_{j=0}^{M}\binom{M}{j}^{-1}\le3:
+\]
+the endpoints contribute two, and each of the $M-1$ interior terms is at
+most $1/M$. The case $M=0$ is immediate. Iteration, followed by the change
+$j_i\mapsto j_i-1$, gives
+\begin{equation}\label{eq:positive-gamma-convolution}
+ \sum_{\substack{j_1+\cdots+j_h=N\\j_i\ge1}}
+       \prod_{i=1}^{h}\Gamma(j_i)
+ \le3^{h-1}\Gamma(N-h+1),\qquad N\ge h\ge1.
+\end{equation}
+
+Removing the endpoints from the two-factor convolution gives a sharper
+estimate:
+\begin{equation}\label{eq:interior-gamma-convolution}
+ \sum_{j=2}^{N-2}\Gamma(j)\Gamma(N-j)
+       \le4\Gamma(N-2),\qquad N\ge4.
+\end{equation}
+For completeness, put $M=N-2$ and divide the left side by $M!$. The
+result is $\sum_{i=1}^{M-1}\binom{M}{i}^{-1}$. For $M\ge3$, its two extreme
+terms contribute $2/M$, and each of the remaining $M-3$ terms is at most
+$2/[M(M-1)]$. The sum is at most $4/M$. The case $M=2$ also satisfies this
+bound, proving \eqref{eq:interior-gamma-convolution}.
+
+Now put $N=n-k$, so $N\ge k$ and $N\ge6$, and expand $\alpha(x)^k$
+according to the number $h$ of positive indices. The case $h=1$ contributes
+$kc^{k-1}\alpha_N$. For $h=2$, the indices $1,N-1$ and $N-1,1$ contribute
+\[
+ 2\binom{k}{2}c^{k-2}\alpha_1\alpha_{N-1}
+       =k(k-1)c^{k-2}d\alpha_{N-1}.
+\]
+By \eqref{eq:alpha-bound} and \eqref{eq:interior-gamma-convolution}, the
+remaining $h=2$ terms are bounded by
+$4\binom{k}{2}c^{k-2}B^2\Gamma(N-2)$.
+For $h\ge3$, \eqref{eq:positive-gamma-convolution} bounds the contribution
+by
+\[
+ \binom{k}{h}c^{k-h}B^h3^{h-1}\Gamma(N-h+1).
+\]
+Since $N\ge k\ge h$, one has
+$\Gamma(N-h+1)\le\Gamma(N-2)$. The binomial theorem therefore bounds
+the sum of all these remainders by $B_*^k\Gamma(N-2)$ after a fixed
+increase of $B_*$. Substituting $\alpha_N=a_{n-k+1}$ and
+$\alpha_{N-1}=a_{n-k}$ proves \eqref{eq:two-endpoints}.
+\end{proof}
+
+\subsection{The two elementary expansions}
+
+The next estimates are uniform over the full range $k\le n/2$; their
+constants may grow exponentially in $k$, because the Lagrange factor
+$1/k!$ makes that growth summable. Define
+\[
+ Q_{n,k}(u)=n^{1-k}T_{n,k}(u),\qquad
+ \beta_k=\frac{(k-1)(k+2)}2.
+\]
+For $|u|\le U$, the finite sum \eqref{eq:T} gives
+\begin{equation}\label{eq:T-first-correction}
+ Q_{n,k}(u)=1+\frac{k(k-1)u}{2n}
+       +O_U\left(\frac{(1+k)^4e^{B_Uk}}{n^2}\right).
+\end{equation}
+To justify the uniform remainder, use
+$\binom{k-1}{j}\le k^j/j!$ and $(k)_j\le(2k)^j$. The sum of the absolute
+values of the terms with $j\ge2$ is at most
+\[
+ \sum_{j\ge2}\frac{(Uk^2/n)^j}{j!}
+ \le\frac{U^2k^4}{2n^2}e^{Uk^2/n}.
+\]
+The inequality $k^2/n\le k/2$ proves
+\eqref{eq:T-first-correction}. It also gives a bound
+$|Q_{n,k}(u)|\le e^{Uk/2}$ that will be used for the endpoint remainder.
+
+For the first endpoint, put $p=n-k+1$. When $p$ is even,
+\begin{equation}\label{eq:gamma-first-correction}
+ \frac{n^{k-1}a_p}{b_n}
+ =4\left\{1+\frac{\beta_k}{n}
+       +O\left(\frac{(1+k)^4e^{B_1k}}{n^2}\right)\right\};
+\end{equation}
+when $p$ is odd it is zero. The exact gamma ratio before multiplication
+by $4\zeta(p)^2$ is
+\begin{equation}\label{eq:gamma-ratio-exact}
+ \frac{n^{k-1}b_{n-k+1}}{b_n}
+ =\frac{n^k}{(n-k+1)\prod_{j=1}^{k-1}(n-j)}.
+\end{equation}
+Its logarithm equals $\beta_k/n+O(k^3/n^2)$: the offsets in the
+denominator are $k-1,1,\ldots,k-1$, whose sum is $\beta_k$, and every
+offset divided by $n$ is at most $1/2$. More explicitly,
+$-\log(1-v)=v+O(v^2)$ uniformly for $0\le v\le1/2$. The logarithm
+itself is $O(k^2/n)=O(k)$, so exponentiating introduces a remainder
+$O((1+k)^4e^{B_1k}/n^2)$. Finally
+$\zeta(p)^2=1+O(2^{-p})$, with $p\ge n/2$, and this exponentially small
+error is absorbed by the displayed bound. This proves
+\eqref{eq:gamma-first-correction}.
+
+The second endpoint has the corresponding estimate
+\begin{equation}\label{eq:gamma-second-endpoint}
+ \frac{n^{k-1}a_{n-k}}{b_n}
+ =\frac4n+O\left(\frac{(1+k)^2e^{B_2k}}{n^2}\right)
+       \quad\text{if }n-k\text{ is even},
+\end{equation}
+and it is zero otherwise. Here the exact gamma ratio is
+\[
+ \frac{n^{k-1}b_{n-k}}{b_n}
+ =\frac{n^k}{(n-k)\prod_{j=1}^{k}(n-j)}.
+\]
+Factor out $1/n$ and apply the same logarithmic estimate to the offsets
+$k,1,\ldots,k$. This proves \eqref{eq:gamma-second-endpoint}.
+
+The remainder in Lemma~\ref{lem:second-endpoint} is also uniformly of
+second order after normalization. For $n\ge12$ and $k\le n/2$,
+\begin{equation}\label{eq:endpoint-normalized-error}
+ \frac{n^{k-1}\Gamma(n-k-2)}{b_n}
+ =\frac{n^k\Gamma(n-k-2)}{\Gamma(n)}
+ \le\frac{3^{k+2}}{n^2}.
+\end{equation}
+Indeed, the denominator ratio contains $k+2$ factors $n-j$, each at least
+$n-k-2\ge n/3$. Combining
+\eqref{eq:two-endpoints}--\eqref{eq:endpoint-normalized-error}, all errors
+in the $k$th summand of \eqref{eq:C-finite}, after division by $b_n$ and
+scaling by $A^n$, are bounded by
+\begin{equation}\label{eq:summable-second-error}
+ \frac{|u|}{n^2}\frac{M_U^k(1+k)^M}{k!},
+\end{equation}
+for constants $M_U$ and a fixed integer $M$. One obtains this bound by
+leaving one factor $|u|$ outside and replacing the remaining
+$|u|^{k-1}$ by $U^{k-1}$. Thus the estimates remain uniform after division
+by $u$, with the removable value at zero.
+
+\subsection{Summing the corrections}
+
+We now complete the proof of Theorem~\ref{thm:main}. Recall that
+$D_n(u)=(-1)^{n+1}A^nC_n(u)$. The range $k>n/2$ contributes less than
+any prescribed inverse power of $n$ after normalization. To make the
+uniformity at $u=0$ explicit, the estimate
+\eqref{eq:master-majorant}, with one factor $u$ left outside, gives
+\begin{equation}\label{eq:correction-tail-majorant}
+ \left|\frac{u^kS_{n,k}T_{n,k}(u)}{k!b_n}\right|
+ \le |u|L_U\frac{kL_U^{k-1}}{k!},\qquad 1\le k\le n.
+\end{equation}
+It follows equally by inserting the three bounds in
+Lemma~\ref{lem:factorial} into the left side. For every fixed integer
+$J\ge1$, use $1\le(2k/n)^J$ when $k>n/2$ to obtain
+\[
+ \sum_{k>n/2}
+ \left|\frac{u^kS_{n,k}T_{n,k}(u)}{k!b_n}\right|
+ \le\frac{|u|\,2^JL_U}{n^J}
+       \sum_{k\ge1}\frac{k^{J+1}L_U^{k-1}}{k!}
+ =O_{U,J}(|u|n^{-J}).
+\]
+The tails of the exponential series below, including their polynomial
+weights in $k$, satisfy the same estimate. This permits replacement of
+the remaining finite sums by infinite sums at the required error order.
+
+For $k\le n/2$, the first endpoint in \eqref{eq:two-endpoints} contributes
+only when $n-k+1$ is even. Put $\ell=k-1$; its parity condition becomes
+$\ell\equiv n\pmod2$. After division by $4ub_n$, its contribution is
+\[
+ \frac{z^\ell}{\ell!}
+ \left[1+\frac{\ell(\ell+3)+u\ell(\ell+1)}{2n}\right],
+ \qquad z=cu,
+\]
+up to the summable error \eqref{eq:summable-second-error} divided by
+$4|u|$. For the second endpoint put $\ell=k-2$. Its parity condition is
+again $\ell\equiv n\pmod2$, and its first-order contribution is
+$du\,z^\ell/(n\ell!)$. Hence
+\begin{equation}\label{eq:correction-parity-sums}
+ \begin{split}
+ \frac{D_n(u)}{4ub_n}
+ ={}&\sum_{\substack{\ell\ge0\\\ell\equiv n\ (2)}}\frac{z^\ell}{\ell!}\\
+ &+\frac1n\sum_{\substack{\ell\ge0\\\ell\equiv n\ (2)}}
+ \left\{du+\frac{\ell(\ell+3)+u\ell(\ell+1)}2\right\}
+ \frac{z^\ell}{\ell!}+O_U(n^{-2}).
+ \end{split}
+\end{equation}
+All sums and remainders are locally uniform in complex $u$.
+
+If $H=H_{n\bmod2}$, the elementary identities
+\[
+ \sum_{\ell\equiv n\ (2)}\ell(\ell+3)\frac{z^\ell}{\ell!}
+       =z^2H(z)+4zH'(z),
+ \qquad
+ \sum_{\ell\equiv n\ (2)}\ell(\ell+1)\frac{z^\ell}{\ell!}
+       =z^2H(z)+2zH'(z)
+\]
+turn \eqref{eq:correction-parity-sums} into
+\eqref{eq:main-expansion}--\eqref{eq:K}.
+
+It remains to prove the extra factor $u$ in the odd remainder. For odd
+$n\ge3$, let
+\[
+ E_n(u)=\frac{D_n(u)}{4ub_n}-H_1(cu)-\frac{K_1(u)}n.
+\]
+This is entire in $u$. By the exact valuation in \eqref{eq:valuation},
+and by the displayed formulas for $H_1$ and $K_1$, it vanishes at zero.
+The already proved estimate on the larger disk $|u|\le2U$ bounds
+$E_n$ there by $O_{2U}(n^{-2})$. Apply the maximum-modulus principle to
+the entire function $E_n(u)/u$ on that disk: its boundary values are
+$O_{2U}(n^{-2}/U)$. Consequently
+\begin{equation}\label{eq:odd-extra-u}
+ E_n(u)=O_U(|u|n^{-2}),\qquad |u|\le U.
+\end{equation}
+This completes the complex-uniform part of Theorem~\ref{thm:main}.
+
+\begin{corollary}[Relative uniformity down to the resonant endpoint]
+\label{cor:relative-two-term}
+For every fixed $U>0$, uniformly for real $0<u\le U$,
+\begin{equation}\label{eq:relative-two-term}
+ C_n(u)=(-1)^{n+1}\frac{4ub_n}{A^n}H_{n\bmod2}(cu)
+ \left\{1+\frac{K_{n\bmod2}(u)}{nH_{n\bmod2}(cu)}
+                +O_U(n^{-2})\right\}.
+\end{equation}
+The ratios $K_0(u)/H_0(cu)$ and $K_1(u)/H_1(cu)$ extend continuously to
+$u=0$, with respective limits $0$ and $2$.
+\end{corollary}
+\begin{proof}
+For $u\ge0$, $\cosh(cu)\ge1$ and $\sinh(cu)\ge cu$. Divide the even
+remainder by the former bound and the sharpened odd remainder
+\eqref{eq:odd-extra-u} by the latter. Formula~\eqref{eq:K} gives the
+stated limits. In particular the ratios are bounded on $[0,U]$, and
+\eqref{eq:even-main}--\eqref{eq:odd-main} follow as well.
+\end{proof}
+
+\subsection{An exact check at small slow parameter}
+
+The quadratic coefficient in Proposition~\ref{prop:structure} provides an
+all-index consistency check. For odd $n\ge3$,
+\begin{equation}\label{eq:small-u-exact}
+ \begin{split}
+ \lim_{u\to0}\frac{A^n C_n(u)}{4u^2b_n}
+ &=\frac{A^n}{4b_n}\frac n4r_{n-1}\\
+ &=c\frac{n^2}{(n-1)^2}\zeta(n-1)^2
+ =c\left\{1+\frac2n+O(n^{-2})\right\}.
+ \end{split}
+\end{equation}
+Our expansion gives the same result: $H_1(cu)/u\to c$ and
+$K_1(u)/u\to2c$, with a remainder that stays uniform after this division.
+For even $n$, the corresponding linear-coefficient identity is
+\[
+ \lim_{u\to0}\frac{-A^nC_n(u)}{4ub_n}=\zeta(n)^2
+       =1+O(2^{-n}).
+\]
+These checks also explain the different powers of $u$ in the two parity
+sectors. If $u=u_n>0$ tends to zero at any rate while $n$ tends to infinity,
+\eqref{eq:relative-two-term} gives
+\[
+ C_n(u_n)\sim
+ \begin{cases}
+ -4u_n b_nA^{-n},&n\text{ even},\\
+ A u_n^2b_nA^{-n},&n\text{ odd}.
+ \end{cases}
+\]
+Thus the late-coefficient theorem remains informative when the slow
+parameter follows the physical specialization $u=X^{-1}$.

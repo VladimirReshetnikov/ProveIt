@@ -1,0 +1,297 @@
+\section{Uniform factorial convolution and the hyperbolic amplitudes}
+\label{sec:leading}
+
+The source conjecture correctly identifies the contribution of any fixed
+number of factors in \eqref{eq:C-finite}. The missing step is to control
+that number uniformly. A factorial convolution estimate supplies this
+control without fitting late coefficients or assuming resurgence.
+
+\subsection{A majorant that retains the endpoint factorial}
+
+Scale the coefficients by
+\begin{equation}\label{eq:positive-scaled}
+ a_m=A^m(-1)^mr_m,\qquad a_1=c,\qquad
+ a_{2j}=4b_{2j}\zeta(2j)^2,\qquad a_{2j+1}=0\ (j\ge1),
+\end{equation}
+and set
+\begin{equation}\label{eq:S-D}
+ S_{n,k}=[x^n]\left(\sum_{m\ge1}a_mx^m\right)^k,
+ \qquad D_n(u)=(-1)^{n+1}A^nC_n(u).
+\end{equation}
+All $a_m$ are nonnegative. If
+$K\ge\max\{c,4\zeta(2)^2\}$, then $a_m\le Kb_m$ for every $m$.
+Equation~\eqref{eq:C-finite} becomes
+\begin{equation}\label{eq:D-formula}
+ D_n(u)=\sum_{k=1}^n\frac{u^k}{k!}S_{n,k}T_{n,k}(u).
+\end{equation}
+
+\begin{lemma}[Endpoint-preserving factorial bounds]\label{lem:factorial}
+For $n\ge2$,
+\begin{equation}\label{eq:b-convolution}
+ \sum_{m=1}^{n-1}b_mb_{n-m}\le3b_{n-1}.
+\end{equation}
+Consequently, for $1\le k\le n$,
+\begin{equation}\label{eq:S-bound}
+ S_{n,k}\le K^k3^{k-1}b_{n-k+1},\qquad
+ \frac{n^{k-1}b_{n-k+1}}{b_n}\le ke^k.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The ratio of the $m$th summand in \eqref{eq:b-convolution} to $b_{n-1}$ is
+\[
+ \frac{n-1}{m(n-m)}\binom{n-2}{m-1}^{-1}
+ \le\binom{n-2}{m-1}^{-1}.
+\]
+For $N\ge2$ every interior binomial coefficient $\binom Nj$ is at least
+$N$, so
+$\sum_{j=0}^N\binom Nj^{-1}\le2+(N-1)/N<3$.
+The cases $N=0,1$ satisfy the same bound. This proves
+\eqref{eq:b-convolution}. Induction on $k$, shifting the convolution index
+at each step, gives
+$[x^n](\sum_{m\ge1}b_mx^m)^k\le3^{k-1}b_{n-k+1}$, and therefore the first
+part of \eqref{eq:S-bound}.
+
+For the second part let $h=k-1$. Direct factorial cancellation gives
+\begin{equation}\label{eq:ratio-exact}
+ \frac{n^hb_{n-h}}{b_n}
+ =\frac{n}{n-h}\prod_{i=1}^h\left(1-\frac in\right)^{-1}.
+\end{equation}
+The first factor is at most $k$, since $(k-1)(n-k)\ge0$.
+For the increasing function $f(x)=-\log(1-x)$,
+\[
+ \sum_{i=1}^{k-1}f(i/n)
+ \le n\int_0^{k/n}f(x)\dd x
+ =k+(n-k)\log(1-k/n)\le k.
+\]
+At $k=n$ the integral is finite and $0\log0$ is interpreted as zero.
+Exponentiation proves the bound, including the endpoint $k=n$.
+\end{proof}
+
+For $|u|\le U$, the exact polynomial \eqref{eq:T} satisfies
+\begin{equation}\label{eq:T-bound}
+ |T_{n,k}(u)|\le n^{k-1}(1+U)^{k-1},
+\end{equation}
+because $(k)_j\le(2n)^j$. Combining this with Lemma~\ref{lem:factorial}
+gives the central estimate
+\begin{equation}\label{eq:master-majorant}
+ \frac1{b_n}\left|\frac{u^k}{k!}S_{n,k}T_{n,k}(u)\right|
+ \le \frac{k}{k!}K^k3^{k-1}e^kU^k(1+U)^{k-1}
+ \le \frac{kB_U^k}{k!}
+\end{equation}
+for a suitable fixed $B_U$. The final majorant is summable in $k$ and
+independent of $n$. It removes the spurious $e^{O(\sqrt n)}$ loss of the
+coarser composition count in the predecessor.
+
+The same conclusion holds after division by $u$ for even $n$, and by
+$u^2$ for odd $n\ge3$. In the latter case the exact sum begins at $k=2$,
+by \eqref{eq:valuation}. On a compact disk one uses
+$|u|^{k-v}\le\max(1,U)^k$, with $v=1$ or $2$. Every quotient is a
+polynomial, so no estimate divides by a small nonzero number.
+
+\subsection{The contribution of one large index}
+
+\begin{lemma}[First endpoint extraction]\label{lem:endpoint}
+For $k\ge2$ and $n\ge k+2$,
+\begin{equation}\label{eq:endpoint}
+ S_{n,k}=k c^{k-1}a_{n-k+1}+E_{n,k},\qquad
+ 0\le E_{n,k}\le6\binom{k}{2}K^k3^{k-2}b_{n-k}.
+\end{equation}
+For $k=1$ the main term is exact.
+\end{lemma}
+\begin{proof}
+Compositions with exactly one part greater than $1$ give the main term.
+Every remaining composition has two parts at least $2$. Mark a pair of
+such positions and use a union bound over $\binom{k}{2}$ choices.
+
+For $N\ge4$,
+\begin{equation}\label{eq:interior-b}
+ \sum_{m=2}^{N-2}b_mb_{N-m}\le6b_{N-2}.
+\end{equation}
+Indeed, put $M=N-4$ and $j=m-2$. The ratio of a summand to $b_{N-2}$ is
+\[
+ \frac{M+2}{M+1}
+ \frac{(j+1)(M-j+1)}{(j+2)(M-j+2)}\binom Mj^{-1}
+ \le2\binom Mj^{-1}.
+\]
+The reciprocal-binomial bound proves \eqref{eq:interior-b}.
+After summing the two marked parts, convolve with the remaining $k-2$
+parts and enlarge the index range. The result is bounded by
+\[
+ 6K^k[x^{n-2}]\left(\sum_{m\ge1}b_mx^m\right)^{k-1}
+ \le6K^k3^{k-2}b_{n-k}.
+\]
+Summing over the marked pair proves \eqref{eq:endpoint}.
+\end{proof}
+
+For fixed $k$, multiplication of the remainder in \eqref{eq:endpoint} by
+$n^{k-1}/b_n$ gives $O_k(n^{-1})$. The main index is $m=n-k+1$.
+If $m$ is even, then
+$n^{k-1}a_m/b_n\to4$; if $m$ is odd it is eventually zero.
+Also $T_{n,k}(u)/n^{k-1}\to1$ locally uniformly in $u$.
+Thus the limit of the $k$th summand in \eqref{eq:D-formula}, divided by
+$b_n$, is
+\begin{equation}\label{eq:fixed-k-limit}
+ \frac{4k u^kc^{k-1}}{k!}
+ =4u\frac{(cu)^{k-1}}{(k-1)!}
+\end{equation}
+when $n-k+1$ is even, and zero in the other parity.
+The majorant \eqref{eq:master-majorant} now justifies summation of these
+limits. Even $n$ selects even $k-1$ and produces $\cosh(cu)$; odd $n$
+selects odd $k-1$ and produces $\sinh(cu)$.
+
+\subsection{Uniform errors, including the zero-parameter boundary}
+
+\begin{theorem}[A quantified proof of the source conjecture]
+\label{thm:leading-rate}
+For every $U>0$, uniformly for complex $|u|\le U$,
+\begin{align}
+ \frac{A^nC_n(u)}{4b_nu}&=-\cosh(cu)+O_U(n^{-1})
+       &&(n\text{ even}),\label{eq:leading-even}\\
+ \frac{A^nC_n(u)}{4b_nu^2}&=\frac{\sinh(cu)}u+O_U(n^{-1})
+       &&(n\ge3\text{ odd}).\label{eq:leading-odd}
+\end{align}
+All quotients at $u=0$ are interpreted by continuity.
+\end{theorem}
+\begin{proof}
+Split the finite sum at $k=n/2$ and first take $k\le n/2$. Let
+$h=k-1$ and $R_{n,k}=n^hb_{n-h}/b_n$. The logarithm of
+\eqref{eq:ratio-exact} and $-\log(1-x)\le2x$ on $[0,1/2]$ give
+\begin{align}
+ 0\le\log R_{n,k}&\le\frac{h(h+3)}n,\nonumber\\
+ |R_{n,k}-1|&\le\frac{ke^kh(h+3)}n,\label{eq:ratio-rate}\\
+ \frac{n^hb_{n-h-1}}{b_n}
+ &=R_{n,k}\frac{n-h}{(n-h-1)^2}
+ \le\frac{4ke^k}{n}\quad(n\ge4).\nonumber
+\end{align}
+The last estimate controls \eqref{eq:endpoint}. Using the sharper
+$(k)_j\le(2k)^j$ in \eqref{eq:T} gives
+\begin{equation}\label{eq:T-rate}
+ \left|\frac{T_{n,k}(u)}{n^h}-1\right|
+ \le(1+kU/n)^h-1
+ \le\frac{k^2U}{n}(1+U)^k.
+\end{equation}
+For the even endpoint $m=n-k+1\ge n/2$, the error
+$\zeta(m)^2-1=O(2^{-m})$ is uniformly $O(n^{-1})$.
+Combining these estimates bounds the difference between each normalized
+summand and \eqref{eq:fixed-k-limit} by
+\[
+ \frac1n\frac{P(k)\widetilde B_U^k}{k!}
+\]
+for a fixed polynomial $P$. The bound also holds after division by the
+valuation factor $u$ or $u^2$, as explained after
+\eqref{eq:master-majorant}. It is summable over $k$.
+
+For $k>n/2$ both the exact summands and the limiting exponential summands
+have a majorant of the form $kB_U^k/k!$. The inequality $1\le2k/n$ makes
+the summed tail $O_U(n^{-1})$. More generally, using
+$1\le(2k/n)^M$ makes this tail $O_{U,M}(n^{-M})$ for any fixed $M$.
+Summing \eqref{eq:fixed-k-limit} with its parity restriction proves
+\eqref{eq:leading-even}--\eqref{eq:leading-odd}.
+\end{proof}
+
+For real $0\le u\le U$, one has $\cosh(cu)\ge1$ and
+$\sinh(cu)/u\ge c$, including the limiting value at zero. Dividing by
+these lower bounds proves the uniform relative versions
+\eqref{eq:even-main}--\eqref{eq:odd-main}. This is stronger than an estimate
+whose constant depends on a fixed lower bound for $u$.
+
+\begin{corollary}[Two limits may be taken together]\label{cor:moving-u}
+Let $u_n>0$, $u_n\to0$, and $n\to\infty$ through the indicated parity.
+Then
+\begin{equation}\label{eq:small-u-late}
+ C_n(u_n)\sim
+ \begin{cases}
+ -4u_n b_nA^{-n},&n\text{ even},\\
+ A u_n^2 b_nA^{-n},&n\text{ odd}.
+ \end{cases}
+\end{equation}
+The rate at which $u_n$ approaches zero is unrestricted.
+\end{corollary}
+\begin{proof}
+Apply the uniform relative bounds and use
+$\cosh(cu)=1+O(u^2)$ and $\sinh(cu)=cu\{1+O(u^2)\}$.
+\end{proof}
+
+The coefficient theorem therefore applies to the physical slow parameter
+$u=1/X$ while the sector index increases. It does not assert that the
+divergent infinite sector series may be summed ordinarily at that physical
+pair, nor does a coefficient estimate alone determine an optimally
+truncated remainder of the actual inverse.
+
+\section{Finite phases and changes of the initial coefficients}\label{sec:phases}
+
+The hyperbolic functions reflect the two phases $1$ and $-1$ in the
+forward coefficients. The same proof yields a finite-phase transformation
+law, with no positivity requirement.
+
+\begin{theorem}[Leading amplitudes for finitely many phases]
+\label{thm:finite-phases}
+Let $A>0$, $b_n=\Gamma(n)/n$, and
+$\widetilde R(t)=\sum_{n\ge1}\widetilde r_nt^n$, with
+$\widetilde r_1=\rho\in\C$. Suppose that for a finite set
+$E\subset\{\omega\in\C:|\omega|=1\}$ of distinct phases,
+\begin{equation}\label{eq:phase-input}
+ |\widetilde r_n|\le K A^{-n}b_n,\qquad
+ \frac{A^n\widetilde r_n}{b_n}
+ =\sum_{\omega\in E}\kappa_\omega\omega^n+O(n^{-1}).
+\end{equation}
+Let $\widetilde C_n(u)$ be the coefficients of the zero-constant formal
+solution of \eqref{eq:implicit} with $R$ replaced by $\widetilde R$.
+Then, locally uniformly for $u\in\C$,
+\begin{equation}\label{eq:phase-output}
+ \widetilde C_n(u)=-u A^{-n}b_n
+ \left\{\sum_{\omega\in E}\kappa_\omega\omega^n
+                   e^{A\rho u/\omega}+O_U(n^{-1})\right\}.
+\end{equation}
+The bracketed formulation extends through $u=0$. Its error corresponds to
+an absolute $O_U(|u|A^{-n}b_n/n)$ error in $\widetilde C_n$.
+\end{theorem}
+\begin{proof}
+Apply the exact formula \eqref{eq:C-finite} to the new input and scale by
+$A^n$. The first endpoint is now
+$k(A\rho)^{k-1}(A^{n-k+1}\widetilde r_{n-k+1})$.
+All remainder estimates of Lemmas~\ref{lem:factorial} and
+\ref{lem:endpoint} apply to absolute values: the positivity assumption
+was used to construct a majorant, not to establish an identity.
+For $k\le n/2$, the remainder in \eqref{eq:phase-input} is $O(n^{-1})$
+at the endpoint. The same proof as Theorem~\ref{thm:leading-rate} therefore
+justifies the uniform $k$ summation with error $O_U(n^{-1})$.
+For each phase the limiting sum is
+\[
+ -\sum_{k\ge1}\frac{u^k}{(k-1)!}(A\rho)^{k-1}
+                 \kappa_\omega\omega^{n-k+1}
+ =-u\kappa_\omega\omega^n e^{A\rho u/\omega}.
+\]
+The sum over $E$ is finite, which proves \eqref{eq:phase-output}.
+\end{proof}
+
+The action corresponding to $\omega$ is $\lambda_\omega=A/\omega$.
+Its leading amplitude is multiplied by $e^{\lambda_\omega\rho u}$.
+This multiplier comes entirely from repeated linear factors of the
+forward series. The terms of $T_{n,k}$ with $j\ge1$, which encode the
+quadratic part of the inverse core, enter one inverse-index order later.
+Cancellation between distinct phases can occur on subsequences, so
+\eqref{eq:phase-output} is an additive expansion. A relative equivalent
+requires a separate nonvanishing argument.
+
+\begin{corollary}[Polynomial changes of the forward tail]
+\label{cor:prefix}
+For the Lambert input, replace $R(t)$ by $R(t)+P(t)$, where $P(0)=0$ is a
+fixed polynomial and $p_1=[t]P(t)$. The late coefficient formula is
+\begin{equation}\label{eq:prefix}
+ \widetilde C_n(u)=-2uA^{-n}b_n
+ \left\{e^{A(p_1-1/4)u}+(-1)^n e^{-A(p_1-1/4)u}
+                     +O_U(n^{-1})\right\}.
+\end{equation}
+In particular, changes satisfying $P(t)=O(t^2)$ leave both leading action
+amplitudes unchanged.
+\end{corollary}
+\begin{proof}
+A polynomial changes no sufficiently late forward coefficient. Apply
+Theorem~\ref{thm:finite-phases} with $E=\{1,-1\}$ and
+$\kappa_1=\kappa_{-1}=2$.
+\end{proof}
+
+This corollary gives a useful separation of data: the arithmetic tail
+locates the leading actions, the linear term changes their amplitudes,
+and the quadratic term first appears in the correction computed next.
