@@ -73,3 +73,16 @@ See `../../synthesis/data/disk-absorption-audit.json` and the synthesis
 subsection “Certified absorption of disk-base annuli”. Delivered runtime files
 remain unchanged. Arbitrary annular gluing, useful-surface coverage, pattern
 transport and the general quasi-polynomial hierarchy bound remain open here.
+
+The complete Regina-enabled suite passes all 1,656 tests with no skips in
+517.462 seconds; its expanded-sheet and marked-cover checks also pass.
+The new audit and regression use the same maintained runtime source pins.
+A separate profile diagnostic identifies 15 unresolved cuts as candidates
+for a further primitive-annulus rule; it adds no accepted certificates.
+
+The new annular family improves by 6.152 in median paired time at 4,096
+copies; its three smaller timed cases regress. Production plus replay at
+multiplicity 2^16384 takes 0.605 seconds with a 15,069,104-byte certificate.
+Four additional finite timings are explicitly labelled as an existing v1
+control, not gains due to absorption. Raw measurements and five shuffled
+paired rounds are in `../../synthesis/data/disk-absorption-benchmark.json`.
