@@ -854,3 +854,29 @@ inspect all 40 external destinations, and review every changed final body.
 Final pages 130/129/240/85 and combined 543; references 140. Preserve inherited
 visual evidence and numbering. General rank, Gaussian S6/revised S8, full
 compensator support/sign and remaining analytic report branches stay open.
+
+
+## All primitive coefficients and full-disk translations, October 12, 2026 (Pacific)
+
+Continue research while incoming is empty. Derive the single polynomial
+integral for every H_m coefficient from the rational R_d normal-form kernel.
+Identify its highest-index part before spatial specialization using the
+Appell anomaly and formal L_d injectivity. Reflection cancels one highest
+factor, and positivity of the remaining polynomial coefficients proves
+the unrestricted support/sign conjecture, with the H_1=0 exception.
+
+Resum the disjoint highest sectors into an entire ordinary E_1 projection.
+Its Cauchy majorant proves actual primitive convergence on the full input
+disk, improving the earlier half-radius proof. Extend Gamma/Stieltjes
+translations and anchored integration domains, retain endpoint terms and
+derive the weighted generating antiderivative. Keep maximal continuation
+and arithmetic independence separate. Original source conjecture wording
+remains preserved as history; current canonical status is corrected.
+
+Independently check every weighted-partition coefficient through weight
+thirty (23025 comparisons, 23024 support/sign checks), twelve ordinary
+projection diagnostics and native symbolic defining identities through
+weight sixteen. The algebraic and analytic written proofs establish the
+all-weight results. Rebuild and review all final editions after the weighted
+identity and corrected display layout. Pages 130/129/242/85, combined 545,
+references 140. General rank and Gaussian S6/revised S8 stay open.

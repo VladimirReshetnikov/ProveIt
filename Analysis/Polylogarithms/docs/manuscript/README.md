@@ -7,7 +7,7 @@ organized as four volumes. Each has its own source and compiled PDF.
 |---|---|---|---:|
 | I | Polylogarithm identities, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 130 |
 | II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 129 |
-| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 240 |
+| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 242 |
 | IV | Gamma grids, CM lattice periods, class products and Herglotz arithmetic | [Gamma Grids, CM Periods and Herglotz Arithmetic](volumes/volume-4-cm-and-herglotz.pdf) | 85 |
 
 The volumes partition all twelve chapters and the literature appendix.
@@ -18,7 +18,7 @@ and the shared bibliography of 140 references. The scientific text is shared
 through chapter files and [preamble.tex](preamble.tex), avoiding duplicate
 copies of proofs. See [volume sources and build instructions](volumes/README.md).
 The [combined source](polylogarithms.tex) and its
-[543-page combined snapshot](polylogarithms.pdf) remain available.
+[545-page combined snapshot](polylogarithms.pdf) remain available.
 
 The [inventory](source-inventory.json) accounts for **1,794 textual source
 files**, including overlapping articles, fragments and correction registers.
@@ -376,3 +376,15 @@ structured values; two original/serialization-guard failures are preserved,
 and the final copy-only comparator change is disclosed. The Gamma-basis and
 infinite gap-ten proof remain separate pending acceptance work. Original
 deliveries and their historical status statements remain unchanged.
+
+
+Theorems 8.143--8.144 now close the unrestricted compensator support/sign
+conjecture. Every primitive coefficient is one positive polynomial integral
+with an explicit sign, and every weight-m-1 monomial is present for m>=2.
+An ordinary E_1 projection gives convergence on the full holomorphic input
+disk, improving the earlier half-radius primitive argument. Gamma and
+Stieltjes translations therefore hold for |t|<x at positive x, with exact
+endpoint terms. Complete independent coefficient comparisons through weight
+thirty and native symbolic identities through weight sixteen pass; the
+infinite statements have separate written proofs. Original report conjecture
+statuses are preserved as historical evidence.

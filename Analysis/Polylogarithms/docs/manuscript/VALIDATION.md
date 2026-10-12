@@ -1,3 +1,44 @@
+# Every primitive coefficient and convergence on the full input disk
+
+October 12, 2026 (Pacific), following experiments begun October 11.
+Theorems 8.143--8.144 give every compensator coefficient by one ordinary
+polynomial integral and prove complete support/sign at all weights m>=2.
+The zero-constant exception remains H_1=0; pure u0 coefficients are -m/2.
+The proof extracts the highest derivative from the integrated rational
+kernel. Its normalization primitive has lower index, so the desired
+coefficient is unchanged; reflection cancels one highest C_d factor and
+leaves a positive polynomial integral. The formal Appell identity and L_d
+injectivity fix constants before any spatial specialization.
+
+An ordinary E_1 projection turns this into an actual primitive generator
+on |t|<R for input holomorphic on its radius-R disk. The new proof improves
+the previous correct half-radius Euler-homotopy argument. Gamma/Stieltjes
+translations now hold for |t|<x at positive x, and termwise anchored integrals
+are valid for |t|<a on [a,b]. The weighted generating antiderivative retains
+both endpoint terms. No maximal continuation or arithmetic independence is
+asserted; general harmonic rank and Gaussian S6/revised S8 remain open.
+
+Independent recursive rational IBP compares every monomial through weight
+thirty: 23025 coefficient comparisons, 23024 nonzero support/sign checks,
+through highest derivative 28, with normalization/sign/kernel controls.
+Twelve 75-digit ordinary projection/Taylor diagnostics pass; they are not
+interval certificates. Native Wolfram separately builds both polynomial
+coefficient families and verifies A_m=N_m+D H_m at every weight zero through
+sixteen, including linear/mixed families and an exact coefficient mutation.
+The finite checks support implementation; the written extraction and Cauchy
+arguments prove the infinite statements and close the source conjecture.
+
+The final four PDFs have 130/129/242/85 pages (586 total), with a 545-page
+combined edition and 140 references. Three coupled build rounds, three
+serial combined passes and three cold passes for each volume succeed with
+no final log issues. All 40 external PDF destinations pass. Review all eight
+changed volume bodies and three unmatched combined bodies at full size;
+578 volume bodies and 539 combined bodies match the reviewed preceding
+edition, and three changed combined bodies match freshly reviewed volumes.
+Only centered footer numbers are excluded, with scientific bounds checked.
+No current contact sheets are claimed as opened. Original reports, archived
+conjecture statuses and source evidence remain unchanged.
+
 # Complete compensators and analytic primitive translations
 
 October 12, 2026. Section 8.46 continues the coefficient/normal-generator
