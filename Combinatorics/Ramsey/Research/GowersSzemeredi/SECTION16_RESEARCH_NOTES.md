@@ -6767,6 +6767,95 @@ build was yielded at a completed-module boundary for this source-fidelity
 proof and resumed with the new combined target using its retained cache.
 Its completion remains a separate verification result.
 
+### L.49. Restoring the original integer-box Corollary 16.11 (verified, 2026-10-12)
+
+The new proof carries IntegerCover through the split uniform classes,
+including the dimension-two seed, successor step, and all-dimension induction.
+It then obtains integer polynomial covers at degree D=2^(68*2^k). The previous
+integer wrapper used the much larger classDeg bound, which did not recover
+the original common exponent when combined with integer geometry.
+
+The generic extraction keeps gamma=alpha/2, theta=alpha/4, rho=alpha/8,
+ascending integer boxes, width N^(1/Q), and frequency density alpha/(8Q).
+Here Q=(256V/alpha^3)^D and V<=2^(2^(2^(k+6))). Writing X=2/alpha and
+B=2^(2^(k+6)) gives Q<=X^((B+8)*D) and
+(B+8)*D+3<=2^(2^(k+8)). Thus the proved common exponent uses k+8,
+which strengthens the paper's k+9. Both the exact-source companion and
+stronger companion cover every prime, without an extra size threshold.
+
+The full current-source IntegerOriginalCorollaryCoreAudit passes all1,272
+native modules and checks the new declarations against only propext,
+Classical.choice and Quot.sound. Its input manifest covers every local proof
+dependency, the toolchain, package manifest and checker, with all compiled
+artifacts checked newer than their current inputs. The source-fidelity ledger
+now records the original exponent and integer geometry together as verified.
+The annotated paper restores the original common exponent and explains the
+stronger k+8 comparison; the published original PDF remains unchanged.
+The expanded downstream target is IntegerOriginalCorollaryFidelityAudit,
+followed separately by the facade. These broader checks remain pending.
+
+### L.50. Numbered widths with integer polynomial covers (verified, 2026-10-12)
+
+Lemma 16.6 now has its annotated numerical width and graph budget together
+with ascending integer boxes. Pad the natural graph count to the floor of
+the allowed real budget, which dominates both explicit profile constants C,p.
+For k>=1 and q>=C,p, the comparison is
+
+    2 * (2*p*(q+1)^(2*2^(k+1))) * (2*C*(q+1)+1)
+      <= ((k+1)^2*2^(k+4))^(2^(k+1)*q).
+
+This converts the polynomial width to the numbered width at every input
+scale. If that width exceeds one, its power of the input size absorbs the
+prefactor; otherwise positive integer cell widths suffice. No additional
+modulus-size threshold is introduced. The covering premise explicitly uses
+ordinary boxes, and the density and loss parameters are in (0,1]. Primality
+is unnecessary once the cover and induced linearity are supplied.
+
+The integer companion of Lemma 16.9 carries this result through the two-stage
+partition, preserving the separate spectrum and remainder counts, the
+annotated k+1 ambient dimension of the remainder and the sign (-1)^k.
+IntegerNumberedLemma6CoreAudit passes 1,244 current-source modules. The combined
+IntegerNumberedWidthsCoreAudit passes 1,249 modules with only propext,
+Classical.choice and Quot.sound. The wider fidelity and facade checks are
+separate. The paper and ledger now record the proved geometry/bound
+combination with its explicit ordinary-box hypotheses.
+
+### L.51. Integer radii in the finite-pattern bounds (verified, 2026-10-12)
+
+Corollary 17.5 now covers every integer radius, with the literal integer
+exponent in a real cardinality bound. Nonnegative radii use the existing
+proof. Negative radii have an empty coefficient domain in positive dimension;
+in dimension zero there is exactly the zero pattern and the exponent is zero.
+
+The affine Corollary 17.6 differs at dimension zero: the free affine offset
+still produces patterns with an empty coefficient tuple. At radius -1,
+dimension 0 and modulus 1 the displayed budget is 1/4, but one pattern exists.
+Lean proves this endpoint counterexample and the integer-radius companion
+with `0<=r or 1<=k`. Every integer radius is therefore covered in the paper's
+usual positive-dimensional context, with no change to the displayed bound.
+The annotated statement makes the endpoint condition explicit. All three
+proofs are included in the 1,249-module combined native audit.
+
+### L.52. Why the numbered loss parameter must be bounded (verified, 2026-10-12)
+
+The restriction 0<sigma<=1 cannot simply be dropped from the numbered budget
+comparison. For delta, theta1 in (0,1] and zeta>0, let
+n=ceil(4/zeta)+1, t=section16T(delta,theta1,k), and sigma=(t/delta)*2n.
+Then delta*sigma/t=2n and the width numerator a=c(sigma/t,delta,k)^t
+is at least 2n. Its reciprocal is the allowed real graph count, hence that
+count is below one and any admissible natural q is zero. At m=2 the required
+width is (zeta/2)*2^(a/2)>2, since 2^n>n>4/zeta.
+
+The native proof shows that these two budgets cannot hold uniformly over
+all positive sigma for any nonempty input box with an axis of size at most
+two. Every nonempty partition cell has that axis contained in the input
+axis, so a proper cell has width at most two. This obstruction holds at
+every nonzero modulus and therefore does not rely on a small-prime exception.
+A separate two-element-modulus corollary is also proved. The annotated Lemmas
+16.6 and 16.9 explicitly use normalized loss, and the editorial note distinguishes
+this numerical obstruction from a claim about unspecified contextual data.
+These proofs are included in the combined 1,249-module audit.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

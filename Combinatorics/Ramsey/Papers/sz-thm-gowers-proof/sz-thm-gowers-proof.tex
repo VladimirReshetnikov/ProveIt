@@ -3652,7 +3652,25 @@ Before we state and prove the next lemma, let us remark that the definition of t
 
 % ed.: The printed statement leaves $K$ and the natural graph count undefined
 % and loses the nested exponent $2^{k+1}$ inherited from Lemma 16.1.
-Lemma 16.6. Let $P=Q \times I$ be a box in $\mathbb{Z}_{N}^{k+1}$ of width at least $m$, let $t=\delta^{-2} s\left(\theta_{1} / 8, \delta, k\right)$, let $\sigma>0$ and let $K=(k+1)^{2}2^{k+4}$. Then there is a natural number $q_{0}$ satisfying $q_{0}\leqslant q(\sigma/t,\delta,k)^{t}$ such that, if $l=(\zeta / 2) m^{c\left(t^{-1} \sigma, \delta, k\right)^{t} / \left(2 K^{2^{k+1} q_{0}}\right)}$, there is a subset $G \subset Q$ of size at least $(1-\sigma)|Q|$ and a partition of $P$ into boxes $S_{u}=T_{u} \times J_{u}$ of width at least $l$, such that, for every $u$ and every $h \in G \cap H_{1} \cap T_{u}$, the function from $J_{u}$ to $\mathbb{Z}_{N}$ defined by $x \mapsto \phi^{\prime}(h, x)$ is linear.
+Lemma 16.6. Let $P=Q \times I$ be a box in $\mathbb{Z}_{N}^{k+1}$ of width at least $m$, let $t=\delta^{-2} s\left(\theta_{1} / 8, \delta, k\right)$, let $0<\sigma\leqslant1$ and let $K=(k+1)^{2}2^{k+4}$. Then there is a natural number $q_{0}$ satisfying $q_{0}\leqslant q(\sigma/t,\delta,k)^{t}$ such that, if $l=(\zeta / 2) m^{c\left(t^{-1} \sigma, \delta, k\right)^{t} / \left(2 K^{2^{k+1} q_{0}}\right)}$, there is a subset $G \subset Q$ of size at least $(1-\sigma)|Q|$ and a partition of $P$ into boxes $S_{u}=T_{u} \times J_{u}$ of width at least $l$, such that, for every $u$ and every $h \in G \cap H_{1} \cap T_{u}$, the function from $J_{u}$ to $\mathbb{Z}_{N}$ defined by $x \mapsto \phi^{\prime}(h, x)$ is linear.
+
+
+\emph{Editorial note on the loss range and integer geometry (2026-10-12).}
+The loss parameter is restricted to $0<\sigma\leqslant1$. Lean verifies
+that the displayed numerical requirements cannot hold uniformly for every
+positive $\sigma$: for sufficiently large $\sigma$ the allowed graph count
+is below one, forcing $q_0=0$, while the required width at $m=2$ exceeds two.
+A nonempty input box with a two-point axis cannot admit such a partition;
+this obstruction holds at arbitrary nonzero moduli, not only small primes.
+With the normalized loss range, the numbered width and graph budget are
+proved for ordinary boxes, with ascending integer output axes and a common
+positive integer difference. The spectral covering premise is interpreted
+on ordinary boxes, and linearity concerns the part of $J_u$ where
+$\phi'(h,\mathord\cdot)$ is defined. Once these covering and induced-linearity
+premises are supplied, primality is unnecessary. The numerical comparison
+uses a polynomial recurrence cover, pads $q_0$ within the displayed budget,
+and absorbs its prefactor by the positive integer cell width; it requires
+no additional lower bound on $N$ or $m$.
 
 Proof. Because $\Delta_{1}$ is $(\delta, t)$-multiply $k$-linear, we can find a natural number $q_{0}\leqslant q(\sigma / t, \delta, k)^{t}$, a subset $G \subset Q$ of size at least $(1-\sigma)|Q|$ and a partition of $Q$ into subboxes $Q_{j}$ of width at least $m_{1}=m^{c(\sigma / t, \delta, k)^{t}}$ such that for each $j$ there are $k$-linear functions $\mu_{1}, \ldots, \mu_{q_{0}}$ from $Q_{j}$ to $\mathbb{Z}_{N}$ such that $\Delta_{1} \cap\left(\left(G \cap Q_{j}\right) \times \mathbb{Z}_{N}\right)$ is contained in the union of the graphs of the $\mu_{i}$. This says that, for any $h \in G \cap Q_{j}$, the set $K_{h}=\left\{r \in \mathbb{Z}_{N}:\left|\hat{f}_{h}(r)\right| \geqslant \delta N^{k+1}\right\}$ is a subset of $\left\{\mu_{1}, \ldots, \mu_{q_{0}}\right\}$.
 
@@ -3687,7 +3705,12 @@ Let us now fix a choice of $x_{1}, \ldots, x_{k}$ satisfying the conclusion of L
 % $(k+1)$-dimensional remainder uses $q_\gamma$, whereas Lemma 16.6 supplies
 % $q_\delta$ and hence the recurrence denominator.  The printed formula
 % conflates them and also uses dimension $k$ for the former controls.
-Lemma 16.9. Let $\sigma>0$, let $t=\delta^{-2} s\left(\theta_{1} / 8, \delta, k\right)$, let $r=\left(2^{k}-1\right) \gamma^{-2} s\left(2^{-(k+2)} \theta, \gamma, k\right)$ and let $K=(k+1)^{2}2^{k+4}$. Let $P=Q \times I$ be any box in $\mathbb{Z}_{N}^{k+1}$ of width at least $m$. Then there are natural numbers $q_{\gamma}$ and $q_{\delta}$ satisfying
+Lemma 16.9. Let $0<\sigma\leqslant1$ and put
+$$
+t=\delta^{-2}s(\theta_1/8,\delta,k),\qquad
+r=(2^k-1)\gamma^{-2}s(2^{-(k+2)}\theta,\gamma,k).
+$$
+Set $K=(k+1)^2 2^{k+4}$. Let $P=Q \times I$ be any box in $\mathbb{Z}_{N}^{k+1}$ of width at least $m$. Then there are natural numbers $q_{\gamma}$ and $q_{\delta}$ satisfying
 
 $$
 q_{\gamma}\leqslant q(\sigma / (2 r), \gamma, k+1)^{r}
@@ -3700,6 +3723,16 @@ such that there is a subset $E \subset P$ of size at least $(1-\sigma)|P|$ and a
 $$
 l=(\zeta / 2) m^{c(\sigma / (2 r), \gamma, k+1)^{r} c(\sigma / (2 t), \delta, k)^{t} / \left(2 K^{2^{k+1}q_{\delta}}\right)}
 $$
+
+
+\emph{Editorial note on the two covering premises (2026-10-12).}
+The verified integer-box companion uses the ordinary-box spectral and
+remainder covers supplied as the contextual hypotheses. It retains the
+separate counts $q_\delta,q_\gamma$, the displayed width and the normalized
+loss range, and produces ascending integer boxes over every nonzero
+modulus. A modular-only covering premise is not silently identified with
+an ordinary-box premise. The $k+1$ ambient dimension of the remainder
+control and the factor $(-1)^k$ in the induced-value identity are retained.
 
 Proof. Given any sequence $\epsilon \in\{0,1\}^{k}$ apart from $(1,1, \ldots, 1)$, let $X=\{j$ : $\left.\epsilon_{j}=0\right\}$ and let $B_{\epsilon}$ be the cross-section of $B$ defined as the set of all $y \in B$ such that $y_{j}=x_{j}$ for every $j \in X$. By property (i) of Lemma 16.4, the restriction of $\phi$ to the cross-section $B_{\epsilon}$ is $\left(\gamma, \gamma^{-2} s\left(2^{-(k+2)} \theta, \gamma, k\right)\right)$-multiply multilinear. It follows easily that $\phi_{\epsilon}$ itself is $\left(\gamma, \gamma^{-2} s\left(2^{-(k+2)} \theta, \gamma, k\right)\right)$-multiply $(k+1)$-linear, since $\phi_{\epsilon}$ is obtained from the restriction of $\phi$ by introducing variables that make no difference, namely the $h_{i}$ with $i \in X$.
 
@@ -3789,19 +3822,45 @@ To complete the proof of the lemma, it would be necessary to check that $q(\sigm
 Proof of Theorem 16.2. Lemma 16.10 shows that if the result is true for $k$ and $\Gamma \subset \mathbb{Z}_{N}^{k+1} \times \mathbb{Z}_{N}$ has the product property with parameter $\gamma$, then $\Gamma$ has a $(\gamma, 1)$-multiply $(k+1)$-linear subset of cardinality at least $\theta_{2} N^{k+1} \geqslant N^{k+1} / s(\theta, \gamma, k)$, if its projection has size at least $\theta N^{k+1}$. Now apply this result repeatedly, removing such sets from $\Gamma$ until it no longer has a projection of size at least $\theta N^{k+1}$. Since $|\Gamma| \leqslant \gamma^{-2} N^{k+1}$, the num-\\
 ber of sets removed is at most $\gamma^{-2} s(\theta, \gamma, k)$. The result now follows from Lemma 16.8. \(\square\)
 
-% ed.: The final ``straightforward calculation'' has its comparison in the
-% wrong direction.  The common exponent actually supplied by the definitions
-% is recorded explicitly instead of the unsupported printed tower.
-Corollary 16.11. Let $k\geqslant1$, let $0<\alpha\leqslant1/2$, and let $N$ be a sufficiently large odd prime. If $f: \mathbb{Z}_{N} \rightarrow D$ fails to be $\alpha$-uniform of degree $k+1$, set
+% ed.: The original common exponent is recovered by polynomial integer covers.
+% The iteration-based proof alone gives a smaller exponent; that comparison
+% remains documented below and is not a counterexample to the corollary.
+Corollary 16.11. Let $k\geqslant1$, let $0<\alpha\leqslant1/2$, and let $N$ be prime. If $f: \mathbb{Z}_{N} \rightarrow D$ fails to be $\alpha$-uniform of degree $k+1$, set
+\[
+\varepsilon=(\alpha/2)^{2^{2^{k+9}}}.
+\]
+Then there is a box $P\subset\mathbb{Z}_{N}^{k}$ of width at least $N^{\varepsilon}$, with ascending integer representatives for all its axes and a common positive integer difference, and a multilinear function $\mu:P\rightarrow\mathbb{Z}_{N}$ such that, for at least $\varepsilon|P|$ values of $(y_1,\ldots,y_k)\in P$,
+\[
+\left|\Delta(f;y_1,\ldots,y_k)^{\wedge}\bigl(\mu(y_1,\ldots,y_k)\bigr)\right|
+\geqslant (\alpha/2)N.
+\]
 
-$$
+\noindent\textbf{Editorial note (formalized recovery and strengthening).}
+The original common exponent is now proved together with ordinary integer-box geometry. In fact $k+9$ may be replaced by $k+8$, and no additional lower bound on the prime modulus is needed, including at $N=2$. The exact-source Lean companion is \texttt{corollary\_16\_11\_printed\_integer}; the stronger one is \texttt{corollary\_16\_11\_integer\_shift\_eight}. The earlier iteration calculation yields only
+\[
 r=4\alpha^{-2}s(\alpha/4,\alpha/2,k),\qquad
-c_{*}=(\alpha/8)c(r^{-1}\alpha/8,\alpha/2,k)^{r}.
-$$
+c_*=(\alpha/8)c(r^{-1}\alpha/8,\alpha/2,k)^r,
+\]
+which is strictly smaller than the printed exponent. That failed comparison does not refute the statement. The proof below uses the sharper polynomial covers instead.
 
-Then there is a box $P \subset \mathbb{Z}_{N}^{k}$ of width at least $N^{c_{*}}$ and a multilinear function $\mu: P \rightarrow \mathbb{Z}_{N}$ such that, for at least $c_{*}|P|$ values of $\left(y_{1}, \ldots, y_{k}\right)$, we have $\left|\Delta\left(f ; y_{1}, \ldots, y_{k}\right)^{\wedge}\left(\mu\left(y_{1}, \ldots, y_{k}\right)\right)\right| \geqslant(\alpha / 2) N$.
+Proof (using polynomial integer covers). The large-frequency graph argument gives a set $B\subset\mathbb{Z}_N^k$ of size at least $(\alpha/2)N^k$ and a function $\phi:B\rightarrow\mathbb{Z}_N$ with the product property at parameter $\alpha/2$, such that the required Fourier inequality holds at every $(y,\phi(y))$. Apply the polynomial cover at parameters $\gamma=\alpha/2$, $\theta=\alpha/4$, and then $\rho=\alpha/8$. The split-degree induction, carried through with integer representatives, supplies a base $V\geqslant1$ and degree $D_0=2^{68\cdot2^k}$ with
+\[
+V\leqslant 2^{2^{2^{k+6}}},\qquad
+Q=(256V/\alpha^3)^{D_0}.
+\]
+After discarding at most $(\alpha/4)N^k$ points and averaging over the integer boxes and their multilinear graphs, there is an ascending integer box $P$ of width at least $N^{1/Q}$ on which one multilinear graph agrees with $\phi$ on at least $(\alpha/8Q)|P|$ points.
 
-Proof. Since $f$ is not $\alpha$-uniform of degree $k+1$, we find, using the implication of (ii) from (vi) in Lemma 3.1, that there is a set $B \subset \mathbb{Z}_{N}^{k}$ of size at least $(\alpha / 2) N^{k}$ and a function $\phi: B \rightarrow \mathbb{Z}_{N}$ such that $\left|\Delta\left(f ; a_{1}, \ldots, a_{k}\right)^{\wedge}\left(\phi\left(a_{1}, \ldots, a_{k}\right)\right)\right| \geqslant(\alpha / 2) N$ for every $\left(a_{1}, \ldots, a_{k}\right) \in B$. Lemma 14.2 then implies that $\phi$ has the product property with parameter $\alpha / 2$. Next, Theorem 16.2 implies that $B$ has a subset $C$ of size at least $(\alpha / 4) N^{k}$ such that the restriction of $\phi$ to $C$ is $(\alpha / 2, r)$-multiply $k$-linear, where $r=4 \alpha^{-2} s(\alpha / 4, \alpha / 2, k)$. Applying the definition of multiple multilinearity in the case where the box $P$ is the whole of $\mathbb{Z}_{N}^{k}$ and $\theta=\alpha / 8$, we find a set $H \subset \mathbb{Z}_{N}^{k}$ of size at least $(1-\alpha / 8) N^{k}$ and partition of $\mathbb{Z}_{N}^{k}$ into boxes $P_{1}, \ldots, P_{M}$ of width at least $N^{c(r^{-1}\alpha/8, \alpha / 2, k)^{r}}$ such that for every $j$ the restriction of $\phi$ to $C \cap P_{j} \cap H$ is contained in the graph of at most $q(r^{-1}\alpha/8, \alpha / 2, k)^{r}$ multilinear functions. By averaging, we can find a box $P_{j}$ such that $\left|C \cap P_{j} \cap H\right| \geqslant(\alpha / 8)\left|P_{j}\right|$. By further averaging, we can find a subset $D \subset P_{j}$ of size at least $\left(q(r^{-1}\alpha/8, \alpha / 2, k)^{r}\right)^{-1}(\alpha / 8)\left|P_{j}\right|$ such that the restriction of $\phi$ to $D$ is multilinear. By the definitions of $q$ and $c_{*}$, this is at least the asserted common lower exponent. \(\square\)
+For the numerical comparison put $X=2/\alpha\geqslant4$ and $B_0=2^{2^{k+6}}$. Then
+\[
+Q=(32VX^3)^{D_0}\leqslant X^{(B_0+8)D_0},\qquad
+(B_0+8)D_0+3\leqslant 2^{2^{k+8}}.
+\]
+Since $4X\leqslant X^3$, these inequalities imply
+\[
+(\alpha/2)^{2^{2^{k+8}}}
+\leqslant (4XQ)^{-1}=\frac{\alpha}{8Q}\leqslant Q^{-1}.
+\]
+Thus both required bounds hold with $k+8$, and hence with $k+9$. \(\square\)
 
 \section*{17 The Main Inductive Step}
 We are finally ready to generalize the argument of §8, to complete a proof of Szemerédi's theorem for progressions of arbitrary length. It turns out that there is a second reason for this being harder than for progressions of length four, but fortunately it is much less serious than the difficulties we have dealt with in the last two sections.
@@ -3922,7 +3981,19 @@ Corollary 17.5. Given real numbers $\alpha_{1}, \ldots, \alpha_{k}$, set $\alpha
 
 Proof. The possible values taken by $f$ are the integers between $\lfloor-r k\rfloor$ and $\lfloor r k\rfloor$, and the set of $\epsilon$ such that $f(\epsilon) \leqslant j$ is the set of $\epsilon$ such that $\epsilon \cdot \alpha<j+1$. Let us estimate how many distinct such sets can be obtained as $\alpha$ varies. Two real numbers $\alpha$ and $\alpha^{\prime}$ give distinct sets if and only if there exists some $\epsilon$ such that $\epsilon \cdot \alpha<j+1$ and $\epsilon \cdot \alpha^{\prime} \geqslant j+1$, that is, if and only if the hyperplane $\{\beta: \epsilon \cdot \beta=j+1\}$ separates $\alpha$ from $\alpha^{\prime}$. There are $2^{k}$ different such hyperplanes, so the previous lemma tells us that the number of distinct sets of the given form is at most $k\binom{2^{k}}{k} \leqslant 2^{k^{2}}$. The function $f$ is determined by the $2 r k$ sets $\{\epsilon: f(\epsilon) \leqslant j\}$ with $\lfloor-rk\rfloor<j \leqslant\lfloor rk\rfloor$, so the result follows. \(\square\)
 
-Corollary 17.6. Let $\alpha_{0}, \alpha_{1}, \ldots, \alpha_{k}$ be real numbers, let $\alpha=\left(\alpha_{1}, \ldots, \alpha_{k}\right)$ and define a function $f:\{0,1\}^{k} \rightarrow \mathbb{Z}_{M}$ by $f(\epsilon)=\left\lfloor\alpha_{0}+\alpha \cdot \epsilon\right\rfloor(\bmod M)$. If $\alpha_{0}$ can be arbitrary and the $\alpha_{i}$ are allowed to vary in the interval $(-r, r)$, then the number of distinct such functions that can result is at most $M \cdot 2^{2 r(k+1)^{3}}$.
+Corollary 17.6. Let $M\geqslant1$ and $r\in\mathbb{Z}$, and assume $r\geqslant0$ or $k\geqslant1$. Let $\alpha_{0}, \alpha_{1}, \ldots, \alpha_{k}$ be real numbers, let $\alpha=\left(\alpha_{1}, \ldots, \alpha_{k}\right)$ and define a function $f:\{0,1\}^{k} \rightarrow \mathbb{Z}_{M}$ by $f(\epsilon)=\left\lfloor\alpha_{0}+\alpha \cdot \epsilon\right\rfloor(\bmod M)$. If $\alpha_{0}$ can be arbitrary and the $\alpha_{i}$ are allowed to vary in the interval $(-r, r)$, then the number of distinct such functions that can result is at most $M \cdot 2^{2 r(k+1)^{3}}$.
+
+
+\emph{Editorial note on integer radii (2026-10-12).}
+Lean proves Corollary 17.5 for every integer $r$, with the displayed
+integer exponent. If $r<0$ and $k\geqslant1$, the coefficient interval is
+empty; if $k=0$, the sole dot-product pattern is zero and the bound is one.
+For Corollary 17.6 the free affine offset changes the zero-dimensional
+case: at $k=0$, $M=1$, $r=-1$, one pattern exists but the displayed bound
+is $1/4$. Lean verifies this endpoint counterexample and the stated
+correction $r\geqslant0$ or $k\geqslant1$. In the usual positive-dimensional
+context, every integer radius is therefore covered without changing the
+bound. This endpoint qualification is not a counterexample to that context.
 
 Proof. By Corollary 17.5, the number of functions that can result if the integer part of $\alpha_{0}$ is $j(\bmod M)$ is at most $2^{2 r(k+1)^{3}}$, since each such function\\
 can be thought of as $j$ added to the restriction of a function on $\{0,1\}^{k+1}$ of the given form (and reduced $\bmod M$ ). The result follows. \(\square\)
