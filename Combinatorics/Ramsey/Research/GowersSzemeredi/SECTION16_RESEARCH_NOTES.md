@@ -6821,6 +6821,26 @@ Lemma 16.6 audit is queued behind the current-source Corollary 16.11 audit;
 the Lemma 16.9 draft will be checked after its new prerequisite passes.
 The source-fidelity ledger and paper are unchanged by these drafts.
 
+### L.51. Integer radii in the finite-pattern bounds (draft, 2026-10-12)
+
+Corollary 17.5 says integer radius, whereas the checked companion used a
+natural radius. The new wrapper keeps the literal integer exponent in a real
+cardinality bound. For nonnegative radii it uses the existing proof; for
+negative radii the coefficient domain is empty in positive dimension, while
+dimension zero has exactly the zero pattern and exponent zero.
+
+The affine Corollary 17.6 has a different zero-dimensional endpoint: a free
+affine offset still produces patterns when the coefficient tuple is empty.
+At radius -1, dimension0 and modulus1, the displayed bound is1/4 but there
+is one pattern. The new proof draft isolates this endpoint counterexample
+and states the integer-radius companion with `0<=r or 1<=k`. This includes
+every integer radius in the positive-dimensional context of the paper.
+It does not allege a counterexample under that context.
+
+`IntegerNumberedWidthsCoreAudit` will check these wrappers and Lemma 16.9
+after Lemma 16.6 passes. These drafts have not yet changed the source-fidelity
+ledger or the annotated paper.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
