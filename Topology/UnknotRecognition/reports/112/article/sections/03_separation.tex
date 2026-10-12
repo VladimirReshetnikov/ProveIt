@@ -1,0 +1,99 @@
+\section{A complete source family separating eager and lazy replay}
+\label{sec:separation}
+
+
+\begin{theorem}[A native AHT star family]
+\label{thm:star}
+For integers $H\ge1$ and even $L\ge2$, set $N=(H+1)L$ and supply the inclusive
+interval pairings
+\[
+ g_j:[0,L-1]\longrightarrow[jL,(j+1)L-1],\qquad 1\le j\le H.
+\]
+Assign weights $w(x)=x\bmod2$ on $[0,L)$ and $w(x)=1$ on $[L,N)$.
+The maintained forward AHT scheduler produces exactly $H$ truncations at
+$HL,(H-1)L,\ldots,L$, followed by one static contraction. Each truncated
+suffix meets a single weight run, while every receiving interval contains
+$L$ alternating runs. Its final histogram is
+\[
+ \{(H,L/2),(H+1,L/2)\},
+\]
+where pairs denote (weight, orbit multiplicity).
+
+The previous eager native weight evaluator performs $\Omega(HL)$ run visits
+or receiving-value updates on this family. Lazy evaluation uses
+$O(L+H\log(L+2))$ weight-tree structural work after canonicalization, including
+final emission. In a record-cost model charging one unit per dictionary
+operation, generic source canonicalization takes $O(L\log(L+2))$ work,
+and the unchanged unweighted trace checker takes $O(H^2)$ pairing-row
+checks. In that model complete certificate replay costs
+\[
+ O\bigl(L\log(L+2)+H\log(L+2)+H^2\bigr).
+\]
+It has an asymptotic record-work separation from the eager method, for
+example $\Omega(H^3)$ eager work versus $O(H^2\log(H+2))$ lazy work and
+shared overhead when $L=2H^2$. The same upper bound has a deterministic
+comparison-model realization using sorted endpoint preparation; on this
+family the final histogram has only two keys. This final whole-verifier
+bound counts map operations in the delivered Python implementation;
+it does not assert a worst-case constant cost for its hash lookups or
+for arithmetic on binary integers. The preceding weight-tree bound is
+deterministic without that map-cost assumption.
+\end{theorem}
+\begin{proof}
+All blocks $[jL,(j+1)L)$ are covered by pairing domains or ranges, so no
+initial static gap exists. Only $g_1$ is periodic: its period is $L$ and its
+domain and range are adjacent. For $j>1$ the distance $jL$ exceeds the domain
+width, so two periodic pairings can never be merged. The unique pairing
+whose range ends at $N-1$ is $g_H$, and every other pairing range ends below
+$HL$. None is transmitted by $g_H$. The suffix exposed for truncation is
+therefore exactly $[HL,(H+1)L)$. The carrier period is $HL$, its nominal
+receiving interval is $[0,HL)$, and its transported addition is one on
+$[0,L)$ and zero on $[L,HL)$. Thus only the first block changes, and
+$g_H$ disappears.
+The same argument applies inductively with $H-1$ in place of $H$. At the end
+no pairing remains and the whole residual prefix contracts.
+
+Every removed block still has constant value one: preceding folds changed
+only the first block. After $t$ folds the first block has value
+$t+(x\bmod2)$, so it retains all $L$ alternating runs. Initially its final
+value one coalesces with the long suffix; after the first fold there is at
+most one additional run. In all cases a removed suffix intersects one run.
+Every orbit is $\{r,r+L,\ldots,r+HL\}$ for a unique $0\le r<L$, proving
+the histogram formula.
+
+The former flat evaluator scans the retained prefix and visits its $L$
+alternating entries at every fold; the local-overlay producer also touches
+the first block's $L$ entries to add one. This gives the stated
+$\Omega(HL)$ cost.
+In the lazy tree, one constant vector is added to the root of the first-block
+subtree at each fold, with logarithmic splits and joins and no scan of that
+subtree. The final contraction scans its $L$ leaves once. Initial source
+and certificate-weight checks process $O(L)$ records. The unweighted
+checker visits exactly $H+(H-1)+\cdots+1=H(H+1)/2$ current pairing rows
+in its truncation precondition loops. Its only gap sort occurs after the
+pairing list becomes empty; the carrier is always the last list element,
+so its deletion causes no row shifts. Thus no extra $\log H$ factor is
+needed for this checker. Generation of the trace is a separate phase and
+is not included in this replay estimate. Add initialization and the
+unchanged input/trace costs to obtain the stated bound.
+\end{proof}
+
+For $H>1$ the actual transport counters on this family are
+\[
+ \begin{aligned}
+ \text{source runs}&=H,&
+ \text{receiving runs}&=HL+H-2,\\
+ \text{addition intervals}&=2H-1,&
+ \text{emitted runs}&=L.
+ \end{aligned}
+\]
+The maximum canonical run count is $L+1$. For $H=1$, the receiving and
+maximum counts are both $L$. These receiving counts are logical state
+sizes read from cached subtree metadata, not counts of visited leaves.
+
+This family was checked against the maintained producer and independent
+weighted verifier for $(H,L)=(1,2),(3,8),(8,64),(16,256)$: the complete operation
+lists, cut positions, and final histograms agree with the theorem. These
+finite executions check compatibility with the current scheduler; the proof
+above establishes the arbitrary-parameter family. The examples are synthetic
+interval-pairing inputs, not claimed difficult knot diagrams.

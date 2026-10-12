@@ -1,0 +1,5164 @@
+{
+  "case": "pachner23_5_8_2/mixed",
+  "status": "COMPLETE",
+  "independent_replay": true,
+  "scope": "one producer + compact JSON save/load + existing independent dispatch replay",
+  "interpretation": "cProfile diagnostic only; not a replacement for unprofiled benchmark medians",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "source_sha256": {
+    "__init__.py": "0ea0ed9e89a1461c674371b96d71d411dc7c7e1d300a3cd41e2bbc5354a8bf73",
+    "__main__.py": "33c6b248a5fa4dfbdad3299a0cdca879a60e6925e653f070597bb9f96a204804",
+    "_regina_worker.py": "cdf1badec61718e60fcace3bddec4d0b4d56dbeeaadb3406946d4f38ae617a33",
+    "_sparse_coverage.py": "ca864198a67f6912afd1221f7dd54abc5ca69e31cdfe4edd44ac909be68f5528",
+    "adaptive_jones.py": "dda8d6b8804c76f41f3c83a8263f3a1fe71f7f0e55f38c59af3cc305d1a0bf46",
+    "adaptive_potts.py": "e74d0248140ec35ae3c9dd239af572a6eed5d59dfbaeaf55d04335e7139b00e8",
+    "alexander.py": "7b1f35cd4981cd43d698aa893fee571dc236ebf1ebea7231adc5b0f3a299cd75",
+    "algebra.py": "f51f807dbf1b8b35d76f6153c36d0747dfb0ff1d550bf5760327dec493f403ab",
+    "anchored_projection.py": "8e2bba655c7ffed2de2f93613f16b02bab1a940d27fa37599474c3741caf12e6",
+    "anchored_projection_verify.py": "e1207fb5248974045ae4d2575d3f1730624958a08e701a2bfa0bcdabaf52df3c",
+    "barcode_scan.py": "c2d7df5069ef6ae4c67cb3dc1821771d03e8d6e5d9b1aa4160e6cb18cfe64a0b",
+    "boundary_connectivity.py": "2b275ee8c0bc94512636e773fe7d7e0eba40daaa3f63adab307670bf5633c8b7",
+    "boundary_shellings.py": "f9c6b0e4c5e879504cfe89e56906891e1fe88915022c2bcd5448b1d7375f9381",
+    "boundary_shellings_verify.py": "acc5b77c4c5029cb725e46122276f039ba743d5119156bcdc29be17aadb25151",
+    "braid.py": "f72df0b0e8ad07e3a5b17fb965b21a0325cc501ec82b3601e85a143ffb9b9c5c",
+    "braid_descent.py": "66cd2d4a716b4a4f220ab3f441f65f176a3cde3178062d4018902f6e8ea4d600",
+    "braid_profile.py": "63f73079d38a3e9576a5f5dd6c3fa2aa878c7ffe73483d9c95a561e5b95bcb27",
+    "braid_reduction.py": "d44e06bd95aa806ab687119241aa0b999504b7a525f1e08b69851134ccf9a5f3",
+    "bundle_boundary_kernel.py": "9efb4c4b5e99875c7f6a1e05af6a975da750a5c7ef7a664012f21361262cbf61",
+    "bundle_boundary_kernel_verify.py": "0f195ec964b4e78de46ba0dc167449e7ca5a82c3ccea45932666ea0b200d8a8d",
+    "bundle_primitive_annuli.py": "fd910c0208dd8c65f531d1de9f3bf884564d1de15f6c028aec4c6b522aa1ba30",
+    "bundle_primitive_annuli_verify.py": "e9f0a5cd7ee1d565a74e602f9d0025f1545b5d4cf2d6c7ec0ef9bd1ea0c9dbea",
+    "causal_r3.py": "a798b44fc259928348364c4aac909d3bd53adaf13379565e176149b87bcea980",
+    "closure_scan.py": "53970894a8e613f442ef063ac4db50c4e83578ecbf35893ed7450eded9abd32f",
+    "cocycle_euler.py": "c293bb6213df30e0ec2e104cc81b4b38dbad4a8c67d40c7d2d583887c0aa3812",
+    "cocycle_euler_flow.py": "1cc5388712c3d8144841df9fd51df95c18328240ce58d81b36e4a687db7550b4",
+    "cocycle_euler_quotient.py": "b91daea754f0e7c67a4343f22570023d66112e2155b14a03f926f443a3d80f2c",
+    "cocycle_euler_verify.py": "397517c6da038bd31fd9b9d294d4a3f3020968c89800688c78fb3fcdb77cbddf",
+    "cocycle_face.py": "e1f588531170969d6b32b9eba1bafef4579edd981ba3946a348b85faab232f59",
+    "cocycle_gauge.py": "acdd7eae5088e5eaceeec79fc9ee1d80792fea89b1965972da02442af83621bc",
+    "cocycle_gauge_verify.py": "aaa2c55dec9fe61cd2ab6b58ceff37f071436166369ae64933f77a138ad9d9a7",
+    "cocycle_lex.py": "b9bb272ec645508de0e2a7e7fdbd564b7c04ecbc1d2d2bde7b45be7c9a75d586",
+    "cocycle_lex_geometry.py": "31a00112addb51ba9dfefe4658fbf3e2b2a0012db4e99807c05cd1ab1aed8b0f",
+    "cocycle_lex_verify.py": "8f7bc06c1129d2f1cfe9336a94d45815b7c0c5b683b90b3edfc3f76a276f7e86",
+    "cocycle_span.py": "544fc51dff5fb7151e43a4f014843414f28da37d217c71092b97d99a0ec0db0d",
+    "cocycle_span_verify.py": "f9e9bebfb20d3ae6576b4b64c472f8f89c3c447ca483ecdb674ffb9031713813",
+    "cocycle_transport.py": "1ed05be1735c8d27927e1172494d8ce0edc8214e45014c3e2bbb622020690a67",
+    "cocycle_transport_verify.py": "225424d9741b61adbbce8b0c0d2d0f0478edee975d85c1e2632062d19dd8e1e4",
+    "cocycle_trees.py": "2d1a16b1339fe70cf9218301245f8f379e920456368386edc669cc57d69b87cd",
+    "coherent_family_verify.py": "bab8bb42c4ade1ef799a1d8393fb61ea899cd76f0038721f8b69a04625197f5a",
+    "column_cancellation_verify.py": "a6792fcd809a98e7df6da09b7747b517cb0b4e0c86f55eac877924ad561cb1a6",
+    "component_algebra.py": "fe27a301879a9f1e75130aace92a2c3d003135f74bab665a130c6ddf00c99935",
+    "component_scan.py": "9357fcfaadc2e41adde0d03cf38ca77f6957bde64fe8fae3c3c6c45b974ca5c1",
+    "compressed_endpoint.py": "c5285fa316378e283fa4b0af224bea00b035cc3dffb7d9108def422dc905ee3c",
+    "compressed_group.py": "07575d27cabc7d49031ff581337a354270ec8c8043807745266aa9aeb37ddba4",
+    "compressed_lcs.py": "9e65ececbeeab6b55fbe764d470468fc0c666cd2a0bf68ff86075d399bf63fbf",
+    "compressed_match.py": "00d397bae99d74976205b97e8d6f371a08a07de9f50c80443719637dbbf0f1f7",
+    "compressed_overlap.py": "0eb571d013649b42b8b52e90bcc533c05acb6206364d07897a44aefeca85862c",
+    "compressed_search.py": "6f680f9a585410ee4ad7eb0c96456a692a1b9ace2805a914453deb188db72692",
+    "compressed_words.py": "55daf4a565d4b2683f2a808db68a8c20ca73d31922a5abe375ff0beec4555fa2",
+    "core_handlebody.py": "f10c96362650e110f80094e552f3f5650de83b4c3d3024c874bef416c7e39dea",
+    "core_handlebody_verify.py": "c5187ecde362aa48fc7bc140b99783421fdf94edb3b9e7598ca8f5471e0afa8f",
+    "core_primitive_annuli.py": "73c4521cafc45f7e211bb23d2d6d1c727d5c2091aecd10b1400d3abd5e68062c",
+    "core_primitive_annuli_verify.py": "a58bae5a125012e2d117dece15c7d8d47edaa7f1a6294f6deac61aae37ca5571",
+    "core_three_handle_reduction.py": "7727248045abc8f28bc9cd33d153b1280286dd034fe48cf7764c3cba01bb7111",
+    "core_three_handle_reduction_verify.py": "86911a3382e7d64621d88544e2ce32091e0ded17dc91ab618e6aeaaebd33a42c",
+    "corner_split.py": "672678111de1c3e0682bc9665c07ceb4e58e6dc8ff9a3402e7b8b815d7346cb7",
+    "corridor.py": "f05e325504f4567b0c6a705ea674964bdbc98376e3fb81db2379a6c2dc2ac3a9",
+    "cyclic_overlap_index.py": "f7cbed157c733a24cc650c33452a2b903759283392a14960d51cdbb496f39df3",
+    "diagram.py": "729c74dcad9e5df72a5533ae8386ccfcfa6e968305ff4f0f5b504d8e27c04511",
+    "diagram_exterior.py": "43fd690cf157916de6c68c333cb148f2e0e5bcca26d112662c7b2e1fa1f89365",
+    "diagram_exterior_verify.py": "a200499bac549d094ce17e784c2bd3a7267cce874518a6c9974c5c900ef4123d",
+    "disk_bundle_absorption.py": "d95f2db63e75d8ebbdd8676f3072e36e0e0c4a29cff77573de225562029e9223",
+    "disk_bundle_absorption_verify.py": "029296e286ce86b5de8eef42a59fa1337f7e519bffcc3c95f6b7b86c6dd89318",
+    "disk_frontier.py": "8e7c7d1a3e4a868c73274310374d0d37e00c134592b4f28aa177d0fd8614d64e",
+    "disk_scan.py": "4bea2a72e245ce67e0aec55f9c07c83194b9326a8521c7dea367608317528eb7",
+    "elimination_batch.py": "b57bcbfcec2180b1b815b75d13015fd7f533e00f661dd1f342fb67d6a6a966d6",
+    "elimination_batch_verify.py": "9b225f29d7c9d5d2dbd2244d7b0f0b7ce0f32d806d463282f77a186bdf9cade1",
+    "elimination_ordered_verify.py": "2e3213b873bd36fa484f0b2627fc8787e55ba006b7cd64d6eb84064285ef8a26",
+    "euler_scan.py": "a17102f9f2e8d7d802e82d87cb576ee8af796fd0301eaa2bb8cacdec0c3b310b",
+    "factor.py": "1b885f14da7b7aeaa21b86360a47d10a565f31a375d52afd1ea44fba10e89420",
+    "faithful_jones.py": "c042f81cfc45dd7c5a9dd788050ca3bf557fa1dd58bff0a9364bb082b3309b0a",
+    "filters.py": "405792a1bbb29aab3bec8fa2527359c1280075963d6880883572be290dd89beb",
+    "free_group_elimination.py": "196b133796d19fd73cf32d842fe8da8da227ad913fafb8e22df606104a7e3334",
+    "free_group_elimination_verify.py": "269bfdeaf71aa2b89095ac02abce519be5ff9c74b446f07110d3ff3b667dbb8c",
+    "garside_probe.py": "cd6ddc1222a975fed2a43daab2b629fe2e43b8a0567f82b0f3cdf7685f05fd30",
+    "geometry.py": "430216440879ab7f8bbc403a3408fa66a1e793a0173c2b81ed97d74186cc2812",
+    "graded.py": "5c91bf40849f3c64c9bb10a5744769c56abd8f00c4f91bdb8b5163960cf350fb",
+    "graded_transfer.py": "0b62fa67c2ead25a1311b9e0eb684ec50c37a9eaf1b15dcd28edd2fcfbbf6ca6",
+    "group_certificate.py": "2d0e3bea94b9e3d6f38d25b128d6a61b5c720e1c3acc500bc19cd0e5ec7c29db",
+    "integer_codec.py": "1602e40df0cfde534e73195f46edfdba74aa72c087d65ad0370153e45789e97a",
+    "integer_determinant.py": "44319b20e2046a53472cb8a23736193bb4a1c7d35c7f6e08d7fdde5a67419a1e",
+    "interlace.py": "b98703923282099c0de7dfdfa20c107f3558128c74a14cd2ce2d8455589abed9",
+    "interval_incidence.py": "185ab1dabb947ac0d5bcedd6c0557f965d2d318ba388e873708296d344dd7cbb",
+    "interval_merger.py": "c64c9bb9bae5e638914def487095eab26b54d530a85d3daa35a7dfc487de49fe",
+    "interval_orbit_verify.py": "890f30139142a7ccea59d266df2a9f255868c9a7bdbdf07460117941575fa835",
+    "interval_orbits.py": "d2453b781c1b9e77384a1db6a6942d0adaea00dc87d93166c9000c5077a784a1",
+    "interval_race.py": "fb558a474510f4fbb40e658137c39103b76b80b45c9b10fdc63364ffb312ac91",
+    "jones_filter.py": "121d9a681720ddb24e1739896fece90c6fbcaa100aed5a15bee811f628dea570",
+    "minimal_window.py": "5bdacd3f6070f035ba8e4492747ba28ae399e803f8f16a712e2c74ebe5ae496d",
+    "nice_order.py": "eab14477436fc714a4070cc14b1fd18c54b1ecf79890d46fb54d47b4df320852",
+    "normal_annulus_verify.py": "424f8981338ce279446ca7f4ee8cc6933866c8002c047495eb4f5aa1656064b5",
+    "normal_boundary_geometry.py": "267ad8849c4bd5f8a36b200196fda6f496b96924926ea1ccc4bddfaa737b0e08",
+    "normal_cocycle.py": "9340d8dcbdc7b51cffe078f425368722612d23f4c460d4fdd41f69d1cf831abc",
+    "normal_cocycle_verify.py": "6dbc09d422ea737df282d4eae294cd6b52e9b688a9080c3920db009a77624dd0",
+    "normal_component_geometry.py": "03cb9b5c909531c87b2e6fd906899b8d2afa4bcbe59af6af38e74063f4e0cbc4",
+    "normal_component_verify.py": "2f78aaadeb9ef53a83da7a75053812db85858ea46301146d486e8fc6e948457e",
+    "normal_coordinate_basis.py": "a06aeffff154e7706af4ed5f2ca4c90c687ef321838427466b2d6cc6ba26983f",
+    "normal_coorientation.py": "f6f3a6381ce2f4f2278fe2045fc70abaaa1163af49368c7474c28ace1440f751",
+    "normal_cut_boundary.py": "1f3874dcb79f7fb7a1ccfdb7da5b6b475f45f43186f578deae8342ce99fb2c40",
+    "normal_cut_boundary_verify.py": "36237433c80903044ff4cfc567b3a93e2ff70a5da275f9ad434623164040ceb2",
+    "normal_cut_cells.py": "a7ad40748dcced8710ff9ff3001c0c78656af0e6a7fde047e38aa8d2baaea42d",
+    "normal_cut_cells_verify.py": "55036fc813298b45c9147374dfd1ba2003412c9bf6b7b0a570c15cfeec5aec8f",
+    "normal_cut_complement.py": "14abc5147f069ad274d533e8155a22b31d96400a77daf168dd621329d8eabfc5",
+    "normal_cut_complement_verify.py": "90f42984134bb614ac97c46eece48a333154003554fdee35b2cac8ad6d1b5dd7",
+    "normal_cut_groups.py": "54411ece2697ca7f69087e0b36ea8cf395923b0fe95ae85dd7595cf118b25ccc",
+    "normal_cut_groups_verify.py": "d7c7573105bf499de3a1077ef2cd2bd8d3f81eb0b46277cc1a8a3c0d090e60b3",
+    "normal_cut_handlebodies.py": "f26036b55168ab56ca0569c0087e17d4cbf0b00dad939bbd71c13c49952a567b",
+    "normal_cut_handlebodies_verify.py": "0afa8e7d8f661a27fd2d30ae344415715f1ce3382e997d6f4ab687f76aa61a06",
+    "normal_disk_kernel.py": "d5bb1c102616496b8f3d48f715d1c53c083c6751cee9fccd94289ba723710e44",
+    "normal_pachner_search.py": "5953595d598ea5602a0f3ef274010d475be7dfe7f7ca8189a477b0a503ca715b",
+    "normal_parallelity.py": "45ca9f57e2a8bea4bc75d35eba5a09ff36bce9e092e84d07477b20e7f66570dc",
+    "normal_parallelity_geometry.py": "9c2a0aa2f5b15089c6ae2571c4a8baef75afd472105f0bb0635a8579eff2a113",
+    "normal_parallelity_reference.py": "8fbec25d15eb38abd422029c9c5c57178cd136d7f15ab7371e832bd67b1cbf84",
+    "normal_parallelity_verify.py": "27961cc628fe47cd477aefc90bbab52a306994b9f8dedeb2c177ef7a199f406b",
+    "normal_planar.py": "173b08a5e808d6912d3573e26c683ab5faa1e903db5b90e6187b006e79fc510c",
+    "normal_planar_verify.py": "ebc221dd6070b808f14c5b603ba23cbdffe86b831bcbb7e74fee663fe57fe289",
+    "normal_prism_interfaces.py": "36c56edc2c310bfc4453634f303ec08b9ac8f324427b574fc3d008506891cee1",
+    "normal_prism_interfaces_verify.py": "be917436220a2d362e3e56c5972d6c6b0cab3ee908e5b3e58c246d8aa7d8546c",
+    "normal_prismatic_inventory.py": "b87670a8326381a31cbf3e3adbeb25ebb19a771c69fd9a226614f7366af7983b",
+    "normal_prismatic_inventory_verify.py": "10f2d9363891e7a22efcfa5aed9a232f37f076e6ad1780bf2d4990a8ccbc631a",
+    "normal_sector.py": "68fcdff4b8cc3b3bd0033f66c3328cfbd42bbbbad36de855d3f77d430138fac5",
+    "normal_sector_verify.py": "ccbd0aa252bbf161f03e0a18aa634b0bf6ba4c3b1c24445707191953d552bc4f",
+    "normal_seed.py": "82868d0b1285cf4a0f7c7b92a1bd4c13a83cf7269cf2c4461cb5afbbc27ae8e9",
+    "normal_seed_verify.py": "b3e8ec77342b7b41ac7381f1a0b230b5e4b0b9613d61dae56d22d26d6e95102f",
+    "normal_shelling_verify.py": "8f391952885107956b04cae20c4c863cd05ae549a46e4cc9885d4229ecff92d7",
+    "normal_support_peeling.py": "8e94aef111247af441e650eec7dcf716735f995078d85d7a72fc568530f22386",
+    "normal_support_peeling_verify.py": "84693d75691c6fe4bc30ed1c17a77211b565e6939333c4211a4268652f7f0789",
+    "normal_surface.py": "3c318e2d98921ef0c971d6671626d13c390268acc1945af8732193f6d8fd6b5b",
+    "normal_surface_components.py": "17b9578da375a70b52cc75eaec25ad1941757dc7f38b1ec827b32a87514d11fe",
+    "normal_surface_geometry.py": "3c7e818428ea60d2a331e9eb3a457dc1baefdb135fe18bf5af3c1b2868839281",
+    "normal_surface_orbits.py": "300aa195a82fe23eb5e8b66785e1d7a727098d8919063fd6e5b610f1a9914ab0",
+    "normal_surface_parity.py": "129a95e8d730ee76e47bf56f22c0bfccaf12eb4f32b9c93242256a3c6aaccf9e",
+    "normal_surface_verify.py": "b0f8bb336ebe8d728d147f54511ed2fc34db49aae7ed0394eedf05a0ffa0ecfa",
+    "normal_topology.py": "c263a33d7e51eddaf7d6218ea3cf9d87ad6784b2d0e90d8f1687d48bf013428a",
+    "normal_topology_geometry.py": "18e96cef06819bebc22ddf69284131380e1c9e79bd279d0e0aaa236a762df7db",
+    "normal_topology_verify.py": "0c0e61a571a84fd375722f15fadf9229f2f31955d76f414744464a86ef2fa7bf",
+    "normal_transport.py": "01abd4174359d911ccebf7f151499677ba89e8f39f54fdf9f2ed4cc0d2ff4352",
+    "normal_transport_verify.py": "a9a16d0fb5113f071fe114822d3d330d60b58666e2cb97519612d32b38066808",
+    "orbit_transversal.py": "4b5efc9d99e1373f378c213b6511441b5d0e078770744ec07d0414d8333ef100",
+    "orbit_transversal_verify.py": "583e8d41a48142cf4e84b70a2f5590b33703b8e4b1c4d700bb8d5cf9184fb6dd",
+    "ordering.py": "18f62b2c86d0ba26843bd466374a6a32eaa38e0c8ca909fd8750d88808d39d57",
+    "pachner23.py": "81eda23572029fb4548fc23cd7e4fc848030aa72c30e4a9efead39117206f254",
+    "pachner23_verify.py": "b4a859c671161aa59e4ca8852b68f3c2b12ecb6aec0a02ff58888bd5c8028e1e",
+    "pachner32.py": "97e42181e065fa3e0eb1b2c82f5b66b32b754fa0da56716a4c9cf6a4c5da24ee",
+    "pachner32_verify.py": "a2030ab1d9738fbc783aba6f95d252ed52bfd9a9a71268a1792cb1b8bad33ad4",
+    "pachner_causality.py": "f21c67604fa4150acbd23524cde28083fff6aee9ddd3bf5e15641bc7aff0ebd8",
+    "pachner_commitments.py": "171851aaba777599276adf12939196ac02a803ffc0be9341df25e925910e073d",
+    "pachner_commitments_verify.py": "058aced3929e0f38c7e55762859d852e2216a68711b8d9a6c8c165fbd81e044d",
+    "pachner_cover_oracle.py": "e9c8a4cbf86377e996be6cc4a9d7a658a150b2be80df7a02f7fc9d9939bf5feb",
+    "pachner_cover_search.py": "39f1db954e691c489cb7542220196803ceb723a98fe0be9dbdb28ae7501212bd",
+    "pachner_cover_verify.py": "a62173b1cde185002ba7e9e47f1e1c635f770c5f5b307160ba6320720e76e8a6",
+    "pachner_epochs.py": "010d7f54d6374fab5928d2b102341608dddd09892c94eee529483bf46a63394b",
+    "pachner_regions.py": "09203a2f25579b74510061051e1665bdbd9177e8db065b079b7d444e0ede19ab",
+    "parallelity_boundary_moments.py": "bbd278379b471f6b3f2d7d4c5b5cd996770c6b38de354355426eeac2baeedb9b",
+    "parallelity_boundary_moments_verify.py": "08b57cd9f6ed8f0a38c2c8b3a10edeaba61442904fd5906fcc35d0e614fc12c3",
+    "parallelity_boundary_words.py": "088b7c8fb78d1dd56216e05c5d986425b1722a319a5699e301ff45d5b1e3ae4e",
+    "parallelity_boundary_words_verify.py": "eae94a660642fe44f9c1e204f2f10f6f5d9a86dd34ee307993811daf34c72ca9",
+    "persistent_elimination.py": "0a99a62a47e51510eb3843091740be2ba4c2a3a795a90fadd317c96eecd25ff2",
+    "persistent_elimination_verify.py": "f5c9ebad643fa49cacb50eee82a3118f97a49cb5baf6ae32194c49dbc109a53c",
+    "planar.py": "6999579f252ffd25e217eda4f64b5e940af2b2356ec433cd5cdbd042d0d62253",
+    "potts.py": "4bdf4eafd5866609b3ac17809e5e249e1420df19eb2d7ae92205e449e2cdd1c9",
+    "potts_exact.py": "76e1e4cb67aa664b63cd91d6008c1b26e9df7d7ebcd7b9fac178e0591648ba34",
+    "potts_factorized.py": "219533bd566dd5480219dcc07fd23c306d2ae886fe84e5768a148ec111869a12",
+    "potts_factorized_exact.py": "7da7b4b8a6cd78c40af6e76bcf3f680ba818bd2b6d8dbe05ed87cbf25912b897",
+    "power_component.py": "6ca6f2ac8c1786b0a9a6fdc53cb96182cb1d44458695e0ed079ecd862cbcceef",
+    "power_component_verify.py": "f07f1581c1421a83cb9d4793c72d434ff8e079e16230d1399124fdb67fb102b5",
+    "power_pair.py": "565f82fb8d35b981bb8186e78f145e04d611d037f3c5eb98ad232f7533fef189",
+    "power_pair_verify.py": "d46f2123c1a387ef931489e6bc5f71281c419c409e2017c05ee087f7b1b91e13",
+    "primary_split.py": "95bfa9d6a33f8b63d0893319e08e0f59d2a17d376ae6bde2f30f85b83d7da1df",
+    "primitive_forest.py": "ea13e90f164fad649c05a114fcee0cdc80796d00c17f9b640db35ae09b060c2c",
+    "primitive_forest_verify.py": "aa949a04b0cbd4bb541fc3bd2deda60d2dd77232ccde2387860cb05e9099ce7a",
+    "primitive_power.py": "a4497a988328be1d3712226b8d4c35d4ba8c577e33ed8ed4dc4386906942d5f8",
+    "primitive_power_verify.py": "f118f40e536fae2a7d13ec87fb812de15cfb8d8337a9ac056765573167a3efdb",
+    "primitive_projection.py": "621d22d96722888e41a4f650c906ebd4f6334d2403a5fc8d9e3f44769f0e0d9e",
+    "primitive_projection_verify.py": "e0e2108ae2737008fccbac3c90265a50613272260b1f6e84a7a59bb4d1bd59cb",
+    "radical_transfer.py": "a97900b59f35084c6d56dd1829d9f9363cae18b030c566fa4f81ebf10ef09845",
+    "rational.py": "e9b15b050258d2682297e4a8adcd5e7dacd2de5d0ff3d65d76393f38da0f755b",
+    "recognize.py": "35ee6662985c0e3e229f6031da2219c0c62db8bf1cc069ae10961d216be9077b",
+    "recovered_grading.py": "3b6cbd631925f4b1fecf0b582307de68b3967c4d85dea502c24143418c6aa96d",
+    "relator_overlap.py": "ee4ed634ac344934cc38d0e98c332f1368dcac56b871ebcc1987197542ed3724",
+    "residue.py": "76f6a751bf82bc2a24d264631e08ee2031ce9b49f71aec887f1f9d3f644b4e09",
+    "scalar_components.py": "603ddc5848d439a85f8c611addcbfcb25d368f1cb04521bd7e71b42788d798e0",
+    "scalar_split.py": "528070b445d1e0271a22783a11b1e40b74d5f4dee77f0f993b46d60d24c6dc39",
+    "scan.py": "c7577b33bd2e3924bf15d2456ed194c8f393026e96c13c98d86eb842f97feaeb",
+    "scan_fast.py": "a1a315b2cd777e758b4377dc3233a53c8fd79e85f0721db565a50541dc3f0cda",
+    "scan_reference.py": "b79897060c7774dd2f3e08c63147b5ee74cf50c0262a50d0452430d9b52686b6",
+    "sector_envelope.py": "879edae73639989618076e92180e9163eb55fecd40481afd49f7f68052241ad1",
+    "sector_envelope_certificate.py": "58b970179ba8098ec524a2d7734ec6239407206faffcfd0f5b277cea185a5cf9",
+    "sector_envelope_verify.py": "86c500caf8d3a7e1376b9e6896d2a4cb71d2f8d865ffc1e39aeb50e4b4f2c334",
+    "sector_euler.py": "9b6a1efe87586fa1a0fcfc959e083e60dfca68f5ad55d7378423fa2bfaf5bb04",
+    "sector_linear_form.py": "94c7e60609ce2a6747bf154f4800d6b629770adea6e47bfb98826026efa7915b",
+    "sector_matching_support.py": "74e356a0acf6b625787238e4a7843a69b70570d40f992efb823219aa0161ffc1",
+    "sector_planar.py": "967ed7348bd7bddecfb1308f78086432742d90ed19db0adbae74d5498dd21ab9",
+    "sector_planar_verify.py": "b61df2726a8cd24da4a67a9a7c706d253a2e24ff8b0371dbbf72f9e80ced241b",
+    "sector_residual.py": "77b113dae3b6e486245afd775c8dd2a62c7d64f989955e470e8d43c1fab2fc51",
+    "sector_sparse.py": "0816cc59ea27badc952b3e52622aabc1cbbd46d6c109e56af7cbb02c1f1464f3",
+    "sector_window_basis.py": "ac075fa8d056f506c2527078d284d34cdbe3e0041a77c733e5479a6b0e7567ad",
+    "seifert.py": "1a9c9be5ee8af84001587e1988ace007d1a1016847a6d53ece9f1433af166df1",
+    "separator_order.py": "735f27a58a2e24b047e031400a103ff81b0a1818fa70aea5c03b671a1782d3f9",
+    "separator_potts.py": "423b6c725101c478581b7ef37d2e9463faffd41ef1b702b1f8002cd16261bfff",
+    "shadow_scan.py": "bd426dc243b65b3c91d005d456fa04df2e7239a036363cc8a26b3ddd4a893772",
+    "simplify.py": "2530f49b2ee21b35480f70182d3970996492c740778636b15bcbf2d23084dd26",
+    "source_cut_group.py": "bfd4013f46c048aea395d234418b8298b13868a6c7f943e9e6fab9315b3df7ec",
+    "source_cut_group_verify.py": "12eca5a2f082908bba9d20c49ef088e00daebbc61b9c47f5772cd085d85a0582",
+    "source_handle_cohomology.py": "c3a2fc0319b5b80d9e4025ac0dba5b4317b1095348660b583cf4510b12dc5ef9",
+    "source_handle_disc.py": "c87412c2adff174a21e4b8c0a58fff9c5374c4379c07c2c27f2c674355b65cfc",
+    "source_handle_reduction.py": "4b282172a40b3c0bd3a9ed5491fa81bc8c7e20e9b17931feae2ebc3061d838c6",
+    "source_handle_reduction_verify.py": "aaf61948b415849cddf6c6c12310b27b4b27ad09d1ff86ef36204264806cacbc",
+    "sparse.py": "58a4d7c80edea9cf9d2a140982b1b5f98750e7e699a358f8d23ff4ebe0094a7e",
+    "sparse_incidence.py": "69defb6615ba0b68387fde1e73eabf2678d563036961c61e7085d503b2a6e9b9",
+    "sparse_incidence_verify.py": "b56e28025c473c74afd42a74d9591ef01185390bb2133484e49edca7436a8361",
+    "spin_jones.py": "d2acb02e5b8e8765af57be6d3b52c69e8992e7c5f6714369bbb817f4e7f40f08",
+    "surface_cover.py": "1dad2c24688b908a6a0677b63bae4958754488a52cbb8199fed8d945fa2eb0fb",
+    "syllable_normalize.py": "8f40ae97854ea7c4b87823066aebd0e5bbdcb83a02e152ba46230a233f1c3ba4",
+    "syllable_normalize_verify.py": "1d3a6d4608a5106fb03c0c123f03f9f493d5e6c6a53b72efaa7b4f894e64a323",
+    "tait_blocks.py": "e08ee4410d39372994579e07b292fc381c6aa506866dda3629603f60c8f37bcf",
+    "tangle_obstruction.py": "5c87e8e40e5703ca51cfd6fce429306e04150c6139df7165cdf5fbc2fd318fdf",
+    "terminal_determinant.py": "04cf547f2ee781823eb5e637cf0a071c22edef4e4741e4cd3770a8313e23cbd7",
+    "topology_spectrum.py": "49b0829da82761e2f626a6b50483cf99171520f15a27987582334f849ed584f7",
+    "treewidth_two.py": "7c1cfa9e689bd9460c49e023ae38185e8133d40abd076accdfd84be7a0d9defc",
+    "twist_adapter.py": "a4497e173dfd397b945227aceea16f7ea1077369c247e143808653677401b246",
+    "two_meridian.py": "158c2afbe923ea6155b44cba0f7bc3eaa87d64078b4e4352a8834ffec82b8c0d",
+    "weighted_orbit_verify.py": "0965e5b920a5645a6579e56050f8e149e77ea22d62485e58690adf6cbe39df95",
+    "weighted_orbits.py": "e68f0b6437a389277abdab14691794180f7591723f6b1a2b6c7145e79224dd3d",
+    "weighted_transversal.py": "2c6e562efe5d8ffa26782183abc1ada9f0b6823386f6f67918844f25f86a6aac",
+    "weighted_transversal_verify.py": "b96f1eeb795f0819f0a532cdb4802f2f918f5ce0ee097c42b018380ad85cbfa0",
+    "whitehead_power.py": "dade6fd4d146d3ab77d78d8db70a418b6909a5597f329aa1b065af7b8c2bf1c2",
+    "window_bounds.py": "57654e7af9042dc99e510ba97a199017675e48cfbbce493d389a201b65ddb8db",
+    "window_filter.py": "3dbb73eac08b7385f5de080f38efda2bcd71d7d1cd93c1ae2b191b86ef4d8112",
+    "window_scan.py": "dd8959a7cd7ccc3780a7ea85a8c7f5591aa0243aa5943ed69fa481eb8bde32fc"
+  },
+  "profile_wall_seconds": 3.61380261600425,
+  "profiled_phase_wall_seconds": {
+    "producer": 1.8671853440027917,
+    "json_serialization_and_loading": 0.04358934899937594,
+    "independent_source_and_group_replay": 1.7022362159987097
+  },
+  "profile_total_self_seconds": 3.5329541120000005,
+  "total_calls": 13846179,
+  "primitive_calls": 13759324,
+  "certificate_bytes": 387809,
+  "certificate_field_bytes": {
+    "schema": 26,
+    "parallelity": 278271,
+    "boundary": 106453,
+    "presentation": 1576,
+    "groups": 944,
+    "census": 465
+  },
+  "native_stats": {
+    "parallelity": {
+      "vertices": {
+        "trace_events": 612,
+        "maximum_live_intervals": 57,
+        "maximum_weight_runs": 184,
+        "representative_runs": 94,
+        "orbit_cycles": 213
+      },
+      "boundary": {
+        "trace_events": 783,
+        "maximum_live_intervals": 22,
+        "maximum_weight_runs": 184,
+        "representative_runs": 21,
+        "orbit_cycles": 289
+      },
+      "polygons": {
+        "input_weight_runs": 48,
+        "maximum_weight_runs": 48,
+        "translation_pushes": 54,
+        "reflection_pushes": 5,
+        "emitted_weight_runs": 5,
+        "replay_events": 406,
+        "single_orbit_shortcut": 0,
+        "orbit_cycles": 60,
+        "orbit_stats": {
+          "initial_pairings": 152,
+          "input_bits": 7,
+          "identity_deletions": 79,
+          "static_points": 5,
+          "contractions": 3,
+          "trims": 0,
+          "mergers": 14,
+          "pair_tests": 19,
+          "transmissions": 251,
+          "truncations": 59,
+          "truncated_points": 62,
+          "merger_queue_runs": 0,
+          "merger_queue_switches": 0,
+          "merger_peak_queue": 0,
+          "merger_stale_pops": 0,
+          "merger_overlap_candidates": 0,
+          "merger_support_scans": 5
+        }
+      },
+      "fibre_cover": {
+        "input_weight_runs": 96,
+        "maximum_weight_runs": 96,
+        "translation_pushes": 76,
+        "reflection_pushes": 42,
+        "emitted_weight_runs": 10,
+        "replay_events": 864,
+        "single_orbit_shortcut": 0,
+        "orbit_cycles": 119,
+        "orbit_stats": {
+          "initial_pairings": 304,
+          "input_bits": 8,
+          "identity_deletions": 169,
+          "static_points": 10,
+          "contractions": 5,
+          "trims": 0,
+          "mergers": 17,
+          "pair_tests": 26,
+          "transmissions": 555,
+          "truncations": 118,
+          "truncated_points": 124,
+          "merger_queue_runs": 0,
+          "merger_queue_switches": 0,
+          "merger_peak_queue": 0,
+          "merger_stale_pops": 0,
+          "merger_overlap_candidates": 0,
+          "merger_support_scans": 9
+        }
+      }
+    },
+    "boundary": {
+      "census": {
+        "input_weight_runs": 365,
+        "maximum_weight_runs": 365,
+        "translation_pushes": 350,
+        "reflection_pushes": 134,
+        "emitted_weight_runs": 304,
+        "replay_events": 1313,
+        "single_orbit_shortcut": 0,
+        "orbit_cycles": 485,
+        "orbit_stats": {
+          "initial_pairings": 668,
+          "input_bits": 10,
+          "identity_deletions": 184,
+          "static_points": 304,
+          "contractions": 205,
+          "trims": 0,
+          "mergers": 0,
+          "pair_tests": 1905,
+          "transmissions": 440,
+          "truncations": 484,
+          "truncated_points": 492,
+          "merger_queue_runs": 0,
+          "merger_queue_switches": 0,
+          "merger_peak_queue": 0,
+          "merger_stale_pops": 0,
+          "merger_overlap_candidates": 1424,
+          "merger_support_scans": 481
+        }
+      },
+      "compilation": {
+        "weight_dimension": 1,
+        "weighted_calls": 1,
+        "codec": "pair",
+        "terminal_labels": 240,
+        "sum_field_bits": 9,
+        "edge_field_bits": 26,
+        "maximum_additive_weight_bits": 27,
+        "owner_intervals": 60,
+        "pairing_records": 668,
+        "weight_records": 300
+      }
+    },
+    "terminal": {
+      "presentation": {
+        "core_zero_handles": 32,
+        "core_one_handles": 44,
+        "core_two_handles": 10,
+        "core_three_handles": 0,
+        "ports": 60,
+        "disk_profiles": 5,
+        "annular_relators": 4,
+        "interval_attachments": 2,
+        "stable_generators": 1,
+        "generators": 16,
+        "relators": 14,
+        "word_length": 27
+      },
+      "group_components": [
+        {
+          "component": 0,
+          "initial_generators": 5,
+          "initial_relators": 4,
+          "source_word_length": 12,
+          "initial_reduced_length": 12,
+          "peak_accepted_length": 12,
+          "candidate_trials": 14,
+          "trial_letter_visits": 134,
+          "private_pivots": 2,
+          "substitution_pivots": 2,
+          "trivial_relators": 0,
+          "final_generators": 1,
+          "final_relators": 0,
+          "final_length": 0,
+          "pivots": 4
+        },
+        {
+          "component": 1,
+          "initial_generators": 10,
+          "initial_relators": 10,
+          "source_word_length": 15,
+          "initial_reduced_length": 15,
+          "peak_accepted_length": 15,
+          "candidate_trials": 0,
+          "trial_letter_visits": 0,
+          "private_pivots": 10,
+          "substitution_pivots": 0,
+          "trivial_relators": 0,
+          "final_generators": 0,
+          "final_relators": 0,
+          "final_length": 0,
+          "pivots": 10
+        },
+        {
+          "component": 16,
+          "initial_generators": 1,
+          "initial_relators": 0,
+          "source_word_length": 0,
+          "initial_reduced_length": 0,
+          "peak_accepted_length": 0,
+          "candidate_trials": 0,
+          "trial_letter_visits": 0,
+          "private_pivots": 0,
+          "substitution_pivots": 0,
+          "trivial_relators": 0,
+          "final_generators": 1,
+          "final_relators": 0,
+          "final_length": 0,
+          "pivots": 0
+        }
+      ],
+      "euler_defect": 0,
+      "trivial_relators": 0
+    }
+  },
+  "histogram": [
+    {
+      "genus": 0,
+      "multiplicity": 1
+    },
+    {
+      "genus": 1,
+      "multiplicity": 2
+    }
+  ],
+  "exclusive_self_seconds_by_category": {
+    "python_runtime_and_libraries": 0.7953528809999998,
+    "profiling_driver": 0.000729314,
+    "inherited_native_modules": 2.6345771320000018,
+    "new_terminal_modules": 0.10229478500000003
+  },
+  "exclusive_self_seconds_by_module": {
+    "fastunknot/interval_orbits.py": 0.964635126,
+    "fastunknot/weighted_orbit_verify.py": 0.8980141710000001,
+    "~": 0.78260222,
+    "fastunknot/interval_orbit_verify.py": 0.29363723199999997,
+    "fastunknot/weighted_orbits.py": 0.16366123400000002,
+    "fastunknot/interval_merger.py": 0.09717923400000002,
+    "fastunknot/weighted_transversal_verify.py": 0.09555739600000002,
+    "fastunknot/normal_cut_groups.py": 0.09467538000000002,
+    "fastunknot/integer_codec.py": 0.037805022,
+    "fastunknot/normal_cut_handlebodies_verify.py": 0.020424304,
+    "fastunknot/normal_parallelity_reference.py": 0.011145867000000002,
+    "fastunknot/normal_parallelity_verify.py": 0.00988962,
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/encoder.py": 0.00800097,
+    "fastunknot/normal_cut_boundary_verify.py": 0.007143249999999999,
+    "fastunknot/orbit_transversal.py": 0.006865129000000001,
+    "fastunknot/weighted_transversal.py": 0.005951277,
+    "fastunknot/normal_cut_groups_verify.py": 0.005795031000000001,
+    "fastunknot/normal_cut_cells_verify.py": 0.004996227,
+    "fastunknot/normal_surface_geometry.py": 0.004932292000000002,
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/decoder.py": 0.00397179,
+    "fastunknot/normal_parallelity_geometry.py": 0.0033681429999999997,
+    "fastunknot/parallelity_boundary_moments_verify.py": 0.0031838300000000008,
+    "fastunknot/normal_parallelity.py": 0.002926703,
+    "fastunknot/parallelity_boundary_moments.py": 0.002578638,
+    "tools/profile_terminal.py": 0.000729314,
+    "fastunknot/normal_cut_boundary.py": 0.0006824370000000001,
+    "fastunknot/source_cut_group_verify.py": 0.0006100070000000001,
+    "fastunknot/free_group_elimination.py": 0.0005079360000000001,
+    "fastunknot/source_cut_group.py": 0.000405731,
+    "fastunknot/free_group_elimination_verify.py": 0.0003007,
+    "<frozen importlib._bootstrap_external>": 0.00025724900000000003,
+    "<frozen importlib._bootstrap>": 0.00023726100000000003,
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/collections/__init__.py": 0.00015214900000000002,
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/__init__.py": 7.4585e-05,
+    "<frozen abc>": 2.6802000000000002e-05,
+    "<string>": 2.5278e-05,
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/_distutils_hack/__init__.py": 2.3540000000000002e-06,
+    "<frozen _collections_abc>": 2.223e-06
+  },
+  "selected_function_costs": [
+    {
+      "file": "fastunknot/interval_orbits.py",
+      "line": 237,
+      "function": "_count_orbits",
+      "primitive_calls": 5,
+      "total_calls": 5,
+      "self_seconds": 0.151149304,
+      "cumulative_seconds": 1.5690369780000002
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments.py",
+      "line": 225,
+      "function": "_compile",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 4.3698e-05,
+      "cumulative_seconds": 1.1288438470000002
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments_verify.py",
+      "line": 212,
+      "function": "verify_parallelity_moment_words",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 0.00022150500000000001,
+      "cumulative_seconds": 0.874379982
+    },
+    {
+      "file": "fastunknot/normal_parallelity_verify.py",
+      "line": 93,
+      "function": "verify_normal_cut_parallelity",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 0.000509722,
+      "cumulative_seconds": 0.816690938
+    },
+    {
+      "file": "fastunknot/normal_parallelity.py",
+      "line": 106,
+      "function": "normal_cut_parallelity",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 0.00027623000000000003,
+      "cumulative_seconds": 0.736507577
+    },
+    {
+      "file": "fastunknot/normal_cut_groups.py",
+      "line": 37,
+      "function": "_group_terminal",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 4.0022000000000004e-05,
+      "cumulative_seconds": 0.001621129
+    },
+    {
+      "file": "fastunknot/source_cut_group_verify.py",
+      "line": 265,
+      "function": "verify_disk_cut_presentation",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 2.9884e-05,
+      "cumulative_seconds": 0.001031648
+    },
+    {
+      "file": "fastunknot/free_group_elimination.py",
+      "line": 100,
+      "function": "certify_free_group",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 0.000217003,
+      "cumulative_seconds": 0.0010243370000000002
+    },
+    {
+      "file": "fastunknot/source_cut_group.py",
+      "line": 104,
+      "function": "compile_disk_cut_presentation",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 0.000163136,
+      "cumulative_seconds": 0.000536941
+    },
+    {
+      "file": "fastunknot/free_group_elimination_verify.py",
+      "line": 26,
+      "function": "replay_free_group",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 0.00015086100000000002,
+      "cumulative_seconds": 0.000448188
+    }
+  ],
+  "functions": [
+    {
+      "file": "tools/profile_terminal.py",
+      "line": 48,
+      "function": "query",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 0.000729314,
+      "cumulative_seconds": 3.613025883
+    },
+    {
+      "file": "fastunknot/normal_cut_groups.py",
+      "line": 67,
+      "function": "normal_cut_group_handlebodies",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 0.000203098,
+      "cumulative_seconds": 1.8671769310000002
+    },
+    {
+      "file": "fastunknot/normal_cut_handlebodies_verify.py",
+      "line": 112,
+      "function": "verify_normal_cut_handlebodies",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 0.00015044600000000002,
+      "cumulative_seconds": 1.702222485
+    },
+    {
+      "file": "fastunknot/normal_cut_groups_verify.py",
+      "line": 22,
+      "function": "verify_normal_cut_group_handlebodies",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 0.000598574,
+      "cumulative_seconds": 1.7008612390000002
+    },
+    {
+      "file": "fastunknot/weighted_orbit_verify.py",
+      "line": 292,
+      "function": "_check_weighted_certificate",
+      "primitive_calls": 5,
+      "total_calls": 5,
+      "self_seconds": 0.002110624,
+      "cumulative_seconds": 1.618914084
+    },
+    {
+      "file": "fastunknot/interval_orbits.py",
+      "line": 407,
+      "function": "count_orbits",
+      "primitive_calls": 5,
+      "total_calls": 5,
+      "self_seconds": 3.0837e-05,
+      "cumulative_seconds": 1.5690678150000001
+    },
+    {
+      "file": "fastunknot/interval_orbits.py",
+      "line": 237,
+      "function": "_count_orbits",
+      "primitive_calls": 5,
+      "total_calls": 5,
+      "self_seconds": 0.151149304,
+      "cumulative_seconds": 1.5690369780000002
+    },
+    {
+      "file": "fastunknot/weighted_orbits.py",
+      "line": 314,
+      "function": "weighted_orbit_histogram",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 5.2918000000000004e-05,
+      "cumulative_seconds": 1.2597638580000001
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments.py",
+      "line": 225,
+      "function": "_compile",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 4.3698e-05,
+      "cumulative_seconds": 1.1288438470000002
+    },
+    {
+      "file": "fastunknot/interval_orbits.py",
+      "line": 126,
+      "function": "_contract",
+      "primitive_calls": 1161,
+      "total_calls": 1161,
+      "self_seconds": 0.39169802000000004,
+      "cumulative_seconds": 1.0421842430000001
+    },
+    {
+      "file": "fastunknot/weighted_orbit_verify.py",
+      "line": 360,
+      "function": "verify_weighted_orbit_certificate",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 0.000206269,
+      "cumulative_seconds": 0.9803703250000001
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments_verify.py",
+      "line": 212,
+      "function": "verify_parallelity_moment_words",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 0.00022150500000000001,
+      "cumulative_seconds": 0.874379982
+    },
+    {
+      "file": "fastunknot/normal_parallelity_verify.py",
+      "line": 93,
+      "function": "verify_normal_cut_parallelity",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 0.000509722,
+      "cumulative_seconds": 0.816690938
+    },
+    {
+      "file": "fastunknot/normal_parallelity.py",
+      "line": 106,
+      "function": "normal_cut_parallelity",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 0.00027623000000000003,
+      "cumulative_seconds": 0.736507577
+    },
+    {
+      "file": "fastunknot/weighted_orbit_verify.py",
+      "line": 229,
+      "function": "_replay",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 0.053769498000000006,
+      "cumulative_seconds": 0.6685558020000001
+    },
+    {
+      "file": "fastunknot/weighted_transversal_verify.py",
+      "line": 81,
+      "function": "verify_weighted_orbit_transversal",
+      "primitive_calls": 2,
+      "total_calls": 2,
+      "self_seconds": 0.000464573,
+      "cumulative_seconds": 0.639320679
+    },
+    {
+      "file": "fastunknot/weighted_transversal.py",
+      "line": 109,
+      "function": "weighted_orbit_transversal",
+      "primitive_calls": 2,
+      "total_calls": 2,
+      "self_seconds": 4.2592e-05,
+      "cumulative_seconds": 0.5844288950000001
+    },
+    {
+      "file": "fastunknot/weighted_orbit_verify.py",
+      "line": 139,
+      "function": "_translation_fold",
+      "primitive_calls": 884,
+      "total_calls": 884,
+      "self_seconds": 0.020444518000000002,
+      "cumulative_seconds": 0.515788637
+    },
+    {
+      "file": "fastunknot/weighted_transversal_verify.py",
+      "line": 88,
+      "function": "replay",
+      "primitive_calls": 2,
+      "total_calls": 2,
+      "self_seconds": 0.000113462,
+      "cumulative_seconds": 0.48794251400000005
+    },
+    {
+      "file": "fastunknot/weighted_transversal_verify.py",
+      "line": 21,
+      "function": "_reverse_tags",
+      "primitive_calls": 2,
+      "total_calls": 2,
+      "self_seconds": 0.036096039,
+      "cumulative_seconds": 0.48782809000000005
+    },
+    {
+      "file": "fastunknot/weighted_orbit_verify.py",
+      "line": 127,
+      "function": "_prefix_events",
+      "primitive_calls": 1161,
+      "total_calls": 1161,
+      "self_seconds": 0.079303471,
+      "cumulative_seconds": 0.47263679700000005
+    },
+    {
+      "file": "fastunknot/interval_orbit_verify.py",
+      "line": 134,
+      "function": "verify_orbit_certificate",
+      "primitive_calls": 5,
+      "total_calls": 5,
+      "self_seconds": 0.000274105,
+      "cumulative_seconds": 0.42169861200000003
+    },
+    {
+      "file": "fastunknot/interval_orbit_verify.py",
+      "line": 154,
+      "function": "_verify",
+      "primitive_calls": 5,
+      "total_calls": 5,
+      "self_seconds": 0.08744123300000001,
+      "cumulative_seconds": 0.421424507
+    },
+    {
+      "file": "fastunknot/weighted_orbit_verify.py",
+      "line": 47,
+      "function": "_event",
+      "primitive_calls": 176135,
+      "total_calls": 176135,
+      "self_seconds": 0.08664798900000001,
+      "cumulative_seconds": 0.31464954300000003
+    },
+    {
+      "file": "fastunknot/weighted_orbit_verify.py",
+      "line": 35,
+      "function": "_add",
+      "primitive_calls": 265778,
+      "total_calls": 265778,
+      "self_seconds": 0.231427504,
+      "cumulative_seconds": 0.30737620200000004
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method builtins.max>",
+      "primitive_calls": 1593452,
+      "total_calls": 1593452,
+      "self_seconds": 0.229050304,
+      "cumulative_seconds": 0.28228384900000003
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method builtins.sum>",
+      "primitive_calls": 709758,
+      "total_calls": 709848,
+      "self_seconds": 0.168376568,
+      "cumulative_seconds": 0.274077356
+    },
+    {
+      "file": "fastunknot/weighted_orbit_verify.py",
+      "line": 176,
+      "function": "_reflection_fold",
+      "primitive_calls": 277,
+      "total_calls": 277,
+      "self_seconds": 0.008342779,
+      "cumulative_seconds": 0.253053537
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method builtins.sorted>",
+      "primitive_calls": 28094,
+      "total_calls": 28094,
+      "self_seconds": 0.153921894,
+      "cumulative_seconds": 0.24787567500000002
+    },
+    {
+      "file": "fastunknot/weighted_orbit_verify.py",
+      "line": 60,
+      "function": "_integrate",
+      "primitive_calls": 1166,
+      "total_calls": 1166,
+      "self_seconds": 0.075437816,
+      "cumulative_seconds": 0.23672029400000003
+    },
+    {
+      "file": "fastunknot/interval_orbit_verify.py",
+      "line": 221,
+      "function": "shifted",
+      "primitive_calls": 353544,
+      "total_calls": 353544,
+      "self_seconds": 0.08819801000000001,
+      "cumulative_seconds": 0.213853957
+    },
+    {
+      "file": "fastunknot/interval_orbits.py",
+      "line": 54,
+      "function": "__post_init__",
+      "primitive_calls": 93184,
+      "total_calls": 93184,
+      "self_seconds": 0.10544415400000001,
+      "cumulative_seconds": 0.180112621
+    },
+    {
+      "file": "fastunknot/interval_merger.py",
+      "line": 127,
+      "function": "support_closure",
+      "primitive_calls": 1161,
+      "total_calls": 1161,
+      "self_seconds": 0.09381059100000001,
+      "cumulative_seconds": 0.17198447800000002
+    },
+    {
+      "file": "fastunknot/weighted_orbit_verify.py",
+      "line": 264,
+      "function": "shift",
+      "primitive_calls": 243360,
+      "total_calls": 243360,
+      "self_seconds": 0.06505804800000001,
+      "cumulative_seconds": 0.15822024
+    },
+    {
+      "file": "fastunknot/weighted_orbits.py",
+      "line": 285,
+      "function": "_result",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 0.000149292,
+      "cumulative_seconds": 0.156173158
+    },
+    {
+      "file": "fastunknot/weighted_orbits.py",
+      "line": 207,
+      "function": "_replay",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 0.007849882,
+      "cumulative_seconds": 0.15571117
+    },
+    {
+      "file": "fastunknot/weighted_transversal.py",
+      "line": 98,
+      "function": "_answer",
+      "primitive_calls": 2,
+      "total_calls": 2,
+      "self_seconds": 8.0673e-05,
+      "cumulative_seconds": 0.099761787
+    },
+    {
+      "file": "fastunknot/weighted_transversal.py",
+      "line": 47,
+      "function": "_tagged_replay",
+      "primitive_calls": 2,
+      "total_calls": 2,
+      "self_seconds": 0.004731728,
+      "cumulative_seconds": 0.09967774
+    },
+    {
+      "file": "fastunknot/normal_cut_groups.py",
+      "line": 68,
+      "function": "<lambda>",
+      "primitive_calls": 1982974,
+      "total_calls": 1982974,
+      "self_seconds": 0.09441909100000001,
+      "cumulative_seconds": 0.09441909100000001
+    },
+    {
+      "file": "fastunknot/weighted_orbits.py",
+      "line": 134,
+      "function": "_truncate_translation",
+      "primitive_calls": 884,
+      "total_calls": 884,
+      "self_seconds": 0.013147131000000001,
+      "cumulative_seconds": 0.093565934
+    },
+    {
+      "file": "fastunknot/weighted_transversal_verify.py",
+      "line": 51,
+      "function": "shift",
+      "primitive_calls": 110184,
+      "total_calls": 110184,
+      "self_seconds": 0.036724311,
+      "cumulative_seconds": 0.088968685
+    },
+    {
+      "file": "fastunknot/weighted_orbits.py",
+      "line": 56,
+      "function": "_overlay_prefix",
+      "primitive_calls": 1161,
+      "total_calls": 1161,
+      "self_seconds": 0.045323489,
+      "cumulative_seconds": 0.088218023
+    },
+    {
+      "file": "fastunknot/interval_orbit_verify.py",
+      "line": 80,
+      "function": "_gaps",
+      "primitive_calls": 435,
+      "total_calls": 435,
+      "self_seconds": 0.016852825000000002,
+      "cumulative_seconds": 0.08801900900000001
+    },
+    {
+      "file": "fastunknot/weighted_orbit_verify.py",
+      "line": 39,
+      "function": "_neg",
+      "primitive_calls": 87627,
+      "total_calls": 87627,
+      "self_seconds": 0.060540751000000004,
+      "cumulative_seconds": 0.084117129
+    },
+    {
+      "file": "fastunknot/weighted_orbit_verify.py",
+      "line": 36,
+      "function": "<genexpr>",
+      "primitive_calls": 776229,
+      "total_calls": 776229,
+      "self_seconds": 0.07594869800000001,
+      "cumulative_seconds": 0.07594869800000001
+    },
+    {
+      "file": "fastunknot/interval_orbits.py",
+      "line": 132,
+      "function": "<genexpr>",
+      "primitive_calls": 604631,
+      "total_calls": 604631,
+      "self_seconds": 0.070648423,
+      "cumulative_seconds": 0.070648423
+    },
+    {
+      "file": "fastunknot/weighted_orbits.py",
+      "line": 198,
+      "function": "_contract_rows",
+      "primitive_calls": 435,
+      "total_calls": 435,
+      "self_seconds": 0.043127017000000004,
+      "cumulative_seconds": 0.066554366
+    },
+    {
+      "file": "fastunknot/interval_orbits.py",
+      "line": 356,
+      "function": "<lambda>",
+      "primitive_calls": 301694,
+      "total_calls": 301694,
+      "self_seconds": 0.053071492000000005,
+      "cumulative_seconds": 0.053071492000000005
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'extend' of 'list' objects>",
+      "primitive_calls": 2185,
+      "total_calls": 2185,
+      "self_seconds": 0.0009853490000000002,
+      "cumulative_seconds": 0.049799823
+    },
+    {
+      "file": "fastunknot/weighted_orbit_verify.py",
+      "line": 51,
+      "function": "_append",
+      "primitive_calls": 109353,
+      "total_calls": 109353,
+      "self_seconds": 0.036896484,
+      "cumulative_seconds": 0.049157485
+    },
+    {
+      "file": "fastunknot/interval_orbit_verify.py",
+      "line": 222,
+      "function": "<genexpr>",
+      "primitive_calls": 590028,
+      "total_calls": 590028,
+      "self_seconds": 0.048784639000000005,
+      "cumulative_seconds": 0.048784639000000005
+    },
+    {
+      "file": "fastunknot/interval_orbits.py",
+      "line": 315,
+      "function": "<genexpr>",
+      "primitive_calls": 1786,
+      "total_calls": 1786,
+      "self_seconds": 0.028295565,
+      "cumulative_seconds": 0.048763051
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method builtins.min>",
+      "primitive_calls": 310826,
+      "total_calls": 310826,
+      "self_seconds": 0.044409433000000005,
+      "cumulative_seconds": 0.047156765
+    },
+    {
+      "file": "fastunknot/interval_orbits.py",
+      "line": 33,
+      "function": "_integer",
+      "primitive_calls": 372741,
+      "total_calls": 372741,
+      "self_seconds": 0.046252865000000004,
+      "cumulative_seconds": 0.046252865000000004
+    },
+    {
+      "file": "fastunknot/interval_orbits.py",
+      "line": 72,
+      "function": "identity",
+      "primitive_calls": 604710,
+      "total_calls": 604710,
+      "self_seconds": 0.042589761000000004,
+      "cumulative_seconds": 0.042589761000000004
+    },
+    {
+      "file": "fastunknot/weighted_orbit_verify.py",
+      "line": 194,
+      "function": "_contract_weights",
+      "primitive_calls": 435,
+      "total_calls": 435,
+      "self_seconds": 0.021249109000000002,
+      "cumulative_seconds": 0.041525378
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'get' of 'dict' objects>",
+      "primitive_calls": 281665,
+      "total_calls": 281665,
+      "self_seconds": 0.039648432000000004,
+      "cumulative_seconds": 0.039648432000000004
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'append' of 'list' objects>",
+      "primitive_calls": 375372,
+      "total_calls": 375372,
+      "self_seconds": 0.03938445,
+      "cumulative_seconds": 0.03938445
+    },
+    {
+      "file": "fastunknot/interval_orbits.py",
+      "line": 162,
+      "function": "<genexpr>",
+      "primitive_calls": 441930,
+      "total_calls": 441930,
+      "self_seconds": 0.036588457000000005,
+      "cumulative_seconds": 0.036588457000000005
+    },
+    {
+      "file": "fastunknot/weighted_orbit_verify.py",
+      "line": 265,
+      "function": "<genexpr>",
+      "primitive_calls": 404820,
+      "total_calls": 404820,
+      "self_seconds": 0.036211730000000004,
+      "cumulative_seconds": 0.036211730000000004
+    },
+    {
+      "file": "fastunknot/weighted_orbit_verify.py",
+      "line": 77,
+      "function": "_initial_weights",
+      "primitive_calls": 5,
+      "total_calls": 5,
+      "self_seconds": 0.004711684000000001,
+      "cumulative_seconds": 0.032716731
+    },
+    {
+      "file": "fastunknot/interval_orbits.py",
+      "line": 76,
+      "function": "periodic",
+      "primitive_calls": 314369,
+      "total_calls": 314369,
+      "self_seconds": 0.031915259,
+      "cumulative_seconds": 0.031915259
+    },
+    {
+      "file": "fastunknot/integer_codec.py",
+      "line": 14,
+      "function": "json_safe",
+      "primitive_calls": 1,
+      "total_calls": 49041,
+      "self_seconds": 0.024653885,
+      "cumulative_seconds": 0.030895825000000002
+    },
+    {
+      "file": "fastunknot/weighted_orbits.py",
+      "line": 152,
+      "function": "_truncate_reflection",
+      "primitive_calls": 277,
+      "total_calls": 277,
+      "self_seconds": 0.0063529960000000005,
+      "cumulative_seconds": 0.029838788
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method builtins.getattr>",
+      "primitive_calls": 372754,
+      "total_calls": 372754,
+      "self_seconds": 0.028420871,
+      "cumulative_seconds": 0.028420871
+    },
+    {
+      "file": "fastunknot/normal_parallelity_reference.py",
+      "line": 34,
+      "function": "_reference_parallelity",
+      "primitive_calls": 2,
+      "total_calls": 2,
+      "self_seconds": 0.006103910000000001,
+      "cumulative_seconds": 0.028356545
+    },
+    {
+      "file": "fastunknot/weighted_orbits.py",
+      "line": 165,
+      "function": "_contract_weights",
+      "primitive_calls": 435,
+      "total_calls": 435,
+      "self_seconds": 0.014990374,
+      "cumulative_seconds": 0.028328509
+    },
+    {
+      "file": "fastunknot/weighted_orbit_verify.py",
+      "line": 40,
+      "function": "<genexpr>",
+      "primitive_calls": 257852,
+      "total_calls": 257852,
+      "self_seconds": 0.023576378000000002,
+      "cumulative_seconds": 0.023576378000000002
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method _bisect.bisect_left>",
+      "primitive_calls": 353544,
+      "total_calls": 353544,
+      "self_seconds": 0.023366517,
+      "cumulative_seconds": 0.023366517
+    },
+    {
+      "file": "fastunknot/interval_orbit_verify.py",
+      "line": 82,
+      "function": "<genexpr>",
+      "primitive_calls": 177207,
+      "total_calls": 177207,
+      "self_seconds": 0.020630909000000003,
+      "cumulative_seconds": 0.020630909000000003
+    },
+    {
+      "file": "fastunknot/normal_cut_handlebodies_verify.py",
+      "line": 113,
+      "function": "<lambda>",
+      "primitive_calls": 301329,
+      "total_calls": 301329,
+      "self_seconds": 0.020273858000000002,
+      "cumulative_seconds": 0.020273858000000002
+    },
+    {
+      "file": "fastunknot/interval_orbit_verify.py",
+      "line": 29,
+      "function": "_row",
+      "primitive_calls": 7127,
+      "total_calls": 7127,
+      "self_seconds": 0.010646820000000001,
+      "cumulative_seconds": 0.019593209
+    },
+    {
+      "file": "fastunknot/weighted_transversal_verify.py",
+      "line": 51,
+      "function": "<genexpr>",
+      "primitive_calls": 185208,
+      "total_calls": 185208,
+      "self_seconds": 0.019320011,
+      "cumulative_seconds": 0.019320011
+    },
+    {
+      "file": "fastunknot/weighted_orbits.py",
+      "line": 104,
+      "function": "_prepare_weights",
+      "primitive_calls": 5,
+      "total_calls": 5,
+      "self_seconds": 0.0051225,
+      "cumulative_seconds": 0.019094153000000003
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method builtins.len>",
+      "primitive_calls": 249923,
+      "total_calls": 249923,
+      "self_seconds": 0.01893156,
+      "cumulative_seconds": 0.01893156
+    },
+    {
+      "file": "fastunknot/interval_orbit_verify.py",
+      "line": 123,
+      "function": "_transmitted_row",
+      "primitive_calls": 3442,
+      "total_calls": 3442,
+      "self_seconds": 0.005226332,
+      "cumulative_seconds": 0.018211420000000002
+    },
+    {
+      "file": "fastunknot/normal_parallelity_verify.py",
+      "line": 42,
+      "function": "_reference_marks",
+      "primitive_calls": 2,
+      "total_calls": 2,
+      "self_seconds": 0.007641907000000001,
+      "cumulative_seconds": 0.018195385
+    },
+    {
+      "file": "fastunknot/weighted_orbits.py",
+      "line": 95,
+      "function": "_append",
+      "primitive_calls": 54910,
+      "total_calls": 54910,
+      "self_seconds": 0.012875144000000002,
+      "cumulative_seconds": 0.017495896
+    },
+    {
+      "file": "fastunknot/normal_cut_cells_verify.py",
+      "line": 14,
+      "function": "_reference_cells",
+      "primitive_calls": 2,
+      "total_calls": 2,
+      "self_seconds": 0.002809807,
+      "cumulative_seconds": 0.015620295000000001
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method builtins.all>",
+      "primitive_calls": 1839,
+      "total_calls": 4452,
+      "self_seconds": 0.002795137,
+      "cumulative_seconds": 0.015109365000000001
+    },
+    {
+      "file": "fastunknot/integer_codec.py",
+      "line": 37,
+      "function": "certificate_equal",
+      "primitive_calls": 5,
+      "total_calls": 10928,
+      "self_seconds": 0.005147358,
+      "cumulative_seconds": 0.011586031
+    },
+    {
+      "file": "fastunknot/integer_codec.py",
+      "line": 47,
+      "function": "<genexpr>",
+      "primitive_calls": 42,
+      "total_calls": 8001,
+      "self_seconds": 0.0016888900000000002,
+      "cumulative_seconds": 0.011542897
+    },
+    {
+      "file": "fastunknot/integer_codec.py",
+      "line": 50,
+      "function": "<genexpr>",
+      "primitive_calls": 655,
+      "total_calls": 5540,
+      "self_seconds": 0.001205092,
+      "cumulative_seconds": 0.011361472000000001
+    },
+    {
+      "file": "fastunknot/weighted_orbit_verify.py",
+      "line": 29,
+      "function": "_vector",
+      "primitive_calls": 3133,
+      "total_calls": 3133,
+      "self_seconds": 0.004303978,
+      "cumulative_seconds": 0.010618788
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method builtins.isinstance>",
+      "primitive_calls": 116387,
+      "total_calls": 116387,
+      "self_seconds": 0.00947162,
+      "cumulative_seconds": 0.009557247000000001
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary_verify.py",
+      "line": 17,
+      "function": "_reference_cycles",
+      "primitive_calls": 2,
+      "total_calls": 2,
+      "self_seconds": 0.002445458,
+      "cumulative_seconds": 0.009339018000000001
+    },
+    {
+      "file": "fastunknot/interval_orbit_verify.py",
+      "line": 52,
+      "function": "_public_pairings",
+      "primitive_calls": 5,
+      "total_calls": 5,
+      "self_seconds": 0.00099084,
+      "cumulative_seconds": 0.009070812000000001
+    },
+    {
+      "file": "fastunknot/interval_orbits.py",
+      "line": 189,
+      "function": "_transmit",
+      "primitive_calls": 1721,
+      "total_calls": 1721,
+      "self_seconds": 0.001617953,
+      "cumulative_seconds": 0.008690950000000001
+    },
+    {
+      "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/__init__.py",
+      "line": 183,
+      "function": "dumps",
+      "primitive_calls": 10,
+      "total_calls": 10,
+      "self_seconds": 4.9857e-05,
+      "cumulative_seconds": 0.008062349
+    },
+    {
+      "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/encoder.py",
+      "line": 183,
+      "function": "encode",
+      "primitive_calls": 10,
+      "total_calls": 10,
+      "self_seconds": 4.2837e-05,
+      "cumulative_seconds": 0.007999542
+    },
+    {
+      "file": "fastunknot/interval_orbit_verify.py",
+      "line": 21,
+      "function": "_integer",
+      "primitive_calls": 62749,
+      "total_calls": 62749,
+      "self_seconds": 0.007975437,
+      "cumulative_seconds": 0.007975437
+    },
+    {
+      "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/encoder.py",
+      "line": 205,
+      "function": "iterencode",
+      "primitive_calls": 10,
+      "total_calls": 10,
+      "self_seconds": 0.007945183,
+      "cumulative_seconds": 0.007945183
+    },
+    {
+      "file": "fastunknot/interval_orbits.py",
+      "line": 343,
+      "function": "<lambda>",
+      "primitive_calls": 2253,
+      "total_calls": 2253,
+      "self_seconds": 0.000829167,
+      "cumulative_seconds": 0.007771274000000001
+    },
+    {
+      "file": "fastunknot/normal_cut_groups_verify.py",
+      "line": 12,
+      "function": "_decoded",
+      "primitive_calls": 5,
+      "total_calls": 10965,
+      "self_seconds": 0.005177906,
+      "cumulative_seconds": 0.007638028000000001
+    },
+    {
+      "file": "fastunknot/normal_parallelity.py",
+      "line": 15,
+      "function": "_systems",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 0.001394864,
+      "cumulative_seconds": 0.007002147
+    },
+    {
+      "file": "fastunknot/interval_orbits.py",
+      "line": 167,
+      "function": "periodic_merge",
+      "primitive_calls": 2253,
+      "total_calls": 2253,
+      "self_seconds": 0.0033841170000000003,
+      "cumulative_seconds": 0.006942107
+    },
+    {
+      "file": "fastunknot/normal_parallelity_geometry.py",
+      "line": 32,
+      "function": "_parallelity_geometry",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 0.0026253080000000002,
+      "cumulative_seconds": 0.006680981000000001
+    },
+    {
+      "file": "fastunknot/weighted_orbits.py",
+      "line": 31,
+      "function": "_add",
+      "primitive_calls": 5143,
+      "total_calls": 5143,
+      "self_seconds": 0.004766505,
+      "cumulative_seconds": 0.006229824
+    },
+    {
+      "file": "fastunknot/orbit_transversal.py",
+      "line": 67,
+      "function": "_retain_prefix",
+      "primitive_calls": 500,
+      "total_calls": 500,
+      "self_seconds": 0.0026782950000000002,
+      "cumulative_seconds": 0.005882418
+    },
+    {
+      "file": "fastunknot/weighted_orbit_verify.py",
+      "line": 32,
+      "function": "<genexpr>",
+      "primitive_calls": 16658,
+      "total_calls": 16658,
+      "self_seconds": 0.003677254,
+      "cumulative_seconds": 0.005737441
+    },
+    {
+      "file": "fastunknot/weighted_orbits.py",
+      "line": 41,
+      "function": "_canonical",
+      "primitive_calls": 1166,
+      "total_calls": 1166,
+      "self_seconds": 0.003526374,
+      "cumulative_seconds": 0.005314958000000001
+    },
+    {
+      "file": "fastunknot/integer_codec.py",
+      "line": 5,
+      "function": "encoded_integer",
+      "primitive_calls": 44923,
+      "total_calls": 44923,
+      "self_seconds": 0.005109797,
+      "cumulative_seconds": 0.005109797
+    },
+    {
+      "file": "fastunknot/normal_parallelity.py",
+      "line": 9,
+      "function": "_pair",
+      "primitive_calls": 850,
+      "total_calls": 850,
+      "self_seconds": 0.0009671800000000001,
+      "cumulative_seconds": 0.005094212000000001
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments_verify.py",
+      "line": 29,
+      "function": "_reference_query",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 0.0012744190000000002,
+      "cumulative_seconds": 0.005081476000000001
+    },
+    {
+      "file": "fastunknot/weighted_orbits.py",
+      "line": 129,
+      "function": "<genexpr>",
+      "primitive_calls": 13320,
+      "total_calls": 13320,
+      "self_seconds": 0.002066534,
+      "cumulative_seconds": 0.004949443
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments.py",
+      "line": 29,
+      "function": "_moment_query",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 0.000953905,
+      "cumulative_seconds": 0.004683764
+    },
+    {
+      "file": "fastunknot/normal_parallelity_verify.py",
+      "line": 15,
+      "function": "_reference_queries",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 0.0009069880000000001,
+      "cumulative_seconds": 0.004360757000000001
+    },
+    {
+      "file": "fastunknot/weighted_orbit_verify.py",
+      "line": 21,
+      "function": "_integer",
+      "primitive_calls": 27116,
+      "total_calls": 27116,
+      "self_seconds": 0.004325756,
+      "cumulative_seconds": 0.004325756
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'update' of 'set' objects>",
+      "primitive_calls": 24346,
+      "total_calls": 24346,
+      "self_seconds": 0.004324149,
+      "cumulative_seconds": 0.004324149
+    },
+    {
+      "file": "fastunknot/weighted_orbits.py",
+      "line": 21,
+      "function": "_integer",
+      "primitive_calls": 15445,
+      "total_calls": 15445,
+      "self_seconds": 0.00258338,
+      "cumulative_seconds": 0.004163518000000001
+    },
+    {
+      "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/__init__.py",
+      "line": 299,
+      "function": "loads",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 1.0737e-05,
+      "cumulative_seconds": 0.004027234
+    },
+    {
+      "file": "fastunknot/interval_merger.py",
+      "line": 142,
+      "function": "finish",
+      "primitive_calls": 1161,
+      "total_calls": 1161,
+      "self_seconds": 0.0015168780000000001,
+      "cumulative_seconds": 0.003994079
+    },
+    {
+      "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/decoder.py",
+      "line": 333,
+      "function": "decode",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 1.2409000000000001e-05,
+      "cumulative_seconds": 0.003977198
+    },
+    {
+      "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/decoder.py",
+      "line": 344,
+      "function": "raw_decode",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 0.0039593810000000005,
+      "cumulative_seconds": 0.0039593810000000005
+    },
+    {
+      "file": "fastunknot/orbit_transversal.py",
+      "line": 38,
+      "function": "_contract_live",
+      "primitive_calls": 222,
+      "total_calls": 222,
+      "self_seconds": 0.0022537250000000003,
+      "cumulative_seconds": 0.003888709
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments_verify.py",
+      "line": 42,
+      "function": "add_maps",
+      "primitive_calls": 668,
+      "total_calls": 668,
+      "self_seconds": 0.0007937090000000001,
+      "cumulative_seconds": 0.0036388880000000003
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments.py",
+      "line": 23,
+      "function": "_isometry",
+      "primitive_calls": 668,
+      "total_calls": 668,
+      "self_seconds": 0.000577018,
+      "cumulative_seconds": 0.003478577
+    },
+    {
+      "file": "fastunknot/interval_orbit_verify.py",
+      "line": 95,
+      "function": "_inverse_image",
+      "primitive_calls": 6884,
+      "total_calls": 6884,
+      "self_seconds": 0.0024459250000000003,
+      "cumulative_seconds": 0.003292922
+    },
+    {
+      "file": "fastunknot/normal_parallelity_verify.py",
+      "line": 10,
+      "function": "_isometry",
+      "primitive_calls": 850,
+      "total_calls": 850,
+      "self_seconds": 0.000687862,
+      "cumulative_seconds": 0.0031583490000000004
+    },
+    {
+      "file": "fastunknot/interval_orbit_verify.py",
+      "line": 73,
+      "function": "_index",
+      "primitive_calls": 5305,
+      "total_calls": 5305,
+      "self_seconds": 0.0019209270000000002,
+      "cumulative_seconds": 0.0030621930000000004
+    },
+    {
+      "file": "fastunknot/orbit_transversal.py",
+      "line": 29,
+      "function": "_append",
+      "primitive_calls": 9875,
+      "total_calls": 9875,
+      "self_seconds": 0.0019331090000000001,
+      "cumulative_seconds": 0.002703748
+    },
+    {
+      "file": "fastunknot/normal_surface_geometry.py",
+      "line": 73,
+      "function": "_prepare",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 0.0013377010000000002,
+      "cumulative_seconds": 0.002605165
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'add' of 'set' objects>",
+      "primitive_calls": 20341,
+      "total_calls": 20341,
+      "self_seconds": 0.002485485,
+      "cumulative_seconds": 0.002485485
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'bit_length' of 'int' objects>",
+      "primitive_calls": 32805,
+      "total_calls": 32805,
+      "self_seconds": 0.002447021,
+      "cumulative_seconds": 0.002447021
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'remove' of 'set' objects>",
+      "primitive_calls": 19226,
+      "total_calls": 19226,
+      "self_seconds": 0.00240092,
+      "cumulative_seconds": 0.00240092
+    },
+    {
+      "file": "fastunknot/interval_orbit_verify.py",
+      "line": 34,
+      "function": "<genexpr>",
+      "primitive_calls": 10932,
+      "total_calls": 10932,
+      "self_seconds": 0.001604745,
+      "cumulative_seconds": 0.0023581210000000003
+    },
+    {
+      "file": "fastunknot/weighted_orbits.py",
+      "line": 123,
+      "function": "<genexpr>",
+      "primitive_calls": 6345,
+      "total_calls": 6345,
+      "self_seconds": 0.0009893270000000001,
+      "cumulative_seconds": 0.002263207
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary_verify.py",
+      "line": 93,
+      "function": "<lambda>",
+      "primitive_calls": 788,
+      "total_calls": 788,
+      "self_seconds": 0.000726307,
+      "cumulative_seconds": 0.0022588860000000003
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method _heapq.heappush>",
+      "primitive_calls": 20004,
+      "total_calls": 20004,
+      "self_seconds": 0.002215893,
+      "cumulative_seconds": 0.002215893
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method builtins.any>",
+      "primitive_calls": 5181,
+      "total_calls": 5181,
+      "self_seconds": 0.00115203,
+      "cumulative_seconds": 0.002202227
+    },
+    {
+      "file": "fastunknot/weighted_orbit_verify.py",
+      "line": 43,
+      "function": "_scale",
+      "primitive_calls": 1935,
+      "total_calls": 1935,
+      "self_seconds": 0.0015527400000000002,
+      "cumulative_seconds": 0.0021742740000000003
+    },
+    {
+      "file": "fastunknot/weighted_transversal_verify.py",
+      "line": 11,
+      "function": "_coalesce",
+      "primitive_calls": 222,
+      "total_calls": 222,
+      "self_seconds": 0.001385605,
+      "cumulative_seconds": 0.002066497
+    },
+    {
+      "file": "fastunknot/normal_parallelity_reference.py",
+      "line": 50,
+      "function": "face_chamber",
+      "primitive_calls": 346,
+      "total_calls": 346,
+      "self_seconds": 0.0020199140000000003,
+      "cumulative_seconds": 0.002042499
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method _heapq.heappop>",
+      "primitive_calls": 19198,
+      "total_calls": 19198,
+      "self_seconds": 0.001991258,
+      "cumulative_seconds": 0.001991258
+    },
+    {
+      "file": "fastunknot/interval_merger.py",
+      "line": 190,
+      "function": "<lambda>",
+      "primitive_calls": 20004,
+      "total_calls": 20004,
+      "self_seconds": 0.00179513,
+      "cumulative_seconds": 0.00179513
+    },
+    {
+      "file": "fastunknot/normal_surface_geometry.py",
+      "line": 29,
+      "function": "_quad",
+      "primitive_calls": 1042,
+      "total_calls": 1042,
+      "self_seconds": 0.00149722,
+      "cumulative_seconds": 0.001794054
+    },
+    {
+      "file": "fastunknot/weighted_transversal_verify.py",
+      "line": 71,
+      "function": "restore",
+      "primitive_calls": 5886,
+      "total_calls": 5886,
+      "self_seconds": 0.0010513010000000001,
+      "cumulative_seconds": 0.001655523
+    },
+    {
+      "file": "fastunknot/normal_cut_groups.py",
+      "line": 37,
+      "function": "_group_terminal",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 4.0022000000000004e-05,
+      "cumulative_seconds": 0.001621129
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary_verify.py",
+      "line": 93,
+      "function": "<genexpr>",
+      "primitive_calls": 3964,
+      "total_calls": 3964,
+      "self_seconds": 0.000700864,
+      "cumulative_seconds": 0.001532579
+    },
+    {
+      "file": "fastunknot/interval_orbits.py",
+      "line": 80,
+      "function": "period",
+      "primitive_calls": 4506,
+      "total_calls": 4506,
+      "self_seconds": 0.000931031,
+      "cumulative_seconds": 0.00143048
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method builtins.next>",
+      "primitive_calls": 2932,
+      "total_calls": 2932,
+      "self_seconds": 0.000707446,
+      "cumulative_seconds": 0.00140342
+    },
+    {
+      "file": "fastunknot/weighted_orbit_verify.py",
+      "line": 106,
+      "function": "_canonical_pairings",
+      "primitive_calls": 5,
+      "total_calls": 5,
+      "self_seconds": 0.0008268630000000001,
+      "cumulative_seconds": 0.0012708880000000002
+    },
+    {
+      "file": "fastunknot/normal_parallelity_geometry.py",
+      "line": 76,
+      "function": "face_region",
+      "primitive_calls": 75,
+      "total_calls": 75,
+      "self_seconds": 8.1248e-05,
+      "cumulative_seconds": 0.0012533770000000002
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 1349,
+      "function": "_find_and_load",
+      "primitive_calls": 1,
+      "total_calls": 3,
+      "self_seconds": 1.8971000000000002e-05,
+      "cumulative_seconds": 0.001205431
+    },
+    {
+      "file": "fastunknot/normal_surface_geometry.py",
+      "line": 25,
+      "function": "_edge",
+      "primitive_calls": 1992,
+      "total_calls": 1992,
+      "self_seconds": 0.0008055720000000001,
+      "cumulative_seconds": 0.001165732
+    },
+    {
+      "file": "fastunknot/normal_cut_cells_verify.py",
+      "line": 67,
+      "function": "incidence",
+      "primitive_calls": 776,
+      "total_calls": 776,
+      "self_seconds": 0.001136716,
+      "cumulative_seconds": 0.001136716
+    },
+    {
+      "file": "fastunknot/weighted_transversal.py",
+      "line": 28,
+      "function": "_emit",
+      "primitive_calls": 222,
+      "total_calls": 222,
+      "self_seconds": 0.000782412,
+      "cumulative_seconds": 0.0011308450000000001
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 1304,
+      "function": "_find_and_load_unlocked",
+      "primitive_calls": 1,
+      "total_calls": 3,
+      "self_seconds": 1.7888000000000002e-05,
+      "cumulative_seconds": 0.0011254000000000001
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary_verify.py",
+      "line": 30,
+      "function": "orientation",
+      "primitive_calls": 208,
+      "total_calls": 208,
+      "self_seconds": 0.00017607200000000002,
+      "cumulative_seconds": 0.0011133270000000001
+    },
+    {
+      "file": "fastunknot/source_cut_group_verify.py",
+      "line": 265,
+      "function": "verify_disk_cut_presentation",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 2.9884e-05,
+      "cumulative_seconds": 0.001031648
+    },
+    {
+      "file": "fastunknot/free_group_elimination.py",
+      "line": 100,
+      "function": "certify_free_group",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 0.000217003,
+      "cumulative_seconds": 0.0010243370000000002
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 911,
+      "function": "_load_unlocked",
+      "primitive_calls": 1,
+      "total_calls": 3,
+      "self_seconds": 1.0919e-05,
+      "cumulative_seconds": 0.001008924
+    },
+    {
+      "file": "fastunknot/source_cut_group_verify.py",
+      "line": 56,
+      "function": "_replay",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 0.00032310300000000004,
+      "cumulative_seconds": 0.0010016530000000001
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 993,
+      "function": "exec_module",
+      "primitive_calls": 1,
+      "total_calls": 3,
+      "self_seconds": 9.713e-06,
+      "cumulative_seconds": 0.000964126
+    },
+    {
+      "file": "fastunknot/normal_parallelity_reference.py",
+      "line": 129,
+      "function": "prism_face_map",
+      "primitive_calls": 120,
+      "total_calls": 120,
+      "self_seconds": 0.0008283850000000001,
+      "cumulative_seconds": 0.000952604
+    },
+    {
+      "file": "fastunknot/normal_parallelity_reference.py",
+      "line": 139,
+      "function": "inverse_gap",
+      "primitive_calls": 216,
+      "total_calls": 216,
+      "self_seconds": 0.000617213,
+      "cumulative_seconds": 0.000946903
+    },
+    {
+      "file": "fastunknot/normal_surface_geometry.py",
+      "line": 221,
+      "function": "_coordinates",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 0.000267202,
+      "cumulative_seconds": 0.000895865
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary.py",
+      "line": 17,
+      "function": "_cycle_recipes",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 0.000341814,
+      "cumulative_seconds": 0.0008848370000000001
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary_verify.py",
+      "line": 42,
+      "function": "recipe_key",
+      "primitive_calls": 3176,
+      "total_calls": 3176,
+      "self_seconds": 0.000831715,
+      "cumulative_seconds": 0.000831715
+    },
+    {
+      "file": "fastunknot/weighted_orbit_verify.py",
+      "line": 219,
+      "function": "_move_interval",
+      "primitive_calls": 3442,
+      "total_calls": 3442,
+      "self_seconds": 0.000822696,
+      "cumulative_seconds": 0.000822696
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'items' of 'dict' objects>",
+      "primitive_calls": 8689,
+      "total_calls": 8689,
+      "self_seconds": 0.0008183340000000001,
+      "cumulative_seconds": 0.0008183340000000001
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments_verify.py",
+      "line": 88,
+      "function": "_reference_output",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 0.000493308,
+      "cumulative_seconds": 0.0007674790000000001
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method builtins.hasattr>",
+      "primitive_calls": 9117,
+      "total_calls": 9117,
+      "self_seconds": 0.0007558170000000001,
+      "cumulative_seconds": 0.0007558170000000001
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 1066,
+      "function": "get_code",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 2.6501000000000003e-05,
+      "cumulative_seconds": 0.00072154
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 480,
+      "function": "_call_with_frames_removed",
+      "primitive_calls": 2,
+      "total_calls": 6,
+      "self_seconds": 4.309000000000001e-06,
+      "cumulative_seconds": 0.00072117
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method builtins.exec>",
+      "primitive_calls": 1,
+      "total_calls": 3,
+      "self_seconds": 7.921000000000001e-06,
+      "cumulative_seconds": 0.0007165720000000001
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'setdefault' of 'dict' objects>",
+      "primitive_calls": 5406,
+      "total_calls": 5406,
+      "self_seconds": 0.000715827,
+      "cumulative_seconds": 0.000715827
+    },
+    {
+      "file": "fastunknot/normal_cut_groups_verify.py",
+      "line": 1,
+      "function": "<module>",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 1.6969e-05,
+      "cumulative_seconds": 0.000713388
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'pop' of 'list' objects>",
+      "primitive_calls": 3104,
+      "total_calls": 3104,
+      "self_seconds": 0.000651971,
+      "cumulative_seconds": 0.000651971
+    },
+    {
+      "file": "fastunknot/interval_orbit_verify.py",
+      "line": 168,
+      "function": "<genexpr>",
+      "primitive_calls": 1827,
+      "total_calls": 1827,
+      "self_seconds": 0.000517671,
+      "cumulative_seconds": 0.0006373230000000001
+    },
+    {
+      "file": "fastunknot/weighted_orbit_verify.py",
+      "line": 44,
+      "function": "<genexpr>",
+      "primitive_calls": 6426,
+      "total_calls": 6426,
+      "self_seconds": 0.0006215340000000001,
+      "cumulative_seconds": 0.0006215340000000001
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method _bisect.bisect_right>",
+      "primitive_calls": 5886,
+      "total_calls": 5886,
+      "self_seconds": 0.0006042220000000001,
+      "cumulative_seconds": 0.0006042220000000001
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary_verify.py",
+      "line": 26,
+      "function": "difference",
+      "primitive_calls": 416,
+      "total_calls": 416,
+      "self_seconds": 0.00040649,
+      "cumulative_seconds": 0.0006011720000000001
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 755,
+      "function": "_compile_bytecode",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 6.957400000000001e-05,
+      "cumulative_seconds": 0.0005680780000000001
+    },
+    {
+      "file": "fastunknot/source_cut_group.py",
+      "line": 104,
+      "function": "compile_disk_cut_presentation",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 0.000163136,
+      "cumulative_seconds": 0.000536941
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments.py",
+      "line": 147,
+      "function": "_assemble",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 0.00019170500000000002,
+      "cumulative_seconds": 0.0005090590000000001
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method marshal.loads>",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 0.000495699,
+      "cumulative_seconds": 0.000495699
+    },
+    {
+      "file": "fastunknot/free_group_elimination_verify.py",
+      "line": 26,
+      "function": "replay_free_group",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 0.00015086100000000002,
+      "cumulative_seconds": 0.000448188
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary_verify.py",
+      "line": 35,
+      "function": "gap",
+      "primitive_calls": 234,
+      "total_calls": 234,
+      "self_seconds": 0.000211358,
+      "cumulative_seconds": 0.000441587
+    },
+    {
+      "file": "fastunknot/weighted_orbits.py",
+      "line": 277,
+      "function": "_conservation",
+      "primitive_calls": 5,
+      "total_calls": 5,
+      "self_seconds": 2.8579000000000002e-05,
+      "cumulative_seconds": 0.00043908300000000005
+    },
+    {
+      "file": "fastunknot/normal_parallelity_reference.py",
+      "line": 54,
+      "function": "edge_face",
+      "primitive_calls": 208,
+      "total_calls": 208,
+      "self_seconds": 0.00029068400000000004,
+      "cumulative_seconds": 0.000427878
+    },
+    {
+      "file": "fastunknot/weighted_transversal_verify.py",
+      "line": 75,
+      "function": "<genexpr>",
+      "primitive_calls": 2943,
+      "total_calls": 2943,
+      "self_seconds": 0.00040209400000000003,
+      "cumulative_seconds": 0.00040209400000000003
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'sort' of 'list' objects>",
+      "primitive_calls": 188,
+      "total_calls": 188,
+      "self_seconds": 0.00020731500000000002,
+      "cumulative_seconds": 0.00039847
+    },
+    {
+      "file": "fastunknot/weighted_orbits.py",
+      "line": 85,
+      "function": "<genexpr>",
+      "primitive_calls": 2076,
+      "total_calls": 2076,
+      "self_seconds": 0.000397682,
+      "cumulative_seconds": 0.000397682
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary_verify.py",
+      "line": 52,
+      "function": "<genexpr>",
+      "primitive_calls": 384,
+      "total_calls": 384,
+      "self_seconds": 0.000128348,
+      "cumulative_seconds": 0.000394987
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary_verify.py",
+      "line": 77,
+      "function": "<genexpr>",
+      "primitive_calls": 416,
+      "total_calls": 416,
+      "self_seconds": 0.000113497,
+      "cumulative_seconds": 0.00038582600000000003
+    },
+    {
+      "file": "fastunknot/normal_cut_cells_verify.py",
+      "line": 56,
+      "function": "direction",
+      "primitive_calls": 542,
+      "total_calls": 542,
+      "self_seconds": 0.00034338200000000004,
+      "cumulative_seconds": 0.000379779
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary_verify.py",
+      "line": 29,
+      "function": "midpoint",
+      "primitive_calls": 320,
+      "total_calls": 320,
+      "self_seconds": 0.000240763,
+      "cumulative_seconds": 0.00037549500000000005
+    },
+    {
+      "file": "fastunknot/normal_parallelity_reference.py",
+      "line": 8,
+      "function": "_links",
+      "primitive_calls": 2,
+      "total_calls": 2,
+      "self_seconds": 0.000247555,
+      "cumulative_seconds": 0.00037351400000000003
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method math.gcd>",
+      "primitive_calls": 2376,
+      "total_calls": 2376,
+      "self_seconds": 0.00035286700000000004,
+      "cumulative_seconds": 0.00035286700000000004
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments_verify.py",
+      "line": 43,
+      "function": "<genexpr>",
+      "primitive_calls": 4008,
+      "total_calls": 4008,
+      "self_seconds": 0.000311836,
+      "cumulative_seconds": 0.000311836
+    },
+    {
+      "file": "fastunknot/normal_cut_cells_verify.py",
+      "line": 158,
+      "function": "use",
+      "primitive_calls": 360,
+      "total_calls": 360,
+      "self_seconds": 0.000271157,
+      "cumulative_seconds": 0.000300622
+    },
+    {
+      "file": "fastunknot/normal_surface_geometry.py",
+      "line": 371,
+      "function": "_fingerprint",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 7.1449e-05,
+      "cumulative_seconds": 0.00029328300000000003
+    },
+    {
+      "file": "fastunknot/interval_orbits.py",
+      "line": 102,
+      "function": "_validate",
+      "primitive_calls": 5,
+      "total_calls": 5,
+      "self_seconds": 0.000188721,
+      "cumulative_seconds": 0.000291821
+    },
+    {
+      "file": "fastunknot/normal_parallelity_reference.py",
+      "line": 43,
+      "function": "owner",
+      "primitive_calls": 1072,
+      "total_calls": 1072,
+      "self_seconds": 0.00028478600000000003,
+      "cumulative_seconds": 0.00028478600000000003
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary_verify.py",
+      "line": 28,
+      "function": "dot",
+      "primitive_calls": 208,
+      "total_calls": 208,
+      "self_seconds": 8.778800000000001e-05,
+      "cumulative_seconds": 0.000284285
+    },
+    {
+      "file": "fastunknot/source_cut_group_verify.py",
+      "line": 40,
+      "function": "_spanning_forest",
+      "primitive_calls": 2,
+      "total_calls": 2,
+      "self_seconds": 2.4175e-05,
+      "cumulative_seconds": 0.00028387000000000003
+    },
+    {
+      "file": "fastunknot/normal_parallelity_reference.py",
+      "line": 158,
+      "function": "add",
+      "primitive_calls": 304,
+      "total_calls": 304,
+      "self_seconds": 0.000243262,
+      "cumulative_seconds": 0.000274217
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments.py",
+      "line": 24,
+      "function": "<genexpr>",
+      "primitive_calls": 2004,
+      "total_calls": 2004,
+      "self_seconds": 0.000250857,
+      "cumulative_seconds": 0.000250857
+    },
+    {
+      "file": "fastunknot/normal_surface_geometry.py",
+      "line": 67,
+      "function": "_permutation_sign",
+      "primitive_calls": 91,
+      "total_calls": 91,
+      "self_seconds": 5.7467000000000004e-05,
+      "cumulative_seconds": 0.00025073
+    },
+    {
+      "file": "fastunknot/source_cut_group_verify.py",
+      "line": 13,
+      "function": "_components",
+      "primitive_calls": 4,
+      "total_calls": 4,
+      "self_seconds": 0.00011923000000000001,
+      "cumulative_seconds": 0.00024270700000000002
+    },
+    {
+      "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/collections/__init__.py",
+      "line": 669,
+      "function": "update",
+      "primitive_calls": 146,
+      "total_calls": 146,
+      "self_seconds": 8.693100000000001e-05,
+      "cumulative_seconds": 0.000241329
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'keys' of 'dict' objects>",
+      "primitive_calls": 2640,
+      "total_calls": 2640,
+      "self_seconds": 0.00023822600000000002,
+      "cumulative_seconds": 0.00023822600000000002
+    },
+    {
+      "file": "fastunknot/normal_surface_geometry.py",
+      "line": 52,
+      "function": "join",
+      "primitive_calls": 207,
+      "total_calls": 207,
+      "self_seconds": 0.000117856,
+      "cumulative_seconds": 0.00023548900000000002
+    },
+    {
+      "file": "fastunknot/normal_parallelity_geometry.py",
+      "line": 160,
+      "function": "glue",
+      "primitive_calls": 152,
+      "total_calls": 152,
+      "self_seconds": 0.000196769,
+      "cumulative_seconds": 0.00023499700000000003
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary_verify.py",
+      "line": 60,
+      "function": "<genexpr>",
+      "primitive_calls": 536,
+      "total_calls": 536,
+      "self_seconds": 0.000229177,
+      "cumulative_seconds": 0.000229177
+    },
+    {
+      "file": "fastunknot/free_group_elimination.py",
+      "line": 75,
+      "function": "_trial",
+      "primitive_calls": 14,
+      "total_calls": 14,
+      "self_seconds": 5.041e-05,
+      "cumulative_seconds": 0.00022550100000000002
+    },
+    {
+      "file": "fastunknot/normal_parallelity_verify.py",
+      "line": 54,
+      "function": "_reference_summary",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 8.843800000000001e-05,
+      "cumulative_seconds": 0.00022394800000000002
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments.py",
+      "line": 94,
+      "function": "_decode",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 0.000167092,
+      "cumulative_seconds": 0.00022339700000000002
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary.py",
+      "line": 88,
+      "function": "<lambda>",
+      "primitive_calls": 60,
+      "total_calls": 60,
+      "self_seconds": 6.7601e-05,
+      "cumulative_seconds": 0.00021238000000000002
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments.py",
+      "line": 25,
+      "function": "<genexpr>",
+      "primitive_calls": 2004,
+      "total_calls": 2004,
+      "self_seconds": 0.00020754400000000002,
+      "cumulative_seconds": 0.00020754400000000002
+    },
+    {
+      "file": "fastunknot/normal_parallelity.py",
+      "line": 45,
+      "function": "_push_marks",
+      "primitive_calls": 2,
+      "total_calls": 2,
+      "self_seconds": 0.00015808800000000002,
+      "cumulative_seconds": 0.000204558
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 1240,
+      "function": "_find_spec",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 4.5247e-05,
+      "cumulative_seconds": 0.0001986
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary_verify.py",
+      "line": 26,
+      "function": "<genexpr>",
+      "primitive_calls": 1664,
+      "total_calls": 1664,
+      "self_seconds": 0.000194682,
+      "cumulative_seconds": 0.000194682
+    },
+    {
+      "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/collections/__init__.py",
+      "line": 595,
+      "function": "__init__",
+      "primitive_calls": 81,
+      "total_calls": 81,
+      "self_seconds": 6.4447e-05,
+      "cumulative_seconds": 0.000192622
+    },
+    {
+      "file": "fastunknot/normal_surface_geometry.py",
+      "line": 35,
+      "function": "<genexpr>",
+      "primitive_calls": 970,
+      "total_calls": 970,
+      "self_seconds": 0.00019181700000000002,
+      "cumulative_seconds": 0.00019181700000000002
+    },
+    {
+      "file": "fastunknot/weighted_orbits.py",
+      "line": 278,
+      "function": "<genexpr>",
+      "primitive_calls": 2128,
+      "total_calls": 2128,
+      "self_seconds": 0.000188032,
+      "cumulative_seconds": 0.000188032
+    },
+    {
+      "file": "fastunknot/normal_surface_geometry.py",
+      "line": 44,
+      "function": "find",
+      "primitive_calls": 600,
+      "total_calls": 957,
+      "self_seconds": 0.000183968,
+      "cumulative_seconds": 0.000183968
+    },
+    {
+      "file": "fastunknot/normal_parallelity_geometry.py",
+      "line": 8,
+      "function": "_edge_links",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 0.000110427,
+      "cumulative_seconds": 0.00018281700000000002
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary_verify.py",
+      "line": 32,
+      "function": "arc",
+      "primitive_calls": 554,
+      "total_calls": 554,
+      "self_seconds": 0.000182181,
+      "cumulative_seconds": 0.000182181
+    },
+    {
+      "file": "fastunknot/normal_parallelity_reference.py",
+      "line": 82,
+      "function": "<genexpr>",
+      "primitive_calls": 200,
+      "total_calls": 200,
+      "self_seconds": 0.000137813,
+      "cumulative_seconds": 0.000179478
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method builtins.divmod>",
+      "primitive_calls": 1278,
+      "total_calls": 1278,
+      "self_seconds": 0.000176061,
+      "cumulative_seconds": 0.000176061
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'encode' of 'str' objects>",
+      "primitive_calls": 10,
+      "total_calls": 10,
+      "self_seconds": 0.000173473,
+      "cumulative_seconds": 0.000173473
+    },
+    {
+      "file": "fastunknot/normal_parallelity.py",
+      "line": 74,
+      "function": "_summary",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 5.4378e-05,
+      "cumulative_seconds": 0.00016740300000000002
+    },
+    {
+      "file": "fastunknot/free_group_elimination.py",
+      "line": 13,
+      "function": "_presentation",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 4.1328e-05,
+      "cumulative_seconds": 0.000155815
+    },
+    {
+      "file": "fastunknot/free_group_elimination.py",
+      "line": 38,
+      "function": "cyclic_reduce",
+      "primitive_calls": 50,
+      "total_calls": 50,
+      "self_seconds": 9.6817e-05,
+      "cumulative_seconds": 0.000155202
+    },
+    {
+      "file": "fastunknot/weighted_transversal.py",
+      "line": 48,
+      "function": "<genexpr>",
+      "primitive_calls": 1397,
+      "total_calls": 1397,
+      "self_seconds": 0.000152683,
+      "cumulative_seconds": 0.000152683
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary.py",
+      "line": 88,
+      "function": "<genexpr>",
+      "primitive_calls": 240,
+      "total_calls": 240,
+      "self_seconds": 5.8188000000000006e-05,
+      "cumulative_seconds": 0.00014477900000000002
+    },
+    {
+      "file": "fastunknot/weighted_transversal.py",
+      "line": 17,
+      "function": "_canonical_tags",
+      "primitive_calls": 2,
+      "total_calls": 2,
+      "self_seconds": 7.893100000000001e-05,
+      "cumulative_seconds": 0.00014238600000000002
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary_verify.py",
+      "line": 29,
+      "function": "<genexpr>",
+      "primitive_calls": 1280,
+      "total_calls": 1280,
+      "self_seconds": 0.000134732,
+      "cumulative_seconds": 0.000134732
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 1524,
+      "function": "find_spec",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 3.615e-06,
+      "cumulative_seconds": 0.000129626
+    },
+    {
+      "file": "fastunknot/interval_orbit_verify.py",
+      "line": 224,
+      "function": "<genexpr>",
+      "primitive_calls": 1031,
+      "total_calls": 1031,
+      "self_seconds": 0.000126814,
+      "cumulative_seconds": 0.000126814
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 1495,
+      "function": "_get_spec",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 7.892e-06,
+      "cumulative_seconds": 0.000126011
+    },
+    {
+      "file": "fastunknot/normal_parallelity_reference.py",
+      "line": 176,
+      "function": "<genexpr>",
+      "primitive_calls": 184,
+      "total_calls": 184,
+      "self_seconds": 0.000125839,
+      "cumulative_seconds": 0.000125839
+    },
+    {
+      "file": "fastunknot/normal_parallelity_geometry.py",
+      "line": 58,
+      "function": "edge_chamber",
+      "primitive_calls": 79,
+      "total_calls": 79,
+      "self_seconds": 6.342400000000001e-05,
+      "cumulative_seconds": 0.00012139
+    },
+    {
+      "file": "fastunknot/source_cut_group.py",
+      "line": 65,
+      "function": "_annular_word",
+      "primitive_calls": 4,
+      "total_calls": 4,
+      "self_seconds": 7.8535e-05,
+      "cumulative_seconds": 0.00011635600000000001
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 1597,
+      "function": "find_spec",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 2.6781000000000003e-05,
+      "cumulative_seconds": 0.000115434
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments.py",
+      "line": 246,
+      "function": "<genexpr>",
+      "primitive_calls": 301,
+      "total_calls": 301,
+      "self_seconds": 9.4772e-05,
+      "cumulative_seconds": 0.00011541800000000001
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'lower' of 'str' objects>",
+      "primitive_calls": 412,
+      "total_calls": 412,
+      "self_seconds": 0.000114377,
+      "cumulative_seconds": 0.000114377
+    },
+    {
+      "file": "fastunknot/free_group_elimination_verify.py",
+      "line": 11,
+      "function": "_reduced",
+      "primitive_calls": 65,
+      "total_calls": 65,
+      "self_seconds": 7.477900000000001e-05,
+      "cumulative_seconds": 0.00011419300000000001
+    },
+    {
+      "file": "fastunknot/normal_surface_geometry.py",
+      "line": 68,
+      "function": "<genexpr>",
+      "primitive_calls": 637,
+      "total_calls": 637,
+      "self_seconds": 0.000111606,
+      "cumulative_seconds": 0.000111606
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary_verify.py",
+      "line": 67,
+      "function": "<genexpr>",
+      "primitive_calls": 640,
+      "total_calls": 640,
+      "self_seconds": 0.000102077,
+      "cumulative_seconds": 0.000102077
+    },
+    {
+      "file": "fastunknot/normal_cut_cells_verify.py",
+      "line": 60,
+      "function": "horizontal",
+      "primitive_calls": 320,
+      "total_calls": 320,
+      "self_seconds": 7.4806e-05,
+      "cumulative_seconds": 9.800100000000001e-05
+    },
+    {
+      "file": "fastunknot/normal_cut_cells_verify.py",
+      "line": 190,
+      "function": "<lambda>",
+      "primitive_calls": 352,
+      "total_calls": 352,
+      "self_seconds": 6.8299e-05,
+      "cumulative_seconds": 9.608e-05
+    },
+    {
+      "file": "fastunknot/source_cut_group_verify.py",
+      "line": 270,
+      "function": "callback",
+      "primitive_calls": 458,
+      "total_calls": 458,
+      "self_seconds": 6.982800000000001e-05,
+      "cumulative_seconds": 9.234500000000001e-05
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 416,
+      "function": "__enter__",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 4.9170000000000005e-06,
+      "cumulative_seconds": 9.2139e-05
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary.py",
+      "line": 82,
+      "function": "key",
+      "primitive_calls": 180,
+      "total_calls": 180,
+      "self_seconds": 8.659100000000001e-05,
+      "cumulative_seconds": 8.659100000000001e-05
+    },
+    {
+      "file": "<frozen abc>",
+      "line": 117,
+      "function": "__instancecheck__",
+      "primitive_calls": 130,
+      "total_calls": 130,
+      "self_seconds": 2.415e-05,
+      "cumulative_seconds": 8.5627e-05
+    },
+    {
+      "file": "fastunknot/source_cut_group.py",
+      "line": 13,
+      "function": "_forest",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 5.5353000000000003e-05,
+      "cumulative_seconds": 8.5529e-05
+    },
+    {
+      "file": "fastunknot/normal_surface_geometry.py",
+      "line": 254,
+      "function": "arc_count",
+      "primitive_calls": 45,
+      "total_calls": 45,
+      "self_seconds": 3.2322e-05,
+      "cumulative_seconds": 8.5321e-05
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 1187,
+      "function": "get_data",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 1.2711e-05,
+      "cumulative_seconds": 8.310500000000001e-05
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary_verify.py",
+      "line": 66,
+      "function": "<genexpr>",
+      "primitive_calls": 640,
+      "total_calls": 640,
+      "self_seconds": 8.105300000000001e-05,
+      "cumulative_seconds": 8.105300000000001e-05
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary_verify.py",
+      "line": 28,
+      "function": "<genexpr>",
+      "primitive_calls": 832,
+      "total_calls": 832,
+      "self_seconds": 8.0664e-05,
+      "cumulative_seconds": 8.0664e-05
+    },
+    {
+      "file": "fastunknot/normal_surface_geometry.py",
+      "line": 257,
+      "function": "<genexpr>",
+      "primitive_calls": 42,
+      "total_calls": 42,
+      "self_seconds": 1.2636e-05,
+      "cumulative_seconds": 8.007000000000001e-05
+    },
+    {
+      "file": "fastunknot/weighted_transversal.py",
+      "line": 72,
+      "function": "<genexpr>",
+      "primitive_calls": 499,
+      "total_calls": 499,
+      "self_seconds": 7.313500000000001e-05,
+      "cumulative_seconds": 7.313500000000001e-05
+    },
+    {
+      "file": "fastunknot/weighted_orbits.py",
+      "line": 247,
+      "function": "<genexpr>",
+      "primitive_calls": 532,
+      "total_calls": 532,
+      "self_seconds": 7.1e-05,
+      "cumulative_seconds": 7.1e-05
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments_verify.py",
+      "line": 22,
+      "function": "_integer",
+      "primitive_calls": 242,
+      "total_calls": 242,
+      "self_seconds": 4.3068e-05,
+      "cumulative_seconds": 7.0807e-05
+    },
+    {
+      "file": "fastunknot/normal_cut_cells_verify.py",
+      "line": 104,
+      "function": "<lambda>",
+      "primitive_calls": 542,
+      "total_calls": 542,
+      "self_seconds": 6.904e-05,
+      "cumulative_seconds": 6.904e-05
+    },
+    {
+      "file": "fastunknot/normal_cut_cells_verify.py",
+      "line": 134,
+      "function": "<genexpr>",
+      "primitive_calls": 936,
+      "total_calls": 936,
+      "self_seconds": 6.6516e-05,
+      "cumulative_seconds": 6.6516e-05
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 806,
+      "function": "module_from_spec",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 6.9300000000000006e-06,
+      "cumulative_seconds": 6.5999e-05
+    },
+    {
+      "file": "fastunknot/source_cut_group.py",
+      "line": 35,
+      "function": "_original_word",
+      "primitive_calls": 10,
+      "total_calls": 10,
+      "self_seconds": 5.508e-05,
+      "cumulative_seconds": 6.3415e-05
+    },
+    {
+      "file": "fastunknot/interval_merger.py",
+      "line": 154,
+      "function": "combine",
+      "primitive_calls": 41,
+      "total_calls": 41,
+      "self_seconds": 5.6635e-05,
+      "cumulative_seconds": 6.3277e-05
+    },
+    {
+      "file": "fastunknot/normal_cut_cells_verify.py",
+      "line": 100,
+      "function": "<genexpr>",
+      "primitive_calls": 468,
+      "total_calls": 468,
+      "self_seconds": 6.305900000000001e-05,
+      "cumulative_seconds": 6.305900000000001e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method _abc._abc_instancecheck>",
+      "primitive_calls": 130,
+      "total_calls": 130,
+      "self_seconds": 2.5433000000000002e-05,
+      "cumulative_seconds": 6.147700000000001e-05
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 304,
+      "function": "acquire",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 1.8378000000000003e-05,
+      "cumulative_seconds": 6.0852000000000006e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'index' of 'list' objects>",
+      "primitive_calls": 370,
+      "total_calls": 370,
+      "self_seconds": 5.9650000000000007e-05,
+      "cumulative_seconds": 5.9650000000000007e-05
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 733,
+      "function": "_init_module_attrs",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 8.973e-06,
+      "cumulative_seconds": 5.5946e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'startswith' of 'str' objects>",
+      "primitive_calls": 418,
+      "total_calls": 418,
+      "self_seconds": 5.5709000000000005e-05,
+      "cumulative_seconds": 5.5709000000000005e-05
+    },
+    {
+      "file": "fastunknot/normal_parallelity_reference.py",
+      "line": 183,
+      "function": "<genexpr>",
+      "primitive_calls": 192,
+      "total_calls": 192,
+      "self_seconds": 5.5238e-05,
+      "cumulative_seconds": 5.5238e-05
+    },
+    {
+      "file": "fastunknot/normal_parallelity_verify.py",
+      "line": 84,
+      "function": "<genexpr>",
+      "primitive_calls": 63,
+      "total_calls": 63,
+      "self_seconds": 3.4425e-05,
+      "cumulative_seconds": 5.4645e-05
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments.py",
+      "line": 51,
+      "function": "<genexpr>",
+      "primitive_calls": 456,
+      "total_calls": 456,
+      "self_seconds": 5.3665e-05,
+      "cumulative_seconds": 5.3665e-05
+    },
+    {
+      "file": "fastunknot/normal_surface_geometry.py",
+      "line": 95,
+      "function": "<genexpr>",
+      "primitive_calls": 330,
+      "total_calls": 330,
+      "self_seconds": 5.2922000000000006e-05,
+      "cumulative_seconds": 5.2922000000000006e-05
+    },
+    {
+      "file": "fastunknot/normal_parallelity_geometry.py",
+      "line": 176,
+      "function": "<genexpr>",
+      "primitive_calls": 116,
+      "total_calls": 116,
+      "self_seconds": 5.2501000000000004e-05,
+      "cumulative_seconds": 5.2501000000000004e-05
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary_verify.py",
+      "line": 27,
+      "function": "cross",
+      "primitive_calls": 208,
+      "total_calls": 208,
+      "self_seconds": 5.1798e-05,
+      "cumulative_seconds": 5.1798e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method builtins.abs>",
+      "primitive_calls": 423,
+      "total_calls": 423,
+      "self_seconds": 5.0125000000000005e-05,
+      "cumulative_seconds": 5.0125000000000005e-05
+    },
+    {
+      "file": "fastunknot/normal_parallelity_geometry.py",
+      "line": 81,
+      "function": "canonical_face",
+      "primitive_calls": 133,
+      "total_calls": 133,
+      "self_seconds": 4.9223000000000006e-05,
+      "cumulative_seconds": 4.9223000000000006e-05
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 140,
+      "function": "_path_stat",
+      "primitive_calls": 9,
+      "total_calls": 9,
+      "self_seconds": 5.566000000000001e-06,
+      "cumulative_seconds": 4.8883000000000006e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method _hashlib.openssl_sha256>",
+      "primitive_calls": 9,
+      "total_calls": 9,
+      "self_seconds": 4.7443e-05,
+      "cumulative_seconds": 4.7443e-05
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 486,
+      "function": "cache_from_source",
+      "primitive_calls": 6,
+      "total_calls": 6,
+      "self_seconds": 1.4750000000000001e-05,
+      "cumulative_seconds": 4.6939000000000006e-05
+    },
+    {
+      "file": "fastunknot/normal_parallelity.py",
+      "line": 58,
+      "function": "_orientations",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 2.9085e-05,
+      "cumulative_seconds": 4.4908000000000004e-05
+    },
+    {
+      "file": "fastunknot/normal_surface_geometry.py",
+      "line": 242,
+      "function": "<genexpr>",
+      "primitive_calls": 489,
+      "total_calls": 489,
+      "self_seconds": 4.3778e-05,
+      "cumulative_seconds": 4.3778e-05
+    },
+    {
+      "file": "fastunknot/normal_parallelity_reference.py",
+      "line": 154,
+      "function": "<genexpr>",
+      "primitive_calls": 240,
+      "total_calls": 240,
+      "self_seconds": 4.343e-05,
+      "cumulative_seconds": 4.343e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method posix.stat>",
+      "primitive_calls": 9,
+      "total_calls": 9,
+      "self_seconds": 4.3317000000000006e-05,
+      "cumulative_seconds": 4.3317000000000006e-05
+    },
+    {
+      "file": "fastunknot/weighted_orbits.py",
+      "line": 279,
+      "function": "<genexpr>",
+      "primitive_calls": 230,
+      "total_calls": 230,
+      "self_seconds": 4.3154e-05,
+      "cumulative_seconds": 4.3154e-05
+    },
+    {
+      "file": "fastunknot/normal_parallelity_geometry.py",
+      "line": 197,
+      "function": "<genexpr>",
+      "primitive_calls": 96,
+      "total_calls": 96,
+      "self_seconds": 4.3048000000000005e-05,
+      "cumulative_seconds": 4.3048000000000005e-05
+    },
+    {
+      "file": "fastunknot/normal_parallelity_geometry.py",
+      "line": 187,
+      "function": "<genexpr>",
+      "primitive_calls": 92,
+      "total_calls": 92,
+      "self_seconds": 4.2725e-05,
+      "cumulative_seconds": 4.2725e-05
+    },
+    {
+      "file": "fastunknot/normal_parallelity_reference.py",
+      "line": 140,
+      "function": "<genexpr>",
+      "primitive_calls": 174,
+      "total_calls": 174,
+      "self_seconds": 4.2633e-05,
+      "cumulative_seconds": 4.2633e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method _io.open_code>",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 4.1852000000000005e-05,
+      "cumulative_seconds": 4.1852000000000005e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'lstrip' of 'str' objects>",
+      "primitive_calls": 412,
+      "total_calls": 412,
+      "self_seconds": 4.1507e-05,
+      "cumulative_seconds": 4.1507e-05
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 632,
+      "function": "cached",
+      "primitive_calls": 6,
+      "total_calls": 6,
+      "self_seconds": 2.855e-06,
+      "cumulative_seconds": 4.1193000000000004e-05
+    },
+    {
+      "file": "fastunknot/normal_surface_geometry.py",
+      "line": 262,
+      "function": "<genexpr>",
+      "primitive_calls": 129,
+      "total_calls": 129,
+      "self_seconds": 2.6209000000000003e-05,
+      "cumulative_seconds": 3.9425e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method math.isqrt>",
+      "primitive_calls": 240,
+      "total_calls": 240,
+      "self_seconds": 3.9219000000000005e-05,
+      "cumulative_seconds": 3.9219000000000005e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method builtins.iter>",
+      "primitive_calls": 320,
+      "total_calls": 320,
+      "self_seconds": 3.8638000000000005e-05,
+      "cumulative_seconds": 3.8638000000000005e-05
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 615,
+      "function": "_get_cached",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 6.45e-06,
+      "cumulative_seconds": 3.8338000000000005e-05
+    },
+    {
+      "file": "fastunknot/normal_parallelity_geometry.py",
+      "line": 50,
+      "function": "chamber_face",
+      "primitive_calls": 94,
+      "total_calls": 94,
+      "self_seconds": 2.3941e-05,
+      "cumulative_seconds": 3.7501000000000006e-05
+    },
+    {
+      "file": "<frozen abc>",
+      "line": 121,
+      "function": "__subclasscheck__",
+      "primitive_calls": 2,
+      "total_calls": 9,
+      "self_seconds": 2.652e-06,
+      "cumulative_seconds": 3.6044e-05
+    },
+    {
+      "file": "fastunknot/normal_surface_geometry.py",
+      "line": 113,
+      "function": "<genexpr>",
+      "primitive_calls": 330,
+      "total_calls": 330,
+      "self_seconds": 3.4974e-05,
+      "cumulative_seconds": 3.4974e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method _abc._abc_subclasscheck>",
+      "primitive_calls": 2,
+      "total_calls": 9,
+      "self_seconds": 3.1169e-05,
+      "cumulative_seconds": 3.4913e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'reverse' of 'list' objects>",
+      "primitive_calls": 230,
+      "total_calls": 230,
+      "self_seconds": 3.4436e-05,
+      "cumulative_seconds": 3.4436e-05
+    },
+    {
+      "file": "fastunknot/free_group_elimination.py",
+      "line": 55,
+      "function": "_normalise",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 8.536000000000001e-06,
+      "cumulative_seconds": 3.3802e-05
+    },
+    {
+      "file": "fastunknot/free_group_elimination.py",
+      "line": 66,
+      "function": "_substitution",
+      "primitive_calls": 14,
+      "total_calls": 14,
+      "self_seconds": 2.4832000000000002e-05,
+      "cumulative_seconds": 3.2519000000000005e-05
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 162,
+      "function": "__enter__",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 5.558e-06,
+      "cumulative_seconds": 3.1388000000000005e-05
+    },
+    {
+      "file": "fastunknot/free_group_elimination_verify.py",
+      "line": 105,
+      "function": "<genexpr>",
+      "primitive_calls": 65,
+      "total_calls": 65,
+      "self_seconds": 2.8296e-05,
+      "cumulative_seconds": 3.1374e-05
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary.py",
+      "line": 57,
+      "function": "<genexpr>",
+      "primitive_calls": 120,
+      "total_calls": 120,
+      "self_seconds": 2.9941000000000004e-05,
+      "cumulative_seconds": 2.9941000000000004e-05
+    },
+    {
+      "file": "fastunknot/normal_parallelity_reference.py",
+      "line": 170,
+      "function": "<genexpr>",
+      "primitive_calls": 232,
+      "total_calls": 232,
+      "self_seconds": 2.8978000000000003e-05,
+      "cumulative_seconds": 2.8978000000000003e-05
+    },
+    {
+      "file": "fastunknot/free_group_elimination.py",
+      "line": 84,
+      "function": "letters",
+      "primitive_calls": 170,
+      "total_calls": 170,
+      "self_seconds": 2.8864e-05,
+      "cumulative_seconds": 2.8864e-05
+    },
+    {
+      "file": "fastunknot/free_group_elimination.py",
+      "line": 26,
+      "function": "<genexpr>",
+      "primitive_calls": 41,
+      "total_calls": 41,
+      "self_seconds": 9.429e-06,
+      "cumulative_seconds": 2.8381e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'disable' of '_lsprof.Profiler' objects>",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 2.8323000000000003e-05,
+      "cumulative_seconds": 2.8323000000000003e-05
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary.py",
+      "line": 35,
+      "function": "normal",
+      "primitive_calls": 60,
+      "total_calls": 60,
+      "self_seconds": 2.7953e-05,
+      "cumulative_seconds": 2.7953e-05
+    },
+    {
+      "file": "fastunknot/normal_cut_cells_verify.py",
+      "line": 135,
+      "function": "<genexpr>",
+      "primitive_calls": 312,
+      "total_calls": 312,
+      "self_seconds": 2.7823e-05,
+      "cumulative_seconds": 2.7823e-05
+    },
+    {
+      "file": "fastunknot/normal_parallelity.py",
+      "line": 95,
+      "function": "<genexpr>",
+      "primitive_calls": 63,
+      "total_calls": 63,
+      "self_seconds": 2.7048000000000003e-05,
+      "cumulative_seconds": 2.7048000000000003e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'copy' of 'list' objects>",
+      "primitive_calls": 92,
+      "total_calls": 92,
+      "self_seconds": 2.688e-05,
+      "cumulative_seconds": 2.688e-05
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 426,
+      "function": "_get_module_lock",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 1.6244000000000002e-05,
+      "cumulative_seconds": 2.6370000000000003e-05
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments_verify.py",
+      "line": 126,
+      "function": "<genexpr>",
+      "primitive_calls": 360,
+      "total_calls": 360,
+      "self_seconds": 2.601e-05,
+      "cumulative_seconds": 2.601e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'update' of 'dict' objects>",
+      "primitive_calls": 45,
+      "total_calls": 45,
+      "self_seconds": 2.5667e-05,
+      "cumulative_seconds": 2.5667e-05
+    },
+    {
+      "file": "<string>",
+      "line": 2,
+      "function": "__init__",
+      "primitive_calls": 5,
+      "total_calls": 5,
+      "self_seconds": 2.5278e-05,
+      "cumulative_seconds": 2.5278e-05
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary.py",
+      "line": 87,
+      "function": "<genexpr>",
+      "primitive_calls": 80,
+      "total_calls": 80,
+      "self_seconds": 2.5107000000000002e-05,
+      "cumulative_seconds": 2.5107000000000002e-05
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 124,
+      "function": "setdefault",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 7.693e-06,
+      "cumulative_seconds": 2.5069e-05
+    },
+    {
+      "file": "fastunknot/normal_surface_geometry.py",
+      "line": 256,
+      "function": "<genexpr>",
+      "primitive_calls": 9,
+      "total_calls": 9,
+      "self_seconds": 6.95e-06,
+      "cumulative_seconds": 2.4837000000000003e-05
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 126,
+      "function": "_path_join",
+      "primitive_calls": 18,
+      "total_calls": 18,
+      "self_seconds": 1.5311e-05,
+      "cumulative_seconds": 2.4618e-05
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary.py",
+      "line": 55,
+      "function": "<genexpr>",
+      "primitive_calls": 120,
+      "total_calls": 120,
+      "self_seconds": 2.4417e-05,
+      "cumulative_seconds": 2.4417e-05
+    },
+    {
+      "file": "fastunknot/normal_cut_cells_verify.py",
+      "line": 145,
+      "function": "<lambda>",
+      "primitive_calls": 234,
+      "total_calls": 234,
+      "self_seconds": 2.3189e-05,
+      "cumulative_seconds": 2.3189e-05
+    },
+    {
+      "file": "fastunknot/normal_parallelity_reference.py",
+      "line": 19,
+      "function": "<genexpr>",
+      "primitive_calls": 200,
+      "total_calls": 200,
+      "self_seconds": 2.2751000000000003e-05,
+      "cumulative_seconds": 2.2751000000000003e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method builtins.format>",
+      "primitive_calls": 5,
+      "total_calls": 5,
+      "self_seconds": 2.2675000000000002e-05,
+      "cumulative_seconds": 2.2675000000000002e-05
+    },
+    {
+      "file": "fastunknot/normal_parallelity_reference.py",
+      "line": 55,
+      "function": "<genexpr>",
+      "primitive_calls": 228,
+      "total_calls": 228,
+      "self_seconds": 2.1747e-05,
+      "cumulative_seconds": 2.1747e-05
+    },
+    {
+      "file": "fastunknot/normal_parallelity_geometry.py",
+      "line": 128,
+      "function": "<genexpr>",
+      "primitive_calls": 120,
+      "total_calls": 120,
+      "self_seconds": 2.1671e-05,
+      "cumulative_seconds": 2.1671e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'decode' of 'bytes' objects>",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 2.1412e-05,
+      "cumulative_seconds": 2.1412e-05
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 1592,
+      "function": "_get_spec",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 6.369e-06,
+      "cumulative_seconds": 2.1021e-05
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary.py",
+      "line": 56,
+      "function": "<genexpr>",
+      "primitive_calls": 120,
+      "total_calls": 120,
+      "self_seconds": 2.0825e-05,
+      "cumulative_seconds": 2.0825e-05
+    },
+    {
+      "file": "fastunknot/normal_surface_geometry.py",
+      "line": 255,
+      "function": "<genexpr>",
+      "primitive_calls": 180,
+      "total_calls": 180,
+      "self_seconds": 2.0474e-05,
+      "cumulative_seconds": 2.0474e-05
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 132,
+      "function": "_path_split",
+      "primitive_calls": 6,
+      "total_calls": 6,
+      "self_seconds": 7.4820000000000005e-06,
+      "cumulative_seconds": 2.0261e-05
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments.py",
+      "line": 73,
+      "function": "<genexpr>",
+      "primitive_calls": 180,
+      "total_calls": 180,
+      "self_seconds": 1.9389e-05,
+      "cumulative_seconds": 1.9389e-05
+    },
+    {
+      "file": "fastunknot/free_group_elimination.py",
+      "line": 128,
+      "function": "<genexpr>",
+      "primitive_calls": 162,
+      "total_calls": 162,
+      "self_seconds": 1.8148e-05,
+      "cumulative_seconds": 1.8148e-05
+    },
+    {
+      "file": "fastunknot/free_group_elimination_verify.py",
+      "line": 89,
+      "function": "expanded",
+      "primitive_calls": 135,
+      "total_calls": 135,
+      "self_seconds": 1.7140000000000002e-05,
+      "cumulative_seconds": 1.7140000000000002e-05
+    },
+    {
+      "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/__init__.py",
+      "line": 244,
+      "function": "detect_encoding",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 1.3991e-05,
+      "cumulative_seconds": 1.7076e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'read' of '_io.BufferedReader' objects>",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 1.6895e-05,
+      "cumulative_seconds": 1.6895e-05
+    },
+    {
+      "file": "fastunknot/normal_parallelity_geometry.py",
+      "line": 198,
+      "function": "<genexpr>",
+      "primitive_calls": 96,
+      "total_calls": 96,
+      "self_seconds": 1.6253000000000002e-05,
+      "cumulative_seconds": 1.6253000000000002e-05
+    },
+    {
+      "file": "fastunknot/normal_cut_groups.py",
+      "line": 16,
+      "function": "_census",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 1.1568e-05,
+      "cumulative_seconds": 1.6214e-05
+    },
+    {
+      "file": "fastunknot/source_cut_group_verify.py",
+      "line": 153,
+      "function": "<genexpr>",
+      "primitive_calls": 54,
+      "total_calls": 54,
+      "self_seconds": 1.2345000000000001e-05,
+      "cumulative_seconds": 1.5701e-05
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 159,
+      "function": "_path_isfile",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 2.634e-06,
+      "cumulative_seconds": 1.5563e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method _collections._count_elements>",
+      "primitive_calls": 65,
+      "total_calls": 65,
+      "self_seconds": 1.5557e-05,
+      "cumulative_seconds": 1.5557e-05
+    },
+    {
+      "file": "fastunknot/normal_surface_geometry.py",
+      "line": 39,
+      "function": "__init__",
+      "primitive_calls": 9,
+      "total_calls": 9,
+      "self_seconds": 1.4862000000000001e-05,
+      "cumulative_seconds": 1.4862000000000001e-05
+    },
+    {
+      "file": "fastunknot/normal_surface_geometry.py",
+      "line": 234,
+      "function": "<genexpr>",
+      "primitive_calls": 144,
+      "total_calls": 144,
+      "self_seconds": 1.4288000000000001e-05,
+      "cumulative_seconds": 1.4288000000000001e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method builtins.hex>",
+      "primitive_calls": 126,
+      "total_calls": 126,
+      "self_seconds": 1.4199e-05,
+      "cumulative_seconds": 1.4199e-05
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 806,
+      "function": "spec_from_file_location",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 9.804000000000001e-06,
+      "cumulative_seconds": 1.4191e-05
+    },
+    {
+      "file": "fastunknot/source_cut_group_verify.py",
+      "line": 31,
+      "function": "<genexpr>",
+      "primitive_calls": 147,
+      "total_calls": 147,
+      "self_seconds": 1.4093e-05,
+      "cumulative_seconds": 1.4093e-05
+    },
+    {
+      "file": "fastunknot/source_cut_group.py",
+      "line": 98,
+      "function": "<genexpr>",
+      "primitive_calls": 54,
+      "total_calls": 54,
+      "self_seconds": 1.0577e-05,
+      "cumulative_seconds": 1.3521000000000001e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'values' of 'dict' objects>",
+      "primitive_calls": 57,
+      "total_calls": 57,
+      "self_seconds": 1.3492e-05,
+      "cumulative_seconds": 1.3492e-05
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 420,
+      "function": "__exit__",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 2.954e-06,
+      "cumulative_seconds": 1.3459000000000001e-05
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 74,
+      "function": "__new__",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 1.1817e-05,
+      "cumulative_seconds": 1.303e-05
+    },
+    {
+      "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/encoder.py",
+      "line": 105,
+      "function": "__init__",
+      "primitive_calls": 10,
+      "total_calls": 10,
+      "self_seconds": 1.2950000000000001e-05,
+      "cumulative_seconds": 1.2950000000000001e-05
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 150,
+      "function": "_path_is_mode_type",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 2.623e-06,
+      "cumulative_seconds": 1.2929000000000001e-05
+    },
+    {
+      "file": "fastunknot/free_group_elimination_verify.py",
+      "line": 47,
+      "function": "<genexpr>",
+      "primitive_calls": 41,
+      "total_calls": 41,
+      "self_seconds": 1.0086000000000001e-05,
+      "cumulative_seconds": 1.2268e-05
+    },
+    {
+      "file": "fastunknot/source_cut_group.py",
+      "line": 17,
+      "function": "root",
+      "primitive_calls": 120,
+      "total_calls": 120,
+      "self_seconds": 1.2191e-05,
+      "cumulative_seconds": 1.2191e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'hexdigest' of '_hashlib.HASH' objects>",
+      "primitive_calls": 9,
+      "total_calls": 9,
+      "self_seconds": 1.2079e-05,
+      "cumulative_seconds": 1.2079e-05
+    },
+    {
+      "file": "fastunknot/normal_surface_geometry.py",
+      "line": 236,
+      "function": "<genexpr>",
+      "primitive_calls": 72,
+      "total_calls": 72,
+      "self_seconds": 1.1669000000000001e-05,
+      "cumulative_seconds": 1.1669000000000001e-05
+    },
+    {
+      "file": "fastunknot/normal_parallelity_geometry.py",
+      "line": 20,
+      "function": "<genexpr>",
+      "primitive_calls": 50,
+      "total_calls": 50,
+      "self_seconds": 1.1569e-05,
+      "cumulative_seconds": 1.1569e-05
+    },
+    {
+      "file": "fastunknot/normal_cut_cells_verify.py",
+      "line": 74,
+      "function": "<genexpr>",
+      "primitive_calls": 104,
+      "total_calls": 104,
+      "self_seconds": 1.1508e-05,
+      "cumulative_seconds": 1.1508e-05
+    },
+    {
+      "file": "fastunknot/normal_parallelity_reference.py",
+      "line": 221,
+      "function": "<genexpr>",
+      "primitive_calls": 108,
+      "total_calls": 108,
+      "self_seconds": 1.1434000000000001e-05,
+      "cumulative_seconds": 1.1434000000000001e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method '__exit__' of '_io._IOBase' objects>",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 1.1107e-05,
+      "cumulative_seconds": 1.1107e-05
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments.py",
+      "line": 203,
+      "function": "<genexpr>",
+      "primitive_calls": 54,
+      "total_calls": 54,
+      "self_seconds": 7.769e-06,
+      "cumulative_seconds": 1.0935000000000001e-05
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 372,
+      "function": "release",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 6.961000000000001e-06,
+      "cumulative_seconds": 1.0505e-05
+    },
+    {
+      "file": "fastunknot/normal_surface_geometry.py",
+      "line": 225,
+      "function": "<genexpr>",
+      "primitive_calls": 21,
+      "total_calls": 21,
+      "self_seconds": 8.574000000000001e-06,
+      "cumulative_seconds": 1.0348e-05
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 645,
+      "function": "parent",
+      "primitive_calls": 10,
+      "total_calls": 10,
+      "self_seconds": 6.929e-06,
+      "cumulative_seconds": 1.0343e-05
+    },
+    {
+      "file": "fastunknot/normal_cut_cells_verify.py",
+      "line": 45,
+      "function": "<genexpr>",
+      "primitive_calls": 104,
+      "total_calls": 104,
+      "self_seconds": 1.0014000000000001e-05,
+      "cumulative_seconds": 1.0014000000000001e-05
+    },
+    {
+      "file": "fastunknot/weighted_orbits.py",
+      "line": 272,
+      "function": "<genexpr>",
+      "primitive_calls": 134,
+      "total_calls": 134,
+      "self_seconds": 9.924e-06,
+      "cumulative_seconds": 9.924e-06
+    },
+    {
+      "file": "fastunknot/normal_cut_cells_verify.py",
+      "line": 111,
+      "function": "<genexpr>",
+      "primitive_calls": 104,
+      "total_calls": 104,
+      "self_seconds": 9.714e-06,
+      "cumulative_seconds": 9.714e-06
+    },
+    {
+      "file": "fastunknot/normal_parallelity_reference.py",
+      "line": 48,
+      "function": "face_cell",
+      "primitive_calls": 12,
+      "total_calls": 12,
+      "self_seconds": 5.567e-06,
+      "cumulative_seconds": 9.493e-06
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary_verify.py",
+      "line": 56,
+      "function": "<genexpr>",
+      "primitive_calls": 72,
+      "total_calls": 72,
+      "self_seconds": 9.4e-06,
+      "cumulative_seconds": 9.4e-06
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'join' of 'str' objects>",
+      "primitive_calls": 34,
+      "total_calls": 34,
+      "self_seconds": 9.367e-06,
+      "cumulative_seconds": 9.367e-06
+    },
+    {
+      "file": "fastunknot/weighted_transversal.py",
+      "line": 92,
+      "function": "<genexpr>",
+      "primitive_calls": 117,
+      "total_calls": 117,
+      "self_seconds": 9.123e-06,
+      "cumulative_seconds": 9.123e-06
+    },
+    {
+      "file": "fastunknot/normal_parallelity_geometry.py",
+      "line": 229,
+      "function": "<genexpr>",
+      "primitive_calls": 54,
+      "total_calls": 54,
+      "self_seconds": 9.070000000000001e-06,
+      "cumulative_seconds": 9.070000000000001e-06
+    },
+    {
+      "file": "fastunknot/normal_parallelity_reference.py",
+      "line": 206,
+      "function": "<genexpr>",
+      "primitive_calls": 90,
+      "total_calls": 90,
+      "self_seconds": 8.97e-06,
+      "cumulative_seconds": 8.97e-06
+    },
+    {
+      "file": "fastunknot/source_cut_group.py",
+      "line": 154,
+      "function": "<genexpr>",
+      "primitive_calls": 66,
+      "total_calls": 66,
+      "self_seconds": 8.847e-06,
+      "cumulative_seconds": 8.847e-06
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 670,
+      "function": "_classify_pyc",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 3.977e-06,
+      "cumulative_seconds": 8.844e-06
+    },
+    {
+      "file": "fastunknot/normal_cut_boundary_verify.py",
+      "line": 57,
+      "function": "<genexpr>",
+      "primitive_calls": 72,
+      "total_calls": 72,
+      "self_seconds": 8.826e-06,
+      "cumulative_seconds": 8.826e-06
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 84,
+      "function": "_unpack_uint32",
+      "primitive_calls": 9,
+      "total_calls": 9,
+      "self_seconds": 5.958e-06,
+      "cumulative_seconds": 8.582e-06
+    },
+    {
+      "file": "fastunknot/normal_parallelity_verify.py",
+      "line": 86,
+      "function": "<genexpr>",
+      "primitive_calls": 6,
+      "total_calls": 6,
+      "self_seconds": 5.748000000000001e-06,
+      "cumulative_seconds": 8.513000000000001e-06
+    },
+    {
+      "file": "fastunknot/source_cut_group.py",
+      "line": 259,
+      "function": "<genexpr>",
+      "primitive_calls": 30,
+      "total_calls": 30,
+      "self_seconds": 6.681e-06,
+      "cumulative_seconds": 8.485000000000001e-06
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 1206,
+      "function": "path_stats",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 1.883e-06,
+      "cumulative_seconds": 7.882e-06
+    },
+    {
+      "file": "fastunknot/normal_cut_cells_verify.py",
+      "line": 119,
+      "function": "<genexpr>",
+      "primitive_calls": 48,
+      "total_calls": 48,
+      "self_seconds": 7.872e-06,
+      "cumulative_seconds": 7.872e-06
+    },
+    {
+      "file": "fastunknot/normal_parallelity_geometry.py",
+      "line": 231,
+      "function": "<genexpr>",
+      "primitive_calls": 54,
+      "total_calls": 54,
+      "self_seconds": 7.748000000000001e-06,
+      "cumulative_seconds": 7.748000000000001e-06
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 703,
+      "function": "_validate_timestamp_pyc",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 3.2950000000000002e-06,
+      "cumulative_seconds": 7.411000000000001e-06
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 134,
+      "function": "<genexpr>",
+      "primitive_calls": 12,
+      "total_calls": 12,
+      "self_seconds": 5.336e-06,
+      "cumulative_seconds": 7.2100000000000004e-06
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'difference_update' of 'set' objects>",
+      "primitive_calls": 17,
+      "total_calls": 17,
+      "self_seconds": 6.978000000000001e-06,
+      "cumulative_seconds": 6.978000000000001e-06
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 232,
+      "function": "__init__",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 4.998e-06,
+      "cumulative_seconds": 6.79e-06
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments.py",
+      "line": 193,
+      "function": "<genexpr>",
+      "primitive_calls": 60,
+      "total_calls": 60,
+      "self_seconds": 6.7380000000000005e-06,
+      "cumulative_seconds": 6.7380000000000005e-06
+    },
+    {
+      "file": "fastunknot/free_group_elimination.py",
+      "line": 77,
+      "function": "<genexpr>",
+      "primitive_calls": 46,
+      "total_calls": 46,
+      "self_seconds": 6.569e-06,
+      "cumulative_seconds": 6.569e-06
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments_verify.py",
+      "line": 175,
+      "function": "<genexpr>",
+      "primitive_calls": 65,
+      "total_calls": 65,
+      "self_seconds": 6.479e-06,
+      "cumulative_seconds": 6.479e-06
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'rpartition' of 'str' objects>",
+      "primitive_calls": 25,
+      "total_calls": 25,
+      "self_seconds": 6.472e-06,
+      "cumulative_seconds": 6.472e-06
+    },
+    {
+      "file": "fastunknot/normal_parallelity_verify.py",
+      "line": 119,
+      "function": "<genexpr>",
+      "primitive_calls": 5,
+      "total_calls": 5,
+      "self_seconds": 5.5490000000000006e-06,
+      "cumulative_seconds": 6.220000000000001e-06
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 982,
+      "function": "find_spec",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 2.2130000000000002e-06,
+      "cumulative_seconds": 6.1790000000000005e-06
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 1128,
+      "function": "find_spec",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 1.684e-06,
+      "cumulative_seconds": 6.1e-06
+    },
+    {
+      "file": "fastunknot/normal_parallelity_geometry.py",
+      "line": 135,
+      "function": "<genexpr>",
+      "primitive_calls": 44,
+      "total_calls": 44,
+      "self_seconds": 6.027e-06,
+      "cumulative_seconds": 6.027e-06
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments_verify.py",
+      "line": 178,
+      "function": "<genexpr>",
+      "primitive_calls": 60,
+      "total_calls": 60,
+      "self_seconds": 6.012e-06,
+      "cumulative_seconds": 6.012e-06
+    },
+    {
+      "file": "fastunknot/normal_parallelity_reference.py",
+      "line": 125,
+      "function": "<genexpr>",
+      "primitive_calls": 60,
+      "total_calls": 60,
+      "self_seconds": 5.758000000000001e-06,
+      "cumulative_seconds": 5.758000000000001e-06
+    },
+    {
+      "file": "fastunknot/free_group_elimination_verify.py",
+      "line": 70,
+      "function": "<genexpr>",
+      "primitive_calls": 42,
+      "total_calls": 42,
+      "self_seconds": 5.74e-06,
+      "cumulative_seconds": 5.74e-06
+    },
+    {
+      "file": "fastunknot/normal_parallelity.py",
+      "line": 98,
+      "function": "<genexpr>",
+      "primitive_calls": 6,
+      "total_calls": 6,
+      "self_seconds": 5.458e-06,
+      "cumulative_seconds": 5.458e-06
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments_verify.py",
+      "line": 198,
+      "function": "<genexpr>",
+      "primitive_calls": 12,
+      "total_calls": 12,
+      "self_seconds": 4.137e-06,
+      "cumulative_seconds": 5.4080000000000006e-06
+    },
+    {
+      "file": "fastunknot/source_cut_group_verify.py",
+      "line": 1,
+      "function": "<module>",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 4.086e-06,
+      "cumulative_seconds": 5.398000000000001e-06
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'rstrip' of 'str' objects>",
+      "primitive_calls": 42,
+      "total_calls": 42,
+      "self_seconds": 5.36e-06,
+      "cumulative_seconds": 5.36e-06
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'append' of 'collections.deque' objects>",
+      "primitive_calls": 15,
+      "total_calls": 15,
+      "self_seconds": 5.138000000000001e-06,
+      "cumulative_seconds": 5.138000000000001e-06
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 491,
+      "function": "_verbose_message",
+      "primitive_calls": 21,
+      "total_calls": 21,
+      "self_seconds": 5.089e-06,
+      "cumulative_seconds": 5.089e-06
+    },
+    {
+      "file": "fastunknot/source_cut_group.py",
+      "line": 230,
+      "function": "<lambda>",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 1.703e-06,
+      "cumulative_seconds": 5.077000000000001e-06
+    },
+    {
+      "file": "fastunknot/source_cut_group.py",
+      "line": 265,
+      "function": "<genexpr>",
+      "primitive_calls": 4,
+      "total_calls": 4,
+      "self_seconds": 1.0110000000000001e-06,
+      "cumulative_seconds": 5.027e-06
+    },
+    {
+      "file": "fastunknot/normal_surface_geometry.py",
+      "line": 169,
+      "function": "<genexpr>",
+      "primitive_calls": 12,
+      "total_calls": 12,
+      "self_seconds": 3.8740000000000005e-06,
+      "cumulative_seconds": 4.845e-06
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 445,
+      "function": "cb",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 2.9870000000000004e-06,
+      "cumulative_seconds": 4.797e-06
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 82,
+      "function": "remove",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 3.885e-06,
+      "cumulative_seconds": 4.766000000000001e-06
+    },
+    {
+      "file": "fastunknot/free_group_elimination_verify.py",
+      "line": 61,
+      "function": "<genexpr>",
+      "primitive_calls": 17,
+      "total_calls": 17,
+      "self_seconds": 3.422e-06,
+      "cumulative_seconds": 4.514e-06
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 173,
+      "function": "__exit__",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 3.5270000000000003e-06,
+      "cumulative_seconds": 4.407e-06
+    },
+    {
+      "file": "fastunknot/normal_parallelity.py",
+      "line": 121,
+      "function": "allowance",
+      "primitive_calls": 4,
+      "total_calls": 4,
+      "self_seconds": 4.406000000000001e-06,
+      "cumulative_seconds": 4.406000000000001e-06
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 79,
+      "function": "__init__",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 4.346e-06,
+      "cumulative_seconds": 4.346e-06
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method _imp.acquire_lock>",
+      "primitive_calls": 18,
+      "total_calls": 18,
+      "self_seconds": 4.316000000000001e-06,
+      "cumulative_seconds": 4.316000000000001e-06
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'match' of 're.Pattern' objects>",
+      "primitive_calls": 2,
+      "total_calls": 2,
+      "self_seconds": 4.157e-06,
+      "cumulative_seconds": 4.157e-06
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 1226,
+      "function": "__exit__",
+      "primitive_calls": 12,
+      "total_calls": 12,
+      "self_seconds": 2.8180000000000004e-06,
+      "cumulative_seconds": 4.1390000000000005e-06
+    },
+    {
+      "file": "fastunknot/normal_parallelity_geometry.py",
+      "line": 154,
+      "function": "<genexpr>",
+      "primitive_calls": 30,
+      "total_calls": 30,
+      "self_seconds": 4.128e-06,
+      "cumulative_seconds": 4.128e-06
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments.py",
+      "line": 218,
+      "function": "<genexpr>",
+      "primitive_calls": 12,
+      "total_calls": 12,
+      "self_seconds": 2.814e-06,
+      "cumulative_seconds": 4.047e-06
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method _imp.is_builtin>",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 3.966000000000001e-06,
+      "cumulative_seconds": 3.966000000000001e-06
+    },
+    {
+      "file": "fastunknot/free_group_elimination_verify.py",
+      "line": 36,
+      "function": "<genexpr>",
+      "primitive_calls": 19,
+      "total_calls": 19,
+      "self_seconds": 3.906e-06,
+      "cumulative_seconds": 3.906e-06
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 1222,
+      "function": "__enter__",
+      "primitive_calls": 12,
+      "total_calls": 12,
+      "self_seconds": 2.522e-06,
+      "cumulative_seconds": 3.8140000000000002e-06
+    },
+    {
+      "file": "fastunknot/free_group_elimination.py",
+      "line": 16,
+      "function": "<genexpr>",
+      "primitive_calls": 19,
+      "total_calls": 19,
+      "self_seconds": 3.6670000000000002e-06,
+      "cumulative_seconds": 3.6670000000000002e-06
+    },
+    {
+      "file": "fastunknot/source_cut_group_verify.py",
+      "line": 261,
+      "function": "<genexpr>",
+      "primitive_calls": 15,
+      "total_calls": 15,
+      "self_seconds": 2.915e-06,
+      "cumulative_seconds": 3.665e-06
+    },
+    {
+      "file": "fastunknot/normal_surface_geometry.py",
+      "line": 160,
+      "function": "<genexpr>",
+      "primitive_calls": 12,
+      "total_calls": 12,
+      "self_seconds": 3.665e-06,
+      "cumulative_seconds": 3.665e-06
+    },
+    {
+      "file": "fastunknot/source_cut_group.py",
+      "line": 284,
+      "function": "<genexpr>",
+      "primitive_calls": 15,
+      "total_calls": 15,
+      "self_seconds": 2.7550000000000003e-06,
+      "cumulative_seconds": 3.6450000000000003e-06
+    },
+    {
+      "file": "fastunknot/free_group_elimination_verify.py",
+      "line": 1,
+      "function": "<module>",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 3.615e-06,
+      "cumulative_seconds": 3.615e-06
+    },
+    {
+      "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/_distutils_hack/__init__.py",
+      "line": 101,
+      "function": "find_spec",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 2.3540000000000002e-06,
+      "cumulative_seconds": 3.4950000000000004e-06
+    },
+    {
+      "file": "fastunknot/normal_parallelity_verify.py",
+      "line": 61,
+      "function": "<genexpr>",
+      "primitive_calls": 10,
+      "total_calls": 10,
+      "self_seconds": 3.485e-06,
+      "cumulative_seconds": 3.485e-06
+    },
+    {
+      "file": "fastunknot/normal_parallelity.py",
+      "line": 64,
+      "function": "<genexpr>",
+      "primitive_calls": 10,
+      "total_calls": 10,
+      "self_seconds": 3.3930000000000004e-06,
+      "cumulative_seconds": 3.3930000000000004e-06
+    },
+    {
+      "file": "fastunknot/normal_cut_cells_verify.py",
+      "line": 156,
+      "function": "<genexpr>",
+      "primitive_calls": 16,
+      "total_calls": 16,
+      "self_seconds": 3.3250000000000004e-06,
+      "cumulative_seconds": 3.3250000000000004e-06
+    },
+    {
+      "file": "fastunknot/normal_surface_geometry.py",
+      "line": 166,
+      "function": "<genexpr>",
+      "primitive_calls": 24,
+      "total_calls": 24,
+      "self_seconds": 3.237e-06,
+      "cumulative_seconds": 3.237e-06
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method builtins.setattr>",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 3.2240000000000004e-06,
+      "cumulative_seconds": 3.2240000000000004e-06
+    },
+    {
+      "file": "fastunknot/normal_parallelity_verify.py",
+      "line": 58,
+      "function": "<lambda>",
+      "primitive_calls": 5,
+      "total_calls": 5,
+      "self_seconds": 2.482e-06,
+      "cumulative_seconds": 3.2240000000000004e-06
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 185,
+      "function": "_path_abspath",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 1.4930000000000001e-06,
+      "cumulative_seconds": 3.2050000000000002e-06
+    },
+    {
+      "file": "fastunknot/source_cut_group_verify.py",
+      "line": 45,
+      "function": "<genexpr>",
+      "primitive_calls": 32,
+      "total_calls": 32,
+      "self_seconds": 3.1050000000000003e-06,
+      "cumulative_seconds": 3.1050000000000003e-06
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 647,
+      "function": "_check_name_wrapper",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 2.714e-06,
+      "cumulative_seconds": 3.0540000000000003e-06
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments_verify.py",
+      "line": 205,
+      "function": "_trace_size",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 1.192e-06,
+      "cumulative_seconds": 3.045e-06
+    },
+    {
+      "file": "fastunknot/normal_parallelity.py",
+      "line": 61,
+      "function": "<lambda>",
+      "primitive_calls": 5,
+      "total_calls": 5,
+      "self_seconds": 2.125e-06,
+      "cumulative_seconds": 3.0260000000000003e-06
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'pop' of 'dict' objects>",
+      "primitive_calls": 17,
+      "total_calls": 17,
+      "self_seconds": 2.984e-06,
+      "cumulative_seconds": 2.984e-06
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method time.perf_counter>",
+      "primitive_calls": 6,
+      "total_calls": 6,
+      "self_seconds": 2.983e-06,
+      "cumulative_seconds": 2.983e-06
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'popleft' of 'collections.deque' objects>",
+      "primitive_calls": 18,
+      "total_calls": 18,
+      "self_seconds": 2.973e-06,
+      "cumulative_seconds": 2.973e-06
+    },
+    {
+      "file": "fastunknot/source_cut_group.py",
+      "line": 208,
+      "function": "root",
+      "primitive_calls": 8,
+      "total_calls": 8,
+      "self_seconds": 2.973e-06,
+      "cumulative_seconds": 2.973e-06
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method _imp.release_lock>",
+      "primitive_calls": 18,
+      "total_calls": 18,
+      "self_seconds": 2.663e-06,
+      "cumulative_seconds": 2.663e-06
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'intersection' of 'set' objects>",
+      "primitive_calls": 6,
+      "total_calls": 6,
+      "self_seconds": 2.624e-06,
+      "cumulative_seconds": 2.624e-06
+    },
+    {
+      "file": "fastunknot/normal_parallelity_geometry.py",
+      "line": 37,
+      "function": "<genexpr>",
+      "primitive_calls": 8,
+      "total_calls": 8,
+      "self_seconds": 2.542e-06,
+      "cumulative_seconds": 2.542e-06
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method _imp.find_frozen>",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 2.483e-06,
+      "cumulative_seconds": 2.483e-06
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'pop' of 'set' objects>",
+      "primitive_calls": 12,
+      "total_calls": 12,
+      "self_seconds": 2.3940000000000003e-06,
+      "cumulative_seconds": 2.3940000000000003e-06
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 1473,
+      "function": "_path_importer_cache",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 2.345e-06,
+      "cumulative_seconds": 2.345e-06
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'endswith' of 'str' objects>",
+      "primitive_calls": 7,
+      "total_calls": 7,
+      "self_seconds": 2.3440000000000003e-06,
+      "cumulative_seconds": 2.3440000000000003e-06
+    },
+    {
+      "file": "fastunknot/free_group_elimination.py",
+      "line": 72,
+      "function": "<genexpr>",
+      "primitive_calls": 16,
+      "total_calls": 16,
+      "self_seconds": 2.333e-06,
+      "cumulative_seconds": 2.333e-06
+    },
+    {
+      "file": "<frozen _collections_abc>",
+      "line": 435,
+      "function": "__subclasshook__",
+      "primitive_calls": 9,
+      "total_calls": 9,
+      "self_seconds": 2.223e-06,
+      "cumulative_seconds": 2.223e-06
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 48,
+      "function": "_new_module",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 2.173e-06,
+      "cumulative_seconds": 2.173e-06
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'startswith' of 'bytes' objects>",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 2.1630000000000003e-06,
+      "cumulative_seconds": 2.1630000000000003e-06
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 1390,
+      "function": "_handle_fromlist",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 1.333e-06,
+      "cumulative_seconds": 2.063e-06
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'rfind' of 'str' objects>",
+      "primitive_calls": 6,
+      "total_calls": 6,
+      "self_seconds": 1.8740000000000002e-06,
+      "cumulative_seconds": 1.8740000000000002e-06
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method from_bytes>",
+      "primitive_calls": 9,
+      "total_calls": 9,
+      "self_seconds": 1.8620000000000001e-06,
+      "cumulative_seconds": 1.8620000000000001e-06
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method _thread.allocate_lock>",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 1.7920000000000002e-06,
+      "cumulative_seconds": 1.7920000000000002e-06
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method '__exit__' of '_thread.RLock' objects>",
+      "primitive_calls": 6,
+      "total_calls": 6,
+      "self_seconds": 1.7330000000000002e-06,
+      "cumulative_seconds": 1.7330000000000002e-06
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 180,
+      "function": "_path_isabs",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 1.051e-06,
+      "cumulative_seconds": 1.712e-06
+    },
+    {
+      "file": "fastunknot/free_group_elimination_verify.py",
+      "line": 51,
+      "function": "<lambda>",
+      "primitive_calls": 14,
+      "total_calls": 14,
+      "self_seconds": 1.683e-06,
+      "cumulative_seconds": 1.683e-06
+    },
+    {
+      "file": "fastunknot/source_cut_group_verify.py",
+      "line": 166,
+      "function": "<genexpr>",
+      "primitive_calls": 11,
+      "total_calls": 11,
+      "self_seconds": 1.632e-06,
+      "cumulative_seconds": 1.632e-06
+    },
+    {
+      "file": "fastunknot/normal_cut_groups_verify.py",
+      "line": 96,
+      "function": "<genexpr>",
+      "primitive_calls": 2,
+      "total_calls": 2,
+      "self_seconds": 1.582e-06,
+      "cumulative_seconds": 1.582e-06
+    },
+    {
+      "file": "fastunknot/normal_parallelity.py",
+      "line": 93,
+      "function": "<genexpr>",
+      "primitive_calls": 5,
+      "total_calls": 5,
+      "self_seconds": 1.543e-06,
+      "cumulative_seconds": 1.543e-06
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments_verify.py",
+      "line": 201,
+      "function": "<genexpr>",
+      "primitive_calls": 7,
+      "total_calls": 7,
+      "self_seconds": 1.393e-06,
+      "cumulative_seconds": 1.393e-06
+    },
+    {
+      "file": "fastunknot/source_cut_group.py",
+      "line": 230,
+      "function": "<genexpr>",
+      "primitive_calls": 6,
+      "total_calls": 6,
+      "self_seconds": 1.3920000000000002e-06,
+      "cumulative_seconds": 1.3920000000000002e-06
+    },
+    {
+      "file": "fastunknot/source_cut_group.py",
+      "line": 264,
+      "function": "<genexpr>",
+      "primitive_calls": 4,
+      "total_calls": 4,
+      "self_seconds": 1.0810000000000001e-06,
+      "cumulative_seconds": 1.3910000000000001e-06
+    },
+    {
+      "file": "fastunknot/normal_parallelity.py",
+      "line": 94,
+      "function": "<genexpr>",
+      "primitive_calls": 6,
+      "total_calls": 6,
+      "self_seconds": 1.353e-06,
+      "cumulative_seconds": 1.353e-06
+    },
+    {
+      "file": "fastunknot/normal_parallelity_verify.py",
+      "line": 83,
+      "function": "<genexpr>",
+      "primitive_calls": 6,
+      "total_calls": 6,
+      "self_seconds": 1.291e-06,
+      "cumulative_seconds": 1.291e-06
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method posix.fspath>",
+      "primitive_calls": 9,
+      "total_calls": 9,
+      "self_seconds": 1.2820000000000002e-06,
+      "cumulative_seconds": 1.2820000000000002e-06
+    },
+    {
+      "file": "fastunknot/source_cut_group_verify.py",
+      "line": 244,
+      "function": "<genexpr>",
+      "primitive_calls": 4,
+      "total_calls": 4,
+      "self_seconds": 9.61e-07,
+      "cumulative_seconds": 1.261e-06
+    },
+    {
+      "file": "fastunknot/source_cut_group.py",
+      "line": 257,
+      "function": "<lambda>",
+      "primitive_calls": 14,
+      "total_calls": 14,
+      "self_seconds": 1.2420000000000001e-06,
+      "cumulative_seconds": 1.2420000000000001e-06
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method __new__ of type object at 0x144d380>",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 1.213e-06,
+      "cumulative_seconds": 1.213e-06
+    },
+    {
+      "file": "fastunknot/source_cut_group_verify.py",
+      "line": 238,
+      "function": "<lambda>",
+      "primitive_calls": 14,
+      "total_calls": 14,
+      "self_seconds": 1.1720000000000002e-06,
+      "cumulative_seconds": 1.1720000000000002e-06
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method _imp._fix_co_filename>",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 1.0310000000000002e-06,
+      "cumulative_seconds": 1.0310000000000002e-06
+    },
+    {
+      "file": "fastunknot/source_cut_group.py",
+      "line": 233,
+      "function": "<genexpr>",
+      "primitive_calls": 6,
+      "total_calls": 6,
+      "self_seconds": 1.0310000000000002e-06,
+      "cumulative_seconds": 1.0310000000000002e-06
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method _thread.get_ident>",
+      "primitive_calls": 6,
+      "total_calls": 6,
+      "self_seconds": 1.0110000000000001e-06,
+      "cumulative_seconds": 1.0110000000000001e-06
+    },
+    {
+      "file": "fastunknot/source_cut_group_verify.py",
+      "line": 184,
+      "function": "<genexpr>",
+      "primitive_calls": 6,
+      "total_calls": 6,
+      "self_seconds": 9.92e-07,
+      "cumulative_seconds": 9.92e-07
+    },
+    {
+      "file": "fastunknot/source_cut_group.py",
+      "line": 280,
+      "function": "<genexpr>",
+      "primitive_calls": 7,
+      "total_calls": 7,
+      "self_seconds": 9.92e-07,
+      "cumulative_seconds": 9.92e-07
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments.py",
+      "line": 221,
+      "function": "<genexpr>",
+      "primitive_calls": 7,
+      "total_calls": 7,
+      "self_seconds": 9.82e-07,
+      "cumulative_seconds": 9.82e-07
+    },
+    {
+      "file": "fastunknot/normal_parallelity_verify.py",
+      "line": 87,
+      "function": "<genexpr>",
+      "primitive_calls": 6,
+      "total_calls": 6,
+      "self_seconds": 9.82e-07,
+      "cumulative_seconds": 9.82e-07
+    },
+    {
+      "file": "fastunknot/source_cut_group_verify.py",
+      "line": 188,
+      "function": "<genexpr>",
+      "primitive_calls": 4,
+      "total_calls": 4,
+      "self_seconds": 9.520000000000001e-07,
+      "cumulative_seconds": 9.520000000000001e-07
+    },
+    {
+      "file": "fastunknot/normal_cut_groups.py",
+      "line": 32,
+      "function": "<genexpr>",
+      "primitive_calls": 2,
+      "total_calls": 2,
+      "self_seconds": 9.210000000000001e-07,
+      "cumulative_seconds": 9.210000000000001e-07
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method _weakref._remove_dead_weakref>",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 8.81e-07,
+      "cumulative_seconds": 8.81e-07
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'remove' of 'list' objects>",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 8.8e-07,
+      "cumulative_seconds": 8.8e-07
+    },
+    {
+      "file": "fastunknot/source_cut_group_verify.py",
+      "line": 245,
+      "function": "<genexpr>",
+      "primitive_calls": 4,
+      "total_calls": 4,
+      "self_seconds": 6.51e-07,
+      "cumulative_seconds": 8.71e-07
+    },
+    {
+      "file": "fastunknot/normal_parallelity.py",
+      "line": 99,
+      "function": "<genexpr>",
+      "primitive_calls": 6,
+      "total_calls": 6,
+      "self_seconds": 8.5e-07,
+      "cumulative_seconds": 8.5e-07
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<method 'end' of 're.Match' objects>",
+      "primitive_calls": 2,
+      "total_calls": 2,
+      "self_seconds": 8.410000000000001e-07,
+      "cumulative_seconds": 8.410000000000001e-07
+    },
+    {
+      "file": "fastunknot/free_group_elimination_verify.py",
+      "line": 116,
+      "function": "<genexpr>",
+      "primitive_calls": 5,
+      "total_calls": 5,
+      "self_seconds": 8.310000000000001e-07,
+      "cumulative_seconds": 8.310000000000001e-07
+    },
+    {
+      "file": "fastunknot/source_cut_group.py",
+      "line": 234,
+      "function": "<genexpr>",
+      "primitive_calls": 4,
+      "total_calls": 4,
+      "self_seconds": 7.91e-07,
+      "cumulative_seconds": 7.91e-07
+    },
+    {
+      "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/collections/__init__.py",
+      "line": 609,
+      "function": "__missing__",
+      "primitive_calls": 4,
+      "total_calls": 4,
+      "self_seconds": 7.71e-07,
+      "cumulative_seconds": 7.71e-07
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments_verify.py",
+      "line": 202,
+      "function": "<genexpr>",
+      "primitive_calls": 7,
+      "total_calls": 7,
+      "self_seconds": 7.620000000000001e-07,
+      "cumulative_seconds": 7.620000000000001e-07
+    },
+    {
+      "file": "fastunknot/normal_parallelity_verify.py",
+      "line": 88,
+      "function": "<genexpr>",
+      "primitive_calls": 6,
+      "total_calls": 6,
+      "self_seconds": 7.410000000000001e-07,
+      "cumulative_seconds": 7.410000000000001e-07
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 599,
+      "function": "__init__",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 7.210000000000001e-07,
+      "cumulative_seconds": 7.210000000000001e-07
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 412,
+      "function": "__init__",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 7.100000000000001e-07,
+      "cumulative_seconds": 7.100000000000001e-07
+    },
+    {
+      "file": "fastunknot/normal_parallelity.py",
+      "line": 100,
+      "function": "<genexpr>",
+      "primitive_calls": 6,
+      "total_calls": 6,
+      "self_seconds": 7.02e-07,
+      "cumulative_seconds": 7.02e-07
+    },
+    {
+      "file": "fastunknot/parallelity_boundary_moments.py",
+      "line": 222,
+      "function": "<genexpr>",
+      "primitive_calls": 7,
+      "total_calls": 7,
+      "self_seconds": 6.900000000000001e-07,
+      "cumulative_seconds": 6.900000000000001e-07
+    },
+    {
+      "file": "fastunknot/normal_cut_groups.py",
+      "line": 55,
+      "function": "<genexpr>",
+      "primitive_calls": 4,
+      "total_calls": 4,
+      "self_seconds": 6.800000000000001e-07,
+      "cumulative_seconds": 6.800000000000001e-07
+    },
+    {
+      "file": "fastunknot/normal_parallelity_geometry.py",
+      "line": 105,
+      "function": "<genexpr>",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 5.210000000000001e-07,
+      "cumulative_seconds": 5.210000000000001e-07
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 1157,
+      "function": "__init__",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 4.61e-07,
+      "cumulative_seconds": 4.61e-07
+    },
+    {
+      "file": "fastunknot/source_cut_group_verify.py",
+      "line": 241,
+      "function": "<genexpr>",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 4.51e-07,
+      "cumulative_seconds": 4.51e-07
+    },
+    {
+      "file": "fastunknot/source_cut_group_verify.py",
+      "line": 194,
+      "function": "<lambda>",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 4.32e-07,
+      "cumulative_seconds": 4.32e-07
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 158,
+      "function": "__init__",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 3.7e-07,
+      "cumulative_seconds": 3.7e-07
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 990,
+      "function": "create_module",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 3.6000000000000005e-07,
+      "cumulative_seconds": 3.6000000000000005e-07
+    },
+    {
+      "file": "fastunknot/source_cut_group.py",
+      "line": 261,
+      "function": "<genexpr>",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 3.6000000000000005e-07,
+      "cumulative_seconds": 3.6000000000000005e-07
+    },
+    {
+      "file": "<frozen importlib._bootstrap>",
+      "line": 653,
+      "function": "has_location",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 3.42e-07,
+      "cumulative_seconds": 3.42e-07
+    },
+    {
+      "file": "fastunknot/free_group_elimination_verify.py",
+      "line": 117,
+      "function": "<genexpr>",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 3.41e-07,
+      "cumulative_seconds": 3.41e-07
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 1182,
+      "function": "get_filename",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 3.4000000000000003e-07,
+      "cumulative_seconds": 3.4000000000000003e-07
+    },
+    {
+      "file": "<frozen importlib._bootstrap_external>",
+      "line": 71,
+      "function": "_relax_case",
+      "primitive_calls": 3,
+      "total_calls": 3,
+      "self_seconds": 2.6e-07,
+      "cumulative_seconds": 2.6e-07
+    }
+  ],
+  "cumulative_cost_warning": "Cumulative function costs overlap and must not be summed across nested calls."
+}

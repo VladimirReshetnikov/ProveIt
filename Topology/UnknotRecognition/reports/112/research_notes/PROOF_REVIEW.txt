@@ -1,0 +1,92 @@
+PROOF AND IMPLEMENTATION REVIEW
+Lazy Weight Replay and Native Chamber Graphs for Unknot Recognition
+Source pin: e0b2f802f336fcb51e9ec5f29174cfe28dfb9d39
+
+This note records the conclusions of independent static reviews. The article
+contains the complete proofs; executable observations are in results/.
+
+1. Run-tree representation
+
+Leaves store positive integer lengths and fixed-dimensional integer vectors.
+Internal nodes store total length, leaf count, AVL height, endpoint run lengths
+and effective values, and an optional uniform vector tag. A parent's endpoint
+caches include its own tag; child caches do not include their parent's tag.
+Operations create new nodes and preserve all existing shared nodes.
+
+All rotations, splits, and structural joins push tags before changing their
+scope. Uniform addition is injective on vector values, so internal canonical
+run inequalities are preserved. Coalescing equal seam leaves cannot cascade:
+their former neighbors were unequal to that same effective value.
+
+The logarithmic split proof charges AVL join-height increases separately to
+the accumulating left and right fragments. Both charges telescope. Charging
+every join by a fresh logarithm would give an unnecessarily weaker bound.
+
+2. Exact arithmetic and numerical size
+
+Translation uses one arithmetic-progression anchor and actual suffix
+derivative jumps before modular reduction. The event at residue zero is
+omitted during integration because the independent anchor fixes that value.
+Reflection maps [l,h) to [K-h+1,K-l+1) and reverses run order.
+
+The coefficient proof uses a mathematical pointwise partition of original
+weighted atoms. Stored bases and tags represent disjoint parts of an active
+point's allocation. Zero-sum parts can be rebased without changing stored
+numbers. This establishes the A bound for tags, endpoint caches and inherited
+tag sums, and the constant-times-A derivative bounds. The atoms are not
+materialized by the algorithm.
+
+The fixed vector dimension is authenticated by the public source parser.
+Private transport helpers rely on this contract and are not standalone
+certificate parsers. Source bit-reading costs include coefficients attached
+to empty intervals, even though such coefficients do not contribute to A.
+
+3. Cost claims
+
+The tree and residue-sort bounds are deterministic. Initial endpoint
+dictionaries, histogram dictionaries, and unweighted pairing-row maintenance
+are additional costs. The complete-star record-work theorem explicitly
+charges map operations; it does not assume worst-case constant-time Python
+hashing. Event dispatch contributes an E term even when an event changes no
+weights. A polynomial source-only claim refers to produced polynomial
+traces; an arbitrary supplied certificate has its own encoded input length.
+
+Metrics distinguish logical receiver-run counts from visited source leaves.
+The maximum-runs counter observes completed events; the theorem separately
+bounds transient seam growth. Cooperative callbacks are polled at the
+documented work boundaries. No constant real-time cancellation latency is
+claimed inside sorting or an individual large-integer operation.
+
+4. Native chamber geometry
+
+Component labels refer to one actual embedded normal surface. The singleton
+power-of-two census detects both omitted components and multiple proposed
+labels on one component. The orientation-double count detects one-sided
+components without assuming that coordinate gcd determines connectedness.
+
+Triangle-arm and quadrilateral-chain marker formulas were checked against
+the independently reconstructed horizontal-face charts. Global edge ranks
+include both source orientation and directed-local-edge reversal.
+
+For a nonempty accepted two-sided surface, every cut chamber touches a
+marked side because the original manifold is connected. Its mask is
+therefore nonzero and unique. The empty surface is a separate one-vertex
+case with mask zero. The theorem states the nonempty hypothesis explicitly.
+
+The full-cut regluing proof gives every labelled subcut partition. The
+spanning-tree maximum-reward conclusion assumes nonnegative rewards. The
+cycle-rank obstruction uses compact properly embedded surfaces, so its
+relative homology intersection pairing is well defined.
+
+5. Scope and attribution
+
+Classical polynomial weighted orbit counting, the native R0+2T run bound,
+the abstract cographic optimizer, and the dependency-reset theory are earlier
+results. The new contributions are the receiver-independent native replay
+construction and separation family, and the source-authenticated native
+chamber interface.
+
+Independent certificate checks share the stated finite source validators,
+integer codec and existing normal-arc/orbit primitives. No end-to-end
+quasipolynomial recognition theorem, geometric edit-persistence certificate,
+or proof-assistant formalization is asserted.

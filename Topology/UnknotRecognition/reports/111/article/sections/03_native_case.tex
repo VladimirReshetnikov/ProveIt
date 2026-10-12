@@ -1,0 +1,90 @@
+\section{The newly certified native figure-eight cut}
+\label{sec:native-target}
+
+The retained fixture \code{pilot/finite\_figureEight/0} provides a concrete
+source-authenticated example that crosses the preceding cancellation barrier.
+It contains ten tetrahedra and 36 normal disks. Its finite core has
+\[
+ (h_0,h_1,h_2,h_3)=(45,68,17,0).
+\]
+There are five ported parallelity bases, all disks, and every one of their
+vertical boundaries is attached as a full annulus. The source cut Euler
+characteristic is $-1$. The whole-cut compiler produces two presentations,
+with $(a,m,L)=(7,5,18)$ and $(18,17,35)$, respectively. Thus the aggregate
+presentation has 25 generators, 22 relators and 53 letters.
+
+\subsection{A complete hand-checkable reduction}
+
+For the difficult component, rename the native generators as
+\[
+ a=33,\ b=41,\ c=45,\ d=49,\ e=57,\ f=61,\ g=65.
+\]
+In native row order 17 through 21, the five annular relations are
+\begin{align*}
+ &gcf^{-1}b^{-1}f^{-1}d^{-1}, & &bed^{-1},\\
+ &e^{-1}a, & &adgc^{-1},\\
+ &egf^{-1}. &&
+\end{align*}
+They are already freely and cyclically reduced. Every generator has at least
+two occurrences across the family, so there is no initial unsigned column
+leaf. Therefore merely normalizing words before invoking the old peeling
+routine does not resolve this component.
+
+The following sequence gives a transparent complete algebraic proof:
+\begin{enumerate}
+\item From $e^{-1}a=1$, eliminate $a$ by $a=e$.
+\item From $bed^{-1}=1$, eliminate $b$ by $b=de^{-1}$.
+\item From $egf^{-1}=1$, eliminate $e$ by $e=fg^{-1}$.
+\item The fourth relation becomes $fg^{-1}dgc^{-1}=1$; eliminate
+      $c=fg^{-1}dg$.
+\item The first relation then freely reduces to
+      $gfg^{-1}f^{-1}d^{-1}=1$; eliminate $d=gfg^{-1}f^{-1}$.
+\end{enumerate}
+Only $f,g$ survive and no relation remains. Each step solves a generator that
+occurs once in its donor. The total reduced lengths are
+\[
+ 18\longrightarrow16\longrightarrow14\longrightarrow11
+ \longrightarrow5\longrightarrow0.
+\]
+No freely trivial relator is discarded separately. This proves the first
+component group is $F_2$ without trusting a group-recognition heuristic.
+
+The deterministic production policy chooses a shorter intermediate trace:
+\[
+ (17,41),\ (21,57),\ (18,45),\ (20,49),\ (19,33),
+\]
+where a pair records the donor row and eliminated generator. Its length
+sequence is
+\[
+ 18\longrightarrow16\longrightarrow13\longrightarrow7
+ \longrightarrow3\longrightarrow0.
+\]
+It uses three substitutions involving other relators and then two private
+column pivots. The independent checker reconstructs every substitution and
+cyclic reduction from the original source-bound words.
+
+The second component needs seventeen private pivots and leaves one generator,
+native label 68. Its free rank is one. The aggregate values are consequently
+\[
+ c=2,\qquad r=2+1=3,\qquad \chi(W)=-1=c-r.
+\]
+Theorem~\ref{thm:free-euler} certifies a genus-two handlebody and a solid torus.
+Here $h_3=z=0$, so the relator ledger agrees automatically.
+
+\subsection{What this experiment establishes}
+
+The original normal coordinates, source triangulation, complete compressed
+proof packet and exact row data are included. The public terminal verifier
+and the dedicated new verifier both replay the new schema. A separately
+expanded Regina cut has 319 tetrahedra, split into components of 191 and 128
+tetrahedra; its recognition gives genera one and two. This comparison supplies
+an external implementation check, while the delivered certificate verifier
+uses the finite source charts and theorems above, without invoking Regina.
+
+The incoming deferred audit identifies this fixture as the remaining actual
+handlebody cut missed by that method~\cite{DeferredForests}. The new result is
+a strict increase in native whole-cut coverage. It is not an example of
+recognizing the figure-eight knot as an unknot. It also does not establish that
+all handlebody cuts have nonincreasing singleton traces: the explicit
+automorphism counterexample in Section~\ref{sec:no-growth-tietze} prevents
+that inference.

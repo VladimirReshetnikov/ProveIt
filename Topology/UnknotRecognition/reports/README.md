@@ -121,6 +121,8 @@ modification times.
 | `108/` | `ProveIt_Nonlinear_Activation_Forests_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | nonlinear activation columns, witness partitions and parameterized forest selection | placed only; tests not rerun and integration unapplied |
 | `109/` | `ProveIt_Ordered_Interface_Kernels_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | ordered incidence interfaces, optimal deferred kernels and width-parameterized dynamic programming | placed only; tests not rerun and integration unapplied |
 | `110/` | `ProveIt_Ordered_Pivot_Interfaces_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | weighted ordered pivot interfaces and repeat-safe transfer optimality | placed only; tests not rerun and integration unapplied |
+| `111/` | `ProveIt_Euler_Group_Terminals_2026-10-12.zip` | complete delivered article, patch, source packets and evidence | no unrestricted quasi-polynomial recognizer | Euler-checked free-group whole-cut terminals | placed only; tests not rerun and patch unapplied |
+| `112/` | `ProveIt_Lazy_Replay_Chamber_Graphs_2026-10-12.zip` | complete delivered article, patch, runtime snapshot and evidence | no unrestricted quasi-polynomial recognizer | lazy weighted replay and source-authenticated chamber graphs | placed only; tests not rerun and patch unapplied |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -951,3 +953,31 @@ patch application or soundness review was performed. The committed ZIP is
 retired and remains recoverable from its arrival commit. Existing attributes
 and ignore rules apply without checksum or line-ending work. See the
 [placement record](../synthesis/data/incoming-110-placement.json).
+
+## Further arrivals of 12 October 2026: reports 111–112
+
+The two archives in `82a9ab98ca664d4a4a2d97c35fd2c985ea0ed91e` are
+numbered in archive-name order, with their single wrappers removed. Their
+articles concern the unknot-recognition programme and belong in this
+numbered collection. Both are placement only.
+
+- [111 article](111/article/Euler_Group_Terminals.tex), pinned to
+  `9bacc258bff4b34b4a92b6fa71d290ba5e60ea26`: Euler-checked free-group
+  terminals for complete normal cuts, a disk-base source compiler and
+  nonincreasing signed singleton reductions. 154 delivered files; seven
+  match older blobs (comparison modules, corpora and a licence).
+- [112 article](112/article/Lazy_Replay_and_Native_Chamber_Graphs.tex), pinned
+  to `e0b2f802f336fcb51e9ec5f29174cfe28dfb9d39`: lazy vector additions
+  during weighted orbit replay and native component/chamber authentication.
+  331 delivered files; 266 match older blobs, predominantly the attributed
+  native dependency snapshot and baseline verifier.
+
+The historical matches were confirmed in commit trees; neither manuscript
+was previously placed. All numerical, correctness and complexity statements
+remain delivered claims pending separate review. No tests, patch application
+or soundness review were performed during intake. Original PDFs, proposed
+integrations, evidence and source layouts are retained. Existing ignore
+rules and attributes apply without checksum or line-ending work. The ZIPs
+are retired and recoverable from their arrival commit; the drop-zone README
+is preserved. See the
+[placement record](../synthesis/data/incoming-111-112-placement.json).

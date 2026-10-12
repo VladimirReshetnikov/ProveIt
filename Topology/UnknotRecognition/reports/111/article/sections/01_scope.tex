@@ -1,0 +1,136 @@
+\section{Problem, baseline and principal contribution}
+\label{sec:scope}
+
+\subsection{What is being accelerated}
+
+Unknot recognition asks whether an input knot diagram represents a circle
+bounding an embedded disk in three-space. The ProveIt programme has developed
+several exact certificate paths and a substantial compressed normal-surface
+infrastructure. This continuation concerns the latter: given a validated
+triangulated source and a supplied normal surface, recognize the homeomorphism
+types of the components after cutting, without expanding the potentially huge
+number of parallel normal disks. It addresses a terminal subproblem in a
+possible hierarchy algorithm. It does not add a new complete scheduler for knot
+diagrams or certify that an arbitrary supplied triangulation is a particular
+diagram's exterior.
+
+The distinction is algorithmically significant. A normal vector can have only
+$7t$ binary coordinates while representing exponentially many disks. An
+operation polynomial in the number of represented disks can therefore be
+exponential in input size. The existing native constructors use finite source
+charts, interval pairings, binary families and source-authenticated orbit
+certificates to avoid that expansion. The present work uses their output to
+construct a particularly small \emph{active} group presentation. Large families
+of isolated balls remain exact integer multiplicities.
+
+The inspected repository is pinned at commit~\cite{RepoSnapshot}
+\begin{center}\small\ttfamily
+9bacc258bff4b34b4a92b6fa71d290ba5e60ea26
+\end{center}
+The newest incoming deferred-forests package is present at this revision but
+its four-module overlay has not been absorbed wholesale into the production
+API~\cite{DeferredForests}. We preserve that distinction when comparing methods.
+The new patch applies to this precise production baseline; the deferred
+comparison runs in an isolated runtime with the four attributed incoming files.
+
+\subsection{Why a group terminal is the next useful step}
+
+Report 102 established the exact role of unsigned column-leaf cancellation
+and exhibited geometric stopping sets with a linear deferral
+requirement~\cite{Report102}. The subsequent incoming work removed the need to
+enumerate primal forests in the fixed raw positive model and increased
+whole-cut coverage from 102 to 111 cases on a retained 120-case corpus. It also
+identified a remaining handlebody cut among the refusals and suggested a
+free-group terminal under an irreducibility hypothesis~\cite{DeferredForests}.
+
+This article makes that suggestion operational and strengthens its logical
+contract. The maintained source validator does not prove irreducibility. We
+instead combine exact freeness with the independently authenticated source
+Euler characteristic. This detects precisely the second homology discarded
+by algebraic simplification. The resulting theorem avoids both an
+irreducibility assumption and a separate boundary-component matching step.
+The finite compiler reads all source two-handles and all disk-bundle annuli;
+it is a presentation of the \emph{whole cut}, not merely the leftover core.
+
+The new move class uses signs and cyclic words. A defining generator can occur
+in many other relators, provided it occurs once in its donor; solving for it
+and substituting is an exact Tietze transformation. Such substitutions can
+produce cancellations invisible to unsigned incidence. This is useful because
+the preceding forest theorem already makes repeated primal-tree exploration
+unproductive inside its stated raw model. Changing the algebraic move class
+addresses a distinct obstruction.
+
+\subsection{Status of the target complexity}
+
+Two author-hosted 2021 slide versions state different quantitative forms of
+the announced quasi-polynomial bound: $n^{O(\log n)}$ in the February slides
+and $2^{O((\log n)^3)}=n^{O((\log n)^2)}$ in the Oxford handout
+\cite{Lackenby2021,LackenbyOxford2021}. Both are quasi-polynomial; their
+logarithmic exponents should not be silently identified.
+
+The July 2026 paper supplies a hierarchy framework and compressed cutting
+results. Its Section 9 does not estimate the complete runtime; Proposition
+10.2 gives a hierarchy length bounded by $4c_q(\mathcal H)$, and Theorem 14.4
+gives polynomial compressed-cut processing in handle count and logarithmic
+extended weight~\cite{Lackenby2026}. These are valuable ingredients, but do not
+by themselves supply the required global search bound. We use the announced
+quasi-polynomial regime as a research target, not as a proved property of the
+current repository or of this extension.
+
+The older normal-surface complexity results explain why binary compression is
+the appropriate starting point. Hass--Lagarias--Pippenger provide classical
+complexity bounds and NP certificates for knot problems~\cite{HLP1999}.
+Agol--Hass--Thurston give a polynomial interval-orbit algorithm and compressed
+normal-surface topology computations~\cite{AgolHassThurston}. Neither result
+eliminates the need to control the number of candidate surfaces, the marking
+carried through a hierarchy, or the number of expensive choices.
+
+\subsection{Claim ledger}
+
+Table~\ref{tab:claim-ledger} separates the contribution types. The source
+compiler and checker are ordinary exact Python programs, not a formalized
+proof in a proof assistant. The mathematical proofs are written below; tests
+and external comparisons challenge their implementation. No statistical
+agreement is substituted for a topological theorem.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{P{0.25\linewidth}P{0.32\linewidth}P{0.34\linewidth}}
+\toprule
+Result & Status & Scope \\
+\midrule
+Freeness--Euler terminal & Proved from classical topology & Every compact orientable component has nonempty boundary \\
+Disk-base presentation & Proved and implemented & Authenticated source; all bases product disks \\
+Signed singleton reduction & Proved and implemented & Polynomial, one-sided, incomplete \\
+Relator/three-handle ledger & Proved & Exact $b_2$ on completion; lower bound earlier \\
+Figure-eight improvement & Source-bound, replayed experiment & One supplied cut, not an unknot verdict \\
+Global branch-budget bounds & Conditional theorems & Precise geometric and completeness hypotheses remain open \\
+Generic quasi-polynomial recognizer & Open & Neither the current code nor this article establishes it \\
+\bottomrule
+\end{tabular}
+\caption{Logical status of the principal statements.}
+\label{tab:claim-ledger}
+\end{table}
+
+\subsection{Notation and input contract}
+
+Let $M$ be the source three-manifold and $S$ the supplied normal surface. Write
+$W=M\cut S$ for the compact manifold obtained by cutting, rather than for the
+set-theoretic complement without its new boundary. The native input is finite,
+compact, connected and orientable, with one torus boundary; $S$ satisfies the
+normal matching and quadrilateral conditions. Thus $\chi(M)=0$ and
+$\chi(W)=\chi(S)$, though the new compiler uses the independently reconstructed
+additive source Euler summary. Every component of $W$ has nonempty boundary.
+
+We use $t$ for source tetrahedra, $h_j$ for finite core $j$-handles, $p$ for core
+ports, $a,m,L$ for active generators, relators and total literal signed word
+length, $c$ for cut components, and $r$ for the sum of their certified free
+ranks. All Betti numbers have rational coefficients. A ``free-group
+certificate'' proves the entire presented group is free. Computing an
+abelianization of the expected rank is insufficient.
+
+The output is \emph{unmarked}: a genus census and, when requested, a proof
+packet. It does not supply meridian disks, peripheral transport, a gluing map
+to an earlier state, or an essential boundary pattern. In particular a cut of
+the figure-eight knot exterior can be a union of handlebodies without the
+figure-eight knot being trivial.
