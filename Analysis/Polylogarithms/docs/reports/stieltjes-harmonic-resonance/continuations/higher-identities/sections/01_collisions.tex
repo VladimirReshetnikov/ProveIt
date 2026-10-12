@@ -1,0 +1,426 @@
+% Mathematical fragment for integration by the parent agent.
+% Standard theorem environments, amsmath/amssymb, and \psi are assumed.
+% Every label begins with pc:.
+
+\section{Evaluated contacts for arbitrarily many polygamma factors}
+\label{pc:section}
+
+The latest incoming \emph{Polygamma Moments and Stieltjes Resonances}
+report, its further-research question~6, asks for three independently shifted
+Stieltjes factors \cite{PolygammaResonances}.  The following result answers the local-contact problem in the entire
+Stieltjes-index-zero sector, with any number of factors and arbitrary
+nonnegative argument derivative orders.  Its uniform comparison permits
+all positive paths, including nonmonomial paths.  Spectral derivatives
+corresponding to positive Stieltjes indices are not claimed here.
+The finite-part integration and divided-difference tools are classical
+\cite{DeBoor,TicaGalapon,VillanuevaGalapon};
+the claimed contribution relative to the inspected sources is their
+complete singular-subset assembly and the evaluated consequences below.
+
+\subsection{The rational kernel as one Hermite divided difference}
+
+For positive nodes $a_1,\ldots,a_p$, positive integers
+$h_1,\ldots,h_p$, and $H=h_1+\cdots+h_p$, define, for
+$0\le d\le H-1$,
+\begin{equation}\label{pc:kernel-def}
+ K_{\boldsymbol h,d}(\boldsymbol a)
+ =\lim_{R\to\infty}\left\{
+       \int_0^R\frac{x^d\,dx}{\prod_{i=1}^p(x+a_i)^{h_i}}
+                 -\mathbf1_{d=H-1}\log R\right\}.
+\end{equation}
+Thus only the last numerator degree needs a finite part at infinity.
+For a smooth function $F$ on the positive axis, write
+$[a_1^{(h_1)},\ldots,a_p^{(h_p)}]F$ for its Hermite divided
+difference with the node $a_i$ repeated $h_i$ times; its order is $H-1$.
+The standard confluent convention \cite{DeBoor} gives
+$[a^{(H)}]F=F^{(H-1)}(a)/(H-1)!$.
+
+\begin{lemma}[Completely evaluated local kernel]\label{pc:kernel}
+For every indicated degree and every positive set of nodes,
+\begin{equation}\label{pc:kernel-dd}
+ \boxed{\displaystyle
+ K_{\boldsymbol h,d}(\boldsymbol a)
+     =(-1)^{H+d}
+       [a_1^{(h_1)},\ldots,a_p^{(h_p)}](z^d\log z).}
+\end{equation}
+In particular this is a finite expression in rational functions of the
+nodes and their logarithms, including all confluent cases.
+\end{lemma}
+
+\begin{proof}
+First take $H$ distinct nodes $b_1,\ldots,b_H$ and all multiplicities
+equal to one.  The partial fraction coefficients of
+$x^d/\prod_j(x+b_j)$ are
+\[
+ c_i=\frac{(-b_i)^d}{\prod_{j\ne i}(b_j-b_i)}.
+\]
+If $d\le H-2$ their sum is zero; if $d=H-1$ their sum is one.
+Integrating from zero to $R$ and subtracting the prescribed logarithm
+therefore gives
+\[
+ -\sum_i c_i\log b_i
+   =(-1)^{H+d}\sum_i
+          \frac{b_i^d\log b_i}{\prod_{j\ne i}(b_i-b_j)},
+\]
+which is exactly the divided difference.  Coalescing nodes proves the
+general case.  For $d<H-1$ dominated convergence applies directly.
+For $d=H-1$, apply it to the integral on $(0,1)$ and to
+$x^d/\prod_j(x+b_j)-1/x$ on $(1,\infty)$, whose tail has a
+locally uniform $O(x^{-2})$ bound.  This also proves the confluent
+continuation without choosing singular individual coefficients.
+\end{proof}
+
+For direct implementation at distinct nodes one can instead use
+\begin{align}\label{pc:partial-fractions}
+ c_{i,q}&=[y^{h_i-q}]\,(y-a_i)^d
+                      \prod_{j\ne i}(y+a_j-a_i)^{-h_j},\\
+ K_{\boldsymbol h,d}(\boldsymbol a)
+   &=-\sum_i c_{i,1}\log a_i
+       +\sum_i\sum_{q=2}^{h_i}
+                    \frac{c_{i,q}a_i^{1-q}}{q-1}.
+                    \label{pc:kernel-rational}
+\end{align}
+Every coefficient in the first line is finite.  These equations are
+also a transparent way to extract power--logarithm constants along
+specified paths.
+
+\subsection{The complete uniform local correction}
+
+Fix $N\ge1$ and $r_1,\ldots,r_N\in\mathbb Z_{\ge0}$.  Put
+\[
+ h_i=r_i+1,\qquad p_i=(-1)^{r_i+1}r_i!,\qquad
+ g_i(x)=\psi^{(r_i)}(1+x).
+\]
+The classical polygamma recurrence \cite[Eq.~5.15.5]{DLMF} gives
+\begin{equation}\label{pc:split}
+ \psi^{(r_i)}(x)=p_i x^{-h_i}+g_i(x).
+\end{equation}
+For a nonempty subset $S\subseteq\{1,\ldots,N\}$ let
+\begin{align}
+ H_S&=\sum_{i\in S}h_i,\qquad p_S=\prod_{i\in S}p_i,\\
+ A_{S,d}(\boldsymbol a)
+   &=[x^d]\prod_{j\notin S}g_j(x+a_j)
+     =\sum_{\substack{d_j\ge0\ (j\notin S)\\\sum d_j=d}}
+          \prod_{j\notin S}
+              \frac{\psi^{(r_j+d_j)}(1+a_j)}{d_j!}.
+              \label{pc:A}
+\end{align}
+The empty product convention makes $A_{S,0}=1$ and $A_{S,d}=0$
+for $d>0$ when $S$ is the full set.  Crucially, the shifts in
+\eqref{pc:A} are retained exactly.
+
+Define the fixed-coordinate merged finite part
+\begin{equation}\label{pc:merged}
+ F_{\boldsymbol r}
+    =\operatorname{CT}_{\delta\downarrow0}
+                  \int_\delta^1\prod_{i=1}^N\psi^{(r_i)}(x)\,dx
+\end{equation}
+and the completely evaluated correction
+\begin{align}\label{pc:Q}
+ Q_{\boldsymbol r}(\boldsymbol a)
+   &=\sum_{\varnothing\ne S\subseteq\{1,\ldots,N\}}
+        p_S\sum_{d=0}^{H_S-1}A_{S,d}(\boldsymbol a)
+                        K_{\boldsymbol h_S,d}(\boldsymbol a_S)\notag\\
+   &=\sum_{\varnothing\ne S}
+       \left(\prod_{i\in S}r_i!\right)
+       \sum_{d=0}^{H_S-1}(-1)^d A_{S,d}(\boldsymbol a)
+        [a_i^{(h_i)}:i\in S](z^d\log z).
+\end{align}
+
+\begin{theorem}[Every polygamma collision with positive shifts]
+\label{pc:uniform}
+As all $a_i\downarrow0$, with no restriction on their relative rates,
+\begin{equation}\label{pc:uniform-formula}
+ \boxed{\displaystyle
+ \int_0^1\prod_{i=1}^N\psi^{(r_i)}(x+a_i)\,dx
+          =F_{\boldsymbol r}+Q_{\boldsymbol r}(\boldsymbol a)+o(1).}
+\end{equation}
+The $o(1)$ is uniform as $\max_i a_i\to0$ through positive shifts.
+The same statement holds after replacing any zero-order factor
+$\psi$ by $\psi+c_i$, provided the same constant is added to its
+regular part in \eqref{pc:A} and in the merged finite part.
+\end{theorem}
+
+\begin{proof}
+Expand the product by choosing its singular part on a subset $S$.
+For $S\ne\varnothing$, put
+\[
+ R_S(x;\boldsymbol a)=\prod_{i\in S}(x+a_i)^{-h_i},\qquad
+ G_S(x;\boldsymbol a)=\prod_{j\notin S}g_j(x+a_j).
+\]
+Uniform Taylor expansion on a fixed compact interval gives
+\[
+ G_S(x;\boldsymbol a)
+    =\sum_{d=0}^{H_S-1}A_{S,d}(\boldsymbol a)x^d
+                   +x^{H_S}B_S(x;\boldsymbol a),
+\]
+where $B_S$ is uniformly bounded and tends to $B_S(x;0)$ for each
+$x\in[0,1]$.  Since $R_S(x;\boldsymbol a)\le x^{-H_S}$ for
+positive shifts, the integral of $x^{H_S}R_SB_S$ tends uniformly
+to $\int_0^1B_S(x;0)dx$.  This estimate does not compare one shift
+with another.
+
+For $d\le H_S-2$, comparison with the tail on $(1,\infty)$ yields
+\[
+ \int_0^1x^dR_S(x;\boldsymbol a)dx
+       =K_{\boldsymbol h_S,d}(\boldsymbol a_S)
+                              -\frac1{H_S-d-1}+o(1).
+\]
+For $d=H_S-1$, compare instead with
+$\int_1^\infty(x^{H_S-1}R_S-1/x)dx$; this tends to zero uniformly,
+so the same formula holds with its rational term omitted.  Both
+tail comparisons follow from an $O(\max a_i)x^{-2}$ bound after
+the appropriate leading power is removed.
+
+The empty-subset term converges ordinarily.  The limits of all
+remainders and all displayed rational terms sum exactly to
+$F_{\boldsymbol r}$: a merged monomial $x^{d-H_S}$ contributes
+$-1/(H_S-d-1)$ for $d\le H_S-2$, while $x^{-1}$ contributes
+zero to the fixed-coordinate constant on $(0,1)$.  This proves
+\eqref{pc:uniform-formula}.  Uniform dominated convergence follows
+by taking the supremum over the shrinking parameter cube in the
+same integrable bound.  Constants added to the regular parts
+do not change the proof.
+\end{proof}
+
+This theorem evaluates the entire local correction.  It does not assert
+a new scalar evaluation of every merged product $F_{\boldsymbol r}$;
+some such merged values remain spectral or harmonic constants in the
+prior manuscript.  The next family eliminates that baseline by an
+ordinary antiderivative and hence gives complete scalar identities.
+
+\subsection{Nonresonant scales and their ordering}
+
+Assume
+\begin{equation}\label{pc:scales}
+ a_i=\lambda_i\epsilon^{\alpha_i},\qquad
+ \alpha_1>\alpha_2>\cdots>\alpha_N>0,\qquad\lambda_i>0,
+\end{equation}
+and that $\alpha_1,\ldots,\alpha_N$ are linearly independent over
+$\mathbb Q$.  For a nonempty subset $S$, write $m(S)=\max S$;
+its node is the largest shift within $S$.  Let $H_0=0$ and
+$H_r=1+\cdots+1/r$.
+
+\begin{theorem}[Evaluated nonresonant constant]\label{pc:nonresonant}
+The ordinary shifted integral has a power--logarithm expansion through
+its constant, and
+\begin{equation}\label{pc:nonresonant-constant}
+ \boxed{\displaystyle
+ \operatorname{CT}_{\epsilon}
+      \int_0^1\prod_i\psi^{(r_i)}(x+a_i)dx
+  =F_{\boldsymbol r}
+    -\sum_{\varnothing\ne S}p_S A_{S,H_S-1}(0)
+            \bigl(\log\lambda_{m(S)}+H_{r_{m(S)}}\bigr).}
+\end{equation}
+The formula includes the same centering modification as
+Theorem~\ref{pc:uniform}.  Its correction is a finite polynomial in
+ordinary zeta values, Euler's constant and the displayed logarithms.
+\end{theorem}
+
+\begin{proof}
+The rational formula \eqref{pc:kernel-rational} expands in convergent
+geometric series in ratios of smaller shifts to larger shifts.
+After each finite pole order is factored out, all remaining increments
+of the exponent are positive differences $\alpha_i-\alpha_j$ or
+positive regular-part exponents.  Therefore only finitely many terms
+can occur below any fixed power.  Analytic expansion of the regular
+coefficients has the same property.
+
+For $d<H_S-1$, the rational coefficients of $K_{\boldsymbol h_S,d}$
+are homogeneous of degree $d+1-H_S<0$, and the logarithms are
+$\log\lambda_i+\alpha_i\log\epsilon$.  A zero exponent would,
+by rational independence, require every integer exponent of every
+shift variable to be zero.  Powers coming from regular-part shifts
+occur only in variables outside $S$, so they must all be zero.
+The remaining degree cannot be zero, a contradiction.  Thus no
+noncritical degree contributes a constant.
+
+For $d=H_S-1$, regular-part powers outside $S$ again cannot contribute.
+Put $b=a_{m(S)}$ and $\rho_i=a_i/b$.  Scaling the defining integral
+gives
+\[
+ K_{\boldsymbol h_S,H_S-1}(\boldsymbol a_S)
+     =-\log b+
+          K_{\boldsymbol h_S,H_S-1}
+                         ((\rho_i)_{i\ne m(S)},1).
+\]
+Dominated convergence on $(0,1)$ and on the compensated tail gives
+\begin{align*}
+ \lim_{\rho_i\to0}
+ K_{\boldsymbol h_S,H_S-1}((\rho_i),1)
+ &=\lim_{R\to\infty}\left\{
+   \int_0^R\frac{x^{h_{m(S)}-1}}{(1+x)^{h_{m(S)}}}dx-\log R
+                                        \right\}\\
+ &=-H_{h_{m(S)}-1}.
+\end{align*}
+For the first dominated-convergence step use the majorant
+$x^{h_{m(S)}-1}/(1+x)^{h_{m(S)}}$ on $(0,1)$; the compensated
+tail is uniformly $O(x^{-2})$.  The last evaluation follows from
+$t=x/(1+x)$ and
+$t^{h-1}/(1-t)=1/(1-t)-\sum_{j=0}^{h-2}t^j$.
+Consequently the critical constant is
+$-\log\lambda_{m(S)}-H_{r_{m(S)}}$.  Substitution into
+\eqref{pc:Q} proves the theorem.
+\end{proof}
+
+Rational independence is a sufficient clean hypothesis, not an assertion
+that every rationally dependent choice is resonant.  The exact kernel
+formula remains valid for every positive path and permits finite
+coefficient extraction in every specified monomial case.
+
+\subsection{A family with complete zeta-valued answers}
+
+Let
+\[
+ \Psi(x)=\psi(x)+\gamma,\qquad
+ h(x)=\psi(1+x)+\gamma,\qquad
+ f(x)=xh(x)=\sum_{k\ge2}(-1)^k\zeta(k)x^k.
+\]
+The series is the classical digamma Taylor expansion
+\cite[Eq.~5.7.4]{DLMF}.
+Thus $\Psi(x)=-1/x+h(x)$ and $\Psi(1)=h(0)=0$.
+Take unit amplitudes in \eqref{pc:scales}.  For $1\le r\le N$,
+define the full constant of the ordinary interval integral
+\begin{equation}\label{pc:T-def}
+ T_{N,r}=\operatorname{CT}_{\epsilon}
+       \int_0^1\psi'(x+\epsilon^{\alpha_r})
+               \prod_{j\ne r}\Psi(x+\epsilon^{\alpha_j})\,dx.
+\end{equation}
+
+\begin{theorem}[Every centered one-derivative moment]
+\label{pc:all-powers}
+For every $N\ge2$ and $1\le r\le N$,
+\begin{equation}\label{pc:all-powers-formula}
+ \boxed{\displaystyle
+ T_{N,r}=-[x^N]\left\{
+           \frac{(f(x)-1)^N}{N}
+               +f(x)^{N-r}(f(x)-1)^{r-1}\right\}.}
+\end{equation}
+This is a finite polynomial in ordinary zeta values of total weight $N$.
+It is independent of the particular nonresonant exponents and depends
+only on the position of the derivative in their ordering.  Moreover
+\begin{equation}\label{pc:sum-jump}
+ \sum_{r=1}^N T_{N,r}=0,\qquad
+ T_{N,r+1}-T_{N,r}
+       =[x^N]f(x)^{N-r-1}(f(x)-1)^{r-1}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The merged antiderivative is $\Psi(x)^N/N$, so its finite part is
+\[
+ B_N=-\frac1N[x^N](f(x)-1)^N.
+\]
+In \eqref{pc:nonresonant-constant}, only a singular subset that
+contains the derivative, has that derivative as its largest shift,
+and contains any selection of its $r-1$ smaller shifts can contribute:
+all other subsets have harmonic number $H_0=0$.
+A subset of size $s$ has $H_S=s+1$, prefactor $p_S=(-1)^{s-1}$,
+and regular coefficient $[x^s]h(x)^{N-s}$.  Its contact is therefore
+$(-1)^s[x^s]h(x)^{N-s}$, with multiplicity $\binom{r-1}{s-1}$.
+Their sum is
+\begin{align*}
+ C_{N,r}
+ &=\sum_{s=1}^r(-1)^s\binom{r-1}{s-1}
+                           [x^s]h(x)^{N-s}\\
+ &=-[x^N]f(x)^{N-r}(f(x)-1)^{r-1}.
+\end{align*}
+Adding $B_N$ gives the theorem.  The adjacent difference is immediate.
+For the sum use
+$\sum_{r=1}^N f^{N-r}(f-1)^{r-1}=f^N-(f-1)^N$ and
+$[x^N]f^N=0$, since $f$ starts in degree two.
+\end{proof}
+
+The first rows, simplified with $\zeta(2)^2=\tfrac52\zeta(4)$, are
+\begin{align}
+ (T_{2,1},T_{2,2})&=(0,0),\\
+ (T_{3,1},T_{3,2},T_{3,3})&=(\zeta(3),0,-\zeta(3)),
+                                                  \label{pc:triple-row}\\
+ (T_{4,1},T_{4,2},T_{4,3},T_{4,4})
+   &=\frac{\zeta(4)}4(-11,-1,5,7),
+                                                  \label{pc:fourth-row}\\
+ (T_{5,1},\ldots,T_{5,5})
+   &=\bigl(\zeta(5)-4\zeta(2)\zeta(3),
+            \zeta(5)-4\zeta(2)\zeta(3),\notag\\
+   &\qquad\zeta(5)-2\zeta(2)\zeta(3),
+            2\zeta(2)\zeta(3),
+            8\zeta(2)\zeta(3)-3\zeta(5)\bigr).
+                                                  \label{pc:fifth-row}
+\end{align}
+These are full asymptotic constants of the integrals, not merely their
+differences from the merged finite part.
+
+\subsection{The uncentered triple and an explicit resonant path}
+
+For the uncentered triple the merged value is
+\begin{equation}\label{pc:triple-baseline}
+ \operatorname{CT}_{\delta\downarrow0}
+       \int_\delta^1\psi'(x)\psi(x)^2\,dx
+           =\zeta(3)-2\gamma\zeta(2).
+\end{equation}
+The three nonresonant contacts, with unit amplitudes, are respectively
+$2\gamma\zeta(2)$,
+$2\gamma\zeta(2)-\zeta(3)$, and
+$2\gamma\zeta(2)-2\zeta(3)$.  Thus the full constants remain
+exactly the triple row \eqref{pc:triple-row}.  A concrete admissible
+choice is $(\alpha_1,\alpha_2,\alpha_3)=(\sqrt3,\sqrt2,1)$.
+The cyclic sum is zero, also directly forced by integrating the
+derivative of $\prod_i\psi(x+a_i)$ and taking its constant.
+
+For comparison, the resonant path $(a,b,c)=(\epsilon^3,\epsilon^2,
+\epsilon)$ with the derivative at $a$ has the different exact value
+\begin{equation}\label{pc:integer-triple}
+ \boxed{\displaystyle
+ \operatorname{CT}_{\epsilon}
+   \int_0^1\psi'(x+\epsilon^3)\psi(x+\epsilon^2)
+                            \psi(x+\epsilon)dx
+ =4+2\gamma-\zeta(2)+\zeta(3)
+       +\left(\frac92-\gamma\right)\zeta(4)
+       +\zeta(5)-\zeta(6).}
+\end{equation}
+Here is a finite certificate of its constant extraction.
+At unit amplitudes every logarithm in \eqref{pc:kernel-rational}
+is an integer multiple of $\log\epsilon$, so only its rational part
+can contribute to the log-free constant.  Any singular subset not
+containing the derivative has only simple poles and hence contributes
+zero.  The four other subsets give the following constants, where
+$h(x)=\psi(1+x)$:
+\begin{center}
+\begin{tabular}{c|l}
+Singular subset & Its contact constant\\\hline
+$\{a\}$ & $-\gamma\zeta(4)+\zeta(2)^2+2\gamma\zeta(2)$\\
+$\{a,b\}$ & $\gamma-\zeta(3)+2\zeta(4)+\zeta(5)-\zeta(6)$\\
+$\{a,c\}$ & $\gamma-\zeta(2)+\zeta(3)$\\
+$\{a,b,c\}$ & $4$
+\end{tabular}
+\end{center}
+For example the last rational part is
+$1/[a(b-a)(c-a)]=\epsilon^{-6}/[(1-\epsilon)(1-\epsilon^2)]$,
+whose constant is four.  The two-factor subset with remaining
+regular factor $h(x+c)$ has rational part
+\[
+ -\frac{h(c)-a h'(c)+a^2h''(c)/2}{a(b-a)},
+\]
+and the exchanged expression gives the other row.  The singleton
+has rational part
+$h(b)h(c)/a-h'(b)h(c)-h(b)h'(c)$.
+Taking the indicated finite Taylor coefficients and adding
+\eqref{pc:triple-baseline} proves \eqref{pc:integer-triple}.
+
+\paragraph{Ordinary renormalized limits.}
+The symbol $\operatorname{CT}_{\epsilon}$ always selects
+$\epsilon^0(\log\epsilon)^0$ from a proved expansion; it is not the
+ordinary limit of a divergent integral.  All the results also give
+ordinary limits: subtract the finite expression
+$Q_{\boldsymbol r}(\boldsymbol a)$ from the original integral and
+then add its evaluated constant.  Equation~\eqref{pc:uniform-formula}
+proves the resulting limit equals the stated full constant.  Thus the
+subtraction is an explicit finite formula in polygammas, rational
+functions and logarithms, with no fitted coefficients or new integrals.
+
+
+The exact and numerical verification records for this section are
+described in Section~\ref{repro:section}. The kernel methods are
+classical \cite{DeBoor,Lesch,TicaGalapon,VillanuevaGalapon};
+the complete assembly and evaluated families are the continuation
+results relative to the inspected project sources.

@@ -1,0 +1,18 @@
+theorem budget_gen_bounds_fejerW (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
+    0 < globalBudgetW (fejerThetaOne alpha (alpha / 2) k) k ∧
+      globalBudgetW (fejerThetaOne alpha (alpha / 2) k) k ≤ 1 ∧
+      (globalBudgetW (fejerThetaOne alpha (alpha / 2) k) k)⁻¹ ≤ (2 / alpha) ^ (2 ^ pDeg k) :=
+  budget_fejer_bounds5 k ha ha2
+
+theorem T2_gen_bounds_fejerW (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
+    0 < globalTheta2W (fejerThetaOne alpha (alpha / 2) k) ∧
+      globalTheta2W (fejerThetaOne alpha (alpha / 2) k) ≤ 1 ∧
+      (globalTheta2W (fejerThetaOne alpha (alpha / 2) k))⁻¹ ≤ (2 / alpha) ^ (2 ^ pDeg k) :=
+  T2_fejer_bounds5 k ha ha2
+
+theorem delta_gen_bounds_fejerW (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
+    0 < section16Delta (fejerThetaOne alpha (alpha / 2) k) ∧
+      section16Delta (fejerThetaOne alpha (alpha / 2) k) ≤ 1 ∧
+      (section16Delta (fejerThetaOne alpha (alpha / 2) k))⁻¹ ≤ (2 / alpha) ^ (2 ^ pDeg k) :=
+  delta_fejer_bounds5 k ha ha2
+

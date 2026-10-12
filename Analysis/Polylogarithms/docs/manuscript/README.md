@@ -5,26 +5,34 @@ organized as four volumes. Each has its own source and compiled PDF.
 
 | Volume | Material | PDF | Pages |
 |---|---|---|---:|
-| I | Polylogarithm identities, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 130 |
-| II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 129 |
-| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 233 |
-| IV | Gamma grids, CM lattice periods, class products and Herglotz arithmetic | [Gamma Grids, CM Periods and Herglotz Arithmetic](volumes/volume-4-cm-and-herglotz.pdf) | 85 |
+| I | Polylogarithm identities, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 144 |
+| II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 130 |
+| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 253 |
+| IV | Gamma grids, CM lattice periods, class products and Herglotz arithmetic | [Gamma Grids, CM Periods and Herglotz Arithmetic](volumes/volume-4-cm-and-herglotz.pdf) | 86 |
+
+A mixed cubic Hurwitz-tail family now has explicit polynomial telescoping
+certificates. Three linear conditions give rational ordinary sums in every
+degree, with first value **-4037/108**. The proof, full finite certificate,
+and precise scope are in the section “Rational identities for a mixed cubic
+Hurwitz tail” in Volume III. This resolves the proposed (2,2,3) construction
+within the stated certificate class; broader arithmetic classification
+remains open.
 
 The volumes partition all twelve chapters and the literature appendix.
 Chapter, theorem and equation numbering is retained so research-report
 citations stay stable. Cross-volume references link to their exact PDF
 destinations; keep the four PDFs together. Each volume has its own contents
-and the shared bibliography of 138 references. The scientific text is shared
+and the shared bibliography of 148 references. The scientific text is shared
 through chapter files and [preamble.tex](preamble.tex), avoiding duplicate
 copies of proofs. See [volume sources and build instructions](volumes/README.md).
 The [combined source](polylogarithms.tex) and its
-[536-page combined snapshot](polylogarithms.pdf) remain available.
+[570-page combined snapshot](polylogarithms.pdf) remain available.
 
-The [inventory](source-inventory.json) accounts for **1,577 textual source
+The [inventory](source-inventory.json) accounts for **1,810 textual source
 files**, including overlapping articles, fragments and correction registers.
 The [editorial ledger](EDITORIAL-LEDGER.md) maps accepted mathematical claims
-and pending research integration. The 107 imported archives preserve 3,956
-original tracked members; 42 ignored bare checksum records remain recoverable
+and pending research integration. The 130 imported archives preserve 4,704
+original tracked members; 54 ignored bare checksum records remain recoverable
 in arrival history. Each imported ZIP was retired in its placement commit.
 All eleven complete mathematical suites in the seventeenth and eighteenth
 intakes pass on isolated copies. Preservation and finite replay do not imply
@@ -59,13 +67,7 @@ and kernel dimension 24. Its entire bounded contribution is already spanned
 by the previous 24 reconstructed relations. A separately reconstructed
 1,008-square minor and 24 exact kernel vectors prove completeness over the
 rationals. Searches with the other first letters retain all depth-five
-coordinates; their target membership remains a separate research question. The complete
-1,032-input first-letter X family now has an exact top-sector rank of 1,008
-and kernel dimension 24. Its entire bounded contribution is already spanned
-by the previous 24 reconstructed relations. A separately reconstructed
-1,008-square minor and 24 exact kernel vectors prove completeness over the
-rationals. Searches with the other first letters retain all depth-five
-coordinates; their target membership remains a separate research question. Further arrivals stay in
+coordinates; their target membership remains a separate research question.  Further arrivals stay in
 the drop zone for their own intake. Other analytic claims retain the
 ledger's pending scopes. The contents number column has been widened so
 long chapter/section numbers remain separated from their titles.
@@ -350,3 +352,95 @@ identity rows for (14,16). Matrix inversion gives ordinary absolutely
 convergent polygamma-product identities for every pair in these three families.
 General all-pair rank, arithmetic independence and Gaussian S6/revised S8
 remain open. Further incoming reports retain a pending intake/audit scope.
+
+
+Section 8.46 now gives every canonical inverse-Gamma coefficient by a finite
+rational beta integral, with complete support and sign. A self-contained
+rational telescoping/variational proof reconciles both universal reports.
+The collective analytic-jet extension turns the formal hierarchy into an
+ordinary locally convergent generator for holomorphic inputs; entire inputs
+give entire generators. An affine/Hermite specialization has an explicit
+hyperbolic-sine-integral evaluation and all-degree rational coefficients.
+
+The nineteenth intake preserves twelve packages and has twelve full isolated
+mathematical replay passes, with an explicitly recorded copy-only output-Path
+repair for the lattice suite and its original failure preserved. The actual
+alpha5 printed typo is corrected to +24*zeta(5); the duplicate README passage
+is removed. Other incoming analytic branches remain tracked in the ledger.
+
+
+Section 8.46 now also gives every compensating derivative by a finite Euler
+homotopy formula and proves a locally convergent primitive generator. The
+Gamma and Stieltjes translation identities retain their exact endpoint
+terms. The affine primitive generator has an explicit entire evaluation;
+its +t/2 correction enforces the canonical zero-constant normalization.
+The cubic report's all-index conjecture is already covered by Theorem 8.139.
+Higher Identities independently proves the normal generator and receives
+credit for that overlap and for the primitive extension.
+
+The twentieth intake has five full isolated replay passes. Its complete
+gap-ten finite certificate is freshly compiled and reproduced by exact
+structured values; two original/serialization-guard failures are preserved,
+and the final copy-only comparator change is disclosed. The Gamma-basis and
+infinite gap-ten proof remain separate pending acceptance work. Original
+deliveries and their historical status statements remain unchanged.
+
+
+Theorems 8.143--8.144 now close the unrestricted compensator support/sign
+conjecture. Every primitive coefficient is one positive polynomial integral
+with an explicit sign, and every weight-m-1 monomial is present for m>=2.
+An ordinary E_1 projection gives convergence on the full holomorphic input
+disk, improving the earlier half-radius primitive argument. Gamma and
+Stieltjes translations therefore hold for |t|<x at positive x, with exact
+endpoint terms. Complete independent coefficient comparisons through weight
+thirty and native symbolic identities through weight sixteen pass; the
+infinite statements have separate written proofs. Original report conjecture
+statuses are preserved as historical evidence.
+
+
+The rational-pole model U_c=c/x now has closed linear/quadratic amplitude
+sectors in Theorem 8.145. The normal quadratic sector is an asinh square;
+the primitive quadratic sector is expressed in classical dilogarithms at
+specified analytic germs. The all-degree harmonic coefficient identity and
+two ordinary antiderivatives follow. Projection precedes specialization,
+and zero-constant normalization fixes the primitive. Higher amplitude
+resummations remain separate research questions.
+
+
+Section 8.47 proves a finite MPL alphabet for rational Hankel determinants
+at every rank. Confluent pole multiplicities determine a uniform weight
+budget that survives shift corrections and anchored integration. Reduced
+denominators of degree at most two require only 1,L,L^2,Li2, with arbitrary
+polynomial part and integer pole separation. A shifted-double-pole example
+has an ordinary zeta endpoint. Sharpness and spectral refinements remain
+separate pending proofs; functional weight is not arithmetic independence.
+
+
+The twenty-first intake preserves five resonant-jet and inverse-transseries
+packages and records full isolated mathematical replay passes. Two packages
+have a single original home in the Transseries collection. The fixed-sector
+R1 extension and pure-logarithm normalization have conventional proof audits.
+A derived order-lowering identity gives finite antiderivatives of every
+normalized jet; its proof and independent checks are in the
+[intake audit](verification/TWENTY-FIRST-INTAKE-AUDIT.md). Section 1.6 now incorporates
+the fixed-sector theorem, exact normalization, monodromy and primitives.
+The collective continuation also proves every repeated primitive in finite
+complete-homogeneous coordinates. The inverse-geometry and Borel branches
+remain separate pending audits.
+
+## Quadratic feedback and exact Bessel coefficients
+
+Section 1.7 integrates the complete quadratic-feedback radius theorem and
+physical threshold from the new boundary report. It develops a finite
+Bessel-polynomial coefficient identity, a finite order spectrum and exact
+order-shift recurrences from two Lagrange inversions. The original report
+and its full replay evidence remain in their single Transseries home.
+Critical-chart and joint-crossover refinements retain separate scopes.
+
+Section 1.8 now proves exact Gamma-moment formulas for every marginal
+logarithmic correction, including a compact third correction, and an exact
+Laplace/convolution pair for powers of the selected Lambert inverse.
+It integrates the incoming order-three chart, proves the Catalan principal
+parts of its rational coefficients, and keeps convergent local expansions
+distinct from the asymptotic coefficient series. Nonmarginal charts and joint
+crossover branches remain separate integration work.

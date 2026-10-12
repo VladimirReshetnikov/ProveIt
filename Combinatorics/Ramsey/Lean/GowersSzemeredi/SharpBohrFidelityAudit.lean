@@ -1,0 +1,5 @@
+import GowersSzemeredi.OpeningScopeFidelityAudit
+import GowersSzemeredi.SharpBohrCoreAudit
+
+example : LeanProofs.GowersSzemeredi.lemma_7_7_original_radius :=
+  LeanProofs.GowersSzemeredi.lemma_7_7_original_radius_holds

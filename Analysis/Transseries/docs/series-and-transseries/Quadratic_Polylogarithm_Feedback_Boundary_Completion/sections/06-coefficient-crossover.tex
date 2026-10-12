@@ -1,0 +1,244 @@
+\section{Exact coefficient identities and the feedback crossover}
+\label{sec:coefficient-crossover}
+
+The local inverse charts describe the function near its endpoint.
+There is also a useful exact identity for its ordinary Taylor
+coefficients.  It provides an independent explanation of the three
+critical coefficient scales and makes the transition in $u$ precise.
+The underlying Lagrange and probability mechanism is classical
+\cite{Janson}; closely related identities already occur in the linear
+critical-Hahn model \cite{RepoHahn}.
+
+\subsection{Finite coefficients and a compound Poisson identity}
+
+For this subsection take $s>2$, $b>0$, and
+\[
+ u=\sqrt{b^2+2\zeta(s)},\quad A=\zeta(s-1),\quad
+ f_b(t)=u-\sqrt{u^2-2\Li_s(t)},\quad
+ \vc=u-b,\quad \Rb=\ee^{-\vc}.
+\]
+The notation $\Rb$ denotes the endpoint parametrization even when
+$b<A$.  In that case the true convergence radius is the larger
+interior maximum of $t\ee^{-f_b(t)}$; it is not $\Rb$.
+
+\begin{proposition}[Exact coefficient and probability identities]
+\label{prop:poisson}
+Write $f_b(t)=\sum_{k\ge1}c_k t^k$.  Then $c_k>0$,
+\begin{equation}\label{eq:finite-c}
+ c_k=\frac1{u k^s}+\frac1{2u}\sum_{j=1}^{k-1}c_jc_{k-j},
+\end{equation}
+and, for every $n\ge1$,
+\begin{equation}\label{eq:lagrange-exact}
+ \boxed{\displaystyle
+ a_n=\frac1n\coef t n\exp\bigl(n f_b(t)\bigr).}
+\end{equation}
+Let $Y_b$ be the nonnegative integer-valued random variable with
+probability generating function
+\begin{equation}\label{eq:pgf}
+ p_b(t)=\exp(f_b(t)-f_b(1))
+       =\exp\left(\sum_{k\ge1}c_k(t^k-1)\right).
+\end{equation}
+For independent copies $Y_{b,1},\ldots,Y_{b,n}$, set
+$S_{n,b}=\sum_{j=1}^nY_{b,j}$.  Then
+\begin{equation}\label{eq:poisson-exact}
+ \Rb^n a_n=\frac1n\Prob(S_{n,b}=n),\qquad
+ \mu_b:=\E Y_b=\frac A b.
+\end{equation}
+When $s>3$,
+\begin{equation}\label{eq:variance}
+ \sigma_b^2:=\operatorname{Var}Y_b
+ =\frac{\zeta(s-2)}b+\frac{A^2}{b^3}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The quadratic identity $u f_b-f_b^2/2=\Li_s(t)$ gives
+\eqref{eq:finite-c} and positivity.  Since $u^2>2\zeta(s)$, the
+square-root series converges normally up to $|t|=1$, and
+$\sum c_k=f_b(1)=\vc<\infty$.
+Writing $t=r\ee^{f_b(t)}$, ordinary Lagrange inversion gives
+\[
+ \coef r n f_b(t(r))
+ =\frac1n\coef t {n-1} f_b'(t)\ee^{nf_b(t)}
+ =\frac1n\coef t n\ee^{nf_b(t)}.
+\]
+The second equality follows by differentiating $\ee^{nf_b(t)}$.
+This is \eqref{eq:lagrange-exact}.  Equation \eqref{eq:pgf} is a
+compound Poisson generating function with jump intensities $c_k$.
+Multiplying it $n$ times gives \eqref{eq:poisson-exact}.
+Finally
+\[
+ t f_b'(t)=\frac{\Li_{s-1}(t)}{\sqrt{u^2-2\Li_s(t)}}.
+\]
+Taking one, and then two, logarithmic derivatives of $p_b$ gives
+the stated mean and variance.
+\end{proof}
+
+This identity is computationally convenient.  For a specified $n$,
+let $E_k=\Rb^n\coef t k\ee^{nf_b(t)}$.  Then
+\begin{equation}\label{eq:finite-E}
+ E_0=\ee^{-n\vc},\qquad
+ E_k=\frac n k\sum_{j=1}^k j c_jE_{k-j},\qquad
+ \Rb^n a_n=\frac{E_n}{n}.
+\end{equation}
+The calculation uses only positive summands.  The supplied program
+also checks it against a coefficient recursion in the original
+implicit equation, so that it is not verified solely by a second
+implementation of the same formula.
+
+\subsection{The normalized crossover profiles}
+
+For $1<\alpha<2$, define
+\begin{equation}\label{eq:stable-density}
+ g_\alpha(\xi)=\frac1{2\pi}\int_{\R}
+       \exp\bigl((-\ii t)^\alpha-\ii t\xi\bigr)\,\dd t.
+\end{equation}
+The branch is $(-\ii t)^\alpha=|t|^\alpha
+\exp(-\ii\operatorname{sgn}(t)\pi\alpha/2)$.
+Since $\cos(\pi\alpha/2)<0$, this integral converges absolutely.
+It is the centered, spectrally positive stable density in the
+normalization appropriate to this problem.  Put
+$g_{\rm N}(\xi)=(2\pi)^{-1/2}\ee^{-\xi^2/2}$.
+
+\begin{theorem}[Uniform lattice limit and coefficient crossover]
+\label{thm:coefficient-crossover}
+Fix $s>2$ and a compact interval $J\subset(0,\infty)$ for $b$.
+Define
+\begin{equation}\label{eq:scales}
+ B_n(b)=
+ \begin{cases}
+  \bigl(n\Gamma(1-s)/b\bigr)^{1/(s-1)},&2<s<3,\\[3pt]
+  \sqrt{n\log n/(2b)},&s=3,\\[3pt]
+  \sqrt n\,\sigma_b,&s>3,
+ \end{cases}
+\end{equation}
+and let $g_s=g_{s-1}$ in the first case and $g_s=g_{\rm N}$ in
+the other two.  Then
+\begin{equation}\label{eq:uniform-llt}
+ \sup_{\substack{b\in J\\\ell\in\mathbb Z}}
+ \left|B_n(b)\Prob(S_{n,b}=\ell)
+  -g_s\left(\frac{\ell-n\mu_b}{B_n(b)}\right)\right|
+ \longrightarrow0.
+\end{equation}
+In particular, if $b=b_n\in J$ is allowed to vary and
+\begin{equation}\label{eq:xi}
+ \xi_n=\frac{n(1-A/b_n)}{B_n(b_n)}
+\end{equation}
+stays in a fixed compact real set, then
+\begin{equation}\label{eq:crossover-coefficient}
+ \boxed{\displaystyle
+ a_n(s,u_n)=\frac{\Rb(s,u_n)^{-n}}{nB_n(b_n)}
+   \bigl(g_s(\xi_n)+o(1)\bigr),\qquad
+ u_n=\sqrt{b_n^2+2\zeta(s)}.}
+\end{equation}
+The error is uniform in such a window.  Both sides of the feedback
+threshold are included.  These hypotheses force $b_n\to A$, since
+$B_n(b)/n\to0$ uniformly on $J$.
+\end{theorem}
+
+\begin{proof}
+We give a direct Fourier proof, retaining uniformity in $b$.
+Set $x=-\ii\theta$ in the local expansion of $f_b(\ee^{-x})$.
+Uniformly for $b\in J$ as $x\to0$ on this axis,
+\begin{align}
+ f_b(\ee^{-x})-f_b(1)
+ &=-\mu_b x+\frac{\Gamma(1-s)}b x^{s-1}+O_J(x^2),
+ &&2<s<3,\label{eq:char-stable}\\
+ &=-\mu_b x+\frac{x^2}{2b}\log(1/x)+O_J(x^2),
+ &&s=3,\label{eq:char-marginal}\\
+ &=-\mu_b x+\frac{\sigma_b^2}{2}x^2+o_J(x^2),
+ &&s>3.\label{eq:char-gaussian}
+\end{align}
+These follow by expanding the square root about the uniformly
+positive $b$; the coefficients of the convergent polylogarithm
+expansion are bounded on the compact parameter interval.
+
+The centered characteristic function of $S_{n,b}/B_n(b)$ therefore
+converges, uniformly for $b\in J$ and bounded Fourier argument $t$,
+to $\exp((-\ii t)^{s-1})$ if $2<s<3$, and to
+$\exp(-t^2/2)$ otherwise.  At $s=3$, the factor is correct because
+\[
+ \frac{n}{2bB_n(b)^2}\log B_n(b)\longrightarrow\frac12
+\]
+uniformly in $b$.
+
+We next justify the needed $L^1$ convergence.  The coefficients of
+$p_b$ include strictly positive constant and first coefficients, so
+$|p_b(\ee^{\ii\theta})|<1$ for $0<|\theta|\le\pi$.
+Continuity and compactness give a common upper bound less than one
+away from a small neighborhood of zero.  Its Fourier contribution
+is exponentially small, even after multiplication by $B_n$.
+
+Near zero, taking real parts in
+\eqref{eq:char-stable}--\eqref{eq:char-gaussian} gives uniform bounds
+\[
+ |p_b(\ee^{\ii\theta})|
+ \le
+ \begin{cases}
+  \exp(-c|\theta|^{s-1}),&2<s<3,\\
+  \exp(-c\theta^2\log(1/|\theta|)),&s=3,\\
+  \exp(-c\theta^2),&s>3,
+ \end{cases}
+\]
+for a common $c>0$ and sufficiently small $|\theta|$.
+In the first and third cases the substitution $\theta=t/B_n$
+gives an integrable bound independent of $n$ and $b$.
+At $s=3$, split at $|t|=B_n^{1/2}$.  Below that point,
+$\log(B_n/|t|)$ is a fixed positive fraction of $\log n$, and
+the bound is Gaussian in $t$.  Between $B_n^{1/2}$ and a small
+fixed multiple of $B_n$, the exponent is at most
+$-c' nB_n^{-1}\log B_n$, after decreasing the neighborhood so
+that $\theta^2\log(1/\theta)$ is increasing.  Its integral tends
+to zero exponentially relative to the length of the interval.
+This proves uniform $L^1$ convergence in every case.
+
+Lattice Fourier inversion, with $\theta=t/B_n$, now gives
+\eqref{eq:uniform-llt}.  The bound on the difference of the
+Fourier integrals is independent of their centering factor
+$\exp(-\ii t(\ell-n\mu_b)/B_n)$, so it is uniform over all
+integer $\ell$.  Apply \eqref{eq:poisson-exact} with $\ell=n$
+to obtain \eqref{eq:crossover-coefficient}.
+\end{proof}
+
+\subsection{Interpretation and limits of the uniform statement}
+
+At $b=A$ the profile is evaluated at zero.  Direct evaluation of
+\eqref{eq:stable-density} at zero, followed by Euler's reflection
+formula, gives
+\begin{equation}\label{eq:stable-zero}
+ g_\alpha(0)=\frac{\Gamma(1/\alpha)\sin(\pi/\alpha)}{\pi\alpha}
+             =\frac1{-\Gamma(-1/\alpha)}.
+\end{equation}
+The three central values in \cref{thm:coefficient-crossover}
+therefore reproduce exactly the constants in
+\cref{thm:phase}.  This is an independent check of the
+singularity-analysis calculation.
+
+The width of the feedback transition follows from
+$1-A/b=(b-A)/A+O((b-A)^2)$.  In terms of $b-A$ it is
+\begin{equation}\label{eq:window-widths}
+ \begin{cases}
+  n^{-(s-2)/(s-1)},&2<s<3,\\
+  \sqrt{\log n/n},&s=3,\\
+  n^{-1/2},&s>3.
+ \end{cases}
+\end{equation}
+The corresponding scale for $u-\Uc$ differs by the nonzero factor
+$A/\Uc$.  The square-root/logarithm competition in the local
+inverse has thus become a Gaussian normalization with an additional
+$\sqrt{\log n}$ in the coefficient problem.
+
+When $b<A$, the coefficient identity remains exact even though
+$\Rb$ is smaller than the actual radius: the probability in
+\eqref{eq:poisson-exact} is a lower-tail probability and contains
+the missing exponential factor.  Confusing these two radii would
+give an incorrect interpretation of the crossover on that side.
+
+The local limit theorem has a uniform \emph{absolute} error after
+normalization.  A compact $\xi$ window yields the coefficient
+crossover stated above.  It does not by itself give a uniform
+relative estimate for $\xi\to+\infty$ or $\xi\to-\infty$.
+Accordingly the fixed supercritical law was proved separately by
+boundary continuation and singularity transfer.  A joint relative
+matching theorem in those expanding windows remains a further
+question.

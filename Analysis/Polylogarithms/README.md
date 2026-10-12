@@ -2,20 +2,20 @@
 
 The canonical reading artifact is the collective four-volume manuscript,
 [Polylogarithms and their Arithmetic Bridges](docs/manuscript/README.md),
-authored by **ProveIt Contributors**. The volumes have **130, 129, 233 and
-85 pages**, each compiling independently; the retained
-[combined edition](docs/manuscript/polylogarithms.pdf) has **536 pages**.
-They share twelve chapters, thirteen figures and 138 references. The
+authored by **ProveIt Contributors**. The volumes have **144, 130, 253 and
+86 pages**, each compiling independently; the retained
+[combined edition](docs/manuscript/polylogarithms.pdf) has **570 pages**.
+They share twelve chapters, thirteen figures and 148 references. The
 [editorial ledger](docs/manuscript/EDITORIAL-LEDGER.md) separates accepted
 proofs from pending analytic claims, and the
 [validation record](docs/manuscript/VALIDATION.md) distinguishes proofs,
 finite certificates, numerical diagnostics, PDF builds and visual review.
 
-The inventory covers **1408 textual provenance documents**. **96 incoming
-archives / 3502 original tracked members** are preserved; imported ZIPs are
+The inventory covers **1810 textual provenance documents**. **130 incoming
+archives / 4704 original tracked members** are preserved; imported ZIPs are
 retired in their placement commits and recoverable from arrival history.
-The latest eighteen deliveries, in three intakes, retain their own PDFs, sources, code and
-receipts. Intake notes use a separate filename, preserving delivered
+Delivered PDFs, sources, code and receipts retain their original evidence
+scopes. Intake notes use a separate filename, preserving delivered
 OVERVIEW files. Original articles and reports remain historical evidence.
 
 The crossed-twist extension now gives the exact finite Fourier correction
@@ -30,8 +30,8 @@ also preserved and audited; their native search is a separate experiment.
 The latest accepted additions prove all positive-integer digamma-power finite
 parts and normalized primitives, reconcile the full fifth-power correction,
 and give a positive Cauchy series for every height-one coefficient. Two
-version-specific source corrections carry exact proofs. All eighteen newest
-packages pass isolated mathematical replay; their broader branches retain
+version-specific source corrections carry exact proofs. Recorded isolated
+mathematical replays retain their stated scopes; broader branches retain
 separate analytic scopes. The differential-polynomial core now proves unsubtracted expansions and
 ordinary finite-part coordinates for every derivative-containing polynomial;
 combined with scalar powers, it handles every fixed differential polynomial.
@@ -584,3 +584,100 @@ checks every remaining case with two algorithms. Formal rank does not imply
 arithmetic independence, and the unrestricted rank and Gaussian questions
 remain open. The seventeenth/eighteenth intake ledger records all eleven
 full isolated replays and their remaining analytic integration branches.
+
+
+Section 8.46 now reconciles the universal rational Beta coefficient formula
+for every derivative index in the canonical inverse-Gamma hierarchy. Its
+complete support/sign theorem and ordinary finite projections have a
+self-contained rational-kernel and variational uniqueness proof. The
+collective analytic-jet extension proves convergence of the infinite normal
+generator on disks of holomorphy, with an entire generator for entire input.
+The affine case has a closed hyperbolic-sine-integral expression and exact
+all-degree coefficients. No infinite convergence for arbitrary formal jets
+or arithmetic independence is inferred.
+
+The fifth reciprocal-Gamma printed coefficient is corrected to end in
++24*zeta(5), with independent symbolic and Wolfram Taylor audits. A repeated
+manuscript README paragraph is removed. The nineteenth intake preserves
+twelve packages and completes all supplied mathematical replays; its lattice
+runner needs one output-Path parenthesis repair on the isolated copy, with
+the unmodified failure preserved. Other analytic branches remain pending.
+
+
+Section 8.46 now also supplies every zero-constant compensator by the finite
+Euler homotopy formula and proves the locally analytic primitive series.
+Gamma and Stieltjes translations retain their exact endpoint terms. The
+collective affine primitive has a closed entire expression and all-degree
+coefficients, including the required +t/2 normalization. Independent sparse
+exact checks through weight eighteen and native Wolfram symbolic identities
+pass. All five twentieth-intake suites pass on isolated copies; the complete
+73722-case gap-ten finite certificate is reproduced with a disclosed portable
+structured comparator. Its infinite Gamma-basis proof remains pending audit.
+
+
+Theorems 8.143--8.144 prove every primitive coefficient by one ordinary
+polynomial integral, closing unrestricted full support/sign for m>=2 with
+the explicit H_1=0 exception. The entire E_1 finite projections also give
+convergence of the primitive generator on the full holomorphic input disk.
+Gamma/Stieltjes translations hold for |t|<x at positive x, with exact
+endpoints; a weighted generating antiderivative is included. Independent
+exact comparisons cover 23025 coefficients through weight thirty, and native
+symbolic defining identities cover every weight through sixteen. Finite
+evidence is separate from the written all-weight and analytic proofs.
+
+
+Theorem 8.145 evaluates the rational input U_c(x)=c/x through quadratic
+amplitude in classical dilogarithms. Free normal projection precedes
+specialization. An all-degree harmonic coefficient identity and ordinary
+asinh-square/log-square antiderivatives follow, with analytic branches
+fixed on |t/x|<1. Higher amplitude resummations remain open.
+
+
+Section 8.47 proves the confluent pole-multiplicity budget and a terminating
+finite MPL compiler for all rational Hankel ranks. Denominators of degree
+at most two use only 1,L,L^2,Li2, with arbitrary polynomial part and
+nonpositive integer poles. Anchored Euler primitives, finite differential
+modules and a shifted-double-pole ordinary zeta endpoint are included.
+Formal sharpness and spectral/Hahn refinements remain separate audits.
+
+
+### Resonant jets and inverse transseries: twenty-first intake
+
+Five packages now have preserved originals, retired arrival archives, and
+full isolated mathematical replays. The [reconciliation and proof audit](docs/manuscript/verification/TWENTY-FIRST-INTAKE-AUDIT.md)
+maps their overlap and pending claims. Three continue the
+[uniform-transition report](docs/reports/uniform-transition-continuation/RESONANT-INVERSION-INTAKE.md);
+the exact-core dilogarithm and weighted endpoint-inverse packages have one
+original copy in [Transseries](../Transseries/docs/series-and-transseries/README.md).
+The fixed-sector R1 proof is audited, and an exact order-lowering identity
+gives finite primitives for all normalized resonant jets. Section 1.6
+integrates these results and extends them to every repeated primitive, with
+complete homogeneous polynomials in consecutive reciprocals. The four
+volumes retain ProveIt Contributors authorship. Inverse geometry, exact
+radius and Borel reconstruction retain separate pending audits.
+
+
+### Quadratic feedback boundary report, October 12, 2026
+
+The new [boundary-feedback continuation](../Transseries/docs/series-and-transseries/Quadratic_Polylogarithm_Feedback_Boundary_Completion/README.md)
+has one original home beside its predecessor in Transseries. Its
+[proof audit](../Transseries/docs/series-and-transseries/Quadratic_Polylogarithm_Feedback_Boundary_Completion/INTAKE-PROOF-AUDIT.md)
+checks the dominant radius, supercritical coefficient constant at integer
+and noninteger orders, the three critical laws and the physical threshold.
+This closes the predecessor's explicitly open boundary question, without
+retracting its correct interior theorem. All five full supplied suites
+replayed successfully on an isolated copy; exact arithmetic checks and
+high-precision diagnostics remain distinct from the analytic proof.
+The imported ZIP was removed in placement. Section 1.7 now integrates the
+phase theorem and physical threshold and develops exact finite
+Bessel-polynomial coefficients, order spectra and shift recurrences.
+Detailed critical charts and crossover refinements remain separate
+integration scopes.
+
+Section 1.8 now proves exact Gamma-moment formulas for every marginal
+logarithmic correction, including a compact third correction, and an exact
+Laplace/convolution pair for powers of the selected Lambert inverse.
+It integrates the incoming order-three chart, proves the Catalan principal
+parts of its rational coefficients, and keeps convergent local expansions
+distinct from the asymptotic coefficient series. Nonmarginal charts and joint
+crossover branches remain separate integration work.

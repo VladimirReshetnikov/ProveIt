@@ -787,3 +787,262 @@ Chapter 8 punctuation. Restore that driver from its committed UTF-8 source
 and append only the new input; the resulting diff has exactly two added
 lines. Fix the helper decoding and rebuild every PDF, then repeat cold builds
 and final raster review. The mathematical certificate inputs were unaffected.
+
+
+## Universal coefficients, analytic resummation and confirmed corrections
+
+Place twelve nineteenth manuscripts as 429 unchanged tracked originals,
+retiring their ZIPs in placement 83d796004821 and publishing cc569dca8622.
+Record source pins honestly, including moving per-file provenance without
+one atomic pin. Confirm the 74172-byte affine Library predecessor for the
+selector and universal-Beta reports as later evidence, leaving originals
+unchanged. Two similarly named Gamma packages are different manuscripts.
+
+Run all twelve full mathematical suites on isolated copies. Preserve the
+lattice original AttributeError after its successful mixed-tail comparisons;
+repair only output-Path parentheses on a new copy and complete all six
+programs. Retain the original failure, two fresh partial results, exact patch
+and qualified complete replay. Reproduce the complete native gap-eight
+certificate and both joint-cumulant precisions; fixed-gap analytic acceptance
+remains separate. Independently derive the all-half-gap complementary-minor
+bridge in FIXED-GAP-BRIDGE-AUDIT.md, without claiming the Gamma null basis.
+
+Confirm the actual printed alpha5 error and repeated README passage. Correct
+the Gamma coefficient using its defining series, independent recurrence and
+native Wolfram expansion. Reconcile the two all-index coefficient proofs by
+a self-contained rational-kernel, finite-jet variational and uniqueness
+argument. Derive a new analytic-jet convergence theorem from Cauchy bounds
+and cancellation of the repeated highest derivative. This gives an ordinary
+infinite generator on the disk of holomorphy and an entire generator for
+entire inputs. Derive the explicit affine Shi/cosh expression and all-degree
+coefficients. Keep primitive endpoint terms and distinguish formal support
+from arithmetic independence.
+
+Independently check all 1596 coefficients through weight eighteen, 19 affine
+rows, 20 ordinary projection/Taylor/majorant diagnostics and two closed affine
+diagnostics. Reject a missing-linear-subtraction control. Rebuild and inspect
+the four volumes and combined edition after the final affine formulas, then
+repeat the cold builds. Final pages 130/129/237/85, combined 540, references
+139. Review every changed final body; preserve exact raster evidence and
+all old numbering. General rank, Gaussian periods and other pending branches
+remain active research questions.
+
+
+## Twentieth intake and complete analytic primitive hierarchy, October 12, 2026
+
+Place five original packages (169 members, 165 tracked), retain provenance
+qualifications and every delivered inner name, inspect all-member repeats
+against historical placement trees, and retire the five ZIPs in the same
+placement. Publish raw preservation in 08e5a22eb971 after merging origin/main.
+Run all five full mathematical suites only on isolated copies. Preserve both
+Higher Identities wrapper failures and qualify its copy-only structured
+comparator; reproduce every field of all 73722 gap-ten certificate rows and
+all mathematical subsidiary values. Keep its infinite proof audit separate.
+
+Reconcile the cubic all-index conjecture with Theorem 8.139. Credit the
+independent analytic normal-generator proof and classical Euler homotopy.
+Accept every compensator's finite formula and the analytic primitive series
+on its stated smaller domain, including exact Gamma/Stieltjes translations
+and anchored endpoint terms. Derive an explicit entire affine primitive and
+all-degree coefficients. Enforce zero-constant normalization with +t/2;
+reject its omission independently. Check the sparse recurrence, homotopy and
+affine coefficients through weight eighteen, 139 general monomial identities,
+two 80-digit diagnostics and native Wolfram exact symbolic controls.
+
+Rebuild all four volumes and the combined edition, repeat each cold build,
+inspect all 40 external destinations, and review every changed final body.
+Final pages 130/129/240/85 and combined 543; references 140. Preserve inherited
+visual evidence and numbering. General rank, Gaussian S6/revised S8, full
+compensator support/sign and remaining analytic report branches stay open.
+
+
+## All primitive coefficients and full-disk translations, October 12, 2026 (Pacific)
+
+Continue research while incoming is empty. Derive the single polynomial
+integral for every H_m coefficient from the rational R_d normal-form kernel.
+Identify its highest-index part before spatial specialization using the
+Appell anomaly and formal L_d injectivity. Reflection cancels one highest
+factor, and positivity of the remaining polynomial coefficients proves
+the unrestricted support/sign conjecture, with the H_1=0 exception.
+
+Resum the disjoint highest sectors into an entire ordinary E_1 projection.
+Its Cauchy majorant proves actual primitive convergence on the full input
+disk, improving the earlier half-radius proof. Extend Gamma/Stieltjes
+translations and anchored integration domains, retain endpoint terms and
+derive the weighted generating antiderivative. Keep maximal continuation
+and arithmetic independence separate. Original source conjecture wording
+remains preserved as history; current canonical status is corrected.
+
+Independently check every weighted-partition coefficient through weight
+thirty (23025 comparisons, 23024 support/sign checks), twelve ordinary
+projection diagnostics and native symbolic defining identities through
+weight sixteen. The algebraic and analytic written proofs establish the
+all-weight results. Rebuild and review all final editions after the weighted
+identity and corrected display layout. Pages 130/129/242/85, combined 545,
+references 140. General rank and Gaussian S6/revised S8 stay open.
+
+
+## Rational-pole amplitude resummation, October 12, 2026 (Pacific)
+
+Continue research with incoming empty. Specialize the free normal hierarchy
+to U_c=c/x only after projection. Identify the quadratic normal generator
+by its exact factorial coefficients and ordinary differential equation.
+Use the raw (1-z)^(-c) decomposition to derive the normalized primitive,
+then evaluate it in classical dilogarithms with analytic germs on |z|<1.
+Prove the all-degree harmonic coefficient identity and both ordinary
+antiderivatives. Preserve the H_1=0 condition, full-generator convergence
+scope and open higher amplitude questions. Independent exact checks cover
+weight thirty; native symbolic branch/ODE/Taylor controls pass. Rebuild all
+five PDFs and review changed scientific bodies before publication. The
+final editions have 130/129/244/85 pages and combined 547, 140 references.
+
+
+## Rational Hankel alphabet, October 12, 2026 (Pacific)
+
+With incoming unchanged, audit and integrate the preserved rational-Hankel
+compiler core. Give full confluent minor allocation, cutoff-cost transport,
+anchored rational integration and finite-alphabet proofs. Separate harmonic
+degree, weight, rank and arithmetic independence. Include the all-rank
+quadratic-denominator consequence, Euler primitives, per-element scalar
+ODEs, and the ordinary shifted-double-pole endpoint with its cancellation.
+Credit the original report and classical methods. Preserve pending
+sharpness, Hahn, endpoint-jet and spectral scopes and unchanged originals.
+
+Independent exact and native checks pass. Rebuild and inspect all five final
+PDFs, then review every changed scientific body. Final pages [130, 129, 248, 85],
+combined 552, references 141. The finite checks support implementation;
+written proofs establish all ranks. General harmonic rank and Gaussian
+S6/revised S8 remain open. No new archive arrived during this work.
+
+
+## Resonant-jet synthesis, October 12, 2026 (Pacific)
+
+October 12, 2026 (Pacific). Section 1.6 integrates the audited fixed-sector
+R1 extension, reciprocal-Gamma pure-logarithm normalization and exact
+monodromy. Theorems 1.16 and 1.17 develop the order-lowering ladder and
+all repeated primitives. Complete homogeneous polynomials in consecutive
+reciprocals give the finite jet coefficients; the polynomial endpoint fixes
+the integration constant. The proof includes the integrable m=0 family.
+Growing jets/windows, inverse geometry and Borel reconstruction remain
+separate research scopes. Original reports are unchanged and credited.
+
+Independent checks pass: 3780 exact coefficient-basis cases, 72 single and
+252 repeated primitive cancellations, 24 direct defining-series diagnostics
+at 85 digits, and nine native Wolfram symbolic checks. The all-order result
+is established by the manuscript's analytic proof, not finite tests.
+
+Final pages 135/130/249/86 (600 total), combined 557,
+142 references. Three coupled rounds, three serial combined passes and
+three cold passes for each volume pass without final log issues.
+All 43 external destinations resolve. Visual review opens 15 changed
+volume bodies and 6 unmatched combined bodies; 585 volume and
+543 combined bodies inherit exact raster-matched review, and 8
+changed combined bodies match freshly reviewed volume pages. Only centered
+footer numbers are excluded, with every other text/image/drawing bound
+checked. No current contact sheet was opened. All five PDFs retain
+ProveIt Contributors authorship. No Lean or remote-CI claim is made.
+
+## Quadratic feedback, October 12, 2026 (Pacific)
+
+October 12, 2026 (Pacific). Section 1.7 develops an exact finite
+Bessel-polynomial formula for every feedback Taylor coefficient. Grouping
+ordered compositions by their product gives a finite Dirichlet polynomial
+in the order, its minimal constant-coefficient differential annihilator,
+and exact shift recurrences. Two Lagrange inversions prove the universal
+formula, including arbitrary holomorphic input kernels and nonzero complex
+feedback parameters. The positive polylogarithm model retains its sharper
+real hypotheses for the global phase theorem.
+
+The audited incoming boundary classification and physical threshold are
+reconciled with full attribution. The interior theorem was correct in its
+stated range; its explicitly open boundary question is now closed here.
+Convergent critical charts, full logarithmic refinements and joint
+crossover branches remain separate synthesis tasks.
+
+Independent exact verification compares 240 polylogarithm and 120 signed
+kernel coefficients against direct iteration of the original equation,
+checks 450 Bessel-weight recurrences and 50 order-shift cases, and retains
+three corruption controls. All five original incoming suites have complete
+isolated replays and 14 recorded-outcome checks. These finite checks are
+distinct from the analytic all-order proof.
+
+Final pages 140/130/249/86 (605 total), combined 562,
+145 references. All four volumes compile independently. The coupled
+volumes and combined edition converge in three rounds/passes without
+final gate issues; 46 external PDF destinations resolve.
+Visual review opens 12 changed volume bodies and 6 unmatched
+combined bodies, with 593 and 548 bodies respectively inherited
+by exact raster comparison and 8 changed combined bodies matched to
+fresh volume review. Only centered footer page numbers are excluded,
+with other content bounds checked. No current contact sheets were opened.
+All PDFs retain ProveIt Contributors authorship.
+
+The twenty-second delivery is preserved once in Transseries: 39 tracked
+originals and one ignored bare manifest recoverable in the committed
+arrival ZIP. Placement c0f20fbd88 retired that ZIP. The canonical archive
+ledger now covers 130 archives and 4704 tracked original members.
+No Lean, interval-certification or remote-CI claim is made.
+
+## Lambert moments, October 12, 2026 (Pacific)
+
+October 12, 2026 (Pacific). Section 1.8 integrates the incoming marginal
+inverse chart and every fixed-order logarithmic coefficient correction.
+It proves a single Gamma-moment formula for each correction polynomial,
+a differential recurrence, and an explicit third centered correction.
+An exact Laplace representation for powers of the selected Lambert inverse
+gives a Gamma-density convolution identity. The rational chart coefficients
+have exact pole orders and Catalan principal parts. The classical Lambert
+convention and related probability literature are credited; no priority
+claim is made.
+
+Independent symbolic checks compare both correction formulas through order
+eight, verify eight derivative recurrences and five exact pole orders by
+implicit recursion at the rational diagnostic A=2. Quadrature at 60 and
+90 digits checks twelve Laplace and nine convolution cases per precision.
+Four corruption controls pass. Numerical quadrature is not interval
+certification; all-order status rests on the written analytic proofs.
+
+Final pages 144/130/249/86 (609 total), combined 566,
+147 references. All four volumes compile independently. Coupled volume and
+combined builds converge without final gate issues; 49 external PDF
+destinations resolve. Manual review opens 11 changed volume bodies and
+6 unmatched combined bodies. Exact raster comparison retains
+598 prior volume bodies and 553 prior combined bodies, with
+7 further combined bodies matched to freshly reviewed volume pages.
+Only centered footer numbers are excluded, with other content bounds
+audited. No current contact sheet was opened.
+
+All PDFs retain ProveIt Contributors authorship. Original report evidence
+is unchanged. Nonmarginal critical charts and joint crossover branches
+remain separate integration work. No Lean or remote-CI claim is made.
+
+## Mixed cubic tail certificates, October 12, 2026 (Pacific)
+
+October 12, 2026 (Pacific). The section on rational identities for a mixed
+cubic Hurwitz tail develops the (2,2,3) case proposed in the preserved
+mixed-tail-anchor-reductions report. Three linear conditions characterize
+the specified polynomial certificate class in every degree. They give an
+infinite family of absolutely convergent rational sums and an explicit
+degree-ten weighted identity with value -4037/108.
+
+Independent verification checks nine exact finite-difference certificates
+through antiderivative degree 27, twelve finite coefficient-space dimensions,
+the centered subtraction and uncentered endpoint, and four corruption
+controls. Ordinary partial sums at three cutoffs agree with the finite
+certificate at both 70 and 100 digits. Numerical endpoint checks are
+diagnostics, not interval certification. The all-degree statements and
+absolute convergence are established by the written proofs.
+
+Final pages 144/130/253/86 (613 total), combined 570,
+148 references. All four volumes compile independently. Coupled volume and
+combined builds converge without final gate issues; 52 external PDF
+destinations resolve. Manual review opens 10 changed volume bodies and
+4 unmatched combined bodies. Exact raster comparison retains
+603 prior volume bodies and 562 prior combined bodies, with
+4 further combined bodies matched to freshly reviewed volume pages.
+Only centered footer numbers are excluded, with other content bounds
+audited. No current contact sheet was opened.
+
+All PDFs retain ProveIt Contributors authorship. Original report evidence
+is unchanged. The (2,3,4) case and the arithmetic classification outside
+this certificate class remain open. No Lean or remote-CI claim is made.

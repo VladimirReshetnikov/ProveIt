@@ -1,6 +1,90 @@
 Gowers Szemeredi formalization checkpoint — 2026-10-11
 
 Scope
+  Latest checkpoint: SharpBohrFidelityAudit passes over1,631 native modules
+  with only the three approved axioms. Translated-box averaging strengthens
+  |B(K,delta)|>=(delta/2)^|K|*N to delta^|K|*N, over every nonzero modulus.
+  It proves the sharper nonzero criteriondelta>N^(-1/|K|) and recovers the
+  original(N/2)^(-1/|K|) criterion. That original criterion is not refuted;
+  the earlier weaker correction was unnecessary. A separate native counter
+  refutes the unbounded positive-radius reading, and another distinguishes
+  progression-coordinate linearity from ambient modular-affine formulas.
+  The annotated paper reflects the verified radius range and coordinate
+  interpretation. Statement-level review has inspected47 of120 results;
+  73 remain unreviewed, with some inspected scope questions still open.
+  The complete semantic review and broad facade gate remain unfinished.
+
+  Latest checkpoint: OpeningScopeFidelityAudit passes over1,625 native
+  modules with only the three approved axioms. A separate native refutation
+  proves that Theorem1.3's literal finite reading without its eventual-N
+  condition is false. A second refutes the original denominator4 length
+  bound in Lemma2.3 by a five-point parity obstruction. Their corrected
+  positive statements remain separately checked; the refutations are not
+  counted as positive companions. The TeX now states the large-N qualifier
+  explicitly and visibly documents both issues. The incremental semantic
+  review has inspected34 of120 numbered statements, with86 not yet reviewed
+  and some scope/geometry conventions in the inspected entries still to be
+  resolved. The full exported-facade gate is incomplete. The goal stays active.
+
+  Latest checkpoint: NaturalAxesFidelityAudit passes over1,616 native
+  modules with only the three approved axioms. Theorem13.12 now has an
+  explicit pair of natural-number progressions bounded by N and sharing
+  one positive integer step, preserving every printed bound over all prime
+  moduli. Twelve new results include the ordinary-axis one-point regime
+  of Corollary13.10. A separate verified modulo7 counterexample shows that
+  equal modular steps and separate integer representatives alone do not
+  imply the shared integer step. It does not refute Theorem13.12.
+  The expanded incoming CompletionAudit also passes: its final bounds
+  improve the printed L+9 to L+3 in every length and L in lengths>=19;
+  the inverse offsets are d+5 in every degree and d+2 in degrees>=17.
+  All120 catalogue companions and previous audits are refreshed. The full
+  exported facade and complete semantic/source-fidelity review remain open.
+
+  Latest checkpoint (2026-10-12): AllDensityExtractionFidelityAudit passes
+  over1,546 native modules, refreshing all120 catalogue companions and every
+  prior fidelity audit. Twenty-four new finite-group, dense-row, bilinear and
+  edge-rule theorems recover the original printed Lemma13.6 masses throughout
+  0<alpha<=1, at every prime modulus, with no additional modulus threshold.
+  Its length exponent improves from13Q to10Q. Thus the original contextual
+  numerical bounds in Lemmas13.6--13.9 and Corollary13.10 are now checked;
+  the weaker corrected Theorem10.13 no longer causes a Section13 numerical
+  gap. Only the three approved axioms occur. The annotated paper records
+  the replacement argument, consistent five-power calculation, chosen row
+  coefficients and corrected coefficient sign. The full exported facade and
+  complete statement-by-statement semantic/source-fidelity review remain
+  incomplete, including interpretation of intermediate integer geometry.
+  The original published alpha^3/1000 claim is neither proved nor refuted
+  by the current corrected Theorem10.13. The full goal remains active.
+
+  Latest direct extraction audit: PrintedExtractionCoreAudit verifies
+  nineteen new theorems and the existing Theorem 10.13 consequence over
+  119 native modules, with only the three approved axioms. The corrected
+  alpha^6/20000 extraction strengthens to alpha^5/20000 with unchanged
+  hypotheses, spectrum cutoffs and Bohr radii. A sharper sixteen-edge
+  encoding gives C(h)<=|X_h|^15*N. Original printed Lemma 13.6 masses now
+  follow from the actual preceding data for 0<alpha<=14/15, over every
+  prime modulus, with the stronger 10Q length exponent instead of13Q.
+  The range14/15<alpha<=1 and unrestricted genuine Corollary13.10 geometry
+  remain open. The full downstream catalogue refresh and exported-facade
+  check are incomplete; the direct119-module audit does not certify them.
+
+  IntegerSparseSquareAudit verifies five further results over 1,530 native
+  modules. Whenever delta*m^2<=1, one point of a bilinear set yields a genuine
+  integer square of any prescribed side m<=N, with common step one; primality
+  is unnecessary if N>=2. Corollary 13.10 retains its exact printed bounds
+  and integer geometry whenever N<=2^86*alpha^(-416). The unrestricted
+  corollary and original stronger Lemma 13.6 extraction remain open.
+
+  Latest source-bound checkpoint: PrintedSection13BoundsAudit verifies 18
+  new results over 1,528 native modules using only the three approved axioms.
+  Lemmas 13.7--13.9 now have exact printed contextual numerical bounds under
+  the original preceding density data; their constructions retain the proved
+  integer step and span. Corollary 13.10 also retains its printed density with
+  modular properness. The stronger upstream Lemma 13.6 extraction and the
+  corollary's ordinary integer geometry remain unproved. No counterexample
+  to those original claims is asserted. The broad exported-library build is
+  incomplete; its compiled modules are cached for resumption.
+
   Active follow-up: the user requested the remaining source-fidelity work
   and further generalizations. The 120-companion audit below verifies the
   corrected catalogue, not completion of this broader follow-up. In
@@ -124,8 +208,73 @@ Scope
   The abstract family lemma works over every nonzero modulus. It assumes
   the faithful lower-dimensional IntegerMultiplyLinearWith cover, as in
   the structural induction; that global hypothesis is not yet proved.
-  Remaining work includes the genuine base relation cover, the remainder
-  family argument and the Section 16 structural induction.
+  The base relation cover and abstract remainder step are supplied by the
+  following audits. Their use in the full Section 16 structural induction
+  remains open.
+
+  BaseIntegerFidelityAudit verifies thirteen new results over 1,503
+  modules, including the exact genuine integer-box Lemma 16.3. Ordinary
+  integer index cells transport to ascending cells, and the exact coarse
+  cover retains its 3^k*M graph count. Freiman-family linearization now
+  produces integer certificates with the original polynomial and cubic
+  controls. The global product property supplies a good domain and a fixed
+  family, yielding graph count 3*q independent of the inner loss and width
+  exponent 2^(-27)*sigma^3/q^4. The printed iteration budget is at least
+  128*q and absorbs these controls without changing the source bounds.
+  No relation-cover conclusion is assumed in this dimension-one result.
+
+  RemainderIntegerFidelityAudit verifies three further family remainder
+  and factor results over 1,505 modules. The abstract family Lemma 16.9
+  retains the same width transfer, graph count and good-set mass. Its cells,
+  canonical base projections and final axes have genuine integer
+  certificates. The explicit named profile works over every nonzero
+  modulus. The spectrum and remainder relation covers remain explicit
+  induction hypotheses; they must still be constructed in the higher
+  dimensional structural argument. All preceding audits and the sixteen
+  new positive results pass with only the three approved axioms.
+
+  FamilyLiftIntegerFidelityAudit verifies twelve further relation-lift,
+  sampled interpolation and family piece-cover results over 1,512 modules.
+  An unused-coordinate lift retains the original graph budget and E/16
+  exponent on genuine integer boxes, and now works over every nonzero
+  modulus. Synchronized compression, local and global affine lifting,
+  rounded sampling and extension to all integer boxes retain ascending
+  certificates with the original candidate counts, density losses and
+  width controls. The simultaneous abstract piece-family union now gives
+  IntegerMultiplyLinearWith. These constructions keep their spectrum,
+  remainder and sampled-slice cover inputs explicit; the global class
+  induction must still supply them from the lower-dimensional hypothesis.
+  All prior audits and the twelve new results use only the approved axioms.
+
+  StructureIntegerFidelityAudit verifies thirty-one new class, relation and
+  global structure results over 1,523 modules. Coordinate permutations,
+  cylinders, scaling and finite sums retain genuine integer cells. The
+  existing uniform-class membership and decomposition records now carry
+  integer cover certificates, from the actual dimension-two Freiman-data
+  bootstrap through every successor and the full dimension induction.
+  No spectrum, remainder or sampled-slice cover is assumed in the resulting
+  global theorem. Exact genuine versions of Theorem 16.2 and Corollary
+  16.11 retain the printed controls and exponents over every prime modulus.
+  The additional eventual-modulus and oddness restrictions are unnecessary;
+  the corollary retains the stronger intermediate width exponent as well.
+  All thirty-one new results and all preceding audits use only the three
+  approved axioms. These results close the main Section 16 representation
+  gap. The complete statement-by-statement audit, including intermediate
+  source statements and numerical bridges, remains a separate obligation.
+
+  The next source audit found concrete numerical mismatches in Lemmas
+  13.7--13.9 and Corollary 13.10. For example, Lemma 13.9 still prints
+  width exponent 2^(-182)*alpha^832 and relative density 2^(-84)*alpha^416;
+  IsStage139Data requires only 2^(-284)*alpha^1408 and
+  2^(-135)*alpha^704. The existing exact companion therefore does not
+  establish those original sharper contextual bounds. No counterexample
+  to these claims has been established. They must be proved at the source
+  constants or, if actually refuted, receive a justified documented repair.
+  The four obligations and exact expressions are recorded in
+    Research/GowersSzemeredi/verification/2026-10-11-source-bound-obligations.json
+  The final Theorem 13.12 remains proved with its printed bounds and
+  genuine integer representatives; that result does not close these
+  separate intermediate obligations.
 
   The paper's literal unbounded loss quantifier is now visibly corrected
   to 0<theta<=1. At theta=2, gamma=r=1, a width-two integer box in ZMod 2
@@ -177,6 +326,12 @@ Scope
     python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.RetiledIntegerFidelityAudit
   The extension through genuine short-parent and family covers is:
     python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.LocalIntegerFidelityAudit
+  The latest full check, including the genuine base and remainder step, is:
+    python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.RemainderIntegerFidelityAudit
+  The extension through genuine sampled family lifting and piece covers is:
+    python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.FamilyLiftIntegerFidelityAudit
+  The latest full check, including the genuine global structure theorems, is:
+    python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.StructureIntegerFidelityAudit
   The exact input hashes and verification results are recorded in
     Research/GowersSzemeredi/verification/2026-10-11-numbered-and-bounds.json
   The source ledger records every numbered definition, TeX heading lines,
@@ -288,10 +443,141 @@ Verification of the cover route (2026-10-11)
   Proofs15FejerProduct: fejer_product_restriction is Lemma 15.6 with density
   (beta*gamma/2)^(fejerProductExponent k), fejerProductExponent k <=
   2^(5k+14) (printed 2^(2^(k+5))); lemma_15_6_of_fejer_product recovers the
-  printed Lemma 15.6. Propagating this theta_1 through Section 16 (which
-  hardwires section16ThetaOne) is not done; fejer_scale_estimate and
-  fejer_product_of_density_lower (the exact interface Lemma 16.4 consumes)
-  are proved, and notes L.16 give the refactor plan for the full-build machine.
+  printed Lemma 15.6. fejer_scale_estimate and fejer_product_of_density_lower
+  (the exact interface Lemma 16.4 consumes) are proved.
+  Proofs16TightRadius (notes L.16b): the Bohr radius 2^(-2^83/a^11) meets
+  Lemma 16.5's condition for any a; under the Fejer theta_1 its exponent is
+  at most (2/(theta*gamma))^(22E+105) and at least 2^(40(k+1)^3+1).
+  Proofs16SplitFejerDegrees (notes L.16c): with those inputs the split-class
+  degrees satisfy log2 D_k <= (c+8)*2^k for a seed 2^8*a2 <= 2^(4c),
+  D2 <= 2^(4(c+8)); at c = 14, any seed a2 <= 2^48, D2 <= 2^88 gives
+  22*2^k (vs 68*2^k). The d+5/L+3 of notes L.16b is withdrawn.
+
+  Theorem 18.1 at d+6, Theorems 18.2 / Corollary 18.7 at L+4 (notes L.16d,
+  L.16e, 2026-10-12). The Fejer theta_1 and the tight radius are propagated
+  through Sections 16 and 18 in parallel light modules (suffix With/Fejer;
+  their printed instances are the corpus statements by rfl, so a later
+  refactor on the full-build machine can fold them into parametric
+  originals). Standard axioms only, kernel-checked locally:
+  - dimension two: Proofs16Lemma5With, Proofs16DenseSelectionWith,
+    Proofs16PolyPieceTwoDataWith, Proofs16PolyCoverTwoFejer,
+    Proofs18FejerSeedCounts, Proofs18FejerSeedExponents,
+    Proofs16UniformCoverTwoFejer (split-class seed 2^46, printed 2^132);
+  - dimensions k >= 2: Proofs16ClassPiecesWith, Proofs16ClassStepFejer,
+    Proofs16ClassStepBoundsFejer, Proofs16ClassStepDegreesFejer,
+    Proofs16SplitStepFejer (splitUniformClass_all_fejer, log2 D_k <= 22*2^k);
+  - Section 18: Proofs16SinglePieceCoverGlobalWith,
+    Proofs18SinglePieceCoverInverseFejer, Proofs18TightClassesFejer
+    (polyCoverAt_class23), Proofs18FejerEnvelopeBase,
+    Proofs18CoverModulusFejer / DensityFejer / ExponentsFejer,
+    Proofs18CoverFejerHeadline (step cost 101*2^k vs 236*2^k; envelopes
+    <= 230*2^k; theorem_18_1_d6_of_profiles_cover, d >= 4, and
+    theorem_18_2_L4_all_of_profiles_cover, L >= 6),
+    Proofs18CoverFejerLowDegrees (d <= 3), Proofs18CoverFejerShortLengths
+    (L <= 5).
+  Bridge Proofs18CoverFejerAllDegrees (heavy; stub-checked, not built
+  locally): theorem_18_1_d6 : forall d, Theorem181AtSharp 6 d;
+  theorem_18_2_L4, corollary_18_7_L4 (every L); the three ..._implies_printed;
+  van_der_waerden_L4 (W(k,r) <= 2^2^r^2^2^(k+4)); theorem_1_3_L4 (Theorem 1.3
+  with constant 2^(-2^(k+4))); theorem_16_2_polynomial_fejer (graph count
+  exponent 2^(23*2^k), vs 2^(68*2^k)) and corollary_16_11_polynomial_fejer
+  (e^-1 <= (2/alpha)^(2^(101*2^k+k+24)), vs 236*2^k), from the light
+  Proofs16PolynomialFejer. CompletionAudit.lean pins all of them (validated
+  in the stub environment).
+  Large degrees and lengths (notes L.16i): with the split invariant using
+  additive slack (Proofs18TightClassesFejerQ, class degree
+  14*2^l + 3(l+4)^2 + 2) and the base budget at the class-base term
+  (Proofs18FejerEnvelopeBaseQ, fixDegQ k = fixDeg (k-1)), the step costs
+  58*2^k + O(k^2) (Proofs18Cover*FejerQ, Proofs18CoverFejerHeadlineQ). This
+  gives theorem_18_1_d5_twelve_le (Theorem181AtSharp 5 d for every d >= 12),
+  theorem_18_2_L3_fourteen_le and corollary_18_7_L3_fourteen_le (L+3 for
+  every L >= 14), van_der_waerden_L3 (k >= 14), and theorem_1_3_L3_fourteen_le
+  (Theorem 1.3 with constant 2^(-2^(k+3)) for every k >= 14; Theorem13AtFrom,
+  Proofs18CoverHeadlineFrom).
+  Also theorem_16_2_polynomial_fejerQ (graph-count exponent 14*2^k+3(k+4)^2+2)
+  and corollary_16_11_polynomial_fejerQ (e^-1 <= (2/alpha)^(2^(58*2^k+9(k+4)^2+k+30))),
+  from Proofs16PolynomialFejerQ. These are bridge theorems,
+  stub-checked and pinned in CompletionAudit. Stub axioms are those of the d+7/L+5 bridge:
+  commonDiffPartitionBoundAt_of, multilinearPartitionBoundAt_explicit,
+  section16RecurrenceProfileWith_explicit (18.1); the last only (18.2 and
+  consequences). Needs the full build on the Codex machine.
+  The small dimension-two seed (notes L.16j). Proofs16UniformCoverTwoSplit
+  proves dimension two is a split class at family exponent 32
+  (splitUniformClass_two_small; through toSplit it was 2^46). The split
+  recursion squares the family exponent, so the class constant drops from 14
+  to 4: Proofs18TightClassesFejerS, class degree sDeg l = 4*2^l + 3(l+4)^2 + 32.
+  Proofs18EtaStepSmall removes the eta step's printed side condition
+  fixDeg k <= m (3(k+4)^2 <= m suffices); without this, one step costs
+  32*2^k and d+4 is lost. The step then costs 28*2^k + O(k^2)
+  (Proofs18Cover*FejerS, Proofs18CoverFejerHeadlineS). Bridge theorems:
+  theorem_18_1_d4_thirteen_le (Theorem181AtSharp 4 d for every d >= 13),
+  theorem_18_1_d5_nine_le (d+5 for every d >= 9), theorem_18_2_L3_eleven_le
+  and corollary_18_7_L3_eleven_le (L+3 for every L >= 11),
+  van_der_waerden_L3_eleven_le, theorem_1_3_L3_eleven_le (Theorem13AtFrom 3 11),
+  theorem_16_2_polynomial_fejerS (graph-count exponent 4*2^k+3(k+4)^2+32) and
+  corollary_16_11_polynomial_fejerS (e^-1 <= (2/alpha)^(2^(32*2^k+9(k+4)^2+k+120))).
+  Same stub axioms; stub-checked and pinned in CompletionAudit. The
+  remaining limits of this envelope are recorded in notes L.16j: L+2 is
+  blocked by the 2^(k+6) threshold branch, and d+3 by the 16*2^k base budget
+  in rho.
+  The exact small-dimension classes (notes L.16k). The true split degrees
+  splitPairWith 32 (2^48) l, l <= 12, are certified by decide +kernel
+  (Proofs18TightClassesFejerT: log-degrees 17, 49, 85, ..., 10375 against
+  sDeg's 115, 156, 211, ..., 17184). The T chain (Proofs18Cover*FejerT,
+  Proofs18CoverFejerHeadlineT) kernel-evaluates the envelope up to k = 12,
+  where it peaks at 124.4*2^k; the S closed forms take over beyond. Degrees
+  0..3 come from Proofs18CoverFejerLowDegrees5 and lengths <= 5 from
+  Proofs18CoverFejerShortLengths3 (generated, offset 5 and 3). Bridge
+  theorems: theorem_18_1_d5 (Theorem181AtSharp 5 d in EVERY degree),
+  theorem_18_1_d4_eleven_le (d+4, d >= 11), theorem_18_2_L3 and
+  corollary_18_7_L3 (L+3 in EVERY length), van_der_waerden_L3_all
+  (W(k,r) <= 2^2^r^2^2^(k+3) for every k), theorem_1_3_L3 (Theorem13At 3).
+  Stub-checked and pinned in CompletionAudit.
+  The polynomial Bohr radius (notes L.16l). Under the Fejer theta1 the tight
+  Bohr radius satisfies zeta^-1 <= exp(X^(2^(5k+21))) (zeta_gen_bounds_fejer5),
+  not exp(X^(2^(2^(k+6)+1))). That removes the 64*2^k threshold branch from
+  the Theorem 18.2 envelope (Proofs18CoverFejerHeadlineU). Bridge theorems:
+  theorem_18_2_L2_thirteen_le and corollary_18_7_L2_thirteen_le (L+2 for
+  every L >= 13), van_der_waerden_L2 (k >= 13), theorem_1_3_L2_thirteen_le
+  (Theorem13AtFrom 2 13). Stub-checked and pinned in CompletionAudit.
+  The polynomial base budget (notes L.16m). The base budget mu0 ~ 16*2^k was
+  a comparison artifact: the Fejer budget is polynomial (5k+21), and the
+  explicit family constants satisfy Kc + pc <= 2^(2^(4k+16))
+  (explicit_family_constants_poly_le). With mu0 = 5k+23
+  (Proofs18FejerEnvelopeBaseW, Proofs18Cover*FejerW,
+  Proofs18CoverFejerHeadlineW) one step costs 12*2^k + O(k^2). Bridge
+  theorems: theorem_18_1_d3_eleven_le (d+3 for every d >= 11),
+  theorem_18_1_d4_eight_le (d+4, d >= 8), theorem_18_2_L1_thirteen_le and
+  corollary_18_7_L1_thirteen_le (L+1 for every L >= 13),
+  theorem_18_2_L2_ten_le and corollary_18_7_L2_ten_le (L+2, L >= 10),
+  van_der_waerden_L1 (W(k,r) <= 2^2^r^2^2^(k+1), k >= 13),
+  van_der_waerden_L2_ten_le, theorem_1_3_L1_thirteen_le (Theorem13AtFrom 1 13),
+  theorem_1_3_L2_ten_le (Theorem13AtFrom 2 10). Stub-checked and pinned in
+  CompletionAudit.
+  Class constant 5/2 and the polynomial Lemma 15.6 (notes L.16n). Started from
+  the exact twelfth dimension, the split invariant holds at constant 5/2
+  (Proofs18TightClassesFejerX); the Lemma 15.6 threshold is X^(2^(5k+21))
+  (lemma156_gen_le_fejer5). One step costs 7.5*2^k + O(k^2)
+  (Proofs18Cover*FejerX, Proofs18CoverFejerHeadlineX). Bridge theorems:
+  theorem_18_1_d2_seventeen_le (Theorem181AtSharp 2 d, every d >= 17),
+  theorem_18_2_L0_nineteen_le and corollary_18_7_L0_nineteen_le (Theorem 18.2
+  with NO offset, every L >= 19), van_der_waerden_L0 (W(k,r) <=
+  2^2^r^2^2^k, k >= 19), theorem_1_3_L0_nineteen_le (Theorem13AtFrom 0 19).
+  Stub-checked and pinned in CompletionAudit. d+1 is beyond this method (it
+  would need class constant < 4/3; the true constant is ~2.4).
+  Also theorem_16_2_polynomial_fejerX (graph-count exponent tDegX k ~ 2.5*2^k,
+  V = 2^(2^(4k+13))) and corollary_16_11_polynomial_fejerX (e^-1 <=
+  (2/alpha)^(2^(3 tDegX k + 6k + 38)) ~ 7.5*2^k), from Proofs16PolynomialFejerX;
+  stub-checked and pinned in CompletionAudit.
+  With the exact class table to dimension 14 (notes L.16o,
+  Proofs18TightClassesFejerZ, Proofs18Cover*FejerZ): theorem_18_1_d2_sixteen_le
+  (d+2, every d >= 16), theorem_18_2_L0_eighteen_le and
+  corollary_18_7_L0_eighteen_le (no offset, every L >= 18),
+  van_der_waerden_L0_eighteen_le, theorem_1_3_L0_eighteen_le
+  (Theorem13AtFrom 0 18). Stub-checked and pinned in CompletionAudit.
+  Partition constant charged at 2^(k+9) (notes L.16p, Proofs18CoverFejerHeadlineY):
+  theorem_18_1_d2_fifteen_le (d+2, d >= 15), theorem_18_1_d3_ten_le (d+3,
+  d >= 10), theorem_18_1_d4_seven_le (d+4, d >= 7). Stub-checked and pinned.
 
 Sharper exponents for Theorems 18.1 and 18.2 — 2026-10-11 (notes L.15)
   The joint-cover envelopes are a quarter of the printed budgets, so:

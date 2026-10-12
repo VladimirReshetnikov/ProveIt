@@ -2635,3 +2635,47 @@ coefficient lists the stage asserts were reproduced independently in exact
 rational arithmetic (see the package README).
 
 See [`../MANIFEST.md`](../../../FabiusFunction/docs/semi-formalized-research-frontiers/drafts/MANIFEST.md) for the group record.
+
+
+## Resonant polylogarithm continuations, October 12, 2026
+
+- [Resonant Polylogarithm Transseries](Resonant_Polylogarithm_Transseries/README.md)
+  continues nonlinear Stokes transport and exact-core inverse charts. Its
+  model-specific claims concern positive Laurent sectors, a sharp
+  dilogarithmic radius and physical threshold, with Gamma and periodic
+  Borel jets. Full pinned-dependency replay passes; independent review of
+  the complete radius proof remains pending.
+- [Polylogarithm Resonance and Inverse Transseries](Polylogarithm_Resonance_And_Inverse_Transseries/README.md)
+  continues endpoint inverse charts through weighted logarithmic deficits,
+  Fuss-Catalan support and uniform order-two transitions. Full replay with
+  declared dependencies passes. Its global coefficient asymptotics and
+  proposed external corrections require separate analytic review.
+- Three related pure-jet, fold and complex-sector reports have their single
+  original home in the [Polylogarithms resonance spine](../../../Polylogarithms/docs/reports/uniform-transition-continuation/RESONANT-INVERSION-INTAKE.md).
+  Their overlap and proof audit are recorded in the collective manuscript's
+  editorial ledger. These are conventional research reports with finite
+  checks, not new Lean formalization or a rebuilt Transseries volume.
+
+
+## Quadratic feedback boundary continuation, October 12, 2026
+
+[Boundary Completion for Quadratic Polylogarithm Feedback](Quadratic_Polylogarithm_Feedback_Boundary_Completion/README.md)
+continues the explicit question in Resonant_Polylogarithm_Transseries,
+article.tex lines 1279–1297, and the collection's nonlinear inverse and
+critical-endpoint programme. Its original TeX/PDF, code and supplied
+evidence are preserved together. The
+[intake proof audit](Quadratic_Polylogarithm_Feedback_Boundary_Completion/INTAKE-PROOF-AUDIT.md)
+accepts the conventional proof of the complete radius/coefficient phase
+classification and physical convergence threshold. All five full supplied
+suites rerun successfully in isolation with declared package versions.
+The convergent charts, logarithmic transfer and crossover refinements
+retain separate canonical integration tasks. Section 1.7 of the collective
+Polylogarithms manuscript now incorporates the phase classification and
+physical threshold, and develops finite Bessel-polynomial coefficient and
+order-spectrum identities. The Transseries volumes have not been rebuilt.
+
+The collective Polylogarithms manuscript's Section 1.8 now also integrates
+the boundary-completion report's marginal Lambert chart and all logarithmic
+coefficient corrections. Its continuation gives exact Catalan principal
+parts and Gamma-moment formulas, plus a proved Laplace/convolution identity.
+Nonmarginal inverse charts and joint crossover branches remain separate work.

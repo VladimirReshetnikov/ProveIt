@@ -1,0 +1,38 @@
+import GowersSzemeredi.Proofs18FejerEnvelopeBaseQ
+import GowersSzemeredi.Proofs18TightClassesFejerT
+import GowersSzemeredi.Proofs16WeylBudgetGrowth
+import GowersSzemeredi.Proofs18CoverTightBase
+
+/-! **The polynomial base budget** (Notes L.16m).
+
+The base budget `μ₀ = max(μV, fixDegQ k) + 2 ≈ 16·2^k` enters every step of
+the Section 18 envelope. Both of its terms are artifacts of comparison
+bounds:
+* under the Fejér `θ₁` the budget, `θ₂/2` and δ are above `X^(-2^(5k+21))`
+  (`…_fejer_bounds5`). They were weakened to `fixDegQ k = 2^(k+4) + 7` only
+  because `GenParams.slice_const_le` hard-codes `fixDeg`;
+* the explicit family constants satisfy `Kc k + pc k ≤ 2^(2^(4k+16))`
+  (`family_constants_poly_le`, from the same estimates as
+  `family_constants_tower_le`), not just `2^(2^(2^(k+5)))`. Hence
+  `classV ≤ 2^(2^(4k+13))` (`classV_le_poly`).
+
+This module provides `pDeg k = 5k + 21` with the budget bounds at `pDeg`,
+`GenParams.slice_const_le_deg` (any budget degree `b ≥ 7`, generated from
+`slice_const_le`), `baseCFW_recipPowerLB` (generated from
+`baseCFQ_recipPowerLB`), and `sq_le_three_tDeg`, which carries the η side
+condition `3(k+4)²` once the base budget no longer does. -/
+set_option autoImplicit false
+noncomputable section
+namespace LeanProofs.GowersSzemeredi
+
+/-- The polynomial base-budget degree of the Fejér fixed parameters. -/
+def pDeg (k : Nat) : Nat := 5 * k + 21
+
+theorem seven_le_pDeg (k : Nat) : 7 ≤ pDeg k := by unfold pDeg; omega
+
+theorem five_k_le_pDeg (k : Nat) : 5 * k + 21 ≤ pDeg k := le_rfl
+
+theorem k_succ_le_two_pow_pDeg (k : Nat) : k + 1 ≤ 2 ^ pDeg k := by
+  have h : k + 1 < 2 ^ (k + 1) := Nat.lt_two_pow_self
+  exact h.le.trans (Nat.pow_le_pow_right (by norm_num) (by unfold pDeg; omega))
+

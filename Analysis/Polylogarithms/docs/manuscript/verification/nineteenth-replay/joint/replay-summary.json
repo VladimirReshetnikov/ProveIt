@@ -1,0 +1,93 @@
+{
+  "part": "joint",
+  "source_folder": "stieltjes-harmonic-resonance/continuations/joint-polygamma-multiscale",
+  "commands": [
+    {
+      "arguments": {
+        "kind": "cpp",
+        "source": "verification/verify_gap_eight.cpp",
+        "arguments": [
+          "4",
+          "8192"
+        ],
+        "output": "verification/gap_eight_certificate.json"
+      },
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "verification/verify_gap_eight_bridge.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "verification/create_gap_eight_example.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "verification/verify_gamma_cumulants.py",
+        "--dps",
+        "36",
+        "--nodes",
+        "56",
+        "--output",
+        "verification/gamma_cumulant_checks.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "verification/verify_gamma_cumulants.py",
+        "--dps",
+        "46",
+        "--nodes",
+        "72",
+        "--output",
+        "verification/gamma_cumulant_checks_46dps.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "verification/stieltjes_contacts.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "verification/verify_stieltjes_contacts.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "verification/identity_audit.py"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "fresh_result_files": [
+    "verification/gamma_cumulant_checks.json",
+    "verification/gamma_cumulant_checks_46dps.json",
+    "verification/gap_eight_14_22_example.json",
+    "verification/gap_eight_bridge_checks.json",
+    "verification/gap_eight_certificate.json",
+    "verification/identity_audit.json",
+    "verification/stieltjes_contact_checks.json"
+  ],
+  "source_code_sha256": {
+    "build.py": "35be3cb67bb0fc5e6c7a6e919d7fc883cc261364cb3fab52bd3380a768bc9c16",
+    "verification/create_gap_eight_example.py": "3a9b5d373ec41f678c2bbf1c19212deb78f1e38c6d468b1be81fc8b633782c88",
+    "verification/identity_audit.py": "016e72146ebb5ab13e798d1af92fa427439b7c6fa1e012eb57e138927587f079",
+    "verification/stieltjes_contacts.py": "879b421c894add19be45e6e3c81f44d8921c1fa75336459a5a91499404026850",
+    "verification/verify_gamma_cumulants.py": "924b730cdc3a9d4dd81b0ff94a9e2cdcd187ebb1e33d25b35b69b9a86d9064bb",
+    "verification/verify_gap_eight.cpp": "0b8c124200dcb3baca4d26ce568717a138825f42afe4a25d973eba16916a4293",
+    "verification/verify_gap_eight_bridge.py": "025cf58d75b6c9b503fe821e23904a76fdd941bfae94942f04e51c63f20f8021",
+    "verification/verify_stieltjes_contacts.py": "00ce9f2b2c5722566c2a6f639d32b129dd84bcc23eff5740250278e0f5d7a260"
+  },
+  "passed": true,
+  "scope": "Complete specified mathematical suites, freshly run on isolated copies with assertions and UTF-8 enabled. Exact finite assertions, numerical diagnostics and canonical analytic acceptance are separate. The joint suite freshly compiles and reproduces the entire exact gap-eight certificate. No package-manifest verification or original document rebuild is performed."
+}
