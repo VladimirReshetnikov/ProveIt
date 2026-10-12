@@ -4,6 +4,7 @@ import GowersSzemeredi.Proofs18CoverFejerLowDegrees
 import GowersSzemeredi.Proofs18CoverFejerShortLengths
 import GowersSzemeredi.Proofs16PolynomialFejer
 import GowersSzemeredi.Proofs18CoverFejerHeadlineQ
+import GowersSzemeredi.Proofs18CoverHeadlineFrom
 
 /-! **Theorem 18.1 at `d + 6` and Theorem 18.2 / Corollary 18.7 at `L + 4`
 in every degree and length** (Notes L.16d).
@@ -162,5 +163,10 @@ theorem van_der_waerden_L3 {k : Nat} (hk : 14 ≤ k) {r : Nat} (hr : 2 ≤ r) (N
     (hN : szemerediThresholdAt 3 (1 / (r : Real)) k ≤ N) (color : Nat → Fin r) :
     HasMonochromaticAP N r color k :=
   (theorem_18_2_L3_fourteen_le hk).van_der_waerden hr N hN color
+
+/-- **Theorem 1.3 with constant `2^(-2^(k+3))` for every `k ≥ 14`** (printed:
+`2^(-2^(k+9))`; every `k`: `2^(-2^(k+4))`, `theorem_1_3_L4`). -/
+theorem theorem_1_3_L3_fourteen_le : Theorem13AtFrom 3 14 :=
+  theorem13AtFrom_of_sharp fun _ hk => theorem_18_2_L3_fourteen_le hk
 
 end LeanProofs.GowersSzemeredi

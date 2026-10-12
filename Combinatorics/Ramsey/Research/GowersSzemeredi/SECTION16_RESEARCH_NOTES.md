@@ -5010,8 +5010,10 @@ L.16g's squaring governs the small-dimension peak, not the asymptotics.
   stub-checked with the same stub axioms as before, and pinned in
   `CompletionAudit.lean`.
 
-Theorem 1.3 needs `Theorem182AtSharp c k` for *every* `k`, so it stays at
-`2^(−2^(k+4))`.
+Theorem 1.3's derivation uses one length at a time (`theorem13AtFrom_of_sharp`,
+`Proofs18CoverHeadlineFrom`), so it holds with constant `2^(−2^(k+3))` for
+every `k ≥ 14` (`theorem_1_3_L3_fourteen_le : Theorem13AtFrom 3 14`); for
+every `k` it stays at `2^(−2^(k+4))`.
 
 *The plan as carried out.*
 1. The refined split invariant (`splitPairWith`, Nat arithmetic) and the
