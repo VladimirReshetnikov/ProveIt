@@ -1149,6 +1149,7 @@ import GowersSzemeredi.Proofs16Lemma5With
 import GowersSzemeredi.Proofs16DenseSelectionWith
 import GowersSzemeredi.Proofs16IntegerPrintedCorollary
 import GowersSzemeredi.Proofs13PrintedSquareBounds
+import GowersSzemeredi.Proofs13IntegerSparseSquare
 import GowersSzemeredi.Proofs16PolyPieceTwoDataWith
 import GowersSzemeredi.Proofs16PolyCoverTwoFejer
 import GowersSzemeredi.Proofs18FejerSeedCounts

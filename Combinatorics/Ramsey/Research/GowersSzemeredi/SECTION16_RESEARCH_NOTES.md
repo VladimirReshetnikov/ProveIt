@@ -5277,6 +5277,27 @@ stronger extraction has been found. The updated source-obligation ledger
 therefore keeps that precise upstream obligation open. The full goal is
 not complete.
 
+### L.33 Ordinary square extraction in the one-point density regime (2026-10-11)
+
+`Proofs13IntegerSparseSquare` constructs ordinary intervals through both
+coordinates of a retained point. The start is `min(x,N-m)`, so each axis
+has positive step one, exactly `m` points, lies inside `[0,N)`, and contains
+the chosen residue. For any nonempty bilinear set, `delta*m^2<=1` supplies
+the entire requested mass. No field hypothesis is needed when `N>=2`.
+
+For the printed contextual Corollary 13.10, choose `m=floor(sqrt(|U|))`.
+Its original real square-root-minus-one lower bound holds. The original
+density is supplied whenever its one-point budget is at most one, and
+this is automatic for `N<=2^86*alpha^(-416)` because `m^2<=|U|<=N`.
+Every output has integer representatives, and its retained set is contained
+in the preceding bilinear piece. Neither a grid nor a geometric conclusion
+is assumed as a premise.
+
+`IntegerSparseSquareAudit` passes over 1,530 native modules and checks the
+five new theorems with only the approved axioms. The unrestricted larger
+budget regime and the stronger original Lemma 13.6 extraction remain open;
+this is a range result, not a completion claim.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
