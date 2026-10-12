@@ -942,7 +942,7 @@ delivery source, receipt, README, PDF or provenance is rewritten.
 | `cubic-gamma-normal-form` | Full exact, endpoint, exploratory and numerical suites pass. The earlier all-index Conjecture 9.1 has exactly the current C_j normalization and is proved by Theorem 8.139. Its local infinite-jet question is answered by Theorem 8.140. Preserve the original unproved status as history. Other specialized endpoint, spectral and Stieltjes applications await their separate analytic integration. |
 | `higher-identities` | Accept the complete Euler-homotopy compensator and analytic primitive series in Section 8.46. Its independently obtained analytic normal generator overlaps Theorem 8.140 and receives explicit credit. Fresh C++ compilation reproduces every field of all 73722 finite gap-ten records; the direct independent checks and all exact/numerical subsidiary programs pass. The unmodified wrapper's byte comparison fails, then a structured comparison fails only on a descriptive serialization identifier. Preserve both failures and qualify the final copy-only portable comparator: every mathematical CSV/JSON value agrees, identifiers are recorded separately, source computations are unchanged. Full gap-ten analytic completion and the Gamma null basis remain pending canonical proof review. The original all-compensator full-support/sign conjecture is now proved by the collective single-integral theorem below; its weight-24 probe remains historical finite evidence. |
 | `mixed-tail-anchor-reductions` | The complete exact/numerical runner passes: 369 exact checks and three corruption controls, including J7/K8/K9 relations and the unequal odd-tail telescoper. Keep compiler bounds and ordinary-convergence conditions. These MZV anchors do not establish arithmetic independence or settle the unrestricted even-tail prefix theorem; canonical analytic integration remains pending. |
-| `rational-hankel-polylogarithms` | All four supplied compiler, structure, spectral and numerical suites pass. Keep rational-pole domains, endpoint anchors, confluent pole budgets and classical norm attribution. Formal sharpness differs from minimal period weight; complete analytic reconciliation remains pending. |
+| `rational-hankel-polylogarithms` | All four supplied compiler, structure, spectral and numerical suites pass. Keep rational-pole domains, endpoint anchors, confluent pole budgets and classical norm attribution. Accept the confluent pole-allocation bound, terminating anchored two-letter compiler, all-rank quadratic-denominator alphabet, Euler primitives and per-element differential equation in Section 8.47, with full analytic proofs. Accept the shifted-double-pole generator and its ordinary endpoint. Formal sharpness, compressed Hahn norms, endpoint principal-part jets and spectral/Stieltjes identities retain separate pending canonical audits; formal sharpness differs from minimal period weight. |
 | `universal-gamma-coefficients-replay` | Independent weight-28 coefficient and 80-digit diagnostic suites pass. The all-index theorem agrees with Theorem 8.139; its distinct source and proof are retained without double-counting closure. The delivered build report explicitly confirms a typeset PDF; it does not certify a new human visual review. |
 
 The canonical extension supplies every zero-constant H_m by B K^{-1}(A_m-N_m),
@@ -1021,3 +1021,35 @@ Four real/complex numerical ODE cases, two Taylor cases and two paired
 antiderivative cases pass at 80 digits, without interval certification.
 Original reports and earlier evidence remain unchanged; this model is a
 collective continuation rather than an imported new report.
+
+
+## Finite alphabets for all rational Hankel ranks, October 12, 2026 (Pacific)
+
+Reconcile the twentieth rational-hankel-polylogarithms continuation into
+Section 8.47. The formal factorization B+sum V_a C_a V_a^T places harmonic
+dependence in confluent pole minors. A k-row local minor has weight at most
+k(s-k+1), so the r largest positive marginals s,s-2,s-4,... give W_r.
+This invariant is harmonic weight, distinct from ordinary degree and rank.
+Shift merging preserves harmonic weight plus inverse-cutoff order.
+Quasi-shuffles and anchored two-letter rational Hermite reduction then
+prove a finite MPL expression at every rank, with no hidden constants.
+All reduced denominators of degree at most two use only 1,L,L^2,Li2.
+Polynomial parts and separated nonpositive integer poles are included.
+
+The finite differential module has at most 2^W_infinity generators;
+each individual function has a scalar ODE of that order or less. No
+common scalar equation for every rank or minimal period weight is claimed.
+The explicit shifted-double-pole generator has a rigorously convergent
+ordinary zeta endpoint, retaining the combined cancellation in integration
+by parts. Credit the original report and classical Hoffman quasi-shuffle
+and Panzer integration methods; no historical novelty claim is added.
+
+New independent exact checks cover 2793 allocation cases, 32 formal
+determinant gradings, 240 moment-matrix entries, 360 ordered ensemble
+identities, and 41 double-pole Taylor coefficients. Eleven native symbolic
+checks include 31 Taylor coefficients, analytic cancellation boundaries
+and corruption controls. Three 80-digit generator comparisons and one
+endpoint quadrature remain diagnostics, not interval certificates. The
+written proofs, rather than finite checks, establish arbitrary rank.
+The preserved four-suite replay remains valid on unchanged originals;
+unaccepted sharpness, Hahn, endpoint-jet and spectral claims stay pending.

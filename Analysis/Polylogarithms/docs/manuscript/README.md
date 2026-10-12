@@ -7,18 +7,18 @@ organized as four volumes. Each has its own source and compiled PDF.
 |---|---|---|---:|
 | I | Polylogarithm identities, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 130 |
 | II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 129 |
-| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 244 |
+| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 248 |
 | IV | Gamma grids, CM lattice periods, class products and Herglotz arithmetic | [Gamma Grids, CM Periods and Herglotz Arithmetic](volumes/volume-4-cm-and-herglotz.pdf) | 85 |
 
 The volumes partition all twelve chapters and the literature appendix.
 Chapter, theorem and equation numbering is retained so research-report
 citations stay stable. Cross-volume references link to their exact PDF
 destinations; keep the four PDFs together. Each volume has its own contents
-and the shared bibliography of 140 references. The scientific text is shared
+and the shared bibliography of 141 references. The scientific text is shared
 through chapter files and [preamble.tex](preamble.tex), avoiding duplicate
 copies of proofs. See [volume sources and build instructions](volumes/README.md).
 The [combined source](polylogarithms.tex) and its
-[547-page combined snapshot](polylogarithms.pdf) remain available.
+[552-page combined snapshot](polylogarithms.pdf) remain available.
 
 The [inventory](source-inventory.json) accounts for **1,794 textual source
 files**, including overlapping articles, fragments and correction registers.
@@ -397,3 +397,12 @@ specified analytic germs. The all-degree harmonic coefficient identity and
 two ordinary antiderivatives follow. Projection precedes specialization,
 and zero-constant normalization fixes the primitive. Higher amplitude
 resummations remain separate research questions.
+
+
+Section 8.47 proves a finite MPL alphabet for rational Hankel determinants
+at every rank. Confluent pole multiplicities determine a uniform weight
+budget that survives shift corrections and anchored integration. Reduced
+denominators of degree at most two require only 1,L,L^2,Li2, with arbitrary
+polynomial part and integer pole separation. A shifted-double-pole example
+has an ordinary zeta endpoint. Sharpness and spectral refinements remain
+separate pending proofs; functional weight is not arithmetic independence.

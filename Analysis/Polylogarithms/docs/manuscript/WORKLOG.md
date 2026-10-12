@@ -895,3 +895,21 @@ scope and open higher amplitude questions. Independent exact checks cover
 weight thirty; native symbolic branch/ODE/Taylor controls pass. Rebuild all
 five PDFs and review changed scientific bodies before publication. The
 final editions have 130/129/244/85 pages and combined 547, 140 references.
+
+
+## Rational Hankel alphabet, October 12, 2026 (Pacific)
+
+With incoming unchanged, audit and integrate the preserved rational-Hankel
+compiler core. Give full confluent minor allocation, cutoff-cost transport,
+anchored rational integration and finite-alphabet proofs. Separate harmonic
+degree, weight, rank and arithmetic independence. Include the all-rank
+quadratic-denominator consequence, Euler primitives, per-element scalar
+ODEs, and the ordinary shifted-double-pole endpoint with its cancellation.
+Credit the original report and classical methods. Preserve pending
+sharpness, Hahn, endpoint-jet and spectral scopes and unchanged originals.
+
+Independent exact and native checks pass. Rebuild and inspect all five final
+PDFs, then review every changed scientific body. Final pages [130, 129, 248, 85],
+combined 552, references 141. The finite checks support implementation;
+written proofs establish all ranks. General harmonic rank and Gaussian
+S6/revised S8 remain open. No new archive arrived during this work.

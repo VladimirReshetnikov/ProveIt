@@ -1,3 +1,43 @@
+# All-rank rational Hankel polylogarithm alphabets
+
+October 12, 2026 (Pacific). Section 8.47 integrates the audited compiler
+core of the twentieth rational-hankel-polylogarithms report. The confluent
+factorization proves the optimized harmonic-weight budget W_r by selecting
+the r largest positive pole marginals s,s-2,s-4,... . Integer-shift merging
+preserves harmonic weight plus inverse-cutoff order. Quasi-shuffles and
+an explicit anchored two-letter Hermite recursion give an exact finite MPL
+expression on |z|<1 at every rank. Arbitrary polynomial parts are allowed;
+all poles lie at nonpositive integers. Reduced denominator degree at most
+two gives the alphabet 1,L,L^2,Li2 uniformly in rank. Euler primitives and
+per-element scalar ODEs follow from a finite differential module. No common
+scalar ODE for every rank or minimal period-weight theorem is asserted.
+
+The shifted-double-pole generator and its ordinary convergent zeta endpoint
+have full proofs, retaining the cancellation of two individually divergent
+integrands. Classical quasi-shuffle and hyperlogarithm integration methods
+are credited to Hoffman and Panzer. Original report evidence is preserved,
+and its sharpness, Hahn compression, endpoint-jet and spectral/Stieltjes
+branches retain separate pending canonical audits.
+
+Independent finite exact checks: 2793 allocation cases, 32 formal gradings,
+240 matrix entries, 360 ordered ensembles, 41 double-pole Taylor coefficients
+and four corruption controls. Eleven native symbolic checks include all
+31 coefficients through cutoff thirty, the shifted generating identity,
+ordinary endpoint cancellation boundaries and Euler beta weight. Three
+80-digit generator sums and one endpoint quadrature are diagnostics, not
+interval certificates. The written proofs establish arbitrary rank.
+
+Final pages 130/129/248/85 (592 total), combined 552,
+141 references. Three coupled rounds, three serial combined passes and
+three cold passes for each volume pass without final log issues. All 40
+external destinations resolve. Full-size visual review covers 10 changed
+volume bodies and 3 unmatched combined bodies; 582 volume bodies
+and 543 combined bodies match the preceding reviewed edition, while
+6 changed combined bodies match freshly reviewed volumes. Only centered
+footer numbers are excluded, with all other bounds checked. No current
+contact sheet was opened. Authorship remains ProveIt Contributors; all
+delivered sources remain unchanged. No Lean or remote-CI claim is made.
+
 # Rational-pole amplitude sectors in classical dilogarithms
 
 October 12, 2026 (Pacific). Theorem 8.145 gives the linear and quadratic
