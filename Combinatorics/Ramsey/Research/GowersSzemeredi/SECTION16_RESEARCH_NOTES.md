@@ -5965,6 +5965,42 @@ must settle the precise ordinary-integer geometry required by each source
 statement. The full exported-facade build is also incomplete. The source
 inventory count alone does not settle either requirement; the goal stays active.
 
+### L.36 Explicit shared natural axes (2026-10-12)
+
+`NaturalAxesFidelityAudit` passes over1,616 native modules, checking twelve
+new positive results and a separate weaker-geometry counterexample, with only
+the approved axioms. The expanded upstream CompletionAudit also passes,
+including the L+3 bounds in every length and L+0 for lengths>=19, and d+5
+in every inverse degree and d+2 for degrees>=17. This remains separate from
+the incomplete broad facade and semantic/source-fidelity review.
+
+The former Theorem13.12 certificate recorded equal modular steps and separate
+integer representatives. Those predicates alone do not express one shared
+ordinary step. Modulo7, the parameterizations `(0,3,2)` and `(4,3,2)` have
+step3 and representative sets `{0,3}` and `{0,4}`. Their positive integer
+steps must be3 and4, so there is no common ordinary step. The explicit
+refutation is not counted as a proof of that implication or a refutation of
+Theorem13.12.
+
+`Proofs13NaturalSquareAxes` retains the actual NatAP witnesses already
+constructed by the near-one, two-by-two and large-width branches. It records
+both positive-step properness certificates, equality of natural steps,
+bounded carriers, equal lengths, all printed numerical conditions, bilinear
+agreement and the Fourier condition. A proved bridge recovers the previous
+modular statement without weakening the new certificate.
+
+`Proofs13SparseNaturalAxes` records the actual unit-step ordinary intervals
+in the one-point regime of Corollary13.10, with the printed square-root side
+bound and density. Its generic construction also extends to every nonzero
+modulus, without primality. The unrestricted extra geometry remains a
+separate question; the complete source review must derive which forms of
+progression each original statement requires rather than infer them from
+injection or modular-step equality.
+
+The annotated paper records the counterexample and explicit stronger square
+certificate. Its116-page PDF was rebuilt twice and inspected at page30.
+The original published PDF is preserved. The goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
