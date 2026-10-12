@@ -1237,6 +1237,7 @@ import GowersSzemeredi.Proofs18CoverDensityFejerJ
 import GowersSzemeredi.Proofs18CoverExponentsFejerJ
 import GowersSzemeredi.Proofs18CoverFejerHeadlineJ
 import GowersSzemeredi.Proofs18CoverFejerLowDegrees4
+import GowersSzemeredi.Proofs18CoverFejerHeadlineK
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
