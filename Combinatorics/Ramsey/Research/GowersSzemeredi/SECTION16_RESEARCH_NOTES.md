@@ -5075,6 +5075,13 @@ runtime `Nat.pow` panics on exponents above `2^24` ("Nat.pow exponent is too
 big", with no source position). Hence `linarith only [...]` throughout, and
 `add_le_add` terms near the huge powers.
 
+*Step 2 (done).* `Proofs18TightClassesFejerS` (light):
+`split_pair_small_quad` proves `2^(l+6)·a_l ≤ 2^(4·2^l)` and
+`D_l ≤ 2^(4·2^l + 3(l+4)² + 30)` in every dimension `l ≥ 2`, from the seed
+`(32, 2^48)`. `splitUniformClass_all_small` gives the split classes at
+`splitPairWith 32 (2^48) l`. `polyCoverAt_classS` gives the class covers at
+`uDegS l = 2^(4·2^l + 3(l+4)² + 32)`, against `uDegQ`'s `14·2^l + 3(l+4)² + 2`.
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`
