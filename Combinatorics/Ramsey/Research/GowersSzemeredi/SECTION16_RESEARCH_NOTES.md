@@ -4865,6 +4865,40 @@ The Lemma 16.3 rounding remark stands on its own. The density
 dimension-two counts θ is the piece budget, so the actual exponent would
 lower the seed from about `2^46` to `2^43`. No headline constant changes.
 
+**L.16g: where the class recursion squares (analysis, 2026-10-12).** L.16f
+traced the `d + 5` barrier to `a_{l+1} ≈ 2^(l+5)·a_l²`. The square enters
+in one place, the family affine lift:
+* `section16_local_affine_lift_family` (`Proofs16FamilyAffineLift`): each
+  member `a ∈ ι` samples `r` last-coordinate values, and needs
+  `6·q·max(1,|ι|) ≤ r·τ`. Here `q` is the number of candidate line maps per
+  point, and the per-member loss is `τ/|ι|`, so that the common good set
+  loses `2τ` (`section16_box_recovered_good_set`: a candidate line carrying
+  a `τ′/q` fraction is hit twice by `6q/τ′` samples).
+* In the class step `q ≤ q_Γ ≤ Q_r(ρ/8)`, the remainder count. That is a
+  product of `2^k` vertex counts, each `(M+1)^a·W^D` at `M = n·m` pieces, so
+  `r = famPieceSamples ≈ 24·Q_r·M/ρ ≈ M^(a·2^k + 1)`.
+* The sampled slices form one relation with `M·r` members, and the
+  dimension-`k` class covers it at count `Pb = (M·r + 1)^a·W^D`, which is
+  `M^(a·(a·2^k + 2))`. This is `sPbN = a·(sSN + 1)` with `sSN = a·2^k + 1`:
+  the square.
+
+Natural repairs fail:
+* *A shared sample for all members.* The good set must be common, so the
+  member losses still add.
+* *Covering the line coefficients instead of the slices.* That is still
+  `M·q` relations, the same polynomial in `n`.
+* *Fewer samples.* `r ∝ q/τ′` is what hitting every heavy candidate twice
+  costs.
+
+One avenue remains open. The `q` candidates are restrictions of the
+`Q_r` multilinear maps of the remainder cover, and those are already
+multilinear. If the slice cover could be organized per remainder map, so
+that a slice is compared with a known multilinear map rather than covered
+afresh, the next count might become *additive* in `a` instead of
+multiplicative. That would need a new form of Lemma 16.10's lift, not a
+change of parameters. Until then `d + 6` / `L + 4` is the limit of this
+route.
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`
