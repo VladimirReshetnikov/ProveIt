@@ -120,7 +120,7 @@ theorem theorem_16_2_polynomial_implies_printed : theorem_16_2 := fun k =>
 
 /-- **Corollary 16.11 with polynomial exponents** in every dimension `k + 1 ≥ 3`:
 a box of width `N^e` carrying a multilinear frequency on an `e` fraction, with
-`e⁻¹ ≤ (2/α)^(2^(236·2^k + k + 24))` (printed: a tower in `1/α`). -/
+`e⁻¹ ≤ (2/α)^(2^(236·2^k + k + 24))` (printed: `e⁻¹ = exp(poly(1/α))`). -/
 theorem corollary_16_11_polynomial {k : Nat} (hk : 2 ≤ k) :
     ∀ alpha : Real, 0 < alpha → alpha ≤ 1 / 2 →
       ∃ e : Real, 0 < e ∧ e⁻¹ ≤ (2 / alpha) ^ (2 ^ (236 * 2 ^ k + k + 24)) ∧

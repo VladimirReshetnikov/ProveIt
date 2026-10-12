@@ -4302,7 +4302,10 @@ and `theorem_16_2_polynomial_implies_printed : theorem_16_2`; stub axiom
 
 **L.15j: Corollary 16.11 with polynomial exponents.** The printed Corollary
 16.11 gives width `N^e` and frequency density `e` with
-`e = section16CorollaryExponent α k`, a tower in `1/α`. The single-piece step
+`e = section16CorollaryExponent α k = (α/8)·C(r⁻¹α/8, α/2)^r`, where
+`r = 4α⁻²·s(α/4, α/2)` is polynomial in `1/α`; hence `e⁻¹ = exp(poly(1/α))`,
+exponential in a polynomial of `1/α` (the first L.15j draft wrongly called it
+a tower). The single-piece step
 with the joint-cover remainder gives the same conclusion with
 `e = min(Eloc, box density)` and `e⁻¹ ≤ (2/α)^(2^(236·2^k + k + 24))`,
 polynomial in `1/α` (`Proofs16PolynomialCorollary`, light:
