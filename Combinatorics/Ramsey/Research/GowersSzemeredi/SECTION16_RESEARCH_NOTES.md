@@ -5013,7 +5013,12 @@ L.16g's squaring governs the small-dimension peak, not the asymptotics.
 Theorem 1.3's derivation uses one length at a time (`theorem13AtFrom_of_sharp`,
 `Proofs18CoverHeadlineFrom`), so it holds with constant `2^(−2^(k+3))` for
 every `k ≥ 14` (`theorem_1_3_L3_fourteen_le : Theorem13AtFrom 3 14`); for
-every `k` it stays at `2^(−2^(k+4))`.
+every `k` it stays at `2^(−2^(k+4))`. The polynomial Theorem 16.2 and Corollary 16.11 improve as well
+(`Proofs16PolynomialFejerQ`; bridge `theorem_16_2_polynomial_fejerQ`,
+`corollary_16_11_polynomial_fejerQ`): graph-count exponent
+`14·2^k + 3(k+4)² + 2` (better than `23·2^k` for `k ≥ 5`), and
+`e⁻¹ ≤ (2/α)^(2^(58·2^k + 9(k+4)² + k + 30))` (better than `101·2^k` for
+`k ≥ 2`).
 
 *The plan as carried out.*
 1. The refined split invariant (`splitPairWith`, Nat arithmetic) and the

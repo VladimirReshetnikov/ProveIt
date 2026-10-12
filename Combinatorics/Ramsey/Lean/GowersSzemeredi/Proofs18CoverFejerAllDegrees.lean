@@ -5,6 +5,7 @@ import GowersSzemeredi.Proofs18CoverFejerShortLengths
 import GowersSzemeredi.Proofs16PolynomialFejer
 import GowersSzemeredi.Proofs18CoverFejerHeadlineQ
 import GowersSzemeredi.Proofs18CoverHeadlineFrom
+import GowersSzemeredi.Proofs16PolynomialFejerQ
 
 /-! **Theorem 18.1 at `d + 6` and Theorem 18.2 / Corollary 18.7 at `L + 4`
 in every degree and length** (Notes L.16d).
@@ -168,5 +169,41 @@ theorem van_der_waerden_L3 {k : Nat} (hk : 14 ≤ k) {r : Nat} (hr : 2 ≤ r) (N
 `2^(-2^(k+9))`; every `k`: `2^(-2^(k+4))`, `theorem_1_3_L4`). -/
 theorem theorem_1_3_L3_fourteen_le : Theorem13AtFrom 3 14 :=
   theorem13AtFrom_of_sharp fun _ hk => theorem_18_2_L3_fourteen_le hk
+
+/-- **Theorem 16.2 with polynomial controls with additive slack**, in every
+dimension `k ≥ 1`: graph count `max(1, (4V/(γθρ))^uDegQ k)`, `log₂ uDegQ k = 14·2^k + 3(k+4)² + 2` with
+`V = 2^(2^(2^(k+4)+1))`, and width exponent its inverse (the printed route
+gives `2^(68·2^k)`). -/
+theorem theorem_16_2_polynomial_fejerQ {k : Nat} (hk : 1 ≤ k) :
+    PolyCoverAt k (uCount (2 ^ (2 ^ tightMuV k)) (uDegQ k))
+      (uExp (2 ^ (2 ^ tightMuV k)) (uDegQ k)) :=
+  theorem_16_2_polynomial_fejerQ_of_profiles
+    (fun k => ⌈multiaffinePartitionK (k + 1) (2 ^ (k + 1))⌉₊)
+    (fun k => (k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1)))
+    (fun k => two_le_ceil_multiaffinePartitionK (k + 1) (2 ^ (k + 1)))
+    (fun k => Nat.mul_pos (Nat.succ_pos k) (multiaffinePartitionP_pos _ _))
+    (fun k _ => section16RecurrenceProfileWith_explicit k)
+    (fun k => explicit_family_constants_le k) hk
+
+/-- **Corollary 16.11 with polynomial exponents with additive slack**, in
+every dimension `k + 1 ≥ 3`: `e⁻¹ ≤ (2/α)^(2^(58·2^k + 9(k+4)² + k + 30))` (the printed
+route gives `236·2^k + k + 24`; the printed statement `e⁻¹ = exp(poly(1/α))`). -/
+theorem corollary_16_11_polynomial_fejerQ {k : Nat} (hk : 2 ≤ k) :
+    ∀ alpha : Real, 0 < alpha → alpha ≤ 1 / 2 →
+      ∃ e : Real, 0 < e ∧ e⁻¹ ≤ (2 / alpha) ^ (2 ^ (58 * 2 ^ k + 9 * (k + 4) ^ 2 + k + 30)) ∧
+        ∃ N0 : Nat, ∀ (N : Nat) [NeZero N] [Fact N.Prime], N0 ≤ N →
+          ∀ f : ZMod N → Complex, DiscValued f → ¬ UniformOfDegree f alpha (k + 2) →
+            ∃ P : Box N (k + 1), ∃ mu : Point N (k + 1) → ZMod N,
+              IsMultilinear mu ∧ (N : Real) ^ e ≤ P.width ∧
+              e * P.carrier.card ≤ section16LargeMultilinearFrequencyCount f P mu alpha := by
+  intro alpha ha ha2
+  obtain ⟨e, he0, hei, hN⟩ := corollary_16_11_polynomial_fejerQ_of_profiles
+    (fun k => ⌈multiaffinePartitionK (k + 1) (2 ^ (k + 1))⌉₊)
+    (fun k => (k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1)))
+    (fun k => two_le_ceil_multiaffinePartitionK (k + 1) (2 ^ (k + 1)))
+    (fun k => Nat.mul_pos (Nat.succ_pos k) (multiaffinePartitionP_pos _ _))
+    (fun k _ => section16RecurrenceProfileWith_explicit k)
+    (fun k => explicit_family_constants_le k) hk alpha ha ha2
+  exact ⟨e, he0, pw_mono (two_div_ge_two ha ha2) hei (expDegQ_tight_le (by omega)), hN⟩
 
 end LeanProofs.GowersSzemeredi

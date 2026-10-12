@@ -33,6 +33,7 @@ map").
 | `assemble_febq.py` | `Proofs18FejerEnvelopeBaseQ` | `Proofs18GenericEnvelopeBase` (atom `2^(k+5)` ↦ `5k+14`) |
 | `assemble_coverq.py` | `Proofs18Cover{Modulus,Density,Exponents}FejerQ` | the `…Fejer` modules (`uDegQ`, `fixDegQ`) |
 | `assemble_headq.py` | `Proofs18CoverFejerHeadlineQ` | `Proofs18CoverFejerHeadline` (+ hand-written closed forms) |
+| `assemble_polyq.py` | `Proofs16PolynomialFejerQ` | `Proofs16PolynomialFejer` |
 | `assemble_polyf.py` | `Proofs16PolynomialFejer` | `Proofs16PolynomialStructure`, `…Corollary` |
 | `mkstub_fejer18.py`, `mkstub_auditfejer.py` | stub checks of `Proofs18CoverFejerAllDegrees` and the Fejér block of `CompletionAudit.lean` | — |
 

@@ -165,7 +165,9 @@ run_cmd do
     ``LeanProofs.GowersSzemeredi.theorem_18_2_L3_fourteen_le,
     ``LeanProofs.GowersSzemeredi.corollary_18_7_L3_fourteen_le,
     ``LeanProofs.GowersSzemeredi.van_der_waerden_L3,
-    ``LeanProofs.GowersSzemeredi.theorem_1_3_L3_fourteen_le
+    ``LeanProofs.GowersSzemeredi.theorem_1_3_L3_fourteen_le,
+    ``LeanProofs.GowersSzemeredi.theorem_16_2_polynomial_fejerQ,
+    ``LeanProofs.GowersSzemeredi.corollary_16_11_polynomial_fejerQ
   ]
   for name in fejer do
     let info ← getConstInfo name

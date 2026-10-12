@@ -1182,6 +1182,7 @@ import GowersSzemeredi.Proofs18CoverDensityFejerQ
 import GowersSzemeredi.Proofs18CoverExponentsFejerQ
 import GowersSzemeredi.Proofs18CoverFejerHeadlineQ
 import GowersSzemeredi.Proofs18CoverHeadlineFrom
+import GowersSzemeredi.Proofs16PolynomialFejerQ
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
