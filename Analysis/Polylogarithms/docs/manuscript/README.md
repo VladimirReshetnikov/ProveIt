@@ -5,20 +5,28 @@ organized as four volumes. Each has its own source and compiled PDF.
 
 | Volume | Material | PDF | Pages |
 |---|---|---|---:|
-| I | Polylogarithm identities, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 140 |
+| I | Polylogarithm identities, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 144 |
 | II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 130 |
-| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 249 |
+| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 253 |
 | IV | Gamma grids, CM lattice periods, class products and Herglotz arithmetic | [Gamma Grids, CM Periods and Herglotz Arithmetic](volumes/volume-4-cm-and-herglotz.pdf) | 86 |
+
+A mixed cubic Hurwitz-tail family now has explicit polynomial telescoping
+certificates. Three linear conditions give rational ordinary sums in every
+degree, with first value **-4037/108**. The proof, full finite certificate,
+and precise scope are in the section “Rational identities for a mixed cubic
+Hurwitz tail” in Volume III. This resolves the proposed (2,2,3) construction
+within the stated certificate class; broader arithmetic classification
+remains open.
 
 The volumes partition all twelve chapters and the literature appendix.
 Chapter, theorem and equation numbering is retained so research-report
 citations stay stable. Cross-volume references link to their exact PDF
 destinations; keep the four PDFs together. Each volume has its own contents
-and the shared bibliography of 145 references. The scientific text is shared
+and the shared bibliography of 148 references. The scientific text is shared
 through chapter files and [preamble.tex](preamble.tex), avoiding duplicate
 copies of proofs. See [volume sources and build instructions](volumes/README.md).
 The [combined source](polylogarithms.tex) and its
-[562-page combined snapshot](polylogarithms.pdf) remain available.
+[570-page combined snapshot](polylogarithms.pdf) remain available.
 
 The [inventory](source-inventory.json) accounts for **1,810 textual source
 files**, including overlapping articles, fragments and correction registers.
@@ -428,3 +436,11 @@ Bessel-polynomial coefficient identity, a finite order spectrum and exact
 order-shift recurrences from two Lagrange inversions. The original report
 and its full replay evidence remain in their single Transseries home.
 Critical-chart and joint-crossover refinements retain separate scopes.
+
+Section 1.8 now proves exact Gamma-moment formulas for every marginal
+logarithmic correction, including a compact third correction, and an exact
+Laplace/convolution pair for powers of the selected Lambert inverse.
+It integrates the incoming order-three chart, proves the Catalan principal
+parts of its rational coefficients, and keeps convergent local expansions
+distinct from the asymptotic coefficient series. Nonmarginal charts and joint
+crossover branches remain separate integration work.

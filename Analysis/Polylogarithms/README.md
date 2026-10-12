@@ -2,17 +2,17 @@
 
 The canonical reading artifact is the collective four-volume manuscript,
 [Polylogarithms and their Arithmetic Bridges](docs/manuscript/README.md),
-authored by **ProveIt Contributors**. The volumes have **140, 130, 249 and
+authored by **ProveIt Contributors**. The volumes have **144, 130, 253 and
 86 pages**, each compiling independently; the retained
-[combined edition](docs/manuscript/polylogarithms.pdf) has **562 pages**.
-They share twelve chapters, thirteen figures and 145 references. The
+[combined edition](docs/manuscript/polylogarithms.pdf) has **570 pages**.
+They share twelve chapters, thirteen figures and 148 references. The
 [editorial ledger](docs/manuscript/EDITORIAL-LEDGER.md) separates accepted
 proofs from pending analytic claims, and the
 [validation record](docs/manuscript/VALIDATION.md) distinguishes proofs,
 finite certificates, numerical diagnostics, PDF builds and visual review.
 
-The inventory covers **1810 textual provenance documents**. **129 incoming
-archives / 4665 original tracked members** are preserved; imported ZIPs are
+The inventory covers **1810 textual provenance documents**. **130 incoming
+archives / 4704 original tracked members** are preserved; imported ZIPs are
 retired in their placement commits and recoverable from arrival history.
 Delivered PDFs, sources, code and receipts retain their original evidence
 scopes. Intake notes use a separate filename, preserving delivered
@@ -673,3 +673,11 @@ phase theorem and physical threshold and develops exact finite
 Bessel-polynomial coefficients, order spectra and shift recurrences.
 Detailed critical charts and crossover refinements remain separate
 integration scopes.
+
+Section 1.8 now proves exact Gamma-moment formulas for every marginal
+logarithmic correction, including a compact third correction, and an exact
+Laplace/convolution pair for powers of the selected Lambert inverse.
+It integrates the incoming order-three chart, proves the Catalan principal
+parts of its rational coefficients, and keeps convergent local expansions
+distinct from the asymptotic coefficient series. Nonmarginal charts and joint
+crossover branches remain separate integration work.

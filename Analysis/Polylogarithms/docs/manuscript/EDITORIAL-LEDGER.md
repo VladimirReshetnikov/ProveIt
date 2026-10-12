@@ -1149,3 +1149,57 @@ all logarithmic corrections and joint crossover refinements retain
 subsequent integration scopes. Local complex folds still do not establish
 global accessibility from the Taylor germ. The manuscript author remains
 ProveIt Contributors; no publication-priority, Lean or interval claim is made.
+
+## Lambert moments and marginal inverse synthesis, October 12, 2026 (Pacific)
+
+Section 1.8 integrates the order-three Lambert inverse chart and the complete
+fixed-order logarithmic coefficient calculus from the twenty-second report.
+Its exact finite Lagrange extraction has rational coefficient functions; the
+collective continuation proves that every pole-order bound is attained and
+computes the Catalan principal part.
+
+A direct Bromwich calculation proves a Laplace identity for every positive
+power of the selected inverse of T-log(T), and Laplace uniqueness gives an
+exact Gamma-density convolution identity. The report's finite logarithmic
+transfer formula collapses to one Gamma moment for each correction polynomial.
+The manuscript gives the differential recurrence and the third centered
+polynomial explicitly, with classical Lambert conventions and related
+probability literature credited. No priority claim is made.
+
+Independent symbolic checks cover correction orders zero through eight,
+eight derivative recurrences and five exact poles via an implicit recursion
+at rational diagnostic A=2. Two precisions check twelve Laplace and nine
+convolution integrals apiece; four corruption controls pass. The all-order
+statements rest on the written proofs, and the numerical integrals are not
+interval enclosures.
+
+The marginal chart and core expansions converge. The transferred coefficient
+series is asserted only to each fixed asymptotic order. In particular, its
+small-parameter Watson integral is truncated: extending the transferred
+density to an integral over the whole positive axis would diverge.
+Nonmarginal critical charts and joint crossover branches remain pending.
+Original reports and their recorded evidence are unchanged.
+
+## Mixed cubic tail certificate family, October 12, 2026 (Pacific)
+
+The third research question of the preserved mixed-tail-anchor-reductions
+continuation motivates the new section on rational identities for
+zeta(2,n+1)^2 zeta(3,n+1). Three explicit linear functionals characterize
+zero-endpoint polynomial certificates of the stated triangular form.
+Their rank is exactly three in every degree at least nine, giving an
+infinite rational ordinary-sum family. The first certificate has an odd
+degree-eleven antiderivative and an even degree-ten weight; its sum is
+-4037/108 after the explicitly prescribed even polynomial subtraction.
+
+The proof derives the three obstructions by finite tail shifts, then uses
+centered parity for absolute convergence and an uncentered Bernoulli
+constant for the rational endpoint. It classifies this polynomial
+certificate class, not all rational evaluations or arithmetic relations
+among MZVs. The (2,3,4) case and the continuation's transport and anchor
+synthesis remain separate open work. No original report has been edited.
+
+Independent exact checks construct nine certificates through antiderivative
+degree 27, verify twelve finite-dimensional kernels, recover the subtraction
+and endpoint independently, and reject four corruptions. At both 70 and 100
+digits, three ordinary partial sums agree with their finite telescopers.
+Endpoint numerical checks are diagnostics, not interval certification.

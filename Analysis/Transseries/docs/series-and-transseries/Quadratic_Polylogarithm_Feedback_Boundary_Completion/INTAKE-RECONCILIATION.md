@@ -54,3 +54,13 @@ physical threshold in the collective Polylogarithms manuscript. It also
 develops finite Bessel-polynomial coefficient and order-spectrum identities.
 The detailed critical charts, full logarithmic corrections and crossover
 refinements remain separate integration work; all original files are intact.
+
+### Marginal integration, October 12, 2026 (Pacific)
+
+Collective Section 1.8 now integrates the order-three material of sections
+03 and 04: the convergent Lambert chart, finite coefficient extraction and
+every fixed-order logarithmic correction. It proves exact Catalan pole
+coefficients, a Laplace/convolution identity and a single Gamma-moment
+formula for the correction polynomials. The report remains unchanged.
+The nonmarginal charts and sections 05 and 06 retain distinct integration
+scopes; local folds still do not establish global accessibility.
