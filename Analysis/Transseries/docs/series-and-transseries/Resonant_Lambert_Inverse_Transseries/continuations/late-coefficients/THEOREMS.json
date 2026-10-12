@@ -1,0 +1,852 @@
+{
+  "schema_version": "1.0",
+  "catalog_title": "Stable theorem and proof-dependency catalog",
+  "article_title": "Sharp Late Coefficients and Borel Continuation of Resonant Lambert Inverses",
+  "article_source": "article.tex",
+  "proof_status_source": "PROOF_STATUS.md",
+  "repository_snapshot": "8f5afd4d7565df808359f6a0c22f87f79a119bb9",
+  "label_policy": "LaTeX labels are stable identifiers; section numbers and theorem numbers may change during integration.",
+  "status_definitions": {
+    "new theorem": "An estimate, proof of a project conjecture, or generalization proved in this report; no worldwide priority claim.",
+    "refinement": "A proved strengthening, explicit correction, or new consequence of identified earlier results.",
+    "inherited/rederived": "An inherited result or expression with an included derivation and, where stated, additional direct estimates.",
+    "imported standard theorem": "Established analytic theory quoted with attribution; its original proof is not reproduced.",
+    "standard-theorem application": "The report verifies a concrete reduction and the hypotheses of imported analytic theory.",
+    "summary of proved results": "A preview assembled from the listed separate proofs, not an independent input."
+  },
+  "global_conventions": {
+    "constants_latex": "A=4\\pi^2,\\quad c=A/4,\\quad d=A^2/288,\\quad b_n=\\Gamma(n)/n",
+    "forward_coefficients_latex": "r_1=-1/4;\\quad r_n=4b_nA^{-n}\\zeta(n)^2\\ (n\\ge2\\text{ even});\\quad r_n=0\\ (n\\ge3\\text{ odd})",
+    "formal_inverse_latex": "V(q,u)+uV(q,u)^2/2+uR(qe^{-V(q,u)})=0,\\quad V=\\sum_{n\\ge1}C_n(u)q^n",
+    "scaled_coefficients_latex": "a_m=A^m(-1)^m r_m,\\quad S_{n,k}=[x^n](\\sum_{m\\ge1}a_mx^m)^k",
+    "parity_functions_latex": "H_0(z)=\\cosh z,\\quad H_1(z)=\\sinh z",
+    "borel_convention_latex": "\\mathcal B(q^n)=\\xi^{n-1}/\\Gamma(n),\\quad\\mathcal S_\\theta f(q)=\\int_0^{e^{i\\theta}\\infty}e^{-\\xi/q}\\widehat f(\\xi)\\,d\\xi",
+    "distinctions": [
+      "q and u are independent for coefficient extraction.",
+      "The scalar constant d differs from the divisor function d(m).",
+      "R includes −t/4; the predecessor’s calligraphic degree-two tail does not.",
+      "thm:finite-phases explicitly permits an arbitrary positive A rather than only the Lambert value."
+    ]
+  },
+  "global_scope_limits": [
+    "Conventional unrefereed mathematical proofs and attributed analytic inputs; no proof-assistant verification is claimed.",
+    "Executed finite checks and floating-point diagnostics are not logical dependencies of the infinite theorems.",
+    "The repository audit established no specific false theorem; the predecessor’s conjectures were explicitly conjectural and its coarser bound was valid.",
+    "All-order inverse-index formulas, the active full lattice, complete local/alien structure, growing-parameter ranges, and certified optimal-truncation remainders remain open as stated in the article."
+  ],
+  "dependency_schema_note": "result_labels lists direct proved-result dependencies. equation_labels identifies the defining data and quantitative estimates used, including estimates derived inline. import_ids resolves to the imports array. Dependency cycles are checked only among result_labels.",
+  "imports": [
+    {
+      "id": "forward_lambert",
+      "description": "Divisor Lambert representation, Mellin expansion, and reflected forward coefficients; standard Gamma/zeta identities.",
+      "bibliography_keys": [
+        "incoming",
+        "DK2021",
+        "BD2026",
+        "DLMF"
+      ],
+      "article_equation_labels": [
+        "eq:F",
+        "eq:mellin",
+        "eq:r-residue",
+        "eq:forward-asym",
+        "eq:R"
+      ]
+    },
+    {
+      "id": "predecessor_reversion",
+      "description": "The predecessor’s exact finite inverse-coefficient formula, signs, Catalan degree, and valuations; rederived in this article.",
+      "bibliography_keys": [
+        "incoming"
+      ],
+      "predecessor_labels": [
+        "thm:inverse-coefficients",
+        "eq:C-formula",
+        "eq:C-degree",
+        "eq:C-valuation"
+      ]
+    },
+    {
+      "id": "forward_borel_kernel",
+      "description": "The predecessor’s logarithmic divisor kernel for the degree-two tail; the current full tail adds −1/4 in Borel space.",
+      "bibliography_keys": [
+        "incoming"
+      ],
+      "predecessor_labels": [
+        "thm:hypergeometric-borel",
+        "eq:borel0"
+      ]
+    },
+    {
+      "id": "sauzin_closure",
+      "description": "Nonlinear substitution, composition/inversion, and summable closure theorems.",
+      "bibliography_keys": [
+        "Sauzin2015"
+      ],
+      "source_theorems": [
+        "3",
+        "5",
+        "3'",
+        "5'"
+      ],
+      "hypotheses": [
+        "Ω is closed and discrete.",
+        "0 belongs to Ω.",
+        "Ω is stable under addition.",
+        "Use zero-constant arguments for convergent analytic substitution and maps x+O(1) for inversion.",
+        "For summability, use the stated directional continuation/growth class."
+      ]
+    },
+    {
+      "id": "exact_forward_completion",
+      "description": "Exact Mellin–Voronoi completion and upper-minus-lower jump J(t)=4πiΣd(m)E₁(Am/t); not inferred from the formal tail alone.",
+      "bibliography_keys": [
+        "incoming"
+      ],
+      "predecessor_labels": [
+        "thm:median",
+        "eq:median-exact",
+        "eq:stokes-exact"
+      ],
+      "article_equation_labels": [
+        "eq:exact-lateral-input"
+      ]
+    }
+  ],
+  "results": [
+    {
+      "label": "thm:main",
+      "kind": "theorem",
+      "title": "Sharp uniform late coefficients",
+      "article_section": {
+        "number": 1,
+        "label": "sec:setting",
+        "title": "The problem and the contribution",
+        "source_file": "sections/01_setting.tex"
+      },
+      "status": "refinement",
+      "claim_summary": "The conjectured hyperbolic late-coefficient amplitudes have an explicit first inverse-index correction, uniformly on every fixed complex disk |u|≤U; the odd normalized error has an extra factor |u|.",
+      "formula_latex": [
+        "Z_n(u):=\\frac{(-1)^{n+1}A^nC_n(u)}{4u b_n}=H_{n\\bmod2}(cu)+\\frac{K_{n\\bmod2}(u)}{n}+O_U(n^{-2})",
+        "K_\\epsilon(u)=\\left(du+\\frac{1+u}{2}z^2\\right)H_\\epsilon(z)+(2+u)zH_\\epsilon^{\\prime}(z),\\quad z=cu",
+        "Z_n-H_1(cu)-K_1(u)/n=O_U(|u|n^{-2})\\quad(n\\text{ odd})"
+      ],
+      "dependencies": {
+        "result_labels": [
+          "prop:lagrange",
+          "prop:structure",
+          "lem:factorial",
+          "lem:second-endpoint"
+        ],
+        "equation_labels": [
+          "eq:T-first-correction",
+          "eq:gamma-first-correction",
+          "eq:gamma-second-endpoint",
+          "eq:endpoint-normalized-error",
+          "eq:master-majorant",
+          "eq:odd-extra-u"
+        ],
+        "import_ids": []
+      },
+      "scope_limits": [
+        "The quotient at u=0 is removable; all constants may depend on the fixed U.",
+        "Relative versions are uniform for real 0<u≤U. At complex zeros of a parity amplitude, the additive expansion is the available statement.",
+        "No estimate for growing |u|, ordinary summation, or an optimally truncated physical remainder is claimed."
+      ],
+      "attribution_note": "Proves and strengthens the explicitly conjectural amplitudes in predecessor §11.1. No worldwide priority claim for the general endpoint mechanism.",
+      "proof_section_labels": [
+        "sec:leading",
+        "sec:correction"
+      ],
+      "proof_status": "conventional proof in article"
+    },
+    {
+      "label": "thm:analytic-preview",
+      "kind": "theorem",
+      "title": "Borel radius and continuation",
+      "article_section": {
+        "number": 1,
+        "label": "sec:setting",
+        "title": "The problem and the contribution",
+        "source_file": "sections/01_setting.tex"
+      },
+      "status": "summary of proved results",
+      "claim_summary": "For fixed complex u≠0, the shifted Borel transform has exact radius A and genuine singularities at both ±A, continues along paths avoiding Aℤ after the starting origin, and the formal inverse V is 1-summable in every nonreal direction.",
+      "formula_latex": [],
+      "dependencies": {
+        "result_labels": [
+          "thm:Borel-models",
+          "thm:inverse-continuation",
+          "thm:inverse-summability"
+        ],
+        "equation_labels": [
+          "eq:BorelV"
+        ],
+        "import_ids": []
+      },
+      "scope_limits": [
+        "At u=0 the transform and formal inverse vanish identically.",
+        "Aℤ is an allowed obstruction set, not a claim that every point is active on every sheet.",
+        "The preview is not used as an independent proof input."
+      ],
+      "attribution_note": "Summary of separately proved coefficient and analytic results.",
+      "proof_section_labels": [
+        "sec:Borel",
+        "sec:continuation"
+      ],
+      "proof_status": "summary; see dependency proofs"
+    },
+    {
+      "label": "prop:lagrange",
+      "kind": "proposition",
+      "title": "Exact finite reversion",
+      "article_section": {
+        "number": 2,
+        "label": "sec:forward",
+        "title": "The forward expansion and the exact reversion formula",
+        "source_file": "sections/01_setting.tex"
+      },
+      "status": "inherited/rederived",
+      "claim_summary": "There is a unique zero-constant formal solution V∈qQ[u][[q]], and each coefficient is given by a finite Lagrange sum with an explicit polynomial T_{n,k}.",
+      "formula_latex": [
+        "C_n(u)=-\\sum_{k=1}^{n}\\frac{u^k}{k!}[q^n]R(q)^k\\,T_{n,k}(u)",
+        "T_{n,k}(u)=\\sum_{j=0}^{k-1}\\binom{k-1}{j}n^{k-1-j}(k)_j(u/2)^j"
+      ],
+      "dependencies": {
+        "result_labels": [],
+        "equation_labels": [
+          "eq:R",
+          "eq:implicit",
+          "eq:T",
+          "eq:C-finite"
+        ],
+        "import_ids": [
+          "predecessor_reversion"
+        ]
+      },
+      "scope_limits": [
+        "Exact for every integer n≥1, with q and u independent formal variables.",
+        "The formula does not require or imply convergence of the formal forward tail."
+      ],
+      "attribution_note": "Already proved in the predecessor; rederived by auxiliary-variable formal Lagrange inversion.",
+      "proof_section_labels": [
+        "sec:forward"
+      ],
+      "proof_status": "conventional proof in article"
+    },
+    {
+      "label": "prop:structure",
+      "kind": "proposition",
+      "title": "Signs, valuations, and the first coefficients",
+      "article_section": {
+        "number": 2,
+        "label": "sec:forward",
+        "title": "The forward expansion and the exact reversion formula",
+        "source_file": "sections/01_setting.tex"
+      },
+      "status": "inherited/rederived",
+      "claim_summary": "Every C_n has alternating coefficientwise sign, exact degree 2n−1, the displayed Catalan top coefficient, and exact valuation one for n=1 or even n and two for odd n≥3.",
+      "formula_latex": [
+        "(-1)^{n+1}C_n(u)\\in\\mathbb Q_{\\ge0}[u]\\setminus\\{0\\},\\quad [u^{2n-1}]C_n=\\frac{(-1)^{n+1}\\operatorname{Cat}_{n-1}}{2^{3n-1}}",
+        "[u^2]C_n=\\frac n4 r_{n-1}\\quad(n\\ge3\\text{ odd})"
+      ],
+      "dependencies": {
+        "result_labels": [
+          "prop:lagrange"
+        ],
+        "equation_labels": [
+          "eq:R",
+          "eq:sign",
+          "eq:degree",
+          "eq:valuation",
+          "eq:firstC"
+        ],
+        "import_ids": [
+          "predecessor_reversion"
+        ]
+      },
+      "scope_limits": [
+        "These sign and valuation statements use the specific Lambert forward support; they are not automatically preserved by arbitrary polynomial perturbations."
+      ],
+      "attribution_note": "Inherited structural statements with a direct local proof.",
+      "proof_section_labels": [
+        "sec:forward"
+      ],
+      "proof_status": "conventional proof in article"
+    },
+    {
+      "label": "lem:factorial",
+      "kind": "lemma",
+      "title": "Endpoint-preserving factorial bounds",
+      "article_section": {
+        "number": 3,
+        "label": "sec:leading",
+        "title": "Uniform factorial convolution and the hyperbolic amplitudes",
+        "source_file": "sections/02_coefficients.tex"
+      },
+      "status": "new theorem",
+      "claim_summary": "Elementary factorial convolution bounds retain the large endpoint and give a summable-in-k majorant for the complete finite Lagrange sum.",
+      "formula_latex": [
+        "\\sum_{m=1}^{n-1}b_m b_{n-m}\\le3b_{n-1}\\quad(n\\ge2)",
+        "S_{n,k}\\le K^k3^{k-1}b_{n-k+1},\\qquad \\frac{n^{k-1}b_{n-k+1}}{b_n}\\le ke^k\\quad(1\\le k\\le n)"
+      ],
+      "dependencies": {
+        "result_labels": [],
+        "equation_labels": [
+          "eq:positive-scaled",
+          "eq:S-D",
+          "eq:ratio-exact"
+        ],
+        "import_ids": []
+      },
+      "scope_limits": [
+        "For the Lambert coefficients choose K≥max(c,4ζ(2)²); S_{n,k} uses the nonnegative scaled coefficients a_m.",
+        "The bounds cover k=n; they are estimates, not sharp constants for every convolution."
+      ],
+      "attribution_note": "Proved elementary estimate supplying the uniform step in the project conjecture. The factorial endpoint mechanism has established antecedents.",
+      "proof_section_labels": [
+        "sec:leading"
+      ],
+      "proof_status": "conventional proof in article"
+    },
+    {
+      "label": "lem:endpoint",
+      "kind": "lemma",
+      "title": "First endpoint extraction",
+      "article_section": {
+        "number": 3,
+        "label": "sec:leading",
+        "title": "Uniform factorial convolution and the hyperbolic amplitudes",
+        "source_file": "sections/02_coefficients.tex"
+      },
+      "status": "new theorem",
+      "claim_summary": "Extracts configurations with one index greater than one and bounds all remaining compositions by a marked-pair interior convolution.",
+      "formula_latex": [
+        "S_{n,k}=kc^{k-1}a_{n-k+1}+E_{n,k},\\quad 0\\le E_{n,k}\\le6\\binom{k}{2}K^k3^{k-2}b_{n-k}"
+      ],
+      "dependencies": {
+        "result_labels": [
+          "lem:factorial"
+        ],
+        "equation_labels": [
+          "eq:positive-scaled",
+          "eq:interior-b"
+        ],
+        "import_ids": []
+      },
+      "scope_limits": [
+        "The displayed range is k≥2 and n≥k+2; k=1 is exact.",
+        "Nonnegativity is for the scaled Lambert input. The finite-phase theorem uses the corresponding absolute-value bound."
+      ],
+      "attribution_note": "Direct quantitative endpoint extraction used in the uniform proof.",
+      "proof_section_labels": [
+        "sec:leading"
+      ],
+      "proof_status": "conventional proof in article"
+    },
+    {
+      "label": "thm:leading-rate",
+      "kind": "theorem",
+      "title": "A quantified proof of the source conjecture",
+      "article_section": {
+        "number": 3,
+        "label": "sec:leading",
+        "title": "Uniform factorial convolution and the hyperbolic amplitudes",
+        "source_file": "sections/02_coefficients.tex"
+      },
+      "status": "new theorem",
+      "claim_summary": "Proves the predecessor’s two hyperbolic amplitude conjectures with quantified, locally complex-uniform O(1/n) errors after the correct parity-dependent valuation is removed.",
+      "formula_latex": [
+        "\\frac{A^nC_n(u)}{4b_nu}=-\\cosh(cu)+O_U(n^{-1})\\quad(n\\text{ even})",
+        "\\frac{A^nC_n(u)}{4b_nu^2}=\\frac{\\sinh(cu)}{u}+O_U(n^{-1})\\quad(n\\ge3\\text{ odd})"
+      ],
+      "dependencies": {
+        "result_labels": [
+          "prop:lagrange",
+          "prop:structure",
+          "lem:factorial",
+          "lem:endpoint"
+        ],
+        "equation_labels": [
+          "eq:master-majorant",
+          "eq:ratio-rate",
+          "eq:T-rate"
+        ],
+        "import_ids": []
+      },
+      "scope_limits": [
+        "Uniform for |u|≤U with removable quotients at u=0.",
+        "The real relative equivalents hold uniformly for 0<u≤U; no lower bound on u is required.",
+        "The large-k tail estimate is essential; fixed-k limits alone do not justify this result."
+      ],
+      "attribution_note": "New proof of a specific stated project conjecture, with stronger parameter uniformity.",
+      "proof_section_labels": [
+        "sec:leading"
+      ],
+      "proof_status": "conventional proof in article"
+    },
+    {
+      "label": "cor:moving-u",
+      "kind": "corollary",
+      "title": "Two limits may be taken together",
+      "article_section": {
+        "number": 3,
+        "label": "sec:leading",
+        "title": "Uniform factorial convolution and the hyperbolic amplitudes",
+        "source_file": "sections/02_coefficients.tex"
+      },
+      "status": "refinement",
+      "claim_summary": "The coefficient index and a positive slow parameter tending to zero may approach their limits together at any rate.",
+      "formula_latex": [
+        "C_n(u_n)\\sim-4u_n b_nA^{-n}\\quad(n\\text{ even})",
+        "C_n(u_n)\\sim A u_n^2 b_nA^{-n}\\quad(n\\text{ odd})"
+      ],
+      "dependencies": {
+        "result_labels": [
+          "thm:leading-rate"
+        ],
+        "equation_labels": [
+          "eq:small-u-late"
+        ],
+        "import_ids": []
+      },
+      "scope_limits": [
+        "Assumes u_n>0, u_n→0, and n→∞ through the indicated parity.",
+        "No coupling-rate restriction is imposed. This is not a theorem about ordinary sector summation or physical optimal truncation."
+      ],
+      "attribution_note": "Uniform consequence of the resolved amplitude conjecture.",
+      "proof_section_labels": [
+        "sec:leading"
+      ],
+      "proof_status": "conventional proof in article"
+    },
+    {
+      "label": "thm:finite-phases",
+      "kind": "theorem",
+      "title": "Leading amplitudes for finitely many phases",
+      "article_section": {
+        "number": 4,
+        "label": "sec:phases",
+        "title": "Finite phases and changes of the initial coefficients",
+        "source_file": "sections/02_coefficients.tex"
+      },
+      "status": "new theorem",
+      "claim_summary": "For an arbitrary formal input with finitely many equal-modulus factorial phases, the nonlinear inverse multiplies each leading phase amplitude by exp(Aρu/ω), where ρ is the linear forward coefficient.",
+      "formula_latex": [
+        "|\\widetilde r_n|\\le K A^{-n}b_n,\\quad A^n\\widetilde r_n/b_n=\\sum_{\\omega\\in E}\\kappa_\\omega\\omega^n+O(n^{-1}),\\quad\\widetilde r_1=\\rho",
+        "\\widetilde C_n(u)=-u A^{-n}b_n\\left\\{\\sum_{\\omega\\in E}\\kappa_\\omega\\omega^n e^{A\\rho u/\\omega}+O_U(n^{-1})\\right\\}"
+      ],
+      "dependencies": {
+        "result_labels": [
+          "prop:lagrange",
+          "lem:factorial",
+          "lem:endpoint"
+        ],
+        "equation_labels": [
+          "eq:phase-input",
+          "eq:phase-output",
+          "eq:ratio-rate",
+          "eq:T-rate"
+        ],
+        "import_ids": []
+      },
+      "scope_limits": [
+        "Here A is any positive constant, E is a fixed finite set of distinct unit complex phases, and the input majorant is assumed.",
+        "The error in C̃_n is absolute O_U(|u|A^(−n)b_n/n), with a removable quotient at u=0; positivity is unnecessary.",
+        "The expansion is additive when phases cancel. No general Borel continuation theorem follows from these coefficient hypotheses alone."
+      ],
+      "attribution_note": "Explicit finite-phase synthesis of the same endpoint proof; not a priority claim for factorial asymptotic calculus.",
+      "proof_section_labels": [
+        "sec:phases"
+      ],
+      "proof_status": "conventional proof in article"
+    },
+    {
+      "label": "cor:prefix",
+      "kind": "corollary",
+      "title": "Polynomial changes of the forward tail",
+      "article_section": {
+        "number": 4,
+        "label": "sec:phases",
+        "title": "Finite phases and changes of the initial coefficients",
+        "source_file": "sections/02_coefficients.tex"
+      },
+      "status": "refinement",
+      "claim_summary": "For R+P with a fixed polynomial P(0)=0, only p_1=[t]P changes the leading two action amplitudes.",
+      "formula_latex": [
+        "\\widetilde C_n(u)=-2uA^{-n}b_n\\left\\{e^{A(p_1-1/4)u}+(-1)^n e^{-A(p_1-1/4)u}+O_U(n^{-1})\\right\\}"
+      ],
+      "dependencies": {
+        "result_labels": [
+          "thm:finite-phases"
+        ],
+        "equation_labels": [
+          "eq:R",
+          "eq:prefix"
+        ],
+        "import_ids": []
+      },
+      "scope_limits": [
+        "The leading amplitudes are unchanged when P(t)=O(t²); the weaker condition deg P≥2 is insufficient.",
+        "Does not assert that arbitrary perturbations preserve the original odd valuation or the first-correction formula."
+      ],
+      "attribution_note": "A direct specialization of the finite-phase theorem.",
+      "proof_section_labels": [
+        "sec:phases"
+      ],
+      "proof_status": "conventional proof in article"
+    },
+    {
+      "label": "lem:second-endpoint",
+      "kind": "lemma",
+      "title": "The second endpoint contribution",
+      "article_section": {
+        "number": 5,
+        "label": "sec:correction",
+        "title": "The first inverse-index correction",
+        "source_file": "sections/03_first_correction.tex"
+      },
+      "status": "new theorem",
+      "claim_summary": "Uniformly isolates the first two endpoint configurations, including one additional forward index of size two, with a remainder strong enough for the first inverse-index correction.",
+      "formula_latex": [
+        "S_{n,k}=kc^{k-1}a_{n-k+1}+k(k-1)c^{k-2}d\\,a_{n-k}+O(B_*^k\\Gamma(n-k-2))"
+      ],
+      "dependencies": {
+        "result_labels": [],
+        "equation_labels": [
+          "eq:alpha-shift",
+          "eq:alpha-bound",
+          "eq:positive-gamma-convolution",
+          "eq:interior-gamma-convolution"
+        ],
+        "import_ids": []
+      },
+      "scope_limits": [
+        "n≥12 and 1≤k≤n/2; the second term is zero for k=1.",
+        "B_* and the implied constant are independent of n,k. The complementary k range is controlled separately by the factorial majorant."
+      ],
+      "attribution_note": "Direct Gamma-convolution estimate supporting the first correction.",
+      "proof_section_labels": [
+        "sec:correction"
+      ],
+      "proof_status": "conventional proof in article"
+    },
+    {
+      "label": "cor:relative-two-term",
+      "kind": "corollary",
+      "title": "Relative uniformity down to the resonant endpoint",
+      "article_section": {
+        "number": 5,
+        "label": "sec:correction",
+        "title": "The first inverse-index correction",
+        "source_file": "sections/03_first_correction.tex"
+      },
+      "status": "refinement",
+      "claim_summary": "The two-term asymptotic expansion is relative and uniform down to u=0 on every bounded positive interval; the correction ratios have finite endpoint limits.",
+      "formula_latex": [
+        "C_n(u)=(-1)^{n+1}\\frac{4ub_n}{A^n}H_{n\\bmod2}(cu)\\left\\{1+\\frac{K_{n\\bmod2}(u)}{nH_{n\\bmod2}(cu)}+O_U(n^{-2})\\right\\}",
+        "\\lim_{u\\to0}K_0(u)/H_0(cu)=0,\\qquad\\lim_{u\\to0}K_1(u)/H_1(cu)=2"
+      ],
+      "dependencies": {
+        "result_labels": [
+          "thm:main"
+        ],
+        "equation_labels": [
+          "eq:odd-extra-u",
+          "eq:relative-two-term",
+          "eq:K"
+        ],
+        "import_ids": []
+      },
+      "scope_limits": [
+        "Real 0<u≤U; no lower bound on u.",
+        "No general complex relative statement is claimed at zeros of H_ε(cu)."
+      ],
+      "attribution_note": "Uses the improved odd remainder, not division of an unqualified absolute error by a vanishing amplitude.",
+      "proof_section_labels": [
+        "sec:correction"
+      ],
+      "proof_status": "conventional proof in article"
+    },
+    {
+      "label": "thm:Borel-models",
+      "kind": "theorem",
+      "title": "Boundary models with controlled remainders",
+      "article_section": {
+        "number": 6,
+        "label": "sec:Borel",
+        "title": "Logarithmic and dilogarithmic Borel boundary models",
+        "source_file": "sections/04_borel_and_continuation.tex"
+      },
+      "status": "refinement",
+      "claim_summary": "The Borel transform admits explicit logarithmic and logarithmic–dilogarithmic models with C⁰ and C¹ closed-disk remainders respectively; both ±A are genuine singularities for every complex u≠0 and the exact radius is A.",
+      "formula_latex": [
+        "B_{0,u}(\\xi)=\\frac{2u}{\\xi}\\left\\{e^{-cu}\\log(1-\\xi/A)+e^{cu}\\log(1+\\xi/A)\\right\\}",
+        "\\widehat V_u=B_{0,u}+\\mathcal H_{0,u}=B_{1,u}+\\mathcal H_{1,u}"
+      ],
+      "dependencies": {
+        "result_labels": [
+          "thm:main"
+        ],
+        "equation_labels": [
+          "eq:BorelV",
+          "eq:PQ",
+          "eq:B0-model",
+          "eq:B1-model",
+          "eq:two-action-coefficients",
+          "eq:radial-refinement"
+        ],
+        "import_ids": []
+      },
+      "scope_limits": [
+        "The remainders are holomorphic in |ξ|<A; H₀ extends continuously to the closed disk, and H₁ and its complex derivative do so. All extensions are locally uniform in u.",
+        "At u=0 the transform is identically zero. For u≠0 the radial logarithmic coefficients (2u/A)e^(−cu) and −(2u/A)e^(cu) do not vanish.",
+        "Boundary regularity does not identify a complete local singular germ or imply holomorphic extension through ±A."
+      ],
+      "attribution_note": "Direct consequence of coefficient estimates, independent of the subsequent continuation theorem; strengthens the predecessor’s fixed-positive-u radius result.",
+      "proof_section_labels": [
+        "sec:Borel"
+      ],
+      "proof_status": "conventional proof in article"
+    },
+    {
+      "label": "prop:forward-Borel",
+      "kind": "proposition",
+      "title": "A normally convergent logarithmic lattice",
+      "article_section": {
+        "number": 7,
+        "label": "sec:continuation",
+        "title": "Resurgent continuation and sectorial sums",
+        "source_file": "sections/04_borel_and_continuation.tex"
+      },
+      "status": "inherited/rederived",
+      "claim_summary": "The full forward tail has the stated logarithmic divisor-lattice Borel transform, with normal continuation on compact subsets of the path surface avoiding Aℤ.",
+      "formula_latex": [
+        "\\widehat R(\\xi)=-\\frac14-\\frac2\\xi\\sum_{m\\ge1}d(m)\\log\\left(1-\\frac{\\xi^2}{A^2m^2}\\right)"
+      ],
+      "dependencies": {
+        "result_labels": [],
+        "equation_labels": [
+          "eq:R",
+          "eq:R-Borel-lattice"
+        ],
+        "import_ids": [
+          "forward_lambert",
+          "forward_borel_kernel"
+        ]
+      },
+      "scope_limits": [
+        "The principal expression is holomorphic off the real cuts (−∞,−A] and [A,∞), with a removable value at zero.",
+        "The large-m tail is controlled by Σd(m)/m²; only finitely many terms acquire monodromy along a fixed bounded path.",
+        "Zero may acquire a pole on another sheet. The formula includes the linear coefficient −1/4 in Borel space."
+      ],
+      "attribution_note": "The explicit forward kernel is inherited; the path-continuation proof and full-tail convention are supplied directly here.",
+      "proof_section_labels": [
+        "sec:continuation"
+      ],
+      "proof_status": "conventional proof in article"
+    },
+    {
+      "label": "prop:Sauzin-input",
+      "kind": "proposition",
+      "title": "Nonlinear resurgence and summability closure",
+      "article_section": {
+        "number": 7,
+        "label": "sec:continuation",
+        "title": "Resurgent continuation and sectorial sums",
+        "source_file": "sections/04_borel_and_continuation.tex"
+      },
+      "status": "imported standard theorem",
+      "claim_summary": "For a closed discrete additive set Ω containing zero, Ω-resurgent series are closed under convergent analytic substitution; maps x+R_Ω form a composition/inversion group. The corresponding operations preserve 1-summability in an arc and commute with summation on smaller common sectors.",
+      "formula_latex": [],
+      "dependencies": {
+        "result_labels": [],
+        "equation_labels": [],
+        "import_ids": [
+          "sauzin_closure"
+        ]
+      },
+      "scope_limits": [
+        "Analytic substitutions require zero-constant inputs. The infinity-coordinate maps are tangent to the identity, G(x)=x+O(1).",
+        "The continuation and summability assertions include their respective analytic control hypotheses; formal existence alone is insufficient.",
+        "No new proof of the quoted convolution estimates is claimed."
+      ],
+      "attribution_note": "Sauzin2015, Theorems 3 and 5 and summable counterparts 3′ and 5′, used with Ω=Aℤ.",
+      "proof_section_labels": [
+        "sec:continuation"
+      ],
+      "proof_status": "quoted analytic input"
+    },
+    {
+      "label": "thm:inverse-continuation",
+      "kind": "theorem",
+      "title": "Continuation of the quadratic inverse",
+      "article_section": {
+        "number": 7,
+        "label": "sec:continuation",
+        "title": "Resurgent continuation and sectorial sums",
+        "source_file": "sections/04_borel_and_continuation.tex"
+      },
+      "status": "standard-theorem application",
+      "claim_summary": "For every fixed complex u, the shifted Borel germ of V continues along every path starting at zero and thereafter avoiding Aℤ.",
+      "formula_latex": [
+        "h(t)=\\frac{\\sqrt{1-2u^2R(t)}-1}{u},\\quad G(x)=x e^{-h(1/x)},\\quad V(q,u)=h\\!\\left(1/G^{-1}(1/q)\\right)"
+      ],
+      "dependencies": {
+        "result_labels": [
+          "prop:forward-Borel",
+          "prop:Sauzin-input",
+          "prop:lagrange"
+        ],
+        "equation_labels": [
+          "eq:hG",
+          "eq:h-equation",
+          "eq:inverse-parametrization"
+        ],
+        "import_ids": [
+          "sauzin_closure"
+        ]
+      },
+      "scope_limits": [
+        "Fixed u; the case u=0 is trivial. Multiplication by x is checked through differentiation of the Borel transform.",
+        "The theorem gives an allowed set, not the exact active lattice on each sheet.",
+        "No global simple-resurgence statement, complete local minor, or all-order alien derivative is proved."
+      ],
+      "attribution_note": "A proved coordinate reduction followed by the established nonlinear closure theorem.",
+      "proof_section_labels": [
+        "sec:continuation"
+      ],
+      "proof_status": "conventional proof in article"
+    },
+    {
+      "label": "lem:kernel-growth",
+      "kind": "lemma",
+      "title": "Growth of the forward kernel on nonreal rays",
+      "article_section": {
+        "number": 7,
+        "label": "sec:continuation",
+        "title": "Resurgent continuation and sectorial sums",
+        "source_file": "sections/04_borel_and_continuation.tex"
+      },
+      "status": "new theorem",
+      "claim_summary": "The principal forward Borel kernel has a uniform logarithmic-square bound on closed angular regions separated from both real directions.",
+      "formula_latex": [
+        "|\\widehat R(\\xi)|\\le M_\\delta\\{1+\\log^2(2+|\\xi|)\\}"
+      ],
+      "dependencies": {
+        "result_labels": [
+          "prop:forward-Borel"
+        ],
+        "equation_labels": [
+          "eq:R-Borel-lattice",
+          "eq:kernel-growth"
+        ],
+        "import_ids": []
+      },
+      "scope_limits": [
+        "0<δ<π/2; δ≤arg ξ≤π−δ or −π+δ≤arg ξ≤−δ.",
+        "This is a principal-branch angular bound, not a bound on arbitrary continuation sheets."
+      ],
+      "attribution_note": "Elementary divisor summation and head–tail estimate, proved to verify the hypotheses needed for summability.",
+      "proof_section_labels": [
+        "sec:continuation"
+      ],
+      "proof_status": "conventional proof in article"
+    },
+    {
+      "label": "thm:inverse-summability",
+      "kind": "theorem",
+      "title": "Sectorial sums satisfy the inverse equation",
+      "article_section": {
+        "number": 7,
+        "label": "sec:continuation",
+        "title": "Resurgent continuation and sectorial sums",
+        "source_file": "sections/04_borel_and_continuation.tex"
+      },
+      "status": "standard-theorem application",
+      "claim_summary": "For fixed complex u, V is 1-summable in every direction θ∉πℤ; its sum is the unique O(q) solution of the exact summed implicit equation on sufficiently small common sectors.",
+      "formula_latex": [
+        "V_\\theta+\\frac u2V_\\theta^2+uR_\\theta(qe^{-V_\\theta})=0,\\qquad R_\\theta(t)=\\int_0^{e^{i\\theta}\\infty}e^{-\\xi/t}\\widehat R(\\xi)\\,d\\xi"
+      ],
+      "dependencies": {
+        "result_labels": [
+          "prop:forward-Borel",
+          "lem:kernel-growth",
+          "prop:Sauzin-input",
+          "thm:inverse-continuation"
+        ],
+        "equation_labels": [
+          "eq:hG",
+          "eq:inverse-parametrization",
+          "eq:summed-inverse"
+        ],
+        "import_ids": [
+          "sauzin_closure"
+        ]
+      },
+      "scope_limits": [
+        "Fixed u; summation and inversion are compared on smaller common sectors.",
+        "Uses growth control in addition to continuation, with Cauchy estimates for the differentiation step.",
+        "No ordinary convergence of the factorial q-series, uniformity over unbounded u, or identification with an arithmetic inverse average is asserted."
+      ],
+      "attribution_note": "Application of summable nonlinear closure plus a local contraction proof of uniqueness.",
+      "proof_section_labels": [
+        "sec:continuation"
+      ],
+      "proof_status": "conventional proof in article"
+    },
+    {
+      "label": "prop:Stokes-transport",
+      "kind": "proposition",
+      "title": "Leading inverse jump with its shifted amplitude",
+      "article_section": {
+        "number": 8,
+        "label": "sec:Stokes",
+        "title": "Compatibility with the exact Stokes transport",
+        "source_file": "sections/05_computation_and_research.tex"
+      },
+      "status": "refinement",
+      "claim_summary": "The exact forward lateral jump transports through the quadratic inverse with a uniform first-action law and an absolute second-exponential error; the finite amplitude shift exp(−Au/4) is retained.",
+      "formula_latex": [
+        "t_0=qe^{-V_0},\\quad D=1+uV_0-ut_0R_{\\mathrm{ex}}^{\\prime}(t_0)",
+        "V_+-V_-=-\\frac{uJ(t_0)}D+O_U(u^2q e^{-2A/q})=-\\frac{4\\pi i}{A}u q e^{-A/q-Au/4}\\{1+O_U(q)\\}",
+        "t_+-t_-=\\frac{i}{\\pi}\\frac{q^2}{X}e^{-A/q-A/(4X)}\\{1+O(q)\\}\\quad(u=1/X,\\ q=e^{\\gamma-X})"
+      ],
+      "dependencies": {
+        "result_labels": [],
+        "equation_labels": [
+          "eq:exact-lateral-input",
+          "eq:eta-inverse",
+          "eq:J-leading",
+          "eq:J-derivative",
+          "eq:small-exact-inverse",
+          "eq:physical"
+        ],
+        "import_ids": [
+          "forward_lambert",
+          "exact_forward_completion"
+        ]
+      },
+      "scope_limits": [
+        "Real q→0+, uniformly for real 0<u≤U; the admissible upper bound on q may depend on U.",
+        "V_± are defined using the exact lateral completions R_ex±J/2 and the upper-minus-lower sign convention.",
+        "The result is not an all-order local Borel or alien-calculus statement, and does not identify arithmetic averaging after inversion with nonlinear median summation."
+      ],
+      "attribution_note": "The exact forward completion and inverse transport principle are predecessor results. The present contribution is the proved uniform leading estimate and its controlled amplitude shift.",
+      "proof_section_labels": [
+        "sec:Stokes"
+      ],
+      "proof_status": "conventional proof in article"
+    }
+  ],
+  "validation": {
+    "result_count": 19,
+    "all_theorem_environments_covered": true,
+    "all_result_labels_exist": true,
+    "all_proof_section_and_equation_labels_exist": true,
+    "all_import_ids_and_bibliography_keys_resolve": true,
+    "all_result_labels_present_in_proof_status_markdown": true,
+    "result_dependency_graph_acyclic": true,
+    "json_round_trip_valid": true
+  }
+}
