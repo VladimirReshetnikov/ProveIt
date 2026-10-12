@@ -1,0 +1,542 @@
+\section{A complex neighborhood for the harmonic angular equation}
+\label{ang:sec:kernel}
+
+For real $a,b>0$ define, initially in the unit disk,
+\begin{equation}
+ F_{a,b}(z)=\sum_{n\ge2}\frac{H_{n-1}^{(b)}}{n^a}z^n,
+ \qquad H_m^{(b)}=\sum_{j=1}^m j^{-b}.
+ \label{ang:eq:F}
+\end{equation}
+This is the depth-two polylogarithm $\Li_{a,b}(z,1)$ when the
+multiple-polylogarithm convention uses $n>m\ge1$ and the factor $z^n$.
+The elementary inequality $1\le H_m^{(b)}\le m$ will be used
+uniformly over all $b>0$.
+
+\begin{lemma}[Positive kernel and exact moments]
+\label{ang:lem:kernel}
+On $\C\setminus[1,\infty)$,
+\begin{equation}
+ F_{a,b}(z)=z^2\int_{0<y<x<1}
+ \frac{W_{a,b}(x,y)}{(1-xz)(1-yz)}\,dy\,dx,
+ \quad
+ W_{a,b}(x,y)=
+ \frac{(-\log x)^{a-1}(\log(x/y))^{b-1}}{\Gamma(a)\Gamma(b)}.
+ \label{ang:eq:kernel}
+\end{equation}
+For nonnegative integers $j,k$ its moments are
+\begin{equation}
+ \int_{0<y<x<1}W_{a,b}(x,y)x^jy^k\,dy\,dx
+   =\frac1{(j+k+2)^a(k+1)^b}.
+ \label{ang:eq:moments}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Set $x=e^{-t}$ and $y=e^{-t-v}$. The Jacobian is $xy$, and the
+integral in \eqref{ang:eq:moments} separates into Gamma integrals
+with decay rates $j+k+2$ and $k+1$. Expanding both geometric
+denominators in \eqref{ang:eq:kernel}, the coefficient of $z^n$
+is
+\[
+ \sum_{k=0}^{n-2}\frac1{n^a(k+1)^b}
+ =\frac{H_{n-1}^{(b)}}{n^a}.
+\]
+Absolute convergence justifies this computation for $|z|<1$.
+On every compact subset of the slit plane the denominators are bounded
+away from zero, and $W$ has finite mass $2^{-a}$. Dominated
+convergence and differentiation on compact sets give the holomorphic
+continuation. This is the kernel of \cite{RepoThreshold}, with its
+moments made explicit for later estimates.
+\end{proof}
+
+For $a\ge6$, $b>0$, and $0<\rho\le1$, let $\theta_{a,b}(\rho)$ be the unique zero
+in $(0,\pi)$ of $\operatorname{Im}F_{a,b}(\rho e^{i\theta})$.
+In the range needed here its existence and simplicity follow from
+the global angular theorem of \cite{RepoThreshold}; alternatively,
+the construction below independently gives the root near $\pi/2$.
+Write
+\[
+ \delta_{a,b}(\rho)=\frac\pi2-\theta_{a,b}(\rho).
+\]
+The Gaussian sign in the same source puts this displacement in
+$(0,\pi/2)$. We shall also see its local positivity directly.
+
+Set
+\begin{align}
+ R_{a,b}(z)&=F_{a,b}(z)-2^{-a}z^2,\notag\\
+ z_+(v)&=i\rho e^{-iv},\qquad z_-(v)=-i\rho e^{iv},\notag\\
+ S(v)&=\frac{2^a}{2i\rho^2}
+       \bigl(R_{a,b}(z_+(v))-R_{a,b}(z_-(v))\bigr),
+ \label{ang:eq:S}\\
+ B(v)&=\frac{v}{\sin2v},\qquad B(0)=\frac12,
+ \qquad f(v)=-B(v)S(v).
+ \label{ang:eq:f}
+\end{align}
+These definitions are holomorphic; the difference in \eqref{ang:eq:S}
+is used instead of taking an imaginary part at complex $v$.
+For real $v$ it equals the normalized imaginary tail. The angular
+equation is exactly
+\begin{equation}
+ \sin2v+S(v)=0.
+ \label{ang:eq:angular}
+\end{equation}
+
+\begin{lemma}[Uniform analytic tail bound]
+\label{ang:lem:norm}
+Let $0<r<\pi/2$ and $c=\cos r$. On the disk $|v|\le r$,
+\begin{equation}
+ |S(v)|\le
+ \rho e^{3r}\bigl(c^{-2}+2^{-b}c^{-1}\bigr)(2/3)^a.
+ \label{ang:eq:norm}
+\end{equation}
+At $r=1/4$ this implies
+\begin{equation}
+ \sup_{|v|\le1/4}|f(v)|<\frac14\eta_{a,\rho},
+ \qquad \eta_{a,\rho}=10\rho(2/3)^a.
+ \label{ang:eq:eta}
+\end{equation}
+In particular $a\ge6$ gives $\eta_{a,\rho}\le640/729<1$.
+\end{lemma}
+\begin{proof}
+If $z$ lies in either sector of half-width $r$ about $i$ or $-i$,
+then $|1-tz|\ge\cos r=c$ for every $t\ge0$: this is the
+distance from $1$ to a ray whose angle is at least $\pi/2-r$ in
+absolute value. The elementary identity
+\[
+ \frac1{(1-A)(1-C)}-1
+ =\frac{A}{(1-A)(1-C)}+\frac{C}{1-C}
+\]
+and the moments of $Wx$ and $Wy$ give
+\[
+ |R_{a,b}(z)|
+ \le |z|^3 3^{-a}\bigl(c^{-2}+2^{-b}c^{-1}\bigr).
+\]
+For $|v|\le r$, both $z_\pm(v)$ lie in these sectors and have
+modulus at most $\rho e^r$. Substitution proves
+\eqref{ang:eq:norm}.
+
+For completeness the constants can be bounded rationally:
+\[
+ \cos(1/4)>31/32,\qquad e^{3/4}<17/8,
+ \qquad \sup_{|v|\le1/4}|B(v)|<8/15.
+\]
+The last inequality follows from
+$|\sin(2v)/(2v)-1|\le\sinh(1/2)/(1/2)-1<1/16$.
+For that strict bound the positive tail is at most
+$(1/24)/(1-1/80)=10/237<1/16$.
+Taylor's formula and a geometric bound on its positive tail give
+$e^{3/4}<18427/8704<17/8$; the cosine bound follows from
+$\cos x>1-x^2/2$. Consequently
+\[
+ 4\sup|B|e^{3/4}(c^{-2}+c^{-1})
+ <\frac{45696}{4805}<10.
+\]
+This proves \eqref{ang:eq:eta}, including its strictness.
+\end{proof}
+
+\section{A convergent summation of the angular multiset transseries}
+\label{ang:sec:summation}
+
+The scalar parameter used below scales the complete perturbation
+before taking boundary values. It is not an independent variation of
+infinitely many Fourier coefficients. Define the coupled equation
+\begin{equation}
+ \delta(\tau)=\tau f(\delta(\tau)),\qquad \delta(0)=0.
+ \label{ang:eq:coupling}
+\end{equation}
+
+\begin{theorem}[Convergent angular reconstruction]
+\label{ang:thm:sum}
+For real $a\ge6$, $b>0$, and $0<\rho\le1$, put
+\begin{equation}
+ D_k(a,b;\rho)=\frac1k[v^{k-1}]f(v)^k
+ =\frac{(-1)^k}{k}[v^{k-1}]B(v)^kS(v)^k.
+ \label{ang:eq:D}
+\end{equation}
+Then
+\begin{equation}
+ \delta_{a,b}(\rho)=\sum_{k\ge1}D_k(a,b;\rho)
+ \label{ang:eq:sum}
+\end{equation}
+converges absolutely. More precisely,
+\begin{align}
+ |D_k(a,b;\rho)|&\le\frac{\eta_{a,\rho}^k}{4k},
+ \label{ang:eq:D-bound}\\
+ \left|\delta_{a,b}(\rho)-\sum_{k=1}^KD_k(a,b;\rho)\right|
+ &\le\frac{\eta_{a,\rho}^{K+1}}
+ {4(K+1)(1-\eta_{a,\rho})},\qquad K\ge0.
+ \label{ang:eq:sum-error}
+\end{align}
+The solution of \eqref{ang:eq:coupling} is holomorphic on
+$|\tau|<\eta_{a,\rho}^{-1}$, which contains $\tau=1$.
+\end{theorem}
+\begin{proof}
+On $|v|=1/4$, Lemma~\ref{ang:lem:norm} gives
+$|\tau f(v)|<|v|$ when $|\tau|\eta_{a,\rho}<1$.
+Rouch\'e's theorem shows that $v-\tau f(v)$ has exactly one
+zero, counted with multiplicity, in the disk. It is therefore simple.
+The implicit function theorem and uniqueness patch its local branches
+into one holomorphic function of $\tau$ on the indicated disk.
+Lagrange inversion gives \eqref{ang:eq:D}.
+Applying Cauchy's coefficient estimate to $f(v)^k$ on the fixed
+circle gives
+\[
+ |D_k|\le\frac1k(1/4)^{1-k}
+              (\eta_{a,\rho}/4)^k
+ =\frac{\eta_{a,\rho}^k}{4k}.
+\]
+
+At real $\tau$ the zero is real by conjugation symmetry. Moreover,
+$S(0)<0$. Indeed the imaginary part of the positive kernel at
+$z=i\rho$ is strictly negative: $z^2=-\rho^2$, while
+the imaginary part of $((1-i\rho x)(1-i\rho y))^{-1}$ is
+strictly positive for $0<y<x<1$. The removed quadratic term is
+real. Thus $f(0)>0$, the zero starts positive for small positive
+$\tau$, and it cannot cross zero for any $\tau>0$.
+At $\tau=1$ it is in $(0,1/4)$ and solves the actual angular
+equation. Global angular uniqueness identifies it with the stated
+$\delta_{a,b}(\rho)$. Finally summing
+$\sum_{k>K}\eta^k/k\le\eta^{K+1}/((K+1)(1-\eta))$
+proves the error bound.
+\end{proof}
+
+\subsection{The exact summation order}
+
+A multiset of Fourier modes is a finitely supported sequence
+$\boldsymbol m=(m_3,m_4,\ldots)$ of nonnegative integers. Set
+\[
+ k=|\boldsymbol m|=\sum m_n,\quad
+ \Lambda(\boldsymbol m)=\prod_{n\ge3}(n/2)^{m_n},\quad
+ R(\boldsymbol m)=\sum_{n\ge3}(n-2)m_n,
+ \quad h_n=H_{n-1}^{(b)}.
+\]
+The source coefficient is
+\begin{equation}
+ C(\boldsymbol m)=\frac{(-1)^k(k-1)!}{\prod m_n!}
+ [v^{k-1}]B(v)^k
+ \prod_{n\ge3}\sin(n\pi/2-nv)^{m_n}.
+ \label{ang:eq:multiset}
+\end{equation}
+The source proves that the sum with $\Lambda<B_0$, for fixed
+$B_0>1$, approximates the displacement with error
+$O_{B_0}(\rho B_0^{-a})$ as $a\to\infty$~\cite{RepoAngular}.
+The support is locally finite in $\Lambda$: every participating
+$n$ is less than $2B_0$ and $k<\log B_0/\log(3/2)$.
+
+\begin{theorem}[Degree blocks and their Abel boundary values]
+\label{ang:thm:Abel}
+For $0<\rho<1$ and fixed $k$, the following inner sum converges
+absolutely:
+\begin{equation}
+ D_k(a,b;\rho)=\sum_{|\boldsymbol m|=k}
+ C(\boldsymbol m)\rho^{R(\boldsymbol m)}
+ \prod h_n^{m_n}\,\Lambda(\boldsymbol m)^{-a}.
+ \label{ang:eq:blocks}
+\end{equation}
+For $a\ge6$, $b>0$, its radial boundary values satisfy
+\begin{align}
+ D_k(a,b;1)&=\lim_{\rho\uparrow1}
+  \sum_{|\boldsymbol m|=k}
+  C(\boldsymbol m)\rho^{R(\boldsymbol m)}
+  \prod h_n^{m_n}\,\Lambda(\boldsymbol m)^{-a},\notag\\
+ \delta_{a,b}(1)&=\sum_{k\ge1}D_k(a,b;1).
+ \label{ang:eq:Abel}
+\end{align}
+The final sum is ordinary and absolutely convergent, with
+\eqref{ang:eq:sum-error} at $\rho=1$.
+\end{theorem}
+\begin{proof}
+For subunit $\rho$, on a sufficiently small complex disk
+$|v|<\epsilon<-\log\rho$, the Fourier expansion
+\[
+ S(v)=\sum_{n\ge3}h_n\rho^{n-2}(2/n)^a
+                    \sin(n\pi/2-nv)
+\]
+and every fixed number of its derivatives converge absolutely.
+For fixed $k$ one may expand its $k$th power and extract the
+coefficient of degree $k-1$ absolutely. The multinomial coefficient
+and the factor $1/k$ give exactly \eqref{ang:eq:multiset}.
+
+For $\rho\uparrow1$, the kernel formula gives uniform convergence
+of $S$ on $|v|\le1/4$: the denominators have a common nonzero
+lower bound and the numerator is dominated by a constant times the
+integrable weight. Each fixed Taylor coefficient in
+\eqref{ang:eq:D} therefore converges. The summable majorant
+$\eta_{a,1}^k/(4k)$ is independent of $\rho$, so dominated
+convergence also interchanges the radial limit with the outer degree
+sum. This proves all the assertions with the displayed order of
+operations.
+\end{proof}
+
+\begin{remark}[Which data the summation uses]
+This is a summation of the canonical multiset family, retaining both
+$|\boldsymbol m|$ and $R(\boldsymbol m)$. Equal rational
+$\Lambda$ can arise with different degrees and different radial
+weights. The prescription is therefore not asserted to be a
+summation functional depending only on the already grouped scalar
+coefficients $\widehat C(\Lambda;b)$. All arithmetic collisions
+are retained in \eqref{ang:eq:blocks}; they are not discarded.
+\end{remark}
+
+\subsection{Why divergence persists in the original ordering}
+
+For clarity, the divergence proof in \cite{RepoFormal} is recalled
+in a short form. It also extends verbatim from integer $a$ to every
+fixed real $a>0$. Choose an integer $s$ with $2s>a$. The multiset
+with $2s$ copies of mode $3$ and one copy of an odd prime $P\ne3$
+has exponential base $q_P=2^{2s+1}/(3^{2s}P)$. This base has a
+unique multiset representation. If another representation has $k$
+factors, then
+\[
+ \prod_{j=1}^k n_j=2^{k-(2s+1)}3^{2s}P.
+\]
+Integrality first forces $k\ge2s+1$. Counting prime factors then
+forces every $n_j$ to be prime. Since $n_j\ge3$, no factor two
+is possible; hence $k=2s+1$ and the representation is unique.
+
+The coefficient extraction contains
+\[
+ [v^{2s}]B(v)^{2s+1}\cos^{2s}(3v)\cos(Pv)
+ =\frac{(-1)^sP^{2s}}{2^{2s+1}(2s)!}+O_s(P^{2s-2}).
+\]
+Its term after multiplication by $q_P^a$ has magnitude a positive
+constant times
+$H_{P-1}^{(b)}P^{2s-a}(1+O(P^{-2}))$, which tends to infinity.
+Thus even the terms grouped by equal bases fail to tend to zero.
+In \eqref{ang:eq:Abel}, by contrast, the inner boundary blocks
+are Abel limits, not ordinary sums. Absolute convergence of the
+outer degree series does not assert absolute convergence of the
+flattened multiset family, even for every subunit $\rho$.
+
+\section{Finite polylogarithm coordinates for every degree}
+\label{ang:sec:periods}
+
+Let $S_j=S^{(j)}(0)$. Differentiating the holomorphic definition
+\eqref{ang:eq:S}, rather than a boundary Fourier series, yields
+\begin{equation}
+ S_j=\frac{2^a}{2i\rho^2}
+ \left((-i)^jF_{a-j,b}(i\rho)-i^jF_{a-j,b}(-i\rho)\right)
+ -2^j\sin(j\pi/2).
+ \label{ang:eq:jets}
+\end{equation}
+Lower outer orders here are defined by the analytic identity
+$z\partial_zF_{s,b}=F_{s-1,b}$. For any finite number of
+derivatives one can start with a positive outer order and differentiate
+its slit-plane continuation, so this notation is unambiguous.
+
+The first four degree blocks are
+\begin{align}
+ D_1&=-\frac{S_0}{2},\qquad
+ D_2=\frac{S_0S_1}{4},\notag\\
+ D_3&=-\frac{S_0^3}{12}-\frac{S_0^2S_2}{16}
+                         -\frac{S_0S_1^2}{8},\notag\\
+ D_4&=\frac{S_0^3S_1}{6}+\frac{S_0^3S_3}{96}
+       +\frac{3S_0^2S_1S_2}{32}+\frac{S_0S_1^3}{16}.
+ \label{ang:eq:first-D}
+\end{align}
+More generally, if $B(v)=\sum\beta_jv^j$,
+$S(v)=\sum s_jv^j$, and $f_j=-\sum_{\ell=0}^j\beta_\ell
+s_{j-\ell}$, then
+\begin{equation}
+ D_k=\frac1k\sum_{j_1+\cdots+j_k=k-1}
+                 f_{j_1}\cdots f_{j_k}.
+ \label{ang:eq:finite-composition}
+\end{equation}
+This is a finite polynomial formula, evaluated by truncated polynomial
+multiplication in the accompanying program.
+
+\begin{proposition}[Reduction at nonpositive outer order]
+\label{ang:prop:lowering}
+For every integer $m\ge0$ and real $b>0$,
+\begin{equation}
+ F_{-m,b}(z)=\sum_{j=0}^m\binom mj
+             \Li_{j-m}(z)\Li_{b-j}(z)
+ \label{ang:eq:lowering}
+\end{equation}
+on the common slit-plane continuation.
+\end{proposition}
+\begin{proof}
+Summing first over $n>j$ in the unit disk gives
+$F_{0,b}(z)=\Li_0(z)\Li_b(z)$, where
+$\Li_0(z)=z/(1-z)$. Apply $(z\partial_z)^m$, use
+Leibniz' rule and $z\partial_z\Li_s=\Li_{s-1}$, and
+then analytically continue. Each factor with nonpositive integral
+order is rational. The identity itself is elementary; its role is
+to close the coordinate algebra of the convergent reconstruction.
+\end{proof}
+
+\begin{corollary}[A fixed period algebra]
+\label{ang:cor:algebra}
+For integers $a\ge6$, $b\ge1$, every $D_k(a,b;1)$ belongs to
+the same finitely generated real algebra
+\begin{equation}
+ \Q\left[
+ \begin{array}{ll}
+ \operatorname{Re}F_{r,b}(i),\operatorname{Im}F_{r,b}(i),&1\le r\le a,\\
+ \operatorname{Re}\Li_j(i),\operatorname{Im}\Li_j(i),&1\le j\le b
+ \end{array}\right].
+ \label{ang:eq:algebra}
+\end{equation}
+Increasing the nonlinear degree introduces no additional depth-two
+generators or classical-polylogarithm generators.
+\end{corollary}
+\begin{proof}
+Use \eqref{ang:eq:jets}, \eqref{ang:eq:finite-composition}, and
+\eqref{ang:eq:lowering}. All nonpositive integral-order
+polylogarithms at $i$ belong to $\Q(i)$, and values at $-i$ are
+complex conjugates. The operations required are finite sums and
+products with rational coefficients. This proves membership, not
+minimality or algebraic independence of the generating set.
+\end{proof}
+
+\section{A moving finite truncation with Gaussian error}
+\label{ang:sec:moving}
+
+The convergent degree reconstruction still uses analytically evaluated
+polylogarithms in each block. It is useful to have a completely finite
+alternative involving only a finite number of harmonic numbers and
+trigonometric Taylor coefficients. Let $M\ge3$ be an integer and put
+\begin{align}
+ S_M(v)&=\sum_{n=3}^M H_{n-1}^{(b)}\rho^{n-2}(2/n)^a
+                         \sin(n\pi/2-nv),\notag\\
+ f_M(v)&=-B(v)S_M(v),\qquad
+ D_{k,M}=\frac1k[v^{k-1}]f_M(v)^k,\notag\\
+ P_{M,K}(a,b;\rho)&=\sum_{k=1}^K D_{k,M}.
+ \label{ang:eq:finite-cutoff}
+\end{align}
+This keeps modes at most $M$ and total degree at most $K$. It is
+a finite subfamily of the original multiset formula, with every
+collision inside that subfamily combined automatically.
+
+\begin{theorem}[Explicit finite approximation bound]
+\label{ang:thm:finite}
+Let $a\ge8$, $b>0$, $0<\rho\le1$, $M\ge3$, and $K\ge0$.
+If
+\begin{equation}
+ \kappa=14M\rho(2/3)^a\le\frac12,
+ \label{ang:eq:kappa}
+\end{equation}
+then
+\begin{equation}
+ \left|\delta_{a,b}(\rho)-P_{M,K}(a,b;\rho)\right|
+ \le \frac{\rho2^aM^{2-a}}{a-2}
+     +\frac{\kappa^{K+1}}{M(K+1)(1-\kappa)}.
+ \label{ang:eq:finite-error}
+\end{equation}
+The two displayed terms control frequency removal and degree removal,
+respectively.
+\end{theorem}
+\begin{proof}
+Use the disk $|v|\le1/M$. Here $|B(v)|\le1$ and
+$|\sin(n\pi/2-nv)|\le e^{n/M}\le e$ for $n\le M$.
+For $a\ge4$,
+\[
+ \sum_{n\ge3}(n-1)(2/n)^a
+ \le (2/3)^a\,81\left(\zeta(3)-\zeta(4)-\frac1{16}\right)
+ <5(2/3)^a.
+\]
+Since $5e<14$, it follows that
+$\sup|f_M|<14\rho(2/3)^a=\kappa/M$.
+The same Rouch\'e and Lagrange argument on radius $1/M$ gives
+a unique real small root $\delta_M$ and
+\[
+ |D_{k,M}|\le\frac{\kappa^k}{Mk},\qquad
+ \left|\delta_M-\sum_{k=1}^K D_{k,M}\right|
+ \le\frac{\kappa^{K+1}}{M(K+1)(1-\kappa)}.
+\]
+
+The actual root is also in this real interval. At its fixed point,
+Lemma~\ref{ang:lem:norm} gives
+$|\delta_{a,b}|\le(10/4)\rho(2/3)^a<1/M$ under
+\eqref{ang:eq:kappa}. On $|v|\le1/M$ the real derivative of
+the finite equation $E_M(v)=\sin2v+S_M(v)$ satisfies
+\begin{align*}
+ E_M'(v)
+ &\ge2\cos(2/M)-\sum_{n\ge3}n(n-1)(2/n)^a\\
+ &\ge2\cos(2/3)-14(2/3)^a>1.
+\end{align*}
+For the second line, comparison at exponent five uses
+\[
+ \sum_{n\ge3}n(n-1)(3/n)^5
+ =243\left(\zeta(3)-\zeta(4)-\frac1{16}\right)<14.
+\]
+This inequality has a finite rational certificate: sum
+$(n-1)/n^4$ from $3$ through $100$ and bound the decreasing
+tail by $1/(2\cdot100^2)-1/(3\cdot100^3)$. Multiplying by
+$243$ gives a rational number less than $14$. Finally,
+$2\cos(2/3)\ge14/9$ and
+$14/9-14(2/3)^8=6622/6561>1$.
+
+At the actual root the residual of the finite equation is its removed
+Fourier tail, whose magnitude is at most
+\[
+ \rho2^a\sum_{n>M}n^{1-a}
+ \le\frac{\rho2^aM^{2-a}}{a-2}.
+\]
+The derivative lower bound and the mean value theorem control
+$|\delta_{a,b}-\delta_M|$ by this residual. Adding the degree
+error proves \eqref{ang:eq:finite-error}.
+\end{proof}
+
+\begin{theorem}[An attainable Gaussian error scale]
+\label{ang:thm:gaussian}
+Put $\ell=\log(3/2)$. For every fixed $0<\lambda<\ell$ choose
+\begin{equation}
+ M(a)=\lfloor e^{\lambda a}\rfloor,\qquad
+ K(a)=\left\lceil\frac{\lambda a}{\ell-\lambda}\right\rceil.
+ \label{ang:eq:moving-choice}
+\end{equation}
+There are constants $a_\lambda,C_\lambda>0$, independent of
+$b>0$ and $0<\rho\le1$, such that for $a\ge a_\lambda$,
+\begin{equation}
+ |\delta_{a,b}(\rho)-P_{M(a),K(a)}(a,b;\rho)|
+ \le \exp(-\lambda a^2+C_\lambda a).
+ \label{ang:eq:gaussian}
+\end{equation}
+\end{theorem}
+\begin{proof}
+We have $\log M=\lambda a+O(e^{-\lambda a})$ and
+$\kappa\le14e^{-(\ell-\lambda)a}$, so the hypotheses of
+Theorem~\ref{ang:thm:finite} hold eventually, uniformly in
+$b,\rho$. The logarithm of its frequency bound is at most
+$-\lambda a^2+(2\lambda+\log2)a+O(\log a)$.
+For the degree bound use
+$K+1\ge\lambda a/(\ell-\lambda)$ and
+$\log\kappa\le\log14-(\ell-\lambda)a$.
+Its logarithm is likewise at most $-\lambda a^2+O_\lambda(a)$.
+Increasing $C_\lambda$ absorbs their sum and all fixed thresholds.
+\end{proof}
+
+A simple choice is $\lambda=\ell/2$, giving
+$M=\lfloor(3/2)^{a/2}\rfloor$ and $K=\lceil a\rceil$.
+The theorem measures error, not computational optimality: $M$ grows
+exponentially with $a$. It is a proved partial answer to the moving
+truncation question, while the sharp error of a single
+exponential-base cutoff remains open.
+
+\subsection{An exact complex frequency remainder}
+
+The positive kernel gives another useful finite identity. Put
+$h_d(x,y)=\sum_{j=0}^d x^{d-j}y^j$. Direct multiplication gives
+\begin{equation}
+ \frac1{(1-xz)(1-yz)}-\sum_{d=0}^{M-3}h_d(x,y)z^d
+ =\frac{z^{M-2}(h_{M-2}(x,y)-zxyh_{M-3}(x,y))}
+ {(1-xz)(1-yz)}.
+ \label{ang:eq:exact-tail}
+\end{equation}
+In the sectors of Lemma~\ref{ang:lem:norm}, integration and the
+exact moments therefore imply
+\begin{align}
+ \left|F_{a,b}(z)-\sum_{n=2}^{M-1}\frac{H_{n-1}^{(b)}}{n^a}z^n\right|
+ &\le\frac{|z|^M}{c^2}
+ \left(\frac{H_{M-1}^{(b)}}{M^a}
+ +|z|\frac{H_{M-1}^{(b)}-1}{(M+1)^a}\right).
+ \label{ang:eq:complex-tail}
+\end{align}
+Unlike an estimate obtained by summing the defining Fourier tail,
+this remains valid for $|z|>1$ in those sectors. At fixed complex
+radius $r$, its normalized angular version is
+$O_r(\rho^{M-2}M e^{Mr}(2/M)^a)$. Taking $M$ proportional
+to $a/r$ yields $\exp(-a\log a+O_r(a))$. The stronger Gaussian
+construction above instead shrinks the analytic disk with $M$;
+both estimates describe their precise domains without assuming
+convergence of the original infinite transseries.

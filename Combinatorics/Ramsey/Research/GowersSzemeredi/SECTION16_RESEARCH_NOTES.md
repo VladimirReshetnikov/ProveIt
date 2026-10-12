@@ -6129,6 +6129,127 @@ comment ofModAP.IsProper is identified for a later documentation fix; its
 actual cardinality predicate is unchanged. The broad facade is incomplete.
 The full goal remains active.
 
+### L.38 Sharp Bohr averaging and restored original criterion (2026-10-12)
+
+`SharpBohrFidelityAudit` passes over1,631 native modules with seven new
+positive theorems and two separate scope refutations. Only the three approved
+axioms occur. The exact original nonzero criterion, with explicit valid
+radius/domain conventions, has its checked companion. The broader facade
+is still incomplete, and47 inspected source statements do not constitute
+completion of the120-statement semantic review.
+
+`Proofs07TranslationAverage` proves the exact translation-fibre cardinality
+identity and its cross-multiplied average bound for arbitrary finite domains
+mapping into finite abelian groups. Product-set cardinalities retain their
+exact powers. No coordinate-grid ceiling factor is introduced.
+
+For0<delta<=1, chooseL=ceil(delta*N) andI={0,...,L-1}. The productI^K has
+L^|K| points. Averaging preimages of its translates gives a fibreC with
+N*L^|K|<=N^|K|*|C|. Subtracting one member ofC injects it into the Bohr set,
+since coordinate differences have centered magnitude at mostL-1<=delta*N.
+Thus |B|>=delta^|K|*N, yielding a nonzero point atdelta>N^(-1/|K|).
+The original sufficient radius(N/2)^(-1/|K|) is therefore valid. The old
+correction that replaced it by2*N^(-1/|K|) was unnecessarily weak, rather
+than a refutation of the original claim.
+
+The unrestricted positive-radius cardinality bound is actually false:
+N=2,K={0},delta=3 demands at least3 points in a group of size2. This separate
+refutation justifies stating the radius range explicitly. The positive
+cardinality/nonzero results require no primality.
+
+For Corollary7.11, coordinate-linearity is the intended transfer through the
+integer-progression embedding. On{0,3} with targetZMod3, values0,1 are affine
+in progression coordinates, but every ambient formulaa*x+b is constant on
+those two integers. The verified distinction is not a refutation of the
+coordinate-interpreted corollary. The source states that interpretation,
+while the proof of7.10 also restores the OCR-lost full length exponent.
+
+The annotated117-page PDF was rebuilt twice and inspected at the radius
+and coordinate notes, pages40 and42. The original published PDF is intact.
+The semantic review now includes Sections6--7, with73 entries still unread
+and convention/geometry follow-ups recorded. Foundational comment fixes are
+identified for after the broad build so that it is not needlessly invalidated.
+The full goal remains active.
+
+### L.39 Four-term scope and Sections 8--10 comparison (2026-10-12)
+
+`FourTermScopeFidelityAudit` passes over 1,634 native modules with only
+`propext`, `Classical.choice` and `Quot.sound`. Two new public theorems
+remove primality from the four-term theorem and weaken exact density to
+`delta*N <= |A|`. The same absolute exponent witness is used. The dense
+branch is a four-set union bound over every group of order at least two;
+the threshold itself excludes the one-element modulus. The remaining
+branch reuses the existing all-modulus quadratic iteration.
+
+The separate, previously proved unrestricted-eta counterexample to Lemma
+9.3 is now explicitly included in the audit. Full domain, identity map,
+alpha=beta=1 and eta=8 demand more additive sixteen-tuples than the whole
+group contains. The annotated paper records this and makes Corollary9.4's
+inherited eventual-N condition explicit.
+
+Statement comparison now covers 68/120 entries. Sections8--10 retain the
+actual tuple counts, Fourier normalization, nested proportion losses and
+inherited component setup. Lemmas10.3 and10.5 now state the restrictions
+used in their proofs; radius ranges and nonempty K are explicit in10.10--11.
+Two proof transcription errors are fixed: N^3 rather than N^4 in10.2's last
+count, and rx rather than rd in10.10's boundary display. The corrected10.13
+statement uses the same integer ceiling as Lean for its spectrum parameter.
+
+Inspection does not close every original claim. Theorem10.13's original
+alpha^3/1000 extraction and real-parameter radius remain open, as does
+extension from the positive integer fibre-cap convention to arbitrary real
+caps if the latter is intended. Lemma10.5's original square-root clause
+must not be classified as false: the existing weighted error estimate is
+1440*eta*L*|W|, whereas the original exceptional proportion and threshold
+multiply to1500*eta. Recover its original clause from that budget in a
+subsequent kernel proof, rather than relying on the old 'inconsistent'
+comment. The fifth-power variant used downstream is already verified.
+
+The exported facade has progressed through further native OAI modules but
+has not yet passed. Its cache is retained. The goal remains active.
+
+### L.40 Original component clause and weighted sign endpoint (2026-10-12)
+
+The direct `ComponentTradeoffCoreAudit` passes over 15 native modules with
+only the three approved axioms. The original square-root clause of Lemma
+10.5 is valid with the same inherited setup and explicit parameter bounds.
+`ComponentTradeoff` records all six conclusions at an arbitrary real error
+exponent t. The construction in `Proofs10Regular` selects one W that works
+for every t simultaneously: the two powers multiply to eta, so its original
+weighted Markov calculation applies without changing any geometric bound.
+Taking t=1/2 gives the original clause; taking t=1/5 preserves the existing
+canonical companion and every downstream fifth-power construction.
+
+The source restores the original item(iii), documents the simultaneous
+trade-offs and identifies the fifth-power variant used in10.6. The published
+PDF was checked to confirm that its original two exponents are indeed1/2.
+Earlier wording that called the square-root clause inconsistent was
+unjustified and is now corrected in the current Lean source and paper.
+
+`Proofs12SourceScope` proves the alpha=0 endpoint of weighted simultaneous
+additivity and separately refutes its unrestricted sign reading. At N=1,
+p=1, alpha=-1 and all weights/functions zero, its Fourier premise holds but
+its weighted quadruple conclusion demands at least one rather than zero.
+The annotated paper states alpha>=0 and visibly records the obstruction.
+All six numbered Section12 results were compared against their actual
+Fourier normalization, endpoint membership, arrangement counts, eventual-N
+quantifiers and uniform-density threshold. The review now covers74/120;
+46 statements and additional inspected scope/bound obligations remain open.
+
+Three current documentation errors in foundational definitions are fixed:
+modular properness means injection and permits wrapping; the original7.7
+threshold is valid by the sharp Bohr proof; the original10.5 clause is valid
+by the simultaneous trade-off proof. These comment edits require a fresh
+native dependency build. The full fidelity gate is running over the expected
+expanded closure, followed automatically by the exported facade build.
+The 15-module direct checkpoint does not certify either broad gate. The last
+full 1,634-module checkpoint remains its historicalf407e0115 snapshot.
+
+The annotated118-page PDF was built twice and its restored component clause
+and sign note inspected on pages57 and68. The published PDF is unchanged.
+The goal remains active; remaining original claims are not reclassified as
+false merely because a weaker proof-supported variant is available.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

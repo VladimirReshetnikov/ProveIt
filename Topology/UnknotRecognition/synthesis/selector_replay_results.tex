@@ -1,0 +1,30 @@
+The complete decomposition audit was rerun after this change. All 1,755
+finite proof records and all 106 saved source certificates are identical to
+the preceding version. The rerun again checks 119,490 vertex links on
+32,437 literal base polygons, as well as the seven large binary cases.
+The compact audit artifact authenticates the preceding full proof bank and
+records the new source hashes. Regression coverage includes malformed nested
+histograms, dimensions and traces, a wrong representative in a single orbit,
+and cancellation after replay has begun.
+
+The full Regina-enabled suite passes all 1,614 tests with no skips. The
+three added tests exercise the common certificate checks and the single-orbit
+label obligation directly.
+
+A paired comparison loads the preceding selector and weighted verifier
+sources directly from Git revision \code{42ca57831}. Source preparation,
+bundle construction, full independent proof replay and serialization are all
+inside the timer. The current producer and geometric verifier are shared;
+only the selector replay implementation changes. Every serialized result is
+byte-identical across the old, old-control and new arms. Five shuffled paired
+rounds follow a warmup.
+
+\input{tables/selector_replay_timing.tex}
+
+Median paired speed ratios range from 1.128 to 1.249, corresponding to about
+11--20 percent less time for this complete decomposition task. The identical
+old-control ratios range from 0.930 to 1.011, so the timings also expose the
+remaining measurement variability. Every individual measured old/new pair
+favours the new implementation. These constant-factor savings leave the
+previous small-case expansion advantage and the unproved general hierarchy
+bound in place.

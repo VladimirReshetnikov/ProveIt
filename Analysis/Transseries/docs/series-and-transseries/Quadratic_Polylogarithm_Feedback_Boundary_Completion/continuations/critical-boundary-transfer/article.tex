@@ -1,0 +1,1517 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=26mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array}
+\usepackage{xcolor,xurl}
+\definecolor{linkink}{RGB}{25,55,85}
+\usepackage[colorlinks=true,allcolors=linkink,pdfusetitle]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Quadratic polylogarithm boundaries}
+\fancyhead[R]{\small ProveIt research contribution}
+\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Uc}{U_{\mathrm c}}
+\newcommand{\vb}{v_{\mathrm b}}
+\newcommand{\coef}[2]{[#1]#2}
+\newcommand{\Dop}{\mathcal D}
+\numberwithin{equation}{section}
+\allowdisplaybreaks[2]
+\title{Critical Boundaries of Quadratic\\Polylogarithm Feedback\\[5pt]
+\large Exact boundary transfer, convergent Hahn inverses,\\
+Gamma cancellations, and the marginal Lambert law}
+\author{Research contribution prepared for Vladimir Reshetnikov\\
+\small with OpenAI assistance}
+\date{12 October 2026}
+\hypersetup{pdftitle={Critical Boundaries of Quadratic Polylogarithm Feedback},pdfauthor={Research contribution prepared for Vladimir Reshetnikov with OpenAI assistance},pdfsubject={Polylogarithms, boundary transfer, convergent Hahn inverses and Lambert logarithmic asymptotics}}
+\begin{document}
+\maketitle
+\begin{abstract}
+We resolve the fixed-parameter boundary problem explicitly left open in the
+incoming article \emph{Resonant Polylogarithm Transseries}. For the analytic
+germ defined by
+\(uv-v^2/2=\Li_s(r\ee^v)\), we prove its exact convergence radius and unique
+dominant singularity at and beyond
+\(u=\sqrt{2\zeta(s)+\zeta(s-1)^2}\), for every real $s>2$.
+Beyond criticality we prove the conjectured $R^{-n}n^{-s}$ coefficient law,
+including its constant and every positive integer order. At criticality we
+construct convergent two-generator inverse charts and obtain the fractional,
+logarithmic, and finite-curvature regimes.
+
+The logarithmic endpoint $s=3$ has an explicitly normalized Lambert core.
+A finite coefficient formula, followed by reciprocal-Gamma differentiation,
+gives every inverse-logarithmic correction to its coefficient asymptotics;
+the first two corrections are displayed in closed form. A polylogarithmic
+transfer dictionary eliminates spurious descendants of logarithmic-coordinate
+powers. At $s=5/2$ this proves an exact missing $n^{-2}$ term. At $s=4$ it
+instead produces a nonzero $n^{-2}$ correction and proves that the leading
+square root is not a genuine Puiseux germ. We classify finite ramification
+at all noninteger critical orders and extend the boundary constants and
+marginal normalization to finite changes of the coefficient prefix.
+
+All theorems have conventional proofs. Exact finite checks, positive
+coefficient recurrences, numerical diagnostics, an integration crosswalk,
+and further research questions accompany the article. Classical inversion,
+singularity analysis, and simply generated tree mechanisms are credited;
+worldwide priority for the model-specific refinements is not asserted.
+\end{abstract}
+\medskip
+\noindent\textbf{Status.} Unrefereed research manuscript, not a proof-assistant
+formalization. Numerical evidence is not an interval certificate. The
+repository observation and limits of the source audit are recorded in
+Section~\ref{qb:sec:audit}; no remote repository file was changed.
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{The research question and what is added}\label{qb:sec:intro}
+
+The starting point is the quadratic feedback equation
+\begin{equation}\label{qb:eq:model}
+ uv(r)-\frac{v(r)^2}{2}=\Li_s\!\left(r\ee^{v(r)}\right),
+ \qquad v(0)=0,\qquad v(r)=\sum_{n\ge1}a_n r^n.
+\end{equation}
+The parameters $s$ and $u$ are real. Our main boundary theorems assume
+$s>2$ and $u\ge\Uc(s)$, where
+\begin{equation}\label{qb:eq:critical}
+ A=\zeta(s),\qquad B=\zeta(s-1),\qquad
+ \Uc(s)=\sqrt{2A+B^2}.
+\end{equation}
+The variable $r$ is complex near zero. Substituting $r=\ee^{-x}$ converts
+its Taylor series into a convergent exponential-sector expansion. Near its
+first singularity a different inversion problem appears, with fractional
+powers or logarithms of the distance to the boundary. These two levels are
+why the model belongs simultaneously to polylogarithm analysis and to the
+repository's transseries inversion program.
+
+Equation~\eqref{qb:eq:model} is a \emph{quadratic feedback model}. Except at
+the dilogarithm specialization discussed in the predecessor, it is not the
+exact-core inversion equation for $-\Li_s(-\ee^x)$. The distinction is
+important when comparing this article with general integer-order Fermi
+inversion.
+
+\subsection{A precise pending question}
+
+The incoming article \cite{prior} proves the interior-fold regime. Its
+Section~12, Question~1 explicitly leaves the case $s>2$, $u\ge\Uc(s)$ open.
+For $u>\Uc(s)$ it proposes
+\begin{equation}\label{qb:eq:conjecture}
+ a_n\sim \frac{w^{s-1}}{(w-B)^s}R^{-n}n^{-s},\qquad
+ w=\sqrt{u^2-2A},\quad \vb=u-w,\quad R=\ee^{-\vb}.
+\end{equation}
+It correctly notes that formal transport of a singular term does not prove
+this assertion: one must establish complex continuation, treat resonant
+integer orders, and exclude other dominant singularities. We supply these
+steps and prove \eqref{qb:eq:conjecture}. We also determine the critical
+cases anticipated there.
+
+\begin{theorem}[Fixed-parameter boundary classification]\label{qb:thm:summary}
+Let $s>2$ and $u\ge\Uc(s)$ in \eqref{qb:eq:model}. With $w,\vb,R$ as in
+\eqref{qb:eq:conjecture}, the coefficients are strictly positive, the exact
+radius is $R$, and $r=R$ is the only singularity on $|r|=R$. The series is
+absolutely convergent on that circle and $v(R)=\vb$.
+
+For $u>\Uc(s)$, \eqref{qb:eq:conjecture} holds. For $u=\Uc(s)$, so that
+$w=B$, the following laws hold as $n\to\infty$:
+\begin{align}
+ a_n R^n&\sim
+ \frac{(B/\Gamma(1-s))^{1/(s-1)}}{-\Gamma(-1/(s-1))}
+ n^{-1-1/(s-1)}, &&2<s<3,\label{qb:eq:summary-stable}\\
+ a_n R^n&\sim \sqrt{\frac{B}{\pi}}\,
+ n^{-3/2}(\log n)^{-1/2}, &&s=3,\label{qb:eq:summary-log}\\
+ a_n R^n&\sim
+ \sqrt{\frac{B}{2\pi(1+\zeta(s-2))}}\,n^{-3/2}, &&s>3.
+ \label{qb:eq:summary-finite}
+\end{align}
+These are fixed-parameter statements, not uniform transition laws as $s$
+or $u$ varies.
+\end{theorem}
+
+The proof is assembled in Sections~\ref{qb:sec:global}--\ref{qb:sec:finite}.
+The constants in \eqref{qb:eq:summary-stable} are positive: for
+$1<\alpha=s-1<2$, $\Gamma(-\alpha)>0$ and
+$\Gamma(-1/\alpha)<0$.
+
+\subsection{Antecedents and proposed contribution}
+
+Polylogarithm continuation and its Gamma--zeta expansion are classical
+\cite{dlmfpoly}. So are Lagrange inversion, the positive implicit-function
+schema, Hankel transfer, and logarithmic singularity analysis
+\cite{fo,fs}. The substitution used below places the problem in the simply
+generated tree/compound-Poisson setting surveyed by Janson \cite{janson}.
+The repository already has a linear-core critical Hahn theory, with
+ramification and arithmetic cancellation results, and related marginal
+and confluent packages \cite{repocritical,repotrans}. Those mechanisms are
+not discoveries of this article.
+
+The proposed additions are narrower and explicit: completion of the
+predecessor's quadratic boundary theorem; its all-order two-variable
+charts on both sides of $s=3$; the exact marginal Lambert normalization and
+finite Gamma-derivative coefficient compiler; the $s=5/2$ and $s=4$
+coefficient identities; and a finite-prefix dictionary that tracks the
+quadratic correction instead of importing linear-core constants unchanged.
+The explicit square-root lift below explains both the connection with
+classical theory and the extra constants it introduces.
+
+\section{The positive quadratic lift and exact coefficients}\label{qb:sec:lift}
+
+Define, with the square root positive at $t=0$,
+\begin{equation}\label{qb:eq:lift}
+ h(t)=u-\sqrt{u^2-2\Li_s(t)},\qquad t=r\ee^{h(t)},\qquad v(r)=h(t(r)).
+\end{equation}
+Since $h(0)=0$ and $u>0$, the
+analytic implicit function theorem gives a unique germ $t(r)$, and hence
+$v(r)$, near zero.
+
+\begin{proposition}[Three exact coefficient descriptions]\label{qb:prop:coeff}
+For any real $s$ and $u>0$, let $h(t)=\sum_{j\ge1}h_jt^j$ be the lift germ.
+Then
+\begin{align}
+ u h_j&=j^{-s}+\frac12\sum_{k=1}^{j-1}h_kh_{j-k},\label{qb:eq:hrec}\\
+ a_n&=\frac1n[t^n]\exp(nh(t)),\label{qb:eq:lagrange}\\
+ a_n&=\sum_{k=1}^n\frac{C^{(s)}_{n,k}}{k}
+ \sum_{j=0}^{k-1}\binom{k+j-1}{j}
+ \frac{n^{k-1-j}}{(k-1-j)!\,2^j u^{k+j}},\label{qb:eq:finite-coeff}\\
+ C^{(s)}_{n,k}&=[z^n]\Li_s(z)^k
+ =\sum_{\substack{n_1+\cdots+n_k=n\\n_j\ge1}}
+ (n_1\cdots n_k)^{-s}.\notag
+\end{align}
+In particular $h_j>0$ and $a_n>0$. Formula~\eqref{qb:eq:finite-coeff} is the
+predecessor's positive finite formula, restated for comparison rather than
+claimed anew.
+\end{proposition}
+\begin{proof}
+The identity $uh-h^2/2=\Li_s(t)$ gives \eqref{qb:eq:hrec}, and induction
+proves positivity. Lagrange inversion in $t=r\ee^{h(t)}$ gives
+\[
+ [r^n]h(t(r))=\frac1n[t^{n-1}]h'(t)\ee^{nh(t)}
+             =\frac1n[t^n]\ee^{nh(t)}.
+\]
+For the finite formula, rewrite \eqref{qb:eq:model} as
+$v=\Li_s(r\ee^v)/(u-v/2)$, insert an auxiliary multiplier, and apply
+Lagrange inversion in that multiplier. The coefficient of $r^n$ in the
+$k$th power of the numerator is $C^{(s)}_{n,k}\ee^{nv}$ and vanishes for
+$k>n$. Expanding $(u-v/2)^{-k}$ and the exponential gives
+\eqref{qb:eq:finite-coeff}. Positivity also follows directly from either
+of the last two expressions.
+\end{proof}
+
+\begin{corollary}[An exact positive coefficient identity]\label{qb:cor:prob}
+If $s>2$ and $u\ge\Uc(s)$, then
+\begin{equation}\label{qb:eq:probability}
+ nR^na_n=[t^n]\exp\bigl(n(h(t)-h(1))\bigr).
+\end{equation}
+The right side is the probability that
+\(\sum_{j\ge1}jN_j=n\), where the independent $N_j$ have Poisson means
+$nh_j$. Their total mean count is $nh(1)<\infty$.
+\end{corollary}
+\begin{proof}
+On $|t|\le1$, $2|\Li_s(t)|/u^2\le2A/u^2<1$. Thus the lift is well
+defined and $h(1)=u-w=\vb$. Multiply \eqref{qb:eq:lagrange} by
+$n\ee^{-n\vb}$. The exponential of
+$n\sum h_j(t^j-1)$ is the stated probability generating function.
+\end{proof}
+
+This identity provides a positive numerical recurrence without subtracting
+large alternating terms. It is also an exact bridge to classical random
+allocation methods; no probability limit theorem is needed for the proofs
+of the fixed-parameter laws below.
+
+\section{Global control up to the boundary}\label{qb:sec:global}
+
+\begin{proposition}[No hidden singularity inside the proposed circle]
+\label{qb:prop:global}
+Suppose $s>2$ and $u\ge\Uc(s)$. Then the germ $v$ extends analytically to
+$|r|<R$, its Taylor series converges absolutely on $|r|\le R$, and
+\begin{equation}\label{qb:eq:sum}
+ \sum_{n\ge1}a_nR^n=\vb.
+\end{equation}
+It extends analytically through every point of $|r|=R$ except possibly
+$r=R$.
+\end{proposition}
+\begin{proof}
+For $0\le t\le1$, put
+\[
+ v(t)=u-\sqrt{u^2-2\Li_s(t)},\qquad r(t)=t\ee^{-v(t)}.
+\]
+The square root is at least $w\ge B>0$. On $0<t<1$,
+\begin{equation}\label{qb:eq:monotone}
+ \frac{\dd}{\dd t}\log r(t)=\frac1t
+ \left(1-\frac{\Li_{s-1}(t)}{\sqrt{u^2-2\Li_s(t)}}\right)>0.
+\end{equation}
+Indeed $\Li_{s-1}(t)<B\le w$. Hence this parameterization supplies the
+real solution on $0\le r<R$, tending to $\vb$ as $r\uparrow R$.
+
+To pass from a real branch to its complex Taylor disk, iterate
+\[
+ v_0=0,\qquad
+ v_{j+1}=\Phi(r,v_j),\qquad
+ \Phi(r,v)=\frac{v^2}{2u}+\frac{\Li_s(r\ee^v)}u.
+\]
+All coefficients are nonnegative and increase coefficientwise. Each fixed
+coefficient stabilizes: if two successive iterates agree modulo $r^k$,
+their images agree modulo $r^{k+1}$, since $\Phi_v(0,0)=0$ and both
+iterates vanish at zero. For each fixed $0\le r<R$, the iterates are
+bounded by the real solution, since $\Phi$ preserves order on the interval
+between zero and that solution. Monotone convergence of the coefficients
+therefore proves convergence of the full formal series at every such $r$.
+Its sum agrees with the real solution near zero, and then on the full
+interval by analytic continuation. Taking $r\uparrow R$ proves
+\eqref{qb:eq:sum}. Nonnegative coefficients imply absolute and uniform
+convergence on the closed disk.
+
+Let $r_0\ne R$ lie on $|r|=R$. Since every $a_n$ is positive, strict
+triangle inequality gives $|v(r_0)|<\vb$. To justify strictness, equality
+would force all $r_0^n/R^n$, $n\ge1$, to have the same argument, which the
+terms $n=1,2$ already exclude unless $r_0=R$. Consequently
+\[
+ |r_0\ee^{v(r_0)}|=R\ee^{\Re v(r_0)}<R\ee^{\vb}=1.
+\]
+The equation is analytic there, and
+\begin{align*}
+ |\Phi_v(r_0,v(r_0))|
+ &\le\frac{|v(r_0)|+\Li_{s-1}(|r_0\ee^{v(r_0)}|)}u\\
+ &<\frac{\vb+B}{u}\le1.
+\end{align*}
+The analytic implicit function theorem gives continuation through $r_0$.
+This proves the proposition without inferring a complex radius from the
+real parameterization alone.
+\end{proof}
+
+The local singular expansions proved below are valid in a sector at $R$
+with opening larger than $\pi$. Together with the proposition, compactness
+of the remaining circle supplies the usual dented-disk, or
+$\Delta$-domain, continuation. A nonzero local singular term then makes
+$R$ the exact radius and the unique dominant singularity. This is the
+analytic justification required before applying coefficient transfer.
+
+\section{Logarithmic coordinates and a transfer dictionary}\label{qb:sec:coordinates}
+
+Near the boundary use the determinations real on $0<r<R$:
+\begin{equation}\label{qb:eq:coordinates}
+ X=-\log(r/R),\qquad \tau=-\log t,\qquad
+ v=\vb+X-\tau.
+\end{equation}
+The exact inverse relation is
+\begin{equation}\label{qb:eq:H}
+ X=H(\tau):=\tau-
+ \left(\sqrt{u^2-2\Li_s(\ee^{-\tau})}-w\right).
+\end{equation}
+For $s\notin\N$, the classical convergent expansion is
+\begin{equation}\label{qb:eq:jonquiere}
+ \Li_s(\ee^{-\tau})=
+ \Gamma(1-s)\tau^{s-1}+
+ \sum_{k\ge0}\frac{(-1)^k\zeta(s-k)}{k!}\tau^k,
+ \qquad |\tau|<2\pi,\quad |\arg\tau|<\pi.
+\end{equation}
+Its source is DLMF 25.12.12 \cite{dlmfpoly}. At a positive integer $m$,
+the cancelling Gamma and zeta poles give
+\begin{equation}\label{qb:eq:integer}
+ \Li_m(\ee^{-\tau})=
+ \frac{(-\tau)^{m-1}}{(m-1)!}\bigl(H_{m-1}-\log\tau\bigr)
+ +\sum_{\substack{k\ge0\\k\ne m-1}}
+ \frac{(-1)^k\zeta(m-k)}{k!}\tau^k,
+\end{equation}
+where $H_j=\sum_{k=1}^j1/k$. This follows either by taking the cancelling
+limit in \eqref{qb:eq:jonquiere}, or by differentiating in $\tau$ and
+matching the elementary $m=1$ identity.
+
+Expanding the square in \eqref{qb:eq:model} after
+\eqref{qb:eq:coordinates}, rather than prematurely expanding an inverse,
+gives the exact local equation, for noninteger $s$,
+\begin{align}\label{qb:eq:master}
+ wX={}&(w-B)\tau+\Gamma(1-s)\tau^{s-1}
+ +\frac{1+\zeta(s-2)}2\tau^2-\tau X+\frac{X^2}{2}\notag\\
+ &+\sum_{k\ge3}\frac{(-1)^k\zeta(s-k)}{k!}\tau^k.
+\end{align}
+The additional $1$ in the quadratic coefficient is the contribution of
+$-v^2/2$. It must not be dropped when importing a linear-core formula.
+
+\subsection{Why powers of \texorpdfstring{$X$}{X} have no spurious descendants}
+
+\begin{lemma}[Polylogarithmic transfer coordinates]\label{qb:lem:transfer}
+Let a function analytic at $r=0$ have a unique dominant point $R$ and a
+$\Delta$-continuation there. Write $X=-\log(r/R)$ locally. A singular term
+$cX^\lambda$, $\lambda\notin\N_0$, contributes
+\begin{equation}\label{qb:eq:power-transfer}
+ \frac{c}{\Gamma(-\lambda)}R^{-n}n^{-\lambda-1}
+\end{equation}
+to coefficient asymptotics, without an additional string of integer
+$1/n$ descendants from that term alone. A term $cX^k$, $k\in\N_0$, is
+locally analytic and contributes no algebraic singularity term. A term
+$cX^k\log X$ contributes
+\begin{equation}\label{qb:eq:integer-transfer}
+ c(-1)^{k+1}k!\,R^{-n}n^{-k-1}.
+\end{equation}
+More generally, for fixed $j$ the contribution of
+$X^\lambda(\log X)^j$ is obtained by applying $\partial_\lambda^j$ to
+$R^{-n}n^{-\lambda-1}/\Gamma(-\lambda)$.
+
+These statements concern local contributions to an asymptotic expansion;
+$X^\lambda$ need not itself be an analytic germ at $r=0$.
+\end{lemma}
+\begin{proof}
+Put $z=r/R$. For $\lambda\notin\N_0$, the convergent identity
+\eqref{qb:eq:jonquiere} gives
+\[
+ \Li_{\lambda+1}(z)=\Gamma(-\lambda)(-\log z)^\lambda+
+ \text{a function analytic near }z=1.
+\]
+Subtract $c\Li_{\lambda+1}(z)/\Gamma(-\lambda)$ from the original
+function. The subtracted function has the exact $n$th coefficient
+\[c n^{-\lambda-1}/\Gamma(-\lambda).\]
+The indicated singular term has therefore been removed. A finite collection of such subtractions reduces the
+remainder to the ordinary big-$O$ transfer theorem \cite{fo,fs}; any local
+analytic part can first be removed to the required order by a polynomial
+in $1-z$. This proves the absence of artificial descendants.
+
+For integer $k$, \eqref{qb:eq:integer} gives the same conclusion using
+$\Li_{k+1}$. Equivalently,
+\[
+ \left.\frac{\dd}{\dd\lambda}\frac1{\Gamma(-\lambda)}
+ \right|_{\lambda=k}=(-1)^{k+1}k!.
+\]
+For logarithmic powers, differentiate the normally convergent local
+identity in a parameter neighborhood not containing a pole, or use its
+pole-cancelled integer limit. Local analytic terms remain irrelevant to
+any fixed algebraic asymptotic order. This proves the finite-order
+statement, not convergence of an infinite coefficient-asymptotic series.
+\end{proof}
+
+\begin{remark}[Cancellation versus a different coordinate]
+Expanding $X^\lambda$ first in powers of $1-r/R$ produces many terms.
+Applying ordinary power transfer to those terms separately is legitimate
+only after combining all terms of the desired order. The apparent integer
+$1/n$ corrections cancel. Lemma~\ref{qb:lem:transfer} performs this
+cancellation exactly by using a polylogarithm as the transfer model.
+\end{remark}
+
+\subsection{Local inverse sectors}
+
+All subsequent local estimates are uniform on each closed subsector
+$|\arg X|\le\pi-\epsilon$, $0<|X|<\delta_\epsilon$. For a simple leading
+relation $X=c\tau^p(1+o(1))$, with $c>0$ and $p\ge1$, the selected inverse
+is obtained near $\tau=(X/c)^{1/p}$, real positive for $X>0$.
+One may prove sectorial inversion by Rouch\'e's theorem on a small relative
+circle about this root: the leading map has one simple root there,
+and the perturbation and its first derivative are smaller uniformly.
+The root depends holomorphically on $X$ away from zero, and uniqueness
+glues the local choices. The explicit implicit-function charts below give
+a stronger convergent construction when $s$ is noninteger. The logarithmic
+case is treated separately with its Lambert core.
+
+\section{The strict boundary theorem, including integer orders}\label{qb:sec:strict}
+
+\begin{theorem}[Proof of the pending boundary law]\label{qb:thm:strict}
+Let $s>2$ and $u>\Uc(s)$. Set
+\(\lambda=1-B/w>0\). Then the exact radius and unique dominant point are
+$R=\ee^{-(u-w)}$, and
+\begin{equation}\label{qb:eq:strict}
+ a_n=\frac1{w\lambda^s}R^{-n}n^{-s}(1+o(1)).
+\end{equation}
+For noninteger $s$, the leading nonanalytic part of $v$ in $X$ coordinates is
+\begin{equation}\label{qb:eq:strict-sing}
+ \frac{\Gamma(1-s)}{w\lambda^s}X^{s-1}.
+\end{equation}
+For integer $m\ge3$, it is
+\begin{equation}\label{qb:eq:strict-int}
+ \frac{(-1)^m}{(m-1)!\,w\lambda^m}X^{m-1}\log X.
+\end{equation}
+In each case the omitted local terms are analytic or have strictly higher
+singular order.
+\end{theorem}
+\begin{proof}
+First suppose $s$ is noninteger. Remove the fractional term from
+\eqref{qb:eq:jonquiere}, leaving an analytic function $Z(\tau)$, and let
+\[
+ H_0(\tau)=\tau-
+ \left(\sqrt{u^2-2Z(\tau)}-w\right).
+\]
+Then $H_0(0)=0$, $H_0'(0)=\lambda$, and its ordinary analytic inverse
+$\tau_0(X)$ satisfies $\tau_0(X)=X/\lambda+O(X^2)$.
+Expanding the square root about its nonzero value $w$ gives
+\[
+ H(\tau)=H_0(\tau)+\frac{\Gamma(1-s)}w\tau^{s-1}
+ +O(\tau^s)+O(\tau^{2s-2})
+\]
+on the chosen sectors. Sectorial inversion, or substitution followed by
+Rouch\'e's theorem, therefore gives
+\[
+ \tau(X)=\tau_0(X)-
+ \frac{\Gamma(1-s)}{w\lambda^s}X^{s-1}
+ +O(X^{s-1+\eta})
+\]
+for any fixed $0<\eta<\min(1,s-2)$. This bound permits analytic terms to
+be absorbed in $\tau_0$; the nonlinear interaction of two leading
+fractional corrections first has order $2s-3>s-1$.
+The identity $v=\vb+X-\tau$ proves \eqref{qb:eq:strict-sing}.
+
+At an integer $m\ge3$, use \eqref{qb:eq:integer} instead. Its analytic
+part again has a simple inverse, and its leading nonanalytic term is
+$\ell_m\tau^{m-1}\log\tau$, where
+$\ell_m=(-1)^m/(m-1)!$. The same calculation gives
+\eqref{qb:eq:strict-int}; terms involving $\log\lambda$ are analytic at
+this order. The remaining nonanalytic terms are of higher order, with at
+most fixed logarithmic factors, so they are negligible in the leading
+coefficient asymptotic.
+
+The nonzero singular terms show that $r=R$ is singular. Proposition
+\ref{qb:prop:global} excludes a smaller radius and any other singularity
+on that circle. The sectorial inverse and the compact continuation away
+from $R$ supply a $\Delta$-domain. Lemma~\ref{qb:lem:transfer} now gives
+\eqref{qb:eq:strict} in both cases. Finally
+$1/(w\lambda^s)=w^{s-1}/(w-B)^s$, which is precisely
+\eqref{qb:eq:conjecture}.
+\end{proof}
+
+\begin{remark}[The singular limit in the theorem]
+The constant in \eqref{qb:eq:strict} diverges as $w\downarrow B$.
+Thus substituting $u=\Uc(s)$ in this formula is not valid. Criticality
+changes the inverse equation's leading order, not merely its prefactor.
+\end{remark}
+
+\section{The fractional critical interval: a convergent Hahn chart}
+\label{qb:sec:stable}
+
+Assume $u=\Uc(s)$ and $2<s<3$. Write
+\begin{equation}\label{qb:eq:stable-constants}
+ \alpha=s-1\in(1,2),\qquad G=\Gamma(-\alpha)>0,\qquad
+ d=(B/G)^{1/\alpha},\qquad T=dX^{1/\alpha}.
+\end{equation}
+Set $\rho=T^{\alpha-1}$ and $\sigma=T^{2-\alpha}$; thus
+$T=\rho\sigma$. Both generators tend to zero.
+
+\begin{theorem}[Convergent two-generator critical inverse]
+\label{qb:thm:hahn}
+There is a unique analytic function $U(\rho,\sigma)$ near $(0,0)$ with
+$U(0,0)=1$ such that the boundary inverse is
+\begin{equation}\label{qb:eq:hahn-inverse}
+ \tau=T U(\rho,\sigma),\qquad v=\vb+X-TU(\rho,\sigma).
+\end{equation}
+It is determined by the analytic equation
+\begin{align}\label{qb:eq:hahn-E}
+ 1={}&U^\alpha+\frac{1+\zeta(\alpha-1)}{2G}\sigma U^2
+ -\frac{\rho\sigma}{B}U+\frac{G}{2B^2}\rho^2\sigma\notag\\
+ &+\frac{\sigma}{G}\sum_{k\ge3}
+ \frac{(-1)^k\zeta(\alpha+1-k)}{k!}
+ (\rho\sigma)^{k-2}U^k.
+\end{align}
+Its Taylor series gives an absolutely convergent generalized power series
+for $\tau$, with support contained in
+\begin{equation}\label{qb:eq:stable-grid}
+ \left\{\frac{1+j(\alpha-1)+k(2-\alpha)}{\alpha}:
+                  j,k\in\N_0\right\}.
+\end{equation}
+Only finitely many support exponents lie below any fixed bound; collisions
+are combined by addition.
+
+If $\alpha=p/q$ in lowest terms, the exact minimum ramification index is
+$p$: the inverse is a convergent Puiseux series in $X^{1/p}$, and cannot
+be expressed as a convergent power series in $X^{1/M}$ with a smaller
+positive integer $M$. If $\alpha$ is irrational, no finite Puiseux
+ramification is possible.
+\end{theorem}
+\begin{proof}
+At criticality $w=B$. In \eqref{qb:eq:master} put
+$X=(G/B)T^\alpha$ and $\tau=TU$, and divide by $GT^\alpha$.
+The identities
+$T^{2-\alpha}=\sigma$, $T=\rho\sigma$, and
+$T^\alpha=\rho^2\sigma$ give exactly \eqref{qb:eq:hahn-E}.
+The tail is analytic near $(\rho,\sigma,U)=(0,0,1)$ because
+\eqref{qb:eq:jonquiere} has a convergent analytic tail. Choose the power
+$U^\alpha$ analytic near $U=1$. The derivative of the right side with
+respect to $U$ is $\alpha\ne0$ at the base point. The analytic implicit
+function theorem therefore produces $U$ and an absolutely convergent
+bivariate Taylor series on a polydisk.
+
+Substitution of the two small generators gives absolute convergence on
+closed subsectors and the support \eqref{qb:eq:stable-grid}. Its
+nonnegative integer generators have positive weights, proving local
+finiteness. The branch agrees with the real inverse for $X>0$ small,
+by its leading behavior, and hence with the continued germ selected in
+Section~\ref{qb:sec:global}.
+
+For $\alpha=p/q$, the exponents are
+$\{(q+j(p-q)+k(2q-p))/p\}$. They are nonnegative integer multiples
+of $1/p$, and absolute convergence gives an analytic series in $X^{1/p}$.
+The leading term $dX^{q/p}$ is nonzero, so any possible ramification
+index must be divisible by $p$. For irrational $\alpha$, its leading
+exponent $1/\alpha$ is irrational and already excludes finite
+ramification.
+\end{proof}
+
+\subsection{A finite formula for every chart coefficient}
+
+The preceding implicit function is not merely existential. The following
+finite recipe applies to both critical charts in this paper.
+
+\begin{lemma}[Finite bivariate reversion]\label{qb:lem:finite-chart}
+Suppose $E(p,q,U)=E_0(U)+\Delta E(p,q,U)$ is analytic near $(0,0,1)$,
+$E_0(1)=0$, $E_0'(1)\ne0$, and $\Delta E(0,0,U)=0$.
+Let $U(0,0)=1$ solve $E=0$, and define
+\[
+ Q(z)=\frac{E_0(1+z)}z,\qquad
+ \Delta(p,q,z)=\Delta E(p,q,1+z).
+\]
+For $j+k\ge1$,
+\begin{equation}\label{qb:eq:finite-chart}
+ [p^jq^k](U-1)=
+ \sum_{\ell=1}^{j+k}\frac{(-1)^\ell}{\ell}
+ [p^jq^kz^{\ell-1}]
+ \left(\frac{\Delta(p,q,z)}{Q(z)}\right)^\ell.
+\end{equation}
+Thus each coefficient requires only finite Taylor data.
+\end{lemma}
+\begin{proof}
+Writing $z=U-1$ converts the equation to $z=-\Delta(p,q,z)/Q(z)$.
+Insert a multiplier $a$ on the right and apply the ordinary Lagrange
+formula in $a$. Its $\ell$th coefficient is
+$(-1)^\ell[ z^{\ell-1}](\Delta/Q)^\ell/\ell$.
+Since $\Delta$ has positive total $(p,q)$ degree, terms with
+$\ell>j+k$ cannot contribute to $p^jq^k$. Setting $a=1$ is therefore
+legitimate coefficientwise, giving the finite formula. Analyticity follows
+independently from the implicit function theorem.
+\end{proof}
+
+For \eqref{qb:eq:hahn-E}, take $E_0(U)=U^\alpha-1$ and let $\Delta E$
+be its displayed parameter-dependent part. This makes every Hahn
+coefficient a finite expression in Gamma values, zeta values, and rational
+functions of $\alpha$ and $B$.
+
+\begin{corollary}[Coefficient expansion to every finite order]
+\label{qb:cor:hahn-transfer}
+Combine the collisions in Theorem~\ref{qb:thm:hahn} and write
+$\tau=\sum_\lambda c_\lambda X^\lambda$. For any positive $L$ outside
+the grid and outside $\N_0$,
+\begin{equation}\label{qb:eq:hahn-transfer}
+ a_nR^n=-\sum_{\lambda<L}
+ \frac{c_\lambda}{\Gamma(-\lambda)}n^{-\lambda-1}
+ +O(n^{-L-1}).
+\end{equation}
+The reciprocal Gamma factor is zero at nonnegative integer $\lambda$.
+In particular \eqref{qb:eq:summary-stable} holds, and $R$ is the exact
+radius and unique dominant point.
+\end{corollary}
+\begin{proof}
+Absolute convergence of the two-variable chart and positivity of the two
+weights imply that truncating below $L$ leaves $O(X^L)$ on each closed
+subsector. One way to see the tail bound is to fix a smaller polydisk,
+apply its geometric Taylor majorant, and factor $|X|^L$ from all omitted
+monomials. Local finiteness leaves a positive gap before the first omitted
+exponent. The leading term $dX^{1/\alpha}$ is nonanalytic and nonzero.
+Proposition~\ref{qb:prop:global} and the chart supply exact dominance and
+$\Delta$-continuation. Apply Lemma~\ref{qb:lem:transfer} to the finite
+truncation and then big-$O$ transfer to its remainder. The analytic term
+$\vb+X$ contributes nothing at these algebraic orders.
+\end{proof}
+
+The expansion in \eqref{qb:eq:hahn-inverse} is genuinely convergent.
+Equation~\eqref{qb:eq:hahn-transfer}, in contrast, is asserted to every
+\emph{fixed finite order}; no convergence claim is made for its infinite
+coefficient-asymptotic sum.
+
+\subsection{An exact cancellation at order \texorpdfstring{$s=5/2$}{5/2}}
+
+\begin{corollary}[The missing $n^{-2}$ term]\label{qb:cor:fivehalves}
+At $s=5/2$, $u=\Uc(5/2)$, put
+\begin{equation}\label{qb:eq:fivehalf-constants}
+ B=\zeta(3/2),\quad G=\Gamma(-3/2)=\frac{4\sqrt\pi}{3},\quad
+ d=(B/G)^{2/3},\quad c=\frac{1+\zeta(1/2)}{2G},\quad
+ K_* =\frac{7c^2}{9}+\frac{2}{3B}.
+\end{equation}
+Then
+\begin{equation}\label{qb:eq:fivehalf-law}
+ a_nR^n=
+ -\frac{d}{\Gamma(-2/3)}n^{-5/3}
+ -\frac{K_*d^2}{\Gamma(-4/3)}n^{-7/3}
+ +O(n^{-8/3}).
+\end{equation}
+The coefficient of $n^{-2}$ is exactly zero. The second displayed
+coefficient is strictly negative.
+\end{corollary}
+\begin{proof}
+Here $\rho=\sigma=T^{1/2}$. Writing $z=T^{1/2}$ in
+\eqref{qb:eq:hahn-E}, its first two coefficient equations are
+\[
+ 1=U^{3/2}+czU^2-z^2U/B+O(z^3).
+\]
+Solving them gives
+\begin{equation}\label{qb:eq:fivehalf-U}
+ U=1-\frac{2c}{3}T^{1/2}
+      +\left(\frac{7c^2}{9}+\frac2{3B}\right)T+O(T^{3/2}).
+\end{equation}
+Thus
+\[
+ v=\vb+X-T+\frac{2c}{3}T^{3/2}-K_*T^2+O(T^{5/2}).
+\]
+Since $T=dX^{2/3}$, the term $T^{3/2}=d^{3/2}X$ is analytic. It is
+annihilated by $1/\Gamma(-1)=0$ in the transfer dictionary, rather than
+producing a coefficient term of order $n^{-2}$. The other terms give
+\eqref{qb:eq:fivehalf-law}. Finally $K_*>0$ and
+$\Gamma(-4/3)>0$.
+\end{proof}
+
+This is an arithmetic cancellation in a specified quadratic model, not a
+new general discovery that analytic local terms vanish under singularity
+transfer. The related mechanism is already present in the repository's
+linear-core critical Hahn theory \cite{repocritical}.
+
+\section{The marginal order three and its complete logarithmic hierarchy}
+\label{qb:sec:marginal}
+
+Now let $s=3$, $u=\Uc(3)$, and $B=\zeta(2)$. Pole cancellation in
+\eqref{qb:eq:integer} gives
+\begin{equation}\label{qb:eq:Li3-local}
+ \Li_3(\ee^{-\tau})=\zeta(3)-B\tau+
+ \frac{\tau^2}{2}\left(\frac32-\log\tau\right)
+ +\frac{\tau^3}{12}+O(\tau^4).
+\end{equation}
+The quadratic equation therefore has
+\begin{equation}\label{qb:eq:marginal-H}
+ X=\frac{\tau^2}{2B}\left(\log\frac1\tau+\frac52\right)
+       +O\left(\tau^3\log\frac1\tau\right).
+\end{equation}
+The constant is $5/2$, not $3/2$. The extra $1$ is the quadratic-core
+contribution in \eqref{qb:eq:master}.
+
+\begin{theorem}[The exact Lambert core]\label{qb:thm:Lambert}
+Define the large positive solution $Y$ by
+\begin{equation}\label{qb:eq:Y}
+ Y-\log Y=\log(1/X)+5-\log(4B).
+\end{equation}
+For positive small $X$ this is equivalently
+\begin{equation}\label{qb:eq:Lambert}
+ Y=-W_{-1}(-4B\ee^{-5}X),\qquad
+ \tau_0(X)=2\sqrt{\frac{BX}{Y}}.
+\end{equation}
+Then the true inverse satisfies, on the selected complex sectors,
+\begin{equation}\label{qb:eq:Lambert-error}
+ \tau(X)=\tau_0(X)+O(\tau_0(X)^2).
+\end{equation}
+The large solution of \eqref{qb:eq:Y}, continued from $X>0$, defines the
+complex branch in this statement; a numerical Lambert branch index is not
+to be used without that continuation convention.
+\end{theorem}
+\begin{proof}
+Let $H_0(\tau)=\tau^2(\log(1/\tau)+5/2)/(2B)$. Setting
+$Y=2\log(1/\tau_0)+5$ converts $H_0(\tau_0)=X$ into
+$Y\ee^{-Y}=4B\ee^{-5}X$, proving \eqref{qb:eq:Lambert}.
+The large solution is holomorphic for $\Re\log(1/X)$ sufficiently large
+and bounded imaginary part: the derivative of $Y-\log Y$ is
+$1-1/Y$, uniformly separated from zero. Its real determination is the
+usual $W_{-1}$ branch \cite{dlmfw}.
+
+Uniformly on closed subsectors,
+$|H_0'(\tau_0)|\asymp|\tau_0\log\tau_0|$ and
+$H(\tau)-H_0(\tau)=O(\tau^3\log\tau)$ by
+\eqref{qb:eq:marginal-H}. On a circle
+$|\tau-\tau_0|=C|\tau_0|^2$, the linear part of
+$H_0(\tau)-H_0(\tau_0)$ dominates this perturbation when $C$ is chosen
+large and then $X$ small. Higher Taylor terms are smaller. Rouch\'e's
+theorem gives one root there; its derivative is nonzero. The roots glue
+holomorphically and match the physical real inverse. This proves
+\eqref{qb:eq:Lambert-error} and provides the required sectorial
+continuation.
+\end{proof}
+
+The error in \eqref{qb:eq:Lambert-error} is power-smaller than the leading
+square root. It therefore lies beyond every fixed inverse-logarithmic
+order in the coefficient expansion. This is stronger than retaining just
+the leading regularly varying factor.
+
+\subsection{All coefficients by finite Lagrange and Gamma formulas}
+
+Let $I(a)=1/\Gamma(-a)$ and define
+\begin{equation}\label{qb:eq:gj}
+ g_j=\frac{I^{(j)}(1/2)}{I(1/2)},\qquad g_0=1.
+\end{equation}
+For example,
+\begin{equation}\label{qb:eq:g12}
+ g_1=p:=\psi(-1/2)=2-\gamma-2\log2,\qquad
+ g_2=p^2-\psi^{(1)}(-1/2),\qquad
+ \psi^{(1)}(-1/2)=4+\frac{\pi^2}{2}.
+\end{equation}
+These are exact Gamma and polygamma constants, not fitted parameters.
+Define polynomials $Q_k$ and $P_m$ by
+\begin{align}
+ Q_0(A)&=1,\notag\\
+ Q_k(A)&=-\frac1{2k}[z^{k-1}]
+       (1+z)^{-3/2}(A+\log(1+z))^k,
+       &&k\ge1,\label{qb:eq:Q}\\
+ P_m(A)&=\sum_{j=0}^m\frac{(-1)^j g_j}{j!}
+ \left\{\prod_{\ell=0}^{j-1}
+ \left(\frac{\dd}{\dd A}-m+j-\ell-\frac12\right)\right\}
+ Q_{m-j}(A).\label{qb:eq:P}
+\end{align}
+The product is the identity when $j=0$.
+
+\begin{theorem}[Every inverse-logarithmic coefficient]\label{qb:thm:log-all}
+Let $L=\log n$ and $A_n=\log L+5-\log(4B)$. For each fixed integer
+$M\ge0$,
+\begin{equation}\label{qb:eq:all-log}
+ a_nR^n=\sqrt{\frac{B}{\pi}}\,n^{-3/2}L^{-1/2}
+ \left\{\sum_{m=0}^M\frac{P_m(A_n)}{L^m}
+ +O\left(\frac{(\log L)^{M+1}}{L^{M+1}}\right)\right\}.
+\end{equation}
+Each $P_m$ has degree $m$, with leading coefficient
+$\binom{-1/2}{m}$. In particular, with
+\begin{equation}\label{qb:eq:D}
+ D_n=\log\log n+3+\gamma-\log B,
+\end{equation}
+\begin{align}\label{qb:eq:log-two}
+ a_nR^n={}&\sqrt{\frac{B}{\pi}}\,n^{-3/2}L^{-1/2}
+ \left[1-\frac{D_n}{2L}\right.\notag\\
+ &\left.\quad+\frac{3D_n^2/8-D_n/2-\frac38(4+\pi^2/2)}{L^2}
+ +O\left(\frac{(\log L)^3}{L^3}\right)\right].
+\end{align}
+The leading term is nonanalytic, so $R$ is the exact radius and unique
+dominant point.
+\end{theorem}
+\begin{proof}
+Put $\mathcal L=\log(1/X)$, $c=5-\log(4B)$,
+$A=\log\mathcal L+c$, and write $Y=\mathcal L H$ in
+\eqref{qb:eq:Y}. Then
+\begin{equation}\label{qb:eq:H-Lambert}
+ H=1+\frac{A+\log H}{\mathcal L}.
+\end{equation}
+For fixed $A$, ordinary Lagrange inversion for $H-1$ gives
+\[
+ H^{-1/2}=\sum_{k\ge0}Q_k(A)\mathcal L^{-k}
+\]
+with \eqref{qb:eq:Q}. Along $A=\log\mathcal L+c$, this expansion to any
+fixed order has remainder
+$O(\mathcal L^{-M-1}(1+|A|)^{M+1})$. To justify uniformity, treat
+$p=1/\mathcal L$ and $z=A/\mathcal L$ as independent variables in
+$H=1+z+p\log H$. The solution is analytic near $(p,z)=(0,0)$;
+its convergent double Taylor majorant supplies the asserted remainder
+when both variables tend to zero. The same argument controls any fixed
+number of derivatives.
+
+For completeness, the finite logarithmic transfer calculation can be
+made directly in $X$ coordinates. In a Cauchy coefficient integral use
+$r=R\ee^{-X}$ and then $X=z/n$. The local singular integral has the
+Hankel kernel $\ee^z z^{1/2}\dd z$ with no further $1/n$ Jacobian
+corrections. If $f(\mathcal L)$ denotes a slowly varying factor, its
+finite Taylor expansion at $L$ is
+\[
+ f(L-\log z)=\sum_{j=0}^J
+ \frac{(-1)^j}{j!}f^{(j)}(L)(\log z)^j+\text{remainder}.
+\]
+The Hankel integral of $\ee^z z^{1/2}(\log z)^j$ divided by $2\pi\ii$
+is $I^{(j)}(1/2)$. This is the reciprocal-Gamma Hankel formula and its
+fixed derivatives. Thus the normalized transfer operator is
+\begin{equation}\label{qb:eq:log-operator}
+ f(L)\longmapsto
+ \sum_{j\ge0}\frac{(-1)^jg_j}{j!}f^{(j)}(L),
+\end{equation}
+used only to the finite order required.
+
+Here $f(\mathcal L)=\sum_kQ_k(\log\mathcal L+c)
+\mathcal L^{-k-1/2}$. Differentiating one term $j$ times gives
+\[
+ \mathcal L^{-k-j-1/2}
+ \prod_{\ell=0}^{j-1}
+ \left(\frac{\dd}{\dd A}-k-\ell-\frac12\right)Q_k(A).
+\]
+Collect $k+j=m$ in \eqref{qb:eq:log-operator}; this is precisely
+\eqref{qb:eq:P}. Multiplication by the singular prefactor
+$-2\sqrt B$ and by $I(1/2)=-1/(2\sqrt\pi)$ gives
+\eqref{qb:eq:all-log}.
+
+The finite Hankel expansion has the stated uniform remainder. One can
+split the scaled contour into $|\log z|\le L/2$ and its complement.
+On the first part the analytic majorants above and the Taylor remainder
+bound give the next inverse-logarithmic order after integration. Near
+$z=0$, the factor $z^{1/2}$ makes the excluded portion exponentially small
+in $L$; at infinity the tilted Hankel rays give exponential decay in
+$|z|$. The part of the original contour away from $R$ is exponentially
+small in $n$, by the $\Delta$-continuation. Finally the error
+$O(\tau_0^2)=O(X/\mathcal L)$ from
+Theorem~\ref{qb:thm:Lambert} contributes a power-smaller coefficient
+error; even the weaker bound $O(X^{1-\epsilon})$, with
+$0<\epsilon<1/2$, suffices to put it beyond every displayed logarithmic
+order. No infinite asymptotic expansion has been interchanged with an
+integral.
+
+For the first terms,
+\[
+ Q_1=-A/2,\quad Q_2=3A^2/8-A/2,
+\]
+\[
+ P_1=-A/2+p/2,\quad
+ P_2=3A^2/8-3Ap/4-A/2+p/2+3g_2/8.
+\]
+Writing $D=A-p$ gives
+$P_1=-D/2$ and
+$P_2=3D^2/8-D/2-3\psi^{(1)}(-1/2)/8$, proving
+\eqref{qb:eq:log-two}. Formula~\eqref{qb:eq:Q} shows that the highest
+$A$ coefficient is $\binom{-1/2}{m}$; all $j>0$ terms in
+\eqref{qb:eq:P} have lower degree. Exact dominance follows as before
+from the nonzero singular term and Proposition~\ref{qb:prop:global}.
+\end{proof}
+
+The two elementary checks $g_1=2-\gamma-2\log2$ and
+$\psi^{(1)}(-1/2)=4+\pi^2/2$ follow from Gamma recurrence, duplication,
+and their derivatives \cite{dlmfgamma}. They explain why Euler's constant
+and polygamma data appear even though the original equation contains only
+a polylogarithm and a quadratic polynomial.
+
+\section{Finite curvature does not always mean a Puiseux germ}
+\label{qb:sec:finite}
+
+For $s>3$ at criticality put
+\begin{equation}\label{qb:eq:curvature}
+ C=1+\zeta(s-2)>0,\qquad b=\frac{C}{2B}>0.
+\end{equation}
+Equation~\eqref{qb:eq:H} has $H(\tau)=b\tau^2(1+o(1))$.
+This gives the leading square root and
+\eqref{qb:eq:summary-finite}. It does not imply that the whole inverse is
+an analytic function of $\sqrt X$.
+
+\subsection{Every noninteger order above three}
+
+\begin{theorem}[A second convergent critical chart]
+\label{qb:thm:upper-chart}
+Let $s>3$ be noninteger and $u=\Uc(s)$. Put
+\[
+ G=\Gamma(1-s),\qquad q=(X/b)^{1/2},\qquad \sigma=q^{s-3}.
+\]
+Then $\tau=qU(q,\sigma)$ for a unique analytic $U$ near $(0,0)$ with
+$U(0,0)=1$. Its exact equation is
+\begin{align}\label{qb:eq:upper-chart}
+ 1={}&U^2+\frac{G}{Bb}\sigma U^{s-1}
+ -\frac qB U+\frac b{2B}q^2\notag\\
+ &+\frac1{Bb}\sum_{k\ge3}
+ \frac{(-1)^k\zeta(s-k)}{k!}q^{k-2}U^k.
+\end{align}
+The support in $X$ is contained in
+\begin{equation}\label{qb:eq:upper-grid}
+ \left\{\frac{1+j+k(s-3)}2:j,k\in\N_0\right\}.
+\end{equation}
+Lemma~\ref{qb:lem:finite-chart}, now with $E_0(U)=U^2-1$, gives every
+coefficient by a finite formula. The expansion converges, and its finite
+coefficient transfer uses Lemma~\ref{qb:lem:transfer} exactly as in
+Corollary~\ref{qb:cor:hahn-transfer}.
+
+Relative to the analytic square-root core obtained by deleting the Gamma
+term in \eqref{qb:eq:jonquiere}, the first additional local term in $v$ is
+\begin{equation}\label{qb:eq:upper-first}
+ \frac{G}{2B}\,b^{-s/2}X^{(s-2)/2}.
+\end{equation}
+If $s=a/d$ in lowest terms is noninteger, the minimum Puiseux ramification
+index is $2d$. If $s$ is irrational, no finite ramification exists.
+\end{theorem}
+\begin{proof}
+Substitute $X=bq^2$ and $\tau=qU$ into
+\eqref{qb:eq:master} with $w=B$, and divide by $Bbq^2$. Since
+$Bb=C/2$, this is \eqref{qb:eq:upper-chart}. The equation is analytic
+in $q,\sigma,U$ near $(0,0,1)$, and its $U$ derivative at that point is
+$2$. The analytic implicit function theorem gives the claimed convergent
+chart. Its two positive exponent weights give local finiteness of the
+support and finite transfer to any required asymptotic order.
+
+The coefficient of $\sigma$ in $U$ at $q=0$ is $-G/(2Bb)$. Therefore
+the first term involving the new generator in $v=\vb+X-qU$ is
+$Gq^{s-2}/(2Bb)$, which is \eqref{qb:eq:upper-first}. The remaining
+terms with at least one $\sigma$ have strictly higher exponent; the
+$\sigma=0$ chart is precisely the analytic square-root reference core.
+
+For rational $s=a/d$, the grid is contained in $(2d)^{-1}\N$ and gives
+an analytic series in $X^{1/(2d)}$. The nonzero leading square root and
+the nonzero exponent $(s-2)/2$ in \eqref{qb:eq:upper-first} force the
+ramification index to be divisible by both $2$ and the denominator of
+$(a-2d)/(2d)$. Their least common multiple is $2d$. The extra exponent
+cannot cancel with a pure half-integer term because $s$ is noninteger.
+For irrational $s$, that exponent is irrational and nonzero, proving
+nonramifiability.
+\end{proof}
+
+The leading local term is $-b^{-1/2}X^{1/2}$. Its coefficient transfer is
+\[
+ \frac{b^{-1/2}}{2\sqrt\pi}R^{-n}n^{-3/2}
+ =\sqrt{\frac{B}{2\pi(1+\zeta(s-2))}}R^{-n}n^{-3/2},
+\]
+which proves \eqref{qb:eq:summary-finite} at every noninteger $s>3$.
+It also establishes exact dominance by the global proposition.
+
+\subsection{Integer orders retain a logarithmic obstruction}
+
+\begin{theorem}[First resonant logarithm above the marginal order]
+\label{qb:thm:integer-obstruction}
+Let $m\ge4$ be an integer and $u=\Uc(m)$. Write
+\[
+ B=\zeta(m-1),\quad b=\frac{1+\zeta(m-2)}{2B},\quad
+ \ell_m=\frac{(-1)^m}{(m-1)!}.
+\]
+There is a function $V(q)$ analytic near $q=0$, with
+$V(\sqrt X)=\vb-b^{-1/2}X^{1/2}+O(X)$, such that
+\begin{align}\label{qb:eq:integer-obstruction}
+ v={}&V(\sqrt X)+\frac{\ell_m}{4B}b^{-m/2}
+       X^{(m-2)/2}\log X\notag\\
+ &+O\left(X^{(m-1)/2}(1+|\log X|^2)\right).
+\end{align}
+The displayed logarithmic coefficient is nonzero. Consequently no finite
+Puiseux ramification represents the full inverse, despite its leading
+square root. The leading coefficient law is still
+\eqref{qb:eq:summary-finite}.
+\end{theorem}
+\begin{proof}
+Write \eqref{qb:eq:integer} as
+$\Li_m(\ee^{-\tau})=Z_m(\tau)+\ell_m\tau^{m-1}\log\tau$, with
+$Z_m$ analytic. The corresponding analytic part of $H$ has a double zero
+with leading coefficient $b$, so its inverse $\tau_a(X)$ is a convergent
+series in $\sqrt X$, beginning with $b^{-1/2}X^{1/2}$.
+Expanding the nonzero square root in \eqref{qb:eq:H} gives
+\[
+ H(\tau)-H_a(\tau)=\frac{\ell_m}{B}\tau^{m-1}\log\tau
+ +O\left(\tau^m(1+|\log\tau|^2)\right).
+\]
+Inverting around $\tau_a$, whose forward derivative is
+$2b\tau_a(1+O(\tau_a))$, gives
+\[
+ \tau-\tau_a=-\frac{\ell_m}{2Bb}\tau_a^{m-2}\log\tau_a
+ +O\left(\tau_a^{m-1}(1+|\log\tau_a|^2)\right).
+\]
+The possible second perturbation term has order
+$\tau_a^{2m-5}\log^2\tau_a$, which is no larger than the stated
+remainder for $m\ge4$. Now
+$\log\tau_a=\tfrac12\log X+\log(\tau_a/\sqrt X)$; the latter
+factor is analytic in $\sqrt X$. Absorb its leading analytic contribution
+into $V$ and use $v=\vb+X-\tau$. This yields
+\eqref{qb:eq:integer-obstruction}.
+
+The coefficient of the first logarithm cannot be removed by a function
+analytic in any finite root of $X$: on the common finite cover all such
+functions have ordinary power series, whereas the first nonzero logarithm
+still has nontrivial logarithmic continuation. Equivalently its asymptotic
+expansion has a logarithmic monomial absent from every Puiseux series.
+The leading square root, sectorial inversion, and the global proposition
+prove the coefficient law and unique dominance.
+\end{proof}
+
+\begin{corollary}[A nonzero $n^{-2}$ correction at order four]
+\label{qb:cor:four}
+At $s=4$, $u=\Uc(4)$, with $B=\zeta(3)$ and $C=1+\zeta(2)$,
+\begin{equation}\label{qb:eq:four-law}
+ a_nR^n=\sqrt{\frac{B}{2\pi C}}\,n^{-3/2}
+       +\frac{B}{6C^2}\,n^{-2}
+       +O(n^{-5/2}(\log n)^2).
+\end{equation}
+\end{corollary}
+\begin{proof}
+The logarithmic coefficient in
+\eqref{qb:eq:integer-obstruction} is
+$\ell_4b^{-2}/(4B)=B/(6C^2)$. Its term is $X\log X$ and transfers
+with multiplier $1$ by \eqref{qb:eq:integer-transfer}. The analytic
+$X$ term does not contribute. The remaining Puiseux terms and logarithmic
+remainder have the stated coefficient order.
+\end{proof}
+
+Together the stable, marginal, and finite-curvature arguments finish the
+proof of Theorem~\ref{qb:thm:summary}. They also show why it is necessary
+to distinguish a leading square-root law from an analytic fold: at the
+polylogarithm boundary the forward function itself need not be analytic.
+
+\section{Finite-prefix changes and a normalization dictionary}
+\label{qb:sec:prefix}
+
+The pure polylogarithm is not essential to the boundary proof. Finite
+changes in the low-index coefficients can be retained exactly without
+changing the tail class. This is useful when comparing separate packages,
+where a polynomial prefix or a different amplitude is often present.
+
+Let
+\begin{equation}\label{qb:eq:prefix-model}
+ f_s(t)=\kappa\Li_s(t)+P(t),\qquad \kappa>0,\quad P(0)=0,
+\end{equation}
+where $P$ is a real polynomial. Assume that the final Taylor coefficients
+$f_j$ are nonnegative and $f_1>0$. The coefficients of $P$ need not all be
+nonnegative. Replace \eqref{qb:eq:model} by
+\(uv-v^2/2=f_s(r\ee^v)\). Put $\Dop=t\,\dd/\dd t$ and define
+\begin{align}\label{qb:eq:prefix-constants}
+ A&=\kappa\zeta(s)+P(1),&
+ B&=\kappa\zeta(s-1)+\Dop P(1),\notag\\
+ \Uc&=\sqrt{2A+B^2},&
+ w&=\sqrt{u^2-2A},\quad \vb=u-w,\quad R=\ee^{-\vb}.
+\end{align}
+
+\begin{theorem}[Finite-prefix boundary transport]
+\label{qb:thm:prefix}
+For $s>2$, $u\ge\Uc$, the exact radius is $R$, the only dominant
+singularity is $R$, and $\sum a_nR^n=\vb$. If $u>\Uc$, then
+\begin{equation}\label{qb:eq:prefix-strict}
+ a_nR^n\sim\frac{\kappa}{w(1-B/w)^s}n^{-s}.
+\end{equation}
+At $u=\Uc$, the fractional law for $2<s<3$ is
+\begin{equation}\label{qb:eq:prefix-stable}
+ a_nR^n\sim
+ \frac{(B/(\kappa\Gamma(1-s)))^{1/(s-1)}}
+      {-\Gamma(-1/(s-1))}n^{-1-1/(s-1)}.
+\end{equation}
+For $s>3$, put
+$C=1+\kappa\zeta(s-2)+\Dop^2P(1)>0$. Then
+\begin{equation}\label{qb:eq:prefix-finite}
+ a_nR^n\sim\sqrt{\frac{B}{2\pi C}}n^{-3/2}.
+\end{equation}
+The convergent noninteger charts remain valid with
+$G=\kappa\Gamma(1-s)$ and with each regular coefficient
+$\zeta(s-k)$ replaced by
+$\kappa\zeta(s-k)+\Dop^kP(1)$.
+
+At the marginal order $s=3$, define
+\begin{equation}\label{qb:eq:prefix-marginal}
+ K=\frac B\kappa,\qquad
+ b_0=\frac32+\frac{1+\Dop^2P(1)}\kappa.
+\end{equation}
+The exact Lambert core is
+\begin{equation}\label{qb:eq:prefix-Lambert}
+ Y=-W_{-1}(-4K\ee^{-2b_0}X),\qquad
+ \tau_0=2\sqrt{\frac{KX}{Y}},
+\end{equation}
+with the same continuation convention as in
+Theorem~\ref{qb:thm:Lambert}. The complete formula
+\eqref{qb:eq:all-log} holds with prefactor $\sqrt{K/\pi}$ and
+$A_n=\log\log n+2b_0-\log(4K)$. Its first two corrections are
+\eqref{qb:eq:log-two} with
+\begin{equation}\label{qb:eq:prefix-D}
+ D_n=\log\log n+2b_0-2+\gamma-\log K.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The lift is $h=u-\sqrt{u^2-2f_s(t)}$, with
+$uh_j=f_j+\tfrac12\sum h_kh_{j-k}$. Nonnegative coefficients and
+$f_1>0$ imply $h_j\ge0$, $h_1>0$, and $a_n>0$ for every $n$ by
+\eqref{qb:eq:lagrange}; the term using $h_1^n$ already proves strictness.
+Also $A>0$ and $B>0$. The proof of
+Proposition~\ref{qb:prop:global} applies with $\Li_s$ replaced by
+$f_s$ and $\Li_{s-1}$ by $\Dop f_s$. In particular
+$\Dop f_s(t)<B$ for $0<t<1$, and the strict circle argument is unchanged.
+
+The regular Taylor coefficients of $P(\ee^{-\tau})$ are
+$(-1)^k\Dop^kP(1)/k!$, whereas the singular amplitude is multiplied by
+$\kappa$. This proves all noninteger statements by the same exact
+substitutions and implicit charts. At integer orders use the cancelled
+formula \eqref{qb:eq:integer}. When $s>3$, $C=1+\sum j^2f_j>0$,
+so the curvature is nonzero.
+
+At $s=3$ the master equation has leading form
+\[
+ BX=\frac{\kappa\tau^2}{2}
+ \left(\log\frac1\tau+\frac32+
+                  \frac{1+\Dop^2P(1)}\kappa\right)
+ +O(\tau^3\log(1/\tau)).
+\]
+This is $X=\tau^2(\log(1/\tau)+b_0)/(2K)$ plus the same
+power-smaller remainder. Solving it gives
+\eqref{qb:eq:prefix-Lambert}; the finite Lambert and Hankel calculations
+are universal once $K$ and $b_0$ are substituted. This proves
+\eqref{qb:eq:prefix-D} and the all-order claim.
+\end{proof}
+
+For the pure model, $\kappa=1$ and $P=0$, so $K=B$ and $b_0=5/2$.
+For the numerical prefix test in the package,
+$f_s(t)=2\Li_s(t)+t/2$, one has at $s=3$
+\[
+ B=2\zeta(2)+\tfrac12,\qquad K=\zeta(2)+\tfrac14,
+ \qquad b_0=\tfrac94.
+\]
+Thus neither the radius nor the logarithmic shift can be copied from the
+pure model without adjustment, even though the leading logarithmic
+exponent is unchanged.
+
+\section{Verification and reproducible evidence}\label{qb:sec:verification}
+
+The program \path{code/verify.py} separates exact finite tests from
+floating-point diagnostics. It writes only to an absent or empty output
+directory, so a replay does not overwrite the delivered evidence.
+
+\subsection{Exact checks}
+
+The recorded run passed \textbf{293 exact assertions}. For
+$s=2,3,4$, $u=1,2,3$, and $1\le n\le10$, rational arithmetic compares
+three independent coefficient constructions: iteration of the original
+quadratic fixed-point equation, the lift/Lagrange identity, and the
+predecessor's positive finite formula. Positivity is checked at each
+instance. Symbolic tests additionally compare the Lambert polynomials
+$Q_0,\ldots,Q_4$ with a separate implicit recurrence, and the Hankel
+polynomials $P_0,\ldots,P_4$ with direct substitution
+$L\mapsto L-y$ followed by moment replacement. The first two shifted
+corrections, the $s=5/2$ local coefficient equations, the $s=4$ logarithmic
+balance, and the leading polynomial coefficients are also checked.
+
+These finite computations are regressions, not proofs of the universal
+claims. In particular, they do not replace the positive-circle or
+sectorial-continuation arguments.
+
+\subsection{Positive numerical coefficient recurrence}
+
+For each target index $n$ define
+\[
+ p_k=[t^k]\exp(n(h(t)-h(1))).
+\]
+Then
+\begin{equation}\label{qb:eq:prob-rec}
+ p_0=\ee^{-n\vb},\qquad
+ p_k=\frac nk\sum_{j=1}^k jh_jp_{k-j},\qquad
+ a_nR^n=\frac{p_n}{n}.
+\end{equation}
+The stored diagnostics use this positive recurrence, not the asymptotic
+formula, to compute the reference coefficients. Seven models were tested
+at seven indices up to $4096$, for 49 coefficient evaluations. The
+platform's NumPy \texttt{longdouble} has 18 decimal digits of precision;
+these larger-index computations were \emph{not} performed at 85 digits.
+For each model an independent arbitrary-precision recurrence at $n=32$
+agreed with the extended-precision result to relative error below
+$1.3\cdot10^{-18}$. The arbitrary-precision constants and local coordinate
+checks used \texttt{mpmath} at 85 decimal digits.
+
+On platforms whose \texttt{longdouble} exponent range is too small for
+$p_0$, the code automatically uses an arbitrary-exponent \texttt{mpmath}
+recurrence. This fallback is slower but avoids silently underflowing the
+initial probability. Neither implementation supplies interval enclosures.
+
+\begin{table}[htbp]\centering
+\caption{Coefficient divided by its proved leading asymptotic. Strict
+boundary tests use $w=2\zeta(s-1)$, hence $1-B/w=1/2$.}
+\label{qb:tab:leading}
+\begin{tabular}{lrrrr}\toprule
+Regime & $n=128$ & $n=512$ & $n=2048$ & $n=4096$\\\midrule
+Critical $s=5/2$ & 0.986604 & 0.994512 & 0.997779 & 0.998591\\
+Critical $s=3$ & 0.655458 & 0.703836 & 0.739120 & 0.753441\\
+Critical $s=4$ & 1.006135 & 1.003630 & 1.002010 & 1.001472\\
+Strict, $s=5/2$ & 0.906424 & 0.973409 & 0.993100 & 0.996528\\
+Strict, $s=3$ & 1.319718 & 1.092013 & 1.026750 & 1.014462\\
+Strict, $s=4$ & 1.425213 & 1.071592 & 1.016618 & 1.008208\\\bottomrule
+\end{tabular}
+\end{table}
+
+The marginal leading law approaches its limit slowly. Its corrections are
+therefore useful rather than decorative. Table~\ref{qb:tab:refinement}
+shows the coefficient divided by the refined approximation. In its
+$s=3$ column both inverse-logarithmic corrections in
+\eqref{qb:eq:log-two} are retained; the fractional column retains the
+second nonzero term in \eqref{qb:eq:fivehalf-law}. The reference
+coefficients in both columns still come from \eqref{qb:eq:prob-rec}.
+
+\begin{table}[htbp]\centering
+\caption{Independent coefficient divided by the refined approximation.}
+\label{qb:tab:refinement}
+\begin{tabular}{rrr}\toprule
+$n$ & Critical $s=5/2$, two nonzero terms & Critical $s=3$, two corrections\\\midrule
+128 & 1.001199056 & 1.049782812\\
+512 & 1.000298579 & 1.020656682\\
+2048 & 1.000074533 & 1.010075657\\
+4096 & 1.000037253 & 1.007282765\\\bottomrule
+\end{tabular}
+\end{table}
+
+There are 21 real or complex checks of the exact coordinate identity
+against the original equation, with recorded absolute residuals below
+$10^{-84}$, and six checks of the defining Lambert-core identity. Local
+ratios at $\tau=10^{-4},10^{-8},10^{-12}$ test the predicted leading
+normal forms; the data retain the observed errors rather than relabeling
+them as certified bounds. The prefix example
+$2\Li_3(t)+t/2$ tests the change of marginal normalization separately.
+Full values and software versions are in \path{data/verification.json}
+and the CSV files.
+
+\section{Source audit, corrections, and integration}\label{qb:sec:audit}
+
+\subsection{What was actually inspected}
+
+The three user-specified areas were inspected through their GitHub
+indexes and selected source material \cite{repopoly,repotrans,repoincoming}. The observed main commit was
+\begin{center}\small
+\texttt{6207c3d40047fd8d1400a4d509fee71c9a3a8132}.
+\end{center}
+Initial index reads were on \texttt{main}; the later linear-core TeX read
+was pinned to this commit. Thus this is not falsely described as an atomic
+full-repository checkout. The incoming directory and commit metadata list
+five new polylogarithm/transseries archives. Their complete contents were
+not all audited.
+
+The predecessor \cite{prior} was read in a Library TeX copy named
+\path{article(20261012-044824).tex}, specifically source lines 1--1000
+and 1030--1487. Its exact title, equation, interior theorem, and pending
+boundary question identify the research target. The Library copy was not
+byte-compared with a member of
+\path{docs/incoming/Resonant_Polylogarithm_Transseries.zip}; that
+provenance limitation is explicit. The existing critical-Hahn package's
+README and its TeX opening through source line 150 were also inspected
+\cite{repocritical}. Its extensive editorial cross-references demonstrate
+that generic critical/Hahn and marginal mechanisms already belong to the
+repository's research program.
+
+The external source check covered the DLMF polylogarithm formula and
+Lambert material, the Janson publication record/abstract, and targeted
+literature searches. Direct retrieval of the full Flajolet--Odlyzko
+article was unsuccessful; it is cited as the classical transfer source,
+not represented as newly audited line by line. The needed local transfer
+and finite Hankel calculations are explained in this manuscript. Neither
+the repository inspection nor the literature search establishes worldwide
+publication priority.
+
+\subsection{Status changes and safeguards, not invented source errors}
+
+No new mathematical error was established in the accepted repository
+statements inspected. In particular, the predecessor correctly labels
+\eqref{qb:eq:conjecture} as unproved and correctly restricts its existing
+fold theorem to the interior regime. The appropriate proposed editorial
+change is to mark its boundary question as answered \emph{for fixed
+parameters} by this article, subject to independent proof review. Its
+joint-limit questions remain open.
+
+There are four useful integration safeguards.
+First, the simple-boundary formula cannot be continued by substitution to
+criticality: its constant diverges. Second, inserting $t=1$ into the
+interior curvature prefactor at $s=3$ would incorrectly erase the leading
+coefficient; the missing factor is $(\log n)^{-1/2}$. Third, above $s=3$
+a leading square root is not a theorem of analytic Puiseux structure:
+Theorem~\ref{qb:thm:integer-obstruction} supplies an explicit nonzero
+logarithmic obstruction at every integer $m\ge4$. Fourth, neglecting
+Gamma zeros creates a false $n^{-2}$ contribution at $s=5/2$, whereas at
+$s=4$ the logarithmic term really does produce such a contribution.
+These are precise consequences of the present proofs, not accusations
+about unseen source passages.
+
+\subsection{Suggested placement and statement-level review}
+
+A self-contained placement is
+\begin{center}\small
+\path{Analysis/Transseries/docs/series-and-transseries/}\par
+\path{Quadratic_Polylogarithm_Boundary_Transfer/}.
+\end{center}
+The polylogarithm project index can link to this package, and the pending
+article can receive a short editorial cross-reference rather than having
+its original proofs silently rewritten. \path{INTEGRATION.md} and
+\path{integration_note.tex} supply proposed wording. No remote change was
+made.
+
+A sensible review order is the exact coefficient identity and the master
+equation, then the positive-circle argument, then the strict-boundary
+proof and integer cancellation. The two convergent critical charts and
+the Lambert/Hankel compiler can be reviewed independently afterward.
+The proposed results do not establish general resurgence, Borel
+summability, a uniform moving-critical-point law, or any new Lean theorem.
+
+\section{Further research questions}\label{qb:sec:future}
+
+\paragraph{1. Uniform approach to the critical surface.}
+Theorem~\ref{qb:thm:strict} and the critical laws are fixed-parameter
+statements. For $2<s<3$, balancing the drift term
+$(w-B)\tau$ against $\Gamma(1-s)\tau^{s-1}$ in the master equation
+suggests a coefficient crossover when
+$w-B$ is of order $n^{-(s-2)/(s-1)}$. Prove a uniform coefficient profile,
+including its normalizing constant and both outer limits. The balance is
+a scaling suggestion, not a proved uniform theorem.
+
+\paragraph{2. The joint order-three limit.}
+Construct a pole-cancelled inverse chart for $s\to3$ and $n\to\infty$
+that matches the two Hahn charts with the Lambert chart. The Gamma pole
+and the pole of $\zeta(s-2)$ must remain paired. The linear-core marginal
+and confluent packages are comparison sources; the quadratic drift terms
+and normalization $b_0$ must be tracked explicitly.
+
+\paragraph{3. The lower endpoint and large-core limits.}
+As $s\downarrow2$, the moment $B=\zeta(s-1)$ diverges and the critical
+surface escapes to infinity. Determine which joint scalings connect this
+boundary theory to the dilogarithm's interior fold and to the predecessor's
+large-core, large-sector question. Neither the fixed-$s$ formulas nor a
+formal limit of their constants provides that connection.
+
+\paragraph{4. Parameter derivatives and resonance cancellation.}
+Differentiate the exact coefficient formulas with respect to $s$ and
+$u$. Can one construct a uniform order-jet calculus for coefficients near
+rational Hahn collisions and integer logarithmic resonance? The transfer
+dictionary suggests explicit polygamma and $\log n$ terms, but uniform
+control must precede differentiating an asymptotic error term.
+
+\paragraph{5. Other exact cores.}
+Replace $uv-v^2/2$ by the higher-degree exact polynomial cores of
+integer-order Fermi inversion. The quadratic lift no longer applies
+directly, and positivity may fail. Identify conditions on a general
+analytic core that preserve the unique positive dominant boundary, and
+determine how its first nonzero derivatives enter the marginal shift.
+
+\paragraph{6. Periodic or signed tails.}
+Replace the positive tail by a periodic-weight or cyclotomic
+polylogarithm combination. Several boundary points can compete and the
+strict triangle-inequality proof may break down. A finite Fourier
+criterion for dominant-point multiplicity and cancellation would connect
+this theory to the predecessor's periodic Borel-residue dictionary.
+
+\paragraph{7. Effective convergence domains and error certificates.}
+The analytic implicit-function proofs give genuine local convergence but
+not optimal explicit polydisks. Produce interval-certified domains for
+the two-variable charts and for the Lambert perturbation, and certified
+coefficient enclosures for the positive recurrence. The floating-point
+diagnostics delivered here are not such certificates.
+
+\paragraph{8. Formalization and exact coefficient infrastructure.}
+The finite reversion formula and the rational coefficient recurrence are
+natural first proof-assistant targets. A second layer would formalize the
+polylogarithmic transfer dictionary and its integer limit. The full radius
+theorem additionally requires positive implicit-series convergence,
+complex continuation, and Hankel transfer. The theorem manifest separates
+these dependencies so that finite algebraic checks are not mistaken for
+formal analytic coverage.
+
+\section*{Conclusion}
+\addcontentsline{toc}{section}{Conclusion}
+The pending quadratic boundary law is an analytic theorem once positivity,
+sectorial inversion, and integer-order pole cancellation are retained
+together. The critical boundary carries more information than a leading
+exponent: it has convergent Hahn charts away from integer resonance,
+Gamma-controlled missing coefficient terms, and an exactly normalized
+Lambert core at the marginal order. A finite quadratic term changes the
+logarithmic constants and can produce resonant corrections invisible in a
+naive square-root description. These refinements connect the exact
+polylogarithm calculus to the repository's transseries inversion program
+without claiming its classical or already-developed mechanisms as new.
+
+\clearpage
+\appendix
+\section{Reproduction and artifact map}\label{qb:app:reproduce}
+
+The article is self-contained in \path{article.tex}; compilation does not
+require external images or font files. A TeX Live installation with the
+standard packages named in the preamble is sufficient. The retained
+numerical tables are rounded from the accompanying CSVs.
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python code/verify.py --output-dir replay --max-n 4096
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The output directory must be new or empty. The distributed
+\path{data/verification.json} describes the executed run, not an
+unperformed command. \path{BUILD_VALIDATION.json} records the PDF build
+and page-layout checks. \path{THEOREMS.json} lists theorem dependencies
+and the distinction between conventional proofs and finite checks.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.31\textwidth}>{\raggedright\arraybackslash}p{.61\textwidth}@{}}
+\toprule
+Artifact & Purpose\\\midrule\endhead
+\path{article.tex}, \path{article.pdf} & Complete proofs, exact identities,
+research questions, and source distinctions.\\[4pt]
+\path{code/verify.py} & Exact finite comparisons and positive numerical
+coefficient diagnostics.\\[4pt]
+\path{data/exact_coefficients.csv} & Rational coefficients for the finite
+replay cases.\\[4pt]
+\path{data/marginal_polynomials.txt} & $Q_0,\ldots,Q_4$ and
+$P_0,\ldots,P_4$ in symbolic Gamma-moment coordinates.\\[4pt]
+\path{data/coefficient_diagnostics.csv} & 49 positive-recurrence comparisons
+through $n=4096$, with arithmetic engine recorded.\\[4pt]
+\path{data/local_checks.csv}, \path{data/lambert_checks.csv} & Local
+normal-form and defining-equation diagnostics.\\[4pt]
+\path{SOURCES.md}, \path{INTEGRATION.md} & Provenance, scope limits, and
+proposed filing/editorial notes.\\\bottomrule
+\end{longtable}
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begingroup\small
+\begin{thebibliography}{12}
+\setlength{\itemsep}{3pt}
+\bibitem{prior}
+Research draft prepared for Vladimir Reshetnikov with OpenAI assistance,
+\emph{Resonant Polylogarithm Transseries: Gamma Borel Kernels, Cyclotomic
+Order Jets, and Sharp Dilogarithm Reversion}, 11 October 2026.
+Theorem 9.1 and Section 12, Question 1. Inspected Library TeX copy
+\path{article(20261012-044824).tex}; associated incoming archive name
+\path{docs/incoming/Resonant_Polylogarithm_Transseries.zip}.
+Source ranges and provenance limitation are stated in Section~\ref{qb:sec:audit}.
+
+\bibitem{dlmfpoly}
+NIST Digital Library of Mathematical Functions,
+\emph{\S25.12, Polylogarithms}, especially 25.12.10--25.12.12.
+\url{https://dlmf.nist.gov/25.12}. Inspected 12 October 2026.
+The Gamma--zeta expansion is attributed there to Erd\'elyi et al.,
+\emph{Higher Transcendental Functions}, vol.~1 (1953), Section 1.11.
+
+\bibitem{dlmfw}
+NIST Digital Library of Mathematical Functions,
+\emph{\S4.13, Lambert $W$-Function}, branch definitions and asymptotic
+expansions. \url{https://dlmf.nist.gov/4.13}. Inspected 12 October 2026.
+
+\bibitem{dlmfgamma}
+NIST Digital Library of Mathematical Functions,
+\emph{Chapter 5, Gamma Function}, especially recurrence, duplication,
+and polygamma relations in \S\S5.5 and 5.15.
+\url{https://dlmf.nist.gov/5}. Classical identities used in
+\eqref{qb:eq:g12}; the finite recurrence evaluations are reproduced in
+\path{code/verify.py}.
+
+\bibitem{fo}
+P. Flajolet and A. Odlyzko,
+Singularity analysis of generating functions,
+\emph{SIAM Journal on Discrete Mathematics} \textbf{3} (1990), 216--240.
+\url{https://doi.org/10.1137/0403019}.
+Classical transfer reference; direct full-text retrieval was unsuccessful
+in the present audit.
+
+\bibitem{fs}
+P. Flajolet and R. Sedgewick,
+\emph{Analytic Combinatorics}, Cambridge University Press, 2009,
+Chapters VI and VII. Standard reference for singularity transfer and
+positive implicit-function schemas; not represented as a new full-book
+audit.
+
+\bibitem{janson}
+S. Janson,
+Simply generated trees, conditioned Galton--Watson trees, random allocations
+and condensation, \emph{Probability Surveys} \textbf{9} (2012), 103--252.
+\url{https://arxiv.org/abs/1112.0510}.
+Publication record and abstract inspected; used to identify the established
+probabilistic framework, not as a substitute for the proofs above.
+
+\bibitem{repocritical}
+ProveIt research package,
+\emph{Beyond Finite-Action Folds: Critical Hahn Transseries, Stable Sector
+Asymptotics, and Sharp Action Budgets}, 29 September 2026, with editorial
+amendments.
+\path{Analysis/Transseries/docs/series-and-transseries/}
+\path{Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/}.
+README and TeX source lines 1--150 inspected; the latter at commit
+\texttt{6207c3d40047fd8d1400a4d509fee71c9a3a8132}.
+
+\bibitem{repotrans}
+ProveIt Contributors,
+\emph{Series and transseries: canonical-volume and research-package index}.
+\path{Analysis/Transseries/docs/series-and-transseries/README.md},
+lines 1--220 inspected on 12 October 2026.
+
+\bibitem{repopoly}
+ProveIt Contributors,
+\emph{Polylogarithms project index}.
+\path{Analysis/Polylogarithms/README.md}, lines 1--190 inspected on
+12 October 2026. Accepted/pending status is governed by the project ledger,
+not by a historical article abstract alone.
+
+\bibitem{repoincoming}
+ProveIt Contributors,
+\emph{Incoming research intake instructions and archive index}.
+\path{docs/incoming/README.md}, lines 1--145, and directory/commit metadata
+inspected on 12 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+\end{thebibliography}
+\endgroup
+\end{document}

@@ -1,0 +1,5 @@
+import GowersSzemeredi.SharpBohrFidelityAudit
+import GowersSzemeredi.FourTermScopeCoreAudit
+
+example : LeanProofs.GowersSzemeredi.theorem_8_2_all_moduli :=
+  LeanProofs.GowersSzemeredi.theorem_8_2_all_moduli_holds

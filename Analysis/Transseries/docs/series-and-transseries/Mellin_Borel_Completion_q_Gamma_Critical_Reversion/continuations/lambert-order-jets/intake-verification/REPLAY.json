@@ -1,0 +1,35 @@
+{
+  "date": "2026-10-12",
+  "suite_source": "unchanged delivered verifier run on a separate copy outside the repository",
+  "runs": [
+    {
+      "command": [
+        "py",
+        "-X",
+        "utf8",
+        "verification/verify.py",
+        "--mode",
+        "exact",
+        "--output",
+        "intake-verification\\exact.json"
+      ],
+      "exit_code": 0,
+      "log": "run-1.log"
+    },
+    {
+      "command": [
+        "py",
+        "-X",
+        "utf8",
+        "verification/verify.py",
+        "--mode",
+        "numerical",
+        "--output",
+        "intake-verification\\numerical.json"
+      ],
+      "exit_code": 0,
+      "log": "run-2.log"
+    }
+  ],
+  "scope": "Finite exact checks and non-interval numerical diagnostics. No proof-assistant certification."
+}

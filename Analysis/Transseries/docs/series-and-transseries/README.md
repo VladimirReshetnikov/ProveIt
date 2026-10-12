@@ -2679,3 +2679,46 @@ the boundary-completion report's marginal Lambert chart and all logarithmic
 coefficient corrections. Its continuation gives exact Catalan principal
 parts and Gamma-moment formulas, plus a proved Laplace/convolution identity.
 Nonmarginal inverse charts and joint crossover branches remain separate work.
+
+
+## Lambert order jets, boundary charts and inverse Stokes transport, October 12, 2026
+
+Three whole delivered packages continue *Transseries_And_Inversion*, specifically
+its exact-core inversion, special-function completion and remainder-transport
+passages. Their source TeX, delivered PDFs and original evidence remain together.
+Placement and subsequent proof review are separate from merging into the volume.
+
+- [Lambert polylogarithm order jets](Mellin_Borel_Completion_q_Gamma_Critical_Reversion/continuations/lambert-order-jets/INTAKE-PLACEMENT.md)
+  extend the existing q-factorial Mellin-Borel report with fixed-parity order
+  derivatives, double-pole finite parts and finite-measure reconstruction.
+- [Critical quadratic boundary transfer](Quadratic_Polylogarithm_Feedback_Boundary_Completion/continuations/critical-boundary-transfer/INTAKE-PLACEMENT.md)
+  continues the existing boundary-completion report. The phase theorem and
+  marginal hierarchy overlap the collective Polylogarithms manuscript's
+  Sections 1.7 and 1.8; the nonmarginal charts and explicit correction terms
+  remain a separate synthesis task.
+- [Resonant Lambert inverse transseries](Resonant_Lambert_Inverse_Transseries/INTAKE-PLACEMENT.md)
+  treats the symmetric two-index Lambert family, a divergent inverse-sector
+  series and exact transport to a nested Stokes scale. Its model differs from
+  the existing analytic-tail inverse reports.
+
+The three imported ZIPs are retired in the placement commit. No collective
+or Transseries volume has been rebuilt by this placement.
+
+The three [order-jet](Mellin_Borel_Completion_q_Gamma_Critical_Reversion/continuations/lambert-order-jets/INTAKE-PROOF-AUDIT.md),
+[boundary-transfer](Quadratic_Polylogarithm_Feedback_Boundary_Completion/continuations/critical-boundary-transfer/INTAKE-PROOF-AUDIT.md) and
+[inverse-transport](Resonant_Lambert_Inverse_Transseries/INTAKE-PROOF-AUDIT.md)
+intake audits now record the conventional proof review, complete isolated
+replays, exact overlap and pending canonical synthesis. The proposed external
+equation-number correction is qualified: HTML 60a/b and PDF 3.36a/b are both
+valid locators of the same Conjecture 5. The delivery notes are preserved.
+
+
+## Summation and singularities under polylogarithmic reversion, October 12, 2026
+
+[The complete continuation package](Resonant_Lambert_Inverse_Transseries/continuations/summation-singularities/INTAKE-PLACEMENT.md)
+is filed under the resonant Lambert inverse report. It addresses that report's
+explicit large-order conjecture, the angular multiset summation question, and
+the direct polylogarithm inverse's endpoint ramification. It continues
+*Transseries_And_Inversion* on factorial-series reversion and inverse
+singularities. Its original modular TeX, PDF, figures and evidence are kept
+together. Proof review and synthesis into the volumes are separate steps.

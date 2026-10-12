@@ -188,6 +188,7 @@ import GowersSzemeredi.Proofs10Selection
 import GowersSzemeredi.Proofs10Regular
 import GowersSzemeredi.Proofs10Shift
 import GowersSzemeredi.Proofs12
+import GowersSzemeredi.Proofs12SourceScope
 import GowersSzemeredi.Proofs12Parallelograms
 import GowersSzemeredi.Proofs12HigherArrangements
 import GowersSzemeredi.Proofs12Amplification
@@ -328,6 +329,7 @@ import GowersSzemeredi.Proofs18QuadraticIterationParameters
 import GowersSzemeredi.Proofs18DensityIterationPowerBound
 import GowersSzemeredi.Proofs18QuadraticDoubleExponential
 import GowersSzemeredi.Proofs08FourTermTheorem
+import GowersSzemeredi.Proofs08AllModuli
 import GowersSzemeredi.Proofs08FourTermColoring
 import GowersSzemeredi.Proofs16CoordinateFaces
 import GowersSzemeredi.Proofs16FaceInduction
@@ -1157,6 +1159,8 @@ import GowersSzemeredi.Proofs13NaturalSquareAxes
 import GowersSzemeredi.Proofs13SparseNaturalAxes
 import GowersSzemeredi.Proofs01HeadlineScale
 import GowersSzemeredi.Proofs02RoundingCounterexample
+import GowersSzemeredi.Proofs07SharpBohr
+import GowersSzemeredi.Proofs07CoordinateLinearity
 import GowersSzemeredi.Proofs16PolyPieceTwoDataWith
 import GowersSzemeredi.Proofs16PolyCoverTwoFejer
 import GowersSzemeredi.Proofs18FejerSeedCounts

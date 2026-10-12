@@ -1,0 +1,160 @@
+{
+  "title": "Critical Boundaries of Quadratic Polylogarithm Feedback",
+  "date": "2026-10-12",
+  "status": "Unrefereed conventional proofs; not externally refereed, not Lean-formalized, not interval-certified.",
+  "global_priority": "Not established; source overlap audit is explicitly scoped.",
+  "theorems": [
+    {
+      "label": "qb:thm:summary",
+      "number": "1.1",
+      "title": "Fixed-parameter boundary classification",
+      "dependencies": "Propositions 2.1, 3.1; Theorems 5.1, 6.1, 7.1\u20137.2, 8.1\u20138.2",
+      "contribution_scope": "Completes the explicitly pending quadratic boundary problem.",
+      "proof_status": "Proved conventionally in article.tex"
+    },
+    {
+      "label": "qb:prop:coeff",
+      "number": "2.1",
+      "title": "Exact coefficient descriptions",
+      "dependencies": "Quadratic lift and classical Lagrange inversion",
+      "contribution_scope": "Lift identity and recurrence; the positive finite formula is credited to the predecessor.",
+      "proof_status": "Proved conventionally in article.tex"
+    },
+    {
+      "label": "qb:prop:global",
+      "number": "3.1",
+      "title": "Global disk and strict-circle continuation",
+      "dependencies": "Positive coefficients, monotone iteration, analytic implicit function theorem",
+      "contribution_scope": "Provides the missing complex-dominance step for the boundary regime.",
+      "proof_status": "Proved conventionally in article.tex"
+    },
+    {
+      "label": "qb:lem:transfer",
+      "number": "4.1",
+      "title": "Polylogarithmic transfer coordinates",
+      "dependencies": "Classical Gamma\u2013zeta expansion and finite singularity transfer",
+      "contribution_scope": "Model-independent classical mechanism; used as an exact bookkeeping dictionary, not claimed new.",
+      "proof_status": "Proved conventionally in article.tex"
+    },
+    {
+      "label": "qb:thm:strict",
+      "number": "5.1",
+      "title": "Strict boundary law with integer orders",
+      "dependencies": "Proposition 3.1, Lemma 4.1, simple sectorial inversion",
+      "contribution_scope": "Proves the predecessor candidate constant.",
+      "proof_status": "Proved conventionally in article.tex"
+    },
+    {
+      "label": "qb:thm:hahn",
+      "number": "6.1",
+      "title": "Lower critical convergent Hahn chart",
+      "dependencies": "Exact master equation, analytic two-variable implicit function theorem",
+      "contribution_scope": "Explicit quadratic specialization; analogous linear-core mechanisms are credited.",
+      "proof_status": "Proved conventionally in article.tex"
+    },
+    {
+      "label": "qb:lem:finite-chart",
+      "number": "6.2",
+      "title": "Finite bivariate coefficient recipe",
+      "dependencies": "Ordinary Lagrange inversion with an auxiliary multiplier",
+      "contribution_scope": "General inversion tool, not claimed to be a new Lagrange theorem.",
+      "proof_status": "Proved conventionally in article.tex"
+    },
+    {
+      "label": "qb:cor:hahn-transfer",
+      "number": "6.3",
+      "title": "Every fixed coefficient-asymptotic order",
+      "dependencies": "Theorem 6.1, Lemma 4.1, finite remainder transfer",
+      "contribution_scope": "Convergent local chart is distinguished from a finite-order coefficient asymptotic expansion.",
+      "proof_status": "Proved conventionally in article.tex"
+    },
+    {
+      "label": "qb:cor:fivehalves",
+      "number": "6.4",
+      "title": "Missing n^(-2) term at s=5/2",
+      "dependencies": "Explicit chart coefficients and reciprocal-Gamma zero",
+      "contribution_scope": "Model-specific explicit cancellation and second nonzero coefficient.",
+      "proof_status": "Proved conventionally in article.tex"
+    },
+    {
+      "label": "qb:thm:Lambert",
+      "number": "7.1",
+      "title": "Exactly normalized marginal Lambert core",
+      "dependencies": "Integer polylogarithm expansion and Rouche perturbation",
+      "contribution_scope": "Quadratic shift 5/2 and power-smaller error.",
+      "proof_status": "Proved conventionally in article.tex"
+    },
+    {
+      "label": "qb:thm:log-all",
+      "number": "7.2",
+      "title": "All inverse-logarithmic coefficient corrections",
+      "dependencies": "Lambert finite reversion, reciprocal-Gamma Hankel moments",
+      "contribution_scope": "Explicit finite coefficient compiler and first two corrections.",
+      "proof_status": "Proved conventionally in article.tex"
+    },
+    {
+      "label": "qb:thm:upper-chart",
+      "number": "8.1",
+      "title": "Upper critical noninteger Hahn chart",
+      "dependencies": "Exact master equation, analytic implicit function theorem",
+      "contribution_scope": "Explicit quadratic chart and minimum ramification index.",
+      "proof_status": "Proved conventionally in article.tex"
+    },
+    {
+      "label": "qb:thm:integer-obstruction",
+      "number": "8.2",
+      "title": "Integer logarithmic obstruction to Puiseux structure",
+      "dependencies": "Pole-cancelled expansion, perturbed analytic square-root core",
+      "contribution_scope": "Nonzero first logarithm at every integer m>=4.",
+      "proof_status": "Proved conventionally in article.tex"
+    },
+    {
+      "label": "qb:cor:four",
+      "number": "8.3",
+      "title": "Nonzero n^(-2) term at s=4",
+      "dependencies": "Theorem 8.2 and integer logarithmic transfer",
+      "contribution_scope": "Explicit positive correction distinguishes square-root leading behavior from a Puiseux germ.",
+      "proof_status": "Proved conventionally in article.tex"
+    },
+    {
+      "label": "qb:thm:prefix",
+      "number": "9.1",
+      "title": "Finite-prefix/amplitude extension",
+      "dependencies": "Same positivity proof and exact moment substitutions",
+      "contribution_scope": "Tracks the quadratic contribution in the marginal normalization.",
+      "proof_status": "Proved conventionally in article.tex"
+    }
+  ],
+  "finite_evidence": {
+    "python": "3.13.5 (main, Jul 15 2026, 20:25:40) [GCC 14.2.0]",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "sympy": "1.14.0",
+    "mpmath": "1.3.0",
+    "numpy": "2.3.5",
+    "evidence_status": "Exact finite checks plus non-certified floating-point diagnostics; not Lean or interval verification.",
+    "exact": {
+      "assertions_passed": 293,
+      "scope": "Rational comparisons through n=10; Lambert/Hankel polynomials through degree 4; stated finite local identities."
+    },
+    "local": {
+      "precision_decimal_digits": 85,
+      "original_equation_checks": 21,
+      "lambert_core_identity_checks": 6,
+      "largest_absolute_original_residual": "9.6516705e-86",
+      "scope": "Floating-point identities, not interval or global-continuation certificates."
+    },
+    "coefficients": {
+      "models": 7,
+      "coefficient_evaluations": 49,
+      "max_n": 4096,
+      "longdouble_decimal_precision": 18,
+      "scope": "Positive recurrence in floating-point arithmetic; asymptotic ratios are diagnostics, not proofs."
+    }
+  },
+  "not_claimed": [
+    "Uniform u->U_c(s) or s->3 coefficient transitions",
+    "General Borel summability or resurgence",
+    "Exhaustive review of all incoming ZIPs",
+    "Proof-assistant verification of the analytic theorems"
+  ]
+}

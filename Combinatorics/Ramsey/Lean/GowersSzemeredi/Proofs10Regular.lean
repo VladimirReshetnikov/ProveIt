@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs10Selection
+import GowersSzemeredi.ComponentTradeoff
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.MeasureTheory.Integral.Average
 import Mathlib.MeasureTheory.Integral.Prod
@@ -415,7 +416,7 @@ private lemma mem_normalizedWindow_of_close_of_not_boundary
 Lemma 10.5. -/
 private lemma almostEvery_of_weighted_error
     {X : Type*} [DecidableEq X]
-    (W : Finset X) (q eps e : X → Real) (eta L Spr : Real)
+    (W : Finset X) (q eps e : X → Real) (eta L Spr t : Real)
     (heta : 0 < eta) (hL : 0 < L)
     (heq : ∀ y, e y = eps y * q y)
     (heps : ∀ y, 0 ≤ eps y)
@@ -423,17 +424,17 @@ private lemma almostEvery_of_weighted_error
     (hqU : ∀ y, y ∈ W → q y ≤ 2 * L)
     (hE : (∑ y ∈ W, e y) ≤ 720 * eta * Spr)
     (hSprW : Spr ≤ ∑ y ∈ W, q y) :
-    AlmostEvery (1 - 5 * eta ^ ((1 : Real) / 5)) W
-      (fun y => eps y ≤ 300 * eta ^ ((4 : Real) / 5)) := by
-  let r1 : Real := eta ^ ((1 : Real) / 5)
-  let r4 : Real := eta ^ ((4 : Real) / 5)
+    AlmostEvery (1 - 5 * eta ^ t) W
+      (fun y => eps y ≤ 300 * eta ^ (1 - t)) := by
+  let r1 : Real := eta ^ t
+  let r4 : Real := eta ^ (1 - t)
   let Bad : Finset X := W.filter fun y => ¬ eps y ≤ 300 * r4
   have hr1 : 0 < r1 := by dsimp only [r1]; positivity
   have hr4 : 0 < r4 := by dsimp only [r4]; positivity
   have hrprod : r1 * r4 = eta := by
     dsimp only [r1, r4]
     rw [← Real.rpow_add heta]
-    norm_num
+    simp
   have hsumQ : (∑ y ∈ W, q y) ≤ 2 * L * W.card := by
     calc
       (∑ y ∈ W, q y) ≤ ∑ _y ∈ W, 2 * L :=
@@ -779,7 +780,7 @@ private lemma exists_regular_parameters {X : Type*} [Fintype X]
       _ = 12 * sigma * (1 + 2 * rho) * T * Spr p := rfl
 
 /-- **Gowers, Lemma 10.5.** -/
-theorem lemma_10_5_holds : lemma_10_5 := by
+theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
   classical
   intro N _ X _ _ D phi B alpha rho M sigma eta x hsetup hsigmaAlpha
     hanchor hrho hrhoAlpha hrhoAlphaSq hsigmaRho
@@ -1153,14 +1154,14 @@ theorem lemma_10_5_holds : lemma_10_5 := by
         gcongr
         linarith only [hQratio]
       _ = 2 * ((p.1 - rho) * K) := by ring
-  have hErrorGood :
-      AlmostEvery (1 - 5 * eta ^ ((1 : Real) / 5)) W
+  have hErrorGood (t : Real) :
+      AlmostEvery (1 - 5 * eta ^ t) W
         (fun y => domainProportionateError D phi B x y ≤
-          300 * eta ^ ((4 : Real) / 5)) := by
+          300 * eta ^ (1 - t)) := by
     apply almostEvery_of_weighted_error W q
       (fun y => domainProportionateError D phi B x y) e eta Lq
       (∑ y ∈ X'.filter (fun y => y ∈ W), q y)
-      hetaPos hLq
+      t hetaPos hLq
     · intro y
       rfl
     · intro y
@@ -1281,7 +1282,28 @@ theorem lemma_10_5_holds : lemma_10_5 := by
     have hgood : (1 - eta) * W.card ≤ ((W \ V).card : Real) := by
       linarith only [hVcard, hinterV, hpart]
     exact hgood.trans (by exact_mod_cast Finset.card_le_card hsub)
-  refine ⟨W, hFibreSaturated, hqVar, hErrorGood, hWcardLower, hRVar,
+  refine ⟨W, ?_⟩
+  intro t
+  exact ⟨hFibreSaturated, hqVar, hErrorGood t, hWcardLower, hRVar,
     hRpointLower, hOverlap⟩
+
+/-- The fifth-power variant used in the downstream local-difference construction. -/
+theorem lemma_10_5_holds : lemma_10_5 := by
+  intro N _ X _ _ D phi B alpha rho M sigma eta x hsetup hsigmaAlpha
+    hanchor hrho hrhoAlpha hrhoAlphaSq hsigmaRho
+  obtain ⟨W, hW⟩ := lemma_10_5_all_tradeoffs_holds N X D phi B alpha rho M
+    sigma eta x hsetup hsigmaAlpha hanchor hrho hrhoAlpha hrhoAlphaSq hsigmaRho
+  refine ⟨W, ?_⟩
+  have ht : (1 : Real) - 1 / 5 = 4 / 5 := by norm_num
+  simpa only [IsSection10RegularComponentAt, IsSection10RegularComponent, ht]
+    using hW (1 / 5)
+
+/-- The original square-root clause is valid under the same inherited setup. -/
+theorem lemma_10_5_original_sqrt_holds : lemma_10_5_original_sqrt := by
+  intro N _ X _ _ D phi B alpha rho M sigma eta x hsetup hsigmaAlpha
+    hanchor hrho hrhoAlpha hrhoAlphaSq hsigmaRho
+  obtain ⟨W, hW⟩ := lemma_10_5_all_tradeoffs_holds N X D phi B alpha rho M
+    sigma eta x hsetup hsigmaAlpha hanchor hrho hrhoAlpha hrhoAlphaSq hsigmaRho
+  exact ⟨W, hW (1 / 2)⟩
 
 end LeanProofs.GowersSzemeredi
