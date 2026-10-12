@@ -6931,6 +6931,69 @@ long-length route. The goal remains active; final statements and bounds
 are unchanged, and this audit does not settle open original intermediate
 statements or replace a full facade check.
 
+### L.55. Direct imports for the uniform final argument (2026-10-12)
+
+The final route no longer imports the specialized length-six envelope or
+Szemeredi proof, Roth's explicit theorem, or the completed four- and five-term
+threshold proofs. Three small modules give the shared results their own homes:
+
+* `Proofs18SingleLengthStatements`: `Theorem182At`, `Corollary187At`, their
+  equivalences with the full statements, and the half-density consequence;
+* `Proofs18DoubleExponentialBounds`: four elementary estimates, including
+  `section18_exp_le_two_rpow`, formerly housed in specialized proofs;
+* `Proofs18CoverLongThresholds`: the existing uniform L+5 argument, without
+  importing separate short-length threshold comparisons.
+
+The general density proof imports `Proofs18GeneralIteration` directly.
+That iteration is essential; an initial import check exposed its previous
+incidental availability through the length-six route. The legacy short-length
+modules re-export the moved declarations, and their explicit bridge now names
+its short-length import. All extracted declarations and proof bodies are
+byte-identical to their previous versions. The prefix proof has only an import
+change and an unused binder-name cleanup.
+
+`FinalAudit` passes 1,197 native modules with only approved axioms. Its entry
+point has 1,196 local modules / 249,652 source lines, down from 1,208 / 253,637
+at L.54: 12 fewer modules and 3,985 fewer lines in the import closure. Against
+the original aggregate baseline, it avoids 93 modules and 15,041 source lines.
+These counts do not describe repository-wide deletions. The original final
+statements and bounds are unchanged.
+
+The combined compatibility audit, including the strengthened Fejer bounds
+and `Proofs18LengthSixExplicit`, passes 1,409 native modules. Every direct
+client in the GowersSzemeredi directory lies in this audited closure;
+the top-level GowersSzemeredi facade is excluded from that client count.
+The final theorem and strengthened-bound checks use only approved axioms.
+Immutable reports are `verification/2026-10-12-final-uniform-imports.json`
+and `verification/2026-10-12-final-uniform-compatibility.json`, with source
+manifests. The full facade remains separate. The goal stays active.
+
+### L.56. Shorter exact log-log conversion (2026-10-12)
+
+`Proofs01QuantitativeHeadline` is reduced from 154 to 111 lines. The private
+inner-exponent wrapper is inlined; two unused positivity lemmas and three
+redundant wrappers are removed. The reciprocal-exponent identity is shared
+in both multiplication orders. The natural cutoff is its explicit ceiling,
+so its comparison with N uses `Nat.le_ceil` directly. The elementary bound
+`2^x <= exp(x)` uses only its one required numerical hypothesis, avoiding
+unrelated local inequalities in the arithmetic tactic.
+
+The signatures of `headline_density_threshold` and
+`theorem_1_3_holds_of_theorem_18_2` are unchanged. The same displayed density
+constant `2^(-2^(k+9))`, concrete cutoff and positive-step natural
+progressions are retained. The independent final-entry and stronger-bound
+audits pass 1,332 native modules together with only approved axioms; see
+`verification/2026-10-12-final-headline-simplification.json` and its immutable
+source manifest. The minimal entry point now has 1,196 local modules /
+249,609 lines. This line count is an import-closure measurement; the headline
+module itself has 43 fewer source lines.
+
+The L.55 direct-client coverage refers to modules inside the
+GowersSzemeredi directory. It excludes the top-level facade, as the original
+compatibility report's limits already indicate. The full facade and open
+original intermediate statements remain separate. The simplification goal
+stays active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
