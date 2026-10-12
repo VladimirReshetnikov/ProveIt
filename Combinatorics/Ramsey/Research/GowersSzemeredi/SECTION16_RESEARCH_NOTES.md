@@ -6994,6 +6994,35 @@ compatibility report's limits already indicate. The full facade and open
 original intermediate statements remain separate. The simplification goal
 stays active.
 
+### L.57. Separate the final cover budgets from polynomial envelopes (2026-10-12)
+
+A Lean traversal of the four final theorems at commit 19bc1ca0f finds
+7,220 transitively used local declarations in 484 modules, compared with
+1,196 imported local modules. This is a proof-dependency diagnostic, not a
+sufficient import list: syntax and tactic dependencies are excluded. The
+query source and per-module counts are recorded in
+`verification/2026-10-12-final-declaration-dependencies.json`.
+
+In particular, the final proof used only the two elementary power identities
+from `Proofs18CoverDegrees`; it used the threshold conversion and cubic
+estimate from `Proofs18CoverSharper`, and six budget inputs/estimates from
+`Proofs18CoverTightBase`. Their polynomial-envelope results were not used.
+
+`Proofs18CoverBudget` now contains the shared class budgets and elementary
+estimates. `Proofs18ThresholdAt` contains the parameterized final threshold
+and its deduction from a discrepancy envelope. `Proofs18CoverLongThresholds`
+imports these directly. The old degree/sharper/tight-base modules re-export
+the moved declarations and retain their separate proofs. All extracted proof
+bodies and declaration types are unchanged.
+
+`FinalAudit` passes 1,163 native modules with only approved axioms. The minimal
+entry point imports 1,162 modules / 244,777 lines, down by 34 modules and
+4,832 source lines from L.56. Against the original aggregate baseline this
+is 127 fewer modules / 19,916 fewer lines in the import closure, not a claim
+of repository-wide deletions. The final statements and bounds are unchanged.
+The stronger-bound compatibility check is running separately; its completion
+is not yet claimed. The goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

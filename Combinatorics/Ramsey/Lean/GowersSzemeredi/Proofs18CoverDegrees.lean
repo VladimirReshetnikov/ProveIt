@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs18CoverExponents
+import GowersSzemeredi.Proofs18CoverBudget
 import GowersSzemeredi.Proofs18PolyDegrees
 import GowersSzemeredi.Proofs18GenericLengths
 
@@ -264,9 +264,6 @@ theorem envBound_allC (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k) (hp : ∀ k
 
 
 /-! ### Closed-form envelopes -/
-
-theorem two_pow_six_mul (k : Nat) : 2 ^ (k + 6) = 64 * 2 ^ k := by rw [pow_add]; ring
-theorem two_pow_five_mul (k : Nat) : 2 ^ (k + 5) = 32 * 2 ^ k := by rw [pow_add]; ring
 
 /-- One step costs `268·2^k` plus a polynomial (Theorem 18.1 envelope). -/
 theorem envStepC_le (k μ : Nat) :
