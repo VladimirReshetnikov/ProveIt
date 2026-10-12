@@ -1,0 +1,127 @@
+\section{The finite problem and its geometric meaning}
+\label{sec:model}
+
+\subsection{Rows, columns, and the rooted dual graph}
+
+Let $D$ be a finite connected multigraph with distinguished root $\ast$.
+Its non-root vertices represent three-handles.  Each row $r\in R$ of a
+nonnegative integer matrix $A=(a_{rc})$ also labels an edge of $D$.
+Rows not eligible for a top cancellation are represented by root loops;
+the software permits an equivalent \code{None} edge record.  Parallel
+edges and loops remain distinct occurrences.
+
+Columns represent retained one-handle cocores after a fixed lower
+zero/one-handle forest has been contracted.  An entry $a_{rc}$ is an
+\emph{actual unsigned number of crossings} of an attaching two-handle
+curve with that cocore.  It is not the signed exponent sum of a word.
+For the raw cancellation decision, all values above one may be saturated
+at two.  This preserves whether a restriction has a column sum exactly
+one.  Saturation must not be used for an unrelated parity computation.
+
+Deleting the rows of a spanning tree $T$ models the source-certified
+top cancellations.  A private-column peel subsequently removes a row
+$r$ when some column has exactly one total remaining occurrence, located
+on that row.  It removes that pivot column as well; all other entries of
+the remaining rows stay unchanged.  A column that has already served as
+a private pivot cannot later matter to an active row, because it had
+no other live owner when removed.
+
+\begin{definition}[Forest-compatible raw completion]
+A pair $(D,A)$ admits a forest-compatible raw completion when some spanning
+tree $T$ of $D$ leaves a row restriction $A|_{R\setminus T}$ that can be
+fully removed by private-column peeling.
+\end{definition}
+
+This is the exact finite problem solved below.  Under the source-authentication
+hypotheses of the preceding geometry compiler, success gives a valid
+topological cancellation sequence.  Without those hypotheses, it is only
+a graph/matrix theorem.
+
+\subsection{Why stopping sets are the right obstruction}
+
+\begin{definition}[Stopping set]
+A nonempty row set $S$ is stopping if, for each column $c$,
+$\sum_{r\in S}a_{rc}$ is either zero or at least two.
+\end{definition}
+
+If all rows of a stopping set remain, no first private-column peel can
+remove a row from that set.  Conversely, a nonempty residual of exhaustive
+column-leaf peeling is stopping.  The predecessor establishes the stronger
+fact that allowing arbitrary positive singleton substitutions does not
+enlarge the class of matrices admitting complete raw cancellation
+\cite{IncomingPositive2026,IncomingForests2026}.  We use that exact
+completeness result to focus on no-fill peeling.  We do not introduce
+negative coefficients, free reduction, or unverified geometric isotopy.
+
+The obstruction is restricted to the chosen calculus.  A stopping set
+does not prove that a manifold is not a handlebody, and certainly does
+not prove that a knot is nontrivial.  Conversely, some native stopping
+examples really are non-handlebodies, so not every refusal should be
+treated as a positive instance awaiting a clever cancellation order.
+
+\subsection{The existing polynomial regime}
+
+Call a column \emph{inert} if it has no entry equal to one.  Such a column
+cannot ever be used by a private-column peel, even after row deletion.
+Ignore it for the finite decision while retaining any corresponding
+geometric handle count.
+
+For a useful column supported on a single row $u$, put $u$ in a seed set
+$Z$.  For a useful column supported on two rows $u,v$, add $u\to v$ when
+the entry on $v$ is one, and add $v\to u$ when the entry on $u$ is one.
+The other entry may exceed one.  These directed arcs form the ordinary
+propagation graph $P$.  From any deleted row set $Q$, ordinary peeling
+removes exactly the rows reachable from $Z\cup Q$.
+
+If all useful columns are ordinary, every source strongly connected
+component of $P$ without a seed must be hit by the tree.  These components
+are disjoint.  Independent representatives from them can be selected by
+intersecting the graphic matroid of $D$ with a partition matroid and then
+extending the selected forest to a spanning tree.  This is the predecessor's
+polynomial theorem, based on the classical independent-representatives
+and matroid-intersection results
+\cite{Rado1942,Edmonds1979,Lawler1975,IncomingForests2026}.
+
+\subsection{Why native triple columns are structurally natural}
+
+An original native one-handle cocore comes from a complementary region of
+a triangular source face cut by normal arcs.  Such a region meets each of
+the triangle's three sides in at most one gap.  Each unsigned two-handle
+occurrence corresponds to an actual boundary gap.  Therefore the total
+number of occurrences on the native cocore is at most three.  Lower-forest
+contraction deletes columns, and top cancellation deletes rows; neither
+increases this bound.  The preceding normalization report proves this
+with source-occurrence conventions \cite{IncomingForests2026}.
+
+The possible positive-entry multisets are consequently
+\[
+(1),\quad(2),\quad(3),\quad(1,1),\quad(1,2),\quad(1,1,1).
+\]
+Only the last type is outside ordinary propagation.  It supplies three
+rules, each with two premises: $\{u,v\}\to w$, $\{u,w\}\to v$, and
+$\{v,w\}\to u$.  This explains the focus on triple-unit columns.  The
+stronger Boolean theorem also applies to wider exceptional columns, with
+the union of their incident rows as its parameter.
+
+The native bound does not automatically survive arbitrary interface
+augmentation, handle slides, or a change of representation.  A native
+adapter must measure the actual exported matrix and check the stated
+support conditions.  Our source audit does so, and the generic Boolean
+solver treats wider columns without pretending that they satisfy the
+three-occurrence theorem.
+
+\subsection{Size and success conventions}
+
+The input size $N$ includes explicit row and edge records and all integer
+bit lengths.  The number of rows is $m$, the graphic rank is
+$r=|V(D)|-1$, the number of exceptional columns is $k$, and their incident-row
+union is $U$, with $t=|U|$.  The source graph is checked for connectivity
+before arrays indexed by its vertex namespace are allocated.
+
+A positive certificate consists of a spanning tree and a complete sequence
+of row/column pivot pairs.  The unchanged predecessor verifier reads the
+original sparse matrix, checks the tree, and checks each actual column
+sum.  Randomized zero tests and resource limits are inconclusive.  The
+deterministic fallback can conclude exhaustive finite-model infeasibility;
+the present implementation does not export a compact negative certificate
+for that entire search.  This distinction is recorded in its output schema.

@@ -1,0 +1,152 @@
+\section{Exact implementation and a conservative integration contract}
+\label{sec:implementation}
+
+\subsection{Two producers, separate replay}
+
+The package includes a standard-library Python implementation of both
+the ordered-event and distinguished-block algorithms. The first exposes
+\texttt{solve}; the second exposes \texttt{solve\_output}. Their independent
+checkers expose \texttt{verify\_result} and \texttt{verify\_output}.
+They consume the same strict sparse schema:
+\begin{lstlisting}[language=Python]
+problem = {
+    "vertices": 3,
+    "columns": 1,
+    "edges": [[0, 1], [1, 2], [2, 0]],
+    "rows": [[[0, 1]], [[0, 1]], [[0, 1]]],
+}
+\end{lstlisting}
+Row labels are list positions. Each edge is either its two endpoint labels
+or \texttt{None}. Counts are positive integers, columns within one row are
+distinct, and column labels lie in the declared namespace. Booleans are
+rejected where integer labels or counts are required. Counts are bound to
+the result by a canonical SHA-256 digest using their original hexadecimal
+integer encodings. This avoids mistaking two inputs with identical saturated
+matrices but different raw parity for the same authenticated source.
+
+The producer compiles free closure, ordinary reachability, and the
+nonlinear supports. Its graphic/partition intersection uses shortest
+augmenting paths on cloned edge memberships. This classical primitive is
+adapted from the inspected dual-forest-normalization package and is credited
+in the source. The new reductions supply overlapping demand groups and
+their independent certificate coverage.
+
+Positive replay checks the full spanning tree and literal column leaves
+against the supplied matrix. Negative replay independently reconstructs
+the logical branch data, uses elementary graphic rank, and validates
+complete enumeration coverage. The checker modules import no producer,
+SCC optimizer, or matroid-intersection optimizer. Tests deliberately disable
+the producer primitives during replay, as well as corrupting tree entries,
+pivots, ranks, output assignments, and partition coverage.
+
+\subsection{Result meanings and finite budgets}
+
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule
+Result & Exact meaning \\
+\midrule
+\texttt{SUCCESS} & A verified spanning tree and full immutable peeling
+trace for this input. \\
+\texttt{NO\_FOREST} & This input has no successful top tree under the
+fixed raw peeling criterion. The attached complete obstruction is checked. \\
+\texttt{INCONCLUSIVE} & A stated resource allowance or recursion limit
+interrupted discovery; no complete mathematical result is asserted. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The implementation can prove some negatives before exceptional search.
+A disconnected eligible graph has no spanning tree. If activation even
+from \emph{all} eligible edges leaves a nonempty residue, monotonicity
+rules out every tree; that immutable stopping residue is a short obstruction.
+These tests are exact and retain their own replay rules.
+
+Structural-work, branch, and partition counters make research caps
+explicit. They are not operating-system wall-time or memory limits:
+input parsing, hashing, allocations, and big-integer operations have their
+ordinary implementation costs. An interrupted search returns
+\texttt{INCONCLUSIVE}, not a partial negative certificate. The theoretical
+algorithms can stream their searches; the supplied producers retain explicit
+negative branches, so actual memory can scale with the fixed-parameter
+certificate size.
+
+\subsection{Where to place this operator in the recognizer}
+
+The appropriate insertion point follows authenticated normal-cut geometry
+and a chosen lower forest. Preserve the existing inexpensive top choices,
+including maximum raw-occurrence weight, because those choices often succeed
+without exceptional search. If their immutable peeling tests fail, the
+new operator can be used as an exact bounded fallback on the reconstructed
+full matrix. The polynomial two-row case remains available. Measured
+results in Section~\ref{sec:experiments} determine practical dispatch
+priorities; the asymptotic theorem does not make every Python branch faster.
+
+\subsection{A polynomial incumbent prefix retains the FPT guarantee}
+\label{sec:bounded-prefix}
+
+The optional \texttt{integration/bounded\_prefix.py} supplies one concrete
+dispatcher: run the existing stopping-set search for at most $|R|+1$
+visited search nodes, emit a complete result for independent replay if it finishes,
+and otherwise invoke \texttt{solve\_output}. The companion dispatcher
+checker binds the input digest and calls the appropriate independent
+certificate verifier. It does not trust an earlier producer merely
+because the earlier implementation is the incumbent.
+
+Each incumbent node performs a polynomial amount of graph and peeling
+work, so this prefix has a polynomial total bound. If it completes, its
+answer is exact. Otherwise the remaining cost is at most the bound in
+Theorem~\ref{thm:factorial-free}. The resulting abstract complete dispatcher therefore
+retains $3^kB_{2k+1}\operatorname{poly}(N)$ complexity while allowing easy
+cases to finish in the incumbent. A requested cap on the fallback may
+still produce \texttt{INCONCLUSIVE}; the full theoretical decision bound
+refers to the abstract unrestricted fallback. The Python reference can
+still reach its recursion limit and return \texttt{INCONCLUSIVE} even when
+no explicit work allowance is supplied.
+
+The particular linear node allowance is a reproducible conservative
+choice, not a proved optimum. An obviously oversized disconnected vertex
+namespace routes directly to the new sparse certificate producer. This dispatcher is delivered as an integration proposal and
+is tested separately from the two new standalone algorithms.
+
+The integration adapter must preserve five pieces of evidence:
+\begin{enumerate}
+\item the triangulation and normal-coordinate data from which the cut was
+reconstructed, including the selected lower forest;
+\item the cap-edge map and exterior root, with loops and unavailable rows
+represented distinctly;
+\item uncapped geometric occurrence counts, including every finite boundary
+relation used by the requested completion criterion;
+\item the map from dense row labels back to native handles and annular
+attachments, and the source-relative charts that legalize cancellations;
+\item the original marked boundary information needed by subsequent
+hierarchy steps.
+\end{enumerate}
+
+After a verified positive matrix result, translate the tree to a rooted
+$2/3$ schedule and the peeling trace to $1/2$ cancellations, then replay
+them through the existing geometric certificate checker. A finite-matrix
+negative should only disable that particular source-relative route.
+It must not become a negative unknot verdict. If a cap is reached, continue
+the enclosing certified search according to its existing semantics.
+
+The archive deliberately supplies a research module and a precise adapter
+contract. It does not silently replace maintained recognizer defaults,
+assert that an annular relation is an actual top cap, or claim to have
+implemented the missing general marked-homeomorphism compiler.
+
+\subsection{Verification boundary and code limitations}
+
+The independent verifier still shares the input parser and canonical
+digest implementation, which form a small explicit trusted base. It checks
+the finite mathematical predicate and assumes the caller supplied the
+authenticated graph--matrix record. It is not a secure parser for arbitrary
+untrusted files under adversarial memory limits, and no such claim is
+needed for the present research interface.
+
+The exact weighted theorem and the certified matroid-closure fast path are
+proved mathematical extensions. The deliverable implements the two
+unweighted forest searches, their complete certificate checks, source
+reconstruction studies, and reproducible finite experiments. It contains
+no Lean formalization, new theorem about global normal-surface discovery,
+or complete quasi-polynomial unknot recognizer.

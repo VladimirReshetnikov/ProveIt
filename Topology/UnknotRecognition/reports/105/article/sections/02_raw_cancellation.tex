@@ -1,0 +1,128 @@
+\section{The raw cancellation invariant}
+\label{sec:raw}
+
+This section records the exact algebraic prerequisite from the preceding
+positive-cancellation work \cite{IncomingPositive}.  The use of unsigned
+literal occurrences is essential.  These counts record intersections with
+specified belt discs; they are not exponent sums of freely reduced words.
+
+\begin{definition}[Positive singleton pivot and stopping set]
+Let $A=(a_{rc})$ be a finite nonnegative integer matrix with rows $R$ and
+columns $C$.  A positive singleton pivot chooses $(r,c)$ with $a_{rc}=1$,
+deletes row $r$ and column $c$, and changes each surviving entry to
+\[
+ a'_{id}=a_{id}+a_{ic}a_{rd}\qquad(i\ne r,\ d\ne c).
+\]
+A nonempty set $S\subseteq R$ is a \emph{stopping set} if
+\[
+ s_c:=\sum_{r\in S}a_{rc}\in\{0\}\cup\{2,3,\ldots\}
+ \quad\text{for every }c\in C.
+\]
+A \emph{column leaf} has total live column occurrence one.  Pivoting on
+it creates no fill in the surviving rows and is called a peeling move.
+\end{definition}
+
+The formula deliberately has a plus sign.  It is the conservative raw
+intersection update: algebraic cancellation of opposite letters is not
+part of this model.  The theorem below cannot be extended to arbitrary
+subtractive elimination merely by reusing its proof.
+
+\begin{lemma}[A stopping set survives positive pivots]
+\label{lem:stopping-invariant}
+If $A$ contains a stopping set, then every legal positive singleton pivot
+leaves a nonempty stopping set on surviving rows.
+\end{lemma}
+\begin{proof}
+Let $(r,c)$ be the pivot and let $S$ be a stopping set.  If $r\notin S$,
+retain $S$.  For each surviving column $d$ its new total is
+$s_d+s_c a_{rd}$.  If this is positive, either $s_d\ge2$ or
+$s_c a_{rd}\ge2$, so it is not one.
+
+If $r\in S$, the pivot entry is one and $s_c\ne1$, hence $s_c\ge2$.
+Another row of $S$ meets $c$, so $S'=S\setminus\{r\}$ is nonempty.  Its
+new total in column $d\ne c$ is
+\[
+ \sum_{i\in S'}a'_{id}
+ =s_d-a_{rd}+(s_c-1)a_{rd}
+ =s_d+(s_c-2)a_{rd}.
+\]
+If $s_d=0$, then $a_{rd}=0$ and the total is zero.  Otherwise $s_d\ge2$
+and the total is at least two.  Thus $S'$ is a stopping set.
+\end{proof}
+
+\begin{theorem}[Complete raw cancellation equals peeling; prior result]
+\label{thm:raw-completeness}
+For every finite nonnegative integer matrix, the following are equivalent:
+there exists a complete positive singleton sequence; column-leaf peeling
+deletes every row; and there is no nonempty stopping set.  Peeling's
+terminal row set is independent of queue order and is the greatest
+stopping set, with the empty set allowed as the greatest residual.
+\end{theorem}
+\begin{proof}
+A nonempty stopping set excludes a complete positive sequence by
+Lemma~\ref{lem:stopping-invariant}.  If peeling stops with live rows, their
+column totals are zero or at least two, so these rows form a stopping set.
+Consequently the absence of stopping sets forces peeling to finish, and
+peeling itself is a positive singleton sequence.
+
+Any stopping set in the original matrix survives every peeling move
+unchanged: a live column of total one cannot meet it.  Hence every original
+stopping set is contained in the terminal row set.  That terminal set is
+itself a stopping set when nonempty.  It is therefore the greatest one and
+does not depend on the order of valid leaves.  Equivalently, unions of
+stopping sets are stopping sets: a column meeting the union meets one of
+its stopping subsets, which already contributes at least two.
+\end{proof}
+
+\begin{corollary}[Heredity under row deletion]
+\label{cor:row-heredity}
+Every row restriction of a completely peelable matrix is completely
+peelable.
+\end{corollary}
+\begin{proof}
+A stopping subset in the restricted matrix would be exactly the same
+stopping subset in the original matrix.  Apply
+Theorem~\ref{thm:raw-completeness}.
+\end{proof}
+
+Heredity is why a successful independent set of dual deletions can later
+be extended to a spanning tree.  It does not say that an arbitrary primal
+column deletion preserves success; deleting columns can remove the only
+available leaves.  The new geometric theorem repairs precisely that
+asymmetry.
+
+\subsection{Saturation and immutable-source replay}
+
+The map $x\mapsto\min\{2,x\}$ preserves whether a nonnegative sum or
+product is zero, one, or at least two.  Therefore all pivot-admissibility
+and stopping-set decisions can use the three values $0,1,2^+$ without
+expanding large counts.  In contrast, this saturation does not preserve
+parity: three becomes two.  Geometric parity conditions must be proved on
+the uncapped source occurrences first.
+
+During peeling, source coefficients never change.  Keep, for each column,
+the number of remaining incident rows and the exclusive-or of their
+identifiers.  If there is one owner and its source coefficient is one,
+the column is a leaf.  Deleting that row updates each incident column
+once.  With indexed adjacency lists this is
+$O(|R|+|C|+I)$ work and storage, where $I$ is the number of nonzero
+incidences.  Dictionary lookup, label encoding, and graph construction
+costs are separate implementation considerations.
+
+A positive certificate lists distinct row/column pivot pairs.  A checker
+can validate them directly against immutable source rows, or use the
+existing timestamp criterion: at the deletion time of row $r$, every
+other owner of its chosen column must already be gone, and the coefficient
+at $r$ must be one.  Successful production does not authorize a checker
+to trust an unauthenticated occurrence matrix.
+
+\subsection{Why signed homology is insufficient}
+
+A curve traversing a belt disc three times can have algebraic intersection
+one.  Its raw count is still three, so it is not a geometric singleton in
+the current charts.  Likewise, a determinant equal to one can certify a
+homological condition without exhibiting the disjoint attaching curves
+needed for handle cancellation.  The incoming homological progress work
+can guide surface choices, but its output cannot be silently substituted
+for the raw matrix in this theorem.  Later sections discuss a different,
+carefully scoped terminal use of verified group presentations.

@@ -1805,3 +1805,15 @@ mode refused. A separate report-99 probe adds no bare-core coverage with
 its restricted polynomial solver. All evidence, baseline modules and the
 publication checker are under `data/weighted-forest-*`. Global recognition
 complexity remains unproved.
+
+`lower_forests.tex` carries an explicit source lower forest through top
+reduction, core cancellation, annular transport and the bundle kernel.
+The source-first adaptive policy retries maximum original passage weight
+using one cached set of orbit queries. Independent v3 kernel replay
+validates the supplied spanning forest, while old v1/v2 semantics remain.
+The fresh 120-source audit completes 110 cuts, preserves all 104 prior
+certificates exactly and agrees with 103 fresh literal positive cuts.
+Six retained baseline modules and eight paired full-query measurements
+show no consistent common-positive speedup; the improvement is certified
+coverage. Source pins and evidence are under `data/lower-forest-*`.
+General quasi-polynomial recognition remains unproved.

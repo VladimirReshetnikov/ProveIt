@@ -1,0 +1,126 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,graphicx,xcolor}
+\usepackage{listings,fancyhdr}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\usepackage[colorlinks=true,linkcolor=teal!65!black,citecolor=teal!65!black,
+ urlcolor=blue!55!black,breaklinks=true]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{RGB}{24,42,60}
+\definecolor{accent}{RGB}{16,105,112}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\rk}{\operatorname{rk}}
+\newcommand{\pin}{\texttt{c6d0ec8aa0b6308310ab6c081ba29d8bc363ede5}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\setlist{itemsep=3pt,topsep=6pt}
+\setlength{\emergencystretch}{2em}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,
+ keepspaces=true,frame=single,rulecolor=\color{black!15},
+ backgroundcolor=\color{black!2},showstringspaces=false}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Exceptional rows and certificate replay}
+\fancyhead[R]{\small ProveIt research}
+\fancyfoot[C]{\thepage}
+\hypersetup{pdftitle={Exceptional Rows and Fast Certificate Replay for Unknot Recognition},
+ pdfauthor={ProveIt research continuation},
+ pdfsubject={Parameterized forest selection, Boolean determinant sieving, and verified interval contraction}}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\setlength{\parindent}{0pt}
+\vspace*{0.1in}
+{\color{accent}\large TOPOLOGY / ALGORITHMS / VERIFIED COMPUTATION\par}
+\vspace{0.20in}
+{\color{ink}\Huge\bfseries Exceptional Rows and\\Fast Certificate Replay\par}
+\vspace{0.18in}
+{\color{ink}\LARGE for Unknot Recognition\par}
+\vspace{0.18in}
+{\large Exact forest selection, a Boolean determinant sieve,\par
+and authenticated interval contraction\par}
+\vspace{0.22in}
+{\large Research continuation for the ProveIt project\par}
+{12 October 2026\par}
+\vspace{0.20in}
+\begin{abstract}
+Recent ProveIt work reduces one source-authenticated handle simplification
+problem to choosing a rooted dual spanning tree whose deleted rows leave
+a completely peelable unsigned occurrence matrix.  Its polynomial theorem
+handles useful columns supported on at most two rows; native three-row
+columns remain outside that theorem.  We close this parameterized gap.
+
+Let $U$ be the set of rows incident to the exceptional columns and put
+$t=|U|$.  Ordinary propagation can be summarized at $U$.
+A fixed family of disjoint source-component requirements and a Boolean
+closure function on $U$ completely characterize successful trees.  A
+M\"obius-weighted determinant sum retains exactly their copied common-basis
+monomials.  Collapsing ordinary strongly connected components and restricting
+to the $J$ ideals of their reachability poset gives one-sided randomized
+witness discovery in $J\poly(N)$ time, where $J\leq2^t\leq8^k$ for $k$
+native triple columns.  If that poset has width $w$, a deterministic
+algorithm takes $J(m+1)^w\poly(N)$ time and polynomial space.
+Every positive answer has a deterministic independent
+tree-and-peeling check.  An explicit homogeneous-polynomial lemma extracts
+a witness from one nonzero evaluation without further randomness.  We also
+give a deterministic exceptional-schedule fallback and a Matrix--Tree
+counting alternative.  An optimal lower forest minimizes the raw triple
+count by a graphic cycle-nullity formula.
+
+The second contribution addresses measured certificate costs.  An exact
+ordered-gap quotient and its inverse replace repeated prefix rescans by
+prefix tables in three independent verifiers.  Endpoint transport changes
+from $O(pg)$ to $O(g+p\log(g+2))$ arithmetic work.  Invocation-local reuse
+removes duplicate source reconstruction while preserving the distinction
+between producer data and independent verification.  The package includes
+source patches, full-certificate comparison, native and finite-model audits,
+paired measurements, and executable research code.  On the pinned 106-case
+corpus, paired full-query time falls by 23.5\%; a separate bounded
+lower-forest portfolio supplies five additional whole-cut certificates.
+
+These are local algorithmic and implementation results.  They do not prove
+a general quasi-polynomial unknot-recognition bound.  The article specifies
+the remaining geometric production, transport, and global hierarchy
+obligations and proposes concrete follow-up problems.
+\end{abstract}
+\vfill
+{\small\textbf{Reproducibility anchor.} Repository baseline:\par
+\pin\par
+\medskip
+\textbf{Claim discipline.} Finite-model theorems are proved.  Empirical
+results concern the supplied corpus and recorded environment.  Unfinished
+geometric and global-complexity steps are identified explicitly.\par}
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\input{sections/scope}
+\input{sections/model}
+\input{sections/native_geometry}
+\input{sections/exceptional_columns}
+\input{sections/special_rows}
+\input{sections/ideal_lattice}
+\input{sections/kirchhoff}
+\input{sections/implementation}
+\input{sections/experiments}
+\input{sections/global_and_research}
+\appendix
+\input{sections/reproducibility}
+\input{bibliography}
+\end{document}

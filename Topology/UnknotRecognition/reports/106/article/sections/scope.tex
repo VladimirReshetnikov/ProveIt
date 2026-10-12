@@ -1,0 +1,144 @@
+\section{What this continuation adds}
+\label{sec:scope}
+
+The practical question is how to reduce the cost of verified topology
+operations while removing genuine combinatorial search barriers.  The
+repository contains many useful exact operators; a new report must identify
+which obstacle it actually removes.  This continuation contributes a new
+parameterized theorem for choosing dual forests and an independently tested
+improvement to interval-certificate replay.  The theorem and implementation
+operate at different interfaces, which makes their scope straightforward to
+audit.
+
+\subsection{The inspected checkpoint}
+
+We inspected both requested directories at the pinned revision, including
+all five ZIP archives then present in \code{docs/incoming}.  These contain
+component-gauge cut atlases, dual-forest normalization, dual forests with
+homological progress, flag regularization, and positive cancellation.
+They are listed with hashes in the package provenance file.  Their results
+are antecedents, not new results of this continuation.  In particular the
+following ingredients were already available:
+
+\begin{enumerate}
+\item exact column-leaf peeling and its greatest stopping-set obstruction;
+\item source-authenticated removal of native three-handles by a rooted
+  dual forest;
+\item an exact tree/stopping-set criterion, and a polynomial
+  graphic--partition matroid-intersection algorithm when each useful
+  column has at most two incident rows;
+\item the fact that an original native cocore has at most three actual
+  occurrences, isolating $(1,1,1)$ as the remaining native support type;
+\item saturated interval-bundle compilation and independently replayable
+  whole-cut handlebody certificates.
+\end{enumerate}
+
+The maintained whole-cut corpus has 106 cases.  At this pin its existing
+producer returns 92 complete handlebody-census certificates and 14
+inconclusive results.  The behavior-preserving performance patch preserves
+that classification.  The optional lower-forest portfolio adds five
+independently verified whole-cut positives.  The separate forest research
+operator decides a more
+general supplied graph/matrix problem; it is not inserted into the native
+recognition schedule without a source adapter and a justified dispatch rule.
+The detailed measurements and fresh source checks appear in
+\cref{sec:experiments}.
+
+\subsection{A new parameter, followed by a stronger algorithm}
+
+The preceding two-row theorem is polynomial even when the dual graph has
+many vertices.  Its limitation is the presence of columns that encode a
+genuine conjunction: two other rows must disappear before the third can
+peel.  Treating either premise as sufficient would be unsound.
+
+Our first extension guesses the exceptional activations and reduces their
+prerequisites to a bounded number of overlapping edge-cover requirements.
+This gives an exact deterministic algorithm, with the exceptional-column
+count in the exponent instead of the dual rank.  It also gives a useful
+reference implementation and a transparent completeness proof.
+
+A stronger reduction removes the need to guess an activation order.  Only
+the rows occurring in nonlinear rules need to remember the influence of
+the tree.  Everything else is ordinary directed reachability.  The effect
+of a spanning tree on these exceptional rows is a finite bit mask, and
+successful masks form a monotone Boolean function that can be evaluated
+by forward chaining.  We compile that function into a determinant filter.
+Unlike an inclusion--exclusion sum that asks only whether every color
+appears, the filter accepts precisely the masks that permit complete
+nonlinear closure.  Each valid copied common-basis monomial retains its
+original nonzero determinant coefficient: the filter multiplies it by one.
+Invalid monomials are multiplied by zero.
+
+\begin{center}
+\begin{tabular}{P{0.26\textwidth}P{0.28\textwidth}P{0.36\textwidth}}
+\toprule
+Result & Time, ignoring polynomial factors & Exact scope\\
+\midrule
+Preceding two-row theorem & $1$ & Every useful column has support at most two.\\
+Deterministic extension & $3^k k!(m+1)^{2k}$ & At most $k$ exceptional triple-unit columns.\\
+Ideal determinant filter & $J\leq2^d\leq8^k$ & $d$ nonfree special SCCs; one-sided randomization.\\
+Deterministic width algorithm & $J(m+1)^w$ & $w$ is their implication-poset width.\\
+Independent positive check & Polynomial & Supplied tree and actual unsigned peel order.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Here $m$ is the number of rows, $k$ counts exceptional columns, $d$ counts
+their nonfree ordinary SCCs, and $J$ counts the ideals of the induced
+reachability poset.  Every ideal is a downward-closed set.  Verification
+does not trust the Boolean table, the determinant evaluation, the random
+seed, or the discovery program.  It checks the original finite input directly.
+
+\subsection{Where the implementation gains occur}
+
+The interval-orbit producer already used prefix-gap information in one
+weighted contraction path.  Three independent certificate replay paths
+still computed the shift of each endpoint by scanning all preceding gaps.
+This was a real repeated operation in whole-cut verification.  We supply
+a verifier-owned prefix implementation, preserve the exact quotient and
+inverse conventions, and compare against the old sums on complete
+certificates and independently generated finite examples.
+
+A separate change shares internally reconstructed geometry within one
+composed call.  On the producer side, the shared object is its own geometry.
+On the verifier side, it is the verifier's fresh reference reconstruction.
+No public prepared-object parameter or persistent cache is introduced.
+This distinction prevents an apparent optimization from quietly shifting
+the trust boundary to producer-supplied data.
+
+\subsection{Relation to Lackenby's announced target}
+
+The primary sources use two displayed quasi-polynomial exponents.  Oxford's
+2021 announcement states $n^{c\log n}$, whereas the detailed Oxford handout
+displays $n^{O((\log n)^2)}$.  Both are quasi-polynomial; we do not silently
+identify them \cite{Oxford2021,LackenbyTalk2021}.  The July 2026 preprint
+supplies a hierarchy algorithm, restart analysis, and compressed certification
+results; it does not establish the announced quasi-polynomial bound
+\cite{Lackenby2026}.
+
+Our main theorem has an especially useful local consequence: if a supplied
+state has polynomial encoded size and only $O(\log n)$ exceptional rows,
+the randomized forest subproblem has polynomial witness-discovery time.
+More generally, bounded implication width gives a deterministic polynomial
+local algorithm, and logarithmic width gives a deterministic quasi-polynomial
+local algorithm.
+Proving that the whole hierarchy always reaches such states, or that
+there are only quasi-polynomially many states of controlled size, remains
+separate work.  A verified local improvement is a concrete component of
+that program, not a substitute for its global argument.
+
+\subsection{Attribution and novelty}
+
+Directed reachability, strongly connected components, matroid intersection,
+Cauchy--Binet, Boolean M\"obius inversion, and polynomial identity testing
+are established tools.  The standard common-basis polynomial and color
+sieve are explicitly treated in the algebraic matroid literature
+\cite{Harvey2009,EibenKoanaWahlstrom2025}.  The contribution here is the
+exact reduction of forest-compatible peeling to a bounded exceptional-row
+state, its Boolean determinant compilation, its integration with the
+native three-occurrence theorem, the implication-poset refinement, and
+the supplied audited implementations.  Efficient lattice transforms are
+also classical; the relevant bound is credited to
+Bj\"orklund et al.\ \cite{FastZeta2012}.
+We make no exhaustive literature-priority claim.  All claims of progress
+are relative to the inspected repository and the cited mathematical inputs.

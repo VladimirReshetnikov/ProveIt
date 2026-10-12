@@ -1,0 +1,127 @@
+\subsection{A stronger local theorem from report 105: defer the lower forest}
+\label{marked-cut:deferred-review}
+
+Report~105 arrived while the preceding implementation was being validated.
+Its delivered code remains a separate research package. A subsequent review
+checks the following stronger local argument and replays its positive
+packets with the current native independent verifier. This section records
+that argument and the integration boundary; the maintained default is still
+the source-first maximum-passage retry of the preceding section.
+
+\paragraph{The source condition.}
+Let $G=(V,E)$ be the zero/one-handle multigraph and let $N$ be the full
+nonnegative occurrence matrix before a lower forest is removed. Its columns
+are $E\sqcup J$, where $J$ contains auxiliary bundle columns, if present.
+For each row, assume its \emph{uncapped} restriction to $E$ is a mod-two
+cycle of $G$. A literal closed attaching walk has this property. Loops
+contribute twice at their vertex. A row may restrict to the empty walk.
+Saturation at two is legitimate for singleton tests but cannot be used to
+establish this parity hypothesis: a count of three has odd parity.
+
+\begin{proposition}[Report 105: peeling leaves a spanning forest]
+Run column-leaf peeling on $N$, possibly stopping before all rows are
+removed. Let $P\subseteq E$ be the graph columns used as pivots. Then
+$G-P$ has exactly the original connected components of $G$.
+\end{proposition}
+\begin{proof}
+Induct over the pivot order. An auxiliary pivot removes no graph edge.
+For a graph pivot $e$ in row $r$, all earlier pivot columns have zero entry
+in $r$: they were column leaves when their different rows were removed.
+Thus $r$ is still a mod-two cycle in the graph with earlier pivots deleted.
+It crosses $e$ once. A bridge separates a component into a cut, and every
+mod-two cycle crosses that cut evenly, so $e$ cannot be a bridge of the
+current graph. Removing it preserves the component partition. Induction
+proves the assertion and hence the existence of a spanning forest avoiding
+all graph pivots.
+\end{proof}
+
+\begin{proposition}[Report 105: complete lower-forest search is unnecessary]
+Under this cycle hypothesis, full column-leaf peeling succeeds if and only
+if some spanning lower forest can be removed so that complete raw positive
+singleton cancellation succeeds. The construction requires one full
+peeling pass and one spanning-forest pass, without enumerating forests.
+\end{proposition}
+\begin{proof}
+If full peeling succeeds, choose a spanning forest in $G-P$ by the previous
+proposition. Its edges are not pivots. Discarding these extra columns
+changes none of the pivot-column sums, so the same complete peeling trace
+works after contracting this forest.
+
+Conversely, complete raw positive cancellation after any forest deletion
+implies complete column peeling by the stopping-set theorem already proved
+for the nonnegative cancellation model. Restore the forest columns. The
+same pivots still have the same live column sums, so their sequence remains
+valid in the full matrix. The order independence of the terminal peeling
+residual then gives success of the full peeling process.
+\end{proof}
+
+This changes discovery order, not geometric execution order. The emitted
+certificate first contracts the discovered forest and then performs the
+usual source-relative one/two cancellations. It assumes no commutation of
+geometric moves. A nonempty terminal full-matrix stopping set obstructs
+complete raw cancellation for \emph{every} lower forest, since deleting
+columns cannot destroy its zero-or-at-least-two column sums. It remains an
+obstruction only to this fixed raw model, not to being a handlebody.
+
+The same argument on a partial peeling trace produces a forest attaining
+the smallest terminal column-peeling residual over all lower forests.
+It does not maximize the length of arbitrary positive-fill partial traces:
+the all-ones two-by-two matrix has no column leaf but allows one singleton
+pivot before the remaining entry becomes two. The exact conclusion is
+complete-success equivalence and optimality of the peeling residual.
+
+\paragraph{Fresh review evidence and a specific next integration.}
+An isolated copy of report~105 over its pinned
+\texttt{c6d0ec8aa0b6} baseline passes all eleven delivered deferred-forest
+and boundary tests in 8.864 seconds. These include 120 seeded closed-walk
+instances compared against exhaustive forest choices. The initial local
+attempt lacked Regina on its import path; the complete rerun includes the
+required package. No delivered file was changed.
+
+Separately, all nine supplied whole-cut packets and eight supplied core
+packets pass the current independent native checkers. The core replay also
+reconstructs their source geometry and the original queue top reduction.
+Eight of those whole-cut sources already complete under the newly
+integrated adaptive policy. The remaining source,
+\path{pachner23_5_8_2/mixed}, has a valid delivered proof and agrees with
+our fresh literal census, but still receives an inconclusive result from
+the maintained producer. That packet is an integration target, not a
+111th production success in the preceding audit.
+
+A new native research probe uses the current maximum-weight top reduction
+on all 120 sources, checks every retained raw row's uncapped vertex parity,
+peels the full core matrix, and selects a forest avoiding its pivots. It
+passes that forest into the ordinary native core API and independently
+replays every success. The result is 118 complete bare cores, six more than
+canonical lower forests on the same top reductions. The two remaining
+stopping sets occur on \path{nested_1_4_6/interior_links} and
+\path{interior_loop/interior_links}. These are bare-core counts; added
+annular rows can invalidate a core-only pivot. A whole-cut integration
+must assemble the complete relevant boundary matrix before deferred
+selection and retain source authentication, top-reduction semantics,
+omitted-column lifting and shared query budgets.
+
+\paragraph{The distinct exceptional-interface result.}
+Report~105 also extends report~99's two-row column selector to a finite
+parameterized problem. Let $u$ count rows meeting an active column with
+support on more than two rows, where active means that some entry is one.
+The delivered reduction uses at most $\operatorname{Bell}(u+1)$ polynomial
+independent-representatives calls: two-row implications are compressed,
+partial partitions of the exceptional interface specify seed signatures,
+and graphic/partition matroid intersection chooses compatible tree edges.
+The partial partitions correspond to ordinary partitions after adjoining
+one distinguished element, and
+$\operatorname{Bell}(u+1)\leq(u+1)^u$. This yields
+$2^{O(u\log(u+2))}\operatorname{poly}(N)$ for its finite graph/matrix model.
+The original native triple-support specialization bounds $u\leq3k$ for
+$k$ such columns; added annular rows require their actual supports.
+
+An isolated rerun of its independent exhaustive oracle checks 50,658
+finite inputs, including 46,656 exhaustive small inputs and 4,000 seeded
+cases. It reproduces 5,183 successful independently replayed tree/peeling
+certificates with zero discrepancies. This finite evidence is not a source
+adapter, a native parameter bound or an independent formalization of the
+whole manuscript. The coupled geometric adapter and a global bound on
+$u$ remain future work. The deferred theorem and this parameterized
+selector remove local search variables under explicit hypotheses; neither
+establishes general quasi-polynomial unknot recognition.

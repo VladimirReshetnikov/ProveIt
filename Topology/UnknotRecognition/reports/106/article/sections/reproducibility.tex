@@ -1,0 +1,196 @@
+\section{Reproduction, integration, and the certificate boundary}
+\label{sec:reproducibility}
+
+\subsection{Package structure and source pin}
+
+The package is intended for review before incorporation into ProveIt.
+The LaTeX article, source fragments, vector figures, executable algorithms,
+independent audits, raw measurements, source-bound packets and patches
+are all included.  The root \code{README.md} gives exact commands and
+the recommended patch order.  \code{PROVENANCE.json} identifies the
+repository pin, the five inspected incoming archives, and their hashes;
+\code{MANIFEST.sha256} inventories the delivered files.
+
+The main LaTeX source is
+\code{article/exceptional_rows_and_certificate_replay.tex}.
+Compile from its directory with:
+\begin{lstlisting}
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+  exceptional_rows_and_certificate_replay.tex
+\end{lstlisting}
+The source uses standard LaTeX packages.  Its figures are included as
+vector PDFs; rebuilding them uses Python, NumPy, and Matplotlib.  The
+finite forest solvers and their independent checker use only Python's
+standard library.  Native reproductions use the dependencies of the
+maintained ProveIt fast package.
+
+\subsection{Finite problem schema and available algorithms}
+
+The finite input is a JSON object with exactly four fields:
+\begin{lstlisting}
+{
+  "vertices": 2,
+  "columns": 2,
+  "edges": [[0, 1], [0, 1], [0, 0]],
+  "rows": [[[0, 1], [1, 1]], [[0, 1], [1, 2]], [[0, 1]]]
+}
+\end{lstlisting}
+Row $i$ has edge record $i$.  A missing eligible edge is encoded by
+\code{null}; loops are also ineligible.  Each sparse row lists distinct
+column indices and strictly positive integer counts.  Booleans are not
+accepted as integers.  Root vertex zero is distinguished.  Empty matrices,
+isolated source vertices, large integer labels and multiplicities, repeated
+edges and invalid records have explicit validation behavior.
+
+\begin{center}
+\begin{tabular}{P{0.31\textwidth}P{0.32\textwidth}P{0.26\textwidth}}
+\toprule
+Entry point & Search & Negative convention\\
+\midrule
+\code{solver.solve} & Exact exceptional schedules, support at most three
+for useful columns & Exhaustive \code{NO_FOREST}; limits are inconclusive.\\
+\code{solver.solve_randomized} & Reference schedule plus covering sieve
+& A randomized zero is inconclusive.\\
+\code{nonlinear.solve_boolean} & SCC/ideal determinant sieve, arbitrary
+exceptional support & A randomized zero is inconclusive.\\
+\code{nonlinear.solve_width} & Exact streamed ideals and minimal-frontier
+representatives & Exhaustive \code{NO_FOREST}; limits are inconclusive.\\
+\code{base_verify.verify} & Independent tree and original-matrix replay
+& Accepts only supported proof objects.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Every success carries a tree and complete peel sequence.  The public
+discovery functions construct these by exact integer operations; callers
+that rely on the result must invoke the supplied independent checker.
+The tests and audit programs do so for every reported positive.  They do
+not regard a discovery program's own assertions as independent verification.
+
+The implementation stores ideal coefficients as integers.  The formula
+\[
+ c(A)=\sum_{S\subseteq\max(A)}(-1)^{|S|}g(A\setminus S)
+\]
+bounds their
+absolute values by $2^d$, so the coefficient storage is
+$J\poly(N)$ bits.  The sharper $O(2^d\log N)$ theoretical table bound
+in the Boolean theorem uses residues modulo the prime; the delivered
+integer tables still satisfy the stated $J\poly(N)$ ideal bound.
+
+The fixed default prime is $2^{61}-1$.  The implementation checks primality
+within an explicit 64-bit domain and requires the chosen prime to exceed
+twice the number of eligible edges when constructing the determinant
+sieve.  Thus the prime characteristic exceeds every copy count and provides
+distinct Vandermonde labels.  For arbitrary asymptotic input sizes, the
+mathematical algorithm chooses a prime in a polynomial interval rather
+than relying on this fixed implementation constant.
+
+An omitted random seed uses uniform system randomness.  A supplied seed
+makes experiments reproducible; a probability bound is justified by the
+uniform independent sampling model, not by one particular pseudorandom
+seed.  Once an evaluation is nonzero, extraction uses no further randomness.
+Resource caps return \code{INCONCLUSIVE}.  Most exhaustive deterministic
+negative answers do not yet carry a portable negative proof, as their
+\code{certificate} field and evidence string make explicit.
+
+\subsection{A minimal example that needs exceptional propagation}
+
+The JSON example above has rows $a,b,c$ and unsigned matrix
+\[
+        A=\begin{pmatrix}1&1\\1&2\\1&0\end{pmatrix}.
+\]
+The first column is exceptional.  The second gives the ordinary implication
+$b\to a$.  Rows $a$ and $b$ are parallel eligible edges; $c$ is a root loop.
+Deleting $a$ as the spanning tree leaves two owners of the triple column
+and a coefficient two in the other column, so peeling stalls.  Deleting
+$b$ instead allows $a$ to peel on column one and then $c$ on column zero.
+The certificate is the tree \([1]\) and peel sequence \([(0,1),(2,0)]\).
+
+The special-row poset has relation $b\prec a$ and isolated element $c$.
+It has six ideals rather than eight Boolean subsets.  This example makes
+the conjunction and order-ideal reduction visible in a small input; the
+general results are justified by the proofs and the separately authenticated
+native experiments, not by the example alone.
+
+\subsection{Counterexamples that constrain the algebraic implementation}
+
+\paragraph{Future heads cannot satisfy their own premises.}
+Take a one-vertex dual graph, so no row can be deleted by a tree, and the
+matrix
+\[
+        \begin{pmatrix}1&2&2\\1&1&0\\1&0&1\end{pmatrix}.
+\]
+The first column is a triple; the ordinary implications are $a\to b$ and
+$a\to c$.  There is no initial seed and no legal first peel.  A proposed
+exceptional head $a$ cannot be used in advance to justify its prerequisites
+$b,c$.  This rejects the tempting but invalid replacement of the prefix
+head set $H_{i-1}$ by the final head set in the schedule reduction.
+
+\paragraph{Different copies need different variables.}
+Consider a rank-two star with two edges $e_1,e_2$, both in one mandatory
+group.  Its copied common-basis polynomial has the form
+\[
+     z_{1,\mathrm{rep}}z_{2,\mathrm{fill}}
+       -z_{1,\mathrm{fill}}z_{2,\mathrm{rep}}.
+\]
+There is a valid spanning tree.  Identifying representative and filler
+variables for each original edge makes the polynomial identically zero.
+The independent variable for each copy is therefore part of the theorem,
+not an implementation convenience.
+
+\paragraph{One deletion scan is insufficient over a field.}
+For three parallel edges in rank one, take
+$Q=x_1+x_2+x_3$ over $\mathbb F_7$ and evaluate at $(1,1,6)$.
+The total is one.  Removing the first or second variable yields zero;
+removing the third leaves two.  A single scan can therefore stop with two
+variables.  A second scan extracts one.  The repeated-scan implementation
+tests this exact regression.
+
+\paragraph{Field cardinality does not replace characteristic.}
+Over any characteristic-two extension, the same polynomial evaluated at
+$(1,1,1)$ is nonzero, while every one-variable deletion is zero.  Euler's
+identity then only gives $3\equiv1\pmod2$.  Arbitrarily large extension
+fields do not fix this example.  The extraction lemma needs characteristic
+greater than the initial number of variables.
+
+\paragraph{Inverse ideal transforms need reverse topological order.}
+For a chain $a\prec b$, the coefficient of its full ideal is
+$g(\{a,b\})-g(\{a\})$.  Processing $a$ before $b$ in the subtraction
+transform introduces an erroneous $g(\varnothing)$ term.  A regression
+also labels ordinary rows in the reverse of their reachability order,
+ensuring that sorting row identifiers cannot masquerade as topological
+sorting.
+
+\subsection{Evidence levels and implementation status}
+
+\begin{longtable}{P{0.29\textwidth}P{0.28\textwidth}P{0.31\textwidth}}
+\toprule
+Claim & Evidence delivered & Boundary\\
+\midrule
+\endhead
+Finite schedule/ideal/width theorems & Mathematical proofs; independent
+finite audits; executable solvers & Supplied rooted graph and unsigned
+matrix; not a general handlebody theorem.\\
+Kirchhoff exact counting & Complete proof with bit bound & Not a separate
+delivered optimized solver.\\
+Native raw arity and optimal $k$ & Local source proof; fresh source/reference
+equality checks & Before arbitrary bundle augmentation or slides.\\
+Prefix contraction & Exact quotient/inverse proof; independent finite tests
+& Endpoint substep, not the whole orbit algorithm.\\
+23.48\% full-query reduction & Five paired rounds; complete returned-object
+equality on 106 cases & Recorded host and workload only.\\
+Five new whole-cut positives & Original-source packets; unchanged public
+verifier acceptance & Bounded two-policy portfolio, not exhaustive forest
+search.\\
+Historical oracle split & Prior report and identical corpus hash & Supporting
+classification, not a fresh oracle run or the new proof.\\
+Global quasi-polynomial recognition & Conditional accounting proposition
+and explicit research obligations & Not established in this continuation.\\
+\bottomrule
+\end{longtable}
+
+The mathematical proofs are conventional written proofs, accompanied by
+independent executable checks.  They have not been formalized in Lean.
+Natural formalization targets are the closure equivalence, source-SCC
+criterion, ideal inversion identity, and fixed-evaluation extraction lemma;
+each has a small explicit interface independent of three-manifold geometry.

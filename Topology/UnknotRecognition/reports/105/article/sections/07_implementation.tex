@@ -1,0 +1,144 @@
+\section{Implementation and independent certificate replay}
+\label{sec:implementation}
+
+\subsection{A small, opt-in native change}
+
+The patch changes four production modules and adds two test modules under
+\path{Topology/UnknotRecognition/fast}.  Existing defaults remain
+canonical.  The optional argument
+\begin{center}
+\code{forest\_strategy='deferred'}
+\end{center}
+is accepted by the core producer, finite bundle-boundary producer, and
+whole-cut wrapper.  Unknown strategy values raise \code{ValueError}.
+The argument is propagated through the supported core, augmented-core,
+and finite-kernel fallback calls.
+
+In the core producer, deferred discovery builds the full occurrence
+matrix, runs the existing column queue, and chooses a spanning forest
+avoiding the recorded pivot columns.  It checks that the original
+component partition is unchanged.  If peeling stops, the result remains
+\code{INCONCLUSIVE}, with reason
+\code{all\_primal\_forests\_raw\_obstruction} and the remaining two-handle
+identifiers.  On success it emits the existing
+\code{normal-core-handlebody-v2} schema.  The independent core checker
+already accepts a general supplied forest, so its code is unchanged.
+
+The logical producer is short:
+\begin{Code}
+rows = source_occurrences_without_a_primal_forest()
+trace, residual = column_leaf_peeling(rows)
+if residual:
+    return INCONCLUSIVE, restricted_stopping_witness(residual)
+pivots = source_graph_columns_used_by(trace)
+forest = spanning_forest(source_graph_without(pivots))
+assert original_components_are_preserved(forest)
+return certificate(forest_first=True, forest=forest, trace=trace)
+\end{Code}
+This pseudocode describes one supported finite matrix.  The full wrapper
+still has conservative branches, port conditions, and bundle lifting
+requirements outside this local argument.
+
+\subsection{Why the whole-boundary change needs a new schema}
+
+Core success is insufficient when a whole cut is reconstructed by gluing
+parallelity bundles.  The attaching annuli add rows and may destroy
+leaves that were available in the isolated core.  Deferred boundary
+discovery therefore first includes every supported annular row, using
+the authenticated closed core paths and dedicated auxiliary base
+columns.  It then peels this full finite matrix and chooses the source
+forest avoiding its source pivots.
+
+The old boundary schemas reconstruct a canonical forest.  Reinterpreting
+them as permitting an arbitrary supplied forest would change an existing
+certificate's meaning.  The patch instead introduces
+\code{bundle-boundary-kernel-v3}; earlier schemas retain their exact
+validation policy.  The outer whole-cut certificate schemas need not
+change because their kernel field already dispatches by kernel schema.
+
+The v3 checker independently decodes and validates every supplied forest
+edge.  It rejects booleans masquerading as integer identifiers, malformed
+hexadecimal strings, negative or out-of-range handles, duplicates, loops,
+cycles, and a failure to span the original graph components.  It uses
+authenticated endpoints to reconstruct the component partition, rather
+than calling the producer's forest routine.  It then reconstructs raw
+post-forest source and annular occurrences, validates the cancellation
+trace, and recomputes the component census, base families, and bridge
+information.
+
+The component identifiers remain the minimum source vertex labels, so
+choosing another forest does not silently rename component ownership.
+The tree is removed from the surviving-column census after discovery;
+forgetting that removal would preserve a valid cancellation trace but
+give an incorrect genus.  Both steps are covered by direct kernel and
+whole-cut replay tests.
+
+\subsection{Checking independence and hostile certificates}
+
+The new tests monkeypatch producer entry points, the producer's forest
+helper, the peeling routine, and a census helper to raise if called while
+verifying a saved positive packet.  Verification still succeeds.  This
+tests the intended separation at the modified interfaces; it is not a
+claim that source preparation and all geometry code are formally
+independent implementations.
+
+Mutation cases remove a tree edge, duplicate an edge, insert invalid
+labels, remove a required cancellation, select a forest edge as a
+cancellation pivot, or relabel a v3 packet as v2.  All are rejected.
+Further tests exercise callbacks, exhausted operation limits, source
+relabelings, an exact literal oracle comparison, and a normal-coordinate
+scale factor $2^{128}$.  The scaling test checks that binary multiplicity
+does not force literal normal-sheet expansion in the changed path; it
+does not establish an asymptotic runtime bound by measurement alone.
+
+\subsection{The standalone exceptional solver}
+
+The research operator \code{exceptional\_forest.py} depends only on
+Python's standard library.  It uses the attributed, unchanged
+\code{degree\_two\_backend.py} from the incoming dual-normalization
+package for validation, strongly connected components, classical matroid
+intersection, forest extension, and final peeling.  Its new code computes
+the exceptional interface and signatures, performs Horn closure,
+enumerates partial partitions, and clones overlapping candidate
+memberships.
+
+The input has one optional dual-edge record per matrix row.  A null
+record is ineligible for the selected tree, and loops cannot be selected.
+The root is vertex zero.  Sparse row entries retain exact positive integer
+counts on input, although the solver caps them at two for singleton
+decisions.  The three statuses mean:
+\begin{description}[style=nextline]
+\item[\code{SUCCESS}] A final spanning tree and complete peel sequence
+have been constructed.  A separate finite checker can verify both.
+\item[\code{NO\_FOREST}] The complete finite search has excluded every
+tree in the specified graph/matrix problem.  This is not a topological
+negative certificate.
+\item[\code{INCONCLUSIVE}] A work/partition budget or implementation
+limit interrupted the search.  Exhaustion of a resource is never treated
+as exhaustive mathematical failure.
+\end{description}
+
+No native extraction adapter for this operator is included.  Such an
+adapter should use the existing authenticated dual endpoints and full
+raw source occurrences, feed any successful tree into the legal top
+reduction, and obtain ordinary native replay before claiming a new
+topological success.  The finite solver's tests deliberately do not
+assume geometric realizability of random matrices.
+
+\subsection{Integration policy}
+
+The direct patch preserves canonical behavior by default.  This is a
+practical decision: the stronger deferred test adds work on many inputs
+that the canonical policy already settles.  A later adaptive policy could
+try canonical peeling first and defer only when needed, but should reuse
+authenticated rows and avoid rebuilding expensive geometry.  We do not
+include that additional optimization without measuring its full cost.
+
+The artifact contains both a patch against the pinned commit and an
+overlay of the six changed files.  Apply one representation, not both.
+It also contains source hashes, the original baseline versions of the
+four production modules for comparison, exact new packets, and the audit
+drivers.  Existing source validators, the normal-orbit construction,
+dual breadth-first policy, and the outer knot verdict logic retain their
+own contracts; local completeness must not be read as a claim about
+every branch of the whole wrapper.

@@ -1,0 +1,38 @@
+Failed-module recovery commands and results
+
+Initial suite evidence: research_integration/full_regression.log
+Initial result: 1620 counted tests; 43 errors; no assertion failures.
+Errors: 11 missing-module placeholders, 29 missing-file test errors, 3 setUpClass errors.
+
+Working directory: /workspace/scratch/1c3d9139d1c2/ProveIt
+git sparse-checkout add Topology/UnknotRecognition/reports/24/reference Topology/UnknotRecognition/reports/26/detshadow Topology/UnknotRecognition/reports/28/src/closure_reset Topology/UnknotRecognition/reports/45/code Topology/UnknotRecognition/reports/57/results Topology/UnknotRecognition/reports/79/repro/fast/commitment_research Topology/UnknotRecognition/reports/79/repro/fast/shared_cover_research/results
+All six task files had identical SHA256 before and immediately after restoring baseline directories.
+
+Working directory: /workspace/scratch/1c3d9139d1c2
+python research_integration/rerun_failed_modules.py
+Reran only the 24 modules implicated by the 43 errors: 174 tests. 171 passed;
+3 CLI subprocess checks failed because this initial recovery harness ran from scratch
+while only modifying its own sys.path. All original missing-baseline errors disappeared.
+The saved driver is corrected to change cwd to the fast directory before running.
+
+python research_integration/rerun_cli_failures.py
+Reran exactly the 3 subprocess checks with cwd=fast: 3 passed, no errors/failures.
+
+python research_integration/count_recovered_suite.py
+Inventory only; no tests executed. Found 1707 distinct actual test IDs, no loader errors.
+All five deferred-forest tests were included in the original successful portion.
+Exact distinct pass total: 1580 initial real passes + 174 affected-module tests - 47 overlaps = 1707.
+Equivalent discovery accounting: 1620 - 11 import placeholders + 77 imported tests + 21 previously blocked setup-class tests = 1707.
+The three CLI retests replace three harness failures; they do not add three unique tests.
+
+Final status: all 1707 distinct actual tests pass across the initial run and targeted recovery.
+No production code was changed during recovery; no full suite was repeated; no benchmark was run.
+
+Original error groups:
+8: ModuleNotFoundError: No module named 'detshadow'
+1: ModuleNotFoundError: No module named 'closure_reset'
+1: FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/1c3d9139d1c2/ProveIt/Topology/UnknotRecognition/reports/24/reference/graded_transfer_v1.py'
+25: FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/1c3d9139d1c2/ProveIt/Topology/UnknotRecognition/reports/57/results/discovery_corpus.json'
+1: FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/1c3d9139d1c2/ProveIt/Topology/UnknotRecognition/reports/79/repro/fast/commitment_research/coherent-obstruction-certificate.json'
+6: FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/1c3d9139d1c2/ProveIt/Topology/UnknotRecognition/reports/79/repro/fast/shared_cover_research/results/exhaustion.json'
+1: FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/1c3d9139d1c2/ProveIt/Topology/UnknotRecognition/reports/45/code/oracle.py'

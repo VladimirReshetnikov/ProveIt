@@ -1,0 +1,141 @@
+% Article fragment. Requires amsmath, amssymb, amsthm and environments
+% lemma, proposition, corollary. Suggested bibliography key: Hempel1976.
+% The classical handlebody criterion below is not claimed as a new theorem.
+\section{A terminal recognition route through free fundamental groups}
+\label{sec:terminal-free-group}
+
+The raw cancellation algorithms deliberately recognise a restricted
+certificate class.  A different terminal certificate can use the
+fundamental group, provided that irreducibility is already justified by
+the source topology.  This permits algebraic certificates to establish an
+\emph{abstract} handlebody conclusion without interpreting the algebraic
+moves as geometric handle slides.  We work with compact PL manifolds and
+locally flat, properly embedded surfaces; equivalent smooth conventions
+give the same statements.
+
+\begin{lemma}[Cutting along surfaces with boundary]
+\label{lem:proper-cut-irreducible}
+Let $M$ be a connected irreducible compact orientable three-manifold.  Let $S$ be a
+finite disjoint union of compact, properly embedded, two-sided surfaces
+such that every connected component of $S$ has nonempty boundary.  Then
+every component of $M\mathbin{\backslash\!\backslash}S$ is irreducible.
+No incompressibility hypothesis on $S$ is required.
+\end{lemma}
+\begin{proof}
+An embedded sphere $\Sigma$ in the interior of a cut component gives an
+embedded sphere in $\operatorname{int}M$ disjoint from $S$.  It bounds an
+embedded ball $B$ in $M$.  Since $\partial B$ misses $S$, every connected
+component of $S$ that meets $B$ must lie entirely inside $B$.  Such a
+component cannot meet $\partial M$, contradicting its nonempty boundary
+and proper embedding.  Thus $B\cap S=\varnothing$.  Choosing the regular
+neighbourhood used for cutting sufficiently small, $B$ lies in the cut
+component containing $\Sigma$.  Changing this neighbourhood only changes
+the cut by a collar isotopy, so the conclusion holds for the given cut.
+\end{proof}
+
+The hypothesis about components is necessary for this argument.  Cutting
+a ball along an interior sphere produces a component homeomorphic to
+$S^2\times I$, which is not irreducible.  If closed cutting surfaces are
+allowed, irreducibility of their complementary pieces needs a separate
+justification.
+
+The next implication is classical; see Hempel~\cite{Hempel1976}.  We
+include its standard compression argument to make the precise hypotheses
+and the terminal use explicit.
+
+\begin{proposition}[Classical free-group handlebody criterion]
+\label{prop:free-group-handlebody}
+Let $N$ be a compact connected orientable irreducible three-manifold with
+$\partial N\ne\varnothing$.  If $\pi_1(N)\cong F_g$, the free group of
+rank $g\ge0$, then $N$ is a handlebody of genus $g$.  In particular,
+$g=0$ implies that $N$ is a three-ball.
+\end{proposition}
+\begin{proof}
+If a boundary component $F$ has positive genus, the homomorphism
+$\pi_1(F)\to\pi_1(N)$ cannot be injective: subgroups of free groups are
+free, whereas a closed orientable positive-genus surface group is not
+free.  The Loop Theorem therefore supplies a properly embedded disk
+$D\subset N$ with $\partial D$ essential in $F$.
+
+Cutting along $D$ preserves irreducibility by
+Lemma~\ref{lem:proper-cut-irreducible}.  Van Kampen's theorem gives
+$\pi_1(N)=\pi_1(N_1)*\pi_1(N_2)$ when $D$ separates, and
+$\pi_1(N)=\pi_1(N\mathbin{\backslash\!\backslash}D)*\mathbb Z$ when
+it does not.  Consequently all cut components again have free
+fundamental group.  Every component still has nonempty boundary.
+
+This process terminates.  Indeed, for the current union $W$ of components
+define
+\[
+ \mu(W)=\sum_{\substack{F\subset\partial W\\g(F)>0}}(2g(F)-1).
+\]
+Compression along an essential separating curve on a boundary component
+decreases $\mu$ by one.  Compression along a nonseparating curve in that
+component decreases it by two, except on a torus, where it decreases it
+by one.  Thus every
+disk cut strictly decreases this nonnegative integer.
+
+At termination all boundary components are spheres.  A connected
+irreducible three-manifold with a sphere boundary component is a ball:
+push that sphere slightly into the interior and use the ball it bounds
+on the side away from its boundary collar.  Hence all terminal components
+are balls.  Reversing the disk cuts attaches one-handles to these balls,
+and recovers a handlebody.  Its genus is $g$, since a genus-$g'$ handlebody
+has fundamental group $F_{g'}$ and free-group rank is an isomorphism
+invariant.
+\end{proof}
+
+\begin{corollary}[Source-bound terminal group certificates]
+\label{cor:terminal-tietze}
+Under the hypotheses of Lemma~\ref{lem:proper-cut-irreducible}, assume
+additionally that $\partial M\ne\varnothing$, and let $N_i$ be the
+connected components of the \emph{whole} cut.  Suppose a source
+verifier reconstructs a presentation $\mathcal P_i$ of $\pi_1(N_i)$, and
+an algebraic verifier certifies
+\[
+ \mathcal P_i\ \cong\ \langle y_1,\ldots,y_{g_i}\mid\ \rangle
+\]
+for every $i$.  Then the cut is a disjoint union of handlebodies of genera
+$g_i$.  It is a disjoint union of balls exactly when every $g_i$ is zero.
+\end{corollary}
+\begin{proof}
+Every $N_i$ is irreducible by the lemma, and has nonempty boundary because
+the source and cutting surfaces have boundary.  The verified group
+isomorphism and Proposition~\ref{prop:free-group-handlebody} give the
+conclusion component by component.
+\end{proof}
+
+One possible algebraic certificate is a sequence of elementary Tietze
+transformations from the authenticated presentation to the displayed
+free presentation.  The checker must verify each transformation.  A
+relator claimed to follow from earlier relators must carry an explicit
+consequence witness, such as a product of conjugates; its validity cannot
+be delegated to an unspecified group-word oracle.  Generator definitions,
+relator inversions, conjugations, products, and their certified inverses
+give familiar checkable building blocks.  If words are compressed, their
+equality checks and all certificate sizes must be measured in that
+encoding.  The initial presentation must describe the entire component,
+including bundle gluing relations, rather than merely its source core.
+
+This is a proposed terminal extension, not an additional implemented
+success in the reported experiments.  Its use requires authenticated
+irreducibility and the stated source identification.  It supplies neither
+a meridian disk system in marked coordinates nor a boundary-pattern
+transport map.  A positive free rank gives a handlebody rather than the
+ball required at the end of an essential hierarchy; a boundary-pattern
+essentiality test remains separate even when the underlying piece is a
+ball.  Finally, the classical theorem and the existence of a finite
+Tietze certificate provide no polynomial or quasi-polynomial bound on
+finding such a certificate, or on its size.  These are separate research
+questions.
+
+% Bibliographic verification, retrieved 12 October 2026:
+% John Hempel, 3-Manifolds, Annals of Mathematics Studies 86,
+% Princeton University Press, 1976.
+% The original book page was not directly inspected. The author-hosted
+% Culler--Shalen preprint "Volumes of hyperbolic Haken manifolds, I"
+% explicitly cites Hempel, Theorem 5.2, for the irreducible/free-pi1
+% handlebody-or-S^3 criterion (printed p.16, PDF page index15), and its
+% reference6 gives author/title/series/volume/publisher:
+% https://homepages.math.uic.edu/~culler/papers/HyperHakenI/nonsep.pdf
+% Accordingly the article cites Hempel without an uninspected theorem number.

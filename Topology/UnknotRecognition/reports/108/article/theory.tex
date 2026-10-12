@@ -1,0 +1,488 @@
+% Section fragment for the parent article; requires amsmath, amssymb,
+% amsthm, and theorem/lemma/proposition/corollary environments.
+\section{Few nonlinear columns: an exact fixed-parameter forest algorithm}
+\label{sec:fpt-column-theorem}
+
+Let $R$ be the row set of the immutable nonnegative occurrence matrix,
+and let $E\subseteq R$ label all nonloop edges of a connected undirected
+multigraph $G$. Parallel edges are allowed; other rows are matroid loops. A selected forest
+activates its rows initially. A unit-column pivot activates its last
+remaining row. We use the established equivalence between complete
+positive raw cancellation and complete unit-column peeling for this
+fixed source presentation.
+
+An active column has at least one entry equal to one; a column without
+such an entry is inert for unit peeling. Form the ordinary implication
+digraph $P$ on $R$ from all active columns supported on at most two rows.
+A singleton unit column contributes its row to the seed set $Z$.
+A two-row column supported on $u,v$ contributes $v\to u$ if its entry
+at $u$ is one, and $u\to v$ if its entry at $v$ is one. Thus a
+$(1,1)$ column contributes both directions and a $(1,a)$ column with
+$a\ge2$ contributes only the direction towards the unit entry.
+
+Let $H_1,\ldots,H_k$ be the supports of the remaining active columns.
+Assume each consists of three distinct unit owners. Each such column
+contributes the three implications
+\[
+                  H_i\setminus\{x\}\longrightarrow x
+                  \qquad(x\in H_i).
+\]
+Ordinary implication closure is directed reachability in $P$, denoted
+$\operatorname{Reach}_P$. The full activation closure additionally uses
+these two-premise implications. An exceptional column can produce at
+most one newly activated row: after its first useful application, all
+three of its support rows are active.
+
+\subsection{Removing the closure that is free for every tree}
+
+Write $\cl_A(X)$ for the rows activated by unit peeling
+from an initial row set $X$, including all singleton-unit seeds. Compute
+the \emph{free closure}
+\[
+                         W=\cl_A(\varnothing).
+\]
+This preprocessing involves no choice of top forest. Restrict the
+matrix columns to the live rows $R_0=R\setminus W$, keeping their
+coefficients unchanged.
+
+\begin{proposition}[Exact free-closure preprocessing]
+\label{prop:fpt-free-closure}
+For every initially selected row set $X\subseteq R$,
+\[
+ \cl_A(X)
+   =W\cup
+     \cl_{A[R_0]}(X\setminus W).
+\]
+Consequently the exceptional-column parameter may be measured after
+this preprocessing. The original cap graph and every original eligible
+edge must remain available for tree completion and weight optimization.
+\end{proposition}
+\begin{proof}
+The activation rule for a unit entry in row $x$ requires all other
+support rows of its column to have been activated. Every row of $W$ is
+active from every initial set $X$, by monotonicity. Once these rows are
+active, the rules with outputs in $R_0$ have precisely the prerequisites
+obtained by restricting their columns to $R_0$. Each residual activation
+is therefore valid in the original system after activating $W$.
+Conversely, remove from an original activation schedule the events whose
+outputs lie in $W$. Every remaining event has all of its remaining
+prerequisites activated earlier in the residual schedule, giving the
+reverse inclusion. A column used during free peeling has no live owner
+afterwards, so it cannot create a conflict through reuse.
+\end{proof}
+
+One convenient implementation retains all original row labels, marks
+the rows of $W$ as free seeds, and removes them only from the residual
+column supports. Their vertices then have no residual clauses. This
+keeps the original connected graph and its eligible edge set unchanged.
+Equivalently, discarded free rows may be retained as extension-only graph
+edges. A column losing one of its three unit owners becomes an ordinary
+two-row column, so the residual value of $k$ cannot increase. Authenticate
+any geometric parity identity from the uncapped source counts before
+capping multiplicities.
+
+Henceforth, recompute $P,H_1,\ldots,H_k$ from the residual columns,
+retain the original $R,E,G$, and include every row of $W$ in $Z$.
+The rows of $W$ are isolated free seeds in the residual implication
+system. All subsequent parameters refer to this recomputed system.
+
+\begin{theorem}[Fixed-parameter forest selection by exceptional columns]
+\label{thm:column-fpt}
+The existence of a spanning tree $T\subseteq E$ whose complementary
+rows peel completely can be decided deterministically in
+\[
+       3^k k! B_{2k}\,\operatorname{poly}(N)
+       =2^{O(k\log(k+2))}\operatorname{poly}(N)
+\]
+bit operations, where $N$ is the encoded graph--matrix input length and
+$B_j$ is the $j$th Bell number. A successful tree and an immutable-source
+peeling schedule can be constructed within this bound. The algorithm
+enumerates no $|R|^k$ family of forest-edge choices.
+\end{theorem}
+
+The parameter in this theorem is the number of exceptional
+\emph{columns}, and the algorithm chooses the forest jointly with the
+peeling strategy. It is therefore distinct from an algorithm that fixes
+the forest first or parameterizes exceptional rows. Its proof follows
+from a reduction to classical independent transversals; no matroid
+property is assumed for the family of peelable row sets.
+
+\subsection{Ordered exceptional events}
+
+A \emph{scenario} consists of a permutation $i_1,\ldots,i_k$ of the
+exceptional columns and an output choice $o_j\in H_{i_j}$ for each
+position. At event $j$, the two rows of $H_{i_j}\setminus\{o_j\}$
+must already be active, and $o_j$ becomes active. An output already
+active is allowed; the event then has no effect. There are $3^k k!$
+scenarios, including one empty scenario when $k=0$.
+
+\begin{lemma}[Complete scenario family]
+\label{lem:fpt-scenarios-complete}
+Every successful forest admits a complete activation schedule obeying
+one of these scenarios. Conversely, a legal scenario execution that
+activates every row certifies success of its initial forest.
+\end{lemma}
+\begin{proof}
+Take a complete activation schedule and list, in their actual order,
+the exceptional-column applications that activate a new row. No column
+appears twice in this list. Append every unused exceptional column after
+the original schedule finishes, choosing its output arbitrarily. These
+appended events are legal because all rows are already active. The
+converse follows directly from the implication rules: each useful
+exceptional event is a column with exactly one unit occurrence remaining.
+Ordinary directed reachability is implemented by the corresponding
+two-row or singleton unit columns.
+\end{proof}
+
+Fix a scenario and write $O=\{o_1,\ldots,o_k\}$. Let
+$Q_1,\ldots,Q_p$ be those source strongly connected components of $P$
+that meet neither $Z$ nor $O$, and put
+\[
+              A_\ell=Q_\ell\cap E,\qquad
+              U=Z\cup\bigcup_{\ell=1}^p Q_\ell.
+\]
+The sets $A_\ell$ are pairwise disjoint. Every complete execution of
+this scenario must select a row in each $A_\ell$: no ordinary arc enters
+$Q_\ell$, and no chosen exceptional event outputs into it. Conversely,
+one selected row in $Q_\ell$ activates all of $Q_\ell$ by strong
+connectivity. These are obligations \emph{conditioned on the scenario};
+they need not be stopping sets of the full matrix when exceptional
+columns are present.
+
+For a prerequisite $x\in H_{i_j}\setminus\{o_j\}$ at event $j$, set
+\[
+ C_j=\operatorname{Reach}_P
+         \bigl(U\cup\{o_1,\ldots,o_{j-1}\}\bigr).
+\]
+If $x\in C_j$, no additional requirement is needed. Otherwise introduce
+the \emph{predecessor demand}
+\[
+ D_{j,x}=\{e\in E:
+              x\in\operatorname{Reach}_P(\{e\})\}.
+ \tag{$\ast$}\label{eq:fpt-predecessor-demand}
+\]
+There are at most $2k$ retained demands. Repeated demands may be kept as
+separately indexed requirements. Only earlier outputs occur in $C_j$;
+using future outputs would permit circular activation justifications.
+
+\begin{lemma}[Separation of the residual demands]
+\label{lem:fpt-demand-separation}
+Every retained predecessor demand is disjoint from every $A_\ell$.
+\end{lemma}
+\begin{proof}
+If $e\in A_\ell\cap D_{j,x}$, then $e\in Q_\ell\subseteq U$ and
+there is a directed path from $e$ to $x$. Consequently $x\in C_j$, in
+contradiction to retention of this demand.
+\end{proof}
+
+\begin{proposition}[Exact requirements for a fixed scenario]
+\label{prop:fpt-fixed-scenario}
+An independent edge set $F$ supports complete activation according to the
+fixed scenario if and only if $F$ meets every $A_\ell$ and every retained
+predecessor demand.
+\end{proposition}
+\begin{proof}
+For necessity, the source-component argument gives the requirements
+$F\cap A_\ell\ne\varnothing$. Immediately before event $j$, every
+active row belongs to
+\[
+ \operatorname{Reach}_P
+       \bigl(Z\cup F\cup\{o_1,\ldots,o_{j-1}\}\bigr).
+\]
+A prerequisite $x\notin C_j$ is not reached from $Z$ or an earlier
+output. Reachability from a union is the union of the individual
+reachability sets, so some $e\in F$ reaches $x$. This is precisely a
+witness in $F\cap D_{j,x}$.
+
+For sufficiency, meeting $A_\ell$ activates every vertex of $Q_\ell$;
+hence all of $U$ is available. Induct on the prescribed events. A
+prerequisite in $C_j$ is reached from already justified sources or earlier
+outputs. Every other prerequisite is reached from a selected edge in its
+demand. Thus event $j$ is legal. After the final event every source
+component of $P$ contains a singleton seed, a selected edge, or a chosen
+output. Every component of a finite acyclic condensation is reachable
+from a source component, so ordinary reachability activates every row.
+\end{proof}
+
+\subsection{Partitioning the few demands}
+
+The retained demands can overlap and can share a single selected edge.
+Requiring a different selected edge for each would be incorrect. The
+following elementary lemma isolates the finite combinatorics needed to
+handle shared witnesses.
+
+\begin{lemma}[Partition reduction for an independent hitting set]
+\label{lem:fpt-partition-reduction}
+Let $M$ be a finite matroid on $E$. Let $A_1,\ldots,A_p$ be pairwise
+disjoint subsets of $E$, and let $D_1,\ldots,D_q$ be subsets of
+$E\setminus\bigcup_\ell A_\ell$. There is an $M$-independent set
+meeting every $A_\ell$ and every $D_j$ if and only if, for some set
+partition $\pi$ of $\{1,\ldots,q\}$, the family
+\[
+       A_1,\ldots,A_p,\qquad
+       K_B=\bigcap_{j\in B}D_j\quad(B\in\pi)
+\]
+has an independent system of distinct representatives.
+\end{lemma}
+\begin{proof}
+Given an independent hitting set $F$, choose $e_j\in F\cap D_j$ and
+partition the demand indices according to equality of their chosen
+witnesses. For every block $B$, its common witness belongs to $K_B$;
+witnesses for different blocks are distinct. Also choose a representative
+in $F\cap A_\ell$ for each $\ell$. The latter representatives are
+pairwise distinct because the $A_\ell$ are disjoint, and none equals a
+demand witness because each $D_j$ avoids their union. All representatives
+form a subset of the independent set $F$. Conversely, representatives
+for the displayed groups meet all original demands and mandatory groups.
+The empty demand family uses the unique empty set partition.
+\end{proof}
+
+For each partition, solve the independent-transversal problem in the
+graphic matroid of $G$. Its groups may overlap. To reduce to the familiar
+graphic/partition intersection, give every membership $e\in K$ its own
+edge copy $(K,e)$, with the same graph endpoints as $e$. Use the graphic
+matroid on these copies and the partition matroid allowing at most one
+edge in each required group. Two copies of the same original nonloop
+edge are parallel and hence dependent; copies of an original loop remain
+loops. A common independent set of size equal to the number of groups
+therefore projects to an independent system of distinct original-edge
+representatives. There are at most $(q+1)|E|$ copies, not $|E|^q$.
+
+Rado's independent-transversal theorem gives the exact alternative:
+either these groups have independent representatives or some subfamily
+$\mathcal J$ satisfies
+\[
+ \rho_G\left(\bigcup_{K\in\mathcal J}K\right)<|\mathcal J|.
+ \tag{$\dagger$}\label{eq:fpt-rado-obstruction}
+\]
+Here the union is a set of original edge labels. Repeated membership does
+not increase rank. This is a classical matroid result; the present
+reduction supplies the scenario-specific groups to which it applies.
+
+\begin{proof}[Proof of Theorem~\ref{thm:column-fpt}]
+Enumerate all scenarios. For each, compute its source groups and at most
+$2k$ retained demands. Enumerate their set partitions and solve each
+graphic/partition intersection problem. By
+Lemma~\ref{lem:fpt-demand-separation},
+Lemma~\ref{lem:fpt-partition-reduction} applies; by
+Proposition~\ref{prop:fpt-fixed-scenario}, a successful intersection
+produces a successful forest. Extend it to a spanning tree. Activation
+is monotone in the initially selected rows, so this extension remains
+successful; replay peeling directly against the immutable source matrix.
+
+Conversely, any successful tree admits a scenario by
+Lemma~\ref{lem:fpt-scenarios-complete}. For that scenario it meets all
+required groups and demands. The partition reduction therefore makes
+at least one of its matroid-intersection subproblems successful.
+
+There are $3^k k!$ scenarios and at most $B_{2k}$ partitions for each.
+All residual constructions and matroid computations are polynomial in
+the encoded input size. For $k\ge1$,
+\[
+      3^k k!B_{2k}
+      \le3^k k^k(2k)^{2k}=(12k^3)^k,
+\]
+which proves the stated bound. Scenarios and partitions can be streamed,
+so the producer needs only polynomial working space apart from any
+explicitly retained negative certificate.
+\end{proof}
+
+\subsection{Independent positive and negative certificates}
+
+A positive certificate consists simply of the selected tree and the
+complete peeling schedule. Its checker need not trust, or reproduce,
+the scenario search or the matroid-intersection implementation.
+
+For a negative certificate, record a violated inequality
+\eqref{eq:fpt-rado-obstruction} for every scenario/partition subproblem.
+An independent verifier regenerates the canonical enumeration, derives
+each family of requirements, checks that every subproblem is covered,
+and verifies the reported rank defect. Graphic rank is the number of
+vertices minus the number of connected components of the indicated
+spanning subgraph, including isolated vertices. Thus verification uses
+only elementary graph operations and the explicit scenario rules; it
+does not invoke matroid-intersection optimization. The resulting
+certificate is fixed-parameter sized, with the same exponential
+parameter factor. It is not asserted to have polynomial size for
+unbounded $k$.
+
+All conclusions concern the supplied immutable graph--matrix
+certificate class. A negative result does not prove nontriviality of
+the knot or exclude other handle systems, slides, subdivisions, or
+hierarchy certificates.
+
+\subsection{Optimizing the successful spanning tree}
+
+\begin{theorem}[Minimum-weight successful tree]
+\label{thm:fpt-minimum-weight-tree}
+Give every eligible edge a binary-encoded signed weight. An exact
+minimum-weight successful spanning tree, or proof that none exists,
+can be found with the same
+$2^{O(k\log(k+2))}\operatorname{poly}(N)$ parameter bound, where $N$
+also includes the weight encoding length.
+\end{theorem}
+\begin{proof}
+Fix a scenario and a demand partition, and let $L$ be the number of
+required groups. Put $r=|V(G)|-1$. If $L>r$, this subproblem is
+infeasible. Otherwise create its required-group copies as above and one
+additional dummy copy of each original edge. The first matroid is the
+graphic matroid on all copies. The second is a partition matroid with
+capacity one for each required group and capacity $r-L$ for the dummy
+group. Give every copy the weight of its original edge.
+
+A common independent set of cardinality $r$ saturates every required
+group and the dummy capacity. Its projection is a spanning tree
+satisfying the group requirements, with exactly the same total weight.
+Conversely, a spanning tree having distinct representatives for the
+required groups lifts to such a common independent set: mark the
+representatives by their group labels and give every remaining tree edge
+its dummy label. Weighted matroid intersection therefore gives the exact
+minimum tree weight for this subproblem. Minimizing over all scenarios
+and partitions gives the global optimum by the completeness proof above.
+Signed weights are harmless because the requested cardinality is fixed.
+\end{proof}
+
+This weighted theorem is separate from any unweighted reference
+implementation. For example, negated row-occurrence counts optimize the
+number of occurrences removed initially among successful trees. Such a
+weight is a practical surrogate; it does not prove optimality for actual
+end-to-end recognition time.
+
+\subsection{Larger exceptional supports and quantitative regimes}
+
+The same proof applies to an exceptional active column with support
+$S_i$, size $s_i\ge3$, and nonempty set $U_i\subseteq S_i$ of
+unit-coefficient owners. Its output must lie in $U_i$ and its
+prerequisites are all other support rows. Put
+\[
+                         Q=\sum_{i=1}^k(s_i-1).
+\]
+There are $k!\prod_i|U_i|$ scenarios and at most $Q$ residual demands,
+giving the following extension.
+
+\begin{corollary}[Parameterization by nonlinear support]
+\label{cor:fpt-nonlinear-support}
+Joint forest selection and complete unit peeling with arbitrary
+exceptional active columns is decidable in
+\[
+       k!\left(\prod_i|U_i|\right)B_Q\operatorname{poly}(N)
+       =2^{O(Q\log(Q+2))}\operatorname{poly}(N).
+\]
+The statement remains valid for any matroid with polynomial-time
+independence testing in place of the graphic matroid.
+\end{corollary}
+\begin{proof}
+Each exceptional column still has at most one useful activation. Its
+scenario event has $s_i-1$ prerequisites, so the preceding arguments
+apply verbatim. Since $|U_i|\le s_i$ and $k\le Q$, the displayed
+enumeration factor is $2^{O(Q\log(Q+2))}$. Cloning is a parallel
+extension of the supplied matroid, and classical matroid intersection
+requires only its independence oracle.
+\end{proof}
+
+For the triple-unit theorem, $k=O(\log N/\log\log N)$ gives polynomial
+time, and $k=O(\log N)$ gives $N^{O(\log\log N)}$. More generally,
+\[
+                k\log(k+2)=O((\log N)^2)
+\]
+is sufficient for the quasipolynomial bound $N^{O(\log N)}$; for example,
+$k=O((\log N)^2/\log\log N)$ suffices. These implications are
+conditional on the corresponding parameter bound. The finite
+graph--matrix theorem alone supplies no such uniform bound for all
+knot diagrams.
+
+\subsection{Authenticated cap parity preserves rank}
+
+The general algorithm above requires no compatibility between the
+occurrence matrix and the graph. The native cap incidence supplies an
+additional structure when it has been independently authenticated.
+Extend the graphic matroid from $E$ to the whole row set $R$ by making
+rows outside $E$ matroid loops. Assume that, for every column of the \emph{full matrix used by activation},
+the eligible edges with odd \emph{uncapped} occurrence count form an
+even-degree subgraph of the cap graph. This includes every added
+finite-boundary or interface column. The distinguished exterior vertex
+is included in this condition, and a graph loop contributes degree two.
+
+\begin{theorem}[Rank preservation of positive activation]
+\label{thm:fpt-parity-rank}
+Under this raw parity hypothesis, every legal unit-target activation
+adds a row in the graphic-matroid closure of its prerequisite rows.
+For every initial row set $X$,
+\[
+  \operatorname{cl}_{G}\bigl(\cl_A(X)\bigr)
+                 =\operatorname{cl}_{G}(X),
+  \qquad
+  \rho_G\bigl(\cl_A(X)\bigr)=\rho_G(X).
+\]
+In particular:
+\begin{enumerate}
+\item every freely activated row is a graphic-matroid loop;
+\item every successful independent seed is already a cap-graph basis;
+\item a scenario/partition can have independent representatives only
+      when its number $L$ of required groups equals
+      $r=\rho_G(E)$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Suppose a column activates its unit row $e$. All its other support rows
+are already active. If $e$ is a matroid loop, the claim is immediate.
+Otherwise $e$ is a nonloop graph edge and, because its coefficient is
+one, belongs to the column's odd-occurrence edge set. Every nonloop edge
+in an even-degree finite multigraph lies on a cycle: if it were a bridge,
+the sum of vertex degrees on one side of that bridge would be odd.
+Removing $e$ from such a cycle leaves a path between its endpoints using
+other odd-occurrence edges of the same column. These are among the
+already active prerequisites. Hence $e$ belongs to their graphic span.
+Induction over activations proves equality of the initial and final
+graphic spans.
+
+Taking $X=\varnothing$ proves the first consequence. Complete activation
+has rank $\rho_G(R)=\rho_G(E)=r$; if $X$ is independent it must therefore have
+cardinality $r$, proving the second. For the third, an independent
+representative system is a successful independent seed by
+Proposition~\ref{prop:fpt-fixed-scenario} and
+Lemma~\ref{lem:fpt-partition-reduction}. Its cardinality is exactly the
+number of its required groups, so $L=r$.
+\end{proof}
+
+The free-closure restriction in
+Proposition~\ref{prop:fpt-free-closure} removes only matroid loops under
+this authenticated hypothesis, and consequently preserves the raw
+even-degree identity. By contrast, replacing an odd multiplicity at
+least three by two can change parity. The rank argument must therefore
+refer to the original raw counts, although the zero/unit/multiple
+predicates used by the decision algorithm can still be capped at two.
+
+\begin{corollary}[One Stirling layer suffices on parity-compatible inputs]
+\label{cor:fpt-stirling-layer}
+For a fixed scenario with $p$ mandatory source groups and $q$ retained
+demands, the parity-compatible algorithm needs only partitions with
+\[
+                            |\pi|=r-p.
+\]
+Thus it examines $\left\{\begin{smallmatrix}q\\r-p\end{smallmatrix}\right\}$
+partitions, the corresponding Stirling number of the second kind,
+instead of all $B_q$ partitions. A scenario with $p>r$ or $p+q<r$
+can be rejected immediately. A successful set of representatives is
+already a spanning tree when the cap graph is connected.
+\end{corollary}
+\begin{proof}
+There are $L=p+|\pi|$ required groups. The previous theorem forces
+$L=r$ in every feasible subproblem. Conversely, excluding the other
+partitions loses no solution: a successful tree generates, through the
+partition-reduction proof, an independent representative system; rank
+preservation forces that system to contain all $r$ of its tree edges.
+The usual conventions include one partition of the empty set into zero
+blocks and no partition into an invalid number of blocks.
+\end{proof}
+
+For a triple-unit column, the earlier source-parity audit's local
+classification follows from the same hypothesis \cite{repo-dual-normalization}. Its three row elements form either a triangle of eligible edges, a
+parallel pair together with a matroid loop, or three matroid loops, of
+graphic ranks two, one, and zero respectively. Indeed, one nonloop edge is incompatible
+with even degrees, two nonloop edges must be parallel, and three
+nonloop edges must form a triangle. Only the triangle case can obtain
+two prerequisites directly from a forest without another activation
+route. This classification and rank pruning apply exactly where the
+raw chain identity has been verified; they are not inferred merely from
+an arbitrary capped matrix.

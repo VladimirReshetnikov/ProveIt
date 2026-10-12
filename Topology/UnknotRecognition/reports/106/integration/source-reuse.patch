@@ -1,0 +1,437 @@
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies.py b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies.py
+index d2ca620..b4c28b9 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies.py
+@@ -15,7 +15,7 @@ from .core_handlebody import core_handlebody_certificate
+ from .core_three_handle_reduction import reduce_core_three_handles
+ from .disk_bundle_absorption import absorb_disk_bundles
+ from .normal_parallelity import normal_cut_parallelity
+-from .parallelity_boundary_words import normal_parallelity_boundary_words
++from .parallelity_boundary_words import _boundary_words_from_geometry
+ 
+ 
+ def _census(geometry, summary, skeleton, components, check, absorbed=frozenset(), primitive=None, core_annuli=None):
+@@ -180,7 +180,11 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
+     remaining = max_cycles
+     if remaining is not None:
+         remaining -= sum(s['orbit_cycles'] for s in parallelity['stats'].values())
+-    boundary = normal_parallelity_boundary_words(triangulation, coordinates,
++    # The whole-cut producer has already built this exact source geometry.
++    # Reuse it only within this call, before any geometric reduction changes it.
++    fingerprint = (parallelity['certificate']['input_sha256']
++                   if record_certificate else None)
++    boundary = _boundary_words_from_geometry(parallelity['geometry'], fingerprint,
+         max_cycles=remaining, record_certificate=record_certificate, check=check)
+     result['stats']['boundary'] = boundary['stats']
+     if boundary['status'] != 'COMPLETE':
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies_verify.py b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies_verify.py
+index e965e78..f8fd460 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies_verify.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies_verify.py
+@@ -9,8 +9,8 @@ from .core_handlebody_verify import verify_core_handlebody_certificate
+ from .core_three_handle_reduction_verify import replay_core_three_handles
+ from .disk_bundle_absorption_verify import replay_disk_bundle_absorption
+ from .integer_codec import encoded_integer, certificate_equal
+-from .normal_parallelity_verify import verify_normal_cut_parallelity
+-from .parallelity_boundary_words_verify import verify_parallelity_boundary_words
++from .normal_parallelity_verify import _replay_normal_cut_parallelity
++from .parallelity_boundary_words_verify import _replay_boundary_words
+ 
+ 
+ def _decode(value):
+@@ -151,13 +151,15 @@ def verify_normal_cut_handlebodies(triangulation, coordinates, certificate, *,
+             return False
+         if operations > max_operations:
+             return False
+-    if not verify_normal_cut_parallelity(triangulation, coordinates, p, check=check):
++    source = _replay_normal_cut_parallelity(triangulation, coordinates, p, check=check)
++    if source is None:
+         return False
+-    if not verify_parallelity_boundary_words(triangulation, coordinates, b, check=check):
++    # Each composed verification reconstructs its own source exactly once.
++    # Use checked reference objects, never decoded certificate-supplied charts.
++    geometry, summary, fingerprint = source
++    skeleton = _replay_boundary_words(b, lambda: (geometry, fingerprint), check=check)
++    if skeleton is None:
+         return False
+-    # Large source integers may use the established exact hexadecimal codec.
+-    geometry, summary = _decode(p['geometry']), _decode(p['summary'])
+-    skeleton = _decode(b['skeleton'])
+     if version == 'normal-cut-handlebodies-v6':
+         geometry = replay_core_three_handles(geometry, certificate['core_reduction'], check=check)
+         if geometry is None:
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_parallelity_verify.py b/Topology/UnknotRecognition/fast/fastunknot/normal_parallelity_verify.py
+index 30bb9ed..f79a3fd 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/normal_parallelity_verify.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_parallelity_verify.py
+@@ -90,40 +90,50 @@ def _reference_summary(g,vertex,boundary,base,cover,cut_chi,check):
+                 attachment_euler_characteristic=attachment_chi,core_attachment_vertices=attachment_vertices)
+ 
+ 
+-def verify_normal_cut_parallelity(triangulation,coordinates,certificate,*,max_operations=None,check=lambda:None):
+-    """Authenticate source handles, base topology, fibre cover and core interfaces.
++def _replay_normal_cut_parallelity(triangulation,coordinates,certificate,*,max_operations=None,check=lambda:None):
++    """Return independently reconstructed geometry, summary and source digest.
+ 
+     The operation cap counts the four supplied discovery traces. It returns
+-    unverified on exhaustion. Malformed proofs return False, source geometry
+-    errors raise NormalOrbitError, and callback exceptions propagate.
++    unverified on exhaustion. Malformed proofs return None, source geometry
++    errors raise NormalOrbitError, and callback exceptions propagate. No source
++    or proof object is retained after the caller releases this return value.
+     """
+     check()
+     if max_operations is not None and(type(max_operations)is not int or max_operations<0):raise ValueError('max_operations must be nonnegative or None')
+     keys={'schema','input_sha256','geometry','summary','vertex_selector','boundary_selector','polygon_weights','fibre_cover'}
+-    if type(certificate)is not dict or set(certificate)!=keys or certificate['schema']!='normal-cut-parallelity-v1':return False
++    if type(certificate)is not dict or set(certificate)!=keys or certificate['schema']!='normal-cut-parallelity-v1':return None
+     traces=[]
+     for field in('vertex_selector','boundary_selector','polygon_weights','fibre_cover'):
+         proof=certificate[field]
+-        if type(proof)is not dict:return False
++        if type(proof)is not dict:return None
+         if field.endswith('selector'):
+             proof=proof.get('weighted_certificate')
+-            if type(proof)is not dict:return False
++            if type(proof)is not dict:return None
+         trace=proof.get('orbit_proof')
+-        if type(trace)is not dict or type(trace.get('operations'))is not list:return False
++        if type(trace)is not dict or type(trace.get('operations'))is not list:return None
+         traces.append(trace['operations'])
+-    if max_operations is not None and sum(map(len,traces))>max_operations:return False
++    if max_operations is not None and sum(map(len,traces))>max_operations:return None
+     prepared=_prepare(triangulation,check);analysed=_coordinates(prepared,coordinates,check)
+-    if certificate['input_sha256']!=_fingerprint(triangulation,analysed,check):return False
++    fingerprint=_fingerprint(triangulation,analysed,check)
++    if certificate['input_sha256']!=fingerprint:return None
+     g=_reference_parallelity(prepared,analysed,check)
+-    if not certificate_equal(certificate['geometry'],g):return False
+-    if any(len(g['core'][f'handles{i}']) > bound*len(coordinates) for i,bound in enumerate((6,8,12,4))):return False
+-    if len(g['ports'])>66*len(coordinates):return False
++    if not certificate_equal(certificate['geometry'],g):return None
++    if any(len(g['core'][f'handles{i}']) > bound*len(coordinates) for i,bound in enumerate((6,8,12,4))):return None
++    if len(g['ports'])>66*len(coordinates):return None
+     vp,bp,vw,pp,pw,dp,carriers=_reference_queries(g,check);v,b,p,d=[certificate[k]for k in('vertex_selector','boundary_selector','polygon_weights','fibre_cover')]
+-    if not verify_weighted_orbit_transversal(g['corner_points'],vp,vw,v,dimension=2,check=check):return False
+-    if not verify_weighted_orbit_transversal(g['corner_points'],bp,vw,b,dimension=2,check=check):return False
++    if not verify_weighted_orbit_transversal(g['corner_points'],vp,vw,v,dimension=2,check=check):return None
++    if not verify_weighted_orbit_transversal(g['corner_points'],bp,vw,b,dimension=2,check=check):return None
+     pw+=_reference_marks(v,carriers,0,check)+_reference_marks(b,carriers,1,check)
+-    if not verify_weighted_orbit_certificate(g['polygon_points'],pp,pw,p,dimension=7,check=check):return False
++    if not verify_weighted_orbit_certificate(g['polygon_points'],pp,pw,p,dimension=7,check=check):return None
+     weights=[(lo+sheet*g['polygon_points'],hi+sheet*g['polygon_points'],value)for lo,hi,value in pw for sheet in(0,1)]
+-    if not verify_weighted_orbit_certificate(2*g['polygon_points'],dp,weights,d,dimension=7,check=check):return False
++    if not verify_weighted_orbit_certificate(2*g['polygon_points'],dp,weights,d,dimension=7,check=check):return None
+     expected=_reference_summary(g,v,b,p,d,analysed['euler_characteristic'],check)
+-    return expected is not None and certificate_equal(certificate['summary'],expected)
++    if expected is None or not certificate_equal(certificate['summary'],expected):return None
++    return g, expected, fingerprint
++
++
++def verify_normal_cut_parallelity(triangulation, coordinates, certificate, *,
++                                  max_operations=None, check=lambda: None):
++    """Authenticate the source and all four parallelity proofs independently."""
++    return _replay_normal_cut_parallelity(triangulation, coordinates, certificate,
++        max_operations=max_operations, check=check) is not None
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/parallelity_boundary_words.py b/Topology/UnknotRecognition/fast/fastunknot/parallelity_boundary_words.py
+index 47414fd..9779386 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/parallelity_boundary_words.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/parallelity_boundary_words.py
+@@ -199,6 +199,21 @@ def normal_parallelity_boundary_words(triangulation, coordinates, *, max_cycles=
+     prepared = _prepare(triangulation, check)
+     analysed = _coordinates(prepared, coordinates, check)
+     geometry = _parallelity_geometry(prepared, analysed, check)
++    fingerprint = (_fingerprint(triangulation, analysed, check)
++                   if record_certificate else None)
++    return _boundary_words_from_geometry(geometry, fingerprint,
++        max_cycles=max_cycles, record_certificate=record_certificate, check=check)
++
++
++def _boundary_words_from_geometry(geometry, fingerprint, *, max_cycles=None,
++                                  record_certificate=False, check=lambda: None):
++    """Continue a producer call from its own already reconstructed geometry.
++
++    This private continuation has no source-authentication contract. Only the
++    source-validating public entry points may issue externally trusted results.
++    Nothing is cached across calls; the geometry is never read from a proof.
++    """
++    check()
+     result = dict(status='INCONCLUSIVE', stats={},
+                   trust='source-bound cyclic core ports and fibre transport; no hierarchy or knot verdict')
+     if not geometry['ports']:
+@@ -206,7 +221,7 @@ def normal_parallelity_boundary_words(triangulation, coordinates, *, max_cycles=
+         result.update(status='COMPLETE', skeleton=skeleton)
+         if record_certificate:
+             result['certificate'] = dict(schema='parallelity-boundary-words-v1',
+-                                        input_sha256=_fingerprint(triangulation, analysed, check),
++                                        input_sha256=fingerprint,
+                                         skeleton=skeleton, vertex_partition=None, gap_cover=None)
+         return result
+     vp, vw, dp, dw, _ = _queries(geometry, check)
+@@ -236,7 +251,7 @@ def normal_parallelity_boundary_words(triangulation, coordinates, *, max_cycles=
+     result.update(status='COMPLETE', skeleton=skeleton)
+     if record_certificate:
+         result['certificate'] = dict(schema='parallelity-boundary-words-v1',
+-                                    input_sha256=_fingerprint(triangulation, analysed, check),
++                                    input_sha256=fingerprint,
+                                     skeleton=skeleton, vertex_partition=vertex['certificate'],
+                                     gap_cover=cover['certificate'])
+     check()
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/parallelity_boundary_words_verify.py b/Topology/UnknotRecognition/fast/fastunknot/parallelity_boundary_words_verify.py
+index 387147b..c07f311 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/parallelity_boundary_words_verify.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/parallelity_boundary_words_verify.py
+@@ -178,12 +178,16 @@ def _reference_skeleton(g, vertex_proof, cover_proof, check):
+                 circle_attachments=sum(p['kind'] == 'circle' for p in attachments))
+ 
+ 
+-def verify_parallelity_boundary_words(triangulation, coordinates, certificate, *,
+-                                       max_operations=None, check=lambda: None):
+-    """Verify source-bound signed boundary words and proper attachment intervals.
++def _replay_boundary_words(certificate, source, *, max_operations=None,
++                           check=lambda: None):
++    """Replay boundary words from a private, authenticated source continuation.
++
++    ``source`` returns independently reconstructed geometry and its digest.
++    It is called only after the certificate envelope and budget are checked.
++    It must never return a producer's geometry or certificate-supplied charts.
+ 
+     The cap counts both supplied unweighted traces; malformed proofs return
+-    False. Invalid source geometry and cooperative callback exceptions propagate.
++    None. Invalid source geometry and cooperative callback exceptions propagate.
+     """
+     check()
+     if max_operations is not None and (type(max_operations) is not int or max_operations < 0):
+@@ -191,41 +195,51 @@ def verify_parallelity_boundary_words(triangulation, coordinates, certificate, *
+     keys = {'schema', 'input_sha256', 'skeleton', 'vertex_partition', 'gap_cover'}
+     if (type(certificate) is not dict or set(certificate) != keys
+             or certificate['schema'] != 'parallelity-boundary-words-v1'):
+-        return False
++        return None
+     proofs = [certificate['vertex_partition'], certificate['gap_cover']]
+     operations = 0
+     for proof in proofs:
+         if proof is None:
+             continue
+         if type(proof) is not dict or type(proof.get('orbit_proof')) is not dict:
+-            return False
++            return None
+         trace = proof['orbit_proof'].get('operations')
+         if type(trace) is not list:
+-            return False
++            return None
+         operations += len(trace)
+     if max_operations is not None and operations > max_operations:
+-        return False
+-    prepared = _prepare(triangulation, check)
+-    analysed = _coordinates(prepared, coordinates, check)
+-    if certificate['input_sha256'] != _fingerprint(triangulation, analysed, check):
+-        return False
+-    geometry = _reference_parallelity(prepared, analysed, check)
++        return None
++    geometry, fingerprint = source()
++    if certificate['input_sha256'] != fingerprint:
++        return None
+     if not geometry['ports']:
+         if proofs != [None, None]:
+-            return False
++            return None
+         expected = _reference_skeleton(geometry, {'histogram': []}, {'histogram': []}, check)
+-        return certificate_equal(certificate['skeleton'], expected)
++        return expected if certificate_equal(certificate['skeleton'], expected) else None
+     if any(proof is None for proof in proofs):
+-        return False
++        return None
+     vp, vw, dp, dw = _reference_queries(geometry, check)
+     if not verify_weighted_orbit_certificate(geometry['corner_points'], vp, vw, proofs[0],
+                                              dimension=1, check=check):
+-        return False
++        return None
+     if not verify_weighted_orbit_certificate(2 * geometry['corner_points'], dp, dw, proofs[1],
+                                              dimension=1, check=check):
+-        return False
++        return None
+     try:
+         expected = _reference_skeleton(geometry, proofs[0], proofs[1], check)
+     except _BadProof:
+-        return False
+-    return certificate_equal(certificate['skeleton'], expected)
++        return None
++    return expected if certificate_equal(certificate['skeleton'], expected) else None
++
++
++def verify_parallelity_boundary_words(triangulation, coordinates, certificate, *,
++                                       max_operations=None, check=lambda: None):
++    """Verify signed boundary words against a freshly reconstructed source."""
++    def source():
++        prepared = _prepare(triangulation, check)
++        analysed = _coordinates(prepared, coordinates, check)
++        fingerprint = _fingerprint(triangulation, analysed, check)
++        return _reference_parallelity(prepared, analysed, check), fingerprint
++    return _replay_boundary_words(certificate, source,
++        max_operations=max_operations, check=check) is not None
+diff --git a/Topology/UnknotRecognition/fast/tests/test_composed_source_reuse.py b/Topology/UnknotRecognition/fast/tests/test_composed_source_reuse.py
+new file mode 100644
+index 0000000..48e5ee1
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_composed_source_reuse.py
+@@ -0,0 +1,159 @@
++"""Authentication and certificate parity for invocation-local source reuse."""
++
++from contextlib import ExitStack
++from copy import deepcopy
++import json
++from pathlib import Path
++import unittest
++from unittest.mock import patch
++
++from fastunknot.integer_codec import json_safe
++from fastunknot.normal_cut_handlebodies import normal_cut_handlebodies
++from fastunknot.normal_cut_handlebodies_verify import verify_normal_cut_handlebodies
++from fastunknot.normal_parallelity import normal_cut_parallelity
++from fastunknot.normal_parallelity_verify import verify_normal_cut_parallelity
++from fastunknot.parallelity_boundary_words import normal_parallelity_boundary_words
++from fastunknot.parallelity_boundary_words_verify import verify_parallelity_boundary_words
++from fastunknot.normal_surface_geometry import NormalOrbitError
++from normal_orbit_research.fixtures import layered_torus
++import fastunknot.normal_parallelity_geometry as producer_geometry
++import fastunknot.normal_parallelity_reference as reference_geometry
++
++
++class ComposedSourceReuseTests(unittest.TestCase):
++    def setUp(self):
++        self.raw, self.rows = layered_torus(4)
++        self.result = normal_cut_handlebodies(
++            self.raw, self.rows, record_certificate=True)
++        self.assertEqual(self.result['status'], 'COMPLETE')
++        self.proof = self.result['certificate']
++
++    def verify(self, raw=None, rows=None, proof=None, **kwargs):
++        return verify_normal_cut_handlebodies(
++            self.raw if raw is None else raw,
++            self.rows if rows is None else rows,
++            self.proof if proof is None else proof, **kwargs)
++
++    def test_composed_producer_uses_its_own_geometry_once(self):
++        with patch('fastunknot.normal_parallelity._parallelity_geometry',
++                   wraps=producer_geometry._parallelity_geometry) as calls:
++            with patch('fastunknot.parallelity_boundary_words._parallelity_geometry',
++                       side_effect=AssertionError('duplicate source construction')):
++                actual = normal_cut_handlebodies(
++                    self.raw, self.rows, record_certificate=True)
++        self.assertEqual(calls.call_count, 1)
++        self.assertEqual(actual, self.result)
++
++    def test_composed_checker_uses_independent_reference_once(self):
++        with ExitStack() as stack:
++            calls = stack.enter_context(patch(
++                'fastunknot.normal_parallelity_verify._reference_parallelity',
++                wraps=reference_geometry._reference_parallelity))
++            forbidden = (
++                'fastunknot.parallelity_boundary_words_verify._reference_parallelity',
++                'fastunknot.normal_parallelity._parallelity_geometry',
++                'fastunknot.parallelity_boundary_words._boundary_words_from_geometry',
++                'fastunknot.normal_cut_handlebodies.normal_cut_handlebodies',
++            )
++            for name in forbidden:
++                stack.enter_context(patch(name, side_effect=AssertionError(name)))
++            self.assertTrue(self.verify())
++        self.assertEqual(calls.call_count, 1)
++
++    def test_standalone_public_apis_keep_source_authentication(self):
++        base = normal_cut_parallelity(self.raw, self.rows, record_certificate=True)
++        boundary = normal_parallelity_boundary_words(
++            self.raw, self.rows, record_certificate=True)
++        self.assertEqual(base['certificate'], self.proof['parallelity'])
++        self.assertEqual(boundary['certificate'], self.proof['boundary'])
++        self.assertTrue(verify_normal_cut_parallelity(
++            self.raw, self.rows, base['certificate']))
++        self.assertTrue(verify_parallelity_boundary_words(
++            self.raw, self.rows, boundary['certificate']))
++        for func, proof in ((verify_normal_cut_parallelity, base['certificate']),
++                            (verify_parallelity_boundary_words, boundary['certificate']),
++                            (verify_normal_cut_handlebodies, self.proof)):
++            for name in ('prepared', 'geometry', 'source', 'cache'):
++                with self.assertRaises(TypeError):
++                    func(self.raw, self.rows, proof, **{name: {}})
++
++    def test_no_cross_call_state_or_input_alias_cache(self):
++        self.assertTrue(self.verify())
++        rows = deepcopy(self.rows)
++        for row in rows:
++            row[:] = [2 * value for value in row]
++        self.assertFalse(self.verify(rows=rows))
++        new = normal_cut_handlebodies(self.raw, rows, record_certificate=True)
++        self.assertTrue(self.verify(rows=rows, proof=new['certificate']))
++        self.assertFalse(self.verify(proof=new['certificate']))
++        self.assertTrue(self.verify())
++        broken = deepcopy(self.raw)
++        next(face for tet in broken['tetrahedra'] for face in tet
++             if face is not None)['tetrahedron'] = len(broken['tetrahedra'])
++        with self.assertRaises(NormalOrbitError):
++            self.verify(raw=broken)
++        self.assertTrue(self.verify())
++
++    def test_equal_hash_strings_do_not_authenticate_wrong_inputs(self):
++        changed = deepcopy(self.proof)
++        changed['parallelity']['input_sha256'] = '0' * 64
++        changed['boundary']['input_sha256'] = '0' * 64
++        self.assertFalse(self.verify(proof=changed))
++        changed['parallelity']['input_sha256'] = self.proof['parallelity']['input_sha256']
++        self.assertFalse(self.verify(proof=changed))
++
++    def test_source_and_nested_chart_mutations_are_rejected(self):
++        altered = deepcopy(self.proof)
++        altered['parallelity']['geometry']['core']['handles1'][0]['ends'][0] += 1
++        self.assertFalse(self.verify(proof=altered))
++        altered = deepcopy(self.proof)
++        altered['parallelity']['summary']['core_euler_characteristic'] += 1
++        self.assertFalse(self.verify(proof=altered))
++        altered = deepcopy(self.proof)
++        altered['boundary']['skeleton']['ports'][0]['core_handle'] += 1
++        self.assertFalse(self.verify(proof=altered))
++        rows = deepcopy(self.rows)
++        rows[0][0] = True
++        with self.assertRaises(NormalOrbitError):
++            self.verify(rows=rows)
++        self.assertTrue(self.verify())
++
++    def test_shared_budget_still_covers_all_six_traces(self):
++        p, b = self.proof['parallelity'], self.proof['boundary']
++        count = 0
++        for name in ('vertex_selector', 'boundary_selector', 'polygon_weights', 'fibre_cover'):
++            trace = p[name]
++            if name.endswith('selector'):
++                trace = trace['weighted_certificate']
++            count += len(trace['orbit_proof']['operations'])
++        count += sum(len(b[name]['orbit_proof']['operations'])
++                     for name in ('vertex_partition', 'gap_cover') if b[name] is not None)
++        self.assertGreater(count, 0)
++        with patch('fastunknot.normal_parallelity_verify._reference_parallelity',
++                   side_effect=AssertionError('budget should refuse first')):
++            self.assertFalse(self.verify(max_operations=count - 1))
++        self.assertTrue(self.verify(max_operations=count))
++        self.assertEqual(normal_cut_handlebodies(
++            self.raw, self.rows, max_cycles=0)['status'], 'INCONCLUSIVE')
++
++    def test_cancelled_replay_cannot_create_later_trust(self):
++        class Cancel(Exception):
++            pass
++        def stop():
++            raise Cancel('cancelled')
++        with self.assertRaises(Cancel):
++            self.verify(check=stop)
++        self.assertTrue(self.verify())
++
++    def test_huge_hexadecimal_source_and_certificate(self):
++        raw, base = layered_torus(1)
++        n = 1 << 16384
++        rows = [[n * x for x in row] for row in base]
++        result = normal_cut_handlebodies(raw, rows, record_certificate=True)
++        proof = json.loads(json.dumps(json_safe(result['certificate'])))
++        self.assertTrue(self.verify(raw=raw, rows=json_safe(rows), proof=proof))
++        self.assertEqual(result['census']['ball_components'], n)
++
++
++if __name__ == '__main__':
++    unittest.main()

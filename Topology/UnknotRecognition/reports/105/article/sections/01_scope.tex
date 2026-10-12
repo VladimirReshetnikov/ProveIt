@@ -1,0 +1,128 @@
+\section{Scope, provenance, and the precise contribution}
+\label{sec:scope}
+
+The engineering objective is to make compressed normal cuts useful inside
+an eventual fast hierarchy algorithm for unknot recognition.  A terminal
+operation already present in ProveIt takes a triangulation and a normal
+surface in binary coordinates, builds source-authenticated compressed
+geometry, and tries to certify the genera and multiplicities of all
+handlebody components of the cut.  Its output is deliberately partial:
+a successful certificate is independently replayable; a failed search is
+\code{INCONCLUSIVE}.  The operation is not itself a decision procedure for
+all knots, nor does a handlebody census alone encode every marked boundary
+map needed to continue a hierarchy.
+
+We work at commit
+\begin{center}\small
+\texttt{c6d0ec8aa0b6308310ab6c081ba29d8bc363ede5}.
+\end{center}
+The inspected material includes the maintained \code{fast} implementation,
+the synthesis notes, and all five archives in \code{docs/incoming} at this
+commit.  The delivered patch is against that revision, not a moving branch.
+The source audit records the hashes of the incoming archives and changed
+modules.  No repository publication or merge is part of this package.
+
+\subsection{What the preceding research already established}
+
+The incoming material is substantial.  In particular, the following are
+inputs to this continuation, not new claims made here.
+
+\begin{enumerate}
+\item \emph{Positive cancellation.}  Complete elimination of the rows of
+a nonnegative occurrence matrix by positive singleton pivots is equivalent
+to column-leaf peeling.  A greatest stopping set is the obstruction, and
+immutable source entries admit a sparse queue and timestamp replay
+\cite{IncomingPositive}.  We reprove the required statement in
+Section~\ref{sec:raw} so the new argument is self-contained.
+\item \emph{Dual normalization.}  The native top handles can be removed
+using a source-authenticated dual spanning tree, relative to the exposed
+ports.  For active columns on at most two rows, the remaining tree-selection
+problem has a polynomial graphic/partition matroid formulation.  Original
+native source columns have at most three literal occurrences; their odd
+supports obey the dual cycle condition \cite{IncomingDualNormalization}.
+\item \emph{Other compressed infrastructure.}  Component gauges, cut
+atlases, occurrence-preserving flag regularization, weighted forest
+heuristics, and homological progress certificates were developed in the
+other incoming notes \cite{IncomingGauges,IncomingFlags,IncomingProgress}.
+They remain relevant to successor construction and to other move classes.
+\end{enumerate}
+
+The maintained code at our baseline already incorporates several of these
+ideas, including a deterministic breadth-first dual-tree reduction.  Its
+historical whole-cut census coverage is $92/106$.  Reimplementing that
+reduction or rediscovering the matrix-only peeling theorem would not be a
+new contribution.
+
+\subsection{New results relative to the inspected baseline}
+
+Our first result uses geometry that the matrix-only model discarded:
+attaching curves are closed walks in the primal graph.  It proves that
+all useful peeling pivots can be kept outside some spanning forest.  Thus
+the primal forest can be eliminated as a search variable, even though its
+canonical choice can destroy all apparent progress.  The constructive
+proof gives a strictly larger native certificate class without introducing
+word reduction, speculative handle slides, or a new topology oracle.
+
+Our second result addresses the remaining high-support columns in dual
+selection.  Their incident rows form a finite interface.  Ordinary
+implications can be compressed onto that interface, and a successful tree
+needs at most one additional witness for each interface row.  Enumerating
+\emph{how targets share witnesses}, rather than enumerating all choices of
+tree edges, gives a Bell-number parameter dependence.  The classical
+matroid machinery is reused; the exceptional-interface reduction is the
+new part.
+
+A third contribution is the exact geometric separation family of
+Section~\ref{sec:forest-separation-family}.  It identifies a genuine failure
+of a fixed forest policy and an exponential candidate space, while making
+no lower-bound claim against every possible algorithm.  The implementation
+and the native experiments then test whether the first theorem helps the
+actual source geometry.  It does: nine additional whole-cut packets are
+certified across the two supplied corpora.
+
+Here and throughout, ``new'' means absent from the inspected repository
+and incoming research and developed in this continuation.  We have not
+established a comprehensive priority claim across all of low-dimensional
+topology, hypergraph peeling, matroid activation, and sparse elimination.
+The mathematical statements are proved in the article and subjected to
+separate proof review and implementation audits; they have not been
+formalized in a proof assistant or externally peer reviewed.
+
+\subsection{Relation to Lackenby's announced target}
+
+The 2021 talk materials announce $n^{O(\log n)}$ unknot recognition; an
+Oxford compressed handout separately displays a weaker
+$n^{O(\log^2 n)}$ estimate.  Both are quasi-polynomial, but their exponents
+should not be conflated \cite{Lackenby2021,LackenbyOxford2021}.
+Lackenby's July 2026 paper gives the hierarchy algorithm and explicitly
+leaves speed-up to future work \cite{Lackenby2026}.  Its Theorem~6.2 already
+constructs a nonseparating oriented normal surface in polynomial time
+under its handle hypotheses.  Proposition~9.1 bounds the relevant loop
+count by $L(g+1)^L$; the refined construction has length at most $4c_q$.
+Theorem~11.3 controls uniform handle type.  Proposition~14.2 and
+Theorem~14.4 give compressed successor and parallelity-bundle constructions
+under their stated geometric hypotheses.  These are established local
+results, not open problems solved by this package.
+
+Our target is to turn applicable theory into a source-authenticated,
+bounded-cost implementation and to improve the local terminal and
+normalization operators.  Neither a faster terminal census nor a
+parameterized forest selector supplies the missing global hierarchy bound.
+Section~\ref{sec:complexity} writes those remaining obligations explicitly.
+
+\subsection{Parameters and trust boundaries}
+
+We distinguish the crossing count $n$ of a knot diagram from the encoded
+size $N$ of a particular finite graph/matrix or compressed cut state.
+A normal weight $W$ is different again: its bit length is logarithmic in
+$W$.  A polynomial in expanded normal weight is generally unusable for
+the desired asymptotic goal.
+
+The finite theorems accept exact integer matrices and graphs.  A topology
+application must additionally authenticate that these objects arise from
+the specified handles, attaching charts, and legal port-preserving moves.
+A matrix with the right parity is not automatically a native normal cut.
+This distinction applies especially to the triangle witness in
+Section~\ref{sec:exceptional}: it tests a constrained finite class, while
+the nine new native certificates have full source records and independent
+whole-cut replay.

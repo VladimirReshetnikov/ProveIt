@@ -1,0 +1,515 @@
+\section{Fixed-parameter forest selection beyond two-row columns}
+\label{sec:exceptional-forest}
+\label{sec:exceptional}
+
+The two-row theorem of \cite{IncomingDualNormalization} reduces a restricted
+dual-forest choice to directed reachability and independent representatives
+in a graphic matroid.  The remaining original native column shape is
+$(1,1,1)$: deleting two of its rows allows the third to peel.  Such a rule
+has two premises and cannot be represented by ordinary directed
+reachability alone.  This section gives an exact reduction when the rows
+participating in these exceptional rules form a small interface.  The
+parameter is independent of the number of interior dual vertices.
+
+\subsection{The finite problem and its parameter}
+\label{subsec:exceptional-problem}
+
+Let $D$ be a connected finite undirected multigraph, with a distinguished
+root and vertex set $V$.  Let $R$ be a finite row set.  Each row $r\in R$
+labels either an edge of $D$ or an ineligible record that cannot be selected
+in a forest.  Eligible row records are in bijection with the edges of
+$D$, so distinct parallel edges still have distinct row labels.
+Loops and parallel edges are allowed.  Write
+\[
+                    A=(a_{rc})\in\mathbb{N}^{R\times C}
+\]
+for a nonnegative integral matrix, supplied by sparse occurrence lists.
+In the geometric application, a row is an attaching two-handle and a
+column is a retained one-handle cocore.  That interpretation requires the
+separate source-authentication and geometric cancellation theorems; the
+finite operator below does not establish it from the matrix alone.
+
+A spanning tree $T\subseteq R$ deletes its rows.  A \emph{unit-column peel}
+on a current live row set $L$ removes a row $r\in L$ when some column $c$
+satisfies
+\[
+                      \sum_{s\in L}a_{sc}=a_{rc}=1.
+\]
+Its column may also be deleted, since it has no other live occurrence.
+The decision problem is whether some spanning tree leaves a row restriction
+that can be completely peeled.  By the raw-cancellation theorem of
+\cite{IncomingDualNormalization}, this is also the exact question for
+complete positive raw cancellation in the specified occurrence model.
+A negative answer concerns that model and its fixed geometric charts.
+
+Call a column \emph{active} if it has an entry equal to one.  An inactive
+column cannot supply a peel after any row deletion, so it can be ignored
+for this decision.  For a column $c$, let
+\[
+         W_c=\{r\in R:a_{rc}>0\},\qquad
+         E=\{c\in C:c\text{ is active and }|W_c|>2\}.
+\]
+The \emph{exceptional interface} and its size are
+\begin{equation}
+          U=\bigcup_{c\in E}W_c,\qquad u=|U|.
+          \label{eq:exceptional-interface}
+\end{equation}
+Inert columns with large supports do not contribute to $U$.  Conversely,
+the support of an exceptional active column contributes \emph{all} its
+rows, including rows whose own entry in that column exceeds one.
+
+Throughout this section, $N$ denotes the encoded input size, including
+graph records, sparse incidences, and the binary encodings of counts.
+Counts can be capped at two for the zero/one decisions used here.  Such
+capping must not be used to justify a separately asserted parity property
+of the original geometric chain complex.
+
+\subsection{Baseline reachability and mandatory source components}
+\label{subsec:exceptional-baseline}
+
+Temporarily omit the columns of $E$.  Build a directed graph $P$ on $R$
+from the remaining active columns.  A singleton column with entry one at
+$r$ makes $r$ an automatic seed; let $Z$ be the set of these seeds.  A
+column supported on $\{r,s\}$ gives the arc $s\to r$ if $a_{rc}=1$, and
+the arc $r\to s$ if $a_{sc}=1$.  No restriction is imposed on the other
+positive entry.  Reachability includes paths of length zero.
+
+\begin{lemma}[Exact baseline activation]
+\label{lem:exceptional-baseline}
+If a row set $Q$ is deleted initially, the rows deleted or peeled using
+only the baseline columns are exactly
+\[
+                         \operatorname{Reach}_P(Z\cup Q).
+\]
+For an exceptional column $c$, its additional exact activation rules are
+\begin{equation}
+             W_c\setminus\{r\}\ \Longrightarrow\ r
+             \qquad(r\in W_c,\ a_{rc}=1).
+             \label{eq:exceptional-horn-rules}
+\end{equation}
+Consequently closure under baseline reachability and these rules is
+exactly the set of initially deleted or subsequently peelable rows.
+\end{lemma}
+
+\begin{proof}
+An automatic seed can peel without another row deletion.  For a two-row
+column, deleting the other supported row makes its unit entry a legal
+pivot.  Thus every directed path gives a valid sequence of possible
+activations.  Conversely, each baseline peel is either an automatic seed
+or follows an arc whose tail is already activated.  Induction on a peel
+trace proves the first assertion, recovering the reachability model of
+\cite{IncomingDualNormalization}.
+
+For an exceptional column, a live row $r$ can peel in that column exactly
+when its entry is one and every other supported row has been deleted.
+These are precisely the premises of \eqref{eq:exceptional-horn-rules}.
+Interleaving these rules with baseline activations proves exactness for
+the full matrix.  Continuing to retain a column in this logical
+description after its pivot is harmless: at that pivot it had no other
+live owner, and therefore cannot later remove a different live row.
+\end{proof}
+
+Let $S_1,\ldots,S_q$ be the source strongly connected components of $P$
+that contain no automatic seed and are disjoint from $U$.  They are
+pairwise disjoint, and their number need not be small.  Put
+\begin{equation}
+       M=\bigcup_{i=1}^{q}S_i,\qquad
+       B=\operatorname{Reach}_P(Z\cup M),\qquad B_U=B\cap U.
+       \label{eq:exceptional-base}
+\end{equation}
+The definition of $B$ treats all rows of $M$ as activated for convenience;
+the algorithm will actually require only one selected forest row from
+each $S_i$.
+
+\begin{lemma}[Mandatory groups and an interface completion criterion]
+\label{lem:exceptional-obligations}
+Every initially deleted row set that permits full peeling must meet each
+$S_i$.  A single initially deleted row in $S_i$ activates the entire
+component by baseline reachability.  If $Q$ meets all these groups, then
+full activation of $R$ is equivalent to activation of every row in $U$.
+\end{lemma}
+
+\begin{proof}
+The component $S_i$ has no incoming arc in the condensation graph, no
+automatic seed, and no row in the support of an exceptional rule.  Hence
+neither baseline propagation from outside nor an exceptional activation
+can create its first activated row.  It must contain an initially deleted
+row.  Strong connectivity then activates all its rows and every baseline
+descendant.
+
+For the last assertion, activation of all of $R$ plainly activates $U$.
+Conversely, every source strongly connected component either contains an
+automatic seed, is one of the groups $S_i$, or intersects $U$.  In the
+third case activation of all of $U$ supplies a row of that component;
+in the first two cases a row is already supplied by $Z$ or $Q$.
+Every source component is therefore activated in full.  Each component
+of a finite directed acyclic condensation graph is reachable from a
+source, so all of $R$ becomes activated.
+\end{proof}
+
+\subsection{Compressing all nonlinear interaction to the interface}
+\label{subsec:exceptional-compression}
+
+For any row $r\in R$, define its reachability signature
+\begin{equation}
+                   \sigma(r)=\operatorname{Reach}_P(\{r\})\cap U.
+                   \label{eq:exceptional-signature}
+\end{equation}
+On subsets of $U$, define $\operatorname{Hcl}$ to be the least closure
+under the following finite rules:
+\begin{enumerate}
+\item $v\Longrightarrow w$ whenever $v,w\in U$ and $w$ is reachable
+      from $v$ in $P$;
+\item every implication in \eqref{eq:exceptional-horn-rules}.
+\end{enumerate}
+All premises and conclusions in the second family lie in $U$ by its
+definition.  Thus this closure can be computed without retaining the
+non-interface vertices as dynamic states.
+
+\begin{lemma}[Exact compressed Horn closure]
+\label{lem:exceptional-compressed}
+Let $Q\subseteq R$ meet every mandatory group $S_i$.  The interface rows
+eventually activated from the initial deletion of $Q$ are exactly
+\begin{equation}
+  \operatorname{Hcl}\left(
+        B_U\ \cup\!\bigcup_{r\in Q\setminus M}\sigma(r)
+                      \right).
+  \label{eq:exceptional-compressed-closure}
+\end{equation}
+In particular, $A[R\setminus Q,C]$ is completely peelable if and only if
+the set in \eqref{eq:exceptional-compressed-closure} is $U$.
+\end{lemma}
+
+\begin{proof}
+Each mandatory group has a selected row, so all of $B$ can be activated
+by the baseline rules.  Every $\sigma(r)$ in the displayed expression
+is reachable from an actual initially deleted row.  Every interface
+reachability rule abbreviates a valid baseline path, and every exceptional
+rule is exact by Lemma~\ref{lem:exceptional-baseline}.  The displayed
+closure is therefore contained in the actual activated interface.
+
+For the reverse inclusion, consider an activation trace and separate its
+baseline propagation from its exceptional rule firings.  Before any
+exceptional firing, each activated interface row is reached from $Z$ or
+$Q$.  Paths from $Z$ or $Q\cap M$ are covered by $B_U$; paths from the
+other rows of $Q$ are covered by their signatures.  If an exceptional rule
+fires, its head belongs to $U$, and all subsequent baseline propagation
+from this head to interface rows is represented by interface reachability
+rules.  The exceptional implication itself is retained without any
+change of premises.  Induction on the exceptional firings proves that
+every actual interface activation occurs in
+\eqref{eq:exceptional-compressed-closure}.  The final equivalence follows
+from Lemma~\ref{lem:exceptional-obligations}.
+\end{proof}
+
+The compression is algorithmic as well as logical.  Reverse reachability
+from each $v\in U$ computes all signatures: a row $r$ receives the target
+$v$ exactly when $r$ reaches $v$ in $P$.  Forward reachability from the
+interface rows computes the interface-to-interface rules.  These
+computations use a polynomial number of graph operations.  Repeatedly
+scanning the finite rule list until no target is added computes
+$\operatorname{Hcl}$; there are at most $u$ strict additions.
+
+\subsection{Partial partitions and independent representatives}
+\label{subsec:exceptional-partitions}
+
+A \emph{partial partition} of $U$ consists of a subset $U_0\subseteq U$
+and a partition
+\[
+                   \Pi=\{B_1,\ldots,B_\ell\}
+\]
+of $U_0$ into nonempty blocks.  The empty subset has the empty partition.
+The interpretation is that $U_0$ is a guessed collection of interface
+targets activated directly by selected tree rows through baseline paths;
+one additional tree row is to supply each block.  This is a witness
+assignment, not an assertion that all possible tree seeds have already
+been identified.
+
+For each partial partition, first test
+\begin{equation}
+                    \operatorname{Hcl}(B_U\cup U_0)=U.
+                    \label{eq:exceptional-partition-test}
+\end{equation}
+If this fails, discard the partition.  Let $R_{\mathrm{el}}$ consist of
+the rows labelling eligible nonloops of $D$.  Otherwise define the
+candidate group for its $j$th block by
+\begin{equation}
+       G_j=\{r\in R_{\mathrm{el}}\setminus M:
+                                      B_j\subseteq\sigma(r)\}.
+       \label{eq:exceptional-block-group}
+\end{equation}
+Seek distinct representatives, one from each member of the group list
+\begin{equation}
+                    S_1,\ldots,S_q,G_1,\ldots,G_\ell,
+                    \label{eq:exceptional-group-list}
+\end{equation}
+whose graph edges form a forest.  Ineligible rows and loops can also be
+removed from the mandatory candidate groups when performing this test.
+An empty group makes that particular test fail.
+
+\begin{lemma}[Overlapping groups reduce to graphic/partition intersection]
+\label{lem:exceptional-clones}
+The independent-representatives problem for
+\eqref{eq:exceptional-group-list} is decidable in polynomial time, even
+though the block groups $G_j$ may overlap.  It requires at most
+$(\ell+1)|R|$ graph-edge copies.
+\end{lemma}
+
+\begin{proof}
+Make one edge copy $(r,H)$ for each permitted membership of row $r$ in a
+group $H$ from \eqref{eq:exceptional-group-list}.  Give this copy the same
+endpoints as $r$ and color it by $H$.  Copies of a single original edge
+are parallel in the resulting multigraph.  Two such copies cannot both
+belong to a forest, since they form a two-edge cycle.  Graphic
+independence therefore enforces both distinct original representatives
+and independence of the original edge set.  The partition matroid that
+allows at most one copy of each color enforces the group constraints.
+A common independent set of size $q+\ell$ exists exactly when the desired
+representatives exist.
+
+This is the standard graphic/partition matroid-intersection problem,
+with polynomial independence tests and a polynomial augmenting-path
+algorithm~\cite{Edmonds1970,Rado1942}.  It is also Rado's independent-transversal formulation,
+already used in \cite{IncomingDualNormalization}; no new
+matroid-intersection theorem is needed.  The mandatory groups are
+disjoint and contribute at most $|R|$ memberships in total.  Every other
+row contributes at most one copy per block group, hence at most
+$\ell|R|$ additional memberships.  This proves the stated size bound.
+\end{proof}
+
+The exclusion of $M$ from the block candidates loses no useful initial
+activation.  Once the mandatory groups have their representatives, all
+signatures of rows in $M$ are already included in the baseline contribution
+$B_U$.  The overlapping candidate groups outside $M$ must nevertheless be
+handled explicitly; treating them as disjoint colors on the original
+edge set would be incorrect.
+
+\begin{theorem}[Exact bounded-interface forest selection]
+\label{thm:exceptional-selector}
+The following finite procedure decides whether some spanning tree of $D$
+leaves $A$ completely peelable:
+\begin{enumerate}
+\item Construct the baseline graph, automatic seeds, mandatory groups,
+      signatures, and interface closure.
+\item Enumerate all partial partitions of $U$.  Retain only those
+      satisfying \eqref{eq:exceptional-partition-test}.
+\item For each retained partition, solve the independent-representatives
+      problem \eqref{eq:exceptional-group-list}.
+\item If representatives form a forest $Q$, extend $Q$ to a spanning
+      tree $T$ of $D$, recompute a complete peel order on
+      $A[R\setminus T,C]$, and return $T$ and that order.
+\item If all partial partitions have failed, report that no spanning
+      tree in the specified finite class permits full peeling.
+\end{enumerate}
+The algorithm makes at most $\operatorname{Bell}(u+1)$ polynomial
+independent-representatives calls.  Its bit complexity is
+\begin{equation}
+       2^{O(u\log(u+2))}\operatorname{poly}(N).
+       \label{eq:exceptional-fpt}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Suppose the algorithm finds representatives forming $Q$.  Each mandatory
+group is met.  Each block $B_j$ is contained in the actual signature of
+its representative, so the actual initial interface activation contains
+$B_U\cup U_0$.  Equation~\eqref{eq:exceptional-partition-test} and
+Lemma~\ref{lem:exceptional-compressed} show that deleting $Q$ permits
+activation of every row.  Thus $A[R\setminus Q,C]$ is completely peelable.
+Every forest in a connected graph extends to a spanning tree.  Deleting
+additional rows preserves peelability: restrict an existing peel order
+to the rows still present; at each remaining pivot its own occurrence is
+one and the other live occurrences remain absent.  Hence the extension
+$T$ also succeeds.  Recomputing the final trace provides an ordinary
+tree-and-peeling certificate on the actual chosen complement.  This
+proves soundness.
+
+For completeness, suppose a successful spanning tree $T$ exists.
+Lemma~\ref{lem:exceptional-obligations} shows that it meets each $S_i$;
+choose one of its rows from each group.  Define
+\[
+                   U_0=\bigcup_{r\in T\setminus M}\sigma(r).
+\]
+Since $T$ succeeds, Lemma~\ref{lem:exceptional-compressed} implies
+\eqref{eq:exceptional-partition-test}.  For each $v\in U_0$, choose an
+actual witnessing row $r(v)\in T\setminus M$ with
+$v\in\sigma(r(v))$.  Partition $U_0$ by equality of these witnesses.
+The resulting nonempty blocks have distinct representatives in
+$T\setminus M$, and each block is contained in the signature of its
+representative.  Together with the chosen mandatory representatives,
+they form a subset of $T$ and are therefore independent.  The algorithm
+enumerates this partial partition, and its representatives test succeeds.
+This argument proves why at most $u$ extra representatives suffice;
+it does not assume that arbitrary tree edges can be replaced by source
+rows while preserving independence.
+
+For the count, adjoin one distinguished element $\ast$ to $U$.  A
+partition of $U\cup\{\ast\}$ corresponds bijectively to a partial
+partition of $U$: the block containing $\ast$ records the omitted
+elements, and its other blocks are the blocks of the partial partition.
+There are exactly $\operatorname{Bell}(u+1)$ objects.  Label the elements
+of $U$ by $1,\ldots,u$ and give $\ast$ the label zero.  A partition is
+determined by assigning each ordinary element the least label in its
+block.  Thus, with the empty-interface case interpreted separately,
+\[
+                 \operatorname{Bell}(u+1)\leq (u+1)^u.
+\]
+Every block list has $\ell\leq u$, so
+Lemma~\ref{lem:exceptional-clones} gives a graph of polynomial size for
+each call.  Candidate membership uses ordinary subset tests on
+$u$-element signatures.  Baseline reachability, interface closure,
+spanning-tree extension, and the final peel require polynomial time in
+the encoded input.  Integer input reading and capping are polynomial in
+the binary bit lengths.  Combining these observations yields
+\eqref{eq:exceptional-fpt}.
+\end{proof}
+
+\begin{remark}[The empty interface and a harmless implementation refinement]
+\label{rem:exceptional-zero}
+If $u=0$, there is one partial partition, its block list is empty, and
+the procedure reduces to the prior polynomial two-row theorem.  More
+generally, one may first compute
+$U_{\mathrm{base}}=\operatorname{Hcl}(B_U)$ and enumerate partial
+partitions only of $U\setminus U_{\mathrm{base}}$.  Targets already
+activated by the mandatory groups and automatic seeds need no additional
+witness.  Any successful-tree witness assignment can simply omit those
+targets, so completeness is preserved.  This can decrease the actual
+enumeration substantially; the bound in
+Theorem~\ref{thm:exceptional-selector} remains valid without relying on it.
+\end{remark}
+
+\subsection{Native specialization and certificate semantics}
+\label{subsec:exceptional-native}
+
+\begin{proposition}[Native triple-column specialization]
+\label{prop:exceptional-native}
+Suppose the matrix is the original source-authenticated native core
+occurrence matrix for which each unsaturated column total is at most
+three.  Let $k$ be the number of its active columns supported on more
+than two rows.  Then each such column has shape $(1,1,1)$ and
+\[
+                             u\leq 3k.
+\]
+The finite forest selector therefore has complexity
+\begin{equation}
+                   2^{O(k\log(k+2))}\operatorname{poly}(N).
+                   \label{eq:exceptional-native-fpt}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+A column supported on at least three rows has at least three positive
+occurrences.  The total bound of three forces exactly three supported
+rows and an entry of one at each.  Its support contributes at most three
+rows to the union defining $U$.  Taking the union over the $k$ exceptional
+columns proves $u\leq3k$, and substituting into
+\eqref{eq:exceptional-fpt} proves the complexity statement.  The geometric
+three-occurrence premise is the prior native cocore theorem of
+\cite{IncomingDualNormalization}, not a consequence of the finite matrix
+algorithm.
+\end{proof}
+
+This specialization applies to the original native source-core matrix and
+to row or column deletions that preserve its occurrence interpretation.
+Adding annular gluing relations or arbitrary boundary rows can increase
+a column's support beyond three.  Such enlarged inputs remain covered by
+Theorem~\ref{thm:exceptional-selector} with their actual parameter $u$;
+they are not automatically covered by the estimate $u\leq3k$.  Similarly,
+transporting additional markings through a chosen dual tree requires the
+applicable geometric port-preservation theorem.
+
+The parameterized result places no restriction on $|V|-1$, the number of
+tree edges to be chosen.  It gives a local quasi-polynomial regime whenever
+the maintained encoded input is polynomial in a diagram parameter $n$
+and $u\log(u+2)$ is bounded by a fixed power of $\log n$.  In particular,
+$u\log(u+2)=O((\log n)^2)$ would give a local
+$n^{O(\log n)}$ bound.  No such interface bound for every state of a
+complete unknot-recognition hierarchy is proved here, and the cost of
+constructing or branching over those states remains a separate problem.
+
+\begin{remark}[Positive replay, exhaustive failure, and budgets]
+\label{rem:exceptional-status}
+A positive output contains the final spanning tree and a complete
+unit-column peel trace.  Their finite correctness can be checked directly
+without replaying the partial-partition search or trusting a
+matroid-intersection optimality claim.  The enclosing geometric verifier
+must still authenticate the rows, columns, dual endpoints, and topological
+meaning of the cancellations.
+
+An exhaustive negative result means that no tree works in this fixed
+finite class.  The current implementation does not package the entire
+exhaustion as a succinct independent negative certificate.  In particular,
+a rank defect for one partial partition is only a rejection of that
+partition; every possibility must be excluded before the complete
+finite-class negative is justified.  Interrupting the enumeration because
+of a work allowance, partition allowance, or implementation
+limit must instead return an inconclusive status.  None of these negative
+or interrupted outcomes is a certificate that the underlying knot is
+nontrivial or that an authenticated core is not a handlebody.
+\end{remark}
+
+\subsection{Why triangle-cycle parity does not remove all tree choice}
+\label{subsec:exceptional-triangle-witness}
+
+The native parity condition constrains the odd support of each source
+column to be an even-degree subgraph of the dual graph.  For a unit
+triple, one allowed form is a triangle.  It is tempting to conclude that
+such short cycle relations make all spanning trees equivalent for raw
+peeling.  The following finite witness rules out that inference from
+sparsity and parity alone.
+
+\begin{proposition}[An abstract triangle-column sensitivity witness]
+\label{prop:exceptional-triangle-witness}
+There is a connected simple graph $D$ on nine vertices with 25 edges and
+a Boolean matrix with those edges as rows and 17 columns such that:
+\begin{enumerate}
+\item each column is supported on exactly the three edges of a triangle
+      of $D$;
+\item one spanning tree leaves a completely peelable row restriction;
+\item another spanning tree leaves a row restriction admitting no
+      complete positive raw cancellation.
+\end{enumerate}
+Thus the three-occurrence bound and dual-cycle parity condition together
+do not imply dual-tree invariance for the abstract finite problem.
+No native triangulated realization of this example is asserted.
+\end{proposition}
+
+\begin{proof}
+Appendix~\ref{app:triangle-data} and the supplied file
+\texttt{triangle\_tree\_sensitivity.json} give the
+complete graph, all triangle-column supports, and two explicit spanning
+trees.  Each tree has eight edges.  For the successful tree, the file
+lists 17 unit-column peels removing all 17 surviving rows.
+
+For the second tree, the recorded eight peels leave the nonempty row set
+\[
+                         \{0,4,6,7,13,17,21,22,23\}.
+\]
+Its column totals, in the supplied column order, are
+\[
+             (2,3,0,0,2,0,2,2,0,0,2,0,0,2,0,2,2).
+\]
+No total is one, so this is a stopping set.  The stopping-set persistence
+theorem of \cite{IncomingDualNormalization} excludes every complete
+positive raw cancellation schedule, including schedules with positive
+fill.  The failure is therefore independent of the particular displayed
+peel order.
+
+All finite assertions are checked by the supplied standard-library
+script \path{check_triangle_witness.py}, which imports no selector,
+peeling backend, or topology library.  It checks that every column
+consists of three distinct edges with degree two at exactly three graph
+vertices, that each proposed tree is connected and has eight edges,
+that every recorded pivot has live column total one, and that the final
+residual has the displayed stopping totals.  A triangle has even degree
+at every vertex and exactly three occurrences, establishing both claimed
+necessary compatibility conditions.
+\end{proof}
+
+The witness is an explicit finite counterexample to an abstract
+invariance claim.  It does not establish how often dual choice matters
+on geometrically authenticated sources after other normalization
+improvements, nor does it exclude a stronger invariance theorem for a
+more restricted native family.  Its role is to keep the distinction
+between the proved local parity constraints and a full geometric
+realization theorem explicit.

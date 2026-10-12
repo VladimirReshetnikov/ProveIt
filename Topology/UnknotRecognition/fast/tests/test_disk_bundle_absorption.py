@@ -56,7 +56,7 @@ class DiskBundleAbsorptionTests(unittest.TestCase):
         for name, reason in [('pilot/fibonacci_lst_04/0', 'raw_cancellation_stalled')]:
             c = next(c for c in self.bank if c['id'] == name)
             a = normal_cut_handlebodies(c['triangulation'], c['coordinates'],
-                                       record_certificate=True)
+                                       record_certificate=True, lower_forest='source')
             self.assertEqual(a['status'], 'INCONCLUSIVE')
             self.assertEqual(a['reason'], reason)
             self.assertNotIn('certificate', a)

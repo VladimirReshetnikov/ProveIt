@@ -1,0 +1,153 @@
+\subsection{Frozen lower forests and a shared-query retry}
+\label{marked-cut:lower-forests}
+
+A complete top reduction need not leave a cancellable presentation, and
+neither need a particular zero/one forest. The experimental lower-forest
+probe in the preceding section isolated six source cores for which a
+maximum-passage forest permits complete raw cancellation. Four already
+extended to whole-cut certificates. Two failed at the bundle kernel because
+that consumer silently reconstructed the historical forest. This section
+makes the choice explicit throughout the finite computation and extends
+independent kernel replay to authenticate it. The change broadens a
+sufficient terminal criterion; it supplies no negative topological verdict.
+
+\paragraph{The lower graph and its geometric meaning.}
+Let $G$ have one vertex for each source zero-handle and one edge for each
+source one-handle, with the two attaching ends as endpoints. Loops and
+parallel edges retain their source identifiers. A lower forest $F$ is a
+spanning tree in every connected component of $G$, including an empty tree
+at an isolated vertex. Contracting its handles successively amalgamates
+zero-handles along one-handles joining distinct balls. Each amalgamation
+is a ball. The remaining one-handles therefore give the usual handlebody
+spine on one zero-handle per component. No loop may belong to $F$.
+
+The original face-sector charts still locate every attachment. To count
+intersections with a remaining one-handle cocore, trace the source attaching
+cycle and omit precisely the flags on $F$. This operation uses literal,
+unsigned passages. In particular, oppositely oriented passages are counted
+twice, not cancelled. Changing $F$ changes this geometric disk system and
+can change which raw singleton cancellations exist, although the underlying
+cut manifold has not changed. The argument certifies the local contraction
+and the ensuing supported operations; it is not a general algorithm for
+transporting arbitrary boundary patterns through a hierarchy.
+
+\begin{proposition}[Maximum original passage weight]
+For each source one-handle $e$, let $w_e$ count its occurrences over all
+original source two-handle attaching cycles, before any top cancellation or
+bundle absorption. A maximum-weight spanning forest $F$ minimizes
+\[
+ L(F)=\sum_{e\notin F} w_e
+\]
+among all lower forests of $G$. The producer constructs such a forest by
+processing edges in decreasing $(w_e,-e)$ order and accepting exactly those
+joining distinct current components.
+\end{proposition}
+\begin{proof}
+The sum of all weights is fixed, so minimizing $L$ is equivalent to
+maximizing $\sum_{e\in F}w_e$. Suppose an optimal spanning forest contains
+the already accepted edges but omits the next accepted edge $e$. Adding
+$e$ creates a cycle in its source connected component. Some edge $f$ on
+that cycle crosses between distinct current components. Such an edge
+cannot have been rejected earlier: a rejection would mean its endpoints
+were already connected, and connections persist. Thus $w_f\leq w_e$.
+Exchange $f$ for $e$ without decreasing weight or removing an earlier
+accepted edge. Induction proves optimality. Scanning all edges gives a
+spanning forest because any unconnected source edge would have been
+accepted. The argument applies componentwise, ignores loops correctly,
+and allows parallel edges.
+\end{proof}
+
+The weights are exact counts, not the saturated $0,1,2$ values used by the
+cancellation planner. These are different tasks: truncation preserves pivot
+admissibility but need not preserve an additive optimization objective.
+For a core with $V$ zero-handles, $E$ one-handles and $P$ original attaching
+flags, weight construction takes $O(P)$ increments, sorting takes
+$O(E\log(E+1))$ comparisons, and union by size with path compression takes
+$O(E\alpha(V+E))$ amortized disjoint-set operations. Storage is $O(V+E)$
+beyond the source core. With source size $O(T)$, this is a polynomial
+finite stage independent of normal sheet multiplicity. Arithmetic costs
+include the bits of the counts and identifiers; the graph-stage bound is
+not a bound for orbit discovery or for a full recognition hierarchy.
+
+\paragraph{One choice, retained by every consumer.}
+The implementation selects the alternative forest on the \emph{original}
+source core. A relative two/three reduction leaves all zero/one handles
+and their incidences unchanged. Disk-bundle absorption adds two-handles
+only. Consequently the same lower forest is valid for both resulting
+cores. The following consumers receive it without recomputation: the
+cost calculation for the top forest, the source raw-cancellation precheck,
+the augmented core certificate, core-side annulus transport through that
+certificate, and the whole bundle-boundary kernel. Port owners use the
+least source zero-handle identifier of their connected component, so
+changing contraction order does not relabel connected components.
+
+Freezing the choice is essential to the implementation contract. Computing
+one forest for the precheck and another for the kernel tests different raw
+matrices; the former's success cannot justify the latter's cancellation.
+It also prevents a purported fixed-cost optimization from changing its
+objective when top rows are removed. This two-stage choice is not a joint
+optimization over primal and dual trees: the lower objective includes all
+original rows, while the top objective subsequently minimizes retained
+passages relative to that fixed lower forest. Neither objective proves
+existence of a complete raw cancellation schedule across all forests.
+
+\paragraph{An independently authenticated kernel certificate.}
+The existing core checker already accepts arbitrary spanning lower forests.
+The bundle checker previously reconstructed one canonical forest. The new
+\path{bundle-boundary-kernel-v3} format has the same fields but interprets
+its forest as supplied evidence. Independent replay decodes exact integer
+identifiers, rejects repeated edges, out-of-range identifiers and cycles,
+and checks that every source edge has endpoints in the same resulting
+component. The last condition proves componentwise spanning. Component
+labels are reconstructed by explicit label merging, without importing the
+producer's selector or its disjoint-set helper.
+
+Replay then reconstructs source occurrence rows, actual annular crossing
+curves, dedicated bundle columns, connecting-handle forest and census.
+The existing independent column timestamp checker verifies the cancellation
+schedule. It never trusts a producer weight, an optimization claim or a
+reported census. Legacy v1 and v2 certificates retain their canonical
+forest semantics, including the dense v1 replay path. The outer whole-cut
+formats v1--v6 require no change. Only an explicitly supplied lower forest
+requests a v3 kernel proof; the historical source path emits the same
+certificate as before.
+
+\begin{proposition}[Source-first preservation and shared discovery]
+The adaptive policy preserves every uninterrupted positive source-policy
+result and its certificate. It performs at most two finite forest attempts
+and at most one set of source and boundary orbit queries. Any successful
+alternative result is justified by independent source-relative replay.
+\end{proposition}
+\begin{proof}
+The first attempt uses the historical forest and returns immediately on
+success. On a method refusal the second attempt uses maximum original
+passage weight. If the selected edge set equals the historical set, it is
+skipped: the raw matrix, component labels and fixed top costs are identical.
+The source parallelity packet is computed before either attempt. Boundary
+discovery is lazy and caches its result, so a second attempt either reuses
+the first packet or causes its first computation. A boundary-budget refusal
+returns immediately; changing the finite forest cannot repair that same
+query allowance. Source and boundary cycles therefore share one budget,
+with no retry reset. Both attempts propagate cancellation callbacks.
+Soundness of a positive alternative follows from forest validation and the
+same local geometric operations verified for a source-policy proof.
+\end{proof}
+
+The API exposes \path{lower_forest='adaptive'} by default, with explicit
+\path{'source'}, \path{'max_passages'} and \path{'reverse_id'} policies for
+reproduction and experiments. Reverse identifier order is not an additional
+default attempt. The default has four source queries and the previously
+chosen one-query moment or two-query mask boundary backend, regardless of
+whether the source precheck or a later kernel step causes the retry.
+It can spend more finite time on an unresolved input; no elapsed-time
+improvement follows merely from having a second choice. The precheck still
+means only that this particular raw presentation cannot be completely
+cancelled by the supported rules. A refusal never proves knottedness.
+
+Useful-surface discovery, general boundary-pattern transport, global
+hierarchy and restart accounting, and a native bit bound for orbit traces
+remain separate unresolved obligations. In particular this bounded retry,
+its spanning-tree optimality, and any extra finite-corpus successes do not
+establish quasi-polynomial unknot recognition.
+
+\input{lower_forests_results.tex}

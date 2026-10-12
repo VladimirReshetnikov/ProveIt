@@ -1,0 +1,247 @@
+% Final strengthening of special_row_sieve_theorems.tex.
+\section{Restricting the sieve to order ideals of the implication poset}
+\label{sec:ideal-sieve}
+
+There is further structure in the possible color masks: ordinary
+reachability forces them to be upward closed.  The full Boolean cube
+therefore contains states that no spanning tree can induce.  Removing
+these states improves both the parameter and the practical table size.
+
+Collapse ordinary SCCs meeting the exceptional supports to colors, and
+discard the colors already reachable from $Z$.  Let $\mathcal P$ be the
+partial order on the remaining $d$ colors in which
+\[
+                  u\preceq v
+           \quad\Longleftrightarrow\quad
+       \text{an ordinary directed path leads from color $u$ to color $v$}.
+\]
+Distinct SCCs make this relation antisymmetric.  Reachability is taken in
+the full ordinary graph, including intermediate rows outside the special
+set.  Let $\mathcal I(\mathcal P)$ be the set of order ideals, and write
+\[
+                        J=|\mathcal I(\mathcal P)|.
+\]
+Here an ideal $K$ satisfies $v\in K$ and $u\preceq v\Rightarrow u\in K$.
+
+\begin{lemma}[Only ideals can be missed]\label{lem:missed-ideal}
+The color set $H(T)$ ordinarily activated by a tree is upward closed.
+Consequently $K(T)=\mathcal P\setminus H(T)$ belongs to
+$\mathcal I(\mathcal P)$.  The same conclusion holds for the union of the
+color masks of any subset of edge copies, whether or not that subset is
+a spanning-tree basis.
+\end{lemma}
+\begin{proof}
+If an edge row reaches $u$ and $u\preceq v$, transitivity implies that
+it reaches $v$.  Each individual edge mask is therefore upward closed,
+and so is a union of such masks.  Its complement is an order ideal.
+Discarding free colors does not change this statement for the induced
+partial order on the remaining colors.
+\end{proof}
+
+Retain the Boolean function $f$ from the preceding section, with its
+free seeds included, but evaluate it only on the upward-closed masks
+$\mathcal P\setminus K$.  Define
+\[
+                    g(K)=f(\mathcal P\setminus K)
+                         \qquad(K\in\mathcal I(\mathcal P)).
+\]
+For an ideal $A$, let $\max(A)$ be its set of maximal elements and put
+\begin{equation}\label{eq:ideal-coefficients}
+                 c(A)=\sum_{S\subseteq\max(A)}
+                             (-1)^{|S|}g(A\setminus S).
+\end{equation}
+Every set $A\setminus S$ occurring here is again an ideal.
+
+\begin{lemma}[Explicit inversion on the ideal lattice]
+\label{lem:ideal-inversion}
+For every ideal $K$,
+\begin{equation}\label{eq:ideal-inversion}
+                 \sum_{A\in\mathcal I(\mathcal P),\,A\subseteq K}
+                                   c(A)=g(K).
+\end{equation}
+Moreover the full coefficient table can be computed in $O(dJ)$ additions
+and subtractions, without enumerating the subsets in
+\eqref{eq:ideal-coefficients} separately.
+\end{lemma}
+\begin{proof}
+Fix an ideal $B\subseteq K$ and collect the coefficient of $g(B)$ in the
+left side of \eqref{eq:ideal-inversion}.  A contributing term is an ideal
+$A=B\cup S$ with $S\subseteq\max(A)$.  This is equivalent to taking
+$S$ to be an arbitrary subset of the minimal elements of $K\setminus B$.
+Indeed, if $s\in A\setminus B$ is maximal in $A$, all its strict
+predecessors lie in $B$: any predecessor outside $B$ would lie in
+$A\setminus B$ and would not be maximal.  Hence $s$ is minimal outside
+$B$.  Conversely, minimal elements outside an ideal $B$ are pairwise
+incomparable and have every predecessor in $B$; adjoining any subset of
+them gives an ideal in which those new elements are maximal.  Thus the
+coefficient of $g(B)$ is
+\[
+             \sum_{S\subseteq\min(K\setminus B)}(-1)^{|S|}.
+\]
+It is one if $B=K$ and zero otherwise, since a nonempty finite poset
+has a minimal element.  This proves the inversion identity over the
+integers, and hence over every field.
+
+For the efficient transform, choose a linear extension of the partial
+order, with predecessors before successors.  Initialize $c(A)=g(A)$ for
+all ideals.  Process colors $v$ in \emph{reverse} linear-extension order.
+For every ideal $A$ for which $v\in A$ and $A\setminus\{v\}$ is an
+ideal, perform
+\begin{equation}\label{eq:restricted-transform}
+                  c(A)\leftarrow c(A)-c(A\setminus\{v\}).
+\end{equation}
+The set-removal condition says exactly that $v$ is maximal in $A$.
+To expand the coefficient eventually obtained for a fixed $A$, each
+subtraction removes a maximal element and contributes one minus sign.
+Any predecessor of a removed element occurs later in the processing order.
+It has therefore not yet been processed in the source value when that
+subtraction takes place.  Such a newly maximal predecessor cannot be
+removed along the resulting expansion path.  Consequently the only
+elements removed are members of the original $\max(A)$, and any subset
+of them is removed exactly once, in reverse linear-extension order.
+This gives exactly \eqref{eq:ideal-coefficients}.  There are at most $dJ$
+updates.
+
+The order matters.  For a chain $a\prec b$, reverse processing yields
+$c(\{a,b\})=g(\{a,b\})-g(\{a\})$.  Processing predecessors first would
+incorrectly introduce an extra $g(\varnothing)$ term in this coefficient.
+\end{proof}
+
+The transform is the M\"obius inversion for the distributive lattice of
+order ideals; the argument above establishes the needed formula directly.
+Efficient lattice zeta and inverse transforms are established tools
+\cite{FastZeta2012,KaskiKohonenWesterback2016}.
+No assumption about a new matroid of peelable sets is being made.
+
+For each ideal $A$, let $P_A$ be the common-basis determinant that bans
+copies whose color masks meet $A$, as in the preceding section.  Form
+\begin{equation}\label{eq:ideal-filter}
+                   Q_{\mathcal I}(z)
+                       =\sum_{A\in\mathcal I(\mathcal P)}c(A)P_A(z).
+\end{equation}
+
+\begin{theorem}[Ideal-state determinant sieve]\label{thm:ideal-sieve}
+The nonzero monomials of $Q_{\mathcal I}$ encode exactly the copied
+spanning-tree bases leaving a completely peelable matrix.  In particular,
+forest-compatible raw-completion witnesses can be found, with one-sided
+miss probability at most $\varepsilon$, in
+\begin{equation}\label{eq:ideal-time}
+                     J\operatorname{poly}(N,\log(1/\varepsilon))
+\end{equation}
+time and $J\operatorname{poly}(N)$ space.  Every success is checked by
+replaying a spanning tree and a unit-column peel order in the original
+matrix.  The theorem applies to arbitrary exceptional supports through
+their finite Horn rules.
+\end{theorem}
+\begin{proof}
+Fix a copied common basis $F$, with underlying spanning tree $T$.  Its
+monomial occurs in $P_A$ exactly when $A\subseteq K(T)$.  By
+Lemma~\ref{lem:missed-ideal}, $K(T)$ is an ideal.  Therefore its coefficient
+in \eqref{eq:ideal-filter} is its original nonzero basis coefficient
+multiplied by
+\[
+       \sum_{A\in\mathcal I(\mathcal P),\,A\subseteq K(T)}c(A)
+            =g(K(T))=f(H(T)).
+\]
+This is zero or one by Lemma~\ref{lem:ideal-inversion}.  The fixed source
+groups are already enforced by the represented partition/filler matroid,
+so the exact special-row criterion identifies precisely the successful
+trees.  Different copied bases still have different monomials.  The
+polynomial is homogeneous and multilinear of degree $r$.
+
+Enumerate ideals by a depth-first traversal of a linear extension.
+At the step for color $v$, exclusion is always allowed; inclusion is
+allowed precisely when every predecessor of $v$ has already been included.
+Each leaf is an ideal and every ideal occurs exactly once.  Every prefix
+can be extended to a complete ideal by excluding all remaining elements,
+so the number of prefixes at any fixed depth is at most $J$.  There are
+at most $(d+1)J$ prefixes in total.  This gives
+$J\operatorname{poly}(N)$ enumeration time, including exact predecessor
+mask tests.
+
+Compute $g$ on these $J$ states by the polynomial-time closure routine,
+and compute $c$ by Lemma~\ref{lem:ideal-inversion}.  Each evaluation of
+$Q_{\mathcal I}$ uses at most $J$ determinants and polynomial additional
+work.  The same prime-field identity test and repeated-deletion witness
+extraction as before apply, with unchanged degree and characteristic
+requirements.  A polynomial number of determinant evaluations suffices
+for extraction, and independent trials contribute only the stated
+$\log(1/\varepsilon)$ factor.  Lists of ideal masks and their coefficient
+values use $J\operatorname{poly}(N)$ space.
+\end{proof}
+
+\begin{corollary}[Width and chain bounds]\label{cor:ideal-width}
+Suppose the implication poset admits a partition into $w\geq1$ chains
+of lengths $n_1,\ldots,n_w$, where $\sum_i n_i=d$.  Then
+\begin{equation}\label{eq:ideal-width}
+       J\leq\prod_{i=1}^w(n_i+1)
+               \leq\left(1+\frac d w\right)^w.
+\end{equation}
+In particular, if $w$ is the width of the poset, a chain partition of
+that size exists by the classical finite chain-decomposition theorem of
+Dilworth.  Fixed width gives randomized polynomial-time discovery for
+this local completion problem even when $d$ is large.  If $N=n^{O(1)}$
+and $w=O(\log n)$, the local time is quasi-polynomial in $n$.
+When $d=0$, the unique ideal is the empty set and $J=1$.
+\end{corollary}
+\begin{proof}
+A partition into $w$ chains exists by Dilworth's theorem
+\cite{Dilworth1950}.  An ideal intersects each chain in a prefix, so it is uniquely determined
+by the $w$ prefix lengths.  This injects the ideals into
+$\prod_i\{0,\ldots,n_i\}$ and proves the first inequality.  The second
+is the arithmetic--geometric mean inequality applied to the positive
+numbers $n_i+1$.  Since $d\leq N$, the final complexity assertions follow
+from Theorem~\ref{thm:ideal-sieve}.  A chain partition is needed only to
+state or certify the bound; the ideal enumeration algorithm does not
+need to find a minimum-width partition.
+\end{proof}
+
+This refinement changes the governing parameter from the number of
+exceptional columns to the number of feasible ordinary activation patterns.
+A chain has $d+1$ ideal states; an antichain has $2^d$ and recovers the full
+Boolean bound.  Intermediate posets interpolate between these cases.
+An antichain example shows why a small number of states cannot be assumed
+merely from having compressed coordinates.  No bound on $J$, $d$, or $w$
+for every state of an unknot hierarchy is established here.
+
+\begin{theorem}[Deterministic discovery parameterized by implication width]
+\label{thm:deterministic-width}
+The same finite completion problem has a deterministic exact algorithm
+with time
+\[
+                   J(m+1)^w\operatorname{poly}(N)
+                            =N^{O(w+1)}
+\]
+and polynomial space, where $w$ is the width of the nonfree special-SCC
+implication poset.  In particular fixed width gives deterministic
+polynomial time, and $w=O(\log n)$ gives deterministic quasi-polynomial
+local time when $N=n^{O(1)}$.
+\end{theorem}
+\begin{proof}
+Stream the ideals $K$ and set $A=\mathcal P\setminus K$.  Discard the
+state if $f(A)=0$.  Otherwise require a spanning tree to hit every fixed
+mandatory source group and every set $\operatorname{Anc}(v)$ for
+$v\in\min(A)$.  The set of minima is an antichain and has at most $w$
+elements.  Enumerate one eligible edge representative for each such
+ancestor requirement.  Reject a selection containing a cycle; contract
+its forest; discard the mandatory groups it has already hit; and use
+graphic--partition matroid intersection for the remaining disjoint groups,
+exactly as in Theorem~\ref{thm:triple-xp}.  Extend a successful forest to
+a spanning tree and verify the original peel order.
+
+For soundness, an upward-closed set containing every minimal element of
+$A$ contains all of $A$.  Thus the tree's ordinary influence satisfies
+$A\subseteq H(T)$, and monotonicity gives $f(H(T))\geq f(A)=1$.
+The fixed mandatory groups complete the exact special-row criterion.
+For completeness, any successful tree occurs in the case $A=H(T)$;
+it has a representative in each of the corresponding ancestor sets,
+and those representatives are contained in the tree and hence independent.
+The remaining group representatives can also be selected from that tree.
+
+There are $J$ states and at most $(m+1)^w$ representative tuples per state.
+The width bound on $J$ proves the stated input-size bound.  Depth-first
+ideal enumeration, a single closure computation, and a single
+representative choice can all be retained at a time.  The matroid
+intersection computation uses polynomial space.  The zero-dimensional
+case has one state and no ancestor requirements.
+\end{proof}
