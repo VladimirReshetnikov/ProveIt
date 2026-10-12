@@ -35,6 +35,17 @@ same test checks the verifier's exact combined operation allowance across five t
 one-less refusal. Recordless production, explicit policies, callback
 interruption and source-relative top reduction are also exercised.
 
+The full discovery run executes all 1,723 tests in 816.500 seconds, with
+1,721 passing and exactly two historical fixture failures: Fibonacci pilots
+4 and 6 were asserted inconclusive under the old default. Those tests now
+explicitly select the source lower forest and both pass in a targeted
+1.019-second rerun. Thus all 1,723 distinct tests are validated across the
+full run and the two corrected fixture reruns; this is not presented as a
+single clean full-suite invocation. No runtime file changed after the
+benchmarks or corpus audit. The two test-only hash revisions and their
+exact patch are retained separately. The full run also completes 13,846
+expanded-sheet topology comparisons and 196,712 marked-cover comparisons.
+
 \paragraph{Measured cost of the extra choice.}
 Six baseline modules are retained unchanged from
 \texttt{ac9c845a5c50}. Private module loading binds the historical core,
