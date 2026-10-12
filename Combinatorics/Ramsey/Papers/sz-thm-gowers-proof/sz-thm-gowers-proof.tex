@@ -2220,16 +2220,18 @@ We are now in a position to prove a new version of Lemma 7.7 in which the hypoth
 % supplies a $\rho^2$ lower bound for $|W|$, while the printed proof below
 % uses $\rho$.  Retaining $\rho^2$ gives the safe conclusion
 % $|Y|\geqslant\alpha^6|X|/20000$ used here.
-% This repair propagates through Section 13 as follows: in Lemma 13.6 replace
-% $2^{-26}\alpha^{128}N^2$ and $2^{-31}\alpha^{160}m_1m_2N$ by
-% $2^{-43}\alpha^{224}N^2$ and $2^{-48}\alpha^{256}m_1m_2N$; in Lemma 13.7
-% replace the exponent by $2^{-100}\alpha^{448}$ and the two $B$-bounds by
-% $2^{-43}\alpha^{224}m_3|I|$ and $2^{-48}\alpha^{256}m_1m_3$; in Lemma 13.8
-% replace the assumption/output by $m_3\geqslant2^{135}\alpha^{-704}$ and
-% $2^{-135}\alpha^{704}m_1m_3$; in Lemma 13.9 use exponent
-% $2^{-284}\alpha^{1408}$ and density $2^{-135}\alpha^{704}$; and in
-% Corollary 13.10 use density $2^{-137}\alpha^{704}$.
-Theorem 10.13. Let $\eta=2^{-43}$ and let $X=X_{0} \cup \cdots \cup X_{N-1}$ be the domain of a $(1-\eta)$-homomorphism $\phi$ of order eight. Suppose that $\left|X_{i}\right| \leqslant M$ for each $i$ and that $|X|=\alpha M N$. Let $g(s)$ be the size of $X_{s}$ for every $s$, let $\lambda=$ $2^{-37} \alpha^{11 / 2}$ and define $K$ to be $\left\{r \in \mathbb{Z}_{N}:|\hat{g}(r)| \geqslant \lambda M N\right\}$. Then $|K| \leqslant 2^{74} \alpha^{-10}$. Let $k=2^{74} \alpha^{-10}$, let $\epsilon=\alpha^{-4} \lambda^{4} / \pi$ and let $\zeta=2^{-155 k} \alpha^{18 k}/k \leqslant 2^{-(k+4)} \epsilon^{k}/k$. If $C=B(K, \zeta)$, then there is a homomorphism $\psi_{1}: C \rightarrow \mathbb{Z}_{N}$ together with a subset $Y \subset X$ of size at least $\alpha^{6}|X| / 20000$ such that, whenever $y, z \in Y$ and $r(y)-r(z) \in C$, we have $\phi(y)-\phi(z)=\psi_{1}(r(y)-r(z))$.
+\emph{Editorial note on the checked proof (2026-10-12).}
+The parameter choice in the preceding paragraph uses $0<\alpha\leqslant1/6$;
+this standing condition is now explicit in the statement. Retaining the
+$\rho^2$ bound gives the stated proof-supported conclusion. The checked
+calculation in fact gives $|Y|\geqslant\alpha^5|X|/20000$, and hence the
+stated six-power bound. The original stronger $\alpha^3|X|/1000$ estimate
+is not asserted by this correction, and no counterexample to it is claimed.
+The original numerical conclusions of Lemmas 13.6--13.9 and Corollary 13.10
+are recovered below using a sharper edge count and a dense bilinear piece,
+so propagating weaker Section 13 constants is unnecessary.
+
+Theorem 10.13. Let $0<\alpha\leqslant1/6$, let $\eta=2^{-43}$ and let $X=X_{0} \cup \cdots \cup X_{N-1}$ be the domain of a $(1-\eta)$-homomorphism $\phi$ of order eight. Suppose that $\left|X_{i}\right| \leqslant M$ for each $i$ and that $|X|=\alpha M N$. Let $g(s)$ be the size of $X_{s}$ for every $s$, let $\lambda=$ $2^{-37} \alpha^{11 / 2}$ and define $K$ to be $\left\{r \in \mathbb{Z}_{N}:|\hat{g}(r)| \geqslant \lambda M N\right\}$. Then $|K| \leqslant 2^{74} \alpha^{-10}$. Let $k=2^{74} \alpha^{-10}$, let $\epsilon=\alpha^{-4} \lambda^{4} / \pi$ and let $\zeta=2^{-155 k} \alpha^{18 k}/k \leqslant 2^{-(k+4)} \epsilon^{k}/k$. If $C=B(K, \zeta)$, then there is a homomorphism $\psi_{1}: C \rightarrow \mathbb{Z}_{N}$ together with a subset $Y \subset X$ of size at least $\alpha^{6}|X| / 20000$ such that, whenever $y, z \in Y$ and $r(y)-r(z) \in C$, we have $\phi(y)-\phi(z)=\psi_{1}(r(y)-r(z))$.
 
 Proof. Let $B=B(K, \epsilon)$ and let $L=\alpha^{3} M^{4} N^{3}$. We know that $|2 X-2 X|=$ $(\alpha M N)^{4}$ and that $\left|(2 X-2 X)_{s}\right| \leqslant \alpha^{3} M^{4} N^{3}=L$ for every $s$. Now we shall show that $2 X-2 X$ is $(B, \sigma L)$-invariant.
 
@@ -2251,15 +2253,15 @@ $$
 
 From the inequality above, the sum over $r \notin K$ is at most $2 \alpha \lambda^{2} M^{4} N^{3}$ (after the multiplication by $N^{-1}$ ). As for the other part, if we make the additional assumption that $s-t \in B$, then $\left|\omega^{r(s-t)}-1\right| \leqslant 2 \pi \epsilon$ for each $r \in K$, so the sum is at most $N^{-1} 2 \pi \epsilon\left|K_{\lambda}\right|(\alpha M N)^{4} \leqslant 2 \pi \epsilon \lambda^{-2} \alpha^{5} M^{4} N^{3}=2 \alpha \lambda^{2} M^{4} N^{3}$. The $(B, \sigma L)$-invariance of $2 X-2 X$ follows.
 
-We know that $\phi$ induces a ( $1-\eta$ )-homomorphism $\phi^{\prime \prime}$ (of order two) on $2 X-2 X$. Therefore, we can find a set $W$ of cardinality at least $\rho^{2} \alpha^{2} L N / 16=\alpha^{9} M^{4} N^{4} / 16384$ with the properties claimed in Lemma 10.5. Corollary 10.11, Lemma 10.12 and the definition in between then give us a set $W_{1}$ of cardinality at least $\alpha^{10} M^{4} N^{4} / 20000=\alpha^{6}|2 X-2 X| / 20000$ and a homomorphism $\psi_{1}: C \rightarrow \mathbb{Z}_{N}$ such that, whenever $w_{1}, w_{2} \in W_{1}$ and $r\left(w_{1}\right)-r\left(w_{2}\right) \in C$, we have $\phi^{\prime \prime}\left(w_{1}\right)-\phi^{\prime \prime}\left(w_{2}\right)=\psi_{1}\left(r(w_{1})-r(w_{2})\right)$.
+We know that $\phi$ induces a ( $1-\eta$ )-homomorphism $\phi^{\prime \prime}$ (of order two) on $2 X-2 X$. Therefore, we can find a set $W$ of cardinality at least $\rho^{2} \alpha^{2} L N / 16=\alpha^{9} M^{4} N^{4} / 16384$ with the properties claimed in Lemma 10.5. Corollary 10.11, Lemma 10.12 and the definition in between then give us a set $W_{1}$ of cardinality at least $\alpha^{9} M^{4} N^{4} / 20000=\alpha^{5}|2 X-2 X| / 20000$ and a homomorphism $\psi_{1}: C \rightarrow \mathbb{Z}_{N}$ such that, whenever $w_{1}, w_{2} \in W_{1}$ and $r\left(w_{1}\right)-r\left(w_{2}\right) \in C$, we have $\phi^{\prime \prime}\left(w_{1}\right)-\phi^{\prime \prime}\left(w_{2}\right)=\psi_{1}\left(r(w_{1})-r(w_{2})\right)$.
 
-Now choose $\left(x_{2}, x_{3}, x_{4}\right) \in X^{3}$ uniformly at random. The expected number of $y \in X$ such that $\left(y, x_{2}, x_{3}, x_{4}\right) \in W_1$ is at least $\alpha^{3}|X| / 1000$, so let us fix $\left(x_{2}, x_{3}, x_{4}\right)$ such that the set $Y$ of all $y$ such that $\left(y, x_{2}, x_{3}, x_{4}\right) \in W_1$ has cardinality at least $\alpha^{3}|X| / 1000$. If $y, z \in Y$ and $r(y)-r(z)=c \in C$, then $r\left(y, x_{2}, x_{3}, x_{4}\right)-r\left(z, x_{2}, x_{3}, x_{4}\right)=c$, so
+Now choose $\left(x_{2}, x_{3}, x_{4}\right) \in X^{3}$ uniformly at random. The expected number of $y \in X$ such that $\left(y, x_{2}, x_{3}, x_{4}\right) \in W_1$ is at least $\alpha^{5}|X| / 20000$, so let us fix $\left(x_{2}, x_{3}, x_{4}\right)$ such that the set $Y$ of all $y$ such that $\left(y, x_{2}, x_{3}, x_{4}\right) \in W_1$ has cardinality at least $\alpha^{5}|X| / 20000$. If $y, z \in Y$ and $r(y)-r(z)=c \in C$, then $r\left(y, x_{2}, x_{3}, x_{4}\right)-r\left(z, x_{2}, x_{3}, x_{4}\right)=c$, so
 
 $$
 \phi(y)-\phi(z)=\phi^{\prime \prime}\left(y, x_{2}, x_{3}, x_{4}\right)-\phi^{\prime \prime}\left(z, x_{2}, x_{3}, x_{4}\right)=\psi_1(r(y)-r(z)) .
 $$
 
-This proves the theorem. \(\square\)
+The five-power estimate above implies the stated six-power bound because $\alpha\leqslant1$. This proves the theorem. \(\square\)
 
 % ed.: As in Corollary 7.9, the standing prime-modulus hypothesis is needed
 % to divide by a nonzero common difference when defining the scalar $c$.
@@ -2768,7 +2770,49 @@ $$
 \sum_{h \in I}\left|\left\{v \in Y_{h}: r(v) \in R\right\}\right| \geqslant 2^{-26} \alpha^{128} m_{2} N|I| \geqslant 2^{-31} \alpha^{160} m_{1} m_{2} N
 $$
 
-Proof. We know that $\left|X_{h, r}\right| \leqslant N$ for every $r$. The lower bound on $C(h)$ for each $h \in I$ implies that $\left|X_{h}\right|=\sum_{r}\left|X_{h, r}\right| \geqslant \alpha^{32} N^{2} / 16$. We are about to apply Corollary 10.14, which uses the hypotheses of Theorem 10.13, to the domain $X_{h}$. We may do so if we replace $\alpha$ in the statements of Theorem 10.13 and Corollary 10.14 by $\alpha^{32} / 16$. (Note that $\eta$ was defined in this section to be $2^{-44}$, so for $h \in I$ the $(1-2 \eta)$-homomorphism $\phi_{h}$ is a $(1-\eta)$-homomorphism in the sense of Theorem 10.13.) This allows us to take $\lambda=2^{-59} \alpha^{176}, k=2^{114} \alpha^{-320}$ and $\zeta=2^{-228 k} \alpha^{576 k}$. Corollary 10.14 then states that if $K_{h}=\left\{r \in \mathbb{Z}_{N}:\left|\hat{f}_{h}(r)\right| \geqslant \lambda N^{2}\right\}$, then there exists a set $Y_{h} \subset X_{h}$ of cardinality at least $\left(\alpha^{32} / 16\right)^{3}\left|X_{h}\right| / 1000 \geqslant 2^{-26} \alpha^{128} N^{2}$ with the following property: for every positive integer $m$ and every $d$ in the Bohr neighbourhood $B\left(K_{h}, \zeta / m\right)$, there exists $c_{h} \in \mathbb{Z}_{N}$ such that $\phi_{h}(v)-\phi_{h}(w)=$ $c_{h}(r(v)-r(w))$ whenever $v, w \in Y_{h}$ and $r(v)-r(w) \in\{j d:-m \leqslant j \leqslant m\}$.
+\emph{Editorial note on the replacement extraction argument (2026-10-12).}
+The original set-size estimates in this lemma now have checked Lean proofs
+at every density $0<\alpha\leqslant1$, without an additional modulus threshold.
+The following argument replaces the use of the unsupported three-power
+estimate from the original Theorem 10.13. The subsequent width and averaging
+constructions retain their printed bounds; Lean also proves the stronger
+width exponent obtained by replacing $13q$ by $10q$.
+
+Proof. Each fibre $X_{h,r}$ has size at most $N$. Fifteen edges and the
+remaining second coordinate determine an additive sixteen-edge tuple, so
+$C(h)\leqslant|X_h|^{15}N$. Writing $\beta=|X_h|/N^2$, a strong height satisfies
+$\alpha^{32}/16\leqslant\beta^{15}$, and consequently $\beta\geqslant\alpha^3/2$.
+If $\beta\leqslant1/6$, the corrected Theorem 10.13 gives a set $Y_h$ with
+$|Y_h|\geqslant\beta^6|X_h|/20000\geqslant2^{-22}\alpha^{21}N^2$, which exceeds
+the asserted $2^{-26}\alpha^{128}N^2$ bound. Monotonicity of the Fourier cutoff
+and Bohr radius restricts this model to the common lower density
+$a=\alpha^{32}/16$, retaining $\lambda=2^{-59}\alpha^{176}$.
+
+For $\beta>1/6$ and $\alpha\leqslant14/15$, use the fibre cap $k'N$, where
+$k'=\lceil6\beta\rceil$. The normalized density $\beta/k'$ lies between $1/12$
+and $1/6$. The corrected extraction gives at least
+$N^2/(12^6\cdot6\cdot20000)$ points, again exceeding
+$2^{-26}\alpha^{128}N^2$. Its model restricts to the same lower-density
+Fourier cutoff and Bohr neighbourhood.
+
+For $\alpha>14/15$ and $N\geqslant5$, retain rows containing more than $4N/5$
+points of $A$. Their set has size greater than $2N/3$. A partial Freiman map
+of order two on more than two thirds of a finite abelian group extends to an
+affine additive map: two translated domains define its differences, and three
+translated domains prove additivity. Thus each retained row is affine.
+Any four retained rows have two distinct common columns, so the vertical
+Freiman relations force their affine coefficient pairs to be Freiman of
+order two as well. Extending these coefficients gives one bilinear formula
+on a subset $B\subset A$ with $|B|\geqslant(6\alpha-5)N^2$. Its height-$h$
+edge domain has at least $(12\alpha-11)N^2>N^2/5$ points for every $h$.
+Take these edges for $Y_h$. Their phase differences are affine in the first
+coordinate without a Bohr restriction. The remaining small-modulus and
+small-width cases use a singleton column; the displayed target width is
+then at most one. These constructions provide all the claimed $Y_h$ bounds
+and short-difference rules from the preceding hypotheses.
+
+In the Bohr cases we retain $k=2^{114}\alpha^{-320}$,
+$\zeta=2^{-228k}\alpha^{576k}$ and the smaller neighbourhoods required below.
 
 Now, Lemmas 13.4 and 13.5 combined, with $\theta$ set equal to $\lambda$, tell us that the common difference $d$ of the arithmetic progression $Q$ satisfies the property that $|r d| \leqslant m_{0}^{-1 / 2^{11 q}} N$ whenever $\left|\hat{f}_{h}(r)\right| \geqslant \theta N^{2}$, where $q$ may be taken to be the number in the statement of this lemma. In other words, we are told that this $d$ belongs to all the Bohr neighbourhoods $B\left(K_{h}, \zeta / m\right)$, provided that the inequality $m_{0}^{-1 / 2^{11 q}} \leqslant \zeta / m$ holds, where $m_{0}$ is as given in the statement of Lemma 13.4. It is not hard to check that $m=(\zeta / 2) N^{1 / 2^{13 q}}$ satisfies the inequality. (In fact, we could replace 13 by 12, but it is convenient later for $m_{2}$ to be significantly less than $m_{1}$.)
 
@@ -2802,12 +2846,16 @@ $$
 It follows that, for every $h \in I$,
 
 $$
-\phi\left(x_{1}, y+h\right)-\phi\left(x_{2}, y+h\right)=\left(c_{h}-c\right)\left(x_{1}-x_{2}\right),
+\phi\left(x_{1}, y+h\right)-\phi\left(x_{2}, y+h\right)=\left(c_{h}+c\right)\left(x_{1}-x_{2}\right),
 $$
 
 which tells us that the restrictions of $\phi$ to the rows of $B$ are all linear. \(\square\)
 
-We have now effectively reduced the dimension of our problem by one, as the next two lemmas will demonstrate. For each $h \in I$, let $a(h)$ and $c(h)$ be the unique constants such that $\phi(x, y+h)=a(h)+c(h) x$ for every $x$ with $(x, y+h) \in B$.
+We have now effectively reduced the dimension of our problem by one, as the next two lemmas will demonstrate. For each $h \in I$, choose constants $a(h)$ and $c(h)$ such that $\phi(x, y+h)=a(h)+c(h) x$ for every $x$ with $(x, y+h) \in B$.
+
+\emph{Editorial note.} The preceding row coefficients add; the original minus sign in that display is corrected. The affine coefficients need not be unique on rows
+with fewer than two points. The following proof selects rows containing two
+distinct common columns, where the required coefficient relations are determined.
 
 Lemma 13.8. Assume that $m_{3} \geqslant 2{ }^{84} \alpha^{-416}$. Then there is a subset $J \subset I$ such that the map $h \mapsto(a(h), c(h))$ is a homomorphism of order 8 on $J$ and the set $C$ of $(x, y+h) \in B$ such that $h \in J$ has cardinality at least $2^{-84} \alpha^{416} m_{1} m_{3}$.
 
