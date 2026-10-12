@@ -2,10 +2,10 @@
 
 The canonical reading artifact is the collective four-volume manuscript,
 [Polylogarithms and their Arithmetic Bridges](docs/manuscript/README.md),
-authored by **ProveIt Contributors**. The volumes have **135, 130, 249 and
+authored by **ProveIt Contributors**. The volumes have **140, 130, 249 and
 86 pages**, each compiling independently; the retained
-[combined edition](docs/manuscript/polylogarithms.pdf) has **557 pages**.
-They share twelve chapters, thirteen figures and 142 references. The
+[combined edition](docs/manuscript/polylogarithms.pdf) has **562 pages**.
+They share twelve chapters, thirteen figures and 145 references. The
 [editorial ledger](docs/manuscript/EDITORIAL-LEDGER.md) separates accepted
 proofs from pending analytic claims, and the
 [validation record](docs/manuscript/VALIDATION.md) distinguishes proofs,
@@ -668,6 +668,8 @@ This closes the predecessor's explicitly open boundary question, without
 retracting its correct interior theorem. All five full supplied suites
 replayed successfully on an isolated copy; exact arithmetic checks and
 high-precision diagnostics remain distinct from the analytic proof.
-The imported ZIP was removed in placement. Canonical chapter integration
-of this report remains pending; the current 557-page combined edition and
-four volumes contain the separately completed resonant-jet synthesis.
+The imported ZIP was removed in placement. Section 1.7 now integrates the
+phase theorem and physical threshold and develops exact finite
+Bessel-polynomial coefficients, order spectra and shift recurrences.
+Detailed critical charts and crossover refinements remain separate
+integration scopes.

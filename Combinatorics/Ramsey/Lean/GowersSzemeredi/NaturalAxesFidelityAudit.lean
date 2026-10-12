@@ -1,0 +1,5 @@
+import GowersSzemeredi.AllDensityExtractionFidelityAudit
+import GowersSzemeredi.NaturalAxesCoreAudit
+
+example : LeanProofs.GowersSzemeredi.theorem_13_12_natural_axes :=
+  LeanProofs.GowersSzemeredi.theorem_13_12_natural_axes_holds
