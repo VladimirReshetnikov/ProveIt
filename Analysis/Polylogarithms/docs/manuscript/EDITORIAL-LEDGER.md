@@ -1122,3 +1122,30 @@ rests on the written normal-convergence and Gamma-recurrence proof.
 No Lean formalization or priority claim is made. The exact inverse-fold,
 sharp-radius, global-coefficient and Borel-reconstruction branches remain
 pending distinct audits; their original evidence is unchanged.
+
+## Quadratic feedback synthesis, October 12, 2026 (Pacific)
+
+Section 1.7 reconciles the twenty-second report's complete boundary
+classification and physical threshold with the predecessor's interior
+theorem. The earlier open boundary question is closed with attribution,
+not retracted as an erroneous theorem. The full conventional proof includes
+coefficient positivity, global closed-disk convergence, strict dominance,
+integer pole pairing and the slit-domain continuation needed for transfer.
+
+The collective continuation obtains an explicit finite Bessel-polynomial
+coefficient identity by two Lagrange inversions, valid for arbitrary
+holomorphic kernels. Grouping ordered compositions by product gives a
+finite Dirichlet polynomial in the polylogarithm order, its minimal
+constant-coefficient differential annihilator and exact shift recurrences.
+The classical Bessel normalization is credited to DLMF 18.34.
+Independent direct-equation rational checks cover 240 polylogarithm and
+120 signed-kernel coefficients, 450 weight recurrences and 50 order-shift
+cases. Those finite checks support signs and indexing; the theorem's
+all-order status comes from the displayed proof.
+
+The new original report has one home in Transseries. Its complete isolated
+five-suite replay remains separate evidence. Detailed critical charts,
+all logarithmic corrections and joint crossover refinements retain
+subsequent integration scopes. Local complex folds still do not establish
+global accessibility from the Taylor germ. The manuscript author remains
+ProveIt Contributors; no publication-priority, Lean or interval claim is made.

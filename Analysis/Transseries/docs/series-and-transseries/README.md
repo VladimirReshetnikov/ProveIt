@@ -2669,5 +2669,7 @@ accepts the conventional proof of the complete radius/coefficient phase
 classification and physical convergence threshold. All five full supplied
 suites rerun successfully in isolation with declared package versions.
 The convergent charts, logarithmic transfer and crossover refinements
-retain separate canonical integration tasks. Neither Transseries volumes
-nor the collective Polylogarithms PDFs have yet incorporated this delivery.
+retain separate canonical integration tasks. Section 1.7 of the collective
+Polylogarithms manuscript now incorporates the phase classification and
+physical threshold, and develops finite Bessel-polynomial coefficient and
+order-spectrum identities. The Transseries volumes have not been rebuilt.

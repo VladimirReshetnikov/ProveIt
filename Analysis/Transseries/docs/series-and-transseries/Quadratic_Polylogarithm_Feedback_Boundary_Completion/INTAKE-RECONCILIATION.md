@@ -46,3 +46,11 @@ The [independent proof audit](INTAKE-PROOF-AUDIT.md) checks the complete
 phase classification and physical threshold. The charts, logarithmic
 transfer and crossover branches retain separate canonical integration
 scopes. The original article, data and source-pin evidence are unchanged.
+
+## Subsequent canonical synthesis
+
+Section 1.7 now reconciles the audited complete phase classification and
+physical threshold in the collective Polylogarithms manuscript. It also
+develops finite Bessel-polynomial coefficient and order-spectrum identities.
+The detailed critical charts, full logarithmic corrections and crossover
+refinements remain separate integration work; all original files are intact.

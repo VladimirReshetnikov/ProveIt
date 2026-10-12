@@ -10,8 +10,8 @@ has been checked. It closes the explicit boundary question at lines
 [article.tex](../Resonant_Polylogarithm_Transseries/article.tex).
 The predecessor called the boundary constant unproved; its interior
 theorem was not false. No retraction or rewriting of that original is
-appropriate. The boundary results still await integration into the
-collective Polylogarithms manuscript and its PDFs.
+appropriate. The boundary results are now integrated into Section 1.7 of the
+collective Polylogarithms manuscript, with attribution and a full proof.
 
 ## Global branch and dominance
 
