@@ -5145,6 +5145,51 @@ Only `propext`, `Classical.choice` and `Quot.sound` occur. The remaining
 structural work is the genuine class-cover induction and the complete
 statement-by-statement source-fidelity audit.
 
+## L.31 Genuine global Theorem 16.2 and Corollary 16.11 (2026-10-11)
+
+`Proofs16IntegerCoordinateOps` and `Proofs16IntegerRelationOps` preserve
+integer certificates under coordinate reindexing, arbitrary-axis cylinders,
+value scaling and finite pointwise relation sums. Their original count,
+width and loss controls are unchanged; the geometric operations require
+only a nonzero modulus.
+
+`UniformClassWith.IntegerCover` in `Proofs16IntegerClassPieceCover`
+certifies the geometry of the existing class's cover field while preserving
+its actual membership and decomposition records. The spectrum, remainder
+and sampled-slice cover inputs are constructed from the predecessor's
+integer cover certificate. This avoids inferring ordinary geometry from
+the old modular cover field. The class-piece and step-family cover proofs
+retain the original scalar envelopes.
+
+`Proofs16IntegerUniformCoverTwo` constructs actual spectrum, cylinder
+remainder and slice covers from the stored Freiman families of the
+dimension-two piece data. `Proofs16IntegerClassTwo` certifies the real
+dimension-two power class with the same degree bounds. The successor in
+`Proofs16IntegerClassSuccessor` and the dimension induction in
+`Proofs16IntegerClassesAll` carry these certificates to every dimension;
+the original class-degree recursion and threshold bounds are reused.
+
+`Proofs16IntegerPrintedStructure` proves the exact proposition
+`theorem_16_2_integer_representatives` unconditionally from these actual
+classes and the explicit recurrence profiles. It includes dimensions zero
+and one. It retains the printed multiple-linearity controls over every
+prime modulus, with no additional eventual-modulus condition. There is no
+supplied relation-cover conclusion in this global companion.
+
+`Proofs16IntegerPrintedCorollary` restricts the global frequency graph,
+selects one dense multilinear graph on a genuine output cell, and proves
+the exact `corollary_16_11_integer_representatives`. The printed common
+exponent and density are retained, as is the stronger intermediate width
+exponent. No eventual threshold or oddness hypothesis is needed, including
+at the even prime. Both global results are exported by the main facade.
+
+`StructureIntegerFidelityAudit` checks all thirty-one new public theorems,
+both exact statements and all preceding catalogue and fidelity audits over
+1,523 native modules. Only `propext`, `Classical.choice` and `Quot.sound`
+occur. The main global Section 16 representation gap is closed. This does
+not complete the full source-fidelity audit of every intermediate statement
+and numerical bridge in the paper.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
