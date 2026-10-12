@@ -681,3 +681,28 @@ It integrates the incoming order-three chart, proves the Catalan principal
 parts of its rational coefficients, and keeps convergent local expansions
 distinct from the asymptotic coefficient series. Nonmarginal charts and joint
 crossover branches remain separate integration work.
+
+
+### Lambert jets and boundary transfer: twenty-third intake
+
+Three reports are preserved with their original PDFs in the
+[Transseries collection](../Transseries/docs/series-and-transseries/README.md).
+Their committed arrival ZIPs were removed after all 48 delivered files were
+placed. Full isolated suites pass, including the boundary recurrence through
+n=4096 and the optional inverse Mellin/lateral diagnostics. Separate intake
+audits record proof review and distinguish finite exact tests from numerical
+evidence and conventional analytic proofs.
+
+The order-jet report extends the q-factorial completion with a double-pole
+first derivative and a finite-measure kernel theorem. The boundary report
+overlaps Sections 1.7 and 1.8 and the earlier nonmarginal charts; its finite
+transfer dictionary, special-order cancellations and prefix normalizations
+are ready for synthesis. The symmetric Lambert inverse report has a divergent
+ordinary sector series and a nested Stokes scale, so its scope must remain
+distinct from the convergent analytic-tail inverse charts. Its sharp
+large-order amplitudes are conjectural.
+
+These reports have not yet been integrated into the four-volume TeX or its
+PDFs. The existing collective author remains **ProveIt Contributors**.
+The order-jet report's proposed equation-number correction is qualified in
+its audit: the cited arXiv HTML uses 60a/b and the PDF uses 3.36a/b.

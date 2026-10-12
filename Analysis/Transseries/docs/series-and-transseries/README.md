@@ -2703,3 +2703,11 @@ Placement and subsequent proof review are separate from merging into the volume.
 
 The three imported ZIPs are retired in the placement commit. No collective
 or Transseries volume has been rebuilt by this placement.
+
+The three [order-jet](Mellin_Borel_Completion_q_Gamma_Critical_Reversion/continuations/lambert-order-jets/INTAKE-PROOF-AUDIT.md),
+[boundary-transfer](Quadratic_Polylogarithm_Feedback_Boundary_Completion/continuations/critical-boundary-transfer/INTAKE-PROOF-AUDIT.md) and
+[inverse-transport](Resonant_Lambert_Inverse_Transseries/INTAKE-PROOF-AUDIT.md)
+intake audits now record the conventional proof review, complete isolated
+replays, exact overlap and pending canonical synthesis. The proposed external
+equation-number correction is qualified: HTML 60a/b and PDF 3.36a/b are both
+valid locators of the same Conjecture 5. The delivery notes are preserved.
