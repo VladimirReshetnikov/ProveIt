@@ -4345,3 +4345,13 @@ its timestamp check; forest bookkeeping, orbit queries, source reconstruction,
 and passive curve transport have separate costs. See
 [column_cancellation.tex](../synthesis/column_cancellation.tex) for the proof,
 compatibility audit, and measured performance.
+
+
+The updated 106-case audit retains all 85 certified cuts, and every old proof
+replays under the new checker. All 1,688 Regina-enabled tests pass. Five paired
+measurements show 522x faster production on the 2,048-row sparse chain and
+476x faster conditional replay at 256 rows; the genuine prepared-core cohort
+improves about 1.17x and 1.08x. Successful whole supplied-cut queries are
+essentially unchanged, while the two measured early-refusal queries improve
+2.53x and 2.06x. Raw samples, A/A controls and source pins are retained in
+`../synthesis/data/column-peeling-benchmark.json`.

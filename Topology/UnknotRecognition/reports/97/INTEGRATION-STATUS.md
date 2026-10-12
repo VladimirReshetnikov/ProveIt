@@ -21,3 +21,9 @@ all legal pivot schedules, source-authenticated cores, malicious records,
 and old certificate replay. Native evidence lives under
 `../../synthesis/data/column-peeling-*`; the delivered archive's verification
 suite was not run as part of placement.
+
+The subsequent full Regina-enabled suite passes all 1,688 tests. Independent
+source compatibility preserves all 85 certified cuts among 106 cases and
+replays every historical certificate. Six source stopping sets avoid ordered
+boundary discovery. The new schedule changes two cases from outer v4 to v5
+without changing their genus censuses; 44 certificates remain byte-identical.
