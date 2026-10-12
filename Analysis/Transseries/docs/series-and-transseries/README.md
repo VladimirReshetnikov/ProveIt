@@ -2735,3 +2735,12 @@ fixed inverse-index order. The new continuation and summability claims are
 audited separately. The original article, PDF, verification evidence and
 proposed patch remain unchanged. Its imported ZIP is retired in this
 placement; the two other incoming reports remain pending.
+
+
+The [late-coefficient proof audit](Resonant_Lambert_Inverse_Transseries/continuations/late-coefficients/INTAKE-PROOF-AUDIT.md)
+now accepts the continuation and off-real summability argument after checking
+its external closure hypotheses. The complete unchanged verifier passed on
+an isolated Linux copy, with all 5890 exact checks and 70 full coefficient
+cases through n=1025. Volume I of the collective Polylogarithms manuscript
+integrates the continuation theorem and strengthens endpoint uniformity to
+all fixed inverse-index orders. Original evidence remains unchanged.
