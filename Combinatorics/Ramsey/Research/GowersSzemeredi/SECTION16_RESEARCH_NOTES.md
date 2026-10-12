@@ -4283,7 +4283,24 @@ with `theorem13At_nine_iff : Theorem13At 9 ↔ theorem_1_3` by `Iff.rfl`,
 bridge `Proofs18CoverSharperAllDegrees`, stub axiom
 `section16RecurrenceProfileWith_explicit` only; in `CompletionAudit.lean`).
 
-A three-page mathematical write-up of L.12-L.15h is in
+**L.15i: Theorem 16.2 with polynomial controls.** The printed Theorem 16.2
+allows graph count `q(r⁻¹ρ, γ, k)^r` at precision `ρ`, with
+`r = γ⁻²·s(θ, γ, k)` and `s = (2/(θγ))^(2^(2^(k+6)))`. That is exponential in a
+polynomial of `1/θ`, which is why the anchor lift of Lemma 16.10 failed (L,
+"the printed defect"). The class covers of route (II) give a count
+**polynomial** in `1/(γθρ)`:
+`Q(γ, θ, ρ) = max(1, (4V/(γθρ))^(2^(68·2^k)))` with `V = 2^(2^(2^(k+4)+1))`
+(`uCount_eq_closed`, `classV_le_tight`), and width exponent `Q⁻¹`, in every
+dimension. This is the "polynomial graph counts" strengthening that route 1 of
+section F asked for. `Proofs16PolynomialStructure` (light):
+`theorem_16_2_polynomial_of_profiles`, and `theorem162At_of_polynomial`, which
+shows that the polynomial form implies the printed `Theorem162At k`. Bridge
+`Proofs18CoverSharperAllDegrees`: `theorem_16_2_polynomial` (every `k ≥ 1`)
+and `theorem_16_2_polynomial_implies_printed : theorem_16_2`; stub axiom
+`section16RecurrenceProfileWith_explicit` only; both are in
+`CompletionAudit.lean`.
+
+A three-page mathematical write-up of L.12-L.15i is in
 `joint-vertex-covers/joint-vertex-covers.tex` (PDF beside it).
 
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the

@@ -203,6 +203,22 @@ threshold is only needed below $\exp(\exp(X^{2^\mu}))$, and
 $2^{2^m}\le\exp(X^{2^j})$ as soon as $m\le2^j$. At that level the
 constants cost only $k+16$, and $L+5$ holds in every length.
 
+\section{Theorem 16.2 with polynomial controls}
+
+The printed Theorem~16.2 restricts a relation with the product property to a
+set of density $1-\theta$ on which it is multiply linear, with graph count
+$q(r^{-1}\rho,\gamma,k)^r$ at precision $\rho$, where
+$r=\gamma^{-2}s(\theta,\gamma,k)$ and $s=(2/\theta\gamma)^{2^{2^{k+6}}}$. This
+count is exponential in a polynomial of $1/\theta$. The covers built for the
+dimension induction give a count that is \emph{polynomial} in $1/(\gamma\theta\rho)$:
+\[
+  Q(\gamma,\theta,\rho)=\max\Bigl(1,\Bigl(\frac{4V}{\gamma\theta\rho}\Bigr)^{2^{68\cdot2^k}}\Bigr),
+  \qquad V=2^{2^{2^{k+4}+1}},
+\]
+with width exponent $Q^{-1}$, in every dimension $k\ge1$
+(\lean{theorem\_16\_2\_polynomial}). This form implies the printed one
+(\lean{theorem\_16\_2\_polynomial\_implies\_printed}).
+
 \section{Further questions}
 
 \begin{enumerate}
@@ -247,6 +263,7 @@ sharper constants & \lean{Proofs18CoverSharper}, \lean{Proofs18CoverTightBase},\
 & \lean{Proofs18CoverThresholdsSharp}, \lean{Proofs18CoverVanDerWaerden},\\
 & \lean{Proofs18CoverHeadline},\\
 & \lean{Proofs18CoverSharperAllDegrees}\\
+polynomial Theorem 16.2 & \lean{Proofs16PolynomialStructure}, \lean{theorem\_16\_2\_polynomial}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -259,14 +276,15 @@ built 1,440 modules from source with Lean~4.32.0, checked the exact types of
 all 120 numbered catalogue statements and of the improved-bound theorems,
 and found only the axioms \lean{propext}, \lean{Classical.choice} and
 \lean{Quot.sound}. The extensions to every degree ($c=7$) and to every
-length ($c=6$ and $c=5$) postdate that audit and are so far checked against faithful
-stubs. The
+length ($c=6$ and $c=5$), the van der Waerden and Theorem~1.3 rows, and the
+polynomial Theorem~16.2 postdate that audit. They are so far checked against
+faithful stubs, and \lean{CompletionAudit.lean} now includes them. The
 audit's record is
 \begin{center}\small
 \lean{Research/GowersSzemeredi/verification/}\\
 \lean{2026-10-11-numbered-and-bounds.json}.
 \end{center}
 The research notes
-(\lean{SECTION16\_RESEARCH\_NOTES.md}, \S\S L.11--L.15h) record the development.
+(\lean{SECTION16\_RESEARCH\_NOTES.md}, \S\S L.11--L.15i) record the development.
 
 \end{document}
