@@ -11,6 +11,7 @@ from .disk_bundle_absorption_verify import replay_disk_bundle_absorption
 from .integer_codec import encoded_integer, certificate_equal
 from .normal_parallelity_verify import verify_normal_cut_parallelity
 from .parallelity_boundary_words_verify import verify_parallelity_boundary_words
+from .parallelity_boundary_moments_verify import verify_parallelity_moment_words
 
 
 def _decode(value):
@@ -110,7 +111,7 @@ def _recount(g, summary, skeleton, components, check, absorbed=frozenset(), prim
 
 def verify_normal_cut_handlebodies(triangulation, coordinates, certificate, *,
                                   max_operations=None, check=lambda: None):
-    """Replay all six orbit proofs and the independent finite geometric checks."""
+    """Replay four source traces and the selected boundary proofs independently."""
     check()
     if max_operations is not None and (type(max_operations) is not int or max_operations < 0):
         raise ValueError('max_operations must be a nonnegative integer or None')
@@ -144,7 +145,9 @@ def verify_normal_cut_handlebodies(triangulation, coordinates, certificate, *,
                 if name.endswith('selector'):
                     proof = proof['weighted_certificate']
                 operations += len(proof['orbit_proof']['operations'])
-            for name in ('vertex_partition', 'gap_cover'):
+            boundary_names = (('census',) if b.get('schema') == 'native-moment-boundary-v2'
+                              else ('vertex_partition', 'gap_cover'))
+            for name in boundary_names:
                 if b[name] is not None:
                     operations += len(b[name]['orbit_proof']['operations'])
         except (KeyError, TypeError):
@@ -153,7 +156,9 @@ def verify_normal_cut_handlebodies(triangulation, coordinates, certificate, *,
             return False
     if not verify_normal_cut_parallelity(triangulation, coordinates, p, check=check):
         return False
-    if not verify_parallelity_boundary_words(triangulation, coordinates, b, check=check):
+    boundary_verifier = (verify_parallelity_moment_words if b.get('schema') == 'native-moment-boundary-v2'
+                         else verify_parallelity_boundary_words)
+    if not boundary_verifier(triangulation, coordinates, b, check=check):
         return False
     # Large source integers may use the established exact hexadecimal codec.
     geometry, summary = _decode(p['geometry']), _decode(p['summary'])

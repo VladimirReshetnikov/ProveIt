@@ -1,0 +1,68 @@
+\paragraph{Validation and measurements.}
+The nine delivered moment tests pass against the maintained runtime in
+159.509 seconds from an isolated copy, leaving the delivered report files
+unchanged. The ported nine native tests pass in 164.451 seconds, and five
+whole-cut integration tests pass in 6.662 seconds. Coverage includes all
+157 inherited boundary sources, both scalar codecs, 146 literal path
+comparisons, binary multiplicity $2^{16384}$, hostile proofs, independent
+replay with producers disabled, and the shared five-trace budget.
+The arithmetic test checks all 4,140 partitions of eight endpoint labels:
+exactly the 105 perfect matchings are accepted.
+
+The complete differential audit checks 106 historical sources and 14
+interior-vertex fixtures. Both backends complete the same 102 cuts; all
+complete censuses agree, all certificates replay, and removing just the new
+gap-length field recovers every old boundary skeleton. All 92 historical
+complete mask certificates are byte-identical. The 95 completed cases with
+retained literal Regina references agree with those references; seven
+large-coordinate cases have no expanded reference. This comparison uses
+the previously recorded oracle outputs on hash-identical source files,
+not a fresh Regina run. The remaining 18 cases stay inconclusive.
+
+\paragraph{Complete-operation timings.}
+The baseline consists of the producer and verifier from commit
+\texttt{a1f5adb096fa}, with their unchanged lower-level dependencies.
+Each operation produces the full cut certificate and independently replays
+it. There are five randomly ordered pairs and three mask/mask controls per
+source, in one process, before starting the full suite or corpus audit.
+The seven families were selected in advance; the cap-only representative
+is the first semantically eligible completed source, not a timing selection.
+The moment path combines the one-query encoding with reuse of geometry
+already built by its producer. These measurements do not isolate the two
+effects.
+
+\input{data/moment-boundary-table.tex}
+
+The reported gain is the median of the five paired mask/moment ratios,
+not the ratio of the two marginal medians. In particular, the interior
+example has a paired ratio below one despite its lower marginal moment
+median. Its samples span 182--352 ms for masks and 188--380 ms for moments.
+The figure-eight ranges are 6.16--7.21 s and 5.49--7.10 s. The port-free
+moment case has one 8.91 ms outlier, despite a 1.93 ms median. The complete
+raw samples and execution order are retained. Five paired medians favor
+moments, while two favor masks; the mask/mask control medians range from
+0.973 to 1.019. Accordingly \path{boundary_method='masks'} remains the
+default and \path{'moments'} is an explicit option.
+
+\paragraph{Structural cost and certificate size.}
+For the figure-eight case, the two old boundary queries total 1,080 orbit
+cycles; the new one uses 733. Its maximum weight-run count rises from 881
+in the old cover query to 919 in the new one. The binary layered example
+has 168 versus 131 cycles, but cover weight runs rise from 17 to 85.
+This explains why fewer queries alone need not yield lower elapsed time.
+All seven full certificates shrink, by 0.39--19.65 percent under the same
+JSON serialization. The figure-eight proof drops from 1,070,683 to 860,263
+bytes, and the binary example from 490,009 to 460,255 bytes.
+
+For the figure-eight input, 776 endpoint labels use a maximum additive
+source weight of 33 bits. This statistic is not the maximum transported
+mass: the proved total-mass bound above supplies that distinction.
+The delivered binary test, rerun against the maintained orbit engine,
+uses 131 cycles, 60 owner intervals and 68 additive weight records for
+each of the multiplicities $2^{32}$, $2^{512}$ and $2^{16384}$. Those
+three observations do not establish a uniform scheduler bound.
+
+The audit, paired driver, source pins, retained baseline, literal coverage
+and test logs are in \path{synthesis/data/moment-boundary-*}. These are
+supplied-cut operations; no new surface-discovery algorithm or general
+quasi-polynomial recognition bound follows.

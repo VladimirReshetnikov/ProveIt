@@ -1,0 +1,156 @@
+\subsection{One source-bound boundary query with endpoint moments}
+\label{marked-cut:moments}
+
+Report 93 supplies a native adapter for moment-coded first returns: it starts
+with the actual parallelity polygons and free-edge records, rather than an
+abstract path pairing. We integrate its producer, independent checker,
+literal path oracle and arithmetic tests. The supplied-cut operator exposes
+\path{boundary_method='moments'} alongside the retained mask method. The
+new compiler also records the exact number of original-boundary edges in
+every gap. This is local length and fibre data, not transport of an arbitrary
+pattern hidden inside a gap.
+
+\paragraph{The source boundary packet.}
+Let $p$ be the number of core-facing ports and $N$ the corner-occurrence
+namespace size. Both are determined by the validated source triangulation
+and binary normal coordinates. The exceptional port list has size $O(T)$;
+$N$ itself may be exponentially larger than the input bit length. All source
+gluings are interval maps with separate endpoint-reversal and fibre-flip
+flags. In particular, fibre transport cannot be inferred from the slope of
+a singleton interval map.
+
+Delete the open port edges from the boundary of every parallelity base.
+Each active residual component is a path with two endpoint occurrences;
+a single point is a permitted path. Components without endpoints are passive
+circles or silent occurrence classes. Work on the two-sheeted fibre cover,
+so the active paths have $r=4p$ distinct endpoint labels, numbered $1$ through
+$r$. Each active path downstairs has two compatible lifts. The source
+surface and edge-link checks, not a numerical moment identity, establish
+this geometric degree-two property.
+
+\begin{proposition}[Canonical source-edge mass]
+Each original-boundary edge occurrence can be assigned exactly once to its
+local initial corner. This assignment is represented by $O(T)$ intervals
+in the corner namespace, without enumerating their binary lengths.
+\end{proposition}
+\begin{proof}
+For an original-boundary record on edge $j$ of polygon family $P$, a rank
+$k$ is owned at $c_{P,j}+k-1$, where $c_{P,j}$ is that corner slot's start.
+A rank interval $[u,v)$ therefore contributes the owner interval
+$[c_{P,j}+u-1,c_{P,j}+v-1)$. Source free-edge records are disjoint rank gaps;
+different polygon corner slots occupy disjoint namespaces. Thus every edge
+has one owner and no owner is counted twice before quotienting. Glued
+corners can identify several owners, and then their masses add, as required.
+The same outgoing-corner convention also assigns the port edges disjoint
+owner occurrences. If $E$ is the number of represented original-boundary
+edges, then $E+p\le N$. Each lift inherits one copy of this ownership.
+\end{proof}
+
+\paragraph{The pair codec.}
+For $p>0$, choose the power-of-two radices
+\[
+ A=2^{\operatorname{bitlength}(2r)},\qquad
+ s_i=i+A i^2,\qquad
+ D=2^{\operatorname{bitlength}(2(r+A r^2))}.
+\]
+Label $i$ contributes $s_i$ at its source endpoint occurrence. Each lifted
+owner edge contributes $D$. Run one scalar weighted orbit census on the
+residual double cover. A path of length $\ell$ with endpoint labels $i<j$
+has weight $W=\ell D+s_i+s_j$.
+
+\begin{proposition}[Exact pair and length decoding]
+For an authenticated active path, its two endpoint labels and exact edge
+length are recovered by
+\[
+ \ell=\lfloor W/D\rfloor,\quad R=W\bmod D,\quad
+ S=R\bmod A,\quad Q=\lfloor R/A\rfloor,\quad
+ i,j=\frac{S\mp\sqrt{2Q-S^2}}2.
+\]
+All calculations use exact integer arithmetic. Passive components have
+remainder zero and do not contribute a port pairing.
+\end{proposition}
+\begin{proof}
+We have $i+j\le2r<A$ and $s_i+s_j\le2(r+A r^2)<D$. Thus neither radix has a
+carry from the two endpoint contributions. The remainder determines
+$S=i+j$ and $Q=i^2+j^2$, and $2Q-S^2=(j-i)^2$. Distinct positive labels give
+a positive square discriminant. A component without labels has weight
+$\ell D$ and remainder zero. Canonical ownership makes $\ell$ the count of
+original edges, rather than the count of aliased corner occurrences.
+\end{proof}
+
+The verifier requires a positive square discriminant, parity, label range,
+active-row multiplicity one, and unique complete coverage of all labels.
+It checks equal lengths and compatible images for the two lifts of each
+endpoint, before traversing the boundary permutation independently. It
+uses the product $(S^2-Q)/2$ and the roots of $x^2-Sx+(S^2-Q)/2$, rather than
+calling the producer's shift/mask decoder. No floating-point square roots
+or large endpoint masks are used.
+
+\begin{proposition}[Why the global inventory check is essential]
+Consider any partition of the actual unique labels and any nonnegative edge
+masses. If the pair decoder accepts a complete disjoint matching of all $r$
+labels, every accepted active row contains exactly two actual labels, and
+every ignored row contains none.
+\end{proposition}
+\begin{proof}
+An actual zero-label row has remainder zero and cannot supply a decoded
+pair. An actual singleton has remainder $s_i$ without a carry; its formal
+roots are $0,i$, which fail the positive-label check. Hence every accepted
+active row consumes at least two actual labels. The complete disjoint
+decoded matching has $r/2$ rows, requiring at least all $r$ actual labels.
+Since actual rows partition those labels, every active row has exactly two
+and no labels can remain in ignored rows. The preceding no-carry proof now
+applies to each active row. Without complete unique coverage, a partial
+moment record would not justify this counting argument.
+\end{proof}
+
+\paragraph{What replaces the corner query.}
+A gap is a point exactly when $\ell=0$. Thus positive length gives precisely
+the legacy \path{old_boundary_present} flag. Matching endpoints, following
+a port to its other endpoint, and then crossing the paired gap reconstruct
+cyclic words and maximal attaching intervals. Local fibre flips are retained;
+the total flip around an authenticated boundary circle is zero. Removing
+only \path{unmarked_edges} from each gap gives the complete previous
+skeleton. In particular, the moment compiler does not infer attachment
+order from a histogram of lengths alone.
+
+If $p=0$, the active skeleton is empty and no boundary census is needed.
+The standalone packet adapter additionally binds active loops to the
+already certified base profiles and retains passive boundary multiplicities.
+It authenticates the four upstream source traces; that work is additional
+to the claim of one new boundary census.
+
+\paragraph{Bit size and the remaining scheduling obligation.}
+The pair scalar has $D=O(p^3)$. Total initial mass is
+$2ED+\sum_{i=1}^r s_i=O(Np^3)$, using $p\le N$. Thus nonnegative
+mass-preserving operations need $O(\log(N+1)+\log(p+1))$ bits for scalar
+weights. This replaces the linear-in-$p$ endpoint-mask width; it also adds
+exact edge lengths that the old scalar did not contain. The retained
+four-field count/sum/squares/length codec has the larger magnitude bound
+$O(Np^9)$ and serves as an independent differential reference.
+
+Query construction uses $O(T)$ interval records and $O(p)$ endpoint records.
+Decoding and word traversal use polynomial bit work and linear structural
+work in their records. However, ownership intervals can increase the number
+of intermediate weight runs. The old sparse point-tag bounds do not apply
+to this dense mass program. The weighted orbit theorem~\cite{aht-orbits} supplies a polynomial
+algorithm for the encoded task, but the present integration does not prove
+a uniform polynomial bound for every maintained scheduler trace. Actual
+cycle counts, weight runs and certificate sizes must be reported separately.
+
+\paragraph{Native integration and proof budgets.}
+The whole-cut moment path reuses its own already constructed parallelity
+geometry and source fingerprint. It avoids reconstructing that geometry
+in a second producer or replaying an external packet that it did not receive.
+The independent checker still reconstructs the source geometry and checks
+the weighted proof. New nested boundary proofs have schema
+\path{native-moment-boundary-v2}; the outer v1--v6 cut formats and their
+geometric meanings remain unchanged. Existing mask proofs remain supported.
+
+The four source queries and the one moment query share the whole-cut cycle
+allowance. The replay cap counts all five traces, including the weighted
+traces inside the two source selectors. Port-free boundary proofs contribute
+zero operations. Exhaustion returns no partial cut certificate; invalid
+backend names and callback interruption do not silently choose another path.
+
+\input{moment_boundary_results.tex}

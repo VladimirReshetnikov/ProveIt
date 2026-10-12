@@ -780,3 +780,13 @@ timestamp replay and a source-core obstruction before boundary discovery.
 The fresh 106-case audit retains all 85 certified cuts; all old certificates
 replay, and six failures avoid boundary discovery. This is a local kernel
 improvement, not a completed hierarchy or general recognition bound.
+
+Report 93's source-bound moment boundary compiler is now an explicit native
+option, documented in its added [integration status](93/INTEGRATION-STATUS.md).
+One weighted query supplies endpoint pairing, fibre flags and exact gap
+lengths, with a separate source-reconstructing verifier. The 120-case audit
+preserves all 102 complete censuses and all 92 historical mask certificates.
+Five of seven paired complete-operation measurements favor moments, while
+two favor masks, so masks remain the default. The synthesis proves the
+logarithmic scalar-weight bit bound and records the remaining native trace
+and global hierarchy obligations. Delivered report files remain unchanged.

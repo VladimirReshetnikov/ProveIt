@@ -16,6 +16,7 @@ from .core_three_handle_reduction import reduce_core_three_handles
 from .disk_bundle_absorption import absorb_disk_bundles
 from .normal_parallelity import normal_cut_parallelity
 from .parallelity_boundary_words import normal_parallelity_boundary_words
+from .parallelity_boundary_moments import _compile as _compile_moment_boundary
 
 
 def _census(geometry, summary, skeleton, components, check, absorbed=frozenset(), primitive=None, core_annuli=None):
@@ -133,18 +134,22 @@ def _kernel_fallback(result, parallelity, boundary, record_certificate, check, *
 
 
 def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
-                           record_certificate=False, precheck_core=True, check=lambda: None):
+                           record_certificate=False, precheck_core=True, boundary_method='masks',
+                           check=lambda: None):
     """Classify the whole supplied cut when the disk-gluing criterion succeeds.
 
     A COMPLETE result is an exact binary multiplicity census of handlebodies.
     An INCONCLUSIVE result is neither a knottedness nor a non-handlebody proof.
     Source validity is the established compact orientable one-torus contract.
-    The six orbit discoveries share the cycle allowance; cancellation callbacks
-    also cover the polynomial core and finite interface computations. The
+    The four source queries and one or two boundary queries share the cycle
+    allowance; cancellation callbacks also cover the finite core/interface work. The
     optional core precheck defaults on: a raw obstruction skips boundary
-    discovery, without claiming any negative topological conclusion.
+    discovery, without claiming any negative topological conclusion. The
+    boundary_method chooses legacy endpoint masks or a single moment census.
     """
     check()
+    if type(boundary_method) is not str or boundary_method not in ('masks', 'moments'):
+        raise ValueError('boundary_method must be masks or moments')
     if type(precheck_core) is not bool:
         raise ValueError('precheck_core must be bool')
     if type(record_certificate) is not bool:
@@ -180,8 +185,16 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
     remaining = max_cycles
     if remaining is not None:
         remaining -= sum(s['orbit_cycles'] for s in parallelity['stats'].values())
-    boundary = normal_parallelity_boundary_words(triangulation, coordinates,
-        max_cycles=remaining, record_certificate=record_certificate, check=check)
+    if boundary_method == 'moments':
+        # Reuse our already constructed source geometry. The standalone packet
+        # API replays an external packet; this internal producer needs no such
+        # duplicate replay. The final checker authenticates both source proofs.
+        fingerprint = parallelity['certificate']['input_sha256'] if record_certificate else None
+        boundary = _compile_moment_boundary(parallelity['geometry'], fingerprint, remaining,
+                                             record_certificate, check, 'pair')
+    else:
+        boundary = normal_parallelity_boundary_words(triangulation, coordinates,
+            max_cycles=remaining, record_certificate=record_certificate, check=check)
     result['stats']['boundary'] = boundary['stats']
     if boundary['status'] != 'COMPLETE':
         result['reason'] = 'boundary_budget_exhausted'

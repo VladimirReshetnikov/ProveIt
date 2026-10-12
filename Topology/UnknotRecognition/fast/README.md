@@ -4404,3 +4404,36 @@ interior (1,2) source, multiplicity `2**16384` gives a certificate for
 `2**16385` balls in 2.38 seconds including replay, with a 29.7 MB serialized
 proof. The article reports all samples, variation, A/A controls and the
 limitations of this finite capacity test.
+
+
+### Moment-coded boundary interfaces
+
+`fastunknot.parallelity_boundary_moments.normal_parallelity_moment_words`
+compiles the authenticated residual fibre cover into one scalar orbit census.
+Endpoint sums and sums of squares recover exact endpoint pairs; canonically
+owned edge mass supplies each gap's `unmarked_edges` length. Removing that
+field gives the previous cyclic interface, including fibre flips and proper
+interval versus full-circle attachments. No large endpoint masks are rebuilt.
+
+Use `normal_cut_handlebodies(..., boundary_method='moments')` for a complete
+supplied-cut query with this backend. It reuses the already constructed source
+geometry. The four source queries and one boundary query share the cycle
+allowance; independent whole-cut replay counts all five traces. Earlier mask
+proofs remain supported. The default remains `boundary_method='masks'` because
+complete-query performance varies by input: the seven paired measurements
+favor moments on five cases and masks on two.
+
+The standalone checker is `verify_parallelity_moment_words` in the companion
+`parallelity_boundary_moments_verify` module. The public
+`moments_from_parallelity_packet` adapter independently authenticates an
+external source packet and additionally binds active loops to base profiles;
+its checker is `verify_parallelity_moment_packet`. That upstream replay is
+additional work, and is included in the packet checker's operation budget.
+
+Both `codec='pair'` and the retained `codec='four'` arithmetic reference are
+supported by the standalone API. Complete unique label coverage, exact square
+roots, parity and range checks are mandatory. All inputs still require the
+validated native geometric contract. Gap lengths and local fibre flips do
+not encode arbitrary hidden boundary markings. The theory and bit-size
+bounds are in [moment_boundary.tex](../synthesis/moment_boundary.tex); a
+uniform bound for every maintained weighted-orbit trace remains unproved.
