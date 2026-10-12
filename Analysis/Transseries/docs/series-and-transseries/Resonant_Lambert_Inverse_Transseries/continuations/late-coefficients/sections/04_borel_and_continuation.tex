@@ -1,0 +1,393 @@
+\section{Logarithmic and dilogarithmic Borel boundary models}
+\label{sec:Borel}
+
+The coefficient theorem gives more information than the Borel radius. It
+identifies explicit functions carrying the two leading boundary
+singularities. The regularity statements in this section concern limits
+from the closed disk. Analytic continuation outside that disk is proved
+separately in Section~\ref{sec:continuation}.
+
+Put $z=cu$ and abbreviate the two combinations in \eqref{eq:K} by
+\begin{equation}\label{eq:PQ}
+ P(u)=du+\frac{1+u}{2}z^2,\qquad Q(u)=(2+u)z.
+\end{equation}
+Thus $K_\epsilon=P H_\epsilon+QH_\epsilon'$.
+All logarithms below mean their Taylor branches at $\xi=0$; the
+dilogarithms have the same convention. Define
+\begin{align}
+ B_{0,u}(\xi)
+ &=\frac{2u}{\xi}
+ \left\{e^{-z}\log(1-\xi/A)+e^z\log(1+\xi/A)\right\},
+ \label{eq:B0-model}\\
+ B_{1,u}(\xi)
+ &=B_{0,u}(\xi)-\frac{2u}{\xi}
+ \left\{(P-Q)e^{-z}\Li_2(\xi/A)
+                  +(P+Q)e^z\Li_2(-\xi/A)\right\}.
+ \label{eq:B1-model}
+\end{align}
+The factors $\xi^{-1}$ have removable singularities at zero.
+
+\begin{theorem}[Boundary models with controlled remainders]
+\label{thm:Borel-models}
+For every $u\in\C$, there are functions $\mathcal H_{0,u}$ and
+$\mathcal H_{1,u}$, holomorphic in $|\xi|<A$, such that
+\begin{equation}\label{eq:Borel-decompositions}
+ \widehat V_u=B_{0,u}+\mathcal H_{0,u}
+             =B_{1,u}+\mathcal H_{1,u}.
+\end{equation}
+The function $\mathcal H_{0,u}$ extends continuously to $|\xi|\le A$.
+Both $\mathcal H_{1,u}$ and its complex derivative extend continuously
+to that closed disk. These extensions, and the convergent series defining
+them, are locally uniform in $u$.
+
+For every $u\ne0$, both $\xi=A$ and $\xi=-A$ are genuine singularities
+of $\widehat V_u$, whose Taylor radius is exactly $A$.
+\end{theorem}
+\begin{proof}
+Resolve the hyperbolic functions in Theorem~\ref{thm:main} into their two
+exponentials. For all sufficiently large $n$, uniformly for $|u|\le U$,
+\begin{align}
+ \frac{C_n(u)}{\Gamma(n)}
+ ={}&-\frac{2u}{nA^n}
+       \left\{e^{-z}+(-1)^n e^z\right\}\notag\\
+ &-\frac{2u}{n^2A^n}
+       \left\{(P-Q)e^{-z}+(-1)^n(P+Q)e^z\right\}
+       +O_U\!\left(\frac{|u|}{A^n n^3}\right).
+ \label{eq:two-action-coefficients}
+\end{align}
+For example, at even $n$ the second brace is
+$2(P\cosh z+Q\sinh z)$; at odd $n$ its negative is
+$2(P\sinh z+Q\cosh z)$. This verifies the signs without any
+singularity-transfer inference.
+
+Now use the convergent identities
+\[
+ \log(1-w)=-\sum_{n\ge1}\frac{w^n}{n},
+ \qquad
+ \Li_2(w)=\sum_{n\ge1}\frac{w^n}{n^2},
+ \qquad |w|<1.
+\]
+The first line of \eqref{eq:two-action-coefficients} is precisely the
+coefficient sequence of \eqref{eq:B0-model}. The first two lines together
+give \eqref{eq:B1-model}. Consequently the coefficients of
+$\mathcal H_{0,u}$ at $\xi^{n-1}$ are
+$O_U(|u|A^{-n}n^{-2})$, and those of $\mathcal H_{1,u}$ are
+$O_U(|u|A^{-n}n^{-3})$. The finitely many omitted indices cause no
+difficulty: their coefficients are entire functions of $u$.
+
+On $|\xi|\le A$, the first remainder series is therefore dominated by a
+constant times $\sum n^{-2}$. The second remainder and its termwise
+derivative are dominated by $\sum n^{-3}$ and $\sum n^{-2}$, respectively.
+The Weierstrass criterion proves all the asserted extensions, including
+local uniformity in the parameter. Equation~\eqref{eq:two-action-coefficients}
+also proves that the original Borel series converges in $|\xi|<A$.
+
+For $0<\varepsilon<1$, \eqref{eq:B0-model} and continuity of its remainder
+give
+\begin{align}
+ \widehat V_u(A(1-\varepsilon))
+ &=\frac{2u}{A}e^{-z}\log\varepsilon+O_u(1),\label{eq:radial-positive}\\
+ \widehat V_u(-A(1-\varepsilon))
+ &=-\frac{2u}{A}e^z\log\varepsilon+O_u(1).\label{eq:radial-negative}
+\end{align}
+Indeed the opposite logarithm tends to $\log2$, and replacing
+$(1-\varepsilon)^{-1}$ by $1$ contributes
+$O(\varepsilon|\log\varepsilon|)$. For $u\ne0$, neither displayed
+logarithmic coefficient vanishes. Thus neither boundary point admits a
+holomorphic extension of the principal germ, and its radius is exactly $A$.
+\end{proof}
+
+This argument remains valid when an individual parity amplitude vanishes
+at a complex value of $u$. The two boundary amplitudes are exponentials
+times $u$, and therefore never vanish for $u\ne0$. At $u=0$ the defining
+equation gives $V=0$, so there is no singularity.
+The exact positive Borel radius also implies that the ordinary
+$q$-series $V(q,u)$ has radius zero for each fixed $u\ne0$:
+the root growth of $\Gamma(n)$ converts a positive Borel coefficient
+growth rate into an unbounded ordinary coefficient growth rate.
+
+The continuously differentiable remainder makes one further radial term
+explicit. With $\sigma\in\{1,-1\}$, set
+\[
+ S_\sigma(u)=\frac{2u}{\sigma A}e^{-\sigma z}.
+\]
+There are finite constants $L_\sigma(u)$ such that
+\begin{equation}\label{eq:radial-refinement}
+\begin{split}
+ \widehat V_u\bigl(\sigma A(1-\varepsilon)\bigr)
+ ={}&S_\sigma(u)\log\varepsilon+L_\sigma(u)\\
+ &+S_\sigma(u)\{1-P(u)+\sigma Q(u)\}
+                   \varepsilon\log\varepsilon+O_u(\varepsilon).
+\end{split}
+\end{equation}
+To see this, use
+$\Li_2(1-\varepsilon)=\zeta(2)+\varepsilon\log\varepsilon
+-\varepsilon+O(\varepsilon^2|\log\varepsilon|)$ in
+\eqref{eq:B1-model}, expand $(1-\varepsilon)^{-1}$, and use the bounded
+derivative of $\mathcal H_{1,u}$. The dilogarithm with opposite argument
+is holomorphic near $-1$. This proves \eqref{eq:radial-refinement} directly.
+Neither \eqref{eq:Borel-decompositions} nor
+\eqref{eq:radial-refinement} asserts that the remainder extends
+holomorphically through the two endpoints.
+
+\section{Resurgent continuation and sectorial sums}
+\label{sec:continuation}
+
+The preceding boundary models follow from coefficient estimates alone.
+The arithmetic forward kernel supplies the additional analytic information
+needed for continuation and summation. We use a standard nonlinear
+closure theorem, with its hypotheses stated explicitly.
+
+\subsection{The arithmetic kernel and its continuation paths}
+
+For a formal series $f(q)=\sum_{n\ge1}f_nq^n$, our Borel convention is
+$\borel f(\xi)=\sum_{n\ge1}f_n\xi^{n-1}/\Gamma(n)$, as in
+\eqref{eq:BorelV}. Let
+\[
+ \Omega=A\Z.
+\]
+An $\Omega$-continuable germ is holomorphic at zero and admits analytic
+continuation along every path starting there whose subsequent points avoid
+$\Omega$. Initial motion inside the regular disk is understood in this
+definition. When passing to functions of $x=1/q$, write
+\[
+ \mathcal R_\Omega
+ =\C\oplus\borel^{-1}
+     \{\text{$\Omega$-continuable germs}\}.
+\]
+Thus $\mathcal R_\Omega$ is a space of formal series in $x^{-1}$.
+Constants are separated because our Borel transform acts on the part
+without constant term.
+
+\begin{proposition}[A normally convergent logarithmic lattice]
+\label{prop:forward-Borel}
+The shifted Borel transform of \eqref{eq:R} is
+\begin{equation}\label{eq:R-Borel-lattice}
+ \widehat R(\xi)
+ =-\frac14-\frac2\xi
+       \sum_{m\ge1}d(m)
+           \log\left(1-\frac{\xi^2}{A^2m^2}\right).
+\end{equation}
+Its principal expression is holomorphic on
+$\C\setminus\bigl((-\infty,-A]\cup[A,\infty)\bigr)$.
+The series continues normally on compact subsets of the path surface
+avoiding $\Omega$. In particular $R(1/x)\in\mathcal R_\Omega$.
+\end{proposition}
+\begin{proof}
+For $|\xi|<A$, expansion of each logarithm and the absolutely convergent
+Dirichlet identity $\sum_{m\ge1}d(m)m^{-s}=\zeta(s)^2$ give
+\[
+ -\frac2\xi\sum_{m\ge1}d(m)
+       \log\left(1-\frac{\xi^2}{A^2m^2}\right)
+ =\sum_{j\ge1}\frac{4\zeta(2j)^2}{2jA^{2j}}\xi^{2j-1}.
+\]
+These are exactly the coefficients $r_{2j}/\Gamma(2j)$; the constant
+$-1/4$ supplies $r_1$.
+
+Fix a bounded continuation path and a compact neighborhood of its lift.
+For all sufficiently large $m$, the argument
+$\xi^2/(A^2m^2)$ stays in a fixed disk of radius less than one, so its
+logarithm retains the Taylor branch and is $O(m^{-2})$, uniformly on that
+compact set. The sum of its majorants converges because
+$\sum d(m)m^{-2}=\zeta(2)^2<\infty$. Only finitely many logarithms need
+nontrivial continuation; their branch points are the stated lattice points
+$\pm Am$. This proves normal continuation. The factor $\xi^{-1}$ is
+removable at zero on the principal sheet, since each logarithm starts
+quadratically.
+\end{proof}
+
+The role of zero in $\Omega$ matters. After a loop around a branch point,
+one logarithm can change by $2\pi\ii$, adding a nonzero multiple of
+$\xi^{-1}$ to \eqref{eq:R-Borel-lattice}. Thus zero can be singular on
+another sheet although the original germ is regular there. Our continuation
+statement permits this behavior and does not promise passage through zero
+after a nontrivial loop.
+
+\subsection{The nonlinear closure input}
+
+We use the following established consequences of Sauzin's convolution
+estimates \cite[Theorems 3 and 5, and their summable counterparts
+$3'$ and $5'$]{Sauzin2015}. They are quoted here as analytic input.
+
+\begin{proposition}[Nonlinear resurgence and summability closure]
+\label{prop:Sauzin-input}
+Suppose $\Omega\subset\C$ is closed, discrete, contains zero, and is stable
+under addition. Then $\mathcal R_\Omega$ is an algebra with the following
+properties.
+\begin{enumerate}
+ \item If $f_1,\ldots,f_j\in\mathcal R_\Omega$ have zero constant term
+ and $H$ is a convergent power series near the origin in $j$ variables,
+ then $H(f_1,\ldots,f_j)\in\mathcal R_\Omega$.
+ \item The formal maps $x+\mathcal R_\Omega$ form a group under
+ composition. In particular a map $G(x)=x+O(1)$ in this group has a
+ compositional inverse there, and $f\circ G\in\mathcal R_\Omega$
+ whenever $f\in\mathcal R_\Omega$.
+\end{enumerate}
+The same operations preserve $1$-summability in an arc of directions.
+On sufficiently small common sectors, Borel--Laplace summation commutes
+with these operations, including compositional inversion.
+\end{proposition}
+
+The topology underlying this statement controls analytic continuation on
+compact subsets of the path surface. Its estimates justify infinite
+substitution and inverse series; coefficientwise formal existence by itself
+would not supply these conclusions. The set $A\Z$ satisfies every
+hypothesis of the proposition.
+
+\begin{theorem}[Continuation of the quadratic inverse]
+\label{thm:inverse-continuation}
+For every fixed $u\in\C$, the series $V(1/x,u)$ belongs to
+$\mathcal R_\Omega$. Hence \eqref{eq:BorelV} admits analytic continuation
+along every path starting at the origin and thereafter avoiding $A\Z$.
+\end{theorem}
+\begin{proof}
+First take $u\ne0$ and define, as formal series,
+\begin{equation}\label{eq:hG}
+ h(t)=\frac{\sqrt{1-2u^2R(t)}-1}{u},
+ \qquad
+ G(x)=x\exp\{-h(1/x)\}.
+\end{equation}
+The square root has constant term one. It is a convergent function of
+$R(t)$ near zero, so Proposition~\ref{prop:Sauzin-input} gives
+$h(1/x)\in\mathcal R_\Omega$. It satisfies the exact formal identities
+\begin{equation}\label{eq:h-equation}
+ h(t)+\frac u2 h(t)^2+uR(t)=0,\qquad
+ h(t)=\frac u4t+O(t^2).
+\end{equation}
+Analytic substitution also puts $e^{-h(1/x)}-1$ in
+$\mathcal R_\Omega$, with zero constant term.
+
+We check explicitly the multiplication by $x$ in \eqref{eq:hG}.
+If $f(x)=\sum_{n\ge1}f_nx^{-n}$ has Borel transform $\widehat f$, then
+\[
+ \borel\{xf(x)-f_1\}=\partial_\xi\widehat f(\xi).
+\]
+Differentiation preserves analytic continuation along the allowed paths.
+It follows that
+$G(x)=x-u/4+O(x^{-1})$ belongs to $x+\mathcal R_\Omega$.
+The closure theorem therefore provides its unique compositional inverse
+$T=G^{-1}\in x+\mathcal R_\Omega$.
+
+Set
+\begin{equation}\label{eq:inverse-parametrization}
+ t(q)=\frac1{T(1/q)},\qquad W(q)=h(t(q)).
+\end{equation}
+Composition closure gives $W(1/x)=h(1/T(x))\in\mathcal R_\Omega$.
+The identity $G(T(x))=x$ becomes $q=t e^{h(t)}$, so
+$t=qe^{-W}$. Equation~\eqref{eq:h-equation} now implies
+\[
+ W+\frac u2W^2+uR(qe^{-W})=0.
+\]
+Formal uniqueness in Proposition~\ref{prop:lagrange} gives $W=V$.
+For $u=0$, equation~\eqref{eq:implicit} gives $V=0$ directly.
+\end{proof}
+
+This is a continuation theorem with an explicit allowed set. It does not
+assert that every nonzero point of $A\Z$ is singular on every sheet.
+The genuine singularities at $\pm A$ on the principal boundary were proved
+independently in Theorem~\ref{thm:Borel-models}. No assertion about an
+all-orders alien derivative or a complete local singularity type is used.
+
+\subsection{Growth away from the real directions and analytic inversion}
+
+\begin{lemma}[Growth of the forward kernel on nonreal rays]
+\label{lem:kernel-growth}
+For every $\delta\in(0,\pi/2)$ there is $M_\delta>0$ such that the principal
+kernel in \eqref{eq:R-Borel-lattice} satisfies
+\begin{equation}\label{eq:kernel-growth}
+ |\widehat R(\xi)|
+ \le M_\delta\{1+\log^2(2+|\xi|)\}
+\end{equation}
+when $\delta\le\arg\xi\le\pi-\delta$ or
+$-\pi+\delta\le\arg\xi\le-\delta$.
+\end{lemma}
+\begin{proof}
+The elementary divisor estimate
+\[
+ D(M):=\sum_{m\le M}d(m)
+       =\sum_{a\le M}\left\lfloor\frac Ma\right\rfloor
+       \le M(1+\log M)
+\]
+and summation by parts give
+$\sum_{m>M}d(m)m^{-2}=O((1+\log M)/M)$.
+Put $\rho=|\xi|/A$ and initially suppose $\rho\ge1$.
+Split the logarithmic lattice at $m=2\rho$.
+
+For $m>2\rho$, Taylor bounds give
+$|\log(1-\xi^2/(A^2m^2))|\le C\rho^2/m^2$, so the total tail before
+division by $\xi$ is $O(\rho\log(2\rho))$.
+For $m\le2\rho$, the angular restriction implies
+\[
+ |1-s e^{2\ii\arg\xi}|
+       \ge \sin\delta\,(1+s)\qquad(s\ge0).
+\]
+Together with the upper bound $1+s$ and the bounded argument of the
+principal logarithm, this bounds each logarithm by
+$C_\delta+2\log(1+\rho/m)$, hence by $O_\delta(\log(2+\rho))$.
+The estimate for $D(2\rho)$ bounds the head by
+$O_\delta(\rho\log^2(2+\rho))$.
+Division by $|\xi|=A\rho$ proves \eqref{eq:kernel-growth}.
+The remaining bounded part of each closed angular sector is controlled
+by holomorphy and the removable value at zero.
+\end{proof}
+
+\begin{theorem}[Sectorial sums satisfy the inverse equation]
+\label{thm:inverse-summability}
+Fix $u\in\C$. The series $V(q,u)$ is $1$-summable in every direction
+$\theta\notin\pi\Z$. Let
+\[
+ R_\theta(t)=\int_0^{e^{\ii\theta}\infty}
+                 e^{-\xi/t}\widehat R(\xi)\dd\xi
+\]
+on its Laplace sector, and write $V_\theta=\SU_\theta V$ for the
+corresponding sum of the inverse series. For sufficiently small $q$
+in any smaller common sector,
+\begin{equation}\label{eq:summed-inverse}
+ V_\theta(q,u)+\frac u2V_\theta(q,u)^2
+       +uR_\theta\bigl(qe^{-V_\theta(q,u)}\bigr)=0.
+\end{equation}
+This is the unique small solution with $V_\theta(q,u)=O(q)$.
+\end{theorem}
+\begin{proof}
+Choose an open arc about $\theta$ whose closure avoids the real
+directions. Proposition~\ref{prop:forward-Borel} and
+Lemma~\ref{lem:kernel-growth} give the analytic continuation and exponential
+growth condition for $1$-summability of $R$ throughout this arc.
+The logarithmic bound is stronger than the required bound of exponential
+type.
+
+Apply the summable version of Proposition~\ref{prop:Sauzin-input} to the
+same operations as in \eqref{eq:hG}--\eqref{eq:inverse-parametrization}.
+Multiplication by $x$ causes no difficulty: its Borel action is
+differentiation, and Cauchy's estimate on a slightly smaller angular
+domain preserves an exponential growth bound. Thus $h$, $G-x$, $T-x$,
+and $V$ are $1$-summable. Summation commutes with their analytic
+substitutions and inverse relations on smaller sectors. In particular,
+putting
+\[
+ h_\theta(t)=\frac{\sqrt{1-2u^2R_\theta(t)}-1}{u}
+\]
+with the branch tending to zero, the summed parametrization has
+$V_\theta=h_\theta(t)$ and $t=qe^{-V_\theta}$. This proves
+\eqref{eq:summed-inverse}. At $u=0$, all statements follow from $V=0$.
+
+For uniqueness, the summed forward function and its derivative satisfy
+$R_\theta(t)=-t/4+O(t^2)$ and
+$R_\theta'(t)=-1/4+O(t)$ on every smaller sector.
+The map
+\[
+ w\longmapsto-\frac u2w^2-uR_\theta(qe^{-w})
+\]
+therefore has derivative $O_u(|q|)$ on a disk $|w|\le M|q|$ and maps
+that disk into itself for a suitable fixed $M$ and sufficiently small
+$q$. The contraction argument proves uniqueness there. Any solution
+that is $O(q)$ enters such a disk after decreasing the sector radius.
+\end{proof}
+
+The preceding sum is defined by Borel--Laplace summation of the divergent
+formal tail. It is not an ordinary sum of its exponential sectors.
+The real-direction completions of the forward Lambert function are
+specified in \cite{incoming}; their upper and lower choices can subsequently
+be transported through \eqref{eq:summed-inverse}. The continuation theorem
+does not require identifying those choices with an arithmetic average.
+
