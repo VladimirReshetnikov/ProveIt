@@ -4906,6 +4906,54 @@ new genuine-box refutation over 1,498 native modules. It also checks the
 existing refutation separately. Only `propext`, `Classical.choice` and
 `Quot.sound` occur. No refutation is counted as a positive companion proof.
 
+## L.28 Genuine global base cover and printed Lemma 16.3 (2026-10-11)
+
+`Proofs16IntegerIndexCells` proves that each proper integer progression
+inside a one-dimensional box's index interval transports to an ascending
+integer cell. Nonempty cells have nonnegative index starts; empty cells
+normalize their stored start separately. No cardinality or width is lost.
+`Proofs16IntegerCoarseCover` retains genuine certificates in the bounded
+fibre cover, with the same `3^k*M` graph bound and `min 2 width` guarantee.
+
+`Proofs16IntegerBaseCover` uses these certificates in the existing shared
+Freiman-family linearization. Canonicalization handles either input
+orientation while preserving carrier, width and all graph formulas. The
+global product property and cardinality bound supply the actual good
+domain and Freiman family through the greedy extraction. The resulting
+`IntegerPolyCoverAt 1` has a graph count `3*q` independent of the inner
+loss and the original cubic width exponent `2^(-27)*sigma^3/q^4`; no
+integer relation-cover conclusion is assumed.
+
+`Proofs16IntegerBaseSourceBounds` compares these controls with the printed
+dimension-one iteration `r = gamma^(-2)*multipleS theta gamma 1`. The fixed
+family satisfies `128*q <= r`. The printed width control is bounded by
+`u^4`, for `u = gamma*sigma/r`, and hence by the cubic exponent; its graph
+bound is at least `r` and therefore covers `3*q`. The exact proposition
+`lemma_16_3_integer_representatives` and its companion retain the printed
+controls for every prime modulus. `BaseIntegerFidelityAudit` checks all
+thirteen new public theorems and the exact statement over 1,503 native
+modules, allowing only the three standard axioms.
+
+## L.29 Genuine abstract family remainder step (2026-10-11)
+
+`Proofs16IntegerFamilyRemainder` applies the faithful remainder cover,
+then the genuine family Lemma 16.6, and flattens the refinements. The good
+sets intersect with the same total loss, and the width-transfer estimate
+and graph count are unchanged. Canonical product factors are selected
+from the final cells, so the base projections are ascending and the last
+axes have genuine integer representatives. This avoids inferring factor
+certificates from set-theoretic product identities alone.
+
+`integerAbstractFamilyLemma169At_explicit` uses the same named polynomial
+profile as L.25 and L.27 and requires only a nonzero modulus. Both spectrum
+and remainder relation covers are explicit induction hypotheses. The
+global base hypothesis is now proved in dimension one by L.28, but the
+higher-dimensional structural argument must still construct and propagate
+its required covers. `RemainderIntegerFidelityAudit` checks the three new
+public results, the exact explicit profile and all preceding audits over
+1,505 modules with only `propext`, `Classical.choice` and `Quot.sound`.
+The full statement-by-statement source-fidelity audit remains pending.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

@@ -124,8 +124,30 @@ Scope
   The abstract family lemma works over every nonzero modulus. It assumes
   the faithful lower-dimensional IntegerMultiplyLinearWith cover, as in
   the structural induction; that global hypothesis is not yet proved.
-  Remaining work includes the genuine base relation cover, the remainder
-  family argument and the Section 16 structural induction.
+  The base relation cover and abstract remainder step are supplied by the
+  following audits. Their use in the full Section 16 structural induction
+  remains open.
+
+  BaseIntegerFidelityAudit verifies thirteen new results over 1,503
+  modules, including the exact genuine integer-box Lemma 16.3. Ordinary
+  integer index cells transport to ascending cells, and the exact coarse
+  cover retains its 3^k*M graph count. Freiman-family linearization now
+  produces integer certificates with the original polynomial and cubic
+  controls. The global product property supplies a good domain and a fixed
+  family, yielding graph count 3*q independent of the inner loss and width
+  exponent 2^(-27)*sigma^3/q^4. The printed iteration budget is at least
+  128*q and absorbs these controls without changing the source bounds.
+  No relation-cover conclusion is assumed in this dimension-one result.
+
+  RemainderIntegerFidelityAudit verifies three further family remainder
+  and factor results over 1,505 modules. The abstract family Lemma 16.9
+  retains the same width transfer, graph count and good-set mass. Its cells,
+  canonical base projections and final axes have genuine integer
+  certificates. The explicit named profile works over every nonzero
+  modulus. The spectrum and remainder relation covers remain explicit
+  induction hypotheses; they must still be constructed in the higher
+  dimensional structural argument. All preceding audits and the sixteen
+  new positive results pass with only the three approved axioms.
 
   The paper's literal unbounded loss quantifier is now visibly corrected
   to 0<theta<=1. At theta=2, gamma=r=1, a width-two integer box in ZMod 2
@@ -177,6 +199,8 @@ Scope
     python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.RetiledIntegerFidelityAudit
   The extension through genuine short-parent and family covers is:
     python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.LocalIntegerFidelityAudit
+  The latest full check, including the genuine base and remainder step, is:
+    python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.RemainderIntegerFidelityAudit
   The exact input hashes and verification results are recorded in
     Research/GowersSzemeredi/verification/2026-10-11-numbered-and-bounds.json
   The source ledger records every numbered definition, TeX heading lines,
