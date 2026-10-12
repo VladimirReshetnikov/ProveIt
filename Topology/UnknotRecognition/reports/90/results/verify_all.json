@@ -1,0 +1,1284 @@
+{
+  "schema": "unknot-hierarchy-kernels-validation-v1",
+  "started_utc": "2026-10-12T18:59:54.655153+00:00",
+  "python": "3.12.14",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "runner": {
+    "path": "verify_all.py",
+    "bytes": 19162,
+    "sha256": "550bcbbb14693f8e9a9c291aafd10ebe993497092cd4f9ee24f2af0f9599f618"
+  },
+  "selected_groups": [
+    "routing_tests",
+    "geometry_tests",
+    "cancellation_tests",
+    "routing_replays",
+    "geometry_replays",
+    "cancellation_replay"
+  ],
+  "scope": "Retained unit tests and producer-disabled saved-certificate replays. No benchmarks, external oracle census, diagram recognition, or PDF build.",
+  "groups": [
+    {
+      "kind": "tests",
+      "tests_discovered": 27,
+      "tests_run": 27,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "skipped_tests": [],
+      "passed": true,
+      "group": "routing_tests",
+      "elapsed_seconds": 1.3998439630013308,
+      "exit_code": 0,
+      "log": "results/verification/routing_tests.log",
+      "result_file": "results/verification/routing_tests.json",
+      "cwd": ".",
+      "pythonpath": [
+        "code"
+      ],
+      "process_elapsed_seconds": 1.518737130001682
+    },
+    {
+      "kind": "tests",
+      "tests_discovered": 14,
+      "tests_run": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "skipped_tests": [],
+      "passed": true,
+      "group": "geometry_tests",
+      "elapsed_seconds": 0.5532751729988377,
+      "exit_code": 0,
+      "log": "results/verification/geometry_tests.log",
+      "result_file": "results/verification/geometry_tests.json",
+      "cwd": "geometry",
+      "pythonpath": [
+        "geometry/code",
+        "geometry/vendor"
+      ],
+      "process_elapsed_seconds": 0.6685523840023961
+    },
+    {
+      "kind": "tests",
+      "tests_discovered": 11,
+      "tests_run": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "skipped_tests": [],
+      "passed": true,
+      "group": "cancellation_tests",
+      "elapsed_seconds": 2.695363921000535,
+      "exit_code": 0,
+      "log": "results/verification/cancellation_tests.log",
+      "result_file": "results/verification/cancellation_tests.json",
+      "cwd": "cancellation",
+      "pythonpath": [
+        "cancellation"
+      ],
+      "process_elapsed_seconds": 2.7719026590020803
+    },
+    {
+      "kind": "replays",
+      "certificates_checked": 4,
+      "certificates_accepted": 4,
+      "producer_entrypoints_disabled": [
+        "routed_patterns.core.solve",
+        "routed_patterns.core.build_kernel",
+        "routed_patterns.core.plan_block",
+        "routed_patterns.core.source_witness",
+        "routed_patterns.core.components",
+        "routed_patterns.core.certify_cubic_graph",
+        "routed_patterns.stable.solve",
+        "routed_patterns.stable.reblock_chain",
+        "routed_patterns.stable.build_kernel",
+        "routed_patterns.stable.through_components",
+        "routed_patterns.stable.aligned_solve",
+        "routed_patterns.stable.aligned_build_kernel",
+        "routed_patterns.stable.aligned_components",
+        "pattern_kernel.core.certify_cubic_graph",
+        "pattern_kernel.core._flow",
+        "pattern_kernel.core.solve",
+        "pattern_kernel.core.kernelize",
+        "pattern_kernel.core.expand",
+        "pattern_kernel.core.lift_witness"
+      ],
+      "cases": [
+        {
+          "certificate_path": "examples/mixed_1025_bits_certificate.json",
+          "passed": true,
+          "source_file": {
+            "path": "examples/mixed_1025_bits.json",
+            "bytes": 1567,
+            "sha256": "901436d24532a9a8043d021a61d07507e96eaef83f4663b32bf2cbf626a866ce"
+          },
+          "certificate_file": {
+            "path": "examples/mixed_1025_bits_certificate.json",
+            "bytes": 8616,
+            "sha256": "a116db4e6bea675afc7d62199004f19694765deff626171ea140e5b6eaad90d2"
+          },
+          "schema": "routed-cubic-cut-v1",
+          "verdict": "LOW_CYCLIC_CUT",
+          "original_source_witness": {
+            "cost": 3,
+            "crossings": [
+              {
+                "block": 0,
+                "copy": "0x0",
+                "edge": 1
+              },
+              {
+                "block": 0,
+                "copy": "0x0",
+                "edge": 2
+              },
+              {
+                "block": 0,
+                "copy": "0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                "edge": 0
+              }
+            ],
+            "anchors": [
+              {
+                "block": 0,
+                "copy": "0x1",
+                "edge": 3
+              },
+              {
+                "block": 0,
+                "copy": "0x0",
+                "edge": 0
+              }
+            ]
+          }
+        },
+        {
+          "certificate_path": "examples/positive_tetrahedron_certificate.json",
+          "passed": true,
+          "source_file": {
+            "path": "examples/positive_tetrahedron.json",
+            "bytes": 620,
+            "sha256": "f810fa34c873afe0a20367b709d5861099a785a672103518305fdbd9604ed19c"
+          },
+          "certificate_file": {
+            "path": "examples/positive_tetrahedron_certificate.json",
+            "bytes": 3206,
+            "sha256": "66ed56aae27844842d995d28856d7cebb86fbb8e494643294e38cd357cf86bf1"
+          },
+          "schema": "routed-cubic-cut-v1",
+          "verdict": "NO_LOW_CYCLIC_CUT"
+        },
+        {
+          "certificate_path": "examples/routed_4097_bits_certificate.json",
+          "passed": true,
+          "source_file": {
+            "path": "examples/routed_4097_bits.json",
+            "bytes": 1644,
+            "sha256": "5e3b77442617c990196c7b6daefbbd52377c9a4b3b1b47adecbebd57a4e432ab"
+          },
+          "certificate_file": {
+            "path": "examples/routed_4097_bits_certificate.json",
+            "bytes": 9153,
+            "sha256": "75314ba7c91804c7dec2ee858c8ba57b279281db7a5527c0a74f97bdc188c1d6"
+          },
+          "schema": "routed-cubic-cut-v1",
+          "verdict": "LOW_CYCLIC_CUT",
+          "original_source_witness": {
+            "cost": 3,
+            "crossings": [
+              {
+                "block": 0,
+                "copy": "0x0",
+                "edge": 1
+              },
+              {
+                "block": 0,
+                "copy": "0x0",
+                "edge": 2
+              },
+              {
+                "block": 0,
+                "copy": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                "edge": 0
+              }
+            ],
+            "anchors": [
+              {
+                "block": 0,
+                "copy": "0x1",
+                "edge": 3
+              },
+              {
+                "block": 0,
+                "copy": "0x0",
+                "edge": 0
+              }
+            ]
+          }
+        },
+        {
+          "certificate_path": "examples/through_4097_bits_certificate.json",
+          "passed": true,
+          "source_file": {
+            "path": "examples/through_4097_bits.json",
+            "bytes": 1806,
+            "sha256": "d949ccfb9cff47f5fe6eafd7ac3740c95f8dfb9ebda39644a50b20dcb9ee3d52"
+          },
+          "certificate_file": {
+            "path": "examples/through_4097_bits_certificate.json",
+            "bytes": 11384,
+            "sha256": "466a3f5fc2fe7e55e77023325e81b0004b41ca207602c62b4fa0bbe75aaa18de"
+          },
+          "schema": "stable-routed-cubic-cut-v1",
+          "verdict": "LOW_CYCLIC_CUT",
+          "original_source_witness": {
+            "cost": 3,
+            "crossings": [
+              {
+                "block": 0,
+                "copy": "0x0",
+                "edge": 1
+              },
+              {
+                "block": 0,
+                "copy": "0x2",
+                "edge": 2
+              },
+              {
+                "block": 0,
+                "copy": "0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                "edge": 3
+              }
+            ],
+            "anchors": [
+              {
+                "block": 0,
+                "copy": "0x0",
+                "edge": 2
+              },
+              {
+                "block": 0,
+                "copy": "0x0",
+                "edge": 0
+              }
+            ]
+          }
+        }
+      ],
+      "passed": true,
+      "group": "routing_replays",
+      "elapsed_seconds": 0.00973139999769046,
+      "exit_code": 0,
+      "log": "results/verification/routing_replays.log",
+      "result_file": "results/verification/routing_replays.json",
+      "cwd": ".",
+      "pythonpath": [
+        "code"
+      ],
+      "process_elapsed_seconds": 0.11460834799800068
+    },
+    {
+      "kind": "replays",
+      "certificates_checked": 5,
+      "certificates_accepted": 5,
+      "producer_entrypoints_disabled": [
+        "unsaturated_bundles.native.normal_cut_unsaturated_handlebodies",
+        "unsaturated_bundles.native.make_certificate",
+        "unsaturated_bundles.finite.make_certificate",
+        "fastunknot.normal_parallelity.normal_cut_parallelity",
+        "fastunknot.core_handlebody.core_handlebody_certificate",
+        "fastunknot.parallelity_boundary_words.normal_parallelity_boundary_words",
+        "fastunknot.normal_cut_handlebodies.normal_cut_handlebodies"
+      ],
+      "cases": [
+        {
+          "certificate_path": "geometry/evidence/lst_3_8_mixed_certificate.json",
+          "passed": true,
+          "file": {
+            "path": "geometry/evidence/lst_3_8_mixed_certificate.json",
+            "bytes": 625598,
+            "sha256": "e28033959a74e9d83ca873877116d1aa1f044f3c14f2ad4d8406f1ea64cba76b"
+          },
+          "schema": "normal-cut-unsaturated-handlebodies-v1",
+          "verified_census": {
+            "histogram": [
+              {
+                "genus": 0,
+                "multiplicity": 1
+              },
+              {
+                "genus": 1,
+                "multiplicity": 2
+              }
+            ],
+            "components": 3,
+            "ball_components": 1,
+            "one_ball": false,
+            "euler_characteristic": 1,
+            "joined": [
+              {
+                "cores": [
+                  19
+                ],
+                "bases": [
+                  0
+                ],
+                "attachments": [
+                  2
+                ],
+                "cycle_rank": 0,
+                "residual_rank": 0,
+                "genus": 1
+              },
+              {
+                "cores": [
+                  0
+                ],
+                "bases": [
+                  1
+                ],
+                "attachments": [
+                  0,
+                  1
+                ],
+                "cycle_rank": 1,
+                "residual_rank": 0,
+                "genus": 1
+              },
+              {
+                "cores": [
+                  2
+                ],
+                "bases": [],
+                "attachments": [],
+                "cycle_rank": 0,
+                "residual_rank": 0,
+                "genus": 0
+              }
+            ],
+            "isolated": [],
+            "reductions": [
+              {
+                "base": 0,
+                "intervals": 0,
+                "circles": 1,
+                "one_handles": 0,
+                "residual_rank": 0
+              },
+              {
+                "base": 1,
+                "intervals": 2,
+                "circles": 0,
+                "one_handles": 1,
+                "residual_rank": 0
+              }
+            ]
+          }
+        },
+        {
+          "certificate_path": "geometry/evidence/pilot_lst_5_7_0_certificate.json",
+          "passed": true,
+          "file": {
+            "path": "geometry/evidence/pilot_lst_5_7_0_certificate.json",
+            "bytes": 190360,
+            "sha256": "7cf17b368fb239dcec54b442399355517e1fb7d9afd5ff5399cd2d8d8f4e32e1"
+          },
+          "schema": "normal-cut-unsaturated-handlebodies-v1",
+          "verified_census": {
+            "histogram": [
+              {
+                "genus": 1,
+                "multiplicity": 1
+              },
+              {
+                "genus": 2,
+                "multiplicity": 1
+              }
+            ],
+            "components": 2,
+            "ball_components": 0,
+            "one_ball": false,
+            "euler_characteristic": -1,
+            "joined": [
+              {
+                "cores": [
+                  0,
+                  12
+                ],
+                "bases": [
+                  0
+                ],
+                "attachments": [
+                  0,
+                  1
+                ],
+                "cycle_rank": 0,
+                "residual_rank": 0,
+                "genus": 2
+              },
+              {
+                "cores": [
+                  1
+                ],
+                "bases": [],
+                "attachments": [],
+                "cycle_rank": 0,
+                "residual_rank": 0,
+                "genus": 1
+              }
+            ],
+            "isolated": [],
+            "reductions": [
+              {
+                "base": 0,
+                "intervals": 1,
+                "circles": 1,
+                "one_handles": 1,
+                "residual_rank": 0
+              }
+            ]
+          }
+        },
+        {
+          "certificate_path": "geometry/evidence/pilot_pachner23_3_5_1_0_certificate.json",
+          "passed": true,
+          "file": {
+            "path": "geometry/evidence/pilot_pachner23_3_5_1_0_certificate.json",
+            "bytes": 232074,
+            "sha256": "5a9fbc6302c8fcd09347617fcccd0ce69789998040fe459d1ade0ac2489fbc29"
+          },
+          "schema": "normal-cut-unsaturated-handlebodies-v1",
+          "verified_census": {
+            "histogram": [
+              {
+                "genus": 1,
+                "multiplicity": 2
+              }
+            ],
+            "components": 2,
+            "ball_components": 0,
+            "one_ball": false,
+            "euler_characteristic": 0,
+            "joined": [
+              {
+                "cores": [
+                  1
+                ],
+                "bases": [
+                  0
+                ],
+                "attachments": [
+                  0
+                ],
+                "cycle_rank": 0,
+                "residual_rank": 0,
+                "genus": 1
+              },
+              {
+                "cores": [
+                  0
+                ],
+                "bases": [],
+                "attachments": [],
+                "cycle_rank": 0,
+                "residual_rank": 0,
+                "genus": 1
+              }
+            ],
+            "isolated": [],
+            "reductions": [
+              {
+                "base": 0,
+                "intervals": 0,
+                "circles": 1,
+                "one_handles": 0,
+                "residual_rank": 0
+              }
+            ]
+          }
+        },
+        {
+          "certificate_path": "geometry/evidence/pilot_pachner23_5_8_1_0_certificate.json",
+          "passed": true,
+          "file": {
+            "path": "geometry/evidence/pilot_pachner23_5_8_1_0_certificate.json",
+            "bytes": 295072,
+            "sha256": "d7c191884a9d8118f41503709b28df826be75a60f455f4bb9a73acc35dc93e51"
+          },
+          "schema": "normal-cut-unsaturated-handlebodies-v1",
+          "verified_census": {
+            "histogram": [
+              {
+                "genus": 1,
+                "multiplicity": 2
+              }
+            ],
+            "components": 2,
+            "ball_components": 0,
+            "one_ball": false,
+            "euler_characteristic": 0,
+            "joined": [
+              {
+                "cores": [
+                  4
+                ],
+                "bases": [
+                  0
+                ],
+                "attachments": [
+                  0
+                ],
+                "cycle_rank": 0,
+                "residual_rank": 0,
+                "genus": 1
+              },
+              {
+                "cores": [
+                  0
+                ],
+                "bases": [],
+                "attachments": [],
+                "cycle_rank": 0,
+                "residual_rank": 0,
+                "genus": 1
+              }
+            ],
+            "isolated": [],
+            "reductions": [
+              {
+                "base": 0,
+                "intervals": 0,
+                "circles": 1,
+                "one_handles": 0,
+                "residual_rank": 0
+              }
+            ]
+          }
+        },
+        {
+          "certificate_path": "geometry/evidence/pilot_pachner23_5_8_2_0_certificate.json",
+          "passed": true,
+          "file": {
+            "path": "geometry/evidence/pilot_pachner23_5_8_2_0_certificate.json",
+            "bytes": 413307,
+            "sha256": "f3ef691af00e94b4cfde1fc22671fbbab6f9567f95681b69b42cddd568d5fa71"
+          },
+          "schema": "normal-cut-unsaturated-handlebodies-v1",
+          "verified_census": {
+            "histogram": [
+              {
+                "genus": 1,
+                "multiplicity": 2
+              }
+            ],
+            "components": 2,
+            "ball_components": 0,
+            "one_ball": false,
+            "euler_characteristic": 0,
+            "joined": [
+              {
+                "cores": [
+                  1
+                ],
+                "bases": [
+                  0
+                ],
+                "attachments": [
+                  0
+                ],
+                "cycle_rank": 0,
+                "residual_rank": 0,
+                "genus": 1
+              },
+              {
+                "cores": [
+                  0
+                ],
+                "bases": [],
+                "attachments": [],
+                "cycle_rank": 0,
+                "residual_rank": 0,
+                "genus": 1
+              }
+            ],
+            "isolated": [],
+            "reductions": [
+              {
+                "base": 0,
+                "intervals": 0,
+                "circles": 1,
+                "one_handles": 0,
+                "residual_rank": 0
+              }
+            ]
+          }
+        }
+      ],
+      "passed": true,
+      "group": "geometry_replays",
+      "elapsed_seconds": 0.3444073409991688,
+      "exit_code": 0,
+      "log": "results/verification/geometry_replays.log",
+      "result_file": "results/verification/geometry_replays.json",
+      "cwd": "geometry",
+      "pythonpath": [
+        "geometry/code",
+        "geometry/vendor"
+      ],
+      "process_elapsed_seconds": 0.4659645760002604
+    },
+    {
+      "kind": "replays",
+      "certificates_checked": 1,
+      "certificates_accepted": 1,
+      "producer_entrypoints_disabled": [
+        "fastunknot.normal_vertex_gate.produce_vertex_disc_certificate",
+        "fastunknot.normal_vertex_gate._find_rank_minor",
+        "fastunknot.normal_weight_clusters.cluster_defect_search",
+        "fastunknot.normal_weight_clusters.enumerate_cluster_candidates"
+      ],
+      "cases": [
+        {
+          "certificate_path": "cancellation/artifacts/disconnected_disc.json",
+          "passed": true,
+          "file": {
+            "path": "cancellation/artifacts/disconnected_disc.json",
+            "bytes": 67711,
+            "sha256": "b32bcb5ba06d25cfbf3d6ae183af36d96a3ce777d2e58317fa2d20e57227a3af"
+          },
+          "schema": "normal-vertex-disc-rank-v1",
+          "tetrahedra": 15,
+          "replay_scope": "Supplied primitive essential disc; no negative census or search-completeness claim."
+        }
+      ],
+      "passed": true,
+      "group": "cancellation_replay",
+      "elapsed_seconds": 0.06644024799970794,
+      "exit_code": 0,
+      "log": "results/verification/cancellation_replay.log",
+      "result_file": "results/verification/cancellation_replay.json",
+      "cwd": "cancellation",
+      "pythonpath": [
+        "cancellation"
+      ],
+      "process_elapsed_seconds": 0.1648291950004932
+    }
+  ],
+  "status": "PASSED",
+  "all_passed": true,
+  "pinned_dependencies": {
+    "passed": true,
+    "module_files_checked": 72,
+    "fixture_files_hash_checked": 1,
+    "files": [
+      {
+        "path": "geometry/vendor/fastunknot/core_handlebody.py",
+        "kind": "geometry_module",
+        "expected_sha256": "780d4e72d9aa432421bc6f2df491c25564a738f4aa96b22f2f1513fb6924bf29",
+        "bytes": 7239,
+        "sha256": "780d4e72d9aa432421bc6f2df491c25564a738f4aa96b22f2f1513fb6924bf29",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/fastunknot/core_handlebody_verify.py",
+        "kind": "geometry_module",
+        "expected_sha256": "751f2574b2574b5d891a41ee5a05fb8a72a15018a359837bb06388ad23ebb601",
+        "bytes": 5282,
+        "sha256": "751f2574b2574b5d891a41ee5a05fb8a72a15018a359837bb06388ad23ebb601",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/fastunknot/integer_codec.py",
+        "kind": "geometry_module",
+        "expected_sha256": "1602e40df0cfde534e73195f46edfdba74aa72c087d65ad0370153e45789e97a",
+        "bytes": 3358,
+        "sha256": "1602e40df0cfde534e73195f46edfdba74aa72c087d65ad0370153e45789e97a",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/fastunknot/interval_incidence.py",
+        "kind": "geometry_module",
+        "expected_sha256": "185ab1dabb947ac0d5bcedd6c0557f965d2d318ba388e873708296d344dd7cbb",
+        "bytes": 10152,
+        "sha256": "185ab1dabb947ac0d5bcedd6c0557f965d2d318ba388e873708296d344dd7cbb",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/fastunknot/interval_merger.py",
+        "kind": "geometry_module",
+        "expected_sha256": "c64c9bb9bae5e638914def487095eab26b54d530a85d3daa35a7dfc487de49fe",
+        "bytes": 12764,
+        "sha256": "c64c9bb9bae5e638914def487095eab26b54d530a85d3daa35a7dfc487de49fe",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/fastunknot/interval_orbit_verify.py",
+        "kind": "geometry_module",
+        "expected_sha256": "890f30139142a7ccea59d266df2a9f255868c9a7bdbdf07460117941575fa835",
+        "bytes": 13051,
+        "sha256": "890f30139142a7ccea59d266df2a9f255868c9a7bdbdf07460117941575fa835",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/fastunknot/interval_orbits.py",
+        "kind": "geometry_module",
+        "expected_sha256": "d2453b781c1b9e77384a1db6a6942d0adaea00dc87d93166c9000c5077a784a1",
+        "bytes": 23645,
+        "sha256": "d2453b781c1b9e77384a1db6a6942d0adaea00dc87d93166c9000c5077a784a1",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/fastunknot/interval_race.py",
+        "kind": "geometry_module",
+        "expected_sha256": "fb558a474510f4fbb40e658137c39103b76b80b45c9b10fdc63364ffb312ac91",
+        "bytes": 4115,
+        "sha256": "fb558a474510f4fbb40e658137c39103b76b80b45c9b10fdc63364ffb312ac91",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/fastunknot/normal_cut_boundary.py",
+        "kind": "geometry_module",
+        "expected_sha256": "1f3874dcb79f7fb7a1ccfdb7da5b6b475f45f43186f578deae8342ce99fb2c40",
+        "bytes": 22317,
+        "sha256": "1f3874dcb79f7fb7a1ccfdb7da5b6b475f45f43186f578deae8342ce99fb2c40",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/fastunknot/normal_cut_boundary_verify.py",
+        "kind": "geometry_module",
+        "expected_sha256": "36237433c80903044ff4cfc567b3a93e2ff70a5da275f9ad434623164040ceb2",
+        "bytes": 20385,
+        "sha256": "36237433c80903044ff4cfc567b3a93e2ff70a5da275f9ad434623164040ceb2",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/fastunknot/normal_cut_cells_verify.py",
+        "kind": "geometry_module",
+        "expected_sha256": "55036fc813298b45c9147374dfd1ba2003412c9bf6b7b0a570c15cfeec5aec8f",
+        "bytes": 14488,
+        "sha256": "55036fc813298b45c9147374dfd1ba2003412c9bf6b7b0a570c15cfeec5aec8f",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/fastunknot/normal_cut_complement.py",
+        "kind": "geometry_module",
+        "expected_sha256": "14abc5147f069ad274d533e8155a22b31d96400a77daf168dd621329d8eabfc5",
+        "bytes": 6078,
+        "sha256": "14abc5147f069ad274d533e8155a22b31d96400a77daf168dd621329d8eabfc5",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/fastunknot/normal_cut_complement_verify.py",
+        "kind": "geometry_module",
+        "expected_sha256": "90f42984134bb614ac97c46eece48a333154003554fdee35b2cac8ad6d1b5dd7",
+        "bytes": 5787,
+        "sha256": "90f42984134bb614ac97c46eece48a333154003554fdee35b2cac8ad6d1b5dd7",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/fastunknot/normal_cut_handlebodies.py",
+        "kind": "geometry_module",
+        "expected_sha256": "e0058a16a9c072e1e08b3ebdacc026005ee20430353a6060fa83fdf9891b8771",
+        "bytes": 7338,
+        "sha256": "e0058a16a9c072e1e08b3ebdacc026005ee20430353a6060fa83fdf9891b8771",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/fastunknot/normal_cut_handlebodies_verify.py",
+        "kind": "geometry_module",
+        "expected_sha256": "2a0fbd68ddd22475c16e25dabb51e60088664835118e8ea5e840ba953be74f3c",
+        "bytes": 6344,
+        "sha256": "2a0fbd68ddd22475c16e25dabb51e60088664835118e8ea5e840ba953be74f3c",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/fastunknot/normal_parallelity.py",
+        "kind": "geometry_module",
+        "expected_sha256": "45ca9f57e2a8bea4bc75d35eba5a09ff36bce9e092e84d07477b20e7f66570dc",
+        "bytes": 9170,
+        "sha256": "45ca9f57e2a8bea4bc75d35eba5a09ff36bce9e092e84d07477b20e7f66570dc",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/fastunknot/normal_parallelity_geometry.py",
+        "kind": "geometry_module",
+        "expected_sha256": "9c2a0aa2f5b15089c6ae2571c4a8baef75afd472105f0bb0635a8579eff2a113",
+        "bytes": 17140,
+        "sha256": "9c2a0aa2f5b15089c6ae2571c4a8baef75afd472105f0bb0635a8579eff2a113",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/fastunknot/normal_parallelity_reference.py",
+        "kind": "geometry_module",
+        "expected_sha256": "8fbec25d15eb38abd422029c9c5c57178cd136d7f15ab7371e832bd67b1cbf84",
+        "bytes": 16836,
+        "sha256": "8fbec25d15eb38abd422029c9c5c57178cd136d7f15ab7371e832bd67b1cbf84",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/fastunknot/normal_parallelity_verify.py",
+        "kind": "geometry_module",
+        "expected_sha256": "27961cc628fe47cd477aefc90bbab52a306994b9f8dedeb2c177ef7a199f406b",
+        "bytes": 8754,
+        "sha256": "27961cc628fe47cd477aefc90bbab52a306994b9f8dedeb2c177ef7a199f406b",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/fastunknot/normal_surface_geometry.py",
+        "kind": "geometry_module",
+        "expected_sha256": "3c7e818428ea60d2a331e9eb3a457dc1baefdb135fe18bf5af3c1b2868839281",
+        "bytes": 18882,
+        "sha256": "3c7e818428ea60d2a331e9eb3a457dc1baefdb135fe18bf5af3c1b2868839281",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/fastunknot/orbit_transversal.py",
+        "kind": "geometry_module",
+        "expected_sha256": "4b5efc9d99e1373f378c213b6511441b5d0e078770744ec07d0414d8333ef100",
+        "bytes": 7845,
+        "sha256": "4b5efc9d99e1373f378c213b6511441b5d0e078770744ec07d0414d8333ef100",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/fastunknot/orbit_transversal_verify.py",
+        "kind": "geometry_module",
+        "expected_sha256": "583e8d41a48142cf4e84b70a2f5590b33703b8e4b1c4d700bb8d5cf9184fb6dd",
+        "bytes": 5568,
+        "sha256": "583e8d41a48142cf4e84b70a2f5590b33703b8e4b1c4d700bb8d5cf9184fb6dd",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/fastunknot/parallelity_boundary_words.py",
+        "kind": "geometry_module",
+        "expected_sha256": "088b7c8fb78d1dd56216e05c5d986425b1722a319a5699e301ff45d5b1e3ae4e",
+        "bytes": 11575,
+        "sha256": "088b7c8fb78d1dd56216e05c5d986425b1722a319a5699e301ff45d5b1e3ae4e",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/fastunknot/parallelity_boundary_words_verify.py",
+        "kind": "geometry_module",
+        "expected_sha256": "eae94a660642fe44f9c1e204f2f10f6f5d9a86dd34ee307993811daf34c72ca9",
+        "bytes": 10776,
+        "sha256": "eae94a660642fe44f9c1e204f2f10f6f5d9a86dd34ee307993811daf34c72ca9",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/fastunknot/weighted_orbit_verify.py",
+        "kind": "geometry_module",
+        "expected_sha256": "0965e5b920a5645a6579e56050f8e149e77ea22d62485e58690adf6cbe39df95",
+        "bytes": 14870,
+        "sha256": "0965e5b920a5645a6579e56050f8e149e77ea22d62485e58690adf6cbe39df95",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/fastunknot/weighted_orbits.py",
+        "kind": "geometry_module",
+        "expected_sha256": "e68f0b6437a389277abdab14691794180f7591723f6b1a2b6c7145e79224dd3d",
+        "bytes": 15196,
+        "sha256": "e68f0b6437a389277abdab14691794180f7591723f6b1a2b6c7145e79224dd3d",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/fastunknot/weighted_transversal.py",
+        "kind": "geometry_module",
+        "expected_sha256": "2c6e562efe5d8ffa26782183abc1ada9f0b6823386f6f67918844f25f86a6aac",
+        "bytes": 7639,
+        "sha256": "2c6e562efe5d8ffa26782183abc1ada9f0b6823386f6f67918844f25f86a6aac",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/fastunknot/weighted_transversal_verify.py",
+        "kind": "geometry_module",
+        "expected_sha256": "b96f1eeb795f0819f0a532cdb4802f2f918f5ce0ee097c42b018380ad85cbfa0",
+        "bytes": 6243,
+        "sha256": "b96f1eeb795f0819f0a532cdb4802f2f918f5ce0ee097c42b018380ad85cbfa0",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/marked_parallelity_research/audit_census.py",
+        "kind": "geometry_module",
+        "expected_sha256": "e11c548c8ac11763ae58e6b5cd758e1ea0c1e2fb4ffe2af9ae2e2c4dde2afea1",
+        "bytes": 4486,
+        "sha256": "e11c548c8ac11763ae58e6b5cd758e1ea0c1e2fb4ffe2af9ae2e2c4dde2afea1",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/normal_orbit_research/fixtures.py",
+        "kind": "geometry_module",
+        "expected_sha256": "f732a07d9e788c796d7e34b363f8139380a50841587d7bfad71f0017c864ddf4",
+        "bytes": 5844,
+        "sha256": "f732a07d9e788c796d7e34b363f8139380a50841587d7bfad71f0017c864ddf4",
+        "passed": true
+      },
+      {
+        "path": "geometry/vendor/marked_parallelity_research/corpus.json",
+        "kind": "geometry_fixture",
+        "expected_sha256": "97b4ceed6f068885760d80dea214538634998dd405b77e76926c1f93db03da5c",
+        "bytes": 461638,
+        "sha256": "97b4ceed6f068885760d80dea214538634998dd405b77e76926c1f93db03da5c",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/normal_surface_geometry.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "3c7e818428ea60d2a331e9eb3a457dc1baefdb135fe18bf5af3c1b2868839281",
+        "bytes": 18882,
+        "sha256": "3c7e818428ea60d2a331e9eb3a457dc1baefdb135fe18bf5af3c1b2868839281",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/pachner23.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "81eda23572029fb4548fc23cd7e4fc848030aa72c30e4a9efead39117206f254",
+        "bytes": 3667,
+        "sha256": "81eda23572029fb4548fc23cd7e4fc848030aa72c30e4a9efead39117206f254",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/pachner23_verify.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "b4a859c671161aa59e4ca8852b68f3c2b12ecb6aec0a02ff58888bd5c8028e1e",
+        "bytes": 3249,
+        "sha256": "b4a859c671161aa59e4ca8852b68f3c2b12ecb6aec0a02ff58888bd5c8028e1e",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/normal_orbit_research/fixtures.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "f732a07d9e788c796d7e34b363f8139380a50841587d7bfad71f0017c864ddf4",
+        "bytes": 5844,
+        "sha256": "f732a07d9e788c796d7e34b363f8139380a50841587d7bfad71f0017c864ddf4",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/normal_orbit_research/weight_defect.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "1a1215caaf6c1cc179e6770c0f93380696168094a594ffce76021b285788c396",
+        "bytes": 17863,
+        "sha256": "1a1215caaf6c1cc179e6770c0f93380696168094a594ffce76021b285788c396",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/normal_weight_defect.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "412c1054fabf148ea133e2821e46f5b31a2ebbdb194bae57de86403b3312e239",
+        "bytes": 22136,
+        "sha256": "412c1054fabf148ea133e2821e46f5b31a2ebbdb194bae57de86403b3312e239",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/normal_disk_kernel.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "d5bb1c102616496b8f3d48f715d1c53c083c6751cee9fccd94289ba723710e44",
+        "bytes": 14349,
+        "sha256": "d5bb1c102616496b8f3d48f715d1c53c083c6751cee9fccd94289ba723710e44",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/normal_sector.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "68fcdff4b8cc3b3bd0033f66c3328cfbd42bbbbad36de855d3f77d430138fac5",
+        "bytes": 27578,
+        "sha256": "68fcdff4b8cc3b3bd0033f66c3328cfbd42bbbbad36de855d3f77d430138fac5",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/normal_cocycle.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "9340d8dcbdc7b51cffe078f425368722612d23f4c460d4fdd41f69d1cf831abc",
+        "bytes": 9429,
+        "sha256": "9340d8dcbdc7b51cffe078f425368722612d23f4c460d4fdd41f69d1cf831abc",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/integer_codec.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "1602e40df0cfde534e73195f46edfdba74aa72c087d65ad0370153e45789e97a",
+        "bytes": 3358,
+        "sha256": "1602e40df0cfde534e73195f46edfdba74aa72c087d65ad0370153e45789e97a",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/interval_orbits.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "d2453b781c1b9e77384a1db6a6942d0adaea00dc87d93166c9000c5077a784a1",
+        "bytes": 23645,
+        "sha256": "d2453b781c1b9e77384a1db6a6942d0adaea00dc87d93166c9000c5077a784a1",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/interval_incidence.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "185ab1dabb947ac0d5bcedd6c0557f965d2d318ba388e873708296d344dd7cbb",
+        "bytes": 10152,
+        "sha256": "185ab1dabb947ac0d5bcedd6c0557f965d2d318ba388e873708296d344dd7cbb",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/normal_sector_verify.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "ccbd0aa252bbf161f03e0a18aa634b0bf6ba4c3b1c24445707191953d552bc4f",
+        "bytes": 14797,
+        "sha256": "ccbd0aa252bbf161f03e0a18aa634b0bf6ba4c3b1c24445707191953d552bc4f",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/normal_orbit_research/coherent_obstruction.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "44ca6637db982d2ac8d2197339de65e637046f1e11b7d10f70976b5d6e017aed",
+        "bytes": 8769,
+        "sha256": "44ca6637db982d2ac8d2197339de65e637046f1e11b7d10f70976b5d6e017aed",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/normal_surface_components.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "17b9578da375a70b52cc75eaec25ad1941757dc7f38b1ec827b32a87514d11fe",
+        "bytes": 7298,
+        "sha256": "17b9578da375a70b52cc75eaec25ad1941757dc7f38b1ec827b32a87514d11fe",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/normal_component_verify.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "2f78aaadeb9ef53a83da7a75053812db85858ea46301146d486e8fc6e948457e",
+        "bytes": 6494,
+        "sha256": "2f78aaadeb9ef53a83da7a75053812db85858ea46301146d486e8fc6e948457e",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/normal_support_peeling.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "8e94aef111247af441e650eec7dcf716735f995078d85d7a72fc568530f22386",
+        "bytes": 3148,
+        "sha256": "8e94aef111247af441e650eec7dcf716735f995078d85d7a72fc568530f22386",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/normal_support_peeling_verify.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "84693d75691c6fe4bc30ed1c17a77211b565e6939333c4211a4268652f7f0789",
+        "bytes": 3380,
+        "sha256": "84693d75691c6fe4bc30ed1c17a77211b565e6939333c4211a4268652f7f0789",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/normal_component_geometry.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "03cb9b5c909531c87b2e6fd906899b8d2afa4bcbe59af6af38e74063f4e0cbc4",
+        "bytes": 9810,
+        "sha256": "03cb9b5c909531c87b2e6fd906899b8d2afa4bcbe59af6af38e74063f4e0cbc4",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/sector_planar.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "967ed7348bd7bddecfb1308f78086432742d90ed19db0adbae74d5498dd21ab9",
+        "bytes": 21692,
+        "sha256": "967ed7348bd7bddecfb1308f78086432742d90ed19db0adbae74d5498dd21ab9",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/sector_envelope.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "879edae73639989618076e92180e9163eb55fecd40481afd49f7f68052241ad1",
+        "bytes": 10684,
+        "sha256": "879edae73639989618076e92180e9163eb55fecd40481afd49f7f68052241ad1",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/sector_euler.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "9b6a1efe87586fa1a0fcfc959e083e60dfca68f5ad55d7378423fa2bfaf5bb04",
+        "bytes": 8332,
+        "sha256": "9b6a1efe87586fa1a0fcfc959e083e60dfca68f5ad55d7378423fa2bfaf5bb04",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/sector_matching_support.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "74e356a0acf6b625787238e4a7843a69b70570d40f992efb823219aa0161ffc1",
+        "bytes": 7180,
+        "sha256": "74e356a0acf6b625787238e4a7843a69b70570d40f992efb823219aa0161ffc1",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/interval_merger.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "c64c9bb9bae5e638914def487095eab26b54d530a85d3daa35a7dfc487de49fe",
+        "bytes": 12764,
+        "sha256": "c64c9bb9bae5e638914def487095eab26b54d530a85d3daa35a7dfc487de49fe",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/interval_race.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "fb558a474510f4fbb40e658137c39103b76b80b45c9b10fdc63364ffb312ac91",
+        "bytes": 4115,
+        "sha256": "fb558a474510f4fbb40e658137c39103b76b80b45c9b10fdc63364ffb312ac91",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/interval_orbit_verify.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "890f30139142a7ccea59d266df2a9f255868c9a7bdbdf07460117941575fa835",
+        "bytes": 13051,
+        "sha256": "890f30139142a7ccea59d266df2a9f255868c9a7bdbdf07460117941575fa835",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/diagram_exterior.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "43fd690cf157916de6c68c333cb148f2e0e5bcca26d112662c7b2e1fa1f89365",
+        "bytes": 5478,
+        "sha256": "43fd690cf157916de6c68c333cb148f2e0e5bcca26d112662c7b2e1fa1f89365",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/coherent_family_verify.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "bab8bb42c4ade1ef799a1d8393fb61ea899cd76f0038721f8b69a04625197f5a",
+        "bytes": 3251,
+        "sha256": "bab8bb42c4ade1ef799a1d8393fb61ea899cd76f0038721f8b69a04625197f5a",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/integer_determinant.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "44319b20e2046a53472cb8a23736193bb4a1c7d35c7f6e08d7fdde5a67419a1e",
+        "bytes": 1012,
+        "sha256": "44319b20e2046a53472cb8a23736193bb4a1c7d35c7f6e08d7fdde5a67419a1e",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/normal_surface_orbits.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "300aa195a82fe23eb5e8b66785e1d7a727098d8919063fd6e5b610f1a9914ab0",
+        "bytes": 15723,
+        "sha256": "300aa195a82fe23eb5e8b66785e1d7a727098d8919063fd6e5b610f1a9914ab0",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/normal_surface_verify.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "b0f8bb336ebe8d728d147f54511ed2fc34db49aae7ed0394eedf05a0ffa0ecfa",
+        "bytes": 12474,
+        "sha256": "b0f8bb336ebe8d728d147f54511ed2fc34db49aae7ed0394eedf05a0ffa0ecfa",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/normal_coordinate_basis.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "a06aeffff154e7706af4ed5f2ca4c90c687ef321838427466b2d6cc6ba26983f",
+        "bytes": 2733,
+        "sha256": "a06aeffff154e7706af4ed5f2ca4c90c687ef321838427466b2d6cc6ba26983f",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/weighted_orbits.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "e68f0b6437a389277abdab14691794180f7591723f6b1a2b6c7145e79224dd3d",
+        "bytes": 15196,
+        "sha256": "e68f0b6437a389277abdab14691794180f7591723f6b1a2b6c7145e79224dd3d",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/weighted_orbit_verify.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "0965e5b920a5645a6579e56050f8e149e77ea22d62485e58690adf6cbe39df95",
+        "bytes": 14870,
+        "sha256": "0965e5b920a5645a6579e56050f8e149e77ea22d62485e58690adf6cbe39df95",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/sector_sparse.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "0816cc59ea27badc952b3e52622aabc1cbbd46d6c109e56af7cbb02c1f1464f3",
+        "bytes": 8767,
+        "sha256": "0816cc59ea27badc952b3e52622aabc1cbbd46d6c109e56af7cbb02c1f1464f3",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/diagram.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "729c74dcad9e5df72a5533ae8386ccfcfa6e968305ff4f0f5b504d8e27c04511",
+        "bytes": 18264,
+        "sha256": "729c74dcad9e5df72a5533ae8386ccfcfa6e968305ff4f0f5b504d8e27c04511",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/normal_cocycle_verify.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "6dbc09d422ea737df282d4eae294cd6b52e9b688a9080c3920db009a77624dd0",
+        "bytes": 5863,
+        "sha256": "6dbc09d422ea737df282d4eae294cd6b52e9b688a9080c3920db009a77624dd0",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/normal_surface_parity.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "129a95e8d730ee76e47bf56f22c0bfccaf12eb4f32b9c93242256a3c6aaccf9e",
+        "bytes": 3207,
+        "sha256": "129a95e8d730ee76e47bf56f22c0bfccaf12eb4f32b9c93242256a3c6aaccf9e",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/normal_coorientation.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "f6f3a6381ce2f4f2278fe2045fc70abaaa1163af49368c7474c28ace1440f751",
+        "bytes": 1016,
+        "sha256": "f6f3a6381ce2f4f2278fe2045fc70abaaa1163af49368c7474c28ace1440f751",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/rational.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "e9b15b050258d2682297e4a8adcd5e7dacd2de5d0ff3d65d76393f38da0f755b",
+        "bytes": 17243,
+        "sha256": "e9b15b050258d2682297e4a8adcd5e7dacd2de5d0ff3d65d76393f38da0f755b",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/diagram_exterior_verify.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "a200499bac549d094ce17e784c2bd3a7267cce874518a6c9974c5c900ef4123d",
+        "bytes": 5849,
+        "sha256": "a200499bac549d094ce17e784c2bd3a7267cce874518a6c9974c5c900ef4123d",
+        "passed": true
+      },
+      {
+        "path": "cancellation/runtime/fast/fastunknot/cocycle_span_verify.py",
+        "kind": "cancellation_module",
+        "expected_sha256": "f9e9bebfb20d3ae6576b4b64c472f8f89c3c447ca483ecdb674ffb9031713813",
+        "bytes": 3286,
+        "sha256": "f9e9bebfb20d3ae6576b4b64c472f8f89c3c447ca483ecdb674ffb9031713813",
+        "passed": true
+      }
+    ],
+    "cancellation_fixture_present": {
+      "path": "cancellation/runtime/synthesis/data/coherent-obstruction-certificate.json",
+      "bytes": 90395,
+      "sha256": "499dfe9b650248360dcbbf94fc2bb92f725b1524f2433b285fc6d79ede920f3c"
+    },
+    "namespace_shims": "Generated minimal __init__.py files are not upstream module copies."
+  },
+  "counts": {
+    "groups": 6,
+    "groups_passed": 6,
+    "test_methods_run": 52,
+    "test_failures": 0,
+    "test_errors": 0,
+    "test_skips": 0,
+    "saved_certificates_checked": 10,
+    "saved_certificates_accepted": 10
+  },
+  "finished_utc": "2026-10-12T19:00:00.381741+00:00"
+}

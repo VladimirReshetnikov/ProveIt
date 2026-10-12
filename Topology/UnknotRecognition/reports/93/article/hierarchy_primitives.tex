@@ -1,0 +1,126 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=24mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,tabularx,longtable}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage[numbers,square,sort&compress]{natbib}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,
+ urlcolor=blue!45!black,pdfusetitle]{hyperref}
+\usepackage{bookmark}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{problem}[theorem]{Research problem}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\poly}{\operatorname{poly}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\setlist{topsep=5pt,itemsep=3pt,parsep=0pt}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small ProveIt: unknot hierarchy primitives}
+\fancyhead[R]{\small Research continuation}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,
+ columns=fullflexible,keepspaces=true,showstringspaces=false,
+ frame=single,rulecolor=\color{black!15},xleftmargin=4pt,xrightmargin=4pt}
+
+\title{\textbf{Genus Budgets and Native Boundary Interfaces\\
+for Unknot Hierarchies}\\[8pt]
+\large Rigorous reductions, source-bound certificates, and a quantitative
+research program toward quasipolynomial recognition}
+\author{Research continuation for the ProveIt project\\
+\normalsize Prepared for Vladimir Reshetnikov}
+\date{12 October 2026}
+
+\begin{document}
+\maketitle
+\hypersetup{pdftitle={Genus Budgets and Native Boundary Interfaces for Unknot Hierarchies},
+ pdfauthor={Research continuation for the ProveIt project},
+ pdfsubject={Rigorous hierarchy primitives, source-bound certificates, and a quantitative research program},
+ pdfkeywords={unknot recognition, normal surfaces, handle structures, interval orbits, quasipolynomial complexity}}
+\thispagestyle{empty}
+\begin{abstract}
+We continue the ProveIt unknot-recognition program at a pinned repository
+state and examine four pending research packages.  The central problem is
+to turn efficient operations on compressed normal surfaces into a complete
+hierarchy algorithm with a proved quasipolynomial bound.  This article
+establishes and implements two missing local bridges and proves a
+structural reduction that explains their limits.
+
+First, cutting unused one-handle cocores in an irreducible manifold gives
+an exact Euler-deficit budget.  For connected boundary of genus $g$, at
+most $g$ nonball pieces survive, and ball absorption reduces their
+attachment network to at most $g-1$ handles.  In a torus source this yields
+either a solid-torus certificate or a unique inherited core.  A local
+tetrahedral argument proves initial empty-pattern admissibility of that
+core.  We implement authenticated diagram wrappers and independent
+geometric replay, and prove a certificate-size improvement from quadratic
+to $O(t\log t)$ bits on the specified Fibonacci layered family.
+
+Second, canonical ownership of native boundary edges permits one weighted
+orbit census to recover complete first-return data, including exact gap
+lengths and local fibre transport.  A compact arithmetic encoding replaces
+large endpoint masks; a conservation argument verifies pair occupancy
+without a separate count field.  The implementation reconstructs its
+source independently and is compared against both the maintained compiler
+and an explicit small-input oracle.
+
+We also derive an output-sensitive unmarked reconstruction bound and give
+a conditional global complexity theorem that identifies the remaining
+geometric and quantitative obligations.  The package includes proofs,
+source code, independent checkers, adversarial examples, raw measurements,
+and reproducible artifacts.  These results do not establish general
+quasipolynomial unknot recognition.  Measured regressions, unimplemented
+geometric outputs, and the distinction between source authentication and
+numerical summaries are stated explicitly.
+\end{abstract}
+
+\vfill
+{\noindent\small
+\textbf{Audited baseline.} \url{https://github.com/VladimirReshetnikov/ProveIt}\\
+Commit \texttt{704600626606a9097cfd89d4e3d2bbc63c8dd1cb}.\\
+The accompanying archive contains the complete article sources, executable
+research additions, a pinned Python source snapshot, and the evidence
+needed to reproduce the reported comparisons.  No recognition default is
+changed by this package.}
+\clearpage
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage
+
+\input{introduction.tex}
+\input{literature.tex}
+\input{attachment_kernel.tex}
+\input{unused_handles.tex}
+\input{native_moments.tex}
+\input{reconstruction.tex}
+\input{global_accounting.tex}
+\input{research_program.tex}
+\input{evidence.tex}
+
+\clearpage
+\bibliographystyle{plainnat}
+\bibliography{literature-references,repository-references}
+\end{document}

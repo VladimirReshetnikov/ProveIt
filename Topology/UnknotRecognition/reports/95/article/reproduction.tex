@@ -1,0 +1,121 @@
+\section{Reproduction and integration package}
+\label{sec:reproduction}
+
+The accompanying archive includes this PDF and all \LaTeX{} sources, the
+new producer and verifier modules, tests, raw source cases and certificates,
+the unchanged pinned runtime required by the examples, baseline comparison
+code, experiment scripts, and an additive integration patch.  No remote
+repository branch has been changed by this continuation.
+
+\subsection{Minimal commands}
+
+From the extracted package root, run the standard-library extension tests:
+\begin{verbatim}
+PYTHONPATH=code:runtime python3 -B -m unittest discover -s tests -v
+\end{verbatim}
+This includes all 106 precheck on/off comparisons and source replays.
+The recorded run used Python 3.12.14.  The optional explicit-cut audit
+additionally needs Regina, recorded as version 7.4:
+\begin{verbatim}
+PYTHONPATH=code:runtime python3 -B experiments/native_audit.py
+\end{verbatim}
+It repeats the old/new comparison and literal-cut oracle, retaining the
+normal-disc expansion cap.  To replay the saved certificates without
+rerunning discovery or the oracle, use:
+\begin{verbatim}
+PYTHONPATH=code:runtime python3 -B experiments/replay_saved.py
+\end{verbatim}
+
+Run the two benchmark scripts sequentially, with other experiment and test
+processes stopped:
+\begin{verbatim}
+python3 -B experiments/benchmark_column_peeling.py
+PYTHONPATH=code:runtime python3 -B experiments/benchmark_native.py
+\end{verbatim}
+The comparison scripts emit raw repetition arrays and A/A controls.
+Their results are local measurements and should be regenerated on the
+integration machine rather than treated as machine-independent constants.
+
+To regenerate the static figure and build the article, use:
+\begin{verbatim}
+python3 -B experiments/generate_figures.py
+python3 -B build_article.py
+\end{verbatim}
+Figure generation uses Matplotlib.  The supplied PNG and SVG are already
+present, so rebuilding the PDF itself requires only a normal \LaTeX{}
+installation with the packages named in the main source.  The build script
+runs \texttt{pdflatex} three times and preserves its log for inspection.
+
+\subsection{Important files}
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.46\linewidth}>{\raggedright\arraybackslash}p{0.49\linewidth}@{}}
+\toprule
+Path & Purpose\\
+\midrule
+\endhead
+\path{code/column_peeling.py} and
+\path{code/column_peeling_verify.py} & Sparse matrix producer and
+independent timestamp/stopping-set verifier\\
+\addlinespace
+\path{code/relative_bundles.py} and
+\path{code/relative_bundles_verify.py} & Finite geometric compiler and
+independent reconstruction\\
+\addlinespace
+\path{code/normal_cut_saturation.py} and
+\path{code/normal_cut_saturation_verify.py} & Complete source-bound
+wrapper and replay, including optional early core refusal\\
+\addlinespace
+\path{data/native_audit.json} & All 106 baseline/new results and actual
+Regina comparisons; no omitted refusals\\
+\addlinespace
+\path{data/core_precheck_audit.json} & Enabled/disabled comparisons,
+identical success proofs, and exact query savings\\
+\addlinespace
+\path{data/native_benchmark.json} & Complete-call timing repetitions
+and A/A controls\\
+\addlinespace
+\path{results/column_peeling_validation.json} and
+\path{results/column_peeling_benchmark.json} & Algebraic validation
+counts, exact work counters, and raw kernel timings\\
+\addlinespace
+\path{data/certificates/} & Seven new successes, legacy and binary
+controls, a full raw obstruction, and an early core obstruction\\
+\addlinespace
+\path{data/extension_tests.log} and
+\path{data/native_regression_pinned.log} & Final 37-method extension
+run and 1,663-test pinned baseline run\\
+\addlinespace
+\path{integration/additive_extension.patch} & Adds namespaced modules
+to the pinned repository without changing its default consumers\\
+\addlinespace
+\path{INTEGRATION.md} and \path{CLAIMS.md} & Proposed integration
+sequence, proof obligations, and boundaries of the claims\\
+\bottomrule
+\end{longtable}
+}
+
+The \path{runtime/fastunknot/} files and
+\path{baseline/core_handlebody_7046006.py} are unchanged excerpts of
+the inspected source.  Their original licensing accompanies the package.
+The main implementation can be reviewed separately from those reference
+files.  The observer-family lemma and ambient-block repair theorem are
+mathematical contributions only; no code in the package claims to solve
+their missing geometric input or transport problems.
+
+\subsection{A safe integration sequence}
+
+Apply the additive patch to a checkout containing the expected source
+interfaces, then import the new modules through the \texttt{fastunknot}
+namespace.  Verify saved source certificates and run the added focused
+tests before putting the operator behind an explicit experimental option.
+Preserve the old full-row consumer while comparing census agreement and
+full-call costs.  A later change to the default recognition schedule
+should state which selected surfaces reach this operator and how its
+unmarked census participates in the existing topological proof.
+
+The present contribution is complete as an opt-in research operator and
+reproducible article.  Its interface intentionally reports inconclusive
+cases that remain outside its hypotheses or fail its fixed geometric
+criterion.  Those retained cases, not a claim of general quasi-polynomial
+recognition, are the basis for the next research stage.

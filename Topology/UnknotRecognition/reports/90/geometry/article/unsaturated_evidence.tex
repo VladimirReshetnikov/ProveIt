@@ -1,0 +1,54 @@
+\subsection{Native coverage and measured costs}
+
+The complete retained source corpus contains 106 normal-cut inputs.  The
+previous disk-only classifier certified 30; the new unsaturated classifier
+certified 35 and preserved every previous census.  All 35 complete outputs
+passed independent source-proof replay.  Each of the five newly covered
+inputs was also cut explicitly by Regina 7.4; its component-by-component
+\texttt{recogniseHandlebody} results agreed exactly.  The remaining 71 cases
+consist of 55 saturated-base cases, 6 raw-cancellation stalls, and 10 cores
+with three-handles.  These are inconclusive outcomes, not non-handlebody
+verdicts.
+
+\begin{center}
+\begin{tabular}{lrrr}
+\hline
+Case & New+replay (ms) & Explicit Regina (ms) & Old (ms)\\
+\hline
+LST(5,7) & 51.439 & 3.025 & 20.729\\
+Pachner(3,5,1) & 51.711 & 1.215 & 29.976\\
+Pachner(5,8,1) & 82.614 & 2.037 & 42.635\\
+Pachner(5,8,2) & 208.660 & 2.774 & 96.788\\
+LST(3,8), mixed & 310.987 & 1.881 & 160.733\\
+Layered 1, one copy & 2.681 & 0.670 & 2.559\\
+Layered 4, eight copies & 423.763 & 24.471 & 433.749\\
+Layered 8, one copy & 1886.583 & 195.046 & 1779.949\\
+\hline
+\end{tabular}
+\end{center}
+
+The first five old results were \texttt{INCONCLUSIVE}; their times are not
+a speed baseline for a completed answer.  All new times include producer
+and source verifier, while Regina times include construction of the
+explicit cut, component separation, and recognition.  Five paired rounds
+were run after a warmup, with shuffled arm order and garbage collection
+outside the timers.  The three preserved cases had old/new paired median
+ratios $0.942$, $0.997$, and $0.908$.  On these small inputs the native
+certificate path is slower than the compiled Regina oracle.  The observed
+advance is additional certified coverage; no practical speedup is claimed
+for these fixtures.
+
+For the abstract proper-boundary model with an orientable genus
+$g=2^{16384}+17$ base, two boundary circles and one attached annulus,
+the output is one handlebody of genus $2g$.  It represents the
+$2g$ relative one-handles by an exact counter.  The encoded input has
+4,321 bytes and the formatted certificate has 25,130 bytes under the
+benchmark serialization.  Production and replay together took a median
+$0.180$ milliseconds over five rounds.  No explicit band system or
+large surface was constructed.  The finite prototype tests include 700
+random assembly comparisons, strict type and source-mutation checks,
+producer-disabled replay, saturated refusal, nonorientable-base formulas,
+and multiplicities exceeding $2^{20000}$.  Fourteen named test methods
+passed with the minimal pinned native runtime.  Timing values are
+machine-specific; the raw rounds, environment, source corpus hash, and
+five replayable new source certificates accompany the code.

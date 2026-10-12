@@ -1,0 +1,150 @@
+% LaTeX fragment for the parent manuscript.  This sharpens the incoming
+% general k+2 bound; the delivered production checker remains threshold three.
+
+\section{Exact universal cutoffs for connected tiles}
+\label{sec:exact-cutoffs}
+
+The incoming article established the universal connected-tile cutoff $k+2$
+and improved it sharply to four at threshold three.  Its further questions
+included the optimal cutoffs at other thresholds.  For the same unit-edge
+model with two exact monochromatic-edge marks, that question has the following
+complete answer.
+
+\begin{theorem}[Exact connected-tile stabilization threshold]
+\label{thm:exact-cutoff}
+For a nonnegative integer $k$, put
+\[
+ b_k=\begin{cases}
+ 1,&k=0,\\
+ 3,&k=1,\\
+ 4,&k=2,\\
+ k+1,&k\geq3.
+ \end{cases}
+\]
+For every connected tile $T$ and every positive integer $N$,
+\[
+ \mathsf S_k(T^{\circ N})
+   =\mathsf S_k(T^{\circ\min(N,b_k)}).
+\]
+No smaller cutoff works uniformly for all connected tiles in this model.
+\end{theorem}
+
+\begin{proof}[Upper bound]
+A connected tile has at least one edge because its nonempty input and output
+interfaces are disjoint.  A zero-cost coloring of any power is monochromatic,
+has one exact edge mark, and prescribes that same color on both interfaces.
+This proves the assertion at $k=0$.  For $k=1,2$, start with $N>k+2$
+copies and a coloring of cost at most $k$.  Retain all at most $k$
+positive-cost copies and at most one zero-cost copy of each color that
+appeared.  The latter copies are monochromatic, so their deletion does not
+change seam colors, and retaining one of each occurring color preserves
+the exact marks.  At most $k+2$ copies remain, including at least one
+zero-cost copy; duplicate that copy to reach length $k+2$.  Conversely,
+any coloring of $k+2$ copies of cost at most $k$ has a zero-cost copy
+that can be duplicated to obtain every larger length.  This proves the
+two remaining small-threshold upper bounds.
+
+Suppose $k\geq3$ and $N>k+1$.  Fix a coloring of $T^{\circ N}$ with total
+cost at most $k$.  At most $k$ tile occurrences have positive cost.  Every
+other occurrence has zero cost, is monochromatic, and has identical constant
+input and output colors.  Consequently it can be deleted from its serial
+position without creating a coloring disagreement at the new seam.
+Keep all positive-cost occurrences and at most one zero-cost occurrence of
+each color that appeared.  This preserves boundary colors, cost, and exact
+marks.  At least one zero-cost occurrence remains because $N>k$.
+
+Let $p$ be the number of retained positive-cost occurrences and $z\leq2$
+the number of retained zero-cost occurrences.  If $p+z\leq k+1$, duplicate
+one retained zero-cost occurrence until the length is exactly $k+1$.
+The resulting coloring preserves all the data and its cost.
+
+The only exceptional case is $p=k$ and $z=2$.  Each positive-cost occurrence
+then has cost exactly one.  If some positive-cost occurrence supplies a
+monochromatic-edge mark $a\in\{0,1\}$, delete the retained zero-cost
+occurrence of color $a$.  That mark is still supplied by the positive-cost
+occurrence, and the other retained zero-cost occurrence supplies the other
+mark.  The new length is exactly $k+1$ and no required data change.
+
+Otherwise every positive-cost occurrence has no monochromatic edge.  All
+edges of the tile are therefore bichromatic in that occurrence.  Its cost
+is one, so the tile has exactly one edge.  Connectedness and the disjoint
+nonempty interfaces force $T$ to be the single-edge tile with one input and
+one output.  The two retained zero-cost occurrences imply that the required
+exact mark set is $\{0,1\}$.  For either prescribed pair of endpoint colors,
+there is a path of length at most four with both marks and cut cost at most
+two: use colors $0,0,1,1,0$ for equal zero endpoints, its complement for
+equal one endpoints, $0,0,1,1$ for distinct endpoints, or its reversal.
+These paths contain a monochromatic edge and may be padded to length $k+1$
+by duplicating it.  The cost is at most two, hence at most $k$, and the
+boundary colors and exact mark set are the required ones.
+
+We have proved that every feasible source coloring of cost at most $k$
+gives a coloring at length $k+1$ of no greater cost with the same boundary
+colors and exact marks.  Conversely, a coloring of $k+1$ copies with cost
+at most $k$ contains a zero-cost occurrence.  Duplicating it produces a
+coloring at any larger length with exactly the same cost, boundary colors,
+and marks.  These two directions establish equality of all minimum costs
+up to the threshold and equality of all saturated entries.
+
+The argument preserves minimum signatures; it does not claim that every
+individual source coloring can be shortened while preserving its exact cost.
+The single-edge exceptional case is the only step where its cost may decrease.
+\end{proof}
+
+\begin{proof}[Sharpness]
+At threshold zero, the smallest possible positive cutoff is one.
+For threshold one, take the single-edge tile with distinct endpoint colors
+and require both marks.  A path of three edges with colors $0,0,1,1$ has
+cost one and both marks.  No path of at most two edges has these properties:
+it needs one edge of each monochromatic color and at least one crossing edge.
+Thus $b_1\geq3$.
+
+For threshold two, prescribe both endpoints zero and again require both
+marks.  Four edges with colors $0,0,1,1,0$ suffice.  Any such coloring needs
+an edge of each monochromatic color and at least two crossing edges, so at
+least four edges are necessary.  Hence $b_2\geq4$.
+
+Now let $k\geq3$ and put $B=k+1$.  Form a connected tile $T_k$ of width
+$2B$ with input vertices $\ell_1,\ldots,\ell_{2B}$, output vertices
+$r_1,\ldots,r_{2B}$, and edges
+\[
+ \ell_i r_i \quad(1\leq i\leq2B),
+ \qquad
+ \ell_i\ell_{i+1}\quad(1\leq i<2B).
+\]
+Thus the inputs form a path and every output is attached to its corresponding
+input by one edge.  Prescribe color one on the first $B$ input and output
+coordinates, and color zero on all the remaining coordinates.
+
+In $T_k^{\circ k}$, propagate these colors unchanged along each vertical
+strand.  Exactly the input-path edge joining coordinates $B$ and $B+1$
+is cut in each copy.  The total cost is $k$, and the matching edges supply
+both exact marks.
+
+In contrast, suppose that $T_k^{\circ(k+1)}$ had any coloring of cost at
+most $k$ with those boundary colors.  Some connected tile occurrence would
+have zero cost and hence be uniformly colored $a$.  For each of the $B$
+oppositely colored original input coordinates, follow its matching-edge
+strand from the exposed input to the corresponding input of that occurrence.
+If the occurrence is the first one, its monochromatic input condition already
+contradicts the prescribed colors.  Otherwise these are $B$ pairwise
+edge-disjoint paths, each with oppositely colored endpoints and hence each
+containing a cut edge.  The total cut cost is at least $B=k+1$, a contradiction.
+
+Therefore the chosen marked-signature entry is at most $k$ at exponent $k$
+and is saturated at exponent $k+1$.  If a universal cutoff were at most $k$,
+both exponents would reduce to the same capped exponent and would have equal
+signatures.  This contradiction proves $b_k\geq k+1$.
+\end{proof}
+
+\paragraph{Consequences and implementation scope.}
+Every routed or reblocked kernel theorem can use $b_k$ in place of $a_k$.
+In particular the routed explicit-size coefficient $a_k+1$ becomes $k+2$
+for all $k\geq3$.  The threshold-three value remains four, so the production
+cubic-pattern checker and its source witness format require no change.
+The supplied general-threshold producer uses the exact value $b_k$ in
+\texttt{connected\_cutoff}; both aligned and reblocked construction use it.
+The certificate solver remains the threshold-three cubic-pattern query.
+The comb examples establish sharpness in the
+full connected unit-edge graph-tile class, without a claim of optimality for
+more restrictive cubic or geometrically realizable subclasses.

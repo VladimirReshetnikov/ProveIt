@@ -1,0 +1,618 @@
+\section{A source-authenticated native moment compiler}
+\label{sec:native-moments}
+
+The incoming moment construction left its passage from the maintained
+parallelity geometry to a weighted first-return query as a separate task.
+We implement that passage here.  The resulting operator starts with an
+actual triangulation and binary normal coordinates, or with the complete
+parallelity certificate for that source.  It produces the same cyclic
+core-port words and attachment components as the maintained native boundary
+compiler, and adds the exact number of original-boundary edges in every
+complementary gap.
+
+The maintained operator uses two scalar weighted censuses: one to identify
+marked corners, and one on the fibre double cover to identify residual
+gaps and their fibre transport.  The new operator performs one scalar
+census on that same residual double cover.  It replaces the corner query
+by canonically owned edge mass, and replaces the lifted endpoint masks by
+quadratic moments.  These are improvements to an existing geometric
+operation.  They do not supply a new cutting surface or establish a
+uniform bound on the number of stages in a recognition hierarchy.
+
+\subsection{The actual native packet}
+
+Fix a source with $T$ tetrahedra and an accepted normal-coordinate vector.
+Let $G$ be its compressed parallelity geometry at the audited source
+revision.  A polygon family $P$ has a binary rank interval and a distinct
+corner-occurrence interval for every corner of its polygon template.
+Write $c_{P,j}$ for the start of the interval at corner $j$.  The occurrence
+of corner $j$ at rank $k$ has coordinate
+\[
+                 x(P,j,k)=c_{P,j}+k-1.
+\]
+The entire corner namespace is $X=\{0,\ldots,N-1\}$.  Its size $N$ can be
+exponential in the bit length of a normal multiplicity.  No construction
+below enumerates $X$.
+
+The packet contains a list of polygon-edge gluings.  Such a gluing has
+affine rank maps of slope $1$ or $-1$, an endpoint-reversal flag, and a
+separate fibre-reversal flag.  The latter cannot be recovered from the
+slope of a singleton rank interval.  The packet also gives a disjoint
+inventory of unglued polygon-edge occurrences.  Each inventory record is
+either an original-boundary family or one singleton core-facing edge,
+called a \emph{port}.  Ports have distinct identifiers $0,\ldots,p-1$ and
+the supplied ordering of their two local endpoints.  The source construction
+has $p\leq66T$.
+
+The geometric correctness of the source packet entails that its free edges,
+after corner identifications, form cellulated boundary circles.  A circle
+may have only one edge; its two incidence flags are still distinct.  The
+fibre labels define a genuine interval bundle over these circles and their
+corner stars.  The reference source reconstruction in the checker is
+independent of the production geometry builder.  Consequently the new
+checker does not accept a purported degree-two boundary merely because its
+moment histogram happens to look plausible.
+
+\begin{lemma}[Native canonical ownership]
+\label{lem:native-edge-ownership}
+For an original-boundary record on edge $j$ of polygon family $P$, with
+rank interval $[u,v)$, place unit edge mass on the interval
+\[
+                 [c_{P,j}+u-1,c_{P,j}+v-1)\subset X.
+\]
+This assigns every original-boundary edge exactly one owner occurrence,
+and the owner represents one endpoint of that edge.  The owner intervals
+of distinct original-boundary records are disjoint in $X$.  In particular,
+if $E$ is the represented number of original-boundary edges, then
+$E+p\leq N$.
+For $a$ original-boundary records the ownership program has $a$ intervals,
+irrespective of the binary lengths of those intervals.
+\end{lemma}
+
+\begin{proof}
+At fixed $P,j$, the inventory records are the disjoint rank gaps remaining
+after the explicitly recorded edge gluings; they cannot contain the same
+rank twice.  The map $k\mapsto c_{P,j}+k-1$ is injective.  Different corner
+slots and different polygon families have disjoint occurrence namespaces
+by the construction of the $c_{P,j}$.  Thus all the indicated intervals
+are disjoint.  Their lengths are precisely the numbers of represented
+edge occurrences.  Each recorded free edge belongs to this inventory once,
+so summing the lengths counts each original-boundary edge exactly once.
+The chosen corner is its local initial endpoint.  Identifying corner
+aliases later does not change this count: several owners can become one
+actual vertex, and their masses are added there.  Apply the same outgoing-corner assignment also to the $p$ port singletons.
+They remain disjoint from each other and from the original-boundary
+intervals, because the complete free-edge inventory is disjoint.  These
+intervals have total length $E+p$ and lie in a namespace of size $N$,
+proving $E+p\leq N$.
+\end{proof}
+
+\subsection{Compiling the residual fibre cover}
+
+Delete all open port edges.  The remaining boundary is a union of compact
+paths, passive circles, and possibly silent occurrence classes that never
+meet a free edge.  The source relation for the residual paths is generated
+by the corner gluings and by the endpoint identifications of all
+original-boundary edges.
+
+To retain local fibre transport, replace $X$ by
+$\widetilde X=X\times\{0,1\}$, encoded as $x+sN$.  A source corner gluing
+with fibre flag $f$ joins sheet $s$ to sheet $s\mathbin{\oplus}f$.
+An original-boundary edge joins its endpoints on the same local sheet.
+Every source interval pairing therefore creates a bounded number of
+affine interval pairings in $\widetilde X$.
+
+\begin{lemma}[Residual degree and exact length]
+\label{lem:native-residual-degree}
+If $p>0$, the residual components meeting port endpoints are exactly $p$
+paths, counting a point as a path of length zero.  Each has two distinct
+endpoint occurrences, and has two lifts to the fibre cover.  A lifted
+residual component contains precisely two lifted endpoint labels.
+Its canonically owned edge mass equals the number of original-boundary
+edges of the underlying path.  This number is zero if and only if the two
+port endpoints represent the same actual corner.
+\end{lemma}
+
+\begin{proof}
+A boundary circle containing $q>0$ distinct ports becomes $q$ compact
+intervals when their open interiors are removed.  Consecutive port edges
+can meet at one vertex, giving a point interval.  If the entire circle
+consists of one port edge, deleting its interior gives one point with two
+distinct endpoint occurrences.  Summing over active circles gives $p$
+residual paths.
+
+An interval bundle restricted to a contractible path is a product, so the
+corresponding two-sheeted fibre-orientation cover has two path components.
+Each contains one lift of each endpoint occurrence.  Every edge owner
+belongs to the same residual class as the endpoints of its edge.  By
+Lemma~\ref{lem:native-edge-ownership}, no edge contributes twice, and no
+edge outside the path contributes to it.  Lift the ownership program once
+on each sheet.  Each lifted path therefore receives exactly its underlying
+edge count.  A finite cellulated interval has equal endpoint vertices
+precisely when it is a point.  Positive length cannot return to its initial
+vertex within a genuine degree-two residual boundary containing a port.
+Passive circles and silent interior classes carry no endpoint labels.
+\end{proof}
+
+The last equivalence is where source geometry matters.  In an arbitrary
+quotient graph a positive-length cycle can have the same initial and final
+vertex.  The scalar moment data alone do not exclude that situation.
+
+\subsection{The four-field reference codec}
+
+The implementation retains the incoming four-field construction as
+\texttt{codec='four'} for differential verification.  For $p>0$ there
+are $r=4p$ lifted terminal labels.  Port $j$, local endpoint
+$e\in\{0,1\}$, and local fibre sheet $s\in\{0,1\}$ receive the distinct
+label
+\[
+                       i=4j+2e+s+1.
+\]
+Define
+\begin{equation}
+\label{eq:native-moment-base}
+ S_2=\frac{r(r+1)(2r+1)}6,
+ \qquad h=\operatorname{bitlength}(S_2),
+ \qquad \beta=2^h.
+\end{equation}
+The terminal label $i$ contributes
+\begin{equation}
+\label{eq:native-terminal-scalar}
+                         1+i\beta+i^2\beta^2
+\end{equation}
+at its lifted corner occurrence.  Every lifted owner edge contributes
+$\beta^3$.  Contributions at the same occurrence are added.  Both terminal
+and ownership contributions are supplied as additive constant-weight
+intervals to the maintained weighted-orbit API.
+
+The global terminal count, global first moment, and global second moment
+are all strictly less than $\beta$.  Hence no carry between the three
+lower fields is possible, even before one uses the degree-two property.
+For an orbit of scalar weight $w$ successive divisions by $\beta$ give
+\[
+               w=t+\beta u+\beta^2 v+\beta^3\ell,
+               \qquad 0\leq t,u,v<\beta.
+\]
+If $t>0$, Lemma~\ref{lem:native-residual-degree} gives $t=2$ and labels
+\begin{equation}
+\label{eq:native-moment-decode}
+ d=\sqrt{2v-u^2},\qquad
+ i=\frac{u-d}{2},\qquad j=\frac{u+d}{2}.
+\end{equation}
+The decoder uses an exact integer square root.  It checks a positive square
+discriminant, parity, label range, unique label usage, and coverage of all
+$r$ labels.  A terminal-bearing histogram row must have orbit multiplicity
+one, because the same globally unique pair of labels cannot belong to two
+different orbits.  A terminal-free row is ignored only after its lower
+three fields have been checked to be zero.
+
+\subsection{A smaller codec using the native degree-two structure}
+
+The default \texttt{codec='pair'} exploits the authenticated native
+boundary contract more closely.  Once residual degree two is known, no
+explicit count field is needed to recover a pair.  Moreover, the scalar
+radices can be chosen using the maximum mass of two labels on one path,
+instead of the sums of all labels in the entire namespace.  This improves
+the power of $p$ in the scalar-magnitude bound from nine to three.
+
+Put
+\begin{equation}
+\label{eq:native-pair-codec}
+ A=2^{\operatorname{bitlength}(2r)},\qquad
+ s_i=i+A i^2,\qquad
+ D=2^{\operatorname{bitlength}(2(r+A r^2))}.
+\end{equation}
+The terminal label $i$ contributes $s_i$ and every lifted owner edge
+contributes $D$.  Both radices are powers of two, so the implementation
+uses integer shifts and masks.
+
+\begin{lemma}[Path-local no-carry decoding]
+\label{lem:native-pair-packing}
+For a lifted residual path with endpoint labels $i<j$ and edge length
+$\ell$, its scalar orbit weight is
+\[
+                        W=\ell D+s_i+s_j.
+\]
+It determines the endpoint pair and length by
+\begin{equation}
+\label{eq:native-pair-decode}
+ \ell=\left\lfloor W/D\right\rfloor,\quad
+ R=W\bmod D,\quad S=R\bmod A,\quad Q=\lfloor R/A\rfloor,
+ \quad i,j=\frac{S\mp\sqrt{2Q-S^2}}2.
+\end{equation}
+The remainder is positive on every active lifted path and is zero on
+every terminal-free orbit.
+\end{lemma}
+
+\begin{proof}
+The source degree-two theorem supplies exactly two distinct labels on
+each lifted active path.  Equation~\eqref{eq:native-pair-codec} gives
+$A>2r\geq i+j$ and $D>2(r+A r^2)\geq s_i+s_j>0$.
+Consequently neither radix receives a carry from the fields beneath it:
+$R=s_i+s_j$, $S=i+j$ and $Q=i^2+j^2$.  The quadratic identity
+$2Q-S^2=(j-i)^2$ proves the decoder.  Terminal-free orbits consist only of
+edge mass, which is an integer multiple of $D$.  Nonnegative edge mass
+and positive terminal labels rule out cancellation.
+\end{proof}
+
+This is a path-local radix proof.  The sum of terminal weights over the
+whole namespace need not be smaller than $D$, and the implementation
+never assumes that it is.  The checker still requires multiplicity one
+on active histogram rows, exact positive square discriminants, admissible
+roots, full label coverage, consistent deck-paired lifts and equal lengths
+on the two lifts.  The source geometry, query weights and orbit proof are
+independently authenticated before the decoded words are accepted.  The
+smaller codec does not furnish a degree-two geometric-boundary certificate
+for an arbitrary quotient graph.
+
+There is nevertheless a useful stronger arithmetic safeguard.  Completeness
+of the recovered matching, together with the known input label inventory,
+replaces the explicit occupancy coordinate even when one does not assume
+degree two in advance.
+
+\begin{lemma}[Global inventory forces pair occupancy]
+\label{lem:native-pair-global-inventory}
+Consider an arbitrary equivalence relation on a finite occurrence namespace.
+Each of the $r$ distinct positive labels occurs exactly once, with scalar
+weight $s_i$ from~\eqref{eq:native-pair-codec}; all other weight contributions
+are nonnegative integer multiples of $D$.  Suppose a complete, exact
+weighted orbit histogram passes the following arithmetic checks:
+\begin{enumerate}
+  \item every row of nonzero remainder modulo $D$ has orbit multiplicity
+  one and decodes to two distinct roots in $\{1,\ldots,r\}$;
+  \item the decoded pairs are disjoint and exhaust this label set.
+\end{enumerate}
+Then every orbit containing labels contains exactly two of them, no
+label-containing orbit has zero remainder, and every decoded pair is its
+actual pair of labels.  If $H$ is the sum of its nonterminal scalar
+contributions, its decoded quotient satisfies $\lfloor W/D\rfloor=H/D$.
+\end{lemma}
+
+\begin{proof}
+An orbit with no labels has zero remainder modulo $D$.  An orbit with only
+label $i$ has remainder $s_i$, since $0<s_i<D$.  Since $i<A$, its decoded
+moment coordinates are $S=i$ and $Q=i^2$, whose quadratic roots are $0,i$.
+Such a row cannot pass the requirement of two positive roots.  Hence every
+accepted nonzero row represents one actual orbit containing at least two
+labels.
+
+The exhaustive disjoint decoded inventory contains exactly $r/2$ pairs.
+Their $r/2$ actual orbits therefore consume at least $r$ actual labels.
+There are precisely $r$ labels in the whole input, counted once each.
+Equality follows: every accepted row contains exactly two labels, and no
+labels remain in a row of zero remainder or in any other orbit.  Now the
+path-local arithmetic inequalities used in
+Lemma~\ref{lem:native-pair-packing}, which depend only on having two labels,
+apply to every accepted row.  They recover its actual two labels and the
+sum of the integer coefficients of $D$ in its nonterminal contributions.
+\end{proof}
+
+The complete authenticated histogram and the exact initial inventory are
+essential to this argument.  Local moment roots alone are insufficient:
+the three labels $\{1,2,6\}$ have the same first two moments as the pair
+$\{4,5\}$.  The global argument excludes such a row in a complete accepted
+partition by counting actual label consumption.  This is an arithmetic
+soundness statement.  It does not turn a two-label orbit in a branched
+graph into a geometric interval, or prove that its arbitrary mass counts
+genuine boundary edges.  Those conclusions still require the independently
+verified source geometry and canonical ownership theorem.
+
+\begin{theorem}[Native first-return bridge]
+\label{thm:native-moment-bridge}
+For a valid authenticated native parallelity packet with $p>0$ ports,
+one scalar weighted orbit histogram on $\widetilde X$ determines:
+\begin{enumerate}
+  \item the first-return matching of all $2p$ base endpoint occurrences;
+  \item the local fibre reversal and the exact original-boundary edge
+  length of each matched gap;
+  \item the signed cyclic port words, their gap order, and the decomposition
+  of the core attachment into proper intervals and whole boundary circles.
+\end{enumerate}
+After forgetting the newly added edge lengths, the output equals the
+maintained native boundary-word output, with the same canonical port
+ordering and local chart convention.  No separate corner census is needed.
+For $p=0$ the cyclic interface is empty and no new census is performed.
+\end{theorem}
+
+\begin{proof}
+Use either the four-field decoder~\eqref{eq:native-moment-decode} or
+the default decoder~\eqref{eq:native-pair-decode} to obtain the perfect
+matching on lifted labels.  For a base endpoint $a$, write the mate of its sheet-zero
+lift as $2b+f$, now using zero-based lifted labels.  The mate of its other
+lift is $2b+(1-f)$.  These two relations recover the base mate $b$ and fibre
+flag $f$.  The two lifted path lengths agree, and the implementation checks
+this equality explicitly.  It also checks $b\ne a$ at the level of
+endpoint occurrences; actual corner equality remains allowed.
+
+By Lemma~\ref{lem:native-residual-degree}, zero length means the two ends
+share a corner, and positive length means original boundary is present.
+These are exactly the data recovered by the maintained compiler's separate
+corner query and lifted endpoint-mask query.  To recover cyclic order,
+cross a port and then its following matched gap.  This permutation on
+oriented endpoint occurrences traverses each active boundary circle in
+one of its two directions.  Start with the least unused port in its
+positive local chart, matching the maintained convention.  Every port
+appears once.  The parity of the gap fibre flags around a complete circle
+must be zero; this is checked rather than inferred from rank slopes.
+
+If every gap in a word has length zero, the attachment is the whole circle.
+Otherwise, begin immediately after every positive-length gap and collect
+successive ports across zero-length gaps.  These maximal runs are exactly
+the proper interval attachments.  Their endpoint tokens and fibre parity
+are read from the same matching and ordered gap flags.  Thus all fields of
+the existing skeleton are identical, while the new positive integer
+lengths refine its original-boundary-present booleans.  Neither traversal
+requires reconstructing endpoint masks.  The case $p=0$ is immediate.
+\end{proof}
+
+\paragraph{What the local charts do not provide.}
+The chosen direction on each word is a canonical reporting convention.
+It is not a coherent boundary orientation of all the circles belonging to
+one orientable base.  The native packet supplies local port charts and
+fibre transitions; a later surgery algorithm requiring coherent base
+frames must derive or receive those frames separately.  Similarly, the
+word does not retain an arbitrary additional boundary marking lying
+inside a positive-length gap.
+
+\subsection{Encoded cost and the actual implementation claim}
+
+\begin{proposition}[Input scalar and output-size bounds]
+\label{prop:native-moment-size}
+For the default pair codec with $p>0$, every additive input weight has
+$O(\log(p+1))$ bits.  Its total scalar mass on the double cover is less
+than
+\begin{equation}
+\label{eq:native-total-mass}
+             2(E+p)D\leq2ND=O\bigl(N(p+1)^3\bigr).
+\end{equation}
+Every active orbit separately has scalar weight less than $(N+1)D$.
+Consequently every orbit weight uses
+$O(\log(N+1)+\log(p+1))$ bits, with only three logarithmic powers of $p$
+in the scalar bound.  The gap and word portion of the returned cyclic
+interface uses
+\[
+                  O\bigl(p(\log(N+1)+\log(p+1))\bigr)
+\]
+bits.  The complete skeleton also carries source core-handle identifiers;
+its bound is $O(p(\log(N+1)+\log(T+1)+\log(p+1)))$, excluding discovery
+certificates and the optional base-profile ledger.  Its assembly uses
+$O(p)$ endpoint and gap records and never materializes an $O(p)$-bit
+incidence mask.
+\end{proposition}
+
+\begin{proof}
+Equation~\eqref{eq:native-pair-codec} gives $2r<A\leq4r$ and
+\[
+   2(r+A r^2)<D\leq4(r+A r^2)\leq20r^3.
+\]
+Every terminal contribution satisfies $s_i<D/2$.  There are $r=4p$
+terminal contributions and $2E$ lifted owner edges.  The total scalar
+mass is therefore less than
+\[
+                    2ED+(r/2)D=2(E+p)D\leq2ND.
+\]
+An active orbit has at most $E$ owner edges and terminal remainder less
+than $D$, giving the stated per-orbit bound.  These inequalities also
+bound the input scalar bit lengths.
+
+There are $p$ gaps, each with two endpoint identifiers, one fibre bit and
+one length at most $E$.  The cyclic words contain $p$ port occurrences in
+total.  The attachment words also contain each port once, so their total
+length is $p$.  Source port ranks have $O(\log(N+1))$ bits, while the
+source core-handle identifiers have $O(\log(T+1))$ bits.  These facts give
+the two output bounds.  The latter term cannot be discarded merely because
+only a few tetrahedra contain nonzero normal coordinates.  The direct
+matching and successor traversals need only a bounded number of arrays
+or dictionaries indexed by the $O(p)$ endpoints and gaps.
+\end{proof}
+
+For comparison, the retained four-field codec has
+$\beta\leq2r^3$ and total scalar mass less than
+$(2E+1)\beta^3=O((N+1)(p+1)^9)$.  Both encodings have the same big-O
+binary length, but the path-local codec reduces the number of label bits
+and scalar-arithmetic constants.  The complete decoded outputs agree.
+
+If there are $g$ source gluing records and $a$ original-boundary free-edge
+records, the double-cover query has $4g+2a$ pairing records and $4p+2a$
+additive weight records.  A simple endpoint sweep initially canonicalizes
+these additions into $O(a+p)$ weight runs.  The source construction makes
+$g+a+p=O(T)$, with binary endpoints.  Exact length extraction therefore
+preserves the polynomial encoded size of the source query.
+
+There is a practical tradeoff.  The maintained sparse-mask compiler has
+input weights only at marked endpoints; its previously established
+uniform sparse-token run bound does not apply to the new edge-mass query.
+Original-boundary owner intervals add weight runs.  The initial bound is
+$O(a+p)$, not a port-only bound, and the measured maximum number of runs
+can be larger even though one entire census has been removed.
+
+The weighted Agol--Hass--Thurston theorem supplies a polynomial algorithm
+for the encoded weighted interval-orbit task
+\cite[Theorem~16]{AgolHassThurston2006}.  Composing that theorem with the
+explicit reduction above gives a polynomial bound for this native
+first-return problem in the source record count and binary lengths.  This
+is an algorithmic existence and reduction statement.  We do not infer a
+new uniform polynomial bound on every intermediate weight run or every
+certificate trace of the particular maintained Python implementation.
+For that implementation the package supplies independently replayed
+executions, cancellation contracts, and concrete measurements.  Those
+executions are evidence about the implementation; they are not a proof of
+its uniform worst-case trace complexity.
+
+\subsection{Certificates, owner profiles, and failure contracts}
+
+The direct API is \texttt{normal\_parallelity\_moment\_words}.
+Its certificate binds the selected codec and contains the source
+fingerprint, the complete cyclic
+skeleton and one weighted census certificate.  The checker reconstructs
+the geometry through the maintained raw-cut reference path, independently
+builds the lifted affine pairings and ownership weights, replays the
+weighted trace, decodes the moment pairs by a separate implementation,
+and reconstructs the words using a separate permutation traversal.  It
+imports neither the new producer nor its query builder, decoder or
+assembly routine.  Tests disable those functions, both native discovery
+schedulers, and the production geometry builder while the checker replays
+a serialized binary certificate.
+
+The optional \texttt{moments\_from\_parallelity\_packet} API accepts an
+existing full normal-cut parallelity certificate.  It first verifies that
+packet, including its four inherited discovery traces, then compiles one
+new moment census from its authenticated free-edge inventory.  Source
+authentication is additional work; it is not hidden in the one-new-census
+claim.  Its combined certificate retains the upstream proof and binds
+every active loop to its certified base-profile owner.  For a profile with
+boundary count $b$ and $k$ active loops, the passive count is $b-k$.
+Port-bearing profiles have multiplicity one; port-free profiles retain
+their binary multiplicity and passive count per copy.  In this way even
+passive components absent from the terminal census are preserved.
+
+Discovery exhaustion returns \texttt{INCONCLUSIVE} without a skeleton or
+certificate.  The direct replay cap counts its one trace; the packet
+replay cap counts the sum of the four inherited traces and the new trace.
+Malformed proofs return false, whereas cooperative cancellation and
+invalid-source exceptions propagate.  These statuses are not knot
+verdicts.  The new proof authenticates a compressed boundary operation,
+not the validity or completeness of a proposed recognition hierarchy.
+
+\subsection{Native verification and paired measurements}
+\label{subsec:native-moment-measurements}
+
+% BEGIN NATIVE MOMENT MEASUREMENTS
+The verification passed eight native test groups in 113.590 seconds and
+one additional arithmetic test group in 0.026 seconds.  Complete cyclic
+outputs were compared on all 157 inherited source cases among the existing
+native compiler and both new codecs.  Each new certificate was independently
+replayed.  The edge-by-edge oracle could expand 146 of these cases; it
+checked 219 positive-length gaps and 3420 point gaps.  The bank includes
+five sources whose parallelity polygons are exclusively edge caps,
+181 whole-circle attachment components, and 546 gaps with nontrivial local
+fibre transport.  Additional cases cover layered-source multiples,
+one-sided bases, source-packet authentication and JSON transport, altered
+moments and lengths, source mismatch, exact resource caps and cancellation.
+
+The arithmetic test enumerates all 4140 set partitions of eight terminal
+labels, adds arbitrary nonnegative edge masses and silent repeated orbits,
+and applies the no-count decoder.  It accepts exactly the 105 perfect
+matchings and recovers their true pairs and masses.  All partitions
+containing a singleton or an overfull terminal class are rejected.  This
+is a finite regression check of
+Lemma~\ref{lem:native-pair-global-inventory}, independent of the geometric
+source-bank coverage.
+
+For the $T=2$ layered source scaled by $m=2^b$, with
+$b=32,512,16384$, the new census retained two ports, 60 lifted ownership
+intervals, 68 additive weight records and 131 orbit cycles in every case.
+This checks binary-coordinate handling without expansion.  The active
+lengths in this family are both seven; the test is not presented as a
+family of growing active gap lengths.  The unscaled $T=16$ source does
+have a gap of 39787 edges, recovered without following them individually.
+
+Table~\ref{tab:native-moment-times} reports five measurements per
+implementation after one untimed warmup per implementation and source.
+The execution order alternates existing--pair--four and
+four--pair--existing.  Every timed discovery call starts with the original
+triangulation and coordinates and includes source validation, geometry
+construction, both or one orbit census respectively, complete cyclic
+assembly and certificate construction.  No source geometry or orbit result
+is reused.  The independent source-bound replay is timed separately.
+These are local measurements on Python 3.12.14 under Linux x86-64 in the
+shared execution environment, not hardware-isolated estimates or whole-knot
+recognition benchmarks.
+
+\begin{table}[H]
+\centering\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lrrrrrrr}
+\toprule
+& & \multicolumn{3}{c}{Discovery, ms} & \multicolumn{3}{c}{Replay, ms}\\
+Case & $p$ & Existing & Four & Pair & Existing & Four & Pair\\
+\midrule
+Layered $T=2$ & 2 & 2.805 & 3.016 & 2.968 & 2.900 & 3.254 & 3.033 \\
+Layered $T=4$ & 15 & 69.697 & 67.925 & 70.650 & 50.308 & 63.959 & 62.811 \\
+Layered $T=8$ & 47 & 589.207 & 531.740 & 521.412 & 418.031 & 406.742 & 439.730 \\
+Layered $T=16$ & 111 & 3754.319 & 3034.441 & 3057.760 & 2505.085 & 2278.534 & 2212.595 \\
+$T=2$, $m=2^{32}$ & 2 & 40.726 & 36.990 & 33.990 & 20.270 & 28.035 & 29.060 \\
+$T=2$, $m=2^{512}$ & 2 & 34.477 & 33.111 & 33.310 & 16.373 & 25.984 & 26.983 \\
+$T=2$, $m=2^{16384}$ & 2 & 135.094 & 118.898 & 117.586 & 64.402 & 89.302 & 85.802 \\
+Cap-only source & 8 & 0.454 & 0.434 & 0.461 & 2.007 & 1.726 & 1.686 \\
+Port-free binary & 0 & 0.318 & 0.276 & 0.280 & 0.976 & 0.980 & 0.894 \\
+\bottomrule
+\end{tabular}
+\caption{Median complete source-query and independent replay times.
+Four denotes the reference four-field codec and Pair the default path-local
+codec.  Both new codecs also certify exact gap lengths.}
+\label{tab:native-moment-times}
+\end{table}
+
+\begin{table}[H]
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lrrrr}
+\toprule
+Case & Orbit cycles & Peak runs & Scalar bits & Certificate KiB\\
+\midrule
+Layered $T=2$ & $42\to 37$ & $13\to 21$ & $25\to 14$ & $5.8\to 5.2$ \\
+Layered $T=4$ & $250\to 189$ & $77\to 161$ & $52\to 21$ & $45.9\to 37.3$ \\
+Layered $T=8$ & $690\to 485$ & $265\to 357$ & $67\to 27$ & $160.7\to 113.7$ \\
+Layered $T=16$ & $1570\to 1077$ & $649\to 741$ & $76\to 30$ & $436.3\to 280.3$ \\
+$T=2$, $m=2^{32}$ & $168\to 131$ & $17\to 85$ & $25\to 14$ & $37.5\to 31.8$ \\
+$T=2$, $m=2^{512}$ & $168\to 131$ & $17\to 85$ & $25\to 14$ & $192.9\to 164.5$ \\
+$T=2$, $m=2^{16384}$ & $168\to 131$ & $17\to 85$ & $25\to 14$ & $4435.1\to 3782.4$ \\
+Cap-only source & $2\to 1$ & $16\to 16$ & $39\to 18$ & $3.1\to 2.7$ \\
+Port-free binary & $0\to 0$ & $0\to 0$ & -- & $0.3\to 0.3$ \\
+\bottomrule
+\end{tabular}
+\caption{Existing-to-pair structural measurements, except Scalar bits,
+which compares the maximum additive input-weight bit length for
+four-field versus pair codecs.  Orbit cycles sum the two existing censuses;
+Peak runs takes their maximum.  Certificate size is compact JSON, using
+hexadecimal transport for sufficiently large integers.  These are observed
+sizes, not uniform worst-case bounds.}
+\label{tab:native-moment-structure}
+\end{table}
+
+Compared with the existing native compiler, pair-codec discovery is about
+$1.13$ times faster for $T=8$ and $1.23$ times faster for $T=16$ in this run.
+The $T=2$, $T=4$ and cap-only examples are slightly slower.  Replay is not
+uniformly faster: on the $m=2^{512}$ example it increases from 16.373 to
+26.983 ms, whereas on the $T=16$ example it decreases from 2505.085 to
+2212.595 ms.  The new ownership weights increase the maximum run count,
+especially in the binary two-port family, from 17 to 85.
+
+The pair codec reduces the maximum additive scalar from 76 to 30 bits
+on the 111-port example and from 25 to 14 bits on the two-port binary
+family.  Its wall-clock differences relative to the four-field codec are
+small and mixed, as the table records.  Its principal justification is the
+proved cubic scalar bound and the removal of the unnecessary count field;
+a further uniform practical speedup is not claimed.  The complete single
+samples, proof sizes and representative replayable certificates are
+included in the results directory.
+% END NATIVE MOMENT MEASUREMENTS
+
+The native source bank contains shared-corner point gaps and whole-circle
+attachments, but none of its explicitly expanded examples has a one-edge
+boundary loop.  A separate geometric regression therefore tests a triangle
+whose first two edges are identified in reverse, leaving its third edge as
+a one-edge boundary circle.  Marking that edge must give one zero-length
+gap and one circle attachment.  That test exercises the actual native
+moment query and weighted proof replay, compared with a literal incidence
+walk.  It is explicitly a geometric packet regression, not an additional
+authenticated source triangulation.
+
+The files \texttt{native\_moments.py} and
+\texttt{native\_moments\_verify.py} contain the producer and checker;
+\texttt{native\_moments\_literal.py} supplies the separate small-input
+edge walker.  The source bank records its upstream commit, source path and
+SHA-256 digest, and omits unrelated upstream proof payloads.  Representative
+certificates cover a nontrivial layered source, a cap-only source, and a
+source with multiplicity $2^{16\,384}$.  They can be replayed
+without rerunning discovery.
+
+\paragraph{Resulting research obligation.}
+The missing native ownership-to-moment bridge from the incoming report is
+now concrete and source authenticated.  The next performance question is
+whether exact edge mass admits an instance-independent run bound strong
+enough to prove a uniform resource bound for this particular replay
+implementation.  The next geometric question is how to supply coherent
+base frames and any additional pattern data needed by subsequent surgery.
+Neither question is resolved by agreement of the present cyclic outputs.

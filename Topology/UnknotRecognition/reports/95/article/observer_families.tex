@@ -1,0 +1,76 @@
+\subsection{A conditional extension for observer curves}
+\label{sec:observer-families}
+
+The private-handle count can be supplemented by certain exact incidence
+data when those data are already available.  The following algebraic
+observation identifies a limited interface for future curve transport;
+it does not provide the missing initial geometric data.
+
+\begin{lemma}[Observer families under column peeling]
+\label{obs:lem-families}
+Let $A$ be the nonnegative integer incidence matrix of $m$ task rows,
+and let $Y$ be a nonnegative integer matrix of observer rows on the
+same columns.  Suppose the private columns are partitioned into
+families $F_\ell$ such that all columns in one family are identical
+across both $A$ and $Y$ initially.  Assume every private task entry
+is zero or at least two; observer rows are never eligible for pivots.
+
+Under any positive-pivot schedule on active columns, equality within
+each private family is preserved.  One representative column and
+the binary multiplicity $|F_\ell|$ therefore suffice for that family.
+If the schedule uses task column leaves, let $W\geq2$ bound every
+\emph{exact} initial entry of $A$ and $Y$.  After $t\leq m$ pivots,
+each surviving observer entry is at most
+\[
+ W(1+W)^t,
+\]
+and hence has $O((m+1)\log(W+1))$ bits, independently of the
+private-family multiplicities.
+\end{lemma}
+
+\begin{proof}
+For a pivot $(r,g)$ the observer update is
+\begin{equation}
+ Y'_{u,h}=Y_{u,h}+Y_{u,g}A_{r,h}\qquad(h\ne g).
+ \label{obs:eq-update}
+\end{equation}
+The task rows follow the same positive update rule.  Equal columns
+receive equal additions in every surviving row, so family equality
+is invariant.  Private task columns cannot acquire a unit entry,
+by Lemma~\ref{lem:inert-columns}, and their multiplicities are unchanged.
+
+For a task column leaf, $A_{r,g}=1$ and $A_{i,g}=0$ for every other
+live task row $i$.  Thus task rows never fill: every surviving task
+entry is an initial entry and is at most $W$.  If $M_t$ bounds the
+observer entries after $t$ pivots, \eqref{obs:eq-update} gives
+$M_{t+1}\leq(1+W)M_t$.  Starting with $M_0\leq W$ proves the bound.
+No update sums over the columns of a private family, so its
+multiplicity contributes no factor to this recurrence.
+\end{proof}
+
+\paragraph{Geometric interpretation.}
+Suppose the observer rows are authenticated unsigned cocore
+incidences of embedded curves disjoint from all task attaching
+curves.  Choose the attaching collars sufficiently small to avoid
+the observers.  The geometric positive-pivot proof can likewise
+choose its sliding bands in a sufficiently small neighbourhood of
+the donor task curve, avoiding the finite union of observer curves.  Each disc
+slide then adds one copy of the relevant cocore's observer
+intersections, giving exactly \eqref{obs:eq-update}.  The observers
+survive the attachment and cancellation because they avoid the
+attaching region.  This applies the same embedded disc-slide
+argument as the task-row formula~\cite{marked-parallelity-85}.
+
+\paragraph{What additional input is required.}
+The update must use \emph{uncapped} donor entries: a value recording
+only ``at least two'' suffices for pivot admissibility but not for
+exact observer counts.  The number of families and their initial
+observer coordinates must also be supplied and geometrically
+authenticated.  Scalar genus and multiplicity profiles do not
+supply them or bound the number of required families.  Multiplicity
+itself still requires $\log(|F_\ell|+1)$ bits of storage.  Even when
+the hypotheses hold, the output consists of cocore intersection
+counts; it does not determine cyclic order, source addresses, or
+the embedded position of an arbitrary boundary pattern.  The
+current implementation does not produce these initial observer
+data or implement this conditional extension.

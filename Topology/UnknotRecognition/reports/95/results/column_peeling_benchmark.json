@@ -1,0 +1,682 @@
+{
+  "scope": "abstract incidence planner kernels; not knot recognition",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "baseline_commit": "704600626606a9097cfd89d4e3d2bbc63c8dd1cb",
+  "baseline_path": "Topology/UnknotRecognition/fast/fastunknot/core_handlebody.py",
+  "baseline_sha256": "780d4e72d9aa432421bc6f2df491c25564a738f4aa96b22f2f1513fb6924bf29",
+  "baseline_method": "capped_cancellation_plan",
+  "new_method": "column_peeling_plan",
+  "source_construction_timed": false,
+  "certificate_replay_timed_separately": true,
+  "records": [
+    {
+      "family": "rectangular_chain",
+      "rows": 32,
+      "columns": 33,
+      "source_nonzeros": 64,
+      "rounds": 7,
+      "complete": true,
+      "old_cancellations": 32,
+      "new_cancellations": 32,
+      "baseline_stats": {
+        "entry_scans": 2112,
+        "entry_updates": 0
+      },
+      "new_stats": {
+        "source_rows": 32,
+        "active_source_columns": 33,
+        "source_entries": 64,
+        "nonzero_entries": 64,
+        "removal_incidence_visits": 64,
+        "queue_pushes": 33,
+        "queue_pops": 33,
+        "entry_updates": 0
+      },
+      "baseline_ns": [
+        573826,
+        1218720,
+        315877,
+        550091,
+        572895,
+        600047,
+        575168
+      ],
+      "new_ns": [
+        90878,
+        72350,
+        45429,
+        101333,
+        71127,
+        69284,
+        70467
+      ],
+      "aa_first_ns": [
+        579195,
+        331030,
+        314134,
+        570962,
+        573977,
+        547296,
+        553556
+      ],
+      "aa_second_ns": [
+        543651,
+        418893,
+        6223902,
+        557472,
+        524432,
+        573396,
+        569210
+      ],
+      "verification_ns": [
+        70506,
+        37657,
+        50296,
+        43086,
+        44497,
+        42804,
+        42484
+      ],
+      "median_baseline_ms": 0.573826,
+      "median_new_ms": 0.071127,
+      "median_verification_ms": 0.043086,
+      "ratio_baseline_over_new": 8.067625514924009,
+      "ratio_aa": 0.9929754319499454
+    },
+    {
+      "family": "rectangular_chain",
+      "rows": 128,
+      "columns": 129,
+      "source_nonzeros": 256,
+      "rounds": 7,
+      "complete": true,
+      "old_cancellations": 128,
+      "new_cancellations": 128,
+      "baseline_stats": {
+        "entry_scans": 33024,
+        "entry_updates": 0
+      },
+      "new_stats": {
+        "source_rows": 128,
+        "active_source_columns": 129,
+        "source_entries": 256,
+        "nonzero_entries": 256,
+        "removal_incidence_visits": 256,
+        "queue_pushes": 129,
+        "queue_pops": 129,
+        "entry_updates": 0
+      },
+      "baseline_ns": [
+        8424025,
+        8512989,
+        8399738,
+        8401230,
+        8418106,
+        8451196,
+        8432988
+      ],
+      "new_ns": [
+        350670,
+        267875,
+        278310,
+        293213,
+        293864,
+        341917,
+        273853
+      ],
+      "aa_first_ns": [
+        8498007,
+        8498377,
+        8465017,
+        8440129,
+        8688284,
+        8430745,
+        8433980
+      ],
+      "aa_second_ns": [
+        8561613,
+        8240808,
+        8434441,
+        8642065,
+        8476514,
+        8394040,
+        8338906
+      ],
+      "verification_ns": [
+        164489,
+        190538,
+        157548,
+        182336,
+        167873,
+        162997,
+        150367
+      ],
+      "median_baseline_ms": 8.424025,
+      "median_new_ms": 0.293213,
+      "median_verification_ms": 0.164489,
+      "ratio_baseline_over_new": 28.730052896699668,
+      "ratio_aa": 1.0036251365087503
+    },
+    {
+      "family": "rectangular_chain",
+      "rows": 512,
+      "columns": 513,
+      "source_nonzeros": 1024,
+      "rounds": 7,
+      "complete": true,
+      "old_cancellations": 512,
+      "new_cancellations": 512,
+      "baseline_stats": {
+        "entry_scans": 525312,
+        "entry_updates": 0
+      },
+      "new_stats": {
+        "source_rows": 512,
+        "active_source_columns": 513,
+        "source_entries": 1024,
+        "nonzero_entries": 1024,
+        "removal_incidence_visits": 1024,
+        "queue_pushes": 513,
+        "queue_pops": 513,
+        "entry_updates": 0
+      },
+      "baseline_ns": [
+        133743615,
+        142628606,
+        144484410,
+        142989752,
+        142418248,
+        142366845,
+        97126383
+      ],
+      "new_ns": [
+        1333034,
+        2266824,
+        1466906,
+        1312893,
+        1354336,
+        916294,
+        810845
+      ],
+      "aa_first_ns": [
+        133759900,
+        124108020,
+        150472835,
+        131326273,
+        137270332,
+        105342885,
+        96835043
+      ],
+      "aa_second_ns": [
+        111404941,
+        99657201,
+        110005593,
+        144048061,
+        79072111,
+        92440890,
+        122308151
+      ],
+      "verification_ns": [
+        623142,
+        677153,
+        733147,
+        714059,
+        491102,
+        434547,
+        680978
+      ],
+      "median_baseline_ms": 142.418248,
+      "median_new_ms": 1.333034,
+      "median_verification_ms": 0.677153,
+      "ratio_baseline_over_new": 106.83767105715233,
+      "ratio_aa": 1.1938145090495536
+    },
+    {
+      "family": "rectangular_fan",
+      "rows": 32,
+      "columns": 33,
+      "source_nonzeros": 64,
+      "rounds": 7,
+      "complete": true,
+      "old_cancellations": 32,
+      "new_cancellations": 32,
+      "baseline_stats": {
+        "entry_scans": 2112,
+        "entry_updates": 0
+      },
+      "new_stats": {
+        "source_rows": 32,
+        "active_source_columns": 33,
+        "source_entries": 64,
+        "nonzero_entries": 64,
+        "removal_incidence_visits": 64,
+        "queue_pushes": 32,
+        "queue_pops": 32,
+        "entry_updates": 0
+      },
+      "baseline_ns": [
+        538934,
+        533597,
+        468888,
+        556660,
+        543090,
+        470421,
+        529409
+      ],
+      "new_ns": [
+        83296,
+        75824,
+        66841,
+        69655,
+        70426,
+        66480,
+        70126
+      ],
+      "aa_first_ns": [
+        494447,
+        498983,
+        508448,
+        507156,
+        506255,
+        529600,
+        508849
+      ],
+      "aa_second_ns": [
+        550031,
+        514658,
+        511353,
+        526305,
+        524432,
+        508659,
+        520126
+      ],
+      "verification_ns": [
+        46040,
+        39319,
+        39500,
+        38459,
+        39790,
+        38909,
+        38398
+      ],
+      "median_baseline_ms": 0.533597,
+      "median_new_ms": 0.070126,
+      "median_verification_ms": 0.039319,
+      "ratio_baseline_over_new": 7.60911787354191,
+      "ratio_aa": 0.9750637345566266
+    },
+    {
+      "family": "rectangular_fan",
+      "rows": 128,
+      "columns": 129,
+      "source_nonzeros": 256,
+      "rounds": 7,
+      "complete": true,
+      "old_cancellations": 128,
+      "new_cancellations": 128,
+      "baseline_stats": {
+        "entry_scans": 33024,
+        "entry_updates": 0
+      },
+      "new_stats": {
+        "source_rows": 128,
+        "active_source_columns": 129,
+        "source_entries": 256,
+        "nonzero_entries": 256,
+        "removal_incidence_visits": 256,
+        "queue_pushes": 128,
+        "queue_pops": 128,
+        "entry_updates": 0
+      },
+      "baseline_ns": [
+        7465948,
+        7468200,
+        7482142,
+        5528260,
+        7476794,
+        7518808,
+        7591978
+      ],
+      "new_ns": [
+        301376,
+        268065,
+        313324,
+        155265,
+        299572,
+        269156,
+        263428
+      ],
+      "aa_first_ns": [
+        7474741,
+        7539198,
+        5891810,
+        7556224,
+        7550846,
+        7545938,
+        7506669
+      ],
+      "aa_second_ns": [
+        7576114,
+        7540791,
+        4210440,
+        7526319,
+        7624507,
+        7532388,
+        7424024
+      ],
+      "verification_ns": [
+        157268,
+        156907,
+        87071,
+        139170,
+        166231,
+        160422,
+        165079
+      ],
+      "median_baseline_ms": 7.476794,
+      "median_new_ms": 0.269156,
+      "median_verification_ms": 0.157268,
+      "ratio_baseline_over_new": 27.77866367459763,
+      "ratio_aa": 1.0009040957529007
+    },
+    {
+      "family": "rectangular_fan",
+      "rows": 512,
+      "columns": 513,
+      "source_nonzeros": 1024,
+      "rounds": 7,
+      "complete": true,
+      "old_cancellations": 512,
+      "new_cancellations": 512,
+      "baseline_stats": {
+        "entry_scans": 525312,
+        "entry_updates": 0
+      },
+      "new_stats": {
+        "source_rows": 512,
+        "active_source_columns": 513,
+        "source_entries": 1024,
+        "nonzero_entries": 1024,
+        "removal_incidence_visits": 1024,
+        "queue_pushes": 512,
+        "queue_pops": 512,
+        "entry_updates": 0
+      },
+      "baseline_ns": [
+        106900317,
+        69480543,
+        68430386,
+        70602288,
+        83909434,
+        69554685,
+        71772174
+      ],
+      "new_ns": [
+        810785,
+        762843,
+        872438,
+        759678,
+        1244239,
+        775351,
+        832508
+      ],
+      "aa_first_ns": [
+        70646925,
+        102566460,
+        69891854,
+        76306834,
+        74328355,
+        74922099,
+        76509155
+      ],
+      "aa_second_ns": [
+        70218658,
+        70048812,
+        69200940,
+        69861248,
+        72025197,
+        95792473,
+        68055711
+      ],
+      "verification_ns": [
+        400555,
+        408597,
+        399985,
+        403359,
+        395968,
+        661670,
+        418532
+      ],
+      "median_baseline_ms": 70.602288,
+      "median_new_ms": 0.810785,
+      "median_verification_ms": 0.403359,
+      "ratio_baseline_over_new": 87.07892721251626,
+      "ratio_aa": 1.0695698736475359
+    },
+    {
+      "family": "cyclic_stopping_core",
+      "rows": 32,
+      "columns": 32,
+      "source_nonzeros": 64,
+      "rounds": 7,
+      "complete": false,
+      "old_cancellations": 31,
+      "new_cancellations": 0,
+      "baseline_stats": {
+        "entry_scans": 2110,
+        "entry_updates": 31
+      },
+      "new_stats": {
+        "source_rows": 32,
+        "active_source_columns": 32,
+        "source_entries": 64,
+        "nonzero_entries": 64,
+        "removal_incidence_visits": 0,
+        "queue_pushes": 0,
+        "queue_pops": 0,
+        "entry_updates": 0
+      },
+      "baseline_ns": [
+        341416,
+        327815,
+        327324,
+        338692,
+        340474,
+        343018,
+        339332
+      ],
+      "new_ns": [
+        36785,
+        27361,
+        26821,
+        25719,
+        26070,
+        26610,
+        25519
+      ],
+      "aa_first_ns": [
+        362627,
+        340294,
+        337489,
+        326383,
+        339022,
+        325862,
+        326653
+      ],
+      "aa_second_ns": [
+        328876,
+        324821,
+        325522,
+        336428,
+        325251,
+        324720,
+        324871
+      ],
+      "verification_ns": [
+        29194,
+        24707,
+        24046,
+        23035,
+        23005,
+        22925,
+        23605
+      ],
+      "median_baseline_ms": 0.339332,
+      "median_new_ms": 0.02661,
+      "median_verification_ms": 0.023605,
+      "ratio_baseline_over_new": 12.752048102217211,
+      "ratio_aa": 1.0376263255147562
+    },
+    {
+      "family": "cyclic_stopping_core",
+      "rows": 128,
+      "columns": 128,
+      "source_nonzeros": 256,
+      "rounds": 7,
+      "complete": false,
+      "old_cancellations": 127,
+      "new_cancellations": 0,
+      "baseline_stats": {
+        "entry_scans": 33022,
+        "entry_updates": 127
+      },
+      "new_stats": {
+        "source_rows": 128,
+        "active_source_columns": 128,
+        "source_entries": 256,
+        "nonzero_entries": 256,
+        "removal_incidence_visits": 0,
+        "queue_pushes": 0,
+        "queue_pops": 0,
+        "entry_updates": 0
+      },
+      "baseline_ns": [
+        4806550,
+        5075036,
+        4849706,
+        4967384,
+        5386627,
+        5150130,
+        8131634
+      ],
+      "new_ns": [
+        99350,
+        102645,
+        101554,
+        99140,
+        126381,
+        102054,
+        181384
+      ],
+      "aa_first_ns": [
+        4998851,
+        5009126,
+        4809164,
+        5073023,
+        4911949,
+        5208078,
+        9042669
+      ],
+      "aa_second_ns": [
+        4783896,
+        4889446,
+        4767561,
+        4768864,
+        6534952,
+        5102148,
+        8484687
+      ],
+      "verification_ns": [
+        92439,
+        91268,
+        88354,
+        91838,
+        99460,
+        103666,
+        172280
+      ],
+      "median_baseline_ms": 5.075036,
+      "median_new_ms": 0.102054,
+      "median_verification_ms": 0.092439,
+      "ratio_baseline_over_new": 49.72892782252533,
+      "ratio_aa": 1.0244772107105795
+    },
+    {
+      "family": "cyclic_stopping_core",
+      "rows": 512,
+      "columns": 512,
+      "source_nonzeros": 1024,
+      "rounds": 7,
+      "complete": false,
+      "old_cancellations": 511,
+      "new_cancellations": 0,
+      "baseline_stats": {
+        "entry_scans": 525310,
+        "entry_updates": 511
+      },
+      "new_stats": {
+        "source_rows": 512,
+        "active_source_columns": 512,
+        "source_entries": 1024,
+        "nonzero_entries": 1024,
+        "removal_incidence_visits": 0,
+        "queue_pushes": 0,
+        "queue_pops": 0,
+        "entry_updates": 0
+      },
+      "baseline_ns": [
+        101545784,
+        139369102,
+        102684038,
+        81568552,
+        79592157,
+        100064963,
+        107459642
+      ],
+      "new_ns": [
+        845778,
+        5661913,
+        514417,
+        461236,
+        470401,
+        762712,
+        682000
+      ],
+      "aa_first_ns": [
+        85351176,
+        138296192,
+        135143550,
+        80777147,
+        90822150,
+        123545230,
+        109947109
+      ],
+      "aa_second_ns": [
+        87072121,
+        134327031,
+        99022698,
+        81128062,
+        143911764,
+        122577848,
+        98776546
+      ],
+      "verification_ns": [
+        489930,
+        688520,
+        401878,
+        373304,
+        723913,
+        536901,
+        518353
+      ],
+      "median_baseline_ms": 101.545784,
+      "median_new_ms": 0.682,
+      "median_verification_ms": 0.518353,
+      "ratio_baseline_over_new": 148.89411143695014,
+      "ratio_aa": 1.1103222919658278
+    }
+  ],
+  "timing_isolation": "Rerun after parent confirmed native full regression finished and local research CPU idle; no simultaneous team tests or benchmarks were started during this run.",
+  "timing_caution": "A/A ratios are retained per row; machine variability is visible, particularly at 512 rows. Deterministic operation-count claims are independent of these timings."
+}

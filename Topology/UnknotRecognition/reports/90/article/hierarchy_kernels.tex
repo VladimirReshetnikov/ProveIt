@@ -1,0 +1,111 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx,booktabs,longtable,array,tabularx}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,fancyhdr,titlesec}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,fit}
+\usepackage{hyperref}
+\usepackage{xurl}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=RoyalBlue,pdftitle={Three Reductions for Certified Unknot Hierarchies},
+ pdfauthor={ProveIt research continuation}}
+\usepackage{bookmark}
+\definecolor{Ink}{HTML}{14354A}
+\definecolor{Accent}{HTML}{007F86}
+\titleformat{\section}{\Large\bfseries\color{Ink}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\large\bfseries\color{Ink}}{\thesubsection}{0.65em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Three reductions for unknot hierarchies}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=0.3em,topsep=0.4em,leftmargin=*}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\poly}{poly}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\rank}{rank}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newcommand{\bits}{\operatorname{bits}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\title{\vspace{-1.2em}\textbf{\color{Ink}Three Reductions for\\Certified Unknot Hierarchies}\\[0.7em]
+\large Cancellation clusters, unsaturated interval bundles,\\
+and polynomial kernels for repeated boundary patterns}
+\author{Research continuation prepared for Vladimir Reshetnikov\\
+\small ProveIt project: mathematical results, certificate implementations, and evidence}
+\date{12 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop three complementary reductions for the ProveIt unknot-recognition
+program. First, normal vertex-disc discovery can be organized by connected
+cancellation profiles. If at most $k$ edges carry cancellation, these edges
+form at most $r$ tetrahedron-incidence components, and each edge meets at most
+$d$ tetrahedra, discovery takes
+$t^{r+O(1)}(Cd^2)^k\poly(k,B)$ bit operations in a one-vertex rank-one source.
+The proof includes the exceptional homogeneous case. A certified
+15-tetrahedron meridian shows that cancellation support need not be connected.
+
+Second, an orientable interval bundle over a bordered surface $B$, attached
+along a nonempty proper subset $A$ of its boundary, adds exactly
+$a-\chi(B)$ genuine three-dimensional one-handles, where $a$ counts attached
+intervals. This gives a nonabelian free-product formula, an exact handlebody
+criterion, and a native classifier extending 30 completed cases to 35 in a
+retained 106-case corpus. Saturated bases contribute precisely one residual
+two-handle apiece; their attaching curves remain a separate obligation.
+
+Third, connected-component routing extends the incoming four-copy marked-cut
+kernel. Every tile whose components meet both interfaces has an aligned power
+of exponent at most its number $d$ of components, with a sharp bound. A
+binary power of an explicit size-$Q$ tile consequently has a
+context-preserving threshold-three query kernel of size at most $6d^2Q$,
+constructed without expanding its exponent or a global permutation period.
+Independent replay retains original cut-edge addresses. We also determine
+the exact universal connected-tile cutoff at every nonnegative threshold.
+
+Complete proofs, executable prototypes, negative controls, paired measurements,
+and a prioritized research program accompany the report. These are local
+advances toward quasi-polynomial recognition; the required global geometric,
+discovery, pattern-transport, and restart bounds are stated explicitly.
+\end{abstract}
+\vfill
+{\small\color{Ink}\textbf{Source checkpoint.}
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/a28a49ee5c4145db0facbeb1e7f65cd8a2816775/Topology/UnknotRecognition}{ProveIt revision \texttt{a28a49ee5c41}},
+including the six relevant incoming research archives at that revision.
+The supplied code is an additive research package.}
+\newpage
+\tableofcontents
+\newpage
+\input{sections/position.tex}
+\input{sections/normal_background.tex}
+\input{sections/clusters.tex}
+\input{sections/unsaturated.tex}
+\input{sections/routing.tex}
+\input{sections/reblocking.tex}
+\input{connected_cutoff_supplement.tex}
+\input{sections/terminal_certification.tex}
+\input{sections/evidence.tex}
+\input{sections/global_budget.tex}
+\input{sections/research.tex}
+\appendix
+\input{sections/reproduction.tex}
+\begin{thebibliography}{99}
+\input{bibliography.tex}
+\input{imported_bibliography.tex}
+\end{thebibliography}
+\end{document}

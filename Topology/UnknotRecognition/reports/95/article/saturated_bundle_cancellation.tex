@@ -1,0 +1,94 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[a4paper,margin=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx,graphicx}
+\usepackage{xcolor,enumitem,fancyhdr}
+\usepackage[hyphens]{url}
+\usepackage[breaklinks]{hyperref}
+\definecolor{ink}{HTML}{18354D}
+\definecolor{accent}{HTML}{146B75}
+\definecolor{wash}{HTML}{F0F5F6}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+ pdftitle={Compressed Saturated Interval Bundles and Exact Full-Row Cancellation},
+ pdfauthor={Research continuation prepared for Vladimir Reshetnikov}}
+\urlstyle{same}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{2pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\per}{per}
+\DeclareMathOperator{\rank}{rank}
+\newcommand{\spanQ}{\operatorname{span}_{\mathbb Q}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Compressed bundles and geometric cancellation}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\title{\color{ink}\bfseries Compressed Saturated Interval Bundles\\[4pt]
+ and Exact Full-Row Cancellation\\[7pt]
+ \large A source-certified advance toward efficient unknot recognition}
+\author{Research continuation prepared for Vladimir Reshetnikov\\
+ \small ProveIt / Topology / UnknotRecognition}
+\date{12 October 2026 (UTC)\\
+ \small Inspected source revision: \texttt{704600626606a9097cfd89d4e3d2bbc63c8dd1cb}}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We extend the source-certified normal-cut handlebody consumer to a class of
+fully attached bordered interval bundles.  A saturated base contributes one
+residual two-handle.  We prove that its incidences with the original core
+cocores are the unsigned sums of the authenticated attaching-annulus
+incidences; its new private cocores are each met twice.  The private columns
+can never become unit pivots, so an arbitrarily large private handle count
+can remain a binary integer.  A connector-forest correction gives the exact
+genus when several original cores are joined.
+
+For the resulting rectangular nonnegative matrix, full positive cancellation
+is equivalent to immutable unit-column peeling, a permanent-one full-row
+minor, and absence of a nonempty stopping subset.  The matching criterion is
+a consequence of existing ProveIt report 56; the new implementation gives
+linear incidence processing and an independent timestamp verifier.  We also
+prove that the maintained minimum-fill planner already decides full-row
+completion correctly, correcting its stated scope.  An optional early core
+filter follows from row-subset monotonicity.
+
+On the pinned 106-case native corpus, successful handlebody censuses increase
+from 78 to 85, preserving all old successes.  All 96 compiled conclusions
+independently replay; 78 positive results match literal Regina cuts, while
+seven binary-scale inputs exceed the explicit expansion cap.  The remaining
+21 cases stay inconclusive.  A separate ambient-surface repair theorem gives
+an additive potential for a precisely specified class of seam-free backward
+repairs.  We provide proofs, code, adversarial tests, preserved measurements,
+and a research program.  These are local advances; the missing bounds on
+surface discovery, geometric transport, and global hierarchy search are
+identified explicitly.
+\end{abstract}
+
+\tableofcontents
+\newpage
+\input{context}
+\input{column_peeling}
+\input{relative_geometry}
+\input{observer_families}
+\input{complexity}
+\input{implementation}
+\input{experiments}
+\input{seam_repair}
+\input{research_program}
+\appendix
+\input{reproduction}
+\input{bibliography}
+\end{document}

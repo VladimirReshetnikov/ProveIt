@@ -1,0 +1,140 @@
+\section{What would suffice for a quasi-polynomial recognizer}
+\label{sec:global-budget}
+
+\subsection{An explicit parameter target for disc discovery}
+
+The logarithm of the bound in Theorem~\ref{thm:cluster-complexity} is, up to
+fixed additive polynomial terms,
+\[
+ r\log t+k\log(Cd^2)+O\bigl(\log t+\log(k+1)+\log(B+1)\bigr).
+\]
+This expression is more useful than a single claim that cancellation should
+be small. It identifies two different geometric questions: how dispersed the
+defects are, and how densely their edges meet tetrahedra.
+
+\begin{corollary}[A sufficient discovery budget]\label{cor:discovery-budget}
+Suppose the encoded source sizes, coherent-coordinate bit lengths, and
+parameter budgets are polynomial in an original input size $n$. If a promised
+vertex meridian satisfies
+\[
+ r\log(n+1)+k\log(d+1)=O\bigl((\log(n+1))^2\bigr),
+\]
+then the complete cancellation-cluster search on that source is bounded by
+$n^{O(\log n)}$ bit operations.
+\end{corollary}
+\begin{proof}
+Use $t\leq n^{O(1)}$ in the displayed logarithmic bound. Since $d\geq1$,
+$k\log(Cd^2)=O(k\log(d+1))$ for the fixed positive constant $C$. The
+remaining polynomial factors contribute $O(\log n)$ to the logarithm.
+\end{proof}
+
+For bounded $d$, the sufficient region includes
+$r=O(\log n)$ and $k=O((\log n)^2)$. For
+$d\leq(\log n)^A$ it includes
+$k=O((\log n)^2/\log\log(n+2))$ with the same $r$ bound.
+For $d=\Theta(n)$ it requires $r+k=O(\log n)$ in this estimate. With
+bounded $d$ and fixed $r$, even $k=O(\log n)$ yields polynomial discovery.
+These are conditional consequences of a proved local algorithm. No source
+transformation controlling these parameters on all unknot inputs is supplied.
+
+\subsection{Accounting for branching, failed attempts, and repairs}
+
+A short successful hierarchy does not bound an algorithm that searches many
+unsuccessful ones. The following elementary counting lemma supplies a precise
+way to state the missing obligation. It applies to an actual execution tree,
+including unsuccessful candidate choices and corrective operations.
+
+\begin{lemma}[Branch-budget accounting]\label{lem:branch-budget}
+Let a finite rooted execution tree have height at most $H$. For each internal
+vertex $v$, let $b(v)\geq1$ be its actual number of children. Suppose every
+root-to-leaf path $P$ satisfies
+\[
+ \sum_{v\in P,\ v\text{ internal}}\log b(v)\leq R.
+\]
+The tree has at most $e^R$ leaves and at most $(H+1)e^R$ vertices.
+If all work charged to any one vertex is at most $W$, total work is at most
+$(H+1)e^R W$.
+\end{lemma}
+\begin{proof}
+At every internal vertex choose a child uniformly. A leaf at path $P$ is
+reached with probability $\prod_{v\in P}b(v)^{-1}\geq e^{-R}$. Leaf
+probabilities sum to one, proving the leaf bound. Every vertex belongs to
+some root-to-leaf path, each of length at most $H$, so counting the union of
+these paths with multiplicity gives at most $(H+1)$ times the number of
+leaves. The last assertion follows by summing the work charges.
+\end{proof}
+
+The height condition controls arbitrarily long unary runs. The branch sum
+controls actual alternatives, including abandoned choices. A restart or
+repair must either appear in this execution tree or have its separate cost
+explicitly charged. A potential that decreases only on the final successful
+path does not satisfy this requirement.
+
+For example, a complete faithful implementation would meet the stronger
+quasi-polynomial target if it proved all of the following jointly:
+\begin{enumerate}
+\item Every reached source and all transported objects have polynomial
+encoded size, and every surface-search call is complete for its required
+topological task under the discovery budget above.
+\item Every expensive terminal pattern query has a polynomial-size faithful
+flat descriptor whose tiles are through, or is handled by another proved
+operation with the same cost bound.
+\item Bundle extraction, core certification, every remaining saturated
+attachment, and curve/disc transport take at most $n^{O(\log n)}$ work per
+execution node, including their certificate replay.
+\item The complete execution, including failure, cleanup, and restart nodes,
+has $H\leq n^{O(1)}$ and $R=O((\log n)^2)$.
+\end{enumerate}
+The local results in this report replace concrete terms in this list.
+Lemma~\ref{lem:branch-budget} then combines the terms. The list is a research
+contract, not a theorem that the present recognizer already satisfies it.
+
+\subsection{The residual geometry after free-boundary condensation}
+
+The unsaturated theorem removes all new relations coming from a proper
+vertical attachment. Among attached bordered bases, if $\sigma$ are saturated,
+there exists a relative decomposition with exactly $\sigma$ additional
+two-handles from those bases.
+This suggests measuring complexity by a residual attaching system rather than
+by numerical genus or the number of product handles. It also gives a sharper
+diagnostic: a failure in an unsaturated region should be a source-chart or
+core-certification issue, or a resource limit, for the unmarked census. New
+relations from these attachments occur in the saturated residue. Marked
+transport remains a separate issue even on an unsaturated base.
+
+Relator count alone is insufficient. A single attaching curve can be long,
+can interact with many core handles, and must remain embedded with its source
+framing. A useful next reduction would output a small triangulated marked core
+and compressed boundary curves, together with a proof of their geometric
+meaning. The source-parallelity $30t$ bound is linear in the current source;
+it supplies neither a polylogarithmic residual core nor short transported
+attaching words automatically.
+
+There is already a relevant algorithmic result: Chambers, Lazarus, de Mesmay,
+and Parsa decide contractibility of a compressed boundary curve in a
+triangulated three-manifold in time
+$2^{O(s^3)}\poly(L)$, where $s$ is the triangulation size and $L$ is the
+compressed curve description size \cite{compressed-contractibility}.
+Thus, if a future certified reduction gave a residual triangulation with
+$s=O(\log n)$ and $L\leq n^{O(1)}$, this existing theorem would yield
+$n^{O((\log n)^2)}$ for that contractibility task. For
+$s=O((\log n)^{2/3})$ it would yield the stronger $n^{O(\log n)}$ bound.
+This is an algebraic substitution into a published theorem, not a new
+contractibility algorithm. It also concerns one specified task; finding all
+needed curves and recognizing the resulting manifold require additional work.
+
+\subsection{Why the pattern result changes the remaining target}
+
+The incoming disconnected-pattern question required control of a potentially
+large global permutation order. Componentwise routing removes that order.
+Reblocking removes the need for initially aligned partitions whenever every
+component meets both interfaces. Consequently a faithful flat through-tile
+descriptor is now sufficient; there is no need to force every original tile
+to be connected or to have logarithmic interface width.
+
+This enlarges the target class for a geometric producer in a precise way.
+The remaining obstructions are components missing an interface, access to
+private tile vertices by later geometry, and unrestricted nested reuse.
+These are concrete structural properties that can be logged at the native
+pattern-transport boundary. Measuring those failures is more informative than
+inferring applicability from a large numerical parallelity multiplicity alone.

@@ -1,0 +1,679 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=24mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array,enumitem,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={A One-Scalar-Census Boundary Compiler for Compressed Unknot Hierarchies},pdfauthor={Research continuation prepared for ProveIt with ChatGPT}}
+\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}
+\setlist{nosep,leftmargin=*}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Moment-coded first returns}\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\bits}{\mathsf B}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\W}{\mathsf W}
+\newcommand{\snapshot}{\texttt{1c0383bd8fdb3865e97f9fbc90171f770106140e}}
+\title{\textbf{A One-Scalar-Census Boundary Compiler\\for Compressed Unknot Hierarchies}\\[7pt]
+\large Moment-coded first returns, exact gap measures,\\finite-group transport, and reusable port reservoirs}
+\author{Research continuation prepared for the ProveIt project\\Developed with ChatGPT}
+\date{12 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The incoming corner-aware boundary-kernel construction recovers the residual matching of $2p$ port endpoints through $O(p\log p)$ unweighted orbit queries. We replace this discovery step by one scalar weighted orbit census. Distinct terminal occurrences receive quadratic moment labels. The count, label sum, square sum, and exact unmarked-edge count are packed into one nonnegative integer with carry-free fields. Each pair is recovered by an integer square root; the label weights have $O(\log(p+1))$ bits rather than a bit for every port. Canonically owned edge mass detects zero-length gaps, including shared corners and one-edge boundary loops. Silent interior orbits do not contaminate the matching.
+
+We extend the construction to regular covers for a fixed finite group, recovering noncommutative endpoint transport and detecting nontrivial active-component holonomy. We also prove exact refinement and coarsening, including ordered transport multiplication: one maximal finite port reservoir supports every subset of its candidate marks without further source queries. A limitation theorem explains why unanchored closed-cycle holonomy is not recoverable from orbit histograms alone.
+
+The delivered standard-library implementation passes 23 tests with 33,253 counted inner cases and additional contract checks. Stress inputs have 16,386-bit namespace bounds. Paired measurements compare complete interface queries on a proved restricted binary oracle; they are not measurements of the native AHT engine or of knot recognition. The abstract compiler has polynomial encoded complexity by the weighted orbit theorem. Small-reservoir surgery search has an explicit quasi-polynomial regime. Source-geometric integration, patterned admissibility, discovery of new cutting surfaces, and global hierarchy bounds remain separate obligations.
+\end{abstract}
+\newpage
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section{Research position and the actual improvement}
+\label{sec:position}
+\subsection{The maintained geometry is already compressed}
+The relevant ProveIt work is no longer merely a proposal to compress normal surfaces. The maintained raw-cut construction retains all cell dimensions, their attaching information, and reconstruction charts. The later source-parallelity construction includes product handles in indices zero, one, and two, with a complementary inherited core of at most $30T$ handles and at most $66T$ core-facing base arcs, where $T$ is the source tetrahedron count \cite{rawcut,parallelity}. Those results are prior work, not contributions of this article.
+
+A bounded inherited core is not automatically an admissible patterned handle structure. The maintained parallelity discussion explicitly distinguishes standard normal coordinates from the stronger patterned hypotheses and gives an inadmissible empty-cut example \cite{parallelity}. We preserve that distinction. Likewise, the independently developed bounded-interface homology report concerns a different layer of the interface pipeline \cite{interfacehomology}.
+
+The immediate predecessor of the present work is the incoming \emph{Corner-Aware Boundary Kernels} report \cite{corner}. Its important geometric insight is to retain corners and cyclic order, rather than merely the set of ports on each component. Its first-return compiler uses subset coning and $O(p\log(p+1))$ unweighted orbit calls. The present article improves that \emph{compiler}; it does not claim to originate the corner-aware kernel or its surgery theorem.
+
+\subsection{What is established here}
+The main advance is a deterministic reduction from boundary first-return discovery to \emph{one scalar weighted histogram}. The label magnitude is polynomial in the number of marked endpoints. Thus this is neither randomized hashing nor an exponential-bit encoding of all subsets.
+
+Three related results make the reduction useful beyond its initial call count. First, the same census records exact binary gap lengths and handles zero-length gaps without a second vertex-equivalence query. Second, regular finite-group covers turn the compiler into a transport algorithm with an active holonomy check. Third, compiling a maximal candidate mark set once allows subsequent activation and deactivation of those marks without rediscovering the source boundary.
+
+The quadratic moment identity, Newton identities, ordinary group covers, and the weighted interval-orbit theorem are classical ingredients. The claimed contribution is their proved combination for this precise compressed boundary interface, including the carry-free scalar implementation and its continuation guarantees. Novelty is asserted relative to the inspected repository and incoming material; an exhaustive priority search has not been performed.
+
+\subsection{External complexity input and provenance}
+We use the weighted orbit algorithm of Agol--Hass--Thurston \cite[Theorem~16]{aht}: for interval pairings and piecewise-constant integer-vector weights, orbit-weight data have a compressed representation computable in time polynomial in the pairing count, weight-piece count, dimension, and relevant binary lengths. In particular, repeated equal-weight orbits can be reported by multiplicities rather than individually. We do not supply or claim a new general AHT algorithm.
+
+Lackenby's July 2026 manuscript separates the number of hierarchy iterations from the cost of its operations. Its Section~9 gives the bound $L(g+1)^L$ in terms of hierarchy length and pattern complexity while leaving the required controlling estimates and operation analysis to further work \cite{lackenby}. The present compiler addresses one operation, not those global estimates.
+
+The pinned code inspection used \snapshot. The raw-cut and parallelity prose and the incoming corner report were also read as documented in \code{SOURCE\_AUDIT.md}. This is a targeted audit, not a full checkout or a claim that all repository tests were rerun. The runtime results below concern only the delivered package.
+
+\section{The boundary input contract}
+\label{sec:model}
+\subsection{Occurrence coordinates and actual boundary vertices}
+Let $X=\{0,\ldots,N-1\}$ be a binary-encoded occurrence namespace. Different points of $X$ may represent different occurrences of the same geometric corner. Let $V$ be the equivalence relation identifying those occurrences into actual vertices. Some $V$-classes may be interior vertices and play no role in the boundary.
+
+The genuine boundary is a disjoint union of finitely cellulated circles. Loop edges are allowed: a one-edge circle has one vertex but two endpoint \emph{occurrences}. The source supplies the endpoint maps of boundary edges into $X/V$. Each geometric boundary edge must occur exactly once in the boundary-edge inventory, even when its endpoints have many occurrence representatives.
+
+There are $p$ distinct marked whole edges, called ports. Port $j$ has ordered endpoint labels $2j-1$ and $2j$, for $1\le j\le p$. Thus the terminal list has $r=2p$ entries
+\[
+                    x_1,x_2,\ldots,x_r\in X.
+\]
+It is a list, not a set. Several $x_i$ may coincide, and different $x_i$ may be $V$-equivalent. Labels are still distinct. Each port has a supplied owner: the connected base surface containing it. The certified boundary count of each owner is also supplied.
+
+Delete the interiors of the marked edges. Let $R$ be the relation generated by $V$ and the endpoint identifications of all \emph{unmarked} boundary edges. The source supplies $R$ by affine interval pairings. We do not recover $R$ from an arbitrary triangulation in this contribution.
+
+\begin{lemma}[Two terminal occurrences per residual path]
+\label{lem:paths}
+Every $R$-class meeting the terminal list contains exactly two terminal occurrences. Its boundary quotient is an interval, possibly a single vertex. These classes number exactly $p$. A boundary circle containing no ports stays terminal-free. Interior classes that never meet boundary edges are terminal-free as well.
+\end{lemma}
+\begin{proof}
+Removing $m\ge1$ distinct open edges from a circle leaves $m$ compact intervals. Between adjacent marked edges a residual path is a point; nevertheless its two ends come from two different endpoint occurrences. A circle with only one loop edge has the same property when that edge is marked. Summing over active circles gives $p$ paths and $2p$ terminal occurrences. Vertex occurrence identifications change the representation, not this quotient decomposition. Passive circles and interior vertices contain no port endpoints.
+\end{proof}
+
+\subsection{Canonical edge mass}
+For every unmarked boundary edge, choose one of its endpoint occurrences as its \emph{mass owner} and place mass one there. Denote the resulting nonnegative function on $X$ by $\lambda$. Choices may differ from the representatives chosen for terminal labels. They must simply represent an endpoint of the same geometric edge.
+
+We require an additive interval description
+\begin{equation}\label{eq:mass}
+       \lambda(x)=\sum_{\alpha=1}^{a}m_\alpha
+                        \mathbf1_{[u_\alpha,v_\alpha)}(x),
+       \qquad m_\alpha\in\N.
+\end{equation}
+The coefficients are usually one; overlapping owner images are added. They must count \emph{edges}, not all aliases of their endpoint. The source certifies this ownership contract.
+
+\begin{lemma}[Exact residual length]
+\label{lem:length}
+For a terminal-bearing $R$-class $C$, the integer
+\[
+                            \ell_C=\sum_{x\in C}\lambda(x)
+\]
+is its number of unmarked boundary edges. It is zero precisely for a point path.
+\end{lemma}
+\begin{proof}
+The owner of an unmarked edge belongs to the same $R$-class as both endpoints. Every such edge in the residual path contributes once, and no edge outside the class contributes. Nonnegativity rules out cancellation. A finite residual path with distinct end vertices has at least one edge; a point path has none.
+\end{proof}
+
+\begin{proposition}[Affine ownership remains small]
+\label{prop:ownership}
+Suppose unmarked edge families have injective affine owner maps $x=\epsilon t+c$, $\epsilon\in\{1,-1\}$, on integral rank intervals. Their mass has an additive interval description with one term per family. Removing $p$ specified singleton port occurrences creates only $O(p)$ additional pieces. Canonicalizing the sum by an endpoint sweep uses a number of intervals linear in the number of input pieces.
+\end{proposition}
+\begin{proof}
+An injective slope-one or slope-minus-one map takes consecutive integer ranks to consecutive occurrence coordinates. Pushforward of unit mass is therefore the indicator of the image interval. Removing a singleton rank splits its family at at most two endpoints. After all removals, the number of pieces has increased by at most twice the number of removed occurrences. For the additive overlay, changes happen only at input interval endpoints. Sorting them and summing jumps constructs every constant run without visiting an individual represented edge.
+\end{proof}
+
+This proposition is a compilation statement after the source has identified its free-edge families and endpoint maps. It is not an algorithm for finding arbitrary embedded curves or choosing a new decomposing surface.
+
+\subsection{Information supplied from outside the compiler}
+The component types, boundary counts, port owners, and coherent orientation frames remain source data. Boundary connectivity alone cannot orient separate boundary circles coherently as boundaries of the same orientable surface. For an interval bundle, fibre reversal is also separate from the slope of the rank map: a singleton rank map cannot record that reversal.
+
+All subsequent statements assume the genuine degree-two boundary contract. A histogram with two terminals per class does not, by itself, prove that the underlying quotient is a path rather than a branched graph or a cycle. The certificates for source geometry and for orbit computation have separate responsibilities.
+
+\section{Moment decoding with bounded terminal occupancy}
+\label{sec:moments}
+\subsection{Recovering a pair without a bit mask}
+Place the vector $(1,i,i^2)$ at terminal occurrence $x_i$, adding vectors when occurrences coincide. For an $R$-class $C$, the first three total coordinates are
+\[
+       t_C=\#\{i:x_i\in C\},\qquad
+       s_C=\sum_{x_i\in C}i,\qquad
+       q_C=\sum_{x_i\in C}i^2.
+\]
+The first coordinate is an occurrence count, not the number of distinct source points.
+
+\begin{theorem}[Exact quadratic pair decoding]
+\label{thm:pair}
+A terminal-bearing residual class has $t_C=2$. Its two labels $i<j$ are determined uniquely by $s=s_C$ and $q=q_C$:
+\begin{equation}\label{eq:decode}
+ d=\sqrt{2q-s^2},\qquad i=\frac{s-d}{2},\qquad j=\frac{s+d}{2}.
+\end{equation}
+The square root is an exact integer square root. All first-return pairs are recoverable from the weighted histogram, even when the histogram does not identify the underlying orbit representatives.
+\end{theorem}
+\begin{proof}
+Lemma~\ref{lem:paths} gives two distinct labels. Since $s=i+j$ and $q=i^2+j^2$,
+\[
+                         2q-s^2=(i-j)^2.
+\]
+The positive square root is $j-i$, yielding~\eqref{eq:decode}. Conversely, these two equations have at most one unordered real pair and hence at most one admissible label pair. Two different touched classes cannot have the same $(t,s,q)$: they would contain the same two globally unique labels. Consequently every touched histogram profile has orbit multiplicity one. Untouched profiles have $t=s=q=0$ and can be ignored.
+\end{proof}
+
+A checker requires $t=2$, multiplicity one, a positive square discriminant, matching parity, labels in $\{1,\ldots,r\}$, and a partition of the entire label set. Floating-point square roots are neither needed nor appropriate.
+
+The bounds $s\le2r$ and $q\le2r^2$ show that label moments occupy $O(\log(r+1))$ bits on a valid path. An unrestricted port-incidence mask can require $r$ bits. The improvement applies because residual paths have occupancy two, not because arbitrary port subsets can be reconstructed from two moments.
+
+\subsection{The bounded-occupancy generalization}
+\begin{theorem}[Fixed-occupancy moment census]
+\label{thm:bounded}
+Let labelled terminal occurrences be partitioned into classes containing at most $h$ labels. The additive coordinates
+\[
+                          1,i,i^2,\ldots,i^h
+\]
+uniquely recover every nonempty class from its histogram profile. With $r$ labels, a direct exact decoder runs in time polynomial in $r$ and $h$ and in the bit lengths of these moments. For fixed $h$, each initial coordinate has $O(\log(r+1))$ bits.
+\end{theorem}
+\begin{proof}
+The count determines the actual occupancy $t\le h$. Let $P_j$ be the $j$th power sum and put $e_0=1$. The elementary symmetric functions are recovered successively by
+\[
+                 k e_k=\sum_{j=1}^k(-1)^{j-1}e_{k-j}P_j,
+                    \qquad 1\le k\le t.
+\]
+The polynomial
+\[
+           f(z)=z^t-e_1z^{t-1}+e_2z^{t-2}-\cdots+(-1)^te_t
+\]
+is exactly $\prod_{i\in C}(z-i)$. It determines the class. An elementary implementation evaluates $f$ at all integers $1,\ldots,r$, verifies that exactly $t$ distinct roots are found, and recomputes the supplied moments. This avoids any reliance on a sophisticated polynomial-factorization algorithm. Integer divisions in the recurrence must be exact. Finally verify disjointness and total coverage of the label sets.
+\end{proof}
+
+\begin{example}[Two moments do not encode arbitrary components]
+The distinct triples $\{1,5,6\}$ and $\{2,3,7\}$ both have count three, sum twelve, and square sum sixty-two. Their cube sums differ. Thus replacing an unrestricted component port mask by only count, sum, and square sum is unsound. The current parallelity component masks and the present two-ended path labels solve different problems.
+\end{example}
+
+\subsection{Information size}
+There are $(2p-1)!!$ perfect matchings on $2p$ labelled endpoints. Since
+\[
+       \log((2p-1)!!)=\Theta(p\log(p+1)),
+\]
+an unrestricted first-return matching requires that many bits in the worst case. The decoded list of $p$ label pairs has the correct order of information size. This does not prove a query lower bound against weighted oracles: a single histogram can return the whole list, as ours does.
+
+\section{One scalar weighted census}
+\label{sec:scalar}
+\subsection{Carry-free packing}
+Assume $r=2p>0$ and define
+\begin{equation}\label{eq:base}
+ S_2=\sum_{i=1}^{r}i^2=\frac{r(r+1)(2r+1)}6,\qquad
+ h=\lfloor\log_2S_2\rfloor+1,\qquad \beta=2^h.
+\end{equation}
+Thus $\beta>S_2$, and it exceeds the global count and label sum as well. Give terminal label $i$ the scalar contribution
+\begin{equation}\label{eq:terminalweight}
+                         a_i=1+i\beta+i^2\beta^2.
+\end{equation}
+Give every canonically owned unmarked edge the scalar contribution $\beta^3$. The complete scalar weight function is
+\begin{equation}\label{eq:scalarweight}
+        w(x)=\sum_{i:x_i=x}a_i+\beta^3\lambda(x).
+\end{equation}
+
+\begin{theorem}[One-scalar-census compiler]
+\label{thm:scalar}
+Under the contract of Section~\ref{sec:model}, one weighted orbit histogram for $(X,R,w)$ determines:
+\begin{enumerate}
+\item every residual terminal pair and its exact number of unmarked edges;
+\item which residual paths are points and hence which port endpoints share a corner;
+\item every active cyclic boundary kernel and the passive boundary count for each supplied owner.
+\end{enumerate}
+There are no coning augmentations and no additional vertex or full-boundary count query. A source with no ports needs no orbit call.
+\end{theorem}
+\begin{proof}
+For every orbit $C$, its total scalar weight is
+\begin{equation}\label{eq:packedtotal}
+                       W_C=t_C+s_C\beta+q_C\beta^2+\ell_C\beta^3.
+\end{equation}
+All terminal contributions are nonnegative and labels occur exactly once globally. Consequently $t_C,s_C,q_C<\beta$, even before invoking the two-terminal hypothesis. There are no carries between the three low fields. Successive division by $\beta$ recovers $t_C,s_C,q_C$, while the quotient by $\beta^3$ is $\ell_C$ with no bound on its magnitude.
+
+Ignore the profiles with terminal count zero. For every other profile apply Theorem~\ref{thm:pair}. Lemma~\ref{lem:length} supplies the exact gap length and its zero test. Join the labels $2j-1,2j$ for each port, and join each recovered residual pair. The resulting two-colored multigraph is a disjoint union of alternating cycles. A double edge is allowed. Those cycles are exactly the active boundary circles. Their owners are determined by their port labels; inconsistent owners are rejected.
+
+Within each active cycle, replace a positive residual path by one unmarked edge labelled with its length, and identify the endpoints of each zero residual path. This constructs the corner-aware boundary cellulation. If owner $u$ has certified total boundary count $b_u$ and $a_u$ recovered active cycles, its passive count is $b_u-a_u$. No passive boundary circle or silent interior orbit is counted from an uncorrected all-corner orbit total. When $p=0$, all boundary circles are passive, so the supplied counts suffice.
+\end{proof}
+
+\begin{remark}[Silent classes]
+An interior class contributes no terminal digits. A passive boundary circle may contribute a large top field through its edge mass, but still has three zero low fields. Both are harmless for first-return decoding. This does not determine how many passive circles there are without the independently supplied boundary counts; the compiler does not infer those counts from silence.
+\end{remark}
+
+\subsection{Exact size and encoded complexity}
+Let $k$ be the number of pairings defining $R$, $a$ the number of edge-mass intervals, and $\bits$ a bound for namespace endpoint bits and mass-coefficient bits. Put $u=a+r+1$. There are at most $2(a+r)+1$ canonical weight intervals, since each of the $a+r$ additive records contributes at most two endpoints.
+
+\begin{proposition}[Polynomial-size scalar labels]
+\label{prop:bits}
+The terminal weights $a_i$ and the unit edge weight $\beta^3$ have $O(\log(r+1))$ bits. With arbitrary nonnegative coefficients from~\eqref{eq:mass}, every canonical initial weight has $O(\bits+\log u)$ bits. The scalar query packet occupies
+\[
+                            O((k+a+r)(\bits+\log u))
+\]
+bits apart from supplied geometric metadata. No numerical gap length is a loop bound.
+\end{proposition}
+\begin{proof}
+From~\eqref{eq:base}, $\beta=O(r^3)$, so $a_i=O(r^8)$ and $\beta^3=O(r^9)$. Summing overlapping records introduces at most the logarithm of their number into the bit length; source mass coefficients contribute their own bits. Endpoints are copied or shifted by one. The number of pairing and weight records is linear in $k+a+r$, establishing the storage bound.
+\end{proof}
+
+Let $\W(k,m,L)$ denote a valid polynomial bit bound for a scalar weighted-orbit query with $k$ pairings, $m$ initial weight runs, and maximum relevant bit length $L$. The import in Section~1 supplies such a polynomial. Sorting weight endpoints, decoding the touched rows, and normalizing the boundary are also polynomial. Therefore the complete abstract compiler has cost
+\begin{equation}\label{eq:cost}
+ \W\bigl(k,O(a+p+1),O(\bits+\log(a+p+2))\bigr)
+       +\poly\bigl(k+a+p,\bits+\log(a+p+2)\bigr).
+\end{equation}
+The actual output histogram, including its zero-terminal rows, belongs to the first term. Only $p$ rows survive first-return decoding. Binary multiplicities must remain compressed.
+
+A valid residual path can have up to $\sum_\alpha m_\alpha(v_\alpha-u_\alpha)$ owned edges. Its length therefore has $O(\bits+\log(a+1))$ bits under the stated bounds, up to the harmless constant for multiplying a coefficient and an interval length. A length of size $2^{16384}$ affects arithmetic bit cost, not the number of visited source vertices.
+
+Equation~\eqref{eq:cost} proves an unconditional polynomial bound for this \emph{abstract query problem}. It does not automatically establish that a particular maintained weighted replay implementation has the same worst-case bound without auditing its trace and partition growth. The delivered native adapter was not executed against a full ProveIt checkout.
+
+\subsection{A two-query fallback when edge ownership is absent}
+\begin{proposition}[Vertex-moment alternative]
+\label{prop:twoquery}
+Suppose $V$ and $R$ are supplied but canonical edge mass is not. Two weighted moment histograms, one for each relation, determine the first-return matching and all zero/positive gap bits. They need not determine exact gap lengths.
+\end{proposition}
+\begin{proof}
+Use $(1,i,i^2)$ without length mass. The $R$ query recovers pairs by Theorem~\ref{thm:pair}. A boundary vertex has two incident endpoint occurrences, so a touched $V$-class contains one or two terminal labels. Count one gives its sole label; count two is decoded by~\eqref{eq:decode}. A residual pair is a point path exactly when its two labels lie in the same $V$-class. The refinement $V\subseteq R$ is checked on the decoded labels. No interior $V$-class has terminal mass.
+\end{proof}
+
+This alternative is a theorem, not a separate delivered compiler entry point. It provides a safe integration route when edge ownership has not yet been authenticated. It must not be confused with the one-query implementation, which uses the ownership contract.
+
+\subsection{Worked scalar example}
+Take a four-edge circle and mark two adjacent edges. Their endpoint labels are $1,2$ and $3,4$, with labels $2$ and $3$ at the shared corner. The residual pairs are $(2,3)$ of length zero and $(1,4)$ of length two. Here $S_2=30$ and $\beta=32$.
+
+The touched scalar histogram consists of
+\[
+ W_{23}=2+5\cdot32+13\cdot32^2=13474,
+\]
+\[
+ W_{14}=2+5\cdot32+17\cdot32^2+2\cdot32^3=83106.
+\]
+The discriminants are $2\cdot13-5^2=1$ and $2\cdot17-5^2=9$. Exact decoding recovers both pairs, the shared corner, and the long side of the boundary. Replacing the two-edge residual path by a path of any binary length changes only the top field.
+
+\section{Finite-group transport and active holonomy}
+\label{sec:group}
+\subsection{The regular lift and the multiplication convention}
+Let $G$ be a finite group of order $g$ with a supplied multiplication table. Each oriented source pairing interval has a constant label $t\in G$. In the lifted relation,
+\begin{equation}\label{eq:lift}
+                       (x,h)\sim(y,ht)
+\end{equation}
+whenever the labelled pairing takes $x$ to $y$. Traversing it backwards uses $t^{-1}$. Deck transformations act on the \emph{left}: $h\mapsto ah$. This convention matters when $G$ is noncommutative.
+
+Place the $g$ sheets in consecutive copies of $X$. Every original affine interval pairing lifts to $g$ affine pairings, including orientation-reversing rank maps. Endpoints have $O(\bits+\log(g+1))$ bits. Labels that vary with rank must first be split into constant-labelled pieces; an unbounded number of such pieces is not free.
+
+Lift each terminal occurrence to every sheet. Give the lifted terminal $(i,h)$ a distinct integer ID, for example $(i-1)g+\operatorname{index}(h)+1$. Copy each edge-owner mass to every sheet. The scalar compiler now applies with $rg$ terminal labels.
+
+\subsection{A holonomy gate before transport decoding}
+The source occurrence graph for a single $R$-class may contain redundant cycles, even when its genuine boundary quotient is a path. Their labels must be compatible with the intended local system.
+
+\begin{theorem}[Active holonomy gate]
+\label{thm:gate}
+Consider a connected labelled source-relation graph with exactly two terminal occurrences. Let $H\le G$ be the subgroup of labels of closed walks at a chosen basepoint. Each connected component of its regular lift contains exactly $2|H|$ lifted terminal occurrences. Consequently all lifted terminal-bearing profiles have count two if and only if $H$ is trivial.
+\end{theorem}
+\begin{proof}
+For any vertex $v$, choose a path from the basepoint to $v$ with label $u_v$. The sheets of $v$ reachable from a fixed lifted basepoint form a coset of $H$, translated by $u_v$, and hence have size $|H|$. This follows because any two basepoint-to-$v$ paths differ by a closed walk, and every element of $H$ is realized by such a walk. Each of the two terminal occurrences therefore has exactly $|H|$ reachable lifts. Occurrences remain separately labelled even when they sit at the same vertex. Summing gives $2|H|$.
+\end{proof}
+
+The gate detects nontrivial label holonomy on every active residual component, including a nontrivial loop at a shared corner. It does not authenticate the underlying source as a surface, and it says nothing about terminal-free components.
+
+\begin{theorem}[One-census finite-group first returns]
+\label{thm:transport}
+Suppose the gate succeeds, equivalently the source labels have trivial holonomy on each active residual class. One lifted scalar weighted histogram recovers the base first-return pairs, their lengths, and the transport $T_{ij}\in G$ between their supplied endpoint frames. For every recovered base pair $i<j$, the sheet matching is
+\begin{equation}\label{eq:equivariance}
+                                h\longmapsto hT_{ij}.
+\end{equation}
+The construction has polynomial encoded cost in $g,k,a,p,\bits$ and in the table size.
+\end{theorem}
+\begin{proof}
+With trivial holonomy, a residual class lifts to $g$ disjoint two-terminal classes. Applying Theorem~\ref{thm:scalar} to the lifted IDs recovers those pairs. All copies have the same owned edge count as the base path. Start from the identity-sheet lift of terminal $i$; its mate identifies $T_{ij}$. Left deck equivariance gives~\eqref{eq:equivariance} on every sheet. Conversely, checking that all $g$ decoded matches satisfy this equation verifies the claimed endpoint map and that the complete fibre is present. Backward transport is $T_{ij}^{-1}$.
+
+There are $gk$ lifted pairings, $ga$ mass records, and $gr$ terminal contributions. Apply~\eqref{eq:cost} with these parameters. The delivered general-table validator also checks associativity in $O(g^3)$ table operations. In particular the bound is polynomial in $g$, not in $\log g$.
+\end{proof}
+
+For a fixed group such as $\Z/2\Z$, the cover multiplies the source size only by a constant. A symmetric group supplied implicitly on many symbols is not a fixed-size group; expanding all its elements may be factorially expensive.
+
+\subsection{Gauge covariance and oriented boundary products}
+If the local sheet coordinate at vertex $x$ is changed from $h$ to $h u_x$, then an edge label becomes
+\[
+                          t'_{xy}=u_x^{-1}t_{xy}u_y.
+\]
+A path transporter transforms by the same endpoint rule,
+\begin{equation}\label{eq:gauge}
+                       T'_{ij}=u_i^{-1}T_{ij}u_j.
+\end{equation}
+Internal frame changes cancel in the ordered product. The implementation tests this identity for noncommutative $S_3$, not just for parity labels.
+
+When the port edges themselves have supplied group transports, alternate their transports with the residual transports around a chosen oriented active boundary cycle. Multiply in traversal order and invert the transport of any edge traversed backwards. The result is its based holonomy. Moving the basepoint conjugates it; reversing the traversal inverts it. This procedure requires the supplied local frames and does not manufacture coherent surface orientations from boundary connectivity.
+
+For instance, in $S_3$, the transpositions $(01)$ and $(12)$ do not commute. Replacing ordered multiplication by a commutative accumulator would lose information even though both factors are involutions. Lengths add commutatively; transport words do not.
+
+\subsection{A sharp information limitation for passive cycles}
+\begin{proposition}[Orbit histograms do not determine unanchored holonomy]
+\label{prop:passivebarrier}
+Even for a fixed finite abelian group, the lifted orbit equivalence relation of a terminal-free boundary circle does not determine its oriented holonomy, or its holonomy up to inversion. This remains false when arbitrary weights may be added to that fixed equivalence relation.
+\end{proposition}
+\begin{proof}
+Use the one-vertex, one-loop circle and $G=\Z/5\Z$. Give the loop label one in the first system and two in the second. Both lifted relations are transitive on the five sheets, because both labels generate $G$. Therefore the two equivalence relations are identical: every sheet lies in one class. Every weighted histogram consists of the total weight on those same five points, regardless of the weight function. Yet the holonomies one and two are distinct, not conjugate in this abelian group, and not inverse. Additional point identifications cannot distinguish already universal equivalence relations either.
+\end{proof}
+
+Thus a passive-cycle algorithm needs additional ordered source information or an anchor that cuts the cycle into a path. The active compiler is not a hidden solution to the passive problem. In a reservoir application the fine active kernel can be retained, so a cycle that temporarily loses all active ports need not be forgotten permanently.
+
+\section{Exact refinement, coarsening, and port reservoirs}
+\label{sec:reservoir}
+\subsection{Refinement by specified source edges}
+Let $P$ be an existing mark set and let $Q\supseteq P$ be a finite set of specified whole boundary edges in the \emph{same source cellulation}. Such specifications are source edge IDs or authenticated family-rank pairs, not arbitrary names for newly imagined curves. Rebuild $R_Q$ by omitting the edge relations of $Q$, and omit their owner mass as well. Theorem~\ref{thm:scalar} compiles $Q$ in one weighted call.
+
+\begin{theorem}[Length-preserving coarsening]
+\label{thm:coarsen}
+The compiled kernel for $Q$ determines the kernel for every subset $P\subseteq Q$ without a source query. If a residual path for $P$ is composed of successive $Q$-gaps with lengths $\ell_0,\ldots,\ell_m$ and $m$ edges unmarked when passing from $Q$ to $P$, then its length is
+\begin{equation}\label{eq:coarsenlength}
+                           \ell_0+\cdots+\ell_m+m.
+\end{equation}
+This remains valid for adjacent ports, loops, and components that become entirely passive.
+\end{theorem}
+\begin{proof}
+Reinsert every marked edge of $Q\setminus P$ into the residual boundary graph. A reinserted whole source edge has one edge of mass, so it joins its adjacent residual pieces and adds one to their total length. The resulting graph is exactly the boundary with the interiors of $P$ deleted. This proves the matching and~\eqref{eq:coarsenlength}. A point gap contributes zero, so shared corners require no exception. A component with no remaining port becomes passive; the total boundary count of its owner has not changed.
+\end{proof}
+
+The geometric statement uses \emph{unit source edges}. A macro-port representing several source edges must carry its actual mass and ordered transport; the $+m$ formula then becomes the sum of those masses. Silently treating every macro-port as one edge is incorrect.
+
+\begin{theorem}[Noncommutative continuation]
+\label{thm:groupcoarsen}
+Under the hypotheses of Theorem~\ref{thm:transport}, retain the transport of every $Q$-gap and every port in $Q$. Coarsening to $P$ recovers the exact transporter of each remaining active residual path by multiplying these labels in path order, using inverses when traversed backwards. The result agrees with a fresh transport census for $P$.
+\end{theorem}
+\begin{proof}
+The refined path is a concatenation of the same labelled source paths and reinserted edges that form the coarse path. The group label of a concatenation is the ordered product of the labels of its pieces. Each internal local frame appears once on the right and once inversely on the left, hence cancels. This gives exactly the endpoint transport of the coarse path and is compatible with~\eqref{eq:gauge}. Associativity proves that different stages of coarsening agree.
+\end{proof}
+
+The delivered transport coarsener returns active transport only. It does not assign holonomies to the already passive, unanchored source circles. A newly passive cycle can be evaluated from the retained fine kernel; keeping the fine reservoir avoids loss when marks may later be reactivated.
+
+\subsection{One maximal reservoir serves every subset}
+\begin{corollary}[Finite-reservoir reuse]
+\label{cor:reservoir}
+Fix $q$ candidate source edges on a boundary. One scalar census with all $q$ edges marked supports an arbitrary sequence of queries that selects subsets of those candidates as ports. Each selection has polynomial cost in $q$ and the binary metadata. No further source orbit call is needed, provided the maximal fine kernel is retained. The same conclusion holds for active finite-group transport when the candidate port labels are retained.
+\end{corollary}
+\begin{proof}
+For each query apply Theorem~\ref{thm:coarsen}, and Theorem~\ref{thm:groupcoarsen} when applicable, directly to the retained maximal kernel. This is a fresh coarsening from the maximal refinement, not an attempt to recover discarded information from a previously coarsened state.
+\end{proof}
+
+This removes the previous fixed-interface restriction for a \emph{specified finite reservoir}. It does not show that all edges needed by a hierarchy belong to a small reservoir. When a genuinely new candidate edge appears, either refine the source packet and make another census or supply a separately authenticated insertion into a retained source chart.
+
+\subsection{Amortization}
+Let $C(q)$ be the encoded cost of compiling a maximal reservoir, including verification of its orbit certificate. For $J$ subsequent subset queries, the total interface cost is
+\begin{equation}\label{eq:amortize}
+                              C(q)+J\poly(q,\bits).
+\end{equation}
+A direct continuation walk can traverse each of the $q$ ports and gaps only a bounded number of times per query: every forgotten port belongs to one reconstructed path, or to a newly passive circle. Thus even a straightforward coarsener has linear combinatorial work apart from integer arithmetic and normalization. The delivered implementation follows this path-splicing strategy.
+
+\section{Exact surgery and a local quasi-polynomial regime}
+\label{sec:search}
+\subsection{What the compiler hands to the existing surgery theorem}
+The corner-aware kernel retains actual port endpoints, zero-gap identifications, positive gaps, owner information, component types, and coherent orientation frames. The new compiler supplies its first-return and gap part. All other source-authenticated data must remain attached.
+
+For reference, the predecessor's exact surgery identity is
+\begin{equation}\label{eq:euler}
+                \chi'_J=\sum_{u\in J}\chi_u+m_J-(v_J-v'_J),
+\end{equation}
+where $J$ is a group of source surfaces joined by the selected port pairs, $m_J$ is the number of paired edge pairs, and $v_J,v'_J$ are the corner counts before and after the induced identifications \cite{corner}. This is prior work. It is recalled because erasing zero gaps would make the term $v_J-v'_J$ wrong.
+
+The cell-count reason for~\eqref{eq:euler} is immediate: identify each pair of boundary one-cells into one, losing $m_J$ one-cells, and identify the boundary vertices, losing $v_J-v'_J$ zero-cells. The two-cells remain. The boundary after gluing is the surviving edge multigraph. Orientation is checked using the retained surface frames and the actual edge parameter maps, not arbitrary independently chosen directions on boundary cycles.
+
+A source with two adjacent marked edges can glue differently from a source with two separated marked edges, despite having the same port set and the same source Euler characteristic. Our exact lengths retain the distinction; their numerical magnitude can then be suppressed for topological surgery while zero versus positive is preserved.
+
+\subsection{Enumerating a reservoir's abstract surgeries}
+For $s$ labelled ports, the number of partial pairings with a choice of two parameter directions on every paired pair is
+\begin{equation}\label{eq:pairenum}
+                    A_s=\sum_{j=0}^{\lfloor s/2\rfloor}
+                              \frac{s!}{(s-2j)!\,j!}.
+\end{equation}
+Indeed, choose the $2j$ used ports, partition them into $j$ unordered pairs, and choose one of two maps for each pair; the two factors $2^j$ cancel. Thus $A_s=\exp(\Theta(s\log(s+1)))$. This count is already present in the corner report \cite{corner}.
+
+\begin{theorem}[Reservoir search bound]
+\label{thm:reservoirsearch}
+After compiling a reservoir of $q$ candidate source edges, all choices of an active subset and all signed partial pairings on that subset can be enumerated and classified as boundary surgeries in
+\begin{equation}\label{eq:searchcost}
+                  C(q)+\exp(O(q\log(q+1)))\poly(s,\bits)
+\end{equation}
+time, where $s$ bounds the number of supplied owner-component records. This is a bound on abstract boundary surgery search, not on discovery of geometric decomposing surfaces.
+\end{theorem}
+\begin{proof}
+There are at most $2^q$ active subsets. Corollary~\ref{cor:reservoir} constructs each subset's kernel in polynomial time. Formula~\eqref{eq:pairenum} bounds its signed pairings by $\exp(O(q\log(q+1)))$. Evaluate each with the corner-aware finite surgery algorithm, retaining the supplied component and frame data. Multiplying by $2^q$ changes only the constant in the exponent. The maximal source compiler is paid once.
+\end{proof}
+
+\begin{corollary}[Explicit quasi-polynomial interface window]
+\label{cor:qpoly}
+Let $n$ be an external problem-size parameter. Suppose the source encoded parameters are polynomial in $n$ and
+\[
+                     q=O\!\left(\frac{(\log n)^2}{\log\log n}\right)
+\]
+for sufficiently large $n$. Then the search in Theorem~\ref{thm:reservoirsearch} takes $\exp(O((\log n)^2))=n^{O(\log n)}$ bit time. The same holds for $n^{O(\log n)}$ such independently bounded epochs, provided all intervening operations obey that bound as well.
+\end{corollary}
+\begin{proof}
+The hypothesis gives $q\log(q+1)=O((\log n)^2)$. The compilation term is polynomial in the source encoding, and polynomial factors are absorbed by the stated bound. A product of two quantities of the form $\exp(O((\log n)^2))$ has the same form. The last sentence explicitly assumes the number and cost of intervening epochs; it does not derive them.
+\end{proof}
+
+\subsection{Why this is not a general recognition bound}
+The maintained $O(T)$ bound on source-core ports does not imply the much smaller reservoir hypothesis of Corollary~\ref{cor:qpoly}. More importantly, a topologically consistent boundary gluing need not be a legal hierarchy operation realized by an embedded decomposing surface in the source 3-manifold. Such a surface needs geometric provenance, normality or its appropriate replacement, and the patterned conditions required by the hierarchy.
+
+The unresolved bridge is therefore specific. A full recognition theorem would need a bounded search family of realizable operations, a bound on encoded pattern growth, control of hierarchy resets and depth, and an exact terminal criterion. A fast boundary compiler contributes to that bridge but does not supply the remaining spans. The exact exponential fallback of the complete recognizer is not changed by this standalone package.
+
+\section{Implementation and the certificate boundary}
+\label{sec:implementation}
+\subsection{Delivered modules}
+The Python package uses only the standard library and was tested with CPython 3.13.5. The intended minimum is Python 3.10. The principal modules are:
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}lX@{}}\toprule
+Module & Responsibility\\\midrule
+\code{moment\_kernel.py} & Interval-weight sweep, vector and scalar moment coding, exact pair decoder, owner and boundary checks, fixed-occupancy decoder.\\
+\code{oracles.py} & Capped literal reference and a proved restricted binary block oracle.\\
+\code{boundary\_sources.py} & Genuine finite degree-two circle interfaces with binary lengths; exact source-order reference; length-preserving coarsening.\\
+\code{group\_transport.py} & Regular finite-group lifts, scalar/vector transport census, active cycle products, noncommutative coarsening.\\
+\code{coning\_baseline.py} & Independently written count-query baseline for matching and zero/positive bits.\\
+\code{proveit\_adapter.py} & Opt-in adapter to the inspected native weighted-orbit API; contract-tested, not executed against an upstream checkout.\\\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{A useful restricted binary oracle, not an AHT substitute}
+The delivered block oracle accepts identity pairings, unit translations, and arbitrary singleton bridges. A unit translation $[a,b]\to[a+1,b+1]$ connects every integer in $[a,b+1]$. Merge overlapping such connected intervals, include any additional singleton bridge endpoints, and then use a disjoint-set structure on the resulting blocks. Every point outside these blocks is isolated.
+
+\begin{proposition}[Correctness of the block oracle]
+\label{prop:block}
+For the accepted family class, block contraction, singleton-bridge union, and exact integration of the input weight runs produce the same orbit histogram as literal pointwise union. Its cost is polynomial in the number of input records and their bit lengths, independently of the numerical universe size.
+\end{proposition}
+\begin{proof}
+The relations generated by one unit-translation family are exactly the connectivity relations of its consecutive-edge path. Overlapping such paths share a point and therefore belong to one connected block. Adjacent but nonoverlapping blocks must \emph{not} be merged: adjacency of integer coordinates is not a supplied relation. A singleton bridge identifies precisely the two blocks containing its endpoints; endpoints outside the translation blocks become singleton blocks. Disjoint-set union thus gives exactly the remaining orbit identifications.
+
+Integrate a piecewise-constant vector over each block by endpoint prefix sums and add block totals within each disjoint-set class. In the complement every point is its own orbit; a constant-weight interval there contributes its length as a binary multiplicity. This gives all orbits and no others. Sorting, prefix integration, and finite disjoint-set operations are polynomial in the record count and binary arithmetic size.
+\end{proof}
+
+Circle sources fall in this class: a run of unmarked edges is a unit translation, while a wraparound edge is a singleton bridge. Long general affine pairings and long reflections are rejected by this oracle. There is no silent fallback to expansion. This restricted oracle makes the large binary experiments executable without claiming to have ported the entire native orbit engine.
+
+\subsection{Native API compatibility and proof obligations}
+The inspected maintained API accepts additive half-open weight intervals and returns a histogram of vectors with orbit multiplicities. It can retain a weighted certificate backed by an unweighted orbit trace, and there is a separate weighted replay verifier \cite{weighted,weightedverify}. The new scalar compiler fits that interface with dimension one.
+
+The adapter requests a certificate and rejects any non-complete status. It calls the maintained independent weighted verifier by default, with an optional caller-supplied replacement hook. It returns only the histogram inside the checked certificate, not an unchecked parallel output field. Its contract tests use a mocked API; they are not a claim of native execution. An integration must confirm the installed verifier signature and authenticate the source pairing list, weight list, terminal list, owner data, and source fingerprint before accepting the final kernel.
+
+A scalar profile checker proves arithmetic consistency of the decoded output. It cannot replace orbit-certificate verification: an adversary could invent a different matching that has perfectly valid moment rows. The packed compiler additionally checks conservation of total scalar mass, which detects corruption but is still not a complete membership proof.
+
+The source adapter remains to be implemented. In the maintained parallelity geometry, the natural route is to use its free-edge families, their ordered endpoint maps, and their port identifiers; remove selected port occurrences; add unit mass at one authenticated endpoint of each remaining free edge; and preserve the existing owner and frame records. This description is an integration design, not an executed source-to-kernel pipeline.
+
+\subsection{Failure and resource semantics}
+The package treats an unsupported binary family or an exceeded literal point cap as \code{Incomplete}. Such an exception authorizes no topological or knot verdict. Invalid moment discriminants, duplicated labels, inconsistent owner assignments, invalid boundary counts, and non-equivariant group maps are rejected. Cancellation in a native integration must propagate through the source builder, census, independent replay, and final assembly; a partial histogram is never a negative certificate.
+
+For a cached native unweighted trace, changing only weights may permit verified replay under the existing reuse API. Changing the marked edge set changes the relation itself, so an old trace is not automatically reusable. The reservoir theorem avoids that issue by retaining a sufficiently fine compiled kernel instead of reusing a trace for a different source relation.
+
+\section{Validation and measured behavior}
+\label{sec:evidence}
+\subsection{Completed tests}
+All 23 delivered tests pass. Their counted inner families total 33,253 cases; several additional malformed-input and API-contract assertions are not included in that sum. These counts are reproducible from \code{results/validation.json}. They are not imported historical ProveIt test counts.
+
+\begin{center}\small
+\begin{tabular}{@{}lr@{}}\toprule
+Validation family & Cases\\\midrule
+Complete pair-discriminant decodings & 22,352\\
+Exhaustive marked circles of lengths one through ten & 2,046\\
+Exhaustive three-state refinement/coarsening through length seven & 3,279\\
+Random multi-circle interfaces & 700\\
+Aliased corner namespaces & 400\\
+Restricted block oracle versus literal expansion, signed weights & 1,200\\
+Bounded-occupancy Newton decoding & 600\\
+Finite-group path transport and gauge covariance & 800\\
+Active-cycle holonomy & 350\\
+Noncommutative coarsening & 350\\
+Group scalar/vector agreement & 200\\
+Scalar/vector boundary agreement & 800\\
+Count-baseline equivalence & 160\\
+Large binary source and packed stress cases & 8\\
+Explicit malformed-profile rejections & 8\\\bottomrule
+\end{tabular}
+\end{center}
+
+The three-state coarsening family labels each source edge as absent from the reservoir, in the reservoir but forgotten, or retained. Permuted port labels exercise renumbering. The aliased-corner family assigns several source representatives to each actual vertex and may choose a different alias for each terminal occurrence. This specifically tests that terminal \emph{occurrences} are not deduplicated.
+
+The finite reference expands interval pairings and computes pointwise connectivity. The separate source-order reference calculates the next marked edge directly from circle order, without moment decoding. The block oracle and literal oracle share some weight-normalization code; source-order checks provide a further check on the resulting pairs and exact lengths. These tests support the implementation, while the general proofs establish the mathematical claims. They are not a formal Lean verification.
+
+Stress sizes include $2^{16384}+33$-scale circle lengths, silent occurrence blocks of size $2^{16384}$, adjacent marks, wraparound paths, and marks added inside long gaps. The largest circle-length bit count is 16,385; the full occurrence namespace, including other circles and silent classes, reaches 16,386 bits. The loops in the compressed algorithms range over source records and marks, not over those numerical lengths.
+
+\subsection{Paired complete interface-query measurements}
+Each measured arm constructs the circle source packet, performs a complete interface query, and serializes the same requested output: first-return pairs, zero/positive bits, owners, and active/passive counts. The scalar and vector methods also calculate exact gap lengths, which are not needed in this common-output serialization. The count-only baseline does not compute those lengths.
+
+The baseline is an independently written implementation of the coning strategy, not an execution of the predecessor's delivered code. All arms use the restricted block oracle proved above. Thus the experiment isolates repeated query discovery from one-census discovery within this model; it does not measure the native AHT producer, its independent verifier, geometric source extraction, or full unknot recognition.
+
+One warmup round precedes seven measured paired rounds. Four arms---scalar packed, vector moments, count coning, and a second identical packed control---are randomly interleaved in each round. All 224 measured arm executions and all 32 warmups completed with matching outputs. The ratio column is the median of the seven paired count/packed ratios, not the ratio of independently selected minima. A/A compares the identical packed control to packed. The $N$-bits column includes the silent occurrence block, not just the physical circle.
+
+\begin{center}\small
+\input{results/benchmark_table.tex}
+\end{center}
+
+At 32 ports the count strategy used 368 orbit calls; at 64 ports it used 856. The packed compiler used one in both cases. On these particular workloads the paired median ratios were approximately 62.74 and 141.92. They are large model-level query-amortization effects, not recognition speedups.
+
+Scalar packing is not uniformly faster than the four-coordinate implementation. The vector/packed paired ratios were about 0.967 on the one-edge loop and 0.983 on the largest-namespace, 16-port case, so the packed variant was slightly slower there. Several other cases favored packing. The A/A controls and raw nanosecond samples are retained. Especially on microsecond-scale inputs, small ratios near one should not be interpreted as stable architectural conclusions.
+
+The input corpus consists of constructed degree-two interfaces, not hard knot diagrams. A native comparison must separately include source construction, certificate generation, independent replay, and serialization under the same budget. The current results justify integration experiments, not an end-to-end performance claim.
+
+\section{Corrections, safeguards, and integration recommendations}
+\label{sec:corrections}
+We found no basis in the inspected sources to allege an incorrect existing knot verdict. The following are precise safeguards against tempting but invalid optimizations.
+
+\paragraph{Do not replace unrestricted port masks by pair moments.}
+Two moments exploit occupancy two. The equal-moment triples in Section~\ref{sec:moments} show why the same representation cannot replace a general component incidence mask. Use it only after the residual-path contract has been established, or use the bounded-occupancy theorem with a genuine bound.
+
+\paragraph{Do not infer zero length from a chosen source representative.}
+Two distinct occurrence coordinates may name the same quotient corner. A literal equality test is sufficient only when the namespace already consists of actual vertices. Canonical edge mass gives the representation-independent zero test; the two-query fallback uses $V$ explicitly.
+
+\paragraph{Do not count aliases as multiple edges.}
+Endpoint mass is owned once per actual boundary edge. Assigning unit mass to every occurrence of that endpoint can inflate lengths. The affine pushforward proof assumes an authenticated edge inventory and ownership maps.
+
+\paragraph{Do not replace nonnegative mass by a signed invariant.}
+A signed sum can vanish on a nonempty path. The equivalence between zero mass and a shared corner depends on nonnegative unit edge contributions. Other additive invariants may be recorded in extra fields, but cannot replace this length coordinate without a new argument.
+
+\paragraph{Do not commute noncommutative transport factors.}
+With convention $(x,h)\mapsto(y,ht)$, deck transformations act on the left, and a coarse path uses ordered right products. Changing frames conjugates or endpoint-transforms these products. The $S_3$ tests intentionally detect the wrong convention.
+
+\paragraph{Do not erase source frames or provenance after compilation.}
+First-return data are not the whole geometric certificate. Component types, boundary ownership, coherent orientation choices, interval-bundle fibre information, and the source identity still belong to the final interface packet. No fast arithmetic decoder can restore data that were never supplied.
+
+\paragraph{Do not confuse call reduction with a universal runtime factor.}
+A weighted query may be more expensive than an unweighted one. The improvement is an exact one-census reduction, polynomial encoded bounds, and measured behavior on a specified oracle. The native wall-clock factor and maintained weight-partition growth need their own measurements and proof audit.
+
+\section{Further research questions and concrete next steps}
+\label{sec:future}
+\paragraph{1. Authenticate the native ownership adapter.}
+Construct the scalar input directly from the verified parallelity free-edge packet. Prove that every free geometric edge contributes once, including cap-only components, self-face identifications, and singleton core ports. Compare complete compiled kernels against explicit boundary cycles on the maintained finite-cut corpus, not only against their Euler characteristics.
+
+\paragraph{2. Bound the maintained replay for sparse moment weights.}
+The abstract weighted theorem supplies a polynomial algorithm, but a specific implementation needs explicit control of trace length and weight-run fragmentation. Do the present scalar weights admit a sharper bound on fragment creation under the maintained translation folds, reflections, and static contractions? A useful target is a bound expressed only through input pairing count, mark count, and endpoint bits.
+
+\paragraph{3. Find small reservoirs for actual hierarchy operations.}
+The local quasi-polynomial regime is explicit. The geometric challenge is to prove that enough realizable moves can be represented using reservoirs of size $O((\log n)^2/\log\log n)$, or another size compatible with a stronger state reduction. The existing $O(T)$ source-port bound alone does not achieve this.
+
+\paragraph{4. Control reservoir creation across resets.}
+A finite reservoir supports arbitrary toggling at no further source-query cost. Can hierarchy resets be organized so that most new marks belong to previously compiled reservoirs? A potential-function proof must charge genuine new source edges and changing source cellulations, rather than count only ports consumed by a local move.
+
+\paragraph{5. Add coherent frame extraction.}
+The current compiler accepts surface orientation frames as source data. A native frame adapter should use the appropriate oriented polygon system or anchored cover, and distinguish that global surface orientation from the endpoint transport of an isolated residual path. Tests should include several boundary circles on the same orientable base and twisted interval bundles.
+
+\paragraph{6. Anchor passive holonomy selectively.}
+Proposition~\ref{prop:passivebarrier} rules out recovery from unanchored orbit data alone. Can a compressed transversal choose a bounded number of representative edges in every \emph{relevant} passive profile and transport ordered holonomy through those anchors? Exponentially many physically identical passive circles must remain grouped unless the requested output itself requires expansion.
+
+\paragraph{7. Replace full group expansion when the group is large.}
+The regular lift costs a factor $|G|$. For permutation groups given by generators, or for compressed matrix-group labels, a polynomial dependence on the group description would require additional algebraic structure. The present theorem does not supply it. A useful first case is a product of a bounded nonabelian group and a binary cyclic factor with explicitly controlled transport.
+
+\paragraph{8. Integrate admissibility and realizability filters.}
+Abstract surface surgery can be enumerated cheaply on a small kernel. Which necessary and sufficient local certificates establish that a candidate is induced by an allowed 3-dimensional hierarchy operation? The outcome should include source charts and pattern transport, not only an appealing boundary type.
+
+\paragraph{9. Measure the complete native query.}
+Benchmark scalar moments, vector moments, the existing coning compiler, and cached verified weight replay under paired runs. Charge source preparation, proof generation, independent checking, and serialization in all arms. Preserve negative results and cancellation behavior. The present model predicts a reduction in repeated discoveries, but not a guaranteed native speedup on every input.
+
+\section{Conclusion}
+The boundary first-return problem has more algebraic structure than an arbitrary component-incidence query: every active residual component has exactly two labelled terminal occurrences. Quadratic moments exploit that structure. Carry-free packing puts all required data into one scalar weighted census while retaining shared corners and exact binary gap lengths.
+
+Regular covers extend the construction to noncommutative transport and provide a direct active-holonomy gate. Refinement and coarsening turn a finite candidate mark set into a reusable reservoir. These are proved interface operations with an executable reference implementation and controlled model-level measurements.
+
+The contribution is not a general quasi-polynomial unknot recognizer. It removes a repeated-discovery cost within the compressed geometry program and gives explicit local search bounds. The remaining work is geometric and global: authenticate the source adapter, construct admissible patterned moves, control new reservoirs and hierarchy resets, and connect terminal outcomes to the full recognition proof.
+
+\appendix
+\section{Reproduction and artifact map}
+From the package root:
+\begin{verbatim}
+python tests/test_research.py
+python code/benchmark.py
+python code/demo.py
+sh build.sh
+\end{verbatim}
+The test runner writes \code{results/validation.json} and reports failures via its exit status. The benchmark writes all samples and a regenerated table. Both use fixed random seeds; timing values themselves are environment-dependent. The delivered logs and measurements are the completed runs used in this article.
+
+The \code{code/demo.py} example emits the adjacent-port scalar histogram discussed in Section~4, along with its decoded pairs. The \code{--bits} option exercises a huge binary circle without explicit expansion. Native integration guidance is in \code{INTEGRATION.md}. The adapter invokes the maintained weighted proof checker by default; native execution and source-geometric authentication must still be validated before its output is integrated into proof-carrying geometry.
+
+\section{Claim and evidence ledger}
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}lX@{}}\toprule
+Claim & Status and support\\\midrule
+One scalar query recovers first returns and exact gaps & Proved in Theorem~\ref{thm:scalar}; implemented and tested.\\
+Polynomial encoded abstract query & Weighted-orbit import plus Proposition~\ref{prop:bits} and equation~\eqref{eq:cost}.\\
+Fixed-group transport and active holonomy gate & Theorems~\ref{thm:gate}--\ref{thm:transport}; scalar implementation and $S_3$ tests.\\
+Finite-reservoir exact reuse & Theorems~\ref{thm:coarsen}--\ref{thm:groupcoarsen} and Corollary~\ref{cor:reservoir}; exhaustive and randomized checks.\\
+Passive holonomy from arbitrary orbit histograms & False in general; Proposition~\ref{prop:passivebarrier}.\\
+Quasi-polynomial reservoir surgery search & Conditional on explicit encoded-size and reservoir bounds; Corollary~\ref{cor:qpoly}.\\
+Native source-geometric adapter & Design supplied; not implemented or run here.\\
+Native weighted-orbit adapter & Inspected API, implemented wrapper, mocked contract tests only.\\
+Full ProveIt or knot-recognition speedup & Not measured; no such claim.\\
+General quasi-polynomial unknot recognition & Not established by this contribution.\\\bottomrule
+\end{tabularx}
+\end{center}
+
+\begingroup\small\setlength{\parskip}{0pt}
+\begin{thebibliography}{9}\setlength{\itemsep}{2pt}
+\bibitem{aht} I. Agol, J. Hass, and W. Thurston,
+\emph{The computational complexity of knot genus and spanning area},
+arXiv:math/0205057v2, especially Theorems 12 and 16.
+\url{https://arxiv.org/abs/math/0205057}.
+
+\bibitem{lackenby} M. Lackenby,
+\emph{Incompressible surfaces, hierarchies and unknot recognition},
+arXiv:2607.23350v1, 25 July 2026, especially Sections 9 and 14.
+\url{https://arxiv.org/abs/2607.23350}.
+
+\bibitem{rawcut} ProveIt project,
+\emph{Full three-dimensional normal cuts in affine cell families},
+\code{Topology/UnknotRecognition/synthesis/cut\_cells.tex},
+inspected 12 October 2026; source blob recorded in \code{SOURCE\_AUDIT.md}.
+
+\bibitem{parallelity} ProveIt project,
+\emph{Source parallelity in all handle dimensions and a bounded inherited core},
+\code{Topology/UnknotRecognition/synthesis/parallelity.tex},
+inspected 12 October 2026; source blob recorded in \code{SOURCE\_AUDIT.md}.
+
+\bibitem{corner} Research continuation prepared for ProveIt,
+\emph{Corner-Aware Boundary Kernels for Compressed Unknot Hierarchies:
+Exact port surgery, orbit-count compilation, and interval-bundle consequences},
+12 October 2026. Incoming package
+\code{ProveIt\_Corner\_Aware\_Boundary\_Kernels\_2026-10-12.zip};
+predecessor snapshot \texttt{ed166080d7db14dd7a91d07788996f02947dd92a}.
+
+\bibitem{interfacehomology} Research continuation prepared for ProveIt,
+\emph{Bounded-interface integral homology: Binary surface condensation,
+twisted attachments, and provenance-aware terminals for compressed unknot hierarchies},
+12 October 2026. Incoming interface-homology report; inspected abstract and scope only.
+
+\bibitem{weighted} ProveIt project,
+\code{Topology/UnknotRecognition/fast/fastunknot/weighted\_orbits.py}
+and \code{normal\_parallelity.py}, at \snapshot.
+
+\bibitem{weightedverify} ProveIt project,
+\code{Topology/UnknotRecognition/fast/fastunknot/}\\
+\code{weighted\_orbit\_verify.py}, at \snapshot; independent replay architecture inspected. The public verifier signature was also checked in the later search snapshot recorded in the audit.
+\end{thebibliography}
+\endgroup
+\end{document}

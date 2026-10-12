@@ -1,0 +1,148 @@
+\section{Implementation and finite evidence for profile discovery}
+\label{sec:profile-evidence}
+
+The research overlay implements the general component-budget search in
+\texttt{normal\_weight\_clusters.py}.  It enumerates connected supports,
+constructs exact local affine profiles, retains admissible positive even
+increments, and reuses those profiles in disjoint component products.
+It also implements the dependent-baseline homogeneous exception.
+Projected rows are deduplicated, and a same-sign test rejects equations
+that cannot have strictly positive increments.  All source conditions
+are checked.  The component budget is capped at $\min(r,k)$, including
+when the supplied integer $r$ is very large.  Global work, support,
+linear-system, and product limits remain effective through final
+certificate replay; a limit reports incomplete search.
+
+The supplied vertex gate is an unchanged copy of the incoming
+rank-and-boundary checker.  It verifies a primitive supported normal
+ray, Euler characteristic one, and essential boundary through exact
+linear algebra and boundary cohomology.  Positive results are replayed
+by the separate checker.  Exhaustion concerns only the stated source
+and parameter class and yields no unrestricted knot verdict.  The
+overlay leaves the maintained recognizer and its defaults unchanged.
+
+\subsection{Complete radius-two candidate generation}
+
+The paired experiment compares the new profile search with the incoming
+enumerator over all supports of size at most two.  Each timed call
+includes source and cocycle preparation, complete candidate generation,
+local normal reconstruction, and actual-cancellation filtering; neither
+arm includes a topological vertex-disc gate.  Candidate sets are checked
+for exact equality outside the timed blocks.  Each source receives one
+excluded warmup per arm and five measured rounds, with arm order
+shuffled using a recorded seed.  Table~\ref{tab:profile-radius-two}
+reports seconds and ratios of the two arm medians; these are not medians
+of per-round ratios.  Full samples, observed ranges, counters, and hashes
+are in \texttt{artifacts/benchmark.json}.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{lrrrr}
+\hline
+Source & $t$ & All supports (s) & Profiles (s) & Ratio\\
+\hline
+Layered obstruction & 8 & 1.189400 & 0.026278 & $45.26$\\
+Layered obstruction & 16 & 7.213136 & 0.043151 & $167.16$\\
+Layered obstruction & 24 & 25.963222 & 0.060250 & $430.93$\\
+Layered obstruction & 40 & 122.938084 & 0.096843 & $1269.46$\\
+Disconnected-support source & 15 & 4.006094 & 0.041128 & $97.40$\\
+\hline
+\end{tabular}
+\caption{Complete radius-two candidate generation, five measured
+rounds.  The ratio is the all-support median divided by the profile
+median.  Exact resulting candidate sets agree in every case.}
+\label{tab:profile-radius-two}
+\end{table}
+
+The counts make the change in workload concrete.  At $t=40$, the
+incoming arm examines $904$ weight spaces and $156\,927$ small systems;
+the profile arm examines $173$ connected supports and $4\,051$ systems.
+Only two local profiles survive, producing three assembled candidates
+including the coherent candidate.  For the disconnected-support source,
+the corresponding counts are $154$ spaces and $14\,942$ systems versus
+$78$ connected supports and $1\,420$ systems.  Three reusable local
+profiles produce five assembled candidates.  Maximum tetrahedron-edge
+incidence is $d=6$ in the smallest layered source and $d=8$ in the other
+sources.
+
+These gains combine component reuse, smaller connected-support
+enumeration, projected-row deduplication, and the stricter local
+positive-even-increment filters.  The old baseline first searches
+homogeneous weight spaces and filters the actual cancellation support
+after reconstruction.  Thus the table does not isolate connectedness
+as the sole cause of the speedup.  The source family is deliberately
+structured, the parameter radius is small, and these finite timings
+establish neither a corpus-wide speedup nor an asymptotic growth law.
+
+\subsection{A retained whole-query regression}
+
+The existing incoming one-edge specialization is a stronger practical
+baseline for positive radius-one queries.  A second paired experiment
+therefore compares complete successful queries, including internal
+positive verification and replay.  Both methods find the same certified
+disc on these sources.  Here there is one excluded warmup per arm and
+seven measured rounds, again with shuffled arm order.  The incoming
+method uses its native component observer, whereas the new method uses
+the polynomial rank gate.  Their end-to-end costs consequently include
+different verification mechanisms, an intentional part of this
+integration comparison.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{rrrr}
+\hline
+$t$ & Incoming one-edge (s) & Profiles with rank gate (s) & Slowdown\\
+\hline
+8 & 0.002818 & 0.005381 & $1.91$\\
+16 & 0.004930 & 0.014919 & $3.03$\\
+24 & 0.007299 & 0.034642 & $4.75$\\
+40 & 0.012197 & 0.128793 & $10.56$\\
+\hline
+\end{tabular}
+\caption{Complete positive radius-one queries, seven measured rounds.
+The slowdown is the new median divided by the incoming median, not the
+median of paired sample ratios.}
+\label{tab:profile-radius-one}
+\end{table}
+
+The larger-radius search improvement therefore does not justify
+replacing the existing one-edge specialization.  A practical portfolio
+should retain it, while adding component profiles for larger budgets.
+The polynomial bit-complexity guarantee of the rank gate also does not
+imply lower constants on these small positive instances.  All measured
+regressions are retained in the artifact.
+
+\subsection{Validation and evidential limits}
+
+All eleven focused tests pass.  They compare exhaustive candidate sets
+on actual sources; recover the disconnected witness through the
+independent incoming weight-space enumerator; exercise the homogeneous
+exception; compare connected-set enumeration with brute subsets; check
+global resource limits, external cancellation, and input immutability;
+replay certificates with discovery routines disabled; reject forged
+certificates; and exercise exact arithmetic with an $8193$-bit right
+hand side.  That last test validates the local arithmetic path, not a
+complete topological search at that coordinate size.
+
+The retained fifteen-tetrahedron source includes its full face
+pairings, construction history, independently checked Pachner moves,
+and positive vertex-disc certificates.  Its independently generated
+dense one-edge inventory proves the finite statement
+$\kappa_V=2$ as described in
+Proposition~\ref{prop:cluster-fixture-minimum}.  The separate full census
+contains $821$ standard vertex vectors agreed upon by Regina's direct
+tree and direct double-description algorithms; the three meridians all
+have two cancellation components.  Each positive is independently
+certified.  Completeness of this additional census still relies on
+those external enumeration algorithms.  No generic independently
+replayable certificate for unrestricted negative assertions is supplied.
+
+The new module, tests, measurement driver, finite-audit scripts, and
+theorem fragment form an additive research artifact.  They establish a
+proved search guarantee for an explicit source class and measured gains
+for complete radius-two candidate generation, together with a concrete
+integration regression.  A global quasipolynomial recognizer still
+requires the structural and source-coverage results stated elsewhere in
+this article.

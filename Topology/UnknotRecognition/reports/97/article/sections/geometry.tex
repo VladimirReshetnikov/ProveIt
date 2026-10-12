@@ -1,0 +1,307 @@
+\section{Saturated interval bundles and joint geometric cancellation}
+\label{sec:saturated-bundles}
+
+The existing primitive-annulus construction\cite{repo} applies when a bordered base
+surface has a boundary circle that is not fully attached to the core.
+We now remove that restriction under a different, explicitly checkable
+condition.  An entire saturated bundle contributes one additional
+two-handle relation.  We cancel these relations jointly with the original
+core two-handles, using only the original core cocores.  The genera of the
+bases can remain in binary throughout.
+
+Here a \emph{saturated} bundle is an orientable total interval bundle
+$P_i\to F_i$ over a connected compact surface with nonempty boundary, all
+of whose vertical boundary annuli are attached to the core.  The base
+$F_i$ need not be orientable.  We work with actual embedded annuli with
+disjoint collars; an abstract cyclic word is insufficient to establish
+this geometric hypothesis.  In the normal-cut application the source
+parallelity construction and its ordered boundary observer supply these
+annuli and collars.
+
+The incoming hierarchy report\cite{hierarchy-incoming} already proves the
+one-two-handle count used below. The new content of the relative lemma is
+the exact old-cocore incidence formula and its implications for excluding
+all unexpanded band columns from the raw search.
+
+\subsection{One relative relation, with exact source incidences}
+
+Let $U$ be a disjoint union of handlebodies given by zero- and one-handles.
+Let $\alpha_1,\ldots,\alpha_f$ be the pairwise disjoint attaching curves of
+the original core two-handles.  The core has no three-handles.  Fix a
+spanning forest in the original zero/one-handle graph, and let
+$\{D_h:h\in J\}$ be the cocore disk system corresponding to the remaining
+one-handles.  Each saturated bundle is attached along annuli disjoint
+from the $\alpha_r$.  Write $\beta_{ij}$ for an actual embedded core curve
+of its $j$th attaching annulus, viewed on the $U$ side.
+
+All curves are transverse to the cocore boundaries.  Define
+\begin{equation}
+ a_{rh}=|\alpha_r\cap\partial D_h|,\qquad
+ a_{ih}^{\mathrm{sat}}
+   =\sum_{j=1}^{b_i}|\beta_{ij}\cap\partial D_h|,
+ \label{eq:saturated-incidences}
+\end{equation}
+where $b_i=|\pi_0(\partial F_i)|$.  These are unsigned geometric counts.
+Oppositely oriented passages both contribute, and no free reduction is
+performed.
+
+\begin{lemma}[Relative bundle presentation with exact incidences]
+\label{lem:saturated-relative-handles}
+The union of $U$ with the saturated bundles has a relative handle
+decomposition with, for each $P_i$, precisely
+\[
+ h_i=1-\chi(F_i)
+\]
+new one-handles and one new two-handle, and no new zero- or three-handles.
+The new two-handle for $P_i$ has incidence
+$a_{ih}^{\mathrm{sat}}$ with every old cocore $D_h$.  It traverses each
+of its own new one-handles exactly twice and every other bundle's new
+one-handles zero times.  Original core two-handles traverse all the new
+one-handles zero times.
+\end{lemma}
+
+\begin{proof}
+Choose pairwise disjoint properly embedded arcs in $F_i$ cutting it into
+one disk.  Their number is $1-\chi(F_i)$: each cut increases Euler
+characteristic by one.  Equivalently, $F_i$ is obtained from collars of
+all its boundary circles by attaching $h_i$ bands and then one final
+disk.  This relative surface handle decomposition exists for orientable
+and nonorientable bordered surfaces alike.
+
+Thicken this construction using the given interval bundle.  A boundary
+collar can be absorbed into a collar of its annular attachment site in
+$U$.  Each band thickens to a three-dimensional one-handle, and the
+final disk, whose interval bundle is trivial, thickens to a two-handle.
+This proves the asserted handle counts.
+
+The boundary of the final disk follows each long side of each band once.
+Its attaching curve therefore crosses every new band cocore exactly
+twice.  A twisted band can change the signs of those crossings, but
+cannot change this unsigned count.  The same boundary follows each
+original boundary segment of $F_i$ once.  Those segments partition the
+original boundary circles, so every original boundary circle is followed
+once in total.  A whole boundary circle need not occur consecutively in
+the attaching word.  Counting its segments avoids choices of basepoints
+or conjugating paths.
+
+For the exact counts on $U$, first straighten the annular attaching
+collars about their chosen core curves. A relative Dehn twist of a
+vertical annulus extends across a collar in the interval bundle: in
+collar coordinates it has the form
+$(\theta,r,t)\mapsto(\theta+2\pi k t\rho(r),r,t)$, where $\rho$ is one
+at the vertical boundary and zero at the inner edge. Its effect on
+the horizontal boundary is allowed because the conclusion here is
+unmarked. Thus annular gluing parameters introduce no additional
+restriction on the positions of the band feet.
+
+Now narrow each annular attaching collar
+about its chosen core curve $\beta_{ij}$, fixing that core curve.  In
+transverse position, the intersections with the cocore boundaries then
+consist of short spanning arcs, one for each counted intersection with
+$\beta_{ij}$.  The finite band feet can be chosen in strips avoiding
+all these arcs.  Consequently the old-boundary portions of the final
+attaching curve contain every counted crossing exactly once, and the
+new bands and their feet introduce no further crossing of an old
+cocore.  This proves~\eqref{eq:saturated-incidences}.  The collar
+changes are supported away from the original two-handle attaching
+curves and the other marked interfaces.
+
+Finally, every added band belongs to its own bundle.  No original
+two-handle or other bundle's final disk uses it, giving the remaining
+zero incidences.
+\end{proof}
+
+For a disk base, $h_i=0$, and the lemma is exactly the familiar absorption
+of a fully attached disk bundle as a two-handle.  An annulus and a
+M\"obius band both have $h_i=1$.  Their additional one-handle occurs twice
+in the residual relation; its orientation data can differ, but the
+incidence argument is the same.
+
+\subsection{Why the additional columns can be omitted completely}
+
+Let $A$ be the matrix obtained by stacking the $f$ original core rows and
+one row $a_i^{\mathrm{sat}}$ per saturated bundle, keeping only the old
+nonforest columns $J$.  In particular, a bundle contributes one row even
+when $h_i$ is very large.
+
+Extend the fixed original forest to a forest for the enlarged
+zero/one-handle graph using only added band edges.  This is possible
+because the original forest already spans each original core component.
+Contraction deletes the selected added columns and leaves all old
+nonforest incidences unchanged.  Let $N$ denote the full remaining
+matrix, including the added band columns that were not contracted.
+
+\begin{theorem}[Exact reduction to the aggregate source matrix]
+\label{thm:saturated-even-columns}
+The full relative matrix $N$ admits a complete sequence of positive
+geometric singleton pivots if and only if $A$ does.  Thus the source
+column-leaf algorithm decides complete cancellation in this selected
+relative handle decomposition without constructing any added band
+column.
+\end{theorem}
+
+\begin{proof}
+Every entry in an added band column is initially even, by
+Lemma~\ref{lem:saturated-relative-handles}.  Recall that a positive
+pivot $(r,g)$, with $n_{rg}=1$, updates surviving entries by
+\[
+ n'_{ih}=n_{ih}+n_{ig}n_{rh}
+ \qquad(i\ne r,\ h\ne g).
+\]
+If column $h$ has only even entries, its updated entries are even as
+well.  Inductively, no added band column can ever contain a singleton.
+Every possible pivot must therefore use an original core column.
+
+Restricted to the original core columns, each update is precisely the
+same update applied to $A$.  A complete sequence for $N$ consequently
+gives one for $A$.  Conversely, a complete sequence for $A$ can be applied
+to $N$ with the same pivot entries, deleting all its two-handle rows.
+Theorem~\ref{thm:complete}, which equates positive singleton cancellation
+with source column-leaf deletion, completes the argument.
+\end{proof}
+
+In fact, evenness is stronger than the algebra needs. A column whose
+entries are all zero or at least two can never acquire an entry one under
+a positive update: both summands are zero or at least two. Thus any such
+column can be omitted when deciding full raw cancellation. The geometric
+band construction gives the particularly transparent values zero and two.
+
+The qualifier ``selected relative handle decomposition'' matters.
+The theorem permits every positive pivot in that decomposition, not
+arbitrary changes of disk system or arbitrary handle moves.  An
+uncancelled stopping set is an obstruction to this rule, not an
+obstruction to the underlying manifold being a handlebody.
+
+\begin{corollary}[Joint core and saturated-bundle certificate]
+\label{cor:saturated-handlebody}
+If source column-leaf deletion removes all rows of $A$, then the core
+with all saturated bundles attached is a disjoint union of
+handlebodies.  The cancellation order may interleave original core
+two-handles and saturated-bundle relations.
+\end{corollary}
+
+\begin{proof}
+Every pivot has the geometric realization of a one/two-handle
+cancellation.  For a source column leaf, no surviving attaching curve
+meets the pivot cocore, so the positive update has no fill in any
+surviving row.  Lemma~\ref{lem:saturated-relative-handles} authenticates
+the geometric rows, and Theorem~\ref{thm:saturated-even-columns} shows
+that the omitted columns hide no extra two-handle relation.  After all
+rows have been removed, only zero- and one-handles remain.  Each
+connected component is therefore a handlebody.
+\end{proof}
+
+\subsection{A primitive anchor explains the geometry}
+
+The following special case makes the saturated-bundle step intuitive
+without introducing its full relative matrix.
+In this proposition, the remaining marked interfaces mean the other
+attachment sites on $H$ and the displayed vertical annuli. No arbitrary
+graph on the horizontal boundary of $P$ is included in that phrase.
+
+\begin{proposition}[One primitive anchor releases a saturated bundle]
+\label{prop:saturated-anchor}
+Let $H$ be a handlebody and let $P\to F$ be an orientable interval bundle
+over a connected bordered surface.  Choose one vertical annulus $A_0$.
+Suppose its attachment annulus on $H$ has a properly embedded dual disk
+$E$ meeting that annulus in one spanning arc and avoiding all other
+marked interfaces.  After attaching $P$ to $H$ only along $A_0$, the
+result is a handlebody of genus
+\[
+ g(H)+1-\chi(F)-1=g(H)-\chi(F).
+\]
+All remaining vertical annuli of $P$ form a simultaneous primitive
+family in this handlebody, relative to the remaining marked interfaces.
+\end{proposition}
+
+\begin{proof}
+For the first annular gluing, cut the annulus along a spanning arc to
+obtain a disk interface. Restoring the annulus supplies a connecting
+one-handle and a two-handle. The latter crosses the handle dual to $E$
+exactly once, so that pair cancels geometrically. The pieces are then
+joined by the connecting handle, giving the claimed genus. This is the
+usual primitive-annulus argument\cite{schultens-weidmann}; the explicit
+dual-disk construction is the hypothesis used here.
+
+For every other boundary circle $C_j$ of $F$, choose a properly embedded
+arc $\gamma_j$ joining it to $C_0$, with the arcs pairwise disjoint.
+Such arcs can be chosen successively by joining distinct boundary
+components; cutting along one leaves the base connected and merges
+those two boundary components.  This construction does not require
+orientability of $F$.
+
+Each $p^{-1}(\gamma_j)$ is a rectangle with one edge on $A_0$ and one
+edge on the annulus over $C_j$.  Choose pairwise disjoint parallel
+copies $E_j$ of $E$.  A collar isotopy matches their spanning arcs in
+$A_0$ with the corresponding rectangle edges: any finite disjoint
+family of spanning arcs of an annulus is parallel.  Gluing each
+rectangle to its $E_j$ along that edge gives an embedded proper disk
+in $H\cup_{A_0}P$.  These disks are pairwise disjoint.  Each meets its
+designated remaining annulus in one spanning arc and avoids all the
+others, proving simultaneous primitivity.
+\end{proof}
+
+A singleton in an aggregate saturated row supplies exactly such an
+anchor after the preceding source cancellations.  The relative-handle
+proof is more general: anchors need not exist simultaneously in the
+original core and may become available only after other rows disappear.
+
+\subsection{Completing the census and its complexity}
+
+After the joint cancellations, attach every unsaturated bundle using
+the established spare-boundary primitive-annulus construction, and
+attach the remaining proper disk interfaces.  These operations yield
+handlebodies.  They can be delayed until after the joint cancellation
+because their disjoint marked sites persist under the resulting
+homeomorphisms.  No explicit coordinates for their transported images
+are required for this unmarked topological conclusion.
+
+Let $C$ be a connected component of the full attachment graph.  Its
+Euler characteristic is
+\begin{equation}
+ \chi_C
+ =\sum_{K_v\subset C}\chi(K_v)
+  +\sum_{P_i\subset C}\chi(F_i)
+  -d_C,
+ \qquad g_C=1-\chi_C,
+ \label{eq:saturated-genus}
+\end{equation}
+where $d_C$ is the number of proper disk interfaces in $C$; annuli have
+Euler characteristic zero.  Equation~\eqref{eq:saturated-genus} computes
+the genus only after the cancellation and gluing proof establishes that
+$C$ is a handlebody.  It cannot be used as a stand-alone ball test.
+An unported bordered bundle is an isolated handlebody of genus
+$1-\chi(F_i)$ and retains its full binary multiplicity.
+
+For the saturated subassembly alone, suppose a connected component
+contains $k$ original zero/one-handlebody components, of genera $g_v$,
+and $f_C$ original core two-handles.  The same count becomes
+\[
+ g_C=\sum_v g_v-f_C-k+1-\sum_i\chi(F_i).
+\]
+It is independent of how many added band edges were needed to join the
+original components.
+
+Let $r$ be the number of aggregate and original rows, $c$ the number of
+old nonforest columns, and $I$ the number of nonzero source incidences.
+After source reconstruction, the queue-based column-leaf algorithm uses
+$O(I+r+c)$ structural operations; a heap for a deterministic least-label
+order uses $O(I+(r+c)\log(r+c+1))$.  Counts can be saturated at two,
+because only zero, one, and at least two are relevant.  The certificate
+lists at most $r$ source row/column pairs and can be checked by one
+incidence scan together with deletion times.  Base Euler
+characteristics, genera, and isolated multiplicities are manipulated in
+binary.  No operation is proportional to $\sum_i(1-\chi(F_i))$.
+
+The complete normal-cut wrapper must additionally authenticate the
+normal vector, compressed parallelity profiles, original handle charts,
+and cyclic annular interface words.  Its total bound includes those
+existing source routines and their binary arithmetic.  Closed base
+surfaces and core three-handles remain outside this certificate.
+Failure of the source cancellation test returns an inconclusive result.
+
+This extension proves the unmarked homeomorphism type of more supplied
+cuts.  It supplies neither an inherited boundary-pattern encoding for
+the next hierarchy stage nor a bound on the number of candidate
+surfaces or hierarchy resets.  Those are the remaining global issues
+that a quasi-polynomial unknot-recognition argument must address.

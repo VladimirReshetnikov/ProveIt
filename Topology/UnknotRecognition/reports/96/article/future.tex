@@ -1,0 +1,176 @@
+\section{Integration plan and research priorities}
+\label{sec:future}
+
+\subsection{An additive integration path}
+
+The package should first be kept as a self-contained research module under the
+repository's preferred report or research directory. Its public statuses are
+algebraic. Promoting it into \code{fastunknot} should require an adapter that
+obtains the actual source matching matrix, Euler functional, coordinate map,
+quadrilateral exclusions, and source identity from maintained producers.
+Every compiled split should be replayed before use.
+
+A practical dispatcher can retain the one-bag or existing search as fallback,
+try inexpensive verified scalar splits, compare their predicted enumeration
+budgets, and use the smaller route only when it improves the forecast.
+The forecast should charge $2^{\delta_v}$ sign chambers, raw versus effective
+nullity, and all source-preparation overhead. The capped-fixture result shows
+why merely counting retained rays is not a sufficient dispatch heuristic.
+
+Prepared local lists can be reused across the triangle anchors and across
+linear objectives on the same source. Original-coordinate deletion is safe;
+source mutation requires recompilation. The positive verifier can remain much
+smaller than the search producer. Negative coverage must include every local
+chamber and ray or an equally complete LP certificate tree.
+
+Before a default-path promotion, the repository should require fresh native
+comparisons on its maintained normal-surface corpus, source-authenticated
+essential-disc checks, forced budget exhaustion tests, malformed-source tests,
+and paired benchmarks against the incumbent dispatcher. A prototype's positive
+Euler status must not bypass those geometric checks.
+
+\subsection{Further mathematical questions}
+
+\paragraph{1. Conflict-preserving source decompositions.}
+Develop a polynomial-time producer for useful rank-one column-cut trees while
+requiring each quadrilateral triple to remain local. Ordinary represented-matroid
+separation algorithms do not, by themselves, enforce this extra locality rule.
+The relevant deliverable is a decomposition with a proved cost measure, or a
+certified obstruction explaining why a large residual core is unavoidable.
+
+\paragraph{2. Rank spectra on genuine knot sources.}
+Measure cut-space dimensions after maintained support propagation, complete
+primal--dual support reduction, and controlled compatibility decisions. The
+rank-three tetrahedron split in the capped fixture is an immediate warning
+against inferring algebraic width from geometric adjacency. Which source
+operations create long rank-one regions, and which preserve large rank cores?
+
+\paragraph{3. A small-core theorem compatible with dense normal vectors.}
+A useful global theorem need not bound the number of nonzero normal
+coordinates. It could instead assert that the source matching system decomposes
+into many scalar pieces plus a residual core with polylogarithmic intrinsic
+dimension. Can parallelity or hierarchy normal forms provide this property
+without enumerating their exponentially many sheets?
+
+\paragraph{4. Source-sensitive higher-rank ray preservation.}
+The no-new-rays argument uses the fact that vanishing scalar flux means
+vanishing full cut vector. In higher rank, a sign boundary usually kills only
+one linear functional of the cut vector. Identify arrangements whose boundary
+strata still split the source support into independent coordinate pieces.
+This would extend connected-witness guarantees beyond rank one.
+
+\paragraph{5. Succinct rank-two messages.}
+Theorem~\ref{thm:twoport} rules out a uniformly small literal cone list, but not
+a short symbolic language. Investigate arithmetic circuits, monotone ratio
+intervals with discrete exceptional sets, or finite-state descriptions carrying
+binary counters. The objective is an exact composition theorem with bit and
+state bounds, not a convexification that fills forbidden slopes.
+
+\paragraph{6. LP-backed local search.}
+Implement the intrinsic-dimension theorem using a polynomial-time exact LP
+policy or a certificate-producing proposal backend with exact replay. Compare
+it with the delivered active-zero-set enumeration on the same supplied trees.
+Separate the mathematical polynomial LP guarantee from the practical behavior
+of any chosen simplex pivot rule.
+
+\paragraph{7. Amortization across anchors and reductions.}
+Coordinate-zero queries already share prepared rays. Can source-bound dual
+certificates and rank-one generators be transported cheaply across the specific
+crushing or Pachner transformations used by the recognizer? A transport rule
+must preserve source equations and forbidden-pair locality, not just matrix
+rank or Euler values.
+
+\paragraph{8. Width-aware decomposition optimization.}
+For a given family of admissible cuts, minimize the actual sum of chamber
+budgets rather than tree depth alone. An empty internal bag can still have a
+large degree and many sign chambers. Determine when balancing a tree preserves
+rank-one cuts and yields a demonstrable net saving.
+
+\paragraph{9. More than one objective.}
+A fixed Euler objective collapses to two slopes, but retaining several
+objectives may require a Pareto frontier. Characterize cases in which essential
+boundary data, homology, or a lexicographic secondary weight can be carried
+without recreating exponentially many continuation states.
+
+\paragraph{10. Nonhomogeneous boundary conditions.}
+The zero-extension shortcut fails in the presence of fixed nonzero boundary
+charges. Find a precise replacement using normalized rooted messages or
+inhomogeneous value functions, with an explicit bound on their breakpoints.
+This is necessary before transferring the scalar method indiscriminately to
+marked hierarchy pieces.
+
+\paragraph{11. Native adversarial validation.}
+Build a reproducible corpus in which the incumbent normal-sector search is
+actually expensive, then test verified source splits under identical source
+preparation and certificate obligations. Include sources that reject all
+nontrivial scalar splits, small cases with overhead, high-bit coordinate
+examples, and deliberately invalid source transports.
+
+\paragraph{12. The remaining quasi-polynomial theorem.}
+Prove a bounded-cost complete source/decomposition family for every required
+recognition query, or a higher-rank continuation theorem that covers the
+large-core cases. The hierarchy length, pattern data, source bit growth,
+decomposition search, and negative coverage must all be charged together.
+These are the explicit missing hypotheses between the local theorems proved
+here and the unrestricted target.
+
+\section{Conclusion}
+
+The principal improvement is not a faster way to enumerate the same global
+compatibility histories. It is an exact reason not to enumerate their Cartesian
+product: a homogeneous one-scalar continuation has only two finite optimization
+slopes once a decisive zero-port direction is excluded. The source compiler
+makes that interface testable from the original matching equations, and the
+no-new-rays theorem turns the resulting local choices into primitive connected
+normal witnesses without a second global support search.
+
+This gives a rigorous search-width criterion, a tested exact implementation,
+and a small genuine source-level performance gain. It also exposes a sharp
+boundary of the approach: two-coordinate interfaces can already carry
+exponentially many distinct conic directions, and even one geometric face can
+induce a rank-three matching interface. The next advance should therefore be
+sought in source-aware decomposition or succinct higher-rank continuation,
+with the complete recognition costs kept explicit.
+
+\appendix
+\section{Reproduction and file map}
+
+From the unpacked package root, run:
+\begin{verbatim}
+python -m unittest discover -s tests -v
+python experiments/reproduce.py --out /tmp/scalar-separator-evidence
+python experiments/build_tables.py
+cd article
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The table generator reads the delivered \code{evidence/results.json}; it does
+not silently replace it with a new timing run. The optional output path on the
+reproduction script permits comparisons while preserving the frozen evidence.
+
+\begin{longtable}{p{0.35\linewidth}p{0.58\linewidth}}
+\toprule
+Path & Contents\\\midrule\endhead
+\code{article/} & This PDF, complete editable TeX, generated tables and macros.\\
+\code{scalar_separators/} & Exact arithmetic, source models, source replay,
+message solver, packet verifier, and fixtures.\\
+\code{tests/test_kernel.py} & The 27-method standard-library regression suite.\\
+\code{experiments/reproduce.py} & Seeded global-oracle audit, actual matching
+fixtures, source split benchmark, algebraic scaling, and rank-two counter.\\
+\code{experiments/build_tables.py} & Tables generated from the frozen JSON.\\
+\code{evidence/results.json} & Environment, generated cases, exact counts,
+source data and individual paired timing records.\\
+\code{evidence/benchmark.csv} & Compact gain-chain timing table.\\
+\code{SOURCE_AUDIT.md} & Reference checkpoint, inspected paths, bibliography,
+and uninspected incoming archives.\\
+\code{CLAIMS.md} & Proven, conditional, implemented and unvalidated claims,
+kept separate.\\
+\code{INTEGRATION.md} & Source authentication, fallback semantics, native
+integration gates and limitations.\\
+\code{validation/} & Fresh unit-test and reproduction logs and PDF checks.\\
+\bottomrule
+\end{longtable}
+
+The package does not include a dependency snapshot of the full repository and
+does not need one to run its own tests. Reproducing a future native integration
+will require the actual maintained source producers and corpus, not merely
+these two fixture definitions.

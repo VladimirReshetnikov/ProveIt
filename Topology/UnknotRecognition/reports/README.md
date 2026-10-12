@@ -98,6 +98,16 @@ modification times.
 | `85/` | `ProveIt_Unknot_Marked_Parallelity_2026-10-12.zip` | complete delivered article, native snapshot and patch | no complete recognizer | marked bundle interfaces, geometric core cancellations and accepted-cut handlebody census; coordinate block search remains separate | interface/core consumer integrated: 22 focused tests, 30 source-certified cuts, 23 explicit-oracle agreements; see [status](85/INTEGRATION-STATUS.md) |
 | `86/` | `unknot_cancellation_20261012.zip` | complete delivered article, native additions and evidence | parameterized vertex-meridian discovery; global coverage unproved | sparse edge cancellation, polynomial rank gate and relative disc interfaces | placed only; patch unapplied and delivered tests not rerun |
 | `87/` | `unknot_reductions_20261012.zip` | complete delivered article, code overlay and evidence | supplied-sector support certificates; global coverage unproved | exact maximal support, cyclic ports and relative disc-product templates | placed only; patch unapplied and delivered tests not rerun |
+| `88/` | `ProveIt_Disconnected_Tile_Kernels_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | arbitrary disconnected tile powers; polynomial marked-cut kernels, contextual replacement and binary lifts | placed only; delivered tests not rerun and patches unapplied |
+| `89/` | `ProveIt_Moment_Coded_First_Returns_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | one-census moment-coded first returns, finite-group transport and reservoir coarsening | placed only; delivered tests not rerun and patches unapplied |
+| `90/` | `ProveIt_Unknot_Hierarchy_Kernels_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | cancellation-component search, relative bundle handles and routed pattern powers | placed only; delivered tests not rerun and patches unapplied |
+| `91/` | `ProveIt_Unknot_Sparse_Cut_Grammars_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | sparse fixed-budget cut responses for supplied connected or component-bounded graph grammars | placed only; delivered tests not rerun and patches unapplied |
+| `92/` | `ProveIt_Cographic_Persistence_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | source-conditional chamber graphs, cographic retention and causal restart accounting | placed only; delivered tests not rerun and patches unapplied |
+| `93/` | `ProveIt_Genus_Budgets_Native_Interfaces_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | initial torus/admissible-core compiler, genus budgets and native moment-coded interfaces | placed only; delivered tests not rerun and patches unapplied |
+| `94/` | `ProveIt_Modular_Morse_Certificates_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | modular discrete Morse rank certificates on supplied authenticated regular cells | placed only; delivered tests not rerun and patches unapplied |
+| `95/` | `ProveIt_Saturated_Bundle_Cancellation_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | source-saturated bundle rows, exact full-row column peeling and stopping certificates | placed only; delivered tests not rerun and patches unapplied |
+| `96/` | `ProveIt_Scalar_Separators_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | source-bound rank-one separator search, scalar continuation and connected ray witnesses | placed only; delivered tests not rerun and patches unapplied |
+| `97/` | `ProveIt_Unknot_Stopping_Cores_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | rectangular stopping-set persistence, timestamp replay, exact passengers and saturated cuts | placed only; delivered tests not rerun and patches unapplied |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -730,3 +740,34 @@ being interchangeable: 82 retains corners for abstract surface surgery;
 normal-surface family; 87 certifies support and relative attachments.
 Future synthesis must retain the source geometry, pattern transport and
 global search obligations alongside each local theorem.
+
+
+## Further arrivals of 12 October 2026: reports 88–97
+
+The four archives from `a61a244a0` become reports 88–91; the six from
+`0a6e773fd` become 92–97, in ASCII archive order within each arrival. All
+1183 extracted files were inventoried by Git blob identity. The ten delivery
+READMEs and every main manuscript are new; reused runtime excerpts and
+fixtures do not constitute repeated manuscripts. Prior placement trees
+confirm 310 reused blobs across fourteen placement commits.
+
+Each single archive wrapper was removed, and the complete delivered layout,
+PDFs, code, patches and evidence were preserved. Existing ignore rules apply
+to checksum manifests; no checksum or line-ending audit was performed.
+Delivered run logs are retained. The ZIPs are retired in the placement commit
+and remain recoverable from their arrival commits. The placement record is
+[recorded separately](../synthesis/data/incoming-88-97-placement.json).
+
+The source anchors are `ed166080d7` (88), `1c0383bd8f` (89 and 91),
+`a28a49ee5c` (90), `7046006266` (92–95 and 97), and `4840e384b5` (96).
+Several source audits distinguish pinned reads from earlier moving-branch
+reads; their precise scope remains in the delivered audit files.
+
+These are placement records, not acceptance of the mathematical claims or
+installation of the delivered patches. No verification suite was run during
+placement. Reported counts and timings remain the authors' evidence. The
+packages address complementary parts of the hierarchy: geometric source
+compilation, surface discovery, terminal graph queries, cancellation and
+restart accounting. None claims a completed general quasi-polynomial
+unknot-recognition implementation. Integration and independent proof review
+are separate work.

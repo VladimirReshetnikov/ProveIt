@@ -1,0 +1,376 @@
+\section{Bit complexity and the improvement over global branching}
+\label{sec:complexity}
+
+Let $V$ be the number of tree vertices, $b_v=|I_v|$ the number of original
+coordinates at $v$, $\delta_v$ its degree, and $k_v=b_v+\delta_v$. For a fixed
+incident sign assignment $\sigma$, let $M_{v,\sigma}$ be its local equation
+matrix and put
+\[
+ d^{\rm raw}_{v,\sigma}=\dim\ker M_{v,\sigma},\qquad
+ d_{v,\sigma}=\dim\operatorname{span}
+       \{z\geq0:M_{v,\sigma}z=0\}.
+\]
+These need not coincide: forced-zero coordinates can lower the intrinsic
+feasible dimension. Let $N$ denote the total binary encoding length of the
+source, supplied decomposition, and objective; using the explicitly compiled
+model instead changes this length by at most a polynomial factor.
+
+\subsection{The delivered enumeration bound}
+
+\begin{lemma}[Active-zero-set ray enumeration]
+\label{lem:enum}
+For a rational matrix $M$ with $k$ columns and kernel dimension $d>0$, every
+extreme ray of $\{z\geq0:Mz=0\}$ is found by selecting $d-1$ coordinate
+functionals that are independent on $\ker M$, setting them to zero, and solving
+the resulting one-dimensional kernel. Testing all $\binom{k}{d-1}$ selections,
+checking signs and forbidden pairs, and removing duplicates is complete.
+\end{lemma}
+
+\begin{proof}
+At an extreme ray $r$, the face obtained by setting every coordinate outside
+$\supp r$ to zero has dimension one. On $\ker M$, those zero-coordinate
+functionals therefore have rank $d-1$. Select a basis of them. Their common
+kernel in $\ker M$ is exactly the ray's linear span, so one of the two
+orientations of the computed direction is $r$. Conversely, a nonzero
+nonnegative direction whose support-restricted kernel is one-dimensional
+spans an extreme ray. If $d=1$, the empty selection is used. If $d=0$, the cone
+is zero and there are no rays.
+\end{proof}
+
+Define the explicit local enumeration budget
+\begin{equation}\label{eq:Xi}
+ \Xi=\sum_v\sum_{\sigma\in\{-1,1\}^{\delta_v}}
+ \left(1+\mathbf1_{\{d^{\rm raw}_{v,\sigma}>0\}}
+ \binom{k_v}{d^{\rm raw}_{v,\sigma}-1}\right).
+\end{equation}
+We use the convention $\binom{k}{-1}=0$. The leading $1$ charges the kernel
+computation even for an empty cone.
+The delivered code implements Lemma~\ref{lem:enum}. It does not implement a
+polynomial-time LP engine or complete-support LP preprocessing.
+
+\begin{theorem}[Implemented exact-query bound]
+\label{thm:implemented}
+Compilation, local enumeration, scalar elimination, and construction of one
+positive witness have bit complexity
+\[
+ \poly(N)\,\Xi.
+\]
+In particular, with $h=\max_v(b_v+2\delta_v)$, the cost is bounded by
+$\poly(N)2^h$. Thus a polynomial-size supplied source decomposition with
+$h=O(\log N)$ gives a polynomial query algorithm, and
+$h=O((\log N)^2)$ gives $N^{O(\log N)}$.
+After local preparation, further objectives and original coordinate deletions
+cost polynomial time in $N$ and the number of retained local rays.
+\end{theorem}
+
+\begin{proof}
+There are $2^{\delta_v}$ local chambers at $v$. Each zero-set candidate uses
+polynomially many exact rational arithmetic operations on matrices of
+polynomial encoding length. Standard elimination and determinant bounds give
+polynomial bit length for every local kernel direction and primitive ray.
+Each candidate is either discarded or adds one ray, so all list sizes are
+charged to \eqref{eq:Xi}. The dynamic recurrence scans those lists a constant
+number of times per incident edge.
+
+It remains to justify that rational message arithmetic does not escape the
+bound. The following lemma supplies a polynomial bound on message and witness
+bits. Finally, $\binom{k}{j}\leq2^k$, so summing over signs gives at most a
+polynomial factor times $2^{b_v+2\delta_v}$ at each node. Repeated queries only
+filter and rescore the already complete local lists.
+\end{proof}
+
+\begin{lemma}[No hidden expansion in message arithmetic]
+\label{lem:bits}
+Every finite message and every selected normalized witness has a rational
+encoding of polynomial length in $N$. The scalar algorithm need not enumerate
+normal discs or global compatibility histories to construct these numbers.
+\end{lemma}
+
+\begin{proof}
+One proof uses the normalized subtree problem from
+Theorem~\ref{thm:message}. After fixing its compatibility and scalar signs, it
+is a rational standard-form system of polynomial dimension with one parent
+coordinate set to $1$ in absolute value. Whenever its finite optimum is
+attained, it is attained at a basic feasible solution. Clearing row denominators
+and applying Cramer's rule bounds numerator and denominator bits by a polynomial
+in the system's total encoding. The source compiler already has polynomial-size
+coefficients. The objective coefficients on original coordinates are part of
+the input; child slopes need not be included in this global subtree argument.
+Thus every exact optimum value has polynomial encoding length.
+
+For the actual selected recipe, each local coordinate-to-parent ratio is a
+ratio of polynomial-size primitive-ray entries. A reconstructed coordinate is
+a product of such ratios along a simple tree path, times one origin-ray entry.
+There are at most $V$ factors. Numerator and denominator bit lengths add under
+multiplication, so they remain polynomial. The objective is a sum of at most
+$n$ products with the original rational coefficients. Reduced fractions in the
+implementation prevent irrelevant common factors from accumulating.
+\end{proof}
+
+This is a bit bound, not a unit-cost arithmetic argument. A gain such as
+$3^{1024}$ occupies only $1624$ bits, while the associated number of admissible
+branch histories may be $2^{1024}$. Neither quantity is used as an iteration
+bound in the scalar recurrence.
+
+\subsection{A sharper local intrinsic-dimension theorem}
+
+The following refinement uses the complete-support and dimension-drop principles
+already available in report 87~\cite{repo87}. It is useful as a target for a
+future LP-backed implementation.
+
+\begin{lemma}[Compatibility cover by intrinsic dimension]
+\label{lem:dimensioncover}
+A nonnegative rational cone of intrinsic dimension $d$ with forbidden coordinate
+pairs admits a complete binary compatibility search with at most
+$2^{d+1}-1$ nodes, using polynomial-time rational LP at each node. On each
+compatible leaf, feasibility or linear optimization under a specified
+normalization is an ordinary LP problem.
+\end{lemma}
+
+\begin{proof}
+At a node, compute which coordinates can be positive in the current cone.
+This can be done by one feasibility query per coordinate, or by the complete
+primal--dual support certificate of report 87. If no forbidden pair has both
+coordinates live, every point of the cone is compatible. Otherwise choose a
+forbidden pair $i,j$ with both coordinates live. Adding their positive witnesses
+shows that they can be simultaneously positive in the convex cone.
+
+Branch on $x_i=0$ or $x_j=0$. Every compatible point belongs to one child.
+Each coordinate functional is nonzero on the current feasible span; hence each
+child has intrinsic dimension at least one smaller. The depth is at most $d$,
+and the node bound follows. All nodes use the original rational equations plus
+coordinate zeros. Polynomial-time rational LP~\cite{lp} gives polynomial bit
+cost per node. Normalized optimizations are performed only after a compatible
+leaf is obtained, so no objective-dependent branching assumption is needed.
+\end{proof}
+
+\begin{theorem}[Sum of local intrinsic-dimension costs]
+\label{thm:intrinsic}
+The scalar-tree positive-objective problem can be decided in bit time
+\[
+ \poly(N)\sum_v\sum_{\sigma\in\{-1,1\}^{\delta_v}}
+                  2^{d_{v,\sigma}}.
+\]
+This is a sum over local searches, not the product of their sizes. With
+$D=\max_{v,\sigma}d_{v,\sigma}$ and $\Delta=\max_v\delta_v$, the bound is
+$\poly(N)2^{D+\Delta}$. In particular, $D+\Delta=O((\log N)^2)$ is a
+quasi-polynomial criterion even when the global matching-cone dimension is
+linear in $N$.
+\end{theorem}
+
+\begin{proof}
+At a node and sign chamber, unavailable child directions and disabled source
+coordinates give coordinate faces and cannot increase intrinsic dimension.
+Use Lemma~\ref{lem:dimensioncover} to cover the compatible local cone. On each
+leaf, test for a positive zero-parent-port direction and optimize the effective
+objective with parent absolute value one when feasible. If an optimum is
+unbounded, its recession direction supplies the already decisive zero-port
+positive witness. Theorem~\ref{thm:message} then computes the exact parent
+message from these local outcomes.
+
+Each subtree is processed once, and its compatibility history is replaced by
+its message before the parent is solved. There is no enumeration of tuples of
+leaf choices from different subtrees. Lemma~\ref{lem:bits} bounds the intermediate
+coefficients, giving the displayed bit cost. The final estimate sums at most
+$V2^\Delta$ chamber costs bounded by $2^D$.
+\end{proof}
+
+To retain the connected-witness conclusion with an LP backend, extract a vertex
+of an optimal normalized local face rather than averaging tied optima. A
+positive-port vertex corresponds to a cone ray; a positive zero-port search
+can use a sum-of-coordinates normalization. Vertex extraction inside a rational
+optimal face uses polynomially many exact LP or linear-algebra operations.
+The delivered ray backend already chooses a single ray, including when several
+rays have the same score.
+
+\subsection{A strict separation from a global search budget}
+
+Consider $m$ stages with nonnegative variables $t_0,\ldots,t_m,u_i,v_i$ and
+\begin{equation}\label{eq:gainchain}
+ t_{i-1}=u_i+v_i,\qquad t_i=2u_i+3v_i,\qquad u_iv_i=0
+ \quad(1\leq i\leq m).
+\end{equation}
+At each stage, the only admissible nonzero choices transmit a gain of $2$ or
+$3$. Consecutive stages share one nonnegative scalar. Eliminating the intermediate $t_i$ into scalar interfaces, and retaining $t_0$
+and $t_m$ as endpoint coordinates, gives the disjoint-coordinate model used in
+the code. The eliminated values are uniquely recovered and are automatically
+nonnegative. Their objective coefficients can be absorbed into the adjacent
+stage equations. The model has two endpoint rays and two admissible rays per
+stage.
+
+\begin{proposition}[Exponential global ray family, linear local inventory]
+The unrestricted matching cone in \eqref{eq:gainchain} has dimension $m+1$.
+Its admissible extreme rays are in bijection with the $2^m$ binary gain
+histories. Nevertheless, every linear objective on its original variables can
+be tested for positivity by the scalar recurrence with $2m+2$ retained local
+rays and polynomial bit cost.
+\end{proposition}
+
+\begin{proof}
+There are $3m+1$ variables and $2m$ independent equations. Independence follows
+successively from the variables $t_m,t_{m-1},\ldots$ and the stage equations,
+or by parameterizing the linear solution space using $t_0$ and $v_1,\ldots,v_m$.
+The cone has a strictly positive point, obtained by taking $u_i=v_i>0$ at every
+stage, so its intrinsic dimension is the same $m+1$.
+
+For a nonzero compatible vector, $t_0>0$: if $t_0=0$, nonnegativity forces
+$u_1=v_1=0$, hence $t_1=0$, and induction makes the entire vector zero. Normalize
+$t_0=1$. At each stage exactly one of $u_i,v_i$ is positive, yielding its binary
+history. Fixing that history makes the matching solution unique up to scale,
+so the corresponding coordinate face is a ray. Different histories have
+different original supports even when their final gains happen to agree.
+The local ray counts and the scalar algorithm now prove the final assertion.
+\end{proof}
+
+For the objective $t_m-3^m t_0$, the answer is nonpositive; changing the
+coefficient to $3^m-1$ gives a positive witness. The family provides a strict
+comparison with a flat complete enumeration of all compatibility histories.
+It is also analytically soluble by the elementary maximum-gain formula. It is
+not offered as a difficult knot family, a lower bound on every algorithm, or a
+novel closed-form optimization problem.
+
+\section{A sharp warning for two-coordinate interfaces}
+\label{sec:twoport}
+
+The success of one scalar does not justify summarizing a two-dimensional
+interface by a fixed number of slopes. The obstruction already occurs in a
+constant-width binary counter.
+
+\begin{theorem}[Exponential literal cone messages in interface dimension two]
+\label{thm:twoport}
+For every $m\geq1$, there is a homogeneous rational system with $O(m)$ variables
+and constraints, coefficients bounded by $2$ in absolute value, and local
+forbidden pairs, whose interface projection onto $(s,w_m)$ is exactly
+\[
+ P_m=\bigcup_{k=0}^{2^m-1}\{(s,ks):s\geq0\}.
+\]
+Any representation of $P_m$ as a finite union of convex cones requires at least
+$2^m$ nonzero cones. The $2^m$ directions are distinguishable by homogeneous
+linear contexts with a positive-objective query.
+\end{theorem}
+
+\begin{proof}
+Take $s,u_i,v_i,w_i\geq0$, fix $w_0=0$, and impose
+\[
+ u_i+v_i=s,\qquad u_iv_i=0,\qquad w_i=2w_{i-1}+v_i
+ \quad(1\leq i\leq m).
+\]
+When $s>0$, each $v_i$ is either $0$ or $s$. Thus $w_m/s$ is an arbitrary
+$m$-bit integer, and every integer between $0$ and $2^m-1$ occurs. When $s=0$,
+all coordinates vanish. This proves the projection formula. Consecutive
+counter stages communicate only the pair $(s,w_i)$, so the phenomenon persists
+with two-dimensional separators and bounded local equations.
+
+If a convex cone contained nonzero vectors on two different displayed rays,
+it would contain their positive combinations. Their slopes range over an
+interval, including slopes not in the finite set of integers. Therefore a
+convex cone contained in $P_m$ meets at most one nonzero displayed ray. At least
+$2^m$ cones are required.
+
+For a specified integer $k$, attach the homogeneous equation $w_m=ks$ and
+ask whether the objective $s$ is positive. This context accepts exactly the
+$k$th direction. Its coefficient has only $O(m)$ bits.
+\end{proof}
+
+The lower bound is explicitly about a \emph{literal union of convex cones}.
+The counter itself is a short symbolic description, so the theorem cannot be
+used to rule out arithmetic circuits, automata, semilinear descriptions, or
+specialized exact optimization in rank two. It pinpoints a representation
+barrier, not an unrestricted complexity lower bound.
+
+\section{Connection to complete unknot recognition}
+\label{sec:geometry}
+
+\subsection{The standard-coordinate interface}
+
+For a validated triangulation with $t$ tetrahedra, the standard coordinates
+have four triangle and three quadrilateral entries per tetrahedron. The three
+forbidden pairs among each quadrilateral triple enforce admissibility. Matching
+equations, a source-derived rational Euler functional, and an original triangle
+coordinate set to zero fit our homogeneous problem directly.
+
+The classical positive-Euler/crushing recognition framework searches a
+one-vertex knot-exterior triangulation for a connected positive-Euler normal
+surface other than the vertex link; an essential-boundary disc proves
+unknottedness, while the other permitted outcomes are handled by the geometric
+reduction~\cite{bo}. Our source-bound ray theorem supplies connected witnesses
+for that interface. It does not replace the essential-boundary test or the
+proof that the triangulation is the exterior of the input knot.
+
+In a one-vertex triangulation, the vertex-link vector has every triangle
+coordinate equal to one. A connected normal surface different from the vertex
+link has some triangle coordinate zero: otherwise a vertex-link copy can be
+removed near the vertex as a disjoint normal component. Thus the search can
+use the disjunction of at most $4t$ zero-triangle queries. Primitivity and
+connectedness are important here; merely producing a positive Euler sum would
+allow an irrelevant vertex-link component to dominate the objective.
+
+For a genuine knot exterior, an embedded connected positive-Euler surface is
+a sphere or a disc: an embedded projective plane does not occur in the
+3-sphere. A sphere, a boundary-parallel disc, and an essential-boundary disc
+must still be distinguished by the geometric layer. The generic algebraic
+status \pos\ is deliberately not named \textsf{UNKNOT}.
+
+\subsection{An explicit conditional running-time criterion}
+
+\begin{theorem}[Width-controlled recognition criterion]
+\label{thm:recognition}
+Consider a correct positive-Euler/crushing recognition implementation operating
+on a diagram of binary input size $N_0$. Assume the following contracts.
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item Source construction, one-vertex conversion, geometric checking, and
+reduction have total polynomial bit cost outside their positive-Euler queries.
+The number and encoding sizes of query sources are polynomial in $N_0$.
+\item A decomposition producer, including all failed proposals, has total cost
+$N_0^{O(\log N_0)}$ and returns source-verified, conflict-local rank-one tree
+models for every query, or equivalent coordinate restrictions with authenticated
+extension back to the source.
+\item Across these query models, the implemented budget satisfies
+$\sum\Xi\leq N_0^{O(\log N_0)}$.
+\end{enumerate}
+Then replacing the positive-Euler search by the delivered scalar ray method
+preserves complete recognition and gives total running time
+$N_0^{O(\log N_0)}$. A sufficient local condition for (iii) is polynomially many
+bags with $b_v+2\delta_v=O((\log N_0)^2)$. For a polynomial-time LP implementation,
+the alternative sufficient condition is
+$d_{v,\sigma}+\delta_v=O((\log N_0)^2)$.
+\end{theorem}
+
+\begin{proof}
+Source compilation preserves every query. Scalar elimination is complete in
+both directions, and selected primitive rays give connected source surfaces.
+The recognition implementation therefore receives exactly the required kind
+of answer and continues through its already correct geometric steps. The
+query costs sum by Theorems~\ref{thm:implemented} and \ref{thm:intrinsic}; the
+producer cost and all nonquery costs are included explicitly. The displayed
+sufficient conditions follow by substituting the local bounds.
+\end{proof}
+
+A single bag containing every source column always gives an exact model with
+no interface condition. This supplies a complete exponential fallback at the
+algebraic query level. It does not give the width assumption of the theorem.
+Neither the one-vertex condition, normal matching, nor a small triangulation
+dual-treewidth by itself has been proved here to imply that assumption.
+
+The classical strictly decreasing tetrahedron count gives a particularly clear
+special case: at most $t$ reduction stages and at most $4t$ triangle anchors
+per stage give $O(t^2)$ anchored queries. Prepared local rays can be reused
+across anchors on a fixed source. Reuse across a changed source is not covered.
+
+\subsection{Relation to Lackenby's hierarchy program}
+
+The scalar theorem is a search primitive, not a substitute for the entire
+hierarchy. To use it for later hierarchy pieces, the source constraints must
+still express the correct surfaces and inherited boundary conditions. A
+marked-boundary objective or charge may introduce several interface quantities,
+nonhomogeneous conditions, or cross-bag restrictions. Such changes must be
+proved compatible with the message contract rather than inferred from a small
+raw-cut encoding.
+
+In particular, a proof of short hierarchy depth does not itself prove small
+scalar width, and small scalar width at one stage does not itself control
+hierarchy resets. The most useful next connection would be a source-aware
+normal form for the hierarchy pieces in which most of the matching system
+splits by rank-one cuts and only a polylogarithmic residual core remains.
+That is a concrete additional theorem to seek, not a conclusion established
+by the present experiments.

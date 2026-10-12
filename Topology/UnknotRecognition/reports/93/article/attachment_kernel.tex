@@ -1,0 +1,245 @@
+\section{A genus budget and a small attachment network}
+\label{sec:attachment-kernel}
+
+The initial torus-boundary reduction is the smallest instance of a more
+general structural fact.  Its useful parameter is the topology of the
+boundary, rather than the number of zero-handles in a presentation.  We
+give the argument in a form that separates a topological theorem from the
+combinatorial certificate implemented in this package.
+
+\subsection{Cut pieces and the unused-handle graph}
+
+Let $M$ be a connected compact orientable irreducible three-manifold with
+nonempty boundary.  Suppose a finite handle presentation has been given
+and a set $U$ of one-handles is disjoint from the attaching regions of all
+higher-index handles.  Their cocores form disjoint properly embedded
+discs.  Cut along all these discs.  Let $K_v$, for $v\in V(Q)$, be the
+connected pieces, and put one edge of $Q$ for every original handle in
+$U$, with endpoints its two incident pieces.  Loops and parallel edges
+are retained.  The graph $Q$ is connected, and
+\[
+ q=|V(Q)|,\qquad e=|E(Q)|,\qquad \beta=e-q+1.
+\]
+The index $\beta$ is a graph cycle rank, not the first Betti number of the
+whole manifold.  Write
+\[
+ \delta(M)=1-\chi(M),\qquad d_v=1-\chi(K_v).
+\]
+When $\partial M$ is connected of genus $g$, orientability and
+Poincar\'e--Lefschetz duality give $\delta(M)=g$.  For boundary components
+of genera $g_1,\ldots,g_b$, the corresponding formula is
+$\delta(M)=1-b+\sum_i g_i$.
+
+\begin{lemma}[Irreducibility and Euler labels after disc cutting]
+\label{lem:disc-euler}
+Every $K_v$ is irreducible and has nonempty boundary.  It is a ball if and
+only if $\chi(K_v)=1$.  Every other piece satisfies $\chi(K_v)\leq0$.
+\end{lemma}
+\begin{proof}
+An interior sphere in a cut piece is also an interior sphere in $M$, so
+it bounds a ball in $M$.  The cutting discs are disjoint from the sphere.
+Each disc is connected and has boundary on $\partial M$, outside that
+interior ball.  It therefore lies outside the ball.  Consequently the
+ball survives inside the same cut piece.  Disc cutting cannot create a
+closed component, which proves the first assertions.
+
+A connected irreducible three-manifold with a sphere boundary component
+is a ball: push that component into the interior and apply irreducibility;
+the side away from the original boundary is a ball, and restoring the
+spherical collar gives a ball.  Thus a nonball $K_v$ has only boundary
+components of genus at least one.  The identity
+$2\chi(K_v)=\chi(\partial K_v)$ now implies $\chi(K_v)\leq0$.
+Conversely a ball has Euler characteristic one, and the two possibilities
+exhaust the pieces.
+\end{proof}
+
+This lemma uses actual irreducibility of the source.  An abstract integer
+label equal to one, a homology computation, or a sphere boundary alone
+does not establish the conclusion.  The executable reducible controls in
+Section~\ref{sec:evidence} show why the distinction matters.
+
+\begin{theorem}[Exact unused-handle budget]
+\label{thm:genus-budget}
+Under the preceding hypotheses,
+\begin{equation}
+ \boxed{\quad
+ \delta(M)=\beta+\sum_{v\in V(Q)}d_v
+          =\beta+\sum_{K_v\text{ nonball}}\bigl(1-\chi(K_v)\bigr).
+ \quad}
+ \label{eq:genus-budget}
+\end{equation}
+In particular, if $s$ is the number of nonball pieces, then
+$s+\beta\leq\delta(M)$.  For connected boundary this is
+$s+\beta\leq g$.
+\end{theorem}
+\begin{proof}
+Recover $M$ by attaching the $e$ one-handles to the disjoint union of the
+$K_v$.  Each such attachment decreases Euler characteristic by one, so
+$\chi(M)=\sum_v\chi(K_v)-e$.  Substituting $e=\beta+q-1$ gives
+\[
+ 1-\chi(M)=\beta+\sum_v(1-\chi(K_v)).
+\]
+By Lemma~\ref{lem:disc-euler}, a ball contributes zero and every nonball
+contributes an integer at least one.  This proves the equality and bound.
+\end{proof}
+
+The identity does more than count components: it distinguishes the two
+possible sources of boundary complexity, cycles in the attachment graph
+and topological complexity inside the retained pieces.  Neither term can
+be large while the boundary genus remains small.
+
+\subsection{Absorbing ball pieces along a rooted forest}
+
+For the following topological replacement, a network means the graph
+together with its vertex manifolds and its labelled attaching discs.
+The graph without these interfaces is not a complete manifold encoding.
+No boundary pattern or prescribed embedded curve is part of the replacement
+contract.
+
+\begin{lemma}[Absorption of a ball vertex]
+\label{lem:absorb-ball}
+Suppose a ball vertex $B$ is joined to a different vertex manifold $K$ by
+a chosen one-handle.  The union of $K$, this handle, and $B$ is
+homeomorphic to $K$.  Under such a homeomorphism all other attaching discs
+on $B$ can be moved to mutually disjoint subdiscs of a neighbourhood of
+the chosen attaching disc on $\partial K$.  The homeomorphism can be taken
+to fix the complement of a chosen three-dimensional boundary collar in $K$.
+\end{lemma}
+\begin{proof}
+A ball attached to one end of a one-handle is a ball with a distinguished
+disc at the other end.  Gluing this ball to $K$ along that disc adds a
+boundary collar.  Removing the collar gives the asserted homeomorphism.
+The remaining attaching discs are a finite labelled collection of
+disjoint discs on the boundary of the added ball, away from its
+distinguished disc.  A homeomorphism of the boundary sphere carries
+them into any prescribed disjoint subdiscs in the corresponding collar
+patch.  It extends over the ball.  This argument preserves labels and
+orientation, including when some of the other handles have both ends on
+$B$.  It does not preserve an arbitrary additional boundary pattern.
+\end{proof}
+
+\begin{theorem}[Genus-controlled attachment kernel]
+\label{thm:attachment-kernel}
+Assume the hypotheses of Theorem~\ref{thm:genus-budget}, and suppose the
+attaching discs have been supplied.  There is a topologically equivalent
+unmarked attachment network with the following sizes.
+\begin{enumerate}[label=(\roman*)]
+\item If $s\geq1$, the vertex manifolds are exactly the $s$ nonball
+pieces, and the number of one-handles is
+\begin{equation}
+             e'=\beta+s-1\leq\delta(M)-1.
+             \label{eq:kernel-edge-count}
+\end{equation}
+Thus the network has at most $g$ vertex manifolds and $g-1$ handles when
+the original boundary is connected of genus $g$.
+\item If $s=0$, the network consists of one ball and $\beta=\delta(M)$
+one-handles.  In particular $M$ is a handlebody of genus $\delta(M)$.
+\end{enumerate}
+The source-to-kernel combinatorial correspondence has a rooted-forest
+certificate of $O(q+e)$ records, constructible and checkable in polynomial
+bit time.  This is a bound for the attachment network; it is not a bound
+for the internal presentation size of the retained nonball pieces.
+\end{theorem}
+\begin{proof}
+If $s\geq1$, choose a spanning forest $F$ of $Q$ with exactly one nonball
+vertex in each tree.  One constructive method starts with all vertices
+separate, and processes the edges, joining two distinct components unless
+both already contain a nonball vertex.  At most one root is ever present
+in a component.  At termination, any component with no root would have
+an edge to another component because $Q$ is connected.  That edge could
+not have been rejected by the rule.  Hence every final component has a
+root and there are exactly $s$ trees.
+
+Root each tree at its nonball vertex.  Starting at the leaves, absorb
+every other vertex and its parent handle using
+Lemma~\ref{lem:absorb-ball}.  Every absorbed vertex is a ball.  Incidences
+of handles outside $F$ are retained, with their attaching discs carried
+into the appropriate parent patch.  Exactly $q-s$ handles are removed,
+leaving
+$e-(q-s)=\beta+s-1$.  The bound follows from
+Theorem~\ref{thm:genus-budget}.
+
+If every piece is a ball, choose one vertex as the root of a spanning
+tree and carry out the same procedure.  The remaining ball has
+$e-(q-1)=\beta$ one-handles, the defining presentation of an orientable
+handlebody of genus $\beta$.  Equation~\eqref{eq:genus-budget} gives
+$\beta=\delta(M)$.
+
+For the combinatorial certificate retain the original edge identifiers,
+the edges of $F$, the root of every source vertex, and one parent pointer
+per nonroot vertex.  Every surviving handle is still an original
+nonforest edge.  Its new ends are the roots of its old ends.  A checker
+verifies the source hash, all forest edges, acyclicity, unique roots,
+coverage of every source vertex, every remaining incidence, and the Euler
+and cycle-rank equalities.  Sorting and union--find give
+$O((q+e)\log(q+e))$ comparison work, with binary costs charged separately.
+The independent checker can traverse the supplied rooted trees directly.
+\end{proof}
+
+\subsection{Source addresses and the meaning of a small kernel}
+
+An endpoint originally on an absorbed vertex is rerouted along its parent
+chain.  These chains must be shared.  Explicitly writing the complete
+route for every endpoint of a long chain can require quadratic space;
+one parent pointer per source vertex suffices.  The implementation returns
+this forest.  After a one-time $O(q)$ parent-index construction, it permits
+expansion of one requested route in time proportional to its length.
+The convenience API pays that indexing cost if no index is supplied.
+It never expands every route as part of
+kernel construction or verification.
+
+There are three distinct outputs here.  The operational graph has the
+small size in Theorem~\ref{thm:attachment-kernel}.  Its source provenance
+still has $O(q+e)$ records.  An explicit homeomorphism from a triangulated
+ball piece to a standard ball is a further geometric output and is not
+constructed by the graph routine.  The topological replacement is
+justified by the preceding lemmas once the vertex pieces and source
+irreducibility are authenticated.  A later patterned-hierarchy consumer
+must additionally construct and verify the required disc charts and
+pattern transport.  The initial torus compiler avoids this extra task by
+retaining its unique core subpresentation directly.
+
+\begin{proposition}[Sharp counts for this replacement contract]
+\label{prop:kernel-sharp}
+The bounds $s\leq g$ and $e'\leq g-1$ in the nonball case are attained
+simultaneously for every $g\geq1$.  In the all-ball case the one-vertex
+graph requires exactly $g$ loops.
+\end{proposition}
+\begin{proof}
+Take $g$ solid tori and connect them by $g-1$ one-handles in a tree.  The
+result is a handlebody of genus $g$, hence irreducible.  Regard the
+connecting handles as $U$.  Its pieces are the $g$ solid tori, each with
+Euler characteristic zero, so $s=g$ and $\beta=0$.  Arbitrarily many ball
+vertices can be inserted along the tree without changing the example.
+All $g$ specified nonball vertex manifolds remain under the stated
+replacement contract, and connecting them requires at least $g-1$
+handles.  If every piece is a ball, cycle rank is $g$ and a one-vertex
+graph has exactly one independent cycle per loop.
+\end{proof}
+
+This sharpness is relative to retaining the specified nonball blocks.  A
+handlebody could of course be given another global presentation.  More
+generally, a knot exterior of arbitrarily high presentation complexity can
+be the sole nonball vertex when $g=1$.  A one-vertex attachment graph
+therefore gives no uniform bound on the difficulty of recognizing that
+vertex manifold.  This is why the result improves a hierarchy primitive
+without proving general quasi-polynomial unknot recognition.
+
+\subsection{Implementation and independent graph replay}
+
+\code{attachment\_kernel.py} implements the rooted-forest producer.
+\code{attachment\_kernel\_verify.py} imports no producer code and checks
+the complete finite certificate.  The adapter
+\path{kernel_from_decomposition} converts the decomposition format from
+\code{unused\_handles.py}; it does not call that module's geometric
+verifier.  The caller must first authenticate the decomposition against
+the original source.  In particular, the graph certificate's hash binds
+only the vertex Euler labels and edge incidences.  It does not bind a
+triangulation of each vertex manifold or its attaching-disc charts.
+A topological consumer must retain the separate verified source packet
+and, when invoking ball absorption, its irreducibility justification.
+Loops, parallel handles, isolated one-vertex networks, zero genus and
+nonball deficits larger than one are part of the supported graph model.
+The tests include every connected labelled simple graph on at most five
+vertices under three root assignments, random multigraphs, sharp families,
+and altered proof records.
